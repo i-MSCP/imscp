@@ -47,7 +47,7 @@ use parent 'Modules::Abstract';
 
 sub getType
 {
-	'Mail';
+    'Mail';
 }
 
 =item process($mailId)
@@ -61,43 +61,43 @@ sub getType
 
 sub process
 {
-	my ($self, $mailId) = @_;
+    my ($self, $mailId) = @_;
 
-	my $rs = $self->_loadData($mailId);
-	return $rs if $rs;
+    my $rs = $self->_loadData( $mailId );
+    return $rs if $rs;
 
-	my @sql;
-	if(grep($_ eq $self->{'status'}, ( 'toadd', 'tochange', 'toenable' ))) {
-		$rs = $self->add();
-		@sql = (
-			'UPDATE mail_users SET status = ? WHERE mail_id = ?',
-			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'ok'), $mailId
-		);
-	} elsif($self->{'status'} eq 'todelete') {
-		$rs = $self->delete();
-		if($rs){
-			@sql = (
-				'UPDATE mail_users SET status = ? WHERE mail_id = ?',
-				scalar getMessageByType('error') || 'Unknown error', $mailId
-			);
-		} else {
-			@sql = ('DELETE FROM mail_users WHERE mail_id = ?', $self->{'mail_id'});
-		}
-	} elsif($self->{'status'} eq 'todisable') {
-		$rs = $self->disable();
-		@sql = (
-			'UPDATE mail_users SET status = ? WHERE mail_id = ?',
-			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'disabled'), $mailId
-		);
-	}
+    my @sql;
+    if (grep($_ eq $self->{'status'}, ( 'toadd', 'tochange', 'toenable' ))) {
+        $rs = $self->add();
+        @sql = (
+            'UPDATE mail_users SET status = ? WHERE mail_id = ?',
+            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'ok'), $mailId
+        );
+    } elsif ($self->{'status'} eq 'todelete') {
+        $rs = $self->delete();
+        if ($rs) {
+            @sql = (
+                'UPDATE mail_users SET status = ? WHERE mail_id = ?',
+                scalar getMessageByType( 'error' ) || 'Unknown error', $mailId
+            );
+        } else {
+            @sql = ('DELETE FROM mail_users WHERE mail_id = ?', $self->{'mail_id'});
+        }
+    } elsif ($self->{'status'} eq 'todisable') {
+        $rs = $self->disable();
+        @sql = (
+            'UPDATE mail_users SET status = ? WHERE mail_id = ?',
+            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'disabled'), $mailId
+        );
+    }
 
-	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
+    my $rdata = iMSCP::Database->factory()->doQuery( 'dummy', @sql );
+    unless (ref $rdata eq 'HASH') {
+        error( $rdata );
+        return 1;
+    }
 
-	$rs;
+    $rs;
 }
 
 =back
@@ -117,34 +117,34 @@ sub process
 
 sub _loadData
 {
-	my ($self, $mailId) = @_;
+    my ($self, $mailId) = @_;
 
-	my $rdata = iMSCP::Database->factory()->doQuery(
-		'mail_id',
-		'
-			SELECT if(ISNULL(t2.mail_addr), "no", "yes") AS hasCatchAll,
-				if(COUNT(t3.mail_addr) <> 0, "yes", "no") AS hasAutoResponder, t1.*
-			FROM mail_users AS t1
-			LEFT JOIN (SELECT mail_addr FROM mail_users WHERE mail_addr LIKE "@%") AS t2
-			ON substr(t1.mail_addr, locate("@", t1.mail_addr)) = t2.mail_addr
-			LEFT JOIN (SELECT mail_addr FROM mail_users WHERE mail_auto_respond = 1) AS t3
-			ON t3.mail_addr LIKE concat("%", substr(t1.mail_addr, locate("@", t1.mail_addr)))
-			WHERE t1.mail_id = ?
-		',
-		$mailId
-	);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
+    my $rdata = iMSCP::Database->factory()->doQuery(
+        'mail_id',
+        '
+            SELECT if(ISNULL(t2.mail_addr), "no", "yes") AS hasCatchAll,
+                if(COUNT(t3.mail_addr) <> 0, "yes", "no") AS hasAutoResponder, t1.*
+            FROM mail_users AS t1
+            LEFT JOIN (SELECT mail_addr FROM mail_users WHERE mail_addr LIKE "@%") AS t2
+            ON substr(t1.mail_addr, locate("@", t1.mail_addr)) = t2.mail_addr
+            LEFT JOIN (SELECT mail_addr FROM mail_users WHERE mail_auto_respond = 1) AS t3
+            ON t3.mail_addr LIKE concat("%", substr(t1.mail_addr, locate("@", t1.mail_addr)))
+            WHERE t1.mail_id = ?
+        ',
+        $mailId
+    );
+    unless (ref $rdata eq 'HASH') {
+        error( $rdata );
+        return 1;
+    }
 
-	unless(exists $rdata->{$mailId}) {
-		error(sprintf('Mail record with ID %s has not been found in database', $mailId));
-		return 1;
-	}
+    unless (exists $rdata->{$mailId}) {
+        error( sprintf( 'Mail record with ID %s has not been found in database', $mailId ) );
+        return 1;
+    }
 
-	%{$self} = (%{$self}, %{$rdata->{$mailId}});
-	0;
+    %{$self} = (%{$self}, %{$rdata->{$mailId}});
+    0;
 }
 
 =item _getMtaData($action)
@@ -158,44 +158,44 @@ sub _loadData
 
 sub _getMtaData
 {
-	my $self = shift;
+    my $self = shift;
 
-	return %{$self->{'mta'}} if $self->{'mta'};
+    return %{$self->{'mta'}} if $self->{'mta'};
 
-	(my $mail = $self->{'mail_addr'}) =~ s/^\s+//;
-	my ($user, $domain) = split '@', $mail;
+    (my $mail = $self->{'mail_addr'}) =~ s/^\s+//;
+    my ($user, $domain) = split '@', $mail;
 
-	$self->{'mta'} = {
-		DOMAIN_NAME => $domain,
-		MAIL_ACC => $user,
-		MAIL_ADDR => $mail,
-		MAIL_CATCHALL => $self->{'mail_acc'},
-		MAIL_PASS => $self->{'mail_pass'},
-		MAIL_FORWARD => $self->{'mail_forward'},
-		MAIL_TYPE => $self->{'mail_type'},
-		MAIL_AUTO_RSPND => $self->{'mail_auto_respond'},
-		MAIL_AUTO_RSPND_TXT => $self->{'mail_auto_respond_text'},
-		MAIL_HAS_AUTO_RSPND => $self->{'hasAutoResponder'},
-		MAIL_HAS_CATCH_ALL => $self->{'hasCatchAll'},
-		MAIL_STATUS => $self->{'status'},
-		MAIL_ON_CATCHALL => undef
-	};
+    $self->{'mta'} = {
+        DOMAIN_NAME         => $domain,
+        MAIL_ACC            => $user,
+        MAIL_ADDR           => $mail,
+        MAIL_CATCHALL       => $self->{'mail_acc'},
+        MAIL_PASS           => $self->{'mail_pass'},
+        MAIL_FORWARD        => $self->{'mail_forward'},
+        MAIL_TYPE           => $self->{'mail_type'},
+        MAIL_AUTO_RSPND     => $self->{'mail_auto_respond'},
+        MAIL_AUTO_RSPND_TXT => $self->{'mail_auto_respond_text'},
+        MAIL_HAS_AUTO_RSPND => $self->{'hasAutoResponder'},
+        MAIL_HAS_CATCH_ALL  => $self->{'hasCatchAll'},
+        MAIL_STATUS         => $self->{'status'},
+        MAIL_ON_CATCHALL    => undef
+    };
 
-	return %{$self->{'mta'}} unless $self->{'hasCatchAll'} eq 'yes';
+    return %{$self->{'mta'}} unless $self->{'hasCatchAll'} eq 'yes';
 
-	my $rdata = iMSCP::Database->factory()->doQuery(
-		'mail_addr',
-		"
-			SELECT mail_addr FROM mail_users
-			WHERE mail_addr LIKE '\%$self->{'mail_addr'}' AND mail_type LIKE '\%mail' AND mail_auto_respond = 0
-		"
-	);
-	unless(ref $rdata eq 'HASH') {
-		fatal($rdata);
-	}
+    my $rdata = iMSCP::Database->factory()->doQuery(
+        'mail_addr',
+        "
+            SELECT mail_addr FROM mail_users
+            WHERE mail_addr LIKE '\%$self->{'mail_addr'}' AND mail_type LIKE '\%mail' AND mail_auto_respond = 0
+        "
+    );
+    unless (ref $rdata eq 'HASH') {
+        fatal( $rdata );
+    }
 
-	@{$self->{'mta'}->{'MAIL_ON_CATCHALL'}} = keys %{$rdata};
-	%{$self->{'mta'}};
+    @{$self->{'mta'}->{'MAIL_ON_CATCHALL'}} = keys %{$rdata};
+    %{$self->{'mta'}};
 }
 
 =item _getPoData($action)
@@ -209,22 +209,22 @@ sub _getMtaData
 
 sub _getPoData
 {
-	my $self = shift;
+    my $self = shift;
 
-	return %{$self->{'po'}} if $self->{'po'};
+    return %{$self->{'po'}} if $self->{'po'};
 
-	(my $mail = $self->{mail_addr}) =~ s/^\s+//;
-	my ($user, $domain) = split '@', $mail;
+    (my $mail = $self->{mail_addr}) =~ s/^\s+//;
+    my ($user, $domain) = split '@', $mail;
 
-	$self->{'po'} = {
-		DOMAIN_NAME => $domain,
-		MAIL_ACC => $user,
-		MAIL_ADDR => $mail,
-		MAIL_PASS => $self->{'mail_pass'},
-		MAIL_TYPE => $self->{'mail_type'},
-		MAIL_QUOTA => $self->{'quota'}
-	};
-	%{$self->{'po'}};
+    $self->{'po'} = {
+        DOMAIN_NAME => $domain,
+        MAIL_ACC    => $user,
+        MAIL_ADDR   => $mail,
+        MAIL_PASS   => $self->{'mail_pass'},
+        MAIL_TYPE   => $self->{'mail_type'},
+        MAIL_QUOTA  => $self->{'quota'}
+    };
+    %{$self->{'po'}};
 }
 
 =item _getPackagesData($action)
@@ -238,21 +238,21 @@ sub _getPoData
 
 sub _getPackagesData
 {
-	my ($self, $action) = @_;
+    my ($self, $action) = @_;
 
-	return %{$self->{'packages'}} if $self->{'packages'};
+    return %{$self->{'packages'}} if $self->{'packages'};
 
-	(my $mail = $self->{mail_addr}) =~ s/^\s+//;
-	my ($user, $domain) = split '@', $mail;
+    (my $mail = $self->{mail_addr}) =~ s/^\s+//;
+    my ($user, $domain) = split '@', $mail;
 
-	$self->{'packages'} = {
-		DOMAIN_NAME => $domain,
-		MAIL_ACC => $user,
-		MAIL_ADDR => $mail,
-		MAIL_PASS => $self->{'mail_pass'},
-		MAIL_TYPE => $self->{'mail_type'}
-	};
-	%{$self->{'packages'}};
+    $self->{'packages'} = {
+        DOMAIN_NAME => $domain,
+        MAIL_ACC    => $user,
+        MAIL_ADDR   => $mail,
+        MAIL_PASS   => $self->{'mail_pass'},
+        MAIL_TYPE   => $self->{'mail_type'}
+    };
+    %{$self->{'packages'}};
 }
 
 =back

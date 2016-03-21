@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -33,23 +33,23 @@ use parent 'Common::Object';
 
 sub errmsg
 {
-	my ($self, $message) = @_;
+    my ($self, $message) = @_;
 
-	my @parts = split '@', $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} || '';
-	return 0 if @parts < 2;
+    my @parts = split '@', $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} || '';
+    return 0 if @parts < 2;
 
-	my $domain = pop(@parts);
-	$domain = idn_to_ascii($domain, 'utf-8');
-	push @parts, $domain;
+    my $domain = pop( @parts );
+    $domain = idn_to_ascii( $domain, 'utf-8' );
+    push @parts, $domain;
 
-	my $adminEmail = join '@', @parts;
-	my $date = strftime "%d.%m.%Y %H:%M:%S", localtime;
-	my $serverName = $main::imscpConfig{'SERVER_HOSTNAME'};
-	my $serverIP = $main::imscpConfig{'BASE_SERVER_IP'};
-	my $functionName = (caller(1))[3];
-	$functionName = 'main' unless $functionName;
+    my $adminEmail = join '@', @parts;
+    my $date = strftime "%d.%m.%Y %H:%M:%S", localtime;
+    my $serverName = $main::imscpConfig{'SERVER_HOSTNAME'};
+    my $serverIP = $main::imscpConfig{'BASE_SERVER_IP'};
+    my $functionName = (caller( 1 ))[3];
+    $functionName = 'main' unless $functionName;
 
-	my $body = <<EOF;
+    my $body = <<EOF;
 Dear admin,
 
 This is an automatic email sent by your $serverName ($serverIP) server.
@@ -63,45 +63,44 @@ $message
 ==========================================================================
 EOF
 
-	my $out = new MIME::Entity;
+    my $out = new MIME::Entity;
 
-	$out->build(
-		From => "$serverName ($serverIP) <$adminEmail>",
-		To => $adminEmail,
-		Subject => "[$date] i-MSCP Error Report",
-		Data => wrap('', '', $body),
-		'X-Mailer' => "i-MSCP $main::imscpConfig{'Version'} Automatic Messenger"
-	);
+    $out->build(
+        From       => "$serverName ($serverIP) <$adminEmail>",
+        To         => $adminEmail,
+        Subject    => "[$date] i-MSCP Error Report",
+        Data       => wrap( '', '', $body ),
+        'X-Mailer' => "i-MSCP $main::imscpConfig{'Version'} Automatic Messenger"
+    );
 
-	unless(open MAIL, '| /usr/sbin/sendmail -t -oi') {
-		error("Unable to send mail: $!");
-		return 1;
-	}
+    unless (open MAIL, '| /usr/sbin/sendmail -t -oi') {
+        error( "Unable to send mail: $!" );
+        return 1;
+    }
 
-	$out->print(\*MAIL);
-	close MAIL;
+    $out->print( \*MAIL );
+    close MAIL;
 
-	0;
+    0;
 }
 
 sub warnMsg
 {
-	my ($self, $message) = @_;
+    my ($self, $message) = @_;
 
-	my @parts = split '@', $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} || '';
-	return 0 if @parts < 2;
+    my @parts = split '@', $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} || '';
+    return 0 if @parts < 2;
 
-	my $dmn = pop(@parts);
-	$dmn = idn_to_ascii($dmn, 'utf-8');
-	push(@parts, $dmn);
+    my $dmn = pop( @parts );
+    $dmn = idn_to_ascii( $dmn, 'utf-8' );
+    push( @parts, $dmn );
 
-	my $adminEmail = join '@', @parts;
-	my $date =  strftime "%d.%m.%Y %H:%M:%S", localtime;
-	my $serverName = $main::imscpConfig{'SERVER_HOSTNAME'};
-	my $serverIP = $main::imscpConfig{'BASE_SERVER_IP'};
-	my $functionName = (caller(1))[3];
-
-	my $body = <<EOF;
+    my $adminEmail = join '@', @parts;
+    my $date = strftime "%d.%m.%Y %H:%M:%S", localtime;
+    my $serverName = $main::imscpConfig{'SERVER_HOSTNAME'};
+    my $serverIP = $main::imscpConfig{'BASE_SERVER_IP'};
+    my $functionName = (caller( 1 ))[3];
+    my $body = <<EOF;
 Dear admin,
 
 This is an automatic email sent by your $serverName ($serverIP) server.
@@ -115,25 +114,24 @@ $message
 ==========================================================================
 EOF
 
-	my $out = new MIME::Entity;
+    my $out = new MIME::Entity;
 
-	$out->build(
-		From => "$serverName ($serverIP) <$adminEmail>",
-		To => $adminEmail,
-		Subject => "[$date] i-MSCP Warning Report",
-		Data => wrap('', '', $body),
-		'X-Mailer' => "i-MSCP $main::imscpConfig{'Version'} Automatic Messenger"
-	);
+    $out->build(
+        From       => "$serverName ($serverIP) <$adminEmail>",
+        To         => $adminEmail,
+        Subject    => "[$date] i-MSCP Warning Report",
+        Data       => wrap( '', '', $body ),
+        'X-Mailer' => "i-MSCP $main::imscpConfig{'Version'} Automatic Messenger"
+    );
 
-	unless(open MAIL, '| /usr/sbin/sendmail -t -oi'){
-		error("Unable to send mail: $!");
-		return 1;
-	}
+    unless (open MAIL, '| /usr/sbin/sendmail -t -oi') {
+        error( "Unable to send mail: $!" );
+        return 1;
+    }
 
-	$out->print(\*MAIL);
-	close MAIL;
-
-	0;
+    $out->print( \*MAIL );
+    close MAIL;
+    0;
 }
 
 1;

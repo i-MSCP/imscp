@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright 2010-2015 by internet Multi Server Control Panel
+# Copyright 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -44,13 +44,12 @@ use parent 'Common::Object';
 
 sub all
 {
-	my $self = $_[0];
+    my $self = shift;
 
-	$self->user();
-	$self->_perlModules();
-	$self->_externalPrograms();
-
-	undef;
+    $self->user();
+    $self->_perlModules();
+    $self->_externalPrograms();
+    undef;
 }
 
 =item user
@@ -63,9 +62,8 @@ sub all
 
 sub user
 {
-	die("This script must be run as root user.") if $< != 0;
-
-	undef;
+    die( "This script must be run as root user." ) if $< != 0;
+    undef;
 }
 
 =item checkVersion($version, $minVersion [, $maxVersion])
@@ -81,17 +79,17 @@ sub user
 
 sub checkVersion
 {
-	my ($self, $version, $minVersion, $maxVersion) = @_;
+    my ($self, $version, $minVersion, $maxVersion) = @_;
 
-	if(version->parse($version) < version->parse($minVersion)) {
-		die("$version is older then required version $minVersion");
-	}
+    if (version->parse( $version ) < version->parse( $minVersion )) {
+        die( "$version is older then required version $minVersion" );
+    }
 
-	if($maxVersion && version->parse($version) > version->parse($maxVersion)) {
-		die("$version is newer then required max version $maxVersion");
-	}
+    if ($maxVersion && version->parse( $version ) > version->parse( $maxVersion )) {
+        die( "$version is newer then required max version $maxVersion" );
+    }
 
-	undef;
+    undef;
 }
 
 =back
@@ -110,42 +108,42 @@ sub checkVersion
 
 sub _init
 {
-	my $self = $_[0];
+    my $self = shift;
 
-	# Required Perl modules
-	# TODO add required min versions
-	$self->{'perl_modules'} = {
-		'Bit::Vector' => undef,
-		'Crypt::Blowfish' => undef,
-		'Crypt::CBC' => undef,
-		'DBI' => undef,
-		'DBD::mysql' => undef,
-		'DateTime' => undef,
-		'Data::Validate::Domain' => undef,
-		'Email::Valid' => undef,
-		'File::Basename' => undef,
-		'File::Path' => undef,
-		'MIME::Base64' => undef,
-		'MIME::Entity' => undef,
-		'Net::LibIDN' => undef,
-		'XML::Simple' => undef
-	};
+    # Required Perl modules
+    # TODO add required min versions
+    $self->{'perl_modules'} = {
+        'Bit::Vector'            => undef,
+        'Crypt::Blowfish'        => undef,
+        'Crypt::CBC'             => undef,
+        'DBI'                    => undef,
+        'DBD::mysql'             => undef,
+        'DateTime'               => undef,
+        'Data::Validate::Domain' => undef,
+        'Email::Valid'           => undef,
+        'File::Basename'         => undef,
+        'File::Path'             => undef,
+        'MIME::Base64'           => undef,
+        'MIME::Entity'           => undef,
+        'Net::LibIDN'            => undef,
+        'XML::Simple'            => undef
+    };
 
-	# Required programs
-	$self->{'programs'} = {
-		'PHP' => {
-			'version_command' => 'php -d date.timezone=UTC -v',
-			'version_regexp' => qr/PHP\s([\d.]+)/,
-			'min_version' => '5.3.2'
-		},
-		'Perl' => {
-			'version_command' => 'perl -v',
-			'version_regexp' => qr/v([\d.]+)/,
-			'min_version' => '5.14.2'
-		}
-	};
+    # Required programs
+    $self->{'programs'} = {
+        'PHP'  => {
+            'version_command' => 'php -d date.timezone=UTC -v',
+            'version_regexp'  => qr/PHP\s([\d.]+)/,
+            'min_version'     => '5.3.2'
+        },
+        'Perl' => {
+            'version_command' => 'perl -v',
+            'version_regexp'  => qr/v([\d.]+)/,
+            'min_version'     => '5.14.2'
+        }
+    };
 
-	$self;
+    $self;
 }
 
 =item test($test)
@@ -159,15 +157,11 @@ sub _init
 
 sub test
 {
-	my ($self, $test) = @_;
+    my ($self, $test) = @_;
 
-	if($self->can($test)) {
-		$self->$test();
-	} else {
-		die(sprintf("The test '%s' is not available.", $test));
-	}
-
-	undef;
+    die( sprintf( "The test '%s' is not available.", $test ) ) unless self->can( $test );
+    $self->$test();
+    undef;
 }
 
 =item _perlModules()
@@ -180,23 +174,22 @@ sub test
 
 sub _perlModules
 {
-	my $self = $_[0];
+    my $self = shift;
 
-	my @moduleNames = ();
+    my @moduleNames = ();
+    while ( my ($moduleName, $moduleVersion) = each %{$self->{'perl_modules'}}) {
+        push( @moduleNames, $moduleName ) unless check_install( module => $moduleName, version => $moduleVersion );
+    }
 
-	while ( my ($moduleName, $moduleVersion) = each %{$self->{'perl_modules'}}) {
-		push(@moduleNames, $moduleName) unless check_install(module => $moduleName, version => $moduleVersion);
-	}
+    return undef unless @moduleNames;
 
-	if(@moduleNames) {
-		if(@moduleNames > 1) {
-			die(sprintf("The following Perl modules are not installed: %s", join ', ', @moduleNames));
-		} else {
-			die(sprintf("The following Perl module is not installed: %s", "@moduleNames"));
-		}
-	}
+    if (@moduleNames > 1) {
+        die( sprintf( "The following Perl modules are not installed: %s", join ', ', @moduleNames ) );
+    } else {
+        die( sprintf( "The following Perl module is not installed: %s", "@moduleNames" ) );
+    }
 
-	undef;
+    undef;
 }
 
 =item _externalPrograms()
@@ -209,29 +202,29 @@ sub _perlModules
 
 sub _externalPrograms
 {
-	my $self = $_[0];
+    my $self = shift;
 
-	for my $program (keys %{$self->{'programs'}}) {
-		my $lcProgram = lc($program);
+    for my $program (keys %{$self->{'programs'}}) {
+        my $lcProgram = lc( $program );
 
-		unless(iMSCP::ProgramFinder::find($lcProgram)) {
-			die(sprintf("Unable to find the %s command in search path", $program));
-		}
+        iMSCP::ProgramFinder::find( $lcProgram ) or die( sprintf(
+                "Could not find the %s command in search path", $program
+            ) );
 
-		if($self->{'programs'}->{$program}->{'version_command'}) {
-			eval {
-				my $result = $self->_programVersions(
-					$self->{'programs'}->{$program}->{'version_command'},
-					$self->{'programs'}->{$program}->{'version_regexp'},
-					$self->{'programs'}->{$program}->{'min_version'}
-				);
-			};
+        next unless $self->{'programs'}->{$program}->{'version_command'};
 
-			die(sprintf('%s: %s', $program, $@)) if $@;
-		}
-	}
+        eval {
+            my $result = $self->_programVersions(
+                $self->{'programs'}->{$program}->{'version_command'},
+                $self->{'programs'}->{$program}->{'version_regexp'},
+                $self->{'programs'}->{$program}->{'min_version'}
+            );
+        };
 
-	undef;
+        die( sprintf( '%s: %s', $program, $@ ) ) if $@;
+    }
+
+    undef;
 }
 
 =item _programVersions($versionCommand, $versionRegexp, $minVersion [, $maxVersion])
@@ -248,31 +241,29 @@ sub _externalPrograms
 
 sub _programVersions
 {
-	my ($self, $versionCommand, $versionRegexp, $minversion, $maxVersion) = @_;
+    my ($self, $versionCommand, $versionRegexp, $minversion, $maxVersion) = @_;
 
-	my ($stdout, $stderr);
-	execute($versionCommand, \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	debug($stderr) if $stderr;
+    execute( $versionCommand, \my $stdout, \my $stderr );
+    debug( $stdout ) if $stdout;
+    debug( $stderr ) if $stderr;
 
-	die('Unable to find version. No output') unless $stdout;
+    die( 'Could not find version. No output' ) unless $stdout;
 
-	if($versionRegexp) {
-		if($stdout =~ /$versionRegexp/m) {
-			$stdout = $1;
-		} else {
-			die(sprintf('Unable to find version. Output was: %s', $stdout));
-		}
-	}
+    if ($versionRegexp) {
+        if ($stdout !~ /$versionRegexp/m) {
+            die( sprintf( 'Could not find version. Output was: %s', $stdout ) );
+        }
 
-	$self->checkVersion($stdout, $minversion, $maxVersion);
+        $stdout = $1;
+    }
+
+    $self->checkVersion( $stdout, $minversion, $maxVersion );
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

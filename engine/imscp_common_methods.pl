@@ -60,13 +60,13 @@ $SIG{HUP} = 'IGNORE';
 #
 sub push_el
 {
-	my ($el, $sub_name, $msg) = @_;
+    my ($el, $sub_name, $msg) = @_;
 
-	push @$el, "$sub_name".$main::el_sep."$msg";
+    push @$el, "$sub_name".$main::el_sep."$msg";
 
-	if (defined $main::engine_debug) {
-		print STDOUT "[DEBUG] push_el() sub_name: $sub_name, msg: $msg\n";
-	}
+    if (defined $main::engine_debug) {
+        print STDOUT "[DEBUG] push_el() sub_name: $sub_name, msg: $msg\n";
+    }
 }
 
 # Print and return the last message from the logging stack
@@ -82,22 +82,22 @@ sub push_el
 #
 sub pop_el
 {
-	my ($el) = @_;
-	my $data = pop @$el;
+    my ($el) = @_;
+    my $data = pop @$el;
 
-	if (!defined $data) {
-		if (defined $main::engine_debug) {
-			print STDOUT "[DEBUG] pop_el() Empty 'EL' Stack !\n";
-		}
+    if (!defined $data) {
+        if (defined $main::engine_debug) {
+            print STDOUT "[DEBUG] pop_el() Empty 'EL' Stack !\n";
+        }
 
-		return undef;
-	}
+        return undef;
+    }
 
-	my ($sub_name, $msg) = split(/$main::el_sep/, $data);
+    my ($sub_name, $msg) = split( /$main::el_sep/, $data );
 
-	if (defined $main::engine_debug) {
-		print STDOUT "[DEBUG] pop_el() sub_name: $sub_name, msg: $msg\n";
-	}
+    if (defined $main::engine_debug) {
+        print STDOUT "[DEBUG] pop_el() sub_name: $sub_name, msg: $msg\n";
+    }
 
     $data;
 }
@@ -110,78 +110,78 @@ sub pop_el
 #
 sub dump_el
 {
-	my ($el, $fname) = @_;
+    my ($el, $fname) = @_;
 
-	if ($fname ne 'stdout' && $fname ne 'stderr') {
-		return 0 if ! open(FP, '>', $fname);
-	}
+    if ($fname ne 'stdout' && $fname ne 'stderr') {
+        return 0 if !open( FP, '>', $fname );
+    }
 
-	my $el_data;
+    my $el_data;
 
-	while (defined($el_data = pop_el(\@main::el))) {
-		my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
+    while (defined( $el_data = pop_el( \@main::el ) )) {
+        my ($sub_name, $msg) = split( /$main::el_sep/, $el_data );
 
-		if ($fname eq 'stdout') {
-			printf STDOUT "%-30s | %s\n",  $sub_name, $msg;
-		} elsif ($fname eq 'stderr') {
-			printf STDERR "%-30s | %s\n",  $sub_name, $msg;
-		} else {
-			printf FP "%-30s | %s\n",  $sub_name, $msg;
-		}
-	}
+        if ($fname eq 'stdout') {
+            printf STDOUT "%-30s | %s\n", $sub_name, $msg;
+        } elsif ($fname eq 'stderr') {
+            printf STDERR "%-30s | %s\n", $sub_name, $msg;
+        } else {
+            printf FP "%-30s | %s\n", $sub_name, $msg;
+        }
+    }
 
-	close FP;
+    close FP;
 }
 
 # SQL subroutines
 
 sub doSQL
 {
-	push_el(\@main::el, 'doSQL()', 'Starting...');
+    push_el( \@main::el, 'doSQL()', 'Starting...' );
 
-	my ($sql) = @_;
-	my $qr;
+    my ($sql) = @_;
+    my $qr;
 
-	if (!defined $sql || $sql eq '') {
-		push_el(\@main::el, 'doSQL()', '[ERROR] Undefined SQL query');
-		return (-1, '');
-	}
+    if (!defined $sql || $sql eq '') {
+        push_el( \@main::el, 'doSQL()', '[ERROR] Undefined SQL query' );
+        return (-1, '');
+    }
 
-	if (!defined $main::db || ! ref $main::db) {
-		$main::db = DBI->connect(
-			@main::db_connect,
-			{
-				'PrintError' => 0,
-				'mysql_auto_reconnect' => 1,
-				'mysql_enable_utf8' => 1
-			}
-		);
+    if (!defined $main::db || !ref $main::db) {
+        $main::db = DBI->connect(
+            @main::db_connect,
+            {
+                'PrintError'           => 0,
+                'mysql_auto_reconnect' => 1,
+                'mysql_enable_utf8'    => 1
+            }
+        );
 
-		if (!defined $main::db) {
-			push_el(
-				\@main::el, 'doSQL()', "[ERROR] Unable to connect to SQL server with current DSN: @main::db_connect"
-			);
-			return (-1, '');
-		} else { # FIXME: It is really necessary with the mysql_enable_utf8 option?
-			$qr = $main::db->do("SET NAMES 'utf8';");
-		}
-	}
+        if (!defined $main::db) {
+            push_el(
+                \@main::el, 'doSQL()', "[ERROR] Unable to connect to SQL server with current DSN: @main::db_connect"
+            );
+            return (-1, '');
+        } else { # FIXME: It is really necessary with the mysql_enable_utf8 option?
+            $qr = $main::db->do( "SET NAMES 'utf8';" );
+        }
+    }
 
-	if ($sql =~ /select/i) {
-		$qr = $main::db->selectall_arrayref($sql);
-	} elsif ($sql =~ /show/i) {
-		$qr = $main::db->selectall_arrayref($sql);
-	} else {
-		$qr = $main::db->do($sql);
-	}
+    if ($sql =~ /select/i) {
+        $qr = $main::db->selectall_arrayref( $sql );
+    } elsif ($sql =~ /show/i) {
+        $qr = $main::db->selectall_arrayref( $sql );
+    } else {
+        $qr = $main::db->do( $sql );
+    }
 
-	if (defined $qr) {
-		push_el(\@main::el, 'doSQL()', 'Ending...');
-		return (0, $qr);
-	} else {
-		push_el(\@main::el, 'doSQL()', '[ERROR] Wrong SQL Query: ' . $main::db -> errstr);
-		return (-1, '');
-	}
+    if (defined $qr) {
+        push_el( \@main::el, 'doSQL()', 'Ending...' );
+        return (0, $qr);
+    } else {
+        push_el( \@main::el, 'doSQL()', '[ERROR] Wrong SQL Query: '.$main::db->errstr );
+        return (-1, '');
+    }
 }
 
 
@@ -193,33 +193,33 @@ sub doSQL
 #
 sub get_file
 {
-	push_el(\@main::el, 'get_file()', 'Starting...');
+    push_el( \@main::el, 'get_file()', 'Starting...' );
 
-	my ($fname) = @_;
+    my ($fname) = @_;
 
-	if (!defined $fname || $fname eq '') {
-		push_el(\@main::el, 'get_file()', "[ERROR] Undefined input data, fname: |$fname| !");
-		return 1;
-	}
+    if (!defined $fname || $fname eq '') {
+        push_el( \@main::el, 'get_file()', "[ERROR] Undefined input data, fname: |$fname| !" );
+        return 1;
+    }
 
-	if (!-e $fname) {
-		push_el(\@main::el, 'get_file()', "[ERROR] File '$fname' does not exist !");
-		return 1;
-	}
+    if (!-e $fname) {
+        push_el( \@main::el, 'get_file()', "[ERROR] File '$fname' does not exist !" );
+        return 1;
+    }
 
-	if (!open(F, '<', $fname)) {
-		push_el(\@main::el, 'get_file()', "[ERROR] Unable to open '$fname' for reading: $!");
-		return 1;
-	}
+    if (!open( F, '<', $fname )) {
+        push_el( \@main::el, 'get_file()', "[ERROR] Unable to open '$fname' for reading: $!" );
+        return 1;
+    }
 
-	my @fdata = <F>;
-	close(F);
+    my @fdata = <F>;
+    close( F );
 
-	my $line = join('', @fdata);
+    my $line = join( '', @fdata );
 
-	push_el(\@main::el, 'get_file()', 'Ending...');
+    push_el( \@main::el, 'get_file()', 'Ending...' );
 
-	return (0, $line);
+    return (0, $line);
 }
 
 # Delete a file
@@ -229,30 +229,30 @@ sub get_file
 #
 sub del_file
 {
-	push_el(\@main::el, 'del_file()', 'Starting...');
+    push_el( \@main::el, 'del_file()', 'Starting...' );
 
-	my ($fname) = @_;
+    my ($fname) = @_;
 
-	if (! defined $fname || $fname eq '') {
-		push_el(\@main::el, 'del_file()', "[ERROR] Undefined input data, fname: $fname");
-		return -1;
-	}
+    if (!defined $fname || $fname eq '') {
+        push_el( \@main::el, 'del_file()', "[ERROR] Undefined input data, fname: $fname" );
+        return -1;
+    }
 
-	if (! -f $fname) {
-		push_el(\@main::el, 'del_file()', "[ERROR] File '$fname' doesn't exist");
-		return -1;
-	}
+    if (!-f $fname) {
+        push_el( \@main::el, 'del_file()', "[ERROR] File '$fname' doesn't exist" );
+        return -1;
+    }
 
-	my $res = unlink($fname);
+    my $res = unlink( $fname );
 
-	if ($res != 1) {
-		push_el(\@main::el, 'del_file()', "[ERROR] Unable to unlink '$fname' !");
-		return -1;
-	}
+    if ($res != 1) {
+        push_el( \@main::el, 'del_file()', "[ERROR] Unable to unlink '$fname' !" );
+        return -1;
+    }
 
-	push_el(\@main::el, 'del_file()', 'Ending...');
+    push_el( \@main::el, 'del_file()', 'Ending...' );
 
-	0;
+    0;
 }
 
 # Subroutine for handle external commands
@@ -269,25 +269,25 @@ sub del_file
 #
 sub getCmdExitValue()
 {
-	push_el(\@main::el, 'getCmdExitValue()', 'Starting...');
+    push_el( \@main::el, 'getCmdExitValue()', 'Starting...' );
 
-	my $exitValue = -1;
+    my $exitValue = -1;
 
-	if ($? == -1) {
- 		push_el(\@main::el, 'getCmdExitValue()', "[ERROR] Failed to execute external command: $!");
-	} elsif ($? & 127) {
- 		push_el(
- 		    \@main::el, 'getCmdExitValue()', sprintf "[ERROR] External command died with signal %d, %s coredump",
- 		    ($? & 127), ($? & 128) ? 'with' : 'without'
- 	    );
-	} else {
-		$exitValue = $? >> 8;
-		push_el(\@main::el, 'getCmdExitValue()', "[DEBUG] External command exited with value $exitValue");
-	}
+    if ($? == -1) {
+        push_el( \@main::el, 'getCmdExitValue()', "[ERROR] Failed to execute external command: $!" );
+    } elsif ($? & 127) {
+        push_el(
+            \@main::el, 'getCmdExitValue()', sprintf "[ERROR] External command died with signal %d, %s coredump",
+                ($? & 127), ($? & 128) ? 'with' : 'without'
+        );
+    } else {
+        $exitValue = $? >> 8;
+        push_el( \@main::el, 'getCmdExitValue()', "[DEBUG] External command exited with value $exitValue" );
+    }
 
-	push_el(\@main::el, 'getCmdExitValue()', 'Ending...');
+    push_el( \@main::el, 'getCmdExitValue()', 'Ending...' );
 
-	$exitValue;
+    $exitValue;
 }
 
 # Execute an external command and show
@@ -302,21 +302,21 @@ sub getCmdExitValue()
 #
 sub sys_command
 {
-	my ($cmd) = @_;
+    my ($cmd) = @_;
 
-	push_el(\@main::el, "sys_command($cmd)", 'Starting...');
+    push_el( \@main::el, "sys_command($cmd)", 'Starting...' );
 
-	system($cmd);
+    system( $cmd );
 
-	my $exit_value = getCmdExitValue();
+    my $exit_value = getCmdExitValue();
 
-	if ($exit_value == 0) {
-		push_el(\@main::el, "sys_command('$cmd')", 'Ending...');
-		0;
-	} else {
-		push_el(\@main::el, 'sys_command()', "[ERROR] External command '$cmd' exited with value $exit_value !");
-		-1;
-	}
+    if ($exit_value == 0) {
+        push_el( \@main::el, "sys_command('$cmd')", 'Ending...' );
+        0;
+    } else {
+        push_el( \@main::el, 'sys_command()', "[ERROR] External command '$cmd' exited with value $exit_value !" );
+        -1;
+    }
 }
 
 # Execute an external command and return the real exit value
@@ -326,61 +326,61 @@ sub sys_command
 #
 sub sys_command_rs
 {
-	my ($cmd) = @_;
+    my ($cmd) = @_;
 
-	push_el(\@main::el, "sys_command_rs($cmd)", 'Starting...');
+    push_el( \@main::el, "sys_command_rs($cmd)", 'Starting...' );
 
-	system($cmd);
+    system( $cmd );
 
-	push_el(\@main::el, 'sys_command_rs()', 'Ending...');
+    push_el( \@main::el, 'sys_command_rs()', 'Ending...' );
 
-	getCmdExitValue();
+    getCmdExitValue();
 }
 
 sub sys_command_excape_arg($)
 {
-	my $string = shift;
+    my $string = shift;
 
-	return $string if $string eq '' || $string =~ /^[a-zA-Z0-9_\-]+\z/;
-	$string =~ s/'/'\\''/g;
+    return $string if $string eq '' || $string =~ /^[a-zA-Z0-9_\-]+\z/;
+    $string =~ s/'/'\\''/g;
 
-	"'$string'";
+    "'$string'";
 }
 
 sub decrypt_db_password
 {
-	push_el(\@main::el, 'decrypt_db_password()', 'Starting...');
+    push_el( \@main::el, 'decrypt_db_password()', 'Starting...' );
 
-	my ($pass) = @_;
+    my ($pass) = @_;
 
-	if (!defined $pass || $pass eq '') {
-		push_el(\@main::el, 'decrypt_db_password()', '[ERROR] Undefined input data...');
-		return (1, '');
-	}
+    if (!defined $pass || $pass eq '') {
+        push_el( \@main::el, 'decrypt_db_password()', '[ERROR] Undefined input data...' );
+        return (1, '');
+    }
 
-	if (length($main::db_pass_key) != 32 || length($main::db_pass_iv) != 8) {
-		push_el(\@main::el, 'decrypt_db_password()', '[ERROR] KEY or IV has invalid length');
-		return (1, '');
-	}
+    if (length( $main::db_pass_key ) != 32 || length( $main::db_pass_iv ) != 8) {
+        push_el( \@main::el, 'decrypt_db_password()', '[ERROR] KEY or IV has invalid length' );
+        return (1, '');
+    }
 
-	my $cipher = Crypt::CBC -> new(
-		{
-			'key' => $main::db_pass_key,
-			'keysize' => 32,
-			'cipher' => 'Blowfish',
-			'iv' => $main::db_pass_iv,
-			'regenerate_key' => 0,
-			'padding' => 'space',
-			'prepend_iv' => 0
-		}
-	);
+    my $cipher = Crypt::CBC->new(
+        {
+            'key'            => $main::db_pass_key,
+            'keysize'        => 32,
+            'cipher'         => 'Blowfish',
+            'iv'             => $main::db_pass_iv,
+            'regenerate_key' => 0,
+            'padding'        => 'space',
+            'prepend_iv'     => 0
+        }
+    );
 
-	my $decoded = decode_base64("$pass\n");
-	my $plaintext = $cipher -> decrypt($decoded);
+    my $decoded = decode_base64( "$pass\n" );
+    my $plaintext = $cipher->decrypt( $decoded );
 
-	push_el(\@main::el, 'decrypt_db_password()', 'Ending...');
+    push_el( \@main::el, 'decrypt_db_password()', 'Ending...' );
 
-	return (0, $plaintext);
+    return (0, $plaintext);
 }
 
 # Setup the global database variables and redefines the DSN
@@ -389,25 +389,25 @@ sub decrypt_db_password
 #
 sub setup_db_vars
 {
-	push_el(\@main::el, 'setup_db_vars()', 'Starting...');
+    push_el( \@main::el, 'setup_db_vars()', 'Starting...' );
 
-	$main::db_host = $main::cfg{'DATABASE_HOST'};
-	$main::db_user = $main::cfg{'DATABASE_USER'};
-	$main::db_pwd = $main::cfg{'DATABASE_PASSWORD'};
-	$main::db_name = $main::cfg{'DATABASE_NAME'};
+    $main::db_host = $main::cfg{'DATABASE_HOST'};
+    $main::db_user = $main::cfg{'DATABASE_USER'};
+    $main::db_pwd = $main::cfg{'DATABASE_PASSWORD'};
+    $main::db_name = $main::cfg{'DATABASE_NAME'};
 
-	if ($main::db_pwd ne '') {
-		(my $rs, $main::db_pwd) = decrypt_db_password($main::db_pwd);
-		return $rs if $rs;
-	}
+    if ($main::db_pwd ne '') {
+        (my $rs, $main::db_pwd) = decrypt_db_password( $main::db_pwd );
+        return $rs if $rs;
+    }
 
-	# Setup DSN
-	@main::db_connect = ("DBI:mysql:$main::db_name:$main::db_host", $main::db_user, $main::db_pwd);
-	$main::db = undef;
+    # Setup DSN
+    @main::db_connect = ("DBI:mysql:$main::db_name:$main::db_host", $main::db_user, $main::db_pwd);
+    $main::db = undef;
 
-	push_el(\@main::el, 'setup_db_vars()', 'Ending...');
+    push_el( \@main::el, 'setup_db_vars()', 'Ending...' );
 
-	0;
+    0;
 }
 
 # Added for BC issue with installers from software packages
@@ -425,47 +425,47 @@ sub setup_db_vars
 #
 sub get_conf
 {
-	push_el(\@main::el, 'get_conf()', 'Starting...');
+    push_el( \@main::el, 'get_conf()', 'Starting...' );
 
-	my $file_name = shift || $main::cfg_file;
+    my $file_name = shift || $main::cfg_file;
 
-	my ($rs, $fline) = get_file($file_name);
-	return -1 if ($rs != 0);
+    my ($rs, $fline) = get_file( $file_name );
+    return -1 if ($rs != 0);
 
-	my @frows = split(/\n/, $fline);
+    my @frows = split( /\n/, $fline );
 
-	my $i = '';
+    my $i = '';
 
-	for ($i = 0; $i < scalar(@frows); $i++) {
-		$frows[$i] = "$frows[$i]\n";
+    for ($i = 0; $i < scalar( @frows ); $i++) {
+        $frows[$i] = "$frows[$i]\n";
 
-		if ($frows[$i] =~ /$main::cfg_re/) {
-			$main::cfg{$1} = $2;
-		}
-	}
+        if ($frows[$i] =~ /$main::cfg_re/) {
+            $main::cfg{$1} = $2;
+        }
+    }
 
-	push_el(\@main::el, 'get_conf()', 'Ending...');
+    push_el( \@main::el, 'get_conf()', 'Ending...' );
 
-	0;
+    0;
 }
 
 sub get_el_error
 {
-	push_el(\@main::el, 'get_el_error()', 'Starting...');
+    push_el( \@main::el, 'get_el_error()', 'Starting...' );
 
-	my ($fname) = @_;
+    my ($fname) = @_;
 
-	my ($rs, $rdata) = get_file($fname);
-	return $rs if $rs;
+    my ($rs, $rdata) = get_file( $fname );
+    return $rs if $rs;
 
-	my @frows = split(/\n/, $rdata);
-	my $err_row = "$frows[0]\n";
+    my @frows = split( /\n/, $rdata );
+    my $err_row = "$frows[0]\n";
 
-	$err_row =~ /\|\ *([^\n]+)\n$/;
+    $err_row =~ /\|\ *([^\n]+)\n$/;
 
-	$rdata = $1;
+    $rdata = $1;
 
-	push_el(\@main::el, 'get_el_error()', 'Ending...');
+    push_el( \@main::el, 'get_el_error()', 'Ending...' );
 
-	return (0, $rdata);
+    return (0, $rdata);
 }

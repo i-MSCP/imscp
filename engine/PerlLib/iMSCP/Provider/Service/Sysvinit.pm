@@ -35,18 +35,18 @@ use Scalar::Defer;
 
 # Paths in which sysvinit script must be searched
 my $initScriptPaths = lazy {
-    my $id = iMSCP::LsbRelease->getInstance()->getId('short');
+        my $id = iMSCP::LsbRelease->getInstance()->getId( 'short' );
 
-    if (grep($_ eq $id, ( 'FreeBSD', 'DragonFly' ))) {
-       [ '/etc/rc.d', '/usr/local/etc/rc.d' ];
-    } elsif ($id eq 'HP-UX') {
-         [ '/sbin/init.d' ];
-    } elsif ($id eq 'Archlinux') {
-        [ '/etc/rc.d' ];
-    } else {
-        [ '/etc/init.d' ];
-    }
-};
+        if (grep($_ eq $id, ( 'FreeBSD', 'DragonFly' ))) {
+            [ '/etc/rc.d', '/usr/local/etc/rc.d' ];
+        } elsif ($id eq 'HP-UX') {
+            [ '/sbin/init.d' ];
+        } elsif ($id eq 'Archlinux') {
+            [ '/etc/rc.d' ];
+        } else {
+            [ '/etc/init.d' ];
+        }
+    };
 
 # Cache for init script paths
 my %initScriptPathsCache = ();
@@ -75,7 +75,7 @@ sub getInstance
     my $instance = \${"${self}::_instance"};
 
     unless (defined ${$instance}) {
-        ${$instance} = bless (\my $this, $self);
+        ${$instance} = bless ( \my $this, $self );
     }
 
     ${$instance};
@@ -138,9 +138,9 @@ sub remove
 
     local $@;
 
-    if (my $initScriptPath = eval { $self->getInitScriptPath($service); }) {
+    if (my $initScriptPath = eval { $self->getInitScriptPath( $service ); }) {
         delete $initScriptPathsCache{$service};
-        return 0 if iMSCP::File->new(filename => $initScriptPath)->delFile();
+        return 0 if iMSCP::File->new( filename => $initScriptPath )->delFile();
     }
 
     1;
@@ -159,7 +159,7 @@ sub start
 {
     my ($self, $service) = @_;
 
-    $self->_exec($self->getInitScriptPath($service), 'start') == 0;
+    $self->_exec( $self->getInitScriptPath( $service ), 'start' ) == 0;
 }
 
 =item stop($service)
@@ -175,9 +175,9 @@ sub stop
 {
     my ($self, $service) = @_;
 
-    return 1 unless $self->_isSysvinit($service) && $self->isRunning($service);
+    return 1 unless $self->_isSysvinit( $service ) && $self->isRunning( $service );
 
-    $self->_exec($self->getInitScriptPath($service), 'stop') == 0;
+    $self->_exec( $self->getInitScriptPath( $service ), 'stop' ) == 0;
 }
 
 =item restart($service)
@@ -193,11 +193,11 @@ sub restart
 {
     my ($self, $service) = @_;
 
-    if ($self->isRunning($service)) {
-        return $self->_exec($self->getInitScriptPath($service), 'restart') == 0;
+    if ($self->isRunning( $service )) {
+        return $self->_exec( $self->getInitScriptPath( $service ), 'restart' ) == 0;
     }
 
-    $self->_exec($self->getInitScriptPath($service), 'start') == 0;
+    $self->_exec( $self->getInitScriptPath( $service ), 'start' ) == 0;
 }
 
 =item reload($service)
@@ -213,11 +213,11 @@ sub reload
 {
     my ($self, $service) = @_;
 
-    if ($self->isRunning($service)) {
-        return $self->_exec($self->getInitScriptPath($service), 'reload') == 0;
+    if ($self->isRunning( $service )) {
+        return $self->_exec( $self->getInitScriptPath( $service ), 'reload' ) == 0;
     }
 
-    $self->_exec($self->getInitScriptPath($service), 'start') == 0;
+    $self->_exec( $self->getInitScriptPath( $service ), 'start' ) == 0;
 }
 
 =item isRunning($service)
@@ -233,7 +233,7 @@ sub isRunning
 {
     my ($self, $service) = @_;
 
-    $self->_exec($self->getInitScriptPath($service), 'status') == 0;
+    $self->_exec( $self->getInitScriptPath( $service ), 'status' ) == 0;
 }
 
 =item getInitScriptPath($service)
@@ -249,7 +249,7 @@ sub getInitScriptPath
 {
     my ($self, $service) = @_;
 
-    $self->_searchInitScript($service);
+    $self->_searchInitScript( $service );
 }
 
 =back
@@ -272,7 +272,7 @@ sub _isSysvinit
     my ($self, $service) = @_;
 
     local $@;
-    eval { $self->_searchInitScript($service); };
+    eval { $self->_searchInitScript( $service ); };
 }
 
 =item searchInitScript($service)
@@ -291,7 +291,7 @@ sub _searchInitScript
     return $initScriptPathsCache{$service} if $initScriptPathsCache{$service};
 
     for my $path(@{$initScriptPaths}) {
-        my $filepath = File::Spec->join($path, $service);
+        my $filepath = File::Spec->join( $path, $service );
         $initScriptPathsCache{$service} = $filepath if -f $filepath;
 
         unless ($initScriptPathsCache{$service}) {
@@ -302,7 +302,7 @@ sub _searchInitScript
         return $initScriptPathsCache{$service} if $initScriptPathsCache{$service};
     }
 
-    die(sprintf('Could not find sysvinit script for the %s service', $service));
+    die( sprintf( 'Could not find sysvinit script for the %s service', $service ) );
 }
 
 =item _exec($command)
@@ -317,8 +317,8 @@ sub _exec
 {
     my ($self, @command) = @_;
 
-    my $ret = execute("@command", \my $stdout, \my $stderr);
-    error($stderr) if $ret && $stderr;
+    my $ret = execute( "@command", \my $stdout, \my $stderr );
+    error( $stderr ) if $ret && $stderr;
     $ret;
 }
 

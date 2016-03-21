@@ -50,7 +50,7 @@ use parent 'Modules::Abstract';
 
 sub getType
 {
-	'SSLcertificate';
+    'SSLcertificate';
 }
 
 =item process($certificateId)
@@ -64,37 +64,39 @@ sub getType
 
 sub process
 {
-	my ($self, $certificateId) = @_;
+    my ($self, $certificateId) = @_;
 
-	my $rs = $self->_loadData($certificateId);
-	return $rs if $rs;
+    my $rs = $self->_loadData( $certificateId );
+    return $rs if $rs;
 
-	my @sql;
-	if(grep($_ eq $self->{'status'}, ( 'toadd', 'tochange' ))) {
-		$rs = $self->add();
-		@sql = (
-			'UPDATE ssl_certs SET status = ? WHERE cert_id = ?',
-			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'ok'), $certificateId
-		);
-	} elsif($self->{'status'} eq 'todelete') {
-		$rs = $self->delete();
-		if($rs) {
-			@sql = ('UPDATE ssl_certs SET status = ? WHERE cert_id = ?', scalar getMessageByType('error'), $certificateId);
-		} else {
-			@sql = ('DELETE FROM ssl_certs WHERE cert_id = ?', $certificateId);
-		}
-	}
+    my @sql;
+    if (grep($_ eq $self->{'status'}, ( 'toadd', 'tochange' ))) {
+        $rs = $self->add();
+        @sql = (
+            'UPDATE ssl_certs SET status = ? WHERE cert_id = ?',
+            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'ok'), $certificateId
+        );
+    } elsif ($self->{'status'} eq 'todelete') {
+        $rs = $self->delete();
+        if ($rs) {
+            @sql = (
+                'UPDATE ssl_certs SET status = ? WHERE cert_id = ?', scalar getMessageByType( 'error' ), $certificateId
+            );
+        } else {
+            @sql = ('DELETE FROM ssl_certs WHERE cert_id = ?', $certificateId);
+        }
+    }
 
-	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
+    my $rdata = iMSCP::Database->factory()->doQuery( 'dummy', @sql );
+    unless (ref $rdata eq 'HASH') {
+        error( $rdata );
+        return 1;
+    }
 
-	# (since 1.2.16 - See #IP-1500)
-	# Return 0 to avoid any failure on update when a customer's SSL certificate is expired or invalid.
-	# It is the customer responsability to update the certificate throught his interface
-	0;
+    # (since 1.2.16 - See #IP-1500)
+    # Return 0 to avoid any failure on update when a customer's SSL certificate is expired or invalid.
+    # It is the customer responsability to update the certificate throught his interface
+    0;
 }
 
 =item add()
@@ -107,39 +109,39 @@ sub process
 
 sub add
 {
-	my $self = shift;
+    my $self = shift;
 
-	# Private key
-	my $privateKeyContainer = File::Temp->new( UNLINK => 1 );
-	print $privateKeyContainer $self->{'private_key'};
-	$privateKeyContainer->flush();
+    # Private key
+    my $privateKeyContainer = File::Temp->new( UNLINK => 1 );
+    print $privateKeyContainer $self->{'private_key'};
+    $privateKeyContainer->flush();
 
-	# Certificate
-	my $certificateContainer = File::Temp->new( UNLINK => 1 );
-	print $certificateContainer $self->{'certificate'};
-	$certificateContainer->flush();
+    # Certificate
+    my $certificateContainer = File::Temp->new( UNLINK => 1 );
+    print $certificateContainer $self->{'certificate'};
+    $certificateContainer->flush();
 
-	# CA Bundle (intermediate certificate(s))
-	my $caBundleContainer;
-	if($self->{'ca_bundle'}) {
-		$caBundleContainer = File::Temp->new( UNLINK => 1 );
-		print $caBundleContainer $self->{'ca_bundle'};
-		$caBundleContainer->flush();
-	}
+    # CA Bundle (intermediate certificate(s))
+    my $caBundleContainer;
+    if ($self->{'ca_bundle'}) {
+        $caBundleContainer = File::Temp->new( UNLINK => 1 );
+        print $caBundleContainer $self->{'ca_bundle'};
+        $caBundleContainer->flush();
+    }
 
-	# Create OpenSSL object
-	my $openSSL = iMSCP::OpenSSL->new(
-		'certificate_chains_storage_dir' => $self->{'certsDir'},
-		'certificate_chain_name' => $self->{'domain_name'},
-		'private_key_container_path' => $privateKeyContainer,
-		'certificate_container_path' => $certificateContainer,
-		'ca_bundle_container_path' => defined $caBundleContainer ? $caBundleContainer : ''
-	);
+    # Create OpenSSL object
+    my $openSSL = iMSCP::OpenSSL->new(
+        'certificate_chains_storage_dir' => $self->{'certsDir'},
+        'certificate_chain_name'         => $self->{'domain_name'},
+        'private_key_container_path'     => $privateKeyContainer,
+        'certificate_container_path'     => $certificateContainer,
+        'ca_bundle_container_path'       => defined $caBundleContainer ? $caBundleContainer : ''
+    );
 
-	# Check certificate chain
-	my $rs = $openSSL->validateCertificateChain();
-	# Create certificate chain (private key, certificate and CA bundle)
-	$rs ||= $openSSL->createCertificateChain();
+    # Check certificate chain
+    my $rs = $openSSL->validateCertificateChain();
+    # Create certificate chain (private key, certificate and CA bundle)
+    $rs ||= $openSSL->createCertificateChain();
 }
 
 =item delete()
@@ -152,11 +154,11 @@ sub add
 
 sub delete
 {
-	my $self = shift;
+    my $self = shift;
 
-	return 0 unless -f "$self->{'certsDir'}/$self->{'domain_name'}.pem";
+    return 0 unless -f "$self->{'certsDir'}/$self->{'domain_name'}.pem";
 
-	iMSCP::File->new( filename => "$self->{'certsDir'}/$self->{'domain_name'}.pem")->delFile();
+    iMSCP::File->new( filename => "$self->{'certsDir'}/$self->{'domain_name'}.pem" )->delFile();
 }
 
 =item _init()
@@ -169,15 +171,15 @@ sub delete
 
 sub _init
 {
-	my $self = shift;
+    my $self = shift;
 
-	$self->{'certsDir'} = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs";
+    $self->{'certsDir'} = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs";
 
-	my $rs = iMSCP::Dir->new( dirname => $self->{'certsDir'} )->make({
-		mode => 0750, user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}
-	});
-	fatal(sprintf('Could not create %s SSL certificate directory', $self->{'certsDir'})) if $rs;
-	$self;
+    my $rs = iMSCP::Dir->new( dirname => $self->{'certsDir'} )->make( {
+            mode => 0750, user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}
+        } );
+    fatal( sprintf( 'Could not create %s SSL certificate directory', $self->{'certsDir'} ) ) if $rs;
+    $self;
 }
 
 =item _loadData($certificateId)
@@ -191,54 +193,55 @@ sub _init
 
 sub _loadData
 {
-	my ($self, $certificateId) = @_;
+    my ($self, $certificateId) = @_;
 
-	my $certData = iMSCP::Database->factory()->doQuery(
-		'cert_id', 'SELECT * FROM ssl_certs WHERE cert_id = ?', $certificateId
-	);
-	unless(ref $certData eq 'HASH') {
-		error($certData);
-		return 1;
-	}
+    my $certData = iMSCP::Database->factory()->doQuery(
+        'cert_id', 'SELECT * FROM ssl_certs WHERE cert_id = ?', $certificateId
+    );
+    unless (ref $certData eq 'HASH') {
+        error( $certData );
+        return 1;
+    }
 
-	unless(exists $certData->{$certificateId}) {
-		error(sprintf('SSL certificate record with ID %s has not been found in database', $certificateId));
-		return 1;
-	}
+    unless (exists $certData->{$certificateId}) {
+        error( sprintf( 'SSL certificate record with ID %s has not been found in database', $certificateId ) );
+        return 1;
+    }
 
-	%{$self} = (%{$self}, %{$certData->{$certificateId}});
+    %{$self} = (%{$self}, %{$certData->{$certificateId}});
 
-	my $sql;
-	if($self->{'domain_type'} eq 'dmn') {
-		$sql = 'SELECT domain_name, domain_id FROM domain WHERE domain_id = ?';
-	} elsif($self->{'domain_type'} eq 'als') {
-		$sql = 'SELECT alias_name AS domain_name, alias_id AS domain_id FROM domain_aliasses WHERE alias_id = ?';
-	} elsif($self->{'domain_type'} eq 'sub') {
-		$sql = "
-			SELECT CONCAT(subdomain_name, '.', domain_name) AS domain_name, subdomain_id AS domain_id
-			FROM subdomain INNER JOIN domain USING(domain_id) WHERE subdomain_id = ?
-		";
-	} else {
-		$sql = "
-			SELECT CONCAT(subdomain_alias_name, '.', alias_name) AS domain_name, subdomain_alias_id AS domain_id
-			FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
-			WHERE subdomain_alias_id = ?
-		";
-	}
+    my $sql;
+    if ($self->{'domain_type'} eq 'dmn') {
+        $sql = 'SELECT domain_name, domain_id FROM domain WHERE domain_id = ?';
+    } elsif ($self->{'domain_type'} eq 'als') {
+        $sql = 'SELECT alias_name AS domain_name, alias_id AS domain_id FROM domain_aliasses WHERE alias_id = ?';
+    } elsif ($self->{'domain_type'} eq 'sub') {
+        $sql = "
+            SELECT CONCAT(subdomain_name, '.', domain_name) AS domain_name, subdomain_id AS domain_id
+            FROM subdomain INNER JOIN domain USING(domain_id) WHERE subdomain_id = ?
+        ";
+    } else {
+        $sql = "
+            SELECT CONCAT(subdomain_alias_name, '.', alias_name) AS domain_name, subdomain_alias_id AS domain_id
+            FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
+            WHERE subdomain_alias_id = ?
+        ";
+    }
 
-	my $rdata = iMSCP::Database->factory()->doQuery('domain_id', $sql, $self->{'domain_id'});
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
+    my $rdata = iMSCP::Database->factory()->doQuery( 'domain_id', $sql, $self->{'domain_id'} );
+    unless (ref $rdata eq 'HASH') {
+        error( $rdata );
+        return 1;
+    }
 
-	unless(exists $rdata->{$self->{'domain_id'}}) {
-		error(sprintf('SSL certificate with ID %s has not been found or is in an inconsistent state', $certificateId));
-		return 1;
-	}
+    unless (exists $rdata->{$self->{'domain_id'}}) {
+        error( sprintf( 'SSL certificate with ID %s has not been found or is in an inconsistent state',
+                $certificateId ) );
+        return 1;
+    }
 
-	$self->{'domain_name'} = $rdata->{$self->{'domain_id'}}->{'domain_name'};
-	0;
+    $self->{'domain_name'} = $rdata->{$self->{'domain_id'}}->{'domain_name'};
+    0;
 }
 
 =back

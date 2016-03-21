@@ -49,12 +49,12 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = shift;
+    my $self = shift;
 
-	my $rs = $self->_removeMasterWebUser();
-	$rs ||= $self->_removeHttpdConfig();
-	$rs ||= $self->_removePhpConfig();
-	$rs ||= $self->_removeInitScript();
+    my $rs = $self->_removeMasterWebUser();
+    $rs ||= $self->_removeHttpdConfig();
+    $rs ||= $self->_removePhpConfig();
+    $rs ||= $self->_removeInitScript();
 }
 
 =back
@@ -73,11 +73,11 @@ sub uninstall
 
 sub _init
 {
-	my $self = shift;
+    my $self = shift;
 
-	$self->{'frontend'} = Package::FrontEnd->getInstance();
-	$self->{'config'} = $self->{'frontend'}->{'config'};
-	$self;
+    $self->{'frontend'} = Package::FrontEnd->getInstance();
+    $self->{'config'} = $self->{'frontend'}->{'config'};
+    $self;
 }
 
 =item _removeMasterWebUser()
@@ -90,14 +90,14 @@ sub _init
 
 sub _removeMasterWebUser
 {
-	my $self = shift;
+    my $self = shift;
 
-	my $rs = iMSCP::SystemUser->new( force => 'yes' )->delSystemUser(
-		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
-	);
-	$rs ||= iMSCP::SystemGroup->getInstance()->delSystemGroup(
-		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
-	);
+    my $rs = iMSCP::SystemUser->new( force => 'yes' )->delSystemUser(
+        $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'}
+    );
+    $rs ||= iMSCP::SystemGroup->getInstance()->delSystemGroup(
+        $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'}
+    );
 }
 
 =item _removeHttpdConfig()
@@ -110,41 +110,44 @@ sub _removeMasterWebUser
 
 sub _removeHttpdConfig
 {
-	my $self = shift;
+    my $self = shift;
 
-	for my $vhost('00_master_ssl.conf', '00_master.conf') {
-		my $rs = $self->{'frontend'}->disableSites($vhost);
-		return $rs if $rs;
+    for my $vhost('00_master_ssl.conf', '00_master.conf') {
+        my $rs = $self->{'frontend'}->disableSites( $vhost );
+        return $rs if $rs;
 
-		if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhost") {
-			$rs = iMSCP::File->new(filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhost")->delFile();
-			return $rs if $rs;
-		}
-	}
+        if (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhost") {
+            $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhost" )->delFile();
+            return $rs if $rs;
+        }
+    }
 
-	if(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf") {
-		my $rs = iMSCP::File->new(filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf")->delFile();
-		return $rs if $rs;
-	}
+    if (-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf") {
+        my $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf" )->delFile();
+        return $rs if $rs;
+    }
 
-	if(-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf") {
-		my $rs = iMSCP::File->new(filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf")->delFile();
-		return $rs if $rs;
-	}
+    if (-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf") {
+        my $rs = iMSCP::File->new( filename =>
+            "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf" )->delFile();
+        return $rs if $rs;
+    }
 
-	if(-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/default") { # Nginx as provided by Debian
-		my $rs = $self->{'frontend'}->enableSites('default');
-		return $rs if $rs;
-	} elsif("$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf.disabled") { # Nginx package as provided by Nginx
-		my $rs = iMSCP::File->new(
-			filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf.disabled"
-		)->moveFile(
-			"$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf"
-		);
-		return $rs if $rs;
-	}
+    if (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/default") {
+        # Nginx as provided by Debian
+        my $rs = $self->{'frontend'}->enableSites( 'default' );
+        return $rs if $rs;
+    } elsif ("$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf.disabled") {
+        # Nginx package as provided by Nginx
+        my $rs = iMSCP::File->new(
+            filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf.disabled"
+        )->moveFile(
+            "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf"
+        );
+        return $rs if $rs;
+    }
 
-	0;
+    0;
 }
 
 =item _removePhpConfig()
@@ -157,9 +160,9 @@ sub _removeHttpdConfig
 
 sub _removePhpConfig
 {
-	my $self = shift;
+    my $self = shift;
 
-	iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_STARTER_DIR'}/master" )->remove();
+    iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_STARTER_DIR'}/master" )->remove();
 }
 
 =item _removeInitScript()
@@ -172,20 +175,20 @@ sub _removePhpConfig
 
 sub _removeInitScript
 {
-	my $self = shift;
+    my $self = shift;
 
-	iMSCP::Service->getInstance()->remove('imscp_panel');
+    iMSCP::Service->getInstance()->remove( 'imscp_panel' );
 
-	for my $pFormat('/etc/init.d/%s', '/etc/systemd/system/%s.service', '/etc/init/%s.conf', '/etc/init/%s.override') {
-		my $file = sprintf($pFormat, 'imscp_panel');
+    for my $pFormat('/etc/init.d/%s', '/etc/systemd/system/%s.service', '/etc/init/%s.conf', '/etc/init/%s.override') {
+        my $file = sprintf( $pFormat, 'imscp_panel' );
 
-		if(-f $file) {
-			my $rs = iMSCP::File->new( filename => $file )->delFile();
-			return $rs if $rs;
-		}
-	}
+        if (-f $file) {
+            my $rs = iMSCP::File->new( filename => $file )->delFile();
+            return $rs if $rs;
+        }
+    }
 
-	0;
+    0;
 }
 
 =back

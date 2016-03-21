@@ -73,10 +73,10 @@ use parent 'Common::SingletonClass';
 
 sub registerSetupListeners
 {
-	my ($self, $eventManager) = @_;
+    my ($self, $eventManager) = @_;
 
-	require Package::PhpMyAdmin::Installer;
-	Package::PhpMyAdmin::Installer->getInstance()->registerSetupListeners($eventManager);
+    require Package::PhpMyAdmin::Installer;
+    Package::PhpMyAdmin::Installer->getInstance()->registerSetupListeners( $eventManager );
 }
 
 =item uninstall()
@@ -89,8 +89,8 @@ sub registerSetupListeners
 
 sub uninstall
 {
-	require Package::PhpMyAdmin::Uninstaller;
-	Package::PhpMyAdmin::Uninstaller->getInstance()->uninstall();
+    require Package::PhpMyAdmin::Uninstaller;
+    Package::PhpMyAdmin::Uninstaller->getInstance()->uninstall();
 }
 
 =item setPermissionsListener()
@@ -103,8 +103,8 @@ sub uninstall
 
 sub setPermissionsListener
 {
-	require Package::PhpMyAdmin::Installer;
-	Package::PhpMyAdmin::Installer->getInstance()->setGuiPermissions();
+    require Package::PhpMyAdmin::Installer;
+    Package::PhpMyAdmin::Installer->getInstance()->setGuiPermissions();
 }
 
 =back
@@ -123,16 +123,19 @@ sub setPermissionsListener
 
 sub _init
 {
-	my $self = shift;
+    my $self = shift;
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/pma";
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-	$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.data"; \%c; };
-	iMSCP::EventManager->getInstance()->register(
-		'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener(); }
-	);
-	$self;
+    $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/pma";
+    $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+    $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+    $self->{'config'} = lazy {
+            tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.data";
+            \%c;
+        };
+    iMSCP::EventManager->getInstance()->register(
+        'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener(); }
+    );
+    $self;
 }
 
 =back

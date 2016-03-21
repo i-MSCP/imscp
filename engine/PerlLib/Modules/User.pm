@@ -54,7 +54,7 @@ use parent 'Modules::Abstract';
 
 sub getType
 {
-	'User';
+    'User';
 }
 
 =item process($userId)
@@ -68,36 +68,36 @@ sub getType
 
 sub process
 {
-	my ($self, $userId) = @_;
+    my ($self, $userId) = @_;
 
-	my $rs = $self->_loadData($userId);
-	return $rs if $rs;
+    my $rs = $self->_loadData( $userId );
+    return $rs if $rs;
 
-	my @sql;
-	if(grep($_ eq $self->{'admin_status'}, ( 'toadd', 'tochange' ))) {
-		$rs = $self->add();
-		@sql = (
-			'UPDATE admin SET admin_status = ? WHERE admin_id = ?',
-			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'ok'), $userId
-		);
-	} elsif($self->{'admin_status'} eq 'todelete') {
-		$rs = $self->delete();
-		if($rs) {
-			@sql = ('UPDATE admin SET admin_status = ? WHERE admin_id = ?', scalar getMessageByType('error'), $userId)
-		} else {
-			@sql = ('DELETE FROM admin WHERE admin_id = ?', $userId);
-		}
-	}
+    my @sql;
+    if (grep($_ eq $self->{'admin_status'}, ( 'toadd', 'tochange' ))) {
+        $rs = $self->add();
+        @sql = (
+            'UPDATE admin SET admin_status = ? WHERE admin_id = ?',
+            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'ok'), $userId
+        );
+    } elsif ($self->{'admin_status'} eq 'todelete') {
+        $rs = $self->delete();
+        if ($rs) {
+            @sql = ('UPDATE admin SET admin_status = ? WHERE admin_id = ?', scalar getMessageByType( 'error' ), $userId)
+        } else {
+            @sql = ('DELETE FROM admin WHERE admin_id = ?', $userId);
+        }
+    }
 
-	if(@sql) {
-		my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
-		unless(ref $rdata eq 'HASH') {
-			error($rdata);
-			return 1;
-		}
-	}
+    if (@sql) {
+        my $rdata = iMSCP::Database->factory()->doQuery( 'dummy', @sql );
+        unless (ref $rdata eq 'HASH') {
+            error( $rdata );
+            return 1;
+        }
+    }
 
-	$rs;
+    $rs;
 }
 
 =item add()
@@ -110,100 +110,100 @@ sub process
 
 sub add
 {
-	my $self = shift;
+    my $self = shift;
 
-	my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
-	my $password = '';
-	my $comment = 'i-MSCP Web User';
-	my $homedir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'admin_name'}";
-	my $skeletonPath = $self->{'skeletonPath'} || '/dev/null';
-	my $shell = '/bin/false';
+    my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
+        ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
+    my $password = '';
+    my $comment = 'i-MSCP Web User';
+    my $homedir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'admin_name'}";
+    my $skeletonPath = $self->{'skeletonPath'} || '/dev/null';
+    my $shell = '/bin/false';
 
-	my ($oldUserName, undef, $userUid, $userGid) = getpwuid($self->{'admin_sys_uid'});
-	my $rs = $self->{'eventManager'}->trigger(
-		'onBeforeAddImscpUnixUser', $self->{'admin_id'}, $userName, \$password, $groupName, \$comment, \$homedir,
-		\$skeletonPath, \$shell, $userUid, $userGid
-	);
-	return $rs if $rs;
+    my ($oldUserName, undef, $userUid, $userGid) = getpwuid( $self->{'admin_sys_uid'} );
+    my $rs = $self->{'eventManager'}->trigger(
+        'onBeforeAddImscpUnixUser', $self->{'admin_id'}, $userName, \$password, $groupName, \$comment, \$homedir,
+        \$skeletonPath, \$shell, $userUid, $userGid
+    );
+    return $rs if $rs;
 
-	clearImmutable($homedir) if -d $homedir;
+    clearImmutable( $homedir ) if -d $homedir;
 
-	if(!$oldUserName || $userUid == 0) {
-		# Creating i-MSCP unix user
-		$rs = iMSCP::SystemUser->new(
-			'password' => $password,
-			'comment' => $comment,
-			'home' => $homedir,
-			'skeletonPath' => $skeletonPath,
-			'shell' => $shell
-		)->addSystemUser($userName);
-		return $rs if $rs;
+    if (!$oldUserName || $userUid == 0) {
+        # Creating i-MSCP unix user
+        $rs = iMSCP::SystemUser->new(
+            'password'     => $password,
+            'comment'      => $comment,
+            'home'         => $homedir,
+            'skeletonPath' => $skeletonPath,
+            'shell'        => $shell
+        )->addSystemUser( $userName );
+        return $rs if $rs;
 
-		$userUid = getpwnam($userName);
-		$userGid = getgrnam($groupName);
-	} else {
-		# Modifying existents i-MSCP unix user
-		my @cmd = (
-			'pkill -KILL -u', escapeShell($oldUserName), ';',
-			'usermod',
-			'-c', escapeShell($comment), # New comment
-			'-d', escapeShell($homedir), # New homedir
-			'-l', escapeShell($userName), # New login
-			'-m', # Move current homedir content to new homedir
-			'-s', escapeShell($shell), #  New Shell
-			escapeShell($self->{'admin_sys_name'}) # Old username
-		);
-		$rs = execute("@cmd", \my $stdout, \my $stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs && $rs != 12;
-		return $rs if $rs && $rs != 12;
+        $userUid = getpwnam( $userName );
+        $userGid = getgrnam( $groupName );
+    } else {
+        # Modifying existents i-MSCP unix user
+        my @cmd = (
+            'pkill -KILL -u', escapeShell( $oldUserName ), ';',
+            'usermod',
+            '-c', escapeShell( $comment ), # New comment
+            '-d', escapeShell( $homedir ), # New homedir
+            '-l', escapeShell( $userName ), # New login
+            '-m', # Move current homedir content to new homedir
+            '-s', escapeShell( $shell ), #  New Shell
+            escapeShell( $self->{'admin_sys_name'} ) # Old username
+        );
+        $rs = execute( "@cmd", \my $stdout, \my $stderr );
+        debug( $stdout ) if $stdout;
+        error( $stderr ) if $stderr && $rs && $rs != 12;
+        return $rs if $rs && $rs != 12;
 
-		# Modifying existents i-MSCP unix group
-		@cmd = (
-			'groupmod',
-			'-n', escapeShell($groupName), # New group name
-			escapeShell($self->{'admin_sys_gname'}) # Current group name
-		);
-		$rs = execute("@cmd", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-	}
+        # Modifying existents i-MSCP unix group
+        @cmd = (
+            'groupmod',
+            '-n', escapeShell( $groupName ), # New group name
+            escapeShell( $self->{'admin_sys_gname'} ) # Current group name
+        );
+        $rs = execute( "@cmd", \$stdout, \$stderr );
+        debug( $stdout ) if $stdout;
+        error( $stderr ) if $stderr && $rs;
+        return $rs if $rs;
+    }
 
-	# Add i-MSCP frontEnd user (e.g vu2000) to user group. Needed for some server such as vsftpd (since 1.2.15)
-	$rs = iMSCP::SystemUser->new(
-		username => $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
-	)->addToGroup(
-		$groupName
-	);
-	return $rs if $rs;
+    # Add i-MSCP frontEnd user (e.g vu2000) to user group. Needed for some server such as vsftpd (since 1.2.15)
+    $rs = iMSCP::SystemUser->new(
+        username => $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'}
+    )->addToGroup(
+        $groupName
+    );
+    return $rs if $rs;
 
-	# Updating admin.admin_sys_name, admin.admin_sys_uid, admin.admin_sys_gname and admin.admin_sys_gid columns
-	my @sql = (
-		'
-			UPDATE admin SET admin_sys_name = ?, admin_sys_uid = ?, admin_sys_gname = ?, admin_sys_gid = ?
-			WHERE admin_id = ?
-		',
-		$userName, $userUid, $groupName, $userGid, $self->{'admin_id'}
-	);
-	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
+    # Updating admin.admin_sys_name, admin.admin_sys_uid, admin.admin_sys_gname and admin.admin_sys_gid columns
+    my @sql = (
+        '
+            UPDATE admin SET admin_sys_name = ?, admin_sys_uid = ?, admin_sys_gname = ?, admin_sys_gid = ?
+            WHERE admin_id = ?
+        ',
+        $userName, $userUid, $groupName, $userGid, $self->{'admin_id'}
+    );
+    my $rdata = iMSCP::Database->factory()->doQuery( 'dummy', @sql );
+    unless (ref $rdata eq 'HASH') {
+        error( $rdata );
+        return 1;
+    }
 
-	$self->{'admin_sys_name'} = $userName;
-	$self->{'admin_sys_uid'} = $userUid;
-	$self->{'admin_sys_gname'} = $groupName;
-	$self->{'admin_sys_gid'} = $userGid;
-	$self->{'eventManager'}->trigger(
-		'onAfterAddImscpUnixUser', $self->{'admin_id'}, $userName, $password, $groupName, $comment, $homedir,
-		$skeletonPath, $shell, $userUid, $userGid
-	);
+    $self->{'admin_sys_name'} = $userName;
+    $self->{'admin_sys_uid'} = $userUid;
+    $self->{'admin_sys_gname'} = $groupName;
+    $self->{'admin_sys_gid'} = $userGid;
+    $self->{'eventManager'}->trigger(
+        'onAfterAddImscpUnixUser', $self->{'admin_id'}, $userName, $password, $groupName, $comment, $homedir,
+        $skeletonPath, $shell, $userUid, $userGid
+    );
 
-	# Run the preaddUser(), addUser() and postaddUser() methods on servers/packages that implement them
-	$self->SUPER::add();
+    # Run the preaddUser(), addUser() and postaddUser() methods on servers/packages that implement them
+    $self->SUPER::add();
 }
 
 =item delete()
@@ -216,18 +216,18 @@ sub add
 
 sub delete
 {
-	my $self = shift;
+    my $self = shift;
 
-	my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
+    my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
+        ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 
-	my $rs = $self->{'eventManager'}->trigger('onBeforeDeleteImscpUnixUser', $userName);
-	# Run the predeleteUser(), deleteUser() and postdeleteUser() methods on servers/packages that implement them
-	$rs ||= $self->SUPER::delete();
-	$rs ||= iMSCP::SystemUser->new('force' => 'yes')->delSystemUser($userName);
-	# Only needed to cover the case where the admin added other users to the unix group
-	$rs ||= iMSCP::SystemGroup->getInstance()->delSystemGroup($groupName);
-	$rs ||=$self->{'eventManager'}->trigger('onAfterDeleteImscpUnixUser', $userName);
+    my $rs = $self->{'eventManager'}->trigger( 'onBeforeDeleteImscpUnixUser', $userName );
+    # Run the predeleteUser(), deleteUser() and postdeleteUser() methods on servers/packages that implement them
+    $rs ||= $self->SUPER::delete();
+    $rs ||= iMSCP::SystemUser->new( 'force' => 'yes' )->delSystemUser( $userName );
+    # Only needed to cover the case where the admin added other users to the unix group
+    $rs ||= iMSCP::SystemGroup->getInstance()->delSystemGroup( $groupName );
+    $rs ||= $self->{'eventManager'}->trigger( 'onAfterDeleteImscpUnixUser', $userName );
 }
 
 =back
@@ -246,10 +246,10 @@ sub delete
 
 sub _init
 {
-	my $self = shift;
+    my $self = shift;
 
-	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-	$self;
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self;
 }
 
 =item _loadData($userId)
@@ -263,29 +263,29 @@ sub _init
 
 sub _loadData
 {
-	my ($self, $userId) = @_;
+    my ($self, $userId) = @_;
 
-	my $rdata = iMSCP::Database->factory()->doQuery(
-		'admin_id',
-		'
-			SELECT admin_id, admin_name, admin_sys_name, admin_sys_uid, admin_sys_gname, admin_sys_gid, admin_status
-			FROM admin
-			WHERE admin_id = ?
-		',
-		$userId
-	);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
+    my $rdata = iMSCP::Database->factory()->doQuery(
+        'admin_id',
+        '
+            SELECT admin_id, admin_name, admin_sys_name, admin_sys_uid, admin_sys_gname, admin_sys_gid, admin_status
+            FROM admin
+            WHERE admin_id = ?
+        ',
+        $userId
+    );
+    unless (ref $rdata eq 'HASH') {
+        error( $rdata );
+        return 1;
+    }
 
-	unless(exists $rdata->{$userId}) {
-		error(sprintf('User record with ID %s has not been found in database', $userId));
-		return 1
-	}
+    unless (exists $rdata->{$userId}) {
+        error( sprintf( 'User record with ID %s has not been found in database', $userId ) );
+        return 1
+    }
 
-	%{$self} = (%{$self}, %{$rdata->{$userId}});
-	0;
+    %{$self} = (%{$self}, %{$rdata->{$userId}});
+    0;
 }
 
 =item _getHttpdData($action)
@@ -299,18 +299,18 @@ sub _loadData
 
 sub _getHttpdData
 {
-	my ($self, $action) = @_;
+    my ($self, $action) = @_;
 
-	return %{$self->{'httpd'}} if $self->{'httpd'};
+    return %{$self->{'httpd'}} if $self->{'httpd'};
 
-	my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
+    my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
+        ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 
-	$self->{'httpd'} = {
-		USER => $userName,
-		GROUP => $groupName
-	};
-	%{$self->{'httpd'}};
+    $self->{'httpd'} = {
+        USER  => $userName,
+        GROUP => $groupName
+    };
+    %{$self->{'httpd'}};
 }
 
 =item _getFtpdData($action)
@@ -324,22 +324,22 @@ sub _getHttpdData
 
 sub _getFtpdData
 {
-	my ($self, $action) = @_;
+    my ($self, $action) = @_;
 
-	return %{$self->{'ftpd'}} if $self->{'ftpd'};
+    return %{$self->{'ftpd'}} if $self->{'ftpd'};
 
-	my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
+    my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
+        ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 
-	$self->{'ftpd'} = {
-		USER_ID => $self->{'admin_id'},
-		USER_SYS_UID => $self->{'admin_sys_uid'},
-		USER_SYS_GID => $self->{'admin_sys_gid'},
-		USERNAME => $self->{'admin_name'},
-		USER => $userName,
-		GROUP => $groupName
-	};
-	%{$self->{'ftpd'}};
+    $self->{'ftpd'} = {
+        USER_ID      => $self->{'admin_id'},
+        USER_SYS_UID => $self->{'admin_sys_uid'},
+        USER_SYS_GID => $self->{'admin_sys_gid'},
+        USERNAME     => $self->{'admin_name'},
+        USER         => $userName,
+        GROUP        => $groupName
+    };
+    %{$self->{'ftpd'}};
 }
 
 =back

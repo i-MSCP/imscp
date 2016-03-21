@@ -50,12 +50,12 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = shift;
+    my $self = shift;
 
-	my $rs = $self->_restoreConfFiles();
-	return $rs if $rs;
+    my $rs = $self->_restoreConfFiles();
+    return $rs if $rs;
 
-	$self->_deleteDbFiles();
+    $self->_deleteDbFiles();
 }
 
 =back
@@ -74,16 +74,16 @@ sub uninstall
 
 sub _init
 {
-	my $self = shift;
+    my $self = shift;
 
-	$self->{'named'} = Servers::named::bind->getInstance();
-	$self->{'cfgDir'} = $self->{'named'}->{'cfgDir'};
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-	$self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
-	$self->{'config'} = $self->{'named'}->{'config'};
+    $self->{'named'} = Servers::named::bind->getInstance();
+    $self->{'cfgDir'} = $self->{'named'}->{'cfgDir'};
+    $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+    $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+    $self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
+    $self->{'config'} = $self->{'named'}->{'config'};
 
-	$self;
+    $self;
 }
 
 =item _restoreConfFiles()
@@ -96,26 +96,26 @@ sub _init
 
 sub _restoreConfFiles
 {
-	my $self = shift;
+    my $self = shift;
 
-	if(-d $self->{'config'}->{'BIND_CONF_DIR'}) {
-		for my $conffile('BIND_CONF_DEFAULT_FILE', 'BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
-			if(defined $self->{'config'}->{$conffile}) {
-				my $filename = fileparse($self->{'config'}->{$conffile});
+    if (-d $self->{'config'}->{'BIND_CONF_DIR'}) {
+        for my $conffile('BIND_CONF_DEFAULT_FILE', 'BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
+            if (defined $self->{'config'}->{$conffile}) {
+                my $filename = fileparse( $self->{'config'}->{$conffile} );
 
-				if(-f "$self->{'bkpDir'}/$filename.system") {
-					my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
-						$self->{'config'}->{$conffile}
-					);
+                if (-f "$self->{'bkpDir'}/$filename.system") {
+                    my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
+                        $self->{'config'}->{$conffile}
+                    );
 
-					$rs = iMSCP::File->new( filename => $self->{'config'}->{$conffile} )->mode(0644);
-					return $rs if $rs;
-				}
-			}
-		}
-	}
+                    $rs = iMSCP::File->new( filename => $self->{'config'}->{$conffile} )->mode( 0644 );
+                    return $rs if $rs;
+                }
+            }
+        }
+    }
 
-	0;
+    0;
 }
 
 =item _deleteDbFiles()
@@ -128,20 +128,20 @@ sub _restoreConfFiles
 
 sub _deleteDbFiles
 {
-	my $self = shift;
+    my $self = shift;
 
-	my ($stdout, $stderr);
-	my $rs = execute("rm -f $self->{'config'}->{'BIND_DB_DIR'}/*.db", \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
+    my ($stdout, $stderr);
+    my $rs = execute( "rm -f $self->{'config'}->{'BIND_DB_DIR'}/*.db", \$stdout, \$stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr ) if $stderr && $rs;
+    return $rs if $rs;
 
-	$rs = execute("rm -f $self->{'wrkDir'}/*", \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
+    $rs = execute( "rm -f $self->{'wrkDir'}/*", \$stdout, \$stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr ) if $stderr && $rs;
+    return $rs if $rs;
 
-	iMSCP::Dir->new( dirname => "$self->{'config'}->{'BIND_DB_DIR'}/slave" )->remove();
+    iMSCP::Dir->new( dirname => "$self->{'config'}->{'BIND_DB_DIR'}/slave" )->remove();
 }
 
 =back

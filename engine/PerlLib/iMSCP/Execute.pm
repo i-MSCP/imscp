@@ -34,7 +34,7 @@ use Cwd ();
 
 my $vendorLibDir;
 
-BEGIN { $vendorLibDir = Cwd::realpath(File::Basename::dirname(__FILE__) . '/../../PerlVendor'); }
+BEGIN { $vendorLibDir = Cwd::realpath( File::Basename::dirname( __FILE__ ).'/../../PerlVendor' ); }
 
 use lib $vendorLibDir;
 use Capture::Tiny ':all';
@@ -63,34 +63,34 @@ our @EXPORT = qw/execute executeNoWait escapeShell getExitCode/;
 
 sub execute($;$$)
 {
-	my ($command, $stdout, $stderr) = @_;
+    my ($command, $stdout, $stderr) = @_;
 
-	if($stdout) {
-		ref $stdout eq 'SCALAR' or die("Expects a scalar reference as second parameter for capture of STDOUT");
-		$$stdout = '';
-	}
+    if ($stdout) {
+        ref $stdout eq 'SCALAR' or die( "Expects a scalar reference as second parameter for capture of STDOUT" );
+        $$stdout = '';
+    }
 
-	if($stderr) {
-		ref $stderr eq 'SCALAR' or die("Expects a scalar reference as third parameter for capture of STDERR");
-		$$stderr = '';
-	}
+    if ($stderr) {
+        ref $stderr eq 'SCALAR' or die( "Expects a scalar reference as third parameter for capture of STDERR" );
+        $$stderr = '';
+    }
 
-	debug($command);
+    debug( $command );
 
-	if($stdout && $stderr) {
-		($$stdout, $$stderr) = capture { system($command); };
-		chomp($$stdout, $$stderr);
-	} elsif ($stdout) {
-		$$stdout = capture_stdout { system($command); };
-		chomp($$stdout);
-	} elsif($stderr) {
-		$$stderr = capture_stderr { system($command); };
-		chomp($stderr);
-	} else {
-		die(sprintf('Could not execute command: %s', $!)) if system($command) == -1;
-	}
+    if ($stdout && $stderr) {
+        ($$stdout, $$stderr) = capture { system( $command ); };
+        chomp( $$stdout, $$stderr );
+    } elsif ($stdout) {
+        $$stdout = capture_stdout { system( $command ); };
+        chomp( $$stdout );
+    } elsif ($stderr) {
+        $$stderr = capture_stderr { system( $command ); };
+        chomp( $stderr );
+    } else {
+        die( sprintf( 'Could not execute command: %s', $! ) ) if system( $command ) == -1;
+    }
 
-	getExitCode();
+    getExitCode();
 }
 
 =item executeNoWait($command, $stdoutSubref, $stderrSubref)
@@ -106,37 +106,36 @@ sub execute($;$$)
 
 sub executeNoWait($$$)
 {
-	my ($command, $stdoutSubref, $stderrSubref) = @_;
+    my ($command, $stdoutSubref, $stderrSubref) = @_;
 
-	ref $stdoutSubref eq 'CODE' or die('Expects a subroutine reference as second parameter for STDOUT processing');
-	ref $stderrSubref eq 'CODE' or die('Expects a subroutine reference as third parameter for STDERR processing');
+    ref $stdoutSubref eq 'CODE' or die( 'Expects a subroutine reference as second parameter for STDOUT processing' );
+    ref $stderrSubref eq 'CODE' or die( 'Expects a subroutine reference as third parameter for STDERR processing' );
 
-	my $pid = open3(my $stdin, my $stdout, my $stderr = gensym, $command);
+    my $pid = open3( my $stdin, my $stdout, my $stderr = gensym, $command );
 
-	close $stdin;
+    close $stdin;
 
-	my %buffers = ( $stdout => '', $stderr => '' );
-	my $sel = new IO::Select($stdout, $stderr);
+    my %buffers = ( $stdout => '', $stderr => '' );
+    my $sel = new IO::Select( $stdout, $stderr );
 
-	while($sel->count()) {
-		for my $fh ($sel->can_read()) {
-			my $ret = sysread($fh, $buffers{$fh}, 4096, length($buffers{$fh}));
+    while($sel->count()) {
+        for my $fh ($sel->can_read()) {
+            my $ret = sysread( $fh, $buffers{$fh}, 4096, length( $buffers{$fh} ) );
 
-			defined $ret or die($!);
+            defined $ret or die( $! );
 
-			if ($ret == 0) {
-				$sel->remove($fh);
-				close($fh);
-				next;
-			}
+            if ($ret == 0) {
+                $sel->remove( $fh );
+                close( $fh );
+                next;
+            }
 
-			$fh == $stderr ? $stderrSubref->(\$buffers{$stderr}) : $stdoutSubref->(\$buffers{$stdout});
-		}
-	}
+            $fh == $stderr ? $stderrSubref->( \$buffers{$stderr} ) : $stdoutSubref->( \$buffers{$stdout} );
+        }
+    }
 
-	waitpid($pid, 0);
-
-	getExitCode();
+    waitpid( $pid, 0 );
+    getExitCode();
 }
 
 =item escapeShell($string)
@@ -150,12 +149,11 @@ sub executeNoWait($$$)
 
 sub escapeShell($)
 {
-	my $string = shift;
+    my $string = shift;
 
-	return $string if $string eq '' || $string =~ /^[a-zA-Z0-9_\-]+\z/;
-	$string =~ s/'/'\\''/g;
-
-	"'$string'";
+    return $string if $string eq '' || $string =~ /^[a-zA-Z0-9_\-]+\z/;
+    $string =~ s/'/'\\''/g;
+    "'$string'";
 }
 
 =item getExitCode([ $ret = $? ])
@@ -169,20 +167,20 @@ sub escapeShell($)
 
 sub getExitCode(;$)
 {
-	my $ret = shift // $?;
+    my $ret = shift // $?;
 
-	if ($ret == -1) {
-		die('Could not execute command.');
-	}
+    if ($ret == -1) {
+        die( 'Could not execute command.' );
+    }
 
-	if ($ret & 127) {
-		debug(sprintf('Command died with signal %d, %s coredump', ($ret & 127), ($? & 128) ? 'with' : 'without'));
-		return $ret;
-	}
+    if ($ret & 127) {
+        debug( sprintf( 'Command died with signal %d, %s coredump', ($ret & 127), ($? & 128) ? 'with' : 'without' ) );
+        return $ret;
+    }
 
-	$ret = $ret >> 8;
-	debug(sprintf('Command exited with value: %s', $ret)) if $ret != 0;
-	$ret;
+    $ret = $ret >> 8;
+    debug( sprintf( 'Command exited with value: %s', $ret ) ) if $ret != 0;
+    $ret;
 }
 
 =back

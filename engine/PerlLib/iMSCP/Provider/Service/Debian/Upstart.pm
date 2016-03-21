@@ -28,7 +28,7 @@ use warnings;
 use parent qw(
     iMSCP::Provider::Service::Upstart
     iMSCP::Provider::Service::Debian::Sysvinit
-);
+    );
 
 =head1 DESCRIPTION
 
@@ -56,11 +56,11 @@ sub isEnabled
 {
     my ($self, $service) = @_;
 
-    if ($self->_isUpstart($service)) {
-        return $self->SUPER::isEnabled($service);
+    if ($self->_isUpstart( $service )) {
+        return $self->SUPER::isEnabled( $service );
     }
 
-    $self->iMSCP::Provider::Service::Debian::Sysvinit::isEnabled($service);
+    $self->iMSCP::Provider::Service::Debian::Sysvinit::isEnabled( $service );
 }
 
 =item enable($service)
@@ -76,15 +76,15 @@ sub enable
 {
     my ($self, $service) = @_;
 
-    if ($self->_isUpstart($service)) {
+    if ($self->_isUpstart( $service )) {
         # Ensure that sysvinit script if any is not enabled
-        my $ret = $self->_isSysvinit($service) ? $self->iMSCP::Provider::Service::Debian::Sysvinit::disable($service) : 1;
-        return $ret && $self->SUPER::enable($service);
+        my $ret = $self->_isSysvinit( $service ) ? $self->iMSCP::Provider::Service::Debian::Sysvinit::disable( $service ) : 1;
+        return $ret && $self->SUPER::enable( $service );
     }
 
     # Enable sysvinit script if any
-    if ($self->_isSysvinit($service)) {
-        return $self->iMSCP::Provider::Service::Debian::Sysvinit::enable($service);
+    if ($self->_isSysvinit( $service )) {
+        return $self->iMSCP::Provider::Service::Debian::Sysvinit::enable( $service );
     }
 
     1;
@@ -103,13 +103,13 @@ sub disable
 {
     my ($self, $service) = @_;
 
-    if ($self->_isUpstart($service)) {
-        return 0 unless $self->SUPER::disable($service);
+    if ($self->_isUpstart( $service )) {
+        return 0 unless $self->SUPER::disable( $service );
     }
 
     # Disable the sysvinit script if any
-    if ($self->_isSysvinit($service)) {
-        return $self->iMSCP::Provider::Service::Debian::Sysvinit::disable($service);
+    if ($self->_isSysvinit( $service )) {
+        return $self->iMSCP::Provider::Service::Debian::Sysvinit::disable( $service );
     }
 
     1;
@@ -128,13 +128,13 @@ sub remove
 {
     my ($self, $service) = @_;
 
-    if ($self->_isUpstart($service)) {
-        return 0 unless $self->SUPER::remove($service);
+    if ($self->_isUpstart( $service )) {
+        return 0 unless $self->SUPER::remove( $service );
     }
 
     # Remove the sysvinit script if any
-    if ($self->_isSysvinit($service)) {
-        return $self->iMSCP::Provider::Service::Debian::Sysvinit::remove($service);
+    if ($self->_isSysvinit( $service )) {
+        return $self->iMSCP::Provider::Service::Debian::Sysvinit::remove( $service );
     }
 
     1;
@@ -152,7 +152,7 @@ sub hasService
 {
     my ($self, $service) = @_;
 
-    $self->_isUpstart($service) || $self->_isSysvinit($service);
+    $self->_isUpstart( $service ) || $self->_isSysvinit( $service );
 }
 
 =back

@@ -279,11 +279,11 @@ sub process
 
     # Process IP addresses tasks
     if ($ipsModule > 0 || $self->{'mode'} eq 'setup') {
-        newDebug('Ips_module.log');
-        eval { require Modules::Ips } or die(sprintf('Could not load Module::Ips module: %s', $@));
-        Modules::Ips->new()->process() == 0 or die(sprintf('Could not process IP addresses',
-            getMessageByType('error', { amount => 1, remove => 1 }) || 'Unknown error'
-        ));
+        newDebug( 'Ips_module.log' );
+        eval { require Modules::Ips } or die( sprintf( 'Could not load Module::Ips module: %s', $@ ) );
+        Modules::Ips->new()->process() == 0 or die( sprintf( 'Could not process IP addresses',
+                getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+            ) );
         endDebug();
     }
 
@@ -297,10 +297,10 @@ sub process
             WHERE software_status IN ('toadd', 'todelete') ORDER BY domain_id ASC
         "
     );
-    ref $rdata eq 'HASH' or die($rdata);
+    ref $rdata eq 'HASH' or die( $rdata );
 
-    if(%{$rdata}) {
-        newDebug('imscp_sw_mngr_engine');
+    if (%{$rdata}) {
+        newDebug( 'imscp_sw_mngr_engine' );
 
         for (values %{$rdata}) {
             my $pushString = encode_base64(
@@ -318,13 +318,14 @@ sub process
 
             my ($stdout, $stderr);
             execute(
-                "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-sw-mngr ".escapeShell($pushString), \$stdout, \$stderr
-            ) == 0 or die($stderr || 'Unknown error');
-            debug($stdout) if $stdout;
-            execute("rm -fR /tmp/sw-$_->{'domain_id'}-$_->{'software_id'}", \$stdout, \$stderr) == 0 or die(
+                "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-sw-mngr ".escapeShell( $pushString ), \$stdout,
+                \$stderr
+            ) == 0 or die( $stderr || 'Unknown error' );
+            debug( $stdout ) if $stdout;
+            execute( "rm -fR /tmp/sw-$_->{'domain_id'}-$_->{'software_id'}", \$stdout, \$stderr ) == 0 or die(
                 $stderr || 'Unknown error'
             );
-            debug($stdout) if $stdout;
+            debug( $stdout ) if $stdout;
         }
 
         endDebug();
@@ -337,10 +338,10 @@ sub process
             FROM web_software WHERE software_status = 'toadd' ORDER BY reseller_id ASC
         "
     );
-    ref $rdata eq 'HASH' or die($rdata);
+    ref $rdata eq 'HASH' or die( $rdata );
 
-    if(%{$rdata}) {
-        newDebug('imscp_pkt_mngr_engine.log');
+    if (%{$rdata}) {
+        newDebug( 'imscp_pkt_mngr_engine.log' );
 
         for (values %{$rdata}) {
             my $pushstring = encode_base64(
@@ -358,11 +359,11 @@ sub process
                 "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-pkt-mngr ".escapeShell( $pushstring ), \$stdout,
                 \$stderr
             ) == 0 or die( $stderr || 'Unknown error' );
-            debug($stdout) if $stdout;
-            execute("rm -fR /tmp/sw-$_->{'software_archive'}-$_->{'software_id'}", \$stdout, \$stderr) == 0 or die(
+            debug( $stdout ) if $stdout;
+            execute( "rm -fR /tmp/sw-$_->{'software_archive'}-$_->{'software_id'}", \$stdout, \$stderr ) == 0 or die(
                 $stderr || 'Unknown error'
             );
-            debug($stdout) if $stdout;
+            debug( $stdout ) if $stdout;
         }
 
         endDebug();
@@ -387,7 +388,7 @@ sub _init
 {
     my $self = shift;
 
-    defined $self->{'mode'} or die('mode attribute is not defined');
+    defined $self->{'mode'} or die( 'mode attribute is not defined' );
     $self->{'db'} = iMSCP::Database->factory();
     $self;
 }
@@ -406,15 +407,15 @@ sub _process
 {
     my ($self, $module, $sql) = @_;
 
-    debug(sprintf('Processing %s module tasks...', $module));
+    debug( sprintf( 'Processing %s module tasks...', $module ) );
 
     my $dbh = $self->{'db'}->getRawDb();
-    my $rows = $dbh->selectall_arrayref($sql, { Slice => { } });
+    my $rows = $dbh->selectall_arrayref( $sql, { Slice => { } } );
 
-    defined $rows && !$dbh->err() or die($dbh->errstr());
+    defined $rows && !$dbh->err() or die( $dbh->errstr() );
 
     unless (@{$rows}) {
-        debug(sprintf('No task to process for the %s module.', $module));
+        debug( sprintf( 'No task to process for the %s module.', $module ) );
         return 0;
     }
 
@@ -423,20 +424,20 @@ sub _process
     for my $row(@{$rows}) {
         my ($id, $name, $status) = ($row->{'id'}, $row->{'name'}, $row->{'status'});
 
-        debug(sprintf('Processing %s (%s) tasks for: %s (ID %s)', $module, $status, $name, $id));
-        newDebug("${module}_module_$name.log");
+        debug( sprintf( 'Processing %s (%s) tasks for: %s (ID %s)', $module, $status, $name, $id ) );
+        newDebug( "${module}_module_$name.log" );
 
         my $module = "Modules::$module";
-        eval "require $module" or die(sprintf('Could not load the %s module: %s', $module, $@));
+        eval "require $module" or die( sprintf( 'Could not load the %s module: %s', $module, $@ ) );
 
         if ($self->{'mode'} eq 'setup') {
             step(
-                sub { $module->new()->process($id) },
-                sprintf('Processing %s (%s) tasks for: %s (ID %s)', $module, $status, $name, $id), $nSteps, ++$nStep
+                sub { $module->new()->process( $id ) },
+                sprintf( 'Processing %s (%s) tasks for: %s (ID %s)', $module, $status, $name, $id ), $nSteps, ++$nStep
             );
         } else {
-            $module->new()->process($id) == 0 or die(
-                getMessageByType('error', { amount => 1, remove => 1 }) || 'Unknown error'
+            $module->new()->process( $id ) == 0 or die(
+                getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
             );
         }
 

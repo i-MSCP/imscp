@@ -50,11 +50,14 @@ use parent 'Common::SingletonClass';
 
 sub registerSetupListeners
 {
-	my ($self, $eventManager) = @_;
+    my ($self, $eventManager) = @_;
 
-	my $rs = $eventManager->register('beforeSetupDialog', sub { push @{$_[0]}, sub { $self->showDialog(@_) }; 0; });
-	$rs ||= $eventManager->register('afterFrontEndPreInstall', sub { $self->preinstallListener(); } );
-	$rs ||= $eventManager->register('afterFrontEndInstall', sub { $self->installListener(); });
+    my $rs = $eventManager->register( 'beforeSetupDialog', sub {
+            push @{$_[0]}, sub { $self->showDialog( @_ ) };
+            0;
+        } );
+    $rs ||= $eventManager->register( 'afterFrontEndPreInstall', sub { $self->preinstallListener(); } );
+    $rs ||= $eventManager->register( 'afterFrontEndInstall', sub { $self->installListener(); } );
 }
 
 =item showDialog(\%dialog)
@@ -68,44 +71,45 @@ sub registerSetupListeners
 
 sub showDialog
 {
-	my ($self, $dialog) = @_;
+    my ($self, $dialog) = @_;
 
-	my $packages = [ split ',', main::setupGetQuestion('WEBMAIL_PACKAGES') ];
-	my $rs = 0;
+    my $packages = [ split ',', main::setupGetQuestion( 'WEBMAIL_PACKAGES' ) ];
+    my $rs = 0;
 
-	if(grep($_ eq $main::reconfigure, ( 'webmails', 'all', 'forced' ))
-		|| !@{$packages}
-		|| grep { my $__ = $_; !grep($_ eq $__, ( @{$self->{'PACKAGES'}}, 'No' )) } @{$packages}
-	) {
-		($rs, $packages) = $dialog->checkbox(
-			"\nPlease select the webmail packages you want to install:", [ @{$self->{'PACKAGES'}} ],
-			grep($_ eq 'No', @{$packages}) ? () : @{$packages} ? @{$packages} : @{$self->{'PACKAGES'}}
-		);
-	}
+    if (grep($_ eq $main::reconfigure, ( 'webmails', 'all', 'forced' ))
+        || !@{$packages}
+        || grep { my $__ = $_;
+        !grep($_ eq $__, ( @{$self->{'PACKAGES'}}, 'No' )) } @{$packages}
+    ) {
+        ($rs, $packages) = $dialog->checkbox(
+            "\nPlease select the webmail packages you want to install:", [ @{$self->{'PACKAGES'}} ],
+                grep($_ eq 'No', @{$packages}) ? () : @{$packages} ? @{$packages} : @{$self->{'PACKAGES'}}
+        );
+    }
 
-	return $rs unless $rs < 30;
+    return $rs unless $rs < 30;
 
-	main::setupSetQuestion('WEBMAIL_PACKAGES', @{$packages} ? join ',', @{$packages} : 'No');
+    main::setupSetQuestion( 'WEBMAIL_PACKAGES', @{$packages} ? join ',', @{$packages} : 'No' );
 
-	return $rs if grep($_ eq 'No', @{$packages});
+    return $rs if grep($_ eq 'No', @{$packages});
 
-	for my $package(@{$packages}) {
-		$package = "Package::Webmail::${package}::${package}";
-		eval "require $package";
-		unless($@) {
-			$package = $package->getInstance();
-			if($package->can('showDialog')) {
-				debug(sprintf('Calling action showDialog on %s', ref $package));
-				$rs = $package->showDialog($dialog);
-				return $rs if $rs;
-			}
-		} else {
-			error($@);
-			return 1;
-		}
-	}
+    for my $package(@{$packages}) {
+        $package = "Package::Webmail::${package}::${package}";
+        eval "require $package";
+        unless ($@) {
+            $package = $package->getInstance();
+            if ($package->can( 'showDialog' )) {
+                debug( sprintf( 'Calling action showDialog on %s', ref $package ) );
+                $rs = $package->showDialog( $dialog );
+                return $rs if $rs;
+            }
+        } else {
+            error( $@ );
+            return 1;
+        }
+    }
 
-	$rs;
+    $rs;
 }
 
 =item preinstallListener()
@@ -120,36 +124,37 @@ sub showDialog
 
 sub preinstallListener
 {
-	my $self = shift;
+    my $self = shift;
 
-	my @packages = split ',', main::setupGetQuestion('WEBMAIL_PACKAGES');
-	my $packagesToInstall = [ grep { $_ ne 'No'} @packages ];
-	my $packagesToUninstall = [ grep { my $__ = $_; !grep($_ eq $__, @{$packagesToInstall}) } @{$self->{'PACKAGES'}} ];
+    my @packages = split ',', main::setupGetQuestion( 'WEBMAIL_PACKAGES' );
+    my $packagesToInstall = [ grep { $_ ne 'No'} @packages ];
+    my $packagesToUninstall = [ grep { my $__ = $_;
+        !grep($_ eq $__, @{$packagesToInstall}) } @{$self->{'PACKAGES'}} ];
 
-	if(@{$packagesToUninstall}) {
-		my $rs = $self->uninstall(@{$packagesToUninstall});
-		return $rs if $rs;
-	}
+    if (@{$packagesToUninstall}) {
+        my $rs = $self->uninstall( @{$packagesToUninstall} );
+        return $rs if $rs;
+    }
 
-	return 0 unless @{$packagesToInstall};
+    return 0 unless @{$packagesToInstall};
 
-	for my $package(@{$packagesToInstall}) {
-		$package = "Package::Webmail::${package}::${package}";
-		eval "require $package";
-		unless($@) {
-			$package = $package->getInstance();
-			if($package->can('preinstall')) {
-				debug(sprintf('Calling action preinstall on %s', ref $package));
-				my $rs = $package->preinstall();
-				return $rs if $rs;
-			}
-		} else {
-			error($@);
-			return 1;
-		}
-	}
+    for my $package(@{$packagesToInstall}) {
+        $package = "Package::Webmail::${package}::${package}";
+        eval "require $package";
+        unless ($@) {
+            $package = $package->getInstance();
+            if ($package->can( 'preinstall' )) {
+                debug( sprintf( 'Calling action preinstall on %s', ref $package ) );
+                my $rs = $package->preinstall();
+                return $rs if $rs;
+            }
+        } else {
+            error( $@ );
+            return 1;
+        }
+    }
 
-	0;
+    0;
 }
 
 =item installListener()
@@ -162,27 +167,27 @@ sub preinstallListener
 
 sub installListener
 {
-	my @packages = split ',', main::setupGetQuestion('WEBMAIL_PACKAGES');
+    my @packages = split ',', main::setupGetQuestion( 'WEBMAIL_PACKAGES' );
 
-	return 0 if grep($_ eq 'No', @packages);
+    return 0 if grep($_ eq 'No', @packages);
 
-	for my $package(@packages) {
-		$package = "Package::Webmail::${package}::${package}";
-		eval "require $package";
-		unless($@) {
-			$package = $package->getInstance();
-			if($package->can('install')) {
-				debug(sprintf('Calling action install on %s', ref $package));
-				my $rs = $package->install();
-				return $rs if $rs;
-			}
-		} else {
-			error($@);
-			return 1;
-		}
-	}
+    for my $package(@packages) {
+        $package = "Package::Webmail::${package}::${package}";
+        eval "require $package";
+        unless ($@) {
+            $package = $package->getInstance();
+            if ($package->can( 'install' )) {
+                debug( sprintf( 'Calling action install on %s', ref $package ) );
+                my $rs = $package->install();
+                return $rs if $rs;
+            }
+        } else {
+            error( $@ );
+            return 1;
+        }
+    }
 
-	0;
+    0;
 }
 
 =item uninstall( [ $package ])
@@ -196,29 +201,29 @@ sub installListener
 
 sub uninstall
 {
-	my ($self, @packages) = @_;
+    my ($self, @packages) = @_;
 
-	@packages = split ',', $main::imscpConfig{'WEBMAIL_PACKAGES'} unless @packages;
+    @packages = split ',', $main::imscpConfig{'WEBMAIL_PACKAGES'} unless @packages;
 
-	for my $package(@packages) {
-		next unless grep($_ eq $package, @{$self->{'PACKAGES'}});
+    for my $package(@packages) {
+        next unless grep($_ eq $package, @{$self->{'PACKAGES'}});
 
-		$package = "Package::Webmail::${package}::${package}";
-		eval "require $package";
-		unless($@) {
-			$package = $package->getInstance();
-			if($package->can('uninstall')) {
-				debug(sprintf('Calling action uninstall on %s', ref $package));
-				my $rs = $package->uninstall();
-				return $rs if $rs;
-			}
-		} else {
-			error($@);
-			return 1;
-		}
-	}
+        $package = "Package::Webmail::${package}::${package}";
+        eval "require $package";
+        unless ($@) {
+            $package = $package->getInstance();
+            if ($package->can( 'uninstall' )) {
+                debug( sprintf( 'Calling action uninstall on %s', ref $package ) );
+                my $rs = $package->uninstall();
+                return $rs if $rs;
+            }
+        } else {
+            error( $@ );
+            return 1;
+        }
+    }
 
-	0;
+    0;
 }
 
 =item setPermissionsListener()
@@ -231,29 +236,29 @@ sub uninstall
 
 sub setPermissionsListener
 {
-	my $self = shift;
+    my $self = shift;
 
-	my @packages = split ',', $main::imscpConfig{'WEBMAIL_PACKAGES'};
+    my @packages = split ',', $main::imscpConfig{'WEBMAIL_PACKAGES'};
 
-	for my $package(@packages) {
-		next unless grep($_ eq $package, @{$self->{'PACKAGES'}});
+    for my $package(@packages) {
+        next unless grep($_ eq $package, @{$self->{'PACKAGES'}});
 
-		$package = "Package::Webmail::${package}::${package}";
-		eval "require $package";
-		unless($@) {
-			$package = $package->getInstance();
-			if($package->can('setGuiPermissions')) {
-				debug(sprintf('Calling action setGuiPermissions on %s', ref $package));
-				my $rs = $package->setGuiPermissions();
-				return $rs if $rs;
-			}
-		} else {
-			error($@);
-			return 1;
-		}
-	}
+        $package = "Package::Webmail::${package}::${package}";
+        eval "require $package";
+        unless ($@) {
+            $package = $package->getInstance();
+            if ($package->can( 'setGuiPermissions' )) {
+                debug( sprintf( 'Calling action setGuiPermissions on %s', ref $package ) );
+                my $rs = $package->setGuiPermissions();
+                return $rs if $rs;
+            }
+        } else {
+            error( $@ );
+            return 1;
+        }
+    }
 
-	0;
+    0;
 }
 
 =item deleteMail(\%data)
@@ -267,29 +272,29 @@ sub setPermissionsListener
 
 sub deleteMail
 {
-	my ($self, $data) = @_;
+    my ($self, $data) = @_;
 
-	my @packages = split ',', $main::imscpConfig{'WEBMAIL_PACKAGES'};
+    my @packages = split ',', $main::imscpConfig{'WEBMAIL_PACKAGES'};
 
-	for my $package(@packages) {
-		next unless grep($_ eq $package, @{$self->{'PACKAGES'}});
+    for my $package(@packages) {
+        next unless grep($_ eq $package, @{$self->{'PACKAGES'}});
 
-		$package = "Package::Webmail::${package}::${package}";
-		eval "require $package";
-		unless($@) {
-			$package = $package->getInstance();
-			if($package->can('deleteMail')) {
-				debug(sprintf('Calling action deleteMail on %s', ref $package));
-				my $rs = $package->deleteMail($data);
-				return $rs if $rs;
-			}
-		} else {
-			error($@);
-			return 1;
-		}
-	}
+        $package = "Package::Webmail::${package}::${package}";
+        eval "require $package";
+        unless ($@) {
+            $package = $package->getInstance();
+            if ($package->can( 'deleteMail' )) {
+                debug( sprintf( 'Calling action deleteMail on %s', ref $package ) );
+                my $rs = $package->deleteMail( $data );
+                return $rs if $rs;
+            }
+        } else {
+            error( $@ );
+            return 1;
+        }
+    }
 
-	0;
+    0;
 }
 
 =back
@@ -308,16 +313,16 @@ sub deleteMail
 
 sub _init()
 {
-	my $self = shift;
+    my $self = shift;
 
-	@{$self->{'PACKAGES'}} = iMSCP::Dir->new(
-		dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webmail"
-	)->getDirs();
+    @{$self->{'PACKAGES'}} = iMSCP::Dir->new(
+        dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webmail"
+    )->getDirs();
 
-	iMSCP::EventManager->getInstance()->register(
-		'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener(@_); }
-	);
-	$self;
+    iMSCP::EventManager->getInstance()->register(
+        'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener( @_ ); }
+    );
+    $self;
 }
 
 =back

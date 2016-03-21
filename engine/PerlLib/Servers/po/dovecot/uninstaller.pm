@@ -29,56 +29,56 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = shift;
+    my $self = shift;
 
-	my $rs = $self->_restoreConfFile();
-	$rs ||= $self->_dropSqlUser();
+    my $rs = $self->_restoreConfFile();
+    $rs ||= $self->_dropSqlUser();
 }
 
 sub _init
 {
-	my $self = shift;
+    my $self = shift;
 
-	$self->{'po'} = Servers::po::dovecot->getInstance();
-	$self->{'mta'} = Servers::mta::postfix->getInstance();
-	$self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-	$self->{'config'} = $self->{'po'}->{'config'};
-	$self;
+    $self->{'po'} = Servers::po::dovecot->getInstance();
+    $self->{'mta'} = Servers::mta::postfix->getInstance();
+    $self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
+    $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+    $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+    $self->{'config'} = $self->{'po'}->{'config'};
+    $self;
 }
 
 sub _restoreConfFile
 {
-	my $self = shift;
+    my $self = shift;
 
-	for my $filename('dovecot.conf', 'dovecot-sql.conf') {
-		if(-f "$self->{bkpDir}/$filename.system") {
-			my $rs = iMSCP::File->new( filename => "$self->{bkpDir}/$filename.system" )->copyFile(
-				"$self->{'config'}->{'DOVECOT_CONF_DIR'}/$filename"
-			);
-			return $rs if $rs;
-		}
-	}
+    for my $filename('dovecot.conf', 'dovecot-sql.conf') {
+        if (-f "$self->{bkpDir}/$filename.system") {
+            my $rs = iMSCP::File->new( filename => "$self->{bkpDir}/$filename.system" )->copyFile(
+                "$self->{'config'}->{'DOVECOT_CONF_DIR'}/$filename"
+            );
+            return $rs if $rs;
+        }
+    }
 
-	my $file = iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf" );
-	my $rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $self->{'mta'}->{'MTA_MAILBOX_GID_NAME'});
-	$rs ||= $file->mode(0644);
+    my $file = iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf" );
+    my $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'mta'}->{'MTA_MAILBOX_GID_NAME'} );
+    $rs ||= $file->mode( 0644 );
 }
 
 sub _dropSqlUser
 {
-	my $self = shift;
+    my $self = shift;
 
-	my $sqlServer = Servers::sqld->factory();
+    my $sqlServer = Servers::sqld->factory();
 
-	if($self->{'config'}->{'DATABASE_USER'}) {
-		for my $host('localhost', '%', $main::imscpConfig{'DATABASE_USER_HOST'}) {
-			sqlServer->dropUser($self->{'config'}->{'DATABASE_USER'}, $host);
-		}
-	}
+    if ($self->{'config'}->{'DATABASE_USER'}) {
+        for my $host('localhost', '%', $main::imscpConfig{'DATABASE_USER_HOST'}) {
+            sqlServer->dropUser( $self->{'config'}->{'DATABASE_USER'}, $host );
+        }
+    }
 
-	0;
+    0;
 }
 
 1;

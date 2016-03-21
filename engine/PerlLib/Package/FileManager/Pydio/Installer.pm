@@ -54,10 +54,10 @@ our $VERSION = '0.2.0.*@dev';
 
 sub preinstall
 {
-	my $self = shift;
+    my $self = shift;
 
-	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/ajaxplorer', $VERSION);
-	$rs ||= $self->{'eventManager'}->register('afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile);
+    my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/ajaxplorer', $VERSION );
+    $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 
 =item install()
@@ -70,10 +70,10 @@ sub preinstall
 
 sub install
 {
-	my $self = shift;
+    my $self = shift;
 
-	my $rs = $self->_installFiles();
-	$rs ||= $self->_buildHttpdConfig();
+    my $rs = $self->_installFiles();
+    $rs ||= $self->_buildHttpdConfig();
 }
 
 =item setGuiPermissions()
@@ -86,13 +86,13 @@ sub install
 
 sub setGuiPermissions
 {
-	my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-	my $rs = setRights( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", {
-		user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1
-	} );
-	$rs ||= setRights( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/data", {
-		user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 1
-	});
+    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $rs = setRights( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", {
+            user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1
+        } );
+    $rs ||= setRights( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/data", {
+            user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 1
+        } );
 }
 
 =back
@@ -113,24 +113,24 @@ sub setGuiPermissions
 
 sub afterFrontEndBuildConfFile
 {
-	my ($tplContent, $tplName) = @_;
+    my ($tplContent, $tplName) = @_;
 
-	return 0 unless grep($_ eq $tplName, ( '00_master.conf', '00_master_ssl.conf' ));
+    return 0 unless grep($_ eq $tplName, ( '00_master.conf', '00_master_ssl.conf' ));
 
-	$$tplContent = replaceBloc(
-		"# SECTION custom BEGIN.\n",
-		"# SECTION custom END.\n",
-		"    # SECTION custom BEGIN.\n" .
-		getBloc(
-			"# SECTION custom BEGIN.\n",
-			"# SECTION custom END.\n",
-			$$tplContent
-		) .
-			"    include imscp_pydio.conf;\n" .
-			"    # SECTION custom END.\n",
-		$$tplContent
-	);
-	0;
+    $$tplContent = replaceBloc(
+        "# SECTION custom BEGIN.\n",
+        "# SECTION custom END.\n",
+        "    # SECTION custom BEGIN.\n".
+            getBloc(
+                "# SECTION custom BEGIN.\n",
+                "# SECTION custom END.\n",
+                $$tplContent
+            ).
+            "    include imscp_pydio.conf;\n".
+            "    # SECTION custom END.\n",
+        $$tplContent
+    );
+    0;
 }
 
 =back
@@ -149,10 +149,10 @@ sub afterFrontEndBuildConfFile
 
 sub _init
 {
-	my $self = shift;
+    my $self = shift;
 
-	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-	$self;
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self;
 }
 
 =item _installFiles()
@@ -165,28 +165,28 @@ sub _init
 
 sub _installFiles
 {
-	my $self = shift;
+    my $self = shift;
 
-	my $packageDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/ajaxplorer";
-	unless(-d $packageDir) {
-		error('Could not find the imscp/ajaxplorer (Pydio) package into the packages cache directory');
-		return 1;
-	}
+    my $packageDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/ajaxplorer";
+    unless (-d $packageDir) {
+        error( 'Could not find the imscp/ajaxplorer (Pydio) package into the packages cache directory' );
+        return 1;
+    }
 
-	my $rs = execute("rm -fR $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", \my $stdout, \my $stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $rs && $stderr;
-	return $rs if $rs;
+    my $rs = execute( "rm -fR $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", \my $stdout, \my $stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr ) if $rs && $stderr;
+    return $rs if $rs;
 
-	$rs = execute("cp -fR $packageDir/src $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $rs && $stderr;
-	return $rs if $rs;
+    $rs = execute( "cp -fR $packageDir/src $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", \$stdout, \$stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr ) if $rs && $stderr;
+    return $rs if $rs;
 
-	$rs = execute("cp -fRT $packageDir/iMSCP/src $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $rs && $stderr;
-	$rs;
+    $rs = execute( "cp -fRT $packageDir/iMSCP/src $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", \$stdout, \$stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr ) if $rs && $stderr;
+    $rs;
 }
 
 =item _buildHttpdConfig()
@@ -199,12 +199,12 @@ sub _installFiles
 
 sub _buildHttpdConfig
 {
-	my $frontEnd = Package::FrontEnd->getInstance();
-	$frontEnd->buildConfFile(
-		"$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/ajaxplorer/iMSCP/config/nginx/imscp_pydio.conf",
-		{ GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },
-		{ destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pydio.conf" }
-	);
+    my $frontEnd = Package::FrontEnd->getInstance();
+    $frontEnd->buildConfFile(
+        "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/ajaxplorer/iMSCP/config/nginx/imscp_pydio.conf",
+        { GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },
+        { destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pydio.conf" }
+    );
 }
 
 =back

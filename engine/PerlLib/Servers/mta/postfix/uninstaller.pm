@@ -31,71 +31,71 @@ use parent 'Common::SingletonClass';
 
 sub _init
 {
-	my $self = shift;
+    my $self = shift;
 
-	$self->{'mta'} = Servers::mta::postfix->getInstance();
-	$self->{'cfgDir'} = $self->{'mta'}->{'cfgDir'};
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-	$self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
-	$self->{'config'} = $self->{'mta'}->{'config'};
-	$self;
+    $self->{'mta'} = Servers::mta::postfix->getInstance();
+    $self->{'cfgDir'} = $self->{'mta'}->{'cfgDir'};
+    $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+    $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+    $self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
+    $self->{'config'} = $self->{'mta'}->{'config'};
+    $self;
 }
 
 sub uninstall
 {
-	my $self = shift;
+    my $self = shift;
 
-	my $rs = $self->_restoreConfFile();
-	$rs ||= $self->_buildAliasses();
-	$rs ||= $self->_removeUsers();
-	$rs ||= $self->_removeDirs();
+    my $rs = $self->_restoreConfFile();
+    $rs ||= $self->_buildAliasses();
+    $rs ||= $self->_removeUsers();
+    $rs ||= $self->_removeDirs();
 }
 
 sub _removeDirs
 {
-	my $self = shift;
+    my $self = shift;
 
-	for my $file($self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}) {
-		my $rs = iMSCP::Dir->new( dirname => $file )->remove();
-		return $rs if $rs;
-	}
+    for my $file($self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}) {
+        my $rs = iMSCP::Dir->new( dirname => $file )->remove();
+        return $rs if $rs;
+    }
 
-	0;
+    0;
 }
 
 sub _removeUsers
 {
-	my $self = shift;
+    my $self = shift;
 
-	iMSCP::SystemUser->new( force => 'yes' )->delSystemUser($self->{'config'}->{'MTA_MAILBOX_UID_NAME'});
+    iMSCP::SystemUser->new( force => 'yes' )->delSystemUser( $self->{'config'}->{'MTA_MAILBOX_UID_NAME'} );
 }
 
 sub _buildAliasses
 {
-	my $self = shift;
+    my $self = shift;
 
-	my $rs = execute("newaliases", \my $stdout, \my $stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	error("Error while executing newaliases command") if ! $stderr && $rs;
-	$rs;
+    my $rs = execute( "newaliases", \my $stdout, \my $stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr ) if $stderr && $rs;
+    error( "Error while executing newaliases command" ) if !$stderr && $rs;
+    $rs;
 }
 
 sub _restoreConfFile
 {
-	my $self = shift;
+    my $self = shift;
 
-	for my $file($self->{'config'}->{'POSTFIX_CONF_FILE'}, $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}) {
-		my $filename = fileparse($file);
+    for my $file($self->{'config'}->{'POSTFIX_CONF_FILE'}, $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}) {
+        my $filename = fileparse( $file );
 
-		if(-f "$self->{'bkpDir'}/$filename.system"){
-			my $rs = iMSCP::File->new(filename => "$self->{'bkpDir'}/$filename.system")->copyFile($file);
-			return $rs if $rs;
-		}
-	}
+        if (-f "$self->{'bkpDir'}/$filename.system") {
+            my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile( $file );
+            return $rs if $rs;
+        }
+    }
 
-	0;
+    0;
 }
 
 1;

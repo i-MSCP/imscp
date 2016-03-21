@@ -17,6 +17,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+=head1 NAME
+
+imscp-disable-accounts - Deactivates expired client accounts
+
+=head1 SYNOPSIS
+
+ imscp-disable-accounts [options]...
+
+=cut
+
 use strict;
 use warnings;
 use FindBin;
@@ -26,11 +36,16 @@ use iMSCP::Bootstrapper;
 use iMSCP::Execute;
 use iMSCP::Getopt;
 use File::Basename;
+use POSIX qw(locale_h);
+use locale;
+
+setlocale(LC_ALL, 'C.UTF-8');
+$ENV{'LANG'} = 'C.UTF-8';
 
 newDebug('imscp-disable-accounts.log');
 
 # Parse command line options
-iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
+iMSCP::Getopt->parseNoDefault(sprintf('Usage: perl %s [OPTION]...', basename($0)) . qq {
 
 Script that deactivates expired client accounts
 
@@ -45,73 +60,79 @@ $bootstrapper->getInstance()->boot({ nolock => 'yes', norequirements => 'yes', c
 
 sub run
 {
-	my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->factory();
 
-	my $qrs = $db->doQuery('name', "SELECT * FROM config WHERE name = 'HARD_MAIL_SUSPENSION'");
-	unless(ref $qrs eq 'HASH') {
-		error($qrs);
-		return 1;
-	}
-	my $hardMailSuspension = $qrs->{'HARD_MAIL_SUSPENSION'}->{'value'};
+    my $qrs = $db->doQuery('name', "SELECT * FROM config WHERE name = 'HARD_MAIL_SUSPENSION'");
+    unless(ref $qrs eq 'HASH') {
+        error($qrs);
+        return 1;
+    }
+    my $hardMailSuspension = $qrs->{'HARD_MAIL_SUSPENSION'}->{'value'};
 
-	$qrs = $db->doQuery(
-		'domain_id',
-		"
-			SELECT domain_id, domain_admin_id FROM domain
-			WHERE domain_expires <> '0' AND domain_expires < UNIX_TIMESTAMP() AND domain_status <> 'disabled'
-		"
-	);
-	unless(ref $qrs eq 'HASH') {
-		error($qrs);
-		return 1;
-	}
+    $qrs = $db->doQuery(
+        'domain_id',
+        "
+            SELECT domain_id, domain_admin_id FROM domain
+            WHERE domain_expires <> '0' AND domain_expires < UNIX_TIMESTAMP() AND domain_status <> 'disabled'
+        "
+    );
+    unless(ref $qrs eq 'HASH') {
+        error($qrs);
+        return 1;
+    }
 
-	my $rs = 0;
-	for my $domainId(keys %{$qrs}) {
-		my $dbi = $db->startTransaction();
+    my $rs = 0;
+    for my $domainId(keys %{$qrs}) {
+        my $dbi = $db->startTransaction();
 
-		eval {
-			if ($hardMailSuspension) { # SMTP/IMAP/POP disabled
-				$dbi->do('UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ?', undef, 'todisable', 'no', $domainId);
-			} else { # IMAP/POP disabled
-				$dbi->do('UPDATE mail_users SET po_active = ? WHERE domain_id = ?', undef,  'no', $domainId);
-			}
+        eval {
+            if ($hardMailSuspension) { # SMTP/IMAP/POP disabled
+                $dbi->do('UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ?', undef, 'todisable', 'no', $domainId);
+            } else { # IMAP/POP disabled
+                $dbi->do('UPDATE mail_users SET po_active = ? WHERE domain_id = ?', undef,  'no', $domainId);
+            }
 
-			$dbi->do('UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef, 'todisable', $domainId);
-			$dbi->do('UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', undef, 'todisable', $domainId);
-			$dbi->do('UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', undef, 'todisable', $domainId);
-			$dbi->do(
-				'
-					UPDATE subdomain_alias SET subdomain_alias_status = ?
-					WHERE alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
-				',
-				undef, 'todisable', $domainId
-			);
+            $dbi->do('UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef, 'todisable', $domainId);
+            $dbi->do('UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', undef, 'todisable', $domainId);
+            $dbi->do('UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', undef, 'todisable', $domainId);
+            $dbi->do(
+                '
+                    UPDATE subdomain_alias SET subdomain_alias_status = ?
+                    WHERE alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
+                ',
+                undef, 'todisable', $domainId
+            );
 
-			$dbi->commit();
-		};
+            $dbi->commit();
+        };
 
-		if($@) {
-			$dbi->rollback();
-			$db->endTransaction();
-			error("Could not deactivate client account with ID $qrs->{$domainId}->{'domain_admin_id'}: $@");
-			$rs = 1;
-		}
+        if($@) {
+            $dbi->rollback();
+            $db->endTransaction();
+            error("Could not deactivate client account with ID $qrs->{$domainId}->{'domain_admin_id'}: $@");
+            $rs = 1;
+        }
 
-		$db->endTransaction();
-	}
+        $db->endTransaction();
+    }
 
-	# Run request manager to process all scheduled tasks
-	unless($rs) {
-		$rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \my $stdout, \my $stderr);
-		debug $stdout if $stdout;
-		error($stderr) if $stderr && $rs;
-		warning($stderr) if $stderr && !$rs;
-	}
+    # Run request manager to process all scheduled tasks
+    unless($rs) {
+        $rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \my $stdout, \my $stderr);
+        debug $stdout if $stdout;
+        error($stderr) if $stderr && $rs;
+        warning($stderr) if $stderr && !$rs;
+    }
 
-	$rs;
+    $rs;
 }
 
 my $rs = run();
 $bootstrapper->unlock('/tmp/imscp-disable-accounts.lock')
 exit run();
+
+=head1 AUTHOR
+
+Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut

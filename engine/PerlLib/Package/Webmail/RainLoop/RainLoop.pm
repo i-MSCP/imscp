@@ -56,10 +56,10 @@ my $dbInitialized = undef;
 
 sub showDialog
 {
-	my ($self, $dialog) = @_;
+    my ($self, $dialog) = @_;
 
-	require Package::Webmail::RainLoop::Installer;
-	Package::Webmail::RainLoop::Installer->getInstance()->showDialog($dialog);
+    require Package::Webmail::RainLoop::Installer;
+    Package::Webmail::RainLoop::Installer->getInstance()->showDialog( $dialog );
 }
 
 =item preinstall()
@@ -72,8 +72,8 @@ sub showDialog
 
 sub preinstall
 {
-	require Package::Webmail::RainLoop::Installer;
-	Package::Webmail::RainLoop::Installer->getInstance()->preinstall();
+    require Package::Webmail::RainLoop::Installer;
+    Package::Webmail::RainLoop::Installer->getInstance()->preinstall();
 }
 
 =item install()
@@ -86,8 +86,8 @@ sub preinstall
 
 sub install
 {
-	require Package::Webmail::RainLoop::Installer;
-	Package::Webmail::RainLoop::Installer->getInstance()->install();
+    require Package::Webmail::RainLoop::Installer;
+    Package::Webmail::RainLoop::Installer->getInstance()->install();
 }
 
 =item uninstall()
@@ -100,8 +100,8 @@ sub install
 
 sub uninstall
 {
-	require Package::Webmail::RainLoop::Uninstaller;
-	Package::Webmail::RainLoop::Uninstaller->getInstance()->uninstall();
+    require Package::Webmail::RainLoop::Uninstaller;
+    Package::Webmail::RainLoop::Uninstaller->getInstance()->uninstall();
 }
 
 =item setGuiPermissions()
@@ -114,8 +114,8 @@ sub uninstall
 
 sub setGuiPermissions
 {
-	require Package::Webmail::RainLoop::Installer;
-	Package::Webmail::RainLoop::Installer->getInstance()->setGuiPermissions();
+    require Package::Webmail::RainLoop::Installer;
+    Package::Webmail::RainLoop::Installer->getInstance()->setGuiPermissions();
 }
 
 =item deleteMail(\%data)
@@ -129,78 +129,79 @@ sub setGuiPermissions
 
 sub deleteMail
 {
-	my ($self, $data) = @_;
+    my ($self, $data) = @_;
 
-	return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
+    return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
 
-	my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->factory();
 
-	unless($dbInitialized) {
-		my $quotedRainLoopDbName = $db->quoteIdentifier($main::imscpConfig{'DATABASE_NAME'} . '_rainloop');
+    unless ($dbInitialized) {
+        my $quotedRainLoopDbName = $db->quoteIdentifier( $main::imscpConfig{'DATABASE_NAME'}.'_rainloop' );
 
-		my $rs = $db->doQuery('1', "SHOW TABLES FROM $quotedRainLoopDbName");
-		unless(ref $rs eq 'HASH') {
-			error($rs);
-			return 1;
-		}
+        my $rs = $db->doQuery( '1', "SHOW TABLES FROM $quotedRainLoopDbName" );
+        unless (ref $rs eq 'HASH') {
+            error( $rs );
+            return 1;
+        }
 
-		if(%{$rs}) {
-			$dbInitialized = 1;
-		}
-	}
+        if (%{$rs}) {
+            $dbInitialized = 1;
+        }
+    }
 
-	if($dbInitialized) {
-		$db->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'} . '_rainloop');
-		my $rs = $db->connect();
+    if ($dbInitialized) {
+        $db->set( 'DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'}.'_rainloop' );
+        my $rs = $db->connect();
 
-		unless($rs) {
-			$rs = $db->doQuery(
-				'dummy',
-				'
-					DELETE u, c, p FROM rainloop_users u
-					JOIN rainloop_ab_contacts c USING(id_user)
-					JOIN rainloop_ab_properties p USING(id_user)
-					WHERE rl_email = ?
-				',
-				$data->{'MAIL_ADDR'}
-			);
-			unless(ref $rs eq 'HASH') {
-				error(sprintf("Could not remove mail user '%s' from rainloop database: %s", $data->{'MAIL_ADDR'}, $rs));
-				return 1;
-			}
-		} else {
-			error($rs);
-			return 1;
-		}
+        unless ($rs) {
+            $rs = $db->doQuery(
+                'dummy',
+                '
+                    DELETE u, c, p FROM rainloop_users u
+                    JOIN rainloop_ab_contacts c USING(id_user)
+                    JOIN rainloop_ab_properties p USING(id_user)
+                    WHERE rl_email = ?
+                ',
+                $data->{'MAIL_ADDR'}
+            );
+            unless (ref $rs eq 'HASH') {
+                error( sprintf( "Could not remove mail user '%s' from rainloop database: %s", $data->{'MAIL_ADDR'},
+                        $rs ) );
+                return 1;
+            }
+        } else {
+            error( $rs );
+            return 1;
+        }
 
-		$db->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
-		if($db->connect()) {
-			error(sprintf("Could not restore connection to i-MSCP database: %s", $rs));
-			return 1;
-		}
-	}
+        $db->set( 'DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'} );
+        if ($db->connect()) {
+            error( sprintf( "Could not restore connection to i-MSCP database: %s", $rs ) );
+            return 1;
+        }
+    }
 
-	my $storageDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop" .
-		"/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_/storage";
+    my $storageDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop".
+        "/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_/storage";
 
-	(my $email = $data->{'MAIL_ADDR'}) =~ s/[^a-z0-9\-\.@]+/_/;
-	(my $storagePath = substr($email, 0, 2)) =~ s/\@$//;
+    (my $email = $data->{'MAIL_ADDR'}) =~ s/[^a-z0-9\-\.@]+/_/;
+    (my $storagePath = substr( $email, 0, 2 )) =~ s/\@$//;
 
-	for my $storageType('cfg', 'data', 'files') {
-		my $rs = iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath/$email" )->remove();
-		return $rs if $rs;
+    for my $storageType('cfg', 'data', 'files') {
+        my $rs = iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath/$email" )->remove();
+        return $rs if $rs;
 
-		if (-d "$storageDir/$storageType/$storagePath") {
-			my $dir = iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath" );
+        if (-d "$storageDir/$storageType/$storagePath") {
+            my $dir = iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath" );
 
-			if($dir->isEmpty()) {
-				$rs = $dir->remove();
-				return $rs if $rs;
-			}
-		}
-	}
+            if ($dir->isEmpty()) {
+                $rs = $dir->remove();
+                return $rs if $rs;
+            }
+        }
+    }
 
-	0;
+    0;
 }
 
 =back
@@ -219,17 +220,20 @@ sub deleteMail
 
 sub _init
 {
-	my $self = shift;
+    my $self = shift;
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/rainloop";
+    $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/rainloop";
 
-	if(-f "$self->{'cfgDir'}/rainloop.data") {
-		$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/rainloop.data"; \%c; };
-	} else {
-		$self->{'config'} = { };
-	}
+    if (-f "$self->{'cfgDir'}/rainloop.data") {
+        $self->{'config'} = lazy {
+                tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/rainloop.data";
+                \%c;
+            };
+    } else {
+        $self->{'config'} = { };
+    }
 
-	$self;
+    $self;
 }
 
 =back

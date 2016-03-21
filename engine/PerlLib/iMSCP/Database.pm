@@ -1,11 +1,11 @@
 =head1 NAME
 
- iMSCP::Database iMSCP database adapter factory
+ iMSCP::Database Database adapter factory
 
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -31,7 +31,7 @@ my %adapterInstances;
 
 =head1 DESCRIPTION
 
- iMSCP database adapter factory.
+ Database adapter factory.
 
 =cut
 
@@ -50,15 +50,13 @@ my %adapterInstances;
 
 sub factory
 {
-	my $adapterName = $_[1] || $main::imscpConfig{'DATABASE_TYPE'};
+    my $adapterName = $_[1] || $main::imscpConfig{'DATABASE_TYPE'};
 
-	unless(defined $adapterInstances{$adapterName}) {
-		my $adapter = "iMSCP::Database::${adapterName}";
-		eval "require $adapter" or fatal("Unable to load database adapter $adapter: $@");
-		$adapterInstances{$adapterName} = $adapter->getInstance();
-	}
+    return $adapterInstances{$adapterName} if $adapterInstances{$adapterName};
 
-	$adapterInstances{$adapterName};
+    my $adapter = "iMSCP::Database::${adapterName}";
+    eval "require $adapter" or die( sprintf( 'Could not to load `%s` database adapter: %s', $adapter, $@ ) );
+    $adapterInstances{$adapterName} = $adapter->getInstance();
 }
 
 =back

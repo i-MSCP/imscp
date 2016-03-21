@@ -17,6 +17,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+=head1 NAME
+
+imscp-rqst-mngr - Process i-MSCP backend requests
+
+=head1 SYNOPSIS
+
+ imscp-rqst-mngr [options]...
+
+=cut
+
 use strict;
 use warnings;
 use FindBin;
@@ -26,6 +36,11 @@ use iMSCP::Bootstrapper;
 use iMSCP::DbTasksProcessor;
 use iMSCP::Debug;
 use iMSCP::Getopt;
+use POSIX qw(locale_h);
+use locale;
+
+setlocale(LC_ALL, 'C.UTF-8');
+$ENV{'LANG'} = 'C.UTF-8';
 
 newDebug('imscp-rqst-mngr.log');
 
@@ -41,5 +56,8 @@ OPTIONS:
 iMSCP::Bootstrapper->getInstance()->boot( { norequirements => 1 } );
 iMSCP::DbTasksProcessor->getInstance( mode => 'backend' )->process();
 
-1;
-__END__
+=head1 AUTHOR
+
+Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut

@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -51,17 +51,17 @@ fieldhash my %events;
 
 sub getInstance
 {
-	my $self = $_[0];
+    my $self = shift;
 
-	no strict 'refs';
-	my $instance = \${"${self}::_instance"};
+    no strict 'refs';
+    my $instance = \${"${self}::_instance"};
 
-	unless(defined $$instance) {
-		$$instance = bless (\ my $this, $self);
-		$$instance->_init();
-	}
+    unless (defined $$instance) {
+        $$instance = bless ( \ my $this, $self );
+        $$instance->_init();
+    }
 
-	$$instance;
+    $$instance;
 }
 
 =item register($event, $callback)
@@ -76,16 +76,16 @@ sub getInstance
 
 sub register
 {
-	my ($self, $event, $callback) = @_;
+    my ($self, $event, $callback) = @_;
 
-	if (ref $callback eq 'CODE') {
-		debug(sprintf('Registering listener on the %s event from %s', $event, (caller(1))[3] || 'main'));
-		push @{ $events{$self}->{$event} }, $callback;
-		0;
-	} else {
-		error(sprintf('Invalid listener provided for the %s event', $event));
-		1;
-	}
+    unless (ref $callback eq 'CODE') {
+        error( sprintf( 'Invalid listener provided for the %s event', $event ) );
+        return 1;
+    }
+
+    debug( sprintf( 'Registering listener on the %s event from %s', $event, (caller( 1 ))[3] || 'main' ) );
+    push @{ $events{$self}->{$event} }, $callback;
+    0;
 }
 
 =item unregister($event)
@@ -99,11 +99,10 @@ sub register
 
 sub unregister
 {
-	my ($self, $event) = @_;
+    my ($self, $event) = @_;
 
-	delete $events{$self}->{$event};
-
-	0;
+    delete $events{$self}->{$event};
+    0;
 }
 
 =item trigger($event, [$param], [$paramN])
@@ -118,29 +117,30 @@ sub unregister
 
 sub trigger
 {
-	my ($self, $event) = (shift, shift);
+    my ($self, $event) = (shift, shift);
 
-	my $rs = 0;
+    my $rs = 0;
 
-	if(exists $events{$self}->{$event}) {
-		debug(sprintf('Triggering %s event', $event));
+    return 0 unless exists $events{$self}->{$event};
 
-		for my $listener(@{$events{$self}->{$event}}) {
-			if($rs = $listener->(@_)) {
-				require Data::Dumper;
-				Data::Dumper->import();
-				local $Data::Dumper::Terse = 1;
-				local $Data::Dumper::Deparse = 1;
-				error(sprintf(
-					"A listener registered on the %s event and triggered in %s has failed.\n\nListener code was: %s\n\n",
-					$event, (caller(1))[3] || 'main', Dumper($listener)
-				));
-				last;
-			}
-		}
-	}
+    debug( sprintf( 'Triggering %s event', $event ) );
 
-	$rs;
+    for my $listener(@{$events{$self}->{$event}}) {
+        if ($rs = $listener->( @_ )) {
+            require Data::Dumper;
+            Data::Dumper->import();
+            local $Data::Dumper::Terse = 1;
+            local $Data::Dumper::Deparse = 1;
+            error( sprintf(
+                    "A listener registered on the %s event and triggered in %s has failed.\n\nListener code was: %s\n\n"
+                    ,
+                    $event, (caller( 1 ))[3] || 'main', Dumper( $listener )
+                ) );
+            last;
+        }
+    }
+
+    $rs;
 }
 
 =back
@@ -159,30 +159,30 @@ sub trigger
 
 sub _init
 {
-	my $self = $_[0];
+    my $self = $_[0];
 
-	$events{$self} = { };
+    $events{$self} = { };
 
-	# Load listener files
-	#
-	# We try to load listeners from the hooks.d directory first (old location) to be sure that the listeners are loaded
-	# even on upgrade
-	my $listenersDir;
+    # Load listener files
+    #
+    # We try to load listeners from the hooks.d directory first (old location) to be sure that the listeners are loaded
+    # even on upgrade
+    my $listenersDir;
 
-	if(-d "$main::imscpConfig{'CONF_DIR'}/hooks.d") {
-		$listenersDir = "$main::imscpConfig{'CONF_DIR'}/hooks.d";
-	} elsif(-d "$main::imscpConfig{'CONF_DIR'}/listeners.d") {
-		$listenersDir = "$main::imscpConfig{'CONF_DIR'}/listeners.d";
-	}
+    if (-d "$main::imscpConfig{'CONF_DIR'}/hooks.d") {
+        $listenersDir = "$main::imscpConfig{'CONF_DIR'}/hooks.d";
+    } elsif (-d "$main::imscpConfig{'CONF_DIR'}/listeners.d") {
+        $listenersDir = "$main::imscpConfig{'CONF_DIR'}/listeners.d";
+    }
 
-	if($listenersDir) {
-		for my $listenerFile(glob "$listenersDir/*.pl") {
-			debug(sprintf('Loading %s listener file', $listenerFile));
-			require $listenerFile;
-		}
-	}
+    if ($listenersDir) {
+        for my $listenerFile(glob "$listenersDir/*.pl") {
+            debug( sprintf( 'Loading %s listener file', $listenerFile ) );
+            require $listenerFile;
+        }
+    }
 
-	$self;
+    $self;
 }
 
 =back

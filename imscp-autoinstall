@@ -23,6 +23,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+=head1 NAME
+
+imscp-autoinstall Install/Update/Reconfigure i-MSCP
+
+=head1 SYNOPSIS
+
+ imscp-autoinstall [options]...
+
+=cut
+
 use strict;
 use warnings;
 use FindBin;
@@ -33,7 +43,10 @@ use iMSCP::Dialog;
 use iMSCP::Getopt;
 use File::Basename;
 use autoinstaller::Functions qw/loadConfig build install/;
+use POSIX qw(locale_h);
+use locale;
 
+setlocale(LC_ALL, 'C.UTF-8');
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
@@ -54,7 +67,7 @@ $main::forcereinstall = 0;
 $main::skippackages = 0;
 
 # Parse autoinstaller options
-iMSCP::Getopt->parse(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
+iMSCP::Getopt->parse(sprintf('Usage: perl %s [OPTION]...', basename($0)) . qq {
  -b,    --build-only            Process build steps only.
  -f,    --force-reinstall       Force reinstallation of distro packages.
  -s,    --skip-distro-packages  Do not install/update distro packages.},
@@ -72,11 +85,11 @@ $main::reconfigure = iMSCP::Getopt->reconfigure;
 
 # Handle preseed option
 if(iMSCP::Getopt->preseed) {
-	require iMSCP::Getopt->preseed;
-	# The preseed option supersede the reconfigure option
-	iMSCP::Getopt->reconfigure('none');
-	$main::reconfigure = 'none';
-	iMSCP::Getopt->noprompt(1);
+    require iMSCP::Getopt->preseed;
+    # The preseed option supersede the reconfigure option
+    iMSCP::Getopt->reconfigure('none');
+    $main::reconfigure = 'none';
+    iMSCP::Getopt->noprompt(1);
 }
 
 # Load config
@@ -88,64 +101,69 @@ require iMSCP::Getopt->listener if iMSCP::Getopt->listener;
 # Handle noprompt option
 $main::noprompt = iMSCP::Getopt->noprompt;
 if($main::noprompt) {
-	debugRegisterCallBack(sub {
-		if($?) { # We exit with status 5 from iMSCP::Dialog in noninteractive mode
-			if($? == 5) {
-				if(iMSCP::Getopt->preseed) {
-					print STDERR output('Missing or bad entry found in your preseed file.', 'fatal');
-				} else {
-					print STDERR output('Missing or bad entry found in configuration file.', 'fatal');
-				}
-			}
-		} else {
-			unless($main::buildonly) {
-				print STDOUT output('i-MSCP has been successfully installed/updated.', 'ok');
-			} else {
-				print STDOUT output('i-MSCP has been successfully built.', 'ok');
-			}
-		}
-	});
+    debugRegisterCallBack(sub {
+        if($?) { # We exit with status 5 from iMSCP::Dialog in noninteractive mode
+            if($? == 5) {
+                if(iMSCP::Getopt->preseed) {
+                    print STDERR output('Missing or bad entry found in your preseed file.', 'fatal');
+                } else {
+                    print STDERR output('Missing or bad entry found in configuration file.', 'fatal');
+                }
+            }
+        } else {
+            unless($main::buildonly) {
+                print STDOUT output('i-MSCP has been successfully installed/updated.', 'ok');
+            } else {
+                print STDOUT output('i-MSCP has been successfully built.', 'ok');
+            }
+        }
+    });
 
-	unless($main::buildonly) {
-		print STDOUT output('Installation in progress... Please wait.', 'info');
-	} else {
-		print STDOUT output('Build steps in progress... Please wait.', 'info')
-	}
+    unless($main::buildonly) {
+        print STDOUT output('Installation in progress... Please wait.', 'info');
+    } else {
+        print STDOUT output('Build steps in progress... Please wait.', 'info')
+    }
 } elsif(!iMSCP::Getopt->preseed) {
-	system('clear');
+    system('clear');
 }
 
 # Build steps
 my $ret = build();
 
 unless($ret) {
-	unless ($main::buildonly) {
-		# Install steps
-		require "$FindBin::Bin/engine/setup/imscp-setup-methods.pl";
-		$ret = install();
-	} else {
-		my $msg = <<EOF;
+    unless ($main::buildonly) {
+        # Install steps
+        require "$FindBin::Bin/engine/setup/imscp-setup-methods.pl";
+        $ret = install();
+    } else {
+        my $msg = <<EOF;
 
 \\Z4\\ZuBuild Steps Successful\\Zn
 
 Please run the following commands from your console:
 
-	# rm -fR $main::imscpConfig{'ROOT_DIR'}/{daemon,engine,gui}
-	# cp -fR $main::{'INST_PREF'}/* /
-	# rm -fR $main::{'INST_PREF'}
-	# perl $main::imscpConfig{'ROOT_DIR'}/engine/setup/imscp-setup -d
+    # rm -fR $main::imscpConfig{'ROOT_DIR'}/{daemon,engine,gui}
+    # cp -fR $main::{'INST_PREF'}/* /
+    # rm -fR $main::{'INST_PREF'}
+    # perl $main::imscpConfig{'ROOT_DIR'}/engine/setup/imscp-reconfigure -d
 EOF
 
-
-		$msg .= <<EOF;
+        $msg .= <<EOF;
 
 For any problem, have a look at http://forum.i-mscp.net
 
 Thank you for choosing i-MSCP.
 EOF
 
-		iMSCP::Dialog->getInstance()->msgbox($msg);
-	}
+        iMSCP::Dialog->getInstance()->msgbox($msg);
+    }
 }
 
 exit $ret;
+
+=head1 AUTHOR
+
+Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut

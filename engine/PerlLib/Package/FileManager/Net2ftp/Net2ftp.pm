@@ -49,8 +49,8 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-	require Package::FileManager::Net2ftp::Installer;
-	Package::FileManager::Net2ftp::Installer->getInstance()->preinstall();
+    require Package::FileManager::Net2ftp::Installer;
+    Package::FileManager::Net2ftp::Installer->getInstance()->preinstall();
 }
 
 =item install()
@@ -63,8 +63,8 @@ sub preinstall
 
 sub install
 {
-	require Package::FileManager::Net2ftp::Installer;
-	Package::FileManager::Net2ftp::Installer->getInstance()->install();
+    require Package::FileManager::Net2ftp::Installer;
+    Package::FileManager::Net2ftp::Installer->getInstance()->install();
 }
 
 =item uninstall()
@@ -77,8 +77,8 @@ sub install
 
 sub uninstall
 {
-	require Package::FileManager::Net2ftp::Uninstaller;
-	Package::FileManager::Net2ftp::Uninstaller->getInstance()->uninstall();
+    require Package::FileManager::Net2ftp::Uninstaller;
+    Package::FileManager::Net2ftp::Uninstaller->getInstance()->uninstall();
 }
 
 =item setGuiPermissions()
@@ -91,8 +91,8 @@ sub uninstall
 
 sub setGuiPermissions
 {
-	require Package::FileManager::Net2ftp::Installer;
-	Package::FileManager::Net2ftp::Installer->getInstance()->setGuiPermissions();
+    require Package::FileManager::Net2ftp::Installer;
+    Package::FileManager::Net2ftp::Installer->getInstance()->setGuiPermissions();
 }
 
 =back

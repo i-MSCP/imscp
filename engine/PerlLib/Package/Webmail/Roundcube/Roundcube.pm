@@ -57,10 +57,10 @@ filters.
 
 sub showDialog
 {
-	my ($self, $dialog) = @_;
+    my ($self, $dialog) = @_;
 
-	require Package::Webmail::Roundcube::Installer;
-	Package::Webmail::Roundcube::Installer->getInstance()->showDialog($dialog);
+    require Package::Webmail::Roundcube::Installer;
+    Package::Webmail::Roundcube::Installer->getInstance()->showDialog( $dialog );
 }
 
 =item preinstall()
@@ -73,8 +73,8 @@ sub showDialog
 
 sub preinstall
 {
-	require Package::Webmail::Roundcube::Installer;
-	Package::Webmail::Roundcube::Installer->getInstance()->preinstall();
+    require Package::Webmail::Roundcube::Installer;
+    Package::Webmail::Roundcube::Installer->getInstance()->preinstall();
 }
 
 =item install()
@@ -87,8 +87,8 @@ sub preinstall
 
 sub install
 {
-	require Package::Webmail::Roundcube::Installer;
-	Package::Webmail::Roundcube::Installer->getInstance()->install();
+    require Package::Webmail::Roundcube::Installer;
+    Package::Webmail::Roundcube::Installer->getInstance()->install();
 }
 
 =item uninstall()
@@ -101,8 +101,8 @@ sub install
 
 sub uninstall
 {
-	require Package::Webmail::Roundcube::Uninstaller;
-	Package::Webmail::Roundcube::Uninstaller->getInstance()->uninstall();
+    require Package::Webmail::Roundcube::Uninstaller;
+    Package::Webmail::Roundcube::Uninstaller->getInstance()->uninstall();
 }
 
 =item setGuiPermissions()
@@ -115,8 +115,8 @@ sub uninstall
 
 sub setGuiPermissions
 {
-	require Package::Webmail::Roundcube::Installer;
-	Package::Webmail::Roundcube::Installer->getInstance()->setGuiPermissions();
+    require Package::Webmail::Roundcube::Installer;
+    Package::Webmail::Roundcube::Installer->getInstance()->setGuiPermissions();
 }
 
 =item deleteMail(\%data)
@@ -130,35 +130,35 @@ sub setGuiPermissions
 
 sub deleteMail
 {
-	my ($self, $data) = @_;
+    my ($self, $data) = @_;
 
-	my $roundcubeDbName = $main::imscpConfig{'DATABASE_NAME'} . '_roundcube';
+    my $roundcubeDbName = $main::imscpConfig{'DATABASE_NAME'}.'_roundcube';
 
-	return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
+    return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
 
-	my $db = iMSCP::Database->factory();
-	$db->set('DATABASE_NAME', $roundcubeDbName);
-	my $rs = $db->connect();
+    my $db = iMSCP::Database->factory();
+    $db->set( 'DATABASE_NAME', $roundcubeDbName );
+    my $rs = $db->connect();
 
-	if($rs) {
-		error($rs);
-		return 1;
-	}
+    if ($rs) {
+        error( $rs );
+        return 1;
+    }
 
-	my $rdata = $db->doQuery('dummy', 'DELETE FROM `users` WHERE `username` = ?', $data->{'MAIL_ADDR'});
-	unless(ref $rdata eq 'HASH') {
-		error(sprintf("Could not remove mail user '%s' from roundcube database: %s", $data->{'MAIL_ADDR'}, $rdata));
-		return 1;
-	}
+    my $rdata = $db->doQuery( 'dummy', 'DELETE FROM `users` WHERE `username` = ?', $data->{'MAIL_ADDR'} );
+    unless (ref $rdata eq 'HASH') {
+        error( sprintf( "Could not remove mail user '%s' from roundcube database: %s", $data->{'MAIL_ADDR'}, $rdata ) );
+        return 1;
+    }
 
-	$db->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
+    $db->set( 'DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'} );
 
-	if($db->connect()) {
-		error(sprintf('Could not restore connection to i-MSCP database: %s', $rs));
-		return 1;
-	}
+    if ($db->connect()) {
+        error( sprintf( 'Could not restore connection to i-MSCP database: %s', $rs ) );
+        return 1;
+    }
 
-	0
+    0
 }
 
 =back
@@ -177,19 +177,22 @@ sub deleteMail
 
 sub _init
 {
-	my $self = shift;
+    my $self = shift;
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/roundcube";
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+    $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/roundcube";
+    $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+    $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	if(-f "$self->{'cfgDir'}/roundcube.data") {
-		$self->{'config'} = lazy { tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/roundcube.data"; \%c; };
-	} else {
-		$self->{'config'} = { };
-	}
+    if (-f "$self->{'cfgDir'}/roundcube.data") {
+        $self->{'config'} = lazy {
+                tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/roundcube.data";
+                \%c;
+            };
+    } else {
+        $self->{'config'} = { };
+    }
 
-	$self;
+    $self;
 }
 
 =back

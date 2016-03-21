@@ -79,18 +79,18 @@ sub isEnabled
 {
     my ($self, $service) = @_;
 
-    my $jobFileContent = $self->_readJobFile($service);
+    my $jobFileContent = $self->_readJobFile( $service );
 
     if ($self->_versionIsPre067()) {
-        return $self->_isEnabledPre067($jobFileContent);
+        return $self->_isEnabledPre067( $jobFileContent );
     }
 
     if ($self->_versionIsPre090()) {
-        return $self->_isEnabledPre090($jobFileContent);
+        return $self->_isEnabledPre090( $jobFileContent );
     }
 
     if ($self->_versionIsPost090()) {
-        return $self->_isEnabledPost090($jobFileContent, $self->_readJobOverrideFile($service));
+        return $self->_isEnabledPost090( $jobFileContent, $self->_readJobOverrideFile( $service ) );
     }
 
     0;
@@ -109,13 +109,13 @@ sub enable
 {
     my ($self, $service) = @_;
 
-    my $jobFileContent = $self->_readJobFile($service);
+    my $jobFileContent = $self->_readJobFile( $service );
 
     if ($self->_versionIsPre090()) {
-        return $self->_enablePre090($service, $jobFileContent);
+        return $self->_enablePre090( $service, $jobFileContent );
     }
 
-    $self->_enablePost090($service, $jobFileContent, $self->_readJobOverrideFile($service));
+    $self->_enablePost090( $service, $jobFileContent, $self->_readJobOverrideFile( $service ) );
 }
 
 =item disable($service)
@@ -132,15 +132,15 @@ sub disable
     my ($self, $service) = @_;
 
     if ($self->_versionIsPre067()) {
-        return $self->_disablePre067($service, $self->_readJobFile($service));
+        return $self->_disablePre067( $service, $self->_readJobFile( $service ) );
     }
 
     if ($self->_versionIsPre090()) {
-        return $self->_disablePre090($service, $self->_readJobFile($service));
+        return $self->_disablePre090( $service, $self->_readJobFile( $service ) );
     }
 
     if ($self->_versionIsPost090()) {
-        return $self->_disablePost090($service, $self->_readJobOverrideFile($service));
+        return $self->_disablePost090( $service, $self->_readJobOverrideFile( $service ) );
     }
 
     0;
@@ -159,14 +159,14 @@ sub remove
 {
     my ($self, $service) = @_;
 
-    return 0 unless $self->stop($service);
+    return 0 unless $self->stop( $service );
 
     local $@;
 
     for my $jobFileType('conf', 'override') {
-        if (my $filepath = eval { $self->getJobFilePath($service, $jobFileType); }) {
+        if (my $filepath = eval { $self->getJobFilePath( $service, $jobFileType ); }) {
             delete $jobFilesCache{$service.'.'.$jobFileType};
-            return 0 if iMSCP::File->new(filename => $filepath)->delFile();
+            return 0 if iMSCP::File->new( filename => $filepath )->delFile();
         }
     }
 
@@ -186,15 +186,15 @@ sub start
 {
     my ($self, $service) = @_;
 
-    if ($self->_isUpstart($service)) {
-        unless ($self->isRunning($service)) {
-            return $self->_exec($commands{'start'}, $service) == 0;
+    if ($self->_isUpstart( $service )) {
+        unless ($self->isRunning( $service )) {
+            return $self->_exec( $commands{'start'}, $service ) == 0;
         }
 
         return 1;
     }
 
-    $self->SUPER::start($service);
+    $self->SUPER::start( $service );
 }
 
 =item stop($service)
@@ -210,15 +210,15 @@ sub stop
 {
     my ($self, $service) = @_;
 
-    if ($self->_isUpstart($service)) {
-        if ($self->isRunning($service)) {
-            return $self->_exec($commands{'stop'}, $service) == 0;
+    if ($self->_isUpstart( $service )) {
+        if ($self->isRunning( $service )) {
+            return $self->_exec( $commands{'stop'}, $service ) == 0;
         }
 
         return 1;
     }
 
-    $self->SUPER::stop($service);
+    $self->SUPER::stop( $service );
 }
 
 =item restart($service)
@@ -234,15 +234,15 @@ sub restart
 {
     my ($self, $service) = @_;
 
-    if ($self->_isUpstart($service)) {
-        if ($self->isRunning($service)) {
-            return $self->_exec($commands{'restart'}, $service) == 0;
+    if ($self->_isUpstart( $service )) {
+        if ($self->isRunning( $service )) {
+            return $self->_exec( $commands{'restart'}, $service ) == 0;
         }
 
-        return $self->start($service);
+        return $self->start( $service );
     }
 
-    $self->SUPER::restart($service);
+    $self->SUPER::restart( $service );
 }
 
 =item reload($service)
@@ -258,15 +258,15 @@ sub reload
 {
     my ($self, $service) = @_;
 
-    if ($self->_isUpstart($service)) {
-        if ($self->isRunning($service)) {
-            return $self->_exec($commands{'reload'}, $service) == 0;
+    if ($self->_isUpstart( $service )) {
+        if ($self->isRunning( $service )) {
+            return $self->_exec( $commands{'reload'}, $service ) == 0;
         }
 
-        return $self->start($service);
+        return $self->start( $service );
     }
 
-    $self->SUPER::reload($service);
+    $self->SUPER::reload( $service );
 
 }
 
@@ -283,12 +283,12 @@ sub isRunning
 {
     my ($self, $service) = @_;
 
-    if ($self->_isUpstart($service)) {
-        execute("$commands{'status'} $service", \my $stdout, \my $stderr);
+    if ($self->_isUpstart( $service )) {
+        execute( "$commands{'status'} $service", \my $stdout, \my $stderr );
         return $stdout =~ m%start/%;
     }
 
-    $self->SUPER::isRunning($service);
+    $self->SUPER::isRunning( $service );
 }
 
 =item getJobFilePath($service [ , $jobFileType = 'conf' ])
@@ -306,7 +306,7 @@ sub getJobFilePath
     my ($self, $service, $jobFileType) = @_;
 
     $jobFileType ||= 'conf';
-    $self->_searchJobFile($service, $jobFileType);
+    $self->_searchJobFile( $service, $jobFileType );
 }
 
 =back
@@ -343,7 +343,7 @@ sub _isUpstart
     my ($self, $service) = @_;
 
     local $@;
-    eval { $self->_searchJobFile($service); };
+    eval { $self->_searchJobFile( $service ); };
 }
 
 =item _versionIsPre067()
@@ -358,7 +358,7 @@ sub _versionIsPre067
 {
     my $self = shift;
 
-    version->parse($self->_getVersion()) < version->parse('0.6.7');
+    version->parse( $self->_getVersion() ) < version->parse( '0.6.7' );
 }
 
 =item _versionIsPre090()
@@ -373,7 +373,7 @@ sub _versionIsPre090
 {
     my $self = shift;
 
-    version->parse($self->_getVersion()) < version->parse('0.9.0');
+    version->parse( $self->_getVersion() ) < version->parse( '0.9.0' );
 }
 
 =item _versionIsPost090()
@@ -388,7 +388,7 @@ sub _versionIsPost090
 {
     my $self = shift;
 
-    version->parse($self->_getVersion()) >= version->parse('0.9.0');
+    version->parse( $self->_getVersion() ) >= version->parse( '0.9.0' );
 }
 
 =item _isEnabledPre067($jobFileContent)
@@ -483,13 +483,13 @@ sub _enablePre090
 {
     my ($self, $service, $jobFileContent) = @_;
 
-    $jobFileContent = $self->_removeManualStanza($jobFileContent);
+    $jobFileContent = $self->_removeManualStanza( $jobFileContent );
 
-    unless ($self->_isEnabledPre090($jobFileContent)) {
+    unless ($self->_isEnabledPre090( $jobFileContent )) {
         if ($jobFileContent =~ /$COMMENTED_START_ON/) {
-            $jobFileContent = $self->_uncommentStartOnStanza($jobFileContent);
+            $jobFileContent = $self->_uncommentStartOnStanza( $jobFileContent );
         } else {
-            $jobFileContent = $self->_addDefaultStartOnStanza($jobFileContent);
+            $jobFileContent = $self->_addDefaultStartOnStanza( $jobFileContent );
         }
     } else {
         1;
@@ -511,16 +511,16 @@ sub _enablePost090
 {
     my ($self, $service, $jobFileContent, $jobOverrideFileContent) = @_;
 
-    $jobOverrideFileContent = $self->_removeManualStanza($jobOverrideFileContent);
+    $jobOverrideFileContent = $self->_removeManualStanza( $jobOverrideFileContent );
 
-    unless ($self->_isEnabledPost090($jobFileContent, $jobOverrideFileContent)) {
+    unless ($self->_isEnabledPost090( $jobFileContent, $jobOverrideFileContent )) {
         if ($jobFileContent =~ /$START_ON/) {
-            $jobOverrideFileContent .= $self->_extractStartOnStanza($jobFileContent);
+            $jobOverrideFileContent .= $self->_extractStartOnStanza( $jobFileContent );
         } else {
             $jobOverrideFileContent .= "\nstart on runlevel [2345]";
         }
 
-        $self->_writeFile("$service.override", $jobOverrideFileContent);
+        $self->_writeFile( "$service.override", $jobOverrideFileContent );
     } else {
         1;
     }
@@ -540,8 +540,8 @@ sub _disablePre067
 {
     my ($self, $service, $jobFileContent) = @_;
 
-    $jobFileContent = $self->_commentStartOnStanza($jobFileContent);
-    $self->_writeFile("$service.conf", $jobFileContent);
+    $jobFileContent = $self->_commentStartOnStanza( $jobFileContent );
+    $self->_writeFile( "$service.conf", $jobFileContent );
 }
 
 =item _disablePre090($service, $jobFileContent)
@@ -558,7 +558,7 @@ sub _disablePre090
 {
     my ($self, $service, $jobFileContent) = @_;
 
-    $self->_writeFile("$service.conf", $self->_ensureDisabledWithManualStanza($jobFileContent));
+    $self->_writeFile( "$service.conf", $self->_ensureDisabledWithManualStanza( $jobFileContent ) );
 }
 
 =item _disablePost090($service, $jobOverrideFileContent)
@@ -575,7 +575,7 @@ sub _disablePost090
 {
     my ($self, $service, $jobOverrideFileContent) = @_;
 
-    $self->_writeFile("$service.override", $self->_ensureDisabledWithManualStanza($jobOverrideFileContent));
+    $self->_writeFile( "$service.override", $self->_ensureDisabledWithManualStanza( $jobOverrideFileContent ) );
 }
 
 =item _uncomment($line)
@@ -666,13 +666,13 @@ sub _commentStartOnStanza
     my $parentheses = 0;
 
     join '', map {
-        if (/$START_ON/ || $parentheses > 0) {
-            $parentheses += $self->_countUnbalancedParentheses($self->_removeTrailingComments($_));
-            '#'.$_;
-        } else {
-            $_;
-        }
-    } split /^/, $text;
+            if (/$START_ON/ || $parentheses > 0) {
+                $parentheses += $self->_countUnbalancedParentheses( $self->_removeTrailingComments( $_ ) );
+                '#'.$_;
+            } else {
+                $_;
+            }
+        } split /^/, $text;
 }
 
 =item _uncommentStartOnStanza($text)
@@ -691,15 +691,15 @@ sub _uncommentStartOnStanza
     my $parentheses = 0;
 
     join '', map {
-        if (/$COMMENTED_START_ON/ || $parentheses > 0) {
-            # If there are more opening parentheses than closing parentheses, we need to comment out a multiline
+            if (/$COMMENTED_START_ON/ || $parentheses > 0) {
+                # If there are more opening parentheses than closing parentheses, we need to comment out a multiline
                 # 'start on' stanza
-            $parentheses += $self->_countUnbalancedParentheses($self->_removeTrailingCommentsFromCommentedLine($_));
-            $self->_uncomment($_);
-        } else {
-            $_;
-        }
-    } split /^/, $text;
+                $parentheses += $self->_countUnbalancedParentheses( $self->_removeTrailingCommentsFromCommentedLine( $_ ) );
+                $self->_uncomment( $_ );
+            } else {
+                $_;
+            }
+        } split /^/, $text;
 }
 
 =item _extractStartOnStanza($text)
@@ -718,11 +718,11 @@ sub _extractStartOnStanza
     my $parentheses = 0;
 
     join '', map {
-        if (/$START_ON/ || $parentheses > 0) {
-            $parentheses += $self->_countUnbalancedParentheses($self->_removeTrailingComments($_));
-            $_;
-        }
-    } split /^/, $text;
+            if (/$START_ON/ || $parentheses > 0) {
+                $parentheses += $self->_countUnbalancedParentheses( $self->_removeTrailingComments( $_ ) );
+                $_;
+            }
+        } split /^/, $text;
 }
 
 =item _addDefaultStartOnStanza($text)
@@ -752,7 +752,7 @@ sub _ensureDisabledWithManualStanza
 {
     my ($self, $text) = @_;
 
-    $self->_removeManualStanza($text)."\nmanual";
+    $self->_removeManualStanza( $text )."\nmanual";
 }
 
 =item _searchJobFile($service ,$jobFileType)
@@ -774,11 +774,11 @@ sub _searchJobFile
     return $jobFilesCache{$jobFile} if $jobFilesCache{$jobFile};
 
     for my $path(@jobFilePaths) {
-        my $filepath = File::Spec->join($path, $jobFile);
+        my $filepath = File::Spec->join( $path, $jobFile );
         return $jobFilesCache{$jobFile} = $filepath if -f $filepath;
     }
 
-    die(sprintf('Could not find the upstart %s job file', $jobFile));
+    die( sprintf( 'Could not find the upstart %s job file', $jobFile ) );
 }
 
 =item _readJobFile($service)
@@ -794,8 +794,8 @@ sub _readJobFile
 {
     my ($self, $service) = @_;
 
-    my $filepath = $self->getJobFilePath($service);
-    iMSCP::File->new(filename => $filepath)->get() or die(sprintf('Could not read %s file', $filepath));
+    my $filepath = $self->getJobFilePath( $service );
+    iMSCP::File->new( filename => $filepath )->get() or die( sprintf( 'Could not read %s file', $filepath ) );
 }
 
 =item _readJobOverrideFile($service)
@@ -811,8 +811,9 @@ sub _readJobOverrideFile
 {
     my ($self, $service) = @_;
 
-    if ((my $filepath = eval { $self->getJobFilePath($service, 'override'); })) {
-        return iMSCP::File->new(filename => $filepath)->get() or die(sprintf('Could not read %s file', $filepath));
+    if ((my $filepath = eval { $self->getJobFilePath( $service, 'override' ); })) {
+        return iMSCP::File->new( filename => $filepath )->get() or die( sprintf( 'Could not read %s file',
+                $filepath ) );
     }
 
     '';
@@ -832,13 +833,13 @@ sub _writeFile
 {
     my ($self, $filename, $fileContent) = @_;
 
-    my $jobDir = dirname($self->getJobFilePath(fileparse($filename, qr/\.[^.]*/)));
-    my $filepath = File::Spec->join($jobDir, $filename);
-    my $file = iMSCP::File->new(filename => $filepath);
+    my $jobDir = dirname( $self->getJobFilePath( fileparse( $filename, qr/\.[^.]*/ ) ) );
+    my $filepath = File::Spec->join( $jobDir, $filename );
+    my $file = iMSCP::File->new( filename => $filepath );
 
-    $file->set($fileContent) == 0 && $file->save() == 0 && $file->mode(0644) == 0 or die(sprintf(
-        'Could not write %s file', $filepath
-    ));
+    $file->set( $fileContent ) == 0 && $file->save() == 0 && $file->mode( 0644 ) == 0 or die( sprintf(
+            'Could not write %s file', $filepath
+        ) );
 }
 
 =back

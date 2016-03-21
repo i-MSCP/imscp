@@ -52,7 +52,7 @@ sub factory
     (my $sName = $main::imscpConfig{'SQL_SERVER'}) =~ s/_\d+\.\d+$//;
     my $package = "Servers::sqld::$sName";
     eval "require $package";
-    fatal($@) if $@;
+    fatal( $@ ) if $@;
     $instance = $package->getInstance();
 }
 
@@ -68,7 +68,7 @@ sub factory
 sub can
 {
     my ($self, $method) = @_;
-    $self->factory()->can($method);
+    $self->factory()->can( $method );
 }
 
 =back

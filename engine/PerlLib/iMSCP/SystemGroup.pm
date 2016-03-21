@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -49,27 +49,20 @@ use parent 'Common::SingletonClass';
 
 sub addSystemGroup
 {
-	my $self = shift;
-	my $groupName = shift;
-	my $systemGroup = shift || 0;
+    my $self = shift;
+    my $groupName = shift;
+    my $systemGroup = shift || 0;
 
-	unless(getgrnam($groupName)) {
-		$systemGroup = ($systemGroup) ? '-r' : '';
+    return 0 if getgrnam( $groupName );
 
-		my  @cmd = (
-			'groupadd',
-			($^O !~ /bsd$/ ? $systemGroup : ''), # System group
-			escapeShell($groupName) # Group name
-		);
-		my ($stdout, $stderr);
-		my $rs = execute("@cmd", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		warning($stderr) if $stderr && ! $rs;
-		return $rs if $rs;
-	}
+    $systemGroup = $systemGroup ? '-r' : '';
 
-	0;
+    my @cmd = ('groupadd', ($^O !~ /bsd$/ ? $systemGroup : ''), escapeShell( $groupName ));
+    my $rs = execute( "@cmd", \my $stdout, \my $stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr ) if $stderr && $rs;
+    warning( $stderr ) if $stderr && !$rs;
+    $rs;
 }
 
 =item delSystemGroup($groupname)
@@ -83,25 +76,21 @@ sub addSystemGroup
 
 sub delSystemGroup
 {
-	my ($self, $groupName) = @_;
+    my ($self, $groupName) = @_;
 
-	if(getgrnam($groupName)) {
-		my ($stdout, $stderr);
-		my $rs = execute('groupdel ' . escapeShell($groupName), \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		warning($stderr) if $stderr && ! $rs;
-		return $rs if $rs;
-	}
+    return unless getgrnam( $groupName );
 
-	0;
+    my $rs = execute( 'groupdel '.escapeShell( $groupName ), \my $stdout, \my $stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr ) if $stderr && $rs;
+    warning( $stderr ) if $stderr && !$rs;
+    $rs;
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

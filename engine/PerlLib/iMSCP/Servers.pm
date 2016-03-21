@@ -46,7 +46,7 @@ use parent 'Common::SingletonClass';
 
 sub get
 {
-	@{$_[0]->{'servers'}};
+    @{$_[0]->{'servers'}};
 }
 
 =back
@@ -65,13 +65,13 @@ sub get
 
 sub _init
 {
-	my $self = shift;
+    my $self = shift;
 
-	$_ = basename($_, '.pm') for @{$self->{'servers'}} = glob(
-		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers/*.pm"
-	);
+    $_ = basename( $_, '.pm' ) for @{$self->{'servers'}} = glob(
+        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers/*.pm"
+    );
 
-	$self;
+    $self;
 }
 
 =back

@@ -48,7 +48,7 @@ use parent 'Common::Object';
 
 sub getType
 {
-	fatal(ref($_[0]) . ' module must implement the getType() method');
+    fatal( ref( $_[0] ).' module must implement the getType() method' );
 }
 
 =item process()
@@ -61,7 +61,7 @@ sub getType
 
 sub process
 {
-	fatal(ref($_[0]) . ' module must implement the process() method');
+    fatal( ref( $_[0] ).' module must implement the process() method' );
 }
 
 =item add()
@@ -76,7 +76,7 @@ sub process
 
 sub add
 {
-	 $_[0]->_runAllActions('add');
+    $_[0]->_runAllActions( 'add' );
 }
 
 =item delete()
@@ -91,7 +91,7 @@ sub add
 
 sub delete
 {
-	$_[0]->_runAllActions('delete');
+    $_[0]->_runAllActions( 'delete' );
 }
 
 =item restore()
@@ -106,7 +106,7 @@ sub delete
 
 sub restore
 {
-	$_[0]->_runAllActions('restore');
+    $_[0]->_runAllActions( 'restore' );
 }
 
 =item disable()
@@ -121,7 +121,7 @@ sub restore
 
 sub disable
 {
-	$_[0]->_runAllActions('disable');
+    $_[0]->_runAllActions( 'disable' );
 }
 
 =back
@@ -140,7 +140,7 @@ sub disable
 
 sub _loadData
 {
-	fatal(ref($_[0]) . ' module must implement the _loadData() method');
+    fatal( ref( $_[0] ).' module must implement the _loadData() method' );
 }
 
 =item _runAction($action, \@items, $itemType)
@@ -156,63 +156,64 @@ sub _loadData
 
 sub _runAction
 {
-	my ($self, $action, $items, $itemType) = @_;
+    my ($self, $action, $items, $itemType) = @_;
 
-	if($itemType eq 'server') {
-		for my $item (@{$items}) {
-			next if $item eq 'noserver';
+    if ($itemType eq 'server') {
+        for my $item (@{$items}) {
+            next if $item eq 'noserver';
 
-			my $dataProvider = '_get' . ucfirst($item) . 'Data';
-			my %moduleData = eval { $self->$dataProvider($action); };
-			if($@) {
-				error($@);
-				return 1;
-			}
+            my $dataProvider = '_get'.ucfirst( $item ).'Data';
+            my %moduleData = eval { $self->$dataProvider( $action ); };
+            if ($@) {
+                error( $@ );
+                return 1;
+            }
 
-			if(%moduleData) {
-				my $package = "Servers::$item";
-				eval "require $package";
-				unless($@) {
-					$package = $package->factory();
-					if ($package->can($action)) {
-						debug("Calling action $action on Servers::$item");
-						my $rs = $package->$action(\%moduleData);
-						return $rs if $rs;
-					}
-				} else {
-					error($@);
-					return 1;
-				}
-			}
-		}
-	} elsif($itemType eq 'package') {
-		for my $item (@{$items}) {
-			my $dataProvider = '_getPackagesData';
-			my %moduleData = eval { $self->$dataProvider($action); };
-			if($@) {
-				error($@);
-				return 1;
-			}
+            if (%moduleData) {
+                my $package = "Servers::$item";
+                eval "require $package";
+                unless ($@) {
+                    $package = $package->factory();
+                    if ($package->can( $action )) {
+                        debug( "Calling action $action on Servers::$item" );
+                        my $rs = $package->$action( \%moduleData );
+                        return $rs if $rs;
+                    }
+                } else {
+                    error( $@ );
+                    return 1;
+                }
+            }
+        }
+        return 0;
+    }
 
-			if(%moduleData) {
-				my $package = "Package::$item";
-				eval "require $package";
-				unless($@) {
-					$package = $package->getInstance();
-					if ($package->can($action)) {
-						debug("Calling action $action on Package::$item");
-						my $rs = $package->$action(\%moduleData);
-						return $rs if $rs;
-					}
-				} else {
-					error($@);
-					return 1;
-				}
-			}
-		}
-	}
+    for my $item (@{$items}) {
+        my $dataProvider = '_getPackagesData';
+        my %moduleData = eval { $self->$dataProvider( $action ); };
+        if ($@) {
+            error( $@ );
+            return 1;
+        }
 
-	0;
+        if (%moduleData) {
+            my $package = "Package::$item";
+            eval "require $package";
+            unless ($@) {
+                $package = $package->getInstance();
+                if ($package->can( $action )) {
+                    debug( "Calling action $action on Package::$item" );
+                    my $rs = $package->$action( \%moduleData );
+                    return $rs if $rs;
+                }
+            } else {
+                error( $@ );
+                return 1;
+            }
+        }
+    }
+
+    0;
 }
 
 =item _runAllActions()
@@ -225,27 +226,29 @@ sub _runAction
 
 sub _runAllActions
 {
-	my ($self, $action) = @_;
+    my ($self, $action) = @_;
 
-	my @servers = iMSCP::Servers->getInstance()->get();
-	my @packages = iMSCP::Packages->getInstance()->get();
-	my $moduleType = $self->getType();
+    my @servers = iMSCP::Servers->getInstance()->get();
+    my @packages = iMSCP::Packages->getInstance()->get();
+    my $moduleType = $self->getType();
 
-	if(grep($_ eq $action, ( 'add', 'restore' ))) {
-		for('pre', '', 'post') {
-			my $rs = $self->_runAction("$_$action$moduleType", \@servers, 'server');
-			$rs ||= $self->_runAction("$_$action$moduleType", \@packages, 'package');
-			return $rs if $rs;
-		}
-	} else {
-		for('pre', '', 'post') {
-			my $rs = $self->_runAction("$_$action$moduleType", \@packages, 'package');
-			$rs ||= $self->_runAction("$_$action$moduleType", \@servers, 'server');
-			return $rs if $rs;
-		}
-	}
+    if (grep($_ eq $action, ( 'add', 'restore' ))) {
+        for('pre', '', 'post') {
+            my $rs = $self->_runAction( "$_$action$moduleType", \@servers, 'server' );
+            $rs ||= $self->_runAction( "$_$action$moduleType", \@packages, 'package' );
+            return $rs if $rs;
+        }
 
-	0;
+        return 0;
+    }
+
+    for('pre', '', 'post') {
+        my $rs = $self->_runAction( "$_$action$moduleType", \@packages, 'package' );
+        $rs ||= $self->_runAction( "$_$action$moduleType", \@servers, 'server' );
+        return $rs if $rs;
+    }
+
+    0;
 }
 
 =item _getPackagesData($action)
@@ -261,7 +264,7 @@ sub _runAllActions
 
 sub _getPackagesData
 {
-	();
+    ();
 }
 
 =item _getCronData($action)
@@ -277,7 +280,7 @@ sub _getPackagesData
 
 sub _getCronData
 {
-	();
+    ();
 }
 
 =item _getFtpdData($action)
@@ -293,7 +296,7 @@ sub _getCronData
 
 sub _getFtpdData
 {
-	();
+    ();
 }
 
 =item _getHttpdData($action)
@@ -309,7 +312,7 @@ sub _getFtpdData
 
 sub _getHttpdData
 {
-	();
+    ();
 }
 
 =item _getMtaData($action)
@@ -325,7 +328,7 @@ sub _getHttpdData
 
 sub _getMtaData
 {
-	();
+    ();
 }
 
 =item _getNamedData($action)
@@ -341,7 +344,7 @@ sub _getMtaData
 
 sub _getNamedData
 {
-	();
+    ();
 }
 
 =item _getPoData($action)
@@ -357,7 +360,7 @@ sub _getNamedData
 
 sub _getPoData
 {
-	();
+    ();
 }
 
 =item _getSqldData($action)
@@ -373,7 +376,7 @@ sub _getPoData
 
 sub _getSqldData
 {
-	();
+    ();
 }
 
 =back

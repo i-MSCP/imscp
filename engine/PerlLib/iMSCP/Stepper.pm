@@ -90,12 +90,12 @@ sub step
 {
     my ($code, $text, $nSteps, $nStep) = @_;
 
-    unless(iMSCP::Getopt->noprompt) {
+    unless (iMSCP::Getopt->noprompt) {
         $last = sprintf( "\n\\ZbStep %s of %s\\Zn\n\n%s", $nStep, $nSteps, $text );
         my $msg = @all ? join( "\n", @all )."\n".$last : $last;
         iMSCP::Dialog->getInstance()->hasGauge()
-            ? iMSCP::Dialog->getInstance()->setGauge(int($nStep * 100 / $nSteps), $msg )
-            : iMSCP::Dialog->getInstance()->startGauge($msg, int($nStep * 100 / $nSteps));
+            ? iMSCP::Dialog->getInstance()->setGauge( int( $nStep * 100 / $nSteps ), $msg )
+            : iMSCP::Dialog->getInstance()->startGauge( $msg, int( $nStep * 100 / $nSteps ) );
     }
 
     return 0 unless defined $code;
@@ -103,7 +103,7 @@ sub step
     local $@;
     my $rs = eval { &{$code} };
     if ($@) {
-        error($@) if $@;
+        error( $@ ) if $@;
         $rs = 1;
     }
 
@@ -113,9 +113,9 @@ sub step
     (my $errorMessage = getLastError()) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
     $errorMessage = 'An unexpected error occurred...' unless $errorMessage;
 
-    unless(iMSCP::Getopt->noprompt) {
+    unless (iMSCP::Getopt->noprompt) {
         iMSCP::Dialog->getInstance()->endGauge();
-        iMSCP::Dialog->getInstance()->msgbox(<<EOF);
+        iMSCP::Dialog->getInstance()->msgbox( <<EOF );
 
 \\Z1[ERROR]\\Zn
 
@@ -131,7 +131,7 @@ Please have a look at http://i-mscp.net/forum if you need help.
 EOF
     }
 
-    die($errorMessage);
+    die( $errorMessage );
 }
 
 =back

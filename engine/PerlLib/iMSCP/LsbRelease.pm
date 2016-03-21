@@ -33,30 +33,30 @@ use Symbol;
 # This should really be included in apt-cache policy output... it is already
 # in the Release file...
 my %RELEASE_CODENAME_LOOKUP = (
-	'1.1' => 'buzz',
-	'1.2' => 'rex',
-	'1.3' => 'bo',
-	'2.0' => 'hamm',
-	'2.1' => 'slink',
-	'2.2' => 'potato',
-	'3.0' => 'woody',
-	'3.1' => 'sarge',
-	'4.0' => 'etch',
-	'5.0' => 'lenny',
-	'6.0' => 'squeeze',
-	'7' => 'wheezy',
-	'8' => 'jessie',
-	'9' => 'stretch',
-	'10' => 'buster'
+    '1.1' => 'buzz',
+    '1.2' => 'rex',
+    '1.3' => 'bo',
+    '2.0' => 'hamm',
+    '2.1' => 'slink',
+    '2.2' => 'potato',
+    '3.0' => 'woody',
+    '3.1' => 'sarge',
+    '4.0' => 'etch',
+    '5.0' => 'lenny',
+    '6.0' => 'squeeze',
+    '7'   => 'wheezy',
+    '8'   => 'jessie',
+    '9'   => 'stretch',
+    '10'  => 'buster'
 );
 
 my @RELEASES_ORDER = (
-	(
-		map { $_->[1] } sort { $a->[0] <=> $b->[0] } (
-			map { [ $_, $RELEASE_CODENAME_LOOKUP{$_} ] } keys %RELEASE_CODENAME_LOOKUP
-		)
-	),
-	'stable', 'testing', 'unstable', 'sid'
+    (
+        map { $_->[1] } sort { $a->[0] <=> $b->[0] } (
+            map { [ $_, $RELEASE_CODENAME_LOOKUP{$_} ] } keys %RELEASE_CODENAME_LOOKUP
+        )
+    ),
+    'stable', 'testing', 'unstable', 'sid'
 );
 
 =head1 DESCRIPTION
@@ -77,18 +77,18 @@ my @RELEASES_ORDER = (
 
 sub getInstance
 {
-	my $self = shift;
-	return $self if ref $self;
+    my $self = shift;
+    return $self if ref $self;
 
-	no strict 'refs';
-	my $instance = \${"$self\::_instance"};
+    no strict 'refs';
+    my $instance = \${"$self\::_instance"};
 
-	unless(defined $$instance) {
-		$$instance = bless { }, $self;
-		%{$$instance->{'lsbInfo'}} = $$instance->getDistroInformation();
-	}
+    unless (defined $$instance) {
+        $$instance = bless { }, $self;
+        %{$$instance->{'lsbInfo'}} = $$instance->getDistroInformation();
+    }
 
-	$$instance;
+    $$instance;
 }
 
 =item getId([$short = false])
@@ -102,13 +102,13 @@ sub getInstance
 
 sub getId
 {
-	my ($self, $short) = @_;
+    my ($self, $short) = @_;
 
-	if($short) {
-		$self->{'lsbInfo'}->{'ID'} || 'n/a';
-	} else {
-		sprintf("Distributor ID:\t%s", $self->{'lsbInfo'}->{'ID'} || 'n/a');
-	}
+    if ($short) {
+        $self->{'lsbInfo'}->{'ID'} || 'n/a';
+    } else {
+        sprintf( "Distributor ID:\t%s", $self->{'lsbInfo'}->{'ID'} || 'n/a' );
+    }
 }
 
 =item getDescription([$short = false])
@@ -122,13 +122,13 @@ sub getId
 
 sub getDescription
 {
-	my ($self, $short) = @_;
+    my ($self, $short) = @_;
 
-	if($short) {
-		$self->{'lsbInfo'}->{'DESCRIPTION'} || 'n/a';
-	} else {
-		sprintf("Description:\t%s", $self->{'lsbInfo'}->{'DESCRIPTION'} || 'n/a');
-	}
+    if ($short) {
+        $self->{'lsbInfo'}->{'DESCRIPTION'} || 'n/a';
+    } else {
+        sprintf( "Description:\t%s", $self->{'lsbInfo'}->{'DESCRIPTION'} || 'n/a' );
+    }
 }
 
 =item getRelease([$short = false])
@@ -142,13 +142,13 @@ sub getDescription
 
 sub getRelease
 {
-	my ($self, $short) = @_;
+    my ($self, $short) = @_;
 
-	if($short) {
-		$self->{'lsbInfo'}->{'RELEASE'} || 'n/a';
-	} else {
-		sprintf("Release:\t%s", $self->{'lsbInfo'}->{'RELEASE'} || 'n/a');
-	}
+    if ($short) {
+        $self->{'lsbInfo'}->{'RELEASE'} || 'n/a';
+    } else {
+        sprintf( "Release:\t%s", $self->{'lsbInfo'}->{'RELEASE'} || 'n/a' );
+    }
 }
 
 =item getCodename([$short = false])
@@ -162,13 +162,13 @@ sub getRelease
 
 sub getCodename
 {
-	my ($self, $short) = @_;
+    my ($self, $short) = @_;
 
-	if($short) {
-		$self->{'lsbInfo'}->{'CODENAME'} || 'n/a';
-	} else {
-		sprintf("Codename:\t%s", $self->{'lsbInfo'}->{'CODENAME'} || 'n/a');
-	}
+    if ($short) {
+        $self->{'lsbInfo'}->{'CODENAME'} || 'n/a';
+    } else {
+        sprintf( "Codename:\t%s", $self->{'lsbInfo'}->{'CODENAME'} || 'n/a' );
+    }
 }
 
 =item getAll([$short = false])
@@ -182,29 +182,29 @@ sub getCodename
 
 sub getAll
 {
-	my ($self, $short) = @_;
+    my ($self, $short) = @_;
 
-	sprintf(
-		"%s\n%s\n%s\n%s",
-		$self->getId($short),
-		$self->getDescription($short),
-		$self->getRelease($short),
-		$self->getCodename($short)
-	);
+    sprintf(
+        "%s\n%s\n%s\n%s",
+        $self->getId( $short ),
+        $self->getDescription( $short ),
+        $self->getRelease( $short ),
+        $self->getCodename( $short )
+    );
 }
 
 =item getDistroInformation()
 
  Get distribution information
 
-	Data are returned in hash such as:
+    Data are returned in hash such as:
 
-	(
-		'ID' => 'Debian',
-		'RELEASE' => '6.0.6',
-		'DESCRIPTION' => 'Debian GNU/Linux 6.0.6 (squeeze)',
-		'CODENAME' => 'squeeze'
-	)
+    (
+        'ID' => 'Debian',
+        'RELEASE' => '6.0.6',
+        'DESCRIPTION' => 'Debian GNU/Linux 6.0.6 (squeeze)',
+        'CODENAME' => 'squeeze'
+    )
 
  Return hash Hash containing distribution information
 
@@ -212,20 +212,20 @@ sub getAll
 
 sub getDistroInformation
 {
-	my $self = $_[0];
+    my $self = $_[0];
 
-	# Try to retrieve information from /etc/lsb-release first
-	my %lsbInfo = $self->_getLsbInformation();
+    # Try to retrieve information from /etc/lsb-release first
+    my %lsbInfo = $self->_getLsbInformation();
 
-	for ('ID', 'RELEASE', 'CODENAME', 'DESCRIPTION') {
-		unless(exists $lsbInfo{$_}) {
-			my %distInfo = $self->_guessDebianRelease();
-			%lsbInfo = (%distInfo, %lsbInfo);
-			last;
-		}
-	}
+    for ('ID', 'RELEASE', 'CODENAME', 'DESCRIPTION') {
+        unless (exists $lsbInfo{$_}) {
+            my %distInfo = $self->_guessDebianRelease();
+            %lsbInfo = (%distInfo, %lsbInfo);
+            last;
+        }
+    }
 
-	%lsbInfo;
+    %lsbInfo;
 }
 
 =back
@@ -244,13 +244,13 @@ sub getDistroInformation
 
 sub _lookupCodename
 {
-	my ($self, $release, $unknown) = @_;
+    my ($self, $release, $unknown) = @_;
 
-	return $unknown unless $release =~ /(\d+)\.(\d+)(r(\d+))?/;
+    return $unknown unless $release =~ /(\d+)\.(\d+)(r(\d+))?/;
 
-	my $shortRelease = (int($1) < 7) ? sprintf '%s.%s', $1, $2 : sprintf '%s', $1;
+    my $shortRelease = (int( $1 ) < 7) ? sprintf '%s.%s', $1, $2 : sprintf '%s', $1;
 
-	$RELEASE_CODENAME_LOOKUP{$shortRelease} || $unknown;
+    $RELEASE_CODENAME_LOOKUP{$shortRelease} || $unknown;
 }
 
 =item _parsePolicyLine($data)
@@ -263,20 +263,20 @@ label field value
 =cut
 
 # map short field names to long field names
-my %longnames = ( 'v' => 'version', 'o' => 'origin', 'a' => 'suite', 'c'  => 'component', 'l' => 'label' );
+my %longnames = ( 'v' => 'version', 'o' => 'origin', 'a' => 'suite', 'c' => 'component', 'l' => 'label' );
 
 sub _parsePolicyLine
 {
-	my ($self, @bits) = ($_[0], split ',', $_[1]);
+    my ($self, @bits) = ($_[0], split ',', $_[1]);
 
-	my %retval = ();
+    my %retval = ();
 
-	for(@bits) {
-		my @kv = split '=', $_, 2;
-		$retval{$longnames{$kv[0]}} = $kv[1] if @kv > 1 && exists $longnames{$kv[0]};
-	}
+    for(@bits) {
+        my @kv = split '=', $_, 2;
+        $retval{$longnames{$kv[0]}} = $kv[1] if @kv > 1 && exists $longnames{$kv[0]};
+    }
 
-	%retval;
+    %retval;
 }
 
 =item _releaseIndex
@@ -289,17 +289,17 @@ sub _parsePolicyLine
 
 sub _releaseIndex
 {
-	my ($self, $suite) = ($_[0], $_[1]->{'suite'} || undef);
+    my ($self, $suite) = ($_[0], $_[1]->{'suite'} || undef);
 
-	if($suite) {
-		if(grep($_ eq $suite, @RELEASES_ORDER)) {
-			int(@RELEASES_ORDER - (grep { $RELEASES_ORDER[$_] eq $suite } 0..$#RELEASES_ORDER)[0]);
-		} else {
-			$suite;
-		}
-	} else {
-		0;
-	}
+    if ($suite) {
+        if (grep($_ eq $suite, @RELEASES_ORDER)) {
+            int( @RELEASES_ORDER - (grep { $RELEASES_ORDER[$_] eq $suite } 0 .. $#RELEASES_ORDER)[0] );
+        } else {
+            $suite;
+        }
+    } else {
+        0;
+    }
 }
 
 =item _parseAptPolicy()
@@ -312,36 +312,40 @@ sub _releaseIndex
 
 sub _parseAptPolicy
 {
-	my $self = $_[0];
+    my $self = $_[0];
 
-	my ($in, $out, $err) = (undef, undef, gensym());
-	my $pid = open3($in, $out, $err, 'LANG=C apt-cache policy');
+    my ($in, $out, $err) = (undef, undef, gensym());
+    my $pid = open3( $in, $out, $err, 'LANG=C apt-cache policy' );
+    close $in;
 
-	close $in;
+    my $stdout = do {
+        local $/;
+        <$out>
+    };
+    my $stderr = do {
+        local $/;
+        <$err>
+    };
 
-	my $stdout = do { local $/; <$out> };
-	my $stderr = do { local $/; <$err> };
+    close $out;
+    close $err;
+    waitpid( $pid, 0 ) or die "$!\n";
+    die( "Unable to parse APT policy: $stderr" ) if $stderr && $?;
 
-	close $out;
-	close $err;
+    my @data = ();
+    my $priority;
 
-	waitpid($pid, 0) or die "$!\n";
-	die("Unable to parse APT policy: $stderr") if $stderr && $?;
+    for(split /\n/, $stdout) {
+        s/^\s+|\s+$//g; # Remove leading and trailing whitespaces
+        $priority = int( $1 ) if /^(\d+)/;
 
-	my @data = ();
-	my $priority;
+        if (index( $_, 'release' ) == 0) {
+            my @bits = split ' ', $_, 2;
+            push @data, [ $priority, { $self->_parsePolicyLine( $bits[1] ) } ] if @bits > 1;
+        }
+    }
 
-	for(split /\n/, $stdout) {
-		s/^\s+|\s+$//g; # Remove leading and trailing whitespaces
-		$priority = int($1) if /^(\d+)/;
-
-		if(index($_, 'release') == 0) {
-			my @bits = split ' ', $_ , 2;
-			push @data, [ $priority, {$self->_parsePolicyLine($bits[1])} ] if @bits > 1;
-		}
-	}
-
-	@data;
+    @data;
 }
 
 =item _guessReleaseFromApt($origin = 'Debian', $component = 'main', $ignoresuites = ['experimental'],
@@ -356,44 +360,42 @@ sub _parseAptPolicy
 
 sub _guessReleaseFromApt
 {
-	my ($self, $origin, $component, $ignoresuites, $label, $alternateOlabels) = @_;
+    my ($self, $origin, $component, $ignoresuites, $label, $alternateOlabels) = @_;
 
-	$origin ||= 'Debian';
-	$component ||= 'main';
-	$ignoresuites ||= ['experimental'];
-	$label ||= 'Debian';
-	$alternateOlabels ||= { 'Debian Ports' => 'ftp.debian-ports.org' };
+    $origin ||= 'Debian';
+    $component ||= 'main';
+    $ignoresuites ||= [ 'experimental' ];
+    $label ||= 'Debian';
+    $alternateOlabels ||= { 'Debian Ports' => 'ftp.debian-ports.org' };
 
-	my @releases = $self->_parseAptPolicy();
+    my @releases = $self->_parseAptPolicy();
 
-	return undef unless @releases;
+    return undef unless @releases;
 
-	# We only care about the specified origin, component, and label
-	@releases = grep {
-		(
-			($_->[1]->{'origin'} || '') eq $origin and
-			($_->[1]->{'component'} || '') eq $component and
-			($_->[1]->{'label'} || '') eq $label
-		) or (
-			exists $alternateOlabels->{$_->[1]->{'origin'} || ''} and
-			($_->[1]->{'label'} || '') eq $alternateOlabels->{($_->[1]->{'origin'} || '')}
-		)
-	} @releases;
+    # We only care about the specified origin, component, and label
+    @releases = grep {
+        (
+            ($_->[1]->{'origin'} || '') eq $origin and
+                ($_->[1]->{'component'} || '') eq $component and
+                ($_->[1]->{'label'} || '') eq $label
+        ) or (
+            exists $alternateOlabels->{$_->[1]->{'origin'} || ''} and
+                ($_->[1]->{'label'} || '') eq $alternateOlabels->{($_->[1]->{'origin'} || '')}
+        )
+    } @releases;
 
-	# Check again to make sure we didn't wipe out all of the releases
-	return undef unless @releases;
+    # Check again to make sure we didn't wipe out all of the releases
+    return undef unless @releases;
 
-	@releases = sort { $b->[0] <=> $a->[0] } @releases;
+    @releases = sort { $b->[0] <=> $a->[0] } @releases;
 
-	# We've sorted the list by descending priority, so the first entry should
-	# be the "main" release in use on the system
+    # We've sorted the list by descending priority, so the first entry should
+    # be the "main" release in use on the system
 
-	my $maxPriority = $releases[0]->[0];
-
-	@releases = grep { $_->[0] == $maxPriority } @releases;
-	@releases = sort { $self->_releaseIndex($a->[1]) cmp $self->_releaseIndex($b->[1]) } @releases;
-
-	%{$releases[0]->[1]};
+    my $maxPriority = $releases[0]->[0];
+    @releases = grep { $_->[0] == $maxPriority } @releases;
+    @releases = sort { $self->_releaseIndex( $a->[1] ) cmp $self->_releaseIndex( $b->[1] ) } @releases;
+    %{$releases[0]->[1]};
 }
 
 =item _guessDebianRelease()
@@ -408,118 +410,121 @@ my $TESTING_CODENAME = 'unknown.new.testing';
 
 sub _guessDebianRelease
 {
-	my $self = $_[0];
+    my $self = $_[0];
 
-	my %distInfo = ( 'ID' => 'Debian' );
+    my %distInfo = ( 'ID' => 'Debian' );
 
-	# Use /etc/dpkg/origins/default to fetch the distribution name
-	my $etcDpkgOriginsDefauft = $ENV{'LSB_ETC_DPKG_ORIGINS_DEFAULT'} || '/etc/dpkg/origins/default';
+    # Use /etc/dpkg/origins/default to fetch the distribution name
+    my $etcDpkgOriginsDefauft = $ENV{'LSB_ETC_DPKG_ORIGINS_DEFAULT'} || '/etc/dpkg/origins/default';
 
-	if(-f $etcDpkgOriginsDefauft) {
-		if(open my $fh, '<', $etcDpkgOriginsDefauft) {
-			while (my $line = <$fh>) {
-				my ($header, $content) = split ':', $line, 2;
+    if (-f $etcDpkgOriginsDefauft) {
+        if (open my $fh, '<', $etcDpkgOriginsDefauft) {
+            while (my $line = <$fh>) {
+                my ($header, $content) = split ':', $line, 2;
 
-				$header = lc($header);
-				$content =~ s/^\s+|\s+$//g;
+                $header = lc( $header );
+                $content =~ s/^\s+|\s+$//g;
 
-				if($header eq 'vendor') {
-					$distInfo{'ID'} = $content;
-				}
-			}
+                if ($header eq 'vendor') {
+                    $distInfo{'ID'} = $content;
+                }
+            }
 
-			close $fh;
-		} else {
-			 warn("Unable to open $etcDpkgOriginsDefauft: $!");
-		}
-	}
+            close $fh;
+        } else {
+            warn( "Unable to open $etcDpkgOriginsDefauft: $!" );
+        }
+    }
 
-	my ($kern) = uname();
+    my ($kern) = uname();
 
-	if(grep($_ eq $kern, ('Linux', 'Hurd', 'NetBSD'))) {
-		$distInfo{'OS'} = "GNU/$kern";
-	} elsif($kern eq 'FreeBSD') {
-		$distInfo{'OS'} = "GNU/k$kern";
-	} elsif(grep($_ eq $kern, ('GNU/Linux', 'GNU/kFreeBSD'))) {
-		$distInfo{'OS'} = $kern;
-	} else {
-		$distInfo{'OS'} = 'GNU';
-	}
+    if (grep($_ eq $kern, ('Linux', 'Hurd', 'NetBSD'))) {
+        $distInfo{'OS'} = "GNU/$kern";
+    } elsif ($kern eq 'FreeBSD') {
+        $distInfo{'OS'} = "GNU/k$kern";
+    } elsif (grep($_ eq $kern, ('GNU/Linux', 'GNU/kFreeBSD'))) {
+        $distInfo{'OS'} = $kern;
+    } else {
+        $distInfo{'OS'} = 'GNU';
+    }
 
-	$distInfo{'DESCRIPTION'} = sprintf('%s %s', $distInfo{'ID'}, $distInfo{'OS'});
+    $distInfo{'DESCRIPTION'} = sprintf( '%s %s', $distInfo{'ID'}, $distInfo{'OS'} );
 
-	my $etcDebianVersion = $ENV{'LSB_ETC_DEBIAN_VERSION'} || '/etc/debian_version';
+    my $etcDebianVersion = $ENV{'LSB_ETC_DEBIAN_VERSION'} || '/etc/debian_version';
 
-	if(-f $etcDebianVersion) {
-		my $release = 'unknown';
+    if (-f $etcDebianVersion) {
+        my $release = 'unknown';
 
-		if(open my $fh, '<', $etcDebianVersion) {
-			$release = do { local $/; <$fh> };
-			$release =~ s/^\s+|\s+$//g; # Remove leading and trailing whitespaces
+        if (open my $fh, '<', $etcDebianVersion) {
+            $release = do {
+                local $/;
+                <$fh>
+            };
+            $release =~ s/^\s+|\s+$//g; # Remove leading and trailing whitespaces
 
-			close $fh;
-		} else {
-			warn("Unable to open $etcDebianVersion: $!");
-		}
+            close $fh;
+        } else {
+            warn( "Unable to open $etcDebianVersion: $!" );
+        }
 
-		if($release !~ /^[a-z]/) {
-			# /etc/debian_version should be numeric
-			$distInfo{'CODENAME'} = $self->_lookupCodename($release, 'n/a');
-			$distInfo{'RELEASE'} = $release;
-		} elsif($release =~ m%(.*)/sid$%) {
-			$TESTING_CODENAME = $1 if lc($1) ne 'testing';
-			$distInfo{'RELEASE'} = 'testing/unstable';
-		} else {
-			$distInfo{'RELEASE'} = $release;
-		}
-	}
+        if ($release !~ /^[a-z]/) {
+            # /etc/debian_version should be numeric
+            $distInfo{'CODENAME'} = $self->_lookupCodename( $release, 'n/a' );
+            $distInfo{'RELEASE'} = $release;
+        } elsif ($release =~ m%(.*)/sid$%) {
+            $TESTING_CODENAME = $1 if lc( $1 ) ne 'testing';
+            $distInfo{'RELEASE'} = 'testing/unstable';
+        } else {
+            $distInfo{'RELEASE'} = $release;
+        }
+    }
 
-	# Only use apt information if we did not get the proper information
-	# from /etc/debian_version or if we don't have a codename
-	# (which will happen if /etc/debian_version does not contain a
-	# number but some text like 'testing/unstable' or 'lenny/sid')
-	#
-	# This is slightly faster and less error prone in case the user
-	# has an entry in his /etc/apt/sources.list but has not actually
-	# upgraded the system.
-	unless(exists $distInfo{'CODENAME'}) {
-		my %rInfo = $self->_guessReleaseFromApt();
+    # Only use apt information if we did not get the proper information
+    # from /etc/debian_version or if we don't have a codename
+    # (which will happen if /etc/debian_version does not contain a
+    # number but some text like 'testing/unstable' or 'lenny/sid')
+    #
+    # This is slightly faster and less error prone in case the user
+    # has an entry in his /etc/apt/sources.list but has not actually
+    # upgraded the system.
+    unless (exists $distInfo{'CODENAME'}) {
+        my %rInfo = $self->_guessReleaseFromApt();
 
- 		if(%rInfo) {
- 			my $release = $rInfo{'version'} || '';
+        if (%rInfo) {
+            my $release = $rInfo{'version'} || '';
 
- 		 	# Special case Debian-Ports as their Release file has 'version': '1.0'
- 		 	if($release eq '1.0' && $rInfo{'origin'} eq 'Debian Ports' && $rInfo{'label'} == 'ftp.debian-ports.org') {
- 		 		$release = undef;
- 		 		$rInfo{'suite'} = 'unstable';
- 		 	}
+            # Special case Debian-Ports as their Release file has 'version': '1.0'
+            if ($release eq '1.0' && $rInfo{'origin'} eq 'Debian Ports' && $rInfo{'label'} == 'ftp.debian-ports.org') {
+                $release = undef;
+                $rInfo{'suite'} = 'unstable';
+            }
 
- 		 	if($release) {
- 		 		$distInfo{'CODENAME'} = $self->_lookupCodename($release, 'n/a');
- 		 	} else {
- 		 		$release = $rInfo{'suite'} || 'unstable';
+            if ($release) {
+                $distInfo{'CODENAME'} = $self->_lookupCodename( $release, 'n/a' );
+            } else {
+                $release = $rInfo{'suite'} || 'unstable';
 
- 		 		if($release eq 'testing') {
- 		 			# Would be nice if I didn't have to hardcode this.
- 		 			$distInfo{'CODENAME'} = $TESTING_CODENAME;
- 		 		} else {
- 		 			$distInfo{'CODENAME'} = 'sid';
- 		 		}
- 		 	}
+                if ($release eq 'testing') {
+                    # Would be nice if I didn't have to hardcode this.
+                    $distInfo{'CODENAME'} = $TESTING_CODENAME;
+                } else {
+                    $distInfo{'CODENAME'} = 'sid';
+                }
+            }
 
- 		 	$distInfo{'RELEASE'} = $release;
- 		}
-	}
+            $distInfo{'RELEASE'} = $release;
+        }
+    }
 
-	if(exists $distInfo{'RELEASE'}) {
-		$distInfo{'DESCRIPTION'} .= sprintf(' %s', $distInfo{'RELEASE'});
-	}
+    if (exists $distInfo{'RELEASE'}) {
+        $distInfo{'DESCRIPTION'} .= sprintf( ' %s', $distInfo{'RELEASE'} );
+    }
 
-	if(exists $distInfo{'CODENAME'}) {
-		$distInfo{'DESCRIPTION'} .= sprintf(' (%s)', $distInfo{'CODENAME'});
-	}
+    if (exists $distInfo{'CODENAME'}) {
+        $distInfo{'DESCRIPTION'} .= sprintf( ' (%s)', $distInfo{'CODENAME'} );
+    }
 
-	%distInfo;
+    %distInfo;
 }
 
 =item _getLsbInformation()
@@ -532,35 +537,35 @@ sub _guessDebianRelease
 
 sub _getLsbInformation
 {
-	my $self = $_[0];
+    my $self = $_[0];
 
-	my %distInfo = ();
+    my %distInfo = ();
 
-	my $etcLsbFile = $ENV{'LSB_ETC_LSB_RELEASE'} || '/etc/lsb-release';
+    my $etcLsbFile = $ENV{'LSB_ETC_LSB_RELEASE'} || '/etc/lsb-release';
 
-	if(-f $etcLsbFile) {
-		if(open my $fh, '<', $etcLsbFile) {
-			while (my $line = <$fh>) {
-				$line =~ s/^\s+|\s+$//g; # Remove trailing and leading whitespaces
+    if (-f $etcLsbFile) {
+        if (open my $fh, '<', $etcLsbFile) {
+            while (my $line = <$fh>) {
+                $line =~ s/^\s+|\s+$//g; # Remove trailing and leading whitespaces
 
-				next unless $line && index($line, '=') != -1; # Skip invalid lines
+                next unless $line && index( $line, '=' ) != -1; # Skip invalid lines
 
-				my ($var, $arg) = split '=', $line, 2;
+                my ($var, $arg) = split '=', $line, 2;
 
-				if(index($var, 'DISTRIB_') == 0) {
-					$var = substr($var, 8);
-					$arg = substr($arg, 1, -1) if $arg =~ /^".*?"$/;
-					$distInfo{$var} = $arg if $arg; # Ignore empty arguments
-				}
-			}
+                if (index( $var, 'DISTRIB_' ) == 0) {
+                    $var = substr( $var, 8 );
+                    $arg = substr( $arg, 1, -1 ) if $arg =~ /^".*?"$/;
+                    $distInfo{$var} = $arg if $arg; # Ignore empty arguments
+                }
+            }
 
-			close $fh;
-		} else {
-			warn("Unable to open $etcLsbFile: $!");
-		}
-	}
+            close $fh;
+        } else {
+            warn( "Unable to open $etcLsbFile: $!" );
+        }
+    }
 
-	%distInfo;
+    %distInfo;
 }
 
 =back

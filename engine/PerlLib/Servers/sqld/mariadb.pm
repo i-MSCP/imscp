@@ -53,13 +53,13 @@ sub createUser
 {
     my ($self, $user, $host, $password) = @_;
 
-    defined $user or die('$user parameter is not defined');
-    defined $host or die('$host parameter is not defined');
-    defined $user or die('$password parameter is not defined');
+    defined $user or die( '$user parameter is not defined' );
+    defined $host or die( '$host parameter is not defined' );
+    defined $user or die( '$password parameter is not defined' );
 
     my $db = iMSCP::Database->factory();
-    my $qrs = $db->doQuery('c', 'CREATE USER ?@? IDENTIFIED BY ?', $user, $host, $password);
-    ref $qrs eq 'HASH' or die(sprintf('Could not create the %s@%s SQL user: %s', $user, $host, $qrs));
+    my $qrs = $db->doQuery( 'c', 'CREATE USER ?@? IDENTIFIED BY ?', $user, $host, $password );
+    ref $qrs eq 'HASH' or die( sprintf( 'Could not create the %s@%s SQL user: %s', $user, $host, $qrs ) );
     0;
 }
 

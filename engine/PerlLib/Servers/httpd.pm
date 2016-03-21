@@ -52,7 +52,7 @@ sub factory
     my $sName = $main::imscpConfig{'HTTPD_SERVER'} || 'no';
     my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::httpd::$sName";
     eval "require $package";
-    fatal($@) if $@;
+    fatal( $@ ) if $@;
     $instance = $package->getInstance();
 }
 
@@ -68,7 +68,7 @@ sub factory
 sub can
 {
     my ($self, $method) = @_;
-    $self->factory()->can($method);
+    $self->factory()->can( $method );
 }
 
 END

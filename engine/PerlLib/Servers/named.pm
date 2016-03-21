@@ -61,10 +61,10 @@ sub factory
             if ($oldSname ne 'external_server') {
                 $package = "Servers::named::$oldSname";
                 eval "require $package";
-                fatal($@) if $@;
+                fatal( $@ ) if $@;
 
                 my $rs = $package->getInstance()->uninstall();
-                fatal("Unable to uninstall $oldSname server") if $rs;
+                fatal( "Unable to uninstall $oldSname server" ) if $rs;
             }
         }
 
@@ -74,7 +74,7 @@ sub factory
     }
 
     eval "require $package";
-    fatal($@) if $@;
+    fatal( $@ ) if $@;
     $instance = $package->getInstance();
 }
 
@@ -90,7 +90,7 @@ sub factory
 sub can
 {
     my ($self, $method) = @_;
-    $self->factory()->can($method);
+    $self->factory()->can( $method );
 }
 
 END

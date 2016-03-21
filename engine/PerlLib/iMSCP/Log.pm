@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -49,23 +49,25 @@ local $Params::Check::VERBOSE = 1;
 
 sub new
 {
-	my $class = shift;
-	my %hash = @_;
+    my $class = shift;
+    my %hash = @_;
 
-	my $tmpl = {
-		'id' => {
-			'default' => 'dummy',
-			'strict_type' => 1,
-			'required' => 1
-		},
-		'stack' => { 'default'  => [] }
-	};
+    my $tmpl = {
+        'id'    => {
+            'default'     => 'dummy',
+            'strict_type' => 1,
+            'required'    => 1
+        },
+        'stack' => {
+            'default' => [ ]
+        }
+    };
 
-	my $args = check($tmpl, \%hash) or die(
-		sprintf('Could not create a new iMSCP::Log object: %s1', Params::Check->last_error)
-	);
+    my $args = check( $tmpl, \%hash ) or die(
+        sprintf( 'Could not create a new iMSCP::Log object: %s1', Params::Check->last_error )
+    );
 
-	bless $args, $class
+    bless $args, $class
 }
 
 =item getId()
@@ -78,7 +80,7 @@ sub new
 
 sub getId
 {
-	$_[0]->{'id'};
+    $_[0]->{'id'};
 }
 
 =item store()
@@ -110,42 +112,41 @@ Return true upon success and undef upon failure, as well as issue a warning as t
 
 sub store
 {
-	my $self = shift;
-	my %hash = ();
+    my $self = shift;
 
-	my $tmpl = {
-		'when' => {
-			'default' => scalar localtime,
-			'strict_type' => 1,
-		},
-		'message' => {
-			'default' => 'empty log',
-			'strict_type' => 1,
-			'required' => 1
-		},
-		'tag' => { 'default' => 'none' }
-	};
+    my %hash = ();
+    my $tmpl = {
+        'when'    => {
+            'default'     => scalar localtime,
+            'strict_type' => 1,
+        },
+        'message' => {
+            'default'     => 'empty log',
+            'strict_type' => 1,
+            'required'    => 1
+        },
+        'tag'     => { 'default' => 'none' }
+    };
 
-	if(@_ == 1) {
-		$hash{'message'} = shift;
-	} else {
-		%hash = @_;
-	}
+    if (@_ == 1) {
+        $hash{'message'} = shift;
+    } else {
+        %hash = @_;
+    }
 
-	my $args = check( $tmpl, \%hash ) or (
-		warn(sprintf('Could not store error: %s', Params::Check->last_error)),
-		return
-	);
+    my $args = check( $tmpl, \%hash ) or (
+        warn( sprintf( 'Could not store error: %s', Params::Check->last_error ) ),
+        return
+    );
 
-	my $item = {
-		'when' => $args->{'when'},
-		'message' => $args->{'message'},
-		'tag' => $args->{'tag'}
-	};
+    my $item = {
+        'when'    => $args->{'when'},
+        'message' => $args->{'message'},
+        'tag'     => $args->{'tag'}
+    };
 
-	push @{$self->{'stack'}}, $item;
-
-	1;
+    push @{$self->{'stack'}}, $item;
+    1;
 }
 
 =item retrieve()
@@ -186,42 +187,50 @@ sub store
 
 sub retrieve
 {
-	my $self = shift;
-	my %hash = ();
+    my $self = shift;
 
-	my $tmpl = {
-		'tag' => { 'default' => qr/.*/ },
-		'message' => { 'default' => qr/.*/ },
-		'amount' => { 'default' => undef },
-		'remove' => { 'default' => 0 },
-		'chrono' => { 'default' => 1 }
-	};
+    my %hash = ();
+    my $tmpl = {
+        'tag'     => {
+            'default' => qr/.*/
+        },
+        'message' => {
+            'default' => qr/.*/
+        },
+        'amount'  => {
+            'default' => undef
+        },
+        'remove'  => {
+            'default' => 0
+        },
+        'chrono'  => {
+            'default' => 1
+        }
+    };
 
-	# single arg means just the amount otherwise, they are named
-	if( @_ == 1 ) {
-		$hash{'amount'} = shift;
-	} else {
-		%hash = @_;
-	}
+    # single arg means just the amount otherwise, they are named
+    if (@_ == 1) {
+        $hash{'amount'} = shift;
+    } else {
+        %hash = @_;
+    }
 
-	my $args = check($tmpl, \%hash) or (
-		warn(sprintf('Could not parse input: %s', Params::Check->last_error)), return
-	);
+    my $args = check( $tmpl, \%hash ) or (
+        warn( sprintf( 'Could not parse input: %s', Params::Check->last_error ) ), return
+    );
 
-	my @list = ();
-	for(@{$self->{'stack'}}) {
-		if($_->{'tag'} =~ /$args->{'tag'}/ && $_->{'message'} =~ /$args->{'message'}/) {
-			push @list, $_;
-			undef $_ if $args->{'remove'};
-		}
-	}
+    my @list = ();
+    for(@{$self->{'stack'}}) {
+        if ($_->{'tag'} =~ /$args->{'tag'}/ && $_->{'message'} =~ /$args->{'message'}/) {
+            push @list, $_;
+            undef $_ if $args->{'remove'};
+        }
+    }
 
-	@{$self->{'stack'}} = grep(defined, @{$self->{'stack'}}) if $args->{'remove'};
-
-	my $amount = $args->{'amount'} || scalar @list;
-	@list = ($amount >= @list) ? @list : @list[0..$amount-1] if @list;
-
-	wantarray ? ($args->{'chrono'}) ? @list : reverse(@list) : ($args->{'chrono'}) ? $list[0] : $list[$#list];
+    @{$self->{'stack'}} = grep(defined, @{$self->{'stack'}}) if $args->{'remove'};
+    my $amount = $args->{'amount'} || scalar @list;
+    @list = ($amount >= @list) ? @list : @list[0 .. $amount - 1] if @list;
+    wantarray ? ($args->{'chrono'}) ? @list : reverse( @list ) : ($args->{'chrono'}) ? $list[0] : $list[$#list];
 }
 
 =item first()
@@ -237,10 +246,10 @@ will always return results in chronological order.
 
 sub first
 {
-	my $self = shift;
-	my $amt = @_ == 1 ? shift : 1;
+    my $self = shift;
 
-	$self->retrieve('amount' => $amt, @_, 'chrono' => 1);
+    my $amt = @_ == 1 ? shift : 1;
+    $self->retrieve( 'amount' => $amt, @_, 'chrono' => 1 );
 }
 
 =item final()
@@ -256,10 +265,10 @@ will always return results in reverse chronological order.
 
 sub final
 {
-	my $self = shift;
-	my $amt = @_ == 1 ? shift : 1;
+    my $self = shift;
 
-	$self->retrieve('amount' => $amt, @_, 'chrono' => 0);
+    my $amt = @_ == 1 ? shift : 1;
+    $self->retrieve( 'amount' => $amt, @_, 'chrono' => 0 );
 }
 
 =item flush()
@@ -270,7 +279,7 @@ sub final
 
 sub flush
 {
-	splice @{$_[0]->{'stack'}};
+    splice @{$_[0]->{'stack'}};
 }
 
 =back

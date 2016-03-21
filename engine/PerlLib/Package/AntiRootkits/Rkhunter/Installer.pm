@@ -50,7 +50,7 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-	$_[0]->_disableDebianConfig();
+    $_[0]->_disableDebianConfig();
 }
 
 =item install()
@@ -63,10 +63,10 @@ sub preinstall
 
 sub install
 {
-	my $self = shift;
+    my $self = shift;
 
-	my $rs = $self->_addCronTask();
-	$rs ||= $self->_scheduleCheck();
+    my $rs = $self->_addCronTask();
+    $rs ||= $self->_scheduleCheck();
 }
 
 =item setEnginePermissions()
@@ -79,19 +79,19 @@ sub install
 
 sub setEnginePermissions
 {
-	require iMSCP::Rights;
-	iMSCP::Rights->import();
+    require iMSCP::Rights;
+    iMSCP::Rights->import();
 
-	my $rs = setRights("$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl", {
-		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_USER'}, mode => '0700'
-	});
-	return $rs if $rs;
+    my $rs = setRights( "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl", {
+            user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_USER'}, mode => '0700'
+        } );
+    return $rs if $rs;
 
-	return 0 unless -f $main::imscpConfig{'RKHUNTER_LOG'};
+    return 0 unless -f $main::imscpConfig{'RKHUNTER_LOG'};
 
-	setRights($main::imscpConfig{'RKHUNTER_LOG'}, {
-		user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'IMSCP_GROUP'}, mode => '0640'
-	});
+    setRights( $main::imscpConfig{'RKHUNTER_LOG'}, {
+            user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'IMSCP_GROUP'}, mode => '0640'
+        } );
 }
 
 =back
@@ -110,44 +110,44 @@ sub setEnginePermissions
 
 sub _disableDebianConfig
 {
-	if(-f '/etc/default/rkhunter') {
-		my $file = iMSCP::File->new( filename => '/etc/default/rkhunter' );
-		my $fileContent = $file->get();
-		unless(defined $fileContent) {
-			error(sprintf('Could not read %s file', $file->{'filename'}));
-			return 1;
-		}
+    if (-f '/etc/default/rkhunter') {
+        my $file = iMSCP::File->new( filename => '/etc/default/rkhunter' );
+        my $fileContent = $file->get();
+        unless (defined $fileContent) {
+            error( sprintf( 'Could not read %s file', $file->{'filename'} ) );
+            return 1;
+        }
 
-		$fileContent =~ s/CRON_DAILY_RUN=".*"/CRON_DAILY_RUN="false"/i;
-		$fileContent =~ s/CRON_DB_UPDATE=".*"/CRON_DB_UPDATE="false"/i;
+        $fileContent =~ s/CRON_DAILY_RUN=".*"/CRON_DAILY_RUN="false"/i;
+        $fileContent =~ s/CRON_DB_UPDATE=".*"/CRON_DB_UPDATE="false"/i;
 
-		my $rs = $file->set($fileContent);
-		$rs ||= $file->save();
-		return $rs if $rs;
-	}
+        my $rs = $file->set( $fileContent );
+        $rs ||= $file->save();
+        return $rs if $rs;
+    }
 
-	if(-f '/etc/cron.daily/rkhunter') {
-		my $rs = iMSCP::File->new( filename => '/etc/cron.daily/rkhunter' )->moveFile(
-			'/etc/cron.daily/rkhunter.disabled'
-		);
-		return $rs if $rs;
-	}
+    if (-f '/etc/cron.daily/rkhunter') {
+        my $rs = iMSCP::File->new( filename => '/etc/cron.daily/rkhunter' )->moveFile(
+            '/etc/cron.daily/rkhunter.disabled'
+        );
+        return $rs if $rs;
+    }
 
-	if(-f '/etc/cron.weekly/rkhunter') {
-		my $rs = iMSCP::File->new( filename => '/etc/cron.weekly/rkhunter' )->moveFile(
-			'/etc/cron.weekly/rkhunter.disabled'
-		);
-		return $rs if $rs;
-	}
+    if (-f '/etc/cron.weekly/rkhunter') {
+        my $rs = iMSCP::File->new( filename => '/etc/cron.weekly/rkhunter' )->moveFile(
+            '/etc/cron.weekly/rkhunter.disabled'
+        );
+        return $rs if $rs;
+    }
 
-	if(-f '/etc/logrotate.d/rkhunter') {
-		my $rs = iMSCP::File->new( filename => '/etc/logrotate.d/rkhunter' )->moveFile(
-			'/etc/logrotate.d/rkhunter.disabled'
-		);
-		return $rs if $rs;
-	}
+    if (-f '/etc/logrotate.d/rkhunter') {
+        my $rs = iMSCP::File->new( filename => '/etc/logrotate.d/rkhunter' )->moveFile(
+            '/etc/logrotate.d/rkhunter.disabled'
+        );
+        return $rs if $rs;
+    }
 
-	0;
+    0;
 }
 
 =item _addCronTask()
@@ -160,35 +160,35 @@ sub _disableDebianConfig
 
 sub _addCronTask
 {
-	my $file = iMSCP::File->new(
-		filename => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl"
-	);
+    my $file = iMSCP::File->new(
+        filename => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl"
+    );
 
-	my $fileContent = $file->get();
-	unless(defined $fileContent ) {
-		error(sprintf('Could not read %s file', $$file->{'filename'}));
-		return 1;
-	}
+    my $fileContent = $file->get();
+    unless (defined $fileContent) {
+        error( sprintf( 'Could not read %s file', $$file->{'filename'} ) );
+        return 1;
+    }
 
-	$fileContent = process({ IMSCP_PERLLIB_PATH => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib" }, $fileContent);
+    $fileContent = process( { IMSCP_PERLLIB_PATH => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib" }, $fileContent );
 
-	my $rs = $file->set($fileContent);
-	$rs ||= $file->save();
-	$rs ||= $file->mode(0700);
-	$rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	$rs ||= Servers::cron->factory()->addTask( {
-		TASKID => 'Package::AntiRootkits::Rkhunter',
-		MINUTE => '@weekly',
-		HOUR => '',
-		DAY => '',
-		MONTH => '',
-		DWEEK => '',
-		USER => $main::imscpConfig{'ROOT_USER'},
-		COMMAND =>
-			'nice -n 15 ionice -c2 -n5 perl ' .
-			"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl " .
-			"> /dev/null 2>&1"
-	});
+    my $rs = $file->set( $fileContent );
+    $rs ||= $file->save();
+    $rs ||= $file->mode( 0700 );
+    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+    $rs ||= Servers::cron->factory()->addTask( {
+            TASKID  => 'Package::AntiRootkits::Rkhunter',
+            MINUTE  => '@weekly',
+            HOUR    => '',
+            DAY     => '',
+            MONTH   => '',
+            DWEEK   => '',
+            USER    => $main::imscpConfig{'ROOT_USER'},
+            COMMAND =>
+            'nice -n 15 ionice -c2 -n5 perl '.
+                "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl ".
+                "> /dev/null 2>&1"
+        } );
 }
 
 =item _scheduleCheck()
@@ -201,24 +201,24 @@ sub _addCronTask
 
 sub _scheduleCheck
 {
-	return 0 if -f -s $main::imscpConfig{'RKHUNTER_LOG'};
+    return 0 if -f -s $main::imscpConfig{'RKHUNTER_LOG'};
 
-	# Create an empty file to avoid planning multiple check if installer is run many time
-	my $file = iMSCP::File->new( filename => $main::imscpConfig{'RKHUNTER_LOG'} );
-	my $rs = $file->set('Check scheduled...');
-	$rs ||= $file->save();
-	return $rs if $rs;
+    # Create an empty file to avoid planning multiple check if installer is run many time
+    my $file = iMSCP::File->new( filename => $main::imscpConfig{'RKHUNTER_LOG'} );
+    my $rs = $file->set( 'Check scheduled...' );
+    $rs ||= $file->save();
+    return $rs if $rs;
 
-	$rs = execute(
-		"echo 'perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl > /dev/null 2>&1' " .
-		"| batch",
-		\ my $stdout,
-		\ my $stderr
-	);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	error("Could not schedule Rkhunter check") if $rs && ! $stderr;
-	$rs;
+    $rs = execute(
+        "echo 'perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl > /dev/null 2>&1' ".
+            "| batch",
+        \ my $stdout,
+        \ my $stderr
+    );
+    debug( $stdout ) if $stdout;
+    error( $stderr ) if $stderr && $rs;
+    error( "Could not schedule Rkhunter check" ) if $rs && !$stderr;
+    $rs;
 }
 
 =back

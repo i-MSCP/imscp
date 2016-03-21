@@ -45,7 +45,7 @@ use parent 'Common::SingletonClass';
 
 sub get
 {
-	@{$_[0]->{'plugins'}};
+    @{$_[0]->{'plugins'}};
 }
 
 =back
@@ -64,11 +64,10 @@ sub get
 
 sub _init
 {
-	my $self = shift;
+    my $self = shift;
 
-	@{$self->{'plugins'}} = glob("$main::imscpConfig{'PLUGINS_DIR'}/*/backend/*.pm");
-
-	$self;
+    @{$self->{'plugins'}} = glob( "$main::imscpConfig{'PLUGINS_DIR'}/*/backend/*.pm" );
+    $self;
 }
 
 =back

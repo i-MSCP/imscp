@@ -51,10 +51,10 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = shift;
+    my $self = shift;
 
-	my $rs = $self->restoreConfFile();
-	$rs ||= $self->removeDB();
+    my $rs = $self->restoreConfFile();
+    $rs ||= $self->removeDB();
 }
 
 =item removeDB()
@@ -67,9 +67,10 @@ sub uninstall
 
 sub removeDB
 {
-	my $self = shift;
+    my $self = shift;
 
-	Servers::sqld->factory()->dropUser($self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'});
+    Servers::sqld->factory()->dropUser( $self->{'config'}->{'DATABASE_USER'},
+        $main::imscpConfig{'DATABASE_USER_HOST'} );
 }
 
 =item restoreConfFile()
@@ -82,18 +83,18 @@ sub removeDB
 
 sub restoreConfFile
 {
-	my $self = shift;
+    my $self = shift;
 
-	my ($filename, $directories, $suffix) = fileparse($self->{'config'}->{'FTPD_CONF_FILE'});
+    my ($filename, $directories, $suffix) = fileparse( $self->{'config'}->{'FTPD_CONF_FILE'} );
 
-	if(-f "$self->{bkpDir}/$filename$suffix.system") {
-		my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename$suffix.system" )->copyFile(
-			"$self->{bkpDir}/$filename$suffix.system"
-		);
-		return $rs if $rs;
-	}
+    if (-f "$self->{bkpDir}/$filename$suffix.system") {
+        my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename$suffix.system" )->copyFile(
+            "$self->{bkpDir}/$filename$suffix.system"
+        );
+        return $rs if $rs;
+    }
 
-	0;
+    0;
 }
 
 =back
@@ -112,14 +113,14 @@ sub restoreConfFile
 
 sub _init
 {
-	my $self = shift;
+    my $self = shift;
 
-	$self->{'ftpd'} = Servers::ftpd::proftpd->getInstance();
-	$self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-	$self->{'config'} = $self->{'ftpd'}->{'config'};
-	$self;
+    $self->{'ftpd'} = Servers::ftpd::proftpd->getInstance();
+    $self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
+    $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+    $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+    $self->{'config'} = $self->{'ftpd'}->{'config'};
+    $self;
 }
 
 =back

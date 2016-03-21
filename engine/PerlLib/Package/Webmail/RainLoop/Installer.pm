@@ -65,86 +65,86 @@ our $VERSION = '0.1.0.*@dev';
 
 sub showDialog
 {
-	my ($self, $dialog) = @_;
+    my ($self, $dialog) = @_;
 
-	my $dbUser = main::setupGetQuestion('RAINLOOP_SQL_USER') || $self->{'rainloop'}->{'config'}->{'DATABASE_USER'} || 'rainloop_user';
-	my $dbPass = main::setupGetQuestion('RAINLOOP_SQL_PASSWORD') || $self->{'rainloop'}->{'config'}->{'DATABASE_PASSWORD'} || '';
-	my ($rs, $msg) = (0, '');
+    my $dbUser = main::setupGetQuestion( 'RAINLOOP_SQL_USER' ) || $self->{'rainloop'}->{'config'}->{'DATABASE_USER'} || 'rainloop_user';
+    my $dbPass = main::setupGetQuestion( 'RAINLOOP_SQL_PASSWORD' ) || $self->{'rainloop'}->{'config'}->{'DATABASE_PASSWORD'} || '';
+    my ($rs, $msg) = (0, '');
 
-	if(grep($_ eq $main::reconfigure, ( 'webmails', 'all', 'forced' ))
-		|| length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x23-\x5b\x5d-\x7e\x21]+$/
-		|| length $dbPass < 6 || $dbPass !~ /^[\x23-\x5b\x5d-\x7e\x21]+$/
-	) {
-		# Ensure no special chars are present in password. If we don't, dialog will not let user set new password
-		$dbPass = '';
+    if (grep($_ eq $main::reconfigure, ( 'webmails', 'all', 'forced' ))
+        || length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x23-\x5b\x5d-\x7e\x21]+$/
+        || length $dbPass < 6 || $dbPass !~ /^[\x23-\x5b\x5d-\x7e\x21]+$/
+    ) {
+        # Ensure no special chars are present in password. If we don't, dialog will not let user set new password
+        $dbPass = '';
 
-		do{
-			($rs, $dbUser) = $dialog->inputbox(
-				"\nPlease enter an username for the rainloop SQL user:$msg", $dbUser
-			);
+        do {
+            ($rs, $dbUser) = $dialog->inputbox(
+                "\nPlease enter an username for the rainloop SQL user:$msg", $dbUser
+            );
 
-			if($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
-				$msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
-				$dbUser = '';
-			} elsif(length $dbUser > 16) {
-				$msg = "\n\n\\Username can be up to 16 characters long.\\Zn\n\nPlease try again:";
-				$dbUser = '';
-			} elsif(length $dbUser < 6) {
-				$msg = "\n\n\\Z1Username must be at least 6 characters long.\\Zn\n\nPlease try again:";
-				$dbUser = '';
-			} elsif($dbUser !~ /^[\x23-\x5b\x5d-\x7e\x21]+$/) {
-				$msg = "\n\n\\Z1Only printable ASCII characters (excepted space, double quote and backslash) are allowed.\\Zn\n\nPlease try again:";
-				$dbUser = '';
-			}
-		} while ($rs < 30 && !$dbUser);
+            if ($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
+                $msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
+                $dbUser = '';
+            } elsif (length $dbUser > 16) {
+                $msg = "\n\n\\Username can be up to 16 characters long.\\Zn\n\nPlease try again:";
+                $dbUser = '';
+            } elsif (length $dbUser < 6) {
+                $msg = "\n\n\\Z1Username must be at least 6 characters long.\\Zn\n\nPlease try again:";
+                $dbUser = '';
+            } elsif ($dbUser !~ /^[\x23-\x5b\x5d-\x7e\x21]+$/) {
+                $msg = "\n\n\\Z1Only printable ASCII characters (excepted space, double quote and backslash) are allowed.\\Zn\n\nPlease try again:";
+                $dbUser = '';
+            }
+        } while ($rs < 30 && !$dbUser);
 
-		if($rs < 30) {
-			$msg = '';
+        if ($rs < 30) {
+            $msg = '';
 
-			# Ask for the rainloop SQL user password unless we reuses existent SQL user
-			unless(grep($_ eq $dbUser, ( keys %main::sqlUsers ))) {
-				do {
-					($rs, $dbPass) = $dialog->passwordbox(
-						"\nPlease, enter a password for the rainloop SQL user (blank for autogenerate):$msg", $dbPass
-					);
+            # Ask for the rainloop SQL user password unless we reuses existent SQL user
+            unless (grep($_ eq $dbUser, ( keys %main::sqlUsers ))) {
+                do {
+                    ($rs, $dbPass) = $dialog->passwordbox(
+                        "\nPlease, enter a password for the rainloop SQL user (blank for autogenerate):$msg", $dbPass
+                    );
 
-					if($dbPass ne '') {
-						if(length $dbPass < 6) {
-							$msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease, try again:";
-							$dbPass = '';
-						} elsif($dbPass !~ /^[\x23-\x5b\x5d-\x7e\x21]+$/) {
-							$msg = "\n\n\\Z1Only printable ASCII characters (excepted space, double quote and backslash) are allowed.\\Zn\n\nPlease try again:";
-							$dbPass = '';
-						} else {
-							$msg = '';
-						}
-					} else {
-						$msg = '';
-					}
-				} while($rs < 30 && $msg);
-			} else {
-				$dbPass = $main::sqlUsers{$dbUser};
-			}
+                    if ($dbPass ne '') {
+                        if (length $dbPass < 6) {
+                            $msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease, try again:";
+                            $dbPass = '';
+                        } elsif ($dbPass !~ /^[\x23-\x5b\x5d-\x7e\x21]+$/) {
+                            $msg = "\n\n\\Z1Only printable ASCII characters (excepted space, double quote and backslash) are allowed.\\Zn\n\nPlease try again:";
+                            $dbPass = '';
+                        } else {
+                            $msg = '';
+                        }
+                    } else {
+                        $msg = '';
+                    }
+                } while ($rs < 30 && $msg);
+            } else {
+                $dbPass = $main::sqlUsers{$dbUser};
+            }
 
-			if($rs < 30) {
-				unless($dbPass) {
-					my @allowedChr = map { chr } (0x21, 0x23..0x5b, 0x5d..0x7e);
-					$dbPass = '';
-					$dbPass .= $allowedChr[rand @allowedChr] for 1..16;
-				}
+            if ($rs < 30) {
+                unless ($dbPass) {
+                    my @allowedChr = map { chr } (0x21, 0x23 .. 0x5b, 0x5d .. 0x7e);
+                    $dbPass = '';
+                    $dbPass .= $allowedChr[rand @allowedChr] for 1 .. 16;
+                }
 
-				$dialog->msgbox("\nPassword for the rainloop SQL user set to: $dbPass");
-			}
-		}
-	}
+                $dialog->msgbox( "\nPassword for the rainloop SQL user set to: $dbPass" );
+            }
+        }
+    }
 
-	if($rs < 30) {
-		main::setupSetQuestion('RAINLOOP_SQL_USER', $dbUser);
-		main::setupSetQuestion('RAINLOOP_SQL_PASSWORD', $dbPass);
-		$main::sqlUsers{$dbUser} = $dbPass;
-	}
+    if ($rs < 30) {
+        main::setupSetQuestion( 'RAINLOOP_SQL_USER', $dbUser );
+        main::setupSetQuestion( 'RAINLOOP_SQL_PASSWORD', $dbPass );
+        $main::sqlUsers{$dbUser} = $dbPass;
+    }
 
-	$rs;
+    $rs;
 }
 
 =item preinstall()
@@ -157,10 +157,10 @@ sub showDialog
 
 sub preinstall
 {
-	my $self = shift;
+    my $self = shift;
 
-	my $rs = iMSCP::Composer->getInstance()->registerPackage('imscp/rainloop', $VERSION);
-	$rs ||= $self->{'eventManager'}->register('afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile);
+    my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/rainloop', $VERSION );
+    $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 
 =item install()
@@ -173,15 +173,15 @@ sub preinstall
 
 sub install
 {
-	my $self = shift;
+    my $self = shift;
 
-	my $rs = $self->_installFiles();
-	$rs ||= $self->_mergeConfig();
-	$rs ||= $self->_setupDatabase();
-	$rs ||= $self->_buildConfig();
-	$rs ||= $self->_buildHttpdConfig();
-	$rs ||= $self->_setVersion();
-	$rs ||= $self->_saveConfig();
+    my $rs = $self->_installFiles();
+    $rs ||= $self->_mergeConfig();
+    $rs ||= $self->_setupDatabase();
+    $rs ||= $self->_buildConfig();
+    $rs ||= $self->_buildHttpdConfig();
+    $rs ||= $self->_setVersion();
+    $rs ||= $self->_saveConfig();
 }
 
 =item setGuiPermissions()
@@ -194,18 +194,18 @@ sub install
 
 sub setGuiPermissions
 {
-	my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
+    my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
 
-	return 0 unless -d "$guiPublicDir/tools/rainloop";
+    return 0 unless -d "$guiPublicDir/tools/rainloop";
 
-	my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-	my $rs = setRights( "$guiPublicDir/tools/rainloop", {
-		user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1
-	});
-	$rs ||= setRights( "$guiPublicDir/tools/rainloop/data", {
-		user => $panelUName, group => $panelGName, dirmode => '0750', filemode => '0640', recursive => 1
-	} );
+    my $rs = setRights( "$guiPublicDir/tools/rainloop", {
+            user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1
+        } );
+    $rs ||= setRights( "$guiPublicDir/tools/rainloop/data", {
+            user => $panelUName, group => $panelGName, dirmode => '0750', filemode => '0640', recursive => 1
+        } );
 }
 
 =back
@@ -226,24 +226,24 @@ sub setGuiPermissions
 
 sub afterFrontEndBuildConfFile
 {
-	my ($tplContent, $tplName) = @_;
+    my ($tplContent, $tplName) = @_;
 
-	return 0 unless grep($_ eq $tplName, ('00_master.conf', '00_master_ssl.conf' ));
+    return 0 unless grep($_ eq $tplName, ('00_master.conf', '00_master_ssl.conf' ));
 
-	$$tplContent = replaceBloc(
-		"# SECTION custom BEGIN.\n",
-		"# SECTION custom END.\n",
-		"    # SECTION custom BEGIN.\n" .
-		getBloc(
-			"# SECTION custom BEGIN.\n",
-			"# SECTION custom END.\n",
-			$$tplContent
-		) .
-			"    include imscp_rainloop.conf;\n" .
-			"    # SECTION custom END.\n",
-		$$tplContent
-	);
-	0;
+    $$tplContent = replaceBloc(
+        "# SECTION custom BEGIN.\n",
+        "# SECTION custom END.\n",
+        "    # SECTION custom BEGIN.\n".
+            getBloc(
+                "# SECTION custom BEGIN.\n",
+                "# SECTION custom END.\n",
+                $$tplContent
+            ).
+            "    include imscp_rainloop.conf;\n".
+            "    # SECTION custom END.\n",
+        $$tplContent
+    );
+    0;
 }
 
 =back
@@ -262,12 +262,12 @@ sub afterFrontEndBuildConfFile
 
 sub _init
 {
-	my $self = shift;
+    my $self = shift;
 
-	$self->{'rainloop'} = Package::Webmail::RainLoop::RainLoop->getInstance();
-	$self->{'frontend'} = Package::FrontEnd->getInstance();
-	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-	$self;
+    $self->{'rainloop'} = Package::Webmail::RainLoop::RainLoop->getInstance();
+    $self->{'frontend'} = Package::FrontEnd->getInstance();
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self;
 }
 
 =item _installFiles()
@@ -280,67 +280,67 @@ sub _init
 
 sub _installFiles
 {
-	my $self = shift;
+    my $self = shift;
 
-	my $packageDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/rainloop";
+    my $packageDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/rainloop";
 
-	unless (-d $packageDir) {
-		error("Couldn't find the imscp/rainloop package in the packages cache directory");
-		return 1;
-	}
+    unless (-d $packageDir) {
+        error( "Couldn't find the imscp/rainloop package in the packages cache directory" );
+        return 1;
+    }
 
-	my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop";
+    my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop";
 
-	# Install upstream files
-	my $rs = execute("cp -fR $packageDir/src ${destDir}-new", \ my $stdout, \ my $stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $rs && $stderr;
-	return $rs if $rs;
+    # Install upstream files
+    my $rs = execute( "cp -fR $packageDir/src ${destDir}-new", \ my $stdout, \ my $stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr ) if $rs && $stderr;
+    return $rs if $rs;
 
-	# Copy i-MSCP files
-	$rs = execute("cp -fRT $packageDir/iMSCP/src ${destDir}-new", \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $rs && $stderr;
-	return $rs if $rs;
+    # Copy i-MSCP files
+    $rs = execute( "cp -fRT $packageDir/iMSCP/src ${destDir}-new", \$stdout, \$stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr ) if $rs && $stderr;
+    return $rs if $rs;
 
-	if(-d $destDir) {
-		my $dataSrcDir = "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_";
-		my $dataDestDir = "${destDir}-new/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_";
+    if (-d $destDir) {
+        my $dataSrcDir = "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_";
+        my $dataDestDir = "${destDir}-new/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_";
 
-		# Copy files from previous installation
-		if(-d "$dataSrcDir/storage") {
-			$rs = execute("cp -fR $dataSrcDir/storage ${destDir}-new/", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $rs && $stderr;
-			return $rs if $rs;
-		}
+        # Copy files from previous installation
+        if (-d "$dataSrcDir/storage") {
+            $rs = execute( "cp -fR $dataSrcDir/storage ${destDir}-new/", \$stdout, \$stderr );
+            debug( $stdout ) if $stdout;
+            error( $stderr ) if $rs && $stderr;
+            return $rs if $rs;
+        }
 
-		# Remove files from previous installation
+        # Remove files from previous installation
 
-		$rs = execute("rm -fR $destDir", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $rs && $stderr;
-		return $rs if $rs;
+        $rs = execute( "rm -fR $destDir", \$stdout, \$stderr );
+        debug( $stdout ) if $stdout;
+        error( $stderr ) if $rs && $stderr;
+        return $rs if $rs;
 
-		# Remove file which are no longer needed
-		for my $file('application.ini', 'plugin-imscp-change-password.ini') {
-			$rs = execute("rm -fR $self->{'rainloop'}->{'cfgDir'}/$file", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $rs && $stderr;
-			return $rs if $rs;
-		}
-	}
+        # Remove file which are no longer needed
+        for my $file('application.ini', 'plugin-imscp-change-password.ini') {
+            $rs = execute( "rm -fR $self->{'rainloop'}->{'cfgDir'}/$file", \$stdout, \$stderr );
+            debug( $stdout ) if $stdout;
+            error( $stderr ) if $rs && $stderr;
+            return $rs if $rs;
+        }
+    }
 
-	$rs = execute("mv ${destDir}-new $destDir", \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $rs && $stderr;
-	return $rs if $rs;
+    $rs = execute( "mv ${destDir}-new $destDir", \$stdout, \$stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr ) if $rs && $stderr;
+    return $rs if $rs;
 
-	# Copy configuration files
-	$rs = execute("cp -fRT $packageDir/iMSCP/config $self->{'rainloop'}->{'cfgDir'}", \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $rs && $stderr;
-	$rs;
+    # Copy configuration files
+    $rs = execute( "cp -fRT $packageDir/iMSCP/config $self->{'rainloop'}->{'cfgDir'}", \$stdout, \$stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr ) if $rs && $stderr;
+    $rs;
 }
 
 =item _mergeConfig
@@ -353,24 +353,26 @@ sub _installFiles
 
 sub _mergeConfig
 {
-	my $self = shift;
+    my $self = shift;
 
-	if(%{$self->{'rainloop'}->{'config'}}) {
-		my %oldConfig = %{$self->{'rainloop'}->{'config'}};
+    if (%{$self->{'rainloop'}->{'config'}}) {
+        my %oldConfig = %{$self->{'rainloop'}->{'config'}};
 
-		tie %{$self->{'rainloop'}->{'config'}}, 'iMSCP::Config', fileName => "$self->{'rainloop'}->{'cfgDir'}/rainloop.data";
+        tie %{$self->{'rainloop'}->{'config'}}, 'iMSCP::Config', fileName =>
+            "$self->{'rainloop'}->{'cfgDir'}/rainloop.data";
 
-		for my $oldConf(keys %oldConfig) {
-			if(exists $self->{'rainloop'}->{'config'}->{$oldConf}) {
-				$self->{'rainloop'}->{'config'}->{$oldConf} = $oldConfig{$oldConf};
-			}
-		}
+        for my $oldConf(keys %oldConfig) {
+            if (exists $self->{'rainloop'}->{'config'}->{$oldConf}) {
+                $self->{'rainloop'}->{'config'}->{$oldConf} = $oldConfig{$oldConf};
+            }
+        }
 
-		return 0;
-	}
+        return 0;
+    }
 
-	tie %{$self->{'rainloop'}->{'config'}}, 'iMSCP::Config', fileName => "$self->{'rainloop'}->{'cfgDir'}/rainloop.data";
-	0;
+    tie %{$self->{'rainloop'}->{'config'}}, 'iMSCP::Config', fileName =>
+        "$self->{'rainloop'}->{'cfgDir'}/rainloop.data";
+    0;
 }
 
 =item _setupDatabase()
@@ -383,66 +385,67 @@ sub _mergeConfig
 
 sub _setupDatabase
 {
-	my $self = shift;
+    my $self = shift;
 
-	my $sqlServer = Servers::sqld->factory();
-	my $imscpDbName = main::setupGetQuestion('DATABASE_NAME');
-	my $rainLoopDbName = $imscpDbName . '_rainloop';
-	my $dbUser = main::setupGetQuestion('RAINLOOP_SQL_USER');
-	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
-	my $dbPass = main::setupGetQuestion('RAINLOOP_SQL_PASSWORD');
-	my $dbOldUser = $self->{'rainloop'}->{'config'}->{'DATABASE_USER'};
+    my $sqlServer = Servers::sqld->factory();
+    my $imscpDbName = main::setupGetQuestion( 'DATABASE_NAME' );
+    my $rainLoopDbName = $imscpDbName.'_rainloop';
+    my $dbUser = main::setupGetQuestion( 'RAINLOOP_SQL_USER' );
+    my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
+    my $dbPass = main::setupGetQuestion( 'RAINLOOP_SQL_PASSWORD' );
+    my $dbOldUser = $self->{'rainloop'}->{'config'}->{'DATABASE_USER'};
 
-	my ($db, $errStr) = main::setupGetSqlConnect();
-	unless($db) {
-		error(sprintf('Could not connect to SQL server: %s', $errStr));
-		return 1;
-	}
+    my ($db, $errStr) = main::setupGetSqlConnect();
+    unless ($db) {
+        error( sprintf( 'Could not connect to SQL server: %s', $errStr ) );
+        return 1;
+    }
 
-	my $quotedDbName = $db->quoteIdentifier($rainLoopDbName);
+    my $quotedDbName = $db->quoteIdentifier( $rainLoopDbName );
 
-	my $rs = $db->doQuery('c', "CREATE DATABASE IF NOT EXISTS $quotedDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci");
-	unless(ref $rs eq 'HASH') {
-		error(sprintf('Could not create SQL database: %s', $rs));
-		return 1;
-	}
+    my $rs = $db->doQuery( 'c',
+        "CREATE DATABASE IF NOT EXISTS $quotedDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci" );
+    unless (ref $rs eq 'HASH') {
+        error( sprintf( 'Could not create SQL database: %s', $rs ) );
+        return 1;
+    }
 
-	for my $sqlUser ($dbOldUser, $dbUser) {
-		next if !$sqlUser || grep($_ eq "$sqlUser\@$dbUserHost", @main::createdSqlUsers);
+    for my $sqlUser ($dbOldUser, $dbUser) {
+        next if !$sqlUser || grep($_ eq "$sqlUser\@$dbUserHost", @main::createdSqlUsers);
 
-		for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
-			next unless $host;
-			$sqlServer->dropUser($sqlUser, $host);
-		}
-	}
+        for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
+            next unless $host;
+            $sqlServer->dropUser( $sqlUser, $host );
+        }
+    }
 
-	# Create SQL user if not already created by another server/package installer
-	unless(grep($_ eq "$dbUser\@$dbUserHost", @main::createdSqlUsers)) {
-		debug(sprintf('Creating %s@%s SQL user', $dbUser, $dbUserHost));
-		$sqlServer->createUser($dbUser, $dbUserHost, $dbPass);
-		push @main::createdSqlUsers, "$dbUser\@$dbUserHost";
-	}
+    # Create SQL user if not already created by another server/package installer
+    unless (grep($_ eq "$dbUser\@$dbUserHost", @main::createdSqlUsers)) {
+        debug( sprintf( 'Creating %s@%s SQL user', $dbUser, $dbUserHost ) );
+        $sqlServer->createUser( $dbUser, $dbUserHost, $dbPass );
+        push @main::createdSqlUsers, "$dbUser\@$dbUserHost";
+    }
 
-	# Give needed privileges to this SQL user
-	$rs = $db->doQuery('g', "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?@?",  $dbUser, $dbUserHost);
-	unless(ref $rs eq 'HASH') {
-		error(sprintf('Could not add SQL privileges: %s', $rs));
-		return 1;
-	}
+    # Give needed privileges to this SQL user
+    $rs = $db->doQuery( 'g', "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?@?", $dbUser, $dbUserHost );
+    unless (ref $rs eq 'HASH') {
+        error( sprintf( 'Could not add SQL privileges: %s', $rs ) );
+        return 1;
+    }
 
-	$quotedDbName = $db->quoteIdentifier($imscpDbName);
-	$rs = $db->doQuery(
-		'g', "GRANT SELECT (mail_addr, mail_pass), UPDATE (mail_pass) ON $quotedDbName.mail_users TO ?@?",
-		$dbUser, $dbUserHost
-	);
-	unless(ref $rs eq 'HASH') {
-		error(sprintf('Could not add SQL privileges: %s', $rs));
-		return 1;
-	}
+    $quotedDbName = $db->quoteIdentifier( $imscpDbName );
+    $rs = $db->doQuery(
+        'g', "GRANT SELECT (mail_addr, mail_pass), UPDATE (mail_pass) ON $quotedDbName.mail_users TO ?@?",
+        $dbUser, $dbUserHost
+    );
+    unless (ref $rs eq 'HASH') {
+        error( sprintf( 'Could not add SQL privileges: %s', $rs ) );
+        return 1;
+    }
 
-	$self->{'rainloop'}->{'config'}->{'DATABASE_USER'} = $dbUser;
-	$self->{'rainloop'}->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
-	0;
+    $self->{'rainloop'}->{'config'}->{'DATABASE_USER'} = $dbUser;
+    $self->{'rainloop'}->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
+    0;
 }
 
 =item _buildConfig()
@@ -455,45 +458,45 @@ sub _setupDatabase
 
 sub _buildConfig
 {
-	my $self = shift;
+    my $self = shift;
 
-	my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_/configs";
-	my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_/configs";
+    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-	for my $confFile('application.ini', 'plugin-imscp-change-password.ini') {
-		my $data = {
-			DATABASE_NAME => $confFile eq 'application.ini'
-				? main::setupGetQuestion('DATABASE_NAME') . '_rainloop' : main::setupGetQuestion('DATABASE_NAME'),
-			DATABASE_HOST => main::setupGetQuestion('DATABASE_HOST'),
-			DATATABASE_PORT => main::setupGetQuestion('DATABASE_PORT'),
-			DATABASE_USER => main::setupGetQuestion('RAINLOOP_SQL_USER'),
-			DATABASE_PASSWORD => main::setupGetQuestion('RAINLOOP_SQL_PASSWORD'),
-			DISTRO_CA_BUNDLE => main::setupGetQuestion('DISTRO_CA_BUNDLE'),
-			DISTRO_CA_PATH => main::setupGetQuestion('DISTRO_CA_PATH')
-		};
+    for my $confFile('application.ini', 'plugin-imscp-change-password.ini') {
+        my $data = {
+            DATABASE_NAME     => $confFile eq 'application.ini'
+                ? main::setupGetQuestion( 'DATABASE_NAME' ).'_rainloop' : main::setupGetQuestion( 'DATABASE_NAME' ),
+            DATABASE_HOST     => main::setupGetQuestion( 'DATABASE_HOST' ),
+            DATATABASE_PORT   => main::setupGetQuestion( 'DATABASE_PORT' ),
+            DATABASE_USER     => main::setupGetQuestion( 'RAINLOOP_SQL_USER' ),
+            DATABASE_PASSWORD => main::setupGetQuestion( 'RAINLOOP_SQL_PASSWORD' ),
+            DISTRO_CA_BUNDLE  => main::setupGetQuestion( 'DISTRO_CA_BUNDLE' ),
+            DISTRO_CA_PATH    => main::setupGetQuestion( 'DISTRO_CA_PATH' )
+        };
 
-		my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'rainloop', $confFile, \ my $cfgTpl, $data );
-		return $rs if $rs;
+        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'rainloop', $confFile, \ my $cfgTpl, $data );
+        return $rs if $rs;
 
-		unless(defined $cfgTpl) {
-			$cfgTpl = iMSCP::File->new( filename => "$confDir/$confFile" )->get();
-			unless(defined $cfgTpl) {
-				error(sprintf('Could not read %s file', "$confDir/$confFile"));
-				return 1;
-			}
-		}
+        unless (defined $cfgTpl) {
+            $cfgTpl = iMSCP::File->new( filename => "$confDir/$confFile" )->get();
+            unless (defined $cfgTpl) {
+                error( sprintf( 'Could not read %s file', "$confDir/$confFile" ) );
+                return 1;
+            }
+        }
 
-		$cfgTpl = process($data, $cfgTpl);
+        $cfgTpl = process( $data, $cfgTpl );
 
-		my $file = iMSCP::File->new( filename => "$confDir/$confFile" );
-		$rs = $file->set($cfgTpl);
-		$rs ||= $file->save();
-		$rs ||= $file->mode(0640);
-		$rs ||= $file->owner($panelUName, $panelGName);
-		return $rs if $rs;
-	}
+        my $file = iMSCP::File->new( filename => "$confDir/$confFile" );
+        $rs = $file->set( $cfgTpl );
+        $rs ||= $file->save();
+        $rs ||= $file->mode( 0640 );
+        $rs ||= $file->owner( $panelUName, $panelGName );
+        return $rs if $rs;
+    }
 
-	0;
+    0;
 }
 
 =item _setVersion()
@@ -506,19 +509,19 @@ sub _buildConfig
 
 sub _setVersion
 {
-	my $self = shift;
+    my $self = shift;
 
-	my $packageDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/rainloop";
-	my $json = iMSCP::File->new( filename => "$packageDir/composer.json" )->get();
-	unless(defined $json) {
-		error(sprintf('Could not read %s file', "$packageDir/composer.json"));
-		return 1;
-	}
+    my $packageDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/rainloop";
+    my $json = iMSCP::File->new( filename => "$packageDir/composer.json" )->get();
+    unless (defined $json) {
+        error( sprintf( 'Could not read %s file', "$packageDir/composer.json" ) );
+        return 1;
+    }
 
-	$json = decode_json($json);
-	debug(sprintf('Set new rainloop version to %s', $json->{'version'}));
-	$self->{'rainloop'}->{'config'}->{'RAINLOOP_VERSION'} = $json->{'version'};
-	0;
+    $json = decode_json( $json );
+    debug( sprintf( 'Set new rainloop version to %s', $json->{'version'} ) );
+    $self->{'rainloop'}->{'config'}->{'RAINLOOP_VERSION'} = $json->{'version'};
+    0;
 }
 
 =item _buildHttpdConfig()
@@ -529,13 +532,13 @@ sub _setVersion
 
 sub _buildHttpdConfig
 {
-	my ($self, $tplContent, $tplName) = @_;
+    my ($self, $tplContent, $tplName) = @_;
 
-	$self->{'frontend'}->buildConfFile(
-		"$self->{'rainloop'}->{'cfgDir'}/nginx/imscp_rainloop.conf",
-		{ GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },
-		{ destination => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf" }
-	);
+    $self->{'frontend'}->buildConfFile(
+        "$self->{'rainloop'}->{'cfgDir'}/nginx/imscp_rainloop.conf",
+        { GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },
+        { destination => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf" }
+    );
 }
 
 =item _saveConfig()
@@ -548,11 +551,11 @@ sub _buildHttpdConfig
 
 sub _saveConfig
 {
-	my $self = shift;
+    my $self = shift;
 
-	iMSCP::File->new( filename => "$self->{'rainloop'}->{'cfgDir'}/rainloop.data" )->copyFile(
-		"$self->{'rainloop'}->{'cfgDir'}/rainloop.old.data"
-	);
+    iMSCP::File->new( filename => "$self->{'rainloop'}->{'cfgDir'}/rainloop.data" )->copyFile(
+        "$self->{'rainloop'}->{'cfgDir'}/rainloop.old.data"
+    );
 }
 
 =back

@@ -47,7 +47,7 @@ use parent 'Modules::Abstract';
 
 sub getType
 {
-	'Htgroup';
+    'Htgroup';
 }
 
 =item process($htgroupId)
@@ -61,34 +61,35 @@ sub getType
 
 sub process
 {
-	my ($self, $htgroupId) = @_;
+    my ($self, $htgroupId) = @_;
 
-	my $rs = $self->_loadData($htgroupId);
-	return $rs if $rs;
+    my $rs = $self->_loadData( $htgroupId );
+    return $rs if $rs;
 
-	my @sql;
-	if(grep($_ eq $self->{'status'}, ( 'toadd', 'tochange' ))) {
-		$rs = $self->add();
-		@sql = (
-			'UPDATE htaccess_groups SET status = ? WHERE id = ?',
-			($rs ? scalar getMessageByType('error') || 'Unknown error' : 'ok'), $htgroupId
-		);
-	} elsif($self->{'status'} eq 'todelete') {
-		$rs = $self->delete();
-		if($rs) {
-			@sql = ('UPDATE htaccess_groups SET status = ? WHERE id = ?', scalar getMessageByType('error'), $htgroupId);
-		} else {
-			@sql = ('DELETE FROM htaccess_groups WHERE id = ?', $htgroupId);
-		}
-	}
+    my @sql;
+    if (grep($_ eq $self->{'status'}, ( 'toadd', 'tochange' ))) {
+        $rs = $self->add();
+        @sql = (
+            'UPDATE htaccess_groups SET status = ? WHERE id = ?',
+            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'ok'), $htgroupId
+        );
+    } elsif ($self->{'status'} eq 'todelete') {
+        $rs = $self->delete();
+        if ($rs) {
+            @sql = ('UPDATE htaccess_groups SET status = ? WHERE id = ?', scalar getMessageByType( 'error' ),
+                $htgroupId);
+        } else {
+            @sql = ('DELETE FROM htaccess_groups WHERE id = ?', $htgroupId);
+        }
+    }
 
-	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
+    my $rdata = iMSCP::Database->factory()->doQuery( 'dummy', @sql );
+    unless (ref $rdata eq 'HASH') {
+        error( $rdata );
+        return 1;
+    }
 
-	$rs;
+    $rs;
 }
 
 =back
@@ -108,58 +109,58 @@ sub process
 
 sub _loadData
 {
-	my ($self, $htgroupId) = @_;
+    my ($self, $htgroupId) = @_;
 
-	my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->factory();
 
-	$db->doQuery('dummy', 'SET SESSION group_concat_max_len = 8192');
+    $db->doQuery( 'dummy', 'SET SESSION group_concat_max_len = 8192' );
 
-	my $rdata = $db->doQuery(
-		'id',
-		"
-			SELECT t2.id, t2.ugroup, t2.status, t2.users, t3.domain_name, t3.domain_admin_id, t3.web_folder_protection
-			FROM (SELECT * from htaccess_groups, (SELECT IFNULL(
-				(
-					SELECT group_concat(uname SEPARATOR ' ')
-					FROM htaccess_users
-					WHERE id regexp (
-						CONCAT('^(', (SELECT REPLACE((SELECT members FROM htaccess_groups WHERE id = ?), ',', '|')), ')\$')
-					)
-					GROUP BY dmn_id
-				), '') AS users) AS t1
-			) AS t2
-			INNER JOIN domain AS t3 ON (t2.dmn_id = t3.domain_id)
-			WHERE id = ?
-		",
-		$htgroupId, $htgroupId
-	);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
+    my $rdata = $db->doQuery(
+        'id',
+        "
+            SELECT t2.id, t2.ugroup, t2.status, t2.users, t3.domain_name, t3.domain_admin_id, t3.web_folder_protection
+            FROM (SELECT * from htaccess_groups, (SELECT IFNULL(
+                (
+                    SELECT group_concat(uname SEPARATOR ' ')
+                    FROM htaccess_users
+                    WHERE id regexp (
+                        CONCAT('^(', (SELECT REPLACE((SELECT members FROM htaccess_groups WHERE id = ?), ',', '|')), ')\$')
+                    )
+                    GROUP BY dmn_id
+                ), '') AS users) AS t1
+            ) AS t2
+            INNER JOIN domain AS t3 ON (t2.dmn_id = t3.domain_id)
+            WHERE id = ?
+        ",
+        $htgroupId, $htgroupId
+    );
+    unless (ref $rdata eq 'HASH') {
+        error( $rdata );
+        return 1;
+    }
 
-	unless(exists $rdata->{$htgroupId}) {
-		error(sprintf('Htgroup record with ID %s has not been found in database', $htgroupId));
-		return 1;
-	}
+    unless (exists $rdata->{$htgroupId}) {
+        error( sprintf( 'Htgroup record with ID %s has not been found in database', $htgroupId ) );
+        return 1;
+    }
 
-	unless(exists $rdata->{$htgroupId}->{'domain_name'}) {
-		require Data::Dumper;
-		Data::Dumper->import();
-		local $Data::Dumper::Terse = 1;
-		error('Orphan entry: ' . Dumper($rdata->{$htgroupId}));
+    unless (exists $rdata->{$htgroupId}->{'domain_name'}) {
+        require Data::Dumper;
+        Data::Dumper->import();
+        local $Data::Dumper::Terse = 1;
+        error( 'Orphan entry: '.Dumper( $rdata->{$htgroupId} ) );
 
-		my @sql = (
-			'UPDATE htaccess_groups SET status = ? WHERE id = ?', 'Orphan entry: ' . Dumper($rdata->{$htgroupId}),
-			$htgroupId
-		);
+        my @sql = (
+            'UPDATE htaccess_groups SET status = ? WHERE id = ?', 'Orphan entry: '.Dumper( $rdata->{$htgroupId} ),
+            $htgroupId
+        );
 
-		$db->doQuery('dummy', @sql);
-		return 1;
-	}
+        $db->doQuery( 'dummy', @sql );
+        return 1;
+    }
 
-	%{$self} = (%{$self}, %{$rdata->{$htgroupId}});
-	0;
+    %{$self} = (%{$self}, %{$rdata->{$htgroupId}});
+    0;
 }
 
 =item _getHttpdData($action)
@@ -173,24 +174,24 @@ sub _loadData
 
 sub _getHttpdData
 {
-	my ($self, $action) = @_;
+    my ($self, $action) = @_;
 
-	return %{$self->{'httpd'}} if $self->{'httpd'};
+    return %{$self->{'httpd'}} if $self->{'httpd'};
 
-	my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+    my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
+        ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
-	$self->{'httpd'} = {
-		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
-		USER => $userName,
-		GROUP => $groupName,
-		WEB_DIR => "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}",
-		HTGROUP_NAME => $self->{'ugroup'},
-		HTGROUP_USERS => $self->{'users'},
-		HTGROUP_DMN => $self->{'domain_name'},
-		WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
-	};
-	%{$self->{'httpd'}};
+    $self->{'httpd'} = {
+        DOMAIN_ADMIN_ID       => $self->{'domain_admin_id'},
+        USER                  => $userName,
+        GROUP                 => $groupName,
+        WEB_DIR               => "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}",
+        HTGROUP_NAME          => $self->{'ugroup'},
+        HTGROUP_USERS         => $self->{'users'},
+        HTGROUP_DMN           => $self->{'domain_name'},
+        WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
+    };
+    %{$self->{'httpd'}};
 }
 
 =back

@@ -1,5 +1,11 @@
+=head1 NAME
+
+ iMSCP::Rights - Package providing basic utilities for filesystem (permissions handling).
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,63 +26,105 @@ package iMSCP::Rights;
 use strict;
 use warnings;
 use iMSCP::Debug;
-use iMSCP::Execute;
-use parent 'Common::SingletonClass', 'Exporter';
+use File::Find;
+use parent 'Exporter';
 
-use vars qw/@EXPORT/;
-@EXPORT = qw/setRights/;
+our @EXPORT = qw/setRights/;
+
+=head1 DESCRIPTION
+
+Package providing basic utilities for filesystem (permissions handling).
+
+=head1 PUBLIC FUNCTIONS
+
+=over 4
+
+=item setRights($target, \%options)
+
+ Depending on the given options, set owner, group and permissions on the given target
+
+ Param string $target Target file or directory
+ Param hash \%options:
+    mode      : Set mode on the given file (operate recursively only if the recursive option is true)
+    dirmode   : Set mode on directories (recursive operation)
+    filemode  : Set mode on files (recusive operation)
+    user      : Set user on the given file (operate recursively only if the recursive option is true)
+    group     : Set group for the given file (operate recursively only if the recusive option is true)
+    recursive : Whether or not mode, owner and group operations should be processed recursively
+
+    Note: Mixe of mode and dirmode/filemode options is not allowed
+ Return int 0 on success, 1 on failure
+
+=cut
 
 sub setRights
 {
-	my ($file, $options) = @_;
+    my ($target, $options) = @_;
 
-	$options = { } if ref $options ne 'HASH';
+    local $@;
 
-	my $rs = 0;
+    eval {
+        ref $options eq 'HASH' && %{$options} or die( 'Expects a HASH and at least one option' );
 
-	my  @dchmod = (
-		"find $file -type d -print0 | xargs", ($^O !~ /bsd$/) ? '-r' : '', "-0 chmod $options->{'dirmode'}"
-	) if $options->{'dirmode'};
+        if (defined $options->{'mode'} && (defined $options->{'dirmode'} || defined $options->{'filemode'})) {
+            die( 'Unallowed mixed options' );
+        }
 
-	my  @fchmod = (
-		"find $file -type f -print0 | xargs", ($^O !~ /bsd$/) ? '-r' : '', "-0 chmod $options->{'filemode'}"
-	) if $options->{'filemode'};
+        my $uid = $options->{'user'} ? getpwnam( $options->{'user'} ) : -1;
+        my $gid = $options->{'group'} ? getgrnam( $options->{'group'} ) : -1;
+        defined $uid or die( sprintf( 'user option refers to inexistent user: %s', $options->{'user'} ) );
+        defined $gid or die( sprintf( 'group option refers to inexistent group: %s', $options->{'group'} ) );
 
-	my  @chmod = ('chmod', $options->{'recursive'} ? '-R' : '', "$options->{'mode'} $file") if $options->{'mode'};
+        my $mode = defined $options->{'mode'} ? oct( $options->{'mode'} ) : undef;
+        my $dirmode = defined $options->{'dirmode'} ? oct( $options->{'dirmode'} ) : undef;
+        my $filemode = defined $options->{'filemode'} ? oct( $options->{'filemode'} ) : undef;
 
-	my  @chown = (
-		'chown',
-		'-h', # Do not dereference (never modify the target referenced by a symlink). Acts on the symlink itself
-		$options->{'recursive'} ? '-R' : '',
-		"$options->{'user'}:$options->{'group'} $file"
-	) if $options->{'user'} && $options->{'group'};
+        if ((($mode || $options->{'user'} || $options->{'group'}) && $options->{'recursive'}) || $dirmode || $filemode) {
+            local $SIG{__WARN__} = sub { die @_ };
+            find {
+                    wanted   => sub {
+                        if (($options->{'user'} || $options->{'group'}) && $options->{'recursive'}) {
+                            chown $uid, $gid, $_ or die( sprintf( 'Could not set user/group on %s: %s', $_, $! ) );
+                        }
 
-	$rs = _set(@chmod) if $options->{'mode'};
-	return $rs if $rs;
+                        if ($mode && $options->{'recursive'}) {
+                            chmod $mode, $_ or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
+                        } else {
+                            if (-d && $dirmode) {
+                                chmod $dirmode, $_ or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
+                            } elsif ($filemode) {
+                                chmod $filemode, $_ or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
+                            }
+                        }
+                    },
+                    no_chdir => 1
+                }, $target;
+        }
 
-	$rs = _set(@dchmod) if $options->{'dirmode'} && $options->{'recursive'};
-	return $rs if $rs;
+        if (($options->{'user'} || $options->{'group'}) && !$options->{'recursive'}) {
+            chown $uid, $gid, $target or die( sprintf( 'Could not set user/group on %s: %s', $target, $! ) );
+        }
 
-	$rs = _set(@fchmod) if $options->{'filemode'} && $options->{'recursive'};
-	return $rs if $rs;
+        if ($mode && !$options->{'recursive'}) {
+            chmod $mode, $target or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
+        }
+    };
 
-	$rs = _set(@chown) if $options->{'user'} && $options->{'group'};
-	return $rs if $rs;
+    if ($@) {
+        error( $@ );
+        return 1;
+    }
 
-	$rs;
+    0;
 }
 
-sub _set
-{
-	my ($stdout, $stderr);
+=back
 
-	my $rs = execute("@_", \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	error("Error while executing @_") if $rs && ! $stderr;
+=head1 AUTHOR
 
-	$rs;
-}
+Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;
 __END__

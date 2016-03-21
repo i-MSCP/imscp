@@ -30,7 +30,10 @@ use strict;
 use XML::Parser;
 use warnings;
 use JSON;
+use POSIX qw(locale_h);
+use locale;
 
+setlocale(LC_ALL, 'C.UTF-8');
 $ENV{'LANG'} = 'C.UTF-8';
 
 # Decoding received data

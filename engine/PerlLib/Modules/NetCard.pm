@@ -51,38 +51,38 @@ sub process
     my $provider = iMSCP::Provider::NetworkInterface->getInstance();
     my $dbh = iMSCP::Database->factory()->getRawDb();
 
-    my $sth = $dbh->prepare('SELECT * FROM server_ips WHERE ip_status <> ?');
-    $sth or die(sprintf('Could not prepare SQL statement: %s', $dbh->errstr));
-    $sth->execute('ok') or die(sprintf('Could not execute prepared statement: %s', $dbh->errstr));
+    my $sth = $dbh->prepare( 'SELECT * FROM server_ips WHERE ip_status <> ?' );
+    $sth or die( sprintf( 'Could not prepare SQL statement: %s', $dbh->errstr ) );
+    $sth->execute( 'ok' ) or die( sprintf( 'Could not execute prepared statement: %s', $dbh->errstr ) );
 
     while (my $row = $sth->fetchrow_hashref()) {
         my ($sth2, @params);
         local $@;
         eval {
             if (grep($_ eq $row->{'ip_status'}, ( 'toadd', 'tochange' ))) {
-                $provider->addIpAddr({
-                    id => $row->{'ip_id'}, ip_card => $row->{'ip_card'}, ip_address => $row->{'ip_number'}
-                });
-                $sth2 = $dbh->prepare('UPDATE server_ips SET ip_status = ? WHERE ip_id = ?');
+                $provider->addIpAddr( {
+                        id => $row->{'ip_id'}, ip_card => $row->{'ip_card'}, ip_address => $row->{'ip_number'}
+                    } );
+                $sth2 = $dbh->prepare( 'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?' );
                 @params = ('ok', $row->{'ip_id'});
             } elsif ($row->{'ip_status'} eq 'todelete') {
-                $provider->removeIpAddr({
-                    id => $row->{'ip_id'}, ip_card => $row->{'ip_card'}, ip_address => $row->{'ip_number'}
-                });
-                $sth2 = $dbh->prepare('DELETE FROM server_ips WHERE ip_id = ?');
+                $provider->removeIpAddr( {
+                        id => $row->{'ip_id'}, ip_card => $row->{'ip_card'}, ip_address => $row->{'ip_number'}
+                    } );
+                $sth2 = $dbh->prepare( 'DELETE FROM server_ips WHERE ip_id = ?' );
                 @params = ($row->{'ip_id'});
             }
 
-            $sth2 or die(sprintf('Could not prepare SQL statement: %s', $dbh->errstr));
-            $sth2->execute(@params) or die(sprintf('Could not execute prepared statement: %s', $dbh->errstr));
+            $sth2 or die( sprintf( 'Could not prepare SQL statement: %s', $dbh->errstr ) );
+            $sth2->execute( @params ) or die( sprintf( 'Could not execute prepared statement: %s', $dbh->errstr ) );
         };
         if ($@) {
             my $error = $@;
-            $sth2 = $dbh->prepare('UPDATE server_ips SET ip_status = ? WHERE ip_id = ?');
-            $sth2->execute($error || 'Unknown error', $row->{'ip_id'}) or die(sprintf(
-                'Could not execute prepared statement: %s', $dbh->errstr
-            ));
-            die($@);
+            $sth2 = $dbh->prepare( 'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?' );
+            $sth2->execute( $error || 'Unknown error', $row->{'ip_id'} ) or die( sprintf(
+                    'Could not execute prepared statement: %s', $dbh->errstr
+                ) );
+            die( $@ );
         }
     }
 

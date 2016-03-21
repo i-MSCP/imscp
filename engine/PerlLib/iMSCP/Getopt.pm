@@ -32,7 +32,7 @@ use fields qw /cleanPackageCache debug listener noprompt preseed reconfigure ski
 $Text::Wrap::columns = 80;
 $Text::Wrap::break = qr/[\s\n\|]/;
 
-my $options = fields::new('iMSCP::Getopt');
+my $options = fields::new( 'iMSCP::Getopt' );
 my $optionHelp = '';
 my $showUsage;
 
@@ -64,7 +64,7 @@ sub parse
 
     $showUsage = sub {
         my $exitCode = shift || 0;
-        print STDERR wrap('', '', <<EOF);
+        print STDERR wrap( '', '', <<EOF );
 
 $usage
  -a     --skip-package-update   Skip i-MSCP packages update.
@@ -79,7 +79,7 @@ $usage
 
 $optionHelp
 EOF
-        debugRegisterCallBack(sub { exit $exitCode; });
+        debugRegisterCallBack( sub { exit $exitCode; } );
         exit $exitCode;
     };
 
@@ -89,23 +89,23 @@ EOF
     local $SIG{'__WARN__'} = sub {
         my $error = shift;
         $error =~ s/(.*?) at.*/$1/;
-        print STDERR wrap('', '', $error) if $error ne "Died\n";
+        print STDERR wrap( '', '', $error ) if $error ne "Died\n";
     };
 
     require Getopt::Long;
-    Getopt::Long::Configure('bundling');
+    Getopt::Long::Configure( 'bundling' );
     Getopt::Long::GetOptions(
         'clean-package-cache|c', sub { $options->{'cleanPackageCache'} = 1 },
         'debug|d', sub { $options->{'debug'} = 1 },
         'help|?|h', sub { $class->showUsage() },
-        'listener|l=s', sub { $class->listener($_[1]) },
+        'listener|l=s', sub { $class->listener( $_[1] ) },
         'noprompt|n', sub { $options->{'noprompt'} = 1 },
-        'preseed|p=s', sub { $class->preseed($_[1]) },
-        'reconfigure|r:s', sub { $class->reconfigure($_[1]) },
+        'preseed|p=s', sub { $class->preseed( $_[1] ) },
+        'reconfigure|r:s', sub { $class->reconfigure( $_[1] ) },
         'skip-package-update|a', sub { $options->{'skipPackageUpdate'} = 1 },
         'verbose|v', sub { $options->{'verbose'} = 1 },
         @options,
-    ) or $class->showUsage(1);
+    ) or $class->showUsage( 1 );
 
     undef;
 }
@@ -126,13 +126,13 @@ sub parseNoDefault
 
     $showUsage = sub {
         my $exitCode = shift || 0;
-        print STDERR wrap('', '', <<EOF);
+        print STDERR wrap( '', '', <<EOF );
 
 $usage
  -?,-h  --help          Show this help.
 
 EOF
-        debugRegisterCallBack(sub { exit $exitCode; });
+        debugRegisterCallBack( sub { exit $exitCode; } );
         exit $exitCode;
     };
 
@@ -142,12 +142,12 @@ EOF
     local $SIG{'__WARN__'} = sub {
         my $error = shift;
         $error =~ s/(.*?) at.*/$1/;
-        print STDERR wrap('', '', $error) if $error ne "Died\n";
+        print STDERR wrap( '', '', $error ) if $error ne "Died\n";
     };
 
     require Getopt::Long;
-    Getopt::Long::Configure('bundling');
-    Getopt::Long::GetOptions('help|?|h', sub { $class->showUsage() }, @options) or $class->showUsage(1);
+    Getopt::Long::Configure( 'bundling' );
+    Getopt::Long::GetOptions( 'help|?|h', sub { $class->showUsage() }, @options ) or $class->showUsage( 1 );
     undef;
 }
 
@@ -165,8 +165,8 @@ sub showUsage
     my ($class, $exitCode) = @_;
 
     $exitCode //= 1;
-    ref $showUsage eq 'CODE' or die('ShowUsage() is not defined.');
-    $showUsage->($exitCode);
+    ref $showUsage eq 'CODE' or die( 'ShowUsage() is not defined.' );
+    $showUsage->( $exitCode );
 }
 
 our @reconfigurationItems = sort(
@@ -205,9 +205,9 @@ EOF
         $item = 'all';
     }
 
-    $item eq 'none' || grep($_ eq $item, @reconfigurationItems) or die(sprintf(
-        "Error: '%s' is not a valid argument for the --reconfigure option.", $item
-    ));
+    $item eq 'none' || grep($_ eq $item, @reconfigurationItems) or die( sprintf(
+            "Error: '%s' is not a valid argument for the --reconfigure option.", $item
+        ) );
     $options->{'reconfigure'} = $item;
 }
 
@@ -226,7 +226,7 @@ sub preseed
 
     return $options->{'preseed'} unless defined $file;
 
-    -f $file or die(sprintf('Preseed file not found: %s', $file));
+    -f $file or die( sprintf( 'Preseed file not found: %s', $file ) );
     $options->{'preseed'} = $file;
 }
 
@@ -245,7 +245,7 @@ sub listener
 
     return $options->{'listener'} unless defined $file;
 
-    -f $file or die(sprintf('Listener file not found: %s', $file));
+    -f $file or die( sprintf( 'Listener file not found: %s', $file ) );
     $options->{'listener'} = $file;
 }
 

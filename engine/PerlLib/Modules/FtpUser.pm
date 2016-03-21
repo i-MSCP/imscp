@@ -46,7 +46,7 @@ use parent 'Modules::Abstract';
 
 sub getType
 {
-	'FtpUser';
+    'FtpUser';
 }
 
 =item process($userId)
@@ -60,44 +60,44 @@ sub getType
 
 sub process
 {
-	my ($self, $userId) = @_;
+    my ($self, $userId) = @_;
 
-	my $rs = $self->_loadData($userId);
-	return $rs if $rs;
+    my $rs = $self->_loadData( $userId );
+    return $rs if $rs;
 
-	my @sql;
-	if(grep($_ eq $self->{'status'}, ( 'toadd', 'tochange', 'toenable' ))) {
-		$rs = $self->add();
-		@sql = (
-			'UPDATE ftp_users SET status = ? WHERE userid = ?',
-			$rs ? scalar getMessageByType('error') || 'Unknown error' : 'ok', $userId
-		);
-	} elsif($self->{'status'} eq 'todisable') {
-		$rs = $self->disable();
-		@sql = (
-			'UPDATE ftp_users SET status = ? WHERE userid = ?',
-			$rs ? scalar getMessageByType('error') || 'Unknown error' : 'disabled', $userId
-		);
-	} elsif($self->{'status'} eq 'todelete') {
-		$rs = $self->delete();
-		if($rs) {
-			@sql = (
-				'UPDATE ftp_users SET status = ? WHERE userid = ?',
-				scalar getMessageByType('error') || 'Unknown error',
-				$userId
-			);
-		} else {
-			@sql = ('DELETE FROM ftp_users WHERE userid = ?', $userId);
-		}
-	}
+    my @sql;
+    if (grep($_ eq $self->{'status'}, ( 'toadd', 'tochange', 'toenable' ))) {
+        $rs = $self->add();
+        @sql = (
+            'UPDATE ftp_users SET status = ? WHERE userid = ?',
+                $rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'ok', $userId
+        );
+    } elsif ($self->{'status'} eq 'todisable') {
+        $rs = $self->disable();
+        @sql = (
+            'UPDATE ftp_users SET status = ? WHERE userid = ?',
+                $rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'disabled', $userId
+        );
+    } elsif ($self->{'status'} eq 'todelete') {
+        $rs = $self->delete();
+        if ($rs) {
+            @sql = (
+                'UPDATE ftp_users SET status = ? WHERE userid = ?',
+                scalar getMessageByType( 'error' ) || 'Unknown error',
+                $userId
+            );
+        } else {
+            @sql = ('DELETE FROM ftp_users WHERE userid = ?', $userId);
+        }
+    }
 
-	my $ret = iMSCP::Database->factory()->doQuery('dummy', @sql);
-	unless(ref $ret eq 'HASH') {
-		error($ret);
-		return 1;
-	}
+    my $ret = iMSCP::Database->factory()->doQuery( 'dummy', @sql );
+    unless (ref $ret eq 'HASH') {
+        error( $ret );
+        return 1;
+    }
 
-	$rs;
+    $rs;
 }
 
 =back
@@ -117,21 +117,21 @@ sub process
 
 sub _loadData
 {
-	my ($self, $userId) = @_;
+    my ($self, $userId) = @_;
 
-	my $row = iMSCP::Database->factory()->doQuery('userid', 'SELECT * FROM ftp_users WHERE userid = ?', $userId);
-	unless(ref $row eq 'HASH') {
-		error($row);
-		return 1;
-	}
+    my $row = iMSCP::Database->factory()->doQuery( 'userid', 'SELECT * FROM ftp_users WHERE userid = ?', $userId );
+    unless (ref $row eq 'HASH') {
+        error( $row );
+        return 1;
+    }
 
-	unless($row->{$userId}) {
-		error(sprintf('Ftp user record with ID %s has not been found in database', $userId));
-		return 1;
-	}
+    unless ($row->{$userId}) {
+        error( sprintf( 'Ftp user record with ID %s has not been found in database', $userId ) );
+        return 1;
+    }
 
-	%{$self} = (%{$self}, %{$row->{$userId}});
-	0;
+    %{$self} = (%{$self}, %{$row->{$userId}});
+    0;
 }
 
 =item _getFtpdData($action)
@@ -145,27 +145,27 @@ sub _loadData
 
 sub _getFtpdData
 {
-	my ($self, $action) = @_;
+    my ($self, $action) = @_;
 
-	return %{$self->{'ftpd'}} if $self->{'ftpd'};
+    return %{$self->{'ftpd'}} if $self->{'ftpd'};
 
-	my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . (
-		$main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'}
-	);
+    my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.(
+        $main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'}
+    );
 
-	$self->{'ftpd'} = {
-		OWNER_ID => $self->{'admin_id'},
-		USERNAME => $self->{'userid'},
-		PASSWORD_CRYPT => $self->{'passwd'},
-		PASSWORD_CLEAR => $self->{'rawpasswd'},
-		SHELL => $self->{'shell'},
-		HOMEDIR => $self->{'homedir'},
-		USER_SYS_GID => $self->{'uid'},
-		USER_SYS_GID => $self->{'gid'},
-		USER_SYS_NAME => $userName,
-		USER_SYS_GNAME => $groupName
-	};
-	%{$self->{'ftpd'}};
+    $self->{'ftpd'} = {
+        OWNER_ID       => $self->{'admin_id'},
+        USERNAME       => $self->{'userid'},
+        PASSWORD_CRYPT => $self->{'passwd'},
+        PASSWORD_CLEAR => $self->{'rawpasswd'},
+        SHELL          => $self->{'shell'},
+        HOMEDIR        => $self->{'homedir'},
+        USER_SYS_GID   => $self->{'uid'},
+        USER_SYS_GID   => $self->{'gid'},
+        USER_SYS_NAME  => $userName,
+        USER_SYS_GNAME => $groupName
+    };
+    %{$self->{'ftpd'}};
 }
 
 =back

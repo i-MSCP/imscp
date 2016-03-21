@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -52,17 +52,17 @@ use vars qw/@EXPORT/;
 
 sub process
 {
-	my ($data, $tplContent) = @_;
-	$data = { } if ref $data ne 'HASH';
+    my ($data, $tplContent) = @_;
+    $data = { } if ref $data ne 'HASH';
 
-	for (keys %{$data}) {
-		next unless defined $data->{$_};
+    for (keys %{$data}) {
+        next unless defined $data->{$_};
 
-		my $regexp = sprintf('\\{%s\\}', quotemeta($_));
-		$tplContent =~ s/$regexp/$data->{$_}/gim
-	}
+        my $regexp = sprintf( '\\{%s\\}', quotemeta( $_ ) );
+        $tplContent =~ s/$regexp/$data->{$_}/gim
+    }
 
-	$tplContent;
+    $tplContent;
 }
 
 =item getBloc($beginTag, $endingTag, $tplContent, [$includeTags = false])
@@ -79,17 +79,17 @@ sub process
 
 sub getBloc
 {
-	my ($beginTag, $endingTag, $tplContent, $includeTags) = @_;
-	my $regexp = '[\t ]*' . quotemeta($beginTag) . '(.*?)[\t ]*' . quotemeta($endingTag);
-	my $ret = '';
+    my ($beginTag, $endingTag, $tplContent, $includeTags) = @_;
+    my $regexp = '[\t ]*'.quotemeta( $beginTag ).'(.*?)[\t ]*'.quotemeta( $endingTag );
+    my $ret = '';
 
-	if($includeTags) {
-		$ret = $1 if $tplContent =~ m/($regexp)/gims;
-	} elsif($tplContent =~ m/$regexp/gims) {
-		$ret = $1;
-	}
+    if ($includeTags) {
+        $ret = $1 if $tplContent =~ m/($regexp)/gims;
+    } elsif ($tplContent =~ m/$regexp/gims) {
+        $ret = $1;
+    }
 
-	$ret;
+    $ret;
 }
 
 =item replaceBloc($beginTag, $endingTag, $replacement, $tplContent, [$preserveTags = false])
@@ -107,16 +107,16 @@ sub getBloc
 
 sub replaceBloc
 {
-	my ($beginTag, $endingTag, $replacement, $tplContent, $preserveTags) = @_;
-	my $regexp = '([\t ]*' . quotemeta($beginTag) . '.*?' . quotemeta($endingTag) . ')';
+    my ($beginTag, $endingTag, $replacement, $tplContent, $preserveTags) = @_;
+    my $regexp = '([\t ]*'.quotemeta( $beginTag ).'.*?'.quotemeta( $endingTag ).')';
 
-	if($preserveTags) {
-		$tplContent =~ s/$regexp/$replacement$1/gis;
-	} else {
-		$tplContent =~ s/$regexp/$replacement/gis;
-	}
+    if ($preserveTags) {
+        $tplContent =~ s/$regexp/$replacement$1/gis;
+    } else {
+        $tplContent =~ s/$regexp/$replacement/gis;
+    }
 
-	$tplContent;
+    $tplContent;
 }
 
 =back

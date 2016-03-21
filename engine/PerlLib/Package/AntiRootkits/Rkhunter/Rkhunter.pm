@@ -45,8 +45,8 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-	require Package::AntiRootkits::Rkhunter::Installer;
-	Package::AntiRootkits::Rkhunter::Installer->getInstance()->preinstall();
+    require Package::AntiRootkits::Rkhunter::Installer;
+    Package::AntiRootkits::Rkhunter::Installer->getInstance()->preinstall();
 }
 
 =item install()
@@ -59,8 +59,8 @@ sub preinstall
 
 sub install
 {
-	require Package::AntiRootkits::Rkhunter::Installer;
-	Package::AntiRootkits::Rkhunter::Installer->getInstance()->install();
+    require Package::AntiRootkits::Rkhunter::Installer;
+    Package::AntiRootkits::Rkhunter::Installer->getInstance()->install();
 }
 
 =item uninstall()
@@ -73,8 +73,8 @@ sub install
 
 sub uninstall
 {
-	require Package::AntiRootkits::Rkhunter::Uninstaller;
-	Package::AntiRootkits::Rkhunter::Uninstaller->getInstance()->uninstall();
+    require Package::AntiRootkits::Rkhunter::Uninstaller;
+    Package::AntiRootkits::Rkhunter::Uninstaller->getInstance()->uninstall();
 }
 
 =item setEnginePermissions()
@@ -87,8 +87,8 @@ sub uninstall
 
 sub setEnginePermissions
 {
-	require Package::AntiRootkits::Rkhunter::Installer;
-	Package::AntiRootkits::Rkhunter::Installer->getInstance()->setEnginePermissions();
+    require Package::AntiRootkits::Rkhunter::Installer;
+    Package::AntiRootkits::Rkhunter::Installer->getInstance()->setEnginePermissions();
 }
 
 =item getDistroPackages()
@@ -101,7 +101,7 @@ sub setEnginePermissions
 
 sub getDistroPackages
 {
-	['rkhunter'];
+    [ 'rkhunter' ];
 }
 
 =back

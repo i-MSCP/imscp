@@ -32,7 +32,7 @@ use FileHandle;
 use parent 'Common::SingletonClass';
 
 # Unbuffered output is required.
-$|=1;
+$| = 1;
 
 =head1 DESCRIPTION
 
@@ -52,13 +52,12 @@ $|=1;
 
 sub resetLabels
 {
-	my %defaultLabels = (
-		'exit' => 'Abort', 'ok' => 'Ok', 'yes' => 'Yes', 'no' => 'No', 'cancel' => 'Back', 'help' => 'Help',
-		'extra' => undef
-	);
-
-	$_[0]->{'_opts'}->{"$_-label"} = $defaultLabels{$_} for keys %defaultLabels;
-	0;
+    my %defaultLabels = (
+        'exit'  => 'Abort', 'ok' => 'Ok', 'yes' => 'Yes', 'no' => 'No', 'cancel' => 'Back', 'help' => 'Help',
+        'extra' => undef
+    );
+    $_[0]->{'_opts'}->{"$_-label"} = $defaultLabels{$_} for keys %defaultLabels;
+    0;
 }
 
 =item fselect($file)
@@ -72,18 +71,18 @@ sub resetLabels
 
 sub fselect
 {
-	my $self = $_[0];
+    my $self = $_[0];
 
-	my $begin = $self->{'_opts'}->{'begin'};
-	$self->{'_opts'}->{'begin'} = undef;
-	$self->{'lines'} = $self->{'lines'} - 8;
+    my $begin = $self->{'_opts'}->{'begin'};
+    $self->{'_opts'}->{'begin'} = undef;
+    $self->{'lines'} = $self->{'lines'} - 8;
 
-	my ($ret, $output) = $self->_execute($_[1], undef, 'fselect');
+    my ($ret, $output) = $self->_execute( $_[1], undef, 'fselect' );
 
-	$self->{'_opts'}->{'begin'} = $begin;
-	$self->{'lines'} = $self->{'lines'} + 8;
+    $self->{'_opts'}->{'begin'} = $begin;
+    $self->{'lines'} = $self->{'lines'} + 8;
 
-	wantarray ? ($ret, $output) : $output;
+    wantarray ? ($ret, $output) : $output;
 }
 
 =item radiolist($text, \@choices, $default = '')
@@ -99,19 +98,19 @@ sub fselect
 
 sub radiolist
 {
-	my ($self, $text, $choices, $default) = @_;
+    my ($self, $text, $choices, $default) = @_;
 
-	$default ||= '';
+    $default ||= '';
 
-	my @init = ();
+    my @init = ();
 
-	s/_/ /g for (@{$choices}, $default); # Humanize
+    s/_/ /g for (@{$choices}, $default); # Humanize
 
-	push @init, (escapeShell($_), "''", $default eq $_ ? 'on' : 'off') for @{$choices};
+    push @init, (escapeShell( $_ ), "''", $default eq $_ ? 'on' : 'off') for @{$choices};
 
-	my ($ret, $choice) = $self->_textbox($text, 'radiolist', @{$choices} . " @init");
-	$choice =~ s/ /_/g; # Normalize
-	wantarray ? ($ret, $choice) : $choice;
+    my ($ret, $choice) = $self->_textbox( $text, 'radiolist', @{$choices}." @init" );
+    $choice =~ s/ /_/g; # Normalize
+    wantarray ? ($ret, $choice) : $choice;
 }
 
 =item checkbox($text, \$choices, @defaults = ())
@@ -127,20 +126,20 @@ sub radiolist
 
 sub checkbox
 {
-	my ($self, $text, $choices, @defaults) = @_;
+    my ($self, $text, $choices, @defaults) = @_;
 
-	my %values = map { $_ => 1 } @defaults;
-	my @init = ();
+    my %values = map { $_ => 1 } @defaults;
+    my @init = ();
 
-	s/_/ /g for (@{$choices}, @defaults); # Humanize
+    s/_/ /g for (@{$choices}, @defaults); # Humanize
 
-	push @init, (escapeShell($_), "''", $values{$_} ? 'on' : 'off') for @{$choices};
+    push @init, (escapeShell( $_ ), "''", $values{$_} ? 'on' : 'off') for @{$choices};
 
-	my ($ret, $output) = $self->_textbox($text, 'checklist', @{$choices} . " @init");
+    my ($ret, $output) = $self->_textbox( $text, 'checklist', @{$choices}." @init" );
 
-	@{$choices} = split /\n/, $output;
-	s/ /_/g for (@{$choices}, @defaults); # Normalize
-	wantarray ? ($ret, $choices) : $choices;
+    @{$choices} = split /\n/, $output;
+    s/ /_/g for (@{$choices}, @defaults); # Normalize
+    wantarray ? ($ret, $choices) : $choices;
 }
 
 =item tailbox($file)
@@ -154,7 +153,7 @@ sub checkbox
 
 sub tailbox
 {
-	($_[0]->_execute($_[1], undef, 'tailbox'))[0];
+    ($_[0]->_execute( $_[1], undef, 'tailbox' ))[0];
 }
 
 =item editbox($file)
@@ -168,7 +167,7 @@ sub tailbox
 
 sub editbox
 {
-	$_[0]->_execute($_[1], undef, 'editbox');
+    $_[0]->_execute( $_[1], undef, 'editbox' );
 }
 
 =item dselect($dir)
@@ -181,12 +180,12 @@ sub editbox
 
 sub dselect
 {
-	my $self = $_[0];
+    my $self = $_[0];
 
-	$self->{'lines'} = $self->{'lines'} - 8;
-	my ($ret, $output) = $self->_execute($_[1], undef, 'dselect');
-	$self->{'lines'} = $self->{'lines'} + 8;
-	wantarray ? ($ret, $output) : $output;
+    $self->{'lines'} = $self->{'lines'} - 8;
+    my ($ret, $output) = $self->_execute( $_[1], undef, 'dselect' );
+    $self->{'lines'} = $self->{'lines'} + 8;
+    wantarray ? ($ret, $output) : $output;
 }
 
 =item msgbox($text)
@@ -200,7 +199,7 @@ sub dselect
 
 sub msgbox
 {
-	($_[0]->_textbox($_[1], 'msgbox'))[0];
+    ($_[0]->_textbox( $_[1], 'msgbox' ))[0];
 }
 
 =item yesno($text)
@@ -214,7 +213,7 @@ sub msgbox
 
 sub yesno
 {
-	($_[0]->_textbox($_[1], 'yesno'))[0];
+    ($_[0]->_textbox( $_[1], 'yesno' ))[0];
 }
 
 =item inputbox($text, $init = '')
@@ -229,10 +228,10 @@ sub yesno
 
 sub inputbox
 {
-	my ($self, $text, $init) = @_;
+    my ($self, $text, $init) = @_;
 
-	$init ||= '';
-	$self->_textbox($text, 'inputbox', escapeShell($init));
+    $init ||= '';
+    $self->_textbox( $text, 'inputbox', escapeShell( $init ) );
 }
 
 =item passwordbox($text, $init = '')
@@ -247,11 +246,11 @@ sub inputbox
 
 sub passwordbox
 {
-	my ($self, $text, $init) = @_;
+    my ($self, $text, $init) = @_;
 
-	$init ||= '';
-	$self->{'_opts'}->{'insecure'} = '';
-	$self->_textbox($text, 'passwordbox', escapeShell($init));
+    $init ||= '';
+    $self->{'_opts'}->{'insecure'} = '';
+    $self->_textbox( $text, 'passwordbox', escapeShell( $init ) );
 }
 
 =item infobox($text)
@@ -265,15 +264,15 @@ sub passwordbox
 
 sub infobox
 {
-	my $self = $_[0];
+    my $self = $_[0];
 
-	my $clear = $self->{'_opts'}->{'clear'};
-	$self->{'_opts'}->{'clear'} = undef;
+    my $clear = $self->{'_opts'}->{'clear'};
+    $self->{'_opts'}->{'clear'} = undef;
 
-	my ($ret) = $self->_textbox($_[1], 'infobox');
+    my ($ret) = $self->_textbox( $_[1], 'infobox' );
 
-	$self->{'_opts'}->{'clear'} = $clear;
-	$ret;
+    $self->{'_opts'}->{'clear'} = $clear;
+    $ret;
 }
 
 =item startGauge($text, $percent = 0)
@@ -288,33 +287,33 @@ sub infobox
 
 sub startGauge
 {
-	my $self = shift;
+    my $self = shift;
 
-	return 0 if $main::noprompt || $self->{'gauge'};
+    return 0 if $main::noprompt || $self->{'gauge'};
 
-	my ($text, $percent) = @_;
+    my ($text, $percent) = @_;
 
-	$text = escapeShell($text);
-	$percent ||= 0;
-	$percent = $percent ? " $percent" : 0;
+    $text = escapeShell( $text );
+    $percent ||= 0;
+    $percent = $percent ? " $percent" : 0;
 
-	my $height = $self->{'autosize'} ? 0 : $self->{'lines'};
-	my $width = $self->{'autosize'} ? 0 : $self->{'columns'};
-	my $begin = $self->{'_opts'}->{'begin'};
-	$self->{'_opts'}->{'begin'} = undef;
+    my $height = $self->{'autosize'} ? 0 : $self->{'lines'};
+    my $width = $self->{'autosize'} ? 0 : $self->{'columns'};
+    my $begin = $self->{'_opts'}->{'begin'};
+    $self->{'_opts'}->{'begin'} = undef;
 
-	my $command = $self->_buildCommandOptions();
-	$command = "$self->{'bin'} $command --gauge $text $height $width $percent";
+    my $command = $self->_buildCommandOptions();
+    $command = "$self->{'bin'} $command --gauge $text $height $width $percent";
 
-	$self->{'_opts'}->{'begin'} = $begin;
-	$self->{'gauge'} = new FileHandle;
-	$self->{'gauge'}->autoflush(1);
-	$self->{'gauge'}->open("| $command") || fatal('Could not start gauge');
+    $self->{'_opts'}->{'begin'} = $begin;
+    $self->{'gauge'} = new FileHandle;
+    $self->{'gauge'}->autoflush( 1 );
+    $self->{'gauge'}->open( "| $command" ) || fatal( 'Could not start gauge' );
 
-	debugRegisterCallBack(sub { $self->endGauge(); });
+    debugRegisterCallBack( sub { $self->endGauge(); } );
 
-	$SIG{'PIPE'} = sub { $self->endGauge(); };
-	getExitCode($?);
+    $SIG{'PIPE'} = sub { $self->endGauge(); };
+    getExitCode( $? );
 }
 
 =item setGauge($value, $text = '')
@@ -329,16 +328,17 @@ sub startGauge
 
 sub setGauge
 {
-	my $self = shift;
+    my $self = shift;
 
-	return 0 if $main::noprompt || ! $self->{'gauge'};
+    return 0 if $main::noprompt || !$self->{'gauge'};
 
-	my ($percent, $text) = @_;
-	$text ||= '';
+    my ($percent, $text) = @_;
+    $text ||= '';
 
-	print {$self->{'gauge'}} (defined $text) ? sprintf("XXX\n%d\n%s\nXXX\n", $percent, $text) : sprintf("%d\n", $percent);
+    print {$self->{'gauge'}} (defined $text) ? sprintf( "XXX\n%d\n%s\nXXX\n", $percent, $text ) : sprintf( "%d\n",
+                $percent );
 
-	($self->{'gauge'}) ? 1 : 0;
+    ($self->{'gauge'}) ? 1 : 0;
 }
 
 =item endGauge()
@@ -351,13 +351,13 @@ sub setGauge
 
 sub endGauge
 {
-	my $self = shift;
+    my $self = shift;
 
-	return 0 if $main::noprompt || ! $self->{'gauge'};
+    return 0 if $main::noprompt || !$self->{'gauge'};
 
-	$self->{'gauge'}->close();
-	undef $self->{'gauge'};
-	0;
+    $self->{'gauge'}->close();
+    undef $self->{'gauge'};
+    0;
 }
 
 =item hasGauge()
@@ -370,9 +370,9 @@ sub endGauge
 
 sub hasGauge
 {
-	return 0 if $main::noprompt;
+    return 0 if $main::noprompt;
 
-	($_[0]->{'gauge'}) ? 1 : 0;
+    ($_[0]->{'gauge'}) ? 1 : 0;
 }
 
 =item set($option, $value)
@@ -387,13 +387,13 @@ sub hasGauge
 
 sub set
 {
-	my($self, $option, $value) = @_;
+    my ($self, $option, $value) = @_;
 
-	return undef unless $option && exists $self->{'_opts'}->{$option};
+    return undef unless $option && exists $self->{'_opts'}->{$option};
 
-	my $return = $self->{'_opts'}->{$option};
-	$self->{'_opts'}->{$option} = $value;
-	$return;
+    my $return = $self->{'_opts'}->{$option};
+    $self->{'_opts'}->{$option} = $value;
+    $return;
 }
 
 =back
@@ -412,75 +412,75 @@ sub set
 
 sub _init
 {
-	my $self = $_[0];
+    my $self = $_[0];
 
-	# Return specific exit status when ESC is pressed
-	$ENV{'DIALOG_ESC'} = 50;
+    # Return specific exit status when ESC is pressed
+    $ENV{'DIALOG_ESC'} = 50;
 
-	# We want get 30 as exit code when CANCEL button is pressed
-	$ENV{'DIALOG_CANCEL'} = 30;
+    # We want get 30 as exit code when CANCEL button is pressed
+    $ENV{'DIALOG_CANCEL'} = 30;
 
-	# Force usage of graphic lines (UNICODE values) when using putty (See #540)
-	$ENV{'NCURSES_NO_UTF8_ACS'} = '1';
+    # Force usage of graphic lines (UNICODE values) when using putty (See #540)
+    $ENV{'NCURSES_NO_UTF8_ACS'} = '1';
 
-	$self->{'autosize'} = undef;
-	$self->{'autoreset'} = 0;
-	$self->{'lines'} = undef;
-	$self->{'columns'} = undef;
+    $self->{'autosize'} = undef;
+    $self->{'autoreset'} = 0;
+    $self->{'lines'} = undef;
+    $self->{'columns'} = undef;
 
-	$self->{'_opts'}->{'backtitle'} ||= "i-MSCP - internet Multi Server Control Panel ($main::imscpConfig{'Version'})";
-	$self->{'_opts'}->{'title'} ||= 'i-MSCP Setup Dialog';
+    $self->{'_opts'}->{'backtitle'} ||= "i-MSCP - internet Multi Server Control Panel ($main::imscpConfig{'Version'})";
+    $self->{'_opts'}->{'title'} ||= 'i-MSCP Setup Dialog';
 
-	$self->{'_opts'}->{'colors'} = '';
-	$self->{'_opts'}->{'begin'} = [1, 0];
+    $self->{'_opts'}->{'colors'} = '';
+    $self->{'_opts'}->{'begin'} = [ 1, 0 ];
 
-	$self->{'_opts'}->{'ok-label'} ||= 'Ok';
-	$self->{'_opts'}->{'yes-label'} ||= 'Yes';
-	$self->{'_opts'}->{'no-label'} ||= 'No';
-	$self->{'_opts'}->{'cancel-label'} ||= 'Back';
-	$self->{'_opts'}->{'exit-label'} ||= 'Abort';
-	$self->{'_opts'}->{'help-label'} ||= 'Help';
-	$self->{'_opts'}->{'extra-label'} ||= undef;
+    $self->{'_opts'}->{'ok-label'} ||= 'Ok';
+    $self->{'_opts'}->{'yes-label'} ||= 'Yes';
+    $self->{'_opts'}->{'no-label'} ||= 'No';
+    $self->{'_opts'}->{'cancel-label'} ||= 'Back';
+    $self->{'_opts'}->{'exit-label'} ||= 'Abort';
+    $self->{'_opts'}->{'help-label'} ||= 'Help';
+    $self->{'_opts'}->{'extra-label'} ||= undef;
 
-	$self->{'_opts'}->{'extra-button'} //= undef;
-	$self->{'_opts'}->{'help-button'} //= undef;
+    $self->{'_opts'}->{'extra-button'} //= undef;
+    $self->{'_opts'}->{'help-button'} //= undef;
 
-	$self->{'_opts'}->{'defaultno'} //= undef;
-	$self->{'_opts'}->{'default-item'} ||= undef;
+    $self->{'_opts'}->{'defaultno'} //= undef;
+    $self->{'_opts'}->{'default-item'} ||= undef;
 
-	$self->{'_opts'}->{'no-cancel'} //= undef;
-	$self->{'_opts'}->{'no-ok'} //= undef;
-	$self->{'_opts'}->{'clear'} //= undef;
+    $self->{'_opts'}->{'no-cancel'} //= undef;
+    $self->{'_opts'}->{'no-ok'} //= undef;
+    $self->{'_opts'}->{'clear'} //= undef;
 
-	$self->{'_opts'}->{'column-separator'} = undef;
+    $self->{'_opts'}->{'column-separator'} = undef;
 
-	$self->{'_opts'}->{'cr-wrap'} = undef;
-	$self->{'_opts'}->{'no-collapse'} = undef;
-	$self->{'_opts'}->{'trim'} = undef;
-	$self->{'_opts'}->{'date-format'} = undef;
+    $self->{'_opts'}->{'cr-wrap'} = undef;
+    $self->{'_opts'}->{'no-collapse'} = undef;
+    $self->{'_opts'}->{'trim'} = undef;
+    $self->{'_opts'}->{'date-format'} = undef;
 
-	$self->{'_opts'}->{'help-status'} = undef;
-	$self->{'_opts'}->{'insecure'} = undef;
-	$self->{'_opts'}->{'item-help'} = undef;
-	$self->{'_opts'}->{'max-input'} = undef;
-	$self->{'_opts'}->{'no-shadow'} = undef;
-	$self->{'_opts'}->{'shadow'} = undef;
-	$self->{'_opts'}->{'single-quoted'} = undef;
-	$self->{'_opts'}->{'tab-correct'} = undef;
-	$self->{'_opts'}->{'tab-len'} = undef;
-	$self->{'_opts'}->{'timeout'} = undef;
+    $self->{'_opts'}->{'help-status'} = undef;
+    $self->{'_opts'}->{'insecure'} = undef;
+    $self->{'_opts'}->{'item-help'} = undef;
+    $self->{'_opts'}->{'max-input'} = undef;
+    $self->{'_opts'}->{'no-shadow'} = undef;
+    $self->{'_opts'}->{'shadow'} = undef;
+    $self->{'_opts'}->{'single-quoted'} = undef;
+    $self->{'_opts'}->{'tab-correct'} = undef;
+    $self->{'_opts'}->{'tab-len'} = undef;
+    $self->{'_opts'}->{'timeout'} = undef;
 
-	$self->{'_opts'}->{'height'} = undef;
-	$self->{'_opts'}->{'width'} = undef;
-	$self->{'_opts'}->{'aspect'} = undef;
+    $self->{'_opts'}->{'height'} = undef;
+    $self->{'_opts'}->{'width'} = undef;
+    $self->{'_opts'}->{'aspect'} = undef;
 
-	$self->{'_opts'}->{'separate-output'} = undef;
+    $self->{'_opts'}->{'separate-output'} = undef;
 
-	$self->_findBin($^O =~ /bsd$/ ? 'cdialog' : 'dialog');
-	#$self->_determineDialogVariant();
-	$self->_determineConsoleSize();
+    $self->_findBin( $^O =~ /bsd$/ ? 'cdialog' : 'dialog' );
+    #$self->_determineDialogVariant();
+    $self->_determineConsoleSize();
 
-	$self;
+    $self;
 }
 
 #=item _determineDialogVariant()
@@ -516,16 +516,16 @@ sub _init
 
 sub _determineConsoleSize
 {
-	my $self = $_[0];
+    my $self = $_[0];
 
-	execute($self->{'bin'} . ' --print-maxsize', \my $output, \my $error);
-	$error =~ /MaxSize:\s(\d+),\s(\d+)/;
-	$self->{'lines'} = (defined($1) && $1 != 0) ? $1 - 3 : 23;
-	$self->{'columns'} = (defined($2) && $2 != 0) ? $2 - 2 : 79;
-	error($error) unless ! $?;
-	debug("Lines->$self->{'lines'}");
-	debug("Columns->$self->{'columns'}");
-	$self;
+    execute( $self->{'bin'}.' --print-maxsize', \my $output, \my $error );
+    $error =~ /MaxSize:\s(\d+),\s(\d+)/;
+    $self->{'lines'} = (defined( $1 ) && $1 != 0) ? $1 - 3 : 23;
+    $self->{'columns'} = (defined( $2 ) && $2 != 0) ? $2 - 2 : 79;
+    error( $error ) unless !$?;
+    debug( "Lines->$self->{'lines'}" );
+    debug( "Columns->$self->{'columns'}" );
+    $self;
 }
 
 =item _findBin($variant)
@@ -538,12 +538,12 @@ sub _determineConsoleSize
 
 sub _findBin
 {
-	my ($self, $variant) = @_;
+    my ($self, $variant) = @_;
 
-	my $bindPath = iMSCP::ProgramFinder::find($variant);
-	fatal(sprintf('Could not find dialog program: %s', $variant)) unless $bindPath;
-	$self->{'bin'} = $bindPath;
-	$self;
+    my $bindPath = iMSCP::ProgramFinder::find( $variant );
+    fatal( sprintf( 'Could not find dialog program: %s', $variant ) ) unless $bindPath;
+    $self->{'bin'} = $bindPath;
+    $self;
 }
 
 =item _stripFormats($string)
@@ -557,10 +557,10 @@ sub _findBin
 
 sub _stripFormats
 {
-	my ($self, $string) = @_;
+    my ($self, $string) = @_;
 
-	$string =~ s/\\Z[0-9bBuUrRn]//gmi;
-	$string;
+    $string =~ s/\\Z[0-9bBuUrRn]//gmi;
+    $string;
 }
 
 =item _buildCommandOptions()
@@ -573,27 +573,27 @@ sub _stripFormats
 
 sub _buildCommandOptions
 {
-	my $self = $_[0];
+    my $self = $_[0];
 
-	my @options = ();
+    my @options = ();
 
-	for my $option(keys %{$self->{'_opts'}}) {
-		next unless defined $self->{'_opts'}->{$option};
+    for my $option(keys %{$self->{'_opts'}}) {
+        next unless defined $self->{'_opts'}->{$option};
 
-		# Add option
-		push @options, '--' . $option;
+        # Add option
+        push @options, '--'.$option;
 
-		next unless $self->{'_opts'}->{$option};
+        next unless $self->{'_opts'}->{$option};
 
-		# Add option arguments
-		if(ref $self->{'_opts'}->{$option} ne 'array') { # Only one argument
-			push @options, escapeShell($self->{'_opts'}->{$option});
-		} else { # Many arguments
-			push @options, escapeShell($_) for @{$self->{'_opts'}->{$option}};
-		}
-	}
+        # Add option arguments
+        if (ref $self->{'_opts'}->{$option} ne 'array') { # Only one argument
+            push @options, escapeShell( $self->{'_opts'}->{$option} );
+        } else { # Many arguments
+            push @options, escapeShell( $_ ) for @{$self->{'_opts'}->{$option}};
+        }
+    }
 
-	"@options";
+    "@options";
 }
 
 =item _restoreDefaults()
@@ -606,14 +606,14 @@ sub _buildCommandOptions
 
 sub _restoreDefaults
 {
-	my $self = $_[0];
+    my $self = $_[0];
 
-	for my $prop (keys %{$self->{'_opts'}}) {
-		$self->{'_opts'}->{$prop} = undef unless grep($_ eq $prop, qw/title backtitle colors begin/);
-	}
+    for my $prop (keys %{$self->{'_opts'}}) {
+        $self->{'_opts'}->{$prop} = undef unless grep($_ eq $prop, qw/title backtitle colors begin/);
+    }
 
-	$self->{'_opts'}->{'begin'} = [1, 0];
-	$self;
+    $self->{'_opts'}->{'begin'} = [ 1, 0 ];
+    $self;
 }
 
 =item _execute($text, $init, $type, [$background])
@@ -630,46 +630,46 @@ sub _restoreDefaults
 
 sub _execute
 {
-	my ($self, $text, $init, $type) = @_;
+    my ($self, $text, $init, $type) = @_;
 
-	$self->endGauge(); # Ensure that no gauge is currently running...
+    $self->endGauge(); # Ensure that no gauge is currently running...
 
-	if($main::noprompt) {
-		if($type ne 'infobox' && $type ne 'msgbox') {
-			error(sprintf('Failed dialog: %s', $text));
-			exit 5
-		}
+    if ($main::noprompt) {
+        if ($type ne 'infobox' && $type ne 'msgbox') {
+            error( sprintf( 'Failed dialog: %s', $text ) );
+            exit 5
+        }
 
-		return 0;
-	}
+        return 0;
+    }
 
-	$text = $self->_stripFormats($text) unless defined $self->{'_opts'}->{'colors'};
-	$self->{'_opts'}->{'separate-output'} = '' if $type eq 'checklist';
+    $text = $self->_stripFormats( $text ) unless defined $self->{'_opts'}->{'colors'};
+    $self->{'_opts'}->{'separate-output'} = '' if $type eq 'checklist';
 
-	my $command = $self->_buildCommandOptions();
+    my $command = $self->_buildCommandOptions();
 
-	$text = escapeShell($text);
-	$init = $init ? $init : '';
+    $text = escapeShell( $text );
+    $init = $init ? $init : '';
 
-	my $height = $self->{'autosize'} ? 0 : $self->{'lines'};
-	my $width = $self->{'autosize'} ? 0 : $self->{'columns'};
+    my $height = $self->{'autosize'} ? 0 : $self->{'lines'};
+    my $width = $self->{'autosize'} ? 0 : $self->{'columns'};
 
-	my $ret = execute("$self->{'bin'} $command --$type $text $height $width $init", undef, \my $output);
+    my $ret = execute( "$self->{'bin'} $command --$type $text $height $width $init", undef, \my $output );
 
-	$self->{'_opts'}->{'separate-output'} = undef;
-	$self->_init() if $self->{'autoreset'};
+    $self->{'_opts'}->{'separate-output'} = undef;
+    $self->_init() if $self->{'autoreset'};
 
-	# The exit status returned when pressing the "No" button matches the exit status returned for the "Cancel" button.
-	# Internally, no distinction is made... Therefore, for the "yesno" dialog box, we map exit status 30 to 1
-	# and we make the backup feature available through the ESC keystroke. This necessarely mean that user cannot abort
-	# through a "yesno" dialog box
-	if($ret == 50 && $type eq 'yesno') {
-		$ret = 30;
-	} elsif($ret == 30 && $type eq 'yesno') {
-		$ret = 1;
-	}
+    # The exit status returned when pressing the "No" button matches the exit status returned for the "Cancel" button.
+    # Internally, no distinction is made... Therefore, for the "yesno" dialog box, we map exit status 30 to 1
+    # and we make the backup feature available through the ESC keystroke. This necessarely mean that user cannot abort
+    # through a "yesno" dialog box
+    if ($ret == 50 && $type eq 'yesno') {
+        $ret = 30;
+    } elsif ($ret == 30 && $type eq 'yesno') {
+        $ret = 1;
+    }
 
-	wantarray ? ($ret, $output) : $output;
+    wantarray ? ($ret, $output) : $output;
 }
 
 =item _textbox($text, $type, $init = 0)
@@ -685,17 +685,17 @@ sub _execute
 
 sub _textbox
 {
-	my($self, $text, $type, $init) = @_;
+    my ($self, $text, $type, $init) = @_;
 
-	$init ||= 0;
-	my $autosize = $self->{'autosize'};
-	$self->{'autosize'} = undef;
-	my $begin = $self->{'_opts'}->{'begin'};
-	$self->{'_opts'}->{'begin'} = undef;
-	my ($ret, $output) = $self->_execute($text, $init, $type);
-	$self->{'_opts'}->{'begin'} = $begin;
-	$self->{'autosize'} = $autosize;
-	wantarray ? ($ret, $output) : $output;
+    $init ||= 0;
+    my $autosize = $self->{'autosize'};
+    $self->{'autosize'} = undef;
+    my $begin = $self->{'_opts'}->{'begin'};
+    $self->{'_opts'}->{'begin'} = undef;
+    my ($ret, $output) = $self->_execute( $text, $init, $type );
+    $self->{'_opts'}->{'begin'} = $begin;
+    $self->{'autosize'} = $autosize;
+    wantarray ? ($ret, $output) : $output;
 }
 
 =back

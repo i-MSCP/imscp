@@ -17,6 +17,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+=head1 NAME
+
+set-engine-permissions Set i-MSCP GUI permission
+
+=head1 SYNOPSIS
+
+ set-engine-permissions [options]...
+
+=cut
+
 use strict;
 use warnings;
 use FindBin;
@@ -27,6 +37,11 @@ use iMSCP::Servers;
 use iMSCP::Packages;
 use iMSCP::Getopt;
 use File::Basename;
+use POSIX qw(locale_h);
+use locale;
+
+setlocale(LC_ALL, 'C.UTF-8');
+$ENV{'LANG'} = 'C.UTF-8';
 
 newDebug('imscp-set-gui-permissions.log');
 
@@ -103,3 +118,9 @@ unless ($main::execmode eq 'setup') {
 }
 
 exit $rs;
+
+=head1 AUTHOR
+
+Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut

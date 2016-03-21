@@ -17,6 +17,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+=head1 NAME
+
+imscp-backup-all backup i-MSCP customer's data.
+
+=head1 SYNOPSIS
+
+ imscp-backup-all [options]...
+
+=cut
+
 use strict;
 use warnings;
 use FindBin;
@@ -31,234 +41,239 @@ use iMSCP::Mail;
 use Servers::mta;
 use File::Basename;
 use POSIX qw/strftime/;
+use POSIX qw(locale_h);
+use locale;
+
+setlocale(LC_ALL, 'C.UTF-8');
+$ENV{'LANG'} = 'C.UTF-8';
 
 sub run
 {
-	return 0 unless $main::imscpConfig{'BACKUP_DOMAINS'} eq 'yes';
+    return 0 unless $main::imscpConfig{'BACKUP_DOMAINS'} eq 'yes';
 
-	my $command = {
-		bzip2 => { extension => 'bz2', command => 'bzip2' },
-		pbzip2 => { extension => 'bz2', command => 'pbzip2' },
-		gzip => { extension => 'gz', command => 'gzip' },
-		pigz => { extension => 'gz', command => 'pigz' },
-		lzma => { extension => 'lzma', command => 'lzma' },
-		xz => { extension => 'xz', command => 'xz' }
-	};
+    my $command = {
+        bzip2 => { extension => 'bz2', command => 'bzip2' },
+        pbzip2 => { extension => 'bz2', command => 'pbzip2' },
+        gzip => { extension => 'gz', command => 'gzip' },
+        pigz => { extension => 'gz', command => 'pigz' },
+        lzma => { extension => 'lzma', command => 'lzma' },
+        xz => { extension => 'xz', command => 'xz' }
+    };
 
-	my $algo = lc($main::imscpConfig{'BACKUP_COMPRESS_ALGORITHM'});
-	my $level = $main::imscpConfig{'BACKUP_COMPRESS_LEVEL'};
-	$level = 1 unless $level =~ /^[1-9]$/;
+    my $algo = lc($main::imscpConfig{'BACKUP_COMPRESS_ALGORITHM'});
+    my $level = $main::imscpConfig{'BACKUP_COMPRESS_LEVEL'};
+    $level = 1 unless $level =~ /^[1-9]$/;
 
-	unless(exists $command->{$algo} || $algo eq 'no') {
-		error(sprintf('Backup algorithm is not supported: %s', $algo));
-		return 1;
-	}
+    unless(exists $command->{$algo} || $algo eq 'no') {
+        error(sprintf('Backup algorithm is not supported: %s', $algo));
+        return 1;
+    }
 
-	my ($ret, $rs, $stdout, $stderr) = (0, 0);
-	my $db = iMSCP::Database->factory();
-	my $mta = Servers::mta->factory();
-	my $canDumpDatabases = $db->can('dumpdb');
+    my ($ret, $rs, $stdout, $stderr) = (0, 0);
+    my $db = iMSCP::Database->factory();
+    my $mta = Servers::mta->factory();
+    my $canDumpDatabases = $db->can('dumpdb');
 
-	my $domainData = $db->doQuery(
-		'domain_id',
-		"
-			SELECT domain_id, domain_name, domain_admin_id, allowbackup, admin_sys_name, admin_sys_gname
-			FROM domain NNNER JOIN admin ON (admin_id = domain_admin_id)
-			WHERE domain_status = 'ok' AND allowbackup <> ''
-		"
-	);
+    my $domainData = $db->doQuery(
+        'domain_id',
+        "
+            SELECT domain_id, domain_name, domain_admin_id, allowbackup, admin_sys_name, admin_sys_gname
+            FROM domain NNNER JOIN admin ON (admin_id = domain_admin_id)
+            WHERE domain_status = 'ok' AND allowbackup <> ''
+        "
+    );
 
-	unless(ref $domainData eq 'HASH') {
-		error($domainData);
-		$ret = 1;
-	} else {
-		for my $mainDomainId(keys %{$domainData}) {
-			my @allowbackup = split '\|', $domainData->{$mainDomainId}->{'allowbackup'};
+    unless(ref $domainData eq 'HASH') {
+        error($domainData);
+        $ret = 1;
+    } else {
+        for my $mainDomainId(keys %{$domainData}) {
+            my @allowbackup = split '\|', $domainData->{$mainDomainId}->{'allowbackup'};
 
-			if (@allowbackup) {
-				my $mainDomainName = $domainData->{$mainDomainId}->{'domain_name'};
-				my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$mainDomainName";
-				my $bkpDir = "$homeDir/backups";
-				my $userName = $domainData->{$mainDomainId}->{'admin_sys_name'};
-				my $groupName = $domainData->{$mainDomainId}->{'admin_sys_gname'};
+            if (@allowbackup) {
+                my $mainDomainName = $domainData->{$mainDomainId}->{'domain_name'};
+                my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$mainDomainName";
+                my $bkpDir = "$homeDir/backups";
+                my $userName = $domainData->{$mainDomainId}->{'admin_sys_name'};
+                my $groupName = $domainData->{$mainDomainId}->{'admin_sys_gname'};
 
-				unless(-d $homeDir) { # Skip backup if home directory doesn't exist
-					warning(sprintf("The %s home directory doesn't exist. Skipping backup...", $homeDir));
-					next;
-				}
+                unless(-d $homeDir) { # Skip backup if home directory doesn't exist
+                    warning(sprintf("The %s home directory doesn't exist. Skipping backup...", $homeDir));
+                    next;
+                }
 
-				if(! -d $bkpDir) { # Create backups directory if doesn't already exists
-					my $isProtectedHomedir = 0;
+                if(! -d $bkpDir) { # Create backups directory if doesn't already exists
+                    my $isProtectedHomedir = 0;
 
-					# Unprotect parent directory if needed
-					if(isImmutable($homeDir)) {
-						$isProtectedHomedir = 1;
-						clearImmutable($homeDir);
-					}
+                    # Unprotect parent directory if needed
+                    if(isImmutable($homeDir)) {
+                        $isProtectedHomedir = 1;
+                        clearImmutable($homeDir);
+                    }
 
-					my $rs = iMSCP::Dir->new( dirname => $bkpDir )->make(
-						{ user => $userName, group => $groupName, mode => 0750 }
-					);
+                    my $rs = iMSCP::Dir->new( dirname => $bkpDir )->make(
+                        { user => $userName, group => $groupName, mode => 0750 }
+                    );
 
-					setImmutable($homeDir) if $isProtectedHomedir;
+                    setImmutable($homeDir) if $isProtectedHomedir;
 
-					if($rs) {
-						$ret ||= $rs;
-						next;
-					}
-				}
+                    if($rs) {
+                        $ret ||= $rs;
+                        next;
+                    }
+                }
 
-				# Remove any previous backup file
-				my $rs = execute("rm -fR $bkpDir/*", \$stdout, \$stderr);
-				debug($stdout) if $stdout;
-				error($stderr) if $stderr && $rs;
+                # Remove any previous backup file
+                my $rs = execute("rm -fR $bkpDir/*", \$stdout, \$stderr);
+                debug($stdout) if $stdout;
+                error($stderr) if $stderr && $rs;
 
-				if($rs) {
-					$ret ||= $rs;
-					next;
-				}
+                if($rs) {
+                    $ret ||= $rs;
+                    next;
+                }
 
-				my $ext = $algo ne 'no' ? ('.' . $command->{$algo}->{'extension'}) : '';
-				my $date = strftime "%Y.%m.%d-%H-%M", localtime;
+                my $ext = $algo ne 'no' ? ('.' . $command->{$algo}->{'extension'}) : '';
+                my $date = strftime "%Y.%m.%d-%H-%M", localtime;
 
-				# Backup customers webspace
-				if (grep($_ eq 'dmn', @allowbackup)) {
-					my @cmd = (
-						"tar -c -C $homeDir --exclude=logs --exclude=phptmp --exclude=backups --exclude=domain_disable_page .",
-						$algo eq 'no'
-							? "-f $bkpDir/$mainDomainName-backup-$date.tar"
-							: "| $command->{$algo}->{'command'} -$level > $bkpDir/$mainDomainName-backup-$date.tar$ext"
-					);
+                # Backup customers webspace
+                if (grep($_ eq 'dmn', @allowbackup)) {
+                    my @cmd = (
+                        "tar -c -C $homeDir --exclude=logs --exclude=phptmp --exclude=backups --exclude=domain_disable_page .",
+                        $algo eq 'no'
+                            ? "-f $bkpDir/$mainDomainName-backup-$date.tar"
+                            : "| $command->{$algo}->{'command'} -$level > $bkpDir/$mainDomainName-backup-$date.tar$ext"
+                    );
 
-					$rs = execute("@cmd", \$stdout, \$stderr);
-					debug($stdout) if $stdout;
+                    $rs = execute("@cmd", \$stdout, \$stderr);
+                    debug($stdout) if $stdout;
 
-					# Tar exit with status 1 only if some files were changed while being read. We want ignore this.
-					if($rs > 1) {
-						error($stderr) if $stderr;
-						error(sprintf('Could not backup %s', $homeDir)) if !$stderr;
-						$ret |= $rs;
-					}
+                    # Tar exit with status 1 only if some files were changed while being read. We want ignore this.
+                    if($rs > 1) {
+                        error($stderr) if $stderr;
+                        error(sprintf('Could not backup %s', $homeDir)) if !$stderr;
+                        $ret |= $rs;
+                    }
 
-					my $file = iMSCP::File->new( filename => "$bkpDir/$mainDomainName-backup-$date.tar$ext" );
-					$rs = $file->mode(0644);
-					$ret ||= $rs;
+                    my $file = iMSCP::File->new( filename => "$bkpDir/$mainDomainName-backup-$date.tar$ext" );
+                    $rs = $file->mode(0644);
+                    $ret ||= $rs;
 
-					$rs = $file->owner($userName, $groupName);
-					$ret ||= $rs;
-				}
+                    $rs = $file->owner($userName, $groupName);
+                    $ret ||= $rs;
+                }
 
-				# Backup all customer databases
-				if ($canDumpDatabases && grep($_ eq 'sql', @allowbackup)) {
-					my $dbData = $db->doQuery(
-						'sqld_name', 'SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?', $mainDomainId
-					);
-					unless (ref $dbData eq 'HASH') {
-						error($dbData);
-						$ret ||= 1;
-						next;
-					}
+                # Backup all customer databases
+                if ($canDumpDatabases && grep($_ eq 'sql', @allowbackup)) {
+                    my $dbData = $db->doQuery(
+                        'sqld_name', 'SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?', $mainDomainId
+                    );
+                    unless (ref $dbData eq 'HASH') {
+                        error($dbData);
+                        $ret ||= 1;
+                        next;
+                    }
 
-					for my $dbName(keys %{$dbData}) {
-						$rs = $db->dumpdb($dbName, "$bkpDir/$dbName.sql");
+                    for my $dbName(keys %{$dbData}) {
+                        $rs = $db->dumpdb($dbName, "$bkpDir/$dbName.sql");
 
-						if($rs) {
-							$ret ||= $rs;
-							next;
-						}
+                        if($rs) {
+                            $ret ||= $rs;
+                            next;
+                        }
 
-						my $file = iMSCP::File->new( filename => "$bkpDir/$dbName.sql" );
+                        my $file = iMSCP::File->new( filename => "$bkpDir/$dbName.sql" );
 
-						$rs = $file->mode(0644);
-						$ret ||= $rs;
+                        $rs = $file->mode(0644);
+                        $ret ||= $rs;
 
-						$rs = $file->owner($userName, $groupName);
-						$ret ||= $rs;
+                        $rs = $file->owner($userName, $groupName);
+                        $ret ||= $rs;
 
-						if($algo ne 'no') {
-							my @cmd = (
-								$command->{$algo}->{'command'}, "-$level", '--force', escapeShell("$bkpDir/$dbName.sql")
-							);
-							$rs = execute("@cmd", \$stdout, \$stderr);
-							debug($stdout) if $stdout;
-							error($stderr) if $stderr && $rs;
-							error(sprintf('Could not compress the %s database dump file', "$dbName.sql")) if $rs && !$stderr;
-							$ret ||= $rs;
-						}
-					}
-				}
+                        if($algo ne 'no') {
+                            my @cmd = (
+                                $command->{$algo}->{'command'}, "-$level", '--force', escapeShell("$bkpDir/$dbName.sql")
+                            );
+                            $rs = execute("@cmd", \$stdout, \$stderr);
+                            debug($stdout) if $stdout;
+                            error($stderr) if $stderr && $rs;
+                            error(sprintf('Could not compress the %s database dump file', "$dbName.sql")) if $rs && !$stderr;
+                            $ret ||= $rs;
+                        }
+                    }
+                }
 
-				# Backup all customer maildirs
-				if (grep($_ eq 'mail', @allowbackup)) {
-					my $mailData = $db->doQuery(
-						'mail_dir',
-						"
-							SELECT domain_name AS mail_dir, domain_id FROM domain
-							WHERE domain_id = ?
-							AND domain_status = 'ok'
-							UNION
-							SELECT CONCAT(subdomain_name, '.', domain_name), subdomain_id FROM subdomain
-							INNER JOIN domain USING(domain_id)
-							WHERE domain_id = ?
-							AND subdomain_status = 'ok'
-							UNION
-							SELECT alias_name, alias_id FROM domain_aliasses
-							WHERE domain_id = ? AND alias_status = 'ok'
-							UNION
-							SELECT CONCAT(subdomain_alias_name, '.', alias_name), subdomain_alias_id
-							FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
-							WHERE domain_id = ?
-							AND subdomain_alias_status = 'ok'
-						",
-						$mainDomainId, $mainDomainId, $mainDomainId, $mainDomainId
-					);
-					unless (ref $mailData eq 'HASH') {
-						error($mailData);
-						$ret ||= 1;
-						next;
-					}
+                # Backup all customer maildirs
+                if (grep($_ eq 'mail', @allowbackup)) {
+                    my $mailData = $db->doQuery(
+                        'mail_dir',
+                        "
+                            SELECT domain_name AS mail_dir, domain_id FROM domain
+                            WHERE domain_id = ?
+                            AND domain_status = 'ok'
+                            UNION
+                            SELECT CONCAT(subdomain_name, '.', domain_name), subdomain_id FROM subdomain
+                            INNER JOIN domain USING(domain_id)
+                            WHERE domain_id = ?
+                            AND subdomain_status = 'ok'
+                            UNION
+                            SELECT alias_name, alias_id FROM domain_aliasses
+                            WHERE domain_id = ? AND alias_status = 'ok'
+                            UNION
+                            SELECT CONCAT(subdomain_alias_name, '.', alias_name), subdomain_alias_id
+                            FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
+                            WHERE domain_id = ?
+                            AND subdomain_alias_status = 'ok'
+                        ",
+                        $mainDomainId, $mainDomainId, $mainDomainId, $mainDomainId
+                    );
+                    unless (ref $mailData eq 'HASH') {
+                        error($mailData);
+                        $ret ||= 1;
+                        next;
+                    }
 
-					for my $mailDir(keys %{$mailData}) {
-						my $mailDirPath = "$mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$mailDir";
+                    for my $mailDir(keys %{$mailData}) {
+                        my $mailDirPath = "$mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$mailDir";
 
-						if(-d $mailDirPath) {
-							my @cmd = (
-								"tar -c -C $mailDirPath .",
-								$algo eq 'no'
-									? "-f $bkpDir/mail-$mailDir-backup-$date.tar"
-									: "| $command->{$algo}->{'command'} -$level > $bkpDir/mail-$mailDir-backup-$date.tar$ext"
-							);
+                        if(-d $mailDirPath) {
+                            my @cmd = (
+                                "tar -c -C $mailDirPath .",
+                                $algo eq 'no'
+                                    ? "-f $bkpDir/mail-$mailDir-backup-$date.tar"
+                                    : "| $command->{$algo}->{'command'} -$level > $bkpDir/mail-$mailDir-backup-$date.tar$ext"
+                            );
 
-							$rs = execute("@cmd", \$stdout, \$stderr);
-							debug($stdout) if $stdout;
+                            $rs = execute("@cmd", \$stdout, \$stderr);
+                            debug($stdout) if $stdout;
 
-							# Tar exit with status 1 only if some files were changed while being read. We want ignore this.
-							if($rs > 1) {
-								error($stderr) if $stderr;
-								error(sprintf('Could not backup %s', $mailDir)) unless $stderr;
-								$ret |= $rs;
-							}
+                            # Tar exit with status 1 only if some files were changed while being read. We want ignore this.
+                            if($rs > 1) {
+                                error($stderr) if $stderr;
+                                error(sprintf('Could not backup %s', $mailDir)) unless $stderr;
+                                $ret |= $rs;
+                            }
 
-							my $file = iMSCP::File->new( filename => "$bkpDir/mail-$mailDir-backup-$date.tar$ext" );
-							$rs = $file->mode(0644);
-							$ret ||= $rs;
+                            my $file = iMSCP::File->new( filename => "$bkpDir/mail-$mailDir-backup-$date.tar$ext" );
+                            $rs = $file->mode(0644);
+                            $ret ||= $rs;
 
-							$rs = $file->owner($userName, $groupName);
-							$ret ||= $rs;
-						}
-					}
-				}
-			}
-		}
-	}
+                            $rs = $file->owner($userName, $groupName);
+                            $ret ||= $rs;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-	my @warningMessages = getMessageByType('warn');
-	iMSCP::Mail->new()->warnMsg("@warningMessages") if @warningMessages;
+    my @warningMessages = getMessageByType('warn');
+    iMSCP::Mail->new()->warnMsg("@warningMessages") if @warningMessages;
 
-	my @errorMessages = getMessageByType('error');
-	iMSCP::Mail->new()->errmsg("@errorMessages") if @errorMessages;
+    my @errorMessages = getMessageByType('error');
+    iMSCP::Mail->new()->errmsg("@errorMessages") if @errorMessages;
 
-	$ret;
+    $ret;
 }
 
 newDebug('imscp-backup-all.log');
@@ -280,3 +295,9 @@ $bootstrapper->boot({ norequirements => 'yes', nofail => 'yes', nolock => 'yes',
 my $rs = run();
 $bootstrapper->unlock('/tmp/imscp-backup-all.lock');
 exit $rs;
+
+=head1 AUTHOR
+
+i-MSCP Team <team@i-mscp.net>
+
+=cut

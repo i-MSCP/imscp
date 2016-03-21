@@ -18,50 +18,50 @@
 # Portions created by Initial Developer are Copyright (C) 2001-2006
 # by moleSoftware GmbH. All Rights Reserved.
 #
-# Portions created by the ispCP Team are Copyright (C) 2006-2010 by
+# Portions created by the ispCP Team are Copyright (C) 2006-2016 by
 # isp Control Panel. All Rights Reserved.
 #
 # Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
 # internet Multi Server Control Panel. All Rights Reserved.
 
 BEGIN {
-	my %needed = (
-		'DBI'=> '',
-		DBD::mysql => '',
-		MIME::Entity => '',
-		Crypt::CBC => '',
-		MIME::Base64 => '',
-		File::Basename => '',
-		File::Path => '',
-		File::Temp => 'qw(tempdir)',
-		File::Copy::Recursive => 'qw(rcopy)',
-		Net::LibIDN => 'qw/idn_to_ascii idn_to_unicode/'
-	);
+    my %needed = (
+        'DBI'                 => '',
+        DBD::mysql            => '',
+        MIME::Entity          => '',
+        Crypt::CBC            => '',
+        MIME::Base64          => '',
+        File::Basename        => '',
+        File::Path            => '',
+        File::Temp            => 'qw(tempdir)',
+        File::Copy::Recursive => 'qw(rcopy)',
+        Net::LibIDN           => 'qw/idn_to_ascii idn_to_unicode/'
+    );
 
-	my ($mod, $mod_err, $mod_missing) = ('', '_off_', '');
+    my ($mod, $mod_err, $mod_missing) = ('', '_off_', '');
 
-	for $mod (keys %needed) {
-		if (eval "require $mod") {
-			eval "use $mod $needed{$mod}";
-		} else {
-			print STDERR "\n[FATAL] Module [$mod] WAS NOT FOUND !\n" ;
+    for $mod (keys %needed) {
+        if (eval "require $mod") {
+            eval "use $mod $needed{$mod}";
+        } else {
+            print STDERR "\n[FATAL] Module [$mod] WAS NOT FOUND !\n";
 
-			$mod_err = '_on_';
+            $mod_err = '_on_';
 
-			if ($mod_missing eq '') {
-				$mod_missing .= $mod;
-			} else {
-				$mod_missing .= ", $mod";
-			}
-		}
-	}
+            if ($mod_missing eq '') {
+                $mod_missing .= $mod;
+            } else {
+                $mod_missing .= ", $mod";
+            }
+        }
+    }
 
-	if ($mod_err eq '_on_') {
-		print STDERR "\nModules [$mod_missing] WAS NOT FOUND in your system...\n";
-		exit 1;
-	} else {
-		$| = 1;
-	}
+    if ($mod_err eq '_on_') {
+        print STDERR "\nModules [$mod_missing] WAS NOT FOUND in your system...\n";
+        exit 1;
+    } else {
+        $| = 1;
+    }
 }
 
 use strict;
@@ -76,19 +76,19 @@ require 'imscp_common_methods.pl';
 
 # Load i-MSCP configuration from the imscp.conf file
 
-if(-f '/usr/local/etc/imscp/imscp.conf'){
-	$main::cfg_file = '/usr/local/etc/imscp/imscp.conf';
+if (-f '/usr/local/etc/imscp/imscp.conf') {
+    $main::cfg_file = '/usr/local/etc/imscp/imscp.conf';
 } else {
-	$main::cfg_file = '/etc/imscp/imscp.conf';
+    $main::cfg_file = '/etc/imscp/imscp.conf';
 }
 
-my $rs = get_conf($main::cfg_file);
-die('FATAL: Unable to load imscp.conf file.') if $rs;
+my $rs = get_conf( $main::cfg_file );
+die( 'FATAL: Unable to load imscp.conf file.' ) if $rs;
 
 # Enable debug mode if needed
 
 if ($main::cfg{'DEBUG'}) {
-	$main::engine_debug = '_on_';
+    $main::engine_debug = '_on_';
 }
 
 # Load i-MSCP Db key and initialization vector
@@ -102,14 +102,14 @@ require "$key_file" if -f $key_file;
 # Check for i-MSCP Db key and initialization vector
 
 if ($db_pass_key eq '{KEY}' || $db_pass_iv eq '{IV}') {
-	print STDERR ("Key file not found at $main::cfg{'CONF_DIR'}/imscp-db-keys. Run i-MSCP setup script to fix.");
-	exit 1;
+    print STDERR ("Key file not found at $main::cfg{'CONF_DIR'}/imscp-db-keys. Run i-MSCP setup script to fix.");
+    exit 1;
 }
 
 $main::db_pass_key = $db_pass_key;
 $main::db_pass_iv = $db_pass_iv;
 
-die('FATAL: Unable to load database parameters') if setup_db_vars();
+die( 'FATAL: Unable to load database parameters' ) if setup_db_vars();
 
 # Lock file system variables
 

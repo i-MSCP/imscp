@@ -48,8 +48,8 @@ set of programs and hacks designed to take control of a target machine by using 
 
 sub preinstall
 {
-	require Package::AntiRootkits::Chkrootkit::Installer;
-	Package::AntiRootkits::Chkrootkit::Installer->getInstance()->preinstall();
+    require Package::AntiRootkits::Chkrootkit::Installer;
+    Package::AntiRootkits::Chkrootkit::Installer->getInstance()->preinstall();
 }
 
 =item install()
@@ -62,8 +62,8 @@ sub preinstall
 
 sub install
 {
-	require Package::AntiRootkits::Chkrootkit::Installer;
-	Package::AntiRootkits::Chkrootkit::Installer->getInstance()->install();
+    require Package::AntiRootkits::Chkrootkit::Installer;
+    Package::AntiRootkits::Chkrootkit::Installer->getInstance()->install();
 }
 
 =item uninstall()
@@ -76,8 +76,8 @@ sub install
 
 sub uninstall
 {
-	require Package::AntiRootkits::Chkrootkit::Uninstaller;
-	Package::AntiRootkits::Chkrootkit::Uninstaller->getInstance()->uninstall();
+    require Package::AntiRootkits::Chkrootkit::Uninstaller;
+    Package::AntiRootkits::Chkrootkit::Uninstaller->getInstance()->uninstall();
 }
 
 =item setEnginePermissions()
@@ -90,8 +90,8 @@ sub uninstall
 
 sub setEnginePermissions
 {
-	require Package::AntiRootkits::Chkrootkit::Installer;
-	Package::AntiRootkits::Chkrootkit::Installer->getInstance()->setEnginePermissions();
+    require Package::AntiRootkits::Chkrootkit::Installer;
+    Package::AntiRootkits::Chkrootkit::Installer->getInstance()->setEnginePermissions();
 }
 
 =item getDistroPackages()
@@ -104,7 +104,7 @@ sub setEnginePermissions
 
 sub getDistroPackages
 {
-	['chkrootkit'];
+    [ 'chkrootkit' ];
 }
 
 =back

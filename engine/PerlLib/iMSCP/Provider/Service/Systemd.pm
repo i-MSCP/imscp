@@ -70,7 +70,7 @@ sub isEnabled
 {
     my ($self, $service) = @_;
 
-    $self->_exec($commands{'systemctl'}, '--quiet', 'is-enabled', "$service.service") == 0;
+    $self->_exec( $commands{'systemctl'}, '--quiet', 'is-enabled', "$service.service" ) == 0;
 }
 
 =item enable($service)
@@ -86,7 +86,7 @@ sub enable
 {
     my ($self, $service) = @_;
 
-    $self->_exec($commands{'systemctl'}, '--force', '--quiet', 'enable', "$service.service") == 0;
+    $self->_exec( $commands{'systemctl'}, '--force', '--quiet', 'enable', "$service.service" ) == 0;
 }
 
 =item disable($service)
@@ -102,7 +102,7 @@ sub disable
 {
     my ($self, $service) = @_;
 
-    $self->_exec($commands{'systemctl'}, '--quiet', 'disable', "$service.service") == 0;
+    $self->_exec( $commands{'systemctl'}, '--quiet', 'disable', "$service.service" ) == 0;
 }
 
 =item remove($service)
@@ -118,16 +118,16 @@ sub remove
 {
     my ($self, $service) = @_;
 
-    return 0 unless $self->stop($service) && $self->disable($service);
+    return 0 unless $self->stop( $service ) && $self->disable( $service );
 
     local $@;
 
-    if (my $unitFilePath = eval { $self->getUnitFilePath($service); }) {
+    if (my $unitFilePath = eval { $self->getUnitFilePath( $service ); }) {
         delete $unitFilePathsCache{$service};
-        return 0 if iMSCP::File->new(filename => $unitFilePath)->delFile();
+        return 0 if iMSCP::File->new( filename => $unitFilePath )->delFile();
     }
 
-    $self->_exec($commands{'systemctl'}, 'daemon-reload') == 0;
+    $self->_exec( $commands{'systemctl'}, 'daemon-reload' ) == 0;
 }
 
 =item start($service)
@@ -143,7 +143,7 @@ sub start
 {
     my ($self, $service) = @_;
 
-    $self->_exec($commands{'systemctl'}, 'start', "$service.service") == 0;
+    $self->_exec( $commands{'systemctl'}, 'start', "$service.service" ) == 0;
 }
 
 =item stop($service)
@@ -159,9 +159,9 @@ sub stop
 {
     my ($self, $service) = @_;
 
-    return 1 unless $self->isRunning($service);
+    return 1 unless $self->isRunning( $service );
 
-    $self->_exec($commands{'systemctl'}, 'stop', "$service.service") == 0;
+    $self->_exec( $commands{'systemctl'}, 'stop', "$service.service" ) == 0;
 }
 
 =item restart($service)
@@ -177,11 +177,11 @@ sub restart
 {
     my ($self, $service) = @_;
 
-    if ($self->isRunning($service)) {
-        return $self->_exec($commands{'systemctl'}, 'restart', "$service.service") == 0;
+    if ($self->isRunning( $service )) {
+        return $self->_exec( $commands{'systemctl'}, 'restart', "$service.service" ) == 0;
     }
 
-    $self->_exec($commands{'systemctl'}, 'start', "$service.service") == 0;
+    $self->_exec( $commands{'systemctl'}, 'start', "$service.service" ) == 0;
 }
 
 =item reload($service)
@@ -197,11 +197,11 @@ sub reload
 {
     my ($self, $service) = @_;
 
-    if ($self->isRunning($service)) {
-        return $self->_exec($commands{'systemctl'}, 'reload', "$service.service") == 0;
+    if ($self->isRunning( $service )) {
+        return $self->_exec( $commands{'systemctl'}, 'reload', "$service.service" ) == 0;
     }
 
-    $self->start($service);
+    $self->start( $service );
 }
 
 =item isRunning($service)
@@ -217,7 +217,7 @@ sub isRunning
 {
     my ($self, $service) = @_;
 
-    $self->_exec($commands{'systemctl'}, 'is-active', "$service.service") == 0;
+    $self->_exec( $commands{'systemctl'}, 'is-active', "$service.service" ) == 0;
 }
 
 =item getUnitFilePath($service)
@@ -233,7 +233,7 @@ sub getUnitFilePath
 {
     my ($self, $service) = @_;
 
-    $self->_searchUnitFile($service);
+    $self->_searchUnitFile( $service );
 }
 
 =back
@@ -256,7 +256,7 @@ sub _isSystemd
     my ($self, $service) = @_;
 
     local $@;
-    eval { $self->_searchUnitFile($service); };
+    eval { $self->_searchUnitFile( $service ); };
 }
 
 =item _searchUnitFile($service)
@@ -275,11 +275,11 @@ sub _searchUnitFile
     return $unitFilePathsCache{$service} if $unitFilePathsCache{$service};
 
     for my $path(@unitFilePaths) {
-        my $filepath = File::Spec->join($path, $service.'.service');
+        my $filepath = File::Spec->join( $path, $service.'.service' );
         return $unitFilePathsCache{$service} = $filepath if -f $filepath;
     }
 
-    die(sprintf('Could not find systemd service unit file for the %s service', $service));
+    die( sprintf( 'Could not find systemd service unit file for the %s service', $service ) );
 }
 
 =back

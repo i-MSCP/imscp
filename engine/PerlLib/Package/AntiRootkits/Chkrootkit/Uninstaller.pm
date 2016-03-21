@@ -46,7 +46,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	$_[0]->_restoreDebianConfig();
+    $_[0]->_restoreDebianConfig();
 }
 
 =back
@@ -65,9 +65,9 @@ sub uninstall
 
 sub _restoreDebianConfig
 {
-	return 0 unless -f '/etc/cron.daily/chkrootkit.disabled';
+    return 0 unless -f '/etc/cron.daily/chkrootkit.disabled';
 
-	iMSCP::File->new( filename => '/etc/cron.daily/chkrootkit.disabled' )->moveFile( '/etc/cron.daily/chkrootkit' );
+    iMSCP::File->new( filename => '/etc/cron.daily/chkrootkit.disabled' )->moveFile( '/etc/cron.daily/chkrootkit' );
 }
 
 =back

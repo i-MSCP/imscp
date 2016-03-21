@@ -64,53 +64,53 @@ sub process
 {
     my ($self, $pluginId) = @_;
 
-    my $rs = $self->_loadData($pluginId);
+    my $rs = $self->_loadData( $pluginId );
     return $rs if $rs;
 
     my $status = $self->{'plugin_status'};
     my $pluginName = $self->{'plugin_name'};
 
-    eval { $self->{$_} = decode_json($self->{$_}) for qw/info config config_prev/; };
+    eval { $self->{$_} = decode_json( $self->{$_} ) for qw/info config config_prev/; };
     unless ($@) {
         if ($status eq 'enabled') {
             $self->{'action'} = 'run';
-            $rs = $self->_run($pluginName);
+            $rs = $self->_run( $pluginName );
         } elsif ($status eq 'toinstall') {
             $self->{'action'} = 'install';
-            $rs = $self->_install($pluginName);
+            $rs = $self->_install( $pluginName );
         } elsif ($status eq 'tochange') {
             $self->{'action'} = 'change';
-            $rs = $self->_change($pluginName);
+            $rs = $self->_change( $pluginName );
         } elsif ($status eq 'toupdate') {
             $self->{'action'} = 'update';
-            $rs = $self->_update($pluginName);
+            $rs = $self->_update( $pluginName );
         } elsif ($status eq 'touninstall') {
             $self->{'action'} = 'uninstall';
-            $rs = $self->_uninstall($pluginName);
+            $rs = $self->_uninstall( $pluginName );
         } elsif ($status eq 'toenable') {
             $self->{'action'} = 'enable';
-            $rs = $self->_enable($pluginName);
+            $rs = $self->_enable( $pluginName );
         } elsif ($status eq 'todisable') {
             $self->{'action'} = 'disable';
-            $rs = $self->_disable($pluginName);
+            $rs = $self->_disable( $pluginName );
         } else {
-            error("$pluginName plugin status is corrupted.");
+            error( "$pluginName plugin status is corrupted." );
             return 1;
         }
     } else {
-        error(sprintf('Could not decode plugin JSON property: %s', $@));
+        error( sprintf( 'Could not decode plugin JSON property: %s', $@ ) );
         $rs = 1;
     }
 
-    $self->{'eventManager'}->trigger('onBeforeSetPluginStatus', $pluginName, \$status);
+    $self->{'eventManager'}->trigger( 'onBeforeSetPluginStatus', $pluginName, \$status );
     my @sql = (
         "UPDATE plugin SET ".($rs ? 'plugin_error' : 'plugin_status')." = ? WHERE plugin_id = ?",
-            $rs ? (scalar getMessageByType('error') || 'Unknown error') : $STATUS_TO_NEW_STATUS{$status},
+            $rs ? (scalar getMessageByType( 'error' ) || 'Unknown error') : $STATUS_TO_NEW_STATUS{$status},
         $pluginId
     );
-    my $qrs = $self->{'db'}->doQuery('dummy', @sql);
+    my $qrs = $self->{'db'}->doQuery( 'dummy', @sql );
     unless (ref $qrs eq 'HASH') {
-        error($qrs);
+        error( $qrs );
         $rs ||= 1;
     }
 
@@ -164,10 +164,10 @@ sub _loadData
         $pluginId
     );
     unless (ref $row eq 'HASH') {
-        error($row);
+        error( $row );
         return 1;
     } elsif (!exists $row->{$pluginId}) {
-        error(sprintf('Data for plugin with ID %s were not found in database', $pluginId));
+        error( sprintf( 'Data for plugin with ID %s were not found in database', $pluginId ) );
         return 1
     }
 
@@ -188,10 +188,10 @@ sub _install
 {
     my ($self, $pluginName) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger('onBeforeInstallPlugin', $pluginName);
-    $rs ||= $self->_call($pluginName, 'install');
-    $rs ||= $self->{'eventManager'}->trigger('onAfterInstallPlugin', $pluginName);
-    $rs ||= $self->_enable($pluginName);
+    my $rs = $self->{'eventManager'}->trigger( 'onBeforeInstallPlugin', $pluginName );
+    $rs ||= $self->_call( $pluginName, 'install' );
+    $rs ||= $self->{'eventManager'}->trigger( 'onAfterInstallPlugin', $pluginName );
+    $rs ||= $self->_enable( $pluginName );
 }
 
 =item _uninstall($pluginName)
@@ -207,9 +207,9 @@ sub _uninstall
 {
     my ($self, $pluginName) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger('onBeforeUninstallPlugin', $pluginName);
-    $rs ||= $self->_call($pluginName, 'uninstall');
-    $rs ||= $self->{'eventManager'}->trigger('onAfterUninstallPlugin', $pluginName);;
+    my $rs = $self->{'eventManager'}->trigger( 'onBeforeUninstallPlugin', $pluginName );
+    $rs ||= $self->_call( $pluginName, 'uninstall' );
+    $rs ||= $self->{'eventManager'}->trigger( 'onAfterUninstallPlugin', $pluginName );;
 }
 
 =item _enable($pluginName)
@@ -225,9 +225,9 @@ sub _enable
 {
     my ($self, $pluginName) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger('onBeforeEnablePlugin', $pluginName);
-    $rs ||= $self->_call($pluginName, 'enable');
-    $rs ||= $self->{'eventManager'}->trigger('onAfterEnablePlugin', $pluginName);
+    my $rs = $self->{'eventManager'}->trigger( 'onBeforeEnablePlugin', $pluginName );
+    $rs ||= $self->_call( $pluginName, 'enable' );
+    $rs ||= $self->{'eventManager'}->trigger( 'onAfterEnablePlugin', $pluginName );
 }
 
 =item _disable($pluginName)
@@ -243,9 +243,9 @@ sub _disable
 {
     my ($self, $pluginName) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger('onBeforeDisablePlugin', $pluginName);
-    $rs ||= $self->_call($pluginName, 'disable');
-    $rs ||= $self->{'eventManager'}->trigger('onAfterDisablePlugin', $pluginName);
+    my $rs = $self->{'eventManager'}->trigger( 'onBeforeDisablePlugin', $pluginName );
+    $rs ||= $self->_call( $pluginName, 'disable' );
+    $rs ||= $self->{'eventManager'}->trigger( 'onAfterDisablePlugin', $pluginName );
 }
 
 =item _change($pluginName)
@@ -261,10 +261,10 @@ sub _change
 {
     my ($self, $pluginName) = @_;
 
-    my $rs = $self->_disable($pluginName);
-    $rs ||= $self->{'eventManager'}->trigger('onBeforeChangePlugin', $pluginName);
-    $rs ||= $self->_call($pluginName, 'change');
-    $rs ||= $self->{'eventManager'}->trigger('onAfterChangePlugin', $pluginName);
+    my $rs = $self->_disable( $pluginName );
+    $rs ||= $self->{'eventManager'}->trigger( 'onBeforeChangePlugin', $pluginName );
+    $rs ||= $self->_call( $pluginName, 'change' );
+    $rs ||= $self->{'eventManager'}->trigger( 'onAfterChangePlugin', $pluginName );
     return $rs if $rs;
 
     if ($self->{'info'}->{'__need_change__'}) {
@@ -272,16 +272,16 @@ sub _change
         my $qrs = $self->{'db'}->doQuery(
             'u',
             'UPDATE plugin SET plugin_info = ?, plugin_config_prev = plugin_config WHERE plugin_name = ?',
-            encode_json($self->{'info'}),
+            encode_json( $self->{'info'} ),
             $pluginName
         );
         unless (ref $qrs eq 'HASH') {
-            error($qrs);
+            error( $qrs );
             return 1;
         }
     }
 
-    $self->_enable($pluginName);
+    $self->_enable( $pluginName );
 }
 
 =item _update($pluginName)
@@ -297,45 +297,45 @@ sub _update
 {
     my ($self, $pluginName) = @_;
 
-    my $rs = $self->_disable($pluginName);
-    $rs ||= $self->{'eventManager'}->trigger('onBeforeUpdatePlugin', $pluginName);
-    $rs ||= $self->_call($pluginName, 'update', $self->{'info'}->{'version'}, $self->{'info'}->{'__nversion__'});
+    my $rs = $self->_disable( $pluginName );
+    $rs ||= $self->{'eventManager'}->trigger( 'onBeforeUpdatePlugin', $pluginName );
+    $rs ||= $self->_call( $pluginName, 'update', $self->{'info'}->{'version'}, $self->{'info'}->{'__nversion__'} );
     return $rs if $rs;
 
     $self->{'info'}->{'version'} = $self->{'info'}->{'__nversion__'};
     my $qrs = $self->{'db'}->doQuery(
-        'u', 'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', encode_json($self->{'info'}), $pluginName
+        'u', 'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', encode_json( $self->{'info'} ), $pluginName
     );
     unless (ref $qrs eq 'HASH') {
-        error($qrs);
+        error( $qrs );
         return 1;
     }
 
-    $rs = $self->{'eventManager'}->trigger('onAfterUpdatePlugin', $pluginName);
+    $rs = $self->{'eventManager'}->trigger( 'onAfterUpdatePlugin', $pluginName );
     return $rs if $rs;
 
     if ($self->{'info'}->{'__need_change__'}) {
-        $rs = $self->{'eventManager'}->trigger('onBeforeChangePlugin', $pluginName);
-        $rs ||= $self->_call($pluginName, 'change');
+        $rs = $self->{'eventManager'}->trigger( 'onBeforeChangePlugin', $pluginName );
+        $rs ||= $self->_call( $pluginName, 'change' );
         return $rs if $rs;
 
         $self->{'info'}->{'__need_change__'} = JSON::false;
         $qrs = $self->{'db'}->doQuery(
             'u',
             'UPDATE plugin SET plugin_info = ?, plugin_config_prev = plugin_config WHERE plugin_name = ?',
-            encode_json($self->{'info'}),
+            encode_json( $self->{'info'} ),
             $pluginName
         );
         unless (ref $qrs eq 'HASH') {
-            error($qrs);
+            error( $qrs );
             return 1
         }
 
-        $rs = $self->{'eventManager'}->trigger('onAfterChangePlugin', $pluginName);
+        $rs = $self->{'eventManager'}->trigger( 'onAfterChangePlugin', $pluginName );
         return $rs if $rs;
     }
 
-    $self->_enable($pluginName);
+    $self->_enable( $pluginName );
 }
 
 =item _run($pluginName)
@@ -351,9 +351,9 @@ sub _run
 {
     my ($self, $pluginName) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger('onBeforeRunPlugin', $pluginName);
-    $rs ||= $self->_call($pluginName, 'run');
-    $rs ||= $self->{'eventManager'}->trigger('onAfterRunPlugin', $pluginName);
+    my $rs = $self->{'eventManager'}->trigger( 'onBeforeRunPlugin', $pluginName );
+    $rs ||= $self->_call( $pluginName, 'run' );
+    $rs ||= $self->{'eventManager'}->trigger( 'onAfterRunPlugin', $pluginName );
 }
 
 =item _call($name, $method [, $fromVersion = undef [, $toVersion = undef ]])
@@ -378,7 +378,7 @@ sub _call
     eval { require $backendPluginFile; };
     if ($@) {
         # We got an error due to a compile time error or missing file
-        error($@);
+        error( $@ );
         return 1;
     }
 
@@ -388,7 +388,7 @@ sub _call
         # Turn any warning from plugin into exception
         local $SIG{'__WARN__'} = sub { die shift };
 
-        if ($plugin->can($method)) {
+        if ($plugin->can( $method )) {
             $plugin = $plugin->getInstance(
                 eventManager => $self->{'eventManager'},
                 action       => $self->{'action'},
@@ -402,13 +402,13 @@ sub _call
     };
 
     if ($@) {
-        error(sprintf('An unexpected error occurred: %s', $@));
+        error( sprintf( 'An unexpected error occurred: %s', $@ ) );
         return 1;
     }
 
     if ($plugin) {
-        debug(sprintf("Executing %s::%s() action", ref $plugin, $method));
-        my $rs = $plugin->$method($fromVersion, $toVersion);
+        debug( sprintf( "Executing %s::%s() action", ref $plugin, $method ) );
+        my $rs = $plugin->$method( $fromVersion, $toVersion );
 
         # Return value from the run() action is ignored by default because it's the responsability of the plugins to set
         # error status for their items. In case a plugin doesn't manage any item, it can force return value by defining

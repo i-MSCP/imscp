@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -57,7 +57,7 @@ use parent 'Common::Object';
 
 sub TIEHASH
 {
-	(shift)->new(@_);
+    (shift)->new( @_ );
 }
 
 =item _init()
@@ -70,24 +70,20 @@ sub TIEHASH
 
 sub _init
 {
-	my $self = $_[0];
+    my $self = shift;
 
-	@{$self->{'confFile'}} = ();
-	$self->{'configValues'} = { };
-	$self->{'lineMap'} = { };
+    defined $self->{'fileName'} or die( 'fileName attribut is not defined' );
 
-	if(defined $self->{'fileName'}) {
-		$self->{'confFileName'} = $self->{'fileName'};
-	} else {
-		fatal('fileName attribut is not defined');
-	}
+    @{$self->{'confFile'}} = ();
+    $self->{'configValues'} = { };
+    $self->{'lineMap'} = { };
+    $self->{'confFileName'} = $self->{'fileName'};
 
-	debug("Tying $self->{'confFileName'}");
+    debug( sprintf( 'Tying %s file', $self->{'confFileName'} ) );
 
-	$self->_loadConfig();
-	$self->_parseConfig();
-
-	$self;
+    $self->_loadConfig();
+    $self->_parseConfig();
+    $self;
 }
 
 =item _loadConfig()
@@ -100,34 +96,25 @@ sub _init
 
 sub _loadConfig
 {
-	my $self = $_[0];
+    my $self = shift;
 
-	my $mode;
+    my $mode;
 
-	debug("Loading $self->{'confFileName'}");
+    if ($self->{'nocreate'}) {
+        $mode = $self->{'readonly'} ? O_RDONLY : O_RDWR;
+    } elsif ($self->{'readonly'}) {
+        $mode = O_RDONLY;
+    } else {
+        $mode = O_RDWR | O_CREAT;
+    }
 
-	if($self->{'nocreate'}) {
-		if($self->{'readonly'}) {
-			$mode = O_RDONLY;
-		} else {
-			$mode = O_RDWR;
-		}
-	} elsif($self->{'readonly'}) {
-		$mode = O_RDONLY;
-	} else {
-		$mode = O_RDWR | O_CREAT;
-	}
+    return if tie @{$self->{'confFile'}}, 'Tie::File', $self->{'confFileName'}, 'mode' => $mode;
 
-	unless(tie @{$self->{'confFile'}}, 'Tie::File', $self->{'confFileName'}, 'mode' => $mode) {
-		if($self->{'nofail'}) {
-			require Tie::Array;
-			tie @{$self->{'confFile'}}, 'Tie::StdArray';
-		} else {
-			fatal("Unable to tie file $self->{'confFileName'}: $!");
-		}
-	}
+    $self->{'nofail'} or die( sprintf( 'Could not tie %s file: %s', $self->{'confFileName'}, $! ) );
 
-	undef;
+    require Tie::Array;
+    tie @{$self->{'confFile'}}, 'Tie::StdArray';
+    undef;
 }
 
 =item _parseConfig()
@@ -140,22 +127,19 @@ sub _loadConfig
 
 sub _parseConfig
 {
-	my $self = $_[0];
+    my $self = shift;
 
-	my $lineNo = 0;
+    my $lineNo = 0;
+    for (@{$self->{'confFile'}}) {
+        if (/^([^#\s=]+)\s{0,}=\s{0,}(.{0,})$/) {
+            $self->{'configValues'}->{$1} = $2;
+            $self->{'lineMap'}->{$1} = $lineNo;
+        }
 
-	debug("Parsing $self->{'confFileName'}");
+        $lineNo++;
+    }
 
-	for (@{$self->{'confFile'}}) {
-		if (/^([^#\s=]+)\s{0,}=\s{0,}(.{0,})$/) {
-			$self->{'configValues'}->{$1} = $2;
-			$self->{'lineMap'}->{$1} = $lineNo;
-		}
-
-		$lineNo++;
-	}
-
-	undef;
+    undef;
 }
 
 =item FETCH($paramName)
@@ -169,27 +153,19 @@ sub _parseConfig
 
 sub FETCH
 {
-	my ($self, $paramName) = @_;
+    my ($self, $paramName) = @_;
 
-	unless (exists $self->{'configValues'}->{$paramName}) {
-		unless($self->{'nowarn'}) {
-			my (undef, $file, $line) = caller;
+    return $self->{'configValues'}->{$paramName} if exists $self->{'configValues'}->{$paramName};
 
-			warning(
-				sprintf(
-					'Accessing non existing config value %s from the %s file (see file %s at line %s)',
-					$paramName,
-					$self->{'fileName'},
-					$file,
-					$line
-				)
-			);
-		}
+    unless ($self->{'nowarn'}) {
+        my (undef, $file, $line) = caller;
+        warning( sprintf(
+                'Accessing non existing config value %s from the %s file (see file %s at line %s)',
+                $paramName, $self->{'fileName'}, $file, $line
+            ) );
+    }
 
-		undef;
-	} else {
-		$self->{'configValues'}->{$paramName};
-	}
+    undef;
 }
 
 =item STORE($paramName, $value)
@@ -204,19 +180,17 @@ sub FETCH
 
 sub STORE
 {
-	my ($self, $paramName, $value) = @_;
+    my ($self, $paramName, $value) = @_;
 
-	if(! $self->{'readonly'} || $self->{'temporary'}) {
-		unless(exists $self->{'configValues'}->{$paramName}) {
-			$self->_insertConfig($paramName, $value);
-		} else {
-			$self->_replaceConfig($paramName, $value);
-		}
-	} else {
-		fatal('Config object is readonly');
-	}
+    !$self->{'readonly'} || $self->{'temporary'} or die( 'Config object is readonly' );
 
-	$value;
+    unless (exists $self->{'configValues'}->{$paramName}) {
+        $self->_insertConfig( $paramName, $value );
+    } else {
+        $self->_replaceConfig( $paramName, $value );
+    }
+
+    $value;
 }
 
 =item FIRSTKEY()
@@ -229,11 +203,10 @@ sub STORE
 
 sub FIRSTKEY
 {
-	my $self = $_[0];
+    my $self = shift;
 
-	$self->{'_list'} = [ sort keys %{$self->{'configValues'}} ];
-
-	$self->NEXTKEY;
+    $self->{'_list'} = [ sort keys %{$self->{'configValues'}} ];
+    $self->NEXTKEY;
 }
 
 =item NEXTKEY()
@@ -246,7 +219,7 @@ sub FIRSTKEY
 
 sub NEXTKEY
 {
-	shift @{$_[0]->{'_list'}};
+    shift @{$_[0]->{'_list'}};
 }
 
 =item EXISTS($paramName)
@@ -260,9 +233,9 @@ sub NEXTKEY
 
 sub EXISTS
 {
-	my ($self, $paramName) = @_;
+    my ($self, $paramName) = @_;
 
-	exists $self->{'configValues'}->{$paramName};
+    exists $self->{'configValues'}->{$paramName};
 }
 
 =item CLEAR()
@@ -273,13 +246,12 @@ sub EXISTS
 
 sub CLEAR
 {
-	my $self = $_[0];
+    my $self = shift;
 
-	@{$self->{'confFile'}} = ();
-	$self->{'configValues'} = { };
-	$self->{'lineMap'} = { };
-
-	$self;
+    @{$self->{'confFile'}} = ();
+    $self->{'configValues'} = { };
+    $self->{'lineMap'} = { };
+    $self;
 }
 
 =item _replaceConfig($paramName, $value)
@@ -294,15 +266,15 @@ sub CLEAR
 
 sub _replaceConfig
 {
-	my ($self, $paramName, $value) = @_;
+    my ($self, $paramName, $value) = @_;
 
-	$value = '' unless defined $value;
+    $value = '' unless defined $value;
 
-	unless($self->{'temporary'}) {
-		@{$self->{'confFile'}}[$self->{'lineMap'}->{$paramName}] = "$paramName = $value";
-	}
+    unless ($self->{'temporary'}) {
+        @{$self->{'confFile'}}[$self->{'lineMap'}->{$paramName}] = "$paramName = $value";
+    }
 
-	$self->{'configValues'}->{$paramName} = $value;
+    $self->{'configValues'}->{$paramName} = $value;
 }
 
 =item _insertConfig($paramName, $value)
@@ -317,18 +289,16 @@ sub _replaceConfig
 
 sub _insertConfig
 {
-	my ($self, $paramName, $value) = @_;
+    my ($self, $paramName, $value) = @_;
 
-	$value ||= '' unless defined $value;
-
-	push (@{$self->{'confFile'}}, "$paramName = $value");
-	$self->{'lineMap'}->{$paramName} = $#{$self->{confFile}};
-	$self->{'configValues'}->{$paramName} = $value;
+    $value ||= '' unless defined $value;
+    push @{$self->{'confFile'}}, "$paramName = $value";
+    $self->{'lineMap'}->{$paramName} = $#{$self->{confFile}};
+    $self->{'configValues'}->{$paramName} = $value;
 }
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

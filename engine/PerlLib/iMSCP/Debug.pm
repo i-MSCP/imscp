@@ -29,28 +29,27 @@ use iMSCP::Log;
 use parent 'Exporter';
 
 our @EXPORT = qw/
-	debug warning error fatal newDebug endDebug getMessage getLastError getMessageByType setVerbose setDebug
-	debugRegisterCallBack output silent
-/;
+    debug warning error fatal newDebug endDebug getMessage getLastError getMessageByType setVerbose setDebug
+    debugRegisterCallBack output silent
+    /;
 
-BEGIN
-{
-	# Handler which trap uncaught exceptions
-	$SIG{__DIE__} = sub {
-		fatal(@_, (caller(1))[3] || 'main') if defined $^S && ! $^S
-	};
+BEGIN {
+    # Catch uncaught exceptions
+    $SIG{__DIE__} = sub {
+        fatal( @_, (caller( 1 ))[3] || 'main' ) if defined $^S && !$^S
+    };
 
-	# Handler which trap warns
-	$SIG{__WARN__} = sub {
-		warning(@_, (caller(1))[3] || 'main');
-	};
+    # Catch warns
+    $SIG{__WARN__} = sub {
+        warning( @_, (caller( 1 ))[3] || 'main' );
+    };
 }
 
 my $self = {
-	debug => 0,
-	verbose => 0,
-	debugCallBacks => [],
-	targets => [ iMSCP::Log->new( id => 'default' ) ]
+    debug          => 0,
+    verbose        => 0,
+    debugCallBacks => [ ],
+    targets        => [ iMSCP::Log->new( id => 'default' ) ]
 };
 
 $self->{'default'} = $self->{'target'} = $self->{'targets'}->[0];
@@ -74,16 +73,15 @@ $self->{'default'} = $self->{'target'} = $self->{'targets'}->[0];
 
 sub setDebug
 {
-	if(shift) {
-		$self->{'debug'} = 1;
-	} else {
-		# Remove any debug message from the current target
-		getMessageByType('debug', { remove => 1 });
-		debug('Debug mode is disabled');
-		$self->{'debug'} = 0;
-	}
+    if (shift) {
+        $self->{'debug'} = 1;
+        return;
+    }
 
-	undef;
+    # Remove any debug message from the current target
+    getMessageByType( 'debug', { remove => 1 } );
+    $self->{'debug'} = 0;
+    undef;
 }
 
 =item setVerbose()
@@ -97,9 +95,8 @@ sub setDebug
 
 sub setVerbose
 {
-	$self->{'verbose'} = shift // 0;
-
-	undef;
+    $self->{'verbose'} = shift // 0;
+    undef;
 }
 
 =item silent()
@@ -117,7 +114,7 @@ sub silent
 
 =item newDebug($logfile)
 
- Create a new log object for the given logfile and set it as current target for new messages
+ Create new log object for the given logfile and set it as current target for new messages
 
  Param string $logfile Logfile unique identifier
  Return int 0
@@ -126,15 +123,12 @@ sub silent
 
 sub newDebug
 {
-	my $logfile = shift || '';
+    my $logfile = shift || '';
 
-	fatal("logfile name expected") if ref $logfile || $logfile eq '';
-
-	$self->{'target'} = iMSCP::Log->new( id => $logfile);
-
-	push @{$self->{'targets'}}, $self->{'target'};
-
-	0;
+    fatal( "logfile name expected" ) if ref $logfile || $logfile eq '';
+    $self->{'target'} = iMSCP::Log->new( id => $logfile );
+    push @{$self->{'targets'}}, $self->{'target'};
+    0;
 }
 
 =item endDebug()
@@ -147,44 +141,42 @@ sub newDebug
 
 sub endDebug
 {
-	my $target = pop @{$self->{'targets'}};
-	my $targetId = $target->getId();
+    my $target = pop @{$self->{'targets'}};
+    my $targetId = $target->getId();
 
-	if($targetId ne 'default') {
-		my @firstItems = (@{$self->{'targets'}} == 1) ? $self->{'default'}->flush() : ();
+    if ($targetId eq 'default') {
+        push @{$self->{'targets'}}, $target;
+        $self->{'target'} = $self->{'default'};
+        return 0;
+    }
 
-		# Retrieve any log which must be printed to default and store them in the appropriate log object
-		for my $item($target->retrieve( tag => qr/^(?:warn|error|fatal)/i ), @firstItems) {
-			$self->{'default'}->store( when => $item->{'when'}, message => $item->{'message'}, tag => $item->{'tag'} );
-		}
+    my @firstItems = (@{$self->{'targets'}} == 1) ? $self->{'default'}->flush() : ();
 
-		my $logDir = $main::imscpConfig{'LOG_DIR'} || '/tmp';
-		if($logDir ne '/tmp' && ! -d $logDir) {
-			require iMSCP::Dir;
-			my $rs = iMSCP::Dir->new( dirname => $logDir)->make( {
-				user => $main::imscpConfig{'ROOT_USER'},
-				group => $main::imscpConfig{'ROOT_GROUP'},
-				mode => 0750
-			});
-			$logDir = '/tmp' if $rs;
-		}
+    # Retrieve any log which must be printed to default and store them in the appropriate log object
+    for my $item($target->retrieve( tag => qr/^(?:warn|error|fatal)/i ), @firstItems) {
+        $self->{'default'}->store( when => $item->{'when'}, message => $item->{'message'}, tag => $item->{'tag'} );
+    }
 
-		# Write logfile
-		_writeLogfile($target, "$logDir/$targetId");
+    my $logDir = $main::imscpConfig{'LOG_DIR'} || '/tmp';
+    if ($logDir ne '/tmp' && !-d $logDir) {
+        require iMSCP::Dir;
+        my $rs = iMSCP::Dir->new( dirname => $logDir )->make( {
+                user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => 0750
+            } );
+        $logDir = '/tmp' if $rs;
+    }
 
-		# Set previous log object as target for new messages
-		$self->{'target'} = @{$self->{'targets'}}[$#{$self->{'targets'}}];
-	} else {
-		push @{$self->{'targets'}}, $target;
-		$self->{'target'} = $self->{'default'};
-	}
+    # Write logfile
+    _writeLogfile( $target, "$logDir/$targetId" );
 
-	0;
+    # Set previous log object as target for new messages
+    $self->{'target'} = @{$self->{'targets'}}[$#{$self->{'targets'}}];
+    0;
 }
 
 =item debug($message)
 
- Log a debug message
+ Log debug message
 
  Param string $message Debug message
  Return int undef
@@ -193,19 +185,17 @@ sub endDebug
 
 sub debug
 {
-	my $message = shift;
-	my $caller = (caller(1))[3] || 'main';
+    my $message = shift;
 
-	$self->{'target'}->store( message => "$caller: $message", tag => 'debug' ) if $self->{'debug'};
-
-	print STDOUT output("$caller: $message", 'debug') if $self->{'verbose'};
-
-	undef;
+    my $caller = (caller( 1 ))[3] || 'main';
+    $self->{'target'}->store( message => "$caller: $message", tag => 'debug' ) if $self->{'debug'};
+    print STDOUT output( "$caller: $message", 'debug' ) if $self->{'verbose'};
+    undef;
 }
 
 =item warning($message [, $caller ])
 
- Log an error message and print it on STDERR if not in silent mode
+ Log warning message and print it on STDERR if not in silent mode
 
  Param string $message Warning message
  Param string $caller OPTIONAL Caller
@@ -215,17 +205,16 @@ sub debug
 
 sub warning
 {
-	my $message = shift;
-	my $caller = shift || (caller(1))[3] || 'main';
+    my $message = shift;
 
-	$self->{'target'}->store( message => "$caller: $message", tag => 'warn' );
-
-	undef;
+    my $caller = shift || (caller( 1 ))[3] || 'main';
+    $self->{'target'}->store( message => "$caller: $message", tag => 'warn' );
+    undef;
 }
 
 =item error($message)
 
- Log an error message and print it on STDERR if not in silent mode
+ Log error message and print it on STDERR if not in silent mode
 
  Param string $message Error message
  Return int undef
@@ -234,17 +223,16 @@ sub warning
 
 sub error
 {
-	my $message = shift;
-	my $caller = (caller(1))[3] || 'main';
+    my $message = shift;
 
-	$self->{'target'}->store( message => "$caller: $message", tag => 'error' );
-
-	0;
+    my $caller = (caller( 1 ))[3] || 'main';
+    $self->{'target'}->store( message => "$caller: $message", tag => 'error' );
+    0;
 }
 
 =item fatal($message [, $caller ])
 
- Log a fatal error message and print it on STDERR if not in silent mode and exit
+ Log fatal message and print it on STDERR if not in silent mode and exit
 
  Param string $message Fatal message
  Param string $caller OPTIONAL Caller
@@ -254,12 +242,11 @@ sub error
 
 sub fatal
 {
-	my $message = shift;
-	my $caller = shift ||  (caller(1))[3] || 'main';
+    my $message = shift;
 
-	$self->{'target'}->store( message => "$caller: $message", tag => 'fatal' );
-
-	exit ($? ||= 255);
+    my $caller = shift || (caller( 1 ))[3] || 'main';
+    $self->{'target'}->store( message => "$caller: $message", tag => 'fatal' );
+    exit ( $? ||= 255 );
 }
 
 =item getLastError()
@@ -272,7 +259,7 @@ sub fatal
 
 sub getLastError
 {
-	getMessageByType('error');
+    getMessageByType( 'error' );
 }
 
 =item getMessageByType($type = 'error', [ %option | \%options ])
@@ -287,18 +274,16 @@ sub getLastError
 
 sub getMessageByType
 {
-	my $type = shift || '';
+    my $type = shift || '';
 
-	my %options = (@_ && ref $_[0] eq 'HASH') ? %{$_[0]} : @_;
-
-	my @messages = map { $_->{'message'} } $self->{'target'}->retrieve(
-		tag => (ref $type eq 'Regexp') ? $type : qr/^$type$/i,
-		amount => $options{'amount'},
-		chrono => $options{'chrono'} // 1,
-		remove => $options{'remove'} // 0
-	);
-
-	wantarray ? @messages : join "\n", @messages;
+    my %options = (@_ && ref $_[0] eq 'HASH') ? %{$_[0]} : @_;
+    my @messages = map { $_->{'message'} } $self->{'target'}->retrieve(
+        tag    => ref $type eq 'Regexp' ? $type : qr/^$type$/i,
+        amount => $options{'amount'},
+        chrono => $options{'chrono'} // 1,
+        remove => $options{'remove'} // 0
+    );
+    wantarray ? @messages : join "\n", @messages;
 }
 
 =item output($text, $level)
@@ -311,31 +296,29 @@ sub getMessageByType
 
 sub output
 {
-	my ($text, $level) = @_;
+    my ($text, $level) = @_;
 
-	my $output = '';
+    return "$text\n" unless $level;
 
-	if($level) {
-		if($level eq 'debug') {
-			$output = "[\033[0;34mDEBUG\033[0m] $text\n";
-		} elsif ($level eq 'info'){
-			$output = "[\033[0;34mINFO\033[0m]  $text\n";
-		} elsif($level eq 'warn'){
-			$output = "[\033[0;33mWARN\033[0m]  $text\n";
-		} elsif($level eq 'error') {
-			$output = "[\033[0;31mERROR\033[0m] $text\n";
-		} elsif ($level eq 'fatal') {
-			$output = "[\033[0;31mFATAL\033[0m] $text\n";
-		} elsif ($level eq 'ok'){
-			$output = "[\033[0;32mDONE\033[0m]  $text\n";
-		} else {
-			$output = "$text\n";
-		}
-	} else {
-		$output = "$text\n";
-	}
+    my $output = '';
 
-	$output;
+    if ($level eq 'debug') {
+        $output = "[\033[0;34mDEBUG\033[0m] $text\n";
+    } elsif ($level eq 'info') {
+        $output = "[\033[0;34mINFO\033[0m]  $text\n";
+    } elsif ($level eq 'warn') {
+        $output = "[\033[0;33mWARN\033[0m]  $text\n";
+    } elsif ($level eq 'error') {
+        $output = "[\033[0;31mERROR\033[0m] $text\n";
+    } elsif ($level eq 'fatal') {
+        $output = "[\033[0;31mFATAL\033[0m] $text\n";
+    } elsif ($level eq 'ok') {
+        $output = "[\033[0;32mDONE\033[0m]  $text\n";
+    } else {
+        $output = "$text\n";
+    }
+
+    $output;
 }
 
 =item debugRegisterCallBack($callback)
@@ -349,11 +332,10 @@ sub output
 
 sub debugRegisterCallBack
 {
-	my $callback = shift;
+    my $callback = shift;
 
-	push @{$self->{'debugCallBacks'}}, $callback;
-
-	0;
+    push @{$self->{'debugCallBacks'}}, $callback;
+    0;
 }
 
 =back
@@ -375,19 +357,19 @@ sub debugRegisterCallBack
 
 sub _writeLogfile
 {
-	my ($logObject, $logfilePath) = @_;
+    my ($logObject, $logfilePath) = @_;
 
-	# Make error message free of any ANSI color and end of line codes
-	(my $messages = _getMessages($logObject)) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
+    # Make error message free of any ANSI color and end of line codes
+    (my $messages = _getMessages( $logObject )) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
 
-	if(open(FH, '>utf8', $logfilePath)) {
-		print FH $messages;
-		close FH;
-	} else {
-		print STDERR "Unable to open log file $logfilePath for writting: $!";
-	}
+    if (open( my $fh, '>utf8', $logfilePath )) {
+        print {$fh} $messages;
+        close $fh;
+        return 0;
+    }
 
-	0;
+    print STDERR sprintf( 'Could not to open log file %s for writting: %s', $logfilePath, $! );
+    0;
 }
 
 =item _getMessages($logObject)
@@ -401,35 +383,28 @@ sub _writeLogfile
 
 sub _getMessages
 {
-	my $logObject = shift;
+    my $logObject = shift;
 
-	my $bf = '';
-
-	for($logObject->flush()) {
-		$bf .= "[$_->{'when'}] [$_->{'tag'}] $_->{'message'}\n";
-	}
-
-	$bf;
+    my $bf = '';
+    $bf .= "[$_->{'when'}] [$_->{'tag'}] $_->{'message'}\n" for $logObject->flush();
+    $bf;
 }
 
-END
-{
-	my $exitCode = $?;
+END {
+    my $exitCode = $?;
 
-	&$_ for @{$self->{'debugCallBacks'}};
+    &$_ for @{$self->{'debugCallBacks'}};
+    endDebug() for @{$self->{'targets'}};
 
-	endDebug() for @{$self->{'targets'}};
+    my @output;
+    for my $logLevel('warn', 'error', 'fatal') {
+        my @messages;
+        push @messages, $_->{'message'} for $self->{'default'}->retrieve( tag => qr/^$logLevel/ );
+        push @output, output( join( "\n", @messages ), $logLevel ) if @messages;
+    }
 
-	my @output;
-	for my $logLevel('warn', 'error', 'fatal') {
-		my @messages;
-		push @messages, $_->{'message'} for $self->{'default'}->retrieve( tag => qr/^$logLevel/ );
-		push @output, output(join("\n", @messages), $logLevel) if @messages;
-	}
-
-	print STDERR "@output" if @output;
-
-	$? = $exitCode;
+    print STDERR "@output" if @output;
+    $? = $exitCode;
 }
 
 =back

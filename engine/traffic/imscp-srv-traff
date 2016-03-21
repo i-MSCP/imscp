@@ -16,6 +16,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+=head1 NAME
+
+imscp-srv-traff - Collects i-MSCP server' traffic data.
+
+=head1 SYNOPSIS
+
+ imscp-srv-traff [options]...
+
+=cut
+
 use strict;
 use warnings;
 use FindBin;
@@ -27,88 +37,93 @@ use iMSCP::Database;
 use iMSCP::Getopt;
 use iMSCP::Service;
 use File::Basename;
+use POSIX qw(locale_h);
+use locale;
+
+setlocale(LC_ALL, 'C.UTF-8');
+$ENV{'LANG'} = 'C.UTF-8';
 
 sub run
 {
-	my ($inputTraffic, $outputTraffic, $stdout, $stderr);
-	my %chains = (
-		'IMSCP_INPUT' => \$inputTraffic,
-		'IMSCP_OUTPUT' => \$outputTraffic
-	);
+    my ($inputTraffic, $outputTraffic, $stdout, $stderr);
+    my %chains = (
+        'IMSCP_INPUT' => \$inputTraffic,
+        'IMSCP_OUTPUT' => \$outputTraffic
+    );
 
-	# Get traffic data from both input and output i-MSCP chains
-	while(my ($chain, $target) = each %chains) {
-		my $rs = execute("iptables -nvxL $chain", $target, \$stderr);
-		debug($$target) if $$target;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-	}
+    # Get traffic data from both input and output i-MSCP chains
+    while(my ($chain, $target) = each %chains) {
+        my $rs = execute("iptables -nvxL $chain", $target, \$stderr);
+        debug($$target) if $$target;
+        error($stderr) if $stderr && $rs;
+        return $rs if $rs;
+    }
 
-	# Parse input traffic data
-	my ($smtpIn, $poIn, $httpIn, $allIn) = _parseTrafficData($inputTraffic);
+    # Parse input traffic data
+    my ($smtpIn, $poIn, $httpIn, $allIn) = _parseTrafficData($inputTraffic);
 
-	# Parse output traffic data
-	my ($smtpOut, $poOut, $httpOut, $allOut) = _parseTrafficData($outputTraffic);
+    # Parse output traffic data
+    my ($smtpOut, $poOut, $httpOut, $allOut) = _parseTrafficData($outputTraffic);
 
-	# Update traffic data in database
-	my $timestamp = time();
-	$timestamp -= ($timestamp % 1800); # Floor down for the last half'n hour
-	my $dbh = iMSCP::Database->factory()->getRawDb();
-	my $qrs = $dbh->do(
-		'
-			INSERT INTO server_traffic (
-				traff_time, bytes_in, bytes_out, bytes_mail_in, bytes_mail_out, bytes_pop_in, bytes_pop_out,
-				bytes_web_in, bytes_web_out
-			) VALUES (
-				?, ?, ?, ?, ?, ?, ?, ?, ?
-			) ON DUPLICATE KEY UPDATE
-				bytes_in = bytes_in + ?, bytes_out = bytes_out + ?, bytes_mail_in = bytes_mail_in + ?,
-				bytes_mail_out = bytes_mail_out + ?, bytes_pop_in = bytes_pop_in + ?, bytes_pop_out = bytes_pop_out + ?,
-				bytes_web_in = bytes_web_in + ?, bytes_web_out = bytes_web_out + ?
-		',
-		undef,
-		$timestamp,
-		$allIn, $allOut, $smtpIn, $smtpOut, $poIn, $poOut, $httpIn, $httpOut,
-		$allIn, $allOut, $smtpIn, $smtpOut, $poIn, $poOut, $httpIn, $httpOut
-	);
-	if($dbh->err) {
-		error($dbh->errstr);
-		return 1;
-	}
+    # Update traffic data in database
+    my $timestamp = time();
+    $timestamp -= ($timestamp % 1800); # Floor down for the last half'n hour
+    my $dbh = iMSCP::Database->factory()->getRawDb();
+    my $qrs = $dbh->do(
+        '
+            INSERT INTO server_traffic (
+                traff_time, bytes_in, bytes_out, bytes_mail_in, bytes_mail_out, bytes_pop_in, bytes_pop_out,
+                bytes_web_in, bytes_web_out
+            ) VALUES (
+                ?, ?, ?, ?, ?, ?, ?, ?, ?
+            ) ON DUPLICATE KEY UPDATE
+                bytes_in = bytes_in + ?, bytes_out = bytes_out + ?, bytes_mail_in = bytes_mail_in + ?,
+                bytes_mail_out = bytes_mail_out + ?, bytes_pop_in = bytes_pop_in + ?, bytes_pop_out = bytes_pop_out + ?,
+                bytes_web_in = bytes_web_in + ?, bytes_web_out = bytes_web_out + ?
+        ',
+        undef,
+        $timestamp,
+        $allIn, $allOut, $smtpIn, $smtpOut, $poIn, $poOut, $httpIn, $httpOut,
+        $allIn, $allOut, $smtpIn, $smtpOut, $poIn, $poOut, $httpIn, $httpOut
+    );
+    if($dbh->err) {
+        error($dbh->errstr);
+        return 1;
+    }
 
-	# Reset both input and output i-MSCP chains
-	iMSCP::Service->getInstance->restart('imscp_traffic');
+    # Reset both input and output i-MSCP chains
+    iMSCP::Service->getInstance->restart('imscp_traffic');
 }
 
 sub _parseTrafficData
 {
-	my $data = shift;
+    my $data = shift;
 
-	my $frontEndHttpPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'};
-	my $frontEndHttpsPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
-	my ($smtp, $po, $http, $all) = (0, 0, 0, 0);
+    my $frontEndHttpPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'};
+    my $frontEndHttpsPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
+    my ($smtp, $po, $http, $all) = (0, 0, 0, 0);
 
-	if($data) {
-		while($data =~ /^\s+\d+\s+(\d+).*?(?:(?:dpt|spt):(\d+))?$/gm) {
-			my ($bytes, $port) = ($1, $2 // 0);
+    if($data) {
+        while($data =~ /^\s+\d+\s+(\d+).*?(?:(?:dpt|spt):(\d+))?$/gm) {
+            my ($bytes, $port) = ($1, $2 // 0);
 
-			if($port > 0) {
-				$smtp += $bytes if grep($_ eq $port, ( 587, 25, 465 ));
-				$po += $bytes if grep($_ eq $port, ( 110, 995, 143, 993 ));
-				$http += $bytes if grep($_ eq $port, ( 80, 443, $frontEndHttpPort, $frontEndHttpsPort ));
-			} else {
-				$all = $bytes;
-			}
-		}
-	}
+            if($port > 0) {
+                $smtp += $bytes if grep($_ eq $port, ( 587, 25, 465 ));
+                $po += $bytes if grep($_ eq $port, ( 110, 995, 143, 993 ));
+                $http += $bytes if grep($_ eq $port, ( 80, 443, $frontEndHttpPort, $frontEndHttpsPort ));
+            } else {
+                $all = $bytes;
+            }
+        }
+    }
 
-	($smtp, $po, $http, $all);
+    ($smtp, $po, $http, $all);
 }
 
 newDebug('imscp-srv-traff.log');
 
 # Parse command line options
-iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
+iMSCP::Getopt->parseNoDefault(sprintf('Usage: perl %s [OPTION]...', basename($0)) . qq {
 
 Script which collects i-MSCP server' traffic data.
 
@@ -124,3 +139,9 @@ $bootstrapper->boot({ norequirements => 'yes', nolock => 'yes', config_readonly 
 my $rs = run();
 $bootstrapper->unlock('/tmp/imscp-srv-traff.lock');
 exit $rs;
+
+=head1 AUTHOR
+
+Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
