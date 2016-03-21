@@ -32,7 +32,7 @@ DATABASE
 FRONTEND
 	Added: SPF DNS resource record type (validated as a TXT record)
 	Changed: The `type` field cannot longer be changed when editing a DNS resource record
-	Fixed: Cannot add DKIM/DMARC DNS resource record
+	Fixed: Cannot add DKIM/DMARC DNS resource records
 	Fixed: Customer must be allowed to specify custom TTL value for any DNS resource record
 	Fixed: Customer must be allowed to specify `name` field of any DNS resource record
 	Fixed: IDNs are shown in ASCII in SSL certificate management interface
@@ -44,6 +44,7 @@ INSTALLER
 	Fixed: Debug and verbose modes must be set early
 	Fixed: Don't die on misconfigured server hostname. Just ask for a valid hostname instead
 	Fixed: Plugin setup listeners are no longer registered (regression fix)
+	Renamed: imscp-setup script to imscp-reconfigure
 
 PLUGINS
 	Fixed: Plugin configuration not synced when triggering plugin list update (when a plugin is in error state)
