@@ -46,7 +46,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * @var int Last database update revision
 	 */
-	protected $lastUpdate = '221';
+	protected $lastUpdate = '222';
 
 	/**
 	 * Singleton - Make new unavailable
@@ -1692,7 +1692,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		);
 
 		$stmt = execute_query('SELECT admin_id FROM admin');
-		$usersIds = implode(',', $stmt->fetchall(PDO::FETCH_COLUMN));
+		$usersIds = implode(',', $stmt->fetchAll(PDO::FETCH_COLUMN));
 
 		foreach ($tablesToForeignKey as $table => $foreignKey) {
 			if (is_array($foreignKey)) {
@@ -3515,5 +3515,29 @@ class iMSCP_Update_Database extends iMSCP_Update
 				'UNIQUE'
 			)
 		);
+	}
+
+	/**
+	 * Convert FTP usernames, groups and members to IDNA form
+	 * 
+	 * @throws iMSCP_Exception_Database
+	 * @return void
+	 */
+	protected function r222()
+	{
+		$stmt = exec_query('SELECT userid FROM ftp_users');
+		while ($row = $stmt->fetchRow()) {
+			exec_query('UPDATE ftp_users SET userid = ? WHERE userid = ?', array(
+				encode_idna($row['userid']), $row['userid']
+			));
+		}
+
+		$stmt = exec_query('SELECT groupname, members FROM ftp_group');
+		while ($row = $stmt->fetchRow()) {
+			$members = implode(',', array_map('encode_idna', explode(',', $row['members'])));
+			exec_query('UPDATE ftp_group SET groupname = ?, members = ? WHERE groupname = ?', array(
+				encode_idna($row['groupname']), $members, $row['groupname']
+			));
+		}
 	}
 }

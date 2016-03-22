@@ -116,7 +116,8 @@ sub postinstall
     }
 
     $rs = $self->{'eventManager'}->register( 'beforeSetupRestartServices', sub {
-            push @{$_[0]}, [ sub { $self->start() }, 'VsFTPd server' ];
+            # We must do a restart here because vsftpd from local package is started while installation
+            push @{$_[0]}, [ sub { $self->restart() }, 'VsFTPd server' ];
             0
         } );
     $rs ||= $self->{'eventManager'}->trigger( 'afterFtpdPostInstall', 'vsftpd' );

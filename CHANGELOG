@@ -58,9 +58,12 @@ SERVERS
     Fixed: Could not build local vsftpd package when gpg has been initialized; .changes file cannot be signed
     Fixed: Courier sysvinit must not be copied when selected PO server is Dovecot
     Fixed: Disabled mod_tls_memcache.c module to avoid weird notice on restart (ProFTPD)
+    Fixed: Hide server identity (ProFTPD)
+    Fixed: Enable support for UTF-8 file systems (VsFTPD)
     Fixed: ON|OFF string not recognized as boolean value in mysql conffile (MySQL)
     Fixed: Traffic accounting routines must not remove log files (ProFTPD/VsFTPd). Files are now truncated instead.
     Fixed: Useless reload of VsFTPd when adding/removing an FTP user (privileges are given by session)
+    Fixed: VsFTPD doesn't handle non-ascii character correctly in usernames
     Fixed: VsFTPd doesn't reopen xferlog file automatically when the file has been removed, leading to traffic data loss
     Removed: /var/log/proftpd/ftp_traff.log custom log. Traffic data are now pulled from /var/log/proftpd/xferlog
 

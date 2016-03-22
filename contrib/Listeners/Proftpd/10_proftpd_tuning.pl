@@ -48,7 +48,11 @@ iMSCP::EventManager->getInstance()->register('afterFtpdBuildConf', sub {
 	}
 
 	# Disable the message displayed on connect
-	$$tplContent =~ s/^(ServerType.*)/$1\nServerIdent                off/m;
+	unless($$tplContent =~ /^ServerIdent/m) {
+		$$tplContent =~ s/^(ServerType.*)/$1\nServerIdent                off/m;
+	} else {
+		$$tplContent =~ s/^ServerIdent.*/ServerIdent                off/m;
+	}
 
 	# Enforce TLS connections for non-local networks
 	$$tplContent =~ s/^(<IfModule mod_tls\.c>$)/$1\n  <IfClass !local>/m;

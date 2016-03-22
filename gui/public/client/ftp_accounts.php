@@ -49,7 +49,7 @@ function generatePage($tpl)
     $nbFtpAccounts = 0;
     while ($row = $stmt->fetchRow()) {
         $tpl->assign(array(
-            'FTP_ACCOUNT' => tohtml(decode_idna($row['userid'])),
+            'FTP_ACCOUNT' => tohtml($row['userid']),
             'UID' => tohtml($row['userid'], 'htmlAttr'),
             'FTP_ACCOUNT_STATUS' => translate_dmn_status($row['status'])
         ));

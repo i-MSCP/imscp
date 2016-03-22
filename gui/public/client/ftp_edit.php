@@ -126,9 +126,9 @@ function generatePage($tpl, $ftpUserId, $mainDomainName)
     }
 
     $tpl->assign(array(
-        'USERNAME' => tohtml($ftpUserId),
+        'USERNAME' => tohtml(decode_idna($ftpUserId), 'htmlAttr'),
         'HOME_DIR' => isset($_POST['home_dir']) ? tohtml($_POST['home_dir']) : tohtml($customFtpHomeDir),
-        'ID' => tohtml($ftpUserId),
+        'ID' => tohtml($ftpUserId, 'htmlAttr'),
     ));
 }
 

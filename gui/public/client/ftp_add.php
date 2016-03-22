@@ -196,7 +196,7 @@ function addAccount($mainDmnName)
     }
 
     $cfg = iMSCP_Registry::get('config');
-    $userid = $username . '@' . decode_idna($dmnName);
+    $userid = $username . '@' . encode_idna($dmnName);
     $encryptedPassword = cryptPasswordWithSalt($passwd);
     $shell = '/bin/sh';
     $homeDir = rtrim(str_replace('//', '/', $cfg['USER_WEB_DIR'] . '/' . $mainDmnName . '/' . $homeDir), '/');

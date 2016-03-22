@@ -16,7 +16,7 @@ DATABASE_PASSWORD =
 ## You can edit the parameters bellow (See vsftpd.conf(5))
 #
 
-FTPD_BANNER = Welcome to i-MSCP Ftp server
+FTPD_BANNER = Welcome to i-MSCP FTP server
 PASSV_ENABLE = YES
 FTP_MAX_CLIENTS = 100
 MAX_PER_IP = 0
