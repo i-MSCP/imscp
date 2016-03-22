@@ -101,7 +101,7 @@ Note: When you want operate on a per domain basis, don't forget to set the PHP c
 can do this by running:
 
 ```
-# perl /var/www/imscp/engine/setup/imscp-setup -dar php
+# perl /var/www/imscp/engine/setup/imscp-reconfigure -dar php
 ```
 
 ## Postfix listener files

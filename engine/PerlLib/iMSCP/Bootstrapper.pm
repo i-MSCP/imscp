@@ -47,7 +47,7 @@ $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
 =item boot()
 
- i-MSCP Bootstrapper
+ Boot i-MSCP
 
  Return iMSCP::Bootstrapper
 
@@ -106,9 +106,9 @@ sub boot
 
 =item lock([$lockFile [, $nowait ]])
 
- Lock the given file or the engine lock file
+ Acquire an exclusive lock on the given file (default to /tmp/imscp.lock)
 
- Param bool $nowait
+ Param bool $nowait Whether or not wait for lock
  Return int 1 on success, other on failure
 
 =cut
@@ -130,7 +130,7 @@ sub lock
 
 =item unlock([$lockFile])
 
- Unlock the given lock file or the engine lock file
+ Unlock the given file (default to /tmp/imscp.lock)
 
  Return iMSCP::Bootstrapper
 
@@ -202,6 +202,8 @@ sub _genKeys
     $main::imscpDBiv = $db_pass_iv;
     undef;
 }
+
+=back
 
 =head1 AUTHOR
 

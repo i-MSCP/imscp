@@ -32,8 +32,6 @@ use parent 'Servers::sqld::mysql';
 
  i-MSCP MariaDB server implementation.
 
-=back
-
 =head1 PUBLIC METHODS
 
 =over 4

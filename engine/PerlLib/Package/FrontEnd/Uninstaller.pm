@@ -39,6 +39,8 @@ use parent 'Common::SingletonClass';
 
 =head1 PUBLIC METHODS
 
+=over 4
+
 =item uninstall()
 
  Process uninstall tasks

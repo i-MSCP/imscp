@@ -578,8 +578,6 @@ sub _getLsbInformation
 current heuristic tends to assume that the installation is of the earliest distribution which is still being used by apt
 but that heuristic is subject to error.
 
-=back
-
 =head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>

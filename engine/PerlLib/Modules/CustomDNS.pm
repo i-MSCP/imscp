@@ -133,7 +133,7 @@ sub process
 
 =over 4
 
-item init()
+=item init()
 
  Initialize instance
 

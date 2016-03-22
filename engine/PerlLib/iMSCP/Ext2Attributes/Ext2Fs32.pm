@@ -68,8 +68,6 @@ use constant EXT2_NOATIME_FL => 0x00000080; # do not update atime (A)
 #use constant EXT2_TOPDIR_FL			=> 0x00020000; # Top of directory hierarchies (T)
 #use constant EXT2_RESERVED_FL			=> 0x80000000; # reserved for ext2 lib
 
-=back
-
 =head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>

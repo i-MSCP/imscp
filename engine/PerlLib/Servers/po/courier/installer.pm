@@ -342,6 +342,8 @@ sub setEnginePermissions
     0;
 }
 
+=back
+
 =head1 EVENT LISTENERS
 
 =over 4

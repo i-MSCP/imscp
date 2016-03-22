@@ -259,7 +259,7 @@ sub ImportCaBundle
     $rs;
 }
 
-=items createSelfSignedCertificate(\%data)
+=item createSelfSignedCertificate(\%data)
 
  Generate a self-signed SSL certificate
 

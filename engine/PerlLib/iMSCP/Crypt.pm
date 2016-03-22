@@ -167,7 +167,7 @@ sub sha512($;$$)
     crypt( $password, '$6$rounds='.$rounds.'$'.$salt );
 }
 
-=item sha512($password [, $cost = 10 [, $salt = randomStr ] ])
+=item bcrypt($password [, $cost = 10 [, $salt = randomStr ] ])
 
  Create a hash of the given password using the bcrypt algorithm
 

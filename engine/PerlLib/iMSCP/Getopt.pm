@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Getopt - Provides command line options for both imscp-autoinstall and imscp-setup scripts
+ iMSCP::Getopt - Provides command line options parser for i-MSCP scripts
 
 =cut
 
@@ -271,8 +271,6 @@ sub AUTOLOAD
     };
     goto &{$AUTOLOAD};
 }
-
-=back
 
 =head1 AUTHOR
 

@@ -31,8 +31,6 @@ use parent 'Servers::sqld::mysql';
 
  i-MSCP Percona server implementation.
 
-=back
-
 =head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>

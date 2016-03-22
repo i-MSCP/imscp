@@ -43,8 +43,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-
-=item($prop, $value)
+=item ($prop, $value)
 
  Set properties
 
@@ -159,7 +158,7 @@ sub endTransaction
 
 =item getRawDb()
 
- Get raw database connection
+ Get raw DBI instance
 
 =cut
 
@@ -315,6 +314,10 @@ sub quoteIdentifier
 }
 
 =item quote($string)
+
+ Quote the given string
+
+ Return string Quoted string
 
 =cut
 

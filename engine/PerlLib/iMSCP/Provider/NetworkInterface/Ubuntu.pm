@@ -31,10 +31,6 @@ use parent 'iMSCP::Provider::NetworkInterface::Debian';
 
  Ubuntu network interface provider.
 
-=head1 PUBLIC METHODS
-
-=back
-
 =head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>

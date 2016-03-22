@@ -297,6 +297,8 @@ sub _insertConfig
     $self->{'configValues'}->{$paramName} = $value;
 }
 
+=back
+
 =head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>

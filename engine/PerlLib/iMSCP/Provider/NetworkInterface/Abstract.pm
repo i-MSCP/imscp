@@ -50,6 +50,8 @@ sub _init
     $self;
 }
 
+=back
+
 =head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>
