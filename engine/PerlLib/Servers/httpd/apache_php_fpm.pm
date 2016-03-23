@@ -725,27 +725,29 @@ sub addIps
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdAddIps', \$fileContent, $data );
     return $rs if $rs;
 
+    # Cleanup previous entries if any
+    $fileContent =~ s/^NameVirtualHost[^\n]+\n//gim;
+
     unless (version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' )) {
         my $net = iMSCP::Net->getInstance();
-        my $confSnippet = "\n";
 
         for my $ipAddr(@{$data->{'SSL_IPS'}}) {
             if ($net->getAddrVersion( $ipAddr ) eq 'ipv4') {
-                $confSnippet .= "NameVirtualHost $ipAddr:443\n";
+                $fileContent .= "NameVirtualHost $ipAddr:443\n";
             } else {
-                $confSnippet .= "NameVirtualHost [$ipAddr]:443\n";
+                $fileContent .= "NameVirtualHost [$ipAddr]:443\n";
             }
         }
 
         for my $ipAddr(@{$data->{'IPS'}}) {
             if ($net->getAddrVersion( $ipAddr ) eq 'ipv4') {
-                $confSnippet .= "NameVirtualHost $ipAddr:80\n";
+                $fileContent .= "NameVirtualHost $ipAddr:80\n";
             } else {
-                $confSnippet .= "NameVirtualHost [$ipAddr]:80\n";
+                $fileContent .= "NameVirtualHost [$ipAddr]:80\n";
             }
         }
-
-        $fileContent .= $confSnippet;
+    } else {
+        $fileContent =~ s/^# NameVirtualHost entries\n//im;
     }
 
     $rs = $self->{'eventManager'}->trigger( 'afterHttpdAddIps', \$fileContent, $data );
