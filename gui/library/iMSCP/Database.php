@@ -419,12 +419,13 @@ class iMSCP_Database
 	 */
 	public function beginTransaction()
 	{
-		if(!$this->transactionCounter) {
-			$this->transactionCounter++;
-			return $this->_db->beginTransaction();
+		if ($this->transactionCounter == 0) {
+			$this->_db->beginTransaction();
+		} else {
+			$this->_db->exec("SAVEPOINT TRANSACTION{$this->transactionCounter}");
 		}
 
-		return true;
+		$this->transactionCounter++;
 	}
 
 	/**
@@ -435,15 +436,13 @@ class iMSCP_Database
 	 */
 	public function commit()
 	{
-		if($this->transactionCounter) {
-			if(!--$this->transactionCounter) {
-				return $this->_db->commit();
-			}
+		$this->transactionCounter--;
 
-			return true;
+		if ($this->transactionCounter == 0) {
+			$this->_db->commit();
+		} else {
+			$this->_db->exec("RELEASE SAVEPOINT TRANSACTION{$this->transactionCounter}");
 		}
-
-		return false;
 	}
 
 	/**
@@ -454,12 +453,17 @@ class iMSCP_Database
 	 */
 	public function rollBack()
 	{
-		if($this->transactionCounter) {
-			$this->transactionCounter = 0;
-			return $this->_db->rollBack();
-		}
+		$this->transactionCounter--;
 
-		return false;
+		if ($this->transactionCounter == 0) {
+			try {
+				$this->_db->rollBack();
+			} catch (PDOException $e) {
+				// Ignore rollback exception
+			}
+		} else {
+			$this->_db->exec("ROLLBACK TO SAVEPOINT TRANSACTION{$this->transactionCounter}");
+		}
 	}
 
 	/**

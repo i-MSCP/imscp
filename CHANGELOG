@@ -33,6 +33,7 @@ DATABASE
 FRONTEND
     Added: SPF DNS resource record type (validated as a TXT record)
     Changed: The `type` field cannot longer be changed when editing a DNS resource record
+    Changed: Support for nested MySQL transactions is now emulated using named transaction savepoints
     Fixed: Cannot add DKIM/DMARC DNS resource records
     Fixed: Customer must be allowed to set custom TTL value for any DNS resource record
     Fixed: Customer must be allowed to set `name` field of any DNS resource record
