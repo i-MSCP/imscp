@@ -70,7 +70,7 @@
         php_admin_flag allow_url_fopen {ALLOW_URL_FOPEN}
         # SECTION itk END.
         # SECTION php_enabled END.
-     </Directory>
+    </Directory>
 
     # SECTION cgi_support BEGIN.
     ScriptAlias /cgi-bin/ {WEB_DIR}/cgi-bin/
