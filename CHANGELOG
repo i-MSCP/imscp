@@ -5,10 +5,10 @@ Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-    Support for prime256v1 (ECDSA) keys (iMSCP::OpenSSL)
     Added: beforeMountLogsFolder, afterMountLogsFolder, beforeUnmountLogsFolder and afterUmountMountLogsFolder events
     Added: Caller info for __DIE__ and __WARN__ signal handlers
     Added: Debug info for loading of listener files (Event::Manager)
+    Added: Support for prime256v1 (ECDSA) keys (iMSCP::OpenSSL)
     Backported: iMSCP::DbTasksProcessor from 1.3.x branch - Allows to process db tasks without spawning new process
     Backported: imscp-mountall-mngr (as imscp-mountall) from 1.3.x branch - Mount i-MSCP file systems on server reboot
     Backported:: iMSCP::Mount library from 1.3.x branch - Library for mounting/unmounting file systems
