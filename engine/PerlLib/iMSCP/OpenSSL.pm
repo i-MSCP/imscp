@@ -72,7 +72,7 @@ sub validatePrivateKey
     }
 
     my @cmd = (
-        'openssl rsa', '-in', escapeShell( $self->{'private_key_container_path'} ), '-noout',
+        'openssl pkey', '-in', escapeShell( $self->{'private_key_container_path'} ), '-noout',
             $passphraseFile ? ('-passin', escapeShell( "file:$passphraseFile" )) : ''
     );
 
@@ -172,7 +172,7 @@ sub importPrivateKey
     }
 
     my @cmd = (
-        'openssl rsa', '-in', escapeShell( $self->{'private_key_container_path'} ),
+        'openssl pkey', '-in', escapeShell( $self->{'private_key_container_path'} ),
         '-out', escapeShell( "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem" ),
             $passphraseFile ? ('-passin', escapeShell( "file:$passphraseFile" )) : ''
     );
