@@ -154,18 +154,17 @@ function addCustomer()
     $extMailServer = str_replace('_', '', $extMailServer);
     $webFolderProtection = str_replace('_', '', $webFolderProtection);
     $encryptedPassword = cryptPasswordWithSalt($password);
-
     $db = iMSCP_Database::getInstance();
 
     try {
+        $db->beginTransaction();
+
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddDomain, array(
             'domainName' => $dmnName,
             'createdBy' => $_SESSION['user_id'],
             'customerId' => $customerId,
             'customerEmail' => $email
         ));
-
-        $db->beginTransaction();
 
         exec_query(
             '
@@ -234,8 +233,6 @@ function addCustomer()
         ));
         update_reseller_c_props($_SESSION['user_id']);
 
-        $db->commit();
-
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddDomain, array(
             'domainName' => $dmnName,
             'createdBy' => $_SESSION['user_id'],
@@ -244,11 +241,12 @@ function addCustomer()
             'domainId' => $dmnId
         ));
 
+        $db->commit();
         send_request();
         write_log("{$_SESSION['user_logged']} added new customer: $adminName", E_USER_NOTICE);
         set_page_message(tr('Customer account successfully scheduled for creation.'), 'success');
         redirectTo('users.php');
-    } catch (iMSCP_Exception_Database $e) {
+    } catch (iMSCP_Exception $e) {
         $db->rollBack();
         throw $e;
     }
@@ -295,7 +293,6 @@ $tpl->define_dynamic(array(
     'ip_entry' => 'page',
     'alias_feature' => 'page'
 ));
-
 $tpl->assign(array(
     'TR_PAGE_TITLE' => tr('Reseller / Customers / Add Customer - Next Step'),
     'TR_ADD_USER' => tr('Add user'),

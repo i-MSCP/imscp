@@ -524,7 +524,6 @@ function update_user_props($domainId, $props)
  */
 function change_domain_status($customerId, $action)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	if ($action == 'deactivate') {
@@ -537,104 +536,79 @@ function change_domain_status($customerId, $action)
 
 	$stmt = exec_query(
 		'
-			SELECT
-				domain_id, admin_name
-			FROM
-				domain
-			INNER JOIN
-				admin ON(admin_id = domain_admin_id)
-			WHERE
-				domain_admin_id = ?
+			SELECT domain_id, admin_name FROM domain INNER JOIN admin ON(admin_id = domain_admin_id)
+			WHERE domain_admin_id = ?
 		',
 		$customerId
 	);
 
-	if($stmt->rowCount()) {
-		$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-		$domainId = $row['domain_id'];
-		$adminName = decode_idna($row['admin_name']);
+	if (!$stmt->rowCount()) {
+		throw new iMSCP_Exception(sprintf("Unable to found domain for user with ID %s", $customerId));
+	}
 
-		/** @var $db iMSCP_Database */
-		$db = iMSCP_Database::getInstance();
+	$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+	$domainId = $row['domain_id'];
+	$adminName = decode_idna($row['admin_name']);
+	$db = iMSCP_Database::getInstance();
 
-		try {
-			$db->beginTransaction();
+	try {
+		$db->beginTransaction();
 
-			iMSCP_Events_Aggregator::getInstance()->dispatch(
-				iMSCP_Events::onBeforeChangeDomainStatus, array('customerId' => $customerId, 'action' => $action)
-			);
+		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeChangeDomainStatus, array(
+			'customerId' => $customerId,
+			'action' => $action
+		));
 
-			if($action == 'deactivate') {
-				if($cfg['HARD_MAIL_SUSPENSION']) { # SMTP/IMAP/POP disabled
-					exec_query(
-						'UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ?',
-						array( 'todisable', 'no', $domainId)
-					);
-				} else { # IMAP/POP disabled
-					exec_query(
-						'UPDATE mail_users SET po_active = ? WHERE domain_id = ?', array( 'no', $domainId)
-					);
-				}
-			} else {
-				exec_query(
-					'UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ? AND status = ?',
-					array( 'toenable', 'yes', $domainId, 'disabled')
-				);
-				exec_query(
-					'UPDATE mail_users SET po_active = ? WHERE domain_id = ? AND status <> ?',
-					array('yes', $domainId, 'disabled')
-				);
+		if ($action == 'deactivate') {
+			if ($cfg['HARD_MAIL_SUSPENSION']) { # SMTP/IMAP/POP disabled
+				exec_query('UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ?', array(
+					'todisable', 'no', $domainId
+				));
+			} else { # IMAP/POP disabled
+				exec_query('UPDATE mail_users SET po_active = ? WHERE domain_id = ?', array('no', $domainId));
 			}
-
-			# TODO implements customer deactivation
-			# exec_query('UPDATE admin SET admin_status = ? WHERE admin_id = ?', array($newStatus, $customerId));
-			exec_query('UPDATE ftp_users SET status = ? WHERE admin_id = ?', array($newStatus, $customerId));
-			exec_query("UPDATE domain SET domain_status = ? WHERE domain_id = ?", array($newStatus, $domainId));
-			exec_query("UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?", array($newStatus, $domainId));
-			exec_query("UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?", array($newStatus, $domainId));
-			exec_query(
-				'
-					UPDATE
-						subdomain_alias
-					INNER JOIN
-						domain_aliasses USING(alias_id)
-					SET
-						subdomain_alias_status = ?
-					WHERE
-						domain_id = ?
-				',
-				array($newStatus, $domainId)
-			);
-			exec_query('UPDATE domain_dns SET domain_dns_status = ? WHERE domain_id = ?', array($newStatus, $domainId));
-
-			iMSCP_Events_Aggregator::getInstance()->dispatch(
-				iMSCP_Events::onAfterChangeDomainStatus, array('customerId' => $customerId, 'action' => $action)
-			);
-
-			$db->commit();
-		} catch (iMSCP_Exception $e) {
-			$db->rollBack();
-			throw $e;
+		} else {
+			exec_query('UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ? AND status = ?', array(
+				'toenable', 'yes', $domainId, 'disabled'
+			));
+			exec_query('UPDATE mail_users SET po_active = ? WHERE domain_id = ? AND status <> ?', array(
+				'yes', $domainId, 'disabled'
+			));
 		}
 
-		// Send request to i-MSCP daemon
+		# TODO implements customer deactivation
+		# exec_query('UPDATE admin SET admin_status = ? WHERE admin_id = ?', array($newStatus, $customerId));
+		exec_query('UPDATE ftp_users SET status = ? WHERE admin_id = ?', array($newStatus, $customerId));
+		exec_query("UPDATE domain SET domain_status = ? WHERE domain_id = ?", array($newStatus, $domainId));
+		exec_query("UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?", array($newStatus, $domainId));
+		exec_query("UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?", array($newStatus, $domainId));
+		exec_query(
+			'
+				UPDATE subdomain_alias INNER JOIN domain_aliasses USING(alias_id) SET subdomain_alias_status = ?
+				WHERE domain_id = ?
+			',
+			array($newStatus, $domainId)
+		);
+		exec_query('UPDATE domain_dns SET domain_dns_status = ? WHERE domain_id = ?', array($newStatus, $domainId));
+
+		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterChangeDomainStatus, array(
+			'customerId' => $customerId,
+			'action' => $action
+		));
+
+		$db->commit();
 		send_request();
 
 		if ($action == 'deactivate') {
-			write_log(
-				sprintf("%s: scheduled deactivation of customer account: %s", $_SESSION['user_logged'], $adminName),
-				E_USER_NOTICE
-			);
+			write_log(sprintf('%s: scheduled deactivation of customer account: %s', $_SESSION['user_logged'], $adminName), E_USER_NOTICE);
 			set_page_message(tr('Customer account successfully scheduled for deactivation.'), 'success');
 		} else {
-			write_log(
-				sprintf("%s: scheduled activation of customer account: %s",$_SESSION['user_logged'], $adminName),
-				E_USER_NOTICE
-			);
+			write_log(sprintf('%s: scheduled activation of customer account: %s', $_SESSION['user_logged'], $adminName), E_USER_NOTICE);
 			set_page_message(tr('Customer account successfully scheduled for activation.'), 'success');
 		}
-	} else {
-		throw new iMSCP_Exception(sprintf("Unable to found domain for user with ID %s", $customerId));
+	} catch (iMSCP_Exception $e) {
+		$db->rollBack();
+		throw $e;
 	}
 }
 
@@ -754,26 +728,14 @@ function delete_sql_database($dmnId, $dbId)
  */
 function deleteCustomer($customerId, $checkCreatedBy = false)
 {
-	$cfg = iMSCP_Registry::get('config');
-
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteCustomer, array(
-		'customerId' => $customerId
-	));
-
 	// Get username, uid and gid of domain user
 	$query = '
-		SELECT
-			admin_name, created_by, domain_id
-		FROM
-			admin
-		INNER JOIN
-			domain ON(domain_admin_id = admin_id)
-		WHERE
-			admin_id = ?
+		SELECT admin_name, created_by, domain_id FROM admin INNER JOIN domain ON(domain_admin_id = admin_id)
+		WHERE admin_id = ?
 	';
 
 	if ($checkCreatedBy) {
-		$query .= 'AND created_by = ?';
+		$query .= ' AND created_by = ?';
 		$stmt = exec_query($query, array($customerId, $_SESSION['user_id']));
 	} else {
 		$stmt = exec_query($query, $customerId);
@@ -783,9 +745,10 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 		return false;
 	}
 
-	$customerName = $stmt->fields['admin_name'];
-	$mainDomainId = $stmt->fields['domain_id'];
-	$resellerId = $stmt->fields['created_by'];
+	$row = $stmt->fetchRow();
+	$customerName = $row['admin_name'];
+	$mainDomainId = $row['domain_id'];
+	$resellerId = $row['created_by'];
 	$deleteStatus = 'todelete';
 
 	$db = iMSCP_Database::getInstance();
@@ -803,132 +766,74 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 
 		$db->beginTransaction();
 
+		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteCustomer, array(
+			'customerId' => $customerId
+		));
+
 		// Deletes all protected areas data (areas, groups and users)
 
 		exec_query(
 			'
-				DELETE
-					t2, t3, t4
-				FROM
-					domain AS t1
-				LEFT JOIN
-					htaccess AS t2 ON (t2.dmn_id = t1.domain_id)
-				LEFT JOIN
-					htaccess_users AS t3 ON (t3.dmn_id = t1.domain_id)
-				LEFT JOIN
-					htaccess_groups AS t4 ON (t4.dmn_id = t1.domain_id)
-				WHERE
-					t1.domain_id = ?
+				DELETE t2, t3, t4 FROM domain AS t1
+				LEFT JOIN htaccess AS t2 ON (t2.dmn_id = t1.domain_id)
+				LEFT JOIN htaccess_users AS t3 ON (t3.dmn_id = t1.domain_id)
+				LEFT JOIN htaccess_groups AS t4 ON (t4.dmn_id = t1.domain_id)
+				WHERE t1.domain_id = ?
 			',
 			$mainDomainId
 		);
 
-		// Deletes domain traffic entries
 		exec_query('DELETE FROM domain_traffic WHERE domain_id = ?', $mainDomainId);
-
-		// Deletes custom DNS records
 		exec_query('DELETE FROM domain_dns WHERE domain_id = ?', $mainDomainId);
-
-		// Deletes FTP groups
 		exec_query('DELETE FROM ftp_group WHERE groupname = ?', $customerName);
-
-		// Deletes quota entries
 		exec_query('DELETE FROM quotalimits WHERE name = ?', $customerName);
 		exec_query('DELETE FROM quotatallies WHERE name = ?', $customerName);
-
-		// Deletes support tickets
 		exec_query('DELETE FROM tickets WHERE ticket_from = ? OR ticket_to = ?', array($customerId, $customerId));
-
-		// Deletes user gui properties
 		exec_query('DELETE FROM user_gui_props WHERE user_id = ?', $customerId);
-
-		// Deletes php.ini entries
 		exec_query('DELETE FROM php_ini WHERE admin_id = ?', $customerId);
 
 		//
 		// Delegated tasks - begin
 		//
 
-		// Delete FTP users
 		exec_query('UPDATE ftp_users SET status = ? WHERE admin_id = ?', array('todelete', $customerId));
-
-		// Schedule mail accounts deletion
 		exec_query('UPDATE mail_users SET status = ? WHERE domain_id = ?', array($deleteStatus, $mainDomainId));
-
-		// Schedule subdomain's aliasses deletion
 		exec_query(
 			'
-				UPDATE
-					subdomain_alias AS t1
-				JOIN
-					domain_aliasses AS t2 ON(t2.domain_id = ?)
-				SET
-					t1.subdomain_alias_status = ?
-				WHERE
-					t1.alias_id = t2.alias_id
+				UPDATE subdomain_alias AS t1 JOIN domain_aliasses AS t2 ON(t2.domain_id = ?)
+				SET t1.subdomain_alias_status = ? WHERE t1.alias_id = t2.alias_id
 			',
 			array($mainDomainId, $deleteStatus)
 		);
-
-		// Schedule domain aliases deletion
-		exec_query(
-			'UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', array($deleteStatus, $mainDomainId)
-		);
-
-		// Schedule domain's subdomains deletion
-		exec_query(
-			'UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', array($deleteStatus, $mainDomainId)
-		);
-
-		// Schedule domain deletion
+		exec_query('UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', array($deleteStatus, $mainDomainId));
+		exec_query('UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', array($deleteStatus, $mainDomainId));
 		exec_query('UPDATE domain SET domain_status = ? WHERE domain_id = ?', array($deleteStatus, $mainDomainId));
-
-		// Schedule user deletion
 		exec_query('UPDATE admin SET admin_status = ? WHERE admin_id = ?', array($deleteStatus, $customerId));
-
-		// Schedule SSL certificates deletion
 		exec_query("UPDATE ssl_certs SET status = ? WHERE domain_type = 'dmn' AND domain_id = ?", array(
 			$deleteStatus, $mainDomainId
 		));
 		exec_query(
 			"
-				UPDATE
-					ssl_certs
-				SET
-					status = ?
-				WHERE
-					domain_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
-				AND
-					domain_type = ?
+				UPDATE ssl_certs SET status = ?
+				WHERE domain_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?) AND domain_type = ?
 			",
 			array($deleteStatus, $mainDomainId, 'als')
 		);
 		exec_query(
 			"
-				UPDATE
-					ssl_certs SET status = ?
-				WHERE
-					domain_id IN (SELECT subdomain_id FROM subdomain WHERE domain_id = ?)
-				AND
-					domain_type = ?
+				UPDATE ssl_certs SET status = ?
+				WHERE domain_id IN (SELECT subdomain_id FROM subdomain WHERE domain_id = ?) AND domain_type = ?
 			",
 			array($deleteStatus, $mainDomainId, 'sub')
 		);
 		exec_query(
 			"
-				UPDATE
-					ssl_certs SET status = ?
-				WHERE
-					domain_id IN (
-						SELECT
-							subdomain_alias_id
-						FROM
-							subdomain_alias
-						WHERE
-							alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
-					)
-				AND
-					domain_type = ?
+				UPDATE ssl_certs SET status = ?
+				WHERE domain_id IN (
+					SELECT subdomain_alias_id FROM subdomain_alias
+					WHERE alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
+				)
+				AND domain_type = ?
 			",
 			array($deleteStatus, $mainDomainId, 'alssub')
 		);
@@ -937,18 +842,16 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 		// Delegated tasks - end
 		//
 
-		// Updates resellers properties
 		update_reseller_c_props($resellerId);
-
-		// Commit all changes to database server
-		$db->commit();
 
 		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteCustomer, array(
 			'customerId' => $customerId
 		));
+
+		$db->commit();
 	} catch (iMSCP_Exception $e) {
 		$db->rollBack();
-		throw new iMSCP_Exception($e->getMessage(), $e->getCode(), $e);
+		throw $e;
 	}
 
 	// We are now ready to send a request to the daemon for delegated tasks.
@@ -956,7 +859,6 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 	// sysadmin will have to fix the problem causing deletion break and send a request to the daemon manually via the
 	// panel, or run the imscp-rqst-mngr script manually.
 	send_request();
-
 	return true;
 }
 
@@ -970,38 +872,30 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
  */
 function deleteDomainAlias($aliasId, $aliasName)
 {
-	iMSCP_Events_Aggregator::getInstance()->dispatch(
-		iMSCP_Events::onBeforeDeleteDomainAlias, array('domainAliasId' => $aliasId, 'domainAliasName' => $aliasName)
-	);
-
 	/** @var $db iMSCP_Database */
 	$db = iMSCP_Database::getInstance();
 
 	try {
 		$db->beginTransaction();
 
+		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteDomainAlias, array(
+			'domainAliasId' => $aliasId,
+			'domainAliasName' => $aliasName
+		));
+
 		// Delete any FTP account that belongs to the domain alias
 
 		$stmt = exec_query(
 			"
-				SELECT
-					t1.groupname, t1.gid, t1.members
-				FROM
-					ftp_group AS t1
-				LEFT JOIN
-					domain_aliasses AS t3 ON(alias_id = ?)
-				LEFT JOIN
-					subdomain_alias AS t4 ON(t4.alias_id = t3.alias_id)
-				LEFT JOIN
-					ftp_users AS t2 ON(
-						userid LIKE CONCAT('%@', t4.subdomain_alias_name, '.', t3.alias_name)
-						OR
-						userid LIKE CONCAT('%@', t3.alias_name)
-					)
-				WHERE
-					t1.gid = t2.gid
-				LIMIT
-					1
+				SELECT t1.groupname, t1.gid, t1.members FROM ftp_group AS t1
+				LEFT JOIN domain_aliasses AS t3 ON(alias_id = ?)
+				LEFT JOIN subdomain_alias AS t4 ON(t4.alias_id = t3.alias_id)
+				LEFT JOIN ftp_users AS t2 ON(
+					userid LIKE CONCAT('%@', t4.subdomain_alias_name, '.', t3.alias_name)
+					OR
+					userid LIKE CONCAT('%@', t3.alias_name)
+				)
+				WHERE t1.gid = t2.gid LIMIT 1
 			",
 			$aliasId
 		);
@@ -1030,44 +924,23 @@ function deleteDomainAlias($aliasId, $aliasName)
 
 		exec_query(
 			"
-				DELETE
-					ftp_users
-				FROM
-					ftp_users
-				LEFT JOIN
-					domain_aliasses AS t2 ON(alias_id = ?)
-				LEFT JOIN
-					subdomain_alias AS t3 ON(t3.alias_id = t2.alias_id)
-				WHERE
-					(
-						userid LIKE CONCAT('%@', t3.subdomain_alias_name, '.', t2.alias_name)
+				DELETE ftp_users FROM ftp_users
+				LEFT JOIN domain_aliasses AS t2 ON(alias_id = ?)
+				LEFT JOIN subdomain_alias AS t3 ON(t3.alias_id = t2.alias_id)
+				WHERE (
+					userid LIKE CONCAT('%@', t3.subdomain_alias_name, '.', t2.alias_name)
 					OR
-						userid LIKE CONCAT('%@', t2.alias_name)
-					)
+					userid LIKE CONCAT('%@', t2.alias_name)
+				)
 			",
 			$aliasId
 		);
-
-		// Delete any custom DNS and external mail server record that belongs to the domain alias
 		exec_query('DELETE FROM domain_dns WHERE alias_id = ?', $aliasId);
-
-		// Delete any phpini entry that belong to the domain alias
 		exec_query("DELETE FROM php_ini WHERE domain_id = ? AND domain_type = 'als'", $aliasId);
-
-		// Schedule deletion of any mail account that belongs to the domain alias
 		exec_query(
 			"
-				UPDATE
-					mail_users
-				SET
-					status = ?
-				WHERE
-					(sub_id = ? AND mail_type LIKE ?)
-				OR (
-					sub_id IN (SELECT subdomain_alias_id FROM subdomain_alias WHERE alias_id = ?)
-				AND
-					mail_type LIKE ?
-				)
+				UPDATE mail_users SET status = ? WHERE (sub_id = ? AND mail_type LIKE ?)
+				OR (sub_id IN (SELECT subdomain_alias_id FROM subdomain_alias WHERE alias_id = ?) AND mail_type LIKE ?)
 			",
 			array('todelete', $aliasId, '%alias_%', $aliasId, '%alssub_%')
 		);
@@ -1076,44 +949,26 @@ function deleteDomainAlias($aliasId, $aliasName)
 
 		exec_query(
 			'
-				UPDATE
-					ssl_certs
-				SET
-					status = ?
-				WHERE
-					domain_id IN (SELECT subdomain_alias_id FROM subdomain_alias WHERE alias_id = ?)
-				AND
-					domain_type = ?
+				UPDATE ssl_certs SET status = ?
+				WHERE domain_id IN (SELECT subdomain_alias_id FROM subdomain_alias WHERE alias_id = ?) AND domain_type = ?
 			',
 			array('todelete', 'alssub', $aliasId)
 		);
-
-		exec_query(
-			'UPDATE ssl_certs SET status = ? WHERE domain_id = ? and domain_type = ?', array('todelete', $aliasId, 'als')
-		);
-
-		# Schedule deletion of any subdomain that belongs to the domain alias
-		exec_query(
-			'UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE alias_id = ?', array('todelete', $aliasId)
-		);
-
-		# Schedule deletion of the domain alias
+		exec_query('UPDATE ssl_certs SET status = ? WHERE domain_id = ? and domain_type = ?', array('todelete', $aliasId, 'als'));
+		exec_query('UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE alias_id = ?', array('todelete', $aliasId));
 		exec_query('UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', array('todelete', $aliasId));
 
-		iMSCP_Events_Aggregator::getInstance()->dispatch(
-			iMSCP_Events::onAfterDeleteDomainAlias,
-			array('domainAliasId' => $aliasId, 'domainAliasName' => $aliasName)
-		);
+		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteDomainAlias, array(
+			'domainAliasId' => $aliasId,
+			'domainAliasName' => $aliasName
+		));
 
 		$db->commit();
 
 		send_request();
-		write_log(
-			sprintf('%s scheduled deletion of the %s domain alias', decode_idna($_SESSION['user_logged']), $aliasName),
-			E_USER_NOTICE
-		);
+		write_log(sprintf('%s scheduled deletion of the %s domain alias', decode_idna($_SESSION['user_logged']), $aliasName), E_USER_NOTICE);
 		set_page_message(tr('Domain alias successfully scheduled for deletion.'), 'success');
-	} catch (iMSCP_Exception_Database $e) {
+	} catch (iMSCP_Exception $e) {
 		$db->rollBack();
 		throw $e;
 	}

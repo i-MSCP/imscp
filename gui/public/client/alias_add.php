@@ -232,13 +232,13 @@ function addDomainAlias()
             }
         }
 
-        $db->commit();
-
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddDomainAlias, array(
             'domainId' => $mainDmnProps['domain_id'],
             'domainAliasName' => $domainAliasNameAscii,
             'domainAliasId' => $id
         ));
+
+        $db->commit();
 
         if ($isSuUser) {
             send_request();
@@ -249,7 +249,7 @@ function addDomainAlias()
             write_log(sprintf('A new `%s` domain alias has been ordered by: %s', $domainAliasName, decode_idna($_SESSION['user_logged'])), E_USER_NOTICE);
             set_page_message(tr('Domain alias successfully ordered.'), 'success');
         }
-    } catch (iMSCP_Exception_Database $e) {
+    } catch (iMSCP_Exception $e) {
         $db->rollBack();
         write_log(sprintf('System was unable to create the `%s` domain alias: %s', $domainAliasName, $e->getMessage()), E_USER_ERROR);
         set_page_message(tr('Could not create domain alias. An unexpected error occurred.'), 'error');

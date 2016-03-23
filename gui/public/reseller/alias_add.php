@@ -264,12 +264,12 @@ function addDomainAlias()
     $db = iMSCP_Database::getInstance();
 
     try {
+        $db->beginTransaction();
+
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddDomainAlias, array(
             'domainId' => $mainDmnProps['domain_id'],
             'domainAliasName' => $domainAliasNameAscii
         ));
-
-        $db->beginTransaction();
 
         exec_query(
             '
@@ -296,18 +296,17 @@ function addDomainAlias()
             client_mail_add_default_accounts($mainDmnProps['domain_id'], $mainDmnProps['admin_email'], $domainAliasNameAscii, 'alias', $id);
         }
 
-        $db->commit();
-
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddDomainAlias, array(
             'domainId' => $mainDmnProps['domain_id'],
             'domainAliasName' => $domainAliasNameAscii,
             'domainAliasId' => $id
         ));
-
+        
+        $db->commit();
         send_request();
         write_log(sprintf('New domain alias `%s` has been added by %', $domainAliasName, $_SESSION['user_logged']), E_USER_NOTICE);
         set_page_message(tr('Domain alias successfully scheduled for addition.'), 'success');
-    } catch (iMSCP_Exception_Database $e) {
+    } catch (iMSCP_Exception $e) {
         $db->rollBack();
         throw $e;
     }
@@ -348,7 +347,6 @@ $tpl->define_dynamic(array(
     'customer_option' => 'page',
     'shared_mount_point_domain' => 'page'
 ));
-
 $tpl->assign(array(
     'TR_PAGE_TITLE' => tr('Reseller / Domains / Add Domain Alias'),
     'TR_CUSTOMER_ACCOUNT' => tr('Customer account'),

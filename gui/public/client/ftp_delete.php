@@ -32,9 +32,6 @@ if (!customerHasFeature('ftp') || !isset($_GET['id'])) {
 }
 
 $ftpUserId = clean_input($_GET['id']);
-
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteFtp, array('ftpUserId' => $ftpUserId));
-
 $stmt = exec_query('SELECT `gid` FROM `ftp_users` WHERE `userid` = ? AND `admin_id` = ?', array(
     $ftpUserId, $_SESSION['user_id']
 ));
@@ -45,11 +42,12 @@ if (!$stmt->rowCount()) {
 
 $row = $stmt->fetchRow();
 $ftpUserGid = $row['gid'];
-
 $db = iMSCP_Database::getInstance();
 
 try {
     $db->beginTransaction();
+
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteFtp, array('ftpUserId' => $ftpUserId));
 
     $stmt = exec_query("SELECT `groupname`, `members` FROM `ftp_group` WHERE `gid` = ?", $ftpUserGid);
 
@@ -86,14 +84,13 @@ try {
         }
     }
 
-    $db->commit();
-
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteFtp, array('ftpUserId' => $ftpUserId));
 
+    $db->commit();
     send_request();
     write_log(sprintf("%s: deleted FTP account: %s", $_SESSION['user_logged'], $ftpUserId), E_USER_NOTICE);
     set_page_message(tr('FTP account successfully deleted.'), 'success');
-} catch (iMSCP_Exception_Database $e) {
+} catch (iMSCP_Exception $e) {
     $db->rollBack();
     throw $e;
 }

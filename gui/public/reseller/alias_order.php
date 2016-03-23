@@ -52,15 +52,12 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['del_i
 
     try {
         $db->beginTransaction();
-
         exec_query('DELETE FROM php_ini WHERE domain_id = ? AND domain_type = ?', array($id, 'als'));
         exec_query('DELETE FROM domain_aliasses WHERE alias_id = ? AND alias_status = ?', array($id, 'ordered'));
-
         $db->commit();
-
         write_log(sprintf('An alias order has been deleted by %s.', $_SESSION['user_logged']), E_USER_NOTICE);
         set_page_message('Alias order successfully deleted.', 'success');
-    } catch (iMSCP_Exception_Database $e) {
+    } catch (iMSCP_Exception $e) {
         $db->rollBack();
         write_log(sprintf('System was unable to remove alias order: %s', $e->getMessage()), E_USER_ERROR);
         set_page_message('Could not remove alias order. An unexpected error occurred.');
@@ -89,12 +86,12 @@ $row = $stmt->fetchRow();
 $db = iMSCP_Database::getInstance();
 
 try {
+    $db->beginTransaction();
+
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddDomainAlias, array(
         'domainId' => $row['domain_id'],
         'domainAliasName' => $row['alias_name']
     ));
-
-    $db->beginTransaction();
 
     exec_query('UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', array('toadd', $id));
 
@@ -111,18 +108,17 @@ try {
         }
     }
 
-    $db->commit();
-
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddDomainAlias, array(
         'domainId' => $row['domain_id'],
         'domainAliasName' => $row['alias_name'],
         'domainAliasId' => $id
     ));
-
+    
+    $db->commit();
     send_request();
     write_log(sprintf('An alias order has been processed by %s.', $_SESSION['user_logged']), E_USER_NOTICE);
     set_page_message(tr('Order successfully processed.'), 'success');
-} catch (iMSCP_Exception_Database $e) {
+} catch (iMSCP_Exception $e) {
     $db->rollBack();
     write_log(sprintf('System was unable to process alias order: %s', $e->getMessage()), E_USER_ERROR);
     set_page_message('Could not process alias order. An unexpected error occurred.', 'error');

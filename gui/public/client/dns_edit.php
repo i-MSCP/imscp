@@ -320,9 +320,10 @@ function client_decodeDnsRecordData($data)
 /**
  * Check and save DNS record
  *
+ * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  * @param int $dnsRecordId DNS record unique identifier (0 for new record)
- * @return bool TRUE on success, FALSE otherwise
+ * @return bool
  */
 function client_saveDnsRecord($dnsRecordId)
 {
@@ -374,7 +375,6 @@ function client_saveDnsRecord($dnsRecordId)
 
         $row = $stmt->fetchRow();
         $domainId = $row['alias_id'] ? $row['alias_id'] : $row['domain_id'];
-
         $domainName = $row['domain_name'];
         $dnsRecordType = $row['domain_type'];
     }
@@ -410,7 +410,6 @@ function client_saveDnsRecord($dnsRecordId)
         switch ($dnsRecordType) {
             case 'A':
                 $ip = client_getPost('dns_A_address');
-
                 if (!client_validate_A($ip, $errorString)) {
                     set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
                 }
@@ -419,7 +418,6 @@ function client_saveDnsRecord($dnsRecordId)
                 break;
             case 'AAAA':
                 $ip = client_getPost('dns_AAAA_address');
-
                 if (!client_validate_AAAA(client_getPost('dns_AAAA_address'), $errorString)) {
                     set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
                 }
@@ -428,7 +426,6 @@ function client_saveDnsRecord($dnsRecordId)
                 break;
             case 'CNAME':
                 $dnsRecordData = client_getPost('dns_cname');
-
                 if ($dnsRecordData == '@') {
                     // Substitute @ with domain name
                     $dnsRecordData = $domainName . '.';
@@ -438,7 +435,6 @@ function client_saveDnsRecord($dnsRecordId)
                 }
 
                 $dnsRecordData = encode_idna($dnsRecordData);
-
                 // Remove trailing dot for validation process (will be readded after)
                 $dnsRecordData = rtrim($dnsRecordData, '.');
 
@@ -465,7 +461,6 @@ function client_saveDnsRecord($dnsRecordId)
                 }
 
                 $srvTarget = encode_idna($srvTarget);
-
                 // Remove trailing dot for validation process (will be readded after)
                 $srvTarget = rtrim($srvTarget, '.');
 
@@ -515,8 +510,7 @@ function client_saveDnsRecord($dnsRecordId)
                 } else {
                     exec_query(
                         "
-                            UPDATE domain_dns
-                            SET domain_dns = ?, domain_class = ?, domain_type = ?, domain_text = ?, domain_dns_status = ?
+                            UPDATE domain_dns SET domain_dns = ?, domain_class = ?, domain_type = ?, domain_text = ?, domain_dns_status = ?
                             WHERE domain_dns_id = ?
                         ",
                         array($dnsRecordName, $dnsRecordClass, $dnsRecordType, $dnsRecordData, 'tochange', $dnsRecordId)
@@ -535,7 +529,7 @@ function client_saveDnsRecord($dnsRecordId)
                 $db->commit();
                 send_request();
                 write_log(sprintf('DNS resource record has been scheduled for %s by %s', $dnsRecordId ? tr('update') : tr('addition'), $_SESSION['user_logged']), E_USER_NOTICE);
-            } catch (iMSCP_Exception_Database $e) {
+            } catch (iMSCP_Exception $e) {
                 $db->rollBack();
                 if ($e->getCode() == 23000) { // Duplicate entries
                     set_page_message(tr('DNS record already exist.'), 'error');
@@ -561,9 +555,7 @@ function client_saveDnsRecord($dnsRecordId)
  */
 function client_generatePage($tpl, $dnsRecordId)
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
-
     $mainDomainId = get_user_domain_id($_SESSION['user_id']);
 
     if (!$dnsRecordId) { // Add DNS record
@@ -605,38 +597,28 @@ function client_generatePage($tpl, $dnsRecordId)
 
     list($name, $ipv4, $ipv6, $srvName, $srvProto, $srvTTL, $srvPriority, $srvWeight, $srvTargetPort, $srvTargetHost,
         $cname, $txt, $ownedBy
-        ) = client_decodeDnsRecordData($data);
+    ) = client_decodeDnsRecordData($data);
 
     // Protection against edition (eg. for external mail MX record)
     if ($ownedBy != 'custom_dns_feature') {
         showBadRequestErrorPage();
     }
 
-    $dnsTypes = client_create_options(
-        array('A', 'AAAA', 'SRV', 'CNAME', 'SPF', 'TXT'), client_getPost('type', $data['domain_type'])
-    );
+    $dnsTypes = client_create_options(array('A', 'AAAA', 'SRV', 'CNAME', 'SPF', 'TXT'), client_getPost('type', $data['domain_type']));
     $dnsClasses = client_create_options(array('IN'), client_getPost('class', $data['domain_class']));
-
     $tpl->assign(array(
         'ID' => tohtml($dnsRecordId),
-
         'DNS_SRV_NAME' => tohtml(client_getPost('dns_srv_name', decode_idna($srvName))),
         'SELECT_DNS_SRV_PROTOCOL' => client_create_options(array('tcp', 'udp', 'tls'), client_getPost('srv_proto', $srvProto)),
         'DNS_NAME' => tohtml(client_getPost('dns_name', decode_idna(rtrim($name, '.')). ($name != '' ? '.' : ''))),
-
         'DNS_TTL' => tohtml(client_getPost('dns_ttl', $srvTTL)),
-
         'SELECT_DNS_TYPE' => $dnsTypes,
-
         'SELECT_DNS_CLASS' => $dnsClasses,
-
         'DNS_ADDRESS' => tohtml(client_getPost('dns_A_address', $ipv4)),
         'DNS_ADDRESS_V6' => tohtml(client_getPost('dns_AAAA_address', $ipv6)),
-
         'DNS_SRV_PRIO' => tohtml(client_getPost('dns_srv_prio', $srvPriority)),
         'DNS_SRV_WEIGHT' => tohtml(client_getPost('dns_srv_weight', $srvWeight)),
         'DNS_SRV_PORT' => tohtml(client_getPost('dns_srv_port', $srvTargetPort)),
-
         'DNS_SRV_HOST' => tohtml(client_getPost('dns_srv_host', decode_idna(rtrim($srvTargetHost, '.')) . ($srvTargetHost != '' ? '.' : ''))),
         'DNS_CNAME' => tohtml(client_getPost('dns_cname', decode_idna(rtrim($cname, '.')) . ($cname != '' ? '.' : ''))),
         'DNS_TXT_DATA' => tohtml(client_getPost('dns_txt_data', $txt))

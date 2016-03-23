@@ -71,14 +71,10 @@ function reseller_getResellerProps($resellerId)
 {
     $stmt = exec_query(
         '
-            SELECT
-                reseller_id, current_sub_cnt, max_sub_cnt, current_als_cnt, max_als_cnt, current_mail_cnt, max_mail_cnt,
+            SELECT reseller_id, current_sub_cnt, max_sub_cnt, current_als_cnt, max_als_cnt, current_mail_cnt, max_mail_cnt,
                 current_ftp_cnt, max_ftp_cnt, current_sql_db_cnt, max_sql_db_cnt, current_sql_user_cnt, max_sql_user_cnt,
                 current_disk_amnt, max_disk_amnt, current_traff_amnt, max_traff_amnt, reseller_ips, software_allowed
-            FROM
-                reseller_props
-            WHERE
-                reseller_id = ?
+            FROM reseller_props WHERE reseller_id = ?
         ',
         $resellerId
     );
@@ -96,18 +92,12 @@ function reseller_getDomainProps($domainId)
 {
     $stmt = exec_query(
         '
-            SELECT
-                admin_id, domain_id, domain_name, domain_expires, domain_status, domain_ip_id, domain_subd_limit,
+            SELECT admin_id, domain_id, domain_name, domain_expires, domain_status, domain_ip_id, domain_subd_limit,
                 domain_alias_limit, domain_mailacc_limit, domain_ftpacc_limit, domain_sqld_limit,
                 domain_sqlu_limit, domain_disk_limit, domain_disk_usage, domain_traffic_limit, domain_php,
                 domain_cgi, domain_dns, domain_software_allowed, allowbackup, domain_external_mail,
                 web_folder_protection, (mail_quota / 1048576) AS mail_quota
-            FROM
-                domain
-            INNER JOIN
-                admin ON(admin_id = domain_admin_id)
-            WHERE
-                domain_id = ?
+            FROM domain INNER JOIN admin ON(admin_id = domain_admin_id) WHERE domain_id = ?
         ',
         $domainId
     );
@@ -569,7 +559,6 @@ function _reseller_generateFeaturesForm($tpl, &$data)
         $tpl->assign('BACKUP_BLOCK', '');
     }
 
-
     $tpl->assign(array(
         'TR_WEB_FOLDER_PROTECTION' => tr('Web folder protection'),
         'TR_WEB_FOLDER_PROTECTION_HELP' => tr('If set to `yes`, Web folders will be protected against deletion.'),
@@ -583,9 +572,10 @@ function _reseller_generateFeaturesForm($tpl, &$data)
 /**
  * Check and updates domain data
  *
+ * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  * @param int $domainId Domain unique identifier
- * @return bool TRUE on success, FALSE otherwise
+ * @return bool
  */
 function reseller_checkAndUpdateData($domainId)
 {
@@ -854,13 +844,13 @@ function reseller_checkAndUpdateData($domainId)
                 set_page_message(tr('Nothing has been changed.'), 'info');
                 return true;
             }
+            
+            $db->beginTransaction();
 
             iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditDomain, array(
                 'domainId' => $domainId
             ));
-
-            $db->beginTransaction();
-
+            
             if ($phpiniClientPerms != $phpini->getClientPermission() || $phpiniDomainConf != $phpini->getDomainIni()) {
                 $phpini->updateDomainConfigOptions($data['admin_id']);
                 $needDaemonRequest = true;
@@ -955,11 +945,11 @@ function reseller_checkAndUpdateData($domainId)
             // Update reseller properties
             update_reseller_c_props($data['reseller_id']);
 
-            $db->commit();
-
             iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditDomain, array(
                 'domainId' => $domainId
             ));
+            
+            $db->commit();
 
             if ($needDaemonRequest) {
                 send_request();
@@ -972,7 +962,7 @@ function reseller_checkAndUpdateData($domainId)
             write_log(sprintf('Domain %s has been updated by %s', decode_idna($data['domain_name']),  $userLogged), E_USER_NOTICE);
             return true;
         }
-    } catch (iMSCP_Exception_Database $e) {
+    } catch (iMSCP_Exception $e) {
         $db->rollBack();
         throw $e;
     }

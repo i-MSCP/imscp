@@ -345,22 +345,16 @@ function admin_generateForm($tpl, &$data)
  */
 function admin_checkAndCreateResellerAccount()
 {
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddUser);
-
     $cfg = iMSCP_Registry::get('config');
     $errFieldsStack = array();
     $data =& admin_getData();
-
-    /** @var $db iMSCP_Database */
     $db = iMSCP_Database::getInstance();
 
     try {
         $db->beginTransaction();
 
         // Check for reseller name
-        $stmt = exec_query(
-            'SELECT COUNT(`admin_id`) `usernameExist` FROM `admin` WHERE `admin_name` = ? LIMIT 1', $data['admin_name']
-        );
+        $stmt = exec_query('SELECT COUNT(`admin_id`) `usernameExist` FROM `admin` WHERE `admin_name` = ? LIMIT 1', $data['admin_name']);
         $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
         if ($row['usernameExist']) {
@@ -466,7 +460,6 @@ function admin_checkAndCreateResellerAccount()
 
         // Check for PHP settings
         $phpini = iMSCP_PHPini::getInstance();
-
         $phpini->setResellerPermission('phpiniSystem', $data['php_ini_system']);
 
         if ($phpini->resellerHasPermission('phpiniSystem')) {
@@ -474,7 +467,6 @@ function admin_checkAndCreateResellerAccount()
             $phpini->setResellerPermission('phpiniDisplayErrors', $data['php_ini_al_display_errors']);
             $phpini->setResellerPermission('phpiniDisableFunctions', $data['php_ini_al_disable_functions']);
             $phpini->setResellerPermission('phpiniMailFunction', $data['php_ini_al_mail_function']);
-
 
             $phpini->setResellerPermission('phpiniMemoryLimit', $data['memory_limit']); // Must be set before phpiniPostMaxSize
             $phpini->setResellerPermission('phpiniPostMaxSize', $data['post_max_size']); // Must be set before phpiniUploadMaxFileSize
@@ -484,7 +476,9 @@ function admin_checkAndCreateResellerAccount()
 
         }
 
-        if (empty($errFieldsStack) && !Zend_Session::namespaceIsset('pageMessages')) { // Update process begin here
+        if (empty($errFieldsStack) && !Zend_Session::namespaceIsset('pageMessages')) { // Add process begin here
+            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddUser);
+            
             // Insert reseller personal data into database
             exec_query(
                 '
@@ -506,12 +500,9 @@ function admin_checkAndCreateResellerAccount()
             // Get new reseller unique identifier
             $resellerId = $db->insertId();
 
-            // Insert reseller GUI properties into database
             exec_query('INSERT INTO user_gui_props (user_id, lang, layout) VALUES (?, ?, ?)', array(
                 $resellerId, $cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME'])
             );
-
-            // Insert reseller properties into database
             exec_query(
                 '
                     INSERT INTO reseller_props (
@@ -547,25 +538,21 @@ function admin_checkAndCreateResellerAccount()
                 )
             );
 
-            $db->commit();
-
             // Creating Software repository for reseller if needed
             if ($data['software_allowed'] == 'yes' && !@mkdir($cfg['GUI_APS_DIR'] . '/' . $resellerId, 0750, true)) {
-                write_log(sprintf('System was unable to create the %s directory for reseller software repository', "{$cfg['GUI_APS_DIR']}/$resellerId"), E_USER_ERROR);
+                write_log('System was unable to create directory for reseller software repository', E_USER_ERROR);
+                throw new iMSCP_Exception(sprintf('Could not create directory for software repository'));
             }
-
+            
             iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddUser);
-
-            send_add_user_auto_msg(
-                $_SESSION['user_id'], $data['admin_name'], $data['password'], $data['email'], $data['fname'],
-                $data['lname'], tr('Reseller')
-            );
-
+            
+            $db->commit();
+            send_add_user_auto_msg($_SESSION['user_id'], $data['admin_name'], $data['password'], $data['email'], $data['fname'], $data['lname'], tr('Reseller'));
             write_log(sprintf('A new reseller account (%s) has been created by %s', $data['admin_name'], $_SESSION['user_logged']), E_USER_NOTICE);
             set_page_message(tr('Reseller account successfully created.'), 'success');
             return true;
         }
-    } catch (iMSCP_Exception_Database $e) {
+    } catch (iMSCP_Exception $e) {
         $db->rollBack();
         throw $e;
     }

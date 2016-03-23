@@ -432,8 +432,6 @@ function admin_generateForm($tpl, &$data)
  */
 function admin_checkAndUpdateData($resellerId)
 {
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $resellerId));
-
     $errFieldsStack = array();
     $data =& admin_getData($resellerId, true);
     $db = iMSCP_Database::getInstance();
@@ -614,6 +612,8 @@ function admin_checkAndUpdateData($resellerId)
         unset($resellerPhpPermissions);
 
         if (empty($errFieldsStack) && !Zend_Session::namespaceIsset('pageMessages')) { // Update process begin here
+            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $resellerId));
+
             $oldValues = $newValues = array();
 
             foreach ($data as $property => $value) {
@@ -649,9 +649,10 @@ function admin_checkAndUpdateData($resellerId)
                     UPDATE admin SET {$setPassword} fname = ?, lname = ?, gender = ?, firm = ?, zip = ?, city = ?,
                         state = ?, country = ?, email = ?, phone = ?, fax = ?, street1 = ?, street2 = ?
                     WHERE admin_id = ?
-            ", $bindParams);
+                ",
+                $bindParams
+            );
 
-            // Update reseller properties
             exec_query(
                 '
                     UPDATE
@@ -715,11 +716,11 @@ function admin_checkAndUpdateData($resellerId)
                 }
             }
 
-            $db->commit();
-
             iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array(
                 'userId' => $resellerId
             ));
+            
+            $db->commit();
 
             // Send mail to reseller for new password
             if ($data['password'] != '') {
@@ -737,7 +738,7 @@ function admin_checkAndUpdateData($resellerId)
             set_page_message(tr('Reseller account successfully updated.'), 'success');
             return true;
         }
-    } catch (iMSCP_Exception_Database $e) {
+    } catch (iMSCP_Exception $e) {
         $db->rollBack();
         throw $e;
     }

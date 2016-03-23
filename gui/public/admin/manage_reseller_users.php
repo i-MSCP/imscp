@@ -214,14 +214,14 @@ function admin_updateResellerLimits($toReseller, $fromReseller, $users, &$errors
 {
 	$toResellerProperties = imscp_getResellerProperties($toReseller);
 	$fromResellerProperties = imscp_getResellerProperties($fromReseller, true);
-
 	$usersList = explode(';', $users);
 
 	for ($i = 0, $countUsersList = count($usersList) - 1; $i < $countUsersList; $i++) {
 		$stmt = exec_query('SELECT domain_name FROM domain WHERE domain_admin_id = ?', $usersList[$i]);
 
 		if($stmt->rowCount()) {
-			$domainName = $stmt->fields['domain_name'];
+			$row = $stmt->fetchRow();
+			$domainName = $row['domain_name'];
 
 			list(
 				$subdomainsLimit, , $domainAliasesLimit, , $mailAccountsLimit, , $ftpAccountsLimit, , $sqlDatabasesLimit, ,
@@ -230,7 +230,8 @@ function admin_updateResellerLimits($toReseller, $fromReseller, $users, &$errors
 
 			calculate_reseller_dvals(
 				$toResellerProperties['current_dmn_cnt'], $toResellerProperties['max_dmn_cnt'], $src_dmn_current,
-				$fromResellerProperties['max_dmn_cnt'], 1, $errorsStack, 'Domain', $domainName);
+				$fromResellerProperties['max_dmn_cnt'], 1, $errorsStack, 'Domain', $domainName
+			);
 
 			if ($errorsStack == '_off_') {
 				calculate_reseller_dvals(
@@ -285,13 +286,9 @@ function admin_updateResellerLimits($toReseller, $fromReseller, $users, &$errors
 			if ($errorsStack != '_off_') {
 				return false;
 			}
-		} else {
-
 		}
 	}
 
-	// Update reseller properties
-	/** @var $db iMSCP_Database */
 	$db = iMSCP_Database::getInstance();
 
 	try {
@@ -322,12 +319,11 @@ function admin_updateResellerLimits($toReseller, $fromReseller, $users, &$errors
 		update_reseller_props($toReseller, $newToResellerProperties);
 
 		for ($i = 0, $countUsersList = count($usersList) - 1; $i < $countUsersList; $i++) {
-			$query = 'UPDATE `admin` SET `created_by` = ? WHERE `admin_id` = ?';
-			exec_query($query, array($toReseller, $usersList[$i]));
+			exec_query('UPDATE `admin` SET `created_by` = ? WHERE `admin_id` = ?', array($toReseller, $usersList[$i]));
 		}
 
 		$db->commit();
-	} catch (iMSCP_Exception_Database $e) {
+	} catch (iMSCP_Exception $e) {
 		$db->rollBack();
 		throw $e;
 	}

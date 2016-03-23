@@ -34,9 +34,7 @@ function generateDomainTypeList($mainDmnId, $tpl)
 {
     $stmt = exec_query(
         '
-            SELECT
-                count(`t2`.`subdomain_id`) AS `sub_count`,
-                count(`t3`.`alias_id`) AS `als_count`,
+            SELECT count(`t2`.`subdomain_id`) AS `sub_count`, count(`t3`.`alias_id`) AS `als_count`,
                 count(`t4`.`subdomain_alias_id`) AS `alssub_count`
             FROM `domain` AS `t1`
             LEFT JOIN `subdomain` AS `t2` ON(`t2`.`domain_id` = `t1`.`domain_id`)
@@ -130,9 +128,10 @@ function getDomainList($mainDmnName, $mainDmnId, $dmnType = 'dmn')
 /**
  * Add Ftp account
  *
+ * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  * @param string $mainDmnName Customer main domain
- * @return bool TRUE on success, FALSE otherwise
+ * @return bool
  */
 function addAccount($mainDmnName)
 {
@@ -220,21 +219,20 @@ function addAccount($mainDmnName)
     $gid = $row['admin_sys_gid'];
     $diskspaceLimit = $row['domain_disk_limit'];
     $quotaEntriesExist = $row['quota_entry'] ? true : false;
-
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddFtp, array(
-        'ftpUserId' => $userid,
-        'ftpPassword' => $encryptedPassword,
-        'ftpRawPassword' => $passwd,
-        'ftpUserUid' => $uid,
-        'ftpUserGid' => $gid,
-        'ftpUserShell' => $shell,
-        'ftpUserHome' => $homeDir
-    ));
-
     $db = iMSCP_Database::getInstance();
 
     try {
         $db->beginTransaction();
+
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddFtp, array(
+            'ftpUserId' => $userid,
+            'ftpPassword' => $encryptedPassword,
+            'ftpRawPassword' => $passwd,
+            'ftpUserUid' => $uid,
+            'ftpUserGid' => $gid,
+            'ftpUserShell' => $shell,
+            'ftpUserHome' => $homeDir
+        ));
 
         exec_query(
             '
@@ -276,19 +274,6 @@ function addAccount($mainDmnName)
             );
         }
 
-        $db->commit();
-    } catch (iMSCP_Exception_Database $e) {
-        $db->rollBack();
-        if (!($e->getCode() == 23000)) {
-            throw $e;
-
-        }
-
-        set_page_message(tr('Ftp account with same username already exists.'), 'error');
-        $ret = false;
-    }
-
-    if ($ret) {
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddFtp, array(
             'ftpUserId' => $userid,
             'ftpPassword' => $encryptedPassword,
@@ -298,9 +283,19 @@ function addAccount($mainDmnName)
             'ftpUserShell' => $shell,
             'ftpUserHome' => $homeDir
         ));
+
+        $db->commit();
         send_request();
         write_log(sprintf('%s added Ftp account: %s', $_SESSION['user_logged'], $userid), E_USER_NOTICE);
         set_page_message(tr('FTP account successfully added.'), 'success');
+    } catch (iMSCP_Exception $e) {
+        $db->rollBack();
+        if (!($e->getCode() == 23000)) {
+            throw $e;
+        }
+
+        set_page_message(tr('Ftp account with same username already exists.'), 'error');
+        return false;
     }
 
     return $ret;
@@ -324,10 +319,7 @@ function generatePage($mainDmn, $mainDmnId, $tpl)
     ));
 
     generateDomainTypeList($mainDmnId, $tpl);
-
-    $dmnList = getDomainList(
-        $mainDmn, $mainDmnId, isset($_POST['domain_type']) ? clean_input($_POST['domain_type']) : 'dmn'
-    );
+    $dmnList = getDomainList($mainDmn, $mainDmnId, isset($_POST['domain_type']) ? clean_input($_POST['domain_type']) : 'dmn');
 
     foreach ($dmnList as $dmn) {
         $tpl->assign(array(

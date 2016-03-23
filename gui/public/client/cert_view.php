@@ -380,7 +380,7 @@ function client_addSslCert($domainId, $domainType)
         }
 
         redirectTo("cert_view.php?domain_id=$domainId&domain_type=$domainType");
-    } catch (iMSCP_Exception_Database $e) {
+    } catch (iMSCP_Exception $e) {
         $db->rollBack();
         write_log('Unable to add/update SSL certificate in database', E_USER_ERROR);
         set_page_message('An unexpected error occurred. Please contact your reseller.');
@@ -426,7 +426,7 @@ function client_deleteSslCert($domainId, $domainType)
         set_page_message(tr('SSL certificate successfully scheduled for deletion.'), 'success');
         write_log(sprintf('%s deleted SSL certificate for the %s domain.', decode_idna($_SESSION['user_logged']), decode_idna($domainName)), E_USER_NOTICE);
         redirectTo('domains_manage.php');
-    } catch (iMSCP_Exception_Database $e) {
+    } catch (iMSCP_Exception $e) {
         $db->rollBack();
         write_log(sprintf('Could not export SSL certificate: %s', $e->getMessage()), E_USER_ERROR);
         set_page_message(tr('Could not delete SSL certificate. An unexpected error occurred.'), 'error');
