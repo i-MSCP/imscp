@@ -149,7 +149,7 @@ vlogger will continue to do its main job.
 use strict;
 no strict 'refs';
 use warnings;
-use POSIX qw':signal_h';
+use POSIX ':signal_h';
 use sigtrap qw/ handler shutdown HUP USR1 TERM INT PIPE /;
 use Date::Format;
 use Getopt::Std;
