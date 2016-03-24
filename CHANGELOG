@@ -31,6 +31,7 @@ DATABASE
     Updated: domain_id index on domain_dns table; added index length for domain_dns and domain_text columns
 
 FRONTEND
+    Added: Datatable for the file system information table
     Added: SPF DNS resource record type (validated as a TXT record)
     Changed: The `type` field cannot longer be changed when editing a DNS resource record
     Changed: Support for nested MySQL transactions is now emulated using named transaction savepoints
@@ -66,9 +67,12 @@ SERVERS
     Fixed: ON|OFF string not recognized as boolean value in mysql conffile (MySQL)
     Fixed: Traffic accounting routines must not remove log files (ProFTPD/VsFTPd). Files are now truncated instead.
     Fixed: Useless reload of VsFTPd when adding/removing an FTP user (privileges are given by session)
-    Fixed: VsFTPD doesn't handle non-ascii characters correctly in usernames
+    Fixed: VsFTPD doesn't support non-ascii characters in FTP usernames
     Fixed: VsFTPd doesn't reopen xferlog file automatically when the file has been removed, leading to traffic data loss
     Removed: /var/log/proftpd/ftp_traff.log custom log. Traffic data are now pulled from /var/log/proftpd/xferlog
+
+VLOGGER
+    Fixed: Avoid SELECT query while dump of traffic data
 
 YOUTRACK
     IP-1231 Default SPF DNS resource records should be overrideable
