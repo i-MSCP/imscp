@@ -368,7 +368,7 @@ sub _buildFastCgiConfFiles
 
     if (version->parse( $version ) >= version->parse( '2.4.10' )) {
         push @modulesOff, 'php_fpm_imscp';
-        push @modulesOn, 'setenvif', 'proxy_fcgi', 'proxy_handler';
+        push @modulesOn, 'proxy_fcgi', 'proxy_handler';
     } else {
         push @modulesOff, 'proxy_fcgi', 'proxy_handler';
         push @modulesOn, 'php_fpm_imscp';
@@ -533,7 +533,7 @@ sub _buildApacheConfFiles
             destination => -d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available"
                 ? "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available" : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d"
         } );
-    $rs ||= $self->{'httpd'}->enableModules( 'cgid', 'rewrite', 'proxy', 'proxy_http', 'ssl' );
+    $rs ||= $self->{'httpd'}->enableModules( 'cgid', 'rewrite', 'proxy', 'proxy_http', 'setenvif', 'ssl' );
     $rs ||= $self->{'httpd'}->enableSites( '00_nameserver.conf' );
     $rs ||= $self->{'httpd'}->enableConfs( '00_imscp.conf' );
     $rs ||= $self->{'httpd'}->disableSites( 'default', 'default-ssl', '000-default.conf', 'default-ssl.conf' );

@@ -346,8 +346,7 @@ sub _buildPhpConfFiles
     return $rs if $rs;
 
     # Transitional: fastcgi_imscp
-    my @modulesOff = ('fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php_fpm_imscp', 'php4', 'php5_cgi',
-        'suexec');
+    my @modulesOff = ('fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php_fpm_imscp', 'php4', 'php5_cgi', 'suexec');
     my @modulesOn = ('php5', 'version');
     my $version = $self->{'config'}->{'HTTPD_VERSION'};
 
@@ -456,7 +455,7 @@ sub _buildApacheConfFiles
             destination => -d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available"
                 ? "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available" : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d"
         } );
-    $rs ||= $self->{'httpd'}->enableModules( 'cgid', 'proxy', 'proxy_http', 'rewrite', 'ssl' );
+    $rs ||= $self->{'httpd'}->enableModules( 'cgid', 'proxy', 'proxy_http', 'rewrite', 'setenvif', 'ssl' );
     $rs ||= $self->{'httpd'}->enableSites( '00_nameserver.conf' );
     $rs ||= $self->{'httpd'}->enableConfs( '00_imscp.conf' );
     $rs ||= $self->{'httpd'}->disableSites( 'default', 'default-ssl', '000-default.conf', 'default-ssl.conf' );

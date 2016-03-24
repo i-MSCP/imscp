@@ -58,6 +58,7 @@ PLUGINS
 SERVERS
     Added: Own i-MSCP logrorate configuration file for ProFTPD (xferlog file don't need to be rotated)
     Added: Own i-MSCP ProFTPD sysvinit script to solve #IP-1402 - (Wheezy, Precise, Trusty)
+    Changed: setenvif module is now always required ((Httpd servers)
     Fixed: Bad regexp in getTraffic() method leading to unmatching of traffic data (VsFTPd)
     Fixed: Could not build local vsftpd package when gpg has been initialized; .changes file cannot be signed
     Fixed: Courier sysvinit script must not be copied when selected PO server is Dovecot
