@@ -4,7 +4,7 @@
         $('.datatable').dataTable(
                 {
                     language: imscp_i18n.core.dataTable,
-                    stateSave: false,
+                    stateSave: true,
                     pagingType: "simple",
                     columnDefs: [
                         {type: "natural", targets: [1]}
