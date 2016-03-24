@@ -24,6 +24,7 @@ CONFIG
     Added: MAX_INSTANCES, MAX_CLIENT_PER_HOST and FTPD_CONF_DIR parameters in proftpd/proftpd.data file
     Added: MOUNT_CUSTOMER_LOGS parameter in apache/apache.data file (allows to disable logs bind mounts)
     Changed: Increased default limits for ProFTPD/VsFTPd
+    Fixed: Allow access to .well-known folder in any case if exists (Apache2)
 
 DATABASE
     Added: SPF type to the list of allowed DNS resource records
