@@ -70,7 +70,9 @@ SERVERS
     Fixed: Useless reload of VsFTPd when adding/removing an FTP user (privileges are given by session)
     Fixed: VsFTPD doesn't support non-ascii characters in FTP usernames
     Fixed: VsFTPd doesn't reopen xferlog file automatically when the file has been removed, leading to traffic data loss
+    Fixed: When the --skip-distro-packages installer option is set, the VsFTPD local package shouldn't be rebuilt
     Removed: /var/log/proftpd/ftp_traff.log custom log. Traffic data are now pulled from /var/log/proftpd/xferlog
+
 
 VLOGGER
     Fixed: Avoid SELECT query while dump of traffic data

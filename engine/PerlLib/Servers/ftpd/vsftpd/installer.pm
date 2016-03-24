@@ -30,7 +30,6 @@ use iMSCP::Crypt 'randomStr';
 use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::File;
-use iMSCP::LsbRelease;
 use iMSCP::Stepper;
 use iMSCP::TemplateParser;
 use File::Basename;
@@ -214,16 +213,17 @@ sub install
 {
     my $self = shift;
 
-    my %lsbInfo = iMSCP::LsbRelease->getInstance()->getDistroInformation();
-
-    if ($lsbInfo{'ID'} eq 'Ubuntu'
-        || $lsbInfo{'ID'} eq 'Debian' && version->parse( $lsbInfo{'RELEASE'} ) < version->parse( '8.0' )
+    if (defined $main::skippackages
+        && !$main::skippackages
+        && ($main::imscpConfig{'DISTRO_ID'} eq 'ubuntu'
+            || ($main::imscpConfig{'DISTRO_ID'} eq 'debian'
+                && version->parse( "$main::imscpConfig{'DISTRO_RELEASE'}" ) < version->parse( '8.0' )
+            )
+        )
     ) {
         my $rs = $self->_rebuildVsFTPdDebianPackage();
         return $rs if $rs;
     }
-
-    undef %lsbInfo;
 
     my $rs = $self->_setVersion();
     $rs ||= $self->_setupDatabase();
