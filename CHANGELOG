@@ -73,6 +73,7 @@ SERVERS
 
 VLOGGER
     Fixed: Avoid SELECT query while dump of traffic data
+    Fixed: SQL statement must be prepared once per dump process
 
 YOUTRACK
     IP-1231 Default SPF DNS resource records should be overrideable
