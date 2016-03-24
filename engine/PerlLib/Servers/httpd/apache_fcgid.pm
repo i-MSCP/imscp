@@ -1539,7 +1539,7 @@ sub _addFiles
                     return $rs if $rs;
                 }
             } else {
-                error( sprintf( "Web folder skeleton %s must provide the 'htdocs' directory.", $skelDir ) );
+                error( sprintf( "Web folder skeleton %s must provides the 'htdocs' directory.", $skelDir ) );
                 return 1;
             }
         } else {
@@ -1554,7 +1554,7 @@ sub _addFiles
                 $rs = iMSCP::Dir->new( dirname => "$tmpDir/errors" )->remove();
                 return $rs if $rs;
             } else {
-                warning( sprintf( "Web folder skeleton %s should provide the 'errors' directory.", $skelDir ) );
+                warning( sprintf( "Web folder skeleton %s should provides the 'errors' directory.", $skelDir ) );
             }
         }
 
@@ -1564,9 +1564,11 @@ sub _addFiles
         if ($data->{'DOMAIN_TYPE'} eq 'dmn') {
             if ($self->{'config'}->{'MOUNT_CUSTOMER_LOGS'} ne 'yes') {
                 $rs = iMSCP::Dir->new( dirname => "$tmpDir/logs" )->remove();
+                $rs ||= iMSCP::Dir->new( dirname => "$webDir/logs" )->remove();
                 return $rs if $rs;
             } elsif (!-d "$tmpDir/logs") {
-                warning( sprintf( "Web folder skeleton %s should provide the 'logs' directory.", $skelDir ) );
+                error( sprintf( "Web folder skeleton %s must provides the 'logs' directory.", $skelDir ) );
+                return 1;
             }
         }
 
