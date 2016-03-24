@@ -73,7 +73,6 @@ SERVERS
     Fixed: When the --skip-distro-packages installer option is set, the VsFTPD local package shouldn't be rebuilt
     Removed: /var/log/proftpd/ftp_traff.log custom log. Traffic data are now pulled from /var/log/proftpd/xferlog
 
-
 VLOGGER
     Fixed: Avoid SELECT query while dump of traffic data
     Fixed: SQL statement must be prepared once per dump process
