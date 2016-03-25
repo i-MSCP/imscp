@@ -69,12 +69,6 @@ return array(
                         'uri' => '/admin/admin_edit.php',
                         'title_class' => 'user_blue',
                         'visible' => '0'
-                    ),
-                    'customer_delete_link' => array(
-                        'label' => tr('Delete customer'),
-                        'uri' => '/admin/user_delete.php',
-                        'title_class' => 'user_blue',
-                        'visible' => '0'
                     )
                 )
             ),

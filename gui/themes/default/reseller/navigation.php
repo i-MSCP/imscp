@@ -66,12 +66,6 @@ return array(
 						'uri' => '/reseller/user_edit.php',
 						'visible' => '0',
 						'title_class' => 'user_blue'
-					),
-					'domain_delete_link' => array(
-						'label' => tr('Delete customer - {DOMAIN_NAME}'),
-						'uri' => '/reseller/user_delete.php',
-						'visible' => '0',
-						'title_class' => 'domains'
 					)
 				)
 			),

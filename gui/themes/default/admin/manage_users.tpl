@@ -1,4 +1,10 @@
 
+<script>
+    function action_delete(dmn_name) {
+        return confirm(sprintf("{TR_MESSAGE_DELETE}", dmn_name));
+    }
+</script>
+
 <h3 class="user_yellow"><span>{TR_ADMINISTRATORS}</span></h3>
 
 <!-- BDP: admin_message -->
@@ -144,7 +150,7 @@
             <!-- BDP: usr_delete_show -->
             <!-- EDP: usr_delete_show -->
             <!-- BDP: usr_delete_link -->
-            <a class="icon i_delete" href="user_delete.php?user_id={USER_ID}" title="{TR_DELETE}">{TR_DELETE}</a>
+            <a class="icon i_delete" href="user_delete.php?user_id={USER_ID}" onclick="return action_delete('{USR_USERNAME}')" title="{TR_DELETE}">{TR_DELETE}</a>
             <!-- EDP: usr_delete_link -->
         </td>
     </tr>
@@ -172,9 +178,3 @@
     <!-- EDP: scroll_next -->
 </div>
 <!-- EDP: usr_list -->
-
-<script>
-    function action_delete(dmn_name) {
-        return confirm(sprintf("{TR_MESSAGE_DELETE}", dmn_name));
-    }
-</script>

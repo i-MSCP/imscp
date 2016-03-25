@@ -1,4 +1,10 @@
 
+<script>
+    function action_delete(dmn_name) {
+        return confirm(sprintf("{TR_MESSAGE_DELETE}", dmn_name));
+    }
+</script>
+
 <!-- BDP: users_search -->
 <form action="users.php" method="post" name="search_user" id="search_user">
     <div style="width=100%;vertical-align: middle;">
@@ -75,9 +81,9 @@
             <a class="icon i_identity" href="domain_details.php?domain_id={DOMAIN_ID}" title="{TR_DETAILS}">{TR_DETAILS}</a>
             <a class="icon i_edit" href="domain_edit.php?edit_id={DOMAIN_ID}" title="{TR_EDIT_DOMAIN}">{TR_EDIT_DOMAIN}</a>
             <a class="icon i_user" href="user_edit.php?edit_id={USER_ID}" title="{TR_EDIT_USER}">{TR_EDIT_USER}</a>
-            <a class="icon i_details" href="change_user_interface.php?to_id={USER_ID}" title="{CHANGE_INTERFACE}">{CHANGE_INTERFACE}</a>
+            <a class="icon i_details" href="change_user_interface.php?to_id={USER_ID}" title="{TR_CHANGE_INTERFACE}">{TR_CHANGE_INTERFACE}</a>
             <a class="icon i_stats" href="user_statistics_details.php?user_id={USER_ID}" title="{TR_STAT}">{TR_STAT}</a>
-            <a class="icon i_delete" href="user_delete.php?id={USER_ID}" title="{ACTION}">{ACTION}</a>
+            <a class="icon i_delete" href="user_delete.php?id={USER_ID}" onclick="return action_delete('{NAME}')" title="{TR_DELETE}">{TR_DELETE}</a>
         </td>
     </tr>
     <!-- BDP: user_details -->

@@ -39,7 +39,6 @@
 function generate_users_list($tpl, $resellerId)
 {
     $cfg = iMSCP_Registry::get('config');
-
     $rowsPerPage = $cfg['DOMAIN_ROWS_PER_PAGE'];
 
     if (isset($_POST['details']) && !empty($_POST['details'])) {
@@ -106,7 +105,7 @@ function generate_users_list($tpl, $resellerId)
                 'SCROLL_PREV' => '',
                 'SCROLL_NEXT' => '',
                 'TR_VIEW_DETAILS' => tr('View aliases'),
-                'SHOW_DETAILS' => tr('Show')
+                'SHOW_DETAILS' => tr('Show'),
             ));
             unset($_SESSION['search_for']);
             unset($_SESSION['search_common']);
@@ -218,19 +217,28 @@ function generate_users_list($tpl, $resellerId)
 
             $tpl->assign(array(
                 'CREATION_DATE' => $domainCreated,
-                'ACTION' => tr('Delete'),
+
                 'USER_ID' => $row['domain_admin_id'],
-                'CHANGE_INTERFACE' => tr('Switch'),
+
                 'DISK_USAGE' => $row['domain_disk_limit']
                     ? tr('%1$s of %2$s', bytesHuman($row['domain_disk_usage']), mebibyteHuman($row['domain_disk_limit']))
-                    : tr('%1$s of <b>unlimited</b>', bytesHuman($row['domain_disk_usage']))
+                    : tr('%1$s of <b>unlimited</b>', bytesHuman($row['domain_disk_usage'])),
+
             ));
 
             gen_domain_details($tpl, $row['domain_id']);
             $tpl->parse('USER_ENTRY', '.user_entry');
         }
 
-        $tpl->assign('USR_MESSAGE', '');
+
+
+        $tpl->assign(array(
+            'TR_DELETE' => tr('Delete'),
+            'USR_MESSAGE' =>  '',
+            'TR_CHANGE_INTERFACE' => tr('Switch'),
+            'TR_MESSAGE_DELETE' => tojs(tr('Are you sure you want to delete %s?', '%s'))
+        ));
+
         $tpl->parse('USER_LIST', 'users_list');
     }
 }
@@ -251,7 +259,7 @@ function check_externel_events()
         unset($_SESSION['edit']);
     } elseif (isset($_SESSION['user_has_domain'])) {
         if ($_SESSION['user_has_domain'] == '_yes_') {
-            set_page_message(tr('This user has domain record.<br/>First remove the domain from the system.'), 'error');
+            set_page_message(tr('This user has domain record. First remove the domain from the system.'), 'error');
         }
 
         unset($_SESSION['user_has_domain']);
