@@ -342,17 +342,19 @@ sub createCertificateChain
 
 sub getCertificateExpiryTime
 {
-    my ($self, $certificatePath) = (shift, shift || $self->{'certificate_container_path'});
+    my ($self, $certificatePath) = @_;
+    $certificatePath ||= $self->{'certificate_container_path'};
 
     if ($certificatePath eq '') {
         error( 'Invalide SSL certificate path provided' );
         return undef;
     }
 
-    my @cmd = ( 'openssl', '-x509', '-enddate', '-noout', '-in', escapeShell( $certificatePath ) );
+    my @cmd = ( 'openssl', 'x509', '-enddate', '-noout', '-in', escapeShell( $certificatePath ) );
     my $rs = execute( "@cmd", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
-    unless ($rs == 0 && $stdout && $stdout =~ /^noAfter=(.*)/i) {
+
+    unless ($rs == 0 && $stdout =~ /^notAfter=(.*)/i) {
         error( sprintf( 'Could not get SSL certificate expiry time: %s', $stderr || 'unknown error' ) );
         return undef;
     }
