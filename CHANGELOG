@@ -44,7 +44,7 @@ FRONTEND
     Rewritten: FTP chooser interface to avoid usage of iframe
 
 INSTALLER
-    Added: Check to prevent downgrade attemps (when DB schema change is involved)
+    Added: Check to prevent downgrade attempts (when DB schema change is involved)
     Added: Conditional statement feature for install.xml files (copy_config items only)
     Fixed: Debug and verbose modes must be set early
     Fixed: Don't die on misconfigured server hostname. Just ask for a valid hostname instead
