@@ -352,7 +352,7 @@ sub getCertificateExpiryTime
     my $rs = execute( "@cmd", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     unless ($rs == 0 && $stdout && $stdout =~ /^noAfter=(.*)/i) {
-        error( sprintf( 'Could not get SSL certificate expiry time: %s', $stderr || 'unknown error' ) ) if $rs;
+        error( sprintf( 'Could not get SSL certificate expiry time: %s', $stderr || 'unknown error' ) );
         return undef;
     }
 
