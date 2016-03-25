@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-18 11:55+0100\n"
-"PO-Revision-Date: 2016-03-14 19:18+0000\n"
+"POT-Creation-Date: 2016-03-25 21:53+0100\n"
+"PO-Revision-Date: 2016-03-25 20:53+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/i-mscp/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -309,7 +309,7 @@ msgstr "%s: Ennek a viszonteladónak korlátlan joggal rendelkező felhasználó
 #, php-format
 msgid ""
 "%s: You cannot disable a service already consumed by reseller's customers."
-msgstr ""
+msgstr "%s: Nem lehet letiltani ezt a szolgáltatást a viszonteladó ügyfelei használata miatt."
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
@@ -485,19 +485,19 @@ msgstr "(általában a mentés neve: "
 
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
-msgstr ""
+msgstr "<b>%1$s</b> korlátlan jogokkal rendelkezik a(z) <b>%2$s</b> szolgáltatáshoz.<br>"
 
 #, php-format
 msgid ""
 "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
 "reseller.<br>"
-msgstr ""
+msgstr "<b>%1$s</b> korlátja meghaladja a cél viszonteladó <b>%2$s</b><br> szolgáltatásra vonatkozó korlátját.<br>"
 
 #, php-format
 msgid ""
 "<b>%s</b> has IP address that cannot be managed from the destination "
 "reseller!<br>This user cannot be moved!"
-msgstr ""
+msgstr "<strong>%s</strong> olyan IP-címmel rendelkezik, amit a cél viszonteladó nem kezelhet!<br>Ez a felhasználó nem mozgatható át!"
 
 msgid "A PHP extension stopped the file upload."
 msgstr "PHP kiterjesztés megállította a fájlfeltöltést"
@@ -575,7 +575,7 @@ msgid "Add"
 msgstr "Létrehozás"
 
 msgid "Add DNS resource record"
-msgstr ""
+msgstr "DNS forrás rekord hozzáadása"
 
 msgid "Add FTP account"
 msgstr "FTP-felhasználó hozzáadása"
@@ -795,9 +795,6 @@ msgstr "Adminisztrátor / Felhasználók / Viszonteladó módosítása"
 msgid "Admin / Users / Overview"
 msgstr "Adminisztrátor / Felhasználók / Áttekintés"
 
-msgid "Admin / Users / Overview / Delete Customer"
-msgstr "Adminisztrátor / Felhasználó / Áttekintés / Ügyfél törlése"
-
 msgid "Admin / Users / Overview / Domain Details"
 msgstr "Adminisztrátor / Felhasználók / Áttekintés / Domain részletei"
 
@@ -858,7 +855,7 @@ msgstr "Adminisztrátorok és viszonteladók"
 msgid ""
 "After your upload the package it will be installed on your "
 "systems.<br>Refresh your site to see the new status!"
-msgstr ""
+msgstr "A feltöltés után a rendszer telepíti a programcsomagot. <br> Frissítse a weboldalt az új állapot megtekintéséhez!"
 
 msgid "Alias forward"
 msgstr "Továbbított alternatív email cím"
@@ -885,16 +882,16 @@ msgid "All errors (Development)"
 msgstr "Minden hiba (fejlesztés)"
 
 msgid "All errors, except E_DEPRECATED and E_STRICT (Production)"
-msgstr ""
+msgstr "Minden hiba, kivéve: E_DEPRECATED és E_STRICT (bemutatás)"
 
 msgid "All errors, except E_NOTICES, E_STRICT AND E_DEPRECATED (Default)"
-msgstr ""
+msgstr "Minden hiba, kivéve: E_NOTICES, E_STRICT és E_DEPRECATED (alapértelmezett)"
 
 msgid "All fields are required."
 msgstr "Összes mező kitöltése kötelező"
 
 msgid "All fields are valid."
-msgstr ""
+msgstr "Minden mező érvényes."
 
 msgid "All in"
 msgstr "Összes (bejövő)"
@@ -1061,14 +1058,14 @@ msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Biztosan szeretné törölni a(z) %s hibajegyet?"
 
 msgid "Are you sure you want to delete this DNS record?"
-msgstr ""
+msgstr "Biztosan törli ezt a DNS rekordot?"
 
 #, php-format
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Biztosan szeretné törölni a(z) %s IP-címet?"
 
 msgid "Are you sure you want to delete this domain alias?"
-msgstr ""
+msgstr "Biztosan törli ezt a domain álnevet?"
 
 msgid "Are you sure you want to delete this hosting plan?"
 msgstr ""
@@ -1077,7 +1074,7 @@ msgid "Are you sure you want to delete this package?"
 msgstr "Biztosan szeretné törölni ezt a programcsomagot?"
 
 msgid "Are you sure you want to delete this subdomain?"
-msgstr ""
+msgstr "Biztosan törli ezt az aldomaint?"
 
 msgid ""
 "Are you sure you want to import this package into the local software "
@@ -1318,9 +1315,6 @@ msgstr "Kattints az aktiváláshoz"
 
 msgid "Click to deactivate"
 msgstr "Kattints a deaktiváláshoz"
-
-msgid "Client / Choose Directory"
-msgstr "Ügyfél / Könyvtár választás"
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "Ügyfél / Adatbázisok / SQL adatbázis létrehozása"
@@ -1626,9 +1620,6 @@ msgstr "Ügyfél fiók törlése beütemezve."
 msgid "Customer account successfully updated."
 msgstr "Ügyfél fiók sikeresen módosítva"
 
-msgid "Customer account summary"
-msgstr "Ügyfél fiók összegzése"
-
 msgid "Customer assignments"
 msgstr "Ügyfél átadása"
 
@@ -1836,12 +1827,6 @@ msgstr "Catch-all törlése"
 msgid "Delete all tickets"
 msgstr "Minden hibajegy törlése"
 
-msgid "Delete customer"
-msgstr "Ügyfél törlése"
-
-msgid "Delete customer - {DOMAIN_NAME}"
-msgstr "{DOMAIN_NAME} - ügyfél törlése"
-
 msgid "Delete from log:"
 msgstr "Törlés a naplóból:"
 
@@ -1917,12 +1902,6 @@ msgstr "Tárhely használat részletesen "
 
 msgid "Display errors"
 msgstr "Hibák kijelzése"
-
-#, php-format
-msgid ""
-"Do you really want to delete the entire %s customer account? This operation "
-"cannot be undone."
-msgstr "Biztosan törölni akarod %s fiókját? Ezt a műveletet nem lehet visszavonni!"
 
 msgid "Domain"
 msgstr "Domain"
@@ -2237,9 +2216,6 @@ msgstr "Üzenetsablonok beállítása"
 
 msgid "Email successfully updated."
 msgstr "E-mail sikeresen frissítve."
-
-msgid "Emails"
-msgstr "Email címek"
 
 msgid "Empty data or wrong field."
 msgstr "Üres mező, vagy hibás adat"
@@ -3414,7 +3390,7 @@ msgid "PHP GD extension not loaded."
 msgstr "PHP GD kiterjesztés nincs betöltve"
 
 msgid "PHP Permissions"
-msgstr ""
+msgstr "PHP jogosultságok"
 
 msgid "PHP Settings"
 msgstr "PHP beállítások"
@@ -3986,9 +3962,6 @@ msgstr "Viszonteladó / Ügyfelek / Elvesztett jelszó e-mail"
 msgid "Reseller / Customers / Overview"
 msgstr "Viszonteladó / Ügyfelek / Áttekintés"
 
-msgid "Reseller / Customers / Overview / Delete Customer"
-msgstr "Viszonteladó / Ügyfelek / Áttekintés / Ügyfél törlése"
-
 msgid "Reseller / Customers / Overview / Domain Details"
 msgstr "Viszonteladó / Ügyfelek / Áttekintés / Domain részletei"
 
@@ -4249,7 +4222,7 @@ msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL funkció nem elérhető. Csak megnézni tudod a tanúsítványaidat."
 
 msgid "SSL status"
-msgstr ""
+msgstr "SSL állapot"
 
 msgid "Save"
 msgstr "Mentés"
@@ -4869,9 +4842,8 @@ msgstr "Ez a programcsomag nincs telepítve még"
 msgid "This software is installed on following domain(s):"
 msgstr "Ez a program telepítve van a következő domain(ek)hez:"
 
-msgid ""
-"This user has domain record.<br/>First remove the domain from the system."
-msgstr "Ennek a felhasználónak van domain bejegyzése.<br>Először azt kell törölni a rendszerből"
+msgid "This user has domain record. First remove the domain from the system."
+msgstr ""
 
 msgid "This user name already exist."
 msgstr "Ez a felhasználónév már létezik"
@@ -5480,9 +5452,6 @@ msgstr "Év"
 msgid "Yes"
 msgstr "Igen"
 
-msgid "Yes, delete this account."
-msgstr "Igen, legyen törölve ez a felhasználói fiók"
-
 msgid "YiB"
 msgstr "YB"
 
@@ -5693,9 +5662,6 @@ msgstr ""
 msgid "You must choose between local and remote upload."
 msgstr "Választania kell a helyi és a távoli feltöltés között."
 
-msgid "You must confirm customer account deletion."
-msgstr "Meg kell erősítened az ügyél fiók törlését."
-
 msgid "You must confirm your password."
 msgstr "Meg kell erősítened a jelszavad."
 
@@ -5810,7 +5776,7 @@ msgid "Zip/Postal code"
 msgstr "Irányítószám"
 
 msgid "Zone"
-msgstr ""
+msgstr "Zóna"
 
 msgid "[New]"
 msgstr "[Új]"
@@ -6049,4 +6015,4 @@ msgid "{USERNAME} user statistics"
 msgstr "{USERNAME} felhasználó statisztikái"
 
 msgid "© 2010-2016 i-MSCP Team<br>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2016 i-MSCP Team<br>Minden jog fenntartva."

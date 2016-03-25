@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-18 11:55+0100\n"
-"PO-Revision-Date: 2016-03-14 19:18+0000\n"
+"POT-Creation-Date: 2016-03-25 21:53+0100\n"
+"PO-Revision-Date: 2016-03-25 20:53+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/i-mscp/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -796,9 +796,6 @@ msgstr "Admin / Users / Edit Reseller"
 msgid "Admin / Users / Overview"
 msgstr "Admin / Users / Overview"
 
-msgid "Admin / Users / Overview / Delete Customer"
-msgstr "Admin / Users / Overview / Delete Customer"
-
 msgid "Admin / Users / Overview / Domain Details"
 msgstr "Admin / Users / Overview / Domain Details"
 
@@ -1320,9 +1317,6 @@ msgstr "Click to activate"
 msgid "Click to deactivate"
 msgstr "Click to deactivate"
 
-msgid "Client / Choose Directory"
-msgstr "Client / Choose Directory"
-
 msgid "Client / Databases / Add SQL Database"
 msgstr "Client / Databases / Add SQL Database"
 
@@ -1627,9 +1621,6 @@ msgstr "Customer account successfully scheduled for deletion."
 msgid "Customer account successfully updated."
 msgstr "Customer account successfully updated."
 
-msgid "Customer account summary"
-msgstr "Customer account summary"
-
 msgid "Customer assignments"
 msgstr "Customer assignments"
 
@@ -1837,12 +1828,6 @@ msgstr "Delete CatchAll"
 msgid "Delete all tickets"
 msgstr "Delete all tickets"
 
-msgid "Delete customer"
-msgstr "Delete customer"
-
-msgid "Delete customer - {DOMAIN_NAME}"
-msgstr "Delete customer - {DOMAIN_NAME}"
-
 msgid "Delete from log:"
 msgstr "Delete from log:"
 
@@ -1918,12 +1903,6 @@ msgstr "Disk usage detail"
 
 msgid "Display errors"
 msgstr "Display errors"
-
-#, php-format
-msgid ""
-"Do you really want to delete the entire %s customer account? This operation "
-"cannot be undone."
-msgstr "Do you really want to delete the entire %s customer account? This operation cannot be undone."
 
 msgid "Domain"
 msgstr "Domain"
@@ -2238,9 +2217,6 @@ msgstr "Email setup"
 
 msgid "Email successfully updated."
 msgstr "Email successfully updated"
-
-msgid "Emails"
-msgstr "Emails"
 
 msgid "Empty data or wrong field."
 msgstr "Empty data or wrong field."
@@ -3987,9 +3963,6 @@ msgstr "Reseller / Customers / Lost Password Email"
 msgid "Reseller / Customers / Overview"
 msgstr "Reseller / Customers / Overview"
 
-msgid "Reseller / Customers / Overview / Delete Customer"
-msgstr "Reseller / Customers / Overview / Delete Customer"
-
 msgid "Reseller / Customers / Overview / Domain Details"
 msgstr "Reseller / Customers / Overview / Domain Details"
 
@@ -4870,9 +4843,8 @@ msgstr "This package is not installed yet"
 msgid "This software is installed on following domain(s):"
 msgstr "This software is installed on following domain(s):"
 
-msgid ""
-"This user has domain record.<br/>First remove the domain from the system."
-msgstr "This user has domain record.<br/>First remove the domain from the system."
+msgid "This user has domain record. First remove the domain from the system."
+msgstr ""
 
 msgid "This user name already exist."
 msgstr "This user name already exist."
@@ -5481,9 +5453,6 @@ msgstr "Year"
 msgid "Yes"
 msgstr "Yes"
 
-msgid "Yes, delete this account."
-msgstr "Yes, delete this account."
-
 msgid "YiB"
 msgstr "YiB"
 
@@ -5693,9 +5662,6 @@ msgstr "You must assign at least one IP to this reseller."
 
 msgid "You must choose between local and remote upload."
 msgstr "You must choose between local and remote upload."
-
-msgid "You must confirm customer account deletion."
-msgstr "You must confirm customer account deletion."
 
 msgid "You must confirm your password."
 msgstr "You must confirm your password."

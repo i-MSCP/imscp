@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-18 11:55+0100\n"
-"PO-Revision-Date: 2016-03-14 19:18+0000\n"
+"POT-Creation-Date: 2016-03-25 21:53+0100\n"
+"PO-Revision-Date: 2016-03-25 20:53+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/i-mscp/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -793,9 +793,6 @@ msgstr "管理者 / ユーザー / 代理店編集"
 msgid "Admin / Users / Overview"
 msgstr "管理者 / ユーザー / 概要"
 
-msgid "Admin / Users / Overview / Delete Customer"
-msgstr "管理者 / ユーザー / 概要 / 顧客削除"
-
 msgid "Admin / Users / Overview / Domain Details"
 msgstr "管理者 / ユーザー / 概要 / ドメイン詳細"
 
@@ -1317,9 +1314,6 @@ msgstr "有効にするためにクリック"
 msgid "Click to deactivate"
 msgstr "無効にするためにクリック"
 
-msgid "Client / Choose Directory"
-msgstr "クライアント / ディレクトリ選択"
-
 msgid "Client / Databases / Add SQL Database"
 msgstr "クライアント / SQLデータベース追加"
 
@@ -1624,9 +1618,6 @@ msgstr "顧客アカウントの削除が予定されました。"
 msgid "Customer account successfully updated."
 msgstr "顧客アカウントを更新しました。"
 
-msgid "Customer account summary"
-msgstr "顧客アカウント要約"
-
 msgid "Customer assignments"
 msgstr "顧客の割り当て"
 
@@ -1834,12 +1825,6 @@ msgstr "ごみ箱の削除"
 msgid "Delete all tickets"
 msgstr "全てのチケットを削除"
 
-msgid "Delete customer"
-msgstr "顧客削除"
-
-msgid "Delete customer - {DOMAIN_NAME}"
-msgstr "顧客削除 - {DOMAIN_NAME}"
-
 msgid "Delete from log:"
 msgstr "ログから削除："
 
@@ -1915,12 +1900,6 @@ msgstr "ディスクの使用状況の詳細"
 
 msgid "Display errors"
 msgstr "エラー表示"
-
-#, php-format
-msgid ""
-"Do you really want to delete the entire %s customer account? This operation "
-"cannot be undone."
-msgstr "本当に%sの顧客アカウントを削除してもよろしいですか？この操作は元に戻すことはできません。"
 
 msgid "Domain"
 msgstr "ドメイン"
@@ -2235,9 +2214,6 @@ msgstr "Eメール設定"
 
 msgid "Email successfully updated."
 msgstr "Eメールが更新されました。"
-
-msgid "Emails"
-msgstr "Eメール"
 
 msgid "Empty data or wrong field."
 msgstr "空のデータまたは誤ったフィールドがあります。"
@@ -3984,9 +3960,6 @@ msgstr "代理店 / 顧客 / パスワード忘れEメール"
 msgid "Reseller / Customers / Overview"
 msgstr "代理店 / 顧客 / 概要"
 
-msgid "Reseller / Customers / Overview / Delete Customer"
-msgstr "代理店 / 顧客 / 概要 / 顧客削除"
-
 msgid "Reseller / Customers / Overview / Domain Details"
 msgstr "代理店 / 顧客 / 概要 / ドメイン詳細"
 
@@ -4867,9 +4840,8 @@ msgstr "このパッケージはまだインストールされていません"
 msgid "This software is installed on following domain(s):"
 msgstr "このソフトウェアは、次のドメインにインストールされています："
 
-msgid ""
-"This user has domain record.<br/>First remove the domain from the system."
-msgstr "このユーザーにはドメインレコードを持っています。<br/>最初にシステムからドメインを削除します。"
+msgid "This user has domain record. First remove the domain from the system."
+msgstr ""
 
 msgid "This user name already exist."
 msgstr "このユーザー名は既に存在している。"
@@ -5478,9 +5450,6 @@ msgstr "年"
 msgid "Yes"
 msgstr "はい"
 
-msgid "Yes, delete this account."
-msgstr "はい、このアカウントを削除してください。"
-
 msgid "YiB"
 msgstr "YB"
 
@@ -5690,9 +5659,6 @@ msgstr "代理店に少なくとも１つのIPを割り当てる必要があり�
 
 msgid "You must choose between local and remote upload."
 msgstr "ローカル又はリモートのアップロードのどちらかを選択する必要があります。"
-
-msgid "You must confirm customer account deletion."
-msgstr "顧客アカウントの削除を確認する必要があります。"
 
 msgid "You must confirm your password."
 msgstr "パスワードを確認しなければなりません。"

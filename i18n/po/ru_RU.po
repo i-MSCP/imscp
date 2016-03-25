@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-18 11:55+0100\n"
-"PO-Revision-Date: 2016-03-17 09:55+0000\n"
-"Last-Translator: Thom Heemstra <thom@heemstra.us>\n"
+"POT-Creation-Date: 2016-03-25 21:53+0100\n"
+"PO-Revision-Date: 2016-03-25 20:53+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/i-mscp/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -797,9 +797,6 @@ msgstr "Администратор / Пользователи / Изменить
 msgid "Admin / Users / Overview"
 msgstr "Администратор / Пользователи / Обзор"
 
-msgid "Admin / Users / Overview / Delete Customer"
-msgstr "Администратор / Пользователи / Обзор / Удалить клиента"
-
 msgid "Admin / Users / Overview / Domain Details"
 msgstr "Администратор / Пользователи / Обзор / Детали домена"
 
@@ -1321,9 +1318,6 @@ msgstr "Щелкните для активации"
 msgid "Click to deactivate"
 msgstr "Щелкните для деактивации"
 
-msgid "Client / Choose Directory"
-msgstr "Клиент / Выбрать каталог"
-
 msgid "Client / Databases / Add SQL Database"
 msgstr "Клиент / Базы данных / Добавить БД"
 
@@ -1628,9 +1622,6 @@ msgstr "Клиент успешно помечен для удаления."
 msgid "Customer account successfully updated."
 msgstr "Учетная запись клиента успешно обновлена."
 
-msgid "Customer account summary"
-msgstr "Учетная запись клиента"
-
 msgid "Customer assignments"
 msgstr "Назначения клиентов"
 
@@ -1838,12 +1829,6 @@ msgstr "Удалить Catch all"
 msgid "Delete all tickets"
 msgstr "Удалить все тикеты"
 
-msgid "Delete customer"
-msgstr "Удалить клиента"
-
-msgid "Delete customer - {DOMAIN_NAME}"
-msgstr "Удалить клиента - {DOMAIN_NAME}"
-
 msgid "Delete from log:"
 msgstr "Удалить из лога:"
 
@@ -1919,12 +1904,6 @@ msgstr "Детали использования диска"
 
 msgid "Display errors"
 msgstr "Отображать ошибки"
-
-#, php-format
-msgid ""
-"Do you really want to delete the entire %s customer account? This operation "
-"cannot be undone."
-msgstr "Вы действительно хотите удалить учетную запись пользователя %s ? Эта операция не может быть отменена."
 
 msgid "Domain"
 msgstr "Домен"
@@ -2239,9 +2218,6 @@ msgstr "Настройка почты"
 
 msgid "Email successfully updated."
 msgstr "Почтовый ящик успешно обновлен."
-
-msgid "Emails"
-msgstr "Почтовые ящики"
 
 msgid "Empty data or wrong field."
 msgstr "Пустые данные или неверное поле"
@@ -3988,9 +3964,6 @@ msgstr "Реселлер / Клиенты / Письмо восстановле�
 msgid "Reseller / Customers / Overview"
 msgstr "Реселлер / Клиенты / Обзор"
 
-msgid "Reseller / Customers / Overview / Delete Customer"
-msgstr "Реселлер / Клиенты / Обзор / Удалить клиента"
-
 msgid "Reseller / Customers / Overview / Domain Details"
 msgstr "Реселлер / Клиенты / Обзор / Детали домена"
 
@@ -4871,9 +4844,8 @@ msgstr "Этот пакет еще не установлен"
 msgid "This software is installed on following domain(s):"
 msgstr "Это ПО установлено на следующих доменах:"
 
-msgid ""
-"This user has domain record.<br/>First remove the domain from the system."
-msgstr "Этот пользователь имеет учетную запись домена.<br/>Сначала удалите домен из системы."
+msgid "This user has domain record. First remove the domain from the system."
+msgstr ""
 
 msgid "This user name already exist."
 msgstr "Имя пользователя уже существует."
@@ -5482,9 +5454,6 @@ msgstr "Год"
 msgid "Yes"
 msgstr "Да"
 
-msgid "Yes, delete this account."
-msgstr "Да, удалить учетную запись."
-
 msgid "YiB"
 msgstr "Йб"
 
@@ -5694,9 +5663,6 @@ msgstr "Вы должны закрепить за реселлером как м
 
 msgid "You must choose between local and remote upload."
 msgstr "Вы должны выбрать между локальной и удаленной загрузкой."
-
-msgid "You must confirm customer account deletion."
-msgstr "Вы должны подтвердить удаление клиента."
 
 msgid "You must confirm your password."
 msgstr "Вы должны подтвердить Ваш пароль."

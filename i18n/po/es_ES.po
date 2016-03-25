@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-18 11:55+0100\n"
-"PO-Revision-Date: 2016-03-14 19:18+0000\n"
+"POT-Creation-Date: 2016-03-25 21:53+0100\n"
+"PO-Revision-Date: 2016-03-25 20:53+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/i-mscp/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -797,9 +797,6 @@ msgstr "Administrador / Usuarios / Editar Revendedor"
 msgid "Admin / Users / Overview"
 msgstr "Administrador / Usuarios / Resumen"
 
-msgid "Admin / Users / Overview / Delete Customer"
-msgstr "Administrador / Usuarios / Resumen / Eliminar Cliente"
-
 msgid "Admin / Users / Overview / Domain Details"
 msgstr "Administrador / Usuarios / Resumen / Detalles del Dominio"
 
@@ -1321,9 +1318,6 @@ msgstr "Clic para Activar"
 msgid "Click to deactivate"
 msgstr "Clic para Desactivar"
 
-msgid "Client / Choose Directory"
-msgstr "Cliente / Elegir directorio"
-
 msgid "Client / Databases / Add SQL Database"
 msgstr "Cliente / Bases de Datos / Añadir Base de Datos SQL"
 
@@ -1628,9 +1622,6 @@ msgstr "Cuenta de cliente programada correctamente para su eliminación."
 msgid "Customer account successfully updated."
 msgstr "La cuenta de cliente se ha actualizado correctamente."
 
-msgid "Customer account summary"
-msgstr "Resumen de la cuenta del cliente"
-
 msgid "Customer assignments"
 msgstr "Asignaciones del cliente"
 
@@ -1838,12 +1829,6 @@ msgstr "Eliminar Catch-All"
 msgid "Delete all tickets"
 msgstr "Eliminar todos los tickets"
 
-msgid "Delete customer"
-msgstr "Eliminar cliente"
-
-msgid "Delete customer - {DOMAIN_NAME}"
-msgstr "Eliminar cliente - {DOMAIN_NAME}"
-
 msgid "Delete from log:"
 msgstr "Eliminar del log:"
 
@@ -1919,12 +1904,6 @@ msgstr "Detalle de uso de disco"
 
 msgid "Display errors"
 msgstr "Mostrar errores"
-
-#, php-format
-msgid ""
-"Do you really want to delete the entire %s customer account? This operation "
-"cannot be undone."
-msgstr "¿De verdad quiere eliminar toda la cuenta del cliente %s? Esta operación no se puede deshacer."
 
 msgid "Domain"
 msgstr "Dominio"
@@ -2239,9 +2218,6 @@ msgstr "Configuración de Email"
 
 msgid "Email successfully updated."
 msgstr "Correo actualizado correctamente."
-
-msgid "Emails"
-msgstr "Correos electrónicos"
 
 msgid "Empty data or wrong field."
 msgstr "Campo erróneo o sin datos"
@@ -3988,9 +3964,6 @@ msgstr "Revendedor / Clientes / Email para restablecer la contraseña"
 msgid "Reseller / Customers / Overview"
 msgstr "Revendedor / Clientes / Resumen"
 
-msgid "Reseller / Customers / Overview / Delete Customer"
-msgstr "Revendedor / Clientes / Resumen / Eliminar Dominio"
-
 msgid "Reseller / Customers / Overview / Domain Details"
 msgstr "Revendedor / Clientes / Resumen / Detalles de Dominio"
 
@@ -4871,9 +4844,8 @@ msgstr "Este paquete aun no está instalado"
 msgid "This software is installed on following domain(s):"
 msgstr "Este software está instalado en el/los siguiente(s) dominio(s):"
 
-msgid ""
-"This user has domain record.<br/>First remove the domain from the system."
-msgstr "Este usuario tiene registro de dominio.<br>Elimina primero el dominio del sistema."
+msgid "This user has domain record. First remove the domain from the system."
+msgstr ""
 
 msgid "This user name already exist."
 msgstr "Este nombre de usuario ya existe."
@@ -5482,9 +5454,6 @@ msgstr "Año"
 msgid "Yes"
 msgstr "Si"
 
-msgid "Yes, delete this account."
-msgstr "Sí, borrar esta cuenta."
-
 msgid "YiB"
 msgstr "YiB"
 
@@ -5694,9 +5663,6 @@ msgstr ""
 
 msgid "You must choose between local and remote upload."
 msgstr "Debes elegir entre carga local o remota."
-
-msgid "You must confirm customer account deletion."
-msgstr "Debe confirmar la eliminación de la cuenta del cliente."
 
 msgid "You must confirm your password."
 msgstr "Debes confirmar tu contraseña."

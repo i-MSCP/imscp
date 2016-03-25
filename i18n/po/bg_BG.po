@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-18 11:55+0100\n"
-"PO-Revision-Date: 2016-03-14 19:18+0000\n"
+"POT-Creation-Date: 2016-03-25 21:53+0100\n"
+"PO-Revision-Date: 2016-03-25 20:53+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/i-mscp/i-MSCP/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
@@ -791,9 +791,6 @@ msgstr ""
 msgid "Admin / Users / Overview"
 msgstr ""
 
-msgid "Admin / Users / Overview / Delete Customer"
-msgstr ""
-
 msgid "Admin / Users / Overview / Domain Details"
 msgstr ""
 
@@ -1315,9 +1312,6 @@ msgstr ""
 msgid "Click to deactivate"
 msgstr ""
 
-msgid "Client / Choose Directory"
-msgstr ""
-
 msgid "Client / Databases / Add SQL Database"
 msgstr ""
 
@@ -1622,9 +1616,6 @@ msgstr ""
 msgid "Customer account successfully updated."
 msgstr "Профила на клиента успешно обновен."
 
-msgid "Customer account summary"
-msgstr ""
-
 msgid "Customer assignments"
 msgstr ""
 
@@ -1832,12 +1823,6 @@ msgstr "Изтрий CatchAll"
 msgid "Delete all tickets"
 msgstr "Изтриване не всички билети"
 
-msgid "Delete customer"
-msgstr ""
-
-msgid "Delete customer - {DOMAIN_NAME}"
-msgstr ""
-
 msgid "Delete from log:"
 msgstr "Изтрий от лога:"
 
@@ -1912,12 +1897,6 @@ msgid "Disk usage detail"
 msgstr ""
 
 msgid "Display errors"
-msgstr ""
-
-#, php-format
-msgid ""
-"Do you really want to delete the entire %s customer account? This operation "
-"cannot be undone."
 msgstr ""
 
 msgid "Domain"
@@ -2233,9 +2212,6 @@ msgstr "Настройка на Пощенска кутия"
 
 msgid "Email successfully updated."
 msgstr ""
-
-msgid "Emails"
-msgstr "Пощенски кутии"
 
 msgid "Empty data or wrong field."
 msgstr ""
@@ -3982,9 +3958,6 @@ msgstr ""
 msgid "Reseller / Customers / Overview"
 msgstr ""
 
-msgid "Reseller / Customers / Overview / Delete Customer"
-msgstr ""
-
 msgid "Reseller / Customers / Overview / Domain Details"
 msgstr ""
 
@@ -4865,8 +4838,7 @@ msgstr ""
 msgid "This software is installed on following domain(s):"
 msgstr ""
 
-msgid ""
-"This user has domain record.<br/>First remove the domain from the system."
+msgid "This user has domain record. First remove the domain from the system."
 msgstr ""
 
 msgid "This user name already exist."
@@ -5476,9 +5448,6 @@ msgstr "Година"
 msgid "Yes"
 msgstr "Да"
 
-msgid "Yes, delete this account."
-msgstr ""
-
 msgid "YiB"
 msgstr ""
 
@@ -5687,9 +5656,6 @@ msgid "You must assign at least one IP to this reseller."
 msgstr ""
 
 msgid "You must choose between local and remote upload."
-msgstr ""
-
-msgid "You must confirm customer account deletion."
 msgstr ""
 
 msgid "You must confirm your password."

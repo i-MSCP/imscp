@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-18 11:55+0100\n"
-"PO-Revision-Date: 2016-03-14 19:18+0000\n"
+"POT-Creation-Date: 2016-03-25 21:53+0100\n"
+"PO-Revision-Date: 2016-03-25 20:53+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/i-mscp/i-MSCP/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -795,9 +795,6 @@ msgstr ""
 msgid "Admin / Users / Overview"
 msgstr ""
 
-msgid "Admin / Users / Overview / Delete Customer"
-msgstr ""
-
 msgid "Admin / Users / Overview / Domain Details"
 msgstr ""
 
@@ -1319,9 +1316,6 @@ msgstr "Etkinleştirmek için tıklayın"
 msgid "Click to deactivate"
 msgstr "Devre dışı bırakmak için tıklayın"
 
-msgid "Client / Choose Directory"
-msgstr ""
-
 msgid "Client / Databases / Add SQL Database"
 msgstr ""
 
@@ -1626,9 +1620,6 @@ msgstr "Müşteri hesabı silinmek için işleme alındı."
 msgid "Customer account successfully updated."
 msgstr "Müşteri hesabı güncellendi."
 
-msgid "Customer account summary"
-msgstr "Müşteri hesabı özeti"
-
 msgid "Customer assignments"
 msgstr ""
 
@@ -1836,12 +1827,6 @@ msgstr "Tümünü Yakalayı Sil"
 msgid "Delete all tickets"
 msgstr ""
 
-msgid "Delete customer"
-msgstr ""
-
-msgid "Delete customer - {DOMAIN_NAME}"
-msgstr ""
-
 msgid "Delete from log:"
 msgstr "Kayıtlardan Sil:"
 
@@ -1916,12 +1901,6 @@ msgid "Disk usage detail"
 msgstr "Disk kullanım detayları"
 
 msgid "Display errors"
-msgstr ""
-
-#, php-format
-msgid ""
-"Do you really want to delete the entire %s customer account? This operation "
-"cannot be undone."
 msgstr ""
 
 msgid "Domain"
@@ -2237,9 +2216,6 @@ msgstr "Eposta ayarları"
 
 msgid "Email successfully updated."
 msgstr ""
-
-msgid "Emails"
-msgstr "Eposta"
 
 msgid "Empty data or wrong field."
 msgstr ""
@@ -3986,9 +3962,6 @@ msgstr ""
 msgid "Reseller / Customers / Overview"
 msgstr ""
 
-msgid "Reseller / Customers / Overview / Delete Customer"
-msgstr ""
-
 msgid "Reseller / Customers / Overview / Domain Details"
 msgstr ""
 
@@ -4869,8 +4842,7 @@ msgstr ""
 msgid "This software is installed on following domain(s):"
 msgstr ""
 
-msgid ""
-"This user has domain record.<br/>First remove the domain from the system."
+msgid "This user has domain record. First remove the domain from the system."
 msgstr ""
 
 msgid "This user name already exist."
@@ -5480,9 +5452,6 @@ msgstr "Yıl"
 msgid "Yes"
 msgstr "Evet"
 
-msgid "Yes, delete this account."
-msgstr "Evet, kullanıcıyı sil."
-
 msgid "YiB"
 msgstr "YiB"
 
@@ -5691,9 +5660,6 @@ msgid "You must assign at least one IP to this reseller."
 msgstr ""
 
 msgid "You must choose between local and remote upload."
-msgstr ""
-
-msgid "You must confirm customer account deletion."
 msgstr ""
 
 msgid "You must confirm your password."

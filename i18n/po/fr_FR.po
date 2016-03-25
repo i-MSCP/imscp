@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-18 11:55+0100\n"
-"PO-Revision-Date: 2016-03-18 10:54+0000\n"
+"POT-Creation-Date: 2016-03-25 21:53+0100\n"
+"PO-Revision-Date: 2016-03-25 20:53+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/i-mscp/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -63,7 +63,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nCher {RESELLER},\n\nVotre client {CUSTOMER} attend pour l'approbation de son alias de domaine:\n\n{ALIAS}\n\nVous pouvez approver cet alias de domaine en vous rendant sur cette page: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n\nMerci d'utiliser nos services.\n\n___________________________\nL'équipe i-MSCP\n"
+msgstr "\n\nCher {RESELLER},\n\nVotre client {CUSTOMER} attend pour l'approbation de son alias de domaine:\n\n{ALIAS}\n\nVous pouvez valider cette commande en vous rendant sur cette page: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n\nMerci d'utiliser nos services.\n\n___________________________\nL'équipe i-MSCP\n"
 
 msgid ""
 "\n"
@@ -803,9 +803,6 @@ msgstr "Administrateur / Utilisateurs / Éditer un revendeur"
 msgid "Admin / Users / Overview"
 msgstr "Administrateur / Utilisateurs / Vue générale"
 
-msgid "Admin / Users / Overview / Delete Customer"
-msgstr "Administrateur / Utilisateurs / Supprimer un client"
-
 msgid "Admin / Users / Overview / Domain Details"
 msgstr "Administrateur / Utilisateurs / Détails du domaine"
 
@@ -1327,9 +1324,6 @@ msgstr "Cliquez pour activer"
 msgid "Click to deactivate"
 msgstr "Clickez pour désactiver"
 
-msgid "Client / Choose Directory"
-msgstr "Client / Choix du répertoire"
-
 msgid "Client / Databases / Add SQL Database"
 msgstr "Client / Bases de données / Ajouter une base de données SQL"
 
@@ -1634,9 +1628,6 @@ msgstr "Le compte client va être supprimé."
 msgid "Customer account successfully updated."
 msgstr "Compte client mise à jour."
 
-msgid "Customer account summary"
-msgstr "Récapitulatif du compte client"
-
 msgid "Customer assignments"
 msgstr "Assignation des clients"
 
@@ -1844,12 +1835,6 @@ msgstr "Supprimer le collecteur (CatchAll)"
 msgid "Delete all tickets"
 msgstr "Supprimer tous les tickets"
 
-msgid "Delete customer"
-msgstr "Supprimer utilisateur"
-
-msgid "Delete customer - {DOMAIN_NAME}"
-msgstr "Supprimer le client - {DOMAIN_NAME}"
-
 msgid "Delete from log:"
 msgstr "Effacer les entrées:"
 
@@ -1925,12 +1910,6 @@ msgstr "Utilisation de l'espace disque"
 
 msgid "Display errors"
 msgstr "Afficher les erreurs"
-
-#, php-format
-msgid ""
-"Do you really want to delete the entire %s customer account? This operation "
-"cannot be undone."
-msgstr "Voulez-vous vraiment supprimer tout le compte client %s ? Cette opération ne peut pas être annulée."
 
 msgid "Domain"
 msgstr "Domaine"
@@ -2245,9 +2224,6 @@ msgstr "Configuration des e-mails"
 
 msgid "Email successfully updated."
 msgstr "Le compte de messagerie a été mis à jour."
-
-msgid "Emails"
-msgstr "E-mails"
 
 msgid "Empty data or wrong field."
 msgstr "Champ vide ou incorrect."
@@ -3994,9 +3970,6 @@ msgstr "Revendeur / Clients / E-mail de mot de passe oublié"
 msgid "Reseller / Customers / Overview"
 msgstr "Revendeur / Clients / Vue générale"
 
-msgid "Reseller / Customers / Overview / Delete Customer"
-msgstr "Revendeur / Clients / Supprimer un client"
-
 msgid "Reseller / Customers / Overview / Domain Details"
 msgstr "Revendeur / Clients / Détails du domaine"
 
@@ -4877,9 +4850,8 @@ msgstr "Ce paquet n'est pas encore installé"
 msgid "This software is installed on following domain(s):"
 msgstr "Ce logiciel est installé dans les domaines suivants :"
 
-msgid ""
-"This user has domain record.<br/>First remove the domain from the system."
-msgstr "Cet utilisateur a un domaine enregistré.<br />Supprimez d'abord le domaine du système."
+msgid "This user has domain record. First remove the domain from the system."
+msgstr ""
 
 msgid "This user name already exist."
 msgstr "Ce nom d'utilisateur est déjà utilisé."
@@ -5488,9 +5460,6 @@ msgstr "Année"
 msgid "Yes"
 msgstr "Oui"
 
-msgid "Yes, delete this account."
-msgstr "Oui, supprimer ce compte."
-
 msgid "YiB"
 msgstr "YiB"
 
@@ -5700,9 +5669,6 @@ msgstr "Vous devez assigner au moins une adresse IP par revendeur."
 
 msgid "You must choose between local and remote upload."
 msgstr "Vous devez choisir entre le téléversement local ou à distance."
-
-msgid "You must confirm customer account deletion."
-msgstr "Vous devez confirmer la suppression du compte client."
 
 msgid "You must confirm your password."
 msgstr "Vous devez confirmer votre mot de passe."

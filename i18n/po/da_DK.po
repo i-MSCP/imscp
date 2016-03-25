@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-18 11:55+0100\n"
-"PO-Revision-Date: 2016-03-14 19:18+0000\n"
+"POT-Creation-Date: 2016-03-25 21:53+0100\n"
+"PO-Revision-Date: 2016-03-25 20:53+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/i-mscp/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -794,9 +794,6 @@ msgstr "Admin / Brugere / Rediger Forhandler"
 msgid "Admin / Users / Overview"
 msgstr "Admin / Brugere / Oversigt"
 
-msgid "Admin / Users / Overview / Delete Customer"
-msgstr "Admin / Brugere / Oversigt / Slet Kunde"
-
 msgid "Admin / Users / Overview / Domain Details"
 msgstr "Admin / Brugere / Oversigt / Domæne Detaljer"
 
@@ -1318,9 +1315,6 @@ msgstr "Klik for at aktivere"
 msgid "Click to deactivate"
 msgstr "Klik for at deaktivere"
 
-msgid "Client / Choose Directory"
-msgstr "Klient / Vælg bibliotek"
-
 msgid "Client / Databases / Add SQL Database"
 msgstr "Klient / Databaser / Tilføj SQL Database"
 
@@ -1625,9 +1619,6 @@ msgstr "Kundekonto succesfuldt planlagt til sletning."
 msgid "Customer account successfully updated."
 msgstr "Kundekonto blevet opdateret."
 
-msgid "Customer account summary"
-msgstr "Kundekonto oversigt"
-
 msgid "Customer assignments"
 msgstr "Kunde tildelinger"
 
@@ -1835,12 +1826,6 @@ msgstr "Slet FangAlle"
 msgid "Delete all tickets"
 msgstr "Slet alle fejlrapports"
 
-msgid "Delete customer"
-msgstr "Slet kunde"
-
-msgid "Delete customer - {DOMAIN_NAME}"
-msgstr "Slet kunde - {DOMAIN_NAME}"
-
 msgid "Delete from log:"
 msgstr "Slet fra log:"
 
@@ -1916,12 +1901,6 @@ msgstr "Diskforbrug detaljer"
 
 msgid "Display errors"
 msgstr "Vis fejl"
-
-#, php-format
-msgid ""
-"Do you really want to delete the entire %s customer account? This operation "
-"cannot be undone."
-msgstr "Ønsker du virkelig at slette hele %s kundekontoen? Denne handling kan ikke fortrydes."
 
 msgid "Domain"
 msgstr "Domæne"
@@ -2236,9 +2215,6 @@ msgstr "Email opstilling"
 
 msgid "Email successfully updated."
 msgstr "E-mail blevet opdateret med succes."
-
-msgid "Emails"
-msgstr "Emails"
 
 msgid "Empty data or wrong field."
 msgstr "Tomme data eller forkert felt."
@@ -3985,9 +3961,6 @@ msgstr "Forhandler / Kunder / Glemt Kodeord E-mail"
 msgid "Reseller / Customers / Overview"
 msgstr "Forhandler / Kunder / Oversigt"
 
-msgid "Reseller / Customers / Overview / Delete Customer"
-msgstr "Forhandler / Kunder / Oversigt / Slet Kunde"
-
 msgid "Reseller / Customers / Overview / Domain Details"
 msgstr "Forhandler / Kunder / Oversigt / Domæne Detaljer"
 
@@ -4868,9 +4841,8 @@ msgstr "Denne pakke er ikke installeret endnu"
 msgid "This software is installed on following domain(s):"
 msgstr "Denne software er installeret på følgende domæne(r):"
 
-msgid ""
-"This user has domain record.<br/>First remove the domain from the system."
-msgstr "Denne bruger har domæne record.<br/>Fjern først domænet fra systemet."
+msgid "This user has domain record. First remove the domain from the system."
+msgstr ""
 
 msgid "This user name already exist."
 msgstr "Dette brugernavn findes allerede."
@@ -5479,9 +5451,6 @@ msgstr "År"
 msgid "Yes"
 msgstr "Ja"
 
-msgid "Yes, delete this account."
-msgstr "Ja, slet denne konto."
-
 msgid "YiB"
 msgstr "YiB"
 
@@ -5691,9 +5660,6 @@ msgstr "Du skal tildele mindst én IP til denne forhandler."
 
 msgid "You must choose between local and remote upload."
 msgstr "Du skal vælge mellem lokal og remote upload."
-
-msgid "You must confirm customer account deletion."
-msgstr "Du skal bekræfte kundekonto sletning."
 
 msgid "You must confirm your password."
 msgstr "Du skal bekræfte dit password."

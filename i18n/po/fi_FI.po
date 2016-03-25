@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-18 11:55+0100\n"
-"PO-Revision-Date: 2016-03-14 19:18+0000\n"
+"POT-Creation-Date: 2016-03-25 21:53+0100\n"
+"PO-Revision-Date: 2016-03-25 20:53+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/i-mscp/i-MSCP/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
@@ -794,9 +794,6 @@ msgstr "Ylläpito / Käyttäjät / Muokkaa jälleenmyyjää"
 msgid "Admin / Users / Overview"
 msgstr "Ylläpitäjä / Käyttäjät / Yhteenveto"
 
-msgid "Admin / Users / Overview / Delete Customer"
-msgstr "Ylläpitäjä / Käyttäjät / Yhteenveto / Poista asiakas"
-
 msgid "Admin / Users / Overview / Domain Details"
 msgstr "Ylläpitäjä / Käyttäjät / Yhteenveto / Domainin tiedot"
 
@@ -1318,9 +1315,6 @@ msgstr "Paina tästä aktivoidaksesi"
 msgid "Click to deactivate"
 msgstr "Paina tästä poistaaksesi käytöstä"
 
-msgid "Client / Choose Directory"
-msgstr "Asiakas / Valitse kansio"
-
 msgid "Client / Databases / Add SQL Database"
 msgstr "Asiakas / Tietokannat / Lisää SQL-tietokanta"
 
@@ -1625,9 +1619,6 @@ msgstr "Asiakkaan tili ajastettu poistettavaksi onnistuneesti."
 msgid "Customer account successfully updated."
 msgstr "Asiakkaan tili päivitetty onnistuneesti."
 
-msgid "Customer account summary"
-msgstr "Asiakastilin yhteenveto"
-
 msgid "Customer assignments"
 msgstr ""
 
@@ -1835,12 +1826,6 @@ msgstr "Poista Nappaa kaikki"
 msgid "Delete all tickets"
 msgstr "Poista kaikki tukipyynnöt"
 
-msgid "Delete customer"
-msgstr "Poista asiakas"
-
-msgid "Delete customer - {DOMAIN_NAME}"
-msgstr "Poista asiakas - {DOMAIN_NAME}"
-
 msgid "Delete from log:"
 msgstr "Poista lokitiedoista:"
 
@@ -1916,12 +1901,6 @@ msgstr "Erittely"
 
 msgid "Display errors"
 msgstr "Näytä virheet"
-
-#, php-format
-msgid ""
-"Do you really want to delete the entire %s customer account? This operation "
-"cannot be undone."
-msgstr "Oletko varma, että haluat poista %s -tilin kokonaan? Toimintoa ei voi peruuttaa."
 
 msgid "Domain"
 msgstr "Domain"
@@ -2236,9 +2215,6 @@ msgstr "Email-asetukset"
 
 msgid "Email successfully updated."
 msgstr "Sähköposti päivitetty onnistuneesti."
-
-msgid "Emails"
-msgstr "Sähköpostit"
 
 msgid "Empty data or wrong field."
 msgstr "Tyhjä tieto tai väärä kenttä."
@@ -3985,9 +3961,6 @@ msgstr "Jälleenmyyjä / Asiakkaat / Salasana kadonnut -sähköposti"
 msgid "Reseller / Customers / Overview"
 msgstr "Jälleenmyyjä / Asiakkaat / Yhteenveto"
 
-msgid "Reseller / Customers / Overview / Delete Customer"
-msgstr "Jälleenmyyjä / Asiakkaat / Yhteenveto / Poista asiakas"
-
 msgid "Reseller / Customers / Overview / Domain Details"
 msgstr "Jälleenmyyjä / Asiakkaat / Yhteenveto / Domainin tiedot"
 
@@ -4868,8 +4841,7 @@ msgstr ""
 msgid "This software is installed on following domain(s):"
 msgstr ""
 
-msgid ""
-"This user has domain record.<br/>First remove the domain from the system."
+msgid "This user has domain record. First remove the domain from the system."
 msgstr ""
 
 msgid "This user name already exist."
@@ -5479,9 +5451,6 @@ msgstr "Vuosi"
 msgid "Yes"
 msgstr "Kyllä"
 
-msgid "Yes, delete this account."
-msgstr "Kyllä, poista käyttäjätunnus."
-
 msgid "YiB"
 msgstr "YiB"
 
@@ -5691,9 +5660,6 @@ msgstr ""
 
 msgid "You must choose between local and remote upload."
 msgstr ""
-
-msgid "You must confirm customer account deletion."
-msgstr "Vahvista käyttäjätilin poisto"
 
 msgid "You must confirm your password."
 msgstr "Syötä salasanasi uudelleen."

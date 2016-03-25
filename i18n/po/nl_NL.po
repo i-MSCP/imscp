@@ -20,9 +20,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-18 11:55+0100\n"
-"PO-Revision-Date: 2016-03-17 09:56+0000\n"
-"Last-Translator: Thom Heemstra <thom@heemstra.us>\n"
+"POT-Creation-Date: 2016-03-25 21:53+0100\n"
+"PO-Revision-Date: 2016-03-25 20:53+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/i-mscp/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -802,9 +802,6 @@ msgstr "Beheerder / Gebruikers / Wederverkoper aanpassen"
 msgid "Admin / Users / Overview"
 msgstr "Beheerder / Gebruikers / Overzicht"
 
-msgid "Admin / Users / Overview / Delete Customer"
-msgstr "Beheerder / Gebruikers / Verwijder gebruiker"
-
 msgid "Admin / Users / Overview / Domain Details"
 msgstr "Beheerder / Gebruikers / Overzicht / Domeindetails"
 
@@ -1326,9 +1323,6 @@ msgstr "Klik om te activeren"
 msgid "Click to deactivate"
 msgstr "Klik om te deactiveren"
 
-msgid "Client / Choose Directory"
-msgstr "Klant / Kies map"
-
 msgid "Client / Databases / Add SQL Database"
 msgstr "Klant / Databanken / Voeg SQL-databank toe"
 
@@ -1633,9 +1627,6 @@ msgstr "Klantaccount wordt verwijderd."
 msgid "Customer account successfully updated."
 msgstr "Klantaccount succesvol bijgewerkt."
 
-msgid "Customer account summary"
-msgstr "Klantaccountoverzicht"
-
 msgid "Customer assignments"
 msgstr "Klanttoewijzingen"
 
@@ -1843,12 +1834,6 @@ msgstr "Verwijder catch-all"
 msgid "Delete all tickets"
 msgstr "Verwijder alle tickets"
 
-msgid "Delete customer"
-msgstr "Verwijder klant"
-
-msgid "Delete customer - {DOMAIN_NAME}"
-msgstr "Verwijder klant - {DOMAIN_NAME}"
-
 msgid "Delete from log:"
 msgstr "Verwijder uit log:"
 
@@ -1924,12 +1909,6 @@ msgstr "Schijfgebruik"
 
 msgid "Display errors"
 msgstr "Laat fouten zien"
-
-#, php-format
-msgid ""
-"Do you really want to delete the entire %s customer account? This operation "
-"cannot be undone."
-msgstr "Wilt u deze %s klant account compleet verwijderen? Deze actie is permanent."
 
 msgid "Domain"
 msgstr "Domein"
@@ -2244,9 +2223,6 @@ msgstr "E-mail instellen"
 
 msgid "Email successfully updated."
 msgstr "E-mail succesvol bijgewerkt."
-
-msgid "Emails"
-msgstr "E-mails"
 
 msgid "Empty data or wrong field."
 msgstr "Geen gegevens of verkeerde veld."
@@ -3993,9 +3969,6 @@ msgstr "Wederverkoper / Instellingen / Wachtwoord vergeten-mail"
 msgid "Reseller / Customers / Overview"
 msgstr "Wederverkoper / Klanten / Overzicht"
 
-msgid "Reseller / Customers / Overview / Delete Customer"
-msgstr "Wederverkoper / Klanten / Overzicht / Klant verwijderen"
-
 msgid "Reseller / Customers / Overview / Domain Details"
 msgstr "Wederverkoper / Klanten / Overzicht / Domeindetails"
 
@@ -4876,9 +4849,8 @@ msgstr "Dit pakket is nog niet geïnstalleerd"
 msgid "This software is installed on following domain(s):"
 msgstr "Deze software is geïnstalleerd op de volgende domeinen:"
 
-msgid ""
-"This user has domain record.<br/>First remove the domain from the system."
-msgstr "Deze gebruiker heeft een domein-record.<br/>Verwijder heeft het domein uit het systeem."
+msgid "This user has domain record. First remove the domain from the system."
+msgstr ""
 
 msgid "This user name already exist."
 msgstr "Deze gebruikersnaam bestaat al."
@@ -5487,9 +5459,6 @@ msgstr "Jaar"
 msgid "Yes"
 msgstr "Ja"
 
-msgid "Yes, delete this account."
-msgstr "Ja, verwijder dit account."
-
 msgid "YiB"
 msgstr "YiB"
 
@@ -5699,9 +5668,6 @@ msgstr "U dient minimaal één IP-adres toe te wijzen aan deze wederverkoper."
 
 msgid "You must choose between local and remote upload."
 msgstr "U dient te kiezen tussen een local of remote upload."
-
-msgid "You must confirm customer account deletion."
-msgstr "U dient de verwijdering van het klantenaccount te bevestigen."
 
 msgid "You must confirm your password."
 msgstr "U dient uw wachtwoord te bevestigen."

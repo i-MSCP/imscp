@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-18 11:55+0100\n"
-"PO-Revision-Date: 2016-03-14 19:18+0000\n"
+"POT-Creation-Date: 2016-03-25 21:53+0100\n"
+"PO-Revision-Date: 2016-03-25 20:53+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -793,9 +793,6 @@ msgstr "管理 / 使用者 / 編輯經銷商"
 msgid "Admin / Users / Overview"
 msgstr "管理 / 使用者 / 概要"
 
-msgid "Admin / Users / Overview / Delete Customer"
-msgstr "管理 / 使用者 / 概要 / 刪除客戶"
-
 msgid "Admin / Users / Overview / Domain Details"
 msgstr "管理 / 使用者 / 概要 / 網域詳細資訊"
 
@@ -1317,9 +1314,6 @@ msgstr "點選啟用"
 msgid "Click to deactivate"
 msgstr "點選停用"
 
-msgid "Client / Choose Directory"
-msgstr "客戶 / 選擇目錄"
-
 msgid "Client / Databases / Add SQL Database"
 msgstr "客戶 / 資料庫 / 新增 SQL 資料庫"
 
@@ -1624,9 +1618,6 @@ msgstr "刪除客戶帳號的排程已成功"
 msgid "Customer account successfully updated."
 msgstr "更新客戶帳號已成功"
 
-msgid "Customer account summary"
-msgstr "客戶帳號摘要"
-
 msgid "Customer assignments"
 msgstr "客戶分配"
 
@@ -1834,12 +1825,6 @@ msgstr "刪除抓取外部信箱"
 msgid "Delete all tickets"
 msgstr "刪除所有服務單"
 
-msgid "Delete customer"
-msgstr "刪除客戶"
-
-msgid "Delete customer - {DOMAIN_NAME}"
-msgstr "刪除客戶 - {DOMAIN_NAME}"
-
 msgid "Delete from log:"
 msgstr "刪除日誌:"
 
@@ -1915,12 +1900,6 @@ msgstr "硬碟使用量資訊"
 
 msgid "Display errors"
 msgstr "顯示錯誤訊息"
-
-#, php-format
-msgid ""
-"Do you really want to delete the entire %s customer account? This operation "
-"cannot be undone."
-msgstr "您確定要刪除這個 %s 客戶帳號嗎? 迢個操作是不可以復原的。"
 
 msgid "Domain"
 msgstr "網域"
@@ -2235,9 +2214,6 @@ msgstr "電子郵件設定"
 
 msgid "Email successfully updated."
 msgstr "電子郵件已成功更新。"
-
-msgid "Emails"
-msgstr "郵件"
 
 msgid "Empty data or wrong field."
 msgstr "空白資料或錯誤欄位。"
@@ -3984,9 +3960,6 @@ msgstr "經銷商 / 客戶 / 忘記密碼郵件"
 msgid "Reseller / Customers / Overview"
 msgstr "經銷商 / 客戶 / 概要"
 
-msgid "Reseller / Customers / Overview / Delete Customer"
-msgstr "經銷商 / 客戶 / 概要 / 刪除客戶"
-
 msgid "Reseller / Customers / Overview / Domain Details"
 msgstr "經銷商 / 客戶 / 概要 / 網域詳細資料"
 
@@ -4867,9 +4840,8 @@ msgstr "這個套件沒安裝"
 msgid "This software is installed on following domain(s):"
 msgstr "這個軟體已安裝在以下網域(s):"
 
-msgid ""
-"This user has domain record.<br/>First remove the domain from the system."
-msgstr "這個使用者已經有網域紀錄。<br/>首先必須從系統中移除這個網域。"
+msgid "This user has domain record. First remove the domain from the system."
+msgstr ""
 
 msgid "This user name already exist."
 msgstr "這個使用者名稱已經存在．"
@@ -5478,9 +5450,6 @@ msgstr "年"
 msgid "Yes"
 msgstr "是"
 
-msgid "Yes, delete this account."
-msgstr "是的，我要刪除這個帳號"
-
 msgid "YiB"
 msgstr "YiB"
 
@@ -5690,9 +5659,6 @@ msgstr "您必須分配至少一個 IP 給這個經銷商。"
 
 msgid "You must choose between local and remote upload."
 msgstr "您必須在本機和遠端之中選擇上傳。"
-
-msgid "You must confirm customer account deletion."
-msgstr "您必須確定刪除客戶帳號。"
 
 msgid "You must confirm your password."
 msgstr "您必須確認您的密碼"
