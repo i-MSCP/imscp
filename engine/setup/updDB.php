@@ -31,8 +31,16 @@ require_once "$guiRootDir/library/imscp-lib.php";
 unset($guiRootDir);
 
 try {
-    if (!iMSCP_Update_Database::getInstance()->applyUpdates()) {
-        fwrite(STDERR, sprintf("[ERROR] %s\n", iMSCP_Update_Database::getInstance()->getError()));
+    $dbUpdater = iMSCP_Update_Database::getInstance();
+    $lastAppliedDbUpdate = $dbUpdater->getLastAppliedUpdate();
+    $lastDbUpdate = $dbUpdater->getLastUpdate();
+
+    if($lastAppliedDbUpdate > $lastDbUpdate) {
+        throw new iMSCP_Exception('A downgrade attempt has been detected. Downgrade is unsupported.');
+    }
+
+    if (!$dbUpdater->applyUpdates()) {
+        fwrite(STDERR, sprintf("[ERROR] %s\n", $dbUpdater->getError()));
         exit(1);
     }
 
