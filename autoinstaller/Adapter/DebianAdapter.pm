@@ -433,7 +433,7 @@ sub _buildPackageList
         # Ask user for alternative list of packages to install if any
         if (@alts > 1 && ($forceDialog || grep($_ eq $main::reconfigure, ( $section, 'servers', 'all' )))) {
             iMSCP::Dialog->getInstance()->set( 'no-cancel', '' );
-            (my $ret, $sAlt) = iMSCP::Dialog->getInstance()->radiolist( <<EOF, [ sort @alts ], $sAlt );
+            (my $ret, $sAlt) = iMSCP::Dialog->getInstance()->radiolist( <<"EOF", [ sort @alts ], $sAlt );
 
 Please, choose the server you want use for the $section service:
 EOF
@@ -599,7 +599,7 @@ sub _processAptRepositories
     for my $repository(@{$self->{'aptRepositoriesToAdd'}}) {
         next if $fileContent =~ /^deb\s+$repository->{'repository'}/m;
 
-        $fileContent .= <<EOF;
+        $fileContent .= <<"EOF";
 
 deb $repository->{'repository'}
 deb-src $repository->{'repository'}
@@ -653,7 +653,7 @@ sub _processAptPreferences
             return 1;
         }
 
-        $fileContent .= <<EOF;
+        $fileContent .= <<"EOF";
 
 Package: $pref->{'pinning_package'}
 Pin: $pref->{'pinning_pin'}
@@ -772,7 +772,7 @@ sub _prefillDebconfDatabase
         $destinations = join ', ', ($mailname, $hostname, 'localhost.'.$domain.', localhost');
     }
 
-    my $selectionsFileContent = <<EOF;
+    my $selectionsFileContent = <<"EOF";
 postfix postfix/main_mailer_type select Internet Site
 postfix postfix/mailname string $mailname
 postfix postfix/destinations string $destinations
@@ -780,41 +780,41 @@ proftpd-basic shared/proftpd/inetd_or_standalone select standalone
 EOF
 
     if ($poServer eq 'courier') {
-        $selectionsFileContent .= <<EOF;
+        $selectionsFileContent .= <<"EOF";
 courier-base courier-base/webadmin-configmode boolean false
 courier-ssl courier-ssl/certnotice note
 EOF
     } elsif ($poServer eq 'dovecot') {
-        $selectionsFileContent .= <<EOF;
+        $selectionsFileContent .= <<"EOF";
 dovecot-core dovecot-core/create-ssl-cert boolean true
 dovecot-core dovecot-core/ssl-cert-name string localhost
 EOF
     }
 
     # Set default answer to yes for purge of sasldb2 database
-    $selectionsFileContent .= <<EOF;
+    $selectionsFileContent .= <<"EOF";
 sasl2-bin cyrus-sasl2/purge-sasldb2 boolean true
 EOF
 
     # We do not want ask user for /var/lib/mysql removal (we want avoid mistakes as much as possible)
     if ($sqlServer eq 'mariadb') {
         # There is a bug in mariadb-server-* packages (wrong version used for question prefix)
-        $selectionsFileContent .= <<EOF;
+        $selectionsFileContent .= <<"EOF";
 $sqlServerQuestionOwner $sqlServerQuestionPrefix-5.1/postrm_remove_databases boolean false
 $sqlServerQuestionOwner $sqlServerQuestionPrefix-5.1/really_downgrade boolean true
 EOF
     } elsif (grep($_ eq 'mysql-community-server', @{$self->{'packagesToInstall'}})) {
-        $selectionsFileContent .= <<EOF;
+        $selectionsFileContent .= <<"EOF";
 $sqlServerQuestionOwner $sqlServerQuestionOwner/remove-data-dir boolean false
 EOF
     } elsif ($sqlServer ne 'remote_server') {
-        $selectionsFileContent .= <<EOF;
+        $selectionsFileContent .= <<"EOF";
 $sqlServerQuestionOwner $sqlServerQuestionOwner/postrm_remove_databases boolean false
 EOF
     }
 
     if ($sqlServer ne 'remote_server' && iMSCP::Getopt->preseed && $sqlServerQuestionOwner) {
-        $selectionsFileContent .= <<EOF;
+        $selectionsFileContent .= <<"EOF";
 $sqlServerQuestionOwner $sqlServerQuestionPrefix/root_password password $main::questions{'DATABASE_PASSWORD'}
 $sqlServerQuestionOwner $sqlServerQuestionPrefix/root_password_again password $main::questions{'DATABASE_PASSWORD'}
 EOF
