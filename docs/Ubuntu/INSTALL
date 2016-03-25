@@ -19,9 +19,9 @@ Distros:         Any LTS version >= Precise Pangolin (12.04) - Trusty Tahr recom
 2) Requirements
 ---------------
 
- - 1 GHz or faster 32-bit (x86) or 64-bit (x64) processor
- - 512 MO memory (minimum) - For heavily loaded servers or high flow is recommended at least 8 GB
- - 1 GB of available hard disk space (only for i-MSCP and related services)
+ - 1 GHz or faster 32 bits (x86) or 64 bits (x64) processor (recommended)
+ - 1 Gio memory (minimum) - For heavily loaded servers or high flow is recommended at least 8 Gio
+ - 1 Gio of available hard disk space (only for i-MSCP and managed services)
  - Internet access (at least 100 Mbits/s recommended)
  - A file system supporting extended attributes such as ext2, ext3, ext4 and reiserfs*.
 
