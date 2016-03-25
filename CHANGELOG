@@ -5,7 +5,6 @@ Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-
     Added: beforeMountLogsFolder, afterMountLogsFolder, beforeUnmountLogsFolder and afterUmountMountLogsFolder events
     Added: Caller info for __DIE__ and __WARN__ signal handlers
     Added: Debug info for loading of listener files (Event::Manager)
