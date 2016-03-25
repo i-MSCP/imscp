@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by i-MSCP team
+ * Copyright (C) 2010-2016 by i-MSCP team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,65 +23,65 @@
  */
 abstract class iMSCP_Update
 {
-	/**
-	 * Last error message
-	 *
-	 * @var string|null
-	 */
-	protected $lastError;
+    /**
+     * Last error message
+     *
+     * @var string|null
+     */
+    protected $lastError;
 
-	/**
-	 * Set error
-	 *
-	 * @param string $error
-	 * @return self
-	 */
-	protected function setError($error)
-	{
-		$this->lastError = $error;
+    /**
+     * Set error
+     *
+     * @param string $error
+     * @return self
+     */
+    protected function setError($error)
+    {
+        $this->lastError = $error;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Returns last error that occurred
-	 *
-	 * @return string Last error
-	 */
-	public function getError()
-	{
-		return $this->lastError;
-	}
+    /**
+     * Returns last error that occurred
+     *
+     * @return string Last error
+     */
+    public function getError()
+    {
+        return $this->lastError;
+    }
 
-	/**
-	 * Apply all available update
-	 *
-	 * @abstract
-	 * @return bool TRUE on success, FALSE othewise
-	 */
-	abstract public function applyUpdates();
+    /**
+     * Apply all available update
+     *
+     * @abstract
+     * @return bool TRUE on success, FALSE othewise
+     */
+    abstract public function applyUpdates();
 
-	/**
-	 * Checks for available update
-	 *
-	 * @abstract
-	 * @return bool TRUE if an update available, FALSE otherwise
-	 */
-	abstract public function isAvailableUpdate();
+    /**
+     * Checks for available update
+     *
+     * @abstract
+     * @return bool TRUE if an update available, FALSE otherwise
+     */
+    abstract public function isAvailableUpdate();
 
-	/**
-	 * Returns last applied update
-	 *
-	 * @abstract
-	 * @return mixed
-	 */
-	abstract protected function getLastAppliedUpdate();
+    /**
+     * Returns last applied update
+     *
+     * @abstract
+     * @return mixed
+     */
+    abstract public function getLastAppliedUpdate();
 
-	/**
-	 * Return next update
-	 *
-	 * @abstract
-	 * @return mixed next update info
-	 */
-	abstract protected function getNextUpdate();
+    /**
+     * Return next update
+     *
+     * @abstract
+     * @return mixed next update info
+     */
+    abstract public function getNextUpdate();
 }
