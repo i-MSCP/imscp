@@ -320,7 +320,7 @@ sub createSelfSignedCertificate
 
  Create certificate chain (import private key, certificate and CA Bundle)
 
- Return timestamp on success, undef
+ Return 0 on success, other on failure
 
 =cut
 
