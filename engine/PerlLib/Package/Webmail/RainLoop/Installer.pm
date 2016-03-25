@@ -67,8 +67,8 @@ sub showDialog
 {
     my ($self, $dialog) = @_;
 
-    my $dbUser = main::setupGetQuestion( 'RAINLOOP_SQL_USER' ) || $self->{'rainloop'}->{'config'}->{'DATABASE_USER'} || 'rainloop_user';
-    my $dbPass = main::setupGetQuestion( 'RAINLOOP_SQL_PASSWORD' ) || $self->{'rainloop'}->{'config'}->{'DATABASE_PASSWORD'} || '';
+    my $dbUser = main::setupGetQuestion( 'RAINLOOP_SQL_USER', $self->{'rainloop'}->{'config'}->{'DATABASE_USER'} || 'rainloop_user' );
+    my $dbPass = main::setupGetQuestion( 'RAINLOOP_SQL_PASSWORD', $self->{'rainloop'}->{'config'}->{'DATABASE_PASSWORD'} );
     my ($rs, $msg) = (0, '');
 
     if (grep($_ eq $main::reconfigure, ( 'webmails', 'all', 'forced' ))

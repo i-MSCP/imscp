@@ -87,7 +87,7 @@ sub showPhpConfigLevelDialog
     my ($self, $dialog) = @_;
 
     my $rs = 0;
-    my $confLevel = main::setupGetQuestion( 'PHP_FPM_POOLS_LEVEL' ) || $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
+    my $confLevel = main::setupGetQuestion( 'PHP_FPM_POOLS_LEVEL', $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'} );
 
     if (grep($_ eq $main::reconfigure, ( 'httpd', 'php', 'servers', 'all', 'forced' ))
         || !grep($_ eq $confLevel, ( 'per_site', 'per_domain', 'per_user' ))
@@ -125,7 +125,7 @@ sub showListenModeDialog
     my ($self, $dialog) = @_;
 
     my $rs = 0;
-    my $listenMode = main::setupGetQuestion( 'PHP_FPM_LISTEN_MODE' ) || $self->{'phpfpmConfig'}->{'LISTEN_MODE'};
+    my $listenMode = main::setupGetQuestion( 'PHP_FPM_LISTEN_MODE', $self->{'phpfpmConfig'}->{'LISTEN_MODE'} );
 
     if (grep($_ eq $main::reconfigure, ( 'httpd', 'php', 'servers', 'all', 'forced' ))
         || !grep($_ eq $listenMode, ( 'uds', 'tcp' ))

@@ -85,7 +85,7 @@ sub showDialog
     my ($self, $dialog) = @_;
 
     my $rs = 0;
-    my $confLevel = main::setupGetQuestion( 'INI_LEVEL' ) || $self->{'config'}->{'INI_LEVEL'};
+    my $confLevel = main::setupGetQuestion( 'INI_LEVEL', $self->{'config'}->{'INI_LEVEL'} );
 
     if (grep($_ eq $main::reconfigure, ( 'httpd', 'php', 'servers', 'all', 'forced' ))
         || !grep($_ eq $confLevel, ( 'per_site', 'per_domain', 'per_user' ))

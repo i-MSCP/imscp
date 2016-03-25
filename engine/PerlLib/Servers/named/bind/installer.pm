@@ -81,7 +81,7 @@ sub askDnsServerMode
 {
     my ($self, $dialog) = @_;
 
-    my $dnsServerMode = main::setupGetQuestion( 'BIND_MODE' ) || $self->{'config'}->{'BIND_MODE'};
+    my $dnsServerMode = main::setupGetQuestion( 'BIND_MODE', $self->{'config'}->{'BIND_MODE'} );
     my $rs = 0;
 
     if (grep($_ eq $main::reconfigure, ( 'named', 'servers', 'all', 'forced' ))
@@ -117,8 +117,8 @@ sub askDnsServerIps
 
     my $dnsServerMode = $self->{'config'}->{'BIND_MODE'};
 
-    my @masterDnsIps = split ';', main::setupGetQuestion( 'PRIMARY_DNS' ) || $self->{'config'}->{'PRIMARY_DNS'};
-    my @slaveDnsIps = split ';', main::setupGetQuestion( 'SECONDARY_DNS' ) || $self->{'config'}->{'SECONDARY_DNS'};
+    my @masterDnsIps = split ';', main::setupGetQuestion( 'PRIMARY_DNS', $self->{'config'}->{'PRIMARY_DNS'} );
+    my @slaveDnsIps = split ';', main::setupGetQuestion( 'SECONDARY_DNS', $self->{'config'}->{'SECONDARY_DNS'} );
 
     my ($rs, $answer, $msg) = (0, '', '');
 
@@ -207,7 +207,7 @@ sub askIPv6Support
 {
     my ($self, $dialog) = @_;
 
-    my $ipv6 = main::setupGetQuestion( 'BIND_IPV6' ) || $self->{'config'}->{'BIND_IPV6'};
+    my $ipv6 = main::setupGetQuestion( 'BIND_IPV6', $self->{'config'}->{'BIND_IPV6'} );
     my $rs = 0;
 
     if (grep($_ eq $main::reconfigure, ( 'named', 'servers', 'all', 'forced' ))
@@ -236,7 +236,7 @@ sub askLocalDnsResolver
 {
     my ($self, $dialog) = @_;
 
-    my $localDnsResolver = main::setupGetQuestion( 'LOCAL_DNS_RESOLVER' ) || $self->{'config'}->{'LOCAL_DNS_RESOLVER'};
+    my $localDnsResolver = main::setupGetQuestion( 'LOCAL_DNS_RESOLVER', $self->{'config'}->{'LOCAL_DNS_RESOLVER'} );
     my $rs = 0;
 
     if (grep($_ eq $main::reconfigure, ( 'resolver', 'named', 'all', 'forced' ))

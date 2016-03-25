@@ -92,8 +92,8 @@ sub authdaemonSqlUserDialog
 {
     my ($self, $dialog) = @_;
 
-    my $dbUser = main::setupGetQuestion( 'AUTHDAEMON_SQL_USER' ) || $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} || 'authdaemon_user';
-    my $dbPass = main::setupGetQuestion( 'AUTHDAEMON_SQL_PASSWORD' ) || $self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'};
+    my $dbUser = main::setupGetQuestion( 'AUTHDAEMON_SQL_USER', $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} || 'authdaemon_user' );
+    my $dbPass = main::setupGetQuestion( 'AUTHDAEMON_SQL_PASSWORD', $self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'} );
 
     my ($rs, $msg) = (0, '');
 
@@ -191,8 +191,8 @@ sub cyrusSaslSqlUserDialog
 {
     my ($self, $dialog) = @_;
 
-    my $dbUser = main::setupGetQuestion( 'SASL_SQL_USER' ) || $self->{'config'}->{'SASL_DATABASE_USER'} || 'sasl_user';
-    my $dbPass = main::setupGetQuestion( 'SASL_SQL_PASSWORD' ) || $self->{'config'}->{'SASL_DATABASE_PASSWORD'} || '';
+    my $dbUser = main::setupGetQuestion( 'SASL_SQL_USER', $self->{'config'}->{'SASL_DATABASE_USER'} || 'sasl_user' );
+    my $dbPass = main::setupGetQuestion( 'SASL_SQL_PASSWORD', $self->{'config'}->{'SASL_DATABASE_PASSWORD'} );
 
     my ($rs, $msg) = (0, '');
 

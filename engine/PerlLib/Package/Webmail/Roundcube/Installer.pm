@@ -67,8 +67,8 @@ sub showDialog
 {
     my ($self, $dialog) = @_;
 
-    my $dbUser = main::setupGetQuestion( 'ROUNDCUBE_SQL_USER' ) || $self->{'config'}->{'DATABASE_USER'} || 'roundcube_user';
-    my $dbPass = main::setupGetQuestion( 'ROUNDCUBE_SQL_PASSWORD' ) || $self->{'config'}->{'DATABASE_PASSWORD'} || '';
+    my $dbUser = main::setupGetQuestion( 'ROUNDCUBE_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || 'roundcube_user' );
+    my $dbPass = main::setupGetQuestion( 'ROUNDCUBE_SQL_PASSWORD', $self->{'config'}->{'DATABASE_PASSWORD'} );
     my ($rs, $msg) = (0, '');
 
     if (grep($_ eq $main::reconfigure, ( 'webmails', 'all', 'forced' ))

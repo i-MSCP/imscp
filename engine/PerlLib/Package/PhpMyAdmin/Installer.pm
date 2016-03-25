@@ -85,8 +85,8 @@ sub showDialog
 {
     my ($self, $dialog) = @_;
 
-    my $dbUser = main::setupGetQuestion( 'PHPMYADMIN_SQL_USER' ) || $self->{'config'}->{'DATABASE_USER'} || 'pma_user';
-    my $dbPass = main::setupGetQuestion( 'PHPMYADMIN_SQL_PASSWORD' ) || $self->{'config'}->{'DATABASE_PASSWORD'};
+    my $dbUser = main::setupGetQuestion( 'PHPMYADMIN_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || 'pma_user' );
+    my $dbPass = main::setupGetQuestion( 'PHPMYADMIN_SQL_PASSWORD', $self->{'config'}->{'DATABASE_PASSWORD'} );
     my ($rs, $msg) = (0, '');
 
     if (grep($_ eq $main::reconfigure, ( 'sqlmanager', 'all', 'forced' ))

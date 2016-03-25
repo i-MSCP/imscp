@@ -210,7 +210,7 @@ sub setupAskServerHostname
 {
     my $dialog = shift;
 
-    my $hostname = setupGetQuestion('SERVER_HOSTNAME') || '';
+    my $hostname = setupGetQuestion('SERVER_HOSTNAME');
     my %options = (domain_private_tld => qr /.*/);
     my ($rs, @labels) = (0, $hostname ? split /\./, $hostname : ());
 
@@ -431,10 +431,10 @@ sub setupAskSqlDsn
 {
     my $dialog = shift;
 
-    my $dbType = setupGetQuestion('DATABASE_TYPE') || 'mysql';
-    my $dbHost = setupGetQuestion('DATABASE_HOST') || 'localhost';
-    my $dbPort = setupGetQuestion('DATABASE_PORT') || '3306';
-    my $dbUser = setupGetQuestion('DATABASE_USER') || 'root';
+    my $dbType = setupGetQuestion('DATABASE_TYPE', 'mysql');
+    my $dbHost = setupGetQuestion('DATABASE_HOST', 'localhost');
+    my $dbPort = setupGetQuestion('DATABASE_PORT', 3306);
+    my $dbUser = setupGetQuestion('DATABASE_USER', 'root');
     my $dbPass;
 
     if(iMSCP::Getopt->preseed) {
@@ -557,7 +557,7 @@ sub setupAskSqlUserHost
 {
     my $dialog = shift;
 
-    my $host = setupGetQuestion('DATABASE_USER_HOST') || setupGetQuestion('BASE_SERVER_PUBLIC_IP');
+    my $host = setupGetQuestion('DATABASE_USER_HOST', setupGetQuestion('BASE_SERVER_PUBLIC_IP'));
     $host = setupGetQuestion('BASE_SERVER_PUBLIC_IP') if grep($_ eq $host, ( '127.0.0.1', 'localhost' ));
     $host = idn_to_ascii($host, 'utf-8');
 
@@ -606,7 +606,7 @@ sub setupAskImscpDbName
 {
     my $dialog = shift;
 
-    my $dbName = setupGetQuestion('DATABASE_NAME') || 'imscp';
+    my $dbName = setupGetQuestion('DATABASE_NAME', 'imscp');
     my $rs = 0;
 
     if(grep($_ eq $main::reconfigure, ( 'sql', 'servers', 'all', 'forced' ))
@@ -853,11 +853,11 @@ sub setupAskServicesSsl
     my($dialog) = @_;
 
     my $domainName = setupGetQuestion('SERVER_HOSTNAME');
-    my $sslEnabled = setupGetQuestion('SERVICES_SSL_ENABLED') || 'no';
+    my $sslEnabled = setupGetQuestion('SERVICES_SSL_ENABLED', 'no');
     my $selfSignedCertificate = setupGetQuestion('SERVICES_SSL_SELFSIGNED_CERTIFICATE', 'no');
-    my $privateKeyPath = setupGetQuestion('SERVICES_SSL_PRIVATE_KEY_PATH', '/root/');
+    my $privateKeyPath = setupGetQuestion('SERVICES_SSL_PRIVATE_KEY_PATH', '/root');
     my $passphrase = setupGetQuestion('SERVICES_SSL_PRIVATE_KEY_PASSPHRASE');
-    my $certificatPath = setupGetQuestion('SERVICES_SSL_CERTIFICATE_PATH', "/root/");
+    my $certificatPath = setupGetQuestion('SERVICES_SSL_CERTIFICATE_PATH', '/root');
     my $caBundlePath = setupGetQuestion('SERVICES_SSL_CA_BUNDLE_PATH', '/root/');
     my $openSSL = iMSCP::OpenSSL->new();
     my $rs = 0;
@@ -1169,8 +1169,8 @@ sub setupServerHostname
 sub setupServerIps
 {
     my $baseServerIp = setupGetQuestion('BASE_SERVER_IP');
-    my $serverIpsToReplace = setupGetQuestion('SERVER_IPS_TO_REPLACE') || {};
-    my $serverIpsToDelete = setupGetQuestion('SERVER_IPS_TO_DELETE') || [];
+    my $serverIpsToReplace = setupGetQuestion('SERVER_IPS_TO_REPLACE', {});
+    my $serverIpsToDelete = setupGetQuestion('SERVER_IPS_TO_DELETE', []);
     my $serverHostname = setupGetQuestion('SERVER_HOSTNAME');
     my $oldIptoIdMap = { };
     my @serverIps = ( $baseServerIp, $main::questions{'SERVER_IPS'} ? @{$main::questions{'SERVER_IPS'}} : () );
@@ -2018,7 +2018,9 @@ sub setupGetQuestion
     $default ||= '';
 
     return exists $main::questions{$qname} ? $main::questions{$qname} : (
-        exists $main::imscpConfig{$qname} && $main::imscpConfig{$qname} ne '' ? $main::imscpConfig{$qname} : $default
+        exists $main::imscpConfig{$qname} && $main::imscpConfig{$qname} ne ''
+        ? $main::imscpConfig{$qname}
+        : $default
     );
 }
 
@@ -2052,9 +2054,9 @@ sub setupGetSqlConnect
 
     my $db = iMSCP::Database->factory();
     $db->set('DATABASE_NAME', $dbName);
-    $db->set('DATABASE_HOST', setupGetQuestion('DATABASE_HOST') || '');
-    $db->set('DATABASE_PORT', setupGetQuestion('DATABASE_PORT') || '');
-    $db->set('DATABASE_USER', setupGetQuestion('DATABASE_USER') || '');
+    $db->set('DATABASE_HOST', setupGetQuestion('DATABASE_HOST'));
+    $db->set('DATABASE_PORT', setupGetQuestion('DATABASE_PORT'));
+    $db->set('DATABASE_USER', setupGetQuestion('DATABASE_USER'));
     $db->set('DATABASE_PASSWORD', setupGetQuestion('DATABASE_PASSWORD')
         ? decryptBlowfishCBC($main::imscpDBKey, $main::imscpDBiv, setupGetQuestion('DATABASE_PASSWORD')) : ''
     );

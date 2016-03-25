@@ -81,8 +81,8 @@ sub sqlUserDialog
 {
     my ($self, $dialog) = @_;
 
-    my $dbUser = main::setupGetQuestion( 'FTPD_SQL_USER' ) || $self->{'config'}->{'DATABASE_USER'} || 'vftp_user';
-    my $dbPass = main::setupGetQuestion( 'FTPD_SQL_PASSWORD' ) || $self->{'config'}->{'DATABASE_PASSWORD'};
+    my $dbUser = main::setupGetQuestion( 'FTPD_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || 'vftp_user' );
+    my $dbPass = main::setupGetQuestion( 'FTPD_SQL_PASSWORD', $self->{'config'}->{'DATABASE_PASSWORD'} );
 
     my ($rs, $msg) = (0, '');
 

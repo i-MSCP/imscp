@@ -95,8 +95,8 @@ sub showDialog
 {
     my ($self, $dialog) = @_;
 
-    my $dbUser = main::setupGetQuestion( 'DOVECOT_SQL_USER' ) || $self->{'config'}->{'DATABASE_USER'} || 'dovecot_user';
-    my $dbPass = main::setupGetQuestion( 'DOVECOT_SQL_PASSWORD' ) || $self->{'config'}->{'DATABASE_PASSWORD'};
+    my $dbUser = main::setupGetQuestion( 'DOVECOT_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || 'dovecot_user' );
+    my $dbPass = main::setupGetQuestion( 'DOVECOT_SQL_PASSWORD', $self->{'config'}->{'DATABASE_PASSWORD'} );
 
     my ($rs, $msg) = (0, '');
 

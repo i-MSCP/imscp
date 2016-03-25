@@ -122,12 +122,12 @@ sub askSsl
     my ($self, $dialog) = @_;
 
     my $domainName = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
-    my $sslEnabled = main::setupGetQuestion( 'PANEL_SSL_ENABLED' ) || 'no';
+    my $sslEnabled = main::setupGetQuestion( 'PANEL_SSL_ENABLED', 'no' );
     my $selfSignedCertificate = main::setupGetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE', 'no' );
-    my $privateKeyPath = main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH', '/root/' );
+    my $privateKeyPath = main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH', '/root' );
     my $passphrase = main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PASSPHRASE' );
-    my $certificatPath = main::setupGetQuestion( 'PANEL_SSL_CERTIFICATE_PATH', "/root/" );
-    my $caBundlePath = main::setupGetQuestion( 'PANEL_SSL_CA_BUNDLE_PATH', '/root/' );
+    my $certificatPath = main::setupGetQuestion( 'PANEL_SSL_CERTIFICATE_PATH', '/root' );
+    my $caBundlePath = main::setupGetQuestion( 'PANEL_SSL_CA_BUNDLE_PATH', '/root' );
     my $baseServerVhostPrefix = main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX', 'http://' );
     my $openSSL = iMSCP::OpenSSL->new();
     my $rs = 0;
@@ -146,7 +146,7 @@ EOF
             $sslEnabled = 'yes';
 
             # Ask for self-signed certificate
-            ($rs, $selfSignedCertificate) = $dialog->yesno( <<"EOF", $selfSignedCertificate eq 'no' ? 1 : 0 );
+            $rs = $dialog->yesno( <<"EOF", $selfSignedCertificate eq 'no' ? 1 : 0 );
 
 Do you have an SSL certificate for the $domainName domain?
 EOF
