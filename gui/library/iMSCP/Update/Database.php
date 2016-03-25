@@ -148,7 +148,6 @@ class iMSCP_Update_Database extends iMSCP_Update
             $revision = $this->getNextUpdate();
 
             try {
-                $pdo->beginTransaction();
                 $updateMethod = 'r' . $revision;
                 $queries = (array)$this->$updateMethod();
 
@@ -157,6 +156,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                     continue;
                 }
 
+                $pdo->beginTransaction();
                 foreach ($queries as $query) {
                     if (!empty($query)) {
                         $pdo->query($query);
