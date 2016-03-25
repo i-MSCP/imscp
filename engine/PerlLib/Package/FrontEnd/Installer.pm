@@ -228,7 +228,7 @@ EOF
                 ($rs, $baseServerVhostPrefix) = $dialog->radiolist(
                     <<"EOF", [ 'https', 'http' ], $baseServerVhostPrefix eq 'https://' ? 'https' : 'http' );
 
-Please, choose the default HTTP access mode for the control panel
+Please, choose the default HTTP access mode for the control panel:
 EOF
                 $baseServerVhostPrefix .= '://'
             }
@@ -245,7 +245,7 @@ EOF
             getMessageByType( 'error', { remove => 1 } );
             $dialog->msgbox( <<"EOF" );
 
-Your SSL certificate for the control panel is missing or invalid
+Your SSL certificate for the control panel is missing or invalid.
 EOF
             goto &{askSsl};
         }

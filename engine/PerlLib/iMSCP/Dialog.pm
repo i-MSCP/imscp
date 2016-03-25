@@ -208,7 +208,7 @@ sub msgbox
  Show boolean dialog box
 
  Param string $text Text to show
- Param string bool $default Make the default value of the box a 'Yes' or No 'No' (Default is 'Yes')
+ Param string bool $default Make the default value of the box a 'Yes' or 'No' (Default is 'Yes')
  Return int Dialog exit code
 
 =cut

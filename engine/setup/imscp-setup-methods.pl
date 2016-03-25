@@ -520,7 +520,7 @@ EOF
 
                 if(($dbError = setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass))) {
 
-                $msg = <<EOF;
+                $msg = <<"EOF";
 
 \\Z1Connection to SQL server failed\\Zn
 
