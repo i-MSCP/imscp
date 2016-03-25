@@ -16,10 +16,6 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 package autoinstaller::Adapter::UbuntuAdapter;
 
@@ -47,33 +43,33 @@ use parent 'autoinstaller::Adapter::DebianAdapter';
 
 sub _init
 {
-	my $self = shift;
+    my $self = shift;
 
-	$self->{'eventManager'} = iMSCP::EventManager->getInstance();
-	$self->{'repositorySections'} = [ 'main', 'universe', 'multiverse' ];
-	$self->{'preRequiredPackages'} = [
-		'debconf-utils', 'binutils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl',
-		'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'wget', 'rsync'
-	];
-	$self->{'aptRepositoriesToRemove'} = [];
-	$self->{'aptRepositoriesToAdd'} = [];
-	$self->{'aptPreferences'} = [];
-	$self->{'packagesToInstall'} = [];
-	$self->{'packagesToInstallDelayed'} = [];
-	$self->{'packagesToPreUninstall'} = [];
-	$self->{'packagesToUninstall'} = [];
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'repositorySections'} = [ 'main', 'universe', 'multiverse' ];
+    $self->{'preRequiredPackages'} = [
+        'debconf-utils', 'binutils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl',
+        'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'wget', 'rsync'
+    ];
+    $self->{'aptRepositoriesToRemove'} = [ ];
+    $self->{'aptRepositoriesToAdd'} = [ ];
+    $self->{'aptPreferences'} = [ ];
+    $self->{'packagesToInstall'} = [ ];
+    $self->{'packagesToInstallDelayed'} = [ ];
+    $self->{'packagesToPreUninstall'} = [ ];
+    $self->{'packagesToUninstall'} = [ ];
 
-	delete $ENV{'DEBCONF_FORCE_DIALOG'};
-	$ENV{'DEBIAN_FRONTEND'} = 'noninteractive' if iMSCP::Getopt->preseed || iMSCP::Getopt->noprompt;
+    delete $ENV{'DEBCONF_FORCE_DIALOG'};
+    $ENV{'DEBIAN_FRONTEND'} = 'noninteractive' if iMSCP::Getopt->preseed || iMSCP::Getopt->noprompt;
 
-	delete $ENV{'UPSTART_SESSION'}; # See IP-1514
+    delete $ENV{'UPSTART_SESSION'}; # See IP-1514
 
-	unless($main::skippackages) {
-		$self->_setupInitScriptPolicyLayer('enable') == 0 or die('Could not setup initscript policy layer');
-		$self->_updateAptSourceList() == 0 or die('Could not configure APT packages manager');
-	}
+    unless ($main::skippackages) {
+        $self->_setupInitScriptPolicyLayer( 'enable' ) == 0 or die( 'Could not setup initscript policy layer' );
+        $self->_updateAptSourceList() == 0 or die( 'Could not configure APT packages manager' );
+    }
 
-	$self;
+    $self;
 }
 
 =back
