@@ -97,9 +97,10 @@ sub showDialog
         $dbPass = '';
 
         do {
-            ($rs, $dbUser) = $dialog->inputbox( "\nPlease enter an username for the PhpMyAdmin SQL user:$msg",
-                $dbUser );
+            ($rs, $dbUser) = $dialog->inputbox( <<"EOF", $dbUser );
 
+Please enter an username for the PhpMyAdmin SQL user:$msg
+EOF
             if ($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
                 $msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
                 $dbUser = '';
@@ -121,10 +122,10 @@ sub showDialog
             # Ask for the phpmyadmin restricted SQL user password unless we reuses existent SQL user
             unless (grep($_ eq $dbUser, ( keys %main::sqlUsers ))) {
                 do {
-                    ($rs, $dbPass) = $dialog->passwordbox(
-                        "\nPlease, enter a password for the phpmyadmin SQL user (blank for autogenerate):$msg", $dbPass
-                    );
+                    ($rs, $dbPass) = $dialog->passwordbox( <<"EOF", $dbPass );
 
+Please, enter a password for the phpmyadmin SQL user (blank for autogenerate):$msg
+EOF
                     if ($dbPass ne '') {
                         if (length $dbPass < 6) {
                             $msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
@@ -150,7 +151,10 @@ sub showDialog
                     $dbPass .= $allowedChr[rand @allowedChr] for 1 .. 16;
                 }
 
-                $dialog->msgbox( "\nPassword for the phpmyadmin SQL user set to: $dbPass" );
+                $dialog->msgbox( <<"EOF" );
+
+Password for the phpmyadmin SQL user set to: $dbPass
+EOF
             }
         }
     }
@@ -176,9 +180,10 @@ sub preinstall
 {
     my $self = shift;
 
-    my $version = version->parse( Servers::sqld->factory()->getVersion() ) >= version->parse( '5.5.0' ) ? (
-                version->parse( $self->_getPhpVersion() ) >= version->parse( '5.5.0' ) ? '0.4.5.*@dev' : '0.4.0.*@dev'
-        )                                                                                               : '0.2.0.*@dev';
+    my $version = version->parse( Servers::sqld->factory()->getVersion() ) >= version->parse( '5.5.0' )
+          ? (version->parse( $self->_getPhpVersion() ) >= version->parse( '5.5.0' )
+            ? '0.4.5.*@dev' : '0.4.0.*@dev'
+        ) : '0.2.0.*@dev';
 
     my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/phpmyadmin', $version );
     $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );

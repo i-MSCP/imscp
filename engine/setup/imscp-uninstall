@@ -116,9 +116,8 @@ sub _userDialog
 {
     my $dialog = iMSCP::Dialog->getInstance();
     $dialog->set('title', 'i-MSCP Uninstaller Dialog');
-    $dialog->set('defaultno', '');
 
-    if ($dialog->yesno(<<EOF)) {
+    exit 0 if $dialog->yesno(<<EOF, 1);
 
 Welcome to the \\Z4i-MSCP $main::imscpConfig{'Version'}\\Zn uninstaller dialog.
 
@@ -134,9 +133,6 @@ During the uninstallation process some or all services might require to be shutd
 
 Do you want to continue?
 EOF
-
-        exit 0;
-    }
 }
 
 sub _removeCustomers

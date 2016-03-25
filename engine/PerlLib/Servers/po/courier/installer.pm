@@ -106,10 +106,10 @@ sub authdaemonSqlUserDialog
 
         # Ask for the authdaemon restricted SQL username
         do {
-            ($rs, $dbUser) = $dialog->inputbox(
-                "\nPlease enter an username for the Courier Authdaemon SQL user:$msg", $dbUser
-            );
+            ($rs, $dbUser) = $dialog->inputbox( <<"EOF", $dbUser );
 
+Please enter an username for the Courier Authdaemon SQL user:$msg
+EOF
             if ($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
                 $msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
                 $dbUser = '';
@@ -132,10 +132,10 @@ sub authdaemonSqlUserDialog
             unless (grep($_ eq $dbUser, ( keys %main::sqlUsers ))) {
                 do {
                     # Ask for the authdaemon restricted SQL user password
-                    ($rs, $dbPass) = $dialog->passwordbox(
-                        "\nPlease, enter a password for the authdaemon SQL user (blank for autogenerate):$msg", $dbPass
-                    );
+                    ($rs, $dbPass) = $dialog->passwordbox( <<"EOF", $dbPass );
 
+Please, enter a password for the authdaemon SQL user (blank for autogenerate):$msg
+EOF
                     if ($dbPass ne '') {
                         if (length $dbPass < 6) {
                             $msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
@@ -161,7 +161,10 @@ sub authdaemonSqlUserDialog
                     $dbPass .= $allowedChr[rand @allowedChr] for 1 .. 16;
                 }
 
-                $dialog->msgbox( "\nPassword for the authdaemon SQL user set to: $dbPass" );
+                $dialog->msgbox( <<"EOF" );
+
+Password for the authdaemon SQL user set to: $dbPass
+EOF
             }
         }
     }

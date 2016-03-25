@@ -86,9 +86,10 @@ sub showDialog
         !grep($_ eq $__, ( @{$self->{'PACKAGES'}}, 'No' )) } @{$packages}
     ) {
         ($rs, $packages) = $dialog->checkbox(
-            "\nPlease select the Webstats packages you want to install:", [ @{$self->{'PACKAGES'}} ],
-                grep($_ eq 'No', @{$packages}) ? () : @{$packages} ? @{$packages} : @{$self->{'PACKAGES'}}
-        );
+            <<"EOF", [ @{$self->{'PACKAGES'}} ], grep($_ eq 'No', @{$packages}) ? () : @{$packages} ? @{$packages} : @{$self->{'PACKAGES'}} );
+
+Please select the Webstats packages you want to install
+EOF
     }
 
     return $rs unless $rs < 30;

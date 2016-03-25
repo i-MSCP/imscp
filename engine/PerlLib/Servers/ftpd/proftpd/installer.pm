@@ -94,10 +94,10 @@ sub sqlUserDialog
         $dbPass = '';
 
         do {
-            ($rs, $dbUser) = $dialog->inputbox(
-                "\nPlease enter an username for the ProFTPD SQL user:$msg", $dbUser
-            );
+            ($rs, $dbUser) = $dialog->inputbox( <<"EOF", $dbUser );
 
+Please enter an username for the ProFTPD SQL user:$msg
+EOF
             if ($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
                 $msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
                 $dbUser = '';
@@ -119,9 +119,11 @@ sub sqlUserDialog
             # Ask for the proftpd SQL user password unless we reuses existent SQL user
             unless (grep($_ eq $dbUser, (keys %main::sqlUsers))) {
                 do {
-                    ($rs, $dbPass) = $dialog->passwordbox(
-                        "\nPlease, enter a password for the proftpd SQL user (blank for autogenerate):$msg", $dbPass
-                    );
+                    ($rs, $dbPass) = $dialog->passwordbox( <<"EOF", $dbPass );
+
+Please, enter a password for the proftpd SQL user (blank for autogenerate):$msg
+EOF
+
 
                     if ($dbPass ne '') {
                         if (length $dbPass < 6) {
@@ -148,7 +150,10 @@ sub sqlUserDialog
                     $dbPass .= $allowedChr[rand @allowedChr] for 1 .. 16;
                 }
 
-                $dialog->msgbox( "\nPassword for the proftpd SQL user set to: $dbPass" );
+                $dialog->msgbox( <<"EOF" );
+
+Password for the proftpd SQL user set to: $dbPass
+EOF
             }
         }
     }

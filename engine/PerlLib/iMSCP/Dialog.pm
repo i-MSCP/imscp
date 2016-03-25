@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::Execute;
+use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
 use FileHandle;
 use parent 'Common::SingletonClass';
@@ -202,18 +203,24 @@ sub msgbox
     ($_[0]->_textbox( $_[1], 'msgbox' ))[0];
 }
 
-=item yesno($text)
+=item yesno($text [, $defaultno ])
 
  Show boolean dialog box
 
  Param string $text Text to show
+ Param string bool $default Make the default value of the box a 'Yes' or No 'No' (Default is 'Yes')
  Return int Dialog exit code
 
 =cut
 
 sub yesno
 {
-    ($_[0]->_textbox( $_[1], 'yesno' ))[0];
+    my ($self, $text, $defaultno) = @_;
+
+    $self->{_opts}->{'defaultno'} = '' || undef;
+    my $ret = ($self->_textbox( $text, 'yesno' ))[0];
+    $self->{_opts}->{'defaultno'} = undef;
+    $ret;
 }
 
 =item inputbox($text, $init = '')
@@ -289,7 +296,7 @@ sub startGauge
 {
     my $self = shift;
 
-    return 0 if $main::noprompt || $self->{'gauge'};
+    return 0 if iMSCP::Getopt->noprompt || $self->{'gauge'};
 
     my ($text, $percent) = @_;
 
@@ -330,7 +337,7 @@ sub setGauge
 {
     my $self = shift;
 
-    return 0 if $main::noprompt || !$self->{'gauge'};
+    return 0 if iMSCP::Getopt->noprompt || !$self->{'gauge'};
 
     my ($percent, $text) = @_;
     $text ||= '';
@@ -353,7 +360,7 @@ sub endGauge
 {
     my $self = shift;
 
-    return 0 if $main::noprompt || !$self->{'gauge'};
+    return 0 if iMSCP::Getopt->noprompt || !$self->{'gauge'};
 
     $self->{'gauge'}->close();
     undef $self->{'gauge'};
@@ -370,7 +377,7 @@ sub endGauge
 
 sub hasGauge
 {
-    return 0 if $main::noprompt;
+    return 0 if iMSCP::Getopt->noprompt;
 
     ($_[0]->{'gauge'}) ? 1 : 0;
 }
@@ -445,12 +452,12 @@ sub _init
     $self->{'_opts'}->{'extra-button'} //= undef;
     $self->{'_opts'}->{'help-button'} //= undef;
 
-    $self->{'_opts'}->{'defaultno'} //= undef;
+    $self->{'_opts'}->{'defaultno'} ||= undef;
     $self->{'_opts'}->{'default-item'} ||= undef;
 
-    $self->{'_opts'}->{'no-cancel'} //= undef;
-    $self->{'_opts'}->{'no-ok'} //= undef;
-    $self->{'_opts'}->{'clear'} //= undef;
+    $self->{'_opts'}->{'no-cancel'} ||= undef;
+    $self->{'_opts'}->{'no-ok'} ||= undef;
+    $self->{'_opts'}->{'clear'} ||= undef;
 
     $self->{'_opts'}->{'column-separator'} = undef;
 
@@ -567,7 +574,7 @@ sub _stripFormats
 
  Build dialog command options
 
- Return string Dialog command
+ Return string Dialog command options
 
 =cut
 
@@ -576,20 +583,16 @@ sub _buildCommandOptions
     my $self = $_[0];
 
     my @options = ();
-
-    for my $option(keys %{$self->{'_opts'}}) {
-        next unless defined $self->{'_opts'}->{$option};
-
-        # Add option
-        push @options, '--'.$option;
-
-        next unless $self->{'_opts'}->{$option};
+    while(my ($option, $value) = each(%{$self->{'_opts'}})) {
+        next unless defined $value;
+        push @options, '--'.$option;  # Add option
+        next unless $value;
 
         # Add option arguments
-        if (ref $self->{'_opts'}->{$option} ne 'array') { # Only one argument
-            push @options, escapeShell( $self->{'_opts'}->{$option} );
+        if (ref $value ne 'array') { # Only one argument
+            push @options, escapeShell( $value );
         } else { # Many arguments
-            push @options, escapeShell( $_ ) for @{$self->{'_opts'}->{$option}};
+            push @options, escapeShell( $_ ) for @{$value};
         }
     }
 
@@ -634,7 +637,7 @@ sub _execute
 
     $self->endGauge(); # Ensure that no gauge is currently running...
 
-    if ($main::noprompt) {
+    if (iMSCP::Getopt->noprompt) {
         if ($type ne 'infobox' && $type ne 'msgbox') {
             error( sprintf( 'Failed dialog: %s', $text ) );
             exit 5

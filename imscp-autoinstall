@@ -99,8 +99,7 @@ loadConfig();
 require iMSCP::Getopt->listener if iMSCP::Getopt->listener;
 
 # Handle noprompt option
-$main::noprompt = iMSCP::Getopt->noprompt;
-if($main::noprompt) {
+if(iMSCP::Getopt->noprompt) {
     debugRegisterCallBack(sub {
         if($?) { # We exit with status 5 from iMSCP::Dialog in noninteractive mode
             if($? == 5) {

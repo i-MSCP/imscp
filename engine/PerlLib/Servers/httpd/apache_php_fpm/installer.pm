@@ -95,19 +95,16 @@ sub showPhpConfigLevelDialog
         $confLevel =~ s/_/ /;
 
         ($rs, $confLevel) = $dialog->radiolist(
-            "
-            \\Z4\\Zb\\ZuPHP configuration level\\Zn
+            <<"EOF", [ 'per_site', 'per_domain', 'per_user' ], grep($_ eq $confLevel, ( 'per user', 'per domain' )) ? $confLevel : 'per site');
 
-            Please, choose the PHP configuration level you want use. Available levels are:
+\\Z4\\Zb\\ZuPHP configuration level\\Zn
 
-            \\Z4Per user:\\Zn One pool configuration file per user
-            \\Z4Per domain:\\Zn One pool configuration file per domain (including subdomains)
-            \\Z4Per site:\\Zn One pool configuration per domain
+Please, choose the PHP configuration level you want use. Available levels are:
 
-            ",
-            [ 'per_site', 'per_domain', 'per_user' ],
-                grep($_ eq $confLevel, ( 'per user', 'per domain' )) ? $confLevel : 'per site'
-        );
+\\Z4Per user:\\Zn One pool configuration file per user
+\\Z4Per domain:\\Zn One pool configuration file per domain (including subdomains)
+\\Z4Per site:\\Zn One pool configuration per domain
+EOF
     }
 
     ($self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'} = $confLevel) =~ s/ /_/ if $rs < 30;
@@ -133,20 +130,17 @@ sub showListenModeDialog
     if (grep($_ eq $main::reconfigure, ( 'httpd', 'php', 'servers', 'all', 'forced' ))
         || !grep($_ eq $listenMode, ( 'uds', 'tcp' ))
     ) {
-        ($rs, $listenMode) = $dialog->radiolist(
-            "
-            \\Z4\\Zb\\ZuPHP-FPM - FastCGI address type\\Zn
+        ($rs, $listenMode) = $dialog->radiolist( <<"EOF", [ 'uds', 'tcp' ], grep($_ eq $listenMode, ( 'tcp', 'uds' )) ? $listenMode : 'uds' );
 
-            Please, choose the FastCGI address type that you want use. Available types are:
+\\Z4\\Zb\\ZuPHP-FPM - FastCGI address type\\Zn
 
-            \\Z4uds:\\Zn Unix domain socket (e.g. /var/run/php5-fpm-domain.tld.sock)
-            \\Z4tcp:\\Zn TCP/IP (e.g. 127.0.0.1:9000)
+Please, choose the FastCGI address type that you want use. Available types are:
 
-            Be aware that for high traffic sites, TCP/IP can require a tweaking of your kernel parameters (sysctl).
+\\Z4uds:\\Zn Unix domain socket (e.g. /var/run/php5-fpm-domain.tld.sock)
+\\Z4tcp:\\Zn TCP/IP (e.g. 127.0.0.1:9000)
 
-            ",
-            [ 'uds', 'tcp' ], grep($_ eq $listenMode, ( 'tcp', 'uds' )) ? $listenMode : 'uds'
-        );
+Be aware that for high traffic sites, TCP/IP can require a tweaking of your kernel parameters (sysctl).
+EOF
     }
 
     $self->{'phpfpmConfig'}->{'LISTEN_MODE'} = $listenMode if $rs < 30;

@@ -74,8 +74,7 @@ if(iMSCP::Getopt->preseed) {
 require iMSCP::Getopt->listener if iMSCP::Getopt->listener;
 
 # handle noprompt option
-$main::noprompt = iMSCP::Getopt->noprompt;
-if($main::noprompt) {
+if(iMSCP::Getopt->noprompt) {
     debugRegisterCallBack(sub {
         print STDOUT output('i-MSCP has been successfully installed/updated.', 'ok') unless $?;
 
@@ -101,14 +100,14 @@ sub run
     $rs ||= setupRegisterListeners();
     return $rs if $rs;
 
-    unless($main::noprompt) {
+    unless(iMSCP::Getopt->noprompt) {
         my $distribution = ucfirst(lc(iMSCP::LsbRelease->getInstance()->getId(1)));
         my $dialog = iMSCP::Dialog->getInstance();
 
         $dialog->set('yes-label', 'Continue');
         $dialog->set('no-label', 'Abort');
 
-        if ($dialog->yesno(<<EOF)) {
+        exit 0 if $dialog->yesno(<<EOF, 1);
 
 Welcome to the \\Z1i-MSCP $main::imscpConfig{'Version'}\\Zn setup dialog.
 
@@ -117,22 +116,13 @@ This program will reconfigure i-MSCP on your system.
 During the process some or all services might require to be shutdown or restarted.
 EOF
 
-            $dialog->msgbox(<<EOF);
-
-Setup process has been aborted...
-EOF
-            exit 0;
-        } else {
-            $dialog->resetLabels();
-        }
+        $dialog->resetLabels();
     }
 
     $rs ||= setupDialog();
     $rs = setupTasks();
     $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetup');
-    return $rs if $rs;
-
-    return 0 if $main::noprompt;
+    return $rs if $rs || iMSCP::Getopt->noprompt;
 
     my $port = ($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://')
         ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}

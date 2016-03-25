@@ -88,10 +88,10 @@ sub askDnsServerMode
         || !grep($_ eq $dnsServerMode, ( 'master', 'slave' ))
     ) {
         ($rs, $dnsServerMode) = $dialog->radiolist(
-            "\nSelect DNS server type to configure",
-            [ 'master', 'slave' ],
-                $dnsServerMode eq 'slave' ? 'slave' : 'master'
-        );
+            <<"EOF", [ 'master', 'slave' ], $dnsServerMode eq 'slave' ? 'slave' : 'master' );
+
+Select DNS server type to configure
+EOF
     }
 
     if ($rs < 30) {
@@ -128,20 +128,18 @@ sub askDnsServerIps
             || "@slaveDnsIps" ne 'no' && !$self->_checkIps( @slaveDnsIps )
         ) {
             ($rs, $answer) = $dialog->radiolist(
-                "\nDo you want add slave DNS servers?",
-                [ 'no', 'yes' ],
-                    grep($_ eq "@slaveDnsIps", ('', 'no')) ? 'no' : 'yes'
-            );
+                <<"EOF", [ 'no', 'yes' ], grep($_ eq "@slaveDnsIps", ('', 'no')) ? 'no' : 'yes' );
 
+Do you want add slave DNS servers?
+EOF
             if ($rs < 30 && $answer eq 'yes') {
                 @slaveDnsIps = () if "@slaveDnsIps" eq 'no';
 
                 do {
-                    ($rs, $answer) = $dialog->inputbox(
-                        "\nPlease enter IP addresses for the slave DNS servers, each separated by a space: $msg",
-                        "@slaveDnsIps"
-                    );
+                    ($rs, $answer) = $dialog->inputbox( <<"EOF", "@slaveDnsIps" );
 
+Please enter IP addresses for the slave DNS servers, each separated by a space:$msg
+EOF
                     $msg = '';
 
                     if ($rs < 30) {
@@ -165,10 +163,10 @@ sub askDnsServerIps
         @masterDnsIps = () if "@masterDnsIps" eq 'no';
 
         do {
-            ($rs, $answer) = $dialog->inputbox(
-                "\nPlease enter master DNS server IP addresses, each separated by space: $msg", "@masterDnsIps"
-            );
+            ($rs, $answer) = $dialog->inputbox( <<"EOF", "@masterDnsIps" );
 
+Please enter master DNS server IP addresses, each separated by space:$msg
+EOF
             $msg = '';
 
             if ($rs < 30) {
@@ -215,9 +213,10 @@ sub askIPv6Support
     if (grep($_ eq $main::reconfigure, ( 'named', 'servers', 'all', 'forced' ))
         || $ipv6 !~ /^yes|no$/
     ) {
-        ($rs, $ipv6) = $dialog->radiolist(
-            "\nDo you want enable IPv6 support for your DNS server?", [ 'yes', 'no' ], $ipv6 eq 'yes' ? 'yes' : 'no'
-        );
+        ($rs, $ipv6) = $dialog->radiolist( <<"EOF", [ 'yes', 'no' ], $ipv6 eq 'yes' ? 'yes' : 'no' );
+
+Do you want enable IPv6 support for your DNS server?
+EOF
     }
 
     $self->{'config'}->{'BIND_IPV6'} = $ipv6 if $rs < 30;
@@ -243,9 +242,10 @@ sub askLocalDnsResolver
     if (grep($_ eq $main::reconfigure, ( 'resolver', 'named', 'all', 'forced' ))
         || !grep( $_ eq $localDnsResolver, ( 'yes', 'no' ))
     ) {
-        ($rs, $localDnsResolver) = $dialog->radiolist(
-            "\nDo you want use the local DNS resolver?", [ 'yes', 'no' ], $localDnsResolver ne 'no' ? 'yes' : 'no'
-        );
+        ($rs, $localDnsResolver) = $dialog->radiolist( <<"EOF", [ 'yes', 'no' ], $localDnsResolver ne 'no' ? 'yes' : 'no' );
+
+Do you want use the local DNS resolver?
+EOF
     }
 
     $self->{'config'}->{'LOCAL_DNS_RESOLVER'} = $localDnsResolver if $rs < 30;

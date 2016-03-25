@@ -93,19 +93,16 @@ sub showDialog
         $confLevel =~ s/_/ /;
 
         ($rs, $confLevel) = $dialog->radiolist(
-            "
-            \\Z4\\Zb\\ZuPHP configuration level\\Zn
+            <<"EOF", [ 'per_site', 'per_domain', 'per_user' ], grep($_ eq $confLevel, ( 'per user', 'per domain' )) ? $confLevel : 'per site' );
 
-            Please, choose the PHP configuration level you want use. Available levels are:
+\\Z4\\Zb\\ZuPHP configuration level\\Zn
 
-            \\Z4Per user:\\Zn One php.ini file per user
-            \\Z4Per domain:\\Zn One php.ini file per domain (including subdomains)
-            \\Z4Per site:\\Zn One php.ini file per domain
+Please, choose the PHP configuration level you want use. Available levels are:
 
-            ",
-            [ 'per_site', 'per_domain', 'per_user' ],
-                grep($_ eq $confLevel, ( 'per user', 'per domain' )) ? $confLevel : 'per site'
-        );
+\\Z4Per user:\\Zn One php.ini file per user
+\\Z4Per domain:\\Zn One php.ini file per domain (including subdomains)
+\\Z4Per site:\\Zn One php.ini file per domain
+EOF
     }
 
     ($self->{'config'}->{'INI_LEVEL'} = $confLevel) =~ s/ /_/ if $rs < 30;
