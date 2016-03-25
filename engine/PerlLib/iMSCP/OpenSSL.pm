@@ -344,8 +344,9 @@ sub getCertificateExpiryTime
 {
     my ($self, $certificatePath) = (shift, shift || $self->{'certificate_container_path'});
 
-    if ($self->{'certificate_container_path'} eq '') {
+    if ($certificatePath eq '') {
         error( 'Invalide SSL certificate path provided' );
+        return undef;
     }
 
     my @cmd = ( 'openssl', '-x509', '-enddate', '-noout', '-in', escapeShell( $certificatePath ) );
