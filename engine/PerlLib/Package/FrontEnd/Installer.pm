@@ -246,7 +246,7 @@ sub askSsl
     my ($self, $dialog) = @_;
 
     my $domainName = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
-    my $sslEnabled = main::setupGetQuestion( 'PANEL_SSL_ENABLED', 'no' );
+    my $sslEnabled = main::setupGetQuestion( 'PANEL_SSL_ENABLED' );
     my $selfSignedCertificate = main::setupGetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE', 'no' );
     my $privateKeyPath = main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH', '/root' );
     my $passphrase = main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PASSPHRASE' );
@@ -406,7 +406,7 @@ sub askHttpPorts
 
     my $httpPort = main::setupGetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT' );
     my $httpsPort = main::setupGetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT' );
-    my $ssl = main::setupGetQuestion( 'PANEL_SSL_ENABLED', 'no' );
+    my $ssl = main::setupGetQuestion( 'PANEL_SSL_ENABLED' );
     my $rs = 0;
 
     if (grep($_ eq $main::reconfigure, ( 'panel', 'panel_ports', 'all', 'forced' ))
@@ -417,7 +417,7 @@ sub askHttpPorts
         do {
             ($rs, $httpPort) = $dialog->inputbox( <<"EOF", $httpPort ? $httpPort : 8080 );
 
-Please enter the http port from which the control panel must be reachable:$msg
+Please enter the http port for the control panel:$msg
 EOF
             $msg = "\n\n\\Z1The port '$httpPort' is reserved or not valid.\\Zn\n\nPlease try again:";
         } while ($rs < 30 && ($httpPort !~ /^\d+$/ || $httpPort < 1023 || $httpPort > 65535 || $httpsPort eq $httpPort));
@@ -435,7 +435,7 @@ EOF
             do {
                 ($rs, $httpsPort) = $dialog->inputbox( <<"EOF", $httpsPort ? $httpsPort : 4443 );
 
-Please enter the https port from which the control panel must be reachable:$msg
+Please enter the https port for the control panel:$msg
 EOF
                 $msg = "\n\n\\Z1The port '$httpsPort' is reserved or not valid.\\Zn\n\nPlease try again:";
             } while (

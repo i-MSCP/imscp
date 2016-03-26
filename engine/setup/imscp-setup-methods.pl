@@ -725,7 +725,7 @@ sub setupAskServicesSsl
     my($dialog) = @_;
 
     my $domainName = setupGetQuestion('SERVER_HOSTNAME');
-    my $sslEnabled = setupGetQuestion('SERVICES_SSL_ENABLED', 'no');
+    my $sslEnabled = setupGetQuestion('SERVICES_SSL_ENABLED');
     my $selfSignedCertificate = setupGetQuestion('SERVICES_SSL_SELFSIGNED_CERTIFICATE', 'no');
     my $privateKeyPath = setupGetQuestion('SERVICES_SSL_PRIVATE_KEY_PATH', '/root');
     my $passphrase = setupGetQuestion('SERVICES_SSL_PRIVATE_KEY_PASSPHRASE');
