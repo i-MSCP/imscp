@@ -48,7 +48,7 @@ See http://wiki.i-mscp.net/doku.php?id=start:howto:reiserfs if you use a reiserf
 
 #### 3. Change to the newly created directory
 
-    # cd ./imscp-<version>
+    # cd imscp-<version>
 
 #### 4. Update by running the imscp-autoinstall script
 
