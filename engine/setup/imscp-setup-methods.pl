@@ -32,7 +32,7 @@ use iMSCP::Net;
 use iMSCP::Bootstrapper;
 use iMSCP::Dialog;
 use iMSCP::Stepper;
-use iMSCP::Crypt qw/md5 encryptBlowfishCBC decryptBlowfishCBC/;
+use iMSCP::Crypt qw/encryptBlowfishCBC decryptBlowfishCBC/;
 use iMSCP::Database;
 use iMSCP::DbTasksProcessor;
 use iMSCP::Dir;
@@ -44,7 +44,6 @@ use iMSCP::TemplateParser;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
 use iMSCP::OpenSSL;
-use Email::Valid;
 use iMSCP::Servers;
 use iMSCP::Packages;
 use iMSCP::Plugins;
@@ -117,8 +116,6 @@ sub setupDialog
         \&setupAskSqlUserHost,
         \&setupAskImscpDbName,
         \&setupAskDbPrefixSuffix,
-        \&setupAskDefaultAdmin,
-        \&setupAskAdminEmail,
         \&setupAskTimezone,
         \&setupAskServicesSsl,
         \&setupAskImscpBackup,
@@ -175,7 +172,6 @@ sub setupTasks
         [ \&setupCreateDatabase,             'Creating/updating i-MSCP database' ],
         [ \&setupSecureSqlInstallation,      'Securing SQL installation' ],
         [ \&setupServerIps,                  'Setting server IP addresses' ],
-        [ \&setupDefaultAdmin,               'Creating/updating default admin account' ],
         [ \&setupServices,                   'Setup i-MSCP services' ],
         [ \&setupServiceSsl,                 'Setup SSL for i-MSCP services' ],
         [ \&setupRegisterPluginListeners,    'Register plugin setup listeners' ],
@@ -692,130 +688,6 @@ EOF
         setupSetQuestion('MYSQL_PREFIX_TYPE', $prefixType);
     }
 
-    $rs;
-}
-
-# Ask for default administrator
-sub setupAskDefaultAdmin
-{
-    my $dialog = shift;
-
-    my ($adminLoginName, $password, $rpassword) = ('', '', '');
-    my ($rs, $msg) = (0, '');
-    my $database = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
-
-    if(iMSCP::Getopt->preseed) {
-        $adminLoginName = setupGetQuestion('ADMIN_LOGIN_NAME');
-        $password = setupGetQuestion('ADMIN_PASSWORD');
-        $adminLoginName = '' if $password eq '';
-    } elsif($database) {
-        my $defaultAdmin = $database->doQuery(
-            'created_by',
-            'SELECT `admin_name`, `created_by` FROM `admin` WHERE `created_by` = ? AND `admin_type` = ? LIMIT 1',
-            '0', 'admin'
-        );
-        unless(ref $defaultAdmin eq 'HASH') {
-            error($defaultAdmin);
-            return 1;
-        }
-
-        if(%{$defaultAdmin}) {
-            $adminLoginName = $defaultAdmin->{'0'}->{'admin_name'};
-        }
-    }
-
-    setupSetQuestion('ADMIN_OLD_LOGIN_NAME', $adminLoginName);
-
-    if(grep($_ eq $main::reconfigure, ( 'admin', 'all', 'forced' ))
-        || $adminLoginName eq ''
-    ) {
-        # Ask for administrator login name
-        do {
-            ($rs, $adminLoginName) = $dialog->inputbox(<<"EOF", $adminLoginName || 'admin');
-
-Please, enter admin login name: $msg
-EOF
-            $msg = '';
-            if($adminLoginName eq '') {
-                $msg = '\n\n\\Z1Admin login name cannot be empty.\\Zn\n\nPlease, try again:';
-            } elsif(length $adminLoginName <= 2
-                || $adminLoginName !~ /^[a-z0-9](:?(?<![-_])(:?-*|[_.])?(?![-_])[a-z0-9]*)*?(?<![-_.])$/i
-            ) {
-                $msg = '\n\n\\Z1Bad admin login name syntax or length.\\Zn\n\nPlease, try again:'
-            } elsif($database) {
-                my $rdata = $database->doQuery(
-                    'admin_id', 'SELECT `admin_id` FROM `admin` WHERE `admin_name` = ? AND `created_by` <> 0 LIMIT 1',
-                    $adminLoginName
-                );
-                unless(ref $rdata eq 'HASH') {
-                    error($rdata);
-                    return 1;
-                } elsif(%{$rdata}) {
-                    $msg = '\n\n\\Z1This login name already exists.\\Zn\n\nPlease, try again:'
-                }
-            }
-        } while($rs < 30 && $msg);
-
-        if($rs < 30) {
-            $msg = '';
-            do {
-                # Ask for administrator password
-                do {
-                    ($rs, $password) = $dialog->passwordbox(<<"EOF", $password);
-
-Please, enter admin password:$msg
-EOF
-                    $msg = '\n\n\\Z1The password must be at least 6 characters long.\\Zn\n\nPlease, try again:';
-                } while($rs < 30 && length $password < 6);
-
-                # Ask for administrator password confirmation
-                if($rs < 30) {
-                    $msg = '';
-
-                    do {
-                        ($rs, $rpassword) = $dialog->passwordbox(<<"EOF", '');
-
-Please, confirm admin password:$msg
-EOF
-                        $msg = "\n\n\\Z1Passwords do not match.\\Zn\n\nPlease try again:";
-                    } while($rs < 30 &&  $rpassword ne $password);
-                }
-            } while($rs < 30 && $password ne $rpassword);
-        }
-    }
-
-    if($rs < 30) {
-        setupSetQuestion('ADMIN_LOGIN_NAME', $adminLoginName);
-        setupSetQuestion('ADMIN_PASSWORD', $password);
-    }
-
-    $rs;
-}
-
-# Ask for administrator email
-sub setupAskAdminEmail
-{
-    my $dialog = shift;
-
-    my $adminEmail = setupGetQuestion('DEFAULT_ADMIN_ADDRESS');
-    my $rs = 0;
-
-    if(grep($_ eq $main::reconfigure, ( 'admin', 'all', 'forced' ))
-        || !Email::Valid->address($adminEmail)
-    ) {
-        my $msg = '';
-
-        do {
-            ($rs, $adminEmail) = $dialog->inputbox(<<"EOF", $adminEmail);
-
-Please, enter admin email address:$msg
-EOF
-
-            $msg = "\n\n\\Z1'$adminEmail' is not a valid email address.\\Zn\n\nPlease, try again:";
-        } while($rs < 30 && !Email::Valid->address($adminEmail));
-    }
-
-    setupSetQuestion('DEFAULT_ADMIN_ADDRESS', $adminEmail) if $rs < 30;
     $rs;
 }
 
@@ -1463,77 +1335,6 @@ sub setupSecureSqlInstallation
     iMSCP::EventManager->getInstance()->trigger('afterSetupSecureSqlInstallation');
 }
 
-# Setup default admin
-sub setupDefaultAdmin
-{
-    my $adminLoginName = setupGetQuestion('ADMIN_LOGIN_NAME');
-    my $adminOldLoginName = setupGetQuestion('ADMIN_OLD_LOGIN_NAME');
-    my $adminPassword= setupGetQuestion('ADMIN_PASSWORD');
-    my $adminEmail= setupGetQuestion('DEFAULT_ADMIN_ADDRESS');
-
-    my $rs = iMSCP::EventManager->getInstance()->trigger(
-        'beforeSetupDefaultAdmin', \$adminLoginName, \$adminPassword, \$adminEmail
-    );
-    return $rs if $rs;
-
-    if($adminLoginName && $adminPassword) {
-        $adminPassword = md5($adminPassword);
-
-        my ($database, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
-        unless($database) {
-            error(sprintf('Could not connect to SQL server: %s', $errStr));
-            return 1;
-        }
-
-        my $rs = $database->doQuery(
-            'admin_name', 'SELECT `admin_id`, `admin_name` FROM `admin` WHERE `admin_name` = ? LIMIT 1',
-            $adminOldLoginName
-        );
-        unless(ref $rs eq 'HASH') {
-            error($rs);
-            return 1;
-        }
-
-        unless(%{$rs}) {
-            $rs = $database->doQuery(
-                'dummy', 'INSERT INTO `admin` (`admin_name`, `admin_pass`, `admin_type`, `email`) VALUES (?, ?, ?, ?)',
-                $adminLoginName, $adminPassword, 'admin', $adminEmail
-            );
-            unless(ref $rs eq 'HASH') {
-                error($rs);
-                return 1;
-            }
-
-            $rs = $database->doQuery(
-                'dummy',
-                '
-                    INSERT IGNORE INTO `user_gui_props` (
-                        `user_id`, `lang`, `layout`, `layout_color`, `logo`, `show_main_menu_labels`
-                    ) VALUES (
-                        LAST_INSERT_ID(), ?, ?, ?, ?, ?
-                    )
-                ',
-                'auto', 'default', 'black', '', '1'
-            );
-            unless(ref $rs eq 'HASH') {
-                error($rs);
-                return 1;
-            }
-        } else {
-            $rs = $database->doQuery(
-                'dummy', 'UPDATE `admin` SET `admin_name` = ?, `admin_pass` = ?, `email` = ? WHERE `admin_id` = ?',
-                $adminLoginName, $adminPassword, $adminEmail, $rs->{$adminOldLoginName}->{'admin_id'}
-            );
-            unless(ref $rs eq 'HASH') {
-                error($rs);
-                return 1;
-            }
-        }
-    }
-
-    iMSCP::EventManager->getInstance()->trigger('afterSetupDefaultAdmin');
-}
-
 # Setup SSL for i-MSCP services
 sub setupServiceSsl
 {
@@ -1751,7 +1552,6 @@ sub setupPreInstallServers
         eval "require $package";
         unless($@) {
             my $server = $package->factory();
-
             if($server->can('preinstall')) {
                 $rs = step(
                     sub { $server->preinstall() },
@@ -1791,7 +1591,6 @@ sub setupPreInstallPackages
         eval "require $package";
         unless($@) {
             my $package = $package->getInstance();
-
             if($package->can('preinstall')) {
                 $rs = step(
                     sub { $package->preinstall() },
@@ -1831,9 +1630,7 @@ sub setupInstallServers
         eval "require $package";
         unless($@) {
             next if $_ eq 'noserver';
-
             my $server = $package->factory();
-
             if($server->can('install')) {
                 $rs = step(
                     sub { $server->install() },
@@ -1873,7 +1670,6 @@ sub setupInstallPackages
         eval "require $package";
         unless($@) {
             my $package = $package->getInstance();
-
             if($package->can('install')) {
                 $rs = step(
                     sub { $package->install() },
@@ -1914,7 +1710,6 @@ sub setupPostInstallServers
         eval "require $package";
         unless($@) {
             my $server = $package->factory();
-
             if($server->can('postinstall')) {
                 $rs = step(
                     sub { $server->postinstall() },
@@ -1954,7 +1749,6 @@ sub setupPostInstallPackages
         eval "require $package";
         unless($@) {
             my $package = $package->getInstance();
-
             if($package->can('postinstall')) {
                 $rs = step(
                     sub { $package->postinstall() },

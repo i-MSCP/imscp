@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::Config;
+use iMSCP::Crypt 'md5';
 use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::File;
@@ -37,9 +38,10 @@ use iMSCP::SystemUser;
 use iMSCP::OpenSSL;
 use Package::FrontEnd;
 use Servers::named;
-use Data::Validate::Domain qw/is_domain/;
+use Data::Validate::Domain 'is_domain';
+use Email::Valid;
 use File::Basename;
-use Net::LibIDN qw/idn_to_ascii idn_to_unicode/;
+use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -63,28 +65,150 @@ sub registerSetupListeners
 {
     my ($self, $eventManager) = @_;
 
-    $eventManager->register( 'beforeSetupDialog', sub {
-            push @{$_[0]}, sub { $self->askHostname( @_ ) }, sub { $self->askSsl( @_ ) }, sub { $self->askPorts( @_ ) };
+    $eventManager->register(
+        'beforeSetupDialog',
+        sub {
+            push @{$_[0]},
+                sub { $self->askMasterAdminData( @_ )},
+                sub { $self->askDomain( @_ ) },
+                sub { $self->askSsl( @_ ) },
+                sub { $self->askHttpPorts( @_ ) };
             0;
-        } );
+        }
+    );
 }
 
-=item askDomain(\%dialog)
+=item askMasterAdminData(\%dialog)
 
- Show hostname dialog
+ Ask for master administrator data
 
  Param iMSCP::Dialog \%dialog
  Return int 0 or 30
 
 =cut
 
-sub askHostname
+sub askMasterAdminData
+{
+    my ($self, $dialog) = @_;
+
+    my ($login, $password, $rpassword) = ('', '', '');
+    my $email = main::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' );
+    my ($rs, $msg) = (0, '');
+    my $db = main::setupGetSqlConnect( main::setupGetQuestion( 'DATABASE_NAME' ) );
+
+    if (iMSCP::Getopt->preseed) {
+        $login = main::setupGetQuestion( 'ADMIN_LOGIN_NAME' );
+        $password = main::setupGetQuestion( 'ADMIN_PASSWORD' );
+        $login = '' if $password eq '';
+    } elsif ($db) {
+        my $defaultAdmin = $db->doQuery(
+            'created_by', 'SELECT admin_name, created_by FROM admin WHERE created_by = ? AND admin_type = ? LIMIT 1',
+            '0', 'admin'
+        );
+        unless (ref $defaultAdmin eq 'HASH') {
+            error( $defaultAdmin );
+            return 1;
+        }
+
+        if (%{$defaultAdmin}) {
+            $login = $defaultAdmin->{'0'}->{'admin_name'};
+        }
+    }
+
+    main::setupSetQuestion( 'ADMIN_OLD_LOGIN_NAME', $login );
+
+    if (grep($_ eq $main::reconfigure, ( 'admin', 'all', 'forced' ))
+        || $login eq ''
+    ) {
+        do {
+            ($rs, $login) = $dialog->inputbox( <<"EOF", $login || 'admin' );
+
+Please enter master administrator login name:$msg
+EOF
+            $msg = '';
+            if ($login eq '') {
+                $msg = '\n\n\\Z1Admin login name cannot be empty.\\Zn\n\nPlease, try again:';
+            } elsif (length $login <= 2
+                || $login !~ /^[a-z0-9](:?(?<![-_])(:?-*|[_.])?(?![-_])[a-z0-9]*)*?(?<![-_.])$/i
+            ) {
+                $msg = '\n\n\\Z1Bad admin login name syntax or length.\\Zn\n\nPlease, try again:'
+            } elsif ($db) {
+                my $rdata = $db->doQuery(
+                    'admin_id', 'SELECT `admin_id` FROM `admin` WHERE `admin_name` = ? AND `created_by` <> 0 LIMIT 1',
+                    $login
+                );
+                unless (ref $rdata eq 'HASH') {
+                    error( $rdata );
+                    return 1;
+                } elsif (%{$rdata}) {
+                    $msg = '\n\n\\Z1This login name already exists.\\Zn\n\nPlease, try again:'
+                }
+            }
+        } while ($rs < 30 && $msg);
+
+        if ($rs < 30) {
+            $msg = '';
+            do {
+                do {
+                    ($rs, $password) = $dialog->passwordbox( <<"EOF", $password );
+
+Please enter master administrator password:$msg
+EOF
+                    $msg = '\n\n\\Z1The password must be at least 6 characters long.\\Zn\n\nPlease, try again:';
+                } while ($rs < 30 && length $password < 6);
+
+                # Ask for administrator password confirmation
+                if ($rs < 30) {
+                    $msg = '';
+
+                    do {
+                        ($rs, $rpassword) = $dialog->passwordbox( <<"EOF", '' );
+
+Please confirm master administrator password:$msg
+EOF
+                        $msg = "\n\n\\Z1Passwords do not match.\\Zn\n\nPlease try again:";
+                    } while ($rs < 30 && $rpassword ne $password);
+                }
+            } while ($rs < 30 && $password ne $rpassword);
+        }
+
+        if ($rs < 30) {
+            $msg = '';
+
+            do {
+                ($rs, $email) = $dialog->inputbox( <<"EOF", $email );
+
+Please enter master administrator email address:$msg
+EOF
+                $msg = "\n\n\\Z1'$email' is not a valid email address.\\Zn\n\nPlease, try again:";
+            } while ($rs < 30 && !Email::Valid->address( $email ));
+        }
+    }
+
+    if ($rs < 30) {
+        main::setupSetQuestion( 'ADMIN_LOGIN_NAME', $login );
+        main::setupSetQuestion( 'ADMIN_PASSWORD', $password );
+        main::setupSetQuestion( 'DEFAULT_ADMIN_ADDRESS', $email );
+    }
+
+    $rs;
+}
+
+=item askDomain(\%dialog)
+
+ Show for frontEnd domain name
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 or 30
+
+=cut
+
+sub askDomain
 {
     my ($self, $dialog) = @_;
 
     my $vhost = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
     my %options = (domain_private_tld => qr /.*/);
-
     my ($rs, @labels) = (0, $vhost ? split( /\./, $vhost ) : ());
 
     if (grep($_ eq $main::reconfigure, ( 'panel', 'panel_hostname', 'hostnames', 'all', 'forced' ))
@@ -96,7 +220,7 @@ sub askHostname
         do {
             ($rs, $vhost) = $dialog->inputbox( <<"EOF", idn_to_unicode( $vhost, 'utf-8' ) );
 
-Please enter the domain name from which the control panel must be reachable:$msg
+Please enter a domain name for the control panel:$msg
 EOF
             $msg = "\n\n\\Z1'$vhost' is not a fully-qualified domain name (FQDN).\\Zn\n\nPlease try again:";
             $vhost = idn_to_ascii( $vhost, 'utf-8' );
@@ -110,7 +234,7 @@ EOF
 
 =item askSsl(\%dialog)
 
- Show SSL dialog
+ Ask for frontEnd SSL certificate
 
  Param iMSCP::Dialog \%dialog
  Return int 0 or 30
@@ -267,16 +391,16 @@ EOF
     $rs;
 }
 
-=item askPorts(\%dialog)
+=item askHttpPorts(\%dialog)
 
- Show ports dialog
+ Ask for frontEnd http ports
 
  Param iMSCP::Dialog \%dialog
  Return int 0 or 30
 
 =cut
 
-sub askPorts
+sub askHttpPorts
 {
     my ($self, $dialog) = @_;
 
@@ -339,7 +463,8 @@ sub install
 {
     my $self = shift;
 
-    my $rs = $self->_setupSsl();
+    my $rs = $self->_setupMasterAdmin();
+    $rs ||= $self->_setupSsl();
     $rs ||= $self->_setHttpdVersion();
     $rs ||= $self->_addMasterWebUser();
     $rs ||= $self->_makeDirs();
@@ -499,6 +624,79 @@ sub _init
     }
 
     $self;
+}
+
+=item _setupMasterAdmin()
+
+ Setup master administrator
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _setupMasterAdmin
+{
+    my $login = main::setupGetQuestion( 'ADMIN_LOGIN_NAME' );
+    my $loginOld = main::setupGetQuestion( 'ADMIN_OLD_LOGIN_NAME' );
+    my $password = main::setupGetQuestion( 'ADMIN_PASSWORD' );
+    my $email = main::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' );
+
+    return 0 unless $login && $password;
+
+    $password = md5( $password );
+
+    my ($db, $errStr) = main::setupGetSqlConnect( main::setupGetQuestion( 'DATABASE_NAME' ) );
+    unless ($db) {
+        error( sprintf( 'Could not connect to SQL server: %s', $errStr ) );
+        return 1;
+    }
+
+    my $rs = $db->doQuery(
+        'admin_name', 'SELECT admin_id, admin_name FROM admin WHERE admin_name = ? LIMIT 1', $loginOld
+    );
+    unless (ref $rs eq 'HASH') {
+        error( $rs );
+        return 1;
+    }
+
+    if (%{$rs}) {
+        $rs = $db->doQuery(
+            'u', 'UPDATE admin SET admin_name = ?, admin_pass = ?, email = ? WHERE admin_id = ?',
+            $login, $password, $email, $rs->{$loginOld}->{'admin_id'}
+        );
+        unless (ref $rs eq 'HASH') {
+            error( $rs );
+            return 1;
+        }
+        return 0;
+    }
+
+    $rs = $db->doQuery(
+        'i', 'INSERT INTO admin (admin_name, admin_pass, admin_type, email) VALUES (?, ?, ?, ?)',
+        $login, $password, 'admin', $email
+    );
+    unless (ref $rs eq 'HASH') {
+        error( $rs );
+        return 1;
+    }
+
+    $rs = $db->doQuery(
+        'i',
+        '
+            INSERT IGNORE INTO user_gui_props (
+                user_id, lang, layout, layout_color, logo, show_main_menu_labels
+            ) VALUES (
+                LAST_INSERT_ID(), ?, ?, ?, ?, ?
+            )
+        ',
+        'auto', 'default', 'black', '', '1'
+    );
+    unless (ref $rs eq 'HASH') {
+        error( $rs );
+        return 1;
+    }
+
+    0
 }
 
 =item _setupSsl()
