@@ -1,11 +1,5 @@
 ## i-MSCP installation on Ubuntu
 
-### Table of Content
-
- 1) Requirements
- 2) Installation
- 3) Update
-
 ### 1) Requirements
 
 - 1 GHz or faster 32 bits (x86) or 64 bits (x64) processor (recommended)
@@ -40,7 +34,7 @@ See http://wiki.i-mscp.net/doku.php?id=start:howto:reiserfs if you use a reiserf
 
     # perl imscp-autoinstall -d
 
-### 3) Update
+### 3) Upgrade
 
 #### 1. Make sure that your system is up-to-date
 
