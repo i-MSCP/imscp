@@ -1,19 +1,12 @@
-##i-MSCP  - HowTo Install On Debian
+## i-MSCP installation on Debian
 
-###Table of Content
+### Table of Content
 
-1) Version Info
-2) Requirements
-3) Installation
-4) Update
-5) Uninstall
+1) Requirements
+2) Installation
+3) Update
 
-### 1) Version Info
-
-i-MSCP Version:  <version>
-Distros:         Debian Wheezy, Jessie (recommended), Stretch (Experimental)
-
-### 2) Requirements
+### 1) Requirements
 
 - 1 GHz or faster 32 bits (x86) or 64 bits (x64) processor (recommended)
 - 1 Gio memory (minimum) - For heavily loaded servers or high flow is recommended at least 8 Gio
@@ -23,7 +16,7 @@ Distros:         Debian Wheezy, Jessie (recommended), Stretch (Experimental)
 
 See http://wiki.i-mscp.net/doku.php?id=start:howto:reiserfs if you use a reiserfs file system.
 
-### 3) Installation
+### 2) Installation
 
 #### 1. Make sure that your system is up-to-date
 
@@ -47,22 +40,22 @@ See http://wiki.i-mscp.net/doku.php?id=start:howto:reiserfs if you use a reiserf
 
     # perl imscp-autoinstall -d
 
-### 4) Update
+### 3) Update
 
 #### 1. Make sure that your system is up-to-date
 
     # apt-get update && apt-get dist-upgrade
 
-#### 2 . Download and untar the distribution files to a secure directory
+#### 2. Download and untar the distribution files to a secure directory
 
     # cd /usr/local/src
     # wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
     # tar xzf imscp-<version>.tar.gz
 
-#### 3 . Change to the newly created directory
+#### 3. Change to the newly created directory
 
     # cd ./imscp-<version>
 
-#### 5. Update by running the imscp-autoinstall script
+#### 4. Update by running the imscp-autoinstall script
 
     # perl imscp-autoinstall -d

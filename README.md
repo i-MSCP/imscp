@@ -13,8 +13,8 @@ professionals.
 
 See the **INSTALL** file of distribution you are using inside the docs directory.
 
-* For Debian: **./docs/Debian/INSTALL**
-* For Ubuntu: **./docs/Ubuntu/INSTALL**
+* For Debian: **./docs/Debian/INSTALL.md**
+* For Ubuntu: **./docs/Ubuntu/INSTALL.md**
 
 ### License
 
