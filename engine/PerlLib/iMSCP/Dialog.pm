@@ -217,7 +217,7 @@ sub yesno
 {
     my ($self, $text, $defaultno) = @_;
 
-    $self->{_opts}->{'defaultno'} = '' || undef;
+    $self->{_opts}->{'defaultno'} = $defaultno ? '' : undef;
     my $ret = ($self->_textbox( $text, 'yesno' ))[0];
     $self->{_opts}->{'defaultno'} = undef;
     $ret;

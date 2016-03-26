@@ -104,16 +104,17 @@ sub run
         my $distribution = ucfirst(lc(iMSCP::LsbRelease->getInstance()->getId(1)));
         my $dialog = iMSCP::Dialog->getInstance();
 
-        $dialog->set('yes-label', 'Continue');
-        $dialog->set('no-label', 'Abort');
+        $dialog->set('title', 'i-MSCP Reconfiguration Dialog');
 
-        exit 0 if $dialog->yesno(<<EOF, 1);
+        exit 0 if $dialog->yesno(<<"EOF", 1);
 
-Welcome to the \\Z1i-MSCP $main::imscpConfig{'Version'}\\Zn setup dialog.
+Welcome to the \\Z1i-MSCP $main::imscpConfig{'Version'}\\Zn reconfiguration dialog.
 
 This program will reconfigure i-MSCP on your system.
 
 During the process some or all services might require to be shutdown or restarted.
+
+Do you want to continue?
 EOF
 
         $dialog->resetLabels();
@@ -122,7 +123,7 @@ EOF
     $rs ||= setupDialog();
     $rs = setupTasks();
     $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetup');
-    return $rs if $rs || iMSCP::Getopt->noprompt;
+    return $rs if $rs || iMSCP::Getopt->noprompt;
 
     my $port = ($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://')
         ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
