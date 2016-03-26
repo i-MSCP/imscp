@@ -2,9 +2,9 @@
 
 ### Table of Content
 
-1) Requirements
-2) Installation
-3) Update
+ 1) Requirements
+ 2) Installation
+ 3) Update
 
 ### 1) Requirements
 
