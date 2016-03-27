@@ -5,199 +5,323 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2016.03.11
+# Last update: 2016.03.27
 
 %main::questions = (
-    # Server to use for the HTTP service (apache_itk|apache_fcgid|apache_php_fpm)
-    HTTPD_SERVER => 'apache_php_fpm',
 
-    # PHP configuration level to use - Only relevant if the server for the http service is set to 'apache_fgcid'
-    INI_LEVEL => 'per_site', # 'per_user', 'per_domain' or 'per_site'
+    #
+    ## i-MSCP server implementations
+    #
 
-    # PHP configuration level to use - Only relevant if the server for the http server is set to 'apache_php_fpm'
-    PHP_FPM_POOLS_LEVEL => 'per_site', # 'per_user', 'per_domain' or 'per_site'
+    # FTP server
+    # Possible values: proftpd, vsftpd
+    FTPD_SERVER                         => 'proftpd',
 
-    # apache_php_fpm - Only relevant if the server for the http server is set to 'apache_php_fpm'
-    # FastCGI addresse type to use (Unix domain socket or TCP/IP)
-    # Be aware that TCP/IP can require modification of your kernel parameters (sysctl)
-    PHP_FPM_LISTEN_MODE => 'uds', # 'uds', 'tcp'
+    # Web server
+    # Possible values: apache_itk, apache_fcgid, apache_php_fpm
+    HTTPD_SERVER                        => 'apache_php_fpm',
 
-    # Server to use for the POP/IMAP services (courier|dovecot)
-    PO_SERVER => 'dovecot',
+    # DNS server
+    # Possible values: bind, external_server
+    NAMED_SERVER                        => 'bind',
 
-    # Authdaemon restricted SQL user - only relevant if you set PO_SERVER to 'courier'
-    AUTHDAEMON_SQL_USER => 'authdaemon_user',
-    AUTHDAEMON_SQL_PASSWORD => '<password>', # Password must be at least 6 characters long
+    # SMTP server
+    # Possible values: postfix
+    MTA_SERVER                          => 'postfix',
 
-    # SASL restricted SQL user - only relevant if you set PO_SERVER to 'courier'
-    SASL_SQL_USER => 'sasl_user',
-    SASL_SQL_PASSWORD => '<password>', # Password must not be empty
+    # POP/IMAP servers
+    # Possible values: courier, dovecot
+    PO_SERVER                           => 'dovecot',
 
-    # Dovecot restricted SQL user - only relevant if you set PO_SERVER to 'dovecot'
-    DOVECOT_SQL_USER => 'dovecot_user',
-    DOVECOT_SQL_PASSWORD => '<password>', # Password must be at least 6 characters long
-
-    # Server to use for the Ftp service (proftpd|vsftpd)
-    FTPD_SERVER => 'proftpd',
-
-    # ProFTPD/VsFTPd SQL user
-    FTPD_SQL_USER => 'vftp_user',
-    FTPD_SQL_PASSWORD => '<password>', # Password must not empty
-
-    # ProFTPD/VsFTPd passive port range
-    FTPD_PASSIVE_PORT_RANGE => '32768 60999',
-
-    # Server to use for the Mail service (postfix)
-    MTA_SERVER => 'postfix',
-
-    # Server to use for the DNS service (bind or external_server)
-    NAMED_SERVER => 'bind',
-
-    # Mode in which the DNS server should acts - Only relevant if you set NAMED_SERVER to 'bind'
-    BIND_MODE => 'master', # 'master' or 'slave'
-
-    # Allow to specify IP addresses of your primary DNS servers - Only relevant if you set BIND_MODE to 'slave'
-    PRIMARY_DNS => 'no', # 'no' or list of IP addresses, each separated by semicolon or space
-
-    # Allow to indicate IP addresses of your slave DNS server(s) - Only relevant if you set BIND_MODE to 'master'
-    SECONDARY_DNS => 'no', # 'no' or list of IP addresses, each separated by semicolon or space
-
-    # IPv6 support for DNS server - Only relevant if you set NAMED_SERVER to 'bind'
-    BIND_IPV6 => 'no', # 'yes' or 'no'
-
-    # Local DNS resolver - Only relevant if you set NAMED_SERVER to 'bind'
-    LOCAL_DNS_RESOLVER => 'yes', # 'yes' or 'no'
-
-    # Server to use for the SQL service
+    # SQL server
     # Please consult the docs/<distro>/packages-<distro>.xml file for available options.
-    SQL_SERVER => 'mysql_5.5',
+    SQL_SERVER                          => 'mysql_5.5',
+
+    #
+    # System configuration
+    #
 
     # Server hostname
-    SERVER_HOSTNAME => 'host.domain.tld', # Fully qualified hostname name
+    # Possible values: A fully qualified hostname name
+    SERVER_HOSTNAME                     => 'host.domain.tld',
 
-    # Domain name from which the i-MSCP control panel must be reachable
-    BASE_SERVER_VHOST => 'panel.domain.tld', # Fully qualified domain name
+    # Primary server IP
+    # Possible values: An already configured IPv4 or IPv6
+    BASE_SERVER_IP                      => '192.168.1.110',
 
-    # HTTP port from which the control panel must be reachable - Must be a valid port greater than 1023
-    BASE_SERVER_VHOST_HTTP_PORT => '8080',
+    # WAN IP
+    # Only relevant if the primary server IP is in private range (e.g. when your server is behind NAT).
+    # You can force usage of private IP by leaving this blanc
+    # Possible values: Ipv4 or IPv6
+    BASE_SERVER_PUBLIC_IP               => '',
 
-    # HTTPs port from which the control panel must be reachable - Must be a valid port greater than 1023
-    # Only relevant if PANEL_SSL_ENABLED is set to 'yes' (see below)
-    BASE_SERVER_VHOST_HTTPS_PORT => '4443',
+    # Secondary IPs to configure
+    # These IPs, if not already configured, will be added to the first network card (e.g. eth0)
+    # Possible values: an array of IPv4/IPv6 such as [ '192.168.1.111', '192.168.1.230' ]
+    SERVER_IPS                          => [ ],
 
-    # Base server IP - Accept both IPv4 and IPv6 - IP must be already configured (see ifconfig)
-    BASE_SERVER_IP => '192.168.5.110',
+    #
+    ## Control panel configuration
+    #
 
-    # Base server public IP - Only relevant if the base server IP is in private range
-    BASE_SERVER_PUBLIC_IP => '192.168.5.110',
+    # Control panel domain
+    # This is the domain name from which the control panel will be reachable
+    # Possible values: A fully qualified domain name
+    BASE_SERVER_VHOST                   => 'panel.domain.tld',
 
-    # IPs to add in the i-MSCP database - Accept both IPv4 and IPv6
-    # Any unconfigured IPs will be added to the first network device found (eg: eth0, p2p1 ...)
-    SERVER_IPS => [], # ['192.168.5.115', '192.168.5.120']
+    # Control panel http port
+    # Possible values: A port in range 1025-65535
+    BASE_SERVER_VHOST_HTTP_PORT         => '8080',
 
-    # SQL DSN
-    DATABASE_TYPE => 'mysql', # Database type (for now, only 'mysql' is supported)
-    DATABASE_HOST => 'localhost', # Accept both hostname and IP
-    DATABASE_PORT => '3306', # Only relevant for TCP (e.g: when DATABASE_HOST is not set to 'localhost')
-    DATABASE_NAME => 'imscp', # Database name
+    # Control panel https port
+    # Only relevant if SSL is enabled for the control panel (see below)
+    # Possible values: A port in range 1025-65535
+    BASE_SERVER_VHOST_HTTPS_PORT        => '4443',
 
-    # i-MSCP SQL user
-    DATABASE_USER => 'root', # SQL user
-    DATABASE_PASSWORD => '<password>', # Password must not empty
+    # Enable or disable SSL
+    # Possible values: yes, no
+    PANEL_SSL_ENABLED                   => 'yes',
 
-    # Host from which SQL users created by i-MSCP are allowed to connect to the MySQL server
-    DATABASE_USER_HOST => 'localhost',
+    # Whether or not a self-signed SSL cettificate must be used
+    # Possible values: yes, no
+    PANEL_SSL_SELFSIGNED_CERTIFICATE    => 'yes',
 
-    # MySQL prefix/sufix
-    MYSQL_PREFIX => 'no', # 'yes' or 'no'
-    MYSQL_PREFIX_TYPE => 'none', # 'none' if MYSQL_PREFIX question is set to 'no' or 'infront' or 'behind'
+    # SSL private key path
+    # Only relevant if you don't use a self-signed certificate
+    PANEL_SSL_PRIVATE_KEY_PATH          => '',
 
-    # Default administrator data
-    # Be aware that email address is added as alias for the local root user into the /etc/aliases file
-    ADMIN_LOGIN_NAME => 'admin', # Default admin name
-    ADMIN_PASSWORD => '<password>', # Default admin password
-    DEFAULT_ADMIN_ADDRESS => 'l.declercq@nuxwin.com', # Default admin email address (must be a valid email)
+    # SSL private key passphrase
+    # Only relevant if your SSL private key is encrypted
+    PANEL_SSL_PRIVATE_KEY_PASSPHRASE    => '',
 
-    # Timzone
-    TIMEZONE => 'UTC', # A valid timezone (see http://php.net/manual/en/timezones.php)
+    # SSL CA Bundle path
+    # Only relevant if you don't use a self-signed certificate
+    PANEL_SSL_CA_BUNDLE_PATH            => '',
 
-    # SSL for i-MSCP control panel
-    PANEL_SSL_ENABLED => 'yes', # 'yes' or 'no'
+    # SSL certificate path
+    # Only relevant if you don't use a self-signed certificate
+    PANEL_SSL_CERTIFICATE_PATH          => '',
 
-    # Only relevant if PANEL_SSL_ENABLED is set to 'yes'
-    PANEL_SSL_SELFSIGNED_CERTIFICATE => 'yes', # 'yes' for selfsigned, 'no' for own certificate
+    # Control panel default access mode
+    # Only relevant if SSL is enabled
+    # Possible values: http://, https://
+    BASE_SERVER_VHOST_PREFIX            => 'http://',
 
-    # Only relevant if PANEL_SSL_ENABLED is set to 'yes' and  PANEL_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
-    PANEL_SSL_PRIVATE_KEY_PATH => '', # Path to private key
+    # Master administrator login
+    ADMIN_LOGIN_NAME                    => 'admin',
+    ADMIN_PASSWORD                      => '',
 
-    # Only relevant if PANEL_SSL_ENABLED is set to 'yes' and PANEL_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
-    PANEL_SSL_PRIVATE_KEY_PASSPHRASE => '', # Leave blank if your private key is not protected by a passphrase
+    # Master administrator email address
+    # Possible value: A valid email address. Be aware that mails sent to local root user will be forwarded to that email.
+    DEFAULT_ADMIN_ADDRESS               => '',
 
-    # Only relevant if PANEL_SSL_ENABLED is set to 'yes' and PANEL_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
-    PANEL_SSL_CA_BUNDLE_PATH => '', # Leave blank if you do not have CA bundle
+    # Database name
+    DATABASE_NAME                       => 'imscp',
 
-    # Only relevant if PANEL_SSL_ENABLED is set to 'yes' and PANEL_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
-    PANEL_SSL_CERTIFICATE_PATH => '', # Path to SSL certificate
+    # SQL user
+    # Note that this SQL user must have full privileges on the SQL server. It is used to to connect to the i-MSCP
+    # database and also to create/delete SQL users for your customers
+    DATABASE_USER                       => 'root',
+    DATABASE_PASSWORD                   => '',
 
-    # Only relevant if PANEL_SSL_ENABLED is set to 'yes'
-    # Let's value set to 'http://' if you set PANEL_SSL_ENABLED to 'no'
-    BASE_SERVER_VHOST_PREFIX => 'http://', # Default panel access mode 'http://' or 'https://'
+    # Database user host for SQL user created by i-MSCP
+    # That is the host from which SQL users created by i-MSCP are allowed to connect to the SQL server
+    # Possible values: A valid hostname or IP address
+    DATABASE_USER_HOST                  => 'localhost',
 
-    # SSL for i-MSCP services (proftpd, courier, dovecot...)
-    SERVICES_SSL_ENABLED => 'yes', # 'yes' or 'no'
+    # Enable or disable prefix/suffix for SQL database names
+    # Possible values: infront, behind or none
+    MYSQL_PREFIX                        => 'none',
 
-    # Only relevant if SERVICES_SSL_ENABLED is set to 'yes'
-    SERVICES_SSL_SELFSIGNED_CERTIFICATE => 'yes', # 'yes' for selfsigned certificate, 'no' for own certificate
+    # Database prefix type
+    # Possible value: infront, behind
+    MYSQL_PREFIX_TYPE                   => 'infront',
 
-    # Only relevant if SERVICES_SSL_ENABLED is set to 'yes' and  SERVICES_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
-    SERVICES_SSL_PRIVATE_KEY_PATH => '', # Path to private key
+    #
+    ## DNS server configuration
+    #
 
-    # Only relevant if SERVICES_SSL_ENABLED is set to 'yes' and SERVICES_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
-    SERVICES_SSL_PRIVATE_KEY_PASSPHRASE => '', # Leave blank if your private key is not protected by a passphrase
+    # DNS server mode
+    # Only relevant with 'bind' server implementation
+    # Possible values: master, slave
+    BIND_MODE                           => 'master',
 
-    # Only relevant if SERVICES_SSL_ENABLED is set to 'yes' and SERVICES_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
-    SERVICES_SSL_CA_BUNDLE_PATH => '', # Leave blank if you do not have CA bundle
+    # Allow to specify IP addresses of your primary DNS servers - Only relevant if you set BIND_MODE to 'slave'
+    # Primary DNS server IP addresses
+    # Only relevant with master mode
+    # Possible value: 'no' or a list of IPv4/IPv6 each separated by semicolon or space
+    PRIMARY_DNS                         => 'no',
 
-    # Only relevant if SERVICES_SSL_ENABLED is set to 'yes' and SERVICES_SSL_SELFSIGNED_CERTIFICATE is set to 'no'
-    SERVICES_SSL_CERTIFICATE_PATH => '', # Path to SSL certificate
+    # Slave DNS server IP addresses
+    # Only relevant with slave mode
+    # Possible value: 'no' or a list of IPv4/IPv6 each separated by semicolon or space
+    SECONDARY_DNS                       => 'no',
 
-    # iMSCP backup feature (database and configuration files)
-    BACKUP_IMSCP => 'yes', # 'yes' or 'no' - It's recommended to set this question to 'yes'
+    # IPv6 support
+    # Only relevant with 'bind' server implementation
+    # Possible values: yes, no
+    BIND_IPV6                           => 'no',
 
-    # Customers backup feature - Allows resellers to enable/disable backup feature for their customers
-    BACKUP_DOMAINS => 'yes', # 'yes' or 'no'
+    # Local DNS resolver
+    # Only relevant with 'bind' server implementation
+    # Possible values: yes, no
+    LOCAL_DNS_RESOLVER                  => 'yes',
 
-    # Webstats packages
-    WEBSTATS_PACKAGES => 'Awstats', # 'Awstats' or 'No'
+    #
+    ## FTP server configuration parameters
+    #
 
-    # Only relevant if WEBSTATS_PACKAGES is set to 'Awstats'
-    AWSTATS_MODE => '0', # Empty value if WEBSTATS_PACKAGES is set to 'No', 0 for dynamic or 1 for static
+    # FTP SQL user
+    FTPD_SQL_USER                       => 'vftp_user',
+    FTPD_SQL_PASSWORD                   => '',
 
-    # Ftp Web file manager
-    FILEMANAGER_PACKAGE => 'Pydio', # Pydio or Net2ftp
+    # Passive port range
+    # Possible values: A valid port range in range 32768-60999
+    FTPD_PASSIVE_PORT_RANGE             => '32768 60999',
 
-    # Phpmyadmin package restricted SQL user
-    PHPMYADMIN_SQL_USER => 'pma_user',
-    PHPMYADMIN_SQL_PASSWORD => '<password>', # Password must not be at least 6 characters long
+    #
+    ## SQL server configuration
+    #
+
+    # Database type
+    # Possible values: mysql
+    DATABASE_TYPE                       => 'mysql',
+
+    # Databas hostname
+    # Possible values: A valid hostname or IP address
+    DATABASE_HOST                       => 'localhost',
+
+    # Database port
+    # Note that port is used only for connections through TCP
+    # Possible values: A valid port
+    DATABASE_PORT                       => '3306',
+
+    #
+    ## Courier, POP server configuration
+    #
+
+    # Authdaemon SQL user
+    AUTHDAEMON_SQL_USER                 => 'authdaemon_user',
+    AUTHDAEMON_SQL_PASSWORD             => '',
+
+    # SASL SQL user
+    # Only relevant with 'courier' server implementation
+    SASL_SQL_USER                       => 'sasl_user',
+    SASL_SQL_PASSWORD                   => '',
+
+    # Dovecot SQL user
+    # Only relevant with 'dovecot' server implementation
+    DOVECOT_SQL_USER                    => 'dovecot_user',
+    DOVECOT_SQL_PASSWORD                => '',
+
+    #
+    ## PHP configuration parameters
+    #
+
+    # PHP configuration level
+    # Only relevant with 'apache_fgcid' server implementation
+    # Possible values: per_user, per_domain, per_site
+    INI_LEVEL                           => 'per_site',
+
+    # PHP configuration level
+    # Only relevant with 'apache_php_fpm' server implementation
+    # Possible values: per_user, per_domain, per_site
+    PHP_FPM_POOLS_LEVEL                 => 'per_site',
+
+    # PHP-FPM listen socket type
+    # Only relevant with 'apache_php_fpm' sever implementation
+    # Possible values: uds, tcp
+    PHP_FPM_LISTEN_MODE                 => 'uds',
+
+    # Timezone
+    # Possible values: A valid timezone (see http://php.net/manual/en/timezones.php)
+    TIMEZONE                            => 'UTC',
+
+    #
+    ## Backup configuration
+    #
+
+    # i-MSCP backup feature (database and configuration files)
+    # Enable backup for i-MSCP
+    # Possible values: yes, no
+    BACKUP_IMSCP                        => 'yes',
+
+    # Enable backup feature for customers
+    # Possible values: yes, no
+    BACKUP_DOMAINS                      => 'yes',
+
+    #
+    ## SSL configuration for FTP, IMAP/POP and SMTP services
+    #
+
+    # Enable or disable SSL
+    # Possible values: yes, no
+    SERVICES_SSL_ENABLED                => 'yes',
+
+    # Whether or not a self-signed SSL certificate must be used
+    # Only relevant if SSL is enabled
+    # Possible values: yes, no
+    SERVICES_SSL_SELFSIGNED_CERTIFICATE => 'yes',
+
+    # SSL private key path
+    # Only relevant if you don't use a self-signed SSL certificate
+    # Possible values: Path to SSL private key
+    SERVICES_SSL_PRIVATE_KEY_PATH       => '',
+
+    # SSL private key passphrase
+    # Only relevant if your SSL private key is encrypted
+    # Possible values: SSL private key passphrase
+    SERVICES_SSL_PRIVATE_KEY_PASSPHRASE => '',
+
+    # SSL CA Bundle path
+    # Only relevant if you don't use a self-signed certificate
+    # Possible values: Path to the SSL CA Bundle
+    SERVICES_SSL_CA_BUNDLE_PATH         => '',
+
+    # SSL certificate path
+    # Only relevant if you don't use a self-signed certificate
+    # Possible values: Path to SSL certificate
+    SERVICES_SSL_CERTIFICATE_PATH       => '',
+
+    #
+    ## i-MSCP packages configuration
+    #
+
+    # Webstats package
+    # Enable or disable webstats package
+    # Possible values: Awstats, No
+    WEBSTATS_PACKAGES                   => 'Awstats',
+
+    # Awstats mode
+    # Only relevant if you use webstats Awstats package
+    # Possible values: 0 for dynamic, 1 for statis
+    AWSTATS_MODE                        => '0',
+
+    # FTP Web file manager packages
+    # Possible values: Pydio, Net2ftp
+    FILEMANAGER_PACKAGE                 => 'Pydio',
+
+    # SQL user for PhpMyAdmin
+    PHPMYADMIN_SQL_USER                 => 'pma_user',
+    PHPMYADMIN_SQL_PASSWORD             => '',
 
     # Webmmail packages
-    # List of webmail packages to install such as (RainLoop,Roundcube)
-    # Set the value to 'No' if you do not want install any webmail
-    WEBMAIL_PACKAGES => 'RainLoop,Roundcube',
+    # Possible values: 'No' or a list of packages, each comma separated
+    WEBMAIL_PACKAGES                    => 'RainLoop,Roundcube',
 
-    # Roundcube package restricted SQL user
-    # Only relevant if the Roundcube package is listed in the WEBMAIL_PACKAGES parameter
-    ROUNDCUBE_SQL_USER => 'roundcube_user',
-    ROUNDCUBE_SQL_PASSWORD => '<password>', # Password must not be at least 6 characters long
+    # SQL user for Roundcube package
+    # Only relevant if you use the Roundcube webmail package
+    ROUNDCUBE_SQL_USER                  => 'roundcube_user',
+    ROUNDCUBE_SQL_PASSWORD              => '',
 
-    # Rainloop package restricted SQL user
-    # Only relevant if the RainLoop package is listed in the WEBMAIL_PACKAGES parameter
-    RAINLOOP_SQL_USER => 'rainloop_user',
-    RAINLOOP_SQL_PASSWORD => '<password>', # Password must be at least 6 characters long
+    # SQL user for Rainloop package
+    # Only relevant if you use the Rainloop webmail package
+    RAINLOOP_SQL_USER                   => 'rainloop_user',
+    RAINLOOP_SQL_PASSWORD               => '',
 
-    # Anti-Rootkits packages - List of Anti-Rootkits packages to install such as (Chkrootkit,Rkhunter)
-    # Set the value to 'No' if you do not want install any Anti-Rootkit
-    ANTI_ROOTKITS_PACKAGES => 'Chkrootkit,Rkhunter'
+    # Anti-rootkits packages
+    # Possible values: 'No' or a list of packages, each comma separated
+    ANTI_ROOTKITS_PACKAGES              => 'Chkrootkit,Rkhunter'
 );
 
 1;
