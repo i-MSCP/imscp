@@ -410,7 +410,7 @@ sub askHttpPorts
     my $rs = 0;
 
     if (grep($_ eq $main::reconfigure, ( 'panel', 'panel_ports', 'all', 'forced' ))
-        || $httpPort !~ /^\d+$/ || $httpPort < 1023 || $httpPort > 65535 || $httpsPort eq $httpPort
+        || $httpPort !~ /^\d+$/ || $httpPort < 1025 || $httpPort > 65535 || $httpsPort eq $httpPort
     ) {
         my $msg = '';
 
@@ -420,14 +420,14 @@ sub askHttpPorts
 Please enter the http port for the control panel:$msg
 EOF
             $msg = "\n\n\\Z1The port '$httpPort' is reserved or not valid.\\Zn\n\nPlease try again:";
-        } while ($rs < 30 && ($httpPort !~ /^\d+$/ || $httpPort < 1023 || $httpPort > 65535 || $httpsPort eq $httpPort));
+        } while ($rs < 30 && ($httpPort !~ /^\d+$/ || $httpPort < 1025 || $httpPort > 65535 || $httpsPort eq $httpPort));
     }
 
     main::setupSetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT', $httpPort ) if $rs < 30;
 
     if ($rs < 30 && $ssl eq 'yes') {
         if (grep($_ eq $main::reconfigure, ( 'panel', 'panel_ports', 'all', 'forced' ))
-            || $httpsPort !~ /^\d+$/ || $httpsPort < 1023 || $httpsPort > 65535
+            || $httpsPort !~ /^\d+$/ || $httpsPort < 1025 || $httpsPort > 65535
             || $httpsPort == $httpPort
         ) {
             my $msg = '';
@@ -440,7 +440,7 @@ EOF
                 $msg = "\n\n\\Z1The port '$httpsPort' is reserved or not valid.\\Zn\n\nPlease try again:";
             } while (
                 $rs < 30
-                    && ($httpsPort !~ /^\d+$/ || $httpsPort < 1023 || $httpsPort > 65535 || $httpsPort eq $httpPort)
+                    && ($httpsPort !~ /^\d+$/ || $httpsPort < 1025 || $httpsPort > 65535 || $httpsPort eq $httpPort)
             );
         }
     } else {

@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2016.03.27
+# Last update: 2016.03.28
 
 %main::questions = (
 
@@ -130,12 +130,8 @@
     DATABASE_USER_HOST                  => 'localhost',
 
     # Enable or disable prefix/suffix for SQL database names
-    # Possible values: infront, behind or none
+    # Possible values: behind, infront, none
     MYSQL_PREFIX                        => 'none',
-
-    # Database prefix type
-    # Possible value: infront, behind
-    MYSQL_PREFIX_TYPE                   => 'infront',
 
     #
     ## DNS server configuration

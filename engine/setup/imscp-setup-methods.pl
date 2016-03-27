@@ -655,14 +655,13 @@ sub setupAskDbPrefixSuffix
     my $dialog = shift;
 
     my $prefix = setupGetQuestion('MYSQL_PREFIX');
-    my $prefixType = setupGetQuestion('MYSQL_PREFIX_TYPE');
     my $rs = 0;
 
     if(grep($_ eq $main::reconfigure, ( 'sql', 'servers', 'all', 'forced' ))
-        || !(($prefix eq 'no' && $prefixType eq 'none') || ($prefix eq 'yes' && $prefixType =~ /^infront|behind$/))
+        || $prefix !~ /^behind|infront|none$/
     ) {
         ($rs, $prefix) = $dialog->radiolist(
-            <<"EOF", [ 'infront', 'behind', 'none' ], $prefixType =~ /^infront|behind$/ ? $prefixType : 'none');
+            <<"EOF", [ 'infront', 'behind', 'none' ], $prefix =~ /^behind|infront$/ ? $prefix : 'none');
 
 \\Z4\\Zb\\ZuMySQL Database Prefix/Suffix\\Zn
 
@@ -674,18 +673,10 @@ Do you want use a prefix or suffix for customer's SQL databases?
          SQL user and database name.
    \\Z4None\\Zn: Choice will be let to customer.
 EOF
-        if($prefix eq 'none') {
-            $prefix = 'no';
-            $prefixType = 'none';
-        } else {
-            $prefixType = $prefix;
-            $prefix = 'yes';
-        }
     }
 
     if($rs < 30) {
         setupSetQuestion('MYSQL_PREFIX', $prefix);
-        setupSetQuestion('MYSQL_PREFIX_TYPE', $prefixType);
     }
 
     $rs;

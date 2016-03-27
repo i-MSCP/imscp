@@ -41,7 +41,9 @@ function client_checkSqlUserPermissions($tpl, $databaseId)
     $domainSqlUsersLimit = $domainProperties['domain_sqlu_limit'];
     $limits = get_domain_running_sql_acc_cnt($domainProperties['domain_id']);
 
-    if ($domainSqlUsersLimit != 0 && $limits[1] >= $domainSqlUsersLimit) {
+    if ($domainSqlUsersLimit != 0
+        && $limits[1] >= $domainSqlUsersLimit
+    ) {
         $tpl->assign('CREATE_SQLUSER', '');
     }
 
@@ -131,7 +133,9 @@ function client_addSqlUser($customerId, $dbId)
     if (!isset($_POST['Add_Exist'])) {
         $needUserCreate = true;
 
-        if (!isset($_POST['user_name']) || !isset($_POST['user_host']) || !isset($_POST['pass'])
+        if (!isset($_POST['user_name'])
+            || !isset($_POST['user_host'])
+            || !isset($_POST['pass'])
             || !isset($_POST['pass_rep'])
         ) {
             showBadRequestErrorPage();
@@ -159,8 +163,9 @@ function client_addSqlUser($customerId, $dbId)
 
         $host = encode_idna(clean_input($_POST['user_host']));
 
-        if ($host !== '%' && $host !== 'localhost' &&
-            !iMSCP_Validate::getInstance()->hostname($host, array('allow' => Zend_Validate_Hostname::ALLOW_DNS | Zend_Validate_Hostname::ALLOW_IP))
+        if ($host !== '%'
+            && $host !== 'localhost'
+            && !iMSCP_Validate::getInstance()->hostname($host, array('allow' => Zend_Validate_Hostname::ALLOW_DNS | Zend_Validate_Hostname::ALLOW_IP))
         ) {
             set_page_message(tr('Invalid SQL user host: %s', iMSCP_Validate::getInstance()->getLastValidationMessages()), 'error');
             return;
@@ -186,11 +191,15 @@ function client_addSqlUser($customerId, $dbId)
             return;
         }
 
-        if (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] == 'on' && isset($_POST['id_pos'])
+        if (isset($_POST['use_dmn_id'])
+            && $_POST['use_dmn_id'] == 'on'
+            && isset($_POST['id_pos'])
             && $_POST['id_pos'] == 'start'
         ) {
             $user = $dmnId . '_' . clean_input($_POST['user_name']);
-        } elseif (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] == 'on' && isset($_POST['id_pos'])
+        } elseif (isset($_POST['use_dmn_id'])
+            && $_POST['use_dmn_id'] == 'on'
+            && isset($_POST['id_pos'])
             && $_POST['id_pos'] == 'end'
         ) {
             $user = clean_input($_POST['user_name']) . '_' . $dmnId;
@@ -277,10 +286,10 @@ function client_generatePage($tpl, $databaseId)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    if ($cfg['MYSQL_PREFIX'] == 'yes') {
+    if ($cfg['MYSQL_PREFIX'] != 'none') {
         $tpl->assign('MYSQL_PREFIX_YES', '');
 
-        if ($cfg['MYSQL_PREFIX_TYPE'] == 'behind') {
+        if ($cfg['MYSQL_PREFIX'] == 'behind') {
             $tpl->assign('MYSQL_PREFIX_INFRONT', '');
             $tpl->parse('MYSQL_PREFIX_BEHIND', 'mysql_prefix_behind');
             $tpl->assign('MYSQL_PREFIX_ALL', '');
@@ -301,18 +310,17 @@ function client_generatePage($tpl, $databaseId)
     }
 
     if (isset($_POST['uaction']) && $_POST['uaction'] == 'add_user') {
-        $htmlChecked = $cfg['HTML_CHECKED'];
         $tpl->assign(array(
-            'USER_NAME' => (isset($_POST['user_name'])) ? tohtml($_POST['user_name'], true) : '',
-            'USER_HOST' => (isset($_POST['user_host'])) ? tohtml($_POST['user_host'], true) : '',
-            'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? $htmlChecked : '',
-            'START_ID_POS_SELECTED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? $htmlChecked : '',
-            'END_ID_POS_SELECTED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? $$htmlChecked : ''
+            'USER_NAME' => isset($_POST['user_name']) ? tohtml($_POST['user_name'], true) : '',
+            'USER_HOST' => isset($_POST['user_host']) ? tohtml($_POST['user_host'], true) : '',
+            'USE_DMN_ID' => isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' ? ' checked' : '',
+            'START_ID_POS_SELECTED' => isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end' ? ' checked' : '',
+            'END_ID_POS_SELECTED' => isset($_POST['id_pos']) && $_POST['id_pos'] === 'end' ? ' checked' : ''
         ));
     } else {
         $tpl->assign(array(
             'USER_NAME' => '',
-            'USER_HOST' => tohtml($cfg['DATABASE_USER_HOST'] == '127.0.0.1' ? 'localhost' : (decode_idna($cfg['DATABASE_USER_HOST']))),
+            'USER_HOST' => tohtml($cfg['DATABASE_USER_HOST'] == '127.0.0.1' ? 'localhost' : decode_idna($cfg['DATABASE_USER_HOST'])),
             'USE_DMN_ID' => '',
             'START_ID_POS_SELECTED' => '',
             'END_ID_POS_SELECTED' => $cfg['HTML_CHECKED']

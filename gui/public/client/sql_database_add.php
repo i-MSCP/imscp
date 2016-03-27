@@ -39,10 +39,10 @@ function client_generatePage($tpl)
 {
     $cfg = iMSCP_Registry::get('config');
 
-    if ($cfg['MYSQL_PREFIX'] == 'yes') {
+    if ($cfg['MYSQL_PREFIX'] != 'none') {
         $tpl->assign('MYSQL_PREFIX_YES', '');
 
-        if ($cfg['MYSQL_PREFIX_TYPE'] == 'behind') {
+        if ($cfg['MYSQL_PREFIX'] == 'behind') {
             $tpl->assign('MYSQL_PREFIX_INFRONT', '');
             $tpl->parse('MYSQL_PREFIX_BEHIND', 'mysql_prefix_behind');
             $tpl->assign('MYSQL_PREFIX_ALL', '');
@@ -62,12 +62,14 @@ function client_generatePage($tpl)
         $tpl->parse('MYSQL_PREFIX_ALL', 'mysql_prefix_all');
     }
 
-    if (isset($_POST['uaction']) && $_POST['uaction'] == 'add_db') {
+    if (isset($_POST['uaction'])
+        && $_POST['uaction'] == 'add_db'
+    ) {
         $tpl->assign(array(
             'DB_NAME' => clean_input($_POST['db_name'], true),
-            'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? $cfg['HTML_CHECKED'] : '',
-            'START_ID_POS_SELECTED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? $cfg['HTML_CHECKED'] : '',
-            'END_ID_POS_SELECTED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? $cfg['HTML_CHECKED'] : ''
+            'USE_DMN_ID' => isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' ? ' checked' : '',
+            'START_ID_POS_SELECTED' => isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end' ? ' checked' : '',
+            'END_ID_POS_SELECTED' => isset($_POST['id_pos']) && $_POST['id_pos'] === 'end' ? ' checked' : ''
         ));
         return;
     }
@@ -78,7 +80,6 @@ function client_generatePage($tpl)
         'START_ID_POS_SELECTED' => $cfg['HTML_SELECTED'],
         'END_ID_POS_SELECTED' => ''
     ));
-
 }
 
 /**
@@ -117,8 +118,12 @@ function client_addSqlDb($userId)
 
     $mainDmnId = get_user_domain_id($userId);
 
-    if (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') {
-        if (isset($_POST['id_pos']) && $_POST['id_pos'] === 'start') {
+    if (isset($_POST['use_dmn_id'])
+        && $_POST['use_dmn_id'] == 'on'
+    ) {
+        if (isset($_POST['id_pos'])
+            && $_POST['id_pos'] == 'start'
+        ) {
             $dbName = $mainDmnId . '_' . $dbName;
         } elseif (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') {
             $dbName = $dbName . '_' . $mainDmnId;
