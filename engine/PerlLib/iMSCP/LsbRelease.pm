@@ -91,7 +91,7 @@ sub getInstance
     $$instance;
 }
 
-=item getId([$short = false])
+=item getId([ $short = false ])
 
  Get distributor ID
 
@@ -104,14 +104,11 @@ sub getId
 {
     my ($self, $short) = @_;
 
-    if ($short) {
-        $self->{'lsbInfo'}->{'ID'} || 'n/a';
-    } else {
-        sprintf( "Distributor ID:\t%s", $self->{'lsbInfo'}->{'ID'} || 'n/a' );
-    }
+    return $self->{'lsbInfo'}->{'ID'} || 'n/a' if $short;
+    sprintf( "Distributor ID:\t%s", $self->{'lsbInfo'}->{'ID'} || 'n/a' );
 }
 
-=item getDescription([$short = false])
+=item getDescription([ $short = false ])
 
  Get description
 
@@ -124,34 +121,37 @@ sub getDescription
 {
     my ($self, $short) = @_;
 
-    if ($short) {
-        $self->{'lsbInfo'}->{'DESCRIPTION'} || 'n/a';
-    } else {
-        sprintf( "Description:\t%s", $self->{'lsbInfo'}->{'DESCRIPTION'} || 'n/a' );
-    }
+    return $self->{'lsbInfo'}->{'DESCRIPTION'} || 'n/a' if $short;
+    sprintf( "Description:\t%s", $self->{'lsbInfo'}->{'DESCRIPTION'} || 'n/a' );
 }
 
-=item getRelease([$short = false])
+=item getRelease([ $short = false, [ forceNumeric = false ] ])
 
  Get release
 
  Param bool $short OPTIONAL Weither or not short value must be returned (default FALSE)
+ Param bool $forceNumeric Weither or not to force numeric value when possible (default FALSE)
  Return string
 
 =cut
 
 sub getRelease
 {
-    my ($self, $short) = @_;
+    my ($self, $short, $forceNumeric) = @_;
 
-    if ($short) {
-        $self->{'lsbInfo'}->{'RELEASE'} || 'n/a';
-    } else {
-        sprintf( "Release:\t%s", $self->{'lsbInfo'}->{'RELEASE'} || 'n/a' );
+    my $release = $self->{'lsbInfo'}->{'RELEASE'} || 'n/a';
+
+    if($forceNumeric && $release =~ /[^\d.]/) {
+        my $codename = $self->getCodename(1);
+        my @match = grep { $RELEASE_CODENAME_LOOKUP{$_} eq $codename} keys %RELEASE_CODENAME_LOOKUP;
+        $release = sprintf('%.1f', $match[0]) if @match;
     }
+
+    return $release if $short;
+    sprintf( "Release:\t%s", $self->{'lsbInfo'}->{'RELEASE'} || 'n/a' );
 }
 
-=item getCodename([$short = false])
+=item getCodename([ $short = false ])
 
  Get codename
 
@@ -164,11 +164,8 @@ sub getCodename
 {
     my ($self, $short) = @_;
 
-    if ($short) {
-        $self->{'lsbInfo'}->{'CODENAME'} || 'n/a';
-    } else {
-        sprintf( "Codename:\t%s", $self->{'lsbInfo'}->{'CODENAME'} || 'n/a' );
-    }
+    return $self->{'lsbInfo'}->{'CODENAME'} || 'n/a' if $short;
+    sprintf( "Codename:\t%s", $self->{'lsbInfo'}->{'CODENAME'} || 'n/a' );
 }
 
 =item getAll([$short = false])
@@ -212,7 +209,7 @@ sub getAll
 
 sub getDistroInformation
 {
-    my $self = $_[0];
+    my $self = shift;
 
     # Try to retrieve information from /etc/lsb-release first
     my %lsbInfo = $self->_getLsbInformation();
@@ -234,7 +231,7 @@ sub getDistroInformation
 
 =over 4
 
-=item _lookupCodename($release, [$unknown = undef])
+=item _lookupCodename($release [, $unknown = undef ])
 
  Lookup distribution codename
 
@@ -249,7 +246,6 @@ sub _lookupCodename
     return $unknown unless $release =~ /(\d+)\.(\d+)(r(\d+))?/;
 
     my $shortRelease = (int( $1 ) < 7) ? sprintf '%s.%s', $1, $2 : sprintf '%s', $1;
-
     $RELEASE_CODENAME_LOOKUP{$shortRelease} || $unknown;
 }
 
@@ -540,7 +536,6 @@ sub _getLsbInformation
     my $self = $_[0];
 
     my %distInfo = ();
-
     my $etcLsbFile = $ENV{'LSB_ETC_LSB_RELEASE'} || '/etc/lsb-release';
 
     if (-f $etcLsbFile) {
@@ -561,7 +556,7 @@ sub _getLsbInformation
 
             close $fh;
         } else {
-            warn( "Unable to open $etcLsbFile: $!" );
+            warn( sprintf('Could not open %s file: %s', $etcLsbFile, $! ));
         }
     }
 

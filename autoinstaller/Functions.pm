@@ -77,9 +77,9 @@ sub loadConfig
     tie my %imscpNewConfig, 'iMSCP::Config', fileName => -f $distroConffile ? $distroConffile : $defaultConffile;
 
     %main::imscpConfig = %imscpNewConfig;
-    $main::imscpConfig{'DISTRO_ID'} = lc( iMSCP::LsbRelease->getInstance()->getId( 1 ) );
-    $main::imscpConfig{'DISTRO_CODENAME'} = lc( iMSCP::LsbRelease->getInstance()->getCodename( 1 ) );
-    $main::imscpConfig{'DISTRO_RELEASE'} = iMSCP::LsbRelease->getInstance()->getRelease( 1 );
+    $main::imscpConfig{'DISTRO_ID'} = lc( iMSCP::LsbRelease->getInstance()->getId( 'short' ) );
+    $main::imscpConfig{'DISTRO_CODENAME'} = lc( iMSCP::LsbRelease->getInstance()->getCodename( 'short' ) );
+    $main::imscpConfig{'DISTRO_RELEASE'} = iMSCP::LsbRelease->getInstance()->getRelease( 'short', 'force_numeric' );
     %main::imscpOldConfig = ();
 
     # Load old i-MSCP conffile as readonly if it exists
@@ -90,7 +90,8 @@ sub loadConfig
         # Merge old config with the new but do not write anything yet.
         for my $oldConf(keys %main::imscpOldConfig) {
             if (exists $main::imscpConfig{$oldConf}
-                && !grep($_ eq $oldConf, ( 'BuildDate', 'Version', 'CodeName', 'THEME_ASSETS_VERSION' ))
+                && !grep($_ eq $oldConf, ( 'BuildDate', 'Version', 'CodeName', 'THEME_ASSETS_VERSION', 'DISTRO_ID',
+                'DISTRO_CODENAME', 'DISTRO_RELEASE' ))
             ) {
                 $main::imscpConfig{$oldConf} = $main::imscpOldConfig{$oldConf};
             }
@@ -446,10 +447,10 @@ sub _confirmDistro
     $dialog->infobox( "\nDetecting target distribution..." );
 
     my $lsbRelease = iMSCP::LsbRelease->getInstance();
-    my $distribution = $lsbRelease->getId( 1 );
-    my $codename = lc( $lsbRelease->getCodename( 1 ) );
-    my $release = $lsbRelease->getRelease( 1 );
-    my $description = $lsbRelease->getDescription( 1 );
+    my $distribution = $lsbRelease->getId( 'short' );
+    my $codename = lc( $lsbRelease->getCodename( 'short' ) );
+    my $release = $lsbRelease->getRelease( 'short' );
+    my $description = $lsbRelease->getDescription( 'short' );
     my $packagesFile = "$FindBin::Bin/docs/$distribution/packages-$codename.xml";
 
     if ($distribution ne 'n/a'
@@ -586,7 +587,7 @@ sub _buildDistributionFiles
 
 sub _buildLayout
 {
-    my $distroLayout = "$FindBin::Bin/autoinstaller/Layout/".iMSCP::LsbRelease->getInstance()->getId( 1 ).'.xml';
+    my $distroLayout = "$FindBin::Bin/autoinstaller/Layout/".iMSCP::LsbRelease->getInstance()->getId( 'short' ).'.xml';
     my $defaultLayout = "$FindBin::Bin/autoinstaller/Layout/Debian.xml";
     _processXmlFile( -f $distroLayout ? $distroLayout : $defaultLayout );
 }
@@ -602,7 +603,7 @@ sub _buildLayout
 sub _buildConfigFiles
 {
     # Possible config directory paths
-    my $distroConfigDir = "$FindBin::Bin/configs/".lc( iMSCP::LsbRelease->getInstance()->getId( 1 ) );
+    my $distroConfigDir = "$FindBin::Bin/configs/".lc( iMSCP::LsbRelease->getInstance()->getId( 'short' ) );
     my $defaultConfigDir = "$FindBin::Bin/configs/debian";
 
     # Determine config directory to use
@@ -1092,7 +1093,7 @@ sub _copyConfig
     my @parts = split '/', $data->{'content'};
     my $name = pop( @parts );
     my $path = join '/', @parts;
-    my $distribution = lc( iMSCP::LsbRelease->getInstance()->getId( 1 ) );
+    my $distribution = lc( iMSCP::LsbRelease->getInstance()->getId( 'short' ) );
 
     my $alternativeFolder = getcwd();
     $alternativeFolder =~ s/$distribution/debian/;
@@ -1225,7 +1226,7 @@ sub _getDistroAdapter
 {
     return $autoinstallerAdapterInstance if defined $autoinstallerAdapterInstance;
 
-    my $distribution = iMSCP::LsbRelease->getInstance()->getId( 1 );
+    my $distribution = iMSCP::LsbRelease->getInstance()->getId( 'short' );
 
     eval {
         my $file = "$FindBin::Bin/autoinstaller/Adapter/${distribution}Adapter.pm";

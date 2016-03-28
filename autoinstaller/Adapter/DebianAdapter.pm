@@ -390,8 +390,8 @@ sub _buildPackageList
     my $self = shift;
 
     my $lsbRelease = iMSCP::LsbRelease->getInstance();
-    my $dist = lc( $lsbRelease->getId( 1 ) );
-    my $codename = lc( $lsbRelease->getCodename( 1 ) );
+    my $dist = lc( $lsbRelease->getId( 'short' ) );
+    my $codename = lc( $lsbRelease->getCodename( 'short' ) );
     my $pkgFile = "$FindBin::Bin/docs/".ucfirst( $dist )."/packages-$codename.xml";
 
     eval "use XML::Simple; 1";

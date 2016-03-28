@@ -26,7 +26,6 @@ use Net::LibIDN qw/idn_to_ascii idn_to_unicode/;
 use Data::Validate::Domain qw/is_domain/;
 use Scalar::Util qw(openhandle);
 use File::Basename;
-use iMSCP::LsbRelease;
 use iMSCP::Debug;
 use iMSCP::Net;
 use iMSCP::Bootstrapper;

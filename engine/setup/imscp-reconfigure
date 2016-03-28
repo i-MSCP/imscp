@@ -101,7 +101,7 @@ sub run
     return $rs if $rs;
 
     unless(iMSCP::Getopt->noprompt) {
-        my $distribution = ucfirst(lc(iMSCP::LsbRelease->getInstance()->getId(1)));
+        my $distribution = ucfirst(lc(iMSCP::LsbRelease->getInstance()->getId( 'short' )));
         my $dialog = iMSCP::Dialog->getInstance();
 
         $dialog->set('title', 'i-MSCP Reconfiguration Dialog');
