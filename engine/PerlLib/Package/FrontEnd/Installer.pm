@@ -259,7 +259,8 @@ sub askSsl
     if (grep($_ eq $main::reconfigure, ( 'panel', 'panel_ssl', 'ssl', 'all', 'forced' ))
         || !grep($_ eq $sslEnabled, ( 'yes', 'no' ))
         || $sslEnabled eq 'yes'
-        && grep($_ eq $main::reconfigure, ( 'panel_hostname', 'hostnames' ))
+        && (grep($_ eq $main::reconfigure, ( 'panel_hostname', 'hostnames' ))
+        || !-f "$main::imscpConfig{'CONF_DIR'}/$domainName.pem")
     ) {
         # Ask for SSL
         ($rs, $sslEnabled) = $dialog->yesno( <<"EOF", $sslEnabled eq 'no' ? 1 : 0 );
@@ -371,6 +372,8 @@ EOF
 
 Your SSL certificate for the control panel is missing or invalid.
 EOF
+            $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem" )->delFile();
+            return $rs if $rs;
             goto &{askSsl};
         }
 
