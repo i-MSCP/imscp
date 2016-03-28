@@ -370,7 +370,7 @@ EOF
             getMessageByType( 'error', { remove => 1 } );
             $dialog->msgbox( <<"EOF" );
 
-Your SSL certificate for the control panel is missing or invalid.
+Your SSL certificate for the control panel is not valid.
 EOF
             $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem" )->delFile();
             return $rs if $rs;

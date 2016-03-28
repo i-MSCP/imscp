@@ -830,9 +830,8 @@ EOF
             getMessageByType('error', { remove => 1 });
             iMSCP::Dialog->getInstance()->msgbox(<<"EOF");
 
-Your SSL certificate for the SMTP, POP/IMAP and FTP services is missing or invalid.
+Your SSL certificate for the SMTP, POP/IMAP and FTP services is not valid.
 EOF
-
             $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem" )->delFile();
             return $rs if $rs;
             goto &{setupAskServicesSsl};
