@@ -122,7 +122,7 @@
     # Note that this SQL user must have full privileges on the SQL server. It is used to to connect to the i-MSCP
     # database and also to create/delete SQL users for your customers
     # Be aware that it is not allowed to use SQL root user
-    DATABASE_USER                       => 'imscp',
+    DATABASE_USER                       => 'imscp_user',
     DATABASE_PASSWORD                   => '',
 
     # Database user host for SQL user created by i-MSCP
