@@ -5,9 +5,11 @@ Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
+
     Added: beforeMountLogsFolder, afterMountLogsFolder, beforeUnmountLogsFolder and afterUmountMountLogsFolder events
     Added: Caller info for __DIE__ and __WARN__ signal handlers
     Added: Debug info for loading of listener files (Event::Manager)
+    Added: iMSCP::Database::mysql::useDatabase() method - Allow to select database on which we want operate on
     Added iMSCP::OpenSSL::getCertificateExpiryTime() method - Allow to get SSL certificate expiry time (UNIX timestamp)
     Added: Support for prime256v1 (ECDSA) keys (iMSCP::OpenSSL)
     Backported: iMSCP::DbTasksProcessor from 1.3.x branch - Allows to process db tasks without spawning new process

@@ -122,6 +122,37 @@ sub connect
     0;
 }
 
+=item useDatabase($database)
+
+ Change database for the current connection
+
+ Param string $database Database name
+ Return string Old database on success, die on failure
+
+=cut
+
+sub useDatabase
+{
+    my ($self, $database) = @_;
+
+    defined $database or die('$database parameter is not defined');
+
+    return $database if $database eq '' || $self->{'db'}->{'DATABASE_NAME'} eq $database;
+
+    my $qDatabase = $self->quoteIdentifier( $database );
+
+    my $rawDb = $self->getRawDb();
+    $rawDb->{'RaiseError'} = 1;
+    local $@;
+    eval { $self->getRawDb->do( "use $qDatabase" ); };
+    $rawDb->{'RaiseError'} = 0;
+    die($@) if $@;
+
+    my $oldDatabase = $self->{'db'}->{'DATABASE_NAME'};
+    $self->{'db'}->{'DATABASE_NAME'} = $database;
+    $oldDatabase;
+}
+
 =item startTransaction()
 
  Start a database transaction
