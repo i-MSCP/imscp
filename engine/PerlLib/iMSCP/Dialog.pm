@@ -436,7 +436,7 @@ sub _init
     $self->{'columns'} = undef;
 
     $self->{'_opts'}->{'backtitle'} ||= "i-MSCP - internet Multi Server Control Panel ($main::imscpConfig{'Version'})";
-    $self->{'_opts'}->{'title'} ||= 'i-MSCP Setup Dialog';
+    $self->{'_opts'}->{'title'} ||= 'i-MSCP Installer Dialog';
 
     $self->{'_opts'}->{'colors'} = '';
     $self->{'_opts'}->{'begin'} = [ 1, 0 ];

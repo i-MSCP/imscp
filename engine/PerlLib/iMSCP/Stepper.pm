@@ -82,7 +82,7 @@ sub endDetail
  Param string $text Step description
  Param int $nSteps Total number of steps (for a group of steps)
  Param int $nStep Current step number
- Return 0 on success, die on failure
+ Return 0 on success, other on failure
 
 =cut
 
@@ -103,7 +103,7 @@ sub step
     local $@;
     my $rs = eval { &{$code} };
     if ($@) {
-        error( $@ ) if $@;
+        error( $@ );
         $rs = 1;
     }
 
@@ -115,8 +115,7 @@ sub step
 
     unless (iMSCP::Getopt->noprompt) {
         iMSCP::Dialog->getInstance()->endGauge();
-        iMSCP::Dialog->getInstance()->msgbox( <<EOF );
-
+        iMSCP::Dialog->getInstance()->msgbox( <<"EOF" );
 \\Z1[ERROR]\\Zn
 
 Error while performing step:
@@ -131,7 +130,7 @@ Please have a look at http://i-mscp.net/forum if you need help.
 EOF
     }
 
-    die( $errorMessage );
+    $rs;
 }
 
 =back
