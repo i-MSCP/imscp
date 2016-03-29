@@ -51,6 +51,7 @@ INSTALLER
     Added: Conditional statement feature for install.xml files (copy_config items only)
     Fixed: Debug and verbose modes must be set early
     Fixed: Don't die on misconfigured server hostname. Just ask for a valid hostname instead
+    Fixed: libmariadbclient18 package not provided in Debian Stretch (testing) repository
     Fixed: Plugin setup listeners are no longer registered (regression fix)
     Moved: Master administrator questions and setup routines into the Package::FrontEnd::Installer package
     Renamed: imscp-setup script to imscp-reconfigure

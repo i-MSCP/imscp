@@ -71,7 +71,6 @@
                 pinning_pin_priority="1001"
                 allow_switch="remote_server"
                 >
-            <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>
             <package>mariadb-client-10.0</package>
             <package>mariadb-common</package>
