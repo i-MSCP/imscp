@@ -117,6 +117,9 @@ EOF
             if ($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
                 $msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
                 $dbUser = '';
+            } elsif($dbUser eq 'root') {
+                $msg = "\n\n\\Z1Usage of SQL root user is prohibited.\\Zn\n\nPlease try again:";
+                $dbUser = '';
             } elsif (length $dbUser > 16) {
                 $msg = "\n\n\\Username can be up to 16 characters long.\\Zn\n\nPlease try again:";
                 $dbUser = '';
