@@ -28,6 +28,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::Crypt 'md5';
+use iMSCP::Database;
 use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::File;
@@ -94,7 +95,11 @@ sub askMasterAdminData
     my ($login, $password, $rpassword) = ('', '', '');
     my $email = main::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' );
     my ($rs, $msg) = (0, '');
-    my $db = main::setupGetSqlConnect( main::setupGetQuestion( 'DATABASE_NAME' ) );
+
+    my $db = iMSCP::Database->factory();
+    local $@;
+    eval { $db->useDatabase(main::setupGetQuestion( 'DATABASE_NAME' )); };
+    $db = undef if $@;
 
     if (iMSCP::Getopt->preseed) {
         $login = main::setupGetQuestion( 'ADMIN_LOGIN_NAME' );
@@ -127,11 +132,11 @@ Please enter master administrator login name:$msg
 EOF
             $msg = '';
             if ($login eq '') {
-                $msg = '\n\n\\Z1Admin login name cannot be empty.\\Zn\n\nPlease, try again:';
+                $msg = '\n\n\\Z1Admin login name cannot be empty.\\Zn\n\nPlease try again:';
             } elsif (length $login <= 2
                 || $login !~ /^[a-z0-9](:?(?<![-_])(:?-*|[_.])?(?![-_])[a-z0-9]*)*?(?<![-_.])$/i
             ) {
-                $msg = '\n\n\\Z1Bad admin login name syntax or length.\\Zn\n\nPlease, try again:'
+                $msg = '\n\n\\Z1Bad admin login name syntax or length.\\Zn\n\nPlease try again:'
             } elsif ($db) {
                 my $rdata = $db->doQuery(
                     'admin_id', 'SELECT `admin_id` FROM `admin` WHERE `admin_name` = ? AND `created_by` <> 0 LIMIT 1',
@@ -141,7 +146,7 @@ EOF
                     error( $rdata );
                     return 1;
                 } elsif (%{$rdata}) {
-                    $msg = '\n\n\\Z1This login name already exists.\\Zn\n\nPlease, try again:'
+                    $msg = '\n\n\\Z1This login name already exists.\\Zn\n\nPlease try again:'
                 }
             }
         } while ($rs < 30 && $msg);
@@ -154,7 +159,7 @@ EOF
 
 Please enter master administrator password:$msg
 EOF
-                    $msg = '\n\n\\Z1The password must be at least 6 characters long.\\Zn\n\nPlease, try again:';
+                    $msg = '\n\n\\Z1The password must be at least 6 characters long.\\Zn\n\nPlease try again:';
                 } while ($rs < 30 && length $password < 6);
 
                 # Ask for administrator password confirmation
@@ -180,7 +185,7 @@ EOF
 
 Please enter master administrator email address:$msg
 EOF
-                $msg = "\n\n\\Z1'$email' is not a valid email address.\\Zn\n\nPlease, try again:";
+                $msg = "\n\n\\Z1'$email' is not a valid email address.\\Zn\n\nPlease try again:";
             } while ($rs < 30 && !Email::Valid->address( $email ));
         }
     }
@@ -648,11 +653,8 @@ sub _setupMasterAdmin
 
     $password = md5( $password );
 
-    my ($db, $errStr) = main::setupGetSqlConnect( main::setupGetQuestion( 'DATABASE_NAME' ) );
-    unless ($db) {
-        error( sprintf( 'Could not connect to SQL server: %s', $errStr ) );
-        return 1;
-    }
+    my $db = iMSCP::Database->factory();
+    $db->useDatabase(main::setupGetQuestion( 'DATABASE_NAME' ));
 
     my $rs = $db->doQuery(
         'admin_name', 'SELECT admin_id, admin_name FROM admin WHERE admin_name = ? LIMIT 1', $loginOld
@@ -792,11 +794,8 @@ sub _addMasterWebUser
 
     my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-    my ($db, $errStr) = main::setupGetSqlConnect( $main::imscpConfig{'DATABASE_NAME'} );
-    unless ($db) {
-        error( sprintf( 'Could not connect to SQL server: %s', $errStr ) );
-        return 1;
-    }
+    my $db = iMSCP::Database->factory();
+    $db->useDatabase(main::setupGetQuestion( 'DATABASE_NAME' ));
 
     my $rdata = $db->doQuery(
         'admin_sys_uid',

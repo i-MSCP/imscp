@@ -25,6 +25,7 @@ package Package::Webmail::RainLoop::Installer;
 
 use strict;
 use warnings;
+use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::TemplateParser;
@@ -110,7 +111,7 @@ Please, enter a password for the rainloop SQL user (blank for autogenerate):$msg
 EOF
                     if ($dbPass ne '') {
                         if (length $dbPass < 6) {
-                            $msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease, try again:";
+                            $msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
                             $dbPass = '';
                         } elsif ($dbPass !~ /^[\x23-\x5b\x5d-\x7e\x21]+$/) {
                             $msg = "\n\n\\Z1Only printable ASCII characters (excepted space, double quote and backslash) are allowed.\\Zn\n\nPlease try again:";
@@ -398,11 +399,7 @@ sub _setupDatabase
     my $dbPass = main::setupGetQuestion( 'RAINLOOP_SQL_PASSWORD' );
     my $dbOldUser = $self->{'rainloop'}->{'config'}->{'DATABASE_USER'};
 
-    my ($db, $errStr) = main::setupGetSqlConnect();
-    unless ($db) {
-        error( sprintf( 'Could not connect to SQL server: %s', $errStr ) );
-        return 1;
-    }
+    my $db = iMSCP::Database->factory();
 
     my $quotedDbName = $db->quoteIdentifier( $rainLoopDbName );
 

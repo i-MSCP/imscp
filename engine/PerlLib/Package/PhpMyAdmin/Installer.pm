@@ -25,6 +25,7 @@ package Package::PhpMyAdmin::Installer;
 
 use strict;
 use warnings;
+use iMSCP::Database;
 use iMSCP::Debug;
 use Package::PhpMyAdmin;
 use iMSCP::EventManager;
@@ -429,11 +430,7 @@ sub _setupSqlUser
         push @main::createdSqlUsers, "$dbUser\@$dbUserHost";
     }
 
-    my ($db, $errStr) = main::setupGetSqlConnect();
-    unless ($db) {
-        error( sprintf( 'Could not connect to SQL server: %s', $errStr ) );
-        return 1;
-    }
+    my $db = iMSCP::Database->factory();
 
     # Give needed privileges to this SQL user
 
@@ -517,11 +514,7 @@ sub _setupDatabase
     my $phpmyadminDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
     my $phpmyadminDbName = main::setupGetQuestion( 'DATABASE_NAME' ).'_pma';
 
-    my ($db, $errStr) = main::setupGetSqlConnect();
-    unless ($db) {
-        error( sprintf( 'Could not connect to SQL server: %s', $errStr ) );
-        return 1;
-    }
+    my $db = iMSCP::Database->factory();
 
     my $quotedDbName = $db->quoteIdentifier( $phpmyadminDbName );
     my $rs = $db->doQuery( '1', 'SHOW DATABASES LIKE ?', $phpmyadminDbName );
@@ -540,7 +533,7 @@ sub _setupDatabase
 
     unless (%{$rs}) {
         $rs = $db->doQuery(
-            'dummy', "CREATE DATABASE IF NOT EXISTS $quotedDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
+            'c', "CREATE DATABASE IF NOT EXISTS $quotedDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
         );
         unless (ref $rs eq 'HASH') {
             error( sprintf( "Could not create the PhpMyAdmin '%s' SQL database: %s", $phpmyadminDbName, $rs ) );
@@ -550,12 +543,6 @@ sub _setupDatabase
 
     # In any case (new install / upgrade) we execute queries from the create_tables.sql file. On upgrade, this will
     # create the missing tables
-
-    ($db, $errStr) = main::setupGetSqlConnect( $phpmyadminDbName );
-    unless ($db) {
-        error( sprintf( 'Could not connect to SQL server: %s', $errStr ) );
-        return 1;
-    }
 
     my $schemaFile = "$phpmyadminDir/sql/create_tables.sql";
     $schemaFile = "$phpmyadminDir/examples/create_tables.sql" unless -f $schemaFile;
@@ -572,7 +559,7 @@ sub _setupDatabase
         # The PhpMyAdmin script contains the creation of the database as well
         # We ignore this part as the database has already been created
         if ($sqlStmt !~ /^CREATE DATABASE/ and $sqlStmt !~ /^USE/) {
-            $rs = $db->doQuery( 'dummy', $sqlStmt );
+            $rs = $db->doQuery( 'c', $sqlStmt );
 
             unless (ref $rs eq 'HASH') {
                 error( sprintf( 'Could not execute SQL query: %s', $rs ) );

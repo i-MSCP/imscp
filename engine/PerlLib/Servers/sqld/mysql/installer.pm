@@ -60,8 +60,8 @@ sub preinstall
     my $self = shift;
 
     my $rs = $self->_setTypeAndVersion();
+    $rs ||= $self->updateServerConfig();
     $rs ||= $self->_buildConf();
-    $rs ||= $self->_upgradeSystemTablesIfNecessary();
     $rs ||= $self->_saveConf();
 }
 
@@ -114,7 +114,6 @@ sub _init
     my $oldConf = "$self->{'cfgDir'}/mysql.old.data";
     if (-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-
         for my $param(keys %oldConfig) {
             if (exists $self->{'config'}->{$param}) {
                 $self->{'config'}->{$param} = $oldConfig{$param};
@@ -147,7 +146,9 @@ sub _setTypeAndVersion
     if (ref $rdata ne 'ARRAY') {
         error( $rdata );
         return 1;
-    } elsif (!@{$rdata}) {
+    }
+
+    if (!@{$rdata}) {
         error( 'Could not find SQL server type and version' );
         return 1;
     }
@@ -172,15 +173,19 @@ sub _setTypeAndVersion
     0;
 }
 
-=item _upgradeSystemTablesIfNecessary()
+=item updateServerConfig()
 
- Upgrade MySQL system tables if necessary (and adjust configuration aspects when needed)
+ Update server configuration
+
+  - Upgrade MySQL system tables if necessary
+  - Disable unwanted plugins
+
 
  Return 0
 
 =cut
 
-sub _upgradeSystemTablesIfNecessary
+sub updateServerConfig
 {
     my $self = shift;
 
@@ -191,8 +196,7 @@ sub _upgradeSystemTablesIfNecessary
             "dpkg -l mysql-community* percona-server-* | cut -d' ' -f1 | grep -q 'ii'", \my $stdout, \my $stderr
         );
 
-        # Upgrade MySQL community server system tables
-        # This is needed for MySQL community servers as provided by MySQL team because upgrade is not done automatically.
+        # Upgrade server system tables
         # See #IP-1482 for further details.
         unless ($rs) {
             # Filter all "duplicate column", "duplicate key" and "unknown column"
@@ -213,32 +217,12 @@ sub _upgradeSystemTablesIfNecessary
         return 1;
     }
 
-    # Ensure that SQL root user uses mysql_native_password authentication plugin
-    if (version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.7.6' )
-        && $main::imscpConfig{'SQL_SERVER'} !~ /^mariadb/
+    # Disable unwanted plugins (bc reasons)
+    if (($main::imscpConfig{'SQL_SERVER'} =~ /^mariadb/
+        && version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '10.0' ))
+        || (version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.6.6' ))
     ) {
-        my $dbUser = $main::imscpConfig{'DATABASE_USER'};
-        my $dbHost = $main::imscpConfig{'DATABASE_HOST'};
-        my $dbPass = decryptBlowfishCBC(
-            $main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'}
-        );
-
-        $qrs = $db->doQuery(
-            'u', "ALTER USER ?@? IDENTIFIED WITH 'mysql_native_password' BY ?", $dbUser, $dbHost, $dbPass
-        );
-        unless (ref $qrs eq 'HASH') {
-            error( $qrs );
-            return 1;
-        }
-    }
-
-    # Disable unwanted validation/authentication plugins if any (bc reasons)
-    if (version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.6.6' )
-        && $main::imscpConfig{'SQL_SERVER'} !~ /^mariadb/
-        || version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '10.1.2' )
-        && $main::imscpConfig{'SQL_SERVER'} =~ /^mariadb/
-    ) {
-        for my $plugin(qw/cracklib_password_check simple_password_check validate_password auth_socket/) {
+        for my $plugin(qw/cracklib_password_check simple_password_check validate_password/) {
             $qrs = $db->doQuery( 'name', "SELECT name FROM mysql.plugin WHERE name = '$plugin'" );
             unless (ref $qrs eq 'HASH') {
                 error( $qrs );
@@ -255,29 +239,8 @@ sub _upgradeSystemTablesIfNecessary
         }
     }
 
-    #	# Ensure that no password is expired (bc reasons)
-    #	# TODO handle mariadb case when ready. See https://mariadb.atlassian.net/browse/MDEV-7597
-    #	if(version->parse("$self->{'config'}->{'SQLD_VERSION'}") >= version->parse('5.7.4')
-    #		&& $main::imscpConfig{'SQL_SERVER'} !~ /^mariadb/
-    #	) {
-    #		$qrs = $db->doQuery(
-    #			'u', "UPDATE mysql.user SET password_expired = 'N', password_last_changed = NULL, password_lifetime = NULL"
-    #		);
-    #		unless(ref $qrs eq 'HASH') {
-    #			error($qrs);
-    #			return 1;
-    #		}
-    #
-    #		$qrs = $db->doQuery('u', 'flush privileges');
-    #		unless(ref $qrs eq 'HASH') {
-    #			error($qrs);
-    #			return 1;
-    #		}
-    #	}
-
     0;
 }
-
 
 =item _buildConf()
 
@@ -300,8 +263,9 @@ sub _buildConf
     my $confDir = $self->{'config'}->{'SQLD_CONF_DIR'};
 
     # Make sure that the conf.d directory exists
-    $rs = iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make( { user => $rootUName, group => $rootGName, mode =>
-            0755 } );
+    $rs = iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make( {
+            user => $rootUName, group => $rootGName, mode => 0755
+        } );
     return $rs if $rs;
 
     # Create the /etc/mysql/my.cnf file if missing

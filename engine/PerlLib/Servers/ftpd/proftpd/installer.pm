@@ -25,6 +25,7 @@ package Servers::ftpd::proftpd::installer;
 
 use strict;
 use warnings;
+use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::Execute;
@@ -370,8 +371,7 @@ sub _setupDatabase
         }
     }
 
-    my ($db, $errStr) = main::setupGetSqlConnect();
-    fatal( sprintf( 'Unable to connect to SQL server: %s', $errStr ) ) unless $db;
+    my $db = iMSCP::Database->factory();
 
     # Create SQL user if not already created by another server/package installer
     unless (grep($_ eq "$dbUser\@$dbUserHost", @main::createdSqlUsers)) {

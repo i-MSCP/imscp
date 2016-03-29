@@ -25,6 +25,7 @@ package Servers::po::courier::installer;
 
 use strict;
 use warnings;
+use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Config;
@@ -517,8 +518,7 @@ sub _setupAuthdaemonSqlUser
         }
     }
 
-    my ($db, $errStr) = main::setupGetSqlConnect();
-    fatal( "Could not connect to SQL server: $errStr" ) unless $db;
+    my $db = iMSCP::Database->factory();
 
     # Create SQL user if not already created by another server/package installer
     unless (grep($_ eq "$dbUser\@$dbUserHost", @main::createdSqlUsers)) {
@@ -573,8 +573,7 @@ sub _setupCyrusSaslSqlUser
         }
     }
 
-    my ($db, $errStr) = main::setupGetSqlConnect();
-    fatal( sprintf( 'Could not connect to SQL server: %s', $errStr ) ) unless $db;
+    my $db = iMSCP::Database->factory();
 
     # Create SQL user if not already created by another server/package installer
     unless (grep($_ eq "$dbUser\@$dbUserHost", @main::createdSqlUsers)) {

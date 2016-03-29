@@ -26,8 +26,8 @@ package Servers::httpd::apache_itk::installer;
 use strict;
 use warnings;
 use iMSCP::Config;
-use iMSCP::Debug;
 use iMSCP::Database;
+use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::Rights;
@@ -509,8 +509,7 @@ sub _setupVlogger
     my $dbPass = '';
     $dbPass .= $allowedChr[ rand @allowedChr ] for 1 .. 16;
 
-    my ($db, $errStr) = main::setupGetSqlConnect( $dbName );
-    fatal( sprintf( 'Could not connect to SQL server: %s', $errStr ) ) unless $db;
+    my $db = iMSCP::Database->factory();
 
     if (-f "$self->{'apacheCfgDir'}/vlogger.sql") {
         my $rs = main::setupImportSqlSchema( $db, "$self->{'apacheCfgDir'}/vlogger.sql" );

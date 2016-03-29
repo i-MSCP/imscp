@@ -146,9 +146,9 @@ EOF
                         @slaveDnsIps = split ' ', $answer;
 
                         if ("@slaveDnsIps" eq '') {
-                            $msg = "\n\n\\Z1You must enter at least one IP address.\\Zn\n\nPlease, try again:";
+                            $msg = "\n\n\\Z1You must enter at least one IP address.\\Zn\n\nPlease try again:";
                         } elsif (!$self->_checkIps( @slaveDnsIps )) {
-                            $msg = "\n\n\\Z1Wrong or disallowed IP address found.\\Zn\n\nPlease, try again:";
+                            $msg = "\n\n\\Z1Wrong or disallowed IP address found.\\Zn\n\nPlease try again:";
                         }
                     }
                 } while ($rs < 30 && $msg);
@@ -173,9 +173,9 @@ EOF
                 @masterDnsIps = split ' ', $answer;
 
                 if ("@masterDnsIps" eq '') {
-                    $msg = "\n\n\\Z1You must enter a least one IP address.\\Zn\n\nPlease, try again:";
+                    $msg = "\n\n\\Z1You must enter a least one IP address.\\Zn\n\nPlease try again:";
                 } elsif (!$self->_checkIps( @masterDnsIps )) {
-                    $msg = "\n\n\\Z1Wrong or disallowed IP address found.\\Zn\n\nPlease, try again:";
+                    $msg = "\n\n\\Z1Wrong or disallowed IP address found.\\Zn\n\nPlease try again:";
                 }
             }
         } while ($rs < 30 && $msg);

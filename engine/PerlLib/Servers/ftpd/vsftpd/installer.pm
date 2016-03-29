@@ -26,6 +26,7 @@ package Servers::ftpd::vsftpd::installer;
 use strict;
 use warnings;
 use Cwd;
+use iMSCP::Database;
 use iMSCP::Crypt 'randomStr';
 use iMSCP::Debug;
 use iMSCP::Execute;
@@ -494,11 +495,7 @@ sub _setupDatabase
         push @main::createdSqlUsers, "$dbUser\@$dbUserHost";
     }
 
-    my ($db, $errStr) = main::setupGetSqlConnect();
-    unless ($db) {
-        error( sprintf( 'Could not connect to SQL server: %s', $errStr ) ),
-            return 1;
-    }
+    my $db = iMSCP::Database->factory();
 
     # Give needed privileges to this SQL user
     my $quotedDbName = $db->quoteIdentifier( $dbName );

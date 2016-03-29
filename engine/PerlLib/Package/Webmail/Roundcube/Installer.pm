@@ -25,6 +25,7 @@ package Package::Webmail::Roundcube::Installer;
 
 use strict;
 use warnings;
+use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::TemplateParser;
@@ -109,7 +110,7 @@ Please, enter a password for the roundcube SQL user (blank for autogenerate):$ms
 EOF
                     if ($dbPass ne '') {
                         if (length $dbPass < 6) {
-                            $msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease, try again:";
+                            $msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
                             $dbPass = '';
                         } elsif ($dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
                             $msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease try again:";
@@ -383,11 +384,7 @@ sub _setupDatabase
     my $dbPass = main::setupGetQuestion( 'ROUNDCUBE_SQL_PASSWORD' );
     my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
-    my ($db, $errStr) = main::setupGetSqlConnect();
-    unless ($db) {
-        error( sprintf( 'Could not to connect to SQL server: %s', $errStr ) );
-        return 1;
-    }
+    my $db = iMSCP::Database->factory();
 
     my $quotedDbName = $db->quoteIdentifier( $roundcubeDbName );
 
@@ -414,11 +411,12 @@ sub _setupDatabase
             return 1;
         }
 
-        my ($db, $errStr) = main::setupGetSqlConnect( $roundcubeDbName );
-        fatal( sprintf( 'Could not connect to SQL server:  %s', $errStr ) ) unless $db;
-
+        my $db = iMSCP::Database->factory();
+        my $oldDatabase = $db->useDatabase($roundcubeDbName);
         $rs = main::setupImportSqlSchema( $db, "$roundcubeDir/SQL/mysql.initial.sql" );
         return $rs if $rs;
+
+        $db->useDatabase($oldDatabase);
     } else {
         $self->{'newInstall'} = 0;
     }
@@ -557,11 +555,8 @@ sub _updateDatabase
 
     # Ensure tha users.mail_host entries are set to 'localhost'
 
-    my ($db, $errStr) = main::setupGetSqlConnect( $roundcubeDbName );
-    unless ($db) {
-        error( sprintf( 'Could not connect to SQL database: %s', $errStr ) );
-        return 1;
-    }
+    my $db = iMSCP::Database->factory();
+    my $oldDatabase = $db->useDatabase($roundcubeDbName);
 
     $rs = $db->doQuery( 'u', "UPDATE IGNORE users SET mail_host = 'localhost'" );
     unless (ref $rs eq 'HASH') {
@@ -574,6 +569,8 @@ sub _updateDatabase
         error( $rs );
         return 1;
     }
+
+    $db->useDatabase($oldDatabase);
 
     0;
 }
