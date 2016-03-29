@@ -169,10 +169,6 @@ sub setupTasks
         [ \&setupCreateMasterGroup,          'Creating system master group' ],
         [ \&setupCreateSystemDirectories,    'Creating system directories' ],
         [ \&setupServerHostname,             'Setting server hostname' ],
-        #[ \&setupCreateMasterSqlUser,        'Creating/updating i-MSCP master SQL user' ],
-        #[ \&setupCreateDatabase,             'Creating/updating i-MSCP database' ],
-        #[ \&setupSecureSqlInstallation,      'Securing SQL installation' ],
-        #[ \&setupServerIps,                  'Setting server IP addresses' ],
         [ \&setupServiceSsl,                 'Setup SSL for i-MSCP services' ],
         [ \&setupServices,                   'Setup i-MSCP services' ],
         [ \&setupRegisterDelayedTasks,       'Register delayed tasks' ],
@@ -1157,7 +1153,7 @@ sub setupCreateMasterSqlUser
         'g', "GRANT ALL PRIVILEGES ON *.* TO ?@? WITH GRANT OPTION", $user, $userHost
     );
     unless (ref $qrs eq 'HASH') {
-        error( sprintf( 'Could grant privileges to master i-MSCP SQL user: %s', $qrs ) );
+        error( sprintf( 'Could not grant privileges to master i-MSCP SQL user: %s', $qrs ) );
         return 1;
     }
 
@@ -1904,74 +1900,6 @@ sub setupIsImscpDb
     }
 
     1;
-}
-
-# Return int 1 if the given SQL user exists, 0 otherwise
-sub setupIsSqlUser($)
-{
-    my $sqlUser = shift;
-
-    my $db = iMSCP::Database->factory();
-    my $oldDatabase = $db->useDatabase('mysql');
-    my $rs = $db->doQuery('1', 'SELECT EXISTS(SELECT 1 FROM user WHERE User = ?)', $sqlUser);
-    ref $rs eq 'HASH' or fatal($rs);
-    $db->useDatabase($oldDatabase);
-    $rs->{1} ? 1 : 0;
-}
-
-# Delete the give Sql user and all its privileges
-#
-# Return int 0 on success, 1 on error
-sub setupDeleteSqlUser
-{
-    my ($user, $host) = @_;
-    $host ||= '%';
-
-    my $db = iMSCP::Database->factory();
-
-    # Remove any columns privileges for the given user
-    my $qrs = $db->doQuery('d', "DELETE FROM mysql.columns_priv WHERE Host = ? AND User = ?", $host, $user);
-    unless(ref $qrs eq 'HASH') {
-        error(sprintf('Could not remove columns privileges: %s', $qrs));
-        return 1;
-    }
-
-    # Remove any tables privileges for the given user
-    $qrs = $db->doQuery('d', 'DELETE FROM mysql.tables_priv WHERE Host = ? AND User = ?', $host, $user);
-    unless(ref $qrs eq 'HASH') {
-        error(sprintf('Could not remove tables privileges: %s', $qrs));
-        return 1;
-    }
-
-    # Remove any proc privileges for the given user
-    $qrs = $db->doQuery('d', 'DELETE FROM mysql.procs_priv WHERE Host = ? AND User = ?', $host, $user);
-    unless(ref $qrs eq 'HASH') {
-        error(sprintf('Could not remove procs privileges: %s', $qrs));
-        return 1;
-    }
-
-    # Remove any database privileges for the given user
-    $qrs = $db->doQuery('d', 'DELETE FROM mysql.db WHERE Host = ? AND User = ?', $host, $user);
-    unless(ref $qrs eq 'HASH') {
-        error(sprintf('Could not remove privileges: %s', $qrs));
-        return 1;
-    }
-
-    # Remove any global privileges for the given user and the user itself
-    $qrs = $db->doQuery('d', "DELETE FROM mysql.user WHERE Host = ? AND User = ?", $host, $user);
-    unless(ref $qrs eq 'HASH') {
-        error(sprintf('Could not delete SQL user: %s', $qrs));
-        return 1;
-    }
-
-    # Reload privileges
-    $qrs = $db->doQuery('f','FLUSH PRIVILEGES');
-    unless(ref $qrs eq 'HASH') {
-        error(sprintf('Could not flush SQL privileges: %s', $qrs));
-        return 1;
-    }
-
-    0;
 }
 
 1;
