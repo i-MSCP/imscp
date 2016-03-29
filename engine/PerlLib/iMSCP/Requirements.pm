@@ -82,11 +82,12 @@ sub checkVersion
     my ($self, $version, $minVersion, $maxVersion) = @_;
 
     if (version->parse( $version ) < version->parse( $minVersion )) {
-        die( "$version is older then required version $minVersion" );
+        die( sprintf( "version %s is too old. Minimum supported version is %s\n", $version, $minVersion ) );
     }
 
     if ($maxVersion && version->parse( $version ) > version->parse( $maxVersion )) {
-        die( "$version is newer then required max version $maxVersion" );
+        die( sprintf( "version %s is not supported. Supported versions are %s to %s\n", $version, $minVersion,
+                $maxVersion ) );
     }
 
     undef;
@@ -129,17 +130,19 @@ sub _init
         'XML::Simple'            => undef
     };
 
-    # Required programs
+    # Required program versions
     $self->{'programs'} = {
         'PHP'  => {
             'version_command' => 'php -d date.timezone=UTC -v',
             'version_regexp'  => qr/PHP\s([\d.]+)/,
-            'min_version'     => '5.3.2'
+            'min_version'     => '5.3.2',
+            'max_version'     => '5.6.999', # Abitrary tiny version is intentional. We only want reject PHP >= 7
         },
         'Perl' => {
             'version_command' => 'perl -v',
             'version_regexp'  => qr/v([\d.]+)/,
-            'min_version'     => '5.14.2'
+            'min_version'     => '5.14.2',
+            'max_version'     => '5.999' # Arbitrary minor version is intentional. We only want reject Perl >= 6
         }
     };
 
@@ -159,7 +162,7 @@ sub test
 {
     my ($self, $test) = @_;
 
-    die( sprintf( "The test '%s' is not available.", $test ) ) unless self->can( $test );
+    die( sprintf( "The '%s' test is not available.\n", $test ) ) unless self->can( $test );
     $self->$test();
     undef;
 }
@@ -184,9 +187,9 @@ sub _perlModules
     return undef unless @moduleNames;
 
     if (@moduleNames > 1) {
-        die( sprintf( "The following Perl modules are not installed: %s", join ', ', @moduleNames ) );
+        die( sprintf( "The following Perl modules are not installed: %s\n", join ', ', @moduleNames ) );
     } else {
-        die( sprintf( "The following Perl module is not installed: %s", "@moduleNames" ) );
+        die( sprintf( "The %s Perl module is not installed\n", "@moduleNames" ) );
     }
 
     undef;
@@ -204,30 +207,31 @@ sub _externalPrograms
 {
     my $self = shift;
 
-    for my $program (keys %{$self->{'programs'}}) {
-        my $lcProgram = lc( $program );
+    for my $programName (keys %{$self->{'programs'}}) {
+        my $lcProgram = lc( $programName );
 
         iMSCP::ProgramFinder::find( $lcProgram ) or die( sprintf(
-                "Could not find the %s command in search path", $program
+                'Could not find the %s command in search path', $programName
             ) );
 
-        next unless $self->{'programs'}->{$program}->{'version_command'};
+        next unless $self->{'programs'}->{$programName}->{'version_command'};
 
         eval {
             my $result = $self->_programVersions(
-                $self->{'programs'}->{$program}->{'version_command'},
-                $self->{'programs'}->{$program}->{'version_regexp'},
-                $self->{'programs'}->{$program}->{'min_version'}
+                $self->{'programs'}->{$programName}->{'version_command'},
+                $self->{'programs'}->{$programName}->{'version_regexp'},
+                $self->{'programs'}->{$programName}->{'min_version'},
+                $self->{'programs'}->{$programName}->{'max_version'}
             );
         };
 
-        die( sprintf( '%s: %s', $program, $@ ) ) if $@;
+        die( sprintf( "%s: %s\n", $programName, $@ ) ) if $@;
     }
 
     undef;
 }
 
-=item _programVersions($versionCommand, $versionRegexp, $minVersion [, $maxVersion])
+=item _programVersions($versionCommand, $versionRegexp, $minVersion [, $maxVersion ])
 
  Check for program version
 
@@ -247,11 +251,11 @@ sub _programVersions
     debug( $stdout ) if $stdout;
     debug( $stderr ) if $stderr;
 
-    die( 'Could not find version. No output' ) unless $stdout;
+    die( "Could not find version. No output\n" ) unless $stdout;
 
     if ($versionRegexp) {
         if ($stdout !~ /$versionRegexp/m) {
-            die( sprintf( 'Could not find version. Output was: %s', $stdout ) );
+            die( sprintf( "Could not find version. Output was: %s\n", $stdout ) );
         }
 
         $stdout = $1;

@@ -46,6 +46,7 @@ FRONTEND
     Rewritten: FTP chooser interface to avoid usage of iframe
 
 INSTALLER
+    Added: Check for maximum supported PHP/Perl versions
     Added: Check to prevent downgrade attempts (when DB schema change is involved)
     Added: Conditional statement feature for install.xml files (copy_config items only)
     Fixed: Debug and verbose modes must be set early
@@ -53,6 +54,7 @@ INSTALLER
     Fixed: Plugin setup listeners are no longer registered (regression fix)
     Moved: Master administrator questions and setup routines into the Package::FrontEnd::Installer package
     Renamed: imscp-setup script to imscp-reconfigure
+    Transitional: Enforce PHP5 variant under Debian Stretch (testing) and Ubuntu 16.04 (Xenial Xerus)
 
 PLUGINS
     Fixed: Plugin configuration not synced when triggering plugin list update (when a plugin is in error state)
@@ -70,7 +72,7 @@ SERVERS
     Fixed: Disabled mod_tls_memcache.c module to avoid weird notice on restart (ProFTPD)
     Fixed: Enable support for UTF-8 file systems (VsFTPD)
     Fixed: Hide real server identity (ProFTPD)
-    Fixed: Invalid version format (non-numeric data) when installing VsFTPd on Debian testing (Stretch)
+    Fixed: Invalid version format (non-numeric data) when installing VsFTPd on Debian Stretch (testing)
     Fixed: IP addresses are added multiple time in Apache 00_nameserver.conf file (Httpd servers)
     Fixed: ON|OFF string not recognized as boolean value in imscp.cnf conffile (MySQL)
     Fixed: Traffic accounting routines must not remove log files (ProFTPD/VsFTPd). Files are now truncated instead.
@@ -161,9 +163,9 @@ INSTALLER
     Fixed: Mitigate possible PHP timezone warning with CLI SAPI
     Fixed: Update notices are not sorted correctly
     Fixed: Use MySQL 5.6 from official Trusty repository in place of MySQL Team repository
-    Fixed: Wrong package name (mysql-client-5.5 instead of mysql-client-5.6) in Debian Stretch packages file
-    Pending: Courier support for Debian Stretch - packages not available at this moment
-    Pending: VsFTPd support for Debian Stretch - libpam-mysql package not available at this moment
+    Fixed: Wrong package name (mysql-client-5.5 instead of mysql-client-5.6) in Debian Stretch (testing) packages file
+    Pending: Courier support for Debian Stretch (testing) - packages not available at this moment
+    Pending: VsFTPd support for Debian Stretch (testing) - libpam-mysql package not available at this moment
     Removed: ispCP migration script (Migration from ispCP is no longer supported)
 
 PACKAGES

@@ -30,6 +30,7 @@ use iMSCP::Getopt;
 use iMSCP::Stepper;
 use iMSCP::ProgramFinder;
 use File::Temp;
+use version;
 use parent 'autoinstaller::Adapter::AbstractAdapter';
 
 =head1 DESCRIPTION
@@ -326,6 +327,18 @@ sub _init
         $self->_setupInitScriptPolicyLayer( 'enable' ) == 0 or die( 'Could not setup initscript policy layer' );
         $self->_updateAptSourceList() == 0 or die( 'Could not configure APT packages manager' );
     }
+
+    $self->{'eventManager'}->register( 'afterInstallPackages', sub {
+            # Debian Stretch (actual testing) introduces support for PHP7 which is the default alternative
+            # Because i-MSCP is not ready yet for PHP7, we enforce PHP5 variant
+            if (version->parse( "$main::imscpConfig{'DISTRO_RELEASE'}" ) >= version->parse( '9.0' )) {
+                my $rs = execute( 'update-alternatives --set php /usr/bin/php5', \my $stdout, \my $stderr );
+                debug( $stdout ) if $stdout;
+                error( $stderr ) if $stderr;
+                return $rs;
+            }
+            0;
+        } );
 
     $self;
 }
