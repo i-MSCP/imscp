@@ -557,7 +557,7 @@ CREATE TABLE IF NOT EXISTS `server_traffic` (
   `bytes_web_in` bigint(20) unsigned DEFAULT NULL,
   `bytes_web_out` bigint(20) unsigned DEFAULT NULL,
   PRIMARY KEY (`straff_id`),
-  UNIQUE `traff_time` (`traff_time`)
+  UNIQUE KEY `traff_time` (`traff_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -608,7 +608,7 @@ CREATE TABLE IF NOT EXISTS `ssl_certs` (
   `ca_bundle` text COLLATE utf8_unicode_ci,
   `status` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`cert_id`),
-  UNIQUE `domain_id_domain_type` (`domain_id`, `domain_type`)
+  UNIQUE KEY `domain_id_domain_type` (`domain_id`, `domain_type`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -678,7 +678,7 @@ CREATE TABLE IF NOT EXISTS `user_gui_props` (
   `layout_color` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   `logo` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT '',
   `show_main_menu_labels` tinyint(1) NOT NULL DEFAULT '1',
-  UNIQUE `user_id` (`user_id`)
+  UNIQUE KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
