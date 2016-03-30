@@ -524,6 +524,7 @@ sub askMasterSqlUser
     my $host = setupGetQuestion('DATABASE_HOST');
     my $port = setupGetQuestion('DATABASE_PORT');
     my $user = setupGetQuestion('DATABASE_USER', 'imscp_user');
+    $user = 'imscp_user' if lc($user) eq 'root'; # Handle upgrade case
     my $pwd = setupGetQuestion('DATABASE_PASSWORD');
     my ($rs, $msg) = (0, '');
 
