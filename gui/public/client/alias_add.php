@@ -161,7 +161,7 @@ function addDomainAlias()
     $forwardUrl = 'no';
 
     if (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') {
-        if (!isset($_POST['forward_url_scheme']) || isset($_POST['forward_url'])) {
+        if (!isset($_POST['forward_url_scheme']) || !isset($_POST['forward_url'])) {
             showBadRequestErrorPage();
         }
 
