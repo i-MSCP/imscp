@@ -1302,9 +1302,7 @@ sub setupCreateDatabase
 
     # In all cases, we process database update. This is important because sometime some developer forget to update the
     # database revision in the main database.sql file.
-    $rs ||= iMSCP::EventManager->getInstance()->register('afterSqldPreinstall', sub {
-        setupUpdateDatabase();
-    });
+    $rs = setupUpdateDatabase();
     $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupCreateDatabase');
 }
 
@@ -1525,7 +1523,6 @@ sub setupRebuildCustomerFiles
     }
 
     $db->endTransaction();
-    iMSCP::Bootstrapper->getInstance()->unlock();
 
     my $debug = $main::imscpConfig{'DEBUG'} || 0;
     $main::imscpConfig{'DEBUG'} = iMSCP::Getopt->debug ? 1 : 0;
