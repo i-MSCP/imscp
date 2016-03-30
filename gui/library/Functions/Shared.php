@@ -652,15 +652,15 @@ function sql_delete_user($dmnId, $userId)
 	$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
 	if ($row['cnt'] < 2) {
-		exec_query('DROP USER ?@?', array($user, $host));
+		exec_query('DELETE FROM mysql.user WHERE User = ? AND Host = ?', array($user, $host));
+		exec_query('DELETE FROM mysql.db WHERE Host = ? AND User = ?', array($host, $user));
 	} else {
-		// SQL user has privileges on many databases. We remove its privileges for the involved database only
-		exec_query(sprintf('REVOKE ALL PRIVILEGES ON %s.* FROM %s@%s',
-			quoteIdentifier($dbName), quoteValue($user), quoteValue($host)
-		));
+		exec_query('DELETE FROM mysql.db WHERE Host = ? AND Db = ? AND User = ?', array($host, $dbName, $user));
 	}
 
 	exec_query('DELETE FROM sql_user WHERE sqlu_id = ?', $userId);
+
+	execute_query('FLUSH PRIVILEGES');
 
 	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSqlUser, array(
 		'sqlUserId' => $userId,
