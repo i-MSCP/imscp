@@ -1524,11 +1524,13 @@ sub setupRebuildCustomerFiles
 
     $db->endTransaction();
 
-    my $debug = $main::imscpConfig{'DEBUG'} || 0;
-    $main::imscpConfig{'DEBUG'} = iMSCP::Getopt->debug ? 1 : 0;
-
     startDetail();
-    iMSCP::DbTasksProcessor->getInstance( mode => 'setup' )->process();
+    local $@;
+    eval { iMSCP::DbTasksProcessor->getInstance( mode => 'setup' )->process(); };
+    if($@) {
+        error($@);
+        $rs = 1;
+    }
     endDetail();
 
     $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupRebuildCustomersFiles');
