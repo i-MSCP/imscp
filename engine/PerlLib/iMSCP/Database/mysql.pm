@@ -135,20 +135,27 @@ sub useDatabase
 {
     my ($self, $database) = @_;
 
-    defined $database or die('$database parameter is not defined');
+    defined $database or die( '$database parameter is not defined' );
 
     return $database if $database eq '' || $self->{'db'}->{'DATABASE_NAME'} eq $database;
 
+    if ($self->{'db'}->{'DATABASE_NAME'} eq '') {
+        $self->{'db'}->{'DATABASE_NAME'} = $database;
+        $self->connect() == 0 or die( 'Could not reconnect to SQL server' );
+        return $database;
+    }
+
+    my $oldDatabase = $self->{'db'}->{'DATABASE_NAME'};
     my $qDatabase = $self->quoteIdentifier( $database );
 
     my $rawDb = $self->getRawDb();
     $rawDb->{'RaiseError'} = 1;
+
     local $@;
     eval { $self->getRawDb->do( "use $qDatabase" ); };
     $rawDb->{'RaiseError'} = 0;
-    die($@) if $@;
+    die( $@ ) if $@;
 
-    my $oldDatabase = $self->{'db'}->{'DATABASE_NAME'};
     $self->{'db'}->{'DATABASE_NAME'} = $database;
     $oldDatabase;
 }
@@ -234,7 +241,7 @@ sub doQuery
     } elsif ($fetchMode eq 'arrayref') {
         $self->{'sth'}->fetchall_arrayref( $key ) || [ ];
     } else {
-        return sprintf( 'Unsupported fetch mode: %s', $fetchMode );
+        sprintf( 'Unsupported fetch mode: %s', $fetchMode );
     }
 }
 
@@ -320,8 +327,7 @@ sub dumpdb
         $dbName
     );
 
-    my ($stdout, $stderr);
-    my $rs = execute( "@cmd", \$stdout, \$stderr );
+    my $rs = execute( "@cmd", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs;
     error( sprintf( 'Could not dump %s', $dbName ) ) if $rs && !$stderr;
@@ -375,7 +381,7 @@ sub quote
 
 sub _init
 {
-    my $self = $_[0];
+    my $self = shift;
 
     $self->{'db'}->{'DATABASE_NAME'} = '';
     $self->{'db'}->{'DATABASE_HOST'} = '';
