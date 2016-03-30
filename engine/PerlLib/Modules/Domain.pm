@@ -401,7 +401,7 @@ sub _getHttpdData
     $self->{'httpd'} = {
         DOMAIN_ADMIN_ID       => $self->{'domain_admin_id'},
         DOMAIN_NAME           => $self->{'domain_name'},
-        DOMAIN_NAME_UNICODE   => idn_to_unicode( $self->{'domain_name'}, 'UTF-8' ),
+        DOMAIN_NAME_UNICODE   => idn_to_unicode( $self->{'domain_name'}, 'utf-8' ),
         DOMAIN_IP             => $self->{'ip_number'},
         DOMAIN_TYPE           => 'dmn',
         PARENT_DOMAIN_NAME    => $self->{'domain_name'},

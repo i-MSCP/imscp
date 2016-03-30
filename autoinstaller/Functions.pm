@@ -36,8 +36,8 @@ use iMSCP::Execute;
 use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::Stepper;
-use File::Find;
 use Cwd;
+use File::Find;
 use version;
 use iMSCP::Getopt;
 use parent 'Exporter';
@@ -281,9 +281,13 @@ EOF
     $rs = iMSCP::EventManager->getInstance()->trigger( 'afterInstall' );
     return $rs if $rs;
 
+    require Net::LibIDN;
+    Net::LibIDN->import('idn_to_unicode');
+
     my $port = $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://'
         ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
         : $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
+    my $vhost = idn_to_unicode($main::imscpConfig{'BASE_SERVER_VHOST'}, 'utf-8');
 
     iMSCP::Dialog->getInstance()->infobox( <<"EOF" );
 
@@ -291,7 +295,7 @@ EOF
 
 i-MSCP has been successfully installed/updated.
 
-Please connect to $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$main::imscpConfig{'BASE_SERVER_VHOST'}:$port and login with your administrator account.
+Please connect to $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$vhost:$port and login with your administrator account.
 
 Thank you for choosing i-MSCP.
 EOF

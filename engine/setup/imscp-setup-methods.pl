@@ -205,34 +205,25 @@ sub setupAskServerHostname
     my $dialog = shift;
 
     my $hostname = setupGetQuestion('SERVER_HOSTNAME');
-    my %options = (domain_private_tld => qr /.*/);
-    my ($rs, @labels) = (0, $hostname ? split /\./, $hostname : ());
+    my $options = { domain_private_tld => qr /.*/ };
+    my ($rs, $msg) = (0, '');
 
     if(grep($_ eq $main::reconfigure, ( 'system_hostname', 'hostnames', 'all', 'forced' ))
-        || @labels < 3 || !is_domain($hostname, \%options)
+        || split(/\./, $hostname) < 3 || !is_domain($hostname, $options)
     ) {
-        unless($hostname || execute('hostname -f', \$hostname, \my $stderr)) {
-            chomp($hostname);
-        }
-
-        my $msg = '';
-        $dialog->set('no-cancel', '');
+        chomp($hostname) unless($hostname || execute('hostname -f', \$hostname, \my $stderr));
+        $hostname = idn_to_unicode($hostname, 'utf-8');
 
         do {
-            ($rs, $hostname) = $dialog->inputbox(<<"EOF", idn_to_unicode($hostname, 'utf-8'));
+            ($rs, $hostname) = $dialog->inputbox(<<"EOF", $hostname);
 
-Please enter a fully-qualified hostname (FQHN): $msg
+Please enter a fully-qualified hostname for the server:$msg
 EOF
             $msg = "\n\n\\Z1'$hostname' is not a valid fully-qualified host name.\\Zn\n\nPlease try again:";
-            $hostname = idn_to_ascii($hostname, 'utf-8');
-            @labels = split /\./, $hostname;
-
-        } while($rs < 30 && (@labels < 3 || !is_domain($hostname, \%options)));
-
-        $dialog->set('no-cancel', undef);
+        } while($rs < 30 && (split(/\./, $hostname) < 3 || !is_domain(idn_to_ascii($hostname, 'utf-8'), $options)));
     }
 
-    setupSetQuestion('SERVER_HOSTNAME', $hostname) if $rs < 30;
+    setupSetQuestion('SERVER_HOSTNAME', idn_to_ascii($hostname, 'utf-8')) if $rs < 30;
     $rs;
 }
 
@@ -434,7 +425,8 @@ sub askSqlRootUser
     if($host eq 'localhost') {
         # If authentication is made through unix socket, password is normally not required.
         # We try a connect without password with 'root' as user and we return on success
-        unless(tryDbConnect($host, $port, $user, $pwd)) {
+        for('localhost', '127.0.0.1') {
+            next if tryDbConnect($host, $port, $user, $pwd);
             setupSetQuestion('DATABASE_TYPE', 'mysql');
             setupSetQuestion('DATABASE_HOST', $host);
             setupSetQuestion('DATABASE_PORT', $port);
@@ -510,7 +502,7 @@ EOF
 
     if($rs < 30) {
         setupSetQuestion('DATABASE_TYPE', 'mysql');
-        setupSetQuestion('DATABASE_HOST', $host);
+        setupSetQuestion('DATABASE_HOST', idn_to_ascii($host, 'utf-8'));
         setupSetQuestion('DATABASE_PORT', $port);
     }
 
@@ -543,7 +535,7 @@ sub askMasterSqlUser
 Please enter a username for the master i-MSCP SQL username:$msg
 EOF
             if ($user eq 'root') {
-                $msg = "\n\n\\Z1Usage of SQL root user is disallowed. \\Zn\n\nPlease try again:";
+                $msg = "\n\n\\Z1Usage of SQL root user is prohibited. \\Zn\n\nPlease try again:";
             } elsif (length $user > 16) {
                 $msg = "\n\n\\Username can be up to 16 characters long.\\Zn\n\nPlease try again:";
             } elsif (length $user < 6) {
@@ -765,7 +757,8 @@ sub setupAskServicesSsl
 {
     my($dialog) = @_;
 
-    my $domainName = setupGetQuestion('SERVER_HOSTNAME');
+    my $hostname = setupGetQuestion('SERVER_HOSTNAME');
+    my $hostnameUnicode = idn_to_unicode($hostname, 'utf-8');
     my $sslEnabled = setupGetQuestion('SERVICES_SSL_ENABLED');
     my $selfSignedCertificate = setupGetQuestion('SERVICES_SSL_SELFSIGNED_CERTIFICATE', 'no');
     my $privateKeyPath = setupGetQuestion('SERVICES_SSL_PRIVATE_KEY_PATH', '/root');
@@ -791,7 +784,7 @@ EOF
             # Ask for self-signed certificate
             $rs = $dialog->yesno(<<"EOF", $selfSignedCertificate eq 'no' ? 1 : 0);
 
-Do you have an SSL certificate for the $domainName domain?
+Do you have an SSL certificate for the $hostnameUnicode domain?
 EOF
             if($rs == 0) {
                 # Ask for private key
@@ -1076,7 +1069,7 @@ sub setupServerHostname
 
 sub setupServiceSsl
 {
-    my $domainName = setupGetQuestion('SERVER_HOSTNAME');
+    my $hostname = setupGetQuestion('SERVER_HOSTNAME');
     my $selfSignedCertificate = setupGetQuestion('SERVICES_SSL_SELFSIGNED_CERTIFICATE') eq 'yes' ? 1 : 0;
     my $privateKeyPath = setupGetQuestion('SERVICES_SSL_PRIVATE_KEY_PATH');
     my $passphrase = setupGetQuestion('SERVICES_SSL_PRIVATE_KEY_PASSPHRASE');
@@ -1093,7 +1086,7 @@ sub setupServiceSsl
             certificate_chains_storage_dir => $main::imscpConfig{'CONF_DIR'},
             certificate_chain_name => 'imscp_services'
         )->createSelfSignedCertificate({
-            common_name => $domainName, email => $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'}
+            common_name => $hostname, email => $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'}
         });
         return $rs if $rs;
     } else {

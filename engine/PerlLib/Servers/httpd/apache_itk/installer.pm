@@ -41,7 +41,6 @@ use File::Basename;
 use Servers::httpd::apache_itk;
 use Servers::sqld;
 use version;
-use Net::LibIDN qw/idn_to_ascii/;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

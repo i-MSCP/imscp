@@ -38,7 +38,6 @@ use iMSCP::SystemUser;
 use iMSCP::TemplateParser;
 use iMSCP::ProgramFinder;
 use Servers::httpd::apache_php_fpm;
-use Net::LibIDN qw/idn_to_ascii/;
 use Cwd;
 use File::Basename;
 use File::Temp;

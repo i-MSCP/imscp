@@ -216,7 +216,7 @@ sub _getHttpdData
     $self->{'httpd'} = {
         DOMAIN_ADMIN_ID       => $self->{'domain_admin_id'},
         DOMAIN_NAME           => $self->{'subdomain_alias_name'}.'.'.$self->{'alias_name'},
-        DOMAIN_NAME_UNICODE   => idn_to_unicode( $self->{'subdomain_alias_name'}.'.'.$self->{'alias_name'}, 'UTF-8' ),
+        DOMAIN_NAME_UNICODE   => idn_to_unicode( $self->{'subdomain_alias_name'}.'.'.$self->{'alias_name'}, 'utf-8' ),
         DOMAIN_IP             => $self->{'ip_number'},
         DOMAIN_TYPE           => 'alssub',
         PARENT_DOMAIN_NAME    => $self->{'alias_name'},

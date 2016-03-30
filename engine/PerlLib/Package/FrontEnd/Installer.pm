@@ -213,27 +213,29 @@ sub askDomain
     my ($self, $dialog) = @_;
 
     my $vhost = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
-    my %options = (domain_private_tld => qr /.*/);
-    my ($rs, @labels) = (0, $vhost ? split( /\./, $vhost ) : ());
+    my $options = { domain_private_tld => qr /.*/ };
+    my ($rs, $msg) = (0, '');
 
     if (grep($_ eq $main::reconfigure, ( 'panel', 'panel_hostname', 'hostnames', 'all', 'forced' ))
-        || @labels < 3 || !is_domain( $vhost, \%options )
+        || split( /\./, $vhost ) < 3 || !is_domain( $vhost, $options )
     ) {
-        $vhost = 'admin.'.main::setupGetQuestion( 'SERVER_HOSTNAME' ) unless $vhost;
-        my $msg = '';
+        unless ($vhost) {
+            my @domain = split( /\./, main::setupGetQuestion( 'SERVER_HOSTNAME' ) );
+            $vhost = 'panel.'.join( '.', @domain[1 .. $#domain] );
+        }
+
+        $vhost = idn_to_unicode( $vhost, 'utf-8' );
 
         do {
-            ($rs, $vhost) = $dialog->inputbox( <<"EOF", idn_to_unicode( $vhost, 'utf-8' ) );
+            ($rs, $vhost) = $dialog->inputbox( <<"EOF", $vhost, 'utf-8' );
 
-Please enter a domain name for the control panel:$msg
+Please enter a fully-qualified domain name for the control panel:$msg
 EOF
-            $msg = "\n\n\\Z1'$vhost' is not a fully-qualified domain name (FQDN).\\Zn\n\nPlease try again:";
-            $vhost = idn_to_ascii( $vhost, 'utf-8' );
-            @labels = split( /\./, $vhost );
-        } while ($rs < 30 && (@labels < 3 || !is_domain( $vhost, \%options )));
+            $msg = "\n\n\\Z1'$vhost' is not a fully-qualified domain name.\\Zn\n\nPlease try again:";
+        } while ($rs < 30 && (split( /\./, $vhost ) < 3 || !is_domain( idn_to_ascii( $vhost, 'utf-8' ), $options )));
     }
 
-    main::setupSetQuestion( 'BASE_SERVER_VHOST', $vhost ) if $rs < 30;
+    main::setupSetQuestion( 'BASE_SERVER_VHOST', idn_to_ascii( $vhost, 'utf-8' ) ) if $rs < 30;
     $rs;
 }
 
@@ -251,6 +253,7 @@ sub askSsl
     my ($self, $dialog) = @_;
 
     my $domainName = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
+    my $domainNameUnicode = idn_to_unicode($domainName, 'utf-8');
     my $sslEnabled = main::setupGetQuestion( 'PANEL_SSL_ENABLED' );
     my $selfSignedCertificate = main::setupGetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE', 'no' );
     my $privateKeyPath = main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH', '/root' );
@@ -278,7 +281,7 @@ EOF
             # Ask for self-signed certificate
             $rs = $dialog->yesno( <<"EOF", $selfSignedCertificate eq 'no' ? 1 : 0 );
 
-Do you have an SSL certificate for the $domainName domain?
+Do you have an SSL certificate for the $domainNameUnicode domain?
 EOF
             if ($rs == 0) {
                 # Ask for private key
