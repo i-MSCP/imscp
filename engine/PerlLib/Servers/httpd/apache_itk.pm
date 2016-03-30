@@ -1318,7 +1318,8 @@ sub umountLogsFolder
 {
     my ($self, $data) = @_;
 
-    my $fsFile = "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}";
+    # If domain type is 'dmn' (full account) we operate recursively to handle case of dangling mounts
+    my $fsFile = "$data->{'HOME_DIR'}/logs".($data->{'DOMAIN_TYPE'} ne 'dmn' ? "/$data->{'DOMAIN_NAME'}" : '');
     my $rs = $self->{'eventManager'}->trigger( 'beforeUnmountLogsFolder', $fsFile );
     return $rs if $rs;
 
