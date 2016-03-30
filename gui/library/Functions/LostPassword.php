@@ -262,7 +262,7 @@ function sendPassword($uniqueKey)
 		$replace = array();
 
 		$search[] = '{USERNAME}';
-		$replace[] = $adminName;
+		$replace[] = decode_idna($adminName);
 
 		$search[] = '{NAME}';
 		$replace[] = $adminFirstName . " " . $adminLastName;
@@ -274,7 +274,7 @@ function sendPassword($uniqueKey)
 		$replace[] = $baseServerVhostPrefix;
 
 		$search[] = '{BASE_SERVER_VHOST}';
-		$replace[] = $baseServerVhost;
+		$replace[] = decode_idna($baseServerVhost);
 
 		$search[] = '{BASE_SERVER_VHOST_PORT}';
 		$replace[] = $baseServerVhostPort;

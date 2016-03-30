@@ -44,7 +44,7 @@ FRONTEND
     Fixed: Customer must be allowed to set `name` field of any DNS resource record
     Fixed: Could not remove database; There is no such grant defined for user...
     Fixed: Could not set URL redirect when adding domain alias; Bad request error page
-    Fixed: IDNs are shown in IDNA form in SSL certificate management interface
+    Fixed: IDNs are shown in IDNA form in several places
     Fixed: iMSCP_Update_Database::addIndex() doesn't allows to set index length
     Removed: User deletion confirmation pages (admin/reseller level)
     Rewritten: FTP chooser interface to avoid usage of iframe

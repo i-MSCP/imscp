@@ -615,13 +615,13 @@ function send_alias_order_email($aliasName)
 	$search [] = '{RESELLER}';
 	$replace[] = $toName;
 	$search[] = '{CUSTOMER}';
-	$replace[] = $fromName;
+	$replace[] = decode_idna($fromName);
 	$search[] = '{ALIAS}';
 	$replace[] = $aliasName;
 	$search[] = '{BASE_SERVER_VHOST_PREFIX}';
 	$replace[] = $baseServerVhostPrefix;
 	$search[] = '{BASE_SERVER_VHOST}';
-	$replace[] = $cfg->BASE_SERVER_VHOST;
+	$replace[] = decode_idna($cfg['BASE_SERVER_VHOST']);
 	$search[] = '{BASE_SERVER_VHOST_PORT}';
 	$replace[] = $port;
 

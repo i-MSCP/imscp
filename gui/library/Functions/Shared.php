@@ -2018,7 +2018,7 @@ function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $uln
 	$replace[] = $upass;
 
 	$search[] = '{BASE_SERVER_VHOST}';
-	$replace[] = $cfg['BASE_SERVER_VHOST'];
+	$replace[] = decode_idna($cfg['BASE_SERVER_VHOST']);
 
 	$search[] = '{BASE_SERVER_VHOST_PREFIX}';
 	$replace[] = $baseServerVhostPrefix;
