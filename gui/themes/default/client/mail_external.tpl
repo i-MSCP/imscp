@@ -1,4 +1,45 @@
 
+<script>
+	function onclick_action(url, domain) {
+		return (url.indexOf('delete') == -1 || confirm(sprintf(imscp_i18n.core.deactivate_message, domain)));
+	}
+
+	$(function () {
+		$('.datatable').dataTable(
+				{
+					language: imscp_i18n.core.datatable,
+					displayLength: 10,
+					stateSave: true,
+					pagingType: "simple"
+				}
+		);
+
+		$(".dataTables_paginate").click(function () {
+			if ($("tbody :checkbox:checked").length == $("tbody :checkbox:not(':disabled')").length) {
+				$("thead :checkbox,tfoot :checkbox").prop('checked', true);
+			} else {
+				$("thead :checkbox,tfoot :checkbox").prop('checked', false);
+			}
+		});
+
+		$("tbody").on("click", ":checkbox:not(':disabled')", function () {
+			if ($("tbody :checkbox:checked").length == $("tbody :checkbox:not(':disabled')").length) {
+				$("thead :checkbox,tfoot :checkbox").prop('checked', true);
+			} else {
+				$("thead :checkbox,tfoot :checkbox").prop('checked', false);
+			}
+		});
+
+		$("thead :checkbox, tfoot :checkbox").click(function (e) {
+			if ($("tbody :checkbox:not(':disabled')").length != 0) {
+				$("table :checkbox:not(':disabled')").prop('checked', $(this).is(':checked'));
+			} else {
+				e.preventDefault();
+			}
+		});
+	});
+</script>
+
 <form name="mail_external_delete" action="mail_external_delete.php" method="post">
 	<table class="firstColFixed datatable">
 		<thead>
@@ -46,44 +87,3 @@
 		<a href="mail_accounts.php" class="link_as_button">{TR_CANCEL}</a>
 	</div>
 </form>
-
-<script>
-	function onclick_action(url, domain) {
-		return (url.indexOf('delete') == -1 || confirm(sprintf(imscp_i18n.core.deactivate_message, domain)));
-	}
-
-	$(function () {
-		$('.datatable').dataTable(
-			{
-				language: imscp_i18n.core.datatable,
-				displayLength: 10,
-				stateSave: true,
-				pagingType: "simple"
-			}
-		);
-
-		$(".dataTables_paginate").click(function () {
-			if ($("tbody :checkbox:checked").length == $("tbody :checkbox:not(':disabled')").length) {
-				$("thead :checkbox,tfoot :checkbox").prop('checked', true);
-			} else {
-				$("thead :checkbox,tfoot :checkbox").prop('checked', false);
-			}
-		});
-
-		$("tbody").on("click", ":checkbox:not(':disabled')", function () {
-			if ($("tbody :checkbox:checked").length == $("tbody :checkbox:not(':disabled')").length) {
-				$("thead :checkbox,tfoot :checkbox").prop('checked', true);
-			} else {
-				$("thead :checkbox,tfoot :checkbox").prop('checked', false);
-			}
-		});
-
-		$("thead :checkbox, tfoot :checkbox").click(function (e) {
-			if ($("tbody :checkbox:not(':disabled')").length != 0) {
-				$("table :checkbox:not(':disabled')").prop('checked', $(this).is(':checked'));
-			} else {
-				e.preventDefault();
-			}
-		});
-	});
-</script>
