@@ -495,51 +495,45 @@ sub _setupVlogger
 {
     my $self = shift;
 
-    my $sqlServer = Servers::sqld->factory();
-    my $dbHost = main::setupGetQuestion( 'DATABASE_HOST' );
-    $dbHost = $dbHost eq 'localhost' ? '127.0.0.1' : $dbHost;
-    my $dbPort = main::setupGetQuestion( 'DATABASE_PORT' );
+    my $sqld = Servers::sqld->factory();
+    my $host = main::setupGetQuestion( 'DATABASE_HOST' );
+    $host = $host eq 'localhost' ? '127.0.0.1' : $host;
+    my $port = main::setupGetQuestion( 'DATABASE_PORT' );
     my $dbName = main::setupGetQuestion( 'DATABASE_NAME' );
-    my $dbUser = 'vlogger_user';
-    my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
-    $dbUserHost = 'localhost' if $dbUserHost eq '127.0.0.1';
+    my $user = 'vlogger_user';
+    my $userHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
+    $userHost = '127.0.0.1' if $userHost eq 'localhost';
 
     my @allowedChr = map { chr } (0x21 .. 0x5b, 0x5d .. 0x7e);
-    my $dbPass = '';
-    $dbPass .= $allowedChr[ rand @allowedChr ] for 1 .. 16;
+    my $pass = '';
+    $pass .= $allowedChr[ rand @allowedChr ] for 1 .. 16;
 
     my $db = iMSCP::Database->factory();
+    my $rs = main::setupImportSqlSchema( $db, "$self->{'apacheCfgDir'}/vlogger.sql" );
+    return $rs if $rs;
 
-    if (-f "$self->{'apacheCfgDir'}/vlogger.sql") {
-        my $rs = main::setupImportSqlSchema( $db, "$self->{'apacheCfgDir'}/vlogger.sql" );
-        return $rs if $rs;
-    } else {
-        error( sprintf( 'File %s not found.', "$self->{'apacheCfgDir'}/vlogger.sql" ) );
-        return 1;
-    }
-
-    for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
+    for my $host($userHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, 'localhost') {
         next unless $host;
-        $sqlServer->dropUser( $dbUser, $host );
+        $sqld->dropUser( $user, $host );
     }
 
-    my $quotedDbName = $db->quoteIdentifier( $dbName );
-    $sqlServer->createUser( $dbUser, $dbUserHost, $dbPass );
-    my $rs = $db->doQuery(
-        'g', "GRANT SELECT, INSERT, UPDATE ON $quotedDbName.httpd_vlogger TO ?@?", $dbUser, $dbUserHost
-    );
+    my $qDbName = $db->quoteIdentifier( $dbName );
+    $sqld->createUser( $user, $userHost, $pass );
+    $rs = $db->doQuery( 'g', "GRANT SELECT, INSERT, UPDATE ON $qDbName.httpd_vlogger TO ?@?", $user, $userHost );
     unless (ref $rs eq 'HASH') {
-        error( sprintf( 'Coould not add SQL privileges: %s', $rs ) );
+        error( sprintf( 'Could not add SQL privileges: %s', $rs ) );
         return 1;
     }
 
-    $rs = $self->{'httpd'}->setData( {
+    $rs = $self->{'httpd'}->setData(
+        {
             DATABASE_NAME     => $dbName,
-            DATABASE_HOST     => $dbHost,
-            DATABASE_PORT     => $dbPort,
-            DATABASE_USER     => $dbUser,
-            DATABASE_PASSWORD => $dbPass
-        } );
+            DATABASE_HOST     => $host,
+            DATABASE_PORT     => $port,
+            DATABASE_USER     => $user,
+            DATABASE_PASSWORD => $pass
+        }
+    );
     $rs ||= $self->{'httpd'}->buildConfFile(
         "$self->{'apacheCfgDir'}/vlogger.conf.tpl", { }, { destination => "$self->{'apacheWrkDir'}/vlogger.conf" }
     );
