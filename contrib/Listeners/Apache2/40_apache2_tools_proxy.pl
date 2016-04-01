@@ -26,24 +26,24 @@ use warnings;
 use iMSCP::EventManager;
 
 iMSCP::EventManager->getInstance()->register('beforeHttpdBuildConf', sub {
-	my ($cfgTpl, $tplName, $data) = @_;
+    my ($cfgTpl, $tplName, $data) = @_;
 
-	return 0 unless =~ /^domain(?:_ssl)?\.tpl$/;
+    return 0 unless $tplName =~ /^domain(?:_ssl)?\.tpl$/;
 
-	if($tplName eq 'domain.tpl') {
-		my $redirect = "    RedirectMatch permanent ^(/(?:ftp|pma|webmail)[\/]?)\$ ";
+    if($tplName eq 'domain.tpl') {
+        my $redirect = "    RedirectMatch permanent ^(/(?:ftp|pma|webmail)[\/]?)\$ ";
 
-		if($data->{'SSL_SUPPORT'}) {
-			$redirect .= "https://$data->{'DOMAIN_NAME'}\$1";
-		} else {
-			$redirect .= "https://$main::imscpConfig{'BASE_SERVER_VHOST'}:$main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'}\$1";
-		}
+        if($data->{'SSL_SUPPORT'}) {
+            $redirect .= "https://$data->{'DOMAIN_NAME'}\$1";
+        } else {
+            $redirect .= "https://$main::imscpConfig{'BASE_SERVER_VHOST'}:$main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'}\$1";
+        }
 
-		$$cfgTpl =~ s/(^\s+Include.*<\/VirtualHost>)/\n    # BEGIN Listener::Apache2::Tools::Proxy\n$redirect\n    # END Listener::Apache2::Tools::Proxy\n$1/sm;
-		return 0;
-	}
+        $$cfgTpl =~ s/(^\s+Include.*<\/VirtualHost>)/\n    # BEGIN Listener::Apache2::Tools::Proxy\n$redirect\n    # END Listener::Apache2::Tools::Proxy\n$1/sm;
+        return 0;
+    }
 
-	my $cfgProxy = <<EOF;
+    my $cfgProxy = <<EOF;
 
     # BEGIN Listener::Apache2::Tools::Proxy
     SSLProxyEngine On
@@ -56,15 +56,16 @@ iMSCP::EventManager->getInstance()->register('beforeHttpdBuildConf', sub {
     # END Listener::Apache2::Tools::Proxy
 EOF
 
-	$cfgProxy = iMSCP::TemplateParser::process(
-		{ 
-			BASE_SERVER_VHOST_HTTPS_PORT => $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'},
-		},
-		$cfgProxy
-	);
+    $cfgProxy = iMSCP::TemplateParser::process(
+        {
+            BASE_SERVER_VHOST_PREFIX => $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'},
+            BASE_SERVER_VHOST_HTTPS_PORT => $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'},
+        },
+        $cfgProxy
+    );
 
-	$$cfgTpl =~ s/(^\s+Include.*<\/VirtualHost>)/$cfgProxy$1/sm;
-	0;
+    $$cfgTpl =~ s/(^\s+Include.*<\/VirtualHost>)/$cfgProxy$1/sm;
+    0;
 });
 
 1;
