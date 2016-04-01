@@ -75,7 +75,7 @@ OPTIONS:
 );
 
 iMSCP::Bootstrapper->getInstance()->boot({
-    norequirements => 'yes', nokeys => 'yes', nodatabase => 'yes', nolock => 'no', config_readonly => 'yes',
+    norequirements => 'yes', nokeys => 'yes', nodatabase => 'yes', nolock => 'yes', config_readonly => 'yes',
     mode => 'backend'
 });
 
