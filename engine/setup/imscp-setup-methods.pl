@@ -532,7 +532,7 @@ sub askMasterSqlUser
         do {
             ($rs, $user) = $dialog->inputbox( <<"EOF", $msg eq '' ? $user : '' );
 
-Please enter a username for the master i-MSCP SQL username:$msg
+Please enter a username for the master i-MSCP SQL user:$msg
 EOF
             if ($user eq 'root') {
                 $msg = "\n\n\\Z1Usage of SQL root user is prohibited. \\Zn\n\nPlease try again:";
@@ -1295,7 +1295,8 @@ sub setupCreateDatabase
             return 1;
         }
 
-        $db->useDatabase($dbName);
+        $db->set('DATABASE_NAME', $dbName);
+        !$db->connect() or die('Could not reconnect to SQL server');
         $rs = setupImportSqlSchema($db, "$main::imscpConfig{'CONF_DIR'}/database/database.sql");
         return $rs if $rs;
     }

@@ -25,7 +25,6 @@ package iMSCP::Database::mysql;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use DBI;
 use iMSCP::Execute;
@@ -80,27 +79,26 @@ sub connect
         ($self->{'db'}->{'DATABASE_HOST'} ? ';host='.$self->{'db'}->{'DATABASE_HOST'} : '').
         ($self->{'db'}->{'DATABASE_PORT'} ? ';port='.$self->{'db'}->{'DATABASE_PORT'} : '');
 
-    if (!$self->{'connection'} ||
-        (
-            $self->{'_dsn'} ne $dsn || $self->{'_currentUser'} ne $self->{'db'}->{'DATABASE_USER'}
-                || $self->{'_currentPassword'} ne $self->{'db'}->{'DATABASE_PASSWORD'}
-        )
+    if (!$self->{'connection'}
+        || $self->{'_dsn'} ne $dsn
+        || $self->{'_currentUser'} ne $self->{'db'}->{'DATABASE_USER'}
+        || $self->{'_currentPassword'} ne $self->{'db'}->{'DATABASE_PASSWORD'}
     ) {
         $self->{'connection'}->disconnect() if $self->{'connection'};
 
-        # Set connection timeout to 3 seconds
+        # Set connection timeout to 5 seconds
         my $mask = POSIX::SigSet->new( SIGALRM );
         my $action = POSIX::SigAction->new( sub { die "SQL database connection timeout\n" }, $mask );
         my $oldaction = POSIX::SigAction->new();
         sigaction( SIGALRM, $action, $oldaction );
 
         eval {
-            alarm 3;
+            alarm 5;
             $self->{'connection'} = DBI->connect(
                 $dsn, $self->{'db'}->{'DATABASE_USER'}, $self->{'db'}->{'DATABASE_PASSWORD'},
                 (
-                        defined( $self->{'db'}->{'DATABASE_SETTINGS'} ) &&
-                            ref $self->{'db'}->{'DATABASE_SETTINGS'} eq 'HASH' ? $self->{'db'}->{'DATABASE_SETTINGS'} : ()
+                    defined( $self->{'db'}->{'DATABASE_SETTINGS'} ) &&
+                        ref $self->{'db'}->{'DATABASE_SETTINGS'} eq 'HASH' ? $self->{'db'}->{'DATABASE_SETTINGS'} : ()
                 )
             );
             alarm 0;
@@ -138,12 +136,6 @@ sub useDatabase
     defined $database or die( '$database parameter is not defined' );
 
     return $database if $database eq '' || $self->{'db'}->{'DATABASE_NAME'} eq $database;
-
-    if ($self->{'db'}->{'DATABASE_NAME'} eq '') {
-        $self->{'db'}->{'DATABASE_NAME'} = $database;
-        $self->connect() == 0 or die( 'Could not reconnect to SQL server' );
-        return $database;
-    }
 
     my $oldDatabase = $self->{'db'}->{'DATABASE_NAME'};
     my $qDatabase = $self->quoteIdentifier( $database );
@@ -207,11 +199,11 @@ sub getRawDb
     return $self->{'connection'} if $self->{'connection'};
 
     my $rs = $self->connect();
-    $rs == 0 or die( sprintf( 'Could not connect to SQL server: %s', $rs ) ) if $rs;
+    !$rs or die( sprintf( 'Could not connect to SQL server', $rs ) );
     $self->{'connection'};
 }
 
-=item doQuery($key, $query, [@bindValues = undef])
+=item doQuery($key, $query, [ @bindValues = undef ])
 
  Execute the given SQL statement
 
