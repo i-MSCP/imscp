@@ -91,7 +91,7 @@ sub addIpAddr
 
     my ($stdout, $stderr);
     execute( "$commands{'ifup'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr ) == 0 or die( sprintf(
-            'Could not bring up the %s network interface %s', "$data->{'ip_card'}:$data->{'id'}",
+            'Could not bring up the %s network interface: %s', "$data->{'ip_card'}:$data->{'id'}",
             $stderr || 'Unknown error'
         ) );
 
@@ -178,8 +178,8 @@ sub _updateInterfaces
                 <<TPL
 
 # i-MSCP [{ip_card}:{id}] entry BEGIN
-auto eth0:{id}
-iface eth0:{id} {addr_family} static
+auto {ip_card}:{id}
+iface {ip_card}:{id} {addr_family} static
         address {address}
         netmask {netmask}
 # i-MSCP [{ip_card}:{id}] entry ENDING

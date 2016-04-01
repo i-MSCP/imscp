@@ -395,15 +395,15 @@ sub _extractDevices
     # FIXME: Does we should show full interface names in control panel instead?
     $devices->{$1}->{'flags'} = $2 while $stdout =~ /
         ^
-            [^\s]+       # identifier
-            :
-            \s+
-            (.*?)        # device name
-            (?:@[^\s]+)? # device name prefix
-            :
-            \s+
-            <(.*)>       # flags
-        /gmx;
+        [^\s]+       # identifier
+        :
+        \s+
+        (.*?)        # device name
+        (?:@[^\s]+)? # device name prefix
+        :
+        \s+
+        <(.*)>       # flags
+    /gmx;
     $devices;
 }
 
@@ -429,7 +429,8 @@ sub _extractAddresses
         version       => $2 eq 'inet' ? 'ipv4' : 'ipv6',
         prefix_length => $4,
         device_label  => $5 // ''
-    } while ($stdout =~ /^
+    } while ($stdout =~ /
+        ^
         [^\s]+                    # identifier
         :
         \s+
@@ -438,16 +439,16 @@ sub _extractAddresses
         ([^\s]+)                  # protocol family identifier
         \s+
         (?:
-        ([^\s]+)              # IP address
-        (?:\s+peer\s+[^\s]+)? # peer address (pointopoint interfaces)
-        \/
-        ([\d]+)               # netmask in CIDR notation
+            ([^\s]+)              # IP address
+            (?:\s+peer\s+[^\s]+)? # peer address (pointopoint interfaces)
+            \/
+            ([\d]+)               # netmask in CIDR notation
         )
         \s+
         (?:
-        .*?                   # optional broadcast address, scope information
-        (\1(?::\d+)?)         # optional label
-        \\
+            .*?                   # optional broadcast address, scope information
+            (\1(?::\d+)?)         # optional label
+            \\
         )?
         /gmx);
     $addresses;
