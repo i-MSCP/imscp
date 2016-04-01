@@ -39,7 +39,7 @@ class Net
     /**
      * @var array IP addresses data
      */
-    protected $ippAddresses = array();
+    protected $ipAddresses = array();
 
     /**
      * Singleton pattern implementation -  makes "new" unavailable
@@ -86,7 +86,7 @@ class Net
      */
     public function getIpAddresses()
     {
-        return array_keys($this->ippAddresses);
+        return array_keys($this->ipAddresses);
     }
 
     /**
@@ -163,7 +163,7 @@ class Net
                 $line,
                 $matches
             )) {
-                $this->ippAddresses[$matches[3]] = array(
+                $this->ipAddresses[$matches[3]] = array(
                     'device' => $matches[1],
                     'version' => $matches[2] == 'inet' ? 'ipv4' : 'ipv6',
                     'prefix_length' => $matches[4],
