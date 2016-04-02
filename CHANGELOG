@@ -19,6 +19,7 @@ BACKEND
     Fixed: composer.phar must not be run with root user privileges (it is now run with i-MSCP system master user)
     Fixed: eth0 is hardcoded in i-MSCP network interface provider
     Fixed: Many inconsistencies in iMSCP::Getopt
+    Improvement: Allow registering many event listeners at once
     Removed: beforeDispatchRequest and afterDispatchRequest events
     Removed: cache data directory (/var/cache/imscp directory)
     Removed: imscp-httpd-logs-mngr script (Apache2 logs dirctories are now mounted through imscp_mountall service)

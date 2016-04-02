@@ -64,27 +64,30 @@ sub getInstance
     $$instance;
 }
 
-=item register($event, $callback)
+=item register($event, @callables)
 
- Register an event listener for the given event
+ Register one or many event listeners for the given event
 
  Param string $event Name of event that the listener listen
- Param code $callback Callback which represent the event listener
+ Param list @callables Callables which represent event listeners
  Return int 0 on success, 1 on failure
 
 =cut
 
 sub register
 {
-    my ($self, $event, $callback) = @_;
+    my ($self, $event, @callables) = @_;
 
-    unless (ref $callback eq 'CODE') {
-        error( sprintf( 'Invalid listener provided for the %s event', $event ) );
-        return 1;
+    for(@callables) {
+        unless (ref $_ eq 'CODE') {
+            error( sprintf( 'Invalid listener provided for the %s event', $event ) );
+            return 1;
+        }
+
+        debug( sprintf( 'Registering listener on the %s event from %s', $event, (caller( 1 ))[3] || 'main' ) );
+        push @{ $events{$self}->{$event} }, $_;
     }
 
-    debug( sprintf( 'Registering listener on the %s event from %s', $event, (caller( 1 ))[3] || 'main' ) );
-    push @{ $events{$self}->{$event} }, $callback;
     0;
 }
 
