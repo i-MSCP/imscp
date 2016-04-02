@@ -34,7 +34,6 @@ use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Rights;
 use iMSCP::TemplateParser;
-use Cwd;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -84,16 +83,6 @@ sub _init
 
     $self->{'toInstall'} = [ ];
     $self->{'pkgDir'} = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages";
-
-    # Increase composer process timeout for slow connections
-    $ENV{'COMPOSER_PROCESS_TIMEOUT'} = 2000;
-
-    # We do not want any user interaction
-    $ENV{'COMPOSER_NO_INTERACTION'} = '1';
-
-    # We discard any change made in vendor
-    $ENV{'COMPOSER_DISCARD_CHANGES'} = 'true';
-
     $self->{'phpCmd'} = 'php -d date.timezone=UTC -d allow_url_fopen=1 -d suhosin.executor.include.whitelist=phar';
 
     iMSCP::EventManager->getInstance()->register(
@@ -141,14 +130,7 @@ sub _getComposer
 {
     my $self = shift;
 
-    my $curDir = getcwd();
-
     unless (-f "$self->{'pkgDir'}/composer.phar") {
-        unless (chdir( $self->{'pkgDir'} )) {
-            error( sprintf( 'Could not change current directory to %s: %s', $self->{'pkgDir'}, $! ) );
-            return 1;
-        }
-
         iMSCP::Dialog->getInstance()->infobox( <<EOF );
 
 Installing/Updating composer.phar from http://getcomposer.org
@@ -157,8 +139,8 @@ Please wait, depending on your connection, this may take few seconds...
 EOF
 
         my $rs = execute(
-            "runuser -u $main::imscpConfig{'IMSCP_USER'} -- "
-                . "curl -s http://getcomposer.org/installer | $self->{'phpCmd'}",
+            "su - $main::imscpConfig{'IMSCP_USER'} -s /bin/sh -c "
+                .escapeShell( "curl -s http://getcomposer.org/installer | $self->{'phpCmd'}" ),
             \my $stdout, \my $stderr
         );
         debug( $stdout ) if $stdout;
@@ -166,17 +148,7 @@ EOF
         error( $stdout ) if !$stderr && $stdout && $rs;
         error( 'Could not install/update composer.phar from http://getcomposer.org' ) if $rs && !$stdout && !$stderr;
         return $rs if $rs;
-
-        unless (chdir( $curDir )) {
-            error( sprinf( 'Could not change current directory to %s: %s', $curDir, $! ) );
-            return 1;
-        }
     } else {
-        unless (chdir( $self->{'pkgDir'} )) {
-            error( sprintf( 'Could not change current directory to %s: %s', $self->{'pkgDir'}, $! ) );
-            return 1;
-        }
-
         iMSCP::Dialog->getInstance()->infobox( <<EOF );
 
 Updating composer.phar from http://getcomposer.org
@@ -185,8 +157,8 @@ Please wait, depending on your connection, this may take few seconds...
 EOF
 
         my $rs = execute(
-            "runuser -u $main::imscpConfig{'IMSCP_USER'} -- "
-                ."$self->{'phpCmd'} $self->{'pkgDir'}/composer.phar --no-ansi -d=$self->{'pkgDir'} self-update",
+            "su - $main::imscpConfig{'IMSCP_USER'} -s /bin/sh -c "
+                .escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} self-update" ),
             \my $stdout,
             \my $stderr
         );
@@ -194,11 +166,6 @@ EOF
         error( $stderr ) if $stderr && $rs;
         error( 'Could not update composer.phar' ) if $rs && !$stderr;
         return $rs if $rs;
-
-        unless (chdir( $curDir )) {
-            error( sprintf( 'Could not change current directory to %s: %s', $curDir, $! ) );
-            return 1;
-        }
     }
 
     0;
@@ -234,8 +201,8 @@ EOF
     # The update option is used here but composer will automatically fallback to install mode when needed
     # Note: Any progress/status info goes to stderr (See https://github.com/composer/composer/issues/3795)
     $rs = executeNoWait(
-        "runuser -u $main::imscpConfig{'IMSCP_USER'} -- "
-            ."$self->{'phpCmd'} $self->{'pkgDir'}/composer.phar --no-ansi -d=$self->{'pkgDir'} update --prefer-dist",
+        "su - $main::imscpConfig{'IMSCP_USER'} -s /bin/sh -c "
+            .escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} update" ),
         sub {
             my $str = shift;
             $$str = '';
@@ -283,6 +250,11 @@ sub _buildComposerFile
     "require": {
 {PACKAGES}
     },
+    "config": {
+        "preferred-install": "dist",
+        "process-timeout": 2000,
+        "discard-changes": true
+    },
     "minimum-stability": "dev"
 }
 TPL
@@ -304,7 +276,9 @@ sub _cleanPackageCache
 {
     my $self = shift;
 
-    iMSCP::Dir->new( dirname => $self->{'pkgDir'} )->remove();
+    my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'IMSCP_HOMEDIR'}/.cache" )->remove();
+    $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'IMSCP_HOMEDIR'}/.composer" )->remove();
+    $rs ||= iMSCP::Dir->new( dirname => $self->{'pkgDir'} )->remove();
 }
 
 =item _checkRequirements()
@@ -324,9 +298,8 @@ sub _checkRequirements
     for(@{$self->{'toInstall'}}) {
         my ($package, $version) = $_ =~ /"(.*)":\s*"(.*)"/;
         my $rs = execute(
-            "runuser -u $main::imscpConfig{'IMSCP_USER'} -- "
-                ."$self->{'phpCmd'} $self->{'pkgDir'}/composer.phar --no-ansi -d=$self->{'pkgDir'} show --installed ".
-                escapeShell( $package ).' '.escapeShell( $version ),
+            "su - $main::imscpConfig{'IMSCP_USER'} -s /bin/sh -c "
+                .escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} show --installed $package $version" ),
             \my $stdout,
             \my $stderr
         );
