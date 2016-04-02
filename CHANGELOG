@@ -106,6 +106,7 @@ YOUTRACK
     IP-1513 Autoreply - Do not autoreply to messages marked as SPAM
     IP-1514 Could not install i-MSCP on Ubuntu Trusty Thar in some contexts
     IP-1525 ifconfig output format has changed in latest versions
+    IP-1527 Wrong syntax in the VsFTPd uninstaller, leading to an i-MSCP uninstallation failure
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.17
