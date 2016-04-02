@@ -1,3 +1,9 @@
+=head1 NAME
+
+ iMSCP::SystemUser - i-MSCP library allowing to add and delete UNIX user
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
@@ -23,22 +29,38 @@ use iMSCP::Debug;
 use iMSCP::Execute;
 use parent 'Common::Object';
 
-# Add the given unix user
+=head1 DESCRIPTION
+
+ i-MSCP library allowing to add and delete UNIX user.
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item addSystemUser( [ $username ] )
+
+ Add UNIX user
+
+ Param string $username Username
+ Return int 0 on success, other on failure
+
+=cut
+
 sub addSystemUser
 {
     my $self = shift;
-    my $userName = shift || $self->{'username'};
+    my $username = shift || $self->{'username'};
 
-    unless ($userName) {
-        error( 'Username is missing' );
+    unless (defined $username) {
+        error( '$username parameter is not defined' );
         return 1;
     }
 
-    $self->{'username'} = $userName;
+    $self->{'username'} = $username;
 
     my $password = $self->{'password'} ? '-p '.escapeShell( $self->{'password'} ) : '';
     my $comment = $self->{'comment'} ? $self->{'comment'} : 'iMSCPuser';
-    my $home = $self->{'home'} ? $self->{'home'} : "$main::imscpConfig{'USER_WEB_DIR'}/$userName";
+    my $home = $self->{'home'} ? $self->{'home'} : "$main::imscpConfig{'USER_WEB_DIR'}/$username";
     my $skipGroup = $self->{'skipGroup'} || $self->{'group'} ? '' : '-U';
     my $group = $self->{'group'} ? '-g '.escapeShell( $self->{'group'} ) : '';
     my $createHome = $self->{'skipCreateHome'} ? '' : '-m';
@@ -48,11 +70,10 @@ sub addSystemUser
     my $shell = $self->{'shell'} ? $self->{'shell'} : '/bin/false';
 
     my @cmd;
-
-    unless (getpwnam( $userName )) { # Creating new user
+    unless (getpwnam( $username )) { # Creating new user
         @cmd = (
             'useradd',
-            ($^O =~ /bsd$/ ? escapeShell( $userName ) : ''), # username bsd way
+            $^O =~ /bsd$/ ? escapeShell( $username ) : '', # username bsd way
             $password, # Password
             '-c', escapeShell( $comment ), # comment
             '-d', escapeShell( $home ), # homedir
@@ -62,19 +83,19 @@ sub addSystemUser
             $copySkeleton, escapeShell( $skeletonPath ), # copy skeleton dir
             $systemUser, # system account
             '-s', escapeShell( $shell ), # shell
-            ($^O !~ /bsd$/ ? escapeShell( $userName ) : '')    # username linux way
+            $^O !~ /bsd$/ ? escapeShell( $username ) : ''    # username linux way
         );
     } else { # Modify existent user
         @cmd = (
-            'pkill -KILL -u', escapeShell( $userName ), ';',
+            'pkill -KILL -u', escapeShell( $username ), ';',
             'usermod',
-            ($^O =~ /bsd$/ ? escapeShell( $userName ) : ''), # username bsd way
+            ($^O =~ /bsd$/ ? escapeShell( $username ) : ''), # username bsd way
             $password, # Password
             '-c', escapeShell( $comment ), # comment
             '-d', escapeShell( $home ), # homedir
             '-m', # Move current home content in new home if needed
             '-s', escapeShell( $shell ), # shell
-            ($^O !~ /bsd$/ ? escapeShell( $userName ) : '')    # username linux way
+            $^O !~ /bsd$/ ? escapeShell( $username ) : ''    # username linux way
         );
     }
 
@@ -86,28 +107,36 @@ sub addSystemUser
     0;
 }
 
-# Delete the given unix user
+=item delSystemUser( [ $username ] )
+
+ Delete UNIX user
+
+ Param string $username Username
+ Return int 0 on success, other on failure
+
+=cut
+
 sub delSystemUser
 {
     my $self = shift;
-    my $userName = shift || $self->{'username'};
+    my $username = shift || $self->{'username'};
 
-    unless ($userName) {
-        error( 'Username is missing' );
+    unless (defined $username) {
+        error( '$username parameter is not defined' );
         return 1;
     }
 
-    $self->{'username'} = $userName;
+    $self->{'username'} = $username;
 
-    return 0 unless getpwnam( $userName );
+    return 0 unless getpwnam( $username );
 
     my @cmd = (
-        'pkill -KILL -u', escapeShell( $userName ), ';',
+        'pkill -KILL -u', escapeShell( $username ), ';',
         'userdel',
-        ($^O =~ /bsd$/ ? escapeShell( $userName ) : ''),
-        ($self->{'keepHome'} ? '' : '-r'),
-        (($self->{'force'} && !$self->{'keepHome'}) ? '-f' : ''),
-        ($^O !~ /bsd$/ ? escapeShell( $userName ) : '')
+            $^O =~ /bsd$/ ? escapeShell( $username ) : '',
+            $self->{'keepHome'} ? '' : '-r',
+            $self->{'force'} && !$self->{'keepHome'} ? '-f' : '',
+            $^O !~ /bsd$/ ? escapeShell( $username ) : ''
     );
     my $rs = execute( "@cmd", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
@@ -117,39 +146,48 @@ sub delSystemUser
     0;
 }
 
-# Add the given unix user to the given unix group
+=item addToGroup( [ $groupname, [ $username ] ] )
+
+ Add given UNIX user to the given UNIX group
+
+ Param string $groupname Group name
+ Param string $username Username
+ Return int 0 on success, other on failure
+
+=cut
+
 sub addToGroup
 {
     my $self = shift;
-    my $groupName = shift || $self->{'groupname'};
-    my $userName = shift || $self->{'username'};
+    my $groupname = shift || $self->{'groupname'};
+    my $username = shift || $self->{'username'};
 
-    unless ($groupName) {
-        error( 'Group name is missing' );
+    unless (defined $groupname) {
+        error( '$groupname parameter is not defined' );
         return 1;
     }
 
-    unless ($userName) {
-        error( 'Username is missing' );
+    unless (defined $username) {
+        error( '$username parameter is not defined' );
         return 1;
     }
 
-    $self->{'groupname'} = $groupName;
-    $self->{'username'} = $userName;
+    $self->{'groupname'} = $groupname;
+    $self->{'username'} = $username;
 
-    return 0 unless (getgrnam( $groupName ) && getpwnam( $userName ));
+    return 0 unless getgrnam( $groupname ) && getpwnam( $username );
 
     if ($^O =~ /bsd$/) {
         # bsd
-        $self->getUserGroups( $userName );
+        $self->getUserGroups( $username );
 
-        return 0 unless exists $self->{'userGroups'}->{$groupName};
+        return 0 unless exists $self->{'userGroups'}->{$groupname};
 
-        delete $self->{'userGroups'}->{$userName};
+        delete $self->{'userGroups'}->{$username};
 
         my $newGroups = join( ',', keys %{$self->{'userGroups'}} );
-        $newGroups = ($newGroups ne '') ? "$newGroups,$groupName" : $groupName;
-        my @cmd = ('usermod', escapeShell( $userName ), '-G', escapeShell( $newGroups ));
+        $newGroups = ($newGroups ne '') ? "$newGroups,$groupname" : $groupname;
+        my @cmd = ('usermod', escapeShell( $username ), '-G', escapeShell( $newGroups ));
         my $rs = execute( "@cmd", \my $stdout, \my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
@@ -158,7 +196,7 @@ sub addToGroup
     }
 
     # Linux
-    my @cmd = ('gpasswd', '-a', escapeShell( $userName ), escapeShell( $groupName ));
+    my @cmd = ('gpasswd', '-a', escapeShell( $username ), escapeShell( $groupname ));
     my $rs = execute( "@cmd", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs && $rs != 3;
@@ -167,37 +205,46 @@ sub addToGroup
     0;
 }
 
-# Remove the given unix user from the given unix group
+=item addToGroup( [ $groupname, [ $username ] ] )
+
+ Remove given UNIX user from the given UNIX group
+
+ Param string $groupname Group name
+ Param string $username Username
+ Return int 0 on success, other on failure
+
+=cut
+
 sub removeFromGroup
 {
     my $self = shift;
-    my $groupName = shift || $self->{'groupname'} || undef;
-    my $userName = shift || $self->{'username'} || undef;
+    my $groupname =  shift || $self->{'groupname'};
+    my $username = shift || $self->{'username'};
 
-    unless ($groupName) {
-        error( 'Group name is missing' );
+    unless (defined $groupname) {
+        error( '$groupname parameter is not defined' );
         return 1;
     }
 
-    unless ($userName) {
-        error( 'Username is missing' );
+    unless (defined $username) {
+        error( '$username parameter is not defined' );
         return 1;
     }
 
-    $self->{'groupname'} = $groupName;
-    $self->{'username'} = $userName;
+    $self->{'groupname'} = $groupname;
+    $self->{'username'} = $username;
 
-    return 0 unless getpwnam( $userName ) && getgrnam( $groupName );
+    return 0 unless getpwnam( $username ) && getgrnam( $groupname );
 
     if ($^O =~ /bsd$/) {
         # bsd way
-        $self->getUserGroups( $userName );
+        $self->getUserGroups( $username );
 
-        delete $self->{'userGroups'}->{$groupName};
-        delete $self->{'userGroups'}->{$userName};
+        delete $self->{'userGroups'}->{$groupname};
+        delete $self->{'userGroups'}->{$username};
 
         my $newGroups = join( ',', keys %{$self->{'userGroups'}} );
-        my @cmd = ('usermod', escapeShell( $userName ), '-G', escapeShell( $newGroups ));
+        my @cmd = ('usermod', escapeShell( $username ), '-G', escapeShell( $newGroups ));
         my $rs = execute( "@cmd", \my $stdout, \my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
@@ -205,7 +252,7 @@ sub removeFromGroup
         return $rs;
     }
 
-    my @cmd = ('gpasswd', '-d', escapeShell( $userName ), escapeShell( $groupName ));
+    my @cmd = ('gpasswd', '-d', escapeShell( $username ), escapeShell( $groupname ));
     my $rs = execute( "@cmd", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs && $rs != 3;
@@ -214,20 +261,29 @@ sub removeFromGroup
     0;
 }
 
-# Retrieve list of all groups to which unix user is part
+
+=item addToGroup( [ $username ] )
+
+ Get list of group to wich given UNIX user belongs
+
+ Param string $username Username
+ Return int 0 on success, other on failure
+
+=cut
+
 sub getUserGroups
 {
     my $self = shift;
-    my $userName = shift || $self->{'username'} || undef;
+    my $username = shift || $self->{'username'};
 
-    unless ($userName) {
-        error( 'Username is missing' );
+    unless (defined $username) {
+        error( '$username parameter is not defined' );
         return 1;
     }
 
-    $self->{'username'} = $userName;
+    $self->{'username'} = $username;
 
-    my $rs = execute( 'id -nG '.escapeShell( $userName ), \my $stdout, \my $stderr );
+    my $rs = execute( 'id -nG '.escapeShell( $username ), \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs;
     debug( $stderr ) if $stderr && !$rs;
@@ -236,6 +292,14 @@ sub getUserGroups
     %{$self->{'userGroups'}} = map { $_ => 1 } split ' ', $stdout;
     0;
 }
+
+=back
+
+=head1 AUTHOR
+
+ i-MSCP Team <team@i-mscp.net>
+
+=cut
 
 1;
 __END__

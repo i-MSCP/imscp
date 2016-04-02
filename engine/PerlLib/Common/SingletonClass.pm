@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -45,18 +45,18 @@ use warnings;
 
 sub getInstance
 {
-	my $self = shift;
-	return $self if ref $self;
+    my $self = shift;
+    return $self if ref $self;
 
-	no strict 'refs';
-	my $instance = \${"${self}::_instance"};
+    no strict 'refs';
+    my $instance = \${"${self}::_instance"};
 
-	unless(defined $$instance) {
-		$$instance = bless { @_ && ref $_[0] eq 'HASH' ? %{$_[0]} : @_ }, $self;
-		$$instance->_init();
-	}
+    unless (defined $$instance) {
+        $$instance = bless { @_ && ref $_[0] eq 'HASH' ? %{$_[0]} : @_ }, $self;
+        $$instance->_init();
+    }
 
-	$$instance;
+    $$instance;
 }
 
 =item hasInstance()
@@ -69,12 +69,11 @@ sub getInstance
 
 sub hasInstance
 {
-	my $self = $_[0];
+    my $self = $_[0];
 
-	$self = ref $self || $self;
-	no strict 'refs';
-
-	${"${self}::_instance"};
+    $self = ref $self || $self;
+    no strict 'refs';
+    ${"${self}::_instance"};
 }
 
 =back
@@ -93,7 +92,7 @@ sub hasInstance
 
 sub _init
 {
-	$_[0];
+    $_[0];
 }
 
 =back

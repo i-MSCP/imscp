@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -45,13 +45,11 @@ use warnings;
 
 sub new
 {
-	my $class = shift;
+    my $class = shift;
 
-	my $self = { @_ && ref $_[0] eq 'HASH' ? %{$_[0]} : @_ };
-
-	bless $self, $class;
-
-	$self->_init();
+    my $self = { @_ && ref $_[0] eq 'HASH' ? %{$_[0]} : @_ };
+    bless $self, $class;
+    $self->_init();
 }
 
 =back
@@ -70,7 +68,7 @@ sub new
 
 sub _init
 {
-	$_[0];
+    $_[0];
 }
 
 =back

@@ -37,31 +37,34 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item addSystemGroup($groupname, [$systemGroup = 0])
+=item addSystemGroup($groupname [, systemgroup = 0 ])
 
  Add group
 
  Param string $groupname Group name
- Param int $systemGroup Whether or not a system group must be created
+ Param int systemgroup Whether or not a system group must be created
  Return int 0 on success, other on failure
 
 =cut
 
 sub addSystemGroup
 {
-    my $self = shift;
-    my $groupName = shift;
-    my $systemGroup = shift || 0;
+    my ($self, $groupname, $systemgroup) = @_;
 
-    return 0 if getgrnam( $groupName );
+    unless (defined $groupname) {
+        error( '$groupname parameter is not defined' );
+        return 1;
+    }
 
-    $systemGroup = $systemGroup ? '-r' : '';
+    return 0 if getgrnam( $groupname );
 
-    my @cmd = ('groupadd', ($^O !~ /bsd$/ ? $systemGroup : ''), escapeShell( $groupName ));
+    $systemgroup = $systemgroup ? '-r' : '';
+
+    my @cmd = ('groupadd', $^O !~ /bsd$/ ? $systemgroup : '', escapeShell( $groupname ));
     my $rs = execute( "@cmd", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs;
-    warning( $stderr ) if $stderr && !$rs;
+    debug( $stderr ) if $stderr && !$rs;
     $rs;
 }
 
@@ -76,14 +79,19 @@ sub addSystemGroup
 
 sub delSystemGroup
 {
-    my ($self, $groupName) = @_;
+    my ($self, $groupname) = @_;
 
-    return unless getgrnam( $groupName );
+    unless (defined $groupname) {
+        error( '$groupname parameter is not defined' );
+        return 1;
+    }
 
-    my $rs = execute( 'groupdel '.escapeShell( $groupName ), \my $stdout, \my $stderr );
+    return unless getgrnam( $groupname );
+
+    my $rs = execute( 'groupdel '.escapeShell( $groupname ), \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs;
-    warning( $stderr ) if $stderr && !$rs;
+    debug( $stderr ) if $stderr && !$rs;
     $rs;
 }
 
