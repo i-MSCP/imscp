@@ -248,8 +248,8 @@ sub getTraffic
 
     require File::Temp;
 
-    my $variableDataDir = $main::imscpConfig{'VARIABLE_DATA_DIR'};
-    my $trafficDbPath = "$variableDataDir/po_traffic.db";
+    my $trafficDir = $main::imscpConfig{'IMSCP_HOMEDIR'};
+    my $trafficDbPath = "$trafficDir/po_traffic.db";
     my $selfCall = 1;
     my %trafficDb;
 
@@ -266,7 +266,7 @@ sub getTraffic
 
     if (-f -s $trafficDataSrc) {
         # We are using a small file to memorize the number of the last line that has been read and his content
-        tie my %indexDb, 'iMSCP::Config', fileName => "$variableDataDir/traffic_index.db", nowarn => 1;
+        tie my %indexDb, 'iMSCP::Config', fileName => "$trafficDir/traffic_index.db", nowarn => 1;
 
         my $lastParsedLineNo = $indexDb{'po_lineNo'} || 0;
         my $lastParsedLineContent = $indexDb{'po_lineContent'} || '';

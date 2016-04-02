@@ -363,7 +363,7 @@ sub _backupConfigFile
 
 sub _installFiles
 {
-    my $packageDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/phpmyadmin";
+    my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/phpmyadmin";
 
     unless (-d $packageDir) {
         error( "Couldn't find the imscp/phpmyadmin package into the packages cache directory" );

@@ -40,7 +40,6 @@ use iMSCP::Execute;
 use iMSCP::EventManager;
 use iMSCP::Rights;
 use iMSCP::TemplateParser;
-use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
 use iMSCP::OpenSSL;
 use iMSCP::Servers;
@@ -166,7 +165,7 @@ sub setupTasks
     my @steps = (
         [ \&setupSaveOldConfig,              'Saving old configuration file' ],
         [ \&setupWriteNewConfig,             'Writing new configuration file' ],
-        [ \&setupCreateMasterGroup,          'Creating system master group' ],
+        [ \&setupCreateMasterUser,           'Creating system master user' ],
         [ \&setupCreateSystemDirectories,    'Creating system directories' ],
         [ \&setupServerHostname,             'Setting server hostname' ],
         [ \&setupServiceSsl,                 'Setup SSL for i-MSCP services' ],
@@ -986,11 +985,26 @@ sub setupWriteNewConfig
     iMSCP::EventManager->getInstance()->trigger('afterSetupWriteNewConfig');
 }
 
-sub setupCreateMasterGroup
+sub setupCreateMasterUser
 {
-    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupCreateMasterGroup');
-    $rs ||= iMSCP::SystemGroup->getInstance()->addSystemGroup($main::imscpConfig{'IMSCP_GROUP'}, 1);
-    $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupCreateMasterGroup');
+    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupCreateMasterUser');
+
+    $rs ||= iMSCP::SystemUser->new(
+        username => $main::imscpConfig{'IMSCP_USER'},
+        group => $main::imscpConfig{'IMSCP_GROUP'},
+        comment => 'i-MSCP master user',
+        home => $main::imscpConfig{'IMSCP_HOMEDIR'}
+    )->addSystemUser();
+
+    # Ensure that correct permlissions are set on i-MSCP master user homedir (handle upgrade case)
+    $rs ||= iMSCP::Dir->new( dirname => $main::imscpConfig{'IMSCP_HOMEDIR'} )->make(
+        {
+            user => $main::imscpConfig{'IMSCP_USER'},
+            group => $main::imscpConfig{'IMSCP_GROUP'},
+            mode => 0755
+        }
+    );
+    $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupCreateMasterUser');
 }
 
 sub setupCreateSystemDirectories
@@ -1113,12 +1127,13 @@ sub setupServices
 
 sub setupRegisterDelayedTasks
 {
-    my $eventManager = iMSCP::EventManager->getInstance();
-
-    my $rs = $eventManager->register( 'afterSqldPreinstall', \&setupCreateMasterSqlUser );
-    $rs ||= $eventManager->register( 'afterSqldPreinstall', \&setupSecureSqlInstallation);
-    $rs ||= $eventManager->register( 'afterSqldPreinstall', \&setupCreateDatabase );
-    $rs ||= $eventManager->register( 'afterSqldPreinstall', \&setupServerIps );
+    iMSCP::EventManager->getInstance()->register(
+        'afterSqldPreinstall',
+        \&setupCreateMasterSqlUser,
+        \&setupSecureSqlInstallation,
+        \&setupCreateDatabase,
+        \&setupServerIps
+    );
 }
 
 sub setupCreateMasterSqlUser

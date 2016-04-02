@@ -343,7 +343,7 @@ sub getTraffic
 {
     my $self = shift;
 
-    my $trafficDbPath = "$main::imscpConfig{'VARIABLE_DATA_DIR'}/ftp_traffic.db";
+    my $trafficDbPath = "$main::imscpConfig{'IMSCP_HOMEDIR'}/ftp_traffic.db";
 
     # Load traffic database (create it if needed)
     tie my %trafficDb, 'iMSCP::Config', fileName => $trafficDbPath, nowarn => 1;

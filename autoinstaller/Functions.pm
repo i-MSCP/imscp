@@ -788,17 +788,10 @@ sub _savePersistentData
         return $rs if $rs;
     }
 
-    ## Package files
+    ## Remove obsolete locations
 
-    # Move old package cache directory to new location
-    if (-d  "$main::imscpConfig{'CACHE_DATA_DIR'}/addons") {
-        my $rs = execute(
-            "mv $main::imscpConfig{'CACHE_DATA_DIR'}/addons $main::imscpConfig{'CACHE_DATA_DIR'}/packages",
-            \my $stdout,
-            \my $stderr
-        );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
+    if (-d  "$main::imscpConfig{'CACHE_DATA_DIR'}") {
+        my $rs = execute("rm -fR $main::imscpConfig{'CACHE_DATA_DIR'}/addons");
         return $rs if $rs;
     }
 

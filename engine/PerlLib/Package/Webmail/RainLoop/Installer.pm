@@ -289,7 +289,7 @@ sub _installFiles
 {
     my $self = shift;
 
-    my $packageDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/rainloop";
+    my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/rainloop";
 
     unless (-d $packageDir) {
         error( "Couldn't find the imscp/rainloop package in the packages cache directory" );
@@ -514,7 +514,7 @@ sub _setVersion
 {
     my $self = shift;
 
-    my $packageDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/rainloop";
+    my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/rainloop";
     my $json = iMSCP::File->new( filename => "$packageDir/composer.json" )->get();
     unless (defined $json) {
         error( sprintf( 'Could not read %s file', "$packageDir/composer.json" ) );

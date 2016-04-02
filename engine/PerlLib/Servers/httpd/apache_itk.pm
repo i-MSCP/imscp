@@ -911,7 +911,7 @@ sub getTraffic
     my $self = shift;
 
     my $timestamp = time();
-    my $trafficDbPath = "$main::imscpConfig{'VARIABLE_DATA_DIR'}/http_traffic.db";
+    my $trafficDbPath = "$main::imscpConfig{'IMSCP_HOMEDIR'}/http_traffic.db";
 
     # Load traffic database (create it if doesn't exist)
     tie my %trafficDb, 'iMSCP::Config', fileName => $trafficDbPath, nowarn => 1;

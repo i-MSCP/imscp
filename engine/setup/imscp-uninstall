@@ -41,7 +41,7 @@ use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::Stepper;
 use iMSCP::Database;
-use iMSCP::SystemGroup;
+use iMSCP::SystemUser;
 use iMSCP::Execute;
 use iMSCP::Servers;
 use iMSCP::Packages;
@@ -82,7 +82,7 @@ sub process
         [ \&_removeLogrotateFile, 'Removing i-MSCP logrotate file' ],
         [ \&_removeSysctlFile, 'Removing i-MSCP sysctl file' ],
         [ \&_removeSqlData, 'Removing i-MSCP SQL data' ],
-        [ \&_removeiMSCPSystemGroup, 'Removing i-MSCP system group' ],
+        [ \&_removeiMSCPSystemUser, 'Removing i-MSCP system user' ],
         [ \&_removeFiles, 'Removing i-MSCP files' ],
     );
 
@@ -344,18 +344,17 @@ sub _removeSqlData
     0;
 }
 
-sub _removeiMSCPSystemGroup
+sub _removeiMSCPSystemUser
 {
-    iMSCP::SystemGroup->getInstance()->delSystemGroup($main::imscpConfig{'IMSCP_GROUP'});
+    iMSCP::SystemUser->new( force => 1 )->delSystemUser( $main::imscpConfig{'IMSCP_USER'} );
 }
 
 sub _removeFiles
 {
     chdir('/');
 
-    for (
-        $main::imscpConfig{'CONF_DIR'}, $main::imscpConfig{'USER_WEB_DIR'}, $main::imscpConfig{'LOG_DIR'},
-        $main::imscpConfig{'ROOT_DIR'}, $main::imscpConfig{'CACHE_DATA_DIR'}, $main::imscpConfig{'VARIABLE_DATA_DIR'},
+    for ($main::imscpConfig{'CONF_DIR'}, $main::imscpConfig{'USER_WEB_DIR'}, $main::imscpConfig{'LOG_DIR'},
+        $main::imscpConfig{'ROOT_DIR'},
     ) {
         my $rs = iMSCP::Dir->new( dirname => $_ )->remove();
         return $rs if $rs;

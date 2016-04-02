@@ -167,7 +167,7 @@ sub _installFiles
 {
     my $self = shift;
 
-    my $packageDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/ajaxplorer";
+    my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/ajaxplorer";
     unless (-d $packageDir) {
         error( 'Could not find the imscp/ajaxplorer (Pydio) package into the packages cache directory' );
         return 1;
@@ -201,7 +201,7 @@ sub _buildHttpdConfig
 {
     my $frontEnd = Package::FrontEnd->getInstance();
     $frontEnd->buildConfFile(
-        "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/ajaxplorer/iMSCP/config/nginx/imscp_pydio.conf",
+        "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/ajaxplorer/iMSCP/config/nginx/imscp_pydio.conf",
         { GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },
         { destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pydio.conf" }
     );

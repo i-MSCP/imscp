@@ -312,7 +312,7 @@ sub _installFiles
 {
     my $self = shift;
 
-    my $packageDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/roundcube";
+    my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/roundcube";
 
     unless (-d $packageDir) {
         error( "Couldn't find the imscp/roundcube package into the packages cache directory" );
@@ -590,7 +590,7 @@ sub _setVersion
 {
     my $self = shift;
 
-    my $repoDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/roundcube";
+    my $repoDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/roundcube";
     my $json = iMSCP::File->new( filename => "$repoDir/composer.json" )->get();
     unless (defined $json) {
         error( sprintf( 'Could not read %s file', "$repoDir/composer.json" ) );

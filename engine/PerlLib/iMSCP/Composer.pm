@@ -26,13 +26,14 @@ package iMSCP::Composer;
 use strict;
 use warnings;
 use iMSCP::Debug;
-use iMSCP::File;
+use iMSCP::Dialog;
 use iMSCP::Dir;
 use iMSCP::Execute;
-use iMSCP::TemplateParser;
 use iMSCP::EventManager;
+use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::Dialog;
+use iMSCP::Rights;
+use iMSCP::TemplateParser;
 use Cwd;
 use parent 'Common::SingletonClass';
 
@@ -82,10 +83,7 @@ sub _init
     my $self = shift;
 
     $self->{'toInstall'} = [ ];
-    $self->{'pkgDir'} = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages";
-
-    # Override default composer home directory
-    $ENV{'COMPOSER_HOME'} = "$self->{'pkgDir'}/.composer";
+    $self->{'pkgDir'} = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages";
 
     # Increase composer process timeout for slow connections
     $ENV{'COMPOSER_PROCESS_TIMEOUT'} = 2000;
@@ -105,7 +103,14 @@ sub _init
             my $rs = $self->_cleanPackageCache() if iMSCP::Getopt->cleanPackageCache;
             return $rs if $rs;
 
-            $rs = iMSCP::Dir->new( dirname => $self->{'pkgDir'} )->make();
+            $rs = iMSCP::Dir->new( dirname => $self->{'pkgDir'} )->make(
+                {
+                    user  => $main::imscpConfig{'IMSCP_USER'},
+                    group => $main::imscpConfig{'IMSCP_GROUP'},
+                    mode  => 0755
+                }
+            );
+            $rs ||= setRights( $self->{'pkgDir'}, { user => 'imscp', group => 'imscp' } );
             return $rs if $rs;
 
             unless (iMSCP::Getopt->skipPackageUpdate && -x "$self->{'pkgDir'}/composer.phar") {
@@ -151,7 +156,11 @@ Installing/Updating composer.phar from http://getcomposer.org
 Please wait, depending on your connection, this may take few seconds...
 EOF
 
-        my $rs = execute( "curl -s http://getcomposer.org/installer | $self->{'phpCmd'}", \my $stdout, \my $stderr );
+        my $rs = execute(
+            "runuser -u $main::imscpConfig{'IMSCP_USER'} -- "
+                . "curl -s http://getcomposer.org/installer | $self->{'phpCmd'}",
+            \my $stdout, \my $stderr
+        );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
         error( $stdout ) if !$stderr && $stdout && $rs;
@@ -176,7 +185,8 @@ Please wait, depending on your connection, this may take few seconds...
 EOF
 
         my $rs = execute(
-            "$self->{'phpCmd'} $self->{'pkgDir'}/composer.phar --no-ansi -d=$self->{'pkgDir'} self-update",
+            "runuser -u $main::imscpConfig{'IMSCP_USER'} -- "
+                ."$self->{'phpCmd'} $self->{'pkgDir'}/composer.phar --no-ansi -d=$self->{'pkgDir'} self-update",
             \my $stdout,
             \my $stderr
         );
@@ -224,7 +234,8 @@ EOF
     # The update option is used here but composer will automatically fallback to install mode when needed
     # Note: Any progress/status info goes to stderr (See https://github.com/composer/composer/issues/3795)
     $rs = executeNoWait(
-        "$self->{'phpCmd'} $self->{'pkgDir'}/composer.phar --no-ansi -d=$self->{'pkgDir'} update --prefer-dist",
+        "runuser -u $main::imscpConfig{'IMSCP_USER'} -- "
+            ."$self->{'phpCmd'} $self->{'pkgDir'}/composer.phar --no-ansi -d=$self->{'pkgDir'} update --prefer-dist",
         sub {
             my $str = shift;
             $$str = '';
@@ -313,7 +324,8 @@ sub _checkRequirements
     for(@{$self->{'toInstall'}}) {
         my ($package, $version) = $_ =~ /"(.*)":\s*"(.*)"/;
         my $rs = execute(
-            "$self->{'phpCmd'} $self->{'pkgDir'}/composer.phar --no-ansi -d=$self->{'pkgDir'} show --installed ".
+            "runuser -u $main::imscpConfig{'IMSCP_USER'} -- "
+                ."$self->{'phpCmd'} $self->{'pkgDir'}/composer.phar --no-ansi -d=$self->{'pkgDir'} show --installed ".
                 escapeShell( $package ).' '.escapeShell( $version ),
             \my $stdout,
             \my $stderr

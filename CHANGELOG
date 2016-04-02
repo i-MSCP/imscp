@@ -9,25 +9,31 @@ BACKEND
     Added: Caller info for __DIE__ and __WARN__ signal handlers
     Added: Debug info for loading of listener files (Event::Manager)
     Added: iMSCP::Database::mysql::useDatabase() method - Allow to select database on which we want operate on
+    Added: i-MSCP (imscp) master system user (homedir is /var/local/imscp)
     Added: iMSCP::OpenSSL::getCertificateExpiryTime() method - Allow to get SSL certificate expiry time (UNIX timestamp)
     Added: Support for prime256v1 (ECDSA) keys (iMSCP::OpenSSL)
     Backported: iMSCP::DbTasksProcessor from 1.3.x branch - Allows to process db tasks without spawning new process
     Backported: imscp-mountall-mngr (as imscp-mountall) from 1.3.x branch - Mount i-MSCP file systems on server reboot
     Backported:: iMSCP::Mount library from 1.3.x branch - Library for mounting/unmounting file systems
     Changed: Upstart job file paths, sysvinit script paths and systemd unit files paths are now cached (init providers)
+    Fixed: composer.phar must not be run with root user privileges (it is now run with i-MSCP system master user)
     Fixed: eth0 is hardcoded in i-MSCP network interface provider
     Fixed: Many inconsistencies in iMSCP::Getopt
     Removed: beforeDispatchRequest and afterDispatchRequest events
+    Removed: cache data directory (/var/cache/imscp directory)
     Removed: imscp-httpd-logs-mngr script (Apache2 logs dirctories are now mounted through imscp_mountall service)
     Rewritten: iMSCP::SetRights library (usage of built-in functions to avoid call of system chown/chmod commands)
 
 CONFIG
+    Added: IMSCP_USER parameter (name of i-MSCP master system user)
     Added: DISTRO_ID, DISTRO_CODENAME and DISTRO_RELEASE parameters in imscp.conf file
     Added: MAX_INSTANCES, MAX_CLIENT_PER_HOST and FTPD_CONF_DIR parameters in proftpd/proftpd.data file
     Added: MOUNT_CUSTOMER_LOGS parameter in apache/apache.data file (allows to disable logs bind mounts)
     Changed: Increased default limits for ProFTPD/VsFTPd
+    Depreciated: CACHE_DATA_DIR parameters
     Fixed: Allow access to .well-known folder in any case if exists (Apache2)
     Removed: Redundant MYSQL_PREFIX_TYPE parameter
+    Removed: VARIABLE_DATA_DIR parameter
 
 DATABASE
     Added: SPF type to the list of allowed DNS resource records

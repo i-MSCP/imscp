@@ -165,7 +165,7 @@ sub _init
 
 sub _installFiles
 {
-    my $packageDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/packages/vendor/imscp/net2ftp";
+    my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/net2ftp";
 
     unless (-d $packageDir) {
         error( 'Could not find the imscp/net2ftp package into the packages cache directory' );
