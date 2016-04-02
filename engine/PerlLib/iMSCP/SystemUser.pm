@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::SystemUser - i-MSCP library allowing to add and delete UNIX user
+ iMSCP::SystemUser - i-MSCP library that allows to add/update/elete UNIX users
 
 =cut
 
@@ -31,13 +31,13 @@ use parent 'Common::Object';
 
 =head1 DESCRIPTION
 
- i-MSCP library allowing to add and delete UNIX user.
+ i-MSCP library that allows to add/update/elete UNIX users.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item addSystemUser( [ $username ] )
+=item addSystemUser([ $username = $self->{'username'} ])
 
  Add UNIX user
 
@@ -107,7 +107,7 @@ sub addSystemUser
     0;
 }
 
-=item delSystemUser( [ $username ] )
+=item delSystemUser([ $username = $self->{'username'} ])
 
  Delete UNIX user
 
@@ -146,7 +146,7 @@ sub delSystemUser
     0;
 }
 
-=item addToGroup( [ $groupname, [ $username ] ] )
+=item addToGroup([ $groupname =  $self->{'groupname'} [, $username = $self->{'username'} ] ])
 
  Add given UNIX user to the given UNIX group
 
@@ -205,7 +205,7 @@ sub addToGroup
     0;
 }
 
-=item addToGroup( [ $groupname, [ $username ] ] )
+=item addToGroup([ $groupname = $self->{'groupname'} [, $username = $self->{'username'} ] ])
 
  Remove given UNIX user from the given UNIX group
 
@@ -262,7 +262,7 @@ sub removeFromGroup
 }
 
 
-=item addToGroup( [ $username ] )
+=item addToGroup( [ $username = $self->{'username'} ] )
 
  Get list of group to wich given UNIX user belongs
 

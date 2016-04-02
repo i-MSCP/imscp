@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::SystemGroup - i-MSCP library allowing to add and delete UNIX groups
+ iMSCP::SystemGroup - i-MSCP library that allows to add/delete UNIX groups
 
 =cut
 
@@ -31,13 +31,13 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP library allowing to add and delete UNIX groups.
+ iMSCP::SystemGroup - i-MSCP library that allows to add/delete UNIX groups.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item addSystemGroup($groupname [, systemgroup = 0 ])
+=item addSystemGroup($groupname [, systemgroup = undef ])
 
  Add group
 
