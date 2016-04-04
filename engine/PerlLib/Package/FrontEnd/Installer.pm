@@ -25,6 +25,9 @@ package Package::FrontEnd::Installer;
 
 use strict;
 use warnings;
+use Data::Validate::Domain 'is_domain';
+use Email::Valid;
+use File::Basename;
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::Crypt 'md5';
@@ -33,16 +36,13 @@ use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::Rights;
-use iMSCP::TemplateParser;
-use iMSCP::SystemUser;
 use iMSCP::OpenSSL;
+use iMSCP::Rights;
+use iMSCP::SystemUser;
+use iMSCP::TemplateParser;
+use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
 use Package::FrontEnd;
 use Servers::named;
-use Data::Validate::Domain 'is_domain';
-use Email::Valid;
-use File::Basename;
-use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -98,7 +98,7 @@ sub askMasterAdminData
 
     my $db = iMSCP::Database->factory();
     local $@;
-    eval { $db->useDatabase(main::setupGetQuestion( 'DATABASE_NAME' )); };
+    eval { $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) ); };
     $db = undef if $@;
 
     if (iMSCP::Getopt->preseed) {
@@ -253,7 +253,7 @@ sub askSsl
     my ($self, $dialog) = @_;
 
     my $domainName = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
-    my $domainNameUnicode = idn_to_unicode($domainName, 'utf-8');
+    my $domainNameUnicode = idn_to_unicode( $domainName, 'utf-8' );
     my $sslEnabled = main::setupGetQuestion( 'PANEL_SSL_ENABLED' );
     my $selfSignedCertificate = main::setupGetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE', 'no' );
     my $privateKeyPath = main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH', '/root' );
@@ -657,7 +657,7 @@ sub _setupMasterAdmin
     $password = md5( $password );
 
     my $db = iMSCP::Database->factory();
-    $db->useDatabase(main::setupGetQuestion( 'DATABASE_NAME' ));
+    $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) );
 
     my $rs = $db->doQuery(
         'admin_name', 'SELECT admin_id, admin_name FROM admin WHERE admin_name = ? LIMIT 1', $loginOld
@@ -798,7 +798,7 @@ sub _addMasterWebUser
     my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
     my $db = iMSCP::Database->factory();
-    $db->useDatabase(main::setupGetQuestion( 'DATABASE_NAME' ));
+    $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) );
 
     my $rdata = $db->doQuery(
         'admin_sys_uid',
@@ -903,14 +903,26 @@ sub _makeDirs
     $rs = iMSCP::Dir->new( dirname => $phpStarterDir )->make( {
             user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => 0555
         } );
+
     # Remove previous FCGI tree if any ( needed to avoid any garbage from plugins )
     $rs ||= iMSCP::Dir->new( dirname => "$phpStarterDir/master" )->remove();
     return $rs if $rs;
 
-    for ([ $self->{'config'}->{'HTTPD_CONF_DIR'}, $rootUName, $rootUName, 0755 ],
+    my $nginxTmpDir = $self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'};
+    unless (-d $nginxTmpDir) {
+        $nginxTmpDir = $self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'};
+    }
+
+    # Force re-creation of cache directory tree (needed to prevent any permissions problem from an old installation)
+    # See #IP-1530
+    iMSCP::Dir->new( dirname => $nginxTmpDir )->remove();
+
+    for (
+        [ $nginxTmpDir, $rootUName, $rootUName, 0755 ],
+        [ $self->{'config'}->{'HTTPD_CONF_DIR'}, $rootUName, $rootUName, 0755 ],
+        [ $self->{'config'}->{'HTTPD_LOG_DIR'}, $rootUName, $rootUName, 0755 ],
         [ $self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}, $rootUName, $rootUName, 0755 ],
         [ $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}, $rootUName, $rootUName, 0755 ],
-        [ $self->{'config'}->{'HTTPD_LOG_DIR'}, $rootUName, $rootUName, 0755 ],
         [ $phpStarterDir, $rootUName, $rootGName, 0555 ],
         [ "$phpStarterDir/master", $panelUName, $panelGName, 0550 ],
         [ "$phpStarterDir/master/php5", $panelUName, $panelGName, 0550 ]

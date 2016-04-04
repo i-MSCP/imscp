@@ -76,6 +76,10 @@ INSTALLER
     Renamed: imscp-setup script to imscp-reconfigure
     Transitional: Enforce PHP5 variant under Debian Stretch (testing) and Ubuntu 16.04 (Xenial Xerus)
 
+PACKAGES
+    Fixed: ERR_INCOMPLETE_CHUNKED_ENCODING error due to wrong permissions on nginx fastcgi cache directory (FrontEnd)
+    Fixed: White page due to 'net::ERR_INCOMPLETE_CHUNKED_ENCODING' errors (related to #IP-1530) (PhpMyAdmin)
+
 PLUGINS
     Fixed: Plugin configuration not synced when triggering plugin list update (when a plugin is in error state)
     Fixed: The 'change' action must be automatically triggered on plugin list update, even for plugins with error state
@@ -117,6 +121,7 @@ YOUTRACK
     IP-1514 Could not install i-MSCP on Ubuntu Trusty Thar in some contexts
     IP-1525 ifconfig output format has changed in latest versions
     IP-1527 Wrong syntax in the VsFTPd uninstaller, leading to an i-MSCP uninstallation failure
+    IP-1530 Nginx - Failed to load resource: net::ERR_INCOMPLETE_CHUNKED_ENCODING
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.17
