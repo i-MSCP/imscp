@@ -35,6 +35,7 @@ use iMSCP::File;
 use iMSCP::ProgramFinder;
 use iMSCP::Rights;
 use iMSCP::TemplateParser;
+use File::Temp;
 use Servers::sqld::mysql;
 use version;
 use parent 'Common::SingletonClass';
@@ -60,8 +61,8 @@ sub preinstall
     my $self = shift;
 
     my $rs = $self->_setTypeAndVersion();
-    $rs ||= $self->updateServerConfig();
     $rs ||= $self->_buildConf();
+    $rs ||= $self->_updateServerConfig();
     $rs ||= $self->_saveConf();
 }
 
@@ -173,75 +174,6 @@ sub _setTypeAndVersion
     0;
 }
 
-=item updateServerConfig()
-
- Update server configuration
-
-  - Upgrade MySQL system tables if necessary
-  - Disable unwanted plugins
-
-
- Return 0
-
-=cut
-
-sub updateServerConfig
-{
-    my $self = shift;
-
-    my $db = iMSCP::Database->factory();
-
-    if (iMSCP::ProgramFinder::find( 'dpkg' ) && iMSCP::ProgramFinder::find( 'mysql_upgrade' )) {
-        my $rs = execute(
-            "dpkg -l mysql-community* percona-server-* | cut -d' ' -f1 | grep -q 'ii'", \my $stdout, \my $stderr
-        );
-
-        # Upgrade server system tables
-        # See #IP-1482 for further details.
-        unless ($rs) {
-            # Filter all "duplicate column", "duplicate key" and "unknown column"
-            # errors as the command is designed to be idempotent.
-            execute(
-                "mysql_upgrade --defaults-extra-file=$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf 2>&1"
-                    .' | egrep -v \'^(1|@had|ERROR (1054|1060|1061))\'',
-                \my $stdout
-            );
-            debug( $stdout ) if $stdout;
-        }
-    }
-
-    # Set SQL mode (bc reasons)
-    my $qrs = $db->doQuery( 's', "SET GLOBAL sql_mode = ''" );
-    unless (ref $qrs eq 'HASH') {
-        error( $qrs );
-        return 1;
-    }
-
-    # Disable unwanted plugins (bc reasons)
-    if (($main::imscpConfig{'SQL_SERVER'} =~ /^mariadb/
-        && version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '10.0' ))
-        || (version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.6.6' ))
-    ) {
-        for my $plugin(qw/cracklib_password_check simple_password_check validate_password/) {
-            $qrs = $db->doQuery( 'name', "SELECT name FROM mysql.plugin WHERE name = '$plugin'" );
-            unless (ref $qrs eq 'HASH') {
-                error( $qrs );
-                return 1;
-            }
-
-            if (%{$qrs}) {
-                $qrs = $db->doQuery( 'u', "UNINSTALL PLUGIN $plugin" );
-                unless (ref $qrs eq 'HASH') {
-                    error( $qrs );
-                    return 1;
-                }
-            }
-        }
-    }
-
-    0;
-}
-
 =item _buildConf()
 
  Build configuration file
@@ -263,9 +195,13 @@ sub _buildConf
     my $confDir = $self->{'config'}->{'SQLD_CONF_DIR'};
 
     # Make sure that the conf.d directory exists
-    $rs = iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make( {
-            user => $rootUName, group => $rootGName, mode => 0755
-        } );
+    $rs = iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make(
+        {
+            user => $rootUName,
+            group => $rootGName,
+            mode => 0755
+        }
+    );
     return $rs if $rs;
 
     # Create the /etc/mysql/my.cnf file if missing
@@ -305,18 +241,18 @@ sql_mode = "NO_AUTO_CREATE_USER"
 [mysql_upgrade]
 host     = {DATABASE_HOST}
 port     = {DATABASE_PORT}
-user     = {DATABASE_USER}
-password = {DATABASE_PASSWORD}
+user     = "{DATABASE_USER}"
+password = "{DATABASE_PASSWORD}"
 socket   = {SQLD_SOCK_DIR}/mysqld.sock
 EOF
 
+    (my $user = $main::imscpConfig{'DATABASE_USER'} ) =~ s/"/\\"/g;
+    (my $pwd = decryptBlowfishCBC( $main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'} ) ) =~ s/"/\\"/g;
     my $variables = {
         DATABASE_HOST     => $main::imscpConfig{'DATABASE_HOST'},
         DATABASE_PORT     => $main::imscpConfig{'DATABASE_PORT'},
-        DATABASE_PASSWORD => escapeShell( decryptBlowfishCBC(
-                $main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'}
-            ) ),
-        DATABASE_USER     => $main::imscpConfig{'DATABASE_USER'},
+        DATABASE_USER     => $user,
+        DATABASE_PASSWORD => $pwd,
         SQLD_SOCK_DIR     => $self->{'config'}->{'SQLD_SOCK_DIR'}
     };
 
@@ -334,7 +270,6 @@ EOF
     }
 
     $cfgTpl =~ s/(\[mysqld\]\n)/$1event_scheduler = DISABLED\n/i;
-
     $cfgTpl = process( $variables, $cfgTpl );
 
     my $file = iMSCP::File->new( filename => "$confDir/conf.d/imscp.cnf" );
@@ -345,6 +280,91 @@ EOF
     return $rs if $rs;
 
     $self->{'eventManager'}->trigger( 'afterSqldBuildConf' );
+}
+
+=item _updateServerConfig()
+
+ Update server configuration
+
+  - Upgrade MySQL system tables if necessary
+  - Disable unwanted plugins
+
+ Return 0 on success, other on failure
+
+=cut
+
+sub _updateServerConfig
+{
+    my $self = shift;
+
+    if (iMSCP::ProgramFinder::find( 'dpkg' ) && iMSCP::ProgramFinder::find( 'mysql_upgrade' )) {
+        my $rs = execute(
+            "dpkg -l mysql-community* percona-server-* | cut -d' ' -f1 | grep -q 'ii'", \my $stdout, \my $stderr
+        );
+
+        # Upgrade server system tables
+        # See #IP-1482 for further details.
+        unless ($rs) {
+            my $host = main::setupGetQuestion( 'DATABASE_HOST' );
+            (my $user = main::setupGetQuestion( 'SQL_ROOT_USER' )) =~ s/"/\\"/g;
+            (my $pwd = main::setupGetQuestion( 'SQL_ROOT_PASSWORD' ) ) =~ s/"/\\"/g;
+            my $conffile = File::Temp->new( UNLINK => 1 );
+
+            print $conffile <<"EOF";
+[mysql_upgrade]
+host     = $host
+user     = "$user"
+password = "$pwd"
+EOF
+            $conffile->flush();
+
+            # Filter all "duplicate column", "duplicate key" and "unknown column"
+            # errors as the command is designed to be idempotent.
+            my $rs = execute(
+                "mysql_upgrade --defaults-file=$conffile 2>&1 | egrep -v '^(1|\@had|ERROR (1054|1060|1061))'",
+                \my $stdout
+            );
+            error(sprintf('Could not upgrade SQL server system tables: %s', $stdout)) if $rs;
+            return $rs if $rs;
+            debug( $stdout ) if $stdout;
+        }
+    }
+
+    my $db = iMSCP::Database->factory();
+
+    # Set SQL mode (bc reasons)
+    my $qrs = $db->doQuery( 's', "SET GLOBAL sql_mode = ''" );
+    unless (ref $qrs eq 'HASH') {
+        error( $qrs );
+        return 1;
+    }
+
+    # Disable unwanted plugins (bc reasons)
+    if (($main::imscpConfig{'SQL_SERVER'} =~ /^mariadb/
+        && version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '10.0' ))
+        || (version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.6.6' ))
+    ) {
+        for my $plugin(qw/cracklib_password_check simple_password_check validate_password/) {
+            $qrs = $db->doQuery( 'name', "SELECT name FROM mysql.plugin WHERE name = '$plugin'" );
+            unless (ref $qrs eq 'HASH') {
+                error( $qrs );
+                return 1;
+            }
+
+            if (%{$qrs}) {
+                $qrs = $db->doQuery( 'u', "UNINSTALL PLUGIN $plugin" );
+                unless (ref $qrs eq 'HASH') {
+                    error( $qrs );
+                    return 1;
+                }
+            }
+        }
+    }
+
+    # For usage of unix socket
+    main::setupSetQuestion('DATABASE_HOST', 'localhost');
+    $main::imscpConfig{'DATABASE_HOST'} = 'localhost';
+    0;
 }
 
 =item _saveConf()

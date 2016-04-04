@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2016.03.28
+# Last update: 2016.04.04
 
 %main::questions = (
 
@@ -51,7 +51,7 @@
 
     # WAN IP
     # Only relevant if the primary server IP is in private range (e.g. when your server is behind NAT).
-    # You can force usage of private IP by leaving this blanc
+    # You can force usage of private IP by putting same IP
     # Possible values: Ipv4 or IPv6
     BASE_SERVER_PUBLIC_IP               => '',
 
@@ -182,12 +182,17 @@
 
     # Databas hostname
     # Possible values: A valid hostname or IP address
-    DATABASE_HOST                       => 'localhost',
+    DATABASE_HOST                       => '127.0.0.1',
 
     # Database port
     # Note that port is used only for connections through TCP
     # Possible values: A valid port
     DATABASE_PORT                       => '3306',
+
+    # SQL root user
+    # Note:this user is only used while installation/reconfiguration
+    SQL_ROOT_USER                       => 'root',
+    SQL_ROOT_PASSWORD                   => '',
 
     #
     ## Courier, POP server configuration

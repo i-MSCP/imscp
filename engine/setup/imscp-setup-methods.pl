@@ -416,20 +416,22 @@ sub askSqlRootUser
 {
     my ($dialog) = @_;
 
-    my $host = $main::imscpConfig{'SQL_SERVER'} eq 'remote_server' ? '' : 'localhost';
-    my $port = 3306;
-    my $user = 'root';
-    my $pwd = '';
+    my $host = setupGetQuestion('DATABASE_HOST', $main::imscpConfig{'SQL_SERVER'} eq 'remote_server' ? '' : 'localhost');
+    my $port = setupGetQuestion('DATABASE_PORT', 3306);
+    my $user = setupGetQuestion('SQL_ROOT_USER', 'root');
+    my $pwd = setupGetQuestion('SQL_ROOT_PASSWORD');
     my ($rs, $msg) = (0, '');
 
     if($host eq 'localhost') {
         # If authentication is made through unix socket, password is normally not required.
         # We try a connect without password with 'root' as user and we return on success
         for('localhost', '127.0.0.1') {
-            next if tryDbConnect($host, $port, $user, $pwd);
+            next if tryDbConnect($_, $port, $user, $pwd);
             setupSetQuestion('DATABASE_TYPE', 'mysql');
-            setupSetQuestion('DATABASE_HOST', $host);
+            setupSetQuestion('DATABASE_HOST', $_);
             setupSetQuestion('DATABASE_PORT', $port);
+            setupSetQuestion('SQL_ROOT_USER', $user);
+            setupSetQuestion('SQL_ROOT_PASSWORD', $pwd);
             return 0;
         }
     }
@@ -504,6 +506,8 @@ EOF
         setupSetQuestion('DATABASE_TYPE', 'mysql');
         setupSetQuestion('DATABASE_HOST', idn_to_ascii($host, 'utf-8'));
         setupSetQuestion('DATABASE_PORT', $port);
+        setupSetQuestion('SQL_ROOT_USER', $user);
+        setupSetQuestion('SQL_ROOT_PASSWORD', $pwd);
     }
 
     $rs;
@@ -534,7 +538,7 @@ sub askMasterSqlUser
 
 Please enter a username for the master i-MSCP SQL user:$msg
 EOF
-            if ($user eq 'root') {
+            if (lc($user) eq 'root') {
                 $msg = "\n\n\\Z1Usage of SQL root user is prohibited. \\Zn\n\nPlease try again:";
             } elsif (length $user > 16) {
                 $msg = "\n\n\\Username can be up to 16 characters long.\\Zn\n\nPlease try again:";
@@ -580,6 +584,10 @@ EOF
     if($rs < 30) {
         setupSetQuestion('DATABASE_USER', $user);
         setupSetQuestion('DATABASE_PASSWORD', encryptBlowfishCBC($main::imscpDBKey, $main::imscpDBiv, $pwd));
+
+        # Substitute SQL root user data with i-MSCP master user data if needed
+        setupSetQuestion('SQL_ROOT_USER', setupGetQuestion('SQL_ROOT_USER', $user));
+        setupSetQuestion('SQL_ROOT_PASSWORD', setupGetQuestion('SQL_ROOT_PASSWORD', $pwd));
     }
 
     $rs;
@@ -590,13 +598,10 @@ sub setupAskSqlUserHost
 {
     my $dialog = shift;
 
-    my $host = setupGetQuestion('DATABASE_USER_HOST', setupGetQuestion('BASE_SERVER_PUBLIC_IP'));
-    $host = setupGetQuestion('BASE_SERVER_PUBLIC_IP') if grep($_ eq $host, ( '127.0.0.1', 'localhost' ));
-    $host = idn_to_ascii($host, 'utf-8');
-
-    my $rs = 0;
+    my $host = idn_to_ascii(setupGetQuestion('DATABASE_USER_HOST', setupGetQuestion('BASE_SERVER_PUBLIC_IP')), 'utf-8');
     my %options = (domain_private_tld => qr /.*/);
     my $net = iMSCP::Net->getInstance();
+    my $rs = 0;
 
     if($main::imscpConfig{'SQL_SERVER'} eq 'remote_server') { # Remote MySQL server
         if(grep($_ eq $main::reconfigure, ( 'sql', 'servers', 'all', 'forced' ))
@@ -620,7 +625,7 @@ EOF
                     && !$net->isValidAddr($host)
                     || grep($_ eq $net->getAddrType($host), ( 'LOOPBACK', 'LINK-LOCAL-UNICAST' ))
                 ) {
-                    $msg = sprintf("\n\n\\Z1Error: '%s' is not valid or not allowedt.\\Zn\n\nPlease try again:", $host);
+                    $msg = sprintf("\n\n\\Z1Error: '%s' is not valid or not allowed.\\Zn\n\nPlease try again:", $host);
                 }
 
             } while($rs < 30 && $msg ne '');
@@ -764,7 +769,7 @@ sub setupAskServicesSsl
     my $privateKeyPath = setupGetQuestion('SERVICES_SSL_PRIVATE_KEY_PATH', '/root');
     my $passphrase = setupGetQuestion('SERVICES_SSL_PRIVATE_KEY_PASSPHRASE');
     my $certificatPath = setupGetQuestion('SERVICES_SSL_CERTIFICATE_PATH', '/root');
-    my $caBundlePath = setupGetQuestion('SERVICES_SSL_CA_BUNDLE_PATH', '/root/');
+    my $caBundlePath = setupGetQuestion('SERVICES_SSL_CA_BUNDLE_PATH', '/root');
     my $openSSL = iMSCP::OpenSSL->new();
     my $rs = 0;
 

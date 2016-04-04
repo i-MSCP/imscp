@@ -18,6 +18,7 @@ BACKEND
     Changed: Upstart job file paths, sysvinit script paths and systemd unit files paths are now cached (init providers)
     Fixed: composer.phar must not be run with root user privileges (it is now run with i-MSCP system master user)
     Fixed: eth0 is hardcoded in i-MSCP network interface provider
+    Fixed: Ignore user-specific options if any (~/.my.cnf file) when running mysqldump (iMSCP::Database::mysql::dumpdb)
     Fixed: Many inconsistencies in iMSCP::Getopt
     Improvement: Allow registering many event listeners at once
     Removed: beforeDispatchRequest and afterDispatchRequest events
@@ -69,6 +70,7 @@ INSTALLER
     Fixed: Don't die on misconfigured server hostname. Just ask for a valid hostname instead
     Fixed: libmariadbclient18 package not provided in Debian Stretch (testing) repository
     Fixed: Plugin setup listeners are no longer registered (regression fix)
+    Fixed: SQL user and password not correctly escaped in imscp.cnf file (Servers::sqld::mysql::installer)
     Moved: Master administrator questions and setup routines into the Package::FrontEnd::Installer package
     Renamed: imscp-setup script to imscp-reconfigure
     Transitional: Enforce PHP5 variant under Debian Stretch (testing) and Ubuntu 16.04 (Xenial Xerus)

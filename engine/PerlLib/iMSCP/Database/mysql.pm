@@ -28,8 +28,8 @@ use warnings;
 use iMSCP::Debug;
 use DBI;
 use iMSCP::Execute;
-use File::HomeDir;
 use POSIX ':signal_h';
+use Servers::sqld;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -299,15 +299,11 @@ sub dumpdb
 {
     my ($self, $dbName, $filename) = @_;
 
-    debug( "Dump $dbName into $filename" );
-
-    $dbName = escapeShell( $dbName );
-    $filename = escapeShell( $filename );
-
-    my $rootHomeDir = File::HomeDir->users_home( $main::imscpConfig{'ROOT_USER'} );
+    debug(sprintf('Dump `%s` database into %s', $dbName, $filename) );
 
     my @cmd = (
         'mysqldump',
+        '--defaults-file=' . escapeShell( "$self->{'sqld_config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf" ),
         '--opt',
         '--complete-insert',
         '--add-drop-database',
@@ -315,14 +311,14 @@ sub dumpdb
         '--compress',
         '--default-character-set=utf8',
         '--quote-names',
-        "--result-file=$filename",
-        $dbName
+        "--result-file=" . escapeShell( $filename ),
+        escapeShell( $dbName )
     );
 
     my $rs = execute( "@cmd", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs;
-    error( sprintf( 'Could not dump %s', $dbName ) ) if $rs && !$stderr;
+    error( sprintf( 'Could not dump `%s` database', $dbName ) ) if $rs && !$stderr;
     $rs;
 }
 
@@ -374,6 +370,8 @@ sub quote
 sub _init
 {
     my $self = shift;
+
+    $self->{'sqld_config'} = Servers::sqld->factory()->{'config'};
 
     $self->{'db'}->{'DATABASE_NAME'} = '';
     $self->{'db'}->{'DATABASE_HOST'} = '';
