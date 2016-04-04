@@ -127,10 +127,8 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer_Abstract
         $mail['header'] .= "Content-Type: text/plain; charset=utf-8\n";
         $mail['header'] .= "Content-Transfer-Encoding: 8bit\n";
         $mail['header'] .= 'X-Mailer: ' . self::NAME;
-
         // Subject
         $mail['subject'] = self::NAME . ' - An exception has been thrown';
-
         // Body
         $mail['body'] = "Dear admin,\n\n";
         $mail['body'] .= sprintf(
@@ -161,7 +159,6 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer_Abstract
 
         // Generate mail footprint using static part of mail body
         $mail['footprint'] = sha1($mail['body']);
-
         // Additional information
         $mail['body'] .= "\nAdditional information:\n";
         $mail['body'] .= str_repeat('-', 22) . "\n\n";

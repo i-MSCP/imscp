@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,33 +23,32 @@
  */
 class iMSCP_Exception_Database extends iMSCP_Exception
 {
-	/**
-	 * @var string Query that failed
-	 */
-	protected $query = null;
+    /**
+     * @var string Query that failed
+     */
+    protected $query = null;
 
-	/**
-	 * Constructor
-	 *
-	 * @param string $msg Exception Message
-	 * @param string $query query Last query executed
-	 * @param int $code Exception code
-	 * @param Exception $previous OPTIONAL Previous exception
-	 */
-	public function __construct($msg = '', $query = null, $code = 0, Exception $previous = null)
-	{
-		$this->query = (string)preg_replace("/[\t\n]+/", ' ', $query);
+    /**
+     * Constructor
+     *
+     * @param string $msg Exception Message
+     * @param string $query query Last query executed
+     * @param int $code Exception code
+     * @param Exception $previous OPTIONAL Previous exception
+     */
+    public function __construct($msg = '', $query = null, $code = 0, Exception $previous = null)
+    {
+        $this->query = (string)preg_replace("/[\t\n]+/", ' ', $query);
+        parent::__construct($msg, $code, $previous);
+    }
 
-		parent::__construct($msg, $code, $previous);
-	}
-
-	/**
-	 * Gets query
-	 *
-	 * @return string
-	 */
-	public function getQuery()
-	{
-		return $this->query;
-	}
+    /**
+     * Gets query
+     *
+     * @return string
+     */
+    public function getQuery()
+    {
+        return $this->query;
+    }
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,15 +23,15 @@
  */
 class iMSCP_Exception extends Exception
 {
-	/**
-	 * Constructor
-	 *
-	 * @param string $msg Exception Message
-	 * @param int $code Exception code
-	 * @param Exception $previous OPTIONAL Previous exception
-	 */
-	public function __construct($msg = '', $code = 0, Exception $previous = null)
-	{
-		parent::__construct($msg, (int)$code, $previous);
-	}
+    /**
+     * Constructor
+     *
+     * @param string $msg Exception Message
+     * @param int $code Exception code
+     * @param Exception $previous OPTIONAL Previous exception
+     */
+    public function __construct($msg = '', $code = 0, Exception $previous = null)
+    {
+        parent::__construct($msg, (int)$code, $previous);
+    }
 }

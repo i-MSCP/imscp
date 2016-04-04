@@ -101,7 +101,7 @@ class iMSCP_Exception_Handler
 	{
 		try {
 			foreach($this->writers as $writer) {
-				$this->em->registerListener('onUncaughtException', new $writer());
+				$this->em->registerListener('onUncaughtException', new $writer);
 			}
 
 			$this->em->dispatch(new iMSCP_Exception_Event($exception));

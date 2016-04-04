@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,11 +23,11 @@
  */
 abstract class iMSCP_Exception_Writer_Abstract
 {
-	/**
-	 * onUncaughtException event listener
-	 *
-	 * @param iMSCP_Exception_Event $event
-	 * @return void
-	 */
-	abstract public function onUncaughtException(iMSCP_Exception_Event $event);
+    /**
+     * onUncaughtException event listener
+     *
+     * @param iMSCP_Exception_Event $event
+     * @return void
+     */
+    abstract public function onUncaughtException(iMSCP_Exception_Event $event);
 }

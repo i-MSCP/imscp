@@ -287,10 +287,7 @@ class iMSCP_Initializer
 
 				if(!$connection->execute('SET NAMES `utf8`')) {
 					throw new iMSCP_Exception(
-						sprintf(
-							'Unable to set charset for database communication. SQL returned: %s',
-							$connection->errorMsg()
-						)
+						sprintf('Could not set charset for database communication. SQL returned: %s', $connection->errorMsg())
 					);
 				}
 			} else {
@@ -298,7 +295,7 @@ class iMSCP_Initializer
 			}
 		} catch(PDOException $e) {
 			throw new iMSCP_Exception_Database(
-				'Unable to establish the connection to the database. SQL returned: ' . $e->getMessage()
+				sprintf('Could not establish connection to the database: %s', $e->getMessage()), null, $e->getCode(), $e
 			);
 		}
 

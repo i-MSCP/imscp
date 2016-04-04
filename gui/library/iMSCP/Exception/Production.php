@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,22 +23,22 @@
  */
 class iMSCP_Exception_Production extends iMSCP_Exception
 {
-	/**
-	 * Constructor
-	 *
-	 * @param string $message
-	 * @param int $code
-	 * @param Exception $previous OPTIONAL Previous exception
-	 * @return iMSCP_Exception_Production
-	 */
-	public function __construct($message = '', $code = 0, $previous = null)
-	{
-		if(function_exists('tr') && iMSCP_Registry::isRegistered('Pdo')) {
-			$message = tr('An unexpected error occurred. Please contact your administrator.');
-		} else {
-			$message = 'An unexpected error occurred. Please contact your administrator.';
-		}
+    /**
+     * Constructor
+     *
+     * @param string $message
+     * @param int $code
+     * @param Exception $previous OPTIONAL Previous exception
+     * @return iMSCP_Exception_Production
+     */
+    public function __construct($message = '', $code = 0, $previous = null)
+    {
+        if (function_exists('tr') && iMSCP_Registry::isRegistered('Pdo')) {
+            $message = tr('An unexpected error occurred. Please contact your administrator.');
+        } else {
+            $message = 'An unexpected error occurred. Please contact your administrator.';
+        }
 
-		parent::__construct($message, $code, $previous);
-	}
+        parent::__construct($message, $code, $previous);
+    }
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,23 +23,23 @@
  */
 class iMSCP_Exception_Event extends iMSCP_Events_Event
 {
-	/**
-	 * Constructor
-	 *
-	 * @param Exception $exception
-	 */
-	public function __construct(Exception $exception)
-	{
-		parent::__construct('onUncaughtException', array('exception' => $exception));
-	}
+    /**
+     * Constructor
+     *
+     * @param Exception $exception
+     */
+    public function __construct(Exception $exception)
+    {
+        parent::__construct('onUncaughtException', array('exception' => $exception));
+    }
 
-	/**
-	 * Get Exception
-	 *
-	 * @return Exception
-	 */
-	public function getException()
-	{
-		return $this->getParam('exception');
-	}
+    /**
+     * Get Exception
+     *
+     * @return Exception
+     */
+    public function getException()
+    {
+        return $this->getParam('exception');
+    }
 }

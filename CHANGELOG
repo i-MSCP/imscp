@@ -58,6 +58,7 @@ FRONTEND
     Fixed: Could not set URL redirect when adding domain alias; Bad request error page
     Fixed: IDNs are shown in IDNA form in several places
     Fixed: iMSCP_Update_Database::addIndex() doesn't allows to set index length
+    Fixed: Wrong behavior with Exception handler when database connection is not available
     Removed: User deletion confirmation pages (admin/reseller level)
     Removed: iMSCP_NetworkCard class (replaced by iMSCP\Net class)
     Rewritten: FTP chooser interface to avoid usage of iframe
