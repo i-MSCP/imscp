@@ -40,6 +40,7 @@ use iMSCP::Execute;
 use iMSCP::EventManager;
 use iMSCP::Rights;
 use iMSCP::TemplateParser;
+use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
 use iMSCP::OpenSSL;
 use iMSCP::Servers;
@@ -989,6 +990,7 @@ sub setupCreateMasterUser
 {
     my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupCreateMasterUser');
 
+    $rs ||= iMSCP::SystemGroup->getInstance()->addSystemGroup($main::imscpConfig{'IMSCP_GROUP'});
     $rs ||= iMSCP::SystemUser->new(
         username => $main::imscpConfig{'IMSCP_USER'},
         group => $main::imscpConfig{'IMSCP_GROUP'},
