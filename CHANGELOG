@@ -14,16 +14,16 @@ BACKEND
     Added: Support for prime256v1 (ECDSA) keys (iMSCP::OpenSSL)
     Backported: iMSCP::DbTasksProcessor from 1.3.x branch - Allows to process db tasks without spawning new process
     Backported: imscp-mountall-mngr (as imscp-mountall) from 1.3.x branch - Mount i-MSCP file systems on server reboot
-    Backported:: iMSCP::Mount library from 1.3.x branch - Library for mounting/unmounting file systems
+    Backported: iMSCP::Mount library from 1.3.x branch - Library for mounting/unmounting file systems
     Changed: Upstart job file paths, sysvinit script paths and systemd unit files paths are now cached (init providers)
     Fixed: composer.phar must not be run with root user privileges (it is now run with i-MSCP system master user)
     Fixed: eth0 is hardcoded in i-MSCP network interface provider
     Fixed: Ignore user-specific options if any (~/.my.cnf file) when running mysqldump (iMSCP::Database::mysql::dumpdb)
     Fixed: Many inconsistencies in iMSCP::Getopt
-    Improvement: Allow registering many event listeners at once
+    Improvement: Allow registering many event listeners at once (Event::Manager)
     Removed: beforeDispatchRequest and afterDispatchRequest events
     Removed: cache data directory (/var/cache/imscp directory)
-    Removed: imscp-httpd-logs-mngr script (Apache2 logs dirctories are now mounted through imscp_mountall service)
+    Removed: imscp-httpd-logs-mngr script (Apache2 logs dirctories are now mounted via the imscp_mountall service)
     Rewritten: iMSCP::SetRights library (usage of built-in functions to avoid call of system chown/chmod commands)
 
 CONFIG
@@ -32,7 +32,7 @@ CONFIG
     Added: MAX_INSTANCES, MAX_CLIENT_PER_HOST and FTPD_CONF_DIR parameters in proftpd/proftpd.data file
     Added: MOUNT_CUSTOMER_LOGS parameter in apache/apache.data file (allows to disable logs bind mounts)
     Changed: Increased default limits for ProFTPD/VsFTPd
-    Depreciated: CACHE_DATA_DIR parameters
+    Depreciated: CACHE_DATA_DIR (/var/cache/imscp) parameter
     Fixed: Allow access to .well-known folder in any case if exists (Apache2)
     Removed: Redundant MYSQL_PREFIX_TYPE parameter
     Removed: VARIABLE_DATA_DIR parameter
@@ -44,24 +44,24 @@ DATABASE
     Updated: domain_id index on domain_dns table; added index length for domain_dns and domain_text columns
 
 FRONTEND
-    Added: iMSCP\Net class - Allow to get list of network devices and IP addresses
-    Added: Datatable for the file system information table
-    Added: SPF DNS resource record type (validated as a TXT record)
+    Added: iMSCP\Net class - Allow to get list of network devices and IP addresses (stdlib)
+    Added: Datatable for the file system information table (admin level)
+    Added: SPF DNS resource record type (validated as a TXT record) (client level)
     Changed: exec() PHP function is no longer disabled for the control panel
-    Changed: The `type` field cannot longer be changed when editing a DNS resource record
-    Changed: Support for nested MySQL transactions is now emulated using named transaction savepoints
-    Fixed: Cannot add DKIM/DMARC DNS resource records
-    Fixed: Could not retrieve network devices list under Debian Stretch (testing) - Related to #IP-1525
-    Fixed: Customer must be allowed to set custom TTL value for any DNS resource record
-    Fixed: Customer must be allowed to set `name` field of any DNS resource record
-    Fixed: Could not remove database; There is no such grant defined for user...
-    Fixed: Could not set URL redirect when adding domain alias; Bad request error page
+    Changed: The `type` field cannot longer be changed when editing a DNS resource record (client level)
+    Changed: Support for nested MySQL transactions is now emulated using named transaction savepoints (stdlib)
+    Fixed: Cannot add DKIM/DMARC DNS resource records (client level)
+    Fixed: Could not retrieve network devices list under Debian Stretch (testing) - Related to #IP-1525 (admin level)
+    Fixed: Customer must be allowed to set custom TTL value for any DNS resource record (client level)
+    Fixed: Customer must be allowed to set `name` field of any DNS resource record (client level)
+    Fixed: Could not remove database; There is no such grant defined for user... (stdlib)
+    Fixed: Could not set URL redirect when adding domain alias; Bad request error page (client level)
     Fixed: IDNs are shown in IDNA form in several places
-    Fixed: iMSCP_Update_Database::addIndex() doesn't allows to set index length
-    Fixed: Wrong behavior with Exception handler when database connection is not available
-    Removed: User deletion confirmation pages (admin/reseller level)
-    Removed: iMSCP_NetworkCard class (replaced by iMSCP\Net class)
-    Rewritten: FTP chooser interface to avoid usage of iframe
+    Fixed: iMSCP_Update_Database::addIndex() doesn't allows to set index length (stdlib)
+    Fixed: Wrong behavior with exception handler when database connection is not available (stdlib)
+    Removed: User deletion confirmation pages (admin and reseller levels)
+    Removed: iMSCP_NetworkCard class; replaced by iMSCP\Net class (stdlib)
+    Rewritten: FTP chooser interface to avoid usage of iframe (client level)
 
 INSTALLER
     Added: Check for maximum supported PHP/Perl versions
@@ -72,7 +72,7 @@ INSTALLER
     Fixed: libmariadbclient18 package not provided in Debian Stretch (testing) repository
     Fixed: Plugin setup listeners are no longer registered (regression fix)
     Fixed: SQL user and password not correctly escaped in imscp.cnf file (Servers::sqld::mysql::installer)
-    Moved: Master administrator questions and setup routines into the Package::FrontEnd::Installer package
+    Moved: Master administrator questions and setup routines into Package::FrontEnd::Installer
     Renamed: imscp-setup script to imscp-reconfigure
     Transitional: Enforce PHP5 variant under Debian Stretch (testing) and Ubuntu 16.04 (Xenial Xerus)
 
@@ -94,20 +94,20 @@ SERVERS
     Fixed: Could not build local vsftpd package when gpg has been initialized; .changes file cannot be signed
     Fixed: Courier sysvinit script must not be copied when selected PO server is Dovecot
     Fixed: Disabled mod_tls_memcache.c module to avoid weird notice on restart (ProFTPD)
-    Fixed: Enable support for UTF-8 file systems (VsFTPD)
+    Fixed: Enable support for UTF-8 file systems (VsFTPd)
     Fixed: Hide real server identity (ProFTPD)
     Fixed: Invalid version format (non-numeric data) when installing VsFTPd on Debian Stretch (testing)
     Fixed: IP addresses are added multiple time in Apache 00_nameserver.conf file (Httpd servers)
-    Fixed: ON|OFF string not recognized as boolean value in imscp.cnf conffile (MySQL)
+    Fixed: ON|OFF string not recognized as boolean value in imscp.cnf file (MySQL)
     Fixed: Traffic accounting routines must not remove log files (ProFTPD/VsFTPd). Files are now truncated instead.
     Fixed: Useless reload of VsFTPd when adding/removing an FTP user (privileges are given by session)
     Fixed: VsFTPd doesn't reopen xferlog file automatically when the file has been removed, leading to traffic data loss
     Fixed: VsFTPD doesn't support non-ascii characters in FTP usernames
-    Fixed: When the --skip-distro-packages installer option is set, the VsFTPD local package shouldn't be rebuilt
+    Fixed: When the --skip-distro-packages installer option is set, the vsftpd local package shouldn't be rebuilt
     Removed: /var/log/proftpd/ftp_traff.log custom log. Traffic data are now pulled from /var/log/proftpd/xferlog
 
 VLOGGER
-    Fixed: Avoid SELECT query while dump of traffic data
+    Fixed: Avoid SELECT queries while dump of traffic data
     Fixed: SQL statement must be prepared once per dump process
     Fixed: Wrong SQL user host (localhost instead of 127.0.0.1)
 
