@@ -104,6 +104,12 @@ can do this by running:
 # perl /var/www/imscp/engine/setup/imscp-reconfigure -dar php
 ```
 
+## PhpMyAdmin listener files
+
+### 10_phpmyadmin_conffile.pl
+
+Allows to override default PhpMyAdmin configuration template file
+
 ## Postfix listener files
 
 ### 10_postfix_smarthost.pl
