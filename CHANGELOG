@@ -82,7 +82,7 @@ INSTALLER
 PACKAGES
     Fixed: ERR_INCOMPLETE_CHUNKED_ENCODING error due to wrong permissions on nginx fastcgi cache directory (FrontEnd)
     Fixed: White page due to 'net::ERR_INCOMPLETE_CHUNKED_ENCODING' errors (related to #IP-1530) (PhpMyAdmin)
-    Updated: PhpMyAdmin version to 4.6.0 - Only for server with PHP/MySQL >= 5.5 (Package::PhpMyAdmin::Installer)
+    Updated: PhpMyAdmin version to 4.6.0 - Only for servers with PHP/MySQL >= 5.5 (Package::PhpMyAdmin::Installer)
 
 PLUGINS
     Fixed: Plugin configuration not synced when triggering plugin list update (when a plugin is in error state)
