@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2016.04.04
+# Last update: 2016.04.05
 
 %main::questions = (
 
@@ -190,7 +190,7 @@
     DATABASE_PORT                       => '3306',
 
     # SQL root user
-    # Note:this user is only used while installation/reconfiguration
+    # Note: This user is only used while installation/reconfiguration
     SQL_ROOT_USER                       => 'root',
     SQL_ROOT_PASSWORD                   => '',
 

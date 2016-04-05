@@ -828,8 +828,8 @@ EOF
 
     if ($sqlServer ne 'remote_server' && iMSCP::Getopt->preseed && $sqlServerQuestionOwner) {
         $selectionsFileContent .= <<"EOF";
-$sqlServerQuestionOwner $sqlServerQuestionPrefix/root_password password $main::questions{'DATABASE_PASSWORD'}
-$sqlServerQuestionOwner $sqlServerQuestionPrefix/root_password_again password $main::questions{'DATABASE_PASSWORD'}
+$sqlServerQuestionOwner $sqlServerQuestionPrefix/root_password password $main::questions{'SQL_ROOT_USER'}
+$sqlServerQuestionOwner $sqlServerQuestionPrefix/root_password_again password $main::questions{'SQL_ROOT_PASSWORD'};
 EOF
     }
 
