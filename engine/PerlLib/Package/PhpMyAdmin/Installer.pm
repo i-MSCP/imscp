@@ -102,10 +102,10 @@ sub showDialog
 
 Please enter an username for the PhpMyAdmin SQL user:$msg
 EOF
-            if (lc($dbUser) eq lc($main::imscpConfig{'DATABASE_USER'})) {
+            if (lc( $dbUser ) eq lc( $main::imscpConfig{'DATABASE_USER'} )) {
                 $msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
                 $dbUser = '';
-            } elsif(lc($dbUser) eq 'root') {
+            } elsif (lc( $dbUser ) eq 'root') {
                 $msg = "\n\n\\Z1Usage of SQL root user is prohibited.\\Zn\n\nPlease try again:";
                 $dbUser = '';
             } elsif (length $dbUser > 16) {
@@ -186,7 +186,7 @@ sub preinstall
 
     my $version = version->parse( Servers::sqld->factory()->getVersion() ) >= version->parse( '5.5.0' )
           ? (version->parse( $self->_getPhpVersion() ) >= version->parse( '5.5.0' )
-            ? '0.4.5.*@dev' : '0.4.0.*@dev'
+            ? '0.4.6.*@dev' : '0.4.0.*@dev'
         ) : '0.2.0.*@dev';
 
     my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/phpmyadmin', $version );
@@ -544,6 +544,8 @@ sub _setupDatabase
         }
     }
 
+    my $oldDatabase = $db->useDatabase( $phpmyadminDbName );
+
     # In any case (new install / upgrade) we execute queries from the create_tables.sql file. On upgrade, this will
     # create the missing tables
 
@@ -552,7 +554,7 @@ sub _setupDatabase
 
     $schemaFile = iMSCP::File->new( filename => $schemaFile )->get();
     unless (defined $schemaFile) {
-        error( sprintf( 'Could not read %s', "$phpmyadminDir/examples/create_tables.sql" ) );
+        error( sprintf( 'Could not read %s', $self->{'filename'} ) );
         return 1;
     }
 
@@ -571,6 +573,7 @@ sub _setupDatabase
         }
     }
 
+    $db->useDatabase( $oldDatabase );
     0;
 }
 
