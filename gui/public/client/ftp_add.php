@@ -315,7 +315,7 @@ function addAccount()
     } catch (iMSCP_Exception $e) {
         $db->rollBack();
         if ($e->getCode() == 23000) {
-            set_page_message(tr('Ftp account already exists.'), 'error');
+            set_page_message(tr('FTP account already exists.'), 'error');
             return false;
         }
 
