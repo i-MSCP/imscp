@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-06 12:53+0200\n"
-"PO-Revision-Date: 2016-04-06 10:54+0000\n"
+"POT-Creation-Date: 2016-04-06 12:59+0200\n"
+"PO-Revision-Date: 2016-04-06 11:00+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/i-mscp/i-MSCP/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -2311,6 +2311,9 @@ msgstr ""
 msgid "FTP account"
 msgstr ""
 
+msgid "FTP account already exists."
+msgstr ""
+
 msgid "FTP account limit"
 msgstr ""
 
@@ -2452,9 +2455,6 @@ msgid "Ftp"
 msgstr ""
 
 msgid "Ftp account"
-msgstr ""
-
-msgid "Ftp account already exists."
 msgstr ""
 
 msgid "Ftp account data"

@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-06 12:53+0200\n"
-"PO-Revision-Date: 2016-04-06 10:54+0000\n"
+"POT-Creation-Date: 2016-04-06 12:59+0200\n"
+"PO-Revision-Date: 2016-04-06 11:00+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/i-mscp/i-MSCP/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
@@ -2317,6 +2317,9 @@ msgstr "Zewnętrzne serwery poczty"
 msgid "FTP account"
 msgstr "Konto FTP"
 
+msgid "FTP account already exists."
+msgstr "Konto FTP już istnieje."
+
 msgid "FTP account limit"
 msgstr "Limit kont FTP"
 
@@ -2459,9 +2462,6 @@ msgstr "FTP"
 
 msgid "Ftp account"
 msgstr "Konto FTP"
-
-msgid "Ftp account already exists."
-msgstr ""
 
 msgid "Ftp account data"
 msgstr "Dane konta FTP"

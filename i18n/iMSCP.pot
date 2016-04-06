@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.2.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-06 12:53+0200\n"
+"POT-Creation-Date: 2016-04-06 12:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2315,6 +2315,9 @@ msgstr ""
 msgid "FTP account"
 msgstr ""
 
+msgid "FTP account already exists."
+msgstr ""
+
 msgid "FTP account limit"
 msgstr ""
 
@@ -2456,9 +2459,6 @@ msgid "Ftp"
 msgstr ""
 
 msgid "Ftp account"
-msgstr ""
-
-msgid "Ftp account already exists."
 msgstr ""
 
 msgid "Ftp account data"
