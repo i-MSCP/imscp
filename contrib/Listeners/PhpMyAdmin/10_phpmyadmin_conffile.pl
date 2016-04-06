@@ -19,7 +19,7 @@
 ## Allows to override default PhpMyAdmin configuration template file
 #
 
-package PhpMyAdmin::Conffile;
+package Listener::PhpMyAdmin::Conffile;
 
 use iMSCP::EventManager;
 use iMSCP::File;
