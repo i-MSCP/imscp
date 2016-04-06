@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-25 21:53+0100\n"
-"PO-Revision-Date: 2016-03-25 20:53+0000\n"
+"POT-Creation-Date: 2016-04-06 12:53+0200\n"
+"PO-Revision-Date: 2016-04-06 10:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/i-mscp/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -251,10 +251,6 @@ msgstr "%s のIPアドレス  は %s 秒間待っています。"
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "%s のアカウントは削除されました。"
-
-#, php-format
-msgid "%s doesn't exist"
-msgstr "%s が見つかりません"
 
 #, php-format
 msgid "%s doesn't exist or is empty."
@@ -1055,6 +1051,14 @@ msgstr "%s のメニューを削除してもよろしいですか？"
 msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr " '%s' のチケットを削除してもよろしいですか？"
 
+#, php-format
+msgid "Are you sure you want to delete the `%%s` FTP user?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the `%%s` protected area?"
+msgstr ""
+
 msgid "Are you sure you want to delete this DNS record?"
 msgstr "このDNSレコードを削除してもよろしいですか？"
 
@@ -1090,9 +1094,6 @@ msgstr "Webソフトウェアリポジトリからこのパッケージをイン
 msgid "Are you sure you want to restore the backup?"
 msgstr "バックアップから復元してもよいですか？"
 
-msgid "Area name"
-msgstr "エリア名"
-
 msgid "Assign"
 msgstr "割り当て"
 
@@ -1107,6 +1108,15 @@ msgstr "最初に、少なくとも1つのSQLユーザを持つデータベー�
 
 msgid "At least one intermediate certificate is invalid or missing."
 msgstr "少なくとも一つの中間証明書が無効か、または存在しません。"
+
+msgid "Authentication by group"
+msgstr ""
+
+msgid "Authentication by user"
+msgstr ""
+
+msgid "Authentication data"
+msgstr ""
 
 msgid "Auto (Browser language)"
 msgstr "自動（ブラウザの言語）"
@@ -1516,6 +1526,9 @@ msgstr ""
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr ""
 
+msgid "Could not retrieve directories. Please contact your reseller."
+msgstr ""
+
 msgid "Could not upload file."
 msgstr "ファイルをアップロードできませんでした。"
 
@@ -1545,6 +1558,9 @@ msgstr "キャッチオール作成"
 
 msgid "Create default email addresses"
 msgstr "デフォルトEメールアドレスを作成"
+
+msgid "Create protected area"
+msgstr ""
 
 msgid "Created by"
 msgstr "作成者"
@@ -1867,6 +1883,14 @@ msgstr "ディレクトリ"
 #, php-format
 msgid "Directory %s doesn't exists."
 msgstr "ディレクトリ%sは存在しません。"
+
+#, php-format
+msgid "Directory '%s' doesn't exists."
+msgstr ""
+
+#, php-format
+msgid "Directory '%s' is not allowed or invalid."
+msgstr ""
 
 msgid "Directory tree"
 msgstr "ディレクトリツリー"
@@ -2251,9 +2275,6 @@ msgstr "エラーページ"
 msgid "Error reporting"
 msgstr "エラー報告"
 
-msgid "Error while trying to obtain list of network cards."
-msgstr "ネットワークカードのリストを取得中にエラーが発生しました。"
-
 msgid "Error: Remote File not found!"
 msgstr "エラー：リモートファイルが見つかりません！"
 
@@ -2290,9 +2311,6 @@ msgstr "外部のメールサーバの更新が予定されました。"
 msgid "External mail servers"
 msgstr "外部メールサーバ"
 
-msgid "FTP Users"
-msgstr "FTPユーザー"
-
 msgid "FTP account"
 msgstr "FTPアカウント"
 
@@ -2314,14 +2332,17 @@ msgstr "FTPアカウントを更新しました。"
 msgid "FTP accounts"
 msgstr "FTPアカウント"
 
+msgid "FTP home directory"
+msgstr ""
+
+msgid "FTP home directory cannot be empty."
+msgstr ""
+
 msgid "FTP traffic"
 msgstr "FTPトラフィック"
 
 msgid "FTP user errors"
 msgstr ""
-
-msgid "FTPs total"
-msgstr "FTP合計"
 
 msgid "Failed to write file to disk."
 msgstr "ディスクへのファイルの書き込みに失敗しました。"
@@ -2436,11 +2457,11 @@ msgstr "Ftp"
 msgid "Ftp account"
 msgstr "Ftp アカウント"
 
+msgid "Ftp account already exists."
+msgstr ""
+
 msgid "Ftp account data"
 msgstr "FTPアカウントデータ"
-
-msgid "Ftp account with same username already exists."
-msgstr "同じユーザー名でFTPアカウントは既に存在します。"
 
 msgid "Ftp accounts"
 msgstr "FTPアカウント"
@@ -2478,9 +2499,6 @@ msgstr "GiB"
 msgid "Group"
 msgstr "グループ"
 
-msgid "Group auth"
-msgstr "グループ認証"
-
 msgid "Group members"
 msgstr "グループのメンバー"
 
@@ -2501,10 +2519,6 @@ msgstr "高"
 
 msgid "Home directory"
 msgstr "ホームディレクトリ"
-
-#, php-format
-msgid "Home directory '%s' doesn't exist"
-msgstr "ホームディレクトリ '%s'は存在しません"
 
 msgid "Homepage"
 msgstr "ホームページ"
@@ -2752,6 +2766,9 @@ msgstr "内部サーバエラー"
 msgid "Internationalization"
 msgstr "国際化"
 
+msgid "Invalid FTP username."
+msgstr ""
+
 msgid "Invalid MX priority."
 msgstr "無効なMXの優先度。"
 
@@ -2786,9 +2803,6 @@ msgstr "無効なEメールユーザ名です。"
 
 msgid "Invalid group name!"
 msgstr "無効なグループ名！"
-
-msgid "Invalid home directory."
-msgstr "無効なホームディレクトリ。"
 
 msgid "Invalid htaccess group name."
 msgstr "無効なhtaccessグループ名。"
@@ -3577,8 +3591,8 @@ msgstr "SQLユーザーのホストを入力してください。"
 msgid "Please enter an username."
 msgstr "ユーザ名を入力してください。"
 
-msgid "Please enter protected area path"
-msgstr "アクセス制限領域のパスを入力してください"
+msgid "Please enter protected area path."
+msgstr ""
 
 msgid "Please enter your auto-responder message below"
 msgstr "下記に自動応答メッセージを入力してください"
@@ -3827,17 +3841,20 @@ msgstr "ID %d を持つ代理店のプロパティがデータベースに見つ
 msgid "Protect"
 msgstr "保護"
 
-msgid "Protect it"
-msgstr "保護する"
-
 msgid "Protect this plugin"
 msgstr "このプラグインを保護する"
 
 msgid "Protected"
 msgstr "保護された"
 
-msgid "Protected area status should be 'OK' if you want to delete it."
-msgstr "アクセス制限領域削除したいならば、ステータスは'OK'でなければなりません。"
+msgid "Protected area data"
+msgstr ""
+
+msgid "Protected area name"
+msgstr ""
+
+msgid "Protected area path"
+msgstr ""
 
 msgid "Protected area successfully scheduled for addition."
 msgstr "アクセス制限領域の追加が予定されました。"
@@ -4506,9 +4523,6 @@ msgstr "統計"
 msgid "Status"
 msgstr "ステータス"
 
-msgid "Status for protected area must be 'OK' if you want to edit it."
-msgstr "編集したい場合は、アクセス制限領域のステータスは'OK'でなければなりません。"
-
 msgid "Street 1"
 msgstr "建物名"
 
@@ -4776,10 +4790,6 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid "This IP (%s) is not assigned to any network card!"
-msgstr "このIPアドレス (%s) はどのネットワークカードにも割り当てられていません！"
-
-#, php-format
 msgid ""
 "This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
 "this package!<br>Please delete the files and database for this package "
@@ -5038,11 +5048,6 @@ msgstr "ID '%sのチケットは再開できません。."
 msgid "Unable to restore %s plugin directory"
 msgstr "%sプラグインのディレクトリを復元することができません"
 
-msgid ""
-"Unable to retrieve directories list for your domain. Please contact your "
-"reseller."
-msgstr "ドメインのディレクトリ一覧を取得できません。代理店にお問い合わせください。"
-
 msgid "Unable to retrieve your password from the database."
 msgstr "データベースからパスワードを取得できません。"
 
@@ -5146,9 +5151,6 @@ msgstr "未知のユーザー名。"
 msgid "Unlimited"
 msgstr "無制限"
 
-msgid "Unprotect it"
-msgstr "保護を解除する"
-
 msgid "Update"
 msgstr "更新"
 
@@ -5180,6 +5182,9 @@ msgstr "Webソフトウェアリポジトリ索引の更新が中止されまし
 
 msgid "Update password"
 msgstr "パスワードを更新"
+
+msgid "Update protected area"
+msgstr ""
 
 msgid "Updates"
 msgstr "アップデート"
@@ -5222,9 +5227,6 @@ msgstr "ユーザーの氏名（姓と名）"
 
 msgid "User assignment"
 msgstr "ユーザーの割り当て"
-
-msgid "User auth"
-msgstr "ユーザー認証"
 
 msgid "User data successfully updated"
 msgstr "ユーザー·データは更新されました"
@@ -5289,9 +5291,6 @@ msgstr "ユーザ名が長すぎます。"
 
 msgid "Users"
 msgstr "ユーザー"
-
-msgid "Users and groups"
-msgstr "ユーザーとグループ"
 
 #, php-format
 msgid "Value for the PHP %%s directive must be in range %%d to %%d."
@@ -5543,9 +5542,6 @@ msgstr "FTPアカウントを持っていません。"
 msgid "You do not have any software uploaded yet"
 msgstr "任意のソフトウェアがまだアップロードされていません"
 
-msgid "You do not have customers."
-msgstr "あなたは顧客を持っていません。"
-
 msgid "You do not have databases."
 msgstr "データベースを持っていません。"
 
@@ -5563,9 +5559,6 @@ msgstr "アクセス制限領域を持っていない。"
 
 msgid "You do not have subdomains."
 msgstr "サブドメインを持っていません。"
-
-msgid "You do not have sufficient permissions to perform this operation."
-msgstr "この操作を実行する権限がありません。"
 
 #, php-format
 msgid "You have %d new domain alias %s."
@@ -5668,6 +5661,9 @@ msgstr "ドメインエイリアス名を入力する必要があります。"
 
 msgid "You must enter a subdomain name."
 msgstr "サブドメイン名を入力する必要があります。"
+
+msgid "You must first create a user."
+msgstr ""
 
 msgid "You must first generate a password by clicking on the generate button."
 msgstr "最初に生成ボタンをクリックしてパスワードを生成する必要があります。"
