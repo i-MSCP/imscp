@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-25 21:53+0100\n"
-"PO-Revision-Date: 2016-03-25 20:53+0000\n"
+"POT-Creation-Date: 2016-04-06 12:53+0200\n"
+"PO-Revision-Date: 2016-04-06 10:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -251,10 +251,6 @@ msgstr "%s IP 位址要等 %s 秒鐘。"
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "%s 帳號已經成功地刪除"
-
-#, php-format
-msgid "%s doesn't exist"
-msgstr "%s 不存在"
 
 #, php-format
 msgid "%s doesn't exist or is empty."
@@ -1055,6 +1051,14 @@ msgstr "您確定要刪除 %s 這個選單?"
 msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "您確定要刪除 '%s' 服務單?"
 
+#, php-format
+msgid "Are you sure you want to delete the `%%s` FTP user?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the `%%s` protected area?"
+msgstr ""
+
 msgid "Are you sure you want to delete this DNS record?"
 msgstr "您確定要刪除這個 DNS 紀錄?"
 
@@ -1090,9 +1094,6 @@ msgstr "您確定要安裝這個套件到網站軟體庫?"
 msgid "Are you sure you want to restore the backup?"
 msgstr "你確定想還原備份？"
 
-msgid "Area name"
-msgstr "區域名稱"
-
 msgid "Assign"
 msgstr "指派"
 
@@ -1107,6 +1108,15 @@ msgstr "首先您必須建立資料庫及至少一個 SQL 使用者。"
 
 msgid "At least one intermediate certificate is invalid or missing."
 msgstr "至少有一個中繈憑證是無效或遺失。"
+
+msgid "Authentication by group"
+msgstr ""
+
+msgid "Authentication by user"
+msgstr ""
+
+msgid "Authentication data"
+msgstr ""
 
 msgid "Auto (Browser language)"
 msgstr "自動 (瀏覽器語言)"
@@ -1516,6 +1526,9 @@ msgstr "無法刪除 SSL 憑證。已產生無法預期的錯誤。"
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr "無法產生 SSL 憑證。已產生無法預期的錯誤。"
 
+msgid "Could not retrieve directories. Please contact your reseller."
+msgstr ""
+
 msgid "Could not upload file."
 msgstr "無法上傳檔案"
 
@@ -1545,6 +1558,9 @@ msgstr "建立抓取外部郵件"
 
 msgid "Create default email addresses"
 msgstr "建立預設郵件地址"
+
+msgid "Create protected area"
+msgstr ""
 
 msgid "Created by"
 msgstr "建立者"
@@ -1867,6 +1883,14 @@ msgstr "目錄"
 #, php-format
 msgid "Directory %s doesn't exists."
 msgstr "目錄 %s 不存在。"
+
+#, php-format
+msgid "Directory '%s' doesn't exists."
+msgstr ""
+
+#, php-format
+msgid "Directory '%s' is not allowed or invalid."
+msgstr ""
 
 msgid "Directory tree"
 msgstr "目錄結構"
@@ -2251,9 +2275,6 @@ msgstr "錯誤頁面"
 msgid "Error reporting"
 msgstr "錯誤報告"
 
-msgid "Error while trying to obtain list of network cards."
-msgstr "在試著取得網卡列表時發生錯誤。"
-
 msgid "Error: Remote File not found!"
 msgstr "錯誤: 遠端檔案不存在"
 
@@ -2290,9 +2311,6 @@ msgstr "更新外部郵件伺服器的排程已成功"
 msgid "External mail servers"
 msgstr "外部郵件伺服器"
 
-msgid "FTP Users"
-msgstr "FTP 使用者"
-
 msgid "FTP account"
 msgstr "FTP 帳號"
 
@@ -2314,14 +2332,17 @@ msgstr "FTP 帳號已經成功更新"
 msgid "FTP accounts"
 msgstr "FTP  帳號"
 
+msgid "FTP home directory"
+msgstr ""
+
+msgid "FTP home directory cannot be empty."
+msgstr ""
+
 msgid "FTP traffic"
 msgstr "FTP 流量"
 
 msgid "FTP user errors"
 msgstr "FTP 使用者錯誤"
-
-msgid "FTPs total"
-msgstr "FTPs 總數"
 
 msgid "Failed to write file to disk."
 msgstr "寫入到磁碟失敗。"
@@ -2436,11 +2457,11 @@ msgstr "Ftp"
 msgid "Ftp account"
 msgstr "Ftp 帳號"
 
+msgid "Ftp account already exists."
+msgstr ""
+
 msgid "Ftp account data"
 msgstr "Ftp 帳號資料"
-
-msgid "Ftp account with same username already exists."
-msgstr "Ftp 帳號已經存在相當使用者名稱。"
 
 msgid "Ftp accounts"
 msgstr "FTP 帳號"
@@ -2478,9 +2499,6 @@ msgstr "GiB"
 msgid "Group"
 msgstr "群組"
 
-msgid "Group auth"
-msgstr "群組認證"
-
 msgid "Group members"
 msgstr "群組成員"
 
@@ -2501,10 +2519,6 @@ msgstr "高"
 
 msgid "Home directory"
 msgstr "家目錄"
-
-#, php-format
-msgid "Home directory '%s' doesn't exist"
-msgstr "家目錄 '%s' 不存在"
 
 msgid "Homepage"
 msgstr "首頁"
@@ -2752,6 +2766,9 @@ msgstr "內部伺服器錯誤"
 msgid "Internationalization"
 msgstr "國際化"
 
+msgid "Invalid FTP username."
+msgstr ""
+
 msgid "Invalid MX priority."
 msgstr "無效的 MX 優先權。"
 
@@ -2786,9 +2803,6 @@ msgstr "無效的郵件使用者名稱。"
 
 msgid "Invalid group name!"
 msgstr "無效的群組名稱！"
-
-msgid "Invalid home directory."
-msgstr "無效的家目錄。"
 
 msgid "Invalid htaccess group name."
 msgstr "無效的 htaccess 群組名稱。"
@@ -3577,8 +3591,8 @@ msgstr "請輸入 SQL 使用者主機"
 msgid "Please enter an username."
 msgstr "請輸入一個使用者名稱"
 
-msgid "Please enter protected area path"
-msgstr "請輸入保護區域的路徑"
+msgid "Please enter protected area path."
+msgstr ""
 
 msgid "Please enter your auto-responder message below"
 msgstr "請在下面輸入您的自動回覆郵件"
@@ -3827,17 +3841,20 @@ msgstr "經銷商及其 ID %d 的內容未從資料庫中找到。"
 msgid "Protect"
 msgstr "保護"
 
-msgid "Protect it"
-msgstr "保護它"
-
 msgid "Protect this plugin"
 msgstr "保護這個外掛"
 
 msgid "Protected"
 msgstr "受保護的"
 
-msgid "Protected area status should be 'OK' if you want to delete it."
-msgstr "假如您想要刪除這個必保護區域的狀態是 '正常' 的。"
+msgid "Protected area data"
+msgstr ""
+
+msgid "Protected area name"
+msgstr ""
+
+msgid "Protected area path"
+msgstr ""
 
 msgid "Protected area successfully scheduled for addition."
 msgstr "新增保護區域的排程已成功"
@@ -4506,9 +4523,6 @@ msgstr "統計"
 msgid "Status"
 msgstr "狀態"
 
-msgid "Status for protected area must be 'OK' if you want to edit it."
-msgstr "假如您想要編輯這個必保護區域的狀態是 '正常' 的。"
-
 msgid "Street 1"
 msgstr "街道 1"
 
@@ -4776,10 +4790,6 @@ msgid ""
 msgstr "有一個錯誤在您的套件裡面。請檢查!<br>重整您的網站來確認新的狀態!"
 
 #, php-format
-msgid "This IP (%s) is not assigned to any network card!"
-msgstr "這個 IP (%s) 並沒有被指派到任何的網卡"
-
-#, php-format
 msgid ""
 "This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
 "this package!<br>Please delete the files and database for this package "
@@ -5038,11 +5048,6 @@ msgstr "無法重新開啟 Id 為'%s' 的服務單。 "
 msgid "Unable to restore %s plugin directory"
 msgstr "無法還原 %s 外掛目錄"
 
-msgid ""
-"Unable to retrieve directories list for your domain. Please contact your "
-"reseller."
-msgstr "無法在您的網域下載目錄清單。請聯絡您的經銷商。"
-
 msgid "Unable to retrieve your password from the database."
 msgstr "無法從資料庫中下載您的密碼。"
 
@@ -5146,9 +5151,6 @@ msgstr "未知的使用者名稱"
 msgid "Unlimited"
 msgstr "無限制"
 
-msgid "Unprotect it"
-msgstr "解除保護"
-
 msgid "Update"
 msgstr "更新"
 
@@ -5180,6 +5182,9 @@ msgstr "已放棄更新網站軟體庫的索引。遺失或空白的欄位。"
 
 msgid "Update password"
 msgstr "修改密碼"
+
+msgid "Update protected area"
+msgstr ""
 
 msgid "Updates"
 msgstr "更新"
@@ -5222,9 +5227,6 @@ msgstr "使用者名稱（姓氏和名字）"
 
 msgid "User assignment"
 msgstr "使用者分配"
-
-msgid "User auth"
-msgstr "使用者認證"
 
 msgid "User data successfully updated"
 msgstr "使用者資料已經成功更新。"
@@ -5289,9 +5291,6 @@ msgstr "使用者名稱過長"
 
 msgid "Users"
 msgstr "使用者"
-
-msgid "Users and groups"
-msgstr "使用者與群組"
 
 #, php-format
 msgid "Value for the PHP %%s directive must be in range %%d to %%d."
@@ -5543,9 +5542,6 @@ msgstr "您沒有任何 FTP 帳號。"
 msgid "You do not have any software uploaded yet"
 msgstr "您沒有任何已上傳的網站軟體。"
 
-msgid "You do not have customers."
-msgstr "你沒有使用者！"
-
 msgid "You do not have databases."
 msgstr "您沒有任何資料庫。"
 
@@ -5563,9 +5559,6 @@ msgstr "您沒有已保護的區域。"
 
 msgid "You do not have subdomains."
 msgstr "您沒有任何子網域"
-
-msgid "You do not have sufficient permissions to perform this operation."
-msgstr "您沒有完整的權限去執行這個操作。"
 
 #, php-format
 msgid "You have %d new domain alias %s."
@@ -5668,6 +5661,9 @@ msgstr "您必須輸入一個網域別稱"
 
 msgid "You must enter a subdomain name."
 msgstr "您必須輸入一個子網域名稱"
+
+msgid "You must first create a user."
+msgstr ""
 
 msgid "You must first generate a password by clicking on the generate button."
 msgstr "您必須點擊產生按鈕來產生第一個密碼。"

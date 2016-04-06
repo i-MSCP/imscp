@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-25 21:53+0100\n"
-"PO-Revision-Date: 2016-03-25 20:53+0000\n"
+"POT-Creation-Date: 2016-04-06 12:53+0200\n"
+"PO-Revision-Date: 2016-04-06 10:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/i-mscp/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -260,10 +260,6 @@ msgstr "IP-adres %s is voor %s minuten wachtende."
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "%s account is verwijderd."
-
-#, php-format
-msgid "%s doesn't exist"
-msgstr "%s bestaat niet"
 
 #, php-format
 msgid "%s doesn't exist or is empty."
@@ -1064,6 +1060,14 @@ msgstr "Weet u zeker dat u het %s menu wilt verwijderen?"
 msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Weet u zeker dat u het %s ticket wilt verwijderen?"
 
+#, php-format
+msgid "Are you sure you want to delete the `%%s` FTP user?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the `%%s` protected area?"
+msgstr ""
+
 msgid "Are you sure you want to delete this DNS record?"
 msgstr "Weet u zeker dat u deze DNS-record wilt verwijderen?"
 
@@ -1099,9 +1103,6 @@ msgstr "Weet u zeker dat u dit pakket vanuit de online softwareberging."
 msgid "Are you sure you want to restore the backup?"
 msgstr "Weet u zeker dat u deze back-up wilt herstellen?"
 
-msgid "Area name"
-msgstr "Gebiedsnaam"
-
 msgid "Assign"
 msgstr "Toewijzen"
 
@@ -1116,6 +1117,15 @@ msgstr "U dient eerst een databank met minimaal 1 gebruiker aan te maken."
 
 msgid "At least one intermediate certificate is invalid or missing."
 msgstr "Minimaal 1 intermediate-certificaat mist of is niet geldig."
+
+msgid "Authentication by group"
+msgstr ""
+
+msgid "Authentication by user"
+msgstr ""
+
+msgid "Authentication data"
+msgstr ""
 
 msgid "Auto (Browser language)"
 msgstr "Automatisch (Browsertaal)"
@@ -1525,6 +1535,9 @@ msgstr "Verwijderen van SSL-certificaat is mislukt. Er is een onverwachte fout o
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr "Genereren van SSL-certificaat is mislukt. Er is een onverwachte fout opgetreden."
 
+msgid "Could not retrieve directories. Please contact your reseller."
+msgstr ""
+
 msgid "Could not upload file."
 msgstr "Kon bestand niet uploaden."
 
@@ -1554,6 +1567,9 @@ msgstr "Maak catch-all"
 
 msgid "Create default email addresses"
 msgstr "Maak standaarde-mailadres aan"
+
+msgid "Create protected area"
+msgstr ""
 
 msgid "Created by"
 msgstr "Gemaakt door"
@@ -1876,6 +1892,14 @@ msgstr "Mappen"
 #, php-format
 msgid "Directory %s doesn't exists."
 msgstr "Map %s bestaat niet."
+
+#, php-format
+msgid "Directory '%s' doesn't exists."
+msgstr ""
+
+#, php-format
+msgid "Directory '%s' is not allowed or invalid."
+msgstr ""
 
 msgid "Directory tree"
 msgstr "Mappenlijst"
@@ -2260,9 +2284,6 @@ msgstr "Errorpaginas"
 msgid "Error reporting"
 msgstr "Foutrapportering"
 
-msgid "Error while trying to obtain list of network cards."
-msgstr "Er is een fout opgetreden tijdens het ophalen van de netwerkapparaten."
-
 msgid "Error: Remote File not found!"
 msgstr "Fout: Extern bestand niet gevonden!"
 
@@ -2299,9 +2320,6 @@ msgstr "Externe mailserver wordt bijgewerkt."
 msgid "External mail servers"
 msgstr "Externe mailservers"
 
-msgid "FTP Users"
-msgstr "FTP-gebruikers"
-
 msgid "FTP account"
 msgstr "FTP-account"
 
@@ -2323,14 +2341,17 @@ msgstr "FTP-account succesvol bijgewerkt."
 msgid "FTP accounts"
 msgstr "FTP-accounts"
 
+msgid "FTP home directory"
+msgstr ""
+
+msgid "FTP home directory cannot be empty."
+msgstr ""
+
 msgid "FTP traffic"
 msgstr "FTP-verkeer"
 
 msgid "FTP user errors"
 msgstr "FTP-gebruikersfouten"
-
-msgid "FTPs total"
-msgstr "Totaal FTP"
 
 msgid "Failed to write file to disk."
 msgstr "Schrijven naar schijf mislukt."
@@ -2445,11 +2466,11 @@ msgstr "FTP"
 msgid "Ftp account"
 msgstr "FTP-account"
 
+msgid "Ftp account already exists."
+msgstr ""
+
 msgid "Ftp account data"
 msgstr "FTP-accountinformatie"
-
-msgid "Ftp account with same username already exists."
-msgstr "FTP-account met zelfde gebruikersnaam bestaat al."
 
 msgid "Ftp accounts"
 msgstr "FTP-accounts"
@@ -2487,9 +2508,6 @@ msgstr "GB"
 msgid "Group"
 msgstr "Groep"
 
-msgid "Group auth"
-msgstr "Groepsauthenticatie"
-
 msgid "Group members"
 msgstr "Groepsleden"
 
@@ -2510,10 +2528,6 @@ msgstr "Hoog"
 
 msgid "Home directory"
 msgstr "Beginmap"
-
-#, php-format
-msgid "Home directory '%s' doesn't exist"
-msgstr "Beginmap '%s' bestaat niet"
 
 msgid "Homepage"
 msgstr "Startpagina"
@@ -2761,6 +2775,9 @@ msgstr "Interne serverfout"
 msgid "Internationalization"
 msgstr "Internationalisering"
 
+msgid "Invalid FTP username."
+msgstr ""
+
 msgid "Invalid MX priority."
 msgstr "Ongeldige MX-prioriteit"
 
@@ -2795,9 +2812,6 @@ msgstr "Foutieve e-mailgebruikersnaam"
 
 msgid "Invalid group name!"
 msgstr "Ongeldige groepsnaam!"
-
-msgid "Invalid home directory."
-msgstr "Ongeldige beginmap."
 
 msgid "Invalid htaccess group name."
 msgstr "Ongeldige htaccess groepsnaam."
@@ -3586,8 +3600,8 @@ msgstr "Vul een SQL-gebruikershost in"
 msgid "Please enter an username."
 msgstr "Vul een gebruikersnaam in."
 
-msgid "Please enter protected area path"
-msgstr "Geef het pad voor de beveiligde map aan"
+msgid "Please enter protected area path."
+msgstr ""
 
 msgid "Please enter your auto-responder message below"
 msgstr "Vul uw auto-beantwoorderbericht in"
@@ -3836,17 +3850,20 @@ msgstr "Eigenschappen voor wederverkoper met nummer %d zijn niet gevonden in de 
 msgid "Protect"
 msgstr "Beveilig"
 
-msgid "Protect it"
-msgstr "Beschermen"
-
 msgid "Protect this plugin"
 msgstr "Beveilig deze invoegtoepassing"
 
 msgid "Protected"
 msgstr "Beveiligd"
 
-msgid "Protected area status should be 'OK' if you want to delete it."
-msgstr "Beveiligde mappen dienen de status 'Oké' te hebben als u ze wilt verwijderen"
+msgid "Protected area data"
+msgstr ""
+
+msgid "Protected area name"
+msgstr ""
+
+msgid "Protected area path"
+msgstr ""
 
 msgid "Protected area successfully scheduled for addition."
 msgstr "Beveiligde wordt  toegevoegd."
@@ -4515,9 +4532,6 @@ msgstr "Statistieken"
 msgid "Status"
 msgstr "Status"
 
-msgid "Status for protected area must be 'OK' if you want to edit it."
-msgstr "Status voor beveiligde map dient 'oké' te zijn als u het wilt bewerken."
-
 msgid "Street 1"
 msgstr "Straat 1"
 
@@ -4785,10 +4799,6 @@ msgid ""
 msgstr "Er bevindt zich een fout in uw pakket. Gelieve het te controleren!<br>Herlaad uw website om de nieuwe status te zien!"
 
 #, php-format
-msgid "This IP (%s) is not assigned to any network card!"
-msgstr "Dit IP (%s) is niet toegewezen aan een netwerkkaart!"
-
-#, php-format
 msgid ""
 "This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
 "this package!<br>Please delete the files and database for this package "
@@ -4850,7 +4860,7 @@ msgid "This software is installed on following domain(s):"
 msgstr "Deze software is geïnstalleerd op de volgende domeinen:"
 
 msgid "This user has domain record. First remove the domain from the system."
-msgstr ""
+msgstr "Deze gebruiker heeft nog een domein-record. Verwijder eerst de domeinnaam van het systeem."
 
 msgid "This user name already exist."
 msgstr "Deze gebruikersnaam bestaat al."
@@ -5047,11 +5057,6 @@ msgstr "Kan ticket met nummer '%s' niet heropenen."
 msgid "Unable to restore %s plugin directory"
 msgstr "Kan map van invoegtoepassing %s niet herstellen"
 
-msgid ""
-"Unable to retrieve directories list for your domain. Please contact your "
-"reseller."
-msgstr "Kan de mappenlijst voor uw domein niet ophalen. Gelieve contact op te nemen met uw wederverkoper."
-
 msgid "Unable to retrieve your password from the database."
 msgstr "Kon uw wachtwoord niet uit de databank ophalen."
 
@@ -5155,9 +5160,6 @@ msgstr "Onbekende gebruikersnaam."
 msgid "Unlimited"
 msgstr "Ongelimiteerd"
 
-msgid "Unprotect it"
-msgstr "Verwijder beveiliging"
-
 msgid "Update"
 msgstr "Opslaan"
 
@@ -5189,6 +5191,9 @@ msgstr "Bijwerken van de index van het softwareberging is afgebroken. Er zijn le
 
 msgid "Update password"
 msgstr "Werk wachtwoord bij"
+
+msgid "Update protected area"
+msgstr ""
 
 msgid "Updates"
 msgstr "Updates"
@@ -5231,9 +5236,6 @@ msgstr "Gebruikers(voor- en achter-)naam"
 
 msgid "User assignment"
 msgstr "Gebruikerstoekenning"
-
-msgid "User auth"
-msgstr "Gebruikersauthenticatie"
 
 msgid "User data successfully updated"
 msgstr "Gebruikersgegevens succesvol bijgewerkt"
@@ -5298,9 +5300,6 @@ msgstr "Gebruikersnaam is te lang."
 
 msgid "Users"
 msgstr "Gebruikers"
-
-msgid "Users and groups"
-msgstr "Gebruikers en groepen"
 
 #, php-format
 msgid "Value for the PHP %%s directive must be in range %%d to %%d."
@@ -5552,9 +5551,6 @@ msgstr "U heeft geen FTP-accounts."
 msgid "You do not have any software uploaded yet"
 msgstr "U heeft nog geen software geüpload."
 
-msgid "You do not have customers."
-msgstr "U heeft geen klanten."
-
 msgid "You do not have databases."
 msgstr "U heeft geen databanken."
 
@@ -5572,9 +5568,6 @@ msgstr "U heeft geen beschermde mappen."
 
 msgid "You do not have subdomains."
 msgstr "U heeft geen subdomeinen."
-
-msgid "You do not have sufficient permissions to perform this operation."
-msgstr "U heeft onvoldoende rechten om deze actie uit te voeren."
 
 #, php-format
 msgid "You have %d new domain alias %s."
@@ -5677,6 +5670,9 @@ msgstr "U dient een naam voor de domeinalias op te geven."
 
 msgid "You must enter a subdomain name."
 msgstr "U dient een naam voor de domeinalias op te geven."
+
+msgid "You must first create a user."
+msgstr ""
 
 msgid "You must first generate a password by clicking on the generate button."
 msgstr "U dient eerst een wachtwoord te genereren door op de Genereer-knop te klikken."

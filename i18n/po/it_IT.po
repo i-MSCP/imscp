@@ -7,7 +7,7 @@
 # i-MSCP <team@i-mscp.net>, 2015
 # theprincy <powerpcweb@gmail.com>, 2015
 # Stefano, 2011,2013-2014
-# Stefano, 2015
+# Stefano, 2015-2016
 # theprincy <powerpcweb@gmail.com>, 2014
 # Tommaso, 2013
 # Zer0, 2013
@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-25 21:53+0100\n"
-"PO-Revision-Date: 2016-03-25 20:53+0000\n"
+"POT-Creation-Date: 2016-04-06 12:53+0200\n"
+"PO-Revision-Date: 2016-04-06 10:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/i-mscp/i-MSCP/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -39,7 +39,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\nGentile {NAME},\n\nUsa il link qui sotto per attivare la tua nuova password per i-MSCP:\n\n{LINK}\n\nTi ringraziamo per aver usato i nostri servizi.\n\n___________________________\nIl Team i-MSCP\n\n"
 
 msgid ""
 "\n"
@@ -255,10 +255,6 @@ msgstr "L'indirizzo IP %s è in attesa %s secondi."
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "%s account eliminati con successo."
-
-#, php-format
-msgid "%s doesn't exist"
-msgstr "%s non esiste"
 
 #, php-format
 msgid "%s doesn't exist or is empty."
@@ -893,7 +889,7 @@ msgid "All fields are required."
 msgstr "Tutti i campi sono obbligatori."
 
 msgid "All fields are valid."
-msgstr ""
+msgstr "Tutti i campi sono validi."
 
 msgid "All in"
 msgstr "Totali in entrata"
@@ -1059,6 +1055,14 @@ msgstr "Sicuro di voler eliminare il menu %s?"
 msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Sicuro di voler eliminare il ticket '%s'?"
 
+#, php-format
+msgid "Are you sure you want to delete the `%%s` FTP user?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the `%%s` protected area?"
+msgstr ""
+
 msgid "Are you sure you want to delete this DNS record?"
 msgstr ""
 
@@ -1076,7 +1080,7 @@ msgid "Are you sure you want to delete this package?"
 msgstr "Sei sicuro di voler eliminare questo pacchetto?"
 
 msgid "Are you sure you want to delete this subdomain?"
-msgstr ""
+msgstr "Sei sicuro di voler eliminare questo sottodominio?"
 
 msgid ""
 "Are you sure you want to import this package into the local software "
@@ -1094,9 +1098,6 @@ msgstr "Sicuro che vuoi installare questo pacchetto dal tuo repository Web?"
 msgid "Are you sure you want to restore the backup?"
 msgstr "Siete sicuri di voler ripristinare il backup?"
 
-msgid "Area name"
-msgstr "Nome dell'area"
-
 msgid "Assign"
 msgstr "Assegnare"
 
@@ -1111,6 +1112,15 @@ msgstr "In un primo momento è necessario creare un database che ha almeno un ut
 
 msgid "At least one intermediate certificate is invalid or missing."
 msgstr "Almeno un certificato intermedio non è valido o mancante."
+
+msgid "Authentication by group"
+msgstr ""
+
+msgid "Authentication by user"
+msgstr ""
+
+msgid "Authentication data"
+msgstr ""
 
 msgid "Auto (Browser language)"
 msgstr "Auto (Linguagio Browser)"
@@ -1520,6 +1530,9 @@ msgstr ""
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr ""
 
+msgid "Could not retrieve directories. Please contact your reseller."
+msgstr ""
+
 msgid "Could not upload file."
 msgstr "Impossibile caricare i file."
 
@@ -1549,6 +1562,9 @@ msgstr "Crea un'email per catturarle tutte"
 
 msgid "Create default email addresses"
 msgstr "Crea indirizzi email di base"
+
+msgid "Create protected area"
+msgstr ""
 
 msgid "Created by"
 msgstr "Creato da"
@@ -1871,6 +1887,14 @@ msgstr "Directories"
 #, php-format
 msgid "Directory %s doesn't exists."
 msgstr "La directory %s non esiste."
+
+#, php-format
+msgid "Directory '%s' doesn't exists."
+msgstr ""
+
+#, php-format
+msgid "Directory '%s' is not allowed or invalid."
+msgstr ""
 
 msgid "Directory tree"
 msgstr "Albero delle directory"
@@ -2255,9 +2279,6 @@ msgstr "Pagine di errore"
 msgid "Error reporting"
 msgstr "Messaggio di errore"
 
-msgid "Error while trying to obtain list of network cards."
-msgstr "Si è verificato un errore cercando le schede di rete."
-
 msgid "Error: Remote File not found!"
 msgstr "Errore: file non trovato "
 
@@ -2294,9 +2315,6 @@ msgstr "Server mail esterno schedulato con successo per aggiornamento"
 msgid "External mail servers"
 msgstr "Server di posta esterni"
 
-msgid "FTP Users"
-msgstr "Utenti Ftp"
-
 msgid "FTP account"
 msgstr "Account FTP"
 
@@ -2318,14 +2336,17 @@ msgstr "Account Ftp modificato con successo."
 msgid "FTP accounts"
 msgstr "Utenti FTP"
 
+msgid "FTP home directory"
+msgstr ""
+
+msgid "FTP home directory cannot be empty."
+msgstr ""
+
 msgid "FTP traffic"
 msgstr "Traffico FTP"
 
 msgid "FTP user errors"
 msgstr ""
-
-msgid "FTPs total"
-msgstr "FTP totali"
 
 msgid "Failed to write file to disk."
 msgstr "Scrittura del file sul disco fallita."
@@ -2440,11 +2461,11 @@ msgstr "Ftp"
 msgid "Ftp account"
 msgstr "Account Ftp"
 
+msgid "Ftp account already exists."
+msgstr ""
+
 msgid "Ftp account data"
 msgstr "Dati account Ftp"
-
-msgid "Ftp account with same username already exists."
-msgstr "Un account Ftp con lo stesso nome già esiste."
 
 msgid "Ftp accounts"
 msgstr "Account Ftp"
@@ -2482,9 +2503,6 @@ msgstr "GiB"
 msgid "Group"
 msgstr "Gruppo"
 
-msgid "Group auth"
-msgstr "Autenticazione gruppo"
-
 msgid "Group members"
 msgstr "Membri del gruppo"
 
@@ -2505,10 +2523,6 @@ msgstr "Alta"
 
 msgid "Home directory"
 msgstr "Directory principale"
-
-#, php-format
-msgid "Home directory '%s' doesn't exist"
-msgstr "La directory home '%s' non esiste"
 
 msgid "Homepage"
 msgstr "Pagina principale"
@@ -2756,6 +2770,9 @@ msgstr "Errore interno di sistema"
 msgid "Internationalization"
 msgstr "Internazionalizzazione"
 
+msgid "Invalid FTP username."
+msgstr ""
+
 msgid "Invalid MX priority."
 msgstr "Invalida priorità MX."
 
@@ -2790,9 +2807,6 @@ msgstr "Email utente non valido."
 
 msgid "Invalid group name!"
 msgstr "Nome gruppo non valido!"
-
-msgid "Invalid home directory."
-msgstr "Directory home non valida."
 
 msgid "Invalid htaccess group name."
 msgstr "Nome gruppo htaccess non valido."
@@ -3581,8 +3595,8 @@ msgstr "Per favore inserisci un utente SQL"
 msgid "Please enter an username."
 msgstr "Per favore inserisci un username"
 
-msgid "Please enter protected area path"
-msgstr "Inserisci il percorso dell'area protetta"
+msgid "Please enter protected area path."
+msgstr ""
 
 msgid "Please enter your auto-responder message below"
 msgstr "Inserisci il tuo messaggio automatico sotto"
@@ -3831,17 +3845,20 @@ msgstr "Le proprietà per il rivenditore con ID %d non è stata trovato nel data
 msgid "Protect"
 msgstr "Protetto"
 
-msgid "Protect it"
-msgstr "Da proteggere"
-
 msgid "Protect this plugin"
 msgstr "Proteggi questo plugin"
 
 msgid "Protected"
 msgstr "Protetto"
 
-msgid "Protected area status should be 'OK' if you want to delete it."
-msgstr "Lo stato di protezione dell'area deve essere in stato di 'OK' se la si vuole eliminare."
+msgid "Protected area data"
+msgstr ""
+
+msgid "Protected area name"
+msgstr ""
+
+msgid "Protected area path"
+msgstr ""
 
 msgid "Protected area successfully scheduled for addition."
 msgstr "L'aggiunta della protezione dell'area è stata programmata con successo."
@@ -4510,9 +4527,6 @@ msgstr "Statistiche"
 msgid "Status"
 msgstr "Stato"
 
-msgid "Status for protected area must be 'OK' if you want to edit it."
-msgstr "Lo stato dell'area protetta deve essere impostato su 'OK' se vuoi modificarla."
-
 msgid "Street 1"
 msgstr "Indirizzo 1"
 
@@ -4780,10 +4794,6 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid "This IP (%s) is not assigned to any network card!"
-msgstr "Questo indirizzo IP (%s) non è assegnato a nessuna scheda di rete!"
-
-#, php-format
 msgid ""
 "This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
 "this package!<br>Please delete the files and database for this package "
@@ -5042,11 +5052,6 @@ msgstr "Non è possibile riaprire il ticket con id '%s'."
 msgid "Unable to restore %s plugin directory"
 msgstr "Impossibile ripristinare la directory del plugin %s"
 
-msgid ""
-"Unable to retrieve directories list for your domain. Please contact your "
-"reseller."
-msgstr "Impossibile recuperare l'elenco directory per il dominio. Si prega di contattare il proprio rivenditore."
-
 msgid "Unable to retrieve your password from the database."
 msgstr "Impossibile recuperare la password dal database."
 
@@ -5150,9 +5155,6 @@ msgstr "Username sconosciuto."
 msgid "Unlimited"
 msgstr "Illimitato"
 
-msgid "Unprotect it"
-msgstr "Non proteggere"
-
 msgid "Update"
 msgstr "Aggiorna"
 
@@ -5184,6 +5186,9 @@ msgstr "L'aggiornamento dell'indice del repository software Web è stato interro
 
 msgid "Update password"
 msgstr "Aggiornamento password"
+
+msgid "Update protected area"
+msgstr ""
 
 msgid "Updates"
 msgstr "Aggiornamenti"
@@ -5226,9 +5231,6 @@ msgstr "Nome (e cognome) dell'utente"
 
 msgid "User assignment"
 msgstr "Assegna utente"
-
-msgid "User auth"
-msgstr "Autenticazione utente"
 
 msgid "User data successfully updated"
 msgstr "Dati utente aggiornati con successo"
@@ -5293,9 +5295,6 @@ msgstr "Username troppo lunga."
 
 msgid "Users"
 msgstr "Utenti"
-
-msgid "Users and groups"
-msgstr "Utenti e gruppi"
 
 #, php-format
 msgid "Value for the PHP %%s directive must be in range %%d to %%d."
@@ -5547,9 +5546,6 @@ msgstr "Non hai un account FTP."
 msgid "You do not have any software uploaded yet"
 msgstr "Finora non hai caricato alcun software"
 
-msgid "You do not have customers."
-msgstr "Non hai nessun utente."
-
 msgid "You do not have databases."
 msgstr "Non si dispone di database."
 
@@ -5567,9 +5563,6 @@ msgstr "Non si dispone di aree protette."
 
 msgid "You do not have subdomains."
 msgstr "Non avete sottodomini."
-
-msgid "You do not have sufficient permissions to perform this operation."
-msgstr "Non si dispone di autorizzazioni sufficienti per eseguire questa operazione."
 
 #, php-format
 msgid "You have %d new domain alias %s."
@@ -5672,6 +5665,9 @@ msgstr "È necessario inserire un nome di alias di dominio."
 
 msgid "You must enter a subdomain name."
 msgstr "È necessario inserire un sottodominio."
+
+msgid "You must first create a user."
+msgstr ""
 
 msgid "You must first generate a password by clicking on the generate button."
 msgstr "Devi prima generare una password cliccando sul bottone apposito."

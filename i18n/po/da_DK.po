@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-03-25 21:53+0100\n"
-"PO-Revision-Date: 2016-03-25 20:53+0000\n"
+"POT-Creation-Date: 2016-04-06 12:53+0200\n"
+"PO-Revision-Date: 2016-04-06 10:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/i-mscp/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -252,10 +252,6 @@ msgstr "%s IP-adresse venter %s sekunder."
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "%s konto slettet."
-
-#, php-format
-msgid "%s doesn't exist"
-msgstr "%s findes ikke"
 
 #, php-format
 msgid "%s doesn't exist or is empty."
@@ -1056,6 +1052,14 @@ msgstr "Er du sikker på at du vil slette %s menuen?"
 msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Er du sikker på du vil slette '%s' fejlrapporten?"
 
+#, php-format
+msgid "Are you sure you want to delete the `%%s` FTP user?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the `%%s` protected area?"
+msgstr ""
+
 msgid "Are you sure you want to delete this DNS record?"
 msgstr ""
 
@@ -1091,9 +1095,6 @@ msgstr "Er du sikker på, du vil installere denne pakke fra web softwarearkivet?
 msgid "Are you sure you want to restore the backup?"
 msgstr "Er du sikker på du vil gendanne denne backup?"
 
-msgid "Area name"
-msgstr "Område navn"
-
 msgid "Assign"
 msgstr "Tildel"
 
@@ -1108,6 +1109,15 @@ msgstr "Først skal du oprette en database, der har mindst én SQL-bruger."
 
 msgid "At least one intermediate certificate is invalid or missing."
 msgstr "Mindst et intermediære certifikat er ugyldigt eller mangler."
+
+msgid "Authentication by group"
+msgstr ""
+
+msgid "Authentication by user"
+msgstr ""
+
+msgid "Authentication data"
+msgstr ""
 
 msgid "Auto (Browser language)"
 msgstr "Auto (Browser sprog)"
@@ -1517,6 +1527,9 @@ msgstr ""
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr ""
 
+msgid "Could not retrieve directories. Please contact your reseller."
+msgstr ""
+
 msgid "Could not upload file."
 msgstr "Kunne ikke uploade filen."
 
@@ -1546,6 +1559,9 @@ msgstr "Opret FangAlle"
 
 msgid "Create default email addresses"
 msgstr "Opret standard e-mail adresser"
+
+msgid "Create protected area"
+msgstr ""
 
 msgid "Created by"
 msgstr "Oprettet af"
@@ -1868,6 +1884,14 @@ msgstr "Mapper"
 #, php-format
 msgid "Directory %s doesn't exists."
 msgstr "Bibliotek %s findes ikke."
+
+#, php-format
+msgid "Directory '%s' doesn't exists."
+msgstr ""
+
+#, php-format
+msgid "Directory '%s' is not allowed or invalid."
+msgstr ""
 
 msgid "Directory tree"
 msgstr "Mappe træ"
@@ -2252,9 +2276,6 @@ msgstr "Fejlsider"
 msgid "Error reporting"
 msgstr "Rapportering af fejl"
 
-msgid "Error while trying to obtain list of network cards."
-msgstr "Fejl under forsøg på at hente listen over netværkskort"
-
 msgid "Error: Remote File not found!"
 msgstr "Fejl: Fjernfil ikke fundet!"
 
@@ -2291,9 +2312,6 @@ msgstr "Ekstern mailserver succesfuldt planlagt til opdatering."
 msgid "External mail servers"
 msgstr "Eksterne mail servers"
 
-msgid "FTP Users"
-msgstr "FTP Bruger"
-
 msgid "FTP account"
 msgstr "FTP konto"
 
@@ -2315,14 +2333,17 @@ msgstr "FTP konto er blevet opdateret."
 msgid "FTP accounts"
 msgstr "FTP konti"
 
+msgid "FTP home directory"
+msgstr ""
+
+msgid "FTP home directory cannot be empty."
+msgstr ""
+
 msgid "FTP traffic"
 msgstr "FTP trafik"
 
 msgid "FTP user errors"
 msgstr "FTP bruger fejl"
-
-msgid "FTPs total"
-msgstr "FTP'er total"
 
 msgid "Failed to write file to disk."
 msgstr "Fejl ved skrivning af fil til disken."
@@ -2437,11 +2458,11 @@ msgstr "Ftp"
 msgid "Ftp account"
 msgstr "Ftp konto"
 
+msgid "Ftp account already exists."
+msgstr ""
+
 msgid "Ftp account data"
 msgstr "Ftp konto data"
-
-msgid "Ftp account with same username already exists."
-msgstr "Ftp-konto med samme navn findes allerede."
 
 msgid "Ftp accounts"
 msgstr "Ftp konti"
@@ -2479,9 +2500,6 @@ msgstr "GiB"
 msgid "Group"
 msgstr "Gruppe"
 
-msgid "Group auth"
-msgstr "Grupperettigeheder"
-
 msgid "Group members"
 msgstr "Gruppe medlemmer"
 
@@ -2502,10 +2520,6 @@ msgstr "Høj"
 
 msgid "Home directory"
 msgstr "Home bibliotek"
-
-#, php-format
-msgid "Home directory '%s' doesn't exist"
-msgstr "Home bibliotek '%s' findes ikke"
 
 msgid "Homepage"
 msgstr "Hjemmeside"
@@ -2753,6 +2767,9 @@ msgstr "Intern Serverfejl"
 msgid "Internationalization"
 msgstr "Internationalisering"
 
+msgid "Invalid FTP username."
+msgstr ""
+
 msgid "Invalid MX priority."
 msgstr "Ugyldig MX prioritet."
 
@@ -2787,9 +2804,6 @@ msgstr "Ugyldig e-mail brugernavn."
 
 msgid "Invalid group name!"
 msgstr "Ugyldigt gruppe navn!"
-
-msgid "Invalid home directory."
-msgstr "Ugyldig home bibliotek"
 
 msgid "Invalid htaccess group name."
 msgstr "Ugyldigt htaccess gruppenavn."
@@ -3578,8 +3592,8 @@ msgstr "Indtast en SQL bruger host."
 msgid "Please enter an username."
 msgstr "Indtast venligst et brugernavn."
 
-msgid "Please enter protected area path"
-msgstr "Indtast sti til beskyttet område"
+msgid "Please enter protected area path."
+msgstr ""
 
 msgid "Please enter your auto-responder message below"
 msgstr "Indtast venligst din autosvar besked nedenfor"
@@ -3828,17 +3842,20 @@ msgstr "Egenskaber til forhandler med ID %d blev ikke fundet i databasen."
 msgid "Protect"
 msgstr "Beskyt"
 
-msgid "Protect it"
-msgstr "Beskyt det"
-
 msgid "Protect this plugin"
 msgstr "Beskyt dette plugin"
 
 msgid "Protected"
 msgstr "Beskyttet"
 
-msgid "Protected area status should be 'OK' if you want to delete it."
-msgstr "Beskyttet område status skal være \"OK\", hvis du ønsker at slette det."
+msgid "Protected area data"
+msgstr ""
+
+msgid "Protected area name"
+msgstr ""
+
+msgid "Protected area path"
+msgstr ""
 
 msgid "Protected area successfully scheduled for addition."
 msgstr "Beskyttet område succesfuldt planlagt til tilføjelse."
@@ -4507,9 +4524,6 @@ msgstr "Statistik"
 msgid "Status"
 msgstr "Status"
 
-msgid "Status for protected area must be 'OK' if you want to edit it."
-msgstr "Status for beskyttede område, skal være 'OK', hvis du ønsker at redigere den."
-
 msgid "Street 1"
 msgstr "Adresse 1"
 
@@ -4777,10 +4791,6 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid "This IP (%s) is not assigned to any network card!"
-msgstr "Denne IP (%s) er ikke tildelt noget netværkskort!"
-
-#, php-format
 msgid ""
 "This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
 "this package!<br>Please delete the files and database for this package "
@@ -5039,11 +5049,6 @@ msgstr "Kan ikke genåbne ticket med Id '%s'."
 msgid "Unable to restore %s plugin directory"
 msgstr "Kan ikke gendanne %s plugin mappen"
 
-msgid ""
-"Unable to retrieve directories list for your domain. Please contact your "
-"reseller."
-msgstr "Kan ikke hente mappe liste til dit domæne. Kontakt din forhandler."
-
 msgid "Unable to retrieve your password from the database."
 msgstr "Kan ikke hente dit password i databasen."
 
@@ -5147,9 +5152,6 @@ msgstr "Ukendt brugernavn."
 msgid "Unlimited"
 msgstr "Ubegrænset"
 
-msgid "Unprotect it"
-msgstr "Fjern beskyttelse"
-
 msgid "Update"
 msgstr "Opdater"
 
@@ -5181,6 +5183,9 @@ msgstr "Opdatering af Web softwarearkiv indeks er blevet afbrudt. Manglende elle
 
 msgid "Update password"
 msgstr "Opdater password"
+
+msgid "Update protected area"
+msgstr ""
 
 msgid "Updates"
 msgstr "Opdateringer"
@@ -5223,9 +5228,6 @@ msgstr "Bruger (for og efter) navn"
 
 msgid "User assignment"
 msgstr "Bruger tildeling"
-
-msgid "User auth"
-msgstr "Brugerrettigheder"
 
 msgid "User data successfully updated"
 msgstr "Brugerdata blev succesfuldt opdateret."
@@ -5290,9 +5292,6 @@ msgstr "Brugernavn er for langt."
 
 msgid "Users"
 msgstr "Brugere"
-
-msgid "Users and groups"
-msgstr "Brugere og grupper"
 
 #, php-format
 msgid "Value for the PHP %%s directive must be in range %%d to %%d."
@@ -5544,9 +5543,6 @@ msgstr "Du har ikke FTP konti."
 msgid "You do not have any software uploaded yet"
 msgstr "Du har ikke noget software uploadet endnu"
 
-msgid "You do not have customers."
-msgstr "Du har ingen kunder"
-
 msgid "You do not have databases."
 msgstr "Du har ingen database."
 
@@ -5564,9 +5560,6 @@ msgstr "Du har ingen beskyttede områder."
 
 msgid "You do not have subdomains."
 msgstr "Du har ingen subdomæne."
-
-msgid "You do not have sufficient permissions to perform this operation."
-msgstr "Du har ikke tilstrækkelige rettigheder til at udføre denne operation."
 
 #, php-format
 msgid "You have %d new domain alias %s."
@@ -5669,6 +5662,9 @@ msgstr "Du skal indtaste et domæne alias navn."
 
 msgid "You must enter a subdomain name."
 msgstr "Du skal indtaste et subdomæne navn."
+
+msgid "You must first create a user."
+msgstr ""
 
 msgid "You must first generate a password by clicking on the generate button."
 msgstr "Du skal først generere en adgangskode ved at klikke på knappen genererer."
