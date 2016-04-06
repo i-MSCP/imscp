@@ -1069,12 +1069,14 @@ sub setupServerHostname
     return $rs if $rs;
 
     $file = iMSCP::File->new( filename => '/etc/hostname' );
-    $rs = $file->copyFile('/etc/hostname.bkp') unless -f '/etc/hostname.bkp';
+    $rs = $file->set($host);
+    $rs ||= $file->save();
+    $rs ||= $file->mode(0644);
+    $rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
     return $rs if $rs;
 
-    $content = $host;
-
-    $rs = $file->set($content);
+    $file = iMSCP::File->new( filename => '/etc/mailname' );
+    $rs = $file->set($hostname);
     $rs ||= $file->save();
     $rs ||= $file->mode(0644);
     $rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
@@ -1082,7 +1084,7 @@ sub setupServerHostname
 
     $rs = execute('hostname -F /etc/hostname', \my $stdout, \my $stderr);
     debug($stdout) if $stdout;
-    warning($stderr) if !$rs && $stderr;
+    debug($stderr) if !$rs && $stderr;
     error($stderr) if $rs && $stderr;
     error('Could not set server hostname') if $rs && !$stderr;
     $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupServerHostname');
