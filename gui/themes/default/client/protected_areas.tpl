@@ -1,37 +1,54 @@
-
 <script>
-	function action_delete(url, subject) {
-		return confirm(sprintf("{TR_MESSAGE_DELETE}", subject));
-	}
+    $(function () {
+        $('.datatable').dataTable(
+                {
+                    language: imscp_i18n.core.dataTable,
+                    stateSave: true,
+                    pagingType: "simple",
+                    columnDefs: [
+                        {
+                            type: "natural",
+                            targets: [ 0, 1, 2 ]
+                        }
+                    ]
+                }
+        );
+
+        $(".i_delete").on('click', function () {
+            return confirm(sprintf(imscp_i18n.core.deletion_confirm_msg, $(this).data('name')));
+        });
+    });
 </script>
 
 <!-- BDP: protected_areas -->
-<table>
-	<thead>
-	<tr>
-		<th>{TR_HTACCESS}</th>
-		<th>{TR_STATUS}</th>
-		<th>{TR__ACTION}</th>
-	</tr>
-	</thead>
-	<tbody>
-	<!-- BDP: dir_item -->
-	<tr>
-		<td>{AREA_NAME}<br/><span style="text-decoration: underline;">{AREA_PATH}</span></td>
-		<td>{STATUS}</td>
-		<td>
-			<a href="protected_areas_add.php?id={PID}" class="icon i_edit">{TR_EDIT}</a>
-			<a href="protected_areas_delete.php?id={PID}"
-			   onclick="return action_delete('protected_areas_delete.php?id={PID}', '{JS_AREA_NAME}')"
-			   class="icon i_delete">{TR_DELETE}</a>
-		</td>
-	</tr>
-	<!-- EDP: dir_item -->
-	</tbody>
+<table class="datatable">
+    <thead>
+    <tr>
+        <th>{TR_NAME}</th>
+        <th>{TR_PATH}</th>
+        <th>{TR_STATUS}</th>
+        <th>{TR_ACTIONS}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- BDP: dir_item -->
+    <tr>
+        <td>{AREA_NAME}</td>
+        <td>{AREA_PATH}</td>
+        <td>{STATUS}</td>
+        <td>
+            <!-- BDP: action_links -->
+            <a href="protected_areas_add.php?id={PID}" class="icon i_edit">{TR_EDIT}</a>
+            <a href="protected_areas_delete.php?id={PID}" data-name="{DATA_AREA_NAME}" class="icon i_delete">{TR_DELETE}</a>
+            <!-- EDP: action_links -->
+        </td>
+    </tr>
+    <!-- EDP: dir_item -->
+    </tbody>
 </table>
-
 <!-- EDP: protected_areas -->
+
 <div class="buttons">
-	<a class="link_as_button" href="protected_areas_add.php">{TR_ADD_AREA}</a>
-	<a class="link_as_button" href="protected_user_manage.php">{TR_MANAGE_USRES}</a>
+    <a class="link_as_button" href="protected_areas_add.php">{TR_ADD_PROTECTED_AREA}</a>
+    <a class="link_as_button" href="protected_user_manage.php">{TR_MANAGE_USERS_AND_GROUPS}</a>
 </div>

@@ -1,400 +1,360 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2016 by i-MSCP Team
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/***********************************************************************
- * Script functions
+/***********************************************************************************************************************
+ * Functions
  */
 
 /**
+ * Is allowed directory?
  *
- * @param int $domainId Domain unique identifier
- * @return mixed
+ * @param string $directory Directory path
+ * @return bool
  */
-function protect_area($domainId)
+function isAllowedDir($directory)
 {
-	if (!isset($_POST['uaction']) || $_POST['uaction'] != 'protect_it') {
-		return;
-	}
+    global $mountpoints;
+    $disallowedDirs = implode('|', array_merge($mountpoints, array(
+        '/', '00_private', 'backups', 'disabled', 'domain_disable_page', 'errors', 'logs', 'phptmp', 'statistics')
+    ));
 
-	if (!isset($_POST['users']) && !isset($_POST['groups'])) {
-		set_page_message(tr('Please choose htaccess user or htaccess group.'), 'error');
-		return;
-	}
+    foreach ($mountpoints as $mountpoint) {
+        if (preg_match("%^($mountpoint/(?:$disallowedDirs)|$disallowedDirs)$%", $directory)) {
+            return false;
+        }
+    }
 
-	if (empty($_POST['paname'])) {
-		set_page_message(tr('Please enter a name for the protected area.'), 'error');
-		return;
-	}
-
-	if (empty($_POST['other_dir'])) {
-		set_page_message(tr('Please enter protected area path'), 'error');
-		return;
-	}
-
-	$path = clean_input($_POST['other_dir'], false);
-
-	// Cleanup path:
-	// Adds a slash as a first char of the path if it doesn't exist
-	// Removes the double slashes
-	// Remove the trailing slash if it exists
-	if ($path != '/') {
-		$clean_path = array();
-
-		foreach (explode(DIRECTORY_SEPARATOR, $path) as $dir) {
-			if ($dir != '') {
-				$clean_path[] = $dir;
-			}
-		}
-
-		$path = '/' . implode(DIRECTORY_SEPARATOR, $clean_path);
-	}
-
-	$domain = $_SESSION['user_logged'];
-
-	// Check for existing directory
-	// We need to use the virtual file system
-	$vfs = new iMSCP_VirtualFileSystem($domain);
-	$res = $vfs->exists($path);
-
-	if (!$res) {
-		set_page_message(tr("%s doesn't exist", $path), 'error');
-		return;
-	}
-
-	$ptype = $_POST['ptype'];
-
-	if (isset($_POST['users'])) {
-		$users = $_POST['users'];
-	}
-
-	if (isset($_POST['groups'])) {
-		$groups = $_POST['groups'];
-	}
-
-	$area_name = $_POST['paname'];
-
-	$user_id = '';
-	$group_id = '';
-
-	if ($ptype == 'user') {
-		for ($i = 0, $cnt_users = count($users); $i < $cnt_users; $i++) {
-			if ($cnt_users == 1 || $cnt_users == $i + 1) {
-				$user_id .= $users[$i];
-				if ($user_id == '-1' || $user_id == '') {
-					set_page_message(tr('You cannot protect an area without selected htaccess user(s).'), 'error');
-					return;
-				}
-			} else {
-				$user_id .= $users[$i] . ',';
-			}
-		}
-
-		$group_id = 0;
-	} else {
-		for ($i = 0, $cnt_groups = count($groups); $i < $cnt_groups; $i++) {
-			if ($cnt_groups == 1 || $cnt_groups == $i + 1) {
-				$group_id .= $groups[$i];
-				if ($group_id == '-1' || $group_id == '') {
-					set_page_message(tr('You cannot protect an area without selected htaccess group(s).'), 'error');
-					return;
-				}
-			} else {
-				$group_id .= $groups[$i] . ',';
-			}
-		}
-
-		$user_id = 0;
-	}
-
-	// let's check if we have to update or to make new enrie
-	$alt_path = $path . "/";
-	$query = "
-		SELECT
-			`id`
-		FROM
-			`htaccess`
-		WHERE
-			`dmn_id` = ?
-		AND
-			(`path` = ? OR `path` = ?)
-	";
-
-	$rs = exec_query($query, array($domainId, $path, $alt_path));
-	$toadd_status = 'toadd';
-	$tochange_status = 'tochange';
-
-	if ($rs->rowCount() !== 0) {
-		$update_id = $rs->fields['id'];
-		$query = "
-			UPDATE
-				`htaccess`
-			SET
-				`user_id` = ?, `group_id` = ?, `auth_name` = ?, `path` = ?,
-				`status` = ?
-			WHERE
-				`id` = ?;
-        ";
-		exec_query($query, array($user_id, $group_id, $area_name, $path, $tochange_status, $update_id));
-		send_request();
-		set_page_message(tr('Protected area successfully scheduled for update.'), 'success');
-	} else {
-		$query = "
-			INSERT INTO `htaccess` (
-			    `dmn_id`, `user_id`, `group_id`, `auth_type`, `auth_name`, `path`,
-			    `status`
-            ) VALUES (
-			    ?, ?, ?, ?, ?, ?, ?
-			)
-		";
-
-		exec_query($query, array($domainId, $user_id, $group_id, 'Basic', $area_name, $path, $toadd_status));
-		send_request();
-		set_page_message(tr('Protected area successfully scheduled for addition.'), 'success');
-	}
-
-	redirectTo('protected_areas.php');
+    return true;
 }
 
 /**
- * Generates page.
+ * Add/update protected area
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
- * @param int $domainId Domain unique identifier
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  * @return void
  */
-function gen_protect_it($tpl, $domainId)
+function handleProtectedArea()
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
+    $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
+    $error = false;
 
-	if (!isset($_GET['id'])) {
-		$edit = 'no';
-		$type = 'user';
-		$user_id = 0;
-		$group_id = 0;
-		$tpl->assign(
-			array(
-				'PATH' => '',
-				'AREA_NAME' => '',
-				'UNPROTECT_IT' => ''));
-	} else {
-		$edit = 'yes';
-		$ht_id = $_GET['id'];
+    if (!isset($_POST['protected_area_name'])
+        || !isset($_POST['protected_area_path'])
+        || !isset($_POST['protection_type'])
+        || !in_array($_POST['protection_type'], array('user', 'group'), true)
+    ) {
+        showBadRequestErrorPage();
+    }
 
-		$tpl->assign('CDIR', $ht_id);
-		$tpl->parse('UNPROTECT_IT', 'unprotect_it');
+    if ($_POST['protected_area_name'] === '') {
+        set_page_message(tr('Please enter a name for the protected area.'), 'error');
+        $error = true;
+    }
 
-		$query = "SELECT * FROM `htaccess` WHERE `dmn_id` = ? AND `id` = ?";
-		$rs = exec_query($query, array($domainId, $ht_id));
+    if ($_POST['protected_area_path'] === '') {
+        set_page_message(tr('Please enter protected area path.'), 'error');
+        $error = true;
+    }
 
-		if ($rs->rowCount() == 0) {
-			redirectTo('protected_areas_add.php');
-			exit;
-		}
+    if (!isset($_POST['users']) && !isset($_POST['groups'])) {
+        set_page_message(tr('Please choose htaccess user or htaccess group.'), 'error');
+        $error = true;
+    }
 
-		$user_id = $rs->fields['user_id'];
-		$group_id = $rs->fields['group_id'];
-		$status = $rs->fields['status'];
-		$path = $rs->fields['path'];
-		$auth_name = $rs->fields['auth_name'];
-		$ok_status = 'ok';
+    if ($error) {
+        return;
+    }
 
-		if ($status !== $ok_status) {
-			set_page_message(tr("Status for protected area must be 'OK' if you want to edit it."), 'error');
-			redirectTo('protected_areas.php');
-			exit;
-		}
+    $protectedAreaName = clean_input($_POST['protected_area_name']);
+    $protectedAreaPath = clean_input($_POST['protected_area_path']);
 
-		$tpl->assign(
-			array(
-				'PATH' => tohtml($path),
-				'AREA_NAME' => tohtml($auth_name)));
+    // Cleanup path:
+    // - Ensure that path start by a slash
+    // - Removes double slashes
+    // - Remove trailing slash if any
+    if ($protectedAreaPath !== '/') {
+        $cleanPath = array();
+        foreach (explode(DIRECTORY_SEPARATOR, $protectedAreaPath) as $dir) {
+            if ($dir != '') {
+                $cleanPath[] = $dir;
+            }
+        }
 
-		// let's get the htaccess management type
-		if ($user_id !== 0 && $group_id == 0) {
-			// we have only user htaccess
-			$type = 'user';
-		} elseif ($group_id !== 0 && $user_id == 0) {
-			// we have only groups htaccess
-			$type = 'group';
-		} elseif ($group_id == 0 && $user_id == 0) {
-			// we have unsr and groups htaccess
-			$type = 'both';
-		}
-	}
-	// this area is not secured by htaccess
-	if ($edit == 'no' || $rs->rowCount() == 0 || $type == 'user') {
-		$tpl->assign(
-			array(
-				'USER_CHECKED' => $cfg->HTML_CHECKED,
-				'GROUP_CHECKED' => "",
-				'USER_FORM_ELEMENS' => "false",
-				'GROUP_FORM_ELEMENS' => "true"));
-	}
+        $protectedAreaPath = '/' . implode(DIRECTORY_SEPARATOR, $cleanPath);
+    }
 
-	if ($type == 'group') {
-		$tpl->assign(
-			array(
-				'USER_CHECKED' => "",
-				'GROUP_CHECKED' => $cfg->HTML_CHECKED,
-				'USER_FORM_ELEMENS' => "true",
-				'GROUP_FORM_ELEMENS' => "false"));
-	}
 
-	$query = "SELECT *  FROM `htaccess_users` WHERE `dmn_id` = ?";
-	$rs = exec_query($query, $domainId);
+    $vfs = new iMSCP_VirtualFileSystem($mainDmnProps['domain_name']);
+    if ($protectedAreaPath !== '/' && !$vfs->exists($protectedAreaPath)) {
+        set_page_message(tr("Directory '%s' doesn't exists.", $protectedAreaPath), 'error');
+        return;
+    } elseif (strpos($protectedAreaPath, '..') !== false || !isAllowedDir($protectedAreaPath)) {
+        set_page_message(tr("Directory '%s' is not allowed or invalid.", $protectedAreaPath), 'error');
+        return;
+    }
 
-	if ($rs->recordCount() == 0) {
-		$tpl->assign(
-			array(
-				'USER_VALUE' => "-1",
-				'USER_LABEL' => tr('You do not have customers.'),
-				'USER_SELECTED' => ''));
+    $userId = '';
+    $groupId = '';
 
-		$tpl->parse('USER_ITEM', 'user_item');
-	} else {
-		while (!$rs->EOF) {
-			$usr_id = explode(',', $user_id);
-			for ($i = 0, $cnt_usr_id = count($usr_id); $i < $cnt_usr_id; $i++) {
-				if ($edit == 'yes' && $usr_id[$i] == $rs->fields['id']) {
-					$i = $cnt_usr_id + 1;
-					$usr_selected = $cfg->HTML_SELECTED;
-				} else {
-					$usr_selected = '';
-				}
-			}
+    if ($_POST['protection_type'] === 'user') {
+        $users = $_POST['users'];
+        for ($i = 0, $cnt_users = count($users); $i < $cnt_users; $i++) {
+            if ($cnt_users == 1 || $cnt_users == $i + 1) {
+                $userId .= $users[$i];
+                if ($userId == '-1' || $userId == '') {
+                    set_page_message(tr('You cannot protect an area without selected htaccess user(s).'), 'error');
+                    return;
+                }
+            } else {
+                $userId .= $users[$i] . ',';
+            }
+        }
 
-			$tpl->assign(
-				array(
-					'USER_VALUE' => $rs->fields['id'],
-					'USER_LABEL' => tohtml($rs->fields['uname']),
-					'USER_SELECTED' => $usr_selected));
+        $groupId = 0;
+    } else {
+        $groups = $_POST['groups'];
+        for ($i = 0, $cnt_groups = count($groups); $i < $cnt_groups; $i++) {
+            if ($cnt_groups == 1 || $cnt_groups == $i + 1) {
+                $groupId .= $groups[$i];
+                if ($groupId == '-1' || $groupId == '') {
+                    set_page_message(tr('You cannot protect an area without selected htaccess group(s).'), 'error');
+                    return;
+                }
+            } else {
+                $groupId .= $groups[$i] . ',';
+            }
+        }
 
-			$tpl->parse('USER_ITEM', '.user_item');
+        $userId = 0;
+    }
 
-			$rs->moveNext();
-		}
-	}
+    // Let's check if we have to update or to make new enrie
+    $rs = exec_query('SELECT id FROM htaccess WHERE dmn_id = ? AND (path = ? OR path = ?)', array(
+        $mainDmnProps['domain_id'], $protectedAreaPath, $protectedAreaPath . '/'
+    ));
 
-	$query = "SELECT * FROM `htaccess_groups` WHERE `dmn_id` = ?";
-	$rs = exec_query($query, $domainId);
+    if ($rs->rowCount()) {
+        $row = $rs->fetchRow();
+        exec_query(
+            'UPDATE htaccess SET user_id = ?, group_id = ?, auth_name = ?, path = ?, status = ? WHERE id = ?',
+            array($userId, $groupId, $protectedAreaName, $protectedAreaPath, 'tochange', $row['id'])
+        );
+        send_request();
+        set_page_message(tr('Protected area successfully scheduled for update.'), 'success');
+    } else {
+        exec_query(
+            '
+                INSERT INTO htaccess (
+                    dmn_id, user_id, group_id, auth_type, auth_name, path, status
+                ) VALUES (
+                    ?, ?, ?, ?, ?, ?, ?
+                )
+            ',
+            array($mainDmnProps['domain_id'], $userId, $groupId, 'Basic', $protectedAreaName, $protectedAreaPath, 'toadd')
+        );
+        send_request();
+        set_page_message(tr('Protected area successfully scheduled for addition.'), 'success');
+    }
 
-	if ($rs->recordCount() == 0) {
-		$tpl->assign(
-			array(
-				'GROUP_VALUE' => "-1",
-				'GROUP_LABEL' => tr('You have no groups.'),
-				'GROUP_SELECTED' => ''));
-
-		$tpl->parse('GROUP_ITEM', 'group_item');
-	} else {
-		while (!$rs->EOF) {
-			$grp_id = explode(',', $group_id);
-			for ($i = 0, $cnt_grp_id = count($grp_id); $i < $cnt_grp_id; $i++) {
-				if ($edit == 'yes' && $grp_id[$i] == $rs->fields['id']) {
-					$i = $cnt_grp_id + 1;
-					$grp_selected = $cfg->HTML_SELECTED;
-				} else {
-					$grp_selected = '';
-				}
-			}
-
-			$tpl->assign(
-				array(
-					'GROUP_VALUE' => $rs->fields['id'],
-					'GROUP_LABEL' => tohtml($rs->fields['ugroup']),
-					'GROUP_SELECTED' => $grp_selected));
-
-			$tpl->parse('GROUP_ITEM', '.group_item');
-			$rs->moveNext();
-		}
-	}
+    redirectTo('protected_areas.php');
 }
 
-/*************************************************************************
- * Main script
+/**
+ * Generates page
+ *
+ * @param iMSCP_pTemplate $tpl Template engine instance
+ * @return void
+ */
+function generatePage($tpl)
+{
+    global $mountpoints;
+
+    $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
+
+    # Set hidden and unselectable directories for FTP chooser
+    $_SESSION['vftp_hidden_dirs'] = array(
+        '00_private', 'backups', 'disabled', 'domain_disable_page', 'errors', 'logs', 'phptmp', 'statistics'
+    );
+    $_SESSION['vftp_unselectable_dirs'] = $mountpoints;
+
+    if (!isset($_GET['id'])) {
+        $edit = 'no';
+        $type = 'user';
+        $userIds = 0;
+        $groupIds = 0;
+        $tpl->assign(array(
+            'AREA_NAME' => isset($_POST['protected_area_name']) ? tohtml($_POST['protected_area_name'], 'htmlAttr') : '',
+            'PATH' => isset($_POST['protected_area_path']) ? tohtml($_POST['protected_area_path'], 'htmlAttr') : '/htdocs'
+        ));
+    } else {
+        $edit = 'yes';
+
+        $stmt = exec_query('SELECT * FROM htaccess WHERE dmn_id = ? AND id = ?', array(
+            $mainDmnProps['domain_id'], intval($_GET['id'])
+        ));
+        if (!$stmt->rowCount()) {
+            showBadRequestErrorPage();
+        }
+
+        $row = $stmt->fetchRow();
+        $userIds = $row['user_id'];
+        $groupIds = $row['group_id'];
+
+        $tpl->assign(array(
+            'PATH' => tohtml($row['path']),
+            'AREA_NAME' => tohtml($row['auth_name'])
+        ));
+
+        if ($userIds !== 0) {
+            $type = 'user';
+        } else {
+            $type = 'group';
+        }
+    }
+
+    if ($edit == 'no' || $type == 'user') {
+        $tpl->assign(array(
+            'USER_CHECKED' => ' checked',
+            'GROUP_CHECKED' => ''
+        ));
+    }
+
+    if ($type == 'group') {
+        $tpl->assign(array(
+            'USER_CHECKED' => '',
+            'GROUP_CHECKED' => ' checked'
+        ));
+    }
+
+    $stmt = exec_query('SELECT * FROM htaccess_users WHERE dmn_id = ?', $mainDmnProps['domain_id']);
+    if (!$stmt->rowCount()) {
+        set_page_message(tr('You must first create a user.'), 'error');
+        redirectTo('protected_areas.php');
+    }
+
+    while ($row = $stmt->fetchRow()) {
+        $userIds = explode(',', $userIds);
+        $userSelected = '';
+        for ($i = 0, $countUserIds = count($userIds); $i < $countUserIds; $i++) {
+            if ($edit == 'yes' && $userIds[$i] == $row['id']) {
+                $i = $countUserIds + 1;
+                $userSelected = ' selected';
+            } else {
+                $userSelected = '';
+            }
+        }
+
+        $tpl->assign(array(
+            'USER_VALUE' => $row['id'],
+            'USER_LABEL' => tohtml($row['uname']),
+            'USER_SELECTED' => $userSelected
+        ));
+        $tpl->parse('USER_ITEM', '.user_item');
+    }
+
+    $stmt = exec_query('SELECT * FROM htaccess_groups WHERE dmn_id = ?', $mainDmnProps['domain_id']);
+    if (!$stmt->rowCount()) {
+        $tpl->assign(array(
+            'GROUP_VALUE' => '-1',
+            'GROUP_LABEL' => tr('You have no groups.'),
+            'GROUP_SELECTED' => ''
+        ));
+        $tpl->parse('GROUP_ITEM', 'group_item');
+    } else {
+        while ($row = $stmt->fetchRow()) {
+            $groupIds = explode(',', $groupIds);
+            $groupSelected = '';
+            for ($i = 0, $countGroupIds = count($groupIds); $i < $countGroupIds; $i++) {
+                if ($edit == 'yes' && $groupIds[$i] == $row['id']) {
+                    $i = $countGroupIds + 1;
+                    $groupSelected = 'selected';
+                } else {
+                    $groupSelected = '';
+                }
+            }
+
+            $tpl->assign(array(
+                'GROUP_VALUE' => $row['id'],
+                'GROUP_LABEL' => tohtml($row['ugroup']),
+                'GROUP_SELECTED' => $groupSelected
+            ));
+            $tpl->parse('GROUP_ITEM', '.group_item');
+        }
+    }
+}
+
+/***********************************************************************************************************************
+ * main
  */
 
-// Include core library
 require_once 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
 check_login('user');
-
 customerHasFeature('protected_areas') or showBadRequestErrorPage();
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
+$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
+$mountpoints = getMountpoints($mainDmnProps['domain_id']);
+array_pop($mountpoints);
+
+if (!empty($_POST)) {
+    handleProtectedArea();
+}
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'client/protect_it.tpl',
-		'page_message' => 'layout',
-		'group_item' => 'page',
-		'user_item' => 'page',
-		'unprotect_it' => 'page'));
+$tpl->define_dynamic(array(
+    'layout' => 'shared/layouts/ui.tpl',
+    'page' => 'client/protect_it.tpl',
+    'page_message' => 'layout',
+    'group_item' => 'page',
+    'user_item' => 'page'
+));
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Client / Webtools / Protected Areas / {TR_DYNAMIC_TITLE}'),
-		'TR_DYNAMIC_TITLE' => isset($_GET['id']) ? tr('Edit protected area') : tr('Add protected area'),
-		'TR_PROTECTED_AREA' => tr('Protected areas'),
-		'TR_AREA_NAME' => tr('Area name'),
-		'TR_PATH' => tr('Path'),
-		'CHOOSE_DIR' => tr('Choose dir'),
-		'TR_USER' => tr('Users'),
-		'TR_GROUPS' => tr('Groups'),
-		'TR_USER_AUTH' => tr('User auth'),
-		'TR_GROUP_AUTH' => tr('Group auth'),
-		'TR_PROTECT_IT' => tr('Protect it'),
-		'TR_UNPROTECT_IT' => tr('Unprotect it'),
-		'TR_CANCEL' => tr('Cancel'),
-		'TR_MANAGE_USERS_AND_GROUPS' => tr('Users and groups')));
+$tpl->assign(array(
+    'TR_PAGE_TITLE' => tr('Client / Webtools / Protected Areas / {TR_DYNAMIC_TITLE}'),
+    'TR_DYNAMIC_TITLE' => isset($_GET['id']) ? tr('Edit protected area') : tr('Add protected area'),
+    'TR_PROTECTED_AREA_DATA' => tr('Protected area data'),
+    'TR_AREA_NAME' => tr('Protected area name'),
+    'TR_PATH' => tr('Protected area path'),
+    'TR_CHOOSE_DIR' => tr('Choose dir'),
+    'TR_AUTHENTICATION_DATA' => tr('Authentication data'),
+    'TR_USER_AUTH' => tr('Authentication by user'),
+    'TR_GROUP_AUTH' => tr('Authentication by group'),
+    'TR_PROTECT_IT' => isset($_GET['id']) ? tr('Update protected area') : tr('Create protected area'),
+    'TR_CANCEL' => tr('Cancel')
+));
 
 iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
-	/** @var $e iMSCP_Events_Event */
-	$translations = $e->getParam('translations');
-	$translations['core']['close']= tr('Close');
-	$translations['core']['ftp_directories']= tr('Ftp directories');
+    /** @var $e iMSCP_Events_Event */
+    $translations = $e->getParam('translations');
+    $translations['core']['close'] = tr('Close');
+    $translations['core']['ftp_directories'] = tr('Protected area path');
 });
 
 generateNavigation($tpl);
-$domainId = get_user_domain_id($_SESSION['user_id']);
-protect_area($domainId);
-gen_protect_it($tpl, get_user_domain_id($domainId));
+generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
-
 $tpl->prnt();
 
 unsetMessages();

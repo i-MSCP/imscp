@@ -1,5 +1,6 @@
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,14 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * @category    iMSCP
- * @package     iMSCP_Core
- * @subpackage  Layout
- * @copyright   2010-2016 by i-MSCP | http://i-mscp.net
- * @link        http://i-mscp.net
- * @author      iMSCP Team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 
 (function($) {
@@ -299,12 +292,12 @@
 // Initialize FTP chooser
 (function($) {
     $(function() {
-        $("body").on("click", "a.ftp_choose_dir", function (e) {
+        $("body").on("click", "span.ftp_choose_dir, a.ftp_choose_dir", function (e) {
             var $dialog = $("#ftp_choose_dir_dialog");
-            var href = $(this).attr("href");
+            var href = $(this).attr("href") || 'none';
 
             if($dialog.length) {
-                if(href == "#") { // # href means that we want set directory.
+                if(href == "#") { // '#' means that we want set directory.
                     $("#ftp_directory").val($(this).data("directory"));
                     $dialog.dialog("close");
                 } else { // We already have a dialog. We just update it content
@@ -314,23 +307,27 @@
                         alert("Request failed");
                     });
                 }
-            } else { // No dialog yet. We create one
-                $.get(href, function(data) {
+            } else { // No dialog. We create one
+                $.get("ftp_choose_dir.php", function(data) {
                     $dialog = $('<div id="ftp_choose_dir_dialog"/>').html(data).dialog({
                         hide: "blind",
                         show: "slide",
                         focus: false,
-                        width: 450,
+                        width: 650,
                         height: 500,
                         autoOpen: false,
                         appendTo: "body",
                         modal: true,
                         title: imscp_i18n.core.ftp_directories,
                         buttons: [{
-                            text: imscp_i18n.core.close, click: function () {
+                            text: imscp_i18n.core.close,
+                            click: function () {
                                 $(this).dialog("close");
                             }
-                        }]
+                        }],
+                        close: function () {
+                            $(this).remove();
+                        }
                     });
 
                     $(window).resize(function () {

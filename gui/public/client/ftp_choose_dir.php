@@ -1,28 +1,21 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 /***********************************************************************************************************************
@@ -30,39 +23,17 @@
  */
 
 /**
- * Whether or not the given directory is allowed
+ * Is the given directory visible?
  *
- * @param int $domainId Main customer domain unique identifier
- * @param string $directory Directory to check
- * @return bool TRUE if the given directory is allowed, FALSE otherwis
+ * @param string $directory Directory path
+ * @return bool
  */
-function isAllowedDir($domainId, $directory)
+function isVisibleDir($directory)
 {
-    static $mountPoints = array();
+    global $hiddenDirs, $mountpoints;
 
-    if (empty($mountPoints)) {
-        $stmt = exec_query(
-            '
-                SELECT `subdomain_mount` AS `mount_point` FROM `subdomain` WHERE `domain_id` = ?
-                UNION
-                SELECT `alias_mount` AS `mount_point` FROM `domain_aliasses` WHERE `domain_id` = ?
-                UNION
-                SELECT `subdomain_alias_mount` AS `mount_point` FROM `subdomain_alias`
-                WHERE `alias_id` IN(SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
-            '
-            ,
-            array($domainId, $domainId, $domainId)
-        );
-
-        if ($stmt->rowCount()) {
-            $mountPoints = $stmt->fetchAll(PDO::FETCH_COLUMN);
-        }
-
-        $mountPoints[] = '/';
-    }
-
-    foreach ($mountPoints as $mountPoint) {
-        if (preg_match("%^$mountPoint/?(?:disabled|errors|phptmp|statistics|domain_disable_page)$%", "$directory")) {
+    foreach ($mountpoints as $mountpoint) {
+        if (preg_match("%^($mountpoint/(?:$hiddenDirs)|$hiddenDirs)$%", $directory)) {
             return false;
         }
     }
@@ -71,33 +42,51 @@ function isAllowedDir($domainId, $directory)
 }
 
 /**
- * Generates directories list.
+ * Is the given directory selectable?
+ *
+ * @param string $directory Directory path
+ * @return bool
+ */
+function isSelectableDir($directory)
+{
+    global $unselectableDirs, $mountpoints;
+
+    foreach ($mountpoints as $mountpoint) {
+        if (preg_match("%^($mountpoint/(?:$unselectableDirs)|$unselectableDirs)$%", $directory)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Generates directory list
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
  * @return void
  */
-function generateDirectoriesList($tpl)
+function generateDirectoryList($tpl)
 {
     // Initialize variables
     $path = isset($_GET['cur_dir']) ? clean_input($_GET['cur_dir']) : '';
     $domain = $_SESSION['user_logged'];
 
-    // Create the virtual file system and open it so it can be used
     $vfs = new iMSCP_VirtualFileSystem($domain);
-
-    // Get the directory listing
     $list = $vfs->ls($path);
 
     if (!$list) {
-        set_page_message(tr('Unable to retrieve directories list for your domain. Please contact your reseller.'), 'error');
-        $tpl->assign('FTP_CHOOSER', '');
-        return;
+        if ($path == '/') {
+            set_page_message(tr('Could not retrieve directories. Please contact your reseller.'), 'error');
+            $tpl->assign('FTP_CHOOSER', '');
+        } else {
+            showBadRequestErrorPage();
+        }
     }
-    // Show parent directory link
+
     $parent = explode('/', $path);
     array_pop($parent);
     $parent = implode('/', $parent);
-
     $tpl->assign(array(
         'ACTION_LINK' => '',
         'ACTION' => '',
@@ -105,22 +94,37 @@ function generateDirectoriesList($tpl)
         'DIR_NAME' => tr('Parent directory'),
         'LINK' => tohtml("ftp_choose_dir.php?cur_dir=$parent", 'htmlAttr')
     ));
-
     $tpl->parse('DIR_ITEM', '.dir_item');
 
-    // Show directories only
     foreach ($list as $entry) {
-        $directory = $path . '/' . $entry['file'];
-
         if ($entry['type'] != iMSCP_VirtualFileSystem::VFS_TYPE_DIR
-            || ($entry['file'] == '.' || $entry['file'] == '..')
-            || !isAllowedDir(get_user_domain_id($_SESSION['user_id']), $directory)
+            || $entry['file'] == '.'
+            || $entry['file'] == '..'
         ) {
             continue;
         }
 
-        // Create the directory link
+        $directory = $path . '/' . $entry['file'];
+        if (substr_count($directory, '/') < 4) { // Only check for hidden/unselectable directories when needed
+            if (!isVisibleDir($directory)) {
+                continue;
+            }
+
+            if (!isSelectableDir($directory)) {
+                $tpl->assign(array(
+                    'ICON' => 'locked',
+                    'DIR_NAME' => tohtml($entry['file']),
+                    'DIRECTORY' => tohtml($directory, 'htmlAttr'),
+                    'LINK' => tohtml('ftp_choose_dir.php?cur_dir=' . $directory, 'htmlAttr')
+                ));
+                $tpl->assign('ACTION_LINK', '');
+                $tpl->parse('DIR_ITEM', '.dir_item');
+                continue;
+            }
+        }
+
         $tpl->assign(array(
+            'ICON' => 'folder',
             'DIR_NAME' => tohtml($entry['file']),
             'DIRECTORY' => tohtml($directory, 'htmlAttr'),
             'LINK' => tohtml('ftp_choose_dir.php?cur_dir=' . $directory, 'htmlAttr')
@@ -139,22 +143,14 @@ require_once 'imscp-lib.php';
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 check_login('user');
 
-
-if (!customerHasFeature('ftp') && !customerHasFeature('protected_areas')) {
-    showBadRequestErrorPage();
-}
-
-
-
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
     'partial' => 'client/ftp_choose_dir.tpl',
     'page_message' => 'partial',
     'ftp_chooser' => 'partial',
     'dir_item' => 'ftp_chooser',
-    'list_item' => 'dir_item',
-    'action_link' => 'list_item',
-    'layout' => '',
+    'action_link' => 'dir_item',
+    'layout' => ''
 ));
 $tpl->assign(array(
     'TR_DIRECTORY_TREE' => tr('Directory tree'),
@@ -163,11 +159,13 @@ $tpl->assign(array(
     'layout' => ''
 ));
 
-generateDirectoriesList($tpl);
+$mountpoints = getMountpoints(get_user_domain_id($_SESSION['user_id']));
+$hiddenDirs = isset($_SESSION['vftp_hidden_dirs']) ? implode('|', $_SESSION['vftp_hidden_dirs']) : '';
+$unselectableDirs = isset($_SESSION['vftp_unselectable_dirs']) ? implode('|', $_SESSION['vftp_unselectable_dirs']) : '';
+
+generateDirectoryList($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('PARTIAL', 'partial');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 $tpl->prnt();
-
-unsetMessages();

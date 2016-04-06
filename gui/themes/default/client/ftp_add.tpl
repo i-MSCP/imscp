@@ -53,8 +53,7 @@
         </tr>
         <tr>
             <td><label for="password">{TR_PASSWORD}</label></td>
-            <td><input type="password" id="password" name="password" value="" class="pwd_generator pwd_prefill"
-                       autocomplete="off"></td>
+            <td><input type="password" id="password" name="password" value="" class="pwd_generator pwd_prefill" autocomplete="off"></td>
         </tr>
         <tr>
             <td><label for="cpassword">{TR_PASSWORD_REPEAT}</label></td>
@@ -64,7 +63,7 @@
             <td><label for="ftp_directory">{TR_HOME_DIR}</label></td>
             <td>
                 <input type="text" id="ftp_directory" name="home_dir" value="{HOME_DIR}">
-                <a href="ftp_choose_dir.php" class="icon i_bc_folder ftp_choose_dir">{TR_CHOOSE_DIR}</a>
+                <span class="icon i_bc_folder ftp_choose_dir clickable">{TR_CHOOSE_DIR}</span>
             </td>
         </tr>
         </tbody>

@@ -65,6 +65,7 @@ FRONTEND
     Removed: User deletion confirmation pages (admin and reseller levels)
     Removed: iMSCP_NetworkCard class; replaced by iMSCP\Net class (stdlib)
     Rewritten: FTP chooser interface to avoid usage of iframe (client level)
+    Rewritten: Protected area interface (client level)
 
 INSTALLER
     Added: Check for maximum supported PHP/Perl versions
@@ -116,6 +117,7 @@ VLOGGER
     Fixed: Wrong SQL user host (localhost instead of 127.0.0.1)
 
 YOUTRACK
+    IP-0931 Unexpected error on protected area creation
     IP-1231 Default SPF DNS resource records should be overrideable
     IP-1402 ProFTPD doesn't restart properly - killed (signal 15) - Wheezy/Precise/Trusty
     IP-1509 Could not generate SSL certificate through the frontEnd - Invalide SSL certificate

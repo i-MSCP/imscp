@@ -46,7 +46,6 @@ function generatePage($tpl)
         $tpl->assign('FTP_EASY_LOGIN', '');
     }
 
-    $nbFtpAccounts = 0;
     while ($row = $stmt->fetchRow()) {
         $tpl->assign(array(
             'FTP_ACCOUNT' => tohtml($row['userid']),
@@ -54,10 +53,7 @@ function generatePage($tpl)
             'FTP_ACCOUNT_STATUS' => translate_dmn_status($row['status'])
         ));
         $tpl->parse('FTP_ITEM', '.ftp_item');
-        $nbFtpAccounts++;
     }
-
-    $tpl->assign('TOTAL_FTP_ACCOUNTS', $nbFtpAccounts);
 }
 
 /***********************************************************************************************************************
@@ -66,7 +62,8 @@ function generatePage($tpl)
 
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+$eventManager = iMSCP_Events_Aggregator::getInstance();
+$eventManager->dispatch(iMSCP_Events::onClientScriptStart);
 check_login('user');
 customerHasFeature('ftp') or showBadRequestErrorPage();
 
@@ -83,10 +80,8 @@ $tpl->define_dynamic(array(
 ));
 $tpl->assign(array(
     'TR_PAGE_TITLE' => tr('Client / FTP / Overview'),
-    'TR_TOTAL_FTP_ACCOUNTS' => tr('FTPs total'),
-    'TR_FTP_USERS' => tr('FTP Users'),
     'TR_FTP_ACCOUNT' => tr('FTP account'),
-    'TR_FTP_ACTION' => tr('Actions'),
+    'TR_FTP_ACTIONS' => tr('Actions'),
     'TR_FTP_ACCOUNT_STATUS' => tr('Status'),
     'TR_LOGINAS' => tr('Login As'),
     'TR_EDIT' => tr('Edit'),
@@ -94,12 +89,17 @@ $tpl->assign(array(
     'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s FTP user?', '%s'),
 ));
 
+$eventManager->registerListener('onGetJsTranslations', function ($e) {
+    /* @var $e iMSCP_Events_Event */
+    $translations = $e->getParam('translations');
+    $translations['core']['dataTable'] = getDataTablesPluginTranslations();
+    $translations['core']['deletion_confirm_msg'] = tr('Are you sure you want to delete the `%%s` FTP user?');
+});
+
 generateNavigation($tpl);
 generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+$eventManager->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 $tpl->prnt();
-
-unsetMessages();

@@ -622,6 +622,9 @@ sub addHtaccess
     my $fileGroup = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_GROUPS_FILENAME'}";
     my $filePath = "$data->{'AUTH_PATH'}/.htaccess";
 
+    my $isImmutable = isImmutable( $data->{'AUTH_PATH'} );
+    clearImmutable( $data->{'AUTH_PATH'} ) if $isImmutable;
+
     my $file = iMSCP::File->new( filename => $filePath );
     my $fileContent = $file->get() if -f $filePath;
     $fileContent = '' unless defined $fileContent;
@@ -647,6 +650,8 @@ sub addHtaccess
     $rs ||= $file->save();
     $rs ||= $file->mode( 0640 );
     $rs ||= $file->owner( $data->{'USER'}, $data->{'GROUP'} );
+    setImmutable( $data->{'AUTH_PATH'} ) if $isImmutable;
+    $rs;
 }
 
 =item deleteHtaccess(\%data)
@@ -670,6 +675,9 @@ sub deleteHtaccess
     my $fileGroup = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_GROUPS_FILENAME'}";
     my $filePath = "$data->{'AUTH_PATH'}/.htaccess";
 
+    my $isImmutable = isImmutable( $data->{'AUTH_PATH'} );
+    clearImmutable( $data->{'AUTH_PATH'} ) if $isImmutable;
+
     my $file = iMSCP::File->new( filename => $filePath );
     my $fileContent = $file->get() if -f $filePath;
     $fileContent = '' unless defined $fileContent;
@@ -690,10 +698,11 @@ sub deleteHtaccess
         $rs ||= $file->save();
         $rs ||= $file->mode( 0640 );
         $rs ||= $file->owner( $data->{'USER'}, $data->{'GROUP'} );
-        return $rs;
+    } else {
+        $rs = $file->delFile() if -f $filePath;
     }
 
-    $rs = $file->delFile() if -f $filePath;
+    setImmutable( $data->{'AUTH_PATH'} ) if $isImmutable;
     $rs;
 }
 
