@@ -172,7 +172,7 @@ class Crypt
                         throw new \InvalidArgumentException('The salt length must be 2 bytes long');
                     }
 
-                    if (!preg_match('/^[' . static::ALPHA64 . ']+$/', $salt)) {
+                    if (preg_match('%[^' . static::ALPHA64 . ']%', $salt)) {
                         throw new \InvalidArgumentException('The salt must be a string in the alphabet "./0-9A-Za-z"');
                     }
                 } else {
