@@ -50,6 +50,7 @@ FRONTEND
     Added: iMSCP\Net class - Allow to get list of network devices and IP addresses (stdlib)
     Added: Datatable for the file system information table (admin level)
     Added: SPF DNS resource record type (validated as a TXT record) (client level)
+    Added: torul() function (Escape a string for the URI or Parameter contexts)
     Changed: exec() PHP function is no longer disabled for the control panel
     Changed: The `type` field cannot longer be changed when editing a DNS resource record (client level)
     Changed: Support for nested MySQL transactions is now emulated using named transaction savepoints (stdlib)
@@ -62,6 +63,7 @@ FRONTEND
     Fixed: IDNs are shown in IDNA form in several places
     Fixed: iMSCP_Update_Database::addIndex() doesn't allows to set index length (stdlib)
     Fixed: Wrong behavior with exception handler when database connection is not available (stdlib)
+    Backported: iMSCP\Crypt library from 1.3.x branch (not used by core atm)
     Removed: User deletion confirmation pages (admin and reseller levels)
     Removed: iMSCP_NetworkCard class; replaced by iMSCP\Net class (stdlib)
     Rewritten: FTP chooser interface to avoid usage of iframe (client level)

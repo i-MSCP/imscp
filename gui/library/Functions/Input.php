@@ -118,6 +118,18 @@ function tojs($string)
 }
 
 /**
+ * Escape a string for the URI or Parameter contexts.
+ *
+ * @param string $string String to be converted
+ * @return string
+ */
+function tourl($string)
+{
+	global $ESCAPER;
+	return $ESCAPER->escapeUrl($string);
+}
+
+/**
  * Checks if the syntax of the given password is valid
  *
  * @param string $password username to be checked
