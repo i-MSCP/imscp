@@ -223,10 +223,8 @@ sub htpasswd($;$$)
     if ($format eq 'crypt') {
         if ($salt) {
             length $salt == 2 or croak( 'The salt length must be 2 bytes long' );
-            my @salt = split //, $salt;
-            for (my $i = 0; $i < 2; $i++) {
-                index( ALPHA64, $salt[$i] ) != -1 or croak( 'The salt must be a string in the alphabet "./0-9A-Za-z"' );
-            }
+            my $regexp = qr/[^${\(ALPHA64)}]/;
+            $salt !~ /$regexp/ or croak( 'The salt must be a string in the alphabet "./0-9A-Za-z"' );
         } else {
             $salt = randomStr( 2, ALPHA64 );
         }
@@ -395,7 +393,8 @@ sub _encryptCBC($$$$)
 {
     my ($algorithm, $key, $iv, $data) = @_;
 
-    encode_base64( Crypt::CBC->new(
+    encode_base64(
+        Crypt::CBC->new(
             -cipher         => $algorithm,
             -key            => $key,
             -keysize        => length $key,
@@ -403,7 +402,9 @@ sub _encryptCBC($$$$)
             -iv             => $iv,
             -header         => 'none',
             -padding        => 'space',
-        )->encrypt( $data ), '' );
+        )->encrypt( $data ),
+        ''
+    );
 }
 
 =item _decryptCBC($algo, $key, $iv, $data)
@@ -430,7 +431,9 @@ sub _decryptCBC($$$$)
         -iv             => $iv,
         -header         => 'none',
         -padding        => 'space',
-    )->decrypt( decode_base64( $data ) );
+    )->decrypt(
+        decode_base64( $data )
+    );
 }
 
 =item _toAlphabet64($string)
@@ -467,11 +470,8 @@ sub _apr1Md5($;$)
 
     if ($salt) {
         length $salt == 8 or croak( 'The salt length for md5 (APR1) algorithm must be 8 bytes long' );
-
-        my @salt = split //, $salt;
-        for (my $i = 0; $i < 8; $i++) {
-            index( ALPHA64, $salt[$i] ) != -1 or croak( 'The salt must be a string in the alphabet "./0-9A-Za-z"' );
-        }
+        my $regexp = qr/[^${\(ALPHA64)}]/;
+        $salt !~ /$regexp/ or croak( 'The salt must be a string in the alphabet "./0-9A-Za-z"' );
     } else {
         $salt = randomStr( 8, ALPHA64 );
     }

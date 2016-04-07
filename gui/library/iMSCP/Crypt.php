@@ -44,8 +44,6 @@ class Crypt
      */
     static public function md5($password, $salt = null)
     {
-        $salt = (string)$salt;
-
         if ($salt !== null) {
             if (strlen($salt) < 8) {
                 throw new \InvalidArgumentException('The salt length must be at least 8 bytes long');
@@ -105,8 +103,6 @@ class Crypt
     static public function sha256($password, $rounds = 5000, $salt = null)
     {
         $rounds = (int)$rounds;
-        $salt = (string)$salt;
-
         if ($rounds < 1000 || $rounds > 5000) {
             throw new \InvalidArgumentException('The rounds parameter must be in range 1000-5000');
         }
@@ -136,8 +132,6 @@ class Crypt
     static public function sha512($password, $rounds = 5000, $salt = null)
     {
         $rounds = (int)$rounds;
-        $salt = (string)$salt;
-
         if ($rounds < 1000 || $rounds > 5000) {
             throw new \InvalidArgumentException('The rounds parameter must be in range 1000-5000');
         }
@@ -169,8 +163,6 @@ class Crypt
      */
     static public function htpasswd($password, $cost = 10, $salt = null, $format = 'md5')
     {
-        $salt = (string)$salt;
-
         switch ($format) {
             case 'bcrypt':
                 return static::bcrypt($password, $cost, $salt);
@@ -180,12 +172,8 @@ class Crypt
                         throw new \InvalidArgumentException('The salt length must be 2 bytes long');
                     }
 
-                    for ($i = 0; $i < 8; $i++) {
-                        if (strpos(static::ALPHA64, $salt[$i]) === false) {
-                            throw new \InvalidArgumentException(
-                                'The salt must be a string in the alphabet "./0-9A-Za-z"'
-                            );
-                        }
+                    if (!preg_match('/^[' . static::ALPHA64 . ']+$/', $salt)) {
+                        throw new \InvalidArgumentException('The salt must be a string in the alphabet "./0-9A-Za-z"');
                     }
                 } else {
                     $salt = static::randomStr(2, static::ALPHA64);
@@ -215,8 +203,6 @@ class Crypt
     static public function bcrypt($password, $cost = 10, $salt = null)
     {
         $cost = (int)$cost;
-        $salt = (string)$salt;
-
         if ($cost < 4 || $cost > 31) {
             throw new \InvalidArgumentException('The cost parameter must be in range 04-31');
         }
@@ -251,17 +237,13 @@ class Crypt
      */
     static protected function apr1Md5($password, $salt = null)
     {
-        $salt = (string)$salt;
-
         if ($salt !== null) {
             if (strlen($salt) !== 8) {
                 throw new \InvalidArgumentException('The salt for APR1 algorithm must be 8 characters long');
             }
 
-            for ($i = 0; $i < 8; $i++) {
-                if (strpos(static::ALPHA64, $salt[$i]) === false) {
-                    throw new \InvalidArgumentException('The salt must be a string in the alphabet "./0-9A-Za-z"');
-                }
+            if (preg_match('%[^' . static::ALPHA64 . ']%', $salt)) {
+                throw new \InvalidArgumentException('The salt must be a string in the alphabet "./0-9A-Za-z"');
             }
         } else {
             $salt = static::randomStr(8, static::ALPHA64);
