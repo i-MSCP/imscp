@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-06 12:59+0200\n"
-"PO-Revision-Date: 2016-04-06 11:00+0000\n"
+"POT-Creation-Date: 2016-04-08 10:19+0200\n"
+"PO-Revision-Date: 2016-04-06 11:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/i-mscp/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -1063,11 +1063,11 @@ msgstr "Etes-vous certain de vouloir supprimer le ticket '%s' ?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
-msgstr ""
+msgstr "Êtes-vous certain de vouloir supprimer l'utilisateur FTP `%%s`?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` protected area?"
-msgstr ""
+msgstr "Êtes-vous certain de vouloir supprimer la zone protégée `%%s`?"
 
 msgid "Are you sure you want to delete this DNS record?"
 msgstr "Etes-vous certain de vouloir supprimer cet enregistrement DNS?"
@@ -1120,13 +1120,13 @@ msgid "At least one intermediate certificate is invalid or missing."
 msgstr "Au moins un certificat intérmédaire est invalide our absent."
 
 msgid "Authentication by group"
-msgstr ""
+msgstr "Authentification par groupe"
 
 msgid "Authentication by user"
-msgstr ""
+msgstr "Authentification par utilisateur"
 
 msgid "Authentication data"
-msgstr ""
+msgstr "Données d'authentification"
 
 msgid "Auto (Browser language)"
 msgstr "Auto (Langage du navigateur)"
@@ -1537,7 +1537,7 @@ msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr "Impossible de générer le certificat SSL. Une erreur inattendue s'est produite."
 
 msgid "Could not retrieve directories. Please contact your reseller."
-msgstr ""
+msgstr "Impossible d'obtenir la liste des répertoires. Veuilez contacter votre revendeur."
 
 msgid "Could not upload file."
 msgstr "Ne peut pas téléverser le fichier."
@@ -1570,7 +1570,7 @@ msgid "Create default email addresses"
 msgstr "Créer les adresses e-mail par défaut"
 
 msgid "Create protected area"
-msgstr ""
+msgstr "Créer une zone protégée"
 
 msgid "Created by"
 msgstr "Créé par"
@@ -1896,11 +1896,11 @@ msgstr "Le répertoire %s n'existe pas."
 
 #, php-format
 msgid "Directory '%s' doesn't exists."
-msgstr ""
+msgstr "Le répertoire '%s' n'éxiste pas."
 
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
-msgstr ""
+msgstr "Le répertoire '%s' est soit pas autorisé soit invalide."
 
 msgid "Directory tree"
 msgstr "Arborescence des répertoires"
@@ -2346,10 +2346,10 @@ msgid "FTP accounts"
 msgstr "Comptes FTP"
 
 msgid "FTP home directory"
-msgstr ""
+msgstr "Répertoire d'accueil FTP"
 
 msgid "FTP home directory cannot be empty."
-msgstr ""
+msgstr "Le répertoire d'accueil FTP est obligatoire."
 
 msgid "FTP traffic"
 msgstr "Trafic FTP"
@@ -2777,7 +2777,7 @@ msgid "Internationalization"
 msgstr "Internationalisation"
 
 msgid "Invalid FTP username."
-msgstr ""
+msgstr "Nom d'utilisateur FTP invalide."
 
 msgid "Invalid MX priority."
 msgstr "Priorité MX invalide."
@@ -3602,7 +3602,7 @@ msgid "Please enter an username."
 msgstr "Veuillez saisir un nom d'utilisateur."
 
 msgid "Please enter protected area path."
-msgstr ""
+msgstr "Veuillez entrer un chemin pour la zone protégée."
 
 msgid "Please enter your auto-responder message below"
 msgstr "Veuillez saisir votre message de réponse automatique ci-dessous"
@@ -3858,13 +3858,13 @@ msgid "Protected"
 msgstr "Protégé"
 
 msgid "Protected area data"
-msgstr ""
+msgstr "Données pour la zone protégée"
 
 msgid "Protected area name"
-msgstr ""
+msgstr "Nom de la zone protégée"
 
 msgid "Protected area path"
-msgstr ""
+msgstr "Chemin de la zone protégée"
 
 msgid "Protected area successfully scheduled for addition."
 msgstr "La zone protégée va être ajoutée."
@@ -4861,7 +4861,7 @@ msgid "This software is installed on following domain(s):"
 msgstr "Ce logiciel est installé dans les domaines suivants :"
 
 msgid "This user has domain record. First remove the domain from the system."
-msgstr ""
+msgstr "Cet utilisateur a des domaines. Vous devez d'abord supprimer les domaines du système."
 
 msgid "This user name already exist."
 msgstr "Ce nom d'utilisateur est déjà utilisé."
@@ -5194,7 +5194,7 @@ msgid "Update password"
 msgstr "Mise à jour du mot de passe"
 
 msgid "Update protected area"
-msgstr ""
+msgstr "Mettre à jour"
 
 msgid "Updates"
 msgstr "Mises à jour"
@@ -5673,7 +5673,7 @@ msgid "You must enter a subdomain name."
 msgstr "Vous devez saisir le nom de sous-domaine."
 
 msgid "You must first create a user."
-msgstr ""
+msgstr "Vous devez d'abord créer un utilisateur."
 
 msgid "You must first generate a password by clicking on the generate button."
 msgstr "Vous devez d'abord générer un mot de passe."

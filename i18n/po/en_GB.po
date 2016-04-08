@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-06 12:59+0200\n"
-"PO-Revision-Date: 2016-04-06 11:00+0000\n"
+"POT-Creation-Date: 2016-04-08 10:19+0200\n"
+"PO-Revision-Date: 2016-04-06 11:01+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/i-mscp/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -2770,7 +2770,7 @@ msgid "Internationalization"
 msgstr "Internationalization"
 
 msgid "Invalid FTP username."
-msgstr ""
+msgstr "Invalid FTP username."
 
 msgid "Invalid MX priority."
 msgstr "Invalid MX priority."
@@ -3595,7 +3595,7 @@ msgid "Please enter an username."
 msgstr "Please enter an username."
 
 msgid "Please enter protected area path."
-msgstr ""
+msgstr "Please enter protected area path."
 
 msgid "Please enter your auto-responder message below"
 msgstr "Please enter your auto-responder message below"
@@ -3851,13 +3851,13 @@ msgid "Protected"
 msgstr "Protected"
 
 msgid "Protected area data"
-msgstr ""
+msgstr "Protected area data"
 
 msgid "Protected area name"
-msgstr ""
+msgstr "Protected area name"
 
 msgid "Protected area path"
-msgstr ""
+msgstr "Protected area path"
 
 msgid "Protected area successfully scheduled for addition."
 msgstr "Protected area successfully scheduled for addition."
@@ -5187,7 +5187,7 @@ msgid "Update password"
 msgstr "Update password"
 
 msgid "Update protected area"
-msgstr ""
+msgstr "Update protected area"
 
 msgid "Updates"
 msgstr "Updates"
@@ -5666,7 +5666,7 @@ msgid "You must enter a subdomain name."
 msgstr "You must enter a subdomain name."
 
 msgid "You must first create a user."
-msgstr ""
+msgstr "You must first create a user."
 
 msgid "You must first generate a password by clicking on the generate button."
 msgstr "You must first generate a password by clicking the generate button."

@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-06 12:59+0200\n"
-"PO-Revision-Date: 2016-04-06 11:00+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2016-04-08 10:19+0200\n"
+"PO-Revision-Date: 2016-04-06 14:47+0000\n"
+"Last-Translator: Arthur Mayer <mayer.arthur@gmail.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/i-mscp/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1057,11 +1057,11 @@ msgstr "Вы уверены, что хотите удалить тикет %s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить пользователя FTP %%s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` protected area?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить защищённую зону %%s ?"
 
 msgid "Are you sure you want to delete this DNS record?"
 msgstr "Вы уверены, что хотите удалить эту DNS запись?"
@@ -1114,13 +1114,13 @@ msgid "At least one intermediate certificate is invalid or missing."
 msgstr "По крайней мере один сертефикат не валидный или отсутствует."
 
 msgid "Authentication by group"
-msgstr ""
+msgstr "Аутентификация по группе"
 
 msgid "Authentication by user"
-msgstr ""
+msgstr "Аутентификация по пользователю"
 
 msgid "Authentication data"
-msgstr ""
+msgstr "Данные аутентификации"
 
 msgid "Auto (Browser language)"
 msgstr "Автоматически (язык браузера)"
@@ -1531,7 +1531,7 @@ msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr "Не удалось сгенерировать SSL сертификат. Произошла неожиданная ошибка."
 
 msgid "Could not retrieve directories. Please contact your reseller."
-msgstr ""
+msgstr "Невозможно получить список каталогов для Вашего домена. Пожалуйста, свяжитесь с вашим реселлером."
 
 msgid "Could not upload file."
 msgstr "Не могу загрузить файл."
@@ -1564,7 +1564,7 @@ msgid "Create default email addresses"
 msgstr "Создать email адреса по умолчанию"
 
 msgid "Create protected area"
-msgstr ""
+msgstr "Создать защищённую зону"
 
 msgid "Created by"
 msgstr "Создал"
@@ -1890,11 +1890,11 @@ msgstr "Каталог %s не существует."
 
 #, php-format
 msgid "Directory '%s' doesn't exists."
-msgstr ""
+msgstr "Домашний каталог '%s' не существует"
 
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
-msgstr ""
+msgstr "Домашний каталог %s не разрешен или неверен."
 
 msgid "Directory tree"
 msgstr "Дерево папок"
@@ -2340,10 +2340,10 @@ msgid "FTP accounts"
 msgstr "Учётные записи FTP"
 
 msgid "FTP home directory"
-msgstr ""
+msgstr "Домашний каталог"
 
 msgid "FTP home directory cannot be empty."
-msgstr ""
+msgstr "Путь к домашнему каталогу пользователя FTP не может быть пуст."
 
 msgid "FTP traffic"
 msgstr "FTP трафик"
@@ -2771,7 +2771,7 @@ msgid "Internationalization"
 msgstr "Языки"
 
 msgid "Invalid FTP username."
-msgstr ""
+msgstr "Неверное имя пользователя"
 
 msgid "Invalid MX priority."
 msgstr "Неверный MX приоритет."
@@ -3596,7 +3596,7 @@ msgid "Please enter an username."
 msgstr "Пожалуйста, введите имя пользователя."
 
 msgid "Please enter protected area path."
-msgstr ""
+msgstr "Пожалуйста, укажите путь для защищенной зоны"
 
 msgid "Please enter your auto-responder message below"
 msgstr "Пожалуйста, введите сообщение для автоответчика ниже"
@@ -3852,13 +3852,13 @@ msgid "Protected"
 msgstr "Защищено"
 
 msgid "Protected area data"
-msgstr ""
+msgstr "Данные защищенной зоны"
 
 msgid "Protected area name"
-msgstr ""
+msgstr "Название защищенной зоны"
 
 msgid "Protected area path"
-msgstr ""
+msgstr "Путь защищенной зоны"
 
 msgid "Protected area successfully scheduled for addition."
 msgstr "Защищенная зона успешно помечена для добавления."
@@ -5188,7 +5188,7 @@ msgid "Update password"
 msgstr "Обновить пароль"
 
 msgid "Update protected area"
-msgstr ""
+msgstr "Обновить новую защищённую зону"
 
 msgid "Updates"
 msgstr "Обновления"
@@ -5667,7 +5667,7 @@ msgid "You must enter a subdomain name."
 msgstr "Вы должны ввести имя поддомена"
 
 msgid "You must first create a user."
-msgstr ""
+msgstr "Сначала вы должны создать пользователя."
 
 msgid "You must first generate a password by clicking on the generate button."
 msgstr "Сначала вы должны сгенерировать пароль, используя кнопку генерации"
