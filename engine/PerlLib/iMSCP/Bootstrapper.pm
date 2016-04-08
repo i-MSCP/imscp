@@ -33,13 +33,14 @@ use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Requirements;
+use IO::Handle;
 use POSIX qw(tzset);
 use parent 'Common::SingletonClass';
 
 umask 022;
 
-autoflush STDOUT 1;
-autoflush STDERR 1;
+STDOUT->autoflush(1);
+STDERR->autoflush(1);
 
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
