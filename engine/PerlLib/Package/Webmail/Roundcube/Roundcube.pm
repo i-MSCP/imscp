@@ -25,6 +25,7 @@ package Package::Webmail::Roundcube::Roundcube;
 
 use strict;
 use warnings;
+use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Database;
 use Scalar::Defer;

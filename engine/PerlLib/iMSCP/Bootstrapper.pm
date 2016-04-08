@@ -25,15 +25,21 @@ package iMSCP::Bootstrapper;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use Fcntl ':flock';
 use iMSCP::Config;
-use iMSCP::Requirements;
+use iMSCP::Database;
+use iMSCP::Debug;
+use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::Database;
-use Fcntl ':flock';
+use iMSCP::Requirements;
 use POSIX qw(tzset);
 use parent 'Common::SingletonClass';
+
+umask 022;
+
+autoflush STDOUT 1;
+autoflush STDERR 1;
 
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
@@ -101,6 +107,10 @@ sub boot
     !$rs || ($options->{'nofail'} && $options->{'nofail'} eq 'yes') or die( sprintf(
             'Could not connect to the SQL server: %s', $rs
         ) );
+
+    iMSCP::EventManager->getInstance()->trigger('onBoot', $mode) == 0 or die(
+        getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'An unexpected error occurred'
+    );
     $self;
 }
 

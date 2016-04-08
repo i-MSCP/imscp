@@ -25,6 +25,7 @@ package Package::PhpMyAdmin;
 
 use strict;
 use warnings;
+use iMSCP::Config;
 use Scalar::Defer;
 use parent 'Common::SingletonClass';
 

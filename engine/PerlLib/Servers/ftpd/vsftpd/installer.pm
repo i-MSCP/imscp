@@ -26,6 +26,7 @@ package Servers::ftpd::vsftpd::installer;
 use strict;
 use warnings;
 use Cwd;
+use iMSCP::Config;
 use iMSCP::Database;
 use iMSCP::Crypt 'randomStr';
 use iMSCP::Debug;

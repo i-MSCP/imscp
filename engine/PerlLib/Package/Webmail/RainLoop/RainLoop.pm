@@ -25,6 +25,7 @@ package Package::Webmail::RainLoop::RainLoop;
 
 use strict;
 use warnings;
+use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Database;
 use iMSCP::Dir;

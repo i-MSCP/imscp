@@ -25,6 +25,7 @@ package Package::PhpMyAdmin::Installer;
 
 use strict;
 use warnings;
+use iMSCP::Config;
 use iMSCP::Database;
 use iMSCP::Debug;
 use Package::PhpMyAdmin;

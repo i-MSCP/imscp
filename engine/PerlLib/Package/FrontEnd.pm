@@ -25,6 +25,7 @@ package Package::FrontEnd;
 
 use strict;
 use warnings;
+use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::EventManager;
