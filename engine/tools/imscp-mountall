@@ -34,7 +34,6 @@ use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVe
 use iMSCP::Bootstrapper;
 use iMSCP::Debug;
 use iMSCP::Getopt;
-use iMSCP::Mail;
 use iMSCP::Mount qw/ mount umount /;
 use File::Basename;
 use Scalar::Defer;
@@ -63,7 +62,7 @@ my $fstabEntries = lazy {
     \@fstabEntries;
 };
 
-newDebug('imscp-mountall-mngr.log');
+newDebug('imscp_mountall.log');
 
 iMSCP::Getopt->parseNoDefault(sprintf('Usage: perl %s [OPTION]...', basename($0)) . qq {
 
@@ -74,19 +73,37 @@ OPTIONS:
  'verbose|v' => sub { setVerbose(@_); }
 );
 
-iMSCP::Bootstrapper->getInstance()->boot({
-    norequirements => 'yes', nokeys => 'yes', nodatabase => 'yes', nolock => 'yes', config_readonly => 'yes',
-    mode => 'backend'
-});
+iMSCP::Bootstrapper->getInstance()->boot(
+    {
+        norequirements => 'yes',
+        nokeys => 'yes',
+        nodatabase => 'yes',
+        nolock => 'yes',
+        config_readonly => 'yes',
+        mode => 'backend'
+    }
+);
 
 my %dispatch = (
-   'start' => sub { mount($_) for @{$fstabEntries}; },
-   'stop' => sub { umount($_->{'fs_file'}) for @{$fstabEntries}; }
+   'start' => sub {
+        for(@{$fstabEntries}) {
+            my $rs = mount($_);
+            return $rs if $rs;
+        }
+        0;
+    },
+   'stop' => sub {
+        for(@{$fstabEntries}) {
+            my $rs = umount($_->{'fs_file'});
+            return $rs if $rs;
+        }
+        0;
+    }
 );
 
 my $action = shift;
 $action && grep($_ eq $action, ( 'start', 'stop' )) or iMSCP::Getopt->showUsage();
-$dispatch{ $action }->();
+exit $dispatch{ $action }->();
 
 =head1 AUTHOR
 
