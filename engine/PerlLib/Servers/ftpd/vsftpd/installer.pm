@@ -502,7 +502,7 @@ sub _setupDatabase
     my $db = iMSCP::Database->factory();
 
     # Give needed privileges to this SQL user
-    my $quotedDbName = $db->quoteIdentifier( $dbName );
+    (my $quotedDbName = $db->quoteIdentifier( $dbName )) =~ s/([%_])/\\$1/g;
     my $quotedTableName = $db->quoteIdentifier( 'ftp_users' );
     my $rs = $db->doQuery( 'g', "GRANT SELECT ON $quotedDbName.$quotedTableName TO ?@?", $dbUser, $dbUserHost );
     unless (ref $rs eq 'HASH') {

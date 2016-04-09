@@ -151,11 +151,6 @@ function client_addSqlUser($customerId, $dbId)
             return;
         }
 
-        if (preg_match('/[%|\?]+/', $user)) {
-            set_page_message(tr("Wildcards such as '%s' and '%s' are not allowed in username.", '%', '?'), 'error');
-            return;
-        }
-
         if ($host === '') {
             set_page_message(tr('Please enter an SQL user host.'), 'error');
             return;
@@ -242,7 +237,6 @@ function client_addSqlUser($customerId, $dbId)
     }
     $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
     $dbName = $row['sqld_name'];
-    $dbName = preg_replace('/([_%\?\*])/', '\\\$1', $dbName);
     $config = iMSCP_Registry::get('config');
     $mysqlConfig = new iMSCP_Config_Handler_File($config['CONF_DIR'] . '/mysql/mysql.data');
 
@@ -259,6 +253,15 @@ function client_addSqlUser($customerId, $dbId)
             exec_query('CREATE USER ?@? IDENTIFIED BY ? PASSWORD EXPIRE NEVER', array($user, $host, $password));
         }
     }
+
+    // According MySQL documentation (http://dev.mysql.com/doc/refman/5.5/en/grant.html#grant-accounts-passwords)
+    // The “_” and “%” wildcards are permitted when specifying database names in GRANT statements that grant privileges
+    // at the global or database levels. This means, for example, that if you want to use a “_” character as part of a
+    // database name, you should specify it as “\_” in the GRANT statement, to prevent the user from being able to
+    // access additional databases matching the wildcard pattern; for example, GRANT ... ON `foo\_bar`.* TO ....
+    //
+    // In practice, without escaping, an user added for db `a_b` would also have access to a db `acb`.
+    $dbName = preg_replace('/([%_])/', '\\\\$1', $dbName);
 
     execute_query(sprintf('GRANT ALL PRIVILEGES ON %s.* to %s@%s',
         quoteIdentifier($dbName), quoteValue($user), quoteValue($host)

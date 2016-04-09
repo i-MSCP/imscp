@@ -498,6 +498,7 @@ function sql_delete_user($dmnId, $userId)
         exec_query('DELETE FROM mysql.user WHERE User = ? AND Host = ?', array($user, $host));
         exec_query('DELETE FROM mysql.db WHERE Host = ? AND User = ?', array($host, $user));
     } else {
+        $dbName = preg_replace('/([%_])/', '\\\\$1', $dbName);
         exec_query('DELETE FROM mysql.db WHERE Host = ? AND Db = ? AND User = ?', array($host, $dbName, $user));
     }
 

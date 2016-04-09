@@ -433,7 +433,7 @@ sub _setupSqlUser
     }
 
     # Give needed privileges to this SQL user
-    my $quotedDbName = $db->quoteIdentifier( $dbName );
+    (my $quotedDbName = $db->quoteIdentifier( $dbName )) =~ s/([%_])/\\$1/g;
     $rs = $db->doQuery( 'g', "GRANT SELECT ON $quotedDbName.mail_users TO ?@?", $dbUser, $dbUserHost );
     unless (ref $rs eq 'HASH') {
         error( sprintf( 'Could not add SQL privilege: %s', $rs ) );

@@ -491,7 +491,7 @@ sub _setupSqlUser
         }
     }
 
-    my $quotedDbName = $db->quoteIdentifier( $phpmyadminDbName );
+    (my $quotedDbName = $db->quoteIdentifier( $phpmyadminDbName )) =~ s/([%_])/\\$1/g;
     $rs = $db->doQuery( 'g', "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?@?", $dbUser, $dbUserHost );
     unless (ref $rs eq 'HASH') {
         error( sprintf( 'Could not add SQL privileges: %s', $rs ) );

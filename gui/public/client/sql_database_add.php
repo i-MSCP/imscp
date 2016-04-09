@@ -135,26 +135,23 @@ function client_addSqlDb($userId)
         return;
     }
 
-    if ($dbName === 'test' || client_isDatabase($dbName)) {
-        set_page_message(tr('Database name is unavailable.'), 'error');
+    if (in_array($dbName, array('information_schema', 'mysql', 'performance_schema', 'sys', 'test'))
+        || client_isDatabase($dbName)
+    ) {
+        set_page_message(tr('Database name is unavailable or unallowed.'), 'error');
         return;
     }
 
-    if (preg_match('/[%|\?]+/', $dbName)) {
-        set_page_message(tr("Wildcards such as 's%' and 's%' are not allowed.", '%', '?'), 'error');
-        return;
-    }
-
-    $responses = iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddSqlDb, array(
-        'dbName' => $dbName
-    ));
-
-    if (!$responses->isStopped()) {
+    try {
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddSqlDb, array('dbName' => $dbName));
         execute_query(sprintf('CREATE DATABASE IF NOT EXISTS %s', quoteIdentifier($dbName)));
         exec_query('INSERT INTO sql_database (domain_id, sqld_name) VALUES (?, ?)', array($mainDmnId, $dbName));
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlDb, array('dbName' => $dbName));
         set_page_message(tr('SQL database successfully created.'), 'success');
         write_log(sprintf('%s added new SQL database: %s', decode_idna($_SESSION['user_logged']), $dbName), E_USER_NOTICE);
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlDb, array('dbName' => $dbName));
+    } catch (iMSCP_Exception $e) {
+        write_log(sprintf('Could not create `%s` database: %s', $e->getMessage()));
+        set_page_message(tr('Could not create the `%s` database name.'), 'error');
     }
 
     redirectTo('sql_manage.php');

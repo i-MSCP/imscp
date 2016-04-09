@@ -431,13 +431,14 @@ sub _setupDatabase
     }
 
     # Give needed privileges to this SQL user
+    $quotedDbName =~ s/([%_])/\\$1/g;
     $rs = $db->doQuery( 'g', "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?@?", $dbUser, $dbUserHost );
     unless (ref $rs eq 'HASH') {
         error( sprintf( 'Could not add SQL privileges: %s', $rs ) );
         return 1;
     }
 
-    $quotedDbName = $db->quoteIdentifier( $imscpDbName );
+    ($quotedDbName = $db->quoteIdentifier( $imscpDbName )) =~ s/([%_])/\\$1/g;
     $rs = $db->doQuery(
         'g', "GRANT SELECT (mail_addr, mail_pass), UPDATE (mail_pass) ON $quotedDbName.mail_users TO ?@?",
         $dbUser, $dbUserHost

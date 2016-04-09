@@ -540,8 +540,10 @@ sub _setupVlogger
         $sqld->dropUser( $user, $host );
     }
 
-    my $qDbName = $db->quoteIdentifier( $dbName );
+
     $sqld->createUser( $user, $userHost, $pass );
+
+    (my $qDbName = $db->quoteIdentifier( $dbName )) =~ s/([%_])/\\$1/g;
     $rs = $db->doQuery( 'g', "GRANT SELECT, INSERT, UPDATE ON $qDbName.httpd_vlogger TO ?@?", $user, $userHost );
     unless (ref $rs eq 'HASH') {
         error( sprintf( 'Could not add SQL privileges: %s', $rs ) );

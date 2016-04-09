@@ -385,14 +385,14 @@ sub _setupDatabase
 
     # Give needed privileges to this SQL user
 
-    my $quotedDbName = $db->quoteIdentifier( $dbName );
+    (my $quotedDbName = $db->quoteIdentifier( $dbName )) =~ s/([%_])/\\$1/g;
 
     for my $tableName('ftp_users', 'ftp_group') {
         my $quotedTableName = $db->quoteIdentifier( $tableName );
 
         $rs = $db->doQuery( 'g', "GRANT SELECT ON $quotedDbName.$quotedTableName TO ?@?", $dbUser, $dbUserHost );
         unless (ref $rs eq 'HASH') {
-            error( sprintf( 'Unable to add SQL privileges: %s', $rs ) );
+            error( sprintf( 'Could not add SQL privileges: %s', $rs ) );
             return 1;
         }
     }
