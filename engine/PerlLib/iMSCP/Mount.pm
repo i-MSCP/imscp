@@ -26,6 +26,7 @@ package iMSCP::Mount;
 use strict;
 use warnings;
 use File::Spec;
+use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::File;
@@ -49,7 +50,7 @@ our @EXPORT_OK = qw/ mount umount addMountEntry removeMountEntry /;
    fs_file: This option describes the mount point for the filesystem.
    fs_vfstype: This option describes the type of the filesystem.
    fs_mntops: This option describes the mount options associated with the filesystem.
- Return int 0 on success, other or die on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -58,44 +59,43 @@ sub mount
     my $options = shift;
 
     $options = { } unless defined $options && ref $options eq 'HASH';
-    defined $options->{$_} or die( sprintf( 'The %s option is not defined', $_ ) ) for qw/
-        fs_spec fs_file fs_spec fs_vfstype fs_mntops
-        /;
+
+    for(qw/ fs_spec fs_file fs_spec fs_vfstype fs_mntops /) {
+        next if defined $options->{$_};
+        error( sprintf( 'The %s option is not defined', $_ ) );
+        return 1;
+    }
 
     my $fsSpec = File::Spec->canonpath( $options->{'fs_spec'} );
     my $fsFile = File::Spec->canonpath( $options->{'fs_file'} );
 
-    if (execute( "mount 2>/dev/null | grep -q ".escapeShell( " on $fsFile " ) )) {
-        if (-f $fsSpec) {
-            my $rs = iMSCP::File->new( filename => $fsFile )->save();
-            return $rs if $rs;
-        } elsif (!-d $fsFile) {
-            my $rs = iMSCP::Dir->new( dirname => $fsFile )->make();
-            return $rs if $rs;
-        }
+    return 0 unless execute( "mount 2>/dev/null | grep -q ".escapeShell( " on $fsFile " ) );
 
-        my @cmdArgs = (
-            '-t', $options->{'fs_vfstype'},
-            '-o', escapeShell( $options->{'fs_mntops'} ),
-            escapeShell( $fsSpec ),
-            escapeShell( $fsFile )
-        );
-
-        my ($stdout, $stderr);
-        execute( "mount @cmdArgs", \$stdout, \$stderr ) == 0 or die( sprintf(
-                'Could not mount %s on %s: %s', $fsFile, $fsFile, $stderr || 'Unknown error'
-            ) );
+    if (-f $fsSpec) {
+        my $rs = iMSCP::File->new( filename => $fsFile )->save();
+        return $rs if $rs;
+    } elsif (!-d $fsFile) {
+        my $rs = iMSCP::Dir->new( dirname => $fsFile )->make();
+        return $rs if $rs;
     }
 
-    if ($options->{'fs_mntops'} =~ /(r?(?:shared|private|slave|unbindable))/) {
-        # handle shared subtrees operations
-        my ($stdout, $stderr);
-        execute( "mount --make-$1 $fsFile", \$stdout, \$stderr ) == 0 or die( sprintf(
-                'Could not make %s a %s subtree: %s', $fsFile, $1, $stderr || 'Unknown error'
-            ) );
-    }
+    my @cmdArgs = (
+        '-t', $options->{'fs_vfstype'},
+        '-o', escapeShell( $options->{'fs_mntops'} ),
+        escapeShell( $fsSpec ),
+        escapeShell( $fsFile )
+    );
 
-    0;
+    my $rs = execute( "mount @cmdArgs", \my $stdout, \my $stderr );
+    error( sprintf( 'Could not mount %s on %s: %s', $fsFile, $fsFile, $stderr || 'Unknown error' ) ) if $rs;
+    return $rs if $rs;
+
+    return 0 unless $options->{'fs_mntops'} =~ /(r?(?:shared|private|slave|unbindable))/;
+
+    # handle shared subtrees operations
+    $rs = execute( "mount --make-$1 $fsFile", \$stdout, \$stderr );
+    error( sprintf( 'Could not make %s a %s subtree: %s', $fsFile, $1, $stderr || 'Unknown error' ) ) if $rs;
+    $rs;
 }
 
 =item umount($fsFile)
@@ -119,10 +119,9 @@ sub umount
     my $fsFileFound;
     do {
         my $stdout;
-        execute( "mount 2>/dev/null | grep ' on $fsFile\\(/\\| \\)' | head -n 1 | cut -d ' ' -f 3",
-            \$stdout ) == 0 or die(
-            'Could not run mount command.'
-        );
+        my $rs = execute( "mount 2>/dev/null | grep ' on $fsFile\\(/\\| \\)' | head -n 1 | cut -d ' ' -f 3", \$stdout );
+        error( 'Could not run mount command.' ) if $rs;
+        return $rs;
 
         $fsFileFound = $stdout;
         if ($fsFileFound) { # We do not trap errors here (expected for dangling mounts)
@@ -138,7 +137,7 @@ sub umount
  Add the given mount entry in the i-MSCP fstab-like file
 
  Param string $entry Fstab entry to add
- Return int 0 on success, other or die on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -148,8 +147,11 @@ sub addMountEntry
 
     my $file = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf" );
     my $fileContent = $file->get();
-    defined $fileContent or die( sprintf( 'Could not read %s file',
-            "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf" ) );
+    unless (defined $fileContent) {
+        error( sprintf( 'Could not read %s file', "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf" ) );
+        return 1;
+    }
+
     my $entryReg = quotemeta( $entry );
     $fileContent =~ s/^$entryReg\n//gm;
     $fileContent .= "$entry\n";
@@ -172,8 +174,11 @@ sub removeMountEntry
 
     my $file = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf" );
     my $fileContent = $file->get();
-    defined $fileContent or die( sprintf( 'Could not read %s file',
-            "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf" ) );
+    unless (defined $fileContent) {
+        error( sprintf( 'Could not read %s file', "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf" ) );
+        return 1;
+    }
+
     my $regexp = ref $entry eq 'Regexp' ? $entry : quotemeta( $entry );
     $fileContent =~ s/^$regexp\n//gm;
     my $rs = $file->set( $fileContent );

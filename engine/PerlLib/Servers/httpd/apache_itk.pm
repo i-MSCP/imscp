@@ -1297,18 +1297,8 @@ sub mountLogsFolder
     my $fsFile = "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}";
     my $mountOptions = { fs_spec => $fsSpec, fs_file => $fsFile, fs_vfstype => 'none', fs_mntops => 'bind' };
     my $rs = $self->{'eventManager'}->trigger( 'beforeMountLogsFolder', $mountOptions );
-    return $rs if $rs;
-
-    local $@;
-    $rs = eval {
-        $rs = addMountEntry( "$fsSpec $fsFile none bind" );
-        $rs ||= mount( $mountOptions );
-    };
-    if ($@) {
-        error( $@ );
-        return 1;
-    }
-
+    $rs ||= addMountEntry( "$fsSpec $fsFile none bind" );
+    $rs ||= mount( $mountOptions );
     $rs ||= $self->{'eventManager'}->trigger( 'afterMountLogsFolder', $mountOptions );
 }
 
@@ -1330,18 +1320,8 @@ sub umountLogsFolder
     # If domain type is 'dmn' (full account) we operate recursively to handle case of dangling mounts
     my $fsFile = "$data->{'HOME_DIR'}/logs".($data->{'DOMAIN_TYPE'} ne 'dmn' ? "/$data->{'DOMAIN_NAME'}" : '');
     my $rs = $self->{'eventManager'}->trigger( 'beforeUnmountLogsFolder', $fsFile );
-    return $rs if $rs;
-
-    local $@;
-    $rs = eval {
-        $rs = umount( $fsFile );
-        $rs ||= removeMountEntry( qr%.*?\s$fsFile(?:/|\s).*% );
-    };
-    if ($@) {
-        error( $@ );
-        return 1;
-    }
-
+    $rs ||= umount( $fsFile );
+    $rs ||= removeMountEntry( qr%.*?\s$fsFile(?:/|\s).*% );
     $rs ||= $self->{'eventManager'}->trigger( 'afterUmountMountLogsFolder', $fsFile );
 }
 
