@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-08 10:19+0200\n"
-"PO-Revision-Date: 2016-04-06 11:00+0000\n"
+"POT-Creation-Date: 2016-04-09 14:08+0200\n"
+"PO-Revision-Date: 2016-04-09 12:08+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -1511,6 +1511,10 @@ msgstr "核心數量"
 msgid "Could not add/update SSL certificate. An unexpected error occurred."
 msgstr "無法新增/更新 SSL 憑證。已產生無法預期的錯誤。"
 
+#, php-format
+msgid "Could not create `%s` database name."
+msgstr ""
+
 msgid "Could not create domain alias. An unexpected error occurred."
 msgstr "無法建立網域別名。已產生無法預期的錯誤。"
 
@@ -1712,8 +1716,8 @@ msgstr "資料庫名稱"
 msgid "Database name is too long."
 msgstr "資料庫名稱太長！"
 
-msgid "Database name is unavailable."
-msgstr "資料庫名稱是無效的。"
+msgid "Database name is unavailable or unallowed."
+msgstr ""
 
 msgid "Database prefix"
 msgstr "資料庫前置字串"
@@ -5395,13 +5399,6 @@ msgstr "萬用字元: 設定 DNS MX 紀錄來轉送到不存在的子網域。"
 msgid ""
 "Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
 msgstr "萬用字元: 設定外部 MX 主機來轉送郵件到不存在的子網域。"
-
-#, php-format
-msgid "Wildcards such as '%s' and '%s' are not allowed in username."
-msgstr "萬用字元像是 '%s' 和 '%s' 不允許使用在帳號。"
-
-msgid "Wildcards such as 's%' and 's%' are not allowed."
-msgstr "萬用字元像是 's%' 和 's%' 是不允許使用。"
 
 msgid "Wrong IP address."
 msgstr "錯誤的 IP地址"

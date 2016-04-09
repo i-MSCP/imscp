@@ -42,9 +42,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-08 10:19+0200\n"
-"PO-Revision-Date: 2016-04-06 12:53+0000\n"
-"Last-Translator: Ninos Ego <me@ninosego.de>\n"
+"POT-Creation-Date: 2016-04-09 14:08+0200\n"
+"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/i-mscp/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1542,6 +1542,10 @@ msgstr "Kerne"
 msgid "Could not add/update SSL certificate. An unexpected error occurred."
 msgstr "SSL-Zertifikat konnte nicht hinzugefügt/aktualisiert werden. Ein unerwarteter Fehler ist aufgetreten."
 
+#, php-format
+msgid "Could not create `%s` database name."
+msgstr ""
+
 msgid "Could not create domain alias. An unexpected error occurred."
 msgstr "Domain-Alias konnte nicht erstellt werden. Ein unerwarteter Fehler ist aufgetreten."
 
@@ -1743,8 +1747,8 @@ msgstr "Datenbankname"
 msgid "Database name is too long."
 msgstr "Der Name für die Datenbank ist zu lang."
 
-msgid "Database name is unavailable."
-msgstr "Datenbankname ist nicht verfügbar"
+msgid "Database name is unavailable or unallowed."
+msgstr ""
 
 msgid "Database prefix"
 msgstr "Datenbank Präfix"
@@ -5426,13 +5430,6 @@ msgstr "Wildcard: Fügt eine MX-Eintrag hinzu um Mail von nichtexisitierende Sub
 msgid ""
 "Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
 msgstr "Wildcard: Nutzen Sie einen externen  Mailserver für Weiterleitungen für nicht vorhandene Subdomains."
-
-#, php-format
-msgid "Wildcards such as '%s' and '%s' are not allowed in username."
-msgstr "Platzhalter wie '%s' und '%s' sind im Benutzernamen nicht erlaubt."
-
-msgid "Wildcards such as 's%' and 's%' are not allowed."
-msgstr "Platzhalter wie 's%' und 's%' sind nicht erlaubt."
 
 msgid "Wrong IP address."
 msgstr "Falsche IP-Adresse."

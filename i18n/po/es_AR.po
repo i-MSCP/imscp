@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-08 10:19+0200\n"
-"PO-Revision-Date: 2016-04-06 11:00+0000\n"
+"POT-Creation-Date: 2016-04-09 14:08+0200\n"
+"PO-Revision-Date: 2016-04-09 12:08+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Argentina) (http://www.transifex.com/i-mscp/i-MSCP/language/es_AR/)\n"
 "MIME-Version: 1.0\n"
@@ -1511,6 +1511,10 @@ msgstr "Núcleos"
 msgid "Could not add/update SSL certificate. An unexpected error occurred."
 msgstr ""
 
+#, php-format
+msgid "Could not create `%s` database name."
+msgstr ""
+
 msgid "Could not create domain alias. An unexpected error occurred."
 msgstr ""
 
@@ -1712,8 +1716,8 @@ msgstr "Nombre de la base de datos"
 msgid "Database name is too long."
 msgstr "El nombre de la base de datos es demasiado largo."
 
-msgid "Database name is unavailable."
-msgstr "Nombre de Base de Datos no disponible."
+msgid "Database name is unavailable or unallowed."
+msgstr ""
 
 msgid "Database prefix"
 msgstr "Prefijo de Base de Datos"
@@ -5395,13 +5399,6 @@ msgstr "Comodín: Configurar un registro DNS MC para retrasmitir correo de subdo
 msgid ""
 "Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
 msgstr "Comodín: Configurar un host MX externo para retrasmitir el correo para subdominios inexistentes."
-
-#, php-format
-msgid "Wildcards such as '%s' and '%s' are not allowed in username."
-msgstr "Comodines como '%s' y '%s' no están permitidos en el nombre de usuario."
-
-msgid "Wildcards such as 's%' and 's%' are not allowed."
-msgstr "Comodines como '%s' y '%s' no están permitidos."
 
 msgid "Wrong IP address."
 msgstr "Dirección IP incorrecta."

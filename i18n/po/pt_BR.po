@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-08 10:19+0200\n"
-"PO-Revision-Date: 2016-04-06 11:00+0000\n"
+"POT-Creation-Date: 2016-04-09 14:08+0200\n"
+"PO-Revision-Date: 2016-04-09 12:08+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/i-mscp/i-MSCP/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -1514,6 +1514,10 @@ msgstr "Núcleo(s)"
 msgid "Could not add/update SSL certificate. An unexpected error occurred."
 msgstr ""
 
+#, php-format
+msgid "Could not create `%s` database name."
+msgstr ""
+
 msgid "Could not create domain alias. An unexpected error occurred."
 msgstr ""
 
@@ -1715,8 +1719,8 @@ msgstr "Nome do banco de dados"
 msgid "Database name is too long."
 msgstr "Nome do banco de dados é muito grande."
 
-msgid "Database name is unavailable."
-msgstr "Nome do banco de dados não está disponível."
+msgid "Database name is unavailable or unallowed."
+msgstr ""
 
 msgid "Database prefix"
 msgstr "Prefixo do banco de dados"
@@ -5398,13 +5402,6 @@ msgstr "Wildcard: Configuração de um registro de DNS MX para retransmitir e-ma
 msgid ""
 "Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
 msgstr "Wildcard: Configure um servidor MX externo para retransmitir os emails de sub-domínios inexistentes."
-
-#, php-format
-msgid "Wildcards such as '%s' and '%s' are not allowed in username."
-msgstr "Caracteres como '%s' e '%s', não são aceitas no nome de usuário."
-
-msgid "Wildcards such as 's%' and 's%' are not allowed."
-msgstr "Caracteres como 's%' e 's%' não são permitidas."
 
 msgid "Wrong IP address."
 msgstr "Endereço de IP incorreto."

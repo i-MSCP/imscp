@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-08 10:19+0200\n"
-"PO-Revision-Date: 2016-04-06 11:00+0000\n"
+"POT-Creation-Date: 2016-04-09 14:08+0200\n"
+"PO-Revision-Date: 2016-04-09 12:08+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/i-mscp/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -1511,6 +1511,10 @@ msgstr "コア"
 msgid "Could not add/update SSL certificate. An unexpected error occurred."
 msgstr ""
 
+#, php-format
+msgid "Could not create `%s` database name."
+msgstr ""
+
 msgid "Could not create domain alias. An unexpected error occurred."
 msgstr ""
 
@@ -1712,8 +1716,8 @@ msgstr "データベース名"
 msgid "Database name is too long."
 msgstr "データベース名が長すぎます。"
 
-msgid "Database name is unavailable."
-msgstr "データベース名は使用できません。"
+msgid "Database name is unavailable or unallowed."
+msgstr ""
 
 msgid "Database prefix"
 msgstr "データベースプレフィックス"
@@ -5395,13 +5399,6 @@ msgstr "ワイルドカード：存在しないサブドメインのメールを
 msgid ""
 "Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
 msgstr "ワイルドカード：存在しないサブドメイン宛のメールを中継する外部のMXホストを設定。"
-
-#, php-format
-msgid "Wildcards such as '%s' and '%s' are not allowed in username."
-msgstr "'%s' と'%s 'のようなワイルドカードはユーザ名では許可されません。"
-
-msgid "Wildcards such as 's%' and 's%' are not allowed."
-msgstr "'%s' 及び ’%s' などのワイルドカードは使用できません。"
 
 msgid "Wrong IP address."
 msgstr "IPアドレスに誤りがあります"

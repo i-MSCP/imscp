@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-08 10:19+0200\n"
-"PO-Revision-Date: 2016-04-06 11:09+0000\n"
+"POT-Creation-Date: 2016-04-09 14:08+0200\n"
+"PO-Revision-Date: 2016-04-09 12:08+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/i-mscp/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -1521,6 +1521,10 @@ msgstr "Cœurs"
 msgid "Could not add/update SSL certificate. An unexpected error occurred."
 msgstr "Impossible d'ajouter ou mettre à jour le certificat SSL. Une erreur inattendue s'est produite."
 
+#, php-format
+msgid "Could not create `%s` database name."
+msgstr ""
+
 msgid "Could not create domain alias. An unexpected error occurred."
 msgstr "Impossible de créer l'alias de domaine. Une erreur inattendue s'est produite."
 
@@ -1722,8 +1726,8 @@ msgstr "Nom de la base de données"
 msgid "Database name is too long."
 msgstr "Le nom de la base de données est trop long."
 
-msgid "Database name is unavailable."
-msgstr "Nom de base de donnée non disponible."
+msgid "Database name is unavailable or unallowed."
+msgstr ""
 
 msgid "Database prefix"
 msgstr "Préfixe de base de données"
@@ -5405,13 +5409,6 @@ msgstr "Joker : Configurer un enregistrement DNS MX pour relayer les e-mails pou
 msgid ""
 "Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
 msgstr "Wildcard; Paramètre un serveur de messagerie externe pour relayer les emails des sous-domaines inexistants."
-
-#, php-format
-msgid "Wildcards such as '%s' and '%s' are not allowed in username."
-msgstr "Les jokers comme '%s' et '%s' ne sont pas autorisés dans les noms d'utilisateurs."
-
-msgid "Wildcards such as 's%' and 's%' are not allowed."
-msgstr "Les jokers come 's%' et 's%' ne sont pas autorisés."
 
 msgid "Wrong IP address."
 msgstr "Mauvais adresse IP."

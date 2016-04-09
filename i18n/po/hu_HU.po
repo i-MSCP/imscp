@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-08 10:19+0200\n"
-"PO-Revision-Date: 2016-04-06 11:00+0000\n"
+"POT-Creation-Date: 2016-04-09 14:08+0200\n"
+"PO-Revision-Date: 2016-04-09 12:08+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/i-mscp/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -1513,6 +1513,10 @@ msgstr "Magok száma:"
 msgid "Could not add/update SSL certificate. An unexpected error occurred."
 msgstr ""
 
+#, php-format
+msgid "Could not create `%s` database name."
+msgstr ""
+
 msgid "Could not create domain alias. An unexpected error occurred."
 msgstr ""
 
@@ -1714,8 +1718,8 @@ msgstr "Adatbázis neve"
 msgid "Database name is too long."
 msgstr "Adatbázis neve túl hosszú"
 
-msgid "Database name is unavailable."
-msgstr "Adatbázis név nem elérhető."
+msgid "Database name is unavailable or unallowed."
+msgstr ""
 
 msgid "Database prefix"
 msgstr "Adatbázis előtag"
@@ -5397,13 +5401,6 @@ msgstr "Wildcard: MX-rekord létrehozása a nem létező aldomainek leveleinek t
 msgid ""
 "Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
 msgstr "Wildcard: Állíts be egy külső MX kiszolgálót, ahová továbbításra kerülnek a nem létező aldomainek levelei."
-
-#, php-format
-msgid "Wildcards such as '%s' and '%s' are not allowed in username."
-msgstr "A „%s” és a „%s” helyettesítő karakterek nem engedélyezettek a felhasználónévben."
-
-msgid "Wildcards such as 's%' and 's%' are not allowed."
-msgstr "A „s%” és a „s%” helyettesítő karakterek nem engedélyezettek."
 
 msgid "Wrong IP address."
 msgstr "Hibás IP-cím"
