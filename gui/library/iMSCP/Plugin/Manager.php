@@ -1229,26 +1229,30 @@ class iMSCP_Plugin_Manager
             $r = new ReflectionMethod($plugin, 'uninstall');
             $info['__uninstallable__'] = 'iMSCP_Plugin' !== $r->getDeclaringClass()->getName();
 
+            $needUpdate = false;
+            $needChange = false;
+            $needDataUpdate = false;
+
             if (!$this->pluginIsKnown($name)) {
                 $status = $info['__installable__'] ? 'uninstalled' : 'disabled';
-                $needUpdate = false;
-                $needChange = false;
                 $returnInfo['new']++;
+                $needDataUpdate = true;
             } else {
                 $status = $this->pluginGetStatus($name);
                 $needUpdate = version_compare($info['version'], $info['__nversion__'], '<');
-                $needChange = false;
 
-                if(!in_array($status, array('uninstalled', 'toinstall', 'touninstall', 'todelete'))
+                if (!in_array($status, array('uninstalled', 'toinstall', 'touninstall', 'todelete'))
                     && $config != $configPrev || $infoPrev['__need_change__']
                 ) {
                     $needChange = true;
+                } elseif ($config != $configPrev) {
+                    $needDataUpdate = true;
                 }
             }
 
             $info['__need_change__'] = $needChange;
 
-            if ($needUpdate || $needChange || !$this->pluginIsKnown($name)) {
+            if ($needDataUpdate || $needUpdate || $needChange) {
                 $this->pluginUpdateData(array(
                     'name' => $name,
                     'type' => $plugin->getType(),
