@@ -1229,9 +1229,9 @@ class iMSCP_Plugin_Manager
             $r = new ReflectionMethod($plugin, 'uninstall');
             $info['__uninstallable__'] = 'iMSCP_Plugin' !== $r->getDeclaringClass()->getName();
 
+            $needDataUpdate = false;
             $needUpdate = false;
             $needChange = false;
-            $needDataUpdate = false;
 
             if (!$this->pluginIsKnown($name)) {
                 $status = $info['__installable__'] ? 'uninstalled' : 'disabled';
@@ -1246,6 +1246,7 @@ class iMSCP_Plugin_Manager
                 ) {
                     $needChange = true;
                 } elseif ($config != $configPrev) {
+                    $configPrev = $config;
                     $needDataUpdate = true;
                 }
             }
