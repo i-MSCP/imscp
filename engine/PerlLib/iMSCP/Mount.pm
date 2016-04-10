@@ -121,7 +121,7 @@ sub umount
         my $stdout;
         my $rs = execute( "mount 2>/dev/null | grep ' on $fsFile\\(/\\| \\)' | head -n 1 | cut -d ' ' -f 3", \$stdout );
         error( 'Could not run mount command.' ) if $rs;
-        return $rs;
+        return $rs if $rs;
 
         $fsFileFound = $stdout;
         if ($fsFileFound) { # We do not trap errors here (expected for dangling mounts)
