@@ -844,15 +844,15 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
         $sqldIds = array();
 
         while (!$stmt->EOF) {
-            array_push($sqld_ids, $stmt->fields['field']);
+            array_push($sqldIds, $stmt->fields['field']);
             $stmt->moveNext();
         }
 
-        $sqld_ids = implode(',', $sqldIds);
+        $sqldIds = implode(',', $sqldIds);
 
         if ($subwhere != '') {
             $subres = execute_query(
-                "SELECT COUNT(DISTINCT $subgroupname) AS `cnt` FROM $subtable WHERE `sqld_id` IN ($sqld_ids)"
+                "SELECT COUNT(DISTINCT $subgroupname) AS `cnt` FROM $subtable WHERE `sqld_id` IN ($sqldIds)"
             );
             $result = $subres->fields['cnt'];
         } else {
