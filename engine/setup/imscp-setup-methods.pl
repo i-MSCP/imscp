@@ -775,12 +775,7 @@ sub setupAskServicesSsl
 
     if(grep($_ eq $main::reconfigure, ( 'services_ssl', 'ssl', 'all', 'forced' ))
         || !grep($_ eq $sslEnabled, ( 'yes', 'no' ))
-        || ($sslEnabled eq 'yes'
-            && (
-                grep($_ eq $main::reconfigure, ( 'system_hostname', 'hostnames' ))
-                || !-f "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem"
-            )
-        )
+        || ($sslEnabled eq 'yes' && grep($_ eq $main::reconfigure, ( 'system_hostname', 'hostnames' )))
     ) {
         # Ask for SSL
         $rs = $dialog->yesno(<<"EOF", $sslEnabled eq 'no' ? 1 : 0);
