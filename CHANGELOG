@@ -51,9 +51,9 @@ FRONTEND
     Added: iMSCP\Net class - Allow to get list of network devices and IP addresses (stdlib)
     Added: Datatable for the file system information table (admin level)
     Added: SPF DNS resource record type (validated as a TXT record) (client level)
-    Added: Support for .phtml template files
-    Added: torul() function (Escape a string for the URI or Parameter contexts)
-    Changed: exec() PHP function is no longer disabled for the control panel
+    Added: Support for .phtml template files (stdlib)
+    Added: torul() function for escaping a string for the URI or Parameter contexts (stdlib)
+    Changed: exec() PHP function is no longer disabled for the control panel (master php.ini file)
     Changed: The `type` field cannot longer be changed when editing a DNS resource record (client level)
     Changed: Support for nested MySQL transactions is now emulated using named transaction savepoints (stdlib)
     Fixed: Cannot add DKIM/DMARC DNS resource records (client level)
@@ -69,7 +69,7 @@ FRONTEND
     Backported: iMSCP\Crypt library from 1.3.x branch (not used by core atm)
     Removed: User deletion confirmation pages (admin and reseller levels)
     Removed: iMSCP_NetworkCard class; replaced by iMSCP\Net class (stdlib)
-    Rewritten: FTP chooser interface to avoid usage of iframe (client level)
+    Rewritten: FTP chooser interface to avoid usage of iframe and allows fine-grained filtering (client level)
     Rewritten: Protected area interface (client level)
 
 INSTALLER
@@ -99,8 +99,8 @@ PLUGINS
     Updated: API version to 1.0.4
 
 SERVERS
-    Added: Own i-MSCP logrorate configuration file for ProFTPD (xferlog file don't need to be rotated)
-    Added: Own i-MSCP ProFTPD sysvinit script to solve #IP-1402 - (Wheezy, Precise, Trusty)
+    Added: i-MSCP own logrorate configuration file for ProFTPD (xferlog file don't need to be rotated)
+    Added: i-MSCP own sysvinit script for ProFTPD - solve #IP-1402
     Changed: setenvif module is now always required ((Httpd servers)
     Fixed: Bad regexp in getTraffic() method leading to unmatching of traffic data (VsFTPd)
     Fixed: Could not build local vsftpd package when gpg has been initialized; .changes file cannot be signed
@@ -110,8 +110,8 @@ SERVERS
     Fixed: Hide real server identity (ProFTPD)
     Fixed: Invalid version format (non-numeric data) when installing VsFTPd on Debian Stretch (testing)
     Fixed: IP addresses are added multiple time in Apache 00_nameserver.conf file (Httpd servers)
-    Fixed: ON|OFF string not recognized as boolean value in imscp.cnf file (MySQL)
-    Fixed: Traffic accounting routines must not remove log files (ProFTPD/VsFTPd). Files are now truncated instead.
+    Fixed: ON|OFF strings not recognized as boolean value in imscp.cnf file (MySQL)
+    Fixed: Traffic accounting routines must not remove log files (ProFTPD/VsFTPd). Files are now truncated instead
     Fixed: Useless reload of VsFTPd when adding/removing an FTP user (privileges are given by session)
     Fixed: VsFTPd doesn't reopen xferlog file automatically when the file has been removed, leading to traffic data loss
     Fixed: VsFTPD doesn't support non-ascii characters in FTP usernames

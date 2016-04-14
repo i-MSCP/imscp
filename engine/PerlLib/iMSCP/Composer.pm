@@ -83,6 +83,7 @@ sub _init
 
     $self->{'toInstall'} = [ ];
     $self->{'pkgDir'} = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages";
+    $self->{'suCmdPattern'} = "/bin/su -s /bin/sh -c %s - $main::imscpConfig{'IMSCP_USER'}";
     $self->{'phpCmd'} = 'php -d date.timezone=UTC -d allow_url_fopen=1 -d suhosin.executor.include.whitelist=phar';
 
     iMSCP::EventManager->getInstance()->register(
@@ -133,14 +134,13 @@ sub _getComposer
     unless (-f "$self->{'pkgDir'}/composer.phar") {
         iMSCP::Dialog->getInstance()->infobox( <<EOF );
 
-Installing/Updating composer.phar from http://getcomposer.org
+Installing composer.phar from http://getcomposer.org
 
 Please wait, depending on your connection, this may take few seconds...
 EOF
-
         my $rs = execute(
-            "su - $main::imscpConfig{'IMSCP_USER'} -s /bin/sh -c "
-                .escapeShell( "curl -s http://getcomposer.org/installer | $self->{'phpCmd'}" ),
+            sprintf( $self->{'suCmdPattern'},
+                escapeShell( "curl -s http://getcomposer.org/installer | $self->{'phpCmd'}" ) ),
             \my $stdout, \my $stderr
         );
         debug( $stdout ) if $stdout;
@@ -155,12 +155,10 @@ Updating composer.phar from http://getcomposer.org
 
 Please wait, depending on your connection, this may take few seconds...
 EOF
-
         my $rs = execute(
-            "su - $main::imscpConfig{'IMSCP_USER'} -s /bin/sh -c "
-                .escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} self-update" ),
-            \my $stdout,
-            \my $stderr
+            sprintf( $self->{'suCmdPattern'},
+                escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} self-update" ) ),
+            \my $stdout, \my $stderr
         );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
@@ -201,8 +199,8 @@ EOF
     # The update option is used here but composer will automatically fallback to install mode when needed
     # Note: Any progress/status info goes to stderr (See https://github.com/composer/composer/issues/3795)
     $rs = executeNoWait(
-        "su - $main::imscpConfig{'IMSCP_USER'} -s /bin/sh -c "
-            .escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} update" ),
+        sprintf( $self->{'suCmdPattern'},
+            escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} update" ) ),
         sub {
             my $str = shift;
             $$str = '';
@@ -242,7 +240,7 @@ sub _buildComposerFile
 {
     my $self = shift;
 
-    my $tpl = <<TPL;
+    my $tpl = <<'TPL';
 {
     "name": "imscp/packages",
     "description": "i-MSCP composer packages",
@@ -298,10 +296,10 @@ sub _checkRequirements
     for(@{$self->{'toInstall'}}) {
         my ($package, $version) = $_ =~ /"(.*)":\s*"(.*)"/;
         my $rs = execute(
-            "su - $main::imscpConfig{'IMSCP_USER'} -s /bin/sh -c "
-                .escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} show --installed $package $version" ),
-            \my $stdout,
-            \my $stderr
+            sprintf( $self->{'suCmdPattern'},
+                escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} show --installed $package $version" ) )
+            ,
+            \my $stdout, \my $stderr
         );
         debug( $stdout ) if $stdout;
 
