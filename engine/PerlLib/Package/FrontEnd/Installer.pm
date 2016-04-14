@@ -266,9 +266,11 @@ sub askSsl
 
     if (grep($_ eq $main::reconfigure, ( 'panel', 'panel_ssl', 'ssl', 'all', 'forced' ))
         || !grep($_ eq $sslEnabled, ( 'yes', 'no' ))
-        || $sslEnabled eq 'yes'
-        && (grep($_ eq $main::reconfigure, ( 'panel_hostname', 'hostnames' ))
-        || !-f "$main::imscpConfig{'CONF_DIR'}/$domainName.pem")
+        || ($sslEnabled eq 'yes'
+            && (grep($_ eq $main::reconfigure, ( 'panel_hostname', 'hostnames' ))
+                || !-f "$main::imscpConfig{'CONF_DIR'}/$domainName.pem"
+            )
+        )
     ) {
         # Ask for SSL
         ($rs, $sslEnabled) = $dialog->yesno( <<"EOF", $sslEnabled eq 'no' ? 1 : 0 );
@@ -378,14 +380,12 @@ EOF
             getMessageByType( 'error', { remove => 1 } );
             $dialog->msgbox( <<"EOF" );
 
-Your SSL certificate for the control panel is not valid.
+Your SSL certificate for the control panel is missing or not valid.
 EOF
-            $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem" )->delFile();
-            return $rs if $rs;
             goto &{askSsl};
         }
 
-        # In case the certificate is valid, we do not generate it again
+        # In case the certificate is valid, we skip SSL setup process
         main::setupSetQuestion( 'PANEL_SSL_SETUP', 'no' );
     }
 
@@ -718,29 +718,38 @@ sub _setupMasterAdmin
 sub _setupSsl
 {
     my $sslEnabled = main::setupGetQuestion( 'PANEL_SSL_ENABLED' );
-    my $panelSSLsetup = main::setupGetQuestion( 'PANEL_SSL_SETUP', 'yes' );
-    my $oldCertificatePath = $main::imscpOldConfig{'BASE_SERVER_VHOST'}
-            && $main::imscpOldConfig{'BASE_SERVER_VHOST'} ne ''
-        ? "$main::imscpConfig{'CONF_DIR'}/$main::imscpOldConfig{'BASE_SERVER_VHOST'}.pem"
-        : '';
+    my $oldCertificate = $main::imscpOldConfig{'BASE_SERVER_VHOST'}
+        ? "$main::imscpOldConfig{'BASE_SERVER_VHOST'}.pem" : '';
+    my $domainName = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
 
-    # Remove old certificate if needed
-    if (($sslEnabled eq 'no' || $panelSSLsetup eq 'yes') && $oldCertificatePath ne '' && -f $oldCertificatePath) {
-        my $rs = iMSCP::File->new( filename => $oldCertificatePath )->delFile();
+    # Remove old certificate if any (handle case where panel hostname has been changed)
+    if ($oldCertificate ne ''
+        && $oldCertificate ne "$domainName.pem"
+        && -f "$main::imscpConfig{'CONF_DIR'}/$oldCertificate"
+    ) {
+        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/$oldCertificate" )->delFile();
         return $rs if $rs;
     }
 
-    return 0 unless $sslEnabled eq 'yes' && $panelSSLsetup eq 'yes';
+    if ($sslEnabled eq 'no' || main::setupGetQuestion( 'PANEL_SSL_SETUP', 'yes' ) eq 'no') {
+        if ($sslEnabled eq 'no ' && -f "$main::imscpConfig{'CONF_DIR'}/$domainName.pem") {
+            my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/$domainName.pem" )->delFile();
+            return $rs if $rs;
+        }
 
-    my $domainName = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
+        return 0;
+    }
 
     if (main::setupGetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE' ) eq 'yes') {
         return iMSCP::OpenSSL->new(
             'certificate_chains_storage_dir' => $main::imscpConfig{'CONF_DIR'},
             'certificate_chain_name'         => $domainName
-        )->createSelfSignedCertificate( {
-                common_name => $domainName, email => $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'}
-            } );
+        )->createSelfSignedCertificate(
+            {
+                common_name => $domainName,
+                email       => $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'}
+            }
+        );
     }
 
     iMSCP::OpenSSL->new(

@@ -25,12 +25,12 @@ package iMSCP::OpenSSL;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
-use iMSCP::File;
-use iMSCP::Execute;
-use iMSCP::TemplateParser;
-use Date::Parse;
 use File::Temp;
+use iMSCP::Debug;
+use iMSCP::Execute;
+use iMSCP::File;
+use Date::Parse;
+use iMSCP::TemplateParser;
 use parent 'Common::Object';
 
 =head1 DESCRIPTION
@@ -59,7 +59,7 @@ sub validatePrivateKey
     }
 
     unless (-f $self->{'private_key_container_path'}) {
-        error( sprintf( "The %s SSL private key doesn't exists", $self->{'private_key_container_path'} ) );
+        error( sprintf( "%s SSL private key doesn't exists", $self->{'private_key_container_path'} ) );
         return 1;
     }
 
@@ -79,7 +79,7 @@ sub validatePrivateKey
 
     my $rs = execute( "@cmd", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
-    error( sprintf( 'Could not import SSL private key from the %s file: %s', $self->{'private_key_container_path'},
+    error( sprintf( 'Could not import SSL private key from %s file: %s', $self->{'private_key_container_path'},
                 $stderr ? $stderr : 'unknown error' ) ) if $rs;
     $rs;
 }
@@ -104,7 +104,7 @@ sub validateCertificate
     }
 
     unless (-f $self->{'certificate_container_path'}) {
-        error( sprintf( "The %s SSL certificate doesn't exists", $self->{'certificate_container_path'} ) );
+        error( sprintf( "%s SSL certificate doesn't exists", $self->{'certificate_container_path'} ) );
         return 1;
     }
 
@@ -113,7 +113,7 @@ sub validateCertificate
         if (-f $self->{'ca_bundle_container_path'}) {
             $caBundle = 1;
         } else {
-            error( sprintf( "The %s SSL CA Bundle doesn't exists", $self->{'ca_bundle_container_path'} ) );
+            error( sprintf( "%s SSL CA Bundle doesn't exists", $self->{'ca_bundle_container_path'} ) );
             return 1;
         }
     }
@@ -200,7 +200,7 @@ sub importCertificate
     my $file = iMSCP::File->new( filename => $self->{'certificate_container_path'} );
     my $certificate = $file->get();
     unless (defined $certificate) {
-        error( sprintf( 'Could not read the %s file', $self->{'certificate_container_path'} ) );
+        error( sprintf( 'Could not read %s file', $self->{'certificate_container_path'} ) );
         return 1;
     }
 
@@ -238,7 +238,7 @@ sub importCaBundle
     my $file = iMSCP::File->new( filename => $self->{'ca_bundle_container_path'} );
     my $caBundle = $file->get();
     unless (defined $caBundle) {
-        error( sprintf( 'Could not read the %s file', $self->{'ca_bundle_container_path'} ) );
+        error( sprintf( 'Could not read %s file', $self->{'ca_bundle_container_path'} ) );
         return 1;
     }
 
@@ -255,7 +255,7 @@ sub importCaBundle
 
     $rs = execute( "@cmd", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
-    error( sprintf( 'Could not import the SSL CA Bundle: %s', $stderr || 'unknown error' ) ) if $rs;
+    error( sprintf( 'Could not import SSL CA Bundle: %s', $stderr || 'unknown error' ) ) if $rs;
     $rs;
 }
 
@@ -283,7 +283,7 @@ sub createSelfSignedCertificate
     # Load openssl configuration template file for self-signed SSL certificates
     my $openSSLConffileTplContent = iMSCP::File->new( filename => $openSSLConffileTpl )->get();
     unless (defined $openSSLConffileTplContent) {
-        error( sprintf( 'Could not load the %s openssl configuration template file', $openSSLConffileTpl ) );
+        error( sprintf( 'Could not load %s openssl configuration template file', $openSSLConffileTpl ) );
         return 1;
     }
 
