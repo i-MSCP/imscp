@@ -732,7 +732,7 @@ sub _setupSsl
     }
 
     if ($sslEnabled eq 'no' || main::setupGetQuestion( 'PANEL_SSL_SETUP', 'yes' ) eq 'no') {
-        if ($sslEnabled eq 'no ' && -f "$main::imscpConfig{'CONF_DIR'}/$domainName.pem") {
+        if ($sslEnabled eq 'no' && -f "$main::imscpConfig{'CONF_DIR'}/$domainName.pem") {
             my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/$domainName.pem" )->delFile();
             return $rs if $rs;
         }
