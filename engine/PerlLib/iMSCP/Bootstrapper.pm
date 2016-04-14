@@ -37,6 +37,8 @@ use IO::Handle;
 use POSIX qw(tzset);
 use parent 'Common::SingletonClass';
 
+$SIG{INT} = 'IGNORE';
+
 umask 022;
 
 STDOUT->autoflush(1);

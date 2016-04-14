@@ -81,6 +81,7 @@ INSTALLER
     Fixed: Don't die on misconfigured server hostname. Just ask for a valid hostname instead
     Fixed: libmariadbclient18 package not provided in Debian Stretch (testing) repository
     Fixed: /etc/mailname file not updated when reconfiguring system hostname
+    Fixed: Ignore SIGNINT to prevent user aborting installer in wrong way
     Fixed: Plugin setup listeners are no longer registered (regression fix)
     Fixed: SQL user and password not correctly escaped in imscp.cnf file (Servers::sqld::mysql::installer)
     Moved: Master administrator questions and setup routines into Package::FrontEnd::Installer
