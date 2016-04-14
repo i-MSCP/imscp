@@ -61,19 +61,21 @@ my $popServiceCount = 0;
 ## Please, don't edit anything below this line
 #
 
-iMSCP::EventManager->getInstance()->register('beforePoBuildConf', sub {
-	my ($cfgTpl, $tplName) = @_;
+iMSCP::EventManager->getInstance()->register(
+    'beforePoBuildConf',
+    sub {
+        my ($cfgTpl, $tplName) = @_;
 
-	return 0 unless index($tplName, 'dovecot.conf') != -1;
+        return 0 unless index( $tplName, 'dovecot.conf' ) != -1;
 
-	execute("dovecot --version", \ my $stdout, \ my $stderr);
+        execute( "dovecot --version", \ my $stdout, \ my $stderr );
 
-	if(version->new($stdout) < version->new('2.1.0')) {
-		warning("The 60_dovecot_service_login.pl Listener file requires Dovecot version 2.1.x or newer. Your version is: $stdout");
-		return 0;
-	}
+        if (version->new( $stdout ) < version->new( '2.1.0' )) {
+            warning( "The 60_dovecot_service_login.pl Listener file requires Dovecot version 2.1.x or newer. Your version is: $stdout" );
+            return 0;
+        }
 
-	$$cfgTpl .= <<EOF;
+        $$cfgTpl .= <<EOF;
 
 # Begin Listener::Dovecot::Service::Login
 service imap-login {
@@ -107,8 +109,9 @@ service pop3-login {
 }
 # Ending Listener::Dovecot::Service::Login
 EOF
-	0;
-});
+        0;
+    }
+);
 
 1;
 __END__

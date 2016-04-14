@@ -69,22 +69,22 @@ my $nginxConfDir = '/etc/nginx';
 # Create the .htpasswd file to restrict access to the provisioning script
 sub createHtpasswdFile
 {
-    if($authUsername =~ /:/) {
-        error("htpasswd: username contains illegal character ':'");
+    if ($authUsername =~ /:/) {
+        error( "htpasswd: username contains illegal character ':'" );
         return 1;
     }
 
     require iMSCP::Crypt;
     my $file = iMSCP::File->new( filename => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning/.htpasswd" );
     my $rs = $file->set(
-        "$authUsername:" . ($isAuthPasswordEncrypted ? $authPassword : iMSCP::Crypt::htpasswd($authPassword))
+        "$authUsername:".($isAuthPasswordEncrypted ? $authPassword : iMSCP::Crypt::htpasswd( $authPassword ))
     );
     $rs ||= $file->save();
     $rs ||= $file->owner(
         "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
         "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}"
     );
-    $rs ||= $file->mode(0640);
+    $rs ||= $file->mode( 0640 );
 }
 
 #
@@ -94,12 +94,14 @@ sub createHtpasswdFile
 my $eventManager = iMSCP::EventManager->getInstance();
 
 # Listener that is responsible to add authentication configuration
-$eventManager->register('afterFrontEndBuildConfFile', sub {
-    my ($tplContent, $tplName) = @_;
+$eventManager->register(
+    'afterFrontEndBuildConfFile',
+    sub {
+        my ($tplContent, $tplName) = @_;
 
-    return 0 unless $tplName eq '00_master.conf' || $tplName eq '00_master_ssl.conf';
+        return 0 unless $tplName eq '00_master.conf' || $tplName eq '00_master_ssl.conf';
 
-    my $locationSnippet = <<EOF;
+        my $locationSnippet = <<EOF;
     location /provisioning {
         root /var/www/imscp/gui/public;
 
@@ -113,25 +115,26 @@ $eventManager->register('afterFrontEndBuildConfFile', sub {
     }
 EOF
 
-    $$tplContent = replaceBloc(
-        "# SECTION custom BEGIN.\n",
-        "# SECTION custom END.\n",
-        "    # SECTION custom BEGIN.\n" .
-        getBloc(
+        $$tplContent = replaceBloc(
             "# SECTION custom BEGIN.\n",
             "# SECTION custom END.\n",
+            "    # SECTION custom BEGIN.\n".
+                getBloc(
+                    "# SECTION custom BEGIN.\n",
+                    "# SECTION custom END.\n",
+                    $$tplContent
+                ).
+                "$locationSnippet\n".
+                "    # SECTION custom END.\n",
             $$tplContent
-        ) .
-        "$locationSnippet\n" .
-        "    # SECTION custom END.\n",
-        $$tplContent
-    );
-    0;
-}) if $authUsername;
+        );
+        0;
+    }
+) if $authUsername;
 
 # Listener that is responsible to create provisioning script
-$eventManager->register('afterFrontEndInstall', sub {
-    my $fileContent = <<'EOF';
+$eventManager->register( 'afterFrontEndInstall', sub {
+        my $fileContent = <<'EOF';
 <?php
 
 require '../../library/imscp-lib.php';
@@ -187,24 +190,29 @@ if ($rowCount > 0) {
 }
 EOF
 
-    my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning" )->make({
-        user => "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
-        group => "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
-        mode => 0550
-    });
+        my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning" )->make(
+            {
+                user  => "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
+                group => "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
+                mode  => 0550
+            }
+        );
 
-    $rs ||= createHtpasswdFile() if $authUsername;
-    return $rs if $rs;
+        $rs ||= createHtpasswdFile() if $authUsername;
+        return $rs if $rs;
 
-    my $file = iMSCP::File->new( filename => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning/slave_provisioning.php" );
-    $rs = $file->set($fileContent);
-    $rs ||= $file->save();
-    $rs ||= $file->owner(
-        "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
-        "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}"
-    );
-    $rs ||= $file->mode(0640);
-});
+        my $file = iMSCP::File->new(
+            filename => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning/slave_provisioning.php"
+        );
+        $rs = $file->set( $fileContent );
+        $rs ||= $file->save();
+        $rs ||= $file->owner(
+            "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
+            "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}"
+        );
+        $rs ||= $file->mode( 0640 );
+    }
+);
 
 1;
 __END__

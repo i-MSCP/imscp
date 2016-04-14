@@ -25,19 +25,24 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 
-iMSCP::EventManager->getInstance()->register('afterSetupTasks', sub {
-	my $file = iMSCP::File->new( filename => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php" );
-	my $fileContent = $file->get();
-	unless (defined $fileContent) {
-		error(sprintf('Could not read %s file', "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php"));
-		return 1;
-	}
+iMSCP::EventManager->getInstance()->register(
+    'afterSetupTasks',
+    sub {
+        my $file = iMSCP::File->new( filename =>
+            "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php" );
+        my $fileContent = $file->get();
+        unless (defined $fileContent) {
+            error( sprintf( 'Could not read %s file',
+                    "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php" ) );
+            return 1;
+        }
 
-	$fileContent =~ s/(\$config\['(?:default_host|smtp_server)?'\]\s+=\s+').*(';)/$1tls:\/\/$main::imscpConfig{'BASE_SERVER_VHOST'}$2/g;
+        $fileContent =~ s/(\$config\['(?:default_host|smtp_server)?'\]\s+=\s+').*(';)/$1tls:\/\/$main::imscpConfig{'BASE_SERVER_VHOST'}$2/g;
 
-	my $rs = $file->set($fileContent);
-	$rs ||= $file->save();
-});
+        my $rs = $file->set( $fileContent );
+        $rs ||= $file->save();
+    }
+);
 
 1;
 __END__

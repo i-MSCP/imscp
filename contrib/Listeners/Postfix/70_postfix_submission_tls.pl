@@ -25,12 +25,15 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 
-iMSCP::EventManager->getInstance()->register('afterMtaBuildMasterCfFile', sub {
-	my $content = shift;
+iMSCP::EventManager->getInstance()->register(
+    'afterMtaBuildMasterCfFile',
+    sub {
+        my $content = shift;
 
-	$$content =~ s/^#(\s+-o\s+smtpd_tls_security_level=encrypt)/$1/m;
-	0;
-});
+        $$content =~ s/^#(\s+-o\s+smtpd_tls_security_level=encrypt)/$1/m;
+        0;
+    }
+);
 
 1;
 __END__

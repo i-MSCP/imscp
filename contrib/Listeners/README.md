@@ -35,8 +35,8 @@ Activates the Dovecot compress plugin to reduce the bandwidth usage of IMAP, and
 
 For more information please consult:
 
-    http://wiki2.dovecot.org/Plugins/Compress
-    http://wiki2.dovecot.org/Plugins/Zlib
+ * http://wiki2.dovecot.org/Plugins/Compress
+ * http://wiki2.dovecot.org/Plugins/Zlib
 
 ### 20_dovecot_connections.pl
 

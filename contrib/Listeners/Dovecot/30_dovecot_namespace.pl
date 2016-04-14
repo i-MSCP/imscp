@@ -26,12 +26,14 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 
-iMSCP::EventManager->getInstance()->register('beforePoBuildConf', sub {
-	my ($cfgTpl, $tplName) = @_;
+iMSCP::EventManager->getInstance()->register(
+    'beforePoBuildConf',
+    sub {
+        my ($cfgTpl, $tplName) = @_;
 
-	return 0 unless index($tplName, 'dovecot.conf') != -1;
+        return 0 unless index( $tplName, 'dovecot.conf' ) != -1;
 
-	my $cfgSnippet = <<EOF;
+        my $cfgSnippet = <<EOF;
 
 # BEGIN Listener::Dovecot::Namespace
 namespace compat {
@@ -45,11 +47,12 @@ namespace compat {
 # END Listener::Dovecot::Namespace
 EOF
 
-	$$cfgTpl =~ s/(separator\s+=\s+)\./$1\//;
-	$$cfgTpl =~ s/(prefix\s+=\s+)INBOX\./$1/;
-	$$cfgTpl =~ s/^(namespace\s+inbox\s+\{.*?^\}\n)/$1$cfgSnippet/sm;
-	0;
-});
+        $$cfgTpl =~ s/(separator\s+=\s+)\./$1\//;
+        $$cfgTpl =~ s/(prefix\s+=\s+)INBOX\./$1/;
+        $$cfgTpl =~ s/^(namespace\s+inbox\s+\{.*?^\}\n)/$1$cfgSnippet/sm;
+        0;
+    }
+);
 
 1;
 __END__

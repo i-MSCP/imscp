@@ -36,19 +36,23 @@ my $addServerAlias = 'example'; # Add more than one alias (example example-2 exa
 ## Please, don't edit anything below this line
 #
 
-iMSCP::EventManager->getInstance()->register('afterHttpdBuildConf', sub {
-	my ($tplFileContent, $tplFileName, $data) = @_;
+iMSCP::EventManager->getInstance()->register(
+    'afterHttpdBuildConf',
+    sub {
+        my ($tplFileContent, $tplFileName, $data) = @_;
 
-	my $domainName = $data->{'DOMAIN_NAME'} || undef;
+        my $domainName = $data->{'DOMAIN_NAME'} || undef;
 
-	if($domainName && $domainName eq $searchDomain &&
-		grep($_ eq $tplFileName, ( 'domain_redirect.tpl', 'domain.tpl', 'domain_redirect_ssl.tpl', 'domain_ssl.tpl' ))
-	) {
-		$$tplFileContent =~ s/^(\s+ServerAlias.*)/$1 $addServerAlias/m;
-	}
+        if ($domainName && $domainName eq $searchDomain &&
+            grep($_ eq $tplFileName, ( 'domain_redirect.tpl', 'domain.tpl', 'domain_redirect_ssl.tpl',
+                'domain_ssl.tpl' ))
+        ) {
+            $$tplFileContent =~ s/^(\s+ServerAlias.*)/$1 $addServerAlias/m;
+        }
 
-	0;
-});
+        0;
+    }
+);
 
 1;
 __END__

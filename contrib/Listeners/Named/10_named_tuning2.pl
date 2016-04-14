@@ -41,22 +41,25 @@ my @nameservers = (
 ## Please, don't edit anything below this line
 #
 
-iMSCP::EventManager->getInstance()->register('afterNamedAddDmnDb', sub {
-    my ($wrkFile, $data) = @_;
+iMSCP::EventManager->getInstance()->register(
+    'afterNamedAddDmnDb',
+    sub {
+        my ($wrkFile, $data) = @_;
 
-    # Remove default nameservers (IN A and IN NS section)
-    $$wrkFile =~ s/ns[0-9]\tIN\tA\t([0-9]{1,3}[\.]){3}[0-9]{1,3}\n//g;
-    $$wrkFile =~ s/\@\t\tIN\tNS\tns[0-9]\n//g;
+        # Remove default nameservers (IN A and IN NS section)
+        $$wrkFile =~ s/ns[0-9]\tIN\tA\t([0-9]{1,3}[\.]){3}[0-9]{1,3}\n//g;
+        $$wrkFile =~ s/\@\t\tIN\tNS\tns[0-9]\n//g;
 
-    # Add out-of-zone nameservers
-    for my $nameserver(@nameservers) {
-        $$wrkFile .= "@         IN      NS      $nameserver.\n";
+        # Add out-of-zone nameservers
+        for my $nameserver(@nameservers) {
+            $$wrkFile .= "@         IN      NS      $nameserver.\n";
+        }
+
+        # Fix SOA record according new nameservers
+        $$wrkFile =~ s/IN\tSOA\tns1\.$data->{'DOMAIN_NAME'}\. hostmaster\.$data->{'DOMAIN_NAME'}\./IN\tSOA\t$nameservers[0]\. hostmaster\.$data->{'DOMAIN_NAME'}\./g;
+        0;
     }
-
-    # Fix SOA record according new nameservers
-    $$wrkFile =~ s/IN\tSOA\tns1\.$data->{'DOMAIN_NAME'}\. hostmaster\.$data->{'DOMAIN_NAME'}\./IN\tSOA\t$nameservers[0]\. hostmaster\.$data->{'DOMAIN_NAME'}\./g;
-    0;
-});
+);
 
 1;
 __END__

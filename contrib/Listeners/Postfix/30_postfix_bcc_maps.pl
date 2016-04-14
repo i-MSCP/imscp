@@ -20,7 +20,7 @@
 #
 
 package Listener::Postfix::BCC::Map;
- 
+
 use strict;
 use warnings;
 use iMSCP::Debug;
@@ -40,26 +40,29 @@ my $addSenderBccMap = "sender_bcc_maps = hash:/etc/postfix/imscp/sender_bcc_map\
 ## Please, don't edit anything below this line
 #
 
-iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', sub {
-	my $tplContent = shift;
+iMSCP::EventManager->getInstance()->register(
+    'afterMtaBuildMainCfFile',
+    sub {
+        my $tplContent = shift;
 
-	return 0 unless -f $postfixRecipientBccMap && -f $postfixSenderBccMap;
+        return 0 unless -f $postfixRecipientBccMap && -f $postfixSenderBccMap;
 
-	my ($stdout, $stderr);
-	my $rs = execute("postmap $postfixRecipientBccMap", \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
+        my ($stdout, $stderr);
+        my $rs = execute( "postmap $postfixRecipientBccMap", \$stdout, \$stderr );
+        debug( $stdout ) if $stdout;
+        error( $stderr ) if $stderr && $rs;
+        return $rs if $rs;
 
-	$rs = execute("postmap $postfixSenderBccMap", \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
+        $rs = execute( "postmap $postfixSenderBccMap", \$stdout, \$stderr );
+        debug( $stdout ) if $stdout;
+        error( $stderr ) if $stderr && $rs;
+        return $rs if $rs;
 
-	$$tplContent .= "$addRecipientBccMap";
-	$$tplContent .= "$addSenderBccMap";
-	0;
-});
+        $$tplContent .= "$addRecipientBccMap";
+        $$tplContent .= "$addSenderBccMap";
+        0;
+    }
+);
 
 1;
 __END__

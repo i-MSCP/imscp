@@ -43,34 +43,34 @@ my $saslPasswdMapsPath = '/etc/postfix/relay_passwd';
 
 sub fillPackages
 {
-	my $packages = shift;
+    my $packages = shift;
 
-	return 0 unless $main::imscpConfig{'PO_SERVER'} eq 'dovecot';
+    return 0 unless $main::imscpConfig{'PO_SERVER'} eq 'dovecot';
 
-	# Dovecot SASL implementation doesn't provides client authentication
-	# for Postfix. Thus, we need also install Cyrus SASL implementation
-	push @{$packages}, 'libsasl2-modules';
-	0;
+    # Dovecot SASL implementation doesn't provides client authentication
+    # for Postfix. Thus, we need also install Cyrus SASL implementation
+    push @{$packages}, 'libsasl2-modules';
+    0;
 }
 
 sub createSaslPasswdMaps
 {
-	my $saslPasswdMapsFile = iMSCP::File->new( filename => $saslPasswdMapsPath );
-	$saslPasswdMapsFile->set("$relayhost:$relayport\t$saslAuthUser:$saslAuthPasswd");
+    my $saslPasswdMapsFile = iMSCP::File->new( filename => $saslPasswdMapsPath );
+    $saslPasswdMapsFile->set( "$relayhost:$relayport\t$saslAuthUser:$saslAuthPasswd" );
 
-	my $rs = $saslPasswdMapsFile->save();
-	$rs ||= $saslPasswdMapsFile->mode(0600);
-	return $rs if $rs;
+    my $rs = $saslPasswdMapsFile->save();
+    $rs ||= $saslPasswdMapsFile->mode( 0600 );
+    return $rs if $rs;
 
-	Servers::mta->factory()->{'postmap'}->{$saslPasswdMapsPath} = 1;
-	0;
+    Servers::mta->factory()->{'postmap'}->{$saslPasswdMapsPath} = 1;
+    0;
 }
 
 sub configureSmartHost
 {
-	my $fileContent = shift;
+    my $fileContent = shift;
 
-	$$fileContent .= <<EOF;
+    $$fileContent .= <<EOF;
 
 # Added by Listener::Postfix::Smarthost
 relayhost=$relayhost:$relayport
@@ -79,13 +79,13 @@ smtp_sasl_auth_enable=yes
 smtp_sasl_password_maps=hash:$saslPasswdMapsPath
 smtp_sasl_security_options=noanonymous
 EOF
-	0;
+    0;
 }
 
 my $eventManager = iMSCP::EventManager->getInstance();
-$eventManager->register('beforeInstallPackages', \&fillPackages);
-$eventManager->register('afterMtaBuildMainCfFile', \&createSaslPasswdMaps);
-$eventManager->register('afterMtaBuildMainCfFile', \&configureSmartHost);
+$eventManager->register( 'beforeInstallPackages', \&fillPackages );
+$eventManager->register( 'afterMtaBuildMainCfFile', \&createSaslPasswdMaps );
+$eventManager->register( 'afterMtaBuildMainCfFile', \&configureSmartHost );
 
 1;
 __END__

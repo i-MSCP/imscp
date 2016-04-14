@@ -26,15 +26,18 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 
-iMSCP::EventManager->getInstance()->register('beforePoBuildConf', sub {
-	my ($cfgTpl, $tplName) = @_;
+iMSCP::EventManager->getInstance()->register(
+    'beforePoBuildConf',
+    sub {
+        my ($cfgTpl, $tplName) = @_;
 
-	return 0 unless index($tplName, 'dovecot.conf') != -1;
+        return 0 unless index( $tplName, 'dovecot.conf' ) != -1;
 
-	$$cfgTpl =~ s/\s+cram-md5\s+digest-md5//;
-	$$cfgTpl =~ s/^(disable_plaintext_auth\s+=\s+).*/$1yes/m;
-	0;
-});
+        $$cfgTpl =~ s/\s+cram-md5\s+digest-md5//;
+        $$cfgTpl =~ s/^(disable_plaintext_auth\s+=\s+).*/$1yes/m;
+        0;
+    }
+);
 
 1;
 __END__

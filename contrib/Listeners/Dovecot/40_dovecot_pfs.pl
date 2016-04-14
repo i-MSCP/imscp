@@ -25,19 +25,22 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 
-iMSCP::EventManager->getInstance()->register('beforePoBuildConf', sub {
-	my ($cfgTpl, $tplName) = @_;
+iMSCP::EventManager->getInstance()->register(
+    'beforePoBuildConf',
+    sub {
+        my ($cfgTpl, $tplName) = @_;
 
-	return 0 unless index($tplName, 'dovecot.conf') != -1;
+        return 0 unless index( $tplName, 'dovecot.conf' ) != -1;
 
-	$$cfgTpl .= <<EOF;
+        $$cfgTpl .= <<EOF;
 
 # BEGIN Listener::Dovecot::PFS
 login_log_format_elements = user=<%u> method=%m rip=%r lip=%l mpid=%e %c %k session=<%{session}>
 # END Listener::Dovecot::PFS
 EOF
-	0;
-});
+        0;
+    }
+);
 
 1;
 __END__

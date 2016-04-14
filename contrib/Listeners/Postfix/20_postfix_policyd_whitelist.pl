@@ -20,7 +20,7 @@
 #
 
 package Listener::Postfix::Policyd::Whitelist;
- 
+
 use strict;
 use warnings;
 use iMSCP::Debug;
@@ -35,37 +35,40 @@ my $policydWeightClientWhitelist = '/etc/postfix/imscp/policyd_weight_client_whi
 my $policydWeightRecipientWhitelist = '/etc/postfix/imscp/policyd_weight_recipient_whitelist';
 my $checkClientAccess = "\n check_client_access hash:/etc/postfix/imscp/policyd_weight_client_whitelist,";
 my $checkRecipientAccess = "\n check_recipient_access hash:/etc/postfix/imscp/policyd_weight_recipient_whitelist,";
- 
+
 #
 ## Please, don't edit anything below this line
 #
 
-iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', sub {
-	my $tplContent = shift;
+iMSCP::EventManager->getInstance()->register(
+    'afterMtaBuildMainCfFile',
+    sub {
+        my $tplContent = shift;
 
-	return 0 unless -f $policydWeightClientWhitelist && -f $policydWeightRecipientWhitelist;
+        return 0 unless -f $policydWeightClientWhitelist && -f $policydWeightRecipientWhitelist;
 
-	my ($stdout, $stderr);
-	my $rs = execute("postmap $policydWeightClientWhitelist", \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
+        my ($stdout, $stderr);
+        my $rs = execute( "postmap $policydWeightClientWhitelist", \$stdout, \$stderr );
+        debug( $stdout ) if $stdout;
+        error( $stderr ) if $stderr && $rs;
+        return $rs if $rs;
 
-	$rs = execute("postmap $policydWeightRecipientWhitelist", \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
+        $rs = execute( "postmap $policydWeightRecipientWhitelist", \$stdout, \$stderr );
+        debug( $stdout ) if $stdout;
+        error( $stderr ) if $stderr && $rs;
+        return $rs if $rs;
 
-	if ($$tplContent !~ /check_client_access/m) {
-		$$tplContent =~ s/(reject_non_fqdn_recipient,)/$1$checkClientAccess/;
-	}
+        if ($$tplContent !~ /check_client_access/m) {
+            $$tplContent =~ s/(reject_non_fqdn_recipient,)/$1$checkClientAccess/;
+        }
 
-	if ($$tplContent !~ /check_recipient_access/m) {
-		$$tplContent =~ s/(reject_non_fqdn_recipient,)/$1$checkRecipientAccess/;
-	}
+        if ($$tplContent !~ /check_recipient_access/m) {
+            $$tplContent =~ s/(reject_non_fqdn_recipient,)/$1$checkRecipientAccess/;
+        }
 
-	0;
-});
+        0;
+    }
+);
 
 1;
 __END__

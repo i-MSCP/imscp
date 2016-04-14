@@ -25,26 +25,29 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 
-iMSCP::EventManager->getInstance()->register('afterFrontEndBuildHttpdVhosts', sub {
-	my $cfgSnippet = <<EOF;
+iMSCP::EventManager->getInstance()->register(
+    'afterFrontEndBuildHttpdVhosts',
+    sub {
+        my $cfgSnippet = <<EOF;
 
     # BEGIN Listener::Nginx::HSTS
     add_header Strict-Transport-Security max-age=31536000;
     # END Listener::Nginx::HSTS
 EOF
 
-	my $file = iMSCP::File->new( filename => "/etc/nginx/sites-available/00_master_ssl.conf" );
-	my $fileContent = $file->get();
-	unless (defined $fileContent) {
-		error(sprintf("Could not read %s file", "/etc/nginx/sites-available/00_master_ssl.conf"));
-		return 1;
-	}
+        my $file = iMSCP::File->new( filename => "/etc/nginx/sites-available/00_master_ssl.conf" );
+        my $fileContent = $file->get();
+        unless (defined $fileContent) {
+            error( sprintf( "Could not read %s file", "/etc/nginx/sites-available/00_master_ssl.conf" ) );
+            return 1;
+        }
 
-	$fileContent =~ s/(ssl_prefer_server_ciphers.*\n)/$1\n$cfgSnippet/g;
+        $fileContent =~ s/(ssl_prefer_server_ciphers.*\n)/$1\n$cfgSnippet/g;
 
-	my $rs = $file->set($fileContent);
-	$rs ||= $file->save();
-});
+        my $rs = $file->set( $fileContent );
+        $rs ||= $file->save();
+    }
+);
 
 1;
 __END__

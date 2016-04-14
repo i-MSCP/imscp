@@ -33,19 +33,22 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 
-iMSCP::EventManager->getInstance()->register('afterMtaBuildMainCfFile', sub {
-	my $content = shift;
+iMSCP::EventManager->getInstance()->register(
+    'afterMtaBuildMainCfFile',
+    sub {
+        my $content = shift;
 
-	my $cfgSnippet = <<EOF;
+        my $cfgSnippet = <<EOF;
 # BEGIN Listener::Postfix::PFS
 smtpd_tls_dh1024_param_file = /etc/postfix/dh2048.pem
 smtpd_tls_dh512_param_file = /etc/postfix/dh512.pem
 # END Listener::Postfix::PFS
 EOF
 
-	$$content =~ s/^(# TLS parameters\n)/$1$cfgSnippet/m;
-	0;
-});
+        $$content =~ s/^(# TLS parameters\n)/$1$cfgSnippet/m;
+        0;
+    }
+);
 
 1;
 __END__

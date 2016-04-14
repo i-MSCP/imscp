@@ -25,14 +25,17 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 
-iMSCP::EventManager->getInstance()->register('beforeHttpdBuildConf', sub {
-	my ($cfgTpl, $tplName) = @_;
+iMSCP::EventManager->getInstance()->register(
+    'beforeHttpdBuildConf',
+    sub {
+        my ($cfgTpl, $tplName) = @_;
 
-	return 0 unless $tplName =~ /^domain_redirect(?:_ssl)?\.tpl$/;
+        return 0 unless $tplName =~ /^domain_redirect(?:_ssl)?\.tpl$/;
 
-	$$cfgTpl =~ s/Redirect / {FORWARD}\n/Redirect 301 / {FORWARD}\n/;
-	0;
-});
+        $$cfgTpl =~ s/Redirect / {FORWARD}\n/Redirect 301 / {FORWARD}\n / ;
+        0;
+    }
+);
 
 1;
 __END__

@@ -25,25 +25,28 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 
-iMSCP::EventManager->getInstance()->register('beforeNamedAddCustomDNS', sub {
-	my ($wrkDbFileContent, $data) = @_;
+iMSCP::EventManager->getInstance()->register(
+    'beforeNamedAddCustomDNS',
+    sub {
+        my ($wrkDbFileContent, $data) = @_;
 
-	return 0 unless @{$data->{'DNS_RECORDS'}};
+        return 0 unless @{$data->{'DNS_RECORDS'}};
 
-	for(@{$data->{'DNS_RECORDS'}}) {
-		my ($name, $class, $type, $rdata) = @{$_};
+        for(@{$data->{'DNS_RECORDS'}}) {
+            my ($name, $class, $type, $rdata) = @{$_};
 
-		if(
-			($name eq "$data->{'DOMAIN_NAME'}." || $name eq '') &&
-			$class eq 'IN' && $type eq 'A' && $rdata ne $data->{'DOMAIN_IP'}
-		) {
-			my $match = quotemeta("\@\t\tIN\tA\t$data->{'DOMAIN_IP'}\n");
-			$$wrkDbFileContent =~ s/$match//;
-		}
-	}
+            if (
+                ($name eq "$data->{'DOMAIN_NAME'}." || $name eq '') &&
+                    $class eq 'IN' && $type eq 'A' && $rdata ne $data->{'DOMAIN_IP'}
+            ) {
+                my $match = quotemeta( "\@\t\tIN\tA\t$data->{'DOMAIN_IP'}\n" );
+                $$wrkDbFileContent =~ s/$match//;
+            }
+        }
 
-	0;
-});
+        0;
+    }
+);
 
 1;
 __END__
