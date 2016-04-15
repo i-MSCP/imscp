@@ -959,6 +959,10 @@ table .icon {
     background-image: url(../images/icons/help.png);
 }
 
+.i_exclamation {
+    background-image: url(../images/icons/exclamation.png);
+}
+
 .i_hide_alias {
     background-image: url(../images/icons/hide_alias.png);
 }

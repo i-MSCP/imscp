@@ -48,11 +48,12 @@ DATABASE
     Updated: domain_id index on domain_dns table; added index length for domain_dns and domain_text columns
 
 FRONTEND
-    Added: iMSCP\Net class - Allow to get list of network devices and IP addresses (stdlib)
     Added: Datatable for the file system information table (admin level)
+    Added: iMSCP\Net class - Allow to get list of network devices and IP addresses (stdlib)
     Added: SPF DNS resource record type (validated as a TXT record) (client level)
     Added: Support for .phtml template files (stdlib)
     Added: torul() function for escaping a string for the URI or Parameter contexts (stdlib)
+    Backported: Exclamation icon from 1.3.x branch
     Changed: exec() PHP function is no longer disabled for the control panel (master php.ini file)
     Changed: The `type` field cannot longer be changed when editing a DNS resource record (client level)
     Changed: Support for nested MySQL transactions is now emulated using named transaction savepoints (stdlib)
