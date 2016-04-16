@@ -32,7 +32,6 @@ use iMSCP::Execute;
 use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::Rights;
 use iMSCP::TemplateParser;
 use parent 'Common::SingletonClass';
 
@@ -91,28 +90,25 @@ sub _init
             iMSCP::Dialog->getInstance()->endGauge();
 
             my $rs = $self->_cleanPackageCache() if iMSCP::Getopt->cleanPackageCache;
-            return $rs if $rs;
-
-            $rs = iMSCP::Dir->new( dirname => $self->{'pkgDir'} )->make(
+            $rs ||= iMSCP::Dir->new( dirname => $self->{'pkgDir'} )->make(
                 {
                     user  => $main::imscpConfig{'IMSCP_USER'},
                     group => $main::imscpConfig{'IMSCP_GROUP'},
                     mode  => 0755
                 }
             );
-            $rs ||= setRights( $self->{'pkgDir'}, { user => 'imscp', group => 'imscp' } );
             return $rs if $rs;
 
-            unless (iMSCP::Getopt->skipPackageUpdate && -x "$self->{'pkgDir'}/composer.phar") {
+            unless (iMSCP::Getopt->skipPackageUpdate && -x "$main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar") {
                 $rs = $self->_getComposer();
                 return $rs if $rs;
             }
 
-            unless (iMSCP::Getopt->skipPackageUpdate && $self->_checkRequirements()) {
-                $rs = $self->_installPackages();
+            if (iMSCP::Getopt->skipPackageUpdate) {
+                return $self->_checkRequirements();
             }
 
-            $rs;
+            $self->_installPackages();
         }
     );
 
@@ -131,8 +127,8 @@ sub _getComposer
 {
     my $self = shift;
 
-    unless (-f "$self->{'pkgDir'}/composer.phar") {
-        iMSCP::Dialog->getInstance()->infobox( <<EOF );
+    unless (-f "$main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar") {
+        iMSCP::Dialog->getInstance()->infobox( <<'EOF' );
 
 Installing composer.phar from http://getcomposer.org
 
@@ -146,27 +142,25 @@ EOF
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
         error( $stdout ) if !$stderr && $stdout && $rs;
-        error( 'Could not install/update composer.phar from http://getcomposer.org' ) if $rs && !$stdout && !$stderr;
-        return $rs if $rs;
-    } else {
-        iMSCP::Dialog->getInstance()->infobox( <<EOF );
+        error( 'Could not install composer.phar' ) if $rs && !$stdout && !$stderr;
+        return $rs;
+    }
+
+    iMSCP::Dialog->getInstance()->infobox( <<'EOF' );
 
 Updating composer.phar from http://getcomposer.org
 
 Please wait, depending on your connection, this may take few seconds...
 EOF
-        my $rs = execute(
-            sprintf( $self->{'suCmdPattern'},
-                escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} self-update" ) ),
-            \my $stdout, \my $stderr
-        );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        error( 'Could not update composer.phar' ) if $rs && !$stderr;
-        return $rs if $rs;
-    }
-
-    0;
+    my $rs = execute(
+        sprintf( $self->{'suCmdPattern'},
+            escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} self-update" ) ),
+        \my $stdout, \my $stderr
+    );
+    debug( $stdout ) if $stdout;
+    error( $stderr ) if $stderr && $rs;
+    error( 'Could not update composer.phar' ) if $rs && !$stderr;
+    $rs;
 }
 
 =item _installPackages()
@@ -186,12 +180,12 @@ sub _installPackages
 
     my $stderr;
     my $dialog = iMSCP::Dialog->getInstance();
-    my $msgHeader = <<EOF;
+    my $msgHeader = <<'EOF';
 
 Installing/Updating i-MSCP packages from Github
 
 EOF
-    my $msgFooter = <<EOF;
+    my $msgFooter = <<'EOF';
 
 Please wait, depending on your connection, this may take few seconds...
 EOF
@@ -283,7 +277,7 @@ sub _cleanPackageCache
 
  Check package version requirements
 
- Return bool TRUE if all requirements are meets, FALSE otherwise
+ Return int 0 if all requirements are met, 1 otherwise
 
 =cut
 
@@ -296,20 +290,22 @@ sub _checkRequirements
     for(@{$self->{'toInstall'}}) {
         my ($package, $version) = $_ =~ /"(.*)":\s*"(.*)"/;
         my $rs = execute(
-            sprintf( $self->{'suCmdPattern'},
-                escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} show --installed $package $version" ) )
+            sprintf(
+                $self->{'suCmdPattern'},
+                escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} show $package $version" )
+            )
             ,
             \my $stdout, \my $stderr
         );
         debug( $stdout ) if $stdout;
 
         if ($rs) {
-            debug( sprintf( "Version %s of package %s not found in composer package cache.", $package, $version ) );
-            return 0;
+            error( sprintf( "Package %s (%s) not found. Please retry without the '-a' option", $package, $version ) );
+            return 1;
         }
     }
 
-    1;
+    0;
 }
 
 =back
