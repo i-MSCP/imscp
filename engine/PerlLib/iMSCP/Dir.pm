@@ -178,7 +178,7 @@ sub owner
     my $uid = ($owner =~ /^\d+$/) ? $owner : getpwnam( $owner ) // -1;
     my $gid = ($group =~ /^\d+$/) ? $group : getgrnam( $group ) // -1;
 
-    debug( sprintf( 'Changing owner and group for %s to %s: %s', $dirname, $uid, $gid ) );
+    debug( sprintf( 'Changing owner and group for %s to %s:%s', $dirname, $uid, $gid ) );
     chown $uid, $gid, $self->{'dirname'} or die( sprintf( 'Could not change owner and group for %s: %s', $dirname,
             $! ) );
     0;
