@@ -25,17 +25,17 @@ package Servers::mta::postfix::installer;
 
 use strict;
 use warnings;
+use File::Basename;
 use iMSCP::Debug;
-use iMSCP::EventManager;
+use iMSCP::Dir;
 use iMSCP::Config;
 use iMSCP::Execute;
-use iMSCP::Dir;
+use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::TemplateParser;
 use iMSCP::Rights;
-use iMSCP::SystemUser;
 use iMSCP::SystemGroup;
-use File::Basename;
+use iMSCP::SystemUser;
 use Servers::mta::postfix;
 use version;
 use parent 'Common::SingletonClass';
@@ -105,28 +105,24 @@ sub setEnginePermissions
 
     # eg. /etc/postfix/imscp
     my $rs = setRights(
-        $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, {
-            user => $rootUName, group => $rootGName, dirmode => '0755', filemode => '0644', recursive => 1
-        } );
-
+        $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'},
+        { user => $rootUName, group => $rootGName, dirmode => '0755', filemode => '0644', recursive => 1 }
+    );
     # eg. /var/www/imscp/engine/messenger
     $rs ||= setRights(
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/messenger", {
-            user => $rootUName, group => $imscpGName, dirmode => '0750', filemode => '0750', recursive => 1
-        } );
-
+        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/messenger",
+        { user => $rootUName, group => $imscpGName, dirmode => '0750', filemode => '0750', recursive => 1 }
+    );
     # eg. /var/log/imscp/imscp-arpl-msgr
     $rs ||= setRights(
-        "$main::imscpConfig{'LOG_DIR'}/imscp-arpl-msgr", {
-            user => $mtaUName, group => $imscpGName, dirmode => '0750', filemode => '0600', recursive => 1
-        } );
-
+        "$main::imscpConfig{'LOG_DIR'}/imscp-arpl-msgr",
+        { user => $mtaUName, group => $imscpGName, dirmode => '0750', filemode => '0600', recursive => 1 }
+    );
     # eg. /var/mail/virtual
     $rs ||= setRights(
-        $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}, {
-            user => $mtaUName, group => $mtaGName, dirmode => '0750', filemode => '0640', recursive => 1
-        } );
-
+        $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
+        { user => $mtaUName, group => $mtaGName, dirmode => '0750', filemode => '0640', recursive => 1 }
+    );
     # eg. /usr/sbin/maillogconvert.pl
     $rs ||= setRights( '/usr/sbin/maillogconvert.pl', { user => $rootUName, group => $rootGName, mode => '0750' } );
 }
@@ -164,7 +160,6 @@ sub _init
     my $oldConf = "$self->{'cfgDir'}/postfix.old.data";
     if (-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-
         for my $param(keys %oldConfig) {
             if (exists $self->{'config'}->{$param}) {
                 $self->{'config'}->{$param} = $oldConfig{$param};
@@ -262,7 +257,8 @@ sub _makeDirs
 {
     my $self = shift;
 
-    my @directories = ([
+    my @directories = (
+        [
             $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, # eg. /etc/postfix/imscp
             $main::imscpConfig{'ROOT_USER'},
             $main::imscpConfig{'ROOT_GROUP'},
@@ -279,7 +275,8 @@ sub _makeDirs
             $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
             $main::imscpConfig{'IMSCP_GROUP'},
             0750
-        ]);
+        ]
+    );
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaMakeDirs', \@directories );
     return $rs if $rs;
@@ -355,9 +352,7 @@ sub _buildAliasesDb
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaBuildAliasesDb' );
-    return $rs if $rs;
-
-    $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'postfix', 'aliases', \my $cfgTpl, { } );
+    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'postfix', 'aliases', \my $cfgTpl, { } );
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
@@ -385,7 +380,7 @@ sub _buildAliasesDb
     $rs = execute( 'newaliases', \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs;
-    error( "Error while executing newaliases command" ) if !$stderr && $rs;
+    error( 'Error while executing newaliases command' ) if !$stderr && $rs;
     return $rs if $rs;
 
     $self->{'eventManager'}->trigger( 'afterMtaBuildAliasesDb' );
@@ -457,11 +452,10 @@ sub _buildMainCfFile
     my $gid = getgrnam( $self->{'config'}->{'MTA_MAILBOX_GID_NAME'} );
     my $uid = getpwnam( $self->{'config'}->{'MTA_MAILBOX_UID_NAME'} );
     my $hostname = $main::imscpConfig{'SERVER_HOSTNAME'};
-
     my $data = {
         MTA_INET_PROTOCOLS       => $baseServerIpType,
-        MTA_SMTP_BIND_ADDRESS    => ($baseServerIpType eq 'ipv4') ? $main::imscpConfig{'BASE_SERVER_IP'} : '',
-        MTA_SMTP_BIND_ADDRESS6   => ($baseServerIpType eq 'ipv6') ? $main::imscpConfig{'BASE_SERVER_IP'} : '',
+        MTA_SMTP_BIND_ADDRESS    => $baseServerIpType eq 'ipv4' ? $main::imscpConfig{'BASE_SERVER_IP'} : '',
+        MTA_SMTP_BIND_ADDRESS6   => $baseServerIpType eq 'ipv6' ? $main::imscpConfig{'BASE_SERVER_IP'} : '',
         MTA_HOSTNAME             => $hostname,
         MTA_LOCAL_DOMAIN         => "$hostname.local",
         MTA_VERSION              => $main::imscpConfig{'Version'},
@@ -486,7 +480,7 @@ sub _buildMainCfFile
     unless (defined $cfgTpl) {
         $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/main.cf" )->get();
         unless (defined $cfgTpl) {
-            error( "Unable to read $self->{'cfgDir'}/main.cf" );
+            error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/main.cf" ) );
             return 1;
         }
     }
@@ -517,19 +511,16 @@ EOF
 
     $cfgTpl = process( $data, $cfgTpl );
 
-    # Fix for #790
     execute( "postconf -h mail_version", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
-    warning( $stderr ) if $stderr && !$rs;
-    error( $stderr ) if $stderr && $rs;
-    return 1 if $rs;
+    debug( $stderr );
 
-    unless (defined $stdout) {
-        error( 'Unable to find Postfix version' );
+    chomp( $stdout );
+    unless ($stdout =~ /^\d+\.\d+\.\d+$/) {
+        error( 'Could not to find Postfix version' );
         return 1;
     }
 
-    chomp( $stdout );
     if (version->parse( $stdout ) >= version->parse( '2.10.0' )) {
         $cfgTpl =~ s/smtpd_recipient_restrictions/smtpd_relay_restrictions =\n\nsmtpd_recipient_restrictions/;
     }
@@ -572,7 +563,7 @@ sub _buildMasterCfFile
     unless (defined $cfgTpl) {
         $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/master.cf" )->get();
         unless (defined $cfgTpl) {
-            error( "Unable to read $self->{'cfgDir'}/master.cf" );
+            error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/master.cf" ) );
             return 1;
         }
     }
