@@ -80,6 +80,7 @@ INSTALLER
     Fixed: '_' and '%' wildcards must be escaped in GRANT statements
     Fixed: Debug and verbose modes must be set early
     Fixed: Don't die on misconfigured server hostname. Just ask for a valid hostname instead
+    Fixed: Invalid regexes for SQL user/password (Package::PhpMyAdmin::Installer)
     Fixed: libmariadbclient18 package not provided in Debian Stretch (testing) repository
     Fixed: /etc/mailname file not updated when reconfiguring system hostname
     Fixed: Ignore SIGNINT to prevent user aborting installer in wrong way

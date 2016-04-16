@@ -92,8 +92,8 @@ sub showDialog
     my ($rs, $msg) = (0, '');
 
     if (grep($_ eq $main::reconfigure, ( 'sqlmanager', 'all', 'forced' ))
-        || length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/
-        || length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/
+        || length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x7e]+$/
+        || length $dbPass < 6 || $dbPass !~ /^[\x21-\x7e]+$/
     ) {
         # Ensure no special chars are present in password. If we don't, dialog will not let user set new password
         $dbPass = '';
@@ -135,7 +135,7 @@ EOF
                         if (length $dbPass < 6) {
                             $msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
                             $dbPass = '';
-                        } elsif ($dbPass !~ /^[x21-\x7e]+$/) {
+                        } elsif ($dbPass !~ /^[\x21-\x7e]+$/) {
                             $msg = "\n\n\\Z1Only printable ASCII characters (excepted space) are allowed.\\Zn\n\nPlease try again:";
                             $dbPass = '';
                         } else {
@@ -185,10 +185,8 @@ sub preinstall
 {
     my $self = shift;
 
-    my $version = version->parse( Servers::sqld->factory()->getVersion() ) >= version->parse( '5.5.0' )
-          ? (version->parse( $self->_getPhpVersion() ) >= version->parse( '5.5.0' )
-            ? '0.4.6.*@dev' : '0.4.0.*@dev'
-        ) : '0.2.0.*@dev';
+    my $version = version->parse( $self->_getPhpVersion() ) >= version->parse( '5.5.0' )
+        ? '0.4.6.*@dev' : '0.4.0.*@dev';
 
     my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/phpmyadmin', $version );
     $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
