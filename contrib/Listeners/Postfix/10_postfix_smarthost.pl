@@ -21,6 +21,8 @@
 
 package Listener::Postfix::Smarthost;
 
+use strict;
+use warnings;
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Execute;

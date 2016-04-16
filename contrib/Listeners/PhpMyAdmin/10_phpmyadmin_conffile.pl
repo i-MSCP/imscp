@@ -21,6 +21,8 @@
 
 package Listener::PhpMyAdmin::Conffile;
 
+use strict;
+use warnings;
 use iMSCP::EventManager;
 use iMSCP::File;
 

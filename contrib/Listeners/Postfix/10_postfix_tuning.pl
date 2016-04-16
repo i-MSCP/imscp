@@ -21,6 +21,8 @@
 
 package Listener::Postfix::Tuning;
 
+use strict;
+use warnings;
 use iMSCP::Debug;
 use iMSCP::ProgramFinder;
 use iMSCP::EventManager;
