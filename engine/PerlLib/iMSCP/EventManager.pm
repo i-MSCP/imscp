@@ -27,46 +27,24 @@ use strict;
 use warnings;
 use Hash::Util::FieldHash 'fieldhash';
 use iMSCP::Debug;
+use parent 'Common::SingletonClass';
 
 fieldhash my %events;
 
 =head1 DESCRIPTION
 
- The i-MSCP event manager is the central point of the engine event system.
+ The i-MSCP event manager is the central point of the event system.
 
- Event listeners are registered on the event manager and events are triggered through the event manager. The event
- listeners are references to subroutines that listen to one or many events.
+ Event listeners are registered on the event manager and events are triggered through the event manager. Event
+ listeners are references to subroutines that listen to particular event.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item getInstance()
+=item register( $event, @callables )
 
- Get instance
-
- Return iMSCP::EventManager
-
-=cut
-
-sub getInstance
-{
-    my $self = shift;
-
-    no strict 'refs';
-    my $instance = \${"${self}::_instance"};
-
-    unless (defined $$instance) {
-        $$instance = bless ( \ my $this, $self );
-        $$instance->_init();
-    }
-
-    $$instance;
-}
-
-=item register($event, @callables)
-
- Register one or many event listeners for the given event
+ Register one or many listeners for the given event
 
  Param string $event Name of event that the listener listen
  Param list @callables Callables which represent event listeners
@@ -77,6 +55,16 @@ sub getInstance
 sub register
 {
     my ($self, $event, @callables) = @_;
+
+    unless (defined $event) {
+        error( '$event parameter is not defined' );
+        return 1;
+    }
+
+    unless (@callables) {
+        error( 'At least one listener is required' );
+        return 1;
+    }
 
     for(@callables) {
         unless (ref $_ eq 'CODE') {
@@ -91,12 +79,12 @@ sub register
     0;
 }
 
-=item unregister($event)
+=item unregister( $event )
 
- Unregister any listener which listen to the given event
+ Unregister all listeners for the given event
 
  Param string $event Event name
- Return int 0
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -104,43 +92,42 @@ sub unregister
 {
     my ($self, $event) = @_;
 
+    unless (defined $event) {
+        error( '$event parameter is not defined' );
+        return 1;
+    }
+
     delete $events{$self}->{$event};
     0;
 }
 
-=item trigger($event, [$param], [$paramN])
+=item trigger( $event [, @params ] )
 
  Trigger the given event
 
  Param string $event Event name
- Param mixed OPTIONAL parameters to pass to the listeners
+ Param mixed @params OPTIONAL parameters passed-in to the listeners
  Return int 0 on success, other on failure
 
 =cut
 
 sub trigger
 {
-    my ($self, $event) = (shift, shift);
+    my ($self, $event, @params) = @_;
 
-    my $rs = 0;
+    unless (defined $event) {
+        error( '$event parameter is not defined' );
+        return 1;
+    }
 
     return 0 unless exists $events{$self}->{$event};
 
     debug( sprintf( 'Triggering %s event', $event ) );
 
+    my $rs = 0;
     for my $listener(@{$events{$self}->{$event}}) {
-        if ($rs = $listener->( @_ )) {
-            require Data::Dumper;
-            Data::Dumper->import();
-            local $Data::Dumper::Terse = 1;
-            local $Data::Dumper::Deparse = 1;
-            error( sprintf(
-                    "A listener registered on the %s event and triggered in %s has failed.\n\nListener code was: %s\n\n"
-                    ,
-                    $event, (caller( 1 ))[3] || 'main', Dumper( $listener )
-                ) );
-            last;
-        }
+        $rs = $listener->( @params );
+        return $rs if $rs;
     }
 
     $rs;
@@ -162,7 +149,7 @@ sub trigger
 
 sub _init
 {
-    my $self = $_[0];
+    my $self = shift;
 
     $events{$self} = { };
 
@@ -189,12 +176,6 @@ sub _init
 }
 
 =back
-
-=head1 TODO
-
- Listener priorities support
-
-=cut
 
 =head1 AUTHOR
 
