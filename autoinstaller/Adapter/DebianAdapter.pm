@@ -361,8 +361,11 @@ sub _setupInitScriptPolicyLayer
 
     if ($action eq 'enable') {
         # Prevents invoke-rc.d (which is invoked by package maintainer scripts) to start some services
-        # Apache2 and Nginx: This prevents failures such as "bind() to 0.0.0.0:80 failed (98: Address already in use"
-        # bind9: This avoid error when resolvconf is not configured yet
+        # Apache2: Prevent "bind() to 0.0.0.0:80 failed (98: Address already in use" failure
+        # Nginx:   Prevent "bind() to 0.0.0.0:80 failed (98: Address already in use" failure
+        # Nginx:   Prevent start failure when IPv6 stack is not enabled
+        # Dovecot: Prevent start failure when IPv6 stack is not enabled
+        # bind9:   Prevent failure when resolvconf is not configured yet
         my $file = iMSCP::File->new( filename => '/usr/sbin/policy-rc.d' );
         my $rs = $file->set( <<'EOF' );
 #/bin/sh
@@ -370,7 +373,7 @@ initscript=$1
 action=$2
 
 if [ "$action" = "start" ] || [ "$action" = "restart" ]; then
-    for i in apache2 bind9 nginx; do
+    for i in apache2 bind9 dovecot nginx; do
         if [ "$initscript" = "$i" ]; then
             exit 101;
         fi

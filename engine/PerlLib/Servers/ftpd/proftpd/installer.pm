@@ -431,6 +431,7 @@ sub _buildConfigFile
     (my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'}) =~ s%("|\\)%\\$1%g;
 
     my $data = {
+        IPV6_SUPPORT            => $main::imscpConfig{'IPV6_SUPPORT'} ? 'on' : 'off',
         HOSTNAME                => $main::imscpConfig{'SERVER_HOSTNAME'},
         DATABASE_NAME           => $main::imscpConfig{'DATABASE_NAME'},
         DATABASE_HOST           => $main::imscpConfig{'DATABASE_HOST'},

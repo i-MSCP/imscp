@@ -479,6 +479,7 @@ sub _buildConf
         MTA_MAILBOX_GID_NAME          => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
         MTA_MAILBOX_UID               => scalar getpwnam( $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'} ),
         MTA_MAILBOX_GID               => scalar getgrnam( $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'} ),
+        NETWORK_PROTOCOLS             => $main::imscpConfig{'IPV6_SUPPORT'} ? '*, [::]' : '*',
         POSTFIX_SENDMAIL_PATH         => $self->{'mta'}->{'config'}->{'POSTFIX_SENDMAIL_PATH'},
         DOVECOT_CONF_DIR              => $self->{'config'}->{'DOVECOT_CONF_DIR'},
         DOVECOT_DELIVER_PATH          => $self->{'config'}->{'DOVECOT_DELIVER_PATH'},

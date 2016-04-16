@@ -64,6 +64,15 @@ sub setupBoot
     0;
 }
 
+# Set server capabilities
+# Currently used for detecting IPv6 support
+sub setServerCapabilities
+{
+    # FIXME: It is sufficient for check of IPv6 support?
+    $main::imscpConfig{'IPV6_SUPPORT'} = -f '/proc/net/if_inet6' ? 1 : 0;
+    0;
+}
+
 # Allow any server/package to register its setup event listeners before any other task
 sub setupRegisterListeners
 {

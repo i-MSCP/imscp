@@ -530,7 +530,6 @@ EOF
     }
 
     chomp( $stdout );
-
     if (version->parse( $stdout ) >= version->parse( '2.10.0' )) {
         $cfgTpl =~ s/smtpd_recipient_restrictions/smtpd_relay_restrictions =\n\nsmtpd_recipient_restrictions/;
     }

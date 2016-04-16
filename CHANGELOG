@@ -28,8 +28,10 @@ BACKEND
     Rewritten: iMSCP::SetRights library (usage of built-in functions to avoid call of system chown/chmod commands)
 
 CONFIG
-    Added: IMSCP_USER parameter (name of i-MSCP master system user)
+
     Added: DISTRO_ID, DISTRO_CODENAME and DISTRO_RELEASE parameters in imscp.conf file
+    Added: IMSCP_USER parameter (name of i-MSCP master system user)
+    Added: IPV6_SUPPORT parameter (tells whether or not IPv6 support is enabled for the server)
     Added: MAX_INSTANCES, MAX_CLIENT_PER_HOST and FTPD_CONF_DIR parameters in proftpd/proftpd.data file
     Added: MOUNT_CUSTOMER_LOGS parameter in apache/apache.data file (allows to disable logs bind mounts)
     Changed: Increased default limits for ProFTPD/VsFTPd
@@ -129,6 +131,7 @@ VLOGGER
 YOUTRACK
     IP-0931 Unexpected error on protected area creation
     IP-1231 Default SPF DNS resource records should be overrideable
+    IP-1365 Check for IPv6 support when installing services
     IP-1402 ProFTPD doesn't restart properly - killed (signal 15) - Wheezy/Precise/Trusty
     IP-1509 Could not generate SSL certificate through the frontEnd - Invalide SSL certificate
     IP-1510 VsFTPd - Use of uninitialized value $tmpFile
@@ -138,6 +141,7 @@ YOUTRACK
     IP-1525 ifconfig output format has changed in latest versions
     IP-1527 Wrong syntax in the VsFTPd uninstaller, leading to an i-MSCP uninstallation failure
     IP-1530 Nginx - Failed to load resource: net::ERR_INCOMPLETE_CHUNKED_ENCODING
+    IP-1533 i-MSCP is not compatible with servers on which IPv6 stack is disabled
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.17

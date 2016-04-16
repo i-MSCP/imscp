@@ -58,7 +58,10 @@ service quota-warning {
 	}
 }
 
+listen = {NETWORK_PROTOCOLS}
+
 !include_try /usr/share/dovecot/protocols.d/*.protocol
+
 protocol imap {
 	mail_plugins = $mail_plugins imap_quota
 }

@@ -1097,11 +1097,13 @@ sub _buildHttpdConfig
         'CONF_DIR'                     => $main::imscpConfig{'CONF_DIR'}
     };
 
-    if ($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'https://') {
-        $rs = $self->{'eventManager'}->register( 'afterFrontEndBuildConf', sub {
-                my ($cfgTpl, $tplName) = @_;
+    $rs = $self->{'eventManager'}->register(
+        'afterFrontEndBuildConf',
+        sub {
+            my ($cfgTpl, $tplName) = @_;
 
-                if ($tplName eq '00_master.conf') {
+            if ($tplName eq '00_master.conf') {
+                if ($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'https://') {
                     $$cfgTpl = replaceBloc(
                         "# SECTION custom BEGIN.\n",
                         "# SECTION custom END.\n",
@@ -1117,12 +1119,27 @@ sub _buildHttpdConfig
                     );
                 }
 
-                0;
-            } );
-        return $rs if $rs;
-    }
+                if (!$main::imscpConfig{'IPV6_SUPPORT'}) {
+                    $$cfgTpl = replaceBloc(
+                        '# SECTION IPv6 BEGIN.',
+                        '# SECTION IPv6 END.',
+                        '',
+                        $$cfgTpl
+                    );
+                }
+            } elsif ($tplName eq '00_master_ssl.conf' && !$main::imscpConfig{'IPV6_SUPPORT'}) {
+                $$cfgTpl = replaceBloc(
+                    '# SECTION IPv6 BEGIN.',
+                    '# SECTION IPv6 END.',
+                    '',
+                    $$cfgTpl
+                );
+            }
 
-    $rs = $self->{'frontend'}->disableSites( 'default', '00_master.conf', '00_master_ssl.conf' );
+            0;
+        }
+    );
+    $rs ||= $self->{'frontend'}->disableSites( 'default', '00_master.conf', '00_master_ssl.conf' );
     $rs ||= $self->{'frontend'}->buildConfFile( '00_master.conf', $tplVars );
     $rs ||= iMSCP::File->new( filename => "$self->{'wrkDir'}/00_master.conf" )->copyFile(
         "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf"
