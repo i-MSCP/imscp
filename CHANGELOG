@@ -28,13 +28,13 @@ BACKEND
     Rewritten: iMSCP::SetRights library (usage of built-in functions to avoid call of system chown/chmod commands)
 
 CONFIG
-
     Added: DISTRO_ID, DISTRO_CODENAME and DISTRO_RELEASE parameters in imscp.conf file
     Added: IMSCP_USER parameter (name of i-MSCP master system user)
     Added: IPV6_SUPPORT parameter (tells whether or not IPv6 support is enabled for the server)
     Added: MAX_INSTANCES, MAX_CLIENT_PER_HOST and FTPD_CONF_DIR parameters in proftpd/proftpd.data file
     Added: MOUNT_CUSTOMER_LOGS parameter in apache/apache.data file (allows to disable logs bind mounts)
     Changed: Increased default limits for ProFTPD/VsFTPd
+    Changed: Moved DirectoryIndex directive in vhosts (Apache2)
     Depreciated: CACHE_DATA_DIR (/var/cache/imscp) parameter
     Fixed: Allow access to .well-known folder in any case if exists (Apache2)
     Removed: Redundant MYSQL_PREFIX_TYPE parameter

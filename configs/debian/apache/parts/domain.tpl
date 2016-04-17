@@ -44,6 +44,8 @@
     </Directory>
 
     <Directory {WEB_DIR}/htdocs>
+        DirectoryIndex index.html index.cgi index.pl index.php
+
         # SECTION php_disabled BEGIN.
         AllowOverride AuthConfig Indexes Limit Options=Indexes \
             Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule
