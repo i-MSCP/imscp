@@ -348,7 +348,7 @@ sub _rebuildVsFTPdDebianPackage
 
             # Apply the imscp_allow_writeable_root.patch patch for vsftpd version < 3.0.0 only
 
-            my $rs = execute( 'dpkg-query --show --showformat \'${Version}\' vsftpd', \my $stdout, \my $stderr );
+            my $rs = execute( 'dpkg-query --show -f=\'${Version}\' vsftpd', \my $stdout, \my $stderr );
             debug( $stdout ) if $stdout;
             error( $stderr ) if $rs && $stderr;
             return $rs if $rs;

@@ -38,11 +38,10 @@ my %commands = (
 
 # Enable compatibility mode if sysv-rc package version is lower than version 2.88
 my $SYSVRC_COMPAT_MODE = lazy {
-        __PACKAGE__->_exec(
-            $commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W --showformat \'${Version}\' sysv-rc)', 'lt',
-            '2.88'
-        ) == 0;
-    };
+    __PACKAGE__->_exec(
+        $commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W -f \'${Version}\' sysv-rc)', 'lt', '2.88'
+    ) == 0;
+};
 
 =head1 DESCRIPTION
 

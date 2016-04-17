@@ -41,11 +41,10 @@ my %commands = (
 
 # Enable compatibility mode if systemd version is lower than version 204-3
 my $SYSTEMCTL_COMPAT_MODE = lazy {
-        __PACKAGE__->_exec(
-            $commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W --showformat \'${Version}\' systemd)', 'lt',
-            '204-3'
-        ) == 0;
-    };
+    __PACKAGE__->_exec(
+        $commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W -f=\'${Version}\' systemd)', 'lt', '204-3'
+    ) == 0;
+};
 
 =head1 DESCRIPTION
 

@@ -68,8 +68,8 @@ sub installPreRequiredPackages
 
     my $stdout;
     $rs = execute(
-        "$command -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' --auto-remove --purge ".
-            "--no-install-recommends install @{$self->{'preRequiredPackages'}}",
+        "$command -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' --auto-remove --purge "
+            ."--no-install-recommends install @{$self->{'preRequiredPackages'}}",
             (iMSCP::Getopt->preseed || iMSCP::Getopt->noprompt) ? \$stdout : undef, \my $stderr
     );
     debug( $stdout ) if $stdout;
@@ -172,70 +172,67 @@ sub installPackages
     $self->{'eventManager'}->trigger( 'afterInstallPackages' );
 }
 
-=item uninstallPackages([ \@packages ])
+=item uninstallPackages( [ \@packagesToUninstall = $self->{'packagesToUninstall'} ] )
 
  Uninstall Debian packages
 
- Param array \@packages OPTIONAL List of packages to uninstall (default is list from the packagesToUninstall attribute)
+ Param array \@packagesToUninstall OPTIONAL List of packages to uninstall
  Return int 0 on success, other on failure
 
 =cut
 
 sub uninstallPackages
 {
-    my ($self, $packages) = @_;
+    my ($self, $packagesToUninstall) = @_;
 
-    $packages ||= $self->{'packagesToUninstall'};
+    $packagesToUninstall ||= $self->{'packagesToUninstall'};
 
-    eval "use List::MoreUtils qw(uniq); 1";
-    die( $@ ) if $@;
+    eval "use List::MoreUtils qw/ uniq /; 1" or die( $@ );
 
-    # Filter packages that must not be removed
-    my @packagesToIgnore = (@{$self->{'packagesToInstall'}}, @{$self->{'packagesToInstallDelayed'}});
-    s/=.*$// for @packagesToIgnore; # Remove any package version info (since 1.2.12)
-    @{$packages} = grep { my $__ = $_; !grep($_ eq $__, @packagesToIgnore) } uniq( @{$packages} );
+    @{$packagesToUninstall} = uniq( @{$packagesToUninstall} );
+    s/=.*$// for @{$packagesToUninstall}; # Remove package version info (since 1.2.12)
 
-    if (@{$packages}) {
-        # Do not try to remove packages that are not installed or not available
-        my $rs = execute(
-            "dpkg-query -W -f='\${Package} \${Version}\n' @{$packages} 2>/dev/null ".
-                "| grep '[[:blank:]][[:alnum:]]' | cut -d ' ' -f 1",
-            \my $stdout,
-            \my $stderr
-        );
-        error( $stderr ) if $stderr && $rs > 1;
-        return $rs if $rs > 1;
-
-        @{$packages} = split /\n/, $stdout;
-    }
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeUninstallPackages', $packages );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeUninstallPackages', $packagesToUninstall );
     return $rs if $rs;
 
-    if (@{$packages}) {
-        # Ensure that packages are not frozen
-        # # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
-        execute( "LANG=C apt-mark unhold @{$packages}", \my $stdout, \my $stderr );
-        debug( $stdout ) if $stdout;
-        debug( $stderr ) if $stderr;
+    # Filter packages that must not be removed
+    my @packagesToKept = (@{$self->{'packagesToInstall'}}, @{$self->{'packagesToInstallDelayed'}});
+    @packagesToKept = uniq( @packagesToKept );
+    s/=.*$// for @packagesToKept; # Remove any package version info (since 1.2.12)
+    @{$packagesToUninstall} = grep {
+        my $__ = $_; !grep($_ eq $__, @packagesToKept)
+    } uniq( @{$packagesToUninstall} );
 
-        my @command = ();
+    if (@{$packagesToUninstall}) {
+        # Do not try to uninstall packages that are not available
+        execute( "dpkg-query -W -f='\${Package}\n' @{$packagesToUninstall} 2>/dev/null", \my $stdout );
+        @{$packagesToUninstall} = split /\n/, $stdout;
 
-        if (!iMSCP::Getopt->preseed && !iMSCP::Getopt->noprompt
-            && iMSCP::ProgramFinder::find( 'debconf-apt-progress' )
-        ) {
-            iMSCP::Dialog->getInstance()->endGauge();
-            push @command, 'debconf-apt-progress --logstderr --';
+        if (@{$packagesToUninstall}) {
+            # Ensure that packages are not frozen
+            # # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
+            execute( "apt-mark unhold @{$packagesToUninstall}", \my $stdout, \my $stderr );
+            debug( $stdout ) if $stdout;
+            debug( $stderr ) if $stderr;
+
+            my @command = ();
+            if (!iMSCP::Getopt->preseed && !iMSCP::Getopt->noprompt
+                && iMSCP::ProgramFinder::find( 'debconf-apt-progress' )
+            ) {
+                iMSCP::Dialog->getInstance()->endGauge();
+                push @command, 'debconf-apt-progress --logstderr --';
+            }
+
+            push @command, "apt-get -y --auto-remove --purge --no-install-recommends remove @{$packagesToUninstall}";
+
+            my $rs = execute(
+                "@command", (iMSCP::Getopt->preseed || iMSCP::Getopt->noprompt) ? \$stdout : undef, \$stderr
+            );
+            debug( $stdout ) if $stdout;
+            error( $stderr ) if $stderr && $rs;
+            error( 'Could not uninstall packages' ) if $rs && !$stderr;
+            return $rs if $rs;
         }
-
-        push @command, "apt-get -y --auto-remove --purge --no-install-recommends remove @{$packages}";
-
-        my $rs = execute( "@command", (iMSCP::Getopt->preseed || iMSCP::Getopt->noprompt) ? \$stdout : undef,
-            \$stderr );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        error( 'Could not uninstall packages' ) if $rs && !$stderr;
-        return $rs if $rs;
     }
 
     $self->{'eventManager'}->trigger( 'afterUninstallPackages' );
@@ -410,9 +407,7 @@ sub _buildPackageList
     my $codename = lc( $lsbRelease->getCodename( 'short' ) );
     my $pkgFile = "$FindBin::Bin/docs/".ucfirst( $dist )."/packages-$codename.xml";
 
-    eval "use XML::Simple; 1";
-    die( $@ ) if $@;
-
+    eval "use XML::Simple; 1" or die($@);
     my $xml = XML::Simple->new( NoEscape => 1 );
     my $pkgData = eval { $xml->XMLin( $pkgFile, ForceArray => [ 'package', 'package_delayed', 'package_conflict' ] ) };
     if ($@) {
@@ -473,7 +468,8 @@ EOF
         }
 
         # APT preferences to add
-        push @{$self->{'aptPreferences'}}, {
+        push @{$self->{'aptPreferences'}},
+            {
                 'pinning_package'      => $data->{$sAlt}->{'pinning_package'},
                 'pinning_pin'          => $data->{$sAlt}->{'pinning_pin'} || undef,
                 'pinning_pin_priority' => $data->{$sAlt}->{'pinning_pin_priority'} || undef,
@@ -485,7 +481,8 @@ EOF
 
         # APT repository to add
         if ($data->{$sAlt}->{'repository'}) {
-            push @{$self->{'aptRepositoriesToAdd'}}, {
+            push @{$self->{'aptRepositoriesToAdd'}},
+                {
                     'repository'         => $data->{$sAlt}->{'repository'},
                     'repository_key_uri' => $data->{$sAlt}->{'repository_key_uri'} || undef,
                     'repository_key_id'  => $data->{$sAlt}->{'repository_key_id'} || undef,

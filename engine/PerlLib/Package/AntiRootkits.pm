@@ -388,12 +388,10 @@ sub _removePackages
 {
     my ($self, $packages) = @_;
 
-    # Do not try to remove packages which are no longer available on the system or not installed
-    my $rs = execute( "LANG=C dpkg-query -W -f='\${Package}/\${Status}\n' @{$packages}", \my $stdout, \my $stderr );
-    error( $stderr ) if $stderr && $rs > 1;
-    return $rs if $rs > 1;
+    # Do not try to uninstall packages that are not available
+    my $rs = execute( "dpkg-query -W -f='\${Package}\n' 2>/dev/null @{$packages}", \my $stdout );
 
-    @{$packages} = grep { m%^(.*?)/install% && ($_ = $1) } split /\n/, $stdout;
+    @{$packages} = split /\n/, $stdout;
 
     return 0 unless @{$packages};
 
@@ -406,7 +404,7 @@ sub _removePackages
 
     push @command, "apt-get -y --auto-remove --purge --no-install-recommends remove @{$packages}";
 
-    $rs = execute( "@command", (iMSCP::Getopt->preseed || iMSCP::Getopt->noprompt) ? \$stdout : undef, \$stderr );
+    $rs = execute( "@command", (iMSCP::Getopt->preseed || iMSCP::Getopt->noprompt) ? \$stdout : undef, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs;
     error( 'Could not remove anti-rootkits distro packages' ) if $rs && !$stderr;
