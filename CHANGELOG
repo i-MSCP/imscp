@@ -108,6 +108,7 @@ SERVERS
     Added: i-MSCP own logrorate configuration file for ProFTPD (xferlog file don't need to be rotated)
     Added: i-MSCP own sysvinit script for ProFTPD - solve #IP-1402
     Changed: setenvif module is now always required ((Httpd servers)
+    Fixed: AH01265: attempt to invoke directory as script: /var/www/virtual/<domain.tld>/cgi-bin/
     Fixed: Bad regexp in getTraffic() method leading to unmatching of traffic data (VsFTPd)
     Fixed: Could not build local vsftpd package when gpg has been initialized; .changes file cannot be signed
     Fixed: Courier sysvinit script must not be copied when selected PO server is Dovecot
