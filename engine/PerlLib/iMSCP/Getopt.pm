@@ -27,7 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug qw/ debugRegisterCallBack /;
 use Text::Wrap;
-use fields qw /cleanPackageCache debug listener noprompt preseed reconfigure skipPackageUpdate verbose/;
+use fields qw /cleanPackageCache debug fixPermissions listener noprompt preseed reconfigure skipPackageUpdate verbose/;
 
 $Text::Wrap::columns = 80;
 $Text::Wrap::break = qr/[\s\n\|]/;
@@ -64,7 +64,7 @@ sub parse
 
     $showUsage = sub {
         my $exitCode = shift || 0;
-        print STDERR wrap( '', '', <<EOF );
+        print STDERR wrap( '', '', <<"EOF" );
 
 $usage
  -a     --skip-package-update   Skip i-MSCP packages update.
@@ -75,7 +75,8 @@ $usage
  -n,    --noprompt              Switch to non-interactive mode.
  -p,    --preseed <file>        Path to preseed file.
  -r,    --reconfigure [item]    Type `help` for list of allowed items.
- -v     --verbose               Enable verbose mode
+ -v     --verbose               Enable verbose mode.
+ -x,    --fix-permissions       Fix permissions recursively.
 
 $optionHelp
 EOF
@@ -98,6 +99,7 @@ EOF
         'clean-package-cache|c', sub { $options->{'cleanPackageCache'} = 1 },
         'debug|d', sub { $options->{'debug'} = 1 },
         'help|?|h', sub { $class->showUsage() },
+        'fix-permissions|x', sub { $options->{'fixPermissions'} = 1 },
         'listener|l=s', sub { $class->listener( $_[1] ) },
         'noprompt|n', sub { $options->{'noprompt'} = 1 },
         'preseed|p=s', sub { $class->preseed( $_[1] ) },
@@ -126,7 +128,7 @@ sub parseNoDefault
 
     $showUsage = sub {
         my $exitCode = shift || 0;
-        print STDERR wrap( '', '', <<EOF );
+        print STDERR wrap( '', '', <<"EOF" );
 
 $usage
  -?,-h  --help          Show this help.
@@ -191,7 +193,7 @@ sub reconfigure
     return $options->{'reconfigure'} ||= 'none' unless defined $item;
 
     if ($item eq 'help') {
-        $optionHelp = <<EOF;
+        $optionHelp = <<'EOF';
 Reconfigure option usage:
 
 Without any argument, this option allows to reconfigure all items. You can reconfigure a specific item by passing it name as argument.

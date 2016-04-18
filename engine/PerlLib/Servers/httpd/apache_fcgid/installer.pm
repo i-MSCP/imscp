@@ -31,6 +31,7 @@ use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::Rights;
+use iMSCP::Getopt;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
 use iMSCP::Dir;
@@ -149,19 +150,26 @@ sub setEnginePermissions
 {
     my $self = shift;
 
-    my $rs = setRights( $self->{'config'}->{'PHP_STARTER_DIR'}, {
-            user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0555'
-        } );
-    $rs ||= setRights( '/usr/local/sbin/vlogger', {
-            user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0750'
-        } );
-    $rs ||= setRights( $self->{'config'}->{'HTTPD_LOG_DIR'}, {
+    my $rs = setRights(
+        $self->{'config'}->{'PHP_STARTER_DIR'},
+        { user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0555' }
+    );
+    $rs ||= setRights(
+        '/usr/local/sbin/vlogger',
+        { user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0750' }
+    );
+    # Fix permissions on root log dir (e.g: /var/log/apache2) in any cases
+    # Fix permissions on root log dir (e.g: /var/log/apache2) content only with --fix-permissions option
+    $rs ||= setRights(
+        $self->{'config'}->{'HTTPD_LOG_DIR'},
+        {
             user      => $main::imscpConfig{'ROOT_USER'},
             group     => $main::imscpConfig{'ADM_GROUP'},
-            dirmode   => '0755',
+            dirmode   => '0750',
             filemode  => '0644',
-            recursive => 1
-        } );
+            recursive => iMSCP::Getopt->fixPermissions
+        }
+    );
 }
 
 =back
@@ -293,7 +301,8 @@ sub _makeDirs
         [
             $self->{'config'}->{'HTTPD_LOG_DIR'},
             $main::imscpConfig{'ROOT_USER'},
-            $main::imscpConfig{'ROOT_GROUP'}, 0755
+            $main::imscpConfig{'ADM_GROUP'},
+            0750
         ],
         [
             $self->{'config'}->{'PHP_STARTER_DIR'},
@@ -302,8 +311,9 @@ sub _makeDirs
             0555
         ]
     ) {
-        $rs = iMSCP::Dir->new( dirname => $dir->[0] )->make( { user => $dir->[1], group => $dir->[2], mode =>
-                $dir->[3] } );
+        $rs = iMSCP::Dir->new( dirname => $dir->[0] )->make(
+            { user => $dir->[1], group => $dir->[2], mode => $dir->[3] }
+        );
         return $rs if $rs;
     }
 

@@ -31,6 +31,7 @@ use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::Rights;
+use iMSCP::Getopt;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
 use iMSCP::Dir;
@@ -148,16 +149,22 @@ sub setEnginePermissions
 {
     my $self = shift;
 
-    my $rs = setRights( '/usr/local/sbin/vlogger', {
-            user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0750' }
+    my $rs = setRights(
+        '/usr/local/sbin/vlogger',
+        { user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0750' }
     );
-    $rs ||= setRights( $self->{'config'}->{'HTTPD_LOG_DIR'}, {
+    # Fix permissions on root log dir (e.g: /var/log/apache2) in any cases
+    # Fix permissions on root log dir (e.g: /var/log/apache2) content only with --fix-permissions option
+    $rs ||= setRights(
+        $self->{'config'}->{'HTTPD_LOG_DIR'},
+        {
             user      => $main::imscpConfig{'ROOT_USER'},
             group     => $main::imscpConfig{'ADM_GROUP'},
-            dirmode   => '0755',
+            dirmode   => '0750',
             filemode  => '0644',
-            recursive => 1
-        } );
+            recursive => iMSCP::Getopt->fixPermissions
+        }
+    );
 }
 
 =back
@@ -285,13 +292,13 @@ sub _makeDirs
         [
             $self->{'config'}->{'HTTPD_LOG_DIR'},
             $main::imscpConfig{'ROOT_USER'},
-            $$main::imscpConfig{'ROOT_GROUP'},
-            0755
+            $main::imscpConfig{'ADM_GROUP'},
+            0750
         ],
         [
             "$self->{'config'}->{'HTTPD_LOG_DIR'}/$main::imscpConfig{'BASE_SERVER_VHOST'}",
-            $$main::imscpConfig{'ROOT_USER'},
-            $$main::imscpConfig{'ROOT_GROUP'},
+            $main::imscpConfig{'ROOT_USER'},
+            $main::imscpConfig{'ROOT_GROUP'},
             0750
         ]
     ) {

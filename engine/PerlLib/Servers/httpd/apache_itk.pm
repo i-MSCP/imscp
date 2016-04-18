@@ -30,6 +30,7 @@ use iMSCP::Debug;
 use iMSCP::Database;
 use iMSCP::EventManager;
 use iMSCP::Execute;
+use iMSCP::Getopt;
 use iMSCP::TemplateParser;
 use iMSCP::File;
 use iMSCP::Dir;
@@ -1481,13 +1482,18 @@ sub _addFiles
     return $rs if $rs;
 
     for my $folderDef($self->_dmnFolders( $data )) {
-        $rs = iMSCP::Dir->new( dirname => $folderDef->[0] )->make( {
-                user => $folderDef->[1], group => $folderDef->[2], mode => $folderDef->[3]
-            } );
+        $rs = iMSCP::Dir->new( dirname => $folderDef->[0] )->make(
+            { user => $folderDef->[1], group => $folderDef->[2], mode => $folderDef->[3] }
+        );
         return $rs if $rs;
     }
 
     if ($data->{'FORWARD'} eq 'no') {
+        # Whether or not permissions must be fixed recursively
+        my $fixPermissions = iMSCP::Getopt->fixPermissions;
+
+        # Prepar Web folder
+
         my $webDir = $data->{'WEB_DIR'};
         my $skelDir;
 
@@ -1499,21 +1505,16 @@ sub _addFiles
             $skelDir = "$main::imscpConfig{'CONF_DIR'}/skel/subdomain";
         }
 
-        my ($tmpDir, $stdout, $stderr);
-
-        if (-d $skelDir) {
-            $tmpDir = File::Temp->newdir();
-            $rs = execute( "cp -RT $skelDir $tmpDir", \$stdout, \$stderr );
-            debug( $stdout ) if $stdout;
-            error( $stderr ) if $stderr && $rs;
-            return $rs if $rs;
-        } else {
-            error( sprintf( "Skeleton directory %s doesn't exists.", $skelDir ) );
-            return 1;
-        }
+        my $tmpDir = File::Temp->newdir();
+        $rs = execute( "cp -RT $skelDir $tmpDir", \ my $stdout, \ my $stderr );
+        debug( $stdout ) if $stdout;
+        error( $stderr ) if $stderr && $rs;
+        return $rs if $rs;
 
         # Build default page if needed (if htdocs doesn't exist or is empty)
-        if (!-d "$webDir/htdocs" || iMSCP::Dir->new( dirname => "$webDir/htdocs" )->isEmpty()) {
+        if (!-d "$webDir/htdocs"
+            || iMSCP::Dir->new( dirname => "$webDir/htdocs" )->isEmpty()
+        ) {
             if (-d "$tmpDir/htdocs") {
                 # Test needed in case admin removed the index.html file from the skeleton
                 if (-f "$tmpDir/htdocs/index.html") {
@@ -1522,37 +1523,46 @@ sub _addFiles
                     return $rs if $rs;
                 }
             } else {
-                error( sprintf( "Web folder skeleton %s must provides the 'htdocs' directory.", $skelDir ) );
+                error( 'Web folder skeleton must provides the `htdocs` directory.' );
                 return 1;
             }
+
+            # Force recursive permissions for newly created Web folders
+            $fixPermissions = 1;
         } else {
             $rs = iMSCP::Dir->new( dirname => "$tmpDir/htdocs" )->remove();
             return $rs if $rs;
         }
 
-        if ($data->{'DOMAIN_TYPE'} eq 'dmn' && -d "$webDir/errors"
+        if ($data->{'DOMAIN_TYPE'} eq 'dmn'
+            && -d "$webDir/errors"
             && !iMSCP::Dir->new( dirname => "$webDir/errors" )->isEmpty()
         ) {
-            if (-d "$tmpDir/errors") {
-                $rs = iMSCP::Dir->new( dirname => "$tmpDir/errors" )->remove();
-                return $rs if $rs;
-            } else {
-                warning( sprintf( "Web folder skeleton %s should provides the 'errors' directory.", $skelDir ) );
+            unless (-d "$tmpDir/errors") {
+                error( 'Web folder skeleton must provides the `errors` directory.' );
+                return 1;
             }
-        }
 
-        $rs = $self->umountLogsFolder( $data );
-        return $rs if $rs;
+            $rs = iMSCP::Dir->new( dirname => "$tmpDir/errors" )->remove();
+            return $rs if $rs;
+        }
 
         if ($data->{'DOMAIN_TYPE'} eq 'dmn') {
             if ($self->{'config'}->{'MOUNT_CUSTOMER_LOGS'} ne 'yes') {
-                $rs = iMSCP::Dir->new( dirname => "$tmpDir/logs" )->remove();
+                $rs = $self->umountLogsFolder( $data );
                 $rs ||= iMSCP::Dir->new( dirname => "$webDir/logs" )->remove();
+                $rs ||= iMSCP::Dir->new( dirname => "$tmpDir/logs" )->remove();
                 return $rs if $rs;
             } elsif (!-d "$tmpDir/logs") {
-                error( sprintf( "Web folder skeleton %s must provides the 'logs' directory.", $skelDir ) );
+                error( 'Web folder skeleton must provides the `logs` directory.' );
                 return 1;
             }
+        }
+
+        if ($data->{'DOMAIN_TYPE'} ne 'dmn' && !$data->{'SHARED_MOUNT_POINT'}) {
+            $rs = iMSCP::Dir->new( dirname => "$webDir/phptmp" )->remove();
+            $rs ||= iMSCP::Dir->new( dirname => "$tmpDir/phptmp" )->remove();
+            return $rs if $rs;
         }
 
         my $parentDir = dirname( $webDir );
@@ -1560,70 +1570,105 @@ sub _addFiles
         # Fix #1327 - Ensure that parent Web folder exists
         unless (-d $parentDir) {
             clearImmutable( dirname( $parentDir ) );
-            $rs = iMSCP::Dir->new( dirname => $parentDir )->make( {
-                    user => $data->{'USER'}, group => $data->{'GROUP'}, mode => 0750
-                } );
+            $rs = iMSCP::Dir->new( dirname => $parentDir )->make(
+                { user => $data->{'USER'}, group => $data->{'GROUP'}, mode => 0750 }
+            );
             return $rs if $rs;
         } else {
             clearImmutable( $parentDir );
         }
 
-        if (-d $webDir) {
-            clearImmutable( $webDir );
-        } else {
-            $rs = iMSCP::Dir->new( dirname => $webDir )->make( {
-                    user => $data->{'USER'}, group => $data->{'GROUP'}, mode => 0750
-                } );
-            return $rs if $rs;
-        }
+        clearImmutable( $webDir ) if -d $webDir;
 
-        $rs = execute( "cp -nRT $tmpDir $webDir", \$stdout, \$stderr );
+        # Copy Web folder
+
+        $rs = execute( "cp -nRT $tmpDir $webDir", \ $stdout, \ $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
         return $rs if $rs;
 
+        # Fix permissions
+
+        # Fix user/group and mode for root Web folder
+        # root Web folder vuxxx:vuxxx 0750 (no recursive)
         $rs = setRights( $webDir, { user => $data->{'USER'}, group => $data->{'GROUP'}, mode => '0750' } );
         return $rs if $rs;
 
+        # Get list of directories/files (firt depth only)
         my @files = iMSCP::Dir->new( dirname => $skelDir )->getAll();
 
+        # Fix user/group for first Web folder depth, e.g:
+        # 00_private           vuxxx:vuxxx (recursive with --fix-permissions)
+        # backups              vuxxx:vuxxx (recursive with --fix-permissions)
+        # cgi-bin              vuxxx:vuxxx (recursive with --fix-permissions)
+        # domain_disable_page  skipped
+        # error                vuxxx:vuxxx (recursive with --fix-permissions)
+        # htdocs               vuxxx:vuxxx (recursive with --fix-permissions)
+        # .htgroup             skipped
+        # .htpasswd            skipped
+        # logs                 skipped
+        # phptmp               vuxxx:vuxxx (recursive with --fix-permissions)
         for my $file(@files) {
-            next unless -e "$webDir/$file";
-            $rs = setRights( "$webDir/$file", { user => $data->{'USER'}, group => $data->{'GROUP'}, recursive => 1 } );
+            next if grep($_ eq $file, ( 'domain_disable_page', '.htgroup', '.htpasswd', 'logs')) || !-e "$webDir/$file";
+            $rs = setRights(
+                "$webDir/$file", { user => $data->{'USER'}, group => $data->{'GROUP'}, recursive => $fixPermissions }
+            );
             return $rs if $rs;
         }
 
-        for my $file(@files) {
-            next unless -d "$webDir/$file";
-            $rs = setRights( "$webDir/$file", {
+        # Fix dirmode/filemode for first Web folder depth, e.g:
+        # 00_private           0750 (no recursive)
+        # backups              0750 (recursive with --fix-permissions)
+        # cgi-bin              0750 (no recursive)
+        # domain_disable_page  0750 (recursive)
+        # error                0750 (recursive with --fix-permissions)
+        # htdocs               0750 (no recursive)
+        # .htgroup             0640
+        # .htpasswd            0640
+        # logs                 skipped
+        # phptmp               0750 (recursive with --fix-permissions)
+        for my $file (@files) {
+            next if $file eq 'logs' || !-e "$webDir/$file";
+            $rs = setRights(
+                "$webDir/$file",
+                {
                     dirmode   => '0750',
                     filemode  => '0640',
-                    recursive => grep($_ eq $file, ( '00_private', 'cgi-bin', 'htdocs' )) ? 0 : 1
-                } );
+                    recursive => grep($_ eq $file, ( '00_private', 'cgi-bin', 'htdocs'))
+                        ? 0 : $file eq 'domain_disable_page' ? 1 : $fixPermissions
+                }
+            );
             return $rs if $rs;
         }
 
+        # Fix user/group for domain_disable_page directory, .htgroup and .htpasswd files
+        # domain_disable_page  root:www-data (recursive)
+        # .htgroup             root:www-data
+        # .htpasswd            root:www-data
         for my $file('domain_disable_page', '.htgroup', '.htpasswd') {
             next unless -e "$webDir/$file";
-            $rs = setRights( "$webDir/$file", {
-                    user => $main::imscpConfig{'ROOT_USER'}, group => $self->getRunningGroup(), recursive => 1
-                } );
+            $rs = setRights(
+                "$webDir/$file",
+                {
+                    user      => $main::imscpConfig{'ROOT_USER'},
+                    group     => $self->getRunningGroup(),
+                    recursive => 1
+                }
+            );
             return $rs if $rs;
         }
 
         if ($data->{'DOMAIN_TYPE'} eq 'dmn' && -d "$webDir/logs") {
-            $rs = setRights( "$webDir/logs", {
-                    user      => $main::imscpConfig{'ROOT_USER'},
-                    group     => $main::imscpConfig{'ADM_GROUP'},
-                    dirmode   => '0755',
-                    filemode  => '0644',
-                    recursive => 1
-                } );
-            return $rs if $rs;
-        }
-
-        if ($data->{'DOMAIN_TYPE'} ne 'dmn' && !$data->{'SHARED_MOUNT_POINT'}) {
-            $rs = iMSCP::Dir->new( dirname => "$webDir/phptmp" )->remove();
+            # Fix user/group and mode for logs directory
+            # logs vuxxx:vuxxx 0755 (no recursive)
+            $rs = setRights(
+                "$webDir/logs",
+                {
+                    user  => $main::imscpConfig{'ROOT_USER'},
+                    group => $data->{'GROUP'},
+                    mode  => '0750'
+                }
+            );
             return $rs if $rs;
         }
 
@@ -1633,7 +1678,7 @@ sub _addFiles
         }
     }
 
-    $rs ||= $self->mountLogsFolder( $data ) if $self->{'MOUNT_CUSTOMER_LOGS'} eq 'yes';
+    $rs = $self->mountLogsFolder( $data ) if $self->{'config'}->{'MOUNT_CUSTOMER_LOGS'} eq 'yes';
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdAddFiles', $data );
 }
 

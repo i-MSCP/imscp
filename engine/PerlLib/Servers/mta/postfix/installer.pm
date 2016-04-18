@@ -26,14 +26,15 @@ package Servers::mta::postfix::installer;
 use strict;
 use warnings;
 use File::Basename;
+use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Dir;
-use iMSCP::Config;
 use iMSCP::Execute;
 use iMSCP::EventManager;
 use iMSCP::File;
-use iMSCP::TemplateParser;
+use iMSCP::Getopt;
 use iMSCP::Rights;
+use iMSCP::TemplateParser;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
 use Servers::mta::postfix;
@@ -121,7 +122,13 @@ sub setEnginePermissions
     # eg. /var/mail/virtual
     $rs ||= setRights(
         $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
-        { user => $mtaUName, group => $mtaGName, dirmode => '0750', filemode => '0640', recursive => 1 }
+        {
+            user => $mtaUName,
+            group => $mtaGName,
+            dirmode => '0750',
+            filemode => '0640',
+            recursive => iMSCP::Getopt->fixPermissions
+        }
     );
     # eg. /usr/sbin/maillogconvert.pl
     $rs ||= setRights( '/usr/sbin/maillogconvert.pl', { user => $rootUName, group => $rootGName, mode => '0750' } );

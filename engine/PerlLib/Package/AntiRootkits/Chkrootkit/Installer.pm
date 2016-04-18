@@ -79,9 +79,10 @@ sub install
 
 sub setEnginePermissions()
 {
-    setRights( $main::imscpConfig{'CHKROOTKIT_LOG'}, {
-            user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'IMSCP_GROUP'}, mode => '0640'
-        } );
+    setRights(
+        $main::imscpConfig{'CHKROOTKIT_LOG'},
+        { user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'IMSCP_GROUP'}, mode => '0640' }
+    );
 }
 
 =back

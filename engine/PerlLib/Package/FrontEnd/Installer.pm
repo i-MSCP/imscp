@@ -499,25 +499,30 @@ sub setGuiPermissions
     my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
     my $guiRootDir = $main::imscpConfig{'GUI_ROOT_DIR'};
 
-    my $rs = setRights( $guiRootDir, {
-            user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1
-        } );
-    $rs ||= setRights( "$guiRootDir/themes", {
-            user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1
-        } );
-    $rs ||= setRights( "$guiRootDir/data", {
-            user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 1
-        } );
-    $rs ||= setRights( "$guiRootDir/data/persistent", {
-            user => $panelUName, group => $panelGName, dirmode => '0750', filemode => '0640', recursive => 1
-        } );
-    $rs ||= setRights( "$guiRootDir/data", { user => $panelUName, group => $panelGName, mode => '0550' } );
-    $rs ||= setRights( "$guiRootDir/i18n", {
-            user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 1
-        } );
-    $rs ||= setRights( "$guiRootDir/plugins", {
-            user => $panelUName, 'group' => $panelGName, 'dirmode' => '0750', 'filemode' => '0640', recursive => 1
-        } );
+    my $rs = setRights(
+        $guiRootDir,
+        { user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1 }
+    );
+    $rs ||= setRights(
+        "$guiRootDir/themes",
+        { user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1 }
+    );
+    $rs ||= setRights(
+        "$guiRootDir/data",
+        { user => $panelUName, group => $panelGName, dirmode => '0750', filemode => '0640', recursive => 1 }
+    );
+    $rs ||= setRights(
+        "$guiRootDir/data/persistent",
+        { user => $panelUName, group => $panelGName, dirmode => '0750', filemode => '0640', recursive => 1 }
+    );
+    $rs ||= setRights(
+        "$guiRootDir/i18n",
+        { user => $panelUName, group => $panelGName, dirmode => '0750', filemode => '0640', recursive => 1 }
+    );
+    $rs ||= setRights(
+        "$guiRootDir/plugins",
+        { user => $panelUName, 'group' => $panelGName, 'dirmode' => '0750', 'filemode' => '0640', recursive => 1 }
+    );
 }
 
 =item setEnginePermissions()
@@ -539,54 +544,58 @@ sub setEnginePermissions
     my $httpdUser = $self->{'config'}->{'HTTPD_USER'};
     my $httpdGroup = $self->{'config'}->{'HTTPD_GROUP'};
 
-    my $rs = setRights( $self->{'config'}->{'HTTPD_CONF_DIR'}, {
-            user => $rootUName, group => $rootGName, dirmode => '0755', filemode => '0644', recursive => 1
-        } );
-    $rs ||= setRights( $self->{'config'}->{'HTTPD_LOG_DIR'}, {
-            user => $rootUName, group => $rootGName, dirmode => '0755', filemode => '0640', recursive => 1
-        } );
-    $rs ||= setRights( "$self->{'config'}->{'PHP_STARTER_DIR'}/master", {
-            'user' => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0640', recursive => 1
-        } );
-    $rs ||= setRights( "$self->{'config'}->{'PHP_STARTER_DIR'}/master/php-fcgi-starter", {
-            user => $panelUName, group => $panelGName, mode => '550'
-        } );
-    $rs ||= setRights( "$self->{'config'}->{'PHP_STARTER_DIR'}/master/php-fcgi-starter", {
-            user => $panelUName, group => $panelGName, mode => '550'
-        } );
+    my $rs = setRights(
+        $self->{'config'}->{'HTTPD_CONF_DIR'},
+        { user => $rootUName, group => $rootGName, dirmode => '0755', filemode => '0644', recursive => 1 }
+    );
+    $rs ||= setRights(
+        $self->{'config'}->{'HTTPD_LOG_DIR'},
+        { user => $rootUName, group => $rootGName, dirmode => '0755', filemode => '0640', recursive => 1 }
+    );
+    $rs ||= setRights(
+        "$self->{'config'}->{'PHP_STARTER_DIR'}/master",
+        { 'user' => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0640', recursive => 1 }
+    );
+    $rs ||= setRights(
+        "$self->{'config'}->{'PHP_STARTER_DIR'}/master/php-fcgi-starter",
+        { user => $panelUName, group => $panelGName, mode => '550' }
+    );
 
     # Temporary directories as provided by nginx package (from Debian Team)
-    if (-d "$self->{'config'}->{'HTTPD_TMP_ROOT_DIR_DEBIAN'}") {
-        $rs = setRights( $self->{'config'}->{'HTTPD_TMP_ROOT_DIR_DEBIAN'},
-            { user => $rootUName, group => $rootGName } );
+    if (-d "$self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'}") {
+        $rs = setRights( $self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'}, { user => $rootUName, group => $rootGName } );
 
         for my $tmp('body', 'fastcgi', 'proxy', 'scgi', 'uwsgi') {
-            next unless -d "$self->{'config'}->{'HTTPD_TMP_ROOT_DIR_DEBIAN'}/$tmp";
+            next unless -d "$self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'}/$tmp";
 
-            $rs = setRights( "$self->{'config'}->{'HTTPD_TMP_ROOT_DIR_DEBIAN'}/$tmp", {
-                    user => $httpdUser, group => $httpdGroup, dirnmode => '0700', filemode => '0640', recursive => 1
-                } );
-            $rs ||= setRights( "$self->{'config'}->{'HTTPD_TMP_ROOT_DIR_DEBIAN'}/$tmp", {
-                    user => $httpdUser, group => $rootGName, mode => '0700'
-                } );
+            $rs = setRights(
+                "$self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'}/$tmp",
+                { user => $httpdUser, group => $httpdGroup, dirnmode => '0700', filemode => '0640', recursive => 1 }
+            );
+            $rs ||= setRights(
+                "$self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'}/$tmp",
+                { user => $httpdUser, group => $rootGName, mode => '0700' }
+            );
             return $rs if $rs;
         }
     }
 
     # Temporary directories as provided by nginx package (from nginx Team)
-    return 0 unless -d "$self->{'config'}->{'HTTPD_TMP_ROOT_DIR_NGINX'}";
+    return 0 unless -d "$self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'}";
 
-    $rs = setRights( $self->{'config'}->{'HTTPD_TMP_ROOT_DIR_NGINX'}, { user => $rootUName, group => $rootGName } );
+    $rs = setRights( $self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'}, { user => $rootUName, group => $rootGName } );
 
     for my $tmp('client_temp', 'fastcgi_temp', 'proxy_temp', 'scgi_temp', 'uwsgi_temp') {
-        next unless -d "$self->{'config'}->{'HTTPD_TMP_ROOT_DIR_NGINX'}/$tmp";
+        next unless -d "$self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'}/$tmp";
 
-        $rs = setRights( "$self->{'config'}->{'HTTPD_TMP_ROOT_DIR_NGINX'}/$tmp", {
-                user => $httpdUser, group => $httpdGroup, dirnmode => '0700', filemode => '0640', recursive => 1
-            } );
-        $rs ||= setRights( "$self->{'config'}->{'HTTPD_TMP_ROOT_DIR_NGINX'}/$tmp", {
-                user => $httpdUser, group => $rootGName, mode => '0700'
-            } );
+        $rs = setRights(
+            "$self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'}/$tmp",
+            { user => $httpdUser, group => $httpdGroup, dirnmode => '0700', filemode => '0640', recursive => 1 }
+        );
+        $rs ||= setRights(
+            "$self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'}/$tmp",
+            { user => $httpdUser, group => $rootGName, mode => '0700' }
+        );
         return $rs if $rs;
     }
 

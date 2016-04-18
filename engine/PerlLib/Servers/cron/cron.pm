@@ -29,6 +29,7 @@ use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::EventManager;
 use iMSCP::File;
+use iMSCP::Rights;
 use iMSCP::TemplateParser;
 use iMSCP::Service;
 use File::Basename;
@@ -287,12 +288,10 @@ sub setEnginePermissions
 
     return 0 unless -f "$self->{'config'}->{'CRON_D_DIR'}/imscp";
 
-    require iMSCP::Rights;
-    iMSCP::Rights->import();
-
-    setRights( "$self->{'config'}->{'CRON_D_DIR'}/imscp", {
-            user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0640'
-        } );
+    setRights(
+        "$self->{'config'}->{'CRON_D_DIR'}/imscp",
+        { user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0640' }
+    );
 }
 
 =back

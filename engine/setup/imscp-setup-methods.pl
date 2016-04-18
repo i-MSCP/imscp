@@ -1467,9 +1467,14 @@ sub setupSetPermissions
     for my $script ('set-engine-permissions.pl', 'set-gui-permissions.pl') {
         startDetail();
 
+        my @options = (
+            '--setup',
+            $script eq 'set-engine-permissions.pl' && iMSCP::Getopt->fixPermissions ? '--fix-permissions' : ''
+        );
+
         my $stderr;
         $rs = executeNoWait(
-            "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/setup/$script --setup",
+            "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/setup/$script @options",
             sub { my $str = shift; while ($$str =~ s/^(.*)\t(.*)\t(.*)\n//) { step(undef, $1, $2, $3); } },
             sub { my $str = shift; while ($$str =~ s/^(.*\n)//) { $stderr .= $1; } }
         );

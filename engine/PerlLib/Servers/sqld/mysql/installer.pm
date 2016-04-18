@@ -79,11 +79,13 @@ sub setEnginePermissions
 {
     my $self = shift;
 
-    my $rs = setRights( "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf", {
-            user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0644' }
+    my $rs = setRights(
+        "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf",
+        { user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0644' }
     );
-    $rs ||= setRights( "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf", {
-            user => $main::imscpConfig{'ROOT_USER'}, group => $self->{'config'}->{'SQLD_GROUP'}, mode => '0640' }
+    $rs ||= setRights(
+        "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf",
+        { user => $main::imscpConfig{'ROOT_USER'}, group => $self->{'config'}->{'SQLD_GROUP'}, mode => '0640' }
     );
 }
 

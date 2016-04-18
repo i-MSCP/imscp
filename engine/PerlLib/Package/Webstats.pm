@@ -287,7 +287,7 @@ sub uninstall
 
 =cut
 
-sub setEnginePermissions
+sub setEnginePermissionss
 {
     my $self = shift;
 

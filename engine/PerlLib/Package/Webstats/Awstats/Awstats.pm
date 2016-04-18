@@ -146,18 +146,23 @@ sub addDmn
     if ($main::imscpConfig{'AWSTATS_MODE'} eq '1') {
         # Static mode
         unless (-d $userStatisticsDir) {
-            $rs = iMSCP::Dir->new( dirname => $userStatisticsDir )->make( {
-                    mode => 02750, user => $main::imscpConfig{'ROOT_USER'}, group => $data->{'GROUP'}
-                } );
+            $rs = iMSCP::Dir->new( dirname => $userStatisticsDir )->make(
+                { mode => 02750, user => $main::imscpConfig{'ROOT_USER'}, group => $data->{'GROUP'} }
+            );
             return $rs if $rs;
         } else {
             require iMSCP::Rights;
             iMSCP::Rights->import();
 
-            $rs = setRights( $userStatisticsDir, {
-                    filemode => '0640', user => $main::imscpConfig{'ROOT_USER'}, group => $data->{'GROUP'}, recursive =>
-                    1
-                } );
+            $rs = setRights(
+                $userStatisticsDir,
+                {
+                    user => $main::imscpConfig{'ROOT_USER'},
+                    group => $data->{'GROUP'},
+                    filemode => '0640',
+                    recursive => 1
+                }
+            );
             return $rs if $rs;
         }
 

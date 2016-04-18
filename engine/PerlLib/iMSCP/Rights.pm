@@ -29,7 +29,7 @@ use iMSCP::Debug;
 use File::Find;
 use parent 'Exporter';
 
-our @EXPORT = qw/setRights/;
+our @EXPORT = qw/ setRights /;
 
 =head1 DESCRIPTION
 
@@ -45,14 +45,13 @@ Package providing basic utilities for filesystem (permissions handling).
 
  Param string $target Target file or directory
  Param hash \%options:
-    mode      : Set mode on the given file (operate recursively only if the recursive option is true)
-    dirmode   : Set mode on directories (recursive operation)
-    filemode  : Set mode on files (recusive operation)
-    user      : Set user on the given file (operate recursively only if the recursive option is true)
-    group     : Set group for the given file (operate recursively only if the recusive option is true)
-    recursive : Whether or not mode, owner and group operations should be processed recursively
+  mode      : Set mode on the given directory/file
+  dirmode   : Set mode on directories
+  filemode  : Set mode on files
+  user      : Set owner on the given file
+  group     : Set group for the given file
+  recursive : Whether or not operations must be processed recursively
 
-    Note: Mixe of mode and dirmode/filemode options is not allowed
  Return int 0 on success, 1 on failure
 
 =cut
@@ -62,13 +61,13 @@ sub setRights
     my ($target, $options) = @_;
 
     local $@;
-
     eval {
-        ref $options eq 'HASH' && %{$options} or die( 'Expects a HASH and at least one option' );
+        defined $target or die( '$target parameter is not defined' );
+        ref $options eq 'HASH' && %{$options} or die( '$options parameter is not defined' );
 
         if (defined $options->{'mode'} && (defined $options->{'dirmode'} || defined $options->{'filemode'})) {
-            die( 'Unallowed mixed options' );
-        }
+            die( 'mode option is not allowed when using dirmode/filemode options' )
+        };
 
         my $uid = $options->{'user'} ? getpwnam( $options->{'user'} ) : -1;
         my $gid = $options->{'group'} ? getgrnam( $options->{'group'} ) : -1;
@@ -79,34 +78,40 @@ sub setRights
         my $dirmode = defined $options->{'dirmode'} ? oct( $options->{'dirmode'} ) : undef;
         my $filemode = defined $options->{'filemode'} ? oct( $options->{'filemode'} ) : undef;
 
-        if ((($mode || $options->{'user'} || $options->{'group'}) && $options->{'recursive'}) || $dirmode || $filemode) {
+        if ($options->{'recursive'}) {
             local $SIG{__WARN__} = sub { die @_ };
-            find {
-                    wanted   => sub {
-                        if (($options->{'user'} || $options->{'group'}) && $options->{'recursive'}) {
+            find(
+                {
+                    wanted      => sub {
+                        if ($options->{'user'} || $options->{'group'}) {
                             chown $uid, $gid, $_ or die( sprintf( 'Could not set user/group on %s: %s', $_, $! ) );
                         }
 
-                        if ($mode && $options->{'recursive'}) {
+                        if ($mode) {
                             chmod $mode, $_ or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
-                        } else {
-                            if (-d && $dirmode) {
-                                chmod $dirmode, $_ or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
-                            } elsif ($filemode) {
-                                chmod $filemode, $_ or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
-                            }
+                        } elsif ($dirmode && -d) {
+                            chmod $dirmode, $_ or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
+                        } elsif ($filemode) {
+                            chmod $filemode, $_ or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
                         }
                     },
-                    no_chdir => 1
-                }, $target;
-        }
+                    follow_skip => 1,
+                    no_chdir    => 1
+                },
+                $target
+            );
+        } else {
+            if ($options->{'user'} || $options->{'group'}) {
+                chown $uid, $gid, $target or die( sprintf( 'Could not set user/group on %s: %s', $target, $! ) );
+            }
 
-        if (($options->{'user'} || $options->{'group'}) && !$options->{'recursive'}) {
-            chown $uid, $gid, $target or die( sprintf( 'Could not set user/group on %s: %s', $target, $! ) );
-        }
-
-        if ($mode && !$options->{'recursive'}) {
-            chmod $mode, $target or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
+            if ($mode) {
+                chmod $mode, $target or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
+            } elsif ($dirmode && -d $target) {
+                chmod $dirmode, $target or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
+            } elsif ($filemode) {
+                chmod $filemode, $target or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
+            }
         }
     };
 

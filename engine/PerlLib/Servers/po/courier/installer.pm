@@ -330,19 +330,24 @@ sub setEnginePermissions
     my $self = shift;
 
     my $rs = setRights(
-        $self->{'config'}->{'AUTHLIB_SOCKET_DIR'}, {
+        $self->{'config'}->{'AUTHLIB_SOCKET_DIR'},
+        {
             user  => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
             group => $self->{'config'}->{'AUTHDAEMON_GROUP'},
             mode  => '0750'
-        } );
+        }
+    );
     return $rs if $rs;
 
     if (-f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem") {
-        $rs = setRights( "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem", {
+        $rs = setRights(
+            "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem",
+            {
                 user  => $self->{'config'}->{'AUTHDAEMON_USER'},
                 group => $main::imscpConfig{'ROOT_GROUP'},
                 mode  => '0600'
-            } );
+            }
+        );
         return $rs if $rs;
     }
 

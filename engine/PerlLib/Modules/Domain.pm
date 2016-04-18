@@ -305,13 +305,13 @@ sub restore
                 error( $stderr ) if $stderr && $rs;
                 return $rs if $rs;
 
-                my $groupName =
-                    my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
-                    ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-
-                $rs = setRights( $dmnDir, { user => $userName, group => $groupName, recursive => 1 } );
-                $rs ||= $self->SUPER::restore();
-                return $rs if $rs;
+#                my $groupName =
+#                    my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
+#                    ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+#
+#                $rs = setRights( $dmnDir, { user => $userName, group => $groupName, recursive => 1 } );
+#                $rs ||= $self->SUPER::restore();
+#                return $rs if $rs;
             }
         }
     }

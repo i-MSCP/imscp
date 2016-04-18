@@ -208,12 +208,14 @@ sub setGuiPermissions
 
     my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-    my $rs = setRights( "$guiPublicDir/tools/rainloop", {
-            user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1
-        } );
-    $rs ||= setRights( "$guiPublicDir/tools/rainloop/data", {
-            user => $panelUName, group => $panelGName, dirmode => '0750', filemode => '0640', recursive => 1
-        } );
+    my $rs = setRights(
+        "$guiPublicDir/tools/rainloop",
+        { user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1 }
+    );
+    $rs ||= setRights(
+        "$guiPublicDir/tools/rainloop/data",
+        { user => $panelUName, group => $panelGName, dirmode => '0750', filemode => '0640', recursive => 1 }
+    );
 }
 
 =back

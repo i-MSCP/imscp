@@ -29,6 +29,7 @@ use iMSCP::Debug;
 use iMSCP::TemplateParser;
 use iMSCP::Dir;
 use iMSCP::File;
+use iMSCP::Rights;
 use Servers::httpd;
 use Servers::cron;
 use version;
@@ -109,9 +110,6 @@ sub install
 
 sub setEnginePermissions
 {
-    require iMSCP::Rights;
-    iMSCP::Rights->import();
-
     my $rs = setRights(
         "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_buildstaticpages.pl",
         { user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_USER'}, mode => '0700' }
@@ -120,13 +118,16 @@ sub setEnginePermissions
         "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_updateall.pl",
         { user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_USER'}, mode => '0700' }
     );
-    $rs ||= setRights( $main::imscpConfig{'AWSTATS_CACHE_DIR'}, {
+    $rs ||= setRights(
+        $main::imscpConfig{'AWSTATS_CACHE_DIR'},
+        {
             user      => $main::imscpConfig{'ROOT_USER'},
             group     => Servers::httpd->factory()->getRunningGroup(),
             dirmode   => '02750',
             filemode  => '0640',
             recursive => 1
-        } );
+        }
+    );
 }
 
 =back
