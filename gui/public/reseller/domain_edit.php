@@ -850,9 +850,8 @@ function reseller_checkAndUpdateData($domainId)
             iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditDomain, array(
                 'domainId' => $domainId
             ));
-            
-            if ($phpiniClientPerms != $phpini->getClientPermission() || $phpiniDomainConf != $phpini->getDomainIni()) {
-                $phpini->updateDomainConfigOptions($data['admin_id']);
+
+            if($phpini->updateDomainConfigOptions($data['admin_id'])) {
                 $needDaemonRequest = true;
             }
 

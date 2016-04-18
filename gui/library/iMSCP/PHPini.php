@@ -97,15 +97,11 @@ class iMSCP_PHPini
         if (null !== $resellerId) {
             $stmt = exec_query(
                 '
-                    SELECT
-                        php_ini_system, php_ini_al_disable_functions, php_ini_al_mail_function, php_ini_al_mail_function,
-                        php_ini_al_allow_url_fopen, php_ini_al_display_errors, php_ini_max_post_max_size,
-                        php_ini_max_upload_max_filesize, php_ini_max_max_execution_time, php_ini_max_max_input_time,
-                        php_ini_max_memory_limit
-                    FROM
-                        reseller_props
-                    WHERE
-                        reseller_id = ?
+                    SELECT php_ini_system, php_ini_al_disable_functions, php_ini_al_mail_function,
+                        php_ini_al_mail_function, php_ini_al_allow_url_fopen, php_ini_al_display_errors,
+                        php_ini_max_post_max_size, php_ini_max_upload_max_filesize, php_ini_max_max_execution_time,
+                        php_ini_max_max_input_time, php_ini_max_memory_limit
+                    FROM reseller_props WHERE reseller_id = ?
                 ',
                 $resellerId
             );
@@ -155,15 +151,11 @@ class iMSCP_PHPini
     {
         exec_query(
             '
-                UPDATE
-                    reseller_props
-                SET
-                    php_ini_system = ?, php_ini_al_disable_functions = ?, php_ini_al_mail_function = ?,
-                    php_ini_al_mail_function = ?, php_ini_al_allow_url_fopen = ?, php_ini_al_display_errors = ?,
-                    php_ini_max_post_max_size = ?, php_ini_max_upload_max_filesize = ?, php_ini_max_max_execution_time = ?,
-                    php_ini_max_max_input_time = ?, php_ini_max_memory_limit = ?
-                WHERE
-                    reseller_id = ?
+                UPDATE reseller_props SET php_ini_system = ?, php_ini_al_disable_functions = ?,
+                    php_ini_al_mail_function = ?, php_ini_al_mail_function = ?, php_ini_al_allow_url_fopen = ?,
+                    php_ini_al_display_errors = ?, php_ini_max_post_max_size = ?, php_ini_max_upload_max_filesize = ?,
+                    php_ini_max_max_execution_time = ?, php_ini_max_max_input_time = ?, php_ini_max_memory_limit = ?
+                WHERE reseller_id = ?
             ',
             array(
                 $this->resellerPermissions['phpiniSystem'],
@@ -299,7 +291,7 @@ class iMSCP_PHPini
             );
 
             if ($stmt->rowCount()) {
-                $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+                $row = $stmt->fetchRow();
                 $this->clientPermissions['phpiniSystem'] = $row['phpini_perm_system'];
                 $this->clientPermissions['phpiniAllowUrlFopen'] = $row['phpini_perm_allow_url_fopen'];
                 $this->clientPermissions['phpiniDisplayErrors'] = $row['phpini_perm_display_errors'];
@@ -325,19 +317,15 @@ class iMSCP_PHPini
      * Saves client PHP permissions
      *
      * @param int $clientId Client unique identifier
-     * @return void
+     * @return bool Boolean indicating whether or not a backend request is needed
      */
     public function saveClientPermissions($clientId)
     {
-        exec_query(
+        $stmt = exec_query(
             '
-                UPDATE
-                    domain
-                SET
-                    phpini_perm_system = ?, phpini_perm_allow_url_fopen = ?, phpini_perm_display_errors = ?,
-                    phpini_perm_disable_functions = ?, phpini_perm_mail_function = ?
-                WHERE
-                    domain_admin_id = ?
+                UPDATE domain SET phpini_perm_system = ?, phpini_perm_allow_url_fopen = ?,
+                    phpini_perm_display_errors = ?, phpini_perm_disable_functions = ?, phpini_perm_mail_function = ?
+                WHERE domain_admin_id = ?
             ',
             array(
                 $this->clientPermissions['phpiniSystem'], $this->clientPermissions['phpiniAllowUrlFopen'],
@@ -345,6 +333,7 @@ class iMSCP_PHPini
                 $this->clientPermissions['phpiniMailFunction'], $clientId
             )
         );
+        return (bool)$stmt->rowCount();
     }
 
     /**
@@ -467,7 +456,7 @@ class iMSCP_PHPini
             ));
 
             if ($stmt->rowCount()) {
-                $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+                $row = $stmt->fetchRow();
                 $this->domainIni['phpiniAllowUrlFopen'] = $row['allow_url_fopen'];
                 $this->domainIni['phpiniDisplayErrors'] = $row['display_errors'];
                 $this->domainIni['phpiniErrorReporting'] = $row['error_reporting'];
@@ -510,6 +499,7 @@ class iMSCP_PHPini
      * @param int $adminId Owner unique identifier
      * @param int $domainId Domain unique identifier
      * @param string $domainType Domain type (dmn|als|sub|subals)
+     * @return bool Boolean indicating whether or not a backend request is needed
      */
     public function saveDomainIni($adminId, $domainId, $domainType)
     {
@@ -524,20 +514,12 @@ class iMSCP_PHPini
         $row = $stmt->fetchRow();
 
         if ($row['cnt'] > 0) {
-            exec_query(
+            $stmt = exec_query(
                 '
-                    UPDATE
-                        php_ini
-                    SET
-                        disable_functions = ?, allow_url_fopen = ?, display_errors = ?, error_reporting = ?,
-                        post_max_size = ?, upload_max_filesize = ?, max_execution_time = ?, max_input_time = ?,
-                        memory_limit = ?
-                    WHERE
-                        admin_id = ?
-                    AND
-                        domain_id = ?
-                    AND
-                        domain_type = ?
+                    UPDATE php_ini SET disable_functions = ?, allow_url_fopen = ?, display_errors = ?,
+                        error_reporting = ?, post_max_size = ?, upload_max_filesize = ?, max_execution_time = ?,
+                        max_input_time = ?, memory_limit = ?
+                    WHERE admin_id = ? AND domain_id = ? AND domain_type = ?
                 ',
                 array(
                     $this->domainIni['phpiniDisableFunctions'], $this->domainIni['phpiniAllowUrlFopen'],
@@ -547,7 +529,7 @@ class iMSCP_PHPini
                     $this->domainIni['phpiniMemoryLimit'], $adminId, $domainId, $domainType
                 )
             );
-            return;
+            return (bool)$stmt->rowCount();
         }
 
         exec_query(
@@ -556,9 +538,7 @@ class iMSCP_PHPini
                     admin_id, domain_id, domain_type, disable_functions, allow_url_fopen, display_errors,
                     error_reporting, post_max_size, upload_max_filesize, max_execution_time, max_input_time,
                     memory_limit
-                ) VALUES (
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-                )
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ',
             array(
                 $adminId, $domainId, $domainType, $this->domainIni['phpiniDisableFunctions'],
@@ -568,6 +548,7 @@ class iMSCP_PHPini
                 $this->domainIni['phpiniMaxInputTime'], $this->domainIni['phpiniMemoryLimit']
             )
         );
+        return true;
     }
 
     /**
@@ -726,10 +707,12 @@ class iMSCP_PHPini
      *
      * @throws iMSCP_Exception_Database
      * @param int $clientId Client identifier
-     * @return void
+     * @param bool $needChange OPTIONAL whether or not client domains must be updated
+     * @return bool Boolean indicating whether or not a backend request is needed
      */
-    public function updateDomainConfigOptions($clientId)
+    public function updateDomainConfigOptions($clientId, $needChange = false)
     {
+        $needBackendRequest = false;
         $config = iMSCP_Registry::get('config');
         $confDir = $config['CONF_DIR'];
 
@@ -794,12 +777,16 @@ class iMSCP_PHPini
                     }
                 }
 
-                $this->saveDomainIni($clientId, $row['domain_id'], $row['domain_type']);
-                $this->updateDomainStatuses($configLevel, $clientId, $row['domain_id'], $row['domain_type']);
+                if ($needChange || $this->saveDomainIni($clientId, $row['domain_id'], $row['domain_type'])) {
+                    $this->updateDomainStatuses($configLevel, $clientId, $row['domain_id'], $row['domain_type']);
+                    $needBackendRequest = true;
+                }
             } catch (iMSCP_Exception_Database $e) {
                 throw $e;
             }
         }
+
+        return $needBackendRequest;
     }
 
     /**
@@ -807,10 +794,11 @@ class iMSCP_PHPini
      *
      * @param int $resellerId Reseller unique identifier
      * @throws iMSCP_Exception_Database
-     * @return void
+     * @return bool Boolean indicating whether or not a backend request is needed
      */
     public function syncClientPermissionsWithResellerPermissions($resellerId)
     {
+        $needBackendRequest = false;
         $stmt = exec_query('SELECT admin_id FROM admin WHERE created_by = ?', $resellerId);
 
         while ($row = $stmt->fetchRow()) {
@@ -839,18 +827,24 @@ class iMSCP_PHPini
                     }
                 }
 
-                $this->saveClientPermissions($row['admin_id']);
+                if ($needChange = $this->saveClientPermissions($row['admin_id'])) {
+                    $needBackendRequest = true;
+                }
 
                 // Update client domain PHP configuration options
-                $this->updateDomainConfigOptions($row['admin_id']);
+                if ($this->updateDomainConfigOptions($row['admin_id'], $needChange)) {
+                    $needBackendRequest = true;
+                }
             } catch (iMSCP_Exception_Database $e) {
                 throw $e;
             }
         }
+
+        return $needBackendRequest;
     }
 
     /**
-     * Update domain statuses and send request to i-MSCP daemon
+     * Update domain statuses
      *
      * @throws iMSCP_Exception
      * @throws iMSCP_Exception_Database

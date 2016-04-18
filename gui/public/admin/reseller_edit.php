@@ -426,9 +426,10 @@ function admin_generateForm($tpl, &$data)
 /**
  * Check and updates reseller data
  *
+ * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  * @param int $resellerId Reseller unique identifier
- * @return bool TRUE on success, FALSE otherwise
+ * @return bool
  */
 function admin_checkAndUpdateData($resellerId)
 {
@@ -584,8 +585,6 @@ function admin_checkAndUpdateData($resellerId)
 
         // Check for PHP settings
         $phpini = iMSCP_PHPini::getInstance();
-        $resellerPhpPermissions = $phpini->getResellerPermission();
-
         $phpini->setResellerPermission('phpiniSystem', $data['php_ini_system']);
 
         if ($phpini->resellerHasPermission('phpiniSystem')) {
@@ -604,12 +603,9 @@ function admin_checkAndUpdateData($resellerId)
             $phpini->loadResellerPermissions(); // Reset reseller PHP permissions to default values
         }
 
-        if (array_diff_assoc($resellerPhpPermissions, $phpini->getResellerPermission())) {
-            // A least one reseller permission has changed. We must synchronize customers permissions
-            $phpini->syncClientPermissionsWithResellerPermissions($resellerId);
+        if($phpini->syncClientPermissionsWithResellerPermissions($resellerId)) {
             $needDaemonRequest = true;
         }
-        unset($resellerPhpPermissions);
 
         if (empty($errFieldsStack) && !Zend_Session::namespaceIsset('pageMessages')) { // Update process begin here
             iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $resellerId));
@@ -635,7 +631,8 @@ function admin_checkAndUpdateData($resellerId)
             $bindParams = array(
                 $data['fname'], $data['lname'], $data['gender'], $data['firm'],
                 $data['zip'], $data['city'], $data['state'], $data['country'], $data['email'], $data['phone'],
-                $data['fax'], $data['street1'], $data['street2'], $resellerId);
+                $data['fax'], $data['street1'], $data['street2'], $resellerId
+            );
 
             if ($data['password'] != '') {
                 $setPassword = '`admin_pass` = ?,';
