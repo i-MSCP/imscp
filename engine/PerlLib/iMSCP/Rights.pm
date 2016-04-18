@@ -66,8 +66,8 @@ sub setRights
         ref $options eq 'HASH' && %{$options} or die( '$options parameter is not defined' );
 
         if (defined $options->{'mode'} && (defined $options->{'dirmode'} || defined $options->{'filemode'})) {
-            die( 'mode option is not allowed when using dirmode/filemode options' )
-        };
+            die( 'mode option is not allowed when using dirmode/filemode options' );
+        }
 
         my $uid = $options->{'user'} ? getpwnam( $options->{'user'} ) : -1;
         my $gid = $options->{'group'} ? getgrnam( $options->{'group'} ) : -1;
