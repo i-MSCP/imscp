@@ -1499,7 +1499,7 @@ sub _addFiles
         # Whether or not permissions must be fixed recursively
         my $fixPermissions = iMSCP::Getopt->fixPermissions;
 
-        # Prepar Web folder
+        # Prepare Web folder
 
         my $webDir = $data->{'WEB_DIR'};
         my $skelDir;
