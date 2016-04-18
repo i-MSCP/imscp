@@ -44,7 +44,7 @@
     </Directory>
 
     <Directory {WEB_DIR}/htdocs>
-        DirectoryIndex index.html index.cgi index.pl index.php
+        DirectoryIndex index.html index.php
 
         # SECTION php_disabled BEGIN.
         AllowOverride AuthConfig Indexes Limit Options=Indexes \
@@ -78,6 +78,7 @@
     ScriptAlias /cgi-bin/ {WEB_DIR}/cgi-bin/
 
     <Directory {WEB_DIR}/cgi-bin>
+        DirectoryIndex index.cgi index.pl
         AllowOverride AuthConfig Indexes Limit Options=Indexes
     </Directory>
     # SECTION cgi_support END.
