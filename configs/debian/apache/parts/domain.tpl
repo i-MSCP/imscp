@@ -5,7 +5,7 @@
 
     DocumentRoot {WEB_DIR}/htdocs
 
-    DirectoryIndex index.html index.php
+    DirectoryIndex index.html
 
     LogLevel error
     ErrorLog {HTTPD_LOG_DIR}/{DOMAIN_NAME}/error.log
@@ -20,6 +20,8 @@
     # SECTION suexec END.
 
     # SECTION php_enabled BEGIN.
+    DirectoryIndex index.php
+
     # SECTION php_fpm BEGIN.
     # SECTION mod_fastcgi BEGIN.
     Alias /php5-fcgi /var/lib/apache2/fastcgi/php5-fcgi-{DOMAIN_NAME}
