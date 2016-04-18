@@ -117,16 +117,16 @@ function addDomainAlias()
 
     $domainAliasName = clean_input(strtolower($_POST['domain_alias_name']));
 
+    // www is considered as an alias of the domain alias
+    while (strpos($domainAliasName, 'www.') === 0) {
+        $domainAliasName = substr($domainAliasName, 4);
+    }
+
     // Check for domain alias name syntax
     global $dmnNameValidationErrMsg;
     if (!isValidDomainName($domainAliasName)) {
         set_page_message($dmnNameValidationErrMsg, 'error');
         return false;
-    }
-
-    // www is considered as an alias of the domain alias
-    while (strpos($domainAliasName, 'www.') !== false) {
-        $domainAliasName = substr($domainAliasName, 4);
     }
 
     // Check for domain alias existence

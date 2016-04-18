@@ -149,7 +149,7 @@ function client_addSubdomain()
 
     $subLabel = clean_input((strtolower($_POST['subdomain_name'])));
 
-    if ($subLabel == 'www' || strpos($subLabel, 'www.') !== false) {
+    if ($subLabel == 'www' || strpos($subLabel, 'www.') === 0) {
         set_page_message(tr('%s is not allowed as subdomain label.', "<strong>www</strong>"), 'error');
         return false;
     }
@@ -193,7 +193,7 @@ function client_addSubdomain()
             $mountPoint = "/$subLabelAscii";
         }
     } else {
-        if (in_array($subLabelAscii, array('cgi-bin', 'phptmp'))) {
+        if ($subLabelAscii === 'cgi-bin') {
             $mountPoint = "/$domainName/sub_$subLabelAscii";
         } else {
             $mountPoint = "/$domainName/$subLabelAscii";
