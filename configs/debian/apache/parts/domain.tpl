@@ -5,6 +5,8 @@
 
     DocumentRoot {WEB_DIR}/htdocs
 
+    DirectoryIndex index.html index.php
+
     LogLevel error
     ErrorLog {HTTPD_LOG_DIR}/{DOMAIN_NAME}/error.log
 
@@ -44,8 +46,6 @@
     </Directory>
 
     <Directory {WEB_DIR}/htdocs>
-        DirectoryIndex index.html index.php
-
         # SECTION php_disabled BEGIN.
         AllowOverride AuthConfig Indexes Limit Options=Indexes \
             Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule

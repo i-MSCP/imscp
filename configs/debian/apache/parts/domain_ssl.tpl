@@ -8,6 +8,8 @@
 
     DocumentRoot {WEB_DIR}/htdocs
 
+    DirectoryIndex index.html index.php
+
     Alias /errors {HOME_DIR}/errors/
 
     # SECTION itk BEGIN.
@@ -43,8 +45,6 @@
     </Directory>
 
     <Directory {WEB_DIR}/htdocs>
-        DirectoryIndex index.html index.php
-
         # SECTION php_disabled BEGIN.
         AllowOverride AuthConfig Indexes Limit Options=Indexes \
             Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule
