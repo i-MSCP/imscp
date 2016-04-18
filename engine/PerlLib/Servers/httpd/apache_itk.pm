@@ -1660,7 +1660,7 @@ sub _addFiles
 
         if ($data->{'DOMAIN_TYPE'} eq 'dmn' && -d "$webDir/logs") {
             # Fix user/group and mode for logs directory
-            # logs vuxxx:vuxxx 0755 (no recursive)
+            # logs vuxxx:vuxxx 0750 (no recursive)
             $rs = setRights(
                 "$webDir/logs",
                 {
