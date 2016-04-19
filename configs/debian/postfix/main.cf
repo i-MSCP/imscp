@@ -1,84 +1,82 @@
-# Some common configuration parameters
+#
+## General parameters
+#
+
 inet_protocols = {MTA_INET_PROTOCOLS}
 inet_interfaces = all
 mynetworks_style = host
-
-# IPv4 source for outbound mails
 smtp_bind_address = {MTA_SMTP_BIND_ADDRESS}
-
-# IPv6 source for outbound mails
-#smtp_bind_address6 = {MTA_SMTP_BIND_ADDRESS6}
-
+smtp_bind_address6 = {MTA_SMTP_BIND_ADDRESS6}
 myhostname = {MTA_HOSTNAME}
 mydomain = {MTA_LOCAL_DOMAIN}
 myorigin = $myhostname
-
 smtpd_banner = $myhostname ESMTP i-MSCP {MTA_VERSION} Managed
-
-# Receiving messages parameters
-mydestination = $myhostname, $mydomain
 append_dot_mydomain = no
 append_at_myorigin = yes
-local_transport = local
-transport_maps = hash:{MTA_TRANSPORT_HASH}
-relay_domains = hash:{MTA_RELAY_HASH}
-alias_maps = hash:{MTA_LOCAL_ALIAS_HASH}
-alias_database = hash:{MTA_LOCAL_ALIAS_HASH}
-
-# Delivering local messages parameters
-mail_spool_directory = {MTA_LOCAL_MAIL_DIR}
-
-# Mailboxquota
-# => 0 for unlimited
-# => 104857600 for 100 MB
-mailbox_size_limit = 0
-
-# Message size limit
-# => 0 for unlimited
-# => 104857600 for 100 MB
-message_size_limit = 0
-
 biff = no
 recipient_delimiter = +
+message_size_limit = 0
 
+# Local delivery
+
+mydestination = $myhostname, $mydomain
+alias_database = hash:{MTA_LOCAL_ALIAS_HASH}
+alias_maps = hash:{MTA_LOCAL_ALIAS_HASH}
+local_transport = local
 local_destination_recipient_limit = 1
 local_recipient_maps = unix:passwd.byname $alias_database
+mail_spool_directory = {MTA_LOCAL_MAIL_DIR}
+mailbox_size_limit = 0
+relay_domains = hash:{MTA_RELAY_HASH}
+transport_maps = hash:{MTA_TRANSPORT_HASH}
 
-# i-MSCP Autoresponder parameters
-imscp-arpl_destination_recipient_limit = 1
+# Virtual delivery
 
-# Delivering virtual messages parameters
 virtual_mailbox_base = {MTA_VIRTUAL_MAIL_DIR}
 virtual_mailbox_limit = 0
-
 virtual_mailbox_domains = hash:{MTA_VIRTUAL_DMN_HASH}
 virtual_mailbox_maps = hash:{MTA_VIRTUAL_MAILBOX_HASH}
-
+virtual_alias_domains =
 virtual_alias_maps = hash:{MTA_VIRTUAL_ALIAS_HASH}
-
 virtual_minimum_uid = {MTA_MAILBOX_MIN_UID}
 virtual_uid_maps = static:{MTA_MAILBOX_UID}
 virtual_gid_maps = static:{MTA_MAILBOX_GID}
 
+#
+## SMTP restrictions
+#
+
 smtpd_helo_required = yes
 
-smtpd_helo_restrictions = permit_mynetworks,
-                          permit_sasl_authenticated,
-                          reject_invalid_helo_hostname,
-                          reject_non_fqdn_helo_hostname
+smtpd_helo_restrictions =
+ permit_mynetworks,
+ permit_sasl_authenticated,
+ reject_non_fqdn_helo_hostname,
+ reject_invalid_helo_hostname,
+ permit
 
-smtpd_sender_restrictions = reject_non_fqdn_sender,
-                            reject_unknown_sender_domain,
-                            permit_mynetworks,
-                            permit_sasl_authenticated
+smtpd_sender_restrictions =
+ permit_mynetworks,
+ permit_sasl_authenticated,
+ reject_non_fqdn_sender,
+ reject_unknown_sender_domain,
+ permit
 
-smtpd_recipient_restrictions = reject_non_fqdn_recipient,
-                               reject_unknown_recipient_domain,
-                               permit_mynetworks,
-                               permit_sasl_authenticated,
-                               reject_unauth_destination,
-                               reject_unlisted_recipient,
-                               permit
+smtpd_recipient_restrictions =
+ reject_non_fqdn_recipient,
+ reject_unknown_recipient_domain,
+ permit_mynetworks,
+ permit_sasl_authenticated,
+ reject_unauth_destination,
+ reject_unlisted_recipient,
+ permit
 
-smtpd_data_restrictions = reject_multi_recipient_bounce,
-                          reject_unauth_pipelining
+smtpd_data_restrictions =
+ reject_multi_recipient_bounce,
+ reject_unauth_pipelining
+
+#
+## Other parameters
+#
+
+imscp-arpl_destination_recipient_limit = 1
