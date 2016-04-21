@@ -68,4 +68,4 @@ $eventsManager->dispatch(iMSCP_Events::onAfterPluginsRoute, array(
     'pluginManager' => $pluginManager, 'scriptPath' => $pluginActionScriptPath
 ));
 
-require $pluginActionScriptPath;
+include $pluginActionScriptPath;
