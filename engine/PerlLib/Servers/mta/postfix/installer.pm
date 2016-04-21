@@ -107,7 +107,7 @@ sub setEnginePermissions
     # eg. /etc/postfix/imscp
     my $rs = setRights(
         $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'},
-        { user => $rootUName, group => $rootGName, dirmode => '0755', filemode => '0644', recursive => 1 }
+        { user => $rootUName, group => $rootGName, dirmode => '0750', filemode => '0640', recursive => 1 }
     );
     # eg. /var/www/imscp/engine/messenger
     $rs ||= setRights(
@@ -269,7 +269,7 @@ sub _makeDirs
             $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, # eg. /etc/postfix/imscp
             $main::imscpConfig{'ROOT_USER'},
             $main::imscpConfig{'ROOT_GROUP'},
-            0755
+            0750
         ],
         [
             $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}, # eg. /var/mail/virtual
@@ -337,7 +337,11 @@ sub _buildLookupTables
     for my $table(@lookupTables) {
         my $file = iMSCP::File->new( filename => "$self->{'lkptsDir'}/$table" );
         $rs = $file->copyFile( $self->{'wrkDir'} );
-        $rs ||= $file->copyFile( "$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}" );
+        $rs ||= $file->copyFile( "$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/$table" );
+        $rs ||= setRights(
+            "$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/$table",
+            { user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0640' }
+        );
         return $rs if $rs;
 
         $self->{'mta'}->{'postmap'}->{"$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/$table"} = 1;
@@ -380,7 +384,7 @@ sub _buildAliasesDb
     my $file = iMSCP::File->new( filename => $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'} );
     $rs = $file->set( $cfgTpl );
     $rs ||= $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'POSTFIX_GROUP'} );
     $rs ||= $file->mode( 0644 );
     return $rs if $rs;
 

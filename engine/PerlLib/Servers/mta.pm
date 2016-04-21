@@ -73,6 +73,7 @@ sub can
 
 END
     {
+        return if defined $main::execmode && $main::execmode eq 'setup';
         my $rs = $?;
 
         if ($Servers::mta::instance->{'restart'}) {

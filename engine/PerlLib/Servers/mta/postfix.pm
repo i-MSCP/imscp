@@ -308,7 +308,7 @@ sub disableDmn
     $rs = $file->set( $content );
     $rs ||= $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0644 );
+    $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( $prodDomainsHashFile );
     return $rs if $rs;
 
@@ -337,8 +337,9 @@ sub deleteDmn
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDelDmn', $data );
     $rs ||= $self->disableDmn( $data );
-    $rs ||= iMSCP::Dir->new( dirname =>
-        "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}" )->remove();
+    $rs ||= iMSCP::Dir->new(
+        dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}"
+    )->remove();
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaDelDmn', $data );
 }
 
@@ -664,7 +665,7 @@ sub _addToRelayHash
     $rs = $file->set( $content );
     $rs ||= $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0644 );
+    $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( $prodRelayHashFile );
     return $rs if $rs;
 
@@ -705,7 +706,7 @@ sub _deleteFromRelayHash
     $rs = $file->set( $content );
     $rs ||= $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0644 );
+    $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( $prodRelayHashFile );
     return $rs if $rs;
 
@@ -746,7 +747,7 @@ sub _addToDomainsHash
     $rs = $file->set( $content );
     $rs ||= $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0644 );
+    $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( $prodDomainsHashFile );
     return $rs if $rs;
 
@@ -796,7 +797,7 @@ sub _addMailBox
     $rs = $file->set( $content );
     $rs ||= $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0644 );
+    $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( $prodMailboxesFileHash );
     return $rs if $rs;
 
@@ -858,7 +859,7 @@ sub _disableMailBox
     $rs ||= $file->set( $content );
     $rs ||= $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0644 );
+    $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( $prodMailboxesFileHash );
     return $rs if $rs;
 
@@ -935,7 +936,7 @@ sub _addMailForward
     $rs = $file->set( $content );
     $rs ||= $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0644 );
+    $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( $prodAliasesFileHash );
     return $rs if $rs;
 
@@ -990,7 +991,7 @@ sub _deleteMailForward
     $rs = $file->set( $content );
     $rs ||= $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0644 );
+    $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( $prodAliasesFileHash );
     return $rs if $rs;
 
@@ -1032,7 +1033,7 @@ sub _addAutoRspnd
     $rs = $file->set( $content );
     $rs ||= $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0644 );
+    $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( $prodTransportFileHash );
     return $rs if $rs;
 
@@ -1074,7 +1075,7 @@ sub _deleteAutoRspnd
     $rs = $file->set( $content );
     $rs ||= $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0644 );
+    $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( $prodTransportFileHash );
     return $rs if $rs;
 
@@ -1124,7 +1125,7 @@ sub _addCatchAll
     $rs = $file->set( $content );
     $rs ||= $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0644 );
+    $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( $prodAliasesFileHash );
     return $rs if $rs;
 
@@ -1171,7 +1172,7 @@ sub _deleteCatchAll
     $rs = $file->set( $content );
     $rs ||= $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0644 );
+    $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( $prodAliasesFileHash );
     return $rs if $rs;
 
