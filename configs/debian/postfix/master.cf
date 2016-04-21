@@ -57,21 +57,6 @@ scache    unix  -       -       -       -       1       scache
 # and other message envelope options.
 # ====================================================================
 #
-# See the Postfix UUCP_README file for configuration details.
-#
-uucp      unix  -       n       n       -       -       pipe
-  flags=Fqhu user=uucp argv=uux -r -n -z -a$sender - $nexthop!rmail ($recipient)
-#
-# Other external delivery methods.
-#
-ifmail    unix  -       n       n       -       -       pipe
-  flags=F user=ftn argv=/usr/lib/ifmail/ifmail -r $nexthop ($recipient)
-bsmtp     unix  -       n       n       -       -       pipe
-  flags=Fq. user=bsmtp argv=/usr/lib/bsmtp/bsmtp -t$nexthop -f$sender $recipient
-scalemail-backend unix	-	n	n	-	2	pipe
-  flags=R user=scalemail argv=/usr/lib/scalemail/bin/scalemail-store ${nexthop} ${user} ${extension}
-mailman   unix  -       n       n       -       -       pipe
-  flags=FR user=list argv=/usr/lib/mailman/bin/postfix-to-mailman.py ${nexthop} ${user}
 
 # i-MSCP autoresponder
 imscp-arpl unix  -      n       n       -       -       pipe
