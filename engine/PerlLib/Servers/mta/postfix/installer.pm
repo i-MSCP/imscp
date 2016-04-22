@@ -84,6 +84,7 @@ sub install
     $rs ||= $self->_buildLookupTables();
     $rs ||= $self->_buildAliasesDb();
     $rs ||= $self->_saveConf();
+    $rs ||= $self->_oldEngineCompatibility();
 }
 
 =item setEnginePermissions()
@@ -104,8 +105,20 @@ sub setEnginePermissions
     my $mtaUName = $self->{'config'}->{'MTA_MAILBOX_UID_NAME'};
     my $mtaGName = $self->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
-    # eg. /etc/postfix/imscp
+    # eg. /etc/postfix/main.cf
     my $rs = setRights(
+        $self->{'config'}->{'POSTFIX_CONF_FILE'}, { user => $rootUName, group => $rootGName, mode => '0644' }
+    );
+    # eg. /etc/postfix/master.cf
+    $rs ||= setRights(
+        $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}, { user => $rootUName, group => $rootGName, mode => '0644' }
+    );
+    # eg. /etc/aliases
+    $rs ||= setRights(
+        $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'}, { user => $rootUName, group => $rootGName, mode => '0644' }
+    );
+    # eg. /etc/postfix/imscp
+    $rs ||= setRights(
         $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'},
         { user => $rootUName, group => $rootGName, dirmode => '0750', filemode => '0640', recursive => 1 }
     );
@@ -123,10 +136,10 @@ sub setEnginePermissions
     $rs ||= setRights(
         $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
         {
-            user => $mtaUName,
-            group => $mtaGName,
-            dirmode => '0750',
-            filemode => '0640',
+            user      => $mtaUName,
+            group     => $mtaGName,
+            dirmode   => '0750',
+            filemode  => '0640',
             recursive => iMSCP::Getopt->fixPermissions
         }
     );
@@ -159,7 +172,6 @@ sub _init
     );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-    $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'lkptsDir'} = "$self->{'cfgDir'}/imscp";
     $self->{'config'} = $self->{'mta'}->{'config'};
 
@@ -289,9 +301,14 @@ sub _makeDirs
     return $rs if $rs;
 
     for my $dir(@directories) {
-        $rs = iMSCP::Dir->new( dirname => $dir->[0] )->make( {
-                user => $dir->[1], group => $dir->[2], mode => $dir->[3]
-            } );
+        $rs = iMSCP::Dir->new( dirname => $dir->[0] )->make(
+            {
+                user => $dir->[1],
+                group => $dir->[2],
+                mode => $dir->[3],
+                fixpermissions => iMSCP::Getopt->fixPermissions
+            }
+        );
         return $rs if $rs;
     }
 
@@ -336,12 +353,7 @@ sub _buildLookupTables
 
     for my $table(@lookupTables) {
         my $file = iMSCP::File->new( filename => "$self->{'lkptsDir'}/$table" );
-        $rs = $file->copyFile( $self->{'wrkDir'} );
         $rs ||= $file->copyFile( "$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/$table" );
-        $rs ||= setRights(
-            "$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/$table",
-            { user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0640' }
-        );
         return $rs if $rs;
 
         $self->{'mta'}->{'postmap'}->{"$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/$table"} = 1;
@@ -384,8 +396,6 @@ sub _buildAliasesDb
     my $file = iMSCP::File->new( filename => $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'} );
     $rs = $file->set( $cfgTpl );
     $rs ||= $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'POSTFIX_GROUP'} );
-    $rs ||= $file->mode( 0644 );
     return $rs if $rs;
 
     $rs = execute( 'newaliases', \my $stdout, \my $stderr );
@@ -539,12 +549,9 @@ EOF
     $rs = $self->{'eventManager'}->trigger( 'afterMtaBuildMainCfFile', \$cfgTpl, 'main.cf' );
     return $rs if $rs;
 
-    my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/main.cf" );
+    my $file = iMSCP::File->new( filename => $self->{'config'}->{'POSTFIX_CONF_FILE'} );
     $rs ||= $file->set( $cfgTpl );
     $rs ||= $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0644 );
-    $rs ||= $file->copyFile( $self->{'config'}->{'POSTFIX_CONF_FILE'} );
 }
 
 =item _buildMasterCfFile()
@@ -587,12 +594,26 @@ sub _buildMasterCfFile
     $rs = $self->{'eventManager'}->trigger( 'afterMtaBuildMasterCfFile', \$cfgTpl, 'master.cf' );
     return $rs if $rs;
 
-    my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/master.cf" );
+    my $file = iMSCP::File->new( filename => $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'} );
     $rs ||= $file->set( $cfgTpl );
     $rs ||= $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0644 );
-    $rs ||= $file->copyFile( $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'} );
+}
+
+=item _oldEngineCompatibility()
+
+ Remove old files
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _oldEngineCompatibility
+{
+    my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaOldEngineCompatibility' );
+    $rs ||= iMSCP::Dir->new( dirname => "$self->{'cfgDir'}/working" )->remove();
+    $rs ||= $self->{'eventManager'}->trigger( 'afterMtadOldEngineCompatibility' );
 }
 
 =back

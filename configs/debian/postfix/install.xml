@@ -3,7 +3,6 @@
     <folders>${SYSTEM_CONF}/postfix</folders>
     <folders>${SYSTEM_CONF}/postfix/backup</folders>
     <folders>${SYSTEM_CONF}/postfix/parts</folders>
-    <folders>${SYSTEM_CONF}/postfix/working</folders>
     <copy_config>${SYSTEM_CONF}/postfix/main.cf</copy_config>
     <copy_config>${SYSTEM_CONF}/postfix/postfix.data</copy_config>
     <copy_config>${SYSTEM_CONF}/postfix/master.cf</copy_config>

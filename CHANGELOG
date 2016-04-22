@@ -8,6 +8,7 @@ BACKEND
     Added: beforeMountLogsFolder, afterMountLogsFolder, beforeUnmountLogsFolder and afterUmountMountLogsFolder events
     Added: Caller info for __DIE__ and __WARN__ signal handlers
     Added: Debug info for loading of listener files (Event::Manager)
+    Added: 'fixpermissions' option for the iMSCP::Dir::make() method
     Added: iMSCP::Database::mysql::useDatabase() method - Allow to select database on which we want operate on
     Added: i-MSCP (imscp) master system user (homedir is /var/local/imscp)
     Added: iMSCP::OpenSSL::getCertificateExpiryTime() method - Allow to get SSL certificate expiry time (UNIX timestamp)
@@ -40,6 +41,7 @@ CONFIG
     Fixed: Allow access to .well-known folder in any case if exists (Apache2)
     Removed: Redundant MYSQL_PREFIX_TYPE parameter
     Removed: VARIABLE_DATA_DIR parameter
+    Removed: i-MSCP intermediate working files, including working directory (Postfix)
 
 CONTRIB
     Added: PhpMyAdmin/10_phpmyadmin_conffile.pl listener file (Allows to override default configuration template file)

@@ -203,7 +203,6 @@ sub make
     $options = { } unless defined $options && ref $options eq 'HASH';
 
     defined $self->{'dirname'} or die( "Attribut 'dirname' is not defined" );
-    !-f $self->{'dirname'} or die( sprintf( 'Could not create %s: Already exists as file.', $self->{'dirname'} ) );
 
     unless (-d $self->{'dirname'}) {
         debug( $self->{'dirname'} );
@@ -221,26 +220,24 @@ sub make
         }
 
         for my $dir(@createdDirs) {
-            if (defined $options->{'mode'}) {
-                $self->mode( $options->{'mode'}, $dir );
-            }
-
             if (defined $options->{'user'} || defined $options->{'group'}) {
                 $self->owner( $options->{'user'} // -1, $options->{'group'} // -1, $dir );
             }
+
+            $self->mode( $options->{'mode'}, $dir ) if defined $options->{'mode'};
         }
         return 0;
     }
 
-    debug( sprintf( '%s already exists. Setting its permissions...', $self->{'dirname'} ) );
+    return 0 unless $options->{'fixpermissions'};
 
-    if (defined $options->{'mode'}) {
-        $self->mode( $options->{'mode'} );
-    }
+    debug( sprintf( '%s already exists. Setting its permissions...', $self->{'dirname'} ) );
 
     if (defined $options->{'user'} || defined $options->{'group'}) {
         $self->owner( $options->{'user'} // -1, $options->{'group'} // -1, $self->{'dirname'} );
     }
+
+    $self->mode( $options->{'mode'} ) if defined $options->{'mode'};
 
     0;
 }

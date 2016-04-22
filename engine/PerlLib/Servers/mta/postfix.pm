@@ -25,14 +25,15 @@ package Servers::mta::postfix;
 
 use strict;
 use warnings;
+use File::Basename;
 use iMSCP::Debug;
-use iMSCP::EventManager;
+use iMSCP::Dir;
 use iMSCP::Config;
+use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
-use iMSCP::Dir;
+use iMSCP::Getopt;
 use iMSCP::Service;
-use File::Basename;
 use Tie::File;
 use Scalar::Defer;
 use Class::Autouse qw/Servers::mta::postfix::installer Servers::mta::postfix::uninstaller/;
@@ -291,14 +292,10 @@ sub disableDmn
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDisableDmn', $data );
     return $rs if $rs;
 
-    my $domainsHashFile = fileparse( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'} );
-    my $wrkDomainsHashFile = "$self->{'wrkDir'}/$domainsHashFile";
-    my $prodDomainsHashFile = $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'};
-
-    my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/domains" );
+    my $file = iMSCP::File->new( filename => $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'} );
     my $content = $file->get();
     unless (defined $content) {
-        error( "Could not read $wrkDomainsHashFile" );
+        error( sprintf( 'Could not read %s file', $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'} ) );
         return 1;
     }
 
@@ -307,12 +304,9 @@ sub disableDmn
 
     $rs = $file->set( $content );
     $rs ||= $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0640 );
-    $rs ||= $file->copyFile( $prodDomainsHashFile );
     return $rs if $rs;
 
-    $self->{'postmap'}->{$prodDomainsHashFile} = 1;
+    $self->{'postmap'}->{$self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}} = 1;
 
     if ($data->{'DOMAIN_TYPE'} eq 'Dmn') {
         $rs = $self->_deleteFromRelayHash( $data );
@@ -616,7 +610,6 @@ sub _init
         'postfix' ) and fatal( 'postfix - beforeMtaInit has failed' );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-    $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'commentChar'} = '#';
     $self->{'config'} = lazy {
             tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/postfix.data";
@@ -643,14 +636,10 @@ sub _addToRelayHash
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddToRelayHash', $data );
     return $rs if $rs;
 
-    my $relayHashFile = fileparse( $self->{'config'}->{'MTA_RELAY_HASH'} );
-    my $wrkRelayHashFile = "$self->{'wrkDir'}/$relayHashFile";
-    my $prodRelayHashFile = $self->{'config'}->{'MTA_RELAY_HASH'};
-
-    my $file = iMSCP::File->new( filename => $wrkRelayHashFile );
+    my $file = iMSCP::File->new( filename => $self->{'config'}->{'MTA_RELAY_HASH'} );
     my $content = $file->get();
     unless (defined $content) {
-        error( "Could not read $wrkRelayHashFile" );
+        error( sprintf( 'Could not read %s file', $self->{'config'}->{'MTA_RELAY_HASH'} ) );
         return 1;
     }
 
@@ -664,12 +653,9 @@ sub _addToRelayHash
 
     $rs = $file->set( $content );
     $rs ||= $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0640 );
-    $rs ||= $file->copyFile( $prodRelayHashFile );
     return $rs if $rs;
 
-    $self->{'postmap'}->{$prodRelayHashFile} = 1;
+    $self->{'postmap'}->{$self->{'config'}->{'MTA_RELAY_HASH'}} = 1;
     $self->{'eventManager'}->trigger( 'afterMtaAddToRelayHash', $data );
 }
 
@@ -689,14 +675,10 @@ sub _deleteFromRelayHash
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDelFromRelayHash', $data );
     return $rs if $rs;
 
-    my $relayHashFile = fileparse( $self->{'config'}->{'MTA_RELAY_HASH'} );
-    my $wrkRelayHashFile = "$self->{'wrkDir'}/$relayHashFile";
-    my $prodRelayHashFile = $self->{'config'}->{'MTA_RELAY_HASH'};
-
-    my $file = iMSCP::File->new( filename => $wrkRelayHashFile );
+    my $file = iMSCP::File->new( filename => $self->{'config'}->{'MTA_RELAY_HASH'} );
     my $content = $file->get();
     unless (defined $content) {
-        error( "Could not read $wrkRelayHashFile" );
+        error( sprintf( 'Could not read %s file', $self->{'config'}->{'MTA_RELAY_HASH'} ) );
         return 1;
     }
 
@@ -705,12 +687,9 @@ sub _deleteFromRelayHash
 
     $rs = $file->set( $content );
     $rs ||= $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0640 );
-    $rs ||= $file->copyFile( $prodRelayHashFile );
     return $rs if $rs;
 
-    $self->{'postmap'}->{$prodRelayHashFile} = 1;
+    $self->{'postmap'}->{$self->{'config'}->{'MTA_RELAY_HASH'}} = 1;
     $self->{'eventManager'}->trigger( 'afterMtaDelFromRelayHash', $data );
 }
 
@@ -730,14 +709,10 @@ sub _addToDomainsHash
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddToDomainsHash', $data );
     return $rs if $rs;
 
-    my $domainsHashFile = fileparse( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'} );
-    my $wrkDomainsHashFile = "$self->{'wrkDir'}/$domainsHashFile";
-    my $prodDomainsHashFile = $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'};
-
-    my $file = iMSCP::File->new( filename => $wrkDomainsHashFile );
+    my $file = iMSCP::File->new( filename => $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'} );
     my $content = $file->get();
     unless (defined $content) {
-        error( "Could not read $wrkDomainsHashFile" );
+        error( sprintf( 'Could not read %s file', $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'} ) );
         return 1;
     }
 
@@ -746,18 +721,18 @@ sub _addToDomainsHash
 
     $rs = $file->set( $content );
     $rs ||= $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0640 );
-    $rs ||= $file->copyFile( $prodDomainsHashFile );
     return $rs if $rs;
 
-    $self->{'postmap'}->{$prodDomainsHashFile} = 1;
+    $self->{'postmap'}->{$self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}} = 1;
 
-    $rs = iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}" )->make( {
+    $rs = iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}" )->make(
+        {
             user  => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
             group => $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
-            mode  => 0750
-        } );
+            mode  => 0750,
+            fixpermissions => iMSCP::Getopt->fixPermissions
+        }
+    );
     return $rs if $rs;
 
     $self->{'eventManager'}->trigger( 'afterMtaAddToDomainsHash', $data );
@@ -779,14 +754,10 @@ sub _addMailBox
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddMailbox', $data );
     return $rs if $rs;
 
-    my $mailboxesFileHash = fileparse( $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'} );
-    my $wrkMailboxesFileHash = "$self->{'wrkDir'}/$mailboxesFileHash";
-    my $prodMailboxesFileHash = $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'};
-
-    my $file = iMSCP::File->new( filename => $wrkMailboxesFileHash );
+    my $file = iMSCP::File->new( filename => $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'} );
     my $content = $file->get();
     unless (defined $content) {
-        error( "Could not read $wrkMailboxesFileHash" );
+        error( sprintf( 'Could not read %s file', $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'} ) );
         return 1;
     }
 
@@ -796,30 +767,35 @@ sub _addMailBox
 
     $rs = $file->set( $content );
     $rs ||= $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0640 );
-    $rs ||= $file->copyFile( $prodMailboxesFileHash );
     return $rs if $rs;
 
-    $self->{'postmap'}->{$prodMailboxesFileHash} = 1;
+    $self->{'postmap'}->{$self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'}} = 1;
 
     my $mailDir = "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
     my $mailUidName = $self->{'config'}->{'MTA_MAILBOX_UID_NAME'};
     my $mailGidName = $self->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
     # Creating maildir directory or only set its permissions if already exists
-    $rs = iMSCP::Dir->new( dirname => $mailDir )->make( {
+    $rs = iMSCP::Dir->new( dirname => $mailDir )->make(
+        {
             user  => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
             group => $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
-            mode  => 0750
-        } );
+            mode  => 0750,
+            fixpermissions => iMSCP::Getopt->fixPermissions
+        }
+    );
     return $rs if $rs;
 
     # Creating maildir sub folders (cur, new, tmp) or only set there permissions if they already exists
     for my $dir('cur', 'new', 'tmp') {
-        $rs = iMSCP::Dir->new( dirname => "$mailDir/$dir" )->make( {
-                user => $mailUidName, group => $mailGidName, mode => 0750
-            } );
+        $rs = iMSCP::Dir->new( dirname => "$mailDir/$dir" )->make(
+            {
+                user => $mailUidName,
+                group => $mailGidName,
+                mode => 0750,
+                fixpermissions => iMSCP::Getopt->fixPermissions
+            }
+        );
         return $rs if $rs;
     }
 
@@ -842,14 +818,10 @@ sub _disableMailBox
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDisableMailbox', $data );
     return $rs if $rs;
 
-    my $mailboxesFileHash = fileparse( $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'} );
-    my $wrkMailboxesFileHash = "$self->{'wrkDir'}/$mailboxesFileHash";
-    my $prodMailboxesFileHash = $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'};
-
-    my $file = iMSCP::File->new( filename => $wrkMailboxesFileHash );
+    my $file = iMSCP::File->new( filename => $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'} );
     my $content = $file->get();
     unless (defined $content) {
-        error( "Could not read $wrkMailboxesFileHash" );
+        error( sprintf( 'Could not read %s file', $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'} ) );
         return 1;
     }
 
@@ -858,12 +830,9 @@ sub _disableMailBox
 
     $rs ||= $file->set( $content );
     $rs ||= $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0640 );
-    $rs ||= $file->copyFile( $prodMailboxesFileHash );
     return $rs if $rs;
 
-    $self->{'postmap'}->{$prodMailboxesFileHash} = 1;
+    $self->{'postmap'}->{$self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'}} = 1;
     $self->{'eventManager'}->trigger( 'afterMtaDisableMailbox', $data );
 }
 
@@ -883,7 +852,7 @@ sub _deleteMailBox
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDelMailbox', $data );
     $rs ||= $self->_disableMailBox( $data );
 
-    return $rs if !$data->{'MAIL_ACC'};
+    return $rs unless $data->{'MAIL_ACC'};
 
     my $mailDir = "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
     $rs = iMSCP::Dir->new( dirname => $mailDir )->remove();
@@ -906,14 +875,10 @@ sub _addMailForward
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddMailForward', $data );
     return $rs if $rs;
 
-    my $aliasesFileHash = fileparse( $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'} );
-    my $wrkAliasesFileHash = "$self->{'wrkDir'}/$aliasesFileHash";
-    my $prodAliasesFileHash = $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'};
-
-    my $file = iMSCP::File->new( filename => $wrkAliasesFileHash );
+    my $file = iMSCP::File->new( filename => $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'} );
     my $content = $file->get();
     unless (defined $content) {
-        error( "Could not read $wrkAliasesFileHash" );
+        error( sprintf( 'Could not read %s file', $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'} ) );
         return 1;
     }
 
@@ -924,10 +889,8 @@ sub _addMailForward
 
     # For a normal+foward mail account, we must add the recipient as address to keep local copy of any forwarded mail
     push( @line, $data->{'MAIL_ADDR'} ) if $data->{'MAIL_TYPE'} =~ /_mail/;
-
     # Add address(s) to which mail will be forwarded
     push( @line, $data->{'MAIL_FORWARD'} );
-
     # If the auto-responder is activated, we must add an address such as user@imscp-arpl.domain.tld
     push( @line, "$data->{'MAIL_ACC'}\@imscp-arpl.$data->{'DOMAIN_NAME'}" ) if $data->{'MAIL_AUTO_RSPND'};
 
@@ -935,12 +898,9 @@ sub _addMailForward
 
     $rs = $file->set( $content );
     $rs ||= $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0640 );
-    $rs ||= $file->copyFile( $prodAliasesFileHash );
     return $rs if $rs;
 
-    $self->{'postmap'}->{$prodAliasesFileHash} = 1;
+    $self->{'postmap'}->{$self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}} = 1;
     $self->{'eventManager'}->trigger( 'afterMtaAddMailForward', $data );
 }
 
@@ -960,14 +920,10 @@ sub _deleteMailForward
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDelMailForward', $data );
     return $rs if $rs;
 
-    my $aliasesFileHash = fileparse( $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'} );
-    my $wrkAliasesFileHash = "$self->{'wrkDir'}/$aliasesFileHash";
-    my $prodAliasesFileHash = $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'};
-
-    my $file = iMSCP::File->new( filename => $wrkAliasesFileHash );
+    my $file = iMSCP::File->new( filename => $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'} );
     my $content = $file->get();
     unless (defined $content) {
-        error( "Could not read $wrkAliasesFileHash" );
+        error( sprintf( 'Could not read %s file', $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'} ) );
         return 1;
     }
 
@@ -977,10 +933,8 @@ sub _deleteMailForward
     # Handle normal mail accounts entries for which auto-responder is active
     if ($data->{'MAIL_STATUS'} ne 'todelete') {
         my @line;
-
         # If auto-responder is activated, we must add the recipient as address to keep local copy of any forwarded mail
         push( @line, $data->{'MAIL_ADDR'} ) if $data->{'MAIL_AUTO_RSPND'} && $data->{'MAIL_TYPE'} =~ /_mail/;
-
         # If auto-responder is activated, we need an address such as user@imscp-arpl.domain.tld
         push( @line, "$data->{'MAIL_ACC'}\@imscp-arpl.$data->{'DOMAIN_NAME'}" )
             if $data->{'MAIL_AUTO_RSPND'} && $data->{'MAIL_TYPE'} =~ /_mail/;
@@ -990,12 +944,9 @@ sub _deleteMailForward
 
     $rs = $file->set( $content );
     $rs ||= $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0640 );
-    $rs ||= $file->copyFile( $prodAliasesFileHash );
     return $rs if $rs;
 
-    $self->{'postmap'}->{$prodAliasesFileHash} = 1;
+    $self->{'postmap'}->{$self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}} = 1;
     $self->{'eventManager'}->trigger( 'afterMtaDelMailForward', $data );
 }
 
@@ -1015,14 +966,10 @@ sub _addAutoRspnd
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddAutoRspnd', $data );
     return $rs if $rs;
 
-    my $transportFileHash = fileparse( $self->{'config'}->{'MTA_TRANSPORT_HASH'} );
-    my $wrkTransportFileHash = "$self->{'wrkDir'}/$transportFileHash";
-    my $prodTransportFileHash = $self->{'config'}->{'MTA_TRANSPORT_HASH'};
-
-    my $file = iMSCP::File->new( filename => $wrkTransportFileHash );
+    my $file = iMSCP::File->new( filename => $self->{'config'}->{'MTA_TRANSPORT_HASH'} );
     my $content = $file->get();
     unless (defined $content) {
-        error( "Could not read $wrkTransportFileHash" );
+        error( sprintf( 'Could not read %s file', $self->{'config'}->{'MTA_TRANSPORT_HASH'} ) );
         return 1;
     }
 
@@ -1032,12 +979,9 @@ sub _addAutoRspnd
 
     $rs = $file->set( $content );
     $rs ||= $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0640 );
-    $rs ||= $file->copyFile( $prodTransportFileHash );
     return $rs if $rs;
 
-    $self->{'postmap'}->{$prodTransportFileHash} = 1;
+    $self->{'postmap'}->{$self->{'config'}->{'MTA_TRANSPORT_HASH'}} = 1;
     $self->{'eventManager'}->trigger( 'afterMtaAddAutoRspnd', $data );
 }
 
@@ -1057,29 +1001,21 @@ sub _deleteAutoRspnd
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDelAutoRspnd', $data );
     return $rs if $rs;
 
-    my $transportFileHash = fileparse( $self->{'config'}->{'MTA_TRANSPORT_HASH'} );
-    my $wrkTransportFileHash = "$self->{'wrkDir'}/$transportFileHash";
-    my $prodTransportFileHash = $self->{'config'}->{'MTA_TRANSPORT_HASH'};
-
-    my $file = iMSCP::File->new( filename => $wrkTransportFileHash );
+    my $file = iMSCP::File->new( filename => $self->{'config'}->{'MTA_TRANSPORT_HASH'} );
     my $content = $file->get();
     unless (defined $content) {
-        error( "Could not read $wrkTransportFileHash" );
+        error( sprintf( 'Could not read %s file', $self->{'config'}->{'MTA_TRANSPORT_HASH'} ) );
         return 1;
     }
 
     my $transportEntry = quotemeta( "imscp-arpl.$data->{'DOMAIN_NAME'}" );
-
     $content =~ s/^$transportEntry\s+[^\n]*\n//gmi;
 
     $rs = $file->set( $content );
     $rs ||= $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0640 );
-    $rs ||= $file->copyFile( $prodTransportFileHash );
     return $rs if $rs;
 
-    $self->{'postmap'}->{$prodTransportFileHash} = 1;
+    $self->{'postmap'}->{$self->{'config'}->{'MTA_TRANSPORT_HASH'}} = 1;
     $self->{'eventManager'}->trigger( 'afterMtaDelAutoRspnd', $data );
 }
 
@@ -1099,14 +1035,10 @@ sub _addCatchAll
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddCatchAll', $data );
     return $rs if $rs;
 
-    my $aliasesFileHash = fileparse( $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'} );
-    my $wrkAliasesFileHash = "$self->{'wrkDir'}/$aliasesFileHash";
-    my $prodAliasesFileHash = $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'};
-
-    my $file = iMSCP::File->new( filename => $wrkAliasesFileHash );
+    my $file = iMSCP::File->new( filename => $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'} );
     my $content = $file->get();
     unless (defined $content) {
-        error( "Could not read $wrkAliasesFileHash" );
+        error( sprintf( 'Could not read %s file', $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'} ) );
         return 1;
     }
 
@@ -1124,12 +1056,9 @@ sub _addCatchAll
 
     $rs = $file->set( $content );
     $rs ||= $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0640 );
-    $rs ||= $file->copyFile( $prodAliasesFileHash );
     return $rs if $rs;
 
-    $self->{'postmap'}->{$prodAliasesFileHash} = 1;
+    $self->{'postmap'}->{$self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}} = 1;
     $self->{'eventManager'}->trigger( 'afterMtaAddCatchAll', $data );
 }
 
@@ -1149,14 +1078,10 @@ sub _deleteCatchAll
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDelCatchAll', $data );
     return $rs if $rs;
 
-    my $aliasesFileHash = fileparse( $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'} );
-    my $wrkAliasesFileHash = "$self->{'wrkDir'}/$aliasesFileHash";
-    my $prodAliasesFileHash = $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'};
-
-    my $file = iMSCP::File->new( filename => $wrkAliasesFileHash );
+    my $file = iMSCP::File->new( filename => $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'} );
     my $content = $file->get();
     unless (defined $content) {
-        error( "Could not read $wrkAliasesFileHash" );
+        error( sprintf( 'Could not read %s file', $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'} ) );
         return 1;
     }
 
@@ -1166,17 +1091,13 @@ sub _deleteCatchAll
     }
 
     my $catchAll = quotemeta( "\@$data->{'DOMAIN_NAME'}" );
-
     $content =~ s/^$catchAll\s+[^\n]*\n//gim;
 
     $rs = $file->set( $content );
     $rs ||= $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0640 );
-    $rs ||= $file->copyFile( $prodAliasesFileHash );
     return $rs if $rs;
 
-    $self->{'postmap'}->{$prodAliasesFileHash} = 1;
+    $self->{'postmap'}->{$self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}} = 1;
     $self->{'eventManager'}->trigger( 'afterMtaDelCatchAll', $data );
 }
 

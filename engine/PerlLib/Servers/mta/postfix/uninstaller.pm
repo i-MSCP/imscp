@@ -19,12 +19,11 @@ package Servers::mta::postfix::uninstaller;
 
 use strict;
 use warnings;
+use File::Basename;
 use iMSCP::Debug;
+use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::File;
-use File::Basename;
-use iMSCP::File;
-use iMSCP::Dir;
 use iMSCP::SystemUser;
 use Servers::mta::postfix;
 use parent 'Common::SingletonClass';
@@ -36,7 +35,6 @@ sub _init
     $self->{'mta'} = Servers::mta::postfix->getInstance();
     $self->{'cfgDir'} = $self->{'mta'}->{'cfgDir'};
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-    $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
     $self->{'config'} = $self->{'mta'}->{'config'};
     $self;
@@ -75,7 +73,7 @@ sub _buildAliasses
 {
     my $self = shift;
 
-    my $rs = execute( "newaliases", \my $stdout, \my $stderr );
+    my $rs = execute( 'newaliases', \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs;
     error( "Error while executing newaliases command" ) if !$stderr && $rs;
@@ -88,7 +86,6 @@ sub _restoreConfFile
 
     for my $file($self->{'config'}->{'POSTFIX_CONF_FILE'}, $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}) {
         my $filename = fileparse( $file );
-
         if (-f "$self->{'bkpDir'}/$filename.system") {
             my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile( $file );
             return $rs if $rs;
