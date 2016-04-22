@@ -109,8 +109,8 @@
 		});
 
 		$(document).
-			ajaxStart(function () { $dataTable.fnProcessingIndicator(); });
-			ajaxStop(function () { $dataTable.fnProcessingIndicator(false); });
+			ajaxStart(function () { $dataTable.fnProcessingIndicator(); }).
+			ajaxStop(function () { $dataTable.fnProcessingIndicator(false); }).
 			ajaxError(function (e, jqXHR, settings, exception) {
 				if(jqXHR.status == 403) {
 					window.location.replace("/index.php");
