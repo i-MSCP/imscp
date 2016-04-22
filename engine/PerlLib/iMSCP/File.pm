@@ -256,7 +256,7 @@ sub owner
     0;
 }
 
-=item copyFile($dest, [\%options = { 'preserve' => 'yes' }])
+=item copyFile( $dest [, \%options = { 'preserve' => 'yes' } ] )
 
  Copy file to the given destination
 
@@ -286,7 +286,7 @@ sub copyFile
 
     $dest .= '/'.basename( $self->{'filename'} ) if -d $dest;
 
-    return 0 unless !defined $options->{'preserve'} || lc( $options->{'preserve'} ) ne 'no';
+    return 0 unless !defined $options->{'preserve'} || $options->{'preserve'} ne 'no';
 
     my (undef, undef, $mode, undef, $uid, $gid) = lstat( $self->{'filename'} );
     $mode = $mode & 07777;

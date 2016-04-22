@@ -812,8 +812,9 @@ sub buildConfFile
     my ($filename, $path) = fileparse( $file );
 
     my $cfgTpl;
-    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'apache_php_fpm', $filename, \$cfgTpl, $data,
-        $options );
+    my $rs = $self->{'eventManager'}->trigger(
+        'onLoadTemplate', 'apache_php_fpm', $filename, \$cfgTpl, $data, $options
+    );
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
@@ -833,16 +834,16 @@ sub buildConfFile
     $rs = $self->{'eventManager'}->trigger( 'afterHttpdBuildConfFile', \$cfgTpl, $filename, $data, $options );
     return $rs if $rs;
 
-    my $fileHandler = iMSCP::File->new(
-        filename => $options->{'destination'} ? $options->{'destination'} : "$self->{'apacheWrkDir'}/$filename"
-    );
+    $options->{'destination'} ||= "$self->{'apacheWrkDir'}/$filename";
+
+    my $fileHandler = iMSCP::File->new( filename => $options->{'destination'} );
     $rs = $fileHandler->set( $cfgTpl );
     $rs ||= $fileHandler->save();
-    $rs ||= $fileHandler->mode( $options->{'mode'} ? $options->{'mode'} : 0644 );
     $rs ||= $fileHandler->owner(
-            $options->{'user'} ? $options->{'user'} : $main::imscpConfig{'ROOT_USER'},
-            $options->{'group'} ? $options->{'group'} : $main::imscpConfig{'ROOT_GROUP'}
+        ($options->{'user'} ? $options->{'user'} : $main::imscpConfig{'ROOT_USER'}),
+        ($options->{'group'} ? $options->{'group'} : $main::imscpConfig{'ROOT_GROUP'})
     );
+    $rs ||= $fileHandler->mode( $options->{'mode'} ? $options->{'mode'} : 0644 );
 }
 
 =item installConfFile($file [, \%options = { } ])
@@ -867,17 +868,17 @@ sub installConfFile
     return $rs if $rs;
 
     $file = "$self->{'apacheWrkDir'}/$file" unless -d $path && $path ne './';
+    $options->{'destination'} ||= "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$filename";
 
     my $fileHandler = iMSCP::File->new( filename => $file );
-    $rs = $fileHandler->mode( $options->{'mode'} ? $options->{'mode'} : 0644 );
-    $rs ||= $fileHandler->owner(
-            $options->{'user'} ? $options->{'user'} : $main::imscpConfig{'ROOT_USER'},
-            $options->{'group'} ? $options->{'group'} : $main::imscpConfig{'ROOT_GROUP'}
-    );
-    $rs ||= $fileHandler->copyFile(
-            $options->{'destination'}
-            ? $options->{'destination'} : "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$filename"
-    );
+    $rs ||= $fileHandler->copyFile( $options->{'destination'} );
+    if (!$rs && defined $options->{'user'} || defined $options->{'group'}) {
+        $rs = $fileHandler->owner(
+            ($options->{'user'} ? $options->{'user'} : $main::imscpConfig{'ROOT_USER'}),
+            ($options->{'group'} ? $options->{'group'} : $main::imscpConfig{'ROOT_GROUP'})
+        );
+    }
+    $rs ||= $fileHandler->mode( $options->{'mode'} ? $options->{'mode'} : 0644 ) if defined $options->{'mode'};
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdInstallConfFile', $filename, $options );
 }
 

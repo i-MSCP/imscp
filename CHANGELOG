@@ -114,6 +114,7 @@ SERVERS
     Fixed: Could not build local vsftpd package when gpg has been initialized; .changes file cannot be signed
     Fixed: Courier sysvinit script must not be copied when selected PO server is Dovecot
     Fixed: Disabled mod_tls_memcache.c module to avoid weird notice on restart (ProFTPD)
+    Fixed: Don't change user/group and mode when not required (Httpd server implementations)
     Fixed: Enable support for UTF-8 file systems (VsFTPd)
     Fixed: Hide real server identity (ProFTPD)
     Fixed: Invalid version format (non-numeric data) when installing VsFTPd on Debian Stretch (testing)
