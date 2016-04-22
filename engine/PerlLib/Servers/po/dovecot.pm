@@ -25,12 +25,13 @@ package Servers::po::dovecot;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
-use iMSCP::EventManager;
 use iMSCP::Config;
+use iMSCP::Debug;
+use iMSCP::Dir;
+use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
-use iMSCP::Dir;
+use iMSCP::Getopt;
 use iMSCP::Service;
 use Servers::mta;
 use Tie::File;
@@ -147,15 +148,25 @@ sub postaddMail
     my $mailGidName = $mta->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
     for my $dir("$mailDir/.Drafts", "$mailDir/.Junk", "$mailDir/.Sent", "$mailDir/.Trash") {
-        my $rs = iMSCP::Dir->new( dirname => $dir )->make( {
-                user => $mailUidName, group => $mailGidName, mode => 0750
-            } );
+        my $rs = iMSCP::Dir->new( dirname => $dir )->make(
+            {
+                user => $mailUidName,
+                group => $mailGidName,
+                mode => 0750,
+                fixpermissions => iMSCP::Getopt->fixPermissions
+            }
+        );
         return $rs if $rs;
 
         for my $subdir ('cur', 'new', 'tmp') {
-            $rs = iMSCP::Dir->new( dirname => "$dir/$subdir" )->make( {
-                    user => $mailUidName, group => $mailGidName, mode => 0750
-                } );
+            $rs = iMSCP::Dir->new( dirname => "$dir/$subdir" )->make(
+                {
+                    user => $mailUidName,
+                    group => $mailGidName,
+                    mode => 0750,
+                    fixpermissions => iMSCP::Getopt->fixPermissions
+                }
+            );
             return $rs if $rs;
         }
     }
@@ -166,7 +177,7 @@ sub postaddMail
     if (-f "$mailDir/subscriptions") {
         my $subscriptionsFileContent = $subscriptionsFile->get();
         unless (defined $subscriptionsFileContent) {
-            error( 'Unable to read dovecot subscriptions file' );
+            error( 'Could not read dovecot subscriptions file' );
             return 1;
         }
 

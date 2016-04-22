@@ -25,18 +25,19 @@ package Servers::po::courier::installer;
 
 use strict;
 use warnings;
+use File::Basename;
+use iMSCP::Config;
 use iMSCP::Database;
 use iMSCP::Debug;
-use iMSCP::EventManager;
-use iMSCP::Config;
-use iMSCP::Rights;
-use iMSCP::File;
 use iMSCP::Dir;
+use iMSCP::EventManager;
 use iMSCP::Execute;
+use iMSCP::File;
+use iMSCP::Getopt;
+use iMSCP::Rights;
+use iMSCP::ProgramFinder;
 use iMSCP::Stepper;
 use iMSCP::TemplateParser;
-use iMSCP::ProgramFinder;
-use File::Basename;
 use Servers::po::courier;
 use Servers::mta::postfix;
 use Servers::sqld;
@@ -93,8 +94,10 @@ sub authdaemonSqlUserDialog
 {
     my ($self, $dialog) = @_;
 
-    my $dbUser = main::setupGetQuestion( 'AUTHDAEMON_SQL_USER', $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} || 'authdaemon_user' );
-    my $dbPass = main::setupGetQuestion( 'AUTHDAEMON_SQL_PASSWORD', $self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'} );
+    my $dbUser = main::setupGetQuestion( 'AUTHDAEMON_SQL_USER',
+        $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} || 'authdaemon_user' );
+    my $dbPass = main::setupGetQuestion( 'AUTHDAEMON_SQL_PASSWORD',
+        $self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'} );
 
     my ($rs, $msg) = (0, '');
 
@@ -111,10 +114,10 @@ sub authdaemonSqlUserDialog
 
 Please enter an username for the Courier Authdaemon SQL user:$msg
 EOF
-            if (lc($dbUser) eq lc($main::imscpConfig{'DATABASE_USER'})) {
+            if (lc( $dbUser ) eq lc( $main::imscpConfig{'DATABASE_USER'} )) {
                 $msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
                 $dbUser = '';
-            } elsif(lc($dbUser) eq 'root') {
+            } elsif (lc( $dbUser ) eq 'root') {
                 $msg = "\n\n\\Z1Usage of SQL root user is prohibited.\\Zn\n\nPlease try again:";
                 $dbUser = '';
             } elsif (length $dbUser > 16) {
@@ -435,11 +438,9 @@ sub _init
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'po'} = Servers::po::courier->getInstance();
     $self->{'mta'} = Servers::mta::postfix->getInstance();
-
     $self->{'eventManager'}->trigger( 'beforePodInitInstaller', $self, 'courier' ) and fatal(
         'courier - beforePoInitInstaller has failed'
     );
-
     $self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
@@ -448,7 +449,6 @@ sub _init
     my $oldConf = "$self->{'cfgDir'}/courier.old.data";
     if (-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-
         for my $param(keys %oldConfig) {
             if (exists $self->{'config'}->{$param}) {
                 $self->{'config'}->{$param} = $oldConfig{$param};
@@ -617,7 +617,7 @@ sub _overrideAuthdaemonInitScript
     my $file = iMSCP::File->new( filename => "/etc/init.d/$self->{'config'}->{'AUTHDAEMON_SNAME'}" );
     my $fileContent = $file->get();
     unless (defined $fileContent) {
-        error( sprintf( 'Could not read the %s file', $file->{'filename'} ) );
+        error( sprintf( 'Could not read %s file', $file->{'filename'} ) );
         return 1;
     }
 
@@ -684,7 +684,7 @@ sub _buildConf
         unless (defined $cfgTpl) {
             $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/$conffile" )->get();
             unless (defined $cfgTpl) {
-                error( "Could not read $self->{'cfgDir'}/$conffile" );
+                error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/$conffile" ) );
                 return 1;
             }
         }
@@ -712,7 +712,7 @@ sub _buildConf
         my $file = iMSCP::File->new( filename => "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd" );
         my $fileContent = $file->get();
         unless (defined $fileContent) {
-            error( "Could not read $self->{'filename'}" );
+            error( sprintf( 'Could not read %s file', $self->{'filename'} ) );
             return 1;
         }
 
@@ -724,9 +724,9 @@ sub _buildConf
         );
 
         $fileContent .=
-            "\n# Servers::po::courier::installer - BEGIN\n".
-                ". $self->{'cfgDir'}/imapd.local\n".
-                "# Servers::po::courier::installer - ENDING\n";
+            "\n# Servers::po::courier::installer - BEGIN\n"
+                .". $self->{'cfgDir'}/imapd.local\n"
+                ."# Servers::po::courier::installer - ENDING\n";
 
         $rs = $file->set( $fileContent );
         $rs ||= $file->save();
@@ -769,7 +769,7 @@ sub _buildCyrusSaslConfFile
     unless (defined $cfgTpl) {
         $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/sasl/smtpd.conf" )->get();
         unless (defined $cfgTpl) {
-            error( "Could not read $self->{'cfgDir'}/sasl/smtpd.conf" );
+            error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/sasl/smtpd.conf" ) );
             return 1;
         }
     }
@@ -843,7 +843,7 @@ sub _buildAuthdaemonrcFile
     unless (defined $cfgTpl) {
         $cfgTpl = iMSCP::File->new( filename => "$self->{'bkpDir'}/authdaemonrc.system" )->get();
         unless (defined $cfgTpl) {
-            error( "Could not read $self->{'bkpDir'}/authdaemonrc.system file" );
+            error( sprintf( 'Could not read %s file', "$self->{'bkpDir'}/authdaemonrc.system" ) );
             return 1;
         }
     }
@@ -884,7 +884,7 @@ sub _buildSslConfFiles
             unless (defined $cfgTpl) {
                 $cfgTpl = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$conffile" )->get();
                 unless (defined $cfgTpl) {
-                    error( "Could not read $self->{'config'}->{'AUTHLIB_CONF_DIR'}/$conffile file" );
+                    error( sprintf( 'Could not read %s file', "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$conffile" ) );
                     return 1;
                 }
             }
@@ -944,13 +944,14 @@ sub _migrateFromDovecot
     my $rs = $self->{'eventManager'}->trigger( 'beforePoMigrateFromDovecot' );
     return $rs if $rs;
 
-    my $mailPath = "$self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}";
-
     my @cmd = (
-        'perl', "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl", '--to-courier',
-        '--convert', '--overwrite', '--recursive', $mailPath
+        'perl', "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl",
+        '--to-courier',
+        '--convert',
+        '--overwrite',
+        '--recursive',
+        escapeShell($self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'})
     );
-
     $rs = execute( "@cmd", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     debug( $stderr ) if $stderr && !$rs;

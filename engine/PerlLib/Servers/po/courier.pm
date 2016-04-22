@@ -25,12 +25,13 @@ package Servers::po::courier;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
-use iMSCP::EventManager;
 use iMSCP::Config;
-use iMSCP::File;
+use iMSCP::Debug;
 use iMSCP::Dir;
+use iMSCP::EventManager;
 use iMSCP::Execute;
+use iMSCP::File;
+use iMSCP::Getopt;
 use iMSCP::Service;
 use Servers::mta;
 use Tie::File;
@@ -135,7 +136,8 @@ sub postinstall
     }
 
     $rs = $self->{'eventManager'}->register(
-        'beforeSetupRestartServices', sub {
+        'beforeSetupRestartServices',
+        sub {
             push @{$_[0]}, [ sub { $self->restart(); }, 'Courier' ];
             0;
         }
@@ -199,15 +201,25 @@ sub postaddMail
     my $mailGidName = $mta->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
     for my $dir("$mailDir/.Drafts", "$mailDir/.Junk", "$mailDir/.Sent", "$mailDir/.Trash") {
-        my $rs = iMSCP::Dir->new( dirname => $dir )->make( {
-                user => $mailUidName, group => $mailGidName, mode => 0750
-            } );
+        my $rs = iMSCP::Dir->new( dirname => $dir )->make(
+            {
+                user => $mailUidName,
+                group => $mailGidName,
+                mode => 0750,
+                fixpermissions => iMSCP::Getopt->fixPermissions
+            }
+        );
         return $rs if $rs;
 
         for my $subdir ('cur', 'new', 'tmp') {
-            my $rs = iMSCP::Dir->new( dirname => "$dir/$subdir" )->make( {
-                    user => $mailUidName, group => $mailGidName, mode => 0750
-                } );
+            my $rs = iMSCP::Dir->new( dirname => "$dir/$subdir" )->make(
+                {
+                    user => $mailUidName,
+                    group => $mailGidName,
+                    mode => 0750,
+                    fixpermissions => iMSCP::Getopt->fixPermissions
+                }
+            );
             return $rs if $rs;
         }
     }

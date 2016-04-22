@@ -51,7 +51,7 @@ sub factory
     return $instance if defined $instance;
 
     my $sName = $main::imscpConfig{'PO_SERVER'} || 'no';
-    my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::po::$sName";
+    my $package = $sName eq 'no' ? 'Servers::noserver' : "Servers::po::$sName";
     eval "require $package";
     fatal( $@ ) if $@;
     $instance = $package->getInstance();

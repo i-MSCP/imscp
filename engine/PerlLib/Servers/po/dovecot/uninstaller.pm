@@ -20,10 +20,10 @@ package Servers::po::dovecot::uninstaller;
 use strict;
 use warnings;
 use iMSCP::Debug;
-use iMSCP::File;
 use iMSCP::Execute;
-use Servers::po::dovecot;
+use iMSCP::File;
 use Servers::mta::postfix;
+use Servers::po::dovecot;
 use Servers::sqld;
 use parent 'Common::SingletonClass';
 
@@ -71,10 +71,9 @@ sub _dropSqlUser
     my $self = shift;
 
     my $sqlServer = Servers::sqld->factory();
-
     if ($self->{'config'}->{'DATABASE_USER'}) {
         for my $host('localhost', '%', $main::imscpConfig{'DATABASE_USER_HOST'}) {
-            sqlServer->dropUser( $self->{'config'}->{'DATABASE_USER'}, $host );
+            $sqlServer->dropUser( $self->{'config'}->{'DATABASE_USER'}, $host );
         }
     }
 
