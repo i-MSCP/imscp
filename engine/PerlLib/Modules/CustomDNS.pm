@@ -83,8 +83,9 @@ sub process
     if ($rs) {
         my $errorStr = getMessageByType( 'error' );
         my $qrs = $self->{'db'}->doQuery(
-            'u', "UPDATE domain_dns SET domain_dns_status = ? WHERE $condition",
-                $errorStr ? $errorStr : 'Invalid DNS resource record'
+            'u',
+            "UPDATE domain_dns SET domain_dns_status = ? WHERE $condition AND domain_dns_status <> 'disabled'",
+            ($errorStr ? $errorStr : 'Invalid DNS resource record')
         );
         unless (ref $qrs eq 'HASH') {
             error( $qrs );
@@ -98,18 +99,13 @@ sub process
         eval {
             $dbh->do(
                 "
-                    UPDATE domain_dns SET domain_dns_status = 'ok'
-                    WHERE $condition AND domain_dns_status NOT IN('todisable', 'todelete')
+                    UPDATE domain_dns SET domain_dns_status = IF(
+                        domain_dns_status = 'todisable',
+                        'disabled',
+                        IF(domain_dns_status NOT IN('todelete', 'disabled'), 'ok', domain_dns_status)
+                    ) WHERE $condition
                 "
             );
-
-            $dbh->do(
-                "
-                    UPDATE domain_dns SET domain_dns_status = 'disabled'
-                    WHERE $condition AND domain_dns_status = 'todisable'
-                ",
-            );
-
             $dbh->do( "DELETE FROM domain_dns WHERE $condition AND domain_dns_status = 'todelete'" );
             $dbh->commit();
         };
@@ -178,7 +174,7 @@ sub _loadData
             LEFT JOIN domain AS t2 USING(domain_id)
             LEFT JOIN domain_aliasses AS t3 USING(alias_id)
             LEFT JOIN server_ips AS t4 ON (IFNULL(t3.alias_ip_id, t2.domain_ip_id) = t4.ip_id)
-            WHERE $condition
+            WHERE $condition AND domain_dns_status <> 'disabled'
         "
     );
 

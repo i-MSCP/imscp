@@ -134,8 +134,9 @@ sub add
         # FIXME: This reflect a bad implementation in the way that entities are managed. This will be solved
         # in version 2.0.0.
         my $rs = $db->doQuery(
-            'u', 'UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ? AND subdomain_status <> ?',
-            'tochange', $self->{'domain_id'}, 'todelete'
+            'u',
+            "UPDATE subdomain SET subdomain_status = 'tochange' WHERE domain_id = ? AND subdomain_status <> 'todelete'",
+            $self->{'domain_id'}
         );
         unless (ref $rs eq 'HASH') {
             error( $rs );
@@ -144,9 +145,11 @@ sub add
 
         $rs = $db->doQuery(
             'u',
-            'UPDATE domain_dns SET domain_dns_status = ? WHERE domain_id = ? AND alias_id = ? AND domain_dns_status <> ?'
-            ,
-            'tochange', $self->{'domain_id'}, '0', 'todelete'
+            "
+                UPDATE domain_dns SET domain_dns_status = 'tochange'
+                WHERE domain_id = ? AND alias_id = 0 AND domain_dns_status NOT IN('todelete', 'todisable', 'disabled')
+            ",
+            $self->{'domain_id'}
         );
         unless (ref $rs eq 'HASH') {
             error( $rs );

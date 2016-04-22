@@ -137,8 +137,11 @@ sub add
         # in version 2.0.0.
         my $rs = $db->doQuery(
             'u',
-            'UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE alias_id = ? AND subdomain_alias_status <> ?',
-            'tochange', $self->{'alias_id'}, 'todelete'
+            "
+                UPDATE subdomain_alias SET subdomain_alias_status = 'tochange'
+                WHERE alias_id = ? AND subdomain_alias_status <> 'todelete'
+            ",
+            $self->{'alias_id'}
         );
         unless (ref $rs eq 'HASH') {
             error( $rs );
@@ -146,8 +149,12 @@ sub add
         }
 
         $rs = $db->doQuery(
-            'u', 'UPDATE domain_dns SET domain_dns_status = ? WHERE alias_id = ? AND domain_dns_status <> ?',
-            'tochange', $self->{'alias_id'}, 'todelete'
+            'u',
+            "
+                UPDATE domain_dns SET domain_dns_status = 'tochange'
+                WHERE alias_id = ? AND domain_dns_status NOT IN ('todelete', 'todisable', 'disabled')
+            ",
+            $self->{'alias_id'}
         );
         unless (ref $rs eq 'HASH') {
             error( $rs );

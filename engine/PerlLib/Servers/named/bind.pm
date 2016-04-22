@@ -650,7 +650,7 @@ sub addCustomDNS
 
     $wrkDbFileContent = $self->_generateSoalSerialNumber( $wrkDbFileContent );
     unless (defined $wrkDbFileContent) {
-        error( 'Could not to update SOA Serial' );
+        error( 'Could not update SOA Serial' );
         return 1;
     }
 
