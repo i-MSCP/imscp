@@ -59,7 +59,6 @@ FRONTEND
     Changed: exec() PHP function is no longer disabled for the control panel (master php.ini file)
     Changed: The `type` field cannot longer be changed when editing a DNS resource record (client level)
     Changed: Support for nested MySQL transactions is now emulated using named transaction savepoints (stdlib)
-    Fixed: Uncaught ReferenceError: ajaxStop is not defined (admin level)
     Fixed: Cannot add DKIM/DMARC DNS resource records (client level)
     Fixed: Could not retrieve network devices list under Debian Stretch (testing) - Related to #IP-1525 (admin level)
     Fixed: Customer must be allowed to set custom TTL value for any DNS resource record (client level)
@@ -68,6 +67,7 @@ FRONTEND
     Fixed: Could not set URL redirect when adding domain alias; Bad request error page (client level)
     Fixed: IDNs are shown in IDNA form in several places
     Fixed: iMSCP_Update_Database::addIndex() doesn't allows to set index length (stdlib)
+    Fixed: Uncaught ReferenceError: ajaxStop is not defined (admin level)
     Fixed: Wrong behavior with exception handler when database connection is not available (stdlib)
     Fixed: Privileges on database that contains wildcards are not removed when SQL user is assigned to many databases
     Backported: iMSCP\Crypt library from 1.3.x branch (not used by core atm)
