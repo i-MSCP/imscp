@@ -10,11 +10,16 @@
 
 See http://wiki.i-mscp.net/doku.php?id=start:howto:reiserfs if you use a reiserfs file system.
 
+#### Supported Debian versions
+
+Any released version >= 7.x (Debian 8.x recommended)
+
 ### 2) i-MSCP Installation
 
 #### 1. Make sure that your system is up-to-date
 
-    # apt-get update && apt-get dist-upgrade
+    # apt-get update
+    # apt-get dist-upgrade
 
 #### 2. Install the pre-required packages
 
