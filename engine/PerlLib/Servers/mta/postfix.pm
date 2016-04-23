@@ -25,7 +25,6 @@ package Servers::mta::postfix;
 
 use strict;
 use warnings;
-use File::Basename;
 use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::Config;
