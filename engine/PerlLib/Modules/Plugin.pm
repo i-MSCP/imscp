@@ -389,7 +389,8 @@ sub _call
         local $SIG{'__WARN__'} = sub { die shift };
 
         if ($plugin->can( $method )) {
-            $plugin = $plugin->getInstance(
+            my $construct = $plugin->can( 'getInstance' ) ? 'getInstance' : 'new';
+            $plugin = $plugin->$construct(
                 eventManager => $self->{'eventManager'},
                 action       => $self->{'action'},
                 info         => $self->{'info'},
@@ -400,7 +401,6 @@ sub _call
             $plugin = undef;
         }
     };
-
     if ($@) {
         error( sprintf( 'An unexpected error occurred: %s', $@ ) );
         return 1;
@@ -409,7 +409,6 @@ sub _call
     if ($plugin) {
         debug( sprintf( "Executing %s::%s() action", ref $plugin, $method ) );
         my $rs = $plugin->$method( $fromVersion, $toVersion );
-
         # Return value from the run() action is ignored by default because it's the responsability of the plugins to set
         # error status for their items. In case a plugin doesn't manage any item, it can force return value by defining
         # the FORCE_RETVAL attribute and set it value to 'yes'

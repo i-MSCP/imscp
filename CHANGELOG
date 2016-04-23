@@ -105,6 +105,7 @@ PACKAGES
     Updated: PhpMyAdmin version to 4.6.0 - Only for servers with PHP/MySQL >= 5.5 (Package::PhpMyAdmin::Installer)
 
 PLUGINS
+    Enhancement: Plugin backend packages can now be simple objects
     Fixed: Plugin configuration not synced when triggering plugin list update (when a plugin is in error state)
     Fixed: The 'change' action must be automatically triggered on plugin list update, even for plugins with error state
     Fixed: Wrong events triggered when a plugin is being locked/unlocked
