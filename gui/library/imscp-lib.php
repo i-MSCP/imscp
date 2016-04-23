@@ -196,13 +196,14 @@ if(is_readable(CONFIG_CACHE_FILE_PATH)) {
 	/**
 	 * Logging Mailer default level (messages sent to DEFAULT_ADMIN_ADDRESS)
 	 *
-	 * E_USER_NOTICE: common operations (normal work flow)
-	 * E_USER_WARNING: Operations that may be related to a problem
-	 * E_USER_ERROR: Errors for which the admin should pay attention
+	 * 0                    : No logging
+	 * E_USER_ERROR (256)   : errors are logged
+	 * E_USER_WARNING (512) : Warnings and errors are logged
+	 * E_USER_NOTICE (1024) : Notice, warnings and errors are logged
 	 *
 	 * Note: PHP's E_USER_* constants are used for simplicity.
 	 */
-	$config['LOG_LEVEL'] = E_USER_WARNING;
+	$config['LOG_LEVEL'] = E_USER_ERROR;
 
 	// Creation of webmaster, postmaster and abuse forwarders when
 	$config['CREATE_DEFAULT_EMAIL_ADDRESSES'] = 1;

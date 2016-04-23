@@ -56,7 +56,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = '222';
+    protected $lastUpdate = '223';
 
     /**
      * Singleton - Make new unavailable
@@ -3214,6 +3214,19 @@ class iMSCP_Update_Database extends iMSCP_Update
             exec_query('UPDATE ftp_group SET groupname = ?, members = ? WHERE groupname = ?', array(
                 encode_idna($row['groupname']), $members, $row['groupname']
             ));
+        }
+    }
+
+    /**
+     * Wrong value for LOG_LEVEL configuration parameter
+     * 
+     * @return void
+     */
+    protected function r223()
+    {
+        if (isset($this->dbConfig['LOG_LEVEL']) && preg_match('/\D/', $this->dbConfig['LOG_LEVEL'])) {
+            $this->dbConfig['LOG_LEVEL'] = defined($this->dbConfig['LOG_LEVEL'])
+                ? constant($this->dbConfig['LOG_LEVEL']) : E_USER_ERROR;
         }
     }
 }

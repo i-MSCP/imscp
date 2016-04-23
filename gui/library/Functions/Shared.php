@@ -1661,7 +1661,7 @@ function write_log($msg, $logLevel = E_USER_WARNING)
 
     exec_query('INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)', $msg);
 
-    if (!isset($cfg['DEFAULT_ADMIN_ADDRESS']) || $cfg['DEFAULT_ADMIN_ADDRESS'] == '' || $logLevel > $cfg['LOG_LEVEL']) {
+    if ($logLevel > $cfg['LOG_LEVEL'] || !isset($cfg['DEFAULT_ADMIN_ADDRESS']) || $cfg['DEFAULT_ADMIN_ADDRESS'] === '') {
         return;
     }
 

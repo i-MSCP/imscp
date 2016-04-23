@@ -105,7 +105,7 @@ if (!empty($_POST)) {
         $dbCfg['USER_INITIAL_LANG'] = $userInitialLang;
         $dbCfg['IMSCP_SUPPORT_SYSTEM'] = $supportSystem;
         $dbCfg['DOMAIN_ROWS_PER_PAGE'] = $domainRowsPerPage;
-        $dbCfg['LOG_LEVEL'] = $logLevel;
+        $dbCfg['LOG_LEVEL'] = defined($logLevel) ? constant($logLevel) : 0;
         $dbCfg['COMPRESS_OUTPUT'] = $compressOutput;
         $dbCfg['SHOW_COMPRESSION_SIZE'] = $showCompressionSize;
         $dbCfg['PREVENT_EXTERNAL_LOGIN_ADMIN'] = $prevExtLoginAdmin;
@@ -328,7 +328,7 @@ if ($cfg['PREVENT_EXTERNAL_LOGIN_CLIENT']) {
 }
 
 switch ($cfg['LOG_LEVEL']) {
-    case false:
+    case 0:
         $tpl->assign(array(
             'LOG_LEVEL_SELECTED_OFF' => ' selected',
             'LOG_LEVEL_SELECTED_NOTICE' => '',

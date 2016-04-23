@@ -73,6 +73,7 @@ FRONTEND
     Fixed: Uncaught ReferenceError: ajaxStop is not defined (admin level)
     Fixed: Wrong behavior with exception handler when database connection is not available (stdlib)
     Fixed: Privileges on database that contains wildcards are not removed when SQL user is assigned to many databases
+    Fixed: Wrong value for LOG_LEVEL configuration parameter
     Backported: iMSCP\Crypt library from 1.3.x branch (not used by core atm)
     Removed: User deletion confirmation pages (admin and reseller levels)
     Removed: iMSCP_NetworkCard class; replaced by iMSCP\Net class (stdlib)
