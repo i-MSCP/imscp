@@ -672,7 +672,7 @@ sub addCustomDNS
         return 1;
     }
     while(my $line = <$fh>) {
-        $origin = $1 if $line =~ /^\$ORIGIN\s+([^\s;]+).*\n$/;
+        $origin = quotemeta($1) if $line =~ /^\$ORIGIN\s+([^\s;]+).*\n$/;
         next if $line =~ /^(\S+)\s+.*?v=spf1\s/ && grep(/^(?:\Q$1\E\.|\Q$1\E\.$origin)\s+.*?v=spf1\s/, @customDns);
         $wrkDbFileContent .= $line;
     }
