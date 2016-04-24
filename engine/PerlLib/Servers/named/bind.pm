@@ -672,8 +672,9 @@ sub addCustomDNS
         return 1;
     }
     while(my $line = <$fh>) {
-        $origin = quotemeta($1) if $line =~ /^\$ORIGIN\s+([^\s;]+).*\n$/;
-        next if $line =~ /^(\S+)\s+.*?v=spf1\s/ && grep(/^(?:\Q$1\E\.|\Q$1\E\.$origin)\s+.*?v=spf1\s/, @customDns);
+        $origin = $1 if $line =~ /^\$ORIGIN\s+([^\s;]+).*\n$/;
+        $line =~ s/@/$origin/g if $origin ne '';
+        next if $line =~ /^(\S+)\s+.*?v=spf1\s/ && grep(/^(?:\Q$1\E|\Q$1.$origin\E)\s+.*?v=spf1\s/, @customDns);
         $wrkDbFileContent .= $line;
     }
     close( $fh );
@@ -682,7 +683,7 @@ sub addCustomDNS
         "; custom DNS entries BEGIN\n",
         "; custom DNS entries ENDING\n",
         "; custom DNS entries BEGIN\n".( join "\n", @customDns, '' )."; custom DNS entries ENDING\n",
-        $wrkDbFileContentTmp
+        $wrkDbFileContent
     );
 
     $rs = $self->{'eventManager'}->trigger( 'afterNamedAddCustomDNS', \$wrkDbFileContent, $data );
