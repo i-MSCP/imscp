@@ -96,6 +96,7 @@ INSTALLER
     Fixed: Plugin setup listeners are no longer registered (regression fix)
     Fixed: SQL user and password not correctly escaped in imscp.cnf file (Servers::sqld::mysql::installer)
     Moved: Master administrator questions and setup routines into Package::FrontEnd::Installer
+    Removed: Update notices (link to errata file is sufficient)
     Renamed: imscp-setup script to imscp-reconfigure
     Transitional: Enforce PHP5 variant under Debian Stretch (testing) and Ubuntu 16.04 (Xenial Xerus)
 

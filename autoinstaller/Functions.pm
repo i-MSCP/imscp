@@ -136,7 +136,7 @@ sub build
         return $rs if $rs;
 
         if (%main::imscpOldConfig) {
-            $rs = _showUpdateNotices( $dialog );
+            $rs = _showUpdateWarning( $dialog );
             return $rs if $rs;
         }
 
@@ -362,55 +362,30 @@ i-MSCP and the i-MSCP logo are trademarks of the i-MSCP | internet Multi Server 
 EOF
 }
 
-=item _showUpdateNotices(\%dialog)
+=item _showUpdateWarning(\%dialog)
 
- Show update notices
+ Show update warning
 
  Return 0 on success, other on failure or when user is aborting
 
 =cut
 
-sub _showUpdateNotices
+sub _showUpdateWarning
 {
     my $dialog = shift;
 
-    eval "use Sort::Versions; 1";
-    die( $@ ) if $@;
+    my $warning = '';
+    if ($main::imscpConfig{'Version'} !~ /git/i) {
+        $warning = <<"EOF";
+Before continue, be sure to have read the errata file:
 
-    my $noticesDir = "$FindBin::Bin/autoinstaller/UpdateNotices";
-    my $imscpVersion = $main::imscpOldConfig{'Version'};
-    my $notices = '';
+    \\Zbhttps://github.com/i-MSCP/imscp/blob/1.2.x/docs/1.2.x_errata.md\\ZB
+EOF
 
-    if ($imscpVersion !~ /git/i) {
-        if ($imscpVersion =~ /^\d+\.\d+\.\d+/) {
-            $imscpVersion = $1;
-
-            my @noticeFiles = iMSCP::Dir->new( dirname => $noticesDir )->getFiles();
-
-            if (@noticeFiles) {
-                s/\.txt$// for @noticeFiles;
-                @noticeFiles = sort { versioncmp( $a, $b ) } @noticeFiles;
-
-                for my $noticeVersion(@noticeFiles) {
-                    if (version->parse( $imscpVersion ) < version->parse( $noticeVersion )) {
-                        my $noticeBody = iMSCP::File->new( filename => "$noticesDir/$noticeVersion.txt" )->get();
-                        unless (defined $noticeBody) {
-                            error( sprintf( 'Could not read %s file', "$noticesDir/$noticeVersion.txt" ) );
-                            return 1;
-                        }
-
-                        $notices .= "\n$noticeBody";
-                    }
-                }
-            }
-        } else {
-            error( 'Could not parse i-MSCP version from your imscp.conf file.' );
-            return 1;
-        }
     } else {
-        $notices = <<"EOF";
+        $warning = <<"EOF";
 
-The installer detected that you're using the \\ZbGit\\ZB version of i-MSCP. Before continue, be sure to have read the errata file:
+The installer detected that you intends to install i-MSCP \\ZbGit\\ZB version. Before continue, be sure to have read the errata file:
 
     \\Zbhttps://github.com/i-MSCP/imscp/blob/1.2.x/docs/1.2.x_errata.md\\ZB
 
@@ -418,21 +393,18 @@ We would remind you that the Git version can be highly unstable and that the i-M
 EOF
     }
 
-    unless ($notices eq '') {
-        $dialog->set( 'yes-label', 'Continue' );
-        $dialog->set( 'no-label', 'Abort' );
-        return 50 if $dialog->yesno( <<"EOF" );
+    return 0 if $warning eq '';
 
-Please read carefully before continue.
+    $dialog->set( 'yes-label', 'Continue' );
+    $dialog->set( 'no-label', 'Abort' );
+    return 50 if $dialog->yesno( <<"EOF" );
 
-\\ZbNote:\\ZB Use the \\ZbPage Down\\ZB key from your keyboard to scroll down.
-$notices
-You can now either continue or abort if needed.
+\\Zb\\Z1WARNING - PLEASE READ CAREFULLY\\Zn\\ZB
+$warning
+You can now either continue or abort.
 EOF
 
-        $dialog->resetLabels();
-    }
-
+    $dialog->resetLabels();
     0;
 }
 

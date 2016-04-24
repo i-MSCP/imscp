@@ -1,6 +1,0 @@
-\Zb\Z1Update to version 1.2.1
-=======================\Zn\ZB
-
-\Zb\Z4# Package's restricted SQL users\Zn\ZB
-
-The minimum length for usernames and passwords is now 6 characters long. Due to this change, it is possible that during the update you need to update them.
