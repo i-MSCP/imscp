@@ -657,21 +657,32 @@ sub addCustomDNS
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedAddCustomDNS', \$wrkDbFileContent, $data );
     return $rs if $rs;
 
-    my @customDnsEntries = ();
+    my @customDns = ();
     for my $record(@{$data->{'DNS_RECORDS'}}) {
-        push @customDnsEntries, join "\t", @{$record};
+        push @customDns, join "\t", @{$record};
     }
 
-    # Remove default SPF records if needed
-    if (grep($_ =~ /^[^\s]+\s+IN\s+(?:SPF|TXT)\s+.*?v=spf1\s.*/gm, @customDnsEntries)) {
-        $wrkDbFileContent =~ s/^[^\s]+\s+IN\s+TXT\s+.*?v=spf1\s.*\n//gm;
+    # Remove any default SPF record that is redefined through a custom DNS record
+    my $wrkDbFileContentTmp = $wrkDbFileContent;
+    $wrkDbFileContent = '';
+    my $origin = '';
+    my $fh;
+    unless (open( $fh, '<', \$wrkDbFileContentTmp )) {
+        error( sprinf( 'Could not open in memory file: %s', $! ) );
+        return 1;
     }
+    while(my $line = <$fh>) {
+        $origin = $1 if $line =~ /^\$ORIGIN\s+([^\s;]+).*\n$/;
+        next if $line =~ /^(\S+)\s+.*?v=spf1\s/ && grep(/^(?:\Q$1\E\.|\Q$1\E\.$origin)\s+.*?v=spf1\s/, @customDns);
+        $wrkDbFileContent .= $line;
+    }
+    close( $fh );
 
     $wrkDbFileContent = replaceBloc(
         "; custom DNS entries BEGIN\n",
         "; custom DNS entries ENDING\n",
-        "; custom DNS entries BEGIN\n".( join "\n", @customDnsEntries, '' )."; custom DNS entries ENDING\n",
-        $wrkDbFileContent
+        "; custom DNS entries BEGIN\n".( join "\n", @customDns, '' )."; custom DNS entries ENDING\n",
+        $wrkDbFileContentTmp
     );
 
     $rs = $self->{'eventManager'}->trigger( 'afterNamedAddCustomDNS', \$wrkDbFileContent, $data );
