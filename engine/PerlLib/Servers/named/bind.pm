@@ -334,7 +334,7 @@ sub addSub
 
     my $wrkDbFile = "$self->{'wrkDir'}/$data->{'PARENT_DOMAIN_NAME'}.db";
     unless (-f $wrkDbFile) {
-        error( sprintf( 'File %s not found. Please run the i-MSCP setup script.', $wrkDbFile ) );
+        error( sprintf( 'File %s not found. Please run the imscp-reconfigure script.', $wrkDbFile ) );
         return 1;
     }
 
@@ -539,7 +539,7 @@ sub deleteSub
 
     my $wrkDbFile = "$self->{'wrkDir'}/$data->{'PARENT_DOMAIN_NAME'}.db";
     unless (-f $wrkDbFile) {
-        error( sprintf( 'File %s not found. Please run the i-MSCP setup script.', $wrkDbFile ) );
+        error( sprintf( 'File %s not found. Please run the imscp-reconfigure script.', $wrkDbFile ) );
         return 1;
     }
 
@@ -637,7 +637,7 @@ sub addCustomDNS
 
     my $wrkDbFile = "$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}.db";
     unless (-f $wrkDbFile) {
-        error( sprintf( 'File %s not found. Please run the i-MSCP setup script.', $wrkDbFile ) );
+        error( sprintf( 'File %s not found. Please run the imscp-reconfigure script.', $wrkDbFile ) );
         return 1;
     }
 
@@ -809,7 +809,7 @@ sub _addDmnConfig
     my ($self, $data) = @_;
 
     unless (defined $self->{'config'}->{'BIND_MODE'}) {
-        error( 'Bind mode is not defined. Please rerun the i-MSCP setup script.' );
+        error( 'Bind mode is not defined. Please rerun the imscp-reconfigure script.' );
         return 1;
     }
 
@@ -818,7 +818,7 @@ sub _addDmnConfig
     );
 
     unless (-f "$self->{'wrkDir'}/$cfgFileName") {
-        error( sprintf( 'File %s not found. Please rerun the i-MSCP setup script.',
+        error( sprintf( 'File %s not found. Please rerun the imscp-reconfigure script.',
                 "$self->{'wrkDir'}/$cfgFileName" ) );
         return 1;
     }
@@ -909,7 +909,7 @@ sub _deleteDmnConfig
     );
 
     unless (-f "$self->{'wrkDir'}/$cfgFileName") {
-        error( sprintf( 'File %s not found. Please rerun the i-MSCP setup script.',
+        error( sprintf( 'File %s not found. Please rerun the imscp-reconfigure script.',
                 "$self->{'wrkDir'}/$cfgFileName" ) );
         return 1;
     }

@@ -63,7 +63,7 @@ require "$key_file" if -f $key_file;
 # Check for i-MSCP Db key and initialization vector
 
 if ($db_pass_key eq '{KEY}' || $db_pass_iv eq '{IV}') {
-    print STDERR ("Key file not found at $main::cfg{'CONF_DIR'}/imscp-db-keys. Run i-MSCP setup script to fix.");
+    print STDERR ("Key file not found at $main::cfg{'CONF_DIR'}/imscp-db-keys. Run imscp-reconfigure script to fix.");
     exit 1;
 }
 
