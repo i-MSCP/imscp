@@ -1,7 +1,6 @@
 HTTPD_VERSION =
 HTTPD_USER = www-data
 HTTPD_GROUP = www-data
-
 HTTPD_SNAME = apache2
 HTTPD_CONF_DIR = /etc/apache2
 HTTPD_MODS_AVAILABLE_DIR = /etc/apache2/mods-available
@@ -12,16 +11,9 @@ HTTPD_CUSTOM_SITES_DIR = /etc/apache2/imscp
 HTTPD_ROOT_DIR = /var/www
 HTTPD_LOG_DIR = /var/log/apache2
 
-# Htaccess variables
-
 HTACCESS_USERS_FILENAME = .htpasswd
 HTACCESS_GROUPS_FILENAME = .htgroup
 
 # Whether or not bind mount logs in customer logs directory
 # Allowed value: yes|no
 MOUNT_CUSTOMER_LOGS = yes
-
-# Dreprecated
-HTTPD_USERS_LOG_DIR = /var/log/apache2/users
-APACHE_SCOREBOARDS_DIR = /var/www/scoreboards
-APACHE_BACKUP_LOG_DIR = /var/log/apache2/backup

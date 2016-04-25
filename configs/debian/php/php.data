@@ -7,6 +7,8 @@ PHP_CONF_DIR_PATH =
 PHP_DISMOD_PATH =
 PHP_ENMOD_PATH =
 
+PHP_PEAR_DIR = /usr/share/php
+
 # Possible values: per_user, per_domain or per_site
 PHP_CONFIG_LEVEL =
 

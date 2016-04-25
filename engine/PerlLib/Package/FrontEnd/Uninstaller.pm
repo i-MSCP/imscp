@@ -164,7 +164,7 @@ sub _removePhpConfig
 {
     my $self = shift;
 
-    iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_STARTER_DIR'}/master" )->remove();
+    iMSCP::Dir->new( dirname => "$self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}/master" )->remove();
 }
 
 =item _removeInitScript()

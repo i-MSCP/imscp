@@ -25,10 +25,10 @@ package Servers::httpd::apache_php_fpm::uninstaller;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
-use iMSCP::File;
-use iMSCP::Dir;
 use File::Basename;
+use iMSCP::Debug;
+use iMSCP::Dir;
+use iMSCP::File;
 use Servers::httpd::apache_php_fpm;
 use Servers::sqld;
 use parent 'Common::SingletonClass';
@@ -79,13 +79,8 @@ sub _init
 
     $self->{'httpd'} = Servers::httpd::apache_php_fpm->getInstance();
     $self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
-    $self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
-    $self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
     $self->{'config'} = $self->{'httpd'}->{'config'};
-    $self->{'phpfpmCfgDir'} = $self->{'httpd'}->{'phpfpmCfgDir'};
-    $self->{'phpfpmBkpDir'} = "$self->{'phpfpmCfgDir'}/backup";
-    $self->{'phpfpmWrkDir'} = "$self->{'phpfpmCfgDir'}/working";
-    $self->{'phpfpmConfig'} = $self->{'httpd'}->{'phpfpmConfig'};
+    $self->{'phpConfig'} = $self->{'httpd'}->{'phpConfig'};
     $self;
 }
 
@@ -146,20 +141,12 @@ sub _restoreApacheConfig
         return $rs if $rs;
     }
 
-    my $confDir = (-d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available")
+    my $confDir = -d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available"
         ? "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available" : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d";
 
     if (-f "$confDir/00_imscp.conf") {
         $rs = $self->{'httpd'}->disableConfs( '00_imscp.conf' );
         $rs ||= iMSCP::File->new( filename => "$confDir/00_imscp.conf" )->delFile();
-        return $rs if $rs;
-    }
-
-    for my $file("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2",
-        "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf") {
-        my $filename = fileparse( $file );
-        next unless -f "$self->{'apacheBkpDir'}/$filename.system";
-        $rs = iMSCP::File->new( filename => "$self->{'apacheBkpDir'}/$filename.system" )->copyFile( $file );
         return $rs if $rs;
     }
 
@@ -187,29 +174,11 @@ sub _restorePhpfpmConfig
 {
     my $self = shift;
 
-    my $filename = fileparse( "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm" );
-
-    if (-f "$self->{'phpfpmBkpDir'}/logrotate.$filename.system") {
+    if (-f "$self->{'phpConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf.disabled") {
         my $rs = iMSCP::File->new(
-            filename => "$self->{'phpfpmBkpDir'}/logrotate.$filename.system"
-        )->copyFile( "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/$filename" );
-        return $rs if $rs;
-    }
-
-    for my $file("$self->{'phpfpmConfig'}->{'PHP_FPM_CONF_DIR'}/php-fpm.conf",
-        "$self->{'phpfpmConfig'}->{'PHP_FPM_CONF_DIR'}/php.ini"
-    ) {
-        $filename = fileparse( $file );
-        next unless -f "$self->{'phpfpmBkpDir'}/$filename.system";
-        my $rs = iMSCP::File->new( filename => "$self->{'phpfpmBkpDir'}/$filename.system" )->copyFile( $file );
-        return $rs if $rs;
-    }
-
-    if (-f "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf.disabled") {
-        my $rs = iMSCP::File->new(
-            filename => "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf.disabled"
+            filename => "$self->{'phpConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf.disabled"
         )->moveFile(
-            "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf"
+            "$self->{'phpConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf"
         );
         return $rs if $rs;
     }

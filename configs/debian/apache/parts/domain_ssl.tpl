@@ -55,7 +55,7 @@
         AllowOverride All
         # SECTION fcgid BEGIN.
         Options +ExecCGI
-        FCGIWrapper {PHP_STARTER_DIR}/{FCGID_NAME}/php-fcgi-starter
+        FCGIWrapper {PHP_FCGI_STARTER_DIR}/{FCGID_NAME}/php-fcgi-starter
         # SECTION fcgid END.
         # SECTION itk BEGIN.
         php_admin_value open_basedir "{HOME_DIR}/:{PEAR_DIR}/:/dev/random:/dev/urandom"

@@ -25,27 +25,27 @@ package Servers::httpd::apache_php_fpm;
 
 use strict;
 use warnings;
+use Class::Autouse qw/Servers::httpd::apache_php_fpm::installer Servers::httpd::apache_php_fpm::uninstaller/;
+use File::Basename;
+use File::Temp;
 use iMSCP::Config;
-use iMSCP::Debug;
 use iMSCP::Database;
+use iMSCP::Debug;
+use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
-use iMSCP::Getopt;
-use iMSCP::TemplateParser;
-use iMSCP::File;
-use iMSCP::Dir;
 use iMSCP::Ext2Attributes qw/ setImmutable clearImmutable isImmutable /;
-use iMSCP::Rights;
+use iMSCP::File;
+use iMSCP::Getopt;
 use iMSCP::Mount qw / mount umount addMountEntry removeMountEntry /;
 use iMSCP::Net;
 use iMSCP::ProgramFinder;
+use iMSCP::Rights;
 use iMSCP::Service;
-use File::Temp;
-use File::Basename;
+use iMSCP::TemplateParser;
 use IO::Socket::INET;
 use Scalar::Defer;
 use version;
-use Class::Autouse qw/Servers::httpd::apache_php_fpm::installer Servers::httpd::apache_php_fpm::uninstaller/;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -85,6 +85,7 @@ sub preinstall
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdPreInstall', 'apache_php_fpm' );
+    $rs ||= Servers::httpd::apache_php_fpm::installer->getInstance()->preinstall();
     $rs ||= $self->stop();
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdPreInstall', 'apache_php_fpm' );
 }
@@ -124,7 +125,7 @@ sub postinstall
     local $@;
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
-        $serviceMngr->enable( $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} );
+        $serviceMngr->enable( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ) );
         $serviceMngr->enable( $self->{'config'}->{'HTTPD_SNAME'} );
     };
     if ($@) {
@@ -132,10 +133,13 @@ sub postinstall
         return 1;
     }
 
-    $rs = $self->{'eventManager'}->register( 'beforeSetupRestartServices', sub {
-            push @{$_[0]}, [ sub { $self->start(); }, 'Httpd (Apache2/php5-fpm)' ];
+    $rs = $self->{'eventManager'}->register(
+        'beforeSetupRestartServices',
+        sub {
+            push @{$_[0]}, [ sub { $self->start(); }, 'Httpd (Apache2/php-fpm)' ];
             0;
-        } );
+        }
+    );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdPostInstall', 'apache_php_fpm' );
 }
 
@@ -277,27 +281,40 @@ sub disableDmn
     my $net = iMSCP::Net->getInstance();
     my $version = $self->{'config'}->{'HTTPD_VERSION'};
 
-    $self->setData( {
+    $self->setData(
+        {
             BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
             AUTHZ_ALLOW_ALL   => version->parse( $version ) >= version->parse( '2.4.0' )
                 ? 'Require all granted' : 'Allow from all',
             HTTPD_LOG_DIR     => $self->{'config'}->{'HTTPD_LOG_DIR'},
             DOMAIN_IP         => $net->getAddrVersion( $data->{'DOMAIN_IP'} ) eq 'ipv4'
                 ? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]"
-        } );
+        }
+    );
 
     my %configTpls = ('' => 'domain_disabled.tpl');
 
     if ($data->{'SSL_SUPPORT'}) {
-        $self->setData( { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" } );
+        $self->setData(
+            {
+                CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem"
+            }
+        );
         $configTpls{'_ssl'} = 'domain_disabled_ssl.tpl';
     }
 
     for my $configTplType(keys %configTpls) {
-        $rs = $self->buildConfFile( "$self->{'apacheTplDir'}/$configTpls{$configTplType}", $data, {
-                destination => "$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}$configTplType.conf"
-            } );
-        $rs ||= $self->installConfFile( "$data->{'DOMAIN_NAME'}$configTplType.conf" );
+        $rs = $self->buildConfFile(
+            "$self->{'apacheTplDir'}/$configTpls{$configTplType}",
+            $data,
+            {
+                destination => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}$configTplType.conf"
+                ,
+                user        => $main::imscpConfig{'ROOT_USER'},
+                group       => $main::imscpConfig['ROOT_GROUP'],
+                mode        => 0644
+            }
+        );
         return $rs if $rs;
     }
 
@@ -326,9 +343,7 @@ sub deleteDmn
     for my $conffile("$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}.conf",
         "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
         "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
-        "$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}.conf",
-        "$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}_ssl.conf",
-        "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/$data->{'DOMAIN_NAME'}.conf"
+        "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR'}/$data->{'DOMAIN_NAME'}.conf"
     ) {
         next unless -f $conffile;
         $rs = iMSCP::File->new( filename => $conffile )->delFile();
@@ -350,7 +365,6 @@ sub deleteDmn
 
         if ($parentDir ne $userWebDir) {
             my $dir = iMSCP::Dir->new( dirname => $parentDir );
-
             if ($dir->isEmpty()) {
                 clearImmutable( dirname( $parentDir ) );
                 $rs = $dir->remove();
@@ -704,8 +718,8 @@ sub deleteHtaccess
         $rs ||= $file->save();
         $rs ||= $file->mode( 0640 );
         $rs ||= $file->owner( $data->{'USER'}, $data->{'GROUP'} );
-    } else {
-        $rs = $file->delFile() if -f $filePath;
+    } elsif (-f $filePath) {
+        $rs = $file->delFile();
     }
 
     setImmutable( $data->{'AUTH_PATH'} ) if $isImmutable;
@@ -725,10 +739,10 @@ sub addIps
 {
     my ($self, $data) = @_;
 
-    my $file = iMSCP::File->new( filename => "$self->{'apacheWrkDir'}/00_nameserver.conf" );
+    my $file = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf" );
     my $fileContent = $file->get();
     unless (defined $fileContent) {
-        error( sprintf( 'Could not read %s file', "$self->{'apacheWrkDir'}/00_nameserver.conf" ) );
+        error( sprintf( 'Could not read %s file', $self->{'filename'} ) );
         return 1;
     }
 
@@ -763,7 +777,6 @@ sub addIps
     $rs = $self->{'eventManager'}->trigger( 'afterHttpdAddIps', \$fileContent, $data );
     $rs ||= $file->set( $fileContent );
     $rs ||= $file->save();
-    $rs ||= $self->installConfFile( '00_nameserver.conf' );
     $rs ||= $self->enableSites( '00_nameserver.conf' );
     $rs || ($self->{'restart'} = 1);
     $rs;
@@ -811,9 +824,8 @@ sub buildConfFile
 
     my ($filename, $path) = fileparse( $file );
 
-    my $cfgTpl;
     my $rs = $self->{'eventManager'}->trigger(
-        'onLoadTemplate', 'apache_php_fpm', $filename, \$cfgTpl, $data, $options
+        'onLoadTemplate', 'apache_php_fpm', $filename, \ my $cfgTpl, $data, $options
     );
     return $rs if $rs;
 
@@ -834,7 +846,7 @@ sub buildConfFile
     $rs = $self->{'eventManager'}->trigger( 'afterHttpdBuildConfFile', \$cfgTpl, $filename, $data, $options );
     return $rs if $rs;
 
-    $options->{'destination'} ||= "$self->{'apacheWrkDir'}/$filename";
+    $options->{'destination'} ||= "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$filename";
 
     my $fileHandler = iMSCP::File->new( filename => $options->{'destination'} );
     $rs = $fileHandler->set( $cfgTpl );
@@ -867,7 +879,7 @@ sub installConfFile
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdInstallConfFile', $filename, $options );
     return $rs if $rs;
 
-    $file = "$self->{'apacheWrkDir'}/$file" unless -d $path && $path ne './';
+    $file = "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$file" unless -d $path && $path ne './';
     $options->{'destination'} ||= "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$filename";
 
     my $fileHandler = iMSCP::File->new( filename => $file );
@@ -1209,7 +1221,7 @@ sub start
     local $@;
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
-        $serviceMngr->start( $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} );
+        $serviceMngr->start( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ) );
         $serviceMngr->start( $self->{'config'}->{'HTTPD_SNAME'} );
     };
     if ($@) {
@@ -1238,7 +1250,7 @@ sub stop
     local $@;
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
-        $serviceMngr->stop( $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} );
+        $serviceMngr->stop( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ) );
         $serviceMngr->stop( $self->{'config'}->{'HTTPD_SNAME'} );
     };
     if ($@) {
@@ -1283,12 +1295,11 @@ sub restart
     local $@;
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
-
         if ($self->{'forceRestart'}) {
-            $serviceMngr->restart( $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} );
+            $serviceMngr->restart( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ) );
             $serviceMngr->restart( $self->{'config'}->{'HTTPD_SNAME'} );
         } else {
-            $serviceMngr->reload( $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} );
+            $serviceMngr->reload( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ) );
             $serviceMngr->reload( $self->{'config'}->{'HTTPD_SNAME'} );
         }
     };
@@ -1298,80 +1309,6 @@ sub restart
     }
 
     $self->{'eventManager'}->trigger( 'afterHttpdRestart' );
-}
-
-=item apacheBkpConfFile($filepath [, $prefix = '' [, $system = 0 ]])
-
- Backup the given Apache configuration file
-
- Param string $filepath Configuration file path
- Param string $prefix Prefix to use
- Param bool $system Backup as system file (default false)
- Return 0 on success, other on failure
-
-=cut
-
-sub apacheBkpConfFile
-{
-    my ($self, $filepath, $prefix, $system) = @_;
-
-    $prefix ||= '';
-    $system ||= 0;
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdBkpConfFile', $filepath, $prefix, $system );
-    return $rs if $rs;
-
-    if (-f $filepath) {
-        my $file = iMSCP::File->new( filename => $filepath );
-        my $filename = fileparse( $filepath );
-
-        if ($system && !-f "$self->{'apacheBkpDir'}/$prefix$filename.system") {
-            $rs = $file->copyFile( "$self->{'apacheBkpDir'}/$prefix$filename.system" );
-            return $rs if $rs;
-        } else {
-            $rs = $file->copyFile( "$self->{'apacheBkpDir'}/$prefix$filename.".time );
-            return $rs if $rs;
-        }
-    }
-
-    $self->{'eventManager'}->trigger( 'afterHttpdBkpConfFile', $filepath, $prefix, $system );
-}
-
-=item phpfpmBkpConfFile($filepath [, $prefix = '' [, $system = 0 ]])
-
- Backup the given PHP FPM configuration file
-
- Param string $filepath Configuration file path
- Param string $prefix Prefix to use
- Param bool $system Param int $system Backup as system file (default false)
- Return 0 on success, other on failure
-
-=cut
-
-sub phpfpmBkpConfFile
-{
-    my ($self, $filepath, $prefix, $system) = @_;
-
-    $prefix ||= '';
-    $system ||= 0;
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdBkpConfFile', $filepath, $prefix, $system );
-    return $rs if $rs;
-
-    if (-f $filepath) {
-        my $file = iMSCP::File->new( filename => $filepath );
-        my $filename = fileparse( $filepath );
-
-        if ($system && !-f "$self->{'phpfpmBkpDir'}/$prefix$filename.system") {
-            $rs = $file->copyFile( "$self->{'phpfpmBkpDir'}/$prefix$filename.system" );
-            return $rs if $rs;
-        } else {
-            $rs = $file->copyFile( "$self->{'phpfpmBkpDir'}/$prefix$filename.".time );
-            return $rs if $rs;
-        }
-    }
-
-    $self->{'eventManager'}->trigger( 'afterHttpdBkpConfFile', $filepath, $prefix, $system );
 }
 
 =item mountLogsFolder(\%data)
@@ -1440,28 +1377,19 @@ sub _init
     $self->{'start'} = 0;
     $self->{'restart'} = 0;
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'eventManager'}->trigger( 'beforeHttpdInit', $self, 'apache_php_fpm' ) and fatal(
-        'apache_php_fpm - beforeHttpdInit has failed'
-    );
     $self->{'apacheCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
-    $self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
-    $self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
     $self->{'apacheTplDir'} = "$self->{'apacheCfgDir'}/parts";
-    $self->{'config'} = lazy {
+    $self->{'config'} = lazy
+        {
             tie my %c, 'iMSCP::Config', fileName => "$self->{'apacheCfgDir'}/apache.data";
             \%c;
         };
-    $self->{'phpfpmCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/php-fpm";
-    $self->{'phpfpmBkpDir'} = "$self->{'phpfpmCfgDir'}/backup";
-    $self->{'phpfpmWrkDir'} = "$self->{'phpfpmCfgDir'}/working";
-    $self->{'phpfpmTplDir'} = "$self->{'phpfpmCfgDir'}/parts";
-    $self->{'phpfpmConfig'} = lazy {
-            tie my %c, 'iMSCP::Config', fileName => "$self->{'phpfpmCfgDir'}/phpfpm.data";
+    $self->{'phpCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/php";
+    $self->{'phpConfig'} = lazy
+        {
+            tie my %c, 'iMSCP::Config', fileName => "$self->{'phpCfgDir'}/php.data";
             \%c;
         };
-    $self->{'eventManager'}->trigger( 'afterHttpdInit', $self, 'apache_php_fpm' ) and fatal(
-        'apache_php_fpm - afterHttpdInit has failed'
-    );
     $self->{'eventManager'}->register( 'afterHttpdBuildConfFile', sub { $self->_cleanTemplate( @_ )} );
     $self;
 }
@@ -1484,26 +1412,31 @@ sub _addCfg
 
     $self->setData( $data );
 
-    my %vhosts = ("$data->{'DOMAIN_NAME'}.conf" => $data->{'FORWARD'} eq 'no' ? 'domain.tpl' : 'domain_redirect.tpl');
+    my %vhosts = (
+        "$data->{'DOMAIN_NAME'}.conf" => $data->{'FORWARD'} eq 'no' ? 'domain.tpl' : 'domain_redirect.tpl'
+    );
 
     if ($data->{'SSL_SUPPORT'}) {
         $vhosts{"$data->{'DOMAIN_NAME'}_ssl.conf"} = $data->{'FORWARD'} eq 'no'
             ? 'domain_ssl.tpl' : 'domain_redirect_ssl.tpl';
-        $self->setData( { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" } );
+        $self->setData(
+            {
+                CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem"
+            }
+        );
     } else {
         $rs = $self->disableSites( "$data->{'DOMAIN_NAME'}_ssl.conf" );
         return $rs if $rs;
 
-        for my $vhost("$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
-            "$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}_ssl.conf"
-        ) {
-            next unless -f $vhost;
-            $rs = iMSCP::File->new( filename => $vhost )->delFile();
+        if (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf") {
+            $rs = iMSCP::File->new(
+                filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf"
+            )->delFile();
             return $rs if $rs;
         }
     }
 
-    my $confLevel = $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
+    my $confLevel = $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'};
     if ($confLevel eq 'per_user') { # One pool configuration file for all domains
         $confLevel = $data->{'ROOT_DOMAIN_NAME'};
     } elsif ($confLevel eq 'per_domain') { # One pool configuration file for each domains (including subdomains)
@@ -1513,13 +1446,15 @@ sub _addCfg
     }
 
     my $apache24 = version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' );
+    my $phpVersion = $self->{'phpConfig'}->{'PHP_VERSION'};
     my $net = iMSCP::Net->getInstance();
 
-    unless ($self->{'phpfpmConfig'}->{'LISTEN_MODE'} eq 'uds') {
-        $data->{'PHP_FPM_LISTEN_PORT'} = $self->{'phpfpmConfig'}->{'LISTEN_PORT_START'} + $data->{'PHP_FPM_LISTEN_PORT'};
+    unless ($self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds') {
+        $data->{'PHP_FPM_LISTEN_PORT'} = $self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'} + $data->{'PHP_FPM_LISTEN_PORT'};
     }
 
-    $self->setData( {
+    $self->setData(
+        {
             BASE_SERVER_VHOST       => $main::imscpConfig{'BASE_SERVER_VHOST'},
             HTTPD_LOG_DIR           => $self->{'config'}->{'HTTPD_LOG_DIR'},
             HTTPD_CUSTOM_SITES_DIR  => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
@@ -1527,31 +1462,47 @@ sub _addCfg
             AUTHZ_DENY_ALL          => $apache24 ? 'Require all denied' : 'Deny from all',
             DOMAIN_IP               => $net->getAddrVersion( $data->{'DOMAIN_IP'} ) eq 'ipv4'
                 ? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]",
+            PHP_VERSION             => $phpVersion,
             POOL_NAME               => $confLevel,
 
             # fastcgi module case (Apache2 < 2.4.10)
-            FASTCGI_LISTEN_MODE     => $self->{'phpfpmConfig'}->{'LISTEN_MODE'} eq 'uds' ? 'socket' : 'host',
-            FASTCGI_LISTEN_ENDPOINT => $self->{'phpfpmConfig'}->{'LISTEN_MODE'} eq 'uds'
+            FASTCGI_LISTEN_MODE     => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds' ? 'socket' : 'host',
+            FASTCGI_LISTEN_ENDPOINT => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
                 ? "/var/run/php5-fpm-$confLevel.sock" : "127.0.0.1:$data->{'PHP_FPM_LISTEN_PORT'}",
 
             # proxy_fcgi module case (Apache2 >= 2.4.10)
-            PROXY_LISTEN_MODE       => $self->{'phpfpmConfig'}->{'LISTEN_MODE'} eq 'uds' ? 'unix' : 'fcgi',
-            PROXY_LISTEN_ENDPOINT   => $self->{'phpfpmConfig'}->{'LISTEN_MODE'} eq 'uds'
-                ? "/var/run/php5-fpm-$confLevel.sock|fcgi://$confLevel/" : "//127.0.0.1:$data->{'PHP_FPM_LISTEN_PORT'}",
-        } );
+            PROXY_LISTEN_MODE       => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds' ? 'unix' : 'fcgi',
+            PROXY_LISTEN_ENDPOINT   => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
+                ? "/var/run/php$phpVersion-fpm-$confLevel.sock|fcgi://$confLevel/"
+                : "//127.0.0.1:$data->{'PHP_FPM_LISTEN_PORT'}",
+        }
+    );
 
     while(my ($vhostTgr, $vhostSrc) = each( %vhosts )) {
-        $rs = $self->buildConfFile( "$self->{'apacheTplDir'}/$vhostSrc", $data, {
-                destination => "$self->{'apacheWrkDir'}/$vhostTgr"
-            } );
-        $rs ||= $self->installConfFile( $vhostTgr );
+        $rs = $self->buildConfFile(
+            "$self->{'apacheTplDir'}/$vhostSrc",
+            $data,
+            {
+                destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostTgr",
+                user        => $main::imscpConfig{'ROOT_USER'},
+                group       => user => $main::imscpConfig{'ROOT_GROUP'},
+                mode        => 0644
+            }
+        );
         return $rs if $rs;
     }
 
     unless (-f "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf") {
-        $rs = $self->buildConfFile( "$self->{'apacheTplDir'}/custom.conf.tpl", $data, {
-                destination => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf"
-            } );
+        $rs = $self->buildConfFile(
+            "$self->{'apacheTplDir'}/custom.conf.tpl",
+            $data,
+            {
+                destination => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
+                user        => $main::imscpConfig{'ROOT_USER'},
+                group       => user => $main::imscpConfig{'ROOT_GROUP'},
+                mode        => 0644
+            }
+        );
         return $rs if $rs;
     }
 
@@ -1576,12 +1527,15 @@ sub _dmnFolders
     my @folders = ();
 
     $self->{'eventManager'}->trigger( 'beforeHttpdDmnFolders', \@folders );
-    push( @folders, [
+    push(
+        @folders,
+        [
             "$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}",
             $main::imscpConfig{'ROOT_USER'},
             $main::imscpConfig{'ADM_GROUP'},
             0755
-        ] );
+        ]
+    );
     $self->{'eventManager'}->trigger( 'afterHttpdDmnFolders', \@folders );
     @folders;
 }
@@ -1770,11 +1724,7 @@ sub _addFiles
             next unless -e "$webDir/$file";
             $rs = setRights(
                 "$webDir/$file",
-                {
-                    user      => $main::imscpConfig{'ROOT_USER'},
-                    group     => $self->getRunningGroup(),
-                    recursive => 1
-                }
+                { user => $main::imscpConfig{'ROOT_USER'}, group => $self->getRunningGroup(), recursive => 1 }
             );
             return $rs if $rs;
         }
@@ -1784,11 +1734,7 @@ sub _addFiles
             # logs vuxxx:vuxxx 0750 (no recursive)
             $rs = setRights(
                 "$webDir/logs",
-                {
-                    user  => $main::imscpConfig{'ROOT_USER'},
-                    group => $data->{'GROUP'},
-                    mode  => '0750'
-                }
+                { user => $main::imscpConfig{'ROOT_USER'}, group => $data->{'GROUP'}, mode => '0750' }
             );
             return $rs if $rs;
         }
@@ -1819,8 +1765,9 @@ sub _buildPHPConfig
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdBuildPhpConf', $data );
     return $rs if $rs;
 
-    my $confLevel = $self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'};
+    my $confLevel = $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'};
     my $domainType = $data->{'DOMAIN_TYPE'};
+    my $phpVersion = $self->{'phpConfig'}->{'PHP_VERSION'};
 
     my ($poolName, $emailDomain);
     if ($confLevel eq 'per_user') {
@@ -1838,36 +1785,43 @@ sub _buildPHPConfig
     }
 
     if ($data->{'FORWARD'} eq 'no' && $data->{'PHP_SUPPORT'} eq 'yes') {
-        $self->setData( {
-                POOL_NAME            => $poolName,
-                TMPDIR               => $data->{'HOME_DIR'}.'/phptmp',
-                EMAIL_DOMAIN         => $emailDomain,
-                LISTEN_ENDPOINT      => $self->{'phpfpmConfig'}->{'LISTEN_MODE'} eq 'uds'
-                    ? "/var/run/php5-fpm-$poolName.sock" : "127.0.0.1:$data->{'PHP_FPM_LISTEN_PORT'}",
-                PROCESS_MANAGER_MODE => $self->{'phpfpmConfig'}->{'PROCESS_MANAGER_MODE'} || 'ondemand',
-                MAX_CHILDREN         => $self->{'phpfpmConfig'}->{'MAX_CHILDREN'} || 6,
-                START_SERVERS        => $self->{'phpfpmConfig'}->{'START_SERVERS'} || 1,
-                MIN_SPARE_SERVERS    => $self->{'phpfpmConfig'}->{'MIN_SPARE_SERVERS'} || 1,
-                MAX_SPARE_SERVERS    => $self->{'phpfpmConfig'}->{'MAX_SPARE_SERVERS'} || 2,
-                PROCESS_IDLE_TIMEOUT => $self->{'phpfpmConfig'}->{'PROCESS_IDLE_TIMEOUT'} || '60s',
-                MAX_REQUESTS         => $self->{'phpfpmConfig'}->{'MAX_REQUESTS'} || 1000
-            } );
+        $self->setData(
+            {
+                PHP_VERSION                  => $phpVersion,
+                POOL_NAME                    => $poolName,
+                TMPDIR                       => $data->{'HOME_DIR'}.'/phptmp',
+                EMAIL_DOMAIN                 => $emailDomain,
+                PHP_FPM_LISTEN_ENDPOINT      => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
+                    ? "/var/run/php$phpVersion-fpm-$poolName.sock" : "127.0.0.1:$data->{'PHP_FPM_LISTEN_PORT'}",
+                PHP_FPM_PROCESS_MANAGER_MODE => $self->{'phpConfig'}->{'PHP_FPM_PROCESS_MANAGER_MODE'} || 'ondemand',
+                PHP_FPM_MAX_CHILDREN         => $self->{'phpConfig'}->{'PHP_FPM_MAX_CHILDREN'} || 6,
+                PHP_FPM_START_SERVERS        => $self->{'phpConfig'}->{'PHP_FPM_START_SERVERS'} || 1,
+                PHP_FPM_MIN_SPARE_SERVERS    => $self->{'phpConfig'}->{'PHP_FPM_MIN_SPARE_SERVERS'} || 1,
+                PHP_FPM_MAX_SPARE_SERVERS    => $self->{'phpConfig'}->{'PHP_FPM_MAX_SPARE_SERVERS'} || 2,
+                PHP_FPM_PROCESS_IDLE_TIMEOUT => $self->{'phpConfig'}->{'PHP_FPM_PROCESS_IDLE_TIMEOUT'} || '60s',
+                PHP_FPM_MAX_REQUESTS         => $self->{'phpConfig'}->{'PHP_FPM_MAX_REQUESTS'} || 1000
+            }
+        );
 
-        $rs = $self->buildConfFile( "$self->{'phpfpmTplDir'}/pool.conf", $data, {
-                destination => "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/$poolName.conf",
+        $rs = $self->buildConfFile(
+            "$self->{'phpCfgDir'}/fpm/pool.conf",
+            $data,
+            {
+                destination => "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR'}/$poolName.conf",
                 user        => $main::imscpConfig{'ROOT_USER'},
                 group       => $main::imscpConfig{'ROOT_GROUP'},
                 mode        => 0644
-            } );
+            }
+        );
         return $rs if $rs;
     } elsif (($data->{'PHP_SUPPORT'} ne 'yes'
         || $confLevel eq 'per_user' && $domainType ne 'dmn'
         || $confLevel eq 'per_domain' && !grep($_ eq $domainType, ( 'dmn', 'als' ))
         || $confLevel eq 'per_site')
-        && -f "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/$data->{'DOMAIN_NAME'}.conf"
+        && -f "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR'}/$data->{'DOMAIN_NAME'}.conf"
     ) {
         $rs = iMSCP::File->new(
-            filename => "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/$data->{'DOMAIN_NAME'}.conf"
+            filename => "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR'}/$data->{'DOMAIN_NAME'}.conf"
         )->delFile();
         return $rs if $rs;
     }
