@@ -1,31 +1,30 @@
+#
+## HTTPD (Nginx) variables
+#
+
 HTTPD_NAME = Nginx
 HTTPD_VERSION =
-
 HTTPD_WORKER_PROCESSES = auto
 HTTPD_WORKER_CONNECTIONS = 2048
 HTTPD_RLIMIT_NOFILE = 65000
-
 HTTPD_USER = www-data
 HTTPD_GROUP = www-data
-
 HTTPD_SNAME = nginx
 HTTPD_CONF_DIR = /etc/nginx
 HTTPD_SITES_AVAILABLE_DIR = /etc/nginx/sites-available
 HTTPD_SITES_ENABLED_DIR = /etc/nginx/sites-enabled
 HTTPD_ROOT_DIR = /var/www
 HTTPD_LOG_DIR = /var/log/nginx
-
 # Cache base directory as provided by nginx package (from debian Team)
 HTTPD_CACHE_DIR_DEBIAN = /var/lib/nginx
-
 # Cache base directory as provided by nginx package (from nginx Team)
 HTTPD_CACHE_DIR_NGINX = /var/cache/nginx
-
 HTTPD_PID_FILE = /var/run/nginx.pid
 
-# PHP / FASTCGI variables
-PHP_STARTER_DIR = /var/www/fcgi
-PHP_CGI_BIN = /usr/bin/php5-cgi
-PHP_FCGI_CHILDREN = 5
-PHP_FCGI_MAX_REQUESTS = 1000
+#
+## FCGI variables
+#
+
 SPAWN_FCGI_BIN = /usr/bin/spawn-fcgi
+FCGI_CHILDREN = 5
+FCGI_MAX_REQUEST = 1000
