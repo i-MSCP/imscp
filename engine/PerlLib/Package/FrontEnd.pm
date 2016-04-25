@@ -122,7 +122,8 @@ sub postinstall
     }
 
     $rs = $self->{'eventManager'}->register(
-        'beforeSetupRestartServices', sub {
+        'beforeSetupRestartServices',
+        sub {
             push @{$_[0]}, [ sub { $self->start(); }, 'Frontend (Nginx/PHP)' ];
             0;
         }
@@ -236,12 +237,9 @@ sub disableSites
 
     for my $site(@sites) {
         my $siteName = basename( $site, '.conf' );
-
         next unless -l "$self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}/$siteName";
-
         $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}/$siteName" )->delFile();
         return $rs if $rs;
-
         $self->{'restart'} = 1;
     }
 
@@ -439,10 +437,9 @@ sub _init
             tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.data";
             \%c;
         };
-
-    $self->{'php_config'} = lazy
+    $self->{'phpConfig'} = lazy
         {
-            tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.data";
+            tie my %c, 'iMSCP::Config', fileName => "$main::imscpConfig{'CONF_DIR'}/php/php.data";
             \%c;
         };
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
