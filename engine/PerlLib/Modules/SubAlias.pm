@@ -184,9 +184,7 @@ sub _getHttpdData
     my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}" );
     my $webDir = File::Spec->canonpath( "$homeDir/$self->{'subdomain_alias_mount'}" );
     my $db = iMSCP::Database->factory();
-    my $confLevel = ($main::imscpConfig{'HTTPD_SERVER'} eq 'apache_php_fpm')
-        ? Servers::httpd->factory()->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'}
-        : Servers::httpd->factory()->{'config'}->{'INI_LEVEL'};
+    my $confLevel = Servers::httpd->factory()->{'phpConfig'}->{'PHP_CONFIG_LEVEL'};
 
     if ($confLevel eq 'per_user') {
         $confLevel = 'dmn';

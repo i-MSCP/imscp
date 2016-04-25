@@ -236,10 +236,7 @@ sub _getHttpdData
     my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}" );
     my $webDir = File::Spec->canonpath( "$homeDir/$self->{'alias_mount'}" );
     my $db = iMSCP::Database->factory();
-    my $confLevel = $main::imscpConfig{'HTTPD_SERVER'} eq 'apache_php_fpm'
-        ? Servers::httpd->factory()->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'}
-        : Servers::httpd->factory()->{'config'}->{'INI_LEVEL'};
-    $confLevel = $confLevel eq 'per_user' ? 'dmn' : 'als';
+    my $confLevel = Servers::httpd->factory()->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} eq 'per_user' ? 'dmn' : 'als';
 
     my $phpiniMatchId = $confLevel eq 'dmn' ? $self->{'domain_id'} : $self->{'alias_id'};
     my $phpini = $db->doQuery(
