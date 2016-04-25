@@ -25,13 +25,13 @@ package Package::FrontEnd;
 
 use strict;
 use warnings;
+use File::Basename;
 use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::EventManager;
 use iMSCP::TemplateParser;
 use iMSCP::Service;
-use File::Basename;
 use Scalar::Defer;
 use parent 'Common::SingletonClass';
 
