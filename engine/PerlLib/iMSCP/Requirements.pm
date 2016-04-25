@@ -62,7 +62,7 @@ sub all
 
 sub user
 {
-    die( "This script must be run as root user." ) if $< != 0;
+    die( 'This script must be run as root user.' ) if $< != 0;
     undef;
 }
 
@@ -135,8 +135,7 @@ sub _init
         'PHP'  => {
             'version_command' => 'php -d date.timezone=UTC -v',
             'version_regexp'  => qr/PHP\s([\d.]+)/,
-            'min_version'     => '5.3.2',
-            'max_version'     => '5.6.999', # Abitrary tiny version is intentional. We only want reject PHP >= 7
+            'min_version'     => '5.3.2'
         },
         'Perl' => {
             'version_command' => 'perl -v',

@@ -16,7 +16,7 @@
         </apache_fcgid>
         <apache_itk>
             <package>apache2</package>
-            <package>libapache2-mod-php7</package>
+            <package>libapache2-mod-php7.0</package>
             <package_delayed>libapache2-mpm-itk</package_delayed>
         </apache_itk>
         <apache_php_fpm>
@@ -36,7 +36,7 @@
             <package>php7.0-intl</package>
             <package>php7.0-json</package>
             <package>php7.0-mcrypt</package>
-            <package>php7-mysql</package>
+            <package>php7.0-mysql</package>
             <package>php-pear</package>
             <package_conflict>php-apc</package_conflict>
             <package_conflict>php5*</package_conflict>
