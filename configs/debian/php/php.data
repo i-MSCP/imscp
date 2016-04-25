@@ -1,0 +1,86 @@
+##
+#### PHP common parameters
+##
+
+PHP_VERSION =
+PHP_CONF_DIR_PATH =
+PHP_DISMOD_PATH =
+PHP_ENMOD_PATH =
+
+# Possible values: per_user, per_domain or per_site
+PHP_CONFIG_LEVEL =
+
+#
+## PHP CLI specific
+#
+
+PHP_CLI_BIN_PATH =
+
+##
+#### PHP FCGI specific
+##
+
+PHP_FCGI_BIN_PATH =
+PHP_FCGI_CHILDREN = 0
+PHP_FCGI_MAX_REQUESTS = 1000
+PHP_FCGI_STARTER_DIR = /var/www/fcgi
+
+##
+#### PHP FPM specific
+##
+
+PHP_FPM_BIN_PATH =
+PHP_FPM_POOL_DIR =
+
+#
+## FPM global parameters
+#
+
+PHP_FPM_LOG_LEVEL = error
+PHP_FPM_EMERGENCY_RESTART_THRESHOLD = 10
+PHP_FPM_EMERGENCY_RESTART_INTERVAL = 1m
+PHP_FPM_PROCESS_CONTROL_TIMEOUT = 10s
+PHP_FPM_PROCESS_MAX = 0
+
+#
+## PHP-FPM pool parameters
+#
+
+# Listen mode (FPM FastCGI addresse type):
+# Available modes:
+#  - 'tcp' (e.g. 192.168.1.136:9001)
+#  - 'uds' (e.g. /var/run/php5-fpm-domain.tld.sock)
+PHP_FPM_LISTEN_MODE =
+
+# Starting port for TCP/IP FastCGI address type
+PHP_FPM_LISTEN_PORT_START = 9000
+
+# Process manager mode
+# Either: 'static', 'dynamic' or 'ondemand'
+PHP_FPM_PROCESS_MANAGER_MODE = ondemand
+
+# Depending on the process manager mode:
+# - Number of child processes to be created (static mode)
+# - Maximum of child processes to be created (dynamic or ondemand modes)
+PHP_FPM_MAX_CHILDREN = 6
+
+# The number of child processes created on startup.
+# Note: Used only when process manager mode is set to 'dynamic'
+PHP_FPM_START_SERVERS = 1
+
+# The desired minimum number of idle server processes.
+# Note: Used only when pm is set to 'dynamic'
+# Note: Mandatory when pm is set to 'dynamic'
+PHP_FPM_MIN_SPARE_SERVERS = 1
+
+# The desired maximum number of idle server processes.
+# Note: Used only when pm is set to 'dynamic'
+# Note: Mandatory when pm is set to 'dynamic'
+PHP_FPM_MAX_SPARE_SERVERS = 2
+
+#  The number of seconds after which an idle process will be killed.
+# Note: Used only when process manager mode is set to 'ondemand'
+PHP_FPM_PROCESS_IDLE_TIMEOUT = 60s
+
+# The number of request each child process should execute before respawning.
+PHP_FPM_MAX_REQUESTS = 1000

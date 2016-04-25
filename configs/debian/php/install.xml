@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<install>
+    <copy_config>${SYSTEM_CONF}/apache</copy_config>
+    <copy_config>${SYSTEM_CONF}/fcgi</copy_config>
+    <copy_config>${SYSTEM_CONF}/fpm</copy_config>
+    <copy_config>${SYSTEM_CONF}/php/php.data</copy_config>
+</install>

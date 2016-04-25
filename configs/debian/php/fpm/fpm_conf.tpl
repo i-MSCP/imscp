@@ -12,7 +12,7 @@
 ; Relative path can also be used. They will be prefixed by:
 ;  - the global prefix if it's been set (-p arguement)
 ;  - /usr otherwise
-;include=/etc/php5/fpm/*.conf
+;include=/etc/php{PHP_VERSION}/fpm/*.conf
 
 ;;;;;;;;;;;;;;;;;;
 ; Global Options ;
@@ -22,14 +22,14 @@
 ; Pid file
 ; Note: the default prefix is /var
 ; Default Value: none
-pid = /var/run/php5-fpm.pid
+pid = /var/run/php{PHP_VERSION}-fpm.pid
 
 ; Error log file
 ; If it's set to "syslog", log is sent to syslogd instead of being written
 ; in a local file.
 ; Note: the default prefix is /var
 ; Default Value: log/php-fpm.log
-error_log = /var/log/php5-fpm.log
+error_log = /var/log/php{PHP_VERSION}-fpm.log
 
 ; syslog_facility is used to specify what type of program is logging the
 ; message. This lets syslogd specify that messages from different facilities
@@ -118,4 +118,4 @@ daemonize = yes
 
 ; To configure the pools it is recommended to have one .conf file per
 ; pool in the following directory:
-include=/etc/php5/fpm/pool.d/*.conf
+include=/etc/php{PHP_VERSION}/fpm/pool.d/*.conf

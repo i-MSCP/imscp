@@ -3,7 +3,7 @@
 [www]
 user = {HTTPD_USER}
 group = {HTTPD_GROUP}
-listen = /var/run/php5-fpm-www.sock
+listen = /var/run/php{PHP_VERSION}-fpm-www.sock
 listen.owner = {HTTPD_USER}
 listen.group = {HTTPD_GROUP}
 listen.mode = 0660

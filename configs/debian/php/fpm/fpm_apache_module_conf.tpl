@@ -1,5 +1,5 @@
 <IfModule fastcgi_module>
-    Action php5-fcgi /php5-fcgi
+    Action php{PHP_VERSION}-fcgi /php{PHP_VERSION}-fcgi
     AddHandler php5-fcgi .php .php3 .php4 .php5 .php7 .pht .phtml
 
     <Directory /var/lib/apache2/fastcgi>
