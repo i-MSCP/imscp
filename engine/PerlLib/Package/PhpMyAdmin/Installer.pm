@@ -554,7 +554,7 @@ sub _setupDatabase
 
     $schemaFile = iMSCP::File->new( filename => $schemaFile )->get();
     unless (defined $schemaFile) {
-        error( sprintf( 'Could not read %s', $self->{'filename'} ) );
+        error( sprintf( 'Could not read %s', $schemaFile ) );
         return 1;
     }
 

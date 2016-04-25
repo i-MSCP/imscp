@@ -312,7 +312,7 @@ sub _makeDirs
     return $rs if $rs;
 
     # Cleanup pools directory (prevent possible orphaned pool file when switching to other pool level)
-    unlink glob "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR'}/*.conf";
+    unlink glob "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/*.conf";
     $self->{'eventManager'}->trigger( 'afterHttpdMakeDirs' );
 }
 
@@ -423,7 +423,7 @@ sub _buildPhpConfFiles
     );
 
     $rs = $self->{'httpd'}->buildConfFile(
-        "$self->{'phpCfgDir'}/fpm/php.ini.tpl",
+        "$self->{'phpCfgDir'}/fpm/php.ini",
         { },
         {
             destination => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/php.ini",
@@ -435,6 +435,7 @@ sub _buildPhpConfFiles
 
     $self->{'httpd'}->setData(
         {
+            PHP_CONF_DIR_PATH                   => $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'},
             PHP_FPM_LOG_LEVEL                   => $self->{'phpConfig'}->{'PHP_FPM_LOG_LEVEL'} || 'error',
             PHP_FPM_EMERGENCY_RESTART_THRESHOLD => $self->{'phpConfig'}->{'PHP_FPM_EMERGENCY_RESTART_THRESHOLD'} || 10,
             PHP_FPM_EMERGENCY_RESTART_INTERVAL  => $self->{'phpConfig'}->{'PHP_FPM_EMERGENCY_RESTART_INTERVAL'} || '1m',
@@ -467,7 +468,7 @@ sub _buildPhpConfFiles
         "$self->{'phpCfgDir'}/fpm/pool.conf.default",
         { },
         {
-            destination => "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR'}/www.conf",
+            destination => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/www.conf",
             user        => $main::imscpConfig{'ROOT_USER'},
             group       => $main::imscpConfig{'ROOT_GROUP'},
             mode        => 0644
@@ -498,7 +499,7 @@ sub _buildApacheConfFiles
         unless (defined $cfgTpl) {
             $cfgTpl = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf" )->get();
             unless (defined $cfgTpl) {
-                error( "Unable to read $self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf" );
+                error( sprintf('Could not read %s file', "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf" );
                 return 1;
             }
         }
@@ -735,7 +736,9 @@ sub _oldEngineCompatibility
     }
 
     if (-f "$self->{'phpConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/master.conf") {
-        $rs = iMSCP::File->new( filename => "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR'}/master.conf" )->delFile();
+        $rs = iMSCP::File->new(
+            filename => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/master.conf"
+        )->delFile();
         return $rs if $rs;
     }
 
@@ -754,70 +757,29 @@ sub _oldEngineCompatibility
 
 sub guessPhpVariables
 {
-    my ($phpVersion) = $main::imscpConfig{'PHP_SERVER'} =~ /php(.*)/;
+    my ($phpVersion) = $main::imscpConfig{'PHP_SERVER'} =~ /php(.*)$/;
+
+    unless(defined $phpVersion) {
+        error('Could not guess PHP version');
+    }
 
     $self->{'phpConfig'}->{'PHP_VERSION'} = $phpVersion;
 
-    # guess PHP CLI binary path
-
-    $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php$phpVersion" ) ||
-        iMSCP::ProgramFinder::find( "php" ) || '';
-
-    if ($self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} eq '') {
-        error( sprintf( 'Could not guess PHP cli binary path. Binary not found in search path.' ) );
+    if(version->parse("$phpVersion") < version->parse("7.0")) {
+        $self->{'config'}->{'PHP_CONF_DIR_PATH'} = "/etc/php/$phpVersion";
+        $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = '/usr/bin/php5';
+        $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = '/usr/bin/php5-cgi';
+        $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = '/usr/bin/php5-fpm';
+        $self->{'phpConfig'}->{'PHP_DISMOD_PATH'} = 'php5dismod';
+        $self->{'phpConfig'}->{'PHP_ENMOD_PATH'} = 'php5enmod';
+    } else {
+        $self->{'config'}->{'PHP_CONF_DIR_PATH'} = "/etc/php5";
+        $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = "/usr/bin/php$phpVersion";
+        $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = "/usr/bin/php-cgi$phpVersion";
+        $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = "/usr/bin/php-fpm$phpVersion";
+        $self->{'phpConfig'}->{'PHP_DISMOD_PATH'} = 'phpdismod';
+        $self->{'phpConfig'}->{'PHP_ENMOD_PATH'} = 'phpenmod';
     }
-
-    # guess PHP fcgi binary path
-
-    $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php$phpVersion-cgi" ) ||
-        iMSCP::ProgramFinder::find( "php-cgi$phpVersion" ) || iMSCP::ProgramFinder::find( 'php-cgi' ) || '';
-
-    if ($self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} eq '') {
-        error( sprintf( 'Could not guess PHP fcgi binary path. Binary not found in search path.' ) );
-    }
-
-    # guess PHP fpm binary path
-    my $phpBinary = iMSCP::ProgramFinder::find( "php$phpVersion-fpm" ) ||
-        iMSCP::ProgramFinder::find( "php-fpm$phpVersion" );
-
-    unless ($phpBinary) {
-        error( sprintf( 'Could not guess PHP fpm binary path. Binary not found in search path.', $phpVersion ) );
-        return 1;
-    }
-
-    $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = $phpBinary;
-
-    # guess PHP configuration directory
-    my $rs = execute(
-        "$phpBinary -i 2/dev/null | grep 'Configuration File (php.ini) Path' | cut -d' ' -f5", \ my $stdout
-    );
-    if ($rs) {
-        error( sprintf( 'Could not guess PHP configuration directory path for PHP %s (fpm SAPI).', $phpVersion ) );
-        return 1;
-    }
-    chomp( $stdout );
-    unless (-d $stdout) {
-        error( "PHP %s configuration directory doesn't exists.", $stdout );
-        return 1;
-    }
-    $self->{'config'}->{'PHP_CONF_DIR_PATH'} = $stdout;
-
-    # guess PHP pool directory
-
-    unless (-d "$stdout/pool.d") {
-        error( "PHP %s pool configuration directory doesn't exists.", $stdout );
-        return 1;
-    }
-
-    $self->{'config'}->{'PHP_FPM_POOL_DIR'} = $stdout;
-
-    # Guess phpdismod executable path
-    $self->{'config'}->{'PHP_DISMOD_PATH'} = iMSCP::ProgramFinder::find( "php${phpVersion}dismod" ) ||
-        iMSCP::ProgramFinder::find( 'phpdismod' ) || '';
-
-    # Guest phpenmod executable path
-    $self->{'config'}->{'PHP_ENMOD_PATH'} = iMSCP::ProgramFinder::find( "php${phpVersion}dismod" ) ||
-        iMSCP::ProgramFinder::find( 'phpenmod' ) || '';
 
     0;
 }

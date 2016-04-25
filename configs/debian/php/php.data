@@ -2,19 +2,16 @@
 #### PHP common parameters
 ##
 
-PHP_VERSION =
+PHP_CONFIG_LEVEL =
 PHP_CONF_DIR_PATH =
 PHP_DISMOD_PATH =
 PHP_ENMOD_PATH =
-
 PHP_PEAR_DIR = /usr/share/php
+PHP_VERSION =
 
-# Possible values: per_user, per_domain or per_site
-PHP_CONFIG_LEVEL =
-
-#
-## PHP CLI specific
-#
+##
+#### PHP CLI specific
+##
 
 PHP_CLI_BIN_PATH =
 
@@ -32,7 +29,6 @@ PHP_FCGI_STARTER_DIR = /var/www/fcgi
 ##
 
 PHP_FPM_BIN_PATH =
-PHP_FPM_POOL_DIR =
 
 #
 ## FPM global parameters

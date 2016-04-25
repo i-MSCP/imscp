@@ -342,7 +342,7 @@ sub deleteDmn
     for my $conffile("$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}.conf",
         "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
         "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
-        "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR'}/$data->{'DOMAIN_NAME'}.conf"
+        "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d$data->{'DOMAIN_NAME'}.conf"
     ) {
         next unless -f $conffile;
         $rs = iMSCP::File->new( filename => $conffile )->delFile();
@@ -741,7 +741,7 @@ sub addIps
     my $file = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf" );
     my $fileContent = $file->get();
     unless (defined $fileContent) {
-        error( sprintf( 'Could not read %s file', $self->{'filename'} ) );
+        error( sprintf( 'Could not read %s file', $file->{'filename'} ) );
         return 1;
     }
 
@@ -1806,7 +1806,7 @@ sub _buildPHPConfig
             "$self->{'phpCfgDir'}/fpm/pool.conf",
             $data,
             {
-                destination => "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR'}/$poolName.conf",
+                destination => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/$poolName.conf",
                 user        => $main::imscpConfig{'ROOT_USER'},
                 group       => $main::imscpConfig{'ROOT_GROUP'},
                 mode        => 0644
@@ -1817,10 +1817,10 @@ sub _buildPHPConfig
         || $confLevel eq 'per_user' && $domainType ne 'dmn'
         || $confLevel eq 'per_domain' && !grep($_ eq $domainType, ( 'dmn', 'als' ))
         || $confLevel eq 'per_site')
-        && -f "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR'}/$data->{'DOMAIN_NAME'}.conf"
+        && -f "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/$data->{'DOMAIN_NAME'}.conf"
     ) {
         $rs = iMSCP::File->new(
-            filename => "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR'}/$data->{'DOMAIN_NAME'}.conf"
+            filename => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/$data->{'DOMAIN_NAME'}.conf"
         )->delFile();
         return $rs if $rs;
     }

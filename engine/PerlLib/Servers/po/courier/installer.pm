@@ -712,7 +712,7 @@ sub _buildConf
         my $file = iMSCP::File->new( filename => "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd" );
         my $fileContent = $file->get();
         unless (defined $fileContent) {
-            error( sprintf( 'Could not read %s file', $self->{'filename'} ) );
+            error( sprintf( 'Could not read %s file', $file->{'filename'} ) );
             return 1;
         }
 
