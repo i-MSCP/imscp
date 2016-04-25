@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2016.04.05
+# Last update: 2016.04.25
 
 %main::questions = (
 
@@ -217,14 +217,8 @@
     #
 
     # PHP configuration level
-    # Only relevant with 'apache_fgcid' server implementation
     # Possible values: per_user, per_domain, per_site
-    INI_LEVEL                           => 'per_site',
-
-    # PHP configuration level
-    # Only relevant with 'apache_php_fpm' server implementation
-    # Possible values: per_user, per_domain, per_site
-    PHP_FPM_POOLS_LEVEL                 => 'per_site',
+    PHP_CONFIG_LEVEL                 => 'per_site',
 
     # PHP-FPM listen socket type
     # Only relevant with 'apache_php_fpm' sever implementation

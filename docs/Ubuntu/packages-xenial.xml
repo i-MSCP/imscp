@@ -25,8 +25,8 @@
             <package>php7.0-fpm</package>
         </apache_php_fpm>
     </httpd>
-    <php default="php7">
-        <php7>
+    <php default="php7.0">
+        <php7.0>
             <package>php7.0</package>
             <package>php7.0-cli</package>
             <package>php7.0-common</package>
@@ -40,7 +40,7 @@
             <package>php-pear</package>
             <package_conflict>php-apc</package_conflict>
             <package_conflict>php5*</package_conflict>
-        </php7>
+        </php7.0>
     </php>
     <po default="dovecot">
         <courier>

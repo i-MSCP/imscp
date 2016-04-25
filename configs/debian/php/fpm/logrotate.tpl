@@ -7,6 +7,6 @@
 	delaycompress
 	create 640 root adm
 	postrotate
-		invoke-rc.d php5-fpm restart > /dev/null
+		invoke-rc.d php{PHP_VERSION}-fpm restart > /dev/null
  	endscript
 }
