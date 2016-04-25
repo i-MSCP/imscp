@@ -26,6 +26,24 @@
             <package>php5-fpm</package>
         </apache_php_fpm>
     </httpd>
+    <php default="php5">
+        <php5>
+            <package>php5</package>
+            <package>php5-cli</package>
+            <package>php5-curl</package>
+            <package>php-pear</package>
+            <package>php5</package>
+            <package>php5-gd</package>
+            <package>php-gettext</package>
+            <package>php5-imap</package>
+            <package>php5-intl</package>
+            <package>php5-json</package>
+            <package>php5-mcrypt</package>
+            <package>php5-mysqlnd</package>
+            <package_conflict>php-apc</package_conflict>
+            <package_conflict>php5-suhosin</package_conflict>
+        </php5>
+    </php>
     <po default="dovecot">
         <courier>
             <package>courier-authlib-mysql</package>
@@ -212,22 +230,6 @@
             <package>mysql-common</package>
         </remote_server>
     </sql>
-    <php>
-        <package>php5</package>
-        <package>php5-cli</package>
-        <package>php5-curl</package>
-        <package>php-pear</package>
-        <package>php5</package>
-        <package>php5-gd</package>
-        <package>php-gettext</package>
-        <package>php5-imap</package>
-        <package>php5-intl</package>
-        <package>php5-json</package>
-        <package>php5-mcrypt</package>
-        <package>php5-mysqlnd</package>
-        <package_conflict>php-apc</package_conflict>
-        <package_conflict>php5-suhosin</package_conflict>
-    </php>
     <perl>
         <package>perl</package>
         <package>libcrypt-blowfish-perl</package>

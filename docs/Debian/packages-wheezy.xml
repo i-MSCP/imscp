@@ -8,7 +8,7 @@
                 repository_key_uri="http://nginx.org/keys/nginx_signing.key"
                 repository_key_id="7BD9BF62"
                 repository_conflict="http://nginx.org/packages/ubuntu"
-                >
+        >
             <package>nginx</package>
             <package>php5-cgi</package>
             <package>spawn-fcgi</package>
@@ -37,6 +37,21 @@
             <package>php5-fpm</package>
         </apache_php_fpm>
     </httpd>
+    <php default="php5">
+        <php5>
+            <package>php5</package>
+            <package>php5-cli</package>
+            <package>php5-curl</package>
+            <package>php-pear</package>
+            <package>php5-gd</package>
+            <package>php-gettext</package>
+            <package>php5-imap</package>
+            <package>php5-intl</package>
+            <package>php5-mcrypt</package>
+            <package>php5-mysqlnd</package>
+            <package>php-apc</package>
+        </php5>
+    </php>
     <po default="dovecot">
         <courier>
             <package>courier-authlib-mysql</package>
@@ -55,7 +70,7 @@
                 pinning_package="dovecot-core dovecot-imapd dovecot-pop3d dovecot-mysql dovecot-managesieved dovecot-sieve"
                 pinning_pin="release a=wheezy-backports"
                 pinning_pin_priority="1001"
-                >
+        >
             <package>dovecot-core</package>
             <package>dovecot-imapd</package>
             <package>dovecot-pop3d</package>
@@ -68,7 +83,7 @@
                 pinning_package="postfix"
                 pinning_pin="release a=wheezy-backports"
                 pinning_pin_priority="1001"
-                >
+        >
             <package>postfix</package>
             <package_conflict>procmail</package_conflict>
         </postfix>
@@ -100,7 +115,7 @@
                 pinning_pin="release o=Debian,n=wheezy"
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.6,mysql_5.7,mariadb_5.5,mariadb_10.0,mariadb_10.1,percona_5.5,percona_5.6,percona_5.7,remote_server"
-                >
+        >
             <package>libmysqlclient18</package>
             <package>mysql-client-5.5</package>
             <package>mysql-common</package>
@@ -114,7 +129,7 @@
                 pinning_pin="origin repo.mysql.com"
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.7,percona_5.6,percona_5.7,remote_server"
-                >
+        >
             <package>libmysqlclient18</package>
             <package>mysql-community-client</package>
             <package>mysql-common</package>
@@ -128,7 +143,7 @@
                 pinning_pin="origin repo.mysql.com"
                 pinning_pin_priority="1001"
                 allow_switch="percona_5.7,remote_server"
-                >
+        >
             <package>libmysqlclient18=5.5*</package>
             <package>libmysqlclient20</package>
             <package>mysql-community-client</package>
@@ -143,7 +158,7 @@
                 pinning_pin="origin mirror.netcologne.de"
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.5,mysql_5.6,mysql_5.7,mariadb_10.0,mariadb_10.1,percona_5.5,percona_5.6,percona_5.7,remote_server"
-                >
+        >
             <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>
             <package>mariadb-client-5.5</package>
@@ -159,7 +174,7 @@
                 pinning_pin="origin mirror.netcologne.de"
                 pinning_pin_priority="1001"
                 allow_switch="mariadb_10.1,remote_server"
-                >
+        >
             <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>
             <package>mariadb-client-10.0</package>
@@ -175,7 +190,7 @@
                 pinning_pin="origin mirror.netcologne.de"
                 pinning_pin_priority="1001"
                 allow_switch="remote_server"
-                >
+        >
             <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>
             <package>mariadb-client-10.1</package>
@@ -191,7 +206,7 @@
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.5,mysql_5.6,mysql_5.7,mariadb_5.5,mariadb_10.0,mariadb_10.1,percona_5.5,percona_5.6,percona_5.7,remote_server"
-                >
+        >
             <package>libmysqlclient18</package>
             <package>libperconaserverclient18</package>
             <package>percona-server-client-5.5</package>
@@ -207,7 +222,7 @@
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.6,mysql_5.7,percona_5.7,remote_server"
-                >
+        >
             <package>libmysqlclient18</package>
             <package>libperconaserverclient18.1</package>
             <package>mysql-common</package>
@@ -223,7 +238,7 @@
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.7,remote_server"
-                >
+        >
             <package>libmysqlclient18=5.5*</package>
             <package>libperconaserverclient20</package>
             <package>mysql-common</package>
@@ -235,25 +250,12 @@
                 pinning_package="libmysqlclient18 mysql-client-5.5 mysql-common"
                 pinning_pin="release o=Debian,n=wheezy"
                 pinning_pin_priority="1001"
-                >
+        >
             <package>libmysqlclient18</package>
             <package>mysql-client-5.5</package>
             <package>mysql-common</package>
         </remote_server>
     </sql>
-    <php>
-        <package>php5</package>
-        <package>php5-cli</package>
-        <package>php5-curl</package>
-        <package>php-pear</package>
-        <package>php5-gd</package>
-        <package>php-gettext</package>
-        <package>php5-imap</package>
-        <package>php5-intl</package>
-        <package>php5-mcrypt</package>
-        <package>php5-mysqlnd</package>
-        <package>php-apc</package>
-    </php>
     <perl>
         <package>perl</package>
         <package>libcrypt-blowfish-perl</package>
