@@ -218,7 +218,7 @@
 
     # PHP configuration level
     # Possible values: per_user, per_domain, per_site
-    PHP_CONFIG_LEVEL                 => 'per_site',
+    PHP_CONFIG_LEVEL                    => 'per_site',
 
     # PHP-FPM listen socket type
     # Only relevant with 'apache_php_fpm' sever implementation
