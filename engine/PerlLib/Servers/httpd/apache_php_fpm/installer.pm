@@ -757,28 +757,29 @@ sub _oldEngineCompatibility
 
 sub guessPhpVariables
 {
-    my ($phpVersion) = $main::imscpConfig{'PHP_SERVER'} =~ /php(.*)$/;
+    my ($phpVersion) = $main::imscpConfig{'PHP_SERVER'} =~ /php([\d.]+)$/;
 
-    unless(defined $phpVersion) {
-        error('Could not guess PHP version');
+    unless (defined $phpVersion) {
+        error( 'Could not guess PHP version' );
+        return 1;
     }
 
     $self->{'phpConfig'}->{'PHP_VERSION'} = $phpVersion;
 
-    if(version->parse("$phpVersion") < version->parse("7.0")) {
-        $self->{'config'}->{'PHP_CONF_DIR_PATH'} = "/etc/php/$phpVersion";
+    if (version->parse( $phpVersion ) < version->parse( '7.0' )) {
+        $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = "/etc/php/$phpVersion";
         $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = '/usr/bin/php5';
         $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = '/usr/bin/php5-cgi';
         $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = '/usr/bin/php5-fpm';
-        $self->{'phpConfig'}->{'PHP_DISMOD_PATH'} = 'php5dismod';
-        $self->{'phpConfig'}->{'PHP_ENMOD_PATH'} = 'php5enmod';
+        $self->{'phpConfig'}->{'PHP_DISMOD_PATH'} = '/usr/sbin/php5dismod';
+        $self->{'phpConfig'}->{'PHP_ENMOD_PATH'} = '/usr/sbin/php5enmod';
     } else {
-        $self->{'config'}->{'PHP_CONF_DIR_PATH'} = "/etc/php5";
+        $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = "/etc/php5";
         $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = "/usr/bin/php$phpVersion";
         $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = "/usr/bin/php-cgi$phpVersion";
         $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = "/usr/bin/php-fpm$phpVersion";
-        $self->{'phpConfig'}->{'PHP_DISMOD_PATH'} = 'phpdismod';
-        $self->{'phpConfig'}->{'PHP_ENMOD_PATH'} = 'phpenmod';
+        $self->{'phpConfig'}->{'PHP_DISMOD_PATH'} = '/usr/sbin/phpdismod';
+        $self->{'phpConfig'}->{'PHP_ENMOD_PATH'} = '/usr/sbin/phpenmod';
     }
 
     0;

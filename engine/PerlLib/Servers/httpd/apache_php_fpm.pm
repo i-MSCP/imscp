@@ -342,7 +342,7 @@ sub deleteDmn
     for my $conffile("$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}.conf",
         "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
         "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
-        "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d$data->{'DOMAIN_NAME'}.conf"
+        "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/$data->{'DOMAIN_NAME'}.conf"
     ) {
         next unless -f $conffile;
         $rs = iMSCP::File->new( filename => $conffile )->delFile();
