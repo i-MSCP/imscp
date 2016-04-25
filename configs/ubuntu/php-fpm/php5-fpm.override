@@ -1,3 +1,0 @@
-# File added by i-MSCP internet - Multi Server Control Panel
-# Fix for issue #1106 (only processed by Upstart >= v1.7)
-reload signal USR2
