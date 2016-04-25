@@ -24,9 +24,9 @@
 
     # SECTION php_fpm BEGIN.
     # SECTION mod_fastcgi BEGIN.
-    Alias /php5-fcgi /var/lib/apache2/fastcgi/php5-fcgi-{DOMAIN_NAME}
+    Alias /php{PHP_VERSION}-fcgi /var/lib/apache2/fastcgi/php{PHP_VERSION}-fcgi-{DOMAIN_NAME}
 
-    FastCGIExternalServer /var/lib/apache2/fastcgi/php5-fcgi-{DOMAIN_NAME} \
+    FastCGIExternalServer /var/lib/apache2/fastcgi/php{PHP_VERSION}-fcgi-{DOMAIN_NAME} \
         -{FASTCGI_LISTEN_MODE} {FASTCGI_LISTEN_ENDPOINT} \
         -idle-timeout 900 \
         -pass-header Authorization
@@ -92,10 +92,10 @@
     php_admin_flag engine off
     # SECTION itk END.
     # SECTION fcgid BEGIN.
-    RemoveHandler .php php5
+    RemoveHandler .php php5 php7
     # SECTION fcgid END.
     # SECTION php_fpm BEGIN.
-    RemoveHandler .php php5
+    RemoveHandler .php php5 php7
     # SECTION php_fpm END.
     # SECTION php_disabled END.
 

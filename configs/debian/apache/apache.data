@@ -1,5 +1,4 @@
 HTTPD_VERSION =
-
 HTTPD_USER = www-data
 HTTPD_GROUP = www-data
 
@@ -13,23 +12,10 @@ HTTPD_CUSTOM_SITES_DIR = /etc/apache2/imscp
 HTTPD_ROOT_DIR = /var/www
 HTTPD_LOG_DIR = /var/log/apache2
 
-# PHP variables
-
-ITK_PHP5_PATH = /etc/php5/apache2/php.ini
-PHP_CGI_BIN = /usr/bin/php5-cgi
-PHP_FCGI_CHILDREN = 0
-PHP_FCGI_MAX_REQUESTS = 1000
-PHP_STARTER_DIR = /var/www/fcgi
-PHP_VERSION = 5
-
 # Htaccess variables
 
 HTACCESS_USERS_FILENAME = .htpasswd
 HTACCESS_GROUPS_FILENAME = .htgroup
-
-## PHP configuration level
-# Possible values: per_user, per_domain or per_site
-INI_LEVEL =
 
 # Whether or not bind mount logs in customer logs directory
 # Allowed value: yes|no
