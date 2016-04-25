@@ -202,7 +202,7 @@ sub enableSites
 
     for my $site(@sites) {
         unless (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site") {
-            error( sprintf( "Site %s doesn't exist", $site ) );
+            error( sprintf( "Site `%s` doesn't exist", $site ) );
             return 1;
         }
 
@@ -210,7 +210,7 @@ sub enableSites
             "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site",
             "$self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}/".basename( $site, '.conf' )
         )) {
-            error( sprintf( 'Could not enable the %s site: %s', $site, $! ) );
+            error( sprintf( 'Could not enable `%s` site: %s', $site, $! ) );
             return 1;
         }
     }
@@ -400,16 +400,16 @@ sub buildConfFile
     $rs = $self->{'eventManager'}->trigger( 'afterFrontEndBuildConfFile', \$cfgTpl, $filename, $tplVars, $options );
     return $rs if $rs;
 
-    my $fileHandler = iMSCP::File->new(
-        filename => $options->{'destination'} ? $options->{'destination'} : "$self->{'wrkDir'}/$filename"
-    );
+    $options->{'destination'} ||= "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$filename";
+
+    my $fileHandler = iMSCP::File->new( filename => $options->{'destination'} );
     $rs = $fileHandler->set( $cfgTpl );
     $rs ||= $fileHandler->save();
-    $rs ||= $fileHandler->mode( $options->{'mode'} ? $options->{'mode'} : 0644 );
     $rs ||= $fileHandler->owner(
-            $options->{'user'} ? $options->{'user'} : $main::imscpConfig{'ROOT_USER'},
-            $options->{'group'} ? $options->{'group'} : $main::imscpConfig{'ROOT_GROUP'}
+        ($options->{'user'} ? $options->{'user'} : $main::imscpConfig{'ROOT_USER'}),
+        ($options->{'group'} ? $options->{'group'} : $main::imscpConfig{'ROOT_GROUP'})
     );
+    $rs ||= $fileHandler->mode( $options->{'mode'} ? $options->{'mode'} : 0644 );
 }
 
 =back
@@ -433,11 +433,16 @@ sub _init
     $self->{'start'} = 0;
     $self->{'reload'} = 0;
     $self->{'restart'} = 0;
-    $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/nginx";
-    $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-    $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-    $self->{'config'} = lazy {
-            tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/nginx.data";
+    $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/frontend";
+    $self->{'config'} = lazy
+        {
+            tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.data";
+            \%c;
+        };
+
+    $self->{'php_config'} = lazy
+        {
+            tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.data";
             \%c;
         };
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();

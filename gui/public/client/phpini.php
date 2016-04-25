@@ -356,14 +356,8 @@ $phpini->loadClientPermissions($_SESSION['user_id']); // Load client PHP permiss
 
 $config = iMSCP_Registry::get('config');
 $confDir = $config['CONF_DIR'];
-
-if ($config['HTTPD_SERVER'] == 'apache_fcgid' || $config['HTTPD_SERVER'] == 'apache_itk') {
-    $srvConfig = new iMSCP_Config_Handler_File("$confDir/apache/apache.data");
-    $configLevel = $srvConfig['INI_LEVEL'];
-} else {
-    $srvConfig = new iMSCP_Config_Handler_File("$confDir/php-fpm/phpfpm.data");
-    $configLevel = $srvConfig['PHP_FPM_POOLS_LEVEL'];
-}
+$srvConfig = new iMSCP_Config_Handler_File("$confDir/php/php.data");
+$configLevel = $srvConfig['PHP_CONFIG_LEVEL'];
 
 if (!empty($_POST)) {
     updatePhpConfig($phpini, $configLevel);

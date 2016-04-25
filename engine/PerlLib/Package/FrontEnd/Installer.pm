@@ -553,11 +553,11 @@ sub setEnginePermissions
         { user => $rootUName, group => $rootGName, dirmode => '0755', filemode => '0640', recursive => 1 }
     );
     $rs ||= setRights(
-        "$self->{'config'}->{'PHP_STARTER_DIR'}/master",
+        "$self->{'php_config'}->{'PHP_FCGI_STARTER_DIR'}/master",
         { 'user' => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0640', recursive => 1 }
     );
     $rs ||= setRights(
-        "$self->{'config'}->{'PHP_STARTER_DIR'}/master/php-fcgi-starter",
+        "$self->{'php_config'}->{'PHP_FCGI_STARTER_DIR'}/master/php-fcgi-starter",
         { user => $panelUName, group => $panelGName, mode => '550' }
     );
 
@@ -623,15 +623,11 @@ sub _init
     $self->{'frontend'} = Package::FrontEnd->getInstance();
     $self->{'eventManager'} = $self->{'frontend'}->{'eventManager'};
     $self->{'cfgDir'} = $self->{'frontend'}->{'cfgDir'};
-    $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-    $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'config'} = $self->{'frontend'}->{'config'};
 
-    my $oldConf = "$self->{'cfgDir'}/nginx.old.data";
-
+    my $oldConf = "$self->{'cfgDir'}/frontend.old.data";
     if (-f $oldConf) {
         tie %{$self->{'oldConfig'}}, 'iMSCP::Config', fileName => $oldConf, 'noerrors' => 1;
-
         for my $oldConf(keys %{$self->{'oldConfig'}}) {
             if (exists $self->{'config'}->{$oldConf}) {
                 $self->{'config'}->{$oldConf} = $self->{'oldConfig'}->{$oldConf};
@@ -911,12 +907,12 @@ sub _makeDirs
     my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
     my $rootUName = $main::imscpConfig{'ROOT_USER'};
     my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-    my $phpStarterDir = $self->{'config'}->{'PHP_STARTER_DIR'};
+    my $phpStarterDir = $self->{'php_config'}->{'PHP_FCGI_STARTER_DIR'};
 
     # Ensure that the FCGI starter directory exists
-    $rs = iMSCP::Dir->new( dirname => $phpStarterDir )->make( {
-            user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => 0555
-        } );
+    $rs = iMSCP::Dir->new( dirname => $phpStarterDir )->make(
+        { user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => 0555 }
+    );
 
     # Remove previous FCGI tree if any ( needed to avoid any garbage from plugins )
     $rs ||= iMSCP::Dir->new( dirname => "$phpStarterDir/master" )->remove();
@@ -963,16 +959,13 @@ sub _buildPhpConfig
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEnddBuildPhpConfig' );
     return $rs if $rs;
 
-    my $cfgDir = $self->{'cfgDir'};
-    my $bkpDir = "$cfgDir/backup";
-    my $wrkDir = "$cfgDir/working";
     my $user = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
     my $group = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
     my $tplVars = {
-        PHP_STARTER_DIR       => $self->{'config'}->{'PHP_STARTER_DIR'},
+        PHP_FCGI_STARTER_DIR  => $self->{'php_config'}->{'PHP_FCGI_STARTER_DIR'},
         DOMAIN_NAME           => 'master',
-        PHP_FCGI_MAX_REQUESTS => $self->{'config'}->{'PHP_FCGI_MAX_REQUESTS'},
-        PHP_FCGI_CHILDREN     => $self->{'config'}->{'PHP_FCGI_CHILDREN'},
+        FCGI_MAX_REQUEST => $self->{'config'}->{'FCGI_MAX_REQUEST'},
+        FCGI_CHILDREN     => $self->{'config'}->{'FCGI_CHILDREN'},
         WEB_DIR               => $main::imscpConfig{'GUI_ROOT_DIR'},
         PANEL_USER            => $user,
         PANEL_GROUP           => $group,
@@ -980,11 +973,15 @@ sub _buildPhpConfig
         PHP_CGI_BIN           => $self->{'config'}->{'PHP_CGI_BIN'}
     };
 
-    $rs = $self->{'frontend'}->buildConfFile( "$cfgDir/parts/master/php-fcgi-starter.tpl", $tplVars, {
-            destination => "$wrkDir/master.php-fcgi-starter", mode => 0550, user => $user, group => $group
-        } );
-    $rs ||= iMSCP::File->new( filename => "$wrkDir/master.php-fcgi-starter" )->copyFile(
-        "$self->{'config'}->{'PHP_STARTER_DIR'}/master/php-fcgi-starter"
+    $rs = $self->{'frontend'}->buildConfFile(
+        "$self->{'cfgDir'}/php-fcgi-starter.tpl",
+        $tplVars,
+        {
+            destination => "$self->{'php_config'}->{'PHP_FCGI_STARTER_DIR'}/master/php-fcgi-starter",
+            user        => $user,
+            group       => $group,
+            mode        => 0550
+        }
     );
     return $rs if $rs;
 
@@ -1003,11 +1000,15 @@ sub _buildPhpConfig
         DISTRO_CA_BUNDLE   => $main::imscpConfig{'DISTRO_CA_BUNDLE'}
     };
 
-    $rs = $self->{'frontend'}->buildConfFile( "$cfgDir/parts/master/php5/php.ini", $tplVars, {
-            destination => "$wrkDir/master.php.ini", mode => 0440, user => $user, group => $group
-        } );
-    $rs ||= iMSCP::File->new( filename => "$wrkDir/master.php.ini" )->copyFile(
-        "$self->{'config'}->{'PHP_STARTER_DIR'}/master/php5/php.ini"
+    $rs = $self->{'frontend'}->buildConfFile(
+        "$self->{'cfgDir'}/php.ini",
+        $tplVars,
+        {
+            destination => "$self->{'php_config'}->{'PHP_FCGI_STARTER_DIR'}/master/php",
+            user        => $user,
+            group       => $group,
+            mode        => 0440,
+        }
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndBuildPhpConfig' );
 }
@@ -1027,13 +1028,6 @@ sub _buildHttpdConfig
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndBuildHttpdConfig' );
     return $rs if $rs;
 
-    if (-f "$self->{'wrkDir'}/nginx.conf") {
-        $rs = iMSCP::File->new( filename => "$self->{'wrkDir'}/nginx.conf" )->copyFile(
-            "$self->{'bkpDir'}/nginx.conf.".time
-        );
-        return $rs if $rs;
-    }
-
     my $nbCPUcores = $self->{'config'}->{'HTTPD_WORKER_PROCESSES'};
 
     if ($nbCPUcores eq 'auto') {
@@ -1050,7 +1044,9 @@ sub _buildHttpdConfig
         }
     }
 
-    $rs = $self->{'frontend'}->buildConfFile( "$self->{'cfgDir'}/nginx.conf", {
+    $rs = $self->{'frontend'}->buildConfFile(
+        "$self->{'cfgDir'}/nginx.conf",
+        {
             'HTTPD_USER'               => $self->{'config'}->{'HTTPD_USER'},
             'HTTPD_WORKER_PROCESSES'   => $nbCPUcores,
             'HTTPD_WORKER_CONNECTIONS' => $self->{'config'}->{'HTTPD_WORKER_CONNECTIONS'},
@@ -1060,37 +1056,33 @@ sub _buildHttpdConfig
             'HTTPD_CONF_DIR'           => $self->{'config'}->{'HTTPD_CONF_DIR'},
             'HTTPD_LOG_DIR'            => $self->{'config'}->{'HTTPD_LOG_DIR'},
             'HTTPD_SITES_ENABLED_DIR'  => $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}
-        } );
-    return $rs if $rs;
-
-    $rs = iMSCP::File->new( filename => "$self->{'wrkDir'}/nginx.conf" )->copyFile(
-        "$self->{'config'}->{'HTTPD_CONF_DIR'}"
+        },
+        {
+            destination => $self->{'config'}->{'HTTPD_CONF_DIR'},
+            user        => $main::imscpConfig{'ROOT_USER'},
+            group       => $main::imscpConfig{'ROOT_GROUP'},
+            mode        => 0644
+        }
     );
-    return $rs if $rs;
-
-    if (-f "$self->{'wrkDir'}/imscp_fastcgi.conf") {
-        $rs = iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp_fastcgi.conf" )->copyFile(
-            "$self->{'bkpDir'}/imscp_fastcgi.conf.".time
-        );
-        return $rs if $rs;
-    }
-
-    $rs = $self->{'frontend'}->buildConfFile( "$self->{'cfgDir'}/imscp_fastcgi.conf" );
-    $rs ||= iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp_fastcgi.conf" )->copyFile(
-        "$self->{'config'}->{'HTTPD_CONF_DIR'}"
+    $rs = $self->{'frontend'}->buildConfFile(
+        "$self->{'cfgDir'}/imscp_fastcgi.conf",
+        { },
+        {
+            destination => $self->{'config'}->{'HTTPD_CONF_DIR'},
+            user        => $main::imscpConfig{'ROOT_USER'},
+            group       => $main::imscpConfig{'ROOT_GROUP'},
+            mode        => 0644
+        }
     );
-    return $rs if $rs;
-
-    if (-f "$self->{'wrkDir'}/imscp_php.conf") {
-        $rs = iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp_php.conf" )->copyFile(
-            "$self->{'bkpDir'}/imscp_php.conf.".time
-        );
-        return $rs if $rs;
-    }
-
-    $rs = $self->{'frontend'}->buildConfFile( "$self->{'cfgDir'}/imscp_php.conf" );
-    $rs ||= iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp_php.conf" )->copyFile(
-        "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d"
+    $rs = $self->{'frontend'}->buildConfFile(
+        "$self->{'cfgDir'}/imscp_php.conf",
+        { },
+        {
+            destination => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d",
+            user        => $main::imscpConfig{'ROOT_USER'},
+            group       => $main::imscpConfig{'ROOT_GROUP'},
+            mode        => 0644
+        }
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndBuildHttpdConfig' );
     $rs ||= $self->{'eventManager'}->trigger( 'beforeFrontEndBuildHttpdVhosts' );
@@ -1149,27 +1141,37 @@ sub _buildHttpdConfig
         }
     );
     $rs ||= $self->{'frontend'}->disableSites( 'default', '00_master.conf', '00_master_ssl.conf' );
-    $rs ||= $self->{'frontend'}->buildConfFile( '00_master.conf', $tplVars );
-    $rs ||= iMSCP::File->new( filename => "$self->{'wrkDir'}/00_master.conf" )->copyFile(
-        "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf"
+    $rs ||= $self->{'frontend'}->buildConfFile(
+        '00_master.conf',
+        $tplVars,
+        {
+            destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf",
+            user        => $main::imscpConfig{'ROOT_USER'},
+            group       => $main::imscpConfig{'ROOT_GROUP'},
+            mode        => 0644
+        }
     );
     $rs ||= $self->{'frontend'}->enableSites( '00_master.conf' );
     return $rs if $rs;
 
     if ($main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes') {
-        $rs = $self->{'frontend'}->buildConfFile( '00_master_ssl.conf', $tplVars );
-        $rs ||= iMSCP::File->new( filename => "$self->{'wrkDir'}/00_master_ssl.conf" )->copyFile(
-            "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf"
+        $rs = $self->{'frontend'}->buildConfFile(
+            '00_master_ssl.conf',
+            $tplVars,
+            {
+                destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf",
+                user        => $main::imscpConfig{'ROOT_USER'},
+                group       => $main::imscpConfig{'ROOT_GROUP'},
+                mode        => 0644
+            }
         );
         $rs ||= $self->{'frontend'}->enableSites( '00_master_ssl.conf' );
         return $rs if $rs;
-    } else {
-        for my $vhost("$self->{'wrkDir'}/00_master_ssl.conf",
-            "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf"
-        ) {
-            $rs = iMSCP::File->new( filename => $vhost )->delFile() if -f $vhost;
-            return $rs if $rs;
-        }
+    } elsif (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf") {
+        $rs = iMSCP::File->new(
+            filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf"
+        )->delFile();
+        return $rs if $rs;
     }
 
     if (-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf") {
@@ -1210,13 +1212,16 @@ sub _buildInitDefaultFile
 
         $rs = $self->{'frontend'}->buildConfFile(
             "$imscpInitdConfDir/imscp_panel.default",
-            { MASTER_WEB_USER => $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'} },
-            { destination => "$imscpInitdConfDir/working/imscp_panel" }
+            {
+                MASTER_WEB_USER => $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'}
+            },
+            {
+                destination => "/etc/default/imscp_panel",
+                user        => $main::imscpConfig{'ROOT_USER'},
+                group       => $main::imscpConfig{'ROOT_GROUP'},
+                mode        => 0644
+            }
         );
-        $rs ||= iMSCP::File->new( filename => "$imscpInitdConfDir/working/imscp_panel" )->copyFile(
-            '/etc/default/imscp_panel'
-        );
-        return $rs if $rs;
     }
 
     $self->{'eventManager'}->trigger( 'afterFrontEndBuildInitDefaultFile' );
@@ -1235,11 +1240,13 @@ sub _addDnsZone
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedAddMasterZone' );
-    $rs ||= Servers::named->factory()->addDmn( {
+    $rs ||= Servers::named->factory()->addDmn(
+        {
             DOMAIN_NAME  => $main::imscpConfig{'BASE_SERVER_VHOST'},
             DOMAIN_IP    => $main::imscpConfig{'BASE_SERVER_IP'},
             MAIL_ENABLED => 1
-        } );
+        }
+    );
     $rs ||= $self->{'eventManager'}->trigger( 'afterNamedAddMasterZone' );
 }
 
@@ -1258,9 +1265,11 @@ sub _deleteDnsZone
     return 0 unless $main::imscpOldConfig{'BASE_SERVER_VHOST'} && $main::imscpOldConfig{'BASE_SERVER_VHOST'} ne '';
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedDeleteMasterZone' );
-    $rs ||= Servers::named->factory()->deleteDmn( {
+    $rs ||= Servers::named->factory()->deleteDmn(
+        {
             DOMAIN_NAME => $main::imscpOldConfig{'BASE_SERVER_VHOST'},
-        } );
+        }
+    );
     $rs ||= $self->{'eventManager'}->trigger( 'afterNamedDeleteMasterZone' );
 }
 
@@ -1278,18 +1287,18 @@ sub _saveConfig
 
     my $rootUname = $main::imscpConfig{'ROOT_USER'};
     my $rootGname = $main::imscpConfig{'ROOT_GROUP'};
-    my $file = iMSCP::File->new( filename => "$self->{'cfgDir'}/nginx.data" );
+    my $file = iMSCP::File->new( filename => "$self->{'cfgDir'}/frontend.data" );
     my $rs = $file->owner( $rootUname, $rootGname );
     $rs ||= $file->mode( 0640 );
     return $rs if $rs;
 
     my $cfg = $file->get();
     unless (defined $cfg) {
-        error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/nginx.data" ) );
+        error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/frontend.data" ) );
         return 1;
     }
 
-    $file = iMSCP::File->new( filename => "$self->{'cfgDir'}/nginx.old.data" );
+    $file = iMSCP::File->new( filename => "$self->{'cfgDir'}/frontend.data" );
     $rs = $file->set( $cfg );
     $rs ||= $file->save();
     $rs ||= $file->owner( $rootUname, $rootGname );

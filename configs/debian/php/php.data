@@ -49,7 +49,7 @@ PHP_FPM_PROCESS_MAX = 0
 # Listen mode (FPM FastCGI addresse type):
 # Available modes:
 #  - 'tcp' (e.g. 192.168.1.136:9001)
-#  - 'uds' (e.g. /var/run/php5-fpm-domain.tld.sock)
+#  - 'uds' (e.g. /var/run/php<version>-fpm-domain.tld.sock)
 PHP_FPM_LISTEN_MODE =
 
 # Starting port for TCP/IP FastCGI address type
