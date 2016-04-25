@@ -308,8 +308,7 @@ sub disableDmn
             "$self->{'apacheTplDir'}/$configTpls{$configTplType}",
             $data,
             {
-                destination => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}$configTplType.conf"
-                ,
+                destination => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}$configTplType.conf",
                 user        => $main::imscpConfig{'ROOT_USER'},
                 group       => $main::imscpConfig['ROOT_GROUP'],
                 mode        => 0644

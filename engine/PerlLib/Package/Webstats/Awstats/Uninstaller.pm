@@ -116,16 +116,12 @@ sub _removeVhost
 {
     my $httpd = Servers::httpd->factory();
 
-    if (-f "$httpd->{'apacheWrkDir'}/01_awstats.conf") {
-        my $rs = iMSCP::File->new( filename => "$httpd->{'apacheWrkDir'}/01_awstats.conf" )->delFile();
-        return $rs if $rs;
-    }
-
     return 0 unless -f "$httpd->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/01_awstats.conf";
 
     my $rs = $httpd->disableSites( '01_awstats.conf' );
-    $rs ||= iMSCP::File->new( filename =>
-        "$httpd->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/01_awstats.conf" )->delFile();
+    $rs ||= iMSCP::File->new(
+        filename => "$httpd->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/01_awstats.conf"
+    )->delFile();
 }
 
 =item _restoreDebianConfig()

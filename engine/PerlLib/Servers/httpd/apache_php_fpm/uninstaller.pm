@@ -78,7 +78,6 @@ sub _init
     my $self = shift;
 
     $self->{'httpd'} = Servers::httpd::apache_php_fpm->getInstance();
-    $self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
     $self->{'config'} = $self->{'httpd'}->{'config'};
     $self->{'phpConfig'} = $self->{'httpd'}->{'phpConfig'};
     $self;
@@ -173,15 +172,6 @@ sub _restoreApacheConfig
 sub _restorePhpfpmConfig
 {
     my $self = shift;
-
-    if (-f "$self->{'phpConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf.disabled") {
-        my $rs = iMSCP::File->new(
-            filename => "$self->{'phpConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf.disabled"
-        )->moveFile(
-            "$self->{'phpConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/www.conf"
-        );
-        return $rs if $rs;
-    }
 
     if (-f "/etc/init/php5-fpm.override") {
         my $rs = iMSCP::File->new( filename => "/etc/init/php5-fpm.override" )->delFile();
