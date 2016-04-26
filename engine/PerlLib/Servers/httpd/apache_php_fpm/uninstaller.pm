@@ -126,9 +126,9 @@ sub _restoreApacheConfig
     my $rs = $self->{'httpd'}->disableModules( 'php_fpm_imscp' );
     return $rs if $rs;
 
-    for my $filename('php_fpm_imscp.conf', 'php_fpm_imscp.load') {
-        next unless -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$filename";
-        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$filename" )->delFile();
+    for ('php_fpm_imscp.conf', 'php_fpm_imscp.load') {
+        next unless -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_";
+        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_" )->delFile();
         return $rs if $rs;
     }
 
@@ -152,9 +152,9 @@ sub _restoreApacheConfig
     $rs = iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove();
     return $rs if $rs;
 
-    for my $site('000-default', 'default') {
-        next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site";
-        $rs = $self->{'httpd'}->enableSites( $site );
+    for ('000-default', 'default') {
+        next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
+        $rs = $self->{'httpd'}->enableSites( $_ );
         return $rs if $rs;
     }
 

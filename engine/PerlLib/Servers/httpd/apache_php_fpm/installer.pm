@@ -238,8 +238,8 @@ sub _init
 
     $self->{'phpCfgDir'} = $self->{'httpd'}->{'phpCfgDir'};
     $self->{'phpConfig'} = $self->{'httpd'}->{'phpConfig'};
-    $oldConf = "$self->{'phpCfgDir'}/php.old.data";
 
+    $oldConf = "$self->{'phpCfgDir'}/php.old.data";
     if (-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
         for (keys %oldConfig) {
@@ -321,7 +321,7 @@ sub _setApacheVersion
 {
     my $self = shift;
 
-    my $rs = execute( 'apache2ctl -v', \my $stdout, \my $stderr );
+    my $rs = execute( 'apache2ctl -v', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs;
     return $rs if $rs;
@@ -450,8 +450,8 @@ sub _buildPhpConfFiles
 
     $self->{'httpd'}->setData(
         {
-            HTTPD_USER                          => $self->{'httpd'}->getRunningUser(),
-            HTTPD_GROUP                         => $self->{'httpd'}->getRunningGroup(),
+            HTTPD_USER                          => $self->{'config'}->{'HTTPD_USER'},
+            HTTPD_GROUP                         => $self->{'config'}->{'HTTPD_GROUP'},
             PEAR_DIR                            => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
             PHP_CONF_DIR_PATH                   => $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'},
             PHP_FPM_LOG_LEVEL                   => $self->{'phpConfig'}->{'PHP_FPM_LOG_LEVEL'} || 'error',
@@ -741,7 +741,7 @@ sub _cleanup
         return $rs if $rs;
     }
 
-    $rs = execute( "rm -f $main::imscpConfig{'USER_WEB_DIR'}/*/logs/*.log", \my $stdout, \my $stderr );
+    $rs = execute( "rm -f $main::imscpConfig{'USER_WEB_DIR'}/*/logs/*.log", \ my $stdout, \ my $stderr );
     error( $stderr ) if $rs && $stderr;
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdOldEngineCompatibility' );
 }

@@ -190,7 +190,7 @@ sub addUser
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdAddUser', $data );
     $self->setData( $data );
-    $rs ||= iMSCP::SystemUser->new( username => $self->getRunningUser() )->addToGroup( $data->{'GROUP'} );
+    $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'HTTPD_USER'} )->addToGroup( $data->{'GROUP'} );
     $rs || ($self->{'restart'} = 1);
     $rs ||= $self->flushData();
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdAddUser', $data );
@@ -210,7 +210,9 @@ sub deleteUser
     my ($self, $data) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdDelUser', $data );
-    $rs ||= iMSCP::SystemUser->new( username => $self->getRunningUser() )->removeFromGroup( $data->{'GROUP'} );
+    $rs ||= iMSCP::SystemUser->new(
+        username => $self->{'config'}->{'HTTPD_USER'} )->removeFromGroup( $data->{'GROUP'}
+    );
     $rs || ($self->{'restart'} = 1);
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdDelUser', $data );
 }
@@ -485,7 +487,7 @@ sub addHtuser
     $rs ||= $file->set( $fileContent );
     $rs ||= $file->save();
     $rs ||= $file->mode( 0640 );
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->getRunningGroup() );
+    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
     return $rs if $rs;
 
     setImmutable( $webDir ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
@@ -524,7 +526,7 @@ sub deleteHtuser
     $rs ||= $file->set( $fileContent );
     $rs ||= $file->save();
     $rs ||= $file->mode( 0640 );
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->getRunningGroup() );
+    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
     return $rs if $rs;
 
     setImmutable( $webDir ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
@@ -564,7 +566,7 @@ sub addHtgroup
     $rs ||= $file->set( $fileContent );
     $rs ||= $file->save();
     $rs ||= $file->mode( 0640 );
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->getRunningGroup() );
+    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
     return $rs if $rs;
 
     setImmutable( $webDir ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
@@ -603,7 +605,7 @@ sub deleteHtgroup
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdDelHtgroup', \$fileContent, $data );
     $rs ||= $file->save();
     $rs ||= $file->mode( 0640 );
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->getRunningGroup() );
+    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
     return $rs if $rs;
 
     setImmutable( $webDir ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
@@ -991,11 +993,10 @@ sub enableSites
             next;
         }
 
-        my $rs = execute( "a2ensite $_", \my $stdout, \my $stderr );
+        my $rs = execute( "a2ensite $_", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
         return $rs if $rs;
-
         $self->{'restart'} = 1;
     }
 
@@ -1020,12 +1021,10 @@ sub disableSites
 
     for (@sites) {
         next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
-
-        my $rs = execute( "a2dissite $_", \my $stdout, \my $stderr );
+        my $rs = execute( "a2dissite $_", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
         return $rs if $rs;
-
         $self->{'restart'} = 1;
     }
 
@@ -1050,12 +1049,10 @@ sub enableModules
 
     for (@modules) {
         next unless -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_.load";
-
-        $rs = execute( "a2enmod $_", \my $stdout, \my $stderr );
+        $rs = execute( "a2enmod $_", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
         return $rs if $rs;
-
         $self->{'restart'} = 1;
     }
 
@@ -1080,12 +1077,10 @@ sub disableModules
 
     for (@modules) {
         next unless -l "$self->{'config'}->{'HTTPD_MODS_ENABLED_DIR'}/$_.load";
-
-        $rs = execute( "a2dismod $_", \my $stdout, \my $stderr );
+        $rs = execute( "a2dismod $_", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
         return $rs if $rs;
-
         $self->{'restart'} = 1;
     }
 
@@ -1115,11 +1110,10 @@ sub enableConfs
                 next;
             }
 
-            my $rs = execute( "a2enconf $_", \my $stdout, \my $stderr );
+            my $rs = execute( "a2enconf $_", \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
             error( $stderr ) if $stderr && $rs;
             return $rs if $rs;
-
             $self->{'restart'} = 1;
         }
     }
@@ -1146,12 +1140,10 @@ sub disableConfs
     if (iMSCP::ProgramFinder::find( 'a2disconf' ) && -d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available") {
         for (@conffiles) {
             next unless -f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/$_";
-
-            my $rs = execute( "a2disconf $_", \my $stdout, \my $stderr );
+            my $rs = execute( "a2disconf $_", \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
             error( $stderr ) if $stderr && $rs;
             return $rs if $rs;
-
             $self->{'restart'} = 1;
         }
     }
@@ -1664,11 +1656,11 @@ sub _addFiles
         # domain_disable_page  root:www-data (recursive)
         # .htgroup             root:www-data
         # .htpasswd            root:www-data
-        for ('domain_disable_page', '.htgroup', '.htpasswd') {
-            next unless -e "$webDir/$_";
+        for my $file ('domain_disable_page', '.htgroup', '.htpasswd') {
+            next unless -e "$webDir/$file";
             $rs = setRights(
-                "$webDir/$_",
-                { user => $main::imscpConfig{'ROOT_USER'}, group => $self->getRunningGroup(), recursive => 1 }
+                "$webDir/$file",
+                { user => $main::imscpConfig{'ROOT_USER'}, group => $self->{'config'}->{'HTTPD_GROUP'}, recursive => 1 }
             );
             return $rs if $rs;
         }

@@ -19,10 +19,10 @@ package Servers::httpd::apache_itk::uninstaller;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
-use iMSCP::File;
-use iMSCP::Dir;
 use File::Basename;
+use iMSCP::Debug;
+use iMSCP::Dir;
+use iMSCP::File;
 use Servers::httpd::apache_itk;
 use Servers::sqld;
 use parent 'Common::SingletonClass';
@@ -34,7 +34,6 @@ sub uninstall
     my $rs = $self->_removeVloggerSqlUser();
     $rs ||= $self->_removeDirs();
     $rs ||= $self->_vHostConf();
-    $rs ||= $self->_restoreConf();
 }
 
 sub _init
@@ -43,9 +42,8 @@ sub _init
 
     $self->{'httpd'} = Servers::httpd::apache_itk->getInstance();
     $self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
-    $self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
-    $self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
     $self->{'config'} = $self->{'httpd'}->{'config'};
+    $self->{'phpConfig'} = $self->{'httpd'}->{'phpConfig'};
     $self;
 }
 
@@ -82,24 +80,9 @@ sub _vHostConf
         return $rs if $rs;
     }
 
-    for my $site('000-default', 'default') {
-        next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site";
-        my $rs = $self->{'httpd'}->enableSites( $site );
-        return $rs if $rs;
-    }
-
-    0;
-}
-
-sub _restoreConf
-{
-    my $self = shift;
-
-    for my $file("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2",
-        "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf") {
-        my $filename = fileparse( $file );
-        next unless -f "$self->{bkpDir}/$filename.system";
-        my $rs = iMSCP::File->new( filename => "$self->{bkpDir}/$filename.system" )->copyFile( $file );
+    for ('000-default', 'default') {
+        next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
+        my $rs = $self->{'httpd'}->enableSites( $_ );
         return $rs if $rs;
     }
 
