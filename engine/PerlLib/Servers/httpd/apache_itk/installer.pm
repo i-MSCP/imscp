@@ -488,7 +488,7 @@ sub _buildApacheConfFiles
     $rs ||= $self->{'httpd'}->disableSites( 'default', 'default-ssl', '000-default.conf', 'default-ssl.conf' );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildApacheConfFiles' );
 }
-=pod=cut
+
 =item _installLogrotate()
 
  Install Apache logrotate file
