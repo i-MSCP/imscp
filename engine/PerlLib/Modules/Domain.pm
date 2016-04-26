@@ -25,16 +25,17 @@ package Modules::Domain;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
-use Modules::User;
-use iMSCP::Execute;
-use iMSCP::Dir;
-use iMSCP::Database;
-use iMSCP::Rights;
-use iMSCP::OpenSSL;
-use iMSCP::Ext2Attributes qw(clearImmutable);
 use File::Spec;
+use iMSCP::Database;
+use iMSCP::Debug;
+use iMSCP::Dir;
+use iMSCP::Ext2Attributes qw(clearImmutable);
+use iMSCP::Execute;
+use iMSCP::OpenSSL;
+use iMSCP::Rights;
+use Modules::User;
 use Net::LibIDN qw/idn_to_unicode/;
+use Servers::httpd;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION

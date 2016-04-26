@@ -67,9 +67,7 @@ use parent 'Common::SingletonClass';
 
 sub registerSetupListeners
 {
-    my (undef, $eventManager) = @_;
-
-    Servers::httpd::apache_php_fpm::installer->getInstance()->registerSetupListeners( $eventManager );
+    Servers::httpd::apache_php_fpm::installer->getInstance()->registerSetupListeners( $_[1] );
 }
 
 =item preinstall()
@@ -295,9 +293,7 @@ sub disableDmn
 
     if ($data->{'SSL_SUPPORT'}) {
         $self->setData(
-            {
-                CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem"
-            }
+            { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" }
         );
         $configTpls{'_ssl'} = 'domain_disabled_ssl.tpl';
     }
@@ -306,12 +302,7 @@ sub disableDmn
         $rs = $self->buildConfFile(
             "$self->{'apacheTplDir'}/$configTpls{$_}",
             $data,
-            {
-                destination => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}$_.conf",
-                user        => $main::imscpConfig{'ROOT_USER'},
-                group       => $main::imscpConfig{'ROOT_GROUP'},
-                mode        => 0644
-            }
+            { destination => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}$_.conf" }
         );
         return $rs if $rs;
     }
@@ -854,10 +845,9 @@ sub buildConfFile
     $rs = $fileHandler->set( $cfgTpl );
     $rs ||= $fileHandler->save();
     $rs ||= $fileHandler->owner(
-        ($options->{'user'} ? $options->{'user'} : $main::imscpConfig{'ROOT_USER'}),
-        ($options->{'group'} ? $options->{'group'} : $main::imscpConfig{'ROOT_GROUP'})
+        $options->{'user'} // $main::imscpConfig{'ROOT_USER'}, $options->{'group'} // $main::imscpConfig{'ROOT_GROUP'}
     );
-    $rs ||= $fileHandler->mode( $options->{'mode'} ? $options->{'mode'} : 0644 );
+    $rs ||= $fileHandler->mode( $options->{'mode'} // 0644 );
 }
 
 =item setData(\%data)
@@ -1386,9 +1376,7 @@ sub _addCfg
         $vhosts{"$data->{'DOMAIN_NAME'}_ssl.conf"} = $data->{'FORWARD'} eq 'no'
             ? 'domain_ssl.tpl' : 'domain_redirect_ssl.tpl';
         $self->setData(
-            {
-                CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem"
-            }
+            { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" }
         );
     } else {
         $rs = $self->disableSites( "$data->{'DOMAIN_NAME'}_ssl.conf" );
@@ -1448,12 +1436,7 @@ sub _addCfg
         $rs = $self->buildConfFile(
             "$self->{'apacheTplDir'}/$vhostSrc",
             $data,
-            {
-                destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostTgr",
-                user        => $main::imscpConfig{'ROOT_USER'},
-                group       => user => $main::imscpConfig{'ROOT_GROUP'},
-                mode        => 0644
-            }
+            { destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostTgr" }
         );
         return $rs if $rs;
     }
@@ -1462,12 +1445,7 @@ sub _addCfg
         $rs = $self->buildConfFile(
             "$self->{'apacheTplDir'}/custom.conf.tpl",
             $data,
-            {
-                destination => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
-                user        => $main::imscpConfig{'ROOT_USER'},
-                group       => user => $main::imscpConfig{'ROOT_GROUP'},
-                mode        => 0644
-            }
+            { destination => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
         );
         return $rs if $rs;
     }
@@ -1772,12 +1750,7 @@ sub _buildPHPConfig
         $rs = $self->buildConfFile(
             "$self->{'phpCfgDir'}/fpm/pool.conf",
             $data,
-            {
-                destination => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/$poolName.conf",
-                user        => $main::imscpConfig{'ROOT_USER'},
-                group       => $main::imscpConfig{'ROOT_GROUP'},
-                mode        => 0644
-            }
+            { destination => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/$poolName.conf" }
         );
         return $rs if $rs;
     } elsif (($data->{'PHP_SUPPORT'} ne 'yes'

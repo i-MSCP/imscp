@@ -170,7 +170,7 @@ sub install
     $rs ||= $self->_installLogrotate();
     $rs ||= $self->_setupVlogger();
     $rs ||= $self->_saveConf();
-    $rs ||= $self->_oldEngineCompatibility();
+    $rs ||= $self->_cleanup();
 }
 
 =item setEnginePermissions
@@ -249,7 +249,6 @@ sub _init
         }
     }
 
-
     $self->_guessPhpVariables();
     $self;
 }
@@ -291,6 +290,7 @@ sub _guessPhpVariables
     }
 
     unless (-d $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}) {
+        $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = '';
         die(
             sprintf(
                 "Could not guess value for the `%s` PHP configuration parameter: %s directory doesn't exists.",
@@ -354,7 +354,7 @@ sub _makeDirs
     );
     return $rs if $rs;
 
-    # Cleanup pools directory (prevent possible orphaned pool file when switching to other pool level)
+    # Cleanup pools directory (prevent possible orphaned pool file when changing PHP configuration level)
     unlink glob "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/*.conf";
     $self->{'eventManager'}->trigger( 'afterHttpdMakeDirs' );
 }
@@ -386,22 +386,12 @@ sub _buildFastCgiConfFiles
     $rs ||= $self->{'httpd'}->buildConfFile(
         "$self->{'phpCfgDir'}/fpm/apache_fastcgi_module.conf",
         { },
-        {
-            destination => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/php_fpm_imscp.conf",
-            user        => $main::imscpConfig{'ROOT_USER'},
-            group       => $main::imscpConfig{'ROOT_GROUP'},
-            mode        => 0644
-        }
+        { destination => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/php_fpm_imscp.conf" }
     );
     $rs ||= $self->{'httpd'}->buildConfFile(
         "$self->{'phpCfgDir'}/fpm/apache_fastcgi_module.load",
         { },
-        {
-            destination => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/php_fpm_imscp.load",
-            user        => $main::imscpConfig{'ROOT_USER'},
-            group       => $main::imscpConfig{'ROOT_GROUP'},
-            mode        => 0644
-        }
+        { destination => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/php_fpm_imscp.load" }
     );
     return $rs if $rs;
 
@@ -429,7 +419,7 @@ sub _buildFastCgiConfFiles
     if ($self->{'phpConfig'}->{'PHP_ENMOD_PATH'} ne '') {
         for (
             'apc', 'curl', 'gd', 'imap', 'intl', 'json', 'mcrypt', 'mysqlnd/10', 'mysqli', 'mysql', 'opcache', 'pdo/10',
-            'pdo_mysql'
+            'pdo_mysql', 'zip'
         ) {
             $rs = execute( "$self->{'phpConfig'}->{'PHP_ENMOD_PATH'} $_", \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
@@ -460,62 +450,34 @@ sub _buildPhpConfFiles
 
     $self->{'httpd'}->setData(
         {
-            PEAR_DIR => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
-            TIMEZONE => $main::imscpConfig{'TIMEZONE'}
+            HTTPD_USER                          => $self->{'httpd'}->getRunningUser(),
+            HTTPD_GROUP                         => $self->{'httpd'}->getRunningGroup(),
+            PEAR_DIR                            => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
+            PHP_CONF_DIR_PATH                   => $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'},
+            PHP_FPM_LOG_LEVEL                   => $self->{'phpConfig'}->{'PHP_FPM_LOG_LEVEL'} || 'error',
+            PHP_FPM_EMERGENCY_RESTART_THRESHOLD => $self->{'phpConfig'}->{'PHP_FPM_EMERGENCY_RESTART_THRESHOLD'} || 10,
+            PHP_FPM_EMERGENCY_RESTART_INTERVAL  => $self->{'phpConfig'}->{'PHP_FPM_EMERGENCY_RESTART_INTERVAL'} || '1m',
+            PHP_FPM_PROCESS_CONTROL_TIMEOUT     => $self->{'phpConfig'}->{'PHP_FPM_PROCESS_CONTROL_TIMEOUT'} || '10s',
+            PHP_FPM_PROCESS_MAX                 => $self->{'phpConfig'}->{'PHP_FPM_PROCESS_MAX'} // 0,
+            PHP_VERSION                         => $self->{'phpConfig'}->{'PHP_VERSION'},
+            TIMEZONE                            => $main::imscpConfig{'TIMEZONE'},
         }
     );
 
     $rs = $self->{'httpd'}->buildConfFile(
         "$self->{'phpCfgDir'}/fpm/php.ini",
         { },
-        {
-            destination => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/php.ini",
-            user        => $main::imscpConfig{'ROOT_USER'},
-            group       => $main::imscpConfig{'ROOT_GROUP'},
-            mode        => 0644
-        }
+        { destination => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/php.ini" }
     );
-
-    $self->{'httpd'}->setData(
-        {
-            PHP_CONF_DIR_PATH                   => $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'},
-            PHP_FPM_LOG_LEVEL                   => $self->{'phpConfig'}->{'PHP_FPM_LOG_LEVEL'} || 'error',
-            PHP_FPM_EMERGENCY_RESTART_THRESHOLD => $self->{'phpConfig'}->{'PHP_FPM_EMERGENCY_RESTART_THRESHOLD'} || 10,
-            PHP_FPM_EMERGENCY_RESTART_INTERVAL  => $self->{'phpConfig'}->{'PHP_FPM_EMERGENCY_RESTART_INTERVAL'} || '1m',
-            PHP_FPM_PROCESS_CONTROL_TIMEOUT     => $self->{'phpConfig'}->{'PHP_FPM_PROCESS_CONTROL_TIMEOUT'} || '10s',
-            PHP_FPM_PROCESS_MAX                 => $self->{'phpConfig'}->{'PHP_FPM_PROCESS_MAX'} // 0
-        }
-    );
-
-    # FPM main configuration file
     $rs ||= $self->{'httpd'}->buildConfFile(
         "$self->{'phpCfgDir'}/fpm/php-fpm.conf",
         { },
-        {
-            destination => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/php-fpm.conf",
-            user        => $main::imscpConfig{'ROOT_USER'},
-            group       => $main::imscpConfig{'ROOT_GROUP'},
-            mode        => 0644
-        }
+        { destination => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/php-fpm.conf" }
     );
-
-    $self->{'httpd'}->setData(
-        {
-            HTTPD_USER  => $self->{'httpd'}->getRunningUser(),
-            HTTPD_GROUP => $self->{'httpd'}->getRunningGroup()
-        }
-    );
-
-    # Default pool configuration file
     $rs ||= $self->{'httpd'}->buildConfFile(
         "$self->{'phpCfgDir'}/fpm/pool.conf.default",
         { },
-        {
-            destination => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/www.conf",
-            user        => $main::imscpConfig{'ROOT_USER'},
-            group       => $main::imscpConfig{'ROOT_GROUP'},
-            mode        => 0644
-        }
+        { destination => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/www.conf" }
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildPhpConfFiles' );
 }
@@ -583,24 +545,18 @@ sub _buildApacheConfFiles
 
     $self->{'httpd'}->setData(
         {
-            HTTPD_LOG_DIR   => $self->{'config'}->{'HTTPD_LOG_DIR'},
-            HTTPD_ROOT_DIR  => $self->{'config'}->{'HTTPD_ROOT_DIR'},
-            AUTHZ_DENY_ALL  => $apache24 ? 'Require all denied' : 'Deny from all',
-            AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : 'Allow from all',
-            PIPE            => version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.2.12' )
-                ? '||' : '|',
-            VLOGGER_CONF    => "$self->{'apacheCfgDir'}/vlogger.conf"
+            AUTHZ_ALLOW_ALL        => $apache24 ? 'Require all granted' : 'Allow from all',
+            AUTHZ_DENY_ALL         => $apache24 ? 'Require all denied' : 'Deny from all',
+            HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
+            HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
+            HTTPD_ROOT_DIR         => $self->{'config'}->{'HTTPD_ROOT_DIR'},
+            PIPE                   =>
+                version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.2.12' ) ? '||' : '|',
+            VLOGGER_CONF           => "$self->{'apacheCfgDir'}/vlogger.conf"
         }
     );
 
     $rs ||= $self->{'httpd'}->buildConfFile( '00_nameserver.conf' );
-
-    $self->{'httpd'}->setData(
-        {
-            HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}
-        }
-    );
-
     $rs ||= $self->{'httpd'}->buildConfFile(
         '00_imscp.conf',
         { },
@@ -643,12 +599,7 @@ sub _installLogrotate
     $rs ||= $self->{'httpd'}->buildConfFile(
         'logrotate.conf',
         { },
-        {
-            destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2",
-            user        => $main::imscpConfig{'ROOT_USER'},
-            group       => $main::imscpConfig{'ROOT_GROUP'},
-            mode        => 0644
-        }
+        { destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2" }
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdInstallLogrotate', 'apache2' );
 
@@ -657,12 +608,7 @@ sub _installLogrotate
         $rs ||= $self->{'httpd'}->buildConfFile(
             "$self->{'phpCfgDir'}/fpm/logrotate.tpl",
             { },
-            {
-                destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm",
-                user        => $main::imscpConfig{'ROOT_USER'},
-                group       => $main::imscpConfig{'ROOT_GROUP'},
-                mode        => 0644
-            }
+            { destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm" }
         );
         $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdInstallLogrotate', 'php5-fpm' );
     }
@@ -724,14 +670,7 @@ sub _setupVlogger
     );
 
     $self->{'httpd'}->buildConfFile(
-        "$self->{'apacheCfgDir'}/vlogger.conf.tpl",
-        { },
-        {
-            destination => "$self->{'apacheCfgDir'}/vlogger.conf",
-            user        => $main::imscpConfig{'ROOT_USER'},
-            group       => $main::imscpConfig{'ROOT_GROUP'},
-            mode        => 0644
-        }
+        "$self->{'apacheCfgDir'}/vlogger.conf.tpl", { }, { destination => "$self->{'apacheCfgDir'}/vlogger.conf" }
     );
 }
 
@@ -760,15 +699,15 @@ sub _saveConf
     0;
 }
 
-=item _oldEngineCompatibility()
+=item _cleanup()
 
- Remove old files
+ Process cleanup tasks
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _oldEngineCompatibility
+sub _cleanup
 {
     my $self = shift;
 

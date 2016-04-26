@@ -25,14 +25,14 @@ package Modules::Subdomain;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
-use iMSCP::Database;
-use iMSCP::Execute;
-use iMSCP::Dir;
-use iMSCP::OpenSSL;
-use Servers::httpd;
 use File::Spec;
+use iMSCP::Database;
+use iMSCP::Debug;
+use iMSCP::Dir;
+use iMSCP::Execute;
+use iMSCP::OpenSSL;
 use Net::LibIDN qw/idn_to_unicode/;
+use Servers::httpd;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
