@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2016 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -14,12 +14,12 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 package Servers::httpd::apache_itk;
 
@@ -206,7 +206,8 @@ sub deleteUser
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdDelUser', $data );
     $rs ||= iMSCP::SystemUser->new(
-        username => $self->{'config'}->{'HTTPD_USER'} )->removeFromGroup( $data->{'GROUP'}
+        username => $self->{'config'}->{'HTTPD_USER'} )->removeFromGroup(
+        $data->{'GROUP'}
     );
     $rs || ($self->{'restart'} = 1);
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdDelUser', $data );
@@ -839,8 +840,7 @@ sub buildConfFile
     $rs = $fileHandler->set( $cfgTpl );
     $rs ||= $fileHandler->save();
     $rs ||= $fileHandler->owner(
-        $options->{'user'} // $main::imscpConfig{'ROOT_USER'},
-        $options->{'group'} // $main::imscpConfig{'ROOT_GROUP'}
+        $options->{'user'} // $main::imscpConfig{'ROOT_USER'}, $options->{'group'} // $main::imscpConfig{'ROOT_GROUP'}
     );
     $rs ||= $fileHandler->mode( $options->{'mode'} // 0644 );
 }
@@ -1628,8 +1628,7 @@ sub _addFiles
             # Fix user/group and mode for logs directory
             # logs vuxxx:vuxxx 0750 (no recursive)
             $rs = setRights(
-                "$webDir/logs",
-                { user => $main::imscpConfig{'ROOT_USER'}, group => $data->{'GROUP'}, mode => '0750' }
+                "$webDir/logs", { user => $main::imscpConfig{'ROOT_USER'}, group => $data->{'GROUP'}, mode => '0750' }
             );
             return $rs if $rs;
         }

@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2016 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,10 +19,10 @@ package Servers::httpd::apache_fcgid::uninstaller;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
-use iMSCP::File;
-use iMSCP::Dir;
 use File::Basename;
+use iMSCP::Debug;
+use iMSCP::Dir;
+use iMSCP::File;
 use Servers::httpd::apache_fcgid;
 use Servers::sqld;
 use parent 'Common::SingletonClass';
@@ -35,7 +35,6 @@ sub uninstall
     $rs ||= $self->_removeDirs();
     $rs ||= $self->_fastcgiConf();
     $rs ||= $self->_vHostConf();
-    $rs ||= $self->_restoreConf();
 }
 
 sub _init
@@ -44,9 +43,8 @@ sub _init
 
     $self->{'httpd'} = Servers::httpd::apache_fcgid->getInstance();
     $self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
-    $self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
-    $self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
     $self->{'config'} = $self->{'httpd'}->{'config'};
+    $self->{'phpConfig'} = $self->{'httpd'}->{'phpConfig'};
     $self;
 }
 
@@ -59,23 +57,8 @@ sub _removeDirs
 {
     my $self = shift;
 
-    for my $dir($self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}, $self->{'config'}->{'PHP_STARTER_DIR'}) {
+    for my $dir($self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}, $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}) {
         my $rs = iMSCP::Dir->new( dirname => $dir )->remove();
-        return $rs if $rs;
-    }
-
-    0;
-}
-
-sub _restoreConf
-{
-    my $self = shift;
-
-    for my $file("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2",
-        "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf") {
-        my $filename = fileparse( $file );
-        next unless -f "$self->{bkpDir}/$filename.system";
-        my $rs = iMSCP::File->new( filename => "$self->{bkpDir}/$filename.system" )->copyFile( $file );
         return $rs if $rs;
     }
 

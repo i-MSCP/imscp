@@ -210,8 +210,8 @@ sub deleteUser
     my ($self, $data) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdDelUser', $data );
-    $rs ||= iMSCP::SystemUser->new(
-        username => $self->{'config'}->{'HTTPD_USER'} )->removeFromGroup( $data->{'GROUP'}
+    $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'HTTPD_USER'} )->removeFromGroup(
+        $data->{'GROUP'}
     );
     $rs || ($self->{'restart'} = 1);
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdDelUser', $data );
@@ -294,9 +294,7 @@ sub disableDmn
     my %configTpls = ('' => 'domain_disabled.tpl');
 
     if ($data->{'SSL_SUPPORT'}) {
-        $self->setData(
-            { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" }
-        );
+        $self->setData( { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" } );
         $configTpls{'_ssl'} = 'domain_disabled_ssl.tpl';
     }
 
@@ -1367,9 +1365,7 @@ sub _addCfg
     if ($data->{'SSL_SUPPORT'}) {
         $vhosts{"$data->{'DOMAIN_NAME'}_ssl.conf"} = $data->{'FORWARD'} eq 'no'
             ? 'domain_ssl.tpl' : 'domain_redirect_ssl.tpl';
-        $self->setData(
-            { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" }
-        );
+        $self->setData( { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" } );
     } else {
         $rs = $self->disableSites( "$data->{'DOMAIN_NAME'}_ssl.conf" );
         return $rs if $rs;
@@ -1669,8 +1665,7 @@ sub _addFiles
             # Fix user/group and mode for logs directory
             # logs vuxxx:vuxxx 0750 (no recursive)
             $rs = setRights(
-                "$webDir/logs",
-                { user => $main::imscpConfig{'ROOT_USER'}, group => $data->{'GROUP'}, mode => '0750' }
+                "$webDir/logs", { user => $main::imscpConfig{'ROOT_USER'}, group => $data->{'GROUP'}, mode => '0750' }
             );
             return $rs if $rs;
         }

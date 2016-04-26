@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2016 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -383,11 +383,11 @@ sub _buildPhpConfFiles
     return $rs if $rs;
 
     if ($self->{'phpConfig'}->{'PHP_ENMOD_PATH'} ne '') {
-        for my $extension(
+        for (
             'apc', 'curl', 'gd', 'imap', 'intl', 'json', 'mcrypt', 'mysqlnd/10', 'mysqli', 'mysql', 'opcache', 'pdo/10',
             'pdo_mysql', 'zip'
         ) {
-            $rs = execute( "$self->{'phpConfig'}->{'PHP_ENMOD_PATH'} ne '' $extension", \ my $stdout, \ my $stderr );
+            $rs = execute( "$self->{'phpConfig'}->{'PHP_ENMOD_PATH'} $_", \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
             unless (grep($_ eq $rs, ( 0, 2 ))) {
                 error( $stderr ) if $stderr;
@@ -507,7 +507,8 @@ sub _installLogrotate
         {
             ROOT_USER     => $main::imscpConfig{'ROOT_USER'},
             ADM_GROUP     => $main::imscpConfig{'ADM_GROUP'},
-            HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'}
+            HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'},
+            PHP_VERSION   => $self->{'CONFIG'}->{'PHP_VERSION'}
         }
     );
 
@@ -608,8 +609,7 @@ sub _cleanup
 {
     my $self = shift;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdOldEngineCompatibility' );
-    $rs ||= $self->{'httpd'}->disableSites( 'imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf' );
+    my $rs = $self->{'httpd'}->disableSites( 'imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf' );
     return $rs if $rs;
 
     for ('imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf') {
@@ -633,7 +633,7 @@ sub _cleanup
     # Remove customer's logs file if any (no longer needed since we are now use bind mount)
     $rs = execute( "rm -f $main::imscpConfig{'USER_WEB_DIR'}/*/logs/*.log", \ my $stdout, \ my $stderr );
     error( $stderr ) if $rs && $stderr;
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdOldEngineCompatibility' );
+    $rs;
 }
 
 =back

@@ -711,8 +711,7 @@ sub _cleanup
 {
     my $self = shift;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdOldEngineCompatibility' );
-    $rs ||= $self->{'httpd'}->disableSites( 'imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf' );
+    my $rs = $self->{'httpd'}->disableSites( 'imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf' );
     return $rs if $rs;
 
     for ('imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf') {
@@ -743,7 +742,7 @@ sub _cleanup
 
     $rs = execute( "rm -f $main::imscpConfig{'USER_WEB_DIR'}/*/logs/*.log", \ my $stdout, \ my $stderr );
     error( $stderr ) if $rs && $stderr;
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdOldEngineCompatibility' );
+    $rs;
 }
 
 =back
