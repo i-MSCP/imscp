@@ -262,7 +262,7 @@ sub _guessPhpVariables
     }
 
     $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} ne '' or die(
-        sprintf( 'Could not guess value for the `%s` PHP configuration parameter.', $_ )
+        sprintf( 'Could not guess value for the `%s` PHP configuration parameter.', 'PHP_CLI_BIN_PATH' )
     );
 
     0;
