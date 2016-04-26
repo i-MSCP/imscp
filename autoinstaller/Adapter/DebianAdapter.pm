@@ -250,36 +250,6 @@ sub postBuild
 {
     my $self = shift;
 
-    # Needed to fix #IP-1246
-    if (iMSCP::ProgramFinder::find( 'php5dismod' )) {
-        for my $module(
-            'apc', 'curl', 'gd', 'imap', 'intl', 'json', 'mcrypt', 'mysqlnd', 'mysqli', 'mysql', 'opcache', 'pdo',
-            'pdo_mysql'
-        ) {
-            my $rs = execute( "php5dismod $module", \my $stdout, \my $stderr );
-            debug( $stdout ) if $stdout;
-            unless (grep($_ eq $rs, ( 0, 2 ))) {
-                error( $stderr ) if $stderr;
-                return $rs;
-            }
-        }
-    }
-
-    # Enable needed PHP modules (only if they are available)
-    if (iMSCP::ProgramFinder::find( 'php5enmod' )) {
-        for my $module(
-            'apc', 'curl', 'gd', 'imap', 'intl', 'json', 'mcrypt', 'mysqlnd/10', 'mysqli', 'mysql', 'opcache', 'pdo/10',
-            'pdo_mysql'
-        ) {
-            my $rs = execute( "php5enmod $module", \my $stdout, \my $stderr );
-            debug( $stdout ) if $stdout;
-            unless (grep($_ eq $rs, ( 0, 2 ))) {
-                error( $stderr ) if $stderr;
-                return $rs;
-            }
-        }
-    }
-
     $self->_setupInitScriptPolicyLayer( 'disable' );
 }
 
