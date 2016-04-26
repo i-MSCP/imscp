@@ -378,6 +378,7 @@ EOF
 
 Your SSL certificate for the control panel is missing or not valid.
 EOF
+            main::setupSetQuestion( 'PANEL_SSL_ENABLED', '' );
             goto &{askSsl};
         }
 
@@ -481,6 +482,7 @@ sub install
     $rs ||= $self->_deleteDnsZone();
     $rs ||= $self->_addDnsZone();
     $rs ||= $self->_saveConfig();
+    $rs ||= $self->_cleanup();
 }
 
 =item setGuiPermissions()
@@ -940,7 +942,7 @@ sub _makeDirs
         [ $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}, $rootUName, $rootUName, 0755 ],
         [ $phpStarterDir, $rootUName, $rootGName, 0555 ],
         [ "$phpStarterDir/master", $panelUName, $panelGName, 0550 ],
-        [ "$phpStarterDir/master/php$self->{'phpConfig}->{'PHP_VERSION'}", $panelUName, $panelGName, 0550 ]
+        [ "$phpStarterDir/master/php$self->{'phpConfig'}->{'PHP_VERSION'}", $panelUName, $panelGName, 0550 ]
     ) {
         $rs = iMSCP::Dir->new( dirname => $_->[0] )->make( { user => $_->[1], group => $_->[2], mode => $_->[3] } );
         return $rs if $rs;
@@ -995,7 +997,7 @@ sub _buildPhpConfig
             WEB_DIR            => $main::imscpConfig{'GUI_ROOT_DIR'},
             DOMAIN             => $main::imscpConfig{'BASE_SERVER_VHOST'},
             CONF_DIR           => $main::imscpConfig{'CONF_DIR'},
-            PEAR_DIR           => $main::imscpConfig{'PEAR_DIR'},
+            PEAR_DIR           => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
             RKHUNTER_LOG       => $main::imscpConfig{'RKHUNTER_LOG'},
             CHKROOTKIT_LOG     => $main::imscpConfig{'CHKROOTKIT_LOG'},
             OTHER_ROOTKIT_LOG  => $main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne ''
@@ -1005,7 +1007,7 @@ sub _buildPhpConfig
             DISTRO_CA_BUNDLE   => $main::imscpConfig{'DISTRO_CA_BUNDLE'}
         },
         {
-            destination => "$self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}/master/php$phpVersion",
+            destination => "$self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}/master/php$phpVersion/php.ini",
             user        => $user,
             group       => $group,
             mode        => 0440,
@@ -1059,7 +1061,7 @@ sub _buildHttpdConfig
             'HTTPD_SITES_ENABLED_DIR'  => $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}
         },
         {
-            destination => $self->{'config'}->{'HTTPD_CONF_DIR'},
+            destination => "$self->{'config'}->{'HTTPD_CONF_DIR'}/nginx.conf",
             user        => $main::imscpConfig{'ROOT_USER'},
             group       => $main::imscpConfig{'ROOT_GROUP'},
             mode        => 0644
@@ -1069,7 +1071,7 @@ sub _buildHttpdConfig
         "$self->{'cfgDir'}/imscp_fastcgi.conf",
         { },
         {
-            destination => $self->{'config'}->{'HTTPD_CONF_DIR'},
+            destination => "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf",
             user        => $main::imscpConfig{'ROOT_USER'},
             group       => $main::imscpConfig{'ROOT_GROUP'},
             mode        => 0644
@@ -1079,7 +1081,7 @@ sub _buildHttpdConfig
         "$self->{'cfgDir'}/imscp_php.conf",
         { },
         {
-            destination => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d",
+            destination => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf",
             user        => $main::imscpConfig{'ROOT_USER'},
             group       => $main::imscpConfig{'ROOT_GROUP'},
             mode        => 0644
@@ -1292,6 +1294,20 @@ sub _saveConfig
     my $rs = $file->owner( $rootUname, $rootGname );
     $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( "$self->{'cfgDir'}/frontend.old.data" );
+}
+
+=item _cleanup()
+
+ Process cleanup tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _cleanup
+{
+    # Remove old frontEnd configuration directory (since 1.2.18)
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/nginx" )->remove();
 }
 
 =back

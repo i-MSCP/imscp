@@ -383,6 +383,7 @@ sub _getHttpdData
 
     return %{$self->{'httpd'}} if $self->{'httpd'};
 
+    my $httpd = Servers::httpd->factory();
     my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
         ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
     my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
@@ -413,7 +414,7 @@ sub _getHttpdData
         WEB_DIR               => $homeDir,
         MOUNT_POINT           => '/',
         SHARED_MOUNT_POINT    => 0,
-        PEAR_DIR              => $main::imscpConfig{'PEAR_DIR'},
+        PEAR_DIR              => $httpd->{'phpConfig'}->{'PHP_PEAR_DIR'},
         TIMEZONE              => $main::imscpConfig{'TIMEZONE'},
         USER                  => $userName,
         GROUP                 => $groupName,

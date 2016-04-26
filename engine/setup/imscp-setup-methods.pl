@@ -887,6 +887,7 @@ EOF
 
 Your SSL certificate for the SMTP, POP/IMAP and FTP services is missing or not valid.
 EOF
+            setupSetQuestion('SERVICES_SSL_ENABLED', '');
             goto &{setupAskServicesSsl};
         }
 

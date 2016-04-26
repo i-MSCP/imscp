@@ -33,6 +33,7 @@ use iMSCP::EventManager;
 use iMSCP::TemplateParser;
 use iMSCP::Service;
 use Scalar::Defer;
+use Servers::httpd;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -437,11 +438,7 @@ sub _init
             tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.data";
             \%c;
         };
-    $self->{'phpConfig'} = lazy
-        {
-            tie my %c, 'iMSCP::Config', fileName => "$main::imscpConfig{'CONF_DIR'}/php/php.data";
-            \%c;
-        };
+    $self->{'phpConfig'} = Servers::httpd->factory()->{'phpConfig'};
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self;
 }

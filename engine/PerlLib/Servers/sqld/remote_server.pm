@@ -71,7 +71,10 @@ sub preinstall
 
 sub postinstall
 {
-    0; # Nothing to do there; Only here to prevent parent method to be called
+    my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'mysql' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'mysql' );
 }
 
 =item restart()

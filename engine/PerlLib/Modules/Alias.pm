@@ -231,12 +231,13 @@ sub _getHttpdData
 
     return %{$self->{'httpd'}} if $self->{'httpd'};
 
+    my $httpd = Servers::httpd->factory();
     my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
         ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
     my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}" );
     my $webDir = File::Spec->canonpath( "$homeDir/$self->{'alias_mount'}" );
     my $db = iMSCP::Database->factory();
-    my $confLevel = Servers::httpd->factory()->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} eq 'per_user' ? 'dmn' : 'als';
+    my $confLevel = $httpd->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} eq 'per_user' ? 'dmn' : 'als';
 
     my $phpiniMatchId = $confLevel eq 'dmn' ? $self->{'domain_id'} : $self->{'alias_id'};
     my $phpini = $db->doQuery(
@@ -264,7 +265,7 @@ sub _getHttpdData
         WEB_DIR               => $webDir,
         MOUNT_POINT           => $self->{'alias_mount'},
         SHARED_MOUNT_POINT    => $self->_sharedMountPoint(),
-        PEAR_DIR              => $main::imscpConfig{'PEAR_DIR'},
+        PEAR_DIR              => $httpd->{'phpConfig'}->{'PHP_PEAR_DIR'},
         TIMEZONE              => $main::imscpConfig{'TIMEZONE'},
         USER                  => $userName,
         GROUP                 => $groupName,

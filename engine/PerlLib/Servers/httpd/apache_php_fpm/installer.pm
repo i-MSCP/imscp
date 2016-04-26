@@ -150,21 +150,6 @@ EOF
     $rs;
 }
 
-=item preinstall()
-
- Process preinstall tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub preinstall
-{
-    my $self = shift;
-
-    $self->_guessPhpVariables();
-}
-
 =item install()
 
  Process install tasks
@@ -244,9 +229,9 @@ sub _init
     my $oldConf = "$self->{'apacheCfgDir'}/apache.old.data";
     if (-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-        for my $param(keys %oldConfig) {
-            if (exists $self->{'config'}->{$param}) {
-                $self->{'config'}->{$param} = $oldConfig{$param};
+        for (keys %oldConfig) {
+            if (exists $self->{'config'}->{$_}) {
+                $self->{'config'}->{$_} = $oldConfig{$_};
             }
         }
     }
@@ -257,13 +242,71 @@ sub _init
 
     if (-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-        for my $param(keys %oldConfig) {
-            if (exists $self->{'phpConfig'}->{$param}) {
-                $self->{'phpConfig'}->{$param} = $oldConfig{$param};
+        for (keys %oldConfig) {
+            if (exists $self->{'phpConfig'}->{$_}) {
+                $self->{'phpConfig'}->{$_} = $oldConfig{$_};
             }
         }
     }
+
+
+    $self->_guessPhpVariables();
     $self;
+}
+
+=item _guessPhpVariables
+
+ Guess PHP Variables
+
+ Return int 0 on success, die on failure
+
+=cut
+
+sub _guessPhpVariables
+{
+    my $self = shift;
+
+    my ($phpVersion) = $main::imscpConfig{'PHP_SERVER'} =~ /php([\d.]+)$/;
+
+    unless (defined $phpVersion) {
+        die( sprintf( 'Could not guess value for the `%s` PHP configuration parameter.', 'PHP_VERSION' ) );
+    }
+
+    $self->{'phpConfig'}->{'PHP_VERSION'} = $phpVersion;
+
+    if (version->parse( $phpVersion ) < version->parse( '7.0' )) {
+        $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = '/etc/php5';
+        $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5' ) || '';
+        $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5-cgi' ) || '';
+        $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5-fpm' ) || '';
+        $self->{'phpConfig'}->{'PHP_DISMOD_PATH'} = iMSCP::ProgramFinder::find( 'php5dismod' ) || '';
+        $self->{'phpConfig'}->{'PHP_ENMOD_PATH'} = iMSCP::ProgramFinder::find( 'php5enmod' ) || '';
+    } else {
+        $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = "/etc/php/$phpVersion";
+        $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php$phpVersion" ) || '';
+        $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-cgi$phpVersion" ) || '';
+        $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-fpm$phpVersion" ) || '';
+        $self->{'phpConfig'}->{'PHP_DISMOD_PATH'} = iMSCP::ProgramFinder::find( 'phpdismod' ) || '';
+        $self->{'phpConfig'}->{'PHP_ENMOD_PATH'} = iMSCP::ProgramFinder::find( 'phpenmod' ) || '';
+    }
+
+    unless (-d $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}) {
+        die(
+            sprintf(
+                "Could not guess value for the `%s` PHP configuration parameter: %s directory doesn't exists.",
+                'PHP_CONF_DIR_PATH',
+                $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}
+            )
+        );
+        $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = '';
+    }
+
+    for(qw/ PHP_CLI_BIN_PATH PHP_FCGI_BIN_PATH PHP_FPM_BIN_PATH /) {
+        next unless $self->{'phpConfig'}->{$_} eq '';
+        die( sprintf( 'Could not guess value for the `%s` PHP configuration parameter.', $_ ) );
+    }
+
+    0;
 }
 
 =item _setApacheVersion
@@ -331,14 +374,15 @@ sub _buildFastCgiConfFiles
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdBuildFastCgiConfFiles' );
     return $rs if $rs;
 
-    my $version = $self->{'config'}->{'HTTPD_VERSION'};
+    my $apacheVersion = $self->{'config'}->{'HTTPD_VERSION'};
 
-    $rs = $self->{'httpd'}->setData(
+    $self->{'httpd'}->setData(
         {
-            AUTHZ_ALLOW_ALL => version->parse( $version ) >= version->parse( '2.4.0' )
+            AUTHZ_ALLOW_ALL => version->parse( $apacheVersion ) >= version->parse( '2.4.0' )
                 ? 'Require env REDIRECT_STATUS' : "Order allow,deny\n        Allow from env=REDIRECT_STATUS"
         }
     );
+
     $rs ||= $self->{'httpd'}->buildConfFile(
         "$self->{'phpCfgDir'}/fpm/apache_fastcgi_module.conf",
         { },
@@ -365,12 +409,12 @@ sub _buildFastCgiConfFiles
     my @modulesOff = ('fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php4', 'php5', 'php5_cgi', 'php5filter');
     my @modulesOn = ('actions', 'suexec', 'version');
 
-    if (version->parse( $version ) >= version->parse( '2.4.0' )) {
+    if (version->parse( $apacheVersion ) >= version->parse( '2.4.0' )) {
         push @modulesOff, 'mpm_event', 'mpm_itk', 'mpm_prefork';
         push @modulesOn, 'mpm_worker', 'authz_groupfile';
     }
 
-    if (version->parse( $version ) >= version->parse( '2.4.10' )) {
+    if (version->parse( $apacheVersion ) >= version->parse( '2.4.10' )) {
         push @modulesOff, 'php_fpm_imscp';
         push @modulesOn, 'proxy_fcgi', 'proxy_handler';
     } else {
@@ -383,12 +427,11 @@ sub _buildFastCgiConfFiles
     return $rs if $rs;
 
     if ($self->{'phpConfig'}->{'PHP_ENMOD_PATH'} ne '') {
-        for my $extension (
+        for (
             'apc', 'curl', 'gd', 'imap', 'intl', 'json', 'mcrypt', 'mysqlnd/10', 'mysqli', 'mysql', 'opcache', 'pdo/10',
             'pdo_mysql'
         ) {
-            my ($stdout, $stderr);
-            $rs = execute( "$self->{'phpConfig'}->{'PHP_ENMOD_PATH'} $extension", \$stdout, \$stderr );
+            $rs = execute( "$self->{'phpConfig'}->{'PHP_ENMOD_PATH'} $_", \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
             unless (grep($_ eq $rs, ( 0, 2 ))) {
                 error( $stderr ) if $stderr;
@@ -551,18 +594,20 @@ sub _buildApacheConfFiles
     );
 
     $rs ||= $self->{'httpd'}->buildConfFile( '00_nameserver.conf' );
-    $rs ||= $self->{'httpd'}->setData(
+
+    $self->{'httpd'}->setData(
         {
             HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}
         }
     );
+
     $rs ||= $self->{'httpd'}->buildConfFile(
         '00_imscp.conf',
         { },
         {
             destination => -d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available"
-                ? "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available"
-                : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d"
+                ? "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/00_imscp.conf"
+                : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/00_imscp.conf"
         }
     );
     $rs ||= $self->{'httpd'}->enableModules( 'cgid', 'rewrite', 'proxy', 'proxy_http', 'setenvif', 'ssl' );
@@ -590,7 +635,8 @@ sub _installLogrotate
         {
             ROOT_USER     => $main::imscpConfig{'ROOT_USER'},
             ADM_GROUP     => $main::imscpConfig{'ADM_GROUP'},
-            HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'}
+            HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'},
+            PHP_VERSION   => $self->{'CONFIG'}->{'PHP_VERSION'}
         }
     );
 
@@ -605,20 +651,23 @@ sub _installLogrotate
         }
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdInstallLogrotate', 'apache2' );
-    $rs ||= $self->{'eventManager'}->trigger( 'beforeHttpdInstallLogrotate', 'php5-fpm' );
-    $rs ||= $self->{'httpd'}->buildConfFile(
-        "$self->{'phpCfgDir'}/fpm/fpm_logrotate.tpl",
-        {
-            PHP_VERSION => $self->{'CONFIG'}->{'PHP_VERSION'}
-        },
-        {
-            destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php$self->{'CONFIG'}->{'PHP_VERSION'}-fpm",
-            user        => $main::imscpConfig{'ROOT_USER'},
-            group       => $main::imscpConfig{'ROOT_GROUP'},
-            mode        => 0644
-        }
-    );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdInstallLogrotate', 'php5-fpm' );
+
+    if (!$rs && version->parse( "$self->{'phpConfig'}->{'PHP_VERSION'}" ) < version->parse( '7.0' )) {
+        $rs ||= $self->{'eventManager'}->trigger( 'beforeHttpdInstallLogrotate', "php5-fpm" );
+        $rs ||= $self->{'httpd'}->buildConfFile(
+            "$self->{'phpCfgDir'}/fpm/logrotate.tpl",
+            { },
+            {
+                destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm",
+                user        => $main::imscpConfig{'ROOT_USER'},
+                group       => $main::imscpConfig{'ROOT_GROUP'},
+                mode        => 0644
+            }
+        );
+        $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdInstallLogrotate', 'php5-fpm' );
+    }
+
+    $rs;
 }
 
 =item _setupVlogger()
@@ -650,9 +699,9 @@ sub _setupVlogger
     my $rs = main::setupImportSqlSchema( $db, "$self->{'apacheCfgDir'}/vlogger.sql" );
     return $rs if $rs;
 
-    for my $host($userHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, 'localhost') {
-        next unless $host;
-        $sqld->dropUser( $user, $host );
+    for ($userHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, 'localhost') {
+        next unless $_;
+        $sqld->dropUser( $user, $_ );
     }
 
     $sqld->createUser( $user, $userHost, $pass );
@@ -674,11 +723,14 @@ sub _setupVlogger
         }
     );
 
-    $rs ||= $self->{'httpd'}->buildConfFile(
+    $self->{'httpd'}->buildConfFile(
         "$self->{'apacheCfgDir'}/vlogger.conf.tpl",
         { },
         {
-            destination => "$self->{'apacheCfgDir'}/vlogger.conf"
+            destination => "$self->{'apacheCfgDir'}/vlogger.conf",
+            user        => $main::imscpConfig{'ROOT_USER'},
+            group       => $main::imscpConfig{'ROOT_GROUP'},
+            mode        => 0644
         }
     );
 }
@@ -735,54 +787,24 @@ sub _oldEngineCompatibility
         return $rs if $rs;
     }
 
-    if (-f "$self->{'phpConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/master.conf") {
+    if (-f "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/master.conf") {
         $rs = iMSCP::File->new(
             filename => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/master.conf"
         )->delFile();
         return $rs if $rs;
     }
 
+    # Remove old apache/backup configuration directory (since 1.2.18)
+    # Remove old apache/working configuration directory (since 1.2.18)
+    # Remove old phpfpm configuration directory (since 1.2.18)
+    for('apache/backup', 'apache/working', 'php-fpm') {
+        $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/$_" )->remove();
+        return $rs if $rs;
+    }
+
     $rs = execute( "rm -f $main::imscpConfig{'USER_WEB_DIR'}/*/logs/*.log", \my $stdout, \my $stderr );
     error( $stderr ) if $rs && $stderr;
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdOldEngineCompatibility' );
-}
-
-=item guessPhpVariables
-
- Guess PHP Variables
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub guessPhpVariables
-{
-    my ($phpVersion) = $main::imscpConfig{'PHP_SERVER'} =~ /php([\d.]+)$/;
-
-    unless (defined $phpVersion) {
-        error( 'Could not guess PHP version' );
-        return 1;
-    }
-
-    $self->{'phpConfig'}->{'PHP_VERSION'} = $phpVersion;
-
-    if (version->parse( $phpVersion ) < version->parse( '7.0' )) {
-        $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = "/etc/php/$phpVersion";
-        $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = '/usr/bin/php5';
-        $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = '/usr/bin/php5-cgi';
-        $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = '/usr/bin/php5-fpm';
-        $self->{'phpConfig'}->{'PHP_DISMOD_PATH'} = '/usr/sbin/php5dismod';
-        $self->{'phpConfig'}->{'PHP_ENMOD_PATH'} = '/usr/sbin/php5enmod';
-    } else {
-        $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = "/etc/php5";
-        $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = "/usr/bin/php$phpVersion";
-        $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = "/usr/bin/php-cgi$phpVersion";
-        $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = "/usr/bin/php-fpm$phpVersion";
-        $self->{'phpConfig'}->{'PHP_DISMOD_PATH'} = '/usr/sbin/phpdismod';
-        $self->{'phpConfig'}->{'PHP_ENMOD_PATH'} = '/usr/sbin/phpenmod';
-    }
-
-    0;
 }
 
 =back

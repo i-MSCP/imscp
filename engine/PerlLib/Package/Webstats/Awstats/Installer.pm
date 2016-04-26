@@ -182,17 +182,18 @@ sub _createGlobalAwstatsVhost
     my $version = $self->{'httpd'}->{'config'}->{'HTTPD_VERSION'};;
     my $apache24 = version->parse( $version ) >= version->parse( '2.4.0' );
 
-    $self->{'httpd'}->setData( {
+    $self->{'httpd'}->setData(
+        {
             NAMEVIRTUALHOST    => $apache24 ? '' : 'NameVirtualHost 127.0.0.1:80',
             AWSTATS_ENGINE_DIR => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
             AWSTATS_WEB_DIR    => $main::imscpConfig{'AWSTATS_WEB_DIR'},
             AUTHZ_ALLOW_ALL    => $apache24 ? 'Require all granted' : 'Allow from all'
-        } );
+        }
+    );
 
     my $rs = $self->{'httpd'}->buildConfFile(
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Config/01_awstats.conf"
+        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Config/01_awstats.conf",
     );
-    $rs ||= $self->{'httpd'}->installConfFile( '01_awstats.conf' );
     $rs ||= $self->{'httpd'}->enableSites( '01_awstats.conf' );
 }
 
