@@ -47,7 +47,7 @@ CONFIG
     Removed: VARIABLE_DATA_DIR parameter
     Removed: i-MSCP intermediate working files, including working directory (Postfix)
     Removed: i-MSCP intermediate working files, including working directory (Apache)
-    Removed fcgi configuration directory (merged into php configuration directory)
+    Removed: fcgi configuration directory (merged into php configuration directory)
     Removed: php-fpm configuration directory (merged into php configuration directory)
 
 CONTRIB
