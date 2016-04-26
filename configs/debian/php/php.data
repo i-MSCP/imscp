@@ -29,6 +29,7 @@ PHP_FCGI_STARTER_DIR = /var/www/fcgi
 ##
 
 PHP_FPM_BIN_PATH =
+PHP_FPM_POOL_DIR_PATH =
 
 #
 ## FPM global parameters

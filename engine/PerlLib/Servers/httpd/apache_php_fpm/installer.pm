@@ -275,6 +275,7 @@ sub _guessPhpVariables
 
     if (version->parse( $phpVersion ) < version->parse( '7.0' )) {
         $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = '/etc/php5';
+        $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = '/etc/php5/fpm/pool.d';
         $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5' ) || '';
         $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5-cgi' ) || '';
         $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5-fpm' ) || '';
@@ -282,6 +283,7 @@ sub _guessPhpVariables
         $self->{'phpConfig'}->{'PHP_ENMOD_PATH'} = iMSCP::ProgramFinder::find( 'php5enmod' ) || '';
     } else {
         $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = "/etc/php/$phpVersion";
+        $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = "/etc/php/$phpVersion/fpm/pool.d";
         $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php$phpVersion" ) || '';
         $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-cgi$phpVersion" ) || '';
         $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-fpm$phpVersion" ) || '';
@@ -289,16 +291,17 @@ sub _guessPhpVariables
         $self->{'phpConfig'}->{'PHP_ENMOD_PATH'} = iMSCP::ProgramFinder::find( 'phpenmod' ) || '';
     }
 
-    unless (-d $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}) {
-        $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = '';
-        die(
-            sprintf(
-                "Could not guess value for the `%s` PHP configuration parameter: %s directory doesn't exists.",
-                'PHP_CONF_DIR_PATH',
-                $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}
-            )
-        );
-        $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = '';
+    for(qw/ PHP_CONF_DIR_PATH PHP_FPM_POOL_DIR_PATH /) {
+        unless (-d $self->{'phpConfig'}->{$_}) {
+            $self->{'phpConfig'}->{$_} = '';
+            die(
+                sprintf(
+                    "Could not guess value for the `%s` PHP configuration parameter: `%s` directory doesn't exists.",
+                    $_,
+                    $self->{'phpConfig'}->{$_}
+                )
+            );
+        }
     }
 
     for(qw/ PHP_CLI_BIN_PATH PHP_FCGI_BIN_PATH PHP_FPM_BIN_PATH /) {
@@ -355,7 +358,7 @@ sub _makeDirs
     return $rs if $rs;
 
     # Cleanup pools directory (prevent possible orphaned pool file when changing PHP configuration level)
-    unlink glob "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/*.conf";
+    unlink glob "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/*.conf";
     $self->{'eventManager'}->trigger( 'afterHttpdMakeDirs' );
 }
 
@@ -454,6 +457,7 @@ sub _buildPhpConfFiles
             HTTPD_GROUP                         => $self->{'config'}->{'HTTPD_GROUP'},
             PEAR_DIR                            => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
             PHP_CONF_DIR_PATH                   => $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'},
+            PHP_FPM_POOL_DIR_PATH               => $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'},
             PHP_FPM_LOG_LEVEL                   => $self->{'phpConfig'}->{'PHP_FPM_LOG_LEVEL'} || 'error',
             PHP_FPM_EMERGENCY_RESTART_THRESHOLD => $self->{'phpConfig'}->{'PHP_FPM_EMERGENCY_RESTART_THRESHOLD'} || 10,
             PHP_FPM_EMERGENCY_RESTART_INTERVAL  => $self->{'phpConfig'}->{'PHP_FPM_EMERGENCY_RESTART_INTERVAL'} || '1m',
@@ -477,7 +481,7 @@ sub _buildPhpConfFiles
     $rs ||= $self->{'httpd'}->buildConfFile(
         "$self->{'phpCfgDir'}/fpm/pool.conf.default",
         { },
-        { destination => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/www.conf" }
+        { destination => "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/www.conf" }
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildPhpConfFiles' );
 }
@@ -725,9 +729,9 @@ sub _cleanup
         return $rs if $rs;
     }
 
-    if (-f "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/master.conf") {
+    if (-f "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/master.conf") {
         $rs = iMSCP::File->new(
-            filename => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/master.conf"
+            filename => "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/master.conf"
         )->delFile();
         return $rs if $rs;
     }

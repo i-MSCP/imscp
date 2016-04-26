@@ -332,7 +332,7 @@ sub deleteDmn
     for ("$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}.conf",
         "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
         "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
-        "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/$data->{'DOMAIN_NAME'}.conf"
+        "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/$data->{'DOMAIN_NAME'}.conf"
     ) {
         next unless -f $_;
         $rs = iMSCP::File->new( filename => $_ )->delFile();
@@ -1737,17 +1737,17 @@ sub _buildPHPConfig
         $rs = $self->buildConfFile(
             "$self->{'phpCfgDir'}/fpm/pool.conf",
             $data,
-            { destination => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/$poolName.conf" }
+            { destination => "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/$poolName.conf" }
         );
         return $rs if $rs;
     } elsif (($data->{'PHP_SUPPORT'} ne 'yes'
         || $confLevel eq 'per_user' && $domainType ne 'dmn'
         || $confLevel eq 'per_domain' && !grep($_ eq $domainType, ( 'dmn', 'als' ))
         || $confLevel eq 'per_site')
-        && -f "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/$data->{'DOMAIN_NAME'}.conf"
+        && -f "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/$data->{'DOMAIN_NAME'}.conf"
     ) {
         $rs = iMSCP::File->new(
-            filename => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d/$data->{'DOMAIN_NAME'}.conf"
+            filename => "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/$data->{'DOMAIN_NAME'}.conf"
         )->delFile();
         return $rs if $rs;
     }
