@@ -65,8 +65,7 @@ sub registerSetupListeners
 {
     my ($self, $eventManager) = @_;
 
-    my $rs = $self->_guessPhpVariables();
-    $rs ||= $eventManager->register(
+    $eventManager->register(
         'beforeSetupDialog',
         sub {
             push @{$_[0]}, sub { $self->showDialog( @_ ) };
@@ -89,7 +88,7 @@ sub showDialog
     my ($self, $dialog) = @_;
 
     my $rs = 0;
-    my $confLevel = main::setupGetQuestion( 'PHP_CONFIG_LEVEL', $self->{'config'}->{'PHP_CONFIG_LEVEL'} );
+    my $confLevel = main::setupGetQuestion( 'PHP_CONFIG_LEVEL', $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} );
 
     if (grep($_ eq $main::reconfigure, ( 'httpd', 'php', 'servers', 'all', 'forced' ))
         || !grep($_ eq $confLevel, ( 'per_site', 'per_domain', 'per_user' ))
@@ -375,7 +374,7 @@ sub _buildFastCgiConfFiles
     );
     return $rs if $rs;
 
-    $file = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/fcgid.load" );
+    my $file = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/fcgid.load" );
 
     my $cfgTpl = $file->get();
     unless (defined $cfgTpl) {
@@ -633,7 +632,8 @@ sub _cleanup
 {
     my $self = shift;
 
-    $rs ||= $self->{'httpd'}->disableSites( 'imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf' );
+    my $rs ||= $self->{'httpd'}->disableSites( 'imscp.conf', '00_modcband.conf', '00_master.conf',
+        '00_master_ssl.conf' );
 
     for ('imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf') {
         next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
@@ -643,7 +643,7 @@ sub _cleanup
 
     if (-d $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}) {
         $rs = execute(
-            "rm -f $self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/*/php5-fastcgi-starter", \ my $stdout, \ my $stderr
+            "rm -f $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}/*/php5-fastcgi-starter", \ my $stdout, \ my $stderr
         );
         return $rs if $rs;
     }

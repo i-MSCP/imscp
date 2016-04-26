@@ -65,7 +65,7 @@ sub registerSetupListeners
 {
     my ($self, $eventManager) = @_;
 
-    $rs ||= $eventManager->register(
+    $eventManager->register(
         'beforeSetupDialog',
         sub {
             push @{$_[0]}, sub { $self->showDialog( @_ ) };
@@ -353,15 +353,15 @@ sub _buildPhpConfFiles
 
     $self->{'httpd'}->setData(
         {
-            PEAR_DIR => $httpd->{'phpConfig'}->{'PHP_PEAR_DIR'},
+            PEAR_DIR => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
             TIMEZONE => $main::imscpConfig{'TIMEZONE'}
         }
     );
 
     $rs = $self->{'httpd'}->buildConfFile(
-        "$self->{'apacheCfgDir'}/apache/php.ini",
+        "$self->{'phpCfgDir'}/apache/php.ini",
         { },
-        { destination => "$self->{'phpConfig'}->{'PHP_CONF_DIR'}/php.ini" }
+        { destination => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/apache2/php.ini" }
     );
     return $rs if $rs;
 
