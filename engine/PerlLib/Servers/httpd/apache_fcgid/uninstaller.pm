@@ -57,8 +57,8 @@ sub _removeDirs
 {
     my $self = shift;
 
-    for my $dir($self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}, $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}) {
-        my $rs = iMSCP::Dir->new( dirname => $dir )->remove();
+    for ($self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}, $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}) {
+        my $rs = iMSCP::Dir->new( dirname => $_ )->remove();
         return $rs if $rs;
     }
 
@@ -72,9 +72,9 @@ sub _fastcgiConf
     my $rs = $self->{'httpd'}->disableModules( 'fcgid_imscp' );
     return $rs if $rs;
 
-    for my $conffile('fcgid_imscp.conf', 'fcgid_imscp.load') {
-        next unless -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$conffile";
-        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$conffile" )->delFile();
+    for ('fcgid_imscp.conf', 'fcgid_imscp.load') {
+        next unless -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_";
+        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_" )->delFile();
         return $rs if $rs;
     }
 
@@ -102,9 +102,9 @@ sub _vHostConf
         return $rs if $rs;
     }
 
-    for my $site('000-default', 'default') {
-        next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site";
-        my $rs = $self->{'httpd'}->enableSites( $site );
+    for ('000-default', 'default') {
+        next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
+        my $rs = $self->{'httpd'}->enableSites( $_ );
         return $rs if $rs;
     }
 
