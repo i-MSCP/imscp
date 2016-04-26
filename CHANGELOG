@@ -5,6 +5,7 @@ Git 1.2.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
+    Added: Support for PHP 7 (httpd servers implementations)
     Added: beforeMountLogsFolder, afterMountLogsFolder, beforeUnmountLogsFolder and afterUmountMountLogsFolder events
     Added: Caller info for __DIE__ and __WARN__ signal handlers
     Added: Debug info for loading of listener files (Event::Manager)
@@ -27,9 +28,11 @@ BACKEND
     Removed: beforeDispatchRequest and afterDispatchRequest events
     Removed: cache data directory (/var/cache/imscp directory)
     Removed: imscp-httpd-logs-mngr script (Apache2 logs dirctories are now mounted via the imscp_mountall service)
+    Removed: installConfFile() method from httpd server packages
     Rewritten: iMSCP::SetRights library (usage of built-in functions to avoid call of system chown/chmod commands)
 
 CONFIG
+    Added: php configuration directory (directory which holds all PHP template and configuration parameters)
     Added: DISTRO_ID, DISTRO_CODENAME and DISTRO_RELEASE parameters in imscp.conf file
     Added: IMSCP_USER parameter (name of i-MSCP master system user)
     Added: IPV6_SUPPORT parameter (tells whether or not IPv6 support is enabled for the server)
@@ -39,9 +42,13 @@ CONFIG
     Changed: Moved DirectoryIndex directive in vhosts (Apache2)
     Depreciated: CACHE_DATA_DIR (/var/cache/imscp) parameter
     Fixed: Allow access to .well-known folder in any case if exists (Apache2)
+    Moved: nginx configuration directory to frontend configuration directory
     Removed: Redundant MYSQL_PREFIX_TYPE parameter
     Removed: VARIABLE_DATA_DIR parameter
     Removed: i-MSCP intermediate working files, including working directory (Postfix)
+    Removed: i-MSCP intermediate working files, including working directory (Apache)
+    Removed fcgi configuration directory (merged into php configuration directory)
+    Removed: php-fpm configuration directory (merged into php configuration directory)
 
 CONTRIB
     Added: PhpMyAdmin/10_phpmyadmin_conffile.pl listener file (Allows to override default configuration template file)
@@ -98,7 +105,7 @@ INSTALLER
     Moved: Master administrator questions and setup routines into Package::FrontEnd::Installer
     Removed: Update notices (link to errata file is sufficient)
     Renamed: imscp-setup script to imscp-reconfigure
-    Transitional: Enforce PHP5 variant under Debian Stretch (testing) and Ubuntu 16.04 (Xenial Xerus)
+    Transitional: Enforce PHP5 variant under Debian Stretch (testing)
 
 PACKAGES
     Fixed: ERR_INCOMPLETE_CHUNKED_ENCODING error due to wrong permissions on nginx fastcgi cache directory (FrontEnd)
