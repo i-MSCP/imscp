@@ -153,7 +153,9 @@ sub build
         [ \&_testRequirements, 'Checking for requirements' ],
         [ \&_buildDistributionFiles, 'Building distribution files' ],
         [ \&_compileDaemon, 'Compiling daemon' ],
-        [ \&_savePersistentData, 'Saving persistent data' ]
+        [ \&_savePersistentData, 'Saving persistent data' ],
+        [ \&_cleanup, 'Process cleanup tasks' ]
+
     );
 
     # Remove the distro packages step in case the --skippackages is set
@@ -714,12 +716,6 @@ sub _savePersistentData
 
     # Save Web directories skeletons
 
-    # Remove deprecated phptmp directories
-    for ("alias", "subdomain") {
-        my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/apache/skel/$_/phptmp" )->remove();
-        return $rs if $rs;
-    }
-
     # Move old skel directory to new location
     if (-d "$main::imscpConfig{'CONF_DIR'}/apache/skel") {
         my $rs = execute(
@@ -750,21 +746,6 @@ sub _savePersistentData
         );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
-        return $rs if $rs;
-    }
-
-    # Remove old README file
-    if (-f "$main::imscpConfig{'CONF_DIR'}/listeners.d/README") {
-        my $rs = execute( "rm -f $main::imscpConfig{'CONF_DIR'}/listeners.d/README", \ my $stdout, \ my $stderr );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        return $rs if $rs;
-    }
-
-    ## Remove obsolete locations
-
-    if (-d  "$main::imscpConfig{'CACHE_DATA_DIR'}") {
-        my $rs = execute( "rm -fR $main::imscpConfig{'CACHE_DATA_DIR'}/addons" );
         return $rs if $rs;
     }
 
@@ -865,6 +846,45 @@ sub _savePersistentData
         );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
+        return $rs if $rs;
+    }
+
+    0;
+}
+
+=item _cleanup()
+
+ Process cleanup tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _cleanup
+{
+    for ("alias", "subdomain") {
+        my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/apache/skel/$_/phptmp" )->remove();
+        return $rs if $rs;
+    }
+
+    # Since 1.2.18
+    my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'CACHE_DATA_DIR'}/addons" )->remove();
+    $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/apache/backup" )->remove();
+    $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/apache/working" )->remove();
+    $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/fcgi" )->remove();
+    $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/nginx" )->remove();
+    $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/postfix/working" )->remove();
+    return $rs if $rs;
+
+    # Remove old README file
+    if (-f "$main::imscpConfig{'CONF_DIR'}/listeners.d/README") {
+        $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/listeners.d/README" )->delFile();
+        return $rs if $rs;
+    }
+
+    # Since 1.2.18
+    if (-f "$main::imscpConfig{'CONF_DIR'}/apache/parts/php5.itk.ini") {
+        $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/apache/parts/php5.itk.ini" )->delFile();
         return $rs if $rs;
     }
 

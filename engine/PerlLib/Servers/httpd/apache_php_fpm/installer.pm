@@ -736,14 +736,6 @@ sub _cleanup
         return $rs if $rs;
     }
 
-    # Remove old apache/backup configuration directory (since 1.2.18)
-    # Remove old apache/working configuration directory (since 1.2.18)
-    # Remove old phpfpm configuration directory (since 1.2.18)
-    for('apache/backup', 'apache/working', 'php-fpm') {
-        $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/$_" )->remove();
-        return $rs if $rs;
-    }
-
     $rs = execute( "rm -f $main::imscpConfig{'USER_WEB_DIR'}/*/logs/*.log", \ my $stdout, \ my $stderr );
     error( $stderr ) if $rs && $stderr;
     $rs;

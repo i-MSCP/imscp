@@ -482,7 +482,6 @@ sub install
     $rs ||= $self->_deleteDnsZone();
     $rs ||= $self->_addDnsZone();
     $rs ||= $self->_saveConfig();
-    $rs ||= $self->_cleanup();
 }
 
 =item setGuiPermissions()
@@ -1294,20 +1293,6 @@ sub _saveConfig
     my $rs = $file->owner( $rootUname, $rootGname );
     $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( "$self->{'cfgDir'}/frontend.old.data" );
-}
-
-=item _cleanup()
-
- Process cleanup tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _cleanup
-{
-    # Remove old frontEnd configuration directory (since 1.2.18)
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/nginx" )->remove();
 }
 
 =back

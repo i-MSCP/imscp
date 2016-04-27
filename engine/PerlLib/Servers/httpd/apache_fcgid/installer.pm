@@ -651,14 +651,6 @@ sub _cleanup
         return $rs if $rs;
     }
 
-    # Remove old apache/backup configuration directory (since 1.2.18)
-    # Remove old apache/working configuration directory (since 1.2.18)
-    # Remove old fcgi configuration directory (since 1.2.18)
-    for('apache/backup', 'apache/working', 'fcgi') {
-        $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/$_" )->remove();
-        return $rs if $rs;
-    }
-
     # Remove customer's logs file if any (no longer needed since we are now use bind mount)
     $rs = execute( "rm -f $main::imscpConfig{'USER_WEB_DIR'}/*/logs/*.log", \ my $stdout, \ my $stderr );
     error( $stderr ) if $rs && $stderr;
