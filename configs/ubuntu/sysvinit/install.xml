@@ -9,6 +9,6 @@
     <copy_config mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/init.d/imscp_mountall</copy_config>
     <copy_config mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/init.d/imscp_panel</copy_config>
     <copy_config mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/init.d/imscp_traffic</copy_config>
-    <copy_config if="'${FTPD_SERVER}' eq 'proftpd' and ${DISTRO_CODENAME}' eq 'wheezy'" mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}" kept="1">${ROOT_CONF}/init.d/proftpd</copy_config>
+    <copy_config if="'${FTPD_SERVER}' eq 'proftpd' and grep($_ eq '${DISTRO_CODENAME}', ('precise', 'trusty'))" mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}" kept="1">${ROOT_CONF}/init.d/proftpd</copy_config>
     <copy_config>${SYSTEM_CONF}/init.d/imscp_panel.default</copy_config>
 </install>

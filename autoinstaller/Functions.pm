@@ -1061,10 +1061,12 @@ sub _copyConfig
 
     if (defined $data->{'if'}) {
         unless (eval _expandVars( $data->{if} )) {
-            (my $syspath = $data->{'content'}) =~ s/^$main::{'INST_PREF'}//;
-            if ($syspath ne '/' && -f $syspath) {
-                my $rs = iMSCP::File->new( filename => $syspath )->delFile();
-                return $rs if $rs;
+            unless ($data->{'kept'}) {
+                (my $syspath = $data->{'content'}) =~ s/^$main::{'INST_PREF'}//;
+                if ($syspath ne '/' && -f $syspath) {
+                    my $rs = iMSCP::File->new( filename => $syspath )->delFile();
+                    return $rs if $rs;
+                }
             }
 
             return 0;
