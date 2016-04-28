@@ -3,7 +3,7 @@
 int main(int argc, char **argv)
 {
 	int listenfd, connfd, option;
-	char *pidfile = NULL;
+	char pidfile[0xff];
 	struct sockaddr_in servaddr, cliaddr;
 	struct timeval timeout_rcv, timeout_snd;
 
@@ -11,12 +11,20 @@ int main(int argc, char **argv)
 	socklen_t clilen;
 
 	/* Parse command line options */
-	while ((option = getopt(argc, argv, "b:p:h")) != -1) {
+	while ((option = getopt(argc, argv, "hb:p:")) != -1) {
 		switch(option) {
 			case 'b':
+				if(strlen(optarg) > 254) {
+					fprintf(stderr, "Backend script path too long, use under 254 characters\n");
+					exit(EXIT_FAILURE);
+				}
 				strncpy(backendscriptpath, optarg, sizeof(backendscriptpath));
 			break;
 			case 'p':
+				if(strlen(optarg) > 254) {
+					fprintf(stderr, "Pid file path too long, use under 254 characters\n");
+					exit(EXIT_FAILURE);
+				}
 				strncpy(pidfile, optarg, sizeof(pidfile));
 			break;
 			case 'h':
@@ -32,7 +40,7 @@ int main(int argc, char **argv)
 		}
 	}
 
-	if(backendscriptpath == NULL) {
+	if(backendscriptpath[0] == '\0') {
 		fprintf(stderr, "Missing i-MSCP backend script path option\n");
 		return 1;
 	}
