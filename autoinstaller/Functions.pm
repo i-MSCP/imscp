@@ -380,7 +380,7 @@ sub _showUpdateWarning
         $warning = <<"EOF";
 Before continue, be sure to have read the errata file:
 
-    \\Zbhttps://github.com/i-MSCP/imscp/blob/1.2.x/docs/1.2.x_errata.md\\ZB
+    \\Zbhttps://github.com/i-MSCP/imscp/blob/1.3.x/docs/1.3.x_errata.md\\ZB
 EOF
 
     } else {
@@ -388,7 +388,7 @@ EOF
 
 The installer detected that you intends to install i-MSCP \\ZbGit\\ZB version. Before continue, be sure to have read the errata file:
 
-    \\Zbhttps://github.com/i-MSCP/imscp/blob/1.2.x/docs/1.2.x_errata.md\\ZB
+    \\Zbhttps://github.com/i-MSCP/imscp/blob/1.3.x/docs/1.3.x_errata.md\\ZB
 
 We would remind you that the Git version can be highly unstable and that the i-MSCP team do not provides any support for it.
 EOF
