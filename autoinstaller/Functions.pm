@@ -872,6 +872,7 @@ sub _cleanup
     $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/apache/working" )->remove();
     $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/fcgi" )->remove();
     $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/nginx" )->remove();
+    $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/php-fpm" )->remove();
     $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/postfix/working" )->remove();
     return $rs if $rs;
 
