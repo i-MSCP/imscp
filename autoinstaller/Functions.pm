@@ -155,7 +155,6 @@ sub build
         [ \&_compileDaemon, 'Compiling daemon' ],
         [ \&_savePersistentData, 'Saving persistent data' ],
         [ \&_cleanup, 'Process cleanup tasks' ]
-
     );
 
     # Remove the distro packages step in case the --skippackages is set
