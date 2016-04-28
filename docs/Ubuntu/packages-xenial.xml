@@ -37,6 +37,7 @@
             <package>php7.0-json</package>
             <package>php7.0-mcrypt</package>
             <package>php7.0-mysql</package>
+            <package>php7.0-opcache</package>
             <package>php7.0-zip</package>
             <package>php-pear</package>
             <package_conflict>php-apc</package_conflict>

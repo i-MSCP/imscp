@@ -295,18 +295,6 @@ sub _init
         $self->_updateAptSourceList() == 0 or die( 'Could not configure APT packages manager' );
     }
 
-    $self->{'eventManager'}->register( 'afterInstallPackages', sub {
-            # Debian Stretch (actual testing) introduces support for PHP7 which is the default alternative
-            # Because i-MSCP is not ready yet for PHP7, we enforce PHP5 variant
-            if (version->parse( "$main::imscpConfig{'DISTRO_RELEASE'}" ) >= version->parse( '9.0' )) {
-                my $rs = execute( 'update-alternatives --set php /usr/bin/php5', \my $stdout, \my $stderr );
-                debug( $stdout ) if $stdout;
-                error( $stderr ) if $stderr;
-                return $rs;
-            }
-            0;
-        } );
-
     $self;
 }
 
@@ -372,10 +360,15 @@ sub _buildPackageList
 {
     my $self = shift;
 
-    my $lsbRelease = iMSCP::LsbRelease->getInstance();
-    my $dist = lc( $lsbRelease->getId( 'short' ) );
-    my $codename = lc( $lsbRelease->getCodename( 'short' ) );
-    my $pkgFile = "$FindBin::Bin/docs/".ucfirst( $dist )."/packages-$codename.xml";
+    my $rs = $self->{'eventManager'}->trigger( 'onBuildPackageList', \ my $pkgFile );
+    return $rs if $rs;
+
+    unless(defined $pkgFile) {
+        my $lsbRelease = iMSCP::LsbRelease->getInstance();
+        my $dist = lc( $lsbRelease->getId( 'short' ) );
+        my $codename = lc( $lsbRelease->getCodename( 'short' ) );
+        $pkgFile = "$FindBin::Bin/docs/".ucfirst( $dist )."/packages-$codename.xml";
+    }
 
     eval "use XML::Simple; 1" or die($@);
     my $xml = XML::Simple->new( NoEscape => 1 );
@@ -474,8 +467,6 @@ EOF
         # Set server implementation to use
         $main::imscpConfig{uc( $section ).'_SERVER'} = $sAlt;
     }
-
-    0;
 }
 
 =item _updateAptSourceList()

@@ -105,7 +105,6 @@ INSTALLER
     Moved: Master administrator questions and setup routines into Package::FrontEnd::Installer
     Removed: Update notices (link to errata file is sufficient)
     Renamed: imscp-setup script to imscp-reconfigure
-    Transitional: Enforce PHP5 variant under Debian Stretch (testing)
 
 PACKAGES
     Fixed: ERR_INCOMPLETE_CHUNKED_ENCODING error due to wrong permissions on nginx fastcgi cache directory (FrontEnd)

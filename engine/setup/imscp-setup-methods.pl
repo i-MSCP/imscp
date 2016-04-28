@@ -1009,12 +1009,13 @@ sub setupCreateMasterUser
         home => $main::imscpConfig{'IMSCP_HOMEDIR'}
     )->addSystemUser();
 
-    # Ensure that correct permlissions are set on i-MSCP master user homedir (handle upgrade case)
+    # Ensure that correct permissions are set on i-MSCP master user homedir (handle upgrade case)
     $rs ||= iMSCP::Dir->new( dirname => $main::imscpConfig{'IMSCP_HOMEDIR'} )->make(
         {
             user => $main::imscpConfig{'IMSCP_USER'},
             group => $main::imscpConfig{'IMSCP_GROUP'},
-            mode => 0755
+            mode => 0755,
+            fixpermissions => 1 # We fix permissions in any case
         }
     );
     $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupCreateMasterUser');
@@ -1030,9 +1031,14 @@ sub setupCreateSystemDirectories
     return $rs if $rs;
 
     for my $dir(@systemDirectories) {
-        $rs = iMSCP::Dir->new( dirname => $dir->[0] )->make({
-            user => $dir->[1], group => $dir->[2], mode => $dir->[3]
-        });
+        $rs = iMSCP::Dir->new( dirname => $dir->[0] )->make(
+            {
+                user => $dir->[1],
+                group => $dir->[2],
+                mode => $dir->[3],
+                fixpermissions => iMSCP::Getopt->fixPermissions
+            }
+        );
         return $rs if $rs;
     }
 

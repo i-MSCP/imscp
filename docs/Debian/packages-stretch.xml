@@ -3,7 +3,7 @@
         <nginx repository_conflict="http://nginx.org/packages/debian">
             <package>nginx-light</package>
             <package>spawn-fcgi</package>
-            <package>php5-cgi</package>
+            <package>php7.0-cgi</package>
             <package_conflict>nginx</package_conflict>
         </nginx>
     </frontend>
@@ -12,35 +12,37 @@
             <package>apache2</package>
             <package>apache2-suexec-custom</package>
             <package>libapache2-mod-fcgid</package>
-            <package>php5-cgi</package>
+            <package>php7.0-cgi</package>
         </apache_fcgid>
         <apache_itk>
             <package>apache2</package>
-            <package>libapache2-mod-php5</package>
+            <package>libapache2-mod-php7.0</package>
             <package_delayed>libapache2-mpm-itk</package_delayed>
         </apache_itk>
         <apache_php_fpm>
             <package>apache2</package>
             <package>apache2-suexec-custom</package>
-            <package>php5-fpm</package>
+            <package>php7.0-fpm</package>
         </apache_php_fpm>
     </httpd>
-    <php default="php5">
-        <php5>
-            <package>php5</package>
-            <package>php5-cli</package>
-            <package>php5-curl</package>
+    <php default="php7.0">
+        <php7.0>
+            <package>php7.0</package>
+            <package>php7.0-cli</package>
+            <package>php7.0-common</package>
+            <package>php7.0-curl</package>
+            <package>php7.0-gd</package>
+            <package>php7.0-imap</package>
+            <package>php7.0-intl</package>
+            <package>php7.0-json</package>
+            <package>php7.0-mcrypt</package>
+            <package>php7.0-mysql</package>
+            <package>php7.0-opcache</package>
+            <package>php7.0-zip</package>
             <package>php-pear</package>
-            <package>php5-gd</package>
-            <package>php-gettext</package>
-            <package>php5-imap</package>
-            <package>php5-intl</package>
-            <package>php5-json</package>
-            <package>php5-mcrypt</package>
-            <package>php5-mysqlnd</package>
             <package_conflict>php-apc</package_conflict>
-            <package_conflict>php5-suhosin</package_conflict>
-        </php5>
+            <package_conflict>php5*</package_conflict>
+        </php7.0>
     </php>
     <po default="dovecot">
         <dovecot>
