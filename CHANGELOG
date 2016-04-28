@@ -53,6 +53,12 @@ CONFIG
 CONTRIB
     Added: PhpMyAdmin/10_phpmyadmin_conffile.pl listener file (Allows to override default configuration template file)
 
+DAEMON
+    Fixed: Added help for command line options
+    Fixed: Wrong check on daemon() return value
+    Fixed: Possible buffer overflows
+    Bumped: Version to 1.2.6
+
 DATABASE
     Added: SPF type to the list of allowed DNS resource records
     Changed: domain_dns.domain_dns and domain_dns.domain_text column types from varchar to text

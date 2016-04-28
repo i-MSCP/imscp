@@ -3,7 +3,7 @@
 void daemonInit(char *pidfile)
 {
 	/* daemonize */
-	if(daemon(0, 0) > 1) {
+	if(daemon(0, 0) == -1) {
 		exit(errno);
 	}
 

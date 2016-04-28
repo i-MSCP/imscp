@@ -11,14 +11,24 @@ int main(int argc, char **argv)
 	socklen_t clilen;
 
 	/* Parse command line options */
-	while ((option = getopt(argc, argv, "b:p:")) != -1) {
+	while ((option = getopt(argc, argv, "b:p:h")) != -1) {
 		switch(option) {
 			case 'b':
-				backendscriptpath = optarg;
+				strncpy(backendscriptpath, optarg, sizeof(backendscriptpath));
 			break;
 			case 'p':
-				pidfile = optarg;
+				strncpy(pidfile, optarg, sizeof(pidfile));
 			break;
+			case 'h':
+			default:
+				fprintf(stderr, "i-MSCP Daemon.\n\n");
+				fprintf(stderr, "Usage: %s [options]\n\n", argv[0]);
+				fprintf(stderr, "Options:\n");
+				fprintf(stderr, "    -b FILE     i-MSCP backend script path\n");
+				fprintf(stderr, "    -f FILE     Pid file path\n");
+				fprintf(stderr, "    -h          This help\n");
+
+				exit(EXIT_FAILURE);
 		}
 	}
 
@@ -92,7 +102,7 @@ int main(int argc, char **argv)
 			takeConnection(connfd);
 			say(message(MSG_END_CHILD), nmb);
 			free(nmb);
-			exit(0);
+			exit(EXIT_SUCCESS);
 		}
 
 		close(connfd);
