@@ -56,7 +56,7 @@ CONTRIB
 DAEMON
     Fixed: Added help for command line options
     Fixed: Wrong check on daemon() return value
-    Fixed: Possible buffer overflows
+    Fixed: Possible buffer overflow
     Bumped: Version to 1.2.6
 
 DATABASE
