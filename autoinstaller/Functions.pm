@@ -866,7 +866,7 @@ sub _cleanup
         return $rs if $rs;
     }
 
-    # Since 1.2.18
+    # Since 1.3.0
     my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'CACHE_DATA_DIR'}/addons" )->remove();
     $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/apache/backup" )->remove();
     $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/apache/working" )->remove();
@@ -881,7 +881,7 @@ sub _cleanup
         return $rs if $rs;
     }
 
-    # Since 1.2.18
+    # Since 1.3.0
     if (-f "$main::imscpConfig{'CONF_DIR'}/apache/parts/php5.itk.ini") {
         $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/apache/parts/php5.itk.ini" )->delFile();
         return $rs if $rs;
