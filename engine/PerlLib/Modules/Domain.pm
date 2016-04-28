@@ -402,42 +402,51 @@ sub _getHttpdData
     ref $certData eq 'HASH' or die( $certData );
 
     my $haveCert = $certData->{$self->{'domain_id'}} && $self->isValidCertificate( $self->{'domain_name'} );
+    my $allowHSTS = $haveCert && $certData->{$self->{'domain_id'}}->{'allow_hsts'} eq 'on';
+    my $hstsMaxAge = $allowHSTS ? $certData->{$self->{'domain_id'}}->{'hsts_max_age'} : '';
+    my $hstsIncludeSubDomains = ($allowHSTS && $certData->{$self->{'domain_id'}}->{'hsts_include_subdomains'} eq 'on')
+        ? '; includeSubDomains' : '';
 
     $self->{'httpd'} = {
-        DOMAIN_ADMIN_ID       => $self->{'domain_admin_id'},
-        DOMAIN_NAME           => $self->{'domain_name'},
-        DOMAIN_NAME_UNICODE   => idn_to_unicode( $self->{'domain_name'}, 'utf-8' ),
-        DOMAIN_IP             => $self->{'ip_number'},
-        DOMAIN_TYPE           => 'dmn',
-        PARENT_DOMAIN_NAME    => $self->{'domain_name'},
-        ROOT_DOMAIN_NAME      => $self->{'domain_name'},
-        HOME_DIR              => $homeDir,
-        WEB_DIR               => $homeDir,
-        MOUNT_POINT           => '/',
-        SHARED_MOUNT_POINT    => 0,
-        PEAR_DIR              => $httpd->{'phpConfig'}->{'PHP_PEAR_DIR'},
-        TIMEZONE              => $main::imscpConfig{'TIMEZONE'},
-        USER                  => $userName,
-        GROUP                 => $groupName,
-        PHP_SUPPORT           => $self->{'domain_php'},
-        CGI_SUPPORT           => $self->{'domain_cgi'},
-        WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'},
-        SSL_SUPPORT           => $haveCert,
-        BWLIMIT               => $self->{'domain_traffic_limit'},
-        ALIAS                 => $userName,
-        FORWARD               => 'no',
-        DISABLE_FUNCTIONS     => $phpini->{$self->{'domain_id'}}->{'disable_functions'} //
+        DOMAIN_ADMIN_ID         => $self->{'domain_admin_id'},
+        DOMAIN_NAME             => $self->{'domain_name'},
+        DOMAIN_NAME_UNICODE     => idn_to_unicode( $self->{'domain_name'}, 'utf-8' ),
+        DOMAIN_IP               => $self->{'ip_number'},
+        DOMAIN_TYPE             => 'dmn',
+        PARENT_DOMAIN_NAME      => $self->{'domain_name'},
+        ROOT_DOMAIN_NAME        => $self->{'domain_name'},
+        HOME_DIR                => $homeDir,
+        WEB_DIR                 => $homeDir,
+        MOUNT_POINT             => '/',
+        SHARED_MOUNT_POINT      => 0,
+        PEAR_DIR                => $httpd->{'phpConfig'}->{'PHP_PEAR_DIR'},
+        TIMEZONE                => $main::imscpConfig{'TIMEZONE'},
+        USER                    => $userName,
+        GROUP                   => $groupName,
+        PHP_SUPPORT             => $self->{'domain_php'},
+        CGI_SUPPORT             => $self->{'domain_cgi'},
+        WEB_FOLDER_PROTECTION   => $self->{'web_folder_protection'},
+        SSL_SUPPORT             => $haveCert,
+        SSL_SUPPORT             => $haveCert,
+        HSTS_SUPPORT            => $allowHSTS,
+        HSTS_MAX_AGE            => $hstsMaxAge,
+        HSTS_INCLUDE_SUBDOMAINS => $hstsIncludeSubDomains,
+        BWLIMIT                 => $self->{'domain_traffic_limit'},
+        ALIAS                   => $userName,
+        FORWARD                 => 'no',
+        FORWARD_TYPE            => '',
+        DISABLE_FUNCTIONS       => $phpini->{$self->{'domain_id'}}->{'disable_functions'} //
             'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
-        MAX_EXECUTION_TIME    => $phpini->{$self->{'domain_id'}}->{'max_execution_time'} // 30,
-        MAX_INPUT_TIME        => $phpini->{$self->{'domain_id'}}->{'max_input_time'} // 60,
-        MEMORY_LIMIT          => $phpini->{$self->{'domain_id'}}->{'memory_limit'} // 128,
-        ERROR_REPORTING       =>
+        MAX_EXECUTION_TIME      => $phpini->{$self->{'domain_id'}}->{'max_execution_time'} // 30,
+        MAX_INPUT_TIME          => $phpini->{$self->{'domain_id'}}->{'max_input_time'} // 60,
+        MEMORY_LIMIT            => $phpini->{$self->{'domain_id'}}->{'memory_limit'} // 128,
+        ERROR_REPORTING         =>
         $phpini->{$self->{'domain_id'}}->{'error_reporting'} || 'E_ALL & ~E_DEPRECATED & ~E_STRICT',
-        DISPLAY_ERRORS        => $phpini->{$self->{'domain_id'}}->{'display_errors'} || 'off',
-        POST_MAX_SIZE         => $phpini->{$self->{'domain_id'}}->{'post_max_size'} // 8,
-        UPLOAD_MAX_FILESIZE   => $phpini->{$self->{'domain_id'}}->{'upload_max_filesize'} // 2,
-        ALLOW_URL_FOPEN       => $phpini->{$self->{'domain_id'}}->{'allow_url_fopen'} || 'off',
-        PHP_FPM_LISTEN_PORT   => ($phpini->{$self->{'domain_id'}}->{'id'} // 0) - 1
+        DISPLAY_ERRORS          => $phpini->{$self->{'domain_id'}}->{'display_errors'} || 'off',
+        POST_MAX_SIZE           => $phpini->{$self->{'domain_id'}}->{'post_max_size'} // 8,
+        UPLOAD_MAX_FILESIZE     => $phpini->{$self->{'domain_id'}}->{'upload_max_filesize'} // 2,
+        ALLOW_URL_FOPEN         => $phpini->{$self->{'domain_id'}}->{'allow_url_fopen'} || 'off',
+        PHP_FPM_LISTEN_PORT     => ($phpini->{$self->{'domain_id'}}->{'id'} // 0) - 1
     };
     %{$self->{'httpd'}};
 }
@@ -572,6 +581,7 @@ sub _getPackagesData
         HOME_DIR              => $homeDir,
         WEB_DIR               => $homeDir,
         FORWARD               => 'no',
+        FORWARD_TYPE          => '',
         WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
     };
     %{$self->{'packages'}};
