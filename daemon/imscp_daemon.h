@@ -18,7 +18,7 @@
 #include <arpa/inet.h>
 #include "defs.h"
 
-char backendscriptpath[0xff];
+char backendscriptpath[255];
 struct timeval *tv_rcv;
 struct timeval *tv_snd;
 

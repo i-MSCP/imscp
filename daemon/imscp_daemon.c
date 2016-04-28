@@ -3,7 +3,7 @@
 int main(int argc, char **argv)
 {
 	int listenfd, connfd, option;
-	char pidfile[0xff];
+	char pidfile[255];
 	struct sockaddr_in servaddr, cliaddr;
 	struct timeval timeout_rcv, timeout_snd;
 
