@@ -83,6 +83,9 @@ function _client_getDomainsList()
  */
 function client_generatePage($tpl)
 {
+    $forwardType = isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307'), true)
+        ? $_POST['forward_type'] : '302';
+
     $tpl->assign(array(
         'SUBDOMAIN_NAME' => isset($_POST['subdomain_name']) ? tohtml($_POST['subdomain_name']) : '',
         'SHARED_MOUNT_POINT_YES' => isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes' ? ' checked' : '',
@@ -92,7 +95,11 @@ function client_generatePage($tpl)
         'HTTP_YES' => isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'http://' ? ' selected' : '',
         'HTTPS_YES' => isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'https://' ? ' selected' : '',
         'FTP_YES' => isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'ftp://' ? ' selected' : '',
-        'FORWARD_URL' => isset($_POST['forward_url']) ? tohtml(decode_idna($_POST['forward_url'])) : ''
+        'FORWARD_URL' => isset($_POST['forward_url']) ? tohtml(decode_idna($_POST['forward_url'])) : '',
+        'FORWARD_TYPE_301' => ($forwardType == '301') ? ' checked' : '',
+        'FORWARD_TYPE_302' => ($forwardType == '302') ? ' checked' : '',
+        'FORWARD_TYPE_303' => ($forwardType == '303') ? ' checked' : '',
+        'FORWARD_TYPE_307' => ($forwardType == '307') ? ' checked' : ''
     ));
 
     foreach (_client_getDomainsList() as $domain) {
@@ -218,10 +225,14 @@ function client_addSubdomain()
 
     // Check for URL forwarding option
     $forwardUrl = 'no';
+    $forwardType = null;
 
-    if (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') { // We are safe here
+    if (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes' &&
+        isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307'), true)
+    ) {
         if (isset($_POST['forward_url_scheme']) && isset($_POST['forward_url'])) {
             $forwardUrl = clean_input($_POST['forward_url_scheme']) . clean_input($_POST['forward_url']);
+            $forwardType = clean_input($_POST['forward_type']);
 
             try {
                 try {
@@ -267,22 +278,23 @@ function client_addSubdomain()
             $query = "
                 INSERT INTO subdomain_alias (
                     alias_id, subdomain_alias_name, subdomain_alias_mount, subdomain_alias_url_forward,
-                    subdomain_alias_status
+                    subdomain_alias_type_forward, subdomain_alias_status
                 ) VALUES (
-                    ?, ?, ?, ?, ?
+                    ?, ?, ?, ?, ?, ?
                 )
             ";
         } else {
             $query = "
                 INSERT INTO subdomain (
-                    domain_id, subdomain_name, subdomain_mount, subdomain_url_forward, subdomain_status
+                    domain_id, subdomain_name, subdomain_mount, subdomain_url_forward, subdomain_type_forward,
+                    subdomain_status
                 ) VALUES (
-                    ?, ?, ?, ?, ?
+                    ?, ?, ?, ?, ?, ?
                 )
             ";
         }
 
-        exec_query($query, array($domainId, $subLabelAscii, $mountPoint, $forwardUrl, 'toadd'));
+        exec_query($query, array($domainId, $subLabelAscii, $mountPoint, $forwardUrl, $forwardType, 'toadd'));
 
         $subdomainId = $db->insertId();
 
@@ -361,6 +373,11 @@ $tpl->assign(array(
     'TR_HTTP' => 'http://',
     'TR_HTTPS' => 'https://',
     'TR_FTP' => 'ftp://',
+    'TR_FORWARD_TYPE' => tr('Forward type'),
+    'TR_301' => '301',
+    'TR_302' => '302',
+    'TR_303' => '303',
+    'TR_307' => '307',
     'TR_ADD' => tr('Add'),
     'TR_CANCEL' => tr('Cancel')
 ));

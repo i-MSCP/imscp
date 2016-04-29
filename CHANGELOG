@@ -25,6 +25,7 @@ BACKEND
     Fixed: Ignore user-specific options if any (~/.my.cnf file) when running mysqldump (iMSCP::Database::mysql::dumpdb)
     Fixed: Many inconsistencies in iMSCP::Getopt
     Improvement: Allow registering many event listeners at once (Event::Manager)
+    Introduced: HSTS (HTTP Strict Transport Security) feature
     Removed: beforeDispatchRequest and afterDispatchRequest events
     Removed: cache data directory (/var/cache/imscp directory)
     Removed: imscp-httpd-logs-mngr script (Apache2 logs dirctories are now mounted via the imscp_mountall service)
@@ -72,6 +73,7 @@ FRONTEND
     Added: Support for .phtml template files (stdlib)
     Added: torul() function for escaping a string for the URI or Parameter contexts (stdlib)
     Backported: Exclamation icon from 1.3.x branch
+    Backported: iMSCP\Crypt library from 1.3.x branch (not used by core atm)
     Changed: exec() PHP function is no longer disabled for the control panel (master php.ini file)
     Changed: The `type` field cannot longer be changed when editing a DNS resource record (client level)
     Changed: Support for nested MySQL transactions is now emulated using named transaction savepoints (stdlib)
@@ -87,7 +89,7 @@ FRONTEND
     Fixed: Wrong behavior with exception handler when database connection is not available (stdlib)
     Fixed: Privileges on database that contains wildcards are not removed when SQL user is assigned to many databases
     Fixed: Wrong value for LOG_LEVEL configuration parameter
-    Backported: iMSCP\Crypt library from 1.3.x branch (not used by core atm)
+    Introduced: HSTS (HTTP Strict Transport Security) feature
     Removed: User deletion confirmation pages (admin and reseller levels)
     Removed: iMSCP_NetworkCard class; replaced by iMSCP\Net class (stdlib)
     Rewritten: FTP chooser interface to avoid usage of iframe and allows fine-grained filtering (client level)
@@ -159,6 +161,7 @@ YOUTRACK
     IP-1231 Default SPF DNS resource records should be overrideable
     IP-1365 Check for IPv6 support when installing services
     IP-1402 ProFTPD doesn't restart properly - killed (signal 15) - Wheezy/Precise/Trusty
+    IP-1410 Feature - Possibility to change redirection type
     IP-1509 Could not generate SSL certificate through the frontEnd - Invalide SSL certificate
     IP-1510 VsFTPd - Use of uninitialized value $tmpFile
     IP-1511 Use of uninitialized value $imscpOldConfig{"BASE_SERVER_VHOST"} on fresh install
