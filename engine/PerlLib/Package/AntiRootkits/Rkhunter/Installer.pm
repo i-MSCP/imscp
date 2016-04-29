@@ -178,7 +178,8 @@ sub _addCronTask
     $rs ||= $file->save();
     $rs ||= $file->mode( 0700 );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= Servers::cron->factory()->addTask( {
+    $rs ||= Servers::cron->factory()->addTask(
+        {
             TASKID  => 'Package::AntiRootkits::Rkhunter',
             MINUTE  => '@weekly',
             HOUR    => '',
@@ -190,7 +191,8 @@ sub _addCronTask
             'nice -n 15 ionice -c2 -n5 perl '.
                 "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl ".
                 "> /dev/null 2>&1"
-        } );
+        }
+    );
 }
 
 =item _scheduleCheck()

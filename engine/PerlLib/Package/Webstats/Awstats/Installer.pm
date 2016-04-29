@@ -162,9 +162,13 @@ sub _init
 
 sub _createCacheDir
 {
-    iMSCP::Dir->new( dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'} )->make( {
-            user => $main::imscpConfig{'ROOT_USER'}, group => $_[0]->{'httpd'}->getRunningGroup(), mode => 02750
-        } );
+    iMSCP::Dir->new( dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'} )->make(
+        {
+            user => $main::imscpConfig{'ROOT_USER'},
+            group => $_[0]->{'httpd'}->getRunningGroup(),
+            mode => 02750
+        }
+    );
 }
 
 =item _createGlobalAwstatsVhost()
@@ -234,7 +238,8 @@ sub _disableDefaultConfig
 
 sub _addAwstatsCronTask
 {
-    Servers::cron->factory()->addTask( {
+    Servers::cron->factory()->addTask(
+        {
             TASKID  => 'Package::Webstats::Awstats',
             MINUTE  => '15',
             HOUR    => '3-21/6',
@@ -245,7 +250,8 @@ sub _addAwstatsCronTask
             COMMAND => 'nice -n 15 ionice -c2 -n5 perl '.
                 "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_updateall.pl now ".
                 "-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl > /dev/null 2>&1"
-        } );
+        }
+    );
 }
 
 =back

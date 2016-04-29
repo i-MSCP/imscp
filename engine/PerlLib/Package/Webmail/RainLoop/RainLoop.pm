@@ -158,16 +158,15 @@ sub deleteMail
             $rs = $db->doQuery(
                 'dummy',
                 '
-                    DELETE u, c, p FROM rainloop_users u
-                    JOIN rainloop_ab_contacts c USING(id_user)
-                    JOIN rainloop_ab_properties p USING(id_user)
-                    WHERE rl_email = ?
+                    DELETE u, c, p FROM rainloop_users u JOIN rainloop_ab_contacts c USING(id_user)
+                    JOIN rainloop_ab_properties p USING(id_user) WHERE rl_email = ?
                 ',
                 $data->{'MAIL_ADDR'}
             );
             unless (ref $rs eq 'HASH') {
-                error( sprintf( "Could not remove mail user '%s' from rainloop database: %s", $data->{'MAIL_ADDR'},
-                        $rs ) );
+                error(
+                    sprintf( "Could not remove mail user '%s' from rainloop database: %s", $data->{'MAIL_ADDR'}, $rs )
+                );
                 return 1;
             }
         } else {
@@ -226,7 +225,8 @@ sub _init
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/rainloop";
 
     if (-f "$self->{'cfgDir'}/rainloop.data") {
-        $self->{'config'} = lazy {
+        $self->{'config'} = lazy
+            {
                 tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/rainloop.data";
                 \%c;
             };

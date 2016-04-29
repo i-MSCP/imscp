@@ -66,10 +66,13 @@ sub registerSetupListeners
 {
     my ($self, $eventManager) = @_;
 
-    my $rs = $eventManager->register( 'beforeSetupDialog', sub {
+    my $rs = $eventManager->register(
+        'beforeSetupDialog',
+        sub {
             push @{$_[0]}, sub { $self->showDialog( @_ ) };
             0;
-        } );
+        }
+    );
     $rs ||= $eventManager->register( 'afterFrontEndPreInstall', sub { $self->preinstall(); } );
     $rs ||= $eventManager->register( 'afterFrontEndInstall', sub { $self->install(); } );
 }
@@ -303,7 +306,6 @@ sub _init
     my $oldConf = "$self->{'cfgDir'}/phpmyadmin.old.data";
     if (-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-
         for my $oldConf(keys %oldConfig) {
             if (exists $self->{'config'}->{$oldConf}) {
                 $self->{'config'}->{$oldConf} = $oldConfig{$oldConf};
@@ -331,8 +333,9 @@ sub _getPhpVersion
     error( $stderr ) if $stderr && $rs;
     return $rs if $rs;
 
-    $stdout =~ /PHP\s+([\d.]+)/ or die( sprintf( 'Could not find PHP version from `php -v` command output: %s',
-            $stdout ) );
+    $stdout =~ /PHP\s+([\d.]+)/ or die(
+        sprintf( 'Could not find PHP version from `php -v` command output: %s', $stdout )
+    );
     $1;
 }
 
@@ -419,7 +422,6 @@ sub _setupSqlUser
 
     for my $sqlUser ($dbOldUser, $dbUser) {
         next if !$sqlUser || grep($_ eq "$sqlUser\@$dbUserHost", @main::createdSqlUsers);
-
         for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
             next unless $host;
             $sqlServer->dropUser( $sqlUser, $host );
@@ -565,7 +567,6 @@ sub _setupDatabase
         # We ignore this part as the database has already been created
         if ($sqlStmt !~ /^CREATE DATABASE/ and $sqlStmt !~ /^USE/) {
             $rs = $db->doQuery( 'c', $sqlStmt );
-
             unless (ref $rs eq 'HASH') {
                 error( sprintf( 'Could not execute SQL query: %s', $rs ) );
                 return 1;

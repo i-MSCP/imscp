@@ -185,7 +185,8 @@ sub _init
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
     if (-f "$self->{'cfgDir'}/roundcube.data") {
-        $self->{'config'} = lazy {
+        $self->{'config'} = lazy
+            {
                 tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/roundcube.data";
                 \%c;
             };

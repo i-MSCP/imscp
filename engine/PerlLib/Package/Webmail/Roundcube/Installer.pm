@@ -647,8 +647,9 @@ sub _saveConfig
 {
     my $self = shift;
 
-    iMSCP::File->new( filename =>
-        "$self->{'cfgDir'}/roundcube.data" )->copyFile( "$self->{'cfgDir'}/roundcube.old.data" );
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/roundcube.data" )->copyFile(
+        "$self->{'cfgDir'}/roundcube.old.data"
+    );
 }
 
 =back

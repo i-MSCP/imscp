@@ -116,7 +116,8 @@ sub _disableDebianConfig
 
 sub _addCronTask
 {
-    Servers::cron->factory()->addTask( {
+    Servers::cron->factory()->addTask(
+        {
             TASKID  => 'Package::AntiRootkits::Chkrootkit',
             MINUTE  => '@weekly',
             HOUR    => '',
@@ -125,7 +126,8 @@ sub _addCronTask
             DWEEK   => '',
             USER    => $main::imscpConfig{'ROOT_USER'},
             COMMAND => "nice -n 15 ionice -c2 -n5 bash chkrootkit -e > $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1"
-        } );
+        }
+    );
 }
 
 =item _scheduleCheck()
