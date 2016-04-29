@@ -6,6 +6,7 @@ int lrSyntax(int fd, char *buffer)
 	char *backendscriptpathdup;
 	char *ptr = strstr(buffer, message(MSG_EQ_CMD));
 	char *lr_answer;
+	char *backendscriptpathPtr = (char *)&backendscriptpath;
 
 	if (ptr != buffer) {
 		return 1;
@@ -13,9 +14,9 @@ int lrSyntax(int fd, char *buffer)
 
 	if (fork() == 0) {
 		close(fd);
-		backendscriptpathdup = strdup(backendscriptpath);
+		backendscriptpathdup = strdup(backendscriptpathPtr);
 		backendscriptbasename = basename(backendscriptpathdup);
-		execl(backendscriptpath, backendscriptbasename, (char*)NULL);
+		execl(backendscriptpathPtr, backendscriptbasename, (char *)NULL);
 		free(backendscriptpathdup);
 		exit(0);
 	}

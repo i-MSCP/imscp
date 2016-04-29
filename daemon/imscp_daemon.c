@@ -3,7 +3,7 @@
 int main(int argc, char **argv)
 {
 	int listenfd, connfd, option;
-	char pidfile[255];
+	char pidfile[256];
 	struct sockaddr_in servaddr, cliaddr;
 	struct timeval timeout_rcv, timeout_snd;
 
@@ -14,15 +14,15 @@ int main(int argc, char **argv)
 	while ((option = getopt(argc, argv, "hb:p:")) != -1) {
 		switch(option) {
 			case 'b':
-				if(strlen(optarg) > 254) {
-					fprintf(stderr, "Backend script path too long, use under 254 characters\n");
+				if(strlen(optarg) > 255) {
+					fprintf(stderr, "Backend script path too long, use under 255 characters\n");
 					exit(EXIT_FAILURE);
 				}
 				strncpy(backendscriptpath, optarg, sizeof(backendscriptpath));
 			break;
 			case 'p':
-				if(strlen(optarg) > 254) {
-					fprintf(stderr, "Pid file path too long, use under 254 characters\n");
+				if(strlen(optarg) > 255) {
+					fprintf(stderr, "Pid file path too long, use under 255 characters\n");
 					exit(EXIT_FAILURE);
 				}
 				strncpy(pidfile, optarg, sizeof(pidfile));
@@ -46,7 +46,7 @@ int main(int argc, char **argv)
 	}
 
 	/* Daemonize */
-	daemonInit(pidfile);
+	daemonInit((char *)&pidfile);
 
 	/* Creates an endpoint for communication */
 	if((listenfd = socket(AF_INET, SOCK_STREAM, IPPROTO_IP)) < 0) {

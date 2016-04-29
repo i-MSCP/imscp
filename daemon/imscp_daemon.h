@@ -18,9 +18,10 @@
 #include <arpa/inet.h>
 #include "defs.h"
 
-char backendscriptpath[255];
 struct timeval *tv_rcv;
 struct timeval *tv_snd;
+
+char backendscriptpath[256];
 
 extern void daemonInit(char *pidfile);
 extern char *message(int message_number);
