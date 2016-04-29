@@ -513,17 +513,12 @@ function client_generatePage($tpl, $domainId, $domainType)
         $hstsIncludeSubDomains = $allowHSTS && isset($_POST['hsts_include_subdomains']);
     }
 
-    /** @var iMSCP_Config_Handler_File $cfg */
-    $cfg = iMSCP_Registry::get('config');
-
-    $checked = $cfg->HTML_CHECKED;
-
     $tpl->assign(array(
         'TR_DYNAMIC_TITLE' => $dynTitle,
         'DOMAIN_NAME' => tohtml(decode_idna($domainName)),
-        'HSTS_CHECKED' => $allowHSTS ? $checked : '',
+        'HSTS_CHECKED' => $allowHSTS ? ' checked' : '',
         'HSTS_MAX_AGE' => tohtml(trim($hstsMaxAge)),
-        'HSTS_INCLUDE_SUBDOMAINS_CHECKED' => $hstsIncludeSubDomains ? $checked : '',
+        'HSTS_INCLUDE_SUBDOMAINS_CHECKED' => $hstsIncludeSubDomains ? ' checked' : '',
         'KEY_CERT' => tohtml(trim($privateKey)),
         'CERTIFICATE' => tohtml(trim($certificate)),
         'CA_BUNDLE' => tohtml(trim($caBundle)),

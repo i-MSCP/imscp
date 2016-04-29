@@ -83,11 +83,6 @@ function _client_getDomainsList()
  */
 function client_generatePage($tpl)
 {
-    /** @var iMSCP_Config_Handler_File $cfg */
-    $cfg = iMSCP_Registry::get('config');
-    $checked = $cfg['HTML_CHECKED'];
-    $selected = $cfg['HTML_SELECTED'];
-
     $forwardType = isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307'), true)
         ? $_POST['forward_type'] : '302';
 
@@ -101,10 +96,10 @@ function client_generatePage($tpl)
         'HTTPS_YES' => isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'https://' ? ' selected' : '',
         'FTP_YES' => isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'ftp://' ? ' selected' : '',
         'FORWARD_URL' => isset($_POST['forward_url']) ? tohtml(decode_idna($_POST['forward_url'])) : '',
-        'FORWARD_TYPE_301' => ($forwardType == '301') ? $checked : '',
-        'FORWARD_TYPE_302' => ($forwardType == '302') ? $checked : '',
-        'FORWARD_TYPE_303' => ($forwardType == '303') ? $checked : '',
-        'FORWARD_TYPE_307' => ($forwardType == '307') ? $checked : ''
+        'FORWARD_TYPE_301' => ($forwardType == '301') ? ' checked' : '',
+        'FORWARD_TYPE_302' => ($forwardType == '302') ? ' checked' : '',
+        'FORWARD_TYPE_303' => ($forwardType == '303') ? ' checked' : '',
+        'FORWARD_TYPE_307' => ($forwardType == '307') ? ' checked' : ''
     ));
 
     foreach (_client_getDomainsList() as $domain) {
@@ -232,8 +227,7 @@ function client_addSubdomain()
     $forwardUrl = 'no';
     $forwardType = null;
 
-    if (
-        isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes' &&
+    if (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes' &&
         isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307'), true)
     ) {
         if (isset($_POST['forward_url_scheme']) && isset($_POST['forward_url'])) {

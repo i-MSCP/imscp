@@ -127,27 +127,21 @@ function client_generatePage($tpl)
 				? $_POST['forward_type'] : '302';
 		}
 
-		/** @var iMSCP_Config_Handler_File $cfg */
-		$cfg = iMSCP_Registry::get('config');
-
-		$checked = $cfg->HTML_CHECKED;
-		$selected = $cfg->HTML_SELECTED;
-
 		$tpl->assign(
 			array(
 				'SUBDOMAIN_ID' => $subdomainId,
 				'SUBDOMAIN_TYPE' => $subdomainType,
 				'SUBDOMAIN_NAME' => tohtml($subdomainData['subdomain_name_utf8']),
-				'FORWARD_URL_YES' => ($urlForwarding) ? $checked : '',
-				'FORWARD_URL_NO' => ($urlForwarding) ? '' : $checked,
-				'HTTP_YES' => ($forwardUrlScheme == 'http://') ? $selected : '',
-				'HTTPS_YES' => ($forwardUrlScheme == 'https://') ? $selected : '',
-				'FTP_YES' => ($forwardUrlScheme == 'ftp://') ? $selected : '',
+				'FORWARD_URL_YES' => ($urlForwarding) ? ' checked' : '',
+				'FORWARD_URL_NO' => ($urlForwarding) ? '' : ' checked',
+				'HTTP_YES' => ($forwardUrlScheme == 'http://') ? 'selected' : '',
+				'HTTPS_YES' => ($forwardUrlScheme == 'https://') ? ' selected' : '',
+				'FTP_YES' => ($forwardUrlScheme == 'ftp://') ? ' selected' : '',
 				'FORWARD_URL' => tohtml(decode_idna($forwardUrl)),
-				'FORWARD_TYPE_301' => ($forwardType == '301') ? $checked : '',
-				'FORWARD_TYPE_302' => ($forwardType == '302') ? $checked : '',
-				'FORWARD_TYPE_303' => ($forwardType == '303') ? $checked : '',
-				'FORWARD_TYPE_307' => ($forwardType == '307') ? $checked : ''
+				'FORWARD_TYPE_301' => ($forwardType == '301') ? ' checked' : '',
+				'FORWARD_TYPE_302' => ($forwardType == '302') ? ' checked' : '',
+				'FORWARD_TYPE_303' => ($forwardType == '303') ? ' checked' : '',
+				'FORWARD_TYPE_307' => ($forwardType == '307') ? ' checked' : ''
 			)
 		);
 	} else {
@@ -172,8 +166,7 @@ function client_editSubdomain()
 			$forwardUrl = 'no';
 			$forwardType = null;
 
-			if (
-				isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes' &&
+			if (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes' &&
 				isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307'), true)
 			) {
 				if (isset($_POST['forward_url_scheme']) && isset($_POST['forward_url'])) {

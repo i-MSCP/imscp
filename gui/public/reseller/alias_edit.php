@@ -99,26 +99,20 @@ function reseller_generatePage($tpl)
 				? $_POST['forward_type'] : '302';
 		}
 
-		/** @var iMSCP_Config_Handler_File $cfg */
-		$cfg = iMSCP_Registry::get('config');
-
-		$checked = $cfg->HTML_CHECKED;
-		$selected = $cfg->HTML_SELECTED;
-
 		$tpl->assign(
 			array(
 				'DOMAIN_ALIAS_ID' => $domainAliasId,
 				'DOMAIN_ALIAS_NAME' => tohtml($domainAliasData['alias_name_utf8']),
-				'FORWARD_URL_YES' => ($urlForwarding) ? $checked : '',
-				'FORWARD_URL_NO' => ($urlForwarding) ? '' : $checked,
-				'HTTP_YES' => ($forwardUrlScheme == 'http://') ? $selected : '',
-				'HTTPS_YES' => ($forwardUrlScheme == 'https://') ? $selected : '',
-				'FTP_YES' => ($forwardUrlScheme == 'ftp://') ? $selected : '',
+				'FORWARD_URL_YES' => ($urlForwarding) ? ' checked' : '',
+				'FORWARD_URL_NO' => ($urlForwarding) ? '' : ' checked',
+				'HTTP_YES' => ($forwardUrlScheme == 'http://') ? ' selected' : '',
+				'HTTPS_YES' => ($forwardUrlScheme == 'https://') ? ' selected' : '',
+				'FTP_YES' => ($forwardUrlScheme == 'ftp://') ? ' selected' : '',
 				'FORWARD_URL' => tohtml(decode_idna($forwardUrl)),
-				'FORWARD_TYPE_301' => ($forwardType == '301') ? $checked : '',
-				'FORWARD_TYPE_302' => ($forwardType == '302') ? $checked : '',
-				'FORWARD_TYPE_303' => ($forwardType == '303') ? $checked : '',
-				'FORWARD_TYPE_307' => ($forwardType == '307') ? $checked : ''
+				'FORWARD_TYPE_301' => ($forwardType == '301') ? ' checked' : '',
+				'FORWARD_TYPE_302' => ($forwardType == '302') ? ' checked' : '',
+				'FORWARD_TYPE_303' => ($forwardType == '303') ? ' checked' : '',
+				'FORWARD_TYPE_307' => ($forwardType == '307') ? ' checked' : ''
 			)
 		);
 	} else {
