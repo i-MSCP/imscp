@@ -42,7 +42,7 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
 		if ($subdomainType == 'dmn') {
 			$query = '
 				SELECT
-					`subdomain_name` AS `subdomain_name` , `subdomain_url_forward` AS `forward_url`
+					`subdomain_name` AS `subdomain_name` , `subdomain_url_forward` AS `forward_url`, `subdomain_type_forward` AS `forward_type`
 				FROM
 					`subdomain`
 				WHERE
@@ -55,7 +55,7 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
 		} else {
 			$query = '
 				SELECT
-					`t1`.`subdomain_alias_name` AS `subdomain_name`, `t1`.`subdomain_alias_url_forward` AS `forward_url`,
+					`t1`.`subdomain_alias_name` AS `subdomain_name`, `t1`.`subdomain_alias_url_forward` AS `forward_url`, `t1`.`subdomain_alias_type_forward` AS `forward_type`,
 					`t2`.`alias_name` `aliasName`
 				FROM
 					`subdomain_alias` AS `t1`
@@ -112,34 +112,36 @@ function client_generatePage($tpl)
 				$uri = iMSCP_Uri_Redirect::fromString($subdomainData['forward_url']);
 				$forwardUrlScheme = $uri->getScheme();
 				$forwardUrl = substr($uri->getUri(), strlen($forwardUrlScheme) + 3);
+				$forwardType = $subdomainData['forward_type'];
 			} else {
 				$urlForwarding = false;
 				$forwardUrlScheme = 'http://';
 				$forwardUrl = '';
+				$forwardType = '302';
 			}
 		} else {
 			$urlForwarding = (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? true : false;
 			$forwardUrlScheme = (isset($_POST['forward_url_scheme'])) ? $_POST['forward_url_scheme'] : 'http://';
 			$forwardUrl = isset($_POST['forward_url']) ? $_POST['forward_url'] : '';
+			$forwardType = isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307'), true)
+				? $_POST['forward_type'] : '302';
 		}
-
-		/** @var iMSCP_Config_Handler_File $cfg */
-		$cfg = iMSCP_Registry::get('config');
-
-		$checked = $cfg->HTML_CHECKED;
-		$selected = $cfg->HTML_SELECTED;
 
 		$tpl->assign(
 			array(
 				'SUBDOMAIN_ID' => $subdomainId,
 				'SUBDOMAIN_TYPE' => $subdomainType,
 				'SUBDOMAIN_NAME' => tohtml($subdomainData['subdomain_name_utf8']),
-				'FORWARD_URL_YES' => ($urlForwarding) ? $checked : '',
-				'FORWARD_URL_NO' => ($urlForwarding) ? '' : $checked,
-				'HTTP_YES' => ($forwardUrlScheme == 'http://') ? $selected : '',
-				'HTTPS_YES' => ($forwardUrlScheme == 'https://') ? $selected : '',
-				'FTP_YES' => ($forwardUrlScheme == 'ftp://') ? $selected : '',
-				'FORWARD_URL' => tohtml(decode_idna($forwardUrl))
+				'FORWARD_URL_YES' => ($urlForwarding) ? ' checked' : '',
+				'FORWARD_URL_NO' => ($urlForwarding) ? '' : ' checked',
+				'HTTP_YES' => ($forwardUrlScheme == 'http://') ? 'selected' : '',
+				'HTTPS_YES' => ($forwardUrlScheme == 'https://') ? ' selected' : '',
+				'FTP_YES' => ($forwardUrlScheme == 'ftp://') ? ' selected' : '',
+				'FORWARD_URL' => tohtml(decode_idna($forwardUrl)),
+				'FORWARD_TYPE_301' => ($forwardType == '301') ? ' checked' : '',
+				'FORWARD_TYPE_302' => ($forwardType == '302') ? ' checked' : '',
+				'FORWARD_TYPE_303' => ($forwardType == '303') ? ' checked' : '',
+				'FORWARD_TYPE_307' => ($forwardType == '307') ? ' checked' : ''
 			)
 		);
 	} else {
@@ -160,11 +162,16 @@ function client_editSubdomain()
 
 		if (($subdomainData = _client_getSubdomainData($subdomainId, $subdomainType))) {
 			// Check for URL forwarding option
-			$forwardUrl = 'no';
 
-			if (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') { // We are safe here
+			$forwardUrl = 'no';
+			$forwardType = null;
+
+			if (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes' &&
+				isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307'), true)
+			) {
 				if (isset($_POST['forward_url_scheme']) && isset($_POST['forward_url'])) {
 					$forwardUrl = clean_input($_POST['forward_url_scheme']) . clean_input($_POST['forward_url']);
+					$forwardType = clean_input($_POST['forward_type']);
 
 					try {
 						try {
@@ -207,7 +214,7 @@ function client_editSubdomain()
 					UPDATE
 						`subdomain`
 					SET
-						`subdomain_url_forward` = ?, `subdomain_status` = ?
+						`subdomain_url_forward` = ?, `subdomain_type_forward` = ?, `subdomain_status` = ?
 					WHERE
 						`subdomain_id` = ?
 				';
@@ -216,13 +223,13 @@ function client_editSubdomain()
 					UPDATE
 						`subdomain_alias`
 					SET
-						`subdomain_alias_url_forward` = ?, `subdomain_alias_status` = ?
+						`subdomain_alias_url_forward` = ?, `subdomain_alias_type_forward` = ?, `subdomain_alias_status` = ?
 					WHERE
 						`subdomain_alias_id` = ?
 				';
 			}
 
-			exec_query($query, array($forwardUrl, 'tochange', $subdomainId));
+			exec_query($query, array($forwardUrl, $forwardType, 'tochange', $subdomainId));
 
 			iMSCP_Events_Aggregator::getInstance()->dispatch(
 				iMSCP_Events::onAfterEditSubdomain, array('subdomainId' => $subdomainId)
@@ -283,6 +290,11 @@ if (!empty($_POST) && client_editSubdomain()) {
 			'TR_HTTP' => 'http://',
 			'TR_HTTPS' => 'https://',
 			'TR_FTP' => 'ftp://',
+			'TR_FORWARD_TYPE' => tr('Forward type'),
+			'TR_301' => '301',
+			'TR_302' => '302',
+			'TR_303' => '303',
+			'TR_307' => '307',
 			'TR_UPDATE' => tr('Update'),
 			'TR_CANCEL' => tr('Cancel')
 		)

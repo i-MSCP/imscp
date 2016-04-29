@@ -287,11 +287,18 @@ sub disableDmn
         }
     );
 
-    my %configTpls = ('' => 'domain_disabled.tpl');
+    my %configTpls = ( '' => (!$data->{'HSTS_SUPPORT'}) ? 'domain_disabled.tpl' : 'domain_redirect.tpl' );
 
     if ($data->{'SSL_SUPPORT'}) {
         $self->setData( { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" } );
         $configTpls{'_ssl'} = 'domain_disabled_ssl.tpl';
+
+        if($data->{'HSTS_SUPPORT'}) {
+            $self->setData({
+                FORWARD => "https://$data->{'DOMAIN_NAME'}/",
+                FORWARD_TYPE => "307"
+            });
+        }
     }
 
     for (keys %configTpls) {
@@ -1349,13 +1356,20 @@ sub _addCfg
     );
 
     my %vhosts = (
-        "$data->{'DOMAIN_NAME'}.conf" => $data->{'FORWARD'} eq 'no' ? 'domain.tpl' : 'domain_redirect.tpl'
+        "$data->{'DOMAIN_NAME'}.conf" => ($data->{'FORWARD'} eq 'no' && !$data->{'HSTS_SUPPORT'}) ? 'domain.tpl' : 'domain_redirect.tpl'
     );
 
     if ($data->{'SSL_SUPPORT'}) {
         $vhosts{"$data->{'DOMAIN_NAME'}_ssl.conf"} = $data->{'FORWARD'} eq 'no'
             ? 'domain_ssl.tpl' : 'domain_redirect_ssl.tpl';
         $self->setData( { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" } );
+
+        if($data->{'HSTS_SUPPORT'}) {
+            $self->setData({
+                FORWARD => "https://$data->{'DOMAIN_NAME'}/",
+                FORWARD_TYPE => "307"
+            });
+        }
     } else {
         $rs = $self->disableSites( "$data->{'DOMAIN_NAME'}_ssl.conf" );
         return $rs if $rs;
@@ -1673,6 +1687,10 @@ sub _cleanTemplate
 
         $$cfgTpl = replaceBloc( "# SECTION fcgid BEGIN.\n", "# SECTION fcgid END.\n", '', $$cfgTpl );
         $$cfgTpl = replaceBloc( "# SECTION php_fpm BEGIN.\n", "# SECTION php_fpm END.\n", '', $$cfgTpl );
+    }
+
+    if($filename =~ /^domain(?:_(?:disabled|redirect))?(_ssl)?\.tpl$/ && !$data->{'HSTS_SUPPORT'}) {
+        $$cfgTpl = replaceBloc("# SECTION hsts_enabled BEGIN.\n", "# SECTION hsts_enabled END.\n", '', $$cfgTpl);
     }
 
     $$cfgTpl =~ s/^[ \t]+#.*?(?:BEGIN|END)\.\n//gim;

@@ -4,9 +4,9 @@
 		$("input[name='url_forwarding']").change(
 			function () {
 				if ($("#url_forwarding_no").is(':checked')) {
-					$("#tr_url_forwarding_data").hide();
+					$("#tr_url_forwarding_data, #tr_type_forwarding_data").hide();
 				} else {
-					$("#tr_url_forwarding_data").show();
+					$("#tr_url_forwarding_data, #tr_type_forwarding_data").show();
 				}
 			}
 		).trigger('change');
@@ -56,6 +56,21 @@
 				<label>
 					<input name="forward_url" type="text" id="forward_url" value="{FORWARD_URL}"/>
 				</label>
+			</td>
+		</tr>
+		<tr id="tr_type_forwarding_data">
+			<td>{TR_FORWARD_TYPE}</td>
+			<td>
+				<div class="radio">
+					<input type="radio" name="forward_type" id="forward_type_301"{FORWARD_TYPE_301} value="301"/>
+					<label for="forward_type_301">{TR_301}</label>
+					<input type="radio" name="forward_type" id="forward_type_302"{FORWARD_TYPE_302} value="302"/>
+					<label for="forward_type_302">{TR_302}</label>
+					<input type="radio" name="forward_type" id="forward_type_303"{FORWARD_TYPE_303} value="303"/>
+					<label for="forward_type_303">{TR_303}</label>
+					<input type="radio" name="forward_type" id="forward_type_307"{FORWARD_TYPE_307} value="307"/>
+					<label for="forward_type_307">{TR_307}</label>
+				</div>
 			</td>
 		</tr>
 		</tbody>

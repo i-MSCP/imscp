@@ -19,11 +19,7 @@ Provides dual stack support for Apache2.
 
 Allows to overwrite Apache2 ServerAlias directive.
 
-### 30_apache2_redirects_permanently.pl
-
-Changes the domain redirect type in customer's vhost files from 302 to 301.
-
-### 40_apache2_tools_proxy.pl
+### 30_apache2_tools_proxy.pl
 
 Allows to redirect/proxy i-MSCP tools (pma,webmail...) in customers Apache2 vhost files.
 

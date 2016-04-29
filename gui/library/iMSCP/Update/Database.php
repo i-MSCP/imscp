@@ -56,7 +56,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = '224';
+    protected $lastUpdate = '226';
 
     /**
      * Singleton - Make new unavailable
@@ -3230,6 +3230,65 @@ class iMSCP_Update_Database extends iMSCP_Update
         }
     }
 
+    /**
+     * Add column for HSTS feature
+     *
+     * @return null|string SQL statement to be executed
+     */
+    protected function r224()
+    {
+        return $this->addColumn(
+            'ssl_certs',
+            'allow_hsts',
+            "VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off' AFTER ca_bundle"
+        );
+    }
+
+    /**
+     * Add columns for forward type feature
+     *
+     * @return array SQL statements to be executed
+     */
+    protected function r225()
+    {
+        $sqlUpd = array();
+
+        $sql = $this->addColumn(
+            'domain_aliasses',
+            'type_forward',
+            "VARCHAR(5) COLLATE utf8_unicode_ci DEFAULT NULL AFTER url_forward"
+        );
+
+        if ($sql !== null) {
+            $sqlUpd[] = $sql;
+            $sqlUpd[] = "UPDATE domain_aliasses SET type_forward = '302' WHERE url_forward <> 'no'";
+        }
+
+        $sql = $this->addColumn(
+            'subdomain',
+            'subdomain_type_forward',
+            "VARCHAR(5) COLLATE utf8_unicode_ci DEFAULT NULL AFTER subdomain_url_forward"
+        );
+
+        if ($sql !== null) {
+            $sqlUpd[] = $sql;
+            $sqlUpd[] = "UPDATE subdomain SET subdomain_type_forward = '302' WHERE subdomain_url_forward <> 'no'";
+        }
+
+        $sql = $this->addColumn(
+            'subdomain_alias',
+            'subdomain_alias_type_forward',
+            "VARCHAR(5) COLLATE utf8_unicode_ci DEFAULT NULL AFTER subdomain_alias_url_forward"
+        );
+
+        if ($sql !== null) {
+            $sqlUpd[] = $sql;
+            $sqlUpd[] = "UPDATE subdomain_alias SET subdomain_alias_type_forward = '302' WHERE subdomain_alias_url_forward <> 'no'";
+        }
+
+        return $sqlUpd;
+    }
+
     /*
     * #IP-1395: Domain redirect feature - Missing URL path separator
     *
@@ -3237,7 +3296,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     * @throws iMSCP_Exception_Database
     * @throws iMSCP_Uri_Exception
     */
-    protected function r224()
+    protected function r226()
     {
         $stmt = exec_query("SELECT alias_id, url_forward FROM domain_aliasses WHERE url_forward <> 'no'");
 
