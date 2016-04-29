@@ -158,6 +158,7 @@ YOUTRACK
     IP-0931 Unexpected error on protected area creation
     IP-1231 Default SPF DNS resource records should be overrideable
     IP-1365 Check for IPv6 support when installing services
+    IP-1395 Domain redirect feature - Missing URL path separator
     IP-1402 ProFTPD doesn't restart properly - killed (signal 15) - Wheezy/Precise/Trusty
     IP-1509 Could not generate SSL certificate through the frontEnd - Invalide SSL certificate
     IP-1510 VsFTPd - Use of uninitialized value $tmpFile
