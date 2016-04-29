@@ -5,6 +5,16 @@
             $("input,textarea").prop('disabled', true);
         }
 
+        $("input[name='allow_hsts']").change(
+            function () {
+                if ($("#allow_hsts").is(':checked')) {
+                    $("#tr_hsts_max_age_data, #tr_hsts_include_subdomains_data").show();
+                } else {
+                    $("#tr_hsts_max_age_data, #tr_hsts_include_subdomains_data").hide();
+                }
+            }
+        ).trigger('change');
+
         $("#selfsigned").change(function () {
             if ($(this).is(':checked')) {
                 $(".input_fields").hide();
@@ -33,6 +43,24 @@
             <td>{STATUS}</td>
         </tr>
         <!-- EDP: ssl_certificate_status -->
+        <tr>
+            <td><label for="allow_hsts">{TR_ALLOW_HSTS}</label></td>
+            <td><input type="checkbox" id="allow_hsts" name="allow_hsts"{HSTS_CHECKED}></td>
+        </tr>
+        <tr id="tr_hsts_max_age_data">
+            <td><label for="hsts_max_age">{TR_HSTS_MAX_AGE}</label></td>
+            <td>
+                <input name="hsts_max_age" id="hsts_max_age" type="text" value="{HSTS_MAX_AGE}">
+                <span>{TR_SEC}</span>
+            </td>
+        </tr>
+        <tr id="tr_hsts_include_subdomains_data">
+            <td>
+                <label for="hsts_include_subdomains">{TR_HSTS_INCLUDE_SUBDOMAINS}</label>
+                <span class="tips icon i_exclamation" id="hsts_include_subdomains_tooltip" title="{TR_HSTS_INCLUDE_SUBDOMAINS_TOOLTIP}"></span>
+            </td>
+            <td><input type="checkbox" id="hsts_include_subdomains" name="hsts_include_subdomains"{HSTS_INCLUDE_SUBDOMAINS_CHECKED}></td>
+        </tr>
         <tr>
             <td><label for="selfsigned">{TR_GENERATE_SELFSIGNED_CERTIFICAT}</label></td>
             <td><input type="checkbox" id="selfsigned" name="selfsigned"></td>
