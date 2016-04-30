@@ -56,7 +56,8 @@ CONTRIB
 
 DAEMON
     Added: notify_parent() function to notify parent process when daemon has been fully initialized
-    Fixed: Added help for command line options
+    Added: Added help for command line options
+    Fixed: Ensures that the daemon process is re-parented to init/PID 1
     Fixed: Exit from parent process only after initialization process and once the pidfile has been written
     Fixed: Wrong check on daemon() return value
     Fixed: Possible buffer overflow

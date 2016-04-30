@@ -2,7 +2,8 @@
 
 void daemonInit(void)
 {
-    int fd;
+	pid_t pid;
+	int fd;
 
 	/*
 	 * The calling process (parent process) will die soon
@@ -55,13 +56,13 @@ void daemonInit(void)
 				if (ret == 0) {
 					fprintf(stderr, "no data have been read from pipe\n");
 					exit(EXIT_FAILURE);
-				} else {
-					if (readval == 1) {
-						exit(EXIT_SUCCESS);
-					}
-
-					fprintf(stderr, "the daemon process returned an error!\n");
 				}
+
+				if (readval == 1) {
+					exit(EXIT_SUCCESS);
+				}
+
+				fprintf(stderr, "the daemon process returned an error!\n");
 			} else { /* no date sent ! */
 				perror("the daemon process didn't send back its status (via the pipe to the calling process) in the expected time");
 			}
@@ -70,18 +71,38 @@ void daemonInit(void)
 		}
 	}
 
-	/* continue as a child (daemon process) */
+	/* continue as a child */
 
 	if(setsid() == -1) {
 		perror("Could not setsid()");
 		notify_parent(-1);
 	}
 
+	/* ignore signal sent from child to parent process */
+	signal(SIGCHLD, SIG_IGN);
+
+	/* Fork off for the second time */
+	pid = fork();
+
+	if(pid == -1) {
+		perror("failed to daemonize");
+		notify_parent(-1);
+	}
+
+	 /* success; let the first child terminate */
+	if(pid > 0) {
+		exit(EXIT_SUCCESS);
+	}
+
+	/* continue as  daemon process */
+
+	/* set new file permissions */
 	if(umask(0) == -1) {
 		perror("Could not umask()");
 		notify_parent(-1);
 	}
 
+	/* change working directory to root directory */
 	if(chdir("/") == -1) {
 		perror("Could not chdir()");
 		notify_parent(-1);
@@ -89,7 +110,7 @@ void daemonInit(void)
 
 	/* Close all open file descriptors except notification pipe write fd */
 	for(fd = sysconf(_SC_OPEN_MAX); fd > 0 && fd != notification_pipe[1]; --fd) {
-	close(fd);
+		close(fd);
 	}
 
 	/* Reopen stdin (fd = 0), stdout (fd = 1), stderr (fd = 2) */
