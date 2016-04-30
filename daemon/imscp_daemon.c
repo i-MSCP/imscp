@@ -2,6 +2,8 @@
 
 int main(int argc, char **argv)
 {
+	/* parent process */
+
 	int listenfd, connfd, option;
 	char pidfile[256];
 	struct sockaddr_in servaddr, cliaddr;
@@ -42,16 +44,24 @@ int main(int argc, char **argv)
 
 	if(backendscriptpath[0] == '\0') {
 		fprintf(stderr, "Missing i-MSCP backend script path option\n");
-		return 1;
+		exit(EXIT_FAILURE);
 	}
 
-	/* Daemonize */
-	daemonInit((char *)&pidfile);
+	/* setup pipe for notification */
+	if(pipe(notification_pipe) == -1) {
+		perror("Could not create pipe for notification");
+		exit(EXIT_FAILURE);
+	}
+
+	/* daemonize */
+	daemonInit();
+
+	/* daemon process */
 
 	/* Creates an endpoint for communication */
 	if((listenfd = socket(AF_INET, SOCK_STREAM, IPPROTO_IP)) < 0) {
 		say(message(MSG_ERROR_SOCKET_CREATE), strerror(errno));
-		exit(errno);
+		notify_parent(-1);
 	}
 
 	/* Ident socket */
@@ -63,13 +73,13 @@ int main(int argc, char **argv)
 	/* Assign name to the socket */
 	if (bind(listenfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0) {
 		say(message(MSG_ERROR_BIND), strerror(errno));
-		exit(errno);
+		notify_parent(-1);
 	}
 
 	/* Marks the socket referred to by listenfd as a passive socket */
 	if (listen(listenfd, DAEMON_MAX_LISTENQ) < 0) {
 		say(message(MSG_ERROR_LISTEN), strerror(errno));
-		exit(errno);
+		notify_parent(-1);
 	}
 
 	/* Setup timeout for input operations  */
@@ -82,6 +92,18 @@ int main(int argc, char **argv)
 
 	signal(SIGCHLD, sigChild);
 	signal(SIGPIPE, sigPipe);
+
+	/* write pidfile if needed */
+	if(pidfile[0] != '\0') {
+		FILE *file = fopen(pidfile, "w");
+		fprintf(file, "%ld", (long)getpid());
+		fclose(file);
+	}
+
+	/* notify parent process that initialization is done and that pidfile has been written */
+	notify_parent(0);
+
+	say("%s", message(MSG_DAEMON_STARTED));
 
 	while (1) {
 		memset((void *) &cliaddr, '\0', sizeof(cliaddr));

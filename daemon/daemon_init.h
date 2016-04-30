@@ -8,13 +8,16 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/time.h>
 #include <syslog.h>
 #include <errno.h>
 #include "defs.h"
 
-extern char *message(int message_number);
-extern void say(char *format, char *message);
+void daemonInit(void);
 
-void daemonInit(char *pidfile);
+extern int notification_pipe[2];
+
+extern void notify_parent(int status);
+extern char *message(int message_number);
 
 #endif

@@ -10,7 +10,7 @@
 #include <libgen.h>
 #include "defs.h"
 
-extern char backendscriptpath;
+extern char backendscriptpath[256];
 extern char *message(int message_number);
 extern int sendLine(int fd, char *src, size_t len);
 

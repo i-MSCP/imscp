@@ -20,21 +20,21 @@
 # The Original Code is "i-MSCP internet Multi Server Control Panel".
 #
 # The Initial Developer of the Original Code is i-MSCP Team.
-# Portions created by Initial Developer are Copyright (C) 22010 by
+# Portions created by Initial Developer are Copyright (C) 2010 by
 # internet Multi Server Control Panel. All Rights Reserved.
 #
-# @category		i-MSCP
-# @copyright	2010-2015 by i-MSCP | http://i-mscp.net
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/ GPL v2
+# @category     i-MSCP
+# @copyright    2010-2016 by i-MSCP | http://i-mscp.net
+# @link         http://i-mscp.net i-MSCP Home Site
+# @license      http://www.gnu.org/licenses/ GPL v2
 
 EXEC = imscp_daemon
 CC = gcc -ansi -Wstrict-prototypes -pedantic $(CFLAGS)
 CFLAGS = -g -O2
 
-OBJECTS = $(EXEC).o message.o daemon_init.o say.o signal-handlers.o\
-receive_data.o send_data.o take_connection.o send_line.o recv_line.o\
-helo_cmd.o helo_syntax.o lr_cmd.o lr_syntax.o bye_cmd.o bye_syntax.o
+OBJECTS = bye_cmd.o bye_syntax.o daemon_init.o helo_cmd.o helo_syntax.o\
+imscp_daemon.o lr_cmd.o lr_syntax.o message.o notify_parent.o receive_data.o\
+say.o send_data.o send_line.o signal-handlers.o recv_line.o take_connection.o
 
 $(EXEC): clean $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -o $@

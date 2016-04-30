@@ -23,11 +23,14 @@ struct timeval *tv_snd;
 
 char backendscriptpath[256];
 
-extern void daemonInit(char *pidfile);
-extern char *message(int message_number);
+int notification_pipe[2];
+
+extern void daemonInit(void);
+extern char * message(int message_number);
 extern void say(char *format, char *message);
 extern void sigChild (int signo);
 extern void sigPipe(int signo);
 extern void takeConnection(int sockfd);
+extern void notify_parent(int status);
 
 #endif
