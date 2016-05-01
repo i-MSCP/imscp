@@ -1,5 +1,5 @@
-#ifndef _IMSCP_DAEMON_H
-#define _IMSCP_DAEMON_H
+#ifndef _DAEMON_MAIN_H
+#define _DAEMON_MAIN_H
 
 #define _POSIX_C_SOURCE 200809L
 
@@ -16,21 +16,19 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <arpa/inet.h>
-#include "defs.h"
+#include "daemon_globals.h"
 
 struct timeval *tv_rcv;
 struct timeval *tv_snd;
+char *backendscriptpath = NULL;
 
-char backendscriptpath[256];
-
-int notification_pipe[2];
-
-extern void daemonInit(void);
+extern int notify_pipe[2];
+extern void daemon_init(void);
 extern char * message(int message_number);
 extern void say(char *format, char *message);
-extern void sigChild (int signo);
-extern void sigPipe(int signo);
-extern void takeConnection(int sockfd);
-extern void notify_parent(int status);
+extern void sig_child (int signo);
+extern void sig_pipe(int signo);
+extern void take_connection(int sockfd);
+extern void notify(int status);
 
 #endif

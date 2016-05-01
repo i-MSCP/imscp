@@ -12,13 +12,12 @@
 #include <sys/time.h>
 #include <syslog.h>
 #include <errno.h>
-#include "defs.h"
+#include "daemon_globals.h"
 
-void daemonInit(void);
+void daemon_init(void);
 
-extern int notification_pipe[2];
-
-extern void notify_parent(int status);
+extern int notify_pipe[2];
+extern void notify(int status);
 extern char *message(int message_number);
 
 #endif

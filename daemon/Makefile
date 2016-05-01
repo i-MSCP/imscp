@@ -32,9 +32,8 @@ EXEC = imscp_daemon
 CC = gcc -ansi -Wall -Wstrict-prototypes -pedantic $(CFLAGS)
 CFLAGS = -g -O2
 
-OBJECTS = bye_cmd.o bye_syntax.o daemon_init.o helo_cmd.o helo_syntax.o\
-imscp_daemon.o lr_cmd.o lr_syntax.o message.o notify_parent.o receive_data.o\
-say.o send_data.o send_line.o signal-handlers.o recv_line.o take_connection.o
+OBJECTS = daemon_cmd.o daemon_conn.o daemon_init.o daemon_main.o daemon_msg.o\
+          daemon_notify.o daemon_receive.o daemon_send.o daemon_signals.o
 
 $(EXEC): clean $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -o $@
