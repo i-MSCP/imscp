@@ -26,8 +26,7 @@ extern int notify_pipe[2];
 extern void daemon_init(void);
 extern char * message(int message_number);
 extern void say(char *format, char *message);
-extern void sig_child (int signo);
-extern void sig_pipe(int signo);
+extern void handle_signal(int signo);
 extern void take_connection(int sockfd);
 extern void notify(int status);
 

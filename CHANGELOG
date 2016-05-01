@@ -57,11 +57,13 @@ CONTRIB
 DAEMON
     Added: notify() function allowing to notify parent process when daemon has been fully initialized
     Added: Added help for command line options
+    Bumped: Version to 1.3.0
+    Fixed: Abort connection and discard any data immediately on close(2)
     Fixed: Ensures that the daemon process is re-parented to init/PID 1
     Fixed: Exits from the parent process only after daemon full initialization
     Fixed: Possible buffer overflow
     Fixed: Segfault when client issue bad `helo` command
-    Bumped: Version to 1.3.0
+    Merged: signal handlers
 
 DATABASE
     Added: SPF type to the list of allowed DNS resource records

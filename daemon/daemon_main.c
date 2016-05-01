@@ -48,6 +48,7 @@ int main(int argc, char **argv)
         int listenfd, connfd;
         struct sockaddr_in servaddr, cliaddr;
         struct timeval timeout_rcv, timeout_snd;
+        struct linger so_linger;
         pid_t childpid;
         socklen_t clilen;
 
@@ -83,8 +84,12 @@ int main(int argc, char **argv)
         timeout_snd.tv_sec = 10;
         timeout_snd.tv_usec = 0;
 
-        signal(SIGCHLD, sig_child);
-        signal(SIGPIPE, sig_pipe);
+        /* Abort connection and discard any data immediately on close(2) */
+        so_linger.l_onoff = 1;
+        so_linger.l_linger = 0;
+
+        signal(SIGCHLD, handle_signal);
+        signal(SIGPIPE, handle_signal);
 
         /* write pidfile if needed */
         if(pidfile != NULL) {
@@ -114,8 +119,9 @@ int main(int argc, char **argv)
                 exit(errno);
             }
 
-            setsockopt(connfd, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout_rcv, sizeof(timeout_rcv));
-            setsockopt(connfd, SOL_SOCKET, SO_SNDTIMEO, (char *)&timeout_snd, sizeof(timeout_snd));
+            setsockopt(connfd, SOL_SOCKET, SO_RCVTIMEO, &timeout_rcv, sizeof(timeout_rcv));
+            setsockopt(connfd, SOL_SOCKET, SO_SNDTIMEO, &timeout_snd, sizeof(timeout_snd));
+            setsockopt(connfd, SOL_SOCKET, SO_LINGER, &so_linger, sizeof(so_linger));
 
             if ((childpid = fork()) == 0) {
                 char *nmb = (char *) calloc(50, sizeof(char));

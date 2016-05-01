@@ -8,13 +8,7 @@
 #include <string.h>
 #include "daemon_globals.h"
 
-#if defined(__OpenBSD__) || defined(__FreeBSD__)
-#define SIGCHLD 13
-#define SIGPIPE 17
-#endif
-
-void sig_child (int signo);
-void sig_pipe(int signo);
+void handle_signal(int signo);
 
 extern void say(char *format, char *message);
 extern char *message(int message_number);
