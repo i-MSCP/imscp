@@ -7,7 +7,9 @@ void take_connection(int sockfd)
     strcat(welcome_msg, message(MSG_CMD_OK));
     strcat(welcome_msg, message(MSG_WELCOME));
 
-    if(send_line(sockfd, welcome_msg, strlen(welcome_msg)) == 0 && helo_command(sockfd) == 0) {
+    if(send_line(sockfd, welcome_msg, strlen(welcome_msg)) == 0
+        && helo_command(sockfd) == 0
+    ) {
         int status;
         char *buffer = (char *) malloc(sizeof(char) * MAX_MSG_SIZE);
 
