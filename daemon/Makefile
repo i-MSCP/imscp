@@ -33,7 +33,7 @@ CC = gcc -ansi -Wall -Wstrict-prototypes -pedantic $(CFLAGS)
 CFLAGS = -g -O2
 
 OBJECTS = daemon_cmd.o daemon_conn.o daemon_init.o daemon_main.o daemon_msg.o\
-          daemon_notify.o daemon_receive.o daemon_send.o daemon_signals.o
+          daemon_notify.o daemon_signals.o daemon_sock_io.o
 
 $(EXEC): clean $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -o $@

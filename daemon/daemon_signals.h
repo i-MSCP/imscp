@@ -1,20 +1,15 @@
 #ifndef _DAEMON_SIGNALS_H
 #define _DAEMON_SIGNALS_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+
 #include "daemon_globals.h"
 
-#if defined(__OpenBSD__) || defined(__FreeBSD__)
-#define SIGCHLD 13
-#define SIGPIPE 17
-#endif
-
-void sig_child (int signo);
-void sig_pipe(int signo);
+void handle_signal(int signo);
 
 extern void say(char *format, char *message);
 extern char *message(int message_number);

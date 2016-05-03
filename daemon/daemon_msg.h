@@ -2,6 +2,7 @@
 #define _DAEMON_MSG_H
 
 #include <syslog.h>
+
 #include "daemon_globals.h"
 
 char *messages_array[MSG_MAX_COUNT][1] = {
@@ -24,6 +25,7 @@ char *messages_array[MSG_MAX_COUNT][1] = {
     {MSG_CMD_ANSWER_TXT},
     {MSG_ERROR_BIND_TXT},
     {MSG_ERROR_SOCKET_CREATE_TXT},
+    {MSG_ERROR_SOCKET_OPTION_TXT},
     {MSG_GOOD_BYE_TXT}
 };
 
