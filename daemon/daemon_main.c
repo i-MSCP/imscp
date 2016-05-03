@@ -114,7 +114,7 @@ int main(int argc, char **argv)
         notify(0);
 
         say("%s", message(MSG_DAEMON_STARTED));
-        say("%s", "Waiting for incoming connections...");
+        /*say("%s", "Waiting for incoming connections...");*/
 
         while (1) {
             memset((void *) &cliaddr, '\0', sizeof(cliaddr));
