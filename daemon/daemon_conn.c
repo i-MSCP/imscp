@@ -60,10 +60,12 @@ void handle_client_connection(int sockfd, struct sockaddr * cliaddr)
             }
 
             retval = backend_command(sockfd, buffer);
-            if (retval == -1 /* Unexpected error */
-                || retval == 0 /* valid backend command has been received */
-            ) {
+            if (retval == -1) { /* Unexpected error */
                 break;
+            }
+
+            if(retval == 0) { /* valid backend command has been received */
+                continue;
             }
 
             retval = bye_command(sockfd, buffer);
