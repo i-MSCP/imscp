@@ -481,7 +481,7 @@ sub _buildApacheConfFiles
                 : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/00_imscp.conf"
         }
     );
-    $rs ||= $self->{'httpd'}->enableModules( 'cgid', 'proxy', 'proxy_http', 'rewrite', 'setenvif', 'ssl' );
+    $rs ||= $self->{'httpd'}->enableModules( 'cgid', 'headers', 'proxy', 'proxy_http', 'rewrite', 'setenvif', 'ssl' );
     $rs ||= $self->{'httpd'}->enableSites( '00_nameserver.conf' );
     $rs ||= $self->{'httpd'}->enableConfs( '00_imscp.conf' );
     $rs ||= $self->{'httpd'}->disableSites( 'default', 'default-ssl', '000-default.conf', 'default-ssl.conf' );
