@@ -12,7 +12,10 @@ void notify(int status)
         say("%s", "Sending \"1\" (OK) to parent via notification pipe");
     }
 
-    write(notify_pipe[1], &writeval, sizeof(writeval));
+    if(write(notify_pipe[1], &writeval, sizeof(writeval)) == -1) {
+        say("could not send notification through pipe: %s", strerror(errno));
+    }
+
     close(notify_pipe[1]);
 
     if(status == -1) {
