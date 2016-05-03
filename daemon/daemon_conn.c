@@ -1,6 +1,6 @@
 #include "daemon_conn.h"
 
-void handle_client_connection(int sockfd, struct sockaddr * cliaddr)
+void handle_client_connection(int sockfd, struct sockaddr *cliaddr)
 {
     int retval;
     char *welcome_msg = (char *) calloc(MAX_MSG_SIZE, sizeof(char));
@@ -41,7 +41,7 @@ void handle_client_connection(int sockfd, struct sockaddr * cliaddr)
             }
 
             if(write_line(sockfd, message(MSG_BAD_SYNTAX), strlen(message(MSG_BAD_SYNTAX))) == -1) {
-                break; /* Unexpected error occurred */
+                break; /* Unexpected error */
             }
         }
 
@@ -74,7 +74,7 @@ void handle_client_connection(int sockfd, struct sockaddr * cliaddr)
             }
 
             if(write_line(sockfd, message(MSG_BAD_SYNTAX), strlen(message(MSG_BAD_SYNTAX))) == -1) {
-                break; /* Unexpected error occurred */
+                break; /* Unexpected error */
             }
         }
 

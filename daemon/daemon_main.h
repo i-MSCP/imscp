@@ -26,7 +26,7 @@ extern void daemon_init(void);
 extern char * message(int message_number);
 extern void say(char *format, char *message);
 extern void handle_signal(int signo);
-extern void handle_client_connection(int sockfd, struct sockaddr * cliaddr);
+extern void handle_client_connection(int sockfd, struct sockaddr *cliaddr);
 extern void notify(int status);
 
 #endif
