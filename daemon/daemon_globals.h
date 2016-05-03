@@ -15,7 +15,7 @@
 #define MAX_MSG_SIZE                1026
 
 /* Messages */
-#define MSG_MAX_COUNT               20
+#define MSG_MAX_COUNT               21
 
 #define MSG_WELCOME                 101
 #define MSG_WELCOME_TXT             "i-MSCP Daemon v1.3.0\n"
@@ -30,21 +30,21 @@
 #define MSG_ERROR_ACCEPT            106
 #define MSG_ERROR_ACCEPT_TXT        "accept() error: %s"
 #define MSG_START_CHILD             107
-#define MSG_START_CHILD_TXT         "child %s started."
+#define MSG_START_CHILD_TXT         "child started."
 #define MSG_END_CHILD               108
-#define MSG_END_CHILD_TXT           "child %s ended."
+#define MSG_END_CHILD_TXT           "child ended."
 #define MSG_ERROR_SOCKET_WR         109
-#define MSG_ERROR_SOCKET_WR_TXT     "send_line(): socket write error: %s"
+#define MSG_ERROR_SOCKET_WR_TXT     "write_line(): socket write error: %s"
 #define MSG_ERROR_SOCKET_RD         110
 #define MSG_ERROR_SOCKET_RD_TXT     "read_line(): socket read error: %s"
 #define MSG_ERROR_SOCKET_EOF        111
-#define MSG_ERROR_SOCKET_EOF_TXT    "read_line(): socket EOF! other end closed the connection."
+#define MSG_ERROR_SOCKET_EOF_TXT    "read_line(): connection closed by remote host."
 #define MSG_HELO_CMD                112
 #define MSG_HELO_CMD_TXT            "helo "
 #define MSG_BAD_SYNTAX              113
-#define MSG_BAD_SYNTAX_TXT          "999 ERR Incorrect Syntax\n"
+#define MSG_BAD_SYNTAX_TXT          "999 Error: command not recognized\n"
 #define MSG_CMD_OK                  114
-#define MSG_CMD_OK_TXT              "250 OK "
+#define MSG_CMD_OK_TXT              "250 "
 #define MSG_BYE_CMD                 115
 #define MSG_BYE_CMD_TXT             "bye"
 #define MSG_EQ_CMD                  116
@@ -55,6 +55,9 @@
 #define MSG_ERROR_BIND_TXT          "bind() error: %s"
 #define MSG_ERROR_SOCKET_CREATE     119
 #define MSG_ERROR_SOCKET_CREATE_TXT "socket() error: %s"
-#define MSG_GOOD_BYE                120
+#define MSG_ERROR_SOCKET_OPTION     120
+#define MSG_ERROR_SOCKET_OPTION_TXT "setsockopt() error: %s"
+#define MSG_GOOD_BYE                121
 #define MSG_GOOD_BYE_TXT            "Good bye\n"
+
 #endif
