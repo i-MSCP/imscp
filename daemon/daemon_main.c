@@ -127,6 +127,8 @@ int main(int argc, char **argv)
                 }
 
                 say(message(MSG_ERROR_ACCEPT), strerror(errno));
+                free(backendscriptpath);
+                close(servsockfd);
                 exit(errno);
             }
 
@@ -134,6 +136,7 @@ int main(int argc, char **argv)
                 || setsockopt(clisockfd, SOL_SOCKET, SO_SNDTIMEO, (char *)&timeout_snd, sizeof(timeout_snd)) < 0
             ) {
                 say(message(MSG_ERROR_SOCKET_OPTION), strerror(errno));
+                free(backendscriptpath);
                 close(clisockfd);
                 exit(errno);
             }
@@ -142,6 +145,7 @@ int main(int argc, char **argv)
                 close(servsockfd);
                 say("%s", message(MSG_START_CHILD));
                 handle_client_connection(clisockfd, (struct sockaddr *) &cliaddr);
+                free(backendscriptpath);
                 close(clisockfd);
                 say("%s", message(MSG_END_CHILD));
                 exit(EXIT_SUCCESS);
@@ -149,7 +153,10 @@ int main(int argc, char **argv)
 
             close(clisockfd);
         }
+
+        close(servsockfd);
     }
+
 
     free(backendscriptpath);
     closelog();

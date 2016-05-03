@@ -79,9 +79,9 @@ int write_data(int sockfd, char *src, size_t n)
     return i;
 }
 
-int write_line(int sockfd, char *src, size_t len)
+int write_line(int sockfd, char *src, size_t n)
 {
-    if (write_data(sockfd, src, len) == -1) {
+    if (write_data(sockfd, src, n) == -1) {
         if(errno == EAGAIN) {
             say("%s", "Connection timeout. Aborting.");
         } else {

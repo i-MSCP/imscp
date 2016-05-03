@@ -10,7 +10,7 @@
 int read_data(int sockfd, char *buffer, size_t n);
 int read_line(int sockfd, char *buffer, size_t n);
 int write_data(int sockfd, char *src, size_t n);
-int write_line(int sockfd, char *src, size_t len);
+int write_line(int sockfd, char *src, size_t n);
 
 extern char *message(int message_number);
 extern void say(char *format, char *message);
