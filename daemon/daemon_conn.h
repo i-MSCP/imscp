@@ -8,7 +8,7 @@
 
 #include "daemon_globals.h"
 
-void handle_client_connection(int sockfd, struct sockaddr * cliaddr);
+void handle_client_connection(int sockfd, struct sockaddr *cliaddr);
 
 extern char *message(int message_number);
 extern int read_line(int fd, char *dest, size_t n);

@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 
          if(setsockopt(servsockfd, SOL_SOCKET, SO_REUSEADDR, (const char*)&reuse, sizeof(reuse)) < 0
 #ifdef SO_REUSEPORT
-            || setsockopt(servsockfd, SOL_SOCKET, SO_REUSEPORT, (const char*)&reuse, sizeof(reuse)) < 0
+            || setsockopt(servsockfd, SOL_SOCKET, SO_REUSEPORT, (const char*)&reuse, sizeof(reuse)) < 0
 #endif
         ) {
             say(message(MSG_ERROR_SOCKET_OPTION), strerror(errno));
