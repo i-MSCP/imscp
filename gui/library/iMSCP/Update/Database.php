@@ -56,7 +56,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = '226';
+    protected $lastUpdate = '227';
 
     /**
      * Singleton - Make new unavailable
@@ -3336,5 +3336,26 @@ class iMSCP_Update_Database extends iMSCP_Update
                 $uri->getUri(), $row['subdomain_alias_id']
             ));
         }
+    }
+
+    /**
+     * Add column for HSTS options
+     *
+     * @return array SQL statements to be executed
+     */
+    protected function r227()
+    {
+        return array(
+            $this->addColumn(
+                'ssl_certs',
+                'hsts_max_age',
+                "int(11) NOT NULL DEFAULT '31536000' AFTER allow_hsts"
+            ),
+            $this->addColumn(
+                'ssl_certs',
+                'hsts_include_subdomains',
+                "VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off' AFTER hsts_max_age"
+            )
+        );
     }
 }
