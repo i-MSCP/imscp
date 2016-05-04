@@ -178,6 +178,7 @@ YOUTRACK
     IP-1530 Nginx - Failed to load resource: net::ERR_INCOMPLETE_CHUNKED_ENCODING
     IP-1533 i-MSCP is not compatible with servers on which IPv6 stack is disabled
     IP-1536 systemd - imscp_daemon service can fail to start/restart
+    IP-1539 Default behaviour when adding a MySQL user is counter-intuitive
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series

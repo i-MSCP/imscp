@@ -194,11 +194,16 @@
                         $(this).dialog("close");
                     }
                 }
-            ]
-        });
-
-        $(window).scroll(function () {
-            $phpEditorDialog.dialog("option", "position", { my: "center", at: "center", of: window });
+            ],
+            open: function () {
+                var $dialog = $(this);
+                $(window).on("resize scroll", function() {
+                    $dialog.dialog("option", "position", { my: "center", at: "center", of: window });
+                });
+            },
+            close: function() {
+                $(window).off("resize scroll");
+            }
         });
 
         // Prevent form submission in case an INI value is not valid
@@ -289,7 +294,7 @@
 })(jQuery);
 
 
-// Initialize FTP chooser
+// Initialize FTP chooser event handler
 (function($) {
     $(function() {
         $("body").on("click", "span.ftp_choose_dir, a.ftp_choose_dir", function (e) {
@@ -309,13 +314,13 @@
                 }
             } else { // No dialog. We create one
                 $.get("ftp_choose_dir.php", function(data) {
-                    $dialog = $('<div id="ftp_choose_dir_dialog"/>').html(data).dialog({
+                    $dialog = $('<div id="ftp_choose_dir_dialog">').html(data).dialog({
                         hide: "blind",
                         show: "slide",
                         focus: false,
                         width: 650,
                         height: 500,
-                        autoOpen: false,
+                        autoOpen: true,
                         appendTo: "body",
                         modal: true,
                         title: imscp_i18n.core.ftp_directories,
@@ -325,20 +330,18 @@
                                 $(this).dialog("close");
                             }
                         }],
+                        open: function () {
+                            var $dialog = $(this);
+                            $dialog.find('table').trigger('updateTable');
+                            $(window).on("resize scroll", function() {
+                                $dialog.dialog("option", "position", { my: "center", at: "center", of: window });
+                            });
+                        },
                         close: function () {
+                            $(window).off("resize scroll");
                             $(this).remove();
                         }
                     });
-
-                    $(window).resize(function () {
-                        $dialog.dialog("option", "position", { my: "center", at: "center", of: window });
-                    });
-
-                    $(window).scroll(function () {
-                        $dialog.dialog("option", "position", { my: "center", at: "center", of: window });
-                    });
-
-                    $dialog.dialog("open").find('table').trigger('updateTable');
                 }).fail(function() {
                     alert("Request failed")
                 });
