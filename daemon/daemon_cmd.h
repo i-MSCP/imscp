@@ -18,7 +18,7 @@ extern char *backendscriptpath;
 extern char *backendscriptname;
 extern char *message(int message_number);
 extern int read_line(int sockfd, char *buffer, size_t n);
-extern int write_line(int sockfd, char *src, size_t len);
+extern int write_line(int sockfd, char *src, size_t n);
 extern void say(char *format, char *message);
 
 #endif

@@ -16,8 +16,6 @@
 
 #include "daemon_globals.h"
 
-struct timeval *tv_rcv;
-struct timeval *tv_snd;
 char *backendscriptpath = NULL;
 char *backendscriptname = NULL;
 
