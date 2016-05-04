@@ -1,6 +1,6 @@
 
-<form name="sql_add_user_frm" method="post" action="sql_user_add.php">
-	<!-- BDP: show_sqluser_list -->
+<!-- BDP: show_sqluser_list -->
+<form name="sql_add_user_frm1" method="post" action="sql_user_add.php">
 	<table class="firstColFixed">
 		<thead>
 		<tr>
@@ -21,11 +21,15 @@
 		</tbody>
 	</table>
 	<div class="buttons">
-		<input name="Add_Exist" type="submit" id="Add_Exist" value="{TR_ADD_EXIST}" tabindex="1"/>
+		<input type="hidden" name="uaction" value="add_user">
+		<input type="hidden" name="id" value="{ID}">
+		<input name="Add_Exist" type="submit" id="Add_Exist" value="{TR_ADD_EXIST}">
 	</div>
-	<br/>
-	<!-- EDP: show_sqluser_list -->
-	<!-- BDP: create_sqluser -->
+</form>
+<!-- EDP: show_sqluser_list -->
+
+<!-- BDP: create_sqluser -->
+<form name="sql_add_user_frm2" method="post" action="sql_user_add.php">
 	<table class="firstColFixed">
 		<thead>
 		<tr>
@@ -35,19 +39,19 @@
 		<tbody>
 		<tr>
 			<td><label for="user_name">{TR_USER_NAME}</label></td>
-			<td><input type="text" id="user_name" name="user_name" value="{USER_NAME}"/></td>
+			<td><input type="text" id="user_name" name="user_name" value="{USER_NAME}"></td>
 		</tr>
 		<tr>
 			<td><label for="user_host">{TR_USER_HOST} <span class="icon i_help" title="{TR_USER_HOST_TIP}"></span></label></td>
-			<td><input type="text" id="user_host" name="user_host" value="{USER_HOST}"/></td>
+			<td><input type="text" id="user_host" name="user_host" value="{USER_HOST}"></td>
 		</tr>
 		<tr>
 			<td>
 				<!-- BDP: mysql_prefix_yes -->
-				<label><input type="checkbox" name="use_dmn_id" {USE_DMN_ID} /></label>
+				<label><input type="checkbox" name="use_dmn_id" {USE_DMN_ID}></label>
 				<!-- EDP: mysql_prefix_yes -->
 				<!-- BDP: mysql_prefix_no -->
-				<input type="hidden" name="use_dmn_id" value="on"/>
+				<input type="hidden" name="use_dmn_id" value="on">
 				<!-- EDP: mysql_prefix_no -->
 				{TR_USE_DMN_ID}
 			</td>
@@ -61,28 +65,28 @@
 				</label>
 				<!-- EDP: mysql_prefix_all -->
 				<!-- BDP: mysql_prefix_infront -->
-				<input type="hidden" name="id_pos" value="start" checked="checked"/>{TR_START_ID_POS}
+				<input type="hidden" name="id_pos" value="start" checked="checked">{TR_START_ID_POS}
 				<!-- EDP: mysql_prefix_infront -->
 				<!-- BDP: mysql_prefix_behind -->
-				<input type="hidden" name="id_pos" value="end" checked="checked"/>{TR_END_ID_POS}
+				<input type="hidden" name="id_pos" value="end" checked="checked">{TR_END_ID_POS}
 				<!-- EDP: mysql_prefix_behind -->
 			</td>
 		</tr>
 		<tr>
 			<td><label for="password">{TR_PASS}</label></td>
-			<td><input id="password" type="password" name="pass" value="" class="pwd_generator pwd_prefill" autocomplete="off"/></td>
+			<td><input id="password" type="password" name="pass" value="" class="pwd_generator pwd_prefill" autocomplete="off"></td>
 		</tr>
 		<tr>
 			<td><label for="cpassword">{TR_PASS_REP}</label></td>
-			<td><input id="cpassword" type="password" name="pass_rep" value="" autocomplete="off"/></td>
+			<td><input id="cpassword" type="password" name="pass_rep" value="" autocomplete="off"></td>
 		</tr>
 		</tbody>
 	</table>
 	<div class="buttons">
-		<input type="hidden" name="uaction" value="add_user"/>
-		<input type="hidden" name="id" value="{ID}"/>
-		<input name="Add_New" type="submit" id="Add_New" value="{TR_ADD}"/>
+		<input type="hidden" name="uaction" value="add_user">
+		<input type="hidden" name="id" value="{ID}">
+		<input name="Add_New" type="submit" id="Add_New" value="{TR_ADD}">
 		<a class="link_as_button" href="sql_manage.php">{TR_CANCEL}</a>
 	</div>
-	<!-- EDP: create_sqluser -->
 </form>
+<!-- EDP: create_sqluser -->
