@@ -12,7 +12,7 @@ void handle_client_connection(int sockfd, struct sockaddr *cliaddr);
 
 extern char *message(int message_number);
 extern int read_line(int fd, char *dest, size_t n);
-extern int write_line(int fd, char *src, size_t len);
+extern int write_line(int fd, char *src, size_t n);
 extern int helo_command(int fd, char *buffer, char *cliaddr);
 extern int backend_command(int fd, char *msg);
 extern int bye_command(int fd, char *msg);
