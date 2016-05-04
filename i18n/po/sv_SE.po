@@ -3,14 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Cool <barni@telia.com>, 2014-2016
-# i-MSCP <team@i-mscp.net>, 2015-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:42+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/i-mscp/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -906,6 +904,9 @@ msgstr "Allt trafik"
 msgid "All users"
 msgstr "Alla användare"
 
+msgid "Allow HTTP Strict Transport Security"
+msgstr ""
+
 msgid "Allow URL fopen"
 msgstr "Allow URL fopen"
 
@@ -1511,7 +1512,7 @@ msgstr "Det gick inte att lägga till / uppdatera SSL-certifikat. Ett oväntat f
 
 #, php-format
 msgid "Could not create `%s` database name."
-msgstr ""
+msgstr "Det gick inte att skapa `%s` databasnamn."
 
 msgid "Could not create domain alias. An unexpected error occurred."
 msgstr "Det gick inte att skapa domänalias . Ett oväntat fel uppstod."
@@ -1715,7 +1716,7 @@ msgid "Database name is too long."
 msgstr "Databas namn är för långt."
 
 msgid "Database name is unavailable or unallowed."
-msgstr ""
+msgstr "Databasnamn är tillgänglig eller otillåtna."
 
 msgid "Database prefix"
 msgstr "Databas prefix"
@@ -2253,6 +2254,11 @@ msgstr "Aktiverar SSL"
 msgid "Enable auto responder"
 msgstr "Aktiverar auto. svar"
 
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
+msgstr ""
+
 msgid "Enabled"
 msgstr "Aktiv"
 
@@ -2447,6 +2453,9 @@ msgstr "Vidarebefordra till"
 msgid "Forward to URL"
 msgstr "Vidarebefordra till URL"
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr "Ledigt"
 
@@ -2509,6 +2518,12 @@ msgstr "Gruppnamn"
 
 msgid "Groups"
 msgstr "Grupper"
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
+msgstr ""
 
 msgid "HTTP traffic"
 msgstr "Http traffic"
@@ -4825,7 +4840,7 @@ msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
 "SQL server. Enter the %s wildcard character to allow this SQL user to "
 "connect from any host."
-msgstr "Detta är den värd från vilken denna SQL användaren måste tillåtas att ansluta till SQL-server. Ange %s jokertecken för att tilllåta den här SQL användare att ansluta från valfri värd."
+msgstr "This is the host from which this SQL user must be allowed to connect to the SQL server. Enter the %s character to allow this SQL user to connect from any host."
 
 msgid "This package already exists in the administrator software repository."
 msgstr "This package already exists in the administrator software repository."
@@ -4999,7 +5014,7 @@ msgid "Unable to find any network interface. You cannot add new IP address."
 msgstr "Kan inte hitta något nätverk att har kontakt med. Du kan inte lägga till nya IP-adress."
 
 msgid "Unable to find plugin root directory withing archive."
-msgstr "Kan inte hitta plugin rotkatalogen innom arkiv."
+msgstr "Unable to find plugin root directory."
 
 #, php-format
 msgid "Unable to get stats for file %s."
@@ -5396,7 +5411,7 @@ msgstr "Jokertecken: Setup en DNS-MX-post till reläet post för obefintligt und
 
 msgid ""
 "Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
-msgstr "Jokertecken: Konfigurera en extern MX värd att vidarebefordra e-post för obefintliga domäner."
+msgstr "Jokertecken: Konfigurera en extern MX värd att vidarebefordra e-post för obefintlig domäner."
 
 msgid "Wrong IP address."
 msgstr "Fel IP adr."
@@ -5491,7 +5506,7 @@ msgstr "Det går inte att installera programvaran utanför htdocs katalogen för
 msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
-msgstr "Du kan inte lägga till nya e-postkonto. Du har redan tilldelats hela din e-mail kvot till andra brevlådor. Vänligen först, granska dina kvot."
+msgstr "Du kan inte lägga till nya e-postkonto. Du har redan tilldelats hela din e-kvoter till andra brevlådor. Vänligen först, granska dina kvot."
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "Du kan inte radera en återförsäljare som har kund konton."
@@ -5625,7 +5640,7 @@ msgstr "Du har nått maximalt antal domän aliasses tillåts av din prenumeratio
 msgid ""
 "You have reached the maximum number of email accounts allowed by your "
 "subscription."
-msgstr "Du har uppnått det maximala antal e-postkonton som tillåts av din prenumeration."
+msgstr "Du har uppnått det högsta tillåtna antalet e-postkonton tillåts av din prenumeration."
 
 msgid ""
 "You have reached the maximum number of subdomains allowed by your "

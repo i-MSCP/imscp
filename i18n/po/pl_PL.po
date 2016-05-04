@@ -3,19 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# b13n1u <b13n1u@gmail.com>, 2015
-# cgr <cobragr@tlen.pl>, 2013
-# Dariusz Sosnowski <kontakt@2komp.pl>, 2016
-# i-MSCP <team@i-mscp.net>, 2015
-# Lukasz Nowak <qkash@o2.pl>, 2013
-# Marcin Kabiesz <admin@hostcenter.eu>, 2015
-# Marcin Kabiesz <admin@hostcenter.eu>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/i-mscp/i-MSCP/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
@@ -910,6 +903,9 @@ msgstr "Cały transfer"
 
 msgid "All users"
 msgstr "Wszyscy użytkownicy"
+
+msgid "Allow HTTP Strict Transport Security"
+msgstr ""
 
 msgid "Allow URL fopen"
 msgstr "Allow URL fopen"
@@ -2077,7 +2073,7 @@ msgid ""
 msgstr "Domena: Konfiguracja rekordu MX DNS do przekazywania poczty z twojej całej domeny, w tym subdomen."
 
 msgid "Domain: Setup an external MX host to relay mail of your entire domain."
-msgstr "Domena: Konfiguracja zewnętrznego hosta MX do przekazywania poczty z całej domeny."
+msgstr "Domena: Konfiguracja zewnętrznego hosta MX do przekazywania poczty z całej domeny"
 
 msgid "Domains"
 msgstr "Domeny"
@@ -2257,6 +2253,11 @@ msgstr "Włącz SSL"
 
 msgid "Enable auto responder"
 msgstr "Włącz auto responder"
+
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
+msgstr ""
 
 msgid "Enabled"
 msgstr "Włączone"
@@ -2452,6 +2453,9 @@ msgstr "Przekieruj do"
 msgid "Forward to URL"
 msgstr "Przekieruj do adresu URL"
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr "Wolne"
 
@@ -2514,6 +2518,12 @@ msgstr "Nazwa grupy"
 
 msgid "Groups"
 msgstr "Grupy"
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
+msgstr ""
 
 msgid "HTTP traffic"
 msgstr "Transfer HTTP"
@@ -3692,7 +3702,7 @@ msgstr "Rozszerzenie %s jest zabezpieczone."
 
 #, php-format
 msgid "Plugin %s reconfigured."
-msgstr "Rozszerzenie %s przekonfigurowane."
+msgstr "Rozszerzenie %s skonfigurowane."
 
 #, php-format
 msgid "Plugin %s scheduled for activation."
@@ -3898,7 +3908,7 @@ msgid "Rebuild languages index"
 msgstr "Przebuduj indeks języków."
 
 msgid "Reconfiguration in progress..."
-msgstr "Przekonfigurowywanie w trakcie..."
+msgstr "Konfiguracja w trakcie..."
 
 msgid "Record data"
 msgstr "Dane rekordu"

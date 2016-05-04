@@ -3,14 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# chaowencn <chaowencn@gmail.com>, 2014
-# Laurent Declercq <l.declercq@nuxwin.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -579,7 +577,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "添加 SQL 数据库"
 
 msgid "Add SQL user"
 msgstr "添加 SQL 用户"
@@ -618,7 +616,7 @@ msgid "Add group"
 msgstr "添加组"
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "添加主机项目"
 
 msgid "Add new IP address"
 msgstr ""
@@ -648,7 +646,7 @@ msgid "Add reseller"
 msgstr "添加代理商"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "添加子域名"
 
 msgid "Add user"
 msgstr "添加用户"
@@ -803,7 +801,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr ""
+msgstr "管理员日志"
 
 msgid "Admin not available"
 msgstr ""
@@ -905,6 +903,9 @@ msgstr "所有流量"
 
 msgid "All users"
 msgstr "所有用户"
+
+msgid "Allow HTTP Strict Transport Security"
+msgstr ""
 
 msgid "Allow URL fopen"
 msgstr ""
@@ -1607,7 +1608,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr ""
+msgstr "自定义菜单"
 
 msgid "Customer"
 msgstr ""
@@ -2132,7 +2133,7 @@ msgid "Edit domain"
 msgstr "编辑域名"
 
 msgid "Edit domain alias"
-msgstr ""
+msgstr "编辑域名别名"
 
 msgid "Edit error page"
 msgstr "编辑错误页"
@@ -2251,6 +2252,11 @@ msgid "Enable SSL"
 msgstr ""
 
 msgid "Enable auto responder"
+msgstr ""
+
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
 msgstr ""
 
 msgid "Enabled"
@@ -2405,7 +2411,7 @@ msgid "FileManager"
 msgstr ""
 
 msgid "Filemanager"
-msgstr ""
+msgstr "文件管理器"
 
 msgid "Filesystem system Info"
 msgstr "文件系统信息"
@@ -2447,6 +2453,9 @@ msgstr "转发"
 msgid "Forward to URL"
 msgstr "转到URL地址"
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr "空闲"
 
@@ -2484,7 +2493,7 @@ msgid "General information"
 msgstr "概要信息"
 
 msgid "General settings"
-msgstr ""
+msgstr "常规设置"
 
 msgid "Generate"
 msgstr ""
@@ -2509,6 +2518,12 @@ msgstr "组名"
 
 msgid "Groups"
 msgstr "组"
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
+msgstr ""
 
 msgid "HTTP traffic"
 msgstr ""
@@ -2550,7 +2565,7 @@ msgid "Hosting plan successfully updated."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "主机项目"
 
 msgid "Hour"
 msgstr "小时"
@@ -3379,7 +3394,7 @@ msgid "Other settings"
 msgstr "其它设置"
 
 msgid "Overview"
-msgstr ""
+msgstr "概览"
 
 msgid "Owner"
 msgstr "所有者"
@@ -3561,7 +3576,7 @@ msgid "Phone"
 msgstr "电话"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr ""
@@ -4355,7 +4370,7 @@ msgid "Service protocol"
 msgstr "协议"
 
 msgid "Services status"
-msgstr ""
+msgstr "服务器状态"
 
 msgid "Sessions"
 msgstr ""
@@ -4656,7 +4671,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr ""
+msgstr "系统工具"
 
 msgid "System under maintenance"
 msgstr ""
@@ -5376,7 +5391,7 @@ msgid "Webmail"
 msgstr "网页邮件"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Web工具"
 
 msgid "Welcome email"
 msgstr ""
@@ -5883,7 +5898,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "i-MSCP 更新"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""

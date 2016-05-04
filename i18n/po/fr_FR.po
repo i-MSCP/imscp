@@ -3,26 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Alexandre B. <0xfuture@gmail.com>, 2013
-# coolternet <coolternet@live.ca>, 2012
-# i-MSCP <team@i-mscp.net>, 2015-2016
-# kevinus60 <kevinus60@gmail.com>, 2013
-# krok <krok@totalynet.fr>, 2011-2013
-# Laurent Declercq <l.declercq@nuxwin.com>, 2011,2015-2016
-# LE BRECH Ludovic <ludofloria@aifesdespets.fr>, 2012-2013
-# lkppo, 2012
-# minicore <minicore@jypino.eu>, 2012
-# Morgan Henreaux <morgan@henreaux.com>, 2012
-# Pierre Galaup <contact@pierre-galaup.fr>, 2013
-# Sébastien M <athar@funstargate.com>, 2013
-# sebtiz13 <sebtiz13@gmail.com>, 2013
-# Thom Heemstra <thom@heemstra.us>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:42+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/i-mscp/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -918,6 +904,9 @@ msgstr "Tout le trafic"
 msgid "All users"
 msgstr "Tous les utilisateurs"
 
+msgid "Allow HTTP Strict Transport Security"
+msgstr ""
+
 msgid "Allow URL fopen"
 msgstr "Autoriser URL fopen"
 
@@ -1332,7 +1321,7 @@ msgid "Click to activate"
 msgstr "Cliquez pour activer"
 
 msgid "Click to deactivate"
-msgstr "Clickez pour désactiver"
+msgstr "Cliquez pour désactiver"
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "Client / Bases de données / Ajouter une base de données SQL"
@@ -1523,7 +1512,7 @@ msgstr "Impossible d'ajouter ou mettre à jour le certificat SSL. Une erreur ina
 
 #, php-format
 msgid "Could not create `%s` database name."
-msgstr ""
+msgstr "Impossible de créer la base de données `%s`."
 
 msgid "Could not create domain alias. An unexpected error occurred."
 msgstr "Impossible de créer l'alias de domaine. Une erreur inattendue s'est produite."
@@ -1727,7 +1716,7 @@ msgid "Database name is too long."
 msgstr "Le nom de la base de données est trop long."
 
 msgid "Database name is unavailable or unallowed."
-msgstr ""
+msgstr "Le nom pour la base de données est indisponible ou non-autorisé."
 
 msgid "Database prefix"
 msgstr "Préfixe de base de données"
@@ -2265,6 +2254,11 @@ msgstr "Activer SSL"
 msgid "Enable auto responder"
 msgstr "Activer la réponse automatique"
 
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
+msgstr ""
+
 msgid "Enabled"
 msgstr "Activé"
 
@@ -2459,6 +2453,9 @@ msgstr "Transférer vers"
 msgid "Forward to URL"
 msgstr "Transférer vers l'URL"
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr "Libre"
 
@@ -2521,6 +2518,12 @@ msgstr "Nom du groupe"
 
 msgid "Groups"
 msgstr "Groupes"
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
+msgstr ""
 
 msgid "HTTP traffic"
 msgstr "Trafic HTTP"
@@ -2772,7 +2775,7 @@ msgid "Instructions to download today's backup"
 msgstr "Instructions pour récupérer les sauvegardes journalières"
 
 msgid "Intermediate certificate(s)"
-msgstr "Certificat(s) intermédiaires"
+msgstr "Certificat(s) intermédiaire(s)"
 
 msgid "Internal Server Error"
 msgstr "Erreur interne au serveur"
@@ -2828,7 +2831,7 @@ msgid "Invalid name."
 msgstr "Nom incorrecte."
 
 msgid "Invalid payload received from GitHub"
-msgstr "Les données reçue de GitHub sont pas valides"
+msgstr "Les données reçue de GitHub ne sont pas valides."
 
 msgid "Invalid private key or passphrase."
 msgstr "Clé ou mot de passe invalide."
@@ -4517,7 +4520,7 @@ msgstr "Filtre anti-spam : Configurer un enregistrement DNS MX pour relayer les 
 msgid ""
 "Spam Filter: Setup an external MX host to relay mail of your entire domain "
 "but retains our server as final mailhost."
-msgstr "Spam Filer: Paramètre un serveur de messagerie externe pour relayer les emails de votre domaines mais retient votre serveur comme serveur de messagerie final."
+msgstr "Spam Filter: Paramètre un serveur de messagerie externe pour relayer les mails de votre domaine but retient votre serveur comme serveur de messagerie final."
 
 msgid "Start installation"
 msgstr "Débuter l'installation"
@@ -5100,7 +5103,7 @@ msgid "Unavailable"
 msgstr "Non disponible"
 
 msgid "Unexpected error"
-msgstr "Erreur innatendue"
+msgstr "Erreur inattendue"
 
 msgid "Uninstall"
 msgstr "Désinstaller"
@@ -5503,7 +5506,7 @@ msgstr "Vous ne pouvez pas installer un logiciel en dehors du répertoire htdocs
 msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
-msgstr "Vous ne pouvez pas ajouter de nouveau compte de messageries. Vous avez déjà assigner tous vos quotas de mails aux autres compte de messageries. Veuillez d'abord revoir l'assignement de vos quotas de mails."
+msgstr "Vous ne pouvez pas ajouter de nouveau compte de messageries. Vous avez déjà assigné tous vos quotas de mails aux autres comptes de messageries. Veuillez d'abord revoir l'assignement de vos quotas de mails."
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "Vous ne pouvez pas supprimer un revendeur qui a des comptes clients."

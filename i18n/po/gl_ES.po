@@ -3,13 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Medulio <medulio@ciberirmandade.org>, 2009-2010
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Galician (Spain) (http://www.transifex.com/i-mscp/i-MSCP/language/gl_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -578,7 +577,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "Engadir banco de datos SQL"
 
 msgid "Add SQL user"
 msgstr "Engadir usuario SQL"
@@ -617,7 +616,7 @@ msgid "Add group"
 msgstr "Engadir grupo"
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "Engadir plano de hospedaxe"
 
 msgid "Add new IP address"
 msgstr ""
@@ -647,7 +646,7 @@ msgid "Add reseller"
 msgstr "Engadir revendedor"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "Engadir subdominio"
 
 msgid "Add user"
 msgstr "Engadir usuario"
@@ -802,7 +801,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr ""
+msgstr "Rexistro (log) de administración"
 
 msgid "Admin not available"
 msgstr ""
@@ -904,6 +903,9 @@ msgstr "Todo o tráfico"
 
 msgid "All users"
 msgstr "Todos os usuarios"
+
+msgid "Allow HTTP Strict Transport Security"
+msgstr ""
 
 msgid "Allow URL fopen"
 msgstr ""
@@ -1606,7 +1608,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr ""
+msgstr "Menús personalizados"
 
 msgid "Customer"
 msgstr ""
@@ -2131,7 +2133,7 @@ msgid "Edit domain"
 msgstr "Editar dominio"
 
 msgid "Edit domain alias"
-msgstr ""
+msgstr "Editar alias de dominio"
 
 msgid "Edit error page"
 msgstr "Editar páxina de erro"
@@ -2250,6 +2252,11 @@ msgid "Enable SSL"
 msgstr ""
 
 msgid "Enable auto responder"
+msgstr ""
+
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
 msgstr ""
 
 msgid "Enabled"
@@ -2404,7 +2411,7 @@ msgid "FileManager"
 msgstr ""
 
 msgid "Filemanager"
-msgstr ""
+msgstr "Filemanager (xestor de arquivos)"
 
 msgid "Filesystem system Info"
 msgstr "Información do sistema de arquivos"
@@ -2446,6 +2453,9 @@ msgstr "Reenviar a"
 msgid "Forward to URL"
 msgstr "Reenviar ao URL"
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr "Ceibe"
 
@@ -2483,7 +2493,7 @@ msgid "General information"
 msgstr "Información xeral"
 
 msgid "General settings"
-msgstr ""
+msgstr "Configuración xeral"
 
 msgid "Generate"
 msgstr ""
@@ -2508,6 +2518,12 @@ msgstr "Nome do grupo"
 
 msgid "Groups"
 msgstr "Grupos"
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
+msgstr ""
 
 msgid "HTTP traffic"
 msgstr ""
@@ -2549,7 +2565,7 @@ msgid "Hosting plan successfully updated."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "Planos de hospedaxe"
 
 msgid "Hour"
 msgstr "Hora"
@@ -3378,7 +3394,7 @@ msgid "Other settings"
 msgstr "Outros axustes"
 
 msgid "Overview"
-msgstr ""
+msgstr "Resumo"
 
 msgid "Owner"
 msgstr "Propietario"
@@ -3560,7 +3576,7 @@ msgid "Phone"
 msgstr "Teléfono"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr ""
@@ -4354,7 +4370,7 @@ msgid "Service protocol"
 msgstr "Protocolo do servizo"
 
 msgid "Services status"
-msgstr ""
+msgstr "Estado do servidor"
 
 msgid "Sessions"
 msgstr ""
@@ -4655,7 +4671,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr ""
+msgstr "Ferramentas do sistema"
 
 msgid "System under maintenance"
 msgstr ""
@@ -5375,7 +5391,7 @@ msgid "Webmail"
 msgstr "Correo-web"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Ferramentas Web"
 
 msgid "Welcome email"
 msgstr ""
@@ -5882,7 +5898,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "Actualizacións do i-MSCP"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""

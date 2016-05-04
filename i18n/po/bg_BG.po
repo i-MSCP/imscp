@@ -3,14 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Al Indjov <al@indjov.info>, 2014-2015
-# dinkonin <k.ninev@nabaco.bg>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/i-mscp/i-MSCP/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
@@ -579,7 +577,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "Добави SQL база данни"
 
 msgid "Add SQL user"
 msgstr "Добави SQL-потребител"
@@ -600,7 +598,7 @@ msgid "Add custom menu"
 msgstr ""
 
 msgid "Add customer"
-msgstr ""
+msgstr "Добави клиент"
 
 msgid "Add customer - Next step"
 msgstr ""
@@ -618,7 +616,7 @@ msgid "Add group"
 msgstr "Добави група"
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "Добави хостинг-план"
 
 msgid "Add new IP address"
 msgstr "Добави нов IP адрес"
@@ -648,7 +646,7 @@ msgid "Add reseller"
 msgstr "Добави риселър"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "Добави поддомейн"
 
 msgid "Add user"
 msgstr "Добави потребител"
@@ -803,7 +801,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr ""
+msgstr "Админ Журнал"
 
 msgid "Admin not available"
 msgstr ""
@@ -905,6 +903,9 @@ msgstr "Целия трафик"
 
 msgid "All users"
 msgstr "Всички потребителии"
+
+msgid "Allow HTTP Strict Transport Security"
+msgstr ""
 
 msgid "Allow URL fopen"
 msgstr ""
@@ -1607,7 +1608,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr ""
+msgstr "Персонално меню"
 
 msgid "Customer"
 msgstr ""
@@ -1739,7 +1740,7 @@ msgid "Database with comma(s) in name is not accepted."
 msgstr ""
 
 msgid "Databases"
-msgstr ""
+msgstr "База данни"
 
 msgid "Date"
 msgstr "Дата"
@@ -2132,7 +2133,7 @@ msgid "Edit domain"
 msgstr "Промяна на Домейн"
 
 msgid "Edit domain alias"
-msgstr ""
+msgstr "Редактиране  на псевдоним на домейн"
 
 msgid "Edit error page"
 msgstr "Редактиране  на страницата с грешки"
@@ -2147,7 +2148,7 @@ msgid "Edit htaccess user"
 msgstr ""
 
 msgid "Edit mail account"
-msgstr ""
+msgstr "Промяна на пощата"
 
 msgid "Edit mail quota"
 msgstr ""
@@ -2159,7 +2160,7 @@ msgid "Edit reseller"
 msgstr "Редакция на риселър"
 
 msgid "Edit subdomain"
-msgstr ""
+msgstr "Промяна на събдомейн "
 
 msgid "Edit user"
 msgstr "Проняна на потребител"
@@ -2251,6 +2252,11 @@ msgid "Enable SSL"
 msgstr ""
 
 msgid "Enable auto responder"
+msgstr ""
+
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
 msgstr ""
 
 msgid "Enabled"
@@ -2405,7 +2411,7 @@ msgid "FileManager"
 msgstr "Файлов Мениджър"
 
 msgid "Filemanager"
-msgstr ""
+msgstr "Файл Мениджър"
 
 msgid "Filesystem system Info"
 msgstr "Информация за файловата система"
@@ -2447,6 +2453,9 @@ msgstr "Пренасочи към"
 msgid "Forward to URL"
 msgstr "Ппенасочване на УРЛ"
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr "Свободно"
 
@@ -2484,7 +2493,7 @@ msgid "General information"
 msgstr "Обща информация"
 
 msgid "General settings"
-msgstr ""
+msgstr "Общи настройки"
 
 msgid "Generate"
 msgstr ""
@@ -2509,6 +2518,12 @@ msgstr "Име на група"
 
 msgid "Groups"
 msgstr "Групи"
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
+msgstr ""
 
 msgid "HTTP traffic"
 msgstr ""
@@ -2550,7 +2565,7 @@ msgid "Hosting plan successfully updated."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "Хостинг-планове"
 
 msgid "Hour"
 msgstr "Час"
@@ -2615,7 +2630,7 @@ msgid "IP management"
 msgstr ""
 
 msgid "IP usage"
-msgstr ""
+msgstr "Използвани IP-та"
 
 msgid "IPv6 address"
 msgstr "IPv6 Адрес"
@@ -3379,7 +3394,7 @@ msgid "Other settings"
 msgstr "Други настройки"
 
 msgid "Overview"
-msgstr ""
+msgstr "Преглед"
 
 msgid "Owner"
 msgstr "Собственик"
@@ -4355,7 +4370,7 @@ msgid "Service protocol"
 msgstr "Протокол на услугата "
 
 msgid "Services status"
-msgstr ""
+msgstr "Статус на Услугите "
 
 msgid "Sessions"
 msgstr ""
@@ -4616,7 +4631,7 @@ msgid "Submit changes"
 msgstr "Приеми промените"
 
 msgid "Support"
-msgstr ""
+msgstr "Поддръжка"
 
 msgid "Support system"
 msgstr "Служба за поддръжка"
@@ -4656,7 +4671,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr ""
+msgstr "Системни инструменти"
 
 msgid "System under maintenance"
 msgstr ""
@@ -5376,7 +5391,7 @@ msgid "Webmail"
 msgstr "Имейли"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Уеб-инструменти"
 
 msgid "Welcome email"
 msgstr ""
@@ -5883,7 +5898,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "Обновяване на i-MSCP"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""

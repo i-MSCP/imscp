@@ -3,14 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Mohsen Ghiasi ravari <mohsengham@gmail.com>, 2015
-# Siavash Memarizadeh <memarizade@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Persian (Iran) (http://www.transifex.com/i-mscp/i-MSCP/language/fa_IR/)\n"
 "MIME-Version: 1.0\n"
@@ -579,7 +577,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "افزودن بانک داده اس کیو ال"
 
 msgid "Add SQL user"
 msgstr "افزودن کاربر اس کیو ال"
@@ -618,7 +616,7 @@ msgid "Add group"
 msgstr "افزودن گروه"
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "افزودن یک پلن"
 
 msgid "Add new IP address"
 msgstr ""
@@ -648,7 +646,7 @@ msgid "Add reseller"
 msgstr "افزودن ریسلر"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "افزودن زیردامنه"
 
 msgid "Add user"
 msgstr "افزودن کاربر"
@@ -803,7 +801,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr ""
+msgstr "لاگ مدیر"
 
 msgid "Admin not available"
 msgstr ""
@@ -905,6 +903,9 @@ msgstr "کل ترافیک"
 
 msgid "All users"
 msgstr "همه ی کاربران"
+
+msgid "Allow HTTP Strict Transport Security"
+msgstr ""
 
 msgid "Allow URL fopen"
 msgstr ""
@@ -1607,7 +1608,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr ""
+msgstr "منوهای شخصی شده"
 
 msgid "Customer"
 msgstr ""
@@ -2132,7 +2133,7 @@ msgid "Edit domain"
 msgstr "ویرایش دامنه"
 
 msgid "Edit domain alias"
-msgstr ""
+msgstr "ویرایش الحاقی دامنه"
 
 msgid "Edit error page"
 msgstr "ویرایش صفحه خطا"
@@ -2251,6 +2252,11 @@ msgid "Enable SSL"
 msgstr ""
 
 msgid "Enable auto responder"
+msgstr ""
+
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
 msgstr ""
 
 msgid "Enabled"
@@ -2405,7 +2411,7 @@ msgid "FileManager"
 msgstr ""
 
 msgid "Filemanager"
-msgstr ""
+msgstr "مدیریت فایل ها"
 
 msgid "Filesystem system Info"
 msgstr "اطلاعات فایل سیستم"
@@ -2447,6 +2453,9 @@ msgstr "فوروارد به"
 msgid "Forward to URL"
 msgstr "فوروارد به یوآرال"
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr "آزاد"
 
@@ -2484,7 +2493,7 @@ msgid "General information"
 msgstr "اطلاعات عمومی"
 
 msgid "General settings"
-msgstr ""
+msgstr "تنظیمات عمومی"
 
 msgid "Generate"
 msgstr ""
@@ -2509,6 +2518,12 @@ msgstr "نام گروه"
 
 msgid "Groups"
 msgstr "گروه ها"
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
+msgstr ""
 
 msgid "HTTP traffic"
 msgstr ""
@@ -2550,7 +2565,7 @@ msgid "Hosting plan successfully updated."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "پلن های هاستینگ"
 
 msgid "Hour"
 msgstr "ساعت"
@@ -3379,7 +3394,7 @@ msgid "Other settings"
 msgstr "تنظیمات دیگر"
 
 msgid "Overview"
-msgstr ""
+msgstr "مرور کلی"
 
 msgid "Owner"
 msgstr "مالک"
@@ -3561,7 +3576,7 @@ msgid "Phone"
 msgstr "تلفن"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr ""
@@ -4355,7 +4370,7 @@ msgid "Service protocol"
 msgstr "پروتکل سرویس"
 
 msgid "Services status"
-msgstr ""
+msgstr "وضعیت سرور"
 
 msgid "Sessions"
 msgstr ""
@@ -4656,7 +4671,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr ""
+msgstr "ابزارهای سیستم"
 
 msgid "System under maintenance"
 msgstr ""
@@ -5376,7 +5391,7 @@ msgid "Webmail"
 msgstr "وب میل"
 
 msgid "Webtools"
-msgstr ""
+msgstr "ابزارهای وب"
 
 msgid "Welcome email"
 msgstr ""
@@ -5883,7 +5898,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "بروزرسانی های آی اس پی سی پی"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""

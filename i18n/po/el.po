@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Greek (http://www.transifex.com/i-mscp/i-MSCP/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -902,6 +902,9 @@ msgid "All traffic"
 msgstr ""
 
 msgid "All users"
+msgstr ""
+
+msgid "Allow HTTP Strict Transport Security"
 msgstr ""
 
 msgid "Allow URL fopen"
@@ -2251,6 +2254,11 @@ msgstr ""
 msgid "Enable auto responder"
 msgstr ""
 
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
+msgstr ""
+
 msgid "Enabled"
 msgstr ""
 
@@ -2445,6 +2453,9 @@ msgstr ""
 msgid "Forward to URL"
 msgstr ""
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr ""
 
@@ -2506,6 +2517,12 @@ msgid "Group name"
 msgstr ""
 
 msgid "Groups"
+msgstr ""
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
 msgstr ""
 
 msgid "HTTP traffic"

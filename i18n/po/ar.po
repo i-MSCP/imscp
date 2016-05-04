@@ -3,13 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# hossam bahaa <hossambahaa2@ymail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/i-mscp/i-MSCP/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -578,7 +577,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "أضف قاعدة بيانات SQL"
 
 msgid "Add SQL user"
 msgstr ""
@@ -617,7 +616,7 @@ msgid "Add group"
 msgstr ""
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "أضف خطة إستضافة"
 
 msgid "Add new IP address"
 msgstr ""
@@ -647,7 +646,7 @@ msgid "Add reseller"
 msgstr "اضافة ريسيلر"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "اضافة نطاق فرعى"
 
 msgid "Add user"
 msgstr "اضافة اسم مستخدم"
@@ -802,7 +801,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr ""
+msgstr "سجل المدير"
 
 msgid "Admin not available"
 msgstr ""
@@ -903,6 +902,9 @@ msgid "All traffic"
 msgstr ""
 
 msgid "All users"
+msgstr ""
+
+msgid "Allow HTTP Strict Transport Security"
 msgstr ""
 
 msgid "Allow URL fopen"
@@ -1606,7 +1608,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr ""
+msgstr "قوائم مخصصة"
 
 msgid "Customer"
 msgstr ""
@@ -2252,6 +2254,11 @@ msgstr ""
 msgid "Enable auto responder"
 msgstr ""
 
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
+msgstr ""
+
 msgid "Enabled"
 msgstr "مفعّل"
 
@@ -2404,7 +2411,7 @@ msgid "FileManager"
 msgstr "مدير الملفات"
 
 msgid "Filemanager"
-msgstr ""
+msgstr "مدير الملفات"
 
 msgid "Filesystem system Info"
 msgstr ""
@@ -2446,6 +2453,9 @@ msgstr ""
 msgid "Forward to URL"
 msgstr ""
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr ""
 
@@ -2483,7 +2493,7 @@ msgid "General information"
 msgstr "المعلومات العامة"
 
 msgid "General settings"
-msgstr ""
+msgstr "إعدادات عامة"
 
 msgid "Generate"
 msgstr ""
@@ -2507,6 +2517,12 @@ msgid "Group name"
 msgstr ""
 
 msgid "Groups"
+msgstr ""
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
 msgstr ""
 
 msgid "HTTP traffic"
@@ -2549,7 +2565,7 @@ msgid "Hosting plan successfully updated."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "خطط الاستضافة"
 
 msgid "Hour"
 msgstr "ساعة"
@@ -2614,7 +2630,7 @@ msgid "IP management"
 msgstr ""
 
 msgid "IP usage"
-msgstr ""
+msgstr "استخدام الأى بى"
 
 msgid "IPv6 address"
 msgstr ""
@@ -3378,7 +3394,7 @@ msgid "Other settings"
 msgstr "إعدادات اخرى"
 
 msgid "Overview"
-msgstr ""
+msgstr "نظرة عامة"
 
 msgid "Owner"
 msgstr "المالك"
@@ -3560,7 +3576,7 @@ msgid "Phone"
 msgstr "رقم هاتف"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "ادارة قواعد البيانات"
 
 msgid "PiB"
 msgstr ""
@@ -4354,7 +4370,7 @@ msgid "Service protocol"
 msgstr ""
 
 msgid "Services status"
-msgstr ""
+msgstr "حالة الخدمات"
 
 msgid "Sessions"
 msgstr ""
@@ -4655,7 +4671,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr ""
+msgstr "أدوات النظام"
 
 msgid "System under maintenance"
 msgstr ""
@@ -5375,7 +5391,7 @@ msgid "Webmail"
 msgstr "البريد الالكتروني"
 
 msgid "Webtools"
-msgstr ""
+msgstr "أدوات الويب"
 
 msgid "Welcome email"
 msgstr ""
@@ -5882,7 +5898,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "تحديثات i-MSCP"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""

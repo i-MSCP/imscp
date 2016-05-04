@@ -3,20 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# 9 Beliy <9beliy@gmail.com>, 2012
-# Arthur Mayer <mayer.arthur@gmail.com>, 2016
-# hosterdev <rwer353453534@mail.ru>, 2011
-# i-MSCP <team@i-mscp.net>, 2015-2016
-# Laurent Declercq <l.declercq@nuxwin.com>, 2015
-# Oleg Olegov <>, 2012
-# Thom Heemstra <thom@heemstra.us>, 2016
-# Vitaliy Zhukov <DragonZX@yandex.ru>, 2014-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:42+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/i-mscp/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -912,6 +904,9 @@ msgstr "Весь трафик"
 msgid "All users"
 msgstr "Все пользователи"
 
+msgid "Allow HTTP Strict Transport Security"
+msgstr ""
+
 msgid "Allow URL fopen"
 msgstr "Allow URL fopen"
 
@@ -1517,7 +1512,7 @@ msgstr "Не удалось добавить/обновить SSL сертифи
 
 #, php-format
 msgid "Could not create `%s` database name."
-msgstr ""
+msgstr "Невозможно создать базу данных с именем `%s`."
 
 msgid "Could not create domain alias. An unexpected error occurred."
 msgstr "Не удалось создать алиас домена. Произошла неожиданная ошибка."
@@ -1721,7 +1716,7 @@ msgid "Database name is too long."
 msgstr "Имя базы данных слишком длинное."
 
 msgid "Database name is unavailable or unallowed."
-msgstr ""
+msgstr "Имя базы данных недопустимо или не разрешено."
 
 msgid "Database prefix"
 msgstr "Префикс базы данных"
@@ -2259,6 +2254,11 @@ msgstr "Включить SSL"
 msgid "Enable auto responder"
 msgstr "Включить автоответчик"
 
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
+msgstr ""
+
 msgid "Enabled"
 msgstr "Включено"
 
@@ -2453,6 +2453,9 @@ msgstr "Перенаправить к"
 msgid "Forward to URL"
 msgstr "Перенаправлять на URL"
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr "Свободно"
 
@@ -2515,6 +2518,12 @@ msgstr "Имя группы"
 
 msgid "Groups"
 msgstr "Группы"
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
+msgstr ""
 
 msgid "HTTP traffic"
 msgstr "HTTP трафик"
@@ -4511,7 +4520,7 @@ msgstr "Фильтр спама: Установите запись MX для п�
 msgid ""
 "Spam Filter: Setup an external MX host to relay mail of your entire domain "
 "but retains our server as final mailhost."
-msgstr "Фильтр спама: Настройте внешний MX-хост, чтобы получат почту для вашего существующего домена, но сохранять наш сервер в качестве конечного почтового шлюза."
+msgstr "Фильтр спама: Настройте внешний MX-хост, чтобы получать почту для вашего существующего домена, но сохранить наш сервер как конечный хост."
 
 msgid "Start installation"
 msgstr "Добавить в репозиторий"
@@ -5039,7 +5048,7 @@ msgstr "Невозможно прочесть индексный файл Web-р
 
 #, php-format
 msgid "Unable to read the %s file."
-msgstr "Невозможно прочесть файл %s"
+msgstr "Невозможно прочесть файл %s."
 
 #, php-format
 msgid "Unable to read the plugin %s file. Please check file permissions"

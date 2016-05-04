@@ -3,16 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Akong Wu <ak6783@gmail.com>, 2015-2016
-# Cloudeasy <a9100a9957@gmail.com>, 2014-2015
-# i-MSCP <team@i-mscp.net>, 2015
-# Laurent Declercq <l.declercq@nuxwin.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:42+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -907,6 +903,9 @@ msgstr "所有流量"
 
 msgid "All users"
 msgstr "所有使用者"
+
+msgid "Allow HTTP Strict Transport Security"
+msgstr ""
 
 msgid "Allow URL fopen"
 msgstr "允許 URL fopen"
@@ -2255,6 +2254,11 @@ msgstr "啟用 SSL"
 msgid "Enable auto responder"
 msgstr "啟用自動回覆"
 
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
+msgstr ""
+
 msgid "Enabled"
 msgstr "啟用"
 
@@ -2449,6 +2453,9 @@ msgstr "轉寄"
 msgid "Forward to URL"
 msgstr "轉網址到"
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr "空閒"
 
@@ -2511,6 +2518,12 @@ msgstr "群組名稱"
 
 msgid "Groups"
 msgstr "群組"
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
+msgstr ""
 
 msgid "HTTP traffic"
 msgstr "HTTP 流量"
@@ -4712,7 +4725,7 @@ msgstr "此 %s 限制針對這個客戶不可以設定為 '停用' 因為他已�
 msgid ""
 "The %s limit for this customer cannot be unlimited because your are limited "
 "for this service."
-msgstr "因為您這個服務已被限制，所以這個客戶的 %s 限制不能改為無限。"
+msgstr "因為您這個服務已被限制，所以針對這個客戶的 %s 限制不能改為無限。"
 
 #, php-format
 msgid "The %s plugin version %s is not compatible with your i-MSCP version."
@@ -4837,7 +4850,7 @@ msgid "This package already exists in the depot of the reseller \"%1$s\"!"
 msgstr "這個套件已在於經銷商 \"%1$s\" 軟體庫中!"
 
 msgid "This package already exists in the software depot!"
-msgstr "這個套件已經存在於軟體庫!"
+msgstr "這個套件已經存在於軟體部署!"
 
 msgid "This package already exists in your software repository."
 msgstr "這個套件已經存在於您的軟體庫。"

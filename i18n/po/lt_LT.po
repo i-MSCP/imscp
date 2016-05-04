@@ -3,13 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Takashi <takashi@elekta.lt>, 2009
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Lithuanian (Lithuania) (http://www.transifex.com/i-mscp/i-MSCP/language/lt_LT/)\n"
 "MIME-Version: 1.0\n"
@@ -617,7 +616,7 @@ msgid "Add group"
 msgstr ""
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "Pridëti hostingo planà"
 
 msgid "Add new IP address"
 msgstr ""
@@ -904,6 +903,9 @@ msgstr "Visas srautas"
 
 msgid "All users"
 msgstr "Visiems varotojams"
+
+msgid "Allow HTTP Strict Transport Security"
+msgstr ""
 
 msgid "Allow URL fopen"
 msgstr ""
@@ -2252,6 +2254,11 @@ msgstr ""
 msgid "Enable auto responder"
 msgstr ""
 
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
+msgstr ""
+
 msgid "Enabled"
 msgstr "Ájungta"
 
@@ -2446,6 +2453,9 @@ msgstr ""
 msgid "Forward to URL"
 msgstr "Nukreipti á URL"
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr "Laisva"
 
@@ -2483,7 +2493,7 @@ msgid "General information"
 msgstr ""
 
 msgid "General settings"
-msgstr ""
+msgstr "Pagrindingiai nustatymai"
 
 msgid "Generate"
 msgstr ""
@@ -2507,6 +2517,12 @@ msgid "Group name"
 msgstr ""
 
 msgid "Groups"
+msgstr ""
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
 msgstr ""
 
 msgid "HTTP traffic"
@@ -2549,7 +2565,7 @@ msgid "Hosting plan successfully updated."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "Hostingo planai"
 
 msgid "Hour"
 msgstr "Valanda"
@@ -4354,7 +4370,7 @@ msgid "Service protocol"
 msgstr "Paslaugos protokolas"
 
 msgid "Services status"
-msgstr ""
+msgstr "Serverio bûklë"
 
 msgid "Sessions"
 msgstr ""
@@ -5882,7 +5898,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "i-MSCP atnaujinimai"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""

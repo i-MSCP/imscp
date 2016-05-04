@@ -3,13 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# FIRST AUTHOR <Bruno Carvalho>, 2010
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/i-mscp/i-MSCP/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
@@ -578,7 +577,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "Adicionar Base de dados SQL"
 
 msgid "Add SQL user"
 msgstr "Adicionar utilizador SQL"
@@ -617,7 +616,7 @@ msgid "Add group"
 msgstr "Adicionar grupo"
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "Adicionar plano de alojamento"
 
 msgid "Add new IP address"
 msgstr ""
@@ -647,7 +646,7 @@ msgid "Add reseller"
 msgstr "Adicionar revendedor"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "Adicionar sub-domínio"
 
 msgid "Add user"
 msgstr "Adicionar utilizador"
@@ -802,7 +801,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr ""
+msgstr "Relatório do Administrador"
 
 msgid "Admin not available"
 msgstr ""
@@ -904,6 +903,9 @@ msgstr "Todo o tráfego"
 
 msgid "All users"
 msgstr "Todos os utilizadores"
+
+msgid "Allow HTTP Strict Transport Security"
+msgstr ""
 
 msgid "Allow URL fopen"
 msgstr ""
@@ -1606,7 +1608,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr ""
+msgstr "Menus personalizados"
 
 msgid "Customer"
 msgstr ""
@@ -2131,7 +2133,7 @@ msgid "Edit domain"
 msgstr "Editar domínio"
 
 msgid "Edit domain alias"
-msgstr ""
+msgstr "Editar alias do domínio"
 
 msgid "Edit error page"
 msgstr "Editar página de erro"
@@ -2250,6 +2252,11 @@ msgid "Enable SSL"
 msgstr ""
 
 msgid "Enable auto responder"
+msgstr ""
+
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
 msgstr ""
 
 msgid "Enabled"
@@ -2404,7 +2411,7 @@ msgid "FileManager"
 msgstr ""
 
 msgid "Filemanager"
-msgstr ""
+msgstr "Gestor de Ficheiros"
 
 msgid "Filesystem system Info"
 msgstr "Info dos ficheiros de sistema"
@@ -2446,6 +2453,9 @@ msgstr "Encaminhar para"
 msgid "Forward to URL"
 msgstr "Re-encaminhar para o URL"
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr "Livre"
 
@@ -2483,7 +2493,7 @@ msgid "General information"
 msgstr "Informação geral"
 
 msgid "General settings"
-msgstr ""
+msgstr "Definições Gerais"
 
 msgid "Generate"
 msgstr ""
@@ -2508,6 +2518,12 @@ msgstr "Nomde do grupo"
 
 msgid "Groups"
 msgstr "Groupos"
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
+msgstr ""
 
 msgid "HTTP traffic"
 msgstr ""
@@ -2549,7 +2565,7 @@ msgid "Hosting plan successfully updated."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "Planos de alojamento"
 
 msgid "Hour"
 msgstr "Hora"
@@ -3378,7 +3394,7 @@ msgid "Other settings"
 msgstr "Outras definições"
 
 msgid "Overview"
-msgstr ""
+msgstr "Visão geral"
 
 msgid "Owner"
 msgstr "Proprietário"
@@ -3560,7 +3576,7 @@ msgid "Phone"
 msgstr "Telefone"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr ""
@@ -4354,7 +4370,7 @@ msgid "Service protocol"
 msgstr "Protocolo do Serviço"
 
 msgid "Services status"
-msgstr ""
+msgstr "Estado do servidor"
 
 msgid "Sessions"
 msgstr ""
@@ -4655,7 +4671,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr ""
+msgstr "Ferramentas do sistema"
 
 msgid "System under maintenance"
 msgstr ""
@@ -5375,7 +5391,7 @@ msgid "Webmail"
 msgstr "Webmail"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Ferramentas Web"
 
 msgid "Welcome email"
 msgstr ""
@@ -5882,7 +5898,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "Actualizações i-MSCP"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""

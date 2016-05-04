@@ -3,14 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# MartinezBuco <martinez.kamosi@gmail.com>, 2014
-# Tomas Srnka <tomas.srnka@linuxsro.sk>, 2007
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Slovak (Slovakia) (http://www.transifex.com/i-mscp/i-MSCP/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
@@ -570,7 +568,7 @@ msgid "Add DNS resource record"
 msgstr ""
 
 msgid "Add FTP account"
-msgstr ""
+msgstr "Pridať FTP konto"
 
 msgid "Add Htaccess group"
 msgstr ""
@@ -579,7 +577,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "Pridať SQL databázu"
 
 msgid "Add SQL user"
 msgstr "Pridať SQL konto"
@@ -594,7 +592,7 @@ msgid "Add admin"
 msgstr "Pridať administrátora"
 
 msgid "Add catchall"
-msgstr ""
+msgstr "Pridať \"Zachytiť všetko\""
 
 msgid "Add custom menu"
 msgstr ""
@@ -609,7 +607,7 @@ msgid "Add domain alias"
 msgstr "Pridať alias domény"
 
 msgid "Add email account"
-msgstr ""
+msgstr "Pridať emailové konto"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr ""
@@ -618,7 +616,7 @@ msgid "Add group"
 msgstr "Pridať skupinu"
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "Pridať hostingový plán"
 
 msgid "Add new IP address"
 msgstr ""
@@ -648,7 +646,7 @@ msgid "Add reseller"
 msgstr "Pridať predajcu"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "Pridať sub-doménu"
 
 msgid "Add user"
 msgstr "Pridať uživateľa"
@@ -803,7 +801,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr ""
+msgstr "Admin log"
 
 msgid "Admin not available"
 msgstr ""
@@ -905,6 +903,9 @@ msgstr "Všetky prenesené dáta"
 
 msgid "All users"
 msgstr "Všetkým užívateľom"
+
+msgid "Allow HTTP Strict Transport Security"
+msgstr ""
 
 msgid "Allow URL fopen"
 msgstr ""
@@ -1607,7 +1608,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr ""
+msgstr "Vlastné menu"
 
 msgid "Customer"
 msgstr "Zákazník"
@@ -1727,7 +1728,7 @@ msgid "Database required"
 msgstr "Potrebná databáza"
 
 msgid "Database update"
-msgstr ""
+msgstr "Aktualizácie databáze"
 
 msgid "Database usage"
 msgstr "Použitie databáze"
@@ -1739,7 +1740,7 @@ msgid "Database with comma(s) in name is not accepted."
 msgstr ""
 
 msgid "Databases"
-msgstr ""
+msgstr "Databáze"
 
 msgid "Date"
 msgstr "Dátum"
@@ -2132,7 +2133,7 @@ msgid "Edit domain"
 msgstr "Upraviť doménu"
 
 msgid "Edit domain alias"
-msgstr ""
+msgstr "Zmeniť alias domény"
 
 msgid "Edit error page"
 msgstr "Upraviť chybovú stránku"
@@ -2159,7 +2160,7 @@ msgid "Edit reseller"
 msgstr "Upraviť predajcu"
 
 msgid "Edit subdomain"
-msgstr ""
+msgstr "Upraviť doménu"
 
 msgid "Edit user"
 msgstr "Upraviť užívateľa"
@@ -2251,6 +2252,11 @@ msgid "Enable SSL"
 msgstr ""
 
 msgid "Enable auto responder"
+msgstr ""
+
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
 msgstr ""
 
 msgid "Enabled"
@@ -2405,7 +2411,7 @@ msgid "FileManager"
 msgstr "Správca súborov"
 
 msgid "Filemanager"
-msgstr ""
+msgstr "Filemanager"
 
 msgid "Filesystem system Info"
 msgstr "Informácie o súborových systémoch"
@@ -2447,6 +2453,9 @@ msgstr "Presmerovať do"
 msgid "Forward to URL"
 msgstr "Presmerovať na URL"
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr "Voľné"
 
@@ -2478,13 +2487,13 @@ msgid "Gender"
 msgstr "Pohlavie"
 
 msgid "General"
-msgstr ""
+msgstr "Všeobecné"
 
 msgid "General information"
 msgstr "Všeobecné informácie"
 
 msgid "General settings"
-msgstr ""
+msgstr "Všeobecné nastavenia"
 
 msgid "Generate"
 msgstr ""
@@ -2509,6 +2518,12 @@ msgstr "Názov skupiny"
 
 msgid "Groups"
 msgstr "Skupiny"
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
+msgstr ""
 
 msgid "HTTP traffic"
 msgstr ""
@@ -2550,7 +2565,7 @@ msgid "Hosting plan successfully updated."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "Hostingový plán"
 
 msgid "Hour"
 msgstr "Hodina"
@@ -2615,7 +2630,7 @@ msgid "IP management"
 msgstr ""
 
 msgid "IP usage"
-msgstr ""
+msgstr "Využitie IP"
 
 msgid "IPv6 address"
 msgstr "IPv6 adresy"
@@ -2852,7 +2867,7 @@ msgid "Language successfully updated."
 msgstr ""
 
 msgid "Languages"
-msgstr ""
+msgstr "Jazyky"
 
 msgid "Languages index was successfully re-built."
 msgstr ""
@@ -3379,7 +3394,7 @@ msgid "Other settings"
 msgstr "Ostatné nastavenia"
 
 msgid "Overview"
-msgstr ""
+msgstr "Prehľad"
 
 msgid "Owner"
 msgstr "Vlastník"
@@ -3561,7 +3576,7 @@ msgid "Phone"
 msgstr "Telefón"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr ""
@@ -3831,7 +3846,7 @@ msgid "Processor data"
 msgstr ""
 
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 msgid "Properties"
 msgstr "Vlastnosti"
@@ -4355,7 +4370,7 @@ msgid "Service protocol"
 msgstr "Porty servra"
 
 msgid "Services status"
-msgstr ""
+msgstr "Stav služby"
 
 msgid "Sessions"
 msgstr ""
@@ -4616,7 +4631,7 @@ msgid "Submit changes"
 msgstr "Odoslať zmeny"
 
 msgid "Support"
-msgstr ""
+msgstr "Podpora"
 
 msgid "Support system"
 msgstr "Podporný systém"
@@ -4656,7 +4671,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr ""
+msgstr "Systémové nástroje"
 
 msgid "System under maintenance"
 msgstr ""
@@ -5323,7 +5338,7 @@ msgid "View aliases"
 msgstr "Zobraziť aliasy"
 
 msgid "View ticket"
-msgstr ""
+msgstr "Zobraziť tiket"
 
 msgid "Visit plugin site"
 msgstr ""
@@ -5376,10 +5391,10 @@ msgid "Webmail"
 msgstr "Webmail"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Web nástroje"
 
 msgid "Welcome email"
-msgstr ""
+msgstr "Uvítací email"
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "Vitajte {USERNAME} v i-MSCP"
@@ -5883,7 +5898,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "i-MSCP aktualizácie"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""

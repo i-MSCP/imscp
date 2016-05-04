@@ -3,47 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Alex H <paderwan@googlemail.com>, 2012
-# Arthur Mayer <mayer.arthur@gmail.com>, 2016
-# bastey <sebastian@34n.de>, 2011
-# BeNe <bene@deluxe-styles.de>, 2011-2012
-# Christian Hernmarck <joximu@web.de>, 2012
-# Cool <barni@telia.com>, 2011,2013
-# Daniel <danielxp@gmx.net>, 2015
-# design <schlanki_26@web.de>, 2011
-# FlorianJ <flo_jung@web.de>, 2012
-# Florian Jung <>, 2012
-# i-MSCP <team@i-mscp.net>, 2015-2016
-# Christoph Keßler, 2015
-# kreilinger <strauss3@gmx.at>, 2011
-# Laurent Declercq <l.declercq@nuxwin.com>, 2014-2015
-# Manuel Ambauen <ma.ambauen@bluewin.ch>, 2012
-# Marc Schütz <schuetzm@gmx.net>, 2011
-# Markus <daywalkerebay@googlemail.com>, 2011
-# Markus <google@mhnp.de>, 2015
-# Martin <hazenetwork@gmail.com>, 2013
-# neppumuck <neppumuck@web.de>, 2012
-# Ninos Ego <me@ninosego.de>, 2016
-# Pascal Küppers <>, 2012
-# Pascal Senn <pascal@pascalsenn.info>, 2015
-# Patrick <speddy20537@gmx.de>, 2014-2015
-# Patrik Kernstock <patschimail@gmail.com>, 2015
-# Peter Wyss <peter@obanax.ch>, 2013
-# radiostreame <jojoeva84@outlook.de>, 2014
-# Rene Schuster, 2014
-# ShortSnow <arne.bracht@gmail.com>, 2015
-# Tango <tango-net@freenet.de>, 2011
-# Thomas <thomasbjoh@gmx.de>, 2013
-# Thom Heemstra <thom@heemstra.us>, 2016
-# Torsten Widmann <info@goover.de>, 2011-2012,2015
-# w3bster <mail@stefan-riegel.de>, 2011
-# Wachert <alexander@wachert.com>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:42+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/i-mscp/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -939,6 +904,9 @@ msgstr "Gesamtverbrauch"
 msgid "All users"
 msgstr "Alle Benutzer"
 
+msgid "Allow HTTP Strict Transport Security"
+msgstr ""
+
 msgid "Allow URL fopen"
 msgstr "Erlaube URL-fopen"
 
@@ -1544,7 +1512,7 @@ msgstr "SSL-Zertifikat konnte nicht hinzugefügt/aktualisiert werden. Ein unerwa
 
 #, php-format
 msgid "Could not create `%s` database name."
-msgstr ""
+msgstr "Datenbankname `%s` konnte nicht erstellt werden."
 
 msgid "Could not create domain alias. An unexpected error occurred."
 msgstr "Domain-Alias konnte nicht erstellt werden. Ein unerwarteter Fehler ist aufgetreten."
@@ -1748,7 +1716,7 @@ msgid "Database name is too long."
 msgstr "Der Name für die Datenbank ist zu lang."
 
 msgid "Database name is unavailable or unallowed."
-msgstr ""
+msgstr "Datenbankname ist nicht verfügbar oder nicht erlaubt."
 
 msgid "Database prefix"
 msgstr "Datenbank Präfix"
@@ -2286,6 +2254,11 @@ msgstr "SSL aktivieren"
 msgid "Enable auto responder"
 msgstr "Automatische Antwort aktivieren"
 
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
+msgstr ""
+
 msgid "Enabled"
 msgstr "Aktiviert"
 
@@ -2480,6 +2453,9 @@ msgstr "Weiterleiten an"
 msgid "Forward to URL"
 msgstr "Weiterleiten zu URL"
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr "Frei"
 
@@ -2542,6 +2518,12 @@ msgstr "Gruppenname"
 
 msgid "Groups"
 msgstr "Gruppen"
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
+msgstr ""
 
 msgid "HTTP traffic"
 msgstr "HTTP Traffic"

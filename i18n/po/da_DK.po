@@ -3,17 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# HenrikS <henrik@schytte.net>, 2011
-# i-MSCP <team@i-mscp.net>, 2015
-# Laurent Declercq <l.declercq@nuxwin.com>, 2014
-# Michael Jensen-Maar <maar@maargrafisk.dk>, 2013,2015
-# Michael R. Christensen <mrc@micco.dk>, 2015-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/i-mscp/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -243,7 +238,7 @@ msgstr "%s / ubegrænset"
 
 #, php-format
 msgid "%s IP address is blocked for %s minutes."
-msgstr "%s IP-adresse er spærret for %s minutter."
+msgstr "%s IP-adresse er spærret i %s minutter."
 
 #, php-format
 msgid "%s IP address is waiting %s seconds."
@@ -908,6 +903,9 @@ msgstr "Alt trafik"
 
 msgid "All users"
 msgstr "Alle brugere"
+
+msgid "Allow HTTP Strict Transport Security"
+msgstr ""
 
 msgid "Allow URL fopen"
 msgstr "Tillad URL fopen"
@@ -2256,6 +2254,11 @@ msgstr "Aktivere SSL"
 msgid "Enable auto responder"
 msgstr "Aktiver auto responder"
 
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
+msgstr ""
+
 msgid "Enabled"
 msgstr "Aktiveret"
 
@@ -2450,6 +2453,9 @@ msgstr "Videresend til"
 msgid "Forward to URL"
 msgstr "Videresend til URL"
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr "Fri"
 
@@ -2512,6 +2518,12 @@ msgstr "Gruppe navn"
 
 msgid "Groups"
 msgstr "Grupper"
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
+msgstr ""
 
 msgid "HTTP traffic"
 msgstr "HTTP trafik"
@@ -3292,7 +3304,7 @@ msgid "Not used"
 msgstr "Ikke brugt"
 
 msgid "Note: You cannot mix 'Spam Filter' and 'Domain' options"
-msgstr "Bemærk: Du kan ikke blande 'Spam Filter \"og\" Domain' muligheder"
+msgstr "Bemærk: Du kan ikke blande 'Spam Filter' og 'Domain' muligheder"
 
 msgid "Note: You cannot mix Spam filter and domain options"
 msgstr "Bemærk: Du kan ikke blande spamfilter og domæne valgmuligheder"
@@ -3794,7 +3806,7 @@ msgstr "Plugins hooks ind i I-MSCP for at udvide dens funktionalitet med custom 
 msgid ""
 "Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
 " %s plugin(s) reconfigured, and %s plugin(s) deleted."
-msgstr "Plugins liste er blevet opdateret: %s nye plugin(s), %s plugin(s) opdateret, %s plugin(s) omkonfigureres, og %s plugin(s) slettet."
+msgstr "Plugins listen er blevet opdateret: %s nye plugin(s), %s plugin(s) opdateret, %s plugin(s) omkonfigureres, og %s plugin(s) slettet."
 
 msgid "Port"
 msgstr "Port"

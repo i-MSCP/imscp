@@ -3,16 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# bostjan smolej mlinaric <rhspro@gmail.com>, 2012
-# Darwin <darko.vintar@gmail.com>, 2012
-# Laurent Declercq <l.declercq@nuxwin.com>, 2012
-# Robi Preskar <robi.preskar@rm-net.si>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Slovenian (http://www.transifex.com/i-mscp/i-MSCP/language/sl/)\n"
 "MIME-Version: 1.0\n"
@@ -581,7 +577,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "Dodaj SQL bazo"
 
 msgid "Add SQL user"
 msgstr ""
@@ -620,7 +616,7 @@ msgid "Add group"
 msgstr ""
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "Dodaj gostovanje"
 
 msgid "Add new IP address"
 msgstr ""
@@ -650,7 +646,7 @@ msgid "Add reseller"
 msgstr "Dodaj Prodajalca"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "Dodaj poddomeno"
 
 msgid "Add user"
 msgstr "Dodaj uporabnika"
@@ -805,7 +801,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr ""
+msgstr "Administratorski log"
 
 msgid "Admin not available"
 msgstr ""
@@ -907,6 +903,9 @@ msgstr "Ves promet"
 
 msgid "All users"
 msgstr "Vsi uporabniki"
+
+msgid "Allow HTTP Strict Transport Security"
+msgstr ""
 
 msgid "Allow URL fopen"
 msgstr ""
@@ -1609,7 +1608,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr ""
+msgstr "Meni po meri"
 
 msgid "Customer"
 msgstr ""
@@ -2255,6 +2254,11 @@ msgstr ""
 msgid "Enable auto responder"
 msgstr ""
 
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
+msgstr ""
+
 msgid "Enabled"
 msgstr "Omogočeno"
 
@@ -2407,7 +2411,7 @@ msgid "FileManager"
 msgstr "Raziskovalec"
 
 msgid "Filemanager"
-msgstr ""
+msgstr "Raziskovalec"
 
 msgid "Filesystem system Info"
 msgstr ""
@@ -2449,6 +2453,9 @@ msgstr ""
 msgid "Forward to URL"
 msgstr "Preusmeri na URl"
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr ""
 
@@ -2486,7 +2493,7 @@ msgid "General information"
 msgstr "Splošne informacije"
 
 msgid "General settings"
-msgstr ""
+msgstr "Glavne nastavitve strežnika"
 
 msgid "Generate"
 msgstr ""
@@ -2510,6 +2517,12 @@ msgid "Group name"
 msgstr ""
 
 msgid "Groups"
+msgstr ""
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
 msgstr ""
 
 msgid "HTTP traffic"
@@ -2617,7 +2630,7 @@ msgid "IP management"
 msgstr ""
 
 msgid "IP usage"
-msgstr ""
+msgstr "Ip uporaba"
 
 msgid "IPv6 address"
 msgstr "IPv6 naslov"
@@ -3381,7 +3394,7 @@ msgid "Other settings"
 msgstr ""
 
 msgid "Overview"
-msgstr ""
+msgstr "Pregled"
 
 msgid "Owner"
 msgstr "Lastnik"
@@ -3563,7 +3576,7 @@ msgid "Phone"
 msgstr "telefon"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr ""
@@ -4357,7 +4370,7 @@ msgid "Service protocol"
 msgstr "Protokol"
 
 msgid "Services status"
-msgstr ""
+msgstr "Status strežnika"
 
 msgid "Sessions"
 msgstr ""
@@ -4658,7 +4671,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr ""
+msgstr "Systemaska orodja"
 
 msgid "System under maintenance"
 msgstr ""
@@ -5378,7 +5391,7 @@ msgid "Webmail"
 msgstr "Spletna pošta"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Spletna orodja"
 
 msgid "Welcome email"
 msgstr ""
@@ -5885,7 +5898,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "i-MSCP Posodobitve"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""

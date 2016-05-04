@@ -3,18 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Ádám Radovits <adamradovits12@hotmail.com>, 2014-2016
-# i-MSCP <team@i-mscp.net>, 2015
-# knorbi555 <k.norbi555@gmail.com>, 2012
-# Laurent Declercq <l.declercq@nuxwin.com>, 2014
-# needforszpit <needforszpit@gmail.com>, 2015
-# starring94 <kovinor123@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/i-mscp/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -321,17 +315,17 @@ msgstr "%s::getInfo() nem hajtotta végre és %s nem található. Ez egy hiba a(
 msgid ""
 "'%%hostname%%' does not appear to have a valid MX record for the email "
 "address '%%value%%'"
-msgstr "'%%hostname%%' kifejezés nem szerepel, hogy egy érvényes MX rekordot az e-mail cím '%%value%%'"
+msgstr "„%%hostname%%” úgy tűnik, hogy nem rendelkezik érvényes MX rekorddal „%%value%%” e-mail cím számára"
 
 #, php-format
 msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
-msgstr "'%%hostname%%' nem érvényes gépnév az e-mail cím '%%value%%'"
+msgstr "„%%hostname%%” érvénytelen kiszolgálónév „%%value%%” e-mail cím számára"
 
 #, php-format
 msgid ""
 "'%%hostname%%' is not in a routable network segment. The email address "
 "'%%value%%' should not be resolved from public network"
-msgstr "„%%hostname%%” egy nem elérhető hálózati szegmens. „%%value%%” e-mail cím nem oldható fel a nyilvános hálózatról."
+msgstr "„%%hostname%%” egy nem elérhető hálózati szegmens. „%%value%%” e-mail cím nem oldható fel a nyilvános hálózatról"
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against dot-atom format"
@@ -347,7 +341,7 @@ msgstr "„%%localPart%%” érvénytelen helyi rész „%%value%%” e-mail cí
 
 #, php-format
 msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
-msgstr "'%%value%%' úgy tűnik, hogy a DNS hostname but cannot extract TLD part"
+msgstr "„%%value%%” egy DNS kiszolgálónévnek tűnik, de nem lehet kibontani a TLD részt"
 
 #, php-format
 msgid ""
@@ -909,6 +903,9 @@ msgstr "Teljes forgalom"
 
 msgid "All users"
 msgstr "Összes felhasználó"
+
+msgid "Allow HTTP Strict Transport Security"
+msgstr ""
 
 msgid "Allow URL fopen"
 msgstr "URL fopen engedélyezése"
@@ -2257,6 +2254,11 @@ msgstr "SSL tanúsítvány használata"
 msgid "Enable auto responder"
 msgstr "'Automatikus válasz' email engedélyezése"
 
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
+msgstr ""
+
 msgid "Enabled"
 msgstr "Engedélyezve"
 
@@ -2451,6 +2453,9 @@ msgstr "Továbbítás címe"
 msgid "Forward to URL"
 msgstr "Továbbítás a következő webcímre"
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr "Szabad"
 
@@ -2513,6 +2518,12 @@ msgstr "Csoportnév"
 
 msgid "Groups"
 msgstr "Csoportok"
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
+msgstr ""
 
 msgid "HTTP traffic"
 msgstr "HTTP forgalom"
@@ -2658,7 +2669,7 @@ msgstr "Új nyelvi fájl importálása"
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
 "from today."
-msgstr "Abban az esetben, ha a domain lejáratának dátuma 'N/A', akkor a lejáratának dátuma ma lesz"
+msgstr "Abban az esetben, ha a domain lejáratának dátuma „N/A”, akkor a lejáratának dátuma ma lesz."
 
 msgid "In front"
 msgstr "Elején"
@@ -3326,7 +3337,7 @@ msgid "One or more database updates are now available. See the details below."
 msgstr "Egy vagy több adatbázis frissítés már elérhető. Lásd a részleteket az alábbiakban"
 
 msgid "Only 'tar.gz' archives are accepted."
-msgstr "Csak a 'tar.gz' archívumok fogadunk el."
+msgstr "Csak a „tar.gz” archívumok fogadunk el."
 
 msgid "Only administrators can login when maintenance mode is activated."
 msgstr "Csak az adminisztátorok tudnak belépni karbantartási módban"
@@ -4365,7 +4376,7 @@ msgid "Sessions"
 msgstr "Felhasználói munkafolyamatok"
 
 msgid "Set status to 'tochange'"
-msgstr "Állapot módosítása 'megváltotatás'-ra"
+msgstr "Állapot módosítása „megváltoztatás”-ra"
 
 msgid "Settings"
 msgstr "Beállítások"
@@ -4657,7 +4668,7 @@ msgstr "Rendszerinformációk"
 
 #, php-format
 msgid "System is unable to remove '%s' user logo."
-msgstr "Rendszer nem tudja eltávolítani a '% s' felhasználó logóját"
+msgstr "A rendszer nem tudja eltávolítani „%s” felhasználó logóját."
 
 msgid "System tools"
 msgstr "Rendszereszközök"
@@ -4740,7 +4751,7 @@ msgstr "A domain jelenleg felfüggesztett. Teljes vagy részleges újra aktivál
 
 msgid ""
 "The domain or at least one of its entities has a different status than 'ok'."
-msgstr "A domain vagy legalábbis annak egyik része más, mint az \"OK\"."
+msgstr "A domain vagy legalábbis annak egyik része más állapottal rendelkezik, mint az „OK”."
 
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "A módosítani kívánt domain név nem létezik"
@@ -4885,7 +4896,7 @@ msgstr "Hibajegy sikeresen újra megynyitva"
 
 #, php-format
 msgid "Ticket with Id '%d' was not found."
-msgstr "Nem található '%d' azonosítójú hibajegy"
+msgstr "„%d” azonosítójú hibajegy nem található."
 
 msgid "To Admin"
 msgstr "Új tulajdonos (adminisztrátor):"
@@ -4965,7 +4976,7 @@ msgstr "%s bővítményt nem lehet megváltoztatni: %s"
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
-msgstr "Nem lehet lezárni '%s' azonosítójú hibajegyet"
+msgstr "„%s” azonosítójú hibajegyet nem lehet lezárni."
 
 msgid ""
 "Unable to connect to the selected database using the selected SQL user."
@@ -4973,10 +4984,10 @@ msgstr "Nem lehet csatlakozni a kiválasztott adatbázishoz a kiválasztott SQL 
 
 #, php-format
 msgid "Unable to create '%s' directory for language file."
-msgstr "Nem hozható létre a(z) '%s' könyvtár a nyelvi fájl számára"
+msgstr "Nem hozható létre a(z) „%s” könyvtár a nyelvi fájl számára."
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
-msgstr "Nem hozható létre a 'LC_MESSAGES' könyvtár a nyelvi fájl számára"
+msgstr "Nem hozható létre a „LC_MESSAGES” könyvtár a nyelvi fájl számára."
 
 msgid "Unable to delete i-MSCP info file."
 msgstr "Nem lehet törölni az i-MSCP infó fájlját. "
@@ -5048,7 +5059,7 @@ msgstr "Nem olvasható a webes alkalmazásokhoz tartozó xml fájl."
 
 #, php-format
 msgid "Unable to reopen ticket with Id '%s'."
-msgstr "Nem lehet újranyitni '%s' azonosítójú hibajegyet"
+msgstr "„%s”azonosítójú hibajegyet nem lehet újranyitni."
 
 #, php-format
 msgid "Unable to restore %s plugin directory"
@@ -5668,7 +5679,7 @@ msgid "You must first generate a password by clicking on the generate button."
 msgstr "Először generálnod kell egy jelszót a generálás gombra kattintva."
 
 msgid "You must omit 'www'. It will be added automatically."
-msgstr "\"www\" címet nem szükséges létrehozni, mert a rendszer automatikusan hozzáadja"
+msgstr "A „www”-t hagyd ki, mert ezt a rendszer automatikusan hozzáadja."
 
 msgid "You must provide a password."
 msgstr "Először létre kell hozni egy jelszót"

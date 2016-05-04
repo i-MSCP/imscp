@@ -3,18 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Husnu APAK <husnu.apak@yandex.com.tr>, 2013
-# U. Ozan Basar <software@nano.net.tr>, 2015
-# Tango <tango-net@freenet.de>, 2011-2012
-# ugur tezer <utezer@hotmail.com>, 2015
-# U. Ozan Basar <software@nano.net.tr>, 2015
-# VOLKAN KIRIK <volkirik@yahoo.com.tr>, 2008
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/i-mscp/i-MSCP/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -574,16 +568,16 @@ msgid "Add DNS resource record"
 msgstr ""
 
 msgid "Add FTP account"
-msgstr ""
+msgstr "FTP hesabı ekle"
 
 msgid "Add Htaccess group"
-msgstr ""
+msgstr "Htaccess grubu ekle"
 
 msgid "Add Htaccess user"
-msgstr ""
+msgstr "Htaccess kullanıcısı ekle"
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "SQL veritabanı ekle"
 
 msgid "Add SQL user"
 msgstr "SQL kullanıcısı ekle"
@@ -598,31 +592,31 @@ msgid "Add admin"
 msgstr "Yönetici ekle"
 
 msgid "Add catchall"
-msgstr ""
+msgstr "Tümünü Yakala ekle"
 
 msgid "Add custom menu"
 msgstr "Özel menü ekle"
 
 msgid "Add customer"
-msgstr ""
+msgstr "Müşteri ekle"
 
 msgid "Add customer - Next step"
-msgstr ""
+msgstr "Müşteri ekle - Sonraki adım"
 
 msgid "Add domain alias"
 msgstr "Domain alias ekle"
 
 msgid "Add email account"
-msgstr ""
+msgstr "Eposta hesabı ekle"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "{DOMAIN_UTF8} için dış eposta sunucusu ekle"
 
 msgid "Add group"
 msgstr "Grup ekle"
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "Hosting planı ekle"
 
 msgid "Add new IP address"
 msgstr "Yeni IP adresi ekle"
@@ -652,7 +646,7 @@ msgid "Add reseller"
 msgstr "Bayi ekle"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "Subdomain ekle"
 
 msgid "Add user"
 msgstr "Kullanıcı ekle"
@@ -807,7 +801,7 @@ msgid "Admin account successfully created."
 msgstr "Yönetici hesabı oluşturuldu."
 
 msgid "Admin log"
-msgstr ""
+msgstr "Yönetici logları"
 
 msgid "Admin not available"
 msgstr "Yönetici mevcut değil"
@@ -910,6 +904,9 @@ msgstr "Tüm Trafik"
 msgid "All users"
 msgstr "Tüm kullanıcılar"
 
+msgid "Allow HTTP Strict Transport Security"
+msgstr ""
+
 msgid "Allow URL fopen"
 msgstr ""
 
@@ -976,7 +973,7 @@ msgid "An unknown error occurred during file upload: %s"
 msgstr "Dosya yükleme sırasında beklenmeyen bir hata oluştu: %s"
 
 msgid "Anti-Rootkits Logs"
-msgstr ""
+msgstr "Anti-Rootkit Kayıtları"
 
 msgid "Any"
 msgstr "Herhangi"
@@ -1103,7 +1100,7 @@ msgid "Assign existing SQL user"
 msgstr "Varolan SQL kullanıcısını ata"
 
 msgid "Assign group"
-msgstr ""
+msgstr "Grup ata"
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Öncelikle kullanıcı hesabı olan bir veritabanı oluşturmalısınız."
@@ -1611,7 +1608,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr ""
+msgstr "Değiştirilebilir menüler"
 
 msgid "Customer"
 msgstr "Müşteri"
@@ -1743,7 +1740,7 @@ msgid "Database with comma(s) in name is not accepted."
 msgstr ""
 
 msgid "Databases"
-msgstr ""
+msgstr "Veritabanı"
 
 msgid "Date"
 msgstr "Tarih"
@@ -1752,7 +1749,7 @@ msgid "Day"
 msgstr "Gün"
 
 msgid "Day statistics"
-msgstr ""
+msgstr "Günlük istatistikler"
 
 msgid "Days"
 msgstr "Gün"
@@ -2112,7 +2109,7 @@ msgid "Edit DNS resource record"
 msgstr ""
 
 msgid "Edit FTP account"
-msgstr ""
+msgstr "FTP hesabını düzenle"
 
 msgid "Edit SSL certificate"
 msgstr "SSL sertifikasını düzenle"
@@ -2136,7 +2133,7 @@ msgid "Edit domain"
 msgstr "Domaini düzenle"
 
 msgid "Edit domain alias"
-msgstr ""
+msgstr "Domain aliasını düzenle"
 
 msgid "Edit error page"
 msgstr "Hata sayafasını düzenle"
@@ -2151,7 +2148,7 @@ msgid "Edit htaccess user"
 msgstr ""
 
 msgid "Edit mail account"
-msgstr ""
+msgstr "Eposta hesabını düzenle"
 
 msgid "Edit mail quota"
 msgstr ""
@@ -2255,6 +2252,11 @@ msgid "Enable SSL"
 msgstr "SSL Aktif"
 
 msgid "Enable auto responder"
+msgstr ""
+
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
 msgstr ""
 
 msgid "Enabled"
@@ -2409,7 +2411,7 @@ msgid "FileManager"
 msgstr "Dosya yöneticisi"
 
 msgid "Filemanager"
-msgstr ""
+msgstr "Dosya yöneticisi"
 
 msgid "Filesystem system Info"
 msgstr "Dosya sistemi sistem bilgisi"
@@ -2451,6 +2453,9 @@ msgstr "Yönlendir"
 msgid "Forward to URL"
 msgstr "URLye yönlendir"
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr "Boş"
 
@@ -2482,13 +2487,13 @@ msgid "Gender"
 msgstr "Cinsiyet"
 
 msgid "General"
-msgstr ""
+msgstr "Genel"
 
 msgid "General information"
 msgstr "Genel bilgi"
 
 msgid "General settings"
-msgstr ""
+msgstr "Genel ayarlar"
 
 msgid "Generate"
 msgstr "Oluştur"
@@ -2513,6 +2518,12 @@ msgstr "Grup adı"
 
 msgid "Groups"
 msgstr "Gruplar"
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
+msgstr ""
 
 msgid "HTTP traffic"
 msgstr "Web Trafiği"
@@ -2554,7 +2565,7 @@ msgid "Hosting plan successfully updated."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "Hosting planları"
 
 msgid "Hour"
 msgstr "Saat"
@@ -2619,7 +2630,7 @@ msgid "IP management"
 msgstr ""
 
 msgid "IP usage"
-msgstr ""
+msgstr "IP kullanımı"
 
 msgid "IPv6 address"
 msgstr "IPv6 adresi"
@@ -3028,7 +3039,7 @@ msgid "Manage SSL certificate"
 msgstr ""
 
 msgid "Manage htaccess users and groups"
-msgstr ""
+msgstr "Htaccess kullanıcılarını ve gruplarını yönet"
 
 msgid "Manage users"
 msgstr "Kullanıcıları yönet"
@@ -3383,7 +3394,7 @@ msgid "Other settings"
 msgstr "Diğer ayarlar"
 
 msgid "Overview"
-msgstr ""
+msgstr "Özet"
 
 msgid "Owner"
 msgstr "Sahip"
@@ -3565,7 +3576,7 @@ msgid "Phone"
 msgstr "Telefon"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr ""
@@ -3835,7 +3846,7 @@ msgid "Processor data"
 msgstr ""
 
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 msgid "Properties"
 msgstr ""
@@ -4095,7 +4106,7 @@ msgid "Reseller software list"
 msgstr "Bayi yazılım listesi"
 
 msgid "Reseller statistics"
-msgstr ""
+msgstr "Bayi istatistikleri"
 
 msgid "Reseller successfully added."
 msgstr ""
@@ -4359,10 +4370,10 @@ msgid "Service protocol"
 msgstr "Hizmet portları"
 
 msgid "Services status"
-msgstr ""
+msgstr "Hizmet durumu"
 
 msgid "Sessions"
-msgstr ""
+msgstr "Oturumlar"
 
 msgid "Set status to 'tochange'"
 msgstr ""
@@ -4660,7 +4671,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr ""
+msgstr "Sistem araçları"
 
 msgid "System under maintenance"
 msgstr ""
@@ -5164,7 +5175,7 @@ msgid "Update Plugins"
 msgstr ""
 
 msgid "Update SQL user password"
-msgstr ""
+msgstr "SQL kullanıcı şifresini güncelle"
 
 msgid "Update data"
 msgstr "Veriyi güncelle"
@@ -5327,7 +5338,7 @@ msgid "View aliases"
 msgstr "Aliasları göster"
 
 msgid "View ticket"
-msgstr ""
+msgstr "Talebi göster"
 
 msgid "Visit plugin site"
 msgstr ""
@@ -5380,10 +5391,10 @@ msgid "Webmail"
 msgstr "Webposta"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Web araçları"
 
 msgid "Welcome email"
-msgstr ""
+msgstr "Aktivasyon mesajı"
 
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr ""
@@ -5887,7 +5898,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "i-MSCP güncellemeleri"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr "i-MSCP sürüm kontrolü devre dışı"

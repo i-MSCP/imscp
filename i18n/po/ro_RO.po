@@ -3,16 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# andrei sebastian <andrei_sebastyan@yahoo.com>, 2012
-# Ivan Petre Paul <ivanpetrepaul@gmail.com>, 2012
-# johnnyg_ro <johnnyg_ro@yahoo.com>, 2015
-# Ovidiu Teaca <ovidiuteaca@yahoo.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Romanian (Romania) (http://www.transifex.com/i-mscp/i-MSCP/language/ro_RO/)\n"
 "MIME-Version: 1.0\n"
@@ -581,7 +577,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "Adauga baza de date SQL"
 
 msgid "Add SQL user"
 msgstr "Adauga utilizator pentru SQL"
@@ -620,7 +616,7 @@ msgid "Add group"
 msgstr "Adauga grup"
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "Adauga plan gazduire"
 
 msgid "Add new IP address"
 msgstr ""
@@ -650,7 +646,7 @@ msgid "Add reseller"
 msgstr "Adauga reseller"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "Adauga subdomeniu"
 
 msgid "Add user"
 msgstr "Adauga utilizator"
@@ -805,7 +801,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr ""
+msgstr "Log Administrator"
 
 msgid "Admin not available"
 msgstr ""
@@ -907,6 +903,9 @@ msgstr "Tot traficul"
 
 msgid "All users"
 msgstr "Toti userii"
+
+msgid "Allow HTTP Strict Transport Security"
+msgstr ""
 
 msgid "Allow URL fopen"
 msgstr ""
@@ -1609,7 +1608,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr ""
+msgstr "Meniuri personalizate"
 
 msgid "Customer"
 msgstr ""
@@ -2134,7 +2133,7 @@ msgid "Edit domain"
 msgstr "Editare domeniu"
 
 msgid "Edit domain alias"
-msgstr ""
+msgstr "Editeaza alias-uri domeniu"
 
 msgid "Edit error page"
 msgstr "Editeaza pagina de eroare"
@@ -2253,6 +2252,11 @@ msgid "Enable SSL"
 msgstr ""
 
 msgid "Enable auto responder"
+msgstr ""
+
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
 msgstr ""
 
 msgid "Enabled"
@@ -2407,7 +2411,7 @@ msgid "FileManager"
 msgstr "Manager de Fisiere"
 
 msgid "Filemanager"
-msgstr ""
+msgstr "Manager fisiere"
 
 msgid "Filesystem system Info"
 msgstr "Informatii sistem fisiere"
@@ -2449,6 +2453,9 @@ msgstr "Forward la"
 msgid "Forward to URL"
 msgstr "Forward spre URL"
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr "Liber"
 
@@ -2486,7 +2493,7 @@ msgid "General information"
 msgstr "Informatii Generale"
 
 msgid "General settings"
-msgstr ""
+msgstr "Setari Generale"
 
 msgid "Generate"
 msgstr ""
@@ -2511,6 +2518,12 @@ msgstr "Nume Grup"
 
 msgid "Groups"
 msgstr "Grupuri"
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
+msgstr ""
 
 msgid "HTTP traffic"
 msgstr ""
@@ -2552,7 +2565,7 @@ msgid "Hosting plan successfully updated."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "Planuri gazduire"
 
 msgid "Hour"
 msgstr "Ora"
@@ -2617,7 +2630,7 @@ msgid "IP management"
 msgstr ""
 
 msgid "IP usage"
-msgstr ""
+msgstr "Utilizare IP"
 
 msgid "IPv6 address"
 msgstr "Adresa IPv6"
@@ -3381,7 +3394,7 @@ msgid "Other settings"
 msgstr "Alte setari"
 
 msgid "Overview"
-msgstr ""
+msgstr "Rezumat"
 
 msgid "Owner"
 msgstr "Proprietar"
@@ -3563,7 +3576,7 @@ msgid "Phone"
 msgstr "Telefon"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr ""
@@ -4357,7 +4370,7 @@ msgid "Service protocol"
 msgstr "Protocol"
 
 msgid "Services status"
-msgstr ""
+msgstr "Status servicii"
 
 msgid "Sessions"
 msgstr ""
@@ -4658,7 +4671,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr ""
+msgstr "Instrumente sistem"
 
 msgid "System under maintenance"
 msgstr ""
@@ -5378,7 +5391,7 @@ msgid "Webmail"
 msgstr "Webmail"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Instrumente Web"
 
 msgid "Welcome email"
 msgstr ""
@@ -5885,7 +5898,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "i-MSCP actualizari"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""

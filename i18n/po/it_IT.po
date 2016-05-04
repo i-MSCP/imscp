@@ -3,20 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# DrPan <giuseppe.pannullo@gmail.com>, 2013
-# i-MSCP <team@i-mscp.net>, 2015
-# theprincy <powerpcweb@gmail.com>, 2015
-# Stefano, 2011,2013-2014
-# Stefano, 2015-2016
-# theprincy <powerpcweb@gmail.com>, 2014
-# Tommaso, 2013
-# Zer0, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/i-mscp/i-MSCP/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -911,6 +903,9 @@ msgstr "Tutto il traffico"
 
 msgid "All users"
 msgstr "Tutti gli utenti"
+
+msgid "Allow HTTP Strict Transport Security"
+msgstr ""
 
 msgid "Allow URL fopen"
 msgstr "Consenti URL fopen"
@@ -2259,6 +2254,11 @@ msgstr "Abilita SSL"
 msgid "Enable auto responder"
 msgstr "Abilita auto responder"
 
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
+msgstr ""
+
 msgid "Enabled"
 msgstr "Abilitato"
 
@@ -2453,6 +2453,9 @@ msgstr "Inoltrare a"
 msgid "Forward to URL"
 msgstr "Redirezionare all'URL"
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr "Libero"
 
@@ -2515,6 +2518,12 @@ msgstr "Nome del gruppo"
 
 msgid "Groups"
 msgstr "Gruppi"
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
+msgstr ""
 
 msgid "HTTP traffic"
 msgstr "Traffico HTTP"

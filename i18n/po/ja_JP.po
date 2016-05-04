@@ -3,16 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# i-MSCP <team@i-mscp.net>, 2015
-# kazuo <kazu.nito@gmail.com>, 2014-2016
-# kazuo <kazu.nito@gmail.com>, 2013
-# Laurent Declercq <l.declercq@nuxwin.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/i-mscp/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -122,7 +118,7 @@ msgid " Wrong IP address."
 msgstr "間違ったIPアドレス。"
 
 msgid " was deleted by {ADMIN}!"
-msgstr "{ADMIN} が削除された！"
+msgstr "{ADMIN} は削除されました。"
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -288,7 +284,7 @@ msgstr "%s webメール"
 msgid ""
 "%s: The clients consumption (%s) for this reseller is greater than the new "
 "limit."
-msgstr "%s： この代理店のクライアントの消費(%s)は新しい制限を超えています。"
+msgstr "%s： このリセラーのクライアントの数(%s)は新しい設定の制限を超えています。"
 
 #, php-format
 msgid ""
@@ -518,7 +514,7 @@ msgid "Account data"
 msgstr "アカウントデータ"
 
 msgid "Account limits"
-msgstr "アカウント制限"
+msgstr "アカウント制限数"
 
 msgid "Account name"
 msgstr "アカウント名"
@@ -527,7 +523,7 @@ msgid "Account overview"
 msgstr "アカウント概要"
 
 msgid "Account summary"
-msgstr "アカウント要約"
+msgstr "アカウントの一覧"
 
 msgid "Account type"
 msgstr "アカウント種別"
@@ -545,13 +541,13 @@ msgid "Actions"
 msgstr "アクション"
 
 msgid "Activate"
-msgstr "アクティブ"
+msgstr "有効化"
 
 msgid "Activate this plugin"
-msgstr "プラグインをアクティブにする"
+msgstr "プラグインを有効化"
 
 msgid "Activated"
-msgstr "有効化する"
+msgstr "有効化"
 
 msgid "Activated software"
 msgstr "ソフトウェアの有効化"
@@ -560,7 +556,7 @@ msgid "Activation email"
 msgstr "Eメールの有効化"
 
 msgid "Activation in progress..."
-msgstr "活性化処理中..."
+msgstr "有効化しています"
 
 msgid "Activation link expire time <small>(In minutes)</small>"
 msgstr "アクティベーションリンクは有効期限 <small>(分)</small>"
@@ -632,7 +628,7 @@ msgid "Add new entry"
 msgstr "新しいエントリを追加します。"
 
 msgid "Add new protected area"
-msgstr "新しいアクセス制限領域追加"
+msgstr "新しい制限領域を追加する"
 
 msgid "Add new service port"
 msgstr "新規サービスポート追加"
@@ -641,13 +637,13 @@ msgid "Add permissions"
 msgstr "アクセス権の追加"
 
 msgid "Add permissions for reseller to software:"
-msgstr "ソフトウェアに代理店のための許可を追加してください："
+msgstr "リセラーにソフトウェア利用許可を追加："
 
 msgid "Add protected area"
-msgstr "アクセス制限領域追加"
+msgstr "アクセス制限領域を追加する"
 
 msgid "Add reseller"
-msgstr "代理店追加"
+msgstr "リセラー追加"
 
 msgid "Add subdomain"
 msgstr "サブドメイン追加"
@@ -731,7 +727,7 @@ msgid "Admin / Statistics / IP Usage"
 msgstr "管理者 / 統計 / IPアドレス使用"
 
 msgid "Admin / Statistics / Reseller Statistics"
-msgstr "管理者 / 統計 / 代理店統計"
+msgstr "管理者 / 統計 / リセラー統計"
 
 msgid "Admin / Statistics / Reseller Statistics / User Statistics"
 msgstr "管理者 / 統計 / 代理店統計 / 顧客統計"
@@ -775,7 +771,7 @@ msgid "Admin / Users / Add Admin"
 msgstr "管理者 / ユーザー / 管理者追加"
 
 msgid "Admin / Users / Add Reseller"
-msgstr "管理者 / ユーザー / 代理店追加"
+msgstr "管理者 / ユーザー / リセラー追加"
 
 msgid "Admin / Users / Circular"
 msgstr "管理者 / ユーザー / 回覧"
@@ -784,7 +780,7 @@ msgid "Admin / Users / Customers Assignment"
 msgstr "管理者 / ユーザー / 顧客の割当"
 
 msgid "Admin / Users / Edit Reseller"
-msgstr "管理者 / ユーザー / 代理店編集"
+msgstr "管理者 / ユーザー / リセラー編集"
 
 msgid "Admin / Users / Overview"
 msgstr "管理者 / ユーザー / 概要"
@@ -796,7 +792,7 @@ msgid "Admin / Users / Overview / Edit Admin"
 msgstr "管理者 / ユーザー / 概要 / 管理者編集"
 
 msgid "Admin / Users / Resellers Assignment"
-msgstr "管理者 / ユーザー / 代理店の割当"
+msgstr "管理者 / ユーザー / リセラーの割当"
 
 msgid "Admin / Users / Sessions"
 msgstr "管理者 / ユーザー / セッション"
@@ -820,7 +816,7 @@ msgid "Administrator"
 msgstr "管理者"
 
 msgid "Administrator and Reseller levels"
-msgstr "管理者と代理店レベル"
+msgstr "管理者とリセラーレベル"
 
 msgid "Administrator and customer"
 msgstr "管理者と顧客"
@@ -829,7 +825,7 @@ msgid "Administrator and customer levels"
 msgstr "管理者と顧客レベル"
 
 msgid "Administrator and reseller"
-msgstr "管理者と代理店"
+msgstr "管理者とリセラー"
 
 msgid "Administrator level"
 msgstr "管理者レベル"
@@ -844,7 +840,7 @@ msgid "Administrators and customers"
 msgstr "管理者と顧客"
 
 msgid "Administrators and resellers"
-msgstr "管理者と代理店"
+msgstr "管理者とリセラー"
 
 msgid ""
 "After your upload the package it will be installed on your "
@@ -900,7 +896,7 @@ msgid "All out"
 msgstr "全体 out"
 
 msgid "All reseller"
-msgstr "全ての代理店"
+msgstr "全てのリセラー"
 
 msgid "All traffic"
 msgstr "すべてのトラフィック"
@@ -908,28 +904,31 @@ msgstr "すべてのトラフィック"
 msgid "All users"
 msgstr "全てのユーザ"
 
+msgid "Allow HTTP Strict Transport Security"
+msgstr ""
+
 msgid "Allow URL fopen"
 msgstr "URLのfopenを許可"
 
 msgid ""
 "Allows to forward any request made to this domain alias to a specific URL."
-msgstr "特定のURLにドメインエイリアスに行われたすべての要求を転送することができます。"
+msgstr "エイリアスドメインを特定のURLへ転送したい場合こちらを設定します"
 
 msgid ""
 "Allows to forward any request made to this domain alias to a specific URL. "
 "Be aware that when this option is in use, no Web folder is created for the "
 "domain alias."
-msgstr "特定のURLにドメインエイリアスに行われたすべての要求を転送することができます。このオプションが使用されているときに、Webフォルダはドメインエイリアス用に作成されていないことに注意してください。"
+msgstr "エイリアスドメインを特定のURLへ転送したい場合こちらを設定します。このオプションを指定する場合は、エイリアスドメインに対してフォルダーが設定されていない状態になりますのでご注意ください。"
 
 msgid ""
 "Allows to forward any request made to this subdomain to a specific URL."
-msgstr "特定のURLに、このサブドメインに加えられたすべての要求を転送することができます。"
+msgstr "サブドメインを特定のURLへ転送したい場合こちらを設定します"
 
 msgid ""
 "Allows to forward any request made to this subdomain to a specific URL. Be "
 "aware that when this option is in use, no Web folder is created for the "
 "subdomain."
-msgstr "特定のURLに、このサブドメインに加えられたすべての要求を転送することができます。このオプションが使用されているときに、Webフォルダがサブドメインのために作成されていないことに注意してください。"
+msgstr "サブドメインを特定のURLへ転送したい場合こちらを設定します。このオプションを指定する場合は、サブドメインに対してフォルダーが設定されていない状態になりますのでご注意ください。"
 
 msgid "Allows to share the mount point of another domain."
 msgstr "別のドメインのマウントポイントを共有することができます。"
@@ -938,7 +937,7 @@ msgid "Already in use"
 msgstr "既に使用されています"
 
 msgid "Alternative URL to reach your website"
-msgstr "代替URLはあなたのWebサイトへのアクセス"
+msgstr "あなたのWebサイトへの代替アクセスURL"
 
 msgid "An email addresse is not valid in mail forward list."
 msgstr "Eメールアドレスは、Eメールフォワードリストでは有効ではありません。"
@@ -1104,7 +1103,7 @@ msgid "Assign group"
 msgstr "グループを割り当てる"
 
 msgid "At first you must create a database which have at least one SQL user."
-msgstr "最初に、少なくとも1つのSQLユーザを持つデータベースを作成する必要があります。"
+msgstr "最初に、1つ以上のSQLユーザを持つデータベースを作成する必要があります。"
 
 msgid "At least one intermediate certificate is invalid or missing."
 msgstr "少なくとも一つの中間証明書が無効か、または存在しません。"
@@ -1239,7 +1238,7 @@ msgid "Catch all successfully scheduled for deletion."
 msgstr "キャッチオールの削除が予定されました。"
 
 msgid "Catchall"
-msgstr "ごみ箱"
+msgstr "キャッチオール"
 
 msgid "Certificate"
 msgstr "証明書"
@@ -1794,7 +1793,7 @@ msgid ""
 "\tPackage ID: {SOFTWARE_ID}\n"
 "\n"
 "\tPlease login into your i-MSCP control panel for more details."
-msgstr "親愛なる {ADMIN} 様\n\t{RESELLER}は、新しいソフトウェアパッケージをアップロードしました。\n\n\t詳細：\n\t代理店ID： 　   {RESELLER_ID}\n\tパッケージ名： {SOFTWARE}\n\tパッケージID：: {SOFTWARE_ID}\n\n\t詳細は、i-MSCPコントロールパネルにログインしてください。"
+msgstr "親愛なる {ADMIN} 様\n\t{RESELLER}は、新しいソフトウェアパッケージをアップロードしました。\n\n\t詳細：\n\tリセラーID： 　   {RESELLER_ID}\n\tパッケージ名： {SOFTWARE}\n\tパッケージID：: {SOFTWARE_ID}\n\n\t詳細は、i-MSCPコントロールパネルにログインしてください。"
 
 msgid ""
 "Dear {RESELLER},\n"
@@ -1840,7 +1839,7 @@ msgid "Delete"
 msgstr "削除"
 
 msgid "Delete CatchAll"
-msgstr "ごみ箱の削除"
+msgstr "キャッチオールの削除"
 
 msgid "Delete all tickets"
 msgstr "全てのチケットを削除"
@@ -1852,7 +1851,7 @@ msgid "Delete order"
 msgstr "オーダーを削除"
 
 msgid "Delete reseller software"
-msgstr "代理店ソフトウェア削除"
+msgstr "リセラーソフトウェア削除"
 
 msgid "Delete selected items"
 msgstr "選択した項目を削除"
@@ -1918,7 +1917,7 @@ msgid "Disk space"
 msgstr "ディスクス容量"
 
 msgid "Disk space limit [MiB]"
-msgstr "ディスク領域制限 [MiB]"
+msgstr "ディスク容量制限 [MiB]"
 
 msgid "Disk usage"
 msgstr "ディスク使用量"
@@ -1965,7 +1964,7 @@ msgid "Domain alias errors"
 msgstr "ドメインエイリアスエラー"
 
 msgid "Domain alias limit"
-msgstr "ドメインエイリアス制限"
+msgstr "ドメインエイリアス制限数"
 
 msgid "Domain alias name"
 msgstr "ドメインエイリアス名"
@@ -2016,7 +2015,7 @@ msgid "Domain for which you want add this DNS resource record."
 msgstr ""
 
 msgid "Domain limit"
-msgstr "ドメイン制限"
+msgstr "ドメイン制限数"
 
 msgid "Domain mail"
 msgstr "ドメインメール"
@@ -2158,7 +2157,7 @@ msgid "Edit protected area"
 msgstr "アクセス制限領域を編集"
 
 msgid "Edit reseller"
-msgstr "代理店変更"
+msgstr "リセラー変更"
 
 msgid "Edit subdomain"
 msgstr "サブドメイン編集"
@@ -2219,7 +2218,7 @@ msgid "Email quota cannot be bigger than %s"
 msgstr "Eメール容量は、%sより大きくすることはできません"
 
 msgid "Email quota cannot be bigger than disk space limit."
-msgstr "Eメール容量は、ディスク容量の制限よりも大きくすることはできません。"
+msgstr "ディスク容量の制限よりEメールの容量を大きくすることはできません。"
 
 #, php-format
 msgid ""
@@ -2229,7 +2228,7 @@ msgstr "メール割当は%dより小さくなることはありません。各�
 
 #, php-format
 msgid "Email quota cannot be unlimited. Max value is %d MiB."
-msgstr "Eメール容量は無制限にすることはできません。最大値は%dMiBです。"
+msgstr "Eメール容量は無制限にできません。最大値は%dMiBです。"
 
 msgid "Email quota must be a number."
 msgstr "Ｅメール容量は数値でなければなりません。"
@@ -2254,6 +2253,11 @@ msgstr "SSLを有効にする"
 
 msgid "Enable auto responder"
 msgstr "自動応答を有効"
+
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
+msgstr ""
 
 msgid "Enabled"
 msgstr "有効"
@@ -2449,6 +2453,9 @@ msgstr "転送先アドレス"
 msgid "Forward to URL"
 msgstr "転送先URL"
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr "空き容量"
 
@@ -2456,7 +2463,7 @@ msgid "From"
 msgstr "From"
 
 msgid "From reseller"
-msgstr "代理店から"
+msgstr "リセラーから"
 
 msgid "Ftp"
 msgstr "Ftp"
@@ -2512,6 +2519,12 @@ msgstr "グループ名"
 msgid "Groups"
 msgstr "グループ"
 
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
+msgstr ""
+
 msgid "HTTP traffic"
 msgstr "HTTPトラフィック"
 
@@ -2528,7 +2541,7 @@ msgid "Homepage"
 msgstr "ホームページ"
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
-msgstr "そのホストのSQLユーザは、SQLサーバーへの接続を許可されています"
+msgstr "このSQLユーザは、右のSQLサーバーへ接続許可されています"
 
 msgid "Hosting plan"
 msgstr "ホスティングプラン"
@@ -2537,7 +2550,7 @@ msgid "Hosting plan availability"
 msgstr "ホスティングプラン有効"
 
 msgid "Hosting plan limits exceed reseller limits."
-msgstr "ホスティングプランの制限は、代理店の限界を超えています。"
+msgstr "リセラーで設定された、ホスティングプラン制限数を超えたため追加出来ません。"
 
 msgid "Hosting plan limits exceed your limits."
 msgstr "ホスティングプランの制限を限界を超えています。"
@@ -2639,7 +2652,7 @@ msgid ""
 msgstr ""
 
 msgid "If you want to limit the reseller, you must first limit its customers."
-msgstr "代理店を制限する場合は、顧客を制限する必要があります。"
+msgstr "この設定のリセラーを制限する場合、先に顧客を制限する必要があります。"
 
 msgid "Images have to be smaller than 500 x 90 pixels."
 msgstr "イメージは500×90ピクセルより小さくなければなりません。"
@@ -2686,7 +2699,7 @@ msgid "Incorrect alias limit."
 msgstr "不正なエイリアスの制限"
 
 msgid "Incorrect disk space limit."
-msgstr "ディスク容量の制限が誤りがあります。"
+msgstr "ディスク容量の制限数に誤りがあります。"
 
 msgid "Incorrect domain alias limit."
 msgstr "不正なドメインエイリアスの制限"
@@ -2744,10 +2757,10 @@ msgid "Installation path"
 msgstr "インストールパス"
 
 msgid "Installed Package which was deleted by your reseller."
-msgstr "インストールされたパッケージは、代理店によって削除された。"
+msgstr "インストールされたパッケージは、リセラーによって削除された。"
 
 msgid "Installed in reseller repository"
-msgstr "代理店リポジトリにインストールしました"
+msgstr "リセラーのリポジトリにインストールしました"
 
 msgid "Installed in software repository"
 msgstr "ソフトウェアリポジトリにインストールしました"
@@ -3080,7 +3093,7 @@ msgid "Message template info"
 msgstr "テンプレート情報"
 
 msgid "Message to reseller before deleting the software"
-msgstr "ソフトウェアを削除する前の代理店へのメッセージ"
+msgstr "ソフトウェアを削除する前のリセラーへのメッセージ"
 
 msgid "Messages"
 msgstr "メッセージ"
@@ -3213,19 +3226,19 @@ msgid "No records found matching the search criteria."
 msgstr "レコードが検索条件に一致する見つかりませんでした。"
 
 msgid "No reseller accounts found."
-msgstr "代理店アカウントが見つかりません。"
+msgstr "リセラーアカウントが見つかりません。"
 
 msgid "No reseller available to add the permissions."
-msgstr "代理店が追加できる権限はありません。"
+msgstr "リセラーが追加できる権限はありません。"
 
 msgid "No reseller with activated software installer found!"
-msgstr "有効なソフトウェアインストーラーを持った代理店は見つけられませんでした!"
+msgstr "有効なソフトウェアインストーラーを持ったリセラーは見つかりませんでした。"
 
 msgid "No reseller with permissions for this software found."
-msgstr "ソフトウェア権限を持つ代理店が見つかりませんでした。"
+msgstr "ソフトウェア権限を持つリセラーが見つかりませんでした。"
 
 msgid "No resellers found."
-msgstr "代理店が見つかりません。"
+msgstr "リセラーが見つかりません。"
 
 msgid "No software available"
 msgstr "利用可能なソフトウェアがありません"
@@ -3255,7 +3268,7 @@ msgid "No user found."
 msgstr "ユーザーが見つかりませんでした。"
 
 msgid "No users found for this reseller."
-msgstr "代理店のユーザーが見つかりません。"
+msgstr "リセラーのユーザーが見つかりません。"
 
 msgid "No."
 msgstr "No."
@@ -3439,7 +3452,7 @@ msgid "Package actions"
 msgstr "パッケージのアクション"
 
 msgid "Package already exists in the reseller depot!"
-msgstr "パッケージは、代理店デポット内に既に存在しています！"
+msgstr "パッケージは、リセラーデポット内に既に存在しています！"
 
 msgid "Package already exists in the software depot!"
 msgstr "パッケージは、ソフトウェアデポット内に既に存在しています！"
@@ -3805,7 +3818,7 @@ msgid "Prevent external login for clients"
 msgstr "クライアントの外部ログインを禁止"
 
 msgid "Prevent external login for resellers"
-msgstr "代理店の外部ログインを禁止"
+msgstr "リセラーの外部ログインを禁止"
 
 msgid "Previous"
 msgstr "前へ"
@@ -3840,7 +3853,7 @@ msgstr "プロパティ"
 
 #, php-format
 msgid "Properties for reseller with ID %d were not found in database."
-msgstr "ID %d を持つ代理店のプロパティがデータベースに見つかりませんでした。"
+msgstr "ID %d を持つリセラーのプロパティがデータベースに見つかりませんでした。"
 
 msgid "Protect"
 msgstr "保護"
@@ -3961,163 +3974,163 @@ msgid "Requires Database?"
 msgstr "データベースは必要ですか？"
 
 msgid "Reseller"
-msgstr "代理店"
+msgstr "リセラー"
 
 msgid "Reseller / Customers / Add Customer"
-msgstr "代理店 / 顧客 / 顧客追加"
+msgstr "リセラー / 顧客 / 顧客追加"
 
 msgid "Reseller / Customers / Add Customer - Next Step"
-msgstr "代理店 / 顧客 / 顧客追加 - 次のステップ"
+msgstr "リセラー / 顧客 / 顧客追加 - 次のステップ"
 
 msgid "Reseller / Customers / Circular"
-msgstr "代理店 / 顧客 / 回覧"
+msgstr "リセラー / 顧客 / 回覧"
 
 msgid "Reseller / Customers / Domain Aliases"
-msgstr "代理店 / 顧客 / ドメインエイリアス"
+msgstr "リセラー / 顧客 / ドメインエイリアス"
 
 msgid "Reseller / Customers / Lost Password Email"
-msgstr "代理店 / 顧客 / パスワード忘れEメール"
+msgstr "リセラー / 顧客 / パスワード忘れEメール"
 
 msgid "Reseller / Customers / Overview"
-msgstr "代理店 / 顧客 / 概要"
+msgstr "リセラー / 顧客 / 概要"
 
 msgid "Reseller / Customers / Overview / Domain Details"
-msgstr "代理店 / 顧客 / 概要 / ドメイン詳細"
+msgstr "リセラー / 顧客 / 概要 / ドメイン詳細"
 
 msgid "Reseller / Customers / Overview / Edit Customer"
-msgstr "代理店 / 顧客 / 概要 / 顧客編集"
+msgstr "リセラー/ 顧客 / 概要 / 顧客編集"
 
 msgid "Reseller / Customers / Overview / Edit Domain"
-msgstr "代理店 / 顧客 / 概要 / ドメイン編集"
+msgstr "リセラー / 顧客 / 概要 / ドメイン編集"
 
 msgid "Reseller / Customers / Welcome Email"
-msgstr "代理店 / 顧客 / 歓迎メール"
+msgstr "リセラー / 顧客 / 歓迎メール"
 
 msgid "Reseller / Domains / Add Domain Alias"
-msgstr "代理店 / ドメイン / ドメインエイリアス追加"
+msgstr "リセラー / ドメイン / ドメインエイリアス追加"
 
 msgid "Reseller / Domains / Edit Domain Alias"
-msgstr "代理店 / ドメイン / ドメインエイリアス編集"
+msgstr "リセラー / ドメイン / ドメインエイリアス編集"
 
 msgid "Reseller / General / Overview"
-msgstr "代理店 / 一般 / 概要"
+msgstr "リセラー / 一般 / 概要"
 
 msgid "Reseller / General / Software Upload"
-msgstr "代理店 / 一般 / ソフトウェアアップロード"
+msgstr "リセラー / 一般 / ソフトウェアアップロード"
 
 msgid "Reseller / Hosting Plans / Add Hosting Plan"
-msgstr "代理店 / ホスティングプラン / ホスティングプラン追加"
+msgstr "リセラー / ホスティングプラン / ホスティングプラン追加"
 
 msgid "Reseller / Hosting Plans / Overview"
-msgstr "代理店 / ホスティングプラン / 概要"
+msgstr "リセラー / ホスティングプラン / 概要"
 
 msgid "Reseller / Profile / Account Summary"
-msgstr "代理店 / プロフィール/ アカウント要約"
+msgstr "リセラー / プロフィール/ アカウント要約"
 
 msgid "Reseller / Profile / Language"
-msgstr "代理店 / プロフィール / 言語"
+msgstr "リセラー / プロフィール / 言語"
 
 msgid "Reseller / Profile / Layout"
-msgstr "代理店 / プロフィール / レイアウト"
+msgstr "リセラー / プロフィール / レイアウト"
 
 msgid "Reseller / Profile / Password"
-msgstr "代理店 / プロフィール / パスワード"
+msgstr "リセラー / プロフィール / パスワード"
 
 msgid "Reseller / Profile / Personal Data"
-msgstr "代理店 / プロフィール / 個人情報"
+msgstr "リセラー / プロフィール / 個人情報"
 
 msgid "Reseller / Statistics / IP Usage"
-msgstr "代理店 / 統計 / IPアドレス使用"
+msgstr "リセラー / 統計 / IPアドレス使用"
 
 msgid "Reseller / Statistics / Overview"
-msgstr "代理店 / 統計 / 概要"
+msgstr "リセラー / 統計 / 概要"
 
 msgid "Reseller / Statistics / Overview / {USERNAME} USER Statistics"
 msgstr "代理店 / 統計 / 概要 / ドメイン統計 - {USERNAME}"
 
 msgid "Reseller / Support / Closed Tickets"
-msgstr "代理店 / サポート / クローズチケット"
+msgstr "リセラー / サポート / クローズチケット"
 
 msgid "Reseller / Support / New Ticket"
-msgstr "代理店 / サポート / 新しいチケット"
+msgstr "リセラー / サポート / 新しいチケット"
 
 msgid "Reseller / Support / Open Tickets"
-msgstr "代理店 / サポート / オープンチケット"
+msgstr "リセラー / サポート / オープンチケット"
 
 msgid "Reseller / Support / View Ticket"
-msgstr "代理店 / サポート / チケットを表示"
+msgstr "リセラー / サポート / チケットを表示"
 
 msgid "Reseller /Hosting Plans / Edit Hosting Plan"
 msgstr "代理店 / ホスティングプラン / ホスティングプラン編集"
 
 msgid "Reseller Name"
-msgstr "代理店名"
+msgstr "リセラー名"
 
 msgid "Reseller account successfully created."
-msgstr "代理店アカウントが作成されました。"
+msgstr "リセラーアカウントが作成されました。"
 
 msgid "Reseller account successfully updated."
-msgstr "代理店のアカウントが更新されました。"
+msgstr "リセラーアカウントが更新されました。"
 
 msgid "Reseller and customer"
-msgstr "代理店と顧客"
+msgstr "リセラーと顧客"
 
 msgid "Reseller and customer levels"
-msgstr "代理店と顧客レベル"
+msgstr "リセラーと顧客レベル"
 
 msgid "Reseller assignment"
-msgstr "代理店の割り当て"
+msgstr "リセラーの割り当て"
 
 msgid "Reseller assignments"
 msgstr "リセラーの割り当て"
 
 msgid "Reseller consumption"
-msgstr "代理店の消費量"
+msgstr "リセラーの消費量"
 
 msgid "Reseller data"
-msgstr "代理店データ"
+msgstr "リセラーデータ"
 
 msgid "Reseller level"
-msgstr "代理店レベル"
+msgstr "リセラーレベル"
 
 msgid "Reseller list"
-msgstr "代理店リスト"
+msgstr "リセラーリスト"
 
 msgid "Reseller list is empty."
-msgstr "代理店リストは未登録です。"
+msgstr "リセラーリストは未登録です。"
 
 msgid "Reseller name"
-msgstr "代理店名"
+msgstr "リセラー名"
 
 msgid "Reseller software list"
-msgstr "代理店ソフトウェアリスト"
+msgstr "リセラーソフトウェアリスト"
 
 msgid "Reseller statistics"
 msgstr "代理店統計"
 
 msgid "Reseller successfully added."
-msgstr "代理店は追加されました。"
+msgstr "リセラーは追加されました。"
 
 msgid "Reseller total"
-msgstr "代理店の合計"
+msgstr "リセラーの合計"
 
 msgid "Reseller users"
-msgstr "代理店ユーザー"
+msgstr "リセラーユーザー"
 
 msgid "Reseller with permissions total"
-msgstr "代理店のアクセス権合計"
+msgstr "リセラーのアクセス権合計"
 
 msgid "Reseller's layout color successfully updated."
-msgstr "代理店のレイアウトが更新されました。"
+msgstr "リセラーのレイアウトが更新されました。"
 
 msgid "Reseller/IP usage statistics"
-msgstr "代理店/IPアドレス使用状況"
+msgstr "リセラー/IPアドレス使用状況"
 
 msgid "Resellers"
-msgstr "代理店"
+msgstr "リセラー"
 
 msgid "Resellers and customers"
-msgstr "代理店や顧客"
+msgstr "リセラーや顧客"
 
 msgid "Reset"
 msgstr "リセット"
@@ -4388,7 +4401,7 @@ msgid "Show SSL certificate"
 msgstr "SSL証明書を表示"
 
 msgid "Show detailed statistics for this reseller"
-msgstr "この代理店の詳細な統計情報を表示する"
+msgstr "このリセラーの詳細な統計情報を表示する"
 
 msgid "Show detailed statistics for this user"
 msgstr "この代理店の詳細な統計情報を表示する"
@@ -4712,7 +4725,7 @@ msgstr ""
 msgid ""
 "The %s limit for this customer cannot be unlimited because your are limited "
 "for this service."
-msgstr "顧客のための %s 制限は、サービスのために制限されているので無制限とすることはできません。"
+msgstr "このサービスは既に %s 制限が存在するため、無制限にはできません。"
 
 #, php-format
 msgid "The %s plugin version %s is not compatible with your i-MSCP version."
@@ -4723,7 +4736,7 @@ msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr " %sの翻訳ファイルは無視されました：変換テーブルは空です。"
 
 msgid "The IP address you're trying to remove is assigned to a reseller."
-msgstr "削除しようとしているIPアドレスは、代理店に割り当てられています。"
+msgstr "削除しようとしているIPアドレスは、リセラーに既に割り当てられています。"
 
 #, php-format
 msgid ""
@@ -4889,7 +4902,7 @@ msgid "To Admin"
 msgstr "管理者 へ"
 
 msgid "To reseller"
-msgstr "代理店へ"
+msgstr "リセラーへ"
 
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
@@ -4918,7 +4931,7 @@ msgid "Total packages in Web software repository"
 msgstr "Webソフトウェアリポジトリ内のパッケージ合計"
 
 msgid "Total reseller"
-msgstr "総代理店数"
+msgstr "総リセラー数"
 
 msgid "Total software"
 msgstr "ソフトウェア合計"
@@ -5282,7 +5295,7 @@ msgid "User type"
 msgstr "ユーザータイプ"
 
 msgid "User type (admin, reseller, user)"
-msgstr "ユーザータイプ (管理者, 代理店, ユーザー)"
+msgstr "ユーザータイプ (管理者, リセラー, ユーザー)"
 
 msgid "Username"
 msgstr "ユーザー名"
@@ -5410,7 +5423,7 @@ msgid "Wrong request."
 msgstr "要求に誤りがあります。"
 
 msgid "Wrong reseller id."
-msgstr "代理店IDに誤りがあります。"
+msgstr "リセラーIDに誤りがあります。"
 
 msgid "Wrong security code"
 msgstr "暗証番号に誤りがあります"
@@ -5450,7 +5463,7 @@ msgid "YiB"
 msgstr "YB"
 
 msgid "You are exceeding the monthly server traffic limit."
-msgstr "毎月のサーバのトラフィック制限を超えています。"
+msgstr "月次のサーバのトラフィック制限を超えています。"
 
 msgid "You are exceeding you domain alias limit."
 msgstr "ドメインエイリアス上限を超えています。"
@@ -5465,13 +5478,13 @@ msgid "You are exceeding your SQL user limit."
 msgstr "SQLユーザー数の制限を超えています。"
 
 msgid "You are exceeding your disk space limit."
-msgstr "ディスクスペースの制限を超えています。"
+msgstr "ディスク容量の制限を超えています。"
 
 msgid "You are exceeding your email account limit."
 msgstr "Eメールアカウント数の制限を超えています。"
 
 msgid "You are exceeding your monthly traffic limit."
-msgstr "毎月のトラフィック制限を超えています。"
+msgstr "月次のトラフィック制限を超えています。"
 
 msgid "You are exceeding your subdomain limit."
 msgstr "サブドメイン数の制限を超えています。"
@@ -5496,7 +5509,7 @@ msgid ""
 msgstr "新しいEメールアカウントを追加することはできません。既に他のメールボックスに全てのEメールの容量を割り当てている。まず、あなたの容量の割り当てを確認してください。"
 
 msgid "You cannot delete a reseller that has customer accounts."
-msgstr "顧客アカウントを持っている代理店は削除できません。"
+msgstr "顧客アカウントを持っているリセラーは削除できません。"
 
 msgid "You cannot delete the last active IP address."
 msgstr "あなたは最後のアクティブなIPアドレスを削除することはできません。"
@@ -5552,7 +5565,7 @@ msgid "You do not have permissions to upload software"
 msgstr "ソフトウェアをアップロードする権限がありません。"
 
 msgid "You do not have protected areas."
-msgstr "アクセス制限領域を持っていない。"
+msgstr "アクセス制限領域を持っていません。"
 
 msgid "You do not have subdomains."
 msgstr "サブドメインを持っていません。"
@@ -5714,7 +5727,7 @@ msgstr "アカウントの有効期限が切れています。契約を更新し
 msgid ""
 "Your account is currently under maintenance or disabled. Please, contact "
 "your reseller."
-msgstr "アカウントがメンテナンス中か無効です。代理店にお問い合わせください。"
+msgstr "アカウントがメンテナンス中か無効です。リセラーにお問い合わせください。"
 
 msgid "Your consumption"
 msgstr "あなたの消費量"

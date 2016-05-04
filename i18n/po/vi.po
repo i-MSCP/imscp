@@ -3,14 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Anh Phan <vietnamesel10n@gmail.com>, 2013
-# Laurent Declercq <l.declercq@nuxwin.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-04-09 14:08+0200\n"
-"PO-Revision-Date: 2016-04-09 12:08+0000\n"
+"POT-Creation-Date: 2016-05-04 10:40+0200\n"
+"PO-Revision-Date: 2016-05-04 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/i-mscp/i-MSCP/language/vi/)\n"
 "MIME-Version: 1.0\n"
@@ -579,7 +577,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "Thêm cơ sở dữ liệu SQL"
 
 msgid "Add SQL user"
 msgstr ""
@@ -618,7 +616,7 @@ msgid "Add group"
 msgstr ""
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "Thêm kết hoạch thuê hosting"
 
 msgid "Add new IP address"
 msgstr ""
@@ -648,7 +646,7 @@ msgid "Add reseller"
 msgstr "Thêm nhà phân phối"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "Thêm tên miền con"
 
 msgid "Add user"
 msgstr "Thêm người dùng"
@@ -803,7 +801,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr ""
+msgstr "Nhật trình quản trị"
 
 msgid "Admin not available"
 msgstr ""
@@ -904,6 +902,9 @@ msgid "All traffic"
 msgstr "Tất cả băng thông"
 
 msgid "All users"
+msgstr ""
+
+msgid "Allow HTTP Strict Transport Security"
 msgstr ""
 
 msgid "Allow URL fopen"
@@ -1607,7 +1608,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr ""
+msgstr "Menu tùy chọn"
 
 msgid "Customer"
 msgstr ""
@@ -2253,6 +2254,11 @@ msgstr ""
 msgid "Enable auto responder"
 msgstr ""
 
+msgid ""
+"Enable that feature only if all the subdomains of that domain have an SSL "
+"certificate."
+msgstr ""
+
 msgid "Enabled"
 msgstr "Bật"
 
@@ -2405,7 +2411,7 @@ msgid "FileManager"
 msgstr "Trình quản lý tập tin"
 
 msgid "Filemanager"
-msgstr ""
+msgstr "Trình quản lý tập tin"
 
 msgid "Filesystem system Info"
 msgstr ""
@@ -2447,6 +2453,9 @@ msgstr ""
 msgid "Forward to URL"
 msgstr ""
 
+msgid "Forward type"
+msgstr ""
+
 msgid "Free"
 msgstr ""
 
@@ -2484,7 +2493,7 @@ msgid "General information"
 msgstr "Thông tin tổng quan"
 
 msgid "General settings"
-msgstr ""
+msgstr "Thiết lập chung"
 
 msgid "Generate"
 msgstr ""
@@ -2508,6 +2517,12 @@ msgid "Group name"
 msgstr ""
 
 msgid "Groups"
+msgstr ""
+
+msgid "HSTS: Include sub domains"
+msgstr ""
+
+msgid "HSTS: Set the max-age"
 msgstr ""
 
 msgid "HTTP traffic"
@@ -2550,7 +2565,7 @@ msgid "Hosting plan successfully updated."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "Kế hoạch thuê hosting"
 
 msgid "Hour"
 msgstr "Giờ"
@@ -2615,7 +2630,7 @@ msgid "IP management"
 msgstr ""
 
 msgid "IP usage"
-msgstr ""
+msgstr "Cách dùng địa chỉ IP"
 
 msgid "IPv6 address"
 msgstr ""
@@ -3379,7 +3394,7 @@ msgid "Other settings"
 msgstr ""
 
 msgid "Overview"
-msgstr ""
+msgstr "Sơ lược"
 
 msgid "Owner"
 msgstr "Người sở hữu"
@@ -3561,7 +3576,7 @@ msgid "Phone"
 msgstr "Điện thoại"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr ""
@@ -4355,7 +4370,7 @@ msgid "Service protocol"
 msgstr ""
 
 msgid "Services status"
-msgstr ""
+msgstr "Trạng thái dịch vụ"
 
 msgid "Sessions"
 msgstr ""
@@ -4656,7 +4671,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr ""
+msgstr "Công cụ hệ thống"
 
 msgid "System under maintenance"
 msgstr ""
@@ -5376,7 +5391,7 @@ msgid "Webmail"
 msgstr "Webmail"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Webtools"
 
 msgid "Welcome email"
 msgstr ""
@@ -5883,7 +5898,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "Cập nhật i-MSCP"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""
