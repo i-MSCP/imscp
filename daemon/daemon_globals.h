@@ -1,8 +1,6 @@
 #ifndef _DAEMON_GLOBALS_H
 #define _DAEMON_GLOBALS_H
 
-#include <stdlib.h>
-
 /* Syslog daemon options */
 #define SYSLOG_OPTIONS              LOG_PID
 #define SYSLOG_FACILITY             LOG_DAEMON
