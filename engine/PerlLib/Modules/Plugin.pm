@@ -224,7 +224,7 @@ sub _disable
 
 =item _change()
 
- Change the lugin
+ Change the plugin
 
  Return int 0 on success, other on failure
 
