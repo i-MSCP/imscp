@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Provider::Service::Systemd - Base service provider for `systemd` service units
+ iMSCP::Provider::Service::Systemd - Base service provider for `systemd` service/socket units
 
 =cut
 
@@ -47,193 +47,217 @@ my %unitFilePathsCache = ();
 
 =head1 DESCRIPTION
 
- Base service provider for `systemd` service units.
+ Base service provider for `systemd` service/socket units.
 
  See:
-  http://www.freedesktop.org/wiki/Software/systemd/
-  http://www.freedesktop.org/software/systemd/man/systemd.service.html
+  - https://www.freedesktop.org/wiki/Software/systemd/
+  - https://www.freedesktop.org/software/systemd/man/systemd.service.html
+  - https://www.freedesktop.org/software/systemd/man/systemd.socket.html
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item isEnabled($service)
+=item isEnabled($unit)
 
- Does the given service is enabled?
+ Is the given service/socket unit is enabled?
 
- Param string $service Service name
- Return bool TRUE if the given service is enabled, FALSE otherwise
+ Param string $unit Unit name
+ Return bool TRUE if the given unit is enabled, FALSE otherwise
 
 =cut
 
 sub isEnabled
 {
-    my ($self, $service) = @_;
+    my ($self, $unit) = @_;
 
-    $self->_exec( $commands{'systemctl'}, '--quiet', 'is-enabled', "$service.service" ) == 0;
+    defined $unit or die( 'parameter $unit is not defined' );
+    $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
+    $self->_exec( $commands{'systemctl'}, '--quiet', 'is-enabled', $unit ) == 0;
 }
 
-=item enable($service)
+=item enable($unit)
 
- Enable the given service
+ Enable the given service or socket unit
 
- Param string $service Service name
+ Param string $unit Unit name
  Return bool TRUE on success, FALSE on failure
 
 =cut
 
 sub enable
 {
-    my ($self, $service) = @_;
+    my ($self, $unit) = @_;
 
-    $self->_exec( $commands{'systemctl'}, '--force', '--quiet', 'enable', "$service.service" ) == 0;
+    defined $unit or die( 'parameter $unit is not defined' );
+    $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
+    $self->_exec( $commands{'systemctl'}, '--force', '--quiet', 'enable', $unit ) == 0;
 }
 
-=item disable($service)
+=item disable($unit)
 
- Disable the given service
+ Disable the given service/socket unit
 
- Param string $service Service name
+ Param string $unit Unit name
  Return bool TRUE on success, FALSE on failure
 
 =cut
 
 sub disable
 {
-    my ($self, $service) = @_;
+    my ($self, $unit) = @_;
 
-    $self->_exec( $commands{'systemctl'}, '--quiet', 'disable', "$service.service" ) == 0;
+    defined $unit or die( 'parameter $unit is not defined' );
+    $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
+    $self->_exec( $commands{'systemctl'}, '--quiet', 'disable', $unit ) == 0;
 }
 
-=item remove($service)
+=item remove($unit)
 
- Remove the given service
+ Remove the given service or socket unit
 
- Param string $service Service name
+ Param string $unit Unit name
  Return bool TRUE on success, FALSE on failure
 
 =cut
 
 sub remove
 {
-    my ($self, $service) = @_;
+    my ($self, $unit) = @_;
 
-    return 0 unless $self->stop( $service ) && $self->disable( $service );
+    defined $unit or die( 'parameter $unit is not defined' );
+    $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
+    return 0 unless $self->stop( $unit ) && $self->disable( $unit );
 
     local $@;
-
-    if (my $unitFilePath = eval { $self->getUnitFilePath( $service ); }) {
-        delete $unitFilePathsCache{$service};
+    if (my $unitFilePath = eval { $self->getUnitFilePath( $unit ); }) {
+        delete $unitFilePathsCache{$unit};
         return 0 if iMSCP::File->new( filename => $unitFilePath )->delFile();
     }
 
     $self->_exec( $commands{'systemctl'}, 'daemon-reload' ) == 0;
 }
 
-=item start($service)
+=item start($unit)
 
- Start the given service
+ Start the given service/socket unit
 
- Param string $service Service name
+ Param string $unit Unit name
  Return bool TRUE on success, FALSE on failure
 
 =cut
 
 sub start
 {
-    my ($self, $service) = @_;
+    my ($self, $unit) = @_;
 
-    $self->_exec( $commands{'systemctl'}, 'start', "$service.service" ) == 0;
+    defined $unit or die( 'parameter $unit is not defined' );
+    $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
+    $self->_exec( $commands{'systemctl'}, 'start', $unit ) == 0;
 }
 
-=item stop($service)
+=item stop($unit)
 
- Stop the given service
+ Stop the given service/socket unit
 
- Param string $service Service name
+ Param string $unit Unit name
  Return bool TRUE on success, FALSE on failure
 
 =cut
 
 sub stop
 {
-    my ($self, $service) = @_;
+    my ($self, $unit) = @_;
 
-    return 1 unless $self->isRunning( $service );
-
-    $self->_exec( $commands{'systemctl'}, 'stop', "$service.service" ) == 0;
+    defined $unit or die( 'parameter $unit is not defined' );
+    $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
+    return 1 unless $self->isRunning( $unit );
+    $self->_exec( $commands{'systemctl'}, 'stop', $unit ) == 0;
 }
 
-=item restart($service)
+=item restart($unit)
 
- Restart the given service
+ Restart the given service/socket unit
 
- Param string $service Service name
+ Param string $unit Unit name
  Return bool TRUE on success, FALSE on failure
 
 =cut
 
 sub restart
 {
-    my ($self, $service) = @_;
+    my ($self, $unit) = @_;
 
-    if ($self->isRunning( $service )) {
-        return $self->_exec( $commands{'systemctl'}, 'restart', "$service.service" ) == 0;
+    defined $unit or die( 'parameter $unit is not defined' );
+    $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
+
+    if ($self->isRunning( $unit )) {
+        return $self->_exec( $commands{'systemctl'}, 'restart', $unit ) == 0;
     }
 
-    $self->_exec( $commands{'systemctl'}, 'start', "$service.service" ) == 0;
+    $self->_exec( $commands{'systemctl'}, 'start', $unit ) == 0;
 }
 
 =item reload($service)
 
- Reload the given service
+ Reload the given service unit
 
- Param string $service Service name
+ Note: Not applicable to socket units
+
+ Param string $unit Unit name
  Return bool TRUE on success, FALSE on failure
 
 =cut
 
 sub reload
 {
-    my ($self, $service) = @_;
+    my ($self, $unit) = @_;
 
-    if ($self->isRunning( $service )) {
-        return $self->_exec( $commands{'systemctl'}, 'reload', "$service.service" ) == 0;
+    defined $unit or die( 'parameter $unit is not defined' );
+
+    $unit .= '.service' unless $unit =~ /\.service$/;
+
+    if ($self->isRunning( $unit )) {
+        return $self->_exec( $commands{'systemctl'}, 'reload', $unit ) == 0;
     }
 
-    $self->start( $service );
+    $self->start( $unit );
 }
 
-=item isRunning($service)
+=item isRunning($unit)
 
- Does the given service is running?
+ Is the given service/scoket is running (active)?
 
- Param string $service Service name
+ Param string $unit Unit name
  Return bool TRUE if the given service is running, FALSE otherwise
 
 =cut
 
 sub isRunning
 {
-    my ($self, $service) = @_;
+    my ($self, $unit) = @_;
 
-    $self->_exec( $commands{'systemctl'}, 'is-active', "$service.service" ) == 0;
+    defined $unit or die( 'parameter $unit is not defined' );
+    $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
+    $self->_exec( $commands{'systemctl'}, 'is-active', $unit ) == 0;
 }
 
-=item getUnitFilePath($service)
+=item getUnitFilePath($unit)
 
- Get full path of unit file which belongs to the given service
+ Get full path of the given unit
 
- Param string $service Service name
- Return string Init script path on success, die on failure
+ Param string $unit Unit name
+ Return string Unit path on success, die on failure
 
 =cut
 
 sub getUnitFilePath
 {
-    my ($self, $service) = @_;
+    my ($self, $unit) = @_;
 
-    $self->_searchUnitFile( $service );
+    defined $unit or die( 'parameter $unit is not defined' );
+    $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
+    $self->_searchUnitFile( $unit );
 }
 
 =back
@@ -242,44 +266,46 @@ sub getUnitFilePath
 
 =over 4
 
-=item _isSystemd($service)
+=item _isSystemd($unit)
 
- Does the given service is managed by a native systemd service unit file?
+ Is the given service managed by a native systemd service unit file?
 
- Param string $service Service name
+ Param string $unit Unit name
  Return bool TRUE if the given service is managed by a systemd service unit file, FALSE otherwise
 
 =cut
 
 sub _isSystemd
 {
-    my ($self, $service) = @_;
+    my ($self, $unit) = @_;
+
+    $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
 
     local $@;
-    eval { $self->_searchUnitFile( $service ); };
+    eval { $self->_searchUnitFile( $unit ); };
 }
 
-=item _searchUnitFile($service)
+=item _searchUnitFile($unit)
 
- Search the unit file which belongs to the given service in all available paths
+ Search the given unit configuration file in all available paths
 
- Param string $service Service name
+ Param string $unit Unit name
  Return string unit file path on success, die on failure
 
 =cut
 
 sub _searchUnitFile
 {
-    my ($self, $service) = @_;
+    my ($self, $unit) = @_;
 
-    return $unitFilePathsCache{$service} if $unitFilePathsCache{$service};
+    return $unitFilePathsCache{$unit} if $unitFilePathsCache{$unit};
 
     for my $path(@unitFilePaths) {
-        my $filepath = File::Spec->join( $path, $service.'.service' );
-        return $unitFilePathsCache{$service} = $filepath if -f $filepath;
+        my $filepath = File::Spec->join( $path, $unit );
+        return $unitFilePathsCache{$unit} = $filepath if -f $filepath;
     }
 
-    die( sprintf( 'Could not find systemd service unit file for the %s service', $service ) );
+    die( sprintf( 'Could not find systemd %s unit configuration file', $unit ) );
 }
 
 =back

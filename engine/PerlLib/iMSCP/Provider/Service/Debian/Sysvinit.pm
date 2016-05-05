@@ -37,11 +37,12 @@ my %commands = (
 );
 
 # Enable compatibility mode if sysv-rc package version is lower than version 2.88
-my $SYSVRC_COMPAT_MODE = lazy {
-    __PACKAGE__->_exec(
-        $commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W -f \'${Version}\' sysv-rc)', 'lt', '2.88'
-    ) == 0;
-};
+my $SYSVRC_COMPAT_MODE = lazy
+    {
+        __PACKAGE__->_exec(
+            $commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W -f \'${Version}\' sysv-rc)', 'lt', '2.88'
+        ) == 0;
+    };
 
 =head1 DESCRIPTION
 
@@ -66,6 +67,8 @@ my $SYSVRC_COMPAT_MODE = lazy {
 sub isEnabled
 {
     my ($self, $service) = @_;
+
+    defined $service or die( 'parameter $service is not defined' );
 
     my $ret = $self->_exec( $commands{'invoke-rc.d'}, '--quiet', '--query', $service, 'start' );
 
@@ -100,6 +103,8 @@ sub enable
 {
     my ($self, $service) = @_;
 
+    defined $service or die( 'parameter $service is not defined' );
+
     if ($SYSVRC_COMPAT_MODE) {
         return $self->_exec( $commands{'update-rc.d'}, '-f', $service, 'remove' ) == 0
             && $self->_exec( $commands{'update-rc.d'}, $service, 'defaults' ) == 0;
@@ -121,6 +126,8 @@ sub enable
 sub disable
 {
     my ($self, $service) = @_;
+
+    defined $service or die( 'parameter $service is not defined' );
 
     if ($SYSVRC_COMPAT_MODE) {
         return $self->_exec( $commands{'update-rc.d'}, '-f', $service, 'remove' ) == 0
@@ -144,6 +151,8 @@ sub remove
 {
     my ($self, $service) = @_;
 
+    defined $service or die( 'parameter $service is not defined' );
+
     $self->stop( $service ) && $self->_exec( $commands{'update-rc.d'}, '-f', $service, 'remove' ) == 0
         && $self->SUPER::remove( $service );
 }
@@ -159,6 +168,8 @@ sub remove
 sub hasService
 {
     my ($self, $service) = @_;
+
+    defined $service or die( 'parameter $service is not defined' );
 
     $self->_isSysvinit( $service );
 }

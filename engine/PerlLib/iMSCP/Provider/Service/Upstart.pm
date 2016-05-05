@@ -60,112 +60,93 @@ my %jobFilesCache = ();
 
  Base service provider for `upstart` jobs.
 
- See:
-  http://upstart.ubuntu.com/
+ See: http://upstart.ubuntu.com
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item isEnabled($service)
+=item isEnabled($job)
 
- Does the given service is enabled?
+ Is the given job is enabled?
 
- Return bool TRUE if the given service is enabled, FALSE otherwise
+ Return bool TRUE if the given job is enabled, FALSE otherwise
 
 =cut
 
 sub isEnabled
 {
-    my ($self, $service) = @_;
+    my ($self, $job) = @_;
 
-    my $jobFileContent = $self->_readJobFile( $service );
-
-    if ($self->_versionIsPre067()) {
-        return $self->_isEnabledPre067( $jobFileContent );
-    }
-
-    if ($self->_versionIsPre090()) {
-        return $self->_isEnabledPre090( $jobFileContent );
-    }
-
-    if ($self->_versionIsPost090()) {
-        return $self->_isEnabledPost090( $jobFileContent, $self->_readJobOverrideFile( $service ) );
-    }
-
+    defined $job or die( 'parameter $job is not defined' );
+    my $jobFileContent = $self->_readJobFile( $job );
+    return $self->_isEnabledPre067( $jobFileContent ) if $self->_versionIsPre067();
+    return $self->_isEnabledPre090( $jobFileContent ) if $self->_versionIsPre090();
+    return $self->_isEnabledPost090(
+        $jobFileContent, $self->_readJobOverrideFile( $job )
+    ) if $self->_versionIsPost090();
     0;
 }
 
-=item enable($service)
+=item enable($job)
 
- Enable the given service
+ Enable the given job
 
- Param string $service Service name
+ Param string $job Job name
  Return bool TRUE on success, FALSE on failure
 
 =cut
 
 sub enable
 {
-    my ($self, $service) = @_;
+    my ($self, $job) = @_;
 
-    my $jobFileContent = $self->_readJobFile( $service );
-
-    if ($self->_versionIsPre090()) {
-        return $self->_enablePre090( $service, $jobFileContent );
-    }
-
-    $self->_enablePost090( $service, $jobFileContent, $self->_readJobOverrideFile( $service ) );
+    defined $job or die( 'parameter $job is not defined' );
+    my $jobFileContent = $self->_readJobFile( $job );
+    return $self->_enablePre090( $job, $jobFileContent ) if $self->_versionIsPre090();
+    $self->_enablePost090( $job, $jobFileContent, $self->_readJobOverrideFile( $job ) );
 }
 
-=item disable($service)
+=item disable($job)
 
- Disable the given service
+ Disable the given job
 
- Param string $service Service name
+ Param string $job Job name
  Return bool TRUE on success, FALSE on failure
 
 =cut
 
 sub disable
 {
-    my ($self, $service) = @_;
+    my ($self, $job) = @_;
 
-    if ($self->_versionIsPre067()) {
-        return $self->_disablePre067( $service, $self->_readJobFile( $service ) );
-    }
-
-    if ($self->_versionIsPre090()) {
-        return $self->_disablePre090( $service, $self->_readJobFile( $service ) );
-    }
-
-    if ($self->_versionIsPost090()) {
-        return $self->_disablePost090( $service, $self->_readJobOverrideFile( $service ) );
-    }
-
+    defined $job or die( 'parameter $job is not defined' );
+    return $self->_disablePre067( $job, $self->_readJobFile( $job ) ) if $self->_versionIsPre067();
+    return $self->_disablePre090( $job, $self->_readJobFile( $job ) ) if $self->_versionIsPre090();
+    return $self->_disablePost090( $job, $self->_readJobOverrideFile( $job ) ) if $self->_versionIsPost090();
     0;
 }
 
-=item remove($service)
+=item remove($job)
 
- Remove the given service
+ Remove the given job
 
- Param string $service Service name
+ Param string $job job name
  Return bool TRUE on success, FALSE on failure
 
 =cut
 
 sub remove
 {
-    my ($self, $service) = @_;
+    my ($self, $job) = @_;
 
-    return 0 unless $self->stop( $service );
+    defined $job or die( 'parameter $job is not defined' );
+    return 0 unless $self->stop( $job );
 
     local $@;
-
     for my $jobFileType('conf', 'override') {
-        if (my $filepath = eval { $self->getJobFilePath( $service, $jobFileType ); }) {
-            delete $jobFilesCache{$service.'.'.$jobFileType};
+        if (my $filepath = eval { $self->getJobFilePath( $job, $jobFileType ); }) {
+            delete $jobFilesCache{$job.'.'.$jobFileType};
             return 0 if iMSCP::File->new( filename => $filepath )->delFile();
         }
     }
@@ -175,127 +156,125 @@ sub remove
 
 =item start($service)
 
- Start the given service
+ Start the given job
 
- Param string $service Service name
+ Param string $job Job name
  Return bool TRUE on success, FALSE on failure
 
 =cut
 
 sub start
 {
-    my ($self, $service) = @_;
+    my ($self, $job) = @_;
 
-    if ($self->_isUpstart( $service )) {
-        unless ($self->isRunning( $service )) {
-            return $self->_exec( $commands{'start'}, $service ) == 0;
-        }
+    defined $job or die( 'parameter $job is not defined' );
 
+    if ($self->_isUpstart( $job )) {
+        return $self->_exec( $commands{'start'}, $job ) == 0 if $self->isRunning( $job );
         return 1;
     }
 
-    $self->SUPER::start( $service );
+    $self->SUPER::start( $job );
 }
 
-=item stop($service)
+=item stop($job)
 
- Stop the given service
+ Stop the given job
 
- Param string $service Service name
+ Param string $job Job name
  Return bool TRUE on success, FALSE on failure
 
 =cut
 
 sub stop
 {
-    my ($self, $service) = @_;
+    my ($self, $job) = @_;
 
-    if ($self->_isUpstart( $service )) {
-        if ($self->isRunning( $service )) {
-            return $self->_exec( $commands{'stop'}, $service ) == 0;
-        }
+    defined $job or die( 'parameter $job is not defined' );
 
+    if ($self->_isUpstart( $job )) {
+        return $self->_exec( $commands{'stop'}, $job ) == 0 if $self->isRunning( $job );
         return 1;
     }
 
-    $self->SUPER::stop( $service );
+    $self->SUPER::stop( $job );
 }
 
-=item restart($service)
+=item restart($job)
 
- Restart the given service
+ Restart the given job
 
- Param string $service Service name
+ Param string $job Job name
  Return bool TRUE on success, FALSE on failure
 
 =cut
 
 sub restart
 {
-    my ($self, $service) = @_;
+    my ($self, $job) = @_;
 
-    if ($self->_isUpstart( $service )) {
-        if ($self->isRunning( $service )) {
-            return $self->_exec( $commands{'restart'}, $service ) == 0;
-        }
+    defined $job or die( 'parameter $job is not defined' );
 
-        return $self->start( $service );
+    if ($self->_isUpstart( $job )) {
+        return $self->_exec( $commands{'restart'}, $job ) == 0 if $self->isRunning( $job );
+        return $self->start( $job );
     }
 
-    $self->SUPER::restart( $service );
+    $self->SUPER::restart( $job );
 }
 
 =item reload($service)
 
- Reload the given service
+ Reload the given job
 
- Param string $service Service name
+ Param string $job Job name
  Return bool TRUE on success, FALSE on failure
 
 =cut
 
 sub reload
 {
-    my ($self, $service) = @_;
+    my ($self, $job) = @_;
 
-    if ($self->_isUpstart( $service )) {
-        if ($self->isRunning( $service )) {
-            return $self->_exec( $commands{'reload'}, $service ) == 0;
-        }
+    defined $job or die( 'parameter $job is not defined' );
 
-        return $self->start( $service );
+    if ($self->_isUpstart( $job )) {
+        return $self->_exec( $commands{'reload'}, $job ) == 0 if $self->isRunning( $job );
+        return $self->start( $job );
     }
 
-    $self->SUPER::reload( $service );
+    $self->SUPER::reload( $job );
 
 }
 
 =item isRunning($service)
 
- Does the given service is running?
+ Is the given job is running?
 
- Param string $service Service name
- Return bool TRUE if the given service is running, FALSE on failure
+ Param string $job Job name
+ Return bool TRUE if the given job is running, FALSE on failure
 
 =cut
 
 sub isRunning
 {
-    my ($self, $service) = @_;
+    my ($self, $job) = @_;
 
-    if ($self->_isUpstart( $service )) {
-        execute( "$commands{'status'} $service", \my $stdout, \my $stderr );
+    defined $job or die( 'parameter $job is not defined' );
+
+    if ($self->_isUpstart( $job )) {
+        execute( "$commands{'status'} $job", \my $stdout, \my $stderr );
         return $stdout =~ m%start/%;
     }
 
-    $self->SUPER::isRunning( $service );
+    $self->SUPER::isRunning( $job );
 }
 
-=item getJobFilePath($service [ , $jobFileType = 'conf' ])
+=item getJobFilePath($job [ , $jobFileType = 'conf' ])
 
- Get full path of the job configuration file or job override file which belongs to the given service
+ Get full path of the job configuration file or job override file which belongs to the given job
 
- Param string $service Service name
+ Param string $job Job name
  Param string $jobFileType OPTIONAL Job file type ('conf'|'override') - Default to 'conf'
  Return string job file path on success, die on failure
 
@@ -303,10 +282,11 @@ sub isRunning
 
 sub getJobFilePath
 {
-    my ($self, $service, $jobFileType) = @_;
+    my ($self, $job, $jobFileType) = @_;
 
+    defined $job or die( 'parameter $job is not defined' );
     $jobFileType ||= 'conf';
-    $self->_searchJobFile( $service, $jobFileType );
+    $self->_searchJobFile( $job, $jobFileType );
 }
 
 =back
@@ -331,24 +311,24 @@ sub _getVersion
 
 =item _isUpstart($service)
 
- Does the given service is managed by an upstart job?
+ Is the given job an upstart job?
 
- Param string $service Service name
- Return bool TRUE if the given service is managed by an upstart job, FALSE otherwise
+ Param string $job Job name
+ Return bool TRUE if the given job is managed by an upstart job, FALSE otherwise
 
 =cut
 
 sub _isUpstart
 {
-    my ($self, $service) = @_;
+    my ($self, $job) = @_;
 
     local $@;
-    eval { $self->_searchJobFile( $service ); };
+    eval { $self->_searchJobFile( $job ); };
 }
 
 =item _versionIsPre067()
 
- Does the upstart version is pre 0.6.7?
+ Is upstart version pre 0.6.7?
 
  Return bool TRUE if upstart version is pre 0.6.7, FALSE otherwise
 
@@ -363,7 +343,7 @@ sub _versionIsPre067
 
 =item _versionIsPre090()
 
- Does the upstart version is pre 0.9.0?
+ Is upstart version pre 0.9.0?
 
  Return bool TRUE if upstart version is pre 0.9.0, FALSE otherwise
 
@@ -378,7 +358,7 @@ sub _versionIsPre090
 
 =item _versionIsPost090()
 
- Does the upstart version is post 0.9.0?
+ Is upstart version post 0.9.0?
 
  Return bool TRUE if upstart version is post 0.9.0, FALSE otherwise
 
@@ -393,7 +373,7 @@ sub _versionIsPost090
 
 =item _isEnabledPre067($jobFileContent)
 
- Does the given job is enabled for upstart versions < 0.6.7?
+ Is the given job enabled for upstart versions < 0.6.7?
 
  Param string $jobFileContent job file content
  Return bool TRUE if the given job is enabled, FALSE otherwise
@@ -410,7 +390,7 @@ sub _isEnabledPre067
 
 =item _isEnabledPre090($jobFileContent)
 
- Does the given job is enabled for upstart versions < 0.9.0?
+ Is the given job enabled for upstart versions < 0.9.0?
 
  Param string $jobFileContent job file content
  Return bool TRUE if the given job is enabled, FALSE otherwise
@@ -424,7 +404,6 @@ sub _isEnabledPre090
     # Upstart versions < 0.9.0 means no override files. Thus, we check to see if an uncommented `start on` or `manual`
     # stanza is the last one in the file. The last one in the file wins.
     my $enabled = 0;
-
     for(split /^/, $jobFileContent) {
         if (/$START_ON/) {
             $enabled = 1;
@@ -438,7 +417,7 @@ sub _isEnabledPre090
 
 =item _isEnabledPost090($jobFileContent, $jobOverrideFileContent)
 
- Does the given job is enabled for upstart versions >= 0.9.0?
+ Is the given job enabled for upstart versions >= 0.9.0?
 
  Param string $jobFileContent job file content
  Param string $jobOverrideFileContent job override file content
@@ -450,10 +429,10 @@ sub _isEnabledPost090
 {
     my ($self, $jobFileContent, $jobOverrideFileContent) = @_;
 
-    # Upstart versions >= 0.9.0 has `manual` stanzas and override files. Thus, we check to see if an uncommented `start on` or `manual`
-    # stanza is the last one in the conf file and any override files. The last one in the file wins.
+    # Upstart versions >= 0.9.0 has `manual` stanzas and override files. Thus, we check to see if an uncommented
+    # `start on` or `manual` stanza is the last one in the conf file and any override files. The last one in the file
+    # wins.
     my $enabled = 0;
-
     for($jobFileContent, $jobOverrideFileContent) {
         next unless defined;
 
@@ -469,11 +448,11 @@ sub _isEnabledPost090
     $enabled;
 }
 
-=item _enablePre090($service, $jobFileContent)
+=item _enablePre090($job, $jobFileContent)
 
- Enable the given service for upstart versions < 0.9.0
+ Enable the given job for upstart versions < 0.9.0
 
- Param string $service Service name
+ Param string $job Job name
  Param string $jobFileContent job file content
  Return bool TRUE on success, die on failure
 
@@ -481,26 +460,25 @@ sub _isEnabledPost090
 
 sub _enablePre090
 {
-    my ($self, $service, $jobFileContent) = @_;
+    my ($self, $job, $jobFileContent) = @_;
 
+    # We also need to remove any manual stanzas to ensure that it is enabled
     $jobFileContent = $self->_removeManualStanza( $jobFileContent );
 
     unless ($self->_isEnabledPre090( $jobFileContent )) {
-        if ($jobFileContent =~ /$COMMENTED_START_ON/) {
-            $jobFileContent = $self->_uncommentStartOnStanza( $jobFileContent );
-        } else {
-            $jobFileContent = $self->_addDefaultStartOnStanza( $jobFileContent );
-        }
-    } else {
-        1;
+        $jobFileContent = $jobFileContent =~ /$COMMENTED_START_ON/
+            ? $self->_uncommentStartOnStanza( $jobFileContent )
+            : $self->_addDefaultStartOnStanza( $jobFileContent );
     }
+
+    return $self->_writeFile( $job, $jobFileContent );
 }
 
-=item _enablePost090($service, $jobFileContent, $jobOverrideFileContent)
+=item _enablePost090($job, $jobFileContent, $jobOverrideFileContent)
 
- Enable the given service for upstart versions >= 0.9.0
+ Enable the given job for upstart versions >= 0.9.0
 
- Param string $service Service name
+ Param string $job Job name
  Param string $jobFileContent job file content
  Param string $jobOverrideFileContent job override file content
  Return bool TRUE on success, die on failure
@@ -509,28 +487,24 @@ sub _enablePre090
 
 sub _enablePost090
 {
-    my ($self, $service, $jobFileContent, $jobOverrideFileContent) = @_;
+    my ($self, $job, $jobFileContent, $jobOverrideFileContent) = @_;
 
     $jobOverrideFileContent = $self->_removeManualStanza( $jobOverrideFileContent );
 
     unless ($self->_isEnabledPost090( $jobFileContent, $jobOverrideFileContent )) {
-        if ($jobFileContent =~ /$START_ON/) {
-            $jobOverrideFileContent .= $self->_extractStartOnStanza( $jobFileContent );
-        } else {
-            $jobOverrideFileContent .= "\nstart on runlevel [2345]";
-        }
-
-        $self->_writeFile( "$service.override", $jobOverrideFileContent );
-    } else {
-        1;
+        $jobOverrideFileContent .= $jobFileContent =~ /$START_ON/
+            ? $self->_extractStartOnStanza( $jobFileContent )
+            : "\nstart on runlevel [2345]";
     }
+
+    return $self->_writeFile( "$job.override", $jobOverrideFileContent );
 }
 
 =item _disablePre067($service, $jobFileContent)
 
- Disable the given service for upstart versions < 0.6.7
+ Disable the given job for upstart versions < 0.6.7
 
- Param string $service Service name
+ Param string $job Job name
  Param string $jobFileContent job file content
  Return bool TRUE on success, die on failure
 
@@ -538,17 +512,17 @@ sub _enablePost090
 
 sub _disablePre067
 {
-    my ($self, $service, $jobFileContent) = @_;
+    my ($self, $job, $jobFileContent) = @_;
 
     $jobFileContent = $self->_commentStartOnStanza( $jobFileContent );
-    $self->_writeFile( "$service.conf", $jobFileContent );
+    $self->_writeFile( "$job.conf", $jobFileContent );
 }
 
 =item _disablePre090($service, $jobFileContent)
 
- Disable the given service for upstart versions < 0.9.0
+ Disable the given job for upstart versions < 0.9.0
 
- Param string $service Service name
+ Param string $job Job name
  Param string $jobFileContent job file content
  Return bool TRUE on success, die on failure
 
@@ -556,16 +530,16 @@ sub _disablePre067
 
 sub _disablePre090
 {
-    my ($self, $service, $jobFileContent) = @_;
+    my ($self, $job, $jobFileContent) = @_;
 
-    $self->_writeFile( "$service.conf", $self->_ensureDisabledWithManualStanza( $jobFileContent ) );
+    $self->_writeFile( "$job.conf", $self->_ensureDisabledWithManualStanza( $jobFileContent ) );
 }
 
 =item _disablePost090($service, $jobOverrideFileContent)
 
- Disable the given service for upstart versions >= 0.9.0
+ Disable the given job for upstart versions >= 0.9.0
 
- Param string $service Service name
+ Param string $job Job name
  Param string $jobOverrideFileContent job $jobOverrideFileContent file content
  Return bool TRUE on success, die on failure
 
@@ -573,9 +547,9 @@ sub _disablePre090
 
 sub _disablePost090
 {
-    my ($self, $service, $jobOverrideFileContent) = @_;
+    my ($self, $job, $jobOverrideFileContent) = @_;
 
-    $self->_writeFile( "$service.override", $self->_ensureDisabledWithManualStanza( $jobOverrideFileContent ) );
+    $self->_writeFile( "$job.override", $self->_ensureDisabledWithManualStanza( $jobOverrideFileContent ) );
 }
 
 =item _uncomment($line)
@@ -665,8 +639,11 @@ sub _commentStartOnStanza
 
     my $parentheses = 0;
 
-    join '', map {
+    join '',
+        map {
             if (/$START_ON/ || $parentheses > 0) {
+                # If there are more opening parens than closing parens, we need to comment out a multiline 'start on'
+                # stanza
                 $parentheses += $self->_countUnbalancedParentheses( $self->_removeTrailingComments( $_ ) );
                 '#'.$_;
             } else {
@@ -690,7 +667,8 @@ sub _uncommentStartOnStanza
 
     my $parentheses = 0;
 
-    join '', map {
+    join '',
+        map {
             if (/$COMMENTED_START_ON/ || $parentheses > 0) {
                 # If there are more opening parentheses than closing parentheses, we need to comment out a multiline
                 # 'start on' stanza
@@ -717,7 +695,8 @@ sub _extractStartOnStanza
 
     my $parentheses = 0;
 
-    join '', map {
+    join '',
+        map {
             if (/$START_ON/ || $parentheses > 0) {
                 $parentheses += $self->_countUnbalancedParentheses( $self->_removeTrailingComments( $_ ) );
                 $_;
@@ -736,7 +715,7 @@ sub _extractStartOnStanza
 
 sub _addDefaultStartOnStanza
 {
-    "$_[1]g\nstart on runlevel [2345]";
+    $_[1]."\nstart on runlevel [2345]";
 }
 
 =item _ensureDisabledWithManualStanza($text)
@@ -755,11 +734,11 @@ sub _ensureDisabledWithManualStanza
     $self->_removeManualStanza( $text )."\nmanual";
 }
 
-=item _searchJobFile($service ,$jobFileType)
+=item _searchJobFile($job, $jobFileType)
 
- Search the job configuration file or job override file which belongs to the given service in all available paths
+ Search the job configuration file or job override file which belongs to the given job in all available paths
 
- Param string $service Service name
+ Param string $job Job name
  Param string $jobFileType Job file type ('conf'|'override')
  Return string Job file path on success, die on failure
 
@@ -767,9 +746,9 @@ sub _ensureDisabledWithManualStanza
 
 sub _searchJobFile
 {
-    my ($self, $service, $jobFileType) = @_;
+    my ($self, $job, $jobFileType) = @_;
 
-    my $jobFile = $service.'.'.($jobFileType || 'conf');
+    my $jobFile = $job.'.'.($jobFileType || 'conf');
 
     return $jobFilesCache{$jobFile} if $jobFilesCache{$jobFile};
 
@@ -781,39 +760,40 @@ sub _searchJobFile
     die( sprintf( 'Could not find the upstart %s job file', $jobFile ) );
 }
 
-=item _readJobFile($service)
+=item _readJobFile($job)
 
- Read the job file which belongs to the given service
+ Read the job file which belongs to the given job
 
- Param string $service Service name
+ Param string $job Job name
  Return string Job file content on success, die on failure
 
 =cut
 
 sub _readJobFile
 {
-    my ($self, $service) = @_;
+    my ($self, $job) = @_;
 
-    my $filepath = $self->getJobFilePath( $service );
+    my $filepath = $self->getJobFilePath( $job );
     iMSCP::File->new( filename => $filepath )->get() or die( sprintf( 'Could not read %s file', $filepath ) );
 }
 
-=item _readJobOverrideFile($service)
+=item _readJobOverrideFile($job)
 
- Read the job override file which belongs to the given service
+ Read the job override file which belongs to the given job
 
- Param string $service Service name
+ Param string job Job name
  Return string Job override file content on success, die on failure
 
 =cut
 
 sub _readJobOverrideFile
 {
-    my ($self, $service) = @_;
+    my ($self, $job) = @_;
 
-    if ((my $filepath = eval { $self->getJobFilePath( $service, 'override' ); })) {
-        return iMSCP::File->new( filename => $filepath )->get() or die( sprintf( 'Could not read %s file',
-                $filepath ) );
+    if ((my $filepath = eval { $self->getJobFilePath( $job, 'override' ); })) {
+        return iMSCP::File->new( filename => $filepath )->get() or die(
+            sprintf( 'Could not read %s file', $filepath )
+        );
     }
 
     '';
@@ -836,10 +816,9 @@ sub _writeFile
     my $jobDir = dirname( $self->getJobFilePath( fileparse( $filename, qr/\.[^.]*/ ) ) );
     my $filepath = File::Spec->join( $jobDir, $filename );
     my $file = iMSCP::File->new( filename => $filepath );
-
-    $file->set( $fileContent ) == 0 && $file->save() == 0 && $file->mode( 0644 ) == 0 or die( sprintf(
-            'Could not write %s file', $filepath
-        ) );
+    $file->set( $fileContent ) == 0 && $file->save() == 0 && $file->mode( 0644 ) == 0 or die(
+        sprintf( 'Could not write %s file', $filepath )
+    );
 }
 
 =back

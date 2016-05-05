@@ -59,6 +59,8 @@ sub isEnabled
 {
     my ($self, $service) = @_;
 
+    defined $service or die('parameter $service is not defined');
+
     $self->{'provider'}->isEnabled( $service );
 }
 
@@ -74,6 +76,8 @@ sub isEnabled
 sub enable
 {
     my ($self, $service) = @_;
+
+    defined $service or die('parameter $service is not defined');
 
     local $@;
     my $ret = eval {
@@ -99,6 +103,8 @@ sub disable
 {
     my ($self, $service) = @_;
 
+    defined $service or die('parameter $service is not defined');
+
     local $@;
     my $ret = eval {
         $self->{'eventManager'}->trigger( 'onBeforeDisableService', $service ) == 0
@@ -122,6 +128,8 @@ sub disable
 sub remove
 {
     my ($self, $service) = @_;
+
+    defined $service or die('parameter $service is not defined');
 
     local $@;
     my $ret = eval {
@@ -147,8 +155,9 @@ sub start
 {
     my ($self, $service) = @_;
 
-    local $@;
+    defined $service or die('parameter $service is not defined');
 
+    local $@;
     my $ret = eval {
         $self->{'eventManager'}->trigger( 'onBeforeStartService', $service ) == 0
             && $self->{'provider'}->start( $service )
@@ -172,8 +181,9 @@ sub stop
 {
     my ($self, $service) = @_;
 
-    local $@;
+    defined $service or die('parameter $service is not defined');
 
+    local $@;
     my $ret = eval {
         $self->{'eventManager'}->trigger( 'onBeforeStopService', $service ) == 0
             && $self->{'provider'}->stop( $service )
@@ -197,8 +207,9 @@ sub restart
 {
     my ($self, $service) = @_;
 
-    local $@;
+    defined $service or die('parameter $service is not defined');
 
+    local $@;
     my $ret = eval {
         $self->{'eventManager'}->trigger( 'onBeforeRestartService', $service ) == 0
             && $self->{'provider'}->restart( $service )
@@ -222,8 +233,9 @@ sub reload
 {
     my ($self, $service) = @_;
 
-    local $@;
+    defined $service or die('parameter $service is not defined');
 
+    local $@;
     my $ret = eval {
         $self->{'eventManager'}->trigger( 'onBeforeReloadService', $service ) == 0
             && $self->{'provider'}->reload( $service )
@@ -247,6 +259,8 @@ sub isRunning
 {
     my ($self, $service) = @_;
 
+    defined $service or die('parameter $service is not defined');
+
     local $@;
     eval { $self->{'provider'}->isRunning( $service ); };
 }
@@ -262,6 +276,8 @@ sub isRunning
 sub hasService
 {
     my ($self, $service) = @_;
+
+    defined $service or die('parameter $service is not defined');
 
     $self->{'provider'}->hasService( $service );
 }

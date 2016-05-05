@@ -34,7 +34,8 @@ use iMSCP::LsbRelease;
 use Scalar::Defer;
 
 # Paths in which sysvinit script must be searched
-my $initScriptPaths = lazy {
+my $initScriptPaths = lazy
+    {
         my $id = iMSCP::LsbRelease->getInstance()->getId( 'short' );
 
         if (grep($_ eq $id, ( 'FreeBSD', 'DragonFly' ))) {
@@ -136,8 +137,9 @@ sub remove
 {
     my ($self, $service) = @_;
 
-    local $@;
+    defined $service or die( 'parameter $service is not defined' );
 
+    local $@;
     if (my $initScriptPath = eval { $self->getInitScriptPath( $service ); }) {
         delete $initScriptPathsCache{$service};
         return 0 if iMSCP::File->new( filename => $initScriptPath )->delFile();
@@ -159,6 +161,7 @@ sub start
 {
     my ($self, $service) = @_;
 
+    defined $service or die( 'parameter $service is not defined' );
     $self->_exec( $self->getInitScriptPath( $service ), 'start' ) == 0;
 }
 
@@ -175,8 +178,8 @@ sub stop
 {
     my ($self, $service) = @_;
 
+    defined $service or die( 'parameter $service is not defined' );
     return 1 unless $self->_isSysvinit( $service ) && $self->isRunning( $service );
-
     $self->_exec( $self->getInitScriptPath( $service ), 'stop' ) == 0;
 }
 
@@ -192,6 +195,8 @@ sub stop
 sub restart
 {
     my ($self, $service) = @_;
+
+    defined $service or die( 'parameter $service is not defined' );
 
     if ($self->isRunning( $service )) {
         return $self->_exec( $self->getInitScriptPath( $service ), 'restart' ) == 0;
@@ -213,6 +218,8 @@ sub reload
 {
     my ($self, $service) = @_;
 
+    defined $service or die( 'parameter $service is not defined' );
+
     if ($self->isRunning( $service )) {
         return $self->_exec( $self->getInitScriptPath( $service ), 'reload' ) == 0;
     }
@@ -233,6 +240,7 @@ sub isRunning
 {
     my ($self, $service) = @_;
 
+    defined $service or die( 'parameter $service is not defined' );
     $self->_exec( $self->getInitScriptPath( $service ), 'status' ) == 0;
 }
 
@@ -249,6 +257,7 @@ sub getInitScriptPath
 {
     my ($self, $service) = @_;
 
+    defined $service or die( 'parameter $service is not defined' );
     $self->_searchInitScript( $service );
 }
 
@@ -317,7 +326,7 @@ sub _exec
 {
     my ($self, @command) = @_;
 
-    my $ret = execute( "@command", \my $stdout, \my $stderr );
+    my $ret = execute( "@command", \ my $stdout, \ my $stderr );
     error( $stderr ) if $ret && $stderr;
     $ret;
 }
