@@ -204,14 +204,20 @@ sub uninstallPackages
     } uniq( @{$packagesToUninstall} );
 
     if (@{$packagesToUninstall}) {
-        # Do not try to uninstall packages that are not available
-        execute( "dpkg-query -W -f='\${Package}\n' @{$packagesToUninstall} 2>/dev/null", \my $stdout );
+        # Clear information about available packages
+        $rs = execute( 'dpkg --clear-avail', \ my $stdout, \ my $stderr );
+        debug( $stdout ) if $stdout;
+        error( $stderr ) if $rs && $stderr;
+        return $rs if $rs;
+
+        # Filter list of packages that are not not available
+        execute( "dpkg-query -W -f='\${Package}\n' @{$packagesToUninstall} 2>/dev/null", $stdout );
         @{$packagesToUninstall} = split /\n/, $stdout;
 
         if (@{$packagesToUninstall}) {
             # Ensure that packages are not frozen
             # # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
-            execute( "apt-mark unhold @{$packagesToUninstall}", \my $stdout, \my $stderr );
+            execute( "apt-mark unhold @{$packagesToUninstall}", \ $stdout, \ $stderr );
             debug( $stdout ) if $stdout;
             debug( $stderr ) if $stderr;
 
