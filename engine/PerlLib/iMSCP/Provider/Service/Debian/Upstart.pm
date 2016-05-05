@@ -42,7 +42,7 @@ use parent qw/ iMSCP::Provider::Service::Upstart iMSCP::Provider::Service::Debia
 
 =item isEnabled($job)
 
- Is the given job is enabled?
+ Is the given job enabled?
 
  Return bool TRUE if the given service is enabled, FALSE otherwise
 
@@ -117,7 +117,7 @@ sub disable
     1;
 }
 
-=item remove($service)
+=item remove($job)
 
  Remove the given job
 
@@ -144,7 +144,7 @@ sub remove
     1;
 }
 
-=item hasService($service)
+=item hasService($job)
 
  Does the given job exists?
 

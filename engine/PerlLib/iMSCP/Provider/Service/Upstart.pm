@@ -263,7 +263,7 @@ sub isRunning
     defined $job or die( 'parameter $job is not defined' );
 
     if ($self->_isUpstart( $job )) {
-        execute( "$commands{'status'} $job", \my $stdout, \my $stderr );
+        execute( "$commands{'status'} $job", \ my $stdout, \ my $stderr );
         return $stdout =~ m%start/%;
     }
 

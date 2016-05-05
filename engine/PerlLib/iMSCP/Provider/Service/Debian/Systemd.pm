@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Provider::Service::Debian::Systemd - Service provider for Debian `systemd` service units
+ iMSCP::Provider::Service::Debian::Systemd - Service provider for Debian `systemd` service/socket units
 
 =cut
 
