@@ -214,7 +214,6 @@ sub reload
     my ($self, $unit) = @_;
 
     defined $unit or die( 'parameter $unit is not defined' );
-
     $unit .= '.service' unless $unit =~ /\.service$/;
 
     if ($self->isRunning( $unit )) {
@@ -280,7 +279,6 @@ sub _isSystemd
     my ($self, $unit) = @_;
 
     $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
-
     local $@;
     eval { $self->_searchUnitFile( $unit ); };
 }

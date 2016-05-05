@@ -69,7 +69,6 @@ sub isEnabled
     my ($self, $service) = @_;
 
     defined $service or die( 'parameter $service is not defined' );
-
     my $ret = $self->_exec( $commands{'invoke-rc.d'}, '--quiet', '--query', $service, 'start' );
 
     # 104 is the exit status when you query start an enabled service.
@@ -152,7 +151,6 @@ sub remove
     my ($self, $service) = @_;
 
     defined $service or die( 'parameter $service is not defined' );
-
     $self->stop( $service ) && $self->_exec( $commands{'update-rc.d'}, '-f', $service, 'remove' ) == 0
         && $self->SUPER::remove( $service );
 }
@@ -170,7 +168,6 @@ sub hasService
     my ($self, $service) = @_;
 
     defined $service or die( 'parameter $service is not defined' );
-
     $self->_isSysvinit( $service );
 }
 

@@ -75,7 +75,6 @@ sub isEnabled
 
     return $self->SUPER::isEnabled( $unit ) if $self->_isSystemd( $unit );
     return 0 if $unit =~ /\.socket$/;
-
     # is-enabled API call is not available for sysvinit scripts. We must invoke the Debian sysvinit provider
     # to known whether or not the sysvinit script is enabled.
     $self->iMSCP::Provider::Service::Debian::Sysvinit::isEnabled( $unit );

@@ -74,11 +74,7 @@ sub getInstance
 
     no strict 'refs';
     my $instance = \${"${self}::_instance"};
-
-    unless (defined ${$instance}) {
-        ${$instance} = bless ( \my $this, $self );
-    }
-
+    ${$instance} = bless ( \my $this, $self ) unless defined ${$instance};
     ${$instance};
 }
 

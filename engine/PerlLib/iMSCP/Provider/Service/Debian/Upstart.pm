@@ -53,11 +53,7 @@ sub isEnabled
     my ($self, $job) = @_;
 
     defined $job or die( 'parameter $job is not defined' );
-
-    if ($self->_isUpstart( $job )) {
-        return $self->SUPER::isEnabled( $job );
-    }
-
+    return $self->SUPER::isEnabled( $job ) if $self->_isUpstart( $job );
     $self->iMSCP::Provider::Service::Debian::Sysvinit::isEnabled( $job );
 }
 
@@ -137,10 +133,7 @@ sub remove
     }
 
     # Remove the sysvinit script if any
-    if ($self->_isSysvinit( $job )) {
-        return $self->iMSCP::Provider::Service::Debian::Sysvinit::remove( $job );
-    }
-
+    return $self->iMSCP::Provider::Service::Debian::Sysvinit::remove( $job ) if $self->_isSysvinit( $job );
     1;
 }
 
@@ -157,7 +150,6 @@ sub hasService
     my ($self, $job) = @_;
 
     defined $job or die( 'parameter $job is not defined' );
-
     $self->_isUpstart( $job ) || $self->_isSysvinit( $job );
 }
 

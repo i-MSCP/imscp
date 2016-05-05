@@ -435,7 +435,6 @@ sub _isEnabledPost090
     my $enabled = 0;
     for($jobFileContent, $jobOverrideFileContent) {
         next unless defined;
-
         for(split /^/) {
             if (/$START_ON/) {
                 $enabled = 1;
