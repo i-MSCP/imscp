@@ -108,6 +108,7 @@ INSTALLER
     Added: onBuildPackageList event (Allows to override default distribution packages file)
     Fixed: '_' and '%' wildcards must be escaped in GRANT statements
     Fixed: Debug and verbose modes must be set early
+    Fixed: Disable Dovecot systemd socket activation unit if any (not needed for Dovecot as configured by i-MSCP)
     Fixed: Don't die on misconfigured server hostname. Just ask for a valid hostname instead
     Fixed: Invalid regexes for SQL user/password (Package::PhpMyAdmin::Installer)
     Fixed: libmariadbclient18 package not provided in Debian Stretch (testing) repository

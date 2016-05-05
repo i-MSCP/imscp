@@ -76,7 +76,28 @@ sub preinstall
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoPreinstall', 'dovecot' );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPoPreinstall', 'dovecot' );
+    $rs ||= $self->stop();
+    return $rs if $rs;
+
+    local $@;
+    eval {
+        my $serviceMngr = iMSCP::Service->getInstance();
+
+        # Disable dovecot.socket unit if any
+        # Dovecot as configured by i-MSCP doesn't rely on systemd activation socket
+        # This also solve problem on boxes where IPv6 is not available (default dovecot.socket unit file make
+        # assumption that IPv6 is available without further checks)
+        if($serviceMngr->isSystemd() && $serviceMngr->hasService('dovecot.socket')) {
+            $serviceMngr->stop('dovecot.socket');
+            $serviceMngr->disable('dovecot.socket');
+        }
+    };
+    if ($@) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterPoPreinstall', 'dovecot' );
 }
 
 =item install()
@@ -92,7 +113,7 @@ sub install
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoInstall', 'dovecot' );
-    $rs ||= Servers::po::dovecot::installer->getInstance()->install();;
+    $rs ||= Servers::po::dovecot::installer->getInstance()->install();
     $rs ||= $self->{'eventManager'}->trigger( 'afterPoInstall', 'dovecot' );
 }
 
@@ -220,9 +241,59 @@ sub uninstall
     $rs ||= $self->{'eventManager'}->trigger( 'afterPoUninstall', 'dovecot' );
 }
 
+=item start()
+
+ Start Dovecot
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub start
+{
+    my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePoStart' );
+    return $rs if $rs;
+
+    local $@;
+    eval { iMSCP::Service->getInstance()->start( $self->{'config'}->{'DOVECOT_SNAME'} ); };
+    if ($@) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterPoStart' );
+}
+
+=item stop()
+
+ Stop Dovecot
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub stop
+{
+    my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePoStop' );
+    return $rs if $rs;
+
+    local $@;
+    eval { iMSCP::Service->getInstance()->stop( $self->{'config'}->{'DOVECOT_SNAME'} ); };
+    if ($@) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterPoStop' );
+}
+
 =item restart()
 
- Restart dovecot
+ Restart Dovecot
 
  Return int 0 on success, other on failure
 
