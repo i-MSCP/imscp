@@ -158,6 +158,7 @@ sub start
     my ($self, $service) = @_;
 
     defined $service or die( 'parameter $service is not defined' );
+    return 1 if $self->isRunning( $service );
     $self->_exec( $self->getInitScriptPath( $service ), 'start' ) == 0;
 }
 
@@ -193,11 +194,7 @@ sub restart
     my ($self, $service) = @_;
 
     defined $service or die( 'parameter $service is not defined' );
-
-    if ($self->isRunning( $service )) {
-        return $self->_exec( $self->getInitScriptPath( $service ), 'restart' ) == 0;
-    }
-
+    return $self->_exec( $self->getInitScriptPath( $service ), 'restart' ) == 0 if $self->isRunning( $service );
     $self->_exec( $self->getInitScriptPath( $service ), 'start' ) == 0;
 }
 
@@ -215,11 +212,7 @@ sub reload
     my ($self, $service) = @_;
 
     defined $service or die( 'parameter $service is not defined' );
-
-    if ($self->isRunning( $service )) {
-        return $self->_exec( $self->getInitScriptPath( $service ), 'reload' ) == 0;
-    }
-
+    return $self->_exec( $self->getInitScriptPath( $service ), 'reload' ) == 0 if $self->isRunning( $service );
     $self->_exec( $self->getInitScriptPath( $service ), 'start' ) == 0;
 }
 
