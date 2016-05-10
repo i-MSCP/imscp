@@ -170,7 +170,7 @@ sub start
     defined $job or die( 'parameter $job is not defined' );
 
     if ($self->_isUpstart( $job )) {
-        return $self->_exec( $commands{'start'}, $job ) == 0 if $self->isRunning( $job );
+        return $self->_exec( $commands{'start'}, $job ) == 0 unless $self->isRunning( $job );
         return 1;
     }
 
@@ -489,14 +489,15 @@ sub _enablePost090
     my ($self, $job, $jobFileContent, $jobOverrideFileContent) = @_;
 
     $jobOverrideFileContent = $self->_removeManualStanza( $jobOverrideFileContent );
-
     unless ($self->_isEnabledPost090( $jobFileContent, $jobOverrideFileContent )) {
         $jobOverrideFileContent .= $jobFileContent =~ /$START_ON/
             ? $self->_extractStartOnStanza( $jobFileContent )
             : "\nstart on runlevel [2345]";
+
+        return $self->_writeFile( "$job.override", $jobOverrideFileContent );
     }
 
-    return $self->_writeFile( "$job.override", $jobOverrideFileContent );
+    1;
 }
 
 =item _disablePre067($service, $jobFileContent)
@@ -812,7 +813,7 @@ sub _writeFile
 {
     my ($self, $filename, $fileContent) = @_;
 
-    my $jobDir = dirname( $self->getJobFilePath( fileparse( $filename, qr/\.[^.]*/ ) ) );
+    my $jobDir = dirname( $self->getJobFilePath( basename( $filename, '.conf', '.override' ) ) );
     my $filepath = File::Spec->join( $jobDir, $filename );
     my $file = iMSCP::File->new( filename => $filepath );
     $file->set( $fileContent ) == 0 && $file->save() == 0 && $file->mode( 0644 ) == 0 or die(

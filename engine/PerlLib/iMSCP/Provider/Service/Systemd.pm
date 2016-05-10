@@ -190,11 +190,7 @@ sub restart
 
     defined $unit or die( 'parameter $unit is not defined' );
     $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
-
-    if ($self->isRunning( $unit )) {
-        return $self->_exec( $commands{'systemctl'}, 'restart', $unit ) == 0;
-    }
-
+    return $self->_exec( $commands{'systemctl'}, 'restart', $unit ) == 0 if $self->isRunning( $unit );
     $self->_exec( $commands{'systemctl'}, 'start', $unit ) == 0;
 }
 
@@ -215,11 +211,7 @@ sub reload
 
     defined $unit or die( 'parameter $unit is not defined' );
     $unit .= '.service' unless $unit =~ /\.service$/;
-
-    if ($self->isRunning( $unit )) {
-        return $self->_exec( $commands{'systemctl'}, 'reload', $unit ) == 0;
-    }
-
+    return $self->_exec( $commands{'systemctl'}, 'reload', $unit ) == 0 if $self->isRunning( $unit );
     $self->start( $unit );
 }
 

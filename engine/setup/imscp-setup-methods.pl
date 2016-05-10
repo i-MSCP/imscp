@@ -1856,7 +1856,7 @@ sub setupRestartServices
 
     my $serviceMngr = iMSCP::Service->getInstance();
     unshift @services, (
-        [ sub { $serviceMngr->start('imscp_mountall'); 0; }, 'Mounts i-MSCP filesystems' ],
+        [ sub { $serviceMngr->restart('imscp_mountall'); 0; }, 'Mounts i-MSCP filesystems' ],
         [ sub { $serviceMngr->restart('imscp_traffic'); 0; }, 'i-MSCP Traffic Logger' ],
         [ sub { $serviceMngr->start('imscp_daemon'); 0; }, 'i-MSCP Daemon' ]
     );
