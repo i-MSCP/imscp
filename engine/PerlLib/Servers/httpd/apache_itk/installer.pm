@@ -383,8 +383,8 @@ sub _buildPhpConfFiles
 
     if ($self->{'phpConfig'}->{'PHP_ENMOD_PATH'} ne '') {
         for (
-            'apc', 'curl', 'gd', 'imap', 'intl', 'json', 'mcrypt', 'mysqlnd/10', 'mysqli', 'mysql', 'opcache', 'pdo/10',
-            'pdo_mysql', 'zip'
+            'apc', 'curl', 'common', 'gd', 'imap', 'intl', 'json', 'mbstring', 'mcrypt', 'mysqlnd/10', 'mysqli',
+            'mysql', 'opcache', 'pdo/10', 'pdo_mysql', 'xml', 'zip'
         ) {
             $rs = execute( "$self->{'phpConfig'}->{'PHP_ENMOD_PATH'} $_", \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;

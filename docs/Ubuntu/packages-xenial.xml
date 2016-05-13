@@ -35,9 +35,11 @@
             <package>php7.0-imap</package>
             <package>php7.0-intl</package>
             <package>php7.0-json</package>
+            <package>php7.0-mbstring</package>
             <package>php7.0-mcrypt</package>
             <package>php7.0-mysql</package>
             <package>php7.0-opcache</package>
+            <package>php7.0-xml</package>
             <package>php7.0-zip</package>
             <package>php-pear</package>
             <package_conflict>php-apc</package_conflict>
