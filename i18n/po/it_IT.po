@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# theprincy <powerpcweb@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-05-04 10:40+0200\n"
-"PO-Revision-Date: 2016-05-04 08:41+0000\n"
+"POT-Creation-Date: 2016-05-14 19:34+0200\n"
+"PO-Revision-Date: 2016-05-14 17:35+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/i-mscp/i-MSCP/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -49,7 +50,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\nGentile {RESELLER},\n\nIl tuo utente {CUSTOMER} sta aspettando che approvi il tuo nuovo alias di dominio:\n\n{ALIAS}\n\nUna volta loggato, puoi attivare il nuovo alias all'indirizzo {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n\nGrazie per aver utilizzato i servizi di i-MSCP.\n\n___________________________\nIl Gruppo i-MSCP\n\n"
 
 msgid ""
 "\n"
@@ -66,7 +67,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\nSalve {NAME},\n\nIl tuo nome utente è: {USERNAME}\nla tua password è: {PASSWORD}\n\nPuoi effettuare il login qui: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\nGrazie per aver utilizzato i servizi di i-MSCP.\n\n___________________________\nIl Gruppo i-MSCP\n\n"
 
 msgid ""
 "\n"
@@ -87,7 +88,7 @@ msgid ""
 "Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr ""
+msgstr "\nCarissimo {NAME},\n\nUn nuovo account è stato creato per te.\n\nEcco le informazioni necessarie:\n\nTipo utente: {USERTYPE}\nNome utente: {USERNAME}\nPassword: {PASSWORD}\n\nRicorda di cambiare la tua password che ti abbiamo invito la prima vorta che accedi al sistema.\n\nPuoi accedere al sistema da {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\nPer le statistiche: http://{USERNAME}/stats\n(Stesso nome utente e password)\n\nTi ringraziamo per usare i nostri servizi.\n"
 
 msgid ""
 "\n"
@@ -122,7 +123,7 @@ msgstr "è stato cancellato da {ADMIN}!"
 
 #, php-format
 msgid "%%s must be lower than %%s."
-msgstr ""
+msgstr "%%s deve essere minore di  %%s."
 
 #, php-format
 msgid "%1$d / %2$d"
@@ -409,13 +410,13 @@ msgstr "'%%value%%' sembra essere un nome di sottodominio, ma non è in grado di
 msgid ""
 "'%%value%%' appears to be a subdomain name but cannot match TLD against "
 "known list"
-msgstr ""
+msgstr "'%%value$%%' sembra essere un nome di sottodominio, ma il TLD non rientra nella lista nota"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but cannot match against "
 "subdomain schema for TLD '%%tld%%'"
-msgstr ""
+msgstr "'%%value%%' sembra essere un nome di sottodominio, ma non può corrisponde allo schema sottodominio per TLD '%%tld%%'"
 
 #, php-format
 msgid ""
@@ -2501,8 +2502,8 @@ msgstr "Genera"
 msgid "Generate a self-signed certificate"
 msgstr "Genera un certificato auto firmato"
 
-msgid "Get a new image"
-msgstr "Immetti una nuova immagine"
+msgid "Get a new security code"
+msgstr ""
 
 msgid "GiB"
 msgstr "GiB"
