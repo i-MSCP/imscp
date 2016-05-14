@@ -167,9 +167,6 @@ sub _init
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'mta'} = Servers::mta::postfix->getInstance();
-    $self->{'eventManager'}->trigger( 'beforeMtaInitInstaller', $self, 'postfix' ) and fatal(
-        'postfix - beforeMtaInitInstaller has failed'
-    );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'lkptsDir'} = "$self->{'cfgDir'}/imscp";
@@ -186,9 +183,6 @@ sub _init
         }
     }
 
-    $self->{'eventManager'}->trigger( 'afterMtaInitInstaller', $self, 'postfix' ) and fatal(
-        'postfix - afterMtaInitInstaller has failed'
-    );
     $self;
 }
 

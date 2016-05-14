@@ -295,9 +295,6 @@ sub _init
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'po'} = Servers::po::dovecot->getInstance();
     $self->{'mta'} = Servers::mta::postfix->getInstance();
-    $self->{'eventManager'}->trigger( 'beforePodInitInstaller', $self, 'dovecot' ) and fatal(
-        'dovecot - beforePoInitInstaller has failed'
-    );
     $self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
@@ -314,9 +311,6 @@ sub _init
     }
 
     $self->_getVersion() and fatal( 'Could not get Dovecot version' );
-    $self->{'eventManager'}->trigger( 'afterPodInitInstaller', $self, 'dovecot' ) and fatal(
-        'dovecot - afterPoInitInstaller has failed'
-    );
     $self;
 }
 

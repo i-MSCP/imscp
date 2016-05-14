@@ -109,9 +109,6 @@ sub _init
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'sqld'} = Servers::sqld::mysql->getInstance();
-    $self->{'eventManager'}->trigger( 'beforeSqldInitInstaller', $self, 'mysql' ) and fatal(
-        'mysql - beforeSqldInitInstaller has failed'
-    );
     $self->{'cfgDir'} = $self->{'sqld'}->{'cfgDir'};
     $self->{'config'} = $self->{'sqld'}->{'config'};
 
@@ -125,9 +122,6 @@ sub _init
         }
     }
 
-    $self->{'eventManager'}->trigger( 'afterSqldInitInstaller', $self, 'mysql' ) and fatal(
-        'mysql - afterSqldInitInstaller has failed'
-    );
     $self;
 }
 

@@ -438,9 +438,6 @@ sub _init
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'po'} = Servers::po::courier->getInstance();
     $self->{'mta'} = Servers::mta::postfix->getInstance();
-    $self->{'eventManager'}->trigger( 'beforePodInitInstaller', $self, 'courier' ) and fatal(
-        'courier - beforePoInitInstaller has failed'
-    );
     $self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
@@ -456,9 +453,6 @@ sub _init
         }
     }
 
-    $self->{'eventManager'}->trigger( 'afterPodInitInstaller', $self, 'courier' ) and fatal(
-        'courier - afterPoInitInstaller has failed'
-    );
     $self;
 }
 

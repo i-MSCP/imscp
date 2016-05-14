@@ -260,9 +260,6 @@ sub _init
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'ftpd'} = Servers::ftpd::proftpd->getInstance();
-    $self->{'eventManager'}->trigger( 'beforeFtpdInitInstaller', $self, 'proftpd' ) and fatal(
-        'proftpd - beforeFtpdInitInstaller has failed'
-    );
     $self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
@@ -271,7 +268,6 @@ sub _init
     my $oldConf = "$self->{'cfgDir'}/proftpd.old.data";
     if (-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-
         for my $param(keys %oldConfig) {
             if (exists $self->{'config'}->{$param}) {
                 $self->{'config'}->{$param} = $oldConfig{$param};
@@ -279,9 +275,6 @@ sub _init
         }
     }
 
-    $self->{'eventManager'}->trigger( 'afterFtpdInitInstaller', $self, 'proftpd' ) and fatal(
-        'proftpd - afterFtpdInitInstaller has failed'
-    );
     $self;
 }
 

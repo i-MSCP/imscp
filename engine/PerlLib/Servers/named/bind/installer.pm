@@ -302,9 +302,6 @@ sub _init
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'named'} = Servers::named::bind->getInstance();
-    $self->{'eventManager'}->trigger( 'beforeNamedInitInstaller', $self, 'bind' ) and fatal(
-        'bind - beforeNamedInitInstaller has failed'
-    );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
@@ -313,7 +310,6 @@ sub _init
     my $oldConf = "$self->{'cfgDir'}/bind.old.data";
     if (-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-
         for my $param(keys %oldConfig) {
             if (exists $self->{'config'}->{$param}) {
                 $self->{'config'}->{$param} = $oldConfig{$param};
@@ -321,9 +317,6 @@ sub _init
         }
     }
 
-    $self->{'eventManager'}->trigger( 'afterNamedInitInstaller', $self, 'bind' ) and fatal(
-        'bind - afterNamedInitInstaller has failed'
-    );
     $self;
 }
 
@@ -345,7 +338,7 @@ sub _bkpConfFile
 
     if (-f $cfgFile) {
         my $file = iMSCP::File->new( filename => $cfgFile );
-        my $filename = fileparse( $cfgFile );
+        my $filename = basename( $cfgFile );
 
         unless (-f "$self->{'bkpDir'}/$filename.system") {
             $rs = $file->copyFile( "$self->{'bkpDir'}/$filename.system" );
@@ -375,9 +368,13 @@ sub _switchTasks
 
     return $slaveDbDir->remove() unless $self->{'config'}->{'BIND_MODE'} eq 'slave';
 
-    my $rs = $slaveDbDir->make( {
-            user => $main::imscpConfig{'ROOT_USER'}, group => $self->{'config'}->{'BIND_GROUP'}, mode => '0775'
-        } );
+    my $rs = $slaveDbDir->make(
+        {
+            user => $main::imscpConfig{'ROOT_USER'},
+            group => $self->{'config'}->{'BIND_GROUP'},
+            mode => 0775
+        }
+    );
     return $rs if $rs;
 
     $rs = execute( "rm -f $self->{'wrkDir'}/*.db", \my $stdout, \my $stderr );
@@ -403,99 +400,146 @@ sub _buildConf
 {
     my $self = shift;
 
-    for my $conffile('BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
-        next if $self->{'config'}->{$conffile} eq '';
-
-        my $filename = fileparse( $self->{'config'}->{$conffile} );
-        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind', $filename, \my $cfgTpl, { } );
+    # default conffile (Debian/Ubuntu specific)
+    if ($self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} && -f $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}) {
+        my $tplName = basename( $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} );
+        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind', $tplName, \ my $tplContent, { } );
         return $rs if $rs;
 
-        unless (defined $cfgTpl) {
-            $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/$filename" )->get();
-            unless (defined $cfgTpl) {
-                error( sprintf( 'Could not read %S file', "$self->{'cfgDir'}/$filename" ) );
+        unless (defined $tplContent) {
+            $tplContent = iMSCP::File->new( filename => $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} )->get();
+            unless (defined $tplContent) {
+                error( sprintf( 'Could not read %s file', $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} ) );
                 return 1;
             }
         }
 
-        $rs = $self->{'eventManager'}->trigger( 'beforeNamedBuildConf', \$cfgTpl, $filename );
-        return $rs if $rs;
+        # Enable/disable local DNS resolver
+        $tplContent =~ s/RESOLVCONF=(?:no|yes)/RESOLVCONF=$self->{'config'}->{'LOCAL_DNS_RESOLVER'}/i;
 
-        if ($conffile eq 'BIND_CONF_FILE' && !-f "$self->{'config'}->{'BIND_CONF_DIR'}/bind.keys") {
-            $cfgTpl =~ s%include "$self->{'config'}->{'BIND_CONF_DIR'}/bind.keys";\n%%;
-        } elsif ($conffile eq 'BIND_OPTIONS_CONF_FILE') {
-            $cfgTpl =~ s/listen-on-v6\s+\{\s+any;\s+\};/listen-on-v6 { none; };/ if $self->{'config'}->{'BIND_IPV6'} eq 'no';
-
-            my $namedVersion = $self->_getVersion();
-            unless (defined $namedVersion) {
-                error( 'Could not retrieve named (Bind9) version' );
-                return 1;
-            }
-
-            if (version->parse( $namedVersion ) >= version->parse( '9.9.3' )) {
-                $cfgTpl =~ s%//\s+(check-spf\s+ignore;)%$1%;
-            }
-
-            if ($self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} ne '' && -f $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}) {
-                my $filename = fileparse( $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} );
-                my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind', $filename, \my $fileContent, { } );
-                return $rs if $rs;
-
-                unless (defined $fileContent) {
-                    $fileContent = iMSCP::File->new( filename => $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} )->get();
-                    unless (defined $fileContent) {
-                        error( sprintf( 'Could not read %s file', $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} ) );
-                        return 1;
-                    }
-                }
-
-                $rs = $self->{'eventManager'}->trigger( 'beforeNamedBuildConf', \$fileContent, $filename );
-                return $rs if $rs;
-
-                # Enable/disable local DNS resolver
-
-                $fileContent =~ s/RESOLVCONF=(?:no|yes)/RESOLVCONF=$self->{'config'}->{'LOCAL_DNS_RESOLVER'}/i;
-
-                # Fix for #IP-1333
-                my $serviceMngr = iMSCP::Service->getInstance();
-                if ($serviceMngr->isSystemd()) {
-                    if ($self->{'config'}->{'LOCAL_DNS_RESOLVER'} eq 'yes') {
-                        $serviceMngr->enable( 'bind9-resolvconf' );
-                    } else {
-                        $serviceMngr->stop( 'bind9-resolvconf' );
-                        $serviceMngr->disable( 'bind9-resolvconf' );
-                    }
-                }
-
-                # Enable/disable IPV6 support
-                if ($fileContent =~ /OPTIONS="(.*)"/) {
-                    (my $options = $1) =~ s/\s*-[46]\s*//g;
-                    $options = '-4 '.$options unless $self->{'config'}->{'BIND_IPV6'} eq 'yes';
-                    $fileContent =~ s/OPTIONS=".*"/OPTIONS="$options"/;
-                }
-
-                $rs = $self->{'eventManager'}->trigger( 'afterNamedBuildConf', \$fileContent, $filename );
-                return $rs if $rs;
-
-                my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
-                $rs = $file->set( $fileContent );
-                $rs ||= $file->save();
-                $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-                $rs ||= $file->mode( 0644 );
-                $rs ||= $file->copyFile( $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} );
-                return $rs if $rs;
+        # Fix for #IP-1333
+        my $serviceMngr = iMSCP::Service->getInstance();
+        if ($serviceMngr->isSystemd()) {
+            if ($self->{'config'}->{'LOCAL_DNS_RESOLVER'} eq 'yes') {
+                $serviceMngr->enable( 'bind9-resolvconf' );
+            } else {
+                $serviceMngr->stop( 'bind9-resolvconf' );
+                $serviceMngr->disable( 'bind9-resolvconf' );
             }
         }
 
-        $rs = $self->{'eventManager'}->trigger( 'afterNamedBuildConf', \$cfgTpl, $filename );
+        # Enable/disable IPV6 support
+        if ($tplContent =~ /OPTIONS="(.*)"/) {
+            (my $options = $1) =~ s/\s*-[46]\s*//g;
+            $options = '-4 '.$options unless $self->{'config'}->{'BIND_IPV6'} eq 'yes';
+            $tplContent =~ s/OPTIONS=".*"/OPTIONS="$options"/;
+        }
+
+        $rs = $self->{'eventManager'}->trigger( 'afterNamedBuildConf', \$tplContent, $tplName );
         return $rs if $rs;
 
-        my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
-        $rs = $file->set( $cfgTpl );
+        my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$tplName" );
+        $rs = $file->set( $tplContent );
         $rs ||= $file->save();
-        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
+        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
         $rs ||= $file->mode( 0644 );
-        $rs ||= $file->copyFile( $self->{'config'}->{$conffile} );
+        $rs ||= $file->copyFile( $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} );
+        return $rs if $rs;
+    }
+
+    # option conffile
+    if ($self->{'config'}->{'BIND_OPTIONS_CONF_FILE'}) {
+        my $tplName = basename( $self->{'config'}->{'BIND_OPTIONS_CONF_FILE'} );
+        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind', $tplName, \ my $tplContent, { } );
+        return $rs if $rs;
+
+        unless (defined $tplContent) {
+            $tplContent = iMSCP::File->new( filename => "$self->{'cfgDir'}/$tplName" )->get();
+            unless (defined $tplContent) {
+                error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/$tplName" ) );
+                return 1;
+            }
+        }
+
+        if ($self->{'config'}->{'BIND_IPV6'} eq 'no') {
+            $tplContent =~ s/listen-on-v6\s+\{\s+any;\s+\};/listen-on-v6 { none; };/;
+        }
+
+        my $namedVersion = $self->_getVersion();
+        unless (defined $namedVersion) {
+            error( 'Could not retrieve named (Bind9) version' );
+            return 1;
+        }
+
+        if (version->parse( $namedVersion ) >= version->parse( '9.9.3' )) {
+            $tplContent =~ s%//\s+(check-spf\s+ignore;)%$1%;
+        }
+
+        $rs = $self->{'eventManager'}->trigger( 'afterNamedBuildConf', \$tplContent, $tplName );
+        return $rs if $rs;
+
+        my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$tplName" );
+        $rs = $file->set( $tplContent );
+        $rs ||= $file->save();
+        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+        $rs ||= $file->mode( 0644 );
+        $rs ||= $file->copyFile( $self->{'config'}->{'BIND_OPTIONS_CONF_FILE'} );
+        return $rs if $rs;
+    }
+
+    # master conffile
+    if ($self->{'config'}->{'BIND_CONF_FILE'}) {
+        my $tplName = basename( $self->{'config'}->{'BIND_CONF_FILE'} );
+        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind', $tplName, \ my $tplContent, { } );
+        return $rs if $rs;
+
+        unless (defined $tplContent) {
+            $tplContent = iMSCP::File->new( filename => "$self->{'cfgDir'}/$tplName" )->get();
+            unless (defined $tplContent) {
+                error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/$tplName" ) );
+                return 1;
+            }
+        }
+
+        unless (-f "$self->{'config'}->{'BIND_CONF_DIR'}/bind.keys") {
+            $tplContent =~ s%include\s+\Q"$self->{'config'}->{'BIND_CONF_DIR'}\E/bind.keys";\n%%;
+        }
+
+        $rs = $self->{'eventManager'}->trigger( 'afterNamedBuildConf', \$tplContent, $tplName );
+        return $rs if $rs;
+
+        my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$tplName" );
+        $rs = $file->set( $tplContent );
+        $rs ||= $file->save();
+        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+        $rs ||= $file->mode( 0644 );
+        $rs ||= $file->copyFile( $self->{'config'}->{'BIND_CONF_FILE'} );
+        return $rs if $rs;
+    }
+
+    # local conffile
+    if ($self->{'config'}->{'BIND_LOCAL_CONF_FILE'}) {
+        my $tplName = basename( $self->{'config'}->{'BIND_LOCAL_CONF_FILE'} );
+        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind', $tplName, \ my $tplContent, { } );
+        return $rs if $rs;
+
+        unless (defined $tplContent) {
+            $tplContent = iMSCP::File->new( filename => "$self->{'cfgDir'}/$tplName" )->get();
+            unless (defined $tplContent) {
+                error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/$tplName" ) );
+                return 1;
+            }
+        }
+
+        $rs = $self->{'eventManager'}->trigger( 'afterNamedBuildConf', \$tplContent, $tplName );
+        return $rs if $rs;
+
+        my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$tplName" );
+        $rs = $file->set( $tplContent );
+        $rs ||= $file->save();
+        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+        $rs ||= $file->mode( 0644 );
+        $rs ||= $file->copyFile( $self->{'config'}->{'BIND_LOCAL_CONF_FILE'} );
         return $rs if $rs;
     }
 
@@ -533,8 +577,8 @@ sub _checkIps
     my $net = iMSCP::Net->getInstance();
 
     for my $ipAddr(@ips) {
-        return 0 unless $net->isValidAddr( $ipAddr ) &&
-            grep($_ eq $net->getAddrType( $ipAddr ), ( 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ));
+        return 0 unless $net->isValidAddr( $ipAddr )
+            && $net->getAddrType( $ipAddr ) =~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/;
     }
 
     1;
@@ -552,7 +596,7 @@ sub _getVersion
 {
     my $self = shift;
 
-    my $rs = execute( "$self->{'config'}->{'NAMED_BNAME'} -v", \my $stdout, \my $stderr );
+    my $rs = execute( "$self->{'config'}->{'NAMED_BNAME'} -v", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $rs && $stderr;
 
@@ -579,7 +623,7 @@ sub _oldEngineCompatibility
     return $rs if $rs;
 
     if (iMSCP::ProgramFinder::find( 'resolvconf' )) {
-        my $rs = execute( "resolvconf -d lo.imscp", \my $stdout, \my $stderr );
+        my $rs = execute( "resolvconf -d lo.imscp", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
         return $rs if $rs;
