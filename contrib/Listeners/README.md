@@ -62,6 +62,10 @@ Allows to modify default service-login configuration options. This listener file
 
 Allows to setup Bind9 for local network.
 
+### 10_bind9_rrl.pl
+
+Listener implementing RRL (Response-Rate-Limiting)
+
 ### 10_named_slave_provisioning.pl
 
 Provides slave DNS server(s) provisioning service.

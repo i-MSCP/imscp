@@ -53,6 +53,7 @@ CONFIG
     Removed: php-fpm configuration directory (merged into php configuration directory)
 
 CONTRIB
+    Added: 10_bind9_rrl listener file (Listener implementing RRL (Response-Rate-Limiting))
     Added: PhpMyAdmin/10_phpmyadmin_conffile.pl listener file (Allows to override default configuration template file)
 
 DAEMON
@@ -180,6 +181,7 @@ YOUTRACK
     IP-1533 i-MSCP is not compatible with servers on which IPv6 stack is disabled
     IP-1536 systemd - imscp_daemon service can fail to start/restart
     IP-1539 Default behaviour when adding a MySQL user is counter-intuitive
+    IP-1549 RRL implementation for BIND/Named config
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series
