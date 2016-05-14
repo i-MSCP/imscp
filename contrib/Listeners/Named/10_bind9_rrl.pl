@@ -35,7 +35,7 @@ use Servers::named;
 ## Configuration variables
 #
 
-# Max responses per second for
+# Max responses per second
 my $responsesPerSecond = 10;
 
 #
