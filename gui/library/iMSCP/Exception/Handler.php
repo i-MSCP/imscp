@@ -94,10 +94,13 @@ class iMSCP_Exception_Handler
 	/**
 	 * Handle uncaught exceptions
 	 *
-	 * @param Exception $exception Uncaught exception
+	 * Note: We cannot enforce type declaraction of Exception since we want be compatible with both PHP5 and PHP 7.
+	 *       See http://php.net/manual/fr/migration70.incompatible.php
+	 * 
+	 * @param Exception|Throwable $exception Uncaught exception
 	 * @return void
 	 */
-	public function handleException(Exception $exception)
+	public function handleException($exception)
 	{
 		try {
 			foreach($this->writers as $writer) {

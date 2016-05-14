@@ -28,7 +28,7 @@ class iMSCP_Exception_Production extends iMSCP_Exception
      *
      * @param string $message
      * @param int $code
-     * @param Exception $previous OPTIONAL Previous exception
+     * @param Exception|Throwable $previous OPTIONAL Previous exception
      * @return iMSCP_Exception_Production
      */
     public function __construct($message = '', $code = 0, $previous = null)
