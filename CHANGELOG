@@ -150,6 +150,7 @@ SERVERS
     Fixed: Invalid version format (non-numeric data) when installing VsFTPd on Debian Stretch (testing)
     Fixed: IP addresses are added multiple time in Apache 00_nameserver.conf file (Httpd servers)
     Fixed: ON|OFF strings not recognized as boolean value in imscp.cnf file (MySQL)
+    Fixed: Postfix (>= 3.0) is showing many warnings about backwards-compatible settings (default setting chroot=y)
     Fixed: Postfix maps must not be world-readable (Postfix)
     Fixed: Traffic accounting routines must not remove log files (ProFTPD/VsFTPd). Files are now truncated instead
     Fixed: Useless reload of VsFTPd when adding/removing an FTP user (privileges are given by session)
