@@ -381,9 +381,9 @@ sub _buildFastCgiConfFiles
 
     $self->{'httpd'}->setData(
         {
-            PHP_VERSION     => $self->{'phpConfig'}->{'PHP_VERSION'},
             AUTHZ_ALLOW_ALL => version->parse( $apacheVersion ) >= version->parse( '2.4.0' )
-                ? 'Require env REDIRECT_STATUS' : "Order allow,deny\n        Allow from env=REDIRECT_STATUS"
+                ? 'Require env REDIRECT_STATUS' : "Order allow,deny\n        Allow from env=REDIRECT_STATUS",
+            PHP_VERSION     => $self->{'phpConfig'}->{'PHP_VERSION'}
         }
     );
 
