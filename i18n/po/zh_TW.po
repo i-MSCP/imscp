@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-05-14 19:34+0200\n"
-"PO-Revision-Date: 2016-05-14 17:35+0000\n"
+"POT-Creation-Date: 2016-05-16 17:05+0200\n"
+"PO-Revision-Date: 2016-05-16 15:06+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -1511,6 +1511,14 @@ msgid "Could not add/update SSL certificate. An unexpected error occurred."
 msgstr "無法新增/更新 SSL 憑證。已產生無法預期的錯誤。"
 
 #, php-format
+msgid "Could not backup %s plugin directory."
+msgstr ""
+
+#, php-format
+msgid "Could not change the %s plugin: %s"
+msgstr ""
+
+#, php-format
 msgid "Could not create `%s` database name."
 msgstr ""
 
@@ -1526,10 +1534,58 @@ msgstr "無法刪除 SQL 使用者。已產生無法預期的錯誤。"
 msgid "Could not delete SSL certificate. An unexpected error occurred."
 msgstr "無法刪除 SSL 憑證。已產生無法預期的錯誤。"
 
+#, php-format
+msgid "Could not disable the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Could not enable the %s plugin: %s"
+msgstr ""
+
+msgid "Could not extract info.php file"
+msgstr ""
+
+msgid "Could not extract plugin archive."
+msgstr ""
+
+#, php-format
+msgid "Could not extract plugin archive: %s"
+msgstr ""
+
+msgid "Could not find plugin root directory withing archive."
+msgstr ""
+
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr "無法產生 SSL 憑證。已產生無法預期的錯誤。"
 
+#, php-format
+msgid "Could not get stats for file %s."
+msgstr ""
+
+#, php-format
+msgid "Could not install the %s plugin: %s"
+msgstr ""
+
+msgid "Could not open plugin archive."
+msgstr ""
+
+#, php-format
+msgid "Could not protect the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Could not restore %s plugin directory"
+msgstr ""
+
 msgid "Could not retrieve directories. Please contact your reseller."
+msgstr ""
+
+#, php-format
+msgid "Could not uninstall the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Could not update the %s plugin: %s"
 msgstr ""
 
 msgid "Could not upload file."
@@ -2833,6 +2889,10 @@ msgstr "無效的名稱"
 msgid "Invalid payload received from GitHub"
 msgstr ""
 
+#, php-format
+msgid "Invalid plugin directory: %s"
+msgstr ""
+
 msgid "Invalid private key or passphrase."
 msgstr "無效的私鑰或密碼。"
 
@@ -3737,36 +3797,52 @@ msgid "Plugin %s updated."
 msgstr "外掛 %s 已經更新。"
 
 #, php-format
+msgid "Plugin Manager: Could not change the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid ""
+"Plugin Manager: Could not delete %s plugin files. You should run the set-"
+"gui-permissions.pl script and try again."
+msgstr ""
+
+#, php-format
+msgid "Plugin Manager: Could not load plugin %s"
+msgstr ""
+
+#, php-format
+msgid ""
+"Plugin Manager: Could not uninstall the %s plugin. Plugin has been locked by"
+" another plugin."
+msgstr ""
+
+#, php-format
+msgid "Plugin Manager: Could not update the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin Manager: Could not write the %s file for protected plugins."
+msgstr ""
+
+#, php-format
+msgid "Plugin Manager: Directory %s doesn't exist or is not writable"
+msgstr ""
+
+#, php-format
 msgid "Plugin Manager: Downgrade of %s plugin is not allowed."
 msgstr "外掛管理: 不允許降外掛 %s 的版本。"
 
 #, php-format
-msgid "Plugin Manager: Unable to change the %s plugin: %s"
-msgstr "外掛管理: 無法變更 %s 外掛: %s"
+msgid "Plugin Manager: Plugin %s is not loaded"
+msgstr ""
 
 #, php-format
-msgid ""
-"Plugin Manager: Unable to delete %s plugin files. You should run the set-"
-"gui-permissions.pl script and try again."
-msgstr "外掛管理: 無法刪除 %s 外掛檔。您應該要執行 set-gui-permissions.pl 的程式然後再試一次。"
+msgid "Plugin Manager: Unknown plugin %s"
+msgstr ""
 
 #, php-format
-msgid "Plugin Manager: Unable to load plugin %s"
-msgstr "外掛管理: 無法讀取外掛 %s"
-
-#, php-format
-msgid ""
-"Plugin Manager: Unable to uninstall the %s plugin. Plugin has been locked by"
-" another plugin."
-msgstr "外掛管理: 無法反安裝 %s 外掛。外掛被其他外掛鎖住了。"
-
-#, php-format
-msgid "Plugin Manager: Unable to update the %s plugin: %s"
-msgstr "外掛管理: 無法更新 %s 外掛: %s"
-
-#, php-format
-msgid "Plugin Manager: Unable to write the %s file for protected plugins."
-msgstr "外掛管理: 無法寫入檔案到 %s 已保護的外掛"
+msgid "Plugin activation has failed: %s"
+msgstr ""
 
 msgid "Plugin archive"
 msgstr "外掛壓縮"
@@ -3776,11 +3852,27 @@ msgid ""
 "Plugin archive exceeds the maximum upload size (%s). Max upload size is: %s."
 msgstr "外掛壓縮檔超過最大的上傳大小 (%s). 最大上傳大小為: %s."
 
+#, php-format
+msgid "Plugin change has failed: %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin deactivation has failed: %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin deletion has failed: %s"
+msgstr ""
+
 msgid "Plugin errors"
 msgstr "外掛錯誤"
 
 msgid "Plugin has been successfully uploaded."
 msgstr "外掛已經成功上傳。"
+
+#, php-format
+msgid "Plugin installation has failed: %s"
+msgstr ""
 
 msgid "Plugin item errors"
 msgstr "外掛項目錯誤"
@@ -3790,6 +3882,14 @@ msgstr "外掛列表是空的。"
 
 msgid "Plugin management"
 msgstr "外掛管理"
+
+#, php-format
+msgid "Plugin uninstallation has failed: %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin update has failed: %s"
+msgstr ""
 
 msgid "Plugins Upload"
 msgstr "外掛上傳"
@@ -4967,14 +5067,6 @@ msgid "URL to this admin panel"
 msgstr "轉到管理員面板的 URL"
 
 #, php-format
-msgid "Unable to backup %s plugin directory."
-msgstr "無法備份 %s 外掛目錄。"
-
-#, php-format
-msgid "Unable to change the %s plugin: %s"
-msgstr "無法變更 %s 外掛: %s"
-
-#, php-format
 msgid "Unable to close the ticket with Id '%s'."
 msgstr "無法關閉 Id 為'%s' 的服務單。 "
 
@@ -4992,33 +5084,8 @@ msgstr "無法建立 'LC_MESSAGES' 語言檔的目錄。"
 msgid "Unable to delete i-MSCP info file."
 msgstr "無法刪除 i-MSCP 資訊檔案。"
 
-#, php-format
-msgid "Unable to disable the %s plugin: %s"
-msgstr "無法停用 %s 外掛: %s"
-
-#, php-format
-msgid "Unable to enable the %s plugin: %s"
-msgstr "無法啟用 %s 外掛: %s"
-
-msgid "Unable to extract info.php file"
-msgstr "無法解開 info.php 檔案"
-
-msgid "Unable to extract plugin archive."
-msgstr "無法解開外掛的壓縮檔"
-
-#, php-format
-msgid "Unable to extract plugin archive: %s"
-msgstr "無法解開外掛的壓縮檔: %s"
-
 msgid "Unable to find any network interface. You cannot add new IP address."
 msgstr "無法找到任何網路介面。您無法新增 IP 位址。"
-
-msgid "Unable to find plugin root directory withing archive."
-msgstr "無法找到有壓縮檔的外掛根目錄。"
-
-#, php-format
-msgid "Unable to get stats for file %s."
-msgstr "無法取得 %s 檔案的狀態。"
 
 msgid "Unable to get the IP address list. Please fix this problem."
 msgstr "無法取得 IP 地址，請修復這個問題。"
@@ -5026,22 +5093,11 @@ msgstr "無法取得 IP 地址，請修復這個問題。"
 msgid "Unable to get update info from Github"
 msgstr "無法從 Github 取得更新資訊"
 
-#, php-format
-msgid "Unable to install the %s plugin: %s"
-msgstr "無法安裝 %s 外掛: %s"
-
 msgid "Unable to load i-MSCP info file."
 msgstr "無法讀取 i-MSCP 資訊檔案。"
 
 msgid "Unable to move file."
 msgstr "無法移動檔案"
-
-msgid "Unable to open plugin archive."
-msgstr "無法開啟外掛壓縮檔。"
-
-#, php-format
-msgid "Unable to protect the %s plugin: %s"
-msgstr "無法保護 %s 外掛: %s"
 
 msgid "Unable to read Web software repository index file."
 msgstr "無法讀取網站軟體庫索引檔。"
@@ -5061,10 +5117,6 @@ msgstr "無法讀取網站軟體 XML 檔案。"
 msgid "Unable to reopen ticket with Id '%s'."
 msgstr "無法重新開啟 Id 為'%s' 的服務單。 "
 
-#, php-format
-msgid "Unable to restore %s plugin directory"
-msgstr "無法還原 %s 外掛目錄"
-
 msgid "Unable to retrieve your password from the database."
 msgstr "無法從資料庫中下載您的密碼。"
 
@@ -5083,14 +5135,6 @@ msgstr "無法設定 sslallowselfsigned 選項"
 
 msgid "Unable to set sslverifypeer option"
 msgstr "無法設定 sslverifypeer 選項"
-
-#, php-format
-msgid "Unable to uninstall the %s plugin: %s"
-msgstr "無法移除 %s 插件: %s"
-
-#, php-format
-msgid "Unable to update the %s plugin: %s"
-msgstr "無法升級 %s 插件: %s"
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"

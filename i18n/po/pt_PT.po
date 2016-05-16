@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-05-14 19:34+0200\n"
-"PO-Revision-Date: 2016-05-14 17:35+0000\n"
+"POT-Creation-Date: 2016-05-16 17:05+0200\n"
+"PO-Revision-Date: 2016-05-16 15:06+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/i-mscp/i-MSCP/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
@@ -1511,6 +1511,14 @@ msgid "Could not add/update SSL certificate. An unexpected error occurred."
 msgstr ""
 
 #, php-format
+msgid "Could not backup %s plugin directory."
+msgstr ""
+
+#, php-format
+msgid "Could not change the %s plugin: %s"
+msgstr ""
+
+#, php-format
 msgid "Could not create `%s` database name."
 msgstr ""
 
@@ -1526,10 +1534,58 @@ msgstr ""
 msgid "Could not delete SSL certificate. An unexpected error occurred."
 msgstr ""
 
+#, php-format
+msgid "Could not disable the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Could not enable the %s plugin: %s"
+msgstr ""
+
+msgid "Could not extract info.php file"
+msgstr ""
+
+msgid "Could not extract plugin archive."
+msgstr ""
+
+#, php-format
+msgid "Could not extract plugin archive: %s"
+msgstr ""
+
+msgid "Could not find plugin root directory withing archive."
+msgstr ""
+
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr ""
 
+#, php-format
+msgid "Could not get stats for file %s."
+msgstr ""
+
+#, php-format
+msgid "Could not install the %s plugin: %s"
+msgstr ""
+
+msgid "Could not open plugin archive."
+msgstr ""
+
+#, php-format
+msgid "Could not protect the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Could not restore %s plugin directory"
+msgstr ""
+
 msgid "Could not retrieve directories. Please contact your reseller."
+msgstr ""
+
+#, php-format
+msgid "Could not uninstall the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Could not update the %s plugin: %s"
 msgstr ""
 
 msgid "Could not upload file."
@@ -2833,6 +2889,10 @@ msgstr ""
 msgid "Invalid payload received from GitHub"
 msgstr ""
 
+#, php-format
+msgid "Invalid plugin directory: %s"
+msgstr ""
+
 msgid "Invalid private key or passphrase."
 msgstr ""
 
@@ -3737,35 +3797,51 @@ msgid "Plugin %s updated."
 msgstr ""
 
 #, php-format
-msgid "Plugin Manager: Downgrade of %s plugin is not allowed."
-msgstr ""
-
-#, php-format
-msgid "Plugin Manager: Unable to change the %s plugin: %s"
+msgid "Plugin Manager: Could not change the %s plugin: %s"
 msgstr ""
 
 #, php-format
 msgid ""
-"Plugin Manager: Unable to delete %s plugin files. You should run the set-"
+"Plugin Manager: Could not delete %s plugin files. You should run the set-"
 "gui-permissions.pl script and try again."
 msgstr ""
 
 #, php-format
-msgid "Plugin Manager: Unable to load plugin %s"
+msgid "Plugin Manager: Could not load plugin %s"
 msgstr ""
 
 #, php-format
 msgid ""
-"Plugin Manager: Unable to uninstall the %s plugin. Plugin has been locked by"
+"Plugin Manager: Could not uninstall the %s plugin. Plugin has been locked by"
 " another plugin."
 msgstr ""
 
 #, php-format
-msgid "Plugin Manager: Unable to update the %s plugin: %s"
+msgid "Plugin Manager: Could not update the %s plugin: %s"
 msgstr ""
 
 #, php-format
-msgid "Plugin Manager: Unable to write the %s file for protected plugins."
+msgid "Plugin Manager: Could not write the %s file for protected plugins."
+msgstr ""
+
+#, php-format
+msgid "Plugin Manager: Directory %s doesn't exist or is not writable"
+msgstr ""
+
+#, php-format
+msgid "Plugin Manager: Downgrade of %s plugin is not allowed."
+msgstr ""
+
+#, php-format
+msgid "Plugin Manager: Plugin %s is not loaded"
+msgstr ""
+
+#, php-format
+msgid "Plugin Manager: Unknown plugin %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin activation has failed: %s"
 msgstr ""
 
 msgid "Plugin archive"
@@ -3776,10 +3852,26 @@ msgid ""
 "Plugin archive exceeds the maximum upload size (%s). Max upload size is: %s."
 msgstr ""
 
+#, php-format
+msgid "Plugin change has failed: %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin deactivation has failed: %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin deletion has failed: %s"
+msgstr ""
+
 msgid "Plugin errors"
 msgstr ""
 
 msgid "Plugin has been successfully uploaded."
+msgstr ""
+
+#, php-format
+msgid "Plugin installation has failed: %s"
 msgstr ""
 
 msgid "Plugin item errors"
@@ -3789,6 +3881,14 @@ msgid "Plugin list is empty."
 msgstr ""
 
 msgid "Plugin management"
+msgstr ""
+
+#, php-format
+msgid "Plugin uninstallation has failed: %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin update has failed: %s"
 msgstr ""
 
 msgid "Plugins Upload"
@@ -4967,14 +5067,6 @@ msgid "URL to this admin panel"
 msgstr "Caminho para este painel de administação"
 
 #, php-format
-msgid "Unable to backup %s plugin directory."
-msgstr ""
-
-#, php-format
-msgid "Unable to change the %s plugin: %s"
-msgstr ""
-
-#, php-format
 msgid "Unable to close the ticket with Id '%s'."
 msgstr ""
 
@@ -4992,32 +5084,7 @@ msgstr ""
 msgid "Unable to delete i-MSCP info file."
 msgstr ""
 
-#, php-format
-msgid "Unable to disable the %s plugin: %s"
-msgstr ""
-
-#, php-format
-msgid "Unable to enable the %s plugin: %s"
-msgstr ""
-
-msgid "Unable to extract info.php file"
-msgstr ""
-
-msgid "Unable to extract plugin archive."
-msgstr ""
-
-#, php-format
-msgid "Unable to extract plugin archive: %s"
-msgstr ""
-
 msgid "Unable to find any network interface. You cannot add new IP address."
-msgstr ""
-
-msgid "Unable to find plugin root directory withing archive."
-msgstr ""
-
-#, php-format
-msgid "Unable to get stats for file %s."
 msgstr ""
 
 msgid "Unable to get the IP address list. Please fix this problem."
@@ -5026,21 +5093,10 @@ msgstr ""
 msgid "Unable to get update info from Github"
 msgstr ""
 
-#, php-format
-msgid "Unable to install the %s plugin: %s"
-msgstr ""
-
 msgid "Unable to load i-MSCP info file."
 msgstr ""
 
 msgid "Unable to move file."
-msgstr ""
-
-msgid "Unable to open plugin archive."
-msgstr ""
-
-#, php-format
-msgid "Unable to protect the %s plugin: %s"
 msgstr ""
 
 msgid "Unable to read Web software repository index file."
@@ -5061,10 +5117,6 @@ msgstr ""
 msgid "Unable to reopen ticket with Id '%s'."
 msgstr ""
 
-#, php-format
-msgid "Unable to restore %s plugin directory"
-msgstr ""
-
 msgid "Unable to retrieve your password from the database."
 msgstr ""
 
@@ -5082,14 +5134,6 @@ msgid "Unable to set sslallowselfsigned option"
 msgstr ""
 
 msgid "Unable to set sslverifypeer option"
-msgstr ""
-
-#, php-format
-msgid "Unable to uninstall the %s plugin: %s"
-msgstr ""
-
-#, php-format
-msgid "Unable to update the %s plugin: %s"
 msgstr ""
 
 #, php-format
