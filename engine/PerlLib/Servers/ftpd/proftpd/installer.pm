@@ -63,10 +63,13 @@ sub registerSetupListeners
 {
     my ($self, $eventManager) = @_;
 
-    $eventManager->register( 'beforeSetupDialog', sub {
+    $eventManager->register(
+        'beforeSetupDialog',
+        sub {
             push @{$_[0]}, sub { $self->sqlUserDialog( @_ ) }, sub { $self->passivePortRangeDialog( @_ ) };
             0;
-        } );
+        }
+    );
 }
 
 =item sqlUserDialog(\%dialog)

@@ -135,7 +135,7 @@ sub lock
     return 1 if defined $self->{'locks'}->{$lockFile};
 
     debug( sprintf( 'Acquire exclusive lock on %s', $lockFile ) );
-    open $self->{'locks'}->{$lockFile}, '>', $lockFile or die( sprintf( 'Could not open %s file file', $lockFile ) );
+    open $self->{'locks'}->{$lockFile}, '>', $lockFile or die( sprintf( 'Could not open %s file', $lockFile ) );
     my $rs = flock( $self->{'locks'}->{$lockFile}, $nowait ? LOCK_EX | LOCK_NB : LOCK_EX );
     $rs || $nowait or die( sprintf( 'Could not acquire exclusive lock on %s', $lockFile ) );
     $rs;
