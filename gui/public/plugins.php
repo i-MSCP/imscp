@@ -20,7 +20,9 @@
 
 require_once 'imscp-lib.php';
 
-if (($urlComponents = parse_url($_SERVER['REQUEST_URI'])) === false) {
+if (($urlComponents = parse_url($_SERVER['REQUEST_URI'])) === false
+    || !isset($urlComponents['path'])
+) {
     showBadRequestErrorPage();
 }
 
