@@ -293,11 +293,11 @@ sub disableDmn
         $self->setData( { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" } );
         $configTpls{'_ssl'} = 'domain_disabled_ssl.tpl';
 
-        if($data->{'HSTS_SUPPORT'}) {
-            $self->setData({
-                FORWARD => "https://$data->{'DOMAIN_NAME'}/",
-                FORWARD_TYPE => "307"
-            });
+        if ($data->{'HSTS_SUPPORT'}) {
+            $self->setData( {
+                    FORWARD      => "https://$data->{'DOMAIN_NAME'}/",
+                    FORWARD_TYPE => "307"
+                } );
         }
     }
 
@@ -1353,18 +1353,22 @@ sub _addCfg
 
     $self->setData( $data );
 
-    my %vhosts = ("$data->{'DOMAIN_NAME'}.conf" => ($data->{'FORWARD'} eq 'no' && !$data->{'HSTS_SUPPORT'}) ? 'domain.tpl' : 'domain_redirect.tpl');
+    my %vhosts = (
+        "$data->{'DOMAIN_NAME'}.conf" => $data->{'FORWARD'} eq 'no' && !$data->{'HSTS_SUPPORT'}
+            ? 'domain.tpl'
+            : 'domain_redirect.tpl'
+    );
 
     if ($data->{'SSL_SUPPORT'}) {
         $vhosts{"$data->{'DOMAIN_NAME'}_ssl.conf"} = $data->{'FORWARD'} eq 'no'
             ? 'domain_ssl.tpl' : 'domain_redirect_ssl.tpl';
         $self->setData( { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" } );
 
-        if($data->{'HSTS_SUPPORT'}) {
-            $self->setData({
-                FORWARD => "https://$data->{'DOMAIN_NAME'}/",
-                FORWARD_TYPE => "307"
-            });
+        if ($data->{'HSTS_SUPPORT'}) {
+            $self->setData( {
+                    FORWARD      => "https://$data->{'DOMAIN_NAME'}/",
+                    FORWARD_TYPE => "307"
+                } );
         }
     } else {
         $rs = $self->disableSites( "$data->{'DOMAIN_NAME'}_ssl.conf" );
@@ -1683,38 +1687,46 @@ sub _buildPHPConfig
     my $confLevel = $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'};
     my $domainType = $data->{'DOMAIN_TYPE'};
 
-    my ($fcgiDir, $emailDomain);
+    my ($fcgidName, $emailDomain);
     if ($confLevel eq 'per_user') {
         # One php.ini file for all domains
-        $fcgiDir = "$phpStarterDir/$data->{'ROOT_DOMAIN_NAME'}";
+        $fcgidName = $data->{'ROOT_DOMAIN_NAME'};
         $emailDomain = $data->{'ROOT_DOMAIN_NAME'};
     } elsif ($confLevel eq 'per_domain') {
         # One php.ini file for each domains (including subdomains)
-        $fcgiDir = "$phpStarterDir/$data->{'PARENT_DOMAIN_NAME'}";
+        $fcgidName = $data->{'PARENT_DOMAIN_NAME'};
         $emailDomain = $data->{'PARENT_DOMAIN_NAME'};
     } else {
         # One php.ini file for each domain
-        $fcgiDir = "$phpStarterDir/$data->{'DOMAIN_NAME'}";
+        $fcgidName = $data->{'DOMAIN_NAME'};
         $emailDomain = $data->{'DOMAIN_NAME'};
     }
 
     if ($data->{'FORWARD'} eq 'no' && $data->{'PHP_SUPPORT'} eq 'yes') {
         $rs = iMSCP::Dir->new( dirname => $phpStarterDir )->make(
-            { user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => 0555 }
+            {
+                user  => $main::imscpConfig{'ROOT_USER'},
+                group => $main::imscpConfig{'ROOT_GROUP'},
+                mode  => 0555
+            }
         );
-        $rs ||= iMSCP::Dir->new( dirname => $fcgiDir )->remove();
+        $rs ||= iMSCP::Dir->new( dirname => "$phpStarterDir/$fcgidName" )->remove();
         return $rs if $rs;
 
-        for  ($fcgiDir, "$fcgiDir/php$phpVersion") {
+        for  ("$phpStarterDir/$fcgidName", "$phpStarterDir/$fcgidName/php$phpVersion") {
             $rs = iMSCP::Dir->new( dirname => $_ )->make(
-                { user => $data->{'USER'}, group => $data->{'GROUP'}, mode => 0550 }
+                {
+                    user  => $data->{'USER'},
+                    group => $data->{'GROUP'},
+                    mode  => 0550
+                }
             );
             return $rs if $rs;
         }
 
         $self->setData(
             {
-                FCGI_DIR              => $fcgiDir,
+                FCGID_NAME            => $fcgidName,
                 PHP_VERSION           => $phpVersion,
                 PHP_FCGI_MAX_REQUESTS => $self->{'phpConfig'}->{'PHP_FCGI_MAX_REQUESTS'},
                 PHP_FCGI_CHILDREN     => $self->{'phpConfig'}->{'PHP_FCGI_CHILDREN'},
@@ -1728,7 +1740,7 @@ sub _buildPHPConfig
             "$self->{'phpCfgDir'}/fcgi/php-fcgi-starter",
             $data,
             {
-                destination => "$fcgiDir/php-fcgi-starter",
+                destination => "$phpStarterDir/$fcgidName/php-fcgi-starter",
                 user        => $data->{'USER'},
                 group       => $data->{'GROUP'},
                 mode        => 0550
@@ -1738,7 +1750,7 @@ sub _buildPHPConfig
             "$self->{'phpCfgDir'}/fcgi/php.ini",
             $data,
             {
-                destination => "$fcgiDir/php$phpVersion/php.ini",
+                destination => "$phpStarterDir/$fcgidName/php$phpVersion/php.ini",
                 user        => $data->{'USER'},
                 group       => $data->{'GROUP'},
                 mode        => 0440
@@ -1787,8 +1799,8 @@ sub _cleanTemplate
         $$cfgTpl = replaceBloc( "# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', $$cfgTpl );
     }
 
-    if($filename =~ /^domain(?:_(?:disabled|redirect))?(_ssl)?\.tpl$/ && !$data->{'HSTS_SUPPORT'}) {
-        $$cfgTpl = replaceBloc("# SECTION hsts_enabled BEGIN.\n", "# SECTION hsts_enabled END.\n", '', $$cfgTpl);
+    if ($filename =~ /^domain(?:_(?:disabled|redirect))?(_ssl)?\.tpl$/ && !$data->{'HSTS_SUPPORT'}) {
+        $$cfgTpl = replaceBloc( "# SECTION hsts_enabled BEGIN.\n", "# SECTION hsts_enabled END.\n", '', $$cfgTpl );
     }
 
     $$cfgTpl =~ s/^[ \t]*#.*?(?:BEGIN|END)\.\n//gim;
