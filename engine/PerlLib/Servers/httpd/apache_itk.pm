@@ -25,7 +25,7 @@ package Servers::httpd::apache_itk;
 
 use strict;
 use warnings;
-use Class::Autouse qw/Servers::httpd::apache_itk::installer Servers::httpd::apache_itk::uninstaller/;
+use Class::Autouse qw/ Servers::httpd::apache_itk::installer Servers::httpd::apache_itk::uninstaller /;
 use File::Basename;
 use File::Temp;
 use iMSCP::Config;
@@ -34,7 +34,7 @@ use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
-use iMSCP::Ext2Attributes qw(setImmutable clearImmutable isImmutable);
+use iMSCP::Ext2Attributes qw/ setImmutable clearImmutable isImmutable /;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Mount qw / mount umount addMountEntry removeMountEntry /;
@@ -287,7 +287,7 @@ sub disableDmn
         }
     );
 
-    my %configTpls = ( '' => (!$data->{'HSTS_SUPPORT'}) ? 'domain_disabled.tpl' : 'domain_redirect.tpl' );
+    my %configTpls = ( '' => !$data->{'HSTS_SUPPORT'} ? 'domain_disabled.tpl' : 'domain_redirect.tpl' );
 
     if ($data->{'SSL_SUPPORT'}) {
         $self->setData( { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" } );

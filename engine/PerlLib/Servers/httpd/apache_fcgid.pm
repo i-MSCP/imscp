@@ -25,7 +25,7 @@ package Servers::httpd::apache_fcgid;
 
 use strict;
 use warnings;
-use Class::Autouse qw/Servers::httpd::apache_fcgid::installer Servers::httpd::apache_fcgid::uninstaller/;
+use Class::Autouse qw/ Servers::httpd::apache_fcgid::installer Servers::httpd::apache_fcgid::uninstaller /;
 use File::Basename;
 use File::Temp;
 use iMSCP::Config;
@@ -34,7 +34,7 @@ use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
-use iMSCP::Ext2Attributes qw(setImmutable clearImmutable isImmutable);
+use iMSCP::Ext2Attributes qw/ setImmutable clearImmutable isImmutable /;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Mount qw / mount umount addMountEntry removeMountEntry /;
@@ -287,17 +287,19 @@ sub disableDmn
         }
     );
 
-    my %configTpls = ( '' => (!$data->{'HSTS_SUPPORT'}) ? 'domain_disabled.tpl' : 'domain_redirect.tpl' );
+    my %configTpls = ( '' => !$data->{'HSTS_SUPPORT'} ? 'domain_disabled.tpl' : 'domain_redirect.tpl' );
 
     if ($data->{'SSL_SUPPORT'}) {
         $self->setData( { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" } );
         $configTpls{'_ssl'} = 'domain_disabled_ssl.tpl';
 
         if ($data->{'HSTS_SUPPORT'}) {
-            $self->setData( {
+            $self->setData(
+                {
                     FORWARD      => "https://$data->{'DOMAIN_NAME'}/",
                     FORWARD_TYPE => "307"
-                } );
+                }
+            );
         }
     }
 

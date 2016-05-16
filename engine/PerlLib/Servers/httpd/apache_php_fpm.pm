@@ -25,7 +25,7 @@ package Servers::httpd::apache_php_fpm;
 
 use strict;
 use warnings;
-use Class::Autouse qw/Servers::httpd::apache_php_fpm::installer Servers::httpd::apache_php_fpm::uninstaller/;
+use Class::Autouse qw/ Servers::httpd::apache_php_fpm::installer Servers::httpd::apache_php_fpm::uninstaller /;
 use File::Basename;
 use File::Temp;
 use iMSCP::Config;
@@ -291,7 +291,7 @@ sub disableDmn
         }
     );
 
-    my %configTpls = ( '' => (!$data->{'HSTS_SUPPORT'}) ? 'domain_disabled.tpl' : 'domain_redirect.tpl' );
+    my %configTpls = ( '' => !$data->{'HSTS_SUPPORT'} ? 'domain_disabled.tpl' : 'domain_redirect.tpl' );
 
     if ($data->{'SSL_SUPPORT'}) {
         $self->setData( { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" } );
