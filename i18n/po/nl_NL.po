@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-05-16 17:05+0200\n"
-"PO-Revision-Date: 2016-05-16 15:06+0000\n"
+"POT-Creation-Date: 2016-05-16 17:13+0200\n"
+"PO-Revision-Date: 2016-05-16 15:14+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/i-mscp/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -1514,11 +1514,11 @@ msgstr "Bewerken of toevoegen van SSL-certificaat is mislukt. Er is een onverwac
 
 #, php-format
 msgid "Could not backup %s plugin directory."
-msgstr ""
+msgstr "Kon geen back-up maken van de %s invoegtoepassingsmap."
 
 #, php-format
 msgid "Could not change the %s plugin: %s"
-msgstr ""
+msgstr "Kon de %s invoegtoepassing niet wijzigen: %s"
 
 #, php-format
 msgid "Could not create `%s` database name."
@@ -1538,23 +1538,23 @@ msgstr "Verwijderen van SSL-certificaat is mislukt. Er is een onverwachte fout o
 
 #, php-format
 msgid "Could not disable the %s plugin: %s"
-msgstr ""
+msgstr "Kon de %s invoegtoepassing niet uitschakelen: %s"
 
 #, php-format
 msgid "Could not enable the %s plugin: %s"
-msgstr ""
+msgstr "Kon de %s invoegtoepassing niet inschakelen: %s"
 
 msgid "Could not extract info.php file"
-msgstr ""
+msgstr "Kon het info.php-bestand niet uitpakken."
 
 msgid "Could not extract plugin archive."
-msgstr ""
+msgstr "Kon het invoegtoepassingsarchief niet uitpakken."
 
 #, php-format
 msgid "Could not extract plugin archive: %s"
-msgstr ""
+msgstr "Kon het invoegtoepassingsarchief niet uitpakken: %s"
 
-msgid "Could not find plugin root directory withing archive."
+msgid "Could not find plugin root directory within archive."
 msgstr ""
 
 msgid "Could not generate SSL certificate. An unexpected error occurred."
@@ -1562,18 +1562,18 @@ msgstr "Genereren van SSL-certificaat is mislukt. Er is een onverwachte fout opg
 
 #, php-format
 msgid "Could not get stats for file %s."
-msgstr ""
+msgstr "Kon geen statistieken voor bestand %s verkrijgen."
 
 #, php-format
 msgid "Could not install the %s plugin: %s"
-msgstr ""
+msgstr "Kon de invoegtoepassing %s niet installeren: %s"
 
 msgid "Could not open plugin archive."
-msgstr ""
+msgstr "Kon het invoegtoepassingsarchief niet openen."
 
 #, php-format
 msgid "Could not protect the %s plugin: %s"
-msgstr ""
+msgstr "Kon de invoegtoepassing %s niet beveiligen: %s"
 
 #, php-format
 msgid "Could not restore %s plugin directory"
