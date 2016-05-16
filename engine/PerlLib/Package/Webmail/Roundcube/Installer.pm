@@ -39,9 +39,8 @@ use File::Basename;
 use JSON;
 use Package::FrontEnd;
 use Servers::sqld;
+use version;
 use parent 'Common::SingletonClass';
-
-our $VERSION = '0.6.0.*@dev';
 
 %main::sqlUsers = () unless %main::sqlUsers;
 @main::createdSqlUsers = () unless @main::createdSqlUsers;
@@ -166,7 +165,8 @@ sub preinstall
 {
     my $self = shift;
 
-    my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/roundcube', $VERSION );
+    my $version = version->parse( $self->_getPhpVersion() ) >= version->parse( '7.0.0' ) ? '1.2.x' : '1.1.x';
+    my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/roundcube', $version );
     $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 
@@ -283,6 +283,29 @@ sub _init
     $self->{'newInstall'} = 1;
     $self->{'config'} = $self->{'roundcube'}->{'config'};
     $self;
+}
+
+=item _getPhpVersion()
+
+ Get PHP version
+
+ Return int PHP version on sucess, die on failure
+
+=cut
+
+sub _getPhpVersion
+{
+    my $self = shift;
+
+    my $rs = execute( 'php -d date.timezone=UTC -v', \ my $stdout, \ my $stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr ) if $stderr && $rs;
+    return $rs if $rs;
+
+    $stdout =~ /PHP\s+([\d.]+)/ or die(
+        sprintf( 'Could not find PHP version from `php -v` command output: %s', $stdout )
+    );
+    $1;
 }
 
 =item _backupConfigFile($cfgFile)
