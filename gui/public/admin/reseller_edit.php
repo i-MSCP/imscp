@@ -581,10 +581,9 @@ function admin_checkAndUpdateData($resellerId)
             $errFieldsStack[] = 'max_disk_amnt';
         }
 
-        $needDaemonRequest = false;
-
         // Check for PHP settings
         $phpini = iMSCP_PHPini::getInstance();
+        $curResPhpPerms = $phpini->getResellerPermission();
         $phpini->setResellerPermission('phpiniSystem', $data['php_ini_system']);
 
         if ($phpini->resellerHasPermission('phpiniSystem')) {
@@ -603,15 +602,10 @@ function admin_checkAndUpdateData($resellerId)
             $phpini->loadResellerPermissions(); // Reset reseller PHP permissions to default values
         }
 
-        if($phpini->syncClientPermissionsWithResellerPermissions($resellerId)) {
-            $needDaemonRequest = true;
-        }
-
         if (empty($errFieldsStack) && !Zend_Session::namespaceIsset('pageMessages')) { // Update process begin here
             iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $resellerId));
 
             $oldValues = $newValues = array();
-
             foreach ($data as $property => $value) {
                 if (strpos($property, 'fallback_') !== false) {
                     $property = substr($property, 9);
@@ -621,7 +615,9 @@ function admin_checkAndUpdateData($resellerId)
             }
 
             // Nothing has been changed ?
-            if ($newValues == $oldValues && !$needDaemonRequest) {
+            if ($newValues == $oldValues
+                && $curResPhpPerms == $phpini->getResellerPermission()
+            ) {
                 set_page_message(tr('Nothing has been changed.'), 'info');
                 return true;
             }
@@ -681,7 +677,15 @@ function admin_checkAndUpdateData($resellerId)
                     $phpini->getResellerPermission('phpiniMaxInputTime'),
                     $phpini->getResellerPermission('phpiniMemoryLimit'),
                     $resellerId
-                ));
+                )
+            );
+
+            // Sync client PHP permissions with reseller PHP permissions
+            if($phpini->syncClientPermissionsWithResellerPermissions($resellerId)) {
+                $needDaemonRequest = true;
+            } else {
+                $needDaemonRequest = false;
+            }
 
             // Updating software installer properties
             if ($data['software_allowed'] == 'no') {
@@ -701,7 +705,7 @@ function admin_checkAndUpdateData($resellerId)
                 );
 
                 if ($stmt->rowCount()) {
-                    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+                    while ($row = $stmt->fetchRow()) {
                         exec_query('UPDATE web_software_inst SET software_res_del = ? WHERE software_id = ?', array(
                             '1', $row['software_id']
                         ));

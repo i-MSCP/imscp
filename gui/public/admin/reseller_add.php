@@ -473,7 +473,6 @@ function admin_checkAndCreateResellerAccount()
             $phpini->setResellerPermission('phpiniUploadMaxFileSize', $data['upload_max_filesize']);
             $phpini->setResellerPermission('phpiniMaxExecutionTime', $data['max_execution_time']);
             $phpini->setResellerPermission('phpiniMaxInputTime', $data['max_input_time']);
-
         }
 
         if (empty($errFieldsStack) && !Zend_Session::namespaceIsset('pageMessages')) { // Add process begin here
