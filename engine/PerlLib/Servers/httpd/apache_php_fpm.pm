@@ -43,7 +43,6 @@ use iMSCP::ProgramFinder;
 use iMSCP::Rights;
 use iMSCP::Service;
 use iMSCP::TemplateParser;
-use IO::Socket::INET;
 use Scalar::Defer;
 use version;
 use parent 'Common::SingletonClass';
