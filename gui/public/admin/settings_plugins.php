@@ -119,7 +119,7 @@ function uploadPlugin($pluginManager)
                         throw new iMSCPException(tr('File %s is missing in plugin archive.', "$pluginName.php"));
                     }
                 } else {
-                    throw new iMSCPException(tr('Could not find plugin root directory withing archive.'));
+                    throw new iMSCPException(tr('Could not find plugin root directory within archive.'));
                 }
 
                 if ($arch->extractTo($tmpDirectory, "$pluginName/info.php")) {
