@@ -103,7 +103,7 @@ function uploadPlugin($pluginManager)
             $arch = new ZipArchive;
 
             if ($arch->open($tmpArchPath) === true) {
-                if (($pluginName = $arch->getNameIndex(0, ZIPARCHIVE::FL_UNCHANGED)) !== false) {
+                if (($pluginName = $arch->getNameIndex(0, ZipArchive::FL_UNCHANGED)) !== false) {
                     $pluginName = rtrim($pluginName, '/');
                     $index = $arch->locateName("$pluginName.php", ZipArchive::FL_NODIR);
 
@@ -113,22 +113,22 @@ function uploadPlugin($pluginManager)
                                 throw new iMSCPException(tr('File %s is missing in plugin archive.', "$pluginName.php"));
                             }
                         } else {
-                            throw new iMSCPException(tr('Unable to get stats for file %s.', "$pluginName.php"));
+                            throw new iMSCPException(tr('Could not get stats for file %s.', "$pluginName.php"));
                         }
                     } else {
                         throw new iMSCPException(tr('File %s is missing in plugin archive.', "$pluginName.php"));
                     }
                 } else {
-                    throw new iMSCPException(tr('Unable to find plugin root directory withing archive.'));
+                    throw new iMSCPException(tr('Could not find plugin root directory withing archive.'));
                 }
 
                 if ($arch->extractTo($tmpDirectory, "$pluginName/info.php")) {
                     $pluginManager->pluginCheckCompat($pluginName, include("$tmpDirectory/$pluginName/info.php"));
                 } else {
-                    throw new iMSCPException(tr('Unable to extract info.php file'));
+                    throw new iMSCPException(tr('Could not extract info.php file'));
                 }
             } else {
-                throw new iMSCPException(tr('Unable to open plugin archive.'));
+                throw new iMSCPException(tr('Could not open plugin archive.'));
             }
         }
 
@@ -139,14 +139,14 @@ function uploadPlugin($pluginManager)
         # Backup current plugin directory in temporary directory if exists
         if (is_dir("$pluginDirectory/$pluginName")) {
             if (!@rename("$pluginDirectory/$pluginName", "$tmpDirectory/$pluginName" . '-old')) {
-                throw new iMSCPException(tr('Unable to backup %s plugin directory.', $pluginName));
+                throw new iMSCPException(tr('Could not backup %s plugin directory.', $pluginName));
             }
         }
 
         if (!$zipArch) {
             $arch->extractTo($pluginDirectory, null, true);
         } elseif (!$arch->extractTo($pluginDirectory)) {
-            throw new iMSCPException(tr('Unable to extract plugin archive.'));
+            throw new iMSCPException(tr('Could not extract plugin archive.'));
         }
 
         $ret = true;
@@ -154,13 +154,13 @@ function uploadPlugin($pluginManager)
         if ($e instanceof iMSCPException) {
             set_page_message($e->getMessage(), 'error');
         } else {
-            set_page_message(tr('Unable to extract plugin archive: %s', $e->getMessage()), 'error');
+            set_page_message(tr('Could not extract plugin archive: %s', $e->getMessage()), 'error');
         }
 
         if (!empty($pluginName) && is_dir("$tmpDirectory/$pluginName" . '-old')) {
             // Try to restore previous plugin directory on error
             if (!@rename("$tmpDirectory/$pluginName" . '-old', "$pluginDirectory/$pluginName")) {
-                set_page_message(tr('Unable to restore %s plugin directory', $pluginName), 'error');
+                set_page_message(tr('Could not restore %s plugin directory', $pluginName), 'error');
             }
         }
     }
@@ -438,25 +438,25 @@ function doAction($pluginManager, $pluginName, $action)
 
             switch ($action) {
                 case 'install':
-                    $msg = tr('Unable to install the %s plugin: %s', $pluginName, $msg);
+                    $msg = tr('Could not install the %s plugin: %s', $pluginName, $msg);
                     break;
                 case 'uninstall':
-                    $msg = tr('Unable to uninstall the %s plugin: %s', $pluginName, $msg);
+                    $msg = tr('Could not uninstall the %s plugin: %s', $pluginName, $msg);
                     break;
                 case 'update':
-                    $msg = tr('Unable to update the %s plugin: %s', $pluginName, $msg);
+                    $msg = tr('Could not update the %s plugin: %s', $pluginName, $msg);
                     break;
                 case 'change':
-                    $msg = tr('Unable to change the %s plugin: %s', $pluginName, $msg);
+                    $msg = tr('Could not change the %s plugin: %s', $pluginName, $msg);
                     break;
                 case 'enable':
-                    $msg = tr('Unable to enable the %s plugin: %s', $pluginName, $msg);
+                    $msg = tr('Could not enable the %s plugin: %s', $pluginName, $msg);
                     break;
                 case 'disable':
-                    $msg = tr('Unable to disable the %s plugin: %s', $pluginName, $msg);
+                    $msg = tr('Could not disable the %s plugin: %s', $pluginName, $msg);
                     break;
                 default:
-                    $msg = tr('Unable to protect the %s plugin: %s', $pluginName, $msg);
+                    $msg = tr('Could not protect the %s plugin: %s', $pluginName, $msg);
             }
 
             set_page_message($msg, 'error');
