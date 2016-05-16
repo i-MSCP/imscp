@@ -1146,13 +1146,11 @@ sub setupServices
 
 sub setupRegisterDelayedTasks
 {
-    iMSCP::EventManager->getInstance()->register(
-        'afterSqldPreinstall',
-        \&setupCreateMasterSqlUser,
-        \&setupSecureSqlInstallation,
-        \&setupCreateDatabase,
-        \&setupServerIps
-    );
+    my $eventManager = iMSCP::EventManager->getInstance();
+    $eventManager->register('afterSqldPreinstall', \&setupCreateMasterSqlUser);
+    $eventManager->register('afterSqldPreinstall', \&setupSecureSqlInstallation);
+    $eventManager->register('afterSqldPreinstall', \&setupCreateDatabase);
+    $eventManager->register('afterSqldPreinstall', \&setupServerIps);
 }
 
 sub setupCreateMasterSqlUser

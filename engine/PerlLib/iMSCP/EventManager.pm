@@ -29,7 +29,7 @@ use Hash::Util::FieldHash 'fieldhash';
 use iMSCP::Debug;
 use parent 'Common::SingletonClass';
 
-fieldhash my %events;
+fieldhash my %EVENTS;
 
 =head1 DESCRIPTION
 
@@ -42,38 +42,42 @@ fieldhash my %events;
 
 =over 4
 
-=item register( $event, @callables )
+=item register( $event, $callables )
 
  Register one or many listeners for the given event
 
- Param string $event Name of event that the listener listen
- Param list @callables Callables which represent event listeners
+ Param string $events Event(s) that the listener listen to
+ Param list $callables Callable that represents event listener
  Return int 0 on success, 1 on failure
 
 =cut
 
 sub register
 {
-    my ($self, $event, @callables) = @_;
+    my ($self, $events, $callable) = @_;
 
-    unless (defined $event) {
+    unless (defined $events) {
         error( '$event parameter is not defined' );
         return 1;
     }
 
-    unless (@callables) {
-        error( 'At least one listener is required' );
+    unless ($callable) {
+        error( '$callable parameter is not defined' );
         return 1;
     }
 
-    for(@callables) {
-        unless (ref $_ eq 'CODE') {
-            error( sprintf( 'Invalid listener provided for the %s event', $event ) );
+    if (ref $events eq 'ARRAY') {
+        for(@{$events}) {
+            my $ret = $self->register( $_, $callable );
+            return $ret if $ret;
+        }
+    } else {
+        unless (ref $callable eq 'CODE') {
+            error( sprintf( 'Invalid listener provided for the %s event', $events ) );
             return 1;
         }
 
-        debug( sprintf( 'Registering listener on the %s event from %s', $event, (caller( 1 ))[3] || 'main' ) );
-        push @{ $events{$self}->{$event} }, $_;
+        push @{ $EVENTS{$self}->{$events} }, $callable;
     }
 
     0;
@@ -97,7 +101,7 @@ sub unregister
         return 1;
     }
 
-    delete $events{$self}->{$event};
+    delete $EVENTS{$self}->{$event};
     0;
 }
 
@@ -120,12 +124,12 @@ sub trigger
         return 1;
     }
 
-    return 0 unless exists $events{$self}->{$event};
+    return 0 unless exists $EVENTS{$self}->{$event};
 
     debug( sprintf( 'Triggering %s event', $event ) );
 
     my $rs = 0;
-    for my $listener(@{$events{$self}->{$event}}) {
+    for my $listener(@{$EVENTS{$self}->{$event}}) {
         $rs = $listener->( @params );
         return $rs if $rs;
     }
@@ -151,7 +155,7 @@ sub _init
 {
     my $self = shift;
 
-    $events{$self} = { };
+    $EVENTS{$self} = { };
 
     # Load listener files
     #
