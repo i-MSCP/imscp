@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Thom Heemstra <thom@heemstra.xyz>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-05-14 19:34+0200\n"
-"PO-Revision-Date: 2016-05-14 17:35+0000\n"
+"POT-Creation-Date: 2016-05-16 17:13+0200\n"
+"PO-Revision-Date: 2016-05-16 15:14+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/i-mscp/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -905,7 +906,7 @@ msgid "All users"
 msgstr "Все пользователи"
 
 msgid "Allow HTTP Strict Transport Security"
-msgstr ""
+msgstr "Разрешить HTTP Strict Transport Security"
 
 msgid "Allow URL fopen"
 msgstr "Allow URL fopen"
@@ -1511,6 +1512,14 @@ msgid "Could not add/update SSL certificate. An unexpected error occurred."
 msgstr "Не удалось добавить/обновить SSL сертификат. Произошла неожиданная ошибка."
 
 #, php-format
+msgid "Could not backup %s plugin directory."
+msgstr ""
+
+#, php-format
+msgid "Could not change the %s plugin: %s"
+msgstr ""
+
+#, php-format
 msgid "Could not create `%s` database name."
 msgstr "Невозможно создать базу данных с именем `%s`."
 
@@ -1526,11 +1535,59 @@ msgstr "Не удалось удалить пользователя SQL. Про�
 msgid "Could not delete SSL certificate. An unexpected error occurred."
 msgstr "Не удалось удалить SSL сертификат. Произошла неожиданная ошибка."
 
+#, php-format
+msgid "Could not disable the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Could not enable the %s plugin: %s"
+msgstr ""
+
+msgid "Could not extract info.php file"
+msgstr ""
+
+msgid "Could not extract plugin archive."
+msgstr ""
+
+#, php-format
+msgid "Could not extract plugin archive: %s"
+msgstr ""
+
+msgid "Could not find plugin root directory within archive."
+msgstr ""
+
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr "Не удалось сгенерировать SSL сертификат. Произошла неожиданная ошибка."
 
+#, php-format
+msgid "Could not get stats for file %s."
+msgstr ""
+
+#, php-format
+msgid "Could not install the %s plugin: %s"
+msgstr ""
+
+msgid "Could not open plugin archive."
+msgstr ""
+
+#, php-format
+msgid "Could not protect the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Could not restore %s plugin directory"
+msgstr ""
+
 msgid "Could not retrieve directories. Please contact your reseller."
 msgstr "Невозможно получить список каталогов для Вашего домена. Пожалуйста, свяжитесь с вашим реселлером."
+
+#, php-format
+msgid "Could not uninstall the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Could not update the %s plugin: %s"
+msgstr ""
 
 msgid "Could not upload file."
 msgstr "Не могу загрузить файл."
@@ -2257,7 +2314,7 @@ msgstr "Включить автоответчик"
 msgid ""
 "Enable that feature only if all the subdomains of that domain have an SSL "
 "certificate."
-msgstr ""
+msgstr "Включить эту функцию только тогда, когда все дочерние домены этого домена имеют сертификат SSL."
 
 msgid "Enabled"
 msgstr "Включено"
@@ -2454,7 +2511,7 @@ msgid "Forward to URL"
 msgstr "Перенаправлять на URL"
 
 msgid "Forward type"
-msgstr ""
+msgstr "вперед вид"
 
 msgid "Free"
 msgstr "Свободно"
@@ -2502,7 +2559,7 @@ msgid "Generate a self-signed certificate"
 msgstr "Создать самоподписанный сертификат"
 
 msgid "Get a new security code"
-msgstr ""
+msgstr "Получить новый код безопасности"
 
 msgid "GiB"
 msgstr "Гб"
@@ -2520,10 +2577,10 @@ msgid "Groups"
 msgstr "Группы"
 
 msgid "HSTS: Include sub domains"
-msgstr ""
+msgstr "HSTS: Включить поддомены"
 
 msgid "HSTS: Set the max-age"
-msgstr ""
+msgstr "HSTS: Установить максимальный возраст"
 
 msgid "HTTP traffic"
 msgstr "HTTP трафик"
@@ -2832,6 +2889,10 @@ msgstr "Неверное имя."
 
 msgid "Invalid payload received from GitHub"
 msgstr "Неверный запрос получен из GitHub"
+
+#, php-format
+msgid "Invalid plugin directory: %s"
+msgstr ""
 
 msgid "Invalid private key or passphrase."
 msgstr "Неверный приватный ключ или пароль."
@@ -3737,36 +3798,52 @@ msgid "Plugin %s updated."
 msgstr "Плагин %s обновлен."
 
 #, php-format
+msgid "Plugin Manager: Could not change the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid ""
+"Plugin Manager: Could not delete %s plugin files. You should run the set-"
+"gui-permissions.pl script and try again."
+msgstr ""
+
+#, php-format
+msgid "Plugin Manager: Could not load plugin %s"
+msgstr ""
+
+#, php-format
+msgid ""
+"Plugin Manager: Could not uninstall the %s plugin. Plugin has been locked by"
+" another plugin."
+msgstr ""
+
+#, php-format
+msgid "Plugin Manager: Could not update the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin Manager: Could not write the %s file for protected plugins."
+msgstr ""
+
+#, php-format
+msgid "Plugin Manager: Directory %s doesn't exist or is not writable"
+msgstr ""
+
+#, php-format
 msgid "Plugin Manager: Downgrade of %s plugin is not allowed."
 msgstr "Менеджер плагинов: Откат плагина %s не разрешен."
 
 #, php-format
-msgid "Plugin Manager: Unable to change the %s plugin: %s"
-msgstr "Менеджер плагинов: Невозможно изменить плагин %s: %s"
+msgid "Plugin Manager: Plugin %s is not loaded"
+msgstr ""
 
 #, php-format
-msgid ""
-"Plugin Manager: Unable to delete %s plugin files. You should run the set-"
-"gui-permissions.pl script and try again."
-msgstr "Менеджер плагинов: Невозможно удалить файлы плагина %s. Вы должны запустить скрипт set-gui-permissions.pl и попробовать снова."
+msgid "Plugin Manager: Unknown plugin %s"
+msgstr ""
 
 #, php-format
-msgid "Plugin Manager: Unable to load plugin %s"
-msgstr "Менеджер плагинов: Невозможно загрузить плагин %s"
-
-#, php-format
-msgid ""
-"Plugin Manager: Unable to uninstall the %s plugin. Plugin has been locked by"
-" another plugin."
-msgstr "Менеджер плагинов: Невозможно удалить плагин %s. Плагин заблокирован другим плагином."
-
-#, php-format
-msgid "Plugin Manager: Unable to update the %s plugin: %s"
-msgstr "Менеджер плагинов: Невозможно обновить плагин %s: %s"
-
-#, php-format
-msgid "Plugin Manager: Unable to write the %s file for protected plugins."
-msgstr "Менеджер плагинов: Невозможно записать %s для защищенных плагинов."
+msgid "Plugin activation has failed: %s"
+msgstr ""
 
 msgid "Plugin archive"
 msgstr "Архив с плагином"
@@ -3776,11 +3853,27 @@ msgid ""
 "Plugin archive exceeds the maximum upload size (%s). Max upload size is: %s."
 msgstr "Архив с плагином достиг максимального размера файла для загрузки (%s). Максимальный размер файла: %s."
 
+#, php-format
+msgid "Plugin change has failed: %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin deactivation has failed: %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin deletion has failed: %s"
+msgstr ""
+
 msgid "Plugin errors"
 msgstr "Ошибки плагинов"
 
 msgid "Plugin has been successfully uploaded."
 msgstr "Плагин был успешно загружен."
+
+#, php-format
+msgid "Plugin installation has failed: %s"
+msgstr ""
 
 msgid "Plugin item errors"
 msgstr "Ошибки плагинов"
@@ -3790,6 +3883,14 @@ msgstr "Список плагинов пуст."
 
 msgid "Plugin management"
 msgstr "Управление плагинами"
+
+#, php-format
+msgid "Plugin uninstallation has failed: %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin update has failed: %s"
+msgstr ""
 
 msgid "Plugins Upload"
 msgstr "Загрузка плагинов"
@@ -4967,14 +5068,6 @@ msgid "URL to this admin panel"
 msgstr "Ссылка на панель управления"
 
 #, php-format
-msgid "Unable to backup %s plugin directory."
-msgstr "Невозможно сделать резервную копию плагина %s ."
-
-#, php-format
-msgid "Unable to change the %s plugin: %s"
-msgstr "Менеджер плагинов: Невозможно изменить плагин %s: %s"
-
-#, php-format
 msgid "Unable to close the ticket with Id '%s'."
 msgstr "Невосможно закрыть тикет с ID '%s'."
 
@@ -4992,33 +5085,8 @@ msgstr "Невозможно создать каталог 'LC_MESSAGES' для 
 msgid "Unable to delete i-MSCP info file."
 msgstr "Невозможно удалить файл информации i-MSCP."
 
-#, php-format
-msgid "Unable to disable the %s plugin: %s"
-msgstr "Невозможно отключить плагин %s: %s"
-
-#, php-format
-msgid "Unable to enable the %s plugin: %s"
-msgstr "Невозможно включить плагин %s: %s"
-
-msgid "Unable to extract info.php file"
-msgstr "Невозможно извлечь файл info.php"
-
-msgid "Unable to extract plugin archive."
-msgstr "Невозможно извлечь архив с плагином."
-
-#, php-format
-msgid "Unable to extract plugin archive: %s"
-msgstr "Невозможно извлечь архив с плагином: %s"
-
 msgid "Unable to find any network interface. You cannot add new IP address."
 msgstr "Невозможно найти сетевой интерфейс. Форма добавления IP адресов была отключена."
-
-msgid "Unable to find plugin root directory withing archive."
-msgstr "Невозможно найти корневой каталог плагина в архиве"
-
-#, php-format
-msgid "Unable to get stats for file %s."
-msgstr "Невозможно получить статистику для файла %s."
 
 msgid "Unable to get the IP address list. Please fix this problem."
 msgstr "Невозможно создать список IP адресов. Пожалуйста, исправьте проблему."
@@ -5026,22 +5094,11 @@ msgstr "Невозможно создать список IP адресов. По
 msgid "Unable to get update info from Github"
 msgstr "Невозможно получить информацию об обновлении из Github"
 
-#, php-format
-msgid "Unable to install the %s plugin: %s"
-msgstr "Менеджер плагинов: Невозможно установить плагин %s: %s"
-
 msgid "Unable to load i-MSCP info file."
 msgstr "Невозможно загрузить файл информации i-MSCP."
 
 msgid "Unable to move file."
 msgstr "Не удалось переместить файл."
-
-msgid "Unable to open plugin archive."
-msgstr "Невозможно открыть архив плагина."
-
-#, php-format
-msgid "Unable to protect the %s plugin: %s"
-msgstr "Менеджер плагинов: Невозможно защитить плагин %s: %s"
 
 msgid "Unable to read Web software repository index file."
 msgstr "Невозможно прочесть индексный файл Web-репозитория"
@@ -5061,10 +5118,6 @@ msgstr "Невозможно прочесть xml файл Web-репозито�
 msgid "Unable to reopen ticket with Id '%s'."
 msgstr "Не удается открыть тикет с Id '%s'."
 
-#, php-format
-msgid "Unable to restore %s plugin directory"
-msgstr "Невозможно восстановить резервную копию плагина %s ."
-
 msgid "Unable to retrieve your password from the database."
 msgstr "Не удается проверить ваш пароль к базе данных."
 
@@ -5083,14 +5136,6 @@ msgstr "Невозможно включить опцию sslallowselfsigned"
 
 msgid "Unable to set sslverifypeer option"
 msgstr "Невозможно включить опцию sslverifypeer"
-
-#, php-format
-msgid "Unable to uninstall the %s plugin: %s"
-msgstr "Менеджер плагинов: Невозможно деинсталлировать плагин %s: %s"
-
-#, php-format
-msgid "Unable to update the %s plugin: %s"
-msgstr "Менеджер плагинов: Невозможно обновить плагин %s: %s"
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
