@@ -635,6 +635,7 @@ iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', 
     $translations['core']['als_delete_alert'] = tr('Are you sure you want to delete this domain alias?');
     $translations['core']['sub_delete_alert'] = tr('Are you sure you want to delete this subdomain?');
     $translations['core']['dns_delete_alert'] = tr('Are you sure you want to delete this DNS record?');
+    $translations['core']['dataTable'] = getDataTablesPluginTranslations(false);
 });
 
 generateNavigation($tpl);

@@ -73,6 +73,7 @@ DATABASE
     Updated: domain_id index on domain_dns table; added index length for domain_dns and domain_text columns
 
 FRONTEND
+    Added: Datatable for domains, subdomains, domain aliases and DNS resource records (client level)
     Added: Datatable for the file system information table (admin level)
     Added: iMSCP\Net class - Allow to get list of network devices and IP addresses (stdlib)
     Added: SPF DNS resource record type (validated as a TXT record) (client level)

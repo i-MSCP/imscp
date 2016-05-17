@@ -1,8 +1,35 @@
 
+<script>
+    function action_delete(url, recordType) {
+        var msg;
+        switch (recordType) {
+            case 'als':
+                msg = imscp_i18n.core.als_delete_alert;
+                break;
+            case 'sub':
+                msg = imscp_i18n.core.sub_delete_alert;
+                break;
+            default:
+                msg = imscp_i18n.core.dns_delete_alert;
+        }
+
+        return (url != '#' && confirm(msg));
+    }
+
+    $(function() {
+       $(".datatable").dataTable({
+            language: imscp_i18n.core.dataTable,
+            displayLength: 10,
+            stateSave: true,
+            pagingType: "simple"
+        });
+    });
+</script>
+
 <h3 class="domains"><span>{TR_DOMAINS}</span></h3>
 
 <!-- BDP: domain_list -->
-<table class="firstColFixed">
+<table class="firstColFixed datatable">
     <thead>
     <tr>
         <th>{TR_NAME}</th>
@@ -43,7 +70,7 @@
 <div class="static_info">{ALS_MSG}</div>
 <!-- EDP: als_message -->
 <!-- BDP: als_list -->
-<table class="firstColFixed">
+<table class="firstColFixed datatable">
     <thead>
     <tr>
         <th>{TR_NAME}</th>
@@ -87,7 +114,7 @@
 <div class="static_info">{SUB_MSG}</div>
 <!-- EDP: sub_message -->
 <!-- BDP: sub_list -->
-<table class="firstColFixed">
+<table class="firstColFixed datatable">
     <thead>
     <tr>
         <th>{TR_NAME}</th>
@@ -103,13 +130,11 @@
     <tr>
         <!-- BDP: sub_status_reload_true -->
         <td>
-            <a href="http://{SUB_NAME}.{SUB_ALIAS_NAME}/" class="icon i_domain_icon" target="_blank"
-               title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</a>
+            <a href="http://{SUB_NAME}.{SUB_ALIAS_NAME}/" class="icon i_domain_icon" target="_blank" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</a>
         </td>
         <!-- EDP: sub_status_reload_true -->
         <!-- BDP: sub_status_reload_false -->
-        <td><span class="tips icon i_domain_icon" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</span>
-        </td>
+        <td><span class="tips icon i_domain_icon" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</span></td>
         <!-- EDP: sub_status_reload_false -->
         <td>{SUB_MOUNT}</td>
         <td>{SUB_REDIRECT}</td>
@@ -133,7 +158,7 @@
 <div class="static_info">{DNS_MSG}</div>
 <!-- EDP: dns_message -->
 <!-- BDP: dns_list -->
-<table class="firstColFixed">
+<table class="firstColFixed datatable">
     <thead>
     <tr>
         <th>{TR_ZONE}</th>
@@ -170,21 +195,3 @@
 </table>
 <!-- EDP: dns_list -->
 <!-- EDP: custom_dns_records_block -->
-
-<script>
-    function action_delete(url, recordType) {
-        var msg;
-        switch (recordType) {
-            case 'als':
-                msg = imscp_i18n.core.als_delete_alert;
-                break;
-            case 'sub':
-                msg = imscp_i18n.core.sub_delete_alert;
-                break;
-            default:
-                msg = imscp_i18n.core.dns_delete_alert;
-        }
-
-        return (url != '#' && confirm(msg));
-    }
-</script>
