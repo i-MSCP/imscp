@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-05-16 17:13+0200\n"
-"PO-Revision-Date: 2016-05-16 15:14+0000\n"
+"POT-Creation-Date: 2016-05-17 21:33+0200\n"
+"PO-Revision-Date: 2016-05-17 19:35+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/i-mscp/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -1513,11 +1513,11 @@ msgstr "Impossible d'ajouter ou mettre à jour le certificat SSL. Une erreur ina
 
 #, php-format
 msgid "Could not backup %s plugin directory."
-msgstr ""
+msgstr "Impossible de sauvegarder le répertoire de l'extension %s."
 
 #, php-format
 msgid "Could not change the %s plugin: %s"
-msgstr ""
+msgstr "Impossible de modifier l'extension %s: %s"
 
 #, php-format
 msgid "Could not create `%s` database name."
@@ -1536,58 +1536,62 @@ msgid "Could not delete SSL certificate. An unexpected error occurred."
 msgstr "Impossible de supprimer le certificat SSL. Une erreur inattendue s'est produite."
 
 #, php-format
-msgid "Could not disable the %s plugin: %s"
+msgid "Could not delete the %s plugin: %s"
 msgstr ""
+
+#, php-format
+msgid "Could not disable the %s plugin: %s"
+msgstr "Impossible de désactiver l'extension %s: %s"
 
 #, php-format
 msgid "Could not enable the %s plugin: %s"
-msgstr ""
+msgstr "Impossible d'activer l'extension %s: %s"
 
 msgid "Could not extract info.php file"
-msgstr ""
+msgstr "Impossible d'extraire le fichier info.php"
 
 msgid "Could not extract plugin archive."
-msgstr ""
+msgstr "Impossible d'extraire l'archive de l'extension."
 
 #, php-format
 msgid "Could not extract plugin archive: %s"
-msgstr ""
+msgstr "Impossible d'extraire l'archive de l'extension: %s"
 
 msgid "Could not find plugin root directory within archive."
-msgstr ""
+msgstr "Impossible de trouver le répertoire racine de l'extension à l'intérieur de l'archive."
 
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr "Impossible de générer le certificat SSL. Une erreur inattendue s'est produite."
 
 #, php-format
 msgid "Could not get stats for file %s."
-msgstr ""
+msgstr "Impossible d'obtenir les statistiques pour le fichier %s"
 
 #, php-format
 msgid "Could not install the %s plugin: %s"
-msgstr ""
+msgstr "Impossible d'installer l'extension %s: %s"
 
 msgid "Could not open plugin archive."
-msgstr ""
+msgstr "Impossible d'ouvrir l'archive de l'extension."
 
 #, php-format
 msgid "Could not protect the %s plugin: %s"
-msgstr ""
+msgstr "Impossible de protéger l'extension %s: %s"
 
 #, php-format
 msgid "Could not restore %s plugin directory"
-msgstr ""
+msgstr "Impossible de restaurer le répertoire de l'extension %s"
 
 msgid "Could not retrieve directories. Please contact your reseller."
 msgstr "Impossible d'obtenir la liste des répertoires. Veuilez contacter votre revendeur."
 
 #, php-format
 msgid "Could not uninstall the %s plugin: %s"
-msgstr ""
+msgstr "Impossible de désinstaller l'extension %s: %s"
 
 #, php-format
 msgid "Could not update the %s plugin: %s"
-msgstr ""
+msgstr "Impossible de mettre à jour l'extension %s: %s"
 
 msgid "Could not upload file."
 msgstr "Ne peut pas téléverser le fichier."
@@ -2559,7 +2563,7 @@ msgid "Generate a self-signed certificate"
 msgstr "Générer un certificat SSL auto-signé"
 
 msgid "Get a new security code"
-msgstr ""
+msgstr "Obtenir un nouveau code de sécurité"
 
 msgid "GiB"
 msgstr "GiB"
@@ -2892,7 +2896,7 @@ msgstr "Les données reçue de GitHub ne sont pas valides."
 
 #, php-format
 msgid "Invalid plugin directory: %s"
-msgstr ""
+msgstr "Répertoire d'extension invalide: %s"
 
 msgid "Invalid private key or passphrase."
 msgstr "Clé ou mot de passe invalide."
@@ -3799,35 +3803,35 @@ msgstr "L'extension %s a été mise à jour."
 
 #, php-format
 msgid "Plugin Manager: Could not change the %s plugin: %s"
-msgstr ""
+msgstr "Gestionnaire d'extensions: Impossible de modifier l'extension %s: %s"
 
 #, php-format
 msgid ""
 "Plugin Manager: Could not delete %s plugin files. You should run the set-"
 "gui-permissions.pl script and try again."
-msgstr ""
+msgstr "Gestionnaire d'extensions: Impossible de supprimer les fichiers de l'extension %s. Vous devriez exécuter le script set-gui-permissions.pl et re-essayer."
 
 #, php-format
 msgid "Plugin Manager: Could not load plugin %s"
-msgstr ""
+msgstr "Gestionnaire d'extensions: Impossible de charger l'extension %s"
 
 #, php-format
 msgid ""
 "Plugin Manager: Could not uninstall the %s plugin. Plugin has been locked by"
 " another plugin."
-msgstr ""
+msgstr "Gestionnaire d'extensions: Impossible de désinstaller l'extension %s. L'extension a été verouillée par une autre extension."
 
 #, php-format
 msgid "Plugin Manager: Could not update the %s plugin: %s"
-msgstr ""
+msgstr "Gestionnaire d'extensions: Impossible de mettre à jour l'extension %s: %s"
 
 #, php-format
 msgid "Plugin Manager: Could not write the %s file for protected plugins."
-msgstr ""
+msgstr "Gestionnaire d'extensions: Impossible d'écrite le fichier %s pour la protection des extensions."
 
 #, php-format
 msgid "Plugin Manager: Directory %s doesn't exist or is not writable"
-msgstr ""
+msgstr "Gestionnaire d'extensions: Le répertoire %s n'existe pas ou n'est pas accessible en écriture."
 
 #, php-format
 msgid "Plugin Manager: Downgrade of %s plugin is not allowed."
@@ -3835,15 +3839,15 @@ msgstr "Gestionnaire d'extensions: L'extension %s ne peut pas être rétrogradé
 
 #, php-format
 msgid "Plugin Manager: Plugin %s is not loaded"
-msgstr ""
+msgstr "Gestionnaire d'extensions: L'extension %s n'est pas chargée"
 
 #, php-format
 msgid "Plugin Manager: Unknown plugin %s"
-msgstr ""
+msgstr "Gestionnaire d'extensions: L'extension %s est inconnue"
 
 #, php-format
 msgid "Plugin activation has failed: %s"
-msgstr ""
+msgstr "L'activation de l'extension a échouée: %s"
 
 msgid "Plugin archive"
 msgstr "Archive d'extension"
@@ -3855,15 +3859,15 @@ msgstr "L'archive de l'extension excède la taille maximum d'envoi de données s
 
 #, php-format
 msgid "Plugin change has failed: %s"
-msgstr ""
+msgstr "La modification de l'extension a échouée: %s"
 
 #, php-format
 msgid "Plugin deactivation has failed: %s"
-msgstr ""
+msgstr "La désactivation de l'extension a échouée: %s"
 
 #, php-format
 msgid "Plugin deletion has failed: %s"
-msgstr ""
+msgstr "La suppression de l'extension a échouée: %s"
 
 msgid "Plugin errors"
 msgstr "Erreurs liées aux extensions"
@@ -3873,7 +3877,7 @@ msgstr "L'extension a été téléchargée."
 
 #, php-format
 msgid "Plugin installation has failed: %s"
-msgstr ""
+msgstr "L'installation de l'extension a échouée: %s"
 
 msgid "Plugin item errors"
 msgstr "Erreurs liées aux objets des extensions"
@@ -3886,11 +3890,11 @@ msgstr "Gestion des extensions"
 
 #, php-format
 msgid "Plugin uninstallation has failed: %s"
-msgstr ""
+msgstr "La désinstallation de l'extension a échouée: %s"
 
 #, php-format
 msgid "Plugin update has failed: %s"
-msgstr ""
+msgstr "La mise à jour de l'extension a échouée: %s"
 
 msgid "Plugins Upload"
 msgstr " Téléchargement d'extensions"

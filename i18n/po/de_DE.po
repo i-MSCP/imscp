@@ -3,12 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Arthur Mayer <mayer.arthur@gmail.com>, 2016
+# Ninos Ego <me@ninosego.de>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-05-16 17:13+0200\n"
-"PO-Revision-Date: 2016-05-16 15:14+0000\n"
+"POT-Creation-Date: 2016-05-17 21:33+0200\n"
+"PO-Revision-Date: 2016-05-17 19:35+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/i-mscp/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -905,7 +907,7 @@ msgid "All users"
 msgstr "Alle Benutzer"
 
 msgid "Allow HTTP Strict Transport Security"
-msgstr ""
+msgstr "HTTP Strict Transport Security erlauben"
 
 msgid "Allow URL fopen"
 msgstr "Erlaube URL-fopen"
@@ -1512,11 +1514,11 @@ msgstr "SSL-Zertifikat konnte nicht hinzugefügt/aktualisiert werden. Ein unerwa
 
 #, php-format
 msgid "Could not backup %s plugin directory."
-msgstr ""
+msgstr "Konnte den Ordner des Plugins %s nicht sichern."
 
 #, php-format
 msgid "Could not change the %s plugin: %s"
-msgstr ""
+msgstr "Konnte das Plugin %s nicht verändern: %s"
 
 #, php-format
 msgid "Could not create `%s` database name."
@@ -1535,58 +1537,62 @@ msgid "Could not delete SSL certificate. An unexpected error occurred."
 msgstr "SSL-Zertifikat konnte nicht gelöscht werden. Ein unerwarteter Fehler ist aufgetreten."
 
 #, php-format
-msgid "Could not disable the %s plugin: %s"
+msgid "Could not delete the %s plugin: %s"
 msgstr ""
+
+#, php-format
+msgid "Could not disable the %s plugin: %s"
+msgstr "Konnte das Plugin %s nicht deaktivieren: %s"
 
 #, php-format
 msgid "Could not enable the %s plugin: %s"
-msgstr ""
+msgstr "Konnte das Plugin %s nicht aktivieren: %s"
 
 msgid "Could not extract info.php file"
-msgstr ""
+msgstr "Konnte die Datei info.php nicht entpacken"
 
 msgid "Could not extract plugin archive."
-msgstr ""
+msgstr "Konnte das Plugin-Archiv nicht entpacken."
 
 #, php-format
 msgid "Could not extract plugin archive: %s"
-msgstr ""
+msgstr "Konnte das Plugin-Archiv nicht entpacken: %s"
 
 msgid "Could not find plugin root directory within archive."
-msgstr ""
+msgstr "Konnte in dem Archiv keinen Plugin Ordner finden."
 
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr "SSL-Zertifikat konnte nicht erstellt werden. Ein unerwarteter Fehler ist aufgetreten."
 
 #, php-format
 msgid "Could not get stats for file %s."
-msgstr ""
+msgstr "Konnte keine Statistik für Datei %s sammeln."
 
 #, php-format
 msgid "Could not install the %s plugin: %s"
-msgstr ""
+msgstr "Konnte das Plugin %s nicht installieren: %s"
 
 msgid "Could not open plugin archive."
-msgstr ""
+msgstr "Konnte das Plugin-Archiv nicht öffnen."
 
 #, php-format
 msgid "Could not protect the %s plugin: %s"
-msgstr ""
+msgstr "Konnte das Plugin %s nicht schützen: %s"
 
 #, php-format
 msgid "Could not restore %s plugin directory"
-msgstr ""
+msgstr "Konnte den Ordner des Plugins %s nicht wiederherstellen"
 
 msgid "Could not retrieve directories. Please contact your reseller."
 msgstr "Konnte Verzeichnisse nicht abfragen. Bitte kontaktieren Sie Ihren Reseller."
 
 #, php-format
 msgid "Could not uninstall the %s plugin: %s"
-msgstr ""
+msgstr "Konnte das Plugin %s nicht deinstallieren: %s"
 
 #, php-format
 msgid "Could not update the %s plugin: %s"
-msgstr ""
+msgstr "Konnte das Plugin %s nicht aktualisieren: %s"
 
 msgid "Could not upload file."
 msgstr "Konnte Datei nicht hochladen."
@@ -2313,7 +2319,7 @@ msgstr "Automatische Antwort aktivieren"
 msgid ""
 "Enable that feature only if all the subdomains of that domain have an SSL "
 "certificate."
-msgstr ""
+msgstr "Aktivieren Sie diese Funktion nur dann, wenn alle Subdomains dieser Domain ein SSL-Zertifikat haben."
 
 msgid "Enabled"
 msgstr "Aktiviert"
@@ -2510,7 +2516,7 @@ msgid "Forward to URL"
 msgstr "Weiterleiten zu URL"
 
 msgid "Forward type"
-msgstr ""
+msgstr "Weiterleitungstyp"
 
 msgid "Free"
 msgstr "Frei"
@@ -2558,7 +2564,7 @@ msgid "Generate a self-signed certificate"
 msgstr "Selbst-signiertes Zertifikat generieren"
 
 msgid "Get a new security code"
-msgstr ""
+msgstr "Einen neuen Sicherheitscode abfragen"
 
 msgid "GiB"
 msgstr "GiB"
@@ -2576,10 +2582,10 @@ msgid "Groups"
 msgstr "Gruppen"
 
 msgid "HSTS: Include sub domains"
-msgstr ""
+msgstr "HSTS: Subdomains einbeziehen"
 
 msgid "HSTS: Set the max-age"
-msgstr ""
+msgstr "HSTS: Maximales Alter angeben"
 
 msgid "HTTP traffic"
 msgstr "HTTP Traffic"
@@ -2891,7 +2897,7 @@ msgstr "Fehlerhafte Daten von GitHub erhalten"
 
 #, php-format
 msgid "Invalid plugin directory: %s"
-msgstr ""
+msgstr "Ungültiges Plugin-Verzeichnis: %s"
 
 msgid "Invalid private key or passphrase."
 msgstr "Falscher Privater Schlüssel oder falsche Passphrase."
@@ -3798,35 +3804,35 @@ msgstr "Plugin %s aktualisiert."
 
 #, php-format
 msgid "Plugin Manager: Could not change the %s plugin: %s"
-msgstr ""
+msgstr "Konnte das Plugin %s nicht verändern: %s"
 
 #, php-format
 msgid ""
 "Plugin Manager: Could not delete %s plugin files. You should run the set-"
 "gui-permissions.pl script and try again."
-msgstr ""
+msgstr "Plugin Manager: Das Plugin %s kann nicht gelöscht werden. Führen Sie das set-gui-permissions.pl Skript aus und versuchen Sie es erneut."
 
 #, php-format
 msgid "Plugin Manager: Could not load plugin %s"
-msgstr ""
+msgstr "Plugin Manager: Konnte das Plugin %s nicht laden"
 
 #, php-format
 msgid ""
 "Plugin Manager: Could not uninstall the %s plugin. Plugin has been locked by"
 " another plugin."
-msgstr ""
+msgstr "Plugin Manager: Das Plugin %s konnte nicht gelöscht werden, da es von einem anderen Plugin verwendet wird."
 
 #, php-format
 msgid "Plugin Manager: Could not update the %s plugin: %s"
-msgstr ""
+msgstr "Plugin Manager: Konnte das Plugin %s nicht aktualisieren: %s"
 
 #, php-format
 msgid "Plugin Manager: Could not write the %s file for protected plugins."
-msgstr ""
+msgstr "Plugin Manager: Schreiben der Datei %s für geschützte Plugins nicht möglich."
 
 #, php-format
 msgid "Plugin Manager: Directory %s doesn't exist or is not writable"
-msgstr ""
+msgstr "Plugin Manager: Plugin Ordner %s existiert nicht oder ist nicht beschreibbar"
 
 #, php-format
 msgid "Plugin Manager: Downgrade of %s plugin is not allowed."
@@ -3834,15 +3840,15 @@ msgstr "Plugin Manager: Downgrade von %s Plugin ist nicht erlaubt."
 
 #, php-format
 msgid "Plugin Manager: Plugin %s is not loaded"
-msgstr ""
+msgstr "Plugin Manager: Plugin %s ist nicht geladen"
 
 #, php-format
 msgid "Plugin Manager: Unknown plugin %s"
-msgstr ""
+msgstr "Plugin Manager: Unbekanntes Plugin %s"
 
 #, php-format
 msgid "Plugin activation has failed: %s"
-msgstr ""
+msgstr "Plugins-Aktivierung fehlgeschlagen: %s"
 
 msgid "Plugin archive"
 msgstr "Plugin-Archiv"
@@ -3854,15 +3860,15 @@ msgstr "Plugin-Archiv überschreitet die maximale Upload-Größe (%s). Max. Uplo
 
 #, php-format
 msgid "Plugin change has failed: %s"
-msgstr ""
+msgstr "Plugin-Änderung fehlgeschlagen: %s"
 
 #, php-format
 msgid "Plugin deactivation has failed: %s"
-msgstr ""
+msgstr "Plugin-Deaktivierung fehlgeschlagen: %s"
 
 #, php-format
 msgid "Plugin deletion has failed: %s"
-msgstr ""
+msgstr "Löschen des Plugins fehlgeschlagen: %s"
 
 msgid "Plugin errors"
 msgstr "Plugin Fehler"
@@ -3872,7 +3878,7 @@ msgstr "Plugin wurder erfolgreich hochgeladen"
 
 #, php-format
 msgid "Plugin installation has failed: %s"
-msgstr ""
+msgstr "Plugin-Installation fehlgeschlagen: %s"
 
 msgid "Plugin item errors"
 msgstr "Plugin Fehler"
@@ -3885,11 +3891,11 @@ msgstr "Plugin Verwaltung"
 
 #, php-format
 msgid "Plugin uninstallation has failed: %s"
-msgstr ""
+msgstr "Plugin-Deinstallation fehlgeschlagen: %s"
 
 #, php-format
 msgid "Plugin update has failed: %s"
-msgstr ""
+msgstr "Plugin-Aktualisierung fehlgeschlagen: %s"
 
 msgid "Plugins Upload"
 msgstr "Plugin-Upload"

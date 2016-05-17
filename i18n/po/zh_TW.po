@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-05-16 17:13+0200\n"
-"PO-Revision-Date: 2016-05-16 15:14+0000\n"
+"POT-Creation-Date: 2016-05-17 21:33+0200\n"
+"PO-Revision-Date: 2016-05-17 19:35+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -1533,6 +1533,10 @@ msgstr "無法刪除 SQL 使用者。已產生無法預期的錯誤。"
 
 msgid "Could not delete SSL certificate. An unexpected error occurred."
 msgstr "無法刪除 SSL 憑證。已產生無法預期的錯誤。"
+
+#, php-format
+msgid "Could not delete the %s plugin: %s"
+msgstr ""
 
 #, php-format
 msgid "Could not disable the %s plugin: %s"

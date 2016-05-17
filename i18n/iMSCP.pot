@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.2.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-05-16 17:13+0200\n"
+"POT-Creation-Date: 2016-05-17 21:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1537,6 +1537,10 @@ msgid "Could not delete SQL user. An unexpected error occurred."
 msgstr ""
 
 msgid "Could not delete SSL certificate. An unexpected error occurred."
+msgstr ""
+
+#, php-format
+msgid "Could not delete the %s plugin: %s"
 msgstr ""
 
 #, php-format

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-05-16 17:13+0200\n"
-"PO-Revision-Date: 2016-05-16 15:14+0000\n"
+"POT-Creation-Date: 2016-05-17 21:33+0200\n"
+"PO-Revision-Date: 2016-05-17 19:35+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/i-mscp/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -1513,11 +1513,11 @@ msgstr "Could not add/update SSL certificate. An unexpected error occurred."
 
 #, php-format
 msgid "Could not backup %s plugin directory."
-msgstr ""
+msgstr "Could not backup %s plugin directory."
 
 #, php-format
 msgid "Could not change the %s plugin: %s"
-msgstr ""
+msgstr "Could not change the %s plugin: %s"
 
 #, php-format
 msgid "Could not create `%s` database name."
@@ -1536,58 +1536,62 @@ msgid "Could not delete SSL certificate. An unexpected error occurred."
 msgstr "Could not delete SSL certificate. An unexpected error occurred."
 
 #, php-format
-msgid "Could not disable the %s plugin: %s"
+msgid "Could not delete the %s plugin: %s"
 msgstr ""
+
+#, php-format
+msgid "Could not disable the %s plugin: %s"
+msgstr "Could not disable the %s plugin: %s"
 
 #, php-format
 msgid "Could not enable the %s plugin: %s"
-msgstr ""
+msgstr "Could not enable the %s plugin: %s"
 
 msgid "Could not extract info.php file"
-msgstr ""
+msgstr "Could not extract info.php file"
 
 msgid "Could not extract plugin archive."
-msgstr ""
+msgstr "Could not extract plugin archive."
 
 #, php-format
 msgid "Could not extract plugin archive: %s"
-msgstr ""
+msgstr "Could not extract plugin archive: %s"
 
 msgid "Could not find plugin root directory within archive."
-msgstr ""
+msgstr "Could not find plugin root directory within archive."
 
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr "Could not generate SSL certificate. An unexpected error occurred."
 
 #, php-format
 msgid "Could not get stats for file %s."
-msgstr ""
+msgstr "Could not get stats for file %s."
 
 #, php-format
 msgid "Could not install the %s plugin: %s"
-msgstr ""
+msgstr "Could not install the %s plugin: %s"
 
 msgid "Could not open plugin archive."
-msgstr ""
+msgstr "Could not open plugin archive."
 
 #, php-format
 msgid "Could not protect the %s plugin: %s"
-msgstr ""
+msgstr "Could not protect the %s plugin: %s"
 
 #, php-format
 msgid "Could not restore %s plugin directory"
-msgstr ""
+msgstr "Could not restore %s plugin directory"
 
 msgid "Could not retrieve directories. Please contact your reseller."
 msgstr "Could not retrieve directories. Please contact your reseller."
 
 #, php-format
 msgid "Could not uninstall the %s plugin: %s"
-msgstr ""
+msgstr "Could not uninstall the %s plugin: %s"
 
 #, php-format
 msgid "Could not update the %s plugin: %s"
-msgstr ""
+msgstr "Could not update the %s plugin: %s"
 
 msgid "Could not upload file."
 msgstr "Could not upload file."
@@ -2892,7 +2896,7 @@ msgstr "Invalid payload received from GitHub"
 
 #, php-format
 msgid "Invalid plugin directory: %s"
-msgstr ""
+msgstr "Invalid plugin directory: %s"
 
 msgid "Invalid private key or passphrase."
 msgstr "Invalid private key or passphrase."
@@ -3799,35 +3803,35 @@ msgstr "Plugin %s updated."
 
 #, php-format
 msgid "Plugin Manager: Could not change the %s plugin: %s"
-msgstr ""
+msgstr "Plugin Manager: Could not change the %s plugin: %s"
 
 #, php-format
 msgid ""
 "Plugin Manager: Could not delete %s plugin files. You should run the set-"
 "gui-permissions.pl script and try again."
-msgstr ""
+msgstr "Plugin Manager: Could not delete %s plugin files. You should run the set-gui-permissions.pl script and try again."
 
 #, php-format
 msgid "Plugin Manager: Could not load plugin %s"
-msgstr ""
+msgstr "Plugin Manager: Could not load plugin %s"
 
 #, php-format
 msgid ""
 "Plugin Manager: Could not uninstall the %s plugin. Plugin has been locked by"
 " another plugin."
-msgstr ""
+msgstr "Plugin Manager: Could not uninstall the %s plugin. Plugin has been locked by another plugin."
 
 #, php-format
 msgid "Plugin Manager: Could not update the %s plugin: %s"
-msgstr ""
+msgstr "Plugin Manager: Could not update the %s plugin: %s"
 
 #, php-format
 msgid "Plugin Manager: Could not write the %s file for protected plugins."
-msgstr ""
+msgstr "Plugin Manager: Could not write the %s file for protected plugins."
 
 #, php-format
 msgid "Plugin Manager: Directory %s doesn't exist or is not writable"
-msgstr ""
+msgstr "Plugin Manager: Directory %s doesn't exist or is not writable"
 
 #, php-format
 msgid "Plugin Manager: Downgrade of %s plugin is not allowed."
@@ -3835,15 +3839,15 @@ msgstr "Plugin Manager: Downgrade of %s plugin is not allowed."
 
 #, php-format
 msgid "Plugin Manager: Plugin %s is not loaded"
-msgstr ""
+msgstr "Plugin Manager: Plugin %s is not loaded"
 
 #, php-format
 msgid "Plugin Manager: Unknown plugin %s"
-msgstr ""
+msgstr "Plugin Manager: Unknown plugin %s"
 
 #, php-format
 msgid "Plugin activation has failed: %s"
-msgstr ""
+msgstr "Plugin activation has failed: %s"
 
 msgid "Plugin archive"
 msgstr "Plugin archive"
@@ -3855,15 +3859,15 @@ msgstr "Plugin archive exceeds the maximum upload size (%s). Max upload size is:
 
 #, php-format
 msgid "Plugin change has failed: %s"
-msgstr ""
+msgstr "Plugin change has failed: %s"
 
 #, php-format
 msgid "Plugin deactivation has failed: %s"
-msgstr ""
+msgstr "Plugin deactivation has failed: %s"
 
 #, php-format
 msgid "Plugin deletion has failed: %s"
-msgstr ""
+msgstr "Plugin deletion has failed: %s"
 
 msgid "Plugin errors"
 msgstr "Plugin errors"
@@ -3873,7 +3877,7 @@ msgstr "Plugin has been successfully uploaded."
 
 #, php-format
 msgid "Plugin installation has failed: %s"
-msgstr ""
+msgstr "Plugin installation has failed: %s"
 
 msgid "Plugin item errors"
 msgstr "Plugin item errors"
@@ -3886,11 +3890,11 @@ msgstr "Plugin management"
 
 #, php-format
 msgid "Plugin uninstallation has failed: %s"
-msgstr ""
+msgstr "Plugin uninstallation has failed: %s"
 
 #, php-format
 msgid "Plugin update has failed: %s"
-msgstr ""
+msgstr "Plugin update has failed: %s"
 
 msgid "Plugins Upload"
 msgstr "Plugins Upload"

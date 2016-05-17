@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-05-16 17:13+0200\n"
-"PO-Revision-Date: 2016-05-16 15:14+0000\n"
+"POT-Creation-Date: 2016-05-17 21:33+0200\n"
+"PO-Revision-Date: 2016-05-17 19:35+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/i-mscp/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -1537,6 +1537,10 @@ msgid "Could not delete SSL certificate. An unexpected error occurred."
 msgstr "Verwijderen van SSL-certificaat is mislukt. Er is een onverwachte fout opgetreden."
 
 #, php-format
+msgid "Could not delete the %s plugin: %s"
+msgstr ""
+
+#, php-format
 msgid "Could not disable the %s plugin: %s"
 msgstr "Kon de %s invoegtoepassing niet uitschakelen: %s"
 
@@ -1555,7 +1559,7 @@ msgid "Could not extract plugin archive: %s"
 msgstr "Kon het invoegtoepassingsarchief niet uitpakken: %s"
 
 msgid "Could not find plugin root directory within archive."
-msgstr ""
+msgstr "Kon de invoegtoepassingsmap niet vinden in het archief."
 
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr "Genereren van SSL-certificaat is mislukt. Er is een onverwachte fout opgetreden."
@@ -1577,18 +1581,18 @@ msgstr "Kon de invoegtoepassing %s niet beveiligen: %s"
 
 #, php-format
 msgid "Could not restore %s plugin directory"
-msgstr ""
+msgstr "Kon de %s invoegtoepassingsmap niet terugzetten"
 
 msgid "Could not retrieve directories. Please contact your reseller."
 msgstr "Kon mappen niet verkrijgen, neem contact op met uw wederverkoper."
 
 #, php-format
 msgid "Could not uninstall the %s plugin: %s"
-msgstr ""
+msgstr "Kon de %s invoegtoepassing niet deïnstalleren: %s"
 
 #, php-format
 msgid "Could not update the %s plugin: %s"
-msgstr ""
+msgstr "Kon de %s invoegtoepassing niet bijwerken: %s"
 
 msgid "Could not upload file."
 msgstr "Kon bestand niet uploaden."
@@ -2893,7 +2897,7 @@ msgstr "Ongeldige informatie ontvangen van GitHub"
 
 #, php-format
 msgid "Invalid plugin directory: %s"
-msgstr ""
+msgstr "Foutieve invoegtoepassingsmap: %s"
 
 msgid "Invalid private key or passphrase."
 msgstr "Ongeldige privésleutel of wachtwoordzin."
@@ -3800,35 +3804,35 @@ msgstr "Invoegtoepassing %s bijgewerkt."
 
 #, php-format
 msgid "Plugin Manager: Could not change the %s plugin: %s"
-msgstr ""
+msgstr "Invoegtoepassingsbeheerder: Kon de %s plugin niet aanpassen: %s"
 
 #, php-format
 msgid ""
 "Plugin Manager: Could not delete %s plugin files. You should run the set-"
 "gui-permissions.pl script and try again."
-msgstr ""
+msgstr "Invoegtoepassingsbeheerder: Kon de bestanden van de %s invoegtoepassing niet verwijderen. Draai set-gui-permissions.pl en probeer opnieuw."
 
 #, php-format
 msgid "Plugin Manager: Could not load plugin %s"
-msgstr ""
+msgstr "Invoegtoepassingsbeheerder: Kon de %s invoegtoepassing niet laden"
 
 #, php-format
 msgid ""
 "Plugin Manager: Could not uninstall the %s plugin. Plugin has been locked by"
 " another plugin."
-msgstr ""
+msgstr "Invoegtoepassingsbeheerder:  Kon de %s invoegtoepassing niet laden. De invoegtoepassing is beveiligd door een andere plugin."
 
 #, php-format
 msgid "Plugin Manager: Could not update the %s plugin: %s"
-msgstr ""
+msgstr "Invoegtoepassingsbeheerder: Kon de %s invoegtoepassing niet bijwerken: %s"
 
 #, php-format
 msgid "Plugin Manager: Could not write the %s file for protected plugins."
-msgstr ""
+msgstr "Invoegtoepassingsbeheerder: Kon niet schrijven naar het %s bestand voor beveiligde invoegtoepassingen."
 
 #, php-format
 msgid "Plugin Manager: Directory %s doesn't exist or is not writable"
-msgstr ""
+msgstr "Invoegtoepassingsbeheerder: : De %s map bestaat niet of kan niet beschreven worden."
 
 #, php-format
 msgid "Plugin Manager: Downgrade of %s plugin is not allowed."
@@ -3836,15 +3840,15 @@ msgstr "Invoegtoepassingen: Downgrade van de %s invoegtoepassing is niet toegest
 
 #, php-format
 msgid "Plugin Manager: Plugin %s is not loaded"
-msgstr ""
+msgstr "Invoegtoepassingsbeheerder: De %s invoegtoepassing is niet geladen"
 
 #, php-format
 msgid "Plugin Manager: Unknown plugin %s"
-msgstr ""
+msgstr "Invoegtoepassingsbeheerder: Onbekende invoegtoepassing %s"
 
 #, php-format
 msgid "Plugin activation has failed: %s"
-msgstr ""
+msgstr "Activeren van invoegtoepassing is mislukt: %s"
 
 msgid "Plugin archive"
 msgstr "Invoegtoepassingsarchief"
@@ -3856,15 +3860,15 @@ msgstr "Invoegtoepassingsarchief overschrijdt de maximumgrootte (%s). Maximale u
 
 #, php-format
 msgid "Plugin change has failed: %s"
-msgstr ""
+msgstr "Aanpassen van invoegtoepassing is mislukt: %s"
 
 #, php-format
 msgid "Plugin deactivation has failed: %s"
-msgstr ""
+msgstr "Uitschakelen van invoegtoepassing is mislukt: %s"
 
 #, php-format
 msgid "Plugin deletion has failed: %s"
-msgstr ""
+msgstr "Verwijderen van invoegtoepassing is mislukt: %s"
 
 msgid "Plugin errors"
 msgstr "Invoegtoepassingsfouten"
@@ -3874,7 +3878,7 @@ msgstr "Invoegtoepassing succesvol geüpload."
 
 #, php-format
 msgid "Plugin installation has failed: %s"
-msgstr ""
+msgstr "Installatie van invoegtoepassing is mislukt: %s"
 
 msgid "Plugin item errors"
 msgstr "Invoegtoepassingsfout"
@@ -3887,11 +3891,11 @@ msgstr "Invoegtoepassingen"
 
 #, php-format
 msgid "Plugin uninstallation has failed: %s"
-msgstr ""
+msgstr "Deïnstallatie van invoegtoepassing is mislukt: %s"
 
 #, php-format
 msgid "Plugin update has failed: %s"
-msgstr ""
+msgstr "Bijwerken van invoegtoepassing is mislukt: %s"
 
 msgid "Plugins Upload"
 msgstr "Invoegtoepassingsupload"
