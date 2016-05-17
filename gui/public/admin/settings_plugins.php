@@ -379,12 +379,14 @@ function checkAction($pluginManager, $pluginName, $action)
             break;
         case 'delete':
             if (!in_array($pluginStatus, array('todelete'))) {
-                if ($pluginManager->pluginIsUninstallable($pluginName)
-                    && $pluginStatus != 'uninstalled'
-                    && $pluginStatus != 'disabled'
-                ) {
-                    set_page_message(tr('Plugin %s cannot be deleted.', $pluginName), 'warning');
+                if(($pluginManager->pluginIsUninstallable($pluginName) && $pluginStatus != 'uninstalled')) {
                     $ret = false;
+                } elseif ($pluginStatus != 'disabled') {
+                    $ret = false;
+                }
+
+                if (!$ret) {
+                    set_page_message(tr('Plugin %s cannot be deleted.', $pluginName), 'warning');
                 }
             }
 
@@ -454,6 +456,9 @@ function doAction($pluginManager, $pluginName, $action)
                     break;
                 case 'disable':
                     $msg = tr('Could not disable the %s plugin: %s', $pluginName, $msg);
+                    break;
+                case 'delete':
+                    $msg = tr('Could not delete the %s plugin: %s', $pluginName, $msg);
                     break;
                 default:
                     $msg = tr('Could not protect the %s plugin: %s', $pluginName, $msg);
