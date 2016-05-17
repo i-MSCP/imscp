@@ -43,7 +43,8 @@ Any released version >= 7.x (Debian 8.x recommended)
 
 #### 1. Make sure that your system is up-to-date
 
-    # apt-get update && apt-get dist-upgrade
+    # apt-get update
+    # apt-get dist-upgrade
 
 #### 2. Download and untar the distribution files to a secure directory
 
