@@ -184,6 +184,7 @@ YOUTRACK
     IP-1536 systemd - imscp_daemon service can fail to start/restart
     IP-1539 Default behaviour when adding a MySQL user is counter-intuitive
     IP-1549 RRL implementation for BIND/Named config
+    IP-1555 Syntax error in imscp-disable-accounts script
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series

@@ -118,7 +118,7 @@ sub run
 
     # Run request manager to process all scheduled tasks
     unless($rs) {
-        $rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \my $stdout, \my $stderr);
+        $rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \ my $stdout, \ my $stderr);
         debug $stdout if $stdout;
         error($stderr) if $stderr && $rs;
         warning($stderr) if $stderr && !$rs;
@@ -128,7 +128,7 @@ sub run
 }
 
 my $rs = run();
-$bootstrapper->unlock('/tmp/imscp-disable-accounts.lock')
+$bootstrapper->unlock('/tmp/imscp-disable-accounts.lock');
 exit run();
 
 =head1 AUTHOR
