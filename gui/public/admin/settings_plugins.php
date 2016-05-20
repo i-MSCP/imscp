@@ -350,14 +350,14 @@ function checkAction($pluginManager, $pluginName, $action)
 
             break;
         case 'update':
-            if (!in_array($pluginStatus, array('toupdate'))) {
+            if ($pluginStatus != 'toupdate') {
                 set_page_message(tr('Plugin %s cannot be updated.', $pluginName), 'warning');
                 $ret = false;
             }
 
             break;
         case 'change':
-            if (!in_array($pluginStatus, array('tochange'))) {
+            if ($pluginStatus != 'tochange') {
                 set_page_message(tr('Plugin %s cannot be reconfigured.', $pluginName), 'warning');
                 $ret = false;
             }
@@ -379,9 +379,9 @@ function checkAction($pluginManager, $pluginName, $action)
             break;
         case 'delete':
             if (!in_array($pluginStatus, array('todelete'))) {
-                if(($pluginManager->pluginIsUninstallable($pluginName) && $pluginStatus != 'uninstalled')) {
+                if ($pluginManager->pluginIsUninstallable($pluginName) && $pluginStatus != 'uninstalled') {
                     $ret = false;
-                } elseif ($pluginStatus != 'disabled') {
+                } elseif (!$pluginManager->pluginIsUninstallable($pluginName) && $pluginStatus != 'disabled') {
                     $ret = false;
                 }
 
