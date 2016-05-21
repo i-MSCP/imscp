@@ -66,7 +66,7 @@
             <package>proftpd-mod-mysql</package>
         </proftpd>
         <vsftpd>
-            <package>libpam-mysql</package>
+            <package rebuild_with_patches="libpam-mysql/patches" patch_sys_type="dpatch" pkg_src_name="pam-mysql">libpam-mysql</package>
             <package>vsftpd</package>
         </vsftpd>
     </ftpd>
