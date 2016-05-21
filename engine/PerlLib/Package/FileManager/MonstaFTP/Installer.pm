@@ -191,7 +191,7 @@ sub _buildHttpdConfig
 {
     my $frontEnd = Package::FrontEnd->getInstance();
     $frontEnd->buildConfFile(
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager/MonstaFTP/config/nginx/imscp_monstaftp.conf",
+        "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/monsta-ftp/iMSCP/nginx/imscp_monstaftp.conf",
         { GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },
         { destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_monstaftp.conf" }
     );
