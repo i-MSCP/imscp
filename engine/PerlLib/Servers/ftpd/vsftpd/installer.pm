@@ -64,10 +64,13 @@ sub registerSetupListeners
 {
     my ($self, $eventManager) = @_;
 
-    $eventManager->register( 'beforeSetupDialog', sub {
+    $eventManager->register(
+        'beforeSetupDialog',
+        sub {
             push @{$_[0]}, sub { $self->sqlUserDialog( @_ ) }, sub { $self->passivePortRangeDialog( @_ ) };
             0;
-        } );
+        }
+    );
 }
 
 =item sqlUserDialog(\%dialog)
@@ -97,10 +100,10 @@ sub sqlUserDialog
 
 Please enter an username for the VsFTPd SQL user:$msg
 EOF
-            if (lc($dbUser) eq lc($main::imscpConfig{'DATABASE_USER'})) {
+            if (lc( $dbUser ) eq lc( $main::imscpConfig{'DATABASE_USER'} )) {
                 $msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
                 $dbUser = '';
-            } elsif(lc($dbUser) eq 'root') {
+            } elsif (lc( $dbUser ) eq 'root') {
                 $msg = "\n\n\\Z1Usage of SQL root user is prohibited.\\Zn\n\nPlease try again:";
                 $dbUser = '';
             } elsif (length $dbUser > 16) {
@@ -225,18 +228,6 @@ sub install
 {
     my $self = shift;
 
-    if (defined $main::skippackages
-        && !$main::skippackages
-        && ($main::imscpConfig{'DISTRO_ID'} eq 'ubuntu'
-            || ($main::imscpConfig{'DISTRO_ID'} eq 'debian'
-                && version->parse( "$main::imscpConfig{'DISTRO_RELEASE'}" ) < version->parse( '8.0' )
-            )
-        )
-    ) {
-        my $rs = $self->_rebuildVsFTPdDebianPackage();
-        return $rs if $rs;
-    }
-
     my $rs = $self->_setVersion();
     $rs ||= $self->_setupDatabase();
     $rs ||= $self->_buildConfigFile();
@@ -279,161 +270,6 @@ sub _init
     $self;
 }
 
-=item _rebuildVsFTPdDebianPackage()
-
- Rebuild VsFTPd debian package
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _rebuildVsFTPdDebianPackage
-{
-    my $self = shift;
-
-    startDetail();
-
-    my $oldDir = getcwd();
-
-    my $rs = step(
-        sub {
-            my $buildir = iMSCP::Dir->new( dirname => '/usr/local/src/vsftpd' );
-            my $rs = $buildir->remove(); # Cleanup previous build directory if any
-            $rs ||= $buildir->make();
-            return $rs if $rs;
-
-            unless (chdir '/usr/local/src/vsftpd') {
-                error( sprintf( 'Could not change directory: %s', $! ) );
-                return 1;
-            }
-            0;
-        }, 'Creating build directory for local vsftpd package...', 7, 1
-    );
-
-    $rs ||= step(
-        sub {
-            # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
-            execute( 'LANG=C apt-mark unhold vsftpd', \my $stdout, \my $stderr );
-            debug( $stdout ) if $stdout;
-            debug( $stderr ) if $stderr;
-
-            my $rs = execute( 'apt-get -y source vsftpd', \$stdout, \$stderr );
-            error( sprintf( 'Could not get vsftpd source package: %s', $stderr || 'Unknown error' ) ) if $rs;
-            return $rs if $rs;
-            debug( $stdout ) if $stdout;
-            0;
-        }, 'Downloading vsftpd source package...', 7, 2
-    );
-
-    $rs ||= step(
-        sub {
-            my $rs = execute( 'apt-get -y build-dep vsftpd', \my $stdout, \my $stderr );
-            error( sprintf( 'Could not install vsftpd package build dependencies: %s',
-                    $stderr || 'Unknown error' ) ) if $rs;
-            return $rs if $rs;
-            debug( $stdout ) if $stdout;
-            0;
-        }, 'Installing vsftpd build dependencies...', 7, 3
-    );
-
-    $rs ||= step(
-        sub {
-            unless (chdir glob 'vsftpd-*') {
-                error( sprintf( 'Could not change directory: %s', $! ) );
-                return 1;
-            }
-
-            my $file = iMSCP::File->new( filename => 'debian/patches/series' );
-            my $fileContent = $file->get();
-
-            # Apply the imscp_allow_writeable_root.patch patch for vsftpd version < 3.0.0 only
-
-            my $rs = execute( 'dpkg-query --show -f=\'${Version}\' vsftpd', \my $stdout, \my $stderr );
-            debug( $stdout ) if $stdout;
-            error( $stderr ) if $rs && $stderr;
-            return $rs if $rs;
-
-            my $ret = execute( "dpkg --compare-versions $stdout lt 3", \$stdout, \$stderr );
-            if ($stderr) {
-                error( sprintf( 'Could not compare vsftpd package version: %s', $stderr ) );
-                return 1;
-            }
-
-            unless ($ret) {
-                $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp_allow_writeable_root.patch" )->copyFile(
-                    'debian/patches/imscp_allow_writeable_root'
-                );
-                return $rs if $rs;
-
-                $fileContent .= "imscp_allow_writeable_root\n"
-            }
-
-            # apply the imscp_pthread_cancel.patch if available
-
-            if (-f "$self->{'cfgDir'}/imscp_pthread_cancel.patch") {
-                $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp_pthread_cancel.patch" )->copyFile(
-                    'debian/patches/imscp_pthread_cancel'
-                );
-                return $rs if $rs;
-
-                $fileContent .= "imscp_pthread_cancel\n";
-            }
-
-            $rs = $file->set( $fileContent );
-            $rs ||= $file->save();
-        }, 'Patching vsftpd source package...', 7, 4
-    );
-
-    $rs ||= step(
-        sub {
-            my $rs = execute( "dch --local imscp 'i-MSCP patched version.'", \my $stdout, \my $stderr );
-            error( sprintf( "Could not add 'imscp' local suffix to vsftpd package: %s",
-                    $stderr || 'Unknown error' ) ) if $rs;
-            return $rs if $rs;
-
-            $rs = execute( 'dpkg-buildpackage -b -uc', \$stdout, \$stderr );
-            error( sprintf( 'Could not build local vsftpd package: %s', $stderr || 'Unknown error' ) ) if $rs;
-            return $rs if $rs;
-            debug( $stdout ) if $stdout;
-            0;
-        }, 'Building local vsftpd package...', 7, 5
-    );
-
-    $rs ||= step(
-        sub {
-            unless (chdir '..') {
-                error( sprintf( 'Could not change directory: %s', $! ) );
-                return 1;
-            }
-
-            my $rs = execute( 'dpkg --force-confnew -i vsftpd_*.deb', \my $stdout, \my $stderr );
-            error( sprintf( 'Could not install local vsftpd package: %s', $stderr || 'Unknown error' ) ) if $rs;
-            debug( $stdout ) if $stdout;
-            return $rs if $rs;
-
-            # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
-            execute( 'LANG=C apt-mark hold vsftpd', \$stdout, \$stderr );
-            debug( $stdout ) if $stdout;
-            debug( $stderr ) if $stderr;
-            0;
-        }, 'Installing local vsftpd package...', 7, 6
-    );
-
-    $rs ||= step(
-        sub {
-            unless (chdir $oldDir) {
-                error( sprintf( 'Could not change directory: %s', $! ) );
-                return 1;
-            }
-
-            iMSCP::Dir->new( dirname => '/usr/local/src/vsftpd' )->remove();
-        }, 'Removing local vsftpd package build directory', 7, 7
-    );
-
-    endDetail();
-    $rs;
-}
-
 =item _setVersion
 
  Set version
@@ -447,7 +283,7 @@ sub _setVersion
     my $self = shift;
 
     # Version is print through STDIN (see: strace vsftpd -v)
-    my $rs = execute( 'vsftpd -v 0>&1', \my $stdout, \my $stderr );
+    my $rs = execute( 'vsftpd -v 0>&1', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs;
     return $rs if $rs;
@@ -552,7 +388,7 @@ sub _buildConfigFile
     # vsftpd main configuration file
 
     my $rs = $self->_bkpConfFile( $self->{'config'}->{'FTPD_CONF_FILE'} );
-    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'vsftpd', 'vsftpd.conf', \my $cfgTpl, $data );
+    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'vsftpd', 'vsftpd.conf', \ my $cfgTpl, $data );
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
@@ -701,7 +537,7 @@ sub _isVsFTPdInsideCt
 {
     return 0 unless -f '/proc/user_beancounters';
 
-    my $rs = execute( 'cat /proc/1/status | grep --color=never envID', \my $stdout, \my $stderr );
+    my $rs = execute( 'cat /proc/1/status | grep --color=never envID', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     debug( $stderr ) if $rs && $stderr;
     return $rs if $rs;

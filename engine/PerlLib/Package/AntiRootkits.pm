@@ -41,7 +41,7 @@ use parent 'Common::SingletonClass';
 
 =head1 PUBLIC METHODS
 
-=over 4
+=over
 
 =item registerSetupListeners(\%eventManager)
 
@@ -56,10 +56,13 @@ sub registerSetupListeners
 {
     my ($self, $eventManager) = @_;
 
-    $eventManager->register( 'beforeSetupDialog', sub {
+    $eventManager->register(
+        'beforeSetupDialog',
+        sub {
             push @{$_[0]}, sub { $self->showDialog( @_ ) };
             0;
-        } );
+        }
+    );
 }
 
 =item askAntiRootkits(\%dialog)
@@ -350,28 +353,26 @@ sub _installPackages
 {
     my ($self, $packages) = @_;
 
-    my @command = ();
-
-    unless (iMSCP::Getopt->preseed || iMSCP::Getopt->noprompt || !iMSCP::ProgramFinder::find( 'debconf-apt-progress' )) {
-        iMSCP::Dialog->getInstance()->endGauge();
-        push @command, 'debconf-apt-progress --logstderr --';
+    my $cmd = '';
+    unless (iMSCP::Getopt->noprompt) {
+        iMSCP::Dialog->getInstance->endGauge();
+        $cmd = 'debconf-apt-progress --logstderr --';
     }
 
-    unshift @command, 'UCF_FORCE_CONFFMISS=1 '; # Force installation of missing conffiles which are managed by UCF
+    $cmd = "UCF_FORCE_CONFFMISS=1 $cmd"; # Force installation of missing conffiles which are managed by UCF
 
     if ($main::forcereinstall) {
-        push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' ".
-                "--reinstall --auto-remove --purge --no-install-recommends install @{$packages}";
+        $cmd .= " apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss'".
+            " --reinstall --auto-remove --purge --no-install-recommends install @{$packages}";
     } else {
-        push @command, "apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' ".
-                "--auto-remove --purge --no-install-recommends install @{$packages}";
+        $cmd .= " apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss'".
+            " --auto-remove --purge --no-install-recommends install @{$packages}";
     }
 
-    my ($stdout, $stderr);
-    my $rs = execute( "@command", (iMSCP::Getopt->preseed || iMSCP::Getopt->noprompt) ? \$stdout : undef, \$stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
-    error( 'Could not install anti-rootkits distro packages' ) if $rs && !$stderr;
+    my $stdout;
+    my $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef, \ my $stderr );
+    error( sprintf( 'Could not install packages: %s', $stderr || 'Unknown error' ) ) if $rs;
+    return $rs if $rs;
     $rs;
 }
 
@@ -389,25 +390,18 @@ sub _removePackages
     my ($self, $packages) = @_;
 
     # Do not try to uninstall packages that are not available
-    my $rs = execute( "dpkg-query -W -f='\${Package}\n' 2>/dev/null @{$packages}", \my $stdout );
-
+    my $rs = execute( "dpkg-query -W -f='\${Package}\\n' @{$packages} 2>/dev/null", \ my $stdout );
     @{$packages} = split /\n/, $stdout;
-
     return 0 unless @{$packages};
 
-    my @command = ();
-
-    unless (iMSCP::Getopt->preseed || iMSCP::Getopt->noprompt || !iMSCP::ProgramFinder::find( 'debconf-apt-progress' )) {
-        iMSCP::Dialog->getInstance()->endGauge();
-        push @command, 'debconf-apt-progress --logstderr -- ';
+    my $cmd = "apt-get -y --auto-remove --purge --no-install-recommends remove @{$packages}";
+    unless (iMSCP::Getopt->noprompt) {
+        iMSCP::Dialog->getInstance->endGauge();
+        $cmd = "debconf-apt-progress --logstderr -- $cmd";
     }
-
-    push @command, "apt-get -y --auto-remove --purge --no-install-recommends remove @{$packages}";
-
-    $rs = execute( "@command", (iMSCP::Getopt->preseed || iMSCP::Getopt->noprompt) ? \$stdout : undef, \ my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
-    error( 'Could not remove anti-rootkits distro packages' ) if $rs && !$stderr;
+    
+    $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef, \ my $stderr );
+    error( sprintf( 'Could not remove packages: %s', $stderr || 'Unknown error' ) ) if $rs;
     $rs;
 }
 

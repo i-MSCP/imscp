@@ -55,7 +55,7 @@ my $last = '';
 sub startDetail
 {
     return 0 if iMSCP::Getopt->noprompt;
-    iMSCP::Dialog->getInstance()->endGauge(); # Needed to ensure refresh (first item)
+    iMSCP::Dialog->getInstance()->endGauge();
     push @all, $last;
     0;
 }
@@ -71,6 +71,7 @@ sub startDetail
 sub endDetail
 {
     return 0 if iMSCP::Getopt->noprompt;
+    iMSCP::Dialog->getInstance()->endGauge();
     $last = pop @all;
     0;
 }

@@ -73,16 +73,10 @@ sub resetLabels
 sub fselect
 {
     my $self = $_[0];
-
-    my $begin = $self->{'_opts'}->{'begin'};
-    $self->{'_opts'}->{'begin'} = undef;
+    
     $self->{'lines'} = $self->{'lines'} - 8;
-
     my ($ret, $output) = $self->_execute( $_[1], undef, 'fselect' );
-
-    $self->{'_opts'}->{'begin'} = $begin;
     $self->{'lines'} = $self->{'lines'} + 8;
-
     wantarray ? ($ret, $output) : $output;
 }
 
@@ -282,13 +276,13 @@ sub infobox
     $ret;
 }
 
-=item startGauge($text, $percent = 0)
+=item startGauge($text [, $percent = 0 ])
 
  Start a gauge
 
  Param string $text Text to show
  Param int $percent OPTIONAL Initial percentage show in the meter
- Return int Dialog exit code
+ Return 0
 
 =cut
 
@@ -298,38 +292,26 @@ sub startGauge
 
     return 0 if iMSCP::Getopt->noprompt || $self->{'gauge'};
 
-    my ($text, $percent) = @_;
+    defined $_[0] or die( '$text parameter is undefined' );
+    
+    open $self->{'gauge'}, '|-', $self->{'bin'}, $self->_buildCommonCommandOptions( 'noEscape' ), '--gauge', shift,
+        ($self->{'autosize'} ? 0 : $self->{'lines'}), ($self->{'autosize'} ? 0 : $self->{'columns'}), shift || 0 or die(
+        'Could not start gauge'
+    );
 
-    $text = escapeShell( $text );
-    $percent ||= 0;
-    $percent = $percent ? " $percent" : 0;
-
-    my $height = $self->{'autosize'} ? 0 : $self->{'lines'};
-    my $width = $self->{'autosize'} ? 0 : $self->{'columns'};
-    my $begin = $self->{'_opts'}->{'begin'};
-    $self->{'_opts'}->{'begin'} = undef;
-
-    my $command = $self->_buildCommandOptions();
-    $command = "$self->{'bin'} $command --gauge $text $height $width $percent";
-
-    $self->{'_opts'}->{'begin'} = $begin;
-    $self->{'gauge'} = new FileHandle;
     $self->{'gauge'}->autoflush( 1 );
-    $self->{'gauge'}->open( "| $command" ) || fatal( 'Could not start gauge' );
-
     debugRegisterCallBack( sub { $self->endGauge(); } );
-
     $SIG{'PIPE'} = sub { $self->endGauge(); };
-    getExitCode( $? );
+    0;
 }
 
-=item setGauge($value, $text = '')
+=item setGauge($value, $text)
 
  Set new percentage and optionaly new text to show
 
  Param int $percent New percentage to show in gauge dialog box
- Param string $text OPTIONAL New text to show in gauge dialog box
- Return int 0 on success, 1 on failure (eg. when SIGPIPE has been received for any reason)
+ Param string $text New text to show in gauge dialog box
+ Return int 0
 
 =cut
 
@@ -338,14 +320,10 @@ sub setGauge
     my $self = shift;
 
     return 0 if iMSCP::Getopt->noprompt || !$self->{'gauge'};
+    
+    print {$self->{'gauge'}} sprintf( "XXX\n%d\n%s\nXXX\n", @_,);
 
-    my ($percent, $text) = @_;
-    $text ||= '';
-
-    print {$self->{'gauge'}} (defined $text) ? sprintf( "XXX\n%d\n%s\nXXX\n", $percent, $text ) : sprintf( "%d\n",
-                $percent );
-
-    ($self->{'gauge'}) ? 1 : 0;
+    0
 }
 
 =item endGauge()
@@ -379,7 +357,7 @@ sub hasGauge
 {
     return 0 if iMSCP::Getopt->noprompt;
 
-    ($_[0]->{'gauge'}) ? 1 : 0;
+    $_[0]->{'gauge'} ? 1 : 0;
 }
 
 =item set($option, $value)
@@ -439,7 +417,6 @@ sub _init
     $self->{'_opts'}->{'title'} ||= 'i-MSCP Installer Dialog';
 
     $self->{'_opts'}->{'colors'} = '';
-    $self->{'_opts'}->{'begin'} = [ 1, 0 ];
 
     $self->{'_opts'}->{'ok-label'} ||= 'Ok';
     $self->{'_opts'}->{'yes-label'} ||= 'Yes';
@@ -482,6 +459,8 @@ sub _init
     $self->{'_opts'}->{'aspect'} = undef;
 
     $self->{'_opts'}->{'separate-output'} = undef;
+    
+    $self->_buildCommonCommandOptions();
 
     $self->_findBin( $^O =~ /bsd$/ ? 'cdialog' : 'dialog' );
     #$self->_determineDialogVariant();
@@ -547,8 +526,9 @@ sub _findBin
 {
     my ($self, $variant) = @_;
 
-    my $bindPath = iMSCP::ProgramFinder::find( $variant );
-    fatal( sprintf( 'Could not find dialog program: %s', $variant ) ) unless $bindPath;
+    my $bindPath = iMSCP::ProgramFinder::find( $variant ) or die(
+        sprintf( 'Could not find dialog program: %s', $variant )
+    );
     $self->{'bin'} = $bindPath;
     $self;
 }
@@ -570,33 +550,29 @@ sub _stripFormats
     $string;
 }
 
-=item _buildCommandOptions()
+=item _buildCommonCommandOptions([ $noEscape = false ])
 
- Build dialog command options
+ Build common dialog command options
 
- Return string Dialog command options
+ Param bool $noEscape Whether or not option values must be escaped
+ Return string|list Dialog command options
 
 =cut
 
-sub _buildCommandOptions
+sub _buildCommonCommandOptions
 {
-    my $self = $_[0];
+    my ($self, $noEscape) = @_;
 
-    my @options = ();
-    while(my ($option, $value) = each(%{$self->{'_opts'}})) {
-        next unless defined $value;
-        push @options, '--'.$option;  # Add option
-        next unless $value;
+    my @options = map {
+        defined $self->{'_opts'}->{$_} ? (
+            "--$_",
+                $noEscape
+                ? ($self->{'_opts'}->{$_} eq '' ? () : $self->{'_opts'}->{$_})
+                : ($self->{'_opts'}->{$_} eq '' ? () : escapeShell( $self->{'_opts'}->{$_} ))
+        )                              : ()
+    } keys %{$self->{'_opts'}};
 
-        # Add option arguments
-        if (ref $value ne 'array') { # Only one argument
-            push @options, escapeShell( $value );
-        } else { # Many arguments
-            push @options, escapeShell( $_ ) for @{$value};
-        }
-    }
-
-    "@options";
+    wantarray ? @options : "@options";
 }
 
 =item _restoreDefaults()
@@ -612,10 +588,9 @@ sub _restoreDefaults
     my $self = $_[0];
 
     for my $prop (keys %{$self->{'_opts'}}) {
-        $self->{'_opts'}->{$prop} = undef unless grep($_ eq $prop, qw/title backtitle colors begin/);
+        $self->{'_opts'}->{$prop} = undef unless grep($_ eq $prop, qw/title backtitle colors/);
     }
 
-    $self->{'_opts'}->{'begin'} = [ 1, 0 ];
     $self;
 }
 
@@ -649,7 +624,7 @@ sub _execute
     $text = $self->_stripFormats( $text ) unless defined $self->{'_opts'}->{'colors'};
     $self->{'_opts'}->{'separate-output'} = '' if $type eq 'checklist';
 
-    my $command = $self->_buildCommandOptions();
+    my $command = $self->_buildCommonCommandOptions();
 
     $text = escapeShell( $text );
     $init = $init ? $init : '';
@@ -693,10 +668,7 @@ sub _textbox
     $init ||= 0;
     my $autosize = $self->{'autosize'};
     $self->{'autosize'} = undef;
-    my $begin = $self->{'_opts'}->{'begin'};
-    $self->{'_opts'}->{'begin'} = undef;
     my ($ret, $output) = $self->_execute( $text, $init, $type );
-    $self->{'_opts'}->{'begin'} = $begin;
     $self->{'autosize'} = $autosize;
     wantarray ? ($ret, $output) : $output;
 }
