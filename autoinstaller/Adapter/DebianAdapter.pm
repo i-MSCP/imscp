@@ -497,6 +497,8 @@ EOF
         # Set server implementation to use
         $main::imscpConfig{uc( $section ).'_SERVER'} = $sAlt;
     }
+
+    0;
 }
 
 =item _updateAptSourceList()
@@ -876,9 +878,8 @@ sub _rebuildAndInstallPackage
         return 1;
     }
 
+    my $oldDir = cwd();
     my $buildDir = File::Temp->newdir( CLEANUP => 1 );
-
-    my $oldDir = getcwd();
     unless (chdir $buildDir) {
         error( sprintf( 'Could not change current directory to: %s', $buildDir, $! ) );
         return 1;
@@ -915,7 +916,7 @@ sub _rebuildAndInstallPackage
     );
     $rs ||= step(
         sub {
-            my $pkgSrcDir = glob "$pkgSrc-*";
+            (my $pkgSrcDir) = <$pkgSrc-*>;
             unless (chdir $pkgSrcDir) {
                 error( sprintf( 'Could not change current directory to %s: %s', $pkgSrcDir, $! ) );
                 return 1;
