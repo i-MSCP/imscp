@@ -28,6 +28,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Execute;
+use version;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
