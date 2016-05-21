@@ -50,12 +50,17 @@ sub uninstall
     $rs ||= $self->_removeDirs();
 }
 
-sub _removeDirs
+sub _removeDirsAndFiles
 {
     my $self = shift;
 
     for my $file($self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}) {
         my $rs = iMSCP::Dir->new( dirname => $file )->remove();
+        return $rs if $rs;
+    }
+
+    if (-f $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'}) {
+        my $rs = iMSCP::File->new( filename => $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'} )->delFile();
         return $rs if $rs;
     }
 
