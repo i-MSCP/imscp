@@ -1,5 +1,5 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
-## 04_imscp_resp_segfault.patch.dpatch by <l.declercq@nuxwin.com>
+## 04_resps_segfault.patch by <l.declercq@nuxwin.com>
 ##
 ## All lines beginning with `## DP:' are a description of the patch.
 ## DP: d2list

@@ -112,7 +112,7 @@ INSTALLER
     Added: Check to prevent downgrade attempts (when DB schema change is involved)
     Added: Conditional statement feature for install.xml files (copy_config items only)
     Added: onBuildPackageList event (Allows to override default distribution packages file)
-    Fixed: Allows to rebuild any package with set patches
+    Fixed: Allows to rebuild any package with privuded set of patches
     Fixed: '_' and '%' wildcards must be escaped in GRANT statements
     Fixed: Debug and verbose modes must be set early
     Fixed: Disable Dovecot systemd socket activation unit if any (not needed for Dovecot as configured by i-MSCP)
