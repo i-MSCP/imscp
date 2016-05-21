@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::EventManager;
+use iMSCP::Execute;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -52,10 +53,13 @@ sub registerSetupListeners
 {
     my ($self, $eventManager) = @_;
 
-    my $rs = $eventManager->register( 'beforeSetupDialog', sub {
+    my $rs = $eventManager->register(
+        'beforeSetupDialog',
+        sub {
             push @{$_[0]}, sub { $self->showDialog( @_ ) };
             0;
-        } );
+        }
+    );
     $rs ||= $eventManager->register( 'afterFrontEndPreInstall', sub { $self->preinstallListener(); } );
     $rs ||= $eventManager->register( 'afterFrontEndInstall', sub { $self->installListener(); } );
 }
@@ -273,15 +277,46 @@ sub _init()
 {
     my $self = shift;
 
+    my $version = version->parse( $self->_getPhpVersion() ) >= version->parse( '5.5.0' )
+        ? '0.4.6.*@dev' : '0.4.0.*@dev';
+
     @{$self->{'PACKAGES'}} = iMSCP::Dir->new(
         dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager"
     )->getDirs();
+
+    # Quick fix for disabling Pydio package if PHP >= 7 is detected
+    if (version->parse( $self->_getPhpVersion() ) >= version->parse( '7.0.0' )) {
+        @{$self->{'PACKAGES'}} = grep { $_ ne 'Pydio' } @{$self->{'PACKAGES'}};
+    }
 
     iMSCP::EventManager->getInstance()->register(
         'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener( @_ ); }
     );
 
     $self;
+}
+
+=item _getPhpVersion()
+
+ Get PHP version
+
+ Return int PHP version on sucess, die on failure
+
+=cut
+
+sub _getPhpVersion
+{
+    my $self = shift;
+
+    my $rs = execute( 'php -d date.timezone=UTC -v', \ my $stdout, \ my $stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr ) if $stderr && $rs;
+    return $rs if $rs;
+
+    $stdout =~ /PHP\s+([\d.]+)/ or die(
+        sprintf( 'Could not find PHP version from `php -v` command output: %s', $stdout )
+    );
+    $1;
 }
 
 =back
