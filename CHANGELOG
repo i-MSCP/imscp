@@ -158,6 +158,8 @@ SERVERS
     Fixed: Invalid version format (non-numeric data) when installing VsFTPd on Debian Stretch (testing)
     Fixed: IP addresses are added multiple time in Apache 00_nameserver.conf file (Httpd servers)
     Fixed: libmysqlclient18 package not available for Ubuntu 16.04
+    Fixed: maillogconvert.pl must not be installed in /usr/sbin (moved to /usr/local/sbin)
+    Fixed: maillogconvert.pl path must not be hardcoded
     Fixed: ON|OFF strings not recognized as boolean value in imscp.cnf file (MySQL)
     Fixed: Postfix (>= 3.0) is showing many warnings about backwards-compatible settings (default setting chroot=y)
     Fixed: Postfix maps must not be world-readable (Postfix)

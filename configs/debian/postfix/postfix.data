@@ -35,3 +35,5 @@ MTA_MAILBOX_GID_NAME = mail
 # the server hostname
 # (Not implemented yet)
 #SMTP_BIND_ADDRESS6 =
+
+MAIL_LOG_CONVERT_PATH = /usr/local/sbin/maillogconvert.pl

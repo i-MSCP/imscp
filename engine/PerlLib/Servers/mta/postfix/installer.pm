@@ -144,7 +144,14 @@ sub setEnginePermissions
         }
     );
     # eg. /usr/sbin/maillogconvert.pl
-    $rs ||= setRights( '/usr/sbin/maillogconvert.pl', { user => $rootUName, group => $rootGName, mode => '0750' } );
+    $rs ||= setRights(
+        $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'},
+        {
+            user => $rootUName,
+            group => $rootGName,
+            mode => '0750'
+        }
+    );
 }
 
 =back

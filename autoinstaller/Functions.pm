@@ -882,7 +882,8 @@ sub _cleanup
         "$main::imscpConfig{'CONF_DIR'}/listeners.d/README",
         "$main::imscpConfig{'CONF_DIR'}/apache/parts/php5.itk.ini",
         "$main::imscpConfig{'CONF_DIR'}/vsftpd/imscp_allow_writeable_root.patch",
-        "$main::imscpConfig{'CONF_DIR'}/vsftpd/imscp_pthread_cancel.patch"
+        "$main::imscpConfig{'CONF_DIR'}/vsftpd/imscp_pthread_cancel.patch",
+        "/usr/sbin/maillogconvert.pl"
     ) {
         next unless -f;
         my $rs = iMSCP::File->new( filename => $_ )->delFile();
