@@ -129,6 +129,7 @@ INSTALLER
     Renamed: imscp-setup script to imscp-reconfigure
 
 PACKAGES
+    Added: Monsta FTP package
     Fixed: ERR_INCOMPLETE_CHUNKED_ENCODING error due to wrong permissions on nginx fastcgi cache directory (FrontEnd)
     Fixed: White page due to 'net::ERR_INCOMPLETE_CHUNKED_ENCODING' errors (related to #IP-1530) (PhpMyAdmin)
     Updated: PhpMyAdmin version to 4.6.0 - Only for servers with PHP/MySQL >= 5.5 (Package::PhpMyAdmin::Installer)

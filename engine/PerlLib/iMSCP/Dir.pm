@@ -298,12 +298,12 @@ sub rcopy
 
     $options = { } unless defined $options && ref $options eq 'HASH';
 
-    defined $self->{'dirname'} or die( "Attribute 'dirname' is not defined" );
+    defined $self->{'dirname'} or die( 'Attribute `dirname` is not defined' );
 
     my $excludeDir = defined $options->{'excludeDir'} ? qr/$options->{'excludeDir'}/ : undef;
     my $excludeFile = defined $options->{'excludeFile'} ? qr/$options->{'excludeFile'}/ : undef;
 
-    opendir my $dh, $self->{'dirname'} or die( sprintf( 'Could not open: %s', $self->{'dirname'}, $! ) );
+    opendir my $dh, $self->{'dirname'} or die( sprintf( 'Could not open %s: %s', $self->{'dirname'}, $! ) );
 
     for my $entry (readdir $dh) {
         if ($entry ne '.' && $entry ne '..') {

@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::FileManager::Net2ftp::Net2ftp - i-MSCP package
+Package::FileManager::MonstaFTP::MonstaFTP - i-MSCP package
 
 =cut
 
@@ -21,19 +21,20 @@ Package::FileManager::Net2ftp::Net2ftp - i-MSCP package
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package Package::FileManager::Net2ftp::Net2ftp;
+package Package::FileManager::MonstaFTP::MonstaFTP;
 
 use strict;
 use warnings;
+use Class::Autouse qw/ Package::FileManager::MonstaFTP::Installer Package::FileManager::MonstaFTP::Uninstaller /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Net2ftp package.
+ i-MSCP MonstaFTP package.
 
- Net2ftp is a web-based FTP client written in PHP.
+ MonstaFTP is a web-based FTP client written in PHP.
 
- Project homepage: http://www.net2ftp.com/
+ Project homepage: http://www.monstaftp.com//
 
 =head1 PUBLIC METHODS
 
@@ -49,8 +50,7 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-    require Package::FileManager::Net2ftp::Installer;
-    Package::FileManager::Net2ftp::Installer->getInstance()->preinstall();
+    Package::FileManager::MonstaFTP::Installer->getInstance()->preinstall();
 }
 
 =item install()
@@ -63,8 +63,7 @@ sub preinstall
 
 sub install
 {
-    require Package::FileManager::Net2ftp::Installer;
-    Package::FileManager::Net2ftp::Installer->getInstance()->install();
+    Package::FileManager::MonstaFTP::Installer->getInstance()->install();
 }
 
 =item uninstall()
@@ -77,8 +76,7 @@ sub install
 
 sub uninstall
 {
-    require Package::FileManager::Net2ftp::Uninstaller;
-    Package::FileManager::Net2ftp::Uninstaller->getInstance()->uninstall();
+    Package::FileManager::MonstaFTP::Uninstaller->getInstance()->uninstall();
 }
 
 =item setGuiPermissions()
@@ -91,8 +89,7 @@ sub uninstall
 
 sub setGuiPermissions
 {
-    require Package::FileManager::Net2ftp::Installer;
-    Package::FileManager::Net2ftp::Installer->getInstance()->setGuiPermissions();
+    Package::FileManager::MonstaFTP::Installer->getInstance()->setGuiPermissions();
 }
 
 =back

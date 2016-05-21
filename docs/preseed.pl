@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2016.04.25
+# Last update: 2016.05.21
 
 %main::questions = (
 
@@ -290,8 +290,8 @@
     AWSTATS_MODE                        => '0',
 
     # FTP Web file manager packages
-    # Possible values: Pydio, Net2ftp
-    FILEMANAGER_PACKAGE                 => 'Pydio',
+    # Possible values: Pydio (only if PHP < 7.0), Net2ftp and MonstaFTP
+    FILEMANAGER_PACKAGE                 => 'MonstaFTP',
 
     # SQL user for PhpMyAdmin
     PHPMYADMIN_SQL_USER                 => 'pma_user',
