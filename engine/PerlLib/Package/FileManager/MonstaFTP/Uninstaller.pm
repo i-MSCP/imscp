@@ -130,7 +130,9 @@ sub _removeFiles
 
     return 0 unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_monstaftp.conf";
 
-    iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_monstaftp.conf" )->delFile();
+    iMSCP::File->new(
+        filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_monstaftp.conf"
+    )->delFile();
 }
 
 =back
