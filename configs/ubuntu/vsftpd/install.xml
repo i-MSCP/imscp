@@ -2,8 +2,6 @@
 <install>
     <folders mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/vsftpd/imscp</folders>
     <folders>${SYSTEM_CONF}/vsftpd/backup</folders>
-    <copy_config>${SYSTEM_CONF}/vsftpd/imscp_allow_writeable_root.patch</copy_config>
-    <copy_config>${SYSTEM_CONF}/vsftpd/imscp_pthread_cancel.patch</copy_config>
     <copy_config>${SYSTEM_CONF}/vsftpd/vsftpd.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/vsftpd/vsftpd.data</copy_config>
     <copy_config>${SYSTEM_CONF}/vsftpd/vsftpd.pam</copy_config>

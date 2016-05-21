@@ -173,6 +173,8 @@ sub build
         $step++;
     }
 
+    iMSCP::Dialog->getInstance()->endGauge() if iMSCP::Getopt->noprompt;
+
     $rs = $eventManager->trigger( 'afterBuild' );
     $rs ||= $eventManager->trigger( 'beforePostBuild' );
     $rs ||= _getDistroAdapter()->postBuild();
@@ -278,7 +280,7 @@ EOF
         $step++;
     }
 
-    iMSCP::Dialog->getInstance()->endGauge() if iMSCP::Dialog->getInstance()->hasGauge();
+    iMSCP::Dialog->getInstance()->endGauge() if iMSCP::Getopt->noprompt;
 
     $rs = iMSCP::EventManager->getInstance()->trigger( 'afterInstall' );
     return $rs if $rs;
@@ -861,30 +863,29 @@ sub _savePersistentData
 
 sub _cleanup
 {
-    for ("alias", "subdomain") {
-        my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/apache/skel/$_/phptmp" )->remove();
+    for(
+        "$main::imscpConfig{'CONF_DIR'}/apache/skel/alias/phptmp",
+        "$main::imscpConfig{'CONF_DIR'}/apache/skel/subdomain/phptmp",
+        "$main::imscpConfig{'CACHE_DATA_DIR'}/addons",
+        "$main::imscpConfig{'CONF_DIR'}/apache/backup",
+        "$main::imscpConfig{'CONF_DIR'}/apache/working",
+        "$main::imscpConfig{'CONF_DIR'}/fcgi",
+        "$main::imscpConfig{'CONF_DIR'}/nginx",
+        "$main::imscpConfig{'CONF_DIR'}/php-fpm",
+        "$main::imscpConfig{'CONF_DIR'}/postfix/working"
+    ) {
+        my $rs ||= iMSCP::Dir->new( dirname => $_ )->remove();
         return $rs if $rs;
     }
 
-    # Since 1.3.0
-    my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'CACHE_DATA_DIR'}/addons" )->remove();
-    $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/apache/backup" )->remove();
-    $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/apache/working" )->remove();
-    $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/fcgi" )->remove();
-    $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/nginx" )->remove();
-    $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/php-fpm" )->remove();
-    $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/postfix/working" )->remove();
-    return $rs if $rs;
-
-    # Remove old README file
-    if (-f "$main::imscpConfig{'CONF_DIR'}/listeners.d/README") {
-        $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/listeners.d/README" )->delFile();
-        return $rs if $rs;
-    }
-
-    # Since 1.3.0
-    if (-f "$main::imscpConfig{'CONF_DIR'}/apache/parts/php5.itk.ini") {
-        $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/apache/parts/php5.itk.ini" )->delFile();
+    for(
+        "$main::imscpConfig{'CONF_DIR'}/listeners.d/README",
+        "$main::imscpConfig{'CONF_DIR'}/apache/parts/php5.itk.ini",
+        "$main::imscpConfig{'CONF_DIR'}/vsftpd/imscp_allow_writeable_root.patch",
+        "$main::imscpConfig{'CONF_DIR'}/vsftpd/imscp_pthread_cancel.patch"
+    ) {
+        next unless -f;
+        my $rs = iMSCP::File->new( filename => $_ )->delFile();
         return $rs if $rs;
     }
 

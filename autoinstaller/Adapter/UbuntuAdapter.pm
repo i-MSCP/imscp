@@ -53,7 +53,7 @@ sub _init
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'repositorySections'} = [ 'main', 'universe', 'multiverse' ];
     $self->{'preRequiredPackages'} = [
-        'debconf-utils', 'binutils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl',
+        'binutils', 'debconf-utils', 'dialog', 'devscripts', 'libbit-vector-perl', 'libclass-insideout-perl',
         'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'wget', 'rsync'
     ];
     $self->{'aptRepositoriesToRemove'} = [ ];
@@ -63,11 +63,13 @@ sub _init
     $self->{'packagesToInstallDelayed'} = [ ];
     $self->{'packagesToPreUninstall'} = [ ];
     $self->{'packagesToUninstall'} = [ ];
+    $self->{'packagesToRebuild'} = { };
 
     delete $ENV{'DEBCONF_FORCE_DIALOG'};
-    $ENV{'DEBIAN_FRONTEND'} = 'noninteractive' if iMSCP::Getopt->preseed || iMSCP::Getopt->noprompt;
-
+    $ENV{'DEBIAN_FRONTEND'} = 'noninteractive' if iMSCP::Getopt->noprompt;
     delete $ENV{'UPSTART_SESSION'}; # See IP-1514
+    $ENV{'DEBFULLNAME'} = 'i-MSCP Installer';
+    $ENV{'DEBEMAIL'} = 'team@i-mscp.net';
 
     unless ($main::skippackages) {
         $self->_setupInitScriptPolicyLayer( 'enable' ) == 0 or die( 'Could not setup initscript policy layer' );

@@ -72,6 +72,10 @@ DATABASE
     Changed: i-MSCP now uses its own SQL user (master SQL user). See errata file for more details.
     Updated: domain_id index on domain_dns table; added index length for domain_dns and domain_text columns
 
+DISTRO
+    Fixed: libpam-mysql - undefined symbol: make_scrambled_password (bugs affecting all distributions)
+    Fixed: libpam-mysql - possible segfault (bugs affecting all distributions)
+
 FRONTEND
     Added: Datatable for domains, subdomains, domain aliases and DNS resource records (client level)
     Added: Datatable for the file system information table (admin level)
@@ -108,6 +112,7 @@ INSTALLER
     Added: Check to prevent downgrade attempts (when DB schema change is involved)
     Added: Conditional statement feature for install.xml files (copy_config items only)
     Added: onBuildPackageList event (Allows to override default distribution packages file)
+    Fixed: Allows to rebuild any package with set patches
     Fixed: '_' and '%' wildcards must be escaped in GRANT statements
     Fixed: Debug and verbose modes must be set early
     Fixed: Disable Dovecot systemd socket activation unit if any (not needed for Dovecot as configured by i-MSCP)
@@ -186,6 +191,8 @@ YOUTRACK
     IP-1539 Default behaviour when adding a MySQL user is counter-intuitive
     IP-1549 RRL implementation for BIND/Named config
     IP-1555 Syntax error in imscp-disable-accounts script
+    IP-1557: vsftpd - request failed due to PAM unable to dlopen(pam_mysql.so): /lib/security/pam_mysql.so: undefined
+        symbol: make_scrambled_password
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series
