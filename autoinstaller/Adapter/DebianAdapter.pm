@@ -222,6 +222,11 @@ sub uninstallPackages
         @{$packagesToUninstall} = split /\n/, $stdout;
 
         if (@{$packagesToUninstall}) {
+            # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
+            execute("apt-mark unhold @{$packagesToUninstall}", \$stdout, \$stderr);
+            debug($stdout) if $stdout;
+            debug($stderr) if $stderr;
+
             my $cmd = !iMSCP::Getopt->noprompt ? 'debconf-apt-progress --logstderr -- ' : '';
             $cmd .="apt-get -y --auto-remove --purge --no-install-recommends remove @{$packagesToUninstall}";
             my $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef, \ my $stderr );
@@ -431,14 +436,12 @@ EOF
                 if $altData->{'repository_conflict'};
 
             # Packages to uninstall
-            push @{$self->{'packagesToUninstall'}}, @{$altData->{'package'}} if $altData->{'package'};
-            if ($data->{$sAlt}->{'package'}) {
-                for(@{$data->{$sAlt}->{'package'}}) {
+            if ($altData->{'package'}) {
+                for(@{$altData->{'package'}}) {
                     push @{$self->{'packagesToUninstall'}}, ref $_ eq 'HASH' ? $_->{'content'} : $_;
                 }
             }
             push @{$self->{'packagesToUninstall'}}, @{$altData->{'package_delayed'}} if $altData->{'package_delayed'};
-            #push @{$self->{'packagesToUninstall'}}, @{$altData->{'package_conflict'}} if $altData->{'package_conflict'};
         }
 
         # APT preferences to add

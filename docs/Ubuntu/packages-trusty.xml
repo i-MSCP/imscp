@@ -74,10 +74,12 @@
         <proftpd>
             <package>proftpd-basic</package>
             <package>proftpd-mod-mysql</package>
+            <package_conflict>vsftpd</package_conflict>
         </proftpd>
         <vsftpd>
             <package rebuild_with_patches="libpam-mysql/patches" patch_sys_type="dpatch" pkg_src_name="pam-mysql">libpam-mysql</package>
             <package rebuild_with_patches="vsftpd/patches" discard_patches="imscp_allow_writeable_root.patch">vsftpd</package>
+            <package_conflict>proftpd-basic</package_conflict>
         </vsftpd>
     </ftpd>
     <named default="bind">
