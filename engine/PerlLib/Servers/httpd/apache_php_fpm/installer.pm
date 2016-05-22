@@ -597,7 +597,7 @@ sub _installLogrotate
             ROOT_USER     => $main::imscpConfig{'ROOT_USER'},
             ADM_GROUP     => $main::imscpConfig{'ADM_GROUP'},
             HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'},
-            PHP_VERSION   => $self->{'CONFIG'}->{'PHP_VERSION'}
+            PHP_VERSION   => $self->{'phpConfig'}->{'PHP_VERSION'}
         }
     );
 
@@ -609,7 +609,7 @@ sub _installLogrotate
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdInstallLogrotate', 'apache2' );
 
     if (!$rs && version->parse( "$self->{'phpConfig'}->{'PHP_VERSION'}" ) < version->parse( '7.0' )) {
-        $rs ||= $self->{'eventManager'}->trigger( 'beforeHttpdInstallLogrotate', "php5-fpm" );
+        $rs ||= $self->{'eventManager'}->trigger( 'beforeHttpdInstallLogrotate', 'php5-fpm' );
         $rs ||= $self->{'httpd'}->buildConfFile(
             "$self->{'phpCfgDir'}/fpm/logrotate.tpl",
             { },
