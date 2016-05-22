@@ -72,7 +72,7 @@ sub showDialog
     my $dbPass = main::setupGetQuestion( 'ROUNDCUBE_SQL_PASSWORD', $self->{'config'}->{'DATABASE_PASSWORD'} );
     my ($rs, $msg) = (0, '');
 
-    if (grep($_ eq $main::reconfigure, ( 'webmails', 'all', 'forced' ))
+    if ($main::reconfigure =~ /^webmails|all|forced$/
         || length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/
         || length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/
     ) {
@@ -239,7 +239,7 @@ sub afterFrontEndBuildConfFile
 {
     my ($tplContent, $tplName) = @_;
 
-    return 0 unless grep($_ eq $tplName, ('00_master.conf', '00_master_ssl.conf'));
+    return 0 unless $tplName =~ /^00_master(?:_ssl)?\.conf$/;
 
     $$tplContent = replaceBloc(
         "# SECTION custom BEGIN.\n",

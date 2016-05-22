@@ -68,7 +68,7 @@ sub process
     return $rs if $rs;
 
     my @sql;
-    if (grep($_ eq $self->{'status'}, ( 'toadd', 'tochange' ))) {
+    if ($self->{'status'} =~ /^to(?:add|change)$/) {
         $rs = $self->add();
         @sql = (
             'UPDATE htaccess SET status = ? WHERE id = ?', ($rs ? scalar getMessageByType( 'error' ) : 'ok'),

@@ -1593,7 +1593,7 @@ sub _addFiles
         # logs                 skipped
         # phptmp               vuxxx:vuxxx (recursive with --fix-permissions)
         for my $file(@files) {
-            next if grep($_ eq $file, ( 'domain_disable_page', '.htgroup', '.htpasswd', 'logs')) || !-e "$webDir/$file";
+            next if $file =~ /^domain_disable_page|\.htgroup|\.htpasswd|logs$/ || !-e "$webDir/$file";
             $rs = setRights(
                 "$webDir/$file", { user => $data->{'USER'}, group => $data->{'GROUP'}, recursive => $fixPermissions }
             );
@@ -1618,7 +1618,7 @@ sub _addFiles
                 {
                     dirmode   => '0750',
                     filemode  => '0640',
-                    recursive => grep($_ eq $file, ( '00_private', 'cgi-bin', 'htdocs'))
+                    recursive => $file =~ /^00_private|cgi-bin|htdocs$/
                         ? 0 : $file eq 'domain_disable_page' ? 1 : $fixPermissions
                 }
             );

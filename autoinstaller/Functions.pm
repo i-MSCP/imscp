@@ -90,8 +90,7 @@ sub loadConfig
         # Merge old config with the new but do not write anything yet.
         for my $oldConf(keys %main::imscpOldConfig) {
             if (exists $main::imscpConfig{$oldConf}
-                && !grep($_ eq $oldConf, ( 'BuildDate', 'Version', 'CodeName', 'THEME_ASSETS_VERSION', 'DISTRO_ID',
-                'DISTRO_CODENAME', 'DISTRO_RELEASE' ))
+                && $oldConf !~ /^BuildDate|Version|CodeName|THEME_ASSETS_VERSION|DISTRO_ID|DISTRO_CODENAME|DISTRO_RELEASE$/
             ) {
                 $main::imscpConfig{$oldConf} = $main::imscpOldConfig{$oldConf};
             }

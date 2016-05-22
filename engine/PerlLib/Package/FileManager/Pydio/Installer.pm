@@ -117,7 +117,7 @@ sub afterFrontEndBuildConfFile
 {
     my ($tplContent, $tplName) = @_;
 
-    return 0 unless grep($_ eq $tplName, ( '00_master.conf', '00_master_ssl.conf' ));
+    return 0 unless $tplName =~ /^00_master(?:_ssl)?\.conf$/;
 
     $$tplContent = replaceBloc(
         "# SECTION custom BEGIN.\n",

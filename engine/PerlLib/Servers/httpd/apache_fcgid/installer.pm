@@ -90,12 +90,10 @@ sub showDialog
     my $rs = 0;
     my $confLevel = main::setupGetQuestion( 'PHP_CONFIG_LEVEL', $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} );
 
-    if (grep($_ eq $main::reconfigure, ( 'httpd', 'php', 'servers', 'all', 'forced' ))
-        || !grep($_ eq $confLevel, ( 'per_site', 'per_domain', 'per_user' ))
-    ) {
+    if ($main::reconfigure =~ /^httpd|php|servers|all|forced$/ || $confLevel !~ /^per_(?:site|domain|user)$/) {
         $confLevel =~ s/_/ /;
         ($rs, $confLevel) = $dialog->radiolist(
-            <<"EOF", [ 'per_site', 'per_domain', 'per_user' ], grep($_ eq $confLevel, ( 'per user', 'per domain' )) ? $confLevel : 'per site' );
+            <<"EOF", [ 'per_site', 'per_domain', 'per_user' ], $confLevel =~ /^per (?:user|domain)$/ ? $confLevel : 'per site' );
 
 \\Z4\\Zb\\ZuPHP configuration level\\Zn
 
@@ -410,7 +408,7 @@ sub _buildFastCgiConfFiles
         ) {
             $rs = execute( "$self->{'phpConfig'}->{'PHP_ENMOD_PATH'} $_", \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
-            unless (grep($_ eq $rs, ( 0, 2 ))) {
+            unless ($rs =~ /^0|2$/) {
                 error( $stderr ) if $stderr;
                 return $rs;
             }

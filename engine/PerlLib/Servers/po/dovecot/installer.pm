@@ -100,7 +100,7 @@ sub showDialog
 
     my ($rs, $msg) = (0, '');
 
-    if (grep($_ eq $main::reconfigure, ( 'po', 'servers', 'all', 'forced' ))
+    if ($main::reconfigure =~ /^po|servers|all|forced$/
         || length $dbUser < 6 || length $dbUser > 16 || $dbUser =~ /[^\x21-\x7e]+/
         || length $dbPass < 6 || $dbPass =~ /[^\x21-\x7e]+/
     ) {

@@ -232,7 +232,7 @@ sub _runAllActions
     my @packages = iMSCP::Packages->getInstance()->get();
     my $moduleType = $self->getType();
 
-    if (grep($_ eq $action, ( 'add', 'restore' ))) {
+    if ($action =~ /^add|restore$/) {
         for('pre', '', 'post') {
             my $rs = $self->_runAction( "$_$action$moduleType", \@servers, 'server' );
             $rs ||= $self->_runAction( "$_$action$moduleType", \@packages, 'package' );

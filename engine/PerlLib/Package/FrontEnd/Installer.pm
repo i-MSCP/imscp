@@ -122,9 +122,7 @@ sub askMasterAdminData
 
     main::setupSetQuestion( 'ADMIN_OLD_LOGIN_NAME', $login );
 
-    if (grep($_ eq $main::reconfigure, ( 'admin', 'all', 'forced' ))
-        || $login eq ''
-    ) {
+    if ($main::reconfigure =~ /^admin|all|forced$/ || $login eq '') {
         do {
             ($rs, $login) = $dialog->inputbox( <<"EOF", $login || 'admin' );
 
@@ -216,7 +214,7 @@ sub askDomain
     my $options = { domain_private_tld => qr /.*/ };
     my ($rs, $msg) = (0, '');
 
-    if (grep($_ eq $main::reconfigure, ( 'panel', 'panel_hostname', 'hostnames', 'all', 'forced' ))
+    if ($main::reconfigure =~ /^panel|panel_hostname|hostnames|all|forced$/
         || split( /\./, $vhost ) < 3 || !is_domain( $vhost, $options )
     ) {
         unless ($vhost) {
@@ -264,9 +262,8 @@ sub askSsl
     my $openSSL = iMSCP::OpenSSL->new();
     my $rs = 0;
 
-    if (grep($_ eq $main::reconfigure, ( 'panel', 'panel_ssl', 'ssl', 'all', 'forced' ))
-        || !grep($_ eq $sslEnabled, ( 'yes', 'no' ))
-        || ($sslEnabled eq 'yes' && grep($_ eq $main::reconfigure, ( 'panel_hostname', 'hostnames' )))
+    if ($main::reconfigure =~ /^panel|panel_ssl|ssl|all|forced$/ || $sslEnabled !~ /^yes|no$/
+        || ($sslEnabled eq 'yes' && $main::reconfigure =~ /^panel_hostname|hostnames$/)
     ) {
         # Ask for SSL
         ($rs, $sslEnabled) = $dialog->yesno( <<"EOF", $sslEnabled eq 'no' ? 1 : 0 );
@@ -417,7 +414,7 @@ sub askHttpPorts
     my $ssl = main::setupGetQuestion( 'PANEL_SSL_ENABLED' );
     my $rs = 0;
 
-    if (grep($_ eq $main::reconfigure, ( 'panel', 'panel_ports', 'all', 'forced' ))
+    if ($main::reconfigure =~ /^panel|panel_ports|all|forced$/
         || $httpPort !~ /^\d+$/ || $httpPort < 1025 || $httpPort > 65535 || $httpsPort eq $httpPort
     ) {
         my $msg = '';
@@ -434,7 +431,7 @@ EOF
     main::setupSetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT', $httpPort ) if $rs < 30;
 
     if ($rs < 30 && $ssl eq 'yes') {
-        if (grep($_ eq $main::reconfigure, ( 'panel', 'panel_ports', 'all', 'forced' ))
+        if ($main::reconfigure =~ /^panel|panel_ports|all|forced$/
             || $httpsPort !~ /^\d+$/ || $httpsPort < 1025 || $httpsPort > 65535
             || $httpsPort == $httpPort
         ) {

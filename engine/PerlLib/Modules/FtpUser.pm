@@ -66,7 +66,7 @@ sub process
     return $rs if $rs;
 
     my @sql;
-    if (grep($_ eq $self->{'status'}, ( 'toadd', 'tochange', 'toenable' ))) {
+    if ($self->{'status'} =~ /^to(?:add|change|enable)$/) {
         $rs = $self->add();
         @sql = (
             'UPDATE ftp_users SET status = ? WHERE userid = ?',

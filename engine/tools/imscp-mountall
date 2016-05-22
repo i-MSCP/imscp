@@ -102,7 +102,7 @@ my %dispatch = (
 );
 
 my $action = shift;
-$action && grep($_ eq $action, ( 'start', 'stop' )) or iMSCP::Getopt->showUsage();
+$action && $action =~ /^start|stop$/ or iMSCP::Getopt->showUsage();
 exit $dispatch{ $action }->();
 
 =head1 AUTHOR

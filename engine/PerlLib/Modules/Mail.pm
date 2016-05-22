@@ -67,7 +67,7 @@ sub process
     return $rs if $rs;
 
     my @sql;
-    if (grep($_ eq $self->{'status'}, ( 'toadd', 'tochange', 'toenable' ))) {
+    if ($self->{'status'} =~ /^to(?:add|change|enable)$/) {
         $rs = $self->add();
         @sql = (
             'UPDATE mail_users SET status = ? WHERE mail_id = ?',

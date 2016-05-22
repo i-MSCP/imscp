@@ -59,16 +59,24 @@ sub process
         my ($sth2, @params);
         local $@;
         eval {
-            if (grep($_ eq $row->{'ip_status'}, ( 'toadd', 'tochange' ))) {
-                $provider->addIpAddr( {
-                        id => $row->{'ip_id'}, ip_card => $row->{'ip_card'}, ip_address => $row->{'ip_number'}
-                    } );
+            if ($row->{'ip_status'} =~ /^to(?:add|change)$/) {
+                $provider->addIpAddr(
+                    {
+                        id         => $row->{'ip_id'},
+                        ip_card    => $row->{'ip_card'},
+                        ip_address => $row->{'ip_number'}
+                    }
+                );
                 $sth2 = $dbh->prepare( 'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?' );
                 @params = ('ok', $row->{'ip_id'});
             } elsif ($row->{'ip_status'} eq 'todelete') {
-                $provider->removeIpAddr( {
-                        id => $row->{'ip_id'}, ip_card => $row->{'ip_card'}, ip_address => $row->{'ip_number'}
-                    } );
+                $provider->removeIpAddr(
+                    {
+                        id         => $row->{'ip_id'},
+                        ip_card    => $row->{'ip_card'},
+                        ip_address => $row->{'ip_number'}
+                    }
+                );
                 $sth2 = $dbh->prepare( 'DELETE FROM server_ips WHERE ip_id = ?' );
                 @params = ($row->{'ip_id'});
             }
@@ -79,9 +87,9 @@ sub process
         if ($@) {
             my $error = $@;
             $sth2 = $dbh->prepare( 'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?' );
-            $sth2->execute( $error || 'Unknown error', $row->{'ip_id'} ) or die( sprintf(
-                    'Could not execute prepared statement: %s', $dbh->errstr
-                ) );
+            $sth2->execute( $error || 'Unknown error', $row->{'ip_id'} ) or die(
+                sprintf( 'Could not execute prepared statement: %s', $dbh->errstr )
+            );
             die( $@ );
         }
     }

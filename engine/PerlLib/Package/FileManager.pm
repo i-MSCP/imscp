@@ -81,9 +81,8 @@ sub showDialog
     my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
     my $rs = 0;
 
-    if (grep($_ eq $main::reconfigure, ( 'filemanager', 'all', 'forced' ))
-        || !$package
-        || !grep($_ eq $package, @{$self->{'PACKAGES'}})
+    if ($main::reconfigure =~ /^filemanager|all|forced$/
+        || !$package || !grep($_ eq $package, @{$self->{'PACKAGES'}})
     ) {
         ($rs, $package) = $dialog->radiolist(
             <<"EOF", [ @{$self->{'PACKAGES'}} ], $package ne '' && grep($_ eq $package, @{$self->{'PACKAGES'}}) ? $package : @{$self->{'PACKAGES'}}[0] );

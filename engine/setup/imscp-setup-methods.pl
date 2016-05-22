@@ -219,7 +219,7 @@ sub setupAskServerHostname
     my $options = { domain_private_tld => qr /.*/ };
     my ($rs, $msg) = (0, '');
 
-    if(grep($_ eq $main::reconfigure, ( 'system_hostname', 'hostnames', 'all', 'forced' ))
+    if($main::reconfigure =~ /^system_hostname|hostnames|all|forced$/
         || split(/\./, $hostname) < 3 || !is_domain($hostname, $options)
     ) {
         chomp($hostname) unless($hostname || execute('hostname -f', \$hostname, \my $stderr));
@@ -284,7 +284,7 @@ sub setupAskServerIps
 
     @serverIps = sort keys %{ { map { $_ => 1 } @serverIps, @{$serverIpsToAdd} } };
 
-    if(grep($_ eq $main::reconfigure, ( 'ips', 'all', 'forced' ))
+    if($main::reconfigure =~ /^ips|all|forced$/
         || !grep($_ eq $baseServerIp, @serverIps)
         || !$net->isValidAddr($baseServerPublicIp)
         || !grep($_ eq $net->getAddrType($baseServerPublicIp), ( 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ))
@@ -537,7 +537,7 @@ sub askMasterSqlUser
 
     $pwd = decryptBlowfishCBC($main::imscpDBKey, $main::imscpDBiv, $pwd) unless $pwd eq '' || iMSCP::Getopt->preseed;
 
-    if(grep($_ eq $main::reconfigure, ( 'sql', 'servers', 'all', 'forced' ))
+    if($main::reconfigure =~ /^sql|servers|all|forced$/
         || $host eq '' || $port eq '' || $user eq '' || $user eq 'root' || $pwd eq ''
         || tryDbConnect($host, $port, $user, $pwd)
     ) {
@@ -615,9 +615,8 @@ sub setupAskSqlUserHost
     my $rs = 0;
 
     if($main::imscpConfig{'SQL_SERVER'} eq 'remote_server') { # Remote MySQL server
-        if(grep($_ eq $main::reconfigure, ( 'sql', 'servers', 'all', 'forced' ))
-            || $host ne '%'
-            && !is_domain($host, \%options) && !$net->isValidAddr($host)
+        if($main::reconfigure =~ /^sql|servers|all|forced$/ || $host ne '%' && !is_domain($host, \%options)
+           && !$net->isValidAddr($host)
         ) {
             my $msg = '';
 
@@ -658,9 +657,7 @@ sub setupAskImscpDbName
     my $dbName = setupGetQuestion('DATABASE_NAME', 'imscp');
     my $rs = 0;
 
-    if(grep($_ eq $main::reconfigure, ( 'sql', 'servers', 'all', 'forced' ))
-        || !iMSCP::Getopt->preseed && !setupIsImscpDb($dbName)
-    ) {
+    if($main::reconfigure =~ /^sql|servers|all|forced$/ || !iMSCP::Getopt->preseed && !setupIsImscpDb($dbName)) {
         my $msg = '';
 
         do {
@@ -715,9 +712,7 @@ sub setupAskDbPrefixSuffix
     my $prefix = setupGetQuestion('MYSQL_PREFIX');
     my $rs = 0;
 
-    if(grep($_ eq $main::reconfigure, ( 'sql', 'servers', 'all', 'forced' ))
-        || $prefix !~ /^behind|infront|none$/
-    ) {
+    if($main::reconfigure =~ /^sql|servers|all|forced$/ || $prefix !~ /^behind|infront|none$/) {
         ($rs, $prefix) = $dialog->radiolist(
             <<"EOF", [ 'infront', 'behind', 'none' ], $prefix =~ /^behind|infront$/ ? $prefix : 'none');
 
@@ -749,9 +744,7 @@ sub setupAskTimezone
     my $timezone = setupGetQuestion('TIMEZONE');
     my $rs = 0;
 
-    if(grep($_ eq $main::reconfigure, ( 'timezone', 'all', 'forced' ))
-        || !($timezone && DateTime::TimeZone->is_valid_name($timezone))
-    ) {
+    if($main::reconfigure =~ /^timezone|all|forced$/ || !($timezone && DateTime::TimeZone->is_valid_name($timezone))) {
         $timezone = $defaultTimezone unless $timezone;
         my $msg = '';
 
@@ -784,9 +777,8 @@ sub setupAskServicesSsl
     my $openSSL = iMSCP::OpenSSL->new();
     my $rs = 0;
 
-    if(grep($_ eq $main::reconfigure, ( 'services_ssl', 'ssl', 'all', 'forced' ))
-        || !grep($_ eq $sslEnabled, ( 'yes', 'no' ))
-        || ($sslEnabled eq 'yes' && grep($_ eq $main::reconfigure, ( 'system_hostname', 'hostnames' )))
+    if($main::reconfigure =~ /^services_ssl|ssl|all|forced$/ || $sslEnabled !~ /^yes|no$/
+        || ($sslEnabled eq 'yes' && $main::reconfigure =~ /^system_hostname|hostnames$/)
     ) {
         # Ask for SSL
         $rs = $dialog->yesno(<<"EOF", $sslEnabled eq 'no' ? 1 : 0);
@@ -917,9 +909,7 @@ sub setupAskImscpBackup
     my $backupImscp = setupGetQuestion('BACKUP_IMSCP');
     my $rs = 0;
 
-    if(grep($_ eq $main::reconfigure, ( 'backup', 'all', 'forced' ))
-        || $backupImscp !~ /^yes|no$/
-    ) {
+    if($main::reconfigure =~ /^backup|all|forced$/ || $backupImscp !~ /^yes|no$/) {
         ($rs, $backupImscp) = $dialog->radiolist(<<"EOF", [ 'yes', 'no' ], $backupImscp ne 'no' ? 'yes' : 'no');
 
 \\Z4\\Zb\\Zui-MSCP Backup Feature\\Zn
@@ -942,9 +932,7 @@ sub setupAskDomainBackup
     my $backupDomains = setupGetQuestion('BACKUP_DOMAINS');
     my $rs = 0;
 
-    if(grep($_ eq $main::reconfigure, ( 'backup', 'all', 'forced' ))
-        || $backupDomains !~ /^yes|no$/
-    ) {
+    if($main::reconfigure =~ /^backup|all|forced$/ || $backupDomains !~ /^yes|no$/) {
         ($rs, $backupDomains) = $dialog->radiolist(<<"EOF", [ 'yes', 'no' ], $backupDomains ne 'no' ? 'yes' : 'no');
 
 \\Z4\\Zb\\ZuDomains Backup Feature\\Zn

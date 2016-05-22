@@ -90,7 +90,7 @@ sub sqlUserDialog
 
     my ($rs, $msg) = (0, '');
 
-    if (grep($_ eq $main::reconfigure, ( 'ftpd', 'servers', 'all', 'forced' ))
+    if ($main::reconfigure =~ /^ftpd|servers|all|forced$/
         || length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x7e]+$/
         || length $dbPass < 6 || $dbPass !~ /^[\x21-\x7e]+$/
     ) {
@@ -190,8 +190,7 @@ sub passivePortRangeDialog
     my ($rs, $msg) = (0, '');
     my $passivePortRange = main::setupGetQuestion( 'FTPD_PASSIVE_PORT_RANGE' ) || $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'};
 
-    if (grep($_ eq $main::reconfigure, ( 'ftpd', 'servers', 'all', 'forced' ))
-        || $passivePortRange !~ /^(\d+)\s+(\d+)$/
+    if ($main::reconfigure =~ /^ftpd|servers|all|forced$/ || $passivePortRange !~ /^(\d+)\s+(\d+)$/
         || $1 < 32768 || $1 >= 60999 || $1 >= $2
     ) {
         $passivePortRange = '32768 60999' unless $1 && $2;

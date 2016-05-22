@@ -76,7 +76,7 @@ sub process
     return $rs if $rs;
 
     my @sql;
-    if (grep($_ eq $self->{'domain_status'}, ( 'toadd', 'tochange', 'toenable' ))) {
+    if ($self->{'domain_status'} =~ /^to(?:add|change|enable)$/) {
         $rs = $self->add();
         @sql = (
             'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
@@ -502,13 +502,12 @@ sub _getNamedData
         USER_NAME       => $userName,
         MAIL_ENABLED    => (
                 $self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0 &&
-                    grep($_ eq $self->{'external_mail'}, ( 'wildcard', 'off' ))
+                    $self->{'external_mail'} =~ /^wildcard|off$/
             ) ? 1 : 0,
         SPF_RECORDS     => [ ]
     };
 
-    return %{$self->{'named'}} unless $action =~ /add/ && grep($_ eq $self->{'external_mail'}, ( 'domain', 'filter',
-        'wildcard' ));
+    return %{$self->{'named'}} unless $action =~ /add/ && $self->{'external_mail'} =~ /^domain|filter|wildcard$/;
 
     my $db = iMSCP::Database->factory();
     my $rdata = $db->doQuery(

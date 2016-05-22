@@ -74,7 +74,7 @@ sub process
     return $rs if $rs;
 
     my @sql;
-    if (grep($_ eq $self->{'admin_status'}, ( 'toadd', 'tochange' ))) {
+    if ($self->{'admin_status'} =~ /^to(?:add|change)$/) {
         $rs = $self->add();
         @sql = (
             'UPDATE admin SET admin_status = ? WHERE admin_id = ?',

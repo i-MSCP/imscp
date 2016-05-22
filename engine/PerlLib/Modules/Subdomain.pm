@@ -73,7 +73,7 @@ sub process
     return $rs if $rs;
 
     my @sql;
-    if (grep($_ eq $self->{'subdomain_status'}, ( 'toadd', 'tochange', 'toenable' ))) {
+    if ($self->{'subdomain_status'} =~ /^to(?:add|change|enable)$/) {
         $rs = $self->add();
         @sql = (
             'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?',
@@ -186,7 +186,7 @@ sub _getHttpdData
     my $webDir = File::Spec->canonpath( "$homeDir/$self->{'subdomain_mount'}" );
     my $db = iMSCP::Database->factory();
     my $confLevel = $httpd->{'phpConfig'}->{'PHP_CONFIG_LEVEL'};
-    $confLevel = grep($_ eq $confLevel, ( 'per_user', 'per_domain' )) ? 'dmn' : 'sub';
+    $confLevel = $confLevel =~ /^per_(?:user|domain)$/ ? 'dmn' : 'sub';
 
     my $phpiniMatchId = $confLevel eq 'dmn' ? $self->{'domain_id'} : $self->{'subdomain_id'};
     my $phpini = $db->doQuery(
@@ -302,7 +302,7 @@ sub _getNamedData
         USER_NAME          => $userName.'sub'.$self->{'subdomain_id'}
     };
 
-    if (grep($_ eq $self->{'external_mail'}, ( 'domain', 'filter' ))) {
+    if ($self->{'external_mail'} =~ /^domain|filter$/) {
         $self->{'named'}->{'MAIL_ENABLED'} = 1;
 
         # only no wildcard MX (NOT LIKE '*.%') must be add to existent subdomains

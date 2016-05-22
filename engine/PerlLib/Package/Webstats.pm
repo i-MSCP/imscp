@@ -83,10 +83,8 @@ sub showDialog
     my $packages = [ split ',', main::setupGetQuestion( 'WEBSTATS_PACKAGES' ) ];
     my $rs = 0;
 
-    if (grep($_ eq $main::reconfigure, ( 'webstats', 'all', 'forced' ))
-        || !@{$packages}
-        || grep { my $__ = $_;
-        !grep($_ eq $__, ( @{$self->{'PACKAGES'}}, 'No' )) } @{$packages}
+    if ($main::reconfigure =~ /^webstats|all|forced$/ || !@{$packages}
+        || grep { my $__ = $_; !grep($_ eq $__, ( @{$self->{'PACKAGES'}}, 'No' )) } @{$packages}
     ) {
         ($rs, $packages) = $dialog->checkbox(
             <<"EOF", [ @{$self->{'PACKAGES'}} ], grep($_ eq 'No', @{$packages}) ? () : @{$packages} ? @{$packages} : @{$self->{'PACKAGES'}} );

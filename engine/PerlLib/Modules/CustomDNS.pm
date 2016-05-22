@@ -184,8 +184,9 @@ sub _loadData
     }
 
     unless (@{$rows} && defined( $rows->[0]->[5] )) {
-        error( sprintf( 'Custom DNS records for %s with ID %s were not found or are orphaned', $domainType,
-                $domainId ) );
+        error(
+            sprintf( 'Custom DNS records for %s with ID %s were not found or are orphaned', $domainType, $domainId )
+        );
         return 1;
     }
 
@@ -194,9 +195,7 @@ sub _loadData
 
     # Filter DNS records which must be disabled or deleted
     for my $record(@{$rows}) {
-        push @{$self->{'dns_records'}}, [ (@{$record})[0 .. 3] ] unless grep(
-            $_ eq $record->[4], ( 'todisable', 'todelete' )
-        );
+        push @{$self->{'dns_records'}}, [ (@{$record})[0 .. 3] ] unless $record->[4] =~ /^to(?:disable|delete)$/;
     }
 
     0;

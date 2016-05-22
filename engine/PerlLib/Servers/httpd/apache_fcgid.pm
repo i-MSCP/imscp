@@ -1604,7 +1604,7 @@ sub _addFiles
         # logs                 skipped
         # phptmp               vuxxx:vuxxx (recursive with --fix-permissions)
         for my $file(@files) {
-            next if grep($_ eq $file, ( 'domain_disable_page', '.htgroup', '.htpasswd', 'logs')) || !-e "$webDir/$file";
+            next if $file =~ /^domain_disable_page|\.htgroup|\.htpasswd|logs$/ || !-e "$webDir/$file";
             $rs = setRights(
                 "$webDir/$file", { user => $data->{'USER'}, group => $data->{'GROUP'}, recursive => $fixPermissions }
             );
@@ -1629,7 +1629,7 @@ sub _addFiles
                 {
                     dirmode   => '0750',
                     filemode  => '0640',
-                    recursive => grep($_ eq $file, ( '00_private', 'cgi-bin', 'htdocs'))
+                    recursive => $file =~ /^00_private|cgi-bin|htdocs$/
                         ? 0 : $file eq 'domain_disable_page' ? 1 : $fixPermissions
                 }
             );
@@ -1761,7 +1761,7 @@ sub _buildPHPConfig
         return $rs if $rs;
     } elsif ($data->{'PHP_SUPPORT'} ne 'yes'
         || $confLevel eq 'per_user' && $domainType ne 'dmn'
-        || $confLevel eq 'per_domain' && !grep($_ eq $domainType, ( 'dmn', 'als' ))
+        || $confLevel eq 'per_domain' && $domainType !~ /^dmn|als$/
         || $confLevel eq 'per_site'
     ) {
         $rs = iMSCP::Dir->new( dirname => "$phpStarterDir/$data->{'DOMAIN_NAME'}" )->remove();
