@@ -29,7 +29,6 @@ use iMSCP::Composer;
 use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Rights;
 use iMSCP::TemplateParser;

@@ -26,8 +26,8 @@ package Package::FileManager::Pydio::Installer;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::Execute;
 use iMSCP::Rights;
 use iMSCP::Composer;
 use iMSCP::TemplateParser;
@@ -175,20 +175,11 @@ sub _installFiles
         return 1;
     }
 
-    my $rs = execute( "rm -fR $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", \my $stdout, \my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr ) if $rs && $stderr;
-    return $rs if $rs;
-
-    $rs = execute( "cp -fR $packageDir/src $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", \$stdout, \$stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr ) if $rs && $stderr;
-    return $rs if $rs;
-
-    $rs = execute( "cp -fRT $packageDir/iMSCP/src $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", \$stdout, \$stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr ) if $rs && $stderr;
-    $rs;
+    my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
+    $rs ||= iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" );
+    $rs ||= iMSCP::Dir->new(
+        dirname => "$packageDir/iMSCP/src" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp"
+    );
 }
 
 =item _buildHttpdConfig()

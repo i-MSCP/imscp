@@ -25,10 +25,11 @@ package iMSCP::Dir;
 
 use strict;
 use warnings;
+use File::Copy;
+use File::Path qw/ mkpath remove_tree /;
+use File::Spec ();
 use iMSCP::Debug;
 use iMSCP::File;
-use File::Path qw/mkpath remove_tree/;
-use File::Copy;
 use parent 'Common::Object';
 
 =head1 DESCRIPTION
@@ -53,11 +54,11 @@ sub getFiles
     my $self = shift;
     my $dirname = shift // $self->{'dirname'};
 
-    defined $dirname or die( "Missing 'dirname' parameter" );
     opendir my $dh, $dirname or die( sprintf( 'Could not open %s: %s', $dirname, $! ) );
-    my @files = grep { $_ ne '.' && $_ ne '..' && -f "$self->{'dirname'}/$_" } readdir $dh;
-    closedir $dh;
-    $self->{'fileType'} ? grep(/$self->{'fileType'}$/, @files) : @files;
+    my @files = grep { -f "$dirname/$_" } File::Spec->no_upwards( readdir( $dh ) );
+    @files = $self->{'fileType'} ? grep(/$self->{'fileType'}$/, @files) : @files;
+    closedir( $dh );
+    @files;
 }
 
 =item getDirs([ $dirname ])
@@ -74,11 +75,10 @@ sub getDirs
     my $self = shift;
     my $dirname = shift // $self->{'dirname'};
 
-    defined $dirname or die( "Missing 'dirname' parameter" );
     opendir my $dh, $dirname or die( sprintf( 'Could not open %s: %s', $dirname, $! ) );
-    my @files = grep { $_ ne '.' && $_ ne '..' && -d "$dirname/$_" } readdir $dh;
-    closedir $dh;
-    @files;
+    my @dirs = grep -d "$dirname/$_", File::Spec->no_upwards( readdir( $dh ) );
+    closedir( $dh );
+    @dirs;
 }
 
 =item getAll([ $dirname ])
@@ -95,10 +95,9 @@ sub getAll
     my $self = shift;
     my $dirname = shift // $self->{'dirname'};
 
-    defined $dirname or die( "Missing 'dirname' parameter" );
     opendir my $dh, $dirname or die( sprintf( 'Could not open %s: %s', $dirname, $! ) );
-    my @files = grep { $_ ne '.' && $_ ne '..' } readdir $dh;
-    closedir $dh;
+    my @files = File::Spec->no_upwards( readdir( $dh ) );
+    closedir( $dh );
     @files;
 }
 
@@ -117,17 +116,16 @@ sub isEmpty
     my $dirname = shift // $self->{'dirname'};
 
     defined $dirname or die( "Missing 'dirname' parameter" );
-    opendir my $dh, $dirname or die( sprintf( 'Could not open %s: %s', $dirname, $! ) );
 
+    opendir my $dh, $dirname or die( sprintf( 'Could not open %s: %s', $dirname, $! ) );
     for my $file(readdir $dh) {
-        if ($file ne '.' && $file ne '..') {
+        if (File::Spec->no_upwards( $file )) {
             closedir $dh;
             return 0;
         }
     }
 
     closedir $dh;
-
     1;
 }
 
@@ -175,12 +173,13 @@ sub owner
     defined $group or die( "Mistting 'group' parameter" );
     defined $dirname or die( "Missing 'dirname' parameter" );
 
-    my $uid = ($owner =~ /^\d+$/) ? $owner : getpwnam( $owner ) // -1;
-    my $gid = ($group =~ /^\d+$/) ? $group : getgrnam( $group ) // -1;
+    my $uid = $owner =~ /^\d+$/ ? $owner : getpwnam( $owner ) // -1;
+    my $gid = $group =~ /^\d+$/ ? $group : getgrnam( $group ) // -1;
 
     debug( sprintf( 'Changing owner and group for %s to %s:%s', $dirname, $uid, $gid ) );
-    chown $uid, $gid, $self->{'dirname'} or die( sprintf( 'Could not change owner and group for %s: %s', $dirname,
-            $! ) );
+    chown $uid, $gid, $self->{'dirname'} or die(
+        sprintf( 'Could not change owner and group for %s: %s', $dirname, $! )
+    );
     0;
 }
 
@@ -261,7 +260,7 @@ sub remove
     return 0 unless -d $dirname;
 
     debug( $dirname );
-    remove_tree( $dirname, { error => \my $errStack } );
+    remove_tree( $dirname, { error => \ my $errStack } );
 
     if (@{$errStack}) {
         my $errorStr = '';
@@ -285,8 +284,6 @@ sub remove
 
  Param string $destDir Destination directory
  Param hash \%options OPTIONAL Options:
-   excludeDir:  String representing a regexp for excluding a list of directories from copy
-   excludeFile: String representing a regexp for excluding a list of files from copy
    preserve:    If true, copy file attributes (uid, gid and mode)
  Return int 0 on success, die on failure
 
@@ -300,8 +297,15 @@ sub rcopy
 
     defined $self->{'dirname'} or die( 'Attribute `dirname` is not defined' );
 
-    my $excludeDir = defined $options->{'excludeDir'} ? qr/$options->{'excludeDir'}/ : undef;
-    my $excludeFile = defined $options->{'excludeFile'} ? qr/$options->{'excludeFile'}/ : undef;
+    unless (-d $destDir) {
+        my $opts = { };
+        if ($options->{'preserve'}) {
+            my (undef, undef, $mode, undef, $uid, $gid) = lstat( $self->{'dirname'} );
+            $opts = { user => $uid, mode => $mode & 07777, group => $gid }
+        }
+
+        iMSCP::Dir->new( dirname => $destDir )->make( $opts );
+    }
 
     opendir my $dh, $self->{'dirname'} or die( sprintf( 'Could not open %s: %s', $self->{'dirname'}, $! ) );
 
@@ -311,7 +315,6 @@ sub rcopy
             my $dst = "$destDir/$entry";
 
             if (-d $src) {
-                unless ($excludeDir && $src =~ /$excludeDir/) {
                     my $opts = { };
 
                     if ($options->{'preserve'}) {
@@ -322,12 +325,11 @@ sub rcopy
                     debug( sprintf( '%s to %s', $src, $dst ) );
                     iMSCP::Dir->new( dirname => $dst )->make( $opts );
                     iMSCP::Dir->new( dirname => $src )->rcopy( $dst, $options );
-                }
-            } elsif (!$excludeFile || $src !~ /$excludeFile}/) {
+            } else {
                 debug( sprintf( '%s to %s', "$self->{'dirname'}/$entry", "$destDir/$entry" ) );
-                iMSCP::File->new( filename => $src )->copyFile( $dst, $options ) == 0 or die( sprintf(
-                        'Could not copy file %s into %s: %s', $src, $dst, getLastError()
-                    ) );
+                iMSCP::File->new( filename => $src )->copyFile( $dst, $options ) == 0 or die(
+                    sprintf( 'Could not copy file %s into %s: %s', $src, $dst, getLastError() )
+                );
             }
         }
     }
@@ -352,8 +354,9 @@ sub moveDir
     defined $self->{'dirname'} or die( "Attribut 'dirname' is not defined" );
     -d $self->{'dirname'} or die( sprintf( "Directory %s doesn't exits", $self->{'dirname'} ) );
     debug( sprintf( '%s to %s', $self->{'dirname'}, $destDir ) );
-    move $self->{'dirname'}, $destDir or die( sprintf( 'Could not move %s to %s: %s', $self->{'dirname'}, $destDir,
-            $! ) );
+    move $self->{'dirname'}, $destDir or die(
+        sprintf( 'Could not move %s to %s: %s', $self->{'dirname'}, $destDir, $! )
+    );
     0;
 }
 

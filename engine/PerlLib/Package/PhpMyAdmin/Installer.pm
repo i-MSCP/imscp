@@ -28,6 +28,7 @@ use warnings;
 use iMSCP::Config;
 use iMSCP::Database;
 use iMSCP::Debug;
+use iMSCP::Dir;
 use Package::PhpMyAdmin;
 use iMSCP::EventManager;
 use iMSCP::TemplateParser;
@@ -373,15 +374,8 @@ sub _installFiles
         return 1;
     }
 
-    my $rs = execute( "rm -fR $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma", \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr ) if $rs && $stderr;
-    return $rs if $rs;
-
-    $rs = execute( "cp -fR $packageDir $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma", \$stdout, \$stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr ) if $rs && $stderr;
-    $rs;
+    my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma" )->remove();
+    $rs ||= iMSCP::Dir->new( dirname => "$packageDir" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma" );
 }
 
 =item _saveConfig()
