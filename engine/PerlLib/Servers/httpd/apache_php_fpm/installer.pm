@@ -96,7 +96,7 @@ sub showPhpConfigLevelDialog
         $confLevel =~ s/_/ /;
 
         ($rs, $confLevel) = $dialog->radiolist(
-            <<"EOF", [ 'per_site', 'per_domain', 'per_user' ], $confLevel =~ /^per (?:user|domain)/ ? $confLevel : 'per site' );
+            <<"EOF", [ 'per_site', 'per_domain', 'per_user' ], $confLevel =~ /^per (?:user|domain)$/ ? $confLevel : 'per site' );
 
 \\Z4\\Zb\\ZuPHP configuration level\\Zn
 
