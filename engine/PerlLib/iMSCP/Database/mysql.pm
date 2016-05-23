@@ -383,7 +383,8 @@ sub _init
         'PrintError'           => 0,
         'RaiseError'           => 1,
         'mysql_auto_reconnect' => 1,
-        'mysql_enable_utf8'    => 1
+        'mysql_enable_utf8'    => 1,
+        'AutoInactiveDestroy'  => 1
     };
 
     # Default fetch mode

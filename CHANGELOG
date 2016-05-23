@@ -22,6 +22,7 @@ BACKEND
     Changed: Upstart job file paths, sysvinit script paths and systemd unit files paths are now cached (init providers)
     Fixed: composer.phar must not be run with root user privileges (it is now run with i-MSCP system master user)
     Fixed: Could not disable custom DNS resource records; DNS resource records are always re-enabled on domain change
+    Fixed: Database handle is destroyed when calling fork(), leading to unexpected failure (iMSCP::Database::mysql)
     Fixed: eth0 is hardcoded in i-MSCP network interface provider
     Fixed: Ignore user-specific options if any (~/.my.cnf file) when running mysqldump (iMSCP::Database::mysql::dumpdb)
     Fixed: Many inconsistencies in iMSCP::Getopt
