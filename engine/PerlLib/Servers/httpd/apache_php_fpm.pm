@@ -1275,14 +1275,14 @@ sub restart
 sub mountLogsFolder
 {
     my ($self, $data) = @_;
-
+    
     my $fsSpec = "$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}";
     my $fsFile = "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}";
     my $mountOptions = { fs_spec => $fsSpec, fs_file => $fsFile, fs_vfstype => 'none', fs_mntops => 'bind' };
-    my $rs = $self->{'eventManager'}->trigger( 'beforeMountLogsFolder', $mountOptions );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeMountLogsFolder', $data, $mountOptions );
     $rs ||= addMountEntry( "$fsSpec $fsFile none bind" );
     $rs ||= mount( $mountOptions );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterMountLogsFolder', $mountOptions );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterMountLogsFolder', $data, $mountOptions );
 }
 
 =item umountLogsFolder(\%data)
@@ -1302,10 +1302,10 @@ sub umountLogsFolder
 
     # If domain type is 'dmn' (full account) we operate recursively to handle case of dangling mounts
     my $fsFile = "$data->{'HOME_DIR'}/logs".($data->{'DOMAIN_TYPE'} ne 'dmn' ? "/$data->{'DOMAIN_NAME'}" : '');
-    my $rs = $self->{'eventManager'}->trigger( 'beforeUnmountLogsFolder', $fsFile );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeUnmountLogsFolder', $data, $fsFile );
     $rs ||= umount( $fsFile );
     $rs ||= removeMountEntry( qr%.*?\s$fsFile(?:/|\s).*% );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterUmountMountLogsFolder', $fsFile );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterUmountMountLogsFolder', $data, $fsFile );
 }
 
 =back
