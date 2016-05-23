@@ -165,8 +165,7 @@ sub preinstall
 {
     my $self = shift;
 
-    my $version = version->parse( $self->_getPhpVersion() ) >= version->parse( '7.0.0' ) ? '1.2.x' : '1.1.x';
-    my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/roundcube', $version );
+    my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/roundcube', '1.2.x' );
     $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 
