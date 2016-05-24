@@ -65,7 +65,6 @@ sub installPreRequiredPackages
     return $rs if $rs;
 
     if (!iMSCP::Getopt->noprompt && iMSCP::ProgramFinder::find( 'debconf-apt-progress' )) {
-        iMSCP::Dialog->getInstance->endGauge();
         $cmd = "debconf-apt-progress --logstderr -- $cmd";
     }
 
@@ -701,7 +700,7 @@ sub _updatePackagesIndex
 
     my $cmd = 'apt-get';
     if (!iMSCP::Getopt->noprompt) {
-        iMSCP::Dialog->getInstance->endGauge();
+        iMSCP::Dialog->getInstance->endGauge() if iMSCP::ProgramFinder::find( 'dialog' );
         $cmd = "debconf-apt-progress --logstderr -- $cmd";
     }
 
