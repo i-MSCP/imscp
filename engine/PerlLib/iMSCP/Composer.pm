@@ -190,7 +190,6 @@ EOF
 Please wait, depending on your connection, this may take few seconds...
 EOF
 
-    # The update option is used here but composer will automatically fallback to install mode when needed
     # Note: Any progress/status info goes to stderr (See https://github.com/composer/composer/issues/3795)
     $rs = executeNoWait(
         sprintf( $self->{'suCmdPattern'},
@@ -201,7 +200,6 @@ EOF
         },
         sub {
             my $str = shift;
-
             if ($$str =~ /^$/m) {
                 $$str = '';
             } else {

@@ -113,6 +113,7 @@ sub step
     # Make error message free of any ANSI color and end of line codes
     (my $errorMessage = getLastError()) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
     $errorMessage = 'An unexpected error occurred...' unless $errorMessage;
+    $errorMessage =~ s/\n+$//;
 
     unless (iMSCP::Getopt->noprompt) {
         iMSCP::Dialog->getInstance()->endGauge();

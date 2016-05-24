@@ -434,6 +434,8 @@ sub _process
             step(
                 sub { $module->new()->process( $id ) },
                 sprintf( 'Processing %s (%s) tasks for: %s (ID %s)', $module, $status, $name, $id ), $nSteps, ++$nStep
+            ) == 0 or die(
+                getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
             );
         } else {
             $module->new()->process( $id ) == 0 or die(
