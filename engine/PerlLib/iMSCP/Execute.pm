@@ -77,20 +77,20 @@ sub execute($;$$)
         $$stderr = '';
     }
 
-    my $mulitArgsSystemCall = ref $command eq 'ARRAY';
-    debug( $mulitArgsSystemCall ? "@{$command}" : $command );
+    my $multitArgsSystemCall = ref $command eq 'ARRAY';
+    debug( $multitArgsSystemCall ? "@{$command}" : $command );
 
     if ($stdout && $stderr) {
-        ($$stdout, $$stderr) = capture { system( $mulitArgsSystemCall ? @{$command} : $command); };
+        ($$stdout, $$stderr) = capture { system( $multitArgsSystemCall ? @{$command} : $command); };
         chomp( $$stdout, $$stderr );
     } elsif ($stdout) {
-        $$stdout = capture_stdout { system( $mulitArgsSystemCall ? @{$command} : $command ); };
+        $$stdout = capture_stdout { system( $multitArgsSystemCall ? @{$command} : $command ); };
         chomp( $$stdout );
     } elsif ($stderr) {
-        $$stderr = capture_stderr { system( $mulitArgsSystemCall ? @{$command} : $command ); };
+        $$stderr = capture_stderr { system( $multitArgsSystemCall ? @{$command} : $command ); };
         chomp( $stderr );
     } else {
-        system( $mulitArgsSystemCall ? @{$command} : $command ) != -1 or die(
+        system( $multitArgsSystemCall ? @{$command} : $command ) != -1 or die(
             sprintf( 'Could not execute command: %s', $! )
         );
     }

@@ -20,7 +20,7 @@ BACKEND
     Backported: imscp-mountall-mngr (as imscp-mountall) from 1.3.x branch - Mount i-MSCP file systems on server reboot
     Backported: iMSCP::Mount library from 1.3.x branch - Library for mounting/unmounting file systems
     Changed: Upstart job file paths, sysvinit script paths and systemd unit files paths are now cached (init providers)
-    Enhancement: Allow passing multiple arguments to system() function
+    Enhancement: Allow passing multiple arguments to system() function (iMSCP::Execute)
     Fixed: composer.phar must not be run with root user privileges (it is now run with i-MSCP system master user)
     Fixed: Could not disable custom DNS resource records; DNS resource records are always re-enabled on domain change
     Fixed: Database handle is destroyed when calling fork(), leading to unexpected failure (iMSCP::Database::mysql)
