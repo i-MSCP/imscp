@@ -54,7 +54,7 @@ our @EXPORT = qw/execute executeNoWait escapeShell getExitCode/;
 
  Execute the given command
 
- Param string $command Command to execute
+ Param string|array $command Command to execute
  Param string \$stdout OPTIONAL Variable for capture of STDOUT
  Param string \$stderr OPTIONAL Variable for capture of STDERR
  Return int Command exit code or die on failure
@@ -64,6 +64,8 @@ our @EXPORT = qw/execute executeNoWait escapeShell getExitCode/;
 sub execute($;$$)
 {
     my ($command, $stdout, $stderr) = @_;
+
+    defined( $command ) or die( '$command parameter is not defined' );
 
     if ($stdout) {
         ref $stdout eq 'SCALAR' or die( "Expects a scalar reference as second parameter for capture of STDOUT" );
@@ -75,19 +77,22 @@ sub execute($;$$)
         $$stderr = '';
     }
 
-    debug( $command );
+    my $mulitArgsSystemCall = ref $command eq 'ARRAY';
+    debug( $mulitArgsSystemCall ? "@{$command}" : $command );
 
     if ($stdout && $stderr) {
-        ($$stdout, $$stderr) = capture { system( $command ); };
+        ($$stdout, $$stderr) = capture { system( $mulitArgsSystemCall ? @{$command} : $command); };
         chomp( $$stdout, $$stderr );
     } elsif ($stdout) {
-        $$stdout = capture_stdout { system( $command ); };
+        $$stdout = capture_stdout { system( $mulitArgsSystemCall ? @{$command} : $command ); };
         chomp( $$stdout );
     } elsif ($stderr) {
-        $$stderr = capture_stderr { system( $command ); };
+        $$stderr = capture_stderr { system( $mulitArgsSystemCall ? @{$command} : $command ); };
         chomp( $stderr );
     } else {
-        die( sprintf( 'Could not execute command: %s', $! ) ) if system( $command ) == -1;
+        system( $mulitArgsSystemCall ? @{$command} : $command ) != -1 or die(
+            sprintf( 'Could not execute command: %s', $! )
+        );
     }
 
     getExitCode();
