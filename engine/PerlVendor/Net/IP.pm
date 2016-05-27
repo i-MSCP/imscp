@@ -167,7 +167,7 @@ sub ip_add_num {
     my $newe = ip_inttobin($last, $self->version);
     $newe = ip_bintoip($newe, $self->version);
 
-    my $new = new Net::IP("$newb - $newe");
+    my $new = Net::IP->new("$newb - $newe");
 
     return ($new);
 }
@@ -712,7 +712,7 @@ sub binadd {
         return;
     }
 
-    my $new = new Net::IP(ip_bintoip($ip, $self->version())) or return;
+    my $new = Net::IP->new(ip_bintoip($ip, $self->version())) or return;
 
     return ($new);
 }
@@ -737,7 +737,7 @@ sub aggregate {
         return;
     }
 
-    return (new Net::IP($r));
+    return (Net::IP->new($r));
 }
 
 #------------------------------------------------------------------------------
@@ -2005,6 +2005,7 @@ sub ip_auth {
 
 __END__
 =encoding utf8
+
 =head1 NAME
 
 Net::IP - Perl extension for manipulating IPv4/IPv6 addresses
