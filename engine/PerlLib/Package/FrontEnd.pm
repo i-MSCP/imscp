@@ -25,6 +25,7 @@ package Package::FrontEnd;
 
 use strict;
 use warnings;
+use Class::Autouse qw/ Package::FrontEnd::Installer Package::FrontEnd::Uninstaller /;
 use File::Basename;
 use iMSCP::Config;
 use iMSCP::Debug;
@@ -57,7 +58,6 @@ sub registerSetupListeners
 {
     my ($self, $eventManager) = @_;
 
-    require Package::FrontEnd::Installer;
     Package::FrontEnd::Installer->getInstance()->registerSetupListeners( $eventManager );
 }
 
@@ -91,7 +91,6 @@ sub install
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndInstall' );
-    require Package::FrontEnd::Installer;
     $rs ||= Package::FrontEnd::Installer->getInstance()->install();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndInstall' );
 }
@@ -145,7 +144,6 @@ sub uninstall
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndUninstall' );
-    require Package::FrontEnd::Uninstaller;
     $rs ||= Package::FrontEnd::Uninstaller->getInstance()->uninstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndUninstall' );
 }
@@ -163,7 +161,6 @@ sub setGuiPermissions
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontendSetGuiPermissions' );
-    require Package::FrontEnd::Installer;
     $rs ||= Package::FrontEnd::Installer->getInstance()->setGuiPermissions();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontendSetGuiPermissions' );
 }
@@ -181,7 +178,6 @@ sub setEnginePermissions
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndSetEnginePermissions' );
-    require Package::FrontEnd::Installer;
     $rs ||= Package::FrontEnd::Installer->getInstance()->setEnginePermissions();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndSetEnginePermissions' );
 }
@@ -479,7 +475,6 @@ END
     {
         unless ($? || defined $main::execmode && $main::execmode eq 'setup') {
             my $self = Package::FrontEnd->getInstance();
-
             if ($self->{'start'}) {
                 $? = $self->start();
             } elsif ($self->{'restart'}) {

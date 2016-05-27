@@ -170,7 +170,6 @@ sub installListener
     my $self = shift;
 
     my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
-
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
     unless ($@) {

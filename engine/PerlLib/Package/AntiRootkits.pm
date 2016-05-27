@@ -133,8 +133,7 @@ sub preinstall
     my $rs = 0;
     my @packages = split ',', main::setupGetQuestion( 'ANTI_ROOTKITS_PACKAGES' );
     my $packagesToInstall = [ grep { $_ ne 'No' } @packages ];
-    my $packagesToUninstall = [ grep { my $__ = $_;
-        !grep($_ eq $__, @{$packagesToInstall}) } @{$self->{'PACKAGES'}} ];
+    my $packagesToUninstall = [ grep { my $__ = $_; !grep($_ eq $__, @{$packagesToInstall}) } @{$self->{'PACKAGES'}} ];
 
     if (@{$packagesToUninstall}) {
         my $packages = [ ];
@@ -249,7 +248,6 @@ sub uninstall
 
     for my $package(@packages) {
         next unless grep($_ eq $package, @{$self->{'PACKAGES'}});
-
         $package = "Package::AntiRootkits::${package}::${package}";
         eval "require $package";
         unless ($@) {
@@ -293,7 +291,6 @@ sub setEnginePermissions
 
     for my $package(@packages) {
         next unless grep($_ eq $package, @{$self->{'PACKAGES'}});
-
         $package = "Package::AntiRootkits::${package}::${package}";
         eval "require $package";
         unless ($@) {

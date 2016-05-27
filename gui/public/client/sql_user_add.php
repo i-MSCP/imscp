@@ -260,12 +260,10 @@ function client_addSqlUser($customerId, $dbId)
     // database name, you should specify it as “\_” in the GRANT statement, to prevent the user from being able to
     // access additional databases matching the wildcard pattern; for example, GRANT ... ON `foo\_bar`.* TO ....
     //
-    // In practice, without escaping, an user added for db `a_b` would also have access to a db `acb`.
+    // In practice, without escaping, an user added for db `a_c` would also have access to a db `abc`.
     $dbName = preg_replace('/([%_])/', '\\\\$1', $dbName);
 
-    execute_query(sprintf('GRANT ALL PRIVILEGES ON %s.* to %s@%s',
-        quoteIdentifier($dbName), quoteValue($user), quoteValue($host)
-    ));
+    exec_query(sprintf('GRANT ALL PRIVILEGES ON %s.* to ?@?', quoteIdentifier($dbName)), array($user, $host));
     exec_query('INSERT INTO sql_user (sqld_id, sqlu_name, sqlu_host, sqlu_pass) VALUES (?, ?, ?, ?)', array(
         $dbId, $user, $host, $password
     ));

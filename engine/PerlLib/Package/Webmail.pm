@@ -52,10 +52,13 @@ sub registerSetupListeners
 {
     my ($self, $eventManager) = @_;
 
-    my $rs = $eventManager->register( 'beforeSetupDialog', sub {
+    my $rs = $eventManager->register(
+        'beforeSetupDialog',
+        sub {
             push @{$_[0]}, sub { $self->showDialog( @_ ) };
             0;
-        } );
+        }
+    );
     $rs ||= $eventManager->register( 'afterFrontEndPreInstall', sub { $self->preinstallListener(); } );
     $rs ||= $eventManager->register( 'afterFrontEndInstall', sub { $self->installListener(); } );
 }
@@ -127,8 +130,7 @@ sub preinstallListener
 
     my @packages = split ',', main::setupGetQuestion( 'WEBMAIL_PACKAGES' );
     my $packagesToInstall = [ grep { $_ ne 'No'} @packages ];
-    my $packagesToUninstall = [ grep { my $__ = $_;
-        !grep($_ eq $__, @{$packagesToInstall}) } @{$self->{'PACKAGES'}} ];
+    my $packagesToUninstall = [ grep { my $__ = $_; !grep($_ eq $__, @{$packagesToInstall}) } @{$self->{'PACKAGES'}} ];
 
     if (@{$packagesToUninstall}) {
         my $rs = $self->uninstall( @{$packagesToUninstall} );
@@ -206,7 +208,6 @@ sub uninstall
 
     for my $package(@packages) {
         next unless grep($_ eq $package, @{$self->{'PACKAGES'}});
-
         $package = "Package::Webmail::${package}::${package}";
         eval "require $package";
         unless ($@) {
@@ -241,7 +242,6 @@ sub setPermissionsListener
 
     for my $package(@packages) {
         next unless grep($_ eq $package, @{$self->{'PACKAGES'}});
-
         $package = "Package::Webmail::${package}::${package}";
         eval "require $package";
         unless ($@) {
@@ -277,7 +277,6 @@ sub deleteMail
 
     for my $package(@packages) {
         next unless grep($_ eq $package, @{$self->{'PACKAGES'}});
-
         $package = "Package::Webmail::${package}::${package}";
         eval "require $package";
         unless ($@) {

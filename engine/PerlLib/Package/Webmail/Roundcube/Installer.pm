@@ -474,7 +474,8 @@ sub _setupDatabase
         return 1;
     }
 
-    ($quotedDbName = $db->quoteIdentifier( $imscpDbName )) =~ s/([%_])/\\$1/g;;
+    # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
+    $quotedDbName = $db->quoteIdentifier( $imscpDbName );
     $rs = $db->doQuery(
         'g', "GRANT SELECT (mail_addr, mail_pass), UPDATE (mail_pass) ON $quotedDbName.mail_users TO ?@?",
         $dbUser, $dbUserHost

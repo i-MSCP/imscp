@@ -25,6 +25,7 @@ package Package::PhpMyAdmin;
 
 use strict;
 use warnings;
+use Class::Autouse qw/ Package::PhpMyAdmin::Installer /;
 use iMSCP::Config;
 use Scalar::Defer;
 use parent 'Common::SingletonClass';
@@ -76,7 +77,6 @@ sub registerSetupListeners
 {
     my ($self, $eventManager) = @_;
 
-    require Package::PhpMyAdmin::Installer;
     Package::PhpMyAdmin::Installer->getInstance()->registerSetupListeners( $eventManager );
 }
 
@@ -90,7 +90,6 @@ sub registerSetupListeners
 
 sub uninstall
 {
-    require Package::PhpMyAdmin::Uninstaller;
     Package::PhpMyAdmin::Uninstaller->getInstance()->uninstall();
 }
 
@@ -104,7 +103,6 @@ sub uninstall
 
 sub setPermissionsListener
 {
-    require Package::PhpMyAdmin::Installer;
     Package::PhpMyAdmin::Installer->getInstance()->setGuiPermissions();
 }
 
@@ -129,7 +127,8 @@ sub _init
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/pma";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-    $self->{'config'} = lazy {
+    $self->{'config'} = lazy
+        {
             tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.data";
             \%c;
         };

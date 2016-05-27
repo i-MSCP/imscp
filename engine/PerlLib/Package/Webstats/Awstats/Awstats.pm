@@ -25,6 +25,7 @@ package Package::Webstats::Awstats::Awstats;
 
 use strict;
 use warnings;
+use Class::Autouse qw/ Package::Webstats::Awstats::Installer Package::Webstats::Awstats::Uninstaller /;
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Execute;
@@ -32,6 +33,7 @@ use iMSCP::TemplateParser;
 use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::Ext2Attributes qw(setImmutable clearImmutable);
+use iMSCP::Rights;
 use Servers::cron;
 use version;
 use parent 'Common::SingletonClass';
@@ -63,7 +65,6 @@ sub showDialog
 {
     my ($self, $dialog) = @_;
 
-    require Package::Webstats::Awstats::Installer;
     Package::Webstats::Awstats::Installer->getInstance()->showDialog( $dialog );
 }
 
@@ -77,7 +78,6 @@ sub showDialog
 
 sub install
 {
-    require Package::Webstats::Awstats::Installer;
     Package::Webstats::Awstats::Installer->getInstance()->install();
 }
 
@@ -91,7 +91,6 @@ sub install
 
 sub uninstall
 {
-    require Package::Webstats::Awstats::Uninstaller;
     Package::Webstats::Awstats::Uninstaller->getInstance()->uninstall();
 }
 
@@ -105,7 +104,6 @@ sub uninstall
 
 sub setEnginePermissions
 {
-    require Package::Webstats::Awstats::Installer;
     Package::Webstats::Awstats::Installer->getInstance()->setEnginePermissions();
 }
 
@@ -151,9 +149,6 @@ sub addDmn
             );
             return $rs if $rs;
         } else {
-            require iMSCP::Rights;
-            iMSCP::Rights->import();
-
             $rs = setRights(
                 $userStatisticsDir,
                 {
@@ -212,9 +207,7 @@ sub deleteDmn
 
     my $rs = 0;
     $rs = iMSCP::File->new( filename => $cfgFileName )->delFile() if -f $cfgFileName;
-    return $rs if $rs;
-
-    $rs = iMSCP::File->new( filename => $wrkFileName )->delFile() if -f $wrkFileName;
+    $rs ||= iMSCP::File->new( filename => $wrkFileName )->delFile() if -f $wrkFileName;
     return $rs if $rs;
 
     if ($main::imscpConfig{'AWSTATS_MODE'} eq '1') {
@@ -249,7 +242,6 @@ sub deleteDmn
 
         if (@awstatsCacheFiles) {
             my $file = iMSCP::File->new();
-
             for(@awstatsCacheFiles) {
                 $file->{'filename'} = "$awstatsCacheDir/$_";
                 $rs = $file->delFile();
@@ -435,7 +427,6 @@ sub _addAwstatsConfig
     my ($self, $data) = @_;
 
     my $awstatsPackageRootDir = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats";
-
     my $tplFileContent = iMSCP::File->new( filename => "$awstatsPackageRootDir/Config/awstats.imscp_tpl.conf" )->get();
     unless (defined $tplFileContent) {
         error( sprintf( 'Could not read read %s file', $tplFileContent->{'filename'} ) );
@@ -455,7 +446,6 @@ sub _addAwstatsConfig
     };
 
     $tplFileContent = process( $tags, $tplFileContent );
-
     unless (defined $tplFileContent) {
         error( "Error while building Awstats configuration file" );
         return 1;

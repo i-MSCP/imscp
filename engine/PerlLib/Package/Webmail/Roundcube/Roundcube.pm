@@ -25,6 +25,7 @@ package Package::Webmail::Roundcube::Roundcube;
 
 use strict;
 use warnings;
+use Class::Autouse qw/ Package::Webmail::Roundcube::Installer Package::Webmail::Roundcube::Uninstaller /;
 use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Database;
@@ -60,7 +61,6 @@ sub showDialog
 {
     my ($self, $dialog) = @_;
 
-    require Package::Webmail::Roundcube::Installer;
     Package::Webmail::Roundcube::Installer->getInstance()->showDialog( $dialog );
 }
 
@@ -74,7 +74,6 @@ sub showDialog
 
 sub preinstall
 {
-    require Package::Webmail::Roundcube::Installer;
     Package::Webmail::Roundcube::Installer->getInstance()->preinstall();
 }
 
@@ -88,7 +87,6 @@ sub preinstall
 
 sub install
 {
-    require Package::Webmail::Roundcube::Installer;
     Package::Webmail::Roundcube::Installer->getInstance()->install();
 }
 
@@ -102,7 +100,6 @@ sub install
 
 sub uninstall
 {
-    require Package::Webmail::Roundcube::Uninstaller;
     Package::Webmail::Roundcube::Uninstaller->getInstance()->uninstall();
 }
 
@@ -116,7 +113,6 @@ sub uninstall
 
 sub setGuiPermissions
 {
-    require Package::Webmail::Roundcube::Installer;
     Package::Webmail::Roundcube::Installer->getInstance()->setGuiPermissions();
 }
 

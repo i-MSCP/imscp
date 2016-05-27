@@ -25,6 +25,7 @@ package Package::FileManager::Net2ftp::Net2ftp;
 
 use strict;
 use warnings;
+use Class::Autouse qw/ Package::FileManager::Net2ftp::Installer Package::FileManager::Net2ftp::Uninstaller /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -49,7 +50,6 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-    require Package::FileManager::Net2ftp::Installer;
     Package::FileManager::Net2ftp::Installer->getInstance()->preinstall();
 }
 
@@ -63,7 +63,6 @@ sub preinstall
 
 sub install
 {
-    require Package::FileManager::Net2ftp::Installer;
     Package::FileManager::Net2ftp::Installer->getInstance()->install();
 }
 
@@ -77,7 +76,6 @@ sub install
 
 sub uninstall
 {
-    require Package::FileManager::Net2ftp::Uninstaller;
     Package::FileManager::Net2ftp::Uninstaller->getInstance()->uninstall();
 }
 
@@ -91,7 +89,6 @@ sub uninstall
 
 sub setGuiPermissions
 {
-    require Package::FileManager::Net2ftp::Installer;
     Package::FileManager::Net2ftp::Installer->getInstance()->setGuiPermissions();
 }
 

@@ -25,6 +25,7 @@ package Package::Webmail::RainLoop::RainLoop;
 
 use strict;
 use warnings;
+use Class::Autouse qw/ Package::Webmail::RainLoop::Installer Package::Webmail::RainLoop::Uninstaller /;
 use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Database;
@@ -59,7 +60,6 @@ sub showDialog
 {
     my ($self, $dialog) = @_;
 
-    require Package::Webmail::RainLoop::Installer;
     Package::Webmail::RainLoop::Installer->getInstance()->showDialog( $dialog );
 }
 
@@ -73,7 +73,6 @@ sub showDialog
 
 sub preinstall
 {
-    require Package::Webmail::RainLoop::Installer;
     Package::Webmail::RainLoop::Installer->getInstance()->preinstall();
 }
 
@@ -87,7 +86,6 @@ sub preinstall
 
 sub install
 {
-    require Package::Webmail::RainLoop::Installer;
     Package::Webmail::RainLoop::Installer->getInstance()->install();
 }
 
@@ -101,7 +99,6 @@ sub install
 
 sub uninstall
 {
-    require Package::Webmail::RainLoop::Uninstaller;
     Package::Webmail::RainLoop::Uninstaller->getInstance()->uninstall();
 }
 
@@ -115,7 +112,6 @@ sub uninstall
 
 sub setGuiPermissions
 {
-    require Package::Webmail::RainLoop::Installer;
     Package::Webmail::RainLoop::Installer->getInstance()->setGuiPermissions();
 }
 
@@ -138,7 +134,6 @@ sub deleteMail
 
     unless ($dbInitialized) {
         my $quotedRainLoopDbName = $db->quoteIdentifier( $main::imscpConfig{'DATABASE_NAME'}.'_rainloop' );
-
         my $rs = $db->doQuery( '1', "SHOW TABLES FROM $quotedRainLoopDbName" );
         unless (ref $rs eq 'HASH') {
             error( $rs );

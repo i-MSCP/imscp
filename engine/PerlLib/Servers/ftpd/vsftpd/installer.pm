@@ -338,7 +338,9 @@ sub _setupDatabase
     my $db = iMSCP::Database->factory();
 
     # Give needed privileges to this SQL user
-    (my $quotedDbName = $db->quoteIdentifier( $dbName )) =~ s/([%_])/\\$1/g;
+
+    # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
+    my $quotedDbName = $db->quoteIdentifier( $dbName );
     my $quotedTableName = $db->quoteIdentifier( 'ftp_users' );
     my $rs = $db->doQuery( 'g', "GRANT SELECT ON $quotedDbName.$quotedTableName TO ?@?", $dbUser, $dbUserHost );
     unless (ref $rs eq 'HASH') {

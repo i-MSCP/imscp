@@ -148,7 +148,7 @@ sub build
     return $rs if $rs;
 
     my @steps = (
-        [ \&_processDistroPackages, 'Processing distro packages' ],
+        [ \&_processDistroPackages, 'Processing distribution packages' ],
         [ \&_testRequirements, 'Checking for requirements' ],
         [ \&_buildDistributionFiles, 'Building distribution files' ],
         [ \&_compileDaemon, 'Compiling daemon' ],
