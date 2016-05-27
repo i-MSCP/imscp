@@ -51,8 +51,10 @@ use parent 'Common::Object';
 
 sub getFiles
 {
-    my $self = shift;
-    my $dirname = shift // $self->{'dirname'};
+    my ($self, $dirname) = @_;
+    $dirname //= $self->{'dirname'};
+
+    defined $dirname or die( '$dirname parameter is not defined' );
 
     opendir my $dh, $dirname or die( sprintf( 'Could not open %s: %s', $dirname, $! ) );
     my @files = grep { -f "$dirname/$_" } File::Spec->no_upwards( readdir( $dh ) );
@@ -72,8 +74,10 @@ sub getFiles
 
 sub getDirs
 {
-    my $self = shift;
-    my $dirname = shift // $self->{'dirname'};
+    my ($self, $dirname) = @_;
+    $dirname //= $self->{'dirname'};
+
+    defined $dirname or die( '$dirname parameter is not defined' );
 
     opendir my $dh, $dirname or die( sprintf( 'Could not open %s: %s', $dirname, $! ) );
     my @dirs = grep -d "$dirname/$_", File::Spec->no_upwards( readdir( $dh ) );
@@ -92,8 +96,10 @@ sub getDirs
 
 sub getAll
 {
-    my $self = shift;
-    my $dirname = shift // $self->{'dirname'};
+    my ($self, $dirname) = @_;
+    $dirname //= $self->{'dirname'};
+
+    defined $dirname or die( '$dirname parameter is not defined' );
 
     opendir my $dh, $dirname or die( sprintf( 'Could not open %s: %s', $dirname, $! ) );
     my @files = File::Spec->no_upwards( readdir( $dh ) );
@@ -112,10 +118,10 @@ sub getAll
 
 sub isEmpty
 {
-    my $self = shift;
-    my $dirname = shift // $self->{'dirname'};
+    my ($self, $dirname) = @_;
+    $dirname //= $self->{'dirname'};
 
-    defined $dirname or die( "Missing 'dirname' parameter" );
+    defined $dirname or die( '$dirname parameter is not defined' );
 
     opendir my $dh, $dirname or die( sprintf( 'Could not open %s: %s', $dirname, $! ) );
     for my $file(readdir $dh) {
@@ -142,11 +148,10 @@ sub isEmpty
 sub mode
 {
     my ($self, $mode, $dirname) = @_;
-
     $dirname //= $self->{'dirname'};
 
-    defined $mode or die( "Missing 'mode' parameter" );
-    defined $dirname or die( "Missing 'dirname' parameter" );
+    defined $mode or die( '$mode parameter is not defined' );
+    defined $dirname or die( '$dirname parameter is not defined' );
     debug( sprintf( 'Changing mode for %s to %s', $dirname, $mode ) );
     chmod $mode, $dirname or die( sprintf( 'Could not change mode for %s: %s', $dirname, $! ) );
     0;
@@ -166,20 +171,17 @@ sub mode
 sub owner
 {
     my ($self, $owner, $group, $dirname) = @_;
-
     $dirname //= $self->{'dirname'};
 
-    defined $owner or die( "Mistting 'owner' parameter" );
-    defined $group or die( "Mistting 'group' parameter" );
-    defined $dirname or die( "Missing 'dirname' parameter" );
+    defined $owner or die( '$owner parameter is not defined' );
+    defined $group or die( '$group parameter is not defined' );
+    defined $dirname or die( '$dirname parameter is not defined' );
 
     my $uid = $owner =~ /^\d+$/ ? $owner : getpwnam( $owner ) // -1;
     my $gid = $group =~ /^\d+$/ ? $group : getgrnam( $group ) // -1;
 
     debug( sprintf( 'Changing owner and group for %s to %s:%s', $dirname, $uid, $gid ) );
-    chown $uid, $gid, $self->{'dirname'} or die(
-        sprintf( 'Could not change owner and group for %s: %s', $dirname, $! )
-    );
+    chown $uid, $gid, $dirname or die( sprintf( 'Could not change owner and group for %s: %s', $dirname, $! ) );
     0;
 }
 
@@ -199,13 +201,12 @@ sub make
 {
     my ($self, $options) = @_;
 
+    defined $self->{'dirname'} or die( '`dirname` attribute is not defined' );
     $options = { } unless defined $options && ref $options eq 'HASH';
-
-    defined $self->{'dirname'} or die( "Attribut 'dirname' is not defined" );
 
     unless (-d $self->{'dirname'}) {
         debug( $self->{'dirname'} );
-        my @createdDirs = mkpath( $self->{'dirname'}, { error => \my $errStack } );
+        my @createdDirs = mkpath( $self->{'dirname'}, { error => \ my $errStack } );
 
         if (@{$errStack}) {
             my $errorStr = '';
@@ -231,7 +232,6 @@ sub make
     return 0 unless $options->{'fixpermissions'};
 
     debug( sprintf( '%s already exists. Setting its permissions...', $self->{'dirname'} ) );
-
     if (defined $options->{'user'} || defined $options->{'group'}) {
         $self->owner( $options->{'user'} // -1, $options->{'group'} // -1, $self->{'dirname'} );
     }
@@ -252,10 +252,10 @@ sub make
 
 sub remove
 {
-    my $self = shift;
-    my $dirname = shift // $self->{'dirname'};
+    my ($self, $dirname) = @_;
+    $dirname //= $self->{'dirname'};
 
-    defined $dirname or die( "Missing 'dirname' parameter" );
+    defined $dirname or die( '$dirname parameter is not defined' );
 
     return 0 unless -d $dirname;
 
@@ -284,7 +284,7 @@ sub remove
 
  Param string $destDir Destination directory
  Param hash \%options OPTIONAL Options:
-   preserve:    If true, copy file attributes (uid, gid and mode)
+   preserve: If true, copy file attributes (uid, gid and mode)
  Return int 0 on success, die on failure
 
 =cut
@@ -295,7 +295,8 @@ sub rcopy
 
     $options = { } unless defined $options && ref $options eq 'HASH';
 
-    defined $self->{'dirname'} or die( 'Attribute `dirname` is not defined' );
+    defined $destDir or die( '$destDir attribute is not defined' );
+    defined $self->{'dirname'} or die( '`dirname` attribute is not defined' );
 
     unless (-d $destDir) {
         my $opts = { };
@@ -315,16 +316,15 @@ sub rcopy
             my $dst = "$destDir/$entry";
 
             if (-d $src) {
-                    my $opts = { };
+                my $opts = { };
+                if ($options->{'preserve'}) {
+                    my (undef, undef, $mode, undef, $uid, $gid) = lstat( $src );
+                    $opts = { user => $uid, mode => $mode & 07777, group => $gid }
+                }
 
-                    if ($options->{'preserve'}) {
-                        my (undef, undef, $mode, undef, $uid, $gid) = lstat( $src );
-                        $opts = { user => $uid, mode => $mode & 07777, group => $gid }
-                    }
-
-                    debug( sprintf( '%s to %s', $src, $dst ) );
-                    iMSCP::Dir->new( dirname => $dst )->make( $opts );
-                    iMSCP::Dir->new( dirname => $src )->rcopy( $dst, $options );
+                debug( sprintf( '%s to %s', $src, $dst ) );
+                iMSCP::Dir->new( dirname => $dst )->make( $opts );
+                iMSCP::Dir->new( dirname => $src )->rcopy( $dst, $options );
             } else {
                 debug( sprintf( '%s to %s', "$self->{'dirname'}/$entry", "$destDir/$entry" ) );
                 iMSCP::File->new( filename => $src )->copyFile( $dst, $options ) == 0 or die(
@@ -351,7 +351,9 @@ sub moveDir
 {
     my ($self, $destDir) = @_;
 
-    defined $self->{'dirname'} or die( "Attribut 'dirname' is not defined" );
+    defined $destDir or die( '$destDir attribute is not defined' );
+    defined $self->{'dirname'} or die( '`dirname` attribute is not defined' );
+
     -d $self->{'dirname'} or die( sprintf( "Directory %s doesn't exits", $self->{'dirname'} ) );
     debug( sprintf( '%s to %s', $self->{'dirname'}, $destDir ) );
     move $self->{'dirname'}, $destDir or die(
