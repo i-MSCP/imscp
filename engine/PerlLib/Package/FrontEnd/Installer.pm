@@ -38,6 +38,7 @@ use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::OpenSSL;
 use iMSCP::Rights;
+use iMSCP::Net;
 use iMSCP::SystemUser;
 use iMSCP::TemplateParser;
 use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
@@ -1089,12 +1090,13 @@ sub _buildHttpdConfig
 
     my $httpsPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
     my $tplVars = {
-        'BASE_SERVER_VHOST'            => $main::imscpConfig{'BASE_SERVER_VHOST'},
-        'BASE_SERVER_IP'               => $main::imscpConfig{'BASE_SERVER_IP'},
-        'BASE_SERVER_VHOST_HTTP_PORT'  => $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'},
-        'BASE_SERVER_VHOST_HTTPS_PORT' => $httpsPort,
-        'WEB_DIR'                      => $main::imscpConfig{'GUI_ROOT_DIR'},
-        'CONF_DIR'                     => $main::imscpConfig{'CONF_DIR'}
+        BASE_SERVER_VHOST            => $main::imscpConfig{'BASE_SERVER_VHOST'},
+        BASE_SERVER_IP               => iMSCP::Net->getInstance()->getAddrVersion( $main::imscpConfig{'BASE_SERVER_IP'} ) eq 'ipv4'
+            ? $main::imscpConfig{'BASE_SERVER_IP'} : "[$main::imscpConfig{'BASE_SERVER_IP'}]",
+        BASE_SERVER_VHOST_HTTP_PORT  => $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'},
+        BASE_SERVER_VHOST_HTTPS_PORT => $httpsPort,
+        WEB_DIR                      => $main::imscpConfig{'GUI_ROOT_DIR'},
+        CONF_DIR                     => $main::imscpConfig{'CONF_DIR'}
     };
 
     $rs = $self->{'eventManager'}->register(
