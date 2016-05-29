@@ -1565,6 +1565,9 @@ sub setupRebuildCustomerFiles
 
 sub setupRegisterPluginListeners
 {
+    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupRegisterPluginListeners');
+    return $rs if $rs;
+
     my $db = iMSCP::Database->factory();
 
     local $@;
@@ -1600,7 +1603,7 @@ sub setupRegisterPluginListeners
         return 1
     }
 
-    0;
+    iMSCP::EventManager->getInstance()->trigger('afterSetupRegisterPluginListeners');
 }
 
 sub setupPreInstallServers

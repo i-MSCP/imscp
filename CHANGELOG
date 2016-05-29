@@ -110,6 +110,7 @@ FRONTEND
 
 INSTALLER
     Added: --fix-permissions command line option. See errata file for more details.
+    Added: (before|after)SetupRegisterPluginListeners events
     Added: Check for maximum supported PHP/Perl versions
     Added: Check to prevent downgrade attempts (when DB schema change is involved)
     Added: Conditional statement feature for install.xml files (copy_config items only)
