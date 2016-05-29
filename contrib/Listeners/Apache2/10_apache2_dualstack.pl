@@ -69,10 +69,12 @@ sub addIPs
     my $net = iMSCP::Net->getInstance();
 
     # All vhost IPs and per domain IPS
-    my @ipList = uniq map $net->normalizeAddr( $_ ), grep{
-            my $__ = $_;
-            $net->isValidAddr( $__ ) && grep($_ eq $net->getAddrType( $__ ), ( 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ))
-    } @additionalIPs, $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} ? @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} : ();
+    my @ipList = uniq map { $net->normalizeAddr( $_ ) } grep {
+            $net->getAddrType( $_ ) =~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/
+        } (
+            @additionalIPs,
+            ($perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} ? @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} : ())
+        );
 
     return 0 unless @ipList;
 

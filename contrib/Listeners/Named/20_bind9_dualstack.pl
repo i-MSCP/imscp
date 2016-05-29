@@ -57,9 +57,11 @@ sub addCustomDNSrecord
 
     # All DNS IPs and per domain IPS
     my @ipList = uniq map $net->normalizeAddr( $_ ), grep {
-        my $__ = $_;
-        $net->isValidAddr( $__ ) && grep($_ eq $net->getAddrType( $__ ), ( 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ))
-    } @additionalIPs, $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} ? @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} : ();
+            $net->getAddrType( $_ ) =~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/
+        } (
+            @additionalIPs,
+            ($perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} ? @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} : ())
+        );
 
     return 0 unless @ipList;
 
@@ -104,10 +106,11 @@ sub addCustomDNSrecordSub
 
     # All DNS IPs and per domain IPS
     my @ipList = uniq map $net->normalizeAddr( $_ ), grep {
-        my $__ eq $__;
-        $net->isValidAddr( $__ ) && grep($_ eq $net->getAddrType( $__ ), ( 'PRIVATE', 'UNIQUE-LOCAL-UNICAST',
-                'PUBLIC', 'GLOBAL-UNICAST' ))
-    } @additionalIPs, $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} ? @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} : ();
+            $net->getAddrType( $_ ) =~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/
+        } (
+            @additionalIPs,
+            ($perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} ? @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} : ())
+        );
 
     return 0 unless @ipList;
 

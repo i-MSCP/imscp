@@ -73,6 +73,7 @@ sub isEnabled
 {
     my ($self, $unit) = @_;
 
+    defined $unit or die( 'parameter $unit is not defined' );
     return $self->SUPER::isEnabled( $unit ) if $self->_isSystemd( $unit );
     return 0 if $unit =~ /\.socket$/;
     # is-enabled API call is not available for sysvinit scripts. We must invoke the Debian sysvinit provider
@@ -92,6 +93,8 @@ sub isEnabled
 sub enable
 {
     my ($self, $unit) = @_;
+
+    defined $unit or die( 'parameter $unit is not defined' );
 
     my $realUnit = $unit;
     if ($self->_isSystemd( $unit )) {
@@ -134,6 +137,8 @@ sub disable
 {
     my ($self, $unit) = @_;
 
+    defined $unit or die( 'parameter $unit is not defined' );
+
     my $realUnit = $unit;
     if ($self->_isSystemd( $unit )) {
         my $unitFilePath = $self->getUnitFilePath( $unit );
@@ -175,6 +180,8 @@ sub remove
 {
     my ($self, $unit) = @_;
 
+    defined $unit or die( 'parameter $unit is not defined' );
+
     if ($self->_isSystemd( $unit )) {
         return 0 unless $self->SUPER::remove( $unit );
     }
@@ -200,6 +207,7 @@ sub hasService
 {
     my ($self, $unit) = @_;
 
+    defined $unit or die( 'parameter $unit is not defined' );
     $self->_isSystemd( $unit ) || $self->_isSysvinit( $unit );
 }
 

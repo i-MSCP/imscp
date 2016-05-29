@@ -254,9 +254,8 @@ sub setupAskServerIps
 
     # Retrieve list of all configured IP addresses
     my @serverIps = grep {
-        my $__ = $_; grep($_ eq $net->getAddrType($__), ( 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ))
+        $net->getAddrType($_) =~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/
     } $net->getAddresses();
-
     unless(@serverIps) {
         error('Could not retrieve server IP addresses. At least one public or private IP adddress must be configured.');
         return 1;
@@ -287,7 +286,7 @@ sub setupAskServerIps
     if($main::reconfigure =~ /^ips|all|forced$/
         || !grep($_ eq $baseServerIp, @serverIps)
         || !$net->isValidAddr($baseServerPublicIp)
-        || !grep($_ eq $net->getAddrType($baseServerPublicIp), ( 'PRIVATE', 'UNIQUE-LOCAL-UNICAST', 'PUBLIC', 'GLOBAL-UNICAST' ))
+        || $net->getAddrType($baseServerPublicIp) !~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/
     ) {
         do {
             # Ask user for the base server IP
@@ -301,9 +300,9 @@ EOF
 
         if($rs < 30) {
             # Server inside private LAN?
-            if(grep($_ eq $net->getAddrType($baseServerIp), ( 'PRIVATE', 'UNIQUE-LOCAL-UNICAST' ))) {
+            if($net->getAddrType($baseServerIp) =~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST)$/) {
                 if (!$net->isValidAddr($baseServerPublicIp)
-                    || !grep($_ eq $net->getAddrType($baseServerPublicIp), ( 'PUBLIC', 'GLOBAL-UNICAST' ))
+                    || $net->getAddrType($baseServerPublicIp) !~ /^(?:PUBLIC|GLOBAL-UNICAST)$/
                 ) {
                     $baseServerPublicIp = '';
                 }
@@ -322,7 +321,7 @@ EOF
                     if($baseServerPublicIp) {
                         unless($net->isValidAddr($baseServerPublicIp)) {
                             $msg = "\n\n\\Z1Invalid or unallowed IP address.\\Zn\n\nPlease try again:";
-                        } elsif(!grep($_ eq $net->getAddrType($baseServerPublicIp), ( 'PUBLIC', 'GLOBAL-UNICAST' ))) {
+                        } elsif($net->getAddrType($baseServerPublicIp) !~ /^(?:PUBLIC|GLOBAL-UNICAST)$/) {
                             $msg = "\n\n\\Z1Unallowed IP address. IP address must be public.\\Zn\n\nPlease try again:";
                         } else {
                             $msg = '';
@@ -633,7 +632,7 @@ EOF
                 if($host ne '%'
                     && !is_domain($host, \%options)
                     && !$net->isValidAddr($host)
-                    || grep($_ eq $net->getAddrType($host), ( 'LOOPBACK', 'LINK-LOCAL-UNICAST' ))
+                    || $net->getAddrType($host) =~ /^(?:LOOPBACK|LINK-LOCAL-UNICAST)$/
                 ) {
                     $msg = sprintf("\n\n\\Z1Error: '%s' is not valid or not allowed.\\Zn\n\nPlease try again:", $host);
                 }
