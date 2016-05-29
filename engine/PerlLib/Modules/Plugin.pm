@@ -25,6 +25,7 @@ package Modules::Plugin;
 
 use strict;
 use warnings;
+use autouse 'Hash::Merge' => qw/ merge /;
 use iMSCP::Debug;
 use iMSCP::Database;
 use iMSCP::EventManager;
@@ -363,7 +364,10 @@ sub _call
                 action       => $self->{'action'},
                 info         => $self->{'info'},
                 config       => $self->{'config'},
-                config_prev  => $self->{'config_prev'}
+                config_prev  => ($self->{'action'} =~ /^change|update$/
+                    # On plugin change/update, make sure that prev config also contains any new parameter
+                    ? merge( $self->{'config_prev'}, $self->{'config'} )
+                    : $self->{'config_prev'})
             );
         } else {
             $plugin = undef;

@@ -128,6 +128,7 @@
         <package>libemail-valid-perl</package>
         <package>libfile-copy-recursive-perl</package>
         <package>libfile-homedir-perl</package>
+        <package>libhash-merge-perl</package>
         <package>libmailtools-perl</package>
         <package>libmime-tools-perl</package>
         <package>libnet-dns-perl</package>
