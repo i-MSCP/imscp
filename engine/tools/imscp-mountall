@@ -69,7 +69,7 @@ newDebug('imscp_mountall.log');
 
 iMSCP::Getopt->parseNoDefault(sprintf('Usage: perl %s [OPTION]... start|stop', basename($0)) . qq {
 
-Mount or umount filesystems by reading entries from an fstab-like file.
+Mount or umount filesystems by reading entries i-MSCP fstab-like file.
 
 OPTIONS:
  -v,    --verbose       Enable verbose mode.},
