@@ -72,7 +72,7 @@ sub showDialog
     my $dbPass = main::setupGetQuestion( 'ROUNDCUBE_SQL_PASSWORD', $self->{'config'}->{'DATABASE_PASSWORD'} );
     my ($rs, $msg) = (0, '');
 
-    if ($main::reconfigure =~ /^webmails|all|forced$/
+    if ($main::reconfigure =~ /^(?:webmails|all|forced)$/
         || length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/
         || length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/
     ) {

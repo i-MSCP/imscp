@@ -73,7 +73,7 @@ sub showDialog
     my $dbPass = main::setupGetQuestion( 'RAINLOOP_SQL_PASSWORD', $self->{'rainloop'}->{'config'}->{'DATABASE_PASSWORD'} );
     my ($rs, $msg) = (0, '');
 
-    if ($main::reconfigure =~ /^webmails|all|forced$/
+    if ($main::reconfigure =~ /^(?:webmails|all|forced)$/
         || length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x23-\x5b\x5d-\x7e\x21]+$/
         || length $dbPass < 6 || $dbPass !~ /^[\x23-\x5b\x5d-\x7e\x21]+$/
     ) {

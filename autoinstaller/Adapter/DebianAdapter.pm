@@ -868,7 +868,7 @@ sub _rebuildAndInstallPackage
         error( '$pkgSrc parameter is not defined' );
         return 1;
     }
-    unless ($patchSysType =~ /^quilt|dpatch$/) {
+    unless ($patchSysType =~ /^(?:quilt|dpatch)$/) {
         error( 'Unsupported patch system.' );
         return 1;
     }

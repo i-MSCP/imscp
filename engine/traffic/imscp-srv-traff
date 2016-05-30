@@ -108,9 +108,9 @@ sub _parseTrafficData
             my ($bytes, $port) = ($1, $2 // 0);
 
             if($port > 0) {
-                $smtp += $bytes if $port =~ /^587|25|465$/;
-                $po += $bytes if $port =~ /^110|995|143|993$/;
-                $http += $bytes if $port =~ /^80|443|$frontEndHttpPort|$frontEndHttpsPort$/;
+                $smtp += $bytes if $port =~ /^(?:587|25|465)$/;
+                $po += $bytes if $port =~ /^(?:110|995|143|993)$/;
+                $http += $bytes if $port =~ /^(?:80|443|$frontEndHttpPort|$frontEndHttpsPort)$/;
             } else {
                 $all = $bytes;
             }

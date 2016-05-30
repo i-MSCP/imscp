@@ -337,12 +337,12 @@ sub _validateCronTask
 {
     my ($self, $data) = @_;
 
-    if ($data->{'MINUTE'} =~ /^@(reboot|yearly|annually|monthly|weekly|daily|midnight|hourly)$/) {
+    if ($data->{'MINUTE'} =~ /^@(?:reboot|yearly|annually|monthly|weekly|daily|midnight|hourly)$/) {
         $data->{'HOUR'} = $data->{'DAY'} = $data->{'MONTH'} = $data->{'DWEEK'} = '';
         return undef;
     }
 
-    for my $attribute(qw/minute hour day month dweek/) {
+    for my $attribute(qw/ minute hour day month dweek /) {
         $self->_validateAttribute( $attribute, $data->{ uc( $attribute ) } );
     }
 

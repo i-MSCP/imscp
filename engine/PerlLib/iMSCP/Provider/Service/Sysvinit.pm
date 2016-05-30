@@ -38,7 +38,7 @@ my $initScriptPaths = lazy
     {
         my $id = iMSCP::LsbRelease->getInstance()->getId( 'short' );
 
-        if ($id =~ /^FreeBSD|DragonFly$/) {
+        if ($id =~ /^(?:FreeBSD|DragonFly)$/) {
             [ '/etc/rc.d', '/usr/local/etc/rc.d' ];
         } elsif ($id eq 'HP-UX') {
             [ '/sbin/init.d' ];

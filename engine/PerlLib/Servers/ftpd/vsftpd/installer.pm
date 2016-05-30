@@ -91,7 +91,7 @@ sub sqlUserDialog
 
     my ($rs, $msg) = (0, '');
 
-    if ($main::reconfigure =~ /^ftpd|servers|all|forced$/
+    if ($main::reconfigure =~ /^(?:ftpd|servers|all|forced)$/
         || length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/
         || length $dbPass < 6 || $dbPass !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/
     ) {

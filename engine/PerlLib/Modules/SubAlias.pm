@@ -312,7 +312,7 @@ sub _getNamedData
     };
 
     # Only no wildcard MX (NOT LIKE '*.%') must be add to existent subdomains
-    if ($self->{'external_mail'} =~ /^domain|filter$/) {
+    if ($self->{'external_mail'} =~ /^(?:domain|filter)$/) {
         $self->{'named'}->{'MAIL_ENABLED'} = 1;
 
         my $rdata = iMSCP::Database->factory()->doQuery(

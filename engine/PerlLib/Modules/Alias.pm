@@ -350,12 +350,12 @@ sub _getNamedData
         USER_NAME       => $userName.'als'.$self->{'alias_id'},
         MAIL_ENABLED    => (
                 $self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0
-                    && $self->{'external_mail'} =~ /^wildcard|off$/
+                    && $self->{'external_mail'} =~ /^(?:wildcard|off)$/
             ) ? 1 : 0,
         SPF_RECORDS     => [ ]
     };
 
-    return %{$self->{'named'}} unless $action =~ /add/ && $self->{'external_mail'} =~ /^domain|filter|wildcard$/;
+    return %{$self->{'named'}} unless $action =~ /add/ && $self->{'external_mail'} =~ /^(?:domain|filter|wildcard)$/;
 
     my $db = iMSCP::Database->factory();
     my $rdata = $db->doQuery(

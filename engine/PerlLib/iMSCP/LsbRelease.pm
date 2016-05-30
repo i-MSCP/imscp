@@ -434,7 +434,7 @@ sub _guessDebianRelease
 
     my ($kern) = uname();
 
-    if ($kern =~ /^Linux|Hurd|NetBSD$/) {
+    if ($kern =~ /^(?:Linux|Hurd|NetBSD)$/) {
         $distInfo{'OS'} = "GNU/$kern";
     } elsif ($kern eq 'FreeBSD') {
         $distInfo{'OS'} = "GNU/k$kern";

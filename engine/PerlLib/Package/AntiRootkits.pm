@@ -81,7 +81,7 @@ sub showDialog
     my $packages = [ split ',', main::setupGetQuestion( 'ANTI_ROOTKITS_PACKAGES' ) ];
     my $rs = 0;
 
-    if ($main::reconfigure =~ /^antirootkits|all|forced$/ || !@{$packages}
+    if ($main::reconfigure =~ /^(?:antirootkits|all|forced)$/ || !@{$packages}
         || grep { my $__ = $_; !grep $_ eq $__, ( @{$self->{'PACKAGES'}}, 'No' ) } @{$packages}
     ) {
         ($rs, $packages) = $dialog->checkbox(

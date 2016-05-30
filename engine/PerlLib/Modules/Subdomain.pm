@@ -302,7 +302,7 @@ sub _getNamedData
         USER_NAME          => $userName.'sub'.$self->{'subdomain_id'}
     };
 
-    if ($self->{'external_mail'} =~ /^domain|filter$/) {
+    if ($self->{'external_mail'} =~ /^(?:domain|filter)$/) {
         $self->{'named'}->{'MAIL_ENABLED'} = 1;
 
         # only no wildcard MX (NOT LIKE '*.%') must be add to existent subdomains

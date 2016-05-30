@@ -95,7 +95,7 @@ sub showDialog
     my $dbPass = main::setupGetQuestion( 'PHPMYADMIN_SQL_PASSWORD', $self->{'config'}->{'DATABASE_PASSWORD'} );
     my ($rs, $msg) = (0, '');
 
-    if ($main::reconfigure =~ /^sqlmanager|all|forced$/
+    if ($main::reconfigure =~ /^(?:sqlmanager|all|forced)$/
         || length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x7e]+$/
         || length $dbPass < 6 || $dbPass !~ /^[\x21-\x7e]+$/
     ) {

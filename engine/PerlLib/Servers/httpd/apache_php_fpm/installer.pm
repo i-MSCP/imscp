@@ -128,8 +128,8 @@ sub showListenModeDialog
     my $rs = 0;
     my $listenMode = main::setupGetQuestion( 'PHP_FPM_LISTEN_MODE', $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} );
 
-    if ($main::reconfigure =~ /^(?:httpd|php|servers|all|forced)$/ || $listenMode !~ /^uds|tcp$/) {
-        ($rs, $listenMode) = $dialog->radiolist( <<"EOF", [ 'uds', 'tcp' ], $listenMode =~ /^tcp|uds$/ ? $listenMode : 'uds' );
+    if ($main::reconfigure =~ /^(?:httpd|php|servers|all|forced)$/ || $listenMode !~ /^(?:uds|tcp)$/) {
+        ($rs, $listenMode) = $dialog->radiolist( <<"EOF", [ 'uds', 'tcp' ], $listenMode =~ /^(?:tcp|uds)$/ ? $listenMode : 'uds' );
 
 \\Z4\\Zb\\ZuPHP-FPM - FastCGI address type\\Zn
 
@@ -423,7 +423,7 @@ sub _buildFastCgiConfFiles
         ) {
             $rs = execute( "$self->{'phpConfig'}->{'PHP_ENMOD_PATH'} $_", \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
-            unless ($rs =~ /^0|2$/) {
+            unless ($rs =~ /^(?:0|2)$/) {
                 error( $stderr ) if $stderr;
                 return $rs;
             }

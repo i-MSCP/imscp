@@ -81,7 +81,7 @@ sub showDialog
     my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
     my $rs = 0;
 
-    if ($main::reconfigure =~ /^filemanager|all|forced$/
+    if ($main::reconfigure =~ /^(?:filemanager|all|forced)$/
         || !$package || !grep($_ eq $package, @{$self->{'PACKAGES'}})
     ) {
         ($rs, $package) = $dialog->radiolist(

@@ -84,7 +84,7 @@ sub askDnsServerMode
     my $dnsServerMode = main::setupGetQuestion( 'BIND_MODE', $self->{'config'}->{'BIND_MODE'} );
     my $rs = 0;
 
-    if ($main::reconfigure =~ /^named|servers|all|forced$/ || $dnsServerMode !~ /^master|slave$/) {
+    if ($main::reconfigure =~ /^(?:named|servers|all|forced)$/ || $dnsServerMode !~ /^(?:master|slave)$/) {
         ($rs, $dnsServerMode) = $dialog->radiolist(
             <<"EOF", [ 'master', 'slave' ], $dnsServerMode eq 'slave' ? 'slave' : 'master' );
 
@@ -121,7 +121,7 @@ sub askDnsServerIps
     my ($rs, $answer, $msg) = (0, '', '');
 
     if ($dnsServerMode eq 'master') {
-        if ($main::reconfigure =~ /^named|servers|all|forced$/ || "@slaveDnsIps" eq ''
+        if ($main::reconfigure =~ /^(?:named|servers|all|forced)$/ || "@slaveDnsIps" eq ''
             || "@slaveDnsIps" ne 'no' && !$self->_checkIps( @slaveDnsIps )
         ) {
             ($rs, $answer) = $dialog->radiolist(
@@ -153,7 +153,7 @@ EOF
                 @slaveDnsIps = ('no');
             }
         }
-    } elsif ($main::reconfigure =~ /^named|servers|all|forced$/ || grep($_ eq "@masterDnsIps", ( '', 'no' ))
+    } elsif ($main::reconfigure =~ /^(?:named|servers|all|forced)$/ || grep($_ eq "@masterDnsIps", ( '', 'no' ))
         || !$self->_checkIps( @masterDnsIps )
     ) {
         @masterDnsIps = () if "@masterDnsIps" eq 'no';
@@ -211,7 +211,7 @@ sub askIPv6Support
     my $ipv6 = main::setupGetQuestion( 'BIND_IPV6', $self->{'config'}->{'BIND_IPV6'} );
     my $rs = 0;
 
-    if ($main::reconfigure =~ /^named|servers|all|forced$/ || $ipv6 !~ /^yes|no$/) {
+    if ($main::reconfigure =~ /^(?:named|servers|all|forced)$/ || $ipv6 !~ /^(?:yes|no)$/) {
         ($rs, $ipv6) = $dialog->radiolist( <<"EOF", [ 'yes', 'no' ], $ipv6 eq 'yes' ? 'yes' : 'no' );
 
 Do you want enable IPv6 support for your DNS server?
@@ -238,7 +238,7 @@ sub askLocalDnsResolver
     my $localDnsResolver = main::setupGetQuestion( 'LOCAL_DNS_RESOLVER', $self->{'config'}->{'LOCAL_DNS_RESOLVER'} );
     my $rs = 0;
 
-    if ($main::reconfigure =~ /^resolver|named|all|forced$/ || $localDnsResolver !~ /^yes|no$/) {
+    if ($main::reconfigure =~ /^(?:resolver|named|all|forced)$/ || $localDnsResolver !~ /^(?:yes|no)$/) {
         ($rs, $localDnsResolver) = $dialog->radiolist( <<"EOF", [ 'yes', 'no' ], $localDnsResolver ne 'no' ? 'yes' : 'no' );
 
 Do you want use the local DNS resolver?

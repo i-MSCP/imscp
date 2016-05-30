@@ -79,7 +79,7 @@ sub showDialog
     my $packages = [ split ',', main::setupGetQuestion( 'WEBMAIL_PACKAGES' ) ];
     my $rs = 0;
 
-    if ($main::reconfigure =~ /^webmails|all|forced$/ || !@{$packages}
+    if ($main::reconfigure =~ /^(?:webmails|all|forced)$/ || !@{$packages}
         || grep { my $__ = $_; !grep($_ eq $__, ( @{$self->{'PACKAGES'}}, 'No' )) } @{$packages}
     ) {
         ($rs, $packages) = $dialog->checkbox(
