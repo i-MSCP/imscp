@@ -246,9 +246,11 @@
         <package>bash-completion</package>
         <package>bzip2</package>
         <package>ca-certificates</package>
+        <package>coreutils</package>
         <package>cron</package>
         <package>curl</package>
         <package>dnsutils</package>
+        <package>findutils</package>
         <package>gcc</package>
         <package>git</package>
         <package>gzip</package>
@@ -260,6 +262,7 @@
         <package>locales-all</package>
         <package>lzma</package>
         <package>make</package>
+        <package>mawk</package>
         <package>openssl</package>
         <package>pbzip2</package>
         <package>pigz</package>

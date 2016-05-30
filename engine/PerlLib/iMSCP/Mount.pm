@@ -69,11 +69,17 @@ sub mount
     my $fsSpec = File::Spec->canonpath( $options->{'fs_spec'} );
     my $fsFile = File::Spec->canonpath( $options->{'fs_file'} );
 
-    return 0 unless execute( "mount 2>/dev/null | grep -q ".escapeShell( " on $fsFile " ) );
+    my $rs = execute(
+        'cat /proc/mounts | awk \'{print $2}\' | grep -q \'^'.quotemeta( $fsFile ).'$\'', undef, \ my $stderr,
+    );
+    error( sprintf( 'Could not check mountpoint: %s', $stderr ) ) if $stderr;
+    return 0 unless $rs;
 
     if (-f $fsSpec) {
-        my $rs = iMSCP::File->new( filename => $fsFile )->save();
-        return $rs if $rs;
+        unless (-f $fsFile) {
+            my $rs = iMSCP::File->new( filename => $fsFile )->save();
+            return $rs if $rs;
+        }
     } elsif (!-d $fsFile) {
         my $rs = iMSCP::Dir->new( dirname => $fsFile )->make();
         return $rs if $rs;
@@ -86,7 +92,7 @@ sub mount
         escapeShell( $fsFile )
     );
 
-    my $rs = execute( "mount @cmdArgs", \my $stdout, \my $stderr );
+    $rs = execute( "mount @cmdArgs", \ my $stdout, \ $stderr );
     error( sprintf( 'Could not mount %s on %s: %s', $fsFile, $fsFile, $stderr || 'Unknown error' ) ) if $rs;
     return $rs if $rs;
 
@@ -114,20 +120,14 @@ sub umount
     my $fsFile = shift;
 
     defined $fsFile or die( 'The $fsFile parameter is not defined' );
-    $fsFile = File::Spec->canonpath( $fsFile );
 
-    my $fsFileFound;
-    do {
-        my $stdout;
-        my $rs = execute( "mount 2>/dev/null | grep ' on $fsFile\\(/\\| \\)' | head -n 1 | cut -d ' ' -f 3", \$stdout );
-        error( 'Could not run mount command.' ) if $rs;
-        return $rs if $rs;
-
-        $fsFileFound = $stdout;
-        if ($fsFileFound) { # We do not trap errors here (expected for dangling mounts)
-            execute( "umount -l $fsFileFound 2>/dev/null", \$stdout );
-        }
-    } while ($fsFileFound);
+    # We do not trap errors here (expected for dangling mounts)
+    execute(
+        'cat /proc/mounts | awk \'{print $2}\' | grep \'^'.quotemeta( File::Spec->canonpath( $fsFile ) ).
+            '\(/\|$\)\' | sort -r | xargs -r umount -l',
+        \ my $stdout,
+        \ my $stderr,
+    );
 
     0;
 }
@@ -152,8 +152,7 @@ sub addMountEntry
         return 1;
     }
 
-    my $entryReg = quotemeta( $entry );
-    $fileContent =~ s/^$entryReg\n//gm;
+    $fileContent =~ s/^\Q$entry\E\n//gm;
     $fileContent .= "$entry\n";
     my $rs = $file->set( $fileContent );
     $rs ||= $file->save();

@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use Class::Autouse qw/ Servers::httpd::apache_fcgid::installer Servers::httpd::apache_fcgid::uninstaller /;
 use File::Basename;
+use File::Spec;
 use File::Temp;
 use iMSCP::Config;
 use iMSCP::Database;
@@ -1292,10 +1293,12 @@ sub umountLogsFolder
     my ($self, $data) = @_;
 
     # If domain type is 'dmn' (full account) we operate recursively to handle case of dangling mounts
-    my $fsFile = "$data->{'HOME_DIR'}/logs".($data->{'DOMAIN_TYPE'} ne 'dmn' ? "/$data->{'DOMAIN_NAME'}" : '');
+    my $fsFile = File::Spec->canonpath(
+        "$data->{'HOME_DIR'}/logs".($data->{'DOMAIN_TYPE'} ne 'dmn' ? "/$data->{'DOMAIN_NAME'}" : '')
+    );
     my $rs = $self->{'eventManager'}->trigger( 'beforeUnmountLogsFolder', $data, $fsFile );
     $rs ||= umount( $fsFile );
-    $rs ||= removeMountEntry( qr%.*?\s$fsFile(?:/|\s).*% );
+    $rs ||= removeMountEntry( qr%.*?[ \t]+\Q$fsFile\E(?:/|[ \t]+)[^\n]+% );
     $rs ||= $self->{'eventManager'}->trigger( 'afterUmountMountLogsFolder', $data, $fsFile );
 }
 
@@ -1604,7 +1607,7 @@ sub _addFiles
         # logs                 skipped
         # phptmp               vuxxx:vuxxx (recursive with --fix-permissions)
         for my $file(@files) {
-            next if $file =~ /^domain_disable_page|\.htgroup|\.htpasswd|logs$/ || !-e "$webDir/$file";
+            next if $file =~ /^(?:domain_disable_page|\.htgroup|\.htpasswd|logs)$/ || !-e "$webDir/$file";
             $rs = setRights(
                 "$webDir/$file", { user => $data->{'USER'}, group => $data->{'GROUP'}, recursive => $fixPermissions }
             );
@@ -1629,7 +1632,7 @@ sub _addFiles
                 {
                     dirmode   => '0750',
                     filemode  => '0640',
-                    recursive => $file =~ /^00_private|cgi-bin|htdocs$/
+                    recursive => $file =~ /^(?:00_private|cgi-bin|htdocs)$/
                         ? 0 : $file eq 'domain_disable_page' ? 1 : $fixPermissions
                 }
             );
@@ -1761,7 +1764,7 @@ sub _buildPHPConfig
         return $rs if $rs;
     } elsif ($data->{'PHP_SUPPORT'} ne 'yes'
         || $confLevel eq 'per_user' && $domainType ne 'dmn'
-        || $confLevel eq 'per_domain' && $domainType !~ /^dmn|als$/
+        || $confLevel eq 'per_domain' && $domainType !~ /^(?:dmn|als)$/
         || $confLevel eq 'per_site'
     ) {
         $rs = iMSCP::Dir->new( dirname => "$phpStarterDir/$data->{'DOMAIN_NAME'}" )->remove();
