@@ -27,7 +27,7 @@ namespace iMSCP\Json;
 class LazyDecoder implements \ArrayAccess, \Countable
 {
     /**
-     * @var string|array Json data
+     * @var array Json data
      */
     protected $container;
 
@@ -164,6 +164,7 @@ class LazyDecoder implements \ArrayAccess, \Countable
     protected function decode()
     {
         $this->container = call_user_func_array('json_decode', $this->parameters);
+        $this->parameters = null;
         $this->decoded = true;
     }
 }
