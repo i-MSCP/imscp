@@ -908,7 +908,6 @@ class iMSCP_Plugin_Manager
                     if ($this->pluginHasBackend($name)) {
                         $this->backendRequest = true;
                     } else {
-                        
                         $pluginInfo = $this->pluginGetInfo($name);
                         $pluginInfo['__need_change__'] = false;
                         $this->pluginUpdateInfo($name, $pluginInfo->toArray());

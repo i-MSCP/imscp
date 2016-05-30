@@ -31,7 +31,7 @@
  * @property int DATABASE_REVISION Database revision
  * @property  int EMAIL_QUOTA_SYNC_MODE Email quota sync mode
  */
-class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator, Serializable
+class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, Serializable
 {
 	/**
 	 * @var PDO PDO instance used by objects of this class

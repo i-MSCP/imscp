@@ -122,7 +122,7 @@ class iMSCP_Config_Handler_File extends iMSCP_Config_Handler
 	{
 		if(is_null($pathFile)) {
 			if(getenv('IMSCP_CONF')) {
-				$pathFile = getEnv('IMSCP_CONF');
+				$pathFile = getenv('IMSCP_CONF');
 			} else {
 				switch(PHP_OS) {
 					case 'FreeBSD':
