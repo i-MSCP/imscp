@@ -511,7 +511,7 @@ abstract class iMSCP_Plugin
         }
 
         $pluginInfo = $pluginManager->pluginGetInfo($pluginName);
-        $dbSchemaVersion = (isset($pluginInfo['db_schema_version'])) ? $pluginInfo['db_schema_version'] : '000';
+        $dbSchemaVersion = isset($pluginInfo['db_schema_version']) ? $pluginInfo['db_schema_version'] : '000';
         $migrationFiles = array();
 
         /** @var $migrationFileInfo DirectoryIterator */
@@ -550,10 +550,10 @@ abstract class iMSCP_Plugin
             }
 
             $pluginInfo['db_schema_version'] = ($migrationMode == 'up') ? $dbSchemaVersion : '000';
-            $pluginManager->pluginUpdateInfo($pluginName, $pluginInfo);
+            $pluginManager->pluginUpdateInfo($pluginName, $pluginInfo->toArray());
         } catch (iMSCP_Exception $e) {
             $pluginInfo['db_schema_version'] = $dbSchemaVersion;
-            $pluginManager->pluginUpdateInfo($pluginName, $pluginInfo);
+            $pluginManager->pluginUpdateInfo($pluginName, $pluginInfo->toArray());
             throw new iMSCP_Plugin_Exception($e->getMessage(), $e->getCode(), $e);
         }
     }

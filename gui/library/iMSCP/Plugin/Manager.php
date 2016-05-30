@@ -408,7 +408,7 @@ class iMSCP_Plugin_Manager
      *
      * @throws iMSCP_Plugin_Exception When $name is not known
      * @param string $name Plugin name
-     * @return array An array containing plugin info
+     * @return \iMSCP\Json\LazyDecoder An array containing plugin info
      */
     public function pluginGetInfo($name)
     {
@@ -908,9 +908,10 @@ class iMSCP_Plugin_Manager
                     if ($this->pluginHasBackend($name)) {
                         $this->backendRequest = true;
                     } else {
+                        
                         $pluginInfo = $this->pluginGetInfo($name);
                         $pluginInfo['__need_change__'] = false;
-                        $this->pluginUpdateInfo($name, $pluginInfo);
+                        $this->pluginUpdateInfo($name, $pluginInfo->toArray());
 
                         try {
                             exec_query('UPDATE plugin set plugin_config_prev = plugin_config WHERE plugin_name = ?', $name);
@@ -989,7 +990,7 @@ class iMSCP_Plugin_Manager
                             $this->backendRequest = true;
                         } else {
                             $pluginInfo['version'] = $pluginInfo['__nversion__'];
-                            $this->pluginUpdateInfo($name, $pluginInfo);
+                            $this->pluginUpdateInfo($name, $pluginInfo->toArray());
                             $this->pluginSetStatus($name, 'enabled');
                         }
                     } elseif ($ret == self::ACTION_STOPPED) {
@@ -1319,11 +1320,11 @@ class iMSCP_Plugin_Manager
     {
         $this->pluginData = array();
         $this->pluginsByType = array();
-
-        $stmt = execute_query('SELECT * FROM plugin');
-        while ($plugin = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+        
+        $stmt = execute_query('SELECT * FROM plugin ORDER BY plugin_priority DESC');
+        while ($plugin = $stmt->fetchRow()) {
             $this->pluginData[$plugin['plugin_name']] = array(
-                'info' => json_decode($plugin['plugin_info'], true),
+                'info' => new iMSCP\Json\LazyDecoder($plugin['plugin_info']),
                 'status' => $plugin['plugin_status'],
                 'error' => $plugin['plugin_error'],
                 'backend' => $plugin['plugin_backend'],
