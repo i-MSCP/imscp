@@ -216,7 +216,7 @@ sub make
                 $errorStr .= ($file eq '') ? "general error: $message\n" : "problem unlinking $file: $message\n";
             }
 
-            die( sprintf( 'Could not create %s: %s', $errorStr ) );
+            die( sprintf( 'Could not create %s: %s', $self->{'dirname'}, $errorStr ) );
         }
 
         for my $dir(@createdDirs) {

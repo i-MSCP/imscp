@@ -88,7 +88,7 @@ iMSCP::Bootstrapper->getInstance()->boot(
 );
 
 my $action = shift;
-defined $action && $action =~ /^start|stop$/ or iMSCP::Getopt->showUsage();
+defined $action && $action =~ /^(?:start|stop)$/ or iMSCP::Getopt->showUsage();
 exit process($action);
 
 =head1 AUTHOR
@@ -96,6 +96,3 @@ exit process($action);
 Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
-
-1;
-__END__

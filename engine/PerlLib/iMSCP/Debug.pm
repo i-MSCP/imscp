@@ -246,7 +246,7 @@ sub fatal
 
     my $caller = shift || (caller( 1 ))[3] || 'main';
     $self->{'target'}->store( message => "$caller: $message", tag => 'fatal' );
-    exit ( $? ||= 255 );
+    exit 255;
 }
 
 =item getLastError()
