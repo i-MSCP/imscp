@@ -19,11 +19,11 @@
 
 =head1 NAME
 
-imscp-mountall - Mount or umount filesystems by reading entries from /etc/imscp/mounts/mounts.conf fstab-like file
+imscp-mountall - Mount or umount filesystems by reading entries from i-MSCP fstab-like file
 
 =head1 SYNOPSIS
 
- imscp-mountall [options]...
+ imscp-mountall [options]... start|stop
 
 =cut
 
@@ -43,28 +43,31 @@ use locale;
 setlocale(LC_ALL, 'C.UTF-8');
 $ENV{'LANG'} = 'C.UTF-8';
 
-my $fstabEntries = lazy {
-    my $fstab = "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf";
-    my @fstabEntries;
+sub process
+{
+    my $action = shift;
 
-    return \@fstabEntries unless -f $fstab;
+    my $rs = 0;
+    my $fstab = "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf";
+    return $rs unless -f $fstab;
 
     open my $fh, '<', $fstab or die(sprintf('Could not open %s: %s', $fstab, $!));
-
     while(<$fh>) {
         next if /^\s*#/;
         chomp;
         my $entryFields;
         @{$entryFields}{ qw/ fs_spec fs_file fs_vfstype fs_mntops / } = split /\s+/;
-        push @fstabEntries, $entryFields;
+        $rs = $action eq 'start' ? mount($entryFields) : umount($entryFields->{'fs_file'});
+        last if $rs;
     }
 
-    \@fstabEntries;
-};
+    close($fh);
+    $rs;
+}
 
 newDebug('imscp_mountall.log');
 
-iMSCP::Getopt->parseNoDefault(sprintf('Usage: perl %s [OPTION]...', basename($0)) . qq {
+iMSCP::Getopt->parseNoDefault(sprintf('Usage: perl %s [OPTION]... start|stop', basename($0)) . qq {
 
 Mount or umount filesystems by reading entries from an fstab-like file.
 
@@ -84,29 +87,15 @@ iMSCP::Bootstrapper->getInstance()->boot(
     }
 );
 
-my %dispatch = (
-   'start' => sub {
-        for(@{$fstabEntries}) {
-            my $rs = mount($_);
-            return $rs if $rs;
-        }
-        0;
-    },
-   'stop' => sub {
-        for(@{$fstabEntries}) {
-            my $rs = umount($_->{'fs_file'});
-            return $rs if $rs;
-        }
-        0;
-    }
-);
-
 my $action = shift;
-$action && $action =~ /^start|stop$/ or iMSCP::Getopt->showUsage();
-exit $dispatch{ $action }->();
+defined $action && $action =~ /^start|stop$/ or iMSCP::Getopt->showUsage();
+exit process($action);
 
 =head1 AUTHOR
 
 Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
+
+1;
+__END__
