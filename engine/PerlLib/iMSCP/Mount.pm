@@ -62,7 +62,7 @@ sub mount
 
     for(qw/ fs_spec fs_file fs_spec fs_vfstype fs_mntops /) {
         next if defined $options->{$_};
-        error( sprintf( 'The %s option is not defined', $_ ) );
+        error( sprintf( '`%s` option is not defined', $_ ) );
         return 1;
     }
 
@@ -119,7 +119,10 @@ sub umount
 {
     my $fsFile = shift;
 
-    defined $fsFile or die( 'The $fsFile parameter is not defined' );
+    unless (defined $fsFile) {
+        error( '$fsFile parameter is not defined' );
+        return 1;
+    }
 
     # We do not trap errors here (expected for dangling mounts)
     execute(
@@ -145,17 +148,22 @@ sub addMountEntry
 {
     my $entry = shift;
 
-    my $file = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf" );
-    my $fileContent = $file->get();
-    unless (defined $fileContent) {
-        error( sprintf( 'Could not read %s file', "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf" ) );
+    unless (defined $entry) {
+        error( '$entry parameter is not defined' );
         return 1;
     }
 
-    $fileContent =~ s/^\Q$entry\E\n//gm;
-    $fileContent .= "$entry\n";
-    my $rs = $file->set( $fileContent );
-    $rs ||= $file->save();
+    my $rs = removeMountEntry( $entry );
+    return $rs if $rs;
+
+    my $fh;
+    unless (open $fh, '>>', "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf") {
+        error( sprintf( 'Could not open `%s` file: %s', "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf", $! ) );
+    }
+
+    print {$fh} "$entry\n";
+    close $fh;
+    0;
 }
 
 =item removeMountEntry($entry)
@@ -163,7 +171,7 @@ sub addMountEntry
  Remove the given mount entry from the i-MSCP fstab-like file
 
  Param string|regexp $entry Fstab entry to remove as a string or regexp
- Return int 0 on success, other or die on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -171,17 +179,26 @@ sub removeMountEntry
 {
     my $entry = shift;
 
-    my $file = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf" );
-    my $fileContent = $file->get();
-    unless (defined $fileContent) {
-        error( sprintf( 'Could not read %s file', "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf" ) );
+    unless (defined $entry) {
+        error( '$entry parameter is not defined' );
         return 1;
     }
 
-    my $regexp = ref $entry eq 'Regexp' ? $entry : quotemeta( $entry );
-    $fileContent =~ s/^$regexp\n//gm;
-    my $rs = $file->set( $fileContent );
-    $rs ||= $file->save();
+    my $file = "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf";
+    $entry = quotemeta( $entry ) unless ref $entry eq 'Regexp';
+    eval {
+        local ($@, $_, $SIG{'__WARN__'}, $^I, @ARGV) = (undef, undef, sub { die shift }, '', $file);
+        while(<>) {
+            s/^$entry\n//;
+            print;
+        }
+    };
+    if ($@) {
+        error( sprintf( 'Could not remove entry matching with `%s` in `%s` file: %s', $entry, $file, $! ) );
+        return 1;
+    }
+
+    0;
 }
 
 =back
