@@ -111,7 +111,7 @@ sub mount
  Note: In case of a partial path, any file systems below this path will be umounted.
 
  Param string $fsFile Partial or full path of file system to umount
- Return int 0 on success, other or die on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -129,7 +129,7 @@ sub umount
         'cat /proc/mounts | awk \'{print $2}\' | grep \'^'.quotemeta( File::Spec->canonpath( $fsFile ) ).
             '\(/\|$\)\' | sort -r | xargs -r umount -l',
         \ my $stdout,
-        \ my $stderr,
+        \ my $stderr
     );
 
     0;
