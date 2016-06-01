@@ -3,7 +3,7 @@
 void daemon_init(void)
 {
     pid_t pid;
-    int fd;
+    int fd, maxfd;
 
     /*
      * The calling process (parent process) will die soon
@@ -111,10 +111,10 @@ void daemon_init(void)
     }
 
     /* Close all open file descriptors except the write side of our notification pipe */
-    for(fd = sysconf(_SC_OPEN_MAX); fd > 0 && fd != notify_pipe[1]; --fd) {
-        if(close(fd) == -1) {
-            perror("could not close()");
-        }
+    maxfd = sysconf(_SC_OPEN_MAX);
+    for(fd = 0; fd < maxfd; fd++) {
+        if(fd != notify_pipe[1])
+            close(fd);
     }
 
     /* Reopen stdin (fd = 0), stdout (fd = 1), stderr (fd = 2) */
