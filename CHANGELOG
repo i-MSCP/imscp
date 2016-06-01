@@ -151,6 +151,7 @@ PLUGINS
 SERVERS
     Added: i-MSCP own logrorate configuration file for ProFTPD (xferlog file don't need to be rotated)
     Added: i-MSCP own sysvinit script for ProFTPD - solve #IP-1402
+    Changed: HTTPD log directories are now bind-mounted as read-only files system
     Changed: setenvif module is now always required ((Httpd servers)
     Fixed: AH01265: attempt to invoke directory as script: /var/www/virtual/<domain.tld>/cgi-bin/
     Fixed: Bad regexp in getTraffic() method leading to unmatching of traffic data (VsFTPd)
