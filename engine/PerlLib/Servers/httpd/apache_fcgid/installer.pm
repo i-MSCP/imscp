@@ -576,7 +576,7 @@ sub _setupVlogger
     $sqld->createUser( $user, $userHost, $pass );
 
     # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
-    $qDbName = $db->quoteIdentifier( $dbName );
+    my $qDbName = $db->quoteIdentifier( $dbName );
     $rs = $db->doQuery( 'g', "GRANT SELECT, INSERT, UPDATE ON $qDbName.httpd_vlogger TO ?@?", $user, $userHost );
     unless (ref $rs eq 'HASH') {
         error( sprintf( 'Could not add SQL privileges: %s', $rs ) );
