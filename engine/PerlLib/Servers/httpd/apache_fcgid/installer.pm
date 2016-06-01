@@ -90,7 +90,7 @@ sub showDialog
     my $rs = 0;
     my $confLevel = main::setupGetQuestion( 'PHP_CONFIG_LEVEL', $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} );
 
-    if ($main::reconfigure =~ /(^(?:httpd|php|servers|all|forced)$/ || $confLevel !~ /^per_(?:site|domain|user)$/) {
+    if ($main::reconfigure =~ /^(?:httpd|php|servers|all|forced)$/ || $confLevel !~ /^per_(?:site|domain|user)$/) {
         $confLevel =~ s/_/ /;
         ($rs, $confLevel) = $dialog->radiolist(
             <<"EOF", [ 'per_site', 'per_domain', 'per_user' ], $confLevel =~ /^per (?:user|domain)$/ ? $confLevel : 'per site' );
@@ -576,7 +576,7 @@ sub _setupVlogger
     $sqld->createUser( $user, $userHost, $pass );
 
     # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
-    $qDbName = $db->quoteIdentifier( $dbName );
+    my $qDbName = $db->quoteIdentifier( $dbName );
     $rs = $db->doQuery( 'g', "GRANT SELECT, INSERT, UPDATE ON $qDbName.httpd_vlogger TO ?@?", $user, $userHost );
     unless (ref $rs eq 'HASH') {
         error( sprintf( 'Could not add SQL privileges: %s', $rs ) );
