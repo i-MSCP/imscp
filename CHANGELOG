@@ -207,8 +207,9 @@ YOUTRACK
     IP-1539 Default behaviour when adding a MySQL user is counter-intuitive
     IP-1549 RRL implementation for BIND/Named config
     IP-1555 Syntax error in imscp-disable-accounts script
-    IP-1557: vsftpd - request failed due to PAM unable to dlopen(pam_mysql.so): /lib/security/pam_mysql.so: undefined
+    IP-1557 vsftpd - request failed due to PAM unable to dlopen(pam_mysql.so): /lib/security/pam_mysql.so: undefined
         symbol: make_scrambled_password
+    IP-1563 Default MX record not removed when adding external mailserver (domain type)
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series

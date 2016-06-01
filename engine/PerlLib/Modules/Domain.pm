@@ -501,8 +501,8 @@ sub _getNamedData
         DOMAIN_IP       => $self->{'ip_number'},
         USER_NAME       => $userName,
         MAIL_ENABLED    => (
-                $self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0 &&
-                    $self->{'external_mail'} =~ /^(?:wildcard|off)$/
+            ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
+                && $self->{'external_mail'} =~ /^(?:wildcard|off)$/
             ) ? 1 : 0,
         SPF_RECORDS     => [ ]
     };

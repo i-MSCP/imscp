@@ -349,7 +349,7 @@ sub _getNamedData
         DOMAIN_IP       => $self->{'ip_number'},
         USER_NAME       => $userName.'als'.$self->{'alias_id'},
         MAIL_ENABLED    => (
-                $self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0
+            ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
                     && $self->{'external_mail'} =~ /^(?:wildcard|off)$/
             ) ? 1 : 0,
         SPF_RECORDS     => [ ]
