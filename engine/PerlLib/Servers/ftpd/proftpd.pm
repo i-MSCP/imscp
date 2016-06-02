@@ -380,9 +380,12 @@ sub getTraffic
 
     # Schedule deletion of full traffic database. This is only done on success. On failure, the traffic database is kept
     # in place for later processing. In such case, data already processed are zeroed by the traffic processor script.
-    $self->{'eventManager'}->register( 'afterVrlTraffic', sub {
+    $self->{'eventManager'}->register(
+        'afterVrlTraffic',
+        sub {
             -f $trafficDbPath ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0;
-        } );
+        }
+    );
 
     \%trafficDb;
 }
@@ -408,8 +411,6 @@ sub _init
     $self->{'start'} = 0;
     $self->{'restart'} = 0;
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'eventManager'}->trigger( 'beforeFtpdInit', $self,
-        'proftpd' ) and fatal( 'proftpd - beforeFtpdInit has failed' );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/proftpd";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
@@ -418,8 +419,6 @@ sub _init
             tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/proftpd.data";
             \%c;
         };
-    $self->{'eventManager'}->trigger( 'afterFtpdInit', $self,
-        'proftpd' ) and fatal( 'proftpd - afterFtpdInit has failed' );
     $self;
 }
 

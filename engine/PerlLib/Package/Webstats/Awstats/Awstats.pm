@@ -111,13 +111,13 @@ sub setEnginePermissions
 
  Get list of Debian packages
 
- Return array List of packages
+ Return list List of packages
 
 =cut
 
 sub getDistroPackages
 {
-    [ 'awstats' ];
+    'awstats';
 }
 
 =item addDmn(\%data)
@@ -172,8 +172,8 @@ sub addDmn
                     "-config=$data->{'DOMAIN_NAME'} ".
                     "-update -awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl -dir=$userStatisticsDir' ".
                     "| batch",
-                \my $stdout,
-                \my $stderr
+                \ my $stdout,
+                \ my $stderr
             );
             debug( $stdout ) if $stdout;
             error( $stderr ) if $stderr && $rs;
@@ -222,7 +222,6 @@ sub deleteDmn
 
             if (@awstatsStaticFiles) {
                 my $file = iMSCP::File->new();
-
                 for(@awstatsStaticFiles) {
                     $file->{'filename'} = "$userStatisticsDir/$_";
                     $rs = $file->delFile();
@@ -447,7 +446,7 @@ sub _addAwstatsConfig
 
     $tplFileContent = process( $tags, $tplFileContent );
     unless (defined $tplFileContent) {
-        error( "Error while building Awstats configuration file" );
+        error( 'Error while building Awstats configuration file' );
         return 1;
     }
 

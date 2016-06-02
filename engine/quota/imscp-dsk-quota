@@ -106,36 +106,16 @@ sub quotaFiles
             my $childDomains = $db->doQuery(
                 'domain_name',
                 "
-                    SELECT
-                        alias_name AS domain_name
-                    FROM
-                        domain_aliasses
-                    WHERE
-                        domain_id = ?
-                    AND
-                        alias_status = 'ok'
+                    SELECT alias_name AS domain_name FROM domain_aliasses WHERE domain_id = ? AND alias_status = 'ok'
                     UNION
-                    SELECT
-                        CONCAT(subdomain_name, '.', domain_name) AS domain_name
-                    FROM
-                        subdomain
-                    INNER JOIN
-                        domain USING(domain_id)
-                    WHERE
-                        domain_id = ?
-                    AND
-                        subdomain_status = 'ok'
+                    SELECT CONCAT(subdomain_name, '.', domain_name) AS domain_name FROM subdomain
+                    INNER JOIN domain USING(domain_id)
+                    WHERE domain_id = ? AND subdomain_status = 'ok'
                     UNION
-                    SELECT
-                        CONCAT(subdomain_alias_name, '.',  alias_name) AS domain_name
-                    FROM
-                        subdomain_alias
-                    INNER JOIN
-                        domain_aliasses USING(alias_id)
-                    WHERE
-                        domain_id = ?
-                    AND
-                        subdomain_alias_status = 'ok'
+                    SELECT CONCAT(subdomain_alias_name, '.',  alias_name) AS domain_name FROM subdomain_alias
+                    INNER JOIN domain_aliasses USING(alias_id)
+                    WHERE domain_id = ?
+                    AND subdomain_alias_status = 'ok'
                 ",
                 $domainId, $domainId, $domainId
             );
@@ -176,12 +156,8 @@ sub quotaFiles
 
             if ($totalDiskUsage > 0) {
                 my $sql = '
-                    UPDATE
-                        domain
-                    SET
-                        domain_disk_usage = ?, domain_disk_file = ?, domain_disk_mail = ?
-                    WHERE
-                        domain_id = ?
+                    UPDATE domain SET domain_disk_usage = ?, domain_disk_file = ?, domain_disk_mail = ?
+                    WHERE domain_id = ?
                 ';
                 my $rdata = $db->doQuery('update', $sql, $totalDiskUsage, $webDiskUsage, $mailDiskUsage, $domainId);
                 unless (ref $rdata eq 'HASH') {

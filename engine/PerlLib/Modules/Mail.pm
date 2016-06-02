@@ -137,7 +137,6 @@ sub _loadData
         error( $rdata );
         return 1;
     }
-
     unless (exists $rdata->{$mailId}) {
         error( sprintf( 'Mail record with ID %s has not been found in database', $mailId ) );
         return 1;

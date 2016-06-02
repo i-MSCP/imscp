@@ -240,8 +240,9 @@ sub htpasswd($;$$)
         return _apr1Md5( $password, $salt );
     }
 
-    croak( sprintf( 'The %s format is not valid. The supported formats are: %s', $format,
-            'bcrypt, crypt, md5, sha1' ) );
+    croak(
+        sprintf( 'The %s format is not valid. The supported formats are: %s', $format, 'bcrypt, crypt, md5, sha1' )
+    );
 }
 
 =item verify($password, $hash)

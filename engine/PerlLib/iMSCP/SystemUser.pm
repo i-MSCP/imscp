@@ -166,7 +166,6 @@ sub addToGroup
         error( '$groupname parameter is not defined' );
         return 1;
     }
-
     unless (defined $username) {
         error( '$username parameter is not defined' );
         return 1;
@@ -225,7 +224,6 @@ sub removeFromGroup
         error( '$groupname parameter is not defined' );
         return 1;
     }
-
     unless (defined $username) {
         error( '$username parameter is not defined' );
         return 1;

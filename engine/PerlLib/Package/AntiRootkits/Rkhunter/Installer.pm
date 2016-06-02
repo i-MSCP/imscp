@@ -221,7 +221,7 @@ sub _scheduleCheck
     );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs;
-    error( "Could not schedule Rkhunter check" ) if $rs && !$stderr;
+    error( 'Could not schedule Rkhunter check' ) if $rs && !$stderr;
     $rs;
 }
 

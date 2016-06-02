@@ -145,7 +145,6 @@ sub _unregisterConfig
         my $file = iMSCP::File->new(
             filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostFile"
         );
-
         my $fileContent = $file->get();
         unless (defined $fileContent) {
             error( sprintf( 'Could not read %s file', $file->{'filename'} ) );

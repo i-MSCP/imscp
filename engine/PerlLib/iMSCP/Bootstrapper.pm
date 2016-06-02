@@ -103,13 +103,14 @@ sub boot
     $database->set( 'DATABASE_PORT', $main::imscpConfig{'DATABASE_PORT'} );
     $database->set( 'DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'} );
     $database->set( 'DATABASE_USER', $main::imscpConfig{'DATABASE_USER'} );
-    $database->set( 'DATABASE_PASSWORD', iMSCP::Crypt::decryptBlowfishCBC(
-            $main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'}
-        ) );
+    $database->set(
+        'DATABASE_PASSWORD',
+        iMSCP::Crypt::decryptBlowfishCBC( $main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'} )
+    );
     my $rs = $database->connect();
-    !$rs || ($options->{'nofail'} && $options->{'nofail'} eq 'yes') or die( sprintf(
-            'Could not connect to the SQL server: %s', $rs
-        ) );
+    !$rs || ($options->{'nofail'} && $options->{'nofail'} eq 'yes') or die(
+        sprintf( 'Could not connect to the SQL server: %s', $rs )
+    );
 
     iMSCP::EventManager->getInstance()->trigger('onBoot', $mode) == 0 or die(
         getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'An unexpected error occurred'
@@ -156,9 +157,9 @@ sub unlock
     return $self unless defined $self->{'locks'}->{$lockFile};
 
     debug( sprintf( 'Releasing exclusive lock on %s', $lockFile ) );
-    flock( $self->{'locks'}->{$lockFile}, LOCK_UN ) or die( sprintf(
-            'Could not release exclusive lock on %s', $lockFile
-        ) );
+    flock( $self->{'locks'}->{$lockFile}, LOCK_UN ) or die(
+        sprintf( 'Could not release exclusive lock on %s', $lockFile )
+    );
     close $self->{'locks'}->{$lockFile};
     delete $self->{'locks'}->{$lockFile};
     $self;
@@ -196,12 +197,13 @@ sub _genKeys
             require Data::Dumper;
             Data::Dumper->import();
 
-            open( my $fh, '>:utf8', "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys" )
-                or die( "Error: Unable to open file '$main::imscpConfig{'CONF_DIR'}/imscp-db-keys' for writing: $!" );
+            open( my $fh, '>:utf8', "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys" ) or die(
+                sprintf('Could not open %s file for writing: %s', "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys", $!)
+            );
 
             print {$fh} Data::Dumper->Dump(
-                    [ iMSCP::Crypt::randomStr( 32 ), iMSCP::Crypt::randomStr( 8 ) ], [ qw(db_pass_key db_pass_iv) ]
-                );
+                [ iMSCP::Crypt::randomStr( 32 ), iMSCP::Crypt::randomStr( 8 ) ], [ qw(db_pass_key db_pass_iv) ]
+            );
 
             close $fh;
         } else {

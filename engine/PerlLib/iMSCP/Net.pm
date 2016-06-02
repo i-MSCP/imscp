@@ -70,9 +70,11 @@ sub addAddr
     $self->isKnownDevice( $dev ) or croak( sprintf( 'Unknown network device: %s', $dev ) );
     my $cidr = ip_is_ipv4( $addr ) ? 32 : 64; # TODO should be configurable
     my ($stdout, $stderr);
-    execute( "ip addr add $addr/$cidr dev $dev", \$stdout, \$stderr ) == 0 or croak( sprintf(
+    execute( "ip addr add $addr/$cidr dev $dev", \$stdout, \$stderr ) == 0 or croak(
+        sprintf(
             'Could not add the %s IP address to the %s network device: %s', $addr, $dev, $stderr || 'Unknown error'
-        ) );
+        )
+    );
     $self->{'addresses'}->{$addr} = {
         prefix_length => $cidr,
         version       => $self->getAddrVersion( $addr ),
@@ -99,9 +101,11 @@ sub delAddr
     my $dev = $self->{'addresses'}->{$addr}->{'device'};
     my $cidr = $self->{'addresses'}->{$addr}->{'prefix_length'};
     my ($stdout, $stderr);
-    execute( "ip addr del $addr/$cidr dev $dev", \$stdout, \$stderr ) == 0 or croak( sprintf(
+    execute( "ip addr del $addr/$cidr dev $dev", \$stdout, \$stderr ) == 0 or croak(
+        sprintf(
             'Could not delete the %s IP address from the %s network device: %s', $addr, $dev, $stderr || 'Unknown error'
-        ) );
+        )
+    );
     delete $self->{'addresses'}->{$addr};
     0;
 }
@@ -136,9 +140,10 @@ sub getAddrType
 {
     my ($self, $addr) = @_;
     my $version = $self->getAddrVersion( $addr ) eq 'ipv4' ? 4 : 6;
-    ip_iptype( ip_iptobin( ip_expand_address( $addr, $version ), $version ), $version ) or croak( sprintf(
-            'Could not guess type of the %s IP address', $addr
-        ) );
+    ip_iptype( ip_iptobin( ip_expand_address( $addr, $version ), $version ), $version ) or croak(
+        sprintf( 'Could not guess type of the %s IP address', $addr
+        )
+    );
 }
 
 =item getAddrDevice($addr)
@@ -280,9 +285,9 @@ sub upDevice
     my ($self, $dev) = @_;
     $self->isKnownDevice( $dev ) or croak( sprintf( 'Unknown network device: %s', $dev ) );
     my ($stdout, $stderr);
-    execute( "ip link set dev $dev up", \$stdout, \$stderr ) == 0 or die( sprintf(
-            'Could not bring the %s network device up: %s', $dev, $stderr || 'Unknown error'
-        ) );
+    execute( "ip link set dev $dev up", \$stdout, \$stderr ) == 0 or die(
+        sprintf( 'Could not bring the %s network device up: %s', $dev, $stderr || 'Unknown error' )
+    );
     0;
 }
 
@@ -300,9 +305,9 @@ sub downDevice
     my ($self, $dev) = @_;
     $self->isKnownDevice( $dev ) or croak( sprintf( 'Unknown network device: %s', $dev ) );
     my ($stdout, $stderr);
-    execute( "ip link set dev $dev down", \$stdout, \$stderr ) == 0 or die( sprintf(
-            'Could not bring the %s network device down: %s', $dev, $stderr || 'Unknown error'
-        ) );
+    execute( "ip link set dev $dev down", \$stdout, \$stderr ) == 0 or die(
+        sprintf( 'Could not bring the %s network device down: %s', $dev, $stderr || 'Unknown error' )
+    );
     0;
 }
 
@@ -385,9 +390,9 @@ sub _extractDevices
 {
     my $self = shift;
     my ($stdout, $stderr);
-    execute( 'ip -o link show', \$stdout, \$stderr ) == 0 or die( sprintf(
-            'Could not extract network devices data: %s', $stderr || 'Unknown error'
-        ) );
+    execute( 'ip -o link show', \$stdout, \$stderr ) == 0 or die(
+        sprintf( 'Could not extract network devices data: %s', $stderr || 'Unknown error' )
+    );
     my $devices = { };
     # Note: The (?:\@[^\s]+)? sub-pattern matches suffixes of interface names (@xxx) as they are displayed in the LXC
     # containers when using macvlan interfaces (and maybe some other interface types).
@@ -419,9 +424,9 @@ sub _extractAddresses
 {
     my $self = shift;
     my ($stdout, $stderr);
-    execute( 'ip -o addr show', \$stdout, \$stderr ) == 0 or die( sprintf(
-            'Could not extract network devices data: %s', $stderr || 'Unknown error'
-        ) );
+    execute( 'ip -o addr show', \$stdout, \$stderr ) == 0 or die(
+        sprintf( 'Could not extract network devices data: %s', $stderr || 'Unknown error' )
+    );
 
     my $addresses = { };
     $addresses->{$3} = {

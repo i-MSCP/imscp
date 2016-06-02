@@ -259,15 +259,12 @@ sub _init
     my $self = shift;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'eventManager'}->trigger( 'beforeSqldInit', $self,
-        'mysql' ) and fatal( 'mysql - beforeSqldInit has failed' );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/mysql";
     $self->{'config'} = $self->{'mysql'}->{'config'};
     $self->{'config'} = lazy {
             tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/mysql.data";
             \%c;
         };
-    $self->{'eventManager'}->trigger( 'afterSqldInit', $self, 'mysql' ) and fatal( 'mysql - afterSqldInit has failed' );
     $self;
 }
 

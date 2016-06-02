@@ -264,7 +264,6 @@ sub remove
 
     if (@{$errStack}) {
         my $errorStr = '';
-
         for my $diag (@{$errStack}) {
             my ($file, $message) = %{$diag};
             $errorStr .= ($file eq '') ? "general error: $message\n" : "problem unlinking $file: $message\n";

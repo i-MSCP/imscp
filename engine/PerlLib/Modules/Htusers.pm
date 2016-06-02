@@ -123,12 +123,10 @@ sub _loadData
         error( $rdata );
         return 1;
     }
-
     unless (exists $rdata->{$htuserId}) {
         error( sprintf( 'Htuser record with ID %s has not been found in database', $htuserId ) );
         return 1;
     }
-
     unless (exists $rdata->{$htuserId}->{'domain_name'}) {
         require Data::Dumper;
         Data::Dumper->import();

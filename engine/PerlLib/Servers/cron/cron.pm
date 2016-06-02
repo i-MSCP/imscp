@@ -132,13 +132,20 @@ sub postinstall
         return 1;
     }
 
-    $rs ||= $self->{'eventManager'}->register( 'beforeSetupRestartServices', sub {
-            push @{$_[0]}, [ sub {
+    $rs ||= $self->{'eventManager'}->register(
+        'beforeSetupRestartServices',
+        sub {
+            push @{$_[0]},
+                [
+                    sub {
                         $srvMngr->restart( $self->{'config'}->{'CRON_SNAME'} );
                         0;
-                    }, 'Cron' ];
+                    },
+                    'Cron'
+                ];
             0;
-        } );
+        }
+    );
     $rs ||= $self->{'eventManager'}->trigger( 'afterCronPostInstall', 'cron' );
 }
 

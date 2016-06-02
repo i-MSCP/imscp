@@ -77,7 +77,6 @@ sub _deleteFiles
 {
     if (-d $main::imscpConfig{'USER_WEB_DIR'}) {
         my @homeDirs = iMSCP::Dir->new( dirname => $main::imscpConfig{'USER_WEB_DIR'} )->getDirs();
-
         if (@homeDirs) {
             for(@homeDirs) {
                 my $isImmutableHomeDir = isImmutable( "$main::imscpConfig{'USER_WEB_DIR'}/$_" );
@@ -90,7 +89,7 @@ sub _deleteFiles
     }
 
     if (-d $main::imscpConfig{'AWSTATS_CACHE_DIR'}) {
-        my $rs = execute( "rm -fR $main::imscpConfig{'AWSTATS_CACHE_DIR'}/*", \my $stdout, \my $stderr );
+        my $rs = execute( "rm -fR $main::imscpConfig{'AWSTATS_CACHE_DIR'}/*", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
         return $rs if $rs;
@@ -98,7 +97,7 @@ sub _deleteFiles
 
     return 0 unless -d $main::imscpConfig{'AWSTATS_CONFIG_DIR'};
 
-    my $rs = execute( "rm -f $main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.*.conf", \my $stdout, \my $stderr );
+    my $rs = execute( "rm -f $main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.*.conf", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs;
     $rs;

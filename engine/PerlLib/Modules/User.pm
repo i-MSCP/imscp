@@ -278,7 +278,6 @@ sub _loadData
         error( $rdata );
         return 1;
     }
-
     unless (exists $rdata->{$userId}) {
         error( sprintf( 'User record with ID %s has not been found in database', $userId ) );
         return 1

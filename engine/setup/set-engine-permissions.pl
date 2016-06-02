@@ -60,9 +60,11 @@ OPTIONS:
     'fix-permissions|x' => sub { iMSCP::Getopt->fixPermissions( 1 ); },
 );
 
-iMSCP::Bootstrapper->getInstance()->boot( {
+iMSCP::Bootstrapper->getInstance()->boot(
+    {
         norequirements => 'yes', nolock => 'yes', nodatabase => 'yes', nokeys => 'yes'
-    } );
+    }
+);
 
 my $rs = 0;
 my @toProcess = ();

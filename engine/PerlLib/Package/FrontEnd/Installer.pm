@@ -123,7 +123,7 @@ sub askMasterAdminData
 
     main::setupSetQuestion( 'ADMIN_OLD_LOGIN_NAME', $login );
 
-    if ($main::reconfigure =~ /^(?:admin|all|forced)$/ || $login eq '') {
+    if ($login eq '' || $main::reconfigure =~ /^(?:admin|all|forced)$/) {
         do {
             ($rs, $login) = $dialog->inputbox( <<"EOF", $login || 'admin' );
 
@@ -215,8 +215,8 @@ sub askDomain
     my $options = { domain_private_tld => qr /.*/ };
     my ($rs, $msg) = (0, '');
 
-    if ($main::reconfigure =~ /^(?:panel|panel_hostname|hostnames|all|forced)$/
-        || split( /\./, $vhost ) < 3 || !is_domain( $vhost, $options )
+    if ($main::reconfigure =~ /^(?:panel|panel_hostname|hostnames|all|forced)$/ || split( /\./, $vhost ) < 3
+        || !is_domain( $vhost, $options )
     ) {
         unless ($vhost) {
             my @domain = split( /\./, main::setupGetQuestion( 'SERVER_HOSTNAME' ) );
@@ -433,8 +433,7 @@ EOF
 
     if ($rs < 30 && $ssl eq 'yes') {
         if ($main::reconfigure =~ /^(?:panel|panel_ports|all|forced)$/
-            || $httpsPort !~ /^\d+$/ || $httpsPort < 1025 || $httpsPort > 65535
-            || $httpsPort == $httpPort
+            || $httpsPort !~ /^\d+$/ || $httpsPort < 1025 || $httpsPort > 65535 || $httpsPort == $httpPort
         ) {
             my $msg = '';
 
@@ -445,8 +444,7 @@ Please enter the https port for the control panel:$msg
 EOF
                 $msg = "\n\n\\Z1The port '$httpsPort' is reserved or not valid.\\Zn\n\nPlease try again:";
             } while (
-                $rs < 30
-                    && ($httpsPort !~ /^\d+$/ || $httpsPort < 1025 || $httpsPort > 65535 || $httpsPort eq $httpPort)
+                $rs < 30 && ($httpsPort !~ /^\d+$/ || $httpsPort < 1025 || $httpsPort > 65535 || $httpsPort eq $httpPort)
             );
         }
     } else {
@@ -724,8 +722,7 @@ sub _setupSsl
     my $domainName = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
 
     # Remove old certificate if any (handle case where panel hostname has been changed)
-    if ($oldCertificate ne ''
-        && $oldCertificate ne "$domainName.pem"
+    if ($oldCertificate ne '' && $oldCertificate ne "$domainName.pem"
         && -f "$main::imscpConfig{'CONF_DIR'}/$oldCertificate"
     ) {
         my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/$oldCertificate" )->delFile();

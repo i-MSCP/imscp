@@ -375,9 +375,12 @@ sub getTraffic
 
     # Schedule deletion of full traffic database. This is only done on success. On failure, the traffic database is kept
     # in place for later processing. In such case, data already processed are zeroed by the traffic processor script.
-    $self->{'eventManager'}->register( 'afterVrlTraffic', sub {
+    $self->{'eventManager'}->register(
+        'afterVrlTraffic',
+        sub {
             -f $trafficDbPath ? iMSCP::File->new( filename => $trafficDbPath )->delFile() : 0
-        } );
+        }
+    );
 
     \%trafficDb;
 }

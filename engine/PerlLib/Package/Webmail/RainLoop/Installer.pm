@@ -406,7 +406,6 @@ sub _setupDatabase
     my $dbOldUser = $self->{'rainloop'}->{'config'}->{'DATABASE_USER'};
 
     my $db = iMSCP::Database->factory();
-
     my $quotedDbName = $db->quoteIdentifier( $rainLoopDbName );
 
     my $rs = $db->doQuery( 'c',
@@ -418,7 +417,6 @@ sub _setupDatabase
 
     for my $sqlUser ($dbOldUser, $dbUser) {
         next if !$sqlUser || grep($_ eq "$sqlUser\@$dbUserHost", @main::createdSqlUsers);
-
         for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
             next unless $host;
             $sqlServer->dropUser( $sqlUser, $host );

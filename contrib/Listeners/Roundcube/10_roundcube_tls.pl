@@ -28,8 +28,9 @@ use iMSCP::EventManager;
 iMSCP::EventManager->getInstance()->register(
     'afterSetupTasks',
     sub {
-        my $file = iMSCP::File->new( filename =>
-            "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php" );
+        my $file = iMSCP::File->new(
+            filename => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php"
+        );
         my $fileContent = $file->get();
         unless (defined $fileContent) {
             error( sprintf( 'Could not read %s file',

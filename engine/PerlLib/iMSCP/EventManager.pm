@@ -60,7 +60,6 @@ sub register
         error( '$event parameter is not defined' );
         return 1;
     }
-
     unless ($callable) {
         error( '$callable parameter is not defined' );
         return 1;

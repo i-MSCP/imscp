@@ -207,9 +207,9 @@ EOF
         $item = 'all';
     }
 
-    $item eq 'none' || grep($_ eq $item, @reconfigurationItems) or die( sprintf(
-            "Error: '%s' is not a valid argument for the --reconfigure option.", $item
-        ) );
+    $item eq 'none' || grep($_ eq $item, @reconfigurationItems) or die(
+        sprintf( "Error: '%s' is not a valid argument for the --reconfigure option.", $item )
+    );
     $options->{'reconfigure'} = $item;
 }
 

@@ -175,9 +175,9 @@ sub _init
 
     $self->{'certsDir'} = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs";
 
-    my $rs = iMSCP::Dir->new( dirname => $self->{'certsDir'} )->make( {
-            mode => 0750, user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}
-        } );
+    my $rs = iMSCP::Dir->new( dirname => $self->{'certsDir'} )->make(
+        { mode => 0750, user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'} }
+    );
     fatal( sprintf( 'Could not create %s SSL certificate directory', $self->{'certsDir'} ) ) if $rs;
     $self;
 }
@@ -202,7 +202,6 @@ sub _loadData
         error( $certData );
         return 1;
     }
-
     unless (exists $certData->{$certificateId}) {
         error( sprintf( 'SSL certificate record with ID %s has not been found in database', $certificateId ) );
         return 1;
@@ -233,7 +232,6 @@ sub _loadData
         error( $rdata );
         return 1;
     }
-
     unless (exists $rdata->{$self->{'domain_id'}}) {
         error( sprintf( 'SSL certificate with ID %s has not been found or is in an inconsistent state',
                 $certificateId ) );

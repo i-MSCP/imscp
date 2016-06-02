@@ -154,7 +154,6 @@ sub _loadData
         error( $rdata );
         return 1;
     }
-
     unless ($rdata->{$subAliasId}) {
         error( sprintf( 'Subdomain alias with ID %s has not been found or is in an inconsistent state', $subAliasId ) );
         return 1;
@@ -195,9 +194,8 @@ sub _getHttpdData
         $confLevel = 'subals';
     }
 
-    my $phpiniMatchId = $confLevel eq 'dmn' ? $self->{'domain_id'} : (
-                $confLevel eq 'als' ? $self->{'alias_id'} : $self->{'subdomain_alias_id'}
-        );
+    my $phpiniMatchId = $confLevel eq 'dmn'
+        ? $self->{'domain_id'} : ($confLevel eq 'als' ? $self->{'alias_id'} : $self->{'subdomain_alias_id'});
     my $phpini = $db->doQuery(
         'domain_id', 'SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = ?', $phpiniMatchId, $confLevel
     );
@@ -213,9 +211,8 @@ sub _getHttpdData
         && $self->isValidCertificate( $self->{'subdomain_alias_name'}.'.'.$self->{'alias_name'} );
     my $allowHSTS = $haveCert && $certData->{$self->{'subdomain_alias_id'}}->{'allow_hsts'} eq 'on';
     my $hstsMaxAge = $allowHSTS ? $certData->{$self->{'subdomain_alias_id'}}->{'hsts_max_age'} : '';
-    my $hstsIncludeSubDomains = (
-        $allowHSTS && $certData->{$self->{'subdomain_alias_id'}}->{'hsts_include_subdomains'} eq 'on'
-    ) ? '; includeSubDomains' : '';
+    my $hstsIncludeSubDomains = $allowHSTS && $certData->{$self->{'subdomain_alias_id'}}->{'hsts_include_subdomains'} eq 'on'
+        ? '; includeSubDomains' : '';
 
     $self->{'httpd'} = {
         DOMAIN_ADMIN_ID         => $self->{'domain_admin_id'},

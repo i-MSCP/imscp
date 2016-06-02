@@ -74,13 +74,18 @@ sub validatePrivateKey
 
     my @cmd = (
         'openssl', 'pkey', '-in', escapeShell( $self->{'private_key_container_path'} ), '-noout',
-            $passphraseFile ? ('-passin', escapeShell( "file:$passphraseFile" )) : ''
+        ($passphraseFile ? ('-passin', escapeShell( "file:$passphraseFile" )) : '')
     );
 
-    my $rs = execute( "@cmd", \my $stdout, \my $stderr );
+    my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( sprintf( 'Could not import SSL private key from %s file: %s', $self->{'private_key_container_path'},
-                $stderr ? $stderr : 'unknown error' ) ) if $rs;
+    error(
+        sprintf(
+            'Could not import SSL private key from %s file: %s',
+            $self->{'private_key_container_path'},
+            $stderr || 'unknown error'
+        )
+    ) if $rs;
     $rs;
 }
 
@@ -176,10 +181,10 @@ sub importPrivateKey
     my @cmd = (
         'openssl', 'pkey', '-in', escapeShell( $self->{'private_key_container_path'} ),
         '-out', escapeShell( "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem" ),
-            $passphraseFile ? ('-passin', escapeShell( "file:$passphraseFile" )) : ''
+        ($passphraseFile ? ('-passin', escapeShell( "file:$passphraseFile" )) : '')
     );
 
-    my $rs = execute( "@cmd", \my $stdout, \my $stderr );
+    my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( sprintf( 'Could not import SSL private key: %s', $stderr || 'unknown error' ) ) if $rs;
     $rs;
@@ -215,7 +220,7 @@ sub importCertificate
         '>>', escapeShell( "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem" )
     );
 
-    $rs = execute( "@cmd", \my $stdout, \my $stderr );
+    $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( sprintf( 'Could not import SSL certificate: %s', $stderr || 'unknown error' ) ) if $rs;
     $rs;
@@ -253,7 +258,7 @@ sub importCaBundle
         '>>', escapeShell( "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem" )
     );
 
-    $rs = execute( "@cmd", \my $stdout, \my $stderr );
+    $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( sprintf( 'Could not import SSL CA Bundle: %s', $stderr || 'unknown error' ) ) if $rs;
     $rs;
@@ -310,7 +315,7 @@ sub createSelfSignedCertificate
         '-out', escapeShell( "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem" )
     );
 
-    my $rs = execute( "@cmd", \my $stdout, \my $stderr );
+    my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( sprintf( 'Could not to generate self-signed certificate: %s', $stderr || 'unknown error' ) ) if $rs;
     $rs
@@ -351,7 +356,7 @@ sub getCertificateExpiryTime
     }
 
     my @cmd = ( 'openssl', 'x509', '-enddate', '-noout', '-in', escapeShell( $certificatePath ) );
-    my $rs = execute( "@cmd", \my $stdout, \my $stderr );
+    my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
 
     unless ($rs == 0 && $stdout =~ /^notAfter=(.*)/i) {

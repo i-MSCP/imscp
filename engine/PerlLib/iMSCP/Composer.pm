@@ -86,16 +86,13 @@ sub _init
     $self->{'phpCmd'} = 'php -d date.timezone=UTC -d allow_url_fopen=1 -d suhosin.executor.include.whitelist=phar';
 
     iMSCP::EventManager->getInstance()->register(
-        'afterSetupPreInstallPackages', sub {
+        'afterSetupPreInstallPackages',
+        sub {
             iMSCP::Dialog->getInstance()->endGauge();
 
             my $rs = $self->_cleanPackageCache() if iMSCP::Getopt->cleanPackageCache;
             $rs ||= iMSCP::Dir->new( dirname => $self->{'pkgDir'} )->make(
-                {
-                    user  => $main::imscpConfig{'IMSCP_USER'},
-                    group => $main::imscpConfig{'IMSCP_GROUP'},
-                    mode  => 0755
-                }
+                { user => $main::imscpConfig{'IMSCP_USER'}, group => $main::imscpConfig{'IMSCP_GROUP'}, mode => 0755 }
             );
             return $rs if $rs;
 
@@ -135,9 +132,11 @@ Installing composer.phar from http://getcomposer.org
 Please wait, depending on your connection, this may take few seconds...
 EOF
         my $rs = execute(
-            sprintf( $self->{'suCmdPattern'},
-                escapeShell( "curl -s http://getcomposer.org/installer | $self->{'phpCmd'}" ) ),
-            \my $stdout, \my $stderr
+            sprintf(
+                $self->{'suCmdPattern'},
+                escapeShell( "curl -s http://getcomposer.org/installer | $self->{'phpCmd'}" )
+            ),
+            \ my $stdout, \ my $stderr
         );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
@@ -153,9 +152,11 @@ Updating composer.phar from http://getcomposer.org
 Please wait, depending on your connection, this may take few seconds...
 EOF
     my $rs = execute(
-        sprintf( $self->{'suCmdPattern'},
-            escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} self-update" ) ),
-        \my $stdout, \my $stderr
+        sprintf(
+            $self->{'suCmdPattern'},
+            escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} self-update" )
+        ),
+        \ my $stdout, \ my $stderr
     );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs;
@@ -192,8 +193,10 @@ EOF
 
     # Note: Any progress/status info goes to stderr (See https://github.com/composer/composer/issues/3795)
     $rs = executeNoWait(
-        sprintf( $self->{'suCmdPattern'},
-            escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} update" ) ),
+        sprintf(
+            $self->{'suCmdPattern'},
+            escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} update" )
+        ),
         sub {
             my $str = shift;
             $$str = '';
@@ -291,9 +294,8 @@ sub _checkRequirements
             sprintf(
                 $self->{'suCmdPattern'},
                 escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} show $package $version" )
-            )
-            ,
-            \my $stdout, \my $stderr
+            ),
+            \ my $stdout, \ my $stderr
         );
         debug( $stdout ) if $stdout;
 

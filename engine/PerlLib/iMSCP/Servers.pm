@@ -70,7 +70,6 @@ sub _init
     $_ = basename( $_, '.pm' ) for @{$self->{'servers'}} = glob(
         "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers/*.pm"
     );
-
     $self;
 }
 

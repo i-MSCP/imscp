@@ -45,7 +45,7 @@ use iMSCP::EventManager;
 #
 # Note that domain names must be in ASCII format.
 my %configOptions = (
-    '*' => { # Any PHP configuration option added here will apply globally (to all domains).
+    '*'             => { # Any PHP configuration option added here will apply globally (to all domains).
         '<option_name1>' => '<option_value1>',
         '<option_name2>' => '<option_value2>'
     },
@@ -63,57 +63,58 @@ my %configOptions = (
 ## Please, don't edit anything below this line
 #
 
-iMSCP::EventManager->getInstance()->register('beforeHttpdBuildConfFile', sub {
-    my ($tplContent, $tplName, $data) = @_;
+iMSCP::EventManager->getInstance()->register(
+    'beforeHttpdBuildConfFile',
+    sub {
+        my ($tplContent, $tplName, $data) = @_;
 
-    if($tplName eq 'php.ini' && $main::imscpConfig{'HTTPD_SERVER'} eq 'apache_fcgid') {
+        if ($tplName eq 'php.ini' && $main::imscpConfig{'HTTPD_SERVER'} eq 'apache_fcgid') {
+            # Apply global PHP configuration options overriding if any
+            if (exists $configOptions{'*'}) {
+                while(my ($option, $value) = each( %{$configOptions{'*'}} )) {
+                    $$tplContent .= "$option = $value\n" unless $$tplContent =~ s/^$option\s+=.*/$option = $value/gim;
+                }
+            }
+
+            # Apply per domain PHP configuration options overriding if any
+            if (exists $configOptions{$data->{'DOMAIN_NAME'}}) {
+                while(my ($option, $value) = each( %{$configOptions{$data->{'DOMAIN_NAME'}}} )) {
+                    $$tplContent .= "$option = $value\n" unless $$tplContent =~ s/^$option\s+=.*/$option = $value/gim;
+                }
+            }
+
+            return 0;
+        }
+
+        return 0 unless $tplName eq 'pool.conf' && $main::imscpConfig{'HTTPD_SERVER'} eq 'apache_php_fpm';
+
         # Apply global PHP configuration options overriding if any
-        if(exists $configOptions{'*'}) {
-            while(my($option, $value) = each(%{$configOptions{'*'}})) {
-                $$tplContent .= "$option = $value\n" unless $$tplContent =~ s/^$option\s+=.*/$option = $value/gim;
+        if (exists $configOptions{'*'}) {
+            while(my ($option, $value) = each( %{$configOptions{'*'}} )) {
+                next if $$tplContent =~ s/^(php_(?:admin_)?(?:value|flag)\[$option\]).*/$1 = $value/gim;
+                if (grep($_ eq lc( $value ), ( 'on', 'off', '1', '0', 'true', 'false', 'yes', 'no' ))) {
+                    $$tplContent .= "php_admin_flag[$option] = $value\n";
+                } else {
+                    $$tplContent .= "php_admin_value[$option] = $value\n";
+                }
             }
         }
+
+        return 0 unless exists $configOptions{$data->{'DOMAIN_NAME'}};
 
         # Apply per domain PHP configuration options overriding if any
-        if(exists $configOptions{$data->{'DOMAIN_NAME'}}) {
-            while(my($option, $value) = each(%{$configOptions{$data->{'DOMAIN_NAME'}}})) {
-                $$tplContent .= "$option = $value\n" unless $$tplContent =~ s/^$option\s+=.*/$option = $value/gim;
-            }
-        }
-
-        return 0;
-    }
-
-    return 0 unless $tplName eq 'pool.conf' && $main::imscpConfig{'HTTPD_SERVER'} eq 'apache_php_fpm';
-
-    # Apply global PHP configuration options overriding if any
-    if(exists $configOptions{'*'}) {
-        while(my($option, $value) = each(%{$configOptions{'*'}})) {
+        while(my ($option, $value) = each( %{$configOptions{$data->{'DOMAIN_NAME'}}} )) {
             next if $$tplContent =~ s/^(php_(?:admin_)?(?:value|flag)\[$option\]).*/$1 = $value/gim;
-
-            if(grep($_ eq lc($value), ( 'on', 'off', '1', '0', 'true', 'false', 'yes', 'no' ))) {
+            if (grep($_ eq lc( $value ), ( 'on', 'off', '1', '0', 'true', 'false', 'yes', 'no' ))) {
                 $$tplContent .= "php_admin_flag[$option] = $value\n";
             } else {
                 $$tplContent .= "php_admin_value[$option] = $value\n";
             }
         }
+
+        0;
     }
-
-    return 0 unless exists $configOptions{$data->{'DOMAIN_NAME'}};
-
-    # Apply per domain PHP configuration options overriding if any
-    while(my($option, $value) = each(%{$configOptions{$data->{'DOMAIN_NAME'}}})) {
-        next if $$tplContent =~ s/^(php_(?:admin_)?(?:value|flag)\[$option\]).*/$1 = $value/gim;
-
-        if(grep($_ eq lc($value), ( 'on', 'off', '1', '0', 'true', 'false', 'yes', 'no' ))) {
-            $$tplContent .= "php_admin_flag[$option] = $value\n";
-        } else {
-            $$tplContent .= "php_admin_value[$option] = $value\n";
-        }
-    }
-
-    0;
-});
+);
 
 1;
 __END__

@@ -147,12 +147,10 @@ sub _loadData
         error( $rdata );
         return 1;
     }
-
     unless (exists $rdata->{$htaccessId}) {
         error( "Htaccess record with ID $htaccessId has not been found in database" );
         return 1;
     }
-
     unless (exists $rdata->{$htaccessId}->{'domain_name'}) {
         require Data::Dumper;
         Data::Dumper->import();

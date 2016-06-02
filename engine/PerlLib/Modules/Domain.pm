@@ -198,10 +198,10 @@ sub restore
                     error( $rdata );
                     return 1;
                 }
-
                 unless (%{$rdata}) {
-                    warning( sprintf( 'Orphaned database (%s) or missing SQL user for this database. skipping...',
-                            $sqldName ) );
+                    warning(
+                        sprintf( 'Orphaned database (%s) or missing SQL user for this database. skipping...', $sqldName )
+                    );
                     next;
                 }
 
@@ -230,7 +230,7 @@ sub restore
                     escapeShell( $rdata->{$sqldName}->{'sqld_name'} )
                 );
 
-                my $rs = execute( "@cmd", \my $stdout, \my $stderr );
+                my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
                 debug( $stdout ) if $stdout;
                 warning( sprintf( 'Could not to restore SQL database: %s', $stderr ) ) if $stderr && $rs;
             } elsif ($bkpFile =~ /^(?!mail-).+?\.tar(?:\.(bz2|gz|lzma|xz))?$/) {
@@ -281,8 +281,7 @@ sub restore
                 $rdata = $db->doQuery(
                     'dummy',
                     "
-                        UPDATE subdomain_alias
-                        SET subdomain_alias_status = 'torestore'
+                        UPDATE subdomain_alias SET subdomain_alias_status = 'torestore'
                         WHERE alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
                     ",
                     $self->{'domain_id'}
@@ -304,7 +303,7 @@ sub restore
                         escapeShell( "$bkpDir/$bkpFile" );
                 }
 
-                my $rs = execute( $cmd, \my $stdout, \my $stderr );
+                my $rs = execute( $cmd, \ my $stdout, \ my $stderr );
                 debug( $stdout ) if $stdout;
                 error( $stderr ) if $stderr && $rs;
                 return $rs if $rs;
@@ -359,7 +358,6 @@ sub _loadData
         error( $rdata );
         return 1;
     }
-
     unless ($rdata->{$domainId}) {
         error( sprintf( 'Domain with ID %s has not been found or is in an inconsistent state', $domainId ) );
         return 1;
@@ -404,7 +402,7 @@ sub _getHttpdData
     my $haveCert = $certData->{$self->{'domain_id'}} && $self->isValidCertificate( $self->{'domain_name'} );
     my $allowHSTS = $haveCert && $certData->{$self->{'domain_id'}}->{'allow_hsts'} eq 'on';
     my $hstsMaxAge = $allowHSTS ? $certData->{$self->{'domain_id'}}->{'hsts_max_age'} : '';
-    my $hstsIncludeSubDomains = ($allowHSTS && $certData->{$self->{'domain_id'}}->{'hsts_include_subdomains'} eq 'on')
+    my $hstsIncludeSubDomains = $allowHSTS && $certData->{$self->{'domain_id'}}->{'hsts_include_subdomains'} eq 'on'
         ? '; includeSubDomains' : '';
 
     $self->{'httpd'} = {
@@ -472,7 +470,7 @@ sub _getMtaData
         DOMAIN_TYPE     => $self->getType(),
         TYPE            => 'vdmn_entry',
         EXTERNAL_MAIL   => $self->{'external_mail'},
-        MAIL_ENABLED    => ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) ? 1 : 0
+        MAIL_ENABLED    => $self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0 ? 1 : 0
     };
     %{$self->{'mta'}};
 }
@@ -501,8 +499,8 @@ sub _getNamedData
         DOMAIN_IP       => $self->{'ip_number'},
         USER_NAME       => $userName,
         MAIL_ENABLED    => (
-            ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
-                && $self->{'external_mail'} =~ /^(?:wildcard|off)$/
+                ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
+                    && $self->{'external_mail'} =~ /^(?:wildcard|off)$/
             ) ? 1 : 0,
         SPF_RECORDS     => [ ]
     };
@@ -537,7 +535,6 @@ sub _getNamedData
         if (@domainHosts) {
             push @{$self->{'named'}->{'SPF_RECORDS'}}, "@\tIN\tTXT\t\"v=spf1 mx @domainHosts -all\""
         }
-
         if (@wildcardHosts) {
             push @{$self->{'named'}->{'SPF_RECORDS'}}, "*\tIN\tTXT\t\"v=spf1 mx @wildcardHosts -all\""
         }

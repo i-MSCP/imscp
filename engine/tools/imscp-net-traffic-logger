@@ -50,7 +50,7 @@ sub start
         '-I INPUT ! -i lo -j IMSCP_INPUT',
         '-I OUTPUT ! -o lo -j IMSCP_OUTPUT'
     ) {
-        my $rs = execute("iptables $chain", \my $stdout, \my $stderr);
+        my $rs = execute("iptables $chain", \ my $stdout, \ my $stderr);
         debug($stdout) if $stdout;
         error($stderr) if $stderr && $rs;
         return $rs if $rs;
@@ -62,7 +62,7 @@ sub start
     for my $port($httpPort, $httpsPort, 80, 443, 110, 143, 25, 465, 587, 995, 993, 20, 21) {
         next unless $port;
 
-        my $rs = execute("iptables -I IMSCP_INPUT -p tcp --dport $port", \my $stdout, \my $stderr);
+        my $rs = execute("iptables -I IMSCP_INPUT -p tcp --dport $port", \ my $stdout, \ my $stderr);
         debug($stdout) if $stdout;
         error($stderr) if $stderr && $rs;
         return $rs if $rs;
@@ -74,7 +74,7 @@ sub start
     }
 
     for my $port(qw(25 465 587)) {
-        my $rs = execute("iptables -I IMSCP_INPUT -p tcp --sport $port", \my $stdout, \my $stderr);
+        my $rs = execute("iptables -I IMSCP_INPUT -p tcp --sport $port", \ my $stdout, \ my $stderr);
         debug($stdout) if $stdout;
         error($stderr) if $stderr && $rs;
         return $rs if $rs;
@@ -86,7 +86,7 @@ sub start
     }
 
     for my $chain('IMSCP_INPUT', 'IMSCP_OUTPUT') {
-        my $rs = execute("iptables -A $chain -j RETURN", \my $stdout, \my $stderr);
+        my $rs = execute("iptables -A $chain -j RETURN", \ my $stdout, \ my $stderr);
         debug($stdout) if $stdout;
         error($stderr) if $stderr && $rs;
         return $rs if $rs;
@@ -97,7 +97,7 @@ sub start
 
 sub stop
 {
-    my $rs = execute('iptables -S', \my $stdout, \my $stderr);
+    my $rs = execute('iptables -S', \ my $stdout, \ my $stderr);
     debug($stdout) if $stdout;
     error($stderr) if $stderr && $rs;
     return $rs if $rs;
@@ -109,7 +109,7 @@ sub stop
         # Handle case were rules on INPUT/OUTPUT chains were already removed
         while($stdout =~ /^-N\s+(IMSCP_INPUT|IMSCP_OUTPUT)/gm) {
             for my $op('-F', '-X') {
-                $rs = execute("iptables $op $1", \my $stdout, \my $stderr);
+                $rs = execute("iptables $op $1", \$stdout, \$stderr);
                 debug($stdout) if $stdout;
                 error($stderr) if $stderr && $rs;
                 return $rs if $rs;

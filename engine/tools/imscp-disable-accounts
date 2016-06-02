@@ -56,12 +56,15 @@ OPTIONS:
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-disable-accounts.lock', 'nowait');
-$bootstrapper->getInstance()->boot({ nolock => 'yes', norequirements => 'yes', config_readonly => 'yes' });
+$bootstrapper->getInstance()->boot(
+    {
+        nolock => 'yes', norequirements => 'yes', config_readonly => 'yes'
+    }
+);
 
 sub run
 {
     my $db = iMSCP::Database->factory();
-
     my $qrs = $db->doQuery('name', "SELECT * FROM config WHERE name = 'HARD_MAIL_SUSPENSION'");
     unless(ref $qrs eq 'HASH') {
         error($qrs);

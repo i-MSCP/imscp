@@ -82,7 +82,6 @@ sub getInstance
 
     no strict 'refs';
     my $instance = \${"$self\::_instance"};
-
     unless (defined $$instance) {
         $$instance = bless { }, $self;
         %{$$instance->{'lsbInfo'}} = $$instance->getDistroInformation();
@@ -140,7 +139,6 @@ sub getRelease
     my ($self, $short, $forceNumeric) = @_;
 
     my $release = $self->{'lsbInfo'}->{'RELEASE'} || 'n/a';
-
     if($forceNumeric && $release =~ /[^\d.]/) {
         my $codename = $self->getCodename(1);
         my @match = grep { $RELEASE_CODENAME_LOOKUP{$_} eq $codename} keys %RELEASE_CODENAME_LOOKUP;
@@ -213,7 +211,6 @@ sub getDistroInformation
 
     # Try to retrieve information from /etc/lsb-release first
     my %lsbInfo = $self->_getLsbInformation();
-
     for ('ID', 'RELEASE', 'CODENAME', 'DESCRIPTION') {
         unless (exists $lsbInfo{$_}) {
             my %distInfo = $self->_guessDebianRelease();
@@ -266,7 +263,6 @@ sub _parsePolicyLine
     my ($self, @bits) = ($_[0], split ',', $_[1]);
 
     my %retval = ();
-
     for(@bits) {
         my @kv = split '=', $_, 2;
         $retval{$longnames{$kv[0]}} = $kv[1] if @kv > 1 && exists $longnames{$kv[0]};
@@ -326,7 +322,7 @@ sub _parseAptPolicy
     close $out;
     close $err;
     waitpid( $pid, 0 ) or die "$!\n";
-    die( "Unable to parse APT policy: $stderr" ) if $stderr && $?;
+    die( sprintf('Could not parse APT policy: %s', $stderr ) ) if $stderr && $?;
 
     my @data = ();
     my $priority;
@@ -334,7 +330,6 @@ sub _parseAptPolicy
     for(split /\n/, $stdout) {
         s/^\s+|\s+$//g; # Remove leading and trailing whitespaces
         $priority = int( $1 ) if /^(\d+)/;
-
         if (index( $_, 'release' ) == 0) {
             my @bits = split ' ', $_, 2;
             push @data, [ $priority, { $self->_parsePolicyLine( $bits[1] ) } ] if @bits > 1;
@@ -546,7 +541,6 @@ sub _getLsbInformation
                 next unless $line && index( $line, '=' ) != -1; # Skip invalid lines
 
                 my ($var, $arg) = split '=', $line, 2;
-
                 if (index( $var, 'DISTRIB_' ) == 0) {
                     $var = substr( $var, 8 );
                     $arg = substr( $arg, 1, -1 ) if $arg =~ /^".*?"$/;

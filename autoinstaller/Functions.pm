@@ -432,10 +432,7 @@ sub _confirmDistro
     my $description = $lsbRelease->getDescription( 'short' );
     my $packagesFile = "$FindBin::Bin/docs/$distribution/packages-$codename.xml";
 
-    if ($distribution ne 'n/a'
-        && (lc( $distribution ) eq 'debian' || lc( $distribution ) eq 'ubuntu')
-        && $codename ne 'n/a'
-    ) {
+    if ($distribution ne 'n/a' && $codename ne 'n/a' && lc( $distribution ) =~ /^(?:debian|ubuntu)$/ ) {
         unless (-f $packagesFile) {
             $dialog->msgbox( <<"EOF" );
 
@@ -906,7 +903,7 @@ sub _installFiles
     iMSCP::Service->getInstance()->stop( 'imscp_daemon' );
 
     # Process cleanup to avoid any security risks and conflicts
-    for(qw/daemon engine gui/) {
+    for(qw/ daemon engine gui /) {
         my $rs = execute( "rm -fR $main::imscpConfig{'ROOT_DIR'}/$_", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;

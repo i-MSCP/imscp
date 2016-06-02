@@ -35,10 +35,10 @@ iMSCP::EventManager->getInstance()->register(
     # END Listener::Nginx::HSTS
 EOF
 
-        my $file = iMSCP::File->new( filename => "/etc/nginx/sites-available/00_master_ssl.conf" );
+        my $file = iMSCP::File->new( filename => '/etc/nginx/sites-available/00_master_ssl.conf' );
         my $fileContent = $file->get();
         unless (defined $fileContent) {
-            error( sprintf( "Could not read %s file", "/etc/nginx/sites-available/00_master_ssl.conf" ) );
+            error( sprintf( 'Could not read %s file', '/etc/nginx/sites-available/00_master_ssl.conf' ) );
             return 1;
         }
 

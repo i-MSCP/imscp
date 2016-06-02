@@ -84,29 +84,15 @@ sub run
         # Get domains list (dmn|sub|als|alssub)
         my $sth = $dbh->prepare(
             "
-                SELECT
-                    domain_id AS upper_domain_id, domain_name
-                FROM
-                    domain
+                SELECT domain_id AS upper_domain_id, domain_name FROM domain
                 UNION
-                SELECT
-                    domain_id AS upper_domain_id, alias_name
-                FROM
-                    domain_aliasses
+                SELECT domain_id AS upper_domain_id, alias_name FROM domain_aliasses
                 UNION
-                SELECT
-                    domain_id AS upper_domain_id, CONCAT(subdomain_name, '.', domain_name)
-                FROM
-                    subdomain
-                INNER JOIN
-                    domain USING (domain_id)
+                SELECT domain_id AS upper_domain_id, CONCAT(subdomain_name, '.', domain_name) FROM subdomain
+                INNER JOIN domain USING (domain_id)
                 UNION
-                SELECT
-                    domain_id AS upper_domain_id, CONCAT(subdomain_alias_name, '.', alias_name)
-                FROM
-                    subdomain_alias
-                INNER JOIN
-                    domain_aliasses USING (alias_id)
+                SELECT domain_id AS upper_domain_id, CONCAT(subdomain_alias_name, '.', alias_name) FROM subdomain_alias
+                INNER JOIN domain_aliasses USING (alias_id)
             "
         );
         unless($sth && $sth->execute()) {
@@ -138,15 +124,10 @@ sub run
             } elsif($domainTrafficRow) {
                 $dbh->do(
                     '
-                        UPDATE
-                            domain_traffic
-                        SET
+                        UPDATE domain_traffic SET
                             dtraff_web = dtraff_web + ?, dtraff_ftp = dtraff_ftp + ?, dtraff_mail = dtraff_mail + ?,
                             dtraff_pop = dtraff_pop + ?, dtraff_time = ?
-                        WHERE
-                            domain_id = ?
-                        AND
-                            dtraff_id = ?
+                        WHERE domain_id = ? AND dtraff_id = ?
                     ',
                     undef, $httpdTraffic, $ftpdTraffic, $mtaTraffic, $poTraffic, $halfTimestamp, $upperDomainId,
                     $domainTrafficRow->{'dtraff_id'}

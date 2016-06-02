@@ -71,12 +71,12 @@ sub addIpAddr
     $data = { } unless defined $data && ref $data eq 'HASH';
     defined $data->{$_} or croak( sprintf( 'The %s parameter is not defined', $_ ) ) for qw/ id ip_card ip_address /;
     $data->{'id'} =~ /^\d+$/ or croak( 'id parameter must be an integer' );
-    $self->{'net'}->isKnownDevice( $data->{'ip_card'} ) or croak( sprintf(
-            'The %s network interface is unknown', $data->{'ip_card'}
-        ) );
-    $self->{'net'}->isValidAddr( $data->{'ip_address'} ) or croak( sprintf(
-            'The %s IP address is not valid', $data->{'ip_address'}
-        ) );
+    $self->{'net'}->isKnownDevice( $data->{'ip_card'} ) or croak(
+        sprintf( 'The %s network interface is unknown', $data->{'ip_card'} )
+    );
+    $self->{'net'}->isValidAddr( $data->{'ip_address'} ) or croak(
+        sprintf( 'The %s IP address is not valid', $data->{'ip_address'} )
+    );
     $data->{'id'} += 1000;
     $data->{'netmask'} = $self->{'net'}->getAddrVersion( $data->{'ip_address'} ) eq 'ipv4' ? '255.255.255.255' : '64';
     # TODO guess netmask broadcast and gateway if not defined
@@ -90,10 +90,12 @@ sub addIpAddr
     return 0 unless $self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'id'}" );
 
     my ($stdout, $stderr);
-    execute( "$commands{'ifup'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr ) == 0 or die( sprintf(
+    execute( "$commands{'ifup'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr ) == 0 or die(
+        sprintf(
             'Could not bring up the %s network interface: %s', "$data->{'ip_card'}:$data->{'id'}",
             $stderr || 'Unknown error'
-        ) );
+        )
+    );
 
     $self->{'net'}->resetInstance();
 }
@@ -122,10 +124,12 @@ sub removeIpAddr
     return 0 unless $self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'id'}" );
 
     my ($stdout, $stderr);
-    execute( "$commands{'ifdown'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr ) == 0 or die( sprintf(
+    execute( "$commands{'ifdown'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr ) == 0 or die(
+        sprintf(
             'Could not bring down the %s network interface: %s', "$data->{'ip_card'}:$data->{'id'}",
             $stderr || 'Unknown error'
-        ) );
+        )
+    );
 
     $self->{'net'}->resetInstance();
     $self->_updateInterfaces( 'remove', $data );

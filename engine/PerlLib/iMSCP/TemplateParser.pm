@@ -55,11 +55,9 @@ sub process
     my ($data, $tplContent) = @_;
     $data = { } if ref $data ne 'HASH';
 
-    for (keys %{$data}) {
-        next unless defined $data->{$_};
-
-        my $regexp = sprintf( '\\{%s\\}', quotemeta( $_ ) );
-        $tplContent =~ s/$regexp/$data->{$_}/gim
+    while (my ($placeholder, $value) = each( %{$data} )) {
+        next unless defined $value;
+        $tplContent =~ s/\Q{$placeholder}\E/$value/gim
     }
 
     $tplContent;
@@ -80,16 +78,11 @@ sub process
 sub getBloc
 {
     my ($beginTag, $endingTag, $tplContent, $includeTags) = @_;
-    my $regexp = '[\t ]*'.quotemeta( $beginTag ).'(.*?)[\t ]*'.quotemeta( $endingTag );
-    my $ret = '';
 
-    if ($includeTags) {
-        $ret = $1 if $tplContent =~ m/($regexp)/gims;
-    } elsif ($tplContent =~ m/$regexp/gims) {
-        $ret = $1;
-    }
-
-    $ret;
+    my $regexp = "[\t ]*\Q$beginTag\E(.*?)[\t ]*\Q$endingTag\E";
+    return $1 if $includeTags && $tplContent =~ m/($regexp)/gims;
+    return $1 if $tplContent =~ m/$regexp/gims;
+    '';
 }
 
 =item replaceBloc($beginTag, $endingTag, $replacement, $tplContent, [$preserveTags = false])
@@ -108,8 +101,8 @@ sub getBloc
 sub replaceBloc
 {
     my ($beginTag, $endingTag, $replacement, $tplContent, $preserveTags) = @_;
-    my $regexp = '([\t ]*'.quotemeta( $beginTag ).'.*?'.quotemeta( $endingTag ).')';
 
+    my $regexp = "([\t ]*\Q$beginTag\E.*?\Q$endingTag\E)";
     if ($preserveTags) {
         $tplContent =~ s/$regexp/$replacement$1/gis;
     } else {

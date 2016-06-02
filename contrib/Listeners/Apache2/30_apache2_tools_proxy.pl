@@ -34,7 +34,6 @@ iMSCP::EventManager->getInstance()->register(
 
         if ($tplName eq 'domain.tpl') {
             my $redirect = "    RedirectMatch permanent ^(/(?:ftp|pma|webmail)[\/]?)\$ ";
-
             if ($data->{'SSL_SUPPORT'}) {
                 $redirect .= "https://$data->{'DOMAIN_NAME'}\$1";
             } else {

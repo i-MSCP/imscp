@@ -206,7 +206,6 @@ for my $fname (keys %constants) {
 
         if ($recursive) {
             debug( sprintf( 'Adding %s flag on %s recursively', $fname, $name ) );
-
             File::Find::finddepth(
                 sub {
                     my $flags;
@@ -221,9 +220,7 @@ for my $fname (keys %constants) {
             );
         } else {
             debug( sprintf( 'Adding %s flag on %s', $fname, $name ) );
-
             my $flags;
-
             if (_getAttributes( $name, \$flags ) == -1) {
                 error( sprintf( 'An error occurred while reading flags on %s: %s', $name, $! ) );
             }
@@ -241,11 +238,9 @@ for my $fname (keys %constants) {
 
         if ($recursive) {
             debug( sprintf( 'Removing %s flag on %s recursively', $fname, $name ) );
-
             File::Find::finddepth(
                 sub {
                     my $flags;
-
                     if (_getAttributes( $_, \$flags ) == -1) {
                         error( sprintf( 'An error occurred while reading flags on %s:', $name, $! ) );
                     }
@@ -256,9 +251,7 @@ for my $fname (keys %constants) {
             );
         } else {
             debug( sprintf( 'Removing %s flag on %s', $fname, $name ) );
-
             my $flags;
-
             if (_getAttributes( $name, \$flags ) == -1) {
                 error( sprintf( 'An error occurred while reading flags on %s: %s', $name, $! ) );
             }
@@ -275,7 +268,6 @@ for my $fname (keys %constants) {
         return 0 unless _isSupported();
 
         my $flags;
-
         if (_getAttributes( $name, \$flags ) == -1) {
             error( sprintf( 'An error occurred while reading flags on %s: %s', $name, $! ) );
         }

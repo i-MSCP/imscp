@@ -77,16 +77,14 @@ sub process
         $rs = $self->add();
         @sql = (
             "UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?",
-            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'ok'),
-            $aliasId
+            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'ok'), $aliasId
         );
     } elsif ($self->{'alias_status'} eq 'todelete') {
         $rs = $self->delete();
         if ($rs) {
             @sql = (
                 "UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?",
-                scalar getMessageByType( 'error' ) || 'Unknown error',
-                $aliasId
+                scalar getMessageByType( 'error' ) || 'Unknown error', $aliasId
             );
         } else {
             @sql = ("DELETE FROM domain_aliasses WHERE alias_id = ?", $aliasId);
@@ -95,15 +93,13 @@ sub process
         $rs = $self->disable();
         @sql = (
             "UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?",
-            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'disabled'),
-            $aliasId
+            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'disabled'), $aliasId
         );
     } elsif ($self->{'alias_status'} eq 'torestore') {
         $rs = $self->restore();
         @sql = (
             "UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?",
-            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'ok'),
-            $aliasId
+            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'ok'), $aliasId
         );
     }
 
@@ -199,8 +195,7 @@ sub _loadData
             ) AS mail_count ON (alias.alias_id = mail_count.id)
             WHERE alias.alias_id = ?
         ",
-        $aliasId,
-        $aliasId
+        $aliasId, $aliasId
     );
     unless (ref $rdata eq 'HASH') {
         error( $rdata );
@@ -254,8 +249,8 @@ sub _getHttpdData
     my $haveCert = $certData->{$self->{'alias_id'}} && $self->isValidCertificate( $self->{'alias_name'} );
     my $allowHSTS = $haveCert && $certData->{$self->{'alias_id'}}->{'allow_hsts'} eq 'on';
     my $hstsMaxAge = $allowHSTS ? $certData->{$self->{'alias_id'}}->{'hsts_max_age'} : '';
-    my $hstsIncludeSubDomains = ($allowHSTS && $certData->{$self->{'alias_id'}}->{'hsts_include_subdomains'} eq 'on')
-	    ? '; includeSubDomains' : '';
+    my $hstsIncludeSubDomains = $allowHSTS && $certData->{$self->{'alias_id'}}->{'hsts_include_subdomains'} eq 'on'
+        ? '; includeSubDomains' : '';
 
     $self->{'httpd'} = {
         DOMAIN_ADMIN_ID         => $self->{'domain_admin_id'},
@@ -320,7 +315,7 @@ sub _getMtaData
         DOMAIN_TYPE     => $self->getType(),
         TYPE            => 'vals_entry',
         EXTERNAL_MAIL   => $self->{'external_mail'},
-        MAIL_ENABLED    => ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) ? 1 : 0
+        MAIL_ENABLED    => $self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0 ? 1 : 0
     };
     %{$self->{'mta'}};
 }
@@ -349,7 +344,7 @@ sub _getNamedData
         DOMAIN_IP       => $self->{'ip_number'},
         USER_NAME       => $userName.'als'.$self->{'alias_id'},
         MAIL_ENABLED    => (
-            ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
+                ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
                     && $self->{'external_mail'} =~ /^(?:wildcard|off)$/
             ) ? 1 : 0,
         SPF_RECORDS     => [ ]
@@ -385,7 +380,6 @@ sub _getNamedData
         if (@domainHosts) {
             push @{$self->{'named'}->{'SPF_RECORDS'}}, "@\tIN\tTXT\t\"v=spf1 mx @domainHosts -all\""
         }
-
         if (@wildcardHosts) {
             push @{$self->{'named'}->{'SPF_RECORDS'}}, "*\tIN\tTXT\t\"v=spf1 mx @wildcardHosts -all\""
         }
@@ -394,10 +388,7 @@ sub _getNamedData
     # We must trigger the SubAlias module whatever the number of entries - See #503
     $rdata = $db->doQuery(
         'dummy',
-        '
-            UPDATE subdomain_alias SET subdomain_alias_status = ?
-            WHERE subdomain_alias_status <> ? AND alias_id = ?
-        ',
+        'UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE subdomain_alias_status <> ? AND alias_id = ?',
         'tochange', 'todelete', $self->{'alias_id'}
     );
     ref $rdata eq 'HASH' or die( $rdata );

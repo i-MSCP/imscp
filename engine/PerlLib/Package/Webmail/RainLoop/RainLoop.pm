@@ -188,7 +188,6 @@ sub deleteMail
 
         if (-d "$storageDir/$storageType/$storagePath") {
             my $dir = iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath" );
-
             if ($dir->isEmpty()) {
                 $rs = $dir->remove();
                 return $rs if $rs;

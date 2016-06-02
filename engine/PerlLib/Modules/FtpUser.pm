@@ -70,13 +70,13 @@ sub process
         $rs = $self->add();
         @sql = (
             'UPDATE ftp_users SET status = ? WHERE userid = ?',
-                $rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'ok', $userId
+            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'ok'), $userId
         );
     } elsif ($self->{'status'} eq 'todisable') {
         $rs = $self->disable();
         @sql = (
             'UPDATE ftp_users SET status = ? WHERE userid = ?',
-                $rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'disabled', $userId
+            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'disabled'), $userId
         );
     } elsif ($self->{'status'} eq 'todelete') {
         $rs = $self->delete();
@@ -124,7 +124,6 @@ sub _loadData
         error( $row );
         return 1;
     }
-
     unless ($row->{$userId}) {
         error( sprintf( 'Ftp user record with ID %s has not been found in database', $userId ) );
         return 1;

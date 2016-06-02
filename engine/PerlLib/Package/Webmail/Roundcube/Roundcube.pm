@@ -136,7 +136,6 @@ sub deleteMail
     my $db = iMSCP::Database->factory();
     $db->set( 'DATABASE_NAME', $roundcubeDbName );
     my $rs = $db->connect();
-
     if ($rs) {
         error( $rs );
         return 1;

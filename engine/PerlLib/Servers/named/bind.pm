@@ -196,7 +196,8 @@ sub postaddDmn
         my $domainIp = ($main::imscpConfig{'BASE_SERVER_IP'} eq $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'})
             ? $data->{'DOMAIN_IP'} : $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
 
-        $rs = $self->addDmn( {
+        $rs = $self->addDmn(
+            {
                 DOMAIN_NAME       => $main::imscpConfig{'BASE_SERVER_VHOST'},
                 DOMAIN_IP         => $main::imscpConfig{'BASE_SERVER_IP'},
                 MAIL_ENABLED      => 1,
@@ -206,7 +207,8 @@ sub postaddDmn
                     TYPE  => iMSCP::Net->getInstance()->getAddrVersion( $domainIp ) eq 'ipv4' ? 'A' : 'AAAA',
                     DATA  => $domainIp
                 }
-            } );
+            }
+        );
         return $rs if $rs;
     }
 
@@ -304,12 +306,14 @@ sub postdeleteDmn
     return $rs if $rs;
 
     if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
-        $rs = $self->addDmn( {
+        $rs = $self->addDmn(
+            {
                 DOMAIN_NAME       => $main::imscpConfig{'BASE_SERVER_VHOST'},
                 DOMAIN_IP         => $main::imscpConfig{'BASE_SERVER_IP'},
                 MAIL_ENABLED      => 1,
                 CTM_ALS_ENTRY_DEL => { NAME => $data->{'USER_NAME'} }
-            } );
+            }
+        );
         return $rs if $rs;
     }
 
@@ -429,8 +433,8 @@ sub addSub
         'named-compilezone -i none -s relative'.
             " -o - $data->{'PARENT_DOMAIN_NAME'} $wrkDbFile->{'filename'}".
             " > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db",
-        \my $stdout,
-        \my $stderr
+        \ my $stdout,
+        \ my $stderr
     );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs;
@@ -575,8 +579,8 @@ sub deleteSub
         'named-compilezone -i none -s relative'.
             " -o - $data->{'PARENT_DOMAIN_NAME'} $wrkDbFile->{'filename'}".
             " > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db",
-        \my $stdout,
-        \my $stderr
+        \ my $stdout,
+        \ my $stderr
     );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs;
@@ -607,12 +611,14 @@ sub postdeleteSub
     return $rs if $rs;
 
     if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
-        $rs = $self->addDmn( {
+        $rs = $self->addDmn(
+            {
                 DOMAIN_NAME       => $main::imscpConfig{'BASE_SERVER_VHOST'},
                 DOMAIN_IP         => $main::imscpConfig{'BASE_SERVER_IP'},
                 MAIL_ENABLED      => 1,
                 CTM_ALS_ENTRY_DEL => { NAME => $data->{'USER_NAME'} }
-            } );
+            }
+        );
         return $rs if $rs;
     }
 
@@ -695,8 +701,8 @@ sub addCustomDNS
         'named-compilezone -i full -s relative'.
             " -o - $data->{'DOMAIN_NAME'} $wrkDbFile->{'filename'}".
             " > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db",
-        \my $stdout,
-        \my $stderr
+        \ my $stdout,
+        \ my $stderr
     );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $rs;
@@ -781,8 +787,6 @@ sub _init
     $self->{'restart'} = 0;
     $self->{'reload'} = 0;
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'eventManager'}->trigger( 'beforeNamedInit', $self,
-        'bind' ) and fatal( 'bind - beforeNamedInit has failed' );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
@@ -791,7 +795,6 @@ sub _init
             tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/bind.data";
             \%c;
         };
-    $self->{'eventManager'}->trigger( 'afterNamedInit', $self, 'bind' ) and fatal( 'bind - afterNamedInit has failed' );
     $self;
 }
 
@@ -1095,8 +1098,8 @@ sub _addDmnDb
         'named-compilezone -i none -s relative'.
             " -o - $data->{'DOMAIN_NAME'} $wrkDbFile->{'filename'}".
             " > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db",
-        \my $stdout,
-        \my $stderr
+        \ my $stdout,
+        \ my $stderr
     );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs;

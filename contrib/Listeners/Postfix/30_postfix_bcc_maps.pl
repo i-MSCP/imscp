@@ -47,8 +47,7 @@ iMSCP::EventManager->getInstance()->register(
 
         return 0 unless -f $postfixRecipientBccMap && -f $postfixSenderBccMap;
 
-        my ($stdout, $stderr);
-        my $rs = execute( "postmap $postfixRecipientBccMap", \$stdout, \$stderr );
+        my $rs = execute( "postmap $postfixRecipientBccMap", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
         return $rs if $rs;

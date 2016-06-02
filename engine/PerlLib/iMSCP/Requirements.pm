@@ -86,8 +86,12 @@ sub checkVersion
     }
 
     if ($maxVersion && version->parse( $version ) > version->parse( $maxVersion )) {
-        die( sprintf( "version %s is not supported. Supported versions are %s to %s\n", $version, $minVersion,
-                $maxVersion ) );
+        die(
+            sprintf(
+                "version %s is not supported. Supported versions are %s to %s\n", $version, $minVersion,
+                $maxVersion
+            )
+        );
     }
 
     undef;
@@ -209,9 +213,9 @@ sub _externalPrograms
     for my $programName (keys %{$self->{'programs'}}) {
         my $lcProgram = lc( $programName );
 
-        iMSCP::ProgramFinder::find( $lcProgram ) or die( sprintf(
-                'Could not find the %s command in search path', $programName
-            ) );
+        iMSCP::ProgramFinder::find( $lcProgram ) or die(
+            sprintf( 'Could not find the %s command in search path', $programName )
+        );
 
         next unless $self->{'programs'}->{$programName}->{'version_command'};
 

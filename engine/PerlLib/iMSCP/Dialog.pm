@@ -133,7 +133,7 @@ sub checkbox
     my ($ret, $output) = $self->_textbox( $text, 'checklist', @{$choices}." @init" );
 
     @{$choices} = split /\n/, $output;
-    s/ /_/g for (@{$choices}, @defaults); # Normalize
+    s/ /_/g for @{$choices}; # Normalize
     wantarray ? ($ret, $choices) : $choices;
 }
 
@@ -321,8 +321,7 @@ sub setGauge
 
     return 0 if iMSCP::Getopt->noprompt || !$self->{'gauge'};
     
-    print {$self->{'gauge'}} sprintf( "XXX\n%d\n%s\nXXX\n", @_,);
-
+    print {$self->{'gauge'}} sprintf( "XXX\n%d\n%s\nXXX\n", @_);
     0
 }
 
@@ -504,7 +503,7 @@ sub _determineConsoleSize
 {
     my $self = $_[0];
 
-    execute( $self->{'bin'}.' --print-maxsize', \my $output, \my $error );
+    execute( $self->{'bin'}.' --print-maxsize', \ my $output, \ my $error );
     $error =~ /MaxSize:\s(\d+),\s(\d+)/;
     $self->{'lines'} = (defined( $1 ) && $1 != 0) ? $1 - 3 : 23;
     $self->{'columns'} = (defined( $2 ) && $2 != 0) ? $2 - 2 : 79;
@@ -588,7 +587,7 @@ sub _restoreDefaults
     my $self = $_[0];
 
     for my $prop (keys %{$self->{'_opts'}}) {
-        $self->{'_opts'}->{$prop} = undef unless grep($_ eq $prop, qw/title backtitle colors/);
+        $self->{'_opts'}->{$prop} = undef unless $prop =~ /^(?:title|backtitle|colors)$/;
     }
 
     $self;
@@ -632,7 +631,7 @@ sub _execute
     my $height = $self->{'autosize'} ? 0 : $self->{'lines'};
     my $width = $self->{'autosize'} ? 0 : $self->{'columns'};
 
-    my $ret = execute( "$self->{'bin'} $command --$type $text $height $width $init", undef, \my $output );
+    my $ret = execute( "$self->{'bin'} $command --$type $text $height $width $init", undef, \ my $output );
 
     $self->{'_opts'}->{'separate-output'} = undef;
     $self->_init() if $self->{'autoreset'};

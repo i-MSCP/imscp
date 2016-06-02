@@ -437,8 +437,6 @@ sub _init
 
     $self->{'restart'} = 0;
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'eventManager'}->trigger( 'beforePoInit', $self,
-        'dovecot' ) and fatal( 'dovecot - beforePoInit has failed' );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
@@ -446,7 +444,6 @@ sub _init
             tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/dovecot.data";
             \%c;
         };
-    $self->{'eventManager'}->trigger( 'afterPoInit', $self, 'dovecot' ) and fatal( 'dovecot - afterPoInit has failed' );
     $self;
 }
 

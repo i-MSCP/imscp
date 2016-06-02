@@ -76,8 +76,10 @@ sub process
     } elsif ($self->{'status'} eq 'todelete') {
         $rs = $self->delete();
         if ($rs) {
-            @sql = ('UPDATE htaccess_groups SET status = ? WHERE id = ?', scalar getMessageByType( 'error' ),
-                $htgroupId);
+            @sql = (
+                'UPDATE htaccess_groups SET status = ? WHERE id = ?', scalar getMessageByType( 'error' ),
+                $htgroupId
+            );
         } else {
             @sql = ('DELETE FROM htaccess_groups WHERE id = ?', $htgroupId);
         }
@@ -112,7 +114,6 @@ sub _loadData
     my ($self, $htgroupId) = @_;
 
     my $db = iMSCP::Database->factory();
-
     $db->doQuery( 'dummy', 'SET SESSION group_concat_max_len = 8192' );
 
     my $rdata = $db->doQuery(
@@ -138,12 +139,10 @@ sub _loadData
         error( $rdata );
         return 1;
     }
-
     unless (exists $rdata->{$htgroupId}) {
         error( sprintf( 'Htgroup record with ID %s has not been found in database', $htgroupId ) );
         return 1;
     }
-
     unless (exists $rdata->{$htgroupId}->{'domain_name'}) {
         require Data::Dumper;
         Data::Dumper->import();

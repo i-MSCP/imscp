@@ -699,7 +699,7 @@ sub _updatePackagesIndex
     my $self = shift;
 
     my $cmd = 'apt-get';
-    if (!iMSCP::Getopt->noprompt) {
+    unless (iMSCP::Getopt->noprompt) {
         iMSCP::Dialog->getInstance->endGauge() if iMSCP::ProgramFinder::find( 'dialog' );
         $cmd = "debconf-apt-progress --logstderr -- $cmd";
     }

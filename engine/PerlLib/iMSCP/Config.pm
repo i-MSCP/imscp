@@ -159,10 +159,12 @@ sub FETCH
 
     unless ($self->{'nowarn'}) {
         my (undef, $file, $line) = caller;
-        warning( sprintf(
+        warning(
+            sprintf(
                 'Accessing non existing config value %s from the %s file (see file %s at line %s)',
                 $paramName, $self->{'fileName'}, $file, $line
-            ) );
+            )
+        );
     }
 
     undef;

@@ -41,9 +41,7 @@ iMSCP::EventManager->getInstance()->register(
     sub {
         my ($tplFileContent, $tplFileName, $data) = @_;
 
-        my $domainName = $data->{'DOMAIN_NAME'} || undef;
-
-        if ($domainName && $domainName eq $searchDomain &&
+        if ($data->{'DOMAIN_NAME'} && $data->{'DOMAIN_NAME'} eq $searchDomain &&
             grep($_ eq $tplFileName, ( 'domain_redirect.tpl', 'domain.tpl', 'domain_redirect_ssl.tpl',
                 'domain_ssl.tpl' ))
         ) {

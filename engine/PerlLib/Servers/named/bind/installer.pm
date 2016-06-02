@@ -61,11 +61,14 @@ sub registerSetupListeners
 {
     my ($self, $eventManager) = @_;
 
-    $eventManager->register( 'beforeSetupDialog', sub {
+    $eventManager->register(
+        'beforeSetupDialog',
+        sub {
             push @{$_[0]}, sub { $self->askDnsServerMode( @_ ) }, sub { $self->askIPv6Support( @_ ) },
                 sub { $self->askLocalDnsResolver( @_ ) };
             0;
-        } );
+        }
+    );
 }
 
 =item askDnsServerMode(\%dialog)
@@ -122,7 +125,7 @@ sub askDnsServerIps
 
     if ($dnsServerMode eq 'master') {
         if ($main::reconfigure =~ /^(?:named|servers|all|forced)$/ || "@slaveDnsIps" eq ''
-            || "@slaveDnsIps" ne 'no' && !$self->_checkIps( @slaveDnsIps )
+            || ("@slaveDnsIps" ne 'no' && !$self->_checkIps( @slaveDnsIps ))
         ) {
             ($rs, $answer) = $dialog->radiolist(
                 <<"EOF", [ 'no', 'yes' ], grep($_ eq "@slaveDnsIps", ('', 'no')) ? 'no' : 'yes' );

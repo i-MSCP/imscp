@@ -88,7 +88,7 @@ sub run
         $ret = 1;
     } else {
         for my $mainDomainId(keys %{$domainData}) {
-            my @allowbackup = split '\|', $domainData->{$mainDomainId}->{'allowbackup'};
+            my @allowbackup = split /\|/, $domainData->{$mainDomainId}->{'allowbackup'};
 
             if (@allowbackup) {
                 my $mainDomainName = $domainData->{$mainDomainId}->{'domain_name'};
@@ -176,7 +176,6 @@ sub run
 
                     for my $dbName(keys %{$dbData}) {
                         $rs = $db->dumpdb($dbName, "$bkpDir/$dbName.sql");
-
                         if($rs) {
                             $ret ||= $rs;
                             next;
@@ -186,7 +185,6 @@ sub run
 
                         $rs = $file->mode(0644);
                         $ret ||= $rs;
-
                         $rs = $file->owner($userName, $groupName);
                         $ret ||= $rs;
 

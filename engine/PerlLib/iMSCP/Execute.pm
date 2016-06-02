@@ -117,7 +117,6 @@ sub executeNoWait($$$)
     ref $stderrSubref eq 'CODE' or die( 'Expects a subroutine reference as third parameter for STDERR processing' );
 
     my $pid = open3( my $stdin, my $stdout, my $stderr = gensym, $command );
-
     close $stdin;
 
     my %buffers = ( $stdout => '', $stderr => '' );
@@ -126,7 +125,6 @@ sub executeNoWait($$$)
     while($sel->count()) {
         for my $fh ($sel->can_read()) {
             my $ret = sysread( $fh, $buffers{$fh}, 4096, length( $buffers{$fh} ) );
-
             defined $ret or die( $! );
 
             if ($ret == 0) {

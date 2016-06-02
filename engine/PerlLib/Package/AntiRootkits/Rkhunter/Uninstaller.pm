@@ -69,7 +69,7 @@ sub _restoreDebianConfig
         my $file = iMSCP::File->new( filename => '/etc/default/rkhunter' );
         my $fileContent = $file->get();
         unless (defined $fileContent) {
-            error( "Could not read /etc/default/rkhunter file" );
+            error( 'Could not read /etc/default/rkhunter file' );
             return 1;
         }
 

@@ -605,8 +605,6 @@ sub _init
 
     $self->{'restart'} = 0;
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'eventManager'}->trigger( 'beforeMtaInit', $self,
-        'postfix' ) and fatal( 'postfix - beforeMtaInit has failed' );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'commentChar'} = '#';
@@ -614,8 +612,6 @@ sub _init
             tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/postfix.data";
             \%c;
         };
-    $self->{'eventManager'}->trigger( 'afterMtaInit', $self,
-        'postfix' ) and fatal( 'postfix - afterMtaInit has failed' );
     $self;
 }
 

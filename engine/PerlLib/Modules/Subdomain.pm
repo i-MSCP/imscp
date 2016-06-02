@@ -154,7 +154,6 @@ sub _loadData
         error( $rdata );
         return 1;
     }
-
     unless ($rdata->{$subdomainId}) {
         error( sprintf( 'Subdomain with ID %s has not been found or is in an inconsistent state', $subdomainId ) );
         return 1;
@@ -204,9 +203,8 @@ sub _getHttpdData
         && $self->isValidCertificate( $self->{'subdomain_name'}.'.'.$self->{'user_home'} );
     my $allowHSTS = $haveCert && $certData->{$self->{'subdomain_id'}}->{'allow_hsts'} eq 'on';
     my $hstsMaxAge = $allowHSTS ? $certData->{$self->{'subdomain_id'}}->{'hsts_max_age'} : '';
-    my $hstsIncludeSubDomains = (
-        $allowHSTS && $certData->{$self->{'subdomain_id'}}->{'hsts_include_subdomains'} eq 'on'
-    ) ? '; includeSubDomains' : '';
+    my $hstsIncludeSubDomains = $allowHSTS && $certData->{$self->{'subdomain_id'}}->{'hsts_include_subdomains'} eq 'on'
+        ? '; includeSubDomains' : '';
 
     $self->{'httpd'} = {
         DOMAIN_ADMIN_ID         => $self->{'domain_admin_id'},

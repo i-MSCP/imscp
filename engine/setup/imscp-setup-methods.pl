@@ -451,7 +451,7 @@ sub askSqlRootUser
 
 Please enter your SQL server hostname or IP address:$msg
 EOF
-        $msg = $host eq '' || $host ne 'localhost' && !is_domain($host, { domain_private_tld => qr /.*/ } )
+        $msg = ($host eq '' || $host ne 'localhost') && !is_domain($host, { domain_private_tld => qr /.*/ } )
             && !iMSCP::Net->getInstance()->isValidAddr($host)
             ? "\n\n\\Z1SQL server hostname or IP address is not valid.\\Zn\n\nPlease try again:" : '';
     } while($rs < 30 && $msg ne '');
@@ -464,8 +464,7 @@ EOF
 Please enter your SQL server port:$msg
 EOF
         $msg = $port !~ /^[\d]+$/ || $port < 1025 || $port > 65535
-            ? "\n\n\\Z1SQL server port is not valid.\\Zn\n\nPlease try again:"
-            : '';
+            ? "\n\n\\Z1SQL server port is not valid.\\Zn\n\nPlease try again:" : '';
     } while($rs < 30 && $msg ne '');
 
     return $rs if $rs >= 30;
@@ -614,7 +613,7 @@ sub setupAskSqlUserHost
     my $rs = 0;
 
     if($main::imscpConfig{'SQL_SERVER'} eq 'remote_server') { # Remote MySQL server
-        if($main::reconfigure =~ /^(?:sql|servers|all|forced)$/ || $host ne '%' && !is_domain($host, \%options)
+        if(($main::reconfigure =~ /^(?:sql|servers|all|forced)$/ || $host ne '%') && !is_domain($host, \%options)
            && !$net->isValidAddr($host)
         ) {
             my $msg = '';
@@ -656,7 +655,7 @@ sub setupAskImscpDbName
     my $dbName = setupGetQuestion('DATABASE_NAME', 'imscp');
     my $rs = 0;
 
-    if($main::reconfigure =~ /^(?:sql|servers|all|forced)$/ || !iMSCP::Getopt->preseed && !setupIsImscpDb($dbName)) {
+    if(($main::reconfigure =~ /^(?:sql|servers|all|forced)$/ || !iMSCP::Getopt->preseed) && !setupIsImscpDb($dbName)) {
         my $msg = '';
 
         do {
@@ -1182,7 +1181,7 @@ sub setupServerIps
     my $serverIpsToDelete = setupGetQuestion('SERVER_IPS_TO_DELETE', []);
     my $serverHostname = setupGetQuestion('SERVER_HOSTNAME');
     my $oldIptoIdMap = { };
-    my @serverIps = ( $baseServerIp, $main::questions{'SERVER_IPS'} ? @{$main::questions{'SERVER_IPS'}} : () );
+    my @serverIps = ($baseServerIp, $main::questions{'SERVER_IPS'} ? @{$main::questions{'SERVER_IPS'}} : ());
 
     my $rs = iMSCP::EventManager->getInstance()->trigger(
         'beforeSetupServerIps', \$baseServerIp, \@serverIps, $serverIpsToReplace
@@ -1436,7 +1435,7 @@ sub setupSecureSqlInstallation
             'd', "DELETE FROM user WHERE User = 'root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
         );
         unless(ref $qrs eq 'HASH'){
-            error(sprintf('Could not remove remote `root` users: %s', $qrs));
+            error(sprintf('Could not remove `root` users: %s', $qrs));
             return 1;
         }
     }

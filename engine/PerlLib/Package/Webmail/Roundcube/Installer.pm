@@ -344,7 +344,7 @@ sub _installFiles
         return 1;
     }
 
-    my $rs = execute( "rm -fR $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail", \my $stdout, \my $stderr );
+    my $rs = execute( "rm -fR $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $rs && $stderr;
     return $rs if $rs;
@@ -451,7 +451,6 @@ sub _setupDatabase
 
     for my $sqlUser ($dbOldUser, $dbUser) {
         next if !$sqlUser || grep($_ eq "$sqlUser\@$dbUserHost", @main::createdSqlUsers);
-
         for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
             next unless $host;
             $sqlServer->dropUser( $sqlUser, $host );

@@ -25,9 +25,9 @@ package Listener::Dovecot::Service::Login;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use iMSCP::EventManager;
 use iMSCP::Execute;
 use version;
-use iMSCP::EventManager;
 
 #
 ## Configuration parameters
@@ -70,7 +70,7 @@ iMSCP::EventManager->getInstance()->register(
 
         execute( "dovecot --version", \ my $stdout, \ my $stderr );
 
-        if (version->new( $stdout ) < version->new( '2.1.0' )) {
+        if (version->parse( "$stdout" ) < version->parse( '2.1.0' )) {
             warning( "The 60_dovecot_service_login.pl Listener file requires Dovecot version 2.1.x or newer. Your version is: $stdout" );
             return 0;
         }

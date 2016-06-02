@@ -109,7 +109,6 @@ sub process
             $dbh->do( "DELETE FROM domain_dns WHERE $condition AND domain_dns_status = 'todelete'" );
             $dbh->commit();
         };
-
         if ($@) {
             $dbh->rollback();
             $self->{'db'}->endTransaction();
@@ -182,7 +181,6 @@ sub _loadData
         error( $rows );
         return 1;
     }
-
     unless (@{$rows} && defined( $rows->[0]->[5] )) {
         error(
             sprintf( 'Custom DNS records for %s with ID %s were not found or are orphaned', $domainType, $domainId )

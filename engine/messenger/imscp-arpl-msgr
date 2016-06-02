@@ -66,20 +66,10 @@ eval {
     ) {
         my $row = $dbh->selectrow_array(
             "
-                SELECT
-                    COUNT(`time`)
-                FROM
-                    `autoreplies_log`
-                WHERE
-                    `from` = ?
-                AND
-                    `to` = ?
-                AND
-                    ADDTIME(`time`, '24:00:00') > NOW()
+                SELECT COUNT(`time`) FROM `autoreplies_log`
+                WHERE `from` = ? AND `to` = ? AND ADDTIME(`time`, '24:00:00') > NOW()
             ",
-            undef,
-            $from,
-            $to
+            undef, $from, $to
         );
 
         unless($row) {
@@ -98,21 +88,21 @@ eval {
                     'X-Autoresponse-From' => $from,
                     'X-Mailer' => "i-MSCP Auto-Reply Mailer"
                 );
-
                 $nEnt->attach(
                     'Type' => 'text/plain; charset=utf-8',
                     'Encoding' => '8bit',
                     'Description' => 'Mail User Auto-Reply Message',
                     'Data' => encode('UTF-8', $row)
                 );
-
                 $nEnt->attach(
                     'Type' => 'message/rfc822',
                     'Description' => 'Original Message',
                     'Data' => $message
                 );
 
-                open my $fh, '|-', '/usr/sbin/sendmail -t -oi' or die("Unable to send auto-reply message: $!");
+                open my $fh, '|-', '/usr/sbin/sendmail -t -oi' or die(
+                    sprintf('Could not send auto-reply message: %s', $!)
+                );
                 $nEnt->print($fh);
                 close $fh;
 

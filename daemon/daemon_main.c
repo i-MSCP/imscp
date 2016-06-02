@@ -114,7 +114,6 @@ int main(int argc, char **argv)
         notify(0);
 
         say("%s", message(MSG_DAEMON_STARTED));
-        /*say("%s", "Waiting for incoming connections...");*/
 
         while (1) {
             memset((void *) &cliaddr, '\0', sizeof(cliaddr));
@@ -156,7 +155,6 @@ int main(int argc, char **argv)
 
         close(servsockfd);
     }
-
 
     free(backendscriptpath);
     closelog();

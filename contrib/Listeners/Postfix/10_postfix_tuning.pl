@@ -79,7 +79,7 @@ sub setupMainCf
 # Listener responsible to add entries at bottom of Postfix master.cf file, once it was built by i-MSCP
 sub setupMasterCf
 {
-    my $cfgTpl = $_[0];
+    my $cfgTpl = shift;
 
     return 0 unless @masterCfParameters;
 

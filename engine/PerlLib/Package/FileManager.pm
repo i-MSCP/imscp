@@ -35,7 +35,7 @@ use parent 'Common::SingletonClass';
 
  i-MSCP FileManager package.
 
- Wrapper that handles all available FileManager packages found in the FileManager directory.
+ Handles FileManager packages found in the FileManager directory.
 
 =head1 PUBLIC METHODS
 
@@ -79,13 +79,13 @@ sub showDialog
     my ($self, $dialog) = @_;
 
     my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
-    my $rs = 0;
 
-    if ($main::reconfigure =~ /^(?:filemanager|all|forced)$/
-        || !$package || !grep($_ eq $package, @{$self->{'PACKAGES'}})
+    my $rs = 0;
+    if ($main::reconfigure =~ /^(?:filemanager|all|forced)$/ || %selectedPackages
+        || !exists $self->{'PACKAGES'}->{$package}
     ) {
         ($rs, $package) = $dialog->radiolist(
-            <<"EOF", [ @{$self->{'PACKAGES'}} ], $package ne '' && grep($_ eq $package, @{$self->{'PACKAGES'}}) ? $package : @{$self->{'PACKAGES'}}[0] );
+            <<"EOF", [ keys %{$self->{'PACKAGES'}} ], exists $self->{'PACKAGES'}->{$package} ? $package : (keys %{$self->{'PACKAGES'}})[0] );
 
 Please select the Ftp Web file manager package you want to install:
 EOF
@@ -99,11 +99,10 @@ EOF
     eval "require $package";
     unless ($@) {
         $package = $package->getInstance();
-        if ($package->can( 'showDialog' )) {
-            debug( sprintf( 'Calling action showDialog on %s', ref $package ) );
-            $rs = $package->showDialog( $dialog );
-            return $rs if $rs;
-        }
+        next unless $package->can( 'showDialog' );
+        debug( sprintf( 'Calling action showDialog on %s', ref $package ) );
+        $rs = $package->showDialog( $dialog );
+        return $rs if $rs;
     } else {
         error( $@ );
         return 1;
@@ -128,13 +127,12 @@ sub preinstallListener
 
     my $oldPackage = $main::imscpOldConfig{'FILEMANAGER_PACKAGE'};
 
-    # Ensure backward compatibility ( See #IP-1249 )
+    # Ensure backward compatibility (See #IP-1249)
     if ($oldPackage && $oldPackage eq 'AjaXplorer') {
         $oldPackage = 'Pydio';
     }
 
     my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
-
     if ($oldPackage && $oldPackage ne $package) {
         my $rs = $self->uninstall( $oldPackage );
         return $rs if $rs;
@@ -144,11 +142,10 @@ sub preinstallListener
     eval "require $package";
     unless ($@) {
         $package = $package->getInstance();
-        if ($package->can( 'preinstall' )) {
-            debug( sprintf( 'Calling action preinstall on %s', ref $package ) );
-            my $rs = $package->preinstall();
-            return $rs if $rs;
-        }
+        next unless $package->can( 'preinstall' );
+        debug( sprintf( 'Calling action preinstall on %s', ref $package ) );
+        my $rs = $package->preinstall();
+        return $rs if $rs;
     } else {
         error( $@ );
         return 1;
@@ -174,11 +171,10 @@ sub installListener
     eval "require $package";
     unless ($@) {
         $package = $package->getInstance();
-        if ($package->can( 'install' )) {
-            debug( sprintf( 'Calling action install on %s', ref $package ) );
-            my $rs = $package->install();
-            return $rs if $rs;
-        }
+        next unless $package->can( 'install' );
+        debug( sprintf( 'Calling action install on %s', ref $package ) );
+        my $rs = $package->install();
+        return $rs if $rs;
     } else {
         error( $@ );
         return 1;
@@ -211,11 +207,10 @@ sub uninstall
     eval "require $package";
     unless ($@) {
         $package = $package->getInstance();
-        if ($package->can( 'uninstall' )) {
-            debug( sprintf( 'Calling action uninstall on %s', ref $package ) );
-            my $rs = $package->uninstall();
-            return $rs if $rs;
-        }
+        next unless $package->can( 'uninstall' );
+        debug( sprintf( 'Calling action uninstall on %s', ref $package ) );
+        my $rs = $package->uninstall();
+        return $rs if $rs;
     } else {
         error( $@ );
         return 1;
@@ -238,18 +233,17 @@ sub setPermissionsListener
 
     my $package = $main::imscpConfig{'FILEMANAGER_PACKAGE'};
 
-    return 0 unless grep($_ eq $package, @{$self->{'PACKAGES'}});
+    return 0 unless exists $self->{'PACKAGES'}->{$package};
 
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
 
     unless ($@) {
         $package = $package->getInstance();
-        if ($package->can( 'setGuiPermissions' )) {
-            debug( sprintf( 'Calling action setGuiPermissions on %s', ref $package ) );
-            my $rs = $package->setGuiPermissions();
-            return $rs if $rs;
-        }
+        next unless $package->can( 'setGuiPermissions' );
+        debug( sprintf( 'Calling action setGuiPermissions on %s', ref $package ) );
+        my $rs = $package->setGuiPermissions();
+        return $rs if $rs;
     } else {
         error( $@ );
         return 1;
@@ -276,17 +270,16 @@ sub _init()
 {
     my $self = shift;
 
+    # Find list of available FileManager packages
+    @{$self->{'PACKAGES'}}{
+        iMSCP::Dir->new( dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager" )->getDirs()
+    } = ();
+
     my $version = version->parse( $self->_getPhpVersion() ) >= version->parse( '5.5.0' )
         ? '0.4.6.*@dev' : '0.4.0.*@dev';
 
-    @{$self->{'PACKAGES'}} = iMSCP::Dir->new(
-        dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager"
-    )->getDirs();
-
     # Quick fix for disabling Pydio package if PHP >= 7 is detected
-    if (version->parse( $self->_getPhpVersion() ) >= version->parse( '7.0.0' )) {
-        @{$self->{'PACKAGES'}} = grep { $_ ne 'Pydio' } @{$self->{'PACKAGES'}};
-    }
+    delete $self->{'PACKAGES'}->{'Pydio'} if version->parse( $self->_getPhpVersion() ) >= version->parse( '7.0.0' );
 
     iMSCP::EventManager->getInstance()->register(
         'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener( @_ ); }
