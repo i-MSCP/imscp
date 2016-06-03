@@ -56,13 +56,16 @@ sub installPreRequiredPackages
 {
     my $self = shift;
 
-    $self->{'eventManager'}->trigger( 'beforeInstallPreRequiredPackages', $self->{'preRequiredPackages'} );
+    print STDOUT output('Satisfying prerequisites Please wait...', 'info');
+
+    my $rs = $self->_updateAptSourceList();
+    $rs ||= $self->_updatePackagesIndex();
+
+    $rs ||= $self->{'eventManager'}->trigger( 'beforeInstallPreRequiredPackages', $self->{'preRequiredPackages'} );
+    return $rs if $rs;
 
     my $cmd = 'apt-get';
     die( 'Not a Debian like system' ) unless iMSCP::ProgramFinder::find( $cmd );
-
-    my $rs = $self->_updatePackagesIndex();
-    return $rs if $rs;
 
     if (!iMSCP::Getopt->noprompt && iMSCP::ProgramFinder::find( 'debconf-apt-progress' )) {
         $cmd = "debconf-apt-progress --logstderr -- $cmd";
@@ -72,7 +75,7 @@ sub installPreRequiredPackages
     $rs = execute(
         "$cmd -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' --auto-remove --purge"
             ." --no-install-recommends install @{$self->{'preRequiredPackages'}}",
-            iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef, \ my $stderr
+            iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef, \ my $stderr
     );
     error( sprintf( 'Could not install pre-required packages: %s', $stderr || 'Unknown error' ) ) if $rs;
 
@@ -91,30 +94,25 @@ sub preBuild
 {
     my $self = shift;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePreBuild' );
-    return $rs if $rs;
+    return 0 if $main::skippackages;
 
-    unless ($main::skippackages) {
-        my @steps = (
-            [ sub { $self->_buildPackageList() }, 'Building list of packages to install/uninstall' ],
-            [ sub { $self->_prefillDebconfDatabase() }, 'Pre-fill Debconf database' ],
-            [ sub { $self->_processAptRepositories() }, 'Processing APT repositories if any' ],
-            [ sub { $self->_processAptPreferences() }, 'Processing APT preferences if any' ],
-            [ sub { $self->_updatePackagesIndex() }, 'Updating packages index' ]
-        );
+    my @steps = (
+        [ sub { $self->_buildPackageList() }, 'Building list of packages to install/uninstall' ],
+        [ sub { $self->_prefillDebconfDatabase() }, 'Pre-fill Debconf database' ],
+        [ sub { $self->_processAptRepositories() }, 'Processing APT repositories if any' ],
+        [ sub { $self->_processAptPreferences() }, 'Processing APT preferences if any' ],
+        [ sub { $self->_updatePackagesIndex() }, 'Updating packages index' ]
+    );
 
-        my $step = 1;
-        my $nbSteps = scalar @steps;
-        for (@steps) {
-            $rs = step( $_->[0], $_->[1], $nbSteps, $step );
-            return $rs if $rs;
-            $step++;
-        }
-
-        iMSCP::Dialog->getInstance()->endGauge() if iMSCP::Getopt->noprompt;
+    my $step = 1;
+    my $nbSteps = scalar @steps;
+    for (@steps) {
+        my $rs = step( $_->[0], $_->[1], $nbSteps, $step );
+        return $rs if $rs;
+        $step++;
     }
 
-    $self->{'eventManager'}->trigger( 'afterPreBuild' );
+    0
 }
 
 =item installPackages()
@@ -129,16 +127,14 @@ sub installPackages
 {
     my $self = shift;
 
-    # Remove packages which must be pre-removed
-    my $rs = $self->uninstallPackages( $self->{'packagesToPreUninstall'} );
-    return $rs if $rs;
-
-    $rs = $self->{'eventManager'}->trigger(
+    my $rs = $self->_setupInitScriptPolicyLayer( 'enable' );
+    $rs ||= $self->uninstallPackages( $self->{'packagesToPreUninstall'} );
+    $rs ||= $self->{'eventManager'}->trigger(
         'beforeInstallPackages', $self->{'packagesToInstall'}, $self->{'packagesToInstallDelayed'}
     );
     return $rs if $rs;
 
-    iMSCP::Dialog->getInstance->endGauge() if iMSCP::Getopt->noprompt;
+    iMSCP::Dialog->getInstance->endGauge();
 
     for my $packages($self->{'packagesToInstall'}, $self->{'packagesToInstallDelayed'}) {
         next unless @{$packages};
@@ -157,7 +153,7 @@ sub installPackages
         }
 
         my $stdout;
-        $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef, \ my $stderr );
+        $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef, \ my $stderr );
         error( sprintf( 'Could not install packages: %s', $stderr || 'Unknown error' ) ) if $rs;
         return $rs if $rs;
     }
@@ -170,6 +166,7 @@ sub installPackages
         return $rs if $rs;
     }
 
+    $rs ||= $self->_setupInitScriptPolicyLayer( 'disable' );
     $rs ||= $self->{'eventManager'}->trigger( 'afterInstallPackages' );
 }
 
@@ -207,8 +204,6 @@ sub uninstallPackages
         !grep($_ eq $__, @packagesToKept)
     } uniq( @{$packagesToUninstall} );
 
-    iMSCP::Dialog->getInstance->endGauge() if iMSCP::Getopt->noprompt;
-
     if (@{$packagesToUninstall}) {
         # Clear information about available packages
         $rs = execute( 'dpkg --clear-avail', \ my $stdout, \ my $stderr );
@@ -217,20 +212,20 @@ sub uninstallPackages
         return $rs if $rs;
 
         # Filter list of packages that are not not available
-        execute( "dpkg-query -W -f='\${Package}\\n' @{$packagesToUninstall} 2>/dev/null", \$stdout );
+        execute( "dpkg-query -W -f='\${Package}\\n' @{$packagesToUninstall} 2>/dev/null", \ $stdout );
         @{$packagesToUninstall} = split /\n/, $stdout;
 
         if (@{$packagesToUninstall}) {
             # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
-            execute( "apt-mark unhold @{$packagesToUninstall}", \$stdout, \$stderr );
+            execute( "apt-mark unhold @{$packagesToUninstall}", \ $stdout, \ $stderr );
             debug( $stdout ) if $stdout;
             debug( $stderr ) if $stderr;
 
+            iMSCP::Dialog->getInstance->endGauge();
+
             my $cmd = !iMSCP::Getopt->noprompt ? 'debconf-apt-progress --logstderr -- ' : '';
             $cmd .= "apt-get -y --auto-remove --purge --no-install-recommends remove @{$packagesToUninstall}";
-            my $rs = execute(
-                $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef, \ my $stderr
-            );
+            my $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef, \ $stderr );
             error( sprintf( 'Could not uninstall packages: %s', $stderr || 'Unknown error' ) ) if $rs;
             return $rs if $rs;
         }
@@ -249,9 +244,7 @@ sub uninstallPackages
 
 sub postBuild
 {
-    my $self = shift;
-
-    $self->_setupInitScriptPolicyLayer( 'disable' );
+    0
 }
 
 =back
@@ -287,18 +280,11 @@ sub _init
     $self->{'packagesToUninstall'} = [ ];
     $self->{'packagesToRebuild'} = { };
     $self->{'need_pbuilder_update'} = 1;
-
     delete $ENV{'DEBCONF_FORCE_DIALOG'};
     $ENV{'DEBIAN_FRONTEND'} = 'noninteractive' if iMSCP::Getopt->noprompt;
     delete $ENV{'UPSTART_SESSION'}; # See IP-1514
     $ENV{'DEBFULLNAME'} = 'i-MSCP Installer';
     $ENV{'DEBEMAIL'} = 'team@i-mscp.net';
-
-    unless ($main::skippackages) {
-        $self->_setupInitScriptPolicyLayer( 'enable' ) == 0 or die( 'Could not setup initscript policy layer' );
-        $self->_updateAptSourceList() == 0 or die( 'Could not configure APT packages manager' );
-    }
-
     $self;
 }
 
@@ -549,8 +535,8 @@ sub _updateAptSourceList
             }
 
             if ($fsec && $fileContent !~ /^deb-src\s+$rc{'uri'}\s+\b$rc{'distrib'}\b\s+.*\b$sec\b/m) {
-                my $rs = execute( "wget --spider $rc{'uri'}/dists/$rc{'distrib'}/$sec/source/", \my $stdout,
-                    \my $stderr );
+                my $rs = execute(
+                    "wget --spider $rc{'uri'}/dists/$rc{'distrib'}/$sec/source/", \ my $stdout, \ my $stderr );
                 debug( $stderr ) if $rs && $stderr;
 
                 unless ($rs) {
@@ -708,7 +694,7 @@ sub _updatePackagesIndex
 
     my $stdout;
     my $rs = execute(
-        "$cmd -y update", iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef, \ my $stderr
+        "$cmd -y update", iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef, \ my $stderr
     );
     error( sprintf( 'Could not update package index from remote repository: %s', $stderr || 'Unknown error' ) ) if $rs;
     debug( $stderr );
@@ -903,13 +889,13 @@ sub _rebuildAndInstallPackage
                 '--override-config'
             ];
             my $rs = execute(
-                $cmd, (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ my $stdout), my $stderr
+                $cmd, (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ my $stdout), \ my $stderr
             );
             error( sprintf( 'Could not create/update pbuilder environment: %s', $stderr || 'Unknown error' ) ) if $rs;
             $rs;
 
         },
-        "Creating/Updating pbuilder environment. Depending on your connection, this may take few seconds...", 5, 1
+        'Creating pbuilder environment. Depending on your connection, this may take few seconds...', 5, 1
     );
     $rs ||= step(
         sub {
@@ -969,8 +955,8 @@ sub _rebuildAndInstallPackage
                     '--',
                     '--debemail', 'i-MSCP Installer <team@i-mscp.net>'
                 ],
-                (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \$stdout),
-                \$stderr
+                (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout),
+                \ $stderr
             );
             error( sprintf( 'Could not build local package: %s', $stderr || 'Unknown error' ) ) if $rs;
             $rs;
@@ -991,14 +977,14 @@ sub _rebuildAndInstallPackage
 
             my $rs = execute(
                 "dpkg --force-confnew -i /var/cache/pbuilder/result/${pkg}_*.deb",
-                (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \$stdout),
+                (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout),
                 \ $stderr
             );
             error( sprintf( 'Could not install local Debian package: %s', $stderr || 'Unknown error' ) ) if $rs;
             return $rs if $rs;
 
             # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
-            execute( "LANG=C apt-mark hold $pkg", \$stdout, \$stderr );
+            execute( "LANG=C apt-mark hold $pkg", \ $stdout, \ $stderr );
             debug( $stdout ) if $stdout;
             debug( $stderr ) if $stderr;
             0;

@@ -201,7 +201,7 @@ sub setupTasks
         $step++;
     }
     
-    iMSCP::Dialog->getInstance()->endGauge() if iMSCP::Getopt->noprompt;
+    iMSCP::Dialog->getInstance()->endGauge();
 
     iMSCP::EventManager->getInstance()->trigger('afterSetupTasks');
 }

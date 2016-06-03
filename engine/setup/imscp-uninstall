@@ -94,7 +94,7 @@ sub process
         $step++;
     }
 
-    iMSCP::Dialog->getInstance()->endGauge() if iMSCP::Getopt->noprompt;
+    iMSCP::Dialog->getInstance()->endGauge();
 
     0;
 }

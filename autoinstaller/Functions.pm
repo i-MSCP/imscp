@@ -121,7 +121,8 @@ sub build
         $main::skippackages = 0;
     }
 
-    my $rs = _installPreRequiredPackages() unless $main::skippackages;
+    my $rs = 0;
+    $rs = _installPreRequiredPackages() unless $main::skippackages;
     return $rs if $rs;
 
     my $dialog = iMSCP::Dialog->getInstance();
@@ -144,7 +145,10 @@ sub build
     }
 
     $rs = _askInstallMode( $dialog ) unless iMSCP::Getopt->noprompt || $main::buildonly || $main::reconfigure ne 'none';
+
+    $rs ||= $eventManager->trigger( 'beforePreBuild' );
     $rs ||= _getDistroAdapter()->preBuild();
+    $rs ||= $eventManager->trigger( 'afterPreBuild' );
     return $rs if $rs;
 
     my @steps = (
@@ -164,7 +168,6 @@ sub build
 
     my $step = 1;
     my $nbSteps = scalar @steps;
-
     for (@steps) {
         $rs = step( $_->[0], $_->[1], $nbSteps, $step );
         error( 'An error occurred while performing build steps' ) if $rs;
@@ -172,7 +175,7 @@ sub build
         $step++;
     }
 
-    iMSCP::Dialog->getInstance()->endGauge() if iMSCP::Getopt->noprompt;
+    iMSCP::Dialog->getInstance()->endGauge();
 
     $rs = $eventManager->trigger( 'afterBuild' );
     $rs ||= $eventManager->trigger( 'beforePostBuild' );
@@ -193,7 +196,8 @@ sub build
     $main::imscpConfig{$_} = $imscpConf{$_} for keys %imscpConf;
 
     # Clean build directory (remove any .gitignore|empty-file)
-    find( sub {
+    find(
+        sub {
             return unless $_ eq '.gitignore' || $_ eq 'empty-file';
             unlink or fatal( sprintf( 'Could not remove %s file: %s', $File::Find::name, $! ) );
         },
@@ -224,7 +228,6 @@ sub install
     my $serviceMngr = iMSCP::Service->getInstance();
     if ($serviceMngr->hasService( 'imscp_network' )) {
         $serviceMngr->remove( 'imscp_network' );
-
         for ('/etc/init.d/%s', '/etc/init/%s.conf') {
             my $file = sprintf( $_, 'imscp_network' );
             if (-f $file) {
@@ -271,7 +274,6 @@ EOF
 
     my $step = 1;
     my $nbSteps = scalar @steps;
-
     for (@steps) {
         $rs = step( $_->[0], $_->[1], $nbSteps, $step );
         error( 'An error occurred while performing installation steps' ) if $rs;
@@ -279,7 +281,7 @@ EOF
         $step++;
     }
 
-    iMSCP::Dialog->getInstance()->endGauge() if iMSCP::Getopt->noprompt;
+    iMSCP::Dialog->getInstance()->endGauge();
 
     $rs = iMSCP::EventManager->getInstance()->trigger( 'afterInstall' );
     return $rs if $rs;
@@ -610,8 +612,7 @@ sub _buildConfigFiles
         }
 
         $file = -f "$distroConfigDir/$_/install.xml"
-            ? "$distroConfigDir/$_/install.xml"
-            : "$defaultConfigDir/$_/install.xml";
+            ? "$distroConfigDir/$_/install.xml" : "$defaultConfigDir/$_/install.xml";
 
         next unless -f $file;
 
@@ -645,7 +646,6 @@ sub _buildEngineFiles
 
     for (@configDirs) {
         next unless -f "$FindBin::Bin/engine/$_/install.xml";
-
         unless (chdir "$FindBin::Bin/engine/$_") {
             error( sprintf( 'Could not change dir to %s', "$FindBin::Bin/engine/$_" ) );
             return 1;
@@ -716,7 +716,8 @@ sub _savePersistentData
     # Move old skel directory to new location
     if (-d "$main::imscpConfig{'CONF_DIR'}/apache/skel") {
         my $rs = execute(
-            "mv $main::imscpConfig{'CONF_DIR'}/apache/skel $main::imscpConfig{'CONF_DIR'}/skel", \ my $stdout,
+            "mv $main::imscpConfig{'CONF_DIR'}/apache/skel $main::imscpConfig{'CONF_DIR'}/skel",
+            \ my $stdout,
             \ my $stderr
         );
         debug( $stdout ) if $stdout;
@@ -826,8 +827,11 @@ sub _savePersistentData
 
     # Quick fix for #IP-1340 ( Removes old filemanager directory which is no longer used )
     if (-d "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager") {
-        my $rs = execute( "rm -rf $main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager", \ my $stdout,
-            \ my $stderr );
+        my $rs = execute(
+            "rm -rf $main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager",
+            \ my $stdout,
+            \ my $stderr
+        );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
         return $rs if $rs;
@@ -836,8 +840,8 @@ sub _savePersistentData
     # Save tools
     if (-d "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools") {
         my $rs = execute(
-            "cp -fRT $main::imscpConfig{'ROOT_DIR'}/gui/public/tools $destdir$main::imscpConfig{'ROOT_DIR'}/gui/public/tools"
-            ,
+            "cp -fRT $main::imscpConfig{'ROOT_DIR'}/gui/public/tools "
+                ."$destdir$main::imscpConfig{'ROOT_DIR'}/gui/public/tools",
             \ my $stdout,
             \ my $stderr
         );
@@ -1141,13 +1145,11 @@ sub _copy
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs;
     return $rs if $rs;
-
     return 0 unless $data->{'user'} || $data->{'group'} || $data->{'mode'};
 
     my $file = iMSCP::File->new( filename => -e "$path/$name" ? "$path/$name" : $path );
     $rs = $file->mode( oct( $data->{'mode'} ) ) if defined $data->{'mode'};
     return $rs if $rs;
-
     return 0 unless defined $data->{'user'} || defined $data->{'group'};
 
     $file->owner(
