@@ -269,6 +269,7 @@
         <package>coreutils</package>
         <package>cron</package>
         <package>curl</package>
+        <package>devscripts</package>
         <package>dnsutils</package>
         <package>findutils</package>
         <package>gcc</package>
@@ -288,6 +289,7 @@
         <package>pbzip2</package>
         <package>pigz</package>
         <package>ssh</package>
+        <package>sudo</package>
         <package>tar</package>
     </other>
 </packages>
