@@ -7,6 +7,7 @@
 - 1 Gio of available hard disk space (only for i-MSCP and managed services)
 - Internet access (at least 100 Mbits/s recommended)
 - A file system supporting extended attributes such as ext2, ext3, ext4 and reiserfs*.
+- System supporting bindmounts
 
 See http://wiki.i-mscp.net/doku.php?id=start:howto:reiserfs if you use a reiserfs file system.
 
@@ -23,7 +24,7 @@ Any LTS version >= 12.04 (Ubuntu 16.04 recommended)
 
 #### 2. Install the pre-required packages
 
-    # apt-get install ca-certificates perl whiptail
+    # apt-get install ca-certificates perl wget whiptail
 
 #### 3. Download and untar the distribution files to a secure directory
 
