@@ -918,7 +918,7 @@ sub _rebuildAndInstallPackage
                 (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ my $stdout),
                 \ my $stderr
             );
-            error( sprintf( 'Could not get source package: %s', $stderr || 'Unknown error' ) ) if $rs;
+            error( sprintf( 'Could not get %s Debian source package: %s', $pkgSrc, $stderr || 'Unknown error' ) ) if $rs;
             $rs;
         },
         sprintf( 'Downloading %s Debian source package...', $pkg ), 5, 2
@@ -962,7 +962,13 @@ sub _rebuildAndInstallPackage
             return $rs if $rs;
 
             $rs = execute(
-                [ 'pdebuild', '--use-pdebuild-internal', '--', '--debemail', 'i-MSCP Installer <team@i-mscp.net>' ],
+                [
+                    'pdebuild',
+                    '--use-pdebuild-internal',
+                    '--debbuildopts', '-b',
+                    '--',
+                    '--debemail', 'i-MSCP Installer <team@i-mscp.net>'
+                ],
                 (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \$stdout),
                 \$stderr
             );
