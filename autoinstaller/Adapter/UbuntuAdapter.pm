@@ -64,6 +64,7 @@ sub _init
     $self->{'packagesToPreUninstall'} = [ ];
     $self->{'packagesToUninstall'} = [ ];
     $self->{'packagesToRebuild'} = { };
+    $self->{'need_pbuilder_update'} = 1;
 
     delete $ENV{'DEBCONF_FORCE_DIALOG'};
     $ENV{'DEBIAN_FRONTEND'} = 'noninteractive' if iMSCP::Getopt->noprompt;

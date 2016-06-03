@@ -286,6 +286,7 @@ sub _init
     $self->{'packagesToPreUninstall'} = [ ];
     $self->{'packagesToUninstall'} = [ ];
     $self->{'packagesToRebuild'} = { };
+    $self->{'need_pbuilder_update'} = 1;
 
     delete $ENV{'DEBCONF_FORCE_DIALOG'};
     $ENV{'DEBIAN_FRONTEND'} = 'noninteractive' if iMSCP::Getopt->noprompt;
@@ -892,9 +893,11 @@ sub _rebuildAndInstallPackage
 
     my $rs = step(
         sub {
+            return 0 unless $self->{'need_pbuilder_update'};
+            $self->{'need_pbuilder_update'} = 0;
             my $cmd = [
                 'pbuilder',
-                ( -f '/var/cache/pbuilder/base.tgz' ? '--update' : '--create'),
+                ( -f '/var/cache/pbuilder/base.tgz' ? ('--update', '--autocleanaptcache') : '--create'),
                 '--distribution', lc( $lsbRelease->getCodename( 1 ) ),
                 '--configfile', "$FindBin::Bin/configs/".lc( $lsbRelease->getId( 1 ) ).'/pbuilder/pbuilderrc',
                 '--override-config'
