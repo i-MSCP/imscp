@@ -270,7 +270,7 @@ sub setEnginePermissions
     my $self = shift;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', main::setupGetQuestion( 'ANTI_ROOTKITS_PACKAGES' ) } = ();
+    @{selectedPackages}{ split ',', $main::imscpConfig{'ANTI_ROOTKITS_PACKAGES'} } = ();
 
     for (keys %{$self->{'PACKAGES'}}) {
         next unless exists $selectedPackages{$_};
@@ -366,8 +366,8 @@ sub _removePackages
 
     # Do not try to uninstall packages that are not available
     my $rs = execute( "dpkg-query -W -f='\${Package}\\n' @packages 2>/dev/null", \ my $stdout );
-    @{$packages} = split /\n/, $stdout;
-    return 0 unless @{$packages};
+    @packages = split /\n/, $stdout;
+    return 0 unless @packages;
 
     my $cmd = "apt-get -y --auto-remove --purge --no-install-recommends remove @packages";
     unless (iMSCP::Getopt->noprompt) {

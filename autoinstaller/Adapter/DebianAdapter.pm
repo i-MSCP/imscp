@@ -228,8 +228,9 @@ sub uninstallPackages
 
             my $cmd = !iMSCP::Getopt->noprompt ? 'debconf-apt-progress --logstderr -- ' : '';
             $cmd .= "apt-get -y --auto-remove --purge --no-install-recommends remove @{$packagesToUninstall}";
-            my $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef,
-                \ my $stderr );
+            my $rs = execute(
+                $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef, \ my $stderr
+            );
             error( sprintf( 'Could not uninstall packages: %s', $stderr || 'Unknown error' ) ) if $rs;
             return $rs if $rs;
         }
@@ -899,9 +900,7 @@ sub _rebuildAndInstallPackage
                 '--override-config'
             ];
             my $rs = execute(
-                $cmd,
-                (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ my $stdout),
-                my $stderr
+                $cmd, (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ my $stdout), my $stderr
             );
             error( sprintf( 'Could not create/update pbuilder environment: %s', $stderr || 'Unknown error' ) ) if $rs;
             $rs;
@@ -953,7 +952,8 @@ sub _rebuildAndInstallPackage
         sub {
             my $rs = execute(
                 "dch --local '~i-mscp-' 'Automatically patched by i-MSCP installer for compatibility.'",
-                \ my $stdout, \ my $stderr
+                \ my $stdout,
+                \ my $stderr
             );
             error( sprintf( 'Could not add `imscp` local suffix: %s', $stderr || 'Unknown error' ) ) if $rs;
             return $rs if $rs;

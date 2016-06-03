@@ -844,11 +844,10 @@ EOF
 
 Please select your SSL certificate in next dialog.
 EOF
-
                     $rs = 1;
 
                     do {
-                        $dialog->msgbox(<<"EOF") if !$rs;
+                        $dialog->msgbox(<<"EOF") unless $rs;
 
 \\Z1Wrong SSL certificate. Please try again.\\Zn
 EOF

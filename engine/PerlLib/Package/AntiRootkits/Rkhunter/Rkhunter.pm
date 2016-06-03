@@ -92,13 +92,13 @@ sub setEnginePermissions
 
  Get list of Debian packages
 
- Return array List of packages
+ Return list List of packages
 
 =cut
 
 sub getDistroPackages
 {
-    [ 'rkhunter' ];
+    'rkhunter';
 }
 
 =back

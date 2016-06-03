@@ -256,7 +256,7 @@ sub setPermissionsListener
     my $self = shift;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', main::setupGetQuestion( 'ANTI_ROOTKITS_PACKAGES' ) } = ();
+    @{selectedPackages}{ split ',', $main::imscpConfig{'WEBMAIL_PACKAGES'} } = ();
 
     for (keys %{$self->{'PACKAGES'}}) {
         next unless exists $selectedPackages{$_};
@@ -291,7 +291,7 @@ sub deleteMail
     my ($self, $data) = @_;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', main::setupGetQuestion( 'ANTI_ROOTKITS_PACKAGES' ) } = ();
+    @{selectedPackages}{ split ',', $main::imscpConfig{'WEBMAIL_PACKAGES'} } = ();
 
     for (keys %{$self->{'PACKAGES'}}) {
         next unless exists $selectedPackages{$_};

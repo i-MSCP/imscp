@@ -81,9 +81,7 @@ sub showDialog
     my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
 
     my $rs = 0;
-    if ($main::reconfigure =~ /^(?:filemanager|all|forced)$/ || %selectedPackages
-        || !exists $self->{'PACKAGES'}->{$package}
-    ) {
+    if ($main::reconfigure =~ /^(?:filemanager|all|forced)$/ || !$package || !exists $self->{'PACKAGES'}->{$package}) {
         ($rs, $package) = $dialog->radiolist(
             <<"EOF", [ keys %{$self->{'PACKAGES'}} ], exists $self->{'PACKAGES'}->{$package} ? $package : (keys %{$self->{'PACKAGES'}})[0] );
 
@@ -99,10 +97,11 @@ EOF
     eval "require $package";
     unless ($@) {
         $package = $package->getInstance();
-        next unless $package->can( 'showDialog' );
-        debug( sprintf( 'Calling action showDialog on %s', ref $package ) );
-        $rs = $package->showDialog( $dialog );
-        return $rs if $rs;
+        if($package->can( 'showDialog' )) {
+            debug( sprintf( 'Calling action showDialog on %s', ref $package ) );
+            $rs = $package->showDialog( $dialog );
+            return $rs if $rs;
+        }
     } else {
         error( $@ );
         return 1;
