@@ -1,0 +1,2 @@
+COMPONENTS="main contrib non-free"
+AUTO_DEBSIGN=${AUTO_DEBSIGN:-no}

@@ -278,6 +278,7 @@
         <package>make</package>
         <package>mawk</package>
         <package>openssl</package>
+        <package>pbuilder</package>
         <package>pbzip2</package>
         <package>pigz</package>
         <package>ssh</package>

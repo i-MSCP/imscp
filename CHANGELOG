@@ -115,8 +115,8 @@ INSTALLER
     Added: Check for maximum supported PHP/Perl versions
     Added: Check to prevent downgrade attempts (when DB schema change is involved)
     Added: Conditional statement feature for install.xml files (copy_config items only)
+    Added: Layer allowing to rebuild Debian/Ubuntu source packages using pbuilder after applying a set patches on them
     Added: onBuildPackageList event (Allows to override default distribution packages file)
-    Fixed: Allows to rebuild any package with privuded set of patches
     Fixed: '_' and '%' wildcards must be escaped in GRANT statements
     Fixed: Debug and verbose modes must be set early
     Fixed: Disable Dovecot systemd socket activation unit if any (not needed for Dovecot as configured by i-MSCP)
@@ -210,6 +210,7 @@ YOUTRACK
     IP-1557 vsftpd - request failed due to PAM unable to dlopen(pam_mysql.so): /lib/security/pam_mysql.so: undefined
         symbol: make_scrambled_password
     IP-1563 Default MX record not removed when adding external mailserver (domain type)
+    IP-1564 Debian pam-mysql source package - Could not satisfy build dependencies
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series

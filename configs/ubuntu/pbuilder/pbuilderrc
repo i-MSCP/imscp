@@ -1,0 +1,2 @@
+COMPONENTS="main restricted universe multiverse"
+AUTO_DEBSIGN=${AUTO_DEBSIGN:-no}

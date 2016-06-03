@@ -74,7 +74,7 @@ sub installPreRequiredPackages
             ." --no-install-recommends install @{$self->{'preRequiredPackages'}}",
             iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef, \ my $stderr
     );
-    error( sprintf('Could not install pre-required packages: %s', $stderr || 'Unknown error') ) if $rs;
+    error( sprintf( 'Could not install pre-required packages: %s', $stderr || 'Unknown error' ) ) if $rs;
 
     $rs ||= $self->{'eventManager'}->trigger( 'afterInstallPreRequiredPackages' );
 }
@@ -158,7 +158,7 @@ sub installPackages
 
         my $stdout;
         $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef, \ my $stderr );
-        error( sprintf('Could not install packages: %s', $stderr || 'Unknown error' ) ) if $rs;
+        error( sprintf( 'Could not install packages: %s', $stderr || 'Unknown error' ) ) if $rs;
         return $rs if $rs;
     }
 
@@ -208,7 +208,7 @@ sub uninstallPackages
     } uniq( @{$packagesToUninstall} );
 
     iMSCP::Dialog->getInstance->endGauge() if iMSCP::Getopt->noprompt;
-    
+
     if (@{$packagesToUninstall}) {
         # Clear information about available packages
         $rs = execute( 'dpkg --clear-avail', \ my $stdout, \ my $stderr );
@@ -222,14 +222,15 @@ sub uninstallPackages
 
         if (@{$packagesToUninstall}) {
             # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
-            execute("apt-mark unhold @{$packagesToUninstall}", \$stdout, \$stderr);
-            debug($stdout) if $stdout;
-            debug($stderr) if $stderr;
+            execute( "apt-mark unhold @{$packagesToUninstall}", \$stdout, \$stderr );
+            debug( $stdout ) if $stdout;
+            debug( $stderr ) if $stderr;
 
             my $cmd = !iMSCP::Getopt->noprompt ? 'debconf-apt-progress --logstderr -- ' : '';
-            $cmd .="apt-get -y --auto-remove --purge --no-install-recommends remove @{$packagesToUninstall}";
-            my $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef, \ my $stderr );
-            error( sprintf('Could not uninstall packages: %s', $stderr || 'Unknown error' ) ) if $rs;
+            $cmd .= "apt-get -y --auto-remove --purge --no-install-recommends remove @{$packagesToUninstall}";
+            my $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef,
+                \ my $stderr );
+            error( sprintf( 'Could not uninstall packages: %s', $stderr || 'Unknown error' ) ) if $rs;
             return $rs if $rs;
         }
     }
@@ -273,9 +274,8 @@ sub _init
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'repositorySections'} = [ 'main', 'non-free' ];
     $self->{'preRequiredPackages'} = [
-        'binutils', 'debconf-utils', 'devscripts', 'dialog', 'fakeroot', 'libbit-vector-perl',
-        'libclass-insideout-perl', 'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl',
-        'libxml-simple-perl', 'wget', 'rsync'
+        'binutils', 'debconf-utils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl',
+        'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'wget', 'rsync'
     ];
     $self->{'aptRepositoriesToRemove'} = [ ];
     $self->{'aptRepositoriesToAdd'} = [ ];
@@ -708,8 +708,8 @@ sub _updatePackagesIndex
     my $rs = execute(
         "$cmd -y update", iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef, \ my $stderr
     );
-    error( sprintf('Could not update package index from remote repository: %s', $stderr || 'Unknown error' )) if $rs;
-    debug($stderr);
+    error( sprintf( 'Could not update package index from remote repository: %s', $stderr || 'Unknown error' ) ) if $rs;
+    debug( $stderr );
     $rs
 }
 
@@ -881,40 +881,45 @@ sub _rebuildAndInstallPackage
     }
 
     my $oldDir = cwd();
-    my $buildDir = File::Temp->newdir( CLEANUP => 1 );
-    unless (chdir $buildDir) {
-        error( sprintf( 'Could not change current directory to: %s', $buildDir, $! ) );
+    my $srcDir = File::Temp->newdir( CLEANUP => 1 );
+    unless (chdir $srcDir) {
+        error( sprintf( 'Could not change current directory to: %s', $srcDir, $! ) );
         return 1;
     }
 
     startDetail();
-    
-    my $rs ||= step(
-        sub {
-            # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
-            execute( "LANG=C apt-mark unhold $pkg", \ my $stdout, \ my $stderr );
-            debug($stdout) if $stdout;
-            debug($stderr) if $stderr;
 
+    my $rs = step(
+        sub {
+            my $cmd = [
+                'pbuilder',
+                ( -f '/var/cache/pbuilder/base.tgz' ? '--update' : '--create'),
+                '--distribution', lc( $lsbRelease->getCodename( 1 ) ),
+                '--configfile', "$FindBin::Bin/configs/".lc( $lsbRelease->getId( 1 ) ).'/pbuilder/pbuilderrc',
+                '--override-config'
+            ];
             my $rs = execute(
-                "apt-get -y source $pkgSrc",
-                iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \$stdout, \$stderr
+                $cmd,
+                (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ my $stdout),
+                my $stderr
             );
-            error( sprintf('Could not get source package: %s', $stderr || 'Unknown error')) if $rs;
+            error( sprintf( 'Could not create/update pbuilder environment: %s', $stderr || 'Unknown error' ) ) if $rs;
             $rs;
-        }, "Downloading $pkg source package...", 5, 1
+
+        },
+        "Creating/Updating pbuilder environment. Depending on your connection, this may take few seconds...", 5, 1
     );
     $rs ||= step(
         sub {
-            my $stdout;
             my $rs = execute(
-                "apt-get -y build-dep $pkgSrc",
-                iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \$stdout, \ my $stderr
+                "apt-get -y source $pkgSrc",
+                (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ my $stdout),
+                \ my $stderr
             );
-            error( sprintf( 'Could not install build dependencies: %s', $stderr || 'Unknown error' ) ) if $rs;
-            return $rs if $rs;
-            0;
-        }, "Installing $pkgSrc build dependencies...", 5, 2
+            error( sprintf( 'Could not get source package: %s', $stderr || 'Unknown error' ) ) if $rs;
+            $rs;
+        },
+        sprintf( 'Downloading %s Debian source package...', $pkg ), 5, 2
     );
     $rs ||= step(
         sub {
@@ -941,7 +946,8 @@ sub _rebuildAndInstallPackage
 
             $rs = $file->set( $fileContent );
             $rs ||= $file->save();
-        }, "Copying i-MSCP patches into $pkgSrc source package...", 5, 3
+        },
+        sprintf( 'Copying i-MSCP patches into %s Debian source package...', $pkgSrc ), 5, 3
     );
     $rs ||= step(
         sub {
@@ -949,16 +955,18 @@ sub _rebuildAndInstallPackage
                 "dch --local '~i-mscp-' 'Automatically patched by i-MSCP installer for compatibility.'",
                 \ my $stdout, \ my $stderr
             );
-            error( sprintf( "Could not add 'imscp' local suffix: %s", $stderr || 'Unknown error' ) ) if $rs;
+            error( sprintf( 'Could not add `imscp` local suffix: %s', $stderr || 'Unknown error' ) ) if $rs;
             return $rs if $rs;
 
             $rs = execute(
-                'dpkg-buildpackage -rfakeroot -D -us -uc -b',
-                iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \$stdout, \$stderr
+                [ 'pdebuild', '--use-pdebuild-internal', '--', '--debemail', 'i-MSCP Installer <team@i-mscp.net>' ],
+                (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \$stdout),
+                \$stderr
             );
-            error( sprintf( "Could not build local package: %s", $stderr || 'Unknown error' ) ) if $rs;
+            error( sprintf( 'Could not build local package: %s', $stderr || 'Unknown error' ) ) if $rs;
             $rs;
-        }, "Building local $pkg Debian package...", 5, 4
+        },
+        sprintf( 'Building local %s Debian package...', $pkg ), 5, 4
     );
     $rs ||= step(
         sub {
@@ -967,20 +975,26 @@ sub _rebuildAndInstallPackage
                 return 1;
             }
 
-            my $stdout;
+            # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
+            execute( "LANG=C apt-mark unhold $pkg", \ my $stdout, \ my $stderr );
+            debug( $stdout ) if $stdout;
+            debug( $stderr ) if $stderr;
+
             my $rs = execute(
-                "dpkg --force-confnew -i ${pkg}_*.deb",
-                iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \$stdout, \my $stderr
+                "dpkg --force-confnew -i /var/cache/pbuilder/result/${pkg}_*.deb",
+                (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \$stdout),
+                \ $stderr
             );
             error( sprintf( 'Could not install local Debian package: %s', $stderr || 'Unknown error' ) ) if $rs;
             return $rs if $rs;
 
             # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
             execute( "LANG=C apt-mark hold $pkg", \$stdout, \$stderr );
-            debug($stdout) if $stdout;
-            debug($stderr) if $stderr;
+            debug( $stdout ) if $stdout;
+            debug( $stderr ) if $stderr;
             0;
-        }, "Installing local $pkg Debian package...", 5, 5
+        },
+        sprintf( 'Installing local %s Debian package...', $pkg ), 5, 5
     );
     endDetail();
 
