@@ -1467,7 +1467,9 @@ sub setupSetPermissions
         my $stderr;
         $rs = executeNoWait(
             "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/setup/$script @options",
-            sub { my $str = shift; while ($str =~ s/^(.*)\t(.*)\t(.*)\n//) { step(undef, $1, $2, $3); } },
+            (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose? undef : sub {
+                my $str = shift; while ($str =~ s/^(.*)\t(.*)\t(.*)\n//) { step(undef, $1, $2, $3); }
+            }),
             sub { $stderr .= shift; }
         );
 

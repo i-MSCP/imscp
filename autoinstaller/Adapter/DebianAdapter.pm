@@ -891,15 +891,16 @@ sub _rebuildAndInstallPackage
         my $stderr;
         my $rs = executeNoWait(
             $cmd,
-            sub {
-                my $lines = shift;
-                open( my $fh, '<', \$lines ) or die ( $! );
-                while(<$fh>) {
-                    $dialog->infobox( $msgHeader.ucfirst( s/^I:\s+(.*)/$1/r ).$msgFooter );
-                    usleep( 62500 ); # Avoid window flash
+            (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : sub {
+                    my $lines = shift;
+                    open( my $fh, '<', \$lines ) or die ( $! );
+                    while(<$fh>) {
+                        $dialog->infobox( $msgHeader.ucfirst( s/^I:\s+(.*)/$1/r ).$msgFooter );
+                        usleep( 62500 ); # Avoid window flash
+                    }
+                    close( $fh );
                 }
-                close( $fh );
-            },
+            ),
             sub { $stderr .= shift; }
         );
         error( sprintf( 'Could not create/update pbuilder environment: %s', $stderr || 'Unknown error' ) ) if $rs;
@@ -919,7 +920,7 @@ sub _rebuildAndInstallPackage
                     $stderr || 'Unknown error' ) ) if $rs;
             $rs;
         },
-        sprintf( 'Downloading %s Debian source package...', $pkg ), 4, 1
+        sprintf( 'Downloading %s %s source package...', $pkg, $lsbRelease->getId( 1 ) ), 4, 1
     );
     $rs ||= step(
         sub {
@@ -947,7 +948,7 @@ sub _rebuildAndInstallPackage
             $rs = $file->set( $fileContent );
             $rs ||= $file->save();
         },
-        sprintf( 'Copying i-MSCP patches into %s Debian source package...', $pkgSrc ), 4, 2
+        sprintf( 'Copying i-MSCP patches into %s %s source package...', $pkgSrc, $lsbRelease->getId( 1 ) ), 4, 2
     );
     $rs ||= step(
         sub {
@@ -970,10 +971,14 @@ sub _rebuildAndInstallPackage
                 (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout),
                 \ $stderr
             );
-            error( sprintf( 'Could not build local package: %s', $stderr || 'Unknown error' ) ) if $rs;
+            error(
+                sprintf(
+                    'Could not build local %s %s package: %s', $pkg, $lsbRelease->getId( 1 ), $stderr || 'Unknown error'
+                )
+            ) if $rs;
             $rs;
         },
-        sprintf( 'Building local %s Debian package...', $pkg ), 4, 3
+        sprintf( 'Building local %s %s package...', $pkg, $lsbRelease->getId( 1 ) ), 4, 3
     );
     $rs ||= step(
         sub {
@@ -992,7 +997,12 @@ sub _rebuildAndInstallPackage
                 (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout),
                 \ $stderr
             );
-            error( sprintf( 'Could not install local Debian package: %s', $stderr || 'Unknown error' ) ) if $rs;
+            error(
+                sprintf(
+                    'Could not install local %s %s package: %s', $pkg, $lsbRelease->getId( 1 ),
+                    $stderr || 'Unknown error'
+                )
+            ) if $rs;
             return $rs if $rs;
 
             # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
@@ -1001,7 +1011,7 @@ sub _rebuildAndInstallPackage
             debug( $stderr ) if $stderr;
             0;
         },
-        sprintf( 'Installing local %s Debian package...', $pkg ), 4, 4
+        sprintf( 'Installing local %s %s package...', $pkg, $lsbRelease->getId( 1 ) ), 4, 4
     );
     endDetail();
 

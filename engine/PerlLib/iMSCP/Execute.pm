@@ -25,7 +25,7 @@ package iMSCP::Execute;
 
 use strict;
 use warnings;
-use iMSCP::Debug qw(debug);
+use iMSCP::Debug qw/ debug /;
 use IO::Select;
 use IPC::Open3;
 use Symbol 'gensym';
@@ -98,23 +98,27 @@ sub execute($;$$)
     getExitCode();
 }
 
-=item executeNoWait($command, $stdoutSubref, $stderrSubref)
+=item executeNoWait($command [, $stdoutSubref = undef [, $stderrSubref = undef ]])
 
  Execute the given command without wait
 
  Param string|array $command Command to execute
- Param subref Subroutine responsible to process command STDOUT
- Param subref Subroutine responsible to process command STDERR
+ Param subref|undef OPTIONAL Subroutine responsible to process command STDOUT
+ Param subref|undef OPTIONAL Subroutine responsible to process command STDERR
  Return int Command exit code or die on failure
 
 =cut
 
-sub executeNoWait($$$)
+sub executeNoWait($;$$)
 {
     my ($command, $stdoutSubref, $stderrSubref) = @_;
 
-    ref $stdoutSubref eq 'CODE' or die( 'Expects a subroutine reference as second parameter for STDOUT processing' );
-    ref $stderrSubref eq 'CODE' or die( 'Expects a subroutine reference as third parameter for STDERR processing' );
+    if (defined $stdoutSubref) {
+        ref $stdoutSubref eq 'CODE' or die( 'Expects a subroutine reference as second parameter for STDOUT processing' );
+    }
+    if (defined $stderrSubref) {
+        ref $stderrSubref eq 'CODE' or die( 'Expects a subroutine reference as third parameter for STDERR processing' );
+    }
 
     my $multitArgsSystemCall = ref $command eq 'ARRAY';
     debug( $multitArgsSystemCall ? "@{$command}" : $command );
@@ -125,7 +129,7 @@ sub executeNoWait($$$)
     my %buffers = ( $stdout => '', $stderr => '' );
     my $sel = new IO::Select( $stdout, $stderr );
     while(my @ready = $sel->can_read) {
-        for my $fh ($sel->can_read()) {
+        for my $fh (@ready) {
             my $ret = sysread( $fh, $buffers{$fh}, 4096, length ( $buffers{$fh} ) );
             defined $ret or die( $! );
             if ($ret == 0) {
@@ -135,7 +139,9 @@ sub executeNoWait($$$)
             }
 
             if ($buffers{$fh} =~ s/^(.*\n)$//s) {
-                $fh == $stderr ? $stderrSubref->( $1 ) : $stdoutSubref->( $1 );
+                $fh == $stderr
+                    ? (defined $stderrSubref ? $stderrSubref->( $1 ) : print STDOUT $1)
+                    : (defined $stdoutSubref ? $stdoutSubref->( $1 ) : print STDERR $1);
             }
         }
     }

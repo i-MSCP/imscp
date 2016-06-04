@@ -191,16 +191,17 @@ sub _installPackages
             escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} update" )
         ),
         sub { },
-        sub {
-            my $lines = shift;
-            open( my $fh, '<', \$lines ) or die ( $! );
-            while(<$fh>) {
-                next if /^\s+downloading/i;
-                $dialog->infobox( "$msgHeader$_$msgFooter" );
-                usleep( 62500 ); # Avoid window flash
+        (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : sub {
+                my $lines = shift;
+                open( my $fh, '<', \$lines ) or die ( $! );
+                while(<$fh>) {
+                    next if /^\s+downloading/i;
+                    $dialog->infobox( "$msgHeader$_$msgFooter" );
+                    usleep( 62500 ); # Avoid window flash
+                }
+                close( $fh );
             }
-            close( $fh );
-        }
+        )
     );
 
     error( 'Could not install/update i-MSCP packages from GitHub' ) if $rs;
