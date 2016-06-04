@@ -33,6 +33,7 @@ use iMSCP::LsbRelease;
 use iMSCP::Stepper;
 use iMSCP::ProgramFinder;
 use File::Temp;
+use Time::HiRes qw/ usleep /;
 use version;
 use parent 'autoinstaller::Adapter::AbstractAdapter';
 
@@ -56,7 +57,7 @@ sub installPreRequiredPackages
 {
     my $self = shift;
 
-    print STDOUT output('Satisfying prerequisites Please wait...', 'info');
+    print STDOUT output( 'Satisfying prerequisites Please wait...', 'info' );
 
     my $rs = $self->_updateAptSourceList();
     $rs ||= $self->_updatePackagesIndex();
@@ -875,39 +876,50 @@ sub _rebuildAndInstallPackage
         return 1;
     }
 
+    if ($self->{'need_pbuilder_update'}) {
+        $self->{'need_pbuilder_update'} = 0;
+        my $dialog = iMSCP::Dialog->getInstance();
+        my $msgHeader = "\nCreating/Updating pbuilder environment\n\n";
+        my $msgFooter = "\nPlease wait, depending on your connection, this may take few minutes...\n";
+        my $cmd = [
+            'pbuilder',
+            ( -f '/var/cache/pbuilder/base.tgz' ? ('--update', '--autocleanaptcache') : '--create'),
+            '--distribution', lc( $lsbRelease->getCodename( 1 ) ),
+            '--configfile', "$FindBin::Bin/configs/".lc( $lsbRelease->getId( 1 ) ).'/pbuilder/pbuilderrc',
+            '--override-config'
+        ];
+        my $stderr;
+        my $rs = executeNoWait(
+            $cmd,
+            sub {
+                my $lines = shift;
+                open( my $fh, '<', \$lines ) or die ( $! );
+                while(<$fh>) {
+                    $dialog->infobox( $msgHeader.ucfirst( s/^I:\s+(.*)/$1/r ).$msgFooter );
+                    usleep( 62500 ); # Avoid window flash
+                }
+                close( $fh );
+            },
+            sub { $stderr .= shift; }
+        );
+        error( sprintf( 'Could not create/update pbuilder environment: %s', $stderr || 'Unknown error' ) ) if $rs;
+        return $rs if $rs;
+    }
+
     startDetail();
 
     my $rs = step(
-        sub {
-            return 0 unless $self->{'need_pbuilder_update'};
-            $self->{'need_pbuilder_update'} = 0;
-            my $cmd = [
-                'pbuilder',
-                ( -f '/var/cache/pbuilder/base.tgz' ? ('--update', '--autocleanaptcache') : '--create'),
-                '--distribution', lc( $lsbRelease->getCodename( 1 ) ),
-                '--configfile', "$FindBin::Bin/configs/".lc( $lsbRelease->getId( 1 ) ).'/pbuilder/pbuilderrc',
-                '--override-config'
-            ];
-            my $rs = execute(
-                $cmd, (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ my $stdout), \ my $stderr
-            );
-            error( sprintf( 'Could not create/update pbuilder environment: %s', $stderr || 'Unknown error' ) ) if $rs;
-            $rs;
-
-        },
-        'Creating pbuilder environment. Depending on your connection, this may take few seconds...', 5, 1
-    );
-    $rs ||= step(
         sub {
             my $rs = execute(
                 "apt-get -y source $pkgSrc",
                 (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ my $stdout),
                 \ my $stderr
             );
-            error( sprintf( 'Could not get %s Debian source package: %s', $pkgSrc, $stderr || 'Unknown error' ) ) if $rs;
+            error( sprintf( 'Could not get %s Debian source package: %s', $pkgSrc,
+                    $stderr || 'Unknown error' ) ) if $rs;
             $rs;
         },
-        sprintf( 'Downloading %s Debian source package...', $pkg ), 5, 2
+        sprintf( 'Downloading %s Debian source package...', $pkg ), 4, 1
     );
     $rs ||= step(
         sub {
@@ -935,7 +947,7 @@ sub _rebuildAndInstallPackage
             $rs = $file->set( $fileContent );
             $rs ||= $file->save();
         },
-        sprintf( 'Copying i-MSCP patches into %s Debian source package...', $pkgSrc ), 5, 3
+        sprintf( 'Copying i-MSCP patches into %s Debian source package...', $pkgSrc ), 4, 2
     );
     $rs ||= step(
         sub {
@@ -961,7 +973,7 @@ sub _rebuildAndInstallPackage
             error( sprintf( 'Could not build local package: %s', $stderr || 'Unknown error' ) ) if $rs;
             $rs;
         },
-        sprintf( 'Building local %s Debian package...', $pkg ), 5, 4
+        sprintf( 'Building local %s Debian package...', $pkg ), 4, 3
     );
     $rs ||= step(
         sub {
@@ -989,7 +1001,7 @@ sub _rebuildAndInstallPackage
             debug( $stderr ) if $stderr;
             0;
         },
-        sprintf( 'Installing local %s Debian package...', $pkg ), 5, 5
+        sprintf( 'Installing local %s Debian package...', $pkg ), 4, 4
     );
     endDetail();
 

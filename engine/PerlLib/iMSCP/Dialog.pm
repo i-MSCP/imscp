@@ -29,7 +29,7 @@ use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
-use FileHandle;
+use Time::HiRes qw / usleep /;
 use parent 'Common::SingletonClass';
 
 # Unbuffered output is required.
@@ -302,6 +302,7 @@ sub startGauge
     $self->{'gauge'}->autoflush( 1 );
     debugRegisterCallBack( sub { $self->endGauge(); } );
     $SIG{'PIPE'} = sub { $self->endGauge(); };
+    usleep( 62500 ); # Avoid window flash
     0;
 }
 
@@ -320,8 +321,9 @@ sub setGauge
     my $self = shift;
 
     return 0 if iMSCP::Getopt->noprompt || !$self->{'gauge'};
-    
-    print {$self->{'gauge'}} sprintf( "XXX\n%d\n%s\nXXX\n", @_);
+
+    print {$self->{'gauge'}} sprintf( "XXX\n%d\n%s\nXXX\n", @_ );
+    usleep( 62500 ); # Avoid window flash
     0
 }
 

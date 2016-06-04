@@ -102,7 +102,7 @@ sub execute($;$$)
 
  Execute the given command without wait
 
- Param string $command Command to execute
+ Param string|array $command Command to execute
  Param subref Subroutine responsible to process command STDOUT
  Param subref Subroutine responsible to process command STDERR
  Return int Command exit code or die on failure
@@ -116,24 +116,29 @@ sub executeNoWait($$$)
     ref $stdoutSubref eq 'CODE' or die( 'Expects a subroutine reference as second parameter for STDOUT processing' );
     ref $stderrSubref eq 'CODE' or die( 'Expects a subroutine reference as third parameter for STDERR processing' );
 
-    my $pid = open3( my $stdin, my $stdout, my $stderr = gensym, $command );
+    my $multitArgsSystemCall = ref $command eq 'ARRAY';
+    debug( $multitArgsSystemCall ? "@{$command}" : $command );
+
+    my $pid = open3( my $stdin, my $stdout, my $stderr = gensym, $multitArgsSystemCall ? @{$command} : $command );
     close $stdin;
 
     my %buffers = ( $stdout => '', $stderr => '' );
     my $sel = new IO::Select( $stdout, $stderr );
 
-    while($sel->count()) {
+    my $buffer;
+    while(my @ready = $sel->can_read) {
         for my $fh ($sel->can_read()) {
-            my $ret = sysread( $fh, $buffers{$fh}, 4096, length( $buffers{$fh} ) );
+            my $ret = sysread( $fh, $buffers{$fh}, 4096, length ( $buffers{$fh} ) );
             defined $ret or die( $! );
-
             if ($ret == 0) {
                 $sel->remove( $fh );
                 close( $fh );
                 next;
             }
 
-            $fh == $stderr ? $stderrSubref->( \$buffers{$stderr} ) : $stdoutSubref->( \$buffers{$stdout} );
+            if ($buffers{$fh} =~ s/^(.*\n)$//s) {
+                $fh == $stderr ? $stderrSubref->( $1 ) : $stdoutSubref->( $1 );
+            }
         }
     }
 

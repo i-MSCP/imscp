@@ -33,6 +33,7 @@ use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::TemplateParser;
+use Time::HiRes qw/ usleep /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -179,17 +180,9 @@ sub _installPackages
     my $rs = $self->_buildComposerFile();
     return $rs if $rs;
 
-    my $stderr;
     my $dialog = iMSCP::Dialog->getInstance();
-    my $msgHeader = <<'EOF';
-
-Installing/Updating i-MSCP packages from Github
-
-EOF
-    my $msgFooter = <<'EOF';
-
-Please wait, depending on your connection, this may take few seconds...
-EOF
+    my $msgHeader = "\nInstalling/Updating i-MSCP packages from Github\n\n";
+    my $msgFooter = "\nPlease wait, depending on your connection, this may take few seconds...\n";
 
     # Note: Any progress/status info goes to stderr (See https://github.com/composer/composer/issues/3795)
     $rs = executeNoWait(
@@ -197,29 +190,20 @@ EOF
             $self->{'suCmdPattern'},
             escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} update" )
         ),
+        sub { },
         sub {
-            my $str = shift;
-            $$str = '';
-        },
-        sub {
-            my $str = shift;
-            if ($$str =~ /^$/m) {
-                $$str = '';
-            } else {
-                my ($strBkp, $buff) = ($$str, '');
-                $buff .= $1 while ($$str =~ s/^(.*\n)//);
-
-                if ($buff ne '') {
-                    debug( $buff );
-                    $dialog->infobox( "$msgHeader$buff$msgFooter" );
-                    $$str = $strBkp unless $strBkp =~ /^Updating dependencies.*\n/m;
-                }
+            my $lines = shift;
+            open( my $fh, '<', \$lines ) or die ( $! );
+            while(<$fh>) {
+                next if /^\s+downloading/i;
+                $dialog->infobox( "$msgHeader$_$msgFooter" );
+                usleep( 62500 ); # Avoid window flash
             }
+            close( $fh );
         }
     );
 
-    error( sprintf( 'Could not install/update i-MSCP packages from GitHub: %s', $stderr ) ) if $stderr && $rs;
-    error( 'Could not install/update i-MSCP packages from GitHub: Unknown error' ) if $rs && !$stderr;
+    error( 'Could not install/update i-MSCP packages from GitHub' ) if $rs;
     $rs;
 }
 
