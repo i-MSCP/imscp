@@ -95,13 +95,15 @@ FRONTEND
     Fixed: Could not retrieve network devices list under Debian Stretch (testing) - Related to #IP-1525 (admin level)
     Fixed: Customer must be allowed to set custom TTL value for any DNS resource record (client level)
     Fixed: Customer must be allowed to set `name` field of any DNS resource record (client level)
+    Fixed: Customer PHP permissions not saved when editing customer account (regression fix)
     Fixed: Could not remove database; There is no such grant defined for user... (stdlib)
     Fixed: Could not set URL redirect when adding domain alias; Bad request error page (client level)
     Fixed: IDNs are shown in IDNA form in several places
     Fixed: iMSCP_Update_Database::addIndex() doesn't allows to set index length (stdlib)
+    Fixed: Reseller PHP permissions not saved when editing reseller account (regression fix)
     Fixed: Uncaught ReferenceError: ajaxStop is not defined (admin level)
-    Fixed: Wrong behavior with exception handler when database connection is not available (stdlib)
     Fixed: Privileges on database that contains wildcards are not removed when SQL user is assigned to many databases
+    Fixed: Wrong behavior with exception handler when database connection is not available (stdlib)
     Fixed: Wrong value for LOG_LEVEL configuration parameter
     Introduced: HSTS (HTTP Strict Transport Security) feature
     Removed: User deletion confirmation pages (admin and reseller levels)
