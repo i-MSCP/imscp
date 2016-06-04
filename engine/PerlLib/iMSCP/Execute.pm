@@ -124,8 +124,6 @@ sub executeNoWait($$$)
 
     my %buffers = ( $stdout => '', $stderr => '' );
     my $sel = new IO::Select( $stdout, $stderr );
-
-    my $buffer;
     while(my @ready = $sel->can_read) {
         for my $fh ($sel->can_read()) {
             my $ret = sysread( $fh, $buffers{$fh}, 4096, length ( $buffers{$fh} ) );

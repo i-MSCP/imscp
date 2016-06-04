@@ -29,7 +29,7 @@ use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
-use Time::HiRes qw / usleep /;
+use Time::HiRes qw/ usleep /;
 use parent 'Common::SingletonClass';
 
 # Unbuffered output is required.
