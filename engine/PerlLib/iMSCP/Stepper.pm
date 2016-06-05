@@ -28,19 +28,22 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::Dialog;
 use iMSCP::Getopt;
+use Scalar::Defer;
 use parent 'Exporter';
+use Data::Dumper;
 
-our @EXPORT = qw/startDetail endDetail step/;
+our @EXPORT = qw/ startDetail endDetail step /;
 
-# Package variables
 my @all = ();
 my $last = '';
+my $dialog = lazy { iMSCP::Dialog->getInstance(); };
+my $step = lazy { iMSCP::Getopt->noprompt ? \&_callback : \&_step; };
 
 =head1 DESCRIPTION
 
- i-MSCP stepper.
+ i-MSCP stepper
 
-=head1 PUBLIC METHODS
+=head1 PUBLIC FUNCTIONS
 
 =over 4
 
@@ -55,7 +58,6 @@ my $last = '';
 sub startDetail
 {
     return 0 if iMSCP::Getopt->noprompt;
-    iMSCP::Dialog->getInstance()->endGauge();
     push @all, $last;
     0;
 }
@@ -71,15 +73,15 @@ sub startDetail
 sub endDetail
 {
     return 0 if iMSCP::Getopt->noprompt;
-    iMSCP::Dialog->getInstance()->endGauge();
     $last = pop @all;
     0;
 }
 
-=item step($code, $text, $nSteps, $nStep)
+=item step($callback, $text, $nSteps, $nStep)
 
  Process a step
- Param coderef|undef $code Step code
+
+ Param callback|undef $callback Callback
  Param string $text Step description
  Param int $nSteps Total number of steps (for a group of steps)
  Param int $nStep Current step number
@@ -89,25 +91,61 @@ sub endDetail
 
 sub step
 {
-    my ($code, $text, $nSteps, $nStep) = @_;
+    $step->( @_ );
+}
 
-    unless (iMSCP::Getopt->noprompt) {
-        $last = sprintf( "\n\\ZbStep %s of %s\\Zn\n\n%s", $nStep, $nSteps, $text );
-        my $msg = @all ? join( "\n", @all )."\n".$last : $last;
-        iMSCP::Dialog->getInstance()->hasGauge()
-            ? iMSCP::Dialog->getInstance()->setGauge( int( $nStep * 100 / $nSteps ), $msg )
-            : iMSCP::Dialog->getInstance()->startGauge( $msg, int( $nStep * 100 / $nSteps ) );
+=back
+
+=head1 PRIVATE FUNCTIONS
+
+=over 4
+
+=item _callback()
+
+ Execute the given callback
+
+ Param callback $callback Callback to execute
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _callback
+{
+    my $callback = shift;
+
+    my $rs = 0;
+    if (defined $callback) {
+        local $@;
+        $rs = eval { $callback->() };
+        if ($@) {
+            error( $@ );
+            $rs = 1;
+        }
     }
 
-    return 0 unless defined $code;
+    $rs;
+}
 
-    local $@;
-    my $rs = eval { &{$code} };
-    if ($@) {
-        error( $@ );
-        $rs = 1;
-    }
+=item _dialogstep
+ 
+ See step()
+ 
+=cut
 
+sub _step
+{
+    my ($callback, $text, $nSteps, $nStep) = @_;
+
+    $last = sprintf( "\n\\ZbStep %s of %s\\Zn\n\n%s", $nStep, $nSteps, $text );
+    my $msg = @all ? join( "\n", @all )."\n".$last : $last;
+
+    use integer;
+    my $percent = $nStep * 100 / $nSteps;
+
+    $dialog->hasGauge ? $dialog->setGauge( $percent, $msg ) : $dialog->startGauge( $msg, $percent );
+    my $rs = _callback( $callback );
+
+    return $rs unless defined $callback;
     return $rs unless $rs && $rs != 50;
 
     # Make error message free of any ANSI color and end of line codes
@@ -115,9 +153,8 @@ sub step
     $errorMessage = 'An unexpected error occurred...' unless $errorMessage;
     $errorMessage =~ s/\n+$//;
 
-    unless (iMSCP::Getopt->noprompt) {
-        iMSCP::Dialog->getInstance()->endGauge();
-        iMSCP::Dialog->getInstance()->msgbox( <<"EOF" );
+    $dialog->endGauge();
+    $dialog->msgbox( <<"EOF" );
 \\Z1[ERROR]\\Zn
 
 Error while performing step:
@@ -130,7 +167,6 @@ Error was:
 
 Please have a look at http://i-mscp.net/forum if you need help.
 EOF
-    }
 
     $rs;
 }

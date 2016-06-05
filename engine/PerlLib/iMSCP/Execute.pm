@@ -77,20 +77,20 @@ sub execute($;$$)
         $$stderr = '';
     }
 
-    my $multitArgsSystemCall = ref $command eq 'ARRAY';
-    debug( $multitArgsSystemCall ? "@{$command}" : $command );
+    my $multitArgs = ref $command eq 'ARRAY';
+    debug( $multitArgs ? "@{$command}" : $command );
 
     if ($stdout && $stderr) {
-        ($$stdout, $$stderr) = capture { system( $multitArgsSystemCall ? @{$command} : $command); };
+        ($$stdout, $$stderr) = capture { system( $multitArgs ? @{$command} : $command); };
         chomp( $$stdout, $$stderr );
     } elsif ($stdout) {
-        $$stdout = capture_stdout { system( $multitArgsSystemCall ? @{$command} : $command ); };
+        $$stdout = capture_stdout { system( $multitArgs ? @{$command} : $command ); };
         chomp( $$stdout );
     } elsif ($stderr) {
-        $$stderr = capture_stderr { system( $multitArgsSystemCall ? @{$command} : $command ); };
+        $$stderr = capture_stderr { system( $multitArgs ? @{$command} : $command ); };
         chomp( $stderr );
     } else {
-        system( $multitArgsSystemCall ? @{$command} : $command ) != -1 or die(
+        system( $multitArgs ? @{$command} : $command ) != -1 or die(
             sprintf( 'Could not execute command: %s', $! )
         );
     }
@@ -120,10 +120,10 @@ sub executeNoWait($;$$)
         ref $stderrSubref eq 'CODE' or die( 'Expects a subroutine reference as third parameter for STDERR processing' );
     }
 
-    my $multitArgsSystemCall = ref $command eq 'ARRAY';
-    debug( $multitArgsSystemCall ? "@{$command}" : $command );
+    my $multitArgs = ref $command eq 'ARRAY';
+    debug( $multitArgs ? "@{$command}" : $command );
 
-    my $pid = open3( my $stdin, my $stdout, my $stderr = gensym, $multitArgsSystemCall ? @{$command} : $command );
+    my $pid = open3( my $stdin, my $stdout, my $stderr = gensym, $multitArgs ? @{$command} : $command );
     close $stdin;
 
     my %buffers = ( $stdout => '', $stderr => '' );

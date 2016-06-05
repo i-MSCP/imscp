@@ -29,7 +29,6 @@ use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
-use Time::HiRes qw/ usleep /;
 use parent 'Common::SingletonClass';
 
 # Unbuffered output is required.
@@ -302,7 +301,6 @@ sub startGauge
     $self->{'gauge'}->autoflush( 1 );
     debugRegisterCallBack( sub { $self->endGauge(); } );
     $SIG{'PIPE'} = sub { $self->endGauge(); };
-    usleep( 62500 ); # Avoid window flash
     0;
 }
 
@@ -323,7 +321,6 @@ sub setGauge
     return 0 if iMSCP::Getopt->noprompt || !$self->{'gauge'};
 
     print {$self->{'gauge'}} sprintf( "XXX\n%d\n%s\nXXX\n", @_ );
-    usleep( 62500 ); # Avoid window flash
     0
 }
 
@@ -400,6 +397,23 @@ sub _init
 {
     my $self = $_[0];
 
+
+    # These environment variable screws up at least whiptail with the
+    # way we call it. Posix does not allow safe arg passing like
+    # whiptail needs.
+    delete $ENV{POSIXLY_CORRECT} if exists $ENV{POSIXLY_CORRECT};
+    delete $ENV{POSIX_ME_HARDER} if exists $ENV{POSIX_ME_HARDER};
+
+    # Detect all the ways people have managed to screw up their
+    # terminals (so far...)
+    if (! exists $ENV{TERM} || ! defined $ENV{TERM} || $ENV{TERM} eq '') {
+        fatal ('TERM is not set, so the dialog frontend is not usable.');
+    } elsif ($ENV{TERM} =~ /emacs/i) {
+        fatal ('Dialog frontend is incompatible with emacs shell buffers');
+    } elsif ($ENV{TERM} eq 'dumb' || $ENV{TERM} eq 'unknown') {
+        fatal ('Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.');
+    }
+
     # Return specific exit status when ESC is pressed
     $ENV{'DIALOG_ESC'} = 50;
 
@@ -465,8 +479,13 @@ sub _init
 
     $self->_findBin( $^O =~ /bsd$/ ? 'cdialog' : 'dialog' );
     #$self->_determineDialogVariant();
-    $self->_determineConsoleSize();
-
+    $self->_resize();
+    $SIG{'WINCH'} = sub { $self->_resize(); };
+    
+    if ($self->{'lines'} < 13 || $self->{'columns'} < 31) {
+        fatal ("Dialog frontend requires a screen at least 13 lines tall and 31 columns wide.");
+    }
+    
     $self;
 }
 
@@ -493,26 +512,36 @@ sub _init
 #	$self;
 #}
 
-=item _determineConsoleSize()
+=item _resize()
 
- Determine console size
-
- Return iMSCP::Dialog::Dialog
+ This method is called whenever the tty is resized, and probes to determine the new screen size.
 
 =cut
 
-sub _determineConsoleSize
+sub _resize
 {
-    my $self = $_[0];
+    my $self = shift;
 
-    execute( $self->{'bin'}.' --print-maxsize', \ my $output, \ my $error );
-    $error =~ /MaxSize:\s(\d+),\s(\d+)/;
-    $self->{'lines'} = (defined( $1 ) && $1 != 0) ? $1 - 3 : 23;
-    $self->{'columns'} = (defined( $2 ) && $2 != 0) ? $2 - 2 : 79;
-    error( $error ) unless !$?;
-    debug( "Lines->$self->{'lines'}" );
-    debug( "Columns->$self->{'columns'}" );
-    $self;
+    my $lines;
+    if (exists $ENV{LINES}) {
+        $self->{'lines'} = $ENV{'LINES'};
+    } else {
+        ($lines) = `stty -a 2>/dev/null` =~ m/rows (\d+)/s;
+        $lines ||= 25;
+
+    }
+
+    my $cols;
+    if (exists $ENV{COLUMNS}) {
+        $cols = $$ENV{'COLUMNS'};
+    } else {
+        ($cols) = `stty -a 2>/dev/null` =~ m/columns (\d+)/s;
+        $cols ||= 80;
+    }
+
+    $self->{'lines'} = ($lines > 40 ? 40 : $lines) - 10;
+    $self->{'columns'} = ($cols > 130 ? 130 : $cols) - 10;
+    $self->endGauge();
 }
 
 =item _findBin($variant)
