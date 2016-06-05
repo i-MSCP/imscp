@@ -255,8 +255,6 @@ sub _installPackages
         )
     );
 
-    sleep( 5 );
-
     error( 'Could not install/update i-MSCP packages from GitHub' ) if $rs;
     $rs;
 }
