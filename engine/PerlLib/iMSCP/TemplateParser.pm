@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::TemplateParser - i-MSCP Template parser implementation
+ iMSCP::TemplateParser - i-MSCP Template parser
 
 =cut
 
@@ -28,88 +28,76 @@ use warnings;
 use iMSCP::Debug;
 use parent 'Exporter';
 
-use vars qw/@EXPORT/;
-@EXPORT = qw/process getBloc replaceBloc/;
+our @EXPORT = qw/ process getBloc replaceBloc /;
 
 =head1 DESCRIPTION
 
- The template parser allow to parse pseudo-variables within i-MSCP engine template files. It can parse simple variables
+ The template parser allow to parse pseudo-variables within i-MSCP template files. It can parse simple variables
  or variable tag pairs
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item process(\%data, $tplContent)
+=item process(\%data, $template)
 
- Parse the given template content
+ Replace placeholders in the given template
 
  Param hash \%data A hash of data where the keys are the pseudo-variable names and the values, the replacement values
- Param string $tplContent The template content to be parsed
+ Param string $template The template content to be parsed
  Return string Parsed template content
 
 =cut
 
 sub process
 {
-    my ($data, $tplContent) = @_;
-    $data = { } if ref $data ne 'HASH';
-
+    my ($data, $template) = @_;
+    return $template unless ref $data eq 'HASH';
     while (my ($placeholder, $value) = each( %{$data} )) {
         next unless defined $value;
-        $tplContent =~ s/\Q{$placeholder}\E/$value/gim
+        $template =~ s/\Q{$placeholder}\E/$value/gim
     }
-
-    $tplContent;
+    $template;
 }
 
-=item getBloc($beginTag, $endingTag, $tplContent, [$includeTags = false])
+=item getBloc($beginTag, $endingTag, $template [, $includeTags = false ])
 
- Get a bloc within the given template content
+ Get a bloc within the given template
 
- Param string Bloc begin tag
- Param string Bloc ending tag
- param string Template content which contain the bloc to return
- Param bool $includeTags Whether or not begin and ending tag should be included in result
+ Param string $beginTag Bloc begin tag
+ Param string $endingTag Bloc ending tag
+ param string $template Template content which contain the bloc to return
+ Param bool $includeTags OPTIONAL Whether or not begin and ending tag should be included in result
  Return string Bloc content, including or not the begin and ending tags
 
 =cut
 
 sub getBloc
 {
-    my ($beginTag, $endingTag, $tplContent, $includeTags) = @_;
-
-    my $regexp = "[\t ]*\Q$beginTag\E(.*?)[\t ]*\Q$endingTag\E";
-    return $1 if $includeTags && $tplContent =~ m/($regexp)/gims;
-    return $1 if $tplContent =~ m/$regexp/gims;
-    '';
+    my ($beginTag, $endingTag, $template, $includeTags) = @_;
+    my $reg = "[\t ]*\Q$beginTag\E(.*?)[\t ]*\Q$endingTag\E";
+    $includeTags ? $template =~ m/($reg)/gims : $template =~ m/$reg/gims;
+    $1 // '';
 }
 
-=item replaceBloc($beginTag, $endingTag, $replacement, $tplContent, [$preserveTags = false])
+=item replaceBloc($beginTag, $endingTag, $repl, $template [, $preserveTags = false ])
 
- Replace a bloc within the given template content
+ Replace a bloc within the given template
 
  Param string $beginTag Bloc begin tag
  Param string $endingTag Bloc ending tag
- Param string $replacement Bloc replacement string
- param string String which contain the bloc to replace
- Param bool $preserveTags Whether or not begin and ending tag should be preverved
+ Param string $repl Bloc replacement string
+ param string $template Template
+ Param bool $preserveTags OPTIONAL Whether or not begin and ending tag should be preverved
  Return string Parsed template content
 
 =cut
 
 sub replaceBloc
 {
-    my ($beginTag, $endingTag, $replacement, $tplContent, $preserveTags) = @_;
-
-    my $regexp = "([\t ]*\Q$beginTag\E.*?\Q$endingTag\E)";
-    if ($preserveTags) {
-        $tplContent =~ s/$regexp/$replacement$1/gis;
-    } else {
-        $tplContent =~ s/$regexp/$replacement/gis;
-    }
-
-    $tplContent;
+    my ($beginTag, $endingTag, $repl, $template, $preserveTags) = @_;
+    my $reg = "([\t ]*\Q$beginTag\E.*?\Q$endingTag\E)";
+    $preserveTags ? $template =~ s/$reg/$repl$1/gisr : $template =~ s/$reg/$repl/gisr;
 }
 
 =back
