@@ -1,5 +1,11 @@
+=head1 NAME
+
+ iMSCP::Mail - Send warning or error message to system administrator
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2016 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,120 +25,137 @@ package iMSCP::Mail;
 
 use strict;
 use warnings;
+use Encode;
 use iMSCP::Debug;
-use POSIX;
-use Net::LibIDN qw/idn_to_ascii/;
+use iMSCP::ProgramFinder;
 use MIME::Entity;
 use Text::Wrap;
-use parent 'Exporter';
+use parent 'Common::Object';
 
+$Text::Wrap::huge = 'wrap';
 $Text::Wrap::columns = 75;
 $Text::Wrap::break = qr/[\s\n\|]/;
 
-use parent 'Common::Object';
+=head1 DESCRIPTION
+
+ Send warning or error message to system administrator
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item errmsg($message)
+
+ Send an error message to system administrator
+
+ Param string Error message to be sent
+ Return int 0 on success, other on failure
+ 
+=cut
 
 sub errmsg
 {
     my ($self, $message) = @_;
 
-    my @parts = split '@', $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} || '';
-    return 0 if @parts < 2;
+    defined $message or die( "$message parameter is not defined" );
 
-    my $domain = pop( @parts );
-    $domain = idn_to_ascii( $domain, 'utf-8' );
-    push @parts, $domain;
+    my $functionName = (caller( 1 ))[3] || 'main';
+    $self->_sendMail( 'i-MSCP - An error has been raised', <<"EOF" );
+An error has been raised while executing function $functionName in $0:
 
-    my $adminEmail = join '@', @parts;
-    my $date = strftime "%d.%m.%Y %H:%M:%S", localtime;
-    my $serverName = $main::imscpConfig{'SERVER_HOSTNAME'};
-    my $serverIP = $main::imscpConfig{'BASE_SERVER_IP'};
-    my $functionName = (caller( 1 ))[3];
-    $functionName = 'main' unless $functionName;
-
-    my $body = <<EOF;
-Dear admin,
-
-This is an automatic email sent by your $serverName ($serverIP) server.
-
-A critical error has been encountered while executing function $functionName in $0.
-
-Error was:
-
-==========================================================================
 $message
-==========================================================================
 EOF
-
-    my $out = new MIME::Entity;
-
-    $out->build(
-        From       => "$serverName ($serverIP) <$adminEmail>",
-        To         => $adminEmail,
-        Subject    => "[$date] i-MSCP Error Report",
-        Data       => wrap( '', '', $body ),
-        'X-Mailer' => "i-MSCP $main::imscpConfig{'Version'} Automatic Messenger"
-    );
-
-    unless (open MAIL, '| /usr/sbin/sendmail -t -oi') {
-        error( "Unable to send mail: $!" );
-        return 1;
-    }
-
-    $out->print( \*MAIL );
-    close MAIL;
-
     0;
 }
+
+=item warnMsg($message)
+
+ Send a warning message to system administrator
+
+ Param string $message Warning message to be sent
+ Return int 0 on success, other on failure
+ 
+=cut
 
 sub warnMsg
 {
     my ($self, $message) = @_;
 
-    my @parts = split '@', $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} || '';
-    return 0 if @parts < 2;
+    defined $message or die( "$message parameter is not defined" );
 
-    my $dmn = pop( @parts );
-    $dmn = idn_to_ascii( $dmn, 'utf-8' );
-    push( @parts, $dmn );
+    my $functionName = (caller( 1 ))[3] || 'main';
+    $self->_sendMail( 'i-MSCP - A warning has been raised', <<"EOF" );
+A warning has been raised while executing function $functionName in $0:
 
-    my $adminEmail = join '@', @parts;
-    my $date = strftime "%d.%m.%Y %H:%M:%S", localtime;
-    my $serverName = $main::imscpConfig{'SERVER_HOSTNAME'};
-    my $serverIP = $main::imscpConfig{'BASE_SERVER_IP'};
-    my $functionName = (caller( 1 ))[3];
-    my $body = <<EOF;
-Dear admin,
+$message
+EOF
+    0;
+}
 
-This is an automatic email sent by your $serverName ($serverIP) server.
+=back
 
-The following warning has been raised while executing function $functionName in $0.
+=head1 PRIVATE METHODS
 
-Warning was:
+=over 4
+
+=item _sendMail($message)
+
+ Send a message to system administrator
+
+ Param string $message Message to be sent
+ Return int 0 on success, other on failure
+ 
+=cut
+
+sub _sendMail
+{
+    my ($self, $subject, $message) = @_;
+
+    my $sendmail = iMSCP::ProgramFinder::find( 'sendmail' ) or die( 'Could not find sendmail executable' );
+    my $host = $main::imscpConfig{'BASE_SERVER_VHOST'};
+    my $out = MIME::Entity->new()->build(
+        From       => "i-MSCP ($host) <noreply\@$host>",
+        To         => $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'},
+        Subject    => $subject,
+        Type       => 'text/plain; charset=utf-8',
+        Encoding   => '8bit',
+        Data       => encode( 'UTF-8', wrap( '', '', <<"EOF" ) ),
+Dear administrator,
+
+This is an automatic email sent by i-MSCP:
+ 
+Server name: $main::imscpConfig{'SERVER_HOSTNAME'}
+Server IP: $main::imscpConfig{'BASE_SERVER_IP'}
 
 ==========================================================================
 $message
 ==========================================================================
+
+Please do not reply to this email.
+
+___________________________
+i-MSCP Mailer
 EOF
-
-    my $out = new MIME::Entity;
-
-    $out->build(
-        From       => "$serverName ($serverIP) <$adminEmail>",
-        To         => $adminEmail,
-        Subject    => "[$date] i-MSCP Warning Report",
-        Data       => wrap( '', '', $body ),
-        'X-Mailer' => "i-MSCP $main::imscpConfig{'Version'} Automatic Messenger"
+        'X-Mailer' => 'i-MSCP Mailer (backend)'
     );
 
-    unless (open MAIL, '| /usr/sbin/sendmail -t -oi') {
-        error( "Unable to send mail: $!" );
+    my $fh;
+    unless (open $fh, '|-', $sendmail, '-t', '-oi', '-f', "noreply\@$host") {
+        error( sprintf( 'Could not send mail: %s', $! ) );
         return 1;
     }
-
-    $out->print( \*MAIL );
-    close MAIL;
+    $out->print( $fh );
+    close $fh;
     0;
 }
+
+=back
+
+=head1 AUTHOR
+
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;
 __END__
