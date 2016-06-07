@@ -68,7 +68,7 @@ function reseller_generateOrdersAliasesMessage()
 
     if ($row['cnt'] > 0) {
         set_page_message(
-            ntr('You have a new domain alias %s order.', 'You have %d new domain alias orders', $row['cnt']), 'info'
+            ntr('You have a new domain alias order.', 'You have %d new domain alias orders', $row['cnt']), 'info'
         );
     }
 }
