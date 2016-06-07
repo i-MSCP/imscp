@@ -1646,11 +1646,11 @@ function write_log($msg, $logLevel = E_USER_WARNING)
 
 This is an automatic email sent by i-MSCP:
 
-Server name      : {HOSTNAME}
-Server IP        : {SERVER_IP}
-Version          : {VERSION}
-Build            : {BUILDDATE}
-Message severity : {MESSAGE_SEVERITY}
+Server name: {HOSTNAME}
+Server IP: {SERVER_IP}
+Version: {VERSION}
+Build: {BUILDDATE}
+Message severity: {MESSAGE_SEVERITY}
 
 ==========================================================================
 {MESSAGE}

@@ -36,7 +36,7 @@ function admin_generateSupportQuestionsMessage()
     $row = $stmt->fetchRow();
 
     if ($row['cnt'] > 0) {
-        set_page_message(tr('You have received %s new support ticket(s).', "<strong>{$row['cnt']}</strong>"), 'static_info');
+        set_page_message(ntr('You have a new support ticket.', 'You have %d new support tickets.', $row['cnt']), 'static_info');
     }
 }
 
@@ -112,7 +112,6 @@ function admin_getAdminGeneralInfo($tpl)
 function admin_generateServerTrafficInfo($tpl)
 {
     $cfg = iMSCP_Registry::get('config');
-
     $trafficLimitBytes = intval($cfg['SERVER_TRAFFIC_LIMIT']) * 1048576;
     $trafficWarningBytes = intval($cfg['SERVER_TRAFFIC_WARN']) * 1048576;
 
@@ -145,7 +144,7 @@ function admin_generateServerTrafficInfo($tpl)
         $trafficMessage = tr('%1$s%% [%2$s of unlimited]', $trafficUsagePercent, bytesHuman($trafficUsageBytes));
     }
 
-    // Warning message about traffic
+    // traffic warning 
     if ($trafficUsageBytes
         && (
             $trafficWarningBytes && $trafficUsageBytes > $trafficWarningBytes
@@ -180,7 +179,6 @@ $tpl->define_dynamic(array(
     'page_message' => 'layout',
     'traffic_warning_message' => 'page'
 ));
-
 $tpl->assign(array(
     'TR_PAGE_TITLE' => tr('Admin / General / Overview'),
     'TR_PROPERTIES' => tr('Properties'),

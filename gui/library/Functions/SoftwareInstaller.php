@@ -111,8 +111,8 @@ function send_activated_sw($resellerId, $softwarePackage, $softwareId)
 
 Your software package has been successfully activated.
 
-Software package : {SOFTWARE_PACKAGE}
-Package ID       : {SOFTWARE_ID}
+Software package: {SOFTWARE_PACKAGE}
+Software ID: {SOFTWARE_ID}
 
 Please do not reply to this email.
 
@@ -156,8 +156,8 @@ function send_deleted_sw($resellerId, $softwarePackage, $softwareId, $adminMessa
 
 Your software package has been deleted.
 
-Software package : {SOFTWARE_PACKAGE}
-Software ID      : {SOFTWARE_ID}
+Software package: {SOFTWARE_PACKAGE}
+Software ID: {SOFTWARE_ID}
 
 Message from your administrator:
 
@@ -724,9 +724,9 @@ function send_new_sw_upload($resellerId, $softwarePackage, $softwareId)
 
 A new software package has been uploaded by a reseller.
 
-Reseller ID      : {RESELLER_ID}
-Software package : {SOFTWARE_PACKAGE}
-Software ID      : {SOFTWARE_ID}
+Reseller ID: {RESELLER_ID}
+Software package: {SOFTWARE_PACKAGE}
+Software ID: {SOFTWARE_ID}
 
 Please do not reply to this email.
 

@@ -104,7 +104,6 @@ function get_welcome_email($userId)
     if ($data['subject'] == '') {
         $data['subject'] = tr('Welcome {USERNAME} to i-MSCP');
     }
-    // No custom template for welcome mail - return the default
     if ($data['message'] == '') {
         $data['message'] = tr('Dear {NAME},
 
@@ -112,9 +111,9 @@ A new account has been created for you.
 
 Your account information:
 
-Account type : {USERTYPE}
-User name    : {USERNAME}
-Password     : {PASSWORD}
+Account type: {USERTYPE}
+User name: {USERNAME}
+Password: {PASSWORD}
 
 Remember to change your password often and the first time you login.
 
@@ -147,17 +146,17 @@ function set_welcome_email($userId, $data)
 /**
  * Gets lostpassword activation email data for the given user
  *
- * @see get_email_tpl_data
- * @param int $adminId User unique identifier - Template owner
+ * @see get_email_tpl_data()
+ * @param int $userId User unique identifier - Template owner
  * @return array An associative array containing mail data:
  *                - sender_name:  Sender name
  *                - sender_email: Sender email
  *                - subject:      Subject
  *                - message:      Message
  */
-function get_lostpassword_activation_email($adminId)
+function get_lostpassword_activation_email($userId)
 {
-    $data = get_email_tpl_data($adminId, 'lostpw-msg-1');
+    $data = get_email_tpl_data($userId, 'lostpw-msg-1');
 
     if ($data['subject'] == '') {
         $data['subject'] = tr('Please activate your new i-MSCP password');
@@ -165,11 +164,11 @@ function get_lostpassword_activation_email($adminId)
     if ($data['message'] == '') {
         $data['message'] = tr('Dear {NAME},
 
-Please click on the link below to renew your i-MSCP password:
+Please click on the link below to renew your password:
 
 {LINK}
 
-Note: If you do not have requested this renewal, you can ignore this email.
+Note: If you do not have requested the renewal of your password, you can ignore this email.
 
 Please do not reply to this email.
 
@@ -218,7 +217,6 @@ function get_lostpassword_password_email($userId)
 
 Your password has been successfully renewed.
 
-Your user name is: {USERNAME}
 Your new password is: {PASSWORD}
 
 You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}
@@ -261,10 +259,10 @@ function set_lostpassword_password_email($userId, $data)
 function get_alias_order_email($resellerId)
 {
     $data = get_email_tpl_data($resellerId, 'alias-order-msg');
-    if (!$data['subject']) {
+    if ($data['subject'] == '') {
         $data['subject'] = tr('New alias order for {CUSTOMER}');
     }
-    if (!$data['message']) {
+    if ($data['message'] == '') {
         $data['message'] = tr('Dear {NAME},
 
 Your customer {CUSTOMER} is awaiting for approval of a new domain alias:
@@ -324,6 +322,7 @@ function encode_mime_header($string, $charset = 'UTF-8')
 /**
  * Send a mail using given data
  *
+ * @throws iMSCP_Exception
  * @param array $data An associative array containing mail data:
  *  - mail_id      : Email identifier
  *  - fname        : OPTIONAL Receiver firstname
@@ -347,6 +346,16 @@ function send_mail($data)
 
     if ($response->isStopped()) { // Allow third-party components to short-circuit this event.
         return true;
+    }
+
+    foreach (array('mail_id', 'username', 'email', 'subject', 'message') as $parameter) {
+        if (!isset($data[$parameter]) || !is_string($data[$parameter])) {
+            throw new  iMSCP_Exception(sprintf("`%s' parameter is not defined or not a string", $parameter));
+        }
+    }
+
+    if (isset($data['placeholders']) && !is_array($data['placeholders'])) {
+        throw new  iMSCP_Exception("`placeholders' parameter must be an array of placeholders/replacements");
     }
 
     $username = decode_idna($data['username']);

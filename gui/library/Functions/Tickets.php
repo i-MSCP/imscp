@@ -613,7 +613,7 @@ function _sendTicketNotification($toId, $ticketSubject, $ticketMessage, $ticketS
     if ($ticketStatus == 0) {
         $message = tr('Dear {NAME},
 
-You have a new ticket:
+You have a new support ticket:
 
 ==========================================================================
 Priority: {PRIORITY}
@@ -630,7 +630,7 @@ i-MSCP Mailer');
     } else {
         $message = tr('Dear {NAME},
 
-You have a new answer for a ticket:
+You have a new answer to a support ticket:
 
 ==========================================================================
 Priority: {PRIORITY}

@@ -139,22 +139,20 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer_Abstract
             'footprint' => sha1($message),
             'username' => 'administrator',
             'email' => $config['DEFAULT_ADMIN_ADDRESS'],
-            'subject' => 'i-MSCP - An exception has been raised',
+            'subject' => 'i-MSCP - An exception has been thrown',
             'message' => <<<EOF
 Dear {NAME},
 
 An exception has been thrown in file {FILE} at line {LINE}:
 
 ==========================================================================
-
 {EXCEPTION}
-
 ==========================================================================
 
-Debug backtrace:
-________________
+Backtrace:
+__________
 
-{TRACE}
+{BACKTRACE}
 
 Contextual information:
 _______________________
@@ -173,7 +171,7 @@ EOF
                 '{FILE}' => $exception->getFile(),
                 '{LINE}' => $exception->getLine(),
                 '{EXCEPTION}' => $message,
-                '{TRACE}' => $backtraces,
+                '{BACKTRACE}' => $backtraces,
                 '{CONTEXT_INFO}' => $contextInfo
             )
         );
