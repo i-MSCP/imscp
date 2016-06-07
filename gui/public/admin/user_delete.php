@@ -191,7 +191,7 @@ function admin_validateUserDeletion($userId)
 
     if ($row2['user_count'] > 0) {
         if ($row['admin_type'] == 'admin') {
-            set_page_message('Prior to removing this administrator, please move his resellers to another administrator.', 'error');
+            set_page_message(tr('Prior to removing this administrator, please move his resellers to another administrator.'), 'error');
         } else {
             set_page_message(tr('You cannot delete a reseller that has customer accounts.'), 'error');
         }
