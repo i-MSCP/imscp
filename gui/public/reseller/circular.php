@@ -65,6 +65,7 @@ function reseller_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToD
  * @param string $senderEmail Sender email
  * @param string $subject Subject
  * @param string $body Body
+ * @return void
  */
 function reseller_sendToCustomers($senderName, $senderEmail, $subject, $body)
 {

@@ -65,14 +65,17 @@ function admin_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData
  * @param string $senderEmail Sender email
  * @param string $subject Subject
  * @param string $body Body
+ * @return void
  */
 function admin_sendToAdministrators($senderName, $senderEmail, $subject, $body)
 {
-    if (systemHasManyAdmins()) {
-        $stmt = exec_query('SELECT admin_name, fname, lname, email FROM admin WHERE admin_type = ?', 'admin');
-        while ($rcptToData = $stmt->fetchRow()) {
-            admin_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData);
-        }
+    if (!systemHasManyAdmins()) {
+        return;
+    }
+
+    $stmt = exec_query('SELECT admin_name, fname, lname, email FROM admin WHERE admin_type = ?', 'admin');
+    while ($rcptToData = $stmt->fetchRow()) {
+        admin_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData);
     }
 }
 
@@ -83,6 +86,7 @@ function admin_sendToAdministrators($senderName, $senderEmail, $subject, $body)
  * @param string $senderEmail Sender email
  * @param string $subject Subject
  * @param string $body Body
+ * @return void
  */
 function admin_sendToResellers($senderName, $senderEmail, $subject, $body)
 {
@@ -103,6 +107,7 @@ function admin_sendToResellers($senderName, $senderEmail, $subject, $body)
  * @param string $senderEmail Sender email
  * @param string $subject Subject
  * @param string $body Body
+ * @return void
  */
 function admin_sendToCustomers($senderName, $senderEmail, $subject, $body)
 {
