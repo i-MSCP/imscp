@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-05-17 21:33+0200\n"
-"PO-Revision-Date: 2016-05-17 19:35+0000\n"
+"POT-Creation-Date: 2016-06-07 06:07+0200\n"
+"PO-Revision-Date: 2016-06-07 04:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/i-mscp/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -18,97 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-msgid ""
-"\n"
-"\n"
-"Dear {NAME},\n"
-"\n"
-"Use this link to activate your new i-MSCP password:\n"
-"\n"
-"{LINK}\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\nBeste {NAME},\n\nGebruik deze link om uw nieuwe wachtwoord van i-MSCP te activeren:\n\n{LINK}\n\nHartelijk dank voor het gebruik van onze service.\n\n___________________________\nHet i-MSCP-team\n"
-
-msgid ""
-"\n"
-"\n"
-"Dear {RESELLER},\n"
-"\n"
-"Your customer {CUSTOMER} is awaiting for the approval of a new domain alias:\n"
-"\n"
-"{ALIAS}\n"
-"\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\nBeste {RESELLER},\n\nUw klant {CUSTOMER} wacht op de goedkeuring van een nieuwe domeinalias:\n\n{ALIAS}\n\nAls u ingelogd bent kunt u zijn nieuwe alias activeren op {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n\nHartelijk dank voor het gebruik van onze service.\n\n___________________________\nHet i-MSCP-team\n"
-
-msgid ""
-"\n"
-"\n"
-"Hello {NAME},\n"
-"\n"
-"Your user name is: {USERNAME}\n"
-"Your password is: {PASSWORD}\n"
-"\n"
-"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\nBeste {NAME},\n\nUw gebruikersnaam is: {USERNAME}\nUw wachtwoord is: {PASSWORD}\n\nU kunt inloggen op {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\nHartelijk dank voor het gebruik van onze service.\n\n___________________________\nHet i-MSCP-team\n"
-
-msgid ""
-"\n"
-"Dear {NAME},\n"
-"\n"
-"A new account has been created for you.\n"
-"\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
-"\n"
-"Thank you for using our services.\n"
-msgstr "\nBeste {NAME},\n\nEr is een nieuw account voor u aangemaakt.\n\nUw accountgegevens:\n\nGebruikerstype: {USERTYPE}\nGebruikersnaam: {USERNAME}\nWachtwoord: {PASSWORD}\n\nZorg er voor dat u uw wachtwoord regelmatig aanpast, maar zeker ook de eerste keer dat u inlogt.\n\nOm in te loggen surft u naar {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\nDe statistieken kunt u vinden op http://{USERNAME}/stats/ (Gebruik dezelfde inloggegevens als bovenstaand)\n\nBedankt voor het gebruiken van onze diensten\n"
-
-msgid ""
-"\n"
-"Dear {NAME},\n"
-"\n"
-"A new account has been created for you.\n"
-"\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Thank you for using our services.\n"
-msgstr "\nBeste {NAME},\n\nEr is een account voor u aangemaakt.\n\nUw accountgegevens:\n\nGebruikerstype: {USERTYPE}\nGebruikersnaam: {USERNAME}\nWachtwoord: {PASSWORD}\n\nVergeet niet uw wachtwoord regelmatig te veranderen, ook als u voor het eerst inlogt.\n\nU kunt nu inloggen op {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\nHartelijk dank voor het gebruik van onze service.\n"
 
 msgid " Admin / Support / Open Tickets"
 msgstr "Beheerder / Ondersteuning / Open tickets"
@@ -118,9 +27,6 @@ msgstr "Klant / Tools / Aangepaste foutpagina's / Foutpagina's aanpassen"
 
 msgid " Wrong IP address."
 msgstr "Foutief IP-adres."
-
-msgid " was deleted by {ADMIN}!"
-msgstr "is verwijderd door {ADMIN}!"
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -502,6 +408,9 @@ msgstr "Een hostingpakket met dezelfde naam bestaat al."
 
 msgid "A new i-MSCP version is available"
 msgstr "Er is een update voor i-MSCP beschikbaar"
+
+msgid "A new software package has been uploaded"
+msgstr ""
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Verkrijg toegang tot uw domeinstatistieken via de webinterface."
@@ -1122,9 +1031,6 @@ msgstr "Authenticatiegegevens"
 msgid "Auto (Browser language)"
 msgstr "Automatisch (Browsertaal)"
 
-msgid "Auto email template data updated!"
-msgstr "Auto-e-mail-template bijgewerkt!"
-
 msgid "Auto responder"
 msgstr "Automatische beantwoorder"
 
@@ -1538,7 +1444,7 @@ msgstr "Verwijderen van SSL-certificaat is mislukt. Er is een onverwachte fout o
 
 #, php-format
 msgid "Could not delete the %s plugin: %s"
-msgstr ""
+msgstr "Konn de plugin %s niet verwijderen: %s"
 
 #, php-format
 msgid "Could not disable the %s plugin: %s"
@@ -1830,55 +1736,6 @@ msgstr "Gedeactiveerd"
 
 msgid "Deactivation in progress..."
 msgstr "Deactiveren bezig..."
-
-#, php-format
-msgid ""
-"Dear %s,\n"
-"\n"
-"You have a new ticket:\n"
-msgstr "Beste %s,\n\nU heeft een nieuw ticket\n"
-
-#, php-format
-msgid ""
-"Dear %s,\n"
-"\n"
-"You have an answer for this ticket:\n"
-msgstr "Beste %s,\n\nU heeft een reactie op dit ticket:\n"
-
-msgid ""
-"Dear {ADMIN},\n"
-"\t{RESELLER} has uploaded a new software package.\n"
-"\n"
-"\tDetails:\n"
-"\tReseller ID: {RESELLER_ID}\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr "Beste {ADMIN},\n\t{RESELLER} heeft een nieuw softwarepakket geüpload.\n\n\tDetails:\n\tWederverkopersnummer: {RESELLER_ID}\n\tPakketnaam: {SOFTWARE}\n\tPakketnummer: {SOFTWARE_ID}\n\n\tLog in via i-MSCP voor meer informatie."
-
-msgid ""
-"Dear {RESELLER},\n"
-"\t\tYour uploaded software was deleted by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tMessage from {ADMIN}:\n"
-"\t"
-msgstr "Beste {RESELLER},\n\t\tUw geüploade software is verwijderd door {ADMIN}.\n\n\tDetails:\n\tPakketnaam: {SOFTWARE}\n\tPakketnummer: {SOFTWARE_ID}\n\n\tBericht van {ADMIN}:\n\t"
-
-msgid ""
-"Dear {RESELLER},\n"
-"\tYour uploaded a software package was successful activated by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr "Beste {RESELLER},\n\tUw softwarepakket is succesvol geactiveerd door {ADMIN}.\n\n\tDetails:\n\tPakketnaam: {SOFTWARE}\n\tPakketnummer: {SOFTWARE_ID}\n\n\tLog in via i-MSCP voor meer informatie"
 
 msgid "Debugger"
 msgstr "Debugger"
@@ -2989,9 +2846,6 @@ msgstr "Gegevens aan het laden..."
 msgid "Log entries successfully deleted."
 msgstr "Logboekinvoer succesvol verwijderd."
 
-msgid "Log in to answer"
-msgstr "Log in om te kunnen antwoorden"
-
 msgid "Login"
 msgstr "Login"
 
@@ -3031,6 +2885,9 @@ msgstr "Wachtwoord opvragen"
 
 msgid "Lost password email"
 msgstr "Wachtwoordherstele-mail"
+
+msgid "Lost password email templates were updated."
+msgstr ""
 
 msgid "Lost password link"
 msgstr "Link voor wachtwoordherstel"
@@ -3236,9 +3093,6 @@ msgstr "Nieuwe SQL-gebruikersinformatie"
 
 msgid "New alias order for {CUSTOMER}"
 msgstr "Nieuwe aliasorder voor {CUSTOMER}"
-
-msgid "New password has not been sent. Ask your administrator."
-msgstr "Nieuw wachtwoord is niet verzonden. Vraag uw beheerder."
 
 msgid "New ticket"
 msgstr "Nieuw ticket"
@@ -3931,10 +3785,6 @@ msgstr "Vorige"
 
 msgid "Priority"
 msgstr "Prioriteit"
-
-#, php-format
-msgid "Priority: %s\n"
-msgstr "Prioriteit: %s\n"
 
 msgid "Private key"
 msgstr "Privésleutel"
@@ -4803,9 +4653,6 @@ msgstr "Doelpoort"
 msgid "Target port must be a number."
 msgstr "Doelpoort moet een getal zijn."
 
-msgid "Template for Auto email successfully updated."
-msgstr "Sjabloon voor auto-e-mail succesvol bijgewerkt."
-
 msgid "Temporary folder not found."
 msgstr "Tmp map niet gevonden"
 
@@ -5446,6 +5293,9 @@ msgstr "Tools"
 msgid "Welcome email"
 msgstr "Welkomste-mail"
 
+msgid "Welcome email template has been updated."
+msgstr ""
+
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "Welkom bij i-MSCP, {USERNAME}"
 
@@ -5560,6 +5410,9 @@ msgstr "U kunt geen nieuwe e-mailaccounts meer maken. U heeft al uw e-mailquota 
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "U kunt een wederverkoper die klantenaccounts heeft niet verwijderen."
+
+msgid "You cannot delete the default administrator."
+msgstr ""
 
 msgid "You cannot delete the last active IP address."
 msgstr "Je kan het laatste actieve IP-adres niet verwijderen."
@@ -5799,20 +5652,29 @@ msgstr "Uw nieuwe i-MSCP-login."
 msgid "Your new password"
 msgstr "Uw nieuwe wachtwoord"
 
-msgid "Your new password has been sent. Check your email."
-msgstr "Uw nieuwe wachtwoord is verzonden. Controleer uw e-mail."
-
 msgid "Your package is corrupt. Please correct it!"
 msgstr "Uw pakket is corrupt. Gelieve het te corrigeren!"
+
+msgid "Your password has been successfully renewed. Check your emails."
+msgstr ""
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
 msgstr "De bestandsgrootte (%s) van het externe bestand is lager dan 1 byte. Gelieve uw URL te controleren."
 
 msgid ""
-"Your request for new password has been registered. You will receive an email"
-" with instructions to complete the process."
-msgstr "Uw verzoek voor een nieuw wachtwoord is geregistreerd. U zult een e-mail ontvangen met instructies om het proces te voltooien."
+"Your request for password renewal has been registered. You will receive an "
+"email with instructions to complete the process."
+msgstr ""
+
+msgid "Your request for password renewal is either invalid or has expired."
+msgstr ""
+
+msgid "Your software package has been activated"
+msgstr ""
+
+msgid "Your software package has been deleted"
+msgstr ""
 
 msgid "ZB"
 msgstr "ZB"
@@ -5838,9 +5700,6 @@ msgstr "[Nieuw]"
 msgid "[Re]"
 msgstr "[Re]"
 
-msgid "[Ticket]"
-msgstr "[Ticket]"
-
 msgid "_: Localised language"
 msgstr "Nederlands - Dutch"
 
@@ -5856,6 +5715,9 @@ msgstr "geactiveerd (in softwaredepot)"
 
 msgid "addition"
 msgstr "toevoegen"
+
+msgid "administrator"
+msgstr ""
 
 msgid "and"
 msgstr "en"
@@ -6058,12 +5920,6 @@ msgstr "wildcard"
 
 msgid "yes"
 msgstr "ja"
-
-msgid "{ADMIN} activated your software package"
-msgstr "{ADMIN} heeft uw softwarepakket geactiveerd"
-
-msgid "{RESELLER} uploaded a new software package"
-msgstr "{RESELLER} heeft een nieuw softwarepakket geüpload"
 
 msgid "{USERNAME} user statistics"
 msgstr "Gebruikersstatistieken voor {USERNAME} "

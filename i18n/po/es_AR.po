@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-05-17 21:33+0200\n"
-"PO-Revision-Date: 2016-05-17 19:35+0000\n"
+"POT-Creation-Date: 2016-06-07 06:07+0200\n"
+"PO-Revision-Date: 2016-06-07 04:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Argentina) (http://www.transifex.com/i-mscp/i-MSCP/language/es_AR/)\n"
 "MIME-Version: 1.0\n"
@@ -16,97 +16,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: es_AR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-msgid ""
-"\n"
-"\n"
-"Dear {NAME},\n"
-"\n"
-"Use this link to activate your new i-MSCP password:\n"
-"\n"
-"{LINK}\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\nEstimado {NAME},\n\nUsá este enlace para activar tu nueva contraseña de i-MSCP:\n\n{LINK}\n\nGracias por utilizar nuestros servicios.\n\n___________________________\nEquipo i-MSCP\n\n"
-
-msgid ""
-"\n"
-"\n"
-"Dear {RESELLER},\n"
-"\n"
-"Your customer {CUSTOMER} is awaiting for the approval of a new domain alias:\n"
-"\n"
-"{ALIAS}\n"
-"\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\nEstimado {RESELLER},\n\nTu cliente {CUSTOMER} está esperando la aprobación de un nuevo alias de dominio:\n\n{ALIAS}\n\nUna vez iniciada sesión, podés activarlos en{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n\nGracias por utilizar nuestros servicios.\n\n___________________________\nEquipo i-MSCP\n"
-
-msgid ""
-"\n"
-"\n"
-"Hello {NAME},\n"
-"\n"
-"Your user name is: {USERNAME}\n"
-"Your password is: {PASSWORD}\n"
-"\n"
-"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\nHola {NAME},\n\nTu nombre de usuario es: {USERNAME}\nTu contraseña es: {PASSWORD}\n\nPodés iniciar sesión en {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\nGracias por utilizar nuestros servicios.\n\n___________________________\nEquipo i-MSCP\n\n"
-
-msgid ""
-"\n"
-"Dear {NAME},\n"
-"\n"
-"A new account has been created for you.\n"
-"\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
-"\n"
-"Thank you for using our services.\n"
-msgstr "\nEstimado {NAME},\n\nTe ha sido creada una nueva cuenta.\n\nInformación de tu cuenta:\n\nTipo de usuario: {USERTYPE}\nNombre de usuario: {USERNAME}\nContraseña: {PASSWORD}\n\nRecordá cambiar tu contraseña cuando inicies sesión por primera vez.\n\nPodés iniciar sesión ahora en {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\nEstadísticas: http://{USERNAME}/stats/ (Con el mismo nombre de usuario y contraseña ya indicados)\n\nGracias por usar nuestros servicios.\n"
-
-msgid ""
-"\n"
-"Dear {NAME},\n"
-"\n"
-"A new account has been created for you.\n"
-"\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Thank you for using our services.\n"
-msgstr "\nEstimado {NAME},\n\nTe ha sido creada una nueva cuenta.\n\nInformación de tu cuenta:\n\nTipo de Usuario: {USERTYPE}\nNombre de Usuario: {USERNAME}\nContraseña: {PASSWORD}\n\nRecordá cambiar tu contraseña cuando inicies sesión por primera vez.\n\nPodés iniciar sesión ahora en {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\nGracias por utilizar nuestros servicios.\n"
 
 msgid " Admin / Support / Open Tickets"
 msgstr "Administrador / Soporte / Tickets abiertos"
@@ -116,9 +25,6 @@ msgstr "Cliente / Herramientas Web / Páginas de Error Personalizadas / Editar P
 
 msgid " Wrong IP address."
 msgstr "Dirección IP incorrecta."
-
-msgid " was deleted by {ADMIN}!"
-msgstr "fue eliminado por {ADMIN}!"
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -500,6 +406,9 @@ msgstr "¡Ya existe el plan de hosting con el nombre ingresado!"
 
 msgid "A new i-MSCP version is available"
 msgstr "Hay disponible una nueva actualización de i-MSCP"
+
+msgid "A new software package has been uploaded"
+msgstr ""
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Accedé a tus estadísticas de dominio desde la interface web."
@@ -1119,9 +1028,6 @@ msgstr ""
 
 msgid "Auto (Browser language)"
 msgstr "Automático (Idioma del navegador)"
-
-msgid "Auto email template data updated!"
-msgstr "¡Datos de la plantilla de correo automático actualizados!"
 
 msgid "Auto responder"
 msgstr "Respuesta automática"
@@ -1828,55 +1734,6 @@ msgstr "Desactivado"
 
 msgid "Deactivation in progress..."
 msgstr "Desactivación en progreso..."
-
-#, php-format
-msgid ""
-"Dear %s,\n"
-"\n"
-"You have a new ticket:\n"
-msgstr "Estimado %s,\n\nTenés un nuevo ticket:\n"
-
-#, php-format
-msgid ""
-"Dear %s,\n"
-"\n"
-"You have an answer for this ticket:\n"
-msgstr "Estimado %s,\n\nTenés una respuesta para este ticket:\n"
-
-msgid ""
-"Dear {ADMIN},\n"
-"\t{RESELLER} has uploaded a new software package.\n"
-"\n"
-"\tDetails:\n"
-"\tReseller ID: {RESELLER_ID}\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr "Estimado {ADMIN},\n\t{RESELLER} ha subido un nuevo paquete de software.\n\n\tDetalles:\n\tRevendedor ID: {RESELLER_ID}\n\tNombre del Paquete: {SOFTWARE}\n\tID del Paquete: {SOFTWARE_ID}\n\n\tPor favor, iniciá sesión en tu panel de control para mas detalles."
-
-msgid ""
-"Dear {RESELLER},\n"
-"\t\tYour uploaded software was deleted by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tMessage from {ADMIN}:\n"
-"\t"
-msgstr "Estimado {RESELLER},\n\t\tTu paquete de software ha sido eliminado por {ADMIN}.\n\n\tDetalles:\n\tNombre del Paquete: {SOFTWARE}\n\tID del Paquete: {SOFTWARE_ID}\n\n\tMensaje de  {ADMIN}:\n\t"
-
-msgid ""
-"Dear {RESELLER},\n"
-"\tYour uploaded a software package was successful activated by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr ""
 
 msgid "Debugger"
 msgstr "Depurador"
@@ -2987,9 +2844,6 @@ msgstr "Cargando datos..."
 msgid "Log entries successfully deleted."
 msgstr "Entradas de registro borradas satisfactoriamente."
 
-msgid "Log in to answer"
-msgstr "Inicia sesión para contestar"
-
 msgid "Login"
 msgstr "Iniciar sesión"
 
@@ -3029,6 +2883,9 @@ msgstr "No recuerdo mi contraseña"
 
 msgid "Lost password email"
 msgstr "Correo de contraseña perdida"
+
+msgid "Lost password email templates were updated."
+msgstr ""
 
 msgid "Lost password link"
 msgstr "Enlace de contraseña perdida."
@@ -3234,9 +3091,6 @@ msgstr "Nuevos datos de usuario SQL"
 
 msgid "New alias order for {CUSTOMER}"
 msgstr "Nueva orden de alias para {CUSTOMER}"
-
-msgid "New password has not been sent. Ask your administrator."
-msgstr "La nueva contraseña no se ha enviado. Preguntale a tu administrador."
 
 msgid "New ticket"
 msgstr "Nuevo ticket"
@@ -3929,10 +3783,6 @@ msgstr "Previo"
 
 msgid "Priority"
 msgstr "Prioridad"
-
-#, php-format
-msgid "Priority: %s\n"
-msgstr "Prioridad: %s\n"
 
 msgid "Private key"
 msgstr "Llave privada"
@@ -4801,9 +4651,6 @@ msgstr "Puerto destino"
 msgid "Target port must be a number."
 msgstr ""
 
-msgid "Template for Auto email successfully updated."
-msgstr "La plantilla de correo automático ha sido actualizada satisfactoriamente."
-
 msgid "Temporary folder not found."
 msgstr "Carpeta termporaria no hallada."
 
@@ -5444,6 +5291,9 @@ msgstr "Herramientas Web"
 msgid "Welcome email"
 msgstr "Correo de bienvenida"
 
+msgid "Welcome email template has been updated."
+msgstr ""
+
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "Bienvenido {USERNAME} a i-MSCP"
 
@@ -5558,6 +5408,9 @@ msgstr "No podés agregar una nueva cuenta de correo. Tenés asignada toda la cu
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "No podés eliminar un revendedor que tiene cuentas de clientes."
+
+msgid "You cannot delete the default administrator."
+msgstr ""
 
 msgid "You cannot delete the last active IP address."
 msgstr "No podés eliminar la última dirección IP."
@@ -5797,20 +5650,29 @@ msgstr "Tus nuevos datos de inicio de sesión en i-MSCP"
 msgid "Your new password"
 msgstr "Tu nueva contraseña"
 
-msgid "Your new password has been sent. Check your email."
-msgstr "Tu nueva contraseña te ha sido enviada. Revisá tu correo."
-
 msgid "Your package is corrupt. Please correct it!"
 msgstr "El paquete está corrupto. Por favor, corregilo."
+
+msgid "Your password has been successfully renewed. Check your emails."
+msgstr ""
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
 msgstr ""
 
 msgid ""
-"Your request for new password has been registered. You will receive an email"
-" with instructions to complete the process."
-msgstr "Tu pedido de nueva contraseña ha sido registrado. Recibirás un correo con instrucciones para completar el proceso."
+"Your request for password renewal has been registered. You will receive an "
+"email with instructions to complete the process."
+msgstr ""
+
+msgid "Your request for password renewal is either invalid or has expired."
+msgstr ""
+
+msgid "Your software package has been activated"
+msgstr ""
+
+msgid "Your software package has been deleted"
+msgstr ""
 
 msgid "ZB"
 msgstr "ZB"
@@ -5836,9 +5698,6 @@ msgstr "[Nuevo]"
 msgid "[Re]"
 msgstr "[Re]"
 
-msgid "[Ticket]"
-msgstr "[Ticket]"
-
 msgid "_: Localised language"
 msgstr "Español (Argentina) - Spanish (Argentina)"
 
@@ -5854,6 +5713,9 @@ msgstr "Activado (Depósito de Software)"
 
 msgid "addition"
 msgstr "adición"
+
+msgid "administrator"
+msgstr ""
 
 msgid "and"
 msgstr "y"
@@ -6056,12 +5918,6 @@ msgstr "comodín"
 
 msgid "yes"
 msgstr "si"
-
-msgid "{ADMIN} activated your software package"
-msgstr "{ADMIN} ha activado tu paquete de software"
-
-msgid "{RESELLER} uploaded a new software package"
-msgstr "{RESELLER} ha subido un nuevo paquete de software"
 
 msgid "{USERNAME} user statistics"
 msgstr "{USERNAME}  Estadísticas"

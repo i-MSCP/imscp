@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Asterios Dimitriou <steve@pci.gr>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-05-17 21:33+0200\n"
-"PO-Revision-Date: 2016-05-17 19:35+0000\n"
+"POT-Creation-Date: 2016-06-07 06:07+0200\n"
+"PO-Revision-Date: 2016-06-07 04:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Greek (http://www.transifex.com/i-mscp/i-MSCP/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -17,293 +18,199 @@ msgstr ""
 "Language: el\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-msgid ""
-"\n"
-"\n"
-"Dear {NAME},\n"
-"\n"
-"Use this link to activate your new i-MSCP password:\n"
-"\n"
-"{LINK}\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr ""
-
-msgid ""
-"\n"
-"\n"
-"Dear {RESELLER},\n"
-"\n"
-"Your customer {CUSTOMER} is awaiting for the approval of a new domain alias:\n"
-"\n"
-"{ALIAS}\n"
-"\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr ""
-
-msgid ""
-"\n"
-"\n"
-"Hello {NAME},\n"
-"\n"
-"Your user name is: {USERNAME}\n"
-"Your password is: {PASSWORD}\n"
-"\n"
-"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr ""
-
-msgid ""
-"\n"
-"Dear {NAME},\n"
-"\n"
-"A new account has been created for you.\n"
-"\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
-"\n"
-"Thank you for using our services.\n"
-msgstr ""
-
-msgid ""
-"\n"
-"Dear {NAME},\n"
-"\n"
-"A new account has been created for you.\n"
-"\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Thank you for using our services.\n"
-msgstr ""
-
 msgid " Admin / Support / Open Tickets"
-msgstr ""
+msgstr "Διαχείριση / Υποστήριξη / Ανοιχτά Σημειώματα"
 
 msgid " Client / Webtools / Custom Error Pages / Edit Custom Error Page"
-msgstr ""
+msgstr "Πελάτης / Διαδικτυακά εργαλεία / Προσαρμοσμένες Σελίδες Λάθους / Επεξεργασία Προσαρμοσμένης Σελίδας Λάθους"
 
 msgid " Wrong IP address."
-msgstr ""
-
-msgid " was deleted by {ADMIN}!"
-msgstr ""
+msgstr "Λάθος διεύθυνση IP."
 
 #, php-format
 msgid "%%s must be lower than %%s."
-msgstr ""
+msgstr "%%s πρέπει να είναι μικρότερο από %%s."
 
 #, php-format
 msgid "%1$d / %2$d"
-msgstr ""
+msgstr "%1$d / %2$d"
 
 #, php-format
 msgid "%1$d / %2$d of %3$d"
-msgstr ""
+msgstr "%1$d / %2$d από %3$d"
 
 #, php-format
 msgid "%1$d / %2$d of %3$d</b>"
-msgstr ""
+msgstr "%1$d / %2$d από %3$d</b>"
 
 #, php-format
 msgid "%1$d / %2$d of unlimited"
-msgstr ""
+msgstr "%1$d / %2$d από χωρίς όριο"
 
 #, php-format
 msgid "%1$d of %2$d"
-msgstr ""
+msgstr "%1$d από %2$d"
 
 #, php-format
 msgid "%1$d%% [%2$s of %3$s]"
-msgstr ""
+msgstr "%1$d%% [%2$s από %3$s]"
 
 #, php-format
 msgid "%1$d%% [%2$s of unlimited]"
-msgstr ""
+msgstr "%1$d%% [%2$s από χωρίς όριο]"
 
 #, php-format
 msgid "%1$s (%2$s)"
-msgstr ""
+msgstr "%1$s (%2$s)"
 
 #, php-format
 msgid "%1$s - (Softwaredepot)"
-msgstr ""
+msgstr "%1$s - (Αποθετήριο)"
 
 #, php-format
 msgid "%1$s - (Version: %2$s, Language: %3$s)"
-msgstr ""
+msgstr "%1$s - (Έκδοση: %2$s, Γλώσσα: %3$s)"
 
 #, php-format
 msgid "%1$s / %2$s"
-msgstr ""
+msgstr "%1$s / %2$s"
 
 #, php-format
 msgid "%1$s / %2$s of %3$s"
-msgstr ""
+msgstr "%1$s / %2$s από %3$s"
 
 #, php-format
 msgid "%1$s / %2$s of unlimited"
-msgstr ""
+msgstr "%1$s / %2$s από χωρίς όριο"
 
 #, php-format
 msgid "%1$s of %2$s"
-msgstr ""
+msgstr "%1$s από %2$s"
 
 #, php-format
 msgid "%1$s of <b>unlimited</b>"
-msgstr ""
+msgstr "%1$s από <b>χωρίς όριο</b>"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
-msgstr ""
+msgstr "%1$s τώρα είστε συνδεδεμένος ως %2$s"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
-msgstr ""
+msgstr "%1$s%% [%2$s από %3$s]"
 
 #, php-format
 msgid "%1$s%% [%2$s of unlimited]"
-msgstr ""
+msgstr "%1$s%% [%2$s από χωρίς όριο]"
 
 #, php-format
 msgid "%1$s`s - Software"
-msgstr ""
+msgstr "%1$s`s - Software"
 
 #, php-format
 msgid "%d %s remaining until account expiration"
-msgstr ""
+msgstr "%d %s απομένουν μέχρι την απενεργοποίηση του λογαριασμού"
 
 #, php-format
 msgid "%d / unlimited"
-msgstr ""
+msgstr "%d / χωρίς όριο"
 
 #, php-format
 msgid "%d Service(s) port successfully updateds"
-msgstr ""
+msgstr "%d Οι πόρτες των υπηρεσιών ενημερώθηκαν επιτυχώςs"
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been created."
-msgstr ""
+msgstr "%d παράμετροι έχουν δημιουργηθεί."
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been updated."
-msgstr ""
+msgstr "%d παράμετροι έχουν ενημερωθεί."
 
 #, php-format
 msgid "%d of %s"
-msgstr ""
+msgstr "%d από %s"
 
 #, php-format
 msgid "%d strings translated"
-msgstr ""
+msgstr "%d συμβολοσειρές μεταφράστηκαν"
 
 #, php-format
 msgid "%s / %s of %s"
-msgstr ""
+msgstr "%s / %s από %s"
 
 #, php-format
 msgid "%s / unlimited"
-msgstr ""
+msgstr "%s / χωρίς όριο"
 
 #, php-format
 msgid "%s IP address is blocked for %s minutes."
-msgstr ""
+msgstr "%s Η IP διεύθυνση είναι μπλοκαρισμένη για %s λεπτά."
 
 #, php-format
 msgid "%s IP address is waiting %s seconds."
-msgstr ""
+msgstr "%s Η IP διεύθυνση περιμένει %s δευτερόλεπτα."
 
 #, php-format
 msgid "%s account successfully deleted."
-msgstr ""
+msgstr "Ο %s λογαριασμός διαγράφηκε επιτυχώς."
 
 #, php-format
 msgid "%s doesn't exist or is empty."
-msgstr ""
+msgstr "%s δεν υπάρχει ή είναι κενό."
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
-msgstr ""
+msgstr "%s δεν είναι έγκυρο i-MSCP αρχείο γλώσσας. "
 
 #, php-format
 msgid "%s is not allowed as subdomain label."
-msgstr ""
+msgstr "%s δεν επιτρέπεται σαν ετικέτα για το subdomain."
 
 #, php-format
 msgid "%s of %s"
-msgstr ""
+msgstr "%s από %s"
 
 #, php-format
 msgid "%s of unlimited"
-msgstr ""
+msgstr "%s από χωρίς όριο"
 
 #, php-format
 msgid "%s page"
-msgstr ""
+msgstr "%s σελίδα"
 
 #, php-format
 msgid "%s record"
-msgstr ""
+msgstr "%s εγγραφή"
 
 #, php-format
 msgid "%s webmail"
-msgstr ""
+msgstr "%s webmail"
 
 #, php-format
 msgid ""
 "%s: The clients consumption (%s) for this reseller is greater than the new "
 "limit."
-msgstr ""
+msgstr "%s: Οι πελάτες του μεταπωλητή καταναλώνουν (%s) περισσότερο από το νέο όριο."
 
 #, php-format
 msgid ""
 "%s: The total of items (%s) already assigned by the reseller is greater than"
 " the new limit."
-msgstr ""
+msgstr "%s: Το σύνολο των αντικειμένων (%s) που έχουν ήδη δοθεί από τον μεταπωλητή είναι μεγαλύτερο από το νέο όριο."
 
 #, php-format
 msgid "%s: This reseller has customer(s) with unlimited items."
-msgstr ""
+msgstr "%s: Αυτός ο μεταπωλητής έχει πελάτη(ες) με αντικείμενα χωρίς όριο."
 
 #, php-format
 msgid ""
 "%s: You cannot disable a service already consumed by reseller's customers."
-msgstr ""
+msgstr "%s: Δεν μπορείτε να απενεργοποιήσετε μια υπηρεσία που έχει ήδη δοθεί στους πελάτες του μεταπωλητή."
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
-msgstr ""
+msgstr "%s: Δεν μπορείτε να απενεργοποιήσετε μια υπηρεσία που έχει ήδη πωληθεί στους πελάτες του μεταπωλητή."
 
 #, php-format
 msgid ""
@@ -493,12 +400,15 @@ msgid "A PHP extension stopped the file upload."
 msgstr ""
 
 msgid "A database update is available"
-msgstr ""
+msgstr "Υπάρχει διαθέσιμη αναβάθμιση στη βάση δεδομένων"
 
 msgid "A hosting plan with same name already exists."
 msgstr ""
 
 msgid "A new i-MSCP version is available"
+msgstr "Υπάρχει διαθέσιμη αναβάθμιση του i-MSCP"
+
+msgid "A new software package has been uploaded"
 msgstr ""
 
 msgid "Access your domain statistics through the Web interface."
@@ -1118,9 +1028,6 @@ msgid "Authentication data"
 msgstr ""
 
 msgid "Auto (Browser language)"
-msgstr ""
-
-msgid "Auto email template data updated!"
 msgstr ""
 
 msgid "Auto responder"
@@ -1827,55 +1734,6 @@ msgid "Deactivated"
 msgstr ""
 
 msgid "Deactivation in progress..."
-msgstr ""
-
-#, php-format
-msgid ""
-"Dear %s,\n"
-"\n"
-"You have a new ticket:\n"
-msgstr ""
-
-#, php-format
-msgid ""
-"Dear %s,\n"
-"\n"
-"You have an answer for this ticket:\n"
-msgstr ""
-
-msgid ""
-"Dear {ADMIN},\n"
-"\t{RESELLER} has uploaded a new software package.\n"
-"\n"
-"\tDetails:\n"
-"\tReseller ID: {RESELLER_ID}\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr ""
-
-msgid ""
-"Dear {RESELLER},\n"
-"\t\tYour uploaded software was deleted by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tMessage from {ADMIN}:\n"
-"\t"
-msgstr ""
-
-msgid ""
-"Dear {RESELLER},\n"
-"\tYour uploaded a software package was successful activated by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
 msgstr ""
 
 msgid "Debugger"
@@ -2987,9 +2845,6 @@ msgstr ""
 msgid "Log entries successfully deleted."
 msgstr ""
 
-msgid "Log in to answer"
-msgstr ""
-
 msgid "Login"
 msgstr ""
 
@@ -3028,6 +2883,9 @@ msgid "Lost password"
 msgstr ""
 
 msgid "Lost password email"
+msgstr ""
+
+msgid "Lost password email templates were updated."
 msgstr ""
 
 msgid "Lost password link"
@@ -3233,9 +3091,6 @@ msgid "New SQL user data"
 msgstr ""
 
 msgid "New alias order for {CUSTOMER}"
-msgstr ""
-
-msgid "New password has not been sent. Ask your administrator."
 msgstr ""
 
 msgid "New ticket"
@@ -3928,10 +3783,6 @@ msgid "Previous"
 msgstr ""
 
 msgid "Priority"
-msgstr ""
-
-#, php-format
-msgid "Priority: %s\n"
 msgstr ""
 
 msgid "Private key"
@@ -4801,9 +4652,6 @@ msgstr ""
 msgid "Target port must be a number."
 msgstr ""
 
-msgid "Template for Auto email successfully updated."
-msgstr ""
-
 msgid "Temporary folder not found."
 msgstr ""
 
@@ -5444,6 +5292,9 @@ msgstr ""
 msgid "Welcome email"
 msgstr ""
 
+msgid "Welcome email template has been updated."
+msgstr ""
+
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr ""
 
@@ -5557,6 +5408,9 @@ msgid ""
 msgstr ""
 
 msgid "You cannot delete a reseller that has customer accounts."
+msgstr ""
+
+msgid "You cannot delete the default administrator."
 msgstr ""
 
 msgid "You cannot delete the last active IP address."
@@ -5797,10 +5651,10 @@ msgstr ""
 msgid "Your new password"
 msgstr ""
 
-msgid "Your new password has been sent. Check your email."
+msgid "Your package is corrupt. Please correct it!"
 msgstr ""
 
-msgid "Your package is corrupt. Please correct it!"
+msgid "Your password has been successfully renewed. Check your emails."
 msgstr ""
 
 #, php-format
@@ -5808,8 +5662,17 @@ msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
 msgstr ""
 
 msgid ""
-"Your request for new password has been registered. You will receive an email"
-" with instructions to complete the process."
+"Your request for password renewal has been registered. You will receive an "
+"email with instructions to complete the process."
+msgstr ""
+
+msgid "Your request for password renewal is either invalid or has expired."
+msgstr ""
+
+msgid "Your software package has been activated"
+msgstr ""
+
+msgid "Your software package has been deleted"
 msgstr ""
 
 msgid "ZB"
@@ -5836,9 +5699,6 @@ msgstr ""
 msgid "[Re]"
 msgstr ""
 
-msgid "[Ticket]"
-msgstr ""
-
 msgid "_: Localised language"
 msgstr ""
 
@@ -5853,6 +5713,9 @@ msgid "activated (Softwaredepot)"
 msgstr ""
 
 msgid "addition"
+msgstr ""
+
+msgid "administrator"
 msgstr ""
 
 msgid "and"
@@ -5961,7 +5824,7 @@ msgid "internet Multi Server Control Panel"
 msgstr ""
 
 msgid "kB"
-msgstr ""
+msgstr "kB"
 
 msgid "kiB"
 msgstr ""
@@ -6019,7 +5882,7 @@ msgid "orphan entry"
 msgstr ""
 
 msgid "phpMyAdmin"
-msgstr ""
+msgstr "phpMyAdmin"
 
 msgid "required"
 msgstr ""
@@ -6052,19 +5915,13 @@ msgid "waiting for activation"
 msgstr ""
 
 msgid "wildcard"
-msgstr ""
+msgstr "χαρακτήρας μπαλαντέρ"
 
 msgid "yes"
-msgstr ""
-
-msgid "{ADMIN} activated your software package"
-msgstr ""
-
-msgid "{RESELLER} uploaded a new software package"
-msgstr ""
+msgstr "ναι"
 
 msgid "{USERNAME} user statistics"
-msgstr ""
+msgstr "{USERNAME} στατιστικά χρήστη"
 
 msgid "© 2010-2016 i-MSCP Team<br>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2016 Η Ομάδα του i-MSCP<br>Με την επιφύλαξη παντός δικαιώματος"

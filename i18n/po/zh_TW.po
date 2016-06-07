@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Cloudeasy <a9100a9957@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-05-17 21:33+0200\n"
-"PO-Revision-Date: 2016-05-17 19:35+0000\n"
+"POT-Creation-Date: 2016-06-07 06:07+0200\n"
+"PO-Revision-Date: 2016-06-07 04:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -16,97 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-
-msgid ""
-"\n"
-"\n"
-"Dear {NAME},\n"
-"\n"
-"Use this link to activate your new i-MSCP password:\n"
-"\n"
-"{LINK}\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\n親愛的 {NAME},\n\n使用這個連結來啟用您新的 i-MSCP 密碼:\n\n{LINK}\n\n感謝您使用我們的服務。\n\n___________________________\ni-MSCP 團隊\n\n"
-
-msgid ""
-"\n"
-"\n"
-"Dear {RESELLER},\n"
-"\n"
-"Your customer {CUSTOMER} is awaiting for the approval of a new domain alias:\n"
-"\n"
-"{ALIAS}\n"
-"\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\n親愛的 {RESELLER},\n\n您的客戶 {CUSTOMER} 正等待您同意新的網域別名:\n\n{ALIAS}\n\n當您登入後,您可以啟用新的別名在 {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n\n感謝您使用我們的服務。\n\n___________________________\nThe i-MSCP 團隊\n\n"
-
-msgid ""
-"\n"
-"\n"
-"Hello {NAME},\n"
-"\n"
-"Your user name is: {USERNAME}\n"
-"Your password is: {PASSWORD}\n"
-"\n"
-"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\n您好 {NAME},\n\n您的使用者名稱是: {USERNAME}\n您的密碼是: {PASSWORD}\n\n您可以登入到 {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\n感謝您使用我們的服務。\n\n___________________________\nThe i-MSCP 團隊\n\n"
-
-msgid ""
-"\n"
-"Dear {NAME},\n"
-"\n"
-"A new account has been created for you.\n"
-"\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
-"\n"
-"Thank you for using our services.\n"
-msgstr "\n親愛的 {NAME},\n\n 新的帳號已經為您建立了。\n\n您的帳號資訊:\n\n使用者身份: {USERTYPE}\n使用者名稱: {USERNAME}\n密碼: {PASSWORD}\n\n 記得要經常變更密碼以及在您第一次登入時也要變更。\n\n 您可以登入到這 {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\nStatistics: http://{USERNAME}/stats/ (Same username and password than above)\n\n感謝您使用我們的服務。\n"
-
-msgid ""
-"\n"
-"Dear {NAME},\n"
-"\n"
-"A new account has been created for you.\n"
-"\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Thank you for using our services.\n"
-msgstr "\n親愛的 {NAME},\n\n新的帳號已經為您建立好了。\n\n您的帳號資訊:\n\n使用者身份: {USERTYPE}\n使用者名稱: {USERNAME}\n密碼: {PASSWORD}\n\n記得要經常變更密碼以及在您第一次登入時也要變更。\n\n您可以登入到這 {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\n感謝您使用我們的服務。\n"
 
 msgid " Admin / Support / Open Tickets"
 msgstr " 管理/ 支援 / 新增問題"
@@ -116,9 +26,6 @@ msgstr " 客戶 / 網頁工具 / 自訂錯誤頁面 / 編輯自訂錯誤頁面"
 
 msgid " Wrong IP address."
 msgstr "錯誤的 IP 地址"
-
-msgid " was deleted by {ADMIN}!"
-msgstr "已被 {ADMIN} 刪除了!"
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -500,6 +407,9 @@ msgstr "主機方案的名稱已經存在了。"
 
 msgid "A new i-MSCP version is available"
 msgstr "i-MSCP 目前已經有最新版本"
+
+msgid "A new software package has been uploaded"
+msgstr ""
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "透過 Web 介面存取您的網域狀態。"
@@ -1119,9 +1029,6 @@ msgstr ""
 
 msgid "Auto (Browser language)"
 msgstr "自動 (瀏覽器語言)"
-
-msgid "Auto email template data updated!"
-msgstr "自動郵件範本資料更新完成！"
 
 msgid "Auto responder"
 msgstr "自動回覆"
@@ -1829,55 +1736,6 @@ msgstr "已停用"
 msgid "Deactivation in progress..."
 msgstr "停用執行中..."
 
-#, php-format
-msgid ""
-"Dear %s,\n"
-"\n"
-"You have a new ticket:\n"
-msgstr "親愛的 %s,\n\n您有新的服務單:\n"
-
-#, php-format
-msgid ""
-"Dear %s,\n"
-"\n"
-"You have an answer for this ticket:\n"
-msgstr "親愛的 %s,\n\n您有一個關於這個服單的回覆:\n"
-
-msgid ""
-"Dear {ADMIN},\n"
-"\t{RESELLER} has uploaded a new software package.\n"
-"\n"
-"\tDetails:\n"
-"\tReseller ID: {RESELLER_ID}\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr "親愛的 {ADMIN},\n\t{RESELLER} 已上傳新的軟體套件。\n\n\t詳細資訊:\n\t經銷商 ID: {RESELLER_ID}\n\t套件名稱: {SOFTWARE}\n\t套件 ID: {SOFTWARE_ID}\n\n\t請登入到您的 i-MSCP 控制台了解更多資訊。"
-
-msgid ""
-"Dear {RESELLER},\n"
-"\t\tYour uploaded software was deleted by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tMessage from {ADMIN}:\n"
-"\t"
-msgstr "親愛的 {RESELLER},\n\t\t您上傳的軟體已經被 {ADMIN} 刪除了。\n\n\t詳細資訊:\n\t套件名稱: {SOFTWARE}\n\t套件 ID: {SOFTWARE_ID}\n\n\t訊息發出由 {ADMIN}:\n\t"
-
-msgid ""
-"Dear {RESELLER},\n"
-"\tYour uploaded a software package was successful activated by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr "親愛的 {RESELLER},\n\t您上傳的軟體套件已成功的由 {ADMIN} 啟動了。\n\n\t詳細資料:\n\t套件名稱: {SOFTWARE}\n\t套件 ID: {SOFTWARE_ID}\n\n\t請登入到您的 i-MSCP 控制台來了解更多資訊。"
-
 msgid "Debugger"
 msgstr "除錯"
 
@@ -2383,7 +2241,7 @@ msgid "FTP account"
 msgstr "FTP 帳號"
 
 msgid "FTP account already exists."
-msgstr ""
+msgstr "FTP 帳號已經存在"
 
 msgid "FTP account limit"
 msgstr "FTP 帳號限制"
@@ -2404,10 +2262,10 @@ msgid "FTP accounts"
 msgstr "FTP  帳號"
 
 msgid "FTP home directory"
-msgstr ""
+msgstr "FTP 家目錄"
 
 msgid "FTP home directory cannot be empty."
-msgstr ""
+msgstr "FTP 家目錄不可以空白"
 
 msgid "FTP traffic"
 msgstr "FTP 流量"
@@ -2844,7 +2702,7 @@ msgid "Internationalization"
 msgstr "國際化"
 
 msgid "Invalid FTP username."
-msgstr ""
+msgstr "不正確的 FTP 使用者名稱"
 
 msgid "Invalid MX priority."
 msgstr "無效的 MX 優先權。"
@@ -2857,7 +2715,7 @@ msgid "Invalid SQL user host: %s"
 msgstr "無效資料庫使用者主機: %s"
 
 msgid "Invalid SSL certificate"
-msgstr ""
+msgstr "不正確的 SSL 憑證"
 
 msgid "Invalid SSL certificate."
 msgstr "無效的 SSL 憑證"
@@ -2987,9 +2845,6 @@ msgstr "讀取資料中..."
 msgid "Log entries successfully deleted."
 msgstr "紀錄已成功刪除。"
 
-msgid "Log in to answer"
-msgstr "登入來回答"
-
 msgid "Login"
 msgstr "登入"
 
@@ -3029,6 +2884,9 @@ msgstr "忘記密碼"
 
 msgid "Lost password email"
 msgstr "忘記密碼信件"
+
+msgid "Lost password email templates were updated."
+msgstr ""
 
 msgid "Lost password link"
 msgstr "忘記密碼連結"
@@ -3234,9 +3092,6 @@ msgstr "新 SQL 使用者資料"
 
 msgid "New alias order for {CUSTOMER}"
 msgstr "新別名訂購的客戶為 {CUSTOMER}"
-
-msgid "New password has not been sent. Ask your administrator."
-msgstr "新密碼並未發送，請詢問管理員．"
 
 msgid "New ticket"
 msgstr "新客戶服務單"
@@ -3930,10 +3785,6 @@ msgstr "上一個"
 msgid "Priority"
 msgstr "優先權"
 
-#, php-format
-msgid "Priority: %s\n"
-msgstr "優先權: %s\n"
-
 msgid "Private key"
 msgstr "私鑰"
 
@@ -4358,7 +4209,7 @@ msgid "SSL feature is not available. You can only view your certificate."
 msgstr "SSL 功能是無效的。您只能檢視您的憑證。"
 
 msgid "SSL status"
-msgstr ""
+msgstr "SSL 狀態"
 
 msgid "Save"
 msgstr "儲存"
@@ -4800,9 +4651,6 @@ msgstr "目標連接埠"
 
 msgid "Target port must be a number."
 msgstr ""
-
-msgid "Template for Auto email successfully updated."
-msgstr "自動郵件範本已成功的更新了。"
 
 msgid "Temporary folder not found."
 msgstr "暫存資料夾找不到。"
@@ -5444,6 +5292,9 @@ msgstr "Web工具"
 msgid "Welcome email"
 msgstr "歡迎郵件"
 
+msgid "Welcome email template has been updated."
+msgstr ""
+
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "歡迎 {USERNAME} 來到 i-MSCP"
 
@@ -5558,6 +5409,9 @@ msgstr "您不可以新增電子郵件帳號。您已經分配您的郵件配額
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "您不能刪除已經有任何客戶帳號的代理商。"
+
+msgid "You cannot delete the default administrator."
+msgstr ""
 
 msgid "You cannot delete the last active IP address."
 msgstr "您不能刪除最後一個可用的 IP位址"
@@ -5797,20 +5651,29 @@ msgstr "您的新 i-MSCP 登入"
 msgid "Your new password"
 msgstr "您的新密碼"
 
-msgid "Your new password has been sent. Check your email."
-msgstr "您的新密碼已經寄送，請查看您的信箱。"
-
 msgid "Your package is corrupt. Please correct it!"
 msgstr "您的套件是損壞的。請用正常的!"
+
+msgid "Your password has been successfully renewed. Check your emails."
+msgstr ""
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
 msgstr "您的遠端檔案大小 (%s) 低於 1 位元。請檢查您的網址。"
 
 msgid ""
-"Your request for new password has been registered. You will receive an email"
-" with instructions to complete the process."
-msgstr "您要新密碼的需求已設定完成。您將會收到含有說明的電子郵件來完成這個動作。"
+"Your request for password renewal has been registered. You will receive an "
+"email with instructions to complete the process."
+msgstr ""
+
+msgid "Your request for password renewal is either invalid or has expired."
+msgstr ""
+
+msgid "Your software package has been activated"
+msgstr ""
+
+msgid "Your software package has been deleted"
+msgstr ""
 
 msgid "ZB"
 msgstr "ZB"
@@ -5836,9 +5699,6 @@ msgstr "[New]"
 msgid "[Re]"
 msgstr "[Re]"
 
-msgid "[Ticket]"
-msgstr "[Ticket]"
-
 msgid "_: Localised language"
 msgstr "正體中文 - Traditional Chinese"
 
@@ -5854,6 +5714,9 @@ msgstr "已啟用 (軟體區)"
 
 msgid "addition"
 msgstr "新增"
+
+msgid "administrator"
+msgstr ""
 
 msgid "and"
 msgstr "和"
@@ -6057,14 +5920,8 @@ msgstr "萬用字元"
 msgid "yes"
 msgstr "是"
 
-msgid "{ADMIN} activated your software package"
-msgstr "{ADMIN} 已啟用您的軟體套件"
-
-msgid "{RESELLER} uploaded a new software package"
-msgstr "{RESELLER} 已上傳新的軟體套件"
-
 msgid "{USERNAME} user statistics"
 msgstr "{USERNAME} 使用者狀態"
 
 msgid "© 2010-2016 i-MSCP Team<br>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2016 i-MSCP Team<br>All Rights Reserved"

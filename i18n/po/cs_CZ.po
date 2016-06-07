@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-05-17 21:33+0200\n"
-"PO-Revision-Date: 2016-05-17 19:35+0000\n"
+"POT-Creation-Date: 2016-06-07 06:07+0200\n"
+"PO-Revision-Date: 2016-06-07 04:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/i-mscp/i-MSCP/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
@@ -16,97 +16,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-
-msgid ""
-"\n"
-"\n"
-"Dear {NAME},\n"
-"\n"
-"Use this link to activate your new i-MSCP password:\n"
-"\n"
-"{LINK}\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr ""
-
-msgid ""
-"\n"
-"\n"
-"Dear {RESELLER},\n"
-"\n"
-"Your customer {CUSTOMER} is awaiting for the approval of a new domain alias:\n"
-"\n"
-"{ALIAS}\n"
-"\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr ""
-
-msgid ""
-"\n"
-"\n"
-"Hello {NAME},\n"
-"\n"
-"Your user name is: {USERNAME}\n"
-"Your password is: {PASSWORD}\n"
-"\n"
-"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr ""
-
-msgid ""
-"\n"
-"Dear {NAME},\n"
-"\n"
-"A new account has been created for you.\n"
-"\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
-"\n"
-"Thank you for using our services.\n"
-msgstr ""
-
-msgid ""
-"\n"
-"Dear {NAME},\n"
-"\n"
-"A new account has been created for you.\n"
-"\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Thank you for using our services.\n"
-msgstr ""
 
 msgid " Admin / Support / Open Tickets"
 msgstr "Admin / Podpora / Otevřené Tickety"
@@ -116,9 +25,6 @@ msgstr ""
 
 msgid " Wrong IP address."
 msgstr "Špatná IP adresa."
-
-msgid " was deleted by {ADMIN}!"
-msgstr ""
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -500,6 +406,9 @@ msgstr "Hostingový plán se stejným názvem již existuje."
 
 msgid "A new i-MSCP version is available"
 msgstr "Je dostupná nová verze i-MSCP"
+
+msgid "A new software package has been uploaded"
+msgstr ""
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Přístup ke statistikám domény přes webové rozhraní."
@@ -1119,9 +1028,6 @@ msgstr ""
 
 msgid "Auto (Browser language)"
 msgstr ""
-
-msgid "Auto email template data updated!"
-msgstr "Šablona pro automatický email zaktualizována!"
 
 msgid "Auto responder"
 msgstr ""
@@ -1827,55 +1733,6 @@ msgid "Deactivated"
 msgstr "Deaktivováno"
 
 msgid "Deactivation in progress..."
-msgstr ""
-
-#, php-format
-msgid ""
-"Dear %s,\n"
-"\n"
-"You have a new ticket:\n"
-msgstr ""
-
-#, php-format
-msgid ""
-"Dear %s,\n"
-"\n"
-"You have an answer for this ticket:\n"
-msgstr ""
-
-msgid ""
-"Dear {ADMIN},\n"
-"\t{RESELLER} has uploaded a new software package.\n"
-"\n"
-"\tDetails:\n"
-"\tReseller ID: {RESELLER_ID}\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr ""
-
-msgid ""
-"Dear {RESELLER},\n"
-"\t\tYour uploaded software was deleted by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tMessage from {ADMIN}:\n"
-"\t"
-msgstr ""
-
-msgid ""
-"Dear {RESELLER},\n"
-"\tYour uploaded a software package was successful activated by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
 msgstr ""
 
 msgid "Debugger"
@@ -2987,9 +2844,6 @@ msgstr ""
 msgid "Log entries successfully deleted."
 msgstr ""
 
-msgid "Log in to answer"
-msgstr ""
-
 msgid "Login"
 msgstr "Přihlášení"
 
@@ -3028,6 +2882,9 @@ msgid "Lost password"
 msgstr "Zapomenuté heslo"
 
 msgid "Lost password email"
+msgstr ""
+
+msgid "Lost password email templates were updated."
 msgstr ""
 
 msgid "Lost password link"
@@ -3234,9 +3091,6 @@ msgstr ""
 
 msgid "New alias order for {CUSTOMER}"
 msgstr ""
-
-msgid "New password has not been sent. Ask your administrator."
-msgstr "Nové heslo nebylo odeslána. Zeptejte se svého správce."
 
 msgid "New ticket"
 msgstr "Nový tiket"
@@ -3929,10 +3783,6 @@ msgstr "Předchozí"
 
 msgid "Priority"
 msgstr "Priorita"
-
-#, php-format
-msgid "Priority: %s\n"
-msgstr ""
 
 msgid "Private key"
 msgstr ""
@@ -4801,9 +4651,6 @@ msgstr "Cílový port"
 msgid "Target port must be a number."
 msgstr ""
 
-msgid "Template for Auto email successfully updated."
-msgstr "Šablona pro automatický e-mail úspěšně aktualizována."
-
 msgid "Temporary folder not found."
 msgstr "Dočasná složka nebyla nalezena."
 
@@ -5444,6 +5291,9 @@ msgstr "Webové nástroje"
 msgid "Welcome email"
 msgstr ""
 
+msgid "Welcome email template has been updated."
+msgstr ""
+
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr ""
 
@@ -5557,6 +5407,9 @@ msgid ""
 msgstr ""
 
 msgid "You cannot delete a reseller that has customer accounts."
+msgstr ""
+
+msgid "You cannot delete the default administrator."
 msgstr ""
 
 msgid "You cannot delete the last active IP address."
@@ -5797,19 +5650,28 @@ msgstr ""
 msgid "Your new password"
 msgstr ""
 
-msgid "Your new password has been sent. Check your email."
-msgstr ""
-
 msgid "Your package is corrupt. Please correct it!"
 msgstr "Váš balíček je poškozen. Prosím, opravte jej!"
+
+msgid "Your password has been successfully renewed. Check your emails."
+msgstr ""
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
 msgstr ""
 
 msgid ""
-"Your request for new password has been registered. You will receive an email"
-" with instructions to complete the process."
+"Your request for password renewal has been registered. You will receive an "
+"email with instructions to complete the process."
+msgstr ""
+
+msgid "Your request for password renewal is either invalid or has expired."
+msgstr ""
+
+msgid "Your software package has been activated"
+msgstr ""
+
+msgid "Your software package has been deleted"
 msgstr ""
 
 msgid "ZB"
@@ -5836,9 +5698,6 @@ msgstr "[Nový]"
 msgid "[Re]"
 msgstr "[Odpověď]"
 
-msgid "[Ticket]"
-msgstr "[Tiket]"
-
 msgid "_: Localised language"
 msgstr "Česky - Czech"
 
@@ -5853,6 +5712,9 @@ msgid "activated (Softwaredepot)"
 msgstr ""
 
 msgid "addition"
+msgstr ""
+
+msgid "administrator"
 msgstr ""
 
 msgid "and"
@@ -6056,12 +5918,6 @@ msgstr "wildcard"
 
 msgid "yes"
 msgstr "ano"
-
-msgid "{ADMIN} activated your software package"
-msgstr "{ADMIN} aktivoval softwerový balíček"
-
-msgid "{RESELLER} uploaded a new software package"
-msgstr "{Prodejce} nahrál nový softwerový balíček"
 
 msgid "{USERNAME} user statistics"
 msgstr ""

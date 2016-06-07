@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-05-17 21:33+0200\n"
-"PO-Revision-Date: 2016-05-17 19:35+0000\n"
+"POT-Creation-Date: 2016-06-07 06:07+0200\n"
+"PO-Revision-Date: 2016-06-07 04:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/i-mscp/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -17,97 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-
-msgid ""
-"\n"
-"\n"
-"Dear {NAME},\n"
-"\n"
-"Use this link to activate your new i-MSCP password:\n"
-"\n"
-"{LINK}\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\nCher {NAME},\n\nVeuillez utiliser ce lien pour activer votre nouveau mot de passe i-MSCP:\n\n{LINK}\n\nMerci d'utiliser nos services.\n\n___________________________\nL'équipe i-MSCP\n\n"
-
-msgid ""
-"\n"
-"\n"
-"Dear {RESELLER},\n"
-"\n"
-"Your customer {CUSTOMER} is awaiting for the approval of a new domain alias:\n"
-"\n"
-"{ALIAS}\n"
-"\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\nCher {RESELLER},\n\nVotre client {CUSTOMER} attend pour l'approbation de son alias de domaine:\n\n{ALIAS}\n\nVous pouvez valider cette commande en vous rendant sur cette page: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n\nMerci d'utiliser nos services.\n\n___________________________\nL'équipe i-MSCP\n"
-
-msgid ""
-"\n"
-"\n"
-"Hello {NAME},\n"
-"\n"
-"Your user name is: {USERNAME}\n"
-"Your password is: {PASSWORD}\n"
-"\n"
-"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\nBonjour {NAME},\n\nVotre nom d'utilisateur est: {USERNAME}\nVotre mot de passe est: {PASSWORD}\n\nVous pouvez vous connecter à l'adresse suivante: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\nMerci d'utiliser nos services\n\n___________________________\nLéquipe i-MSCP\n\n"
-
-msgid ""
-"\n"
-"Dear {NAME},\n"
-"\n"
-"A new account has been created for you.\n"
-"\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
-"\n"
-"Thank you for using our services.\n"
-msgstr "\nCher {NAME},\n\nUn nouveau compte a été créé pour vous.\n\nType de compte: {USERTYPE}\nNom d'utilisateur: {USERNAME}\nMot de passe: {PASSWORD}\n\nPensez à changer votre mot de passe de temps en temps et surtout la première fois que vous vous connectez.\n\nVous pouvez vous connecter à l'adresse suivante: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\nAccès aux statistiques: http://{USERNAME}/stats/ (Même nom d'utilisateur et mot de passe)\n\nMerci d'utiliser nos services.\n"
-
-msgid ""
-"\n"
-"Dear {NAME},\n"
-"\n"
-"A new account has been created for you.\n"
-"\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Thank you for using our services.\n"
-msgstr "\nCher {NAME},\n\nUn nouveau compte a été créé pour vous.\n\nType d'utilisateur: {USERTYPE}\nNom d'utilisateur: {USERNAME}\nMot de passe: {PASSWORD}\n\nPensez à changer votre mot de passe de temps en temps et surtout la première fois que vous vous connectez.\n\nVous pouvez vous connectez à l'adresse suivante {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\nMerci d'utiliser nos services.\n"
 
 msgid " Admin / Support / Open Tickets"
 msgstr "Admininistrateur / Support / Tickets ouverts"
@@ -117,9 +26,6 @@ msgstr "Client / Outils Internet / Pages d'erreur personnalisées / Éditer une 
 
 msgid " Wrong IP address."
 msgstr "Adresse IP incorrecte."
-
-msgid " was deleted by {ADMIN}!"
-msgstr "a été supprimé par {ADMIN} !"
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -501,6 +407,9 @@ msgstr "Un plan d'hébergement avec le même nom existe déjà."
 
 msgid "A new i-MSCP version is available"
 msgstr "Une mise à jour pour i-MSCP est disponible"
+
+msgid "A new software package has been uploaded"
+msgstr ""
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Accédez aux statistiques de votre domaine via l'interface Web."
@@ -1121,9 +1030,6 @@ msgstr "Données d'authentification"
 msgid "Auto (Browser language)"
 msgstr "Auto (Langage du navigateur)"
 
-msgid "Auto email template data updated!"
-msgstr "Mise en page automatique des e-mails mise à jour !"
-
 msgid "Auto responder"
 msgstr "Réponse automatique"
 
@@ -1537,7 +1443,7 @@ msgstr "Impossible de supprimer le certificat SSL. Une erreur inattendue s'est p
 
 #, php-format
 msgid "Could not delete the %s plugin: %s"
-msgstr ""
+msgstr "Impossible de supprimer l'extension %s: %s"
 
 #, php-format
 msgid "Could not disable the %s plugin: %s"
@@ -1829,55 +1735,6 @@ msgstr "Désactivé"
 
 msgid "Deactivation in progress..."
 msgstr "Désactivation en cours..."
-
-#, php-format
-msgid ""
-"Dear %s,\n"
-"\n"
-"You have a new ticket:\n"
-msgstr "Cher %s,\n\nvous avez un nouveau ticket : \n"
-
-#, php-format
-msgid ""
-"Dear %s,\n"
-"\n"
-"You have an answer for this ticket:\n"
-msgstr "Cher %s,\n\nVous avez une réponse pour ce ticket :\n"
-
-msgid ""
-"Dear {ADMIN},\n"
-"\t{RESELLER} has uploaded a new software package.\n"
-"\n"
-"\tDetails:\n"
-"\tReseller ID: {RESELLER_ID}\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr "Cher  {ADMIN},\n\t{RESELLER} a envyé un nouveau paquet logiciel.\n\n\tDétails :\n\tID revendeur : {RESELLER_ID}\n\tNom du paquet : {SOFTWARE}\n\tID du paquet : {SOFTWARE_ID}\n\n\tVeuillez vous connecter au panneau de contrôle i-MSCP pour plus de détails"
-
-msgid ""
-"Dear {RESELLER},\n"
-"\t\tYour uploaded software was deleted by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tMessage from {ADMIN}:\n"
-"\t"
-msgstr "Cher  {RESELLER},\n\tVotre logiciel téléversé a été supprimé par {ADMIN}.\n\n\tDétails :\n\tNom du paquet : {SOFTWARE}\n\tID du paquet : {SOFTWARE_ID}\n\n\tMessage de {ADMIN} :\n\t"
-
-msgid ""
-"Dear {RESELLER},\n"
-"\tYour uploaded a software package was successful activated by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr "Cher {RESELLER},\n\nVotre logiciel téléversé a été accepté par {ADMIN}.\n\nDétails :\nNom du paquet : {SOFTWARE}\nID du paquet : {SOFTWARE_ID}\n\nVeuillez vous connecter au panneau d'administration pour plus de détails."
 
 msgid "Debugger"
 msgstr "Debogueur"
@@ -2988,9 +2845,6 @@ msgstr "Chargement des données..."
 msgid "Log entries successfully deleted."
 msgstr "Les entrées du journal ont été supprimées."
 
-msgid "Log in to answer"
-msgstr "Se connecter pour répondre"
-
 msgid "Login"
 msgstr "Connexion"
 
@@ -3030,6 +2884,9 @@ msgstr "Mot de passe perdu"
 
 msgid "Lost password email"
 msgstr "E-mail de mot de passe oublié"
+
+msgid "Lost password email templates were updated."
+msgstr ""
 
 msgid "Lost password link"
 msgstr "Lien pour les mots de passe oubliés"
@@ -3235,9 +3092,6 @@ msgstr "Données de l'utilisateur SQL"
 
 msgid "New alias order for {CUSTOMER}"
 msgstr "Nouvelle commande d'alias pour {CUSTOMER}"
-
-msgid "New password has not been sent. Ask your administrator."
-msgstr "Le nouveau mot de passe n'a pas pu être envoyé. Veuillez contacter votre administrateur."
 
 msgid "New ticket"
 msgstr "Nouveau ticket"
@@ -3930,10 +3784,6 @@ msgstr "Précédent"
 
 msgid "Priority"
 msgstr "Priorité"
-
-#, php-format
-msgid "Priority: %s\n"
-msgstr "Priorité : %s\n"
 
 msgid "Private key"
 msgstr "Clé privée"
@@ -4802,9 +4652,6 @@ msgstr "Port cible"
 msgid "Target port must be a number."
 msgstr "Le port doit être un nombre."
 
-msgid "Template for Auto email successfully updated."
-msgstr "le modèle a été mis à jour."
-
 msgid "Temporary folder not found."
 msgstr "Dossier temporaire non trouvé."
 
@@ -5445,6 +5292,9 @@ msgstr "Outils Internet"
 msgid "Welcome email"
 msgstr "E-mail de bienvenue"
 
+msgid "Welcome email template has been updated."
+msgstr ""
+
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "Bienvenue {USERNAME} dans i-MSCP"
 
@@ -5559,6 +5409,9 @@ msgstr "Vous ne pouvez pas ajouter de nouveau compte de messageries. Vous avez d
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "Vous ne pouvez pas supprimer un revendeur qui a des comptes clients."
+
+msgid "You cannot delete the default administrator."
+msgstr ""
 
 msgid "You cannot delete the last active IP address."
 msgstr "Vous ne pouvez pas supprimé la dernière adresse Ip disponible."
@@ -5798,20 +5651,29 @@ msgstr "Vos nouveaux identifiants i-MSCP"
 msgid "Your new password"
 msgstr "Votre nouveau mot de passe"
 
-msgid "Your new password has been sent. Check your email."
-msgstr "Votre nouveau mot de passe a été envoyé. Vérifier vos e-mails."
-
 msgid "Your package is corrupt. Please correct it!"
 msgstr "Votre paquet est corrompu. Veuillez le corriger."
+
+msgid "Your password has been successfully renewed. Check your emails."
+msgstr ""
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
 msgstr "Votre fichier distant (%s) est inférieur à 1 byte. Veuillez vérifier l'URL."
 
 msgid ""
-"Your request for new password has been registered. You will receive an email"
-" with instructions to complete the process."
-msgstr "Votre demande de nouveau mot de passe a été enregistrée. Vous allez recevoir un e-mail avec les instruction pour terminer le processus."
+"Your request for password renewal has been registered. You will receive an "
+"email with instructions to complete the process."
+msgstr ""
+
+msgid "Your request for password renewal is either invalid or has expired."
+msgstr ""
+
+msgid "Your software package has been activated"
+msgstr ""
+
+msgid "Your software package has been deleted"
+msgstr ""
 
 msgid "ZB"
 msgstr "Zo"
@@ -5837,9 +5699,6 @@ msgstr "[Nouveau]"
 msgid "[Re]"
 msgstr "[Re]"
 
-msgid "[Ticket]"
-msgstr "[Ticket]"
-
 msgid "_: Localised language"
 msgstr "Français (France) - French (France)"
 
@@ -5855,6 +5714,9 @@ msgstr "activé (Dépôt de logiciels)"
 
 msgid "addition"
 msgstr "ajout"
+
+msgid "administrator"
+msgstr ""
 
 msgid "and"
 msgstr "et"
@@ -6057,12 +5919,6 @@ msgstr "joker"
 
 msgid "yes"
 msgstr "oui"
-
-msgid "{ADMIN} activated your software package"
-msgstr "{ADMIN} a activé votre logiciel"
-
-msgid "{RESELLER} uploaded a new software package"
-msgstr "{RESELLER} a téléversé un nouveau logiciel"
 
 msgid "{USERNAME} user statistics"
 msgstr "Statistiques de l'utilsateur {USERNAME}"

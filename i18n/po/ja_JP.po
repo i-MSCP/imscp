@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-05-17 21:33+0200\n"
-"PO-Revision-Date: 2016-05-17 19:35+0000\n"
+"POT-Creation-Date: 2016-06-07 06:07+0200\n"
+"PO-Revision-Date: 2016-06-07 04:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/i-mscp/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -16,97 +16,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ja_JP\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-
-msgid ""
-"\n"
-"\n"
-"Dear {NAME},\n"
-"\n"
-"Use this link to activate your new i-MSCP password:\n"
-"\n"
-"{LINK}\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\n親愛なる {NAME}様,\n\n新しいI-MSCPパスワードを有効にするには、このリンクを使用します。\n\n{LINK}\n\nサービスをご利用いただき、ありがとうございます。\n\n___________________________\ni-MSCP チーム\n\n"
-
-msgid ""
-"\n"
-"\n"
-"Dear {RESELLER},\n"
-"\n"
-"Your customer {CUSTOMER} is awaiting for the approval of a new domain alias:\n"
-"\n"
-"{ALIAS}\n"
-"\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\n親愛なる {RESELLER}。\n\nお客様 {CUSTOMER} は、新しいドメインエイリアスの認証を得るために待っています:\n\n{ALIAS}\n\nログイン後、 {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.phpで新しいエイリアスを有効にすることができます。\n\nサービスをご利用いただきありがとうございます。\n\n___________________________\ni-MSCP チーム\n"
-
-msgid ""
-"\n"
-"\n"
-"Hello {NAME},\n"
-"\n"
-"Your user name is: {USERNAME}\n"
-"Your password is: {PASSWORD}\n"
-"\n"
-"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\nこんにちは {NAME}様,\n\nユーザー名は次のとおりです: {USERNAME}\nパスワードは次のとおりです: {PASSWORD}\n\nあなたは、 {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT} でログインできます。\n\nサービスをご利用いただき、ありがとうございます。\n\n___________________________\ni-MSCP チーム\n\n"
-
-msgid ""
-"\n"
-"Dear {NAME},\n"
-"\n"
-"A new account has been created for you.\n"
-"\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
-"\n"
-"Thank you for using our services.\n"
-msgstr "\n親愛なる {NAME}様,\n\n新しいアカウントが作成されています。\n\nアカウント情報：\n\nユーザ種別： {USERTYPE}\nユーザ名： {USERNAME}\nパスワード： {PASSWORD}\n\n最初にログイン時にパスワードを変更するのを忘れないでください。\n\n今、{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}でログインすることができます。\n\n統計： http://{USERNAME}/stats/ (上記と同じユーザ名とパスワード)\n\nサービスをご利用いただきありがとうございます。\n"
-
-msgid ""
-"\n"
-"Dear {NAME},\n"
-"\n"
-"A new account has been created for you.\n"
-"\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Thank you for using our services.\n"
-msgstr "\n親愛なる {NAME}様,\n\n新しいアカウントが作成されています。\n\nアカウント情報：\n\nユーザ種別： {USERTYPE}\nユーザ名： {USERNAME}\nパスワード： {PASSWORD}\n\n最初にログイン時にパスワードを変更するのを忘れないでください。\n\n今、{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}でログインすることができます。\n\nサービスをご利用いただきありがとうございます。\n"
 
 msgid " Admin / Support / Open Tickets"
 msgstr "管理者 / サポート / オープンチケット"
@@ -116,9 +25,6 @@ msgstr " クライアント / Webツール / カスタムエラーページ / �
 
 msgid " Wrong IP address."
 msgstr "間違ったIPアドレス。"
-
-msgid " was deleted by {ADMIN}!"
-msgstr "{ADMIN} は削除されました。"
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -500,6 +406,9 @@ msgstr "同じ名前のホスティングプランは既に存在します。"
 
 msgid "A new i-MSCP version is available"
 msgstr "新しいi-MSCPのバージョンが提供されています"
+
+msgid "A new software package has been uploaded"
+msgstr ""
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Webインターフェイスを介してドメインの統計情報にアクセスします。"
@@ -1119,9 +1028,6 @@ msgstr ""
 
 msgid "Auto (Browser language)"
 msgstr "自動（ブラウザの言語）"
-
-msgid "Auto email template data updated!"
-msgstr "自動送信Eメールのテンプレート情報が更新されました！"
 
 msgid "Auto responder"
 msgstr "自動応答"
@@ -1828,55 +1734,6 @@ msgstr "無効化する"
 
 msgid "Deactivation in progress..."
 msgstr "非活性化処理中..."
-
-#, php-format
-msgid ""
-"Dear %s,\n"
-"\n"
-"You have a new ticket:\n"
-msgstr "親愛なる %s 様\n\n新しいチケットを持っています：\n"
-
-#, php-format
-msgid ""
-"Dear %s,\n"
-"\n"
-"You have an answer for this ticket:\n"
-msgstr "親愛なる %s 様\n\nこのチケットの回答があります：\n"
-
-msgid ""
-"Dear {ADMIN},\n"
-"\t{RESELLER} has uploaded a new software package.\n"
-"\n"
-"\tDetails:\n"
-"\tReseller ID: {RESELLER_ID}\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr "親愛なる {ADMIN} 様\n\t{RESELLER}は、新しいソフトウェアパッケージをアップロードしました。\n\n\t詳細：\n\tリセラーID： 　   {RESELLER_ID}\n\tパッケージ名： {SOFTWARE}\n\tパッケージID：: {SOFTWARE_ID}\n\n\t詳細は、i-MSCPコントロールパネルにログインしてください。"
-
-msgid ""
-"Dear {RESELLER},\n"
-"\t\tYour uploaded software was deleted by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tMessage from {ADMIN}:\n"
-"\t"
-msgstr "親愛なる {RESELLER} 様\n\tアップロードされたソフトウェアは、{ADMIN}によって削除されました。\n\n\t詳細：\n\tパッケージ名：  {SOFTWARE}\n\tパッケージID：  {SOFTWARE_ID}\n\n\t{ADMIN} からのメッセージ：\n\t"
-
-msgid ""
-"Dear {RESELLER},\n"
-"\tYour uploaded a software package was successful activated by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr ""
 
 msgid "Debugger"
 msgstr "デバッガー"
@@ -2987,9 +2844,6 @@ msgstr "データのロード中..."
 msgid "Log entries successfully deleted."
 msgstr "ログエントリを削除しました。"
 
-msgid "Log in to answer"
-msgstr "回答するには、ログインしてください"
-
 msgid "Login"
 msgstr "ログイン"
 
@@ -3029,6 +2883,9 @@ msgstr "パスワードを忘れた"
 
 msgid "Lost password email"
 msgstr "失われたEメールパスワード"
+
+msgid "Lost password email templates were updated."
+msgstr ""
 
 msgid "Lost password link"
 msgstr "パスワード忘れリンク"
@@ -3234,9 +3091,6 @@ msgstr "新しいSQLユーザデータ"
 
 msgid "New alias order for {CUSTOMER}"
 msgstr "{CUSTOMER} ための新しいエイリアスのオーダー"
-
-msgid "New password has not been sent. Ask your administrator."
-msgstr "新しいパスワードが送信されていません。管理者に問い合わせてください。"
 
 msgid "New ticket"
 msgstr "新規チケット"
@@ -3929,10 +3783,6 @@ msgstr "前へ"
 
 msgid "Priority"
 msgstr "優先度"
-
-#, php-format
-msgid "Priority: %s\n"
-msgstr "優先度： %s\n"
 
 msgid "Private key"
 msgstr "秘密鍵"
@@ -4801,9 +4651,6 @@ msgstr "ターゲットポート"
 msgid "Target port must be a number."
 msgstr ""
 
-msgid "Template for Auto email successfully updated."
-msgstr "自動Eメールのテンプレートは更新されました。"
-
 msgid "Temporary folder not found."
 msgstr "一時フォルダが見つかりません。"
 
@@ -5444,6 +5291,9 @@ msgstr "Webツール"
 msgid "Welcome email"
 msgstr "ウェルカムメール"
 
+msgid "Welcome email template has been updated."
+msgstr ""
+
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "{USERNAME} さんi-MSCPへようこそ！"
 
@@ -5558,6 +5408,9 @@ msgstr "新しいEメールアカウントを追加することはできませ�
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "顧客アカウントを持っているリセラーは削除できません。"
+
+msgid "You cannot delete the default administrator."
+msgstr ""
 
 msgid "You cannot delete the last active IP address."
 msgstr "あなたは最後のアクティブなIPアドレスを削除することはできません。"
@@ -5797,20 +5650,29 @@ msgstr "新しい i-MSCPログイン"
 msgid "Your new password"
 msgstr "新しいパスワード"
 
-msgid "Your new password has been sent. Check your email."
-msgstr "新しいパスワードが送られました。Eメールをチェックしてください。"
-
 msgid "Your package is corrupt. Please correct it!"
 msgstr "パッケージが破損しています。修正してください！"
+
+msgid "Your password has been successfully renewed. Check your emails."
+msgstr ""
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
 msgstr ""
 
 msgid ""
-"Your request for new password has been registered. You will receive an email"
-" with instructions to complete the process."
-msgstr "新しいパスワードの要求が登録されています。あなたがプロセスを完了するための手順を記載したメールを送ります。"
+"Your request for password renewal has been registered. You will receive an "
+"email with instructions to complete the process."
+msgstr ""
+
+msgid "Your request for password renewal is either invalid or has expired."
+msgstr ""
+
+msgid "Your software package has been activated"
+msgstr ""
+
+msgid "Your software package has been deleted"
+msgstr ""
 
 msgid "ZB"
 msgstr "ZB"
@@ -5836,9 +5698,6 @@ msgstr "[新規]"
 msgid "[Re]"
 msgstr "[返信]"
 
-msgid "[Ticket]"
-msgstr "[チケット]"
-
 msgid "_: Localised language"
 msgstr "日本語 - Japanese"
 
@@ -5854,6 +5713,9 @@ msgstr "有効 (ソフトウェアデポット)"
 
 msgid "addition"
 msgstr "追加"
+
+msgid "administrator"
+msgstr ""
 
 msgid "and"
 msgstr "と"
@@ -6056,12 +5918,6 @@ msgstr "ワイルドカード"
 
 msgid "yes"
 msgstr "はい"
-
-msgid "{ADMIN} activated your software package"
-msgstr "{ADMIN} ソフトウェアパッケージを有効化"
-
-msgid "{RESELLER} uploaded a new software package"
-msgstr "{RESELLER} 新しいソフトウェアパッケージをアップロード"
 
 msgid "{USERNAME} user statistics"
 msgstr "Web統計 - {USERNAME} "

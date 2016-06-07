@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-05-17 21:33+0200\n"
-"PO-Revision-Date: 2016-05-17 19:35+0000\n"
+"POT-Creation-Date: 2016-06-07 06:07+0200\n"
+"PO-Revision-Date: 2016-06-07 04:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/i-mscp/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -19,97 +19,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
-
-msgid ""
-"\n"
-"\n"
-"Dear {NAME},\n"
-"\n"
-"Use this link to activate your new i-MSCP password:\n"
-"\n"
-"{LINK}\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\nУважаемый {NAME},\n\nИспользуйте эту ссылку для активации нового пароля для i-MSCP:\n\n{LINK}\n\nБлагодарим за использование сервисов i-MSCP.\n\n___________________________\nКоманда i-MSCP\n\n"
-
-msgid ""
-"\n"
-"\n"
-"Dear {RESELLER},\n"
-"\n"
-"Your customer {CUSTOMER} is awaiting for the approval of a new domain alias:\n"
-"\n"
-"{ALIAS}\n"
-"\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\nУважаемый {RESELLER}, \n\nВаш клиент {CUSTOMER} ожидает подтверждения для своего нового алиаса: \n\n{ALIAS} \n\nВойдя в панель управления, вы можете подтвердить его, пройдя по ссылке {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n\nБлагодарим за использование сервисов i-MSCP.\n___________________________ \nКоманда i-MSCP \n"
-
-msgid ""
-"\n"
-"\n"
-"Hello {NAME},\n"
-"\n"
-"Your user name is: {USERNAME}\n"
-"Your password is: {PASSWORD}\n"
-"\n"
-"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\nЗдравствуйте {NAME},\n\nВаше имя пользователя: {USERNAME}\nВаш пароль: {PASSWORD}\n\nВы можете войти через {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\nБлагодарим за использование сервисов i-MSCP.\n\n___________________________\nКоманда i-MSCP\n"
-
-msgid ""
-"\n"
-"Dear {NAME},\n"
-"\n"
-"A new account has been created for you.\n"
-"\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
-"\n"
-"Thank you for using our services.\n"
-msgstr "\n\nУважаемый {NAME},\n\nНовая учетная запись i-MSCP была создана для Вас.\n\nИнформация по учетной записи:\n\nТип пользователя: {USERTYPE}\nИмя пользователя: {USERNAME}\nПароль: {PASSWORD}\n\nНе забудьте сменить Ваш пароль после первого входа в учетную запись.\n\nВы можете войти по адресу {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\nСтатистика: http://{USERNAME}/stats/ (С теми же учетными данными)\n\nСпасибо за использование наших сервисов.\n\n___________________________\nКоманда i-MSCP\n"
-
-msgid ""
-"\n"
-"Dear {NAME},\n"
-"\n"
-"A new account has been created for you.\n"
-"\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Thank you for using our services.\n"
-msgstr "\n\nУважаемый {NAME},\n\nНовая учетная запись i-MSCP была создана для Вас.\n\nИнформация о Вашей учетной записи:\n\nТип пользователя: {USERTYPE}\nИмя пользователя: {USERNAME}\nПароль: {PASSWORD}\n\nПожалуйста, для Вашей безопасности, измените Ваш пароль при первом входе.\n\nВы можете войти прямо сейчас {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\nСпасибо за использование наших сервисов .\n\n___________________________\nКоманда i-MSCP\n"
 
 msgid " Admin / Support / Open Tickets"
 msgstr "Администратор / Служба поддержки / Открытые тикеты"
@@ -119,9 +28,6 @@ msgstr "Клиент / Инструменты / Пользовательские
 
 msgid " Wrong IP address."
 msgstr "Неверный IP адрес."
-
-msgid " was deleted by {ADMIN}!"
-msgstr "было удалено {ADMIN}!"
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -503,6 +409,9 @@ msgstr "Хостинг-план с таким именем уже существ
 
 msgid "A new i-MSCP version is available"
 msgstr "Доступна новая версия i-MSCP"
+
+msgid "A new software package has been uploaded"
+msgstr ""
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Получить доступ к статистике домена через Web-интерфейс."
@@ -1123,9 +1032,6 @@ msgstr "Данные аутентификации"
 msgid "Auto (Browser language)"
 msgstr "Автоматически (язык браузера)"
 
-msgid "Auto email template data updated!"
-msgstr "Шаблон авто рассылки изменён!"
-
 msgid "Auto responder"
 msgstr "Автоответчик"
 
@@ -1539,7 +1445,7 @@ msgstr "Не удалось удалить SSL сертификат. Произ�
 
 #, php-format
 msgid "Could not delete the %s plugin: %s"
-msgstr ""
+msgstr "Невозможно удалить плагин %s: %s"
 
 #, php-format
 msgid "Could not disable the %s plugin: %s"
@@ -1831,55 +1737,6 @@ msgstr "Деактивировано"
 
 msgid "Deactivation in progress..."
 msgstr "Деактивация в процессе..."
-
-#, php-format
-msgid ""
-"Dear %s,\n"
-"\n"
-"You have a new ticket:\n"
-msgstr "Уважаемый, %s,\n\nУ Вас есть новый тикет:\n"
-
-#, php-format
-msgid ""
-"Dear %s,\n"
-"\n"
-"You have an answer for this ticket:\n"
-msgstr "Уважаемый, %s,\n\nВы получили ответ на этот тикет:\n"
-
-msgid ""
-"Dear {ADMIN},\n"
-"\t{RESELLER} has uploaded a new software package.\n"
-"\n"
-"\tDetails:\n"
-"\tReseller ID: {RESELLER_ID}\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr "Уважаемый {ADMIN},\n\t{RESELLER} загрузил новый пакет программного обеспечения.\n\n\tПодробности:\n\tID Реселлера: {RESELLER_ID}\n\tНазвание пакета: {SOFTWARE}\n\tID пакета: {SOFTWARE_ID}\n\n\tПожалуйста, войдите в вашу панель управления i-MSCP для получения подробностей."
-
-msgid ""
-"Dear {RESELLER},\n"
-"\t\tYour uploaded software was deleted by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tMessage from {ADMIN}:\n"
-"\t"
-msgstr "Уважаемый {RESELLER},\n\t\tЗагруженное Вами ПО было удалено администратором {ADMIN}.\n\n\tПодробности:\n\tНазвание пакета: {SOFTWARE}\n\tID пакета: {SOFTWARE_ID}\n\n\tСообщение от {ADMIN}:\n\t"
-
-msgid ""
-"Dear {RESELLER},\n"
-"\tYour uploaded a software package was successful activated by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr "Уважаемый {RESELLER},\n\nЗагруженное Вами ПО было успешно подтверждено администратором {ADMIN}.\n\nПодробности:\nНазвание пакета: {SOFTWARE}\nID Пакета: {SOFTWARE_ID}\n\nПожалуйста, войдите в вашу панель управления i-MSCP для получения подробностей."
 
 msgid "Debugger"
 msgstr "Отладчик"
@@ -2990,9 +2847,6 @@ msgstr "Загрузка данных..."
 msgid "Log entries successfully deleted."
 msgstr "Записи лога успешно удалены."
 
-msgid "Log in to answer"
-msgstr "Войти, чтобы ответить"
-
 msgid "Login"
 msgstr "Войти"
 
@@ -3032,6 +2886,9 @@ msgstr "Восстановление пароля"
 
 msgid "Lost password email"
 msgstr "Письмо восстановления пароля"
+
+msgid "Lost password email templates were updated."
+msgstr ""
 
 msgid "Lost password link"
 msgstr "Ссылка восстановления пароля"
@@ -3237,9 +3094,6 @@ msgstr "Новые данные пользователя SQL"
 
 msgid "New alias order for {CUSTOMER}"
 msgstr "Новый заказ алиаса для {CUSTOMER}"
-
-msgid "New password has not been sent. Ask your administrator."
-msgstr "Новый пароль не был отправлен. Обратитесь к администратору. "
 
 msgid "New ticket"
 msgstr "Новый тикет"
@@ -3932,10 +3786,6 @@ msgstr "Назад"
 
 msgid "Priority"
 msgstr "Приоритет"
-
-#, php-format
-msgid "Priority: %s\n"
-msgstr "Приоритет: %s\n"
 
 msgid "Private key"
 msgstr "Приватный ключ"
@@ -4804,9 +4654,6 @@ msgstr "Порт назначения"
 msgid "Target port must be a number."
 msgstr "Порт должен быть числом."
 
-msgid "Template for Auto email successfully updated."
-msgstr "Шаблон автосообщения успешно обновлен."
-
 msgid "Temporary folder not found."
 msgstr "Временная папка не найдена."
 
@@ -5447,6 +5294,9 @@ msgstr "Web-инструменты"
 msgid "Welcome email"
 msgstr "Приветственное письмо"
 
+msgid "Welcome email template has been updated."
+msgstr ""
+
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "{USERNAME}, добро пожаловать в i-MSCP"
 
@@ -5561,6 +5411,9 @@ msgstr "Вы не можете добавить новый почтовый ящ
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "Вы не можете удалить реселлера, имеющего клиентов. Пожалуйста, сначала удалите их."
+
+msgid "You cannot delete the default administrator."
+msgstr ""
 
 msgid "You cannot delete the last active IP address."
 msgstr "Вы не можете удалить последний активный IP адрес."
@@ -5800,20 +5653,29 @@ msgstr "Новый I-MSCP логин"
 msgid "Your new password"
 msgstr "Ваш новый пароль"
 
-msgid "Your new password has been sent. Check your email."
-msgstr "Новый пароль отправлен на Ваш почтовый ящик."
-
 msgid "Your package is corrupt. Please correct it!"
 msgstr "Ваш пакет поврежден. Пожалуйста, исправьте его!"
+
+msgid "Your password has been successfully renewed. Check your emails."
+msgstr ""
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
 msgstr "Размер удаленного файла (%s) меньше 1 байта. Пожалуйста, проверьте Ваш URL."
 
 msgid ""
-"Your request for new password has been registered. You will receive an email"
-" with instructions to complete the process."
-msgstr "Ваш запрос нового пароля был зарегистрирован. Вы получите письмо с инструкциями по завершению процесса смены пароля."
+"Your request for password renewal has been registered. You will receive an "
+"email with instructions to complete the process."
+msgstr ""
+
+msgid "Your request for password renewal is either invalid or has expired."
+msgstr ""
+
+msgid "Your software package has been activated"
+msgstr ""
+
+msgid "Your software package has been deleted"
+msgstr ""
 
 msgid "ZB"
 msgstr "ЗБ"
@@ -5839,9 +5701,6 @@ msgstr "[New]"
 msgid "[Re]"
 msgstr "[Re]"
 
-msgid "[Ticket]"
-msgstr "[Ticket]"
-
 msgid "_: Localised language"
 msgstr "Русский язык - Russian"
 
@@ -5857,6 +5716,9 @@ msgstr "активирован (Репозиторий)"
 
 msgid "addition"
 msgstr "добавить"
+
+msgid "administrator"
+msgstr ""
 
 msgid "and"
 msgstr "и"
@@ -6059,12 +5921,6 @@ msgstr "Групповой символ"
 
 msgid "yes"
 msgstr "да"
-
-msgid "{ADMIN} activated your software package"
-msgstr "{ADMIN} активировал Ваш пакет ПО"
-
-msgid "{RESELLER} uploaded a new software package"
-msgstr "{RESELLER} загрузил новый пакет ПО"
 
 msgid "{USERNAME} user statistics"
 msgstr "Статистика пользователя {USERNAME} "

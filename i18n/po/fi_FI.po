@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-05-17 21:33+0200\n"
-"PO-Revision-Date: 2016-05-17 19:35+0000\n"
+"POT-Creation-Date: 2016-06-07 06:07+0200\n"
+"PO-Revision-Date: 2016-06-07 04:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/i-mscp/i-MSCP/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
@@ -16,97 +16,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fi_FI\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-msgid ""
-"\n"
-"\n"
-"Dear {NAME},\n"
-"\n"
-"Use this link to activate your new i-MSCP password:\n"
-"\n"
-"{LINK}\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\n"
-
-msgid ""
-"\n"
-"\n"
-"Dear {RESELLER},\n"
-"\n"
-"Your customer {CUSTOMER} is awaiting for the approval of a new domain alias:\n"
-"\n"
-"{ALIAS}\n"
-"\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\nHyvä {RESELLER},\n\nAsiakkaasi {CUSTOMER} odottaa uuden aliaksen hyväksyntää:\n\n{ALIAS}\n\nVoit aktivoida uuden aliaksen osoitteessa {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n\n___________________________\nThe i-MSCP Team\n"
-
-msgid ""
-"\n"
-"\n"
-"Hello {NAME},\n"
-"\n"
-"Your user name is: {USERNAME}\n"
-"Your password is: {PASSWORD}\n"
-"\n"
-"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\nHei {NAME},\n\nKäyttäjänimesi: {USERNAME}\nSalasanasi: {PASSWORD}\n\nVoit kirjautua sisään osoitteessa {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\nKiitos palveluidemme käyttämisestä\n\n______________________________\nThe i-MSCP Team\n"
-
-msgid ""
-"\n"
-"Dear {NAME},\n"
-"\n"
-"A new account has been created for you.\n"
-"\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
-"\n"
-"Thank you for using our services.\n"
-msgstr "\nHyvä {NAME},\n\nSinulle on luotu uusi käyttäjätunnus.\n\nTunnuksen tiedot:\nTilityyppi: {USERTYPE}\nKäyttäjätunnus: {USERNAME}\nSalasana: {PASSWORD}\n\nVaihdathan salasanasi riittävän usein sekä ensimmäisen kirjautumisen yhteydessä.\n\nVoit nyt kirjautua sisään osoitteessa {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\nKiitos palveluidemme käyttämisestä.\n"
-
-msgid ""
-"\n"
-"Dear {NAME},\n"
-"\n"
-"A new account has been created for you.\n"
-"\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Thank you for using our services.\n"
-msgstr ""
 
 msgid " Admin / Support / Open Tickets"
 msgstr "Ylläpito / Tukijärjestelmä / Avoimet tukipyynnöt"
@@ -116,9 +25,6 @@ msgstr "Asiakas / Web-työkalut / Muokkaa kustomoituja virhesivut"
 
 msgid " Wrong IP address."
 msgstr "Väärä IP-osoite"
-
-msgid " was deleted by {ADMIN}!"
-msgstr "poistettiin ylläpitäjän {ADMIN} toimesta!"
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -500,6 +406,9 @@ msgstr "Järjestelmässä on jo samalla nimellä palvelupaketti."
 
 msgid "A new i-MSCP version is available"
 msgstr "Uusi i-MSCP versio on saatavilla"
+
+msgid "A new software package has been uploaded"
+msgstr ""
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Pääsy domainisi tilastoihin hallintapaneelin kautta."
@@ -1119,9 +1028,6 @@ msgstr ""
 
 msgid "Auto (Browser language)"
 msgstr "Auto (selaimen kieli)"
-
-msgid "Auto email template data updated!"
-msgstr "Automaattisen sähköpostin tiedot päivitetty!"
 
 msgid "Auto responder"
 msgstr "Automaattivastaaja"
@@ -1828,55 +1734,6 @@ msgstr "Poistettu käytöstä"
 
 msgid "Deactivation in progress..."
 msgstr "Suoritetaan..."
-
-#, php-format
-msgid ""
-"Dear %s,\n"
-"\n"
-"You have a new ticket:\n"
-msgstr "Hyvä %s,\n\nSinulla on uusi tukipyyntö:\n"
-
-#, php-format
-msgid ""
-"Dear %s,\n"
-"\n"
-"You have an answer for this ticket:\n"
-msgstr ""
-
-msgid ""
-"Dear {ADMIN},\n"
-"\t{RESELLER} has uploaded a new software package.\n"
-"\n"
-"\tDetails:\n"
-"\tReseller ID: {RESELLER_ID}\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr ""
-
-msgid ""
-"Dear {RESELLER},\n"
-"\t\tYour uploaded software was deleted by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tMessage from {ADMIN}:\n"
-"\t"
-msgstr ""
-
-msgid ""
-"Dear {RESELLER},\n"
-"\tYour uploaded a software package was successful activated by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr ""
 
 msgid "Debugger"
 msgstr "Debugger"
@@ -2987,9 +2844,6 @@ msgstr "Ladataan tietoja..."
 msgid "Log entries successfully deleted."
 msgstr "Lokitiedot poistettu onnistuneesti."
 
-msgid "Log in to answer"
-msgstr "Kirjaudu sisään vastataksesi"
-
 msgid "Login"
 msgstr "Kirjaudu"
 
@@ -3029,6 +2883,9 @@ msgstr "Salasanan palautus"
 
 msgid "Lost password email"
 msgstr "Salasana kadonnut -sähköposti"
+
+msgid "Lost password email templates were updated."
+msgstr ""
 
 msgid "Lost password link"
 msgstr "Salasana kadonnut linkki"
@@ -3234,9 +3091,6 @@ msgstr "Uuden SQL-käyttäjän tiedot"
 
 msgid "New alias order for {CUSTOMER}"
 msgstr "Uusi alias-tilaus asiakkaalta {CUSTOMER}"
-
-msgid "New password has not been sent. Ask your administrator."
-msgstr "Uutta salasanaa ei ole lähetetty. Kysy ylläpitäjältäsi."
 
 msgid "New ticket"
 msgstr "Uusi kysymys"
@@ -3929,10 +3783,6 @@ msgstr "Edellinen"
 
 msgid "Priority"
 msgstr "Tärkeys"
-
-#, php-format
-msgid "Priority: %s\n"
-msgstr ""
 
 msgid "Private key"
 msgstr "Yksityinen avain"
@@ -4801,9 +4651,6 @@ msgstr "Kohdeportti"
 msgid "Target port must be a number."
 msgstr "Kohdeportin täytyy olla numero."
 
-msgid "Template for Auto email successfully updated."
-msgstr "Automaattisen viestin pohja on päivitetty onnistuneesti."
-
 msgid "Temporary folder not found."
 msgstr "Väliaikaista kansiota ei löydy."
 
@@ -5444,6 +5291,9 @@ msgstr "Web-työkalut"
 msgid "Welcome email"
 msgstr "Tervetuloviesti"
 
+msgid "Welcome email template has been updated."
+msgstr ""
+
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "{USERNAME}, Tervetuloa käyttämään i-MSCP:tä."
 
@@ -5558,6 +5408,9 @@ msgstr "Et voi lisätä uutta sähköpostitiliä. Olet käyttänyt kaiken levyti
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "Et voi poistaa jälleenmyyjää, jolla on asiakkaita."
+
+msgid "You cannot delete the default administrator."
+msgstr ""
 
 msgid "You cannot delete the last active IP address."
 msgstr "Et voi poistaa viimeistä aktiivista IP-osoitetta."
@@ -5797,20 +5650,29 @@ msgstr "Uudet kirjautumistietosi i-MSCP hallintapaneeliin"
 msgid "Your new password"
 msgstr "Uusi salasanasi"
 
-msgid "Your new password has been sent. Check your email."
-msgstr "Uusi salasanasi on lähetetty sähköpostitse."
-
 msgid "Your package is corrupt. Please correct it!"
 msgstr "Pakettisi on korruptoitunut. Korjaa paketti!"
+
+msgid "Your password has been successfully renewed. Check your emails."
+msgstr ""
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
 msgstr ""
 
 msgid ""
-"Your request for new password has been registered. You will receive an email"
-" with instructions to complete the process."
-msgstr "Salasanan vaihtopyyntö on vastaanotettu. Tarkista sähköpostisi ja toimi ohjeiden mukaan."
+"Your request for password renewal has been registered. You will receive an "
+"email with instructions to complete the process."
+msgstr ""
+
+msgid "Your request for password renewal is either invalid or has expired."
+msgstr ""
+
+msgid "Your software package has been activated"
+msgstr ""
+
+msgid "Your software package has been deleted"
+msgstr ""
 
 msgid "ZB"
 msgstr "ZB"
@@ -5836,9 +5698,6 @@ msgstr "[Uusi]"
 msgid "[Re]"
 msgstr "[Vastaus]"
 
-msgid "[Ticket]"
-msgstr "[Tiketti]"
-
 msgid "_: Localised language"
 msgstr "Finnish (Suomi) - Finnish (Finland)"
 
@@ -5853,6 +5712,9 @@ msgid "activated (Softwaredepot)"
 msgstr "aktivoitu (ohjelmavarasto)"
 
 msgid "addition"
+msgstr ""
+
+msgid "administrator"
 msgstr ""
 
 msgid "and"
@@ -6056,12 +5918,6 @@ msgstr "jokerimerkki"
 
 msgid "yes"
 msgstr "kyllä"
-
-msgid "{ADMIN} activated your software package"
-msgstr "{ADMIN} aktivoi ohjelmistopakettisi"
-
-msgid "{RESELLER} uploaded a new software package"
-msgstr "{RESELLER} lähetti palvelimelle uuden ohjelmistopaketin"
 
 msgid "{USERNAME} user statistics"
 msgstr "{USERNAME} käyttäjätilastot"

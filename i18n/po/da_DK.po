@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-05-17 21:33+0200\n"
-"PO-Revision-Date: 2016-05-17 19:35+0000\n"
+"POT-Creation-Date: 2016-06-07 06:07+0200\n"
+"PO-Revision-Date: 2016-06-07 04:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/i-mscp/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -16,97 +16,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: da_DK\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-msgid ""
-"\n"
-"\n"
-"Dear {NAME},\n"
-"\n"
-"Use this link to activate your new i-MSCP password:\n"
-"\n"
-"{LINK}\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\nKære {NAME},\n\nBrug dette link til at aktivere dit nye i-MSCP password:\n\n{LINK}\n\nTak fordi du bruger vores tjenester.\n\n___________________________\ni-MSCP Teamet\n\n"
-
-msgid ""
-"\n"
-"\n"
-"Dear {RESELLER},\n"
-"\n"
-"Your customer {CUSTOMER} is awaiting for the approval of a new domain alias:\n"
-"\n"
-"{ALIAS}\n"
-"\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\nKære {RESELLER},\n\nDin kunde {CUSTOMER} afventer for godkendelse af sit nye domæne alias:\n\n{ALIAS}\n\nNår du er logget ind, kan du aktivere det nye alias på {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n\nTak fordi du bruger vores tjenester.\n\n___________________________\ni-MSCP Teamet\n\n"
-
-msgid ""
-"\n"
-"\n"
-"Hello {NAME},\n"
-"\n"
-"Your user name is: {USERNAME}\n"
-"Your password is: {PASSWORD}\n"
-"\n"
-"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Thank you for using our services.\n"
-"\n"
-"___________________________\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr "\n\nHej {NAME},\n\nDit brugernavn er: {USERNAME}\nDit password er: {PASSWORD}\n\nDu kan logge ind på {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\nTak fordi du bruger vores tjenester.\n\n___________________________\ni-MSCP Teamet\n\n"
-
-msgid ""
-"\n"
-"Dear {NAME},\n"
-"\n"
-"A new account has been created for you.\n"
-"\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Statistics: http://{USERNAME}/stats/ (Same username and password than above)\n"
-"\n"
-"Thank you for using our services.\n"
-msgstr "\nKære {NAME},\n\nEn ny konto er blevet oprettet for dig.\n\nDine kontooplysninger:\n\nBrugertype: {USERTYPE}\nBrugernavn: {USERNAME}\nPassword: {PASSWORD}\n\nHusk at ændre din adgangskode ofte og første gang du logger ind.\n\nDu kan logge ind lige nu på {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\nStatistik: http://{USERNAME}/stats/\n(Samme brugernavn og password som ovenfor)\n\nTak fordi du bruger vores tjenester.\n"
-
-msgid ""
-"\n"
-"Dear {NAME},\n"
-"\n"
-"A new account has been created for you.\n"
-"\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
-"\n"
-"Thank you for using our services.\n"
-msgstr "\nKære {NAME},\n\nEn ny konto er blevet oprettet for dig.\n\nDine kontooplysninger:\n\nBrugertype: {USERTYPE}\nBrugernavn: {USERNAME}\nPassword: {PASSWORD}\n\nHusk at ændre din adgangskode ofte og første gang du logger ind.\n\nDu kan logge ind lige nu på {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\nTak fordi du bruger vores tjenester.\n"
 
 msgid " Admin / Support / Open Tickets"
 msgstr "Admin / Support / Åbne Tickets"
@@ -116,9 +25,6 @@ msgstr "Kunde / Webværktøjer / brugerdefinerede fejlsider / Edit Brugerdefiner
 
 msgid " Wrong IP address."
 msgstr "Forkert IP adresse."
-
-msgid " was deleted by {ADMIN}!"
-msgstr " blev slettet af {ADMIN}!"
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -500,6 +406,9 @@ msgstr "En hosting plan med samme navn findes allerede."
 
 msgid "A new i-MSCP version is available"
 msgstr "En ny I-MSCP version er tilgængelig"
+
+msgid "A new software package has been uploaded"
+msgstr ""
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Få adgang til dine domæne statistik via web interface."
@@ -1119,9 +1028,6 @@ msgstr ""
 
 msgid "Auto (Browser language)"
 msgstr "Auto (Browser sprog)"
-
-msgid "Auto email template data updated!"
-msgstr "Auto Email skabelon, data er opdateret"
 
 msgid "Auto responder"
 msgstr "Autosvar"
@@ -1828,55 +1734,6 @@ msgstr "Deaktiveret"
 
 msgid "Deactivation in progress..."
 msgstr "Deaktivering i gang..."
-
-#, php-format
-msgid ""
-"Dear %s,\n"
-"\n"
-"You have a new ticket:\n"
-msgstr "Kære %s,\n\nDu har en ny support ticket:\n"
-
-#, php-format
-msgid ""
-"Dear %s,\n"
-"\n"
-"You have an answer for this ticket:\n"
-msgstr "Kære %s,\n\nDu har et svar på denne support ticket:\n"
-
-msgid ""
-"Dear {ADMIN},\n"
-"\t{RESELLER} has uploaded a new software package.\n"
-"\n"
-"\tDetails:\n"
-"\tReseller ID: {RESELLER_ID}\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr "Kære {ADMIN},\n\t{RESELLER} har uploadet en ny softwarepakke.\n\n\tDetaljer:\n\tForhandler ID: {RESELLER_ID}\n\tPakkenavn: {SOFTWARE}\n\tPakke ID: {SOFTWARE_ID}\n\n\tVenligst log ind i dit I-MSCP kontrolpanel for flere detaljer."
-
-msgid ""
-"Dear {RESELLER},\n"
-"\t\tYour uploaded software was deleted by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tMessage from {ADMIN}:\n"
-"\t"
-msgstr "Kære {RESELLER},\n\t\tDit uploadede software blev slettet af {ADMIN}.\n\n\tDetaljer\n\tPakkenavn: {SOFTWARE}\n\tPakke ID: {SOFTWARE_ID}\n\n\tMeddelelse fra {ADMIN}:\n\t"
-
-msgid ""
-"Dear {RESELLER},\n"
-"\tYour uploaded a software package was successful activated by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr ""
 
 msgid "Debugger"
 msgstr "Debugger"
@@ -2987,9 +2844,6 @@ msgstr "Indlæser data..."
 msgid "Log entries successfully deleted."
 msgstr "Log poster succesfuldt slettet."
 
-msgid "Log in to answer"
-msgstr "Log ind for svar"
-
 msgid "Login"
 msgstr "Log ind"
 
@@ -3029,6 +2883,9 @@ msgstr "Glemt Adgangskode"
 
 msgid "Lost password email"
 msgstr "Mistet kodeord e-mail"
+
+msgid "Lost password email templates were updated."
+msgstr ""
 
 msgid "Lost password link"
 msgstr "Glemt adgangskode, link"
@@ -3234,9 +3091,6 @@ msgstr "Ny SQL bruger data"
 
 msgid "New alias order for {CUSTOMER}"
 msgstr "Ny alias ordrer for {CUSTOMER}"
-
-msgid "New password has not been sent. Ask your administrator."
-msgstr "Ny adgangskode er ikke blevet sendt. Spørg din administrator."
 
 msgid "New ticket"
 msgstr "Ny Sag"
@@ -3929,10 +3783,6 @@ msgstr "Forrige"
 
 msgid "Priority"
 msgstr "Prioritet"
-
-#, php-format
-msgid "Priority: %s\n"
-msgstr "Prioritet: %s\n"
 
 msgid "Private key"
 msgstr "Privat nøgle"
@@ -4801,9 +4651,6 @@ msgstr "Mål port"
 msgid "Target port must be a number."
 msgstr ""
 
-msgid "Template for Auto email successfully updated."
-msgstr "Skabelon til Auto email blevet opdateret."
-
 msgid "Temporary folder not found."
 msgstr "Midlertidig mappe ikke fundet."
 
@@ -5444,6 +5291,9 @@ msgstr "Webværktøjer"
 msgid "Welcome email"
 msgstr "Velkomst e-mail"
 
+msgid "Welcome email template has been updated."
+msgstr ""
+
 msgid "Welcome {USERNAME} to i-MSCP"
 msgstr "Velkommen {USERNAME} til i-MSCP"
 
@@ -5558,6 +5408,9 @@ msgstr "Du kan ikke tilføje nye e-mail konti. Du har allerede tildelt alle dine
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "Du kan ikke slette en forhandler, der har kundekonti."
+
+msgid "You cannot delete the default administrator."
+msgstr ""
 
 msgid "You cannot delete the last active IP address."
 msgstr "Du kan ikke slette den sidste aktive IP adresse."
@@ -5797,20 +5650,29 @@ msgstr "Dit nye i-MSCP login"
 msgid "Your new password"
 msgstr "Din nye adgangskode"
 
-msgid "Your new password has been sent. Check your email."
-msgstr "Dit nye password er blevet sendt. Tjek din e-mail."
-
 msgid "Your package is corrupt. Please correct it!"
 msgstr "Din pakke er beskadiget. Ret venligst dette!"
+
+msgid "Your password has been successfully renewed. Check your emails."
+msgstr ""
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
 msgstr ""
 
 msgid ""
-"Your request for new password has been registered. You will receive an email"
-" with instructions to complete the process."
-msgstr "Deres anmodning om nyt password er blevet registreret. Du vil modtage en e-mail med instruktioner for at fuldføre processen."
+"Your request for password renewal has been registered. You will receive an "
+"email with instructions to complete the process."
+msgstr ""
+
+msgid "Your request for password renewal is either invalid or has expired."
+msgstr ""
+
+msgid "Your software package has been activated"
+msgstr ""
+
+msgid "Your software package has been deleted"
+msgstr ""
 
 msgid "ZB"
 msgstr "ZB"
@@ -5836,9 +5698,6 @@ msgstr "[Ny]"
 msgid "[Re]"
 msgstr "[Re]"
 
-msgid "[Ticket]"
-msgstr "[Ticket]"
-
 msgid "_: Localised language"
 msgstr "Dansk (Danmark) - Danish (Denmark)"
 
@@ -5854,6 +5713,9 @@ msgstr "aktiveret (Softwaredepot)"
 
 msgid "addition"
 msgstr "derudover"
+
+msgid "administrator"
+msgstr ""
 
 msgid "and"
 msgstr "og"
@@ -6056,12 +5918,6 @@ msgstr "wildcard"
 
 msgid "yes"
 msgstr "ja"
-
-msgid "{ADMIN} activated your software package"
-msgstr "{ADMIN} aktiverede din softwarepakke"
-
-msgid "{RESELLER} uploaded a new software package"
-msgstr "{FORHANDLER} uploadede en ny softwarepakke"
 
 msgid "{USERNAME} user statistics"
 msgstr "{USERNAME} bruger statistiker"
