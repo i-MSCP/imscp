@@ -992,44 +992,6 @@ function update_reseller_props($resellerId, $props)
  */
 
 /**
- * Encode a string to be valid as mail header
- *
- * @source php.net/manual/en/function.mail.php
- *
- * @param string $string String to be encoded [should be in the $charset charset]
- * @param string $charset OPTIONAL charset in that string will be encoded
- * @return string encoded string
- */
-function encode_mime_header($string, $charset = 'UTF-8')
-{
-    if ($string && $charset) {
-        if (function_exists('mb_encode_mimeheader')) {
-            $string = mb_encode_mimeheader($string, $charset, 'Q', "\r\n", 8);
-        } elseif ($string && $charset) {
-            // define start delimiter, end delimiter and spacer
-            $end = '?=';
-            $start = '=?' . $charset . '?B?';
-            $spacer = $end . "\r\n " . $start;
-
-            // Determine length of encoded text withing chunks and ensure length is even
-            $length = 75 - strlen($start) - strlen($end);
-            $length = floor($length / 4) * 4;
-
-            // Encode the string and split it into chunks with spacers after each chunk
-            $string = base64_encode($string);
-            $string = chunk_split($string, $length, $spacer);
-
-            // Remove trailing spacer and add start and end delimiters
-            $spacer = preg_quote($spacer);
-            $string = preg_replace('/' . $spacer . '$/', '', $string);
-            $string = $start . $string . $end;
-        }
-    }
-
-    return $string;
-}
-
-/**
  * Synchronizes mailboxes quota that belong to the given domain using the given quota limit
  *
  * Algorythm:

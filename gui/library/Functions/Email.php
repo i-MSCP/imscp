@@ -113,15 +113,15 @@ A new account has been created for you.
 
 Your account information:
 
-User type: {USERTYPE}
-User name: {USERNAME}
-Password: {PASSWORD}
+Account type : {USERTYPE}
+User name    : {USERNAME}
+Password     : {PASSWORD}
 
 Remember to change your password often and the first time you login.
 
 You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}
 
-Thank you for choosing our services.
+Please do not reply to this email.
 
 ___________________________
 i-MSCP Mailer
@@ -297,6 +297,44 @@ EOF
 }
 
 /**
+ * Encode a string to be valid as mail header
+ *
+ * @source php.net/manual/en/function.mail.php
+ *
+ * @param string $string String to be encoded [should be in the $charset charset]
+ * @param string $charset OPTIONAL charset in that string will be encoded
+ * @return string encoded string
+ */
+function encode_mime_header($string, $charset = 'UTF-8')
+{
+    if ($string && $charset) {
+        if (function_exists('mb_encode_mimeheader')) {
+            $string = mb_encode_mimeheader($string, $charset, 'Q', "\r\n", 8);
+        } elseif ($string && $charset) {
+            // define start delimiter, end delimiter and spacer
+            $end = '?=';
+            $start = '=?' . $charset . '?B?';
+            $spacer = $end . "\r\n " . $start;
+
+            // Determine length of encoded text withing chunks and ensure length is even
+            $length = 75 - strlen($start) - strlen($end);
+            $length = floor($length / 4) * 4;
+
+            // Encode the string and split it into chunks with spacers after each chunk
+            $string = base64_encode($string);
+            $string = chunk_split($string, $length, $spacer);
+
+            // Remove trailing spacer and add start and end delimiters
+            $spacer = preg_quote($spacer);
+            $string = preg_replace('/' . $spacer . '$/', '', $string);
+            $string = $start . $string . $end;
+        }
+    }
+
+    return $string;
+}
+
+/**
  * Send a mail using given data
  *
  * @param array $data An associative array containing mail data:
@@ -368,7 +406,7 @@ function send_mail($data)
     $from = "noreply@$host";
 
     # Prepare recipient
-    $to = encode_mime_header("$name <" . $data['email'] . '>');
+    $to = encode_mime_header($name) . ' <' . $data['email'] . '>';
 
     # Prepare subject
     $subject = encode_mime_header(str_replace($search, $replace, $data['subject']));

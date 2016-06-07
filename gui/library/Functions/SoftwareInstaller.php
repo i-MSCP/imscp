@@ -112,8 +112,8 @@ Dear {NAME},
 
 Your software package has been successfully activated.
 
-Software package: {SOFTWARE_PACKAGE}
-Package ID: {SOFTWARE_ID}
+Software package : {SOFTWARE_PACKAGE}
+Package ID       : {SOFTWARE_ID}
 
 Please do not reply to this email.
 
@@ -160,8 +160,8 @@ Dear {NAME},
 
 Your software package has been deleted.
 
-Software package: {SOFTWARE_PACKAGE}
-Software ID: {SOFTWARE_ID}
+Software package : {SOFTWARE_PACKAGE}
+Software ID      : {SOFTWARE_ID}
 
 Message from your administrator:
 
@@ -731,9 +731,9 @@ Dear {NAME},
 
 A new software package has been uploaded by a reseller.
 
-Reseller ID: {RESELLER_ID}
-Software package:: {SOFTWARE_PACKAGE}
-Software ID: {SOFTWARE_ID}
+Reseller ID      : {RESELLER_ID}
+Software package : {SOFTWARE_PACKAGE}
+Software ID      : {SOFTWARE_ID}
 
 Please do not reply to this email.
 
