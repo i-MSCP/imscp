@@ -24,7 +24,7 @@
  * @throws iMSCP_Exception
  * @param int $userId User unique identifier
  * @param string $tplName Template name
- * @return array An associative array where each key correspond to a specific email part:
+ * @return array An associative array containing mail data:
  *                - sender_name:  Sender name
  *                - sender_email: Sender email
  *                - subject:      Subject
@@ -66,7 +66,7 @@ function get_email_tpl_data($userId, $tplName)
  *
  * @param int $userId User unique identifier
  * @param string $tplName Template name
- * @param array $data An associative array where each key correspond to a specific email part:
+ * @param array $data An associative array containing mail data:
  *                     - subject: Subject
  *                     - message: Message
  * @return void
@@ -91,7 +91,7 @@ function set_email_tpl_data($userId, $tplName, $data)
  *
  * @see get_email_tpl_data()
  * @param int $userId User unique identifier - Template owner
- * @return array An associative array where each key correspond to a specific email part:
+ * @return array An associative array containing mail data:
  *                - sender_name:  Sender name
  *                - sender_email: Sender email
  *                - subject:      Subject
@@ -137,7 +137,7 @@ EOF
  *
  * @see set_email_tpl_data()
  * @param  int $userId Template owner unique identifier (0 for administrators)
- * @param array $data An associative array where each key correspond to a specific email part:
+ * @param array $data An associative array containing mail data:
  *                     - subject: Subject
  *                     - message: Message
  * @return void
@@ -152,7 +152,7 @@ function set_welcome_email($userId, $data)
  *
  * @see get_email_tpl_data
  * @param int $adminId User unique identifier - Template owner
- * @return array An associative array where each key correspond to a specific email part:
+ * @return array An associative array containing mail data:
  *                - sender_name:  Sender name
  *                - sender_email: Sender email
  *                - subject:      Subject
@@ -175,6 +175,8 @@ Please click on the link below to renew your i-MSCP password:
 
 Note: If you do not have requested this renewal, you can ignore this email.
 
+Please do not reply to this email.
+
 ___________________________
 i-MSCP Mailer
 EOF
@@ -189,7 +191,7 @@ EOF
  *
  * @see set_email_tpl_data()
  * @param int $adminId User unique identifier
- * @param array $data An associative array where each key correspond to a specific email part:
+ * @param array $data An associative array containing mail data:
  *                     - subject: Subject
  *                     - message: Message
  * @return void
@@ -204,7 +206,7 @@ function set_lostpassword_activation_email($adminId, $data)
  *
  * @see get_email_tpl_data()
  * @param int $userId User uniqaue identifier - Template owner
- * @return array An associative array where each key correspond to a specific email part:
+ * @return array An associative array containing mail data:
  *                - sender_name:  Sender name
  *                - sender_email: Sender email
  *                - subject:      Subject
@@ -229,6 +231,8 @@ Your new password is: {PASSWORD}
 
 You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}
 
+Please do not reply to this email.
+
 ___________________________
 i-MSCP Mailer
 EOF
@@ -243,7 +247,7 @@ EOF
  *
  * @see set_email_tpl_data()
  * @param int $userId User unique identifier - Template owner
- * @param array $data An associative array where each key correspond to a specific email part:
+ * @param array $data An associative array containing mail data:
  *                     - subject: Subject
  *                     - message: Message
  * @return void
@@ -258,7 +262,7 @@ function set_lostpassword_password_email($userId, $data)
  *
  * @see get_email_tpl_data()
  * @param int $resellerId Reseller User unique identifier
- * @return array An associative array where each key correspond to a specific email part:
+ * @return array An associative array containing mail data:
  *                - sender_name:  Sender name
  *                - sender_email: Sender email
  *                - subject:      Subject
@@ -278,8 +282,10 @@ Your customer {CUSTOMER} is awaiting for approval of a new domain alias:
 
 {ALIAS}
 
-PLease login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php to activate
+Login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php to activate
 this domain alias.
+
+Please do not reply to this email.
 
 ___________________________
 i-MSCP Mailer
@@ -293,7 +299,7 @@ EOF
 /**
  * Send a mail using given data
  *
- * @param array $data An associative array where each key represent specific email data:
+ * @param array $data An associative array containing mail data:
  *  - mail_id      : Email identifier
  *  - fname        : OPTIONAL Receiver firstname
  *  - lname        : OPTIONAL Receiver lastname

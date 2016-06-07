@@ -60,7 +60,7 @@ sub errmsg
     defined $message or die( "$message parameter is not defined" );
 
     my $functionName = (caller( 1 ))[3] || 'main';
-    $self->_sendMail( 'i-MSCP - An error has been raised', <<"EOF" );
+    $self->_sendMail( 'i-MSCP - An error has been raised', <<"EOF", 'error' );
 An error has been raised while executing function $functionName in $0:
 
 $message
@@ -84,7 +84,7 @@ sub warnMsg
     defined $message or die( "$message parameter is not defined" );
 
     my $functionName = (caller( 1 ))[3] || 'main';
-    $self->_sendMail( 'i-MSCP - A warning has been raised', <<"EOF" );
+    $self->_sendMail( 'i-MSCP - A warning has been raised', <<"EOF", 'warning' );
 A warning has been raised while executing function $functionName in $0:
 
 $message
