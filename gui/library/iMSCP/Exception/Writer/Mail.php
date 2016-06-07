@@ -67,9 +67,9 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer_Abstract
         }
 
         // Do not send mail for identical exception in next 24 hours
-        #if (array_key_exists($data['footprint'], $footprints)) {
-        #    return;
-        #}
+        if (array_key_exists($data['footprint'], $footprints)) {
+            return;
+        }
 
         send_mail($data);
 

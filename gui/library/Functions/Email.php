@@ -381,7 +381,7 @@ function send_mail($data)
     if (isset($data['sender_email'])) {
         # Note: We cannot use the real sender email address in the FROM header because the email's domain could be
         # hosted on external server, meaning that if the domain implements SPF, the mail could be rejected. However we
-        # pass the real sender email through  the `Reply-To' header
+        # pass the real sender email through the `Reply-To' header
         if (isset($data['sender_name'])) {
             $headers[] = 'Reply-To: ' . encode_mime_header($data['sender_name']) . ' <' . $data['sender_email'] . '>';
         } else {
