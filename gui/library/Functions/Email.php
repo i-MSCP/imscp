@@ -106,8 +106,7 @@ function get_welcome_email($userId)
     }
     // No custom template for welcome mail - return the default
     if ($data['message'] == '') {
-        $data['message'] = tr('
-Dear {NAME},
+        $data['message'] = tr('Dear {NAME},
 
 A new account has been created for you.
 
@@ -124,8 +123,7 @@ You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST
 Please do not reply to this email.
 
 ___________________________
-i-MSCP Mailer
-');
+i-MSCP Mailer');
     }
 
     return $data;
@@ -165,8 +163,7 @@ function get_lostpassword_activation_email($adminId)
         $data['subject'] = tr('Please activate your new i-MSCP password');
     }
     if ($data['message'] == '') {
-        $data['message'] = tr('
-Dear {NAME},
+        $data['message'] = tr('Dear {NAME},
 
 Please click on the link below to renew your i-MSCP password:
 
@@ -177,8 +174,7 @@ Note: If you do not have requested this renewal, you can ignore this email.
 Please do not reply to this email.
 
 ___________________________
-i-MSCP Mailer
-');
+i-MSCP Mailer');
     }
 
     return $data;
@@ -218,9 +214,7 @@ function get_lostpassword_password_email($userId)
         $data['subject'] = tr('Your new i-MSCP login');
     }
     if ($data['message'] == '') {
-        $data['message'] = tr('
-
-Dear {NAME},
+        $data['message'] = tr('Dear {NAME},
 
 Your password has been successfully renewed.
 
@@ -232,8 +226,7 @@ You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST
 Please do not reply to this email.
 
 ___________________________
-i-MSCP Mailer
-');
+i-MSCP Mailer');
     }
 
     return $data;
@@ -272,8 +265,7 @@ function get_alias_order_email($resellerId)
         $data['subject'] = tr('New alias order for {CUSTOMER}');
     }
     if (!$data['message']) {
-        $data['message'] = tr('
-Dear {NAME},
+        $data['message'] = tr('Dear {NAME},
 
 Your customer {CUSTOMER} is awaiting for approval of a new domain alias:
 
@@ -285,8 +277,7 @@ this domain alias.
 Please do not reply to this email.
 
 ___________________________
-i-MSCP Mailer
-');
+i-MSCP Mailer');
     }
 
     return $data;

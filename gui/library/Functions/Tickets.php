@@ -611,8 +611,7 @@ function _sendTicketNotification($toId, $ticketSubject, $ticketMessage, $ticketS
     $toData = $stmt->fetchRow();
 
     if ($ticketStatus == 0) {
-        $message = tr(<<<MSG
-Dear {NAME},
+        $message = tr('Dear {NAME},
 
 You have a new ticket:
 
@@ -627,12 +626,9 @@ You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST
 Please do not reply to this email.
 
 ___________________________
-i-MSCP Mailer
-MSG
-        );
+i-MSCP Mailer');
     } else {
-        $message = tr('
-Dear {NAME},
+        $message = tr('Dear {NAME},
 
 You have a new answer for a ticket:
 
@@ -647,9 +643,7 @@ You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST
 Please do not reply to this email.
 
 ___________________________
-i-MSCP Mailer
-MSG
-');
+i-MSCP Mailer');
     }
 
     $ret = send_mail(array(
