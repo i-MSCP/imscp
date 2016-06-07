@@ -114,17 +114,17 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 		";
 		$res = exec_query($delete, $rs->fields['software_id']);
 		$res = exec_query($delete_master, $rs->fields['software_id']);
-        echo "hallo";
 		set_page_message(tr('Software was deleted.'), 'success');
-        redirectTo('software_manage.php');
+		redirectTo('software_manage.php');
 	} else {
 		if(isset($_POST['id']) && is_numeric($_POST['id']) && $_POST['uaction'] === 'send_delmessage') {
 			if (!empty($_POST['id']) && !empty($_POST['delete_msg_text'])) {
-				send_deleted_sw($rs->fields['reseller_id'], $rs->fields['software_archive'].'.tar.gz', $rs->fields['software_id'], 'Software '.$rs->fields['software_name'].' (V'.$rs->fields['software_version'].')', clean_input($_POST['delete_msg_text']));
+				send_deleted_sw(
+					$rs->fields['reseller_id'], $rs->fields['software_archive'].'.tar.gz', $rs->fields['software_id'], clean_input($_POST['delete_msg_text']));
 				update_existing_client_installations_res_upload(
-			        $rs->fields['software_id'], $rs->fields['reseller_id'], $rs->fields['software_id'], TRUE
-		        );
-                $del_path = $cfg->GUI_APS_DIR."/".$rs->fields['reseller_id']."/".$rs->fields['software_archive']."-".$rs->fields['software_id'].".tar.gz";
+					$rs->fields['software_id'], $rs->fields['reseller_id'], $rs->fields['software_id'], true
+				);
+				$del_path = $cfg['GUI_APS_DIR']."/".$rs->fields['reseller_id']."/".$rs->fields['software_archive']."-".$rs->fields['software_id'].".tar.gz";
 				@unlink($del_path);
 				$delete="
 					DELETE FROM

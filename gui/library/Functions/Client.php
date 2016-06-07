@@ -241,7 +241,6 @@ function get_gender_by_code($code, $nullOnBad = false)
 /**
  * Tells whether or not the current customer can access to the given feature(s)
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @throws iMSCP_Exception When $featureName is not known
  * @param array|string $featureNames Feature name(s) (insensitive case)
  * @param bool $forceReload If true force data to be reloaded
@@ -430,4 +429,38 @@ function getMountpoints($domainId)
     }
 
     return $mountpoints;
+}
+
+/**
+ * Send alias order email
+ *
+ * @param  string $aliasName
+ * @return bool TRUE on success, FALSE on failure
+ */
+function send_alias_order_email($aliasName)
+{
+    $userId = $_SESSION['user_id'];
+    $resellerId = who_owns_this($userId, 'user');
+    $stmt = exec_query('SELECT admin_name, fname, lname, email FROM admin WHERE admin_id = ?', $userId);
+    $row = $stmt->fetchRow();
+    $data = get_alias_order_email($resellerId);
+    $ret = send_mail(array(
+        'mail_id' => 'alias-order-msg',
+        'fname' => $row['fname'],
+        'lname' => $row['lname'],
+        'username' => $row['admin_name'],
+        'email' => $row['email'],
+        'subject' => $data['subject'],
+        'message' => $data['message'],
+        'placeholders' => array(
+            '{ALIAS}' => $aliasName
+        )
+    ));
+
+    if (!$ret) {
+        write_log(sprintf('Lost Password: Could not send alias order to %s', $row['admin_name']), E_USER_ERROR);
+        return false;
+    }
+
+    return true;
 }

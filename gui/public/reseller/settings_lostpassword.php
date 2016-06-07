@@ -43,16 +43,13 @@ $tpl->define_dynamic(
 		'page_message' => 'layout',
 		'custom_buttons' => 'page'));
 
-$user_id = $_SESSION['user_id'];
-
 $selected_on = '';
 $selected_off = '';
 
-$data_1 = get_lostpassword_activation_email($user_id);
-$data_2 = get_lostpassword_password_email($user_id);
+$data_1 = get_lostpassword_activation_email($_SESSION['user_id']);
+$data_2 = get_lostpassword_password_email($_SESSION['user_id']);
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
-
 	$err_message = '';
 
 	$data_1['subject'] = clean_input($_POST['subject1'], false);
@@ -71,9 +68,9 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	if (Zend_Session::namespaceIsset('pageMessages')) {
 		return false;
 	} else {
-		set_lostpassword_activation_email($user_id, $data_1);
-		set_lostpassword_password_email($user_id, $data_2);
-		set_page_message(tr('Template for Auto email successfully updated.'), 'success');
+		set_lostpassword_activation_email($_SESSION['user_id'], $data_1);
+		set_lostpassword_password_email($_SESSION['user_id'], $data_2);
+		set_page_message(tr('Lost password email templates were updated.'), 'success');
 	}
 }
 

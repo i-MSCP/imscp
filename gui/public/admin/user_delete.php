@@ -164,46 +164,43 @@ function _admin_deleteResellerSwPackages($userId, array $swPackages)
 }
 
 /**
- * Validates admin or reseller user deletion
+ * Validates admin or reseller deletion
  *
  * @param int $userId User unique identifier
  * @return bool TRUE if deletion can be done, FALSE otherwise
  */
 function admin_validateUserDeletion($userId)
 {
-    $userId = (int)$userId;
-
-    // User is super admin
-    if ($userId == 1) {
-        showBadRequestErrorPage();
-    }
-
-    $stmt = exec_query(
-        "
-            SELECT t1.admin_type, t1.admin_id, COUNT(t2.admin_id) AS customers_count FROM admin AS t1
-            LEFT JOIN admin AS t2 ON (t1.admin_id <> t2.admin_id AND t1.admin_id = t2.created_by AND t2.admin_type <> 'reseller')
-            WHERE t1.admin_id = ?
-        ",
-        $userId
-    );
-
-    // User has not been found or it's a customer
+    $stmt = exec_query('SELECT admin_type, created_by FROM admin WHERE admin_id = ?', $userId);
     if (!$stmt->rowCount()) {
-        showBadRequestErrorPage();
+        showBadRequestErrorPage(); # No user found; assume a bad request
     }
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetchRow();
 
-    if ($row['admin_type'] == 'user') {
-        showBadRequestErrorPage();
-    } elseif ($row['customers_count'] > 0) {
-        set_page_message(tr('You cannot delete a reseller that has customer accounts.'), 'error');
+    if ($row['created_by'] == 0) {
+        set_page_message(tr('You cannot delete the default administrator.'), 'error');
+    }
+
+    if (!in_array($row['admin_type'], array('admin', 'reseller'))) {
+        showBadRequestErrorPage(); # Not an administrator, nor a reseller; assume a bad request
+    }
+
+    $stmt = exec_query('SELECT COUNT(admin_id) AS user_count FROM admin WHERE created_by = ?', $userId);
+    $row2 = $stmt->fetchRow();
+
+    if ($row2['user_count'] > 0) {
+        if ($row['admin_type'] == 'admin') {
+            set_page_message('Prior to removing this administrator, please move his resellers to another administrator.', 'error');
+        } else {
+            set_page_message(tr('You cannot delete a reseller that has customer accounts.'), 'error');
+        }
+
         return false;
     }
 
     return true;
 }
-
 
 /***********************************************************************************************************************
  * Main script

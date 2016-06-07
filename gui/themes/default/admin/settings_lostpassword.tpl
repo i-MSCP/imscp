@@ -59,8 +59,8 @@
 		<tbody>
 		<tr>
 			<td><strong>{TR_SUBJECT}</strong></td>
-			<td><label><input name="subject1" type="text" id="subject1" class="inputTitle" value="{SUBJECT_VALUE1}"/></label></td>
-			<td><label><input type="text" name="subject2" class="inputTitle" value="{SUBJECT_VALUE2}"/></label></td>
+			<td><label><input name="subject1" type="text" id="subject1" class="inputTitle" value="{SUBJECT_VALUE1}"></label></td>
+			<td><label><input type="text" name="subject2" class="inputTitle" value="{SUBJECT_VALUE2}"></label></td>
 		</tr>
 		<tr>
 			<td><strong>{TR_MESSAGE}</strong></td>
@@ -70,18 +70,18 @@
 		<tr>
 			<td><strong>{TR_SENDER_EMAIL}</strong></td>
 			<td>{SENDER_EMAIL_VALUE}</td>
-			<td><input type="hidden" name="sender_email" value="{SENDER_EMAIL_VALUE}"/></td>
+			<td><input type="hidden" name="sender_email" value="{SENDER_EMAIL_VALUE}"></td>
 		</tr>
 		<tr>
 			<td><strong>{TR_SENDER_NAME}</strong></td>
 			<td>{SENDER_NAME_VALUE}</td>
-			<td><input type="hidden" name="sender_name" value="{SENDER_NAME_VALUE}"/></td>
+			<td><input type="hidden" name="sender_name" value="{SENDER_NAME_VALUE}"></td>
 		</tr>
 		</tbody>
 	</table>
 
 	<div class="buttons">
-		<input name="Submit" type="submit" value="{TR_APPLY_CHANGES}"/>
-		<input type="hidden" name="uaction" value="apply"/>
+		<input name="Submit" type="submit" value="{TR_APPLY_CHANGES}">
+		<input type="hidden" name="uaction" value="apply">
 	</div>
 </form>

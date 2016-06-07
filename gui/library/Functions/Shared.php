@@ -1002,8 +1002,6 @@ function update_reseller_props($resellerId, $props)
  */
 function encode_mime_header($string, $charset = 'UTF-8')
 {
-    $string = (string)$string;
-
     if ($string && $charset) {
         if (function_exists('mb_encode_mimeheader')) {
             $string = mb_encode_mimeheader($string, $charset, 'Q', "\r\n", 8);
@@ -1643,7 +1641,7 @@ function calc_bar_value($value, $value_max, $bar_width)
  */
 
 /**
- * Writes a log message in the database and notify administrator if needed
+ * Writes a log message in database and notify administrator by email
  *
  * @param string $msg Message
  * @param int $logLevel Log level
@@ -1661,128 +1659,95 @@ function write_log($msg, $logLevel = E_USER_WARNING)
 
     exec_query('INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)', $msg);
 
-    if ($logLevel > $cfg['LOG_LEVEL'] || !isset($cfg['DEFAULT_ADMIN_ADDRESS']) || $cfg['DEFAULT_ADMIN_ADDRESS'] === '') {
+    if ($logLevel > $cfg['LOG_LEVEL']) {
         return;
     }
 
     $msg = strip_tags(preg_replace('/<br\s*\/?>/', "\n", $msg));
-    $hostname = isset($cfg['SERVER_HOSTNAME']) ? $cfg['SERVER_HOSTNAME'] : 'unknown';
-    $baseServerIp = isset($cfg['BASE_SERVER_PUBLIC_IP']) ? $cfg['BASE_SERVER_PUBLIC_IP'] : 'unknown';
-    $version = isset($cfg['Version']) ? $cfg['Version'] : 'unknown';
-    $buildDate = !empty($cfg['BuildDate']) ? $cfg['BuildDate'] : 'unavailable';
-    $subject = "i-MSCP $version on $hostname ($baseServerIp)";
 
     if ($logLevel == E_USER_NOTICE) {
-        $severity = 'Notice (You can ignore this message)';
+        $severity = 'Notice';
     } elseif ($logLevel == E_USER_WARNING) {
         $severity = 'Warning';
     } elseif ($logLevel == E_USER_ERROR) {
         $severity = 'Error';
     } else {
-        $severity = 'Unknown';
+        $severity = 'Unknown error';
     }
 
-    $message = <<<AUTO_LOG_MSG
+    send_mail(array(
+        'mail_id' => 'imscp-log',
+        'username' => tr('administrator'),
+        'email' => $cfg['DEFAULT_ADMIN_ADDRESS'],
+        'subject' => "i-MSCP $severity",
+        'message' => tr(<<<"MSG"
+Dear {NAME},
 
-i-MSCP Log
+This is an automatic email sent by i-MSCP:
 
-Server : $hostname ($baseServerIp)
-Version: $version
-Build  : $buildDate
-Message severity: $severity
+Server name      : {HOSTNAME}
+Server IP        : {SERVER_IP}
+Version          : {VERSION}
+Build            : {BUILDDATE}
+Message severity : {MESSAGE_SEVERITY}
 
-Message: ----------------[BEGIN]--------------------------
+==========================================================================
+{MESSAGE}
+==========================================================================
 
-$msg
+Please do not reply to this email.
 
-Message: ----------------[END]----------------------------
-
-_________________________
-i-MSCP Log Mailer
-
-Note: If you want no longer receive messages for this log
-level, you can change it via the settings page.
-
-AUTO_LOG_MSG;
-
-    $headers = "From: \"i-MSCP Logging Mailer\" <" . $cfg['DEFAULT_ADMIN_ADDRESS'] . ">\n";
-    $headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n";
-    $headers .= "Content-Transfer-Encoding: 7bit\n";
-    $headers .= "X-Mailer: i-MSCP Mailer";
-    mail($cfg['DEFAULT_ADMIN_ADDRESS'], $subject, $message, $headers);
+___________________________
+i-MSCP Mailer
+MSG
+        ),
+        'placeholders' => array(
+            '{USERNAME}' => tr('administrator'),
+            '{HOSTNAME}' => $cfg['SERVER_HOSTNAME'],
+            '{SERVER_IP}' => $cfg['BASE_SERVER_PUBLIC_IP'],
+            '{VERSION}' => $cfg['Version'],
+            '{BUILDDATE}' => $cfg['BuildDate'] ?: tr('Unavailable'),
+            '{MESSAGE_SEVERITY}' => $severity,
+            '{MESSAGE}' => $msg
+        ),
+    ));
 }
 
 /**
  * Send add user email
  *
- * @param int $adminId Admin unique identifier
+ * @param int $adminId Administrator or reseller unique identifier
  * @param string $uname Username
  * @param string $upass User password
  * @param string $uemail User email
  * @param string $ufname User firstname
  * @param string $ulname User lastname
  * @param string $utype User type
- * @return void
+ * @return bool TRUE on success, FALSE on failure
  */
 function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $ulname, $utype)
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
+    $data = get_welcome_email($adminId);
+    $ret = send_mail(array(
+        'mail_id' => 'add-user-auto-msg',
+        'fname' => $ufname,
+        'lname' => $ulname,
+        'username' => $uname,
+        'email' => $uemail,
+        'subject' => $data['subject'],
+        'message' => $data['message'],
+        'placeholders' => array(
+            '{USERTYPE}' => $utype,
+            '{PASSWORD}' => $upass
+        )
+    ));
 
-    $data = get_welcome_email($adminId, $_SESSION['user_type']);
-
-    if ($data['sender_name']) {
-        $from = encode_mime_header($data['sender_name']) . " <{$data['sender_email']}>";
-    } else {
-        $from = $data['sender_email'];
+    if (!$ret) {
+        write_log(sprintf('Lost Password: Could not send welcome email to %s', $uname), E_USER_ERROR);
+        return false;
     }
 
-    if ($ufname && $ulname) {
-        $to = encode_mime_header($ufname . ' ' . $ulname) . " <$uemail>";
-        $name = "$ufname $ulname";
-    } else {
-        $name = $uname;
-        $to = $uemail;
-    }
-
-    $baseServerVhostPrefix = $cfg['BASE_SERVER_VHOST_PREFIX'];
-    $port = ($baseServerVhostPrefix == 'http://')
-        ? (($cfg['BASE_SERVER_VHOST_HTTP_PORT'] == '80') ? '' : ':' . $cfg['BASE_SERVER_VHOST_HTTP_PORT'])
-        : (($cfg['BASE_SERVER_VHOST_HTTPS_PORT'] == '443') ? '' : ':' . $cfg['BASE_SERVER_VHOST_HTTPS_PORT']);
-
-    $search = array();
-    $replace = array();
-    $search[] = '{USERNAME}';
-    $replace[] = decode_idna($uname);
-    $search[] = '{USERTYPE}';
-    $replace[] = $utype;
-    $search[] = '{NAME}';
-    $replace[] = decode_idna($name);
-    $search[] = '{PASSWORD}';
-    $replace[] = $upass;
-    $search[] = '{BASE_SERVER_VHOST}';
-    $replace[] = decode_idna($cfg['BASE_SERVER_VHOST']);
-    $search[] = '{BASE_SERVER_VHOST_PREFIX}';
-    $replace[] = $baseServerVhostPrefix;
-    $search[] = '{BASE_SERVER_VHOST_PORT}';
-    $replace[] = $port;
-
-    $data['subject'] = str_replace($search, $replace, $data['subject']);
-    $message = str_replace($search, $replace, $data['message']);
-    $headers = "From: $from\r\n";
-    $headers .= "MIME-Version: 1.0\r\n";
-    $headers .= "Content-Type: text/plain; charset=utf-8\r\n";
-    $headers .= "Content-Transfer-Encoding: 8bit\r\n";
-    $headers .= "X-Mailer: i-MSCP Mailer";
-    $mailStatus = mail($to, encode_mime_header($data['subject']), $message, $headers, "-f {$data['sender_email']}")
-        ? 'OK' : 'NOT OK';
-    $name = tohtml($name);
-    $fromName = tohtml($data['sender_name']);
-    $logEntry = (!$fromName) ? $data['sender_email'] : "$fromName - {$data['sender_email']}";
-    write_log(
-        "{$_SESSION['user_logged']}: Auto Add User To: |$name - $uemail |, From: |$logEntry|, Status: |$mailStatus|!",
-        E_USER_NOTICE
-    );
+    return true;
 }
 
 /***********************************************************************************************************************

@@ -56,7 +56,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = '227';
+    protected $lastUpdate = '228';
 
     /**
      * Singleton - Make new unavailable
@@ -3357,5 +3357,15 @@ class iMSCP_Update_Database extends iMSCP_Update
                 "VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off' AFTER hsts_max_age"
             )
         );
+    }
+
+    /**
+     * Reset all mail templates according changes made in 1.3.0
+     * 
+     * @return string SQL statement to be executed
+     */
+    protected function r228()
+    {
+        return 'TRUNCATE email_tpls';
     }
 }

@@ -21,7 +21,7 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -30,24 +30,17 @@ require_once 'imscp-lib.php';
 require_once LIBRARY_PATH . '/Functions/LostPassword.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onLostPasswordScriptStart);
-
-// Purge expired sessions
 do_session_timeout();
 
-/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
-
-// Lost password feature is disabled ?
 if (!$cfg['LOSTPASSWORD']) {
     showNotFoundErrorPage();
 }
 
-// Check for gd library availability
-if (!check_gd()) {
+if (!function_exists('imagecreatetruecolor')) {
     throw new iMSCP_Exception(tr("PHP GD extension not loaded."));
 }
 
-// Remove old unique keys
 removeOldKeys($cfg['LOSTPASSWORD_TIMEOUT']);
 
 $tpl = new iMSCP_pTemplate();
@@ -56,7 +49,6 @@ $tpl->define_dynamic(array(
     'page' => 'lostpassword.tpl',
     'page_message' => 'layout'
 ));
-
 $tpl->assign(array(
     'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Lost Password'),
     'CONTEXT_CLASS' => '',
@@ -72,42 +64,39 @@ $tpl->assign(array(
     'TR_CANCEL' => tr('Cancel')
 ));
 
-// A request for new password was validated (user clicked on the link he has received by mail)
-if (isset($_GET['key']) && $_GET['key'] != '') {
-    // Check key
-    clean_input($_GET['key']);
-
-    // Sending new password
-    if (sendPassword($_GET['key'])) {
-        set_page_message(tr('Your new password has been sent. Check your email.'), 'success');
-        redirectTo('index.php');
+if (isset($_GET['key'])) { // Password request validation
+    $key = clean_input($_GET['key']);
+    if (sendPassword($key)) {
+        set_page_message(tr('Your password has been successfully renewed. Check your emails.'), 'success');
     }
 
-    set_page_message(tr('New password has not been sent. Ask your administrator.'), 'error');
+    redirectTo('lostpassword.php');
 } elseif (!empty($_POST)) { // Request for new password
-    $bruteForce = new iMSCP_Plugin_Bruteforce(iMSCP_Registry::get('pluginManager'), 'captcha');
+    if ($cfg['BRUTEFORCE']) {
+        $bruteForce = new iMSCP_Plugin_Bruteforce(iMSCP_Registry::get('pluginManager'), 'captcha');
+        if ($bruteForce->isWaiting() || $bruteForce->isBlocked()) {
+            set_page_message($bruteForce->getLastMessage(), 'error');
+            redirectTo('lostpassword.php');
+        }
 
-    if ($bruteForce->isWaiting() || $bruteForce->isBlocked()) {
-        set_page_message($bruteForce->getLastMessage(), 'error');
-        redirectTo('lostpassword.php');
+        $bruteForce->recordAttempt();
     }
 
-    $bruteForce->recordAttempt();
+    if (isset($_POST['uname']) && isset($_POST['capcode']) && isset($_SESSION['image'])) {
+        $uname = clean_input($_POST['uname']);
+        $capcode = clean_input($_POST['capcode']);
 
-    if (!empty($_POST['uname']) && isset($_SESSION['image']) && isset($_POST['capcode'])) {
-        clean_input($_POST['uname']);
-        clean_input($_POST['capcode']);
-
-        if ($_SESSION['image'] != $_POST['capcode']) {
+        if ($_SESSION['image'] !== $capcode) {
             set_page_message(tr('Wrong security code'), 'error');
-        } elseif (!requestPassword($_POST['uname'])) {
-            set_page_message(tr('Wrong username.'), 'error');
-        } else {
-            set_page_message(tr('Your request for new password has been registered. You will receive an email with instructions to complete the process.'), 'success');
+        } else if (sendPasswordRequestValidation($uname)) {
+            set_page_message(tr('Your request for password renewal has been registered. You will receive an email with instructions to complete the process.'), 'success');
+            redirectTo('index.php');
         }
     } else {
         set_page_message(tr('All fields are required.'), 'error');
     }
+
+    redirectTo('lostpassword.php');
 }
 
 generatePageMessage($tpl);

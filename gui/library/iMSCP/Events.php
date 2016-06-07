@@ -1308,9 +1308,29 @@ class iMSCP_Events
      *
      * The listeners receive an iMSCP_Events_Event object with the following parameters:
      *
-     * - translations An ArrayObject which allows the plugins to add their own JS translations
+     * - translations An ArrayObject that allows third-party components to add their own JS translations
      *
      * @see i18n_getJsTranslations() for more details
      */
     const onGetJsTranslations = 'onGetJsTranslations';
+
+    /**
+     * The onSendMail event is triggered by the send_mail() function.
+     * 
+     * The listeners receive an iMSCP_Events_Event object with the following parameters:
+     * 
+     * - mail_data: An ArrayObject that allows third-party components to override mail data which are:
+     *    - mail_id      : Mail unique identifier
+     *    - fname        : OPTIONAL Receiver firstname
+     *    - lname        : OPTIONAL Receiver lastname
+     *    - username     : Receiver username
+     *    - email        : Receiver email
+     *    - sender_name  : OPTIONAL sender name (if present, passed through `Reply-To' header)
+     *    - sender_email : OPTIONAL Sender email (if present, passed through `Reply-To' header)
+     *    - subject      : Subject of the email to be sent
+     *    - message      : Message to be sent
+     *    - placeholders : OPTIONAL An array where keys are placeholders to replace and values, the replacement values.
+     *                     Those placeholders take precedence on the default placeholders.
+     */
+    const onSendMail = 'onSendMail';
 }

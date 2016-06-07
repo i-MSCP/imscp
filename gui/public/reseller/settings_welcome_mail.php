@@ -42,8 +42,7 @@ $tpl->define_dynamic(
 		'page' => 'reseller/settings_welcome_mail.tpl',
 		'page_message' => 'layout'));
 
-$user_id = $_SESSION['user_id'];
-$data = get_welcome_email($user_id, 'user');
+$data = get_welcome_email($_SESSION['user_id']);
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
 	$data['subject'] = clean_input($_POST['auto_subject']);
@@ -54,8 +53,8 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
 	} elseif ($data['message'] == '') {
 		set_page_message(tr('You must specify a message.'), 'error');
 	} else {
-		set_welcome_email($user_id, $data);
-		set_page_message (tr('Template for Auto email successfully updated.'), 'success');
+		set_welcome_email($_SESSION['user_id'], $data);
+		set_page_message (tr('Welcome email template has been updated.'), 'success');
 	}
 }
 

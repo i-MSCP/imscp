@@ -30,33 +30,32 @@
  * @param string $subject Subject
  * @param string $body Body
  * @param array $rcptToData Recipient data
+ * @return bool TRUE on success, FALSE on failure
  */
 function reseller_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData)
 {
-	if ($rcptToData['email'] != '') {
-		$senderEmail = encode_idna($senderEmail);
-
-		if (!empty($rcptToData['fname']) && !empty($rcptToData['lname'])) {
-			$to = $rcptToData['fname'] . ' ' . $rcptToData['lname'];
-		} elseif (!empty($rcptToData['fname'])) {
-			$to = $rcptToData['fname'];
-		} elseif (!empty($rcptToData['lname'])) {
-			$to = $rcptToData['lname'];
-		} else {
-			$to = $rcptToData['admin_name'];
-		}
-
-		$from = encode_mime_header($senderName) .  " <$senderEmail>";
-		$to = encode_mime_header($to) . " <{$rcptToData['email']}>";
-
-		$headers = "From: $from\r\n";
-		$headers .= "MIME-Version: 1.0\r\n";
-		$headers .= "Content-Type: text/plain; charset=utf-8\r\n";
-		$headers .= "Content-Transfer-Encoding: 8bit\r\n";
-		$headers .= "X-Mailer: i-MSCP mailer";
-
-		mail($to, encode_mime_header($subject), $body, $headers, "-f $senderEmail");
+	if ($rcptToData['email'] == '') {
+		return true;
 	}
+
+	$ret = send_mail(array(
+		'mail_id' => 'admin-circular',
+		'fname' => $rcptToData['fname'],
+		'lname' => $rcptToData['lname'],
+		'username' => $rcptToData['admin_name'],
+		'email' => $rcptToData['email'],
+		'sender_name' => $senderName,
+		'sender_email' => encode_idna($senderEmail),
+		'subject' => $subject,
+		'message' => $body
+	));
+
+	if (!$ret) {
+		write_log(sprintf('Could not send reseller circular to %s', $rcptToData['admin_name']), E_USER_ERROR);
+		return false;
+	}
+
+	return true;
 }
 
 /**

@@ -47,7 +47,7 @@
 		<tbody>
 		<tr>
 			<td><label for="auto_subject"><strong>{TR_SUBJECT}</strong></label></td>
-			<td><input type="text" name="auto_subject" id="auto_subject" class="inputTitle" value="{SUBJECT_VALUE}"/>
+			<td><input type="text" name="auto_subject" id="auto_subject" class="inputTitle" value="{SUBJECT_VALUE}">
 			</td>
 		</tr>
 		<tr>
@@ -65,7 +65,7 @@
 		</tbody>
 	</table>
 	<div class="buttons">
-		<input name="Submit" type="submit" value="{TR_UPDATE}"/>
-		<input type="hidden" name="uaction" value="email_setup"/>
+		<input name="Submit" type="submit" value="{TR_UPDATE}">
+		<input type="hidden" name="uaction" value="email_setup">
 	</div>
 </form>

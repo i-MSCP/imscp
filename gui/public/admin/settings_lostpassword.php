@@ -44,11 +44,10 @@ $tpl->define_dynamic(
 		'logged_from' => 'page',
 		'custom_buttons' => 'page'));
 
-$user_id = $_SESSION['user_id'];
 $selected_on = '';
 $selected_off = '';
-$data_1 = get_lostpassword_activation_email($user_id);
-$data_2 = get_lostpassword_password_email($user_id);
+$data_1 = get_lostpassword_activation_email($_SESSION['user_id']);
+$data_2 = get_lostpassword_password_email($_SESSION['user_id']);
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$err_message = '';
@@ -68,9 +67,9 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	if (!empty($err_message)) {
 		set_page_message($err_message, 'error');
 	} else {
-		set_lostpassword_activation_email($user_id, $data_1);
-		set_lostpassword_password_email($user_id, $data_2);
-		set_page_message(tr('Auto email template data updated!'), 'success');
+		set_lostpassword_activation_email(0, $data_1);
+		set_lostpassword_password_email(0, $data_2);
+		set_page_message(tr('Lost password email templates were updated.'), 'success');
 	}
 }
 

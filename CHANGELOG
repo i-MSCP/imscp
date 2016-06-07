@@ -10,29 +10,31 @@ BACKEND
     Added: Debug info for loading of listener files (Event::Manager)
     Added: 'fixpermissions' option for the iMSCP::Dir::make() method
     Added: iMSCP::Database::mysql::useDatabase() method - Allow to select database on which we want operate on
-    Added: i-MSCP (imscp) master system user (homedir is /var/local/imscp)
+    Added: iMSCP::DbTasksProcessor - Allows to process db tasks without spawning new process
+    Added: imscp master system user (homedir is /var/local/imscp)
+    Added: imscp-mountall script - Mount file systems by reading entries from i-MSCP fstab-like file
+    Added: iMSCP::Mount library - Library for mounting/unmounting file systems
     Added: iMSCP::OpenSSL::getCertificateExpiryTime() method - Allow to get SSL certificate expiry time (UNIX timestamp)
     Added: onBoot event in iMSCP::Bootstrapper (triggered at end of bootstrapping process)
-    Added: Support for PHP 7 (httpd servers implementations)
+    Added: Support for PHP 7.0 (httpd servers implementations)
     Added: Support for prime256v1 (ECDSA) keys (iMSCP::OpenSSL)
     Added: Support for systemd socket units (systemd init provider)
-    Backported: iMSCP::DbTasksProcessor from 1.3.x branch - Allows to process db tasks without spawning new process
-    Backported: imscp-mountall-mngr (as imscp-mountall) from 1.3.x branch - Mount i-MSCP file systems on server reboot
-    Backported: iMSCP::Mount library from 1.3.x branch - Library for mounting/unmounting file systems
     Changed: Upstart job file paths, sysvinit script paths and systemd unit files paths are now cached (init providers)
-    Enhancement: Allow passing multiple arguments to system() function (iMSCP::Execute)
+    Enhancement: Allow passing command through arrayref (iMSCP::Execute::execute, iMSCP::Execute::executeNoWait)
     Fixed: composer.phar must not be run with root user privileges (it is now run with i-MSCP system master user)
     Fixed: Could not disable custom DNS resource records; DNS resource records are always re-enabled on domain change
     Fixed: Database handle is destroyed when calling fork(), leading to unexpected failure (iMSCP::Database::mysql)
     Fixed: eth0 is hardcoded in i-MSCP network interface provider
-    Fixed: Ignore user-specific options if any (~/.my.cnf file) when running mysqldump (iMSCP::Database::mysql::dumpdb)
+    Fixed: Ignore user-specific options if any ~/.my.cnf file when running mysqldump (iMSCP::Database::mysql::dumpdb)
+    Fixed: Mails sent from Backend could be rejected if sender email domain is hosted externally
     Fixed: Many inconsistencies in iMSCP::Getopt
     Improvement: Allow registering listeners on many events at once (Event::Manager)
     Introduced: HSTS (HTTP Strict Transport Security) feature
     Removed: beforeDispatchRequest and afterDispatchRequest events
     Removed: cache data directory (/var/cache/imscp directory)
-    Removed: imscp-httpd-logs-mngr script (Apache2 logs dirctories are now mounted via the imscp_mountall service)
+    Removed: imscp-httpd-logs-mngr script (Apache2 logs dirctories are now mounted via the iMSCP::Mount library)
     Removed: installConfFile() method from httpd server packages
+    Rewritten: iMSCP::Mail library
     Rewritten: iMSCP::SetRights library (usage of built-in functions to avoid call of system chown/chmod commands)
 
 CONFIG
@@ -74,23 +76,25 @@ DATABASE
     Changed: i-MSCP now uses its own SQL user (master SQL user). See errata file for more details.
     Updated: domain_id index on domain_dns table; added index length for domain_dns and domain_text columns
 
-DISTRO
-    Fixed: libpam-mysql - undefined symbol: make_scrambled_password (bugs affecting all distributions)
-    Fixed: libpam-mysql - possible segfault (bugs affecting all distributions)
+DISTRIBUTIONS
+    Fixed: libpam-mysql package - undefined symbol: make_scrambled_password (bugs affecting all distributions)
+    Fixed: libpam-mysql package - possible segfault (bugs affecting all distributions)
 
 FRONTEND
     Added: Datatable for domains, subdomains, domain aliases and DNS resource records (client level)
     Added: Datatable for the file system information table (admin level)
+    Added: iMSCP\Crypt library
     Added: iMSCP\Net class - Allow to get list of network devices and IP addresses (stdlib)
     Added: \iMSCP\Json\LazyDecoder class for lazy-decoding of JSON data
+    Added: Exclamation icon
+    Added: onSendMail event (event triggered each time a mail is sent)
     Added: SPF DNS resource record type (validated as a TXT record) (client level)
     Added: Support for .phtml template files (stdlib)
     Added: torul() function for escaping a string for the URI or Parameter contexts (stdlib)
-    Backported: Exclamation icon from 1.3.x branch
-    Backported: iMSCP\Crypt library from 1.3.x branch (not used by core atm)
     Changed: exec() PHP function is no longer disabled for the control panel (master php.ini file)
     Changed: The `type` field cannot longer be changed when editing a DNS resource record (client level)
     Changed: Support for nested MySQL transactions is now emulated using named transaction savepoints (stdlib)
+    Fixed: Bruteforce feature still acts even when disabled (lostpassword.php)
     Fixed: Cannot add DKIM/DMARC DNS resource records (client level)
     Fixed: Could not retrieve network devices list under Debian Stretch (testing) - Related to #IP-1525 (admin level)
     Fixed: Customer must be allowed to set custom TTL value for any DNS resource record (client level)
@@ -98,11 +102,14 @@ FRONTEND
     Fixed: Customer PHP permissions not saved when editing customer account (regression fix)
     Fixed: Could not remove database; There is no such grant defined for user... (stdlib)
     Fixed: Could not set URL redirect when adding domain alias; Bad request error page (client level)
+    Fixed: Email template inconsistencies
     Fixed: IDNs are shown in IDNA form in several places
     Fixed: iMSCP_Update_Database::addIndex() doesn't allows to set index length (stdlib)
+    Fixed: Lostpasword feature is broken
+    Fixed: Mails sent from FrontEnd could be rejected if sender email domain is hosted externally
+    Fixed: Privileges on database that contains wildcards are not removed when SQL user is assigned to many databases
     Fixed: Reseller PHP permissions not saved when editing reseller account (regression fix)
     Fixed: Uncaught ReferenceError: ajaxStop is not defined (admin level)
-    Fixed: Privileges on database that contains wildcards are not removed when SQL user is assigned to many databases
     Fixed: Wrong behavior with exception handler when database connection is not available (stdlib)
     Fixed: Wrong value for LOG_LEVEL configuration parameter
     Introduced: HSTS (HTTP Strict Transport Security) feature
@@ -180,6 +187,9 @@ SERVERS
     Fixed: When the --skip-distro-packages installer option is set, the vsftpd local package shouldn't be rebuilt
     Removed: /var/log/proftpd/ftp_traff.log custom log. Traffic data are now pulled from /var/log/proftpd/xferlog
 
+SERVICES
+    Added: imscp_mountall service - Mount filesystems on server reboot
+
 VENDOR:
     Patched: phpseclib library (deprecated constructor method - PHP >= 7.0)
     Updated: phpseclib library to version 1.0.2
@@ -209,10 +219,11 @@ YOUTRACK
     IP-1539 Default behaviour when adding a MySQL user is counter-intuitive
     IP-1549 RRL implementation for BIND/Named config
     IP-1555 Syntax error in imscp-disable-accounts script
-    IP-1557 vsftpd - request failed due to PAM unable to dlopen(pam_mysql.so): /lib/security/pam_mysql.so: undefined
-        symbol: make_scrambled_password
+    IP-1557 vsftpd - request failed due to PAM unable to dlopen(pam_mysql.so)...
     IP-1563 Default MX record not removed when adding external mailserver (domain type)
     IP-1564 Debian pam-mysql source package - Could not satisfy build dependencies
+    IP-1566 Exception thrown when requesting password for reseller with deleted admin
+    IP-1567 "Unknown" status in users overview
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series

@@ -98,18 +98,20 @@ EOF
 
 =over 4
 
-=item _sendMail($message)
+=item _sendMail($subject, $message, $severity)
 
  Send a message to system administrator
 
+ Param string $subject Message subject
  Param string $message Message to be sent
+ Param string $severity Message severity
  Return int 0 on success, other on failure
  
 =cut
 
 sub _sendMail
 {
-    my ($self, $subject, $message) = @_;
+    my ($self, $subject, $message, $severity) = @_;
 
     my $sendmail = iMSCP::ProgramFinder::find( 'sendmail' ) or die( 'Could not find sendmail executable' );
     my $host = $main::imscpConfig{'BASE_SERVER_VHOST'};
@@ -124,8 +126,11 @@ Dear administrator,
 
 This is an automatic email sent by i-MSCP:
  
-Server name: $main::imscpConfig{'SERVER_HOSTNAME'}
-Server IP: $main::imscpConfig{'BASE_SERVER_IP'}
+Server name      : $main::imscpConfig{'SERVER_HOSTNAME'}
+Server IP        : $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}
+Version          : $main::imscpConfig{'Version'}
+Build            : $main::imscpConfig{'BuildDate'}
+Message severity : $severity
 
 ==========================================================================
 $message

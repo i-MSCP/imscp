@@ -47,7 +47,7 @@
 		<tbody>
 		<tr>
 			<td><label for="auto_subject">{TR_SUBJECT}</label></td>
-			<td><input type="text" id="auto_subject" name="auto_subject" value="{SUBJECT_VALUE}" class="inputTitle"/>
+			<td><input type="text" id="auto_subject" name="auto_subject" value="{SUBJECT_VALUE}" class="inputTitle">
 			</td>
 		</tr>
 		<tr>
