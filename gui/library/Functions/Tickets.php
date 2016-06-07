@@ -631,7 +631,7 @@ i-MSCP Mailer
 MSG
         );
     } else {
-        $message = tr(<<<MSG
+        $message = tr('
 Dear {NAME},
 
 You have a new answer for a ticket:
@@ -649,7 +649,7 @@ Please do not reply to this email.
 ___________________________
 i-MSCP Mailer
 MSG
-        );
+');
     }
 
     $ret = send_mail(array(

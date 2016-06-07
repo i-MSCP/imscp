@@ -1642,7 +1642,7 @@ function write_log($msg, $logLevel = E_USER_WARNING)
         'username' => tr('administrator'),
         'email' => $cfg['DEFAULT_ADMIN_ADDRESS'],
         'subject' => "i-MSCP $severity",
-        'message' => tr(<<<"MSG"
+        'message' => tr('
 Dear {NAME},
 
 This is an automatic email sent by i-MSCP:
@@ -1661,8 +1661,7 @@ Please do not reply to this email.
 
 ___________________________
 i-MSCP Mailer
-MSG
-        ),
+'),
         'placeholders' => array(
             '{USERNAME}' => tr('administrator'),
             '{HOSTNAME}' => $cfg['SERVER_HOSTNAME'],

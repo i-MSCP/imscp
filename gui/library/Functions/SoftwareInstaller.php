@@ -107,7 +107,7 @@ function send_activated_sw($resellerId, $softwarePackage, $softwareId)
         'username' => $resellerData['admin_name'],
         'email' => $resellerData['email'],
         'subject' => tr('Your software package has been activated'),
-        'message' => tr(<<<EOF
+        'message' => tr('
 Dear {NAME},
 
 Your software package has been successfully activated.
@@ -119,8 +119,7 @@ Please do not reply to this email.
 
 ___________________________
 i-MSCP Mailer.
-EOF
-        ),
+'),
         'placeholders' => array(
             '{SOFTWARE_PACKAGE}' => $softwarePackage,
             '{SOFTWARE_ID}' => $softwareId
@@ -155,7 +154,7 @@ function send_deleted_sw($resellerId, $softwarePackage, $softwareId, $adminMessa
         'username' => $resellerData['admin_name'],
         'email' => $resellerData['email'],
         'subject' => tr('Your software package has been deleted'),
-        'message' => tr(<<<EOF
+        'message' => tr('
 Dear {NAME},
 
 Your software package has been deleted.
@@ -173,8 +172,7 @@ Please do not reply to this email.
 
 ___________________________
 i-MSCP Mailer
-EOF
-        ),
+'),
         'placeholders' => array(
             '{SOFTWARE_PACKAGE}' => $softwarePackage,
             '{SOFTWARE_ID}' => $softwareId,
@@ -726,7 +724,7 @@ function send_new_sw_upload($resellerId, $softwarePackage, $softwareId)
         'username' => $adminData['admin_name'],
         'email' => $adminData['email'],
         'subject' => tr('A new software package has been uploaded'),
-        'message' => tr(<<<EOF
+        'message' => tr('
 Dear {NAME},
 
 A new software package has been uploaded by a reseller.
@@ -739,8 +737,7 @@ Please do not reply to this email.
 
 ___________________________
 i-MSCP Mailer
-EOF
-        ),
+'),
         'placeholders' => array(
             '{RESELLER_ID}' => $resellerId,
             '{SOFTWARE_ARCHIVE}' => $softwarePackage,

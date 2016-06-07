@@ -106,7 +106,7 @@ function get_welcome_email($userId)
     }
     // No custom template for welcome mail - return the default
     if ($data['message'] == '') {
-        $data['message'] = tr(<<<EOF
+        $data['message'] = tr('
 Dear {NAME},
 
 A new account has been created for you.
@@ -125,8 +125,7 @@ Please do not reply to this email.
 
 ___________________________
 i-MSCP Mailer
-EOF
-        );
+');
     }
 
     return $data;
@@ -166,7 +165,7 @@ function get_lostpassword_activation_email($adminId)
         $data['subject'] = tr('Please activate your new i-MSCP password');
     }
     if ($data['message'] == '') {
-        $data['message'] = tr(<<<EOF
+        $data['message'] = tr('
 Dear {NAME},
 
 Please click on the link below to renew your i-MSCP password:
@@ -179,8 +178,7 @@ Please do not reply to this email.
 
 ___________________________
 i-MSCP Mailer
-EOF
-        );
+');
     }
 
     return $data;
@@ -220,7 +218,7 @@ function get_lostpassword_password_email($userId)
         $data['subject'] = tr('Your new i-MSCP login');
     }
     if ($data['message'] == '') {
-        $data['message'] = tr(<<<EOF
+        $data['message'] = tr('
 
 Dear {NAME},
 
@@ -235,8 +233,7 @@ Please do not reply to this email.
 
 ___________________________
 i-MSCP Mailer
-EOF
-        );
+');
     }
 
     return $data;
@@ -275,7 +272,7 @@ function get_alias_order_email($resellerId)
         $data['subject'] = tr('New alias order for {CUSTOMER}');
     }
     if (!$data['message']) {
-        $data['message'] = tr(<<<EOF
+        $data['message'] = tr('
 Dear {NAME},
 
 Your customer {CUSTOMER} is awaiting for approval of a new domain alias:
@@ -289,8 +286,7 @@ Please do not reply to this email.
 
 ___________________________
 i-MSCP Mailer
-EOF
-        );
+');
     }
 
     return $data;
