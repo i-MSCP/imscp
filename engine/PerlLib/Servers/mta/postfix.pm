@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2013-2016 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,14 +25,17 @@ package Servers::mta::postfix;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ File::Temp Servers::mta::postfix::installer Servers::mta::postfix::uninstaller/;
+use Class::Autouse qw/ File::Temp Servers::mta::postfix::installer Servers::mta::postfix::uninstaller /;
 use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
+use iMSCP::Getopt;
+use iMSCP::Service;
 use Scalar::Defer;
+use Tie::File;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
