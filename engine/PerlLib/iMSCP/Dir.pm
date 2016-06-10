@@ -152,7 +152,6 @@ sub mode
 
     defined $mode or die( '$mode parameter is not defined' );
     defined $dirname or die( '$dirname parameter is not defined' );
-    debug( sprintf( 'Changing mode for %s to %s', $dirname, $mode ) );
     chmod $mode, $dirname or die( sprintf( 'Could not change mode for %s: %s', $dirname, $! ) );
     0;
 }
@@ -180,7 +179,6 @@ sub owner
     my $uid = $owner =~ /^\d+$/ ? $owner : getpwnam( $owner ) // -1;
     my $gid = $group =~ /^\d+$/ ? $group : getgrnam( $group ) // -1;
 
-    debug( sprintf( 'Changing owner and group for %s to %s:%s', $dirname, $uid, $gid ) );
     chown $uid, $gid, $dirname or die( sprintf( 'Could not change owner and group for %s: %s', $dirname, $! ) );
     0;
 }
@@ -205,7 +203,6 @@ sub make
     $options = { } unless defined $options && ref $options eq 'HASH';
 
     unless (-d $self->{'dirname'}) {
-        debug( $self->{'dirname'} );
         my @createdDirs = mkpath( $self->{'dirname'}, { error => \ my $errStack } );
 
         if (@{$errStack}) {
@@ -231,7 +228,6 @@ sub make
 
     return 0 unless $options->{'fixpermissions'};
 
-    debug( sprintf( '%s already exists. Setting its permissions...', $self->{'dirname'} ) );
     if (defined $options->{'user'} || defined $options->{'group'}) {
         $self->owner( $options->{'user'} // -1, $options->{'group'} // -1, $self->{'dirname'} );
     }
@@ -259,7 +255,6 @@ sub remove
 
     return 0 unless -d $dirname;
 
-    debug( $dirname );
     remove_tree( $dirname, { error => \ my $errStack } );
 
     if (@{$errStack}) {
@@ -321,11 +316,9 @@ sub rcopy
                     $opts = { user => $uid, mode => $mode & 07777, group => $gid }
                 }
 
-                debug( sprintf( '%s to %s', $src, $dst ) );
                 iMSCP::Dir->new( dirname => $dst )->make( $opts );
                 iMSCP::Dir->new( dirname => $src )->rcopy( $dst, $options );
             } else {
-                debug( sprintf( '%s to %s', "$self->{'dirname'}/$entry", "$destDir/$entry" ) );
                 iMSCP::File->new( filename => $src )->copyFile( $dst, $options ) == 0 or die(
                     sprintf( 'Could not copy file %s into %s: %s', $src, $dst, getLastError() )
                 );
@@ -354,7 +347,6 @@ sub moveDir
     defined $self->{'dirname'} or die( '`dirname` attribute is not defined' );
 
     -d $self->{'dirname'} or die( sprintf( "Directory %s doesn't exits", $self->{'dirname'} ) );
-    debug( sprintf( '%s to %s', $self->{'dirname'}, $destDir ) );
     move $self->{'dirname'}, $destDir or die(
         sprintf( 'Could not move %s to %s: %s', $self->{'dirname'}, $destDir, $! )
     );

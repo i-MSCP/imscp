@@ -161,7 +161,6 @@ sub save
         return 1;
     }
 
-    debug( sprintf( 'Saving file %s', $self->{'filename'} ) );
     $self->{'fileContent'} //= '';
     print {$fh} $self->{'fileContent'};
     $fh->close();
@@ -185,7 +184,6 @@ sub delFile
         return 1;
     }
 
-    debug( sprintf( 'Deleting file %s', $self->{'filename'} ) );
     unless (unlink( $self->{'filename'} )) {
         error( sprintf( 'Could not delete file %s: %s', $self->{'filename'}, $! ) );
         return 1;
@@ -212,7 +210,6 @@ sub mode
         return 1;
     }
 
-    debug( sprintf( 'Changing mode for %s to %o', $self->{'filename'}, $mode ) );
     unless (chmod( $mode, $self->{'filename'} )) {
         error( sprintf( 'Could not change mode for %s: %s', $self->{'filename'}, $! ) );
         return 1;
@@ -243,7 +240,6 @@ sub owner
     my $uid = (($owner =~ /^\d+$/) ? $owner : getpwnam( $owner )) // -1;
     my $gid = (($group =~ /^\d+$/) ? $group : getgrnam( $group )) // -1;
 
-    debug( sprintf( 'Changing owner and group for %s to %s:%s', $self->{'filename'}, $uid, $gid ) );
     unless (chown( $uid, $gid, $self->{'filename'} )) {
         error( sprintf( 'Could not change owner and group for %s: %s', $self->{'filename'}, $! ) );
         return 1;
@@ -273,7 +269,6 @@ sub copyFile
         return 1;
     }
 
-    debug( sprintf( 'Copying file %s to %s', $self->{'filename'}, $dest ) );
     unless (copy( $self->{'filename'}, $dest )) {
         error( sprintf( 'Could not copy %s to %s: %s', $self->{'filename'}, $dest, $! ) );
         return 1;
@@ -286,13 +281,11 @@ sub copyFile
     my (undef, undef, $mode, undef, $uid, $gid) = lstat( $self->{'filename'} );
     $mode = $mode & 07777;
 
-    debug( sprintf( 'Changing mode for %s to %o', $dest, $mode ) );
     unless (chmod( $mode, $dest )) {
         error( sprintf( 'Could not change mode for %s: %s', $dest, $! ) );
         return 1;
     }
 
-    debug( sprintf( "Changing owner and group for %s to %s:%s", $dest, $uid, $gid ) );
     unless (chown( $uid, $gid, $dest )) {
         error( sprintf( 'Could not change owner and group for %s: %s', $dest, $! ) );
         return 1;
@@ -319,7 +312,6 @@ sub moveFile
         return 1;
     }
 
-    debug( sprintf( 'Moving file %s to %s', $self->{'filename'}, $dest ) );
     unless (move( $self->{'filename'}, $dest )) {
         error( sprintf( 'Unable to move %s to %s: %s', $self->{'filename'}, $dest, $! ) );
         return 1;
