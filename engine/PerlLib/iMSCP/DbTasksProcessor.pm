@@ -31,6 +31,7 @@ use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::Stepper;
 use JSON;
+use MIME::Base64 qw/ encode_base64 /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
