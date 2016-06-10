@@ -23,13 +23,13 @@
  *
  * @throws iMSCP_Exception on error
  * @param int $mailId Mail account unique identifier
- * @param array $dmnProps Main domain properties
+ * @param int $domainId Main domain unique identifier
  * @return void
  */
-function client_deleteMailAccount($mailId, $dmnProps)
+function client_deleteMailAccount($mailId, $domainId)
 {
-    $stmt = exec_query('SELECT `mail_addr` FROM `mail_users` WHERE `mail_id` = ? AND `domain_id` = ?', array(
-        $mailId, $dmnProps['domain_id']
+    $stmt = exec_query('SELECT mail_addr FROM mail_users WHERE mail_id = ? AND domain_id = ?', array(
+        $mailId, $domainId
     ));
 
     if (!$stmt->rowCount()) {
@@ -40,14 +40,49 @@ function client_deleteMailAccount($mailId, $dmnProps)
     $mailAddr = $row['mail_addr'];
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteMail, array('mailId' => $mailId));
-    exec_query('UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?', array('todelete', $mailId));
-    exec_query(
+    exec_query('UPDATE mail_users SET status = ? WHERE mail_id = ?', array('todelete', $mailId));
+    
+    # Update or delete forward accounts and/or catch-alls that list mail_addr of the account that is being deleted
+    #  Forward accounts:
+    #   A forward account which only forward on the mail_addr of the account that is being deleted will be also deleted,
+    #   else mail_addr will be simply removed from its forward list
+    # Catch-alls:
+    #   A catchall that catch only on mail_addr of the account that is being deleted will be also deleted, else
+    #   mail_addr will be simply deleted from the catchall list.
+    $stmt = exec_query(
         '
-            UPDATE `mail_users` SET `status` = ?
-            WHERE `mail_acc` = ? OR `mail_acc` LIKE ? OR `mail_acc` LIKE ? OR `mail_acc` LIKE ?
+            SELECT mail_id, mail_acc, mail_forward FROM mail_users
+            WHERE mail_addr <> :mail_addr AND (mail_acc RLIKE :rlike OR mail_forward RLIKE :rlike) 
         ',
-        array('todelete', $mailAddr, "$mailAddr,%", "%,$mailAddr,%", "%,$mailAddr")
+        array(
+            'mail_addr' => $mailAddr,
+            'rlike' => '(,|^)' . $mailAddr . '(,|$)'
+        )
     );
+    if ($stmt->rowCount()) {
+        while ($row = $stmt->fetchRow()) {
+            if ($row['mail_forward'] == '_no_') {
+                # Catchall
+                $row['mail_acc'] = implode(',', preg_grep(
+                    '/^' . quotemeta($mailAddr) . '$/', explode(',', $row['mail_acc']), PREG_GREP_INVERT
+                ));
+            } else {
+                # Forward account
+                $row['mail_forward'] = implode(',', preg_grep(
+                    '/^' . quotemeta($mailAddr) . '$/', explode(',', $row['mail_forward']), PREG_GREP_INVERT
+                ));
+            }
+
+            if ($row['mail_acc'] == '' || $row['mail_forward'] == '') {
+                exec_query('UPDATE mail_users SET status = ? WHERE mail_id = ?', array('todelete', $row['mail_id']));
+            } else {
+                exec_query('UPDATE mail_users SET status = ?, mail_acc = ?, mail_forward = ? WHERE mail_id = ?', array(
+                    'tochange', $row['mail_acc'], $row['mail_forward'], $row['mail_id']
+                ));
+            }
+        }
+    }
+
     delete_autoreplies_log_entries();
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMail, array('mailId' => $mailId));
     set_page_message(tr('Mail account %s successfully scheduled for deletion.', decode_idna($mailAddr)), 'success');
@@ -66,7 +101,7 @@ if (!customerHasFeature('mail') || !isset($_REQUEST['id'])) {
     showBadRequestErrorPage();
 }
 
-$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
+$domainId = get_user_domain_id($_SESSION['user_id']);
 $nbDeletedMails = 0;
 $mailIds = (array)$_REQUEST['id'];
 
@@ -81,8 +116,8 @@ try {
     $db->beginTransaction();
 
     foreach ($mailIds as $mailId) {
-        $mailId = clean_input($mailId);
-        client_deleteMailAccount($mailId, $mainDmnProps);
+        $mailId = intval($mailId);
+        client_deleteMailAccount($mailId, $domainId);
         $nbDeletedMails++;
     }
 
@@ -100,7 +135,7 @@ try {
     $code = $e->getCode();
 
     write_log(sprintf(
-        'An unexpected error occurred while attempting to delete mail account with ID %s: %s', $mailId, $errorMessage), E_USER_ERROR
+        'An unexpected error occurred while attempting to delete a mail account: %s', $errorMessage), E_USER_ERROR
     );
 
     if ($code == 403) {

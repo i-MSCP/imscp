@@ -342,15 +342,14 @@ sub _loadData
 
     my $rdata = iMSCP::Database->factory()->doQuery(
         'domain_id',
-        '
-            SELECT domain.*, ip_number, IFNULL(mail_on_domain, 0) AS mail_on_domain
-            FROM domain INNER JOIN server_ips ON (domain_ip_id = ip_id)
+        "
+            SELECT t1.*, t2.ip_number, t3.mail_on_domain FROM domain AS t1
+            INNER JOIN server_ips AS t2 ON (t1.domain_ip_id = t2.ip_id)
             LEFT JOIN (
-                SELECT domain_id, COUNT(domain_id) AS mail_on_domain FROM mail_users WHERE sub_id = 0
-                GROUP BY domain_id
-            ) AS mail_count USING (domain_id)
-            WHERE domain_id = ?
-        ',
+                SELECT domain_id, COUNT(domain_id) AS mail_on_domain FROM mail_users WHERE mail_type LIKE 'normal\\_%'
+            ) AS t3 ON(t1.domain_id = t3.domain_id)
+            WHERE t1.domain_id = ?
+        ",
         $domainId
     );
     unless (ref $rdata eq 'HASH') {
@@ -467,7 +466,6 @@ sub _getMtaData
         DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
         DOMAIN_NAME     => $self->{'domain_name'},
         DOMAIN_TYPE     => $self->getType(),
-        TYPE            => 'vdmn_entry',
         EXTERNAL_MAIL   => $self->{'external_mail'},
         MAIL_ENABLED    => $self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0 ? 1 : 0
     };
@@ -606,9 +604,8 @@ sub isValidCertificate
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

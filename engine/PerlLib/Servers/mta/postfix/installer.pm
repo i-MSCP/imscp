@@ -147,9 +147,9 @@ sub setEnginePermissions
     $rs ||= setRights(
         $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'},
         {
-            user => $rootUName,
+            user  => $rootUName,
             group => $rootGName,
-            mode => '0750'
+            mode  => '0750'
         }
     );
 }
@@ -210,17 +210,18 @@ sub _addUsersAndGroups
         'yes' # Whether it's a system group
     ]);
 
-    my @users = ([
-        $self->{'config'}->{'MTA_MAILBOX_UID_NAME'}, # User name
-        $self->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # User primary group name
-        'vmail_user', # Comment
-        $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}, # User homedir
-        'yes', # Whether it's a system user
-        [ $main::imscpConfig{'IMSCP_GROUP'} ] # Additional user group(s)
-    ]);
+    my @users = (
+        [
+            $self->{'config'}->{'MTA_MAILBOX_UID_NAME'}, # User name
+            $self->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # User primary group name
+            'vmail_user', # Comment
+            $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}, # User homedir
+            'yes', # Whether it's a system user
+            [ $main::imscpConfig{'IMSCP_GROUP'} ] # Additional user group(s)
+        ]
+    );
 
     my @userToGroups = ();
-
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddUsersAndGroups', \@groups, \@users, \@userToGroups );
     return $rs if $rs;
 
@@ -304,9 +305,9 @@ sub _makeDirs
     for my $dir(@directories) {
         $rs = iMSCP::Dir->new( dirname => $dir->[0] )->make(
             {
-                user => $dir->[1],
-                group => $dir->[2],
-                mode => $dir->[3],
+                user           => $dir->[1],
+                group          => $dir->[2],
+                mode           => $dir->[3],
                 fixpermissions => iMSCP::Getopt->fixPermissions
             }
         );

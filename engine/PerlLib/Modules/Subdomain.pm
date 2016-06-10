@@ -134,20 +134,17 @@ sub _loadData
     my $rdata = iMSCP::Database->factory()->doQuery(
         'subdomain_id',
         "
-            SELECT sub.*, domain_name AS user_home, domain_admin_id, domain_php, domain_cgi, domain_traffic_limit,
-                domain_mailacc_limit, domain_dns, external_mail, web_folder_protection, ips.ip_number,
-                mail_count.mail_on_domain
-            FROM subdomain AS sub
-            INNER JOIN domain ON (sub.domain_id = domain.domain_id)
-            INNER JOIN server_ips AS ips ON (domain.domain_ip_id = ips.ip_id)
+            SELECT t1.*, t2.domain_name AS user_home, t2.domain_admin_id, t2.domain_php, t2.domain_cgi,
+                t2.domain_traffic_limit, t2.domain_mailacc_limit, t2.domain_dns, t2.external_mail,
+                t2.web_folder_protection, t3.ip_number, t4.mail_on_domain
+            FROM subdomain AS t1
+            INNER JOIN domain AS t2 ON (t1.domain_id = t2.domain_id)
+            INNER JOIN server_ips AS t3 ON (t2.domain_ip_id = t3.ip_id)
             LEFT JOIN (
-                SELECT sub_id AS id, COUNT( sub_id ) AS mail_on_domain FROM mail_users
-                WHERE sub_id= ? AND mail_type IN ('subdom_mail', 'subdom_forward', 'subdom_mail,subdom_forward', 'subdom_catchall')
-                GROUP BY sub_id
-            ) AS mail_count ON (sub.subdomain_id = mail_count.id)
-            WHERE sub.subdomain_id = ?
+                SELECT sub_id, COUNT(sub_id) AS mail_on_domain FROM mail_users WHERE mail_type LIKE 'subdom\\_%'
+            ) AS t4 ON (t1.subdomain_id = t4.sub_id)
+            WHERE t1.subdomain_id = ?
         ",
-        $subdomainId,
         $subdomainId
     );
     unless (ref $rdata eq 'HASH') {
@@ -267,7 +264,6 @@ sub _getMtaData
         DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
         DOMAIN_NAME     => $self->{'subdomain_name'}.'.'.$self->{'user_home'},
         DOMAIN_TYPE     => $self->getType(),
-        TYPE            => 'vsub_entry',
         EXTERNAL_MAIL   => $self->{'external_mail'},
         MAIL_ENABLED    => ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) ? 1 : 0
     };
@@ -420,9 +416,8 @@ sub isValidCertificate
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

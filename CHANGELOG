@@ -16,6 +16,7 @@ BACKEND
     Added: iMSCP::Mount library - Library for mounting/unmounting file systems
     Added: iMSCP::OpenSSL::getCertificateExpiryTime() method - Allow to get SSL certificate expiry time (UNIX timestamp)
     Added: onBoot event in iMSCP::Bootstrapper (triggered at end of bootstrapping process)
+    Added: Servers::mta::postfix::postconf method() - Allows editing of Postfix main.cf parameters
     Added: Support for PHP 7.0 (httpd servers implementations)
     Added: Support for prime256v1 (ECDSA) keys (iMSCP::OpenSSL)
     Added: Support for systemd socket units (systemd init provider)
@@ -36,6 +37,7 @@ BACKEND
     Removed: installConfFile() method from httpd server packages
     Rewritten: iMSCP::Mail library
     Rewritten: iMSCP::SetRights library (usage of built-in functions to avoid call of system chown/chmod commands)
+    Rewritten: Postfix Server implementation (Servers::mta::postfix)
 
 CONFIG
     Added: php configuration directory (directory which holds all PHP template and configuration parameters)
@@ -222,6 +224,7 @@ YOUTRACK
     IP-1557 vsftpd - request failed due to PAM unable to dlopen(pam_mysql.so)...
     IP-1563 Default MX record not removed when adding external mailserver (domain type)
     IP-1564 Debian pam-mysql source package - Could not satisfy build dependencies
+    IP-1565 Broken catch-all after deletion of a mailbox
     IP-1566 Exception thrown when requesting password for reseller with deleted admin
     IP-1567 "Unknown" status in users overview
 

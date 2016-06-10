@@ -25,8 +25,8 @@ package Modules::Mail;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
 use iMSCP::Database;
+use iMSCP::Debug;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -122,14 +122,8 @@ sub _loadData
     my $rdata = iMSCP::Database->factory()->doQuery(
         'mail_id',
         '
-            SELECT if(ISNULL(t2.mail_addr), "no", "yes") AS hasCatchAll,
-                if(COUNT(t3.mail_addr) <> 0, "yes", "no") AS hasAutoResponder, t1.*
-            FROM mail_users AS t1
-            LEFT JOIN (SELECT mail_addr FROM mail_users WHERE mail_addr LIKE "@%") AS t2
-            ON substr(t1.mail_addr, locate("@", t1.mail_addr)) = t2.mail_addr
-            LEFT JOIN (SELECT mail_addr FROM mail_users WHERE mail_auto_respond = 1) AS t3
-            ON t3.mail_addr LIKE concat("%", substr(t1.mail_addr, locate("@", t1.mail_addr)))
-            WHERE t1.mail_id = ?
+            SELECT mail_id, mail_acc, mail_pass, mail_forward, mail_type, mail_auto_respond, status, quota, mail_addr
+            FROM mail_users WHERE mail_id = ?
         ',
         $mailId
     );
@@ -161,39 +155,19 @@ sub _getMtaData
 
     return %{$self->{'mta'}} if $self->{'mta'};
 
-    (my $mail = $self->{'mail_addr'}) =~ s/^\s+//;
-    my ($user, $domain) = split '@', $mail;
+    my ($user, $domain) = split '@', $self->{'mail_addr'};
 
     $self->{'mta'} = {
-        DOMAIN_NAME         => $domain,
-        MAIL_ACC            => $user,
-        MAIL_ADDR           => $mail,
-        MAIL_CATCHALL       => $self->{'mail_acc'},
-        MAIL_PASS           => $self->{'mail_pass'},
-        MAIL_FORWARD        => $self->{'mail_forward'},
-        MAIL_TYPE           => $self->{'mail_type'},
-        MAIL_AUTO_RSPND     => $self->{'mail_auto_respond'},
-        MAIL_AUTO_RSPND_TXT => $self->{'mail_auto_respond_text'},
-        MAIL_HAS_AUTO_RSPND => $self->{'hasAutoResponder'},
-        MAIL_HAS_CATCH_ALL  => $self->{'hasCatchAll'},
-        MAIL_STATUS         => $self->{'status'},
-        MAIL_ON_CATCHALL    => undef
+        DOMAIN_NAME             => $domain,
+        MAIL_ACC                => $user,
+        MAIL_PASS               => $self->{'mail_pass'},
+        MAIL_FORWARD            => $self->{'mail_forward'},
+        MAIL_TYPE               => $self->{'mail_type'},
+        MAIL_HAS_AUTO_RESPONDER => $self->{'mail_auto_respond'},
+        MAIL_STATUS             => $self->{'status'},
+        MAIL_ADDR               => $self->{'mail_addr'},
+        MAIL_CATCHALL           => index( $self->{'mail_type'}, '_catchall' ) != -1 ? $self->{'mail_acc'} : ''
     };
-
-    return %{$self->{'mta'}} unless $self->{'hasCatchAll'} eq 'yes';
-
-    my $rdata = iMSCP::Database->factory()->doQuery(
-        'mail_addr',
-        "
-            SELECT mail_addr FROM mail_users
-            WHERE mail_addr LIKE '\%$self->{'mail_addr'}' AND mail_type LIKE '\%mail' AND mail_auto_respond = 0
-        "
-    );
-    unless (ref $rdata eq 'HASH') {
-        fatal( $rdata );
-    }
-
-    @{$self->{'mta'}->{'MAIL_ON_CATCHALL'}} = keys %{$rdata};
     %{$self->{'mta'}};
 }
 
@@ -212,16 +186,17 @@ sub _getPoData
 
     return %{$self->{'po'}} if $self->{'po'};
 
-    (my $mail = $self->{mail_addr}) =~ s/^\s+//;
-    my ($user, $domain) = split '@', $mail;
+    my ($user, $domain) = split '@', $self->{'mail_addr'};
 
     $self->{'po'} = {
-        DOMAIN_NAME => $domain,
-        MAIL_ACC    => $user,
-        MAIL_ADDR   => $mail,
-        MAIL_PASS   => $self->{'mail_pass'},
-        MAIL_TYPE   => $self->{'mail_type'},
-        MAIL_QUOTA  => $self->{'quota'}
+        DOMAIN_NAME   => $domain,
+        MAIL_ACC      => $user,
+        MAIL_PASS     => $self->{'mail_pass'},
+        MAIL_TYPE     => $self->{'mail_type'},
+        MAIL_QUOTA    => $self->{'quota'},
+        MAIL_STATUS   => $self->{'status'},
+        MAIL_ADDR     => $self->{'mail_addr'},
+        MAIL_CATCHALL => index( $self->{'mail_type'}, '_catchall' ) != -1 ? $self->{'mail_acc'} : ''
     };
     %{$self->{'po'}};
 }
@@ -241,24 +216,23 @@ sub _getPackagesData
 
     return %{$self->{'packages'}} if $self->{'packages'};
 
-    (my $mail = $self->{mail_addr}) =~ s/^\s+//;
-    my ($user, $domain) = split '@', $mail;
+    my ($user, $domain) = split '@', $self->{'mail_addr'};
 
     $self->{'packages'} = {
-        DOMAIN_NAME => $domain,
-        MAIL_ACC    => $user,
-        MAIL_ADDR   => $mail,
-        MAIL_PASS   => $self->{'mail_pass'},
-        MAIL_TYPE   => $self->{'mail_type'}
+        DOMAIN_NAME   => $domain,
+        MAIL_ACC      => $user,
+        MAIL_PASS     => $self->{'mail_pass'},
+        MAIL_TYPE     => $self->{'mail_type'},
+        MAIL_ADDR     => $self->{'mail_addr'},
+        MAIL_CATCHALL => index( $self->{'mail_type'}, '_catchall' ) != -1 ? $self->{'mail_acc'} : ''
     };
     %{$self->{'packages'}};
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

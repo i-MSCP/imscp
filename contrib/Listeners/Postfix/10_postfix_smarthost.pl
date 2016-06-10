@@ -23,9 +23,7 @@ package Listener::Postfix::Smarthost;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
 use iMSCP::EventManager;
-use iMSCP::Execute;
 use iMSCP::File;
 use Servers::mta;
 
@@ -43,51 +41,46 @@ my $saslPasswdMapsPath = '/etc/postfix/relay_passwd';
 ## Please, don't edit anything below this line
 #
 
-sub fillPackages
-{
-    my $packages = shift;
+my $em = iMSCP::EventManager->getInstance();
+$em->register(
+    'beforeInstallPackages',
+    sub {
+        push @{$_[0]}, 'libsasl2-modules';
+        0;
+    }
+);
+$em->register(
+    'afterMtaBuildMainCfFile',
+    sub {
+        my $saslPasswdMapsFile = iMSCP::File->new( filename => $saslPasswdMapsPath );
+        my $rs = $saslPasswdMapsFile->set( "$relayhost:$relayport\t$saslAuthUser:$saslAuthPasswd" );
+        $rs ||= $saslPasswdMapsFile->save();
+        $rs ||= $saslPasswdMapsFile->mode( 0600 );
+        return $rs if $rs;
 
-    return 0 unless $main::imscpConfig{'PO_SERVER'} eq 'dovecot';
+        my $mta = Servers::mta->factory();
+        local $@;
+        eval {
+            $rs = $mta->postconf(
+                (
+                    relayhost                  => { action => 'replace', values => [ "$relayhost:$relayport" ] },
+                    smtp_sasl_type             => { action => 'replace', values => [ 'cyrus' ] },
+                    smtp_sasl_auth_enable      => { action => 'replace', values => [ 'yes' ] },
+                    smtp_sasl_password_maps    => { action => 'add', values => [ $saslPasswdMapsPath ] },
+                    smtp_sasl_security_options => { action => 'add', values => [ 'noanonymous' ] }
+                )
+            );
+            return $rs if $rs;
+        };
+        if ($@) {
+            error( 'Could not configure smarthost: %s', $@ );
+            return 1;
+        }
 
-    # Dovecot SASL implementation doesn't provides client authentication
-    # for Postfix. Thus, we need also install Cyrus SASL implementation
-    push @{$packages}, 'libsasl2-modules';
-    0;
-}
-
-sub createSaslPasswdMaps
-{
-    my $saslPasswdMapsFile = iMSCP::File->new( filename => $saslPasswdMapsPath );
-    $saslPasswdMapsFile->set( "$relayhost:$relayport\t$saslAuthUser:$saslAuthPasswd" );
-
-    my $rs = $saslPasswdMapsFile->save();
-    $rs ||= $saslPasswdMapsFile->mode( 0600 );
-    return $rs if $rs;
-
-    Servers::mta->factory()->{'postmap'}->{$saslPasswdMapsPath} = 1;
-    0;
-}
-
-sub configureSmartHost
-{
-    my $fileContent = shift;
-
-    $$fileContent .= <<EOF;
-
-# Added by Listener::Postfix::Smarthost
-relayhost=$relayhost:$relayport
-smtp_sasl_type = cyrus
-smtp_sasl_auth_enable=yes
-smtp_sasl_password_maps=hash:$saslPasswdMapsPath
-smtp_sasl_security_options=noanonymous
-EOF
-    0;
-}
-
-my $eventManager = iMSCP::EventManager->getInstance();
-$eventManager->register( 'beforeInstallPackages', \&fillPackages );
-$eventManager->register( 'afterMtaBuildMainCfFile', \&createSaslPasswdMaps );
-$eventManager->register( 'afterMtaBuildMainCfFile', \&configureSmartHost );
+        $mta->{'postmap'}->{$saslPasswdMapsPath} = 1;
+        0;
+    }
+);
 
 1;
 __END__

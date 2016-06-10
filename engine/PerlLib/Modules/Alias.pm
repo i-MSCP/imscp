@@ -183,19 +183,18 @@ sub _loadData
     my $rdata = iMSCP::Database->factory()->doQuery(
         'alias_id',
         "
-            SELECT alias.*, domain_name AS user_home, domain_admin_id, domain_php, domain_cgi, domain_traffic_limit,
-                domain_mailacc_limit, domain_dns, web_folder_protection, ips.ip_number, mail_count.mail_on_domain
-            FROM domain_aliasses AS alias
-            INNER JOIN domain ON (alias.domain_id = domain.domain_id)
-            INNER JOIN server_ips AS ips ON (alias.alias_ip_id = ips.ip_id)
+            SELECT t1.*, t2.domain_name AS user_home, t2.domain_admin_id, t2.domain_php, t2.domain_cgi,
+                t2.domain_traffic_limit, t2.domain_mailacc_limit, t2.domain_dns, t2.web_folder_protection, t3.ip_number,
+                t4.mail_on_domain
+            FROM domain_aliasses AS t1
+            INNER JOIN domain AS t2 ON (t1.domain_id = t2.domain_id)
+            INNER JOIN server_ips AS t3 ON (t1.alias_ip_id = t3.ip_id)
             LEFT JOIN(
-                SELECT sub_id AS id, COUNT( sub_id ) AS mail_on_domain FROM mail_users
-                WHERE sub_id= ? AND mail_type IN ('alias_forward', 'alias_mail', 'alias_mail,alias_forward', 'alias_catchall')
-                GROUP BY sub_id
-            ) AS mail_count ON (alias.alias_id = mail_count.id)
-            WHERE alias.alias_id = ?
+                SELECT sub_id, COUNT(sub_id) AS mail_on_domain FROM mail_users WHERE mail_type LIKE 'alias\\_%'
+            ) AS t4 ON (t1.alias_id = t4.sub_id)
+            WHERE t1.alias_id = ?
         ",
-        $aliasId, $aliasId
+        $aliasId
     );
     unless (ref $rdata eq 'HASH') {
         error( $rdata );
@@ -313,7 +312,6 @@ sub _getMtaData
         DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
         DOMAIN_NAME     => $self->{'alias_name'},
         DOMAIN_TYPE     => $self->getType(),
-        TYPE            => 'vals_entry',
         EXTERNAL_MAIL   => $self->{'external_mail'},
         MAIL_ENABLED    => $self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0 ? 1 : 0
     };

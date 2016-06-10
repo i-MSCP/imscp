@@ -134,21 +134,19 @@ sub _loadData
     my $rdata = iMSCP::Database->factory()->doQuery(
         'subdomain_alias_id',
         "
-            SELECT sub.*, domain_name AS user_home, alias_name, alias.external_mail, domain_admin_id, domain_php, domain_cgi,
-                domain_traffic_limit, domain_mailacc_limit, domain_dns, domain.domain_id, web_folder_protection,
-                ips.ip_number, mail_count.mail_on_domain
-            FROM subdomain_alias AS sub
-            INNER JOIN domain_aliasses AS alias ON (sub.alias_id = alias.alias_id)
-            INNER JOIN domain ON (alias.domain_id = domain.domain_id)
-            INNER JOIN server_ips AS ips ON (alias.alias_ip_id = ips.ip_id)
+            SELECT t1.*, t2.alias_name, t2.external_mail, t3.domain_name AS user_home, t3.domain_admin_id,
+                t3.domain_php, t3.domain_cgi, t3.domain_traffic_limit, t3.domain_mailacc_limit, t3.domain_dns,
+                t3.domain_id, t3.web_folder_protection, t4.ip_number, t5.mail_on_domain
+            FROM subdomain_alias AS t1
+            INNER JOIN domain_aliasses AS t2 ON (t1.alias_id = t2.alias_id)
+            INNER JOIN domain AS t3 ON (t2.domain_id = t3.domain_id)
+            INNER JOIN server_ips AS t4 ON (t2.alias_ip_id = t4.ip_id)
             LEFT JOIN (
-                SELECT sub_id AS id, COUNT(sub_id) AS mail_on_domain FROM mail_users
-                WHERE sub_id= ? AND mail_type IN ('alssub_mail', 'alssub_forward', 'alssub_mail,alssub_forward', 'alssub_catchall')
-                GROUP BY sub_id
-            ) AS mail_count ON (sub.subdomain_alias_id = mail_count.id)
-            WHERE sub.subdomain_alias_id = ?
+                SELECT sub_id, COUNT(sub_id) AS mail_on_domain FROM mail_users WHERE mail_type LIKE 'alssub\\_%'
+            ) AS t5 ON (t1.subdomain_alias_id = t5.sub_id)
+            WHERE t1.subdomain_alias_id = ?
         ",
-        $subAliasId, $subAliasId
+        $subAliasId
     );
     unless (ref $rdata eq 'HASH') {
         error( $rdata );
@@ -275,7 +273,6 @@ sub _getMtaData
         DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
         DOMAIN_NAME     => $self->{'subdomain_alias_name'}.'.'.$self->{'alias_name'},
         DOMAIN_TYPE     => $self->getType(),
-        TYPE            => 'valssub_entry',
         EXTERNAL_MAIL   => $self->{'external_mail'},
         MAIL_ENABLED    => ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) ? 1 : 0
     };
@@ -430,9 +427,8 @@ sub isValidCertificate
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
