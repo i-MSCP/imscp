@@ -288,7 +288,7 @@ sub _init
 
  Get PHP version
 
- Return int PHP version on sucess, die on failure
+ Return int PHP version on success, die on failure
 
 =cut
 
@@ -375,9 +375,7 @@ sub _mergeConfig
 
     if (%{$self->{'config'}}) {
         my %oldConfig = %{$self->{'config'}};
-
         tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/roundcube.data";
-
         for my $oldConf(keys %oldConfig) {
             if (exists $self->{'config'}->{$oldConf}) {
                 $self->{'config'}->{$oldConf} = $oldConfig{$oldConf};

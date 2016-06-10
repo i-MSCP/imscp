@@ -321,7 +321,7 @@ sub _init
 
  Get PHP version
 
- Return int PHP version on sucess, die on failure
+ Return int PHP version on success, die on failure
 
 =cut
 

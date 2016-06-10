@@ -274,11 +274,10 @@ sub _init()
         iMSCP::Dir->new( dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager" )->getDirs()
     } = ();
 
-    my $version = version->parse( $self->_getPhpVersion() ) >= version->parse( '5.5.0' )
-        ? '0.4.6.*@dev' : '0.4.0.*@dev';
-
     # Quick fix for disabling Pydio package if PHP >= 7 is detected
-    delete $self->{'PACKAGES'}->{'Pydio'} if version->parse( $self->_getPhpVersion() ) >= version->parse( '7.0.0' );
+    if (defined $main::execmode && $main::execmode eq 'setup') {
+        delete $self->{'PACKAGES'}->{'Pydio'} if version->parse( $self->_getPhpVersion() ) >= version->parse( '7.0.0' );
+    }
 
     iMSCP::EventManager->getInstance()->register(
         'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener( @_ ); }
@@ -291,7 +290,7 @@ sub _init()
 
  Get PHP version
 
- Return int PHP version on sucess, die on failure
+ Return int PHP version on success, die on failure
 
 =cut
 

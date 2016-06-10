@@ -301,7 +301,7 @@ sub deleteMail
             $package = $package->getInstance();
             next unless $package->can( 'deleteMail' );
             debug( sprintf( 'Calling action deleteMail on %s', ref $package ) );
-            my $rs = $package->deleteMail();
+            my $rs = $package->deleteMail($data);
             return $rs if $rs;
         } else {
             error( $@ );
