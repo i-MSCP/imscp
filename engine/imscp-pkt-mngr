@@ -27,6 +27,7 @@ use strict;
 use XML::Parser;
 use warnings;
 use JSON;
+use MIME::Base64 qw/ decode_base64 /;
 use POSIX qw(locale_h);
 use locale;
 
