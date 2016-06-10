@@ -56,7 +56,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = '228';
+    protected $lastUpdate = '229';
 
     /**
      * Singleton - Make new unavailable
@@ -3367,5 +3367,15 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected function r228()
     {
         return 'TRUNCATE email_tpls';
+    }
+
+    /**
+     * Add index for mail_users.sub_id column
+     *
+     * @return string SQL statement to be executed
+     */
+    protected function r229()
+    {
+        return $this->addIndex('mail_users', 'sub_id', 'INDEX');
     }
 }

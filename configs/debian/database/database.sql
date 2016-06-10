@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `admin_status` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT 'ok',
   UNIQUE KEY `admin_id` (`admin_id`),
   UNIQUE KEY `admin_name` (`admin_name`),
-  KEY `created_by` (`created_by`)
+  INDEX `created_by` (`created_by`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '228');
+  ('DATABASE_REVISION', '229');
 
 -- --------------------------------------------------------
 
@@ -144,7 +144,7 @@ CREATE TABLE IF NOT EXISTS `domain` (
   `mail_quota` bigint(20) unsigned NOT NULL,
   PRIMARY KEY (`domain_id`),
   UNIQUE KEY `domain_name` (`domain_name`),
-  KEY `i_domain_admin_id` (`domain_admin_id`)
+  INDEX `i_domain_admin_id` (`domain_admin_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -165,7 +165,7 @@ CREATE TABLE IF NOT EXISTS `domain_aliasses` (
   `external_mail` varchar(15) collate utf8_unicode_ci NOT NULL DEFAULT 'off',
   `external_mail_dns_ids` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`alias_id`),
-  KEY `domain_id` (`domain_id`)
+  INDEX `domain_id` (`domain_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -203,8 +203,8 @@ CREATE TABLE IF NOT EXISTS `domain_traffic` (
   `dtraff_mail` bigint(20) unsigned DEFAULT NULL,
   `dtraff_pop` bigint(20) unsigned DEFAULT NULL,
   PRIMARY KEY (`dtraff_id`),
-  KEY `i_domain_id` (`domain_id`),
-  KEY `i_dtraff_time` (`dtraff_time`)
+  INDEX `i_domain_id` (`domain_id`),
+  INDEX `i_dtraff_time` (`dtraff_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -268,7 +268,7 @@ CREATE TABLE IF NOT EXISTS `ftp_users` (
   `homedir` varchar(255) collate utf8_unicode_ci DEFAULT NULL,
   `status` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT 'ok',
   UNIQUE KEY (`userid`),
-  KEY `admin_id` (`admin_id`)
+  INDEX `admin_id` (`admin_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -385,7 +385,8 @@ CREATE TABLE IF NOT EXISTS `mail_users` (
   `quota` bigint(20) unsigned DEFAULT NULL,
   `mail_addr` varchar(254) collate utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`mail_id`),
-  KEY `domain_id` (`domain_id`),
+  INDEX `domain_id` (`domain_id`),
+  INDEX `sub_id` (`sub_id`),
   UNIQUE KEY `mail_addr` (`mail_addr`),
   INDEX `status` (`status`),
   INDEX `po_active` (`po_active`)
@@ -412,9 +413,9 @@ CREATE TABLE IF NOT EXISTS `php_ini` (
   `max_input_time` int(11) NOT NULL DEFAULT '60',
   `memory_limit` int(11) NOT NULL DEFAULT '128',
   PRIMARY KEY (`id`),
-  KEY `admin_id` (`admin_id`),
-  KEY `domain_id` (`domain_id`),
-  KEY `domain_type` (`domain_type`)
+  INDEX `admin_id` (`admin_id`),
+  INDEX `domain_id` (`domain_id`),
+  INDEX `domain_type` (`domain_type`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -522,7 +523,7 @@ CREATE TABLE IF NOT EXISTS `reseller_props` (
   `php_ini_max_max_input_time` int(11) NOT NULL DEFAULT '0',
   `php_ini_max_memory_limit` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `reseller_id` (`reseller_id`)
+  INDEX `reseller_id` (`reseller_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -572,7 +573,7 @@ CREATE TABLE IF NOT EXISTS `sql_database` (
   `domain_id` int(10) unsigned NOT NULL,
   `sqld_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`sqld_id`),
-  KEY `domain_id` (`domain_id`),
+  INDEX `domain_id` (`domain_id`),
   UNIQUE KEY `sqld_name` (`sqld_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -589,9 +590,9 @@ CREATE TABLE IF NOT EXISTS `sql_user` (
   `sqlu_host` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `sqlu_pass` varchar(64) collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`sqlu_id`),
-  KEY `sqld_id` (`sqld_id`),
-  KEY `sqlu_name` (`sqlu_name`),
-  KEY `sqlu_host` (`sqlu_host`)
+  INDEX `sqld_id` (`sqld_id`),
+  INDEX `sqlu_name` (`sqlu_name`),
+  INDEX `sqlu_host` (`sqlu_host`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -630,7 +631,7 @@ CREATE TABLE IF NOT EXISTS `subdomain` (
   `subdomain_type_forward` varchar(5) collate utf8_unicode_ci DEFAULT NULL,
   `subdomain_status` varchar(255) collate utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`subdomain_id`),
-  KEY `domain_id` (`domain_id`)
+  INDEX `domain_id` (`domain_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -648,7 +649,7 @@ CREATE TABLE IF NOT EXISTS `subdomain_alias` (
   `subdomain_alias_type_forward` varchar(5) collate utf8_unicode_ci DEFAULT NULL,
   `subdomain_alias_status` varchar(255) collate utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`subdomain_alias_id`),
-  KEY `alias_id` (`alias_id`)
+  INDEX `alias_id` (`alias_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -742,7 +743,7 @@ CREATE TABLE IF NOT EXISTS `web_software_inst` (
   `install_email` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL DEFAULT '0',
   `software_status` varchar(15) character set utf8 collate utf8_unicode_ci NOT NULL,
   `software_depot` varchar(15) character set utf8 collate utf8_unicode_ci NOT NULL NOT NULL DEFAULT 'no',
-  KEY `software_id` (`software_id`)
+  INDEX `software_id` (`software_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
