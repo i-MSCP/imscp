@@ -25,22 +25,21 @@ package iMSCP::Execute;
 
 use strict;
 use warnings;
+use Cwd qw/ realpath /;
+use Errno ;
+use File::Basename qw/ dirname /;
 use iMSCP::Debug qw/ debug /;
 use IO::Select;
 use IPC::Open3;
 use Symbol 'gensym';
-use File::Basename ();
-use Cwd ();
 
 my $vendorLibDir;
-
-BEGIN { $vendorLibDir = Cwd::realpath( File::Basename::dirname( __FILE__ ).'/../../PerlVendor' ); }
-
+BEGIN { $vendorLibDir = realpath( dirname( __FILE__ ).'/../../PerlVendor' ); }
 use lib $vendorLibDir;
 use Capture::Tiny ':all';
 use parent 'Exporter';
 
-our @EXPORT = qw/execute executeNoWait escapeShell getExitCode/;
+our @EXPORT = qw/ execute executeNoWait escapeShell getExitCode /;
 
 =head1 DESCRIPTION
 
@@ -131,6 +130,9 @@ sub executeNoWait($;$$)
     while(my @ready = $sel->can_read) {
         for my $fh (@ready) {
             my $ret = sysread( $fh, $buffers{$fh}, 4096, length ( $buffers{$fh} ) );
+
+            next if $!{EINTR};
+
             defined $ret or die( $! );
             if ($ret == 0) {
                 $sel->remove( $fh );

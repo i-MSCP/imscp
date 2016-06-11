@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Dir - Package which allow to perform operation on directories
+ iMSCP::Dir - Library allowing to perform common operation on directories
 
 =cut
 
@@ -34,7 +34,7 @@ use parent 'Common::Object';
 
 =head1 DESCRIPTION
 
- Package which allow to perform operation on directories
+ Library allowing to perform common operation on directories
 
 =head1 PUBLIC METHODS
 

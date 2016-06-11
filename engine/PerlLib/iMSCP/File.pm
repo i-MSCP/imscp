@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::File - i-MSCP File library
+ iMSCP::File - Library allowing to perform common operations on files
 
 =cut
 
@@ -26,14 +26,13 @@ package iMSCP::File;
 use strict;
 use warnings;
 use iMSCP::Debug;
-use FileHandle;
 use File::Copy;
 use File::Basename;
 use parent 'Common::Object';
 
 =head1 DESCRIPTION
 
- i-MSCP File library. Library allowing to perform common operations on files.
+ Library allowing to perform common operations on files.
 
 =head1 PUBLIC METHODS
 
@@ -52,77 +51,20 @@ sub get
     my $self = shift;
 
     unless (defined $self->{'filename'}) {
-        error( "Attribut 'filename' is not set" );
+        error( "Attribut `filename' is not set" );
         return undef;
     }
 
     return $self->{'fileContent'} if defined $self->{'fileContent'};
 
-    $self->{'fileHandle'} = FileHandle->new( $self->{'filename'}, 'r' ) or delete( $self->{'fileHandle'} );
-
-    unless (defined $self->{'fileHandle'}) {
-        error( sprintf( 'Could not open %s: %s', $self->{'filename'}, $! ) );
+    my $fh;
+    unless(open($fh, '<', $self->{'filename'})) {
+        error( sprintf( 'Could not open %s for reading: %s', $self->{'filename'}, $! ) );
         return undef;
     }
 
-    $self->{'fileContent'} = do {
-        local $/;
-        readline( $self->{'fileHandle'} )
-    };
-
-    $self->{'fileContent'};
-}
-
-=item getRFileHandle()
-
- Get filehandle for reading
-
- Return FileHandle|undef A filehandle on success or undef on failure
-
-=cut
-
-sub getRFileHandle
-{
-    my $self = shift;
-
-    unless (defined $self->{'filename'}) {
-        error( "Attribut 'filename' is not set" );
-        return undef;
-    }
-
-    $self->{'fileHandle'}->close() if defined $self->{'fileHandle'};
-    $self->{'fileHandle'} = FileHandle->new( $self->{'filename'}, 'r' ) or delete( $self->{'fileHandle'} );
-
-    return $self->{'fileHandle'} if defined $self->{'fileHandle'};
-
-    error( sprintf( 'Could not open %s', $self->{'filename'} ) );
-    return undef;
-}
-
-=item getWFileHandle()
-
- Get filehandle for writting
-
- Return FileHandle|undef A filehandle on success or undef on failure
-
-=cut
-
-sub getWFileHandle
-{
-    my $self = $_[0];
-
-    unless (defined $self->{'filename'}) {
-        error( "Attribut 'filename' is not set" );
-        return undef;
-    }
-
-    $self->{'fileHandle'}->close() if defined $self->{'fileHandle'};
-    $self->{'fileHandle'} = FileHandle->new( $self->{'filename'}, 'w' ) or delete( $self->{'fileHandle'} );
-
-    return $self->{'fileHandle'} if defined $self->{'fileHandle'};
-
-    error( sprintf( 'Unable to open %s', $self->{'filename'} ) );
-    return undef
+    local $/;
+    $self->{'fileContent'} = <$fh>;
 }
 
 =item set($content)
@@ -139,7 +81,6 @@ sub set
     my ($self, $content) = @_;
 
     $self->{'fileContent'} = $content // '';
-
     0;
 }
 
@@ -155,15 +96,19 @@ sub save
 {
     my $self = shift;
 
-    my $fh = $self->getWFileHandle();
-    unless ($fh) {
-        error( 'Could not save file' );
+    unless (defined $self->{'filename'}) {
+        error( "Attribut 'filename' is not set" );
+        return undef;
+    }
+    
+    my $fh;
+    unless(open($fh, '>', $self->{'filename'})) {
+        error( sprintf( 'Could not open %s for writing: %s', $self->{'filename'}, $! ) );
         return 1;
     }
 
     $self->{'fileContent'} //= '';
     print {$fh} $self->{'fileContent'};
-    $fh->close();
     0;
 }
 
@@ -180,7 +125,7 @@ sub delFile
     my $self = shift;
 
     unless (defined $self->{'filename'}) {
-        error( "Attribut 'filename' is not set" );
+        error( "Attribut `filename' is not set" );
         return 1;
     }
 
@@ -206,7 +151,7 @@ sub mode
     my ($self, $mode) = @_;
 
     unless (defined $self->{'filename'}) {
-        error( 'Attribut filename is not set' );
+        error( "Attribut `filename' is not set" );
         return 1;
     }
 
@@ -233,7 +178,7 @@ sub owner
     my ($self, $owner, $group) = @_;
 
     unless (defined $self->{'filename'}) {
-        error( "Attribut 'filename' is not set" );
+        error( "Attribut `filename' is not set" );
         return 1;
     }
 
@@ -265,10 +210,9 @@ sub copyFile
     $options = { } unless ref $options eq 'HASH';
 
     unless (defined $self->{'filename'}) {
-        error( "Attribut 'filename' is not set" );
+        error( "Attribut `filename' is not set" );
         return 1;
     }
-
     unless (copy( $self->{'filename'}, $dest )) {
         error( sprintf( 'Could not copy %s to %s: %s', $self->{'filename'}, $dest, $! ) );
         return 1;
@@ -285,7 +229,6 @@ sub copyFile
         error( sprintf( 'Could not change mode for %s: %s', $dest, $! ) );
         return 1;
     }
-
     unless (chown( $uid, $gid, $dest )) {
         error( sprintf( 'Could not change owner and group for %s: %s', $dest, $! ) );
         return 1;
@@ -308,35 +251,15 @@ sub moveFile
     my ($self, $dest) = @_;
 
     unless (defined $self->{'filename'}) {
-        error( "Attribut 'filename' is not set" );
+        error( "Attribut `filename' is not set" );
         return 1;
     }
 
     unless (move( $self->{'filename'}, $dest )) {
-        error( sprintf( 'Unable to move %s to %s: %s', $self->{'filename'}, $dest, $! ) );
+        error( sprintf( 'Could not move %s to %s: %s', $self->{'filename'}, $dest, $! ) );
         return 1;
     }
 
-    0;
-}
-
-=back
-
-=head1 PRIVATE METHODS
-
-=over 4
-
-=item DESTROY()
-
- Close last filehandle opened when instance get destroyed
-
-=cut
-
-sub DESTROY
-{
-    my $self = shift;
-
-    $self->{'fileHandle'}->close() if $self->{'fileHandle'};
     0;
 }
 

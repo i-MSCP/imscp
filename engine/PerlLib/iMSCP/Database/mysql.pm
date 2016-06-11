@@ -96,14 +96,9 @@ sub connect
             alarm 5;
             $self->{'connection'} = DBI->connect(
                 $dsn, $self->{'db'}->{'DATABASE_USER'}, $self->{'db'}->{'DATABASE_PASSWORD'},
-                (
-                    defined( $self->{'db'}->{'DATABASE_SETTINGS'} ) &&
-                        ref $self->{'db'}->{'DATABASE_SETTINGS'} eq 'HASH' ? $self->{'db'}->{'DATABASE_SETTINGS'} : ()
-                )
+                $self->{'db'}->{'DATABASE_SETTINGS'}
             );
             alarm 0;
-
-            $self->{'connection'}->do( 'SET NAMES utf8' );
         };
 
         alarm 0;
