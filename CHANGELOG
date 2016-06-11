@@ -8,7 +8,7 @@ BACKEND
     Added: beforeMountLogsFolder, afterMountLogsFolder, beforeUnmountLogsFolder and afterUmountMountLogsFolder events
     Added: Caller info for __DIE__ and __WARN__ signal handlers
     Added: Debug info for loading of listener files (Event::Manager)
-    Added: Fallback method for sysvinit script that don't provide status command (iMSCP::Provider::Service::Sysvinit)
+    Added: Fallback method for sysvinit scripts that don't provide status command (iMSCP::Provider::Service::Sysvinit)
     Added: 'fixpermissions' option for the iMSCP::Dir::make() method
     Added: iMSCP::Database::mysql::useDatabase() method - Allow to select database on which we want operate on
     Added: iMSCP::DbTasksProcessor - Allows to process db tasks without spawning new process
