@@ -24,11 +24,8 @@
 # Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
 # internet Multi Server Control Panel. All Rights Reserved.
 
-
 use strict;
 use warnings;
-
-# Hide the "used only once: possible typo" warnings
 no warnings 'once';
 
 $main::engine_debug = undef;
@@ -36,7 +33,6 @@ $main::engine_debug = undef;
 require 'imscp_common_methods.pl';
 
 # Load i-MSCP configuration from the imscp.conf file
-
 if (-f '/usr/local/etc/imscp/imscp.conf') {
     $main::cfg_file = '/usr/local/etc/imscp/imscp.conf';
 } else {
@@ -47,13 +43,11 @@ my $rs = get_conf( $main::cfg_file );
 die( 'FATAL: Unable to load imscp.conf file.' ) if $rs;
 
 # Enable debug mode if needed
-
 if ($main::cfg{'DEBUG'}) {
     $main::engine_debug = '_on_';
 }
 
 # Load i-MSCP Db key and initialization vector
-
 my $key_file = "$main::cfg{'CONF_DIR'}/imscp-db-keys";
 our $db_pass_key = '{KEY}';
 our $db_pass_iv = '{IV}';
@@ -61,7 +55,6 @@ our $db_pass_iv = '{IV}';
 require "$key_file" if -f $key_file;
 
 # Check for i-MSCP Db key and initialization vector
-
 if ($db_pass_key eq '{KEY}' || $db_pass_iv eq '{IV}') {
     print STDERR ("Key file not found at $main::cfg{'CONF_DIR'}/imscp-db-keys. Run imscp-reconfigure script to fix.");
     exit 1;
@@ -70,25 +63,20 @@ if ($db_pass_key eq '{KEY}' || $db_pass_iv eq '{IV}') {
 $main::db_pass_key = $db_pass_key;
 $main::db_pass_iv = $db_pass_iv;
 
-die( 'FATAL: Unable to load database parameters' ) if setup_db_vars();
+die( 'FATAL: Could not to load database parameters' ) if setup_db_vars();
 
 # Lock file system variables
-
 $main::lock_file = '/tmp/imscp.lock';
 $main::fh_lock_file = undef;
 
 $main::log_dir = $main::cfg{'LOG_DIR'};
 $main::root_dir = $main::cfg{'ROOT_DIR'};
-
 $main::imscp = "$main::log_dir/imscp-rqst-mngr.el";
 
-
 # imscp-serv-traff variable
-
 $main::imscp_srv_traff_el = "$main::log_dir/imscp-srv-traff.el";
 
 # Software installer log variables
-
 $main::imscp_pkt_mngr = "$main::root_dir/engine/imscp-pkt-mngr";
 $main::imscp_pkt_mngr_el = "$main::log_dir/imscp-pkt-mngr.el";
 $main::imscp_pkt_mngr_stdout = "$main::log_dir/imscp-pkt-mngr.stdout";
@@ -100,3 +88,4 @@ $main::imscp_sw_mngr_stdout = "$main::log_dir/imscp-sw-mngr.stdout";
 $main::imscp_sw_mngr_stderr = "$main::log_dir/imscp-sw-mngr.stderr";
 
 1;
+__END__

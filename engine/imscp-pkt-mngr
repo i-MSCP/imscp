@@ -34,6 +34,8 @@ use locale;
 setlocale(LC_ALL, 'C.UTF-8');
 $ENV{'LANG'} = 'C.UTF-8';
 
+defined $ARGV[0] or die('Expects a base64 encoded string containg JSON data as first argument');
+
 # Decoding data which pushed from another script
 my (
 	$sw_software_id, $sw_reseller_id, $sw_software_archive, $sw_status, $sw_software_depot
@@ -118,7 +120,7 @@ sub _pkt_add_data
 	);
 
 	our ($tag, $data) = '';
-	@cmd = ('mkdir', '-p', sys_command_excape_arg($sw_tmp_path));
+	@cmd = ('mkdir', '-p', sys_command_escape_arg($sw_tmp_path));
 	$rs = sys_command_rs("@cmd");
 	return $rs if $rs;
 
@@ -129,14 +131,14 @@ sub _pkt_add_data
 
 	@cmd = (
 		'cp', '-f',
-		sys_command_excape_arg("$sw_src_path-$sw_software_id.tar.gz"),
-		sys_command_excape_arg($sw_tmp_path),
+		sys_command_escape_arg("$sw_src_path-$sw_software_id.tar.gz"),
+		sys_command_escape_arg($sw_tmp_path),
 	);
 
 	$rs = sys_command_rs("@cmd");
 	return $rs if $rs;
 
-	@cmd = ('tar', '-xzf', sys_command_excape_arg("$sw_src_path-$sw_software_id.tar.gz"));
+	@cmd = ('tar', '-xzf', sys_command_escape_arg("$sw_src_path-$sw_software_id.tar.gz"));
 	$rs = sys_command_rs("@cmd");
 	return $rs if $rs;
 
@@ -375,7 +377,7 @@ sub _pkt_add_data
 				$rs = doSQL($sql);
 			}
 
-			@cmd = ('rm', '-fR', sys_command_excape_arg($sw_tmp_path));
+			@cmd = ('rm', '-fR', sys_command_escape_arg($sw_tmp_path));
 			$rs = sys_command_rs("@cmd");
 			return $rs if $rs;
 		} else {
@@ -390,7 +392,7 @@ sub _pkt_add_data
 			$rs = doSQL($sql);
 			return $rs if $rs;
 
-			@cmd = ('rm', '-fR', sys_command_excape_arg($sw_tmp_path));
+			@cmd = ('rm', '-fR', sys_command_escape_arg($sw_tmp_path));
 			$rs = sys_command_rs("@cmd");
 			return $rs if $rs;
 
@@ -408,7 +410,7 @@ sub _pkt_add_data
 		($rs) = doSQL($sql);
 		return $rs if $rs;
 
-		@cmd = ('rm', '-fR', sys_command_excape_arg($sw_tmp_path));
+		@cmd = ('rm', '-fR', sys_command_escape_arg($sw_tmp_path));
 		$rs = sys_command_rs("@cmd");
 		return $rs if $rs;
 

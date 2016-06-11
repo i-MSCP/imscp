@@ -37,6 +37,8 @@ use locale;
 setlocale(LC_ALL, 'C.UTF-8');
 $ENV{'LANG'} = 'C.UTF-8';
 
+defined $ARGV[0] or die('Expects a base64 encoded string containg JSON data as first argument');
+
 # Decoding received data
 my (
 	$sw_domain_id, $sw_software_id, $sw_path, $sw_software_prefix, $sw_database, $sw_database_user, $sw_database_tmp_pwd,
@@ -239,11 +241,11 @@ sub _sw_add_data
 
 	# Creating software destdir directory if it doesn't already exists
 	unless(-d $sw_dest_path) {
-		@cmd = ('mkdir', '-p', sys_command_excape_arg($sw_dest_path));
+		@cmd = ('mkdir', '-p', sys_command_escape_arg($sw_dest_path));
 		$rs = sys_command_rs("@cmd");
 		return $rs if $rs;
 
-		@cmd = ('chown', "$uid:$gid", sys_command_excape_arg($sw_dest_path));
+		@cmd = ('chown', "$uid:$gid", sys_command_escape_arg($sw_dest_path));
 		$rs = sys_command_rs("@cmd");
 		return $rs if $rs;
 	}
@@ -252,8 +254,8 @@ sub _sw_add_data
 		if (-f "$sw_dest_path/index.html") {
 			@cmd = (
 				'mv',
-				sys_command_excape_arg("$sw_dest_path/index.html"),
-				sys_command_excape_arg("$sw_dest_path/index.installer_bak")
+				sys_command_escape_arg("$sw_dest_path/index.html"),
+				sys_command_escape_arg("$sw_dest_path/index.installer_bak")
 			);
 			$rs = sys_command_rs("@cmd");
 			return $rs if $rs;
@@ -262,15 +264,15 @@ sub _sw_add_data
 		if (-d "$sw_dest_path/images"){
 			@cmd = (
 				'mv',
-				sys_command_excape_arg("$sw_dest_path/images"),
-				sys_command_excape_arg("$sw_dest_path/images.installer_bak")
+				sys_command_escape_arg("$sw_dest_path/images"),
+				sys_command_escape_arg("$sw_dest_path/images.installer_bak")
 			);
 			$rs = sys_command_rs("@cmd");
 			return $rs if $rs;
 		}
 	}
 
-	@cmd = ('mkdir', '-p', sys_command_excape_arg($sw_tmp_path));
+	@cmd = ('mkdir', '-p', sys_command_escape_arg($sw_tmp_path));
 	$rs = sys_command_rs("@cmd");
 
 	# Change directory to software temporary directory
@@ -282,30 +284,30 @@ sub _sw_add_data
 	if($sw_software_depot eq 'yes') {
 		@cmd = (
 			'cp', '-f',
-			sys_command_excape_arg("$sw_src_path-$sw_software_master_id.tar.gz"),
-			sys_command_excape_arg($sw_tmp_path)
+			sys_command_escape_arg("$sw_src_path-$sw_software_master_id.tar.gz"),
+			sys_command_escape_arg($sw_tmp_path)
 		);
 		$rs = sys_command_rs("@cmd");
 		return $rs if $rs;
 
-		@cmd = ('tar', '-xzf', sys_command_excape_arg("$sw_tmp_path/$sw_software_archive-$sw_software_master_id.tar.gz"));
+		@cmd = ('tar', '-xzf', sys_command_escape_arg("$sw_tmp_path/$sw_software_archive-$sw_software_master_id.tar.gz"));
 		$rs = sys_command_rs("@cmd");
 		return $rs if $rs;
 	} else {
 		@cmd = (
 			'cp', '-f',
-			sys_command_excape_arg("$sw_src_path-$sw_software_id.tar.gz"),
-			sys_command_excape_arg($sw_tmp_path)
+			sys_command_escape_arg("$sw_src_path-$sw_software_id.tar.gz"),
+			sys_command_escape_arg($sw_tmp_path)
 		);
 		$rs = sys_command_rs("@cmd");
 		return $rs if $rs;
 
-		@cmd = ('tar', '-xzf', sys_command_excape_arg("$sw_tmp_path/$sw_software_archive-$sw_software_id.tar.gz"));
+		@cmd = ('tar', '-xzf', sys_command_escape_arg("$sw_tmp_path/$sw_software_archive-$sw_software_id.tar.gz"));
 		$rs = sys_command_rs("@cmd");
 		return $rs if $rs;
 	}
 
-	@cmd = ('cp', '-fRT', sys_command_excape_arg("$sw_tmp_path/web"), sys_command_excape_arg($sw_dest_path));
+	@cmd = ('cp', '-fRT', sys_command_escape_arg("$sw_tmp_path/web"), sys_command_escape_arg($sw_dest_path));
 	$rs = sys_command_rs("@cmd");
 	return $rs if $rs;
 
@@ -318,15 +320,15 @@ sub _sw_add_data
 		$XARGSVAR = 'xargs';
 	}
 
-	@cmd = ('find', sys_command_excape_arg("$sw_dest_path/"), '-type', 'd', '-print0', '|', $XARGSVAR, '-0', 'chmod', '0755');
+	@cmd = ('find', sys_command_escape_arg("$sw_dest_path/"), '-type', 'd', '-print0', '|', $XARGSVAR, '-0', 'chmod', '0755');
 	$rs = sys_command_rs("@cmd");
 	return $rs if $rs;
 
-	@cmd = ('find', sys_command_excape_arg("$sw_dest_path/"), '-type', 'f', '-print0', '|', $XARGSVAR, '-0', 'chmod', '0644');
+	@cmd = ('find', sys_command_escape_arg("$sw_dest_path/"), '-type', 'f', '-print0', '|', $XARGSVAR, '-0', 'chmod', '0644');
 	$rs = sys_command_rs("@cmd");
 	return $rs if $rs;
 
-	@cmd = ('chown', "$uid:$gid", '-R', sys_command_excape_arg("$sw_dest_path"));
+	@cmd = ('chown', "$uid:$gid", '-R', sys_command_escape_arg("$sw_dest_path"));
 	$rs = sys_command_rs("@cmd");
 	return $rs if $rs;
 
@@ -341,17 +343,17 @@ sub _sw_add_data
 
 	@cmd = (
 		'perl',
-		sys_command_excape_arg("$sw_tmp_path/$sw_software_installfile"),
-		sys_command_excape_arg($imscp_software_install_pushstring)
+		sys_command_escape_arg("$sw_tmp_path/$sw_software_installfile"),
+		sys_command_escape_arg($imscp_software_install_pushstring)
 	);
 	$rs = sys_command_rs("@cmd");
 	return $rs if $rs;
 
-	@cmd = ('chown', "$uid:$gid", '-R', sys_command_excape_arg($sw_dest_path));
+	@cmd = ('chown', "$uid:$gid", '-R', sys_command_escape_arg($sw_dest_path));
 	$rs = sys_command_rs("@cmd");
 	return $rs if $rs;
 
-	@cmd = ('rm', '-fR', sys_command_excape_arg($sw_tmp_path));
+	@cmd = ('rm', '-fR', sys_command_escape_arg($sw_tmp_path));
 	$rs = sys_command_rs("@cmd");
 	return $rs if $rs;
 
@@ -390,25 +392,25 @@ sub _sw_del_data
 	if($sw_software_depot eq 'yes') {
 		my @cmd = (
 			'cp', '-f',
-			sys_command_excape_arg("$sw_src_path-$sw_software_master_id.tar.gz"),
-			sys_command_excape_arg($sw_tmp_path)
+			sys_command_escape_arg("$sw_src_path-$sw_software_master_id.tar.gz"),
+			sys_command_escape_arg($sw_tmp_path)
 		);
 		$rs = sys_command_rs("@cmd");
 		return $rs if $rs;
 
-		@cmd = ('tar', '-xzf', sys_command_excape_arg("$sw_tmp_path/$sw_software_archive-$sw_software_master_id.tar.gz"));
+		@cmd = ('tar', '-xzf', sys_command_escape_arg("$sw_tmp_path/$sw_software_archive-$sw_software_master_id.tar.gz"));
 		$rs = sys_command_rs("@cmd");
 		return $rs if $rs;
 	} else{
 		my @cmd = (
 			'cp', '-f',
-			sys_command_excape_arg("$sw_src_path-$sw_software_id.tar.gz"),
-			sys_command_excape_arg($sw_tmp_path)
+			sys_command_escape_arg("$sw_src_path-$sw_software_id.tar.gz"),
+			sys_command_escape_arg($sw_tmp_path)
 		);
 		$rs = sys_command_rs("@cmd");
 		return $rs if $rs;
 
-		@cmd = ('tar', '-xzf', sys_command_excape_arg("$sw_tmp_path/$sw_software_archive-$sw_software_id.tar.gz"));
+		@cmd = ('tar', '-xzf', sys_command_escape_arg("$sw_tmp_path/$sw_software_archive-$sw_software_id.tar.gz"));
 		$rs = sys_command_rs("@cmd");
 		return $rs if $rs;
 	}
@@ -457,7 +459,7 @@ sub _sw_del_data
 		my @uninstallfiles = split(',', $UNINSTALL_DATA{'software_delfiles'});
 
 		for (@uninstalldirs, @uninstallfiles) {
-			@cmd = ('rm', '-fR', sys_command_excape_arg("$sw_dest_path/$_"));
+			@cmd = ('rm', '-fR', sys_command_escape_arg("$sw_dest_path/$_"));
 			$rs = sys_command_rs("@cmd");
 			return $rs if $rs;
 		}
@@ -470,13 +472,13 @@ sub _sw_del_data
 
 		@cmd = (
 			'perl',
-			sys_command_excape_arg("$sw_tmp_path/$sw_software_installfile"),
-			sys_command_excape_arg($imscp_software_uninstall_pushstring)
+			sys_command_escape_arg("$sw_tmp_path/$sw_software_installfile"),
+			sys_command_escape_arg($imscp_software_uninstall_pushstring)
 		);
 		$rs = sys_command_rs("@cmd");
 		return $rs if $rs;
 
-		@cmd = ('rm', '-fR', sys_command_excape_arg($sw_tmp_path));
+		@cmd = ('rm', '-fR', sys_command_escape_arg($sw_tmp_path));
 		$rs = sys_command_rs("@cmd");
 		return $rs if $rs;
 
@@ -484,8 +486,8 @@ sub _sw_del_data
 			if (-f "$sw_dest_path/index.installer_bak") {
 				@cmd = (
 					'mv',
-					sys_command_excape_arg("$sw_dest_path/index.installer_bak"),
-					sys_command_excape_arg("$sw_dest_path/index.html")
+					sys_command_escape_arg("$sw_dest_path/index.installer_bak"),
+					sys_command_escape_arg("$sw_dest_path/index.html")
 				);
 				$rs = sys_command_rs("@cmd");
 				return $rs if $rs;
@@ -494,15 +496,15 @@ sub _sw_del_data
 			if (-d "$sw_dest_path/images.installer_bak") {
 				@cmd = (
 					'mv',
-					sys_command_excape_arg("$sw_dest_path/images.installer_bak"),
-					sys_command_excape_arg("$sw_dest_path/images")
+					sys_command_escape_arg("$sw_dest_path/images.installer_bak"),
+					sys_command_escape_arg("$sw_dest_path/images")
 				);
 
 				$rs = sys_command_rs("@cmd");
 				return $rs if $rs;
 			}
 
-			@cmd = ('chown', "$uid:$gid", '-R', sys_command_excape_arg($sw_dest_path));
+			@cmd = ('chown', "$uid:$gid", '-R', sys_command_escape_arg($sw_dest_path));
 			$rs = sys_command_rs("@cmd");
 			return $rs if $rs;
 		}

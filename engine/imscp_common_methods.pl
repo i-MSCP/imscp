@@ -26,8 +26,13 @@
 
 # Backward compatibility file for script using old engine methods
 
-# Hide the "used only once: possible typo" warnings
+
+use strict;
+use warnings;
 no warnings 'once';
+use Crypt::CBC;
+use DBI;
+use MIME::Base64 qw/ decode_base64 /;
 
 # Global variables;
 
@@ -94,7 +99,6 @@ sub pop_el
     }
 
     my ($sub_name, $msg) = split( /$main::el_sep/, $data );
-
     if (defined $main::engine_debug) {
         print STDOUT "[DEBUG] pop_el() sub_name: $sub_name, msg: $msg\n";
     }
@@ -112,12 +116,12 @@ sub dump_el
 {
     my ($el, $fname) = @_;
 
+    my  $fh;
     if ($fname ne 'stdout' && $fname ne 'stderr') {
-        return 0 if !open( FP, '>', $fname );
+        return 0 unless open( $fh, '>', $fname );
     }
 
     my $el_data;
-
     while (defined( $el_data = pop_el( \@main::el ) )) {
         my ($sub_name, $msg) = split( /$main::el_sep/, $el_data );
 
@@ -126,14 +130,12 @@ sub dump_el
         } elsif ($fname eq 'stderr') {
             printf STDERR "%-30s | %s\n", $sub_name, $msg;
         } else {
-            printf FP "%-30s | %s\n", $sub_name, $msg;
+            printf {$fh} "%-30s | %s\n", $sub_name, $msg;
         }
     }
 
-    close FP;
+    close $fh;
 }
-
-# SQL subroutines
 
 sub doSQL
 {
@@ -153,17 +155,16 @@ sub doSQL
             {
                 'PrintError'           => 0,
                 'mysql_auto_reconnect' => 1,
-                'mysql_enable_utf8'    => 1
+                'mysql_enable_utf8'    => 1,
+                'AutoInactiveDestroy'  => 1
             }
         );
 
-        if (!defined $main::db) {
+        unless (defined $main::db) {
             push_el(
-                \@main::el, 'doSQL()', "[ERROR] Unable to connect to SQL server with current DSN: @main::db_connect"
+                \@main::el, 'doSQL()', "[ERROR] Could not connect to SQL server with current DSN: @main::db_connect"
             );
             return (-1, '');
-        } else { # FIXME: It is really necessary with the mysql_enable_utf8 option?
-            $qr = $main::db->do( "SET NAMES 'utf8';" );
         }
     }
 
@@ -178,14 +179,11 @@ sub doSQL
     if (defined $qr) {
         push_el( \@main::el, 'doSQL()', 'Ending...' );
         return (0, $qr);
-    } else {
-        push_el( \@main::el, 'doSQL()', '[ERROR] Wrong SQL Query: '.$main::db->errstr );
-        return (-1, '');
     }
+
+    push_el( \@main::el, 'doSQL()', '[ERROR] Wrong SQL Query: '.$main::db->errstr );
+    return (-1, '');
 }
-
-
-# Other subroutines
 
 # Get file content in string
 #
@@ -202,23 +200,23 @@ sub get_file
         return 1;
     }
 
-    if (!-e $fname) {
-        push_el( \@main::el, 'get_file()', "[ERROR] File '$fname' does not exist !" );
+    unless (-f $fname) {
+        push_el( \@main::el, 'get_file()', "[ERROR] File `$fname' does not exist !" );
         return 1;
     }
 
-    if (!open( F, '<', $fname )) {
-        push_el( \@main::el, 'get_file()', "[ERROR] Unable to open '$fname' for reading: $!" );
+    my $fh;
+    unless (open( $fh, '<', $fname )) {
+        push_el( \@main::el, 'get_file()', "[ERROR] Could not open `$fname' for reading: $!" );
         return 1;
     }
 
-    my @fdata = <F>;
-    close( F );
+    my @fdata = <$fh>;
+    close( $fh );
 
     my $line = join( '', @fdata );
 
     push_el( \@main::el, 'get_file()', 'Ending...' );
-
     return (0, $line);
 }
 
@@ -238,15 +236,14 @@ sub del_file
         return -1;
     }
 
-    if (!-f $fname) {
+    unless (-f $fname) {
         push_el( \@main::el, 'del_file()', "[ERROR] File '$fname' doesn't exist" );
         return -1;
     }
 
     my $res = unlink( $fname );
-
     if ($res != 1) {
-        push_el( \@main::el, 'del_file()', "[ERROR] Unable to unlink '$fname' !" );
+        push_el( \@main::el, 'del_file()', "[ERROR] Could not unlink '$fname' !" );
         return -1;
     }
 
@@ -277,8 +274,10 @@ sub getCmdExitValue()
         push_el( \@main::el, 'getCmdExitValue()', "[ERROR] Failed to execute external command: $!" );
     } elsif ($? & 127) {
         push_el(
-            \@main::el, 'getCmdExitValue()', sprintf "[ERROR] External command died with signal %d, %s coredump",
-                ($? & 127), ($? & 128) ? 'with' : 'without'
+            \@main::el, 'getCmdExitValue()',
+            sprintf(
+                "[ERROR] External command died with signal %d, %s coredump", ($? & 127), ($? & 128) ? 'with' : 'without'
+            )
         );
     } else {
         $exitValue = $? >> 8;
@@ -286,7 +285,6 @@ sub getCmdExitValue()
     }
 
     push_el( \@main::el, 'getCmdExitValue()', 'Ending...' );
-
     $exitValue;
 }
 
@@ -307,16 +305,15 @@ sub sys_command
     push_el( \@main::el, "sys_command($cmd)", 'Starting...' );
 
     system( $cmd );
-
     my $exit_value = getCmdExitValue();
 
     if ($exit_value == 0) {
         push_el( \@main::el, "sys_command('$cmd')", 'Ending...' );
-        0;
-    } else {
-        push_el( \@main::el, 'sys_command()', "[ERROR] External command '$cmd' exited with value $exit_value !" );
-        -1;
+        return 0;
     }
+
+    push_el( \@main::el, 'sys_command()', "[ERROR] External command `$cmd' exited with value $exit_value !" );
+    -1;
 }
 
 # Execute an external command and return the real exit value
@@ -329,29 +326,25 @@ sub sys_command_rs
     my ($cmd) = @_;
 
     push_el( \@main::el, "sys_command_rs($cmd)", 'Starting...' );
-
     system( $cmd );
-
     push_el( \@main::el, 'sys_command_rs()', 'Ending...' );
-
     getCmdExitValue();
 }
 
-sub sys_command_excape_arg($)
+sub sys_command_escape_arg($)
 {
     my $string = shift;
 
     return $string if $string eq '' || $string =~ /^[a-zA-Z0-9_\-]+\z/;
     $string =~ s/'/'\\''/g;
-
     "'$string'";
 }
 
 sub decrypt_db_password
 {
-    push_el( \@main::el, 'decrypt_db_password()', 'Starting...' );
-
     my ($pass) = @_;
+
+    push_el( \@main::el, 'decrypt_db_password()', 'Starting...' );
 
     if (!defined $pass || $pass eq '') {
         push_el( \@main::el, 'decrypt_db_password()', '[ERROR] Undefined input data...' );
@@ -379,7 +372,6 @@ sub decrypt_db_password
     my $plaintext = $cipher->decrypt( $decoded );
 
     push_el( \@main::el, 'decrypt_db_password()', 'Ending...' );
-
     return (0, $plaintext);
 }
 
@@ -404,9 +396,7 @@ sub setup_db_vars
     # Setup DSN
     @main::db_connect = ("DBI:mysql:$main::db_name:$main::db_host", $main::db_user, $main::db_pwd);
     $main::db = undef;
-
     push_el( \@main::el, 'setup_db_vars()', 'Ending...' );
-
     0;
 }
 
@@ -435,7 +425,6 @@ sub get_conf
     my @frows = split( /\n/, $fline );
 
     my $i = '';
-
     for ($i = 0; $i < scalar( @frows ); $i++) {
         $frows[$i] = "$frows[$i]\n";
 
@@ -445,7 +434,6 @@ sub get_conf
     }
 
     push_el( \@main::el, 'get_conf()', 'Ending...' );
-
     0;
 }
 
@@ -460,12 +448,12 @@ sub get_el_error
 
     my @frows = split( /\n/, $rdata );
     my $err_row = "$frows[0]\n";
-
     $err_row =~ /\|\ *([^\n]+)\n$/;
-
     $rdata = $1;
 
     push_el( \@main::el, 'get_el_error()', 'Ending...' );
-
     return (0, $rdata);
 }
+
+1;
+__END__

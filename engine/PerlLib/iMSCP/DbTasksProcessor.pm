@@ -83,11 +83,9 @@ sub process
         "
     );
 
-    my $ipsModule = 0;
-
     # Process toadd|tochange|torestore|toenable|todisable domain tasks
     # For each entitty, process only if the parent entity is in a consistent state
-    $ipsModule += $self->_process(
+    my $ipsModule = $self->_process(
         'Domain',
         "
             SELECT domain_id AS id, domain_name AS name, domain_status AS status FROM domain
@@ -279,16 +277,19 @@ sub process
     );
 
     # Process IP addresses tasks
-    if ($ipsModule > 0 || $self->{'mode'} eq 'setup') {
+    if ($ipsModule || $self->{'mode'} eq 'setup') {
         newDebug( 'Ips_module.log' );
         eval { require Modules::Ips } or die( sprintf( 'Could not load Module::Ips module: %s', $@ ) );
-        Modules::Ips->new()->process() == 0 or die( sprintf( 'Could not process IP addresses',
+        Modules::Ips->new()->process() == 0 or die(
+            sprintf(
+                'Could not process IP addresses',
                 getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-            ) );
+            )
+        );
         endDebug();
     }
 
-    # Process XXX tasks
+    # Process software package tasks
     my $rdata = iMSCP::Database->factory()->doQuery(
         'software_id',
         "
@@ -332,6 +333,7 @@ sub process
         endDebug();
     }
 
+    # Process software tasks
     $rdata = iMSCP::Database->factory()->doQuery(
         'software_id',
         "
