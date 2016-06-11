@@ -164,7 +164,7 @@ sub setEnginePermissions
 
 =item restart()
 
- Restart server
+ Restart Postfix server
 
  Return int 0 on success, other on failure
 
@@ -185,6 +185,31 @@ sub restart
     }
 
     $self->{'eventManager'}->trigger( 'afterMtaRestart' );
+}
+
+=item reload()
+
+ Reload Postfix server
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub reload
+{
+    my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaReload' );
+    return $rs if $rs;
+
+    local $@;
+    eval { iMSCP::Service->getInstance()->reload( $self->{'config'}->{'MTA_SNAME'} ); };
+    if ($@) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterMtaReload' );
 }
 
 =item addDmn(\%data)
@@ -420,7 +445,6 @@ sub deleteMail
     my ($self, $data) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDelMail', $data );
-    
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+[^\n]*/ );
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+[^\n]*/ );
     # There is no way to insert a literal $ or @ inside a \Q\E pair
@@ -687,6 +711,7 @@ sub _init
     my $self = shift;
 
     $self->{'restart'} = 0;
+    $self->{'reload'} = 0;
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";

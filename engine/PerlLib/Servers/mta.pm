@@ -78,6 +78,8 @@ END
 
         if ($Servers::mta::instance->{'restart'}) {
             $rs ||= $Servers::mta::instance->restart();
+        } elsif ($Servers::mta::instance->{'reload'}) {
+            $rs ||= $Servers::mta::instance->reload();
         }
 
         $? = $rs;
