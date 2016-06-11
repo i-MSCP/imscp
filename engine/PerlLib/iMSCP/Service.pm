@@ -304,11 +304,11 @@ sub isSystemd
     $init eq 'systemd';
 }
 
-=item getProvider($providerName)
+=item getProvider($providerName = $init)
 
- Get a particular service provider instance
+ Get service provider instance
 
- Param string Provider name (sysvinit|upstart|systemd)
+ Param string $providerName OPTIONAL Provider name (sysvinit|upstart|systemd)
  Return iMSCP::Provider::Service::Sysvinit
 
 =cut
@@ -317,7 +317,7 @@ sub getProvider
 {
     my ($self, $providerName) = @_;
 
-    $providerName = ucfirst( lc( $providerName ) );
+    $providerName = ucfirst( lc( $providerName // $init ) );
     my $id = iMSCP::LsbRelease->getInstance->getId( 'short' );
     $id = 'Debian' if $id eq 'Ubuntu';
     my $provider = "iMSCP::Provider::Service::${id}::${providerName}";

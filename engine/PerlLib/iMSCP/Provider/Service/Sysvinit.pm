@@ -27,7 +27,7 @@ use strict;
 use warnings;
 use Carp;
 use File::Spec;
-use iMSCP::Debug 'error';
+use iMSCP::Debug qw/ debug error /;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::LsbRelease;
@@ -36,8 +36,8 @@ use Scalar::Defer;
 # Paths in which sysvinit script must be searched
 my $initScriptPaths = lazy
     {
+        # Fixme: iMSCP::LsbRelease is Linux specific. We must rewrite it to support all platforms below.
         my $id = iMSCP::LsbRelease->getInstance()->getId( 'short' );
-
         if ($id =~ /^(?:FreeBSD|DragonFly)$/) {
             [ '/etc/rc.d', '/usr/local/etc/rc.d' ];
         } elsif ($id eq 'HP-UX') {
@@ -74,7 +74,7 @@ sub getInstance
 
     no strict 'refs';
     my $instance = \${"${self}::_instance"};
-    ${$instance} = bless ( \my $this, $self ) unless defined ${$instance};
+    ${$instance} = bless ( { }, $self ) unless defined ${$instance};
     ${$instance};
 }
 
@@ -230,7 +230,14 @@ sub isRunning
     my ($self, $service) = @_;
 
     defined $service or die( 'parameter $service is not defined' );
-    $self->_exec( $self->getInitScriptPath( $service ), 'status' ) == 0;
+
+    if (defined $self->{'_pid_pattern'}) {
+        my $ret = $self->_getPid( $self->{'_pid_pattern'} );
+        $self->{'_pid_pattern'} = undef;
+        return $ret;
+    }
+
+    $self->_exec( $self->getInitScriptPath( $service ), 'status' );
 }
 
 =item getInitScriptPath($service)
@@ -248,6 +255,24 @@ sub getInitScriptPath
 
     defined $service or die( 'parameter $service is not defined' );
     $self->_searchInitScript( $service );
+}
+
+=item setPidPattern($pattern)
+
+ Set PID pattern for next _getPid() invocation
+
+ Param string $pattern Process PID pattern
+ Return int 0
+
+=cut
+
+sub setPidPattern
+{
+    my ($self, $pattern) = @_;
+
+    defined $pattern or die( '$pattern parameter is not defined' );
+    $self->{'_pid_pattern'} = $pattern;
+    0;
 }
 
 =back
@@ -318,6 +343,60 @@ sub _exec
     my $ret = execute( "@command", \ my $stdout, \ my $stderr );
     error( $stderr ) if $ret && $stderr;
     $ret;
+}
+
+=item _getPs()
+
+ Get proper 'ps' invocation for the platform
+
+ Return int Command exit status
+
+=cut
+
+sub _getPs
+{
+    my ($self) = shift;
+
+    # Fixme: iMSCP::LsbRelease is Linux specific. We must rewrite it to support all platforms below.
+    my $id = iMSCP::LsbRelease->getInstance()->getId( 'short' );
+    if ($id eq 'OpenWrt') {
+        'ps www';
+    } elsif ($id =~ /^(?:FreeBSD|NetBSD|OpenBSD|Darwin|DragonFly)$/) {
+        'ps auxwww';
+    } else {
+        'ps -ef'
+    }
+}
+
+=item _getPid($pattern)
+
+ Get the process ID for a running process.
+
+ Param string $pattern
+ Return int|undef Process ID or undef if not found
+
+=cut
+
+sub _getPid
+{
+    my ($self, $pattern) = @_;
+
+    defined $pattern or die( '$pattern parameter is not defined' );
+
+    my $ps = $self->_getPs();
+    open my $fh, '-|', $ps or die( sprintf( 'Could not pipe to %s: %s', $ps, $! ) );
+
+    my $regex = qr/$pattern/;
+    while(<$fh>) {
+        if (/$regex/) {
+            my $line = $_;
+            debug( sprintf( 'Process matched line: %s', $line ) );
+            $line =~ s/^\s+//;
+            return (split /\s+/, $line)[1];
+        }
+    }
+
+    undef;
 }
 
 =back
