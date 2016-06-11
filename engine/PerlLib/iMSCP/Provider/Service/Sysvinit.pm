@@ -370,7 +370,7 @@ sub _getPs
 
 =item _getPid($pattern)
 
- Get the process ID for a running process.
+ Get the process ID for a running process
 
  Param string $pattern
  Return int|undef Process ID or undef if not found
@@ -388,12 +388,9 @@ sub _getPid
 
     my $regex = qr/$pattern/;
     while(<$fh>) {
-        if (/$regex/) {
-            my $line = $_;
-            debug( sprintf( 'Process matched line: %s', $line ) );
-            $line =~ s/^\s+//;
-            return (split /\s+/, $line)[1];
-        }
+        next unless /$regex/;
+        debug( sprintf( 'Process matched line: %s', $_ ) );
+        return (split /\s+/, s/^\s+//r)[1];
     }
 
     undef;
