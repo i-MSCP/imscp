@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
     <folders>${SYSTEM_CONF}/postfix</folders>
-    <folders>${SYSTEM_CONF}/postfix/backup</folders>
-    <folders>${SYSTEM_CONF}/postfix/parts</folders>
     <copy_config>${SYSTEM_CONF}/postfix/main.cf</copy_config>
     <copy_config>${SYSTEM_CONF}/postfix/postfix.data</copy_config>
     <copy_config>${SYSTEM_CONF}/postfix/master.cf</copy_config>
-    <copy_config>${SYSTEM_CONF}/postfix/imscp</copy_config>
 </install>

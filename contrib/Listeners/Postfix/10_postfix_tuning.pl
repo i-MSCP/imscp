@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Allows to tune Postfix configuration files (main.cf and master.cf).
+## Tune up Postfix configuration files (main.cf and master.cf).
 #
 
 package Listener::Postfix::Tuning;
@@ -24,22 +24,18 @@ package Listener::Postfix::Tuning;
 use strict;
 use warnings;
 use iMSCP::Debug;
-use iMSCP::ProgramFinder;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use Servers::mta;
 
 #
 ## Configuration variables
 #
 
-# Path to Postfix configuration directory
-my $postfixConfigDir = '/etc/postfix';
-
 ## Postfix main.cf (see http://www.postfix.org/postconf.5.html)
 # Hash where each pair of key/value correspond to a postfix parameter
 # Please replace the entries below by your own entries
 my %mainCfParameters = (
-    'inet_protocols'     => 'ipv4,ipv6',
+    'inet_protocols'     => 'ipv4, ipv6',
     'inet_interfaces'    => '127.0.0.1, 192.168.2.5, [2001:db8:0:85a3::ac1f:8001]',
     'smtp_bind_address'  => '192.168.2.5',
     'smtp_bind_address6' => '',
@@ -54,43 +50,40 @@ my @masterCfParameters = (
 );
 
 #
-## Please, don't edit anything below this line
+## Please, don't edit anything below this line unless you known what you're doing
 #
 
-# Listener responsible to tune Postfix main.cf file, once it was built by i-MSCP
-sub setupMainCf
-{
-    return 0 unless %mainCfParameters && iMSCP::ProgramFinder::find( 'postconf' );
+my $em = iMSCP::EventManager->getInstance();
+$em->register(
+    'afterMtaBuildConf',
+    sub {
+        my %params = ();
+        while(my ($param, $value) = each( %mainCfParameters )) {
+            $params{$param} = {
+                'action' => 'replace',
+                'values' => split /,\s+/, $value
+            };
+        }
 
-    my @cmd = (
-        'postconf',
-        '-e', # Needed for Postfix < 2.8
-        '-c', escapeShell( $postfixConfigDir )
-    );
+        if (%params) {
+            my $rs = Servers::mta->factory()->postconf( %params );
+            return $rs if $rs;
+        }
 
-    push @cmd, ($_.'='.escapeShell( $mainCfParameters{$_} )) for keys %mainCfParameters;
+        0;
+    }
+);
+$em->register(
+    'afterMtaBuildMasterCfFile',
+    sub {
+        my $cfgTpl = shift;
 
-    my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
-    $rs;
-}
+        return 0 unless @masterCfParameters;
 
-# Listener responsible to add entries at bottom of Postfix master.cf file, once it was built by i-MSCP
-sub setupMasterCf
-{
-    my $cfgTpl = shift;
-
-    return 0 unless @masterCfParameters;
-
-    $$cfgTpl .= join( "\n", @masterCfParameters )."\n";
-    0;
-}
-
-# Register event listeners on the event manager
-my $eventManager = iMSCP::EventManager->getInstance();
-$eventManager->register( 'afterMtaBuildConf', \&setupMainCf );
-$eventManager->register( 'afterMtaBuildMasterCfFile', \&setupMasterCf );
+        $$cfgTpl .= join( "\n", @masterCfParameters )."\n";
+        0;
+    }
+);
 
 1;
 __END__

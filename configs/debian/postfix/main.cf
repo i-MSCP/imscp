@@ -1,4 +1,7 @@
-# Common parameters
+#
+## Common parameters
+#
+
 inet_protocols = {MTA_INET_PROTOCOLS}
 inet_interfaces = all
 mynetworks_style = host
@@ -14,7 +17,10 @@ biff = no
 recipient_delimiter = +
 message_size_limit = 0
 
-# Local delivery
+#
+## Local delivery parameters
+#
+
 mydestination = $myhostname, $mydomain
 alias_database = hash:{MTA_LOCAL_ALIAS_HASH}
 alias_maps = hash:{MTA_LOCAL_ALIAS_HASH}
@@ -24,7 +30,10 @@ local_recipient_maps = unix:passwd.byname $alias_database
 mail_spool_directory = {MTA_LOCAL_MAIL_DIR}
 mailbox_size_limit = 0
 
-# Virtual delivery
+#
+## Virtual delivery parameters
+#
+
 virtual_mailbox_base = {MTA_VIRTUAL_MAIL_DIR}
 virtual_mailbox_limit = 0
 virtual_mailbox_domains = hash:{MTA_VIRTUAL_DMN_HASH}
@@ -35,40 +44,45 @@ virtual_minimum_uid = {MTA_MAILBOX_MIN_UID}
 virtual_uid_maps = static:{MTA_MAILBOX_UID}
 virtual_gid_maps = static:{MTA_MAILBOX_GID}
 
-# Relay
+#
+## Relay parameters
+#
+
 relay_domains = hash:{MTA_RELAY_HASH}
 relay_recipient_maps =
 relay_transport = relay
 relayhost =
 
-# Transport
+#
+## Transport parameters
+#
+
 transport_maps = hash:{MTA_TRANSPORT_HASH}
 
-# SMTP restrictions
-smtpd_helo_required = yes
-smtpd_helo_restrictions =
- permit_mynetworks,
- permit_sasl_authenticated,
- reject_non_fqdn_helo_hostname,
- reject_invalid_helo_hostname,
- permit
-smtpd_sender_restrictions =
- permit_mynetworks,
- permit_sasl_authenticated,
- reject_non_fqdn_sender,
- reject_unknown_sender_domain,
- permit
-smtpd_recipient_restrictions =
- reject_non_fqdn_recipient,
- reject_unknown_recipient_domain,
- permit_mynetworks,
- permit_sasl_authenticated,
- reject_unauth_destination,
- reject_unlisted_recipient,
- permit
-smtpd_data_restrictions =
- reject_multi_recipient_bounce,
- reject_unauth_pipelining
+#
+## SMTP restrictions
+#
 
-# Other parameters
+smtpd_helo_required = yes
+
+smtpd_helo_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_non_fqdn_helo_hostname,
+ reject_invalid_helo_hostname, permit
+ 
+smtpd_sender_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_non_fqdn_sender,
+ reject_unknown_sender_domain, permit
+ 
+smtpd_recipient_restrictions = reject_non_fqdn_recipient, reject_unknown_recipient_domain, permit_mynetworks,
+ permit_sasl_authenticated, reject_unauth_destination, reject_unlisted_recipient, permit
+
+smtpd_data_restrictions = reject_multi_recipient_bounce, reject_unauth_pipelining
+
+#
+## i-MSCP responder parameters
+#
+
 imscp-arpl_destination_recipient_limit = 1
+
+#
+## Other parameters
+## Those parameters are added dynamically by i-MSCP or 3rd-party softwares
+#

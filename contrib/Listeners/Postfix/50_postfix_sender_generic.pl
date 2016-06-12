@@ -16,42 +16,40 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #
-## Allows to setup sender generic map.
+## Setup Postfix sender generic maps.
 #
 
 package Listener::Postfix::Sender::Generic::Map;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use Servers::mta;
 
 #
 ## Configuration variables
 #
 
 my $postfixSmtpGenericMap = '/etc/postfix/imscp/smtp_outgoing_rewrite';
-my $addSmtpGenericMap = "smtp_generic_maps = hash:/etc/postfix/imscp/smtp_outgoing_rewrite\n";
+my $addSmtpGenericMap = "smtp_generic_maps = hash:/etc/postfix/smtp_outgoing_rewrite\n";
 
 #
 ## Please, don't edit anything below this line
 #
 
 iMSCP::EventManager->getInstance()->register(
-    'afterMtaBuildMainCfFile',
+    'afterMtaBuildConf',
     sub {
-        my $tplContent = shift;
-
-        return 0 unless -f $postfixSmtpGenericMap;
-
-        my $rs = execute( "postmap $postfixSmtpGenericMap", \ my $stdout, \ my $stderr );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        return $rs if $rs;
-
-        $$tplContent .= "$addSmtpGenericMap";
-        0;
+        my $mta = Servers::mta->factory();
+        my $rs = $mta->addMapEntry( $postfixSmtpGenericMap );
+        $rs ||= $mta->postconf(
+            (
+                smtp_generic_maps => {
+                    action => 'add',
+                    values => [ "hash:$postfixSmtpGenericMap" ]
+                }
+            )
+        );
     }
 );
 

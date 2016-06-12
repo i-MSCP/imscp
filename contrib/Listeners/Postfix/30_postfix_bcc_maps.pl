@@ -16,50 +16,45 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #
-## Allows to setup recipient and sender bbc map.
+## Setup Postfix recipient and sender bbc maps.
 #
 
 package Listener::Postfix::BCC::Map;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use Servers::mta;
 
 #
 ## Configuration variables
 #
 
-my $postfixRecipientBccMap = '/etc/postfix/imscp/recipient_bcc_map';
-my $postfixSenderBccMap = '/etc/postfix/imscp/sender_bcc_map';
-my $addRecipientBccMap = "recipient_bcc_maps = hash:/etc/postfix/imscp/recipient_bcc_map\n";
-my $addSenderBccMap = "sender_bcc_maps = hash:/etc/postfix/imscp/sender_bcc_map\n";
+my $postfixRecipientBccMap = '/etc/postfix/recipient_bcc_map';
+my $postfixSenderBccMap = '/etc/postfix/sender_bcc_map';
 
 #
 ## Please, don't edit anything below this line
 #
 
 iMSCP::EventManager->getInstance()->register(
-    'afterMtaBuildMainCfFile',
+    'afterMtaBuildConf',
     sub {
-        my $tplContent = shift;
-
-        return 0 unless -f $postfixRecipientBccMap && -f $postfixSenderBccMap;
-
-        my $rs = execute( "postmap $postfixRecipientBccMap", \ my $stdout, \ my $stderr );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        return $rs if $rs;
-
-        $rs = execute( "postmap $postfixSenderBccMap", \$stdout, \$stderr );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        return $rs if $rs;
-
-        $$tplContent .= "$addRecipientBccMap";
-        $$tplContent .= "$addSenderBccMap";
-        0;
+        my $mta = Servers::mta->factory();
+        my $rs = $mta->addMapEntry( $postfixRecipientBccMap );
+        $rs ||= $mta->addMapEntry( $postfixSenderBccMap );
+        $rs ||= $mta->postconf(
+            (
+                recipient_bcc_maps => {
+                    action => 'add',
+                    values => [ "hash:$postfixRecipientBccMap" ]
+                },
+                sender_bcc_maps    => {
+                    action => 'add',
+                    values => [ "hash:$postfixSenderBccMap" ]
+                }
+            )
+        );
     }
 );
 

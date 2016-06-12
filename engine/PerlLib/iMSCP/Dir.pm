@@ -223,6 +223,7 @@ sub make
 
             $self->mode( $options->{'mode'}, $dir ) if defined $options->{'mode'};
         }
+
         return 0;
     }
 

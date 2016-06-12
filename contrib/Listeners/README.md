@@ -114,27 +114,27 @@ Allows to override default PhpMyAdmin configuration template file
 
 ### 10_postfix_smarthost.pl
 
-Allows to configure Postfix as smarthost with SASL authentication.
+Configure Postfix to route all mails to a smarthost using SASL authentication.
 
 ### 10_postfix_tuning.pl
 
-Allows to tune Postfix configuration files (main.cf and master.cf).
+Tune up Postfix configuration files (main.cf and master.cf).
 
 ### 20_postfix_policyd_whitelist.pl
 
-Allows to setup policyd-weight whilelist maps.
+Setup Postfix whilelist tables for policyd-weight policy daemon.
 
 ### 30_postfix_bcc_maps.pl
 
-Allows to setup recipient and sender bbc map.
+Setup Postfix recipient and sender bbc maps.
 
 ### 40_postfix_sender_canonical.pl
 
-Allows to setup sender canonical maps.
+Setup Postfix sender canonical maps.
 
 ### 50_postfix_sender_generic.pl
 
-Allows to setup sender generic map.
+Setup Postfix sender generic maps.
 
 ### 60_postfix_pfs.pl
 

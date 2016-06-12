@@ -26,6 +26,7 @@ package Servers::mta::postfix;
 use strict;
 use warnings;
 use Class::Autouse qw/ File::Temp Servers::mta::postfix::installer Servers::mta::postfix::uninstaller /;
+use File::Basename;
 use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Dir;
@@ -129,13 +130,19 @@ sub postinstall
                         my $rs = 0;
                         for my $mapPath(keys %{$self->{'_maps'}}) {
                             my $file = iMSCP::File->new( filename => $mapPath );
-                            $rs |= $file->set( $self->{'_maps'}->{$mapPath} );
-                            $rs |= $file->save();
+                            my $rs = $file->set( $self->{'_maps'}->{$mapPath} );
+                            $rs ||= $file->save();
+                            $rs ||= $file->mode(0640)
                         }
-                        for my $mapPath(keys %{$self->{'postmap'}}) {
-                            $rs |= $self->postmap( $mapPath );
+
+                        unless($rs) {
+                            for my $mapPath(keys %{$self->{'postmap'}}) {
+                                $rs = $self->postmap( $mapPath );
+                                last if $rs;
+                            }
+
+                            $rs ||= $self->restart();
                         }
-                        $rs |= $self->restart();
                     },
                     'Postfix'
                 ];
@@ -563,6 +570,8 @@ sub getTraffic
 
  Add the given entry into the given Postfix map
 
+ Note: without any $entry passed-ind, the map will be simply created or updated.
+
  Param string $mapPath Map file path
  Param string $entry Map entry to add
  Return int 0 on success, other on failure
@@ -583,7 +592,7 @@ sub addMapEntry
         return 1;
     }
 
-    $$mapContent .= "$entry\n";
+    $$mapContent .= "$entry\n" if defined $entry;
     $self->{'eventManager'}->trigger( 'beforeAddPostfixMapEntry', $mapPath, $entry );
 }
 
@@ -636,15 +645,27 @@ sub postmap
 
  Provide interface to postconf for editing parameters from Postfix main.cf configuration file
 
- Param hash %params A hash where keys describe Postfix configuration parameters and values, the action to be
-  performed and the associated values: my %params = (
-      smtp_sasl_password_maps => {
-          action => 'add', # Action to be performed (add|replace|remove; default: add)
-          values => [ 'hash:/etc/postfix/relay_passwd' ] # List of values for that parameter
-       },
-       ...
-  );
- Return int 0 on success, other or die on failure
+ Param hash %params A hash where keys are Postfix parameters names and values a hashes describing in order:
+  - action: The action to be performed (add|replace|remove)
+  - values: An array containing parameters values to add, replace or remove
+  - before: OPTIONAL option allowing to add values before the given value (expressed as a Regexp)
+  - after: OPTIONAL option allowing to add values after the given value (expressed as a Regexp)
+
+    Note that the `before' and `after' option are only supported by the `add' action. Note also that the `before'
+    option has highter precedence than the `after' option.
+
+  For instance, let's assume that we want add both, the `check_client_access <table>' value and the
+  `check_recipient_access <table>' value to the `smtpd_recipient_restrictions' parameter, after the
+  `check_policy_service ...' value. The following hash passed as parameter of this method will do the job:
+
+      my %params = (
+        smtpd_recipient_restrictions => {
+          action => 'add',
+          values => [ 'check_client_access <table>', 'check_recipient_access <table>' ]
+          before => qr/check_policy_service\s+.*/,
+        }
+      );
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -652,44 +673,84 @@ sub postconf
 {
     my ($self, %params) = @_;
 
-    my $stderr;
-    my $rs = executeNoWait(
-        [ 'postconf', '-c', $self->{'config'}->{'POSTFIX_CONF_DIR'}, keys %params ],
-        sub {
-            my $buffer = shift;
-            open my $stdout, '<', \$buffer or die( sprintf( 'Could not open: %s', $! ) );
-            while(<$stdout>) {
-                /^([^=]+)\s+=\s+(.*)/;
-                next unless defined $1 && defined $2 && defined $params{$1};
+    my @paramsToRemove = ();
 
-                my @values = split /,\s+/, $2;
-                for my $value(@{$params{$1}->{'values'}}) {
-                    if (!defined $params{$1}->{'action'} || $params{$1}->{'action'} eq 'add') {
-                        push @values, $value unless grep { $_ eq $value } @values;
-                    } elsif ($params{$1}->{'action'} eq 'replace') {
-                        @values = ($value);
-                    } elsif ($params{$1}->{'action'} eq 'remove') {
-                        @values = grep { $_ ne $value } @values;
+    local $@;
+    my $rs = eval {
+        my $stderr;
+        my $rs = executeNoWait(
+            [ 'postconf', '-c', $self->{'config'}->{'POSTFIX_CONF_DIR'}, keys %params ],
+            sub {
+                my $buffer = shift;
+                open my $stdout, '<', \$buffer or die( sprintf( 'Could not open: %s', $! ) );
+                while(<$stdout>) {
+                    /^([^=]+)\s+=\s+(.*)/;
+                    next unless defined $1 && defined $2 && defined $params{$1};
+
+                    my @replace;
+                    my @values = split /,\s+/, $2;
+                    for my $value(@{$params{$1}->{'values'}}) {
+                        if (!defined $params{$1}->{'action'} || $params{$1}->{'action'} eq 'add') {
+                            next if grep { $_ eq $value } @values;
+
+                            if (defined $params{$1}->{'before'} || defined $params{$1}->{'after'}) {
+                                my $regexp = $params{$1}->{'before'} || $params{$1}->{'after'};
+                                my ($index) = grep { $values[$_] =~ /^$regexp$/ } (0 .. @values - 1);
+                                next unless defined $index;
+                                splice( @values, (defined $params{$1}->{'before'} ? $index : ++$index), 0, $value );
+                            } else {
+                                push @values, $value;
+                            }
+                        } elsif ($params{$1}->{'action'} eq 'replace') {
+                            push @replace, $value;
+                        } elsif ($params{$1}->{'action'} eq 'remove') {
+                            @values = grep { $_ !~ /^$value$/ } @values;
+                        }
+                    }
+
+                    $params{$1} = join ', ', @replace ? @replace : @values;
+                    if ($params{$1} eq '') {
+                        push @paramsToRemove, $1;
+                        delete $params{$1};
                     }
                 }
-
-                $params{$1} = join ', ', @values;
-            }
-            close $stdout;
-        },
-        sub { $stderr .= shift }
-    );
-    warning( $stderr ) if $stderr;
+                close $stdout;
+            },
+            sub { $stderr .= shift }
+        );
+        warning( $stderr ) if $stderr;
+        $rs;
+    };
+    if ($@) {
+        error( sprintf( 'Could not edit main.cf configuration file through postconf: %s', $@ ) );
+        return 1;
+    }
+    return $rs if $rs;
 
     my $cmd = [ 'postconf', '-e', '-c', $self->{'config'}->{'POSTFIX_CONF_DIR'} ];
     while(my ($param, $value) = each( %params )) {
         next if ref $value eq 'HASH';
         push @{$cmd}, "$param=$value";
     }
-    $rs = execute( $cmd, \ my $stdout, \$stderr );
+
+    $rs = execute( $cmd, \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
-    $rs;
+
+    return $rs if $rs || !@paramsToRemove;
+
+    # postconf -X command that allows to remove parameter is not available prior Postfix 2.10. Thus, we must
+    # edit the file manually.
+    my $file = iMSCP::File->new( filename => "$self->{'config'}->{'POSTFIX_CONF_DIR'}/main.cf" );
+    my $fileContent = $file->get();
+    unless (defined $fileContent) {
+        error( sprintf( 'Could not read %s file', $file->{'filename'} ) );
+        return 1;
+    }
+
+    $fileContent =~ s/^\Q$_\E\s*=[^\n]+\n//mi for @paramsToRemove;
+    $rs = $file->set( $fileContent );
+    $rs ||= $file->save;
 }
 
 =back
@@ -729,7 +790,7 @@ sub _init
  Get given postfix map content
 
  Param string $mapPath Postfix map path
- Return Servers::mta::postfix
+ Return scalarref Reference to map content
 
 =cut
 
@@ -738,10 +799,18 @@ sub _getMapContent
     my ($self, $mapPath) = @_;
 
     unless (defined $self->{'_maps'}->{$mapPath}) {
-        my $file = iMSCP::File->new( filename => $mapPath );
-        $self->{'_maps'}->{$mapPath} = $file->get();
-        unless (defined $self->{'_maps'}->{$mapPath}) {
-            die( sprintf( 'Could not read %s file', $mapPath ) );
+        if(-f $mapPath) {
+            my $file = iMSCP::File->new( filename => $mapPath );
+            $self->{'_maps'}->{$mapPath} = $file->get();
+            unless (defined $self->{'_maps'}->{$mapPath}) {
+                die( sprintf( 'Could not read %s file', $mapPath ) );
+            }
+        } else {
+            my $basename = basename($mapPath);
+            $self->{'_maps'}->{$mapPath} = <<EOF;
+# Postfix $basename - auto-generated by i-MSCP
+#     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN
+EOF
         }
 
         $self->{'postmap'}->{$mapPath} = 1;
@@ -759,21 +828,26 @@ sub _getMapContent
 END
     {
         my $self = __PACKAGE__->getInstance();
-        my $rs = $?;
+        my $exitCode = $?;
+        my $rs = 0;
 
         unless (defined $main::execmode && $main::execmode eq 'setup') {
             for my $mapPath(keys %{$self->{'_maps'}}) {
                 my $file = iMSCP::File->new( filename => $mapPath );
                 my $rs = $file->set( $self->{'_maps'}->{$mapPath} );
-                $rs |= $file->save();
+                $rs ||= $file->save();
+                $rs ||= $file->mode(0640)
             }
 
-            for my $mapPath(keys %{$self->{'postmap'}}) {
-                $rs |= $self->postmap( $mapPath );
+            unless($rs) {
+                for my $mapPath(keys %{$self->{'postmap'}}) {
+                    $rs = $self->postmap( $mapPath );
+                    last if $rs;
+                }
             }
         }
 
-        $? = $rs;
+        $? = $exitCode || $rs;
     }
 
 =back

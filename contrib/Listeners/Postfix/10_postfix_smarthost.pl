@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #
-## Allows to configure Postfix as smarthost with SASL authentication.
+## Configure Postfix to route all mails to a smarthost using SASL authentication.
 #
 
 package Listener::Postfix::Smarthost;
@@ -31,14 +31,15 @@ use Servers::mta;
 ## Configuration variables
 #
 
-my $relayhost = 'smtp.host.tld';
+my $relayhost = '[smtp.host.tld]';
 my $relayport = '587';
 my $saslAuthUser = '';
 my $saslAuthPasswd = '';
 my $saslPasswdMapsPath = '/etc/postfix/relay_passwd';
+my $tlsCAfile = '/etc/ssl/certs/ca-certificates.crt';
 
 #
-## Please, don't edit anything below this line
+## Please, don't edit anything below this line unless you known what you're doing
 #
 
 my $em = iMSCP::EventManager->getInstance();
@@ -50,35 +51,28 @@ $em->register(
     }
 );
 $em->register(
-    'afterMtaBuildMainCfFile',
+    'afterMtaBuildConf',
     sub {
-        my $saslPasswdMapsFile = iMSCP::File->new( filename => $saslPasswdMapsPath );
-        my $rs = $saslPasswdMapsFile->set( "$relayhost:$relayport\t$saslAuthUser:$saslAuthPasswd" );
-        $rs ||= $saslPasswdMapsFile->save();
-        $rs ||= $saslPasswdMapsFile->mode( 0600 );
-        return $rs if $rs;
-
         my $mta = Servers::mta->factory();
-        local $@;
-        eval {
-            $rs = $mta->postconf(
-                (
-                    relayhost                  => { action => 'replace', values => [ "$relayhost:$relayport" ] },
-                    smtp_sasl_type             => { action => 'replace', values => [ 'cyrus' ] },
-                    smtp_sasl_auth_enable      => { action => 'replace', values => [ 'yes' ] },
-                    smtp_sasl_password_maps    => { action => 'add', values => [ $saslPasswdMapsPath ] },
-                    smtp_sasl_security_options => { action => 'add', values => [ 'noanonymous' ] }
-                )
-            );
-            return $rs if $rs;
-        };
-        if ($@) {
-            error( 'Could not configure smarthost: %s', $@ );
-            return 1;
-        }
-
-        $mta->{'postmap'}->{$saslPasswdMapsPath} = 1;
-        0;
+        my $rs = $mta->addMapEntry( $saslPasswdMapsPath, "$relayhost:$relayport\t$saslAuthUser:$saslAuthPasswd" );
+        $rs ||= $mta->postconf(
+            (
+                # Relay parameter
+                relayhost                  => { action => 'replace', values => [ "$relayhost:$relayport" ] },
+                # smtp SASL parameters
+                smtp_sasl_type             => { action => 'replace', values => [ 'cyrus' ] },
+                smtp_sasl_auth_enable      => { action => 'replace', values => [ 'yes' ] },
+                smtp_sasl_password_maps    => { action => 'add', values => [ $saslPasswdMapsPath ] },
+                smtp_sasl_security_options => { action => 'replace', values => [ 'noanonymous' ] },
+                # smtp TLS parameters (opportunistic)
+                smtp_tls_security_level    => { action => 'replace', values => [ 'may' ] },
+                smtp_tls_ciphers           => { action => 'replace', values => [ 'high' ] },
+                smtp_tls_exclude_ciphers   => { action => 'replace', values => [ 'aNULL', 'MD5' ] },
+                smtp_tls_protocols         => { action => 'replace', values => [ '!SSLv2', '!SSLv3' ] },
+                smtp_tls_loglevel          => { action => 'replace', values => [ '1' ] },
+                smtp_tls_CAfile            => { action => 'replace', values => [ $tlsCAfile ] }
+            )
+        );
     }
 );
 

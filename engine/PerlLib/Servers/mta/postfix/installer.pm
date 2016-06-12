@@ -81,7 +81,7 @@ sub install
     my $self = shift;
 
     my $rs = $self->_buildConf();
-    $rs ||= $self->_buildLookupTables();
+    #$rs ||= $self->_buildLookupTables();
     $rs ||= $self->_buildAliasesDb();
     $rs ||= $self->_saveConf();
     $rs ||= $self->_oldEngineCompatibility();
@@ -175,8 +175,6 @@ sub _init
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'mta'} = Servers::mta::postfix->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
-    $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-    $self->{'lkptsDir'} = "$self->{'cfgDir'}/imscp";
     $self->{'config'} = $self->{'mta'}->{'config'};
 
     # Merge old config file with new config file
@@ -205,11 +203,12 @@ sub _addUsersAndGroups
 {
     my $self = shift;
 
-    my @groups = ([
-        $self->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # Group name
-        'yes' # Whether it's a system group
-    ]);
-
+    my @groups = (
+        [
+            $self->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # Group name
+            'yes' # Whether it's a system group
+        ]
+    );
     my @users = (
         [
             $self->{'config'}->{'MTA_MAILBOX_UID_NAME'}, # User name
@@ -227,7 +226,6 @@ sub _addUsersAndGroups
 
     # Create groups
     my $systemGroup = iMSCP::SystemGroup->getInstance();
-
     for my $group(@groups) {
         $rs = $systemGroup->addSystemGroup( $group->[0], ($group->[1] eq 'yes') ? 1 : 0 );
         return $rs if $rs;
@@ -256,7 +254,6 @@ sub _addUsersAndGroups
     for my $entry(@userToGroups) {
         my $systemUser = iMSCP::SystemUser->new();
         my $user = $entry->[0];
-
         for my $group(@{$entry->[1]}) {
             $rs = $systemUser->addToGroup( $group, $user );
             return $rs if $rs;
@@ -300,6 +297,9 @@ sub _makeDirs
     );
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaMakeDirs', \@directories );
+
+    # Make sure to start with clean directory
+    $rs ||= iMSCP::Dir->new(dirname => $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'})->remove();
     return $rs if $rs;
 
     for my $dir(@directories) {
@@ -424,38 +424,6 @@ sub _saveConf
     iMSCP::File->new( filename => "$self->{'cfgDir'}/postfix.data" )->copyFile( "$self->{'cfgDir'}/postfix.old.data" );
 }
 
-=item _bkpConfFile($cfgFile)
-
- Backup configuration file
-
- Param string $cfgFile Configuration file path
- Return int 0 on success, other on failure
-
-=cut
-
-sub _bkpConfFile
-{
-    my ($self, $cfgFile) = @_;
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaBkpConfFile', $cfgFile );
-    return $rs if $rs;
-
-    if (-f $cfgFile) {
-        my $file = iMSCP::File->new( filename => $cfgFile );
-        my $filename = fileparse( $cfgFile );
-
-        unless (-f "$self->{'bkpDir'}/$filename.system") {
-            $rs = $file->copyFile( "$self->{'bkpDir'}/$filename.system" );
-            return $rs if $rs;
-        } else {
-            $rs = $file->copyFile( "$self->{'bkpDir'}/$filename.".time() );
-            return $rs if $rs;
-        }
-    }
-
-    $self->{'eventManager'}->trigger( 'afterMtaBkpConfFile', $cfgFile );
-}
-
 =item _buildMainCfFile()
 
  Build main.cf file
@@ -467,9 +435,6 @@ sub _bkpConfFile
 sub _buildMainCfFile
 {
     my $self = shift;
-
-    my $rs = $self->_bkpConfFile( "self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/main.cf" );
-    return $rs if $rs;
 
     my $baseServerIpType = iMSCP::Net->getInstance->getAddrVersion( $main::imscpConfig{'BASE_SERVER_IP'} );
     my $gid = getgrnam( $self->{'config'}->{'MTA_MAILBOX_GID_NAME'} );
@@ -497,7 +462,7 @@ sub _buildMainCfFile
         CERTIFICATE              => 'imscp_services'
     };
 
-    $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'postfix', 'main.cf', \my $cfgTpl, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'postfix', 'main.cf', \my $cfgTpl, $data );
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
@@ -515,20 +480,19 @@ sub _buildMainCfFile
     if ($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') {
         $cfgTpl .= <<'EOF';
 
-# TLS parameters
+# smtpd TLS parameters (opportunistic)
 smtpd_tls_security_level = may
-smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3
+smtpd_tls_ciphers = high
+smtpd_tls_exclude_ciphers = aNULL, MD5
 smtpd_tls_protocols = !SSLv2, !SSLv3
 smtpd_tls_loglevel = 1
 smtpd_tls_cert_file = {CONF_DIR}/{CERTIFICATE}.pem
 smtpd_tls_key_file = {CONF_DIR}/{CERTIFICATE}.pem
+smtpd_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
 smtpd_tls_auth_only = no
 smtpd_tls_received_header = yes
-smtp_tls_security_level = may
-smtp_tls_mandatory_protocols = !SSLv2, !SSLv3
-smtp_tls_protocols = !SSLv2, !SSLv3
-smtp_tls_loglevel = 1
-smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
+smtpd_tls_session_cache_database = btree:/var/lib/postfix/smtpd_scache
+smtpd_tls_session_cache_timeout = 3600s
 EOF
     }
 
@@ -554,6 +518,7 @@ EOF
     my $file = iMSCP::File->new( filename => $self->{'config'}->{'POSTFIX_CONF_FILE'} );
     $rs ||= $file->set( $cfgTpl );
     $rs ||= $file->save();
+    0;
 }
 
 =item _buildMasterCfFile()
@@ -568,16 +533,13 @@ sub _buildMasterCfFile
 {
     my $self = shift;
 
-    my $rs = $self->_bkpConfFile( "self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/master.cf" );
-    return $rs if $rs;
-
     my $data = {
         MTA_MAILBOX_UID_NAME => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
         IMSCP_GROUP          => $main::imscpConfig{'IMSCP_GROUP'},
         ARPL_PATH            => $main::imscpConfig{'ROOT_DIR'}."/engine/messenger/imscp-arpl-msgr"
     };
 
-    $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'postfix', 'master.cf', \my $cfgTpl, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'postfix', 'master.cf', \my $cfgTpl, $data );
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
@@ -614,7 +576,6 @@ sub _oldEngineCompatibility
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaOldEngineCompatibility' );
-    $rs ||= iMSCP::Dir->new( dirname => "$self->{'cfgDir'}/working" )->remove();
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtadOldEngineCompatibility' );
 }
 

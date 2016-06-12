@@ -34,19 +34,22 @@ use warnings;
 use iMSCP::EventManager;
 
 iMSCP::EventManager->getInstance()->register(
-    'afterMtaBuildMainCfFile',
+    'afterMtaBuildConf',
     sub {
-        my $content = shift;
+        return 0 unless -f '/etc/postfix/dh2048.pem' && -f '/etc/postfix/dh512.pem';
 
-        my $cfgSnippet = <<EOF;
-# BEGIN Listener::Postfix::PFS
-smtpd_tls_dh1024_param_file = /etc/postfix/dh2048.pem
-smtpd_tls_dh512_param_file = /etc/postfix/dh512.pem
-# END Listener::Postfix::PFS
-EOF
-
-        $$content =~ s/^(# TLS parameters\n)/$1$cfgSnippet/m;
-        0;
+        Servers::mta->factory()->postconf(
+            (
+                smtpd_tls_dh1024_param_file => {
+                    action => 'replace',
+                    values => [ '/etc/postfix/dh2048.pem' ]
+                },
+                smtpd_tls_dh512_param_file  => {
+                    action => 'replace',
+                    values => [ '/etc/postfix/dh512.pem' ]
+                }
+            )
+        );
     }
 );
 

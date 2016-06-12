@@ -872,6 +872,9 @@ sub _cleanup
         "$main::imscpConfig{'CONF_DIR'}/fcgi",
         "$main::imscpConfig{'CONF_DIR'}/nginx",
         "$main::imscpConfig{'CONF_DIR'}/php-fpm",
+        "$main::imscpConfig{'CONF_DIR'}/postfix/backup",
+        "$main::imscpConfig{'CONF_DIR'}/postfix/imscp",
+        "$main::imscpConfig{'CONF_DIR'}/postfix/parts",
         "$main::imscpConfig{'CONF_DIR'}/postfix/working"
     ) {
         my $rs ||= iMSCP::Dir->new( dirname => $_ )->remove();
@@ -881,7 +884,6 @@ sub _cleanup
     for(
         "$main::imscpConfig{'CONF_DIR'}/apache/parts/php5.itk.ini",
         "$main::imscpConfig{'CONF_DIR'}/listeners.d/README",
-        "$main::imscpConfig{'CONF_DIR'}/postfix/sender-access",
         "$main::imscpConfig{'CONF_DIR'}/vsftpd/imscp_allow_writeable_root.patch",
         "$main::imscpConfig{'CONF_DIR'}/vsftpd/imscp_pthread_cancel.patch",
         "/usr/sbin/maillogconvert.pl"

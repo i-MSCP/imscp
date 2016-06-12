@@ -16,42 +16,39 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #
-## Allows to setup sender canonical maps.
+## Setup Postfix sender canonical maps.
 #
 
 package Listener::Postfix::Sender::Canonical;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use Servers::mta;
 
 #
 ## Configuration variables
 #
 
-my $postfixSenderCanoncial = '/etc/postfix/imscp/sender_canonical';
-my $addSenderCanoncial = "sender_canonical_maps = hash:/etc/postfix/imscp/sender_canonical\n";
+my $postfixSenderCanoncial = '/etc/postfix/sender_canonical';
 
 #
 ## Please, don't edit anything below this line
 #
 
 iMSCP::EventManager->getInstance()->register(
-    'afterMtaBuildMainCfFile',
+    'afterMtaBuildConf',
     sub {
-        my $tplContent = shift;
-
-        return 0 unless -f $postfixSenderCanoncial;
-
-        my $rs = execute( "postmap $postfixSenderCanoncial", \ my $stdout, \ my $stderr );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        return $rs if $rs;
-
-        $$tplContent .= "$addSenderCanoncial";
-        0;
+        my $mta = Servers::mta->factory();
+        my $rs = $mta->addMapEntry( $postfixSenderCanoncial );
+        $rs ||= $mta->postconf(
+            (
+                sender_canonical_maps => {
+                    action => 'add',
+                    values => [ "hash:$postfixSenderCanoncial" ]
+                }
+            )
+        );
     }
 );
 
