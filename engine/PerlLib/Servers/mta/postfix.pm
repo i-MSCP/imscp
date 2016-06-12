@@ -665,6 +665,7 @@ sub postmap
           before => qr/check_policy_service\s+.*/,
         }
       );
+
  Return int 0 on success, other on failure
 
 =cut

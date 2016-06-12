@@ -16,7 +16,6 @@ MTA_VIRTUAL_DMN_HASH = /etc/postfix/imscp/domains
 MTA_VIRTUAL_MAILBOX_HASH = /etc/postfix/imscp/mailboxes
 MTA_TRANSPORT_HASH = /etc/postfix/imscp/transport
 MTA_RELAY_HASH = /etc/postfix/imscp/relay_domains
-MTA_SENDER_ACCESS_HASH = /etc/postfix/imscp/sender-access
 MTA_MAILBOX_UID_NAME = vmail
 MTA_MAILBOX_GID_NAME = mail
 

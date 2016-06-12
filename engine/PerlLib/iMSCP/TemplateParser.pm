@@ -62,7 +62,7 @@ sub process
 
 =item getBloc($beginTag, $endingTag, $template [, $includeTags = false ])
 
- Get a bloc within the given template
+ Get first block matching the given tags within the given template
 
  Param string $beginTag Bloc begin tag
  Param string $endingTag Bloc ending tag
@@ -75,13 +75,13 @@ sub process
 sub getBloc
 {
     my ($beginTag, $endingTag, $template, $includeTags) = @_;
-    my $reg = qr/[\t ]*\Q$beginTag\E(.*)[\t ]*\Q$endingTag\E/is;
-    ($includeTags ? $template =~ /^($reg)$/m : $template =~ /^$reg$/m) ? $1 : '';
+    my $reg = qr/[\t ]*\Q$beginTag\E(.*?)[\t ]*\Q$endingTag\E/is;
+    ($includeTags ? $template =~ /($reg)/ : $template =~ /$reg/) ? $1 : '';
 }
 
 =item replaceBloc($beginTag, $endingTag, $repl, $template [, $preserveTags = false ])
 
- Replace a bloc within the given template
+ Replace all blocs matching the given tags within the given template
 
  Param string $beginTag Bloc begin tag
  Param string $endingTag Bloc ending tag
@@ -95,8 +95,8 @@ sub getBloc
 sub replaceBloc
 {
     my ($beginTag, $endingTag, $repl, $template, $preserveTags) = @_;
-    my $reg = qr/[\t ]*\Q$beginTag\E.*[\t ]*\Q$endingTag\E/is;
-    $preserveTags ? $template =~ s/^($reg)$/$repl$1/gmr : $template =~ s/^$reg$/$repl/gmr;
+    my $reg = qr/[\t ]*\Q$beginTag\E.*?[\t ]*\Q$endingTag\E/is;
+    $preserveTags ? $template =~ s/($reg)/$repl$1/gr : $template =~ s/$reg/$repl/gr;
 }
 
 =back

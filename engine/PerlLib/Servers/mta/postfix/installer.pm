@@ -80,9 +80,9 @@ sub install
 {
     my $self = shift;
 
-    my $rs = $self->_buildConf();
-    #$rs ||= $self->_buildLookupTables();
+    my $rs = $self->_createPostfixMaps();
     $rs ||= $self->_buildAliasesDb();
+    $rs ||= $self->_buildConf();
     $rs ||= $self->_saveConf();
     $rs ||= $self->_oldEngineCompatibility();
 }
@@ -335,33 +335,33 @@ sub _buildConf
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaBuildConf' );
 }
 
-=item _buildLookupTables()
+=item _createPostfixMaps()
 
- Build lookup tables
+ Ceate postfix maps
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _buildLookupTables
+sub _createPostfixMaps
 {
     my $self = shift;
 
-    my $dir = iMSCP::Dir->new( dirname => $self->{'lkptsDir'} );
-    my @lookupTables = $dir->getFiles();
+    my @lookupTables = (
+        $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'},
+        $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'}, $self->{'config'}->{'MTA_TRANSPORT_HASH'},
+        $self->{'config'}->{'MTA_RELAY_HASH'}
+    );
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaBuildLookupTables', \@lookupTables );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeCreatePostfixMaps', \@lookupTables );
     return $rs if $rs;
 
-    for my $table(@lookupTables) {
-        my $file = iMSCP::File->new( filename => "$self->{'lkptsDir'}/$table" );
-        $rs ||= $file->copyFile( "$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/$table" );
+    for (@lookupTables) {
+        $rs = $self->{'mta'}->addMapEntry($_);
         return $rs if $rs;
-
-        $self->{'mta'}->{'postmap'}->{"$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/$table"} = 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterMtaBuildLookupTables', \@lookupTables );
+    $self->{'eventManager'}->trigger( 'afterCreatePostfixMaps', \@lookupTables );
 }
 
 =item _buildAliasesDb()
