@@ -570,7 +570,7 @@ sub getTraffic
 
  Add the given entry into the given Postfix map
 
- Note: without any $entry passed-ind, the map will be simply created or updated.
+ Note: without any $entry passed-in, the map will be simply created or updated.
 
  Param string $mapPath Map file path
  Param string $entry Map entry to add

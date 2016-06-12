@@ -237,7 +237,7 @@ sub isRunning
         return $ret;
     }
 
-    $self->_exec( $self->getInitScriptPath( $service ), 'status' );
+    $self->_exec( $self->getInitScriptPath( $service ), 'status' ) == 0;
 }
 
 =item getInitScriptPath($service)
