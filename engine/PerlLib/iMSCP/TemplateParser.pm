@@ -75,9 +75,8 @@ sub process
 sub getBloc
 {
     my ($beginTag, $endingTag, $template, $includeTags) = @_;
-    my $reg = "[\t ]*\Q$beginTag\E(.*?)[\t ]*\Q$endingTag\E";
-    $includeTags ? $template =~ m/($reg)/gims : $template =~ m/$reg/gims;
-    $1 // '';
+    my $reg = qr/[\t ]*\Q$beginTag\E(.*)[\t ]*\Q$endingTag\E/is;
+    ($includeTags ? $template =~ /^($reg)$/m : $template =~ /^$reg$/m) ? $1 : '';
 }
 
 =item replaceBloc($beginTag, $endingTag, $repl, $template [, $preserveTags = false ])
@@ -96,8 +95,8 @@ sub getBloc
 sub replaceBloc
 {
     my ($beginTag, $endingTag, $repl, $template, $preserveTags) = @_;
-    my $reg = "([\t ]*\Q$beginTag\E.*?\Q$endingTag\E)";
-    $preserveTags ? $template =~ s/$reg/$repl$1/gisr : $template =~ s/$reg/$repl/gisr;
+    my $reg = qr/[\t ]*\Q$beginTag\E.*[\t ]*\Q$endingTag\E/is;
+    $preserveTags ? $template =~ s/^($reg)$/$repl$1/gmr : $template =~ s/^$reg$/$repl/gmr;
 }
 
 =back
