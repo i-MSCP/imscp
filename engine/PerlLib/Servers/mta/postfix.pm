@@ -646,10 +646,11 @@ sub postmap
  Provide interface to postconf for editing parameters from Postfix main.cf configuration file
 
  Param hash %params A hash where keys are Postfix parameters names and values a hashes describing in order:
-  - action: The action to be performed (add|replace|remove)
-  - values: An array containing parameters values to add, replace or remove
-  - before: OPTIONAL option allowing to add values before the given value (expressed as a Regexp)
-  - after: OPTIONAL option allowing to add values after the given value (expressed as a Regexp)
+  - action          : The action to be performed (add|replace|remove)
+  - values          : An array containing parameters values to add, replace or remove
+  - values_separator: Values separator
+  - before          : OPTIONAL option allowing to add values before the given value (expressed as a Regexp)
+  - after           : OPTIONAL option allowing to add values after the given value (expressed as a Regexp)
 
     Note that the `before' and `after' option are only supported by the `add' action. Note also that the `before'
     option has highter precedence than the `after' option.
@@ -660,9 +661,9 @@ sub postmap
 
       my %params = (
         smtpd_recipient_restrictions => {
-          action => 'add',
-          values => [ 'check_client_access <table>', 'check_recipient_access <table>' ]
-          before => qr/check_policy_service\s+.*/,
+          action           => 'add',
+          values           => [ 'check_client_access <table>', 'check_recipient_access <table>' ],
+          before           => qr/check_policy_service\s+.*/,
         }
       );
 
@@ -686,10 +687,10 @@ sub postconf
                 open my $stdout, '<', \$buffer or die( sprintf( 'Could not open: %s', $! ) );
                 while(<$stdout>) {
                     /^([^=]+)\s+=\s+(.*)/;
-                    next unless defined $1 && defined $2 && defined $params{$1};
+                    next unless defined $1 && defined $2;
 
                     my @replace;
-                    my @values = split /,\s+/, $2;
+                    my @values = split /,\s*/, $2;
                     for my $value(@{$params{$1}->{'values'}}) {
                         if (!defined $params{$1}->{'action'} || $params{$1}->{'action'} eq 'add') {
                             next if grep { $_ eq $value } @values;
@@ -723,7 +724,7 @@ sub postconf
         $rs;
     };
     if ($@) {
-        error( sprintf( 'Could not edit main.cf configuration file through postconf: %s', $@ ) );
+        error( $@ );
         return 1;
     }
     return $rs if $rs;
