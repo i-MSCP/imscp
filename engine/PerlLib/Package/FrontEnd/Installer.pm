@@ -30,7 +30,7 @@ use Email::Valid;
 use File::Basename;
 use iMSCP::Debug;
 use iMSCP::Config;
-use iMSCP::Crypt 'md5';
+use iMSCP::Crypt 'sha512';
 use iMSCP::Database;
 use iMSCP::Dir;
 use iMSCP::Execute;
@@ -651,9 +651,9 @@ sub _setupMasterAdmin
     my $password = main::setupGetQuestion( 'ADMIN_PASSWORD' );
     my $email = main::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' );
 
-    return 0 unless $login && $password;
+    return 0 unless defined $login && defined $password;
 
-    $password = md5( $password );
+    $password = sha512( $password );
 
     my $db = iMSCP::Database->factory();
     $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) );

@@ -146,6 +146,7 @@ INSTALLER
 
 PACKAGES
     Added: Monsta FTP package
+    Fixed: As of 2012-6-7, the md5 algorithm is "no longer considered safe" (Package::FrontEnd::Installer)
     Fixed: ERR_INCOMPLETE_CHUNKED_ENCODING error due to wrong permissions on nginx fastcgi cache directory (FrontEnd)
     Fixed: Missing IP version check (Package::FrontEnd::Installer)
     Fixed: White page due to 'net::ERR_INCOMPLETE_CHUNKED_ENCODING' errors (related to #IP-1530) (PhpMyAdmin)
