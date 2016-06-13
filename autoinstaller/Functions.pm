@@ -25,6 +25,7 @@ package autoinstaller::Functions;
 
 use strict;
 use warnings;
+use autouse 'iMSCP::Stepper' => qw/ step /;
 use Cwd;
 use File::Basename;
 use File::Find;
@@ -38,7 +39,6 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::LsbRelease;
-use iMSCP::Stepper;
 use version;
 use parent 'Exporter';
 

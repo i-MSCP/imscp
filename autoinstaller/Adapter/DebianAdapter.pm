@@ -21,6 +21,7 @@ package autoinstaller::Adapter::DebianAdapter;
 
 use strict;
 use warnings;
+use autouse 'iMSCP::Stepper' => qw/ startDetail endDetail step /;
 use Cwd;
 use FindBin;
 use iMSCP::Debug;
@@ -30,7 +31,6 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::LsbRelease;
-use iMSCP::Stepper;
 use iMSCP::ProgramFinder;
 use File::Temp;
 use version;
