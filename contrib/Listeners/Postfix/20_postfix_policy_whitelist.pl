@@ -16,10 +16,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #
-## Setup Postfix whilelist tables for policyd-weight policy daemon.
+## Setup Postfix whilelist tables for policy servers.
 #
 
-package Listener::Postfix::Policyd::Whitelist;
+package Listener::Postfix::Policy::Whitelist;
 
 use strict;
 use warnings;
@@ -30,8 +30,8 @@ use Servers::mta;
 ## Configuration variables
 #
 
-my $policydWeightClientWhitelistTable = '/etc/postfix/policyd_weight_client_whitelist';
-my $policydWeightRecipientWhitelistTable = '/etc/postfix/policyd_weight_recipient_whitelist';
+my $policydWeightClientWhitelistTable = '/etc/postfix/policy_weight_client_whitelist';
+my $policydWeightRecipientWhitelistTable = '/etc/postfix/policy_weight_recipient_whitelist';
 
 #
 ## Please, don't edit anything below this line

@@ -120,9 +120,9 @@ Configure Postfix to route all mails to a smarthost using SASL authentication.
 
 Tune up Postfix configuration files (main.cf and master.cf).
 
-### 20_postfix_policyd_whitelist.pl
+### 20_postfix_policy_whitelist.pl
 
-Setup Postfix whilelist tables for policyd-weight policy daemon.
+Setup Postfix whilelist tables for policy servers.
 
 ### 30_postfix_bcc_maps.pl
 

@@ -62,7 +62,7 @@ $em->register(
                 # smtp SASL parameters
                 smtp_sasl_type             => { action => 'replace', values => [ 'cyrus' ] },
                 smtp_sasl_auth_enable      => { action => 'replace', values => [ 'yes' ] },
-                smtp_sasl_password_maps    => { action => 'add', values => [ $saslPasswdMapsPath ] },
+                smtp_sasl_password_maps    => { action => 'add', values => [ "hash:$saslPasswdMapsPath" ] },
                 smtp_sasl_security_options => { action => 'replace', values => [ 'noanonymous' ] },
                 # smtp TLS parameters (opportunistic)
                 smtp_tls_security_level    => { action => 'replace', values => [ 'may' ] },
