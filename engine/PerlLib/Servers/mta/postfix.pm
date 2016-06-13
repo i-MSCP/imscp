@@ -238,17 +238,17 @@ sub addDmn
 
     if ($data->{'EXTERNAL_MAIL'} eq 'domain') { # Mail for domain (including subdomains) is managed by external server
         if ($data->{'DOMAIN_TYPE'} eq 'Dmn') {
-            $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, "$data->{'DOMAIN_NAME'}\tok" );
+            $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, "$data->{'DOMAIN_NAME'}\tOK" );
         }
     } elsif ($data->{'EXTERNAL_MAIL'} eq 'wildcard') { # Mail for in-existent subdomains is managed by external server
         if ($data->{'MAIL_ENABLED'}) {
-            $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, "$data->{'DOMAIN_NAME'}\tok" );
+            $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, "$data->{'DOMAIN_NAME'}\tOK" );
         }
         if ($data->{'DOMAIN_TYPE'} eq 'Dmn') {
-            $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, ".$data->{'DOMAIN_NAME'}\tok" );
+            $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, ".$data->{'DOMAIN_NAME'}\tOK" );
         }
     } elsif ($data->{'MAIL_ENABLED'}) { # Mail for domain (including subdomains) is managed by this server
-        $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, "$data->{'DOMAIN_NAME'}\tok" );
+        $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, "$data->{'DOMAIN_NAME'}\tOK" );
     }
 
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaAddDmn', $data );
@@ -592,7 +592,11 @@ sub addMapEntry
         return 1;
     }
 
-    $$mapContent .= "$entry\n" if defined $entry;
+    if(defined $entry) {
+        $$mapContent =~ s/^\Q$entry\E\n//gim;
+        $$mapContent .= "$entry\n";
+    }
+
     $self->{'eventManager'}->trigger( 'beforeAddPostfixMapEntry', $mapPath, $entry );
 }
 
