@@ -297,11 +297,13 @@ sub disableDmn
         $self->setData( { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" } );
         $configTpls{'_ssl'} = 'domain_disabled_ssl.tpl';
 
-        if($data->{'HSTS_SUPPORT'}) {
-            $self->setData({
-                FORWARD => "https://$data->{'DOMAIN_NAME'}/",
-                FORWARD_TYPE => "307"
-            });
+        if ($data->{'HSTS_SUPPORT'}) {
+            $self->setData(
+                {
+                    FORWARD      => "https://$data->{'DOMAIN_NAME'}/",
+                    FORWARD_TYPE => "307"
+                }
+            );
         }
     }
 
@@ -472,11 +474,10 @@ sub addHtuser
 {
     my ($self, $data) = @_;
 
-    my $webDir = $data->{'WEB_DIR'};
     my $fileName = $self->{'config'}->{'HTACCESS_USERS_FILENAME'};
-    my $filePath = "$webDir/$fileName";
+    my $filePath = "$data->{'WEB_DIR'}/$fileName";
 
-    clearImmutable( $webDir );
+    clearImmutable( $data->{'WEB_DIR'} );
 
     my $file = iMSCP::File->new( filename => $filePath );
     my $fileContent = $file->get() if -f $filePath;
@@ -495,7 +496,7 @@ sub addHtuser
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
     return $rs if $rs;
 
-    setImmutable( $webDir ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
+    setImmutable( $data->{'WEB_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
     0;
 }
 
@@ -512,11 +513,10 @@ sub deleteHtuser
 {
     my ($self, $data) = @_;
 
-    my $webDir = $data->{'WEB_DIR'};
     my $fileName = $self->{'config'}->{'HTACCESS_USERS_FILENAME'};
-    my $filePath = "$webDir/$fileName";
+    my $filePath = "$data->{'WEB_DIR'}/$fileName";
 
-    clearImmutable( $webDir );
+    clearImmutable( $data->{'WEB_DIR'} );
 
     my $file = iMSCP::File->new( filename => $filePath );
     my $fileContent = $file->get() if -f $filePath;
@@ -534,7 +534,7 @@ sub deleteHtuser
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
     return $rs if $rs;
 
-    setImmutable( $webDir ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
+    setImmutable( $data->{'WEB_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
     0;
 }
 
@@ -551,11 +551,10 @@ sub addHtgroup
 {
     my ($self, $data) = @_;;
 
-    my $webDir = $data->{'WEB_DIR'};
     my $fileName = $self->{'config'}->{'HTACCESS_GROUPS_FILENAME'};
-    my $filePath = "$webDir/$fileName";
+    my $filePath = "$data->{'WEB_DIR'}/$fileName";
 
-    clearImmutable( $webDir );
+    clearImmutable( $data->{'WEB_DIR'} );
 
     my $file = iMSCP::File->new( filename => $filePath );
     my $fileContent = $file->get() if -f $filePath;
@@ -574,7 +573,7 @@ sub addHtgroup
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
     return $rs if $rs;
 
-    setImmutable( $webDir ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
+    setImmutable( $data->{'WEB_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
     0;
 }
 
@@ -591,11 +590,10 @@ sub deleteHtgroup
 {
     my ($self, $data) = @_;
 
-    my $webDir = $data->{'WEB_DIR'};
     my $fileName = $self->{'config'}->{'HTACCESS_GROUPS_FILENAME'};
-    my $filePath = "$webDir/$fileName";
+    my $filePath = "$data->{'WEB_DIR'}/$fileName";
 
-    clearImmutable( $webDir );
+    clearImmutable( $data->{'WEB_DIR'} );
 
     my $file = iMSCP::File->new( filename => $filePath );
     my $fileContent = $file->get() if -f $filePath;
@@ -613,7 +611,7 @@ sub deleteHtgroup
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
     return $rs if $rs;
 
-    setImmutable( $webDir ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
+    setImmutable( $data->{'WEB_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
     0;
 }
 
@@ -1277,8 +1275,8 @@ sub mountLogsFolder
 {
     my ($self, $data) = @_;
 
-    my $fsSpec = File::Spec->canonpath("$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}");
-    my $fsFile = File::Spec->canonpath("$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}");
+    my $fsSpec = File::Spec->canonpath( "$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}" );
+    my $fsFile = File::Spec->canonpath( "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}" );
     my $fields = { fs_spec => $fsSpec, fs_file => $fsFile, fs_vfstype => 'none', fs_mntops => 'private,ro,bind' };
     my $rs = $self->{'eventManager'}->trigger( 'beforeMountLogsFolder', $data, $fields );
     $rs ||= addMountEntry( "$fields->{'fs_spec'} $fields->{'fs_file'} $fields->{'fs_vfstype'} $fields->{'fs_mntops'}" );
@@ -1368,7 +1366,8 @@ sub _addCfg
     $self->setData( $data );
 
     my %vhosts = (
-        "$data->{'DOMAIN_NAME'}.conf" => ($data->{'FORWARD'} eq 'no' && !$data->{'HSTS_SUPPORT'}) ? 'domain.tpl' : 'domain_redirect.tpl'
+        "$data->{'DOMAIN_NAME'}.conf" =>
+            ($data->{'FORWARD'} eq 'no' && !$data->{'HSTS_SUPPORT'}) ? 'domain.tpl' : 'domain_redirect.tpl'
     );
 
     if ($data->{'SSL_SUPPORT'}) {
@@ -1376,11 +1375,13 @@ sub _addCfg
             ? 'domain_ssl.tpl' : 'domain_redirect_ssl.tpl';
         $self->setData( { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" } );
 
-        if($data->{'HSTS_SUPPORT'}) {
-            $self->setData({
-                FORWARD => "https://$data->{'DOMAIN_NAME'}/",
-                FORWARD_TYPE => "307"
-            });
+        if ($data->{'HSTS_SUPPORT'}) {
+            $self->setData(
+                {
+                    FORWARD      => "https://$data->{'DOMAIN_NAME'}/",
+                    FORWARD_TYPE => "307"
+                }
+            );
         }
     } else {
         $rs = $self->disableSites( "$data->{'DOMAIN_NAME'}_ssl.conf" );
@@ -1505,9 +1506,7 @@ sub _addFiles
     return $rs if $rs;
 
     for ($self->_dmnFolders( $data )) {
-        $rs = iMSCP::Dir->new( dirname => $_->[0] )->make(
-            { user => $_->[1], group => $_->[2], mode => $_->[3] }
-        );
+        $rs = iMSCP::Dir->new( dirname => $_->[0] )->make( { user => $_->[1], group => $_->[2], mode => $_->[3] } );
         return $rs if $rs;
     }
 
@@ -1516,10 +1515,7 @@ sub _addFiles
         my $fixPermissions = iMSCP::Getopt->fixPermissions;
 
         # Prepare Web folder
-
-        my $webDir = $data->{'WEB_DIR'};
         my $skelDir;
-
         if ($data->{'DOMAIN_TYPE'} eq 'dmn') {
             $skelDir = "$main::imscpConfig{'CONF_DIR'}/skel/domain";
         } elsif ($data->{'DOMAIN_TYPE'} eq 'als') {
@@ -1535,8 +1531,8 @@ sub _addFiles
         return $rs if $rs;
 
         # Build default page if needed (if htdocs doesn't exist or is empty)
-        if (!-d "$webDir/htdocs"
-            || iMSCP::Dir->new( dirname => "$webDir/htdocs" )->isEmpty()
+        if (!-d "$data->{'WEB_DIR'}/htdocs"
+            || iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/htdocs" )->isEmpty()
         ) {
             if (-d "$tmpDir/htdocs") {
                 # Test needed in case admin removed the index.html file from the skeleton
@@ -1558,8 +1554,8 @@ sub _addFiles
         }
 
         if ($data->{'DOMAIN_TYPE'} eq 'dmn'
-            && -d "$webDir/errors"
-            && !iMSCP::Dir->new( dirname => "$webDir/errors" )->isEmpty()
+            && -d "$data->{'WEB_DIR'}/errors"
+            && !iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/errors" )->isEmpty()
         ) {
             unless (-d "$tmpDir/errors") {
                 error( 'Web folder skeleton must provides the `errors` directory.' );
@@ -1573,7 +1569,7 @@ sub _addFiles
         if ($data->{'DOMAIN_TYPE'} eq 'dmn') {
             if ($self->{'config'}->{'MOUNT_CUSTOMER_LOGS'} ne 'yes') {
                 $rs = $self->umountLogsFolder( $data );
-                $rs ||= iMSCP::Dir->new( dirname => "$webDir/logs" )->remove();
+                $rs ||= iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/logs" )->remove();
                 $rs ||= iMSCP::Dir->new( dirname => "$tmpDir/logs" )->remove();
                 return $rs if $rs;
             } elsif (!-d "$tmpDir/logs") {
@@ -1583,12 +1579,12 @@ sub _addFiles
         }
 
         if ($data->{'DOMAIN_TYPE'} ne 'dmn' && !$data->{'SHARED_MOUNT_POINT'}) {
-            $rs = iMSCP::Dir->new( dirname => "$webDir/phptmp" )->remove();
+            $rs = iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/phptmp" )->remove();
             $rs ||= iMSCP::Dir->new( dirname => "$tmpDir/phptmp" )->remove();
             return $rs if $rs;
         }
 
-        my $parentDir = dirname( $webDir );
+        my $parentDir = dirname( $data->{'WEB_DIR'} );
 
         # Fix #1327 - Ensure that parent Web folder exists
         unless (-d $parentDir) {
@@ -1601,11 +1597,11 @@ sub _addFiles
             clearImmutable( $parentDir );
         }
 
-        clearImmutable( $webDir ) if -d $webDir;
+        clearImmutable( $data->{'WEB_DIR'} ) if -d $data->{'WEB_DIR'};
 
         # Copy Web folder
 
-        $rs = execute( "cp -nRT $tmpDir $webDir", \ $stdout, \ $stderr );
+        $rs = execute( "cp -nRT $tmpDir $data->{'WEB_DIR'}", \ $stdout, \ $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
         return $rs if $rs;
@@ -1614,7 +1610,7 @@ sub _addFiles
 
         # Fix user/group and mode for root Web folder
         # root Web folder vuxxx:vuxxx 0750 (no recursive)
-        $rs = setRights( $webDir, { user => $data->{'USER'}, group => $data->{'GROUP'}, mode => '0750' } );
+        $rs = setRights( $data->{'WEB_DIR'}, { user => $data->{'USER'}, group => $data->{'GROUP'}, mode => '0750' } );
         return $rs if $rs;
 
         # Get list of directories/files (firt depth only)
@@ -1632,9 +1628,10 @@ sub _addFiles
         # logs                 skipped
         # phptmp               vuxxx:vuxxx (recursive with --fix-permissions)
         for my $file(@files) {
-            next if $file =~ /^(?:domain_disable_page|\.htgroup|\.htpasswd|logs)$/ || !-e "$webDir/$file";
+            next if $file =~ /^(?:domain_disable_page|\.htgroup|\.htpasswd|logs)$/ || !-e "$data->{'WEB_DIR'}/$file";
             $rs = setRights(
-                "$webDir/$file", { user => $data->{'USER'}, group => $data->{'GROUP'}, recursive => $fixPermissions }
+                "$data->{'WEB_DIR'}/$file",
+                { user => $data->{'USER'}, group => $data->{'GROUP'}, recursive => $fixPermissions }
             );
             return $rs if $rs;
         }
@@ -1651,9 +1648,9 @@ sub _addFiles
         # logs                 skipped
         # phptmp               0750 (recursive with --fix-permissions)
         for my $file (@files) {
-            next if $file eq 'logs' || !-e "$webDir/$file";
+            next if $file eq 'logs' || !-e "$data->{'WEB_DIR'}/$file";
             $rs = setRights(
-                "$webDir/$file",
+                "$data->{'WEB_DIR'}/$file",
                 {
                     dirmode   => '0750',
                     filemode  => '0640',
@@ -1669,26 +1666,29 @@ sub _addFiles
         # .htgroup             root:www-data
         # .htpasswd            root:www-data
         for my $file ('domain_disable_page', '.htgroup', '.htpasswd') {
-            next unless -e "$webDir/$file";
+            next unless -e "$data->{'WEB_DIR'}/$file";
             $rs = setRights(
-                "$webDir/$file",
+                "$data->{'WEB_DIR'}/$file",
                 { user => $main::imscpConfig{'ROOT_USER'}, group => $self->{'config'}->{'HTTPD_GROUP'}, recursive => 1 }
             );
             return $rs if $rs;
         }
 
-        if ($data->{'DOMAIN_TYPE'} eq 'dmn' && -d "$webDir/logs") {
+        if ($data->{'DOMAIN_TYPE'} eq 'dmn' && -d "$data->{'WEB_DIR'}/logs") {
             # Fix user/group and mode for logs directory
             # logs vuxxx:vuxxx 0750 (no recursive)
             $rs = setRights(
-                "$webDir/logs", { user => $main::imscpConfig{'ROOT_USER'}, group => $data->{'GROUP'}, mode => '0750' }
+                "$data->{'WEB_DIR'}/logs",
+                { user => $main::imscpConfig{'ROOT_USER'}, group => $data->{'GROUP'}, mode => '0750' }
             );
             return $rs if $rs;
         }
 
         if ($data->{'WEB_FOLDER_PROTECTION'} eq 'yes') {
             (my $userWebDir = $main::imscpConfig{'USER_WEB_DIR'}) =~ s%/+$%%;
-            do { setImmutable( $webDir ); } while (($webDir = dirname( $webDir )) ne $userWebDir);
+            do {
+                setImmutable( $data->{'WEB_DIR'} );
+            } while (($data->{'WEB_DIR'} = dirname( $data->{'WEB_DIR'} )) ne $userWebDir);
         }
     }
 
@@ -1809,8 +1809,8 @@ sub _cleanTemplate
         }
     }
 
-    if($filename =~ /^domain(?:_(?:disabled|redirect))?(_ssl)?\.tpl$/ && !$data->{'HSTS_SUPPORT'}) {
-        $$cfgTpl = replaceBloc("# SECTION hsts_enabled BEGIN.\n", "# SECTION hsts_enabled END.\n", '', $$cfgTpl);
+    if ($filename =~ /^domain(?:_(?:disabled|redirect))?(_ssl)?\.tpl$/ && !$data->{'HSTS_SUPPORT'}) {
+        $$cfgTpl = replaceBloc( "# SECTION hsts_enabled BEGIN.\n", "# SECTION hsts_enabled END.\n", '', $$cfgTpl );
     }
 
     $$cfgTpl =~ s/^[ \t]+#.*?(?:BEGIN|END)\.\n//gmi;
