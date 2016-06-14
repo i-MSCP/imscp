@@ -13,9 +13,8 @@
 
 In order, to use the reiserfs file system with i-MSCP, you must follow these steps:
 
-Edit your `/etc/fstab` file to add the attrs option for your device (e.g. device containing the /var partition).
-
-For instance:
+Edit your `/etc/fstab` file to add the `attrs` option for your device (e.g. device containing the /var partition). For
+instance:
 
 ```
 UUID=74699091-3ab8-43f2-bdd5-d1d898ab50fd /     reiserfs notail          0    1
@@ -33,8 +32,7 @@ Once you did that, you can remount your device. For instance:
 # mount -o remount /dev/disk/by-uuid/74699091-3ab8-43f2-bdd5-d1d898ab50fd
 ```
 
-And then, normally you must be able to use i-MSCP without any trouble (a least with the immutable bit). If needed, you
-can find the uuid of your device, with the following command:
+*Note:* If needed, you can find the uuid of your device, with the following command:
 
 ```
 # blkid <device>
