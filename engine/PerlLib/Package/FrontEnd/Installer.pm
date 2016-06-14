@@ -651,7 +651,7 @@ sub _setupMasterAdmin
     my $password = main::setupGetQuestion( 'ADMIN_PASSWORD' );
     my $email = main::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' );
 
-    return 0 unless defined $login && defined $password;
+    return 0 unless $password ne '';
 
     $password = sha512( $password );
 
