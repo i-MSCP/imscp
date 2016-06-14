@@ -590,9 +590,17 @@ sub _saveConf
 {
     my $self = shift;
 
-    iMSCP::File->new( filename => "$self->{'apacheCfgDir'}/apache.data" )->copyFile(
-        "$self->{'apacheCfgDir'}/apache.old.data"
+    my %filesToDir = (
+        'apache' => $self->{'apacheCfgDir'},
+        'php'    => $self->{'phpCfgDir'}
     );
+
+    for (keys %filesToDir) {
+        my $rs = iMSCP::File->new( filename => "$filesToDir{$_}/$_.data" )->copyFile( "$filesToDir{$_}/$_.old.data" );
+        return $rs if $rs;
+    }
+
+    0;
 }
 
 =item _cleanup()
