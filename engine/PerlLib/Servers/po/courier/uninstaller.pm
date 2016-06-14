@@ -49,14 +49,6 @@ sub uninstall
     $rs ||= $self->_deleteQuotaWarning();
 }
 
-=item _removeSqlUser()
-
- Remove any authdaemon SQL user
-
- Return int 0
-
-=cut
-
 sub _removeSqlUser
 {
     my $self = shift;

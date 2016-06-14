@@ -1163,7 +1163,7 @@ sub setupCreateMasterSqlUser
 
     # Grant all privileges to that user (including GRANT otpion)
     my $qrs = iMSCP::Database->factory()->doQuery(
-        'g', "GRANT ALL PRIVILEGES ON *.* TO ?@? WITH GRANT OPTION", $user, $userHost
+        'g', "GRANT ALL PRIVILEGES ON *.* TO ?\@? WITH GRANT OPTION", $user, $userHost
     );
     unless (ref $qrs eq 'HASH') {
         error( sprintf( 'Could not grant privileges to master i-MSCP SQL user: %s', $qrs ) );

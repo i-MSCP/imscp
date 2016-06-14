@@ -67,18 +67,21 @@ sub registerSetupListeners
 {
     my ($self, $eventManager) = @_;
 
-    my $rs = $eventManager->register( 'beforeSetupDialog', sub {
-            push @{$_[0]}, sub { $self->authdaemonSqlUserDialog( @_ ) };
-            0;
-        }
+    my $rs = $eventManager->register(
+        'beforeSetupDialog',
+        [
+            sub {
+                push @{$_[0]}, sub { $self->authdaemonSqlUserDialog( @_ ) };
+                0;
+            },
+            sub {
+                push @{$_[0]}, sub { $self->cyrusSaslSqlUserDialog( @_ ) };
+                0;
+            }
+        ]
     );
-    $rs ||= $eventManager->register( 'beforeSetupDialog', sub {
-            push @{$_[0]}, sub { $self->cyrusSaslSqlUserDialog( @_ ) };
-            0;
-        }
-    );
-    $rs ||= $eventManager->register( 'beforeMtaBuildMainCfFile', sub { $self->buildPostfixConf( @_ ); } );
-    $rs ||= $eventManager->register( 'beforeMtaBuildMasterCfFile', sub { $self->buildPostfixConf( @_ ); } );
+    $rs ||= $eventManager->register( 'beforeMtaBuildMainCfFile', sub { $self->configurePostfix( @_ ); } );
+    $rs ||= $eventManager->register( 'beforeMtaBuildMasterCfFile', sub { $self->configurePostfix( @_ ); } );
 }
 
 =item authdaemonSqlUserDialog(\%dialog)
@@ -94,10 +97,12 @@ sub authdaemonSqlUserDialog
 {
     my ($self, $dialog) = @_;
 
-    my $dbUser = main::setupGetQuestion( 'AUTHDAEMON_SQL_USER',
-        $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} || 'authdaemon_user' );
-    my $dbPass = main::setupGetQuestion( 'AUTHDAEMON_SQL_PASSWORD',
-        $self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'} );
+    my $dbUser = main::setupGetQuestion(
+        'AUTHDAEMON_SQL_USER', $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} || 'authdaemon_user'
+    );
+    my $dbPass = main::setupGetQuestion(
+        'AUTHDAEMON_SQL_PASSWORD', $self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'}
+    );
 
     my ($rs, $msg) = (0, '');
 
@@ -363,7 +368,7 @@ sub setEnginePermissions
 
 =over 4
 
-=item buildPostfixConf(\$fileContent, $fileName)
+=item configurePostfix(\$fileContent, $fileName)
 
  Injects configuration for both, maildrop LDA and Cyrus SASL in Postfix configuration files.
 
@@ -377,34 +382,39 @@ sub setEnginePermissions
 
 =cut
 
-sub buildPostfixConf
+sub configurePostfix
 {
     my ($self, $fileContent, $fileName) = @_;
 
     if ($fileName eq 'main.cf') {
-        $$fileContent .= <<'EOF';
+        return $self->{'eventManager'}->register(
+            'afterMtaBuildConf',
+            sub {
+                $self->{'mta'}->postconf(
+                    (
+                        # Maildrop MDA parameters
+                        virtual_transport                      => { action => 'replace', values => [ 'maildrop' ] },
+                        maildrop_destination_concurrency_limit => { action => 'replace', values => [ '2' ] },
+                        maildrop_destination_recipient_limit   => { action => 'replace', values => [ '1' ] },
+                        # Cyrus SASL parameters
+                        smtpd_sasl_type                        => { action => 'replace', values => [ 'cyrus' ] },
+                        smtpd_sasl_path                        => { action => 'replace', values => [ 'smtpd' ] },
+                        smtpd_sasl_auth_enable                 => { action => 'replace', values => [ 'yes' ] },
+                        smtpd_sasl_security_options            => { action => 'replace', values => [ 'noanonymous' ] },
+                        smtpd_sasl_authenticated_header        => { action => 'replace', values => [ 'yes' ] },
+                        broken_sasl_auth_clients               => { action => 'replace', values => [ 'yes' ] }
+                    )
+                );
+            }
+        );
+    }
 
-# Maildrop MDA parameters
-virtual_transport = maildrop
-maildrop_destination_concurrency_limit = 1
-maildrop_destination_recipient_limit = 1
-
-# Cyrus SASL parameters
-smtpd_sasl_type = cyrus
-smtpd_sasl_path = smtpd
-smtpd_sasl_auth_enable = yes
-smtpd_sasl_security_options = noanonymous
-broken_sasl_auth_clients = yes
-smtpd_sasl_authenticated_header = yes
-EOF
-
-    } elsif ($fileName eq 'master.cf') {
+    if ($fileName eq 'master.cf') {
         my $configSnippet = <<'EOF';
 
 maildrop  unix  -       n       n       -       -       pipe
  flags=DRhu user={MTA_MAILBOX_UID_NAME}:{MTA_MAILBOX_GID_NAME} argv=maildrop -w 90 -d ${user}@${nexthop} ${extension} ${recipient} ${user} ${nexthop} ${sender}
 EOF
-
         $$fileContent .= iMSCP::TemplateParser::process(
             {
                 MTA_MAILBOX_UID_NAME => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
@@ -507,8 +517,9 @@ sub _setupAuthdaemonSqlUser
     my $dbPass = main::setupGetQuestion( 'AUTHDAEMON_SQL_PASSWORD' );
     my $dbOldUser = $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'};
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoSetupAuthdaemonSqlUser', $dbUser, $dbOldUser, $dbPass,
-        $dbUserHost );
+    my $rs = $self->{'eventManager'}->trigger(
+        'beforePoSetupAuthdaemonSqlUser', $dbUser, $dbOldUser, $dbPass, $dbUserHost
+    );
     return $rs if $rs;
 
     for my $sqlUser ($dbOldUser, $dbUser) {
@@ -533,7 +544,7 @@ sub _setupAuthdaemonSqlUser
 
     # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
     my $quotedDbName = $db->quoteIdentifier( $dbName );
-    $rs = $db->doQuery( 'g', "GRANT SELECT ON $quotedDbName.mail_users TO ?@?", $dbUser, $dbUserHost );
+    $rs = $db->doQuery( 'g', "GRANT SELECT ON $quotedDbName.mail_users TO ?\@?", $dbUser, $dbUserHost );
     unless (ref $rs eq 'HASH') {
         error( sprintf( 'Could not add SQL privileges: %s', $rs ) );
         return 1;
@@ -564,8 +575,9 @@ sub _setupCyrusSaslSqlUser
     my $dbPass = main::setupGetQuestion( 'SASL_SQL_PASSWORD' );
     my $dbOldUser = $self->{'config'}->{'SASL_DATABASE_USER'};
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoSetupCyrusSaslSqlUser', $dbUser, $dbOldUser, $dbPass,
-        $dbUserHost );
+    my $rs = $self->{'eventManager'}->trigger(
+        'beforePoSetupCyrusSaslSqlUser', $dbUser, $dbOldUser, $dbPass, $dbUserHost
+    );
     return $rs if $rs;
 
     for my $sqlUser ($dbOldUser, $dbUser) {
@@ -588,7 +600,7 @@ sub _setupCyrusSaslSqlUser
 
     # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
     my $quotedDbName = $db->quoteIdentifier( $dbName );
-    $rs = $db->doQuery( 'g', "GRANT SELECT ON $quotedDbName.mail_users TO ?@?", $dbUser, $dbUserHost );
+    $rs = $db->doQuery( 'g', "GRANT SELECT ON $quotedDbName.mail_users TO ?\@?", $dbUser, $dbUserHost );
     unless (ref $rs eq 'HASH') {
         error( sprintf( 'Could not add SQL privileges: %s', $rs ) );
         return 1;
@@ -675,7 +687,7 @@ sub _buildConf
     );
 
     for my $conffile(keys %cfgFiles) {
-        $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'courier', $conffile, \my $cfgTpl, $data );
+        $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'courier', $conffile, \ my $cfgTpl, $data );
         return $rs if $rs;
 
         unless (defined $cfgTpl) {
@@ -686,12 +698,12 @@ sub _buildConf
             }
         }
 
-        $rs = $self->{'eventManager'}->trigger( 'beforePoBuildConf', \$cfgTpl, $conffile );
+        $rs = $self->{'eventManager'}->trigger( 'beforePoBuildConf', \ $cfgTpl, $conffile );
         return $rs if $rs;
 
         $cfgTpl = process( $data, $cfgTpl );
 
-        $rs = $self->{'eventManager'}->trigger( 'afterPoBuildConf', \$cfgTpl, $conffile );
+        $rs = $self->{'eventManager'}->trigger( 'afterPoBuildConf', \ $cfgTpl, $conffile );
         return $rs if $rs;
 
         my $filename = fileparse( $cfgFiles{$conffile}->[0] );
@@ -760,7 +772,7 @@ sub _buildCyrusSaslConfFile
         DATABASE_PASSWORD => $self->{'config'}->{'SASL_DATABASE_PASSWORD'}
     };
 
-    $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'courier', 'smtpd.conf', \my $cfgTpl, $data );
+    $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'courier', 'smtpd.conf', \ my $cfgTpl, $data );
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
@@ -771,12 +783,12 @@ sub _buildCyrusSaslConfFile
         }
     }
 
-    $rs = $self->{'eventManager'}->trigger( 'beforePoBuildSaslConfFile', \$cfgTpl, 'smtpd.conf' );
+    $rs = $self->{'eventManager'}->trigger( 'beforePoBuildSaslConfFile', \ $cfgTpl, 'smtpd.conf' );
     return $rs if $rs;
 
     $cfgTpl = process( $data, $cfgTpl );
 
-    $rs = $self->{'eventManager'}->trigger( 'afterPoBuildSaslConfFil', \$cfgTpl, 'smtpd.conf' );
+    $rs = $self->{'eventManager'}->trigger( 'afterPoBuildSaslConfFil', \ $cfgTpl, 'smtpd.conf' );
     return $rs if $rs;
 
     my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/smtpd.conf" );
@@ -810,7 +822,7 @@ sub _buildDHparametersFile
         startDetail();
         my $rs = step(
             sub {
-                my $rs = execute( 'DH_BITS=2048 mkdhparams', \my $stdout, \my $stderr );
+                my $rs = execute( 'DH_BITS=2048 mkdhparams', \ my $stdout, \ my $stderr );
                 error( $stderr ) if $stderr && $rs;
                 $rs;
             }, 'Generating DH parameter file. Please be patient...', 1, 1
@@ -834,7 +846,7 @@ sub _buildAuthdaemonrcFile
 {
     my $self = shift;
 
-    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'courier', 'authdaemonrc', \my $cfgTpl, { } );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'courier', 'authdaemonrc', \ my $cfgTpl, { } );
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
@@ -845,12 +857,12 @@ sub _buildAuthdaemonrcFile
         }
     }
 
-    $rs = $self->{'eventManager'}->trigger( 'beforePoBuildAuthdaemonrcFile', \$cfgTpl, 'authdaemonrc' );
+    $rs = $self->{'eventManager'}->trigger( 'beforePoBuildAuthdaemonrcFile', \ $cfgTpl, 'authdaemonrc' );
     return $rs if $rs;
 
     $cfgTpl =~ s/authmodulelist=".*"/authmodulelist="authmysql authpam"/;
 
-    $rs = $self->{'eventManager'}->trigger( 'afterPoBuildAuthdaemonrcFile', \$cfgTpl, 'authdaemonrc' );
+    $rs = $self->{'eventManager'}->trigger( 'afterPoBuildAuthdaemonrcFile', \ $cfgTpl, 'authdaemonrc' );
     return $rs if $rs;
 
     my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/authdaemonrc" );
@@ -873,39 +885,39 @@ sub _buildSslConfFiles
 {
     my $self = shift;
 
-    if ($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') {
-        for my $conffile($self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
-            my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'courier', $conffile, \my $cfgTpl, { } );
-            return $rs if $rs;
+    return 0 unless ($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes');
 
+    for my $conffile($self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
+        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'courier', $conffile, \ my $cfgTpl, { } );
+        return $rs if $rs;
+
+        unless (defined $cfgTpl) {
+            $cfgTpl = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$conffile" )->get();
             unless (defined $cfgTpl) {
-                $cfgTpl = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$conffile" )->get();
-                unless (defined $cfgTpl) {
-                    error( sprintf( 'Could not read %s file', "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$conffile" ) );
-                    return 1;
-                }
+                error( sprintf( 'Could not read %s file', "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$conffile" ) );
+                return 1;
             }
-
-            $rs = $self->{'eventManager'}->trigger( 'beforePoBuildSslConfFile', \$cfgTpl, $conffile );
-            return $rs if $rs;
-
-            if ($cfgTpl =~ m/^TLS_CERTFILE=/msg) {
-                $cfgTpl =~ s!^TLS_CERTFILE=.*$!TLS_CERTFILE=$main::imscpConfig{'CONF_DIR'}/imscp_services.pem!gm;
-            } else {
-                $cfgTpl .= "TLS_CERTFILE=$main::imscpConfig{'CONF_DIR'}/imscp_services.pem";
-            }
-
-            $rs = $self->{'eventManager'}->trigger( 'afterPoBuildSslConfFile', \$cfgTpl, $conffile );
-            return $rs if $rs;
-
-            my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$conffile" );
-            $rs = $file->set( $cfgTpl );
-            $rs ||= $file->save();
-            $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-            $rs ||= $file->mode( 0644 );
-            $rs ||= $file->copyFile( "$self->{'config'}->{'AUTHLIB_CONF_DIR'}" );
-            return $rs if $rs;
         }
+
+        $rs = $self->{'eventManager'}->trigger( 'beforePoBuildSslConfFile', \ $cfgTpl, $conffile );
+        return $rs if $rs;
+
+        if ($cfgTpl =~ m/^TLS_CERTFILE=/msg) {
+            $cfgTpl =~ s!^TLS_CERTFILE=.*$!TLS_CERTFILE=$main::imscpConfig{'CONF_DIR'}/imscp_services.pem!gm;
+        } else {
+            $cfgTpl .= "TLS_CERTFILE=$main::imscpConfig{'CONF_DIR'}/imscp_services.pem";
+        }
+
+        $rs = $self->{'eventManager'}->trigger( 'afterPoBuildSslConfFile', \ $cfgTpl, $conffile );
+        return $rs if $rs;
+
+        my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$conffile" );
+        $rs = $file->set( $cfgTpl );
+        $rs ||= $file->save();
+        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+        $rs ||= $file->mode( 0644 );
+        $rs ||= $file->copyFile( "$self->{'config'}->{'AUTHLIB_CONF_DIR'}" );
+        return $rs if $rs;
     }
 
     0;
@@ -947,9 +959,9 @@ sub _migrateFromDovecot
         '--convert',
         '--overwrite',
         '--recursive',
-        escapeShell($self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'})
+        escapeShell( $self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'} )
     );
-    $rs = execute( "@cmd", \my $stdout, \my $stderr );
+    $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     debug( $stderr ) if $stderr && !$rs;
     error( $stderr ) if $stderr && $rs;
@@ -981,7 +993,7 @@ sub _oldEngineCompatibility
         $rs ||= $file->mode( 0600 );
         return $rs if $rs;
 
-        $rs = execute( "makeuserdb -f $self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb", \my $stdout, \my $stderr );
+        $rs = execute( "makeuserdb -f $self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
         return $rs if $rs;

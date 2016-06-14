@@ -73,8 +73,8 @@ sub registerSetupListeners
                 0;
             }
         );
-        $rs ||= $eventManager->register( 'beforeMtaBuildMainCfFile', sub { $self->buildPostfixConf( @_ ); } );
-        $rs ||= $eventManager->register( 'beforeMtaBuildMasterCfFile', sub { $self->buildPostfixConf( @_ ); } );
+        $rs ||= $eventManager->register( 'beforeMtaBuildMainCfFile', sub { $self->configurePostfix( @_ ); } );
+        $rs ||= $eventManager->register( 'beforeMtaBuildMasterCfFile', sub { $self->configurePostfix( @_ ); } );
     } else {
         $main::imscpConfig{'PO_SERVER'} = 'no';
         warning( 'i-MSCP Dovecot PO server require the Postfix MTA. Installation skipped...' );
@@ -219,7 +219,7 @@ sub install
 
 =over 4
 
-=item buildPostfixConf($fileContent, $fileName)
+=item configurePostfix($fileContent, $fileName)
 
  Injects configuration for both, Dovecot LDA and Dovecot SASL in Postfix configuration files.
 
@@ -233,33 +233,39 @@ sub install
 
 =cut
 
-sub buildPostfixConf
+sub configurePostfix
 {
     my ($self, $fileContent, $fileName) = @_;
 
     if ($fileName eq 'main.cf') {
-        $$fileContent .= <<'EOF';
+        return $self->{'eventManager'}->register(
+            'afterMtaBuildConf',
+            sub {
+                $self->{'mta'}->postconf(
+                    (
+                        # Dovecot LDA parameters
+                        virtual_transport                     => { action => 'replace', values => [ 'dovecot' ] },
+                        dovecot_destination_concurrency_limit => { action => 'replace', values => [ '2' ] },
+                        dovecot_destination_recipient_limit   => { action => 'replace', values => [ '1' ] },
+                        # Dovecot SASL parameters
+                        smtpd_sasl_type                       => { action => 'replace', values => [ 'dovecot' ] },
+                        smtpd_sasl_path                       => { action => 'replace', values => [ 'private/auth' ] },
+                        smtpd_sasl_auth_enable                => { action => 'replace', values => [ 'yes' ] },
+                        smtpd_sasl_security_options           => { action => 'replace', values => [ 'noanonymous' ] },
+                        smtpd_sasl_authenticated_header       => { action => 'replace', values => [ 'yes' ] },
+                        broken_sasl_auth_clients              => { action => 'replace', values => [ 'yes' ] }
+                    )
+                );
+            }
+        );
+    }
 
-# Dovecot LDA parameters
-virtual_transport = dovecot
-dovecot_destination_concurrency_limit = 2
-dovecot_destination_recipient_limit = 1
-
-# Dovecot SASL parameters
-smtpd_sasl_type = dovecot
-smtpd_sasl_path = private/auth
-smtpd_sasl_auth_enable = yes
-smtpd_sasl_security_options = noanonymous
-smtpd_sasl_authenticated_header = yes
-broken_sasl_auth_clients = yes
-EOF
-    } elsif ($fileName eq 'master.cf') {
+    if ($fileName eq 'master.cf') {
         my $configSnippet = <<'EOF';
 
 dovecot   unix  -       n       n       -       -       pipe
   flags=DRhu user={MTA_MAILBOX_UID_NAME}:{MTA_MAILBOX_GID_NAME} argv={DOVECOT_DELIVER_PATH} -f ${sender} -d ${recipient} {SFLAG}
 EOF
-
         $$fileContent .= iMSCP::TemplateParser::process(
             {
                 MTA_MAILBOX_UID_NAME => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
@@ -422,7 +428,7 @@ sub _setupSqlUser
 
     # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
     my $quotedDbName = $db->quoteIdentifier( $dbName );
-    $rs = $db->doQuery( 'g', "GRANT SELECT ON $quotedDbName.mail_users TO ?@?", $dbUser, $dbUserHost );
+    $rs = $db->doQuery( 'g', "GRANT SELECT ON $quotedDbName.mail_users TO ?\@?", $dbUser, $dbUserHost );
     unless (ref $rs eq 'HASH') {
         error( sprintf( 'Could not add SQL privilege: %s', $rs ) );
         return 1;

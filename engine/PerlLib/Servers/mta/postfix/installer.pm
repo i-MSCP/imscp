@@ -177,7 +177,6 @@ sub _init
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
     $self->{'config'} = $self->{'mta'}->{'config'};
 
-    # Merge old config file with new config file
     my $oldConf = "$self->{'cfgDir'}/postfix.old.data";
     if (-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
@@ -221,7 +220,7 @@ sub _addUsersAndGroups
     );
 
     my @userToGroups = ();
-    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddUsersAndGroups', \@groups, \@users, \@userToGroups );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddUsersAndGroups', \ @groups, \ @users, \ @userToGroups );
     return $rs if $rs;
 
     # Create groups
@@ -296,7 +295,7 @@ sub _makeDirs
         ]
     );
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaMakeDirs', \@directories );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaMakeDirs', \ @directories );
 
     # Make sure to start with clean directory
     $rs ||= iMSCP::Dir->new(dirname => $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'})->remove();
@@ -330,8 +329,8 @@ sub _buildConf
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaBuildConf' );
-    $rs ||= $self->_buildMainCfFile();
     $rs ||= $self->_buildMasterCfFile();
+    $rs ||= $self->_buildMainCfFile();
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaBuildConf' );
 }
 
@@ -353,7 +352,7 @@ sub _createPostfixMaps
         $self->{'config'}->{'MTA_RELAY_HASH'}
     );
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeCreatePostfixMaps', \@lookupTables );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeCreatePostfixMaps', \ @lookupTables );
     return $rs if $rs;
 
     for (@lookupTables) {
@@ -361,7 +360,7 @@ sub _createPostfixMaps
         return $rs if $rs;
     }
 
-    $self->{'eventManager'}->trigger( 'afterCreatePostfixMaps', \@lookupTables );
+    $self->{'eventManager'}->trigger( 'afterCreatePostfixMaps', \ @lookupTables );
 }
 
 =item _buildAliasesDb()
@@ -377,7 +376,7 @@ sub _buildAliasesDb
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaBuildAliasesDb' );
-    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'postfix', 'aliases', \my $cfgTpl, { } );
+    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'postfix', 'aliases', \ my $cfgTpl, { } );
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
@@ -385,14 +384,14 @@ sub _buildAliasesDb
         $cfgTpl = '' unless defined $cfgTpl;
     }
 
-    $rs = $self->{'eventManager'}->trigger( 'beforeMtaBuildAliasesDbFile', \$cfgTpl, 'aliases' );
+    $rs = $self->{'eventManager'}->trigger( 'beforeMtaBuildAliasesDbFile', \ $cfgTpl, 'aliases' );
     return $rs if $rs;
 
     # Add alias for local root user
     $cfgTpl =~ s/^root:.*\n//gim;
     $cfgTpl .= "root: $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'}\n";
 
-    $rs = $self->{'eventManager'}->trigger( 'afterMtaBuildAliasesDbFile', \$cfgTpl, 'aliases' );
+    $rs = $self->{'eventManager'}->trigger( 'afterMtaBuildAliasesDbFile', \ $cfgTpl, 'aliases' );
     return $rs if $rs;
 
     my $file = iMSCP::File->new( filename => $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'} );
@@ -400,10 +399,9 @@ sub _buildAliasesDb
     $rs ||= $file->save();
     return $rs if $rs;
 
-    $rs = execute( 'newaliases', \my $stdout, \my $stderr );
+    $rs = execute( 'newaliases', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
-    error( 'Error while executing newaliases command' ) if !$stderr && $rs;
+    error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
     $self->{'eventManager'}->trigger( 'afterMtaBuildAliasesDb' );
@@ -422,6 +420,48 @@ sub _saveConf
     my $self = shift;
 
     iMSCP::File->new( filename => "$self->{'cfgDir'}/postfix.data" )->copyFile( "$self->{'cfgDir'}/postfix.old.data" );
+}
+
+=item _buildMasterCfFile()
+
+ Build master.cf file
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _buildMasterCfFile
+{
+    my $self = shift;
+
+    my $data = {
+        MTA_MAILBOX_UID_NAME => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+        IMSCP_GROUP          => $main::imscpConfig{'IMSCP_GROUP'},
+        ARPL_PATH            => $main::imscpConfig{'ROOT_DIR'}."/engine/messenger/imscp-arpl-msgr"
+    };
+
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'postfix', 'master.cf', \ my $cfgTpl, $data );
+    return $rs if $rs;
+
+    unless (defined $cfgTpl) {
+        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/master.cf" )->get();
+        unless (defined $cfgTpl) {
+            error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/master.cf" ) );
+            return 1;
+        }
+    }
+
+    $rs = $self->{'eventManager'}->trigger( 'beforeMtaBuildMasterCfFile', \ $cfgTpl, 'master.cf' );
+    return $rs if $rs;
+
+    $cfgTpl = process( $data, $cfgTpl );
+
+    $rs = $self->{'eventManager'}->trigger( 'afterMtaBuildMasterCfFile', \ $cfgTpl, 'master.cf' );
+    return $rs if $rs;
+
+    my $file = iMSCP::File->new( filename => $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'} );
+    $rs ||= $file->set( $cfgTpl );
+    $rs ||= $file->save();
 }
 
 =item _buildMainCfFile()
@@ -457,12 +497,10 @@ sub _buildMainCfFile
         MTA_RELAY_HASH           => $self->{'config'}->{'MTA_RELAY_HASH'},
         MTA_MAILBOX_MIN_UID      => $uid,
         MTA_MAILBOX_UID          => $uid,
-        MTA_MAILBOX_GID          => $gid,
-        CONF_DIR                 => $main::imscpConfig{'CONF_DIR'},
-        CERTIFICATE              => 'imscp_services'
+        MTA_MAILBOX_GID          => $gid
     };
 
-    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'postfix', 'main.cf', \my $cfgTpl, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'postfix', 'main.cf', \ my $cfgTpl, $data );
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
@@ -476,29 +514,9 @@ sub _buildMainCfFile
     $rs = $self->{'eventManager'}->trigger( 'beforeMtaBuildMainCfFile', \$cfgTpl, 'main.cf' );
     return $rs if $rs;
 
-    # Add TLS parameters if required
-    if ($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') {
-        $cfgTpl .= <<'EOF';
-
-# smtpd TLS parameters (opportunistic)
-smtpd_tls_security_level = may
-smtpd_tls_ciphers = high
-smtpd_tls_exclude_ciphers = aNULL, MD5
-smtpd_tls_protocols = !SSLv2, !SSLv3
-smtpd_tls_loglevel = 1
-smtpd_tls_cert_file = {CONF_DIR}/{CERTIFICATE}.pem
-smtpd_tls_key_file = {CONF_DIR}/{CERTIFICATE}.pem
-smtpd_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
-smtpd_tls_auth_only = no
-smtpd_tls_received_header = yes
-smtpd_tls_session_cache_database = btree:/var/lib/postfix/smtpd_scache
-smtpd_tls_session_cache_timeout = 3600s
-EOF
-    }
-
     $cfgTpl = process( $data, $cfgTpl );
 
-    execute( "postconf -h mail_version", \my $stdout, \my $stderr );
+    execute( "postconf -h mail_version", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     debug( $stderr );
 
@@ -512,55 +530,47 @@ EOF
         $cfgTpl =~ s/smtpd_recipient_restrictions/smtpd_relay_restrictions =\n\nsmtpd_recipient_restrictions/;
     }
 
-    $rs = $self->{'eventManager'}->trigger( 'afterMtaBuildMainCfFile', \$cfgTpl, 'main.cf' );
+    $rs = $self->{'eventManager'}->trigger( 'afterMtaBuildMainCfFile', \ $cfgTpl, 'main.cf' );
     return $rs if $rs;
 
     my $file = iMSCP::File->new( filename => $self->{'config'}->{'POSTFIX_CONF_FILE'} );
     $rs ||= $file->set( $cfgTpl );
     $rs ||= $file->save();
-    0;
-}
-
-=item _buildMasterCfFile()
-
- Build master.cf file
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _buildMasterCfFile
-{
-    my $self = shift;
-
-    my $data = {
-        MTA_MAILBOX_UID_NAME => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-        IMSCP_GROUP          => $main::imscpConfig{'IMSCP_GROUP'},
-        ARPL_PATH            => $main::imscpConfig{'ROOT_DIR'}."/engine/messenger/imscp-arpl-msgr"
-    };
-
-    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'postfix', 'master.cf', \my $cfgTpl, $data );
     return $rs if $rs;
 
-    unless (defined $cfgTpl) {
-        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/master.cf" )->get();
-        unless (defined $cfgTpl) {
-            error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/master.cf" ) );
-            return 1;
+    # Add TLS parameters if required
+    return 0 unless $main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes';
+
+    $self->{'eventManager'}->register(
+        'afterMtaBuildConf',
+        sub {
+            $self->{'mta'}->postconf(
+                (
+                    # smtpd TLS parameters (opportunistic)
+                    smtpd_tls_security_level         => { action => 'replace', values => [ 'may' ] },
+                    smtpd_tls_ciphers                => { action => 'replace', values => [ 'high' ] },
+                    smtpd_tls_exclude_ciphers        => { action => 'replace', values => [ 'aNULL', 'MD5' ] },
+                    smtpd_tls_protocols              => { action => 'replace', values => [ '!SSLv2', '!SSLv3' ] },
+                    smtpd_tls_loglevel               => { action => 'replace', values => [ '1' ] },
+                    smtpd_tls_cert_file              => {
+                        action => 'replace', values => [ "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem" ]
+                    },
+                    smtpd_tls_key_file               => {
+                        action => 'replace', values => [ "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem" ]
+                    },
+                    smtpd_tls_CAfile                 => {
+                        action => 'replace', values => [ '/etc/ssl/certs/ca-certificates.crt' ]
+                    },
+                    smtpd_tls_auth_only              => { action => 'replace', values => [ 'no' ] },
+                    smtpd_tls_received_header        => { action => 'replace', values => [ 'yes' ] },
+                    smtpd_tls_session_cache_database => {
+                        action => 'replace', values => [ 'btree:/var/lib/postfix/smtpd_scache' ]
+                    },
+                    smtpd_tls_session_cache_timeout  => { action => 'replace', values => [ '3600s' ] },
+                )
+            );
         }
-    }
-
-    $rs = $self->{'eventManager'}->trigger( 'beforeMtaBuildMasterCfFile', \$cfgTpl, 'master.cf' );
-    return $rs if $rs;
-
-    $cfgTpl = process( $data, $cfgTpl );
-
-    $rs = $self->{'eventManager'}->trigger( 'afterMtaBuildMasterCfFile', \$cfgTpl, 'master.cf' );
-    return $rs if $rs;
-
-    my $file = iMSCP::File->new( filename => $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'} );
-    $rs ||= $file->set( $cfgTpl );
-    $rs ||= $file->save();
+    );
 }
 
 =item _oldEngineCompatibility()

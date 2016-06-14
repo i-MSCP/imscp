@@ -341,7 +341,7 @@ sub _setupDatabase
     # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
     my $quotedDbName = $db->quoteIdentifier( $dbName );
     my $quotedTableName = $db->quoteIdentifier( 'ftp_users' );
-    my $rs = $db->doQuery( 'g', "GRANT SELECT ON $quotedDbName.$quotedTableName TO ?@?", $dbUser, $dbUserHost );
+    my $rs = $db->doQuery( 'g', "GRANT SELECT ON $quotedDbName.$quotedTableName TO ?\@?", $dbUser, $dbUserHost );
     unless (ref $rs eq 'HASH') {
         error( sprintf( 'Could not add SQL privileges: %s', $rs ) );
         return 1;
