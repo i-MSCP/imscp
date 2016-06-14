@@ -5,17 +5,17 @@
             <tr>
                 <td colspan="2" class="center">
                     <a href="lostpassword.php" title="{GET_NEW_IMAGE}">
-                        <img id="captcha" src="imagecode.php" width="{CAPTCHA_WIDTH}" height="{CAPTCHA_HEIGHT}" alt="captcha image"/>
+                        <img id="captcha" src="imagecode.php" width="{CAPTCHA_WIDTH}" height="{CAPTCHA_HEIGHT}" alt="captcha image">
                     </a>
                 </td>
             </tr>
             <tr>
-                <td class="left"><label for="uname">{TR_USERNAME}</label></td>
-                <td class="right"><input type="text" name="uname" id="uname" tabindex="1"></td>
+                <td class="left"><label for="capcode">{TR_CAPCODE}</label></td>
+                <td class="right"><input type="text" name="capcode" id="capcode" tabindex="1"></td>
             </tr>
             <tr>
-                <td class="left"><label for="capcode">{TR_CAPCODE}</label></td>
-                <td class="right"><input type="text" name="capcode" id="capcode" tabindex="2"></td>
+                <td class="left"><label for="uname">{TR_USERNAME}</label></td>
+                <td class="right"><input type="text" name="uname" id="uname" tabindex="2"></td>
             </tr>
             <tr>
                 <td colspan="2" class="right">

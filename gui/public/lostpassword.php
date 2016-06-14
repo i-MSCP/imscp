@@ -70,7 +70,7 @@ if (isset($_GET['key'])) { // Password request validation
         set_page_message(tr('Your password has been successfully renewed. Check your emails.'), 'success');
     }
 
-    redirectTo('lostpassword.php');
+    redirectTo('index.php');
 } elseif (!empty($_POST)) { // Request for new password
     if ($cfg['BRUTEFORCE']) {
         $bruteForce = new iMSCP_Plugin_Bruteforce(iMSCP_Registry::get('pluginManager'), 'captcha');
@@ -82,11 +82,13 @@ if (isset($_GET['key'])) { // Password request validation
         $bruteForce->recordAttempt();
     }
 
-    if (isset($_POST['uname']) && isset($_POST['capcode']) && isset($_SESSION['image'])) {
+    if(!isset($_SESSION['capcode'])) {
+        set_page_message(tr('Security code has expired'), 'error');
+    } elseif (isset($_POST['uname']) && isset($_POST['capcode'])) {
         $uname = clean_input($_POST['uname']);
         $capcode = clean_input($_POST['capcode']);
 
-        if ($_SESSION['image'] !== $capcode) {
+        if (strtolower($_SESSION['capcode']) !== strtolower($capcode)) {
             set_page_message(tr('Wrong security code'), 'error');
         } else if (sendPasswordRequestValidation($uname)) {
             set_page_message(tr('Your request for password renewal has been registered. You will receive an email with instructions to complete the process.'), 'success');
