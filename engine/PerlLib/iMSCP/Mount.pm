@@ -76,12 +76,30 @@ sub mount
     my $fsFile = File::Spec->canonpath( $fields->{'fs_file'} );
 
     my $rs = execute(
-        'cat /proc/mounts | awk \'{print $2}\' | grep -q \'^'.quotemeta( $fsFile ).'$\'', undef, \ my $stderr
+        'cat /proc/mounts'
+            .' | awk \'{print $2}\''
+            .' | grep \'^'.quotemeta( $fsFile ).'\(\|\\\\\\040(deleted)\)$\'',
+        \ my $stdout,
+        \ my $stderr
     );
     error( sprintf( 'Could not check mount point: %s', $stderr ) ) if $stderr;
-    return 0 unless $rs;
 
-    if (-f $fsSpec) {
+    unless ($rs) { # Mount point found
+        if ($stdout =~ /\\040\(deleted\)$/) {
+            # Mount point is in `deleted' state, we must re-create it
+            $rs = umount( $fsFile );
+            return $rs if $rs;
+        } else {
+            return 0;
+        }
+    }
+
+    if (index( $fsSpec, '/' ) == 0 && !-e $fsSpec) {
+        error( sprintf( 'Could not mount %s on %s: %s is not a valid filesystem.', $fsSpec, $fsFile, $fsSpec ) );
+        return 1;
+    }
+
+    if (-f _) {
         unless (-f $fsFile) {
             my $rs = iMSCP::File->new( filename => $fsFile )->save();
             return $rs if $rs;
@@ -113,7 +131,7 @@ sub mount
 
     for(@commands) {
         $rs = execute( $_, \ my $stdout, \ $stderr );
-        error( sprintf( 'Error while mounting %s on %s: %s', $fsFile, $fsFile, $stderr || 'Unknown error' ) ) if $rs;
+        error( sprintf( 'Error while mounting %s on %s: %s', $fsSpec, $fsFile, $stderr || 'Unknown error' ) ) if $rs;
         return $rs if $rs;
     }
 
@@ -140,13 +158,25 @@ sub umount
         return 1;
     }
 
-    # We do not trap errors here (expected for dangling mounts)
-    execute(
-        'cat /proc/mounts | awk \'{print $2}\' | grep --colour=never \'^'.quotemeta( File::Spec->canonpath( $fsFile ) ).
-            '\(/\|$\)\' | sort -r | xargs -r umount -l',
-        \ my $stdout,
-        \ my $stderr
-    );
+    # Matches also mount points that are in `deleted' state
+    # (cover case where fs has been removed but mount point still exists)
+    my $cmd = 'cat /proc/mounts | awk \'{print $2}\''
+        .' | grep \'^'.quotemeta( File::Spec->canonpath( $fsFile ) ).'\(/\|\(\|\\\\\\040(deleted)\)$\)\''
+        .' | sort -r';
+
+    my $fh;
+    unless (open( $fh, '-|', $cmd )) {
+        error( sprintf( 'Could not pipe on %s', $cmd ) );
+        return 1;
+    }
+
+    while(my $fsFile = <$fh>) {
+        chomp( $fsFile );
+        $fsFile =~ s/\\040\(deleted\)$//;
+        my $rs = execute( [ 'umount', '-l', $fsFile ], \ my $stdout, \ my $stderr );
+        debug( $stdout ) if $stdout;
+        warning( sprintf( 'Could not umount %s: %s', $fsFile, $stderr || 'Unknown error' ) ) if $rs;
+    }
 
     0;
 }
