@@ -60,7 +60,6 @@ our @EXPORT_OK = qw/ mount umount addMountEntry removeMountEntry /;
 sub mount
 {
     my $fields = shift;
-
     $fields = { } unless defined $fields && ref $fields eq 'HASH';
 
     for(qw/ fs_spec fs_file fs_spec fs_vfstype fs_mntops /) {
@@ -94,17 +93,20 @@ sub mount
         }
     }
 
-    if (index( $fsSpec, '/' ) == 0 && !-e $fsSpec) {
-        error( sprintf( 'Could not mount %s on %s: %s is not a valid filesystem.', $fsSpec, $fsFile, $fsSpec ) );
-        return 1;
-    }
+    if (index( $fsSpec, '/' ) == 0) {
+        if (!-e $fsSpec) {
+            error( sprintf( 'Could not mount %s on %s: %s is not a valid filesystem.', $fsSpec, $fsFile, $fsSpec ) );
+            return 1;
+        }
 
-    if (-f _) {
-        unless (-f $fsFile) {
+        if (-f _) {
             my $rs = iMSCP::File->new( filename => $fsFile )->save();
             return $rs if $rs;
+        } else {
+            my $rs = iMSCP::Dir->new( dirname => $fsFile )->make();
+            return $rs if $rs;
         }
-    } elsif (!-d $fsFile) {
+    } else {
         my $rs = iMSCP::Dir->new( dirname => $fsFile )->make();
         return $rs if $rs;
     }
