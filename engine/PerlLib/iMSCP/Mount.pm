@@ -170,7 +170,7 @@ sub umount
         return 1;
     }
 
-    while(my $fsFile = <$fh>) {
+    while($fsFile = <$fh>) {
         chomp( $fsFile );
         $fsFile =~ s/\\040\(deleted\)$//;
         my $rs = execute( [ 'umount', '-l', $fsFile ], \ my $stdout, \ my $stderr );
