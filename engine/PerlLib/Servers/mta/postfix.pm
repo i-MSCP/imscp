@@ -81,24 +81,6 @@ sub install
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaInstall', 'postfix' );
 }
 
-=item uninstall()
-
- Process uninstall tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub uninstall
-{
-    my $self = shift;
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaUninstall', 'postfix' );
-    $rs ||= Servers::mta::postfix::uninstaller->getInstance()->uninstall();
-    $rs ||= $self->restart();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterMtaUninstall', 'postfix' );
-}
-
 =item postinstall()
 
  Process postintall tasks
@@ -150,6 +132,24 @@ sub postinstall
         }
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaPostinstall', 'postfix' );
+}
+
+=item uninstall()
+
+ Process uninstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub uninstall
+{
+    my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaUninstall', 'postfix' );
+    $rs ||= Servers::mta::postfix::uninstaller->getInstance()->uninstall();
+    $rs ||= $self->restart();
+    $rs ||= $self->{'eventManager'}->trigger( 'afterMtaUninstall', 'postfix' );
 }
 
 =item setEnginePermissions()
