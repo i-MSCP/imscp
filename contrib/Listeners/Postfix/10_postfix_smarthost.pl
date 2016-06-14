@@ -69,7 +69,7 @@ $em->register(
                 smtp_tls_ciphers           => { action => 'replace', values => [ 'high' ] },
                 smtp_tls_exclude_ciphers   => { action => 'replace', values => [ 'aNULL', 'MD5' ] },
                 smtp_tls_protocols         => { action => 'replace', values => [ '!SSLv2', '!SSLv3' ] },
-                smtp_tls_loglevel          => { action => 'replace', values => [ '1' ] },
+                smtp_tls_loglevel          => { action => 'replace', values => [ '0' ] },
                 smtp_tls_CAfile            => { action => 'replace', values => [ $tlsCAfile ] }
             )
         );

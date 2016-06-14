@@ -527,7 +527,7 @@ sub _buildMainCfFile
     }
 
     if (version->parse( $stdout ) >= version->parse( '2.10.0' )) {
-        $cfgTpl =~ s/smtpd_recipient_restrictions/smtpd_relay_restrictions =\n\nsmtpd_recipient_restrictions/;
+        $cfgTpl =~ s/(smtpd_recipient_restrictions)/smtpd_relay_restrictions =\n$1/;
     }
 
     $rs = $self->{'eventManager'}->trigger( 'afterMtaBuildMainCfFile', \ $cfgTpl, 'main.cf' );
@@ -551,7 +551,7 @@ sub _buildMainCfFile
                     smtpd_tls_ciphers                => { action => 'replace', values => [ 'high' ] },
                     smtpd_tls_exclude_ciphers        => { action => 'replace', values => [ 'aNULL', 'MD5' ] },
                     smtpd_tls_protocols              => { action => 'replace', values => [ '!SSLv2', '!SSLv3' ] },
-                    smtpd_tls_loglevel               => { action => 'replace', values => [ '1' ] },
+                    smtpd_tls_loglevel               => { action => 'replace', values => [ '0' ] },
                     smtpd_tls_cert_file              => {
                         action => 'replace', values => [ "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem" ]
                     },
