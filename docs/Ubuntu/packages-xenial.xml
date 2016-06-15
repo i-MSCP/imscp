@@ -133,6 +133,7 @@
         <package>libcrypt-rijndael-perl</package>
         <package>libdata-validate-ip-perl</package>
         <package>libdata-validate-domain-perl</package>
+        <package>libdate-simple-perl</package>
         <package>libdatetime-perl</package>
         <package>libdbd-mysql-perl</package>
         <package>libdbi-perl</package>

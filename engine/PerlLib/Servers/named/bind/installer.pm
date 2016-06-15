@@ -64,7 +64,9 @@ sub registerSetupListeners
     $eventManager->register(
         'beforeSetupDialog',
         sub {
-            push @{$_[0]}, sub { $self->askDnsServerMode( @_ ) }, sub { $self->askIPv6Support( @_ ) },
+            push @{$_[0]},
+                sub { $self->askDnsServerMode( @_ ) },
+                sub { $self->askIPv6Support( @_ ) },
                 sub { $self->askLocalDnsResolver( @_ ) };
             0;
         }
@@ -141,7 +143,6 @@ EOF
 Please enter IP addresses for the slave DNS servers, each separated by a space:$msg
 EOF
                     $msg = '';
-
                     if ($rs < 30) {
                         @slaveDnsIps = split ' ', $answer;
 
@@ -167,7 +168,6 @@ EOF
 Please enter master DNS server IP addresses, each separated by space:$msg
 EOF
             $msg = '';
-
             if ($rs < 30) {
                 @masterDnsIps = split ' ', $answer;
 
@@ -334,7 +334,6 @@ sub _bkpConfFile
     if (-f $cfgFile) {
         my $file = iMSCP::File->new( filename => $cfgFile );
         my $filename = basename( $cfgFile );
-
         unless (-f "$self->{'bkpDir'}/$filename.system") {
             $rs = $file->copyFile( "$self->{'bkpDir'}/$filename.system" );
             return $rs if $rs;
@@ -365,21 +364,21 @@ sub _switchTasks
 
     my $rs = $slaveDbDir->make(
         {
-            user => $main::imscpConfig{'ROOT_USER'},
+            user  => $main::imscpConfig{'ROOT_USER'},
             group => $self->{'config'}->{'BIND_GROUP'},
-            mode => 0775
+            mode  => 0775
         }
     );
     return $rs if $rs;
 
     $rs = execute( "rm -f $self->{'wrkDir'}/*.db", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
+    error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
     $rs = execute( "rm -f $self->{'config'}->{'BIND_DB_DIR'}/*.db", \$stdout, \$stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
+    error( $stderr || 'Unknown error' ) if $rs;
     $rs;
 }
 
@@ -593,7 +592,7 @@ sub _getVersion
 
     my $rs = execute( "$self->{'config'}->{'NAMED_BNAME'} -v", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $rs && $stderr;
+    error( $stderr || 'Unknown error' ) if $rs;
 
     unless ($rs) {
         return $1 if $stdout =~ /^BIND\s+([0-9.]+)/;
@@ -620,7 +619,7 @@ sub _oldEngineCompatibility
     if (iMSCP::ProgramFinder::find( 'resolvconf' )) {
         my $rs = execute( "resolvconf -d lo.imscp", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
+        error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
     }
 

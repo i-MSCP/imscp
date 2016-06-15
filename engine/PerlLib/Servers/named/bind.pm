@@ -25,6 +25,9 @@ package Servers::named::bind;
 
 use strict;
 use warnings;
+use Class::Autouse qw/ Servers::named::bind::installer Servers::named::bind::uninstaller /;
+use Date::Simple;
+use File::Basename;
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::EventManager;
@@ -34,9 +37,7 @@ use iMSCP::ProgramFinder;
 use iMSCP::TemplateParser;
 use iMSCP::Net;
 use iMSCP::Service;
-use File::Basename;
 use Scalar::Defer;
-use Class::Autouse qw/Servers::named::bind::installer Servers::named::bind::uninstaller/;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -119,7 +120,8 @@ sub postinstall
     }
 
     $rs ||= $self->{'eventManager'}->register(
-        'beforeSetupRestartServices', sub {
+        'beforeSetupRestartServices',
+        sub {
             push @{$_[0]}, [ sub { $self->restart(); }, 'Bind9' ];
             0;
         }
@@ -193,7 +195,7 @@ sub postaddDmn
     return $rs if $rs;
 
     if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
-        my $domainIp = ($main::imscpConfig{'BASE_SERVER_IP'} eq $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'})
+        my $domainIP = ($main::imscpConfig{'BASE_SERVER_IP'} eq $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'})
             ? $data->{'DOMAIN_IP'} : $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
 
         $rs = $self->addDmn(
@@ -204,8 +206,8 @@ sub postaddDmn
                 CTM_ALS_ENTRY_ADD => {
                     NAME  => $data->{'USER_NAME'},
                     CLASS => 'IN',
-                    TYPE  => iMSCP::Net->getInstance()->getAddrVersion( $domainIp ) eq 'ipv4' ? 'A' : 'AAAA',
-                    DATA  => $domainIp
+                    TYPE  => iMSCP::Net->getInstance()->getAddrVersion( $domainIP ) eq 'ipv4' ? 'A' : 'AAAA',
+                    DATA  => $domainIP
                 }
             }
         );
@@ -221,7 +223,7 @@ sub postaddDmn
  Process disableDmn tasks
 
  When a domain is being disabled, we must ensure that the DNS data are still present for it (eg: when doing a full
-upgrade or reconfiguration). This explain here why we are calling the addDmn() method.
+ upgrade or reconfiguration). This explain here why we are calling the addDmn() method.
 
  Param hash \%data Domain data
  Return int 0 on success, other on failure
@@ -275,12 +277,11 @@ sub deleteDmn
     return $rs if $rs;
 
     if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
-        for my $file(
-            "$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}.db",
+        for("$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}.db",
             "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db"
         ) {
-            if (-f $file) {
-                $rs = iMSCP::File->new( filename => $file )->delFile();
+            if (-f) {
+                $rs = iMSCP::File->new( filename => $_ )->delFile();
                 return $rs if $rs;
             }
         }
@@ -338,7 +339,7 @@ sub addSub
 
     my $wrkDbFile = "$self->{'wrkDir'}/$data->{'PARENT_DOMAIN_NAME'}.db";
     unless (-f $wrkDbFile) {
-        error( sprintf( 'File %s not found. Please run the imscp-reconfigure script.', $wrkDbFile ) );
+        error( sprintf( 'File %s not found. Run imscp-reconfigure script.', $wrkDbFile ) );
         return 1;
     }
 
@@ -349,7 +350,7 @@ sub addSub
         return 1;
     }
 
-    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind', 'db_sub.tpl', \my $subEntry, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind', 'db_sub.tpl', \ my $subEntry, $data );
     return $rs if $rs;
 
     unless (defined $subEntry) {
@@ -360,27 +361,19 @@ sub addSub
         }
     }
 
-    $rs = $self->{'eventManager'}->trigger( 'beforeNamedAddSub', \$wrkDbFileContent, \$subEntry, $data );
+    $rs = $self->_updateSOAserialNumber( \$wrkDbFileContent, \$wrkDbFileContent );
+    $rs ||= $self->{'eventManager'}->trigger( 'beforeNamedAddSub', \$wrkDbFileContent, \$subEntry, $data );
     return $rs if $rs;
-
-    $wrkDbFileContent = $self->_generateSoalSerialNumber( $wrkDbFileContent );
-    unless (defined $wrkDbFileContent) {
-        error( 'Could not update SOA Serial' );
-        return 1;
-    }
 
     if ($data->{'MAIL_ENABLED'}) {
         my $subMailEntry = getBloc( "; sub MX entry BEGIN\n", "; sub MX entry ENDING\n", $subEntry );
         my $subMailEntryContent = '';
 
-        for my $entry(keys %{$data->{'MAIL_DATA'}}) {
-            $subMailEntryContent .= process( { MX_DATA => $data->{'MAIL_DATA'}->{$entry} }, $subMailEntry );
+        for (keys %{$data->{'MAIL_DATA'}}) {
+            $subMailEntryContent .= process( { MX_DATA => $data->{'MAIL_DATA'}->{$_} }, $subMailEntry );
         }
 
-        $subEntry = replaceBloc(
-            "; sub MX entry BEGIN\n", "; sub MX entry ENDING\n", $subMailEntryContent, $subEntry
-        );
-
+        $subEntry = replaceBloc( "; sub MX entry BEGIN\n", "; sub MX entry ENDING\n", $subMailEntryContent, $subEntry );
         $subEntry = replaceBloc(
             "; sub SPF entry BEGIN\n",
             "; sub SPF entry ENDING\n",
@@ -395,16 +388,14 @@ sub addSub
         $subEntry = replaceBloc( "; sub SPF entry BEGIN\n", "; sub SPF entry ENDING\n", '', $subEntry );
     }
 
-    my $domainIp = ($main::imscpConfig{'BASE_SERVER_IP'} eq $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'})
+    my $domainIP = ($main::imscpConfig{'BASE_SERVER_IP'} eq $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'})
         ? $data->{'DOMAIN_IP'} : $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
-
-    my $net = iMSCP::Net->getInstance();
 
     $subEntry = process(
         {
             SUBDOMAIN_NAME => $data->{'DOMAIN_NAME'},
-            IP_TYPE        => $net->getAddrVersion( $domainIp ) eq 'ipv4' ? 'A' : 'AAAA',
-            DOMAIN_IP      => $domainIp
+            IP_TYPE        => iMSCP::Net->getInstance()->getAddrVersion( $domainIP ) eq 'ipv4' ? 'A' : 'AAAA',
+            DOMAIN_IP      => $domainIP
         },
         $subEntry
     );
@@ -415,7 +406,6 @@ sub addSub
         '',
         $wrkDbFileContent
     );
-
     $wrkDbFileContent = replaceBloc(
         "; sub [{SUBDOMAIN_NAME}] entry BEGIN\n",
         "; sub [{SUBDOMAIN_NAME}] entry ENDING\n",
@@ -437,12 +427,12 @@ sub addSub
         \ my $stderr
     );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
-    error( sprintf( 'Could not dump %s zone file', $wrkDbFile->{'filename'} ) ) if $rs && !$stderr;
+    error( sprintf( 'Could not dump %s zone: %s', $data->{'PARENT_DOMAIN_NAME'}, $stderr || 'Unknown error' ) ) if $rs;
     return $rs if $rs;
 
-    my $prodFile = iMSCP::File->new( filename =>
-        "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db" );
+    my $prodFile = iMSCP::File->new(
+        filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db"
+    );
     $rs ||= $prodFile->mode( 0640 );
     $rs = $prodFile->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
 }
@@ -464,7 +454,7 @@ sub postaddSub
     return $rs if $rs;
 
     if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
-        my $domainIp = (($main::imscpConfig{'BASE_SERVER_IP'} eq $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}))
+        my $domainIP = (($main::imscpConfig{'BASE_SERVER_IP'} eq $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}))
             ? $data->{'DOMAIN_IP'} : $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
 
         $rs = $self->addDmn( {
@@ -474,8 +464,8 @@ sub postaddSub
                 CTM_ALS_ENTRY_ADD => {
                     NAME  => $data->{'USER_NAME'},
                     CLASS => 'IN',
-                    TYPE  => iMSCP::Net->getInstance()->getAddrVersion( $domainIp ) eq 'ipv4' ? 'A' : 'AAAA',
-                    DATA  => $domainIp
+                    TYPE  => iMSCP::Net->getInstance()->getAddrVersion( $domainIP ) eq 'ipv4' ? 'A' : 'AAAA',
+                    DATA  => $domainIP
                 }
             } );
         return $rs if $rs;
@@ -490,7 +480,7 @@ sub postaddSub
  Process disableSub tasks
 
  When a subdomain is being disabled, we must ensure that the DNS data are still present for it (eg: when doing a full
-upgrade or reconfiguration). This explain here why we are calling the addSub() method.
+ upgrade or reconfiguration). This explain here why we are calling the addSub() method.
 
  Param hash \%data Domain data
  Return int 0 on success, other on failure
@@ -543,7 +533,7 @@ sub deleteSub
 
     my $wrkDbFile = "$self->{'wrkDir'}/$data->{'PARENT_DOMAIN_NAME'}.db";
     unless (-f $wrkDbFile) {
-        error( sprintf( 'File %s not found. Please run the imscp-reconfigure script.', $wrkDbFile ) );
+        error( sprintf( 'File %s not found. Run imscp-reconfigure script.', $wrkDbFile ) );
         return 1;
     }
 
@@ -554,14 +544,9 @@ sub deleteSub
         return 1;
     }
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedDelSub', \$wrkDbFileContent, $data );
+    my $rs = $self->_updateSOAserialNumber( $data->{'PARENT_DOMAIN_NAME'}, \$wrkDbFileContent, \$wrkDbFileContent );
+    $rs ||= $self->{'eventManager'}->trigger( 'beforeNamedDelSub', \$wrkDbFileContent, $data );
     return $rs if $rs;
-
-    $wrkDbFileContent = $self->_generateSoalSerialNumber( $wrkDbFileContent );
-    unless (defined $wrkDbFileContent) {
-        error( 'Could not load update SOA Serial' );
-        return 1;
-    }
 
     $wrkDbFileContent = replaceBloc(
         "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
@@ -583,8 +568,7 @@ sub deleteSub
         \ my $stderr
     );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
-    error( sprintf( 'Could not dump %s zone file', $wrkDbFile->{'filename'} ) ) if $rs && !$stderr;
+    error( sprintf( 'Could not dump %s zone: %s', $data->{'PARENT_DOMAIN_NAME'}, $stderr || 'Unknown error' ) ) if $rs;
     return $rs if $rs;
 
     my $prodFile = iMSCP::File->new(
@@ -643,7 +627,7 @@ sub addCustomDNS
 
     my $wrkDbFile = "$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}.db";
     unless (-f $wrkDbFile) {
-        error( sprintf( 'File %s not found. Please run the imscp-reconfigure script.', $wrkDbFile ) );
+        error( sprintf( 'File %s not found. Run imscp-reconfigure script.', $wrkDbFile ) );
         return 1;
     }
 
@@ -654,33 +638,30 @@ sub addCustomDNS
         return 1;
     }
 
-    $wrkDbFileContent = $self->_generateSoalSerialNumber( $wrkDbFileContent );
-    unless (defined $wrkDbFileContent) {
-        error( 'Could not update SOA Serial' );
-        return 1;
-    }
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedAddCustomDNS', \$wrkDbFileContent, $data );
+    my $rs = $self->_updateSOAserialNumber( $data->{'DOMAIN_NAME'}, \$wrkDbFileContent, \$wrkDbFileContent );
+    $rs ||= $self->{'eventManager'}->trigger( 'beforeNamedAddCustomDNS', \$wrkDbFileContent, $data );
     return $rs if $rs;
 
-    my @customDns = ();
-    for my $record(@{$data->{'DNS_RECORDS'}}) {
-        push @customDns, join "\t", @{$record};
+    my @customDNS = ();
+    for (@{$data->{'DNS_RECORDS'}}) {
+        push @customDNS, join "\t", @{$_};
     }
 
-    # Remove any default SPF record that is redefined through a custom DNS record
+    # Removes any default SPF DNS resource record that is overwritten by a custom DNS resource record
     my $wrkDbFileContentTmp = $wrkDbFileContent;
     $wrkDbFileContent = '';
-    my $origin = '';
+
     my $fh;
     unless (open( $fh, '<', \$wrkDbFileContentTmp )) {
         error( sprinf( 'Could not open in memory file: %s', $! ) );
         return 1;
     }
+
+    my $origin = '';
     while(my $line = <$fh>) {
         $origin = $1 if $line =~ /^\$ORIGIN\s+([^\s;]+).*\n$/;
         $line =~ s/@/$origin/g if $origin ne '';
-        next if $line =~ /^(\S+)\s+.*?v=spf1\s/ && grep(/^(?:\Q$1\E|\Q$1.$origin\E)\s+.*?v=spf1\s/, @customDns);
+        next if $line =~ /^(\S+)\s+.*?v=spf1\s/ && grep(/^(?:\Q$1\E|\Q$1.$origin\E)\s+.*?v=spf1\s/, @customDNS);
         $wrkDbFileContent .= $line;
     }
     close( $fh );
@@ -688,7 +669,7 @@ sub addCustomDNS
     $wrkDbFileContent = replaceBloc(
         "; custom DNS entries BEGIN\n",
         "; custom DNS entries ENDING\n",
-        "; custom DNS entries BEGIN\n".( join "\n", @customDns, '' )."; custom DNS entries ENDING\n",
+        "; custom DNS entries BEGIN\n".( join "\n", @customDNS, '' )."; custom DNS entries ENDING\n",
         $wrkDbFileContent
     );
 
@@ -705,7 +686,7 @@ sub addCustomDNS
         \ my $stderr
     );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $rs;
+    error( sprintf( 'Could not dump %s zone: %s', $data->{'DOMAIN_NAME'}, $stderr || 'Unknown error' ) ) if $rs;
     return $rs if $rs;
 
     my $prodFile = iMSCP::File->new( filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db" );
@@ -786,12 +767,14 @@ sub _init
 
     $self->{'restart'} = 0;
     $self->{'reload'} = 0;
+    $self->{'serials'} = { };
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'tplDir'} = "$self->{'cfgDir'}/parts";
-    $self->{'config'} = lazy {
+    $self->{'config'} = lazy
+        {
             tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/bind.data";
             \%c;
         };
@@ -812,7 +795,7 @@ sub _addDmnConfig
     my ($self, $data) = @_;
 
     unless (defined $self->{'config'}->{'BIND_MODE'}) {
-        error( 'Bind mode is not defined. Please rerun the imscp-reconfigure script.' );
+        error( 'Bind mode is not defined. Run imscp-reconfigure script.' );
         return 1;
     }
 
@@ -821,8 +804,7 @@ sub _addDmnConfig
     );
 
     unless (-f "$self->{'wrkDir'}/$cfgFileName") {
-        error( sprintf( 'File %s not found. Please rerun the imscp-reconfigure script.',
-                "$self->{'wrkDir'}/$cfgFileName" ) );
+        error( sprintf( 'File %s not found. Run imscp-reconfigure script.', "$self->{'wrkDir'}/$cfgFileName" ) );
         return 1;
     }
 
@@ -835,7 +817,7 @@ sub _addDmnConfig
 
     my $tplFileName = "cfg_$self->{'config'}->{'BIND_MODE'}.tpl";
     my $rs = $self->{'eventManager'}->trigger(
-        'onLoadTemplate', 'bind', $tplFileName, \my $tplCfgEntryContent, $data
+        'onLoadTemplate', 'bind', $tplFileName, \ my $tplCfgEntryContent, $data
     );
     return $rs if $rs;
 
@@ -867,10 +849,9 @@ sub _addDmnConfig
         $tags->{'PRIMARY_DNS'} = join( '; ', split( ';', $self->{'config'}->{'PRIMARY_DNS'} ) ).';';
     }
 
-    $tplCfgEntryContent =
-        "// imscp [$data->{'DOMAIN_NAME'}] entry BEGIN\n".
-            process( $tags, $tplCfgEntryContent ).
-            "// imscp [$data->{'DOMAIN_NAME'}] entry ENDING\n";
+    $tplCfgEntryContent = "// imscp [$data->{'DOMAIN_NAME'}] entry BEGIN\n"
+        .process( $tags, $tplCfgEntryContent )
+        ."// imscp [$data->{'DOMAIN_NAME'}] entry ENDING\n";
 
     $cfgWrkFileContent = replaceBloc(
         "// imscp [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
@@ -912,8 +893,7 @@ sub _deleteDmnConfig
     );
 
     unless (-f "$self->{'wrkDir'}/$cfgFileName") {
-        error( sprintf( 'File %s not found. Please rerun the imscp-reconfigure script.',
-                "$self->{'wrkDir'}/$cfgFileName" ) );
+        error( sprintf( 'File %s not found. Run imscp-reconfigure script.', "$self->{'wrkDir'}/$cfgFileName" ) );
         return 1;
     }
 
@@ -969,7 +949,7 @@ sub _addDmnDb
         $wrkDbFile = iMSCP::File->new( filename => $wrkDbFile );
     }
 
-    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind', 'db.tpl', \my $tplDbFileContent, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind', 'db.tpl', \ my $tplDbFileContent, $data );
     return $rs if $rs;
 
     unless (defined $tplDbFileContent) {
@@ -980,40 +960,33 @@ sub _addDmnDb
         }
     }
 
-    $rs = $self->{'eventManager'}->trigger( 'beforeNamedAddDmnDb', \$tplDbFileContent, $data );
+    $rs = $self->_updateSOAserialNumber( $data->{'DOMAIN_NAME'}, \$tplDbFileContent, \$wrkDbFileContent );
+    $rs ||= $self->{'eventManager'}->trigger( 'beforeNamedAddDmnDb', \$tplDbFileContent, $data );
     return $rs if $rs;
-
-    $tplDbFileContent = $self->_generateSoalSerialNumber(
-        $tplDbFileContent, defined $wrkDbFileContent ? $wrkDbFileContent : undef
-    );
-    unless (defined $tplDbFileContent) {
-        error( 'Could not add/update SOA Serial' );
-        return 1;
-    }
 
     my $dmnNsEntry = getBloc( "; dmn NS entry BEGIN\n", "; dmn NS entry ENDING\n", $tplDbFileContent );
     my $dmnNsAEntry = getBloc( "; dmn NS A entry BEGIN\n", "; dmn NS A entry ENDING\n", $tplDbFileContent );
-    my $domainIp = (($main::imscpConfig{'BASE_SERVER_IP'} eq $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}))
+    my $domainIP = ($main::imscpConfig{'BASE_SERVER_IP'} eq $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'})
         ? $data->{'DOMAIN_IP'} : $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
 
     my @nsIPs = (
-        $domainIp, $self->{'config'}->{'SECONDARY_DNS'} eq 'no' ? () : split ';', $self->{'config'}->{'SECONDARY_DNS'}
+        $domainIP,
+        ($self->{'config'}->{'SECONDARY_DNS'} eq 'no' ? () : split ';', $self->{'config'}->{'SECONDARY_DNS'})
     );
 
     my $net = iMSCP::Net->getInstance();
     my ($dmnNsEntries, $dmnNsAentries, $nsNumber) = (undef, undef, 1);
 
-    for my $ipAddr(@nsIPs) {
+    for (@nsIPs) {
         $dmnNsEntries .= process( { NS_NUMBER => $nsNumber }, $dmnNsEntry );
         $dmnNsAentries .= process(
             {
                 NS_NUMBER  => $nsNumber,
-                NS_IP_TYPE => $net->getAddrVersion( $ipAddr ) eq 'ipv4' ? 'A' : 'AAAA',
-                NS_IP      => $ipAddr
+                NS_IP_TYPE => $net->getAddrVersion( $_ ) eq 'ipv4' ? 'A' : 'AAAA',
+                NS_IP      => $_
             },
             $dmnNsAEntry
         );
-
         $nsNumber++;
     }
 
@@ -1027,7 +1000,6 @@ sub _addDmnDb
     my $dmnMailEntry = '';
     if ($data->{'MAIL_ENABLED'}) {
         my $baseServerIp = $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
-
         $dmnMailEntry = process(
             {
                 BASE_SERVER_IP_TYPE => $net->getAddrVersion( $baseServerIp ) eq 'ipv4' ? 'A' : 'AAAA',
@@ -1040,15 +1012,11 @@ sub _addDmnDb
     $tplDbFileContent = replaceBloc(
         "; dmn MAIL entry BEGIN\n", "; dmn MAIL entry ENDING\n", $dmnMailEntry, $tplDbFileContent
     );
+    $tplDbFileContent .= "$_\n" for @{$data->{'SPF_RECORDS'}};
 
-    for my $record(@{$data->{'SPF_RECORDS'}}) {
-        $tplDbFileContent .= $record."\n";
-    }
-
-    if (defined $wrkDbFileContent) {
+    if ($data->{'DOMAIN_NAME'} eq $main::imscpConfig{'BASE_SERVER_VHOST'} && defined $wrkDbFileContent) {
         if (exists $data->{'CTM_ALS_ENTRY_ADD'}) {
             $wrkDbFileContent =~ s/^$data->{'CTM_ALS_ENTRY_ADD'}->{'NAME'}\s+[^\n]*\n//m;
-
             $tplDbFileContent = replaceBloc(
                 "; ctm als entries BEGIN\n",
                 "; ctm als entries ENDING\n",
@@ -1083,8 +1051,8 @@ sub _addDmnDb
     $tplDbFileContent = process(
         {
             DOMAIN_NAME => $data->{'DOMAIN_NAME'},
-            IP_TYPE     => $net->getAddrVersion( $domainIp ) eq 'ipv4' ? 'A' : 'AAAA',
-            DOMAIN_IP   => $domainIp
+            IP_TYPE     => $net->getAddrVersion( $domainIP ) eq 'ipv4' ? 'A' : 'AAAA',
+            DOMAIN_IP   => $domainIP
         },
         $tplDbFileContent
     );
@@ -1102,8 +1070,7 @@ sub _addDmnDb
         \ my $stderr
     );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
-    error( sprintf( 'Could not dump %s zone file', $wrkDbFile->{'filename'} ) ) if $rs && !$stderr;
+    error( sprintf( 'Could not dump %s zone: %s', $data->{'DOMAIN_NAME'}, $stderr || 'Unknown error' ) ) if $rs;
     return $rs if $rs;
 
     my $prodFile = iMSCP::File->new( filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db" );
@@ -1111,53 +1078,63 @@ sub _addDmnDb
     $rs ||= $prodFile->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
 }
 
-=item _generateSoalSerialNumber($newDbFile [, $oldDbFile = undef ])
+=item _updateSOAserialNumber($zone, \$zoneContent, \$oldZoneContent)
 
- Generate SOA Serial Number according RFC 1912
+ Update SOA serial number for the given zone
+ 
+ Note: Format follows RFC 1912 recommendations
 
- Param string $newDbFile New DB file content
- Param string|undef $oldDbFile Old DB file content
- Return string|undef
+ Param string zone Zone name
+ Param scalarref $zoneContent Zone content
+ Param scalarref $oldZoneContent Old zone content
+ Return int 0 on success, other on failure
 
 =cut
 
-sub _generateSoalSerialNumber
+sub _updateSOAserialNumber
 {
-    my ($self, $newDbFile, $oldDbFile) = @_;
+    my ($self, $zone, $zoneContent, $oldZoneContent) = @_;
 
-    $oldDbFile ||= $newDbFile;
-
-    if (
-        (my $tyear, my $tmon, my $tday, my $nn, my $placeholder) = (
-            $oldDbFile =~ /^[\s]+(?:(\d{4})(\d{2})(\d{2})(\d{2})|(\{TIMESTAMP\}))/m
-        )
-    ) {
-        my (undef, undef, undef, $day, $mon, $year) = localtime;
-        my ($newSerial, $oldSerial);
-
-        if ($placeholder) {
-            $newSerial = sprintf( '%04d%02d%02d00', $year + 1900, $mon + 1, $day );
-        } else {
-            $oldSerial = "$tyear$tmon$tday$nn";
-            $nn++;
-
-            if ($nn >= 99) {
-                $nn = 0;
-                $tday++;
-            }
-
-            $newSerial = ((($year + 1900) * 10000 + ($mon + 1) * 100 + $day) > ($tyear * 10000 + $tmon * 100 + $tday))
-                ? (sprintf '%04d%02d%02d00', $year + 1900, $mon + 1, $day)
-                : (sprintf '%04d%02d%02d%02d', $tyear, $tmon, $tday, $nn);
+    if (exists $self->{'serials'}->{$zone}) {
+        unless ($$zoneContent =~ s/^(\s+)(?:\d{10}|\{TIMESTAMP\})(\s*;[^\n]*\n)/$1$self->{'serials'}->{$zone}$2/m) {
+            error( sprintf( 'Could not update SOA serial number for the %s DNS zone', $zone ) );
+            return 1;
         }
 
-        $newDbFile =~ s/$oldSerial/$newSerial/ if defined $oldSerial;
-        $newDbFile = process( { TIMESTAMP => $newSerial }, $newDbFile );
-    } else {
-        $newDbFile = undef;
+        return 0;
     }
 
-    $newDbFile;
+    $oldZoneContent = $zoneContent unless defined $$oldZoneContent;
+    if ((my $date, my $nn, my $var) = $$oldZoneContent =~ /^\s+(?:(\d{8})(\d{2})|(\{TIMESTAMP\}))\s*;[^\n]*\n/m) {
+        my $todayDate = Date::Simple->new();
+
+        if (defined $var) {
+            $self->{'serials'}->{$zone} = $todayDate->as_d8().'00';
+            $$zoneContent = process( { TIMESTAMP => $self->{'serials'}->{$zone} }, $$zoneContent );
+            return 0;
+        }
+
+        $date = Date::Simple->new( $date );
+        if ($date && $date >= $todayDate) {
+            $nn++;
+            if ($nn >= 99) {
+                $nn = '00';
+                $date = $date->next();
+            }
+        } else {
+            $date = $todayDate;
+            undef $todayDate;
+            $nn = '00';
+        }
+
+        $self->{'serials'}->{$zone} = $date->as_d8().$nn;
+        if ($$zoneContent =~ s/^(\s+)(?:\d{10}|\{TIMESTAMP\})(\s*;[^\n]*\n)/$1$self->{'serials'}->{$zone}$2/m) {
+            return 0;
+        }
+    }
+
+    error( sprintf( 'Could not update SOA serial number for the %s DNS zone: Serial number not found.', $zone ) );
+    1;
 }
 
 =back
