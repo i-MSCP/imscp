@@ -69,16 +69,12 @@ sub registerSetupListeners
 
     my $rs = $eventManager->register(
         'beforeSetupDialog',
-        [
-            sub {
-                push @{$_[0]}, sub { $self->authdaemonSqlUserDialog( @_ ) };
-                0;
-            },
-            sub {
-                push @{$_[0]}, sub { $self->cyrusSaslSqlUserDialog( @_ ) };
-                0;
-            }
-        ]
+        sub {
+            push @{$_[0]},
+                sub { $self->authdaemonSqlUserDialog( @_ ) },
+                sub { $self->cyrusSaslSqlUserDialog( @_ ) };
+            0;
+        }
     );
     $rs ||= $eventManager->register( 'beforeMtaBuildMainCfFile', sub { $self->configurePostfix( @_ ); } );
     $rs ||= $eventManager->register( 'beforeMtaBuildMasterCfFile', sub { $self->configurePostfix( @_ ); } );

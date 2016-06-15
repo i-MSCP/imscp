@@ -239,9 +239,11 @@ sub addDmn
     if ($data->{'MAIL_ENABLED'}) { # Mail for domain is managed by this server
         $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, "$data->{'DOMAIN_NAME'}\tOK" );
     }
+
     if($data->{'EXTERNAL_MAIL'} eq 'domain') { # Mail for domain is managed by external server
         $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, "$data->{'DOMAIN_NAME'}\tOK" );
     }
+
     if ($data->{'EXTERNAL_MAIL'} eq 'wildcard') { # Mail for in-existent subdomains is managed by external server
         $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, ".$data->{'DOMAIN_NAME'}\tOK" );
     }
@@ -427,8 +429,7 @@ sub addMail
     }
 
     if (!$isMailAccount && !$isForwardAccount && index( $data->{'MAIL_TYPE'}, '_catchall' ) != -1) {
-        $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'},
-            "$data->{'MAIL_ADDR'}\t$data->{'MAIL_CATCHALL'}" );
+        $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, "$data->{'MAIL_ADDR'}\t$data->{'MAIL_CATCHALL'}" );
     }
 
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaAddMail', $data );

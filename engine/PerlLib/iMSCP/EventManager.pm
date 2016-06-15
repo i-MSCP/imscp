@@ -42,9 +42,9 @@ fieldhash my %EVENTS;
 
 =over 4
 
-=item register( $event, $callables )
+=item register( $events, $callable )
 
- Register one or many listeners for the given event
+ Register the given listener for the given event(s)
 
  Param string $events Event(s) that the listener listen to
  Param list $callables Callable that represents event listener
