@@ -103,7 +103,7 @@ sub postinstall
         return 1;
     }
 
-    $rs ||= $self->{'eventManager'}->register(
+    $rs = $self->{'eventManager'}->register(
         'beforeSetupRestartServices',
         sub {
             push @{$_[0]},
@@ -236,19 +236,14 @@ sub addDmn
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, qr/\\.?\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
 
-    if ($data->{'EXTERNAL_MAIL'} eq 'domain') { # Mail for domain (including subdomains) is managed by external server
-        if ($data->{'DOMAIN_TYPE'} eq 'Dmn') {
-            $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, "$data->{'DOMAIN_NAME'}\tOK" );
-        }
-    } elsif ($data->{'EXTERNAL_MAIL'} eq 'wildcard') { # Mail for in-existent subdomains is managed by external server
-        if ($data->{'MAIL_ENABLED'}) {
-            $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, "$data->{'DOMAIN_NAME'}\tOK" );
-        }
-        if ($data->{'DOMAIN_TYPE'} eq 'Dmn') {
-            $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, ".$data->{'DOMAIN_NAME'}\tOK" );
-        }
-    } elsif ($data->{'MAIL_ENABLED'}) { # Mail for domain (including subdomains) is managed by this server
+    if ($data->{'MAIL_ENABLED'}) { # Mail for domain is managed by this server
         $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, "$data->{'DOMAIN_NAME'}\tOK" );
+    }
+    if($data->{'EXTERNAL_MAIL'} eq 'domain') { # Mail for domain is managed by external server
+        $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, "$data->{'DOMAIN_NAME'}\tOK" );
+    }
+    if ($data->{'EXTERNAL_MAIL'} eq 'wildcard') { # Mail for in-existent subdomains is managed by external server
+        $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, ".$data->{'DOMAIN_NAME'}\tOK" );
     }
 
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaAddDmn', $data );
@@ -307,7 +302,12 @@ sub addSub
     my ($self, $data) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddSub', $data );
-    $rs ||= $self->addDmn( $data );
+    $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
+
+    if($data->{'MAIL_ENABLED'}) {
+        $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, "$data->{'DOMAIN_NAME'}\tOK" );
+    }
+
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaAddSub', $data );
 }
 
@@ -325,7 +325,7 @@ sub disableSub
     my ($self, $data) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDisableSub', $data );
-    $rs ||= $self->disableDmn( $data );
+    $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaDisableSub', $data );
 }
 
@@ -343,7 +343,8 @@ sub deleteSub
     my ($self, $data) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDelSub', $data );
-    $rs ||= $self->deleteDmn( $data );
+    $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
+    $rs ||= iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}" )->remove();
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaDelSub', $data );
 }
 
@@ -363,15 +364,17 @@ sub addMail
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddMail', $data );
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+[^\n]*/ );
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+[^\n]*/ );
-    # There is no way to insert a literal $ or @ inside a \Q\E pair
     my $responderEntry = "$data->{'MAIL_ACC'}\@imscp-arpl.$data->{'DOMAIN_NAME'}";
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_TRANSPORT_HASH'}, qr/\Q$responderEntry\E\s+[^\n]*/ );
     return $rs if $rs;
 
-    if (index( $data->{'MAIL_TYPE'}, '_mail' ) != -1) {
-        for my $dir('cur', 'new', 'tmp') {
+    my $isMailAccount = index( $data->{'MAIL_TYPE'}, '_mail' ) != -1;
+    my $isForwardAccount = index( $data->{'MAIL_TYPE'}, '_forward' ) != -1;
+
+    if ($isMailAccount) {
+        for ('cur', 'new', 'tmp') {
             $rs = iMSCP::Dir->new(
-                dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}/$dir"
+                dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}/$_"
             )->make(
                 {
                     user           => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
@@ -387,30 +390,45 @@ sub addMail
             $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'},
             "$data->{'MAIL_ADDR'}\t$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}/"
         );
+
+        if (!$rs && !$isForwardAccount) {
+            # Postfix lookup in `virtual_alias_maps' first. Thus, if there is a catchall defined for the domain, any
+            # mail for the mail account will be catched by the catchall. To prevent this behavior, we must also add an
+            # entry in the virtual alias map.
+            $rs = $self->addMapEntry(
+                $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'},
+                $data->{'MAIL_ADDR'} # Recipient
+                    ."\t"
+                    .$data->{'MAIL_ADDR'} # alias
+                    # Add autoresponder if autoresponder is enabled for this account
+                    .($data->{'MAIL_HAS_AUTO_RESPONDER'} ? ",$responderEntry" : '')
+            );
+        }
+
         return $rs if $rs;
     }
 
-    if (index( $data->{'MAIL_TYPE'}, '_forward' ) != -1) {
+    if ($isForwardAccount) {
         $rs = $self->addMapEntry(
             $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'},
-            "$data->{'MAIL_ADDR'}\t" # recipient
-                # Add recipient itself in case of mailbox + forward
-                .($data->{'MAIL_TYPE'} =~ /_mail/ ? "$data->{'MAIL_ADDR'}," : '')
-                # Add list of addr to which mail must be forwarded
+            "$data->{'MAIL_ADDR'}" # Recipient
+                ."\t"
+                # Add recipient itself in case of mailbox + forward account
+                .($isMailAccount ? "$data->{'MAIL_ADDR'}," : '')
+                # Add list of mail addresses to which mail must be forwarded
                 .$data->{'MAIL_FORWARD'}
-                # Add autoresponder alias if autoresponder is enabled for this account
+                # Add autoresponder if autoresponder is enabled for this account
                 .($data->{'MAIL_HAS_AUTO_RESPONDER'} ? ",$responderEntry" : '')
         );
-    } elsif ($data->{'MAIL_HAS_AUTO_RESPONDER'}) { # mailbox + autoresponder
-        $rs = $self->addMapEntry( $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, "$data->{'MAIL_ADDR'}\t$data->{'MAIL_ADDR'},$responderEntry" );
     }
 
     if ($data->{'MAIL_HAS_AUTO_RESPONDER'}) {
         $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_TRANSPORT_HASH'}, "$responderEntry\timscp-arpl:" );
     }
 
-    if (index( $data->{'MAIL_TYPE'}, '_catchall' ) != -1) {
-        $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, "$data->{'MAIL_ADDR'}\t$data->{'MAIL_CATCHALL'}" );
+    if (!$isMailAccount && !$isForwardAccount && index( $data->{'MAIL_TYPE'}, '_catchall' ) != -1) {
+        $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'},
+            "$data->{'MAIL_ADDR'}\t$data->{'MAIL_CATCHALL'}" );
     }
 
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaAddMail', $data );
@@ -432,7 +450,6 @@ sub disableMail
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDisableMail', $data );
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+[^\n]*/ );
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+[^\n]*/ );
-    # There is no way to insert a literal $ or @ inside a \Q\E pair
     my $responderEntry = "$data->{'MAIL_ACC'}\@imscp-arpl.$data->{'DOMAIN_NAME'}";
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_TRANSPORT_HASH'}, qr/\Q$responderEntry\E\s+[^\n]*/ );
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaDisableMail', $data );
@@ -454,12 +471,9 @@ sub deleteMail
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDelMail', $data );
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+[^\n]*/ );
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+[^\n]*/ );
-    # There is no way to insert a literal $ or @ inside a \Q\E pair
     my $responderEntry = "$data->{'MAIL_ACC'}\@imscp-arpl.$data->{'DOMAIN_NAME'}";
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_TRANSPORT_HASH'}, qr/\Q$responderEntry\E\s+[^\n]*/ );
-    if (index( $data->{'MAIL_TYPE'}, '_mail' ) != -1) {
-        $rs ||= iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}" )->remove();
-    }
+    $rs ||= iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}" )->remove();
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaDelMail', $data );
 }
 
@@ -494,7 +508,7 @@ sub getTraffic
     $trafficDataSrc ||= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
 
     if (-f -s $trafficDataSrc) {
-        # We are using a small file to memorize the number of the last line that has been read and his content
+        # We use a small file to memorize number of the last line that has been read and his content
         tie my %indexDb, 'iMSCP::Config', fileName => "$trafficDir/traffic_index.db", nowarn => 1;
 
         my $lastParsedLineNo = $indexDb{'smtp_lineNo'} || 0;

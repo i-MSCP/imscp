@@ -274,7 +274,9 @@ sub _getMtaData
         DOMAIN_NAME     => $self->{'subdomain_alias_name'}.'.'.$self->{'alias_name'},
         DOMAIN_TYPE     => $self->getType(),
         EXTERNAL_MAIL   => $self->{'external_mail'},
-        MAIL_ENABLED    => ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) ? 1 : 0
+        MAIL_ENABLED    => (
+            $self->{'external_mail'} ne 'domain' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
+        )
     };
     %{$self->{'mta'}};
 }

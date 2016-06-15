@@ -467,7 +467,9 @@ sub _getMtaData
         DOMAIN_NAME     => $self->{'domain_name'},
         DOMAIN_TYPE     => $self->getType(),
         EXTERNAL_MAIL   => $self->{'external_mail'},
-        MAIL_ENABLED    => $self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0 ? 1 : 0
+        MAIL_ENABLED    => (
+            $self->{'external_mail'} ne 'domain' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
+        )
     };
     %{$self->{'mta'}};
 }
@@ -496,9 +498,9 @@ sub _getNamedData
         DOMAIN_IP       => $self->{'ip_number'},
         USER_NAME       => $userName,
         MAIL_ENABLED    => (
-                ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
-                    && $self->{'external_mail'} =~ /^(?:wildcard|off)$/
-            ) ? 1 : 0,
+            ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
+            && $self->{'external_mail'} =~ /^(?:wildcard|off)$/
+        ),
         SPF_RECORDS     => [ ]
     };
 

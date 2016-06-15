@@ -1,6 +1,5 @@
 POSTFIX_USER = postfix
 POSTFIX_GROUP = postfix
-
 POSTFIX_CONF_DIR = /etc/postfix
 POSTFIX_CONF_FILE = /etc/postfix/main.cf
 POSTFIX_MASTER_CONF_FILE = /etc/postfix/master.cf
