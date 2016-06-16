@@ -84,7 +84,6 @@ DISTRIBUTIONS
     Fixed: libpam-mysql package - possible segfault (bugs affecting all distributions)
 
 FRONTEND
-    
     Added: Datatable for domains, subdomains, domain aliases and DNS resource records (client level)
     Added: Datatable for the file system information table (admin level)
     Added: iMSCP\Crypt library
