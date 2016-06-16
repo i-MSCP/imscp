@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-08 01:02+0200\n"
-"PO-Revision-Date: 2016-06-07 23:04+0000\n"
+"POT-Creation-Date: 2016-06-16 20:04+0200\n"
+"PO-Revision-Date: 2016-06-16 18:06+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Greek (http://www.transifex.com/i-mscp/i-MSCP/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -397,109 +397,109 @@ msgid ""
 msgstr ""
 
 msgid "A PHP extension stopped the file upload."
-msgstr ""
+msgstr "Μία επέκταση της PHP σταμάτησε τη μεταφόρτωση του αρχείου."
 
 msgid "A database update is available"
 msgstr "Υπάρχει διαθέσιμη αναβάθμιση στη βάση δεδομένων"
 
 msgid "A hosting plan with same name already exists."
-msgstr ""
+msgstr "Υπάρχει ήδη σχέδιο φιλοξενίας με το ίδιο όνομα."
 
 msgid "A new i-MSCP version is available"
 msgstr "Υπάρχει διαθέσιμη αναβάθμιση του i-MSCP"
 
 msgid "A new software package has been uploaded"
-msgstr ""
+msgstr "Ένα νέο πακέτο λογισμικού μεταφορτώθηκε"
 
 msgid "Access your domain statistics through the Web interface."
-msgstr ""
+msgstr "Αποκτήστε πρόσβαση στα στατιστικά του domain σας μέσω της web διεπαφής."
 
 msgid "Access your files through the web interface."
-msgstr ""
+msgstr "Αποκτήστε πρόσβαση στα αρχεία σας μέσω της web διεπαφής."
 
 msgid "Access your mail through the web interface."
-msgstr ""
+msgstr "Αποκτήστε πρόσβαση στην αλληλογραφία σας μέσω της web διεπαφής."
 
 msgid "Account data"
-msgstr ""
+msgstr "Δεδομένα λογαριασμού"
 
 msgid "Account limits"
-msgstr ""
+msgstr "Όρια λογαριασμού"
 
 msgid "Account name"
-msgstr ""
+msgstr "Όνομα λογαριασμού"
 
 msgid "Account overview"
-msgstr ""
+msgstr "Επισκόπηση λογαριασμού"
 
 msgid "Account summary"
-msgstr ""
+msgstr "Σύνοψη λογαριασμού"
 
 msgid "Account type"
-msgstr ""
+msgstr "Είδος λογαριασμού"
 
 msgid "Action"
-msgstr ""
+msgstr "Ενέργεια"
 
 msgid "Action has been stopped."
-msgstr ""
+msgstr "Η ενέργεια έχει σταματήσει."
 
 msgid "Action has failed."
-msgstr ""
+msgstr "Η ενέργεια απέτυχε."
 
 msgid "Actions"
-msgstr ""
+msgstr "Ενέργειες"
 
 msgid "Activate"
-msgstr ""
+msgstr "Ενεργοποίηση"
 
 msgid "Activate this plugin"
-msgstr ""
+msgstr "Ενεργοποίηση αυτού του πρόσθετου"
 
 msgid "Activated"
-msgstr ""
+msgstr "Ενεργοποιήθηκε"
 
 msgid "Activated software"
-msgstr ""
+msgstr "Ενεργοποιημένο λογισμικό"
 
 msgid "Activation email"
-msgstr ""
+msgstr "Email ενεργοποίησης"
 
 msgid "Activation in progress..."
-msgstr ""
+msgstr "Ενεργοποίηση σε εξέλιξη..."
 
 msgid "Activation link expire time <small>(In minutes)</small>"
-msgstr ""
+msgstr "Χρόνος λήξης συνδέσμου ενεργοποίησης <small>(Σε λεπτά)</small>"
 
 msgid "Add"
-msgstr ""
+msgstr "Προσθήκη"
 
 msgid "Add DNS resource record"
-msgstr ""
+msgstr "Προσθήκη εγγραφής DNS"
 
 msgid "Add FTP account"
-msgstr ""
+msgstr "Προσθήκη λογαριασμού FTP"
 
 msgid "Add Htaccess group"
-msgstr ""
+msgstr "Προσθήκη ομάδας Htaccess"
 
 msgid "Add Htaccess user"
-msgstr ""
+msgstr "Προσθήκη χρήστη Htaccess"
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "Προσθήκη SQL βάσης δεδομένων"
 
 msgid "Add SQL user"
-msgstr ""
+msgstr "Προσθήκη SQL χρήστη"
 
 msgid "Add SSL certificate"
-msgstr ""
+msgstr "Προσθήκη πιστοποιητικού SSL"
 
 msgid "Add a new entry"
 msgstr ""
 
 msgid "Add admin"
-msgstr ""
+msgstr "Προσθήκη διαχειριστή"
 
 msgid "Add catchall"
 msgstr ""
@@ -508,10 +508,10 @@ msgid "Add custom menu"
 msgstr ""
 
 msgid "Add customer"
-msgstr ""
+msgstr "Προσθήκη πελάτη"
 
 msgid "Add customer - Next step"
-msgstr ""
+msgstr "Προσθήκη πελάτη - Επόμενο βήμα"
 
 msgid "Add domain alias"
 msgstr ""
@@ -523,16 +523,16 @@ msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr ""
 
 msgid "Add group"
-msgstr ""
+msgstr "Προσθήκη ομάδας"
 
 msgid "Add hosting plan"
 msgstr ""
 
 msgid "Add new IP address"
-msgstr ""
+msgstr "Προσθήκη νέας IP διεύθυνσης"
 
 msgid "Add new database"
-msgstr ""
+msgstr "Προσθήκη νέας βάσης δεδομένων"
 
 msgid "Add new entry"
 msgstr ""
@@ -553,61 +553,61 @@ msgid "Add protected area"
 msgstr ""
 
 msgid "Add reseller"
-msgstr ""
+msgstr "Προσθήκη μεταπωλητή"
 
 msgid "Add subdomain"
 msgstr ""
 
 msgid "Add user"
-msgstr ""
+msgstr "Προσθήκη χρήστη"
 
 msgid "Added by"
-msgstr ""
+msgstr "Προστέθηκε από"
 
 msgid "Addition in progress..."
-msgstr ""
+msgstr "Προσθήκη σε εξέλιξη..."
 
 msgid "Additional data"
-msgstr ""
+msgstr "Επιπλέον δεδομένα"
 
 msgid "Admin"
-msgstr ""
+msgstr "Διαχείρηση"
 
 msgid "Admin / General / Admin Log"
-msgstr ""
+msgstr "Διαχείρηση / Γενικά / Αρχείο καταγραφής διαχειριστή"
 
 msgid "Admin / General / Overview"
-msgstr ""
+msgstr "Διαχείρηση / Γενικά / Επισκόπηση"
 
 msgid "Admin / General / Services Status"
-msgstr ""
+msgstr "Διαχείρηση / Γενικά / Κατάσταση Υπηρεσιών"
 
 msgid "Admin / Profile / Account Summary"
-msgstr ""
+msgstr "Διαχείρηση / Προφίλ / Σύνοψη Λογαριασμού"
 
 msgid "Admin / Profile / Language"
-msgstr ""
+msgstr "Διαχείρηση / Προφίλ / Γλώσσα"
 
 msgid "Admin / Profile / Layout"
-msgstr ""
+msgstr "Διαχείρηση / Προφίλ / Διάταξη"
 
 msgid "Admin / Profile / Password"
-msgstr ""
+msgstr "Διαχείρηση / Προφίλ / Κωδικός"
 
 msgid "Admin / Profile / Personal Data"
-msgstr ""
+msgstr "Διαχείρηση / Προφίλ / Προσωπικά Δεδομένα"
 
 msgid "Admin / Settings"
-msgstr ""
+msgstr "Διαχείρηση / Ρυθμίσεις"
 
 msgid "Admin / Settings / IP Addresses Management"
-msgstr ""
+msgstr "Διαχείρηση / Ρυθμίσεις / Διαχείριση IP διευθύνσεων"
 
 msgid "Admin / Settings / Languages"
-msgstr ""
+msgstr "Διαχείρηση / Ρυθμίσεις / Γλώσσες"
 
 msgid "Admin / Settings / Lost Password Email"
-msgstr ""
+msgstr "Διαχείρηση / Ρυθμίσεις / Email Χαμένου Κωδικού"
 
 msgid "Admin / Settings / Plugin Management"
 msgstr ""
@@ -678,10 +678,10 @@ msgid "Admin / System Tools / i-MSCP Updates"
 msgstr ""
 
 msgid "Admin / Users / Add Admin"
-msgstr ""
+msgstr "Διαχείρηση / Χρήστες / Προσθήκη Διαχειριστή"
 
 msgid "Admin / Users / Add Reseller"
-msgstr ""
+msgstr "Διαχείρηση / Χρήστες / Προσθήκη Μεταπωλητή"
 
 msgid "Admin / Users / Circular"
 msgstr ""
@@ -690,16 +690,16 @@ msgid "Admin / Users / Customers Assignment"
 msgstr ""
 
 msgid "Admin / Users / Edit Reseller"
-msgstr ""
+msgstr "Διαχείρηση / Χρήστες / Επεξεργασία Μεταπωλητή"
 
 msgid "Admin / Users / Overview"
-msgstr ""
+msgstr "Διαχείρηση / Χρήστες / Επισκόπηση"
 
 msgid "Admin / Users / Overview / Domain Details"
-msgstr ""
+msgstr "Διαχείρηση / Χρήστες / Επισκόπηση / Λεπτομέρειες Domain"
 
 msgid "Admin / Users / Overview / Edit Admin"
-msgstr ""
+msgstr "Διαχείρηση / Χρήστες / Επισκόπηση / Επεξεργασία Domain"
 
 msgid "Admin / Users / Resellers Assignment"
 msgstr ""
@@ -723,7 +723,7 @@ msgid "Admin/IP usage statistics"
 msgstr ""
 
 msgid "Administrator"
-msgstr ""
+msgstr "Διαχειριστής"
 
 msgid "Administrator and Reseller levels"
 msgstr ""
@@ -4404,6 +4404,9 @@ msgid "Secure connection"
 msgstr ""
 
 msgid "Security code"
+msgstr ""
+
+msgid "Security code has expired"
 msgstr ""
 
 msgid "Select all entries for deletion."
