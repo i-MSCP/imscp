@@ -2,10 +2,12 @@
 <script>
     $(function () {
         if (!$("#add_update").length) {
-            $("input,textarea").prop('disabled', true);
+            <!-- BDP: ssl_certificate_disabled_fields -->
+            $("input,textarea").prop("disabled", true);
+            <!-- EDP: ssl_certificate_disabled_fields -->
         }
 
-        $("input[name='allow_hsts']").change(
+        $("#allow_hsts").change(
             function () {
                 if ($("#allow_hsts").is(':checked')) {
                     $("#tr_hsts_max_age_data, #tr_hsts_include_subdomains_data").show();
@@ -13,10 +15,10 @@
                     $("#tr_hsts_max_age_data, #tr_hsts_include_subdomains_data").hide();
                 }
             }
-        ).trigger('change');
+        ).trigger("change");
 
         $("#selfsigned").change(function () {
-            if ($(this).is(':checked')) {
+            if ($(this).is(":checked")) {
                 $(".input_fields").hide();
             } else {
                 $(".input_fields").show();
@@ -43,6 +45,7 @@
             <td>{STATUS}</td>
         </tr>
         <!-- EDP: ssl_certificate_status -->
+        <!-- BDP: ssl_certificate_hsts -->
         <tr>
             <td><label for="allow_hsts">{TR_ALLOW_HSTS}</label></td>
             <td><input type="checkbox" id="allow_hsts" name="allow_hsts"{HSTS_CHECKED}></td>
@@ -61,14 +64,20 @@
             </td>
             <td><input type="checkbox" id="hsts_include_subdomains" name="hsts_include_subdomains"{HSTS_INCLUDE_SUBDOMAINS_CHECKED}></td>
         </tr>
+        <!-- EDP: ssl_certificate_hsts -->
+        <!-- BDP: ssl_certificate_selfsigned -->
         <tr>
             <td><label for="selfsigned">{TR_GENERATE_SELFSIGNED_CERTIFICAT}</label></td>
             <td><input type="checkbox" id="selfsigned" name="selfsigned"></td>
         </tr>
+        <!-- EDP: ssl_certificate_selfsigned -->
+        <!-- BDP: ssl_certificate_pk_pwd -->
         <tr class="input_fields">
             <td><label for="passphrase">{TR_PASSWORD}</label></td>
             <td><input id="passphrase" type="password" name="passphrase" value="" autocomplete="off"></td>
         </tr>
+        <!-- EDP: ssl_certificate_pk_pwd -->
+        <!-- BDP: ssl_certificate_certchain -->
         <tr class="input_fields">
             <td><label for="private_key">{TR_PRIVATE_KEY}</label></td>
             <td><textarea name="private_key" id="private_key">{KEY_CERT}</textarea></td>
@@ -81,12 +90,17 @@
             <td><label for="ca_bundle">{TR_CA_BUNDLE}</label></td>
             <td><textarea name="ca_bundle" id="ca_bundle">{CA_BUNDLE}</textarea></td>
         </tr>
+        <!-- EDP: ssl_certificate_certchain -->
         </tbody>
     </table>
     <div class="buttons">
         <!-- BDP: ssl_certificate_actions -->
+        <!-- BDP: ssl_certificate_action_update -->
         <input name="add_update" id="add_update" type="submit" value="{TR_ACTION}">
+        <!-- EDP: ssl_certificate_action_update -->
+        <!-- BDP: ssl_certificate_action_delete -->
         <input name="delete" id="delete" type="submit" value="{TR_DELETE}">
+        <!-- EDP: ssl_certificate_action_delete -->
         <input name="cert_id" type="hidden" value="{CERT_ID}">
         <!-- EDP: ssl_certificate_actions -->
         <a class="link_as_button" href="domains_manage.php">{TR_CANCEL}</a>

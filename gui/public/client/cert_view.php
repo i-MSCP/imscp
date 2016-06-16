@@ -173,7 +173,7 @@ function client_generateSelfSignedCert($domainName)
         return false;
     }
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetchRow();
     $row['domain_name'] = $domainName;
 
     if (!($sslConfigFilePath = _client_generateOpenSSLConfFile($row))) {
@@ -250,8 +250,8 @@ function client_addSslCert($domainId, $domainType)
         return;
     }
 
-    if (!isset($_POST['passphrase']) || !isset($_POST['private_key']) || !isset($_POST['certificate']) ||
-        !isset($_POST['ca_bundle']) || !isset($_POST['cert_id'])
+    if (!isset($_POST['passphrase']) || !isset($_POST['private_key']) || !isset($_POST['certificate'])
+        || !isset($_POST['ca_bundle']) || !isset($_POST['cert_id'])
     ) {
         showBadRequestErrorPage();
     }
@@ -394,7 +394,7 @@ function client_addSslCert($domainId, $domainType)
     } catch (iMSCP_Exception $e) {
         $db->rollBack();
         write_log('Unable to add/update SSL certificate in database', E_USER_ERROR);
-        set_page_message('An unexpected error occurred. Please contact your reseller.');
+        set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
     }
 }
 
@@ -465,48 +465,46 @@ function client_generatePage($tpl, $domainId, $domainType)
     $stmt = exec_query('SELECT * FROM ssl_certs WHERE domain_id = ? AND domain_type = ?', array($domainId, $domainType));
 
     if ($stmt->rowCount()) {
-        $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+        $row = $stmt->fetchRow();
         $dynTitle = customerHasFeature('ssl') && $row['status'] == 'ok' ? tr('Edit SSL certificate') : tr('Show SSL certificate');
         $certId = $row['cert_id'];
         $privateKey = tohtml($row['private_key']);
         $certificate = tohtml($row['certificate']);
         $caBundle = tohtml($row['ca_bundle']);
-        $allowHSTS = ($row['allow_hsts'] == 'on') ? true : false;
+        $allowHSTS = $row['allow_hsts'] == 'on';
         $hstsMaxAge = $row['hsts_max_age'];
-        $hstsIncludeSubDomains = ($row['hsts_include_subdomains'] == 'on') ? true : false;
+        $hstsIncludeSubDomains = $row['hsts_include_subdomains'] == 'on';
         $trAction = tr('Update');
         $status = $row['status'];
         $tpl->assign('STATUS', in_array($status, array('toadd', 'tochange', 'todelete', 'ok'))
-            ? translate_dmn_status($status)
-            : '<span style="color: red;font-weight: bold">' . tr('Invalid SSL certificate') . "</span>");
+            ? translate_dmn_status($status) : '<span style="color: red;font-weight: bold">' . tr('Invalid SSL certificate') . "</span>");
+    } elseif (customerHasFeature('ssl')) {
+        $dynTitle = tr('Add SSL certificate');
+        $trAction = tr('Add');
+        $certId = '0';
+        $privateKey = '';
+        $certificate = '';
+        $caBundle = '';
+        $allowHSTS = false;
+        $hstsMaxAge = '31536000';
+        $hstsIncludeSubDomains = false;
+        $tpl->assign('SSL_CERTIFICATE_STATUS', '');
     } else {
-        if (customerHasFeature('ssl')) {
-            $dynTitle = tr('Add SSL certificate');
-            $trAction = tr('Add');
-            $certId = '0';
-            $privateKey = '';
-            $certificate = '';
-            $caBundle = '';
-            $allowHSTS = false;
-            $hstsMaxAge = '31536000';
-            $hstsIncludeSubDomains = false;
-            $tpl->assign('SSL_CERTIFICATE_STATUS', '');
-        } else {
-            set_page_message('SSL feature is currently disabled.', 'static_warning');
-            redirectTo('domains_manage.php');
-            return;
-        }
+        set_page_message('SSL feature is currently disabled.', 'static_warning');
+        redirectTo('domains_manage.php');
+        return;
     }
 
-    if (customerHasFeature('ssl') && isset($_POST['cert_id']) && isset($_POST['private_key']) &&
-        isset($_POST['certificate']) && isset($_POST['ca_bundle'])
+    if (customerHasFeature('ssl') && isset($_POST['cert_id']) && isset($_POST['private_key'])
+        && isset($_POST['certificate']) && isset($_POST['ca_bundle'])
     ) {
         $certId = $_POST['cert_id'];
         $privateKey = $_POST['private_key'];
         $certificate = $_POST['certificate'];
         $caBundle = $_POST['ca_bundle'];
         $allowHSTS = isset($_POST['allow_hsts']);
-        $hstsMaxAge = $allowHSTS && isset($_POST['hsts_max_age']) && $_POST['hsts_max_age'] != '' && $_POST['hsts_max_age'] >= 0 ? intval($_POST['hsts_max_age']) : 31536000;
+        $hstsMaxAge = ($allowHSTS && isset($_POST['hsts_max_age']) && $_POST['hsts_max_age'] != '' && $_POST['hsts_max_age'] >= 0)
+            ? intval($_POST['hsts_max_age']) : 31536000;
         $hstsIncludeSubDomains = $allowHSTS && isset($_POST['hsts_include_subdomains']);
     }
 

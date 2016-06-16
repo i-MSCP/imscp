@@ -84,12 +84,14 @@ DISTRIBUTIONS
     Fixed: libpam-mysql package - possible segfault (bugs affecting all distributions)
 
 FRONTEND
+    
     Added: Datatable for domains, subdomains, domain aliases and DNS resource records (client level)
     Added: Datatable for the file system information table (admin level)
     Added: iMSCP\Crypt library
     Added: iMSCP\Net class - Allow to get list of network devices and IP addresses (stdlib)
     Added: \iMSCP\Json\LazyDecoder class for lazy-decoding of JSON data
     Added: Exclamation icon
+    Added: onParseTemplate event (event triggered when a template is parsed)
     Added: onSendMail event (event triggered each time a mail is sent)
     Added: SPF DNS resource record type (validated as a TXT record) (client level)
     Added: Support for .phtml template files (stdlib)

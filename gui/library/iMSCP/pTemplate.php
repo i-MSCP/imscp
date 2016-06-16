@@ -158,7 +158,7 @@ class iMSCP_pTemplate
     }
 
     /**
-     * Sets templates root direcotry.
+     * Sets templates root directory.
      *
      * @throws iMSCP_Exception
      * @param string $rootDir
@@ -613,6 +613,12 @@ class iMSCP_pTemplate
      */
     public function parse($pname, $tname)
     {
+        $this->eventManager->dispatch(iMSCP_Events::onParseTemplate, array(
+            'pname' => $pname,
+            'tname' => $tname,
+            'templateEngine' => $this
+        ));
+
         if (!preg_match('/[A-Z0-9][A-Z0-9\_]*/', $pname)) {
             return;
         }

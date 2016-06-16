@@ -1207,6 +1207,17 @@ class iMSCP_Events
     const onAfterLoadTemplateFile = 'onAfterLoadTemplateFile';
 
     /**
+     * The onbeforeParseTemplate event is triggered before template parsing occurs
+     * 
+     * The listener receive an iMSCP_Events_Event object with the following parameters:
+     * 
+     * pname: Parent template name
+     * tname: template name
+     * templateEngine: iMSCP_pTemplate instance
+     */
+    const onParseTemplate = 'onParseTemplate';
+
+    /**
      * The onBeforeGenerateNavigation event is triggeed before the navigation is generated.
      *
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
