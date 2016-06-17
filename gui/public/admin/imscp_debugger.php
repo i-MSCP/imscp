@@ -540,7 +540,7 @@ if (isset($_GET['action'])) {
                 set_page_message(tr('Daemon request failed.'), 'error');
             }
         } else {
-            set_page_message(tr('There is no pending tasks. Operation canceled..'), 'warning');
+            set_page_message(tr('There is no pending task. Operation canceled.'), 'warning');
         }
         redirectTo('imscp_debugger.php');
     } elseif ($_GET['action'] == 'change' && (isset($_GET['id']) && isset($_GET['type']))) {
