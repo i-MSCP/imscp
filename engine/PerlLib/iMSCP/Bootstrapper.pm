@@ -45,6 +45,7 @@ STDOUT->autoflush(1);
 STDERR->autoflush(1);
 
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+$ENV{'HOME'} = '/root';
 
 =head1 DESCRIPTION
 

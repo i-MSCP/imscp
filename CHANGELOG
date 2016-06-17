@@ -29,6 +29,7 @@ BACKEND
     Fixed: eth0 is hardcoded in i-MSCP network interface provider
     Fixed: Ignore user-specific options if any ~/.my.cnf file when running mysqldump (iMSCP::Database::mysql::dumpdb)
     Fixed: Mails sent from Backend could be rejected if sender email domain is hosted externally
+    Fixed: Make sure that the `root' user HOME directory environment variable is defined
     Fixed: Many inconsistencies in iMSCP::Getopt
     Improvement: Allow registering listeners on many events at once (Event::Manager)
     Introduced: HSTS (HTTP Strict Transport Security) feature
