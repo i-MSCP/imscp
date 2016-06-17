@@ -46,7 +46,7 @@ function debugger_getUserErrors($tpl)
     );
 
     if (!$stmt->rowCount()) {
-        $tpl->assign(array('USER_ITEM' => '', 'TR_USER_MESSAGE' => tr('No errors')));
+        $tpl->assign(array('USER_ITEM' => '', 'TR_USER_MESSAGE' => tr('No error found')));
         $tpl->parse('USER_MESSAGE', 'user_message');
     } else {
         while ($row = $stmt->fetchRow()) {
@@ -79,7 +79,7 @@ function debugger_getDmnErrors($tpl)
     );
 
     if (!$stmt->rowCount()) {
-        $tpl->assign(array('DMN_ITEM' => '', 'TR_DMN_MESSAGE' => tr('No errors')));
+        $tpl->assign(array('DMN_ITEM' => '', 'TR_DMN_MESSAGE' => tr('No error found')));
         $tpl->parse('DMN_MESSAGE', 'dmn_message');
     } else {
         while ($row = $stmt->fetchRow()) {
@@ -112,7 +112,7 @@ function debugger_getAlsErrors($tpl)
     );
 
     if (!$stmt->rowCount()) {
-        $tpl->assign(array('ALS_ITEM' => '', 'TR_ALS_MESSAGE' => tr('No errors')));
+        $tpl->assign(array('ALS_ITEM' => '', 'TR_ALS_MESSAGE' => tr('No error found')));
         $tpl->parse('ALS_MESSAGE', 'als_message');
     } else {
         while ($row = $stmt->fetchRow()) {
@@ -146,7 +146,7 @@ function debugger_getSubErrors($tpl)
     );
 
     if (!$stmt->rowCount()) {
-        $tpl->assign(array('SUB_ITEM' => '', 'TR_SUB_MESSAGE' => tr('No errors')));
+        $tpl->assign(array('SUB_ITEM' => '', 'TR_SUB_MESSAGE' => tr('No error found')));
         $tpl->parse('SUB_MESSAGE', 'sub_message');
     } else {
         while ($row = $stmt->fetchRow()) {
@@ -181,7 +181,7 @@ function debugger_getAlssubErrors($tpl)
     );
 
     if (!$stmt->rowCount()) {
-        $tpl->assign(array('ALSSUB_ITEM' => '', 'TR_ALSSUB_MESSAGE' => tr('No errors')));
+        $tpl->assign(array('ALSSUB_ITEM' => '', 'TR_ALSSUB_MESSAGE' => tr('No error found')));
         $tpl->parse('ALSSUB_MESSAGE', 'alssub_message');
     } else {
         while ($row = $stmt->fetchRow()) {
@@ -214,7 +214,7 @@ function debugger_getCustomDNSErrors($tpl)
     );
 
     if (!$stmt->rowCount()) {
-        $tpl->assign(array('CUSTOM_DNS_ITEM' => '', 'TR_CUSTOM_DNS_MESSAGE' => tr('No errors')));
+        $tpl->assign(array('CUSTOM_DNS_ITEM' => '', 'TR_CUSTOM_DNS_MESSAGE' => tr('No error found')));
         $tpl->parse('CUSTOM_DNS_MESSAGE', 'custom_dns_message');
     } else {
         while ($row = $stmt->fetchRow()) {
@@ -256,7 +256,7 @@ function debugger_getHtaccessErrors($tpl)
     );
 
     if (!$stmt->rowCount()) {
-        $tpl->assign(array('HTACCESS_ITEM' => '', 'TR_HTACCESS_MESSAGE' => tr('No errors')));
+        $tpl->assign(array('HTACCESS_ITEM' => '', 'TR_HTACCESS_MESSAGE' => tr('No error found')));
         $tpl->parse('HTACCESS_MESSAGE', 'htaccess_message');
     } else {
         while ($row = $stmt->fetchRow()) {
@@ -286,7 +286,7 @@ function debugger_getFtpUserErrors($tpl)
         array('ok', 'disabled', 'toadd', 'tochange', 'toenable', 'todisable', 'todelete')
     );
     if (!$stmt->rowCount()) {
-        $tpl->assign(array('FTP_ITEM' => '', 'TR_FTP_MESSAGE' => tr('No errors')));
+        $tpl->assign(array('FTP_ITEM' => '', 'TR_FTP_MESSAGE' => tr('No error found')));
         $tpl->parse('FTP_MESSAGE', 'ftp_message');
     } else {
         while ($row = $stmt->fetchRow()) {
@@ -320,7 +320,7 @@ function debugger_getMailsErrors($tpl)
     );
 
     if (!$stmt->rowCount()) {
-        $tpl->assign(array('MAIL_ITEM' => '', 'TR_MAIL_MESSAGE' => tr('No errors')));
+        $tpl->assign(array('MAIL_ITEM' => '', 'TR_MAIL_MESSAGE' => tr('No error found')));
         $tpl->parse('MAIL_MESSAGE', 'mail_message');
     } else {
         while ($row = $stmt->fetchRow()) {
@@ -439,7 +439,7 @@ function debugger_getPluginItemErrors($tpl)
     }
 
     if (!$itemFound) {
-        $tpl->assign(array('PLUGIN_ITEM_ITEM' => '', 'TR_PLUGIN_ITEM_MESSAGE' => tr('No errors')));
+        $tpl->assign(array('PLUGIN_ITEM_ITEM' => '', 'TR_PLUGIN_ITEM_MESSAGE' => tr('No error found')));
         $tpl->parse('PLUGIN_ITEM_MESSAGE', 'plugin_item_message');
     }
 }
@@ -453,7 +453,7 @@ function debugger_getPluginItemErrors($tpl)
  * @param int $itemId item unique identifier
  * @return bool
  */
-function debugger_setPluginItemToChange($pluginName, $table, $field, $itemId)
+function debugger_changePluginItemStatus($pluginName, $table, $field, $itemId)
 {
     /** @var iMSCP_Plugin_Manager $pluginManager */
     $pluginManager = iMSCP_Registry::get('pluginManager');
@@ -540,7 +540,7 @@ if (isset($_GET['action'])) {
                 set_page_message(tr('Daemon request failed.'), 'error');
             }
         } else {
-            set_page_message(tr('Nothing to do. Daemon request has been cancelled.'), 'warning');
+            set_page_message(tr('There is no pending tasks. Operation canceled..'), 'warning');
         }
         redirectTo('imscp_debugger.php');
     } elseif ($_GET['action'] == 'change' && (isset($_GET['id']) && isset($_GET['type']))) {
@@ -579,7 +579,7 @@ if (isset($_GET['action'])) {
                 break;
             default:
                 if (isset($_GET['table']) && isset($_GET['field'])) {
-                    if (!debugger_setPluginItemToChange($_GET['type'], $_GET['table'], $_GET['field'], $_GET['id'])) {
+                    if (!debugger_changePluginItemStatus($_GET['type'], $_GET['table'], $_GET['field'], $_GET['id'])) {
                         set_page_message(tr('Unknown type.'), 'error');
                     } else {
                         set_page_message(tr('Done'), 'success');
@@ -657,9 +657,9 @@ $tpl->assign(array(
     'TR_HTACCESS_ERRORS' => tr('Htaccess errors'),
     'TR_PLUGINS_ERRORS' => tr('Plugin errors'),
     'TR_PLUGIN_ITEM_ERRORS' => tr('Plugin item errors'),
-    'TR_DAEMON_TOOLS' => tr('i-MSCP Daemon tools'),
-    'TR_EXEC_REQUESTS' => tr('Execute requests'),
-    'TR_CHANGE_STATUS' => tr("Set status to 'tochange'"),
+    'TR_DAEMON_TOOLS' => tr('Pending tasks'),
+    'TR_EXEC_REQUESTS' => tr('Execute tasks'),
+    'TR_CHANGE_STATUS' => tr("Change status of this item for a new attempt"),
     'EXEC_COUNT' => $rqstCount
 ));
 
