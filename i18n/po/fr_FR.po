@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-16 20:04+0200\n"
-"PO-Revision-Date: 2016-06-16 18:06+0000\n"
+"POT-Creation-Date: 2016-06-17 10:07+0200\n"
+"PO-Revision-Date: 2016-06-17 08:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/i-mscp/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -1158,6 +1158,9 @@ msgstr "Changer"
 
 msgid "Change personal data"
 msgstr "Modifier les informations personnelles"
+
+msgid "Change status of this item for a new attempt"
+msgstr ""
 
 msgid "Check for update"
 msgstr "Vérification des mises à jour"
@@ -2385,8 +2388,8 @@ msgstr "Erreurs"
 msgid "Excl. default mails"
 msgstr "Exclure les e-mails par défaut"
 
-msgid "Execute requests"
-msgstr "Exécuter requête"
+msgid "Execute tasks"
+msgstr ""
 
 msgid "Expire date"
 msgstr "Date d'expiration"
@@ -3301,8 +3304,8 @@ msgstr "Aucun comptes clients trouvés."
 msgid "No database update available."
 msgstr "Aucun mise à jour pour la base de données disponible."
 
-msgid "No errors"
-msgstr "Aucune erreur"
+msgid "No error found"
+msgstr ""
 
 msgid "No file was uploaded."
 msgstr "Aucun fichier n'a été téléversé."
@@ -3414,9 +3417,6 @@ msgstr "Rien n'a été supprimé."
 
 msgid "Nothing has been scheduled for deactivation."
 msgstr "Rien ne va être désactivé."
-
-msgid "Nothing to do. Daemon request has been cancelled."
-msgstr "Rien à faire. La requête du démon a été annulée."
 
 msgid "Notices, Warnings and Errors"
 msgstr "Remarques, avertissements et erreurs"
@@ -3650,6 +3650,9 @@ msgstr "Les mots de passes ne correspondent pas."
 
 msgid "Path"
 msgstr "Chemin d'accès"
+
+msgid "Pending tasks"
+msgstr ""
 
 msgid "Percent"
 msgstr "Pourcentage"
@@ -4407,7 +4410,7 @@ msgid "Security code"
 msgstr "Code de sécurité"
 
 msgid "Security code has expired"
-msgstr ""
+msgstr "Le code de sécurité a expiré."
 
 msgid "Select all entries for deletion."
 msgstr "Selectionner toutes les entrées pour suppression."
@@ -4512,9 +4515,6 @@ msgstr "Statut des services"
 
 msgid "Sessions"
 msgstr "Sessions"
-
-msgid "Set status to 'tochange'"
-msgstr "Mettre le statut à 'à changer'"
 
 msgid "Settings"
 msgstr "Paramètres"
@@ -4940,6 +4940,9 @@ msgid ""
 "There is an Error inside your package. Please check it!<br>Refresh your site"
 " to see the new status!"
 msgstr "Il y a une erreur dans le paquet. Veuillez le vérifier !<br>Rafraichissez votre site pour voir le nouveau statut !"
+
+msgid "There is no pending task. Operation canceled."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5984,9 +5987,6 @@ msgstr "i-MSCP - Gestion de logiciels"
 
 msgid "i-MSCP / Software Installer / Management"
 msgstr "i-MSCP / Installation de logiciel / Gestion"
-
-msgid "i-MSCP Daemon tools"
-msgstr "Requêtes en attente"
 
 msgid "i-MSCP Software installer / Web software repository"
 msgstr "i-MSCP Installateur de logiciel / Dépôt de logiciels Web"

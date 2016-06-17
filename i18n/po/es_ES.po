@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-16 20:04+0200\n"
-"PO-Revision-Date: 2016-06-16 18:06+0000\n"
+"POT-Creation-Date: 2016-06-17 10:07+0200\n"
+"PO-Revision-Date: 2016-06-17 08:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/i-mscp/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -1157,6 +1157,9 @@ msgstr "Cambiar"
 
 msgid "Change personal data"
 msgstr "Cambiar datos personales"
+
+msgid "Change status of this item for a new attempt"
+msgstr ""
 
 msgid "Check for update"
 msgstr "¡Buscar actualizaciones!"
@@ -2384,8 +2387,8 @@ msgstr "Errores"
 msgid "Excl. default mails"
 msgstr "Excluir correos por defecto"
 
-msgid "Execute requests"
-msgstr "Ejecutar solicitudes"
+msgid "Execute tasks"
+msgstr ""
 
 msgid "Expire date"
 msgstr "Fecha de expiración"
@@ -3300,8 +3303,8 @@ msgstr "No se encontraron cuentas de clientes."
 msgid "No database update available."
 msgstr "Ninguna actualización de base de datos disponible."
 
-msgid "No errors"
-msgstr "No hay errores"
+msgid "No error found"
+msgstr ""
 
 msgid "No file was uploaded."
 msgstr "No se cargó ningún archivo."
@@ -3413,9 +3416,6 @@ msgstr "No se ha eliminado Nada."
 
 msgid "Nothing has been scheduled for deactivation."
 msgstr "No se ha programado nada para desactivación."
-
-msgid "Nothing to do. Daemon request has been cancelled."
-msgstr ""
 
 msgid "Notices, Warnings and Errors"
 msgstr "Avisos, advertencias y errores"
@@ -3649,6 +3649,9 @@ msgstr "Las contraseñas no coinciden"
 
 msgid "Path"
 msgstr "Ruta"
+
+msgid "Pending tasks"
+msgstr ""
 
 msgid "Percent"
 msgstr "Porcentaje"
@@ -4512,9 +4515,6 @@ msgstr "Estado de los servicios"
 msgid "Sessions"
 msgstr "Sesiones"
 
-msgid "Set status to 'tochange'"
-msgstr "Establecer el estado a 'tochange '"
-
 msgid "Settings"
 msgstr "Configuraciones"
 
@@ -4938,6 +4938,9 @@ msgstr "Los valores no deben ser iguales"
 msgid ""
 "There is an Error inside your package. Please check it!<br>Refresh your site"
 " to see the new status!"
+msgstr ""
+
+msgid "There is no pending task. Operation canceled."
 msgstr ""
 
 #, php-format
@@ -5983,9 +5986,6 @@ msgstr "i-MSCP - Administración de Software"
 
 msgid "i-MSCP / Software Installer / Management"
 msgstr "i-MSCP / Instalador de Software / Administración"
-
-msgid "i-MSCP Daemon tools"
-msgstr "i-MSCP - Herramientas del Demonio"
 
 msgid "i-MSCP Software installer / Web software repository"
 msgstr "Instalador de Software i-MSCP / Repositorio de Software Web"

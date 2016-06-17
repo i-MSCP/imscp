@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-16 20:04+0200\n"
-"PO-Revision-Date: 2016-06-16 18:06+0000\n"
+"POT-Creation-Date: 2016-06-17 10:07+0200\n"
+"PO-Revision-Date: 2016-06-17 08:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -1158,6 +1158,9 @@ msgstr "變更"
 
 msgid "Change personal data"
 msgstr "變更個人資料"
+
+msgid "Change status of this item for a new attempt"
+msgstr ""
 
 msgid "Check for update"
 msgstr "檢查更新"
@@ -2385,8 +2388,8 @@ msgstr "錯誤"
 msgid "Excl. default mails"
 msgstr "預設郵件除外"
 
-msgid "Execute requests"
-msgstr "執行請求"
+msgid "Execute tasks"
+msgstr ""
 
 msgid "Expire date"
 msgstr "到期日"
@@ -3301,8 +3304,8 @@ msgstr "找不到客戶帳號。"
 msgid "No database update available."
 msgstr "沒有可用的資料庫更新"
 
-msgid "No errors"
-msgstr "沒有發現任何錯誤"
+msgid "No error found"
+msgstr ""
 
 msgid "No file was uploaded."
 msgstr "沒有檔案上傳。"
@@ -3414,9 +3417,6 @@ msgstr "沒有刪除任何東西。"
 
 msgid "Nothing has been scheduled for deactivation."
 msgstr "沒有任何排程將被停用。"
-
-msgid "Nothing to do. Daemon request has been cancelled."
-msgstr "沒有做任何動作。背景需求已被取消。"
 
 msgid "Notices, Warnings and Errors"
 msgstr "通知，警告和錯誤"
@@ -3650,6 +3650,9 @@ msgstr "密碼不正確！"
 
 msgid "Path"
 msgstr "路徑"
+
+msgid "Pending tasks"
+msgstr ""
 
 msgid "Percent"
 msgstr "已用百分比"
@@ -4513,9 +4516,6 @@ msgstr "伺服器狀態"
 msgid "Sessions"
 msgstr "工作階段"
 
-msgid "Set status to 'tochange'"
-msgstr "設定狀態為 '要變更'"
-
 msgid "Settings"
 msgstr "設定"
 
@@ -4940,6 +4940,9 @@ msgid ""
 "There is an Error inside your package. Please check it!<br>Refresh your site"
 " to see the new status!"
 msgstr "有一個錯誤在您的套件裡面。請檢查!<br>重整您的網站來確認新的狀態!"
+
+msgid "There is no pending task. Operation canceled."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5981,9 +5984,6 @@ msgstr "i-MSCP - 軟體管理"
 
 msgid "i-MSCP / Software Installer / Management"
 msgstr "i-MSCP / 軟體安裝器 / 管理"
-
-msgid "i-MSCP Daemon tools"
-msgstr "i-MSCP 後台工具"
 
 msgid "i-MSCP Software installer / Web software repository"
 msgstr "i-MSCP 軟體安裝器 / 網站軟體來源"

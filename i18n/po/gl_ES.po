@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-16 20:04+0200\n"
-"PO-Revision-Date: 2016-06-16 18:06+0000\n"
+"POT-Creation-Date: 2016-06-17 10:07+0200\n"
+"PO-Revision-Date: 2016-06-17 08:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Galician (Spain) (http://www.transifex.com/i-mscp/i-MSCP/language/gl_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -1157,6 +1157,9 @@ msgstr "Mudar"
 
 msgid "Change personal data"
 msgstr "Mudar datos persoais"
+
+msgid "Change status of this item for a new attempt"
+msgstr ""
 
 msgid "Check for update"
 msgstr "Comprobar se hai actualizacións"
@@ -2384,8 +2387,8 @@ msgstr "Erros"
 msgid "Excl. default mails"
 msgstr ""
 
-msgid "Execute requests"
-msgstr "Solicitudes de execución"
+msgid "Execute tasks"
+msgstr ""
 
 msgid "Expire date"
 msgstr "Data de caducidade"
@@ -3300,7 +3303,7 @@ msgstr ""
 msgid "No database update available."
 msgstr ""
 
-msgid "No errors"
+msgid "No error found"
 msgstr ""
 
 msgid "No file was uploaded."
@@ -3412,9 +3415,6 @@ msgid "Nothing has been deleted."
 msgstr ""
 
 msgid "Nothing has been scheduled for deactivation."
-msgstr ""
-
-msgid "Nothing to do. Daemon request has been cancelled."
 msgstr ""
 
 msgid "Notices, Warnings and Errors"
@@ -3649,6 +3649,9 @@ msgstr ""
 
 msgid "Path"
 msgstr "Ruta"
+
+msgid "Pending tasks"
+msgstr ""
 
 msgid "Percent"
 msgstr "Porcentaxe"
@@ -4512,9 +4515,6 @@ msgstr "Estado do servidor"
 msgid "Sessions"
 msgstr ""
 
-msgid "Set status to 'tochange'"
-msgstr ""
-
 msgid "Settings"
 msgstr "Configuración"
 
@@ -4938,6 +4938,9 @@ msgstr ""
 msgid ""
 "There is an Error inside your package. Please check it!<br>Refresh your site"
 " to see the new status!"
+msgstr ""
+
+msgid "There is no pending task. Operation canceled."
 msgstr ""
 
 #, php-format
@@ -5983,9 +5986,6 @@ msgstr ""
 
 msgid "i-MSCP / Software Installer / Management"
 msgstr ""
-
-msgid "i-MSCP Daemon tools"
-msgstr "Ferramentas do Proceso MDE (Monitor de Disco e Execución) i-MSCP"
 
 msgid "i-MSCP Software installer / Web software repository"
 msgstr ""

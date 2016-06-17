@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-16 20:04+0200\n"
-"PO-Revision-Date: 2016-06-16 18:06+0000\n"
+"POT-Creation-Date: 2016-06-17 10:07+0200\n"
+"PO-Revision-Date: 2016-06-17 08:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/i-mscp/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -1157,6 +1157,9 @@ msgstr "変更"
 
 msgid "Change personal data"
 msgstr "個人情報変更"
+
+msgid "Change status of this item for a new attempt"
+msgstr ""
 
 msgid "Check for update"
 msgstr "更新がないかどうかチェック"
@@ -2384,8 +2387,8 @@ msgstr "エラー"
 msgid "Excl. default mails"
 msgstr "Excl. デフォルトメール"
 
-msgid "Execute requests"
-msgstr "リクエスト実行"
+msgid "Execute tasks"
+msgstr ""
 
 msgid "Expire date"
 msgstr "失効日"
@@ -3300,8 +3303,8 @@ msgstr "顧客アカウントが見つかりません。"
 msgid "No database update available."
 msgstr "利用可能なデータベースの更新はありません。"
 
-msgid "No errors"
-msgstr "エラーなし"
+msgid "No error found"
+msgstr ""
 
 msgid "No file was uploaded."
 msgstr "ファイルをアップロードできませんでした。"
@@ -3413,9 +3416,6 @@ msgstr "何も削除されていない。"
 
 msgid "Nothing has been scheduled for deactivation."
 msgstr "何も無効化が予定されていません。"
-
-msgid "Nothing to do. Daemon request has been cancelled."
-msgstr ""
 
 msgid "Notices, Warnings and Errors"
 msgstr "通知, 警告とエラー"
@@ -3649,6 +3649,9 @@ msgstr "パスワードが一致しません。"
 
 msgid "Path"
 msgstr "パス"
+
+msgid "Pending tasks"
+msgstr ""
 
 msgid "Percent"
 msgstr "パーセント"
@@ -4512,9 +4515,6 @@ msgstr "サービス状態"
 msgid "Sessions"
 msgstr "セッション"
 
-msgid "Set status to 'tochange'"
-msgstr "ステータス '変更' を設定します。"
-
 msgid "Settings"
 msgstr "設定"
 
@@ -4938,6 +4938,9 @@ msgstr "値が等しくてはいけません"
 msgid ""
 "There is an Error inside your package. Please check it!<br>Refresh your site"
 " to see the new status!"
+msgstr ""
+
+msgid "There is no pending task. Operation canceled."
 msgstr ""
 
 #, php-format
@@ -5980,9 +5983,6 @@ msgstr "i-MSCP - ソフトウェア管理"
 
 msgid "i-MSCP / Software Installer / Management"
 msgstr "i-MSCP / ソフトウェアインストール / 管理"
-
-msgid "i-MSCP Daemon tools"
-msgstr "i-MSCP デーモンツール"
 
 msgid "i-MSCP Software installer / Web software repository"
 msgstr "i-MSCP ソフトウェアインストール / Webソフトウェアリポジトリ"

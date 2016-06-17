@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-16 20:04+0200\n"
-"PO-Revision-Date: 2016-06-16 18:06+0000\n"
+"POT-Creation-Date: 2016-06-17 10:07+0200\n"
+"PO-Revision-Date: 2016-06-17 08:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/i-mscp/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -1160,6 +1160,9 @@ msgstr "Aanpassen"
 
 msgid "Change personal data"
 msgstr "Verander persoonlijke informatie"
+
+msgid "Change status of this item for a new attempt"
+msgstr ""
 
 msgid "Check for update"
 msgstr "Controleer op updates"
@@ -2387,8 +2390,8 @@ msgstr "Fouten"
 msgid "Excl. default mails"
 msgstr "Excl. standaard-e-mails"
 
-msgid "Execute requests"
-msgstr "verzoeken nu uitvoeren"
+msgid "Execute tasks"
+msgstr ""
 
 msgid "Expire date"
 msgstr "Verloopdatum"
@@ -3303,8 +3306,8 @@ msgstr "Geen klantenaccount gevonden"
 msgid "No database update available."
 msgstr "Geen databankupdate beschikbaar."
 
-msgid "No errors"
-msgstr "Geen fouten"
+msgid "No error found"
+msgstr ""
 
 msgid "No file was uploaded."
 msgstr "Er is geen bestand geüpload."
@@ -3416,9 +3419,6 @@ msgstr "Er is niets verwijderd"
 
 msgid "Nothing has been scheduled for deactivation."
 msgstr "Er is niets ingepland om gedeactiveerd te worden"
-
-msgid "Nothing to do. Daemon request has been cancelled."
-msgstr "Niks te doen. Daemon-verzoek is geannuleerd."
 
 msgid "Notices, Warnings and Errors"
 msgstr "Opmerkingen, Waarschuwingen en Fouten"
@@ -3652,6 +3652,9 @@ msgstr "Wachtwoorden komen niet overeen"
 
 msgid "Path"
 msgstr "Pad"
+
+msgid "Pending tasks"
+msgstr ""
 
 msgid "Percent"
 msgstr "Procent"
@@ -4409,7 +4412,7 @@ msgid "Security code"
 msgstr "Veiligheidscode"
 
 msgid "Security code has expired"
-msgstr ""
+msgstr "Veligheidscode is verlopen"
 
 msgid "Select all entries for deletion."
 msgstr "Alle invoer markeren voor verwijdering"
@@ -4514,9 +4517,6 @@ msgstr "Serverstatus"
 
 msgid "Sessions"
 msgstr "Sessies"
-
-msgid "Set status to 'tochange'"
-msgstr "Verander status naar 'veranderen'"
 
 msgid "Settings"
 msgstr "Instellingen"
@@ -4942,6 +4942,9 @@ msgid ""
 "There is an Error inside your package. Please check it!<br>Refresh your site"
 " to see the new status!"
 msgstr "Er bevindt zich een fout in uw pakket. Gelieve het te controleren!<br>Herlaad uw website om de nieuwe status te zien!"
+
+msgid "There is no pending task. Operation canceled."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5986,9 +5989,6 @@ msgstr "i-MSCP - Softwarebeheer"
 
 msgid "i-MSCP / Software Installer / Management"
 msgstr "i-MSCP / Software-installer / Beheer"
-
-msgid "i-MSCP Daemon tools"
-msgstr "i-MSCP - Daemon tools"
 
 msgid "i-MSCP Software installer / Web software repository"
 msgstr "i-MSCP Software-installer / Softwareberging"

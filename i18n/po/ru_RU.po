@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-16 20:04+0200\n"
-"PO-Revision-Date: 2016-06-16 18:06+0000\n"
+"POT-Creation-Date: 2016-06-17 10:07+0200\n"
+"PO-Revision-Date: 2016-06-17 08:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/i-mscp/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -1160,6 +1160,9 @@ msgstr "Изменить"
 
 msgid "Change personal data"
 msgstr "Изменить персональные данные"
+
+msgid "Change status of this item for a new attempt"
+msgstr ""
 
 msgid "Check for update"
 msgstr "Проверка обновлений"
@@ -2387,8 +2390,8 @@ msgstr "Ошибки"
 msgid "Excl. default mails"
 msgstr "Кроме ящиков по умолчанию"
 
-msgid "Execute requests"
-msgstr "Выполнить запросы"
+msgid "Execute tasks"
+msgstr ""
 
 msgid "Expire date"
 msgstr "Дата истечения"
@@ -3303,8 +3306,8 @@ msgstr "Не найдено учетных записей клиентов."
 msgid "No database update available."
 msgstr "Нет обновлений базы данных."
 
-msgid "No errors"
-msgstr "Ошибок нет"
+msgid "No error found"
+msgstr ""
 
 msgid "No file was uploaded."
 msgstr "Файл не был загружен."
@@ -3416,9 +3419,6 @@ msgstr "Ничего не было удалено"
 
 msgid "Nothing has been scheduled for deactivation."
 msgstr "Ничего не было помечено для деактивации."
-
-msgid "Nothing to do. Daemon request has been cancelled."
-msgstr "Задача отсутствует. Запрос демона был отклонен."
 
 msgid "Notices, Warnings and Errors"
 msgstr "Уведомления, предупреждения и ошибки"
@@ -3652,6 +3652,9 @@ msgstr "Пароли не совпадают."
 
 msgid "Path"
 msgstr "Путь"
+
+msgid "Pending tasks"
+msgstr ""
 
 msgid "Percent"
 msgstr "Процент"
@@ -4515,9 +4518,6 @@ msgstr "Статус служб"
 msgid "Sessions"
 msgstr "Сессия"
 
-msgid "Set status to 'tochange'"
-msgstr "Сменить статус на \"к изменению\""
-
 msgid "Settings"
 msgstr "Настройки"
 
@@ -4942,6 +4942,9 @@ msgid ""
 "There is an Error inside your package. Please check it!<br>Refresh your site"
 " to see the new status!"
 msgstr "Ошибка Вашего пакета. Пожалуйста, проверьте его!<br>Обновите Ваш сайт, чтобы увидеть новый статус!"
+
+msgid "There is no pending task. Operation canceled."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5992,9 +5995,6 @@ msgstr "i-MSCP - Управление ПО"
 
 msgid "i-MSCP / Software Installer / Management"
 msgstr "i-MSCP / Установщик программного обеспечения / Управление"
-
-msgid "i-MSCP Daemon tools"
-msgstr "Инструменты системы i-MSCP"
 
 msgid "i-MSCP Software installer / Web software repository"
 msgstr "i-MSCP - Установка ПО / Web-репозиторий"
