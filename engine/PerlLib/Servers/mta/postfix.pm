@@ -234,7 +234,7 @@ sub addDmn
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddDmn', $data );
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
-    $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, qr/\\.?\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
+    $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
 
     if ($data->{'MAIL_ENABLED'}) { # Mail is managed by this server
         $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, "$data->{'DOMAIN_NAME'}\tOK" );
@@ -260,7 +260,7 @@ sub disableDmn
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDisableDmn', $data );
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
-    $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, qr/\\.?\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
+    $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaDisableDmn', $data );
 }
 
@@ -279,7 +279,7 @@ sub deleteDmn
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDelDmn', $data );
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
-    $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, qr/\\.?\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
+    $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
     $rs ||= iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}" )->remove();
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaDelDmn', $data );
 }
@@ -763,7 +763,7 @@ sub postconf
         return 1;
     }
 
-    $fileContent =~ s/^\Q$_\E\s*=[^\n]+\n//mi for @paramsToRemove;
+    $fileContent =~ s/^\Q$_\E\s*=[^\n]+\n//gim for @paramsToRemove;
     $rs = $file->set( $fileContent );
     $rs ||= $file->save;
 }
