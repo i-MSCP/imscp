@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '229');
+  ('DATABASE_REVISION', '230');
 
 -- --------------------------------------------------------
 
@@ -139,7 +139,6 @@ CREATE TABLE IF NOT EXISTS `domain` (
   `phpini_perm_mail_function` VARCHAR(20) NOT NULL DEFAULT 'yes',
   `domain_external_mail` varchar(15) collate utf8_unicode_ci NOT NULL DEFAULT 'no',
   `external_mail` varchar(15) collate utf8_unicode_ci NOT NULL DEFAULT 'off',
-  `external_mail_dns_ids` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT '',
   `web_folder_protection` varchar(5) collate utf8_unicode_ci NOT NULL DEFAULT 'yes',
   `mail_quota` bigint(20) unsigned NOT NULL,
   PRIMARY KEY (`domain_id`),
@@ -163,7 +162,6 @@ CREATE TABLE IF NOT EXISTS `domain_aliasses` (
   `url_forward` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT 'no',
   `type_forward` varchar(5) collate utf8_unicode_ci DEFAULT NULL,
   `external_mail` varchar(15) collate utf8_unicode_ci NOT NULL DEFAULT 'off',
-  `external_mail_dns_ids` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`alias_id`),
   INDEX `domain_id` (`domain_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

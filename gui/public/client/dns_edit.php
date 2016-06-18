@@ -139,6 +139,33 @@ function client_validate_AAAA($ip, &$errorString)
 }
 
 /**
+ * Validate rdata field for MX DNS resource record
+ *
+ * @param string $pref MX preference
+ * @param string $host MX host
+ * @param string &$errorString Reference to variable, which contain error string
+ * @return bool TRUE if the record is valid, FALSE otherwise
+ */
+function client_validate_MX($pref, $host, &$errorString)
+{
+    if (!is_number($pref) || $pref > 65535) {
+        showBadRequestErrorPage();
+    }
+
+    if ($host === '') {
+        $errorString .= tr('`%s` field cannot be empty.', tr('Host'));
+        return false;
+    }
+
+    if (!isValidDomainName($host)) {
+        $errorString .= tr('Invalid `%s` field.', tr('Host'));
+        return false;
+    }
+
+    return true;
+}
+
+/**
  * Validate rdata field for SPF/TXT DNS resource record
  *
  * @param string $data DNS record data
@@ -207,12 +234,12 @@ function client_validate_SRV($srvName, $proto, $priority, $weight, $port, $host,
     }
 
     if ($host === '') {
-        $errorString .= tr('`%s` field cannot be empty.', tr('Target host'));
+        $errorString .= tr('`%s` field cannot be empty.', tr('Host'));
         return false;
     }
 
     if(!isValidDomainName($host)) {
-        $errorString .= tr('Invalid `%s` field.', tr('Target host'));
+        $errorString .= tr('Invalid `%s` field.', tr('Host'));
         return false;
     }
 
@@ -243,13 +270,11 @@ function client_validate_TTL($ttl)
  */
 function client_create_options($data, $value = null)
 {
-    $cfg = iMSCP_Registry::get('config');
-    $sel = $cfg['HTML_SELECTED'];
     $options = '';
     reset($data);
 
     foreach ($data as $item) {
-        $options .= '<option value="' . $item . '"' . ($item == $value ? $sel : '') . '>' . $item . '</option>';
+        $options .= '<option value="' . $item . '"' . ($item == $value ? ' selected' : '') . '>' . $item . '</option>';
     }
 
     return $options;
@@ -288,6 +313,13 @@ function client_decodeDnsRecordData($data)
                 break;
             case 'CNAME':
                 $cname = $data['domain_text'];
+                break;
+            case 'MX':
+                # Extract priority and host fields
+                if (preg_match('/^(?P<pref>\d+)\s+(?P<host>[^\s]+)/', $data['domain_text'], $matches)) {
+                    $srvPrio = $matches['pref'];
+                    $srvTargetHost = $matches['host'];
+                }
                 break;
             case 'SRV':
                 # Extract service name, protocol name, owner name and ttl fields
@@ -335,7 +367,7 @@ function client_saveDnsRecord($dnsRecordId)
     if (!$dnsRecordId) {
         $dnsRecordType = client_getPost('type');
 
-        if ($dnsRecordClass != 'IN' || !in_array($dnsRecordType, array('A', 'AAAA', 'CNAME', 'SPF', 'SRV', 'TXT'))) {
+        if ($dnsRecordClass != 'IN' || !in_array($dnsRecordType, array('A', 'AAAA', 'CNAME', 'MX', 'SPF', 'SRV', 'TXT'))) {
             showBadRequestErrorPage();
         }
 
@@ -397,7 +429,6 @@ function client_saveDnsRecord($dnsRecordId)
     if ($dnsRecordName !== '' && !preg_match("/(?:.*?\\.)?$domainName\\.$/", $dnsRecordName)) {
         set_page_message(tr('Could not validate DNS resource record: %s', 'out-of-zone data'), 'error');
     } else {
-
         // Remove trailing dot for validation process (will be readded after)
         $dnsRecordName = rtrim($dnsRecordName, '.');
 
@@ -428,10 +459,10 @@ function client_saveDnsRecord($dnsRecordId)
                 $dnsRecordData = client_getPost('dns_cname');
                 if ($dnsRecordData == '@') {
                     // Substitute @ with domain name
-                    $dnsRecordData = $domainName . '.';
+                    $dnsRecordData = $domainName;
                 } elseif ($dnsRecordData != '' && substr($dnsRecordData, -1) !== '.') {
                     // No fully-qualified canonical name, complete it
-                    $dnsRecordData .= '.' . $domainName . '.';
+                    $dnsRecordData .= '.' . $domainName;
                 }
 
                 $dnsRecordData = encode_idna($dnsRecordData);
@@ -444,6 +475,25 @@ function client_saveDnsRecord($dnsRecordId)
 
                 $dnsRecordData .= '.';
                 break;
+            case'MX':
+                $pref = client_getPost('dns_srv_prio');
+                $host = client_getPost('dns_srv_host');
+                $host = encode_idna($host);
+
+                if ($host != '' && substr($host, -1) !== '.') {
+                    // No fully-qualified host, complete it
+                    $host .= '.' . $domainName;
+                }
+                $host = encode_idna($host);
+                // Remove trailing dot for validation process (will be readded after)
+                $host = rtrim($host, '.');
+                
+                if (!client_validate_MX($pref, $host, $errorString)) {
+                    set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
+                }
+
+                $dnsRecordData = sprintf('%d %s.', $pref,  $host);
+                break;
             case 'SRV':
                $srvName = client_getPost('dns_srv_name');
                $srvProto = client_getPost('srv_proto');
@@ -454,10 +504,10 @@ function client_saveDnsRecord($dnsRecordId)
 
                 if ($srvTarget == '@') {
                     // Substitute @ with domain name
-                    $srvTarget = $domainName . '.';
+                    $srvTarget = $domainName;
                 } elseif ($srvTarget != '' && substr($srvTarget, -1) !== '.') {
                     // No fully-qualified target host, complete it
-                    $srvTarget .= '.' . $domainName . '.';
+                    $srvTarget .= '.' . $domainName;
                 }
 
                 $srvTarget = encode_idna($srvTarget);
@@ -604,7 +654,7 @@ function client_generatePage($tpl, $dnsRecordId)
         showBadRequestErrorPage();
     }
 
-    $dnsTypes = client_create_options(array('A', 'AAAA', 'SRV', 'CNAME', 'SPF', 'TXT'), client_getPost('type', $data['domain_type']));
+    $dnsTypes = client_create_options(array('A', 'AAAA', 'SRV', 'CNAME', 'MX', 'SPF', 'TXT'), client_getPost('type', $data['domain_type']));
     $dnsClasses = client_create_options(array('IN'), client_getPost('class', $data['domain_class']));
     $tpl->assign(array(
         'ID' => tohtml($dnsRecordId),
@@ -674,7 +724,7 @@ $tpl->assign(array(
     'TR_DNS_TTL' => tr('TTL'),
     'TR_DNS_SRV_PRIO' => tr('Priority'),
     'TR_DNS_SRV_WEIGHT' => tr('Relative weight'),
-    'TR_DNS_SRV_HOST' => tr('Target host'),
+    'TR_DNS_SRV_HOST' => tr('Host'),
     'TR_DNS_SRV_PORT' => tr('Target port'),
     'TR_DNS_CNAME' => tr('Canonical name'),
     'TR_DNS_TXT_DATA' => tr('Data'),

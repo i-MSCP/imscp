@@ -25,6 +25,7 @@ package Servers::named::bind::installer;
 
 use strict;
 use warnings;
+use File::Basename;
 use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Dir;
@@ -33,10 +34,9 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Net;
 use iMSCP::ProgramFinder;
-use iMSCP::TemplateParser;
 use iMSCP::Service;
+use iMSCP::TemplateParser;
 use Servers::named::bind;
-use File::Basename;
 use version;
 use parent 'Common::SingletonClass';
 

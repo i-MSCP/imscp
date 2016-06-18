@@ -554,10 +554,6 @@ function generateCustomDnsRecordAction($action, $id, $status, $ownedBy = 'custom
             if ($ownedBy === 'custom_dns_feature') {
                 return array(tr('Edit'), tohtml("dns_edit.php?id=$id", 'htmlAttr'));
             }
-
-            if ($ownedBy === 'ext_mail_feature') {
-                return array(tr('Edit'), tohtml("mail_external_edit.php?item=$id", 'htmlAttr'));
-            }
         } elseif ($ownedBy === 'custom_dns_feature') {
             return array(tr('Delete'), tohtml("dns_delete.php?id=$id", 'htmlAttr'));
         }

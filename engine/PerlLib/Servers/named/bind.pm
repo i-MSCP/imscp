@@ -365,27 +365,25 @@ sub addSub
     $rs ||= $self->{'eventManager'}->trigger( 'beforeNamedAddSub', \$wrkDbFileContent, \$subEntry, $data );
     return $rs if $rs;
 
+    my $net = iMSCP::Net->getInstance();
+
     if ($data->{'MAIL_ENABLED'}) {
-        my $subMailEntry = getBloc( "; sub MX entry BEGIN\n", "; sub MX entry ENDING\n", $subEntry );
-        my $subMailEntryContent = '';
-
-        for (keys %{$data->{'MAIL_DATA'}}) {
-            $subMailEntryContent .= process( { MX_DATA => $data->{'MAIL_DATA'}->{$_} }, $subMailEntry );
-        }
-
-        $subEntry = replaceBloc( "; sub MX entry BEGIN\n", "; sub MX entry ENDING\n", $subMailEntryContent, $subEntry );
+        my $baseServerIp = $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
         $subEntry = replaceBloc(
-            "; sub SPF entry BEGIN\n",
-            "; sub SPF entry ENDING\n",
+            "; sub MAIL entry BEGIN\n",
+            "; sub MAIL entry ENDING\n",
             process(
-                { DOMAIN_NAME => $data->{'PARENT_DOMAIN_NAME'} },
-                getBloc( "; sub SPF entry BEGIN\n", "; sub SPF entry ENDING\n", $subEntry )
+                {
+                    BASE_SERVER_IP_TYPE => $net->getAddrVersion( $baseServerIp ) eq 'ipv4' ? 'A' : 'AAAA',
+                    BASE_SERVER_IP      => $baseServerIp,
+                    DOMAIN_NAME         => $data->{'PARENT_DOMAIN_NAME'}
+                },
+                getBloc( "; sub MAIL entry BEGIN\n", "; sub MAIL entry ENDING\n", $subEntry )
             ),
             $subEntry
         );
     } else {
-        $subEntry = replaceBloc( "; sub MX entry BEGIN\n", "; sub MX entry ENDING\n", '', $subEntry );
-        $subEntry = replaceBloc( "; sub SPF entry BEGIN\n", "; sub SPF entry ENDING\n", '', $subEntry );
+        $subEntry = replaceBloc( "; sub MAIL entry BEGIN\n", "; sub MAIL entry ENDING\n", '', $subEntry );
     }
 
     my $domainIP = ($main::imscpConfig{'BASE_SERVER_IP'} eq $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'})
@@ -394,7 +392,7 @@ sub addSub
     $subEntry = process(
         {
             SUBDOMAIN_NAME => $data->{'DOMAIN_NAME'},
-            IP_TYPE        => iMSCP::Net->getInstance()->getAddrVersion( $domainIP ) eq 'ipv4' ? 'A' : 'AAAA',
+            IP_TYPE        => $net->getAddrVersion( $domainIP ) eq 'ipv4' ? 'A' : 'AAAA',
             DOMAIN_IP      => $domainIP
         },
         $subEntry
@@ -659,9 +657,14 @@ sub addCustomDNS
 
     my $origin = '';
     while(my $line = <$fh>) {
+        # Update current $ORIGIN if needed
         $origin = $1 if $line =~ /^\$ORIGIN\s+([^\s;]+).*\n$/;
+
+        # Substitute @ with $ORGIN
         $line =~ s/@/$origin/g if $origin ne '';
-        next if $line =~ /^(\S+)\s+.*?v=spf1\s/ && grep(/^(?:\Q$1\E|\Q$1.$origin\E)\s+.*?v=spf1\s/, @customDNS);
+
+        # Skip default SPF record line if SPF record for the same host exist in @customDNS
+        next if $line =~ /^(\S+).*?\sv=spf1\s/ && grep(/^(?:\Q$1\E|\Q$1.$origin\E)\s+.*?v=spf1\s/, @customDNS);
         $wrkDbFileContent .= $line;
     }
     close( $fh );
@@ -1008,11 +1011,9 @@ sub _addDmnDb
             getBloc( "; dmn MAIL entry BEGIN\n", "; dmn MAIL entry ENDING\n", $tplDbFileContent )
         )
     }
-
     $tplDbFileContent = replaceBloc(
         "; dmn MAIL entry BEGIN\n", "; dmn MAIL entry ENDING\n", $dmnMailEntry, $tplDbFileContent
     );
-    $tplDbFileContent .= "$_\n" for @{$data->{'SPF_RECORDS'}};
 
     if ($data->{'DOMAIN_NAME'} eq $main::imscpConfig{'BASE_SERVER_VHOST'} && defined $wrkDbFileContent) {
         if (exists $data->{'CTM_ALS_ENTRY_ADD'}) {
@@ -1105,7 +1106,8 @@ sub _updateSOAserialNumber
     }
 
     $oldZoneContent = $zoneContent unless defined $$oldZoneContent;
-    if ((my $date, my $nn, my $var) = $$oldZoneContent =~ /^\s+(?:(\d{8})(\d{2})|(\{TIMESTAMP\}))\s*;[^\n]*\n/m) {
+    (my $date, my $nn, my $var) = $$oldZoneContent =~ /^\s+(?:(\d{8})(\d{2})|(\{TIMESTAMP\}))\s*;[^\n]*\n/m;
+    if (defined $date || defined $var) {
         my $todayDate = Date::Simple->new();
 
         if (defined $var) {

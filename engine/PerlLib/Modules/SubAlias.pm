@@ -275,7 +275,7 @@ sub _getMtaData
         DOMAIN_TYPE     => $self->getType(),
         EXTERNAL_MAIL   => $self->{'external_mail'},
         MAIL_ENABLED    => (
-            $self->{'external_mail'} ne 'domain' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
+            $self->{'external_mail'} eq 'off' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
         )
     };
     %{$self->{'mta'}};
@@ -304,30 +304,11 @@ sub _getNamedData
         DOMAIN_NAME        => $self->{'subdomain_alias_name'}.'.'.$self->{'alias_name'},
         PARENT_DOMAIN_NAME => $self->{'alias_name'},
         DOMAIN_IP          => $self->{'ip_number'},
-        USER_NAME          => $userName.'alssub'.$self->{'subdomain_alias_id'}
+        USER_NAME          => $userName.'alssub'.$self->{'subdomain_alias_id'},
+        MAIL_ENABLED    => (
+            $self->{'external_mail'} eq 'off' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
+        )
     };
-
-    # Only no wildcard MX (NOT LIKE '*.%') must be add to existent subdomains
-    if ($self->{'external_mail'} =~ /^(?:domain|filter)$/) {
-        $self->{'named'}->{'MAIL_ENABLED'} = 1;
-
-        my $rdata = iMSCP::Database->factory()->doQuery(
-            'domain_dns_id',
-            '
-                SELECT domain_dns_id, domain_text FROM domain_dns
-                WHERE domain_id = ? AND alias_id = ? AND domain_dns NOT LIKE ? AND domain_type = ? AND owned_by = ?
-            ',
-            $self->{'domain_id'}, $self->{'alias_id'}, '*.%', 'MX', 'ext_mail_feature'
-        );
-        ref $rdata eq 'HASH' or die( $rdata );
-
-        ($self->{'named'}->{'MAIL_DATA'}->{$_} = $rdata->{$_}->{'domain_text'}) =~ s/(.*)\.$/$1./ for keys %{$rdata};
-    } elsif ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) {
-        $self->{'named'}->{'MAIL_ENABLED'} = 1;
-        $self->{'named'}->{'MAIL'}->{1} = "10\tmail.$self->{'alias_name'}.";
-    } else {
-        $self->{'named'}->{'MAIL_ENABLED'} = 0;
-    }
 
     %{$self->{'named'}};
 }

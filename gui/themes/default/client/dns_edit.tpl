@@ -18,16 +18,18 @@
 	}
 
 	function change_dns_type(value) {
-		if (value == 'A') {
+		if(value == 'MX') {
+			dns_show_rows(['name', 'srv_ttl', 'srv_prio', 'srv_host']);
+		} else  if (value == 'A') {
 			dns_show_rows(['name', 'srv_ttl', 'ip_address']);
 		} else if (value == 'AAAA') {
 			dns_show_rows(['name', 'srv_ttl', 'ip_address_v6']);
-		} else if (value == 'SRV') {
-			dns_show_rows(['srv_name', 'srv_protocol', 'name', 'srv_ttl', 'srv_prio', 'srv_weight', 'srv_host', 'srv_port']);
 		} else if (value == 'CNAME') {
 			dns_show_rows(['name', 'srv_ttl', 'cname']);
 		} else if (value == 'SPF' || value == 'TXT') {
 			dns_show_rows(['name', 'srv_ttl', 'txt_data']);
+		} else if (value == 'SRV') {
+			dns_show_rows(['srv_name', 'srv_protocol', 'name', 'srv_ttl', 'srv_prio', 'srv_weight', 'srv_host', 'srv_port']);
 		}
 	}
 

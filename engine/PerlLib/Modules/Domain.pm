@@ -131,7 +131,6 @@ sub add
         my $db = iMSCP::Database->factory();
 
         # Sets the status of any subdomain that belongs to this domain to 'tochange'.
-        # This is needed, else, the DNS resource records for the subdomains are not re-added in DNS zone files.
         # FIXME: This reflect a bad implementation in the way that entities are managed. This will be solved
         # in version 2.0.0.
         my $rs = $db->doQuery(
@@ -468,7 +467,7 @@ sub _getMtaData
         DOMAIN_TYPE     => $self->getType(),
         EXTERNAL_MAIL   => $self->{'external_mail'},
         MAIL_ENABLED    => (
-            $self->{'external_mail'} ne 'domain' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
+            $self->{'external_mail'} eq 'off' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
         )
     };
     %{$self->{'mta'}};
@@ -498,52 +497,9 @@ sub _getNamedData
         DOMAIN_IP       => $self->{'ip_number'},
         USER_NAME       => $userName,
         MAIL_ENABLED    => (
-            $self->{'external_mail'} ne 'domain' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
-        ),
-        SPF_RECORDS     => [ ]
+            $self->{'external_mail'} eq 'off' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
+        )
     };
-
-    return %{$self->{'named'}} unless $action =~ /add/ && $self->{'external_mail'} =~ /^(?:domain|filter|wildcard)$/;
-
-    my $db = iMSCP::Database->factory();
-    my $rdata = $db->doQuery(
-        'domain_dns_id',
-        '
-            SELECT domain_dns_id, domain_dns, domain_text FROM domain_dns
-            WHERE domain_id = ? AND alias_id = ? AND owned_by = ? AND domain_dns_status <> ?
-        ',
-        $self->{'domain_id'}, 0, 'ext_mail_feature', 'todelete'
-    );
-    ref $rdata eq 'HASH' or die( $rdata );
-
-    if (%{$rdata}) {
-        my (@domainHosts, @wildcardHosts);
-
-        # Add SPF records for external MX
-        for(keys %{$rdata}) {
-            (my $host = $rdata->{$_}->{'domain_text'}) =~ s/\d+\s+(.*)\.$/$1/;
-
-            if (index( $rdata->{$_}->{'domain_dns'}, '*' ) != 0) {
-                push @domainHosts, "a:$host";
-            } else {
-                push @wildcardHosts, "a:$host";
-            }
-        }
-
-        if (@domainHosts) {
-            push @{$self->{'named'}->{'SPF_RECORDS'}}, "@\tIN\tTXT\t\"v=spf1 mx @domainHosts -all\""
-        }
-        if (@wildcardHosts) {
-            push @{$self->{'named'}->{'SPF_RECORDS'}}, "*\tIN\tTXT\t\"v=spf1 mx @wildcardHosts -all\""
-        }
-    }
-
-    # We must trigger the Subdomain module whatever the number of entries - See #503
-    $rdata = $db->doQuery(
-        'dummy', 'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_status <> ? AND domain_id = ?',
-        'tochange', 'todelete', $self->{'domain_id'}
-    );
-    ref $rdata eq 'HASH' or die( $rdata );
     %{$self->{'named'}};
 }
 

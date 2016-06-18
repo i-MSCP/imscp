@@ -236,16 +236,10 @@ sub addDmn
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, qr/\\.?\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
 
-    if ($data->{'MAIL_ENABLED'}) { # Mail for domain is managed by this server
+    if ($data->{'MAIL_ENABLED'}) { # Mail is managed by this server
         $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, "$data->{'DOMAIN_NAME'}\tOK" );
-    }
-
-    if($data->{'EXTERNAL_MAIL'} eq 'domain') { # Mail for domain is managed by external server
+    } elsif ($data->{'EXTERNAL_MAIL'} eq 'on') { # Mail is managed by external server
         $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, "$data->{'DOMAIN_NAME'}\tOK" );
-    }
-
-    if ($data->{'EXTERNAL_MAIL'} eq 'wildcard') { # Mail for in-existent subdomains is managed by external server
-        $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, ".$data->{'DOMAIN_NAME'}\tOK" );
     }
 
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaAddDmn', $data );
