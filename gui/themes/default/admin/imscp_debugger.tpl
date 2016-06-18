@@ -249,12 +249,12 @@
 <table>
     <thead>
     <tr>
-        <th>{TR_DAEMON_TOOLS}</th>
+        <th>{TR_PENDING_TASKS} ({EXEC_COUNT})</th>
     </tr>
     </thead>
     <tbody>
     <tr>
-        <td><a href="imscp_debugger.php?action=run" class="link_as_button">{EXEC_COUNT} {TR_EXEC_REQUESTS}</a></td>
+        <td><a href="imscp_debugger.php?action=run" class="link_as_button">{TR_EXEC_TASKS}</a></td>
     </tr>
     </tbody>
 </table>

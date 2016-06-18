@@ -28,7 +28,7 @@ use warnings;
 use Cwd qw/ realpath /;
 use Errno ;
 use File::Basename qw/ dirname /;
-use iMSCP::Debug qw/ debug /;
+use iMSCP::Debug qw/ debug error /;
 use IO::Select;
 use IPC::Open3;
 use Symbol 'gensym';
@@ -184,7 +184,8 @@ sub getExitCode(;$)
     my $ret = shift // $?;
 
     if ($ret == -1) {
-        die( 'Could not execute command.' );
+        debug('Could not execute command');
+        return 1;
     }
 
     if ($ret & 127) {

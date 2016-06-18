@@ -657,8 +657,8 @@ $tpl->assign(array(
     'TR_HTACCESS_ERRORS' => tr('Htaccess errors'),
     'TR_PLUGINS_ERRORS' => tr('Plugin errors'),
     'TR_PLUGIN_ITEM_ERRORS' => tr('Plugin item errors'),
-    'TR_DAEMON_TOOLS' => tr('Pending tasks'),
-    'TR_EXEC_REQUESTS' => tr('Execute tasks'),
+    'TR_PENDING_TASKS' => tr('Pending tasks'),
+    'TR_EXEC_TASKS' => tr('Execute tasks'),
     'TR_CHANGE_STATUS' => tr("Change status of this item for a new attempt"),
     'EXEC_COUNT' => $rqstCount
 ));
