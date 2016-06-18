@@ -158,7 +158,7 @@ function client_generateView($tpl)
 
     $tpl->assign(array(
         'TR_PAGE_TITLE' => tr('Client / Email / External Mail Feature'),
-        'TR_INTRO' => tr("Below, you can activate the external mail feature for a one or many of your domains. Be aware that activating the external mail feature configures our server to relay your mail through your own mail server but doesn't setup any DNS resource record for it. It is your responsability to setup those DNS records."),
+        'TR_INTRO' => tr('Below, you can activate the external mail feature for one or many of your domains. Note that activating the external mail feature configures our server to relay your mail through your own mail server, but that no DNS record is created for it.'),
         'TR_DOMAIN' => tr('Domain'),
         'TR_STATUS' => tr('Status'),
         'TR_ACTION' => tr('Action'),
