@@ -181,9 +181,7 @@ sub _createGlobalAwstatsVhost
 {
     my $self = shift;
 
-    my $version = $self->{'httpd'}->{'config'}->{'HTTPD_VERSION'};;
-    my $apache24 = version->parse( $version ) >= version->parse( '2.4.0' );
-
+    my $apache24 = version->parse( "$self->{'httpd'}->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' );
     $self->{'httpd'}->setData(
         {
             NAMEVIRTUALHOST    => $apache24 ? '' : 'NameVirtualHost 127.0.0.1:80',

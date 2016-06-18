@@ -1212,7 +1212,7 @@ sub setupServerIps
     my $defaultNetcard = (grep { $_ ne 'lo' } $net->getDevices())[0];
     for my $serverIp(@serverIps) {
         next if exists $serverIpsToReplace->{$serverIp};
-        my $netCard = $net->isKnownAddr($serverIp) ? $net->getAddrDevice($serverIp) || $defaultNetcard : $defaultNetcard;
+        my $netCard = $net->getAddrDevice($serverIp) || $defaultNetcard;
 
         if($netCard) {
             my $rs = $db->doQuery(

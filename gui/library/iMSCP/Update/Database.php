@@ -778,8 +778,8 @@ class iMSCP_Update_Database extends iMSCP_Update
         $stmt = exec_query('SELECT ip_id, ip_card FROM server_ips');
         if ($stmt->rowCount()) {
             while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-                $cardname = explode(':', $row['ip_card']);
-                $cardname = quoteValue($cardname[0]);
+                list($cardname) = explode(':', $row['ip_card']);
+                $cardname = quoteValue($cardname);
                 $ipId = quoteValue($row['ip_id']);
                 $sqlUpd[] = "UPDATE server_ips SET ip_card = $cardname WHERE ip_id = $ipId";
             }

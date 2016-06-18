@@ -275,12 +275,10 @@ sub disableDmn
     $self->setData( $data );
 
     my $net = iMSCP::Net->getInstance();
-    my $version = $self->{'config'}->{'HTTPD_VERSION'};
-
     $self->setData(
         {
             BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
-            AUTHZ_ALLOW_ALL   => version->parse( $version ) >= version->parse( '2.4.0' )
+            AUTHZ_ALLOW_ALL   => version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' )
                 ? 'Require all granted' : 'Allow from all',
             HTTPD_LOG_DIR     => $self->{'config'}->{'HTTPD_LOG_DIR'},
             DOMAIN_IP         => $net->getAddrVersion( $data->{'DOMAIN_IP'} ) eq 'ipv4'
@@ -1387,8 +1385,7 @@ sub _addCfg
         }
     }
 
-    my $version = $self->{'config'}->{'HTTPD_VERSION'};
-    my $apache24 = version->parse( $version ) >= version->parse( '2.4.0' );
+    my $apache24 = version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' );
     my $net = iMSCP::Net->getInstance();
 
     $self->setData(
