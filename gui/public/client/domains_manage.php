@@ -480,10 +480,7 @@ function generateCustomDnsRecordsList($tpl)
     if ($stmt->rowCount()) {
         while ($row = $stmt->fetchRow()) {
             list($actionEdit, $actionScriptEdit) = generateCustomDnsRecordAction(
-                'edit',
-                $row['owned_by'] === 'custom_dns_feature' ? $row['domain_dns_id'] : ($row['owned_by'] === 'ext_mail_feature' ? ($row['alias_id'] ? $row['alias_id'] . ';alias' : $row['domain_id'] . ';normal' ) : null),
-                $row['domain_dns_status'],
-                $row['owned_by']
+                'edit', $row['domain_dns_id'], $row['domain_dns_status'], $row['owned_by']
             );
 
             if ($row['owned_by'] !== 'custom_dns_feature') {
@@ -550,11 +547,11 @@ function generateCustomDnsRecordsList($tpl)
 function generateCustomDnsRecordAction($action, $id, $status, $ownedBy = 'custom_dns_feature')
 {
     if (!in_array($status, array('toadd', 'tochange', 'todelete'))) {
-        if ($action == 'edit') {
-            if ($ownedBy === 'custom_dns_feature') {
-                return array(tr('Edit'), tohtml("dns_edit.php?id=$id", 'htmlAttr'));
-            }
-        } elseif ($ownedBy === 'custom_dns_feature') {
+        if ($action == 'edit' && $ownedBy == 'custom_dns_feature') {
+            return array(tr('Edit'), tohtml("dns_edit.php?id=$id", 'htmlAttr'));
+        }
+
+        if ($ownedBy == 'custom_dns_feature') {
             return array(tr('Delete'), tohtml("dns_delete.php?id=$id", 'htmlAttr'));
         }
     }
