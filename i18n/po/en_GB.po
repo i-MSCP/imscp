@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-17 10:07+0200\n"
-"PO-Revision-Date: 2016-06-17 08:09+0000\n"
+"POT-Creation-Date: 2016-06-18 18:50+0200\n"
+"PO-Revision-Date: 2016-06-18 16:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/i-mscp/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -496,9 +496,6 @@ msgstr "Add SQL user"
 msgid "Add SSL certificate"
 msgstr "Add SSL certificate"
 
-msgid "Add a new entry"
-msgstr "Add a new entry"
-
 msgid "Add admin"
 msgstr "Add admin"
 
@@ -520,9 +517,6 @@ msgstr "Add domain alias"
 msgid "Add email account"
 msgstr "Add email account"
 
-msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr "Add external mail server for {DOMAIN_UTF8}"
-
 msgid "Add group"
 msgstr "Add group"
 
@@ -534,9 +528,6 @@ msgstr "Add new IP address"
 
 msgid "Add new database"
 msgstr "Add new database"
-
-msgid "Add new entry"
-msgstr "Add new entry"
 
 msgid "Add new protected area"
 msgstr "Add new protected area"
@@ -853,9 +844,6 @@ msgstr "Alternative URL to reach your website"
 msgid "An email addresse is not valid in mail forward list."
 msgstr "An email address is not valid in the mail forward list."
 
-msgid "An entry is defined twice."
-msgstr "An entry is defined twice."
-
 msgid "An error occurred during authentication."
 msgstr "An error occurred during authentication."
 
@@ -913,12 +901,6 @@ msgstr "Are you sure you want delete the %s SQL user?"
 
 msgid "Are you sure you want to activate this package?"
 msgstr "Are you sure you want to activate this package?"
-
-#, php-format
-msgid ""
-"Are you sure you want to deactivate the external mail server(s) for the '%s'"
-" domain?"
-msgstr "Are you sure you want to deactivate the external mail server(s) for the '%s' domain?"
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
@@ -1083,6 +1065,14 @@ msgid "Behind"
 msgstr "Behind"
 
 msgid ""
+"Below, you can activate the external mail feature for a one or many of your "
+"domains. Be aware that activating the external mail feature configures our "
+"server to relay your mail through your own mail server but doesn't setup any"
+" DNS resource record for it. It is your responsability to setup those DNS "
+"records."
+msgstr ""
+
+msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
 msgstr "Blocking time between login/captcha attempts <small>(In seconds)</small>"
 
@@ -1161,7 +1151,7 @@ msgid "Change personal data"
 msgstr "Change personal data"
 
 msgid "Change status of this item for a new attempt"
-msgstr ""
+msgstr "Change status of this item for a new attempt"
 
 msgid "Check for update"
 msgstr "Check for update"
@@ -1285,18 +1275,8 @@ msgstr "Client / Email / Catchall / Add Catchall"
 msgid "Client / Email / Edit Email Account"
 msgstr "Client / Email / Edit Email Account"
 
-msgid "Client / Email / External Mail Server"
-msgstr "Client / Email / External Mail Server"
-
-msgid ""
-"Client / Email / External Mail Server / Add External Mail Server for "
-"{DOMAIN_UTF8}"
-msgstr "Client / Email / External Mail Server / Add External Mail Server for {DOMAIN_UTF8}"
-
-msgid ""
-"Client / Email / External Mail Server / Edit External Mail Server for "
-"{DOMAIN_UTF8}"
-msgstr "Client / Email / External Mail Server / Edit External Mail Server for {DOMAIN_UTF8}"
+msgid "Client / Email / External Mail Feature"
+msgstr ""
 
 msgid "Client / Email / Overview"
 msgstr "Client / Email / Overview"
@@ -1727,9 +1707,6 @@ msgstr "Days"
 
 msgid "Deactivate"
 msgstr "Deactivate"
-
-msgid "Deactivate selected items"
-msgstr "Deactivate selected items"
 
 msgid "Deactivate this plugin"
 msgstr "Deactivate this plugin"
@@ -2164,14 +2141,6 @@ msgstr "Domain successfully updated."
 msgid "Domain type"
 msgstr "Domain type"
 
-msgid ""
-"Domain: Setup a DNS MX record to relay mail of your entire domain, including"
-" subdomains."
-msgstr "Domain: Setup a DNS MX record to relay mail of your entire domain, including subdomains."
-
-msgid "Domain: Setup an external MX host to relay mail of your entire domain."
-msgstr "Domain: Setup an external MX host to relay mail of your entire domain."
-
 msgid "Domains"
 msgstr "Domains"
 
@@ -2234,9 +2203,6 @@ msgstr "Edit domain alias"
 
 msgid "Edit error page"
 msgstr "Edit error page"
-
-msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr "Edit external mail server for {DOMAIN_UTF8}"
 
 msgid "Edit hosting plan"
 msgstr "Edit hosting plan"
@@ -2363,11 +2329,6 @@ msgstr "Enabled"
 msgid "Enabled for: %s"
 msgstr "Enabled for: %s"
 
-msgid ""
-"Entries associated to your external mail servers were not found. A "
-"Resynchronization has been scheduled."
-msgstr "Entries associated to your external mail servers were not found. A Resynchronization has been scheduled."
-
 msgid "Error"
 msgstr "Error"
 
@@ -2390,7 +2351,7 @@ msgid "Excl. default mails"
 msgstr "Excl. default mails"
 
 msgid "Execute tasks"
-msgstr ""
+msgstr "Execute tasks"
 
 msgid "Expire date"
 msgstr "Expire date"
@@ -2398,20 +2359,14 @@ msgstr "Expire date"
 msgid "Ext. mail server"
 msgstr "Ext. mail server"
 
-msgid "External Mail Host"
-msgstr "External Mail Host"
-
 msgid "External mail server"
 msgstr "External mail server"
 
-msgid "External mail server successfully scheduled for addition."
-msgstr "External mail server successfully scheduled for addition."
+msgid "External mail server feature scheduled for activation."
+msgstr ""
 
-msgid "External mail server successfully scheduled for deactivation."
-msgstr "External mail server successfully scheduled for deactivation."
-
-msgid "External mail server successfully scheduled for update."
-msgstr "External mail server successfully scheduled for update."
+msgid "External mail server feature scheduled for deactivation."
+msgstr ""
 
 msgid "External mail servers"
 msgstr "External mail servers"
@@ -2636,6 +2591,9 @@ msgstr "Home directory"
 
 msgid "Homepage"
 msgstr "Homepage"
+
+msgid "Host"
+msgstr ""
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
 msgstr "Host from which SQL user is allowed to connect to SQL server"
@@ -2883,12 +2841,6 @@ msgstr "Internationalization"
 msgid "Invalid FTP username."
 msgstr "Invalid FTP username."
 
-msgid "Invalid MX priority."
-msgstr "Invalid MX priority."
-
-msgid "Invalid MX type."
-msgstr "Invalid MX type."
-
 #, php-format
 msgid "Invalid SQL user host: %s"
 msgstr "Invalid SQL user host: %s"
@@ -3101,16 +3053,6 @@ msgstr "Mail feature is disabled."
 msgid "Mail usage"
 msgstr "Mail usage"
 
-#, php-format
-msgid "Mailhost %s is not valid."
-msgstr "Mailhost %s is not valid."
-
-msgid "Mailhost cannot be empty."
-msgstr "Mailhost cannot be empty."
-
-msgid "Mailhost must not be equal to the domain name for which you add it."
-msgstr "Mailhost must not be equal to the domain name for which you add it."
-
 msgid "Main menu labels visibility successfully updated."
 msgstr "Main menu labels visibility successfully updated."
 
@@ -3306,7 +3248,7 @@ msgid "No database update available."
 msgstr "No database update available."
 
 msgid "No error found"
-msgstr ""
+msgstr "No error found"
 
 msgid "No file was uploaded."
 msgstr "No file was uploaded."
@@ -3401,12 +3343,6 @@ msgstr "Not provided"
 msgid "Not used"
 msgstr "Not used"
 
-msgid "Note: You cannot mix 'Spam Filter' and 'Domain' options"
-msgstr "Note: You cannot mix 'Spam Filter' and 'Domain' options"
-
-msgid "Note: You cannot mix Spam filter and domain options"
-msgstr "Note: You cannot mix Spam filter and domain options"
-
 msgid "Nothing found - sorry"
 msgstr "Nothing found - sorry"
 
@@ -3415,9 +3351,6 @@ msgstr "Nothing has been changed."
 
 msgid "Nothing has been deleted."
 msgstr "Nothing has been deleted."
-
-msgid "Nothing has been scheduled for deactivation."
-msgstr "Nothing has been scheduled for deactivation."
 
 msgid "Notices, Warnings and Errors"
 msgstr "Notices, Warnings and Errors"
@@ -3653,7 +3586,7 @@ msgid "Path"
 msgstr "Path"
 
 msgid "Pending tasks"
-msgstr ""
+msgstr "Pending tasks"
 
 msgid "Percent"
 msgstr "Percent"
@@ -4085,9 +4018,6 @@ msgstr "Remove"
 msgid "Remove IP"
 msgstr "Remove IP"
 
-msgid "Remove last entry"
-msgstr "Remove last entry"
-
 msgid "Remove permissions"
 msgstr "Remove permissions"
 
@@ -4274,9 +4204,6 @@ msgstr "Resellers and customers"
 msgid "Reset"
 msgstr "Reset"
 
-msgid "Reset entries"
-msgstr "Reset entries"
-
 msgid "Restore"
 msgstr "Restore"
 
@@ -4413,19 +4340,8 @@ msgstr "Security code"
 msgid "Security code has expired"
 msgstr "Security code has expired"
 
-msgid "Select all entries for deletion."
-msgstr "Select all entries for deletion."
-
 msgid "Select group"
 msgstr "Select group"
-
-msgid "Select this entry for deletion."
-msgstr "Select this entry for deletion."
-
-msgid ""
-"Selecting all entries for deletion will cause deactivation of external mail "
-"server."
-msgstr "Selecting all entries for deletion will cause deactivation of external mail server."
 
 msgid "Send"
 msgstr "Send"
@@ -4648,19 +4564,6 @@ msgstr "Software-Version"
 msgid "Softwaredepot"
 msgstr "Softwaredepot"
 
-msgid "Spam Filter"
-msgstr "Spam Filter"
-
-msgid ""
-"Spam Filter: Setup a DNS MX record to relay mail of your entire domain, "
-"including subdomains, but retains our server as final mailhost."
-msgstr "Spam Filter: Setup a DNS MX record to relay mail of your entire domain, including subdomains, but retains our server as final mailhost."
-
-msgid ""
-"Spam Filter: Setup an external MX host to relay mail of your entire domain "
-"but retains our server as final mailhost."
-msgstr "Spam Filter: Setup an external MX host to relay mail of your entire domain but retains our server as final mailhost."
-
 msgid "Start installation"
 msgstr "Start installation"
 
@@ -4827,9 +4730,6 @@ msgstr "Target"
 msgid "Target domain"
 msgstr "Target domain"
 
-msgid "Target host"
-msgstr "Target host"
-
 msgid "Target port"
 msgstr "Target port"
 
@@ -4943,7 +4843,7 @@ msgid ""
 msgstr "There is an Error inside your package. Please check it!<br>Refresh your site to see the new status!"
 
 msgid "There is no pending task. Operation canceled."
-msgstr ""
+msgstr "There is no pending task. Operation canceled."
 
 #, php-format
 msgid ""
@@ -5488,17 +5388,6 @@ msgstr "Welcome {USERNAME} to i-MSCP"
 msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr "When set to 'yes', your PHP scripts can call the PHP exec() function."
 
-msgid "Wildcard"
-msgstr "Wildcard"
-
-msgid ""
-"Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
-msgstr "Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
-
-msgid ""
-"Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
-msgstr "Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
-
 msgid "Wrong IP address."
 msgstr "Wrong IP address."
 
@@ -5622,9 +5511,6 @@ msgstr "You cannot protect an area without selected htaccess user(s)."
 #, php-format
 msgid "You cannot remove the %s IP address."
 msgstr "You cannot remove the %s IP address."
-
-msgid "You cannot remove this entry."
-msgstr "You cannot remove this entry."
 
 msgid "You cannot set expire date in past."
 msgstr "You cannot set expire date in past."
@@ -5788,9 +5674,6 @@ msgstr "You must select a file to upload."
 
 msgid "You must select a file to upload/download."
 msgstr "You must select a file to upload/download."
-
-msgid "You must select a least one item to deactivate."
-msgstr "You must select a least one item to deactivate."
 
 msgid "You must select a least one item to delete"
 msgstr "You must select a least one item to delete"
@@ -6097,9 +5980,6 @@ msgstr "view aliases"
 
 msgid "waiting for activation"
 msgstr "waiting for activation"
-
-msgid "wildcard"
-msgstr "wildcard"
 
 msgid "yes"
 msgstr "yes"

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-17 10:07+0200\n"
-"PO-Revision-Date: 2016-06-17 08:09+0000\n"
+"POT-Creation-Date: 2016-06-18 18:50+0200\n"
+"PO-Revision-Date: 2016-06-18 16:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/i-mscp/i-MSCP/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -495,9 +495,6 @@ msgstr "Aggiungi utente SQL"
 msgid "Add SSL certificate"
 msgstr "Aggiungi certificato SSL"
 
-msgid "Add a new entry"
-msgstr "Aggiungi una nuova voce"
-
 msgid "Add admin"
 msgstr "Aggiungi amministratore"
 
@@ -519,9 +516,6 @@ msgstr "Aggiungi alias di dominio"
 msgid "Add email account"
 msgstr "Aggiungi una casella di posta"
 
-msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr "Aggiungi un mail server esterno per {DOMAIN_UTF8}"
-
 msgid "Add group"
 msgstr "Aggiungi gruppo"
 
@@ -533,9 +527,6 @@ msgstr "Aggiungi un nuovo indirizzo IP"
 
 msgid "Add new database"
 msgstr "Aggiungi un nuovo database"
-
-msgid "Add new entry"
-msgstr "Aggiungi nuova voce"
 
 msgid "Add new protected area"
 msgstr "Aggiungi nuova area protetta"
@@ -852,9 +843,6 @@ msgstr "URL alternativo per raggiungere il tuo sito"
 msgid "An email addresse is not valid in mail forward list."
 msgstr "Sintassi sbagliata per l'indirizzo di forward per la posta elettronica."
 
-msgid "An entry is defined twice."
-msgstr "Una voce è stata definita due volte"
-
 msgid "An error occurred during authentication."
 msgstr "Un errore è occorso durante l'autenticazione."
 
@@ -912,12 +900,6 @@ msgstr "Sicuro di voler eliminare l'utente SQL '%s'?"
 
 msgid "Are you sure you want to activate this package?"
 msgstr "Sei certo di voler attivare questo pacchetto?"
-
-#, php-format
-msgid ""
-"Are you sure you want to deactivate the external mail server(s) for the '%s'"
-" domain?"
-msgstr "Sicuro di voler disattivare il server di posta esterno per il dominio '%s'?"
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
@@ -1080,6 +1062,14 @@ msgstr "Richiesta errata."
 
 msgid "Behind"
 msgstr "Dietro"
+
+msgid ""
+"Below, you can activate the external mail feature for a one or many of your "
+"domains. Be aware that activating the external mail feature configures our "
+"server to relay your mail through your own mail server but doesn't setup any"
+" DNS resource record for it. It is your responsability to setup those DNS "
+"records."
+msgstr ""
 
 msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
@@ -1284,18 +1274,8 @@ msgstr "Cliente / Posta / Catchall / Aggiungi Catchall"
 msgid "Client / Email / Edit Email Account"
 msgstr "Cliente / Email / Modifica Account Email"
 
-msgid "Client / Email / External Mail Server"
-msgstr "Cliente / Posta / Server di posta esterno"
-
-msgid ""
-"Client / Email / External Mail Server / Add External Mail Server for "
-"{DOMAIN_UTF8}"
-msgstr "Cliente / Posta / Server di posta esterno / Aggiungi server di Posta per {DOMAIN_UTF8}"
-
-msgid ""
-"Client / Email / External Mail Server / Edit External Mail Server for "
-"{DOMAIN_UTF8}"
-msgstr "Cliente / Posta / Server di posta esterno / Modifica server di Posta per {DOMAIN_UTF8}"
+msgid "Client / Email / External Mail Feature"
+msgstr ""
 
 msgid "Client / Email / Overview"
 msgstr "Cliente / Posta / Panoramica"
@@ -1726,9 +1706,6 @@ msgstr "Giorni"
 
 msgid "Deactivate"
 msgstr "Disattiva"
-
-msgid "Deactivate selected items"
-msgstr "Disattiva gli oggetti selezionati"
 
 msgid "Deactivate this plugin"
 msgstr "Disattiva questo plugin"
@@ -2163,14 +2140,6 @@ msgstr "Dominio aggiornato con successo."
 msgid "Domain type"
 msgstr "Tipo di dominio"
 
-msgid ""
-"Domain: Setup a DNS MX record to relay mail of your entire domain, including"
-" subdomains."
-msgstr "Dominio: Settare un record MX per l'inoltro della posta di tutto il tuo dominio compresi i sottodomini."
-
-msgid "Domain: Setup an external MX host to relay mail of your entire domain."
-msgstr "Dominio: Settare un host esterno MX per l'inoltro della posta di tutto il tuo dominio."
-
 msgid "Domains"
 msgstr "Domini"
 
@@ -2233,9 +2202,6 @@ msgstr "Modifica gli alias del dominio"
 
 msgid "Edit error page"
 msgstr "Modifica della pagina di errore"
-
-msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr "Edita server di posta esterno per {DOMAIN_UTF8}"
 
 msgid "Edit hosting plan"
 msgstr "Modifica piano di hosting"
@@ -2362,11 +2328,6 @@ msgstr "Abilitato"
 msgid "Enabled for: %s"
 msgstr "Abilita per : %s"
 
-msgid ""
-"Entries associated to your external mail servers were not found. A "
-"Resynchronization has been scheduled."
-msgstr "I valori immessi associati al tuo server di posta esterno non sono stati trovati. Una risincronizzazione è stata schedutata."
-
 msgid "Error"
 msgstr "Errore"
 
@@ -2397,20 +2358,14 @@ msgstr "Data scadenza"
 msgid "Ext. mail server"
 msgstr "Ext. server di posta"
 
-msgid "External Mail Host"
-msgstr "Host di posta esterno"
-
 msgid "External mail server"
 msgstr "Server di posta esterno"
 
-msgid "External mail server successfully scheduled for addition."
-msgstr "Server mail esterno schedulato con successo per aggiunta"
+msgid "External mail server feature scheduled for activation."
+msgstr ""
 
-msgid "External mail server successfully scheduled for deactivation."
-msgstr "Server mail esterno schedulato con successo per la disattivazione"
-
-msgid "External mail server successfully scheduled for update."
-msgstr "Server mail esterno schedulato con successo per aggiornamento"
+msgid "External mail server feature scheduled for deactivation."
+msgstr ""
 
 msgid "External mail servers"
 msgstr "Server di posta esterni"
@@ -2635,6 +2590,9 @@ msgstr "Directory principale"
 
 msgid "Homepage"
 msgstr "Pagina principale"
+
+msgid "Host"
+msgstr ""
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
 msgstr ""
@@ -2882,12 +2840,6 @@ msgstr "Internazionalizzazione"
 msgid "Invalid FTP username."
 msgstr ""
 
-msgid "Invalid MX priority."
-msgstr "Invalida priorità MX."
-
-msgid "Invalid MX type."
-msgstr "Tipo MX invalido ."
-
 #, php-format
 msgid "Invalid SQL user host: %s"
 msgstr "Utente host SQL non valido : %s"
@@ -3099,16 +3051,6 @@ msgstr "Funzione Mail disabilitata."
 
 msgid "Mail usage"
 msgstr "Utilizzo Mail"
-
-#, php-format
-msgid "Mailhost %s is not valid."
-msgstr "Mailhost %s non valido"
-
-msgid "Mailhost cannot be empty."
-msgstr "Mailhost non può essere vuoto."
-
-msgid "Mailhost must not be equal to the domain name for which you add it."
-msgstr "Il server di posta non deve essere uguale al nome del dominio a cui si aggiunge."
 
 msgid "Main menu labels visibility successfully updated."
 msgstr "Visibilità etichette nel menù principale aggiornato con successo."
@@ -3400,12 +3342,6 @@ msgstr "Non fornito"
 msgid "Not used"
 msgstr "Non utilizzato"
 
-msgid "Note: You cannot mix 'Spam Filter' and 'Domain' options"
-msgstr "Nota: È possibile combinare queste opzioni."
-
-msgid "Note: You cannot mix Spam filter and domain options"
-msgstr "Nota: È possibile combinare queste opzioni."
-
 msgid "Nothing found - sorry"
 msgstr "Non trovato"
 
@@ -3414,9 +3350,6 @@ msgstr "Nessuna modifica effettuata"
 
 msgid "Nothing has been deleted."
 msgstr "Nessuna cancellazione effettuata"
-
-msgid "Nothing has been scheduled for deactivation."
-msgstr "Non è stato programmata nessuna eliminazione."
 
 msgid "Notices, Warnings and Errors"
 msgstr "Notifiche, Allarmi e Errori"
@@ -4084,9 +4017,6 @@ msgstr "Rimuovere"
 msgid "Remove IP"
 msgstr "Rimuovi indirizzo IP"
 
-msgid "Remove last entry"
-msgstr "Rimuovi l'ultima voce"
-
 msgid "Remove permissions"
 msgstr "Rimuovi permessi"
 
@@ -4273,9 +4203,6 @@ msgstr "Rivenditori e utenti"
 msgid "Reset"
 msgstr "Azzera"
 
-msgid "Reset entries"
-msgstr "Ripristinare le voci"
-
 msgid "Restore"
 msgstr "Ripristina"
 
@@ -4412,19 +4339,8 @@ msgstr "Codice di sicurezza"
 msgid "Security code has expired"
 msgstr ""
 
-msgid "Select all entries for deletion."
-msgstr "Selezionare tutte le voci per la cancellazione."
-
 msgid "Select group"
 msgstr "Seleziona gruppo"
-
-msgid "Select this entry for deletion."
-msgstr "Selezionare questa voce per l'eliminazione."
-
-msgid ""
-"Selecting all entries for deletion will cause deactivation of external mail "
-"server."
-msgstr "La selezione di tutte le voci per l'eliminazione causerà la disattivazione del server di posta in uscita."
 
 msgid "Send"
 msgstr "Invia"
@@ -4647,19 +4563,6 @@ msgstr "Software-Versione"
 msgid "Softwaredepot"
 msgstr "Deposito Software"
 
-msgid "Spam Filter"
-msgstr "Filtro antispam"
-
-msgid ""
-"Spam Filter: Setup a DNS MX record to relay mail of your entire domain, "
-"including subdomains, but retains our server as final mailhost."
-msgstr ""
-
-msgid ""
-"Spam Filter: Setup an external MX host to relay mail of your entire domain "
-"but retains our server as final mailhost."
-msgstr ""
-
 msgid "Start installation"
 msgstr "Avviare l'installazione"
 
@@ -4825,9 +4728,6 @@ msgstr "Obiettivo"
 
 msgid "Target domain"
 msgstr ""
-
-msgid "Target host"
-msgstr "Host di destinazione"
 
 msgid "Target port"
 msgstr "Porta di destinazione"
@@ -5487,17 +5387,6 @@ msgstr "Benvenuto {USERNAME} su i-MSCP"
 msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr ""
 
-msgid "Wildcard"
-msgstr "Wildcard"
-
-msgid ""
-"Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
-msgstr ""
-
-msgid ""
-"Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
-msgstr ""
-
 msgid "Wrong IP address."
 msgstr "Indirizzo IP errato."
 
@@ -5621,9 +5510,6 @@ msgstr "Non puoi proteggere un area senza selezionare un utente htaccess."
 #, php-format
 msgid "You cannot remove the %s IP address."
 msgstr "Non puoi rimuovere l'indirizzo IP %s."
-
-msgid "You cannot remove this entry."
-msgstr "Non è possibile rimuovere questa voce."
 
 msgid "You cannot set expire date in past."
 msgstr "Non è possibile impostare una data di scadenza passata."
@@ -5787,9 +5673,6 @@ msgstr "Devi selezionare un file per l'upload."
 
 msgid "You must select a file to upload/download."
 msgstr "Devi selezionare un file per l'upload/download."
-
-msgid "You must select a least one item to deactivate."
-msgstr "È necessario selezionare almeno un elemento da disattivare."
 
 msgid "You must select a least one item to delete"
 msgstr "È necessario selezionare un almeno un elemento da eliminare"
@@ -6096,9 +5979,6 @@ msgstr "visualizza gli alias"
 
 msgid "waiting for activation"
 msgstr "In attesa di attivazione"
-
-msgid "wildcard"
-msgstr "Wildcard"
 
 msgid "yes"
 msgstr "sì"

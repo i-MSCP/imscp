@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-17 10:07+0200\n"
-"PO-Revision-Date: 2016-06-17 08:09+0000\n"
+"POT-Creation-Date: 2016-06-18 18:50+0200\n"
+"PO-Revision-Date: 2016-06-18 16:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/i-mscp/i-MSCP/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
@@ -494,9 +494,6 @@ msgstr "Přidat uživatele SQL"
 msgid "Add SSL certificate"
 msgstr "Přidat SSL certifikát"
 
-msgid "Add a new entry"
-msgstr "Přidat nový záznam"
-
 msgid "Add admin"
 msgstr "Přidat administrátora"
 
@@ -518,9 +515,6 @@ msgstr "Přidat alias domény"
 msgid "Add email account"
 msgstr "Přidat e-mailový účet"
 
-msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr "Přidat externí mail server pro {DOMAIN_UTF8}"
-
 msgid "Add group"
 msgstr "Přidat skupinu"
 
@@ -532,9 +526,6 @@ msgstr "Přidat novou IP adresu"
 
 msgid "Add new database"
 msgstr "Přidat novou databázi"
-
-msgid "Add new entry"
-msgstr "Přidat novou položku"
 
 msgid "Add new protected area"
 msgstr "Přidat chráněnou oblast"
@@ -851,9 +842,6 @@ msgstr "Alternativní URL pro dosažení vašich webových stránkách"
 msgid "An email addresse is not valid in mail forward list."
 msgstr ""
 
-msgid "An entry is defined twice."
-msgstr ""
-
 msgid "An error occurred during authentication."
 msgstr ""
 
@@ -911,12 +899,6 @@ msgstr ""
 
 msgid "Are you sure you want to activate this package?"
 msgstr "Opravdu chcete aktivovat tento balíček?"
-
-#, php-format
-msgid ""
-"Are you sure you want to deactivate the external mail server(s) for the '%s'"
-" domain?"
-msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
@@ -1078,6 +1060,14 @@ msgid "Bad request."
 msgstr ""
 
 msgid "Behind"
+msgstr ""
+
+msgid ""
+"Below, you can activate the external mail feature for a one or many of your "
+"domains. Be aware that activating the external mail feature configures our "
+"server to relay your mail through your own mail server but doesn't setup any"
+" DNS resource record for it. It is your responsability to setup those DNS "
+"records."
 msgstr ""
 
 msgid ""
@@ -1283,17 +1273,7 @@ msgstr ""
 msgid "Client / Email / Edit Email Account"
 msgstr ""
 
-msgid "Client / Email / External Mail Server"
-msgstr ""
-
-msgid ""
-"Client / Email / External Mail Server / Add External Mail Server for "
-"{DOMAIN_UTF8}"
-msgstr ""
-
-msgid ""
-"Client / Email / External Mail Server / Edit External Mail Server for "
-"{DOMAIN_UTF8}"
+msgid "Client / Email / External Mail Feature"
 msgstr ""
 
 msgid "Client / Email / Overview"
@@ -1725,9 +1705,6 @@ msgstr "Dny"
 
 msgid "Deactivate"
 msgstr "Deaktivovat"
-
-msgid "Deactivate selected items"
-msgstr "Deaktivace vybraných položek"
 
 msgid "Deactivate this plugin"
 msgstr "Deaktivovat plugin"
@@ -2162,14 +2139,6 @@ msgstr ""
 msgid "Domain type"
 msgstr "Typ Domény"
 
-msgid ""
-"Domain: Setup a DNS MX record to relay mail of your entire domain, including"
-" subdomains."
-msgstr ""
-
-msgid "Domain: Setup an external MX host to relay mail of your entire domain."
-msgstr ""
-
 msgid "Domains"
 msgstr "Domény"
 
@@ -2232,9 +2201,6 @@ msgstr "Editovat doménový alias"
 
 msgid "Edit error page"
 msgstr "Editovat chybovou stránku"
-
-msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr ""
 
 msgid "Edit hosting plan"
 msgstr "Upravit plán hostingu"
@@ -2361,11 +2327,6 @@ msgstr "Zapnuto"
 msgid "Enabled for: %s"
 msgstr ""
 
-msgid ""
-"Entries associated to your external mail servers were not found. A "
-"Resynchronization has been scheduled."
-msgstr ""
-
 msgid "Error"
 msgstr "Chyba"
 
@@ -2396,19 +2357,13 @@ msgstr "Datum expirace"
 msgid "Ext. mail server"
 msgstr ""
 
-msgid "External Mail Host"
-msgstr ""
-
 msgid "External mail server"
 msgstr "Externí mail server"
 
-msgid "External mail server successfully scheduled for addition."
+msgid "External mail server feature scheduled for activation."
 msgstr ""
 
-msgid "External mail server successfully scheduled for deactivation."
-msgstr ""
-
-msgid "External mail server successfully scheduled for update."
+msgid "External mail server feature scheduled for deactivation."
 msgstr ""
 
 msgid "External mail servers"
@@ -2634,6 +2589,9 @@ msgstr ""
 
 msgid "Homepage"
 msgstr "Hlavní stránka"
+
+msgid "Host"
+msgstr ""
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
 msgstr ""
@@ -2881,12 +2839,6 @@ msgstr ""
 msgid "Invalid FTP username."
 msgstr ""
 
-msgid "Invalid MX priority."
-msgstr ""
-
-msgid "Invalid MX type."
-msgstr ""
-
 #, php-format
 msgid "Invalid SQL user host: %s"
 msgstr ""
@@ -3097,16 +3049,6 @@ msgid "Mail feature is disabled."
 msgstr ""
 
 msgid "Mail usage"
-msgstr ""
-
-#, php-format
-msgid "Mailhost %s is not valid."
-msgstr ""
-
-msgid "Mailhost cannot be empty."
-msgstr ""
-
-msgid "Mailhost must not be equal to the domain name for which you add it."
 msgstr ""
 
 msgid "Main menu labels visibility successfully updated."
@@ -3399,12 +3341,6 @@ msgstr ""
 msgid "Not used"
 msgstr ""
 
-msgid "Note: You cannot mix 'Spam Filter' and 'Domain' options"
-msgstr ""
-
-msgid "Note: You cannot mix Spam filter and domain options"
-msgstr ""
-
 msgid "Nothing found - sorry"
 msgstr "Omlouváme se - nic nenalezeno"
 
@@ -3412,9 +3348,6 @@ msgid "Nothing has been changed."
 msgstr "Nic nebylo změněno."
 
 msgid "Nothing has been deleted."
-msgstr ""
-
-msgid "Nothing has been scheduled for deactivation."
 msgstr ""
 
 msgid "Notices, Warnings and Errors"
@@ -4083,9 +4016,6 @@ msgstr "Smazat"
 msgid "Remove IP"
 msgstr "Smazat IP adresu"
 
-msgid "Remove last entry"
-msgstr ""
-
 msgid "Remove permissions"
 msgstr "Odebrat oprávnění"
 
@@ -4272,9 +4202,6 @@ msgstr ""
 msgid "Reset"
 msgstr "Vynulovat"
 
-msgid "Reset entries"
-msgstr ""
-
 msgid "Restore"
 msgstr "Obnovit"
 
@@ -4411,18 +4338,7 @@ msgstr "Bezpečnostní kód"
 msgid "Security code has expired"
 msgstr ""
 
-msgid "Select all entries for deletion."
-msgstr ""
-
 msgid "Select group"
-msgstr ""
-
-msgid "Select this entry for deletion."
-msgstr ""
-
-msgid ""
-"Selecting all entries for deletion will cause deactivation of external mail "
-"server."
 msgstr ""
 
 msgid "Send"
@@ -4646,19 +4562,6 @@ msgstr "Verze-Software"
 msgid "Softwaredepot"
 msgstr ""
 
-msgid "Spam Filter"
-msgstr ""
-
-msgid ""
-"Spam Filter: Setup a DNS MX record to relay mail of your entire domain, "
-"including subdomains, but retains our server as final mailhost."
-msgstr ""
-
-msgid ""
-"Spam Filter: Setup an external MX host to relay mail of your entire domain "
-"but retains our server as final mailhost."
-msgstr ""
-
 msgid "Start installation"
 msgstr ""
 
@@ -4824,9 +4727,6 @@ msgstr "Cíl"
 
 msgid "Target domain"
 msgstr ""
-
-msgid "Target host"
-msgstr "Cílový host"
 
 msgid "Target port"
 msgstr "Cílový port"
@@ -5486,17 +5386,6 @@ msgstr ""
 msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr ""
 
-msgid "Wildcard"
-msgstr ""
-
-msgid ""
-"Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
-msgstr ""
-
-msgid ""
-"Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
-msgstr ""
-
 msgid "Wrong IP address."
 msgstr ""
 
@@ -5620,9 +5509,6 @@ msgstr ""
 #, php-format
 msgid "You cannot remove the %s IP address."
 msgstr "Nemůžete odstranit tuto %s IP adresu."
-
-msgid "You cannot remove this entry."
-msgstr ""
 
 msgid "You cannot set expire date in past."
 msgstr ""
@@ -5789,9 +5675,6 @@ msgstr ""
 
 msgid "You must select a file to upload/download."
 msgstr "Musíte vybrat soubor, který chcete nahrát / stáhnout."
-
-msgid "You must select a least one item to deactivate."
-msgstr ""
 
 msgid "You must select a least one item to delete"
 msgstr ""
@@ -6098,9 +5981,6 @@ msgstr "zobrazit aliasy"
 
 msgid "waiting for activation"
 msgstr "čekání na aktivaci"
-
-msgid "wildcard"
-msgstr "wildcard"
 
 msgid "yes"
 msgstr "ano"

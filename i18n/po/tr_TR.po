@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-17 10:07+0200\n"
-"PO-Revision-Date: 2016-06-17 08:09+0000\n"
+"POT-Creation-Date: 2016-06-18 18:50+0200\n"
+"PO-Revision-Date: 2016-06-18 16:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/i-mscp/i-MSCP/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -494,9 +494,6 @@ msgstr "SQL kullanıcısı ekle"
 msgid "Add SSL certificate"
 msgstr "SSL setifikası ekle"
 
-msgid "Add a new entry"
-msgstr "Yeni giriş ekle"
-
 msgid "Add admin"
 msgstr "Yönetici ekle"
 
@@ -518,9 +515,6 @@ msgstr "Domain alias ekle"
 msgid "Add email account"
 msgstr "Eposta hesabı ekle"
 
-msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr "{DOMAIN_UTF8} için dış eposta sunucusu ekle"
-
 msgid "Add group"
 msgstr "Grup ekle"
 
@@ -532,9 +526,6 @@ msgstr "Yeni IP adresi ekle"
 
 msgid "Add new database"
 msgstr "Yeni veritabanı ekle"
-
-msgid "Add new entry"
-msgstr "Yeni giriş ekle"
 
 msgid "Add new protected area"
 msgstr "Yeni korunan alan ekle"
@@ -851,9 +842,6 @@ msgstr "Alternatif URL"
 msgid "An email addresse is not valid in mail forward list."
 msgstr "Eposta yönlendirme listesindeki bir adres geçerli değil."
 
-msgid "An entry is defined twice."
-msgstr "Bir giriş iki kere tanımlanmış."
-
 msgid "An error occurred during authentication."
 msgstr "Doğrulama sırasında hata oluştu."
 
@@ -911,12 +899,6 @@ msgstr "%s SQL kullanıcısını silmek istediğinize emin misiniz?"
 
 msgid "Are you sure you want to activate this package?"
 msgstr "Bu paketi etkinleştirmek istediğinize emin misiniz?"
-
-#, php-format
-msgid ""
-"Are you sure you want to deactivate the external mail server(s) for the '%s'"
-" domain?"
-msgstr "%s domaini için dış eposta sunucusunu devre dışı bırakmak istediğinize emin misiniz?"
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
@@ -1079,6 +1061,14 @@ msgstr "Geçersiz istek."
 
 msgid "Behind"
 msgstr "arkasına"
+
+msgid ""
+"Below, you can activate the external mail feature for a one or many of your "
+"domains. Be aware that activating the external mail feature configures our "
+"server to relay your mail through your own mail server but doesn't setup any"
+" DNS resource record for it. It is your responsability to setup those DNS "
+"records."
+msgstr ""
 
 msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
@@ -1283,17 +1273,7 @@ msgstr ""
 msgid "Client / Email / Edit Email Account"
 msgstr ""
 
-msgid "Client / Email / External Mail Server"
-msgstr ""
-
-msgid ""
-"Client / Email / External Mail Server / Add External Mail Server for "
-"{DOMAIN_UTF8}"
-msgstr ""
-
-msgid ""
-"Client / Email / External Mail Server / Edit External Mail Server for "
-"{DOMAIN_UTF8}"
+msgid "Client / Email / External Mail Feature"
 msgstr ""
 
 msgid "Client / Email / Overview"
@@ -1725,9 +1705,6 @@ msgstr "Gün"
 
 msgid "Deactivate"
 msgstr "Devre dışı bırak"
-
-msgid "Deactivate selected items"
-msgstr ""
 
 msgid "Deactivate this plugin"
 msgstr "Eklentiyi devre dışı bırak"
@@ -2162,14 +2139,6 @@ msgstr ""
 msgid "Domain type"
 msgstr "Domain türü"
 
-msgid ""
-"Domain: Setup a DNS MX record to relay mail of your entire domain, including"
-" subdomains."
-msgstr ""
-
-msgid "Domain: Setup an external MX host to relay mail of your entire domain."
-msgstr ""
-
 msgid "Domains"
 msgstr "Domain"
 
@@ -2232,9 +2201,6 @@ msgstr "Domain aliasını düzenle"
 
 msgid "Edit error page"
 msgstr "Hata sayafasını düzenle"
-
-msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr ""
 
 msgid "Edit hosting plan"
 msgstr "Hosting planını düzenle"
@@ -2361,11 +2327,6 @@ msgstr "Açıldı"
 msgid "Enabled for: %s"
 msgstr ""
 
-msgid ""
-"Entries associated to your external mail servers were not found. A "
-"Resynchronization has been scheduled."
-msgstr ""
-
 msgid "Error"
 msgstr "Hata"
 
@@ -2396,20 +2357,14 @@ msgstr "Sipariş tarihi"
 msgid "Ext. mail server"
 msgstr ""
 
-msgid "External Mail Host"
-msgstr ""
-
 msgid "External mail server"
 msgstr "Dış eposta sunucusu"
 
-msgid "External mail server successfully scheduled for addition."
-msgstr "Dış eposta sunucusu kaydı eklenmek için işleme alındı."
+msgid "External mail server feature scheduled for activation."
+msgstr ""
 
-msgid "External mail server successfully scheduled for deactivation."
-msgstr "Dış eposta sunucusu kaydı durdurulmak için işleme alındı."
-
-msgid "External mail server successfully scheduled for update."
-msgstr "DIş eposta sunucusu kaydı güncellenmek için işleme alındı."
+msgid "External mail server feature scheduled for deactivation."
+msgstr ""
 
 msgid "External mail servers"
 msgstr "Dış eposta sunucusu"
@@ -2633,6 +2588,9 @@ msgid "Home directory"
 msgstr "Ev dizini"
 
 msgid "Homepage"
+msgstr ""
+
+msgid "Host"
 msgstr ""
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
@@ -2881,12 +2839,6 @@ msgstr "Yerelleştirme"
 msgid "Invalid FTP username."
 msgstr ""
 
-msgid "Invalid MX priority."
-msgstr "Geçersiz MX önceliği."
-
-msgid "Invalid MX type."
-msgstr "Geçersiz MX tipi."
-
 #, php-format
 msgid "Invalid SQL user host: %s"
 msgstr "Geçersiz SQL kullanıcı sunucusu: %s"
@@ -3098,16 +3050,6 @@ msgstr "Eposta özelliği devre dışı."
 
 msgid "Mail usage"
 msgstr "Eposta boyutu"
-
-#, php-format
-msgid "Mailhost %s is not valid."
-msgstr ""
-
-msgid "Mailhost cannot be empty."
-msgstr ""
-
-msgid "Mailhost must not be equal to the domain name for which you add it."
-msgstr ""
 
 msgid "Main menu labels visibility successfully updated."
 msgstr ""
@@ -3399,12 +3341,6 @@ msgstr ""
 msgid "Not used"
 msgstr ""
 
-msgid "Note: You cannot mix 'Spam Filter' and 'Domain' options"
-msgstr ""
-
-msgid "Note: You cannot mix Spam filter and domain options"
-msgstr ""
-
 msgid "Nothing found - sorry"
 msgstr "Bulunamadı :("
 
@@ -3413,9 +3349,6 @@ msgstr ""
 
 msgid "Nothing has been deleted."
 msgstr ""
-
-msgid "Nothing has been scheduled for deactivation."
-msgstr "Durdurulmak için işleme alınmış birşey yok."
 
 msgid "Notices, Warnings and Errors"
 msgstr "İkazlar, Uyarılar ve Hatalar"
@@ -4083,9 +4016,6 @@ msgstr "Kaldır"
 msgid "Remove IP"
 msgstr "IPyi kaldır"
 
-msgid "Remove last entry"
-msgstr ""
-
 msgid "Remove permissions"
 msgstr "Yetkileri kaldır"
 
@@ -4272,9 +4202,6 @@ msgstr ""
 msgid "Reset"
 msgstr "Reset"
 
-msgid "Reset entries"
-msgstr ""
-
 msgid "Restore"
 msgstr "Geri yükle"
 
@@ -4411,18 +4338,7 @@ msgstr "Güvenlik kodu"
 msgid "Security code has expired"
 msgstr ""
 
-msgid "Select all entries for deletion."
-msgstr ""
-
 msgid "Select group"
-msgstr ""
-
-msgid "Select this entry for deletion."
-msgstr ""
-
-msgid ""
-"Selecting all entries for deletion will cause deactivation of external mail "
-"server."
 msgstr ""
 
 msgid "Send"
@@ -4646,19 +4562,6 @@ msgstr ""
 msgid "Softwaredepot"
 msgstr "Yazılım Deposu"
 
-msgid "Spam Filter"
-msgstr ""
-
-msgid ""
-"Spam Filter: Setup a DNS MX record to relay mail of your entire domain, "
-"including subdomains, but retains our server as final mailhost."
-msgstr ""
-
-msgid ""
-"Spam Filter: Setup an external MX host to relay mail of your entire domain "
-"but retains our server as final mailhost."
-msgstr ""
-
 msgid "Start installation"
 msgstr ""
 
@@ -4824,9 +4727,6 @@ msgstr ""
 
 msgid "Target domain"
 msgstr ""
-
-msgid "Target host"
-msgstr "Hedef sunucu"
 
 msgid "Target port"
 msgstr "Hedef port"
@@ -5486,17 +5386,6 @@ msgstr ""
 msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr ""
 
-msgid "Wildcard"
-msgstr ""
-
-msgid ""
-"Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
-msgstr ""
-
-msgid ""
-"Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
-msgstr ""
-
 msgid "Wrong IP address."
 msgstr "Hatalı IP adresi."
 
@@ -5620,9 +5509,6 @@ msgstr ""
 #, php-format
 msgid "You cannot remove the %s IP address."
 msgstr "%s IP adresini kaldıramazsınız."
-
-msgid "You cannot remove this entry."
-msgstr ""
 
 msgid "You cannot set expire date in past."
 msgstr ""
@@ -5783,9 +5669,6 @@ msgstr ""
 
 msgid "You must select a file to upload/download."
 msgstr "Yükleme/indirme için bir dosya seçmelisiniz."
-
-msgid "You must select a least one item to deactivate."
-msgstr ""
 
 msgid "You must select a least one item to delete"
 msgstr ""
@@ -6091,9 +5974,6 @@ msgid "view aliases"
 msgstr "aliasları göster"
 
 msgid "waiting for activation"
-msgstr ""
-
-msgid "wildcard"
 msgstr ""
 
 msgid "yes"

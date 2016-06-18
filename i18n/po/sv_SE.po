@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-17 10:07+0200\n"
-"PO-Revision-Date: 2016-06-17 08:09+0000\n"
+"POT-Creation-Date: 2016-06-18 18:50+0200\n"
+"PO-Revision-Date: 2016-06-18 16:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/i-mscp/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -496,9 +496,6 @@ msgstr "Lägg till SQL-användare"
 msgid "Add SSL certificate"
 msgstr "Lägg till ett SSL certifikat"
 
-msgid "Add a new entry"
-msgstr "Lägga till en ny post"
-
 msgid "Add admin"
 msgstr "Lägg till administratör"
 
@@ -520,9 +517,6 @@ msgstr "Lägg till domänalias"
 msgid "Add email account"
 msgstr "Lägg till ett mail konto"
 
-msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr "Lägg till externt mail servrar för {DOMAIN_UTF8}"
-
 msgid "Add group"
 msgstr "Lägg till grupp"
 
@@ -534,9 +528,6 @@ msgstr "Lägg till ett ip address"
 
 msgid "Add new database"
 msgstr "Lägg till SQL-databas"
-
-msgid "Add new entry"
-msgstr "Lägg till ny post"
 
 msgid "Add new protected area"
 msgstr "Lägg till nytt skyddat område"
@@ -853,9 +844,6 @@ msgstr "Alternativ URL för att nå din webbplats"
 msgid "An email addresse is not valid in mail forward list."
 msgstr "Ett e-post adr. är inte giltigt i post framåt listan."
 
-msgid "An entry is defined twice."
-msgstr "En post definierades två gånger."
-
 msgid "An error occurred during authentication."
 msgstr "Ett fel uppstod vid autentisering."
 
@@ -913,12 +901,6 @@ msgstr "Är du säker på att du vill ta bort '%s' SQL-användare?"
 
 msgid "Are you sure you want to activate this package?"
 msgstr "Är du säker på att du vill aktivera det här paketet?"
-
-#, php-format
-msgid ""
-"Are you sure you want to deactivate the external mail server(s) for the '%s'"
-" domain?"
-msgstr "Är du säker på att du vill avaktivera extern mail server(s) för ' %s' domän?"
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
@@ -1083,6 +1065,14 @@ msgid "Behind"
 msgstr "Bakom"
 
 msgid ""
+"Below, you can activate the external mail feature for a one or many of your "
+"domains. Be aware that activating the external mail feature configures our "
+"server to relay your mail through your own mail server but doesn't setup any"
+" DNS resource record for it. It is your responsability to setup those DNS "
+"records."
+msgstr ""
+
+msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
 msgstr "Blockera tid mellan inloggning/captcha försök <small>(i sekunder)</small>"
 
@@ -1161,7 +1151,7 @@ msgid "Change personal data"
 msgstr "Ändra personligt information"
 
 msgid "Change status of this item for a new attempt"
-msgstr ""
+msgstr "Ändra status till den här artikeln för ett nytt försök"
 
 msgid "Check for update"
 msgstr "Leta efter uppdatering"
@@ -1285,18 +1275,8 @@ msgstr "Kund / Mail / Catchall / Lägg till Catchall"
 msgid "Client / Email / Edit Email Account"
 msgstr "Beställare / e-post / Redigera e-postkonto"
 
-msgid "Client / Email / External Mail Server"
-msgstr "Kund / Mail / External Mail Server"
-
-msgid ""
-"Client / Email / External Mail Server / Add External Mail Server for "
-"{DOMAIN_UTF8}"
-msgstr "Kund / Mail / External Mail Server / Lägg till External Mail Server for {DOMAIN_UTF8}"
-
-msgid ""
-"Client / Email / External Mail Server / Edit External Mail Server for "
-"{DOMAIN_UTF8}"
-msgstr "Kund / Mail / External Mail Server / Redigerar External Mail Server för {DOMAIN_UTF8}"
+msgid "Client / Email / External Mail Feature"
+msgstr ""
 
 msgid "Client / Email / Overview"
 msgstr "Kund / Mail / Översikt"
@@ -1727,9 +1707,6 @@ msgstr "Dagar"
 
 msgid "Deactivate"
 msgstr "Deactivate"
-
-msgid "Deactivate selected items"
-msgstr "Avaktivera valda poster"
 
 msgid "Deactivate this plugin"
 msgstr "Deactivate this plugin"
@@ -2164,14 +2141,6 @@ msgstr "Domain successfully updated."
 msgid "Domain type"
 msgstr "Domain typ"
 
-msgid ""
-"Domain: Setup a DNS MX record to relay mail of your entire domain, including"
-" subdomains."
-msgstr "Domän: Setup en DNS-MX-post till reläet post för hela din domän, inklusive underdomäner."
-
-msgid "Domain: Setup an external MX host to relay mail of your entire domain."
-msgstr "Domän: Konfigurera en extern MX värd att vidarebefordra e-post på hela domänen."
-
 msgid "Domains"
 msgstr "Domäner"
 
@@ -2234,9 +2203,6 @@ msgstr "Redigera domänalias"
 
 msgid "Edit error page"
 msgstr "Redigera felsida"
-
-msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr "Redigera externt mail server för {DOMAIN_UTF8}"
 
 msgid "Edit hosting plan"
 msgstr "Ändra webbhotellsplan"
@@ -2363,11 +2329,6 @@ msgstr "Aktiv"
 msgid "Enabled for: %s"
 msgstr "Aktiv för: %s"
 
-msgid ""
-"Entries associated to your external mail servers were not found. A "
-"Resynchronization has been scheduled."
-msgstr "Poster som är kopplade till din externa e-post servrar hittades inte. En synkronisering har planerats."
-
 msgid "Error"
 msgstr "Fel"
 
@@ -2390,7 +2351,7 @@ msgid "Excl. default mails"
 msgstr "Exkl. standard e-mail"
 
 msgid "Execute tasks"
-msgstr ""
+msgstr "utföra uppgifter"
 
 msgid "Expire date"
 msgstr "Domain utgångsdatum"
@@ -2398,20 +2359,14 @@ msgstr "Domain utgångsdatum"
 msgid "Ext. mail server"
 msgstr "Extern e-postserver"
 
-msgid "External Mail Host"
-msgstr "Extern post värd"
-
 msgid "External mail server"
 msgstr "Extern e-postserver"
 
-msgid "External mail server successfully scheduled for addition."
-msgstr "Extern e-postserver schemalagt för tillägg."
+msgid "External mail server feature scheduled for activation."
+msgstr ""
 
-msgid "External mail server successfully scheduled for deactivation."
-msgstr "Extern e-postserver schemalagt för avaktivering."
-
-msgid "External mail server successfully scheduled for update."
-msgstr "Extern e-postserver schemalagt för uppdatering."
+msgid "External mail server feature scheduled for deactivation."
+msgstr ""
 
 msgid "External mail servers"
 msgstr "Extern mail servrar"
@@ -2636,6 +2591,9 @@ msgstr "Home directory"
 
 msgid "Homepage"
 msgstr "Hemsida"
+
+msgid "Host"
+msgstr ""
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
 msgstr "Host from which SQL user is allowed to connect to SQL server"
@@ -2883,12 +2841,6 @@ msgstr "Internationalisering"
 msgid "Invalid FTP username."
 msgstr "Ogiltigt FTP användarnamn."
 
-msgid "Invalid MX priority."
-msgstr "Ogiltig MX prioritet."
-
-msgid "Invalid MX type."
-msgstr "Ogiltig MX type."
-
 #, php-format
 msgid "Invalid SQL user host: %s"
 msgstr "Ogiltig SQL användare värd %s"
@@ -3101,16 +3053,6 @@ msgstr "Mail feature is disabled."
 msgid "Mail usage"
 msgstr "Mail usage"
 
-#, php-format
-msgid "Mailhost %s is not valid."
-msgstr "Mailhost %s är inte giltigt."
-
-msgid "Mailhost cannot be empty."
-msgstr "Mailhost får inte vara tomt."
-
-msgid "Mailhost must not be equal to the domain name for which you add it."
-msgstr "Mailhost får inte vara lika med domännamnet som du lägger till den."
-
 msgid "Main menu labels visibility successfully updated."
 msgstr "Huvudmenyn etiketter synlighet har uppdaterats."
 
@@ -3306,7 +3248,7 @@ msgid "No database update available."
 msgstr "No database update available."
 
 msgid "No error found"
-msgstr ""
+msgstr "Inget fel hittades"
 
 msgid "No file was uploaded."
 msgstr "No file was uploaded."
@@ -3401,12 +3343,6 @@ msgstr "Not provided"
 msgid "Not used"
 msgstr "Inte i bruk."
 
-msgid "Note: You cannot mix 'Spam Filter' and 'Domain' options"
-msgstr "Obs: Du kan inte blanda \"Spamfilter\" och \"Domain\" alternativ"
-
-msgid "Note: You cannot mix Spam filter and domain options"
-msgstr "Obs! Du kan inte blanda Spam-filter och domän alternativ"
-
 msgid "Nothing found - sorry"
 msgstr "Inget hittades - tyvärr"
 
@@ -3415,9 +3351,6 @@ msgstr "Ingenting har ändrats."
 
 msgid "Nothing has been deleted."
 msgstr "Ingenting har ändrats."
-
-msgid "Nothing has been scheduled for deactivation."
-msgstr "Inget har planerats för avaktivering."
 
 msgid "Notices, Warnings and Errors"
 msgstr "Notiser, varningar och fel"
@@ -3653,7 +3586,7 @@ msgid "Path"
 msgstr "Sökväg"
 
 msgid "Pending tasks"
-msgstr ""
+msgstr "Väntande uppgifter"
 
 msgid "Percent"
 msgstr "Procent"
@@ -4085,9 +4018,6 @@ msgstr "Ta bort"
 msgid "Remove IP"
 msgstr "Ta bort IP-adress"
 
-msgid "Remove last entry"
-msgstr "Ta bort senaste inmatningen"
-
 msgid "Remove permissions"
 msgstr "Ta bort behörigheter"
 
@@ -4274,9 +4204,6 @@ msgstr "Återförsäljare och kunder"
 msgid "Reset"
 msgstr "Återställ"
 
-msgid "Reset entries"
-msgstr "Återställa poster"
-
 msgid "Restore"
 msgstr "Återställ"
 
@@ -4413,19 +4340,8 @@ msgstr "Säkerhetskod"
 msgid "Security code has expired"
 msgstr "Säkerhetskod har löpt ut"
 
-msgid "Select all entries for deletion."
-msgstr "Välj alla poster för radering."
-
 msgid "Select group"
 msgstr "Välj grupp:"
-
-msgid "Select this entry for deletion."
-msgstr "Välj den här posten för radering."
-
-msgid ""
-"Selecting all entries for deletion will cause deactivation of external mail "
-"server."
-msgstr "Välja alla poster för radering orsakar avaktivering av extern e-postserver."
 
 msgid "Send"
 msgstr "Skicka"
@@ -4648,19 +4564,6 @@ msgstr "Software-version"
 msgid "Softwaredepot"
 msgstr "Softwaredepot"
 
-msgid "Spam Filter"
-msgstr "Spam Filter"
-
-msgid ""
-"Spam Filter: Setup a DNS MX record to relay mail of your entire domain, "
-"including subdomains, but retains our server as final mailhost."
-msgstr "Spam-filtrar: Setup en DNS-MX-post till reläet post för hela din domän, inklusive underdomäner, men behåller vår server som slutlig mailhost."
-
-msgid ""
-"Spam Filter: Setup an external MX host to relay mail of your entire domain "
-"but retains our server as final mailhost."
-msgstr "Spam Filter: Konfigurera en extern MX värd att vidarebefordra e-post av hela din domän men behåller vår server som slutlig mailhost."
-
 msgid "Start installation"
 msgstr "Starta installationen"
 
@@ -4827,9 +4730,6 @@ msgstr "Target"
 msgid "Target domain"
 msgstr "Måldomän"
 
-msgid "Target host"
-msgstr "Målvärd"
-
 msgid "Target port"
 msgstr "Målport"
 
@@ -4943,7 +4843,7 @@ msgid ""
 msgstr "There is an Error inside your package. Please check it!<br>Refresh your site to see the new status!"
 
 msgid "There is no pending task. Operation canceled."
-msgstr ""
+msgstr "Det finns ingen väntande uppgift. Åtgärden avbröts."
 
 #, php-format
 msgid ""
@@ -5488,17 +5388,6 @@ msgstr "Välkommen {USERNAME} i-MSCP"
 msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr "När satt till \"ja\", kan din PHP-skript ringa PHP exec () funktion."
 
-msgid "Wildcard"
-msgstr "Jokertecken"
-
-msgid ""
-"Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
-msgstr "Jokertecken: Setup en DNS-MX-post till reläet post för obefintligt underdomäner."
-
-msgid ""
-"Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
-msgstr "Jokertecken: Konfigurera en extern MX värd att vidarebefordra e-post för obefintlig domäner."
-
 msgid "Wrong IP address."
 msgstr "Fel IP adr."
 
@@ -5622,9 +5511,6 @@ msgstr "You cannot protect an area without selected htaccess user(s)."
 #, php-format
 msgid "You cannot remove the %s IP address."
 msgstr "Du kan inte ta bort%s IP-adress."
-
-msgid "You cannot remove this entry."
-msgstr "Du kan inte ta bort denna post."
 
 msgid "You cannot set expire date in past."
 msgstr "You cannot set expire date in past."
@@ -5788,9 +5674,6 @@ msgstr "Du måste välja en fil att ladda upp."
 
 msgid "You must select a file to upload/download."
 msgstr "Du måste välja en fil att ladda upp / ladda ner."
-
-msgid "You must select a least one item to deactivate."
-msgstr "Du måste välja minst ett alternativ för att avaktivera."
 
 msgid "You must select a least one item to delete"
 msgstr "Du måste välja minst ett objekt som du vill ta bort"
@@ -6097,9 +5980,6 @@ msgstr "visa alias"
 
 msgid "waiting for activation"
 msgstr "Väntar på aktivering"
-
-msgid "wildcard"
-msgstr "Jokertecken"
 
 msgid "yes"
 msgstr "ja"

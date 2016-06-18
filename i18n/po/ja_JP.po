@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-17 10:07+0200\n"
-"PO-Revision-Date: 2016-06-17 08:09+0000\n"
+"POT-Creation-Date: 2016-06-18 18:50+0200\n"
+"PO-Revision-Date: 2016-06-18 16:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/i-mscp/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -494,9 +494,6 @@ msgstr "SQLユーザー追加"
 msgid "Add SSL certificate"
 msgstr "SSL証明書の追加"
 
-msgid "Add a new entry"
-msgstr "新しいエントリを追加します。"
-
 msgid "Add admin"
 msgstr "管理者追加"
 
@@ -518,9 +515,6 @@ msgstr "ドメインエイリアス追加"
 msgid "Add email account"
 msgstr "Eメールアカウント追加"
 
-msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr "{DOMAIN UTF8}の外部メールサーバー追加"
-
 msgid "Add group"
 msgstr "グループ追加"
 
@@ -532,9 +526,6 @@ msgstr "新しいＩＰアドレス追加"
 
 msgid "Add new database"
 msgstr "新しいデータベースを追加"
-
-msgid "Add new entry"
-msgstr "新しいエントリを追加します。"
 
 msgid "Add new protected area"
 msgstr "新しい制限領域を追加する"
@@ -851,9 +842,6 @@ msgstr "あなたのWebサイトへの代替アクセスURL"
 msgid "An email addresse is not valid in mail forward list."
 msgstr "Eメールアドレスは、Eメールフォワードリストでは有効ではありません。"
 
-msgid "An entry is defined twice."
-msgstr "エントリが二重に定義されています。"
-
 msgid "An error occurred during authentication."
 msgstr "認証中にエラーが発生した。"
 
@@ -911,12 +899,6 @@ msgstr "%sのSQLユーザを削除してもよろしいですか？"
 
 msgid "Are you sure you want to activate this package?"
 msgstr "このパッケージをアクティブにしてもよろしいですか？"
-
-#, php-format
-msgid ""
-"Are you sure you want to deactivate the external mail server(s) for the '%s'"
-" domain?"
-msgstr "あなたは'%s'のドメインに対して外部メールサーバを無効化してもよろしいですか？"
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
@@ -1079,6 +1061,14 @@ msgstr "不正な要求。"
 
 msgid "Behind"
 msgstr "ビハインド"
+
+msgid ""
+"Below, you can activate the external mail feature for a one or many of your "
+"domains. Be aware that activating the external mail feature configures our "
+"server to relay your mail through your own mail server but doesn't setup any"
+" DNS resource record for it. It is your responsability to setup those DNS "
+"records."
+msgstr ""
 
 msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
@@ -1283,18 +1273,8 @@ msgstr "クライアント / Eメール / キャッチオール / キャッチ�
 msgid "Client / Email / Edit Email Account"
 msgstr "クライアント / Eメール / Eメールアカウント編集"
 
-msgid "Client / Email / External Mail Server"
-msgstr "クライアント / Eメール / 外部メールサーバー"
-
-msgid ""
-"Client / Email / External Mail Server / Add External Mail Server for "
-"{DOMAIN_UTF8}"
-msgstr "クライアント / Eメール / 外部メールサーバー / {DOMAIN_UTF8}の外部メールサーバー追加"
-
-msgid ""
-"Client / Email / External Mail Server / Edit External Mail Server for "
-"{DOMAIN_UTF8}"
-msgstr "クライアント / Eメール / 外部メールーサーバー / {DOMAIN_UTF8}の外部メールサーバー編集 "
+msgid "Client / Email / External Mail Feature"
+msgstr ""
 
 msgid "Client / Email / Overview"
 msgstr "クライアント / Eメール / 概要"
@@ -1725,9 +1705,6 @@ msgstr "日"
 
 msgid "Deactivate"
 msgstr "無効にする"
-
-msgid "Deactivate selected items"
-msgstr "選択した項目を無効化"
 
 msgid "Deactivate this plugin"
 msgstr "プラグインを無効にします"
@@ -2162,14 +2139,6 @@ msgstr "ドメインが更新されました。"
 msgid "Domain type"
 msgstr "ドメイン種別"
 
-msgid ""
-"Domain: Setup a DNS MX record to relay mail of your entire domain, including"
-" subdomains."
-msgstr "ドメイン：DNSのMXレコードに、サブドメインを含むドメイン全体のメールを中継を設定します。"
-
-msgid "Domain: Setup an external MX host to relay mail of your entire domain."
-msgstr "ドメイン：外部MXホストは、ドメイン全体のメールを中継を設定\nします。"
-
 msgid "Domains"
 msgstr "ドメイン"
 
@@ -2232,9 +2201,6 @@ msgstr "ドメインエイリアスの編集"
 
 msgid "Edit error page"
 msgstr "エラーページの編集"
-
-msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr "{DOMAIN UTF8}の外部メールサーバー編集"
 
 msgid "Edit hosting plan"
 msgstr "ホスティングプランの編集"
@@ -2361,11 +2327,6 @@ msgstr "有効"
 msgid "Enabled for: %s"
 msgstr "有効なため：%s"
 
-msgid ""
-"Entries associated to your external mail servers were not found. A "
-"Resynchronization has been scheduled."
-msgstr "外部メールサーバーに関連付けられたエントリが見つかりませんでした。再同期は予定されています。"
-
 msgid "Error"
 msgstr "エラー"
 
@@ -2396,20 +2357,14 @@ msgstr "失効日"
 msgid "Ext. mail server"
 msgstr "Ext. メールサーバー"
 
-msgid "External Mail Host"
-msgstr "外部メールホスト"
-
 msgid "External mail server"
 msgstr "外部メールサーバ"
 
-msgid "External mail server successfully scheduled for addition."
-msgstr "外部のメールサーバの追加が予定されました。"
+msgid "External mail server feature scheduled for activation."
+msgstr ""
 
-msgid "External mail server successfully scheduled for deactivation."
-msgstr "外部のメールサーバの無効化が予定されました。"
-
-msgid "External mail server successfully scheduled for update."
-msgstr "外部のメールサーバの更新が予定されました。"
+msgid "External mail server feature scheduled for deactivation."
+msgstr ""
 
 msgid "External mail servers"
 msgstr "外部メールサーバ"
@@ -2634,6 +2589,9 @@ msgstr "ホームディレクトリ"
 
 msgid "Homepage"
 msgstr "ホームページ"
+
+msgid "Host"
+msgstr ""
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
 msgstr "このSQLユーザは、右のSQLサーバーへ接続許可されています"
@@ -2881,12 +2839,6 @@ msgstr "国際化"
 msgid "Invalid FTP username."
 msgstr ""
 
-msgid "Invalid MX priority."
-msgstr "無効なMXの優先度。"
-
-msgid "Invalid MX type."
-msgstr "無効なMX種別。"
-
 #, php-format
 msgid "Invalid SQL user host: %s"
 msgstr "無効なSQLユーザホスト： %s"
@@ -3098,16 +3050,6 @@ msgstr "メール機能が無効"
 
 msgid "Mail usage"
 msgstr "メールの使用"
-
-#, php-format
-msgid "Mailhost %s is not valid."
-msgstr "メールホスト%sは有効ではありません。"
-
-msgid "Mailhost cannot be empty."
-msgstr "メールホストは空にすることはできません。"
-
-msgid "Mailhost must not be equal to the domain name for which you add it."
-msgstr "メールホストは、追加するドメイン名と同じであってはなりません。"
 
 msgid "Main menu labels visibility successfully updated."
 msgstr "メインメニューのラベルの可視性は、更新されました"
@@ -3399,12 +3341,6 @@ msgstr "提供されていません"
 msgid "Not used"
 msgstr "使用しない"
 
-msgid "Note: You cannot mix 'Spam Filter' and 'Domain' options"
-msgstr "注意：迷惑メールフィルタやドメインオプションを混在させることはできません"
-
-msgid "Note: You cannot mix Spam filter and domain options"
-msgstr "注：スパムフィルタやドメインオプションを混在させることはできません"
-
 msgid "Nothing found - sorry"
 msgstr "何も見つかりません - すいません"
 
@@ -3413,9 +3349,6 @@ msgstr "何も変更されていません。"
 
 msgid "Nothing has been deleted."
 msgstr "何も削除されていない。"
-
-msgid "Nothing has been scheduled for deactivation."
-msgstr "何も無効化が予定されていません。"
 
 msgid "Notices, Warnings and Errors"
 msgstr "通知, 警告とエラー"
@@ -4083,9 +4016,6 @@ msgstr "削除"
 msgid "Remove IP"
 msgstr "IPアドレス削除"
 
-msgid "Remove last entry"
-msgstr "最後のエントリを削除"
-
 msgid "Remove permissions"
 msgstr "アクセス権を削除します。"
 
@@ -4272,9 +4202,6 @@ msgstr "リセラーや顧客"
 msgid "Reset"
 msgstr "リセット"
 
-msgid "Reset entries"
-msgstr "エントリをリセット"
-
 msgid "Restore"
 msgstr "リストア"
 
@@ -4411,19 +4338,8 @@ msgstr "セキュリティーコード"
 msgid "Security code has expired"
 msgstr ""
 
-msgid "Select all entries for deletion."
-msgstr "削除のため、全てのエントリを選択します。"
-
 msgid "Select group"
 msgstr "グループを選択"
-
-msgid "Select this entry for deletion."
-msgstr "削除のため、このエントリを選択します。"
-
-msgid ""
-"Selecting all entries for deletion will cause deactivation of external mail "
-"server."
-msgstr "削除のために全てのエントリを選択すると、外部メールサーバーが無効化される原因となります。"
 
 msgid "Send"
 msgstr "送信"
@@ -4646,19 +4562,6 @@ msgstr "ソフトウェア-バージョン"
 msgid "Softwaredepot"
 msgstr "ソフトウェアデポット"
 
-msgid "Spam Filter"
-msgstr "スパムフィルター"
-
-msgid ""
-"Spam Filter: Setup a DNS MX record to relay mail of your entire domain, "
-"including subdomains, but retains our server as final mailhost."
-msgstr "スパムフィルタ：サブドメインを含むドメイン全体のメールを中継にDNSのMXレコードを設定しますが、最終的なメールホストとして私たちのサーバーを保持します。"
-
-msgid ""
-"Spam Filter: Setup an external MX host to relay mail of your entire domain "
-"but retains our server as final mailhost."
-msgstr "スパムフィルタ：外部MXホスト設定は、ドメイン全体のメールを中継するが、最終的なメールホストとして当社のサーバーを保持します。"
-
 msgid "Start installation"
 msgstr "インストールを開始します。"
 
@@ -4824,9 +4727,6 @@ msgstr "ターゲット"
 
 msgid "Target domain"
 msgstr "ターゲットドメイン"
-
-msgid "Target host"
-msgstr "ターゲットホスト"
 
 msgid "Target port"
 msgstr "ターゲットポート"
@@ -5486,17 +5386,6 @@ msgstr "{USERNAME} さんi-MSCPへようこそ！"
 msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr ""
 
-msgid "Wildcard"
-msgstr "ワイルドカード"
-
-msgid ""
-"Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
-msgstr "ワイルドカード：存在しないサブドメインのメールをリレーするDNSのMXレコードを設定。"
-
-msgid ""
-"Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
-msgstr "ワイルドカード：存在しないサブドメイン宛のメールを中継する外部のMXホストを設定。"
-
 msgid "Wrong IP address."
 msgstr "IPアドレスに誤りがあります"
 
@@ -5620,9 +5509,6 @@ msgstr "選択したhtaccessのユーザー（複数可）を使用せずに領�
 #, php-format
 msgid "You cannot remove the %s IP address."
 msgstr "あなたは%sのIPアドレスを削除することはできません。"
-
-msgid "You cannot remove this entry."
-msgstr "このエントリを削除することはできません。"
 
 msgid "You cannot set expire date in past."
 msgstr "過去に有効期限を設定することはできません。"
@@ -5783,9 +5669,6 @@ msgstr "アップロードするファイルを選択する必要があります
 
 msgid "You must select a file to upload/download."
 msgstr "アップロード/ダウンロードするファイルを選択する必要があります。"
-
-msgid "You must select a least one item to deactivate."
-msgstr "無効化するには、少なくとも一つの項目を選択する必要があります。"
 
 msgid "You must select a least one item to delete"
 msgstr "削除するには、少なくとも1つの項目を選択する必要があります"
@@ -6092,9 +5975,6 @@ msgstr "エイリアス確認"
 
 msgid "waiting for activation"
 msgstr "アクティベーション待ち"
-
-msgid "wildcard"
-msgstr "ワイルドカード"
 
 msgid "yes"
 msgstr "はい"

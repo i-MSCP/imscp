@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-17 10:07+0200\n"
-"PO-Revision-Date: 2016-06-17 08:09+0000\n"
+"POT-Creation-Date: 2016-06-18 18:50+0200\n"
+"PO-Revision-Date: 2016-06-18 16:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/i-mscp/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -494,9 +494,6 @@ msgstr "Tilføj SQL bruger"
 msgid "Add SSL certificate"
 msgstr "Tilføj SSL certifikat"
 
-msgid "Add a new entry"
-msgstr "Tilføj en ny post"
-
 msgid "Add admin"
 msgstr "Tilføj admin"
 
@@ -518,9 +515,6 @@ msgstr "Tilføj domæne alias"
 msgid "Add email account"
 msgstr "Tilføj e-mail konto"
 
-msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr "Tilføj ekstern mailserver for {DOMAIN_UTF8}"
-
 msgid "Add group"
 msgstr "Tilføj gruppe"
 
@@ -532,9 +526,6 @@ msgstr "Tilføj ny IP adresse"
 
 msgid "Add new database"
 msgstr "Tilføj ny database"
-
-msgid "Add new entry"
-msgstr "Tilføj ny post"
 
 msgid "Add new protected area"
 msgstr "Tilføj nyt beskyttet område"
@@ -851,9 +842,6 @@ msgstr "Alternativ URL til at nå dit website"
 msgid "An email addresse is not valid in mail forward list."
 msgstr "En e-mail adresse er ikke fundet valid i mail forward listen."
 
-msgid "An entry is defined twice."
-msgstr "En oplysning er defineret to gange."
-
 msgid "An error occurred during authentication."
 msgstr "Der opstod en fejl i forbindelse med godkendelse."
 
@@ -911,12 +899,6 @@ msgstr "Er du sikker på, du vil slette %s SQL bruger?"
 
 msgid "Are you sure you want to activate this package?"
 msgstr "Er du sikker på, du vil aktivere denne pakke?"
-
-#, php-format
-msgid ""
-"Are you sure you want to deactivate the external mail server(s) for the '%s'"
-" domain?"
-msgstr "Er du sikker på du vil deaktivere den/de eksterne mail-server(e) til '%s' domæne?"
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
@@ -1079,6 +1061,14 @@ msgstr "Forkert anmodning."
 
 msgid "Behind"
 msgstr "Bag"
+
+msgid ""
+"Below, you can activate the external mail feature for a one or many of your "
+"domains. Be aware that activating the external mail feature configures our "
+"server to relay your mail through your own mail server but doesn't setup any"
+" DNS resource record for it. It is your responsability to setup those DNS "
+"records."
+msgstr ""
 
 msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
@@ -1283,18 +1273,8 @@ msgstr "Klient / E-mail / Catchall / Tilføj Catchall"
 msgid "Client / Email / Edit Email Account"
 msgstr "Klient / E-mail / Rediger E-mail Konto"
 
-msgid "Client / Email / External Mail Server"
-msgstr " Klient / E-mail / Ekstern Mail server"
-
-msgid ""
-"Client / Email / External Mail Server / Add External Mail Server for "
-"{DOMAIN_UTF8}"
-msgstr " Klient / E-mail / Ekstern Mail Server / Tilføj Ekstern Mail Server for {DOMAIN_UTF8}"
-
-msgid ""
-"Client / Email / External Mail Server / Edit External Mail Server for "
-"{DOMAIN_UTF8}"
-msgstr " Klient / E-mail / Ekstern Mail Server / Rediger Ekstern Mail Server for {DOMAIN_UTF8}"
+msgid "Client / Email / External Mail Feature"
+msgstr ""
 
 msgid "Client / Email / Overview"
 msgstr "Klient / E-mail / Oversigt"
@@ -1725,9 +1705,6 @@ msgstr "Dage"
 
 msgid "Deactivate"
 msgstr "Deaktivér"
-
-msgid "Deactivate selected items"
-msgstr "Deaktivér valgte elementer"
 
 msgid "Deactivate this plugin"
 msgstr "Deaktivér dette plugin"
@@ -2162,14 +2139,6 @@ msgstr "Domæne blevet opdateret."
 msgid "Domain type"
 msgstr "Domæne type"
 
-msgid ""
-"Domain: Setup a DNS MX record to relay mail of your entire domain, including"
-" subdomains."
-msgstr "Domæne: Opsætning af en MX-record til relay mail på hele domænet, herunder underdomæner."
-
-msgid "Domain: Setup an external MX host to relay mail of your entire domain."
-msgstr "Domæne: Opsæt en ekstern MX vært til relay mail af hele din domæne."
-
 msgid "Domains"
 msgstr "Domæner"
 
@@ -2232,9 +2201,6 @@ msgstr "Rediger domænealias"
 
 msgid "Edit error page"
 msgstr "Rediger fejlside"
-
-msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr "Rediger ekatern mail server for {DOMAIN_UTF8}"
 
 msgid "Edit hosting plan"
 msgstr "Rediger hosting plan"
@@ -2361,11 +2327,6 @@ msgstr "Aktiveret"
 msgid "Enabled for: %s"
 msgstr "Aktiveret for: %s"
 
-msgid ""
-"Entries associated to your external mail servers were not found. A "
-"Resynchronization has been scheduled."
-msgstr "Poster forbundet til din eksterne mail-servere blev ikke fundet. En resynkronisering er blevet planlagt."
-
 msgid "Error"
 msgstr "Fejl"
 
@@ -2396,20 +2357,14 @@ msgstr "Udløbsdato"
 msgid "Ext. mail server"
 msgstr "Ekst. mail server"
 
-msgid "External Mail Host"
-msgstr "Ekstern Mail Host"
-
 msgid "External mail server"
 msgstr "Ekstern mail server"
 
-msgid "External mail server successfully scheduled for addition."
-msgstr "Eksterne mailserver succesfuldt planlagt til tilføjelse."
+msgid "External mail server feature scheduled for activation."
+msgstr ""
 
-msgid "External mail server successfully scheduled for deactivation."
-msgstr "Eksterne mailserver succesfuldt planlagt til deaktivering."
-
-msgid "External mail server successfully scheduled for update."
-msgstr "Ekstern mailserver succesfuldt planlagt til opdatering."
+msgid "External mail server feature scheduled for deactivation."
+msgstr ""
 
 msgid "External mail servers"
 msgstr "Eksterne mail servers"
@@ -2634,6 +2589,9 @@ msgstr "Home bibliotek"
 
 msgid "Homepage"
 msgstr "Hjemmeside"
+
+msgid "Host"
+msgstr ""
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
 msgstr "Vært, hvorfra SQL bruger har tilladelse til at oprette forbindelse til SQL Server"
@@ -2881,12 +2839,6 @@ msgstr "Internationalisering"
 msgid "Invalid FTP username."
 msgstr ""
 
-msgid "Invalid MX priority."
-msgstr "Ugyldig MX prioritet."
-
-msgid "Invalid MX type."
-msgstr "Invalid MX type."
-
 #, php-format
 msgid "Invalid SQL user host: %s"
 msgstr "Ugyldig SQL bruger host: %s"
@@ -3098,16 +3050,6 @@ msgstr "Mail funktioner er deaktiveret."
 
 msgid "Mail usage"
 msgstr "Mail anvendelse"
-
-#, php-format
-msgid "Mailhost %s is not valid."
-msgstr "E-mailhost %s er ikke gyldig."
-
-msgid "Mailhost cannot be empty."
-msgstr "E-mailhost kan ikke være tom."
-
-msgid "Mailhost must not be equal to the domain name for which you add it."
-msgstr "E-mailhost skal ikke være lig med det domænenavn, som du tilføje det."
 
 msgid "Main menu labels visibility successfully updated."
 msgstr "Hovedmenu labels synlighed korrekt opdateret."
@@ -3399,12 +3341,6 @@ msgstr "Ikke opgivet"
 msgid "Not used"
 msgstr "Ikke brugt"
 
-msgid "Note: You cannot mix 'Spam Filter' and 'Domain' options"
-msgstr "Bemærk: Du kan ikke blande 'Spam Filter' og 'Domain' muligheder"
-
-msgid "Note: You cannot mix Spam filter and domain options"
-msgstr "Bemærk: Du kan ikke blande spamfilter og domæne valgmuligheder"
-
 msgid "Nothing found - sorry"
 msgstr "Intet fundet - undskyld"
 
@@ -3413,9 +3349,6 @@ msgstr "Intet er blevet ændret."
 
 msgid "Nothing has been deleted."
 msgstr "Intet er blevet slettet."
-
-msgid "Nothing has been scheduled for deactivation."
-msgstr "Intet er blevet planlagt til deaktivering."
 
 msgid "Notices, Warnings and Errors"
 msgstr "Meddelelser, advarsler og fejl"
@@ -4083,9 +4016,6 @@ msgstr "Fjern"
 msgid "Remove IP"
 msgstr "Fjern IP"
 
-msgid "Remove last entry"
-msgstr "Fjern sidste indtastning"
-
 msgid "Remove permissions"
 msgstr "Fjern tilladelser"
 
@@ -4272,9 +4202,6 @@ msgstr "Forhandlere og kunder"
 msgid "Reset"
 msgstr "Nulstille"
 
-msgid "Reset entries"
-msgstr "Reset indtastninger"
-
 msgid "Restore"
 msgstr "Gendan"
 
@@ -4411,19 +4338,8 @@ msgstr "Sikkerhedskode"
 msgid "Security code has expired"
 msgstr ""
 
-msgid "Select all entries for deletion."
-msgstr "Vælg alle poster til sletning."
-
 msgid "Select group"
 msgstr "Vælg gruppe"
-
-msgid "Select this entry for deletion."
-msgstr "Vælg denne post til sletning."
-
-msgid ""
-"Selecting all entries for deletion will cause deactivation of external mail "
-"server."
-msgstr "Valg af alle poster for sletning vil forårsage deaktivering af eksterne mailserver."
 
 msgid "Send"
 msgstr "Send"
@@ -4646,19 +4562,6 @@ msgstr "Software-Version"
 msgid "Softwaredepot"
 msgstr "Softwaredepot"
 
-msgid "Spam Filter"
-msgstr "Spam Filter"
-
-msgid ""
-"Spam Filter: Setup a DNS MX record to relay mail of your entire domain, "
-"including subdomains, but retains our server as final mailhost."
-msgstr "Spam Filter: Setup en DNS MX-record til relay mail af hele dit domæne, herunder underdomæner, men bevarer vores server som endelig mailhost."
-
-msgid ""
-"Spam Filter: Setup an external MX host to relay mail of your entire domain "
-"but retains our server as final mailhost."
-msgstr "Spam Filter: Opsæt en ekstern MX vært til relay post for hele dit domæne men bevarer vores server som endelig postvært."
-
 msgid "Start installation"
 msgstr "Start installation"
 
@@ -4824,9 +4727,6 @@ msgstr "Mål"
 
 msgid "Target domain"
 msgstr "Target domæne"
-
-msgid "Target host"
-msgstr "Hosting mål"
 
 msgid "Target port"
 msgstr "Mål port"
@@ -5486,17 +5386,6 @@ msgstr "Velkommen {USERNAME} til i-MSCP"
 msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr ""
 
-msgid "Wildcard"
-msgstr "Jokertegn"
-
-msgid ""
-"Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
-msgstr "Wildcard: Setup en DNS MX-record til at videresende post til ikke-eksisterende underdomæner."
-
-msgid ""
-"Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
-msgstr "Wildcard: Opsæt en ekstern MX vært til relay post til ikke-eksisterende underdomæner."
-
 msgid "Wrong IP address."
 msgstr "Forkert IP-adresse."
 
@@ -5620,9 +5509,6 @@ msgstr "Du kan ikke beskytte et område uden valgte htaccess bruger(e)."
 #, php-format
 msgid "You cannot remove the %s IP address."
 msgstr "Du kan ikke fjerne %s IP adressen."
-
-msgid "You cannot remove this entry."
-msgstr "Du kan ikke fjerne denne post."
 
 msgid "You cannot set expire date in past."
 msgstr "Du kan ikke indstille udløbsdato i fortiden."
@@ -5786,9 +5672,6 @@ msgstr "Du skal vælge en fil til upload."
 
 msgid "You must select a file to upload/download."
 msgstr "Du skal vælge en fil for upload/download."
-
-msgid "You must select a least one item to deactivate."
-msgstr "Du skal vælge mindst ét ​​element at deaktivere."
 
 msgid "You must select a least one item to delete"
 msgstr "Du skal vælge mindst ét ​​element der skal slettes."
@@ -6095,9 +5978,6 @@ msgstr "Se Aliaser"
 
 msgid "waiting for activation"
 msgstr "venter på aktivering"
-
-msgid "wildcard"
-msgstr "wildcard"
 
 msgid "yes"
 msgstr "ja"

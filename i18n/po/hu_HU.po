@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-17 10:07+0200\n"
-"PO-Revision-Date: 2016-06-17 08:09+0000\n"
+"POT-Creation-Date: 2016-06-18 18:50+0200\n"
+"PO-Revision-Date: 2016-06-18 16:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/i-mscp/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -494,9 +494,6 @@ msgstr "SQL felhasználó hozzáadása"
 msgid "Add SSL certificate"
 msgstr "SSL tanúsítvány hozzáadása"
 
-msgid "Add a new entry"
-msgstr "Új bejegyzés hozzáadása"
-
 msgid "Add admin"
 msgstr "Adminisztrátor hozzáadása"
 
@@ -518,9 +515,6 @@ msgstr "Domain álnév létrehozása"
 msgid "Add email account"
 msgstr "Postafiók hozzáadása"
 
-msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr "Külső levelező szerver hozzáadása a {DOMAIN_UTF8} -hez"
-
 msgid "Add group"
 msgstr "Csoport létrehozása"
 
@@ -532,9 +526,6 @@ msgstr "IP-cím hozzáadása"
 
 msgid "Add new database"
 msgstr "Új adatbázis létrehozása"
-
-msgid "Add new entry"
-msgstr "Új bejegyzés hozzáadása"
 
 msgid "Add new protected area"
 msgstr "Védett terület létrehozása"
@@ -851,9 +842,6 @@ msgstr "Alternatív webcím a weboldal eléréséhez"
 msgid "An email addresse is not valid in mail forward list."
 msgstr "Érvénytelen e-mail cím van a levél továbbítási listában."
 
-msgid "An entry is defined twice."
-msgstr "Ilyen már létezik egyszer."
-
 msgid "An error occurred during authentication."
 msgstr "Hiba történt a hitelesítés közben."
 
@@ -911,12 +899,6 @@ msgstr "Tényleg törölni szeretnéd a(z) %s SQL felhasználót?"
 
 msgid "Are you sure you want to activate this package?"
 msgstr "Biztosan szeretné aktiválni ezt a programcsomagot?"
-
-#, php-format
-msgid ""
-"Are you sure you want to deactivate the external mail server(s) for the '%s'"
-" domain?"
-msgstr "Biztosan felfüggeszti a külső levelező szerver(ek) használatát  '%s' domain-hez?"
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
@@ -1079,6 +1061,14 @@ msgstr "Hibás kérés."
 
 msgid "Behind"
 msgstr "Mögötte"
+
+msgid ""
+"Below, you can activate the external mail feature for a one or many of your "
+"domains. Be aware that activating the external mail feature configures our "
+"server to relay your mail through your own mail server but doesn't setup any"
+" DNS resource record for it. It is your responsability to setup those DNS "
+"records."
+msgstr ""
 
 msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
@@ -1283,18 +1273,8 @@ msgstr "Ügyfél / Levelezés / Catchall létrehozása"
 msgid "Client / Email / Edit Email Account"
 msgstr "Ügyfél / Levelezés / Postafiók szerkesztése"
 
-msgid "Client / Email / External Mail Server"
-msgstr "Ügyfél / Levelezés / Külső levelező szerver"
-
-msgid ""
-"Client / Email / External Mail Server / Add External Mail Server for "
-"{DOMAIN_UTF8}"
-msgstr "Ügyfél / Levelezés / Külső levelező szerver / Külső levelező szerver hozzáadása ehhez: {DOMAIN_UTF8}"
-
-msgid ""
-"Client / Email / External Mail Server / Edit External Mail Server for "
-"{DOMAIN_UTF8}"
-msgstr "Ügyfél / Levelezés / Külső levelező szerver / Külső levelező szerver módosítása ehhez: {DOMAIN_UTF8}"
+msgid "Client / Email / External Mail Feature"
+msgstr ""
 
 msgid "Client / Email / Overview"
 msgstr "Ügyfél / Levelezés / Áttekintés"
@@ -1725,9 +1705,6 @@ msgstr "nap"
 
 msgid "Deactivate"
 msgstr "Deaktiválás"
-
-msgid "Deactivate selected items"
-msgstr "Kijelölt elemek felfüggesztése (kikapcsolása)"
 
 msgid "Deactivate this plugin"
 msgstr "Bővítmény deaktiválása"
@@ -2162,14 +2139,6 @@ msgstr "Domain tulajdonságai sikeresen frissítve"
 msgid "Domain type"
 msgstr "Domain típusa"
 
-msgid ""
-"Domain: Setup a DNS MX record to relay mail of your entire domain, including"
-" subdomains."
-msgstr "Domain: MX-rekord létrehozása a teljes domainre vonatkozik beleértve az aldomainokat is."
-
-msgid "Domain: Setup an external MX host to relay mail of your entire domain."
-msgstr "Domain: Állíts be egy külső MX kiszolgálót, ahová az egész domaineid leveleit továbbítod."
-
 msgid "Domains"
 msgstr "Domainek"
 
@@ -2232,9 +2201,6 @@ msgstr "Domain álnév módosítása"
 
 msgid "Edit error page"
 msgstr "Hibaoldal szerkesztése"
-
-msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr "Külső levelező szerver módosítása a {DOMAIN_UTF8} -hez"
 
 msgid "Edit hosting plan"
 msgstr "Tárhely csomag módosítása"
@@ -2361,11 +2327,6 @@ msgstr "Engedélyezve"
 msgid "Enabled for: %s"
 msgstr "%s számára engedélyezve"
 
-msgid ""
-"Entries associated to your external mail servers were not found. A "
-"Resynchronization has been scheduled."
-msgstr "Külső levelező szerverek nem találhatók a kapcsolat létrehozása során. Újraszinkronizálás beütemezve."
-
 msgid "Error"
 msgstr "Hiba"
 
@@ -2396,20 +2357,14 @@ msgstr "Lejárati dátum"
 msgid "Ext. mail server"
 msgstr "Külső levelező szerver"
 
-msgid "External Mail Host"
-msgstr "Külső levelező kiszolgáló"
-
 msgid "External mail server"
 msgstr "Külső levelező szerver"
 
-msgid "External mail server successfully scheduled for addition."
-msgstr "Külső levelező szerver hozzáadása sikeresen beütemezve."
+msgid "External mail server feature scheduled for activation."
+msgstr ""
 
-msgid "External mail server successfully scheduled for deactivation."
-msgstr "Külső levelező szerver deaktiválása sikeresen beütemezve."
-
-msgid "External mail server successfully scheduled for update."
-msgstr "Külső levelező szerver frissítése sikeresen beütemezve."
+msgid "External mail server feature scheduled for deactivation."
+msgstr ""
 
 msgid "External mail servers"
 msgstr "Külső levelező szerverek"
@@ -2634,6 +2589,9 @@ msgstr "Home könyvtár"
 
 msgid "Homepage"
 msgstr "Honlap"
+
+msgid "Host"
+msgstr ""
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
 msgstr "Az a kiszolgáló, ahonnan az SQL felhasználó csatlakozhat az SQL szerverre"
@@ -2881,12 +2839,6 @@ msgstr "Nyelvi beállítások"
 msgid "Invalid FTP username."
 msgstr ""
 
-msgid "Invalid MX priority."
-msgstr "Érvénytelen MX prioritás"
-
-msgid "Invalid MX type."
-msgstr "Érvénytelen MX típus."
-
 #, php-format
 msgid "Invalid SQL user host: %s"
 msgstr "Érvénytelen SQL felhasználói kiszolgáló: %s"
@@ -3098,16 +3050,6 @@ msgstr "Email szolgáltatások nem engedélyezettek"
 
 msgid "Mail usage"
 msgstr "Levelezés tárhely foglaltsága"
-
-#, php-format
-msgid "Mailhost %s is not valid."
-msgstr "Hibás levelező kiszolgáló (%s)."
-
-msgid "Mailhost cannot be empty."
-msgstr "Levelező kiszolgáló nem lehet üres."
-
-msgid "Mailhost must not be equal to the domain name for which you add it."
-msgstr "A levelező kiszolgáló nem egyezhet meg azzal a domain névvel, amelyhez hozzáadtad."
 
 msgid "Main menu labels visibility successfully updated."
 msgstr "Főmenü hivatkozások sikeresen frissültek"
@@ -3399,12 +3341,6 @@ msgstr "Nincs megadva"
 msgid "Not used"
 msgstr "Nem elérhető"
 
-msgid "Note: You cannot mix 'Spam Filter' and 'Domain' options"
-msgstr "Megjegyzés: Nem keverheted a „Spamszűrő” és „Domain” beállításokat."
-
-msgid "Note: You cannot mix Spam filter and domain options"
-msgstr "Megjegyzés: Nem keverheted össze a spamszürő és domain beállításokat."
-
 msgid "Nothing found - sorry"
 msgstr "Nem található - sajnálom"
 
@@ -3413,9 +3349,6 @@ msgstr "Semmi sem változott."
 
 msgid "Nothing has been deleted."
 msgstr "Semmi sem változott."
-
-msgid "Nothing has been scheduled for deactivation."
-msgstr "Semmi nem lett beütemezve deaktiválásra."
 
 msgid "Notices, Warnings and Errors"
 msgstr "Értesítések, Figyelmeztetések és Hibák"
@@ -4083,9 +4016,6 @@ msgstr "Eltávolít"
 msgid "Remove IP"
 msgstr "IP-cím törlése"
 
-msgid "Remove last entry"
-msgstr "Utolsó bejegyzés törlése"
-
 msgid "Remove permissions"
 msgstr "Jogosultság elvétele"
 
@@ -4272,9 +4202,6 @@ msgstr "Viszonteladók és ügyfelek"
 msgid "Reset"
 msgstr "Visszaállítás"
 
-msgid "Reset entries"
-msgstr "Bejegyzések törlése"
-
 msgid "Restore"
 msgstr "Visszaállítás"
 
@@ -4411,19 +4338,8 @@ msgstr "Biztonsági kód"
 msgid "Security code has expired"
 msgstr ""
 
-msgid "Select all entries for deletion."
-msgstr "Összes bejegyzés kijelölése törlésre"
-
 msgid "Select group"
 msgstr "Csoport kiválasztása"
-
-msgid "Select this entry for deletion."
-msgstr "Ez a bejegyzés kijelölése törlésre"
-
-msgid ""
-"Selecting all entries for deletion will cause deactivation of external mail "
-"server."
-msgstr "Az összes bejegyzés törlése a külső levelező kiszolgáló kikapcsolását okozza"
 
 msgid "Send"
 msgstr "Küldés"
@@ -4646,19 +4562,6 @@ msgstr "Program verzió"
 msgid "Softwaredepot"
 msgstr "Programtároló"
 
-msgid "Spam Filter"
-msgstr "Spamszűrő"
-
-msgid ""
-"Spam Filter: Setup a DNS MX record to relay mail of your entire domain, "
-"including subdomains, but retains our server as final mailhost."
-msgstr "Spamszűrő: MX-rekord létrehozása a teljes domainre vonatkozik beleértve az aldomainokat is, de a szervered lesz a végső levelező kiszolgáló."
-
-msgid ""
-"Spam Filter: Setup an external MX host to relay mail of your entire domain "
-"but retains our server as final mailhost."
-msgstr "Spamszűrő: Állíts be egy külső MX kiszolgálót, ahová az egész domained leveleit továbbítjuk, de ez a szerver megmarad végleges levél kiszolgálónak."
-
 msgid "Start installation"
 msgstr "Telepítés megkezdése"
 
@@ -4824,9 +4727,6 @@ msgstr "Cél (target)"
 
 msgid "Target domain"
 msgstr "Cél domain"
-
-msgid "Target host"
-msgstr "Kiszolgáló (host)"
 
 msgid "Target port"
 msgstr "Port"
@@ -5486,17 +5386,6 @@ msgstr "Üdvözöljük {USERNAME} az i-MSCP rendszerben!"
 msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr ""
 
-msgid "Wildcard"
-msgstr "Wildcard"
-
-msgid ""
-"Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
-msgstr "Wildcard: MX-rekord létrehozása a nem létező aldomainek leveleinek továbbítására."
-
-msgid ""
-"Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
-msgstr "Wildcard: Állíts be egy külső MX kiszolgálót, ahová továbbításra kerülnek a nem létező aldomainek levelei."
-
 msgid "Wrong IP address."
 msgstr "Hibás IP-cím"
 
@@ -5620,9 +5509,6 @@ msgstr "Nem tudja megvédeni a kijelölt területet védett felhasználó(ok) ki
 #, php-format
 msgid "You cannot remove the %s IP address."
 msgstr "Nem törölhető az „%s” IP-cím."
-
-msgid "You cannot remove this entry."
-msgstr "Nem lehet törölni ezt a bejegyzést."
 
 msgid "You cannot set expire date in past."
 msgstr "Lejárati dátum nem lehet korábbi ."
@@ -5786,9 +5672,6 @@ msgstr "Meg kell adni a feltöltendő fájlt"
 
 msgid "You must select a file to upload/download."
 msgstr "Meg kell adni a feltöltendő/letöltendő fájlt"
-
-msgid "You must select a least one item to deactivate."
-msgstr "Ki kell választani legalább egy elemet a felfüggesztéshez "
 
 msgid "You must select a least one item to delete"
 msgstr "Legalább egy elemet ki kell jelölni a törléshez"
@@ -6095,9 +5978,6 @@ msgstr "álnevek mutatása"
 
 msgid "waiting for activation"
 msgstr "aktiválásra vár"
-
-msgid "wildcard"
-msgstr "helyettesítő"
 
 msgid "yes"
 msgstr "igen"

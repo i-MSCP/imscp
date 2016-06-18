@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-17 10:07+0200\n"
-"PO-Revision-Date: 2016-06-17 08:09+0000\n"
+"POT-Creation-Date: 2016-06-18 18:50+0200\n"
+"PO-Revision-Date: 2016-06-18 16:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/i-mscp/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -497,9 +497,6 @@ msgstr "MySQL-gebruiker toevoegen"
 msgid "Add SSL certificate"
 msgstr "Voeg SSL-certificaat toe"
 
-msgid "Add a new entry"
-msgstr "Nieuwe toevoegen"
-
 msgid "Add admin"
 msgstr "Nieuwe beheerder"
 
@@ -521,9 +518,6 @@ msgstr "Domeinalias toevoegen"
 msgid "Add email account"
 msgstr "E-mailaccount toevoegen"
 
-msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr "Voeg externe mailserver toe voor domein {DOMAIN_UTF8}"
-
 msgid "Add group"
 msgstr "Groep toevoegen"
 
@@ -535,9 +529,6 @@ msgstr "Voeg nieuw IP-adres toe"
 
 msgid "Add new database"
 msgstr "Nieuwe databank toevoegen"
-
-msgid "Add new entry"
-msgstr "Nieuwe toevoegen"
 
 msgid "Add new protected area"
 msgstr "Nieuwe beveiligde map toevoegen"
@@ -854,9 +845,6 @@ msgstr "Alternatieve URL"
 msgid "An email addresse is not valid in mail forward list."
 msgstr "Een ontvanger uit de mailinglist is niet geldig."
 
-msgid "An entry is defined twice."
-msgstr "Een invoer is tweemaal ingegeven."
-
 msgid "An error occurred during authentication."
 msgstr "Er is een aanmeldfout opgetreden"
 
@@ -914,12 +902,6 @@ msgstr "Weet u zeker dat u de SQL-gebruiker %s wilt verwijderen?"
 
 msgid "Are you sure you want to activate this package?"
 msgstr "Weet u zeker dat u dit pakket wilt activeren?"
-
-#, php-format
-msgid ""
-"Are you sure you want to deactivate the external mail server(s) for the '%s'"
-" domain?"
-msgstr "Weet u zeker dat u externe mail server(s) voor het domein '%s' wilt aanpassen?"
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
@@ -1084,6 +1066,14 @@ msgid "Behind"
 msgstr "Achter"
 
 msgid ""
+"Below, you can activate the external mail feature for a one or many of your "
+"domains. Be aware that activating the external mail feature configures our "
+"server to relay your mail through your own mail server but doesn't setup any"
+" DNS resource record for it. It is your responsability to setup those DNS "
+"records."
+msgstr ""
+
+msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
 msgstr "Blokkeertijd tussen login/captcha-pogingen <small>(in seconden)</small>"
 
@@ -1162,7 +1152,7 @@ msgid "Change personal data"
 msgstr "Verander persoonlijke informatie"
 
 msgid "Change status of this item for a new attempt"
-msgstr ""
+msgstr "Verander de status van dit object voor een nieuwe poging."
 
 msgid "Check for update"
 msgstr "Controleer op updates"
@@ -1286,18 +1276,8 @@ msgstr "Klant / E-mail / Catch-all / Voeg catch-all toe"
 msgid "Client / Email / Edit Email Account"
 msgstr "Klant / E-mail / Pas mailaccount aan"
 
-msgid "Client / Email / External Mail Server"
-msgstr "Klant / E-mail / Externe mailserver"
-
-msgid ""
-"Client / Email / External Mail Server / Add External Mail Server for "
-"{DOMAIN_UTF8}"
-msgstr "Klant / E-mail / Externe mailserver / Voeg externe mailserver toe voor {DOMAIN_UTF8}"
-
-msgid ""
-"Client / Email / External Mail Server / Edit External Mail Server for "
-"{DOMAIN_UTF8}"
-msgstr "Klant / E-mail / Externe mailserver / Pas externe mailserver aan voor {DOMAIN_UTF8}"
+msgid "Client / Email / External Mail Feature"
+msgstr ""
 
 msgid "Client / Email / Overview"
 msgstr "Klant / E-mail / Overzicht"
@@ -1728,9 +1708,6 @@ msgstr "Dagen"
 
 msgid "Deactivate"
 msgstr "Deactiveren"
-
-msgid "Deactivate selected items"
-msgstr "Verwijder geselecteerde items"
 
 msgid "Deactivate this plugin"
 msgstr "Deactiveer deze invoegtoepassing"
@@ -2165,14 +2142,6 @@ msgstr "Domein succesvol bijgewerkt."
 msgid "Domain type"
 msgstr "Domeintype"
 
-msgid ""
-"Domain: Setup a DNS MX record to relay mail of your entire domain, including"
-" subdomains."
-msgstr "Domein: Maak een DNS-MX-record aan om mail te kunnen ontvangen op het gehele domein, inclusief subdomeinen."
-
-msgid "Domain: Setup an external MX host to relay mail of your entire domain."
-msgstr "Domein: Stel een eigen externe MX-host in om mail te relayen voor het gehele domein.Domein: Stel een eigen externe MX-host in om mail te versturen voor het gehele domein."
-
 msgid "Domains"
 msgstr "Domeinen"
 
@@ -2235,9 +2204,6 @@ msgstr "Bewerk domeinalias"
 
 msgid "Edit error page"
 msgstr "Foutpagina bewerken"
-
-msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr "Pas externe mailserver voor {DOMAIN_UTF8} aan"
 
 msgid "Edit hosting plan"
 msgstr "Webhostingpakket bewerken"
@@ -2364,11 +2330,6 @@ msgstr "Ingeschakeld"
 msgid "Enabled for: %s"
 msgstr "Ingeschakeld voor: %s"
 
-msgid ""
-"Entries associated to your external mail servers were not found. A "
-"Resynchronization has been scheduled."
-msgstr "Invoer in combinatie met uw externe mailservers zijn niet gevonden, een hersynchronisatie wordt zo snel mogelijk uitgevoerd. Even geduld."
-
 msgid "Error"
 msgstr "Fout"
 
@@ -2391,7 +2352,7 @@ msgid "Excl. default mails"
 msgstr "Excl. standaard-e-mails"
 
 msgid "Execute tasks"
-msgstr ""
+msgstr "Verzoeken uitvoeren"
 
 msgid "Expire date"
 msgstr "Verloopdatum"
@@ -2399,20 +2360,14 @@ msgstr "Verloopdatum"
 msgid "Ext. mail server"
 msgstr "Externe mailserver"
 
-msgid "External Mail Host"
-msgstr "Externe e-mailhost"
-
 msgid "External mail server"
 msgstr "Externe mailserver"
 
-msgid "External mail server successfully scheduled for addition."
-msgstr "Externe mailserver wordt toegevoegd."
+msgid "External mail server feature scheduled for activation."
+msgstr ""
 
-msgid "External mail server successfully scheduled for deactivation."
-msgstr "Externe mailserver wordt gedeactiveerd."
-
-msgid "External mail server successfully scheduled for update."
-msgstr "Externe mailserver wordt bijgewerkt."
+msgid "External mail server feature scheduled for deactivation."
+msgstr ""
 
 msgid "External mail servers"
 msgstr "Externe mailservers"
@@ -2637,6 +2592,9 @@ msgstr "Beginmap"
 
 msgid "Homepage"
 msgstr "Startpagina"
+
+msgid "Host"
+msgstr ""
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
 msgstr "De host waarvan een SQL-gebruiker toegestaan is om te verbinden naar de SQL-server"
@@ -2884,12 +2842,6 @@ msgstr "Internationalisering"
 msgid "Invalid FTP username."
 msgstr "Ongeldige FTP-gebruikersnaam"
 
-msgid "Invalid MX priority."
-msgstr "Ongeldige MX-prioriteit"
-
-msgid "Invalid MX type."
-msgstr "Ongeldig MX-type"
-
 #, php-format
 msgid "Invalid SQL user host: %s"
 msgstr "Ongeldige SQL-gebruikershost: %s"
@@ -3102,16 +3054,6 @@ msgstr "E-mailfunctie is uitgeschakeld"
 msgid "Mail usage"
 msgstr "Mailverbruik"
 
-#, php-format
-msgid "Mailhost %s is not valid."
-msgstr "E-mailhost %s is niet geldig"
-
-msgid "Mailhost cannot be empty."
-msgstr "E-mailhost kan niet leeg zijn."
-
-msgid "Mailhost must not be equal to the domain name for which you add it."
-msgstr "E-mailhost mag niet gelijk zijn aan de domeinnaam waarvoor u deze toevoegt."
-
 msgid "Main menu labels visibility successfully updated."
 msgstr "Hoofdmenu-labels zichtbaarheid succesvol bijgewerkt."
 
@@ -3307,7 +3249,7 @@ msgid "No database update available."
 msgstr "Geen databankupdate beschikbaar."
 
 msgid "No error found"
-msgstr ""
+msgstr "Geen foutmeldingen"
 
 msgid "No file was uploaded."
 msgstr "Er is geen bestand geüpload."
@@ -3402,12 +3344,6 @@ msgstr "Niet opgegeven"
 msgid "Not used"
 msgstr "Niet gebruikt"
 
-msgid "Note: You cannot mix 'Spam Filter' and 'Domain' options"
-msgstr "Let op: U kunt Spam filter niet mixen met domeinopties."
-
-msgid "Note: You cannot mix Spam filter and domain options"
-msgstr "Notitie: U kunt uw spam filter en domein opties niet mixen"
-
 msgid "Nothing found - sorry"
 msgstr "Niets gevonden - sorry"
 
@@ -3416,9 +3352,6 @@ msgstr "Er is niets veranderd."
 
 msgid "Nothing has been deleted."
 msgstr "Er is niets verwijderd"
-
-msgid "Nothing has been scheduled for deactivation."
-msgstr "Er is niets ingepland om gedeactiveerd te worden"
 
 msgid "Notices, Warnings and Errors"
 msgstr "Opmerkingen, Waarschuwingen en Fouten"
@@ -3654,7 +3587,7 @@ msgid "Path"
 msgstr "Pad"
 
 msgid "Pending tasks"
-msgstr ""
+msgstr "Onafgedane taken"
 
 msgid "Percent"
 msgstr "Procent"
@@ -4086,9 +4019,6 @@ msgstr "Verwijder"
 msgid "Remove IP"
 msgstr "Verwijder IP"
 
-msgid "Remove last entry"
-msgstr "Laatste invoer verwijderen"
-
 msgid "Remove permissions"
 msgstr "Verwijder rechten"
 
@@ -4275,9 +4205,6 @@ msgstr "Wederverkopers en klanten"
 msgid "Reset"
 msgstr "Herstel"
 
-msgid "Reset entries"
-msgstr "Invoer leegmaken"
-
 msgid "Restore"
 msgstr "Herstel"
 
@@ -4414,19 +4341,8 @@ msgstr "Veiligheidscode"
 msgid "Security code has expired"
 msgstr "Veligheidscode is verlopen"
 
-msgid "Select all entries for deletion."
-msgstr "Alle invoer markeren voor verwijdering"
-
 msgid "Select group"
 msgstr "Selecteer groep"
-
-msgid "Select this entry for deletion."
-msgstr "Selecteer deze invoer voor verwijdering."
-
-msgid ""
-"Selecting all entries for deletion will cause deactivation of external mail "
-"server."
-msgstr "Door alle invoer te verwijderen, schakelt u tevens de externe mailserver uit."
 
 msgid "Send"
 msgstr "Verzenden"
@@ -4649,19 +4565,6 @@ msgstr "Softwareversie"
 msgid "Softwaredepot"
 msgstr "Softwaredepot"
 
-msgid "Spam Filter"
-msgstr "Spamfilter"
-
-msgid ""
-"Spam Filter: Setup a DNS MX record to relay mail of your entire domain, "
-"including subdomains, but retains our server as final mailhost."
-msgstr "Maak een DNS-MX-record aan om mail te kunnen ontvangen op het gehele domein, inclusief subdomeinen, maar behoudt onze server als laatste e-mailhost."
-
-msgid ""
-"Spam Filter: Setup an external MX host to relay mail of your entire domain "
-"but retains our server as final mailhost."
-msgstr "Spamfilter: Stel een externe MX-host in om de e-mail voor het gehele domein te versturen, maar houd deze server als uiteindelijke mailhost."
-
 msgid "Start installation"
 msgstr "Begin met installatie"
 
@@ -4828,9 +4731,6 @@ msgstr "Doel"
 msgid "Target domain"
 msgstr "Doeldomein"
 
-msgid "Target host"
-msgstr "Doelhost"
-
 msgid "Target port"
 msgstr "Doelpoort"
 
@@ -4944,7 +4844,7 @@ msgid ""
 msgstr "Er bevindt zich een fout in uw pakket. Gelieve het te controleren!<br>Herlaad uw website om de nieuwe status te zien!"
 
 msgid "There is no pending task. Operation canceled."
-msgstr ""
+msgstr "Er zijn geen onafgedane taken. Operatie gestopt."
 
 #, php-format
 msgid ""
@@ -5489,17 +5389,6 @@ msgstr "Welkom bij i-MSCP, {USERNAME}"
 msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr "Indien ingeschakeld kan een klant de PHP exec()-functie gebruiken."
 
-msgid "Wildcard"
-msgstr "Wildcard"
-
-msgid ""
-"Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
-msgstr "Wildcard: Het instellen van een DNS-MX-record om berichten te kunnen ontvangen voor onbestaande subdomeinen."
-
-msgid ""
-"Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
-msgstr "Wildcard: Stel een externe MX-host in om e-mail te verwerken voor niet-bestaande subdomeinen."
-
 msgid "Wrong IP address."
 msgstr "Fout IP-adres."
 
@@ -5623,9 +5512,6 @@ msgstr "U kunt een map niet beveiligen zonder htaccess-gebruikers te selecteren.
 #, php-format
 msgid "You cannot remove the %s IP address."
 msgstr "U kunt het IP-adres %s niet verwijderen."
-
-msgid "You cannot remove this entry."
-msgstr "U kunt deze invoer niet verwijderen."
 
 msgid "You cannot set expire date in past."
 msgstr "U kunt geen vervaldatum in het verleden instellen."
@@ -5789,9 +5675,6 @@ msgstr "U dient een bestand te selecteren om te uploaden."
 
 msgid "You must select a file to upload/download."
 msgstr "U dient een bestand te selecteren om te uploaden/downloaden."
-
-msgid "You must select a least one item to deactivate."
-msgstr "U dient tenminste één voorwerp te selecteren om uit te schakelen."
 
 msgid "You must select a least one item to delete"
 msgstr "U dient tenminste één voorwerp te selecteren om te verwijderen"
@@ -6098,9 +5981,6 @@ msgstr "aliassen bekijken"
 
 msgid "waiting for activation"
 msgstr "wachten op activering"
-
-msgid "wildcard"
-msgstr "wildcard"
 
 msgid "yes"
 msgstr "ja"

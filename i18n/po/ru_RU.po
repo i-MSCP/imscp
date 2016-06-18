@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-17 10:07+0200\n"
-"PO-Revision-Date: 2016-06-17 08:09+0000\n"
+"POT-Creation-Date: 2016-06-18 18:50+0200\n"
+"PO-Revision-Date: 2016-06-18 16:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/i-mscp/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -497,9 +497,6 @@ msgstr "Добавить пользователя SQL"
 msgid "Add SSL certificate"
 msgstr "Добавить SSL сертификат"
 
-msgid "Add a new entry"
-msgstr "Добавить новое вхождеие"
-
 msgid "Add admin"
 msgstr "Добавить администратора"
 
@@ -521,9 +518,6 @@ msgstr "Добавить алиас домена"
 msgid "Add email account"
 msgstr "Добавить почтовый ящик"
 
-msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr "Добавить внешний почтовый сервер для {DOMAIN_UTF8}"
-
 msgid "Add group"
 msgstr "Добавить группу"
 
@@ -535,9 +529,6 @@ msgstr "Добавить новый IP адрес"
 
 msgid "Add new database"
 msgstr "Добавить новую БД"
-
-msgid "Add new entry"
-msgstr "Добавить новое вхождеие"
 
 msgid "Add new protected area"
 msgstr "Добавить новую защищённую зону"
@@ -854,9 +845,6 @@ msgstr "Альтернативный URL для доступа к сайту"
 msgid "An email addresse is not valid in mail forward list."
 msgstr "Неверный синтаксис почтового адреса в списке перенаправления."
 
-msgid "An entry is defined twice."
-msgstr "Вхождение указано дважды."
-
 msgid "An error occurred during authentication."
 msgstr "При попытке аутентификации обнаружена ошибка."
 
@@ -914,12 +902,6 @@ msgstr "Вы уверены что хотите удалить SQL пользо�
 
 msgid "Are you sure you want to activate this package?"
 msgstr "Вы уверены, что хотите активировать этот пакет?"
-
-#, php-format
-msgid ""
-"Are you sure you want to deactivate the external mail server(s) for the '%s'"
-" domain?"
-msgstr "Вы уваерены, что хотите деактивировать внешние почтовые сервера для домена '%s' ?"
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
@@ -1082,6 +1064,14 @@ msgstr "Неверный запрос."
 
 msgid "Behind"
 msgstr "После"
+
+msgid ""
+"Below, you can activate the external mail feature for a one or many of your "
+"domains. Be aware that activating the external mail feature configures our "
+"server to relay your mail through your own mail server but doesn't setup any"
+" DNS resource record for it. It is your responsability to setup those DNS "
+"records."
+msgstr ""
 
 msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
@@ -1286,18 +1276,8 @@ msgstr "Клиент / Управление почтой / Добавить пе
 msgid "Client / Email / Edit Email Account"
 msgstr "Клиент / Управление почтой / Изменить учетную запись"
 
-msgid "Client / Email / External Mail Server"
-msgstr "Клиент / Управление почтой / Внешние почтовые сервера"
-
-msgid ""
-"Client / Email / External Mail Server / Add External Mail Server for "
-"{DOMAIN_UTF8}"
-msgstr "Клиент / Управление почтой / Внешние почтовые сервера / Добавить внешние почтовые сервера для {DOMAIN_UTF8}"
-
-msgid ""
-"Client / Email / External Mail Server / Edit External Mail Server for "
-"{DOMAIN_UTF8}"
-msgstr "Клиент / Управление почтой / Внешние почтовые сервера / Изменить внешние почтовые сервера для {DOMAIN_UTF8}"
+msgid "Client / Email / External Mail Feature"
+msgstr ""
 
 msgid "Client / Email / Overview"
 msgstr "Клиент / Управление почтой / Обзор"
@@ -1728,9 +1708,6 @@ msgstr "Дни"
 
 msgid "Deactivate"
 msgstr "Деактивировать"
-
-msgid "Deactivate selected items"
-msgstr "Деактивировать выбранное"
 
 msgid "Deactivate this plugin"
 msgstr "Деактивировать плагин"
@@ -2165,14 +2142,6 @@ msgstr "Домен успешно обновлен."
 msgid "Domain type"
 msgstr "Тип домена"
 
-msgid ""
-"Domain: Setup a DNS MX record to relay mail of your entire domain, including"
-" subdomains."
-msgstr "Домен: Установите запись DNS MX для переадресации с Вашего текущего домена, включая поддомены."
-
-msgid "Domain: Setup an external MX host to relay mail of your entire domain."
-msgstr "Домен: Настройте внешний МХ-хост, чтобы перенести почту вашего домена."
-
 msgid "Domains"
 msgstr "Домены"
 
@@ -2235,9 +2204,6 @@ msgstr "Редактировать алиас Домена"
 
 msgid "Edit error page"
 msgstr "Редактировать страницу ошибок"
-
-msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr "Измените внешние почтовые сервера для {DOMAIN_UTF8}"
 
 msgid "Edit hosting plan"
 msgstr "Редактировать хостинг-план"
@@ -2364,11 +2330,6 @@ msgstr "Включено"
 msgid "Enabled for: %s"
 msgstr "Включено для: %s"
 
-msgid ""
-"Entries associated to your external mail servers were not found. A "
-"Resynchronization has been scheduled."
-msgstr "Записей, ассоциирующихся с Вашим внешним почтовым сервером не было найдено. Будет помечено на пересинхронизацию. "
-
 msgid "Error"
 msgstr "Ошибка"
 
@@ -2399,20 +2360,14 @@ msgstr "Дата истечения"
 msgid "Ext. mail server"
 msgstr "Внешние почтовые сервера"
 
-msgid "External Mail Host"
-msgstr "Внешний почтовый узел"
-
 msgid "External mail server"
 msgstr "Внешний почтовый сервер"
 
-msgid "External mail server successfully scheduled for addition."
-msgstr "Внешний почтовый сервер успешно помечен для добавления."
+msgid "External mail server feature scheduled for activation."
+msgstr ""
 
-msgid "External mail server successfully scheduled for deactivation."
-msgstr "Внешний почтовый сервер успешно помечен для деактивации."
-
-msgid "External mail server successfully scheduled for update."
-msgstr "Внешний почтовый сервер успешно помечен для обновления."
+msgid "External mail server feature scheduled for deactivation."
+msgstr ""
 
 msgid "External mail servers"
 msgstr "Внешние почтовые сервера"
@@ -2637,6 +2592,9 @@ msgstr "Домашний каталог"
 
 msgid "Homepage"
 msgstr "Домашняя страница"
+
+msgid "Host"
+msgstr ""
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
 msgstr "Хост, с которого каждому пользователю SQL позволено входить на SQL сервер"
@@ -2884,12 +2842,6 @@ msgstr "Языки"
 msgid "Invalid FTP username."
 msgstr "Неверное имя пользователя"
 
-msgid "Invalid MX priority."
-msgstr "Неверный MX приоритет."
-
-msgid "Invalid MX type."
-msgstr "Неверный MX тип."
-
 #, php-format
 msgid "Invalid SQL user host: %s"
 msgstr "Неверный хост SQL: %s"
@@ -3101,16 +3053,6 @@ msgstr "Почта отключена"
 
 msgid "Mail usage"
 msgstr "Использование почты"
-
-#, php-format
-msgid "Mailhost %s is not valid."
-msgstr "Почтовый узел %s не допустим."
-
-msgid "Mailhost cannot be empty."
-msgstr "Почтовый хост не может быть пуст."
-
-msgid "Mailhost must not be equal to the domain name for which you add it."
-msgstr "Почтовый хост не может совпадать с доменом, для которого вы его добавляете."
 
 msgid "Main menu labels visibility successfully updated."
 msgstr "Отображение ярлыков меню успешно обновлено. "
@@ -3402,12 +3344,6 @@ msgstr "Не предусмотрено"
 msgid "Not used"
 msgstr "Не используется"
 
-msgid "Note: You cannot mix 'Spam Filter' and 'Domain' options"
-msgstr "Замечание: Вы не можете смешивать настройки 'Спам-фильтра' и 'Домена'"
-
-msgid "Note: You cannot mix Spam filter and domain options"
-msgstr "Замечание: Вы не можете совмещать фильтр спама и настройки домена"
-
 msgid "Nothing found - sorry"
 msgstr "Ничего не найдено"
 
@@ -3416,9 +3352,6 @@ msgstr "Ничего не было изменено"
 
 msgid "Nothing has been deleted."
 msgstr "Ничего не было удалено"
-
-msgid "Nothing has been scheduled for deactivation."
-msgstr "Ничего не было помечено для деактивации."
 
 msgid "Notices, Warnings and Errors"
 msgstr "Уведомления, предупреждения и ошибки"
@@ -4086,9 +4019,6 @@ msgstr "Удалить"
 msgid "Remove IP"
 msgstr "Удалить IP"
 
-msgid "Remove last entry"
-msgstr "Удалить последнюю запись"
-
 msgid "Remove permissions"
 msgstr "Удалить права"
 
@@ -4275,9 +4205,6 @@ msgstr "Реселлеры и клиенты"
 msgid "Reset"
 msgstr "Сбросить"
 
-msgid "Reset entries"
-msgstr "Сбросить записи"
-
 msgid "Restore"
 msgstr "Восстановить"
 
@@ -4414,19 +4341,8 @@ msgstr "Код безопасности"
 msgid "Security code has expired"
 msgstr ""
 
-msgid "Select all entries for deletion."
-msgstr "Выбрать все записи для удаления."
-
 msgid "Select group"
 msgstr "Выберите группу"
-
-msgid "Select this entry for deletion."
-msgstr "Выберите запись для удаления."
-
-msgid ""
-"Selecting all entries for deletion will cause deactivation of external mail "
-"server."
-msgstr "Выбор всех записей для удаления, приведет к деактивации внешнего почтового сервера."
 
 msgid "Send"
 msgstr "Отправит"
@@ -4649,19 +4565,6 @@ msgstr "Версия ПО"
 msgid "Softwaredepot"
 msgstr "Репозиторий ПО"
 
-msgid "Spam Filter"
-msgstr "Фильтр спама"
-
-msgid ""
-"Spam Filter: Setup a DNS MX record to relay mail of your entire domain, "
-"including subdomains, but retains our server as final mailhost."
-msgstr "Фильтр спама: Установите запись MX для переадресации с Вашего внутреннего домена, включая поддомены, но оставить наш сервер в качестве конечного почтового хоста."
-
-msgid ""
-"Spam Filter: Setup an external MX host to relay mail of your entire domain "
-"but retains our server as final mailhost."
-msgstr "Фильтр спама: Настройте внешний MX-хост, чтобы получать почту для вашего существующего домена, но сохранить наш сервер как конечный хост."
-
 msgid "Start installation"
 msgstr "Добавить в репозиторий"
 
@@ -4827,9 +4730,6 @@ msgstr "Цель"
 
 msgid "Target domain"
 msgstr "Целевой домен"
-
-msgid "Target host"
-msgstr "Хост назначения"
 
 msgid "Target port"
 msgstr "Порт назначения"
@@ -5489,17 +5389,6 @@ msgstr "{USERNAME}, добро пожаловать в i-MSCP"
 msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr "Если да, то функция PHP exec() может использоваться в ваших скриптах."
 
-msgid "Wildcard"
-msgstr "Групповой символ"
-
-msgid ""
-"Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
-msgstr "Групповой символ: Настройте записи MX для несуществующих поддоменов."
-
-msgid ""
-"Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
-msgstr "Спецсимволы: Настройте внешний MX-хост, чтобы получать почту для ваших несуществующих поддоменов."
-
 msgid "Wrong IP address."
 msgstr "Неверный IP адрес."
 
@@ -5623,9 +5512,6 @@ msgstr "Вы не можете защитить зону без выбора п�
 #, php-format
 msgid "You cannot remove the %s IP address."
 msgstr "Вы не можете удалить IP адрес %s ."
-
-msgid "You cannot remove this entry."
-msgstr "Вы не можете удалить эту запись."
 
 msgid "You cannot set expire date in past."
 msgstr "Дата истечения не может быть в прошлом."
@@ -5795,9 +5681,6 @@ msgstr "Вы должны выбрать файл для загрузки"
 
 msgid "You must select a file to upload/download."
 msgstr "Вы должны Выбрать файл для загрузки/скачивания"
-
-msgid "You must select a least one item to deactivate."
-msgstr "Вы должны выбрать как минимум один пункт для деактивации."
 
 msgid "You must select a least one item to delete"
 msgstr "Вы должны выбрать как минимум один пункт для удаления"
@@ -6104,9 +5987,6 @@ msgstr "показать алиасы"
 
 msgid "waiting for activation"
 msgstr "ожидание активации"
-
-msgid "wildcard"
-msgstr "Групповой символ"
 
 msgid "yes"
 msgstr "да"

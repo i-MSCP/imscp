@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-17 10:07+0200\n"
-"PO-Revision-Date: 2016-06-17 08:09+0000\n"
+"POT-Creation-Date: 2016-06-18 18:50+0200\n"
+"PO-Revision-Date: 2016-06-18 16:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -495,9 +495,6 @@ msgstr "增加 SQL 使用者"
 msgid "Add SSL certificate"
 msgstr "新增 SSL 證書"
 
-msgid "Add a new entry"
-msgstr "新增"
-
 msgid "Add admin"
 msgstr "增加管理員"
 
@@ -519,9 +516,6 @@ msgstr "增加網域別名"
 msgid "Add email account"
 msgstr "新增電子郵件帳號"
 
-msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr "新增外部郵件伺服器給 {DOMAIN_UTF8}"
-
 msgid "Add group"
 msgstr "增加群組"
 
@@ -533,9 +527,6 @@ msgstr "新增 IP 位址"
 
 msgid "Add new database"
 msgstr "新增資料庫"
-
-msgid "Add new entry"
-msgstr "新增"
 
 msgid "Add new protected area"
 msgstr "增加新的保護區域"
@@ -852,9 +843,6 @@ msgstr "您的臨時網址"
 msgid "An email addresse is not valid in mail forward list."
 msgstr "在郵件轉址列表中有電子郵件位址是不正確的。"
 
-msgid "An entry is defined twice."
-msgstr "一個設定被定義兩次。"
-
 msgid "An error occurred during authentication."
 msgstr "在驗證過程中發生錯誤。"
 
@@ -912,12 +900,6 @@ msgstr "您確定要刪除 %s 這個 SQL 使用者?"
 
 msgid "Are you sure you want to activate this package?"
 msgstr "您確定要啟用這個 Package"
-
-#, php-format
-msgid ""
-"Are you sure you want to deactivate the external mail server(s) for the '%s'"
-" domain?"
-msgstr "您確定要停用 '%s' 網域的外部郵件伺服器嗎?"
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
@@ -1080,6 +1062,14 @@ msgstr "錯誤需求"
 
 msgid "Behind"
 msgstr "背景"
+
+msgid ""
+"Below, you can activate the external mail feature for a one or many of your "
+"domains. Be aware that activating the external mail feature configures our "
+"server to relay your mail through your own mail server but doesn't setup any"
+" DNS resource record for it. It is your responsability to setup those DNS "
+"records."
+msgstr ""
 
 msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
@@ -1284,18 +1274,8 @@ msgstr "客戶 / 郵件 / 抓取外部郵件 / 新增抓取外部郵件"
 msgid "Client / Email / Edit Email Account"
 msgstr "客戶 / 郵件 / 編輯郵件帳號"
 
-msgid "Client / Email / External Mail Server"
-msgstr "客戶 / 郵件 / 外部郵件伺服器"
-
-msgid ""
-"Client / Email / External Mail Server / Add External Mail Server for "
-"{DOMAIN_UTF8}"
-msgstr "客戶 / 郵件 / 外部郵件伺服器 / 新增外部郵件伺服器到 {DOMAIN_UTF8}"
-
-msgid ""
-"Client / Email / External Mail Server / Edit External Mail Server for "
-"{DOMAIN_UTF8}"
-msgstr "客戶 / 郵件 / 外部郵件伺服器 / 編輯外部郵件伺服器到 {DOMAIN_UTF8}"
+msgid "Client / Email / External Mail Feature"
+msgstr ""
 
 msgid "Client / Email / Overview"
 msgstr "客戶 / 郵件 / 概要"
@@ -1726,9 +1706,6 @@ msgstr "日"
 
 msgid "Deactivate"
 msgstr "停用"
-
-msgid "Deactivate selected items"
-msgstr "停用選擇的項目"
 
 msgid "Deactivate this plugin"
 msgstr "停用這個外掛"
@@ -2163,14 +2140,6 @@ msgstr "網域已成功更新。"
 msgid "Domain type"
 msgstr "網域類型"
 
-msgid ""
-"Domain: Setup a DNS MX record to relay mail of your entire domain, including"
-" subdomains."
-msgstr "網域: 在您的網域中設定 DNS MX 紀錄來轉發郵件，包括子網域。"
-
-msgid "Domain: Setup an external MX host to relay mail of your entire domain."
-msgstr "網域: 為您的網域設定可轉送的外部 MX 主機。"
-
 msgid "Domains"
 msgstr "網域"
 
@@ -2233,9 +2202,6 @@ msgstr "編輯網域別名"
 
 msgid "Edit error page"
 msgstr "編輯錯誤頁"
-
-msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr "編輯外部郵件伺服器到 {DOMAIN_UTF8}"
 
 msgid "Edit hosting plan"
 msgstr "編輯主機方案"
@@ -2362,11 +2328,6 @@ msgstr "啟用"
 msgid "Enabled for: %s"
 msgstr "啟用: %s"
 
-msgid ""
-"Entries associated to your external mail servers were not found. A "
-"Resynchronization has been scheduled."
-msgstr "找不到與您關聯的外部郵件伺服器。同步的動作已排程。"
-
 msgid "Error"
 msgstr "錯誤"
 
@@ -2397,20 +2358,14 @@ msgstr "到期日"
 msgid "Ext. mail server"
 msgstr "外部郵件伺服器"
 
-msgid "External Mail Host"
-msgstr "外部郵件主機"
-
 msgid "External mail server"
 msgstr "外部郵件伺服器"
 
-msgid "External mail server successfully scheduled for addition."
-msgstr "新增外部郵件伺服器的排程已成功"
+msgid "External mail server feature scheduled for activation."
+msgstr ""
 
-msgid "External mail server successfully scheduled for deactivation."
-msgstr "停用外部郵件伺服器的排程已成功"
-
-msgid "External mail server successfully scheduled for update."
-msgstr "更新外部郵件伺服器的排程已成功"
+msgid "External mail server feature scheduled for deactivation."
+msgstr ""
 
 msgid "External mail servers"
 msgstr "外部郵件伺服器"
@@ -2635,6 +2590,9 @@ msgstr "家目錄"
 
 msgid "Homepage"
 msgstr "首頁"
+
+msgid "Host"
+msgstr ""
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
 msgstr "這個 SQL 使用者從這個主機是允許連到 SQL 伺服器"
@@ -2882,12 +2840,6 @@ msgstr "國際化"
 msgid "Invalid FTP username."
 msgstr "不正確的 FTP 使用者名稱"
 
-msgid "Invalid MX priority."
-msgstr "無效的 MX 優先權。"
-
-msgid "Invalid MX type."
-msgstr "無效的 MX 類型。"
-
 #, php-format
 msgid "Invalid SQL user host: %s"
 msgstr "無效資料庫使用者主機: %s"
@@ -3099,16 +3051,6 @@ msgstr "郵件功能已停用。"
 
 msgid "Mail usage"
 msgstr "郵件使用量"
-
-#, php-format
-msgid "Mailhost %s is not valid."
-msgstr "郵件主機 %s 是無效的。"
-
-msgid "Mailhost cannot be empty."
-msgstr "郵件主機不可以空白。"
-
-msgid "Mailhost must not be equal to the domain name for which you add it."
-msgstr "郵件主機必須等於你新增的網域名稱。"
 
 msgid "Main menu labels visibility successfully updated."
 msgstr "主要選單標籤檢視已成功更新。"
@@ -3400,12 +3342,6 @@ msgstr "未提供"
 msgid "Not used"
 msgstr "未使用"
 
-msgid "Note: You cannot mix 'Spam Filter' and 'Domain' options"
-msgstr "注意: 您不可以混合 '垃圾信過濾' 和 '網域' 選項"
-
-msgid "Note: You cannot mix Spam filter and domain options"
-msgstr "注意: 您不可以混合垃圾信過濾和網域選項"
-
 msgid "Nothing found - sorry"
 msgstr "沒有找到 - 抱歉"
 
@@ -3414,9 +3350,6 @@ msgstr "沒有變更任何東西。"
 
 msgid "Nothing has been deleted."
 msgstr "沒有刪除任何東西。"
-
-msgid "Nothing has been scheduled for deactivation."
-msgstr "沒有任何排程將被停用。"
 
 msgid "Notices, Warnings and Errors"
 msgstr "通知，警告和錯誤"
@@ -4084,9 +4017,6 @@ msgstr "移除"
 msgid "Remove IP"
 msgstr "移除 IP"
 
-msgid "Remove last entry"
-msgstr "移除最後的部份"
-
 msgid "Remove permissions"
 msgstr "移除權限"
 
@@ -4273,9 +4203,6 @@ msgstr "經銷商與客戶"
 msgid "Reset"
 msgstr "重設"
 
-msgid "Reset entries"
-msgstr "重設這個"
-
 msgid "Restore"
 msgstr "還原"
 
@@ -4412,19 +4339,8 @@ msgstr "驗證碼"
 msgid "Security code has expired"
 msgstr ""
 
-msgid "Select all entries for deletion."
-msgstr "刪除全部選擇的。"
-
 msgid "Select group"
 msgstr "選擇群組"
-
-msgid "Select this entry for deletion."
-msgstr "刪除這些選擇的。"
-
-msgid ""
-"Selecting all entries for deletion will cause deactivation of external mail "
-"server."
-msgstr "刪除全選的部份會造成停用外部郵件伺服器。"
 
 msgid "Send"
 msgstr "發送"
@@ -4647,19 +4563,6 @@ msgstr "軟體版本"
 msgid "Softwaredepot"
 msgstr "軟體區"
 
-msgid "Spam Filter"
-msgstr "垃圾信過濾"
-
-msgid ""
-"Spam Filter: Setup a DNS MX record to relay mail of your entire domain, "
-"including subdomains, but retains our server as final mailhost."
-msgstr "垃圾信過濾: 在您的網域中設定 DNS MX 紀錄來轉發郵件，包括子網域，但是保留我們的主機為最後的郵件主機。"
-
-msgid ""
-"Spam Filter: Setup an external MX host to relay mail of your entire domain "
-"but retains our server as final mailhost."
-msgstr "垃圾信過濾: 在您的網域中設定 DNS MX 紀錄來轉發郵件但是保留我們的主機為最後的郵件主機。"
-
 msgid "Start installation"
 msgstr "開始安裝"
 
@@ -4825,9 +4728,6 @@ msgstr "目標"
 
 msgid "Target domain"
 msgstr "目標網域"
-
-msgid "Target host"
-msgstr "目標主機"
 
 msgid "Target port"
 msgstr "目標連接埠"
@@ -5487,17 +5387,6 @@ msgstr "歡迎 {USERNAME} 來到 i-MSCP"
 msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr "當設定為 '是'，您的 PHP scripts 可以呼叫 PHP exec() 功能。"
 
-msgid "Wildcard"
-msgstr "萬用字元"
-
-msgid ""
-"Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
-msgstr "萬用字元: 設定 DNS MX 紀錄來轉送到不存在的子網域。"
-
-msgid ""
-"Wildcard: Setup an external MX host to relay mail for inexistent subdomains."
-msgstr "萬用字元: 設定外部 MX 主機來轉送郵件到不存在的子網域。"
-
 msgid "Wrong IP address."
 msgstr "錯誤的 IP地址"
 
@@ -5621,9 +5510,6 @@ msgstr "您不可以保護一個沒有選擇 htaccess 使用者的區域。"
 #, php-format
 msgid "You cannot remove the %s IP address."
 msgstr "您不能移除 %s 這個 IP 位址"
-
-msgid "You cannot remove this entry."
-msgstr "您不可以移除這個部份"
 
 msgid "You cannot set expire date in past."
 msgstr "您不能將到期日設為過去"
@@ -5784,9 +5670,6 @@ msgstr "您必須選擇至少一個須上傳的檔案。"
 
 msgid "You must select a file to upload/download."
 msgstr "您必須選擇一個檔案來上傳/下載。"
-
-msgid "You must select a least one item to deactivate."
-msgstr "您必須選擇至少一個項目來停用"
 
 msgid "You must select a least one item to delete"
 msgstr "您必須選擇至少一個項目來刪除"
@@ -6093,9 +5976,6 @@ msgstr "檢視網域別名"
 
 msgid "waiting for activation"
 msgstr "等待啟用中"
-
-msgid "wildcard"
-msgstr "萬用字元"
 
 msgid "yes"
 msgstr "是"
