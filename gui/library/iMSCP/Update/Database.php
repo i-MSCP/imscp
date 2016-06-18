@@ -56,7 +56,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = '229';
+    protected $lastUpdate = '230';
 
     /**
      * Singleton - Make new unavailable
@@ -3377,5 +3377,21 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected function r229()
     {
         return $this->addIndex('mail_users', 'sub_id', 'INDEX');
+    }
+
+    /**
+     * Ext. mail feature - Remove deprecated columns and reset values
+     *
+     * @return array SQL statements to be executed
+     */
+    protected function r230()
+    {
+        return $sqlUpd = array(
+            $this->dropColumn('domain', 'external_mail_dns_ids'),
+            $this->dropColumn('domain_aliasses', 'external_mail_dns_ids'),
+            "DELETE FROM domain_dns WHERE owned_by = 'ext_mail_feature'",
+            "UPDATE domain_aliasses SET external_mail = 'off'",
+            "UPDATE domain SET external_mail = 'off'"
+        );
     }
 }

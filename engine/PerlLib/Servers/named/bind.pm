@@ -663,7 +663,7 @@ sub addCustomDNS
         # Substitute @ with $ORGIN
         $line =~ s/@/$origin/g if $origin ne '';
 
-        # Skip default SPF record line if SPF record for the same host exist in @customDNS
+        # Skip default SPF record line if SPF record for the same DNS name exists in @customDNS
         next if $line =~ /^(\S+).*?\sv=spf1\s/ && grep(/^(?:\Q$1\E|\Q$1.$origin\E)\s+.*?v=spf1\s/, @customDNS);
         $wrkDbFileContent .= $line;
     }
