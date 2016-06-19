@@ -212,6 +212,7 @@ sub addTask
     );
 
     ($wrkFileContent .= <<EOF) =~ s/^(@[^\s]+)\s+/$1 /gm;
+
 # imscp [$data->{'TASKID'}] entry BEGIN
 $data->{'MINUTE'} $data->{'HOUR'} $data->{'DAY'} $data->{'MONTH'} $data->{'DWEEK'} $data->{'USER'} $data->{'COMMAND'}
 # imscp [$data->{'TASKID'}] entry ENDING
@@ -266,7 +267,7 @@ sub deleteTask
     return $rs if $rs;
 
     $wrkFileContent = replaceBloc(
-        "# imscp [$data->{'TASKID'}] entry BEGIN\n", "# imscp [$data->{'TASKID'}] entry ENDING\n", '', $wrkFileContent
+        "\n# imscp [$data->{'TASKID'}] entry BEGIN\n", "# imscp [$data->{'TASKID'}] entry ENDING\n", '', $wrkFileContent
     );
 
     $rs = $self->{'eventManager'}->trigger( 'afterCronDelTask', \$wrkFileContent, $data );
