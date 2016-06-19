@@ -41,11 +41,11 @@ $SIG{INT} = 'IGNORE';
 
 umask 022;
 
-STDOUT->autoflush(1);
-STDERR->autoflush(1);
+STDOUT->autoflush( 1 );
+STDERR->autoflush( 1 );
 
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
-$ENV{'HOME'} = '/root';
+$ENV{'HOME'} = (getpwuid $>)[7] or die( 'Could not find running user homedir' );
 
 =head1 DESCRIPTION
 
@@ -66,6 +66,9 @@ $ENV{'HOME'} = '/root';
 sub boot
 {
     my ($self, $options) = @_;
+
+    # Set debug mode for booting time
+    setDebug( 1 );
 
     my $mode = $options->{'mode'} || 'backend';
     debug( sprintf( 'Booting %s....', $mode ) );
