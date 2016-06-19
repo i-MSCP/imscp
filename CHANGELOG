@@ -5,6 +5,7 @@ Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
+    
     Added: (before|after)rMountLogsFolder and  (before|after)UnmountLogsFolder events
     Added: Caller info for __DIE__ and __WARN__ signal handlers
     Added: Debug info for loading of listener files (Event::Manager)
@@ -28,6 +29,7 @@ BACKEND
     Fixed: Database handle is destroyed when calling fork(), leading to unexpected failure (iMSCP::Database::mysql)
     Fixed: eth0 is hardcoded in i-MSCP network interface provider
     Fixed: Ignore user-specific options if any ~/.my.cnf file when running mysqldump (iMSCP::Database::mysql::dumpdb)
+    Fixed: iMSCP::SystemUser::addSystemUser must allow empty value for user comment field
     Fixed: Mails sent from Backend could be rejected if sender email domain is hosted externally
     Fixed: Make sure that the `root' user HOME directory environment variable is defined
     Fixed: Many inconsistencies in iMSCP::Getopt

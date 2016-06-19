@@ -59,7 +59,8 @@ sub addSystemUser
     $self->{'username'} = $username;
 
     my $password = $self->{'password'} ? '-p '.escapeShell( $self->{'password'} ) : '';
-    my $comment = $self->{'comment'} ? $self->{'comment'} : 'iMSCPuser';
+    my $comment = defined $self->{'comment'}
+        ? ( $self->{'comment'} ne '' ? escapeShell( $self->{'comment'} ) : "''") : 'iMSCPuser';
     my $home = $self->{'home'} ? $self->{'home'} : "$main::imscpConfig{'USER_WEB_DIR'}/$username";
     my $skipGroup = $self->{'skipGroup'} || $self->{'group'} ? '' : '-U';
     my $group = $self->{'group'} ? '-g '.escapeShell( $self->{'group'} ) : '';
@@ -73,9 +74,9 @@ sub addSystemUser
     unless (getpwnam( $username )) { # Creating new user
         @cmd = (
             'useradd',
-            $^O =~ /bsd$/ ? escapeShell( $username ) : '', # username bsd way
+            ($^O =~ /bsd$/ ? escapeShell( $username ) : ''), # username bsd way
             $password, # Password
-            '-c', escapeShell( $comment ), # comment
+            '-c', $comment, # comment
             '-d', escapeShell( $home ), # homedir
             $skipGroup, # create group with same name and add user to group
             $group, # user initial connexion group
@@ -83,7 +84,7 @@ sub addSystemUser
             $copySkeleton, escapeShell( $skeletonPath ), # copy skeleton dir
             $systemUser, # system account
             '-s', escapeShell( $shell ), # shell
-            $^O !~ /bsd$/ ? escapeShell( $username ) : ''    # username linux way
+            ($^O !~ /bsd$/ ? escapeShell( $username ) : '') # username linux way
         );
     } else { # Modify existent user
         @cmd = (
@@ -91,15 +92,16 @@ sub addSystemUser
             'usermod',
             ($^O =~ /bsd$/ ? escapeShell( $username ) : ''), # username bsd way
             $password, # Password
-            '-c', escapeShell( $comment ), # comment
+            '-c', $comment, # comment
+            $group, # user initial connexion group
             '-d', escapeShell( $home ), # homedir
             '-m', # Move current home content in new home if needed
             '-s', escapeShell( $shell ), # shell
-            $^O !~ /bsd$/ ? escapeShell( $username ) : ''    # username linux way
+            ($^O !~ /bsd$/ ? escapeShell( $username ) : '') # username linux way
         );
     }
 
-    my $rs = execute( "@cmd", \my $stdout, \my $stderr );
+    my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs && $rs != 12;
     debug( $stderr ) if $stderr && !$rs;
@@ -133,12 +135,12 @@ sub delSystemUser
     my @cmd = (
         'pkill -KILL -u', escapeShell( $username ), ';',
         'userdel',
-            $^O =~ /bsd$/ ? escapeShell( $username ) : '',
-            $self->{'keepHome'} ? '' : '-r',
-            $self->{'force'} && !$self->{'keepHome'} ? '-f' : '',
-            $^O !~ /bsd$/ ? escapeShell( $username ) : ''
+        ($^O =~ /bsd$/ ? escapeShell( $username ) : ''),
+        ($self->{'keepHome'} ? '' : '-r'),
+        ($self->{'force'} && !$self->{'keepHome'} ? '-f' : ''),
+        ($^O !~ /bsd$/ ? escapeShell( $username ) : '')
     );
-    my $rs = execute( "@cmd", \my $stdout, \my $stderr );
+    my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs && $rs != 12;
     debug( $stderr ) if $stderr && !$rs;
@@ -196,7 +198,7 @@ sub addToGroup
 
     # Linux
     my @cmd = ('gpasswd', '-a', escapeShell( $username ), escapeShell( $groupname ));
-    my $rs = execute( "@cmd", \my $stdout, \my $stderr );
+    my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs && $rs != 3;
     debug( $stderr ) if $stderr && !$rs;
@@ -217,7 +219,7 @@ sub addToGroup
 sub removeFromGroup
 {
     my $self = shift;
-    my $groupname =  shift || $self->{'groupname'};
+    my $groupname = shift || $self->{'groupname'};
     my $username = shift || $self->{'username'};
 
     unless (defined $groupname) {
@@ -243,7 +245,7 @@ sub removeFromGroup
 
         my $newGroups = join( ',', keys %{$self->{'userGroups'}} );
         my @cmd = ('usermod', escapeShell( $username ), '-G', escapeShell( $newGroups ));
-        my $rs = execute( "@cmd", \my $stdout, \my $stderr );
+        my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
         debug( $stderr ) if $stderr && !$rs;
@@ -281,7 +283,7 @@ sub getUserGroups
 
     $self->{'username'} = $username;
 
-    my $rs = execute( 'id -nG '.escapeShell( $username ), \my $stdout, \my $stderr );
+    my $rs = execute( 'id -nG '.escapeShell( $username ), \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs;
     debug( $stderr ) if $stderr && !$rs;

@@ -83,7 +83,7 @@ sub _init
 
     $self->{'toInstall'} = [ ];
     $self->{'pkgDir'} = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages";
-    $self->{'suCmdPattern'} = "/bin/su -s /bin/sh -c %s - $main::imscpConfig{'IMSCP_USER'}";
+    $self->{'suCmdPattern'} = "su - $main::imscpConfig{'IMSCP_USER'} -s /bin/sh -c %s";
     $self->{'phpCmd'} = 'php -d date.timezone=UTC -d allow_url_fopen=1 -d suhosin.executor.include.whitelist=phar';
 
     iMSCP::EventManager->getInstance()->register(
