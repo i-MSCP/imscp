@@ -742,17 +742,20 @@ sub postconf
     }
     return $rs if $rs;
 
-    my $cmd = [ 'postconf', '-e', '-c', $self->{'config'}->{'POSTFIX_CONF_DIR'} ];
-    while(my ($param, $value) = each( %params )) {
-        next if ref $value eq 'HASH';
-        push @{$cmd}, "$param=$value";
+    if (%params) {
+        my $cmd = [ 'postconf', '-e', '-c', $self->{'config'}->{'POSTFIX_CONF_DIR'} ];
+        while(my ($param, $value) = each( %params )) {
+            next if ref $value eq 'HASH';
+            push @{$cmd}, "$param=$value";
+        }
+
+        $rs = execute( $cmd, \ my $stdout, \ my $stderr );
+        debug( $stdout ) if $stdout;
+        error( $stderr || 'Unknown error' ) if $rs;
+        return $rs if $rs;
     }
 
-    $rs = execute( $cmd, \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr || 'Unknown error' ) if $rs;
-
-    return $rs if $rs || !@paramsToRemove;
+    return 0 unless @paramsToRemove;
 
     # postconf -X command that allows to remove parameter is not available prior Postfix 2.10. Thus, we must
     # edit the file manually.
