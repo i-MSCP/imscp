@@ -790,10 +790,10 @@ sub _readJobOverrideFile
 {
     my ($self, $job) = @_;
 
-    if ((my $filepath = eval { $self->getJobFilePath( $job, 'override' ); })) {
-        return iMSCP::File->new( filename => $filepath )->get() or die(
-            sprintf( 'Could not read %s file', $filepath )
-        );
+    if (my $filepath = eval { $self->getJobFilePath( $job, 'override' ); }) {
+        my $fileContent = iMSCP::File->new( filename => $filepath )->get();
+        defined $fileContent or die( sprintf( 'Could not read %s file', $filepath ) );
+        return $fileContent;
     }
 
     '';
