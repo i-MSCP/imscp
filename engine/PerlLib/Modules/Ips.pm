@@ -25,8 +25,9 @@ package Modules::Ips;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
 use iMSCP::Database;
+use iMSCP::Debug;
+use iMSCP::EventManager;
 use iMSCP::Net;
 use parent 'Modules::Abstract';
 
@@ -65,6 +66,28 @@ sub process
 
     my $rs = $self->_loadData();
     $rs ||= $self->add();
+}
+
+=item addIps()
+
+ Add IP addresses
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub add
+{
+    my $self = shift;
+
+    my $ips = {
+        IPS     => $self->{'ipaddrs'},
+        SSL_IPS => $self->{'ssl_ipaddrs'}
+    };
+
+    my $rs = iMSCP::EventManager->trigger( 'beforeAddIps', $ips );
+    $rs ||= $self->SUPER::add();
+    $rs = iMSCP::EventManager->trigger( 'afterAddIps', $ips );
 }
 
 =back

@@ -5,7 +5,7 @@ Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-    
+    Added; (before|after)AddIps event
     Added: (before|after)rMountLogsFolder and  (before|after)UnmountLogsFolder events
     Added: Caller info for __DIE__ and __WARN__ signal handlers
     Added: Debug info for loading of listener files (Event::Manager)
