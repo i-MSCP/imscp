@@ -85,9 +85,10 @@ sub add
         SSL_IPS => $self->{'ssl_ipaddrs'}
     };
 
-    my $rs = iMSCP::EventManager->trigger( 'beforeAddIps', $ips );
+    my $em = iMSCP::EventManager->getInstance();
+    my $rs = $em->trigger( 'beforeAddIps', $ips );
     $rs ||= $self->SUPER::add();
-    $rs = iMSCP::EventManager->trigger( 'afterAddIps', $ips );
+    $rs ||= $em->trigger( 'afterAddIps', $ips );
 }
 
 =back
