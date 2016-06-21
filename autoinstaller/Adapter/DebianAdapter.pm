@@ -266,7 +266,7 @@ sub _init
     my $self = shift;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'repositorySections'} = [ 'main', 'non-free' ];
+    $self->{'repositorySections'} = [ 'main', 'contrib', 'non-free' ];
     $self->{'preRequiredPackages'} = [
         'binutils', 'debconf-utils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl',
         'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'wget', 'rsync'
@@ -923,7 +923,7 @@ sub _rebuildAndInstallPackage
                     $stderr || 'Unknown error' ) ) if $rs;
             $rs;
         },
-        sprintf( 'Downloading %s %s source package...', $pkg, $lsbRelease->getId( 1 ) ), 5, 2
+        sprintf( 'Downloading %s %s source package...', $pkgSrc, $lsbRelease->getId( 1 ) ), 5, 2
     );
     $rs ||= step(
         sub {

@@ -2465,7 +2465,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Fix Sql user hosts
+     * Fix SQL user hosts
      *
      * @return array SQL statements to be executed
      */
@@ -2486,11 +2486,11 @@ class iMSCP_Update_Database extends iMSCP_Update
                 $sqlUser = quoteValue($row['sqlu_name']);
 
                 $sqlUdp[] = "
-                    UPDATE mysql.user SET Host = $sqlUserHost WHERE User = $sqlUser AND Host NOT IN ($sqlUserHost, '%')
+                    UPDATE IGNORE mysql.user SET Host = $sqlUserHost WHERE User = $sqlUser AND Host NOT IN ($sqlUserHost, '%')
                 ";
 
                 $sqlUdp[] = "
-                    UPDATE mysql.db SET Host = $sqlUserHost WHERE User = $sqlUser AND Host NOT IN ($sqlUserHost, '%')
+                    UPDATE IGNORE mysql.db SET Host = $sqlUserHost WHERE User = $sqlUser AND Host NOT IN ($sqlUserHost, '%')
                 ";
 
                 $sqlUdp[] = "
