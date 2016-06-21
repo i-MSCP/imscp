@@ -61,7 +61,6 @@ int main(int argc, char **argv)
             notify(-1);
         }
 
-
 #ifdef SO_REUSEPORT
     /*
         Even if defined, SO_REUSEPORT could be unsupported. Thus we just ignore error if errno is equal to ENOPROTOOPT
