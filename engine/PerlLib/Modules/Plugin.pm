@@ -380,7 +380,12 @@ sub _call
 
     if ($plugin) {
         debug( sprintf( "Calling %s() method on %s", $method, ref $plugin ) );
-        my $rs = $plugin->$method( $fromVersion, $toVersion );
+        my $rs = eval { $plugin->$method( $fromVersion, $toVersion ); };
+        if ($@) {
+            error( $@ );
+            $rs ||= 1;
+        }
+
         # Return value from the run() action is ignored by default because it's the responsability of the plugins to set
         # error status for their items. In case a plugin doesn't manage any item, it can force return value by defining
         # the FORCE_RETVAL attribute and set it value to 'yes'
