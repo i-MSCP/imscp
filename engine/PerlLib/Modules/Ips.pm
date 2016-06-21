@@ -68,7 +68,7 @@ sub process
     $rs ||= $self->add();
 }
 
-=item addIps()
+=item add()
 
  Add IP addresses
 
