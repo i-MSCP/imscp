@@ -519,6 +519,9 @@ function doAction($pluginManager, $pluginName, $action)
                 break;
             case 'delete':
                 $msg = tr('Plugin %s deleted.', $pluginName);
+                break;
+            case 'protect':
+                $msg = tr('Plugin %s protected.', $pluginName);
         }
 
         set_page_message($msg, 'success');
