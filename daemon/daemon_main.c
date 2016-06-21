@@ -61,15 +61,26 @@ int main(int argc, char **argv)
             notify(-1);
         }
 
-         if(setsockopt(servsockfd, SOL_SOCKET, SO_REUSEADDR, (const char*)&reuse, sizeof(reuse)) < 0
+
 #ifdef SO_REUSEPORT
-            || setsockopt(servsockfd, SOL_SOCKET, SO_REUSEPORT, (const char*)&reuse, sizeof(reuse)) < 0
-#endif
-        ) {
-            say(message(MSG_ERROR_SOCKET_OPTION), strerror(errno));
+    /*
+        Even if defined, SO_REUSEPORT could be unsupported. Thus we just ignore error if errno is equal to ENOPROTOOPT
+        See http://man7.org/linux/man-pages/man2/setsockopt.2.html
+    */
+    if(setsockopt(servsockfd, SOL_SOCKET, SO_REUSEPORT, (const char*)&reuse, sizeof(reuse)) < 0 && errno != ENOPROTOOPT) {
+        say(message(MSG_ERROR_SOCKET_OPTION), strerror(errno));
             close(servsockfd);
             notify(-1);
         }
+#endif
+
+#ifdef SO_REUSEADDR
+    if(setsockopt(servsockfd, SOL_SOCKET, SO_REUSEADDR, (const char*)&reuse, sizeof(reuse)) < 0) {
+        say(message(MSG_ERROR_SOCKET_OPTION), strerror(errno));
+        close(servsockfd);
+        notify(-1);
+    }
+#endif
 
         /* ident socket */
         memset((void *) &servaddr, '\0', (size_t) sizeof(servaddr));
