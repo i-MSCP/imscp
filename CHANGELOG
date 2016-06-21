@@ -238,6 +238,7 @@ YOUTRACK
     IP-1566 Exception thrown when requesting password for reseller with deleted admin
     IP-1567 "Unknown" status in users overview
     IP-1572 Upstart Provider - Possible precedence issue with control flow operator
+    IP-1573 On i-MSCP update, some disabled customer items are still processed which is unexpected
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series

@@ -386,10 +386,10 @@ function change_domain_status($customerId, $action)
     );
 
     if (!$stmt->rowCount()) {
-        throw new iMSCP_Exception(sprintf("Unable to found domain for user with ID %s", $customerId));
+        throw new iMSCP_Exception(sprintf("Could not find domain for user with ID %s", $customerId));
     }
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetchRow();
     $domainId = $row['domain_id'];
     $adminName = decode_idna($row['admin_name']);
     $db = iMSCP_Database::getInstance();
@@ -420,8 +420,11 @@ function change_domain_status($customerId, $action)
         }
 
         # TODO implements customer deactivation
-        # exec_query('UPDATE admin SET admin_status = ? WHERE admin_id = ?', array($newStatus, $customerId));
+        #exec_query('UPDATE admin SET admin_status = ? WHERE admin_id = ?', array($newStatus, $customerId));
         exec_query('UPDATE ftp_users SET status = ? WHERE admin_id = ?', array($newStatus, $customerId));
+        exec_query('UPDATE htaccess SET status = ? WHERE dmn_id = ?', array($newStatus, $domainId));
+        exec_query('UPDATE htaccess_groups SET status = ? WHERE dmn_id = ?', array($newStatus, $domainId));
+        exec_query('UPDATE htaccess_users SET status = ? WHERE dmn_id = ?', array($newStatus, $domainId));
         exec_query("UPDATE domain SET domain_status = ? WHERE domain_id = ?", array($newStatus, $domainId));
         exec_query("UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?", array($newStatus, $domainId));
         exec_query("UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?", array($newStatus, $domainId));

@@ -114,7 +114,7 @@ sub process
 
 =item add()
 
- Add domain
+ Add domain alias
 
  Return int 0 on success, other on failure
 
@@ -158,6 +158,35 @@ sub add
     }
 
     $self->SUPER::add();
+}
+
+=item disable()
+
+ Disable domain alias
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub disable
+{
+    my $self = shift;
+
+    # Sets the status of any subdomain that belongs to this domain alias to 'todisable'.
+    my $rs = iMSCP::Database->factory()->doQuery(
+        'u',
+        "
+            UPDATE subdomain_alias SET subdomain_alias_status = 'todisable'
+            WHERE alias_id = ? AND subdomain_alias_status <> 'todelete'
+        ",
+        $self->{'alias_id'}
+    );
+    unless (ref $rs eq 'HASH') {
+        error( $rs );
+        return 1;
+    }
+
+    $self->SUPER::disable();
 }
 
 =back

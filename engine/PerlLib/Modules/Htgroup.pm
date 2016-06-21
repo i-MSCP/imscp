@@ -67,12 +67,14 @@ sub process
     return $rs if $rs;
 
     my @sql;
-    if ($self->{'status'} =~ /^to(?:add|change)$/) {
+    if ($self->{'status'} =~ /^to(?:add|change|enable)$/) {
         $rs = $self->add();
         @sql = (
             'UPDATE htaccess_groups SET status = ? WHERE id = ?',
             ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'ok'), $htgroupId
         );
+    } elsif ($self->{'status'} eq 'todisable') {
+        @sql = ('UPDATE htaccess_groups SET status = ? WHERE id = ?', 'disabled', $htgroupId);
     } elsif ($self->{'status'} eq 'todelete') {
         $rs = $self->delete();
         if ($rs) {

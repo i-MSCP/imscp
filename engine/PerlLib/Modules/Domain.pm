@@ -160,6 +160,32 @@ sub add
     $self->SUPER::add();
 }
 
+=item disable()
+
+ Disable domain
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub disable
+{
+    my $self = shift;
+
+    # Sets the status of any subdomain that belongs to this domain to 'todisable'.
+    my $rs = iMSCP::Database->factory()->doQuery(
+        'u',
+        "UPDATE subdomain SET subdomain_status = 'todisable' WHERE domain_id = ? AND subdomain_status <> 'todelete'",
+        $self->{'domain_id'}
+    );
+    unless (ref $rs eq 'HASH') {
+        error( $rs );
+        return 1;
+    }
+
+    $self->SUPER::disable();
+}
+
 =item restore()
 
  Restore domain

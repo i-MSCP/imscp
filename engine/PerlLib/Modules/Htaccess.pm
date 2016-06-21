@@ -68,12 +68,14 @@ sub process
     return $rs if $rs;
 
     my @sql;
-    if ($self->{'status'} =~ /^to(?:add|change)$/) {
+    if ($self->{'status'} =~ /^to(?:add|change|enable)$/) {
         $rs = $self->add();
         @sql = (
             'UPDATE htaccess SET status = ? WHERE id = ?', ($rs ? scalar getMessageByType( 'error' ) : 'ok'),
             $htaccessId
         );
+    } elsif ($self->{'status'} eq 'todisable') {
+        @sql = ('UPDATE htaccess SET status = ? WHERE id = ?', 'disabled', $htaccessId);
     } elsif ($self->{'status'} eq 'todelete') {
         $rs = $self->delete();
         if ($rs) {

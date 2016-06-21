@@ -286,11 +286,11 @@ sub disableDmn
         }
     );
 
-    my %configTpls = ( '' => !$data->{'HSTS_SUPPORT'} ? 'domain_disabled.tpl' : 'domain_redirect.tpl' );
+    my %templates = ( '' => $data->{'HSTS_SUPPORT'} ? 'domain_redirect.tpl' : 'domain_disabled.tpl' );
 
     if ($data->{'SSL_SUPPORT'}) {
         $self->setData( { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" } );
-        $configTpls{'_ssl'} = 'domain_disabled_ssl.tpl';
+        $templates{'_ssl'} = 'domain_disabled_ssl.tpl';
 
         if ($data->{'HSTS_SUPPORT'}) {
             $self->setData(
@@ -302,11 +302,21 @@ sub disableDmn
         }
     }
 
-    for (keys %configTpls) {
+    while (my ($suffix, $tpl) = each( %templates )) {
         $rs = $self->buildConfFile(
-            "$self->{'apacheTplDir'}/$configTpls{$_}",
+            "$self->{'apacheTplDir'}/$tpl",
             $data,
-            { destination => "$data->{'DOMAIN_NAME'}$_.conf" }
+            { destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}$suffix.conf" }
+        );
+        return $rs if $rs;
+    }
+
+    # Ensure that custom httpd conffile exists (cover case where file has been removed for any reasons)
+    unless (-f "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf") {
+        $rs = $self->buildConfFile(
+            "$self->{'apacheTplDir'}/custom.conf.tpl",
+            $data,
+            { destination => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
         );
         return $rs if $rs;
     }

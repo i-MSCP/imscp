@@ -181,35 +181,38 @@ sub process
         "
     );
 
-    # Process toadd|tochange|todelete Htusers tasks
+    # Process toadd|tochange|toenable|todisable|todelete Htusers tasks
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_process(
         'Htusers',
         "
             SELECT id, CONCAT(uname, ':', id) AS name, status
             FROM htaccess_users INNER JOIN domain ON(domain_id = dmn_id)
-            WHERE status IN ('toadd', 'tochange', 'todelete') AND domain_status = 'ok' ORDER BY id ASC
+            WHERE status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
+            AND domain_status IN('ok', 'todelete', 'disabled') ORDER BY id ASC
         "
     );
 
-    # Process toadd|tochange|todelete Htgroups tasks
+    # Process toadd|tochange|toenable|todisable|todelete Htgroups tasks
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_process(
         'Htgroup',
         "
             SELECT id, CONCAT(ugroup, ':', id) AS name, status FROM htaccess_groups
             INNER JOIN domain ON(domain_id = dmn_id)
-            WHERE status IN ('toadd', 'tochange', 'todelete') AND domain_status = 'ok' ORDER BY id ASC
+            WHERE status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
+            AND domain_status IN('ok', 'todelete', 'disabled') ORDER BY id ASC
         "
     );
 
-    # Process toadd|tochange|todelete Htaccess tasks
+    # Process toadd|tochange|toenable|todisable|todelete Htaccess tasks
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_process(
         'Htaccess',
         "
             SELECT id, CONCAT(auth_name, ':', id) AS name, status FROM htaccess INNER JOIN domain ON(domain_id = dmn_id)
-            WHERE status IN ('toadd', 'tochange', 'todelete') AND domain_status = 'ok' ORDER BY id ASC
+            WHERE status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
+            AND domain_status IN('ok', 'todelete', 'disabled') ORDER BY id ASC
         "
     );
 
