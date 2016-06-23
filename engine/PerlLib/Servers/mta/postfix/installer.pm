@@ -558,9 +558,6 @@ sub _buildMainCfFile
                     smtpd_tls_key_file               => {
                         action => 'replace', values => [ "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem" ]
                     },
-                    smtpd_tls_CAfile                 => {
-                        action => 'replace', values => [ '/etc/ssl/certs/ca-certificates.crt' ]
-                    },
                     smtpd_tls_auth_only              => { action => 'replace', values => [ 'no' ] },
                     smtpd_tls_received_header        => { action => 'replace', values => [ 'yes' ] },
                     smtpd_tls_session_cache_database => {

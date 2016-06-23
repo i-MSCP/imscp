@@ -37,6 +37,7 @@ my $saslAuthUser = '';
 my $saslAuthPasswd = '';
 my $saslPasswdMapsPath = '/etc/postfix/relay_passwd';
 my $tlsCAfile = '/etc/ssl/certs/ca-certificates.crt';
+my $tlsSessionCacheDb = '/var/lib/postfix/smtp_scache';
 
 #
 ## Please, don't edit anything below this line unless you known what you're doing
@@ -70,7 +71,8 @@ $em->register(
                 smtp_tls_exclude_ciphers   => { action => 'replace', values => [ 'aNULL', 'MD5' ] },
                 smtp_tls_protocols         => { action => 'replace', values => [ '!SSLv2', '!SSLv3' ] },
                 smtp_tls_loglevel          => { action => 'replace', values => [ '0' ] },
-                smtp_tls_CAfile            => { action => 'replace', values => [ $tlsCAfile ] }
+                smtp_tls_CAfile            => { action => 'replace', values => [ $tlsCAfile ] },
+                smtp_tls_session_cache_database => { action => 'replace', values => [ "btree:$tlsSessionCacheDb" ] },
             )
         );
     }
