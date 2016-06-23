@@ -817,14 +817,11 @@ sub _buildDHparametersFile
             \ my $stderr
         );
         debug( $stderr || 'Unknown error' ) if $rs;
-        if ($rs == 0 && $stdout =~ /DH Parameters:\s+\((\d+)\s+bit\)/ && $1 >= 2048) {
+        if ($rs == 0 && $stdout =~ /\((\d+)\s+bit\)/ && $1 >= 2048) {
             return 0; # Don't regenerate file if not needed
         }
-    }
 
-    # We must delete old file to force re-generation
-    if (-f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem") {
-        my $rs = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem" )->delFile();
+        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem" )->delFile();
         return $rs if $rs;
     }
 
@@ -837,8 +834,6 @@ sub _buildDHparametersFile
         }, 'Generating DH parameter file. Please be patient...', 1, 1
     );
     endDetail();
-
-    0;
 }
 
 =item _buildAuthdaemonrcFile()
