@@ -35,7 +35,7 @@ check_for_upstart()
 
 case "$1" in
 start)
-	check_for_upstart 1
+	check_for_upstart 0
 	# Start daemon.
 	cd /
 	log_daemon_msg "Starting Courier authentication services" "authdaemond"
@@ -63,12 +63,12 @@ stop)
 	log_end_msg 0
     ;;
 restart|force-reload)
-	check_for_upstart 1
+	check_for_upstart 0
 	$0 stop
 	$0 start
     ;;
 status)
-	check_for_upstart 1
+	check_for_upstart 0
 	status_of_proc -p "$pidfile" "authdaemond" && exit 0 || exit $?
 	;;
 *)
