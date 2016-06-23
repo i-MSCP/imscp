@@ -44,7 +44,8 @@ check_for_upstart()
 {
 	# We don't use init_is_upstart() from /lib/lsb/init-functions because
 	# that function is not provided in all supported Distro versions
-	if [ -x /sbin/initctl ] && /sbin/initctl version 2>/dev/null | /bin/grep -q upstart; then
+
+	if [ -f /etc/init/proftpd.conf -a -x /sbin/initctl -a ] && /sbin/initctl version 2>/dev/null | /bin/grep -q upstart; then
 		exit $1
 	fi
 }
@@ -138,7 +139,7 @@ signal()
 
 case "$1" in
 	start)
-	check_for_upstart 0
+	check_for_upstart 1
 	if [ "x$RUN" = "xyes" ] ; then
 		start
 	else
@@ -152,6 +153,7 @@ case "$1" in
 	;;
 
 	force-start)
+	check_for_upstart 1
 	if [ "x$INETD" = "xyes" ] ; then
 		echo "Warning: ProFTPD is started from inetd/xinetd (trying to start anyway)."
 		inetd_check
@@ -174,7 +176,7 @@ case "$1" in
 	;;
 
 	force-stop)
-	check_for_upstart 0
+	check_for_upstart 1
 	if [ "x$INETD" = "xyes" ] ; then
 		echo "Warning: ProFTPD is started from inetd/xinetd (trying to kill anyway)."
 		inetd_check
@@ -183,11 +185,12 @@ case "$1" in
 	;;
 
 	reload)
+	check_for_upstart 1
 	signal reload 0
 	;;
 
 	force-reload|restart)
-	check_for_upstart 0
+	check_for_upstart 1
 	if [ "x$RUN" = "xyes" ] ; then
 		signal stop 1
 		start
@@ -202,7 +205,7 @@ case "$1" in
 	;;
 
 	status)
-	check_for_upstart 0
+	check_for_upstart 1
 	if [ "x$INETD" = "xyes" ] ; then
 		echo "ProFTPD is started from inetd/xinetd."
 		inetd_check
@@ -224,7 +227,7 @@ case "$1" in
 	;;
 
 	check-config)
-	check_for_upstart 0
+	check_for_upstart 1
 		$DAEMON -t >/dev/null && echo "ProFTPD configuration OK" && exit 0
 		exit 1
 		;;
