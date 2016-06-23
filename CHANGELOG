@@ -33,6 +33,7 @@ BACKEND
     Fixed: Mails sent from Backend could be rejected if sender email domain is hosted externally
     Fixed: Make sure that the `root' user HOME directory environment variable is defined
     Fixed: Many inconsistencies in iMSCP::Getopt
+    Fixed: Upstart jobs not always enabled (iMSCP::Provider::Service::Debian::Upstart)
     Improvement: Allow registering listeners on many events at once (Event::Manager)
     Introduced: HSTS (HTTP Strict Transport Security) feature
     Removed: (before|adter)DispatchRequest events

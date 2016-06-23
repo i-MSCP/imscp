@@ -355,7 +355,7 @@ sub _init
 
 =item _detectInit()
 
- Detect init used on the system
+ Detect init system
 
  Return string init system in use
 
@@ -363,15 +363,16 @@ sub _init
 
 sub _detectInit
 {
-    my $exec = iMSCP::ProgramFinder::find( 'strings' ) or die(
-        sprintf( '%s: Could not find `%s` executable in %s', __PACKAGE__, 'string', $ENV{'PATH'} )
-    );
-    execute( "$exec /proc/1/exe | egrep ".escapeShell( 'systemd|sysvinit|upstart' ), \ my $stdout, \ my $stderr );
-    if ($stdout && $stdout =~ /(systemd|upstart|sysvinit)/) {
-        debug( sprintf( '%s init system has been detected', $1 ) );
-        return $1
+    my $init = 'sysvinit';
+
+    if (-d '/run/systemd/system') {
+        $init = 'systemd';
+    } elsif (iMSCP::ProgramFinder::find( 'initctl' ) && execute( 'initctl version 2>/dev/null | grep -q upstart' ) == 0) {
+        $init = 'upstart';
     }
-    die( 'Could not guess init system used on your system' );
+
+    debug( sprintf( '%s init system has been detected', ucfirst($init) ) );
+    $init;
 }
 
 =item _getLastError()

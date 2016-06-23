@@ -282,7 +282,6 @@ sub _init
     $self->{'need_pbuilder_update'} = 1;
     delete $ENV{'DEBCONF_FORCE_DIALOG'};
     $ENV{'DEBIAN_FRONTEND'} = 'noninteractive' if iMSCP::Getopt->noprompt;
-    delete $ENV{'UPSTART_SESSION'}; # See IP-1514
     $ENV{'DEBFULLNAME'} = 'i-MSCP Installer';
     $ENV{'DEBEMAIL'} = 'team@i-mscp.net';
     $self;

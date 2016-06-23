@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Provider::Service::Upstart - Base service provider for `upstart` jobs
+ iMSCP::Provider::Service::Upstart - Base service provider for `upstart' jobs
 
 =cut
 
@@ -32,16 +32,17 @@ use iMSCP::File;
 use version;
 use parent 'iMSCP::Provider::Service::Sysvinit';
 
-delete $ENV{'UPSTART_SESSION'}; # See IP-1514
+# Operate against system upstart, not session (see See IP-1514)
+delete $ENV{'UPSTART_SESSION'};
 
 # Private variables
-my $upstartVersion;
+my $UPSTART_VERSION;
 my $START_ON = qr/^\s*start\s+on/;
 my $COMMENTED_START_ON = qr/^\s*#+\s*start\s+on/;
-my $MANUAL = qr/^\s*manual\s*$/;
+my $MANUAL = qr/^\s*manual\s*/m;
 
 # Commands used in that package
-my %commands = (
+my %COMMANDS = (
     start   => '/sbin/start',
     stop    => '/sbin/stop',
     restart => '/sbin/restart',
@@ -51,14 +52,11 @@ my %commands = (
 );
 
 # Paths where job files must be searched
-my @jobFilePaths = ( '/etc/init' );
-
-# Cache for job file paths
-my %jobFilesCache = ();
+my @JOBFILEPATHS = ( '/etc/init' );
 
 =head1 DESCRIPTION
 
- Base service provider for `upstart` jobs.
+ Base service provider for `upstart' jobs.
 
  See: http://upstart.ubuntu.com
 
@@ -79,13 +77,16 @@ sub isEnabled
     my ($self, $job) = @_;
 
     defined $job or die( 'parameter $job is not defined' );
-    my $jobFileContent = $self->_readJobFile( $job );
-    return $self->_isEnabledPre067( $jobFileContent ) if $self->_versionIsPre067();
-    return $self->_isEnabledPre090( $jobFileContent ) if $self->_versionIsPre090();
-    return $self->_isEnabledPost090(
-        $jobFileContent, $self->_readJobOverrideFile( $job )
-    ) if $self->_versionIsPost090();
-    0;
+
+    if ($self->_versionIsPre067()) {
+        return $self->_isEnabledPre067( $self->_readJobFile( $job ) );
+    }
+
+    if ($self->_versionIsPre090()) {
+        return $self->_isEnabledPre090( $self->_readJobFile( $job ) );
+    }
+
+    $self->_isEnabledPost090( $self->_readJobFile( $job ), $self->_readJobOverrideFile( $job ) );
 }
 
 =item enable($job)
@@ -102,9 +103,12 @@ sub enable
     my ($self, $job) = @_;
 
     defined $job or die( 'parameter $job is not defined' );
-    my $jobFileContent = $self->_readJobFile( $job );
-    return $self->_enablePre090( $job, $jobFileContent ) if $self->_versionIsPre090();
-    $self->_enablePost090( $job, $jobFileContent, $self->_readJobOverrideFile( $job ) );
+
+    if ($self->_versionIsPre090()) {
+        return $self->_enablePre090( $job, $self->_readJobFile( $job ) );
+    }
+
+    $self->_enablePost090( $job, $self->_readJobFile( $job ), $self->_readJobOverrideFile( $job ) );
 }
 
 =item disable($job)
@@ -121,10 +125,16 @@ sub disable
     my ($self, $job) = @_;
 
     defined $job or die( 'parameter $job is not defined' );
-    return $self->_disablePre067( $job, $self->_readJobFile( $job ) ) if $self->_versionIsPre067();
-    return $self->_disablePre090( $job, $self->_readJobFile( $job ) ) if $self->_versionIsPre090();
-    return $self->_disablePost090( $job, $self->_readJobOverrideFile( $job ) ) if $self->_versionIsPost090();
-    0;
+
+    if ($self->_versionIsPre067()) {
+        return $self->_disablePre067( $job, $self->_readJobFile( $job ) );
+    }
+
+    if ($self->_versionIsPre090()) {
+        return $self->_disablePre090( $job, $self->_readJobFile( $job ) );
+    }
+
+    $self->_disablePost090( $job, $self->_readJobOverrideFile( $job ) );
 }
 
 =item remove($job)
@@ -141,12 +151,13 @@ sub remove
     my ($self, $job) = @_;
 
     defined $job or die( 'parameter $job is not defined' );
+
     return 0 unless $self->stop( $job );
 
     local $@;
     for my $jobFileType('conf', 'override') {
-        if (my $filepath = eval { $self->getJobFilePath( $job, $jobFileType ); }) {
-            delete $jobFilesCache{$job.'.'.$jobFileType};
+        my $filepath = eval { $self->getJobFilePath( $job, $jobFileType ); };
+        if (defined $filepath) {
             return 0 if iMSCP::File->new( filename => $filepath )->delFile();
         }
     }
@@ -170,7 +181,10 @@ sub start
     defined $job or die( 'parameter $job is not defined' );
 
     if ($self->_isUpstart( $job )) {
-        return $self->_exec( $commands{'start'}, $job ) == 0 unless $self->isRunning( $job );
+        unless ($self->isRunning( $job )) {
+            return $self->_exec( $COMMANDS{'start'}, $job ) == 0;
+        }
+
         return 1;
     }
 
@@ -193,7 +207,10 @@ sub stop
     defined $job or die( 'parameter $job is not defined' );
 
     if ($self->_isUpstart( $job )) {
-        return $self->_exec( $commands{'stop'}, $job ) == 0 if $self->isRunning( $job );
+        if ($self->isRunning( $job )) {
+            return $self->_exec( $COMMANDS{'stop'}, $job ) == 0;
+        }
+
         return 1;
     }
 
@@ -216,7 +233,10 @@ sub restart
     defined $job or die( 'parameter $job is not defined' );
 
     if ($self->_isUpstart( $job )) {
-        return $self->_exec( $commands{'restart'}, $job ) == 0 if $self->isRunning( $job );
+        if ($self->isRunning( $job )) {
+            return $self->_exec( $COMMANDS{'restart'}, $job ) == 0
+        }
+
         return $self->start( $job );
     }
 
@@ -239,7 +259,10 @@ sub reload
     defined $job or die( 'parameter $job is not defined' );
 
     if ($self->_isUpstart( $job )) {
-        return $self->_exec( $commands{'reload'}, $job ) == 0 if $self->isRunning( $job );
+        if ($self->isRunning( $job )) {
+            return $self->_exec( $COMMANDS{'reload'}, $job ) == 0;
+        }
+
         return $self->start( $job );
     }
 
@@ -263,8 +286,8 @@ sub isRunning
     defined $job or die( 'parameter $job is not defined' );
 
     if ($self->_isUpstart( $job )) {
-        execute( "$commands{'status'} $job", \ my $stdout, \ my $stderr );
-        return $stdout =~ m%start/%;
+        execute( "$COMMANDS{'status'} $job", \ my $stdout, \ my $stderr );
+        return $stdout =~ /start/;
     }
 
     $self->SUPER::isRunning( $job );
@@ -275,7 +298,7 @@ sub isRunning
  Get full path of the job configuration file or job override file which belongs to the given job
 
  Param string $job Job name
- Param string $jobFileType OPTIONAL Job file type ('conf'|'override') - Default to 'conf'
+ Param string $jobFileType OPTIONAL Job file type (conf|override) - Default to 'conf'
  Return string job file path on success, die on failure
 
 =cut
@@ -305,8 +328,8 @@ sub getJobFilePath
 
 sub _getVersion
 {
-    ($upstartVersion) = `initctl --version` =~ /initctl \(upstart\s+([^\)]*)\)/ unless $upstartVersion;
-    $upstartVersion;
+    ($UPSTART_VERSION) = `initctl --version` =~ /initctl \(upstart\s+([^\)]*)\)/ unless $UPSTART_VERSION;
+    $UPSTART_VERSION;
 }
 
 =item _isUpstart($service)
@@ -384,7 +407,7 @@ sub _isEnabledPre067
 {
     my ($self, $jobFileContent) = @_;
 
-    # Upstart version < 0.6.7 means no manual stanza.
+    # Upstart version < 0.6.7 means no `manual' stanza.
     $jobFileContent =~ /$START_ON/;
 }
 
@@ -401,10 +424,13 @@ sub _isEnabledPre090
 {
     my ($self, $jobFileContent) = @_;
 
-    # Upstart versions < 0.9.0 means no override files. Thus, we check to see if an uncommented `start on` or `manual`
-    # stanza is the last one in the file. The last one in the file wins.
+    # Upstart versions < 0.9.0 means no override files. Thus,
+    # we check to see if an uncommented `start on' or `manual'
+    # stanza is the last one in the file. The last one in the
+    # file wins.
+    open my $fh, '<', \$jobFileContent or die ( sprintf( 'Could not open in-memory file: %s', $! ) );
     my $enabled = 0;
-    for(split /^/, $jobFileContent) {
+    while(<$fh>) {
         if (/$START_ON/) {
             $enabled = 1;
         } elsif (/$MANUAL/) {
@@ -429,13 +455,14 @@ sub _isEnabledPost090
 {
     my ($self, $jobFileContent, $jobOverrideFileContent) = @_;
 
-    # Upstart versions >= 0.9.0 has `manual` stanzas and override files. Thus, we check to see if an uncommented
-    # `start on` or `manual` stanza is the last one in the conf file and any override files. The last one in the file
-    # wins.
+    # Upstart versions >= 0.9.0 has `manual' stanzas and override
+    # files. Thus, we check to see if an uncommented `start on' or
+    # `manual' stanza is the last one in the conf file and any
+    # override files. The last one in the file wins.
     my $enabled = 0;
-    for($jobFileContent, $jobOverrideFileContent) {
-        next unless defined;
-        for(split /^/) {
+    for (\$jobFileContent, \$jobOverrideFileContent) {
+        open my $fh, '<', $_ or die ( sprintf( 'Could not open in-memory file: %s', $! ) );
+        while(<$fh>) {
             if (/$START_ON/) {
                 $enabled = 1;
             } elsif (/$MANUAL/) {
@@ -461,13 +488,14 @@ sub _enablePre090
 {
     my ($self, $job, $jobFileContent) = @_;
 
-    # We also need to remove any manual stanzas to ensure that it is enabled
-    $jobFileContent = $self->_removeManualStanza( $jobFileContent );
+    # Remove `manual' stanzas if any
+    $jobFileContent = $self->_removeManualStanzaFrom( $jobFileContent );
 
+    # Add or uncomment `START ON' stanza if needed
     unless ($self->_isEnabledPre090( $jobFileContent )) {
-        $jobFileContent = $jobFileContent =~ /$COMMENTED_START_ON/
-            ? $self->_uncommentStartOnStanza( $jobFileContent )
-            : $self->_addDefaultStartOnStanza( $jobFileContent );
+        $jobFileContent = ($jobFileContent =~ /$COMMENTED_START_ON/)
+            ? $self->_uncommentStartOnStanzaIn( $jobFileContent )
+            : $self->_addDefaultStartOnStanzaTo( $jobFileContent );
     }
 
     return $self->_writeFile( $job, $jobFileContent );
@@ -488,16 +516,19 @@ sub _enablePost090
 {
     my ($self, $job, $jobFileContent, $jobOverrideFileContent) = @_;
 
-    $jobOverrideFileContent = $self->_removeManualStanza( $jobOverrideFileContent );
-    unless ($self->_isEnabledPost090( $jobFileContent, $jobOverrideFileContent )) {
-        $jobOverrideFileContent .= $jobFileContent =~ /$START_ON/
-            ? $self->_extractStartOnStanza( $jobFileContent )
-            : "\nstart on runlevel [2345]";
+    # Remove `manual' stanzas if any
+    $jobOverrideFileContent = $self->_removeManualStanzaFrom( $jobOverrideFileContent );
 
-        return $self->_writeFile( "$job.override", $jobOverrideFileContent );
+    # Add or uncomment `START ON' stanza if needed
+    unless ($self->_isEnabledPost090( $jobFileContent, $jobOverrideFileContent )) {
+        if ($jobFileContent =~ /$START_ON/) {
+            $jobOverrideFileContent .= $self->_extractStartOnStanzaFrom( $jobFileContent );
+        } else {
+            $jobOverrideFileContent = $self->_addDefaultStartOnStanzaTo( $jobOverrideFileContent );
+        }
     }
 
-    1;
+    $self->_writeFile( $job.'.override', $jobOverrideFileContent );
 }
 
 =item _disablePre067($service, $jobFileContent)
@@ -515,7 +546,7 @@ sub _disablePre067
     my ($self, $job, $jobFileContent) = @_;
 
     $jobFileContent = $self->_commentStartOnStanza( $jobFileContent );
-    $self->_writeFile( "$job.conf", $jobFileContent );
+    $self->_writeFile( $job.'.conf', $jobFileContent );
 }
 
 =item _disablePre090($service, $jobFileContent)
@@ -532,7 +563,7 @@ sub _disablePre090
 {
     my ($self, $job, $jobFileContent) = @_;
 
-    $self->_writeFile( "$job.conf", $self->_ensureDisabledWithManualStanza( $jobFileContent ) );
+    $self->_writeFile( $job.'.conf', $self->_ensureDisabledWithManualStanza( $jobFileContent ) );
 }
 
 =item _disablePost090($service, $jobOverrideFileContent)
@@ -549,7 +580,7 @@ sub _disablePost090
 {
     my ($self, $job, $jobOverrideFileContent) = @_;
 
-    $self->_writeFile( "$job.override", $self->_ensureDisabledWithManualStanza( $jobOverrideFileContent ) );
+    $self->_writeFile( $job.'.override', $self->_ensureDisabledWithManualStanza( $jobOverrideFileContent ) );
 }
 
 =item _uncomment($line)
@@ -594,42 +625,40 @@ sub _removeTrailingComments
     $_[1] =~ s/^(\s*[^#]*).*/$1/r;
 }
 
-=item _countUnbalancedParentheses($line)
+=item _countUnbalancedRoundBrackets($line)
 
- Return number of unbalanced parentheses in the given line
+ Count number of unbalanced round brackets in the given line
 
  Param string $line Line to process
- Return int
+ Return int Number of unbalanced round brackets
 
 =cut
 
-sub _countUnbalancedParentheses
+sub _countUnbalancedRoundBrackets
 {
-    my $line = $_[1];
-
-    ( $line =~ tr/(/(/ ) - ( $line =~ tr/)/)/ );
+    ( $_[1] =~ tr/(// ) - ( $_[1] =~ tr/)// );
 }
 
-=item _removeManualStanza($string)
+=item _removeManualStanzaFrom($string)
 
- Remove any upstart `manual` stanza in the given $string
+ Remove any upstart `manual' stanza from the given $string
 
  Param string $string String to process
- Return string String without upstart `manual` stanza
+ Return string String without upstart `manual' stanza
 
 =cut
 
-sub _removeManualStanza
+sub _removeManualStanzaFrom
 {
-    $_[1] =~ s/$MANUAL//r;
+    $_[1] =~ s/$MANUAL//gr;
 }
 
 =item _commentStartOnStanza($text)
 
- Comment any upstart `start on` stanza in the given text
+ Comment any upstart `start on' stanza in the given text
 
  Param string $text Text to process
- Return string Text with commented upstart `start on` stanza if any
+ Return string Text with commented upstart `start on' stanza if any
 
 =cut
 
@@ -637,14 +666,15 @@ sub _commentStartOnStanza
 {
     my ($self, $text) = @_;
 
-    my $parentheses = 0;
+    my $roundBrackets = 0;
 
     join '',
         map {
-            if (/$START_ON/ || $parentheses > 0) {
-                # If there are more opening parens than closing parens, we need to comment out a multiline 'start on'
-                # stanza
-                $parentheses += $self->_countUnbalancedParentheses( $self->_removeTrailingComments( $_ ) );
+            if ($roundBrackets > 0 || /$START_ON/) {
+                # If there are more opening round brackets than closing
+                # round brackets, we need to comment out a multiline
+                # `start on' stanza
+                $roundBrackets += $self->_countUnbalancedRoundBrackets( $self->_removeTrailingComments( $_ ) );
                 '#'.$_;
             } else {
                 $_;
@@ -652,27 +682,29 @@ sub _commentStartOnStanza
         } split /^/, $text;
 }
 
-=item _uncommentStartOnStanza($text)
+=item _uncommentStartOnStanzaIn($text)
 
- Uncomment any upstart `start on` stanza in the given text
+ Uncomment any upstart `start on' stanza in the given text
 
  Param string Text to process
- Return string Text with uncommented upstart `start on `stanza` if any
+ Return string Text with uncommented upstart `start on' stanza if any
 
 =cut
 
-sub _uncommentStartOnStanza
+sub _uncommentStartOnStanzaIn
 {
     my ($self, $text) = @_;
 
-    my $parentheses = 0;
-
+    my $roundBrackets = 0;
     join '',
         map {
-            if (/$COMMENTED_START_ON/ || $parentheses > 0) {
-                # If there are more opening parentheses than closing parentheses, we need to comment out a multiline
-                # 'start on' stanza
-                $parentheses += $self->_countUnbalancedParentheses( $self->_removeTrailingCommentsFromCommentedLine( $_ ) );
+            if ($roundBrackets > 0 || /$COMMENTED_START_ON/) {
+                # If there are more opening round brackets than closing
+                # round brackets, we need to comment out a multiline
+                # `start on' stanza
+                $roundBrackets += $self->_countUnbalancedRoundBrackets(
+                    $self->_removeTrailingCommentsFromCommentedLine( $_ )
+                );
                 $self->_uncomment( $_ );
             } else {
                 $_;
@@ -680,58 +712,59 @@ sub _uncommentStartOnStanza
         } split /^/, $text;
 }
 
-=item _extractStartOnStanza($text)
+=item _extractStartOnStanzaFrom($string)
 
- Extract the upstart `start on` stanza from the given text if any
+ Extract the upstart `start on' stanza from the given string if any
 
- Param string $text Text to process
- Return string Text without any upstart `start in stanza`
+ Param string $string String to process
+ Return string Text without any upstart `start in stanza'
 
 =cut
 
-sub _extractStartOnStanza
+sub _extractStartOnStanzaFrom
 {
-    my ($self, $text) = @_;
+    my ($self, $string) = @_;
 
-    my $parentheses = 0;
-
+    my $roundBrackets = 0;
     join '',
         map {
-            if (/$START_ON/ || $parentheses > 0) {
-                $parentheses += $self->_countUnbalancedParentheses( $self->_removeTrailingComments( $_ ) );
+            if ($roundBrackets > 0 || /$START_ON/) {
+                $roundBrackets += $self->_countUnbalancedRoundBrackets( $self->_removeTrailingComments( $_ ) );
                 $_;
             }
-        } split /^/, $text;
+        } split /^/, $string;
 }
 
-=item _addDefaultStartOnStanza($text)
+=item _addDefaultStartOnStanzaTo($string)
 
- Add default upstart `start on` stanza in the given text
+ Add default upstart `start on' stanza to the given string
 
- Param string $text Text to process
- Return string Text with upstart default `start on` stanza
+ Param string $string String into which default `start on' stanza must be added
+ Return string Text with upstart default `start on' stanza
 
 =cut
 
-sub _addDefaultStartOnStanza
+sub _addDefaultStartOnStanzaTo
 {
-    $_[1]."\nstart on runlevel [2345]";
+    my $string = $_[1];
+
+    $string."\nstart on runlevel [2345]\n";
 }
 
-=item _ensureDisabledWithManualStanza($text)
+=item _ensureDisabledWithManualStanza($string)
 
- Ensure that the given text contains the upstart `manual` stanza
+ Ensure that the given string contains the upstart `manual' stanza
 
- Param string $text Text to process
- Return string Text with upstart `manual` stanza
+ Param string $string String to process
+ Return string String with upstart `manual' stanza
 
 =cut
 
 sub _ensureDisabledWithManualStanza
 {
-    my ($self, $text) = @_;
+    my ($self, $string) = @_;
 
-    $self->_removeManualStanza( $text )."\nmanual";
+    $self->_removeManualStanzaFrom( $string )."manual\n";
 }
 
 =item _searchJobFile($job, $jobFileType)
@@ -750,11 +783,9 @@ sub _searchJobFile
 
     my $jobFile = $job.'.'.($jobFileType || 'conf');
 
-    return $jobFilesCache{$jobFile} if $jobFilesCache{$jobFile};
-
-    for my $path(@jobFilePaths) {
+    for my $path(@JOBFILEPATHS) {
         my $filepath = File::Spec->join( $path, $jobFile );
-        return $jobFilesCache{$jobFile} = $filepath if -f $filepath;
+        return $filepath if -f $filepath;
     }
 
     die( sprintf( 'Could not find the upstart %s job file', $jobFile ) );
@@ -790,7 +821,9 @@ sub _readJobOverrideFile
 {
     my ($self, $job) = @_;
 
-    if (my $filepath = eval { $self->getJobFilePath( $job, 'override' ); }) {
+    local $@;
+    my $filepath = eval { $self->getJobFilePath( $job, 'override' ) };
+    if (defined $filepath) {
         my $fileContent = iMSCP::File->new( filename => $filepath )->get();
         defined $fileContent or die( sprintf( 'Could not read %s file', $filepath ) );
         return $fileContent;
@@ -816,9 +849,16 @@ sub _writeFile
     my $jobDir = dirname( $self->getJobFilePath( basename( $filename, '.conf', '.override' ) ) );
     my $filepath = File::Spec->join( $jobDir, $filename );
     my $file = iMSCP::File->new( filename => $filepath );
-    $file->set( $fileContent ) == 0 && $file->save() == 0 && $file->mode( 0644 ) == 0 or die(
-        sprintf( 'Could not write %s file', $filepath )
-    );
+
+    if ($fileContent ne '') {
+        $file->set( $fileContent ) == 0 && $file->save() == 0 && $file->mode( 0644 ) == 0 or die(
+            sprintf( 'Could not write %s file', $filepath )
+        );
+    } elsif ($filepath =~ /\.override$/ && -f $filepath) {
+        $file->delFile() == 0 or die( sprintf( 'Could not unlink %s file', $filepath ) );
+    } else {
+        1;
+    }
 }
 
 =back

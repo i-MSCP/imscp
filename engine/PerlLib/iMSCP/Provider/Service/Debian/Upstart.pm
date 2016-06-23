@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Provider::Service::Debian::Upstart - Service provider for Debian `upstart` jobs.
+ iMSCP::Provider::Service::Debian::Upstart - Service provider for Debian `upstart' jobs.
 
 =cut
 
@@ -29,9 +29,9 @@ use parent qw/ iMSCP::Provider::Service::Upstart iMSCP::Provider::Service::Debia
 
 =head1 DESCRIPTION
 
- Service provider for Debian `upstart` jobs.
+ Service provider for Debian `upstart' jobs.
 
- The only differences with the base `upstart` provider are support for enabling, disabling and removing underlying
+ The only differences with the base `upstart' provider are support for enabling, disabling and removing underlying
  sysvinit scripts if any.
 
  See: https://wiki.debian.org/Upstart
@@ -74,11 +74,13 @@ sub enable
 
     if ($self->_isUpstart( $job )) {
         # Ensure that sysvinit script if any is not enabled
-        my $ret = $self->_isSysvinit( $job ) ? $self->iMSCP::Provider::Service::Debian::Sysvinit::disable( $job ) : 1;
-        return $ret && $self->SUPER::enable( $job );
+        # FIXME: Should we really disable underlying sysvinit script?
+        #my $ret = $self->_isSysvinit( $job ) ? $self->iMSCP::Provider::Service::Debian::Sysvinit::disable( $job ) : 1;
+        #return $ret && $self->SUPER::enable( $job );
+        return 0 unless $self->SUPER::enable( $job );
     }
 
-    # Enable sysvinit script if any
+    # Also enable the underlying sysvinit script if any
     if ($self->_isSysvinit( $job )) {
         return $self->iMSCP::Provider::Service::Debian::Sysvinit::enable( $job );
     }
@@ -105,7 +107,7 @@ sub disable
         return 0 unless $self->SUPER::disable( $job );
     }
 
-    # Disable the sysvinit script if any
+    # Also disable the underlying sysvinit script if any
     if ($self->_isSysvinit( $job )) {
         return $self->iMSCP::Provider::Service::Debian::Sysvinit::disable( $job );
     }

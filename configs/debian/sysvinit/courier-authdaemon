@@ -24,8 +24,18 @@ if [ ! -x $daemonscript ]; then
 	exit 0
 fi
 
+check_for_upstart()
+{
+	# We don't use init_is_upstart() from /lib/lsb/init-functions because
+	# that function is not provided in all supported Distro versions
+	if [ -x /sbin/initctl ] && /sbin/initctl version 2>/dev/null | /bin/grep -q upstart; then
+		exit $1
+	fi
+}
+
 case "$1" in
 start)
+	check_for_upstart 1
 	# Start daemon.
 	cd /
 	log_daemon_msg "Starting Courier authentication services" "authdaemond"
@@ -45,6 +55,7 @@ start)
 	log_end_msg 0
 	;;
 stop)
+	check_for_upstart 0
 	# Stop daemon.
 	cd /
 	log_daemon_msg "Stopping Courier authentication services" "authdaemond"
@@ -52,10 +63,12 @@ stop)
 	log_end_msg 0
     ;;
 restart|force-reload)
+	check_for_upstart 1
 	$0 stop
 	$0 start
     ;;
 status)
+	check_for_upstart 1
 	status_of_proc -p "$pidfile" "authdaemond" && exit 0 || exit $?
 	;;
 *)

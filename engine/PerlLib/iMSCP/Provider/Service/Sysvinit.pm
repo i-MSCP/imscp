@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Provider::Service::Sysvinit - Base service provider for `sysvinit` scripts
+ iMSCP::Provider::Service::Sysvinit - Base service provider for `sysvinit' scripts
 
 =cut
 
@@ -34,7 +34,7 @@ use iMSCP::LsbRelease;
 use Scalar::Defer;
 
 # Paths in which sysvinit script must be searched
-my $initScriptPaths = lazy
+my $SYSVINITSCRIPTPATHS = lazy
     {
         # Fixme: iMSCP::LsbRelease is Linux specific. We must rewrite it to support all platforms below.
         my $id = iMSCP::LsbRelease->getInstance()->getId( 'short' );
@@ -49,12 +49,9 @@ my $initScriptPaths = lazy
         }
     };
 
-# Cache for init script paths
-my %initScriptPathsCache = ();
-
 =head1 DESCRIPTION
 
- Base service provider for `sysvinit` scripts.
+ Base service provider for `sysvinit' scripts.
 
 =head1 PUBLIC METHODS
 
@@ -136,8 +133,8 @@ sub remove
     defined $service or die( 'parameter $service is not defined' );
 
     local $@;
-    if (my $initScriptPath = eval { $self->getInitScriptPath( $service ); }) {
-        delete $initScriptPathsCache{$service};
+    my $initScriptPath = eval { $self->getInitScriptPath( $service ); };
+    if (defined $initScriptPath) {
         return 0 if iMSCP::File->new( filename => $initScriptPath )->delFile();
     }
 
@@ -311,18 +308,12 @@ sub _searchInitScript
 {
     my ($self, $service) = @_;
 
-    return $initScriptPathsCache{$service} if $initScriptPathsCache{$service};
-
-    for my $path(@{$initScriptPaths}) {
+    for my $path(@{$SYSVINITSCRIPTPATHS}) {
         my $filepath = File::Spec->join( $path, $service );
-        $initScriptPathsCache{$service} = $filepath if -f $filepath;
+        return $filepath if -f $filepath;
 
-        unless ($initScriptPathsCache{$service}) {
-            $filepath .= '.sh';
-            $initScriptPathsCache{$service} = $filepath if -f $filepath;
-        }
-
-        return $initScriptPathsCache{$service} if $initScriptPathsCache{$service};
+        $filepath .= '.sh';
+        return $filepath if -f $filepath;
     }
 
     die( sprintf( 'Could not find sysvinit script for the %s service', $service ) );
@@ -384,7 +375,7 @@ sub _getPid
     defined $pattern or die( '$pattern parameter is not defined' );
 
     my $ps = $self->_getPs();
-    open my $fh, '-|', $ps or die( sprintf( 'Could not pipe to %s: %s', $ps, $! ) );
+    open my $fh, '-|', $ps or die( sprintf( 'Could not open pipe to %s: %s', $ps, $! ) );
 
     my $regex = qr/$pattern/;
     while(<$fh>) {

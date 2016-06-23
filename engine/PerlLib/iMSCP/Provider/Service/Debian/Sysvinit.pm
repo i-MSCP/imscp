@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Provider::Service::Sysvinit - Service provider for Debian `sysvinit` scripts
+ iMSCP::Provider::Service::Sysvinit - Service provider for Debian `sysvinit' scripts
 
 =cut
 
@@ -30,7 +30,7 @@ use Scalar::Defer;
 use parent 'iMSCP::Provider::Service::Sysvinit';
 
 # Commands used in that package
-my %commands = (
+my %COMMANDS = (
     dpkg          => '/usr/bin/dpkg',
     'invoke-rc.d' => '/usr/sbin/invoke-rc.d',
     'update-rc.d' => '/usr/sbin/update-rc.d'
@@ -40,16 +40,16 @@ my %commands = (
 my $SYSVRC_COMPAT_MODE = lazy
     {
         __PACKAGE__->_exec(
-            $commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W -f \'${Version}\' sysv-rc)', 'lt', '2.88'
+            $COMMANDS{'dpkg'}, '--compare-versions', '$(dpkg-query -W -f \'${Version}\' sysv-rc)', 'lt', '2.88'
         ) == 0;
     };
 
 =head1 DESCRIPTION
 
- Service provider for Debian `sysvinit` scripts.
+ Service provider for Debian `sysvinit' scripts.
 
  The only differences with the base sysvinit provider are support for enabling, disabling and removing services
- via `update-rc.d` and the ability to determine enabled status via `invoke-rc.d`.
+ via `update-rc.d' and the ability to determine enabled status via `invoke-rc.d'.
 
 =head1 PUBLIC METHODS
 
@@ -69,15 +69,15 @@ sub isEnabled
     my ($self, $service) = @_;
 
     defined $service or die( 'parameter $service is not defined' );
-    my $ret = $self->_exec( $commands{'invoke-rc.d'}, '--quiet', '--query', $service, 'start' );
+    my $ret = $self->_exec( $COMMANDS{'invoke-rc.d'}, '--quiet', '--query', $service, 'start' );
 
     # 104 is the exit status when you query start an enabled service.
     # 106 is the exit status when the policy layer supplies a fallback action
-    if ($ret =~ /^(?:104|106)$/) {
+    if ($ret =~ /^10(?:4|6)$/) {
         return 1;
     }
 
-    if ($ret =~ /^(?:101|105)$/) {
+    if ($ret =~ /^10(?:1|5)$/) {
         # 101 is action not allowed, which means we have to do the check manually.
         # 105 is unknown, which generally means the iniscript does not support query
         # The debian policy states that the initscript should support methods of query
@@ -104,13 +104,13 @@ sub enable
 
     defined $service or die( 'parameter $service is not defined' );
 
-    if ($SYSVRC_COMPAT_MODE) {
-        return $self->_exec( $commands{'update-rc.d'}, '-f', $service, 'remove' ) == 0
-            && $self->_exec( $commands{'update-rc.d'}, $service, 'defaults' ) == 0;
-    }
+    #if ($SYSVRC_COMPAT_MODE) {
+    return $self->_exec( $COMMANDS{'update-rc.d'}, '-f', $service, 'remove' ) == 0
+        && $self->_exec( $COMMANDS{'update-rc.d'}, $service, 'defaults' ) == 0;
+    #}
 
-    $self->_exec( $commands{'update-rc.d'}, $service, 'defaults' ) == 0
-        && $self->_exec( $commands{'update-rc.d'}, $service, 'enable' ) == 0;
+    #$self->_exec( $COMMANDS{'update-rc.d'}, $service, 'defaults' ) == 0
+    #    && $self->_exec( $COMMANDS{'update-rc.d'}, $service, 'enable' ) == 0;
 }
 
 =item disable($service)
@@ -129,12 +129,13 @@ sub disable
     defined $service or die( 'parameter $service is not defined' );
 
     if ($SYSVRC_COMPAT_MODE) {
-        return $self->_exec( $commands{'update-rc.d'}, '-f', $service, 'remove' ) == 0
-            && $self->_exec( $commands{'update-rc.d'}, $service, 'stop', '00', '1', '2', '3', '4', '5', '6', '.' ) == 0;
+        return $self->_exec( $COMMANDS{'update-rc.d'}, '-f', $service, 'remove' ) == 0
+            && $self->_exec( $COMMANDS{'update-rc.d'}, $service, 'stop', '00', '1', '2', '3', '4', '5', '6', '.' ) == 0;
     }
 
-    $self->_exec( $commands{'update-rc.d'}, $service, 'defaults' ) == 0
-        && $self->_exec( $commands{'update-rc.d'}, $service, 'disable' ) == 0;
+    #$self->_exec( $COMMANDS{'update-rc.d'}, $service, 'defaults' ) == 0
+    #&& $self->_exec( $COMMANDS{'update-rc.d'}, $service, 'disable' ) == 0;
+    $self->_exec( $COMMANDS{'update-rc.d'}, $service, 'disable' ) == 0;
 }
 
 =item remove($service)
@@ -151,7 +152,7 @@ sub remove
     my ($self, $service) = @_;
 
     defined $service or die( 'parameter $service is not defined' );
-    $self->stop( $service ) && $self->_exec( $commands{'update-rc.d'}, '-f', $service, 'remove' ) == 0
+    $self->stop( $service ) && $self->_exec( $COMMANDS{'update-rc.d'}, '-f', $service, 'remove' ) == 0
         && $self->SUPER::remove( $service );
 }
 

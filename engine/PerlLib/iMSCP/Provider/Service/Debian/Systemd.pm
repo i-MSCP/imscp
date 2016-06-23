@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Provider::Service::Debian::Systemd - Service provider for Debian `systemd` service/socket units
+ iMSCP::Provider::Service::Debian::Systemd - Service provider for Debian `systemd' service/socket units
 
 =cut
 
@@ -31,7 +31,7 @@ use Scalar::Defer;
 use parent qw/ iMSCP::Provider::Service::Systemd iMSCP::Provider::Service::Debian::Sysvinit /;
 
 # Commands used in that package
-my %commands = (
+my %COMMANDS = (
     dpkg      => '/usr/bin/dpkg',
     systemctl => '/bin/systemctl'
 );
@@ -40,15 +40,15 @@ my %commands = (
 my $SYSTEMCTL_COMPAT_MODE = lazy
     {
         __PACKAGE__->_exec(
-            $commands{'dpkg'}, '--compare-versions', '$(dpkg-query -W -f=\'${Version}\' systemd)', 'lt', '204-3'
+            $COMMANDS{'dpkg'}, '--compare-versions', '$(dpkg-query -W -f=\'${Version}\' systemd)', 'lt', '204-3'
         ) == 0;
     };
 
 =head1 DESCRIPTION
 
- Service provider for Debian `systemd` service/socket units.
+ Service provider for Debian `systemd' service/socket units.
 
- The only differences with the base `systemd` provider are support for enabling, disabling and removing underlying
+ The only differences with the base `systemd' provider are support for enabling, disabling and removing underlying
  sysvinit scripts. This provider also provides backware compatibility mode for older Debian systemd package versions.
 
  See:
@@ -108,13 +108,13 @@ sub enable
         }
 
         # Backward compatibility operations
-        # We must manually enable the underlying sysvinit script if any. This is needed because `systemctl` as provided
-        # in systemd packages older than version 204-3, doesn't make call of `the update-rc-d <service> enable`. Thus,
-        # the sysvinit script is not enabled. We must also make call of `systemctl daemon-reload` to make systemd aware
+        # We must manually enable the underlying sysvinit script if any. This is needed because `systemctl' as provided
+        # in systemd packages older than version 204-3, doesn't make call of `the update-rc-d <service> enable'. Thus,
+        # the sysvinit script is not enabled. We must also make call of `systemctl daemon-reload' to make systemd aware
         # of changes.
         if ($self->_isSysvinit( $unit )) {
             return $self->iMSCP::Provider::Service::Debian::Sysvinit::enable( $unit )
-                && $self->_exec( $commands{'systemctl'}, 'daemon-reload' ) == 0
+                && $self->_exec( $COMMANDS{'systemctl'}, 'daemon-reload' ) == 0
         }
 
         return 1;
@@ -151,13 +151,13 @@ sub disable
         }
 
         # Backward compatibility operations
-        # We must manually disable the underlying sysvinit script if any. This is needed because `systemctl` as provided
-        # in systemd packages older than version 204-3, doesn't make call of `the update-rc-d <service> disable`. Thus,
-        # the sysvinit script is not disabled. We must also make call of `systemctl daemon-reload` to make systemd aware
+        # We must manually disable the underlying sysvinit script if any. This is needed because `systemctl' as provided
+        # in systemd packages older than version 204-3, doesn't make call of `the update-rc-d <service> disable'. Thus,
+        # the sysvinit script is not disabled. We must also make call of `systemctl daemon-reload' to make systemd aware
         # of changes.
         if ($self->_isSysvinit( $unit )) {
             return $self->iMSCP::Provider::Service::Debian::Sysvinit::disable( $unit )
-                && $self->_exec( $commands{'systemctl'}, 'daemon-reload' ) == 0;
+                && $self->_exec( $COMMANDS{'systemctl'}, 'daemon-reload' ) == 0;
         }
 
         return 1;
@@ -189,7 +189,7 @@ sub remove
     # Remove the underlying sysvinit script if any and make systemd aware of changes
     if ($self->_isSysvinit( $unit )) {
         return $self->iMSCP::Provider::Service::Debian::Sysvinit::remove( $unit )
-            && $self->_exec( $commands{'systemctl'}, 'daemon-reload' ) == 0;
+            && $self->_exec( $COMMANDS{'systemctl'}, 'daemon-reload' ) == 0;
     }
 
     1;
