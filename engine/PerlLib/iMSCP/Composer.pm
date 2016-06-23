@@ -113,7 +113,11 @@ sub _init
                 sub { iMSCP::Getopt->skipPackageUpdate ? $self->_checkRequirements() : 0; },
                 'Checking composer package requirements', 3, 2
             );
-            return $rs if iMSCP::Getopt->skipPackageUpdate;
+
+            if (iMSCP::Getopt->skipPackageUpdate) {
+                endDetail;
+                return $rs;
+            };
 
             $rs ||= step(
                 sub { $self->_installPackages(); },

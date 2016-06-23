@@ -182,15 +182,15 @@ sub setupTasks
         [ \&setupServices,                   'Setup i-MSCP services' ],
         [ \&setupRegisterDelayedTasks,       'Register delayed tasks' ],
         [ \&setupRegisterPluginListeners,    'Register plugin setup listeners' ],
-        [ \&setupPreInstallServers,          'Servers pre-installation' ],
-        [ \&setupPreInstallPackages,         'Packages pre-installation' ],
-        [ \&setupInstallServers,             'Servers installation' ],
-        [ \&setupInstallPackages,            'Packages installation' ],
-        [ \&setupPostInstallServers,         'Servers post-installation' ],
-        [ \&setupPostInstallPackages,        'Packages post-installation' ],
-        [ \&setupSetPermissions,             'Setting permissions' ],
-        [ \&setupRebuildCustomerFiles,       'Rebuilding customers files' ],
-        [ \&setupRestartServices,            'Restarting services' ]
+        [ \&setupPreInstallServers,          'Servers pre-installation...' ],
+        [ \&setupPreInstallPackages,         'Packages pre-installation...' ],
+        [ \&setupInstallServers,             'Servers installation...' ],
+        [ \&setupInstallPackages,            'Packages installation...' ],
+        [ \&setupPostInstallServers,         'Servers post-installation...' ],
+        [ \&setupPostInstallPackages,        'Packages post-installation...' ],
+        [ \&setupSetPermissions,             'Setting permissions...' ],
+        [ \&setupDbTasks,                    'Processing DB tasks...' ],
+        [ \&setupRestartServices,            'Restarting services...' ]
     );
 
     my $step = 1;
@@ -1484,9 +1484,9 @@ sub setupSetPermissions
     iMSCP::EventManager->getInstance()->trigger('afterSetupSetPermissions');
 }
 
-sub setupRebuildCustomerFiles
+sub setupDbTasks
 {
-    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupRebuildCustomersFiles');
+    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupDbTasks');
     return $rs if $rs;
 
     my $tables = {
@@ -1560,7 +1560,7 @@ sub setupRebuildCustomerFiles
     }
     endDetail();
 
-    $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupRebuildCustomersFiles');
+    $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupDbTasks');
 }
 
 sub setupRegisterPluginListeners

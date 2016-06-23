@@ -808,24 +808,35 @@ sub _buildDHparametersFile
 {
     my $self = shift;
 
-    if (iMSCP::ProgramFinder::find( 'mkdhparams' )) {
-        # We must delete old file to force re-generation
-        if (-f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem") {
-            my $rs = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem" )->delFile();
-            return $rs if $rs;
-        }
+    return 0 unless iMSCP::ProgramFinder::find( 'mkdhparams' );
 
-        startDetail();
-        my $rs = step(
-            sub {
-                my $rs = execute( 'DH_BITS=2048 mkdhparams', \ my $stdout, \ my $stderr );
-                error( $stderr ) if $stderr && $rs;
-                $rs;
-            }, 'Generating DH parameter file. Please be patient...', 1, 1
+    if (-f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem") {
+        my $rs = execute(
+            [ 'openssl', 'dhparam', '-in', "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem", '-text', '-noout' ],
+            \ my $stdout,
+            \ my $stderr
         );
-        endDetail();
+        debug( $stderr || 'Unknown error' ) if $rs;
+        if ($rs == 0 && $stdout =~ /DH Parameters:\s+\((\d+)\s+bit\)/ && $1 >= 2048) {
+            return 0; # Don't regenerate file if not needed
+        }
+    }
+
+    # We must delete old file to force re-generation
+    if (-f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem") {
+        my $rs = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem" )->delFile();
         return $rs if $rs;
     }
+
+    startDetail();
+    my $rs = step(
+        sub {
+            my $rs = execute( 'DH_BITS=2048 mkdhparams', \ my $stdout, \ my $stderr );
+            error( $stderr ) if $stderr && $rs;
+            $rs;
+        }, 'Generating DH parameter file. Please be patient...', 1, 1
+    );
+    endDetail();
 
     0;
 }
