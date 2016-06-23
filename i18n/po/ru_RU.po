@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-18 19:17+0200\n"
-"PO-Revision-Date: 2016-06-18 17:19+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2016-06-23 06:49+0200\n"
+"PO-Revision-Date: 2016-06-18 17:26+0000\n"
+"Last-Translator: Arthur Mayer <mayer.arthur@gmail.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/i-mscp/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1070,7 +1070,7 @@ msgid ""
 "domains. Note that activating the external mail feature configures our "
 "server to relay your mail through your own mail server, but that no DNS "
 "record is created for it."
-msgstr ""
+msgstr "Тут Вы можете переключить один или несколько ваших доменов в режим доставки почты на другой почтовый сервер. Внимание, эта функция не изменяет записи DNS. Не забудьте зменить запись MX в настройках DNS."
 
 msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
@@ -1151,7 +1151,7 @@ msgid "Change personal data"
 msgstr "Изменить персональные данные"
 
 msgid "Change status of this item for a new attempt"
-msgstr ""
+msgstr "Изменить статус данного элемента для новой попытки"
 
 msgid "Check for update"
 msgstr "Проверка обновлений"
@@ -1276,7 +1276,7 @@ msgid "Client / Email / Edit Email Account"
 msgstr "Клиент / Управление почтой / Изменить учетную запись"
 
 msgid "Client / Email / External Mail Feature"
-msgstr ""
+msgstr "Клиент / Управление почтой / Внешние почтовые сервера"
 
 msgid "Client / Email / Overview"
 msgstr "Клиент / Управление почтой / Обзор"
@@ -2351,7 +2351,7 @@ msgid "Excl. default mails"
 msgstr "Кроме ящиков по умолчанию"
 
 msgid "Execute tasks"
-msgstr ""
+msgstr "Выполнить запросы"
 
 msgid "Expire date"
 msgstr "Дата истечения"
@@ -2363,10 +2363,10 @@ msgid "External mail server"
 msgstr "Внешний почтовый сервер"
 
 msgid "External mail server feature scheduled for activation."
-msgstr ""
+msgstr "Внешний почтовый сервер успешно помечен для добавления."
 
 msgid "External mail server feature scheduled for deactivation."
-msgstr ""
+msgstr "Внешний почтовый сервер успешно помечен для деактивации."
 
 msgid "External mail servers"
 msgstr "Внешние почтовые сервера"
@@ -3248,7 +3248,7 @@ msgid "No database update available."
 msgstr "Нет обновлений базы данных."
 
 msgid "No error found"
-msgstr ""
+msgstr "Ошибок нет"
 
 msgid "No file was uploaded."
 msgstr "Файл не был загружен."
@@ -3586,7 +3586,7 @@ msgid "Path"
 msgstr "Путь"
 
 msgid "Pending tasks"
-msgstr ""
+msgstr "В ожидании"
 
 msgid "Percent"
 msgstr "Процент"
@@ -4338,7 +4338,7 @@ msgid "Security code"
 msgstr "Код безопасности"
 
 msgid "Security code has expired"
-msgstr ""
+msgstr "Срок кода безопасности истек"
 
 msgid "Select group"
 msgstr "Выберите группу"
@@ -4843,7 +4843,7 @@ msgid ""
 msgstr "Ошибка Вашего пакета. Пожалуйста, проверьте его!<br>Обновите Ваш сайт, чтобы увидеть новый статус!"
 
 msgid "There is no pending task. Operation canceled."
-msgstr ""
+msgstr "Задач в ожидании нет. Операця аннулирована."
 
 #, php-format
 msgid ""

@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-18 19:17+0200\n"
-"PO-Revision-Date: 2016-06-18 17:19+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2016-06-23 06:49+0200\n"
+"PO-Revision-Date: 2016-06-21 09:21+0000\n"
+"Last-Translator: Asterios Dimitriou <steve@pci.gr>\n"
 "Language-Team: Greek (http://www.transifex.com/i-mscp/i-MSCP/language/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -847,28 +847,28 @@ msgid "An error occurred during authentication."
 msgstr ""
 
 msgid "An unexpected error occurred"
-msgstr ""
+msgstr "Προέκυψε ένα μη αναμενόμενο σφάλμα"
 
 msgid "An unexpected error occurred."
-msgstr ""
+msgstr "Προέκυψε ένα μη αναμενόμενο σφάλμα."
 
 msgid ""
 "An unexpected error occurred. Go to the debugger interface for more details."
-msgstr ""
+msgstr "Προέκυψε ένα μη αναμενόμενο σφάλμα. Πηγαίνετε στη διεπαφή εντοπισμού σφαλμάτων για περισσότερες λεπτομέρειες."
 
 msgid "An unexpected error occurred. Please contact your administrator."
-msgstr ""
+msgstr "Προέκυψε ένα μη αναμενόμενο σφάλμα. Παρακαλώ επικοινωνείστε  με το διαχειριστή σας."
 
 msgid "An unexpected error occurred. Please contact your reseller."
-msgstr ""
+msgstr "Προέκυψε ένα μη αναμενόμενο σφάλμα. Παρακαλώ επικοινωνίστε με τον μεταπωλητή σας."
 
 #, php-format
 msgid "An unexpected error occurred: %s"
-msgstr ""
+msgstr "Προέκυψε ένα μη αναμενόμενο σφάλμα: %s"
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
-msgstr ""
+msgstr "Προέκυψε ένα άγνωστο σφάλμα κατά τη μεταφόρτωση αρχείου: %s"
 
 msgid "Anti-Rootkits Logs"
 msgstr ""
@@ -880,10 +880,10 @@ msgid "Application installer"
 msgstr ""
 
 msgid "Apply"
-msgstr ""
+msgstr "Εφαρμογή"
 
 msgid "Apply changes"
-msgstr ""
+msgstr "Εφαρμογή αλλαγών"
 
 msgid "Are you sure to install this package from the webdepot?"
 msgstr ""
