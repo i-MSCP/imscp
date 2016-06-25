@@ -140,7 +140,8 @@ EOF;
     ));
     $sslTpl->parse('TPL', 'tpl');
 
-    if (!($opensslConfFile = @tempnam(sys_get_temp_dir(), $_SESSION['user_id'] . '-openssl.cnf'))) {
+    $opensslConfFile = @tempnam(sys_get_temp_dir(), $_SESSION['user_id'] . '-openssl.cnf');
+    if ($opensslConfFile === false) {
         write_log('Could not create temporary openssl configuration file.', E_USER_ERROR);
         return false;
     }
@@ -264,7 +265,6 @@ function client_addSslCert($domainId, $domainType)
 
     if (!$selfSigned) { // Validate SSL certificate (private key, SSL certificate and certificate chain)
         $privateKey = @openssl_pkey_get_private($privateKey, $passPhrase);
-
         if (!is_resource($privateKey)) {
             set_page_message(tr('Invalid private key or passphrase.'), 'error');
             return;
@@ -283,7 +283,8 @@ function client_addSslCert($domainId, $domainType)
             return;
         }
 
-        if (($tmpfname = @tempnam(sys_get_temp_dir(), (intval($_SESSION['user_id']) . 'ssl-ca'))) === false) {
+        $tmpfname = @tempnam(sys_get_temp_dir(), (intval($_SESSION['user_id']) . 'ssl-ca'));
+        if ($tmpfname === false) {
             write_log('Could not create temporary file for CA bundle.', E_USER_ERROR);
             set_page_message(tr('Could not add/update SSL certificate. An unexpected error occurred.'), 'error');
             return;
