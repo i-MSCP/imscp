@@ -650,12 +650,12 @@ EOF
 # Ask for i-MSCP database name
 sub setupAskImscpDbName
 {
-    my $dialog = shift;
+    my($dialog) = @_;
 
     my $dbName = setupGetQuestion('DATABASE_NAME', 'imscp');
     my $rs = 0;
 
-    if(($main::reconfigure =~ /^(?:sql|servers|all|forced)$/ || !iMSCP::Getopt->preseed) && !setupIsImscpDb($dbName)) {
+    if($main::reconfigure =~ /^(?:sql|servers|all|forced)$/ || (!setupIsImscpDb($dbName) && !iMSCP::Getopt->preseed)) {
         my $msg = '';
 
         do {
@@ -682,10 +682,7 @@ EOF
             my $oldDbName = setupGetQuestion('DATABASE_NAME');
 
             if($oldDbName && $dbName ne $oldDbName && setupIsImscpDb($oldDbName)) {
-                $dbName = setupGetQuestion('DATABASE_NAME') if $dialog->yesno(<<"EOF", 1);
-
-\\Z1An i-MSCP database has been found\\Zn
-
+                if($dialog->yesno(<<"EOF", 1)) {
 A database '$main::imscpConfig{'DATABASE_NAME'}' for i-MSCP already exists.
 
 Are you sure you want to create a new database?
@@ -694,6 +691,8 @@ Keep in mind that the new database will be free of any reseller and customer dat
 
 \\Z4Note:\\Zn If the database you want to create already exists, nothing will happen.
 EOF
+                    goto &{setupAskImscpDbName};
+                }
             }
         }
     }
@@ -762,7 +761,7 @@ EOF
 # Ask for services SSL
 sub setupAskServicesSsl
 {
-    my($dialog) = @_;
+    my ($dialog) = @_;
 
     my $hostname = setupGetQuestion('SERVER_HOSTNAME');
     my $hostnameUnicode = idn_to_unicode($hostname, 'utf-8');
