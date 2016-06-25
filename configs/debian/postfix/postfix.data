@@ -18,10 +18,6 @@ MTA_RELAY_HASH = /etc/postfix/imscp/relay_domains
 MTA_MAILBOX_UID_NAME = vmail
 MTA_MAILBOX_GID_NAME = mail
 
-# Possible value: yes or no
-# (Not implemented yet)
-#IPV6_SUPPORT =
-
 # This is the IPv4 addresses used as IP source for outbound mails
 # It is important that a reverse DNS lookup result matches with
 # the server hostname

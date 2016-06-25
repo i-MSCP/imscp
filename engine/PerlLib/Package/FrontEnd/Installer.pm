@@ -1118,7 +1118,7 @@ sub _buildHttpdConfig
                     );
                 }
 
-                if (!$main::imscpConfig{'IPV6_SUPPORT'}) {
+                unless ($main::imscpConfig{'IPV6_SUPPORT'}) {
                     $$cfgTpl = replaceBloc(
                         '# SECTION IPv6 BEGIN.',
                         '# SECTION IPv6 END.',
