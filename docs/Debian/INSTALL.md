@@ -60,7 +60,7 @@ Note that all those operations must be done on the host, not in the container.
 - https://linuxcontainers.org/fr/lxc/manpages/man5/lxc.container.conf.5.html
 - https://help.ubuntu.com/lts/serverguide/lxc.html#lxc-apparmor
 
-#### OpenVZ users (Proxmox 3.x and Virtuozzo)
+#### OpenVZ users (Proxmox and Virtuozzo)
 
 Some servers require increasing fs.ve-mount-nr on host node, otherwise CageFS will throw errors like `mount: Cannot allocate memory`.
 On the host node:
