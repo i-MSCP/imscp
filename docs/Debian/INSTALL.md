@@ -42,18 +42,18 @@ where `<device>` must be replaced by your device path such as `/dev/sda1`
 
 #### LXC users
 
-If you want install i-MSCP inside a LXC container, the following conditions must be met:
+If you want install i-MSCP inside a LXC container, the following conditions have to be met:
 
 - You must have the `CAP_MKNOD` capability inside the container. Thus, you must ensure that `mknod` is not in the list
-  of dropped capabilities (needed for pbuilder).
+  of dropped capabilities
 - You must have the `CAP_SYS_ADMIN` capability inside the container (needed for mount(8)). Thus, you must ensure that
   `sys_admin` is not in the list of dropped capabilities.
-- You must allow the creation of devices inside the container by white-listing them (needed for pbuilder). Easy solution
-  is to add `lxc.cgroup.devices.allow = a *:* rwm` in LXC container configuration file.
+- You must allow the creation of devices inside the container by white-listing them. Easy solution is to add
+  `lxc.cgroup.devices.allow = a *:* rwm` in LXC container configuration file.
 - If you use `Apparmor`, you must allow bindmounts inside your container by modifying the default apparmor profile
   `/etc/apparmor.d/lxc/lxc-default` or by creating a specific apparmor profile for the container.
 
-Note that all those operations must be done on the host, not in the container.
+Note that these operations must be done on the host, not in the container.
 
 **See also:**
 
@@ -62,13 +62,13 @@ Note that all those operations must be done on the host, not in the container.
 
 #### OpenVZ users (Proxmox and Virtuozzo)
 
-Some servers require increasing fs.ve-mount-nr on host node, otherwise CageFS will throw errors like `mount: Cannot allocate memory`.
-On the host node:
+You could have to increase the `fs.ve-mount-nr` limit, else, an error such as `mount: Cannot allocate memory` error
+could be threw by CageFS. To avoid this problem you must:
 
-- add `fs.ve-mount-nr = 4096` to /etc/sysctl.conf
-- apply it with `sysctl -p` command
+- Increase the limit by adding an entry such as `fs.ve-mount-nr = 4096` to your `/etc/sysctl.conf` file
+- Make the new limit effective by executing the `sysctl -p` command
 
-Note that this operations must be done on the host, not in the container.
+Note that these operations must be done on the host, not in the container.
 
 #### Supported Debian versions
 
