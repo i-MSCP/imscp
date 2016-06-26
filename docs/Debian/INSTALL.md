@@ -62,8 +62,8 @@ Note that these operations must be done on the host, not in the container.
 
 #### OpenVZ users (Proxmox and Virtuozzo)
 
-You could have to increase the `fs.ve-mount-nr` limit, else, an error such as `mount: Cannot allocate memory` error
-could be threw by CageFS. To avoid this problem you must:
+You could have to increase the `fs.ve-mount-nr` limit, else, an error such as `mount: Cannot allocate memory` could be
+threw by CageFS. To avoid this problem you must:
 
 - Increase the limit by adding an entry such as `fs.ve-mount-nr = 4096` to your `/etc/sysctl.conf` file
 - Make the new limit effective by executing the `sysctl -p` command
