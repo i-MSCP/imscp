@@ -71,7 +71,7 @@ sub addCustomDNSrecord
 
     for my $ip(@ipList) {
         for my $name('@', 'ftp', 'mail', 'imap', 'pop', 'pop3', 'relay', 'smtp') {
-            if ($ipMngr->getAddrVersion( $ip ) eq 'ipv6') {
+            if ($net->getAddrVersion( $ip ) eq 'ipv6') {
                 push @formattedEntries, "$name\tIN\tAAAA\t$ip";
             } else {
                 push @formattedEntries, "$name\tIN\tA\t$ip";
