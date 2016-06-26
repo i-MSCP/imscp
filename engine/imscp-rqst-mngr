@@ -61,3 +61,6 @@ iMSCP::DbTasksProcessor->getInstance( mode => 'backend' )->process();
 Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
+
+1;
+__END__
