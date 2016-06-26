@@ -5,12 +5,12 @@ Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-    Added; (before|after)AddIps event
-    Added: (before|after)rMountLogsFolder and  (before|after)UnmountLogsFolder events
+    Added; (before|after)AddIps events
+    Added: (before|after)MountLogsFolder and (before|after)UnmountLogsFolder events
     Added: Caller info for __DIE__ and __WARN__ signal handlers
     Added: Debug info for loading of listener files (Event::Manager)
     Added: Fallback method for sysvinit scripts that don't provide status command (iMSCP::Provider::Service::Sysvinit)
-    Added: 'fixpermissions' option for the iMSCP::Dir::make() method
+    Added: `fixpermissions' option for the iMSCP::Dir::make() method
     Added: iMSCP::Database::mysql::useDatabase() method - Allow to select database on which we want operate on
     Added: iMSCP::DbTasksProcessor - Allows to process db tasks without spawning new process
     Added: imscp master system user (homedir is /var/local/imscp)
@@ -22,7 +22,6 @@ BACKEND
     Added: Support for PHP 7.0 (httpd servers implementations)
     Added: Support for prime256v1 (ECDSA) keys (iMSCP::OpenSSL)
     Added: Support for systemd socket units (systemd init provider)
-    Changed: Upstart job file paths, sysvinit script paths and systemd unit files paths are now cached (init providers)
     Enhancement: Allow passing command through arrayref (iMSCP::Execute::execute, iMSCP::Execute::executeNoWait)
     Fixed: composer.phar must not be run with root user privileges (it is now run with i-MSCP system master user)
     Fixed: Could not disable custom DNS resource records; DNS resource records are always re-enabled on domain change
@@ -34,7 +33,7 @@ BACKEND
     Fixed: Make sure that the `root' user HOME directory environment variable is defined
     Fixed: Many inconsistencies in iMSCP::Getopt
     Fixed: Upstart jobs not always enabled (iMSCP::Provider::Service::Debian::Upstart)
-    Improvement: Allow registering listeners on many events at once (Event::Manager)
+    Improvement: Allow registering same listener on many events at once (Event::Manager)
     Introduced: HSTS (HTTP Strict Transport Security) feature
     Removed: (before|adter)DispatchRequest events
     Removed: cache data directory (/var/cache/imscp directory)
@@ -46,18 +45,18 @@ BACKEND
 
 CONFIG
     Added: php configuration directory (directory which holds all PHP template and configuration parameters)
-    Added: DISTRO_ID, DISTRO_CODENAME and DISTRO_RELEASE parameters in imscp.conf file
-    Added: IMSCP_USER parameter (name of i-MSCP master system user)
-    Added: IPV6_SUPPORT parameter (tells whether or not IPv6 support is enabled for the server)
-    Added: MAX_INSTANCES, MAX_CLIENT_PER_HOST and FTPD_CONF_DIR parameters in proftpd/proftpd.data file
-    Added: MOUNT_CUSTOMER_LOGS parameter in apache/apache.data file (allows to disable logs bind mounts)
+    Added: `DISTRO_ID', `DISTRO_CODENAME' and `DISTRO_RELEASE' parameters in imscp.conf file
+    Added: `IMSCP_USER' parameter (name of i-MSCP master system user)
+    Added: `IPV6_SUPPORT' parameter (tells whether or not IPv6 support is enabled for the server)
+    Added: `MAX_INSTANCES', `MAX_CLIENT_PER_HOST' and `FTPD_CONF_DIR' parameters in proftpd/proftpd.data file
+    Added: `MOUNT_CUSTOMER_LOGS' parameter in apache/apache.data file (allows to disable logs bind mounts)
     Changed: Increased default limits for ProFTPD/VsFTPd
     Changed: Moved DirectoryIndex directive in vhosts (Apache2)
-    Depreciated: CACHE_DATA_DIR (/var/cache/imscp) parameter
-    Fixed: Allow access to .well-known folder in any case if exists (Apache2)
-    Moved: nginx configuration directory to frontend configuration directory
-    Removed: Redundant MYSQL_PREFIX_TYPE parameter
-    Removed: VARIABLE_DATA_DIR parameter
+    Depreciated: `CACHE_DATA_DIR' parameter
+    Fixed: Allow access to `.well-known' folder in any case if exists (Apache2)
+    Moved: Nginx configuration directory to frontend configuration directory
+    Removed: Redundant `MYSQL_PREFIX_TYPE' parameter
+    Removed: `VARIABLE_DATA_DIR' parameter
     Removed: i-MSCP intermediate working files, including working directory (Postfix)
     Removed: i-MSCP intermediate working files, including working directory (Apache)
     Removed: fcgi configuration directory (merged into php configuration directory)
@@ -66,6 +65,7 @@ CONFIG
 CONTRIB
     Added: 10_bind9_rrl listener file (Listener implementing RRL (Response-Rate-Limiting))
     Added: PhpMyAdmin/10_phpmyadmin_conffile.pl listener file (Allows to override default configuration template file)
+    Updated: All listener files for i-MSCP 1.3.x Serie
 
 DAEMON
     Added: notify() function allowing to notify parent process when daemon has been fully initialized
@@ -79,9 +79,9 @@ DAEMON
 
 DATABASE
     Added: SPF type to the list of allowed DNS resource records
-    Changed: domain_dns.domain_dns and domain_dns.domain_text column types from varchar to text
+    Changed: `domain_dns.domain_dns' and `domain_dns.domain_text' column types from varchar to text
     Changed: i-MSCP now uses its own SQL user (master SQL user). See errata file for more details.
-    Updated: domain_id index on domain_dns table; added index length for domain_dns and domain_text columns
+    Updated: `domain_id' index on `domain_dns' table; added index length for `domain_dns' and `domain_text' columns
 
 DISTRIBUTIONS
     Fixed: libpam-mysql package - undefined symbol: make_scrambled_password (bugs affecting all distributions)
@@ -91,24 +91,24 @@ FRONTEND
     Added: Datatable for domains, subdomains, domain aliases and DNS resource records (client level)
     Added: Datatable for the file system information table (admin level)
     Added: iMSCP\Crypt library
-    Added: iMSCP\Net class - Allow to get list of network devices and IP addresses (stdlib)
+    Added: iMSCP\Net class - Allows to get list of network devices and IP addresses (stdlib)
     Added: \iMSCP\Json\LazyDecoder class for lazy-decoding of JSON data
     Added: Exclamation icon
     Added: MX DNS resource record type (client level)
-    Added: onParseTemplate event (event triggered when a template is parsed)
-    Added: onSendMail event (event triggered each time a mail is sent)
+    Added: `onParseTemplate' event (event triggered when a template is parsed)
+    Added: `onSendMail' event (event triggered each time a mail is sent)
     Added: SPF DNS resource record type (validated as a TXT record) (client level)
     Added: Support for .phtml template files (stdlib)
-    Added: torul() function for escaping a string for the URI or Parameter contexts (stdlib)
+    Added: torul() function for escaping a string for the URI or parameter contexts (stdlib)
     Changed: DNS resource record are no longer created automatically (client level - See  errata for more details)
     Changed: exec() PHP function is no longer disabled for the control panel (master php.ini file)
-    Changed: The `type` field cannot longer be changed when editing a DNS resource record (client level)
+    Changed: The `type' field cannot longer be changed when editing a DNS resource record (client level)
     Changed: Support for nested MySQL transactions is now emulated using named transaction savepoints (stdlib)
     Fixed: Bruteforce feature still acts even when disabled (lostpassword.php)
-    Fixed: Cannot add DKIM/DMARC DNS resource records (client level)
+    Fixed: Could not add DKIM/DMARC DNS resource records (client level)
     Fixed: Could not retrieve network devices list under Debian Stretch (testing) - Related to #IP-1525 (admin level)
     Fixed: Customer must be allowed to set custom TTL value for any DNS resource record (client level)
-    Fixed: Customer must be allowed to set `name` field of any DNS resource record (client level)
+    Fixed: Customer must be allowed to set `name' field of any DNS resource record (client level)
     Fixed: Customer PHP permissions not saved when editing customer account (regression fix)
     Fixed: Could not remove database; There is no such grant defined for user... (stdlib)
     Fixed: Could not set URL redirect when adding domain alias; Bad request error page (client level)
@@ -119,9 +119,9 @@ FRONTEND
     Fixed: Mails sent from FrontEnd could be rejected if sender email domain is hosted externally
     Fixed: Privileges on database that contains wildcards are not removed when SQL user is assigned to many databases
     Fixed: Reseller PHP permissions not saved when editing reseller account (regression fix)
-    Fixed: Uncaught ReferenceError: ajaxStop is not defined (admin level)
+    Fixed: Uncaught ReferenceError: `ajaxStop' is not defined (admin level)
     Fixed: Wrong behavior with exception handler when database connection is not available (stdlib)
-    Fixed: Wrong value for LOG_LEVEL configuration parameter
+    Fixed: Wrong value for `LOG_LEVEL' configuration parameter
     Introduced: HSTS (HTTP Strict Transport Security) feature
     Removed: User deletion confirmation pages (admin and reseller levels)
     Removed: iMSCP_NetworkCard class; replaced by iMSCP\Net class (stdlib)
@@ -135,8 +135,8 @@ INSTALLER
     Added: Check to prevent downgrade attempts (when DB schema change is involved)
     Added: Conditional statement feature for install.xml files (copy_config items only)
     Added: Layer allowing to rebuild Debian/Ubuntu source packages using pbuilder after applying a set patches on them
-    Added: onBuildPackageList event (Allows to override default distribution packages file)
-    Fixed: '_' and '%' wildcards must be escaped in GRANT statements
+    Added: `onBuildPackageList' event (Allows to override default distribution packages file)
+    Fixed: `_' and `%' wildcards must be escaped in GRANT statements
     Fixed: Debug and verbose modes must be set early
     Fixed: Disable Dovecot systemd socket activation unit if any (not needed for Dovecot as configured by i-MSCP)
     Fixed: Don't die on misconfigured server hostname. Just ask for a valid hostname instead
@@ -156,16 +156,16 @@ PACKAGES
     Added: Monsta FTP package
     Disabled: Pydio in case PHP >= 7.0.0 is detected
     Fixed: As of 2012-6-7, the md5 algorithm is "no longer considered safe" (Package::FrontEnd::Installer)
-    Fixed: ERR_INCOMPLETE_CHUNKED_ENCODING error due to wrong permissions on nginx fastcgi cache directory (FrontEnd)
+    Fixed: `ERR_INCOMPLETE_CHUNKED_ENCODING' error due to wrong permissions on nginx fastcgi cache directory (FrontEnd)
     Fixed: Missing IP version check (Package::FrontEnd::Installer)
-    Fixed: White page due to 'net::ERR_INCOMPLETE_CHUNKED_ENCODING' errors (related to #IP-1530) (PhpMyAdmin)
+    Fixed: White page due to `net::ERR_INCOMPLETE_CHUNKED_ENCODING' errors (related to #IP-1530) (PhpMyAdmin)
     Updated: PhpMyAdmin version to 4.6.0 - Only for servers with PHP/MySQL >= 5.5 (Package::PhpMyAdmin::Installer)
 
 PLUGINS
     Enhancement: Plugin backend packages can now be simple objects
     Fixed: Plugin configuration not synced when triggering plugin list update (when a plugin is in error state)
     Fixed: Plugin manager must load plugins by respecting their priority
-    Fixed: The 'change' action must be automatically triggered on plugin list update, even for plugins with error state
+    Fixed: The `change' action must be automatically triggered on plugin list update, even for plugins with error state
     Fixed: Wrong events triggered when a plugin is being locked/unlocked
     Updated: API version to 1.0.4
 
@@ -180,7 +180,7 @@ SERVERS
     Fixed: Courier sysvinit script must not be copied when selected PO server is Dovecot
     Fixed: Disabled mod_tls_memcache.c module to avoid weird notice on restart (ProFTPD)
     Fixed: Do not fix user/group and mode when not required (Httpd server implementations)
-    Fixed: Do not remove default dns records that are not redefined (Servers::named::bind)
+    Fixed: Do not remove default DNS records that are not redefined (Servers::named::bind)
     Fixed: Enable support for UTF-8 file systems (VsFTPd)
     Fixed: Hide real server identity (ProFTPD)
     Fixed: Invalid version format (non-numeric data) when installing VsFTPd on Debian Stretch (testing)
@@ -203,7 +203,7 @@ SERVERS
 SERVICES
     Added: imscp_mountall service - Mount filesystems on server reboot
 
-VENDOR:
+VENDOR
     Patched: phpseclib library (deprecated constructor method - PHP >= 7.0)
     Updated: phpseclib library to version 1.0.2
 
