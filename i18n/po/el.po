@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-23 06:49+0200\n"
-"PO-Revision-Date: 2016-06-21 09:21+0000\n"
+"POT-Creation-Date: 2016-06-26 08:19+0200\n"
+"PO-Revision-Date: 2016-06-23 09:33+0000\n"
 "Last-Translator: Asterios Dimitriou <steve@pci.gr>\n"
 "Language-Team: Greek (http://www.transifex.com/i-mscp/i-MSCP/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -2597,60 +2597,60 @@ msgid "Host from which SQL user is allowed to connect to SQL server"
 msgstr ""
 
 msgid "Hosting plan"
-msgstr ""
+msgstr "Πακέτο φιλοξενίας"
 
 msgid "Hosting plan availability"
-msgstr ""
+msgstr "Διαθεσιμότητα πακέτου φιλοξενίας"
 
 msgid "Hosting plan limits exceed reseller limits."
-msgstr ""
+msgstr "Το όριο του πακέτου φιλοξενίας υπερβαίνει το όριο του μεταπωλητή."
 
 msgid "Hosting plan limits exceed your limits."
-msgstr ""
+msgstr "Το όριο του πακέτου φιλοξενίας υπερβαίνει τα όριά σας."
 
 msgid "Hosting plan successfully created."
-msgstr ""
+msgstr "Το πακέτο φιλοξενίας δημιουργήθηκε επιτυχώς."
 
 msgid "Hosting plan successfully deleted."
-msgstr ""
+msgstr "Το πακέτο φιλοξενίας διαγράφηκε επιτυχώς."
 
 msgid "Hosting plan successfully updated."
-msgstr ""
+msgstr "Το πακέτο φιλοξενίας ενημερώθηκε επιτυχώς."
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "Πακέτα φιλοξενίας"
 
 msgid "Hour"
-msgstr ""
+msgstr "Ώρα"
 
 msgid "Hours"
-msgstr ""
+msgstr "Ώρες"
 
 msgid "Htaccess errors"
-msgstr ""
+msgstr "Λάθη htaccess"
 
 msgid "Htaccess group"
-msgstr ""
+msgstr "Ομάδα htaccess"
 
 msgid "Htaccess group successfully scheduled for addition."
-msgstr ""
+msgstr "Η htaccess ομάδα προγραμματίστηκε επιτυχώς για προσθήκη."
 
 msgid "Htaccess group successfully scheduled for deletion."
-msgstr ""
+msgstr "Η htaccess ομάδα προγραμματίστηκε επιτυχώς για διαγραφή."
 
 msgid "Htaccess user"
-msgstr ""
+msgstr "Χρήστης htaccess"
 
 #, php-format
 msgid "Htaccess user successfully assigned to the %s htaccess group"
-msgstr ""
+msgstr "Ο htaccess χρήστης εκχωρήθηκε επιτυχώς στην %s ομάδα htaccess"
 
 #, php-format
 msgid "Htaccess user successfully deleted from the %s htaccess group "
-msgstr ""
+msgstr "Ο htaccess χρήστης διαγράφηκε επιτυχώς από την %s ομάδα htaccess"
 
 msgid "Htaccess user successfully scheduled for addition."
-msgstr ""
+msgstr "Ο htaccess χρήστης προγραμματίστηκε επιτυχώς για προσθήκη."
 
 msgid "Http traffic"
 msgstr ""
@@ -5898,7 +5898,7 @@ msgid "kB"
 msgstr "kB"
 
 msgid "kiB"
-msgstr ""
+msgstr "kiB"
 
 msgid "mail"
 msgstr ""
@@ -5916,13 +5916,13 @@ msgid "n\\a"
 msgstr ""
 
 msgid "no"
-msgstr ""
+msgstr "όχι"
 
 msgid "not available"
-msgstr ""
+msgstr "μη διαθέσιμο"
 
 msgid "not required"
-msgstr ""
+msgstr "προαιρετικό"
 
 msgid "older than 1 month"
 msgstr ""
@@ -5950,34 +5950,34 @@ msgid "phpMyAdmin"
 msgstr "phpMyAdmin"
 
 msgid "required"
-msgstr ""
+msgstr "απαιτούμενο"
 
 msgid "subdomain"
-msgstr ""
+msgstr "subdomain"
 
 msgid "subdomains"
-msgstr ""
+msgstr "subdomains"
 
 msgid "tcp"
-msgstr ""
+msgstr "tcp"
 
 msgid "traffic"
 msgstr ""
 
 msgid "udp"
-msgstr ""
+msgstr "udp"
 
 msgid "unlimited"
-msgstr ""
+msgstr "χωρίς όριο"
 
 msgid "update"
-msgstr ""
+msgstr "ενημέρωση"
 
 msgid "view aliases"
 msgstr ""
 
 msgid "waiting for activation"
-msgstr ""
+msgstr "αναμονή ενεργοποίησης"
 
 msgid "yes"
 msgstr "ναι"
