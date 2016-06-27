@@ -576,7 +576,7 @@ $tpl->assign(array(
     'TR_HSTS_MAX_AGE' => tr('HSTS: Set the max-age'),
     'TR_SEC' => tr('Sec.'),
     'TR_HSTS_INCLUDE_SUBDOMAINS' => tr('HSTS: Include sub domains'),
-    'TR_HSTS_INCLUDE_SUBDOMAINS_TOOLTIP' => tr('Enable that feature only if all the subdomains of that domain have an SSL certificate.'),
+    'TR_HSTS_INCLUDE_SUBDOMAINS_TOOLTIP' => tr('Enable that feature only if all the subdomains of that domain have SSL enabled. This will set the \'includeSubDomains\' flag, but will not automatically allow HSTS for all subdomains of that domain.'),
     'TR_GENERATE_SELFSIGNED_CERTIFICAT' => tr('Generate a self-signed certificate'),
     'TR_PASSWORD' => tr('Private key passphrase if any'),
     'TR_PRIVATE_KEY' => tr('Private key'),
