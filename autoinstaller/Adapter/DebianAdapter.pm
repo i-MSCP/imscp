@@ -142,13 +142,17 @@ sub installPackages
         my $cmd = 'UCF_FORCE_CONFFMISS=1'; # Force installation of missing conffiles which are managed by UCF
         $cmd .= !iMSCP::Getopt->noprompt ? ' debconf-apt-progress --logstderr --' : '';
 
+        my ($aptVersion) = `apt-get --version` =~ /^apt\s+([\d.]+)/;
+        my $forceYes = (version->parse( $aptVersion ) < version->parse( '1.1.0' ))
+            ? '--force-yes' : '--allow-downgrades';
+
         if ($main::forcereinstall) {
             $cmd .= " apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss'".
                 " -o Dpkg::Options::='--force-overwrite' --reinstall --auto-remove --purge --no-install-recommends".
-                " --force-yes install @{$packages}";
+                " $forceYes install @{$packages}";
         } else {
             $cmd .= " apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss'".
-                " -o Dpkg::Options::='--force-overwrite' --auto-remove --purge --no-install-recommends --force-yes".
+                " -o Dpkg::Options::='--force-overwrite' --auto-remove --purge --no-install-recommends $forceYes".
                 " install @{$packages}";
         }
 
