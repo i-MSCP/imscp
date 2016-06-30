@@ -3,22 +3,22 @@
     $(function () {
         if (!$("#add_update").length) {
             <!-- BDP: ssl_certificate_disabled_fields -->
-            $("input,textarea").prop("disabled", true);
+            $("#selfsigned").hide();
+            $("input,textarea").prop("disabled", true).trigger("change");
             <!-- EDP: ssl_certificate_disabled_fields -->
         }
 
-        $("#allow_hsts").change(
-            function () {
-                if ($("#allow_hsts").is(':checked')) {
+        $("#allow_hsts_on,#allow_hsts_off").on('change', function() {
+                if ($("#allow_hsts_on").is(':checked')) {
                     $("#tr_hsts_max_age_data, #tr_hsts_include_subdomains_data").show();
                 } else {
                     $("#tr_hsts_max_age_data, #tr_hsts_include_subdomains_data").hide();
                 }
             }
         ).trigger("change");
-
-        $("#selfsigned").change(function () {
-            if ($(this).is(":checked")) {
+ 
+        $("#selfsigned_on,#selfsigned_off").on('change', function () {
+            if ($("#selfsigned_on").is(":checked")) {
                 $(".input_fields").hide();
             } else {
                 $(".input_fields").show();
@@ -47,8 +47,15 @@
         <!-- EDP: ssl_certificate_status -->
         <!-- BDP: ssl_certificate_hsts -->
         <tr>
-            <td><label for="allow_hsts">{TR_ALLOW_HSTS}</label></td>
-            <td><input type="checkbox" id="allow_hsts" name="allow_hsts"{HSTS_CHECKED}></td>
+            <td><label>{TR_ALLOW_HSTS}</label></td>
+            <td>
+                <div class="radio">
+                    <input type="radio" name="allow_hsts" id="allow_hsts_on" value="on"{HSTS_CHECKED_ON}>
+                    <label for="allow_hsts_on">{TR_YES}</label>
+                    <input type="radio" name="allow_hsts" id="allow_hsts_off" value="off"{HSTS_CHECKED_OFF}>
+                    <label for="allow_hsts_off">{TR_NO}</label>
+                </div>
+            </td>
         </tr>
         <tr id="tr_hsts_max_age_data">
             <td><label for="hsts_max_age">{TR_HSTS_MAX_AGE}</label></td>
@@ -59,16 +66,30 @@
         </tr>
         <tr id="tr_hsts_include_subdomains_data">
             <td>
-                <label for="hsts_include_subdomains">{TR_HSTS_INCLUDE_SUBDOMAINS}</label>
-                <span class="tips icon i_exclamation" id="hsts_include_subdomains_tooltip" title="{TR_HSTS_INCLUDE_SUBDOMAINS_TOOLTIP}"></span>
+                <label>{TR_HSTS_INCLUDE_SUBDOMAINS}</label>
+                <span class="icon i_help" title="{TR_HSTS_INCLUDE_SUBDOMAINS_TOOLTIP}"></span>
             </td>
-            <td><input type="checkbox" id="hsts_include_subdomains" name="hsts_include_subdomains"{HSTS_INCLUDE_SUBDOMAINS_CHECKED}></td>
+            <td>
+                <div class="radio selfsigned">
+                    <input type="radio" name="hsts_include_subdomains" id="hsts_include_subdomains_on" value="on"{HSTS_INCLUDE_SUBDOMAIN_ON}>
+                    <label for="hsts_include_subdomains_on">{TR_YES}</label>
+                    <input type="radio" name="hsts_include_subdomains" id="hsts_include_subdomains_off" value="off"{HSTS_INCLUDE_SUBDOMAIN_OFF}>
+                    <label for="hsts_include_subdomains_off">{TR_NO}</label>
+                </div>
+            </td>
         </tr>
         <!-- EDP: ssl_certificate_hsts -->
         <!-- BDP: ssl_certificate_selfsigned -->
-        <tr>
-            <td><label for="selfsigned">{TR_GENERATE_SELFSIGNED_CERTIFICAT}</label></td>
-            <td><input type="checkbox" id="selfsigned" name="selfsigned"></td>
+        <tr id="selfsigned">
+            <td><label>{TR_GENERATE_SELFSIGNED_CERTIFICAT}</label></td>
+            <td>
+                <div class="radio">
+                    <input type="radio" name="selfsigned" id="selfsigned_on" value="on">
+                    <label for="selfsigned_on">{TR_YES}</label>
+                    <input type="radio" name="selfsigned" id="selfsigned_off" value="off" checked>
+                    <label for="selfsigned_off">{TR_NO}</label>
+                </div>
+            </td>
         </tr>
         <!-- EDP: ssl_certificate_selfsigned -->
         <!-- BDP: ssl_certificate_pk_pwd -->

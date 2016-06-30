@@ -237,10 +237,10 @@ function client_addSslCert($domainId, $domainType)
 {
     $config = iMSCP_Registry::get('config');
     $domainName = _client_getDomainName($domainId, $domainType);
-    $allowHSTS = isset($_POST['allow_hsts']) ? 'on' : 'off';
+    $allowHSTS = (isset($_POST['allow_hsts']) && in_array($_POST['allow_hsts'], array('on', 'off'))) ? $_POST['allow_hsts'] : 'off';
     $hstsMaxAge = ($allowHSTS == 'on' && isset($_POST['hsts_max_age']) && $_POST['hsts_max_age'] != '' && $_POST['hsts_max_age'] >= 0) ? intval($_POST['hsts_max_age']) : 31536000;
-    $hstsIncludeSubDomains = ($allowHSTS == 'on' && isset($_POST['hsts_include_subdomains'])) ? 'on' : 'off';
-    $selfSigned = isset($_POST['selfsigned']);
+    $hstsIncludeSubDomains = ($allowHSTS == 'on' && isset($_POST['hsts_include_subdomains']) && in_array($_POST['hsts_include_subdomains'], array('on', 'off'))) ? $_POST['hsts_include_subdomains'] : 'off';
+    $selfSigned = (isset($_POST['selfsigned']) && $_POST['selfsigned'] === 'on');
 
     if ($domainName === false) {
         showBadRequestErrorPage();
@@ -472,9 +472,9 @@ function client_generatePage($tpl, $domainId, $domainType)
         $privateKey = tohtml($row['private_key']);
         $certificate = tohtml($row['certificate']);
         $caBundle = tohtml($row['ca_bundle']);
-        $allowHSTS = $row['allow_hsts'] == 'on';
+        $allowHSTS = ($row['allow_hsts'] == 'on');
         $hstsMaxAge = $row['hsts_max_age'];
-        $hstsIncludeSubDomains = $row['hsts_include_subdomains'] == 'on';
+        $hstsIncludeSubDomains = ($row['hsts_include_subdomains'] == 'on');
         $trAction = tr('Update');
         $status = $row['status'];
         $tpl->assign('STATUS', in_array($status, array('toadd', 'tochange', 'todelete', 'ok'))
@@ -489,7 +489,12 @@ function client_generatePage($tpl, $domainId, $domainType)
         $allowHSTS = false;
         $hstsMaxAge = '31536000';
         $hstsIncludeSubDomains = false;
-        $tpl->assign('SSL_CERTIFICATE_STATUS', '');
+        $tpl->assign(
+            array(
+                'SSL_CERTIFICATE_STATUS' => '',
+                'SSL_CERTIFICATE_ACTION_DELETE' => ''
+            )
+        );
     } else {
         set_page_message('SSL feature is currently disabled.', 'static_warning');
         redirectTo('domains_manage.php');
@@ -503,23 +508,26 @@ function client_generatePage($tpl, $domainId, $domainType)
         $privateKey = $_POST['private_key'];
         $certificate = $_POST['certificate'];
         $caBundle = $_POST['ca_bundle'];
-        $allowHSTS = isset($_POST['allow_hsts']);
-        $hstsMaxAge = ($allowHSTS && isset($_POST['hsts_max_age']) && $_POST['hsts_max_age'] != '' && $_POST['hsts_max_age'] >= 0)
-            ? intval($_POST['hsts_max_age']) : 31536000;
-        $hstsIncludeSubDomains = $allowHSTS && isset($_POST['hsts_include_subdomains']);
+        $allowHSTS = (isset($_POST['allow_hsts']) && $_POST['allow_hsts'] === 'on');
+        $hstsMaxAge = ($allowHSTS && isset($_POST['hsts_max_age']) && $_POST['hsts_max_age'] != '' && $_POST['hsts_max_age'] >= 0) ? intval($_POST['hsts_max_age']) : 31536000;
+        $hstsIncludeSubDomains = ($allowHSTS && isset($_POST['hsts_include_subdomains']) && $_POST['hsts_include_subdomains'] === 'on');
     }
 
     $tpl->assign(array(
         'TR_DYNAMIC_TITLE' => $dynTitle,
         'DOMAIN_NAME' => tohtml(decode_idna($domainName)),
-        'HSTS_CHECKED' => $allowHSTS ? ' checked' : '',
+        'HSTS_CHECKED_ON' => $allowHSTS ? ' checked' : '',
+        'HSTS_CHECKED_OFF' => !$allowHSTS ? ' checked' : '',
         'HSTS_MAX_AGE' => tohtml(trim($hstsMaxAge)),
-        'HSTS_INCLUDE_SUBDOMAINS_CHECKED' => $hstsIncludeSubDomains ? ' checked' : '',
+        'HSTS_INCLUDE_SUBDOMAIN_ON' => $hstsIncludeSubDomains ? ' checked' : '',
+        'HSTS_INCLUDE_SUBDOMAIN_OFF' => !$hstsIncludeSubDomains ? ' checked' : '',
         'KEY_CERT' => tohtml(trim($privateKey)),
         'CERTIFICATE' => tohtml(trim($certificate)),
         'CA_BUNDLE' => tohtml(trim($caBundle)),
         'CERT_ID' => tohtml(trim($certId)),
-        'TR_ACTION' => $trAction
+        'TR_ACTION' => $trAction,
+        'TR_YES' => tr('Yes'),
+        'TR_NO' => tr('No')
     ));
 
     if (!customerHasFeature('ssl') || isset($status) && in_array($status, array('toadd', 'tochange', 'todelete'))) {
@@ -567,16 +575,17 @@ if (customerHasFeature('ssl') && !empty($_POST)) {
     }
 }
 
+
 $tpl->assign(array(
     'TR_PAGE_TITLE' => tr('Client / Domains / SSL Certificate'),
     'TR_CERTIFICATE_DATA' => tr('Certificate data'),
     'TR_CERT_FOR' => tr('Common name'),
     'TR_STATUS' => tr('Status'),
-    'TR_ALLOW_HSTS' => tr('Allow HTTP Strict Transport Security'),
-    'TR_HSTS_MAX_AGE' => tr('HSTS: Set the max-age'),
+    'TR_ALLOW_HSTS' => tr('HSTS (HTTP Strict Transport Security)'),
+    'TR_HSTS_MAX_AGE' => tr('HSTS max-age directive value'),
     'TR_SEC' => tr('Sec.'),
-    'TR_HSTS_INCLUDE_SUBDOMAINS' => tr('HSTS: Include sub domains'),
-    'TR_HSTS_INCLUDE_SUBDOMAINS_TOOLTIP' => tr('Enable that feature only if all the subdomains of that domain have SSL enabled. This will set the \'includeSubDomains\' flag, but will not automatically allow HSTS for all subdomains of that domain.'),
+    'TR_HSTS_INCLUDE_SUBDOMAINS' => tr('HSTS includeSubDomains directive'),
+    'TR_HSTS_INCLUDE_SUBDOMAINS_TOOLTIP' => tr("You should enable this directive only if all subdomains of this domain are served through SSL. Note that even if you add this directive, this will not automatically activate the HSTS feature for the subdomains of this domain."),
     'TR_GENERATE_SELFSIGNED_CERTIFICAT' => tr('Generate a self-signed certificate'),
     'TR_PASSWORD' => tr('Private key passphrase if any'),
     'TR_PRIVATE_KEY' => tr('Private key'),
