@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-30 04:13+0200\n"
-"PO-Revision-Date: 2016-06-18 17:19+0000\n"
+"POT-Creation-Date: 2016-06-30 04:15+0200\n"
+"PO-Revision-Date: 2016-06-30 02:17+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/i-mscp/i-MSCP/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -803,9 +803,6 @@ msgstr "Todo tráfego"
 
 msgid "All users"
 msgstr "Todos os usuários"
-
-msgid "Allow HTTP Strict Transport Security"
-msgstr ""
 
 msgid "Allow URL fopen"
 msgstr "Permitir URL fopen"
@@ -2314,11 +2311,6 @@ msgstr "Ativar SSL"
 msgid "Enable auto responder"
 msgstr "Ativar resposta automática"
 
-msgid ""
-"Enable that feature only if all the subdomains of that domain have an SSL "
-"certificate."
-msgstr ""
-
 msgid "Enabled"
 msgstr "Ativado"
 
@@ -2568,10 +2560,13 @@ msgstr "Nome do grupo"
 msgid "Groups"
 msgstr "Grupos"
 
-msgid "HSTS: Include sub domains"
+msgid "HSTS (HTTP Strict Transport Security)"
 msgstr ""
 
-msgid "HSTS: Set the max-age"
+msgid "HSTS includeSubDomains directive"
+msgstr ""
+
+msgid "HSTS max-age directive value"
 msgstr ""
 
 msgid "HTTP traffic"
@@ -5692,6 +5687,12 @@ msgstr "Você deve especificar um assunto."
 
 msgid "You need a Database for this software"
 msgstr "Você precisa de um banco de dados para este programa"
+
+msgid ""
+"You should enable this directive only if all subdomains of this domain are "
+"served through SSL. Note that even if you add this directive, this will not "
+"automatically activate the HSTS feature for the subdomains of this domain."
+msgstr ""
 
 msgid "Your account has expired."
 msgstr "Sua conta expirou."
