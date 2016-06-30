@@ -102,7 +102,7 @@ sub radiolist
 
     push @init, (escapeShell( $_ ), "''", $default eq $_ ? 'on' : 'off') for @{$choices};
 
-    my ($ret, $choice) = $self->_textbox( $text, 'radiolist', @{$choices}." @init" );
+    my ($ret, $choice) = $self->_textbox( $text, 'radiolist', scalar @{$choices}." @init" );
     $choice =~ s/ /_/g; # Normalize
     wantarray ? ($ret, $choice) : $choice;
 }
@@ -129,7 +129,7 @@ sub checkbox
 
     push @init, (escapeShell( $_ ), "''", $values{$_} ? 'on' : 'off') for @{$choices};
 
-    my ($ret, $output) = $self->_textbox( $text, 'checklist', @{$choices}." @init" );
+    my ($ret, $output) = $self->_textbox( $text, 'checklist', scalar @{$choices}." @init" );
 
     @{$choices} = split /\n/, $output;
     s/ /_/g for @{$choices}; # Normalize
@@ -462,7 +462,7 @@ sub _init
     $self->{'_opts'}->{'insecure'} = undef;
     $self->{'_opts'}->{'item-help'} = undef;
     $self->{'_opts'}->{'max-input'} = undef;
-    $self->{'_opts'}->{'no-shadow'} = undef;
+    $self->{'_opts'}->{'no-shadow'} = '';
     $self->{'_opts'}->{'shadow'} = undef;
     $self->{'_opts'}->{'single-quoted'} = undef;
     $self->{'_opts'}->{'tab-correct'} = undef;
@@ -474,43 +474,12 @@ sub _init
     $self->{'_opts'}->{'aspect'} = undef;
 
     $self->{'_opts'}->{'separate-output'} = undef;
-    
-    $self->_buildCommonCommandOptions();
 
     $self->_findBin( $^O =~ /bsd$/ ? 'cdialog' : 'dialog' );
-    #$self->_determineDialogVariant();
     $self->_resize();
     $SIG{'WINCH'} = sub { $self->_resize(); };
-    
-    if ($self->{'lines'} < 13 || $self->{'columns'} < 31) {
-        fatal ("Dialog frontend requires a screen at least 13 lines tall and 31 columns wide.");
-    }
-    
     $self;
 }
-
-#=item _determineDialogVariant()
-#
-# Determine dialog variant.
-#
-# Return iMSCP::Dialog::Dialog
-#
-#=cut
-#
-#sub _determineDialogVariant
-#{
-#	my $self = $_[0];
-#
-#	my $str = `$self->{'bin'} --help 2>&1`;
-#
-#	if ($str =~ /cdialog\s\(ComeOn\sDialog\!\)\sversion\s\d+\.\d+\-(\d{4})/ && $1 >= 2003) {
-#		$self->{'_opts'}->{'colors'} = '';
-#	} elsif ($str =~ /version\s0\.[34]/m) {
-#		$self->{'_opts'}->{'force-no-separate-output'} = '';
-#	}
-#
-#	$self;
-#}
 
 =item _resize()
 
@@ -526,21 +495,25 @@ sub _resize
     if (exists $ENV{LINES}) {
         $self->{'lines'} = $ENV{'LINES'};
     } else {
-        ($lines) = `stty -a 2>/dev/null` =~ m/rows (\d+)/s;
-        $lines ||= 25;
-
+        ($lines) = `stty -a 2>/dev/null` =~ /rows (\d+)/s;
+        $lines ||= 24;
     }
 
     my $cols;
     if (exists $ENV{COLUMNS}) {
         $cols = $$ENV{'COLUMNS'};
     } else {
-        ($cols) = `stty -a 2>/dev/null` =~ m/columns (\d+)/s;
+        ($cols) = `stty -a 2>/dev/null` =~ /columns (\d+)/s;
         $cols ||= 80;
     }
 
-    $self->{'lines'} = ($lines > 40 ? 40 : $lines) - 10;
-    $self->{'columns'} = ($cols > 130 ? 130 : $cols) - 10;
+    if ($lines < 24 || $cols < 80) {
+        fatal ('A screen at least 24 lines tall and 80 columns wide is required. Please enlarge your screen.');
+    }
+
+    $self->{'lines'} = $lines - 2 ;
+    $self->{'columns'} = $cols - 2;
+
     $self->endGauge();
 }
 
