@@ -501,7 +501,7 @@ sub _resize
 
     my $cols;
     if (exists $ENV{COLUMNS}) {
-        $cols = $$ENV{'COLUMNS'};
+        $cols = $ENV{'COLUMNS'};
     } else {
         ($cols) = `stty -a 2>/dev/null` =~ /columns (\d+)/s;
         $cols ||= 80;
