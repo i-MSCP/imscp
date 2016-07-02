@@ -175,7 +175,10 @@ function generateDevicesList($tpl)
 
     sort($netDevices);
     foreach ($netDevices as $netDevice) {
-        $tpl->assign('NETWORK_CARD', $netDevice);
+        $tpl->assign(array(
+            'NETWORK_CARD' => $netDevice,
+            'SELECTED' => isset($_POST['ip_card']) && $_POST['ip_card'] === $netDevice ? ' selected' : ''
+        ));
         $tpl->parse('NETWORK_CARD_BLOCK', '.network_card_block');
     }
 }
@@ -225,17 +228,17 @@ function checkIpData($ipAddr, $netDevice)
 }
 
 /**
- * Change configuration mode
+ * Change IP address configuration mode
  *
  * @return void
  */
 function changeIpConfigMode()
 {
-    if (!isset($_POST['ip_config_mode'])) {
-        sendJsonResponse(400, array('message' => tr('Bad request.')));
-    }
-
     try {
+        if (!isset($_POST['ip_config_mode'])) {
+            sendJsonResponse(400, array('message' => tr('Bad request.')));
+        }
+
         $ipId = key($_POST['ip_config_mode']);
         $ipConfigMode = in_array($_POST['ip_config_mode'][$ipId], array('auto', 'manual')) ? $_POST['ip_config_mode'][$ipId] : 'auto';
         $stmt = exec_query('SELECT * FROM server_ips WHERE ip_id = ? AND ip_status = ?', array($ipId, 'ok'));
@@ -257,7 +260,7 @@ function changeIpConfigMode()
         ));
 
         send_request();
-        write_log(sprintf('The configuration mode for the %s IP address has been changed by %s', $row['ip_number'], $_SESSION['user_logged']), E_USER_NOTICE);
+        write_log(sprintf("The configuration mode for the `%s' IP address has been changed by %s", $row['ip_number'], $_SESSION['user_logged']), E_USER_NOTICE);
         set_page_message('Configuration mode successfully scheduled for modification.', 'success');
         sendJsonResponse(200);
     } catch (\Exception $e) {
@@ -287,7 +290,7 @@ function addIpAddr($ipAddr, $networkCard, $configMode)
 
     send_request();
     set_page_message(tr('IP address successfully scheduled for addition.'), 'success');
-    write_log(sprintf('The %s IP address has been address by %s', $ipAddr, $_SESSION['user_logged']), E_USER_NOTICE);
+    write_log(sprintf("The `%s' IP address has been address by %s", $ipAddr, $_SESSION['user_logged']), E_USER_NOTICE);
     redirectTo('ip_manage.php');
 }
 

@@ -50,10 +50,10 @@ $Module::Load::Conditional::FIND_VERSION = 0;
    id             : IP address unique identifier
    ip_card        : Network card to which the IP address must be added
    ip_address     : Either an IPv4 or IPv6 address
+   ip_config_mode : IP configuration mode (auto|manual)
    netmask        : OPTIONAL Netmask (default: auto)
    broadcast      : OPTIONAL Broadcast (default: auto)
    gateway        : OPTIONAL Gateway (default: auto)
-   ip_config_mode : IP configuration mode (auto|manual)
  Return iMSCP::Provider::NetworkInterface, die on failure
 
 =cut

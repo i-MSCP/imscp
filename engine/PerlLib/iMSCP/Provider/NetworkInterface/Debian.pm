@@ -91,7 +91,7 @@ sub addIpAddr
 
     $self->_updateInterfaces( 'add', $data );
 
-    # We bring up the network interface for the target IP only if the IP has been configured by us
+    # We bring up the network interface for the target IP address only if that IP address has been configured by us
     return 0 unless $data->{'ip_config_mode'} eq 'auto' &&
         $self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'id'}" );
 
@@ -131,7 +131,7 @@ sub removeIpAddr
     $data->{'id'} =~ /^\d+$/ or croak( 'id parameter must be an integer' );
     $data->{'id'} += 1000;
 
-    # We process only if the IP has been added by us
+    # We bring down the network interface for the target IP address only if that IP address has been added by us
     return 0 unless $data->{'ip_config_mode'} eq 'auto' &&
         $self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'id'}" );
 

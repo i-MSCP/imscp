@@ -89,7 +89,7 @@
             <td>
                 <select name="ip_card" id="ip_card">
                     <!-- BDP: network_card_block -->
-                    <option {SELECTED}>{NETWORK_CARD}</option>
+                    <option{SELECTED}>{NETWORK_CARD}</option>
                     <!-- EDP: network_card_block -->
                 </select>
             </td>

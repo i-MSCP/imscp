@@ -120,7 +120,7 @@ sub setupDialog
 
     unshift(@{$dialogStack}, (
         \&setupAskServerHostname,
-        \&setupAskBaseServerIp,
+        \&setupAskServerPrimaryIP,
         \&askMasterSqlUser,
         \&setupAskSqlUserHost,
         \&setupAskImscpDbName,
@@ -238,8 +238,8 @@ EOF
     $rs;
 }
 
-# Ask for base server ip
-sub setupAskBaseServerIp
+# Ask for server's primary IP
+sub setupAskServerPrimaryIP
 {
     my $dialog = shift;
 

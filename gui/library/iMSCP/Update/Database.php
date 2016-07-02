@@ -3411,9 +3411,9 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Set configuration mode to `manual' for primary IP
+     * Set configuration mode to `manual' for the server's primary IP
      *
-     * @return null|string SQL statement to be executed
+     * @return string SQL statement to be executed
      */
     protected function r232()
     {
