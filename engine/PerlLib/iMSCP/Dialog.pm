@@ -511,7 +511,7 @@ sub _resize
         fatal ('A screen at least 24 lines tall and 80 columns wide is required. Please enlarge your screen.');
     }
 
-    $self->{'lines'} = $lines - 2 ;
+    $self->{'lines'} = $lines - 2;
     $self->{'columns'} = $cols - 2;
 
     $self->endGauge();

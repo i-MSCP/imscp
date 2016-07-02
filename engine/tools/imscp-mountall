@@ -36,7 +36,6 @@ use iMSCP::Debug;
 use iMSCP::Getopt;
 use iMSCP::Mount qw/ mount umount /;
 use File::Basename;
-use Scalar::Defer;
 use POSIX qw(locale_h);
 use locale;
 
