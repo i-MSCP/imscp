@@ -204,11 +204,13 @@ function checkIpData($ipAddr, $netDevice)
     }
 
     if (empty($errFieldsStack)) {
-        $stmt = exec_query('SELECT COUNT(*) AS cnt FROM server_ips WHERE ip_number = ?', $ipAddr);
-        $row = $stmt->fetchRow();
-        if ($row['cnt'] > 0) {
-            set_page_message(tr('IP address already under the control of i-MSCP.'), 'error');
-            $errFieldsStack[] = 'ip_number';
+        $stmt = execute_query('SELECT ip_number FROM server_ips');
+        while ($row = $stmt->fetchRow()) {
+            if (inet_pton($row['ip_number']) === inet_pton($ipAddr)) {
+                set_page_message(tr('IP address already under the control of i-MSCP.'), 'error');
+                $errFieldsStack[] = 'ip_number';
+                break;
+            }
         }
     }
 
