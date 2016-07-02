@@ -4,10 +4,22 @@
 Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
+FRONTEND
+    Added: `onAddIpAddr', `onChangeIpConfigMode' and `onDeleteIpAddr' events
+
+INSTALLER
+    Added: `primary_ip' item to the list of reconfigurable items (--reconfigure command line option)
+    Removed: Additional IP configuration dialog (see the errata file for more details)
+    Removed: `ips' item from the list of reconfigurable items (--reconfigure command line option)
+
+PRESEED
+    Removed: SERVER_IPS parameter according change made in installer
+
 YOUTRACK
     #IP-1575 When editing forwarding URL, scheme field is not set with current value
     #IP-1577 i-MSCP installer - Dialog exit with code 255 when console size is too small
     #IP-1579 APT (>= 1.1) - The `--force-yes' option has been replaced by various options starting with `--allow'
+    #IP-1581 Allow to disable auto-configuration of network interfaces (IP addresses managed by i-MSCP)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.3.0

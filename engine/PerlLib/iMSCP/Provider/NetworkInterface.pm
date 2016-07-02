@@ -47,12 +47,13 @@ $Module::Load::Conditional::FIND_VERSION = 0;
  Add an IP address
 
  Param hash \%data IP address data:
-   id: int IP address unique identifier
-   ip_card: string Network card to which the IP address must be added
-   ip_address: string Either an IPv4 or IPv6 address
-   netmask: OPTIONAL string Netmask (default: auto)
-   broadcast: OPTIONAL string Broadcast (default: auto)
-   gateway: OPTIONAL string Gateway (default: auto)
+   id             : IP address unique identifier
+   ip_card        : Network card to which the IP address must be added
+   ip_address     : Either an IPv4 or IPv6 address
+   netmask        : OPTIONAL Netmask (default: auto)
+   broadcast      : OPTIONAL Broadcast (default: auto)
+   gateway        : OPTIONAL Gateway (default: auto)
+   ip_config_mode : IP configuration mode (auto|manual)
  Return iMSCP::Provider::NetworkInterface, die on failure
 
 =cut
@@ -71,9 +72,10 @@ sub addIpAddr
  Remove an IP address
 
  Param hash \%data IP address data:
-   id: int IP address unique identifier
-   ip_card: string Network card from which the IP address must be removed
-   ip_address: string Either an IPv4 or IPv6 address
+   id             : IP address unique identifier
+   ip_card        : Network card from which the IP address must be removed
+   ip_address     : Either an IPv4 or IPv6 address
+   ip_config_mode : IP configuration mode (auto|manual)
  Return iMSCP::Provider::NetworkInterface, die on failure
 
 =cut
@@ -102,9 +104,9 @@ sub getProvider
     return $self->{'_provider'} if $self->{'_provider'};
 
     my $provider = 'iMSCP::Provider::NetworkInterface::'.iMSCP::LsbRelease->getInstance->getId( 'short' );
-    can_load( modules => { $provider => undef } ) or croak( sprintf(
-            'Could not load %s network interface provider: %s', $provider, $Module::Load::Conditional::ERROR
-        ) );
+    can_load( modules => { $provider => undef } ) or croak(
+        sprintf( "Could not load `%s' network interface provider: %s", $provider, $Module::Load::Conditional::ERROR )
+    );
     $self->setProvider( $provider->new() );
 }
 

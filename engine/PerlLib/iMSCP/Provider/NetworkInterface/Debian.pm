@@ -33,7 +33,7 @@ use iMSCP::TemplateParser;
 use parent 'iMSCP::Provider::NetworkInterface::Abstract';
 
 # Commands used in that package
-my %commands = (
+my %COMMANDS = (
     ifup    => '/sbin/ifup',
     ifdown  => '/sbin/ifdown',
     ifquery => '/sbin/ifquery'
@@ -56,11 +56,12 @@ my $interfacesFilePath = '/etc/network/interfaces';
 
  Param hash \%data IP address parameters:
    id: int IP address unique identifier
-   ip_card: Network card to which the IP address must be added
-   ip_address: string Either an IPv4 or IPv6 address
-   netmask: OPTIONAL string Netmask (default: auto)
-   broadcast: OPTIONAL string Broadcast (default: auto)
-   gateway: OPTIONAL string Gateway (default: auto)
+   ip_card        : Network card to which the IP address must be added
+   ip_address     : Either an IPv4 or IPv6 address
+   ip_config_mode : IP configuration mode (auto|manual)
+   netmask        : OPTIONAL Netmask (default: auto)
+   broadcast      : OPTIONAL Broadcast (default: auto)
+   gateway        : OPTIONAL Gateway (default: auto)
  Return iMSCP::Provider::NetworkInterface::Debian, die on failure
 
 =cut
@@ -69,13 +70,17 @@ sub addIpAddr
 {
     my ($self, $data) = @_;
     $data = { } unless defined $data && ref $data eq 'HASH';
-    defined $data->{$_} or croak( sprintf( 'The %s parameter is not defined', $_ ) ) for qw/ id ip_card ip_address /;
+
+    for(qw/ id ip_card ip_address ip_config_mode /) {
+        defined $data->{$_} or croak( sprintf( "The `%s' parameter is not defined", $_ ) );
+    }
+
     $data->{'id'} =~ /^\d+$/ or croak( 'id parameter must be an integer' );
     $self->{'net'}->isKnownDevice( $data->{'ip_card'} ) or croak(
-        sprintf( 'The %s network interface is unknown', $data->{'ip_card'} )
+        sprintf( "The '%s` network interface is unknown", $data->{'ip_card'} )
     );
     $self->{'net'}->isValidAddr( $data->{'ip_address'} ) or croak(
-        sprintf( 'The %s IP address is not valid', $data->{'ip_address'} )
+        sprintf( "The `%s' IP address is not valid", $data->{'ip_address'} )
     );
     $data->{'id'} += 1000;
     $data->{'netmask'} = $self->{'net'}->getAddrVersion( $data->{'ip_address'} ) eq 'ipv4' ? '255.255.255.255' : '64';
@@ -86,13 +91,14 @@ sub addIpAddr
 
     $self->_updateInterfaces( 'add', $data );
 
-    # We process only if the IP has been added by us
-    return 0 unless $self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'id'}" );
+    # We bring up the network interface for the target IP only if the IP has been configured by us
+    return 0 unless $data->{'ip_config_mode'} eq 'auto' &&
+        $self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'id'}" );
 
     my ($stdout, $stderr);
-    execute( "$commands{'ifup'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr ) == 0 or die(
+    execute( "$COMMANDS{'ifup'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr ) == 0 or die(
         sprintf(
-            'Could not bring up the %s network interface: %s', "$data->{'ip_card'}:$data->{'id'}",
+            "Could not bring up the `%s' network interface: %s", "$data->{'ip_card'}:$data->{'id'}",
             $stderr || 'Unknown error'
         )
     );
@@ -105,9 +111,10 @@ sub addIpAddr
  Remove an IP address
 
  Param hash \%data IP address parameters:
-   id: int IP address unique identifier
-   ip_card: string Network card from which the IP address must be removed
-   ip_address: string Either an IPv4 or IPv6 address
+   id             : IP address unique identifier
+   ip_card        : Network card from which the IP address must be removed
+   ip_address     : Either an IPv4 or IPv6 address
+   ip_config_mode : IP configuration mode (auto|manual)
  Return iMSCP::Provider::NetworkInterface::Debian, die on failure
 
 =cut
@@ -116,17 +123,22 @@ sub removeIpAddr
 {
     my ($self, $data) = @_;
     $data = { } unless defined $data && ref $data eq 'HASH';
-    defined $data->{$_} or croak( sprintf( 'The %s parameter is not defined', $_ ) ) for qw/ id ip_card ip_address /;
+
+    for(qw/ id ip_card ip_address ip_config_mode /) {
+        defined $data->{$_} or croak( sprintf( "The `%s' parameter is not defined", $_ ) );
+    }
+
     $data->{'id'} =~ /^\d+$/ or croak( 'id parameter must be an integer' );
     $data->{'id'} += 1000;
 
     # We process only if the IP has been added by us
-    return 0 unless $self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'id'}" );
+    return 0 unless $data->{'ip_config_mode'} eq 'auto' &&
+        $self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'id'}" );
 
     my ($stdout, $stderr);
-    execute( "$commands{'ifdown'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr ) == 0 or die(
+    execute( "$COMMANDS{'ifdown'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr ) == 0 or die(
         sprintf(
-            'Could not bring down the %s network interface: %s', "$data->{'ip_card'}:$data->{'id'}",
+            "Could not bring down the `%s' network interface: %s", "$data->{'ip_card'}:$data->{'id'}",
             $stderr || 'Unknown error'
         )
     );
@@ -166,7 +178,7 @@ sub _updateInterfaces
         $fileContent
     );
 
-    if ($action eq 'add') {
+    if ($action eq 'add' && $data->{'ip_config_mode'} eq 'auto') {
         my $normalizedAddr = $self->{'net'}->normalizeAddr( $data->{'ip_address'} );
 
         # Add IP addresse only if not already present (e.g: manually configured IP addresses)
@@ -208,7 +220,7 @@ TPL
 sub _isDefinedInterface
 {
     my ($self, $interface) = @_;
-    execute( "$commands{'ifquery'} --list | grep -q ".escapeShell( '^'.$interface.'$' ) ) == 0;
+    execute( "$COMMANDS{'ifquery'} --list | grep -q ".escapeShell( '^'.$interface.'$' ) ) == 0;
 }
 
 =back

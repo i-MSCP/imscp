@@ -23,11 +23,45 @@
 
 namespace iMSCP;
 
-use iMSCP_Events_Aggregator as EventManager;
 use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventManager;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
 use Zend_Session as Session;
+
+/**
+ * Send Json response
+ *
+ * @param int $statusCode HTTPD status code
+ * @param array $data JSON data
+ * @return void
+ */
+function sendJsonResponse($statusCode = 200, array $data = array())
+{
+    header('Cache-Control: no-cache, must-revalidate');
+    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+    header('Content-type: application/json');
+
+    switch ($statusCode) {
+        case 400:
+            header('Status: 400 Bad Request');
+            break;
+        case 404:
+            header('Status: 404 Not Found');
+            break;
+        case 500:
+            header('Status: 500 Internal Server Error');
+            break;
+        case 501:
+            header('Status: 501 Not Implemented');
+            break;
+        default:
+            header('Status: 200 OK');
+    }
+
+    echo json_encode($data);
+    exit;
+}
 
 /**
  * Generates page
@@ -40,11 +74,30 @@ function generatePage($tpl)
     generateIpsList($tpl);
     generateDevicesList($tpl);
 
-    if (isset($_POST['ip_number'])) {
-        $tpl->assign('VALUE_IP', tohtml($_POST['ip_number']));
-    } else {
-        $tpl->assign('VALUE_IP', '');
+    $ipConfigMode = isset($_POST['ip_config_mode']) && in_array($_POST['ip_config_mode'], array('auto', 'manual'))
+        ? $_POST['ip_config_mode'] : 'auto';
+
+    $tpl->assign(array(
+        'VALUE_IP' => isset($_POST['ip_number']) ? tohtml($_POST['ip_number']) : '',
+        'IP_CONFIG_AUTO' => $ipConfigMode == 'auto' ? ' checked' : '',
+        'IP_CONFIG_MANUAL' => $ipConfigMode == 'manual' ? ' checked' : ''
+    ));
+}
+
+/**
+ * Get action field data
+ *
+ * @param int $ipId Ip address unique identifier
+ * @param string $status
+ * @return array An array containing action name and action ip id
+ */
+function getActionFieldData($ipId, $status)
+{
+    if ($status == 'ok') {
+        return array(tr('Remove IP'), $ipId);
     }
+
+    return array(translate_dmn_status($status), null);
 }
 
 /**
@@ -65,45 +118,41 @@ function generateIpsList($tpl)
 
     $cfg = Registry::get('config');
     while ($row = $stmt->fetchRow()) {
-        list($actionName, $actionUrl) = generateIpAction($row['ip_id'], $row['ip_status']);
+        if ($cfg['BASE_SERVER_IP'] === $row['ip_number']) {
+            $actionName = $row['ip_status'] == 'ok' ? tr('Protected') : translate_dmn_status($row['ip_status']);
+            $actionIpId = null;
+        } else {
+            list($actionName, $actionIpId) = getActionFieldData($row['ip_id'], $row['ip_status']);
+        }
+
         $tpl->assign(array(
             'IP' => $row['ip_number'],
-            'NETWORK_CARD' => $row['ip_card'] === null ? '' : tohtml($row['ip_card'])
+            'NETWORK_CARD' => $row['ip_card'] === null ? '' : tohtml($row['ip_card']),
         ));
-        $tpl->assign(array(
-            'ACTION_NAME' => $cfg['BASE_SERVER_IP'] == $row['ip_number'] ? tr('Protected') : $actionName,
-            'ACTION_URL' => $cfg['BASE_SERVER_IP'] == $row['ip_number'] ? '#' : $actionUrl
-        ));
+
+        if ($row['ip_status'] === 'ok') {
+            $tpl->assign(array(
+                'IP_ID' => $row['ip_id'],
+                'IP_CONFIG_AUTO' => $row['ip_config_mode'] == 'auto' ? ' checked' : '',
+                'IP_CONFIG_MANUAL' => $row['ip_config_mode'] == 'manual' ? ' checked' : ''
+            ));
+            $tpl->parse('IP_CONFIG_MODE_BLOCK', 'ip_config_mode_block');
+        } else {
+            $tpl->assign('IP_CONFIG_MODE_BLOCK', tr('N/A'));
+        }
+
+        if ($actionIpId === null) {
+            $tpl->assign('IP_ACTION_DELETE', $actionName);
+        } else {
+            $tpl->assign(array(
+                'ACTION_NAME' => $actionName,
+                'ACTION_IP_ID' => $actionIpId
+            ));
+            $tpl->parse('IP_ACTION_DELETE', 'ip_action_delete');
+        }
+
         $tpl->parse('IP_ADDRESS_BLOCK', '.ip_address_block');
     }
-}
-
-/**
- * Generates Ips action
- *
- * @param int $ipId Ip address unique identifier
- * @param string $status
- * @return array
- */
-function generateIpAction($ipId, $status)
-{
-    if ($status == 'ok') {
-        return array(tr('Remove IP'), 'ip_delete.php?delete_id=' . $ipId);
-    }
-
-    if ($status == 'todelete') {
-        return array(translate_dmn_status('todelete'), '#');
-    }
-
-    if ($status == 'toadd') {
-        return array(translate_dmn_status('toadd'), '#');
-    }
-
-    if (!in_array($status, array('toadd', 'tochange', 'ok', 'todelete'))) {
-        return array(tr('Unknown Error'), '#');
-    }
-
-    return array(tr('N/A'), '#');
 }
 
 /**
@@ -118,14 +167,13 @@ function generateDevicesList($tpl)
         return $device != 'lo';
     });
 
-    sort($netDevices);
-
     if (empty($netDevices)) {
-        set_page_message(tr('Unable to find any network interface. You cannot add new IP address.'), 'error');
+        set_page_message(tr('Could not find any network interface. You cannot add new IP addresses.'), 'error');
         $tpl->assign('IP_ADDRESS_FORM_BLOCK', '');
         return;
     }
-    
+
+    sort($netDevices);
     foreach ($netDevices as $netDevice) {
         $tpl->assign('NETWORK_CARD', $netDevice);
         $tpl->parse('NETWORK_CARD_BLOCK', '.network_card_block');
@@ -147,13 +195,18 @@ function checkIpData($ipAddr, $netDevice)
 
     $errFieldsStack = array();
 
-    $stmt = exec_query('SELECT COUNT(IF(ip_number = ?, 1, NULL)) isRegisteredIp FROM server_ips', $ipAddr);
     if (filter_var($ipAddr, FILTER_VALIDATE_IP, FILTER_FLAG_NO_RES_RANGE) === false) {
         set_page_message(tr('Wrong IP address.'), 'error');
         $errFieldsStack[] = 'ip_number';
-    } elseif ($stmt->fields['isRegisteredIp']) {
-        set_page_message(tr('IP address already under the control of i-MSCP.'), 'error');
-        $errFieldsStack[] = 'ip_number';
+    }
+
+    if (empty($errFieldsStack)) {
+        $stmt = exec_query('SELECT COUNT(*) AS cnt FROM server_ips WHERE ip_number = ?', $ipAddr);
+        $row = $stmt->fetchRow();
+        if ($row['cnt'] > 0) {
+            set_page_message(tr('IP address already under the control of i-MSCP.'), 'error');
+            $errFieldsStack[] = 'ip_number';
+        }
     }
 
     if (!in_array($netDevice, $netDevices)) {
@@ -172,20 +225,69 @@ function checkIpData($ipAddr, $netDevice)
 }
 
 /**
- * Register new IP.
+ * Change configuration mode
  *
- * @param string $ipNumber IP number
- * @param string $netDevice Network device
  * @return void
  */
-function registerIp($ipNumber, $netDevice)
+function changeIpConfigMode()
 {
-    exec_query('INSERT INTO server_ips (ip_number, ip_card, ip_status) VALUES (?, ?, ?)', array(
-        $ipNumber, $netDevice, 'toadd'
+    if (!isset($_POST['ip_config_mode'])) {
+        sendJsonResponse(400, array('message' => tr('Bad request.')));
+    }
+
+    try {
+        $ipId = key($_POST['ip_config_mode']);
+        $ipConfigMode = in_array($_POST['ip_config_mode'][$ipId], array('auto', 'manual')) ? $_POST['ip_config_mode'][$ipId] : 'auto';
+        $stmt = exec_query('SELECT * FROM server_ips WHERE ip_id = ? AND ip_status = ?', array($ipId, 'ok'));
+        $row = $stmt->fetchRow();
+
+        if (!$stmt->rowCount()) {
+            sendJsonResponse(400, array('message' => tr('Bad request.')));
+        }
+
+        EventManager::getInstance()->dispatch(Events::onChangeIpConfigMode, array(
+            'ip_id' => $row['ip_id'],
+            'ip_number' => $row['ip_number'],
+            'ip_card' => $row['ip_card'],
+            'ip_config_mode' => $ipConfigMode
+        ));
+
+        exec_query('UPDATE server_ips SET ip_config_mode = ?, ip_status = ? WHERE ip_id = ?', array(
+            $ipConfigMode, 'tochange', $ipId
+        ));
+
+        send_request();
+        write_log(sprintf('The configuration mode for the %s IP address has been changed by %s', $row['ip_number'], $_SESSION['user_logged']), E_USER_NOTICE);
+        set_page_message('Configuration mode successfully scheduled for modification.', 'success');
+        sendJsonResponse(200);
+    } catch (\Exception $e) {
+        sendJsonResponse(500, array('message' => sprintf('An unexpected error occurred: %s', $e->getMessage())));
+    }
+}
+
+/**
+ * Add new IP
+ *
+ * @param string $ipAddr IP address
+ * @param string $networkCard Network card
+ * @param string $configMode
+ * @return void
+ */
+function addIpAddr($ipAddr, $networkCard, $configMode)
+{
+    EventManager::getInstance()->dispatch(Events::onAddIpAddr, array(
+        'ip_number' => $ipAddr,
+        'ip_card' => $networkCard,
+        'ip_config_mode' => $configMode
     ));
+
+    exec_query('INSERT INTO server_ips (ip_number, ip_card, ip_config_mode, ip_status) VALUES (?, ?, ?, ?)', array(
+        $ipAddr, $networkCard, $configMode, 'toadd'
+    ));
+
     send_request();
     set_page_message(tr('IP address successfully scheduled for addition.'), 'success');
-    write_log(sprintf('%s added new IP address: %s', $_SESSION['user_logged'], $ipNumber), E_USER_NOTICE);
+    write_log(sprintf('The %s IP address has been address by %s', $ipAddr, $_SESSION['user_logged']), E_USER_NOTICE);
     redirectTo('ip_manage.php');
 }
 
@@ -200,11 +302,17 @@ $eventManager->dispatch(Events::onAdminScriptStart);
 check_login('admin');
 
 if (!empty($_POST)) {
+    if (is_xhr()) {
+        changeIpConfigMode();
+    }
+
     $ipAddr = isset($_POST['ip_number']) ? trim($_POST['ip_number']) : '';
     $netDevice = isset($_POST['ip_card']) ? clean_input($_POST['ip_card']) : '';
+    $ipConfigMode = isset($_POST['ip_config_mode']) && in_array($_POST['ip_config_mode'], array('auto', 'manual'))
+        ? $_POST['ip_config_mode'] : 'auto';
 
     if (checkIpData($ipAddr, $netDevice)) {
-        registerIp($ipAddr, $netDevice);
+        addIpAddr($ipAddr, $netDevice, $ipConfigMode);
     }
 }
 
@@ -215,12 +323,13 @@ $tpl->define_dynamic(array(
     'page_message' => 'layout',
     'ip_addresses_block' => 'page',
     'ip_address_block' => 'ip_addresses_block',
+    'ip_config_mode_block' => 'ip_address_block',
+    'ip_action_delete' => 'ip_address_block',
     'ip_address_form_block' => 'page',
     'network_card_block' => 'ip_address_form_block'
 ));
-
 $tpl->assign(array(
-    'TR_PAGE_TITLE' => tr('Admin / Settings / IP Addresses Management'),
+    'TR_PAGE_TITLE' => tr('Admin / Settings / IP Management'),
     'TR_IP' => tr('IP Address'),
     'TR_ACTION' => tr('Action'),
     'TR_NETWORK_CARD' => tr('Network interface'),
@@ -228,17 +337,20 @@ $tpl->assign(array(
     'TR_CANCEL' => tr('Cancel'),
     'TR_CONFIGURED_IPS' => tr('IP addresses under control of i-MSCP'),
     'TR_ADD_NEW_IP' => tr('Add new IP address'),
-    'TR_IP_DATA' => tr('IP address data'),
-    'TR_MESSAGE_DELETE' => json_encode(tr('Are you sure you want to delete this IP: %s?', '%s')),
-    'TR_MESSAGE_DENY_DELETE' => json_encode(tr('You cannot remove the %s IP address.', '%s')),
-    'ERR_FIELDS_STACK' => (Registry::isRegistered('errFieldsStack'))
-        ? json_encode(Registry::get('errFieldsStack')) : '[]',
-    'TR_TIP' => tr('This interface allow to add or remove IP addresses. IP addresses listed below are already under the control of i-MSCP. IP addresses which are added through this interface will be automatically added into the i-MSCP database, and will be available for assignment to one or many of your resellers. If an IP address is not already configured on the system, it will be attached to the selected network interface.')
+    'TR_TIP' => tr('This interface allow to add or remove IP addresses.'),
+    'TR_CONFIG_MODE' => tr('Configuration mode'),
+    'TR_CONFIG_MODE_TOOLTIPS' => tr("When set to `Auto', the IP address is automatically configured.") . '<br>'
+        . tr("When set to `Manual', the configuration is left to the administrator."),
+    'TR_AUTO' => tr('Auto'),
+    'TR_MANUAL' => tr('Manual')
 ));
 
 $eventManager->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e \iMSCP_Events_Event */
-    $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
+    $translation = $e->getParam('translations');
+    $translation['core']['datatable'] = getDataTablesPluginTranslations(false);
+    $translation['core']['err_fields_stack'] = Registry::isRegistered('errFieldsStack') ? Registry::get('errFieldsStack') : array();
+    $translation['core']['confirm_deletion_msg'] = tr("Are you sure you want to delete the `%%s' IP addresse?");
 });
 
 generateNavigation($tpl);
@@ -248,5 +360,3 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 $eventManager->dispatch(Events::onAdminScriptEnd, array('templateEngine' => $tpl));
 $tpl->prnt();
-
-unsetMessages();

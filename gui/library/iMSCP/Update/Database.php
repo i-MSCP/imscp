@@ -56,7 +56,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = '230';
+    protected $lastUpdate = '232';
 
     /**
      * Singleton - Make new unavailable
@@ -3288,14 +3288,14 @@ class iMSCP_Update_Database extends iMSCP_Update
 
         return $sqlUpd;
     }
-
-    /*
-    * #IP-1395: Domain redirect feature - Missing URL path separator
-    *
-    * @throws Zend_Uri_Exception
-    * @throws iMSCP_Exception_Database
-    * @throws iMSCP_Uri_Exception
-    */
+    
+    /**
+     * #IP-1395: Domain redirect feature - Missing URL path separator
+     *
+     * @throws Zend_Uri_Exception
+     * @throws iMSCP_Exception_Database
+     * @throws iMSCP_Uri_Exception
+     */
     protected function r226()
     {
         $stmt = exec_query("SELECT alias_id, url_forward FROM domain_aliasses WHERE url_forward <> 'no'");
@@ -3393,5 +3393,31 @@ class iMSCP_Update_Database extends iMSCP_Update
             "UPDATE domain_aliasses SET external_mail = 'off'",
             "UPDATE domain SET external_mail = 'off'"
         );
+    }
+
+    /**
+     * #IP-1581 Allow to disable auto-configuration of network interfaces
+     * - Add server_ips.ip_config_mode column
+     *
+     * @return null|string SQL statement to be executed
+     */
+    protected function r231()
+    {
+        return $this->addColumn(
+            'server_ips',
+            'ip_config_mode',
+            "VARCHAR(15) COLLATE utf8_unicode_ci DEFAULT 'auto' AFTER ip_card"
+        );
+    }
+
+    /**
+     * Set configuration mode to `manual' for primary IP
+     *
+     * @return null|string SQL statement to be executed
+     */
+    protected function r232()
+    {
+        $primaryIP = quoteValue(iMSCP_Registry::get('config')->BASE_SERVER_IP);
+        return "UPDATE server_ips SET ip_config_mode = 'manual' WHERE ip_number = $primaryIP";
     }
 }

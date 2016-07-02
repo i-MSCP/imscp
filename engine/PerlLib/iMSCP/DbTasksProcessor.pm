@@ -65,6 +65,15 @@ sub process
         "
     );
 
+    # Process network interface tasks
+    $self->_process(
+        'NetworkInterfaces',
+        "
+            SELECT ip_id AS id, CONCAT(ip_card, ':', ip_number) AS name, ip_status AS status
+            FROM server_ips WHERE ip_status <> 'ok' LIMIT 1
+        "
+    );
+
     # Process SSL certificate toadd|tochange SSL certificates tasks
     $self->_process(
         'SSLcertificate',
@@ -267,15 +276,6 @@ sub process
             SELECT admin_id AS id, admin_name AS name, admin_status AS status FROM admin
             LEFT JOIN domain ON(domain_admin_id = admin_id)
             WHERE admin_type = 'user' AND admin_status = 'todelete' AND domain_id IS NULL ORDER BY admin_id ASC
-        "
-    );
-
-    # Process network cards tasks
-    $self->_process(
-        'NetCard',
-        "
-            SELECT ip_id AS id, CONCAT(ip_card, ':', ip_number) AS name, ip_status AS status
-            FROM server_ips WHERE ip_status <> 'ok' LIMIT 1
         "
     );
 

@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2016.05.21
+# Last update: 2016.07.02
 
 %main::questions = (
 
@@ -50,15 +50,10 @@
     BASE_SERVER_IP                      => '192.168.1.110',
 
     # WAN IP
-    # Only relevant if the primary server IP is in private range (e.g. when your server is behind NAT).
-    # You can force usage of private IP by putting same IP
+    # Only relevant if your primary IP is in private range (e.g. when your server is behind NAT).
+    # You can force usage of a private IP by putting BASE_SERVER_IP IP value
     # Possible values: Ipv4 or IPv6
     BASE_SERVER_PUBLIC_IP               => '',
-
-    # Secondary IPs to configure
-    # These IPs, if not already configured, will be added to the first network card (e.g. eth0)
-    # Possible values: an array of IPv4/IPv6 such as [ '192.168.1.111', '192.168.1.230' ]
-    SERVER_IPS                          => [ ],
 
     #
     ## Control panel configuration

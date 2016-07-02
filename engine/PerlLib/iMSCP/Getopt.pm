@@ -173,8 +173,8 @@ sub showUsage
 
 our @reconfigurationItems = sort(
     'all', 'servers', 'httpd', 'mta', 'mailfilters', 'po', 'ftpd', 'named', 'sql', 'hostnames', 'system_hostname',
-    'panel_hostname', 'panel_ports', 'ips', 'admin', 'php', 'timezone', 'panel', 'panel_ssl', 'services_ssl', 'ssl',
-    'backup', 'webstats', 'sqlmanager', 'webmails', 'filemanager', 'antirootkits'
+    'panel_hostname', 'panel_ports', 'primary_ip', 'admin', 'php', 'timezone', 'panel', 'panel_ssl', 'services_ssl',
+    'ssl', 'backup', 'webstats', 'sqlmanager', 'webmails', 'filemanager', 'antirootkits'
 );
 
 =item reconfigure([ $item = 'none' ])

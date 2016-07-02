@@ -120,7 +120,7 @@ sub setupDialog
 
     unshift(@{$dialogStack}, (
         \&setupAskServerHostname,
-        \&setupAskServerIps,
+        \&setupAskBaseServerIp,
         \&askMasterSqlUser,
         \&setupAskSqlUserHost,
         \&setupAskImscpDbName,
@@ -238,185 +238,81 @@ EOF
     $rs;
 }
 
-# Ask for server ips
-sub setupAskServerIps
+# Ask for base server ip
+sub setupAskBaseServerIp
 {
     my $dialog = shift;
 
-    my $baseServerIp = setupGetQuestion('BASE_SERVER_IP');
-    my $baseServerPublicIp = setupGetQuestion('BASE_SERVER_PUBLIC_IP');
-    my $serverIps = '';
-    my $serverIpsToAdd = setupGetQuestion('SERVER_IPS', []);
-    my %serverIpsToDelete = ();
-    my %serverIpsReplMap = ();
+    my $primaryIP = setupGetQuestion('BASE_SERVER_IP');
+    my $publicIP = setupGetQuestion('BASE_SERVER_PUBLIC_IP');
     my $net = iMSCP::Net->getInstance();
-    my $rs = 0;
+    my ($rs, $msg) = (0, '');
 
-    # Retrieve list of all configured IP addresses
-    my @serverIps = grep {
+    # Retrieve list of available IP addresses
+    my @ipAddresses = sort grep {
         $net->getAddrType($_) =~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/
     } $net->getAddresses();
-    unless(@serverIps) {
+    unless(@ipAddresses) {
         error('Could not retrieve server IP addresses. At least one public or private IP adddress must be configured.');
         return 1;
     }
 
-    my $currentServerIps = { };
-    my $db = '';
-    my $msg = '';
-
-    if(setupGetQuestion('DATABASE_NAME')) {
-        my $db = iMSCP::Database->factory();
-
-        local $@;
-        eval { $db->useDatabase(setupGetQuestion('DATABASE_NAME')); };
-        unless($@) {
-            $currentServerIps = $db->doQuery('ip_number', 'SELECT ip_id, ip_number FROM server_ips');
-            unless(ref $currentServerIps eq 'HASH') {
-                error(sprintf('Could not retrieve server IP addresses: %s', $currentServerIps));
-                return 1
-            }
-        }
-
-        @{$serverIpsToAdd} = (@{$serverIpsToAdd}, keys %{$currentServerIps});
-    }
-
-    @serverIps = sort keys %{ { map { $_ => 1 } @serverIps, @{$serverIpsToAdd} } };
-
-    if($main::reconfigure =~ /^(?:ips|all|forced)$/
-        || !grep($_ eq $baseServerIp, @serverIps)
-        || !$net->isValidAddr($baseServerPublicIp)
-        || $net->getAddrType($baseServerPublicIp) !~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/
+    if($main::reconfigure =~ /^(?:primary_ip|all|forced)$/
+        || !grep($_ eq $primaryIP, @ipAddresses)
+        || !$net->isValidAddr($publicIP)
+        || $net->getAddrType($publicIP) !~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/
     ) {
         do {
-            # Ask user for the base server IP
-            ($rs, $baseServerIp) = $dialog->radiolist(
-                <<"EOF", [ @serverIps ], $baseServerIp && grep($_ eq $baseServerIp, @serverIps) ? $baseServerIp : $serverIps[0]);
+            # Ask user for the primary server IP
+            ($rs, $primaryIP) = $dialog->radiolist(
+                <<"EOF", [ @ipAddresses ], grep($_ eq $primaryIP, @ipAddresses) ? $primaryIP : $ipAddresses[0]);
 
-Please, select the primary IP address:
+Please, select your primary server IP address:
 EOF
-
-        } while($rs < 30 && !$baseServerIp);
+        } while($rs < 30 && !$primaryIP);
 
         if($rs < 30) {
             # Server inside private LAN?
-            if($net->getAddrType($baseServerIp) =~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST)$/) {
-                if (!$net->isValidAddr($baseServerPublicIp)
-                    || $net->getAddrType($baseServerPublicIp) !~ /^(?:PUBLIC|GLOBAL-UNICAST)$/
+            if($net->getAddrType($primaryIP) =~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST)$/) {
+                if (!$net->isValidAddr($publicIP)
+                    || $net->getAddrType($publicIP) !~ /^(?:PUBLIC|GLOBAL-UNICAST)$/
                 ) {
-                    $baseServerPublicIp = '';
+                    $publicIP = '';
                 }
 
                 $msg = '';
 
                 do {
-                    ($rs, $baseServerPublicIp) = $dialog->inputbox(<<"EOF", $baseServerPublicIp);
+                    ($rs, $publicIP) = $dialog->inputbox(<<"EOF", $publicIP);
 
 The system has detected that your server is inside a private LAN.
 
 Please enter your public IP address:$msg
 
-\\ZbNote:\\Zn Leave blank to force usage of the $baseServerIp IP address.
+\\ZbNote:\\Zn Leave blank to force usage of the private IP address.
 EOF
-                    if($baseServerPublicIp) {
-                        unless($net->isValidAddr($baseServerPublicIp)) {
+                    if($publicIP) {
+                        unless($net->isValidAddr($publicIP)) {
                             $msg = "\n\n\\Z1Invalid or unallowed IP address.\\Zn\n\nPlease try again:";
-                        } elsif($net->getAddrType($baseServerPublicIp) !~ /^(?:PUBLIC|GLOBAL-UNICAST)$/) {
+                        } elsif($net->getAddrType($publicIP) !~ /^(?:PUBLIC|GLOBAL-UNICAST)$/) {
                             $msg = "\n\n\\Z1Unallowed IP address. IP address must be public.\\Zn\n\nPlease try again:";
                         } else {
                             $msg = '';
                         }
                     } else {
-                        $baseServerPublicIp = $baseServerIp;
+                        $publicIP = $primaryIP;
                         $msg = ''
                     }
                 } while($rs < 30 && $msg);
             } else {
-                $baseServerPublicIp = $baseServerIp
-            }
-        }
-
-        # Handle additional IP addition / deletion
-        if($rs < 30) {
-            if(@serverIps > 1) {
-                @serverIps = grep($_ ne $baseServerIp, @serverIps); # Remove the base server IP from the list
-
-                # Retrieve IP to which the user is currently connected (SSH)
-                my $sshConnectionIp = defined $ENV{'SSH_CONNECTION'} ? (split ' ', $ENV{'SSH_CONNECTION'})[2] : undef;
-
-                $msg = '';
-
-                do {
-                    ($rs, $serverIps) = $dialog->checkbox(<<"EOF", [ @serverIps ], @{$serverIpsToAdd});
-
-Please, select additional IP addresses to register into i-MSCP and deselect those to unregister:$msg
-EOF
-                    $msg = '';
-                    if(defined $sshConnectionIp
-                        && grep($_ eq $sshConnectionIp, @serverIps)
-                        && !grep($_ eq $sshConnectionIp, @{$serverIps})
-                    ) {
-                        $msg = "\n\n\\Z1You cannot remove the $sshConnectionIp IP to which you are currently connected " .
-                        "through SSH.\\Zn\n\nPlease try again:";
-                    }
-                } while ($rs < 30 && $msg);
-
-                if($rs < 30) {
-                    @{$serverIpsToAdd} = @{$serverIps}; # Retrieve list of IP to add into database
-                    push @{$serverIpsToAdd}, $baseServerIp; # Re-add base ip
-
-                    if($db) {
-                        # Get list of IP addresses to delete
-                        %serverIpsToDelete = ();
-
-                        for my $ip(@serverIps) {
-                            if(exists $currentServerIps->{$ip} && !grep($_ eq $ip, @{$serverIpsToAdd})) {
-                                $serverIpsToDelete{$currentServerIps->{$ip}->{'ip_id'}} = $ip;
-                            }
-                        }
-
-                        # Check for server IP addresses already in use and ask for replacement
-                        my $resellerIps = $db->doQuery('reseller_ips', 'SELECT reseller_ips FROM reseller_props');
-
-                        if(ref $resellerIps ne 'HASH') {
-                            error(sprintf("Could not retrieve resellers's IP addresses: %s", $resellerIps));
-                            return 1;
-                        }
-
-                        for(keys %$resellerIps) {
-                            my @resellerIps = split ';';
-
-                            for(@resellerIps) {
-                                if(exists $serverIpsToDelete{$_} && !exists $serverIpsReplMap{$serverIpsToDelete{$_}}) {
-                                    my $ret = '';
-
-                                    do {
-                                        ($rs, $ret) = $dialog->radiolist(<<"EOF", $serverIpsToAdd, $baseServerIp);
-
-The IP address '$serverIpsToDelete{$_}' is already in use. Please, choose an IP to replace it:
-EOF
-                                    } while($rs < 30 && !$ret);
-
-                                    $serverIpsReplMap{$serverIpsToDelete{$_}} = $ret;
-                                }
-
-                                last if $rs;
-                            }
-
-                            last if $rs;
-                        }
-                    }
-                }
+                $publicIP = $primaryIP
             }
         }
     }
 
     if($rs < 30) {
-        setupSetQuestion('BASE_SERVER_IP', $baseServerIp);
-        setupSetQuestion('BASE_SERVER_PUBLIC_IP', $baseServerPublicIp);
-        setupSetQuestion('SERVER_IPS', $serverIpsToAdd);
-        setupSetQuestion('SERVER_IPS_TO_REPLACE', {%serverIpsReplMap});
-        setupSetQuestion('SERVER_IPS_TO_DELETE', [values %serverIpsToDelete]);
+        setupSetQuestion('BASE_SERVER_IP', $primaryIP);
+        setupSetQuestion('BASE_SERVER_PUBLIC_IP', $publicIP);
     }
 
     $rs;
@@ -1034,9 +930,9 @@ sub setupCreateSystemDirectories
 sub setupServerHostname
 {
     my $hostname = setupGetQuestion('SERVER_HOSTNAME');
-    my $baseServerIp = setupGetQuestion('BASE_SERVER_IP');
+    my $primaryIP = setupGetQuestion('BASE_SERVER_IP');
 
-    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupServerHostname', \$hostname, \$baseServerIp);
+    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupServerHostname', \$hostname, \$primaryIP);
     return $rs if $rs;
 
     my @labels = split /\./, $hostname;
@@ -1050,10 +946,10 @@ sub setupServerHostname
     my $net = iMSCP::Net->getInstance();
     my $content = "# 'hosts' file configuration.\n\n";
     $content .= "127.0.0.1\t$hostnameLocal\tlocalhost\n";
-    $content .= "$baseServerIp\t$hostname\t$host\n";
-    $content .= "::ffff:$baseServerIp\t$hostname\t$host\n" if $net->getAddrVersion($baseServerIp) eq 'ipv4';
-    $content .= "::1\tip6-localhost\tip6-loopback\n" if $net->getAddrVersion($baseServerIp) eq 'ipv4';
-    $content .= "::1\tip6-localhost\tip6-loopback\t$host\n" if $net->getAddrVersion($baseServerIp) eq 'ipv6';
+    $content .= "$primaryIP\t$hostname\t$host\n";
+    $content .= "::ffff:$primaryIP\t$hostname\t$host\n" if $net->getAddrVersion($primaryIP) eq 'ipv4';
+    $content .= "::1\tip6-localhost\tip6-loopback\n" if $net->getAddrVersion($primaryIP) eq 'ipv4';
+    $content .= "::1\tip6-localhost\tip6-loopback\t$host\n" if $net->getAddrVersion($primaryIP) eq 'ipv6';
     $content .= "fe00::0\tip6-localnet\n";
     $content .= "ff00::0\tip6-mcastprefix\n";
     $content .= "ff02::1\tip6-allnodes\n";
@@ -1136,7 +1032,7 @@ sub setupRegisterDelayedTasks
     $eventManager->register('afterSqldPreinstall', \&setupCreateMasterSqlUser);
     $eventManager->register('afterSqldPreinstall', \&setupSecureSqlInstallation);
     $eventManager->register('afterSqldPreinstall', \&setupCreateDatabase);
-    $eventManager->register('afterSqldPreinstall', \&setupServerIps);
+    $eventManager->register('afterSqldPreinstall', \&setupPrimaryIP);
 }
 
 sub setupCreateMasterSqlUser
@@ -1172,128 +1068,46 @@ sub setupCreateMasterSqlUser
     0;
 }
 
-sub setupServerIps
+sub setupPrimaryIP
 {
-    my $baseServerIp = setupGetQuestion('BASE_SERVER_IP');
-    my $serverIpsToReplace = setupGetQuestion('SERVER_IPS_TO_REPLACE', {});
-    my $serverIpsToDelete = setupGetQuestion('SERVER_IPS_TO_DELETE', []);
-    my $serverHostname = setupGetQuestion('SERVER_HOSTNAME');
-    my $oldIptoIdMap = { };
-    my @serverIps = ($baseServerIp, $main::questions{'SERVER_IPS'} ? @{$main::questions{'SERVER_IPS'}} : ());
+    my $primaryIP = setupGetQuestion('BASE_SERVER_IP');
 
-    my $rs = iMSCP::EventManager->getInstance()->trigger(
-        'beforeSetupServerIps', \$baseServerIp, \@serverIps, $serverIpsToReplace
-    );
-    return $rs if $rs;
-
-    # Ensure promoting of secondary IP addresses in case a PRIMARY addresse is being deleted
-    # Note we are ignoring return value here (eg for vps)
-    execute('sysctl -q -w net.ipv4.conf.all.promote_secondaries=1', \my $stdout, \my $stderr);
+    iMSCP::EventManager->getInstance()->trigger('beforeSetupPrimaryIP', $primaryIP);
 
     my $db = iMSCP::Database->factory();
     $db->useDatabase(setupGetQuestion('DATABASE_NAME'));
 
-   # Get IDs of IP addresses to replace
-   if(%{$serverIpsToReplace}) {
-        my $ipsToReplace = join q{,}, map $db->quote($_), keys %{$serverIpsToReplace};
-        $oldIptoIdMap = $db->doQuery(
-            'ip_number', 'SELECT ip_id, ip_number FROM server_ips WHERE ip_number IN ('. $ipsToReplace .')'
-        );
-        if(ref $oldIptoIdMap ne 'HASH') {
-            error(sprintf('Could not get IDs of server IP addresses to replace: %s', $oldIptoIdMap));
-            return 1;
-        }
+    my $qrs = $db->doQuery('ip_number', 'SELECT ip_number, ip_card FROM server_ips WHERE ip_number = ?', $primaryIP);
+    unless(ref $qrs eq 'HASH') {
+        error($qrs);
+        return 1;
     }
 
     my $net = iMSCP::Net->getInstance();
-
-    # Process server IPs addition
-    my $defaultNetcard = (grep { $_ ne 'lo' } $net->getDevices())[0];
-    for my $serverIp(@serverIps) {
-        next if exists $serverIpsToReplace->{$serverIp};
-        my $netCard = $net->getAddrDevice($serverIp) || $defaultNetcard;
-
-        if($netCard) {
-            my $rs = $db->doQuery(
-                'i', 'INSERT IGNORE INTO server_ips (ip_number, ip_card, ip_status) VALUES(?, ?, ?)',
-                $serverIp, $netCard, 'toadd'
-            );
-            if (ref $rs ne 'HASH') {
-                error(sprintf('Could not add/update %s IP address: %s', $serverIp, $rs));
-                return 1;
-            }
-        } else {
-            error(sprintf('Could not add %s IP address into database: Unknown network card', $serverIp));
-            return 1;
-        }
+    my $netCard = $net->getAddrDevice($primaryIP);
+    unless(defined $netCard) {
+        error(sprintf("Could not find network interface for the `%s' IP address", $primaryIP));
+        return 1;
     }
 
-    # Server IPs replacement
-    for my $serverIp(keys %{$serverIpsToReplace}) {
-        my $newIp = $serverIpsToReplace->{$serverIp}; # New IP
-        my $oldIpId = $oldIptoIdMap->{$serverIp}->{'ip_id'}; # Old IP ID
-
-        # Get IP IDs of resellers to which the IP to replace is currently assigned
-        my $resellerIps = $db->doQuery(
-            'id', 'SELECT id, reseller_ips FROM reseller_props WHERE reseller_ips REGEXP ?', "(^|[^0-9]$oldIpId;)"
+    unless(%{$qrs}) {
+        $qrs = $db->doQuery(
+            'i', 'INSERT INTO server_ips (ip_number, ip_card, ip_config_mode, ip_status) VALUES(?, ?, ?, ?)',
+            $primaryIP, $netCard, 'manual', 'ok'
         );
-        unless(ref $resellerIps eq 'HASH') {
-            error($resellerIps);
+        unless (ref $qrs eq 'HASH') {
+            error(sprintf("Could not add the `%s' IP address: %s", $primaryIP, $qrs));
             return 1;
         }
-
-        # Get new IP ID
-        my $newIpId = $db->doQuery( 'ip_number', 'SELECT ip_id, ip_number FROM server_ips WHERE ip_number = ?', $newIp );
-        unless(ref $newIpId eq 'HASH') {
-            error($newIpId);
-            return 1;
-        }
-
-        $newIpId = $newIpId->{$newIp}->{'ip_id'};
-
-        for my $resellerIp(keys %{$resellerIps}) {
-            my $ips = $resellerIps->{$resellerIp}->{'reseller_ips'};
-
-            if($ips !~ /(?:^|[^0-9])$newIpId;/) {
-                $ips =~ s/((?:^|[^0-9]))$oldIpId;?/$1$newIpId;/;
-                $rs = $db->doQuery( 'u', 'UPDATE reseller_props SET reseller_ips = ? WHERE id = ?', $ips, $resellerIp );
-                unless(ref $rs eq 'HASH') {
-                    error($rs);
-                    return 1;
-                }
-            }
-        }
-
-        # Update IP id of customer domains if needed
-        $rs = $db->doQuery( 'u', 'UPDATE domain SET domain_ip_id = ? WHERE domain_ip_id = ?', $newIpId, $oldIpId );
-        unless(ref $rs eq 'HASH') {
-            error($rs);
-            return 1;
-        }
-
-        # Update IP id of customer domain aliases if needed
-        $rs = $db->doQuery('u', 'UPDATE domain_aliasses SET alias_ip_id = ? WHERE alias_ip_id = ?', $newIpId, $oldIpId);
-        unless(ref $rs eq 'HASH') {
-            error($rs);
+    } else {
+        $qrs = $db->doQuery('u', 'UPDATE server_ips SET ip_card = ? WHERE ip_number = ?', $netCard, $primaryIP);
+        unless (ref $qrs eq 'HASH') {
+            error(sprintf("Could not update `%s' IP address: %s", $primaryIP, $qrs));
             return 1;
         }
     }
 
-    # Schedule IP deletion
-    if(@{$serverIpsToDelete}) {
-        my $serverIpsToDelete = join q{,}, map $db->quote($_), @{$serverIpsToDelete};
-        my $rs = $db->doQuery(
-            'u',
-            'UPDATE server_ips set ip_status = ?  WHERE ip_number IN(' . $serverIpsToDelete . ') AND ip_number <> ?',
-            'todelete', $baseServerIp
-        );
-        unless (ref $rs eq 'HASH') {
-            error($rs);
-            return 1;
-        }
-    }
-
-    iMSCP::EventManager->getInstance()->trigger('afterSetupServerIps');
+    iMSCP::EventManager->getInstance()->trigger('afterSetupPrimaryIP', $primaryIP);
 }
 
 sub setupCreateDatabase

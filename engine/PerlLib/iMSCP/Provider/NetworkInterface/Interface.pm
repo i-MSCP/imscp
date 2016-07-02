@@ -68,12 +68,13 @@ sub removeNetworkCard
  Add an IP address
 
  Param hash \%data IP address data:
-   id: int IP address unique identifier
-   ip_card: string Network card to which the IP address must be added
-   ip_address: string Either an IPv4 or IPv6 address
-   netmask: OPTIONAL string Netmask (default: auto)
-   broadcast: OPTIONAL string Broadcast (default: auto)
-   gateway: OPTIONAL string Gateway (default: auto)
+   id             : IP address unique identifier
+   ip_card        : Network card to which the IP address must be added
+   ip_address     : Either an IPv4 or IPv6 address
+   ip_config_mode : IP configuration mode (auto|manual)
+   netmask        : OPTIONAL Netmask (default: auto)
+   broadcast      : OPTIONAL Broadcast (default: auto)
+   gateway        : OPTIONAL Gateway (default: auto)
  Return iMSCP::Provider::NetworkInterface::Interface, die on failure
 
 =cut
@@ -88,9 +89,10 @@ sub addIpAddr
  Remove an IP address
 
  Param hash \%data IP address data:
-   id: int IP address unique identifier
-   ip_card: string Network card from which the IP address must be removed
-   ip_address: string Either an IPv4 or IPv6 address
+   id             : IP address unique identifier
+   ip_card        : Network card from which the IP address must be removed
+   ip_address     : Either an IPv4 or IPv6 address
+   ip_config_mode : IP configuration mode (auto|manual)
  Return iMSCP::Provider::NetworkInterface::Interface, die on failure
 
 =cut

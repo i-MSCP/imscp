@@ -1,6 +1,6 @@
 =head1 NAME
 
- Modules::NetCard - i-MSCP NetCard module
+ Modules::NetworkInterfaces - i-MSCP NetworkInterfaces module
 
 =cut
 
@@ -21,7 +21,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package Modules::NetCard;
+package Modules::NetworkInterfaces;
 
 use strict;
 use warnings;
@@ -32,7 +32,7 @@ use parent 'Common::Object';
 
 =head1 DESCRIPTION
 
- i-MSCP NetCard module.
+ i-MSCP NetworkInterfaces module.
 
 =head1 PUBLIC METHODS
 
@@ -62,9 +62,10 @@ sub process
             if ($row->{'ip_status'} =~ /^to(?:add|change)$/) {
                 $provider->addIpAddr(
                     {
-                        id         => $row->{'ip_id'},
-                        ip_card    => $row->{'ip_card'},
-                        ip_address => $row->{'ip_number'}
+                        id             => $row->{'ip_id'},
+                        ip_card        => $row->{'ip_card'},
+                        ip_address     => $row->{'ip_number'},
+                        ip_config_mode => $row->{'ip_config_mode'}
                     }
                 );
                 $sth2 = $dbh->prepare( 'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?' );
@@ -72,9 +73,10 @@ sub process
             } elsif ($row->{'ip_status'} eq 'todelete') {
                 $provider->removeIpAddr(
                     {
-                        id         => $row->{'ip_id'},
-                        ip_card    => $row->{'ip_card'},
-                        ip_address => $row->{'ip_number'}
+                        id             => $row->{'ip_id'},
+                        ip_card        => $row->{'ip_card'},
+                        ip_address     => $row->{'ip_number'},
+                        ip_config_mode => $row->{'ip_config_mode'}
                     }
                 );
                 $sth2 = $dbh->prepare( 'DELETE FROM server_ips WHERE ip_id = ?' );

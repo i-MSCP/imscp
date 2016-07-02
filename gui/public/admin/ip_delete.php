@@ -21,7 +21,7 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -29,46 +29,44 @@
  * Main
  */
 
-// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
-
 check_login('admin');
 
-if (isset($_GET['delete_id'])) {
-	$deleteIpId = clean_input($_GET['delete_id']);
-
-	$query = "SELECT `reseller_ips` FROM `reseller_props`";
-	$stmt = execute_query($query);
-
-	while (!$stmt->EOF) {
-		if (in_array($deleteIpId, explode(';', $stmt->fields['reseller_ips']))) {
-			set_page_message(tr("The IP address you're trying to remove is assigned to a reseller."), 'error');
-			redirectTo('ip_manage.php');
-		}
-
-		$stmt->moveNext();
-	}
-
-	$query = "SELECT count(`ip_id`) `ipsTotalCount` FROM `server_ips`";
-	$stmt = execute_query($query);
-
-	if ($stmt->fields['ipsTotalCount'] < 2) {
-		set_page_message(tr('You cannot delete the last active IP address.'), 'error');
-		redirectTo('ip_manage.php');
-	}
-
-	write_log("{$_SESSION['user_logged']}: deleted IP address {$stmt->fields['ipNumber']}", E_USER_NOTICE);
-
-	$query = "UPDATE `server_ips` SET `ip_status` = ? WHERE `ip_id` = ?";
-	$stmt = exec_query($query, array('todelete', $deleteIpId));
-
-	send_request();
-
-	set_page_message(tr('IP address successfully scheduled for deletion.'), 'success');
-
-	redirectTo('ip_manage.php');
+if (!isset($_GET['delete_id'])) {
+    showBadRequestErrorPage();
 }
 
-showBadRequestErrorPage();
+$ipId = intval($_GET['delete_id']);
+
+$stmt = exec_query('SELECT ip_number FROM server_ips WHERE ip_id = ?', $ipId);
+if (!$stmt->rowCount()) {
+    showBadRequestErrorPage();
+}
+
+$row = $stmt->fetchRow();
+$ipAddr = $row['ip_number'];
+
+$stmt = execute_query('SELECT reseller_ips FROM reseller_props');
+while ($row = $stmt->fetchRow()) {
+    if (in_array($ipId, explode(';', $row['reseller_ips']))) {
+        set_page_message(tr("You cannot remove an IP that is assigned to a reseller."), 'error');
+        redirectTo('ip_manage.php');
+    }
+}
+
+$stmt = execute_query('SELECT count(*) cnt FROM server_ips');
+$row = $stmt->fetchRow();
+
+if ($row ['cnt'] < 2) {
+    set_page_message(tr('You cannot delete the last active IP address.'), 'error');
+    redirectTo('ip_manage.php');
+}
+
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onDeleteIpAddr);
+$stmt = exec_query($query, array('UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', $ipId));
+send_request();
+write_log(sprintf('The %s IP address has been deleted by %s', $ipAddr, $_SESSION['user_logged']), E_USER_NOTICE);
+set_page_message(tr('IP address successfully scheduled for deletion.'), 'success');
+redirectTo('ip_manage.php');

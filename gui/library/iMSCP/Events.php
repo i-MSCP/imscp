@@ -1344,4 +1344,36 @@ class iMSCP_Events
      *                     Those placeholders take precedence on the default placeholders.
      */
     const onSendMail = 'onSendMail';
+
+    /**
+     * The onAddIpAddr event is triggered when a new IP is added.
+     * 
+     * The listeners recevei an iMSCP_Events_Event object with the following parameters:
+     * - ip_number      : IP addresse
+     * - ip_card        : Network interface to which IP addresse is attached
+     * - ip_config_mode : Ip addresse configuration mode (auto|manual)
+     * 
+     */
+    const onAddIpAddr = 'onAddIpAddr';
+
+    /**
+     * The onChangeIpConfigMode event is triggered when a the an IP address configuration mode is changed.
+     *
+     * The listeners recevei an iMSCP_Events_Event object with the following parameters:
+     * - ip_id          : IP address unique identifier
+     * - ip_number      : IP addresse
+     * - ip_card        : Network interface to which IP addresse is attached
+     * - ip_config_mode : Ip addresse configuration mode (auto|manual)
+     *
+     */
+    const onChangeIpConfigMode = 'onChangeIpConfigMode';
+
+    /**
+     * The onDeleteIpAddr event is triggered when a new IP is added.
+     *
+     * The listeners recevei an iMSCP_Events_Event object with the following parameters:
+     * - ip_id : IP unique identifier
+     *
+     */
+    const onDeleteIpAddr = 'onDeleteIpAddr';
 }
