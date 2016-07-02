@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-30 04:15+0200\n"
-"PO-Revision-Date: 2016-06-30 02:17+0000\n"
+"POT-Creation-Date: 2016-07-02 13:14+0200\n"
+"PO-Revision-Date: 2016-07-02 11:16+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/i-mscp/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -590,7 +590,7 @@ msgstr "Admin / Perfil / Dades Personals"
 msgid "Admin / Settings"
 msgstr "Admin / Paràmetres"
 
-msgid "Admin / Settings / IP Addresses Management"
+msgid "Admin / Settings / IP Management"
 msgstr ""
 
 msgid "Admin / Settings / Languages"
@@ -939,6 +939,10 @@ msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Esteu segurs que voleu eliminar el tiquet '%s'?"
 
 #, php-format
+msgid "Are you sure you want to delete the `%%s' IP addresse?"
+msgstr ""
+
+#, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
 msgstr ""
 
@@ -948,10 +952,6 @@ msgstr ""
 
 msgid "Are you sure you want to delete this DNS record?"
 msgstr ""
-
-#, php-format
-msgid "Are you sure you want to delete this IP: %s?"
-msgstr "Esteu segurs que voleu eliminar aquesta IP: %s?"
 
 msgid "Are you sure you want to delete this domain alias?"
 msgstr ""
@@ -1003,6 +1003,9 @@ msgid "Authentication by user"
 msgstr ""
 
 msgid "Authentication data"
+msgstr ""
+
+msgid "Auto"
 msgstr ""
 
 msgid "Auto (Browser language)"
@@ -1386,6 +1389,9 @@ msgstr "Empresa"
 msgid "Compress HTML output"
 msgstr "Comprimir la sortida HTML"
 
+msgid "Configuration mode"
+msgstr ""
+
 msgid "Core data"
 msgstr "Dades principals"
 
@@ -1439,6 +1445,9 @@ msgstr ""
 
 #, php-format
 msgid "Could not extract plugin archive: %s"
+msgstr ""
+
+msgid "Could not find any network interface. You cannot add new IP addresses."
 msgstr ""
 
 msgid "Could not find plugin root directory within archive."
@@ -2658,9 +2667,6 @@ msgstr "Adreça IP"
 msgid "IP address already under the control of i-MSCP."
 msgstr ""
 
-msgid "IP address data"
-msgstr ""
-
 msgid "IP address successfully scheduled for addition."
 msgstr ""
 
@@ -3084,6 +3090,9 @@ msgstr "Administrar usuaris i grups"
 
 msgid "Manage your protected areas, users and groups."
 msgstr "Gestionar les seves àrees protegides, usuaris i grups."
+
+msgid "Manual"
+msgstr ""
 
 msgid "Mark"
 msgstr "Marca"
@@ -4763,9 +4772,6 @@ msgstr ""
 msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr ""
 
-msgid "The IP address you're trying to remove is assigned to a reseller."
-msgstr ""
-
 #, php-format
 msgid ""
 "The directory %s doesn't exists. Please create that directory using your "
@@ -4857,13 +4863,7 @@ msgstr "Aquest grup de htaccess ja existeix."
 msgid "This htaccess user already exist."
 msgstr "Aquest usuari de htaccess ja existeix."
 
-msgid ""
-"This interface allow to add or remove IP addresses. IP addresses listed "
-"below are already under the control of i-MSCP. IP addresses which are added "
-"through this interface will be automatically added into the i-MSCP database,"
-" and will be available for assignment to one or many of your resellers. If "
-"an IP address is not already configured on the system, it will be attached "
-"to the selected network interface."
+msgid "This interface allow to add or remove IP addresses."
 msgstr ""
 
 #, php-format
@@ -5013,9 +5013,6 @@ msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "No s'ha pogut crear el directori 'LC_MESSAGES' per el fitxer d'idioma."
 
 msgid "Unable to delete i-MSCP info file."
-msgstr ""
-
-msgid "Unable to find any network interface. You cannot add new IP address."
 msgstr ""
 
 msgid "Unable to get the IP address list. Please fix this problem."
@@ -5380,6 +5377,12 @@ msgstr "Benvingut {USERNAME} a i-MSCP"
 msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr ""
 
+msgid "When set to `Auto', the IP address is automatically configured."
+msgstr ""
+
+msgid "When set to `Manual', the configuration is left to the administrator."
+msgstr ""
+
 msgid "Wrong IP address."
 msgstr "Adreça IP errònia."
 
@@ -5500,9 +5503,8 @@ msgstr "No pots protegir una àrea sense seleccionar grup(s) htaccess."
 msgid "You cannot protect an area without selected htaccess user(s)."
 msgstr "No pots protegir una àrea sense seleccionar usuari(s) htaccess."
 
-#, php-format
-msgid "You cannot remove the %s IP address."
-msgstr "No podeu esborrar lla IP %s."
+msgid "You cannot remove an IP that is assigned to a reseller."
+msgstr ""
 
 msgid "You cannot set expire date in past."
 msgstr "No es pot assignar una data d'expiració passada."

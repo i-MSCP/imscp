@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-30 04:15+0200\n"
-"PO-Revision-Date: 2016-06-30 02:17+0000\n"
+"POT-Creation-Date: 2016-07-02 13:14+0200\n"
+"PO-Revision-Date: 2016-07-02 11:16+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/i-mscp/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -594,8 +594,8 @@ msgstr "Admin / Profil / Persönliche Daten"
 msgid "Admin / Settings"
 msgstr "Admin / Einstellungen"
 
-msgid "Admin / Settings / IP Addresses Management"
-msgstr "Admin / Einstellungen / IP Addressen Verwaltung"
+msgid "Admin / Settings / IP Management"
+msgstr ""
 
 msgid "Admin / Settings / Languages"
 msgstr "Admin / Einstellungen / Sprachen"
@@ -943,6 +943,10 @@ msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Sind Sie sicher, dass Sie das '%s' Ticket löschen wollen?"
 
 #, php-format
+msgid "Are you sure you want to delete the `%%s' IP addresse?"
+msgstr ""
+
+#, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
 msgstr "Sind Sie sich sicher, den FTP Benutzer `%%s` löschen zu wollen?"
 
@@ -952,10 +956,6 @@ msgstr "Sind Sie sich sicher, das geschützte Verzeichnis `%%s` löschen zu woll
 
 msgid "Are you sure you want to delete this DNS record?"
 msgstr "Sind Sie sicher, dass Sie diesen DNS-Eintrag löschen wollen?"
-
-#, php-format
-msgid "Are you sure you want to delete this IP: %s?"
-msgstr "Sind Sie sicher, dass Sie die IP %s löschen möchten?"
 
 msgid "Are you sure you want to delete this domain alias?"
 msgstr "Sind Sie sicher, dass Sie diesen Domain-Alias löschen wollen?"
@@ -1008,6 +1008,9 @@ msgstr "Authentifizierung durch Benutzer"
 
 msgid "Authentication data"
 msgstr "Authentifizierungsdaten"
+
+msgid "Auto"
+msgstr ""
 
 msgid "Auto (Browser language)"
 msgstr "Automatisch (Browsereinstellung)"
@@ -1390,6 +1393,9 @@ msgstr "Firma"
 msgid "Compress HTML output"
 msgstr "HTML-Ausgabe komprimieren"
 
+msgid "Configuration mode"
+msgstr ""
+
 msgid "Core data"
 msgstr "Stammdaten"
 
@@ -1444,6 +1450,9 @@ msgstr "Konnte das Plugin-Archiv nicht entpacken."
 #, php-format
 msgid "Could not extract plugin archive: %s"
 msgstr "Konnte das Plugin-Archiv nicht entpacken: %s"
+
+msgid "Could not find any network interface. You cannot add new IP addresses."
+msgstr ""
 
 msgid "Could not find plugin root directory within archive."
 msgstr "Konnte in dem Archiv keinen Plugin Ordner finden."
@@ -2662,9 +2671,6 @@ msgstr "IP-Adresse"
 msgid "IP address already under the control of i-MSCP."
 msgstr "IP-Adresse bereits unter der Kontrolle von i-MSCP."
 
-msgid "IP address data"
-msgstr "IP-Adressdaten"
-
 msgid "IP address successfully scheduled for addition."
 msgstr "IP-Adresse erfolgreich zum Hinzufügen vorgemerkt."
 
@@ -3088,6 +3094,9 @@ msgstr "Benutzer- und Gruppenverwaltung"
 
 msgid "Manage your protected areas, users and groups."
 msgstr "Verwalten Sie Ihre geschützten Bereiche, Benutzer und Gruppen."
+
+msgid "Manual"
+msgstr ""
 
 msgid "Mark"
 msgstr "Auswählen"
@@ -4767,9 +4776,6 @@ msgstr "Die %s Pluginversion %s ist nicht kompatibel mit der i-MSCP Version."
 msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr "Die Übersetzungsdatei %s wurde ignoriert: Übersetzungstabelle ist leer."
 
-msgid "The IP address you're trying to remove is assigned to a reseller."
-msgstr "Die IP-Adresse die Sie löschen möchten, ist einem Reseller zugewiesen."
-
 #, php-format
 msgid ""
 "The directory %s doesn't exists. Please create that directory using your "
@@ -4861,14 +4867,8 @@ msgstr "Diese htaccess Gruppe existiert bereits."
 msgid "This htaccess user already exist."
 msgstr "Dieser htaccess-Benutzer existiert bereits."
 
-msgid ""
-"This interface allow to add or remove IP addresses. IP addresses listed "
-"below are already under the control of i-MSCP. IP addresses which are added "
-"through this interface will be automatically added into the i-MSCP database,"
-" and will be available for assignment to one or many of your resellers. If "
-"an IP address is not already configured on the system, it will be attached "
-"to the selected network interface."
-msgstr "Diese Oberfläche erlaubt es IP-Adressen hinzuzufügen oder zu entfernen. Unten aufgeführte IP-Adressen sind bereits unter der Kontrolle von i-MSCP. Über diese Schnittstelle hinzugefügte IP-Adressen werden automatisch in die i-MSCP Datenbank eingetragen und stehen für die Zuordnung zu einem oder mehreren Ihrer Reseller zur Verfügung. Wenn eine IP-Adresse nicht bereits im System konfiguriert ist, wird sie der ausgewählten Netzwerkschnittstelle hinzugefügt."
+msgid "This interface allow to add or remove IP addresses."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5018,9 +5018,6 @@ msgstr "Kann 'LC_MESSAGES' Verzeichnis für Sprachdatei nicht erstellen."
 
 msgid "Unable to delete i-MSCP info file."
 msgstr "Fehler beim Löschen der i-MSCP Info Datei"
-
-msgid "Unable to find any network interface. You cannot add new IP address."
-msgstr "Kann keine Netzwerkkarten finden. Sie können keine neue IP-Adresse hinzufügen."
 
 msgid "Unable to get the IP address list. Please fix this problem."
 msgstr "Die Liste der IP-Adressen kann nicht abgerufen werden. Bitte beheben Sie dieses Problem."
@@ -5384,6 +5381,12 @@ msgstr "Willkommen {USERNAME} bei i-MSCP"
 msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr "Wenn auf 'ja' gesetzt, kann die PHP exec() Funktion in Ihren Scripten benutzt werden."
 
+msgid "When set to `Auto', the IP address is automatically configured."
+msgstr ""
+
+msgid "When set to `Manual', the configuration is left to the administrator."
+msgstr ""
+
 msgid "Wrong IP address."
 msgstr "Falsche IP-Adresse."
 
@@ -5504,9 +5507,8 @@ msgstr "Sie können keinen Bereich schützen, ohne ausgewählte htaccess-Gruppe(
 msgid "You cannot protect an area without selected htaccess user(s)."
 msgstr "Sie können keinen Bereich schützen, ohne ausgewählte htaccess-Benutzer."
 
-#, php-format
-msgid "You cannot remove the %s IP address."
-msgstr "Sie können die %s IP-Adresse nicht entfernen."
+msgid "You cannot remove an IP that is assigned to a reseller."
+msgstr ""
 
 msgid "You cannot set expire date in past."
 msgstr "Sie können kein Ablaufdatum in der Vergangenheit verwenden."
