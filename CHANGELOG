@@ -5,8 +5,8 @@ Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
 FRONTEND
-    Added: `onAddIpAddr', `onChangeIpConfigMode' and `onDeleteIpAddr' events
-    Fixed: `SELECT' placeholder is not parsed in ip_manage.php
+    Added: `onAddIpAddr', `onChangeIpConfigMode' and `onDeleteIpAddr' events (admin level)
+    Fixed: `SELECT' placeholder is not parsed in ip_manage.php (admin level)
 
 INSTALLER
     Added: `primary_ip' item to the list of reconfigurable items (--reconfigure command line option)
