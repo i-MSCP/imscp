@@ -36,7 +36,7 @@ use parent 'Common::Object';
 
 =item all
 
- Process all requirements checks
+ Process check for all requirements
 
  Return undef on success, die on failure
 
@@ -47,8 +47,9 @@ sub all
     my $self = shift;
 
     $self->user();
-    $self->_perlModules();
-    $self->_externalPrograms();
+    $self->_checkPrograms();
+    $self->_checkPerlModules();
+    $self->_checkPhpModules();
     undef;
 }
 
@@ -66,7 +67,7 @@ sub user
     undef;
 }
 
-=item checkVersion($version, $minVersion [, $maxVersion])
+=item checkVersion($version, $minVersion [, $maxVersion ])
 
  Checks for version
 
@@ -115,8 +116,19 @@ sub _init
 {
     my $self = shift;
 
-    # Required Perl modules
-    # TODO add required min versions
+    $self->{'programs'} = {
+        'PHP'  => {
+            'version_command' => 'php -d date.timezone=UTC -v',
+            'version_regexp'  => qr/PHP\s([\d.]+)/,
+            'min_version'     => '5.3.2'
+        },
+        'Perl' => {
+            'version_command' => 'perl -v',
+            'version_regexp'  => qr/v([\d.]+)/,
+            'min_version'     => '5.14.2',
+            'max_version'     => '5.999' # Arbitrary minor version is intentional. We only want reject Perl >= 6
+        }
+    };
     $self->{'perl_modules'} = {
         'Bit::Vector'            => undef,
         'Crypt::Blowfish'        => undef,
@@ -133,80 +145,23 @@ sub _init
         'Net::LibIDN'            => undef,
         'XML::Simple'            => undef
     };
-
-    # Required program versions
-    $self->{'programs'} = {
-        'PHP'  => {
-            'version_command' => 'php -d date.timezone=UTC -v',
-            'version_regexp'  => qr/PHP\s([\d.]+)/,
-            'min_version'     => '5.3.2'
-        },
-        'Perl' => {
-            'version_command' => 'perl -v',
-            'version_regexp'  => qr/v([\d.]+)/,
-            'min_version'     => '5.14.2',
-            'max_version'     => '5.999' # Arbitrary minor version is intentional. We only want reject Perl >= 6
-        }
-    };
-
+    $self->{'php_modules'} = [ qw/
+        ctype curl date dom fileinfo filter ftp gd gettext hash iconv imap intl json libxml mbstring mcrypt mysqli
+        openssl pcntl pcre PDO pdo_mysql Phar posix Reflection session SimpleXML sockets SPL xml xmlreader xmlwriter
+        zip zlib
+        / ];
     $self;
 }
 
-=item test($test)
+=item _checkPrograms()
 
- Run the given test if available
-
- Param string $test Test name
- Return undef on success, die on failure
-
-=cut
-
-sub test
-{
-    my ($self, $test) = @_;
-
-    die( sprintf( "The '%s' test is not available.\n", $test ) ) unless self->can( $test );
-    $self->$test();
-    undef;
-}
-
-=item _perlModules()
-
- Checks for perl module availability
+ Checks for program requirements
 
  Return undef on success, die on failure
 
 =cut
 
-sub _perlModules
-{
-    my $self = shift;
-
-    my @moduleNames = ();
-    while ( my ($moduleName, $moduleVersion) = each %{$self->{'perl_modules'}}) {
-        push( @moduleNames, $moduleName ) unless check_install( module => $moduleName, version => $moduleVersion );
-    }
-
-    return undef unless @moduleNames;
-
-    if (@moduleNames > 1) {
-        die( sprintf( "The following Perl modules are not installed: %s\n", join ', ', @moduleNames ) );
-    } else {
-        die( sprintf( "The %s Perl module is not installed\n", "@moduleNames" ) );
-    }
-
-    undef;
-}
-
-=item _externalPrograms()
-
- Checks for external program availability and their versions
-
- Return undef on success, die on failure
-
-=cut
-
-sub _externalPrograms
+sub _checkPrograms
 {
     my $self = shift;
 
@@ -214,7 +169,7 @@ sub _externalPrograms
         my $lcProgram = lc( $programName );
 
         iMSCP::ProgramFinder::find( $lcProgram ) or die(
-            sprintf( 'Could not find the %s command in search path', $programName )
+            sprintf( "Could not find the `%s' command in search path", $programName )
         );
 
         next unless $self->{'programs'}->{$programName}->{'version_command'};
@@ -229,6 +184,69 @@ sub _externalPrograms
         };
 
         die( sprintf( "%s: %s\n", $programName, $@ ) ) if $@;
+    }
+
+    undef;
+}
+
+=item _checkPerlModules()
+
+ Checks for Perl modules requirements
+
+ Return undef on success, die on failure
+
+=cut
+
+sub _checkPerlModules
+{
+    my $self = shift;
+
+    my @missingModules = ();
+    while ( my ($moduleName, $moduleVersion) = each %{$self->{'perl_modules'}}) {
+        push( @missingModules, $moduleName ) unless check_install( module => $moduleName, version => $moduleVersion );
+    }
+
+    return undef unless @missingModules;
+
+    if (@missingModules > 1) {
+        die(
+            sprintf( "The following Perl modules are not installed: %s\n", join ', ', @missingModules )
+        );
+    } else {
+        die( sprintf( "The `%s' Perl module is not installed\n", "@missingModules" ) );
+    }
+
+    undef;
+}
+
+=item _checkPhpModules()
+
+ Checks for PHP modules requirements
+
+ Return undef on success, die on failure
+
+=cut
+
+sub _checkPhpModules
+{
+    my $self = shift;
+
+    open my $fh, '-|', 'php', '-d', 'date.timezone=UTC', '-m' or die( sprintf( 'Could not pipe to PHP', $! ) );
+    chomp( my @modules = <$fh> );
+
+    my @missingModules = ();
+    for my $module(@{$self->{'php_modules'}}) {
+        push @missingModules, $module unless grep($_ eq $module, @modules);
+    }
+
+    return undef unless @missingModules;
+
+    if (@missingModules > 1) {
+        die(
+            sprintf( "The following PHP modules are not installed or not enabled: %s\n", join ', ', @missingModules )
+        );
+    } else {
+        die( sprintf( "The `%s' PHP module is not installed or not enabled.\n", "@missingModules" ) );
     }
 
     undef;

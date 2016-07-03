@@ -153,7 +153,7 @@ sub build
 
     my @steps = (
         [ \&_processDistroPackages, 'Processing distribution packages' ],
-        [ \&_testRequirements, 'Checking for requirements' ],
+        [ \&_checkRequirements, 'Checking for requirements' ],
         [ \&_buildDistributionFiles, 'Building distribution files' ],
         [ \&_compileDaemon, 'Compiling daemon' ],
         [ \&_savePersistentData, 'Saving persistent data' ],
@@ -526,15 +526,15 @@ sub _processDistroPackages
     $rs ||= _getDistroAdapter()->uninstallPackages();
 }
 
-=item _testRequirements()
+=item _checkRequirements()
 
- Test for requirements
+ Check for requirements
 
- Return undef if all requirements are meet, throw a fatal error otherwise
+ Return undef if all requirements are met, throw a fatal error otherwise
 
 =cut
 
-sub _testRequirements
+sub _checkRequirements
 {
     iMSCP::Requirements->new()->all();
 }

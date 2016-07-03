@@ -11,6 +11,7 @@ FRONTEND
 
 INSTALLER
     Added: `primary_ip' item to the list of reconfigurable items (--reconfigure command line option)
+    Added: Requirements check for PHP modules
     Removed: Additional IP configuration dialog (see the errata file for more details)
     Removed: `ips' item from the list of reconfigurable items (--reconfigure command line option)
 
