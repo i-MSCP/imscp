@@ -148,7 +148,7 @@ sub _init
     $self->{'php_modules'} = [ qw/
         ctype curl date dom fileinfo filter ftp gd gettext hash iconv imap intl json libxml mbstring mcrypt mysqli
         openssl pcntl pcre PDO pdo_mysql Phar posix Reflection session SimpleXML sockets SPL xml xmlreader xmlwriter
-        zip zlib
+        zip zlib sss
         / ];
     $self;
 }
@@ -213,7 +213,7 @@ sub _checkPerlModules
             sprintf( "The following Perl modules are not installed: %s\n", join ', ', @missingModules )
         );
     } else {
-        die( sprintf( "The `%s' Perl module is not installed\n", "@missingModules" ) );
+        die( sprintf( "The `%s' Perl module is not installed\n", pop @missingModules ) );
     }
 
     undef;
@@ -246,7 +246,7 @@ sub _checkPhpModules
             sprintf( "The following PHP modules are not installed or not enabled: %s\n", join ', ', @missingModules )
         );
     } else {
-        die( sprintf( "The `%s' PHP module is not installed or not enabled.\n", "@missingModules" ) );
+        die( sprintf( "The `%s' PHP module is not installed or not enabled.\n",  pop @missingModules ) );
     }
 
     undef;
