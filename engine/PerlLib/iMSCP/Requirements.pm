@@ -148,7 +148,7 @@ sub _init
     $self->{'php_modules'} = [ qw/
         ctype curl date dom fileinfo filter ftp gd gettext hash iconv imap intl json libxml mbstring mcrypt mysqli
         openssl pcntl pcre PDO pdo_mysql Phar posix Reflection session SimpleXML sockets SPL xml xmlreader xmlwriter
-        zip zlib sss
+        zip zlib
         / ];
     $self;
 }
