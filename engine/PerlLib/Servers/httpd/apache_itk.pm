@@ -1664,8 +1664,10 @@ sub _addFiles
         }
 
         # Transitional - Remove deprecated domain_disable_page directory if any
-        $rs = iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/domain_disable_page" )->remove();
-        return $rs if $rs;
+        if ($data->{'DOMAIN_TYPE'} eq 'dmn') {
+            $rs = iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/domain_disable_page" )->remove();
+            return $rs if $rs;
+        }
 
         if ($data->{'WEB_FOLDER_PROTECTION'} eq 'yes') {
             (my $userWebDir = $main::imscpConfig{'USER_WEB_DIR'}) =~ s%/+$%%;
