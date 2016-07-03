@@ -17,7 +17,7 @@ INSTALLER
     Removed: `ips' item from the list of reconfigurable items (--reconfigure command line option)
 
 PRESEED
-    Removed: SERVER_IPS parameter according change made in installer
+    Removed: SERVER_IPS parameter according changes made in installer
 
 YOUTRACK
     #IP-1575 When editing forwarding URL, scheme field is not set with current value
