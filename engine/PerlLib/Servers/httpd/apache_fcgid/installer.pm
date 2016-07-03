@@ -357,7 +357,7 @@ sub _makeDirs
 
 =item _copyDomainDisablePages()
 
- Copy page for disabled domains
+ Copy pages for disabled domains
 
  Return int 0 on success, other on failure
 
