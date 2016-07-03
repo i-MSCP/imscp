@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-02 13:14+0200\n"
-"PO-Revision-Date: 2016-07-02 11:16+0000\n"
+"POT-Creation-Date: 2016-07-03 18:53+0200\n"
+"PO-Revision-Date: 2016-07-02 15:34+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/i-mscp/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -592,7 +592,7 @@ msgid "Admin / Settings"
 msgstr "Administrateur / Paramètres"
 
 msgid "Admin / Settings / IP Management"
-msgstr ""
+msgstr "Administrateur / Paramètres / Gestion des adresses IP"
 
 msgid "Admin / Settings / Languages"
 msgstr "Administrateur / Paramètres / Langues"
@@ -941,7 +941,7 @@ msgstr "Etes-vous certain de vouloir supprimer le ticket '%s' ?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s' IP addresse?"
-msgstr ""
+msgstr "Êtes-vous certain de vouloir supprimer l'adresse IP `%%s'?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
@@ -1007,7 +1007,7 @@ msgid "Authentication data"
 msgstr "Données d'authentification"
 
 msgid "Auto"
-msgstr ""
+msgstr "Automatique"
 
 msgid "Auto (Browser language)"
 msgstr "Auto (Langage du navigateur)"
@@ -1391,7 +1391,7 @@ msgid "Compress HTML output"
 msgstr "Activer la compression HTML"
 
 msgid "Configuration mode"
-msgstr ""
+msgstr "Mode de configuration"
 
 msgid "Core data"
 msgstr "Données principales"
@@ -1449,7 +1449,7 @@ msgid "Could not extract plugin archive: %s"
 msgstr "Impossible d'extraire l'archive de l'extension: %s"
 
 msgid "Could not find any network interface. You cannot add new IP addresses."
-msgstr ""
+msgstr "Impossible de trouver une interface réseau. Vous ne pouvez pas ajouter de nouvelles adresses IP."
 
 msgid "Could not find plugin root directory within archive."
 msgstr "Impossible de trouver le répertoire racine de l'extension à l'intérieur de l'archive."
@@ -2571,13 +2571,13 @@ msgid "Groups"
 msgstr "Groupes"
 
 msgid "HSTS (HTTP Strict Transport Security)"
-msgstr ""
+msgstr "HSTS (HTTP Strict Transport Security)"
 
 msgid "HSTS includeSubDomains directive"
-msgstr ""
+msgstr "HSTS includeSubDomains directive"
 
 msgid "HSTS max-age directive value"
-msgstr ""
+msgstr "HSTS: Valeur de la directuve  max-age"
 
 msgid "HTTP traffic"
 msgstr "Trafic HTTP"
@@ -3093,7 +3093,7 @@ msgid "Manage your protected areas, users and groups."
 msgstr "Gérez vos zones protégées, vos utilisateurs et vos groupes."
 
 msgid "Manual"
-msgstr ""
+msgstr "Manuel"
 
 msgid "Mark"
 msgstr "Marque"
@@ -4865,7 +4865,7 @@ msgid "This htaccess user already exist."
 msgstr "Ce nom d'utilisateur htaccess n'est pas disponible."
 
 msgid "This interface allow to add or remove IP addresses."
-msgstr ""
+msgstr "Cette interface permet d'ajouter ou supprimer des adresses IP."
 
 #, php-format
 msgid ""
@@ -5379,10 +5379,10 @@ msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr "Si oui, vos scripts PHP peuvent appeler la function PHP exec()."
 
 msgid "When set to `Auto', the IP address is automatically configured."
-msgstr ""
+msgstr "Quand `Automatique' est sélectionné, l'adresse IP est automatiquement configurée."
 
 msgid "When set to `Manual', the configuration is left to the administrator."
-msgstr ""
+msgstr "Quand `Manuel' est sélectionné, la configuration est laissée aux soins de l'administrateur."
 
 msgid "Wrong IP address."
 msgstr "Mauvais adresse IP."
@@ -5505,7 +5505,7 @@ msgid "You cannot protect an area without selected htaccess user(s)."
 msgstr "Vous ne pouvez pas protéger une zone sans avoir sélectionner au moins un utilisateur."
 
 msgid "You cannot remove an IP that is assigned to a reseller."
-msgstr ""
+msgstr "Vous ne pouvez pas supprimer une adresse IP qui est assignée à un revendeur."
 
 msgid "You cannot set expire date in past."
 msgstr "Vous ne pouvez pas paramétrer la nouvelle date d'expiration dans le passé."
@@ -5695,7 +5695,7 @@ msgid ""
 "You should enable this directive only if all subdomains of this domain are "
 "served through SSL. Note that even if you add this directive, this will not "
 "automatically activate the HSTS feature for the subdomains of this domain."
-msgstr ""
+msgstr "Vous devriez activer cette directive seulement si tous les sous-domaines de ce domaine sont servis via SSL. Notez que même si vous activez cette directive, cela ne va pas automatiquement activer la fonctionnalité HSTS pour les sous-domaines de ce domaine."
 
 msgid "Your account has expired."
 msgstr "Votre compte est expiré."
