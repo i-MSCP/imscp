@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-30 04:15+0200\n"
-"PO-Revision-Date: 2016-06-30 02:17+0000\n"
+"POT-Creation-Date: 2016-07-03 18:53+0200\n"
+"PO-Revision-Date: 2016-07-02 11:17+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/i-mscp/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -507,7 +507,7 @@ msgid "Add custom menu"
 msgstr "Добавить пользовательское меню"
 
 msgid "Add customer"
-msgstr "Добавить пользователя"
+msgstr "Добавить клиента"
 
 msgid "Add customer - Next step"
 msgstr "Добавить клиента - Следующий шаг"
@@ -593,8 +593,8 @@ msgstr "Администратор / Профиль / Персональные �
 msgid "Admin / Settings"
 msgstr "Администратор / Настройки"
 
-msgid "Admin / Settings / IP Addresses Management"
-msgstr "Администратор / Настройки / Управление IP адресами"
+msgid "Admin / Settings / IP Management"
+msgstr "Админ / Настройки / Управление IP"
 
 msgid "Admin / Settings / Languages"
 msgstr "Администратор / Настройки / Языки"
@@ -942,6 +942,10 @@ msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Вы уверены, что хотите удалить тикет %s ?"
 
 #, php-format
+msgid "Are you sure you want to delete the `%%s' IP addresse?"
+msgstr ""
+
+#, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
 msgstr "Вы уверены, что хотите удалить пользователя FTP %%s ?"
 
@@ -951,10 +955,6 @@ msgstr "Вы уверены, что хотите удалить защищённ
 
 msgid "Are you sure you want to delete this DNS record?"
 msgstr "Вы уверены, что хотите удалить эту DNS запись?"
-
-#, php-format
-msgid "Are you sure you want to delete this IP: %s?"
-msgstr "Вы уверены что хотите удалить этот IP: %s?"
 
 msgid "Are you sure you want to delete this domain alias?"
 msgstr "Вы уверены, что хотите удалить этот алиас домена?"
@@ -1007,6 +1007,9 @@ msgstr "Аутентификация по пользователю"
 
 msgid "Authentication data"
 msgstr "Данные аутентификации"
+
+msgid "Auto"
+msgstr ""
 
 msgid "Auto (Browser language)"
 msgstr "Автоматически (язык браузера)"
@@ -1389,6 +1392,9 @@ msgstr "Компания"
 msgid "Compress HTML output"
 msgstr "Сжать вывод HTML"
 
+msgid "Configuration mode"
+msgstr ""
+
 msgid "Core data"
 msgstr "Основные данные"
 
@@ -1443,6 +1449,9 @@ msgstr "Невозможно извлечь архив плагина."
 #, php-format
 msgid "Could not extract plugin archive: %s"
 msgstr "Невозможно извлечь архив плагина: %s"
+
+msgid "Could not find any network interface. You cannot add new IP addresses."
+msgstr ""
 
 msgid "Could not find plugin root directory within archive."
 msgstr "Невозможно найти корневой каталог плагина в архиве."
@@ -2564,13 +2573,13 @@ msgid "Groups"
 msgstr "Группы"
 
 msgid "HSTS (HTTP Strict Transport Security)"
-msgstr ""
+msgstr "HSTS (HTTP Strict Transport Security)"
 
 msgid "HSTS includeSubDomains directive"
-msgstr ""
+msgstr "HSTS директива includeSubDomains"
 
 msgid "HSTS max-age directive value"
-msgstr ""
+msgstr "HSTS значение директивы max-age"
 
 msgid "HTTP traffic"
 msgstr "HTTP трафик"
@@ -2660,9 +2669,6 @@ msgstr "IP адрес"
 
 msgid "IP address already under the control of i-MSCP."
 msgstr "IP адрес уже под контролем i-MSCP."
-
-msgid "IP address data"
-msgstr "Данные IP адресов"
 
 msgid "IP address successfully scheduled for addition."
 msgstr "IP адрес успешно помечен для добавления."
@@ -3087,6 +3093,9 @@ msgstr "Управление пользователями и группами"
 
 msgid "Manage your protected areas, users and groups."
 msgstr "Управление защищенными зонами, пользователями и группами"
+
+msgid "Manual"
+msgstr ""
 
 msgid "Mark"
 msgstr "Метка"
@@ -4766,9 +4775,6 @@ msgstr "Ваша версия i-MSCP несовместима с %s плагин
 msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr "Язык %s перевода был проигнорирован: Таблица перевода пуста."
 
-msgid "The IP address you're trying to remove is assigned to a reseller."
-msgstr "IP адрес, который вы пытаетесь удалить, назначен реселлеру."
-
 #, php-format
 msgid ""
 "The directory %s doesn't exists. Please create that directory using your "
@@ -4860,14 +4866,8 @@ msgstr "Группа htaccess уже существует."
 msgid "This htaccess user already exist."
 msgstr "Пользователь htaccess уже существует."
 
-msgid ""
-"This interface allow to add or remove IP addresses. IP addresses listed "
-"below are already under the control of i-MSCP. IP addresses which are added "
-"through this interface will be automatically added into the i-MSCP database,"
-" and will be available for assignment to one or many of your resellers. If "
-"an IP address is not already configured on the system, it will be attached "
-"to the selected network interface."
-msgstr "Этот интерфейс позволяет добавлять или удалять IP адреса. IP адреса, перчисленные ниже уже находятся под контролем i-MSCP. IP адреса, которые добавляются через этот интерфейс, будут автоматически добавлены в базу данных i-MSCP, и будут добавлены для одного или нескольких Ваших реселлеров. Если IP адреса еще не настроены в системе, они будут прикреплены к выбранному сетевому интерфейсу."
+msgid "This interface allow to add or remove IP addresses."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5017,9 +5017,6 @@ msgstr "Невозможно создать каталог 'LC_MESSAGES' для 
 
 msgid "Unable to delete i-MSCP info file."
 msgstr "Невозможно удалить файл информации i-MSCP."
-
-msgid "Unable to find any network interface. You cannot add new IP address."
-msgstr "Невозможно найти сетевой интерфейс. Форма добавления IP адресов была отключена."
 
 msgid "Unable to get the IP address list. Please fix this problem."
 msgstr "Невозможно создать список IP адресов. Пожалуйста, исправьте проблему."
@@ -5383,6 +5380,12 @@ msgstr "{USERNAME}, добро пожаловать в i-MSCP"
 msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr "Если да, то функция PHP exec() может использоваться в ваших скриптах."
 
+msgid "When set to `Auto', the IP address is automatically configured."
+msgstr ""
+
+msgid "When set to `Manual', the configuration is left to the administrator."
+msgstr ""
+
 msgid "Wrong IP address."
 msgstr "Неверный IP адрес."
 
@@ -5503,9 +5506,8 @@ msgstr "Вы не можете защитить зону без выбора г�
 msgid "You cannot protect an area without selected htaccess user(s)."
 msgstr "Вы не можете защитить зону без выбора пользователей htaccess."
 
-#, php-format
-msgid "You cannot remove the %s IP address."
-msgstr "Вы не можете удалить IP адрес %s ."
+msgid "You cannot remove an IP that is assigned to a reseller."
+msgstr ""
 
 msgid "You cannot set expire date in past."
 msgstr "Дата истечения не может быть в прошлом."
@@ -5701,7 +5703,7 @@ msgid ""
 "You should enable this directive only if all subdomains of this domain are "
 "served through SSL. Note that even if you add this directive, this will not "
 "automatically activate the HSTS feature for the subdomains of this domain."
-msgstr ""
+msgstr "Вы должны включать эту директиву только если поддомены данного домена обслуживаются с использованием SSL. Учтите, что включение директивы не включит функцию HSTS для поддоменов данного домена."
 
 msgid "Your account has expired."
 msgstr "Ваша учетная запись истекла."

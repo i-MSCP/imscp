@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-06-30 04:15+0200\n"
-"PO-Revision-Date: 2016-06-30 02:17+0000\n"
+"POT-Creation-Date: 2016-07-03 18:53+0200\n"
+"PO-Revision-Date: 2016-07-02 11:17+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/i-mscp/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -590,7 +590,7 @@ msgstr "Adminisztrátor / Profil / Személyes adatok módosítása"
 msgid "Admin / Settings"
 msgstr "Adminisztrátor / Beállítások"
 
-msgid "Admin / Settings / IP Addresses Management"
+msgid "Admin / Settings / IP Management"
 msgstr "Adminisztrátor / Beállítások / IP-címek kezelése"
 
 msgid "Admin / Settings / Languages"
@@ -939,6 +939,10 @@ msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Biztosan szeretné törölni a(z) %s hibajegyet?"
 
 #, php-format
+msgid "Are you sure you want to delete the `%%s' IP addresse?"
+msgstr ""
+
+#, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
 msgstr ""
 
@@ -948,10 +952,6 @@ msgstr ""
 
 msgid "Are you sure you want to delete this DNS record?"
 msgstr "Biztosan törli ezt a DNS rekordot?"
-
-#, php-format
-msgid "Are you sure you want to delete this IP: %s?"
-msgstr "Biztosan szeretné törölni a(z) %s IP-címet?"
 
 msgid "Are you sure you want to delete this domain alias?"
 msgstr "Biztosan törli ezt a domain álnevet?"
@@ -1003,6 +1003,9 @@ msgid "Authentication by user"
 msgstr ""
 
 msgid "Authentication data"
+msgstr ""
+
+msgid "Auto"
 msgstr ""
 
 msgid "Auto (Browser language)"
@@ -1386,6 +1389,9 @@ msgstr "Cég"
 msgid "Compress HTML output"
 msgstr "Tömöritett HTML kimenet"
 
+msgid "Configuration mode"
+msgstr ""
+
 msgid "Core data"
 msgstr "Alapadatok (szükséges)"
 
@@ -1439,6 +1445,9 @@ msgstr ""
 
 #, php-format
 msgid "Could not extract plugin archive: %s"
+msgstr ""
+
+msgid "Could not find any network interface. You cannot add new IP addresses."
 msgstr ""
 
 msgid "Could not find plugin root directory within archive."
@@ -2658,9 +2667,6 @@ msgstr "IPv4-cím"
 msgid "IP address already under the control of i-MSCP."
 msgstr "Ezt az IP-címet már kezeli az i-MSCP."
 
-msgid "IP address data"
-msgstr "IP-cím adatok"
-
 msgid "IP address successfully scheduled for addition."
 msgstr "IP-cím hozzáadása sikeresen beütemezve."
 
@@ -3084,6 +3090,9 @@ msgstr "Felhasználók és csoportok kezelése"
 
 msgid "Manage your protected areas, users and groups."
 msgstr "Védett területek, felhasználók és csoportok kezelése"
+
+msgid "Manual"
+msgstr ""
 
 msgid "Mark"
 msgstr "Kijelölés"
@@ -4763,9 +4772,6 @@ msgstr "%s bővítmény %s verziója nem kompatibilis az i-MSCP verzióval."
 msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr "A(z) %s fordítási fájl figyelmen kívül hagyva: Üres a fordítói tábla."
 
-msgid "The IP address you're trying to remove is assigned to a reseller."
-msgstr "IP-cím, amit próbál eltávolítani, hozzá van rendelve viszonteladóhoz."
-
 #, php-format
 msgid ""
 "The directory %s doesn't exists. Please create that directory using your "
@@ -4857,14 +4863,8 @@ msgstr "Ez a védett csoport már létezik"
 msgid "This htaccess user already exist."
 msgstr "Ez a védett felhasználó már létezik"
 
-msgid ""
-"This interface allow to add or remove IP addresses. IP addresses listed "
-"below are already under the control of i-MSCP. IP addresses which are added "
-"through this interface will be automatically added into the i-MSCP database,"
-" and will be available for assignment to one or many of your resellers. If "
-"an IP address is not already configured on the system, it will be attached "
-"to the selected network interface."
-msgstr "Ezen a felületen tudsz hozzáadni vagy eltávolítani IP-címeket. Az alább felsorolt IP-címeket már kezeli az i-MSCP. Ezen a felületen keresztül hozzáadott IP-címek automatikusan hozzáadásra kerülnek az i-MSCP adatbázisához, és kioszthatóak lesznek egy vagy több viszonteladónak. Ha egy IP-címet még nem konfiguráltál a rendszerben, akkor hozzáadásra kerül a kiválasztott hálózati csatolóhoz."
+msgid "This interface allow to add or remove IP addresses."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5014,9 +5014,6 @@ msgstr "Nem hozható létre a „LC_MESSAGES” könyvtár a nyelvi fájl szám�
 
 msgid "Unable to delete i-MSCP info file."
 msgstr "Nem lehet törölni az i-MSCP infó fájlját. "
-
-msgid "Unable to find any network interface. You cannot add new IP address."
-msgstr "Nem található hálózati csatoló. Új IP-cím hozzáadása nem lehetséges. "
 
 msgid "Unable to get the IP address list. Please fix this problem."
 msgstr "IP-cím lista nem érhető el. Kérjük javítsd a problémát."
@@ -5380,6 +5377,12 @@ msgstr "Üdvözöljük {USERNAME} az i-MSCP rendszerben!"
 msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr ""
 
+msgid "When set to `Auto', the IP address is automatically configured."
+msgstr ""
+
+msgid "When set to `Manual', the configuration is left to the administrator."
+msgstr ""
+
 msgid "Wrong IP address."
 msgstr "Hibás IP-cím"
 
@@ -5500,9 +5503,8 @@ msgstr "Nem tudja megvédeni a kijelölt területet védett csoport(ok) kiválas
 msgid "You cannot protect an area without selected htaccess user(s)."
 msgstr "Nem tudja megvédeni a kijelölt területet védett felhasználó(ok) kiválasztása nélkül"
 
-#, php-format
-msgid "You cannot remove the %s IP address."
-msgstr "Nem törölhető az „%s” IP-cím."
+msgid "You cannot remove an IP that is assigned to a reseller."
+msgstr ""
 
 msgid "You cannot set expire date in past."
 msgstr "Lejárati dátum nem lehet korábbi ."
