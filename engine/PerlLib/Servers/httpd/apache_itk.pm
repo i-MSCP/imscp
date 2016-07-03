@@ -283,10 +283,13 @@ sub disableDmn
             HTTPD_LOG_DIR     => $self->{'config'}->{'HTTPD_LOG_DIR'},
             DOMAIN_IP         => $net->getAddrVersion( $data->{'DOMAIN_IP'} ) eq 'ipv4'
                 ? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]",
+            USER_WEB_DIR      => $main::imscpConfig{'USER_WEB_DIR'}
         }
     );
 
-    my %templates = ( '' => $data->{'HSTS_SUPPORT'} ? 'domain_redirect.tpl' : 'domain_disabled.tpl' );
+    my %templates = (
+        '' => $data->{'SSL_SUPPORT'} && $data->{'HSTS_SUPPORT'} ? 'domain_redirect.tpl' : 'domain_disabled.tpl'
+    );
 
     if ($data->{'SSL_SUPPORT'}) {
         $self->setData( { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" } );
@@ -319,6 +322,14 @@ sub disableDmn
             { destination => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
         );
         return $rs if $rs;
+    }
+
+    # Transitional - Remove deprecated domain_disable_page directory if any
+    if ($data->{'DOMAIN_TYPE'} eq 'dmn' && -d $data->{'WEB_DIR'}) {
+        clearImmutable( $data->{'WEB_DIR'} );
+        $rs = iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/domain_disable_page" )->remove();
+        return $rs if $rs;
+        setImmutable( $data->{'WEB_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
     }
 
     $self->{'restart'} = 1;
@@ -1592,7 +1603,6 @@ sub _addFiles
         # 00_private           vuxxx:vuxxx (recursive with --fix-permissions)
         # backups              vuxxx:vuxxx (recursive with --fix-permissions)
         # cgi-bin              vuxxx:vuxxx (recursive with --fix-permissions)
-        # domain_disable_page  skipped
         # error                vuxxx:vuxxx (recursive with --fix-permissions)
         # htdocs               vuxxx:vuxxx (recursive with --fix-permissions)
         # .htgroup             skipped
@@ -1600,7 +1610,7 @@ sub _addFiles
         # logs                 skipped
         # phptmp               vuxxx:vuxxx (recursive with --fix-permissions)
         for my $file(@files) {
-            next if $file =~ /^(?:domain_disable_page|\.htgroup|\.htpasswd|logs)$/ || !-e "$data->{'WEB_DIR'}/$file";
+            next if $file =~ /^(?:\.htgroup|\.htpasswd|logs)$/ || !-e "$data->{'WEB_DIR'}/$file";
             $rs = setRights(
                 "$data->{'WEB_DIR'}/$file",
                 { user => $data->{'USER'}, group => $data->{'GROUP'}, recursive => $fixPermissions }
@@ -1612,7 +1622,6 @@ sub _addFiles
         # 00_private           0750 (no recursive)
         # backups              0750 (recursive with --fix-permissions)
         # cgi-bin              0750 (no recursive)
-        # domain_disable_page  0750 (recursive)
         # error                0750 (recursive with --fix-permissions)
         # htdocs               0750 (no recursive)
         # .htgroup             0640
@@ -1626,18 +1635,16 @@ sub _addFiles
                 {
                     dirmode   => '0750',
                     filemode  => '0640',
-                    recursive => $file =~ /^(?:00_private|cgi-bin|htdocs)$/
-                        ? 0 : $file eq 'domain_disable_page' ? 1 : $fixPermissions
+                    recursive => $file =~ /^(?:00_private|cgi-bin|htdocs)$/ ? 0 : $fixPermissions
                 }
             );
             return $rs if $rs;
         }
 
-        # Fix user/group for domain_disable_page directory, .htgroup and .htpasswd files
-        # domain_disable_page  root:www-data (recursive)
+        # Fix user/group for .htgroup and .htpasswd files
         # .htgroup             root:www-data
         # .htpasswd            root:www-data
-        for my $file('domain_disable_page', '.htgroup', '.htpasswd') {
+        for my $file('.htgroup', '.htpasswd') {
             next unless -e "$data->{'WEB_DIR'}/$file";
             $rs = setRights(
                 "$data->{'WEB_DIR'}/$file",
@@ -1655,6 +1662,10 @@ sub _addFiles
             );
             return $rs if $rs;
         }
+
+        # Transitional - Remove deprecated domain_disable_page directory if any
+        $rs = iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/domain_disable_page" )->remove();
+        return $rs if $rs;
 
         if ($data->{'WEB_FOLDER_PROTECTION'} eq 'yes') {
             (my $userWebDir = $main::imscpConfig{'USER_WEB_DIR'}) =~ s%/+$%%;

@@ -875,7 +875,8 @@ sub _cleanup
         "$main::imscpConfig{'CONF_DIR'}/postfix/backup",
         "$main::imscpConfig{'CONF_DIR'}/postfix/imscp",
         "$main::imscpConfig{'CONF_DIR'}/postfix/parts",
-        "$main::imscpConfig{'CONF_DIR'}/postfix/working"
+        "$main::imscpConfig{'CONF_DIR'}/postfix/working",
+        "$main::imscpConfig{'CONF_DIR'}/skel/domain/domain_disable_page"
     ) {
         my $rs ||= iMSCP::Dir->new( dirname => $_ )->remove();
         return $rs if $rs;

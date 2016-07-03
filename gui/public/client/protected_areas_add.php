@@ -32,7 +32,7 @@ function isAllowedDir($directory)
 {
     global $mountpoints;
     $disallowedDirs = implode('|', array_merge($mountpoints, array(
-        '/', '00_private', 'backups', 'disabled', 'domain_disable_page', 'errors', 'logs', 'phptmp', 'statistics')
+        '/', '00_private', 'backups', 'disabled', 'errors', 'logs', 'phptmp', 'statistics')
     ));
 
     foreach ($mountpoints as $mountpoint) {
@@ -191,7 +191,7 @@ function generatePage($tpl)
 
     # Set hidden and unselectable directories for FTP chooser
     $_SESSION['vftp_hidden_dirs'] = array(
-        '00_private', 'backups', 'disabled', 'domain_disable_page', 'errors', 'logs', 'phptmp', 'statistics'
+        '00_private', 'backups', 'disabled', 'errors', 'logs', 'phptmp', 'statistics'
     );
     $_SESSION['vftp_unselectable_dirs'] = $mountpoints;
 

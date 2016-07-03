@@ -139,7 +139,7 @@ sub run
                 # Backup customers webspace
                 if (grep($_ eq 'dmn', @allowbackup)) {
                     my @cmd = (
-                        "tar -c -C $homeDir --exclude=logs --exclude=phptmp --exclude=backups --exclude=domain_disable_page .",
+                        "tar -c -C $homeDir --exclude=logs --exclude=phptmp --exclude=backups .",
                         $algo eq 'no'
                             ? "-f $bkpDir/$mainDomainName-backup-$date.tar"
                             : "| $command->{$algo}->{'command'} -$level > $bkpDir/$mainDomainName-backup-$date.tar$ext"

@@ -84,7 +84,6 @@ sub quotaFiles
                     'nice -n 15 ionice -c2 -n5',
                     'du',
                     '--exclude=backups/*',
-                    '--exclude=domain_disable_page/*',
                     '--exclude=logs/*.log',
                     '--exclude=statistics/*',
                     '-s -B1',

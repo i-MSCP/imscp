@@ -34,7 +34,7 @@ function isAllowedDir($directory)
     $mountpoints = getMountpoints($mainDmnProps['domain_id']);
 
     foreach ($mountpoints as $mountpoint) {
-        if (preg_match("%^$mountpoint/(?:disabled|domain_disable_page|errors|phptmp|statistics)$%", $directory)) {
+        if (preg_match("%^$mountpoint/(?:disabled|errors|phptmp|statistics)$%", $directory)) {
             return false;
         }
     }
@@ -150,7 +150,7 @@ function generatePage($tpl, $ftpUserId)
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
     # Set hidden and unselectable directories for FTP chooser
-    $_SESSION['vftp_hidden_dirs'] = array('disabled', 'errors', 'phptmp', 'statistics', 'domain_disable_page');
+    $_SESSION['vftp_hidden_dirs'] = array('disabled', 'errors', 'phptmp', 'statistics');
     $_SESSION['vftp_unselectable_dirs'] = array();
 
     $cfg = iMSCP_Registry::get('config');

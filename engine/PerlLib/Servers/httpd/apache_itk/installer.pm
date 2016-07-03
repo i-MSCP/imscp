@@ -123,6 +123,7 @@ sub install
 
     my $rs = $self->_setApacheVersion();
     $rs ||= $self->_makeDirs();
+    $rs ||= $self->_copyDomainDisablePages;
     $rs ||= $self->_buildPhpConfFiles();
     $rs ||= $self->_buildApacheConfFiles();
     $rs ||= $self->_installLogrotate();
@@ -145,7 +146,11 @@ sub setEnginePermissions
 
     my $rs = setRights(
         '/usr/local/sbin/vlogger',
-        { user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0750' }
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
+            mode  => '0750'
+        }
     );
     # Fix permissions on root log dir (e.g: /var/log/apache2) in any cases
     # Fix permissions on root log dir (e.g: /var/log/apache2) content only with --fix-permissions option
@@ -157,6 +162,16 @@ sub setEnginePermissions
             dirmode   => '0750',
             filemode  => '0644',
             recursive => iMSCP::Getopt->fixPermissions
+        }
+    );
+    $rs ||= setRights(
+        "$main::imscpConfig{'USER_WEB_DIR'}/domain_disabled_pages",
+        {
+            user      => $main::imscpConfig{'ROOT_USER'},
+            group     => $self->{'config'}->{'HTTPD_GROUP'},
+            dirmode   => '0550',
+            filemode  => '0440',
+            recursive => 1
         }
     );
 }
@@ -333,6 +348,23 @@ sub _makeDirs
     $self->{'eventManager'}->trigger( 'afterHttpdMakeDirs' );
 }
 
+=item _copyDomainDisablePages()
+
+ Copy page for disabled domains
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _copyDomainDisablePages
+{
+    my $self = shift;
+
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/skel/domain_disabled_pages" )->rcopy(
+        "$main::imscpConfig{'USER_WEB_DIR'}/domain_disabled_pages"
+    );
+}
+
 =item _buildPhpConfFiles()
 
  Build PHP configuration files
@@ -377,23 +409,7 @@ sub _buildPhpConfFiles
 
     $rs = $self->{'httpd'}->disableModules( @modulesOff );
     $rs ||= $self->{'httpd'}->enableModules( @modulesOn );
-    return $rs if $rs;
-
-    if ($self->{'phpConfig'}->{'PHP_ENMOD_PATH'} ne '') {
-        for (
-            'apc', 'curl', 'common', 'gd', 'imap', 'intl', 'json', 'mbstring', 'mcrypt', 'mysqlnd/10', 'mysqli',
-            'mysql', 'opcache', 'pdo/10', 'pdo_mysql', 'xml', 'zip'
-        ) {
-            $rs = execute( "$self->{'phpConfig'}->{'PHP_ENMOD_PATH'} $_", \ my $stdout, \ my $stderr );
-            debug( $stdout ) if $stdout;
-            unless ($rs =~ /^(?:0|2)$/) {
-                error( $stderr ) if $stderr;
-                return $rs;
-            }
-        }
-    }
-
-    $self->{'eventManager'}->trigger( 'afterHttpdBuildPhpConfFiles' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildPhpConfFiles' );
 }
 
 =item _buildApacheConfFiles()
