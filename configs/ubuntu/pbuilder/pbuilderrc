@@ -1,2 +1,3 @@
 COMPONENTS="main restricted universe multiverse"
+MIRRORSITE=http://mirrors.kernel.org/ubuntu/
 AUTO_DEBSIGN=${AUTO_DEBSIGN:-no}
