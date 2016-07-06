@@ -66,7 +66,7 @@
         </td>
         <td>
             <!-- BDP: ip_action_delete -->
-            <a class="icon i_delete" href="#" data-ip="{IP}" title="{ACTION_NAME}">{ACTION_NAME}</a>
+            <a class="icon i_delete" href="ip_delete.php?ip_id={ACTION_IP_ID}" data-ip="{IP}" title="{ACTION_NAME}">{ACTION_NAME}</a>
             <!-- EDP: ip_action_delete -->
         </td>
     </tr>
