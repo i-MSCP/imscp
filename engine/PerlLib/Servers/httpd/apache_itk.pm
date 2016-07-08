@@ -287,9 +287,7 @@ sub disableDmn
         }
     );
 
-    my %templates = (
-        '' => $data->{'SSL_SUPPORT'} && $data->{'HSTS_SUPPORT'} ? 'domain_redirect.tpl' : 'domain_disabled.tpl'
-    );
+    my %templates = ('' => data->{'HSTS_SUPPORT'} ? 'domain_redirect.tpl' : 'domain_disabled.tpl');
 
     if ($data->{'SSL_SUPPORT'}) {
         $self->setData( { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" } );
@@ -1376,9 +1374,8 @@ sub _addCfg
     );
 
     my %vhosts = (
-        "$data->{'DOMAIN_NAME'}.conf" => (
-                $data->{'FORWARD'} eq 'no' && !$data->{'HSTS_SUPPORT'}
-            ) ? 'domain.tpl' : 'domain_redirect.tpl'
+        "$data->{'DOMAIN_NAME'}.conf" => ($data->{'FORWARD'} eq 'no' && !$data->{'HSTS_SUPPORT'})
+            ? 'domain.tpl' : 'domain_redirect.tpl'
     );
 
     if ($data->{'SSL_SUPPORT'}) {
