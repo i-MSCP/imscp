@@ -11,7 +11,7 @@ PHP_VERSION =
 
 ##
 ### PHP opcode cache parameters (OPcache, APC)
-### Note: Only relevant if you use PHP as Apache2 module (ITK) or through PHP-FPM
+### Note: Only relevant if you use PHP as Apache2 module (ITK), or through PHP-FPM
 ##
 
 PHP_OPCODE_CACHE_ENABLED = 1
