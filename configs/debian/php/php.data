@@ -10,6 +10,14 @@ PHP_PEAR_DIR = /usr/share/php
 PHP_VERSION =
 
 ##
+### PHP OPcode cache parameters (Opcache, APC)
+### Note: Only relevant if you use PHP as Apache module (ITK) or PHP-FPM
+##
+
+PHP_OPCODE_CACHE_ENABLED = 1
+PHP_OPCODE_CACHE_MAX_MEMORY = 256
+
+##
 #### PHP CLI specific
 ##
 

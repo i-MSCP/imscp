@@ -478,6 +478,8 @@ sub _buildPhpConfFiles
             PHP_FPM_PROCESS_MAX                 => $self->{'phpConfig'}->{'PHP_FPM_PROCESS_MAX'} // 0,
             PHP_VERSION                         => $self->{'phpConfig'}->{'PHP_VERSION'},
             TIMEZONE                            => $main::imscpConfig{'TIMEZONE'},
+            PHP_OPCODE_CACHE_ENABLED            => $self->{'phpConfig'}->{'PHP_OPCODE_CACHE_ENABLED'},
+            PHP_OPCODE_CACHE_MAX_MEMORY         => $self->{'phpConfig'}->{'PHP_OPCODE_CACHE_MAX_MEMORY'}
         }
     );
 
