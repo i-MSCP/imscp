@@ -382,8 +382,8 @@ sub _buildPhpConfFiles
 
     $self->{'httpd'}->setData(
         {
-            PEAR_DIR                => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
-            TIMEZONE                => $main::imscpConfig{'TIMEZONE'},
+            PEAR_DIR                    => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
+            TIMEZONE                    => $main::imscpConfig{'TIMEZONE'},
             PHP_OPCODE_CACHE_ENABLED    => $self->{'phpConfig'}->{'PHP_OPCODE_CACHE_ENABLED'},
             PHP_OPCODE_CACHE_MAX_MEMORY => $self->{'phpConfig'}->{'PHP_OPCODE_CACHE_MAX_MEMORY'}
         }
