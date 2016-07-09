@@ -7,7 +7,7 @@ Git 1.3.x
 CONFIG
     Added: `PHP_OPCODE_CACHE_ENABLED' and `PHP_OPCODE_CACHE_MAX_MEMORY' in php/php.data conffile
     Fixed: FastCGI handler name for PHP must be static
-    Fixed: PHP OpCode cache should be enabled by default (OPCache, APC)
+    Fixed: PHP opcode cache should be enabled by default (OPcache, APC)
     Moved: DocumentRoot for pages of disabled domains now live outside of the customer home directories
 
 SKELETON

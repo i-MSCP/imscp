@@ -10,8 +10,8 @@ PHP_PEAR_DIR = /usr/share/php
 PHP_VERSION =
 
 ##
-### PHP OPcode cache parameters (Opcache, APC)
-### Note: Only relevant if you use PHP as Apache module (ITK) or through PHP-FPM
+### PHP opcode cache parameters (OPcache, APC)
+### Note: Only relevant if you use PHP as Apache2 module (ITK) or through PHP-FPM
 ##
 
 PHP_OPCODE_CACHE_ENABLED = 1
