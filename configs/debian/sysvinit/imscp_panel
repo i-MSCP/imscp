@@ -10,7 +10,7 @@
 ### END INIT INFO
 
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
-DESC="# Author: Ondrej Sury <ondrej@debian.org>"
+DESC="PHP FastCGI process Manager Daemon for i-MSCP FrontEnd"
 NAME=imscp_panel
 DAEMON=/usr/local/sbin/$NAME
 DAEMON_ARGS="--daemonize --fpm-config /usr/local/etc/imscp_panel/php-fpm.conf -c /usr/local/etc/imscp_panel/php.ini"
