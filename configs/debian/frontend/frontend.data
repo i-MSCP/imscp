@@ -25,6 +25,5 @@ HTTPD_PID_FILE = /var/run/nginx.pid
 ## FCGI variables
 #
 
-SPAWN_FCGI_BIN = /usr/bin/spawn-fcgi
 FRONTEND_FCGI_CHILDREN = 5
 FRONTEND_FCGI_MAX_REQUEST = 1000

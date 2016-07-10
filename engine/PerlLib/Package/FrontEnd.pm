@@ -261,8 +261,8 @@ sub start
     local $@;
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
-        $serviceMngr->start( $self->{'config'}->{'HTTPD_SNAME'} );
         $serviceMngr->start( 'imscp_panel' );
+        $serviceMngr->start( $self->{'config'}->{'HTTPD_SNAME'} );
     };
     if ($@) {
         error( $@ );
@@ -290,8 +290,8 @@ sub stop
     local $@;
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
-        $serviceMngr->stop( "$self->{'config'}->{'HTTPD_SNAME'}" );
         $serviceMngr->stop( 'imscp_panel' );
+        $serviceMngr->stop( "$self->{'config'}->{'HTTPD_SNAME'}" );
     };
     if ($@) {
         error( $@ );
@@ -317,7 +317,12 @@ sub reload
     return $rs if $rs;
 
     local $@;
-    eval { iMSCP::Service->getInstance()->reload( $self->{'config'}->{'HTTPD_SNAME'} ); };
+    eval {
+        my $serviceMngr = iMSCP::Service->getInstance();
+        $serviceMngr->reload( 'imscp_panel' );
+        $serviceMngr->reload( $self->{'config'}->{'HTTPD_SNAME'} );
+
+    };
     if ($@) {
         error( $@ );
         return 1;
@@ -344,8 +349,8 @@ sub restart
     local $@;
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
-        $serviceMngr->restart( $self->{'config'}->{'HTTPD_SNAME'} );
         $serviceMngr->restart( 'imscp_panel' );
+        $serviceMngr->restart( $self->{'config'}->{'HTTPD_SNAME'} );
     };
     if ($@) {
         error( $@ );

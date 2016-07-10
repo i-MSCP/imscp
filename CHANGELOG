@@ -15,8 +15,10 @@ SKELETON
 
 FRONTEND
     Added: `onAddIpAddr', `onChangeIpConfigMode' and `onDeleteIpAddr' events (admin level)
+    Changed: Frontend is now run through an isolated PHP-FPM master process (see errata file)
     Fixed: IPv6 - Possible duplicate entries - It is possible to add an IPv6 twice (uncompressed and compressed)
     Fixed: `SELECT' placeholder is not parsed in ip_manage.php (admin level)
+    Fixed: Running the frontEnd through PHP CGI using spawn-fcgi lead to problems with opcode cache (see errata file)
 
 INSTALLER
     Added: `primary_ip' item to the list of reconfigurable items (--reconfigure command line option)

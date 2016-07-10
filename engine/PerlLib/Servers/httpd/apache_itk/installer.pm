@@ -238,15 +238,15 @@ sub _guessPhpVariables
 {
     my $self = shift;
 
-    my ($phpVersion) = $main::imscpConfig{'PHP_SERVER'} =~ /php([\d.]+)$/;
+    my ($phpVersion) = $main::imscpConfig{'PHP_SERVER'} =~ /(\d)/;
 
     unless (defined $phpVersion) {
-        die( sprintf( 'Could not guess value for the `%s` PHP configuration parameter.', 'PHP_VERSION' ) );
+        die( sprintf( "Could not guess value for the `%s' PHP configuration parameter.", 'PHP_VERSION' ) );
     }
 
     $self->{'phpConfig'}->{'PHP_VERSION'} = $phpVersion;
 
-    if (version->parse( $phpVersion ) < version->parse( '7.0' )) {
+    if (version->parse( $phpVersion ) < version->parse('7')) {
         $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = '/etc/php5';
         $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5' ) || '';
         $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5-cgi' ) || '';

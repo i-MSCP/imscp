@@ -39,11 +39,13 @@ use iMSCP::Getopt;
 use iMSCP::OpenSSL;
 use iMSCP::Rights;
 use iMSCP::Net;
+use iMSCP::ProgramFinder;
 use iMSCP::SystemUser;
 use iMSCP::TemplateParser;
 use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
 use Package::FrontEnd;
 use Servers::named;
+use version;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -472,9 +474,9 @@ sub install
     $rs ||= $self->_setHttpdVersion();
     $rs ||= $self->_addMasterWebUser();
     $rs ||= $self->_makeDirs();
+    $rs ||= $self->_copyPhpBinary();
     $rs ||= $self->_buildPhpConfig();
     $rs ||= $self->_buildHttpdConfig();
-    $rs ||= $self->_buildInitDefaultFile();
     $rs ||= $self->_deleteDnsZone();
     $rs ||= $self->_addDnsZone();
     $rs ||= $self->_saveConfig();
@@ -549,14 +551,7 @@ sub setEnginePermissions
         $self->{'config'}->{'HTTPD_LOG_DIR'},
         { user => $rootUName, group => $rootGName, dirmode => '0755', filemode => '0640', recursive => 1 }
     );
-    $rs ||= setRights(
-        "$self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}/master",
-        { 'user' => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0640', recursive => 1 }
-    );
-    $rs ||= setRights(
-        "$self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}/master/php-fcgi-starter",
-        { user => $panelUName, group => $panelGName, mode => '550' }
-    );
+    return $rs if $rs;
 
     # Temporary directories as provided by nginx package (from Debian Team)
     if (-d "$self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'}") {
@@ -934,15 +929,43 @@ sub _makeDirs
         [ $self->{'config'}->{'HTTPD_LOG_DIR'}, $rootUName, $rootUName, 0755 ],
         [ $self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}, $rootUName, $rootUName, 0755 ],
         [ $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}, $rootUName, $rootUName, 0755 ],
-        [ $phpStarterDir, $rootUName, $rootGName, 0555 ],
-        [ "$phpStarterDir/master", $panelUName, $panelGName, 0550 ],
-        [ "$phpStarterDir/master/php$self->{'phpConfig'}->{'PHP_VERSION'}", $panelUName, $panelGName, 0550 ]
+        [ $phpStarterDir, $rootUName, $rootGName, 0555 ]
     ) {
         $rs = iMSCP::Dir->new( dirname => $_->[0] )->make( { user => $_->[1], group => $_->[2], mode => $_->[3] } );
         return $rs if $rs;
     }
 
     $self->{'eventManager'}->trigger( 'afterFrontEndMakeDirs' );
+}
+
+=item _copyPhpBinary()
+
+ Copy PHP binary for imscp_panel service
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _copyPhpBinary
+{
+    my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndCopyPhpBinary' );
+    return $rs if $rs;
+
+    my $phpBinaryPath = (version->parse( "$self->{'phpConfig'}->{'PHP_VERSION'}" ) < version->parse( '7' ))
+        ? iMSCP::ProgramFinder::find( "php$self->{'phpConfig'}->{'PHP_VERSION'}-fpm" )
+        : iMSCP::ProgramFinder::find( "php-fpm$self->{'phpConfig'}->{'PHP_VERSION'}" );
+
+    unless (defined $phpBinaryPath) {
+        error( 'Could not find system PHP-FPM binary' );
+        return 1;
+    }
+
+    $rs ||= iMSCP::File->new( filename => $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} )->copyFile(
+        '/usr/local/sbin/imscp_panel'
+    );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndCopyPhpBinary' );
 }
 
 =item _buildPhpConfig()
@@ -957,54 +980,52 @@ sub _buildPhpConfig
 {
     my $self = shift;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEnddBuildPhpConfig' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndBuildPhpConfig' );
     return $rs if $rs;
 
-    my $phpVersion = $self->{'phpConfig'}->{'PHP_VERSION'};
     my $user = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
     my $group = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
     $rs = $self->{'frontend'}->buildConfFile(
-        "$self->{'cfgDir'}/php-fcgi-starter",
+        "$self->{'cfgDir'}/php-fpm.conf",
         {
-            PHP_FCGI_STARTER_DIR      => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'},
-            FRONTEND_FCGI_MAX_REQUEST => $self->{'config'}->{'FRONTEND_FCGI_MAX_REQUEST'},
+            CHKROOTKIT_LOG            => $main::imscpConfig{'CHKROOTKIT_LOG'},
+            CONF_DIR                  => $main::imscpConfig{'CONF_DIR'},
+            DOMAIN                    => $main::imscpConfig{'BASE_SERVER_VHOST'},
+            DISTRO_OPENSSL_CNF        => $main::imscpConfig{'DISTRO_OPENSSL_CNF'},
+            DISTRO_CA_BUNDLE          => $main::imscpConfig{'DISTRO_CA_BUNDLE'},
             FRONTEND_FCGI_CHILDREN    => $self->{'config'}->{'FRONTEND_FCGI_CHILDREN'},
-            WEB_DIR                   => $main::imscpConfig{'GUI_ROOT_DIR'},
-            FRONTEND_USER             => $user,
+            FRONTEND_FCGI_MAX_REQUEST => $self->{'config'}->{'FRONTEND_FCGI_MAX_REQUEST'},
             FRONTEND_GROUP            => $group,
-            SPAWN_FCGI_BIN            => $self->{'config'}->{'SPAWN_FCGI_BIN'},
-            PHP_FCGI_BIN_PATH         => $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'},
-            PHP_VERSION               => $phpVersion
+            FRONTEND_USER             => $user,
+            HOME_DIR                  => $main::imscpConfig{'GUI_ROOT_DIR'},
+            PEAR_DIR                  => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
+            OTHER_ROOTKIT_LOG         => $main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne ''
+                ? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : '',
+            RKHUNTER_LOG              => $main::imscpConfig{'RKHUNTER_LOG'},
+            TIMEZONE                  => $main::imscpConfig{'TIMEZONE'},
+            WEB_DIR                   => $main::imscpConfig{'GUI_ROOT_DIR'},
         },
         {
-            destination => "$self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}/master/php-fcgi-starter",
-            user        => $user,
-            group       => $group,
-            mode        => 0550
+            destination => "/usr/local/etc/imscp_panel/php-fpm.conf",
+            user        => $main::imscpConfig{'ROOT_USER'},
+            group       => $main::imscpConfig{'ROOT_GROUP'},
+            mode        => 0640
         }
     );
     $rs ||= $self->{'frontend'}->buildConfFile(
         "$self->{'cfgDir'}/php.ini",
         {
-            HOME_DIR           => $main::imscpConfig{'GUI_ROOT_DIR'},
-            WEB_DIR            => $main::imscpConfig{'GUI_ROOT_DIR'},
-            DOMAIN             => $main::imscpConfig{'BASE_SERVER_VHOST'},
-            CONF_DIR           => $main::imscpConfig{'CONF_DIR'},
-            PEAR_DIR           => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
-            RKHUNTER_LOG       => $main::imscpConfig{'RKHUNTER_LOG'},
-            CHKROOTKIT_LOG     => $main::imscpConfig{'CHKROOTKIT_LOG'},
-            OTHER_ROOTKIT_LOG  => $main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne ''
-                ? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : '',
-            TIMEZONE           => $main::imscpConfig{'TIMEZONE'},
-            DISTRO_OPENSSL_CNF => $main::imscpConfig{'DISTRO_OPENSSL_CNF'},
-            DISTRO_CA_BUNDLE   => $main::imscpConfig{'DISTRO_CA_BUNDLE'}
+
+            PEAR_DIR => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
+            TIMEZONE => $main::imscpConfig{'TIMEZONE'},
+            WEB_DIR  => $main::imscpConfig{'GUI_ROOT_DIR'}
         },
         {
-            destination => "$self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}/master/php$phpVersion/php.ini",
-            user        => $user,
-            group       => $group,
-            mode        => 0440,
+            destination => "/usr/local/etc/imscp_panel/php.ini",
+            user        => $main::imscpConfig{'ROOT_USER'},
+            group       => $main::imscpConfig{'ROOT_GROUP'},
+            mode        => 0640,
         }
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndBuildPhpConfig' );
@@ -1088,7 +1109,8 @@ sub _buildHttpdConfig
     my $httpsPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
     my $tplVars = {
         BASE_SERVER_VHOST            => $main::imscpConfig{'BASE_SERVER_VHOST'},
-        BASE_SERVER_IP               => iMSCP::Net->getInstance()->getAddrVersion( $main::imscpConfig{'BASE_SERVER_IP'} ) eq 'ipv4'
+        BASE_SERVER_IP               =>
+            iMSCP::Net->getInstance()->getAddrVersion( $main::imscpConfig{'BASE_SERVER_IP'} ) eq 'ipv4'
             ? $main::imscpConfig{'BASE_SERVER_IP'} : "[$main::imscpConfig{'BASE_SERVER_IP'}]",
         BASE_SERVER_VHOST_HTTP_PORT  => $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'},
         BASE_SERVER_VHOST_HTTPS_PORT => $httpsPort,
@@ -1181,48 +1203,6 @@ sub _buildHttpdConfig
     }
 
     $self->{'eventManager'}->trigger( 'afterFrontEndBuildHttpdVhosts' );
-}
-
-=item _buildInitDefaultFile()
-
- Build imscp_panel default init file
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _buildInitDefaultFile
-{
-    my $self = shift;
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndBuildInitDefaultFile' );
-    return $rs if $rs;
-
-    my $imscpInitdConfDir = "$main::imscpConfig{'CONF_DIR'}/init.d";
-
-    if (-f "$imscpInitdConfDir/imscp_panel.default") {
-        if (-f "$imscpInitdConfDir/working/imscp_panel") {
-            $rs = iMSCP::File->new( filename => "$imscpInitdConfDir/working/imscp_panel" )->copyFile(
-                "$imscpInitdConfDir/backup/imscp_panel.".time
-            );
-            return $rs if $rs;
-        }
-
-        $rs = $self->{'frontend'}->buildConfFile(
-            "$imscpInitdConfDir/imscp_panel.default",
-            {
-                MASTER_WEB_USER => $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'}
-            },
-            {
-                destination => "/etc/default/imscp_panel",
-                user        => $main::imscpConfig{'ROOT_USER'},
-                group       => $main::imscpConfig{'ROOT_GROUP'},
-                mode        => 0644
-            }
-        );
-    }
-
-    $self->{'eventManager'}->trigger( 'afterFrontEndBuildInitDefaultFile' );
 }
 
 =item _addDnsZone()

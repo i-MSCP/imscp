@@ -1,0 +1,12 @@
+/var/log/imscp_panel.log {
+	rotate 52
+	weekly
+	missingok
+	notifempty
+	compress
+	delaycompress
+	create 640 root adm
+	postrotate
+		/usr/local/lib/imscp_panel/imscp_panel_reopenlogs
+	endscript
+}

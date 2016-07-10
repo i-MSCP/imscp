@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+errors=$(/usr/local/sbin/imscp_panel --fpm-config /usr/local/etc/imscp_panel/php-fpm.conf -c /usr/local/etc/imscp_panel/php.ini -t 2>&1 | grep "\[ERROR\]" || true);
+if [ -n "$errors" ]; then
+    echo "Please fix imscp_panel service configuration file..."
+    echo $errors
+    exit 1
+fi
+exit 0

@@ -863,13 +863,13 @@ sub _savePersistentData
 
 sub _cleanup
 {
-    for(
-        "$main::imscpConfig{'CONF_DIR'}/apache/skel/alias/phptmp",
+    for("$main::imscpConfig{'CONF_DIR'}/apache/skel/alias/phptmp",
         "$main::imscpConfig{'CONF_DIR'}/apache/skel/subdomain/phptmp",
         "$main::imscpConfig{'CACHE_DATA_DIR'}/addons",
         "$main::imscpConfig{'CONF_DIR'}/apache/backup",
         "$main::imscpConfig{'CONF_DIR'}/apache/working",
         "$main::imscpConfig{'CONF_DIR'}/fcgi",
+        "$main::imscpConfig{'CONF_DIR'}/init.d",
         "$main::imscpConfig{'CONF_DIR'}/nginx",
         "$main::imscpConfig{'CONF_DIR'}/php-fpm",
         "$main::imscpConfig{'CONF_DIR'}/postfix/backup",
@@ -882,12 +882,13 @@ sub _cleanup
         return $rs if $rs;
     }
 
-    for(
-        "$main::imscpConfig{'CONF_DIR'}/apache/parts/php5.itk.ini",
-        "$main::imscpConfig{'CONF_DIR'}/listeners.d/README",
-        "$main::imscpConfig{'CONF_DIR'}/vsftpd/imscp_allow_writeable_root.patch",
+    for("$main::imscpConfig{'CONF_DIR'}/vsftpd/imscp_allow_writeable_root.patch",
         "$main::imscpConfig{'CONF_DIR'}/vsftpd/imscp_pthread_cancel.patch",
-        "/usr/sbin/maillogconvert.pl"
+        "$main::imscpConfig{'CONF_DIR'}/apache/parts/php5.itk.ini",
+        '/etc/default/imscp_panel',
+        "$main::imscpConfig{'CONF_DIR'}/frontend/php-fcgi-starter",
+        "$main::imscpConfig{'CONF_DIR'}/listeners.d/README",
+        '/usr/sbin/maillogconvert.pl'
     ) {
         next unless -f;
         my $rs = iMSCP::File->new( filename => $_ )->delFile();

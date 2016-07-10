@@ -1,0 +1,7 @@
+#!/bin/sh
+CONFFILE=/usr/local/etc/imscp_panel/php-fpm.conf
+[ -r /etc/default/imscp_panel ] && . /etc/default/imscp_panel
+CONF_PIDFILE=$(sed -n 's/^[[:space:]]*pid[[:space:]]*=[[:space:]]*//p' $CONFFILE)
+PIDFILE=${CONF_PIDFILE:-/run/imscp_panel.pid}
+[ -r "$PIDFILE" ] && kill -USR1 $(cat "$PIDFILE") > /dev/null
+exit 0

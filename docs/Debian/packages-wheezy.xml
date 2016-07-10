@@ -10,8 +10,7 @@
                 repository_conflict="http://nginx.org/packages/ubuntu"
         >
             <package>nginx</package>
-            <package>php5-cgi</package>
-            <package>spawn-fcgi</package>
+            <package>php5-fpm</package>
             <package_conflict>nginx-full</package_conflict>
             <package_conflict>nginx-light</package_conflict>
         </nginx>

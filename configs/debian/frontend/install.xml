@@ -4,13 +4,18 @@
     <folders mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_NGINX_CONF}/conf.d</folders>
     <folders mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_NGINX_CONF}/sites-available</folders>
     <folders mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_NGINX_CONF}/sites-enabled</folders>
+    <folders mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${LOCAL_USR_LIB}/imscp_panel</folders>
+    <folders mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${LOCAL_CONF}/imscp_panel</folders>
     <folders>${SYSTEM_CONF}/frontend</folders>
     <copy_config>${SYSTEM_CONF}/frontend/00_master.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/frontend/00_master_ssl.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/frontend/frontend.data</copy_config>
+    <copy_config mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${LOCAL_USR_LIB}/imscp_panel/imscp_panel_checkconf</copy_config>
+    <copy_config mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${LOCAL_USR_LIB}/imscp_panel/imscp_panel_reopenlogs</copy_config>
     <copy_config>${SYSTEM_CONF}/frontend/imscp_fastcgi.conf</copy_config>
+    <copy_config>${ROOT_CONF}/logrotate.d/imscp_panel</copy_config>
     <copy_config>${SYSTEM_CONF}/frontend/imscp_php.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/frontend/nginx.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/frontend/php.ini</copy_config>
-    <copy_config>${SYSTEM_CONF}/frontend/php-fcgi-starter</copy_config>
+    <copy_config>${SYSTEM_CONF}/frontend/php-fpm.conf</copy_config>
 </install>

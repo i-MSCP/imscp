@@ -2,8 +2,7 @@
     <frontend default="nginx">
         <nginx repository_conflict="http://nginx.org/packages/debian">
             <package>nginx-light</package>
-            <package>spawn-fcgi</package>
-            <package>php7.0-cgi</package>
+            <package>php7.0-fpm</package>
             <package_conflict>nginx</package_conflict>
         </nginx>
     </frontend>

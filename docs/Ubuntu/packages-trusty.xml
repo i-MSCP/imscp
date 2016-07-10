@@ -2,8 +2,7 @@
     <frontend default="nginx">
         <nginx repository_conflict="http://nginx.org/packages/ubuntu">
             <package>nginx-light</package>
-            <package>spawn-fcgi</package>
-            <package>php5-cgi</package>
+            <package>php5-fpm</package>
             <package_conflict>nginx</package_conflict>
         </nginx>
     </frontend>
