@@ -146,8 +146,9 @@ sub _deconfigureHTTPD
     }
 
     if (-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf") {
-        my $rs = iMSCP::File->new( filename =>
-            "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf" )->delFile();
+        my $rs = iMSCP::File->new(
+            filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf"
+        )->delFile();
         return $rs if $rs;
     }
 
