@@ -26,6 +26,7 @@ package Package::FrontEnd::Uninstaller;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::SystemUser;
 use iMSCP::SystemGroup;
@@ -53,10 +54,9 @@ sub uninstall
 {
     my $self = shift;
 
-    my $rs = $self->_removeMasterWebUser();
-    $rs ||= $self->_removeHttpdConfig();
-    $rs ||= $self->_removePhpConfig();
-    $rs ||= $self->_removeInitScript();
+    my $rs = $self->_deconfigurePHP();
+    $rs ||= $self->_deconfigureHTTPD();
+    $rs ||= $self->_deleteMasterWebUser();
 }
 
 =back
@@ -82,35 +82,51 @@ sub _init
     $self;
 }
 
-=item _removeMasterWebUser()
+=item _deconfigurePHP()
 
- Remove master Web user
+ Deconfigure PHP (imscp_panel service)
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _removeMasterWebUser
+sub _deconfigurePHP
 {
     my $self = shift;
 
-    my $rs = iMSCP::SystemUser->new( force => 'yes' )->delSystemUser(
-        $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'}
-    );
-    $rs ||= iMSCP::SystemGroup->getInstance()->delSystemGroup(
-        $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'}
-    );
+    local $@;
+    eval { iMSCP::Service->getInstance()->remove( 'imscp_panel' ); };
+    if ($@) {
+        error( $@ );
+        return 1;
+    }
+
+    for my $pFormat('/etc/init.d/%s', '/etc/systemd/system/%s.service', '/etc/init/%s.conf', '/etc/init/%s.override') {
+        my $file = sprintf( $pFormat, 'imscp_panel' );
+        if (-f $file) {
+            my $rs = iMSCP::File->new( filename => $file )->delFile();
+            return $rs if $rs;
+        }
+    }
+
+    if (-f '/usr/local/sbin/imscp_panel') {
+        my $rs = iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
+        return $rs if $rs;
+    }
+
+    my $rs = iMSCP::Dir->new( dirname => '/usr/local/lib/imscp_panel' )->remove();
+    $rs ||= iMSCP::Dir->new( dirname => '/usr/local/etc/imscp_panel' )->remove();
 }
 
-=item _removeHttpdConfig()
+=item _deconfigureHTTPD()
 
- Remove httpd configuration
+ Deconfigure HTTPD (nginx)
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _removeHttpdConfig
+sub _deconfigureHTTPD
 {
     my $self = shift;
 
@@ -152,45 +168,24 @@ sub _removeHttpdConfig
     0;
 }
 
-=item _removePhpConfig()
+=item _deleteMasterWebUser()
 
- Remove PHP configuration
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _removePhpConfig
-{
-    my $self = shift;
-
-    iMSCP::Dir->new( dirname => "$self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}/master" )->remove();
-}
-
-=item _removeInitScript()
-
- Remove init script
+ Delete i-MSCP master Web user
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _removeInitScript
+sub _deleteMasterWebUser
 {
     my $self = shift;
 
-    iMSCP::Service->getInstance()->remove( 'imscp_panel' );
-
-    for my $pFormat('/etc/init.d/%s', '/etc/systemd/system/%s.service', '/etc/init/%s.conf', '/etc/init/%s.override') {
-        my $file = sprintf( $pFormat, 'imscp_panel' );
-
-        if (-f $file) {
-            my $rs = iMSCP::File->new( filename => $file )->delFile();
-            return $rs if $rs;
-        }
-    }
-
-    0;
+    my $rs = iMSCP::SystemUser->new( force => 'yes' )->delSystemUser(
+        $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'}
+    );
+    $rs ||= iMSCP::SystemGroup->getInstance()->delSystemGroup(
+        $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'}
+    );
 }
 
 =back

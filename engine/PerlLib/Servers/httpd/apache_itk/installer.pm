@@ -239,23 +239,26 @@ sub _guessPhpVariables
     my $self = shift;
 
     my ($phpVersion) = $main::imscpConfig{'PHP_SERVER'} =~ /(\d)/;
-
     unless (defined $phpVersion) {
         die( sprintf( "Could not guess value for the `%s' PHP configuration parameter.", 'PHP_VERSION' ) );
     }
 
     $self->{'phpConfig'}->{'PHP_VERSION'} = $phpVersion;
 
-    if (version->parse( $phpVersion ) < version->parse('7')) {
+    if (version->parse( $phpVersion ) < version->parse( '7' )) {
         $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = '/etc/php5';
+        $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = '/etc/php5/fpm/pool.d';
         $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5' ) || '';
         $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5-cgi' ) || '';
+        $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5-fpm' ) || '';
         $self->{'phpConfig'}->{'PHP_DISMOD_PATH'} = iMSCP::ProgramFinder::find( 'php5dismod' ) || '';
         $self->{'phpConfig'}->{'PHP_ENMOD_PATH'} = iMSCP::ProgramFinder::find( 'php5enmod' ) || '';
     } else {
         $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = "/etc/php/$phpVersion";
+        $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = "/etc/php/$phpVersion/fpm/pool.d";
         $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php$phpVersion" ) || '';
         $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-cgi$phpVersion" ) || '';
+        $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-fpm$phpVersion" ) || '';
         $self->{'phpConfig'}->{'PHP_DISMOD_PATH'} = iMSCP::ProgramFinder::find( 'phpdismod' ) || '';
         $self->{'phpConfig'}->{'PHP_ENMOD_PATH'} = iMSCP::ProgramFinder::find( 'phpenmod' ) || '';
     }
@@ -264,7 +267,7 @@ sub _guessPhpVariables
         $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = '';
         die(
             sprintf(
-                "Could not guess value for the `%s` PHP configuration parameter: %s directory doesn't exists.",
+                "Could not guess value for the `%s' PHP configuration parameter: %s directory doesn't exists.",
                 'PHP_CONF_DIR_PATH',
                 $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}
             )
@@ -272,9 +275,9 @@ sub _guessPhpVariables
         $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = '';
     }
 
-    for(qw/ PHP_CLI_BIN_PATH PHP_FCGI_BIN_PATH /) {
+    for(qw/ PHP_CLI_BIN_PATH /) {
         next unless $self->{'phpConfig'}->{$_} eq '';
-        die( sprintf( 'Could not guess value for the `%s` PHP configuration parameter.', $_ ) );
+        die( sprintf( "Could not guess value for the `%s' PHP configuration parameter.", $_ ) );
     }
 
     0;

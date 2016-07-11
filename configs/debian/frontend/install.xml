@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
+    <folders mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/logrotate.d</folders>
     <folders export="ROOT_NGINX_CONF" mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/nginx</folders>
     <folders mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_NGINX_CONF}/conf.d</folders>
     <folders mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_NGINX_CONF}/sites-available</folders>
