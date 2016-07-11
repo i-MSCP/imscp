@@ -109,6 +109,16 @@ sub _deconfigurePHP
         }
     }
 
+    if (-f '/etc/default/imscp_panel') {
+        my $rs = iMSCP::File->new( filename => '/etc/default/imscp_panel' )->delFile();
+        return $rs if $rs;
+    }
+
+    if (-f '/etc/logrotate.d/imscp_panel') {
+        my $rs = iMSCP::File->new( filename => '/etc/logrotate.d/imscp_panel' )->delFile();
+        return $rs if $rs;
+    }
+
     if (-f '/usr/local/sbin/imscp_panel') {
         my $rs = iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
         return $rs if $rs;
