@@ -526,7 +526,7 @@ class iMSCP_PHPini
                 'upload_max_file_size' => $this->domainIni['phpiniUploadMaxFileSize'],
                 'max_execution_time' => $this->domainIni['phpiniMaxExecutionTime'],
                 'max_input_time' => $this->domainIni['phpiniMaxInputTime'],
-                'memory_limit' => $this->domainIni['phpiniMemoryLimit'],
+                'memory_limit' => $this->domainIni['phpiniMemoryLimit']
             )
         );
 
@@ -885,7 +885,7 @@ class iMSCP_PHPini
      * Create missing PHP INI entries
      *
      * Handle case were an entry has been removed by mistake in the php_ini table
-     * 
+     *
      * @throws iMSCP_Exception
      * @throws iMSCP_Exception_Database
      * @param int $clientId Customer unique identifier
@@ -907,7 +907,7 @@ class iMSCP_PHPini
             array($domain['domain_id'], 'todelete')
         );
         while ($subdomain = $subdomains->fetchRow()) {
-            $phpini->loadDomainIni($clientId, $domain['domain_id'], 'dmn');
+            $phpini->loadDomainIni($clientId, $subdomain['subdomain_id'], 'sub');
             if ($phpini->isDefaultDomainIni()) { // If no entry found, create one with default values
                 $phpini->saveDomainIni($clientId, $subdomain['subdomain_id'], 'sub');
             }
@@ -919,6 +919,7 @@ class iMSCP_PHPini
             array($domain['domain_id'], 'todelete')
         );
         while ($domainAlias = $domainAliases->fetchRow()) {
+            $phpini->loadDomainIni($clientId, $domainAlias['alias_id'], 'als');
             if ($phpini->isDefaultDomainIni()) { // If no entry found, create one with default values
                 $phpini->saveDomainIni($clientId, $domainAlias['alias_id'], 'als');
             }
@@ -933,6 +934,7 @@ class iMSCP_PHPini
             array($domain['domain_id'], 'todelete')
         );
         while ($subdomainAlias = $subdomainAliases->fetchRow()) {
+            $phpini->loadDomainIni($clientId, $subdomainAlias['subdomain_alias_id'], 'subals');
             if ($phpini->isDefaultDomainIni()) { // If no entry found, create one with default values
                 $phpini->saveDomainIni($clientId, $subdomainAlias['subdomain_alias_id'], 'subals');
             }
