@@ -6,5 +6,7 @@
     LogLevel error
     ErrorLog {HTTPD_LOG_DIR}/{DOMAIN_NAME}/error.log
 
-    Redirect {FORWARD_TYPE} / {FORWARD}
+    <LocationMatch "^/(?!.well-known/)">
+        Redirect {FORWARD_TYPE} / {FORWARD}
+    </LocationMatch>
 </VirtualHost>
