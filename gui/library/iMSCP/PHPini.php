@@ -71,16 +71,6 @@ class iMSCP_PHPini
     }
 
     /**
-     * Makes clone unavailable
-     *
-     * @return void
-     */
-    private function __clone()
-    {
-
-    }
-
-    /**
      * Loads reseller PHP permissions
      *
      * If a reseller identifier is given, try to load permissions from
@@ -339,7 +329,7 @@ class iMSCP_PHPini
     /**
      * Sets the value of a client PHP permission
      *
-     * We are safe here. New value is set only if valid.
+     * We are safe here. New value is set only if valid and if client' reseller has the needed permission.
      *
      * @param string $permission Permission name
      * @param string $value Permission value
@@ -508,47 +498,39 @@ class iMSCP_PHPini
         }
 
         $stmt = exec_query(
-            'SELECT COUNT(admin_id) AS cnt FROM php_ini WHERE admin_id = ? AND domain_id = ? AND domain_type = ? ',
-            array($adminId, $domainId, $domainType)
-        );
-        $row = $stmt->fetchRow();
-
-        if ($row['cnt'] > 0) {
-            $stmt = exec_query(
-                '
-                    UPDATE php_ini SET disable_functions = ?, allow_url_fopen = ?, display_errors = ?,
-                        error_reporting = ?, post_max_size = ?, upload_max_filesize = ?, max_execution_time = ?,
-                        max_input_time = ?, memory_limit = ?
-                    WHERE admin_id = ? AND domain_id = ? AND domain_type = ?
-                ',
-                array(
-                    $this->domainIni['phpiniDisableFunctions'], $this->domainIni['phpiniAllowUrlFopen'],
-                    $this->domainIni['phpiniDisplayErrors'], $this->domainIni['phpiniErrorReporting'],
-                    $this->domainIni['phpiniPostMaxSize'], $this->domainIni['phpiniUploadMaxFileSize'],
-                    $this->domainIni['phpiniMaxExecutionTime'], $this->domainIni['phpiniMaxInputTime'],
-                    $this->domainIni['phpiniMemoryLimit'], $adminId, $domainId, $domainType
-                )
-            );
-            return (bool)$stmt->rowCount();
-        }
-
-        exec_query(
             '
                 INSERT INTO php_ini (
                     admin_id, domain_id, domain_type, disable_functions, allow_url_fopen, display_errors,
                     error_reporting, post_max_size, upload_max_filesize, max_execution_time, max_input_time,
                     memory_limit
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (
+                    :admin_id, :domain_id, :domain_type, :disable_functions, :allow_url_fopen, :display_errors,
+                    :error_reporting, :post_max_size, :upload_max_file_size, :max_execution_time, :max_input_time,
+                    :memory_limit
+                ) ON DUPLICATE KEY UPDATE
+                    disable_functions = :disable_functions, allow_url_fopen = :allow_url_fopen,
+                    display_errors = :display_errors, error_reporting = :error_reporting,
+                    post_max_size = :post_max_size, upload_max_filesize = :upload_max_file_size,
+                    max_execution_time = :max_execution_time, max_input_time = :max_input_time,
+                    memory_limit = :memory_limit
             ',
             array(
-                $adminId, $domainId, $domainType, $this->domainIni['phpiniDisableFunctions'],
-                $this->domainIni['phpiniAllowUrlFopen'], $this->domainIni['phpiniDisplayErrors'],
-                $this->domainIni['phpiniErrorReporting'], $this->domainIni['phpiniPostMaxSize'],
-                $this->domainIni['phpiniUploadMaxFileSize'], $this->domainIni['phpiniMaxExecutionTime'],
-                $this->domainIni['phpiniMaxInputTime'], $this->domainIni['phpiniMemoryLimit']
+                'admin_id' => $adminId,
+                'domain_id' => $domainId,
+                'domain_type' => $domainType,
+                'disable_functions' => $this->domainIni['phpiniDisableFunctions'],
+                'allow_url_fopen' => $this->domainIni['phpiniAllowUrlFopen'],
+                'display_errors' => $this->domainIni['phpiniDisplayErrors'],
+                'error_reporting' => $this->domainIni['phpiniErrorReporting'],
+                'post_max_size' => $this->domainIni['phpiniPostMaxSize'],
+                'upload_max_file_size' => $this->domainIni['phpiniUploadMaxFileSize'],
+                'max_execution_time' => $this->domainIni['phpiniMaxExecutionTime'],
+                'max_input_time' => $this->domainIni['phpiniMaxInputTime'],
+                'memory_limit' => $this->domainIni['phpiniMemoryLimit'],
             )
         );
-        return true;
+
+        return (bool)$stmt->rowCount();
     }
 
     /**
@@ -717,11 +699,12 @@ class iMSCP_PHPini
         $confDir = $config['CONF_DIR'];
         $srvConfig = new iMSCP_Config_Handler_File("$confDir/php/php.data");
         $configLevel = $srvConfig['PHP_CONFIG_LEVEL'];
-
-        $stmt = exec_query('SELECT id, domain_id, domain_type FROM php_ini WHERE admin_id = ?', $clientId);
-
         $domainConfOptions = $this->getDomainIni();
 
+        // We must ensure that there is no missing PHP INI entries (since 1.3.1)
+        $this->createMissingPhpIniEntries($clientId);
+
+        $stmt = exec_query('SELECT id, domain_id, domain_type FROM php_ini WHERE admin_id = ?', $clientId);
         while ($row = $stmt->fetchRow()) {
             try {
                 if (!$this->clientHasPermission('phpiniSystem')) {
@@ -896,5 +879,64 @@ class iMSCP_PHPini
 
             exec_query($query, array($adminId, $domainId));
         }
+    }
+
+    /**
+     * Create missing PHP INI entries
+     *
+     * Handle case were an entry has been removed by mistake in the php_ini table
+     * 
+     * @throws iMSCP_Exception
+     * @throws iMSCP_Exception_Database
+     * @param int $clientId Customer unique identifier
+     * @return void
+     */
+    protected function createMissingPhpIniEntries($clientId)
+    {
+        $phpini = clone($this);
+
+        $domain = exec_query('SELECT domain_id FROM domain WHERE domain_admin_id = ?', $clientId);
+        $domain = $domain->fetchRow();
+        $phpini->loadDomainIni($clientId, $domain['domain_id'], 'dmn');
+        if ($phpini->isDefaultDomainIni()) { // If no entry found, create one with default values
+            $phpini->saveDomainIni($clientId, $domain['domain_id'], 'dmn');
+        }
+
+        $subdomains = exec_query(
+            'SELECT subdomain_id FROM subdomain WHERE domain_id = ? AND subdomain_status <> ?',
+            array($domain['domain_id'], 'todelete')
+        );
+        while ($subdomain = $subdomains->fetchRow()) {
+            $phpini->loadDomainIni($clientId, $domain['domain_id'], 'dmn');
+            if ($phpini->isDefaultDomainIni()) { // If no entry found, create one with default values
+                $phpini->saveDomainIni($clientId, $subdomain['subdomain_id'], 'sub');
+            }
+        }
+        unset($subdomains);
+
+        $domainAliases = exec_query(
+            'SELECT alias_id FROM domain_aliasses WHERE domain_id = ? AND alias_status <> ?',
+            array($domain['domain_id'], 'todelete')
+        );
+        while ($domainAlias = $domainAliases->fetchRow()) {
+            if ($phpini->isDefaultDomainIni()) { // If no entry found, create one with default values
+                $phpini->saveDomainIni($clientId, $domainAlias['alias_id'], 'als');
+            }
+        }
+        unset($domainAliases);
+
+        $subdomainAliases = exec_query(
+            '
+                SELECT subdomain_alias_id FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
+                WHERE domain_id = ? AND subdomain_alias_status <> ?
+            ',
+            array($domain['domain_id'], 'todelete')
+        );
+        while ($subdomainAlias = $subdomainAliases->fetchRow()) {
+            if ($phpini->isDefaultDomainIni()) { // If no entry found, create one with default values
+                $phpini->saveDomainIni($clientId, $subdomainAlias['subdomain_alias_id'], 'subals');
+            }
+        }
+        unset($subdomainAliases);
     }
 }

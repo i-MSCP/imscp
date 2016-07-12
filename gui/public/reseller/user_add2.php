@@ -452,14 +452,16 @@ function checkInputData()
             if (isset($_POST['max_input_time'])) {
                 $phpini->setDomainIni('phpiniMaxInputTime', clean_input($_POST['max_input_time']));
             }
-        } else {
-            $phpini->loadClientPermissions(); // Reset client PHP permissions to default values
-            $phpini->loadDomainIni(); // Reset domain PHP configuration options to default values
         }
-    } else {
-        $phpini->loadClientPermissions(); // Reset client PHP permissions to default values
-        $phpini->loadDomainIni(); // Reset domain PHP configuration options to default values
+        #else { # Useless because default client permissions and domain INI values are already loaded
+        #    $phpini->loadClientPermissions(); // Reset client PHP permissions to default values
+        #    $phpini->loadDomainIni(); // Reset domain PHP configuration options to default values
+        #}
     }
+    #else { # Useless because default client permissions and domain INI values are already loaded
+    #    $phpini->loadClientPermissions(); // Reset client PHP permissions to default values
+    #    $phpini->loadDomainIni(); // Reset domain PHP configuration options to default values
+    #}
 
     if (!Zend_Session::namespaceIsset('pageMessages')) {
         return true;

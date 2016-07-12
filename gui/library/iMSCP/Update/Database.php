@@ -56,7 +56,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = '232';
+    protected $lastUpdate = 234;
 
     /**
      * Singleton - Make new unavailable
@@ -1249,8 +1249,8 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r100()
     {
-        return
-            "CREATE TABLE IF NOT EXISTS ssl_certs (
+        return "
+            CREATE TABLE IF NOT EXISTS ssl_certs (
                 cert_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
                 id INT(10) NOT NULL,
                 `type` ENUM('dmn','als','sub','alssub') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'dmn',
@@ -1446,6 +1446,8 @@ class iMSCP_Update_Database extends iMSCP_Update
                 }
             }
         }
+
+        return $sqlUpd;
     }
 
     /**
@@ -2734,31 +2736,35 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * Remove deprecated MAIL_WRITER_EXPIRY_TIME configuration parameter
      *
-     * @return void
+     * @return null
      */
     protected function r195()
     {
         if (isset($this->dbConfig['MAIL_WRITER_EXPIRY_TIME'])) {
             unset($this->dbConfig['MAIL_WRITER_EXPIRY_TIME']);
         }
+
+        return null;
     }
 
     /**
      * Remove deprecated MAIL_BODY_FOOTPRINTS configuration parameter
      *
-     * @return void
+     * @return null
      */
     protected function r196()
     {
         if (isset($this->dbConfig['MAIL_BODY_FOOTPRINTS'])) {
             unset($this->dbConfig['MAIL_BODY_FOOTPRINTS']);
         }
+
+        return null;
     }
 
     /**
      * Remove postgrey and policyd-weight ports
      *
-     * @return void
+     * @return null
      */
     protected function r198()
     {
@@ -2769,6 +2775,8 @@ class iMSCP_Update_Database extends iMSCP_Update
         if (isset($this->dbConfig['PORT_POLICYD-WEIGHT'])) {
             unset($this->dbConfig['PORT_POLICYD-WEIGHT']);
         }
+
+        return null;
     }
 
     /**
@@ -2921,7 +2929,6 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected function r210()
     {
         $this->removeDuplicateRowsOnColumns('server_traffic', 'traff_time');
-
         return $this->addIndex('server_traffic', 'traff_time', 'UNIQUE', 'traff_time');
     }
 
@@ -3015,85 +3022,6 @@ class iMSCP_Update_Database extends iMSCP_Update
                 CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'E_ALL & ~E_DEPRECATED & ~E_STRICT'
             "
         );
-    }
-
-    /**
-     * Creates missing entries in the php_ini table (one for each domain)
-     *
-     * @throws iMSCP_Exception
-     * @throws iMSCP_Exception_Database
-     */
-    protected function r215()
-    {
-        $phpini = iMSCP_PHPini::getInstance();
-
-        // For each reseller
-        $resellers = execute_query("SELECT admin_id FROM admin WHERE admin_type = 'reseller'");
-        while ($reseller = $resellers->fetchRow()) {
-            $phpini->loadResellerPermissions($reseller['admin_id']);
-
-            // For each client of the reseller
-            $clients = execute_query("SELECT admin_id FROM admin WHERE created_by = {$reseller['admin_id']}");
-            while ($client = $clients->fetchRow()) {
-                $phpini->loadClientPermissions($client['admin_id']);
-
-                // For the client's main domain
-                $domain = execute_query(
-                    "
-                        SELECT domain_id FROM domain
-                        WHERE domain_admin_id = {$client['admin_id']} AND domain_status <> 'todelete'
-                    "
-                );
-
-                if (!$domain->rowCount()) {
-                    continue;
-                }
-
-                $domain = $domain->fetchRow();
-                $phpini->loadDomainIni($client['admin_id'], $domain['domain_id'], 'dmn');
-
-                // If no entry found, create one with default values
-                if ($phpini->isDefaultDomainIni()) {
-                    $phpini->saveDomainIni($client['admin_id'], $domain['domain_id'], 'dmn');
-                }
-
-                // Create entries for subdomains (based on domain entry)
-                $subdomains = execute_query(
-                    "
-                        SELECT subdomain_id FROM subdomain
-                        WHERE domain_id = {$domain['domain_id']} AND subdomain_status <> 'todelete'
-                    "
-                );
-                while ($subdomain = $subdomains->fetchRow()) {
-                    $phpini->saveDomainIni($client['admin_id'], $subdomain['subdomain_id'], 'sub');
-                }
-                unset($subdomains);
-
-                // Create entries for domain aliases (based on domain entry)
-                $domainAliases = execute_query(
-                    "
-                        SELECT alias_id FROM domain_aliasses
-                        WHERE domain_id = {$domain['domain_id']} AND alias_status <> 'todelete'
-                    "
-                );
-                while ($domainAlias = $domainAliases->fetchRow()) {
-                    $phpini->saveDomainIni($client['admin_id'], $domainAlias['alias_id'], 'als');
-                }
-                unset($domainAliases);
-
-                // Create entries for subdomains of domain aliases (based on domain entry)
-                $subdomainAliases = execute_query(
-                    "
-                        SELECT subdomain_alias_id FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
-                        WHERE domain_id = {$domain['domain_id']} AND subdomain_alias_status <> 'todelete'
-                    "
-                );
-                while ($subdomainAlias = $subdomainAliases->fetchRow()) {
-                    $phpini->saveDomainIni($client['admin_id'], $subdomainAlias['subdomain_alias_id'], 'subals');
-                }
-                unset($subdomainAliases);
-            }
-        }
     }
 
     /**
@@ -3197,7 +3125,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      * Convert FTP usernames, groups and members to IDNA form
      *
      * @throws iMSCP_Exception_Database
-     * @return void
+     * @return null
      */
     protected function r222()
     {
@@ -3215,12 +3143,14 @@ class iMSCP_Update_Database extends iMSCP_Update
                 encode_idna($row['groupname']), $members, $row['groupname']
             ));
         }
+
+        return null;
     }
 
     /**
      * Wrong value for LOG_LEVEL configuration parameter
      *
-     * @return void
+     * @return null
      */
     protected function r223()
     {
@@ -3228,6 +3158,8 @@ class iMSCP_Update_Database extends iMSCP_Update
             $this->dbConfig['LOG_LEVEL'] = defined($this->dbConfig['LOG_LEVEL'])
                 ? constant($this->dbConfig['LOG_LEVEL']) : E_USER_ERROR;
         }
+
+        return null;
     }
 
     /**
@@ -3288,7 +3220,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
         return $sqlUpd;
     }
-    
+
     /**
      * #IP-1395: Domain redirect feature - Missing URL path separator
      *
@@ -3361,7 +3293,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
     /**
      * Reset all mail templates according changes made in 1.3.0
-     * 
+     *
      * @return string SQL statement to be executed
      */
     protected function r228()
@@ -3419,5 +3351,119 @@ class iMSCP_Update_Database extends iMSCP_Update
     {
         $primaryIP = quoteValue(iMSCP_Registry::get('config')->BASE_SERVER_IP);
         return "UPDATE server_ips SET ip_config_mode = 'manual' WHERE ip_number = $primaryIP";
+    }
+
+    /**
+     * Creates missing entries in the php_ini table (one for each domain)
+     *
+     * @throws iMSCP_Exception
+     * @throws iMSCP_Exception_Database
+     * @return null
+     */
+    protected function r233()
+    {
+        $phpini = iMSCP_PHPini::getInstance();
+
+        // For each reseller
+        $resellers = execute_query("SELECT admin_id FROM admin WHERE admin_type = 'reseller'");
+        while ($reseller = $resellers->fetchRow()) {
+            $phpini->loadResellerPermissions($reseller['admin_id']);
+
+            // For each client of the reseller
+            $clients = exec_query("SELECT admin_id FROM admin WHERE created_by = {$reseller['admin_id']}");
+            while ($client = $clients->fetchRow()) {
+                $phpini->loadClientPermissions($client['admin_id']);
+
+                $domain = exec_query(
+                    "SELECT domain_id FROM domain WHERE domain_admin_id = ? AND domain_status <> ?",
+                    array($client['admin_id'], 'todelete')
+                );
+
+                if (!$domain->rowCount()) {
+                    continue;
+                }
+
+                $domain = $domain->fetchRow();
+                $phpini->loadDomainIni($client['admin_id'], $domain['domain_id'], 'dmn');
+                if ($phpini->isDefaultDomainIni()) {
+                    $phpini->saveDomainIni($client['admin_id'], $domain['domain_id'], 'dmn');
+                }
+
+                $subdomains = exec_query(
+                    'SELECT subdomain_id FROM subdomain WHERE domain_id = ? AND subdomain_status <> ?',
+                    array($domain['domain_id'], 'todelete')
+                );
+                while ($subdomain = $subdomains->fetchRow()) {
+                    $phpini->loadDomainIni($client['admin_id'], $subdomain['subdomain_id'], 'sub');
+                    if ($phpini->isDefaultDomainIni()) {
+                        $phpini->saveDomainIni($client['admin_id'], $subdomain['subdomain_id'], 'sub');
+                    }
+                }
+                unset($subdomains);
+
+                $domainAliases = exec_query(
+                    'SELECT alias_id FROM domain_aliasses WHERE domain_id = ? AND alias_status <> ?',
+                    array($domain['domain_id'], 'todelete')
+                );
+                while ($domainAlias = $domainAliases->fetchRow()) {
+                    $phpini->loadDomainIni($client['admin_id'], $domainAlias['alias_id'], 'als');
+                    if ($phpini->isDefaultDomainIni()) {
+                        $phpini->saveDomainIni($client['admin_id'], $domainAlias['alias_id'], 'als');
+                    }
+                }
+                unset($domainAliases);
+
+                $subdomainAliases = exec_query(
+                    '
+                        SELECT subdomain_alias_id FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
+                        WHERE domain_id = ? AND subdomain_alias_status <> ?
+                    ',
+                    array($domain['domain_id'], 'todelete')
+                );
+                while ($subdomainAlias = $subdomainAliases->fetchRow()) {
+                    $phpini->loadDomainIni($client['admin_id'], $subdomainAlias['subdomain_alias_id'], 'subals');
+                    if ($phpini->isDefaultDomainIni()) {
+                        $phpini->saveDomainIni($client['admin_id'], $subdomainAlias['subdomain_alias_id'], 'subals');
+                    }
+                }
+                unset($subdomainAliases);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Adds composite unique key on the php_ini table
+     *
+     * @return array SQL statement to be executed
+     */
+    protected function r234()
+    {
+        $this->removeDuplicateRowsOnColumns('php_ini', array('admin_id', 'domain_id', 'domain_type'));
+        $sqlUpd = array();
+
+        $queries = $this->dropIndexByColumn('php_ini', 'admin_id');
+        if (!empty($queries)) {
+            foreach ($queries as $query) {
+                $sqlUpd[] = $query;
+            }
+        }
+        $queries = $this->dropIndexByColumn('php_ini', 'domain_id');
+        if (!empty($queries)) {
+            foreach ($queries as $query) {
+                $sqlUpd[] = $query;
+            }
+        }
+        $queries = $this->dropIndexByColumn('php_ini', 'domain_type');
+        if (!empty($queries)) {
+            foreach ($queries as $query) {
+                $sqlUpd[] = $query;
+            }
+        }
+        unset($queries);
+
+        $sqlUpd[] = $this->addIndex('php_ini', array('admin_id', 'domain_id', 'domain_type'), 'UNIQUE', 'unique_php_ini');
+        return $sqlUpd;
     }
 }

@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '232');
+  ('DATABASE_REVISION', '234');
 
 -- --------------------------------------------------------
 
@@ -411,9 +411,7 @@ CREATE TABLE IF NOT EXISTS `php_ini` (
   `max_input_time` int(11) NOT NULL DEFAULT '60',
   `memory_limit` int(11) NOT NULL DEFAULT '128',
   PRIMARY KEY (`id`),
-  INDEX `admin_id` (`admin_id`),
-  INDEX `domain_id` (`domain_id`),
-  INDEX `domain_type` (`domain_type`)
+  UNIQUE `unique_php_ini` (`admin_id`,`domain_id`,`domain_type`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

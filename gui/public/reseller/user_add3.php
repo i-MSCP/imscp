@@ -206,15 +206,13 @@ function addCustomer()
 
         $dmnId = $db->insertId();
 
-        if ($phpEditor == 'yes') {
-            $phpini = iMSCP_PHPini::getInstance();
-            $phpini->setDomainIni('phpiniMemoryLimit', $phpiniMemoryLimit); // Must be set before phpiniPostMaxSize
-            $phpini->setDomainIni('phpiniPostMaxSize', $phpiniPostMaxSize); // Must be set before phpiniUploadMaxFileSize
-            $phpini->setDomainIni('phpiniUploadMaxFileSize', $phpiniUploadMaxFileSize);
-            $phpini->setDomainIni('phpiniMaxExecutionTime', $phpiniMaxExecutionTime);
-            $phpini->setDomainIni('phpiniMaxInputTime', $phpiniMaxInputTime);
-            $phpini->saveDomainIni($adminId, $dmnId, 'dmn');
-        }
+        $phpini = iMSCP_PHPini::getInstance();
+        $phpini->setDomainIni('phpiniMemoryLimit', $phpiniMemoryLimit); // Must be set before phpiniPostMaxSize
+        $phpini->setDomainIni('phpiniPostMaxSize', $phpiniPostMaxSize); // Must be set before phpiniUploadMaxFileSize
+        $phpini->setDomainIni('phpiniUploadMaxFileSize', $phpiniUploadMaxFileSize);
+        $phpini->setDomainIni('phpiniMaxExecutionTime', $phpiniMaxExecutionTime);
+        $phpini->setDomainIni('phpiniMaxInputTime', $phpiniMaxInputTime);
+        $phpini->saveDomainIni($adminId, $dmnId, 'dmn');
 
         exec_query('INSERT INTO htaccess_users (dmn_id, uname, upass, status) VALUES (?, ?, ?, ?)', array(
             $dmnId, $dmnName, $encryptedPassword, 'toadd'

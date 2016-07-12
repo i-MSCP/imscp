@@ -10,13 +10,15 @@ CONFIG
     Fixed: PHP opcode cache should be enabled by default (OPcache, APC)
     Moved: DocumentRoot for pages of disabled domains now live outside of the customer home directories
 
-SKELETON
-    Added: Dedicated `domain_disabled_pages' directory for pages of disabled domains
+DATABASE
+    Added: Composite unique key on the `php_ini' table
 
 FRONTEND
     Added: `onAddIpAddr', `onChangeIpConfigMode' and `onDeleteIpAddr' events (admin level)
     Changed: Frontend is now run through an isolated PHP-FPM Daemon (see errata file)
+    Fixed: Customer PHP permissions are not synced with reseller PHP permissions in some contexts
     Fixed: IPv6 - Possible duplicate entries - It is possible to add an IPv6 twice (uncompressed and compressed)
+    Fixed: PHP INI entry for main domains must be created even if PHP editor is not enabled
     Fixed: `SELECT' placeholder is not parsed in ip_manage.php (admin level)
     Fixed: Running the frontEnd through PHP CGI using spawn-fcgi lead to problems with opcode cache (cache not shared)
 
@@ -30,7 +32,11 @@ INSTALLER
 PRESEED
     Removed: SERVER_IPS parameter according changes made in installer
 
+SKELETON
+    Added: Dedicated `domain_disabled_pages' directory for pages of disabled domains
+
 YOUTRACK
+    #IP-1534 Cannot save PHP `post_max_size' and `upload_max_filesize' for a domain
     #IP-1575 When editing forwarding URL, scheme field is not set with current value
     #IP-1577 i-MSCP installer - Dialog exit with code 255 when console size is too small
     #IP-1579 APT (>= 1.1) - The `--force-yes' option has been replaced by various options starting with `--allow'
