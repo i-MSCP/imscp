@@ -41,7 +41,7 @@ class iMSCP_Uri_Redirect extends Zend_Uri_Http
 		$scheme = strtolower($uri[0]);
 		$schemeSpecific = isset($uri[1]) === true ? $uri[1] : '';
 
-		if (in_array($scheme, array('http', 'https', 'ftp')) === false) {
+		if (in_array($scheme, array('http', 'https')) === false) {
 			throw new iMSCP_Uri_Exception(sprintf('Invalid scheme: %s', $scheme));
 		}
 

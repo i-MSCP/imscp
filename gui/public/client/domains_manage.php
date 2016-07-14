@@ -23,6 +23,31 @@
  */
 
 /**
+ * Generates domain redirect and edit link
+ *
+ * @param int $id Domain unique identifier
+ * @param string $status Domain status
+ * @param string $redirectUrl Target URL for redirect request
+ * @return array
+ */
+function generateDomainRedirectAndEditLink($id, $status, $redirectUrl)
+{
+    if ($redirectUrl == 'no') {
+        if ($status == 'ok') {
+            return array('-', tohtml("domain_edit.php?id=$id", 'htmlAttr'), tr('Edit'));
+        }
+
+        return array(tr('N/A'), '#', tr('N/A'));
+    }
+
+    if ($status == 'ok') {
+        return array($redirectUrl, tohtml("domain_edit.php?id=$id", 'htmlAttr'), tr('Edit'));
+    }
+
+    return array(tr('N/A'), '#', tr('N/A'));
+}
+
+/**
  * Generates domains list
  *
  * @param iMSCP_pTemplate $tpl Template engine
@@ -30,11 +55,9 @@
  */
 function generateDomainsList($tpl)
 {
-    $cfg = iMSCP_Registry::get('config');
     $stmt = exec_query(
         "
-            SELECT t1.domain_id, t1.domain_name, t1.domain_created, t1.domain_expires, t1.domain_status,
-                t2.status as ssl_status
+            SELECT t1.domain_id, t1.domain_name, t1.domain_status, t1.url_forward, t2.status as ssl_status
             FROM domain AS t1
             LEFT JOIN ssl_certs AS t2 ON(t2.domain_id = t1.domain_id AND t2.domain_type = 'dmn')
             WHERE domain_admin_id = ? ORDER BY domain_name
@@ -43,7 +66,9 @@ function generateDomainsList($tpl)
     );
 
     while ($row = $stmt->fetchRow()) {
+        list($redirectUrl, $editLink, $edit) = generateDomainRedirectAndEditLink($row['domain_id'], $row['domain_status'], $row['url_forward']);
         $domainName = decode_idna($row['domain_name']);
+        $redirectUrl = decode_idna($redirectUrl);
 
         if ($row['domain_status'] == 'ok') {
             $tpl->assign(array(
@@ -61,21 +86,83 @@ function generateDomainsList($tpl)
 
         $tpl->assign(array(
             'DOMAIN_NAME' => tohtml($domainName),
-            'DOMAIN_CREATE_DATE' => tohtml(date($cfg['DATE_FORMAT'], $row['domain_created'])),
-            'DOMAIN_EXPIRE_DATE' => $row['domain_expires'] != 0 ? tohtml(date($cfg['DATE_FORMAT'], $row['domain_expires'])) : tr('Never'),
             'DOMAIN_STATUS' => translate_dmn_status($row['domain_status']),
             'DOMAIN_SSL_STATUS' => is_null($row['ssl_status'])
                 ? tr('Disabled')
                 : (
-                    in_array($row['ssl_status'], array('toadd', 'tochange', 'todelete', 'ok'))
-                        ? translate_dmn_status($row['ssl_status'])
-                        : '<span style="color: red;font-weight: bold">' . tr('Invalid SSL certificate') . "</span>"
+                in_array($row['ssl_status'], array('toadd', 'tochange', 'todelete', 'ok'))
+                    ? translate_dmn_status($row['ssl_status'])
+                    : '<span style="color: red;font-weight: bold">' . tr('Invalid SSL certificate') . "</span>"
                 ),
+            'DOMAIN_REDIRECT' => tohtml($redirectUrl),
+            'DOMAIN_EDIT_LINK' => $editLink,
+            'DOMAIN_EDIT' => $edit,
             'CERT_SCRIPT' => tohtml('cert_view.php?domain_id=' . $row['domain_id'] . '&domain_type=dmn', 'htmlAttr'),
             'VIEW_CERT' => customerHasFeature('ssl') ? tr('Manage SSL certificate') : tr('View SSL certificate'),
         ));
         $tpl->parse('DOMAIN_ITEM', '.domain_item');
     }
+}
+
+/**
+ * Generates domain alias action
+ *
+ * @access private
+ * @param int $id Alias unique identifier
+ * @param string $status Alias status
+ * @return array
+ */
+function generateDomainAliasAction($id, $status)
+{
+    if ($status == 'ok') {
+        return array(
+            tr('Delete'),
+            tohtml("alias_delete.php?id=$id", 'htmlAttr'),
+            true,
+            customerHasFeature('ssl') ? tr('Manage SSL certificate') : tr('View SSL certificate'),
+            tohtml("cert_view.php?domain_id=$id&domain_type=als", 'htmlAttr')
+        );
+    }
+
+    if ($status == 'ordered') {
+        return array(tr('Delete order'), tohtml("alias_order_delete.php?del_id=$id"), false, '-', '#');
+    }
+
+    return array(tr('N/A'), '#', false, tr('N/A'), '#');
+}
+
+/**
+ * Generates domain alias redirect and edit link
+ *
+ * @access private
+ * @param int $id Alias unique identifier
+ * @param string $status Alias status
+ * @param string $redirectUrl Target URL for redirect request
+ * @return array
+ */
+function generateDomainAliasRedirectAndEditLink($id, $status, $redirectUrl)
+{
+    if ($redirectUrl == 'no') {
+        if ($status == 'ok') {
+            return array('-', tohtml("alias_edit.php?id=$id", 'htmlAttr'), tr('Edit'));
+        }
+
+        if ($status == 'ordered') {
+            return array('-', '#', tr('N/A'));
+        }
+
+        return array(tr('N/A'), '#', tr('N/A'));
+    }
+
+    if ($status == 'ok') {
+        return array($redirectUrl, tohtml("alias_edit.php?id=$id", 'htmlAttr'), tr('Edit'));
+    }
+
+    if ($status == 'ordered') {
+        return array($redirectUrl, '#', tr('N/A'));
+    }
+
+    return array(tr('N/A'), '#', tr('N/A'));
 }
 
 /**
@@ -111,17 +198,14 @@ function generateDomainAliasesList($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-        $alsId = $row['alias_id'];
-        $alsName = $row['alias_name'];
-        $alsStatus = $row['alias_status'];
-        $alsForwardUrl = $row['url_forward'];
-        $alsMountPoint = $row['alias_mount'];
-
-        list($action, $actionScript, $isStatusOk, $certText, $certScript) = generateDomainAliasAction($alsId, $alsStatus);
-        list($redirectUrl, $editLink, $edit) = generateDomainAliasRedirect($alsId, $alsStatus, $alsForwardUrl);
-
-        $alsName = decode_idna($alsName);
+    while ($row = $stmt->fetchRow()) {
+        list($action, $actionScript, $isStatusOk, $certText, $certScript) = generateDomainAliasAction(
+            $row['alias_id'], $row['alias_status']
+        );
+        list($redirectUrl, $editLink, $edit) = generateDomainAliasRedirectAndEditLink(
+            $row['alias_id'], $row['alias_status'], $row['url_forward']
+        );
+        $alsName = decode_idna($row['alias_name']);
         $redirectUrl = decode_idna($redirectUrl);
 
         if ($isStatusOk) {
@@ -140,14 +224,14 @@ function generateDomainAliasesList($tpl)
 
         $tpl->assign(array(
             'ALS_NAME' => tohtml($alsName),
-            'ALS_MOUNT' => tohtml($alsMountPoint),
-            'ALS_STATUS' => translate_dmn_status($alsStatus),
+            'ALS_MOUNT' => tohtml($row['alias_mount']),
+            'ALS_STATUS' => translate_dmn_status($row['alias_status']),
             'ALS_SSL_STATUS' => is_null($row['ssl_status'])
                 ? tr('Disabled')
                 : (
-                    in_array($row['ssl_status'], array('toadd', 'tochange', 'todelete', 'ok'))
-                        ? translate_dmn_status($row['ssl_status'])
-                        : '<span style="color: red;font-weight: bold">' . tr('Invalid SSL certificate') . "</span>"
+                in_array($row['ssl_status'], array('toadd', 'tochange', 'todelete', 'ok'))
+                    ? translate_dmn_status($row['ssl_status'])
+                    : '<span style="color: red;font-weight: bold">' . tr('Invalid SSL certificate') . "</span>"
                 ),
             'ALS_REDIRECT' => tohtml($redirectUrl),
             'ALS_EDIT_LINK' => $editLink,
@@ -165,61 +249,72 @@ function generateDomainAliasesList($tpl)
 }
 
 /**
- * Generates domain alias action
+ * Generates subdomain action
  *
  * @access private
- * @param int $id Alias unique identifier
- * @param string $status Alias status
+ * @param int $id Subdomain unique identifier
+ * @param string $status Subdomain status
  * @return array
  */
-function generateDomainAliasAction($id, $status)
+function generateSubdomainAction($id, $status)
 {
     if ($status == 'ok') {
         return array(
-            tr('Delete'),
-            tohtml("alias_delete.php?id=$id", 'htmlAttr'),
+            tr('Delete'), tohtml("subdomain_delete.php?id=$id", 'htmlAttr'),
             true,
             customerHasFeature('ssl') ? tr('Manage SSL certificate') : tr('View SSL certificate'),
-            tohtml("cert_view.php?domain_id=$id&domain_type=als", 'htmlAttr')
+            tohtml("cert_view.php?domain_id=$id&domain_type=sub", 'htmlAttr')
         );
-    }
-
-    if ($status == 'ordered') {
-        return array(tr('Delete order'), tohtml("alias_order_delete.php?del_id=$id"), false, '-', '#');
     }
 
     return array(tr('N/A'), '#', false, tr('N/A'), '#');
 }
 
 /**
- * Generates domain alias redirect
+ * Generates subdomain aliases action
  *
  * @access private
- * @param int $id Alias unique identifier
- * @param string $status Alias status
- * @param string $redirectUrl Target URL for redirect request
+ * @param int $id Subdomain Alias unique identifier
+ * @param string $status Subdomain alias Status
  * @return array
  */
-function generateDomainAliasRedirect($id, $status, $redirectUrl)
+function generateSubdomainAliasAction($id, $status)
 {
-    if ($redirectUrl == 'no') {
-        if ($status == 'ok') {
-            return array('-', tohtml("alias_edit.php?id=$id", 'htmlAttr'), tr('Edit'));
-        }
-
-        if ($status == 'ordered') {
-            return array('-', '#', tr('N/A'));
-        }
-
-        return array(tr('N/A'), '#', tr('N/A'));
+    if ($status == 'ok') {
+        return array(
+            tr('Delete'),
+            tohtml("alssub_delete.php?id=$id", 'htmlAttr'),
+            true,
+            customerHasFeature('ssl') ? tr('Manage SSL certificate') : tr('View SSL certificate'),
+            tohtml("cert_view.php?domain_id=$id&domain_type=alssub", 'htmlAttr')
+        );
     }
 
+    return array(tr('N/A'), '#', false, tr('N/A'), '#');
+}
+
+/**
+ * Generates subdomain redirect and edit link
+ *
+ * @access private
+ * @param int $id Subdomain unique identifier
+ * @param string $status Subdomain status
+ * @param string $redirectUrl Target URL for redirect request
+ * @param string $entityType Subdomain type (dmn|als)
+ * @return array
+ */
+function generateSubdomainRedirectAndEditLink($id, $status, $redirectUrl, $entityType)
+{
     if ($status == 'ok') {
-        return array($redirectUrl, tohtml("alias_edit.php?id=$id", 'htmlAttr'), tr('Edit'));
+        return array(
+            $redirectUrl == 'no' ? '-' : $redirectUrl,
+            tohtml("subdomain_edit.php?id=$id&type=$entityType", 'htmlAttr'),
+            tr('Edit')
+        );
     }
 
     if ($status == 'ordered') {
-        return array($redirectUrl, '#', tr('N/A'));
+        return array($redirectUrl == 'no' ? '-' : $redirectUrl, '#', tr('N/A'));
     }
 
     return array(tr('N/A'), '#', tr('N/A'));
@@ -243,8 +338,8 @@ function generateSubdomainsList($tpl)
     // Subdomains
     $stmt1 = exec_query(
         "
-            SELECT t1.subdomain_id, t1.subdomain_name, t1.subdomain_mount, t1.subdomain_status, t1.subdomain_url_forward,
-                t2.domain_name, t3.status AS ssl_status
+            SELECT t1.subdomain_id, t1.subdomain_name, t1.subdomain_mount, t1.subdomain_status,
+                t1.subdomain_url_forward, t2.domain_name, t3.status AS ssl_status
             FROM subdomain AS t1 JOIN domain AS t2 USING(domain_id)
             LEFT JOIN ssl_certs AS t3 ON(t1.subdomain_id = t3.domain_id AND t3.domain_type = 'sub')
             WHERE t1.domain_id = ? ORDER BY t1.subdomain_name
@@ -274,18 +369,15 @@ function generateSubdomainsList($tpl)
     }
 
     while ($row = $stmt1->fetchRow()) {
-        $domainName = $row['domain_name'];
-        $subId = $row['subdomain_id'];
-        $subName = $row['subdomain_name'];
-        $subStatus = $row['subdomain_status'];
-        $subUrlForward = $row['subdomain_url_forward'];
-        $subMountPoint = $row['subdomain_mount'];
+        list($action, $actionScript, $isStatusOk, $certText, $certScript) = generateSubdomainAction(
+            $row['subdomain_id'], $row['subdomain_status']
+        );
+        list($redirectUrl, $editLink, $edit) = generateSubdomainRedirectAndEditLink(
+            $row['subdomain_id'], $row['subdomain_status'], $row['subdomain_url_forward'], 'dmn'
+        );
 
-        list($action, $actionScript, $isStatusOk, $certText, $certScript) = generateSubdomainAction($subId, $subStatus);
-        list($redirectUrl, $editLink, $edit) = generateSubdomainRedirect($subId, $subStatus, $subUrlForward, 'dmn');
-
-        $domainName = decode_idna($domainName);
-        $subName = decode_idna($subName);
+        $domainName = decode_idna($row['domain_name']);
+        $subName = decode_idna($row['subdomain_name']);
         $redirectUrl = decode_idna($redirectUrl);
 
         if ($isStatusOk) {
@@ -305,15 +397,15 @@ function generateSubdomainsList($tpl)
         }
 
         $tpl->assign(array(
-            'SUB_MOUNT' => tohtml($subMountPoint),
+            'SUB_MOUNT' => tohtml($row['subdomain_mount']),
             'SUB_REDIRECT' => $redirectUrl,
-            'SUB_STATUS' => translate_dmn_status($subStatus),
+            'SUB_STATUS' => translate_dmn_status($row['subdomain_status']),
             'SUB_SSL_STATUS' => is_null($row['ssl_status'])
                 ? tr('Disabled')
                 : (
-                    in_array($row['ssl_status'], array('toadd', 'tochange', 'todelete', 'ok'))
-                        ? translate_dmn_status($row['ssl_status'])
-                        : '<span style="color: red;font-weight: bold">' . tr('Invalid SSL certificate') . "</span>"
+                in_array($row['ssl_status'], array('toadd', 'tochange', 'todelete', 'ok'))
+                    ? translate_dmn_status($row['ssl_status'])
+                    : '<span style="color: red;font-weight: bold">' . tr('Invalid SSL certificate') . "</span>"
                 ),
             'SUB_EDIT_LINK' => $editLink,
             'SUB_EDIT' => $edit,
@@ -325,19 +417,15 @@ function generateSubdomainsList($tpl)
         $tpl->parse('SUB_ITEM', '.sub_item');
     }
 
-    while ($row = $stmt2->fetchRow(PDO::FETCH_ASSOC)) {
-        $alsName = $row['alias_name'];
-        $alssubId = $row['subdomain_alias_id'];
-        $alssubName = $row['subdomain_alias_name'];
-        $alssubStatus = $row['subdomain_alias_status'];
-        $alssubMountPoint = $row['subdomain_alias_mount'];
-        $alssubUrlForward = $row['subdomain_alias_url_forward'];
-
-        list($action, $actionScript, $isStatusOk, $certText, $certScript) = generateSubdomainAliasAction($alssubId, $alssubStatus);
-        list($redirectUrl, $editLink, $edit) = generateSubdomainRedirect($alssubId, $alssubStatus, $alssubUrlForward, 'als');
-
-        $alsName = decode_idna($alsName);
-        $name = decode_idna($alssubName);
+    while ($row = $stmt2->fetchRow()) {
+        list($action, $actionScript, $isStatusOk, $certText, $certScript) = generateSubdomainAliasAction(
+            $row['subdomain_alias_id'], $row['subdomain_alias_status']
+        );
+        list($redirectUrl, $editLink, $edit) = generateSubdomainRedirectAndEditLink(
+            $row['subdomain_alias_id'], $row['subdomain_alias_status'], $row['subdomain_alias_url_forward'], 'als'
+        );
+        $alsName = decode_idna($row['alias_name']);
+        $name = decode_idna($row['subdomain_alias_name']);
         $redirectUrl = decode_idna($redirectUrl);
 
         if ($isStatusOk) {
@@ -358,15 +446,15 @@ function generateSubdomainsList($tpl)
 
         $tpl->assign(array(
             'SUB_NAME' => tohtml($name),
-            'SUB_MOUNT' => tohtml($alssubMountPoint),
+            'SUB_MOUNT' => tohtml($row['subdomain_alias_mount']),
             'SUB_REDIRECT' => $redirectUrl,
-            'SUB_STATUS' => translate_dmn_status($alssubStatus),
+            'SUB_STATUS' => translate_dmn_status($row['subdomain_alias_status']),
             'SUB_SSL_STATUS' => is_null($row['ssl_status'])
                 ? tr('Disabled')
                 : (
-                    in_array($row['ssl_status'], array('toadd', 'tochange', 'todelete', 'ok'))
-                        ? translate_dmn_status($row['ssl_status'])
-                        : '<span style="color: red;font-weight: bold">' . tr('Invalid SSL certificate') . "</span>"
+                in_array($row['ssl_status'], array('toadd', 'tochange', 'todelete', 'ok'))
+                    ? translate_dmn_status($row['ssl_status'])
+                    : '<span style="color: red;font-weight: bold">' . tr('Invalid SSL certificate') . "</span>"
                 ),
             'SUB_EDIT_LINK' => $editLink,
             'SUB_EDIT' => $edit,
@@ -383,75 +471,28 @@ function generateSubdomainsList($tpl)
 }
 
 /**
- * Generates subdomain redirect
+ * Generates custom DNS record action
  *
  * @access private
- * @param int $id Subdomain unique identifier
- * @param string $status Subdomain status
- * @param string $redirectUrl Target URL for redirect request
- * @param string $entityType Subdomain type (dmn|als)
+ * @param string $action Action
+ * @param string|null $id Custom DNS record unique identifier
+ * @param string $status Custom DNS record status
+ * @param string $ownedBy Owner of the DNS record
  * @return array
  */
-function generateSubdomainRedirect($id, $status, $redirectUrl, $entityType)
+function generateCustomDnsRecordAction($action, $id, $status, $ownedBy = 'custom_dns_feature')
 {
-    if ($status == 'ok') {
-        return array(
-            $redirectUrl == 'no' ? '-' : $redirectUrl,
-            tohtml("subdomain_edit.php?id=$id&type=$entityType", 'htmlAttr'),
-            tr('Edit')
-        );
+    if (!in_array($status, array('toadd', 'tochange', 'todelete'))) {
+        if ($action == 'edit' && $ownedBy == 'custom_dns_feature') {
+            return array(tr('Edit'), tohtml("dns_edit.php?id=$id", 'htmlAttr'));
+        }
+
+        if ($ownedBy == 'custom_dns_feature') {
+            return array(tr('Delete'), tohtml("dns_delete.php?id=$id", 'htmlAttr'));
+        }
     }
 
-    if ($status == 'ordered') {
-        return array($redirectUrl == 'no' ? '-' : $redirectUrl, '#', tr('N/A'));
-    }
-
-    return array(tr('N/A'), '#', tr('N/A'));
-}
-
-/**
- * Generates subdomain action
- *
- * @access private
- * @param int $id Subdomain unique identifier
- * @param string $status Subdomain status
- * @return array
- */
-function generateSubdomainAction($id, $status)
-{
-    if ($status == 'ok') {
-        return array(
-            tr('Delete'), tohtml("subdomain_delete.php?id=$id", 'htmlAttr'),
-            true,
-            customerHasFeature('ssl') ? tr('Manage SSL certificate') : tr('View SSL certificate'),
-            tohtml("cert_view.php?domain_id=$id&domain_type=sub", 'htmlAttr'),
-        );
-    }
-
-    return array(tr('N/A'), '#', false, tr('N/A'), '#');
-}
-
-/**
- * Generates subdomain aliases action
- *
- * @access private
- * @param int $id Subdomain Alias unique identifier
- * @param string $status Subdomain alias Status
- * @return array
- */
-function generateSubdomainAliasAction($id, $status)
-{
-    if ($status == 'ok') {
-        return array(
-            tr('Delete'),
-            tohtml("alssub_delete.php?id=$id", 'htmlAttr'),
-            true,
-            customerHasFeature('ssl') ? tr('Manage SSL certificate') : tr('View SSL certificate'),
-            tohtml("cert_view.php?domain_id=$id&domain_type=alssub", 'htmlAttr'),
-        );
-    }
-
-    return array(tr('N/A'), '#', false, tr('N/A'), '#');
+    return array(tr('N/A'), '#');
 }
 
 /**
@@ -497,7 +538,7 @@ function generateCustomDnsRecordsList($tpl)
 
             $dnsName = $row['domain_dns'];
             $ttl = tr('Default');
-            if(preg_match('/^(?P<name>([^\s]+))(?:\s+(?P<ttl>\d+))/', $dnsName, $matches)) {
+            if (preg_match('/^(?P<name>([^\s]+))(?:\s+(?P<ttl>\d+))/', $dnsName, $matches)) {
                 $dnsName = $matches['name'];
                 $ttl = $matches['ttl'] . ' ' . tr('Sec.');
             }
@@ -532,31 +573,6 @@ function generateCustomDnsRecordsList($tpl)
             $tpl->assign('CUSTOM_DNS_RECORDS_BLOCK', '');
         }
     }
-}
-
-/**
- * Generates custom DNS record action
- *
- * @access private
- * @param string $action Action
- * @param string|null $id Custom DNS record unique identifier
- * @param string $status Custom DNS record status
- * @param string $ownedBy Owner of the DNS record
- * @return array
- */
-function generateCustomDnsRecordAction($action, $id, $status, $ownedBy = 'custom_dns_feature')
-{
-    if (!in_array($status, array('toadd', 'tochange', 'todelete'))) {
-        if ($action == 'edit' && $ownedBy == 'custom_dns_feature') {
-            return array(tr('Edit'), tohtml("dns_edit.php?id=$id", 'htmlAttr'));
-        }
-
-        if ($ownedBy == 'custom_dns_feature') {
-            return array(tr('Delete'), tohtml("dns_delete.php?id=$id", 'htmlAttr'));
-        }
-    }
-
-    return array(tr('N/A'), '#');
 }
 
 /***********************************************************************************************************************
@@ -602,8 +618,6 @@ $tpl->assign(array(
     'TR_DOMAINS' => tr('Domains'),
     'TR_ZONE' => tr('Zone'),
     'TR_TTL' => tr('TTL'),
-    'TR_CREATE_DATE' => tr('Creation date'),
-    'TR_EXPIRE_DATE' => tr('Expire date'),
     'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
     'TR_SUBDOMAINS' => tr('Subdomains'),
     'TR_NAME' => tr('Name'),

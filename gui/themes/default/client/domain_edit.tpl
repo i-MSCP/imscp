@@ -19,19 +19,19 @@
     });
 </script>
 
-<form name="edit_domain_alias_frm" method="post" action="alias_edit.php?id={DOMAIN_ALIAS_ID}">
+<form name="edit_domain_frm" method="post" action="domain_edit.php?id={DOMAIN_ID}">
     <table class="firstColFixed">
         <thead>
         <tr>
-            <th colspan="2">{TR_DOMAIN_ALIAS}</th>
+            <th colspan="2">{TR_DOMAIN}</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td><label for="domain_alias_name">{TR_DOMAIN_ALIAS_NAME}</label></td>
+            <td><label for="domain_name">{TR_DOMAIN_NAME}</label></td>
             <td>
                 <span class="bold">www.</span>
-                <input type="text" name="domain_alias_name" id="domain_alias_name" value="{DOMAIN_ALIAS_NAME}" readonly="readonly">
+                <input type="text" name="domain_name" id="domain_name" value="{DOMAIN_NAME}" readonly="readonly">
             </td>
         </tr>
         <tr>
@@ -57,9 +57,7 @@
                         <option value="https://"{HTTPS_YES}>{TR_HTTPS}</option>
                     </select>
                 </label>
-                <label>
-                    <input name="forward_url" type="text" id="forward_url" value="{FORWARD_URL}">
-                </label>
+                <label><input name="forward_url" type="text" id="forward_url" value="{FORWARD_URL}"></label>
             </td>
         </tr>
         <tr id="tr_type_forwarding_data">
@@ -87,6 +85,6 @@
     </table>
     <div class="buttons">
         <input name="Submit" type="submit" value="{TR_UPDATE}">
-        <a class="link_as_button" href="alias.php">{TR_CANCEL}</a>
+        <a class="link_as_button" href="domains_manage.php">{TR_CANCEL}</a>
     </div>
 </form>

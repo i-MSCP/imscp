@@ -29,12 +29,13 @@
  */
 function getPreviousStepData()
 {
-    global $hpId, $dmnName, $adminName, $dmnExpire;
+    global $adminName, $hpId, $dmnName, $dmnExpire, $dmnUrlForward, $dmnTypeForward, $dmnHostForward;
 
-    if (isset($_SESSION['dmn_expire'])) {
-        $dmnExpire = $_SESSION['dmn_expire'];
-    }
-
+    $dmnExpire = $_SESSION['dmn_expire'];
+    $dmnUrlForward = $_SESSION['dmn_url_forward'];
+    $dmnTypeForward = $_SESSION['dmn_type_forward'];
+    $dmnHostForward = $_SESSION['dmn_host_forward'];
+    
     if (isset($_SESSION['step_one'])) {
         $stepTwo = $_SESSION['dmn_name'] . ';' . $_SESSION['dmn_tpl'];
         $hpId = $_SESSION['dmn_tpl'];
@@ -107,8 +108,9 @@ function generatePage($tpl)
  */
 function addCustomer()
 {
-    global $hpId, $dmnName, $dmnExpire, $domainIp, $adminName, $email, $password, $customerId, $firstName, $lastName,
-           $gender, $firm, $zip, $city, $state, $country, $phone, $fax, $street1, $street2;
+    global $hpId, $dmnName, $dmnExpire, $dmnUrlForward, $dmnTypeForward, $dmnHostForward, $domainIp, $adminName, $email,
+           $password, $customerId, $firstName, $lastName, $gender, $firm, $zip, $city, $state, $country, $phone, $fax,
+           $street1, $street2;
 
     if (!isset($_POST['domain_ip'])) {
         showBadRequestErrorPage();
@@ -163,7 +165,10 @@ function addCustomer()
             'domainName' => $dmnName,
             'createdBy' => $_SESSION['user_id'],
             'customerId' => $customerId,
-            'customerEmail' => $email
+            'customerEmail' => $email,
+            'forwardUrl' => $dmnUrlForward,
+            'forwardType' => $dmnTypeForward,
+            'forwardHost' => $dmnHostForward
         ));
 
         exec_query(
@@ -191,16 +196,17 @@ function addCustomer()
                     domain_alias_limit, domain_subd_limit, domain_ip_id, domain_disk_limit, domain_disk_usage,
                     domain_php, domain_cgi, allowbackup, domain_dns, domain_software_allowed, phpini_perm_system,
                     phpini_perm_allow_url_fopen, phpini_perm_display_errors, phpini_perm_disable_functions,
-                    phpini_perm_mail_function, domain_external_mail, web_folder_protection, mail_quota
+                    phpini_perm_mail_function, domain_external_mail, web_folder_protection, mail_quota, url_forward,
+                    type_forward, host_forward
                 ) VALUES (
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                 )
             ',
             array(
                 $dmnName, $adminId, time(), $dmnExpire, $mail, $ftp, $traff, $sql_db, $sql_user, 'toadd', $als, $sub,
                 $domainIp, $disk, 0, $php, $cgi, $backup, $dns, $aps, $phpEditor, $phpiniAllowUrlFopen,
                 $phpiniDisplayErrors, $phpiniDisableFunctions, $phpMailFunction, $extMailServer, $webFolderProtection,
-                $mailQuota
+                $mailQuota, $dmnUrlForward, $dmnTypeForward, $dmnHostForward
             )
         );
 
@@ -236,13 +242,17 @@ function addCustomer()
             'createdBy' => $_SESSION['user_id'],
             'customerId' => $adminId,
             'customerEmail' => $email,
-            'domainId' => $dmnId
+            'domainId' => $dmnId,
+            'forwardUrl' => $dmnUrlForward,
+            'forwardType' => $dmnTypeForward,
+            'forwardHost' => $dmnHostForward
         ));
 
         $db->commit();
         send_request();
         write_log("{$_SESSION['user_logged']} added new customer: $adminName", E_USER_NOTICE);
         set_page_message(tr('Customer account successfully scheduled for creation.'), 'success');
+        unsetMessages();
         redirectTo('users.php');
     } catch (iMSCP_Exception $e) {
         $db->rollBack();

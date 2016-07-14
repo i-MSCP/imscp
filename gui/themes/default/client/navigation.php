@@ -41,6 +41,12 @@ return array(
                 'uri' => '/client/domains_manage.php',
                 'title_class' => 'domains',
                 'pages' => array(
+                    'domain_edit_link' => array(
+                        'label' => tr('Edit domain'),
+                        'uri' => '/client/domain_edit.php',
+                        'title_class' => 'domains',
+                        'visible' => '0'
+                    ),
                     'domain_alias_edit_link' => array(
                         'label' => tr('Edit domain alias'),
                         'uri' => '/client/alias_edit.php',

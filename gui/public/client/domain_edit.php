@@ -23,37 +23,35 @@
  */
 
 /**
- * Get domain alias data
+ * Get domain data
  *
  * @access private
- * @param int $domainAliasId Subdomain unique identifier
- * @return array Domain alias data. If any error occurs FALSE is returned
+ * @param int $domainId Domain unique identifier
+ * @return array|bool Domain data or FALSE on error
  */
-function _reseller_getAliasData($domainAliasId)
+function _client_getDomainData($domainId)
 {
-    static $domainAliasData = null;
+    static $domainData = null;
 
-    if (null === $domainAliasData) {
-        $stmt = exec_query(
-            "
-                SELECT t1.alias_name, t1.url_forward, t1.type_forward, t1.host_forward
-                FROM domain_aliasses AS t1
-                INNER JOIN domain AS t2 USING(domain_id)
-                INNER JOIN admin AS t3 ON(admin_id = domain_admin_id)
-                WHERE t1.alias_id = ? AND t1.alias_status = ? AND t3.created_by = ?
-            ",
-            array($domainAliasId, 'ok', $_SESSION['user_id'])
-        );
-
-        if (!$stmt->rowCount()) {
-            return false;
-        }
-
-        $domainAliasData = $stmt->fetchRow(PDO::FETCH_ASSOC);
-        $domainAliasData['alias_name_utf8'] = decode_idna($domainAliasData['alias_name']);
+    if (null !== $domainData) {
+        return $domainData;
     }
 
-    return $domainAliasData;
+    $stmt = exec_query(
+        '
+            SELECT domain_name, url_forward, type_forward, host_forward
+            FROM domain WHERE domain_id = ? AND domain_admin_id = ? AND domain_status = ?
+        ',
+        array($domainId, $_SESSION['user_id'], 'ok')
+    );
+
+    if (!$stmt->rowCount()) {
+        return false;
+    }
+
+    $domainData = $stmt->fetchRow();
+    $domainData['domain_name_utf8'] = decode_idna($domainData['domain_name']);
+    return $domainData;
 }
 
 /**
@@ -62,32 +60,31 @@ function _reseller_getAliasData($domainAliasId)
  * @param $tpl iMSCP_pTemplate
  * @return void
  */
-function reseller_generatePage($tpl)
+function client_generatePage($tpl)
 {
     if (!isset($_GET['id'])) {
         showBadRequestErrorPage();
     }
 
-    $domainAliasId = clean_input($_GET['id']);
-    $domainAliasData = _reseller_getAliasData($domainAliasId);
-
-    if ($domainAliasData === false) {
+    $domainId = intval($_GET['id']);
+    $domainData = _client_getDomainData($domainId);
+    if ($domainData === false) {
         showBadRequestErrorPage();
     }
 
     $forwardHost = 'Off';
 
     if (empty($_POST)) {
-        if ($domainAliasData['url_forward'] != 'no') {
+        if ($domainData['url_forward'] != 'no') {
             $urlForwarding = true;
-            $uri = iMSCP_Uri_Redirect::fromString($domainAliasData['url_forward']);
-            $forwardUrlScheme = $uri->getScheme();
-            $forwardUrl = substr($uri->getUri(), strlen($forwardUrlScheme) + 3);
-            $forwardType = $domainAliasData['type_forward'];
-            $forwardHost = $domainAliasData['host_forward'];
+            $uri = iMSCP_Uri_Redirect::fromString($domainData['url_forward']);
+            $forwardUrlScheme = $uri->getScheme() . '://';
+            $forwardUrl = substr($uri->getUri(), strlen($forwardUrlScheme));
+            $forwardType = $domainData['type_forward'];
+            $forwardHost = $domainData['host_forward'];
         } else {
             $urlForwarding = false;
-            $forwardUrlScheme = 'http://';
+            $forwardUrlScheme = 'http';
             $forwardUrl = '';
             $forwardType = '302';
         }
@@ -103,40 +100,41 @@ function reseller_generatePage($tpl)
     }
 
     $tpl->assign(array(
-        'DOMAIN_ALIAS_ID' => $domainAliasId,
-        'DOMAIN_ALIAS_NAME' => tohtml($domainAliasData['alias_name_utf8']),
+        'DOMAIN_ID' => $domainId,
+        'DOMAIN_NAME' => tohtml($domainData['domain_name_utf8']),
         'FORWARD_URL_YES' => ($urlForwarding) ? ' checked' : '',
         'FORWARD_URL_NO' => ($urlForwarding) ? '' : ' checked',
         'HTTP_YES' => ($forwardUrlScheme == 'http://') ? ' selected' : '',
         'HTTPS_YES' => ($forwardUrlScheme == 'https://') ? ' selected' : '',
-        'FORWARD_URL' => tohtml(decode_idna($forwardUrl)),
+        'FORWARD_URL' => $forwardUrl !== '' ? tohtml(decode_idna($forwardUrl)) : '',
         'FORWARD_TYPE_301' => ($forwardType == '301') ? ' checked' : '',
         'FORWARD_TYPE_302' => ($forwardType == '302') ? ' checked' : '',
         'FORWARD_TYPE_303' => ($forwardType == '303') ? ' checked' : '',
         'FORWARD_TYPE_307' => ($forwardType == '307') ? ' checked' : '',
-        'FORWARD_TYPE_PROXY' => ($forwardType == '307') ? ' checked' : '',
+        'FORWARD_TYPE_PROXY' => ($forwardType == 'proxy') ? ' checked' : '',
         'FORWARD_HOST' => ($forwardHost == 'On') ? ' checked' : ''
     ));
 }
 
 /**
- * Edit domain alias
+ * Edit domain
  *
  * @return bool TRUE on success, FALSE on failure
  */
-function reseller_editDomainAlias()
+function client_editDomain()
 {
     if (!isset($_GET['id'])) {
         showBadRequestErrorPage();
     }
 
-    $domainAliasId = clean_input($_GET['id']);
-    $domainAliasData = _reseller_getAliasData($domainAliasId);
+    $domainId = intval($_GET['id']);
+    $domainData = _client_getDomainData($domainId);
 
-    if ($domainAliasData === false) {
+    if ($domainData === false) {
         showBadRequestErrorPage();
     }
 
+    // Check for URL forwarding option
     $forwardUrl = 'no';
     $forwardType = null;
     $forwardHost = 'Off';
@@ -165,12 +163,12 @@ function reseller_editDomainAlias()
             $uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/'; // normalize path
             $uri->setPath($uriPath);
 
-            if ($uri->getHost() == $domainAliasData['alias_name'] && $uri->getPath() == '/') {
+            if ($uri->getHost() == $domainData['domain_name'] && $uri->getPath() == '/') {
                 throw new iMSCP_Exception(
                     tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
                     tr(
-                        'Domain alias %s cannot be forwarded on itself.',
-                        "<strong>{$domainAliasData['alias_name_utf8']}</strong>"
+                        'Domain %s cannot be forwarded on itself.',
+                        "<strong>{$domainData['domain_name_utf8']}</strong>"
                     )
                 );
             }
@@ -182,33 +180,27 @@ function reseller_editDomainAlias()
         }
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditDomainAlias, array(
-        'domainAliasId' => $domainAliasId,
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditDomain, array(
+        'domainId' => $domainId,
         'forwardUrl' => $forwardUrl,
         'forwardType' => $forwardType,
         'forwardHost' => $forwardHost
     ));
 
     exec_query(
-        'UPDATE domain_aliasses SET url_forward = ?, type_forward = ?, host_forward = ?, alias_status = ? WHERE alias_id = ?',
-        array($forwardUrl, $forwardType, $forwardHost, 'tochange', $domainAliasId)
+        'UPDATE domain SET url_forward = ?, type_forward = ?, host_forward = ?, domain_status = ? WHERE domain_id = ?',
+        array($forwardUrl, $forwardType, $forwardHost, 'tochange', $domainId)
     );
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditDomainALias, array(
-        'domainAliasId' => $domainAliasId,
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditDomain, array(
+        'domainId' => $domainId,
         'forwardUrl' => $forwardUrl,
         'forwardType' => $forwardType,
         'forwardHost' => $forwardHost
     ));
 
     send_request();
-
-    write_log(
-        "{$_SESSION['user_logged']}: scheduled update of domain alias: {$domainAliasData['alias_name_utf8']}.",
-        E_USER_NOTICE
-    );
-
-
+    write_log(sprintf('%s updated properties of the %s domain', $_SESSION['user_logged'], $domainData['domain_name_utf8']), E_USER_NOTICE);
     return true;
 }
 
@@ -218,27 +210,24 @@ function reseller_editDomainAlias()
 
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
-check_login('reseller');
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+check_login('user');
 
-(resellerHasFeature('domain_aliases') && resellerHasCustomers()) or showBadRequestErrorPage();
-
-if (!empty($_POST) && reseller_editDomainAlias()) {
-    set_page_message(tr('Domain alias successfully scheduled for update.'), 'success');
-    redirectTo('alias.php');
+if (!empty($_POST) && client_editDomain()) {
+    set_page_message(tr('Domain successfully scheduled for update.'), 'success');
+    redirectTo('domains_manage.php');
 }
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
     'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'reseller/alias_edit.tpl',
+    'page' => 'client/domain_edit.tpl',
     'page_message' => 'layout'
 ));
-
 $tpl->assign(array(
-    'TR_PAGE_TITLE' => tr('Reseller / Domains / Edit Domain Alias'),
-    'TR_DOMAIN_ALIAS' => tr('Domain alias'),
-    'TR_DOMAIN_ALIAS_NAME' => tr('Domain alias name'),
+    'TR_PAGE_TITLE' => tr('Client / Domains / Edit Domain'),
+    'TR_DOMAIN' => tr('Domain'),
+    'TR_DOMAIN_NAME' => tr('Domain name'),
     'TR_URL_FORWARDING' => tr('URL forwarding'),
     'TR_FORWARD_TO_URL' => tr('Forward to URL'),
     'TR_URL_FORWARDING_TOOLTIP' => tr('Allows to forward any request made to this domain to a specific URL.'),
@@ -258,9 +247,9 @@ $tpl->assign(array(
 ));
 
 generateNavigation($tpl);
-reseller_generatePage($tpl);
+client_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 $tpl->prnt();

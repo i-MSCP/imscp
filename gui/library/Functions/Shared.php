@@ -2245,7 +2245,7 @@ function unsetMessages()
         'user_updated', 'dmn_tpl', 'chtpl', 'step_one', 'step_two_data', 'ch_hpprops', 'user_add3_added',
         'user_has_domain', 'local_data', 'reseller_added', 'user_added', 'aladd', 'edit_ID', 'aldel', 'hpid',
         'user_deleted', 'hdomain', 'aledit', 'acreated_by', 'dhavesub', 'ddel', 'dhavealias', 'dhavealias', 'dadel',
-        'local_data',
+        'local_data'
     );
 
     foreach ($glToUnset as $toUnset) {
@@ -2258,6 +2258,7 @@ function unsetMessages()
         'reseller_added', 'dmn_name', 'dmn_tpl', 'chtpl', 'step_one', 'step_two_data', 'ch_hpprops', 'user_add3_added',
         'user_has_domain', 'user_added', 'aladd', 'edit_ID', 'aldel', 'hpid', 'user_deleted', 'hdomain', 'aledit',
         'acreated_by', 'dhavesub', 'ddel', 'dhavealias', 'dadel', 'local_data',
+        'dmn_expire', 'dmn_url_forward', 'dmn_type_forward', 'dmn_host_forward'
     );
 
     foreach ($sessToUnset as $toUnset) {

@@ -63,13 +63,56 @@ function reseller_checkData()
         return;
     }
 
+    // Check for URL forwarding option
+    $forwardUrl = 'no';
+    $forwardType = null;
+    $forwardHost = 'Off';
+    if (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes' &&
+        isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307', 'proxy'), true)
+    ) {
+        if (!isset($_POST['forward_url_scheme']) || !isset($_POST['forward_url'])) {
+            showBadRequestErrorPage();
+        }
+
+        $forwardUrl = clean_input($_POST['forward_url_scheme']) . clean_input($_POST['forward_url']);
+        $forwardType = clean_input($_POST['forward_type']);
+
+        if($forwardType == 'proxy' && isset($_POST['forward_host'])) {
+            $forwardHost = 'On';
+        }
+
+        try {
+            try {
+                $uri = iMSCP_Uri_Redirect::fromString($forwardUrl);
+            } catch (Zend_Uri_Exception $e) {
+                throw new iMSCP_Exception(tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>"));
+            }
+
+            $uri->setHost(encode_idna($uri->getHost()));
+
+            $uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/'; // normalize path
+            $uri->setPath($uriPath);
+
+            if ($uri->getHost() == $asciiDmnName && $uri->getPath() == '/') {
+                throw new iMSCP_Exception(
+                    tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
+                    tr('Domain %s cannot be forwarded on itself.', "<strong>$dmnName</strong>")
+                );
+            }
+
+            $forwardUrl = $uri->getUri();
+        } catch (Exception $e) {
+            set_page_message($e->getMessage(), 'error');
+            return;
+        }
+    }
+
     if ((!isset($_POST['datepicker']) || $_POST['datepicker'] === '') && !isset($_POST['never_expire'])) {
         set_page_message(tr('Domain expiration date must be filled.'), 'error');
         return;
     }
 
     $dmnExpire = isset($_POST['datepicker']) ? @strtotime(clean_input($_POST['datepicker'])) : 0;
-
     if ($dmnExpire === false) {
         set_page_message('Invalid expiration date.', 'error');
         return;
@@ -81,6 +124,9 @@ function reseller_checkData()
     if ($hpId == 0 || $customizeHp == '_yes_') {
         $_SESSION['dmn_name'] = $asciiDmnName;
         $_SESSION['dmn_expire'] = $dmnExpire;
+        $_SESSION['dmn_url_forward'] = $forwardUrl;
+        $_SESSION['dmn_type_forward'] = $forwardType;
+        $_SESSION['dmn_host_forward'] = $forwardHost;
         $_SESSION['dmn_tpl'] = $hpId;
         $_SESSION['chtpl'] = '_yes_';
         $_SESSION['step_one'] = '_yes_';
@@ -90,6 +136,9 @@ function reseller_checkData()
     if (reseller_limits_check($_SESSION['user_id'], $hpId)) {
         $_SESSION['dmn_name'] = $asciiDmnName;
         $_SESSION['dmn_expire'] = $dmnExpire;
+        $_SESSION['dmn_url_forward'] = $forwardUrl;
+        $_SESSION['dmn_type_forward'] = $forwardType;
+        $_SESSION['dmn_host_forward'] = $forwardHost;
         $_SESSION['dmn_tpl'] = $hpId;
         $_SESSION['chtpl'] = $customizeHp;
         $_SESSION['step_one'] = '_yes_';
@@ -107,13 +156,26 @@ function reseller_checkData()
  */
 function reseller_generatePage($tpl)
 {
+    $forwardType = isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307', 'proxy'), true) ? $_POST['forward_type'] : '302';
+    $forwardHost = ($forwardType == 'proxy' && isset($_POST['forward_host'])) ? 'On' : 'Off';
+
     $tpl->assign(array(
         'DOMAIN_NAME_VALUE' => isset($_POST['dmn_name']) ? tohtml($_POST['dmn_name']) : '',
+        'FORWARD_URL_YES' => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? ' checked' : '',
+        'FORWARD_URL_NO' => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? '' : ' checked',
+        'HTTP_YES' => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'http://') ? ' checked' : '',
+        'HTTPS_YES' => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'https://') ? ' checked' : '',
+        'FORWARD_URL' => isset($_POST['forward_url']) ? tohtml(decode_idna($_POST['forward_url'])) : '',
+        'FORWARD_TYPE_301' => ($forwardType == '301') ? ' checked' : '',
+        'FORWARD_TYPE_302' => ($forwardType == '302') ? ' checked' : '',
+        'FORWARD_TYPE_303' => ($forwardType == '303') ? ' checked' : '',
+        'FORWARD_TYPE_307' => ($forwardType == '307') ? ' checked' : '',
+        'FORWARD_HOST' => ($forwardHost == 'On') ? ' checked' : '',
         'DATEPICKER_VALUE' => isset($_POST['datepicker']) ? tohtml($_POST['datepicker']) : '',
         'DATEPICKER_DISABLED' => isset($_POST['datepicker']) ? '' : ' disabled',
-        'NEVER_EXPIRE_CHECKED' => isset($_POST['datepicker']) ? '' : '  checked',
-        'CHTPL1_VAL' => isset($_POST['chtpl']) && $_POST['chtpl'] == '_yes_' ? ' checked' : '',
-        'CHTPL2_VAL' => isset($_POST['chtpl']) && $_POST['chtpl'] == '_yes_' ? '' : ' checked'
+        'NEVER_EXPIRE_CHECKED' => isset($_POST['datepicker']) ? '' : ' checked',
+        'CHTPL1_VAL' => (isset($_POST['chtpl']) && $_POST['chtpl'] == '_yes_') ? ' checked' : '',
+        'CHTPL2_VAL' => (isset($_POST['chtpl']) && $_POST['chtpl'] == '_yes_') ? '' : ' checked'
     ));
 
     $stmt = exec_query('SELECT id, name FROM hosting_plans WHERE reseller_id = ? AND status = ? ORDER BY name', array(
@@ -170,8 +232,20 @@ $tpl->assign(array(
     'TR_EXPIRE_CHECKBOX' => tr('Never'),
     'TR_CHOOSE_HOSTING_PLAN' => tr('Choose hosting plan'),
     'TR_PERSONALIZE_TEMPLATE' => tr('Personalise template'),
-    'TR_YES' => tr('yes'),
-    'TR_NO' => tr('no'),
+    'TR_URL_FORWARDING' => tr('URL forwarding'),
+    'TR_URL_FORWARDING_TOOLTIP' => tr('Allows to forward any request made to this domain to a specific URL.'),
+    'TR_FORWARD_TO_URL' => tr('Forward to URL'),
+    'TR_YES' => tr('Yes'),
+    'TR_NO' => tr('No'),
+    'TR_HTTP' => 'http://',
+    'TR_HTTPS' => 'https://',
+    'TR_FORWARD_TYPE' => tr('Forward type'),
+    'TR_301' => '301',
+    'TR_302' => '302',
+    'TR_303' => '303',
+    'TR_307' => '307',
+    'TR_PROXY' => 'PROXY',
+    'TR_PROXY_PRESERVE_HOST' => tr('Preserve Host'),
     'TR_NEXT_STEP' => tr('Next step')
 ));
 
@@ -182,5 +256,3 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
 $tpl->prnt();
-
-unsetMessages();

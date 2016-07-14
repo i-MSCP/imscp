@@ -83,31 +83,32 @@ function _client_getDomainsList()
  */
 function client_generatePage($tpl)
 {
-    $forwardType = isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307'), true)
-        ? $_POST['forward_type'] : '302';
+    $forwardType = isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307', 'proxy'), true) ? $_POST['forward_type'] : '302';
+    $forwardHost = ($forwardType == 'proxy' && isset($_POST['forward_host'])) ? 'On' : 'Off';
 
     $tpl->assign(array(
         'SUBDOMAIN_NAME' => isset($_POST['subdomain_name']) ? tohtml($_POST['subdomain_name']) : '',
-        'SHARED_MOUNT_POINT_YES' => isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes' ? ' checked' : '',
-        'SHARED_MOUNT_POINT_NO' => isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes' ? '' : ' checked',
-        'FORWARD_URL_YES' => isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes' ? ' checked' : '',
-        'FORWARD_URL_NO' => isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes' ? '' : ' checked',
-        'HTTP_YES' => isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'http://' ? ' selected' : '',
-        'HTTPS_YES' => isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'https://' ? ' selected' : '',
-        'FTP_YES' => isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'ftp://' ? ' selected' : '',
+        'SHARED_MOUNT_POINT_YES' => (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes') ? ' checked' : '',
+        'SHARED_MOUNT_POINT_NO' => (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes') ? '' : ' checked',
+        'FORWARD_URL_YES' => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? ' checked' : '',
+        'FORWARD_URL_NO' => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? '' : ' checked',
+        'HTTP_YES' => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'http://') ? ' selected' : '',
+        'HTTPS_YES' => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'https://') ? ' selected' : '',
         'FORWARD_URL' => isset($_POST['forward_url']) ? tohtml(decode_idna($_POST['forward_url'])) : '',
         'FORWARD_TYPE_301' => ($forwardType == '301') ? ' checked' : '',
         'FORWARD_TYPE_302' => ($forwardType == '302') ? ' checked' : '',
         'FORWARD_TYPE_303' => ($forwardType == '303') ? ' checked' : '',
-        'FORWARD_TYPE_307' => ($forwardType == '307') ? ' checked' : ''
+        'FORWARD_TYPE_307' => ($forwardType == '307') ? ' checked' : '',
+        'FORWARD_TYPE_PROXY' => ($forwardType == 'proxy') ? ' checked' : '',
+        'FORWARD_HOST' => ($forwardHost == 'On') ? ' checked' : ''
     ));
 
     foreach (_client_getDomainsList() as $domain) {
         $tpl->assign(array(
             'DOMAIN_NAME' => tohtml($domain['name']),
             'DOMAIN_NAME_UNICODE' => tohtml(decode_idna($domain['name'])),
-            'DOMAIN_NAME_SELECTED' => isset($_POST['domain_name']) && $_POST['domain_name'] == $domain['name'] ? ' selected' : '',
-            'SHARED_MOUNT_POINT_DOMAIN_SELECTED' => isset($_POST['shared_mount_point_domain']) && $_POST['shared_mount_point_domain'] == $domain['name'] ? ' selected' : ''
+            'DOMAIN_NAME_SELECTED' => (isset($_POST['domain_name']) && $_POST['domain_name'] == $domain['name']) ? ' selected' : '',
+            'SHARED_MOUNT_POINT_DOMAIN_SELECTED' => (isset($_POST['shared_mount_point_domain']) && $_POST['shared_mount_point_domain'] == $domain['name']) ? ' selected' : ''
         ));
 
         if ($domain['type'] == 'dmn' || $domain['type'] == 'als') {
@@ -226,40 +227,43 @@ function client_addSubdomain()
     // Check for URL forwarding option
     $forwardUrl = 'no';
     $forwardType = null;
-
+    $forwardHost = 'Off';
     if (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes' &&
-        isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307'), true)
+        isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307', 'proxy'), true)
     ) {
-        if (isset($_POST['forward_url_scheme']) && isset($_POST['forward_url'])) {
-            $forwardUrl = clean_input($_POST['forward_url_scheme']) . clean_input($_POST['forward_url']);
-            $forwardType = clean_input($_POST['forward_type']);
-
-            try {
-                try {
-                    $uri = iMSCP_Uri_Redirect::fromString($forwardUrl);
-                } catch (Zend_Uri_Exception $e) {
-                    throw new iMSCP_Exception(tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>"));
-                }
-
-                $uri->setHost(encode_idna($uri->getHost()));
-
-                $uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/'; // normalize path
-                $uri->setPath($uriPath);
-
-                if ($uri->getHost() == $subdomainNameAscii && $uri->getPath() == '/') {
-                    throw new iMSCP_Exception(
-                        tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
-                        tr('Subdomain %s cannot be forwarded on itself.', "<strong>$subdomainName</strong>")
-                    );
-                }
-
-                $forwardUrl = $uri->getUri();
-            } catch (Exception $e) {
-                set_page_message($e->getMessage(), 'error');
-                return false;
-            }
-        } else {
+        if (!isset($_POST['forward_url_scheme']) || !isset($_POST['forward_url'])) {
             showBadRequestErrorPage();
+        }
+
+        $forwardUrl = clean_input($_POST['forward_url_scheme']) . clean_input($_POST['forward_url']);
+        $forwardType = clean_input($_POST['forward_type']);
+
+        if ($forwardType == 'proxy' && isset($_POST['forward_host'])) {
+            $forwardHost = 'On';
+        }
+
+        try {
+            try {
+                $uri = iMSCP_Uri_Redirect::fromString($forwardUrl);
+            } catch (Zend_Uri_Exception $e) {
+                throw new iMSCP_Exception(tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>"));
+            }
+
+            $uri->setHost(encode_idna($uri->getHost()));
+            $uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/'; // normalize path
+            $uri->setPath($uriPath);
+
+            if ($uri->getHost() == $subdomainNameAscii && $uri->getPath() == '/') {
+                throw new iMSCP_Exception(
+                    tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
+                    tr('Subdomain %s cannot be forwarded on itself.', "<strong>$subdomainName</strong>")
+                );
+            }
+
+            $forwardUrl = $uri->getUri();
+        } catch (Exception $e) {
+            set_page_message($e->getMessage(), 'error');
+            return false;
         }
     }
 
@@ -274,6 +278,8 @@ function client_addSubdomain()
             'parentDomainId' => $domainId,
             'mountPoint' => $mountPoint,
             'forwardUrl' => $forwardUrl,
+            'forwardType' => $forwardType,
+            'forwardHost' => $forwardHost,
             'customerId' => $_SESSION['user_id']
         ));
 
@@ -281,23 +287,23 @@ function client_addSubdomain()
             $query = "
                 INSERT INTO subdomain_alias (
                     alias_id, subdomain_alias_name, subdomain_alias_mount, subdomain_alias_url_forward,
-                    subdomain_alias_type_forward, subdomain_alias_status
+                    subdomain_alias_type_forward, subdomain_alias_host_forward, subdomain_alias_status
                 ) VALUES (
-                    ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, ?, ?, ?, ?
                 )
             ";
         } else {
             $query = "
                 INSERT INTO subdomain (
                     domain_id, subdomain_name, subdomain_mount, subdomain_url_forward, subdomain_type_forward,
-                    subdomain_status
+                    subdomain_host_forward, subdomain_status
                 ) VALUES (
-                    ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, ?, ?, ?, ?
                 )
             ";
         }
 
-        exec_query($query, array($domainId, $subLabelAscii, $mountPoint, $forwardUrl, $forwardType, 'toadd'));
+        exec_query($query, array($domainId, $subLabelAscii, $mountPoint, $forwardUrl, $forwardType, $forwardHost, 'toadd'));
 
         $subdomainId = $db->insertId();
 
@@ -314,6 +320,8 @@ function client_addSubdomain()
             'parentDomainId' => $domainId,
             'mountPoint' => $mountPoint,
             'forwardUrl' => $forwardUrl,
+            'forwardType' => $forwardType,
+            'forwardHost' => $forwardHost,
             'customerId' => $_SESSION['user_id'],
             'subdomainId' => $subdomainId
         ));
@@ -369,18 +377,19 @@ $tpl->assign(array(
     'TR_SHARED_MOUNT_POINT' => tr('Shared mount point'),
     'TR_SHARED_MOUNT_POINT_TOOLTIP' => tr('Allows to share the mount point of another domain.'),
     'TR_URL_FORWARDING' => tr('URL forwarding'),
-    'TR_URL_FORWARDING_TOOLTIP' => tr('Allows to forward any request made to this subdomain to a specific URL. Be aware that when this option is in use, no Web folder is created for the subdomain.'),
+    'TR_URL_FORWARDING_TOOLTIP' => tr('Allows to forward any request made to this domain to a specific URL.'),
     'TR_FORWARD_TO_URL' => tr('Forward to URL'),
     'TR_YES' => tr('Yes'),
     'TR_NO' => tr('No'),
     'TR_HTTP' => 'http://',
     'TR_HTTPS' => 'https://',
-    'TR_FTP' => 'ftp://',
     'TR_FORWARD_TYPE' => tr('Forward type'),
     'TR_301' => '301',
     'TR_302' => '302',
     'TR_303' => '303',
     'TR_307' => '307',
+    'TR_PROXY' => 'PROXY',
+    'TR_PROXY_PRESERVE_HOST' => tr('Preserve Host'),
     'TR_ADD' => tr('Add'),
     'TR_CANCEL' => tr('Cancel')
 ));
@@ -392,5 +401,3 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 $tpl->prnt();
-
-unsetMessages();

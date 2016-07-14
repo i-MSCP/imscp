@@ -70,7 +70,7 @@ function gen_mail_quota_limit_mgs()
 }
 
 /**
- * Generates notice for support system.
+ * Generates notice for support system
  *
  * @return void
  */
@@ -148,7 +148,7 @@ function client_generateDiskUsageBar($tpl, $usage, $maxUsage, $barMax)
 }
 
 /**
- * Generates feature status.
+ * Generates feature status
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
@@ -207,7 +207,7 @@ function client_generateFeatureStatus($tpl)
 }
 
 /**
- * Calculate traffic usage.
+ * Calculate traffic usage
  *
  * @param int $domainId Domain unique identifier
  * @return array An array that contain traffic information
@@ -238,7 +238,7 @@ function client_makeTrafficUsage($domainId)
 }
 
 /**
- * Returns domain remaining time before expire.
+ * Returns domain remaining time before expire
  *
  * @access private
  * @param $domainExpireDate
@@ -261,7 +261,7 @@ function _client_getDomainRemainingTime($domainExpireDate)
 }
 
 /**
- * Generates domain expires information.
+ * Generates domain expires information
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
@@ -349,6 +349,8 @@ if ($domainProperties['domain_status'] == 'ok') {
     $tpl->assign('DOMAIN_ALTERNATIVE_URL', '');
 }
 
+$tpl->assign('CREATE_DATE', tohtml(date($cfg['DATE_FORMAT'], $domainProperties['domain_created'])));
+
 list(
     $subdomainCount, $domainAliasCount, $mailAccountsCount, $ftpAccountsCount, $sqlDatabasesCount, $sqlUsersCount
     ) = get_domain_running_props_cnt($domainProperties['domain_id']);
@@ -359,6 +361,7 @@ $tpl->assign(array(
     'TR_DOMAIN_NAME' => tr('Domain name'),
     'DOMAIN_NAME' => tohtml(decode_idna($domainProperties['domain_name'])),
     'TR_DOMAIN_ALTERNATIVE_URL' => tr('Alternative URL to reach your website'),
+    'TR_CREATE_DATE' =>tr('Creation date'),
     'TR_DOMAIN_EXPIRES_DATE' => tr('Domain expiration date'),
     'TR_FEATURE' => tr('Feature'),
     'TR_FEATURE_STATUS' => tr('Status'),

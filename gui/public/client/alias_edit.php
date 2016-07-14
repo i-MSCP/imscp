@@ -39,7 +39,7 @@ function _client_getAliasData($domainAliasId)
 
     $stmt = exec_query(
         '
-            SELECT alias_name, url_forward AS forward_url, type_forward AS forward_type
+            SELECT alias_name, url_forward, type_forward, host_forward
             FROM domain_aliasses WHERE alias_id = ? AND domain_id = ? AND alias_status = ?
         ',
         array($domainAliasId, get_user_domain_id($_SESSION['user_id']), 'ok')
@@ -66,18 +66,22 @@ function client_generatePage($tpl)
         showBadRequestErrorPage();
     }
 
-    $domainAliasId = clean_input($_GET['id']);
-    if (!($domainAliasData = _client_getAliasData($domainAliasId))) {
+    $domainAliasId = intval($_GET['id']);
+    $domainAliasData = _client_getAliasData($domainAliasId);
+    if ($domainAliasData === false) {
         showBadRequestErrorPage();
     }
 
+    $forwardHost = 'Off';
+
     if (empty($_POST)) {
-        if ($domainAliasData['forward_url'] != 'no') {
+        if ($domainAliasData['url_forward'] != 'no') {
             $urlForwarding = true;
-            $uri = iMSCP_Uri_Redirect::fromString($domainAliasData['forward_url']);
+            $uri = iMSCP_Uri_Redirect::fromString($domainAliasData['url_forward']);
             $forwardUrlScheme = $uri->getScheme() . '://';
             $forwardUrl = substr($uri->getUri(), strlen($forwardUrlScheme));
-            $forwardType = $domainAliasData['forward_type'];
+            $forwardType = $domainAliasData['type_forward'];
+            $forwardHost = $domainAliasData['host_forward'];
         } else {
             $urlForwarding = false;
             $forwardUrlScheme = 'http';
@@ -87,8 +91,12 @@ function client_generatePage($tpl)
     } else {
         $urlForwarding = (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? true : false;
         $forwardUrlScheme = (isset($_POST['forward_url_scheme'])) ? $_POST['forward_url_scheme'] : 'http://';
-        $forwardUrl = isset($_POST['forward_url']) ? $_POST['forward_url'] : '';
-        $forwardType = isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307'), true) ? $_POST['forward_type'] : '302';
+        $forwardUrl = (isset($_POST['forward_url'])) ? $_POST['forward_url'] : '';
+        $forwardType = (isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307', 'proxy'), true)) ? $_POST['forward_type'] : '302';
+
+        if ($forwardType == 'proxy' && isset($_POST['forward_host'])) {
+            $forwardHost = 'On';
+        }
     }
 
     $tpl->assign(array(
@@ -98,12 +106,13 @@ function client_generatePage($tpl)
         'FORWARD_URL_NO' => ($urlForwarding) ? '' : ' checked',
         'HTTP_YES' => ($forwardUrlScheme == 'http://') ? ' selected' : '',
         'HTTPS_YES' => ($forwardUrlScheme == 'https://') ? ' selected' : '',
-        'FTP_YES' => ($forwardUrlScheme == 'ftp://') ? ' selected' : '',
         'FORWARD_URL' => $forwardUrl !== '' ? tohtml(decode_idna($forwardUrl)) : '',
         'FORWARD_TYPE_301' => ($forwardType == '301') ? ' checked' : '',
         'FORWARD_TYPE_302' => ($forwardType == '302') ? ' checked' : '',
         'FORWARD_TYPE_303' => ($forwardType == '303') ? ' checked' : '',
-        'FORWARD_TYPE_307' => ($forwardType == '307') ? ' checked' : ''
+        'FORWARD_TYPE_307' => ($forwardType == '307') ? ' checked' : '',
+        'FORWARD_TYPE_PROXY' => ($forwardType == 'proxy') ? ' checked' : '',
+        'FORWARD_HOST' => ($forwardHost == 'On') ? ' checked' : ''
     ));
 }
 
@@ -118,7 +127,7 @@ function client_editDomainAlias()
         showBadRequestErrorPage();
     }
 
-    $domainAliasId = clean_input($_GET['id']);
+    $domainAliasId = intval($_GET['id']);
     $domainAliasData = _client_getAliasData($domainAliasId);
 
     if ($domainAliasData === false) {
@@ -128,8 +137,9 @@ function client_editDomainAlias()
     // Check for URL forwarding option
     $forwardUrl = 'no';
     $forwardType = null;
+    $forwardHost = 'Off';
     if (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes' &&
-        isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307'), true)
+        isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307', 'proxy'), true)
     ) {
         if (!isset($_POST['forward_url_scheme']) || !isset($_POST['forward_url'])) {
             showBadRequestErrorPage();
@@ -137,6 +147,10 @@ function client_editDomainAlias()
 
         $forwardUrl = clean_input($_POST['forward_url_scheme']) . clean_input($_POST['forward_url']);
         $forwardType = clean_input($_POST['forward_type']);
+
+        if ($forwardType == 'proxy' && isset($_POST['forward_host'])) {
+            $forwardHost = 'On';
+        }
 
         try {
             try {
@@ -167,16 +181,22 @@ function client_editDomainAlias()
     }
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditDomainAlias, array(
-        'domainAliasId' => $domainAliasId
+        'domainAliasId' => $domainAliasId,
+        'forwardUrl' => $forwardUrl,
+        'forwardType' => $forwardType,
+        'forwardHost' => $forwardHost
     ));
 
     exec_query(
-        'UPDATE domain_aliasses SET url_forward = ?, type_forward = ?, alias_status = ? WHERE alias_id = ?',
-        array($forwardUrl, $forwardType, 'tochange', $domainAliasId)
+        'UPDATE domain_aliasses SET url_forward = ?, type_forward = ?, host_forward = ?, alias_status = ? WHERE alias_id = ?',
+        array($forwardUrl, $forwardType, $forwardHost, 'tochange', $domainAliasId)
     );
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditDomainALias, array(
-        'domainAliasId' => $domainAliasId
+        'domainAliasId' => $domainAliasId,
+        'forwardUrl' => $forwardUrl,
+        'forwardType' => $forwardType,
+        'forwardHost' => $forwardHost
     ));
 
     send_request();
@@ -212,17 +232,18 @@ $tpl->assign(array(
     'TR_DOMAIN_ALIAS_NAME' => tr('Domain alias name'),
     'TR_URL_FORWARDING' => tr('URL forwarding'),
     'TR_FORWARD_TO_URL' => tr('Forward to URL'),
-    'TR_URL_FORWARDING_TOOLTIP' => tr('Allows to forward any request made to this domain alias to a specific URL.'),
+    'TR_URL_FORWARDING_TOOLTIP' => tr('Allows to forward any request made to this domain to a specific URL.'),
     'TR_YES' => tr('Yes'),
     'TR_NO' => tr('No'),
     'TR_HTTP' => 'http://',
     'TR_HTTPS' => 'https://',
-    'TR_FTP' => 'ftp://',
     'TR_FORWARD_TYPE' => tr('Forward type'),
     'TR_301' => '301',
     'TR_302' => '302',
     'TR_303' => '303',
     'TR_307' => '307',
+    'TR_PROXY' => 'PROXY',
+    'TR_PROXY_PRESERVE_HOST' => tr('Preserve Host'),
     'TR_UPDATE' => tr('Update'),
     'TR_CANCEL' => tr('Cancel')
 ));

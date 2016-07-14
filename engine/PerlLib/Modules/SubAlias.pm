@@ -239,6 +239,7 @@ sub _getHttpdData
         ALIAS                   => $userName.'subals'.$self->{'subdomain_alias_id'},
         FORWARD                 => $self->{'subdomain_alias_url_forward'} || 'no',
         FORWARD_TYPE            => $self->{'subdomain_alias_type_forward'} || '',
+        FORWARD_PRESERVE_HOST   => $self->{'subdomain_alias_host_forward'} || 'Off',
         DISABLE_FUNCTIONS       => $phpini->{$phpiniMatchId}->{'disable_functions'} //
             'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
         MAX_EXECUTION_TIME      => $phpini->{$phpiniMatchId}->{'max_execution_time'} // 30,

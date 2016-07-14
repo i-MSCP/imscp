@@ -1,15 +1,21 @@
 
 <script>
     $(function () {
-        $("input[name='url_forwarding']").change(
-                function () {
-                    if ($("#url_forwarding_no").is(':checked')) {
-                        $("#tr_url_forwarding_data, #tr_type_forwarding_data").hide();
-                    } else {
-                        $("#tr_url_forwarding_data, #tr_type_forwarding_data").show();
-                    }
-                }
-        ).trigger('change');
+        $("input[name='url_forwarding']").on('change', function () {
+            if ($("#url_forwarding_no").is(':checked')) {
+                $("#tr_url_forwarding_data, #tr_type_forwarding_data").hide();
+            } else {
+                $("#tr_url_forwarding_data, #tr_type_forwarding_data").show();
+            }
+        }).trigger('change');
+
+        $("input[name='forward_type']").on('change', function () {
+            if ($("#forward_type_proxy").is(':checked')) {
+                $(".checkbox").show();
+            } else {
+                $(".checkbox").hide();
+            }
+        }).trigger('change');
     });
 </script>
 
@@ -24,7 +30,7 @@
         <tr>
             <td><label for="domain_alias_name">{TR_DOMAIN_ALIAS_NAME}</label></td>
             <td>
-                <span class="bold">www .</span>
+                <span class="bold">www.</span>
                 <input type="text" name="domain_alias_name" id="domain_alias_name" value="{DOMAIN_ALIAS_NAME}" readonly="readonly">
             </td>
         </tr>
@@ -49,7 +55,6 @@
                     <select name="forward_url_scheme" id="forward_url_scheme">
                         <option value="http://"{HTTP_YES}>{TR_HTTP}</option>
                         <option value="https://"{HTTPS_YES}>{TR_HTTPS}</option>
-                        <option value="ftp://"{FTP_YES}>{TR_FTP}</option>
                     </select>
                 </label>
                 <label><input name="forward_url" type="text" id="forward_url" value="{FORWARD_URL}"></label>
@@ -58,7 +63,7 @@
         <tr id="tr_type_forwarding_data">
             <td>{TR_FORWARD_TYPE}</td>
             <td>
-                <div class="radio">
+                <span class="radio">
                     <input type="radio" name="forward_type" id="forward_type_301"{FORWARD_TYPE_301} value="301">
                     <label for="forward_type_301">{TR_301}</label>
                     <input type="radio" name="forward_type" id="forward_type_302"{FORWARD_TYPE_302} value="302">
@@ -67,7 +72,13 @@
                     <label for="forward_type_303">{TR_303}</label>
                     <input type="radio" name="forward_type" id="forward_type_307"{FORWARD_TYPE_307} value="307">
                     <label for="forward_type_307">{TR_307}</label>
-                </div>
+                    <input type="radio" name="forward_type" id="forward_type_proxy"{FORWARD_TYPE_PROXY} value="proxy">
+                    <label for="forward_type_proxy">{TR_PROXY}</label>
+                </span>
+                <span class="checkbox">
+                    <input type="checkbox" name="forward_host" id="forward_host"{FORWARD_HOST}>
+                    <label for="forward_host">{TR_PROXY_PRESERVE_HOST}</label>
+                </span>
             </td>
         </tr>
         </tbody>

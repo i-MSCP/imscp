@@ -29,12 +29,12 @@
 <h3 class="domains"><span>{TR_DOMAINS}</span></h3>
 
 <!-- BDP: domain_list -->
-<table class="firstColFixed datatable">
+<table class="firstColFixed">
     <thead>
     <tr>
         <th>{TR_NAME}</th>
-        <th>{TR_CREATE_DATE}</th>
-        <th>{TR_EXPIRE_DATE}</th>
+        <th>{TR_MOUNT}</th>
+        <th>{TR_REDIRECT}</th>
         <th>{TR_STATUS}</th>
         <th>{TR_SSL_STATUS}</th>
         <th>{TR_ACTIONS}</th>
@@ -53,11 +53,14 @@
             <span class="tips icon i_domain_icon" title="{DOMAIN_NAME}">{DOMAIN_NAME}</span>
         </td>
         <!-- EDP: domain_status_reload_false -->
-        <td>{DOMAIN_CREATE_DATE}</td>
-        <td>{DOMAIN_EXPIRE_DATE}</td>
+        <td>/</td>
+        <td>{DOMAIN_REDIRECT}</td>
         <td>{DOMAIN_STATUS}</td>
         <td>{DOMAIN_SSL_STATUS}</td>
-        <td><a href="{CERT_SCRIPT}" class="icon i_edit" title="{VIEW_CERT}">{VIEW_CERT}</a></td>
+        <td>
+            <a href="{CERT_SCRIPT}" class="icon i_edit" title="{VIEW_CERT}">{VIEW_CERT}</a>
+            <a class="icon i_edit" href="{DOMAIN_EDIT_LINK}" title="{DOMAIN_EDIT}">{DOMAIN_EDIT}</a>
+        </td>
     </tr>
     <!-- EDP: domain_item -->
     </tbody>
@@ -90,7 +93,9 @@
         </td>
         <!-- EDP: als_status_reload_true -->
         <!-- BDP: als_status_reload_false -->
-        <td><span class="tips icon i_domain_icon" title="{ALS_NAME}">{ALS_NAME}</span></td>
+        <td>
+            <span class="tips icon i_domain_icon" title="{ALS_NAME}">{ALS_NAME}</span>
+        </td>
         <!-- EDP: als_status_reload_false -->
         <td>{ALS_MOUNT}</td>
         <td>{ALS_REDIRECT}</td>
@@ -134,7 +139,9 @@
         </td>
         <!-- EDP: sub_status_reload_true -->
         <!-- BDP: sub_status_reload_false -->
-        <td><span class="tips icon i_domain_icon" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</span></td>
+        <td>
+            <span class="tips icon i_domain_icon" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</span>
+        </td>
         <!-- EDP: sub_status_reload_false -->
         <td>{SUB_MOUNT}</td>
         <td>{SUB_REDIRECT}</td>

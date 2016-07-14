@@ -454,8 +454,9 @@ sub _getHttpdData
         HSTS_INCLUDE_SUBDOMAINS => $hstsIncludeSubDomains,
         BWLIMIT                 => $self->{'domain_traffic_limit'},
         ALIAS                   => $userName,
-        FORWARD                 => 'no',
-        FORWARD_TYPE            => '',
+        FORWARD                 => $self->{'url_forward'} || 'no',
+        FORWARD_TYPE            => $self->{'type_forward'} || '',
+        FORWARD_PRESERVE_HOST   => $self->{'host_forward'} || 'Off',
         DISABLE_FUNCTIONS       => $phpini->{$self->{'domain_id'}}->{'disable_functions'} //
             'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
         MAX_EXECUTION_TIME      => $phpini->{$self->{'domain_id'}}->{'max_execution_time'} // 30,

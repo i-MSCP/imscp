@@ -306,6 +306,7 @@ sub _getHttpdData
         ALIAS                   => $userName.'als'.$self->{'alias_id'},
         FORWARD                 => $self->{'url_forward'} || 'no',
         FORWARD_TYPE            => $self->{'type_forward'} || '',
+        FORWARD_PRESERVE_HOST   => $self->{'host_forward'} || 'Off',
         DISABLE_FUNCTIONS       => $phpini->{$phpiniMatchId}->{'disable_functions'} //
             'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
         MAX_EXECUTION_TIME      => $phpini->{$phpiniMatchId}->{'max_execution_time'} // 30,

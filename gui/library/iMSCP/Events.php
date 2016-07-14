@@ -796,6 +796,9 @@ class iMSCP_Events
      * - createdBy: An integer representing the ID of the reseller that adds the domain
      * - customerId: An integer representitng the ID of the customer for which the domain is added
      * - customerEmail: A string representing the email of the customer for which the domain is added
+     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
+     * - forwardType: A string representing the forward type
+     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
      *
      * @const string
      */
@@ -811,6 +814,9 @@ class iMSCP_Events
      * - customerId: An integer representing the ID of the customer for which the domain has been added
      * - customerEmail: A string representing the email of customer for which the domain has been added
      * - domainId: An integer representing the ID of the domain that has been added
+     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
+     * - forwardType: A string representing the forward type
+     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
      *
      * @const string
      */
@@ -822,6 +828,9 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - domainId: An integer representing the ID of the domain being edited
+     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
+     * - forwardType: A string representing the forward type
+     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
      *
      * @const string
      */
@@ -833,6 +842,9 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - domainId: An integer reprensenting the ID of the domain that has been edited
+     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
+     * - forwardType: A string representing the forward type
+     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
      *
      * @const string
      */
@@ -848,6 +860,8 @@ class iMSCP_Events
      * - parentDomainId: An integer representing the ID of the parent domain
      * - mountPoint: A string representing the mount point of the subdomain
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
+     * - forwardType: A string representing the forward type
+     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
      * - customerId: An integer representing the ID of the customer for which the subdomain is added
      *
      * @const string
@@ -864,6 +878,8 @@ class iMSCP_Events
      * - parentDomainId: An integer representing the ID of the parent domain
      * - mountPoint: A string representing the mount point of the subdomain
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
+     * - forwardType: A string representing the forward type
+     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
      * - customerId: An integer representing the ID of the customer for wich the subdomain has been added
      * - subdomainId: An integer representing the ID of thesubdomain that has been added
      *
@@ -877,6 +893,9 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - subdomainId: An integer representing the ID of the subdomain being edited
+     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
+     * - forwardType: A string representing the forward type
+     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
      *
      * @const string
      */
@@ -888,6 +907,9 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - subdomainId: An integer representing the ID of the subdomain that has been edited
+     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
+     * - forwardType: A string representing the forward type
+     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
      *
      * @const string
      */
@@ -924,6 +946,10 @@ class iMSCP_Events
      *
      * - domainId: An integer representing the ID of the parent domain
      * - domainAliasName: A string representing the name of the domain alias being added
+     * - mountPoint: A string representing the mount point of the subdomain
+     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
+     * - forwardType: A string representing the forward type
+     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
      *
      * @const string
      */
@@ -937,6 +963,10 @@ class iMSCP_Events
      * - domainId: An integer representing the ID of the parent domain
      * - domainAliasName: A string representing the name of the domain alias that has been added
      * - domainAliasId: An integer representing the ID of the domain alias that has been added
+     * - mountPoint: A string representing the mount point of the subdomain
+     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
+     * - forwardType: A string representing the forward type
+     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
      *
      * @const string
      */
@@ -948,6 +978,9 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - domainAliasId: An integer representing the ID of the domain alias being edited
+     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
+     * - forwardType: A string representing the forward type
+     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
      *
      * @const string
      */
@@ -959,6 +992,9 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - domainAliasId: An integer representing the ID of the domain alias that has been edited
+     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
+     * - forwardType: A string representing the forward type
+     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
      *
      * @const string
      */

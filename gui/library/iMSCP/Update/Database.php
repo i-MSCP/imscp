@@ -56,7 +56,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 234;
+    protected $lastUpdate = 236;
 
     /**
      * Singleton - Make new unavailable
@@ -3465,5 +3465,58 @@ class iMSCP_Update_Database extends iMSCP_Update
 
         $sqlUpd[] = $this->addIndex('php_ini', array('admin_id', 'domain_id', 'domain_type'), 'UNIQUE', 'unique_php_ini');
         return $sqlUpd;
+    }
+
+    /**
+     * #IP-1429 Make main domains forwardable
+     * - Add domain.url_forward, domain.type_forward and domain.host_forward columns
+     * - Add domain_aliasses.host_forward column
+     * - Add subdomain.subdomain_host_forward column
+     * - Add subdomain_alias.subdomain_alias_host_forward column
+     * 
+     * @return array SQL statements to be executed
+     */
+    protected function r235()
+    {
+        return array(
+            $this->addColumn('domain', 'url_forward', "VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'"),
+            $this->addColumn('domain', 'type_forward', "VARCHAR(5) COLLATE utf8_unicode_ci DEFAULT NULL"),
+            $this->addColumn('domain', 'host_forward', "VARCHAR(3) COLLATE utf8_unicode_ci DEFAULT 'Off'"),
+            $this->addColumn(
+                'domain_aliasses',
+                'host_forward',
+                "VARCHAR(3) COLLATE utf8_unicode_ci DEFAULT 'Off' AFTER type_forward"
+            ),
+            $this->addColumn(
+                'subdomain',
+                'subdomain_host_forward',
+                "VARCHAR(3) COLLATE utf8_unicode_ci DEFAULT 'Off' AFTER subdomain_type_forward"
+            ),
+            $this->addColumn(
+                'subdomain_alias',
+                'subdomain_alias_host_forward',
+                "VARCHAR(3) COLLATE utf8_unicode_ci DEFAULT 'Off' AFTER subdomain_alias_type_forward"
+            ),
+        );
+    }
+
+    /**
+     * Remove support for ftp URL redirect
+     *
+     * @return array SQL statements to be executed
+     */
+    protected function r236()
+    {
+        return array(
+            "UPDATE domain_aliasses SET url_forward = 'no', type_forward = NULL WHERE url_forward LIKE 'ftp://%'",
+            "
+                UPDATE subdomain SET subdomain_url_forward = 'no', subdomain_type_forward = NULL
+                WHERE subdomain_url_forward LIKE 'ftp://%'
+            ",
+            "
+                UPDATE subdomain_alias SET subdomain_alias_url_forward = 'no', subdomain_alias_type_forward = NULL
+                WHERE subdomain_alias_url_forward LIKE 'ftp://%'
+            "
+        );
     }
 }

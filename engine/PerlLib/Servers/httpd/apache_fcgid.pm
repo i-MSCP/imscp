@@ -1500,7 +1500,7 @@ sub _addFiles
         return $rs if $rs;
     }
 
-    if ($data->{'FORWARD'} eq 'no') {
+    if ($data->{'DOMAIN_TYPE'} eq 'dmn' || $data->{'FORWARD'} eq 'no') {
         # Whether or not permissions must be fixed recursively
         my $fixPermissions = iMSCP::Getopt->fixPermissions;
 
@@ -1520,55 +1520,63 @@ sub _addFiles
         error( $stderr ) if $stderr && $rs;
         return $rs if $rs;
 
-        # Build default page if needed (if htdocs doesn't exist or is empty)
-        if (!-d "$data->{'WEB_DIR'}/htdocs"
-            || iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/htdocs" )->isEmpty()
-        ) {
-            if (-d "$tmpDir/htdocs") {
-                # Test needed in case admin removed the index.html file from the skeleton
-                if (-f "$tmpDir/htdocs/index.html") {
-                    my $fileSource = "$tmpDir/htdocs/index.html";
-                    $rs = $self->buildConfFile( $fileSource, $data, { destination => $fileSource } );
+        if ($data->{'FORWARD'} eq 'no') {
+            # Build default page if needed (if htdocs doesn't exists or is empty)
+            if (!-d "$data->{'WEB_DIR'}/htdocs" || iMSCP::Dir->new( dirname =>
+                "$data->{'WEB_DIR'}/htdocs" )->isEmpty()) {
+                if (-d "$tmpDir/htdocs") {
+                    # Test needed in case admin removed the index.html file from the skeleton
+                    if (-f "$tmpDir/htdocs/index.html") {
+                        my $fileSource = "$tmpDir/htdocs/index.html";
+                        $rs = $self->buildConfFile( $fileSource, $data, { destination => $fileSource } );
+                        return $rs if $rs;
+                    }
+                } else {
+                    error( "Web folder skeleton must provides the `htdocs' directory." );
+                    return 1;
+                }
+
+                # Force recursive permissions for newly created Web folders
+                $fixPermissions = 1;
+            } else {
+                $rs = iMSCP::Dir->new( dirname => "$tmpDir/htdocs" )->remove();
+                return $rs if $rs;
+            }
+        } else { # Remove unwanted files/directories for forwarded dmn
+            for(iMSCP::Dir->new( dirname => $tmpDir )->getAll()) {
+                next if /^(backups|errors|logs|\.htgroup|\.htpasswd)$/;
+                if (-f "$tmpDir/$_") {
+                    $rs = iMSCP::File->new( filename => "$tmpDir/$_" )->delFile();
+                } else {
+                    $rs = iMSCP::Dir->new( dirname => "$tmpDir/$_" )->remove();
                     return $rs if $rs;
                 }
-            } else {
-                error( 'Web folder skeleton must provides the `htdocs` directory.' );
-                return 1;
             }
-
-            # Force recursive permissions for newly created Web folders
-            $fixPermissions = 1;
-        } else {
-            $rs = iMSCP::Dir->new( dirname => "$tmpDir/htdocs" )->remove();
-            return $rs if $rs;
-        }
-
-        if ($data->{'DOMAIN_TYPE'} eq 'dmn'
-            && -d "$data->{'WEB_DIR'}/errors"
-            && !iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/errors" )->isEmpty()
-        ) {
-            unless (-d "$tmpDir/errors") {
-                error( 'Web folder skeleton must provides the `errors` directory.' );
-                return 1;
-            }
-
-            $rs = iMSCP::Dir->new( dirname => "$tmpDir/errors" )->remove();
-            return $rs if $rs;
         }
 
         if ($data->{'DOMAIN_TYPE'} eq 'dmn') {
+            if (-d "$data->{'WEB_DIR'}/errors"
+                && !iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/errors" )->isEmpty()
+            ) {
+                $rs = iMSCP::Dir->new( dirname => "$tmpDir/errors" )->remove();
+                return $rs if $rs;
+            } elsif (!-d "$tmpDir/errors") {
+                error( "The `domain' Web folder skeleton must provides the `errors' directory." );
+                return 1;
+            } else {
+                $fixPermissions = 1;
+            }
+
             if ($self->{'config'}->{'MOUNT_CUSTOMER_LOGS'} ne 'yes') {
                 $rs = $self->umountLogsFolder( $data );
                 $rs ||= iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/logs" )->remove();
                 $rs ||= iMSCP::Dir->new( dirname => "$tmpDir/logs" )->remove();
                 return $rs if $rs;
             } elsif (!-d "$tmpDir/logs") {
-                error( 'Web folder skeleton must provides the `logs` directory.' );
+                error( "The `domain' Web folder skeleton must provides the `logs' directory." );
                 return 1;
             }
-        }
-
-        if ($data->{'DOMAIN_TYPE'} ne 'dmn' && !$data->{'SHARED_MOUNT_POINT'}) {
+        } elsif (!$data->{'SHARED_MOUNT_POINT'}) {
             $rs = iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/phptmp" )->remove();
             $rs ||= iMSCP::Dir->new( dirname => "$tmpDir/phptmp" )->remove();
             return $rs if $rs;
@@ -1821,8 +1829,27 @@ sub _cleanTemplate
         $$cfgTpl = replaceBloc( "# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', $$cfgTpl );
     }
 
-    if ($filename =~ /^domain(?:_(?:disabled|redirect))?(_ssl)?\.tpl$/ && !$data->{'HSTS_SUPPORT'}) {
-        $$cfgTpl = replaceBloc( "# SECTION hsts_enabled BEGIN.\n", "# SECTION hsts_enabled END.\n", '', $$cfgTpl );
+    if ($filename =~ /^domain_(?:disabled|redirect)?(_ssl)?\.tpl$/) {
+        my $isSSLVhost = defined $1;
+
+        if ($data->{'FORWARD'} ne 'no') {
+            if ($data->{'FORWARD_TYPE'} eq 'proxy' && (!$data->{'HSTS_SUPPORT'} || $isSSLVhost)) {
+                $$cfgTpl = replaceBloc(
+                    "# SECTION standard_redirect BEGIN.\n", "# SECTION standard_redirect END.\n", '', $$cfgTpl
+                );
+                if ($data->{'FORWARD'} !~ /^https/) {
+                    $$cfgTpl = replaceBloc("# SECTION ssl_proxy BEGIN.\n", "# SECTION ssl_proxy END.\n", '', $$cfgTpl);
+                }
+            } else {
+                $$cfgTpl = replaceBloc(
+                    "# SECTION proxy_redirect BEGIN.\n", "# SECTION proxy_redirect END.\n", '', $$cfgTpl
+                );
+            }
+        }
+
+        if ($isSSLVhost && !$data->{'HSTS_SUPPORT'}) {
+            $$cfgTpl = replaceBloc( "# SECTION hsts BEGIN.\n", "# SECTION hsts END.\n", '', $$cfgTpl );
+        }
     }
 
     $$cfgTpl =~ s/^[ \t]*#.*?(?:BEGIN|END)\.\n//gim;

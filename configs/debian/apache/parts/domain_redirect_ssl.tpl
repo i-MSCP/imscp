@@ -6,15 +6,36 @@
     LogLevel error
     ErrorLog {HTTPD_LOG_DIR}/{DOMAIN_NAME}/error.log
 
+    Alias /errors/ {HOME_DIR}/errors/
+    <Directory {HOME_DIR}/errors/>
+        {AUTHZ_ALLOW_ALL}
+    </Directory>
+
+    # SECTION standard_redirect BEGIN.
     <LocationMatch "^/(?!.well-known/)">
         Redirect {FORWARD_TYPE} / {FORWARD}
     </LocationMatch>
+    # SECTION standard_redirect END.
+    # SECTION proxy_redirect BEGIN.
+    # SECTION ssl_proxy BEGIN.
+    SSLProxyEngine on
+    # SECTION ssl_proxy END.
+    RequestHeader set X-Forwarded-Host "{DOMAIN_NAME}"
+    RequestHeader set X-Forwarded-For %{REMOTE_ADDR}e
+    RequestHeader add X-Forwarded-Ssl on
+    RequestHeader set X-Forwarded-Proto "https"
+    ProxyPreserveHost {FORWARD_PRESERVE_HOST}
+    ProxyPass /errors/ !
+    ProxyPass /.well-known/ !
+    ProxyPass / {FORWARD} retry=30 timeout=7200
+    ProxyPassReverse / {FORWARD}
+    # SECTION proxy_redirect END.
 
     SSLEngine On
     SSLCertificateFile {CERTIFICATE}
     SSLCertificateChainFile {CERTIFICATE}
 
-    # SECTION hsts_enabled BEGIN.
+    # SECTION hsts BEGIN.
     Header always set Strict-Transport-Security "max-age={HSTS_MAX_AGE}{HSTS_INCLUDE_SUBDOMAINS}"
-    # SECTION hsts_enabled END.
+    # SECTION hsts END.
 </VirtualHost>

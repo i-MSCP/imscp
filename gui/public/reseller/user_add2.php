@@ -29,14 +29,15 @@
  */
 function getFirstStepData()
 {
-    global $dmnName, $dmnExpire, $hpId;
+    global $dmnName, $hpId;
 
-    if (!isset($_SESSION['dmn_name'])) {
-        return false;
+    foreach (array('dmn_name', 'dmn_expire', 'dmn_url_forward', 'dmn_type_forward', 'dmn_host_forward', 'dmn_tpl') as $data) {
+        if (!array_key_exists($data, $_SESSION)) {
+            return false;
+        }
     }
 
     $dmnName = $_SESSION['dmn_name'];
-    $dmnExpire = $_SESSION['dmn_expire'];
     $hpId = $_SESSION['dmn_tpl'];
     return true;
 }
@@ -124,7 +125,7 @@ function generatePage($tpl)
 
     $tpl->assign(array(
         'VL_WEB_FOLDER_PROTECTION_YES' => $webFolderProtection == '_yes_' ? ' checked' : '',
-        'VL_WEB_FOLDER_PROTECTION_NO' => $webFolderProtection == '_yes_' ? '' : 'checked'
+        'VL_WEB_FOLDER_PROTECTION_NO' => $webFolderProtection == '_yes_' ? '' : ' checked'
     ));
 
     $phpini = iMSCP_PHPini::getInstance();
@@ -153,8 +154,7 @@ function generatePage($tpl)
         $translations['core']['fields_ok'] = tr('All fields are valid.');
         $translations['core']['out_of_range_value_error'] = tr('Value for the PHP %%s directive must be in range %%d to %%d.');
         $translations['core']['lower_value_expected_error'] = tr('%%s must be lower than %%s.');
-        $translations['core']['error_field_stack'] = iMSCP_Registry::isRegistered('errFieldsStack')
-            ? iMSCP_Registry::get('errFieldsStack') : array();
+        $translations['core']['error_field_stack'] = iMSCP_Registry::isRegistered('errFieldsStack') ? iMSCP_Registry::get('errFieldsStack') : array();
     });
 
     $permissionsBlock = false;
@@ -484,7 +484,7 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptS
 check_login('reseller');
 
 // Initialize global variables
-global $dmnName, $dmnExpire, $hpId;
+global $dmnName, $hpId;
 $hpName = 'Custom';
 $sub = $als = $mail = $mailQuota = $ftp = $sqld = $sqlu = $traffic = $diskspace = '0';
 $php = $cgi = $dns = $aps = $extMail = '_no_';
@@ -550,7 +550,6 @@ $tpl->define_dynamic(array(
     "php_mail_function_block" => 'php_editor_permissions_block',
     'php_editor_default_values_block' => 'php_editor_block'
 ));
-
 $tpl->assign(array(
     'TR_PAGE_TITLE' => tr('Reseller / Customers / Add Customer - Next Step'),
     'TR_ADD_USER' => tr('Add user'),

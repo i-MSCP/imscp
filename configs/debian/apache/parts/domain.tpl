@@ -10,7 +10,7 @@
     LogLevel error
     ErrorLog {HTTPD_LOG_DIR}/{DOMAIN_NAME}/error.log
 
-    Alias /errors {HOME_DIR}/errors/
+    Alias /errors/ {HOME_DIR}/errors/
 
     # SECTION itk BEGIN.
     AssignUserID {USER} {GROUP}
