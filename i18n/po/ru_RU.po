@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-03 18:53+0200\n"
-"PO-Revision-Date: 2016-07-02 11:17+0000\n"
+"POT-Creation-Date: 2016-07-14 08:37+0200\n"
+"PO-Revision-Date: 2016-07-14 06:38+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/i-mscp/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -810,25 +810,8 @@ msgstr "Все пользователи"
 msgid "Allow URL fopen"
 msgstr "Allow URL fopen"
 
-msgid ""
-"Allows to forward any request made to this domain alias to a specific URL."
-msgstr "Позволяет перенаправлять любой запрос, сделанный для алиаса домена на указанный URL"
-
-msgid ""
-"Allows to forward any request made to this domain alias to a specific URL. "
-"Be aware that when this option is in use, no Web folder is created for the "
-"domain alias."
-msgstr "Позволяет перенаправлять любой запрос, сделанный для этого алиаса домена на указанный URL. Знайте, что когда опция используется, каталога для алиаса домена не создается. "
-
-msgid ""
-"Allows to forward any request made to this subdomain to a specific URL."
-msgstr "Позволяет перенаправлять любой запрос, сделанный для поддомена на указанный URL"
-
-msgid ""
-"Allows to forward any request made to this subdomain to a specific URL. Be "
-"aware that when this option is in use, no Web folder is created for the "
-"subdomain."
-msgstr "Позволяет перенаправлять любой запрос, сделанный для этого поддомена на указанный URL. Знайте, что когда обция используется, каталога для поддомена не создается. "
+msgid "Allows to forward any request made to this domain to a specific URL."
+msgstr ""
 
 msgid "Allows to share the mount point of another domain."
 msgstr "Позволяет распределить точку монтирования другого домена."
@@ -943,7 +926,7 @@ msgstr "Вы уверены, что хотите удалить тикет %s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s' IP addresse?"
-msgstr ""
+msgstr "Вы уверены что хотите удалить IP адрес %%s?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
@@ -1009,7 +992,7 @@ msgid "Authentication data"
 msgstr "Данные аутентификации"
 
 msgid "Auto"
-msgstr ""
+msgstr "Автоматически"
 
 msgid "Auto (Browser language)"
 msgstr "Автоматически (язык браузера)"
@@ -1251,6 +1234,9 @@ msgstr "Клиент / Домены / Добавить алиас"
 msgid "Client / Domains / Add Subdomain"
 msgstr "Клиент / Домены / Добавить поддомен"
 
+msgid "Client / Domains / Edit Domain"
+msgstr ""
+
 msgid "Client / Domains / Edit Domain Alias"
 msgstr "Клиент / Домены / Редактрировать алиас"
 
@@ -1393,7 +1379,7 @@ msgid "Compress HTML output"
 msgstr "Сжать вывод HTML"
 
 msgid "Configuration mode"
-msgstr ""
+msgstr "Режим конфигурации"
 
 msgid "Core data"
 msgstr "Основные данные"
@@ -1451,7 +1437,7 @@ msgid "Could not extract plugin archive: %s"
 msgstr "Невозможно извлечь архив плагина: %s"
 
 msgid "Could not find any network interface. You cannot add new IP addresses."
-msgstr ""
+msgstr "Невозможно найти сетевой интерфейс. Вы не можете добавить новый IP адрес."
 
 msgid "Could not find plugin root directory within archive."
 msgstr "Невозможно найти корневой каталог плагина в архиве."
@@ -2012,6 +1998,10 @@ msgid "Domain"
 msgstr "Домен"
 
 #, php-format
+msgid "Domain %s cannot be forwarded on itself."
+msgstr ""
+
+#, php-format
 msgid "Domain %s is unavailable."
 msgstr "Домен %s недоступен."
 
@@ -2140,6 +2130,9 @@ msgstr "Статистика домена"
 
 msgid "Domain status is not ok."
 msgstr "Статус домена не в порядке."
+
+msgid "Domain successfully scheduled for update."
+msgstr ""
 
 msgid "Domain successfully updated."
 msgstr "Домен успешно обновлен."
@@ -3095,7 +3088,7 @@ msgid "Manage your protected areas, users and groups."
 msgstr "Управление защищенными зонами, пользователями и группами"
 
 msgid "Manual"
-msgstr ""
+msgstr "Вручную"
 
 msgid "Mark"
 msgstr "Метка"
@@ -3885,6 +3878,9 @@ msgstr "Список плагинов обновлен: %s новый(ых) пл
 
 msgid "Port"
 msgstr "Порт"
+
+msgid "Preserve Host"
+msgstr ""
 
 msgid "Prevent external login for admins"
 msgstr "Запрет внешних логинов для администраторов"
@@ -4867,7 +4863,7 @@ msgid "This htaccess user already exist."
 msgstr "Пользователь htaccess уже существует."
 
 msgid "This interface allow to add or remove IP addresses."
-msgstr ""
+msgstr "В этой маске Вы можете добавлять или удалять IP адреса."
 
 #, php-format
 msgid ""
@@ -5381,10 +5377,10 @@ msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr "Если да, то функция PHP exec() может использоваться в ваших скриптах."
 
 msgid "When set to `Auto', the IP address is automatically configured."
-msgstr ""
+msgstr "В автоматическом режиме IP адрес будет настроен автоматически."
 
 msgid "When set to `Manual', the configuration is left to the administrator."
-msgstr ""
+msgstr "В ручном режиме администратор может настроить IP адрес сам."
 
 msgid "Wrong IP address."
 msgstr "Неверный IP адрес."
@@ -5507,7 +5503,7 @@ msgid "You cannot protect an area without selected htaccess user(s)."
 msgstr "Вы не можете защитить зону без выбора пользователей htaccess."
 
 msgid "You cannot remove an IP that is assigned to a reseller."
-msgstr ""
+msgstr "IP адрес, который вы пытаетесь удалить, назначен реселлеру."
 
 msgid "You cannot set expire date in past."
 msgstr "Дата истечения не может быть в прошлом."
@@ -5665,9 +5661,6 @@ msgstr "Сначала вы должны создать пользователя
 
 msgid "You must first generate a password by clicking on the generate button."
 msgstr "Сначала вы должны сгенерировать пароль, используя кнопку генерации"
-
-msgid "You must omit 'www'. It will be added automatically."
-msgstr "Вам не нужен префикс 'www.' Он будет добавлен самостоятельно."
 
 msgid "You must provide a password."
 msgstr "Вы должны указать пароль."

@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-03 18:53+0200\n"
-"PO-Revision-Date: 2016-07-02 11:16+0000\n"
+"POT-Creation-Date: 2016-07-14 08:37+0200\n"
+"PO-Revision-Date: 2016-07-14 06:38+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -809,25 +809,8 @@ msgstr "所有使用者"
 msgid "Allow URL fopen"
 msgstr "允許 URL fopen"
 
-msgid ""
-"Allows to forward any request made to this domain alias to a specific URL."
-msgstr "允許轉址任何需求來達成這個網域別名指到特定的 URL。"
-
-msgid ""
-"Allows to forward any request made to this domain alias to a specific URL. "
-"Be aware that when this option is in use, no Web folder is created for the "
-"domain alias."
-msgstr "允許轉址任何需求來達成這個網域別名指到特定的 URL。當使用了這個選項後，就不會在這個網域別名上建立網頁資料夾了。"
-
-msgid ""
-"Allows to forward any request made to this subdomain to a specific URL."
-msgstr "允許轉址任何需求來達成這個子網域指到特定的 URL。"
-
-msgid ""
-"Allows to forward any request made to this subdomain to a specific URL. Be "
-"aware that when this option is in use, no Web folder is created for the "
-"subdomain."
-msgstr "允許轉址任何需求來達成這個子網域指到特定的 URL。當使用了這個選項後，就不會在這個子網域上建立網頁資料夾了。"
+msgid "Allows to forward any request made to this domain to a specific URL."
+msgstr ""
 
 msgid "Allows to share the mount point of another domain."
 msgstr "允許分享掛載點到其他網域上。"
@@ -1249,6 +1232,9 @@ msgstr "客戶 / 網域 / 新增網域別名"
 
 msgid "Client / Domains / Add Subdomain"
 msgstr "客戶 / 網域 / 新增子網域"
+
+msgid "Client / Domains / Edit Domain"
+msgstr ""
 
 msgid "Client / Domains / Edit Domain Alias"
 msgstr "客戶 / 網域 / 編輯網域別名"
@@ -2011,6 +1997,10 @@ msgid "Domain"
 msgstr "網域"
 
 #, php-format
+msgid "Domain %s cannot be forwarded on itself."
+msgstr ""
+
+#, php-format
 msgid "Domain %s is unavailable."
 msgstr "網域 %s 是無效的。"
 
@@ -2139,6 +2129,9 @@ msgstr "網域狀態"
 
 msgid "Domain status is not ok."
 msgstr "網域狀態不正常。"
+
+msgid "Domain successfully scheduled for update."
+msgstr ""
 
 msgid "Domain successfully updated."
 msgstr "網域已成功更新。"
@@ -3884,6 +3877,9 @@ msgstr "外掛列表已經更新: %s 新的外掛已找到，%s 外掛已更新�
 
 msgid "Port"
 msgstr "連接埠"
+
+msgid "Preserve Host"
+msgstr ""
 
 msgid "Prevent external login for admins"
 msgstr "防止從外部登入管理帳號"
@@ -5655,9 +5651,6 @@ msgstr "首先您必須建一個使用者。"
 
 msgid "You must first generate a password by clicking on the generate button."
 msgstr "您必須點擊產生按鈕來產生第一個密碼。"
-
-msgid "You must omit 'www'. It will be added automatically."
-msgstr "您必須忽略 'www'。這個會自動新增。"
 
 msgid "You must provide a password."
 msgstr "您必須提供一組密碼"

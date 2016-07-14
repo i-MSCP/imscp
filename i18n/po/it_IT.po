@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-03 18:53+0200\n"
-"PO-Revision-Date: 2016-07-02 11:17+0000\n"
+"POT-Creation-Date: 2016-07-14 08:37+0200\n"
+"PO-Revision-Date: 2016-07-14 06:38+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/i-mscp/i-MSCP/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -808,25 +808,8 @@ msgstr "Tutti gli utenti"
 msgid "Allow URL fopen"
 msgstr "Consenti URL fopen"
 
-msgid ""
-"Allows to forward any request made to this domain alias to a specific URL."
-msgstr "Acconsenti a inoltrare ogni richiesta fatta a questo sottodominio a uno specifico URL."
-
-msgid ""
-"Allows to forward any request made to this domain alias to a specific URL. "
-"Be aware that when this option is in use, no Web folder is created for the "
-"domain alias."
-msgstr "Inoltra qualsiasi richiesta fatta a questo alias di dominio ad un URL specifico. Attivando questa opzione, nessua directory web viene creata per questo alias di dominio."
-
-msgid ""
-"Allows to forward any request made to this subdomain to a specific URL."
-msgstr "Acconsenti a inoltrare ogni richiesta fatta a questo sottodominio a uno specifico URL."
-
-msgid ""
-"Allows to forward any request made to this subdomain to a specific URL. Be "
-"aware that when this option is in use, no Web folder is created for the "
-"subdomain."
-msgstr "Acconsenti a inoltrare ogni richiesta fatta a questo sottodominio a uno specifico URL. Essere consapevoli che quando questa opzione è in uso, nessuna Web directory viene creata per il sottodominio."
+msgid "Allows to forward any request made to this domain to a specific URL."
+msgstr ""
 
 msgid "Allows to share the mount point of another domain."
 msgstr "Acconsenti a condividere il punto di montaggio di un altro dominio."
@@ -1248,6 +1231,9 @@ msgstr "Cliente/ Domini / Aggiungi Alias Domini"
 
 msgid "Client / Domains / Add Subdomain"
 msgstr "Cliente / Domini / Aggiungi Sottodominio"
+
+msgid "Client / Domains / Edit Domain"
+msgstr ""
 
 msgid "Client / Domains / Edit Domain Alias"
 msgstr "Cliente/ Domini / Modifica Alias Domini"
@@ -2010,6 +1996,10 @@ msgid "Domain"
 msgstr "Dominio"
 
 #, php-format
+msgid "Domain %s cannot be forwarded on itself."
+msgstr ""
+
+#, php-format
 msgid "Domain %s is unavailable."
 msgstr "Il dominio %s non è disponibile."
 
@@ -2138,6 +2128,9 @@ msgstr "Statistiche Dominio"
 
 msgid "Domain status is not ok."
 msgstr "Lo stato dominio è non ok."
+
+msgid "Domain successfully scheduled for update."
+msgstr ""
 
 msgid "Domain successfully updated."
 msgstr "Dominio aggiornato con successo."
@@ -3883,6 +3876,9 @@ msgstr "La lista dei plugin è stata corretamente aggiornata: %s nuovi plugin(s)
 
 msgid "Port"
 msgstr "Porta"
+
+msgid "Preserve Host"
+msgstr ""
 
 msgid "Prevent external login for admins"
 msgstr "Impedire accessi esterni per gli amministratori"
@@ -5657,9 +5653,6 @@ msgstr ""
 
 msgid "You must first generate a password by clicking on the generate button."
 msgstr "Devi prima generare una password cliccando sul bottone apposito."
-
-msgid "You must omit 'www'. It will be added automatically."
-msgstr "Non mettere 'www'. Verrà aggiunto automaticamente"
 
 msgid "You must provide a password."
 msgstr "È necessario specificare una password."

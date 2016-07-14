@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-03 18:53+0200\n"
-"PO-Revision-Date: 2016-07-02 11:17+0000\n"
+"POT-Creation-Date: 2016-07-14 08:37+0200\n"
+"PO-Revision-Date: 2016-07-14 06:38+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/i-mscp/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -807,25 +807,8 @@ msgstr "Tots els usuaris"
 msgid "Allow URL fopen"
 msgstr "Permetre URL fopen"
 
-msgid ""
-"Allows to forward any request made to this domain alias to a specific URL."
+msgid "Allows to forward any request made to this domain to a specific URL."
 msgstr ""
-
-msgid ""
-"Allows to forward any request made to this domain alias to a specific URL. "
-"Be aware that when this option is in use, no Web folder is created for the "
-"domain alias."
-msgstr ""
-
-msgid ""
-"Allows to forward any request made to this subdomain to a specific URL."
-msgstr "Permet reenviar una petició fet a aquest subdomini cap a una URL especifica."
-
-msgid ""
-"Allows to forward any request made to this subdomain to a specific URL. Be "
-"aware that when this option is in use, no Web folder is created for the "
-"subdomain."
-msgstr "Permet reenviar qualsevol petició fet a aquest subdomini cap a una URL específica. Tingueu en compte que quan aquesta opció està activa no es crea cap carpeta Web per el subdomini."
 
 msgid "Allows to share the mount point of another domain."
 msgstr "Permetre compartir el punt de muntatge de un altre domini."
@@ -1247,6 +1230,9 @@ msgstr ""
 
 msgid "Client / Domains / Add Subdomain"
 msgstr "Client / Dominis / Afegir subdomini"
+
+msgid "Client / Domains / Edit Domain"
+msgstr ""
 
 msgid "Client / Domains / Edit Domain Alias"
 msgstr ""
@@ -2009,6 +1995,10 @@ msgid "Domain"
 msgstr "Domini"
 
 #, php-format
+msgid "Domain %s cannot be forwarded on itself."
+msgstr ""
+
+#, php-format
 msgid "Domain %s is unavailable."
 msgstr ""
 
@@ -2137,6 +2127,9 @@ msgstr "Estadístiques de domini"
 
 msgid "Domain status is not ok."
 msgstr "L'estat del domini NO és OK"
+
+msgid "Domain successfully scheduled for update."
+msgstr ""
 
 msgid "Domain successfully updated."
 msgstr "El domini ha estat actualitzat."
@@ -3882,6 +3875,9 @@ msgstr ""
 
 msgid "Port"
 msgstr "Port"
+
+msgid "Preserve Host"
+msgstr ""
 
 msgid "Prevent external login for admins"
 msgstr "Prohibir l'accés extern dels admins"
@@ -5655,9 +5651,6 @@ msgid "You must first create a user."
 msgstr ""
 
 msgid "You must first generate a password by clicking on the generate button."
-msgstr ""
-
-msgid "You must omit 'www'. It will be added automatically."
 msgstr ""
 
 msgid "You must provide a password."

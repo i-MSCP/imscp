@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-03 18:53+0200\n"
-"PO-Revision-Date: 2016-07-02 11:17+0000\n"
+"POT-Creation-Date: 2016-07-14 08:37+0200\n"
+"PO-Revision-Date: 2016-07-14 06:38+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/i-mscp/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -807,25 +807,8 @@ msgstr "Alle brugere"
 msgid "Allow URL fopen"
 msgstr "Tillad URL fopen"
 
-msgid ""
-"Allows to forward any request made to this domain alias to a specific URL."
-msgstr "Gør det muligt at videresende en anmodning til dette domæne alias til en bestemt webadresse."
-
-msgid ""
-"Allows to forward any request made to this domain alias to a specific URL. "
-"Be aware that when this option is in use, no Web folder is created for the "
-"domain alias."
-msgstr "Gør det muligt at videresende en anmodning til dette domæne alias til en bestemt webadresse. Vær opmærksom på, at når denne indstilling er i brug, vik ingen web mppe oprettes til dette domænealias."
-
-msgid ""
-"Allows to forward any request made to this subdomain to a specific URL."
-msgstr "Gør det muligt at videresende en anmodning til dette subdomæne til en bestemt webadresse."
-
-msgid ""
-"Allows to forward any request made to this subdomain to a specific URL. Be "
-"aware that when this option is in use, no Web folder is created for the "
-"subdomain."
-msgstr "Gør det muligt at videresende en anmodning til dette subdomæne til en bestemt webadresse. Vær opmærksom på, at når denne indstilling er i brug, er der ingen web mappe til underdomæne."
+msgid "Allows to forward any request made to this domain to a specific URL."
+msgstr ""
 
 msgid "Allows to share the mount point of another domain."
 msgstr "Gør det muligt at dele monterings punkt i et andet domæne."
@@ -1247,6 +1230,9 @@ msgstr "Klient / Domæner / Tilføj Domæne Alias"
 
 msgid "Client / Domains / Add Subdomain"
 msgstr "Klient / Domæner / Tilføj subdomæne"
+
+msgid "Client / Domains / Edit Domain"
+msgstr ""
 
 msgid "Client / Domains / Edit Domain Alias"
 msgstr "Klient / Domæner / Rediger Domæne Alias"
@@ -2009,6 +1995,10 @@ msgid "Domain"
 msgstr "Domæne"
 
 #, php-format
+msgid "Domain %s cannot be forwarded on itself."
+msgstr ""
+
+#, php-format
 msgid "Domain %s is unavailable."
 msgstr "Domæne %s er ikke tilgængelig."
 
@@ -2137,6 +2127,9 @@ msgstr "Domæne statistik"
 
 msgid "Domain status is not ok."
 msgstr "Domæne status er ikke ok."
+
+msgid "Domain successfully scheduled for update."
+msgstr ""
 
 msgid "Domain successfully updated."
 msgstr "Domæne blevet opdateret."
@@ -3882,6 +3875,9 @@ msgstr "Plugins listen er blevet opdateret: %s nye plugin(s), %s plugin(s) opdat
 
 msgid "Port"
 msgstr "Port"
+
+msgid "Preserve Host"
+msgstr ""
 
 msgid "Prevent external login for admins"
 msgstr "Forhindre ekstern adgang for admins"
@@ -5656,9 +5652,6 @@ msgstr ""
 
 msgid "You must first generate a password by clicking on the generate button."
 msgstr "Du skal først generere en adgangskode ved at klikke på knappen genererer."
-
-msgid "You must omit 'www'. It will be added automatically."
-msgstr "Du behøver ikke \"www\". i-MSCP vil tilføje det automatisk."
 
 msgid "You must provide a password."
 msgstr "Du skal angive et password."

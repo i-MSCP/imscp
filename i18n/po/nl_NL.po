@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-03 18:53+0200\n"
-"PO-Revision-Date: 2016-07-02 11:16+0000\n"
+"POT-Creation-Date: 2016-07-14 08:37+0200\n"
+"PO-Revision-Date: 2016-07-14 06:38+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/i-mscp/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -594,7 +594,7 @@ msgid "Admin / Settings"
 msgstr "Beheerder / Instellingen"
 
 msgid "Admin / Settings / IP Management"
-msgstr ""
+msgstr "Beheerder / Instellingen / IP-beheer"
 
 msgid "Admin / Settings / Languages"
 msgstr "Beheerder / Instellingen / Talen"
@@ -810,25 +810,8 @@ msgstr "Alle gebruikers"
 msgid "Allow URL fopen"
 msgstr "Sta URL-fopen toe"
 
-msgid ""
-"Allows to forward any request made to this domain alias to a specific URL."
-msgstr "Maakt het doorsturen van een verzoek naar dit domeinalias naar een specifieke URL mogelijk"
-
-msgid ""
-"Allows to forward any request made to this domain alias to a specific URL. "
-"Be aware that when this option is in use, no Web folder is created for the "
-"domain alias."
-msgstr "Staat toe dat verzoeken aan deze domeinalias doorgestuurd worden aan een specifieke URL. Let er op dat als u deze functie gebruikt, er geen nieuwe map gemaakt wordt voor de domeinalias"
-
-msgid ""
-"Allows to forward any request made to this subdomain to a specific URL."
-msgstr "Staat toe dat verzoeken aan deze subdomein doorgestuurd worden aan een specifieke URL. "
-
-msgid ""
-"Allows to forward any request made to this subdomain to a specific URL. Be "
-"aware that when this option is in use, no Web folder is created for the "
-"subdomain."
-msgstr "Staat toe dat verzoeken aan deze subdomein doorgestuurd worden aan een specifieke URL. Let er op dat als u deze functie gebruikt, er geen nieuwe map gemaakt wordt voor de domeinalias"
+msgid "Allows to forward any request made to this domain to a specific URL."
+msgstr ""
 
 msgid "Allows to share the mount point of another domain."
 msgstr "Zorgt er voor dat u het koppelpunt kunt delen met een ander domein."
@@ -943,7 +926,7 @@ msgstr "Weet u zeker dat u het %s ticket wilt verwijderen?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s' IP addresse?"
-msgstr ""
+msgstr "Weet u zeker dat u het IP-adres `%%s' wilt verwijderen?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
@@ -1009,7 +992,7 @@ msgid "Authentication data"
 msgstr "Authenticatiegegevens"
 
 msgid "Auto"
-msgstr ""
+msgstr "Automatisch"
 
 msgid "Auto (Browser language)"
 msgstr "Automatisch (Browsertaal)"
@@ -1251,6 +1234,9 @@ msgstr "Klant / Domain / Voeg domeinalias toe"
 msgid "Client / Domains / Add Subdomain"
 msgstr "Klant / Domain / Subdomein toevoegen"
 
+msgid "Client / Domains / Edit Domain"
+msgstr ""
+
 msgid "Client / Domains / Edit Domain Alias"
 msgstr "Klant / Domain / Pas domeinalias aan"
 
@@ -1393,7 +1379,7 @@ msgid "Compress HTML output"
 msgstr "Compressie toepassen op HTML-output"
 
 msgid "Configuration mode"
-msgstr ""
+msgstr "Configuratiemode"
 
 msgid "Core data"
 msgstr "Kerngegevens"
@@ -1451,7 +1437,7 @@ msgid "Could not extract plugin archive: %s"
 msgstr "Kon het invoegtoepassingsarchief niet uitpakken: %s"
 
 msgid "Could not find any network interface. You cannot add new IP addresses."
-msgstr ""
+msgstr "Kon deze netwerkinterface niet vinden. U kunt geen nieuwe IP-adressen invullen."
 
 msgid "Could not find plugin root directory within archive."
 msgstr "Kon de invoegtoepassingsmap niet vinden in het archief."
@@ -2012,6 +1998,10 @@ msgid "Domain"
 msgstr "Domein"
 
 #, php-format
+msgid "Domain %s cannot be forwarded on itself."
+msgstr ""
+
+#, php-format
 msgid "Domain %s is unavailable."
 msgstr "Domein %s is niet beschikbaar"
 
@@ -2140,6 +2130,9 @@ msgstr "Domeinstatistieken"
 
 msgid "Domain status is not ok."
 msgstr "Domeinstatus niet oké."
+
+msgid "Domain successfully scheduled for update."
+msgstr ""
 
 msgid "Domain successfully updated."
 msgstr "Domein succesvol bijgewerkt."
@@ -3095,7 +3088,7 @@ msgid "Manage your protected areas, users and groups."
 msgstr "Beheer uw beveiligde mappen, gebruikers en groepen"
 
 msgid "Manual"
-msgstr ""
+msgstr "Handmatig"
 
 msgid "Mark"
 msgstr "Markeer"
@@ -3885,6 +3878,9 @@ msgstr "Invoegtoepassingslijst is bijgewerkt: %s nieuwe invoegtoepassing(en) gev
 
 msgid "Port"
 msgstr "Poort"
+
+msgid "Preserve Host"
+msgstr ""
 
 msgid "Prevent external login for admins"
 msgstr "Voorkom externe login voor beheerder"
@@ -4867,7 +4863,7 @@ msgid "This htaccess user already exist."
 msgstr "Deze htaccess-gebruiker bestaat al."
 
 msgid "This interface allow to add or remove IP addresses."
-msgstr ""
+msgstr "Via deze interface kunt u nieuwe IP-adressen toevoegen en andere verwijderen."
 
 #, php-format
 msgid ""
@@ -5381,10 +5377,10 @@ msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr "Indien ingeschakeld kan een klant de PHP exec()-functie gebruiken."
 
 msgid "When set to `Auto', the IP address is automatically configured."
-msgstr ""
+msgstr "Wanneer ingesteld op 'Automatisch', dan worden de IP-adressen automatisch op de server geconfigureerd."
 
 msgid "When set to `Manual', the configuration is left to the administrator."
-msgstr ""
+msgstr "Wanneer ingesteld op 'Handmatig', dan dient de beheerder de IP-adressen handmatig te configureren en beheren op de server."
 
 msgid "Wrong IP address."
 msgstr "Fout IP-adres."
@@ -5507,7 +5503,7 @@ msgid "You cannot protect an area without selected htaccess user(s)."
 msgstr "U kunt een map niet beveiligen zonder htaccess-gebruikers te selecteren."
 
 msgid "You cannot remove an IP that is assigned to a reseller."
-msgstr ""
+msgstr "U kunt geen IP-adressen verwijderen, als ze zijn toegewezen aan een wederverkoper."
 
 msgid "You cannot set expire date in past."
 msgstr "U kunt geen vervaldatum in het verleden instellen."
@@ -5659,9 +5655,6 @@ msgstr "U moet eerst een gebruiker aanmaken"
 
 msgid "You must first generate a password by clicking on the generate button."
 msgstr "U dient eerst een wachtwoord te genereren door op de Genereer-knop te klikken."
-
-msgid "You must omit 'www'. It will be added automatically."
-msgstr "U dient 'www' weg te laten. Het zal automatisch worden toegevoegd."
 
 msgid "You must provide a password."
 msgstr "U dient een wachtwoord in te geven."

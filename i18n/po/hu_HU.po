@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-03 18:53+0200\n"
-"PO-Revision-Date: 2016-07-02 11:17+0000\n"
+"POT-Creation-Date: 2016-07-14 08:37+0200\n"
+"PO-Revision-Date: 2016-07-14 06:38+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/i-mscp/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -807,25 +807,8 @@ msgstr "Összes felhasználó"
 msgid "Allow URL fopen"
 msgstr "URL fopen engedélyezése"
 
-msgid ""
-"Allows to forward any request made to this domain alias to a specific URL."
-msgstr "Ezzel a domain álnév minden lekérést egy megadott URL-re irányít át. "
-
-msgid ""
-"Allows to forward any request made to this domain alias to a specific URL. "
-"Be aware that when this option is in use, no Web folder is created for the "
-"domain alias."
-msgstr "Ezzel a domain álnév minden lekérést egy megadott URL-re irányít át. Ne feledd, ha ezt az opciót választod, akkor nem lesz \"Web\" könyvtár létrehozva a domain álnév számára."
-
-msgid ""
-"Allows to forward any request made to this subdomain to a specific URL."
-msgstr "Ezzel az aldomain minden lekérést egy megadott URL-re irányít át."
-
-msgid ""
-"Allows to forward any request made to this subdomain to a specific URL. Be "
-"aware that when this option is in use, no Web folder is created for the "
-"subdomain."
-msgstr "Ezzel az aldomain minden lekérést egy megadott URL-re irányít át. Ne feledd, ha ezt az opciót választod, akkor nem lesz \"Web\" könyvtár létrehozva az aldomain számára."
+msgid "Allows to forward any request made to this domain to a specific URL."
+msgstr ""
 
 msgid "Allows to share the mount point of another domain."
 msgstr "Más domainnal közös csatolási pont használata."
@@ -1247,6 +1230,9 @@ msgstr "Ügyfél / Domainek / Domain álnév hozzáadása"
 
 msgid "Client / Domains / Add Subdomain"
 msgstr "Ügyfél / Domainek / Aldomain létrehozása"
+
+msgid "Client / Domains / Edit Domain"
+msgstr ""
 
 msgid "Client / Domains / Edit Domain Alias"
 msgstr "Ügyfél / Domainek / Domain álnév szerkesztése"
@@ -2009,6 +1995,10 @@ msgid "Domain"
 msgstr "Domain"
 
 #, php-format
+msgid "Domain %s cannot be forwarded on itself."
+msgstr ""
+
+#, php-format
 msgid "Domain %s is unavailable."
 msgstr "%s domain nem elérhető."
 
@@ -2137,6 +2127,9 @@ msgstr "Domain statisztikák"
 
 msgid "Domain status is not ok."
 msgstr "Domain állapota nincs rendben"
+
+msgid "Domain successfully scheduled for update."
+msgstr ""
 
 msgid "Domain successfully updated."
 msgstr "Domain tulajdonságai sikeresen frissítve"
@@ -3882,6 +3875,9 @@ msgstr "Bővítmény lista frissítve: %s új bővítmény található, %s bőv�
 
 msgid "Port"
 msgstr "Port"
+
+msgid "Preserve Host"
+msgstr ""
 
 msgid "Prevent external login for admins"
 msgstr "Adminisztrátor belépésének megakadályozása külföldről"
@@ -5656,9 +5652,6 @@ msgstr ""
 
 msgid "You must first generate a password by clicking on the generate button."
 msgstr "Először generálnod kell egy jelszót a generálás gombra kattintva."
-
-msgid "You must omit 'www'. It will be added automatically."
-msgstr "A „www”-t hagyd ki, mert ezt a rendszer automatikusan hozzáadja."
 
 msgid "You must provide a password."
 msgstr "Először létre kell hozni egy jelszót"

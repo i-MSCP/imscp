@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-03 18:53+0200\n"
-"PO-Revision-Date: 2016-07-02 11:17+0000\n"
+"POT-Creation-Date: 2016-07-14 08:37+0200\n"
+"PO-Revision-Date: 2016-07-14 06:38+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/i-mscp/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -811,25 +811,8 @@ msgstr "Alle Benutzer"
 msgid "Allow URL fopen"
 msgstr "Erlaube URL-fopen"
 
-msgid ""
-"Allows to forward any request made to this domain alias to a specific URL."
-msgstr "Erlaubt das Weiterleiten jedlicher Anfragen an diese Domain zu einer spezifischen URL."
-
-msgid ""
-"Allows to forward any request made to this domain alias to a specific URL. "
-"Be aware that when this option is in use, no Web folder is created for the "
-"domain alias."
-msgstr "Erlaubt das Weiterleiten jedlicher Anfragen an diesen Domain-Alias zu einer spezifischen URL. Seien Sie sich bewusst, dass wenn Sie diese Option nutzen kein Web-Verzeichnis für diesen Domain-Alias erstellt wird."
-
-msgid ""
-"Allows to forward any request made to this subdomain to a specific URL."
-msgstr "Erlaubt das Weiterleiten jedlicher Anfragen an diese Subdomain zu einer spezifischen URL."
-
-msgid ""
-"Allows to forward any request made to this subdomain to a specific URL. Be "
-"aware that when this option is in use, no Web folder is created for the "
-"subdomain."
-msgstr "Erlaubt das Weiterleiten jedlicher Anfragen an diese Subdomain zu einer spezifischen URL. Seien Sie sich bewusst, dass wenn Sie diese Option nutzen kein Web-Verzeichnis für diese Subdomain erstellt wird."
+msgid "Allows to forward any request made to this domain to a specific URL."
+msgstr ""
 
 msgid "Allows to share the mount point of another domain."
 msgstr "Erlaubt das Teilen des Einhängepunktes einer anderen Domain."
@@ -944,7 +927,7 @@ msgstr "Sind Sie sicher, dass Sie das '%s' Ticket löschen wollen?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s' IP addresse?"
-msgstr ""
+msgstr "Sind Sie sich sicher, die IP-Adresse `%%s' löschen zu wollen?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
@@ -1010,7 +993,7 @@ msgid "Authentication data"
 msgstr "Authentifizierungsdaten"
 
 msgid "Auto"
-msgstr ""
+msgstr "Automatisch"
 
 msgid "Auto (Browser language)"
 msgstr "Automatisch (Browsereinstellung)"
@@ -1252,6 +1235,9 @@ msgstr "Kunde / Domains / Domain-Alias hinzufügen"
 msgid "Client / Domains / Add Subdomain"
 msgstr "Kunde / Domains / Subdomain hinzufügen"
 
+msgid "Client / Domains / Edit Domain"
+msgstr ""
+
 msgid "Client / Domains / Edit Domain Alias"
 msgstr "Kunde / Domains / Domain-Alias bearbeiten"
 
@@ -1394,7 +1380,7 @@ msgid "Compress HTML output"
 msgstr "HTML-Ausgabe komprimieren"
 
 msgid "Configuration mode"
-msgstr ""
+msgstr "Konfigurationsmodus"
 
 msgid "Core data"
 msgstr "Stammdaten"
@@ -1452,7 +1438,7 @@ msgid "Could not extract plugin archive: %s"
 msgstr "Konnte das Plugin-Archiv nicht entpacken: %s"
 
 msgid "Could not find any network interface. You cannot add new IP addresses."
-msgstr ""
+msgstr "Konnte kein Netzwerkinterface finden. Sie können keine neuen IP-Adressen hinzufügen."
 
 msgid "Could not find plugin root directory within archive."
 msgstr "Konnte in dem Archiv keinen Plugin Ordner finden."
@@ -2013,6 +1999,10 @@ msgid "Domain"
 msgstr "Domain"
 
 #, php-format
+msgid "Domain %s cannot be forwarded on itself."
+msgstr ""
+
+#, php-format
 msgid "Domain %s is unavailable."
 msgstr "Domain %s ist nicht verfügbar."
 
@@ -2141,6 +2131,9 @@ msgstr "Domainstatistiken"
 
 msgid "Domain status is not ok."
 msgstr "Domainstatus ist nicht OK"
+
+msgid "Domain successfully scheduled for update."
+msgstr ""
 
 msgid "Domain successfully updated."
 msgstr "Domain erfolgreich aktualisiert."
@@ -2574,13 +2567,13 @@ msgid "Groups"
 msgstr "Gruppen"
 
 msgid "HSTS (HTTP Strict Transport Security)"
-msgstr ""
+msgstr "HSTS (HTTP Strict Transport Security)"
 
 msgid "HSTS includeSubDomains directive"
-msgstr ""
+msgstr "HSTS includeSubDomains Richtlinie"
 
 msgid "HSTS max-age directive value"
-msgstr ""
+msgstr "Wert für HSTS max-age Richtlinie"
 
 msgid "HTTP traffic"
 msgstr "HTTP Traffic"
@@ -3096,7 +3089,7 @@ msgid "Manage your protected areas, users and groups."
 msgstr "Verwalten Sie Ihre geschützten Bereiche, Benutzer und Gruppen."
 
 msgid "Manual"
-msgstr ""
+msgstr "Manuell"
 
 msgid "Mark"
 msgstr "Auswählen"
@@ -3886,6 +3879,9 @@ msgstr "Die Plugin-Liste ist auf dem neusten Stand: %s neue Plugin(s) wurden gef
 
 msgid "Port"
 msgstr "Port"
+
+msgid "Preserve Host"
+msgstr ""
 
 msgid "Prevent external login for admins"
 msgstr "Anmeldung aus externer Quelle für Admins verhindern"
@@ -4868,7 +4864,7 @@ msgid "This htaccess user already exist."
 msgstr "Dieser htaccess-Benutzer existiert bereits."
 
 msgid "This interface allow to add or remove IP addresses."
-msgstr ""
+msgstr "Dieses Interface erlaubt es Ihnen IP-Adressen hinzuzufügen oder zu entfernen."
 
 #, php-format
 msgid ""
@@ -5382,10 +5378,10 @@ msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr "Wenn auf 'ja' gesetzt, kann die PHP exec() Funktion in Ihren Scripten benutzt werden."
 
 msgid "When set to `Auto', the IP address is automatically configured."
-msgstr ""
+msgstr "IP-Adressen werden automatisch konfiguriert, wenn `Auto' ausgewählt wurde."
 
 msgid "When set to `Manual', the configuration is left to the administrator."
-msgstr ""
+msgstr "Die Konfiguration liegt beim Administrator, wenn `Manuell' ausgewählt wurde."
 
 msgid "Wrong IP address."
 msgstr "Falsche IP-Adresse."
@@ -5508,7 +5504,7 @@ msgid "You cannot protect an area without selected htaccess user(s)."
 msgstr "Sie können keinen Bereich schützen, ohne ausgewählte htaccess-Benutzer."
 
 msgid "You cannot remove an IP that is assigned to a reseller."
-msgstr ""
+msgstr "Sie können keine IP-Adresse entfernen, welche einem Reseller zugeordnet ist."
 
 msgid "You cannot set expire date in past."
 msgstr "Sie können kein Ablaufdatum in der Vergangenheit verwenden."
@@ -5661,9 +5657,6 @@ msgstr "Sie müssen zuerst einen Benutzer anlegen."
 msgid "You must first generate a password by clicking on the generate button."
 msgstr "Es muß erst ein Passwort generiert werden. Klicken Sie auf die Schaltfläche \"Generieren\"."
 
-msgid "You must omit 'www'. It will be added automatically."
-msgstr "Sie müssen 'www.' entfernen. Es wird automatisch hinzugefügt."
-
 msgid "You must provide a password."
 msgstr "Sie müssen ein Passwort angeben."
 
@@ -5698,7 +5691,7 @@ msgid ""
 "You should enable this directive only if all subdomains of this domain are "
 "served through SSL. Note that even if you add this directive, this will not "
 "automatically activate the HSTS feature for the subdomains of this domain."
-msgstr ""
+msgstr "Sie sollten diese Richtlinie nur aktivieren, wenn alle Subdomains dieser Domain SSL unterstützen. Beachten Sie, dass diese Direktive das HSTS-Feature nicht automatisch für alle Subdomains dieser Domain aktiviert."
 
 msgid "Your account has expired."
 msgstr "Ihr Account ist abgelaufen."
