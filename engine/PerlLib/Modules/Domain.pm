@@ -553,6 +553,7 @@ sub _getPackagesData
         DOMAIN_ADMIN_ID       => $self->{'domain_admin_id'},
         ALIAS                 => $userName,
         DOMAIN_NAME           => $self->{'domain_name'},
+        ROOT_DOMAIN_NAME      => $self->{'domain_name'},
         USER                  => $userName,
         GROUP                 => $groupName,
         HOME_DIR              => $homeDir,

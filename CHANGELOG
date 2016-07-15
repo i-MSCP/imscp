@@ -30,6 +30,11 @@ INSTALLER
     Removed: Additional IP configuration dialog (see the errata file for more details)
     Removed: `ips' item from the list of reconfigurable items (--reconfigure command line option)
 
+PACKAGES
+    Fixed: AWStats data can be accessed through localhost without any authentication
+    Fixed: AWStats (domains) configuration files are not generated (regression fix)
+    Fixed: Could not authenticate to AWStats interface of domain aliases and subdomains
+
 PRESEED
     Removed: SERVER_IPS parameter according changes made in installer
 

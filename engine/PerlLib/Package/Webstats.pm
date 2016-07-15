@@ -355,7 +355,7 @@ sub addDmn
         eval "require $package";
         unless ($@) {
             $package = $package->getInstance();
-            next unless $package->can( 'preaddDmn' );
+            next unless $package->can( 'addDmn' );
             debug( sprintf( 'Calling action addDmn on %s', ref $package ) );
             my $rs = $package->addDmn( $data );
             return $rs if $rs;
