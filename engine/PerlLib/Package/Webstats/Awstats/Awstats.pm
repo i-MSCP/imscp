@@ -35,6 +35,7 @@ use iMSCP::File;
 use iMSCP::Ext2Attributes qw(setImmutable clearImmutable);
 use iMSCP::Rights;
 use Servers::cron;
+use Servers::httpd;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -346,6 +347,7 @@ sub _addAwstatsSection
             ).
             process(
                 {
+                    AUTH_USER                => $data->{'ROOT_DOMAIN_NAME'},
                     AUTHZ_ALLOW_ALL          => version->parse( $httpdVersion ) >= version->parse( '2.4.0' )
                         ? 'Require all granted' : 'Allow from all',
                     AWSTATS_WEB_DIR          => $main::imscpConfig{'AWSTATS_WEB_DIR'},
@@ -401,7 +403,7 @@ EOF
 
     <Location /stats>
         RewriteEngine on
-        RewriteRule ^(.+)\?config=([^\?\&]+)(.*) \$1\?config={DOMAIN_NAME}&\$3 [NC,L]
+        RequestHeader set Proxy-User "{AUTH_USER}"
         AuthType Basic
         AuthName "Statistics for domain {DOMAIN_NAME}"
         AuthUserFile {HOME_DIR}/{HTACCESS_USERS_FILENAME}
@@ -432,16 +434,16 @@ sub _addAwstatsConfig
         return 1;
     }
 
-    require Servers::httpd;
     my $httpd = Servers::httpd->factory();
     my $tags = {
         ALIAS               => $data->{'ALIAS'},
+        AUTH_USER           => $data->{'ROOT_DOMAIN_NAME'},
         AWSTATS_CACHE_DIR   => $main::imscpConfig{'AWSTATS_CACHE_DIR'},
         AWSTATS_ENGINE_DIR  => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
         AWSTATS_WEB_DIR     => $main::imscpConfig{'AWSTATS_WEB_DIR'},
         CMD_LOGRESOLVEMERGE => "perl $awstatsPackageRootDir/Scripts/logresolvemerge.pl",
         DOMAIN_NAME         => $data->{'DOMAIN_NAME'},
-        LOG_DIR             => "$httpd->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}",
+        LOG_DIR             => "$httpd->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}"
     };
 
     $tplFileContent = process( $tags, $tplFileContent );
