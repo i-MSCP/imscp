@@ -716,17 +716,17 @@ sub _prefillDebconfDatabase
 {
     my $self = shift;
 
-    if ($main::imscpConfig{'DATABASE_PASSWORD'} && -d '/var/lib/mysql') {
+    if ($main::imscpConfig{'DATABASE_PASSWORD'} && -d $main::imscpConfig{'DATABASE_DIR'}) {
         # Only show critical questions
         $ENV{'DEBIAN_PRIORITY'} = 'critical';
 
         # Allow switching to other vendor (e.g: MariaDB 10.0 to MySQL >= 5.6)
-        unlink glob '/var/lib/mysql/debian-*.flag';
+        unlink glob "$main::imscpConfig{'DATABASE_DIR'}/debian-*.flag";
 
         # Don't show SQL root password dialog from package maintainer script
         # when switching to another vendor or a newest version
-        # /var/lib/mysql/debian-5.0.flag is the file checked by maintainer script (even for newest versions...)
-        my $rs = iMSCP::File->new( filename => '/var/lib/mysql/debian-5.0.flag' )->save();
+        # <DATABASE_DIR>/debian-5.0.flag is the file checked by maintainer script (even for newest versions...)
+        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'DATABASE_DIR'}/debian-5.0.flag" )->save();
         return $rs if $rs;
     }
 
@@ -794,7 +794,7 @@ EOF
 sasl2-bin cyrus-sasl2/purge-sasldb2 boolean true
 EOF
 
-    # We do not want ask user for /var/lib/mysql removal (we want avoid mistakes as much as possible)
+    # We do not want ask user for <DATABASE_DIR> removal (we want avoid mistakes as much as possible)
     if ($sqlServer eq 'mariadb') {
         # There is a bug in mariadb-server-* packages (wrong version used for question prefix)
         $selectionsFileContent .= <<"EOF";
