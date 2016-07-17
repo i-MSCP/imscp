@@ -574,7 +574,7 @@ sub _buildMainCfFile
                         action => 'replace', values => [ '/etc/ssl/certs/ca-certificates.crt' ]
                     },
                     smtp_tls_session_cache_database  => {
-                        action => 'replace', values => [ "btree:/var/lib/postfix/smtp_scache" ]
+                        action => 'replace', values => [ 'btree:/var/lib/postfix/smtp_scache' ]
                     }
                 )
             );
