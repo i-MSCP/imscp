@@ -1702,7 +1702,7 @@ sub _addFiles
 
         if ($data->{'DOMAIN_TYPE'} eq 'dmn' && -d "$data->{'WEB_DIR'}/logs") {
             # Fix user/group and mode for logs directory
-            # logs vuxxx:vuxxx 0750 (no recursive)
+            # logs root:vuxxx 0750 (no recursive)
             $rs = setRights(
                 "$data->{'WEB_DIR'}/logs",
                 { user => $main::imscpConfig{'ROOT_USER'}, group => $data->{'GROUP'}, mode => '0750' }

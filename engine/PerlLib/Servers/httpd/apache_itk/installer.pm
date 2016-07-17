@@ -158,10 +158,17 @@ sub setEnginePermissions
         $self->{'config'}->{'HTTPD_LOG_DIR'},
         {
             user      => $main::imscpConfig{'ROOT_USER'},
-            group     => $main::imscpConfig{'ADM_GROUP'},
-            dirmode   => '0750',
+            group     => $main::imscpConfig{'ROOT_GROUP'},
+            dirmode   => '0755',
             filemode  => '0644',
-            recursive => iMSCP::Getopt->fixPermissions
+            recursive => 1
+        }
+    );
+    $rs ||= setRights(
+        $self->{'config'}->{'HTTPD_LOG_DIR'},
+        {
+            group => $main::imscpConfig{'ADM_GROUP'},
+            mode  => '0750'
         }
     );
     $rs ||= setRights(
