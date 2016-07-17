@@ -564,6 +564,18 @@ sub _buildMainCfFile
                         action => 'replace', values => [ 'btree:/var/lib/postfix/smtpd_scache' ]
                     },
                     smtpd_tls_session_cache_timeout  => { action => 'replace', values => [ '3600s' ] },
+                    # smtp TLS parameters (opportunistic)
+                    smtp_tls_security_level          => { action => 'replace', values => [ 'may' ] },
+                    smtp_tls_ciphers                 => { action => 'replace', values => [ 'high' ] },
+                    smtp_tls_exclude_ciphers         => { action => 'replace', values => [ 'aNULL', 'MD5' ] },
+                    smtp_tls_protocols               => { action => 'replace', values => [ '!SSLv2', '!SSLv3' ] },
+                    smtp_tls_loglevel                => { action => 'replace', values => [ '0' ] },
+                    smtp_tls_CAfile                  => {
+                        action => 'replace', values => [ '/etc/ssl/certs/ca-certificates.crt' ]
+                    },
+                    smtp_tls_session_cache_database  => {
+                        action => 'replace', values => [ "btree:/var/lib/postfix/smtp_scache" ]
+                    }
                 )
             );
         }

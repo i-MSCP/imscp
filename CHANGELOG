@@ -43,6 +43,7 @@ PRESEED
 
 SERVERS
     Fixed: Could not access httpd log files through FTP (permissions on log files are too restrictives)
+    Fixed: Enable opportunistic TLS for Postfix client side (smtp)
 
 SKELETON
     Added: Dedicated `domain_disabled_pages' directory for pages of disabled domains
