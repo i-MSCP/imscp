@@ -276,14 +276,14 @@ sub _guessPhpVariables
 {
     my $self = shift;
 
-    my ($phpVersion) = $main::imscpConfig{'PHP_SERVER'} =~ /(\d)/;
+    my ($phpVersion) = $main::imscpConfig{'PHP_SERVER'} =~ /^php([\d.]+)/;
     unless (defined $phpVersion) {
         die( sprintf( "Could not guess value for the `%s' PHP configuration parameter.", 'PHP_VERSION' ) );
     }
 
     $self->{'phpConfig'}->{'PHP_VERSION'} = $phpVersion;
 
-    if (version->parse( $phpVersion ) < version->parse( '7' )) {
+    if (version->parse( $phpVersion ) < version->parse( '7.0' )) {
         $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = '/etc/php5';
         $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = '/etc/php5/fpm/pool.d';
         $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5' ) || '';
@@ -427,7 +427,7 @@ sub _buildFastCgiConfFiles
     return $rs if $rs;
 
     # Transitional: fastcgi_imscp
-    my @modulesOff = ('fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php4', 'php5', 'php5_cgi', 'php5filter');
+    my @modulesOff = ('fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php5_cgi');
     my @modulesOn = ('actions', 'suexec', 'version');
 
     if (version->parse( $apacheVersion ) >= version->parse( '2.4.0' )) {
@@ -436,10 +436,11 @@ sub _buildFastCgiConfFiles
     }
 
     if (version->parse( $apacheVersion ) >= version->parse( '2.4.10' )) {
-        push @modulesOff, 'php_fpm_imscp';
-        push @modulesOn, 'proxy_fcgi', 'proxy_handler';
+        # Transitional: proxy_handler
+        push @modulesOff, 'php_fpm_imscp', 'proxy_handler';
+        push @modulesOn, 'proxy_fcgi';
     } else {
-        push @modulesOff, 'proxy_fcgi', 'proxy_handler';
+        push @modulesOff, 'proxy_fcgi';
         push @modulesOn, 'php_fpm_imscp';
     }
 

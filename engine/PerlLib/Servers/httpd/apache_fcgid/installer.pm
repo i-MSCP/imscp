@@ -246,14 +246,14 @@ sub _guessPhpVariables
 {
     my $self = shift;
 
-    my ($phpVersion) = $main::imscpConfig{'PHP_SERVER'} =~ /(\d)/;
+    my ($phpVersion) = $main::imscpConfig{'PHP_SERVER'} =~ /^php([\d.]+)/;
     unless (defined $phpVersion) {
         die( sprintf( "Could not guess value for the `%s' PHP configuration parameter.", 'PHP_VERSION' ) );
     }
 
     $self->{'phpConfig'}->{'PHP_VERSION'} = $phpVersion;
 
-    if (version->parse( $phpVersion ) < version->parse( '7' )) {
+    if (version->parse( $phpVersion ) < version->parse( '7.0' )) {
         $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = '/etc/php5';
         $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = '/etc/php5/fpm/pool.d';
         $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5' ) || '';
@@ -427,7 +427,7 @@ sub _buildFastCgiConfFiles
     return $rs if $rs;
 
     # # Transitional: fastcgi_imscp
-    my @modulesOff = ('fastcgi', 'fcgid', 'php4', 'php5', 'php5_cgi', 'php5filter', 'php_fpm_imscp', 'fastcgi_imscp');
+    my @modulesOff = ('fastcgi', 'fcgid', 'php5_cgi', 'php_fpm_imscp', 'fastcgi_imscp');
     my @modulesOn = ('actions', 'fcgid_imscp', 'version');
 
     if ($apache24) {
