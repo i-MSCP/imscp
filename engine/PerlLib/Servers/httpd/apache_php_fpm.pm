@@ -1576,7 +1576,7 @@ sub _addFiles
             }
         } else { # Remove unwanted files/directories for forwarded dmn
             for(iMSCP::Dir->new( dirname => $tmpDir )->getAll()) {
-                next if /^(backups|errors|logs|\.htgroup|\.htpasswd)$/;
+                next if /^(backups|errors|logs|\.htgroup|\.htpasswd|phptmp)$/;
                 if (-f "$tmpDir/$_") {
                     $rs = iMSCP::File->new( filename => "$tmpDir/$_" )->delFile();
                 } else {

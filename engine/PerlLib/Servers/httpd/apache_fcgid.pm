@@ -1522,8 +1522,9 @@ sub _addFiles
 
         if ($data->{'FORWARD'} eq 'no') {
             # Build default page if needed (if htdocs doesn't exists or is empty)
-            if (!-d "$data->{'WEB_DIR'}/htdocs" || iMSCP::Dir->new( dirname =>
-                "$data->{'WEB_DIR'}/htdocs" )->isEmpty()) {
+            if (!-d "$data->{'WEB_DIR'}/htdocs"
+                || iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/htdocs" )->isEmpty()
+            ) {
                 if (-d "$tmpDir/htdocs") {
                     # Test needed in case admin removed the index.html file from the skeleton
                     if (-f "$tmpDir/htdocs/index.html") {
@@ -1544,7 +1545,7 @@ sub _addFiles
             }
         } else { # Remove unwanted files/directories for forwarded dmn
             for(iMSCP::Dir->new( dirname => $tmpDir )->getAll()) {
-                next if /^(backups|errors|logs|\.htgroup|\.htpasswd)$/;
+                next if /^(backups|errors|logs|\.htgroup|\.htpasswd|phptmp)$/;
                 if (-f "$tmpDir/$_") {
                     $rs = iMSCP::File->new( filename => "$tmpDir/$_" )->delFile();
                 } else {
