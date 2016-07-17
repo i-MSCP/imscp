@@ -36,7 +36,6 @@ my $relayport = '587';
 my $saslAuthUser = '';
 my $saslAuthPasswd = '';
 my $saslPasswdMapsPath = '/etc/postfix/relay_passwd';
-my $tlsCAfile = '/etc/ssl/certs/ca-certificates.crt';
 
 #
 ## Please, don't edit anything below this line unless you known what you're doing
