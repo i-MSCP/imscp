@@ -33,7 +33,7 @@ use parent 'Common::SingletonClass';
  i-MSCP Chkrootkit package.
 
  The chkrootkit security scanner searches the local system for signs that it is infected with a 'rootkit'. Rootkits are
-set of programs and hacks designed to take control of a target machine by using known security flaws.
+ set of programs and hacks designed to take control of a target machine by using known security flaws.
 
 =head1 PUBLIC METHODS
 
