@@ -34,6 +34,7 @@ INSTALLER
 PACKAGES
     Fixed: AWStats data can be accessed through localhost without any authentication
     Fixed: AWStats (domains) configuration files are not generated (regression fix)
+    Fixed: Awstats package is never installed (regression fix)
     Fixed: Could not authenticate to AWStats interface of domain aliases and subdomains
 
 PRESEED
