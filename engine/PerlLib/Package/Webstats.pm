@@ -142,10 +142,12 @@ sub preinstall
         eval "require $package";
         unless ($@) {
             $package = $package->getInstance();
-            next unless $package->can( 'uninstall' );
-            debug( sprintf( 'Calling action uninstall on %s', ref $package ) );
-            my $rs = $package->uninstall();
-            return $rs if $rs;
+
+            if ($package->can( 'uninstall' )) {
+                debug( sprintf( 'Calling action uninstall on %s', ref $package ) );
+                my $rs = $package->uninstall();
+                return $rs if $rs;
+            }
 
             next unless $package->can( 'getDistroPackages' );
             debug( sprintf( 'Calling action getDistroPackages on %s', ref $package ) );
@@ -168,10 +170,12 @@ sub preinstall
         eval "require $package";
         unless ($@) {
             $package = $package->getInstance();
-            next unless $package->can( 'preinstall' );
-            debug( sprintf( 'Calling action preinstall on %s', ref $package ) );
-            my $rs = $package->preinstall();
-            return $rs if $rs;
+
+            if ($package->can( 'preinstall' )) {
+                debug( sprintf( 'Calling action preinstall on %s', ref $package ) );
+                my $rs = $package->preinstall();
+                return $rs if $rs;
+            }
 
             next unless $package->can( 'getDistroPackages' );
             debug( sprintf( 'Calling action getDistroPackages on %s', ref $package ) );
@@ -242,10 +246,12 @@ sub uninstall
         eval "require $package";
         unless ($@) {
             $package = $package->getInstance();
-            next unless $package->can( 'uninstall' );
-            debug( sprintf( 'Calling action uninstall on %s', ref $package ) );
-            my $rs = $package->uninstall();
-            return $rs if $rs;
+
+            if ($package->can( 'uninstall' )) {
+                debug( sprintf( 'Calling action uninstall on %s', ref $package ) );
+                my $rs = $package->uninstall();
+                return $rs if $rs;
+            }
 
             next unless $package->can( 'getDistroPackages' );
             debug( sprintf( 'Calling action getDistroPackages on %s', ref $package ) );
@@ -272,7 +278,7 @@ sub setEnginePermissions
     my $self = shift;
 
     my %selectedPackages;
-    
+
     @{selectedPackages}{ split ',', $main::imscpConfig{'WEBSTATS_PACKAGES'} } = ();
 
     for (keys %{$self->{'PACKAGES'}}) {

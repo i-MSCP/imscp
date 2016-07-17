@@ -44,8 +44,8 @@ use parent 'Common::SingletonClass';
  AWStats package for i-MSCP.
 
  Advanced Web Statistics (AWStats) is a powerful Web server logfile analyzer written in perl that shows you all your Web
-statistics including visits, unique visitors, pages, hits, rush hours, search engines, keywords used to find your site,
-robots, broken links and more.
+ statistics including visits, unique visitors, pages, hits, rush hours, search engines, keywords used to find your site,
+ robots, broken links and more.
 
  Project homepage: http://awstats.sourceforge.net/
 
