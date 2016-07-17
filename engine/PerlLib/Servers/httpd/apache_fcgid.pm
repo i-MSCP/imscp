@@ -1577,15 +1577,11 @@ sub _addFiles
                 error( "The `domain' Web folder skeleton must provides the `logs' directory." );
                 return 1;
             }
-        } elsif (!$data->{'SHARED_MOUNT_POINT'}) {
-            $rs = iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/phptmp" )->remove();
-            $rs ||= iMSCP::Dir->new( dirname => "$tmpDir/phptmp" )->remove();
-            return $rs if $rs;
         }
 
         my $parentDir = dirname( $data->{'WEB_DIR'} );
 
-        # Fix #1327 - Ensure that parent Web folder exists
+        # Fix #IP-1327 - Ensure that parent Web folder exists
         unless (-d $parentDir) {
             clearImmutable( dirname( $parentDir ) );
             $rs = iMSCP::Dir->new( dirname => $parentDir )->make(
@@ -1604,6 +1600,19 @@ sub _addFiles
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
         return $rs if $rs;
+
+        # Cleanup (Transitional)
+
+        if ($data->{'DOMAIN_TYPE'} eq 'dmn') {
+            # Remove deprecated domain_disable_page directory if any
+            $rs = iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/domain_disable_page" )->remove();
+            return $rs if $rs;
+        } elsif (!$data->{'SHARED_MOUNT_POINT'}) {
+            # Remove deprecated phptmp directory if any
+            $rs = iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/phptmp" )->remove();
+            $rs ||= iMSCP::Dir->new( dirname => "$tmpDir/phptmp" )->remove();
+            return $rs if $rs;
+        }
 
         # Fix permissions
 
@@ -1686,7 +1695,7 @@ sub _addFiles
         }
 
         if ($data->{'WEB_FOLDER_PROTECTION'} eq 'yes') {
-            (my $userWebDir = $main::imscpConfig{'USER_WEB_DIR'}) =~ s%/+$%%;
+            my $userWebDir = File::Spec->canonpath( $main::imscpConfig{'USER_WEB_DIR'} );
             do {
                 setImmutable( $data->{'WEB_DIR'} );
             } while (($data->{'WEB_DIR'} = dirname( $data->{'WEB_DIR'} )) ne $userWebDir);
