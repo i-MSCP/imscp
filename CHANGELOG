@@ -41,7 +41,7 @@ PRESEED
     Removed: SERVER_IPS parameter according changes made in installer
 
 SERVERS
-    Fixed: Could not read httpd log files through FTP (permissions on log files are too restrictives)
+    Fixed: Could not access httpd log files through FTP (permissions on log files are too restrictives)
 
 SKELETON
     Added: Dedicated `domain_disabled_pages' directory for pages of disabled domains
