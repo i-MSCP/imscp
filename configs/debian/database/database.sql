@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '236');
+  ('DATABASE_REVISION', '238');
 
 -- --------------------------------------------------------
 
@@ -198,16 +198,37 @@ CREATE TABLE IF NOT EXISTS `domain_dns` (
 
 CREATE TABLE IF NOT EXISTS `domain_traffic` (
   `dtraff_id` int(10) unsigned NOT NULL auto_increment,
-  `domain_id` int(10) unsigned DEFAULT NULL,
-  `dtraff_time` bigint(20) unsigned DEFAULT NULL,
-  `dtraff_web` bigint(20) unsigned DEFAULT NULL,
-  `dtraff_ftp` bigint(20) unsigned DEFAULT NULL,
-  `dtraff_mail` bigint(20) unsigned DEFAULT NULL,
-  `dtraff_pop` bigint(20) unsigned DEFAULT NULL,
+  `domain_id` int(10) unsigned NOT NULL,
+  `dtraff_time` bigint(20) unsigned NOT NULL,
+  `dtraff_web` bigint(20) unsigned DEFAULT 0,
+  `dtraff_ftp` bigint(20) unsigned DEFAULT 0,
+  `dtraff_mail` bigint(20) unsigned DEFAULT 0,
+  `dtraff_pop` bigint(20) unsigned DEFAULT 0,
   PRIMARY KEY (`dtraff_id`),
+  UNIQUE `i_unique_timestamp` (`domain_id`, `i_dtraff_time`),
   INDEX `i_domain_id` (`domain_id`),
   INDEX `i_dtraff_time` (`dtraff_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- View `monthly_domain_traffic`
+--
+
+CREATE SQL SECURITY INVOKER VIEW `monthly_domain_traffic` AS SELECT
+  `domain_id`,
+  SUM(`dtraff_web`) AS `web_traffic`,
+  SUM(`dtraff_ftp`) AS `ftp_traffic`,
+  SUM(`dtraff_mail`) AS `smtp_traffic`,
+  SUM(`dtraff_pop`) AS `pop_traffic`,
+  SUM(`dtraff_web`) + SUM(`dtraff_ftp`) + SUM(`dtraff_mail`) + SUM(`dtraff_pop`) AS `total_traffic`
+  FROM `domain_traffic`
+  WHERE (
+    `dtraff_time` BETWEEN
+      unix_timestamp(((LAST_DAY(CURDATE()) + INTERVAL 1 day) - INTERVAL 1 MONTH ))
+      AND
+      unix_timestamp((LAST_DAY(CURDATE()) + INTERVAL 1 DAY ))
+  )
+  GROUP BY `domain_id`;
 
 -- --------------------------------------------------------
 

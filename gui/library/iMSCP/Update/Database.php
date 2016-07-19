@@ -56,7 +56,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 236;
+    protected $lastUpdate = 238;
 
     /**
      * Singleton - Make new unavailable
@@ -3516,6 +3516,58 @@ class iMSCP_Update_Database extends iMSCP_Update
             "
                 UPDATE subdomain_alias SET subdomain_alias_url_forward = 'no', subdomain_alias_type_forward = NULL
                 WHERE subdomain_alias_url_forward LIKE 'ftp://%'
+            "
+        );
+    }
+
+    /**
+     * Add composite unique index on the domain_traffic table
+     *
+     * @return string SQL statement to be executed
+     */
+    protected function r237()
+    {
+        $this->removeDuplicateRowsOnColumns('domain_traffic', array('domain_id', 'dtraff_time'));
+        return $this->addIndex('domain_traffic', array('domain_id', 'dtraff_time'), 'UNIQUE', 'i_unique_timestamp');
+    }
+
+    /**
+     * #IP-1587 Slow query when admin or reseller want to login into customer's area
+     * - Disallow NULL value on domain_id and dtraff_time columns
+     * - Change default value for dtraff_web, dtraff_ftp, dtraff_mail domain_traffic columns (NULL to 0)
+     * - Add monthly_domain_traffic view
+     *
+     * @return array SQL statements to be executed
+     */
+    protected function r238()
+    {
+        return array(
+            "
+                
+              ALTER TABLE `domain_traffic`
+              CHANGE `domain_id` `domain_id` INT(10) UNSIGNED NOT NULL,
+              CHANGE `dtraff_time` `dtraff_time` BIGINT(20) UNSIGNED NOT NULL,
+              CHANGE `dtraff_web` `dtraff_web` BIGINT(20) UNSIGNED NULL DEFAULT 0,
+              CHANGE `dtraff_ftp` `dtraff_ftp` BIGINT(20) UNSIGNED NULL DEFAULT 0,
+              CHANGE `dtraff_mail` `dtraff_mail` BIGINT(20) UNSIGNED NULL DEFAULT 0,
+              CHANGE `dtraff_pop` `dtraff_pop` BIGINT(20) UNSIGNED NULL DEFAULT 0
+            ",
+            "
+                CREATE OR REPLACE SQL SECURITY INVOKER VIEW `monthly_domain_traffic` AS SELECT
+                    `domain_id`,
+                    SUM(`dtraff_web`) AS `web_traffic`,
+                    SUM(`dtraff_ftp`) AS `ftp_traffic`,
+                    SUM(`dtraff_mail`) AS `smtp_traffic`,
+                    SUM(`dtraff_pop`) AS `pop_traffic`,
+                    SUM(`dtraff_web`) + SUM(`dtraff_ftp`) + SUM(`dtraff_mail`) + SUM(`dtraff_pop`) AS `total_traffic`
+                FROM `domain_traffic`
+                WHERE (
+                    `dtraff_time` BETWEEN
+                        unix_timestamp(((LAST_DAY(CURDATE()) + INTERVAL 1 day) - INTERVAL 1 MONTH ))
+                        AND
+                        unix_timestamp((LAST_DAY(CURDATE()) + INTERVAL 1 DAY ))
+                )
+                GROUP BY `domain_id`;
             "
         );
     }

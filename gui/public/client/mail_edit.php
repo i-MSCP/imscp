@@ -114,7 +114,7 @@ function client_editMailAccount()
                 }
 
                 $stmt = exec_query(
-                    'SELECT SUM(quota) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
+                    'SELECT IFNULL(SUM(quota), 0) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
                     $mainDmnProps['domain_id']
                 );
                 $row = $stmt->fetchRow();
@@ -212,7 +212,7 @@ function client_generatePage($tpl)
     list($username, $domainName) = explode('@', $mailData['mail_addr']);
 
     $stmt = exec_query(
-        'SELECT SUM(quota) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
+        'SELECT IFNULL(SUM(quota), 0) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
         $mainDmnProps['domain_id']
     );
     $row = $stmt->fetchRow();

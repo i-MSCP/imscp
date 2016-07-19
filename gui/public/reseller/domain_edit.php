@@ -36,12 +36,12 @@ function reseller_getMailData($domainId, $mailQuota)
     if (null === $mailData) {
         $stmt = exec_query(
             '
-                SELECT SUM(quota) AS quota, COUNT(mail_id) AS nb_mailboxes FROM mail_users
+                SELECT IFNULL(SUM(quota), 0) AS quota, COUNT(mail_id) AS nb_mailboxes FROM mail_users
                 WHERE domain_id = ? AND quota IS NOT NULL
             ',
             $domainId
         );
-        $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+        $row = $stmt->fetchRow();
 
         if ($mailQuota == 0) {
             $mailData = array(
@@ -103,18 +103,9 @@ function reseller_getDomainProps($domainId)
     );
     $data = $stmt->fetchRow();
 
-    // domain traffic
-    $fdofmnth = mktime(0, 0, 0, date('m'), 1, date('Y'));
-    $ldofmnth = mktime(1, 0, 0, date('m') + 1, 0, date('Y'));
-    $stmt = exec_query(
-        '
-            SELECT IFNULL(SUM(dtraff_web) + SUM(dtraff_ftp) + SUM(dtraff_mail) + SUM(dtraff_pop), 0) AS traffic
-            FROM domain_traffic  WHERE domain_id = ? AND dtraff_time > ? AND dtraff_time < ?
-        ',
-        array($domainId, $fdofmnth, $ldofmnth)
-    );
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-    $data['domainTraffic'] = $row['traffic'];
+    $stmt = exec_query('SELECT total_traffic FROM monthly_domain_traffic WHERE domain_id = ?', $domainId);
+    $row = $stmt->fetchRow();
+    $data['domainTraffic'] = $row['total_traffic'];
     return $data;
 }
 

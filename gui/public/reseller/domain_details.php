@@ -21,7 +21,7 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -39,15 +39,17 @@ function reseller_gen_mail_quota_limit_mgs($customerId)
 {
     $mainDmnProps = get_domain_default_props($customerId, $_SESSION['user_id']);
     $stmt = exec_query(
-        'SELECT SUM(quota) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
+        'SELECT IFNULL(SUM(quota), 0) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
         $mainDmnProps['domain_id']
     );
 
+    $row = $stmt->fetchRow();
+
     if ($mainDmnProps['mail_quota'] == 0) {
-        return array(bytesHuman($stmt->fields['quota']), tr('Unlimited'));
+        return array(bytesHuman($row['quota']), tr('Unlimited'));
     }
 
-    return array(bytesHuman($stmt->fields['quota']), bytesHuman($mainDmnProps['mail_quota']));
+    return array(bytesHuman($row), bytesHuman($mainDmnProps['mail_quota']));
 }
 
 /**
@@ -60,18 +62,7 @@ function reseller_gen_mail_quota_limit_mgs($customerId)
 function reseller_generatePage($tpl, $domainId)
 {
     $stmt = exec_query(
-        '
-            SELECT
-                domain_admin_id
-            FROM
-                domain
-            INNER JOIN
-                admin ON(admin_id = domain_admin_id)
-            WHERE
-                domain_id = ?
-            AND
-                created_by = ?
-        ',
+        'SELECT * FROM domain INNER JOIN admin ON(admin_id = domain_admin_id) WHERE domain_id = ? AND created_by = ?',
         array($domainId, $_SESSION['user_id'])
     );
 
@@ -79,102 +70,84 @@ function reseller_generatePage($tpl, $domainId)
         showBadRequestErrorPage();
     }
 
-    $domainAdminId = $stmt->fields['domain_admin_id'];
-    $domainProperties = get_domain_default_props($domainAdminId, $_SESSION['user_id']);
+    $domainData = $stmt->fetchRow();
 
     // Domain IP address info
-    $stmt = exec_query("SELECT ip_number FROM server_ips WHERE ip_id = ?", $domainProperties['domain_ip_id']);
-
-    if (!$stmt->rowCount()) {
-        $domainIpAddr = tr('Not found.');
-    } else {
-        $domainIpAddr = $stmt->fields['ip_number'];
-    }
-
-    $domainStatus = $domainProperties['domain_status'];
-
-    // Domain status
-
-    if ($domainStatus == 'ok' || $domainStatus == 'disabled' ||
-        $domainStatus == 'todelete' || $domainStatus == 'toadd' ||
-        $domainStatus == 'torestore' || $domainStatus == 'tochange' ||
-        $domainStatus == 'toenable' || $domainStatus == 'todisable'
-    ) {
-        $domainStatus = '<span style="color:green">' . tohtml(translate_dmn_status($domainStatus)) . '</span>';
-    } else {
-        $domainStatus = '<b><font size="3" color="red">' . $domainStatus . "</font></b>";
-    }
-
-    // Get total domain traffic usage in bytes
-
-    $query = "
-        SELECT
-            IFNULL(SUM(dtraff_web), 0) AS dtraff_web, IFNULL(SUM(dtraff_ftp), 0) AS dtraff_ftp,
-            IFNULL(SUM(dtraff_mail), 0) AS dtraff_mail, IFNULL(SUM(dtraff_pop), 0) AS dtraff_pop
-        FROM
-            domain_traffic
-        WHERE
-            domain_id = ?
-        AND
-            dtraff_time BETWEEN ? AND ?
-    ";
-    $stmt = exec_query($query, array($domainProperties['domain_id'], getFirstDayOfMonth(), getLastDayOfMonth()));
+    $stmt = exec_query("SELECT ip_number FROM server_ips WHERE ip_id = ?", $domainData['domain_ip_id']);
 
     if ($stmt->rowCount()) {
-        $trafficUsageBytes = $stmt->fields['dtraff_web'] + $stmt->fields['dtraff_ftp'] + $stmt->fields['dtraff_mail'] +
-            $stmt->fields['dtraff_pop'];
+        $row = $stmt->fetchRow();
+        $domainIpAddr = $row['ip_number'];
+    } else {
+
+        $domainIpAddr = tr('Not found.');
+    }
+
+    // Domain status
+    if ($domainData['domain_status'] == 'ok' || $domainData['domain_status'] == 'disabled' ||
+        $domainData['domain_status'] == 'todelete' || $domainData['domain_status'] == 'toadd' ||
+        $domainData['domain_status'] == 'torestore' || $domainData['domain_status'] == 'tochange' ||
+        $domainData['domain_status'] == 'toenable' || $domainData['domain_status'] == 'todisable'
+    ) {
+        $domainStatus = '<span style="color:green">' . tohtml(translate_dmn_status($domainData['domain_status'])) . '</span>';
+    } else {
+        $domainStatus = '<b><font size="3" color="red">' . $domainData['domain_status'] . "</font></b>";
+    }
+
+    // Get total monthly traffic usage in bytes
+    $stmt = exec_query('SELECT total_traffic FROM monthly_domain_traffic WHERE domain_id = ?', $domainId);
+    if ($stmt->rowCount()) {
+        $row = $stmt->fetchRow();
+        $trafficUsageBytes = $row['traffic_total'];
     } else {
         $trafficUsageBytes = 0;
     }
 
-    // Get limits in bytes
-    $trafficLimitBytes = $domainProperties['domain_traffic_limit'] * 1048576;
-    $diskspaceLimitBytes = $domainProperties['domain_disk_limit'] * 1048576;
+    $trafficLimitBytes = $domainData['domain_traffic_limit'] * 1048576;
+    $diskspaceLimitBytes = $domainData['domain_disk_limit'] * 1048576;
 
     // Get usages in percent
     $trafficUsagePercent = make_usage_vals($trafficUsageBytes, $trafficLimitBytes);
-    $diskspaceUsagePercent = make_usage_vals($domainProperties['domain_disk_usage'], $diskspaceLimitBytes);
+    $diskspaceUsagePercent = make_usage_vals($domainData['domain_disk_usage'], $diskspaceLimitBytes);
 
     // Get Email quota info
-    list($quota, $quotaLimit) = reseller_gen_mail_quota_limit_mgs($domainAdminId);
+    list($quota, $quotaLimit) = reseller_gen_mail_quota_limit_mgs($domainData['domain_admin_id']);
 
     # Features
-
     $trEnabled = '<span style="color:green">' . tr('Enabled') . '</span>';
     $trDisabled = '<span style="color:red">' . tr('Disabled') . '</span>';
-
     $tpl->assign(array(
         'DOMAIN_ID' => $domainId,
-        'VL_DOMAIN_NAME' => tohtml(decode_idna($domainProperties['domain_name'])),
+        'VL_DOMAIN_NAME' => tohtml(decode_idna($domainData['domain_name'])),
         'VL_DOMAIN_IP' => tohtml($domainIpAddr),
         'VL_STATUS' => $domainStatus,
-        'VL_PHP_SUPP' => ($domainProperties['domain_php'] == 'yes') ? $trEnabled : $trDisabled,
-        'VL_PHP_EDITOR_SUPP' => ($domainProperties['phpini_perm_system'] == 'yes') ? $trEnabled : $trDisabled,
-        'VL_CGI_SUPP' => ($domainProperties['domain_cgi'] == 'yes') ? $trEnabled : $trDisabled,
-        'VL_DNS_SUPP' => ($domainProperties['domain_dns'] == 'yes') ? $trEnabled : $trDisabled,
-        'VL_EXT_MAIL_SUPP' => ($domainProperties['domain_external_mail'] == 'yes') ? $trEnabled : $trDisabled,
-        'VL_SOFTWARE_SUPP' => ($domainProperties['domain_software_allowed'] == 'yes') ? $trEnabled : $trDisabled,
-        'VL_BACKUP_SUP' => translate_limit_value($domainProperties['allowbackup']),
+        'VL_PHP_SUPP' => ($domainData['domain_php'] == 'yes') ? $trEnabled : $trDisabled,
+        'VL_PHP_EDITOR_SUPP' => ($domainData['phpini_perm_system'] == 'yes') ? $trEnabled : $trDisabled,
+        'VL_CGI_SUPP' => ($domainData['domain_cgi'] == 'yes') ? $trEnabled : $trDisabled,
+        'VL_DNS_SUPP' => ($domainData['domain_dns'] == 'yes') ? $trEnabled : $trDisabled,
+        'VL_EXT_MAIL_SUPP' => ($domainData['domain_external_mail'] == 'yes') ? $trEnabled : $trDisabled,
+        'VL_SOFTWARE_SUPP' => ($domainData['domain_software_allowed'] == 'yes') ? $trEnabled : $trDisabled,
+        'VL_BACKUP_SUP' => translate_limit_value($domainData['allowbackup']),
         'VL_TRAFFIC_PERCENT' => $trafficUsagePercent,
         'VL_TRAFFIC_USED' => bytesHuman($trafficUsageBytes),
         'VL_TRAFFIC_LIMIT' => bytesHuman($trafficLimitBytes),
         'VL_DISK_PERCENT' => $diskspaceUsagePercent,
-        'VL_DISK_USED' => bytesHuman($domainProperties['domain_disk_usage']),
+        'VL_DISK_USED' => bytesHuman($domainData['domain_disk_usage']),
         'VL_DISK_LIMIT' => bytesHuman($diskspaceLimitBytes),
         'VL_MAIL_ACCOUNTS_USED' => get_domain_running_mail_acc_cnt($domainId),
-        'VL_MAIL_ACCOUNTS_LIMIT' => translate_limit_value($domainProperties['domain_mailacc_limit']),
+        'VL_MAIL_ACCOUNTS_LIMIT' => translate_limit_value($domainData['domain_mailacc_limit']),
         'VL_MAIL_QUOTA_USED' => $quota,
-        'VL_MAIL_QUOTA_LIMIT' => ($domainProperties['domain_mailacc_limit'] != '-1') ? $quotaLimit : tr('Disabled'),
-        'VL_FTP_ACCOUNTS_USED' => get_customer_running_ftp_acc_cnt($domainAdminId),
-        'VL_FTP_ACCOUNTS_LIMIT' => translate_limit_value($domainProperties['domain_ftpacc_limit']),
+        'VL_MAIL_QUOTA_LIMIT' => ($domainData['domain_mailacc_limit'] != '-1') ? $quotaLimit : tr('Disabled'),
+        'VL_FTP_ACCOUNTS_USED' => get_customer_running_ftp_acc_cnt($domainData['domain_admin_id']),
+        'VL_FTP_ACCOUNTS_LIMIT' => translate_limit_value($domainData['domain_ftpacc_limit']),
         'VL_SQL_DB_ACCOUNTS_USED' => get_domain_running_sqld_acc_cnt($domainId),
-        'VL_SQL_DB_ACCOUNTS_LIMIT' => translate_limit_value($domainProperties['domain_sqld_limit']),
+        'VL_SQL_DB_ACCOUNTS_LIMIT' => translate_limit_value($domainData['domain_sqld_limit']),
         'VL_SQL_USER_ACCOUNTS_USED' => get_domain_running_sqlu_acc_cnt($domainId),
-        'VL_SQL_USER_ACCOUNTS_LIMIT' => translate_limit_value($domainProperties['domain_sqlu_limit']),
+        'VL_SQL_USER_ACCOUNTS_LIMIT' => translate_limit_value($domainData['domain_sqlu_limit']),
         'VL_SUBDOM_ACCOUNTS_USED' => get_domain_running_sub_cnt($domainId),
-        'VL_SUBDOM_ACCOUNTS_LIMIT' => translate_limit_value($domainProperties['domain_subd_limit']),
+        'VL_SUBDOM_ACCOUNTS_LIMIT' => translate_limit_value($domainData['domain_subd_limit']),
         'VL_DOMALIAS_ACCOUNTS_USED' => get_domain_running_als_cnt($domainId),
-        'VL_DOMALIAS_ACCOUNTS_LIMIT' => translate_limit_value($domainProperties['domain_alias_limit']),
+        'VL_DOMALIAS_ACCOUNTS_LIMIT' => translate_limit_value($domainData['domain_alias_limit'])
     ));
 }
 
@@ -197,7 +170,6 @@ $tpl->define_dynamic(array(
     'page' => 'reseller/domain_details.tpl',
     'page_messages' => 'layout'
 ));
-
 $tpl->assign(array(
     'TR_PAGE_TITLE' => tr('Reseller / Customers / Overview / Domain Details'),
     'TR_DOMAIN_DETAILS' => tr('Domain details'),

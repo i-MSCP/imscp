@@ -1530,21 +1530,11 @@ function make_usage_vals($amount, $total)
  */
 function shared_getCustomerStats($adminId)
 {
-    $curMonth = date('m');
-    $curYear = date('Y');
-    $fromTimestamp = mktime(0, 0, 0, $curMonth, 1, $curYear);
-
-    if ($curMonth == 12) {
-        $toTImestamp = mktime(0, 0, 0, 1, 1, $curYear + 1);
-    } else {
-        $toTImestamp = mktime(0, 0, 0, $curMonth + 1, 1, $curYear);
-    }
-
     $stmt = exec_query(
         '
             SELECT domain_id, IFNULL(domain_disk_usage, 0) AS diskspace_usage,
-                IFNULL(domain_traffic_limit, 0) AS monthly_traffic_limit,
-                IFNULL(domain_disk_limit, 0) AS diskspace_limit, admin_name
+              IFNULL(domain_traffic_limit, 0) AS monthly_traffic_limit, IFNULL(domain_disk_limit, 0) AS diskspace_limit,
+              admin_name
             FROM domain INNER JOIN admin on(admin_id = domain_admin_id)
             WHERE domain_admin_id = ? ORDER BY domain_name
         ',
@@ -1555,7 +1545,7 @@ function shared_getCustomerStats($adminId)
         showBadRequestErrorPage();
     }
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetchRow();
     $diskspaceUsage = $row['diskspace_usage'];
     $monthlyTrafficLimit = $row['monthly_traffic_limit'];
     $diskspaceLimit = $row['diskspace_limit'];
@@ -1563,21 +1553,26 @@ function shared_getCustomerStats($adminId)
     $domainId = $row['domain_id'];
     $stmt = exec_query(
         '
-            SELECT
-                IFNULL(SUM(dtraff_web), 0) AS webTraffic, IFNULL(SUM(dtraff_ftp), 0) AS ftpTraffic,
-                IFNULL(SUM(dtraff_mail), 0) AS smtpTraffic, IFNULL(SUM(dtraff_pop), 0) AS popTraffic,
-                IFNULL(SUM(dtraff_web), 0) + IFNULL(SUM(dtraff_ftp), 0) +
-                IFNULL(SUM(dtraff_mail), 0) + IFNULL(SUM(dtraff_pop), 0) AS totalTraffic
-            FROM domain_traffic WHERE domain_id = ? AND dtraff_time >= ? AND dtraff_time < ?
+          SELECT web_traffic, ftp_traffic, smtp_traffic, pop_traffic, total_traffic
+          FROM monthly_domain_traffic WHERE domain_id = ?
         ',
-        array($domainId, $fromTimestamp, $toTImestamp)
+        $domainId
     );
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    if ($stmt->rowCount()) {
+        $row = $stmt->fetchRow();
+        $webTraffic = $row['web_traffic'];
+        $ftpTraffic = $row['ftp_traffic'];
+        $smtpTraffic = $row['smtp_traffic'];
+        $popTraffic = $row['pop_traffic'];
+        $totalTraffic = $row['total_traffic'];
+    } else {
+        $webTraffic = $ftpTraffic = $smtpTraffic = $popTraffic = $totalTraffic = 0;
+    }
 
     return array(
-        $adminName, $domainId, $row['webTraffic'], $row['ftpTraffic'], $row['smtpTraffic'], $row['popTraffic'],
-        $row['totalTraffic'], $diskspaceUsage, $monthlyTrafficLimit, $diskspaceLimit
+        $adminName, $domainId, $webTraffic, $ftpTraffic, $smtpTraffic, $popTraffic, $totalTraffic, $diskspaceUsage,
+        $monthlyTrafficLimit, $diskspaceLimit
     );
 }
 

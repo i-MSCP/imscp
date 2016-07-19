@@ -57,7 +57,7 @@ function gen_mail_quota_limit_mgs()
 {
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
     $stmt = exec_query(
-        'SELECT SUM(quota) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
+        'SELECT IFNULL(SUM(quota), 0) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
         $mainDmnProps['domain_id']
     );
     $row = $stmt->fetchRow();
@@ -207,7 +207,7 @@ function client_generateFeatureStatus($tpl)
 }
 
 /**
- * Calculate traffic usage
+ * Calculate monthly traffic usage for the given domain
  *
  * @param int $domainId Domain unique identifier
  * @return array An array that contain traffic information
@@ -215,26 +215,27 @@ function client_generateFeatureStatus($tpl)
 function client_makeTrafficUsage($domainId)
 {
     $domainProperties = get_domain_default_props($_SESSION['user_id']);
-    $fdofmnth = mktime(0, 0, 0, date('m'), 1, date('Y'));
-    $ldofmnth = mktime(1, 0, 0, date('m') + 1, 0, date('Y'));
+    $stmt = exec_query('SELECT total_traffic FROM monthly_domain_traffic WHERE domain_id = ?', $domainId);
 
-    $query = '
-        SELECT IFNULL(SUM(dtraff_web) + SUM(dtraff_ftp) + SUM(dtraff_mail) + SUM(dtraff_pop), 0) traffic
-        FROM domain_traffic WHERE domain_id = ? AND dtraff_time > ? AND dtraff_time < ?
-    ';
-    $stmt = exec_query($query, array($domainId, $fdofmnth, $ldofmnth));
-    $row = $stmt->fetchRow();
-
-    $traffic = ($row['traffic'] / 1024) / 1024;
+    if ($stmt->rowCount()) {
+        $row = $stmt->fetchRow();
+        $totalTraffic = ($row['total_traffic'] / 1024) / 1024;
+    } else {
+        $totalTraffic = 0;
+    }
 
     if ($domainProperties['domain_traffic_limit'] == 0) {
         $percent = 0;
     } else {
-        $percent = ($traffic / $domainProperties['domain_traffic_limit']) * 100;
+        if ($totalTraffic > 0) {
+            $percent = ($totalTraffic / $domainProperties['domain_traffic_limit']) * 100;
+        } else {
+            $percent = 0;
+        }
         $percent = sprintf('%.2f', $percent);
     }
 
-    return array($percent, $traffic);
+    return array($percent, $totalTraffic);
 }
 
 /**
@@ -361,7 +362,7 @@ $tpl->assign(array(
     'TR_DOMAIN_NAME' => tr('Domain name'),
     'DOMAIN_NAME' => tohtml(decode_idna($domainProperties['domain_name'])),
     'TR_DOMAIN_ALTERNATIVE_URL' => tr('Alternative URL to reach your website'),
-    'TR_CREATE_DATE' =>tr('Creation date'),
+    'TR_CREATE_DATE' => tr('Creation date'),
     'TR_DOMAIN_EXPIRES_DATE' => tr('Domain expiration date'),
     'TR_FEATURE' => tr('Feature'),
     'TR_FEATURE_STATUS' => tr('Status'),
