@@ -1380,15 +1380,6 @@ sub _addCfg
 
     $self->setData( $data );
 
-    my $confLevel = $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'};
-    if ($confLevel eq 'per_user') { # One php.ini file for all domains
-        $confLevel = $data->{'ROOT_DOMAIN_NAME'};
-    } elsif ($confLevel eq 'per_domain') { # One php.ini file for each domains (including subdomains)
-        $confLevel = $data->{'PARENT_DOMAIN_NAME'};
-    } else { # One php.ini file for each domain
-        $confLevel = $data->{'DOMAIN_NAME'};
-    }
-
     my $apache24 = version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' );
     my $net = iMSCP::Net->getInstance();
 
@@ -1396,13 +1387,11 @@ sub _addCfg
         {
             BASE_SERVER_VHOST      => $main::imscpConfig{'BASE_SERVER_VHOST'},
             HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
-            PHP_FCGI_STARTER_DIR   => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'},
             HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
             AUTHZ_ALLOW_ALL        => $apache24 ? 'Require all granted' : 'Allow from all',
             AUTHZ_DENY_ALL         => $apache24 ? 'Require all denied' : 'Deny from all',
             DOMAIN_IP              => $net->getAddrVersion( $data->{'DOMAIN_IP'} ) eq 'ipv4'
-                ? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]",
-            FCGID_NAME             => $confLevel
+                ? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]"
         }
     );
 

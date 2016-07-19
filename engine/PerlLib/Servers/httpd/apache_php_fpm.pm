@@ -1411,15 +1411,25 @@ sub _addCfg
 
     $self->setData(
         {
-            BASE_SERVER_VHOST      => $main::imscpConfig{'BASE_SERVER_VHOST'},
-            HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
-            PHP_FCGI_STARTER_DIR   => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'},
-            HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
-            AUTHZ_ALLOW_ALL        => $apache24 ? 'Require all granted' : 'Allow from all',
-            AUTHZ_DENY_ALL         => $apache24 ? 'Require all denied' : 'Deny from all',
-            DOMAIN_IP              => $net->getAddrVersion( $data->{'DOMAIN_IP'} ) eq 'ipv4'
+            BASE_SERVER_VHOST       => $main::imscpConfig{'BASE_SERVER_VHOST'},
+            HTTPD_LOG_DIR           => $self->{'config'}->{'HTTPD_LOG_DIR'},
+            HTTPD_CUSTOM_SITES_DIR  => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
+            AUTHZ_ALLOW_ALL         => $apache24 ? 'Require all granted' : 'Allow from all',
+            AUTHZ_DENY_ALL          => $apache24 ? 'Require all denied' : 'Deny from all',
+            DOMAIN_IP               => $net->getAddrVersion( $data->{'DOMAIN_IP'} ) eq 'ipv4'
                 ? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]",
-            FCGID_NAME             => $confLevel
+            PHP_VERSION             => $phpVersion,
+            POOL_NAME               => $confLevel,
+            # fastcgi module case (Apache2 < 2.4.10)
+            FASTCGI_LISTEN_MODE     => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds' ? 'socket' : 'host',
+            FASTCGI_LISTEN_ENDPOINT => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
+                ? "/var/run/php5-fpm-$confLevel.sock" : "127.0.0.1:$data->{'PHP_FPM_LISTEN_PORT'}",
+            # proxy_fcgi module case (Apache2 >= 2.4.10)
+            PROXY_LISTEN_MODE       => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds' ? 'unix' : 'fcgi',
+            PROXY_LISTEN_ENDPOINT   => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
+                ? "/var/run/php$phpVersion-fpm-$confLevel.sock|fcgi://$confLevel/"
+                : "//127.0.0.1:$data->{'PHP_FPM_LISTEN_PORT'}",
+            FCGID_NAME              => $confLevel
         }
     );
 
