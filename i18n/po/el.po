@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-14 08:37+0200\n"
-"PO-Revision-Date: 2016-07-14 06:38+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2016-07-19 23:35+0200\n"
+"PO-Revision-Date: 2016-07-15 10:11+0000\n"
+"Last-Translator: Asterios Dimitriou <steve@pci.gr>\n"
 "Language-Team: Greek (http://www.transifex.com/i-mscp/i-MSCP/language/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1684,19 +1684,19 @@ msgid "Databases"
 msgstr ""
 
 msgid "Date"
-msgstr ""
+msgstr "Ημερομηνία"
 
 msgid "Day"
-msgstr ""
+msgstr "Ημέρα"
 
 msgid "Day statistics"
-msgstr ""
+msgstr "Στατιστικά ημέρας"
 
 msgid "Days"
-msgstr ""
+msgstr "Ημέρες"
 
 msgid "Deactivate"
-msgstr ""
+msgstr "Απενεργοποίηση"
 
 msgid "Deactivate this plugin"
 msgstr ""
@@ -2163,10 +2163,10 @@ msgid "Download the archives stored in this directory"
 msgstr ""
 
 msgid "EB"
-msgstr ""
+msgstr "EB"
 
 msgid "Edit"
-msgstr ""
+msgstr "Επεξεργασία"
 
 msgid "Edit DNS resource record"
 msgstr ""
@@ -2178,7 +2178,7 @@ msgid "Edit SSL certificate"
 msgstr ""
 
 msgid "Edit admin"
-msgstr ""
+msgstr "Επεξεργασία διαχειριστή"
 
 msgid "Edit auto responder"
 msgstr ""
@@ -2190,10 +2190,10 @@ msgid "Edit custom menu"
 msgstr ""
 
 msgid "Edit customer"
-msgstr ""
+msgstr "Επεξεργασία πελάτη"
 
 msgid "Edit domain"
-msgstr ""
+msgstr "Επεξεργασία domain"
 
 msgid "Edit domain alias"
 msgstr ""
@@ -2226,7 +2226,7 @@ msgid "Edit user"
 msgstr ""
 
 msgid "EiB"
-msgstr ""
+msgstr "EiB"
 
 msgid "Email"
 msgstr ""
@@ -2406,7 +2406,7 @@ msgid "Failure in the package. Deleting!"
 msgstr ""
 
 msgid "Fax"
-msgstr ""
+msgstr "Φαξ"
 
 msgid "Feature"
 msgstr ""
@@ -2464,7 +2464,7 @@ msgid "Fill out a message text."
 msgstr ""
 
 msgid "First name"
-msgstr ""
+msgstr "Όνομα"
 
 msgid "First name cannot have more than 200 characters."
 msgstr ""
@@ -2501,16 +2501,16 @@ msgid "Forward type"
 msgstr ""
 
 msgid "Free"
-msgstr ""
+msgstr "Ελεύθερη"
 
 msgid "From"
-msgstr ""
+msgstr "Από"
 
 msgid "From reseller"
-msgstr ""
+msgstr "Από μεταπωλητή"
 
 msgid "Ftp"
-msgstr ""
+msgstr "Ftp"
 
 msgid "Ftp account"
 msgstr ""
@@ -2579,7 +2579,7 @@ msgid "Hide aliases"
 msgstr ""
 
 msgid "High"
-msgstr ""
+msgstr "Υψηλή"
 
 msgid "Home directory"
 msgstr ""
@@ -2924,10 +2924,10 @@ msgid "Last access"
 msgstr ""
 
 msgid "Last name"
-msgstr ""
+msgstr "Επώνυμο"
 
 msgid "Last name cannot have more than 200 characters."
-msgstr ""
+msgstr "Το επώνυμο δεν μπορεί να ξεπερνάει τους 200 χαρακτήρες."
 
 msgid "Last reply date"
 msgstr ""
@@ -3018,7 +3018,7 @@ msgid "Lostpw link"
 msgstr ""
 
 msgid "Low"
-msgstr ""
+msgstr "Χαμηλή"
 
 msgid "MB"
 msgstr "MB"
@@ -3113,7 +3113,7 @@ msgid ""
 msgstr ""
 
 msgid "Medium"
-msgstr ""
+msgstr "Μέση"
 
 msgid "Member of group"
 msgstr ""
@@ -3137,17 +3137,17 @@ msgid "Messages"
 msgstr ""
 
 msgid "MiB"
-msgstr ""
+msgstr "MiB"
 
 #, php-format
 msgid "Migration file %s is not readable."
 msgstr ""
 
 msgid "Minute"
-msgstr ""
+msgstr "Λεπτό"
 
 msgid "Minutes"
-msgstr ""
+msgstr "Λεπτά"
 
 msgid "Missing domain"
 msgstr ""
@@ -3159,7 +3159,7 @@ msgid "Modification in progress..."
 msgstr ""
 
 msgid "Month"
-msgstr ""
+msgstr "Μήνας"
 
 msgid "Monthly traffic limit [MiB]"
 msgstr ""
@@ -3201,7 +3201,7 @@ msgid "Network interface"
 msgstr ""
 
 msgid "Never"
-msgstr ""
+msgstr "Ποτέ"
 
 msgid "New SQL user data"
 msgstr ""
@@ -3423,7 +3423,7 @@ msgid "Owner"
 msgstr "Ιδιοκτήτης"
 
 msgid "PB"
-msgstr ""
+msgstr "PB"
 
 msgid "PHP"
 msgstr "PHP"
@@ -3898,7 +3898,7 @@ msgid ""
 msgstr ""
 
 msgid "Priority"
-msgstr ""
+msgstr "Προτεραιότητα"
 
 msgid "Private key"
 msgstr ""
@@ -3916,7 +3916,7 @@ msgid "Processor data"
 msgstr ""
 
 msgid "Profile"
-msgstr ""
+msgstr "Προφίλ"
 
 msgid "Properties"
 msgstr ""
@@ -4041,13 +4041,13 @@ msgid "Requires Database?"
 msgstr ""
 
 msgid "Reseller"
-msgstr ""
+msgstr "Μεταπωλητής"
 
 msgid "Reseller / Customers / Add Customer"
-msgstr ""
+msgstr "Μεταπωλητής / Πελάτες / Προσθήκη Πελάτη"
 
 msgid "Reseller / Customers / Add Customer - Next Step"
-msgstr ""
+msgstr "Μεταπωλητής / Πελάτες / Προσθήκη Πελάτη - Επόμενο Βήμα"
 
 msgid "Reseller / Customers / Circular"
 msgstr ""
@@ -4059,19 +4059,19 @@ msgid "Reseller / Customers / Lost Password Email"
 msgstr ""
 
 msgid "Reseller / Customers / Overview"
-msgstr ""
+msgstr "Μεταπωλητής / Πελάτες / Επισκόπηση"
 
 msgid "Reseller / Customers / Overview / Domain Details"
-msgstr ""
+msgstr "Μεταπωλητής / Πελάτες / Επισκόπηση / Λεπτομέρειες Domain"
 
 msgid "Reseller / Customers / Overview / Edit Customer"
-msgstr ""
+msgstr "Μεταπωλητής / Πελάτες / Επισκόπηση / Επεξεργασία Πελάτη"
 
 msgid "Reseller / Customers / Overview / Edit Domain"
-msgstr ""
+msgstr "Μεταπωλητής / Πελάτες / Επισκόπηση / Επεξεργασία Domain"
 
 msgid "Reseller / Customers / Welcome Email"
-msgstr ""
+msgstr "Μεταπωλητής / Πελάτες / Email Καλωσορίσματος"
 
 msgid "Reseller / Domains / Add Domain Alias"
 msgstr ""
@@ -4080,40 +4080,40 @@ msgid "Reseller / Domains / Edit Domain Alias"
 msgstr ""
 
 msgid "Reseller / General / Overview"
-msgstr ""
+msgstr "Μεταπωλητής / Γενικά / Επισκόπηση"
 
 msgid "Reseller / General / Software Upload"
-msgstr ""
+msgstr "Μεταπωλητής / Γενικά / Μεταφόρτωση Λογισμικού"
 
 msgid "Reseller / Hosting Plans / Add Hosting Plan"
-msgstr ""
+msgstr "Μεταπωλητής / Πακέτα Φιλοξενίας / Προσθήκη Πακέτου Φιλοξενίας"
 
 msgid "Reseller / Hosting Plans / Overview"
-msgstr ""
+msgstr "Μεταπωλητής / Πακέτα Φιλοξενίας / Επισκόπηση"
 
 msgid "Reseller / Profile / Account Summary"
-msgstr ""
+msgstr "Μεταπωλητής / Προφίλ / Σύνοψη Λογαριασμού"
 
 msgid "Reseller / Profile / Language"
-msgstr ""
+msgstr "Μεταπωλητής / Προφίλ / Γλώσσα"
 
 msgid "Reseller / Profile / Layout"
-msgstr ""
+msgstr "Μεταπωλητής / Προφίλ / Διάταξη"
 
 msgid "Reseller / Profile / Password"
-msgstr ""
+msgstr "Μεταπωλητής / Προφίλ / Κωδικός"
 
 msgid "Reseller / Profile / Personal Data"
-msgstr ""
+msgstr "Μεταπωλητής / Προφίλ / Προσωπικά Δεδομένα"
 
 msgid "Reseller / Statistics / IP Usage"
 msgstr ""
 
 msgid "Reseller / Statistics / Overview"
-msgstr ""
+msgstr "Μεταπωλητής / Στατιστικά / Επισκόπηση"
 
 msgid "Reseller / Statistics / Overview / {USERNAME} USER Statistics"
-msgstr ""
+msgstr "Μεταπωλητής / Στατιστικά / Επισκόπηση / {USERNAME} Στατιστικά χρήστη"
 
 msgid "Reseller / Support / Closed Tickets"
 msgstr ""
@@ -4128,16 +4128,16 @@ msgid "Reseller / Support / View Ticket"
 msgstr ""
 
 msgid "Reseller /Hosting Plans / Edit Hosting Plan"
-msgstr ""
+msgstr "Μεταπωλητής / Πακέτα Φιλοξενίας / Επεξεργαία Πακέτου Φιλοξενίας"
 
 msgid "Reseller Name"
-msgstr ""
+msgstr "Όνομα Μεταπωλητή"
 
 msgid "Reseller account successfully created."
-msgstr ""
+msgstr "Ο λογαριασμός του μεταπωλητή δημιουργήθηκε επιτυχώς."
 
 msgid "Reseller account successfully updated."
-msgstr ""
+msgstr "Ο λογαριασμός του μεταπωλητή ενημερώθηκε επιτυχώς."
 
 msgid "Reseller and customer"
 msgstr ""
@@ -4161,13 +4161,13 @@ msgid "Reseller level"
 msgstr ""
 
 msgid "Reseller list"
-msgstr ""
+msgstr "Λίστα μεταπωλητών"
 
 msgid "Reseller list is empty."
-msgstr ""
+msgstr "Η λίστα μεταπωλητών είναι άδεια."
 
 msgid "Reseller name"
-msgstr ""
+msgstr "Όνομα Μεταπωλητή"
 
 msgid "Reseller software list"
 msgstr ""
@@ -4194,7 +4194,7 @@ msgid "Reseller/IP usage statistics"
 msgstr ""
 
 msgid "Resellers"
-msgstr ""
+msgstr "Μεταπωλητές"
 
 msgid "Resellers and customers"
 msgstr ""
@@ -4384,22 +4384,22 @@ msgid "Separate multiple email addresses with a line-break."
 msgstr ""
 
 msgid "Server ports"
-msgstr ""
+msgstr "Πόρτες διακομιστή"
 
 msgid "Server statistics"
-msgstr ""
+msgstr "Στατιστικά διακομιστή"
 
 msgid "Server status"
-msgstr ""
+msgstr "Κατάσταση διακομιστή"
 
 msgid "Server traffic"
-msgstr ""
+msgstr "Κίνηση διακομιστή"
 
 msgid "Server traffic settings"
-msgstr ""
+msgstr "Ρυθμίσεις κίνησης διακομιστή"
 
 msgid "Server traffic settings successfully updated."
-msgstr ""
+msgstr "Οι ρυθμίσεις κίνησης του διακομιστή ενημερώθηκαν επιτυχώς."
 
 msgid "Service Name"
 msgstr ""
@@ -4429,7 +4429,7 @@ msgid "Services status"
 msgstr ""
 
 msgid "Sessions"
-msgstr ""
+msgstr "Συνεδρίες"
 
 msgid "Settings"
 msgstr "Ρυθμίσεις"
@@ -4937,7 +4937,7 @@ msgid "To unprotect this plugin, you must edit the %s file"
 msgstr ""
 
 msgid "Total"
-msgstr ""
+msgstr "Σύνολο"
 
 msgid "Total Domains"
 msgstr ""
@@ -4965,16 +4965,16 @@ msgid "Total software"
 msgstr ""
 
 msgid "Traffic"
-msgstr ""
+msgstr "Κίνηση"
 
 msgid "Traffic statistics"
-msgstr ""
+msgstr "Στατιστικά κίνησης"
 
 msgid "Traffic usage"
-msgstr ""
+msgstr "Χρήση κίνησης"
 
 msgid "Translated strings"
-msgstr ""
+msgstr "Μεταφρασμένες συμβολοσειρές"
 
 msgid "Type"
 msgstr ""
@@ -5176,13 +5176,13 @@ msgid "Updates"
 msgstr ""
 
 msgid "Upload"
-msgstr ""
+msgstr "Μεταφόρτωση"
 
 msgid "Upload logo"
-msgstr ""
+msgstr "Μεταφόρτωση λογότυπου"
 
 msgid "Upload now"
-msgstr ""
+msgstr "Μεταφόρτωση τώρα"
 
 msgid "Uptime"
 msgstr ""
@@ -5200,13 +5200,13 @@ msgid "Use secure connection (SSL)"
 msgstr ""
 
 msgid "Used"
-msgstr ""
+msgstr "Χρησιμοποιημένη"
 
 msgid "Used database"
 msgstr ""
 
 msgid "User"
-msgstr ""
+msgstr "Χρήστης"
 
 msgid "User (first and last) name"
 msgstr ""
@@ -5276,7 +5276,7 @@ msgid "Username is too long."
 msgstr ""
 
 msgid "Users"
-msgstr ""
+msgstr "Χρήστες"
 
 #, php-format
 msgid "Value for the PHP %%s directive must be in range %%d to %%d."
@@ -5289,10 +5289,10 @@ msgid "Vendor hompage"
 msgstr ""
 
 msgid "Version"
-msgstr ""
+msgstr "Έκδοση"
 
 msgid "Very high"
-msgstr ""
+msgstr "Πολύ υψηλή"
 
 msgid "View"
 msgstr ""
@@ -5418,16 +5418,16 @@ msgid "XML file URL for the Web software repository"
 msgstr ""
 
 msgid "YB"
-msgstr ""
+msgstr "YB"
 
 msgid "Year"
-msgstr ""
+msgstr "Έτος"
 
 msgid "Yes"
-msgstr ""
+msgstr "Ναι"
 
 msgid "YiB"
-msgstr ""
+msgstr "YiB"
 
 msgid "You are exceeding the monthly server traffic limit."
 msgstr ""
@@ -5746,22 +5746,22 @@ msgid "Your software package has been deleted"
 msgstr ""
 
 msgid "ZB"
-msgstr ""
+msgstr "ZB"
 
 msgid "ZiB"
-msgstr ""
+msgstr "ZiB"
 
 msgid "Zip"
-msgstr ""
+msgstr "ΤΚ"
 
 msgid "Zip code"
-msgstr ""
+msgstr "Ταχ. κώδικας"
 
 msgid "Zip/Postal code"
-msgstr ""
+msgstr "Ταχυδρομικός κώδικας"
 
 msgid "Zone"
-msgstr ""
+msgstr "Ζώνη"
 
 msgid "[New]"
 msgstr ""
@@ -5786,16 +5786,16 @@ msgid "addition"
 msgstr ""
 
 msgid "administrator"
-msgstr ""
+msgstr "διαχειριστής"
 
 msgid "and"
-msgstr ""
+msgstr "και"
 
 msgid "day"
-msgstr ""
+msgstr "ημέρα"
 
 msgid "days"
-msgstr ""
+msgstr "ημέρες"
 
 msgid "deleting"
 msgstr ""
@@ -5958,7 +5958,7 @@ msgid "tcp"
 msgstr "tcp"
 
 msgid "traffic"
-msgstr ""
+msgstr "κίνηση"
 
 msgid "udp"
 msgstr "udp"

@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# stanimir iliev <stanimiriliev@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-14 08:37+0200\n"
-"PO-Revision-Date: 2016-07-14 06:38+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2016-07-19 23:35+0200\n"
+"PO-Revision-Date: 2016-07-18 06:31+0000\n"
+"Last-Translator: stanimir iliev <stanimiriliev@gmail.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/i-mscp/i-MSCP/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,7 +29,7 @@ msgstr "Грешен IP адрес"
 
 #, php-format
 msgid "%%s must be lower than %%s."
-msgstr ""
+msgstr "%%sтрябва да бъде по-ниска от %%s."
 
 #, php-format
 msgid "%1$d / %2$d"
@@ -36,19 +37,19 @@ msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d of %3$d"
-msgstr ""
+msgstr "%1$d / %2$d от %3$d"
 
 #, php-format
 msgid "%1$d / %2$d of %3$d</b>"
-msgstr ""
+msgstr "%1$d / %2$d от %3$d"
 
 #, php-format
 msgid "%1$d / %2$d of unlimited"
-msgstr ""
+msgstr "%1$d / %2$d от без Ограничение"
 
 #, php-format
 msgid "%1$d of %2$d"
-msgstr ""
+msgstr "%1$d от %2$d"
 
 #, php-format
 msgid "%1$d%% [%2$s of %3$s]"
@@ -92,7 +93,7 @@ msgstr "%1$s of <b>Без Ограничение</b>"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
-msgstr "%1$s Вие се влезли като %2$s"
+msgstr "%1$s Вие сте влезли като %2$s"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -140,7 +141,7 @@ msgstr ""
 
 #, php-format
 msgid "%s / unlimited"
-msgstr ""
+msgstr "%s / без Ограничение"
 
 #, php-format
 msgid "%s IP address is blocked for %s minutes."
@@ -342,7 +343,7 @@ msgstr ""
 
 #, php-format
 msgid "'%%value%%' does not appear to be a valid IP address"
-msgstr ""
+msgstr "'%%value%%' не изглежда да е валиден IP адрес"
 
 #, php-format
 msgid "'%%value%%' does not appear to be a valid URI hostname"
@@ -474,16 +475,16 @@ msgid "Add"
 msgstr "Добавяне"
 
 msgid "Add DNS resource record"
-msgstr ""
+msgstr "Добавяне на собствен DNS запис"
 
 msgid "Add FTP account"
-msgstr ""
+msgstr "Добави FTP Акаунт"
 
 msgid "Add Htaccess group"
-msgstr ""
+msgstr "Добави Htaccess група"
 
 msgid "Add Htaccess user"
-msgstr ""
+msgstr "Добави Htaccess потребител"
 
 msgid "Add SQL database"
 msgstr "Добави SQL база данни"
@@ -492,7 +493,7 @@ msgid "Add SQL user"
 msgstr "Добави SQL-потребител"
 
 msgid "Add SSL certificate"
-msgstr ""
+msgstr "Добави  SSL сертификат."
 
 msgid "Add admin"
 msgstr "Добави админ"
@@ -501,19 +502,19 @@ msgid "Add catchall"
 msgstr ""
 
 msgid "Add custom menu"
-msgstr ""
+msgstr "Добави Персонално меню"
 
 msgid "Add customer"
 msgstr "Добави клиент"
 
 msgid "Add customer - Next step"
-msgstr ""
+msgstr "Добави клиент - Напред"
 
 msgid "Add domain alias"
 msgstr "Добави псевдоним домейна"
 
 msgid "Add email account"
-msgstr ""
+msgstr "Добавите Пощенски кутии"
 
 msgid "Add group"
 msgstr "Добави група"
@@ -525,7 +526,7 @@ msgid "Add new IP address"
 msgstr "Добави нов IP адрес"
 
 msgid "Add new database"
-msgstr ""
+msgstr "Добави SQL база данни"
 
 msgid "Add new protected area"
 msgstr "Добави нова защитена зона"
@@ -555,7 +556,7 @@ msgid "Added by"
 msgstr "Добавен от"
 
 msgid "Addition in progress..."
-msgstr ""
+msgstr "Активирането е в ход ..."
 
 msgid "Additional data"
 msgstr "Допълнителни данни"
@@ -594,19 +595,19 @@ msgid "Admin / Settings / IP Management"
 msgstr ""
 
 msgid "Admin / Settings / Languages"
-msgstr ""
+msgstr "Админ / Настройки / Език"
 
 msgid "Admin / Settings / Lost Password Email"
-msgstr ""
+msgstr "Админ / Настройки / Забравена парола Email"
 
 msgid "Admin / Settings / Plugin Management"
 msgstr ""
 
 msgid "Admin / Settings / Server Traffic"
-msgstr ""
+msgstr "Админ / Настройки / Трафик на сървъра"
 
 msgid "Admin / Settings / Service Ports"
-msgstr ""
+msgstr "Админ / Настройки / Портове на сървъра"
 
 msgid "Admin / Settings / Software Management"
 msgstr ""
@@ -638,7 +639,7 @@ msgid ""
 msgstr ""
 
 msgid "Admin / Statistics / Server Statistics"
-msgstr ""
+msgstr "Админ / Статистика / Статистика на сървъра"
 
 msgid "Admin / Statistics / Server Statistics / Day Statistics"
 msgstr ""
@@ -668,10 +669,10 @@ msgid "Admin / System Tools / i-MSCP Updates"
 msgstr ""
 
 msgid "Admin / Users / Add Admin"
-msgstr ""
+msgstr "Администратор / Потребител / Добави Администратор"
 
 msgid "Admin / Users / Add Reseller"
-msgstr ""
+msgstr "Администратор / Потребител / Добави Реселър"
 
 msgid "Admin / Users / Circular"
 msgstr ""
@@ -680,7 +681,7 @@ msgid "Admin / Users / Customers Assignment"
 msgstr ""
 
 msgid "Admin / Users / Edit Reseller"
-msgstr ""
+msgstr "Администратор / Потребител / Редактирай Реселър"
 
 msgid "Admin / Users / Overview"
 msgstr ""
@@ -701,7 +702,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr "Админ Журнал"
+msgstr "Лог админ"
 
 msgid "Admin not available"
 msgstr ""
@@ -796,7 +797,7 @@ msgid "All out"
 msgstr "Всички-изход"
 
 msgid "All reseller"
-msgstr ""
+msgstr "Всички риселъри"
 
 msgid "All traffic"
 msgstr "Целия трафик"
