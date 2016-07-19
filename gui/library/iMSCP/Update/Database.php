@@ -3434,7 +3434,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Adds composite unique key on the php_ini table
+     * Adds compound unique key on the php_ini table
      *
      * @return array SQL statement to be executed
      */
@@ -3521,7 +3521,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Add composite unique index on the domain_traffic table
+     * Add compound unique index on the domain_traffic table
      *
      * @return string SQL statement to be executed
      */
