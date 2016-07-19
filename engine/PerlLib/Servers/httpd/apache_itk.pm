@@ -273,16 +273,14 @@ sub disableDmn
 
     $self->setData( $data );
 
-    my $net = iMSCP::Net->getInstance();
-    my $version = $self->{'config'}->{'HTTPD_VERSION'};
+    my $isApache24 = version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' );
 
     $self->setData(
         {
             BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
-            AUTHZ_ALLOW_ALL   => version->parse( $version ) >= version->parse( '2.4.0' )
-                ? 'Require all granted' : 'Allow from all',
+            AUTHZ_ALLOW_ALL   => $isApache24 ? 'Require all granted' : 'Allow from all',
             HTTPD_LOG_DIR     => $self->{'config'}->{'HTTPD_LOG_DIR'},
-            DOMAIN_IP         => $net->getAddrVersion( $data->{'DOMAIN_IP'} ) eq 'ipv4'
+            DOMAIN_IP         => iMSCP::Net->getInstance()->getAddrVersion( $data->{'DOMAIN_IP'} ) eq 'ipv4'
                 ? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]",
             USER_WEB_DIR      => $main::imscpConfig{'USER_WEB_DIR'}
         }
@@ -1022,7 +1020,7 @@ sub enableSites
             next;
         }
 
-        my $rs = execute( "a2ensite $_", \ my $stdout, \ my $stderr );
+        my $rs = execute( [ 'a2ensite', $_ ], \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
         return $rs if $rs;
@@ -1050,7 +1048,7 @@ sub disableSites
 
     for (@sites) {
         next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
-        my $rs = execute( "a2dissite $_", \ my $stdout, \ my $stderr );
+        my $rs = execute( [ 'a2dissite', $_ ], \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
         return $rs if $rs;
@@ -1078,7 +1076,7 @@ sub enableModules
 
     for (@modules) {
         next unless -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_.load";
-        $rs = execute( "a2enmod $_", \ my $stdout, \ my $stderr );
+        $rs = execute( [ 'a2enmod', $_ ], \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
         return $rs if $rs;
@@ -1106,7 +1104,7 @@ sub disableModules
 
     for (@modules) {
         next unless -l "$self->{'config'}->{'HTTPD_MODS_ENABLED_DIR'}/$_.load";
-        $rs = execute( "a2dismod $_", \ my $stdout, \ my $stderr );
+        $rs = execute( [ 'a2dismod', $_ ], \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $stderr && $rs;
         return $rs if $rs;
@@ -1139,7 +1137,7 @@ sub enableConfs
                 next;
             }
 
-            my $rs = execute( "a2enconf $_", \ my $stdout, \ my $stderr );
+            my $rs = execute( [ 'a2enconf', $_ ], \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
             error( $stderr ) if $stderr && $rs;
             return $rs if $rs;
@@ -1169,7 +1167,7 @@ sub disableConfs
     if (iMSCP::ProgramFinder::find( 'a2disconf' ) && -d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available") {
         for (@conffiles) {
             next unless -f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/$_";
-            my $rs = execute( "a2disconf $_", \ my $stdout, \ my $stderr );
+            my $rs = execute( [ 'a2disconf', $_ ], \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
             error( $stderr ) if $stderr && $rs;
             return $rs if $rs;
@@ -1380,17 +1378,16 @@ sub _addCfg
 
     $self->setData( $data );
 
-    my $apache24 = version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' );
-    my $net = iMSCP::Net->getInstance();
+    my $isApache24 = version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' );
 
     $self->setData(
         {
             BASE_SERVER_VHOST      => $main::imscpConfig{'BASE_SERVER_VHOST'},
             HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
             HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
-            AUTHZ_ALLOW_ALL        => $apache24 ? 'Require all granted' : 'Allow from all',
-            AUTHZ_DENY_ALL         => $apache24 ? 'Require all denied' : 'Deny from all',
-            DOMAIN_IP              => $net->getAddrVersion( $data->{'DOMAIN_IP'} ) eq 'ipv4'
+            AUTHZ_ALLOW_ALL        => $isApache24 ? 'Require all granted' : 'Allow from all',
+            AUTHZ_DENY_ALL         => $isApache24 ? 'Require all denied' : 'Deny from all',
+            DOMAIN_IP              => iMSCP::Net->getInstance()->getAddrVersion( $data->{'DOMAIN_IP'} ) eq 'ipv4'
                 ? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]"
         }
     );
