@@ -205,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `domain_traffic` (
   `dtraff_mail` bigint(20) unsigned DEFAULT 0,
   `dtraff_pop` bigint(20) unsigned DEFAULT 0,
   PRIMARY KEY (`dtraff_id`),
-  UNIQUE `i_unique_timestamp` (`domain_id`, `i_dtraff_time`),
+  UNIQUE `i_unique_timestamp` (`domain_id`, `dtraff_time`),
   INDEX `i_domain_id` (`domain_id`),
   INDEX `i_dtraff_time` (`dtraff_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -224,9 +224,9 @@ CREATE SQL SECURITY INVOKER VIEW `monthly_domain_traffic` AS SELECT
   FROM `domain_traffic`
   WHERE (
     `dtraff_time` BETWEEN
-      unix_timestamp(((LAST_DAY(CURDATE()) + INTERVAL 1 day) - INTERVAL 1 MONTH ))
+      UNIX_TIMESTAMP(((LAST_DAY(CURDATE()) + INTERVAL 1 day) - INTERVAL 1 MONTH ))
       AND
-      unix_timestamp((LAST_DAY(CURDATE()) + INTERVAL 1 DAY ))
+      UNIX_TIMESTAMP((LAST_DAY(CURDATE()) + INTERVAL 1 DAY ))
   )
   GROUP BY `domain_id`;
 
