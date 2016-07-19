@@ -238,7 +238,7 @@ function client_addSslCert($domainId, $domainType)
     $config = iMSCP_Registry::get('config');
     $domainName = _client_getDomainName($domainId, $domainType);
     $allowHSTS = (isset($_POST['allow_hsts']) && in_array($_POST['allow_hsts'], array('on', 'off'))) ? $_POST['allow_hsts'] : 'off';
-    $hstsMaxAge = ($allowHSTS == 'on' && isset($_POST['hsts_max_age']) && $_POST['hsts_max_age'] != '' && $_POST['hsts_max_age'] >= 0) ? intval($_POST['hsts_max_age']) : 31536000;
+    $hstsMaxAge = ($allowHSTS == 'on' && isset($_POST['hsts_max_age']) && $_POST['hsts_max_age'] != '' && $_POST['hsts_max_age'] >= 0) ? intval($_POST['hsts_max_age']) : '31536000';
     $hstsIncludeSubDomains = ($allowHSTS == 'on' && isset($_POST['hsts_include_subdomains']) && in_array($_POST['hsts_include_subdomains'], array('on', 'off'))) ? $_POST['hsts_include_subdomains'] : 'off';
     $selfSigned = (isset($_POST['selfsigned']) && $_POST['selfsigned'] === 'on');
 
@@ -509,7 +509,7 @@ function client_generatePage($tpl, $domainId, $domainType)
         $certificate = $_POST['certificate'];
         $caBundle = $_POST['ca_bundle'];
         $allowHSTS = (isset($_POST['allow_hsts']) && $_POST['allow_hsts'] === 'on');
-        $hstsMaxAge = ($allowHSTS && isset($_POST['hsts_max_age']) && $_POST['hsts_max_age'] != '' && $_POST['hsts_max_age'] >= 0) ? intval($_POST['hsts_max_age']) : 31536000;
+        $hstsMaxAge = ($allowHSTS && isset($_POST['hsts_max_age']) && $_POST['hsts_max_age'] != '' && $_POST['hsts_max_age'] >= 0) ? intval($_POST['hsts_max_age']) : '31536000';
         $hstsIncludeSubDomains = ($allowHSTS && isset($_POST['hsts_include_subdomains']) && $_POST['hsts_include_subdomains'] === 'on');
     }
 

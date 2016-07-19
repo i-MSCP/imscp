@@ -205,11 +205,11 @@ sub _getHttpdData
     );
     ref $certData eq 'HASH' or die( $certData );
 
-    my $haveCert = $certData->{$self->{'subdomain_alias_id'}}
-        && $self->isValidCertificate( $self->{'subdomain_alias_name'}.'.'.$self->{'alias_name'} );
-    my $allowHSTS = $haveCert && $certData->{$self->{'subdomain_alias_id'}}->{'allow_hsts'} eq 'on';
+    my $haveCert = ($certData->{$self->{'subdomain_alias_id'}}
+        && $self->isValidCertificate( $self->{'subdomain_alias_name'}.'.'.$self->{'alias_name'} ));
+    my $allowHSTS = ($haveCert && $certData->{$self->{'subdomain_alias_id'}}->{'allow_hsts'} eq 'on');
     my $hstsMaxAge = $allowHSTS ? $certData->{$self->{'subdomain_alias_id'}}->{'hsts_max_age'} : '';
-    my $hstsIncludeSubDomains = $allowHSTS && $certData->{$self->{'subdomain_alias_id'}}->{'hsts_include_subdomains'} eq 'on'
+    my $hstsIncludeSubDomains = ($allowHSTS && $certData->{$self->{'subdomain_alias_id'}}->{'hsts_include_subdomains'} eq 'on')
         ? '; includeSubDomains' : '';
 
     $self->{'httpd'} = {

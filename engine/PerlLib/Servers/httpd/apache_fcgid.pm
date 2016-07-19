@@ -275,10 +275,12 @@ sub disableDmn
     $self->setData( $data );
 
     my $net = iMSCP::Net->getInstance();
+    my $version = $self->{'config'}->{'HTTPD_VERSION'};
+
     $self->setData(
         {
             BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
-            AUTHZ_ALLOW_ALL   => version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' )
+            AUTHZ_ALLOW_ALL   => version->parse( $version ) >= version->parse( '2.4.0' )
                 ? 'Require all granted' : 'Allow from all',
             HTTPD_LOG_DIR     => $self->{'config'}->{'HTTPD_LOG_DIR'},
             DOMAIN_IP         => $net->getAddrVersion( $data->{'DOMAIN_IP'} ) eq 'ipv4'
@@ -287,28 +289,41 @@ sub disableDmn
         }
     );
 
-    my %templates = ('' => $data->{'HSTS_SUPPORT'} ? 'domain_redirect.tpl' : 'domain_disabled.tpl');
+    # Create http vhost
+
+    if ($data->{'HSTS_SUPPORT'}) {
+        $self->setData(
+            {
+                FORWARD      => "https://$data->{'DOMAIN_NAME'}/",
+                FORWARD_TYPE => '301'
+            }
+        );
+    }
+
+    $rs = $self->buildConfFile(
+        "$self->{'apacheTplDir'}/".($data->{'HSTS_SUPPORT'} ? 'domain_redirect.tpl' : 'domain_disabled.tpl'),
+        $data,
+        { destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
+    );
+    $rs ||= $self->enableSites( "$data->{'DOMAIN_NAME'}.conf" );
+    return $rs if $rs;
+
+    # Create https vhost (or delete it if SSL is disabled)
 
     if ($data->{'SSL_SUPPORT'}) {
         $self->setData( { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" } );
-        $templates{'_ssl'} = 'domain_disabled_ssl.tpl';
-
-        if ($data->{'HSTS_SUPPORT'}) {
-            $self->setData(
-                {
-                    FORWARD      => "https://$data->{'DOMAIN_NAME'}/",
-                    FORWARD_TYPE => "307"
-                }
-            );
-        }
-    }
-
-    while (my ($suffix, $tpl) = each( %templates )) {
         $rs = $self->buildConfFile(
-            "$self->{'apacheTplDir'}/$tpl",
+            "$self->{'apacheTplDir'}/domain_disabled_ssl.tpl",
             $data,
-            { destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}$suffix.conf" }
+            { destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf" }
         );
+        $rs ||= $self->enableSites( "$data->{'DOMAIN_NAME'}_ssl.conf" );
+        return $rs if $rs;
+    } elsif (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf") {
+        $rs = $self->disableSites( "$data->{'DOMAIN_NAME'}_ssl.conf" );
+        $rs ||= iMSCP::File->new(
+            filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf"
+        )->delFile();
         return $rs if $rs;
     }
 
@@ -322,7 +337,7 @@ sub disableDmn
         return $rs if $rs;
     }
 
-    # Transitional - Remove deprecated domain_disable_page directory if any
+    # Transitional - Remove deprecated `domain_disable_page' directory if any
     if ($data->{'DOMAIN_TYPE'} eq 'dmn' && -d $data->{'WEB_DIR'}) {
         clearImmutable( $data->{'WEB_DIR'} );
         $rs = iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/domain_disable_page" )->remove();
@@ -330,7 +345,6 @@ sub disableDmn
         setImmutable( $data->{'WEB_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
     }
 
-    $self->{'restart'} = 1;
     $self->flushData();
     $self->{'eventManager'}->trigger( 'afterHttpdDisableDmn', $data );
 }
@@ -1371,36 +1385,6 @@ sub _addCfg
 
     $self->setData( $data );
 
-    my %vhosts = (
-        "$data->{'DOMAIN_NAME'}.conf" => ($data->{'FORWARD'} eq 'no' && !$data->{'HSTS_SUPPORT'})
-            ? 'domain.tpl' : 'domain_redirect.tpl'
-    );
-
-    if ($data->{'SSL_SUPPORT'}) {
-        $vhosts{"$data->{'DOMAIN_NAME'}_ssl.conf"} = $data->{'FORWARD'} eq 'no'
-            ? 'domain_ssl.tpl' : 'domain_redirect_ssl.tpl';
-        $self->setData( { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" } );
-
-        if ($data->{'HSTS_SUPPORT'}) {
-            $self->setData(
-                {
-                    FORWARD      => "https://$data->{'DOMAIN_NAME'}/",
-                    FORWARD_TYPE => "307"
-                }
-            );
-        }
-    } else {
-        $rs = $self->disableSites( "$data->{'DOMAIN_NAME'}_ssl.conf" );
-        return $rs if $rs;
-
-        if (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf") {
-            $rs = iMSCP::File->new(
-                filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf"
-            )->delFile();
-            return $rs if $rs;
-        }
-    }
-
     my $confLevel = $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'};
     if ($confLevel eq 'per_user') { # One php.ini file for all domains
         $confLevel = $data->{'ROOT_DOMAIN_NAME'};
@@ -1427,12 +1411,49 @@ sub _addCfg
         }
     );
 
-    while(my ($vhostTgr, $vhostSrc) = each( %vhosts )) {
-        $rs = $self->buildConfFile(
-            "$self->{'apacheTplDir'}/$vhostSrc",
-            $data,
-            { destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostTgr" }
+    # Create http vhost
+
+    if ($data->{'HSTS_SUPPORT'}) {
+        $self->setData(
+            {
+                FORWARD      => "https://$data->{'DOMAIN_NAME'}/",
+                FORWARD_TYPE => '301'
+            }
         );
+    }
+
+    $rs = $self->buildConfFile(
+        "$self->{'apacheTplDir'}/".(
+                ($data->{'HSTS_SUPPORT'} || $data->{'FORWARD'} ne 'no') ? 'domain_redirect.tpl' : 'domain.tpl'
+        ),
+        $data,
+        { destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
+    );
+    $rs ||= $self->enableSites( "$data->{'DOMAIN_NAME'}.conf" );
+    return $rs if $rs;
+
+    # Create https vhost (or delete it if SSL is disabled)
+
+    if ($data->{'SSL_SUPPORT'}) {
+        $self->setData(
+            {
+                CERTIFICATE  => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem",
+                FORWARD      => $data->{'FORWARD'},
+                FORWARD_TYPE => $data->{'FORWARD_TYPE'}
+            }
+        );
+        $rs = $self->buildConfFile(
+            "$self->{'apacheTplDir'}/".($data->{'FORWARD'} ne 'no' ? 'domain_redirect_ssl.tpl' : 'domain_ssl.tpl'),
+            $data,
+            { destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf" }
+        );
+        $rs ||= $self->enableSites( "$data->{'DOMAIN_NAME'}_ssl.conf" );
+        return $rs if $rs;
+    } elsif (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf") {
+        $rs = $self->disableSites( "$data->{'DOMAIN_NAME'}_ssl.conf" );
+        $rs ||= iMSCP::File->new(
+            filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf"
+        )->delFile();
         return $rs if $rs;
     }
 
@@ -1442,10 +1463,8 @@ sub _addCfg
             $data,
             { destination => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
         );
-        return $rs if $rs;
     }
 
-    $rs = $self->enableSites( keys %vhosts );
     $rs ||= $self->_buildPHPConfig( $data );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdAddCfg', $data );
 }
@@ -1604,7 +1623,7 @@ sub _addFiles
         # Cleanup (Transitional)
 
         if ($data->{'DOMAIN_TYPE'} eq 'dmn') {
-            # Remove deprecated domain_disable_page directory if any
+            # Remove deprecated `domain_disable_page' directory if any
             $rs = iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/domain_disable_page" )->remove();
             return $rs if $rs;
         } elsif (!$data->{'SHARED_MOUNT_POINT'}) {
