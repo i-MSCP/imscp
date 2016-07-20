@@ -1,5 +1,6 @@
 # i-MSCP Listener::Named::OverrideNsRecords listener file
 # Copyright (C) 2015-2016 Arthur Mayer <mayer.arthur@gmail.com>
+# Copyright (C) 2016 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -44,19 +45,17 @@ my @nameservers = (
 iMSCP::EventManager->getInstance()->register(
     'afterNamedAddDmnDb',
     sub {
-            my ($wrkFile, $data) = @_;
+        my ($wrkFile, $data) = @_;
 
-            # Remove default nameservers records
-            $$wrkFile =~ s/^(?:\@(?:\s+\d+)?\s+IN\s+NS|ns[0-9]\s+IN)\s+[^\n]+\n//gm;
-
-            # Update SOA record
-            $$wrkFile =~ s/
-                ^\@\s+IN\s+SOA\s+ns1\Q.$data->{'DOMAIN_NAME'}.\E\s+hostmaster\Q.$data->{'DOMAIN_NAME'}.\E
+        # Remove default nameservers records
+        $$wrkFile =~ s/^(?:\@(?:\s+\d+)?\s+IN\s+NS|ns[0-9]\s+IN)\s+[^\n]+\n//gm;
+        # Update SOA record
+        $$wrkFile =~ s/
+            ^\@\s+IN\s+SOA\s+ns1\Q.$data->{'DOMAIN_NAME'}.\E\s+hostmaster\Q.$data->{'DOMAIN_NAME'}.\E
             /\@\tIN\tSOA\t$nameservers[0]\. hostmaster\.$nameservers[0]\./gmx;
-
-            # Add out-of-zone nameservers
-            $$wrkFile .= "$data->{'DOMAIN_NAME'}. IN NS $_.\n" for @nameservers;
-            0;
+        # Add out-of-zone nameservers
+        $$wrkFile .= "$data->{'DOMAIN_NAME'}.\tIN\tNS\t$_.\n" for @nameservers;
+        0;
     }
 );
 
