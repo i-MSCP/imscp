@@ -1,4 +1,4 @@
-# i-MSCP Listener::Named::Tuning2 listener file
+# i-MSCP Listener::Named::OverrideNsRecords listener file
 # Copyright (C) 2015-2016 Arthur Mayer <mayer.arthur@gmail.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -16,10 +16,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Overwrites the default nameservers with out-of-zone nameservers.
+## Listener that allows overriding of default NS DNS resource records.
 #
 
-package Listener::Named::Tuning2;
+package Listener::Named::OverrideDefaultNsRecords;
 
 use strict;
 use warnings;
@@ -38,26 +38,25 @@ my @nameservers = (
 );
 
 #
-## Please, don't edit anything below this line
+## Please don't edit anything below this line
 #
 
 iMSCP::EventManager->getInstance()->register(
     'afterNamedAddDmnDb',
     sub {
-        my ($wrkFile, $data) = @_;
+            my ($wrkFile, $data) = @_;
 
-        # Remove default nameservers (IN A and IN NS section)
-        $$wrkFile =~ s/ns[0-9]\tIN\tA\t([0-9]{1,3}[\.]){3}[0-9]{1,3}\n//g;
-        $$wrkFile =~ s/\@\t\tIN\tNS\tns[0-9]\n//g;
+            # Remove default nameservers records
+            $$wrkFile =~ s/^(?:\@(?:\s+\d+)?\s+IN\s+NS|ns[0-9]\s+IN)\s+[^\n]+\n//gm;
 
-        # Add out-of-zone nameservers
-        for my $nameserver(@nameservers) {
-            $$wrkFile .= "@         IN      NS      $nameserver.\n";
-        }
+            # Update SOA record
+            $$wrkFile =~ s/
+                ^\@\s+IN\s+SOA\s+ns1\Q.$data->{'DOMAIN_NAME'}.\E\s+hostmaster\Q.$data->{'DOMAIN_NAME'}.\E
+            /\@\tIN\tSOA\t$nameservers[0]\. hostmaster\.$nameservers[0]\./gmx;
 
-        # Fix SOA record according new nameservers
-        $$wrkFile =~ s/IN\tSOA\tns1\.$data->{'DOMAIN_NAME'}\. hostmaster\.$data->{'DOMAIN_NAME'}\./IN\tSOA\t$nameservers[0]\. hostmaster\.$data->{'DOMAIN_NAME'}\./g;
-        0;
+            # Add out-of-zone nameservers
+            $$wrkFile .= "$data->{'DOMAIN_NAME'}. IN NS $_.\n" for @nameservers;
+            0;
     }
 );
 

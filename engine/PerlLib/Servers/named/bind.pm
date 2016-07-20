@@ -657,14 +657,19 @@ sub addCustomDNS
 
     my $origin = '';
     while(my $line = <$fh>) {
-        # Update current $ORIGIN if needed
-        $origin = $1 if $line =~ /^\$ORIGIN\s+([^\s;]+).*\n$/;
+        my $isOrigin = $line =~ /^\$ORIGIN\s+([^\s;]+).*\n$/;
+        # Update $ORIGIN if needed
+        $origin = $1 if $isOrigin;
 
-        # Substitute @ with $ORGIN
-        $line =~ s/@/$origin/g if $origin ne '';
+        unless($isOrigin || index($line, '$') == 0 || index($line, ';') == 0) {
+            # Process $ORIGIN substitutions
+            $line =~ s/\@/$origin/g;
+            $line =~ s/^(\S+?[^\s.])\s+/$1.$origin\t/;
 
-        # Skip default SPF record line if SPF record for the same DNS name exists in @customDNS
-        next if $line =~ /^(\S+).*?\sv=spf1\s/ && grep(/^(?:\Q$1\E|\Q$1.$origin\E)\s+.*?v=spf1\s/, @customDNS);
+            # Skip default SPF record line if SPF record for the same DNS name exists in @customDNS
+            next if $line =~ /^(\S+).*?\sv=spf1\s/ && grep(/^(?:\Q$1\E|\Q$1.$origin\E)\s+.*?v=spf1\s/, @customDNS);
+        }
+
         $wrkDbFileContent .= $line;
     }
     close( $fh );

@@ -66,18 +66,23 @@ Allows to setup Bind9 for local network.
 
 Listener implementing RRL (Response-Rate-Limiting)
 
+### 10_named_override_default_ns_rr.pl
+
+Listener that allows overriding of default NS DNS resource records.
+
+### 10_named_override_default_rr.pl
+
+Listener that allows overriding of default DNS records with custom DNS records
+
+Following DNS resource records can be overriden:
+
+ - @   IN {IP_TYPE} {DOMAIN_IP}
+ - www IN CNAME     @
+
 ### 10_named_slave_provisioning.pl
 
 Provides slave DNS server(s) provisioning service.
 This listener file requires i-MSCP 1.2.12 or newer.
-
-### 10_named_tuning.pl
-
-Allows to replace defaults **@ IN <IP>** DNS record with a custom DNS record (when a custom DNS is set as replacement).
-
-### 10_named_tuning2.pl
-
-Overwrites the default nameservers with out-of-zone nameservers.
 
 ### 20_bind9_dualstack.pl
 

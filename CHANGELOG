@@ -10,6 +10,12 @@ CONFIG
     Fixed: PHP opcode cache should be enabled by default (OPcache, APC)
     Moved: DocumentRoot for pages of disabled domains now live outside of the customer home directories
 
+CONTRIB
+    Added: 10_named_override_default_ns_rr.pl
+    Added: 10_named_override_default_rr.pl listener
+    Removed: 10_named_tuning.pl listener (replaced by 10_named_override_default_rr.pl listener)
+    Removed: 10_named_tuning2.pl listener (replaced by 10_named_override_default_ns_rr.pl listener)
+
 DATABASE
     Added: Compound unique key on the `php_ini' table
     Added: Compound unique index on the domain_traffic table
@@ -47,10 +53,11 @@ PRESEED
 
 SERVERS
     Fixed: Could not access httpd log files through FTP (permissions on log files are too restrictives)
-    Fixed: Enable opportunistic TLS for Postfix client side (smtp)
     Fixed: Dotfiles not listed (ProFTPD, VsFTPD)
+    Fixed: Enable opportunistic TLS for Postfix client side (smtp)
     Fixed: HSTS - Follow RFC 6797 recommendations for non-secure-to-secure redirects (status code 301 instead of 307)
-    Fixed: HSTS - Wrong redirect when domain is forwarded
+    Fixed: HSTS - Wrong redirect when domain is forwarded (Apache server impl.)
+    Fixed: Process $ORIGIN substitutions before triggering the `afterNamedAddCustomDNS' event (Bind9 server impl.)
 
 SKELETON
     Added: Dedicated `domain_disabled_pages' directory for pages of disabled domains
