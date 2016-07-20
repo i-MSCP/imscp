@@ -25,7 +25,6 @@ package Listener::Named::OverrideDefaultNsRecords;
 use strict;
 use warnings;
 use iMSCP::EventManager;
-use iMSCP::TemplateParser;
 
 #
 ## Configuration parameters
