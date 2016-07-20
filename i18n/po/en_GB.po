@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-14 08:37+0200\n"
-"PO-Revision-Date: 2016-07-14 06:38+0000\n"
+"POT-Creation-Date: 2016-07-19 23:35+0200\n"
+"PO-Revision-Date: 2016-07-14 06:43+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/i-mscp/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -810,7 +810,7 @@ msgid "Allow URL fopen"
 msgstr "Allow URL fopen"
 
 msgid "Allows to forward any request made to this domain to a specific URL."
-msgstr ""
+msgstr "Allows to forward any request made to this domain to a specific URL."
 
 msgid "Allows to share the mount point of another domain."
 msgstr "Allows to share the mount point of another domain."
@@ -1234,7 +1234,7 @@ msgid "Client / Domains / Add Subdomain"
 msgstr "Client / Domains / Add Subdomain"
 
 msgid "Client / Domains / Edit Domain"
-msgstr ""
+msgstr "Client / Domains / Edit Domain"
 
 msgid "Client / Domains / Edit Domain Alias"
 msgstr "Client / Domains / Edit Domain Alias"
@@ -1998,7 +1998,7 @@ msgstr "Domain"
 
 #, php-format
 msgid "Domain %s cannot be forwarded on itself."
-msgstr ""
+msgstr "Domain %s cannot be forwarded on itself."
 
 #, php-format
 msgid "Domain %s is unavailable."
@@ -2131,7 +2131,7 @@ msgid "Domain status is not ok."
 msgstr "Domain status is not ok."
 
 msgid "Domain successfully scheduled for update."
-msgstr ""
+msgstr "Domain successfully scheduled for update."
 
 msgid "Domain successfully updated."
 msgstr "Domain successfully updated."
@@ -3879,7 +3879,7 @@ msgid "Port"
 msgstr "Port"
 
 msgid "Preserve Host"
-msgstr ""
+msgstr "Preserve Host"
 
 msgid "Prevent external login for admins"
 msgstr "Prevent external login for admins"

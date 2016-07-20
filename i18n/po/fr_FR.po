@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-14 08:37+0200\n"
-"PO-Revision-Date: 2016-07-14 06:38+0000\n"
+"POT-Creation-Date: 2016-07-19 23:35+0200\n"
+"PO-Revision-Date: 2016-07-14 06:42+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/i-mscp/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -809,7 +809,7 @@ msgid "Allow URL fopen"
 msgstr "Autoriser URL fopen"
 
 msgid "Allows to forward any request made to this domain to a specific URL."
-msgstr ""
+msgstr "Permet de rediriger toutes les requêtes de ce domaine vers l'URL spécifiée."
 
 msgid "Allows to share the mount point of another domain."
 msgstr "Permettre de partage le point de montage avec un autre domaine."
@@ -1233,7 +1233,7 @@ msgid "Client / Domains / Add Subdomain"
 msgstr "Client / Domaines / Ajouter un sous-domaine"
 
 msgid "Client / Domains / Edit Domain"
-msgstr ""
+msgstr "Client / Domaines / Édition du domaine"
 
 msgid "Client / Domains / Edit Domain Alias"
 msgstr "Client / Domaines / Éditer un alias de domaine"
@@ -1997,7 +1997,7 @@ msgstr "Domaine"
 
 #, php-format
 msgid "Domain %s cannot be forwarded on itself."
-msgstr ""
+msgstr "Le domaine %s ne peut pas être transféré vers lui-même."
 
 #, php-format
 msgid "Domain %s is unavailable."
@@ -2130,7 +2130,7 @@ msgid "Domain status is not ok."
 msgstr "L'état du domaine n'est pas correct."
 
 msgid "Domain successfully scheduled for update."
-msgstr ""
+msgstr "Le domaine va être mis à jour."
 
 msgid "Domain successfully updated."
 msgstr "Les propriétés du  domaine ont été mis à jour."
@@ -3878,7 +3878,7 @@ msgid "Port"
 msgstr "Port"
 
 msgid "Preserve Host"
-msgstr ""
+msgstr "Préserver l'hôte"
 
 msgid "Prevent external login for admins"
 msgstr "Interdire les connexion externes pour les administrateurs"
