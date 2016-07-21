@@ -2343,7 +2343,7 @@ msgid "Errors"
 msgstr "Fehler"
 
 msgid "Excl. default mails"
-msgstr "Exkl. Standart E-Mails"
+msgstr "Exkl. Standard E-Mails"
 
 msgid "Execute tasks"
 msgstr "Aufgaben ausführen"
@@ -2728,7 +2728,7 @@ msgid "In maintenance mode, only administrators can login."
 msgstr "Im Wartungsmodus. Nur Administratoren können sich einloggen."
 
 msgid "Incl. default mails"
-msgstr "Inkl. Standart E-Mails"
+msgstr "Inkl. Standard E-Mails"
 
 msgid "Incorrect Email quota"
 msgstr "Falsches E-Mail Quota"
