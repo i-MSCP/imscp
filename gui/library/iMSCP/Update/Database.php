@@ -1640,13 +1640,13 @@ class iMSCP_Update_Database extends iMSCP_Update
             $this->changeColumn(
                 'domain_aliasses',
                 'url_forward',
-                "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'"
+                "url_forward VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'"
             ),
             "UPDATE domain_aliasses SET url_forward = 'no' WHERE url_forward IS NULL OR url_forward = ''",
             $this->changeColumn(
                 'subdomain',
                 'subdomain_url_forward',
-                "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'"
+                "subdomain_url_forward VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'"
             ),
             "
                 UPDATE subdomain SET subdomain_url_forward = 'no'
@@ -1655,7 +1655,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             $this->changeColumn(
                 'subdomain_alias',
                 'subdomain_alias_url_forward',
-                "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'"
+                "subdomain_alias_url_forward VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'"
             ),
             "
                 UPDATE subdomain_alias SET subdomain_alias_url_forward = 'no'
