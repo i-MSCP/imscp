@@ -85,7 +85,7 @@ if (is_readable(CONFIG_CACHE_FILE_PATH)) {
 
     clearstatcache(true, CONFIG_FILE_PATH);
 
-    if ($config['DEBUG'] || filemtime(CONFIG_FILE_PATH) !== $config['__filemtime__']) {
+    if (PHP_SAPI == 'cli' || $config['DEBUG'] || filemtime(CONFIG_FILE_PATH) !== $config['__filemtime__']) {
         @unlink(CONFIG_CACHE_FILE_PATH);
         goto FORCE_CONFIG_RELOAD;
     }
