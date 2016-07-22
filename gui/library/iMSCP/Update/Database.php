@@ -3540,21 +3540,19 @@ class iMSCP_Update_Database extends iMSCP_Update
      * - Disallow NULL value on domain_id and dtraff_time columns
      * - Change default value for dtraff_web, dtraff_ftp, dtraff_mail domain_traffic columns (NULL to 0)
      *
-     * @return array SQL statements to be executed
+     * @return string SQL statement to be executed
      */
     protected function r238()
     {
-        return array(
-            "
-              ALTER TABLE `domain_traffic`
-              CHANGE `domain_id` `domain_id` INT(10) UNSIGNED NOT NULL,
-              CHANGE `dtraff_time` `dtraff_time` BIGINT(20) UNSIGNED NOT NULL,
-              CHANGE `dtraff_web` `dtraff_web` BIGINT(20) UNSIGNED NULL DEFAULT 0,
-              CHANGE `dtraff_ftp` `dtraff_ftp` BIGINT(20) UNSIGNED NULL DEFAULT 0,
-              CHANGE `dtraff_mail` `dtraff_mail` BIGINT(20) UNSIGNED NULL DEFAULT 0,
-              CHANGE `dtraff_pop` `dtraff_pop` BIGINT(20) UNSIGNED NULL DEFAULT 0
-            "
-        );
+        return "
+          ALTER TABLE `domain_traffic`
+            CHANGE `domain_id` `domain_id` INT(10) UNSIGNED NOT NULL,
+            CHANGE `dtraff_time` `dtraff_time` BIGINT(20) UNSIGNED NOT NULL,
+            CHANGE `dtraff_web` `dtraff_web` BIGINT(20) UNSIGNED NULL DEFAULT '0',
+            CHANGE `dtraff_ftp` `dtraff_ftp` BIGINT(20) UNSIGNED NULL DEFAULT '0',
+            CHANGE `dtraff_mail` `dtraff_mail` BIGINT(20) UNSIGNED NULL DEFAULT '0',
+            CHANGE `dtraff_pop` `dtraff_pop` BIGINT(20) UNSIGNED NULL DEFAULT '0'
+        ";
     }
 
     /**
