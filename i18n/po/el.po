@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-19 23:35+0200\n"
-"PO-Revision-Date: 2016-07-15 10:11+0000\n"
+"POT-Creation-Date: 2016-07-22 04:57+0200\n"
+"PO-Revision-Date: 2016-07-21 09:38+0000\n"
 "Last-Translator: Asterios Dimitriou <steve@pci.gr>\n"
 "Language-Team: Greek (http://www.transifex.com/i-mscp/i-MSCP/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -1997,48 +1997,48 @@ msgstr "Domain"
 
 #, php-format
 msgid "Domain %s cannot be forwarded on itself."
-msgstr ""
+msgstr "Το domain %s δεν μπορεί να προωθηθεί στον εαυτό του."
 
 #, php-format
 msgid "Domain %s is unavailable."
-msgstr ""
+msgstr "Το domain %s δεν είναι διαθέσιμο."
 
 msgid "Domain IP"
-msgstr ""
+msgstr "Domain IP"
 
 msgid "Domain Limit"
-msgstr ""
+msgstr "Όριο Domain"
 
 msgid "Domain Name"
-msgstr ""
+msgstr "Όνομα Domain"
 
 msgid "Domain account"
-msgstr ""
+msgstr " Λογαριασμός domain"
 
 msgid "Domain account expired."
-msgstr ""
+msgstr "Ο λογαρισμός του domain έληξε."
 
 msgid "Domain accounts"
-msgstr ""
+msgstr "Λογαριασμοί domain"
 
 msgid "Domain alias"
-msgstr ""
+msgstr "Ψευδώνυμο domain"
 
 #, php-format
 msgid "Domain alias %s cannot be forwarded on itself."
-msgstr ""
+msgstr "Το ψευδώνυμο του domain %s δεν μπορεί να προωθηθεί στον εαυτό του."
 
 msgid "Domain alias errors"
-msgstr ""
+msgstr "Λάθη στο ψευδώνυμο του domain"
 
 msgid "Domain alias limit"
-msgstr ""
+msgstr "Όριο στο ψευδώνυμο του domain"
 
 msgid "Domain alias name"
-msgstr ""
+msgstr "Όνομα ψευδώνυμου domain"
 
 msgid "Domain alias successfully created."
-msgstr ""
+msgstr "Το ψευδώνυμο του domain δημιουργήθηκε επιτυχώς."
 
 msgid "Domain alias successfully ordered."
 msgstr ""
@@ -2118,13 +2118,13 @@ msgid "Domain new expiration date"
 msgstr ""
 
 msgid "Domain overview"
-msgstr ""
+msgstr "Επισκόπηση domain"
 
 msgid "Domain scheduled for update."
 msgstr ""
 
 msgid "Domain statistics"
-msgstr ""
+msgstr "Στατιστικά domain"
 
 msgid "Domain status is not ok."
 msgstr ""
@@ -2294,7 +2294,7 @@ msgid "Email quota must be a number."
 msgstr ""
 
 msgid "Email settings"
-msgstr ""
+msgstr "Email ρυθμίσεις"
 
 msgid "Email setup"
 msgstr ""
@@ -2409,10 +2409,10 @@ msgid "Fax"
 msgstr "Φαξ"
 
 msgid "Feature"
-msgstr ""
+msgstr "Χαρακτηριστικό"
 
 msgid "Features"
-msgstr ""
+msgstr "Χαρακτηριστικά"
 
 msgid "Female"
 msgstr "Γυναίκα"
@@ -2476,29 +2476,29 @@ msgid "Force retry"
 msgstr ""
 
 msgid "Forward"
-msgstr ""
+msgstr "Προώθηση"
 
 msgid "Forward URL"
-msgstr ""
+msgstr "Προώθηση URL"
 
 #, php-format
 msgid "Forward URL %s is not valid."
-msgstr ""
+msgstr "Η προώθηση του URL %s δεν είναι έγκυρη."
 
 msgid "Forward list is empty."
-msgstr ""
+msgstr "Η λίστα προωθήσεων είναι άδεια."
 
 msgid "Forward mail"
-msgstr ""
+msgstr "Προώθηση mail"
 
 msgid "Forward to"
-msgstr ""
+msgstr "Προώθηση σε"
 
 msgid "Forward to URL"
-msgstr ""
+msgstr "Προώθηση σε  URL"
 
 msgid "Forward type"
-msgstr ""
+msgstr "Τύπος προώθησης"
 
 msgid "Free"
 msgstr "Ελεύθερη"
@@ -2513,16 +2513,16 @@ msgid "Ftp"
 msgstr "Ftp"
 
 msgid "Ftp account"
-msgstr ""
+msgstr "Ftp λογαριασμός"
 
 msgid "Ftp account data"
 msgstr ""
 
 msgid "Ftp accounts"
-msgstr ""
+msgstr "Ftp λογαριασμοί"
 
 msgid "Ftp directories"
-msgstr ""
+msgstr "Ftp κατάλογοι"
 
 msgid "GB"
 msgstr "GB"
@@ -2540,13 +2540,13 @@ msgid "General settings"
 msgstr "Γενικές ρυθμίσεις"
 
 msgid "Generate"
-msgstr ""
+msgstr "Παραγωγή"
 
 msgid "Generate a self-signed certificate"
-msgstr ""
+msgstr "Παραγωγή ενός αυτο-υπογραφόμενου πιστοποιητικού"
 
 msgid "Get a new security code"
-msgstr ""
+msgstr "Λήψη νέου κωδικού ασφαλείας"
 
 msgid "GiB"
 msgstr "GiB"
@@ -2573,10 +2573,10 @@ msgid "HSTS max-age directive value"
 msgstr ""
 
 msgid "HTTP traffic"
-msgstr ""
+msgstr "Κίνηση HTTP"
 
 msgid "Hide aliases"
-msgstr ""
+msgstr "Απόκρυψη ψευδωνύμων"
 
 msgid "High"
 msgstr "Υψηλή"
@@ -2585,7 +2585,7 @@ msgid "Home directory"
 msgstr ""
 
 msgid "Homepage"
-msgstr ""
+msgstr "Αρχική σελίδα"
 
 msgid "Host"
 msgstr ""
@@ -2650,7 +2650,7 @@ msgid "Htaccess user successfully scheduled for addition."
 msgstr "Ο htaccess χρήστης προγραμματίστηκε επιτυχώς για προσθήκη."
 
 msgid "Http traffic"
-msgstr ""
+msgstr "Κίνηση HTTP"
 
 msgid "IP Address"
 msgstr ""
@@ -2702,13 +2702,13 @@ msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr ""
 
 msgid "Images have to be smaller than 500 x 90 pixels."
-msgstr ""
+msgstr "Οι εικόνες πρέπει να είναι μικρότερες από 500 x 90 εικονοστοιχεία."
 
 msgid "Import"
-msgstr ""
+msgstr "Εισαγωγή"
 
 msgid "Import in local repository"
-msgstr ""
+msgstr "Εισαγωγή σε τοπικό αποθετήριο"
 
 msgid "Import new language file"
 msgstr "Εισαγωγή νέου αρχείου γλώσσας"
@@ -2722,7 +2722,7 @@ msgid "In front"
 msgstr ""
 
 msgid "In maintenance mode, only administrators can login."
-msgstr ""
+msgstr "Στην κατάσταση συντήρησης, μόνο οι διαχειριστές μπορούν να συνδεθούν."
 
 msgid "Incl. default mails"
 msgstr ""
@@ -2780,16 +2780,16 @@ msgid "Incorrect username length or syntax."
 msgstr ""
 
 msgid "Info Unavailable"
-msgstr ""
+msgstr "Πληροφορία Μη Διαθέσιμη"
 
 msgid "Install"
-msgstr ""
+msgstr "Εγκατάσταση"
 
 msgid "Install in progress"
-msgstr ""
+msgstr "Εγκατάσταση σε εξέλιξη"
 
 msgid "Install this plugin"
-msgstr ""
+msgstr "Εγκατάσταση αυτού του πρόσθετου"
 
 msgid "Install various Web applications with a few clicks."
 msgstr ""
@@ -2813,7 +2813,7 @@ msgid "Installed in software repository"
 msgstr ""
 
 msgid "Installed on"
-msgstr ""
+msgstr "Εγκατάσταση σε"
 
 msgid "Installing your uploaded package. Please refresh this page."
 msgstr ""
@@ -2891,13 +2891,13 @@ msgid "Invalid username."
 msgstr ""
 
 msgid "Kernel Version"
-msgstr ""
+msgstr "Έκδοση Πυρήνα"
 
 msgid "Kill session"
 msgstr ""
 
 msgid "Label"
-msgstr ""
+msgstr "Ετικέτα"
 
 msgid "Language"
 msgstr "Γλώσσα"
@@ -2933,13 +2933,13 @@ msgid "Last reply date"
 msgstr ""
 
 msgid "Layout"
-msgstr ""
+msgstr "Διάταξη"
 
 msgid "Layout color"
-msgstr ""
+msgstr "Χρώμα διάταξης"
 
 msgid "Layout color successfully updated."
-msgstr ""
+msgstr "Το χρώμα διάταξης ενημερώθηκε επιτυχώς"
 
 msgid "Level"
 msgstr ""
@@ -2957,16 +2957,16 @@ msgid "Link"
 msgstr "Σύνδεσμος"
 
 msgid "Link to authors homepage"
-msgstr ""
+msgstr "Σύνδεσμος στην ιστοσελίδα των συγγραφέων"
 
 msgid "Load (1 Min, 5 Min, 15 Min)"
-msgstr ""
+msgstr "Φόρτος (1 Λεπτό,, 5 Λεπτά, 15 Λεπτά)"
 
 msgid "Loading data..."
-msgstr ""
+msgstr "Φόρτωση δεδομένων..."
 
 msgid "Log entries successfully deleted."
-msgstr ""
+msgstr "Οι καταχωρήσεις στο αρχείο καταγραφής διαγράφηκαν επιτυχώς."
 
 msgid "Login"
 msgstr "Σύνδεση"
@@ -2979,16 +2979,16 @@ msgid "Login data successfully sent to %s."
 msgstr ""
 
 msgid "Login into phpMyAdmin"
-msgstr ""
+msgstr "Σύνδεση στο phpMyAdmin"
 
 msgid "Login password"
-msgstr ""
+msgstr "Κωδικός σύνδεσης"
 
 msgid "Login username"
-msgstr ""
+msgstr "Όνομα χρήστη σύνδεσης"
 
 msgid "Login with your FTP account"
-msgstr ""
+msgstr "Σύνδεση με τον FTP λογαριασμό σας"
 
 msgid "Logo file"
 msgstr "Αρχείο λογότυπου"
@@ -3003,16 +3003,16 @@ msgid "Logout"
 msgstr "Αποσύνδεση"
 
 msgid "Lost password"
-msgstr ""
+msgstr "Απολεσθέντας κωδικός"
 
 msgid "Lost password email"
-msgstr ""
+msgstr "Email απολεσθέντα κωδικού"
 
 msgid "Lost password email templates were updated."
-msgstr ""
+msgstr "Τα πρότυπα email για τον απολεσθέντα κωδικό ενημερώθηκαν."
 
 msgid "Lost password link"
-msgstr ""
+msgstr "Σύνδεσμος απολεσθέντα κωδικού"
 
 msgid "Lostpw link"
 msgstr ""
@@ -3122,19 +3122,19 @@ msgid "Memory information"
 msgstr ""
 
 msgid "Message"
-msgstr ""
+msgstr "Μήνυμα"
 
 msgid "Message template"
-msgstr ""
+msgstr "Πρότυπο μηνύματος"
 
 msgid "Message template info"
-msgstr ""
+msgstr "Πληροφορίες πρότυπου μηνύματος"
 
 msgid "Message to reseller before deleting the software"
 msgstr ""
 
 msgid "Messages"
-msgstr ""
+msgstr "Μήνυματα"
 
 msgid "MiB"
 msgstr "MiB"
@@ -3330,10 +3330,10 @@ msgid "Not Set"
 msgstr ""
 
 msgid "Not found."
-msgstr ""
+msgstr "Δεν βρέθηκε."
 
 msgid "Not provided"
-msgstr ""
+msgstr "Δεν παρέχεται"
 
 msgid "Not used"
 msgstr ""
@@ -3342,10 +3342,10 @@ msgid "Nothing found - sorry"
 msgstr ""
 
 msgid "Nothing has been changed."
-msgstr ""
+msgstr "Δεν έχει γίνει καμία αλλαγή."
 
 msgid "Nothing has been deleted."
-msgstr ""
+msgstr "Δεν έχει γίνει καμία διαγραφή."
 
 msgid "Notices, Warnings and Errors"
 msgstr ""
@@ -3363,7 +3363,7 @@ msgid "Only 'tar.gz' archives are accepted."
 msgstr ""
 
 msgid "Only administrators can login when maintenance mode is activated."
-msgstr ""
+msgstr "Μόνο οι διαχειριστές μπορούν να συνδεθούν όταν η κατάσταση συντήρησης έχει ενεργοποιηθεί."
 
 msgid "Only exec"
 msgstr ""
@@ -3396,7 +3396,7 @@ msgid "Operation cancelled: %s"
 msgstr ""
 
 msgid "Optional"
-msgstr ""
+msgstr "Προαιρετικό"
 
 msgid "Order"
 msgstr ""
@@ -3460,7 +3460,7 @@ msgid "PHP settings"
 msgstr ""
 
 msgid "POP3/IMAP"
-msgstr ""
+msgstr "POP3/IMAP"
 
 msgid "POP3/IMAP in"
 msgstr ""
@@ -3520,7 +3520,7 @@ msgid "Parent directory"
 msgstr ""
 
 msgid "Partition"
-msgstr ""
+msgstr "Διαμέρισμα"
 
 msgid "Password"
 msgstr "Κωδικός"
@@ -3578,7 +3578,7 @@ msgid "Passwords do not match."
 msgstr ""
 
 msgid "Path"
-msgstr ""
+msgstr "Διαδρομή"
 
 msgid "Pending tasks"
 msgstr ""
@@ -3668,27 +3668,27 @@ msgid "Please type your message."
 msgstr ""
 
 msgid "Plugin"
-msgstr ""
+msgstr "Πρόσθετο"
 
 #, php-format
 msgid "Plugin %s activated."
-msgstr ""
+msgstr "Το πρόσθετο %s ενεργοποιήθηκε."
 
 #, php-format
 msgid "Plugin %s cannot be activated."
-msgstr ""
+msgstr "Το πρόσθετο %s δεν μπορεί να ενεργοποιηθεί."
 
 #, php-format
 msgid "Plugin %s cannot be deactivated."
-msgstr ""
+msgstr "Το πρόσθετο %s δεν μπορεί να απενεργοποιηθεί."
 
 #, php-format
 msgid "Plugin %s cannot be deleted."
-msgstr ""
+msgstr "Το πρόσθετο %s δεν μπορεί να διαγραφεί."
 
 #, php-format
 msgid "Plugin %s cannot be installed."
-msgstr ""
+msgstr "Το πρόσθετο %s δεν μπορεί να εγκατασταθεί."
 
 #, php-format
 msgid "Plugin %s cannot be protected."
@@ -3700,11 +3700,11 @@ msgstr ""
 
 #, php-format
 msgid "Plugin %s cannot be uninstalled."
-msgstr ""
+msgstr "Το πρόσθετο %s δεν μπορεί να απεγκατασταθεί."
 
 #, php-format
 msgid "Plugin %s cannot be updated."
-msgstr ""
+msgstr "Το πρόσθετο %s δεν μπορεί να ενημερωθεί."
 
 #, php-format
 msgid "Plugin %s deactivated."
@@ -3811,12 +3811,12 @@ msgid "Plugin activation has failed: %s"
 msgstr ""
 
 msgid "Plugin archive"
-msgstr ""
+msgstr "Αρχείο πρόσθετου"
 
 #, php-format
 msgid ""
 "Plugin archive exceeds the maximum upload size (%s). Max upload size is: %s."
-msgstr ""
+msgstr "Το αρχείο πρόσθετου ξεπερνά το μέγιστο μέγεθος μεταγόρτωσης (%s). Το μέγιστο μέγεθος είναι: %s."
 
 #, php-format
 msgid "Plugin change has failed: %s"
@@ -3969,7 +3969,7 @@ msgid "Quota in MiB (Max: %s)"
 msgstr ""
 
 msgid "RAM"
-msgstr ""
+msgstr "RAM"
 
 msgid "Read ticket"
 msgstr ""
@@ -5185,7 +5185,7 @@ msgid "Upload now"
 msgstr "Μεταφόρτωση τώρα"
 
 msgid "Uptime"
-msgstr ""
+msgstr "Χρόνος λειτουργίας"
 
 msgid "Usage of dot in domain name labels is prohibited."
 msgstr ""
