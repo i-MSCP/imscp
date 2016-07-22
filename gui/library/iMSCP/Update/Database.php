@@ -56,7 +56,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 238;
+    protected $lastUpdate = 239;
 
     /**
      * Singleton - Make new unavailable
@@ -166,7 +166,10 @@ class iMSCP_Update_Database extends iMSCP_Update
                 $this->dbConfig['DATABASE_REVISION'] = $revision;
                 $pdo->commit();
             } catch (Exception $e) {
-                $pdo->rollBack();
+                if ($pdo->inTransaction()) {
+                    $pdo->rollBack();
+                }
+
                 $this->setError(sprintf('Database update %s failed: %s', $revision, $e->getMessage()));
                 return false;
             }
@@ -243,22 +246,22 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     function removeDuplicateRowsOnColumns($table, $columns)
     {
-        $tmpTable = quoteIdentifier($table . '_tmp_no_dup');
-        $table = quoteIdentifier($table);
-        if (is_array($columns)) {
-            $columns = implode(',', array_map('quoteIdentifier', $columns));
-        } else {
-            $columns = quoteIdentifier($columns);
-        }
+        $originTable = quoteIdentifier($table);
+        $tableWithDup = quoteIdentifier($table . '_tmp1');
+        $tableWithoutDup = quoteIdentifier($table . '_tmp2');
+        $columns = implode(',', array_map('quoteIdentifier', (array)$columns));
 
         exec_query(
             "
-                CREATE TABLE $tmpTable AS SELECT * FROM $table GROUP BY $columns;
-                DELETE FROM $table;
-                INSERT INTO $table SELECT * FROM $tmpTable;
-                DROP TABLE $tmpTable;
+                CREATE TABLE $tableWithoutDup LIKE $originTable;
+                INSERT $tableWithoutDup SELECT * FROM $originTable GROUP BY $columns;
             "
         );
+
+        $this->renameTable($originTable, $tableWithDup);
+        $this->renameTable($tableWithoutDup, $originTable);
+        $this->dropTable($tableWithDup);
+        return null;
     }
 
     /**
@@ -3473,7 +3476,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      * - Add domain_aliasses.host_forward column
      * - Add subdomain.subdomain_host_forward column
      * - Add subdomain_alias.subdomain_alias_host_forward column
-     * 
+     *
      * @return array SQL statements to be executed
      */
     protected function r235()
@@ -3501,7 +3504,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Remove support for ftp URL redirect
+     * Remove support for ftp URL redirects
      *
      * @return array SQL statements to be executed
      */
@@ -3521,7 +3524,8 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Add compound unique index on the domain_traffic table
+     * #IP-1587 Slow query on domain_traffic table when admin or reseller want to login into customer's area
+     * - Add compound unique index on the domain_traffic table to avoid slow query and duplicate entries
      *
      * @return string SQL statement to be executed
      */
@@ -3532,10 +3536,9 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * #IP-1587 Slow query when admin or reseller want to login into customer's area
+     * Update domain_traffic table schema
      * - Disallow NULL value on domain_id and dtraff_time columns
      * - Change default value for dtraff_web, dtraff_ftp, dtraff_mail domain_traffic columns (NULL to 0)
-     * - Add monthly_domain_traffic view
      *
      * @return array SQL statements to be executed
      */
@@ -3543,7 +3546,6 @@ class iMSCP_Update_Database extends iMSCP_Update
     {
         return array(
             "
-                
               ALTER TABLE `domain_traffic`
               CHANGE `domain_id` `domain_id` INT(10) UNSIGNED NOT NULL,
               CHANGE `dtraff_time` `dtraff_time` BIGINT(20) UNSIGNED NOT NULL,
@@ -3551,24 +3553,17 @@ class iMSCP_Update_Database extends iMSCP_Update
               CHANGE `dtraff_ftp` `dtraff_ftp` BIGINT(20) UNSIGNED NULL DEFAULT 0,
               CHANGE `dtraff_mail` `dtraff_mail` BIGINT(20) UNSIGNED NULL DEFAULT 0,
               CHANGE `dtraff_pop` `dtraff_pop` BIGINT(20) UNSIGNED NULL DEFAULT 0
-            ",
-            "
-                CREATE OR REPLACE SQL SECURITY INVOKER VIEW `monthly_domain_traffic` AS SELECT
-                    `domain_id`,
-                    SUM(`dtraff_web`) AS `web_traffic`,
-                    SUM(`dtraff_ftp`) AS `ftp_traffic`,
-                    SUM(`dtraff_mail`) AS `smtp_traffic`,
-                    SUM(`dtraff_pop`) AS `pop_traffic`,
-                    SUM(`dtraff_web`) + SUM(`dtraff_ftp`) + SUM(`dtraff_mail`) + SUM(`dtraff_pop`) AS `total_traffic`
-                FROM `domain_traffic`
-                WHERE (
-                    `dtraff_time` BETWEEN
-                        unix_timestamp(((LAST_DAY(CURDATE()) + INTERVAL 1 day) - INTERVAL 1 MONTH ))
-                        AND
-                        unix_timestamp((LAST_DAY(CURDATE()) + INTERVAL 1 DAY ))
-                )
-                GROUP BY `domain_id`;
             "
         );
+    }
+
+    /**
+     * Drop monthly_domain_traffic view which was added in update r238 and removed later on
+     *
+     * @return string SQL statement to be executed
+     */
+    protected function r239()
+    {
+        return 'DROP VIEW IF EXISTS monthly_domain_traffic';
     }
 }

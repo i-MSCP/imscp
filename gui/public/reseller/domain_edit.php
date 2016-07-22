@@ -103,9 +103,9 @@ function reseller_getDomainProps($domainId)
     );
     $data = $stmt->fetchRow();
 
-    $stmt = exec_query('SELECT total_traffic FROM monthly_domain_traffic WHERE domain_id = ?', $domainId);
-    $row = $stmt->fetchRow();
-    $data['domainTraffic'] = $row['total_traffic'];
+
+    $trafficData = shared_getCustomerMonthlyTrafficData($domainId);
+    $data['domainTraffic'] = $trafficData[4];
     return $data;
 }
 

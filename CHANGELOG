@@ -17,9 +17,8 @@ CONTRIB
     Removed: 10_named_tuning2.pl listener (replaced by 10_named_override_default_ns_rr.pl listener)
 
 DATABASE
+    Added: Compound unique index on the domain_traffic table to avoid slow query and duplicate entries
     Added: Compound unique key on the `php_ini' table
-    Added: Compound unique index on the domain_traffic table
-    Added: 'monthly_domain_traffic` view
     Changed: Default value for the dtraff_web, dtraff_ftp, dtraff_mail domain_traffic columns (NULL to 0)
     Fixed: Disallow NULL value on domain_traffic.domain_id and domain_traffic.dtraff_time columns
 
@@ -29,6 +28,7 @@ FRONTEND
     Fixed: Customer PHP permissions are not synced with reseller PHP permissions in some contexts
     Fixed: IPv6 - Possible duplicate entries - It is possible to add an IPv6 twice (uncompressed and compressed)
     Fixed: PHP INI entry for main domains must be created even if PHP editor is not enabled
+    Fixed: Prevent rollback attempts when not in transaction (iMSCP_Update_Database)
     Fixed: `SELECT' placeholder is not parsed in ip_manage.php (admin level)
     Fixed: Running the frontEnd through PHP CGI using spawn-fcgi lead to problems with opcode cache (cache not shared)
     Removed: Support for FTP URL (Redirect feature)

@@ -215,14 +215,18 @@ function client_generateFeatureStatus($tpl)
 function client_makeTrafficUsage($domainId)
 {
     $domainProperties = get_domain_default_props($_SESSION['user_id']);
-    $stmt = exec_query('SELECT total_traffic FROM monthly_domain_traffic WHERE domain_id = ?', $domainId);
 
-    if ($stmt->rowCount()) {
-        $row = $stmt->fetchRow();
-        $totalTraffic = ($row['total_traffic'] / 1024) / 1024;
+
+    $trafficData = shared_getCustomerMonthlyTrafficData($domainId);
+    $totalTraffic = $trafficData[4];
+    unset($trafficData);
+
+    if($totalTraffic > 0) {
+        $totalTraffic = ($totalTraffic / 1024) / 1024;
     } else {
         $totalTraffic = 0;
     }
+    unset($trafficData);
 
     if ($domainProperties['domain_traffic_limit'] == 0) {
         $percent = 0;

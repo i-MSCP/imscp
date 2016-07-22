@@ -1523,6 +1523,45 @@ function make_usage_vals($amount, $total)
 }
 
 /**
+ * Get monthly traffic data for a customer
+ *
+ * @param int $domainId Customer main domain ID
+ * @return array An array container Web, FTP, SMTP, POP and total traffic (for the current month)
+ */
+function shared_getCustomerMonthlyTrafficData($domainId)
+{
+    $stmt = exec_query(
+        '
+          SELECT
+            SUM(dtraff_web) AS dtraff_web,
+            SUM(dtraff_ftp) AS dtraff_ftp,
+            SUM(dtraff_mail) AS dtraff_mail,
+            SUM(dtraff_pop) AS dtraff_pop
+          FROM domain_traffic WHERE `dtraff_time` BETWEEN
+            UNIX_TIMESTAMP(((LAST_DAY(CURDATE()) + INTERVAL 1 DAY) - INTERVAL 1 MONTH ))
+            AND
+            UNIX_TIMESTAMP((LAST_DAY(CURDATE()) + INTERVAL 1 DAY ))
+          AND
+            domain_id = ?
+        ',
+        $domainId
+    );
+
+    if ($stmt->rowCount()) {
+        $row = $stmt->fetchRow();
+        $webTraffic = $row['dtraff_web'];
+        $ftpTraffic = $row['dtraff_ftp'];
+        $smtpTraffic = $row['dtraff_mail'];
+        $popTraffic = $row['dtraff_pop'];
+        $totalTraffic = $row['dtraff_web'] + $row['dtraff_ftp'] + $row['dtraff_mail'] + $row['dtraff_pop'];
+    } else {
+        $webTraffic = $ftpTraffic = $smtpTraffic = $popTraffic = $totalTraffic = 0;
+    }
+
+    return array($webTraffic, $ftpTraffic, $smtpTraffic, $popTraffic, $totalTraffic);
+}
+
+/**
  * Get statistiques for the given user
  *
  * @param int $adminId User unique identifier
@@ -1532,8 +1571,11 @@ function shared_getCustomerStats($adminId)
 {
     $stmt = exec_query(
         '
-            SELECT domain_id, IFNULL(domain_disk_usage, 0) AS diskspace_usage,
-              IFNULL(domain_traffic_limit, 0) AS monthly_traffic_limit, IFNULL(domain_disk_limit, 0) AS diskspace_limit,
+            SELECT
+              domain_id,
+              IFNULL(domain_disk_usage, 0) AS diskspace_usage,
+              IFNULL(domain_traffic_limit, 0) AS monthly_traffic_limit,
+              IFNULL(domain_disk_limit, 0) AS diskspace_limit,
               admin_name
             FROM domain INNER JOIN admin on(admin_id = domain_admin_id)
             WHERE domain_admin_id = ? ORDER BY domain_name
@@ -1546,33 +1588,14 @@ function shared_getCustomerStats($adminId)
     }
 
     $row = $stmt->fetchRow();
-    $diskspaceUsage = $row['diskspace_usage'];
-    $monthlyTrafficLimit = $row['monthly_traffic_limit'];
-    $diskspaceLimit = $row['diskspace_limit'];
-    $adminName = $row['admin_name'];
-    $domainId = $row['domain_id'];
-    $stmt = exec_query(
-        '
-          SELECT web_traffic, ftp_traffic, smtp_traffic, pop_traffic, total_traffic
-          FROM monthly_domain_traffic WHERE domain_id = ?
-        ',
-        $domainId
+
+    list($webTraffic, $ftpTraffic, $smtpTraffic, $popTraffic, $totalTraffic) = shared_getCustomerMonthlyTrafficData(
+        $row['domain_id']
     );
 
-    if ($stmt->rowCount()) {
-        $row = $stmt->fetchRow();
-        $webTraffic = $row['web_traffic'];
-        $ftpTraffic = $row['ftp_traffic'];
-        $smtpTraffic = $row['smtp_traffic'];
-        $popTraffic = $row['pop_traffic'];
-        $totalTraffic = $row['total_traffic'];
-    } else {
-        $webTraffic = $ftpTraffic = $smtpTraffic = $popTraffic = $totalTraffic = 0;
-    }
-
     return array(
-        $adminName, $domainId, $webTraffic, $ftpTraffic, $smtpTraffic, $popTraffic, $totalTraffic, $diskspaceUsage,
-        $monthlyTrafficLimit, $diskspaceLimit
+        $row['admin_name'], $row['domain_id'], $webTraffic, $ftpTraffic, $smtpTraffic, $popTraffic, $totalTraffic,
+        $row['diskspace_usage'], $row['monthly_traffic_limit'], $row['diskspace_limit']
     );
 }
 

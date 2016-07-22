@@ -95,13 +95,9 @@ function reseller_generatePage($tpl, $domainId)
     }
 
     // Get total monthly traffic usage in bytes
-    $stmt = exec_query('SELECT total_traffic FROM monthly_domain_traffic WHERE domain_id = ?', $domainId);
-    if ($stmt->rowCount()) {
-        $row = $stmt->fetchRow();
-        $trafficUsageBytes = $row['traffic_total'];
-    } else {
-        $trafficUsageBytes = 0;
-    }
+    $trafficData = shared_getCustomerMonthlyTrafficData($domainId);
+    $trafficUsageBytes = $trafficData[4];
+    unset($trafficData);
 
     $trafficLimitBytes = $domainData['domain_traffic_limit'] * 1048576;
     $diskspaceLimitBytes = $domainData['domain_disk_limit'] * 1048576;
