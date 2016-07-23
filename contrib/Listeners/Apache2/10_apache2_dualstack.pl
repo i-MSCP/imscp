@@ -66,7 +66,7 @@ sub addVhostIPs
     }
 
     return 0 if $APACHE24;
-    
+
     @IPS = uniq( @IPS, @ADDITIONAL_IPS, @{$PER_DOMAIN_ADDITIONAL_IPS{$data->{'DOMAIN_NAME'}}} );
 
     if ($data->{'SSL_SUPPORT'}) {
@@ -88,7 +88,7 @@ sub addIPList
 
 my $eventManager = iMSCP::EventManager->getInstance();
 $eventManager->register( 'onAddHttpdVhostIps', \&addVhostIPs );
-$eventManager->register( 'beforeHttpdAddIps', \&addIPList ) if $APACHE24;
+$eventManager->register( 'beforeHttpdAddIps', \&addIPList ) unless $APACHE24;
 
 1;
 __END__
