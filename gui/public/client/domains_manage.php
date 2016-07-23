@@ -350,7 +350,7 @@ function generateSubdomainsList($tpl)
     $stmt1 = exec_query(
         "
             SELECT t1.subdomain_id, t1.subdomain_name, t1.subdomain_mount, t1.subdomain_status,
-                t1.subdomain_url_forward, t2.domain_name, t3.status AS ssl_status, 'sub' AS subdomain_type
+                t1.subdomain_url_forward, t2.domain_name, t3.status AS ssl_status
             FROM subdomain AS t1 JOIN domain AS t2 USING(domain_id)
             LEFT JOIN ssl_certs AS t3 ON(t1.subdomain_id = t3.domain_id AND t3.domain_type = 'sub')
             WHERE t1.domain_id = ? ORDER BY t1.subdomain_name
@@ -362,8 +362,7 @@ function generateSubdomainsList($tpl)
     $stmt2 = exec_query(
         "
             SELECT t1.subdomain_alias_id, t1.subdomain_alias_name, t1.subdomain_alias_mount,
-                t1.subdomain_alias_url_forward, t1.subdomain_alias_status, t2.alias_name, t3.status AS ssl_status,
-                'subals' AS subdomain_type
+                t1.subdomain_alias_url_forward, t1.subdomain_alias_status, t2.alias_name, t3.status AS ssl_status
             FROM subdomain_alias AS t1 JOIN domain_aliasses AS t2 USING(alias_id)
             LEFT JOIN ssl_certs AS t3 ON(t1.subdomain_alias_id = t3.domain_id AND t3.domain_type = 'alssub')
             WHERE t2.domain_id = ?
