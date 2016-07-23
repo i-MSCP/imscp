@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-22 04:57+0200\n"
-"PO-Revision-Date: 2016-07-18 11:44+0000\n"
-"Last-Translator: Vitaliy Zhukov <DragonZX@yandex.ru>\n"
+"POT-Creation-Date: 2016-07-23 17:50+0200\n"
+"PO-Revision-Date: 2016-07-23 15:50+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/i-mscp/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -818,6 +818,9 @@ msgstr "Позволяет распределить точку монтиров�
 
 msgid "Already in use"
 msgstr "Уже используется"
+
+msgid "Alternate URL to reach your website."
+msgstr ""
 
 msgid "Alternative URL to reach your website"
 msgstr "Альтернативный URL для доступа к сайту"
