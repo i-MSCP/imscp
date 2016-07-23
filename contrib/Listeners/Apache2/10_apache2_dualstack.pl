@@ -25,7 +25,7 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 use iMSCP::Net;
-use Servers::Httpd;
+use Servers::httpd;
 use List::MoreUtils qw(uniq);
 use version;
 
@@ -50,7 +50,8 @@ my @ADDITIONAL_IPS = ( '<IP1>', '<IP2>' );
 ## Please, don't edit anything below this line
 #
 
-my $APACHE24 = version->parse( Servers::Httpd->factory()->{'config'}->{'HTTPD_VERSION'} ) >= version->parse( '2.4.0' );
+my $APACHE_VERSION = Servers::httpd->factory()->{'config'}->{'HTTPD_VERSION'};
+my $IS_APACHE24 = version->parse( "$APACHE_VERSION" ) >= version->parse( '2.4.0' );
 my @IPS = ();
 my @SSL_IPS = ();
 
@@ -65,7 +66,7 @@ sub addVhostIPs
         push @{$domainIps}, @{$PER_DOMAIN_ADDITIONAL_IPS{$data->{'DOMAIN_NAME'}}};
     }
 
-    return 0 if $APACHE24;
+    return 0 if $IS_APACHE24;
 
     @IPS = uniq( @IPS, @ADDITIONAL_IPS, @{$PER_DOMAIN_ADDITIONAL_IPS{$data->{'DOMAIN_NAME'}}} );
 
@@ -88,7 +89,7 @@ sub addIPList
 
 my $eventManager = iMSCP::EventManager->getInstance();
 $eventManager->register( 'onAddHttpdVhostIps', \&addVhostIPs );
-$eventManager->register( 'beforeHttpdAddIps', \&addIPList ) unless $APACHE24;
+$eventManager->register( 'beforeHttpdAddIps', \&addIPList ) unless $IS_APACHE24;
 
 1;
 __END__
