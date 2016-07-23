@@ -25,22 +25,18 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 use iMSCP::Net;
+use Servers::Httpd;
 use List::MoreUtils qw(uniq);
+use version;
 
 #
 ## Configuration variables
 #
 
-# Port to use for http
-my $httpPort = 80;
-
-# Port to use for https
-my $httpsPort = 443;
-
 # Parameter that allows to add one or many IPs to the Apache2 vhost file of the specified domains
 # Please replace the entries below by your own entries
 # Be aware that invalid or unallowed IP addresses are ignored silently
-my %perDomainAdditionalIPs = (
+my %PER_DOMAIN_ADDITIONAL_IPS = (
     '<domain1.tld>' => [ '<IP1>', '<IP2>' ],
     '<domain2.tld>' => [ '<IP1>', '<IP2>' ]
 );
@@ -48,58 +44,40 @@ my %perDomainAdditionalIPs = (
 # Parameter that allows to add one or many IPs to all Apache2 vhosts files
 # Please replace the entries below by your own entries
 # Be aware that invalid or unallowed IP addresses are ignored silently
-my @additionalIPs = ( '<IP1>', '<IP2>' );
+my @ADDITIONAL_IPS = ( '<IP1>', '<IP2>' );
 
 #
 ## Please, don't edit anything below this line
 #
 
+my $APACHE24 = version->parse( Servers::Httpd->factory()->{'config'}->{'HTTPD_VERSION'} ) >= version->parse( '2.4.0' );
 my @IPS = ();
 my @SSL_IPS = ();
 
-# Listener responsible to add additional IPs in Apache2 vhost files, once they was built by i-MSCP
-sub addIPs
+# Listener that is responsible to add additional IPs in Apache2 vhost files
+sub addVhostIPs
 {
-    my ($cfgTpl, $tplName, $data) = @_;
+    my ($data, $domainIps) = @_;
 
-    return 0 unless exists $data->{'DOMAIN_NAME'} && $tplName =~ /^domain(?:_(?:disabled|redirect))?(_ssl)?\.tpl$/;
+    push @{$domainIps}, @ADDITIONAL_IPS;
 
-    my $sslVhost = defined $1;
-    my $port = $sslVhost ? $httpsPort : $httpPort;
-    my $net = iMSCP::Net->getInstance();
-
-    # All vhost IPs and per domain IPS
-    my @ipList = uniq map { $net->normalizeAddr( $_ ) } grep {
-            $net->getAddrType( $_ ) =~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/
-        } (
-            @additionalIPs,
-            ($perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} ? @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} : ())
-        );
-
-    return 0 unless @ipList;
-
-    my @formattedIPs = ();
-    for my $ip(@ipList) {
-        if ($net->getAddrVersion( $ip ) eq 'ipv6') {
-            push @formattedIPs, "[$ip]:$port";
-        } else {
-            push @formattedIPs, "$ip:$port";
-        }
+    if (exists $PER_DOMAIN_ADDITIONAL_IPS{$data->{'DOMAIN_NAME'}}) {
+        push @{$domainIps}, @{$PER_DOMAIN_ADDITIONAL_IPS{$data->{'DOMAIN_NAME'}}};
     }
 
-    $$cfgTpl =~ s/(<VirtualHost.*?)>/$1 @formattedIPs>/;
-    undef @formattedIPs;
+    return 0 if $APACHE24;
+    
+    @IPS = uniq( @IPS, @ADDITIONAL_IPS, @{$PER_DOMAIN_ADDITIONAL_IPS{$data->{'DOMAIN_NAME'}}} );
 
-    unless ($sslVhost) {
-        @IPS = uniq( @IPS, @ipList );
-    } else {
-        @SSL_IPS = uniq( @SSL_IPS, @ipList );
+    if ($data->{'SSL_SUPPORT'}) {
+        @SSL_IPS = uniq( @SSL_IPS, @ADDITIONAL_IPS, @{$PER_DOMAIN_ADDITIONAL_IPS{$data->{'DOMAIN_NAME'}}} );
     }
 
     0;
 }
 
-# Listener responsible to make the Httpd server implementation aware of additional IPs
+# Listener that is responsible to make the Apache Httpd server (version < 2.4)
+# aware of additional IPs
 sub addIPList
 {
     my $data = $_[1];
@@ -109,8 +87,8 @@ sub addIPList
 }
 
 my $eventManager = iMSCP::EventManager->getInstance();
-$eventManager->register( 'afterHttpdBuildConfFile', \&addIPs );
-$eventManager->register( 'beforeHttpdAddIps', \&addIPList );
+$eventManager->register( 'onAddHttpdVhostIps', \&addVhostIPs );
+$eventManager->register( 'beforeHttpdAddIps', \&addIPList ) if $APACHE24;
 
 1;
 __END__

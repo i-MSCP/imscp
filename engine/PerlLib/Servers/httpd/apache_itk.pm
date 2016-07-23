@@ -44,6 +44,7 @@ use iMSCP::ProgramFinder;
 use iMSCP::Rights;
 use iMSCP::TemplateParser;
 use iMSCP::Service;
+use List::MoreUtils qw(uniq);
 use Scalar::Defer;
 use version;
 use parent 'Common::SingletonClass';
@@ -273,15 +274,22 @@ sub disableDmn
 
     $self->setData( $data );
 
+    my $net = iMSCP::Net->getInstance();
     my $isApache24 = version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' );
+
+    my @domainIPs = ($main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}, $data->{'DOMAIN_IP'});
+    $rs = $self->{'eventManager'}->trigger( 'onAddHttpdVhostIps', $data, \@domainIPs );
+    return $rs if $rs;
+
+    # Remove duplicate IP if any
+    @domainIPs = uniq( map { $net->normalizeAddr( $_ ) } @domainIPs );
 
     $self->setData(
         {
             BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
             AUTHZ_ALLOW_ALL   => $isApache24 ? 'Require all granted' : 'Allow from all',
             HTTPD_LOG_DIR     => $self->{'config'}->{'HTTPD_LOG_DIR'},
-            DOMAIN_IP         => iMSCP::Net->getInstance()->getAddrVersion( $data->{'DOMAIN_IP'} ) eq 'ipv4'
-                ? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]",
+            DOMAIN_IPS        =>  join(' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]") . ':80' } @domainIPs),
             USER_WEB_DIR      => $main::imscpConfig{'USER_WEB_DIR'}
         }
     );
@@ -308,7 +316,12 @@ sub disableDmn
     # Create https vhost (or delete it if SSL is disabled)
 
     if ($data->{'SSL_SUPPORT'}) {
-        $self->setData( { CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" } );
+        $self->setData(
+            {
+                CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem",
+                DOMAIN_IPS  =>  join(' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]") . ':443' } @domainIPs),
+            }
+        );
         $rs = $self->buildConfFile(
             "$self->{'apacheTplDir'}/domain_disabled_ssl.tpl",
             $data,
@@ -1378,7 +1391,15 @@ sub _addCfg
 
     $self->setData( $data );
 
+    my $net = iMSCP::Net->getInstance();
     my $isApache24 = version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' );
+
+    my @domainIPs = ($main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}, $data->{'DOMAIN_IP'});
+    $rs = $self->{'eventManager'}->trigger( 'onAddHttpdVhostIps', $data, \@domainIPs );
+    return $rs if $rs;
+
+    # Remove duplicate IP if any
+    @domainIPs = uniq( map { $net->normalizeAddr( $_ ) } @domainIPs );
 
     $self->setData(
         {
@@ -1387,8 +1408,7 @@ sub _addCfg
             HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
             AUTHZ_ALLOW_ALL        => $isApache24 ? 'Require all granted' : 'Allow from all',
             AUTHZ_DENY_ALL         => $isApache24 ? 'Require all denied' : 'Deny from all',
-            DOMAIN_IP              => iMSCP::Net->getInstance()->getAddrVersion( $data->{'DOMAIN_IP'} ) eq 'ipv4'
-                ? $data->{'DOMAIN_IP'} : "[$data->{'DOMAIN_IP'}]"
+            DOMAIN_IP              => join(' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]") . ':80' } @domainIPs)
         }
     );
 
@@ -1404,9 +1424,7 @@ sub _addCfg
     }
 
     $rs = $self->buildConfFile(
-        "$self->{'apacheTplDir'}/".(
-                ($data->{'HSTS_SUPPORT'} || $data->{'FORWARD'} ne 'no') ? 'domain_redirect.tpl' : 'domain.tpl'
-        ),
+        "$self->{'apacheTplDir'}/".(($data->{'HSTS_SUPPORT'} || $data->{'FORWARD'} ne 'no') ? 'domain_redirect.tpl' : 'domain.tpl'),
         $data,
         { destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
     );
@@ -1419,6 +1437,7 @@ sub _addCfg
         $self->setData(
             {
                 CERTIFICATE  => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem",
+                DOMAIN_IPS   => join(' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]") . ':443' } @domainIPs),
                 FORWARD      => $data->{'FORWARD'},
                 FORWARD_TYPE => $data->{'FORWARD_TYPE'}
             }
