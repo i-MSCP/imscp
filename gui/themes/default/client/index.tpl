@@ -10,14 +10,6 @@
         <td>{TR_ACCOUNT_NAME} / {TR_DOMAIN_NAME}</td>
         <td>{DOMAIN_NAME}</td>
     </tr>
-    <!-- BDP: domain_alternative_url -->
-    <tr>
-        <td>{TR_DOMAIN_ALTERNATIVE_URL}</td>
-        <td>
-            <a id="dmn_tmp_access" href="{HREF_DOMAIN_ALTERNATIVE_URL}" target="_blank">{HREF_DOMAIN_ALTERNATIVE_URL}</a>
-        </td>
-    </tr>
-    <!-- EDP: domain_alternative_url -->
     <tr>
         <td>{TR_CREATE_DATE}</td>
         <td>{CREATE_DATE}</td>
