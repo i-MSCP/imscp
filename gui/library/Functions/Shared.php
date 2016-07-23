@@ -367,6 +367,9 @@ function update_reseller_c_props($resellerId)
  */
 function change_domain_status($customerId, $action)
 {
+    ignore_user_abort(true);
+    set_time_limit(0);
+
     $cfg = iMSCP_Registry::get('config');
 
     if ($action == 'deactivate') {
@@ -468,6 +471,9 @@ function change_domain_status($customerId, $action)
  */
 function sql_delete_user($dmnId, $userId)
 {
+    ignore_user_abort(true);
+    set_time_limit(0);
+
     $stmt = exec_query(
         '
             SELECT sqlu_name, sqlu_host, sqld_name FROM sql_user INNER JOIN sql_database USING(sqld_id)
@@ -526,6 +532,9 @@ function sql_delete_user($dmnId, $userId)
  */
 function delete_sql_database($dmnId, $dbId)
 {
+    ignore_user_abort(true);
+    set_time_limit(0);
+
     $stmt = exec_query('SELECT sqld_name FROM sql_database WHERE domain_id = ? AND sqld_id = ?', array($dmnId, $dbId));
     if (!$stmt->rowCount()) {
         return false;
@@ -571,6 +580,9 @@ function delete_sql_database($dmnId, $dbId)
  */
 function deleteCustomer($customerId, $checkCreatedBy = false)
 {
+    ignore_user_abort(true);
+    set_time_limit(0);
+
     // Get username, uid and gid of domain user
     $query = '
         SELECT admin_name, created_by, domain_id FROM admin INNER JOIN domain ON(domain_admin_id = admin_id)
@@ -715,6 +727,9 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
  */
 function deleteDomainAlias($aliasId, $aliasName)
 {
+    ignore_user_abort(true);
+    set_time_limit(0);
+
     $db = iMSCP_Database::getInstance();
 
     try {
@@ -964,6 +979,9 @@ function imscp_getResellerProperties($resellerId, $forceReload = false)
  */
 function update_reseller_props($resellerId, $props)
 {
+    ignore_user_abort(true);
+    set_time_limit(0);
+
     if (empty($props)) {
         return null;
     }
@@ -1021,6 +1039,9 @@ function update_reseller_props($resellerId, $props)
  */
 function sync_mailboxes_quota($domainId, $newQuota)
 {
+    ignore_user_abort(true);
+    set_time_limit(0);
+
     if ($newQuota == 0) {
         return;
     }
