@@ -1408,7 +1408,7 @@ sub _addCfg
             HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
             AUTHZ_ALLOW_ALL        => $isApache24 ? 'Require all granted' : 'Allow from all',
             AUTHZ_DENY_ALL         => $isApache24 ? 'Require all denied' : 'Deny from all',
-            DOMAIN_IP              => join(' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]") . ':80' } @domainIPs)
+            DOMAIN_IPS              => join(' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]") . ':80' } @domainIPs)
         }
     );
 
