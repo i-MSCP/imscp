@@ -55,6 +55,8 @@ function generateDomainRedirectAndEditLink($id, $status, $redirectUrl)
  */
 function generateDomainsList($tpl)
 {
+    $cfg = iMSCP_Registry::get('config');
+
     $stmt = exec_query(
         "
             SELECT t1.domain_id, t1.domain_name, t1.domain_status, t1.url_forward, t2.status as ssl_status
@@ -69,10 +71,13 @@ function generateDomainsList($tpl)
         list($redirectUrl, $editLink, $edit) = generateDomainRedirectAndEditLink($row['domain_id'], $row['domain_status'], $row['url_forward']);
         $domainName = decode_idna($row['domain_name']);
         $redirectUrl = decode_idna($redirectUrl);
-
+        $alternateUrlHost = $cfg['SYSTEM_USER_PREFIX'] . ($cfg['SYSTEM_USER_MIN_UID'] + $_SESSION['user_id']) . '.' . decode_idna($cfg['BASE_SERVER_VHOST']);
+        
         if ($row['domain_status'] == 'ok') {
             $tpl->assign(array(
                 'DOMAIN_NAME' => tohtml($domainName),
+                'ALTERNATE_URL' => tohtml($alternateUrlHost, 'htmlAttr'),
+                'ALTERNATE_URL_TOOLTIP' => tohtml(tr('Alternate URL to reach your website.'), 'htmlAttr'),
                 'DOMAIN_STATUS_RELOAD_FALSE' => ''
             ));
             $tpl->parse('DOMAIN_STATUS_RELOAD_TRUE', 'domain_status_reload_true');
@@ -178,6 +183,8 @@ function generateDomainAliasesList($tpl)
         return;
     }
 
+    $cfg = iMSCP_Registry::get('config');
+
     $domainId = get_user_domain_id($_SESSION['user_id']);
     $stmt = exec_query(
         "
@@ -207,10 +214,13 @@ function generateDomainAliasesList($tpl)
         );
         $alsName = decode_idna($row['alias_name']);
         $redirectUrl = decode_idna($redirectUrl);
+        $alternateUrlHost = $cfg['SYSTEM_USER_PREFIX'] . ($cfg['SYSTEM_USER_MIN_UID'] + $_SESSION['user_id']) . "als" . $row['alias_id'] . '.' . decode_idna($cfg['BASE_SERVER_VHOST']);
 
         if ($isStatusOk) {
             $tpl->assign(array(
                 'ALS_NAME' => tohtml($alsName),
+                'ALTERNATE_URL' => tohtml($alternateUrlHost, 'htmlAttr'),
+                'ALTERNATE_URL_TOOLTIP' => tohtml(tr('Alternate URL to reach your website.'), 'htmlAttr'),
                 'ALS_STATUS_RELOAD_FALSE' => ''
             ));
             $tpl->parse('ALS_STATUS_RELOAD_TRUE', 'als_status_reload_true');
@@ -333,13 +343,14 @@ function generateSubdomainsList($tpl)
         return;
     }
 
+    $cfg = iMSCP_Registry::get('config');
     $domainId = get_user_domain_id($_SESSION['user_id']);
 
     // Subdomains
     $stmt1 = exec_query(
         "
             SELECT t1.subdomain_id, t1.subdomain_name, t1.subdomain_mount, t1.subdomain_status,
-                t1.subdomain_url_forward, t2.domain_name, t3.status AS ssl_status
+                t1.subdomain_url_forward, t2.domain_name, t3.status AS ssl_status, 'sub' AS subdomain_type
             FROM subdomain AS t1 JOIN domain AS t2 USING(domain_id)
             LEFT JOIN ssl_certs AS t3 ON(t1.subdomain_id = t3.domain_id AND t3.domain_type = 'sub')
             WHERE t1.domain_id = ? ORDER BY t1.subdomain_name
@@ -351,7 +362,8 @@ function generateSubdomainsList($tpl)
     $stmt2 = exec_query(
         "
             SELECT t1.subdomain_alias_id, t1.subdomain_alias_name, t1.subdomain_alias_mount,
-                t1.subdomain_alias_url_forward, t1.subdomain_alias_status, t2.alias_name, t3.status AS ssl_status
+                t1.subdomain_alias_url_forward, t1.subdomain_alias_status, t2.alias_name, t3.status AS ssl_status,
+                'subals' AS subdomain_type
             FROM subdomain_alias AS t1 JOIN domain_aliasses AS t2 USING(alias_id)
             LEFT JOIN ssl_certs AS t3 ON(t1.subdomain_alias_id = t3.domain_id AND t3.domain_type = 'alssub')
             WHERE t2.domain_id = ?
@@ -379,11 +391,15 @@ function generateSubdomainsList($tpl)
         $domainName = decode_idna($row['domain_name']);
         $subName = decode_idna($row['subdomain_name']);
         $redirectUrl = decode_idna($redirectUrl);
+        $alternateUrlHost = $cfg['SYSTEM_USER_PREFIX'] . ($cfg['SYSTEM_USER_MIN_UID'] + $_SESSION['user_id']) . 'sub'
+            . $row['subdomain_id'] . '.' . decode_idna($cfg['BASE_SERVER_VHOST']);
 
         if ($isStatusOk) {
             $tpl->assign(array(
                 'SUB_NAME' => tohtml($subName),
                 'SUB_ALIAS_NAME' => tohtml($domainName),
+                'ALTERNATE_URL' => tohtml($alternateUrlHost, 'htmlAttr'),
+                'ALTERNATE_URL_TOOLTIP' => tohtml(tr('Alternate URL to reach your website.'), 'htmlAttr'),
                 'SUB_STATUS_RELOAD_FALSE' => ''
             ));
             $tpl->parse('SUB_STATUS_RELOAD_TRUE', 'sub_status_reload_true');
@@ -427,11 +443,15 @@ function generateSubdomainsList($tpl)
         $alsName = decode_idna($row['alias_name']);
         $name = decode_idna($row['subdomain_alias_name']);
         $redirectUrl = decode_idna($redirectUrl);
+        $alternateUrlHost = $cfg['SYSTEM_USER_PREFIX'] . ($cfg['SYSTEM_USER_MIN_UID'] + $_SESSION['user_id']) . 'alssub'
+            . $row['subdomain_alias_id'] . '.' . decode_idna($cfg['BASE_SERVER_VHOST']);
 
         if ($isStatusOk) {
             $tpl->assign(array(
                 'SUB_NAME' => tohtml($name),
                 'SUB_ALIAS_NAME' => tohtml($alsName),
+                'ALTERNATE_URL' => tohtml($alternateUrlHost, 'htmlAttr'),
+                'ALTERNATE_URL_TOOLTIP' => tohtml(tr('Alternate URL to reach your website.'), 'htmlAttr'),
                 'SUB_STATUS_RELOAD_FALSE' => ''
             ));
             $tpl->parse('SUB_STATUS_RELOAD_TRUE', 'sub_status_reload_true');

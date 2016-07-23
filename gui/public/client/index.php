@@ -309,13 +309,10 @@ function client_generateDomainExpiresInformation($tpl)
  * Main script
  */
 
-
 require_once 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
 $cfg = iMSCP_Registry::get('config');
-
 check_login('user', $cfg['PREVENT_EXTERNAL_LOGIN_CLIENT']);
 
 $tpl = new iMSCP_pTemplate();
@@ -345,14 +342,6 @@ client_generateTrafficUsageBar(
 client_generateDiskUsageBar(
     $tpl, $domainProperties['domain_disk_usage'], $domainProperties['domain_disk_limit'] * 1024 * 1024, 400
 );
-
-if ($domainProperties['domain_status'] == 'ok') {
-    $tpl->assign(
-        'HREF_DOMAIN_ALTERNATIVE_URL',
-        'http://' . $cfg['SYSTEM_USER_PREFIX'] . ($cfg['SYSTEM_USER_MIN_UID'] + $_SESSION['user_id']) . '.' . $cfg['BASE_SERVER_VHOST']);
-} else {
-    $tpl->assign('DOMAIN_ALTERNATIVE_URL', '');
-}
 
 $tpl->assign('CREATE_DATE', tohtml(date($cfg['DATE_FORMAT'], $domainProperties['domain_created'])));
 
