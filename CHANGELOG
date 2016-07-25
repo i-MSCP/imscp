@@ -21,6 +21,7 @@ DATABASE
     Added: Compound unique key on the `php_ini' table
     Changed: Default value for the dtraff_web, dtraff_ftp, dtraff_mail domain_traffic columns (NULL to 0)
     Fixed: Disallow NULL value on domain_traffic.domain_id and domain_traffic.dtraff_time columns
+    Fixed: Make queries compatible with `only_full_group_by' SQL mode which is par of default modes in MySQL > 5.7
 
 FRONTEND
     Added: `onAddIpAddr', `onChangeIpConfigMode' and `onDeleteIpAddr' events (admin level)

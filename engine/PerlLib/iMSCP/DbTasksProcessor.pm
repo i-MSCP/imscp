@@ -69,7 +69,7 @@ sub process
     $self->_process(
         'NetworkInterfaces',
         "
-            SELECT ip_id AS id, CONCAT(ip_card, ':', ip_number) AS name, ip_status AS status
+            SELECT 'all' id, 'network interfaces' AS name, 'any' AS status
             FROM server_ips WHERE ip_status <> 'ok' LIMIT 1
         "
     );
@@ -147,10 +147,10 @@ sub process
     $self->_process(
         'CustomDNS',
         "
-            SELECT CONCAT('domain_', domain_id) AS id, domain_name AS name, domain_dns_status AS status
+            SELECT DISTINCT CONCAT('domain_', domain_id) AS id, domain_name AS name, 'any' AS status
             FROM domain_dns INNER JOIN domain USING(domain_id)
             WHERE domain_dns_status IN ('toadd', 'tochange', 'toenable', 'todisable', 'todelete')
-            AND alias_id = '0' AND domain_status IN('ok', 'disabled') GROUP BY domain_id
+            AND alias_id = '0' AND domain_status IN('ok', 'disabled')
         "
     );
 
@@ -159,10 +159,10 @@ sub process
     $self->_process(
         'CustomDNS',
         "
-            SELECT CONCAT('alias_', alias_id) AS id, alias_name AS name, domain_dns_status AS status FROM domain_dns
+            SELECT DISTINCT CONCAT('alias_', alias_id) AS id, alias_name AS name, 'any' AS status FROM domain_dns
             INNER JOIN domain_aliasses USING(alias_id)
             WHERE domain_dns_status IN ('toadd', 'tochange', 'toenable', 'todisable', 'todelete')
-            AND alias_id <> '0' AND alias_status IN('ok', 'disabled') GROUP BY alias_id
+            AND alias_id <> '0' AND alias_status IN('ok', 'disabled')
         "
     );
 
@@ -240,9 +240,11 @@ sub process
     $ipsModule += $self->_process(
         'Alias',
         "
-            SELECT DISTINCT alias_id AS id, alias_name AS name, alias_status AS status FROM domain_aliasses
-            LEFT JOIN subdomain_alias USING(alias_id) WHERE alias_status = 'todelete'
-            AND subdomain_alias_id IS NULL
+            SELECT alias_id AS id, alias_name AS name, alias_status AS status
+            FROM domain_aliasses
+            LEFT JOIN (SELECT DISTINCT alias_id FROM subdomain_alias) AS subdomain_alias  USING(alias_id)
+            WHERE alias_status = 'todelete'
+            AND subdomain_alias.alias_id IS NULL
             ORDER BY alias_id ASC
         "
     );
@@ -262,9 +264,12 @@ sub process
     $ipsModule += $self->_process(
         'Domain',
         "
-            SELECT DISTINCT domain_id AS id, domain_name AS name, domain_status AS status FROM domain
-            LEFT JOIN domain_aliasses USING(domain_id) LEFT JOIN mail_users USING(domain_id)
-            WHERE domain_status = 'todelete' AND alias_id IS NULL AND mail_id IS NULL ORDER BY domain_id ASC
+            SELECT domain_id AS id, domain_name AS name, domain_status AS status
+            FROM domain
+            LEFT JOIN (SELECT DISTINCT domain_id FROM subdomain) as subdomain USING (domain_id)
+            WHERE domain_status = 'todelete'
+            AND subdomain.domain_id IS NULL
+            ORDER BY domain_id ASC
         "
     );
 

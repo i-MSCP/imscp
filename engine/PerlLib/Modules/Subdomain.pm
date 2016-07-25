@@ -141,7 +141,7 @@ sub _loadData
             INNER JOIN domain AS t2 ON (t1.domain_id = t2.domain_id)
             INNER JOIN server_ips AS t3 ON (t2.domain_ip_id = t3.ip_id)
             LEFT JOIN (
-                SELECT sub_id, COUNT(sub_id) AS mail_on_domain FROM mail_users WHERE mail_type LIKE 'subdom\\_%'
+                SELECT sub_id, COUNT(sub_id) AS mail_on_domain FROM mail_users WHERE mail_type LIKE 'subdom\\_%' GROUP BY sub_id
             ) AS t4 ON (t1.subdomain_id = t4.sub_id)
             WHERE t1.subdomain_id = ?
         ",

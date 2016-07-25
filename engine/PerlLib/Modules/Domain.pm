@@ -371,7 +371,7 @@ sub _loadData
             SELECT t1.*, t2.ip_number, t3.mail_on_domain FROM domain AS t1
             INNER JOIN server_ips AS t2 ON (t1.domain_ip_id = t2.ip_id)
             LEFT JOIN (
-                SELECT domain_id, COUNT(domain_id) AS mail_on_domain FROM mail_users WHERE mail_type LIKE 'normal\\_%'
+                SELECT domain_id, COUNT(domain_id) AS mail_on_domain FROM mail_users WHERE mail_type LIKE 'normal\\_%' GROUP BY domain_id
             ) AS t3 ON(t1.domain_id = t3.domain_id)
             WHERE t1.domain_id = ?
         ",

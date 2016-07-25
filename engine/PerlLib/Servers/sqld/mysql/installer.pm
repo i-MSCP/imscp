@@ -234,7 +234,6 @@ sub _buildConf
     $cfgTpl .= <<'EOF';
 [mysqld]
 performance_schema = 0
-sql_mode = "NO_AUTO_CREATE_USER"
 [mysql_upgrade]
 host     = {DATABASE_HOST}
 port     = {DATABASE_PORT}
@@ -329,7 +328,7 @@ EOF
 
     my $db = iMSCP::Database->factory();
 
-    # Set SQL mode (bc reasons)
+    # Set SQL mode (transitional)
     my $qrs = $db->doQuery( 's', "SET GLOBAL sql_mode = ''" );
     unless (ref $qrs eq 'HASH') {
         error( $qrs );

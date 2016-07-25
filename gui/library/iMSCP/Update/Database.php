@@ -1913,21 +1913,12 @@ class iMSCP_Update_Database extends iMSCP_Update
         }
 
         if (!empty($sqlQueries)) {
-            $enabled = 'enabed';
-            $disabled = 'disabled';
-            $uninstalled = 'uninstalled';
-            $toinstall = 'toinstall';
-            $toupdate = 'toupdate';
-            $touninstall = 'touninstall';
-            $toenable = 'toenable';
-            $todisable = 'todisable';
-            $todelete = 'todelete';
             $sqlQueries[] = "
                 UPDATE plugin AS t1 JOIN plugin AS t2 ON (t2.plugin_id = t1.plugin_id)
-                SET t1.plugin_status = '$toinstall', t1.plugin_error = t2.plugin_status
+                SET t1.plugin_status = 'toinstall', t1.plugin_error = t2.plugin_status
                 WHERE t1.plugin_status NOT IN(
-                    '$enabled', '$disabled', '$uninstalled', '$toinstall', '$toupdate', '$touninstall', '$toenable',
-                    '$todisable', '$todelete'
+                    'enabled', 'disabled', 'uninstalled', 'toinstall', 'toupdate', 'touninstall', 'toenable',
+                    'todisable', 'todelete'
                 )
             ";
             $sqlQueries[] = "
@@ -2075,19 +2066,15 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r151()
     {
-        $sqlQueries = array();
-
-        $stmt = exec_query("SHOW COLUMNS FROM domain_dns LIKE 'protected'");
-        if ($stmt->rowCount()) {
-            $sqlQueries[] = "
-                ALTER TABLE domain_dns CHANGE protected owned_by VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci
-                NOT NULL DEFAULT 'custom_dns_feature'
-            ";
-        };
-
-        $sqlQueries[] = "UPDATE domain_dns SET owned_by = 'custom_dns_feature' WHERE owned_by = 'no'";
-        $sqlQueries[] = "UPDATE domain_dns SET owned_by = 'ext_mail_feature' WHERE domain_type = 'MX' AND owned_by = 'yes'";
-        return $sqlQueries;
+        return array(
+            $this->changeColumn(
+                'domain_dns',
+                'protected',
+                "owned_by VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'custom_dns_feature'"
+            ),
+            "UPDATE domain_dns SET owned_by = 'custom_dns_feature' WHERE owned_by = 'no'",
+            "UPDATE domain_dns SET owned_by = 'ext_mail_feature' WHERE domain_type = 'MX' AND owned_by = 'yes'"
+        );
     }
 
     /**
@@ -2239,8 +2226,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Update domain.mail_quota and domain.domain_disk_limit fields according the number of existent mailboxes for which
-     * a quota is appliable
+     * Ensure that there is at least one 1 MiB given per mailboxes
      *
      * @return array SQL statements to be executed
      */
@@ -2249,16 +2235,23 @@ class iMSCP_Update_Database extends iMSCP_Update
         return array(
             '
                 UPDATE domain AS t1 JOIN (
-                    SELECT COUNT(mail_id) AS nb_mailboxes, domain_id FROM mail_users WHERE quota IS NOT NULL
+                    SELECT COUNT(mail_id) AS nb_mailboxes, domain_id
+                    FROM mail_users
+                    WHERE quota IS NOT NULL
+                    GROUP BY domain_id
                 ) AS t2 USING(domain_id)
                 SET t1.domain_disk_limit = t2.nb_mailboxes
                 WHERE t1.domain_disk_limit <> 0 AND t1.domain_disk_limit < t2.nb_mailboxes
             ',
             '
                 UPDATE domain AS t1 JOIN (
-                    SELECT COUNT(mail_id) AS nb_mailboxes, domain_id FROM mail_users WHERE quota IS NOT NULL
+                    SELECT COUNT(mail_id) AS nb_mailboxes, domain_id
+                    FROM mail_users
+                    WHERE quota IS NOT NULL
+                    GROUP BY domain_id
                 ) AS t2 USING(domain_id)
-                SET t1.mail_quota = t2.nb_mailboxes WHERE t1.mail_quota <> 0 AND t1.mail_quota < t2.nb_mailboxes
+                SET t1.mail_quota = t2.nb_mailboxes
+                WHERE t1.mail_quota <> 0 AND t1.mail_quota < t2.nb_mailboxes
             '
         );
     }
