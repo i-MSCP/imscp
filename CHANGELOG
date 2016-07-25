@@ -43,6 +43,9 @@ INSTALLER
     Removed: Additional IP configuration dialog (see the errata file for more details)
     Removed: `ips' item from the list of reconfigurable items (--reconfigure command line option)
 
+LISTENERS
+    Fixed: Script for slave DNS provisionning won't work if HTML compression is enabled in panel
+
 PACKAGES
     Fixed: AWStats data can be accessed through localhost without any authentication
     Fixed: AWStats (domains) configuration files are not generated (regression fix)

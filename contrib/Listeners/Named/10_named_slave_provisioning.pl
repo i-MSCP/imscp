@@ -136,14 +136,13 @@ EOF
 $eventManager->register( 'afterFrontEndInstall', sub {
         my $fileContent = <<'EOF';
 <?php
-
 require '../../library/imscp-lib.php';
-
 $config = iMSCP_Registry::get('config');
-$filter = iMSCP_Registry::get('bufferFilter');
-$filter->compressionInformation = false;
+if(iMSCP_Registry::isRegistered('bufferFilter')) {
+    $filter = iMSCP_Registry::get('bufferFilter');
+    $filter->compressionInformation = false;
+}
 $masterDnsServerIp = $config['BASE_SERVER_PUBLIC_IP'];
-
 echo "// CONFIGURATION FOR MAIN DOMAIN\n";
 echo "zone \"$config->BASE_SERVER_VHOST\" {\n";
 echo "\ttype slave;\n";
@@ -152,10 +151,8 @@ echo "\tmasters { $masterDnsServerIp; };\n";
 echo "\tallow-notify { $masterDnsServerIp; };\n";
 echo "};\n";
 echo "// END CONFIGURATION FOR MAIN DOMAIN\n\n";
-
 $stmt = exec_query('SELECT domain_id, domain_name FROM domain');
 $rowCount = $stmt->rowCount();
-
 if ($rowCount > 0) {
     echo "// $rowCount HOSTED DOMAINS LISTED ON $config->SERVER_HOSTNAME [$masterDnsServerIp]\n";
 
@@ -170,13 +167,10 @@ if ($rowCount > 0) {
 
     echo "// END DOMAINS LIST\n\n";
 }
-
 $stmt = exec_query('SELECT alias_id, alias_name FROM domain_aliasses');
 $rowCount = $stmt->rowCount();
-
 if ($rowCount > 0) {
     echo "// $rowCount HOSTED ALIASES LISTED ON $config->SERVER_HOSTNAME [$masterDnsServerIp\n";
-
     while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
         echo "zone \"{$row['alias_name']}\" {\n";
         echo "\ttype slave;\n";
@@ -185,7 +179,6 @@ if ($rowCount > 0) {
         echo "\tallow-notify { $masterDnsServerIp; };\n";
         echo "};\n";
     }
-
     echo "// END ALIASES LIST\n";
 }
 EOF
