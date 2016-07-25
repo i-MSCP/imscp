@@ -69,7 +69,7 @@ sub process
     $self->_process(
         'NetworkInterfaces',
         "
-            SELECT 'all' id, 'network interfaces' AS name, 'any' AS status
+            SELECT 'all' AS id, 'network interfaces' AS name, 'any' AS status
             FROM server_ips WHERE ip_status <> 'ok' LIMIT 1
         "
     );
