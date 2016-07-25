@@ -44,7 +44,7 @@ INSTALLER
     Removed: `ips' item from the list of reconfigurable items (--reconfigure command line option)
 
 LISTENERS
-    Fixed: Script for slave DNS provisionning won't work if HTML compression is enabled in panel
+    Fixed: Script for slave DNS provisionning won't work if HTML compression is disabled in panel
 
 PACKAGES
     Fixed: AWStats data can be accessed through localhost without any authentication
