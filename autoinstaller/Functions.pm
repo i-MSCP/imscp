@@ -888,7 +888,9 @@ sub _cleanup
         '/etc/default/imscp_panel',
         "$main::imscpConfig{'CONF_DIR'}/frontend/php-fcgi-starter",
         "$main::imscpConfig{'CONF_DIR'}/listeners.d/README",
-        '/usr/sbin/maillogconvert.pl'
+        '/usr/sbin/maillogconvert.pl',
+        # Due to a mistake in previous i-MSCP versions (Upstart conffile copied into systemd confdir)
+        "/etc/systemd/system/php5-fpm.override"
     ) {
         next unless -f;
         my $rs = iMSCP::File->new( filename => $_ )->delFile();

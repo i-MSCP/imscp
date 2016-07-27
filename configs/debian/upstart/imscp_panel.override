@@ -1,0 +1,2 @@
+# Only processed by Upstart >= v1.7
+reload signal USR2
