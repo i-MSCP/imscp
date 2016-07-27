@@ -359,7 +359,7 @@ sub addSub
         }
     }
 
-    $rs = $self->_updateSOAserialNumber( \$wrkDbFileContent, \$wrkDbFileContent );
+    $rs = $self->_updateSOAserialNumber($data->{'PARENT_DOMAIN_NAME'}, \$wrkDbFileContent, \$wrkDbFileContent );
     $rs ||= $self->{'eventManager'}->trigger( 'beforeNamedAddSub', \$wrkDbFileContent, \$subEntry, $data );
     return $rs if $rs;
 
@@ -1120,7 +1120,7 @@ sub _updateSOAserialNumber
         }
 
         $date = Date::Simple->new( $date );
-        if ($date && $date >= $todayDate) {
+        if (defined $date && $date >= $todayDate) {
             $nn++;
             if ($nn >= 99) {
                 $nn = '00';

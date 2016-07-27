@@ -62,6 +62,7 @@ SERVERS
     Fixed: HSTS - Follow RFC 6797 recommendations for non-secure-to-secure redirects (status code 301 instead of 307)
     Fixed: HSTS - Wrong redirect when domain is forwarded (Apache server impl.)
     Fixed: Process $ORIGIN substitutions before triggering the `afterNamedAddCustomDNS' event (Bind9 server impl.)
+    Fixed: Wrong argument passed to Servers::named::bind::_updateSOAserialNumber
 
 SKELETON
     Added: Dedicated `domain_disabled_pages' directory for pages of disabled domains
