@@ -1,3 +1,2 @@
 # File added by i-MSCP internet - Multi Server Control Panel
-# Only processed by Upstart >= v1.7
 reload signal USR2
