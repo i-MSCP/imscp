@@ -146,7 +146,7 @@ function handleProtectedArea()
         $userId = 0;
     }
 
-    // Let's check if we have to update or to make new enrie
+    // Let's check if we have to update or to make new entry
     $rs = exec_query('SELECT id FROM htaccess WHERE dmn_id = ? AND (path = ? OR path = ?)', array(
         $mainDmnProps['domain_id'], $protectedAreaPath, $protectedAreaPath . '/'
     ));
