@@ -56,7 +56,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 239;
+    protected $lastUpdate = 240;
 
     /**
      * Singleton - Make new unavailable
@@ -143,6 +143,8 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     public function applyUpdates()
     {
+        ignore_user_abort(true);
+
         $pdo = iMSCP_Database::getRawInstance();
         while ($this->isAvailableUpdate()) {
             $revision = $this->getNextUpdate();
@@ -3533,5 +3535,17 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected function r239()
     {
         return 'DROP VIEW IF EXISTS monthly_domain_traffic';
+    }
+
+    /**
+     * Add missing primary key on httpd_vlogger table
+     *
+     * @return array SQL statements to be executed;
+     */
+    protected function r240()
+    {
+        $sqlQueries = $this->removeDuplicateRowsOnColumns('httpd_vlogger', array('vhost', 'ldate'));
+        $sqlQueries[] = $this->addIndex('httpd_vlogger', array('vhost', 'ldate'));
+        return $sqlQueries;
     }
 }
