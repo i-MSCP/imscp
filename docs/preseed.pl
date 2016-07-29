@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2016.07.02
+# Last update: 2016.07.30
 
 %main::questions = (
 
@@ -66,12 +66,12 @@
 
     # Control panel http port
     # Possible values: A port in range 1025-65535
-    BASE_SERVER_VHOST_HTTP_PORT         => '8080',
+    BASE_SERVER_VHOST_HTTP_PORT         => '8880',
 
     # Control panel https port
     # Only relevant if SSL is enabled for the control panel (see below)
     # Possible values: A port in range 1025-65535
-    BASE_SERVER_VHOST_HTTPS_PORT        => '4443',
+    BASE_SERVER_VHOST_HTTPS_PORT        => '8443',
 
     # Enable or disable SSL
     # Possible values: yes, no

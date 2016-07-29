@@ -423,7 +423,7 @@ sub askHttpPorts
         my $msg = '';
 
         do {
-            ($rs, $httpPort) = $dialog->inputbox( <<"EOF", $httpPort ? $httpPort : 8080 );
+            ($rs, $httpPort) = $dialog->inputbox( <<"EOF", $httpPort ? $httpPort : 8880 );
 
 Please enter the http port for the control panel:$msg
 EOF
@@ -440,7 +440,7 @@ EOF
             my $msg = '';
 
             do {
-                ($rs, $httpsPort) = $dialog->inputbox( <<"EOF", $httpsPort ? $httpsPort : 4443 );
+                ($rs, $httpsPort) = $dialog->inputbox( <<"EOF", $httpsPort ? $httpsPort : 8443 );
 
 Please enter the https port for the control panel:$msg
 EOF
@@ -450,7 +450,7 @@ EOF
             );
         }
     } else {
-        $httpsPort = 4443;
+        $httpsPort ||= 8443;
     }
 
     main::setupSetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT', $httpsPort ) if $rs < 30;
