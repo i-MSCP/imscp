@@ -54,17 +54,13 @@ sub _removeDirsAndFiles
 {
     my $self = shift;
 
-    for my $file($self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}) {
-        my $rs = iMSCP::Dir->new( dirname => $file )->remove();
+    for ($self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}) {
+        my $rs = iMSCP::Dir->new( dirname => $_ )->remove();
         return $rs if $rs;
     }
 
-    if (-f $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'}) {
-        my $rs = iMSCP::File->new( filename => $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'} )->delFile();
-        return $rs if $rs;
-    }
-
-    0;
+    return 0 unless -f $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'};
+    iMSCP::File->new( filename => $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'} )->delFile();
 }
 
 sub _removeUsers
@@ -89,10 +85,10 @@ sub _restoreConfFile
 {
     my $self = shift;
 
-    for my $file($self->{'config'}->{'POSTFIX_CONF_FILE'}, $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}) {
-        my $filename = fileparse( $file );
+    for ($self->{'config'}->{'POSTFIX_CONF_FILE'}, $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}) {
+        my $filename = basename( $_ );
         if (-f "$self->{'bkpDir'}/$filename.system") {
-            my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile( $file );
+            my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile( $_ );
             return $rs if $rs;
         }
     }

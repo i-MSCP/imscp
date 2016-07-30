@@ -19,7 +19,6 @@ package Servers::po::dovecot::uninstaller;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::File;
 use Servers::mta::postfix;
@@ -52,13 +51,12 @@ sub _restoreConfFile
 {
     my $self = shift;
 
-    for my $filename('dovecot.conf', 'dovecot-sql.conf') {
-        if (-f "$self->{bkpDir}/$filename.system") {
-            my $rs = iMSCP::File->new( filename => "$self->{bkpDir}/$filename.system" )->copyFile(
-                "$self->{'config'}->{'DOVECOT_CONF_DIR'}/$filename"
-            );
-            return $rs if $rs;
-        }
+    for ('dovecot.conf', 'dovecot-sql.conf') {
+        next unless -f "$self->{bkpDir}/$_.system";
+        my $rs = iMSCP::File->new( filename => "$self->{bkpDir}/$_.system" )->copyFile(
+            "$self->{'config'}->{'DOVECOT_CONF_DIR'}/$_"
+        );
+        return $rs if $rs;
     }
 
     my $file = iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf" );
@@ -71,10 +69,10 @@ sub _dropSqlUser
     my $self = shift;
 
     my $sqlServer = Servers::sqld->factory();
-    if ($self->{'config'}->{'DATABASE_USER'}) {
-        for my $host('localhost', '%', $main::imscpConfig{'DATABASE_USER_HOST'}) {
-            $sqlServer->dropUser( $self->{'config'}->{'DATABASE_USER'}, $host );
-        }
+    return 0 unless $self->{'config'}->{'DATABASE_USER'};
+
+    for ('localhost', '%', $main::imscpConfig{'DATABASE_USER_HOST'}) {
+        $sqlServer->dropUser( $self->{'config'}->{'DATABASE_USER'}, $_ );
     }
 
     0;

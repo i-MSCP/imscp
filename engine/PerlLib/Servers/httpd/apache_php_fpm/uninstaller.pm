@@ -25,8 +25,6 @@ package Servers::httpd::apache_php_fpm::uninstaller;
 
 use strict;
 use warnings;
-use File::Basename;
-use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::File;
 use Servers::httpd::apache_php_fpm;
@@ -173,12 +171,8 @@ sub _restorePhpfpmConfig
 {
     my $self = shift;
 
-    if (-f "/etc/init/php5-fpm.override") {
-        my $rs = iMSCP::File->new( filename => "/etc/init/php5-fpm.override" )->delFile();
-        return $rs if $rs;
-    }
-
-    0;
+    return 0 unless -f "/etc/init/php5-fpm.override";
+    iMSCP::File->new( filename => "/etc/init/php5-fpm.override" )->delFile();
 }
 
 =back

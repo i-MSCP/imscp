@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2015 by internet Multi Server Control Panel
+# Copyright (C) 2010-2016 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -53,9 +53,7 @@ sub uninstall
     my $self = shift;
 
     my $rs = $self->_restoreConfFiles();
-    return $rs if $rs;
-
-    $self->_deleteDbFiles();
+    $rs ||= $self->_deleteDbFiles();
 }
 
 =back
@@ -82,7 +80,6 @@ sub _init
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
     $self->{'config'} = $self->{'named'}->{'config'};
-
     $self;
 }
 
@@ -98,21 +95,17 @@ sub _restoreConfFiles
 {
     my $self = shift;
 
-    if (-d $self->{'config'}->{'BIND_CONF_DIR'}) {
-        for my $conffile('BIND_CONF_DEFAULT_FILE', 'BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
-            if (defined $self->{'config'}->{$conffile}) {
-                my $filename = fileparse( $self->{'config'}->{$conffile} );
+    return 0 unless -d $self->{'config'}->{'BIND_CONF_DIR'};
 
-                if (-f "$self->{'bkpDir'}/$filename.system") {
-                    my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
-                        $self->{'config'}->{$conffile}
-                    );
-
-                    $rs = iMSCP::File->new( filename => $self->{'config'}->{$conffile} )->mode( 0644 );
-                    return $rs if $rs;
-                }
-            }
-        }
+    for ('BIND_CONF_DEFAULT_FILE', 'BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
+        next unless defined $self->{'config'}->{$_};
+        my $filename = basename( $self->{'config'}->{$_} );
+        next unless -f "$self->{'bkpDir'}/$filename.system";
+        my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
+            $self->{'config'}->{$_}
+        );
+        $rs ||= iMSCP::File->new( filename => $self->{'config'}->{$_} )->mode( 0644 );
+        return $rs if $rs;
     }
 
     0;
@@ -130,8 +123,7 @@ sub _deleteDbFiles
 {
     my $self = shift;
 
-    my ($stdout, $stderr);
-    my $rs = execute( "rm -f $self->{'config'}->{'BIND_DB_DIR'}/*.db", \$stdout, \$stderr );
+    my $rs = execute( "rm -f $self->{'config'}->{'BIND_DB_DIR'}/*.db", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs;
     return $rs if $rs;
@@ -139,14 +131,13 @@ sub _deleteDbFiles
     $rs = execute( "rm -f $self->{'wrkDir'}/*", \$stdout, \$stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $stderr && $rs;
-    return $rs if $rs;
 
-    iMSCP::Dir->new( dirname => "$self->{'config'}->{'BIND_DB_DIR'}/slave" )->remove();
+    $rs ||= iMSCP::Dir->new( dirname => "$self->{'config'}->{'BIND_DB_DIR'}/slave" )->remove();
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>
 

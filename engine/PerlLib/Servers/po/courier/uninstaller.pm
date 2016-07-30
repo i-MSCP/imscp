@@ -55,17 +55,17 @@ sub _removeSqlUser
 
     my $sqlServer = Servers::sqld->factory();
 
-    for my $host(
+    for (
         $main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1', '%'
     ) {
-        next unless $host;
+        next unless $_;
 
         if ($self->{'config'}->{'AUTHDAEMON_DATABASE_USER'}) {
-            $sqlServer->dropUser( $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'}, $host );
+            $sqlServer->dropUser( $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'}, $_ );
         }
 
         if ($self->{'config'}->{'SALS_DATABASE_USER'}) {
-            $sqlServer->dropUser( $self->{'config'}->{'SALS_DATABASE_USER'}, $host );
+            $sqlServer->dropUser( $self->{'config'}->{'SALS_DATABASE_USER'}, $_ );
         }
     }
 
@@ -87,15 +87,14 @@ sub _restoreConfFile
         return $rs if $rs;
     }
 
-    for my $filename(
+    for (
         'authdaemonrc', 'authmysqlrc', $self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}
     ) {
-        if (-f "$self->{'bkpDir'}/$filename.system") {
-            my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
-                "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$filename"
-            );
-            return $rs if $rs;
-        }
+        next unless -f "$self->{'bkpDir'}/$_.system";
+        my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$_.system" )->copyFile(
+            "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$_"
+        );
+        return $rs if $rs;
     }
 
     if (-f "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd") {
@@ -141,11 +140,8 @@ sub _deleteQuotaWarning
 {
     my $self = shift;
 
-    if (-f $self->{'config'}->{'QUOTA_WARN_MSG_PATH'}) {
-        return iMSCP::File->new( filename => $self->{'config'}->{'QUOTA_WARN_MSG_PATH'} )->delFile();
-    }
-
-    0;
+    return 0 unless -f $self->{'config'}->{'QUOTA_WARN_MSG_PATH'};
+    iMSCP::File->new( filename => $self->{'config'}->{'QUOTA_WARN_MSG_PATH'} )->delFile();
 }
 
 1;

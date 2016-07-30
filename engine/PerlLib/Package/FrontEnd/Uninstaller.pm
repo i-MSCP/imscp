@@ -101,12 +101,11 @@ sub _deconfigurePHP
         return 1;
     }
 
-    for my $pFormat('/etc/init.d/%s', '/etc/systemd/system/%s.service', '/etc/init/%s.conf', '/etc/init/%s.override') {
-        my $file = sprintf( $pFormat, 'imscp_panel' );
-        if (-f $file) {
-            my $rs = iMSCP::File->new( filename => $file )->delFile();
-            return $rs if $rs;
-        }
+    for ('/etc/init.d/%s', '/etc/systemd/system/%s.service', '/etc/init/%s.conf', '/etc/init/%s.override') {
+        my $file = sprintf( $_, 'imscp_panel' );
+        next unless -f $file;
+        my $rs = iMSCP::File->new( filename => $file )->delFile();
+        return $rs if $rs;
     }
 
     if (-f '/etc/default/imscp_panel') {
@@ -140,14 +139,12 @@ sub _deconfigureHTTPD
 {
     my $self = shift;
 
-    for my $vhost('00_master_ssl.conf', '00_master.conf') {
-        my $rs = $self->{'frontend'}->disableSites( $vhost );
+    for ('00_master_ssl.conf', '00_master.conf') {
+        my $rs = $self->{'frontend'}->disableSites( $_ );
         return $rs if $rs;
-
-        if (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhost") {
-            $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhost" )->delFile();
-            return $rs if $rs;
-        }
+        next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
+        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_" )->delFile();
+        return $rs if $rs;
     }
 
     if (-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf") {

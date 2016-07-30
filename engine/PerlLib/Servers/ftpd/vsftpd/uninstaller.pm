@@ -26,7 +26,6 @@ package Servers::ftpd::vsftpd::uninstaller;
 use strict;
 use warnings;
 use File::Basename;
-use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::File;
 use Servers::ftpd::vsftpd;
@@ -90,13 +89,11 @@ sub _restoreDefaultConf
 {
     my $self = shift;
 
-    for my $conffile($self->{'config'}->{'FTPD_CONF_FILE'}, $self->{'config'}->{'FTPD_PAM_CONF_FILE'}) {
-        my $basename = basename( $conffile );
-
-        if (-f "$self->{'bkpDir'}/$basename.system") {
-            my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$basename.system" )->copyFile( $conffile );
-            return $rs if $rs;
-        }
+    for ($self->{'config'}->{'FTPD_CONF_FILE'}, $self->{'config'}->{'FTPD_PAM_CONF_FILE'}) {
+        my $basename = basename( $_ );
+        next unless -f "$self->{'bkpDir'}/$basename.system";
+        my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$basename.system" )->copyFile( $conffile );
+        return $rs if $rs;
     }
 
     iMSCP::Dir->new( dirname => $self->{'config'}->{'FTPD_USER_CONF_DIR'} )->remove();

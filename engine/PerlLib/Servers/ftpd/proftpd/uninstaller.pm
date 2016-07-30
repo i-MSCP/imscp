@@ -25,8 +25,6 @@ package Servers::ftpd::proftpd::uninstaller;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
-use iMSCP::Execute;
 use File::Basename;
 use iMSCP::File;
 use Servers::ftpd::proftpd;
@@ -69,8 +67,9 @@ sub removeDB
 {
     my $self = shift;
 
-    Servers::sqld->factory()->dropUser( $self->{'config'}->{'DATABASE_USER'},
-        $main::imscpConfig{'DATABASE_USER_HOST'} );
+    Servers::sqld->factory()->dropUser(
+        $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'}
+    );
 }
 
 =item restoreConfFile()
@@ -85,16 +84,11 @@ sub restoreConfFile
 {
     my $self = shift;
 
-    my ($filename, $directories, $suffix) = fileparse( $self->{'config'}->{'FTPD_CONF_FILE'} );
-
-    if (-f "$self->{bkpDir}/$filename$suffix.system") {
-        my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename$suffix.system" )->copyFile(
-            "$self->{bkpDir}/$filename$suffix.system"
-        );
-        return $rs if $rs;
-    }
-
-    0;
+    my $filename = basename( $self->{'config'}->{'FTPD_CONF_FILE'} );
+    return 0 unless -f "$self->{bkpDir}/$filename.system";
+    iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
+        "$self->{bkpDir}/$filename.system"
+    );
 }
 
 =back

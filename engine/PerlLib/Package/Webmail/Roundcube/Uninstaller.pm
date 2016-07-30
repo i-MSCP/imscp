@@ -101,14 +101,13 @@ sub _removeSqlUser
     my $self = shift;
 
     my $sqlServer = Servers::sqld->factory();
-
     return 0 unless $self->{'config'}->{'DATABASE_USER'};
 
-    for my $host(
+    for(
         $main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1', '%'
     ) {
-        next unless $host;
-        $sqlServer->dropUser( $self->{'config'}->{'DATABASE_USER'}, $host );
+        next unless $_;
+        $sqlServer->dropUser( $self->{'config'}->{'DATABASE_USER'}, $_ );
     }
 
     0;
@@ -143,12 +142,9 @@ sub _unregisterConfig
 {
     my $self = shift;
 
-    for my $vhostFile('00_master.conf', '00_master_ssl.conf') {
-        next unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostFile";
-
-        my $file = iMSCP::File->new(
-            filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostFile"
-        );
+    for ('00_master.conf', '00_master_ssl.conf') {
+        next unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
+        my $file = iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_" );
         my $fileContent = $file->get();
         unless (defined $fileContent) {
             error( sprintf( 'Could not read %s file', $file->{'filename'} ) );
@@ -156,7 +152,6 @@ sub _unregisterConfig
         }
 
         $fileContent =~ s/[\t ]*include imscp_roundcube.conf;\n//;
-
         my $rs = $file->set( $fileContent );
         $rs ||= $file->save();
         return $rs if $rs;
@@ -181,11 +176,10 @@ sub _removeFiles
     my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail" )->remove();
     $rs ||= iMSCP::Dir->new( dirname => $self->{'cfgDir'} )->remove();
     return $rs if $rs;
-
     return 0 unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf";
-
-    iMSCP::File->new( filename =>
-        "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf" )->delFile();
+    iMSCP::File->new(
+        filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf"
+    )->delFile();
 }
 
 =back

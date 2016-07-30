@@ -89,13 +89,9 @@ sub _unregisterConfig
 {
     my $self = shift;
 
-    for my $vhostFile('00_master.conf', '00_master_ssl.conf') {
-        next unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostFile";
-
-        my $file = iMSCP::File->new(
-            filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$vhostFile"
-        );
-
+    for ('00_master.conf', '00_master_ssl.conf') {
+        next unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
+        my $file = iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_" );
         my $fileContent = $file->get();
         unless (defined $fileContent) {
             error( sprintf( 'Could not read %s file', $file->{'filename'} ) );
@@ -103,7 +99,6 @@ sub _unregisterConfig
         }
 
         $fileContent =~ s/[\t ]*include imscp_net2ftp.conf;\n//;
-
         my $rs = $file->set( $fileContent );
         $rs ||= $file->save();
         return $rs if $rs;
@@ -127,9 +122,7 @@ sub _removeFiles
 
     my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
     return $rs if $rs;
-
     return 0 unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_net2ftp.conf";
-
     iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_net2ftp.conf" )->delFile();
 }
 

@@ -75,7 +75,6 @@ sub _restoreDebianConfig
 
         $fileContent =~ s/CRON_DAILY_RUN=".*"/CRON_DAILY_RUN=""/i;
         $fileContent =~ s/CRON_DB_UPDATE=".*"/CRON_DB_UPDATE=""/i;
-
         my $rs = $file->set( $fileContent );
         $rs ||= $file->save();
         return $rs if $rs;

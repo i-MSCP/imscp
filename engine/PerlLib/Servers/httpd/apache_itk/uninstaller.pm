@@ -19,8 +19,6 @@ package Servers::httpd::apache_itk::uninstaller;
 
 use strict;
 use warnings;
-use File::Basename;
-use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::File;
 use Servers::httpd::apache_itk;
