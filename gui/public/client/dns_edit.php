@@ -412,7 +412,7 @@ function client_saveDnsRecord($dnsRecordId)
     }
 
     $nameValidationError = '';
-    $dnsRecordName = client_getPost('dns_name');
+    $dnsRecordName = mb_strtolower(client_getPost('dns_name'));
     $ttl = client_validate_TTL(client_getPost('dns_ttl')); // Will show a bad request error page on invalid TTL
 
     if($dnsRecordName == '@') {
@@ -456,7 +456,7 @@ function client_saveDnsRecord($dnsRecordId)
                 $dnsRecordData = $ip;
                 break;
             case 'CNAME':
-                $dnsRecordData = client_getPost('dns_cname');
+                $dnsRecordData = mb_strtolower(client_getPost('dns_cname'));
                 if ($dnsRecordData == '@') {
                     // Substitute @ with domain name
                     $dnsRecordData = $domainName;
@@ -477,13 +477,14 @@ function client_saveDnsRecord($dnsRecordId)
                 break;
             case'MX':
                 $pref = client_getPost('dns_srv_prio');
-                $host = client_getPost('dns_srv_host');
+                $host = mb_strtolower(client_getPost('dns_srv_host'));
                 $host = encode_idna($host);
 
                 if ($host != '' && substr($host, -1) !== '.') {
                     // No fully-qualified host, complete it
                     $host .= '.' . $domainName;
                 }
+
                 $host = encode_idna($host);
                 // Remove trailing dot for validation process (will be readded after)
                 $host = rtrim($host, '.');
@@ -495,12 +496,12 @@ function client_saveDnsRecord($dnsRecordId)
                 $dnsRecordData = sprintf('%d %s.', $pref,  $host);
                 break;
             case 'SRV':
-               $srvName = client_getPost('dns_srv_name');
+               $srvName = mb_strtolower(client_getPost('dns_srv_name'));
                $srvProto = client_getPost('srv_proto');
                $srvPrio = client_getPost('dns_srv_prio');
                $srvWeight = client_getPost('dns_srv_weight');
                $srvPort = client_getPost('dns_srv_port');
-               $srvTarget = client_getPost('dns_srv_host');
+               $srvTarget = mb_strtolower(client_getPost('dns_srv_host'));
 
                 if ($srvTarget == '@') {
                     // Substitute @ with domain name

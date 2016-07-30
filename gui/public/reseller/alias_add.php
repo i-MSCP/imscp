@@ -192,7 +192,7 @@ function addDomainAlias()
         return false;
     }
 
-    $domainAliasName = clean_input(strtolower($_POST['domain_alias_name']));
+    $domainAliasName = mb_strtolower(clean_input($_POST['domain_alias_name']));
 
     // Check for domain alias name syntax
     global $dmnNameValidationErrMsg;
@@ -259,7 +259,7 @@ function addDomainAlias()
                 throw new iMSCP_Exception(tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>"));
             }
 
-            $uri->setHost(encode_idna($uri->getHost()));
+            $uri->setHost(encode_idna(mb_strtolower($uri->getHost())));
 
             $uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/'; // normalize path
             $uri->setPath($uriPath);

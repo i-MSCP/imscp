@@ -80,6 +80,7 @@ YOUTRACK
     #IP-1581 Allow to disable auto-configuration of network interfaces (IP addresses managed by i-MSCP)
     #IP-1587 Slow query on domain_traffic table when admin or reseller want to login into customer's area
     #IP-1588 Alternative URL vHosts tagged on default IP of I-MSCP
+    #IP-1600 All domain names must be lowercased using mb_strtolower() PHP function
 
 ------------------------------------------------------------------------------------------------------------------------
 1.3.0

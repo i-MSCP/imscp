@@ -166,7 +166,7 @@ function addAccount()
 
     $error = false;
     $username = clean_input($_POST['username']);
-    $dmnName = clean_input($_POST['domain_name']);
+    $dmnName = mb_strtolower(clean_input($_POST['domain_name']));
     $passwd = clean_input($_POST['password']);
     $passwdRepeat = clean_input($_POST['password_repeat']);
     $homeDir = clean_input($_POST['home_dir']);

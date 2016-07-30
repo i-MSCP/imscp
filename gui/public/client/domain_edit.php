@@ -159,7 +159,7 @@ function client_editDomain()
                 throw new iMSCP_Exception(tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>"));
             }
 
-            $uri->setHost(encode_idna($uri->getHost()));
+            $uri->setHost(encode_idna(mb_strtolower($uri->getHost())));
             $uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/'; // normalize path
             $uri->setPath($uriPath);
 

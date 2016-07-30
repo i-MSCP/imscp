@@ -43,7 +43,7 @@ function reseller_checkData()
         return;
     }
 
-    $dmnName = clean_input($_POST['dmn_name']);
+    $dmnName = mb_strtolower(clean_input($_POST['dmn_name']));
 
     global $dmnNameValidationErrMsg;
     if (!isValidDomainName($dmnName)) {
@@ -88,7 +88,7 @@ function reseller_checkData()
                 throw new iMSCP_Exception(tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>"));
             }
 
-            $uri->setHost(encode_idna($uri->getHost()));
+            $uri->setHost(encode_idna(mb_strtolower($uri->getHost())));
 
             $uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/'; // normalize path
             $uri->setPath($uriPath);

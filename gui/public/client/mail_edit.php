@@ -154,7 +154,7 @@ function client_editMailAccount()
 
         $forwardList = preg_split("/[\n,]+/", $forwardList);
         foreach ($forwardList as $key => &$forwardEmailAddr) {
-            $forwardEmailAddr = encode_idna(trim($forwardEmailAddr));
+            $forwardEmailAddr = encode_idna(mb_strtolower(trim($forwardEmailAddr)));
             if ($forwardEmailAddr == '') {
                 unset($forwardList[$key]);
             } elseif (!chk_email($forwardEmailAddr)) {

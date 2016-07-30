@@ -140,7 +140,7 @@ function client_addSubdomain()
     }
 
     // Check for parent domain
-    $domainName = clean_input($_POST['domain_name']);
+    $domainName = mb_strtolower(clean_input($_POST['domain_name']));
     $domainType = $domainId = null;
     $domainList = _client_getDomainsList();
 
@@ -155,7 +155,7 @@ function client_addSubdomain()
         showBadRequestErrorPage();
     }
 
-    $subLabel = clean_input((strtolower($_POST['subdomain_name'])));
+    $subLabel = mb_strtolower(clean_input($_POST['subdomain_name']));
 
     if ($subLabel == 'www' || strpos($subLabel, 'www.') === 0) {
         set_page_message(tr('%s is not allowed as subdomain label.', "<strong>www</strong>"), 'error');
@@ -182,7 +182,7 @@ function client_addSubdomain()
         return false;
     }
 
-    $subLabelAscii = clean_input(encode_idna(strtolower($_POST['subdomain_name'])));
+    $subLabelAscii = encode_idna($subLabel);
     $subdomainNameAscii = encode_idna($subdomainName);
 
     // Check for sudomain existence
@@ -249,7 +249,7 @@ function client_addSubdomain()
                 throw new iMSCP_Exception(tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>"));
             }
 
-            $uri->setHost(encode_idna($uri->getHost()));
+            $uri->setHost(encode_idna(mb_strtolower($uri->getHost())));
             $uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/'; // normalize path
             $uri->setPath($uriPath);
 

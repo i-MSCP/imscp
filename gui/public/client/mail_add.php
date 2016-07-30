@@ -115,7 +115,7 @@ function client_addMailAccount()
 		}
 
 		// Check for username
-		$username = strtolower(clean_input($_POST['username']));
+		$username = mb_strtolower(clean_input($_POST['username']));
 
 		if ($_POST['username'] == '' || ! chk_email($username, true)) {
 			set_page_message(tr('Invalid email username.'), 'error');
@@ -123,7 +123,7 @@ function client_addMailAccount()
 		}
 
 		// Check for domain existence and owner
-		$domainName = clean_input($_POST['domain_name']);
+		$domainName = mb_strtolower(clean_input($_POST['domain_name']));
 		$domainType = null;
 		$domainId = null;
 
@@ -214,7 +214,7 @@ function client_addMailAccount()
 				$forwardList = preg_split("/[\n,]+/", $forwardList);
 
 				foreach ($forwardList as $key => &$forwardEmailAddr) {
-					$forwardEmailAddr = encode_idna(trim($forwardEmailAddr));
+					$forwardEmailAddr = encode_idna(mb_strtolower(trim($forwardEmailAddr)));
 
 					if ($forwardEmailAddr == '') {
 						unset($forwardList[$key]);

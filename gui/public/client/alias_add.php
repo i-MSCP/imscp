@@ -123,7 +123,7 @@ function addDomainAlias()
         return false;
     }
 
-    $domainAliasName = clean_input(strtolower($_POST['domain_alias_name']));
+    $domainAliasName = mb_strtolower(clean_input($_POST['domain_alias_name']));
 
     // www is considered as an alias of the domain alias
     while (strpos($domainAliasName, 'www.') === 0) {
@@ -192,7 +192,7 @@ function addDomainAlias()
 
             $uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/'; // normalize path
             $uri->setPath($uriPath);
-            $uri->setHost(encode_idna($uri->getHost()));
+            $uri->setHost(encode_idna(mb_strtolower($uri->getHost())));
 
             if ($uri->getHost() == $domainAliasNameAscii && $uri->getPath() == '/') {
                 throw new iMSCP_Exception(
