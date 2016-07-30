@@ -100,8 +100,7 @@ function client_addCatchall($itemId)
 								)
 							',
 							array(
-								$mailAccount, '_no_', '_no_', $dmnId, $mailType, $subId, 'toadd', '_no_', NULL,
-								$mailAddr
+								$mailAccount, '_no_', '_no_', $dmnId, $mailType, $subId, 'toadd', 0, NULL, $mailAddr
 							)
 						);
 
