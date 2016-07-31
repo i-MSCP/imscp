@@ -80,8 +80,11 @@ sub preinstall
     return $rs if $rs;
 
     local $@;
-    eval {
+    $rs = eval {
         my $serviceMngr = iMSCP::Service->getInstance();
+
+        my $rs = $self->stop();
+        return $rs if $rs;
 
         # Disable dovecot.socket unit if any
         # Dovecot as configured by i-MSCP doesn't rely on systemd activation socket
@@ -91,13 +94,15 @@ sub preinstall
             $serviceMngr->stop('dovecot.socket');
             $serviceMngr->disable('dovecot.socket');
         }
+
+        0;
     };
     if ($@) {
         error( $@ );
         return 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterPoPreinstall', 'dovecot' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPoPreinstall', 'dovecot' );
 }
 
 =item install()
