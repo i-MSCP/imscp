@@ -206,7 +206,6 @@ function generatePage($tpl)
         ));
     } else {
         $edit = 'yes';
-
         $stmt = exec_query('SELECT * FROM htaccess WHERE dmn_id = ? AND id = ?', array(
             $mainDmnProps['domain_id'], intval($_GET['id'])
         ));
@@ -223,7 +222,7 @@ function generatePage($tpl)
             'AREA_NAME' => tohtml($row['auth_name'])
         ));
 
-        if ($userIds !== 0) {
+        if ($userIds != 0) {
             $type = 'user';
         } else {
             $type = 'group';
@@ -250,16 +249,12 @@ function generatePage($tpl)
         redirectTo('protected_areas.php');
     }
 
+    $userIds = explode(',', $userIds);
     while ($row = $stmt->fetchRow()) {
-        $userIds = explode(',', $userIds);
-        $userSelected = '';
-        for ($i = 0, $countUserIds = count($userIds); $i < $countUserIds; $i++) {
-            if ($edit == 'yes' && $userIds[$i] == $row['id']) {
-                $i = $countUserIds + 1;
-                $userSelected = ' selected';
-            } else {
-                $userSelected = '';
-            }
+        if ($edit == 'yes' && in_array($row['id'], $userIds)) {
+            $userSelected = ' selected';
+        } else {
+            $userSelected = '';
         }
 
         $tpl->assign(array(
@@ -279,16 +274,12 @@ function generatePage($tpl)
         ));
         $tpl->parse('GROUP_ITEM', 'group_item');
     } else {
+        $groupIds = explode(',', $groupIds);
         while ($row = $stmt->fetchRow()) {
-            $groupIds = explode(',', $groupIds);
-            $groupSelected = '';
-            for ($i = 0, $countGroupIds = count($groupIds); $i < $countGroupIds; $i++) {
-                if ($edit == 'yes' && $groupIds[$i] == $row['id']) {
-                    $i = $countGroupIds + 1;
-                    $groupSelected = 'selected';
-                } else {
-                    $groupSelected = '';
-                }
+            if ($edit == 'yes' && in_array($row['id'], $groupIds)) {
+                $groupSelected = ' selected';
+            } else {
+                $groupSelected = '';
             }
 
             $tpl->assign(array(
