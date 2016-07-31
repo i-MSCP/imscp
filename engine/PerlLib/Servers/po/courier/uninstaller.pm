@@ -124,6 +124,11 @@ sub _restoreConfFile
         return $rs if $rs;
     }
 
+    if (-f '/etc/tmpfiles.d/courier-authdaemon.conf') {
+        my $rs = iMSCP::File->new( filename => '/etc/tmpfiles.d/courier-authdaemon.conf' )->delFile();
+        return $rs if $rs;
+    }
+
     0;
 }
 

@@ -76,6 +76,7 @@ sub preinstall
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoPreinstall', 'courier' );
+    $rs ||= $self->stop();
     $rs ||= $self->{'eventManager'}->trigger( 'afterPoPreinstall', 'courier' );
 }
 
@@ -113,21 +114,21 @@ sub postinstall
 
     local $@;
     eval {
-        my $serviceMngr = iMSCP::Service->getInstance();
-
-        for my $service('AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME') {
-            $serviceMngr->restart( $self->{'config'}->{$service} );
-        }
+        my @toEnableServices = ('AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME');
+        my @toDisableServices = ();
 
         if ($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') {
-            for my $service('POPD_SSL_SNAME', 'IMAPD_SSL_SNAME') {
-                $serviceMngr->enable( $self->{'config'}->{$service} );
-            }
+            push @toEnableServices, 'POPD_SSL_SNAME', 'IMAPD_SSL_SNAME';
         } else {
-            for my $service('POPD_SSL_SNAME', 'IMAPD_SSL_SNAME') {
-                $serviceMngr->stop( $self->{'config'}->{$service} );
-                $serviceMngr->disable( $self->{'config'}->{$service} );
-            }
+            push @toDisableServices, 'POPD_SSL_SNAME', 'IMAPD_SSL_SNAME';
+        }
+
+        my $serviceMngr = iMSCP::Service->getInstance();
+        $serviceMngr->enable( $self->{'config'}->{$_} ) for @toEnableServices;
+
+        for(@toDisableServices) {
+            $serviceMngr->stop( $self->{'config'}->{$_} );
+            $serviceMngr->disable( $self->{'config'}->{$_} );
         }
     };
     if ($@) {
@@ -138,7 +139,7 @@ sub postinstall
     $rs = $self->{'eventManager'}->register(
         'beforeSetupRestartServices',
         sub {
-            push @{$_[0]}, [ sub { $self->restart(); }, 'Courier' ];
+            push @{$_[0]}, [ sub { $self->restart(); }, 'Courier IMAP/POP, Authdaemon, Maildrop' ];
             0;
         }
     );
@@ -353,17 +354,13 @@ sub restart
 
     local $@;
     eval {
-        my $serviceMngr = iMSCP::Service->getInstance();
-
-        for my $service('AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME') {
-            $serviceMngr->restart( $self->{'config'}->{$service} );
-        }
-
+        my @toRestartServices = ('AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME');
         if ($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') {
-            for my $service('POPD_SSL_SNAME', 'IMAPD_SSL_SNAME') {
-                $serviceMngr->restart( $self->{'config'}->{$service} );
-            }
+            push @toRestartServices, 'POPD_SSL_SNAME', 'IMAPD_SSL_SNAME';
         }
+
+        my $serviceMngr = iMSCP::Service->getInstance();
+        $serviceMngr->restart( $self->{'config'}->{$_} ) for @toRestartServices;
     };
     if ($@) {
         error( $@ );
