@@ -60,7 +60,7 @@ function client_validate_NAME($name, $type, &$errorString)
         return false;
     }
 
-    if($type == 'TXT') {
+    if($type == 'TXT' || $type == 'CNAME') {
         $name = preg_replace('/_/', '', $name); // Only to fullfit DMARC/DKIM records validation
     }
 

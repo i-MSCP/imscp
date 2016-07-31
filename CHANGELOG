@@ -71,6 +71,7 @@ SKELETON
     Added: Dedicated `domain_disabled_pages' directory for pages of disabled domains
 
 YOUTRACK
+    #IP-1316 Could not add CNAME with underscore in name for DKIM
     #IP-1526 Alternate URL for subdomains and domain aliases not shown in interface
     #IP-1429 Make main domains forwardable
     #IP-1534 Cannot save PHP `post_max_size' and `upload_max_filesize' for a domain
