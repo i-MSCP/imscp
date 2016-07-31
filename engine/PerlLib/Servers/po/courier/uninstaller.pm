@@ -55,9 +55,7 @@ sub _removeSqlUser
 
     my $sqlServer = Servers::sqld->factory();
 
-    for (
-        $main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1', '%'
-    ) {
+    for ($main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1', '%') {
         next unless $_;
 
         if ($self->{'config'}->{'AUTHDAEMON_DATABASE_USER'}) {

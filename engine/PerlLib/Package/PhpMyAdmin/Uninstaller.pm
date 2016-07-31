@@ -101,9 +101,7 @@ sub _removeSqlUser
     my $self = shift;
 
     return 0 unless $self->{'config'}->{'DATABASE_USER'} && $main::imscpConfig{'DATABASE_USER_HOST'};
-    Servers::sqld->factory()->dropUser(
-        $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'}
-    );
+    Servers::sqld->factory()->dropUser( $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'} );
 }
 
 =item _removeSqlDatabase()
