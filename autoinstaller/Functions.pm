@@ -59,10 +59,6 @@ my $eventManager;
 
  Load main i-MSCP configuration
 
- Load both, the new imscp.conf file (upstream conffile) and the current imscp.conf file (old conffile) and merge them
-together in the %main::imscpConfig variable. The old imscp.conf file is tied to the %main::imscpOldConfig variable
-and set as readonly.
-
  Return undef
 
 =cut
@@ -73,28 +69,38 @@ sub loadConfig
     my $distroConffile = "$FindBin::Bin/configs/".lc( $lsbRelease->getId( 1 ) ).'/imscp.conf';
     my $defaultConffile = "$FindBin::Bin/configs/debian/imscp.conf";
 
-    # Load new imscp.conf conffile from i-MSCP upstream source
-    tie my %imscpNewConfig, 'iMSCP::Config', fileName => -f $distroConffile ? $distroConffile : $defaultConffile;
+    # Load new configuration parameters
+    tie my %tmpVar, 'iMSCP::Config', fileName => -f $distroConffile ? $distroConffile : $defaultConffile;
+    %main::imscpConfig = %tmpVar;
+    untie %tmpVar;
 
-    %main::imscpConfig = %imscpNewConfig;
     $main::imscpConfig{'DISTRO_ID'} = lc( iMSCP::LsbRelease->getInstance()->getId( 'short' ) );
     $main::imscpConfig{'DISTRO_CODENAME'} = lc( iMSCP::LsbRelease->getInstance()->getCodename( 'short' ) );
     $main::imscpConfig{'DISTRO_RELEASE'} = iMSCP::LsbRelease->getInstance()->getRelease( 'short', 'force_numeric' );
+
+    # Make sure to have old configuration file on i-MSCP update
+    if (!-f "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf" && -f "$main::imscpConfig{'CONF_DIR'}/imscp.conf") {
+        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf" )->copyFile(
+            "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf"
+        );
+        return $rs if $rs;
+    }
+
+    # Load old i-MSCP configuration parameters 
     %main::imscpOldConfig = ();
+    if (-f "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf") {
+        tie my %tmpVar, 'iMSCP::Config', fileName => "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf";
+        %main::imscpOldConfig = %tmpVar;
+        untie %tmpVar;
 
-    # Load old i-MSCP conffile as readonly if it exists
-    if (-f "$imscpNewConfig{'CONF_DIR'}/imscp.conf") {
-        tie %main::imscpOldConfig,
-            'iMSCP::Config', fileName => "$imscpNewConfig{'CONF_DIR'}/imscp.conf", readonly => 1, nowarn => 1;
-
-        # Merge old config with the new but do not write anything yet.
-        for my $oldConf(keys %main::imscpOldConfig) {
-            if (exists $main::imscpConfig{$oldConf}
-                && $oldConf !~ /^(?:BuildDate|Version|CodeName|THEME_ASSETS_VERSION|DISTRO_ID|DISTRO_CODENAME|DISTRO_RELEASE)$/
-            ) {
-                $main::imscpConfig{$oldConf} = $main::imscpOldConfig{$oldConf};
-            }
+        # Merge old configuration parameter with new configuration parameters
+        while(my ($param, $value) = each(%main::imscpOldConfig)) {
+            next unless exists $main::imscpConfig{$param}
+                && $param !~ /^(?:BuildDate|Version|CodeName|THEME_ASSETS_VERSION|DISTRO_(?:ID|CODENAME|RELEASE))$/;
+            $main::imscpConfig{$param} = $main::imscpOldConfig{$param};
         }
+    } else {
+        %main::imscpOldConfig = %main::imscpConfig;
     }
 
     $eventManager = iMSCP::EventManager->getInstance();
@@ -152,16 +158,13 @@ sub build
     return $rs if $rs;
 
     my @steps = (
-        [ \&_processDistroPackages, 'Processing distribution packages' ],
+        $main::skippackages ? () : [ \&_processDistroPackages, 'Processing distribution packages' ],
         [ \&_checkRequirements, 'Checking for requirements' ],
         [ \&_buildDistributionFiles, 'Building distribution files' ],
         [ \&_compileDaemon, 'Compiling daemon' ],
         [ \&_savePersistentData, 'Saving persistent data' ],
         [ \&_cleanup, 'Process cleanup tasks' ]
     );
-
-    # Remove the distro packages step in case the --skippackages is set
-    shift @steps if $main::skippackages;
 
     $rs = $eventManager->trigger( 'beforeBuild', \@steps );
     return $rs if $rs;
@@ -182,18 +185,29 @@ sub build
     $rs ||= _getDistroAdapter()->postBuild();
     return $rs if $rs;
 
-    # Backup current configuration file if any
-    if (-f "$main::imscpConfig{'CONF_DIR'}/imscp.conf") {
-        $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf" )->copyFile(
-            "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf"
+    # Backup old configuration file if any 
+    if (-f "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf") {
+        $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf" )->copyFile(
+            "$main::{'SYSTEM_CONF'}/imscp.old.conf"
         );
         return $rs if $rs;
     }
 
-    # Write new config file
-    my %imscpConf = %main::imscpConfig;
+    # Write new configuration
+    my %tmpVar = %main::imscpConfig;
     tie %main::imscpConfig, 'iMSCP::Config', fileName => "$main::{'SYSTEM_CONF'}/imscp.conf";
-    $main::imscpConfig{$_} = $imscpConf{$_} for keys %imscpConf;
+    $main::imscpConfig{$_} = $tmpVar{$_} for keys %tmpVar;
+    untie %main::imscpConfig;
+    %main::imscpConfig = %tmpVar;
+    undef %tmpVar;
+    
+    # Make sure that we have an old conffile
+    unless (-f "$main::{'SYSTEM_CONF'}/imscp.old.conf") {
+        $rs = iMSCP::File->new( filename => "$main::{'SYSTEM_CONF'}/imscp.conf" )->copyFile(
+            "$main::{'SYSTEM_CONF'}/imscp.old.conf"
+        );
+        return $rs if $rs;
+    }
 
     # Clean build directory (remove any .gitignore|empty-file)
     find(

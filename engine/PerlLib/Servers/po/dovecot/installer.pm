@@ -208,6 +208,8 @@ sub install
     if ($main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} eq 'courier') {
         $rs = $self->_migrateFromCourier();
         return $rs if $rs;
+
+        $main::imscpOldConfig{'PO_SERVER'} = 'dovecot';
     }
 
     0;

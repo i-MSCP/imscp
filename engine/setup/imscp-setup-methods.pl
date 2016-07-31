@@ -53,14 +53,22 @@ use Servers::sqld;
 # Boot
 sub setupBoot
 {
-    # We do not try to establish connection to the database since needed data can be unavailable
+    # Reset config variables
+    undef %main::imscpConfig;
+    undef %main::imscpOldConfig;
+
+    # We do not try to establish connection to the database since needed data can be unavailable at this stage
     iMSCP::Bootstrapper->getInstance()->boot({ mode => 'setup', nodatabase => 'yes' });
 
-    return 0 if %main::imscpOldConfig;
+    # Make sure that we have an old conffile
+    unless (-f "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf") {
+        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf" )->copyFile(
+            "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf"
+        );
+        return $rs if $rs;
+    }
 
-    %main::imscpOldConfig = ();
-    my $oldConfig = "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf";
-    tie %main::imscpOldConfig, 'iMSCP::Config', fileName => $oldConfig, readonly => 1 if -f $oldConfig;
+    tie %main::imscpOldConfig, 'iMSCP::Config', fileName => "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf";
     0;
 }
 
@@ -173,24 +181,24 @@ sub setupTasks
     return $rs if $rs;
 
     my @steps = (
-        [ \&setupSaveOldConfig,              'Saving old configuration file' ],
-        [ \&setupWriteNewConfig,             'Writing new configuration file' ],
-        [ \&setupCreateMasterUser,           'Creating system master user' ],
-        [ \&setupCreateSystemDirectories,    'Creating system directories' ],
-        [ \&setupServerHostname,             'Setting server hostname' ],
-        [ \&setupServiceSsl,                 'Setup SSL for i-MSCP services' ],
-        [ \&setupServices,                   'Setup i-MSCP services' ],
-        [ \&setupRegisterDelayedTasks,       'Register delayed tasks' ],
-        [ \&setupRegisterPluginListeners,    'Register plugin setup listeners' ],
-        [ \&setupPreInstallServers,          'Servers pre-installation...' ],
-        [ \&setupPreInstallPackages,         'Packages pre-installation...' ],
-        [ \&setupInstallServers,             'Servers installation...' ],
-        [ \&setupInstallPackages,            'Packages installation...' ],
-        [ \&setupPostInstallServers,         'Servers post-installation...' ],
-        [ \&setupPostInstallPackages,        'Packages post-installation...' ],
-        [ \&setupSetPermissions,             'Setting permissions...' ],
-        [ \&setupDbTasks,                    'Processing DB tasks...' ],
-        [ \&setupRestartServices,            'Restarting services...' ]
+        [ \&setupSaveConfig,              'Saving configuration' ],
+        [ \&setupCreateMasterUser,        'Creating system master user' ],
+        [ \&setupCreateSystemDirectories, 'Creating system directories' ],
+        [ \&setupServerHostname,          'Setting server hostname' ],
+        [ \&setupServiceSsl,              'Setup SSL for i-MSCP services' ],
+        [ \&setupServices,                'Setup i-MSCP services' ],
+        [ \&setupRegisterDelayedTasks,    'Register delayed tasks' ],
+        [ \&setupRegisterPluginListeners, 'Register plugin setup listeners' ],
+        [ \&setupPreInstallServers,       'Servers pre-installation...' ],
+        [ \&setupPreInstallPackages,      'Packages pre-installation...' ],
+        [ \&setupInstallServers,          'Servers installation...' ],
+        [ \&setupInstallPackages,         'Packages installation...' ],
+        [ \&setupPostInstallServers,      'Servers post-installation...' ],
+        [ \&setupPostInstallPackages,     'Packages post-installation...' ],
+        [ \&setupSetPermissions,          'Setting permissions...' ],
+        [ \&setupDbTasks,                 'Processing DB tasks...' ],
+        [ \&setupRestartServices,         'Restarting services...' ],
+        [ \&setupSyncConfig,         'Syncing configuration file...']
     );
 
     my $step = 1;
@@ -848,26 +856,26 @@ EOF
 ## Setup subroutines
 #
 
-sub setupSaveOldConfig
+#sub setupSaveOldConfig
+#{
+#    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupSaveOldConfig');
+#    return $rs if $rs;
+#
+#    unless(-f "$main::imscpConfig{'CONF_DIR'}/imscp.conf") {
+#        error(sprintf('File %s not found', "$main::imscpConfig{'CONF_DIR'}/imscp.conf"));
+#        return 1;
+#    }
+#
+#    $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf" )->copyFile(
+#        "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf"
+#    );
+#   $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupSaveOldConfig');
+#}
+
+# Write configuration into imscp.conf file
+sub setupSaveConfig
 {
-    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupSaveOldConfig');
-    return $rs if $rs;
-
-    unless(-f "$main::imscpConfig{'CONF_DIR'}/imscp.conf") {
-        error(sprintf('File %s not found', "$main::imscpConfig{'CONF_DIR'}/imscp.conf"));
-        return 1;
-    }
-
-    $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf" )->copyFile(
-        "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf"
-    );
-    $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupSaveOldConfig');
-}
-
-# Write question answers into imscp.conf file
-sub setupWriteNewConfig
-{
-    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupWriteNewConfig');
+    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupSaveConfig');
     return $rs if $rs;
 
     for my $question(keys %main::questions) {
@@ -876,7 +884,7 @@ sub setupWriteNewConfig
         }
     }
 
-    iMSCP::EventManager->getInstance()->trigger('afterSetupWriteNewConfig');
+    iMSCP::EventManager->getInstance()->trigger('afterSetupSaveConfig');
 }
 
 sub setupCreateMasterUser
@@ -1676,6 +1684,16 @@ sub setupRestartServices
 
     endDetail();
     iMSCP::EventManager->getInstance()->trigger('afterSetupRestartServices');
+}
+
+sub setupSyncConfig
+{
+    iMSCP::EventManager->getInstance()->trigger('beforeSetupSyncConfig');
+    untie %main::imscpOldConfig;
+    my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf" )->copyFile(
+        "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf"
+    );
+    $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupSyncConfig');
 }
 
 #

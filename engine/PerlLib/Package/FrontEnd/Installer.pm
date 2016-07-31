@@ -1230,7 +1230,7 @@ sub _addDnsZone
 
 =item _deleteDnsZone()
 
- Delete DNS zone
+ Delete previous DNS zone if needed (i.e. case where BASER_SERVER_VHOST has been modified)
 
  Return int 0 on success, other on failure
 
