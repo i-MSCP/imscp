@@ -64,7 +64,7 @@ sub factory
                 fatal( $@ ) if $@;
 
                 my $rs = $package->getInstance()->uninstall();
-                fatal( "Unable to uninstall $oldSname server" ) if $rs;
+                fatal( spritnf( "Could not uninstall `%s' server", $oldSname ) ) if $rs;
             }
         }
 
