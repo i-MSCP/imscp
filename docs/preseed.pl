@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2016.07.30
+# Last update: 2016.08.03
 
 %main::questions = (
 
@@ -278,11 +278,6 @@
     # Enable or disable webstats package
     # Possible values: Awstats, No
     WEBSTATS_PACKAGES                   => 'Awstats',
-
-    # Awstats mode
-    # Only relevant if you use webstats Awstats package
-    # Possible values: 0 for dynamic, 1 for statis
-    AWSTATS_MODE                        => '0',
 
     # FTP Web file manager packages
     # Possible values: Pydio (only if PHP < 7.0), Net2ftp and MonstaFTP

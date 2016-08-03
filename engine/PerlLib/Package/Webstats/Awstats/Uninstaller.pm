@@ -75,19 +75,6 @@ sub uninstall
 
 sub _deleteFiles
 {
-    if (-d $main::imscpConfig{'USER_WEB_DIR'}) {
-        my @homeDirs = iMSCP::Dir->new( dirname => $main::imscpConfig{'USER_WEB_DIR'} )->getDirs();
-        if (@homeDirs) {
-            for(@homeDirs) {
-                my $isImmutableHomeDir = isImmutable( "$main::imscpConfig{'USER_WEB_DIR'}/$_" );
-                my $rs = clearImmutable( "$main::imscpConfig{'USER_WEB_DIR'}/$_" ) if $isImmutableHomeDir;
-                $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'USER_WEB_DIR'}/$_/statistics" )->remove();
-                $rs ||= setImmutable( "$main::imscpConfig{'USER_WEB_DIR'}/$_" ) if $isImmutableHomeDir;
-                return $rs if $rs;
-            }
-        }
-    }
-
     if (-d $main::imscpConfig{'AWSTATS_CACHE_DIR'}) {
         my $rs = execute( "rm -fR $main::imscpConfig{'AWSTATS_CACHE_DIR'}/*", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;

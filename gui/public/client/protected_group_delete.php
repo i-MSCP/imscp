@@ -57,10 +57,8 @@ $query = "
 		`id` = ?
 	AND
 		`dmn_id` = ?
-	AND
-		`ugroup` != ?
 ";
-$rs = exec_query($query, array($change_status, $group_id, $dmn_id, 'statistics'));
+$rs = exec_query($query, array($change_status, $group_id, $dmn_id));
 
 $query = "SELECT *  FROM `htaccess` WHERE `dmn_id` = ?";
 $rs = exec_query($query, $dmn_id);

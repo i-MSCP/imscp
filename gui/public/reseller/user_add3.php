@@ -220,13 +220,6 @@ function addCustomer()
         $phpini->setDomainIni('phpiniMaxInputTime', $phpiniMaxInputTime);
         $phpini->saveDomainIni($adminId, $dmnId, 'dmn');
 
-        exec_query('INSERT INTO htaccess_users (dmn_id, uname, upass, status) VALUES (?, ?, ?, ?)', array(
-            $dmnId, $dmnName, $encryptedPassword, 'toadd'
-        ));
-        exec_query('INSERT INTO htaccess_groups (dmn_id, ugroup, members, status) VALUES (?, ?, ?, ?)', array(
-            $dmnId, 'statistics', $db->insertId(), 'toadd'
-        ));
-
         if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
             client_mail_add_default_accounts($dmnId, $email, $dmnName);
         }

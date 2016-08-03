@@ -50,12 +50,11 @@ function _client_generateUserAction($status)
  *
  * @access private
  * @param string $status Group status
- * @param string $group Group name
  * @return array
  */
-function _client_generateHtgroupAction($status, $group)
+function _client_generateHtgroupAction($status)
 {
-	if ($status == 'ok' && $group != 'statistics') {
+	if ($status == 'ok') {
 		return array(tr('Delete'), "action_delete('protected_group_delete.php?gname={GROUP_ID}', '{GNAME}')");
 	} else {
 		return array(tr('N/A'), '');
@@ -127,7 +126,7 @@ function client_genetateGroupsList($tpl, $domainId)
 		foreach($stmt->fetchAll() as $group) {
 			list(
 				$groupDeleteTranslation, $groupDeleteJsScript
-			) = _client_generateHtgroupAction($group['status'], $group['ugroup']);
+			) = _client_generateHtgroupAction($group['status']);
 
 			$tpl->assign(
 				array(

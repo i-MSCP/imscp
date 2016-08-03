@@ -25,13 +25,15 @@ package Package::Webstats::Awstats::Installer;
 
 use strict;
 use warnings;
+use iMSCP::Crypt qw/decryptBlowfishCBC/;
 use iMSCP::Debug;
 use iMSCP::TemplateParser;
 use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::Rights;
-use Servers::httpd;
 use Servers::cron;
+use Servers::httpd;
+use Servers::sqld;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -44,35 +46,6 @@ use parent 'Common::SingletonClass';
 =head1 PUBLIC METHODS
 
 =over 4
-
-=item showDialog(\%dialog)
-
- Show dialog
-
- Param iMSCP::Dialog \%dialog
- Return int 0 or 30
-
-=cut
-
-sub showDialog
-{
-    my (undef, $dialog) = @_;
-
-    my $rs = 0;
-    my $awstatsMode = main::setupGetQuestion( 'AWSTATS_MODE' );
-
-    if ($main::reconfigure =~ /^(?:webstats|all|forced)$/ || $awstatsMode !~ /^(?:0|1)$/) {
-        ($rs, $awstatsMode) = $dialog->radiolist(
-            "\nPlease select the AWStats mode you want use:", [ 'Dynamic', 'Static' ],
-                $awstatsMode ? 'Static' : 'Dynamic'
-        );
-
-        $awstatsMode = $awstatsMode eq 'Dynamic' ? 0 : 1 if $rs < 30;
-    }
-
-    main::setupSetQuestion( 'AWSTATS_MODE', $awstatsMode ) if $rs < 30;
-    $rs;
-}
 
 =item install()
 
@@ -88,14 +61,8 @@ sub install
 
     my $rs = $self->_disableDefaultConfig();
     $rs ||= $self->_createCacheDir();
-    $rs ||= $self->_createGlobalAwstatsVhost();
-    return $rs if $rs;
-
-    if (main::setupGetQuestion( 'AWSTATS_MODE' ) eq '0') {
-        $rs = $self->_addAwstatsCronTask();
-    }
-
-    $rs;
+    $rs ||= $self->_setupApache2();
+    $rs ||= $self->_addAwstatsCronTask();
 }
 
 =item setEnginePermissions()
@@ -108,11 +75,9 @@ sub install
 
 sub setEnginePermissions
 {
+    my $self = shift;
+
     my $rs = setRights(
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_buildstaticpages.pl",
-        { user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_USER'}, mode => '0700' }
-    );
-    $rs ||= setRights(
         "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_updateall.pl",
         { user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_USER'}, mode => '0700' }
     );
@@ -120,11 +85,15 @@ sub setEnginePermissions
         $main::imscpConfig{'AWSTATS_CACHE_DIR'},
         {
             user      => $main::imscpConfig{'ROOT_USER'},
-            group     => Servers::httpd->factory()->getRunningGroup(),
+            group     => $self->{'httpd'}->getRunningGroup(),
             dirmode   => '02750',
             filemode  => '0640',
             recursive => 1
         }
+    );
+    $rs ||= setRights(
+        "$self->{'httpd'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/01_awstats.conf",
+        { user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0640' }
     );
 }
 
@@ -160,39 +129,98 @@ sub _init
 
 sub _createCacheDir
 {
+    my $self = shift;
+
     iMSCP::Dir->new( dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'} )->make(
         {
-            user => $main::imscpConfig{'ROOT_USER'},
-            group => $_[0]->{'httpd'}->getRunningGroup(),
-            mode => 02750
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $self->{'httpd'}->getRunningGroup(),
+            mode  => 02750
         }
     );
 }
 
-=item _createGlobalAwstatsVhost()
+=item _setupApache2()
 
- Create global vhost file
+ Setup Apache2 for AWStats
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _createGlobalAwstatsVhost
+sub _setupApache2
 {
     my $self = shift;
 
-    my $apache24 = version->parse( "$self->{'httpd'}->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' );
+    my $isApache24 = version->parse( "$self->{'httpd'}->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' );
+
+    # Enable required Apache2 module
+
+    my $rs = $isApache24 ? $self->{'httpd'}->enableModules(
+            'rewrite', 'dbd', 'authn_core', 'authn_basic', 'authn_socache', 'authn_dbd', 'proxy', 'proxy_http'
+        )
+                         : $self->{'httpd'}->enableModules(
+            'rewrite', 'dbd', 'authn_core', 'authn_basic', 'authn_dbd', 'proxy', 'proxy_http'
+        );
+    return $rs if $rs;
+
+    # Create required SQL user
+
+    my $host = main::setupGetQuestion( 'DATABASE_HOST' );
+    $host = $host eq 'localhost' ? '127.0.0.1' : $host;
+    my $port = main::setupGetQuestion( 'DATABASE_PORT' );
+    my $dbName = main::setupGetQuestion( 'DATABASE_NAME' );
+    my $user = 'imscp_awstats';
+    my $userHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
+    $userHost = '127.0.0.1' if $userHost eq 'localhost';
+
+    my @allowedChr = map { chr } (0x30 .. 0x39, 0x41 .. 0x5a, 0x61 .. 0x7a);
+    my $pass = '';
+    $pass .= $allowedChr[ rand @allowedChr ] for 1 .. 16;
+
+    my $sqld = Servers::sqld->factory();
+    for ($userHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, 'localhost') {
+        next unless $_;
+        $sqld->dropUser( $user, $_ );
+    }
+
+    local $@;
+    eval {
+        $sqld->createUser( $user, $userHost, $pass );
+
+        # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
+        my $db = iMSCP::Database->factory();
+        my $qDbName = $db->quoteIdentifier( $dbName );
+        $rs = $db->doQuery( 'g', "GRANT SELECT ON $qDbName.admin TO ?\@?", $user, $userHost );
+        unless (ref $rs eq 'HASH') {
+            error( sprintf( 'Could not add SQL privileges: %s', $rs ) );
+            return 1;
+        }
+    };
+    if($@) {
+        error($@);
+        return 1;
+    }
+   
+    # Create Apache2 vhost
+
     $self->{'httpd'}->setData(
         {
-            NAMEVIRTUALHOST    => $apache24 ? '' : 'NameVirtualHost 127.0.0.1:80',
+            AUTHZ_ALLOW_ALL    => $isApache24 ? 'Require all granted' : 'Allow from all',
             AWSTATS_ENGINE_DIR => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
             AWSTATS_WEB_DIR    => $main::imscpConfig{'AWSTATS_WEB_DIR'},
-            AUTHZ_ALLOW_ALL    => $apache24 ? 'Require all granted' : 'Allow from all'
+            DATABASE_HOST      => $host,
+            DATABASE_PORT      => $port,
+            DATABASE_USER      => $user,
+            DATABASE_PASSWORD  => $pass,
+            DATABASE_NAME      => $dbName,
+            NAMEVIRTUALHOST    => $isApache24 ? '' : 'NameVirtualHost 127.0.0.1:80',
         }
     );
 
-    my $rs = $self->{'httpd'}->buildConfFile(
+    $rs = $self->{'httpd'}->buildConfFile(
         "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Config/01_awstats.conf",
+        { mode => 0640 }
     );
     $rs ||= $self->{'httpd'}->enableSites( '01_awstats.conf' );
 }

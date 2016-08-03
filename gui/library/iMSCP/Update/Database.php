@@ -56,7 +56,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 240;
+    protected $lastUpdate = 241;
 
     /**
      * Singleton - Make new unavailable
@@ -3547,5 +3547,15 @@ class iMSCP_Update_Database extends iMSCP_Update
         $sqlQueries = $this->removeDuplicateRowsOnColumns('httpd_vlogger', array('vhost', 'ldate'));
         $sqlQueries[] = $this->addIndex('httpd_vlogger', array('vhost', 'ldate'));
         return $sqlQueries;
+    }
+
+    /**
+     * Delete deprecated `statistics` group for AWStats
+     *
+     * @return string SQL statement to be executed
+     */
+    protected function r241()
+    {
+        return "DELETE FROM htaccess_groups WHERE ugroup = 'statistics'";
     }
 }

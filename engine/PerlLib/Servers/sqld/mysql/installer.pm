@@ -235,6 +235,7 @@ sub _buildConf
 [mysqld]
 performance_schema = 0
 sql_mode = "NO_AUTO_CREATE_USER"
+max_connections = 500
 [mysql_upgrade]
 host     = {DATABASE_HOST}
 port     = {DATABASE_PORT}

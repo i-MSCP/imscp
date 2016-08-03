@@ -50,10 +50,12 @@ LISTENERS
     Fixed: Script for slave DNS provisionning won't work if HTML compression is disabled in panel
 
 PACKAGES
+    Changed: Usage for Apache2 mod_dbd to authenticate AWStats users
     Fixed: AWStats data can be accessed through localhost without any authentication
     Fixed: AWStats (domains) configuration files are not generated (regression fix)
     Fixed: Awstats package is never installed (regression fix)
     Fixed: Could not authenticate to AWStats interface of domain aliases and subdomains
+    Removed: Support for AWStats static mode
 
 PRESEED
     Removed: SERVER_IPS parameter according changes made in installer
@@ -87,6 +89,7 @@ YOUTRACK
     #IP-1595 courier-authdaemon service not started on reboot
     #IP-1596 Previous DNS zone is not removed when changing BASE_SERVER_VHOST
     #IP-1600 All domain names must be lowercased using mb_strtolower() PHP function
+    #IP-1604 Any customer can access AWStats interface of other customers
 
 ------------------------------------------------------------------------------------------------------------------------
 1.3.0
