@@ -117,6 +117,7 @@
     # Note that this SQL user must have full privileges on the SQL server. It is used to to connect to the i-MSCP
     # database and also to create/delete SQL users for your customers
     # Be aware that it is not allowed to use SQL root user
+    # Only ASCII alphabet characters and numbers are allowed in password.
     DATABASE_USER                       => 'imscp_user',
     DATABASE_PASSWORD                   => '',
 
@@ -164,6 +165,7 @@
     #
 
     # FTP SQL user
+    # Only ASCII alphabet characters and numbers are allowed in password.
     FTPD_SQL_USER                       => 'vftp_user',
     FTPD_SQL_PASSWORD                   => '',
 
@@ -186,6 +188,7 @@
 
     # SQL root user
     # Note: This user is only used while installation/reconfiguration
+    # Only ASCII alphabet characters and numbers are allowed in password.
     SQL_ROOT_USER                       => 'root',
     SQL_ROOT_PASSWORD                   => '',
 
@@ -194,16 +197,19 @@
     #
 
     # Authdaemon SQL user
+    # Only ASCII alphabet characters and numbers are allowed in password.
     AUTHDAEMON_SQL_USER                 => 'authdaemon_user',
     AUTHDAEMON_SQL_PASSWORD             => '',
 
     # SASL SQL user
     # Only relevant with 'courier' server implementation
+    # Only ASCII alphabet characters and numbers are allowed in password.
     SASL_SQL_USER                       => 'sasl_user',
     SASL_SQL_PASSWORD                   => '',
 
     # Dovecot SQL user
     # Only relevant with 'dovecot' server implementation
+    # Only ASCII alphabet characters and numbers are allowed in password.
     DOVECOT_SQL_USER                    => 'dovecot_user',
     DOVECOT_SQL_PASSWORD                => '',
 
@@ -284,6 +290,7 @@
     FILEMANAGER_PACKAGE                 => 'MonstaFTP',
 
     # SQL user for PhpMyAdmin
+    # Only ASCII alphabet characters and numbers are allowed in password.
     PHPMYADMIN_SQL_USER                 => 'pma_user',
     PHPMYADMIN_SQL_PASSWORD             => '',
 
@@ -293,11 +300,13 @@
 
     # SQL user for Roundcube package
     # Only relevant if you use the Roundcube webmail package
+    # Only ASCII alphabet characters and numbers are allowed in password.
     ROUNDCUBE_SQL_USER                  => 'roundcube_user',
     ROUNDCUBE_SQL_PASSWORD              => '',
 
     # SQL user for Rainloop package
     # Only relevant if you use the Rainloop webmail package
+    # Only ASCII alphabet characters and numbers are allowed in password.
     RAINLOOP_SQL_USER                   => 'rainloop_user',
     RAINLOOP_SQL_PASSWORD               => '',
 

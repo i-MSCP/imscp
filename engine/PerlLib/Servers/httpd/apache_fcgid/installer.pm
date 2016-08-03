@@ -589,7 +589,7 @@ sub _setupVlogger
     my $userHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
     $userHost = '127.0.0.1' if $userHost eq 'localhost';
 
-    my @allowedChr = map { chr } (0x21 .. 0x5b, 0x5d .. 0x7e);
+    my @allowedChr = map { chr } (0x30 .. 0x39, 0x41 .. 0x5a, 0x61 .. 0x7a);
     my $pass = '';
     $pass .= $allowedChr[ rand @allowedChr ] for 1 .. 16;
 
