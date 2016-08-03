@@ -25,7 +25,7 @@ package Package::Webstats::Awstats::Installer;
 
 use strict;
 use warnings;
-use iMSCP::Crypt qw/decryptBlowfishCBC/;
+use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::TemplateParser;
 use iMSCP::Dir;
@@ -154,12 +154,13 @@ sub _setupApache2
 
     my $isApache24 = version->parse( "$self->{'httpd'}->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' );
 
-    # Enable required Apache2 module
+    # Enable required Apache2 modules
 
-    my $rs = $isApache24 ? $self->{'httpd'}->enableModules(
+    my $rs = $isApache24
+        ? $self->{'httpd'}->enableModules(
             'rewrite', 'dbd', 'authn_core', 'authn_basic', 'authn_socache', 'authn_dbd', 'proxy', 'proxy_http'
         )
-                         : $self->{'httpd'}->enableModules(
+        : $self->{'httpd'}->enableModules(
             'rewrite', 'dbd', 'authn_core', 'authn_basic', 'authn_dbd', 'proxy', 'proxy_http'
         );
     return $rs if $rs;
