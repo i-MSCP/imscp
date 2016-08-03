@@ -1,13 +1,16 @@
 ## i-MSCP - internet Multi Server Control Panel
 
-i-MSCP - internet Multi Server Control Panel is an open-source software which allows to manage shared hosting
-environments on Linux servers.
+i-MSCP - internet Multi Server Control Panel is an open-source software which allows to manage shared hosting environments on Linux servers.
 
-i-MSCP aims to provide an easy-to-use Web interface for end-users, and to manage servers without any manual intervention
-on the filesystem.
+i-MSCP aims to provide an easy-to-use Web interface for end-users, and to manage servers without any manual intervention on the filesystem.
 
-i-MSCP was designed for professional Hosting Service Providers (HSPs), Internet Service Providers (ISPs) and IT
-professionals.
+i-MSCP was designed for professional Hosting Service Providers (HSPs), Internet Service Providers (ISPs) and IT professionals.
+
+### Official Site & Documentation
+
+* [i-MSCP (Internet Multi Server Control Panel) Site](https://i-mscp.net/)
+* [i-MSCP Forums](https://i-mscp.net/index.php/BoardList/)
+* [i-MSCP Documentation](https://wiki.i-mscp.net/doku.php)
 
 ### Installation
 
