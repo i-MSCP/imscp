@@ -136,7 +136,7 @@ EOF
                         if (length $dbPass < 6) {
                             $msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
                             $dbPass = '';
-                        } elsif ($dbPass !~ /^[\x30-\x39\x41-\x5a\x61-\x7a]+$/) {
+                        } elsif ($dbPass =~ /[^\x30-\x39\x41-\x5a\x61-\x7a]/) {
                             $msg = "\n\n\\Z1Only ASCII alphabet characters and numbers are allowed.\\Zn\n\nPlease try again:";
                             $dbPass = '';
                         } else {

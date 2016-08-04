@@ -31,6 +31,7 @@ use iMSCP::Dir;
 use iMSCP::Execute;
 use Servers::httpd;
 use Servers::cron;
+use Servers::sqld;
 use iMSCP::Ext2Attributes qw(setImmutable clearImmutable isImmutable);
 use parent 'Common::SingletonClass';
 
@@ -54,7 +55,8 @@ sub uninstall
 {
     my $self = shift;
 
-    my $rs = $self->_deleteFiles();
+    my $rs = $self->_removeSqlUser();
+    $rs ||= $self->_deleteFiles();
     $rs ||= $self->_removeVhost();
     $rs ||= $self->_restoreDebianConfig();
 }
@@ -64,6 +66,19 @@ sub uninstall
 =head1 PRIVATE METHODS
 
 =over 4
+
+=item _removeSqlUser()
+
+ Remove SQL user
+
+ Return int 0
+
+=cut
+
+sub _removeSqlUser
+{
+    Servers::sqld->factory()->dropUser( 'imscp_awstats', $main::imscpConfig{'DATABASE_USER_HOST'} );
+}
 
 =item _deleteFiles()
 
@@ -119,8 +134,9 @@ sub _removeVhost
 sub _restoreDebianConfig
 {
     if (-f "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf.disabled") {
-        my $rs = iMSCP::File->new( filename =>
-            "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf.disabled" )->moveFile(
+        my $rs = iMSCP::File->new(
+            filename => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf.disabled"
+        )->moveFile(
             "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf"
         );
         return $rs if $rs;

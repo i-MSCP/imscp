@@ -472,7 +472,7 @@ Please enter a password for the master i-MSCP SQL user (blank for autogenerate):
 EOF
                 if ($pwd ne '' && length $pwd < 6) {
                     $msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
-                } elsif ($pwd !~ /^[\x30-\x39\x41-\x5a\x61-\x7a]$/) {
+                } elsif ($pwd =~ /[^\x30-\x39\x41-\x5a\x61-\x7a]/) {
                     $msg = "\n\n\\Z1Only ASCII alphabet characters and numbers are allowed.\\Zn\n\nPlease try again:";
                 } else {
                     $msg = '';
