@@ -272,6 +272,12 @@ sub disableDmn
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdDisableDmn', $data );
     return $rs if $rs;
 
+    # Ensure that all needed directories are present
+    for ($self->_dmnFolders( $data )) {
+        $rs = iMSCP::Dir->new( dirname => $_->[0] )->make( { user => $_->[1], group => $_->[2], mode => $_->[3] } );
+        return $rs if $rs;
+    }
+
     $self->setData( $data );
 
     my $net = iMSCP::Net->getInstance();
