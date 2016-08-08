@@ -118,10 +118,10 @@ sub mount
     $fields->{'fs_mntops'} =~ s/(\br?(?:private|shared|slave|unbindable)\b)(?:,|$)//g if @propagationFlags;
 
     my @commands;
-    if ($fields->{'fs_mntops'} =~ /\bbind\b/) {
-        # Passing mount options along with the `bind` mount option is not supported until mount(8) v2.27. Thus, we must
-        # process them with an additional mount(8) call
-        push @commands, [ 'mount', '--bind', $fsSpec, $fsFile ];
+    if ($fields->{'fs_mntops'} =~ /\b(r?bind)\b/) {
+        # Passing mount options along with the `[r]bind' mount option is not supported until mount(8) v2.27. Thus, we
+        # must process them with an additional mount(8) call
+        push @commands, [ 'mount', "--$1", $fsSpec, $fsFile ];
         if (index( $fields->{'fs_mntops'}, ',' ) != -1) {
             push @commands, [ 'mount', '-o', "remount,$fields->{'fs_mntops'}", $fsSpec, $fsFile ];
         }

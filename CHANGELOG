@@ -17,6 +17,9 @@ CONTRIB
     Removed: 10_named_tuning.pl listener (replaced by 10_named_override_default_rr.pl listener)
     Removed: 10_named_tuning2.pl listener (replaced by 10_named_override_default_ns_rr.pl listener)
 
+BACKEND
+    Added: Support for `rbind' in iMSCP::Mount library
+
 DATABASE
     Added: Compound unique index on the domain_traffic table to avoid slow query and duplicate entries
     Added: Compound unique key on the `php_ini' table
