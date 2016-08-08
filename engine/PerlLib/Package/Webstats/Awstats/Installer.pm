@@ -215,7 +215,7 @@ sub _setupApache2
             DATABASE_USER      => $user,
             DATABASE_PASSWORD  => $pass,
             DATABASE_NAME      => $dbName,
-            NAMEVIRTUALHOST    => $isApache24 ? '' : 'NameVirtualHost 127.0.0.1:80',
+            NAMEVIRTUALHOST    => $isApache24 ? '' : 'NameVirtualHost 127.0.0.1:8889',
         }
     );
 
