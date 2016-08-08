@@ -15,7 +15,7 @@ recipient_delimiter = +
 message_size_limit = 0
 
 # Local delivery parameters
-mydestination = $myhostname, $mydomain
+mydestination = $myhostname localhost.$mydomain localhost $mydomain
 alias_database = hash:{MTA_LOCAL_ALIAS_HASH}
 alias_maps = hash:{MTA_LOCAL_ALIAS_HASH}
 local_transport = local
