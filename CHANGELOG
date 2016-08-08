@@ -50,6 +50,7 @@ LISTENERS
     Fixed: Script for slave DNS provisionning won't work if HTML compression is disabled in panel
 
 PACKAGES
+    Changed: AWStats is now accessible through dedicated port (8889)
     Changed: Usage for Apache2 mod_dbd to authenticate AWStats users
     Fixed: AWStats data can be accessed through localhost without any authentication
     Fixed: AWStats (domains) configuration files are not generated (regression fix)

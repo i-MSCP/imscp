@@ -275,8 +275,8 @@ sub _getApacheConfSnippet
 {
     <<EOF;
     ProxyRequests Off
-    ProxyPass /stats http://localhost/stats/{DOMAIN_NAME}
-    ProxyPassReverse /stats http://localhost/stats/{DOMAIN_NAME}
+    ProxyPass /stats http://127.0.0.1:8889/stats/{DOMAIN_NAME}
+    ProxyPassReverse /stats http://127.0.0.1:8889/stats/{DOMAIN_NAME}
     ProxyErrorOverride On
 EOF
 }
