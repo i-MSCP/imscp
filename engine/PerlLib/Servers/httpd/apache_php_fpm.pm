@@ -1441,18 +1441,19 @@ sub _addCfg
             HTTPD_CUSTOM_SITES_DIR  => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
             AUTHZ_ALLOW_ALL         => $isApache24 ? 'Require all granted' : 'Allow from all',
             AUTHZ_DENY_ALL          => $isApache24 ? 'Require all denied' : 'Deny from all',
-            DOMAIN_IPS              =>  join(' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]") . ':80' } @domainIPs),
+            DOMAIN_IPS              => join(' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]").':80' } @domainIPs),
             PHP_VERSION             => $phpVersion,
             POOL_NAME               => $confLevel,
             # fastcgi module case (Apache2 < 2.4.10)
             FASTCGI_LISTEN_MODE     => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds' ? 'socket' : 'host',
             FASTCGI_LISTEN_ENDPOINT => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
-                ? "/var/run/php5-fpm-$confLevel.sock" : "127.0.0.1:$data->{'PHP_FPM_LISTEN_PORT'}",
+                ? "/var/run/php5-fpm-$confLevel.sock"
+                : '127.0.0.1:'.($self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'} + $data->{'PHP_FPM_LISTEN_PORT'}),
             # proxy_fcgi module case (Apache2 >= 2.4.10)
             PROXY_LISTEN_MODE       => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds' ? 'unix' : 'fcgi',
             PROXY_LISTEN_ENDPOINT   => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
                 ? "/var/run/php$phpVersion-fpm-$confLevel.sock|fcgi://$confLevel/"
-                : "//127.0.0.1:$data->{'PHP_FPM_LISTEN_PORT'}",
+                : '//127.0.0.1:'.($self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'} + $data->{'PHP_FPM_LISTEN_PORT'}),
             FCGID_NAME              => $confLevel
         }
     );
@@ -1807,7 +1808,8 @@ sub _buildPHPConfig
                 TMPDIR                       => $data->{'HOME_DIR'}.'/phptmp',
                 EMAIL_DOMAIN                 => $emailDomain,
                 PHP_FPM_LISTEN_ENDPOINT      => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
-                    ? "/var/run/php$phpVersion-fpm-$poolName.sock" : "127.0.0.1:$data->{'PHP_FPM_LISTEN_PORT'}",
+                    ? "/var/run/php$phpVersion-fpm-$poolName.sock"
+                    : '127.0.0.1:'.($self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'} + $data->{'PHP_FPM_LISTEN_PORT'}),
                 PHP_FPM_PROCESS_MANAGER_MODE => $self->{'phpConfig'}->{'PHP_FPM_PROCESS_MANAGER_MODE'} || 'ondemand',
                 PHP_FPM_MAX_CHILDREN         => $self->{'phpConfig'}->{'PHP_FPM_MAX_CHILDREN'} || 6,
                 PHP_FPM_START_SERVERS        => $self->{'phpConfig'}->{'PHP_FPM_START_SERVERS'} || 1,

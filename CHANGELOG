@@ -67,6 +67,7 @@ PRESEED
 
 SERVERS
     Fixed: Could not access httpd log files through FTP (permissions on log files are too restrictives)
+    Fixed: Could not start PHP FPM service when using TCP FastCGI address type (apache_php_fpm)
     Fixed: Dotfiles not listed (ProFTPD, VsFTPD)
     Fixed: Enable opportunistic TLS for Postfix client side (smtp)
     Fixed: HSTS - Follow RFC 6797 recommendations for non-secure-to-secure redirects (status code 301 instead of 307)
