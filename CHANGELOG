@@ -70,6 +70,7 @@ SERVERS
     Fixed: Could not start PHP FPM service when using TCP FastCGI address type (apache_php_fpm)
     Fixed: Dotfiles not listed (ProFTPD, VsFTPD)
     Fixed: Enable opportunistic TLS for Postfix client side (smtp)
+    Fixed: Enforce installation of our own sysvinit script for ProFTPD to prevent restart failure on log rotation
     Fixed: HSTS - Follow RFC 6797 recommendations for non-secure-to-secure redirects (status code 301 instead of 307)
     Fixed: HSTS - Wrong redirect when domain is forwarded (Apache server impl.)
     Fixed: Permissions on courier-authdaemon rundir are reseted on reboot (systemd tmpfiles.d)

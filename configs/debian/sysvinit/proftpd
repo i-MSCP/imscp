@@ -101,7 +101,6 @@ start()
 
 signal()
 {
-
 	if [ "$1" = "stop" ]; then
 		SIGNAL="TERM"
 		log_daemon_msg "Stopping ftp server" "$NAME"
@@ -167,9 +166,9 @@ case "$1" in
 		signal stop 0
 	else
 		if [ "x$INETD" = "xyes" ] ; then
-		echo "ProFTPD is started from inetd/xinetd."
-		inetd_check
-		else
+			echo "ProFTPD is started from inetd/xinetd."
+			inetd_check
+		else 
 			echo "ProFTPD warning: cannot start neither in standalone nor in inetd/xinetd mode. Check your configuration."
 		fi
 	fi
@@ -222,7 +221,7 @@ case "$1" in
 		else
 			echo "ProFTPD is started in standalone mode, currently not running."
 			exit 3
-	    fi
+		fi
 	fi
 	;;
 
