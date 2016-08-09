@@ -60,6 +60,7 @@ Note that these operations must be done on the host, not in the container.
 - https://i-mscp.net/index.php/Thread/14039-i-MSCP-inside-a-LXC-container-Managed-by-Proxmox-4-2
 - https://linuxcontainers.org/fr/lxc/manpages/man5/lxc.container.conf.5.html
 - https://help.ubuntu.com/lts/serverguide/lxc.html#lxc-apparmor
+- http://wiki.apparmor.net/index.php/AppArmor_Core_Policy_Reference#Mount_rules_.28AppArmor_2.8_and_later.29
 
 #### OpenVZ users (Proxmox and Virtuozzo)
 
