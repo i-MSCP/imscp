@@ -146,7 +146,7 @@ sub postinstall
 
     $rs = $self->{'eventManager'}->register(
         'beforeSetupRestartServices', sub {
-            push @{$_[0]}, [ sub { $self->restart(); }, 'Dovecot' ];
+            push @{$_[0]}, [ sub { $self->start(); }, 'Dovecot' ];
             0;
         }
     );

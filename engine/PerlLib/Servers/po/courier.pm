@@ -139,7 +139,7 @@ sub postinstall
     $rs = $self->{'eventManager'}->register(
         'beforeSetupRestartServices',
         sub {
-            push @{$_[0]}, [ sub { $self->restart(); }, 'Courier IMAP/POP, Courier Authdaemon' ];
+            push @{$_[0]}, [ sub { $self->start(); }, 'Courier IMAP/POP, Courier Authdaemon' ];
             0;
         }
     );

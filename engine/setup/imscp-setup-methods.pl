@@ -1047,15 +1047,16 @@ sub setupCreateMasterSqlUser
 {
     my $user = setupGetQuestion( 'DATABASE_USER' );
     my $userHost = setupGetQuestion( 'DATABASE_USER_HOST' );
+    my $oldUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'} || '';
     my $pwd = decryptBlowfishCBC($main::imscpDBKey, $main::imscpDBiv, setupGetQuestion( 'DATABASE_PASSWORD' ));
-    my $oldUser = $main::imscpOldConfig{'DATABASE_USER'};
+    my $oldUser = $main::imscpOldConfig{'DATABASE_USER'} || '';
 
     my $sqlServer = Servers::sqld->factory();
 
     # Remove old user if any
     for my $sqlUser ($oldUser, $user) {
         next unless $sqlUser;
-        for my $host($userHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
+        for my $host($userHost, $oldUserHost) {
             next unless $host;
             $sqlServer->dropUser( $sqlUser, $host );
         }

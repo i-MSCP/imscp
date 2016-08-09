@@ -562,6 +562,7 @@ sub _setupVlogger
     my $user = 'vlogger_user';
     my $userHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
     $userHost = '127.0.0.1' if $userHost eq 'localhost';
+    my $oldUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'} || '';
 
     my @allowedChr = map { chr } (0x30 .. 0x39, 0x41 .. 0x5a, 0x61 .. 0x7a);
     my $pass = '';
@@ -571,7 +572,7 @@ sub _setupVlogger
     my $rs = main::setupImportSqlSchema( $db, "$self->{'apacheCfgDir'}/vlogger.sql" );
     return $rs if $rs;
 
-    for ($userHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, 'localhost') {
+    for ($userHost, $oldUserHost, 'localhost') {
         next unless $_;
         $sqld->dropUser( $user, $_ );
     }

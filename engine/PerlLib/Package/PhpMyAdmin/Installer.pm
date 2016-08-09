@@ -411,12 +411,13 @@ sub _setupSqlUser
     my $phpmyadminDbName = main::setupGetQuestion( 'DATABASE_NAME' ).'_pma';
     my $dbUser = main::setupGetQuestion( 'PHPMYADMIN_SQL_USER' );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
+    my $oldDbUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'} || '';
     my $dbPass = main::setupGetQuestion( 'PHPMYADMIN_SQL_PASSWORD' );
     my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
     for my $sqlUser ($dbOldUser, $dbUser) {
         next if !$sqlUser || grep($_ eq "$sqlUser\@$dbUserHost", @main::createdSqlUsers);
-        for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
+        for my $host($dbUserHost, $oldDbUserHost) {
             next unless $host;
             $sqlServer->dropUser( $sqlUser, $host );
         }

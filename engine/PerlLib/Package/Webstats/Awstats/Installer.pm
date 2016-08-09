@@ -174,13 +174,14 @@ sub _setupApache2
     my $user = 'imscp_awstats';
     my $userHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
     $userHost = '127.0.0.1' if $userHost eq 'localhost';
+    my $oldUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'} || '';
 
     my @allowedChr = map { chr } (0x30 .. 0x39, 0x41 .. 0x5a, 0x61 .. 0x7a);
     my $pass = '';
     $pass .= $allowedChr[ rand @allowedChr ] for 1 .. 16;
 
     my $sqld = Servers::sqld->factory();
-    for ($userHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, 'localhost') {
+    for ($userHost, $oldUserHost, 'localhost') {
         next unless $_;
         $sqld->dropUser( $user, $_ );
     }

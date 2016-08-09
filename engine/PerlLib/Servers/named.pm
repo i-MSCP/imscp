@@ -56,9 +56,9 @@ sub factory
 
     if ($sName eq 'external_server') {
         if (defined $main::imscpOldConfig) {
-            my $oldSname = $main::imscpOldConfig{'NAMED_SERVER'};
+            my $oldSname = $main::imscpOldConfig{'NAMED_SERVER'} || '';
 
-            if ($oldSname ne 'external_server') {
+            if ($oldSname ne '' && $oldSname ne 'external_server') {
                 $package = "Servers::named::$oldSname";
                 eval "require $package";
                 fatal( $@ ) if $@;

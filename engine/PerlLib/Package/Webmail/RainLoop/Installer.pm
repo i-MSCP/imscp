@@ -402,6 +402,7 @@ sub _setupDatabase
     my $rainLoopDbName = $imscpDbName.'_rainloop';
     my $dbUser = main::setupGetQuestion( 'RAINLOOP_SQL_USER' );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
+    my $oldDbUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'} || '';
     my $dbPass = main::setupGetQuestion( 'RAINLOOP_SQL_PASSWORD' );
     my $dbOldUser = $self->{'rainloop'}->{'config'}->{'DATABASE_USER'};
 
@@ -417,7 +418,7 @@ sub _setupDatabase
 
     for my $sqlUser ($dbOldUser, $dbUser) {
         next if !$sqlUser || grep($_ eq "$sqlUser\@$dbUserHost", @main::createdSqlUsers);
-        for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
+        for my $host($dbUserHost, $oldDbUserHost) {
             next unless $host;
             $sqlServer->dropUser( $sqlUser, $host );
         }

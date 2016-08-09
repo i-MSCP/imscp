@@ -512,6 +512,7 @@ sub _setupAuthdaemonSqlUser
     my $dbName = main::setupGetQuestion( 'DATABASE_NAME' );
     my $dbUser = main::setupGetQuestion( 'AUTHDAEMON_SQL_USER' );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
+    my $oldDbUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'} || '';
     my $dbPass = main::setupGetQuestion( 'AUTHDAEMON_SQL_PASSWORD' );
     my $dbOldUser = $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'};
 
@@ -523,7 +524,7 @@ sub _setupAuthdaemonSqlUser
     for my $sqlUser ($dbOldUser, $dbUser) {
         next if !$sqlUser || grep($_ eq "$sqlUser\@$dbUserHost", @main::createdSqlUsers);
 
-        for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
+        for my $host($dbUserHost, $oldDbUserHost) {
             next unless $host;
             $sqlServer->dropUser( $sqlUser, $host );
         }
@@ -570,6 +571,7 @@ sub _setupCyrusSaslSqlUser
     my $dbUser = main::setupGetQuestion( 'SASL_SQL_USER' );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
     $dbUserHost = '127.0.0.1' if $dbUserHost eq 'localhost';
+    my $oldDbuSerHost = $main::imscpOldConfig{'DATABASE_USER_HOST'} || '';
     my $dbPass = main::setupGetQuestion( 'SASL_SQL_PASSWORD' );
     my $dbOldUser = $self->{'config'}->{'SASL_DATABASE_USER'};
 
@@ -581,7 +583,7 @@ sub _setupCyrusSaslSqlUser
     for my $sqlUser ($dbOldUser, $dbUser) {
         next if !$sqlUser || grep($_ eq "$sqlUser\@$dbUserHost", @main::createdSqlUsers);
 
-        for my $host($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
+        for my $host($dbUserHost, $oldDbuSerHost) {
             next unless $host;
             $sqlServer->dropUser( $sqlUser, $host );
         }
