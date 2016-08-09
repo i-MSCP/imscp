@@ -239,6 +239,17 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
+     * Does the given table is known?
+     *
+     * @param string $table
+     * @return int TRUE if th
+     */
+    protected function isKnownTable($table)
+    {
+        return exec_query('SHOW TABLES LIKE ?', $table)->rowCount();
+    }
+
+    /**
      * Remove any duplicate rows in the given table for the given column(s)
      *
      * @throws iMSCP_Exception_Database
@@ -246,7 +257,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      * @param string|array $columns Column(s)
      * @return array SQL statements to be executed
      */
-    function removeDuplicateRowsOnColumns($table, $columns)
+    protected function removeDuplicateRowsOnColumns($table, $columns)
     {
         $originTable = $table;
         $tableWithDup = $table . '_tmp1';
@@ -3544,6 +3555,10 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r240()
     {
+        if (!$this->isKnownTable('httpd_vlogger')) {
+            return null;
+        }
+
         $sqlQueries = $this->removeDuplicateRowsOnColumns('httpd_vlogger', array('vhost', 'ldate'));
         $sqlQueries[] = $this->addIndex('httpd_vlogger', array('vhost', 'ldate'));
         return $sqlQueries;
