@@ -241,12 +241,12 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * Does the given table is known?
      *
-     * @param string $table
-     * @return int TRUE if th
+     * @param string $table Table name
+     * @return bool TRUE if the given table is know, FALSE otherwise
      */
     protected function isKnownTable($table)
     {
-        return exec_query('SHOW TABLES LIKE ?', $table)->rowCount();
+        return (bool)exec_query('SHOW TABLES LIKE ?', $table)->rowCount();
     }
 
     /**
@@ -3551,7 +3551,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * Add missing primary key on httpd_vlogger table
      *
-     * @return array SQL statements to be executed;
+     * @return null|array SQL statements to be executed or null
      */
     protected function r240()
     {
