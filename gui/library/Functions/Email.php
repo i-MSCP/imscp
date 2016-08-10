@@ -422,7 +422,7 @@ function send_mail($data)
             $headers[] = 'Reply-To: ' . $data['sender_email'];
         }
     } else {
-        $headers[] = 'Reply-To: ' . $cfg{'DEFAULT_ADMIN_ADDRESS'};
+        $headers[] = 'Reply-To: ' . $cfg['DEFAULT_ADMIN_ADDRESS'];
     }
     $headers[] = 'MIME-Version: 1.0';
     $headers[] = 'Content-Type: text/plain; charset=utf-8';

@@ -29,7 +29,6 @@ DATABASE
     Fixed: Make queries compatible with `only_full_group_by' SQL mode which is par of default modes in MySQL > 5.7
 
 FRONTEND
-    
     Added: `onAddIpAddr', `onChangeIpConfigMode' and `onDeleteIpAddr' events (admin level)
     Changed: Listening ports are now 8880 (http) and 8443 (https). (Required by CloudFlare)
     Changed: Frontend is now run through an isolated PHP-FPM Daemon (see errata file)
