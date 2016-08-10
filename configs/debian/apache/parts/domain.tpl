@@ -35,8 +35,11 @@
     # SECTION mod_proxy_fcgi BEGIN.
     SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1
 
+    <Proxy "{PROXY_LISTEN_MODE}:{PROXY_LISTEN_ENDPOINT}" disablereuse=off max=10 timeout=7200>
+    </Proxy>
+
     <FilesMatch ".+\.ph(p[3457]?|t|tml)$">
-        SetHandler "proxy:{PROXY_LISTEN_MODE}:{PROXY_LISTEN_ENDPOINT}"
+        SetHandler proxy:{PROXY_LISTEN_MODE}:{PROXY_LISTEN_ENDPOINT}
     </FilesMatch>
     # SECTION mod_proxy_fcgi END.
     # SECTION php_fpm END.
