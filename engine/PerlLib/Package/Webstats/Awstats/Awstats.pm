@@ -274,10 +274,10 @@ sub _addAwstatsSection
 sub _getApacheConfSnippet
 {
     <<EOF;
+    ProxyErrorOverride On
     <Location /stats>
         ProxyPass http://127.0.0.1:8889/stats/{DOMAIN_NAME}
         ProxyPassReverse http://127.0.0.1:8889/stats/{DOMAIN_NAME}
-        ProxyErrorOverride On
     </Location>
 EOF
 }
