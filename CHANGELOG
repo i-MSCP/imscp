@@ -99,6 +99,7 @@ YOUTRACK
     #IP-1596 Previous DNS zone is not removed when changing BASE_SERVER_VHOST
     #IP-1600 All domain names must be lowercased using mb_strtolower() PHP function
     #IP-1604 Any customer can access AWStats interface of other customers
+    #IP-1609 Quota script shouldn't include apache log files
 
 ------------------------------------------------------------------------------------------------------------------------
 1.3.0

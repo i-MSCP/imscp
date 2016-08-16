@@ -79,27 +79,10 @@ sub quotaFiles
             my $domainName = $mainDomains->{$domainId}->{'domain_name'};
             my $totalDiskUsage = my $webDiskUsage = my $mailDiskUsage = 0;
 
-            my @cmd = ( {
-                'webdir' => [
-                    'nice -n 15 ionice -c2 -n5',
-                    'du',
-                    '--exclude=backups/*',
-                    '--exclude=logs/*.log',
-                    '--exclude=statistics/*',
-                    '-s -B1',
-                    escapeShell("$main::imscpConfig{'USER_WEB_DIR'}/$domainName")
-                ]
-            });
-
-            if(-d "$virtualMailDir/$domainName") {
-                push @cmd, { 'maildir' => [
-                    'nice -n 15 ionice -c2 -n5',
-                    'du',
-                    '-s',
-                    '-B1',
-                    escapeShell("$virtualMailDir/$domainName")
-                ]};
-            }
+            my @items = (
+                { 'webdir' => "$main::imscpConfig{'USER_WEB_DIR'}/$domainName" },
+                { 'maildir' => "$virtualMailDir/$domainName" }
+            );
 
             # Getting list of all child domains (sub|als|alssub)
             my $childDomains = $db->doQuery(
@@ -124,31 +107,35 @@ sub quotaFiles
                 $rs = 1;
             } elsif(%{$childDomains}) {
                 for (keys %{$childDomains}) {
-                    my $domainMailDir = "$virtualMailDir/$_";
-
-                    if (-d $domainMailDir) {
-                        push @cmd, { 'maildir' => [
-                            'du', '-s', '-B1', escapeShell($domainMailDir)
-                        ]};
-                    }
+                    push @items, { 'maildir' => "$virtualMailDir/$_" };
                 }
             }
 
-            for(@cmd) {
-                my ($dirType, $quotaCmd) = %{$_};
-                $rs = execute("@{$quotaCmd}", \my $stdout, \my $stderr);
-                error($stderr) if $stderr && $rs;
-                return $rs if $rs;
-
-                if(defined $stdout) {
-                    debug($stdout);
-
-                    if($dirType eq 'webdir') {
-                        ($webDiskUsage) = $stdout =~ /^(\d+)/;
-                    } else {
-                        ($mailDiskUsage) += $stdout =~ /^(\d+)/;
-                    }
+            my ($stdout, $stderr);
+            for(@items) {
+                my ($dirType, $dir) = %{$_};
+                next unless -d $dir;
+                if($dirType eq 'webdir') {
+                    $rs = execute(
+                        [
+                            'nice', '-n', '15', 'ionice', '-c2', '-n5', 'du', '--exclude=backups/*', '--exclude=logs/*',
+                            '-s', '-B1', $dir
+                        ],
+                        \$stdout,
+                        \$stderr
+                    );
+                    error($stderr) if $stderr && $rs;
+                    ($webDiskUsage) = $stdout =~ /^(\d+)/ if defined $stdout;
+                } else {
+                    $rs = execute(
+                        [ 'nice', '-n', '15', 'ionice', '-c2', '-n5', 'du', '-s', '-B1', $dir ],
+                        \$stdout, \$stderr
+                    );
+                    error($stderr) if $stderr && $rs;
+                    ($mailDiskUsage) += $stdout =~ /^(\d+)/ if defined $stdout;
                 }
+                
+                return $rs if $rs;
             }
 
             $totalDiskUsage = $webDiskUsage + $mailDiskUsage;
