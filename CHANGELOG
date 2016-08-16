@@ -18,7 +18,8 @@ CONTRIB
     Removed: 10_named_tuning2.pl listener (replaced by 10_named_override_default_ns_rr.pl listener)
 
 BACKEND
-    Added: Support for `rbind' in iMSCP::Mount library
+    Added: Support for `rbind' (iMSCP::Mount library)
+    Fixed: Could not bind mount socket files (iMSCP::Mount library)
 
 DATABASE
     Added: Compound unique index on the domain_traffic table to avoid slow query and duplicate entries

@@ -23,6 +23,7 @@
 
 # TODO Make direct syscalls instead of calling mount(8), e.g:
 # syscall(&SYS_mount, ...)
+# http://stackoverflow.com/questions/33263510/executing-mount-system-call-from-perl
 
 package iMSCP::Mount;
 
@@ -95,11 +96,11 @@ sub mount
 
     if (index( $fsSpec, '/' ) == 0) {
         if (!-e $fsSpec) {
-            error( sprintf( 'Could not mount %s on %s: %s is not a valid filesystem.', $fsSpec, $fsFile, $fsSpec ) );
+            error( sprintf( 'Could not mount %s on %s: %s is not a valid file.', $fsSpec, $fsFile, $fsSpec ) );
             return 1;
         }
 
-        if (-f _) {
+        if (!-d _) {
             my $rs = iMSCP::File->new( filename => $fsFile )->save();
             return $rs if $rs;
         } else {
