@@ -53,7 +53,7 @@ sub _init
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'repositorySections'} = [ 'main', 'universe', 'multiverse' ];
     $self->{'preRequiredPackages'} = [
-        'binutils', 'debconf-utils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl',
+        'binutils', 'debconf-utils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl', 'lsb-release',
         'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'wget', 'rsync'
     ];
     $self->{'aptRepositoriesToRemove'} = [ ];

@@ -1,3 +1,17 @@
-COMPONENTS="main contrib non-free"
-MIRRORSITE=http://httpredir.debian.org/debian/
 AUTO_DEBSIGN=${AUTO_DEBSIGN:-no}
+AUTOCLEANAPTCACHE=yes
+APTCONFDIR=/tmp
+CODENAME=$(lsb_release -cs)
+DEBBUILDOPTS=-b
+MIRRORSITE=http://httpredir.debian.org/debian/
+
+cat > "$APTCONFDIR/sources.list" <<EOF
+deb $MIRRORSITE $CODENAME main contrib non-free
+deb-src $MIRRORSITE $CODENAME main contrib non-free
+
+deb http://security.debian.org/ ${CODENAME}/updates main contrib non-free
+deb-src http://security.debian.org/ ${CODENAME}/updates main contrib non-free
+
+deb $MIRRORSITE ${CODENAME}-updates main contrib non-free
+deb-src $MIRRORSITE ${CODENAME}-updates main contrib non-free
+EOF

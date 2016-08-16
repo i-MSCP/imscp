@@ -1,3 +1,17 @@
-COMPONENTS="main restricted universe multiverse"
-MIRRORSITE=http://mirrors.kernel.org/ubuntu/
 AUTO_DEBSIGN=${AUTO_DEBSIGN:-no}
+AUTOCLEANAPTCACHE=yes
+APTCONFDIR=/tmp
+CODENAME=$(lsb_release -cs)
+DEBBUILDOPTS=-b
+MIRRORSITE=http://mirrors.kernel.org/ubuntu/
+
+cat >> "$APTCONFDIR/sources.list" <<EOF
+deb $MIRRORSITE $CODENAME main restricted universe multiverse
+deb-src $MIRRORSITE $CODENAME main restricted universe multiverse
+
+deb $MIRRORSITE ${CODENAME}-security main restricted universe multiverse
+deb-src $MIRRORSITE ${CODENAME}-updates main restricted universe multiverse
+
+deb $MIRRORSITE ${CODENAME}-updates main restricted universe multiverse
+deb-src $MIRRORSITE ${CODENAME}-updates main restricted universe multiverse
+EOF

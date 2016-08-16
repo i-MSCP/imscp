@@ -272,7 +272,7 @@ sub _init
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'repositorySections'} = [ 'main', 'contrib', 'non-free' ];
     $self->{'preRequiredPackages'} = [
-        'binutils', 'debconf-utils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl',
+        'binutils', 'debconf-utils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl', 'lsb-release',
         'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'wget', 'rsync'
     ];
     $self->{'aptRepositoriesToRemove'} = [ ];
@@ -970,9 +970,7 @@ sub _rebuildAndInstallPackage
                 [
                     'pdebuild',
                     '--use-pdebuild-internal',
-                    '--debbuildopts', '-b',
-                    '--',
-                    '--debemail', 'i-MSCP Installer <team@i-mscp.net>'
+                    '--configfile', "$FindBin::Bin/configs/".lc( $lsbRelease->getId( 1 ) ).'/pbuilder/pbuilderrc'
                 ],
                 (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout),
                 \ $stderr

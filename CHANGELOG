@@ -49,6 +49,7 @@ INSTALLER
     Fixed: Cannot create pbuilder environment - Wrong repository (pbuilder use first entry from sources.list)
     Fixed: Could not remove deprecated `phptmp' directories on update (Httpd server impl.)
     Fixed: SQL server data directory must not be hardcoded
+    Fixed: Update and Security repositories are missing in pbuilder environments
     Removed: Additional IP configuration dialog (see the errata file for more details)
     Removed: `ips' item from the list of reconfigurable items (--reconfigure command line option)
 
