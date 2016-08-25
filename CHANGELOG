@@ -18,8 +18,11 @@ CONTRIB
     Removed: 10_named_tuning2.pl listener (replaced by 10_named_override_default_ns_rr.pl listener)
 
 BACKEND
+    Added: iMSCP::Mount::isMountpoint() function (iMSCP::Mount library)
+    Added: iMSCP::Syscall library
     Added: Support for `rbind' (iMSCP::Mount library)
     Fixed: Could not bind mount socket files (iMSCP::Mount library)
+    Rewritten: iMSCP::Mount library - Make direct syscalls instead of calling mount(8)/umount(8)
 
 DATABASE
     Added: Compound unique index on the domain_traffic table to avoid slow query and duplicate entries
@@ -64,6 +67,9 @@ PACKAGES
     Fixed: Awstats package is never installed (regression fix)
     Fixed: Could not authenticate to AWStats interface of domain aliases and subdomains
     Removed: Support for AWStats static mode
+
+PLUGINS
+    Updated: API version to 1.0.5 (needed due to changes in iMSCP::Mount library)
 
 PRESEED
     Removed: SERVER_IPS parameter according changes made in installer

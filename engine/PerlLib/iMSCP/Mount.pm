@@ -21,27 +21,70 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-# TODO Make direct syscalls instead of calling mount(8), e.g:
-# syscall(&SYS_mount, ...)
-# http://stackoverflow.com/questions/33263510/executing-mount-system-call-from-perl
-
 package iMSCP::Mount;
 
 use strict;
 use warnings;
+use Errno qw / EINVAL /;
 use File::Spec;
+use File::stat ();
 use iMSCP::Debug;
 use iMSCP::Dir;
-use iMSCP::Execute;
 use iMSCP::File;
+use iMSCP::Syscall;
 use parent 'Exporter';
-our @EXPORT_OK = qw/ mount umount addMountEntry removeMountEntry /;
+
+our @EXPORT_OK = qw/ mount umount setPropagationFlag isMountpoint addMountEntry removeMountEntry /;
+
+# These are the fs-independent mount-flags (see sys/mount.h)
+# See http://man7.org/linux/man-pages/man2/mount.2.html for a description of these flags
+use constant {
+    # These are the fs-independent mount-flags
+    MS_RDONLY      => 1, # Mount read-only.
+    MS_NOSUID      => 2, # Ignore suid and sgid bits.
+    MS_NODEV       => 4, # Disallow access to device special files.
+    MS_NOEXEC      => 8, # Disallow program execution.
+    MS_SYNCHRONOUS => 16, # Writes are synced at once.
+    MS_REMOUNT     => 32, # Alter flags of a mounted FS.
+    MS_MANDLOCK    => 64, # Allow mandatory locks on an FS.
+    MS_DIRSYNC     => 128, # Directory modifications are synchronous.
+    MS_NOATIME     => 1024, # Do not update access times.
+    MS_NODIRATIME  => 2048, # Do not update directory access times.
+    MS_BIND        => 4096, # Bind directory at different place.
+    MS_MOVE        => 8192, # Move a subtree.
+    MS_REC         => 16384, # Recursive loopback.
+    MS_SILENT      => 32768, # Be quiet.
+    MS_POSIXACL    => 1 << 16, # VFS does not apply the umask.
+    MS_UNBINDABLE  => 1 << 17, # Change to unbindable.
+    MS_PRIVATE     => 1 << 18, # Change to private.
+    MS_SLAVE       => 1 << 19, # Change to slave.
+    MS_SHARED      => 1 << 20, # Change to shared.
+    MS_RELATIME    => 1 << 21, # Update atime relative to mtime/ctime.
+    MS_KERNMOUNT   => 1 << 22, # This is a kern_mount call.
+    MS_I_VERSION   => 1 << 23, # Update inode I_version field.
+    MS_STRICTATIME => 1 << 24, # Always perform atime updates.
+    MS_LAZYTIME    => 1 << 25 # Update the time lazily. (since Linux 4.0)
+};
+use constant {
+    # Flags that can be altered by MS_REMOUNT (see sys/mount.h)
+    #MS_RMT_MASK     => (MS_RDONLY | MS_SYNCHRONOUS | MS_MANDLOCK | MS_I_VERSION),
+
+    # Magic mount flag number. Has to be or-ed to the flag values. (see sys/mount.h)
+    MS_MGC_VAL => 0xc0ed0000, # Magic flag number to indicate "new" flags
+    #MS_MGC_MSK     => 0xffff0000, # Magic flag number mask */
+
+    # Possible value for FLAGS parameter of `umount2' (see sys/mount.h)
+    #MNT_FORCE       => 1,
+    MNT_DETACH => 2,
+    #MNT_EXPIRE      => 4,
+    #UMOUNT_NOFOLLOW => 8
+};
 
 =head1 DESCRIPTION
 
  Library for mounting/unmounting file systems.
 
-=head1 FUNCTIONS
+=head1 PUBLIC FUNCTIONS
 
 =over 4
 
@@ -63,79 +106,39 @@ sub mount
     my $fields = shift;
     $fields = { } unless defined $fields && ref $fields eq 'HASH';
 
-    for(qw/ fs_spec fs_file fs_spec fs_vfstype fs_mntops /) {
+    for(qw/ fs_spec fs_file fs_vfstype fs_mntops /) {
         next if defined $fields->{$_};
-        error( sprintf( '`%s` field is not defined', $_ ) );
+        error( sprintf( "`%s' field is not defined", $_ ) );
         return 1;
     }
-
-    # Do not propagate changes made on this element outside of this scope
-    local $fields->{'fs_mntops'} = $fields->{'fs_mntops'};
 
     my $fsSpec = File::Spec->canonpath( $fields->{'fs_spec'} );
     my $fsFile = File::Spec->canonpath( $fields->{'fs_file'} );
 
-    my $rs = execute(
-        'cat /proc/mounts'
-            .' | awk \'{print $2}\''
-            .' | grep \'^'.quotemeta( $fsFile ).'\(\|\\\\\\040(deleted)\)$\'',
-        \ my $stdout,
-        \ my $stderr
-    );
-    error( sprintf( 'Could not check mount point: %s', $stderr ) ) if $stderr;
+    debug("$fsSpec, $fsFile, $fields->{'fs_vfstype'}, $fields->{'fs_mntops'}");
 
-    unless ($rs) { # Mount point found
-        if ($stdout =~ /\\040\(deleted\)$/) {
-            # Mount point is in `deleted' state, we must re-create it
-            $rs = umount( $fsFile );
-            return $rs if $rs;
+    my ($mflags, $pflags, $data) = _parseOptions($fields->{'fs_mntops'});
+    my @syscallsArgv;
+
+    if ($mflags & MS_BIND) {
+        if ($mflags & MS_REMOUNT) {
+            push @syscallsArgv, [ MS_MGC_VAL | $mflags, $data ];
         } else {
-            return 0;
+            my $rs = umount($fsFile);
+            return $rs if $rs;
+            push @syscallsArgv, [ MS_MGC_VAL | ($mflags & MS_REC ? MS_BIND | MS_REC : MS_BIND), 0 ];
+            push @syscallsArgv, [ MS_MGC_VAL | MS_REMOUNT | $mflags, $data ] if $mflags & ~(MS_BIND | MS_REC) || $data;
         }
+    } else {
+        push @syscallsArgv, [ MS_MGC_VAL | $mflags, $data ] unless !($mflags & MS_REMOUNT) && isMountpoint $fsFile;
     }
+    push @syscallsArgv, [ $pflags, 0 ] if $pflags;
 
-    if (index( $fsSpec, '/' ) == 0) {
-        if (!-e $fsSpec) {
-            error( sprintf( 'Could not mount %s on %s: %s is not a valid file.', $fsSpec, $fsFile, $fsSpec ) );
+    for(@syscallsArgv) {
+        unless (syscall(&iMSCP::Syscall::SYS_mount, $fsSpec, $fsFile, $fields->{'fs_vfstype'}, @{$_} ) == 0) {
+            error( sprintf( 'Error while calling mount(): %s', $! || 'Unknown error' ) );
             return 1;
         }
-
-        if (!-d _) {
-            my $rs = iMSCP::File->new( filename => $fsFile )->save();
-            return $rs if $rs;
-        } else {
-            my $rs = iMSCP::Dir->new( dirname => $fsFile )->make();
-            return $rs if $rs;
-        }
-    } else {
-        my $rs = iMSCP::Dir->new( dirname => $fsFile )->make();
-        return $rs if $rs;
-    }
-
-    # Propagation flags (private, slave, shared, unbindable, rprivate, rslave, rshared, runbindable) passed as mount
-    # options are not supported until util-linux 2.23. Thus, because we support Debian Wheezy, Ubuntu Precise/Trusty
-    # which have older util-linux version, we must process them by additional mount(8) calls
-    my (@propagationFlags) = $fields->{'fs_mntops'} =~ /,?(\br?(?:private|shared|slave|unbindable)\b)/g;
-    $fields->{'fs_mntops'} =~ s/(\br?(?:private|shared|slave|unbindable)\b)(?:,|$)//g if @propagationFlags;
-
-    my @commands;
-    if ($fields->{'fs_mntops'} =~ /\b(r?bind)\b/) {
-        # Passing mount options along with the `[r]bind' mount option is not supported until mount(8) v2.27. Thus, we
-        # must process them with an additional mount(8) call
-        push @commands, [ 'mount', "--$1", $fsSpec, $fsFile ];
-        if (index( $fields->{'fs_mntops'}, ',' ) != -1) {
-            push @commands, [ 'mount', '-o', "remount,$fields->{'fs_mntops'}", $fsSpec, $fsFile ];
-        }
-    } else {
-        push @commands, [ 'mount', '-t', $fields->{'fs_vfstype'}, '-o', $fields->{'fs_mntops'}, $fsSpec, $fsFile ];
-    }
-
-    push @commands, [ 'mount', "--make-$_", $fsFile ] for @propagationFlags;
-
-    for(@commands) {
-        $rs = execute( $_, \ my $stdout, \ $stderr );
-        error( sprintf( 'Error while mounting %s on %s: %s', $fsSpec, $fsFile, $stderr || 'Unknown error' ) ) if $rs;
-        return $rs if $rs;
     }
 
     0;
@@ -147,12 +150,12 @@ sub mount
 
  Note: In case of a partial mount point, any file systems below this mount point will be umounted.
 
- Param string $fsFile mount point of file system to umount
+ Param string $fsFile Mount point of file system to umount
  Return int 0 on success, other on failure
 
 =cut
 
-sub umount
+sub umount($)
 {
     my $fsFile = shift;
 
@@ -161,11 +164,10 @@ sub umount
         return 1;
     }
 
-    # Matches also mount points that are in `deleted' state
-    # (cover case where fs has been removed but mount point still exists)
-    my $cmd = 'cat /proc/mounts | awk \'{print $2}\''
-        .' | grep \'^'.quotemeta( File::Spec->canonpath( $fsFile ) ).'\(/\|\(\|\\\\\\040(deleted)\)$\)\''
-        .' | sort -r';
+    debug("$fsFile");
+
+    my $cmd = 'tac /proc/mounts | awk \'{print $2}\''
+        .' | grep \'^'.quotemeta( File::Spec->canonpath( $fsFile ) ).'\(/\|\(\|\\\\\\040(deleted)\)$\)\'';
 
     my $fh;
     unless (open( $fh, '-|', $cmd )) {
@@ -176,12 +178,73 @@ sub umount
     while($fsFile = <$fh>) {
         chomp( $fsFile );
         $fsFile =~ s/\\040\(deleted\)$//;
-        my $rs = execute( [ 'umount', '-l', $fsFile ], \ my $stdout, \ my $stderr );
-        debug( $stdout ) if $stdout;
-        warning( sprintf( 'Could not umount %s: %s', $fsFile, $stderr || 'Unknown error' ) ) if $rs;
+        unless (syscall(&iMSCP::Syscall::SYS_umount2, $fsFile, MNT_DETACH) == 0 || $!{'EINVAL'}) {
+            error( sprintf( 'Could not umount %s: %s', $fsFile, $! || 'Unknown error' ) );
+            return 1;
+        }
     }
 
     0;
+}
+
+=item setPropagationFlag($fsFile [, $flag = 'private' ])
+
+ Set propagation type of an existing mount
+
+ Parameter string $fsFile Mount point
+ Parameter string $flag Propagation flag as string (private,slave,shared,unbindable,rprivate,rslave,rshared,runbindable)
+
+=cut
+
+sub setPropagationFlag
+{
+    my ($fsFile, $flag) = @_;
+    $flag ||= 'private';
+
+    unless (defined $fsFile) {
+        error( '$fsFile parameter is not defined' );
+        return 1;
+    }
+
+    $fsFile = File::Spec->canonpath( $fsFile );
+
+    debug("$fsFile $flag");
+
+    (undef, $flag) = _parseOptions($flag);
+    unless ($flag) {
+        error('Invalid propagation flags');
+        return 1;
+    }
+
+    unless (syscall(&iMSCP::Syscall::SYS_mount, 0, $fsFile, 0, $flag, 0 ) == 0) {
+        error( sprintf( 'Error while changing propagation flag on %s: %s', $fsFile, $! || 'Unknown error' ) );
+        return 1;
+    }
+
+    0;
+}
+
+=item isMountpoint()
+
+ Is the given path a mountpoint?
+
+ Note that bind mounts are never recognized as mountpoints. There is not way to check them.
+ 
+ See also mountpoint(1)
+
+ Param string $path Path to test
+ Return bool TRUE if $path look like a mount point, FALSE otherwise
+
+=cut
+
+sub isMountpoint($)
+{
+    my $path = shift;
+
+    return 0 unless -d $path;
+    my $st = File::stat::populate(CORE::stat( _ ));
+    my $st2 = File::stat::stat("$path/..");
+    ($st->dev != $st2->dev) || ($st->dev == $st2->dev && $st->ino == $st2->ino);
 }
 
 =item addMountEntry($entry)
@@ -193,7 +256,7 @@ sub umount
 
 =cut
 
-sub addMountEntry
+sub addMountEntry($)
 {
     my $entry = shift;
 
@@ -207,7 +270,7 @@ sub addMountEntry
 
     my $fh;
     unless (open $fh, '>>', "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf") {
-        error( sprintf( 'Could not open `%s` file: %s', "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf", $! ) );
+        error( sprintf( "Could not open `%s' file: %s", "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf", $! ) );
     }
 
     print {$fh} "$entry\n";
@@ -224,7 +287,7 @@ sub addMountEntry
 
 =cut
 
-sub removeMountEntry
+sub removeMountEntry($)
 {
     my $entry = shift;
 
@@ -243,11 +306,91 @@ sub removeMountEntry
         }
     };
     if ($@) {
-        error( sprintf( 'Could not remove entry matching with `%s` in `%s` file: %s', $entry, $file, $! ) );
+        error( sprintf( "Could not remove entry matching with `%s' in `%s' file: %s", $entry, $file, $! ) );
         return 1;
     }
 
     0;
+}
+
+=back
+
+=head1 PRIVATE FUNCTIONS
+
+=over 4
+
+=item _parseOptions($options)
+
+ Parse mount options (mount flags, propagation flags and data)
+
+ Param string $options String containing options, each comma separated
+ Return list List containing mount flags, propagation flags and data
+
+=cut
+
+sub _parseOptions($)
+{
+    my $options = shift;
+    
+    # Turn options string into option list and remove leading and trailing whitespaces
+    my @options = split ',', $options;
+    map { s/\s+//g } @options;
+
+    # Process fs-independent mount flags (excluding any propagation flag)
+    # Note: 'defaults' option is an userspace mount option
+    # List taken from libmount/src/optmap.c (util-linux 2.25.2)
+    my ($mflags, @roptions) = (0);
+    for (@options) {
+        ($_ eq 'defaults') && do { $mflags = 0; next; };
+        ($_ eq 'bind') && do { $mflags |= MS_BIND; next; };
+        ($_ eq 'rbind') && do { $mflags |= MS_BIND | MS_REC; next };
+        ($_ eq 'ro') && do { $mflags |= MS_RDONLY; next; };
+        ($_ eq 'rw') && do { $mflags = $mflags & ~MS_RDONLY; next; };
+        ($_ eq 'exec') && do { $mflags = $mflags & ~MS_NOEXEC; next; };
+        ($_ eq 'noexec') && do { $mflags |= MS_NOEXEC; next; };
+        ($_ eq 'suid') && do { $mflags = $mflags & ~MS_NOSUID; next; };
+        ($_ eq 'nosuid') && do { $mflags |= MS_NOSUID; next; };
+        ($_ eq 'dev') && do { $mflags = $mflags & ~MS_NODEV; next; };
+        ($_ eq 'nodev') && do { $mflags |= MS_NODEV; next; };
+        ($_ eq 'sync') && do { $mflags |= MS_SYNCHRONOUS; next; };
+        ($_ eq 'async') && do { $mflags = $mflags & ~MS_SYNCHRONOUS; next; };
+        ($_ eq 'dirsync') && do { $mflags |= MS_DIRSYNC; next; };
+        ($_ eq 'remount') && do { $mflags |= MS_REMOUNT; next; };
+        ($_ eq 'silent') && do { $mflags |= MS_SILENT; next; };
+        ($_ eq 'loud') && do { $mflags = $mflags & ~MS_SILENT; next; };
+        ($_ eq 'move') && do { $mflags |= MS_MOVE; next; };
+        ($_ eq 'mand') && do { $mflags |= MS_MANDLOCK; next; };
+        ($_ eq 'nomand') && do { $mflags = $mflags & ~MS_MANDLOCK; next; };
+        ($_ eq 'atime') && do { $mflags = $mflags & ~MS_NOATIME; next; };
+        ($_ eq 'noatime') && do { $mflags |= MS_NOATIME; next; };
+        ($_ eq 'iversion') && do { $mflags |= MS_I_VERSION; next; };
+        ($_ eq 'noiversion') && do { $mflags = $mflags & ~MS_I_VERSION; next; };
+        ($_ eq 'diratime') && do { $mflags = $mflags & ~MS_NODIRATIME; next; };
+        ($_ eq 'nodiratime') && do { $mflags |= MS_NODIRATIME; next; };
+        ($_ eq 'relatime') && do { $mflags |= MS_RELATIME; next; };
+        ($_ eq 'norelatime') && do { $mflags = $mflags & ~MS_RELATIME; next; };
+        ($_ eq 'strictatime') && do { $mflags |= MS_STRICTATIME; next; };
+        ($_ eq 'nostrictatime') && do { $mflags = $mflags & ~MS_STRICTATIME; next; };
+        ($_ eq 'lazytime') && do { $mflags = $mflags & ~MS_LAZYTIME; next; };
+        push @roptions, $_;
+    }
+
+    # Process fs-independent mount flags (Propagation flag only)
+    # List taken from libmount/src/optmap.c (util-linux 2.25.2)
+    my ($pflags, @data) = (0);
+    for (@roptions) {
+        ($_ eq 'unbindable') && do { $pflags |= MS_UNBINDABLE; next; }; 
+        ($_ eq 'runbindable') && do { $pflags |= MS_UNBINDABLE | MS_REC; next; };
+        ($_ eq 'private') && do { $pflags |= MS_PRIVATE; next; };
+        ($_ eq 'rprivate') && do { $pflags |= MS_PRIVATE | MS_REC; next; };
+        ($_ eq 'slave') && do { $pflags |= MS_SLAVE; next; };
+        ($_ eq 'rslave') && do { $pflags |= MS_SLAVE | MS_REC; next; };
+        ($_ eq 'shared') && do { $pflags |= MS_SHARED; next; };
+        ($_ eq 'rshared') && do { $pflags |= MS_SHARED | MS_REC; next; };
+        push @data, $_;
+    }
+
+    ($mflags, $pflags, (@data) ? join ',', @data : 0);
 }
 
 =back
