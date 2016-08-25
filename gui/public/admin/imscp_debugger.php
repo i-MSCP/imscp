@@ -404,7 +404,7 @@ function debugger_getMailsErrors($tpl)
 }
 
 /**
- * Get ÎP errors
+ * Get IP errors
  *
  * @param  iMSCP_pTemplate $tpl Template engine instance
  * @return void
