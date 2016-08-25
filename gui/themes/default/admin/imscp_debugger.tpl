@@ -223,6 +223,31 @@
 <table>
     <thead>
     <tr>
+        <th>{TR_IP_ERRORS}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- BDP: ip_message -->
+    <tr>
+        <td>{TR_IP_MESSAGE}</td>
+    </tr>
+    <!-- EDP: ip_message -->
+    <!-- BDP: ip_item -->
+    <tr>
+        <td>
+            <p>
+                <span class="bold">{IP_NAME}</span>
+                <span style="float: right"><a href="imscp_debugger.php?action=change&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link_as_button">{TR_CHANGE_STATUS}</a></span>
+            </p>
+            <span style="color:red;font-weight:bold;">{IP_ERROR}</span>
+        </td>
+    </tr>
+    <!-- EDP: ip_item -->
+    </tbody>
+</table>
+<table>
+    <thead>
+    <tr>
         <th>{TR_PLUGIN_ITEM_ERRORS}</th>
     </tr>
     </thead>

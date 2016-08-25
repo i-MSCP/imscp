@@ -45,6 +45,7 @@ FRONTEND
     Fixed: Prevent rollback attempts when not in transaction (iMSCP_Update_Database)
     Fixed: `SELECT' placeholder is not parsed in ip_manage.php (admin level)
     Fixed: Running the frontEnd through PHP CGI using spawn-fcgi lead to problems with opcode cache (cache not shared)
+    Fixed: Server IP addresses are missing in the debugger interface
     Removed: Support for FTP URL (Redirect feature)
 
 INSTALLER

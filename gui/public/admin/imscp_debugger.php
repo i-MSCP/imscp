@@ -404,6 +404,36 @@ function debugger_getMailsErrors($tpl)
 }
 
 /**
+ * Get ÎP errors
+ *
+ * @param  iMSCP_pTemplate $tpl Template engine instance
+ * @return void
+ */
+function debugger_getIpErrors($tpl)
+{
+    $stmt = exec_query(
+        'SELECT `ip_id`, `ip_number`, `ip_card`, `ip_status` FROM `server_ips` WHERE `ip_status` NOT IN (?, ?, ?, ?)',
+        array('ok', 'toadd', 'tochange', 'todelete')
+    );
+
+    if (!$stmt->rowCount()) {
+        $tpl->assign(array('IP_ITEM' => '', 'TR_IP_MESSAGE' => tr('No error found')));
+        $tpl->parse('IP_MESSAGE', 'ip_message');
+    } else {
+        while ($row = $stmt->fetchRow()) {
+            $tpl->assign(array(
+                'IP_MESSAGE' => '',
+                'IP_NAME' => tohtml($row['ip_number'] . ' ' . '(' . $row['ip_card'] . ':' . ($row['ip_id'] + 1000) . ')'),
+                'IP_ERROR' => tohtml($row['ip_status']),
+                'CHANGE_ID' => tohtml($row['ip_id']),
+                'CHANGE_TYPE' => 'ip'
+            ));
+            $tpl->parse('IP_ITEM', '.ip_item');
+        }
+    }
+}
+
+/**
  * Get plugin items errors
  *
  * @param iMSCP_pTemplate $tpl
@@ -529,6 +559,7 @@ $rqstCount += debugger_countRequests('status', 'mail_users');
 $rqstCount += debugger_countRequests('status', 'htaccess');
 $rqstCount += debugger_countRequests('status', 'htaccess_groups');
 $rqstCount += debugger_countRequests('status', 'htaccess_users');
+$rqstCount += debugger_countRequests('ip_status', 'server_ips');
 $rqstCount += debugger_countRequests(); // Plugin items
 
 if (isset($_GET['action'])) {
@@ -572,7 +603,10 @@ if (isset($_GET['action'])) {
             case 'htaccess':
             case 'htaccess_users':
             case 'htaccess_groups':
-                $query = "UPDATE `" . $_GET['type'] . "` SET `status` = ? WHERE `id` = ?";
+                $query = 'UPDATE ' . quoteIdentifier($_GET['type']) . ' SET `status` = ? WHERE `id` = ?';
+                break;
+            case 'ip':
+                $query = 'UPDATE `server_ips` SET `ip_status` = ? WHERE `ip_id` = ?';
                 break;
             case 'plugin':
                 $query = "UPDATE `plugin` SET `plugin_status` = ? WHERE `plugin_id` = ?";
@@ -627,6 +661,8 @@ $tpl->define_dynamic(array(
     'ftp_item' => 'page',
     'mail_message' => 'page',
     'mail_item' => 'page',
+    'ip_message' => 'page',
+    'ip_item' => 'page',
     'plugin_message' => 'page',
     'plugin_item' => 'page',
     'plugin_item_message' => 'page',
@@ -642,6 +678,7 @@ debugger_getCustomDNSErrors($tpl);
 debugger_getFtpUserErrors($tpl);
 debugger_getMailsErrors($tpl);
 debugger_getHtaccessErrors($tpl);
+debugger_getIpErrors($tpl);
 debugger_getPluginItemErrors($tpl);
 
 $tpl->assign(array(
@@ -654,6 +691,7 @@ $tpl->assign(array(
     'TR_CUSTOM_DNS_ERRORS' => tr('Custom DNS errors'),
     'TR_FTP_ERRORS' => tr('FTP user errors'),
     'TR_MAIL_ERRORS' => tr('Email account errors'),
+    'TR_IP_ERRORS' => tr('IP errors'),
     'TR_HTACCESS_ERRORS' => tr('Htaccess errors'),
     'TR_PLUGINS_ERRORS' => tr('Plugin errors'),
     'TR_PLUGIN_ITEM_ERRORS' => tr('Plugin item errors'),
