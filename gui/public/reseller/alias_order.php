@@ -102,7 +102,6 @@ try {
 
     $cfg = iMSCP_Registry::get('config');
     if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
-        $row = $stmt->fetchRow();
         client_mail_add_default_accounts($row['domain_id'], $row['email'], $row['alias_name'], 'alias', $id);
     }
 
