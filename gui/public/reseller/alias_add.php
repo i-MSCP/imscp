@@ -318,7 +318,7 @@ function addDomainAlias()
         $phpini->saveDomainIni($mainDmnProps['admin_id'], $id, 'als');
 
         // Create default email addresses if needed
-        if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES'] && $mainDmnProps['admin_email'] !== '') {
+        if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
             client_mail_add_default_accounts($mainDmnProps['domain_id'], $mainDmnProps['admin_email'], $domainAliasNameAscii, 'alias', $id);
         }
 

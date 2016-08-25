@@ -249,7 +249,7 @@ function addDomainAlias()
 
         if ($isSuUser) {
             $cfg = iMSCP_Registry::get('config');
-            if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES'] && $userEmail !== '') {
+            if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
                 client_mail_add_default_accounts($mainDmnProps['domain_id'], $userEmail, $domainAliasNameAscii, 'alias', $id);
             }
         }

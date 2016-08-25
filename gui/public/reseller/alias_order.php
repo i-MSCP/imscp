@@ -73,8 +73,13 @@ if (!isset($_GET['action']) || $_GET['action'] !== 'activate' || !isset($_GET['a
 $id = intval($_GET['act_id']);
 $stmt = exec_query(
     '
-        SELECT alias_name, domain_id FROM domain_aliasses INNER JOIN domain USING(domain_id) INNER JOIN admin ON(admin_id = domain_admin_id)
-        WHERE alias_id = ? AND alias_status = ? AND created_by = ?
+        SELECT alias_name, domain_id, email
+        FROM domain_aliasses
+        INNER JOIN domain USING(domain_id)
+        INNER JOIN admin ON(admin_id = domain_admin_id)
+        WHERE alias_id = ?
+        AND alias_status = ?
+        AND created_by = ?
     ',
     array($id, 'ordered', $_SESSION['user_id'])
 );
@@ -96,16 +101,9 @@ try {
     exec_query('UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', array('toadd', $id));
 
     $cfg = iMSCP_Registry::get('config');
-
     if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
-        $stmt = exec_query(
-            'SELECT email FROM admin INNER JOIN domain ON(admin_id = domain_admin_id) WHERE domain_id = ?', $row['domain_id']
-        );
-
-        if ($stmt->rowCount() && $row['email'] !== '') {
-            $row = $stmt->fetchRow();
-            client_mail_add_default_accounts($row['domain_id'], $row['email'], $row['alias_name'], 'alias', $id);
-        }
+        $row = $stmt->fetchRow();
+        client_mail_add_default_accounts($row['domain_id'], $row['email'], $row['alias_name'], 'alias', $id);
     }
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddDomainAlias, array(

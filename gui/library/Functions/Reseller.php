@@ -500,14 +500,13 @@ function reseller_limits_check($resellerId, $hp)
 function client_mail_add_default_accounts($dmnId, $userEmail, $dmnName, $dmnType = 'domain', $subId = 0)
 {
 	$forwardType = ($dmnType == 'alias') ? 'alias_forward' : 'normal_forward';
-	$resellerEmail = $_SESSION['user_email'];
+	$resellerEmail = $_SESSION['user_email'] ?: null;
+	$userEmail = $userEmail ?: null;
 
 	$db = iMSCP_Database::getInstance();
 
 	try {
 		$db->beginTransaction();
-
-		// Prepare the statement once
 		$stmt = $db->getRawInstance()->prepare(
 			'
 				INSERT INTO mail_users (
@@ -521,15 +520,15 @@ function client_mail_add_default_accounts($dmnId, $userEmail, $dmnName, $dmnType
 
 		foreach(
 			array(
-				'abuse' => $resellerEmail, 'hostmaster' => $resellerEmail, 'postmaster' => $resellerEmail,
+				'abuse' => $resellerEmail,
+				'hostmaster' => $resellerEmail,
+				'postmaster' => $resellerEmail,
 				'webmaster' => $userEmail
-			) as $umail => $forwardTo
+			) as $email => $forwardTo
 		) {
-			$stmt->execute(
-				array(
-					$umail, '_no_', $forwardTo, $dmnId, $forwardType, $subId, 'toadd', 0, null, $umail . '@' . $dmnName
-				)
-			);
+			if($forwardTo !== null) {
+				$stmt->execute(array($email, '_no_', $forwardTo, $dmnId, $forwardType, $subId, 'toadd', 0, null, $email . '@' . $dmnName));
+			}
 		}
 
 		$db->commit();
