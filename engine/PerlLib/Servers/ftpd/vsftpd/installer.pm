@@ -28,7 +28,6 @@ use warnings;
 use Cwd;
 use iMSCP::Config;
 use iMSCP::Database;
-use iMSCP::Crypt 'randomStr';
 use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::File;
@@ -134,8 +133,8 @@ EOF
                         if (length $dbPass < 6) {
                             $msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
                             $dbPass = '';
-                        } elsif ($dbPass !~ /^[\x21-\x22\x24-\x5b\x5d-\x7e]+$/) {
-                            $msg = "\n\n\\Z1Only printable ASCII characters (excepted space and number sign and backslash) are allowed.\\Zn\n\nPlease try again:";
+                        } elsif ($dbPass =~ /[^\x30-\x39\x41-\x5a\x61-\x7a]/) {
+                            $msg = "\n\n\\Z1Only ASCII alphabet characters and numbers are allowed.\\Zn\n\nPlease try again:";
                             $dbPass = '';
                         } else {
                             $msg = '';
@@ -149,7 +148,10 @@ EOF
             }
 
             if ($rs < 30) {
-                $dbPass = randomStr( 16 ) unless $dbPass;
+                my @allowedChr = map { chr } (0x30 .. 0x39, 0x41 .. 0x5a, 0x61 .. 0x7a);
+                $dbPass = '';
+                $dbPass .= $allowedChr[rand @allowedChr] for 1 .. 16;
+
                 $dialog->msgbox( <<"EOF" );
 
 Password for the VsFTPd SQL user set to: $dbPass"

@@ -93,7 +93,7 @@ sub loadConfig
         %main::imscpOldConfig = %tmpVar;
         untie %tmpVar;
 
-        # Merge old configuration parameter with new configuration parameters
+        # Merge old configuration parameters with new configuration parameters
         while(my ($param, $value) = each(%main::imscpOldConfig)) {
             next unless exists $main::imscpConfig{$param}
                 && $param !~ /^(?:BuildDate|Version|CodeName|THEME_ASSETS_VERSION|DISTRO_(?:ID|CODENAME|RELEASE))$/;
