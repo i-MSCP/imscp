@@ -91,9 +91,9 @@ sub addIpAddr
 
     $self->_updateInterfaces( 'add', $data );
 
-    # We bring up the network interface for the target IP address only if that IP address has been configured by us
-    return 0 unless $data->{'ip_config_mode'} eq 'auto' &&
-        $self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'id'}" );
+    # We bring up the network interface for the target IP address only if that IP address has been auto-configured
+    return 0 unless $data->{'ip_config_mode'} eq 'auto'; #&&
+        #$self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'id'}" );
 
     my ($stdout, $stderr);
     execute( "$COMMANDS{'ifup'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr ) == 0 or die(
