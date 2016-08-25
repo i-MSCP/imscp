@@ -107,11 +107,12 @@ sub askMasterAdminData
     if (iMSCP::Getopt->preseed) {
         $login = main::setupGetQuestion( 'ADMIN_LOGIN_NAME' );
         $password = main::setupGetQuestion( 'ADMIN_PASSWORD' );
-        $login = '' if $password eq '';
     } elsif ($db) {
         my $defaultAdmin = $db->doQuery(
-            'created_by', 'SELECT admin_name, created_by FROM admin WHERE created_by = ? AND admin_type = ? LIMIT 1',
-            '0', 'admin'
+            'created_by',
+            'SELECT admin_name, admin_pass, created_by FROM admin WHERE created_by = ? AND admin_type = ? LIMIT 1',
+            '0',
+            'admin'
         );
         unless (ref $defaultAdmin eq 'HASH') {
             error( $defaultAdmin );
@@ -119,13 +120,16 @@ sub askMasterAdminData
         }
 
         if (%{$defaultAdmin}) {
-            $login = $defaultAdmin->{'0'}->{'admin_name'};
+            $login = $defaultAdmin->{'0'}->{'admin_name'} // '';
+            $password = $defaultAdmin->{'0'}->{'admin_pass'} // '';
         }
     }
 
     main::setupSetQuestion( 'ADMIN_OLD_LOGIN_NAME', $login );
 
-    if ($login eq '' || $main::reconfigure =~ /^(?:admin|all|forced)$/) {
+    if ($login eq '' || $password eq '' || $email eq '' || $main::reconfigure =~ /^(?:admin|all|forced)$/) {
+        $password = '';
+
         do {
             ($rs, $login) = $dialog->inputbox( <<"EOF", $login || 'admin' );
 

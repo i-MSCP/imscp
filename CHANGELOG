@@ -51,6 +51,7 @@ INSTALLER
     Added: Requirements check for PHP modules
     Fixed: Cannot create pbuilder environment - Wrong repository (pbuilder use first entry from sources.list)
     Fixed: Could not remove deprecated `phptmp' directories on update (Httpd server impl.)
+    Fixed: Ensure that DEFAULT_ADMIN_ADDRESS parameter is set
     Fixed: SQL server data directory must not be hardcoded
     Fixed: Update and Security repositories are missing in pbuilder environments
     Removed: Additional IP configuration dialog (see the errata file for more details)
