@@ -80,6 +80,49 @@ use constant {
     #UMOUNT_NOFOLLOW => 8
 };
 
+# List taken from libmount/src/optmap.c (util-linux 2.25.2)
+my %OPTIONS = (
+    defaults      => sub { 0 },
+    bind          => sub { $_[0] | MS_BIND },
+    rbind         => sub { $_[0] | MS_BIND | MS_REC },
+    ro            => sub { $_[0] | MS_RDONLY },
+    rw            => sub { $_[0] & ~MS_RDONLY },
+    exec          => sub { $_[0] & ~MS_NOEXEC },
+    noexec        => sub { $_[0] | MS_NOEXEC },
+    suid          => sub { $_[0] & ~MS_NOSUID },
+    nosuid        => sub { $_[0] | MS_NOSUID },
+    dev           => sub { $_[0] & ~MS_NODEV },
+    nodev         => sub { $_[0] | MS_NODEV },
+    sync          => sub { $_[0] | MS_SYNCHRONOUS },
+    async         => sub { $_[0] & ~MS_SYNCHRONOUS },
+    dirsync       => sub { $_[0] | MS_DIRSYNC },
+    remount       => sub { $_[0] | MS_REMOUNT },
+    silent        => sub { $_[0] | MS_SILENT },
+    loud          => sub { $_[0] & ~MS_SILENT },
+    move          => sub { $_[0] | MS_MOVE },
+    mand          => sub { $_[0] | MS_MANDLOCK },
+    nomand        => sub { $_[0] & ~MS_MANDLOCK },
+    atime         => sub { $_[0] & ~MS_NOATIME },
+    noatime       => sub { $_[0] | MS_NOATIME },
+    iversion      => sub { $_[0] | MS_I_VERSION },
+    noiversion    => sub { $_[0] & ~MS_I_VERSION },
+    diratime      => sub { $_[0] & ~MS_NODIRATIME },
+    nodiratime    => sub { $_[0] | MS_NODIRATIME },
+    relatime      => sub { $_[0] | MS_RELATIME },
+    norelatime    => sub { $_[0] & ~MS_RELATIME },
+    strictatime   => sub { $_[0] | MS_STRICTATIME },
+    nostrictatime => sub { $_[0] & ~MS_STRICTATIME },
+    lazytime      => sub { $_[0] & ~MS_LAZYTIME },
+    unbindable    => sub { $_[0] | MS_UNBINDABLE },
+    runbindable   => sub { $_[0] | MS_UNBINDABLE | MS_REC},
+    private       => sub { $_[0] | MS_PRIVATE },
+    rprivate      => sub { $_[0] | MS_PRIVATE | MS_REC },
+    slave         => sub { $_[0] | MS_SLAVE },
+    rslave        => sub { $_[0] | MS_SLAVE | MS_REC },
+    shared        => sub { $_[0] | MS_SHARED },
+    rshared       => sub { $_[0] | MS_SHARED | MS_REC }
+);
+
 =head1 DESCRIPTION
 
  Library for mounting/unmounting file systems.
@@ -101,7 +144,7 @@ use constant {
 
 =cut
 
-sub mount
+sub mount($)
 {
     my $fields = shift;
     $fields = { } unless defined $fields && ref $fields eq 'HASH';
@@ -130,7 +173,7 @@ sub mount
             push @syscallsArgv, [ MS_MGC_VAL | MS_REMOUNT | $mflags, $data ] if $mflags & ~(MS_BIND | MS_REC) || $data;
         }
     } else {
-        push @syscallsArgv, [ MS_MGC_VAL | $mflags, $data ] unless !($mflags & MS_REMOUNT) && isMountpoint $fsFile;
+        push @syscallsArgv, [ MS_MGC_VAL | $mflags, $data ] unless !($mflags & MS_REMOUNT) && isMountpoint($fsFile);
     }
     push @syscallsArgv, [ $pflags, 0 ] if $pflags;
 
@@ -196,7 +239,7 @@ sub umount($)
 
 =cut
 
-sub setPropagationFlag
+sub setPropagationFlag($;$)
 {
     my ($fsFile, $flag) = @_;
     $flag ||= 'private';
@@ -331,63 +374,23 @@ sub removeMountEntry($)
 sub _parseOptions($)
 {
     my $options = shift;
-    
+
     # Turn options string into option list and remove leading and trailing whitespaces
     my @options = split ',', $options;
     map { s/\s+//g } @options;
 
-    # Process fs-independent mount flags (excluding any propagation flag)
-    # Note: 'defaults' option is an userspace mount option
-    # List taken from libmount/src/optmap.c (util-linux 2.25.2)
+    # Process mount flags (excluding any propagation flag)
     my ($mflags, @roptions) = (0);
     for (@options) {
-        ($_ eq 'defaults') && do { $mflags = 0; next; };
-        ($_ eq 'bind') && do { $mflags |= MS_BIND; next; };
-        ($_ eq 'rbind') && do { $mflags |= MS_BIND | MS_REC; next };
-        ($_ eq 'ro') && do { $mflags |= MS_RDONLY; next; };
-        ($_ eq 'rw') && do { $mflags = $mflags & ~MS_RDONLY; next; };
-        ($_ eq 'exec') && do { $mflags = $mflags & ~MS_NOEXEC; next; };
-        ($_ eq 'noexec') && do { $mflags |= MS_NOEXEC; next; };
-        ($_ eq 'suid') && do { $mflags = $mflags & ~MS_NOSUID; next; };
-        ($_ eq 'nosuid') && do { $mflags |= MS_NOSUID; next; };
-        ($_ eq 'dev') && do { $mflags = $mflags & ~MS_NODEV; next; };
-        ($_ eq 'nodev') && do { $mflags |= MS_NODEV; next; };
-        ($_ eq 'sync') && do { $mflags |= MS_SYNCHRONOUS; next; };
-        ($_ eq 'async') && do { $mflags = $mflags & ~MS_SYNCHRONOUS; next; };
-        ($_ eq 'dirsync') && do { $mflags |= MS_DIRSYNC; next; };
-        ($_ eq 'remount') && do { $mflags |= MS_REMOUNT; next; };
-        ($_ eq 'silent') && do { $mflags |= MS_SILENT; next; };
-        ($_ eq 'loud') && do { $mflags = $mflags & ~MS_SILENT; next; };
-        ($_ eq 'move') && do { $mflags |= MS_MOVE; next; };
-        ($_ eq 'mand') && do { $mflags |= MS_MANDLOCK; next; };
-        ($_ eq 'nomand') && do { $mflags = $mflags & ~MS_MANDLOCK; next; };
-        ($_ eq 'atime') && do { $mflags = $mflags & ~MS_NOATIME; next; };
-        ($_ eq 'noatime') && do { $mflags |= MS_NOATIME; next; };
-        ($_ eq 'iversion') && do { $mflags |= MS_I_VERSION; next; };
-        ($_ eq 'noiversion') && do { $mflags = $mflags & ~MS_I_VERSION; next; };
-        ($_ eq 'diratime') && do { $mflags = $mflags & ~MS_NODIRATIME; next; };
-        ($_ eq 'nodiratime') && do { $mflags |= MS_NODIRATIME; next; };
-        ($_ eq 'relatime') && do { $mflags |= MS_RELATIME; next; };
-        ($_ eq 'norelatime') && do { $mflags = $mflags & ~MS_RELATIME; next; };
-        ($_ eq 'strictatime') && do { $mflags |= MS_STRICTATIME; next; };
-        ($_ eq 'nostrictatime') && do { $mflags = $mflags & ~MS_STRICTATIME; next; };
-        ($_ eq 'lazytime') && do { $mflags = $mflags & ~MS_LAZYTIME; next; };
-        push @roptions, $_;
+        push @roptions, $_ && next unless exists $OPTIONS{$_};
+        $mflags = $OPTIONS{$_}->( $mflags );
     }
 
-    # Process fs-independent mount flags (Propagation flag only)
-    # List taken from libmount/src/optmap.c (util-linux 2.25.2)
+    # Process propagation flags
     my ($pflags, @data) = (0);
     for (@roptions) {
-        ($_ eq 'unbindable') && do { $pflags |= MS_UNBINDABLE; next; }; 
-        ($_ eq 'runbindable') && do { $pflags |= MS_UNBINDABLE | MS_REC; next; };
-        ($_ eq 'private') && do { $pflags |= MS_PRIVATE; next; };
-        ($_ eq 'rprivate') && do { $pflags |= MS_PRIVATE | MS_REC; next; };
-        ($_ eq 'slave') && do { $pflags |= MS_SLAVE; next; };
-        ($_ eq 'rslave') && do { $pflags |= MS_SLAVE | MS_REC; next; };
-        ($_ eq 'shared') && do { $pflags |= MS_SHARED; next; };
-        ($_ eq 'rshared') && do { $pflags |= MS_SHARED | MS_REC; next; };
-        push @data, $_;
+        push @data, $_ && next unless exists $OPTIONS{$_};
+        $pflags = $OPTIONS{$_}->( $pflags );
     }
 
     ($mflags, $pflags, (@data) ? join ',', @data : 0);
