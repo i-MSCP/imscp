@@ -44,17 +44,7 @@ $Module::Load::Conditional::FIND_VERSION = 0;
 
 =item addIpAddr(\%data)
 
- Add an IP address
-
- Param hash \%data IP address data:
-   id             : IP address unique identifier
-   ip_card        : Network card to which the IP address must be added
-   ip_address     : Either an IPv4 or IPv6 address
-   ip_config_mode : IP configuration mode (auto|manual)
-   netmask        : OPTIONAL Netmask (default: auto)
-   broadcast      : OPTIONAL Broadcast (default: auto)
-   gateway        : OPTIONAL Gateway (default: auto)
- Return iMSCP::Provider::NetworkInterface, die on failure
+ See iMSCP::Provider::NetworkInterface::Interface
 
 =cut
 
@@ -69,14 +59,7 @@ sub addIpAddr
 
 =item removeIpAddr(\%data)
 
- Remove an IP address
-
- Param hash \%data IP address data:
-   id             : IP address unique identifier
-   ip_card        : Network card from which the IP address must be removed
-   ip_address     : Either an IPv4 or IPv6 address
-   ip_config_mode : IP configuration mode (auto|manual)
- Return iMSCP::Provider::NetworkInterface, die on failure
+ See iMSCP::Provider::NetworkInterface::Interface
 
 =cut
 
@@ -93,7 +76,7 @@ sub removeIpAddr
 
  Get network interface provider
 
- Return iMSCP::Provider::NetworkInterface::Interface, croak on failure
+ Return iMSCP::Provider::NetworkInterface, die on failure
 
 =cut
 
@@ -104,7 +87,7 @@ sub getProvider
     return $self->{'_provider'} if $self->{'_provider'};
 
     my $provider = 'iMSCP::Provider::NetworkInterface::'.iMSCP::LsbRelease->getInstance->getId( 'short' );
-    can_load( modules => { $provider => undef } ) or croak(
+    can_load( modules => { $provider => undef } ) or die(
         sprintf( "Could not load `%s' network interface provider: %s", $provider, $Module::Load::Conditional::ERROR )
     );
     $self->setProvider( $provider->new() );
@@ -115,7 +98,7 @@ sub getProvider
  Set network interface provider
 
  Param iMSCP::Provider::NetworkInterface::Interface $provider
- Return iMSCP::Provider::NetworkInterface::Interface, croak on failure
+ Return iMSCP::Provider::NetworkInterface, croak on failure
 
 =cut
 
@@ -126,6 +109,7 @@ sub setProvider
         '$provider parameter is either not defined or not an iMSCP::Provider::NetworkInterface::Interface object'
     );
     $self->{'_provider'} = $provider;
+    $self;
 }
 
 =back

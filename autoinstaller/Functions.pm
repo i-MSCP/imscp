@@ -150,7 +150,7 @@ sub build
         return $rs if $rs;
     }
 
-    $rs = _askInstallMode( $dialog ) unless iMSCP::Getopt->noprompt || $main::buildonly || $main::reconfigure ne 'none';
+    $rs = _askInstallerMode( $dialog ) unless iMSCP::Getopt->noprompt || $main::buildonly || $main::reconfigure ne 'none';
 
     $rs ||= $eventManager->trigger( 'beforePreBuild' );
     $rs ||= _getDistroAdapter()->preBuild();
@@ -497,30 +497,27 @@ EOF
     0;
 }
 
-=item _askInstallMode(\%dialog)
+=item _askInstallerMode(\%dialog)
 
- Asks for install mode
+ Asks for installer mode
 
  Param iMSCP::Dialog \%dialog
  Return int 0 on success, 50 otherwise
 
 =cut
 
-sub _askInstallMode
+sub _askInstallerMode
 {
     my $dialog = shift;
 
     $dialog->set( 'cancel-label', 'Abort' );
 
-    my ($rs, $mode) = $dialog->radiolist( <<"EOF", [ 'Install', 'Build' ], 'Install' );
+    my ($rs, $mode) = $dialog->radiolist( <<"EOF", [ 'auto', 'manual' ], 'auto' );
 
-Please, choose an option:
-
-\\Z4Install:\\Zn Choose this option if you want install or update i-MSCP.
-  \\Z4Build:\\Zn Choose this option if you want install i-MSCP manually.
+Please choose the installer mode:
 EOF
 
-    $main::buildonly = $mode eq 'Build' ? 1 : 0;
+    $main::buildonly = $mode eq 'manual' ? 1 : 0;
     $dialog->set( 'cancel-label', 'Back' );
     return 50 if $rs;
     0;

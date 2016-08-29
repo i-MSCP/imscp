@@ -59,26 +59,19 @@ sub process
         my ($sth2, @params);
         local $@;
         eval {
+            my $data = {
+                id             => $row->{'ip_id'},
+                ip_card        => $row->{'ip_card'},
+                ip_address     => $row->{'ip_number'},
+                ip_config_mode => $row->{'ip_config_mode'}
+            };
+
             if ($row->{'ip_status'} =~ /^to(?:add|change)$/) {
-                $provider->addIpAddr(
-                    {
-                        id             => $row->{'ip_id'},
-                        ip_card        => $row->{'ip_card'},
-                        ip_address     => $row->{'ip_number'},
-                        ip_config_mode => $row->{'ip_config_mode'}
-                    }
-                );
+                $provider->addIpAddr( $data );
                 $sth2 = $dbh->prepare( 'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?' );
                 @params = ('ok', $row->{'ip_id'});
             } elsif ($row->{'ip_status'} eq 'todelete') {
-                $provider->removeIpAddr(
-                    {
-                        id             => $row->{'ip_id'},
-                        ip_card        => $row->{'ip_card'},
-                        ip_address     => $row->{'ip_number'},
-                        ip_config_mode => $row->{'ip_config_mode'}
-                    }
-                );
+                $provider->removeIpAddr( $data );
                 $sth2 = $dbh->prepare( 'DELETE FROM server_ips WHERE ip_id = ?' );
                 @params = ($row->{'ip_id'});
             }

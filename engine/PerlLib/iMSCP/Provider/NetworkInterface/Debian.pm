@@ -30,7 +30,7 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Net;
 use iMSCP::TemplateParser;
-use parent 'iMSCP::Provider::NetworkInterface::Abstract';
+use parent qw/ Common::Object iMSCP::Provider::NetworkInterface::Interface /;
 
 # Commands used in that package
 my %COMMANDS = (
@@ -39,8 +39,8 @@ my %COMMANDS = (
     ifquery => '/sbin/ifquery'
 );
 
-#  Network interface configuration file for ifup and ifdown
-my $interfacesFilePath = '/etc/network/interfaces';
+#  Network interface configuration file for ifup/ifdown
+my $INTERFACES_FILE_PATH = '/etc/network/interfaces';
 
 =head1 DESCRIPTION
 
@@ -52,23 +52,14 @@ my $interfacesFilePath = '/etc/network/interfaces';
 
 =item addIpAddr(\%data)
 
- Add an IP address
-
- Param hash \%data IP address parameters:
-   id: int IP address unique identifier
-   ip_card        : Network card to which the IP address must be added
-   ip_address     : Either an IPv4 or IPv6 address
-   ip_config_mode : IP configuration mode (auto|manual)
-   netmask        : OPTIONAL Netmask (default: auto)
-   broadcast      : OPTIONAL Broadcast (default: auto)
-   gateway        : OPTIONAL Gateway (default: auto)
- Return iMSCP::Provider::NetworkInterface::Debian, die on failure
+ See iMSCP::Provider::NetworkInterface::Interface
 
 =cut
 
 sub addIpAddr
 {
     my ($self, $data) = @_;
+
     $data = { } unless defined $data && ref $data eq 'HASH';
 
     for(qw/ id ip_card ip_address ip_config_mode /) {
@@ -83,17 +74,13 @@ sub addIpAddr
         sprintf( "The `%s' IP address is not valid", $data->{'ip_address'} )
     );
     $data->{'id'} += 1000;
-    $data->{'netmask'} = $self->{'net'}->getAddrVersion( $data->{'ip_address'} ) eq 'ipv4' ? '255.255.255.255' : '64';
-    # TODO guess netmask broadcast and gateway if not defined
 
-    # Make sure that the network device is UP
-    #$self->{'net'}->upDevice($data->{'ip_card'}) unless $self->{'net'}->isDeviceUp($data->{'ip_card'});
+    $data->{'netmask'} = $self->{'net'}->getAddrVersion( $data->{'ip_address'} ) eq 'ipv4' ? '32' : '64';
 
-    $self->_updateInterfaces( 'add', $data );
+    $self->_updateInterfacesFile( 'add', $data ) == 0 or die('Could not update interfaces file');
 
-    # We bring up the network interface for the target IP address only if that IP address has been auto-configured
-    return 0 unless $data->{'ip_config_mode'} eq 'auto'; #&&
-        #$self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'id'}" );
+    return 0 unless $data->{'ip_config_mode'} eq 'auto';
+    $self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'id'}" );
 
     my ($stdout, $stderr);
     execute( "$COMMANDS{'ifup'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr ) == 0 or die(
@@ -103,49 +90,42 @@ sub addIpAddr
         )
     );
 
-    $self->{'net'}->resetInstance();
+    $self;
 }
 
 =item removeIpAddr(\%data)
 
- Remove an IP address
-
- Param hash \%data IP address parameters:
-   id             : IP address unique identifier
-   ip_card        : Network card from which the IP address must be removed
-   ip_address     : Either an IPv4 or IPv6 address
-   ip_config_mode : IP configuration mode (auto|manual)
- Return iMSCP::Provider::NetworkInterface::Debian, die on failure
+ See iMSCP::Provider::NetworkInterface::Interface
 
 =cut
 
 sub removeIpAddr
 {
     my ($self, $data) = @_;
+
     $data = { } unless defined $data && ref $data eq 'HASH';
 
     for(qw/ id ip_card ip_address ip_config_mode /) {
         defined $data->{$_} or croak( sprintf( "The `%s' parameter is not defined", $_ ) );
     }
 
-    $data->{'id'} =~ /^\d+$/ or croak( 'id parameter must be an integer' );
-    $data->{'id'} += 1000;
+    if ($data->{'ip_config_mode'} eq 'auto' && $self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'id'}" )) {
+        $data->{'id'} =~ /^\d+$/ or croak( 'id parameter must be an integer' );
+        $data->{'id'} += 1000;
 
-    # We bring down the network interface for the target IP address only if that IP address has been added by us
-    return 0 unless $data->{'ip_config_mode'} eq 'auto' &&
-        $self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'id'}" );
+        my ($stdout, $stderr);
+        execute( "$COMMANDS{'ifdown'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr ) == 0 or die(
+            sprintf(
+                "Could not bring down the `%s' network interface: %s", "$data->{'ip_card'}:$data->{'id'}",
+                $stderr || 'Unknown error'
+            )
+        );
+    } elsif ($data->{'ip_config_mode'} eq 'auto') {
+        $self->{'net'}->delAddr( $data->{'ip_address'} )
+    }
 
-    my ($stdout, $stderr);
-    execute( "$COMMANDS{'ifdown'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr ) == 0 or die(
-        sprintf(
-            "Could not bring down the `%s' network interface: %s", "$data->{'ip_card'}:$data->{'id'}",
-            $stderr || 'Unknown error'
-        )
-    );
-
-    $self->{'net'}->resetInstance();
-    $self->_updateInterfaces( 'remove', $data );
-    0;
+    $self->_updateInterfaces( 'remove', $data ) == 0 or die('Could not update interfaces file');
+    $self;
 }
 
 =back
@@ -154,21 +134,37 @@ sub removeIpAddr
 
 =over 4
 
-=item _updateInterfaces($action, \%data)
+=item _init()
 
- Add or remove IP address in the network interfaces file
-
- Param string $action Action to perform (add|remove)
- Param string $data Template data
- Return int 0 on success, die on failure
+ See Common::Object
 
 =cut
 
-sub _updateInterfaces
+sub _init
+{
+    my $self = shift;
+
+    $self->{'net'} = iMSCP::Net->getInstance();
+    $self->SUPER::_init();
+}
+
+=item _updateInterfacesFile($action, \%data)
+
+ Add or remove IP address in the interfaces configuration file
+
+ Param string $action Action to perform (add|remove)
+ Param string $data Template data
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _updateInterfacesFile
 {
     my ($self, $action, $data) = @_;
-    my $file = iMSCP::File->new( filename => $interfacesFilePath );
-    $file->copyFile( $interfacesFilePath.'.bak' );
+
+    my $file = iMSCP::File->new( filename => $INTERFACES_FILE_PATH );
+    my $rs = $file->copyFile( $INTERFACES_FILE_PATH.'.bak' );
+    return $rs if $rs;
 
     my $fileContent = $file->get();
     $fileContent = iMSCP::TemplateParser::replaceBloc(
@@ -179,38 +175,39 @@ sub _updateInterfaces
     );
 
     if ($action eq 'add' && $data->{'ip_config_mode'} eq 'auto') {
-        my $normalizedAddr = $self->{'net'}->normalizeAddr( $data->{'ip_address'} );
+        my $cAddr = $self->{'net'}->normalizeAddr( $data->{'ip_address'} );
+        my $eAddr = expandAddr($data->{'ip_address'});
 
         # Add IP addresse only if not already present (e.g: manually configured IP addresses)
-        if ($fileContent !~ /^[^#]*(?:address|ip\s+addr.*?)\s+(?:$data->{'ip_address'}|$normalizedAddr)(?:\s+|\n)/gm) {
+        if ($fileContent !~ /^[^#]*(?:address|ip\s+addr.*?)\s+(?:$cAddr|$eAddr|$data->{'ip_address'})(?:\s+|\n)/gm) {
             $fileContent .= iMSCP::TemplateParser::process(
                 {
                     id          => $data->{'id'},
                     ip_card     => $data->{'ip_card'},
-                    addr_family => $self->{'net'}->getAddrVersion( $data->{'ip_address'} ) eq 'ipv4' ? 'inet' : 'inet6',
-                    address     => $normalizedAddr,
+                    addr_family => $data->{'netmask'} == 32 ? 'inet' : 'inet6',
+                    address     => $cAddr,
                     netmask     => $data->{'netmask'}
                 },
-                <<TPL
+                <<STANZA
 
 # i-MSCP [{ip_card}:{id}] entry BEGIN
 auto {ip_card}:{id}
 iface {ip_card}:{id} {addr_family} static
-        address {address}
-        netmask {netmask}
+    address {address}
+    netmask {netmask}
 # i-MSCP [{ip_card}:{id}] entry ENDING
-TPL
+STANZA
             );
         }
     }
 
-    $file->set( $fileContent );
-    $file->save();
+    $rs = $file->set( $fileContent );
+    $rs ||= $file->save();
 }
 
 =item _isDefinedInterface($interface)
 
- Does the given interface is defined in the network configuration file
+ Is the given interface defined in the interfaces configuration file?
 
  Param string $interface Logical interface name
  Return bool TRUE if the given interface is defined in the network interface file, false otherwise
@@ -220,7 +217,7 @@ TPL
 sub _isDefinedInterface
 {
     my ($self, $interface) = @_;
-    execute( "$COMMANDS{'ifquery'} --list | grep -q ".escapeShell( '^'.$interface.'$' ) ) == 0;
+    execute( [ $COMMANDS{'ifquery'}, '--list', '|', 'grep', '-q', "^$interface\$" ] ) == 0;
 }
 
 =back

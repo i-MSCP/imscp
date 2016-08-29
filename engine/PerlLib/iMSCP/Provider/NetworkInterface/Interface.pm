@@ -40,7 +40,7 @@ use Carp;
  Add a network card
 
  Param hash \%data Network card data
- Return iMSCP::Provider::NetworkInterface::Interface, die on failure
+ Return iMSCP::Provider::NetworkInterface::Interface, croak or die on failure
 
 =cut
 
@@ -54,7 +54,7 @@ sub addNetworkCard
  Remove a network card
 
  Param hash \%data Network card data
- Return iMSCP::Provider::NetworkInterface::Interface, die on failure
+ Return iMSCP::Provider::NetworkInterface::Interface, croak or die on failure
 
 =cut
 
@@ -75,7 +75,7 @@ sub removeNetworkCard
    netmask        : OPTIONAL Netmask (default: auto)
    broadcast      : OPTIONAL Broadcast (default: auto)
    gateway        : OPTIONAL Gateway (default: auto)
- Return iMSCP::Provider::NetworkInterface::Interface, die on failure
+ Return iMSCP::Provider::NetworkInterface::Interface, croak or die on failure
 
 =cut
 
@@ -93,7 +93,7 @@ sub addIpAddr
    ip_card        : Network card from which the IP address must be removed
    ip_address     : Either an IPv4 or IPv6 address
    ip_config_mode : IP configuration mode (auto|manual)
- Return iMSCP::Provider::NetworkInterface::Interface, die on failure
+ Return iMSCP::Provider::NetworkInterface::Interface, croak or die on failure
 
 =cut
 
