@@ -74,13 +74,11 @@ sub addIpAddr
         sprintf( "The `%s' IP address is not valid", $data->{'ip_address'} )
     );
     $data->{'id'} += 1000;
-
     $data->{'netmask'} = $self->{'net'}->getAddrVersion( $data->{'ip_address'} ) eq 'ipv4' ? '32' : '64';
-
     $self->_updateInterfacesFile( 'add', $data ) == 0 or die('Could not update interfaces file');
 
-    return 0 unless $data->{'ip_config_mode'} eq 'auto';
-    $self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'id'}" );
+    return 0 unless $data->{'ip_config_mode'} eq 'auto' &&
+        $self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'id'}" );
 
     my ($stdout, $stderr);
     execute( "$COMMANDS{'ifup'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr ) == 0 or die(

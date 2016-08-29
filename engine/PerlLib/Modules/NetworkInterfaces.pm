@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::Database;
+use iMSCP::Net;
 use iMSCP::Provider::NetworkInterface;
 use parent 'Common::Object';
 
@@ -89,7 +90,8 @@ sub process
         }
     }
 
-    0;
+    # Make sure that iMSCP::Net library is aware of latest changes
+    iMSCP::Net->getInstance()->resetInstance();
 }
 
 =back
