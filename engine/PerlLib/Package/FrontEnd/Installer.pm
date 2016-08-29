@@ -193,6 +193,8 @@ EOF
                 $msg = "\n\n\\Z1'$email' is not a valid email address.\\Zn\n\nPlease try again:";
             } while ($rs < 30 && !Email::Valid->address( $email ));
         }
+    } else {
+        $password = '';
     }
 
     if ($rs < 30) {
