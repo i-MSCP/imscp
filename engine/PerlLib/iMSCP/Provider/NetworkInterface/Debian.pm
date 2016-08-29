@@ -81,7 +81,7 @@ sub addIpAddr
         $self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'id'}" );
 
     my ($stdout, $stderr);
-    execute( "$COMMANDS{'ifup'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr ) == 0 or die(
+    execute( [ $COMMANDS{'ifup'}, '--force', "$data->{'ip_card'}:$data->{'id'}" ], \$stdout, \$stderr ) == 0 or die(
         sprintf(
             "Could not bring up the `%s' network interface: %s", "$data->{'ip_card'}:$data->{'id'}",
             $stderr || 'Unknown error'
@@ -174,7 +174,7 @@ sub _updateInterfacesFile
 
     if ($action eq 'add' && $data->{'ip_config_mode'} eq 'auto') {
         my $cAddr = $self->{'net'}->normalizeAddr( $data->{'ip_address'} );
-        my $eAddr = expandAddr($data->{'ip_address'});
+        my $eAddr = $self->{'net'}->expandAddr( $data->{'ip_address'} );
 
         # Add IP addresse only if not already present (e.g: manually configured IP addresses)
         if ($fileContent !~ /^[^#]*(?:address|ip\s+addr.*?)\s+(?:$cAddr|$eAddr|$data->{'ip_address'})(?:\s+|\n)/gm) {
@@ -215,7 +215,8 @@ STANZA
 sub _isDefinedInterface
 {
     my ($self, $interface) = @_;
-    execute( [ $COMMANDS{'ifquery'}, '--list', '|', 'grep', '-q', "^$interface\$" ] ) == 0;
+
+    execute( "$COMMANDS{'ifquery'} --list | grep -q '^$interface\$'" ) == 0;
 }
 
 =back
