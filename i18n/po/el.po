@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-23 17:50+0200\n"
-"PO-Revision-Date: 2016-07-23 15:50+0000\n"
+"POT-Creation-Date: 2016-09-01 10:39+0200\n"
+"PO-Revision-Date: 2016-09-01 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Greek (http://www.transifex.com/i-mscp/i-MSCP/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -499,10 +499,10 @@ msgid "Add admin"
 msgstr "Προσθήκη διαχειριστή"
 
 msgid "Add catchall"
-msgstr ""
+msgstr "Προσθήκη μπαλαντέρ"
 
 msgid "Add custom menu"
-msgstr ""
+msgstr "Προσθήκη προσαρμοσμένου μενού"
 
 msgid "Add customer"
 msgstr "Προσθήκη πελάτη"
@@ -511,10 +511,10 @@ msgid "Add customer - Next step"
 msgstr "Προσθήκη πελάτη - Επόμενο βήμα"
 
 msgid "Add domain alias"
-msgstr ""
+msgstr "Προσθήκη ψευδώνυμου domain"
 
 msgid "Add email account"
-msgstr ""
+msgstr "Προσθήκη λογαριασμού email"
 
 msgid "Add group"
 msgstr "Προσθήκη ομάδας"
@@ -529,19 +529,19 @@ msgid "Add new database"
 msgstr "Προσθήκη νέας βάσης δεδομένων"
 
 msgid "Add new protected area"
-msgstr ""
+msgstr "Προσθήκη νέας προστατευμένης περιοχής"
 
 msgid "Add new service port"
-msgstr ""
+msgstr "Προσθήκη νές πόρτας υπηρεσίας"
 
 msgid "Add permissions"
-msgstr ""
+msgstr "Προσθήκη δικαιωμάτων"
 
 msgid "Add permissions for reseller to software:"
 msgstr ""
 
 msgid "Add protected area"
-msgstr ""
+msgstr "Προσθήκη προστατευμένης περιοχής"
 
 msgid "Add reseller"
 msgstr "Προσθήκη μεταπωλητή"
@@ -607,22 +607,22 @@ msgid "Admin / Settings / Server Traffic"
 msgstr "Διαχείριση / Ρυθμίσεις / Κίνηση Διακομιστή"
 
 msgid "Admin / Settings / Service Ports"
-msgstr ""
+msgstr "Διαχείριση / Ρυθμίσεις / Πόρτες Υπηρεσιών"
 
 msgid "Admin / Settings / Software Management"
-msgstr ""
+msgstr "Διαχείριση / Ρυθμίσεις / Διαχείριση Λογισμικού"
 
 msgid "Admin / Settings / Software Options"
-msgstr ""
+msgstr "Διαχείριση / Ρυθμίσεις / Επιλογές Λογισμικού"
 
 msgid "Admin / Settings / Welcome Email"
-msgstr ""
+msgstr "Διαχείριση / Ρυθμίσεις / Email Καλωσορίσματος"
 
 msgid "Admin / Settings / {TR_DYNAMIC_TITLE}"
-msgstr ""
+msgstr "Διαχείριση / Ρυθμίσεις / {TR_DYNAMIC_TITLE}"
 
 msgid "Admin / Software Management / Reseller Software"
-msgstr ""
+msgstr "Διαχείριση / Διαχείριση Λογισμικού / Λογισμικό Μεταπωλητή"
 
 msgid "Admin / Statistics / IP Usage"
 msgstr ""
@@ -651,22 +651,22 @@ msgid "Admin / Support / View Ticket"
 msgstr ""
 
 msgid "Admin / System Tools / Anti-Rootkits Logs"
-msgstr ""
+msgstr "Διαχείριση / Εργαλεία Συστήματος / Anti-Rootkit Αρχεία Καταγραφών"
 
 msgid "Admin / System Tools / Database Update"
-msgstr ""
+msgstr "Διαχείριση / Εργαλεία Συστήματος / Ενημέρωση Βάσης Δεδομένων"
 
 msgid "Admin / System Tools / Debugger"
-msgstr ""
+msgstr "Διαχείριση / Εργαλεία Συστήματος / Αποσφαλματωτής"
 
 msgid "Admin / System Tools / Maintenance Settings"
-msgstr ""
+msgstr "Διαχείριση / Εργαλεία Συστήματος / Ρυθμίσεις Συντήρησης"
 
 msgid "Admin / System Tools / System Information"
-msgstr ""
+msgstr "Διαχείριση / Εργαλεία Συστήματος / Πληροφορίες Συστήματος"
 
 msgid "Admin / System Tools / i-MSCP Updates"
-msgstr ""
+msgstr "Διαχείριση / Εργαλεία Συστήματος / Ενημέρωσεις του i-MSCP"
 
 msgid "Admin / Users / Add Admin"
 msgstr "Διαχείριση / Χρήστες / Προσθήκη Διαχειριστή"
@@ -854,7 +854,7 @@ msgid "An unknown error occurred during file upload: %s"
 msgstr "Προέκυψε ένα άγνωστο σφάλμα κατά τη μεταφόρτωση αρχείου: %s"
 
 msgid "Anti-Rootkits Logs"
-msgstr ""
+msgstr "Anti-Rootkit Αρχεία Καταγραφών"
 
 msgid "Any"
 msgstr ""
@@ -926,7 +926,7 @@ msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr ""
 
 #, php-format
-msgid "Are you sure you want to delete the `%%s' IP addresse?"
+msgid "Are you sure you want to delete the `%%s' IP address?"
 msgstr ""
 
 #, php-format
@@ -977,6 +977,9 @@ msgstr ""
 msgid "Assign group"
 msgstr ""
 
+msgid "Assigned to at least one reseller"
+msgstr ""
+
 msgid "At first you must create a database which have at least one SQL user."
 msgstr ""
 
@@ -996,7 +999,7 @@ msgid "Auto"
 msgstr ""
 
 msgid "Auto (Browser language)"
-msgstr ""
+msgstr "Αυτόματα (Γλώσσα του προγράμματος περιήγησης)"
 
 msgid "Auto responder"
 msgstr ""
@@ -1029,7 +1032,7 @@ msgid "B"
 msgstr ""
 
 msgid "Back"
-msgstr ""
+msgstr "Πίσω"
 
 msgid "Backup"
 msgstr ""
@@ -1044,6 +1047,9 @@ msgid "Bad password."
 msgstr ""
 
 msgid "Bad request."
+msgstr ""
+
+msgid "Bad requests."
 msgstr ""
 
 msgid "Behind"
@@ -1120,13 +1126,13 @@ msgid "Catch all successfully scheduled for deletion."
 msgstr ""
 
 msgid "Catchall"
-msgstr ""
+msgstr "Μπαλαντέρ"
 
 msgid "Certificate"
-msgstr ""
+msgstr "Πιστοποιητικό"
 
 msgid "Certificate data"
-msgstr ""
+msgstr "Δεδομένα πιστοποιητικού"
 
 msgid "Change"
 msgstr "Αλλαγή"
@@ -1162,23 +1168,23 @@ msgid ""
 msgstr ""
 
 msgid "Choose"
-msgstr ""
+msgstr "Επιλογή"
 
 msgid "Choose dir"
-msgstr ""
+msgstr "Επιλογή καταλόγου"
 
 #, php-format
 msgid "Choose file (Max: %1$d MiB)"
-msgstr ""
+msgstr "Επιλογή αρχείου (Μέγιστο: %1$d MiB)"
 
 msgid "Choose hosting plan"
-msgstr ""
+msgstr "Επιλογή πακέτου φιλοξενίας"
 
 msgid "Choose layout color"
-msgstr ""
+msgstr "Επιλογή χρώματος διάταξης"
 
 msgid "Choose your language"
-msgstr ""
+msgstr "Επιλέξτε τη γλώσσα σας"
 
 msgid "Circular"
 msgstr ""
@@ -1206,6 +1212,9 @@ msgid "Click to activate"
 msgstr ""
 
 msgid "Click to deactivate"
+msgstr ""
+
+msgid "Click to edit"
 msgstr ""
 
 msgid "Client / Databases / Add SQL Database"
@@ -1236,7 +1245,7 @@ msgid "Client / Domains / Add Subdomain"
 msgstr "Πελάτης / Domains / Προσθήκη Subdomain"
 
 msgid "Client / Domains / Edit Domain"
-msgstr ""
+msgstr "Πελάτης / Domains / Επεξεργασία Domain"
 
 msgid "Client / Domains / Edit Domain Alias"
 msgstr "Πελάτης / Domains / Επεξεργασία Εναλλακτικής Ονομασίας του Domain"
@@ -1254,10 +1263,10 @@ msgid "Client / Email / Add Email Account"
 msgstr "Πελάτης / Email / Προσθήκη Email Λογαριασμού"
 
 msgid "Client / Email / Catchall"
-msgstr ""
+msgstr "Πελάτης / Email / Μπαλαντέρ"
 
 msgid "Client / Email / Catchall / Add Catchall"
-msgstr ""
+msgstr "Πελάτης / Email / Μπαλαντέρ / Προσθήκη Μπαλαντέρ"
 
 msgid "Client / Email / Edit Email Account"
 msgstr ""
@@ -1266,22 +1275,22 @@ msgid "Client / Email / External Mail Feature"
 msgstr ""
 
 msgid "Client / Email / Overview"
-msgstr ""
+msgstr "Πελάτης / Email / Επισκόπηση"
 
 msgid "Client / Email / Overview / Edit Auto Responder"
-msgstr ""
+msgstr "Πελάτης / Email / Επισκόπηση / Επεξεργασία Αυτόματης Απάντησης"
 
 msgid "Client / Email / Overview / Enable Auto Responder"
-msgstr ""
+msgstr "Πελάτης / Email / Επισκόπηση / Ενεργοποίηση Αυτόματης Απάντησης"
 
 msgid "Client / FTP / Add FTP Account"
-msgstr ""
+msgstr "Πελάτης / FTP / Προσθήκη FTP Λογαριασμού"
 
 msgid "Client / FTP / Overview"
-msgstr ""
+msgstr "Πελάτης / FTP / Επισκόπηση"
 
 msgid "Client / FTP / Overview / Edit FTP Account"
-msgstr ""
+msgstr "Πελάτης / FTP / Επισκόπηση / Επεξεργασία FTP Λογαριασμού"
 
 msgid "Client / General / Overview"
 msgstr "Πελάτης / Γενικά / Επισκόπηση"
@@ -1293,28 +1302,28 @@ msgid "Client / Profile / Language"
 msgstr "Πελάτης / Προφίλ / Γλώσσα"
 
 msgid "Client / Profile / Layout"
-msgstr ""
+msgstr "Πελάτης / Προφίλ / Διάταξη"
 
 msgid "Client / Profile / Password"
-msgstr ""
+msgstr "Πελάτης / Προφίλ / Κωδικός"
 
 msgid "Client / Profile / Personal Data"
-msgstr ""
+msgstr "Πελάτης / Προφίλ / Προσωπικά Δεδομένα"
 
 msgid "Client / Statistics"
-msgstr ""
+msgstr "Πελάτης / Στατιστικά"
 
 msgid "Client / Support / Closed Tickets"
-msgstr ""
+msgstr "Πελάτης / Υποστήριξη / Κλειστά Σημειώματα"
 
 msgid "Client / Support / New Ticket"
-msgstr ""
+msgstr "Πελάτης / Υποστήριξη / Νέο Σημείωμα"
 
 msgid "Client / Support / Open Tickets"
-msgstr ""
+msgstr "Πελάτης / Υποστήριξη / Ανοιχτά Σημειώματα"
 
 msgid "Client / Support / View Ticket"
-msgstr ""
+msgstr "Πελάτης / Υποστήριξη / Εμφάνιση Σημειώματος"
 
 msgid "Client / Webtools / Custom Error Pages"
 msgstr ""
@@ -1359,22 +1368,22 @@ msgid "Clock speed (MHz)"
 msgstr ""
 
 msgid "Close"
-msgstr ""
+msgstr "Κλείσιμο"
 
 msgid "Close the ticket"
-msgstr ""
+msgstr "Κλείσιμο του σημειώματος"
 
 msgid "Close ticket"
-msgstr ""
+msgstr "Κλείσιμο σημειώματος"
 
 msgid "Closed tickets"
-msgstr ""
+msgstr "Κλειστά σημειώματα"
 
 msgid "Common name"
 msgstr ""
 
 msgid "Company"
-msgstr ""
+msgstr "Εταιρεία"
 
 msgid "Compress HTML output"
 msgstr ""
@@ -1386,7 +1395,7 @@ msgid "Core data"
 msgstr ""
 
 msgid "Cores"
-msgstr ""
+msgstr "Πυρήνες"
 
 msgid "Could not add/update SSL certificate. An unexpected error occurred."
 msgstr ""
@@ -1498,7 +1507,7 @@ msgid "Country"
 msgstr "Χώρα"
 
 msgid "Create"
-msgstr ""
+msgstr "Δημιουργία"
 
 msgid "Create catch all"
 msgstr ""
@@ -1513,13 +1522,13 @@ msgid "Created by"
 msgstr ""
 
 msgid "Creation date"
-msgstr ""
+msgstr "Ημερομηνία δημιουργίας"
 
 msgid "Current password"
-msgstr ""
+msgstr "Τρέχων κωδικός"
 
 msgid "Current password is invalid."
-msgstr ""
+msgstr "Ο τρέχων κωδικός είναι άκυρος."
 
 msgid "Custom DNS errors"
 msgstr ""
@@ -1570,7 +1579,7 @@ msgid "Customer account successfully scheduled for activation."
 msgstr ""
 
 msgid "Customer account successfully scheduled for creation."
-msgstr ""
+msgstr "Ο λογαριασμός του πελάτη προγραμματίστηκε επιτυχώς για δημιουργία."
 
 msgid "Customer account successfully scheduled for deactivation."
 msgstr ""
@@ -1886,7 +1895,7 @@ msgid ""
 msgstr ""
 
 msgid "Debugger"
-msgstr ""
+msgstr "Αποσφαλματωτής"
 
 msgid "Default"
 msgstr "Προεπιλογή"
@@ -1906,7 +1915,7 @@ msgid "Delete"
 msgstr "Διαγραφή"
 
 msgid "Delete CatchAll"
-msgstr ""
+msgstr "Διαγραφή Μπαλαντέρ"
 
 msgid "Delete all tickets"
 msgstr ""
@@ -2318,11 +2327,11 @@ msgid "Enable auto responder"
 msgstr ""
 
 msgid "Enabled"
-msgstr ""
+msgstr "Ενεργοποιημένο"
 
 #, php-format
 msgid "Enabled for: %s"
-msgstr ""
+msgstr "Ενεργοποιημένο για: %s"
 
 msgid "Error"
 msgstr ""
@@ -2676,7 +2685,13 @@ msgstr ""
 msgid "IP assignments"
 msgstr ""
 
+msgid "IP errors"
+msgstr ""
+
 msgid "IP management"
+msgstr ""
+
+msgid "IP netmask"
 msgstr ""
 
 msgid "IP usage"
@@ -3200,7 +3215,7 @@ msgstr ""
 msgid "Name cannot be empty."
 msgstr ""
 
-msgid "Network interface"
+msgid "Network interface (NIC)"
 msgstr ""
 
 msgid "Never"
@@ -3258,7 +3273,7 @@ msgid "No hosting plan available."
 msgstr ""
 
 msgid "No languages found."
-msgstr ""
+msgstr "Δεν βρέθηκαν γλώσσες."
 
 msgid "No records found matching the search criteria."
 msgstr ""
@@ -3297,13 +3312,13 @@ msgid "No unassigned users were found in the database."
 msgstr ""
 
 msgid "No update available"
-msgstr ""
+msgstr "Δεν υπάρχουν διαθέσιμες ενημερώσεις"
 
 msgid "No used yet"
 msgstr ""
 
 msgid "No user found."
-msgstr ""
+msgstr "Δεν βρέθηκε χρήστης."
 
 msgid "No users found for this reseller."
 msgstr ""
@@ -3339,6 +3354,10 @@ msgid "Not provided"
 msgstr "Δεν παρέχεται"
 
 msgid "Not used"
+msgstr ""
+
+msgid ""
+"Note that in manual mode, the NIC and the subnet mask are only indicative."
 msgstr ""
 
 msgid "Nothing found - sorry"
@@ -3389,10 +3408,10 @@ msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
 msgid "Open ticket"
-msgstr ""
+msgstr "Άνοιγμα σημειώματος"
 
 msgid "Open tickets"
-msgstr ""
+msgstr "Ανοιχτά σημειώματα"
 
 #, php-format
 msgid "Operation cancelled: %s"
@@ -3417,7 +3436,7 @@ msgid "Other out"
 msgstr ""
 
 msgid "Other settings"
-msgstr ""
+msgstr "Λοιπές ρυθμίσεις"
 
 msgid "Overview"
 msgstr "Επισκόπηση"
@@ -3593,10 +3612,10 @@ msgid "Permissions"
 msgstr ""
 
 msgid "Personal data"
-msgstr ""
+msgstr "Προσωπικά δεδομένα"
 
 msgid "Personal data successfully updated."
-msgstr ""
+msgstr "Τα προσωπικά δεδομένα ενημερώθηκαν επιτυχώς."
 
 msgid "Personalise template"
 msgstr ""
@@ -3662,7 +3681,7 @@ msgid "Please specify a message content."
 msgstr ""
 
 msgid "Please specify a message subject."
-msgstr ""
+msgstr "Παρακαλώ ορίστε το θέμα μηνύματος."
 
 msgid "Please type database name."
 msgstr ""
@@ -3993,7 +4012,7 @@ msgid "Redistribute unused quota across existing mailboxes"
 msgstr ""
 
 msgid "Registration date"
-msgstr ""
+msgstr "Ημερομηνία εγγραφής"
 
 msgid "Relative weight"
 msgstr ""
@@ -4444,11 +4463,11 @@ msgid "Shared mount point"
 msgstr ""
 
 msgid "Show"
-msgstr ""
+msgstr "Εμφάνιση"
 
 #, php-format
 msgid "Show %s records per page"
-msgstr ""
+msgstr "Εμφάνιση %s εγγραφών ανά σελίδα"
 
 msgid "Show HTML output compression size comment"
 msgstr ""
@@ -4466,7 +4485,7 @@ msgid "Show in"
 msgstr ""
 
 msgid "Show labels for main menu links"
-msgstr ""
+msgstr "Εμφάνιση κειμένου στους συνδέσμους του κυρίως μενού"
 
 #, php-format
 msgid "Showing %s to %s of %s records"
@@ -4665,10 +4684,10 @@ msgid "Subdomains"
 msgstr ""
 
 msgid "Subject"
-msgstr ""
+msgstr "Θέμα"
 
 msgid "Subject is missing."
-msgstr ""
+msgstr "Το θέμα είναι απών."
 
 msgid "Submit changes"
 msgstr ""
@@ -4707,14 +4726,14 @@ msgid "System error - custom error page was not updated."
 msgstr ""
 
 msgid "System information"
-msgstr ""
+msgstr "Πληροφορίες συστήματος"
 
 #, php-format
 msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr ""
+msgstr "Εργαλεία συστήματος"
 
 msgid "System under maintenance"
 msgstr "Σύστημα υπό συντήρηση"
@@ -5090,7 +5109,7 @@ msgid "Uninstalled"
 msgstr ""
 
 msgid "Unknown"
-msgstr ""
+msgstr "Άγνωστο"
 
 msgid "Unknown Error"
 msgstr ""
@@ -5141,7 +5160,7 @@ msgid "Unlimited"
 msgstr ""
 
 msgid "Update"
-msgstr ""
+msgstr "Ενημέρωση"
 
 msgid "Update Plugins"
 msgstr ""
@@ -5150,7 +5169,7 @@ msgid "Update SQL user password"
 msgstr ""
 
 msgid "Update data"
-msgstr ""
+msgstr "Ενημέρωση δεδομένων"
 
 msgid "Update from Web software repository"
 msgstr ""
@@ -5270,7 +5289,7 @@ msgid "User type (admin, reseller, user)"
 msgstr ""
 
 msgid "Username"
-msgstr ""
+msgstr "Όνομα χρήστη"
 
 msgid "Username and password for application login"
 msgstr ""
@@ -5383,10 +5402,13 @@ msgstr ""
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr ""
 
-msgid "Wrong IP address."
+msgid "Wrong mail syntax in forward list."
 msgstr ""
 
-msgid "Wrong mail syntax in forward list."
+msgid "Wrong or unallowed IP address."
+msgstr ""
+
+msgid "Wrong or unallowed IP netmask."
 msgstr ""
 
 msgid "Wrong request."
@@ -5672,9 +5694,6 @@ msgstr ""
 msgid "You must select a least one mail account to delete."
 msgstr ""
 
-msgid "You must select a network interface."
-msgstr ""
-
 msgid "You must select at least one plugin."
 msgstr ""
 
@@ -5682,7 +5701,7 @@ msgid "You must specify a message."
 msgstr ""
 
 msgid "You must specify a subject."
-msgstr ""
+msgstr "Πρέπει να ορίσετε ένα θέμα."
 
 msgid "You need a Database for this software"
 msgstr ""
@@ -5831,7 +5850,7 @@ msgid "email accounts"
 msgstr ""
 
 msgid "enabled"
-msgstr ""
+msgstr "ενεργοποιημένο"
 
 msgid "everything"
 msgstr ""
@@ -5843,7 +5862,7 @@ msgid "i-MSCP - Application Management (Permissions)"
 msgstr ""
 
 msgid "i-MSCP - Client/Create CatchAll Mail Account"
-msgstr ""
+msgstr "i-MSCP - Πελάτης/Δημιουργία Μπαλαντέρ Λογαριασμού Email"
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
 msgstr ""

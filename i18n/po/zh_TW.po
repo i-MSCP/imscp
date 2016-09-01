@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-23 17:50+0200\n"
-"PO-Revision-Date: 2016-07-23 15:50+0000\n"
+"POT-Creation-Date: 2016-09-01 10:39+0200\n"
+"PO-Revision-Date: 2016-09-01 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -927,7 +927,7 @@ msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "您確定要刪除 '%s' 服務單?"
 
 #, php-format
-msgid "Are you sure you want to delete the `%%s' IP addresse?"
+msgid "Are you sure you want to delete the `%%s' IP address?"
 msgstr ""
 
 #, php-format
@@ -977,6 +977,9 @@ msgstr "指派已存在的的 SQL 使用者"
 
 msgid "Assign group"
 msgstr "指派群組"
+
+msgid "Assigned to at least one reseller"
+msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "首先您必須建立資料庫及至少一個 SQL 使用者。"
@@ -1046,6 +1049,9 @@ msgstr "錯誤密碼"
 
 msgid "Bad request."
 msgstr "錯誤需求"
+
+msgid "Bad requests."
+msgstr ""
 
 msgid "Behind"
 msgstr "背景"
@@ -1208,6 +1214,9 @@ msgstr "點選啟用"
 
 msgid "Click to deactivate"
 msgstr "點選停用"
+
+msgid "Click to edit"
+msgstr ""
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "客戶 / 資料庫 / 新增 SQL 資料庫"
@@ -2677,8 +2686,14 @@ msgstr "IP 位址在 i-MSCP 管理之下。"
 msgid "IP assignments"
 msgstr "IP 分配"
 
+msgid "IP errors"
+msgstr ""
+
 msgid "IP management"
 msgstr "IP 管理"
+
+msgid "IP netmask"
+msgstr ""
 
 msgid "IP usage"
 msgstr "IP 使用清單"
@@ -3201,8 +3216,8 @@ msgstr "名稱"
 msgid "Name cannot be empty."
 msgstr "Name 不可以空白。"
 
-msgid "Network interface"
-msgstr "網路介面"
+msgid "Network interface (NIC)"
+msgstr ""
 
 msgid "Never"
 msgstr "從不過期"
@@ -3341,6 +3356,10 @@ msgstr "未提供"
 
 msgid "Not used"
 msgstr "未使用"
+
+msgid ""
+"Note that in manual mode, the NIC and the subnet mask are only indicative."
+msgstr ""
 
 msgid "Nothing found - sorry"
 msgstr "沒有找到 - 抱歉"
@@ -5384,11 +5403,14 @@ msgstr ""
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr ""
 
-msgid "Wrong IP address."
-msgstr "錯誤的 IP地址"
-
 msgid "Wrong mail syntax in forward list."
 msgstr "轉寄列表裡面的郵件格式是錯誤的"
+
+msgid "Wrong or unallowed IP address."
+msgstr ""
+
+msgid "Wrong or unallowed IP netmask."
+msgstr ""
 
 msgid "Wrong request."
 msgstr "錯誤的請求"
@@ -5669,9 +5691,6 @@ msgstr "您必須選擇至少一個項目來刪除"
 
 msgid "You must select a least one mail account to delete."
 msgstr "您必須選擇至少一個欲刪除的Mail 帳號。"
-
-msgid "You must select a network interface."
-msgstr "您必須選擇一個網路介面"
 
 msgid "You must select at least one plugin."
 msgstr "您必須選擇至少一個插件。"

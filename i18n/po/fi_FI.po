@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-23 17:50+0200\n"
-"PO-Revision-Date: 2016-07-23 15:50+0000\n"
+"POT-Creation-Date: 2016-09-01 10:39+0200\n"
+"PO-Revision-Date: 2016-09-01 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/i-mscp/i-MSCP/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
@@ -925,7 +925,7 @@ msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Oletko varma, että haluat poistaa '%s' tukipyynnön?"
 
 #, php-format
-msgid "Are you sure you want to delete the `%%s' IP addresse?"
+msgid "Are you sure you want to delete the `%%s' IP address?"
 msgstr ""
 
 #, php-format
@@ -975,6 +975,9 @@ msgstr "Valitse olemassaoleva SQL-käyttäjä"
 
 msgid "Assign group"
 msgstr "Aseta ryhmä"
+
+msgid "Assigned to at least one reseller"
+msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Sinun täytyy luoda ensin tietokanta, jossa on vähintää yksi tietokantakäyttäjä."
@@ -1044,6 +1047,9 @@ msgstr "Väärä salasana."
 
 msgid "Bad request."
 msgstr "Virheellinen pyyntö."
+
+msgid "Bad requests."
+msgstr ""
 
 msgid "Behind"
 msgstr "Lopussa"
@@ -1206,6 +1212,9 @@ msgstr "Paina tästä aktivoidaksesi"
 
 msgid "Click to deactivate"
 msgstr "Paina tästä poistaaksesi käytöstä"
+
+msgid "Click to edit"
+msgstr ""
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "Asiakas / Tietokannat / Lisää SQL-tietokanta"
@@ -2675,8 +2684,14 @@ msgstr ""
 msgid "IP assignments"
 msgstr ""
 
+msgid "IP errors"
+msgstr ""
+
 msgid "IP management"
 msgstr "IP-hallinta"
+
+msgid "IP netmask"
+msgstr ""
 
 msgid "IP usage"
 msgstr "IP käyttö"
@@ -3199,8 +3214,8 @@ msgstr "Nimi"
 msgid "Name cannot be empty."
 msgstr "Nimi ei voi olla tyhjä."
 
-msgid "Network interface"
-msgstr "Verkkosovitin"
+msgid "Network interface (NIC)"
+msgstr ""
 
 msgid "Never"
 msgstr "Ei asetettu"
@@ -3339,6 +3354,10 @@ msgstr "Ei toimitettu"
 
 msgid "Not used"
 msgstr "Ei käytössä"
+
+msgid ""
+"Note that in manual mode, the NIC and the subnet mask are only indicative."
+msgstr ""
 
 msgid "Nothing found - sorry"
 msgstr "Mitään ei löytynyt - pahoittelut"
@@ -5382,10 +5401,13 @@ msgstr ""
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr ""
 
-msgid "Wrong IP address."
-msgstr "Väärä IP-osoite"
-
 msgid "Wrong mail syntax in forward list."
+msgstr ""
+
+msgid "Wrong or unallowed IP address."
+msgstr ""
+
+msgid "Wrong or unallowed IP netmask."
 msgstr ""
 
 msgid "Wrong request."
@@ -5670,9 +5692,6 @@ msgstr "Valitse vähintään yksi poistettava kohde."
 
 msgid "You must select a least one mail account to delete."
 msgstr "Valitse vähintään yksi poistettava sähköpostitili."
-
-msgid "You must select a network interface."
-msgstr ""
 
 msgid "You must select at least one plugin."
 msgstr "Valitse vähintään yksi lisäosa."

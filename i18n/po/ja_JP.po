@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-23 17:50+0200\n"
-"PO-Revision-Date: 2016-07-23 15:50+0000\n"
+"POT-Creation-Date: 2016-09-01 10:39+0200\n"
+"PO-Revision-Date: 2016-09-01 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/i-mscp/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -925,7 +925,7 @@ msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr " '%s' のチケットを削除してもよろしいですか？"
 
 #, php-format
-msgid "Are you sure you want to delete the `%%s' IP addresse?"
+msgid "Are you sure you want to delete the `%%s' IP address?"
 msgstr ""
 
 #, php-format
@@ -975,6 +975,9 @@ msgstr "既存のSQLユーザーを割り当てます。"
 
 msgid "Assign group"
 msgstr "グループを割り当てる"
+
+msgid "Assigned to at least one reseller"
+msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "最初に、1つ以上のSQLユーザを持つデータベースを作成する必要があります。"
@@ -1044,6 +1047,9 @@ msgstr "パスワードが間違っています。"
 
 msgid "Bad request."
 msgstr "不正な要求。"
+
+msgid "Bad requests."
+msgstr ""
 
 msgid "Behind"
 msgstr "ビハインド"
@@ -1206,6 +1212,9 @@ msgstr "有効にするためにクリック"
 
 msgid "Click to deactivate"
 msgstr "無効にするためにクリック"
+
+msgid "Click to edit"
+msgstr ""
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "クライアント / SQLデータベース追加"
@@ -2675,8 +2684,14 @@ msgstr " i-MSCPの制御下にあるIPアドレス"
 msgid "IP assignments"
 msgstr "ユーザーの割り当て"
 
+msgid "IP errors"
+msgstr ""
+
 msgid "IP management"
 msgstr "IP管理"
+
+msgid "IP netmask"
+msgstr ""
 
 msgid "IP usage"
 msgstr "IPの使用状況"
@@ -3199,8 +3214,8 @@ msgstr "ネーム"
 msgid "Name cannot be empty."
 msgstr "名前は空にできません。"
 
-msgid "Network interface"
-msgstr "ネットワークインターフェイス"
+msgid "Network interface (NIC)"
+msgstr ""
 
 msgid "Never"
 msgstr "ない"
@@ -3339,6 +3354,10 @@ msgstr "提供されていません"
 
 msgid "Not used"
 msgstr "使用しない"
+
+msgid ""
+"Note that in manual mode, the NIC and the subnet mask are only indicative."
+msgstr ""
 
 msgid "Nothing found - sorry"
 msgstr "何も見つかりません - すいません"
@@ -5382,11 +5401,14 @@ msgstr ""
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr ""
 
-msgid "Wrong IP address."
-msgstr "IPアドレスに誤りがあります"
-
 msgid "Wrong mail syntax in forward list."
 msgstr "転送リストに間違ったメール構文があります。"
+
+msgid "Wrong or unallowed IP address."
+msgstr ""
+
+msgid "Wrong or unallowed IP netmask."
+msgstr ""
 
 msgid "Wrong request."
 msgstr "要求に誤りがあります。"
@@ -5668,9 +5690,6 @@ msgstr "削除するには、少なくとも1つの項目を選択する必要�
 msgid "You must select a least one mail account to delete."
 msgstr "削除するには、少なくとも1つのメールアカウントを選択する必要があります。"
 
-msgid "You must select a network interface."
-msgstr "ネットワークインターフェイスを選択する必要があります。"
-
 msgid "You must select at least one plugin."
 msgstr "少なくとも一つのプラグインを選択する必要があります。"
 
@@ -5760,7 +5779,7 @@ msgid "Zip/Postal code"
 msgstr "郵便番号"
 
 msgid "Zone"
-msgstr ""
+msgstr "ゾーン"
 
 msgid "[New]"
 msgstr "[新規]"
@@ -5981,4 +6000,4 @@ msgid "{USERNAME} user statistics"
 msgstr "Web統計 - {USERNAME} "
 
 msgid "© 2010-2016 i-MSCP Team<br>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2016 i-MSCP チーム<br>All Rights Reserved"

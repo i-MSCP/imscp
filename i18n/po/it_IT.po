@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-23 17:50+0200\n"
-"PO-Revision-Date: 2016-07-23 15:50+0000\n"
+"POT-Creation-Date: 2016-09-01 10:39+0200\n"
+"PO-Revision-Date: 2016-09-01 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/i-mscp/i-MSCP/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -926,7 +926,7 @@ msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Sicuro di voler eliminare il ticket '%s'?"
 
 #, php-format
-msgid "Are you sure you want to delete the `%%s' IP addresse?"
+msgid "Are you sure you want to delete the `%%s' IP address?"
 msgstr ""
 
 #, php-format
@@ -976,6 +976,9 @@ msgstr "Assegna un utente SQL esistente"
 
 msgid "Assign group"
 msgstr "Assegna gruppo"
+
+msgid "Assigned to at least one reseller"
+msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "In un primo momento è necessario creare un database che ha almeno un utente SQL."
@@ -1045,6 +1048,9 @@ msgstr "Password errata."
 
 msgid "Bad request."
 msgstr "Richiesta errata."
+
+msgid "Bad requests."
+msgstr ""
 
 msgid "Behind"
 msgstr "Dietro"
@@ -1207,6 +1213,9 @@ msgstr "Clicca per attivare"
 
 msgid "Click to deactivate"
 msgstr "Clicca per disattivare"
+
+msgid "Click to edit"
+msgstr ""
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "Cliente / Database / Aggiungi database SQL"
@@ -2676,8 +2685,14 @@ msgstr "Indirizzo IP  sotto controllo di i-MSCP"
 msgid "IP assignments"
 msgstr "Assegnazione IP"
 
+msgid "IP errors"
+msgstr ""
+
 msgid "IP management"
 msgstr "Gestione indirizzo IP"
+
+msgid "IP netmask"
+msgstr ""
 
 msgid "IP usage"
 msgstr "IP utilizzato"
@@ -3200,8 +3215,8 @@ msgstr "Nome"
 msgid "Name cannot be empty."
 msgstr "Nome non può essere vuoto."
 
-msgid "Network interface"
-msgstr "Interfaccia di rete"
+msgid "Network interface (NIC)"
+msgstr ""
 
 msgid "Never"
 msgstr "Mai"
@@ -3340,6 +3355,10 @@ msgstr "Non fornito"
 
 msgid "Not used"
 msgstr "Non utilizzato"
+
+msgid ""
+"Note that in manual mode, the NIC and the subnet mask are only indicative."
+msgstr ""
 
 msgid "Nothing found - sorry"
 msgstr "Non trovato"
@@ -5383,11 +5402,14 @@ msgstr ""
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr ""
 
-msgid "Wrong IP address."
-msgstr "Indirizzo IP errato."
-
 msgid "Wrong mail syntax in forward list."
 msgstr "Sintassi sbagliata per l'indirizzo di forward per la posta elettronica."
+
+msgid "Wrong or unallowed IP address."
+msgstr ""
+
+msgid "Wrong or unallowed IP netmask."
+msgstr ""
 
 msgid "Wrong request."
 msgstr "Richiesta sbagliata."
@@ -5671,9 +5693,6 @@ msgstr "È necessario selezionare un almeno un elemento da eliminare"
 
 msgid "You must select a least one mail account to delete."
 msgstr "È necessario selezionare un almeno una casella di posta da eliminare."
-
-msgid "You must select a network interface."
-msgstr "Devi selezionare una interfaccia di rete."
 
 msgid "You must select at least one plugin."
 msgstr "È necessario selezionare almeno un plugin."

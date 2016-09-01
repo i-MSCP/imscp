@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-23 17:50+0200\n"
-"PO-Revision-Date: 2016-07-23 15:50+0000\n"
+"POT-Creation-Date: 2016-09-01 10:39+0200\n"
+"PO-Revision-Date: 2016-09-01 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/i-mscp/i-MSCP/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
@@ -28,7 +28,7 @@ msgstr "Zły adres IP."
 
 #, php-format
 msgid "%%s must be lower than %%s."
-msgstr ""
+msgstr "%%s musi być mniejsze niż %%s."
 
 #, php-format
 msgid "%1$d / %2$d"
@@ -205,7 +205,7 @@ msgstr "%s: Ten reseller ma użytkownika(ów) z nielimitowanymi usługami."
 #, php-format
 msgid ""
 "%s: You cannot disable a service already consumed by reseller's customers."
-msgstr ""
+msgstr "%s: Nie możesz wyłączyć usługi, która jest wykorzystywana przez klientów resellerów."
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
@@ -925,7 +925,7 @@ msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Jesteś pewien, że chcesz usunąć zgłoszenie '%s' ?"
 
 #, php-format
-msgid "Are you sure you want to delete the `%%s' IP addresse?"
+msgid "Are you sure you want to delete the `%%s' IP address?"
 msgstr ""
 
 #, php-format
@@ -975,6 +975,9 @@ msgstr "Przypisz isniejącego użytkownika SQL"
 
 msgid "Assign group"
 msgstr "Przypisz grupę"
+
+msgid "Assigned to at least one reseller"
+msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Na początku musisz utworzyć bazę danych, która będzie posiadać co najmniej jednego użytkownika SQL."
@@ -1044,6 +1047,9 @@ msgstr "Nieprawidłowe hasło."
 
 msgid "Bad request."
 msgstr "Nieprawidłowe żądanie."
+
+msgid "Bad requests."
+msgstr ""
 
 msgid "Behind"
 msgstr "Za"
@@ -1206,6 +1212,9 @@ msgstr "Kliknij aby aktywować"
 
 msgid "Click to deactivate"
 msgstr "Kliknij aby deaktywować"
+
+msgid "Click to edit"
+msgstr ""
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "Klient / Bazy Danych / Dodawanie Bazy SQL"
@@ -2675,8 +2684,14 @@ msgstr "Adresy IP pod kontrolą i-MSCP"
 msgid "IP assignments"
 msgstr "Przypisane IP"
 
+msgid "IP errors"
+msgstr ""
+
 msgid "IP management"
 msgstr "Zarządzanie IP"
+
+msgid "IP netmask"
+msgstr ""
 
 msgid "IP usage"
 msgstr "Wykorzystane IP"
@@ -3199,8 +3214,8 @@ msgstr "Nazwa"
 msgid "Name cannot be empty."
 msgstr "Musisz podać nazwę."
 
-msgid "Network interface"
-msgstr "Interfejs sieciowy"
+msgid "Network interface (NIC)"
+msgstr ""
 
 msgid "Never"
 msgstr "Nigdy"
@@ -3339,6 +3354,10 @@ msgstr "Nie dostarczono"
 
 msgid "Not used"
 msgstr "Nie używany"
+
+msgid ""
+"Note that in manual mode, the NIC and the subnet mask are only indicative."
+msgstr ""
 
 msgid "Nothing found - sorry"
 msgstr "Nic nie znaleziono"
@@ -5382,11 +5401,14 @@ msgstr ""
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr ""
 
-msgid "Wrong IP address."
-msgstr "Zły adres IP."
-
 msgid "Wrong mail syntax in forward list."
 msgstr "Nieprawidłowa składnia poczty na liście przekierowań."
+
+msgid "Wrong or unallowed IP address."
+msgstr ""
+
+msgid "Wrong or unallowed IP netmask."
+msgstr ""
 
 msgid "Wrong request."
 msgstr "Nieprawidłowe żądanie."
@@ -5673,9 +5695,6 @@ msgstr "Musisz wybrać przynajmniej jeden element który chcesz usunąć."
 
 msgid "You must select a least one mail account to delete."
 msgstr "Wybierz przynajmniej jedno konto poczty do usunięcia."
-
-msgid "You must select a network interface."
-msgstr "Musisz wybrać interfejs sieciowy. "
 
 msgid "You must select at least one plugin."
 msgstr "Wybierz co najmniej jedno rozszerzenie."

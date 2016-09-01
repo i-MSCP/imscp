@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-23 17:50+0200\n"
-"PO-Revision-Date: 2016-07-23 15:50+0000\n"
+"POT-Creation-Date: 2016-09-01 10:39+0200\n"
+"PO-Revision-Date: 2016-09-01 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/i-mscp/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -925,7 +925,7 @@ msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Er du sikker på du vil slette '%s' fejlrapporten?"
 
 #, php-format
-msgid "Are you sure you want to delete the `%%s' IP addresse?"
+msgid "Are you sure you want to delete the `%%s' IP address?"
 msgstr ""
 
 #, php-format
@@ -975,6 +975,9 @@ msgstr "Tildel eksisterende SQL bruger"
 
 msgid "Assign group"
 msgstr "Tildel gruppe"
+
+msgid "Assigned to at least one reseller"
+msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Først skal du oprette en database, der har mindst én SQL-bruger."
@@ -1044,6 +1047,9 @@ msgstr "Forkert password."
 
 msgid "Bad request."
 msgstr "Forkert anmodning."
+
+msgid "Bad requests."
+msgstr ""
 
 msgid "Behind"
 msgstr "Bag"
@@ -1206,6 +1212,9 @@ msgstr "Klik for at aktivere"
 
 msgid "Click to deactivate"
 msgstr "Klik for at deaktivere"
+
+msgid "Click to edit"
+msgstr ""
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "Klient / Databaser / Tilføj SQL Database"
@@ -2675,8 +2684,14 @@ msgstr "IP-adresser under kontrol af i-MSCP"
 msgid "IP assignments"
 msgstr "IP tildelinger"
 
+msgid "IP errors"
+msgstr ""
+
 msgid "IP management"
 msgstr "IP administration"
+
+msgid "IP netmask"
+msgstr ""
 
 msgid "IP usage"
 msgstr "IP brug"
@@ -3199,8 +3214,8 @@ msgstr "Navn"
 msgid "Name cannot be empty."
 msgstr "Navn kan ikke være tomt."
 
-msgid "Network interface"
-msgstr "Netværks interface"
+msgid "Network interface (NIC)"
+msgstr ""
 
 msgid "Never"
 msgstr "Aldrig"
@@ -3339,6 +3354,10 @@ msgstr "Ikke opgivet"
 
 msgid "Not used"
 msgstr "Ikke brugt"
+
+msgid ""
+"Note that in manual mode, the NIC and the subnet mask are only indicative."
+msgstr ""
 
 msgid "Nothing found - sorry"
 msgstr "Intet fundet - undskyld"
@@ -5382,11 +5401,14 @@ msgstr ""
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr ""
 
-msgid "Wrong IP address."
-msgstr "Forkert IP-adresse."
-
 msgid "Wrong mail syntax in forward list."
 msgstr "Forkert e-mail syntaks i forward liste."
+
+msgid "Wrong or unallowed IP address."
+msgstr ""
+
+msgid "Wrong or unallowed IP netmask."
+msgstr ""
 
 msgid "Wrong request."
 msgstr "Forkert anmodning."
@@ -5670,9 +5692,6 @@ msgstr "Du skal vælge mindst ét ​​element der skal slettes."
 
 msgid "You must select a least one mail account to delete."
 msgstr "Du skal vælge mindst en email-konto der skal slettes."
-
-msgid "You must select a network interface."
-msgstr "Du skal vælge et netværks interface."
 
 msgid "You must select at least one plugin."
 msgstr "Du skal vælge mindst en plugin."
