@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-09-01 10:39+0200\n"
-"PO-Revision-Date: 2016-09-01 08:41+0000\n"
+"POT-Creation-Date: 2016-09-01 10:44+0200\n"
+"PO-Revision-Date: 2016-09-01 08:46+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/i-mscp/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -928,7 +928,7 @@ msgstr "Are you sure you want to delete the '%s' ticket?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s' IP address?"
-msgstr ""
+msgstr "Are you sure you want to delete the `%%s' IP address?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
@@ -979,7 +979,7 @@ msgid "Assign group"
 msgstr "Assign group"
 
 msgid "Assigned to at least one reseller"
-msgstr ""
+msgstr "Assigned to at least one reseller"
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "At first you must create a database which have at least one SQL user."
@@ -1049,9 +1049,6 @@ msgstr "Bad password."
 
 msgid "Bad request."
 msgstr "Bad request."
-
-msgid "Bad requests."
-msgstr ""
 
 msgid "Behind"
 msgstr "Behind"
@@ -1216,7 +1213,7 @@ msgid "Click to deactivate"
 msgstr "Click to deactivate"
 
 msgid "Click to edit"
-msgstr ""
+msgstr "Click to edit"
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "Client / Databases / Add SQL Database"
@@ -2687,13 +2684,13 @@ msgid "IP assignments"
 msgstr "IP assignments"
 
 msgid "IP errors"
-msgstr ""
+msgstr "IP errors"
 
 msgid "IP management"
 msgstr "IP management"
 
 msgid "IP netmask"
-msgstr ""
+msgstr "IP netmask"
 
 msgid "IP usage"
 msgstr "IP usage"
@@ -3217,7 +3214,7 @@ msgid "Name cannot be empty."
 msgstr "Name cannot be empty."
 
 msgid "Network interface (NIC)"
-msgstr ""
+msgstr "Network interface (NIC)"
 
 msgid "Never"
 msgstr "Never"
@@ -3359,7 +3356,7 @@ msgstr "Not used"
 
 msgid ""
 "Note that in manual mode, the NIC and the subnet mask are only indicative."
-msgstr ""
+msgstr "Note that in manual mode, the NIC and the subnet mask are only indicative."
 
 msgid "Nothing found - sorry"
 msgstr "Nothing found - sorry"
@@ -5407,10 +5404,10 @@ msgid "Wrong mail syntax in forward list."
 msgstr "Wrong mail syntax in forward list."
 
 msgid "Wrong or unallowed IP address."
-msgstr ""
+msgstr "Wrong or unallowed IP address."
 
 msgid "Wrong or unallowed IP netmask."
-msgstr ""
+msgstr "Wrong or unallowed IP netmask."
 
 msgid "Wrong request."
 msgstr "Wrong request."
