@@ -82,8 +82,7 @@ sub addIpAddr
 
     $self->_updateInterfacesFile( 'add', $data ) == 0 or die('Could not update interfaces file');
 
-    return 0 unless $data->{'ip_config_mode'} eq 'auto'; #&&
-        #$self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'ip_id'}" );
+    return 0 unless $data->{'ip_config_mode'} eq 'auto';
 
     # Handle case where the IP netmask or NIC has been changed
     if($self->{net}->isKnownAddr($data->{'ip_address'})
@@ -189,18 +188,15 @@ sub _updateInterfacesFile
 
     if ($action eq 'add' && $data->{'ip_config_mode'} eq 'auto') {
         my $eAddr = $self->{'net'}->expandAddr( $data->{'ip_address'} );
-
-        # Add IP addresse only if not already present (e.g: manually configured IP addresses)
-        #if ($fileContent !~ /^[^#]*(?:address|ip\s+addr.*?)\s+(?:$cAddr|$eAddr|$data->{'ip_address'})(?:\s+|\n)/gm) {
-            $fileContent .= iMSCP::TemplateParser::process(
-                {
-                    ip_id       => $data->{'ip_id'},
-                    ip_card     => $data->{'ip_card'},
-                    ip_address  => $cAddr,
-                    ip_netmask  => $data->{'ip_netmask'},
-                    addr_family => $self->{'net'}->getAddrVersion( $cAddr ) eq 'ipv4' ? 'inet' : 'inet6'
-                },
-                <<STANZA
+        $fileContent .= iMSCP::TemplateParser::process(
+            {
+                ip_id       => $data->{'ip_id'},
+                ip_card     => $data->{'ip_card'},
+                ip_address  => $cAddr,
+                ip_netmask  => $data->{'ip_netmask'},
+                addr_family => $self->{'net'}->getAddrVersion( $cAddr ) eq 'ipv4' ? 'inet' : 'inet6'
+            },
+            <<STANZA
 
 # i-MSCP [{ip_address}] entry BEGIN
 auto {ip_card}:{ip_id}
@@ -209,8 +205,7 @@ iface {ip_card}:{ip_id} {addr_family} static
     netmask {ip_netmask}
 # i-MSCP [{ip_address}] entry ENDING
 STANZA
-            );
-        #}
+        );
     }
 
     $rs = $file->set( $fileContent );

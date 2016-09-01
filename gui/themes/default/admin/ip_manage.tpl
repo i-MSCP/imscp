@@ -66,7 +66,8 @@
                             }
 
                             $el = $elDeepCopy;
-                            $(this).parent().replaceWith($elDeepCopy);
+                            $el.text($(this).val());
+                            $(this).parent().replaceWith($el);
                         });
 
                         return $newEl;
@@ -164,8 +165,7 @@
                 <div class="radio">
                     <input type="radio" name="ip_config_mode" id="ip_config_mode_auto" value="auto"{IP_CONFIG_AUTO}>
                     <label for="ip_config_mode_auto">{TR_AUTO}</label>
-                    <input type="radio" name="ip_config_mode" id="ip_config_mode_manual"
-                           value="manual"{IP_CONFIG_MANUAL}>
+                    <input type="radio" name="ip_config_mode" id="ip_config_mode_manual" value="manual"{IP_CONFIG_MANUAL}>
                     <label for="ip_config_mode_manual">{TR_MANUAL}</label>
                 </div>
             </td>
