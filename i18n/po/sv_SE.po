@@ -5,12 +5,13 @@
 # Translators:
 # Cool <barni@telia.com>, 2016
 # Laurent Declercq <l.declercq@nuxwin.com>, 2016
+# Thom Heemstra <thom@heemstra.xyz>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-23 17:50+0200\n"
-"PO-Revision-Date: 2016-07-23 15:50+0000\n"
+"POT-Creation-Date: 2016-09-01 10:39+0200\n"
+"PO-Revision-Date: 2016-09-01 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/i-mscp/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -819,7 +820,7 @@ msgid "Already in use"
 msgstr "Redan i bruk"
 
 msgid "Alternate URL to reach your website."
-msgstr ""
+msgstr "Alternativ URL för att nå din webbplats"
 
 msgid "Alternative URL to reach your website"
 msgstr "Alternativ URL för att nå din webbplats"
@@ -927,8 +928,8 @@ msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Är du säker på att du vill ta bort '%s' ticket?"
 
 #, php-format
-msgid "Are you sure you want to delete the `%%s' IP addresse?"
-msgstr "Är du säker på att du vill ta bort denna `%% s 'IP-adress?"
+msgid "Are you sure you want to delete the `%%s' IP address?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
@@ -977,6 +978,9 @@ msgstr "Tilldela befintlig SQL användare"
 
 msgid "Assign group"
 msgstr "Tilldela grupp"
+
+msgid "Assigned to at least one reseller"
+msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Först måste du skapa en databas som har minst en SQL-användare."
@@ -1046,6 +1050,9 @@ msgstr "Felaktigt lösenord."
 
 msgid "Bad request."
 msgstr "Dåligt begäran."
+
+msgid "Bad requests."
+msgstr ""
 
 msgid "Behind"
 msgstr "Bakom"
@@ -1208,6 +1215,9 @@ msgstr "Klicka för att aktivera"
 
 msgid "Click to deactivate"
 msgstr "Klicka för att avaktivera"
+
+msgid "Click to edit"
+msgstr ""
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "Kund / Databas / Lägg till databas"
@@ -2677,8 +2687,14 @@ msgstr "IP-adresser under kontroll av i-MSCP"
 msgid "IP assignments"
 msgstr "IP uppdrag"
 
+msgid "IP errors"
+msgstr ""
+
 msgid "IP management"
 msgstr "IP förwaltning"
+
+msgid "IP netmask"
+msgstr ""
 
 msgid "IP usage"
 msgstr "IP-användning"
@@ -3201,8 +3217,8 @@ msgstr "Namn"
 msgid "Name cannot be empty."
 msgstr "Namnet får inte vara tomt."
 
-msgid "Network interface"
-msgstr "Nätverksgränssnitt"
+msgid "Network interface (NIC)"
+msgstr ""
 
 msgid "Never"
 msgstr "Aldrig"
@@ -3341,6 +3357,10 @@ msgstr "Not provided"
 
 msgid "Not used"
 msgstr "Inte i bruk."
+
+msgid ""
+"Note that in manual mode, the NIC and the subnet mask are only indicative."
+msgstr ""
 
 msgid "Nothing found - sorry"
 msgstr "Inget hittades - tyvärr"
@@ -5384,11 +5404,14 @@ msgstr "När satt till 'Auto' konfigureras IP-adressen automatiskt."
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr "Vid inställningen 'Manuell' , konfigureras den av administratören."
 
-msgid "Wrong IP address."
-msgstr "Fel IP adr."
-
 msgid "Wrong mail syntax in forward list."
 msgstr "Fel syntax i framåt-lista."
+
+msgid "Wrong or unallowed IP address."
+msgstr ""
+
+msgid "Wrong or unallowed IP netmask."
+msgstr ""
 
 msgid "Wrong request."
 msgstr "Fel begäran."
@@ -5672,9 +5695,6 @@ msgstr "Du måste välja minst ett objekt som du vill ta bort"
 
 msgid "You must select a least one mail account to delete."
 msgstr "Du måste välja minst ett mail konto som ska tas bort."
-
-msgid "You must select a network interface."
-msgstr "Du måste välja ett nätverkskort."
 
 msgid "You must select at least one plugin."
 msgstr "Du måste välja minst ett plugin."

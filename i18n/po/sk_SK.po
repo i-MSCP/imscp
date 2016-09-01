@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Henrich Brunner <brunno.eu@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-23 17:50+0200\n"
-"PO-Revision-Date: 2016-07-23 15:50+0000\n"
+"POT-Creation-Date: 2016-09-01 10:39+0200\n"
+"PO-Revision-Date: 2016-09-01 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Slovak (Slovakia) (http://www.transifex.com/i-mscp/i-MSCP/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
@@ -144,7 +145,7 @@ msgstr "%s / neobmedzené "
 
 #, php-format
 msgid "%s IP address is blocked for %s minutes."
-msgstr ""
+msgstr "%s IP adresa je blokovaná na %s minút."
 
 #, php-format
 msgid "%s IP address is waiting %s seconds."
@@ -456,7 +457,7 @@ msgid "Activate this plugin"
 msgstr ""
 
 msgid "Activated"
-msgstr ""
+msgstr "Activované"
 
 msgid "Activated software"
 msgstr ""
@@ -480,10 +481,10 @@ msgid "Add FTP account"
 msgstr "Pridať FTP konto"
 
 msgid "Add Htaccess group"
-msgstr ""
+msgstr "Pridať skupinu Htaccess"
 
 msgid "Add Htaccess user"
-msgstr ""
+msgstr "Pridať užívateľa Htaccess"
 
 msgid "Add SQL database"
 msgstr "Pridať SQL databázu"
@@ -492,7 +493,7 @@ msgid "Add SQL user"
 msgstr "Pridať SQL konto"
 
 msgid "Add SSL certificate"
-msgstr ""
+msgstr "Pridať SSl certifikát"
 
 msgid "Add admin"
 msgstr "Pridať administrátora"
@@ -501,7 +502,7 @@ msgid "Add catchall"
 msgstr "Pridať \"Zachytiť všetko\""
 
 msgid "Add custom menu"
-msgstr ""
+msgstr "Pridať vlastné menu"
 
 msgid "Add customer"
 msgstr ""
@@ -925,7 +926,7 @@ msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr ""
 
 #, php-format
-msgid "Are you sure you want to delete the `%%s' IP addresse?"
+msgid "Are you sure you want to delete the `%%s' IP address?"
 msgstr ""
 
 #, php-format
@@ -974,6 +975,9 @@ msgid "Assign existing SQL user"
 msgstr ""
 
 msgid "Assign group"
+msgstr ""
+
+msgid "Assigned to at least one reseller"
 msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
@@ -1043,6 +1047,9 @@ msgid "Bad password."
 msgstr "Nesprávne heslo."
 
 msgid "Bad request."
+msgstr ""
+
+msgid "Bad requests."
 msgstr ""
 
 msgid "Behind"
@@ -1205,6 +1212,9 @@ msgid "Click to activate"
 msgstr ""
 
 msgid "Click to deactivate"
+msgstr ""
+
+msgid "Click to edit"
 msgstr ""
 
 msgid "Client / Databases / Add SQL Database"
@@ -2369,13 +2379,13 @@ msgid "FTP account"
 msgstr "FTP konto"
 
 msgid "FTP account already exists."
-msgstr ""
+msgstr "FTP konto už existuje"
 
 msgid "FTP account limit"
-msgstr "FTP limit kont"
+msgstr "FTP limit konta"
 
 msgid "FTP account limit reached."
-msgstr "FTP limit kont bol dosiahnutý."
+msgstr "FTP limit konta bol dosiahnutý."
 
 msgid "FTP account successfully added."
 msgstr "FTP konto bolo úspešne pridané."
@@ -2675,7 +2685,13 @@ msgstr ""
 msgid "IP assignments"
 msgstr ""
 
+msgid "IP errors"
+msgstr ""
+
 msgid "IP management"
+msgstr ""
+
+msgid "IP netmask"
 msgstr ""
 
 msgid "IP usage"
@@ -3199,8 +3215,8 @@ msgstr "Meno"
 msgid "Name cannot be empty."
 msgstr ""
 
-msgid "Network interface"
-msgstr "Zmeniť užívateľské rozhranie"
+msgid "Network interface (NIC)"
+msgstr ""
 
 msgid "Never"
 msgstr ""
@@ -3338,6 +3354,10 @@ msgid "Not provided"
 msgstr ""
 
 msgid "Not used"
+msgstr ""
+
+msgid ""
+"Note that in manual mode, the NIC and the subnet mask are only indicative."
 msgstr ""
 
 msgid "Nothing found - sorry"
@@ -5382,11 +5402,14 @@ msgstr ""
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr ""
 
-msgid "Wrong IP address."
-msgstr ""
-
 msgid "Wrong mail syntax in forward list."
 msgstr "Nesprávna mailová adresa v zozname presmerovaní."
+
+msgid "Wrong or unallowed IP address."
+msgstr ""
+
+msgid "Wrong or unallowed IP netmask."
+msgstr ""
 
 msgid "Wrong request."
 msgstr "Nesprávna požiadavka. "
@@ -5673,9 +5696,6 @@ msgstr "Musíte zvoliť aspoň jednú položku na vymazanie."
 
 msgid "You must select a least one mail account to delete."
 msgstr "Musíte zvoliť aspoň jedno konto na vymazanie."
-
-msgid "You must select a network interface."
-msgstr "Musíte vybrať sieťové rozhranie."
 
 msgid "You must select at least one plugin."
 msgstr ""

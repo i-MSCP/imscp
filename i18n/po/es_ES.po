@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-23 17:50+0200\n"
-"PO-Revision-Date: 2016-07-23 15:50+0000\n"
+"POT-Creation-Date: 2016-09-01 10:39+0200\n"
+"PO-Revision-Date: 2016-09-01 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/i-mscp/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -810,7 +810,7 @@ msgid "Allow URL fopen"
 msgstr "Permitir URL fopen"
 
 msgid "Allows to forward any request made to this domain to a specific URL."
-msgstr ""
+msgstr "Permite reenviar cualquier solicitud realizada a este dominio a una URL específica."
 
 msgid "Allows to share the mount point of another domain."
 msgstr "Permite compartir el punto de montaje de otro dominio."
@@ -819,7 +819,7 @@ msgid "Already in use"
 msgstr "Ya en uso"
 
 msgid "Alternate URL to reach your website."
-msgstr ""
+msgstr "URL alternativa para encontrar tu sitio web."
 
 msgid "Alternative URL to reach your website"
 msgstr "URL alternativa para encontrar tu sitio web"
@@ -927,8 +927,8 @@ msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "¿Estas seguro de que quieres eliminar el ticket '%s' ?"
 
 #, php-format
-msgid "Are you sure you want to delete the `%%s' IP addresse?"
-msgstr "¿Estas seguro que deseas eliminar la dirección IP '%%s'?"
+msgid "Are you sure you want to delete the `%%s' IP address?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
@@ -977,6 +977,9 @@ msgstr "Asignar un usuario SQL existente."
 
 msgid "Assign group"
 msgstr "Asignar grupo"
+
+msgid "Assigned to at least one reseller"
+msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "¡Primero debes crear una Base de Datos que tenga al menos un usuario SQL!"
@@ -1046,6 +1049,9 @@ msgstr "Contraseña equivocada"
 
 msgid "Bad request."
 msgstr "Solicitud incorrecta."
+
+msgid "Bad requests."
+msgstr ""
 
 msgid "Behind"
 msgstr "Detrás"
@@ -1209,6 +1215,9 @@ msgstr "Clic para Activar"
 msgid "Click to deactivate"
 msgstr "Clic para desactivar"
 
+msgid "Click to edit"
+msgstr ""
+
 msgid "Client / Databases / Add SQL Database"
 msgstr "Cliente / Bases de Datos / Añadir Base de Datos SQL"
 
@@ -1237,7 +1246,7 @@ msgid "Client / Domains / Add Subdomain"
 msgstr "Cliente / Dominios / Añadir Subdominio"
 
 msgid "Client / Domains / Edit Domain"
-msgstr ""
+msgstr "Cliente / Dominios / Editar Dominio"
 
 msgid "Client / Domains / Edit Domain Alias"
 msgstr "Cliente / Dominios / Editar Alias de Dominio"
@@ -2001,7 +2010,7 @@ msgstr "Dominio"
 
 #, php-format
 msgid "Domain %s cannot be forwarded on itself."
-msgstr ""
+msgstr "El dominio %s no se puede reenviar a sí mismo."
 
 #, php-format
 msgid "Domain %s is unavailable."
@@ -2134,7 +2143,7 @@ msgid "Domain status is not ok."
 msgstr "El estado del dominio no es ok."
 
 msgid "Domain successfully scheduled for update."
-msgstr ""
+msgstr "Dominio programado correctamente para actualización."
 
 msgid "Domain successfully updated."
 msgstr "El dominio ha sido actualizado correctamente."
@@ -2677,8 +2686,14 @@ msgstr "Direcciones IP bajo el control de i-MSCP"
 msgid "IP assignments"
 msgstr "Asignaciones de IP"
 
+msgid "IP errors"
+msgstr ""
+
 msgid "IP management"
 msgstr "Administración de IP"
+
+msgid "IP netmask"
+msgstr ""
 
 msgid "IP usage"
 msgstr "Uso de IP"
@@ -3201,8 +3216,8 @@ msgstr "Nombre"
 msgid "Name cannot be empty."
 msgstr "El nombre no puede estar vacío."
 
-msgid "Network interface"
-msgstr "Interfaz de red"
+msgid "Network interface (NIC)"
+msgstr ""
 
 msgid "Never"
 msgstr "Nunca"
@@ -3341,6 +3356,10 @@ msgstr "No proporcionado"
 
 msgid "Not used"
 msgstr "No usado"
+
+msgid ""
+"Note that in manual mode, the NIC and the subnet mask are only indicative."
+msgstr ""
 
 msgid "Nothing found - sorry"
 msgstr "Nada encontrado - disculpa"
@@ -3882,7 +3901,7 @@ msgid "Port"
 msgstr "Puerto"
 
 msgid "Preserve Host"
-msgstr ""
+msgstr "Preservar Host"
 
 msgid "Prevent external login for admins"
 msgstr "Evitar accesos externos de administradores"
@@ -5384,11 +5403,14 @@ msgstr "Cuando se estable en 'Auto', la dirección IP es configurada automaticam
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr "Cuando se establece en 'Manual', la configuración se le deja al Administrador"
 
-msgid "Wrong IP address."
-msgstr "Dirección IP incorrecta."
-
 msgid "Wrong mail syntax in forward list."
 msgstr "Sintaxis de correo incorrecta en la lista de reenvio."
+
+msgid "Wrong or unallowed IP address."
+msgstr ""
+
+msgid "Wrong or unallowed IP netmask."
+msgstr ""
 
 msgid "Wrong request."
 msgstr "Peticion errónea."
@@ -5672,9 +5694,6 @@ msgstr "Usted debe seleccionar mínimo un elemento para eliminarlo"
 
 msgid "You must select a least one mail account to delete."
 msgstr "Usted debe seleccionar mínimo una cuenta de correo para eliminar."
-
-msgid "You must select a network interface."
-msgstr "Debes seleccionar una tarjeta de red."
 
 msgid "You must select at least one plugin."
 msgstr "Debes seleccionar al menos un Plugin."

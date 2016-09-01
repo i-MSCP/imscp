@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-23 17:50+0200\n"
-"PO-Revision-Date: 2016-07-23 15:50+0000\n"
+"POT-Creation-Date: 2016-09-01 10:39+0200\n"
+"PO-Revision-Date: 2016-09-01 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/i-mscp/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -820,7 +820,7 @@ msgid "Already in use"
 msgstr "Reeds in gebruik"
 
 msgid "Alternate URL to reach your website."
-msgstr ""
+msgstr "Alternatieve URL om uw website te bereiken"
 
 msgid "Alternative URL to reach your website"
 msgstr "Alternatieve URL"
@@ -928,8 +928,8 @@ msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Weet u zeker dat u het %s ticket wilt verwijderen?"
 
 #, php-format
-msgid "Are you sure you want to delete the `%%s' IP addresse?"
-msgstr "Weet u zeker dat u het IP-adres `%%s' wilt verwijderen?"
+msgid "Are you sure you want to delete the `%%s' IP address?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
@@ -978,6 +978,9 @@ msgstr "Bestaande SQL-gebruiker toewijzen"
 
 msgid "Assign group"
 msgstr "Wijs groep toe"
+
+msgid "Assigned to at least one reseller"
+msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "U dient eerst een databank met minimaal 1 gebruiker aan te maken."
@@ -1047,6 +1050,9 @@ msgstr "Wachtwoord niet correct."
 
 msgid "Bad request."
 msgstr "Fout verzoek."
+
+msgid "Bad requests."
+msgstr ""
 
 msgid "Behind"
 msgstr "Achter"
@@ -1209,6 +1215,9 @@ msgstr "Klik om te activeren"
 
 msgid "Click to deactivate"
 msgstr "Klik om te deactiveren"
+
+msgid "Click to edit"
+msgstr ""
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "Klant / Databanken / Voeg SQL-databank toe"
@@ -2678,8 +2687,14 @@ msgstr "IP-adressen onder controle van i-MSCP"
 msgid "IP assignments"
 msgstr "IP-toewijzingen"
 
+msgid "IP errors"
+msgstr ""
+
 msgid "IP management"
 msgstr "IP beheer"
+
+msgid "IP netmask"
+msgstr ""
 
 msgid "IP usage"
 msgstr "IP-gebruik"
@@ -3202,8 +3217,8 @@ msgstr "Naam"
 msgid "Name cannot be empty."
 msgstr "Naam kan niet leeg zijn."
 
-msgid "Network interface"
-msgstr "Netwerkinterface"
+msgid "Network interface (NIC)"
+msgstr ""
 
 msgid "Never"
 msgstr "Nooit"
@@ -3342,6 +3357,10 @@ msgstr "Niet opgegeven"
 
 msgid "Not used"
 msgstr "Niet gebruikt"
+
+msgid ""
+"Note that in manual mode, the NIC and the subnet mask are only indicative."
+msgstr ""
 
 msgid "Nothing found - sorry"
 msgstr "Niets gevonden - sorry"
@@ -5385,11 +5404,14 @@ msgstr "Wanneer ingesteld op 'Automatisch', dan worden de IP-adressen automatisc
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr "Wanneer ingesteld op 'Handmatig', dan dient de beheerder de IP-adressen handmatig te configureren en beheren op de server."
 
-msgid "Wrong IP address."
-msgstr "Fout IP-adres."
-
 msgid "Wrong mail syntax in forward list."
 msgstr "Verkeerde syntax in doorstuurlijst."
+
+msgid "Wrong or unallowed IP address."
+msgstr ""
+
+msgid "Wrong or unallowed IP netmask."
+msgstr ""
 
 msgid "Wrong request."
 msgstr "Verkeerd verzoek."
@@ -5673,9 +5695,6 @@ msgstr "U dient tenminste één voorwerp te selecteren om te verwijderen"
 
 msgid "You must select a least one mail account to delete."
 msgstr "U dient tenminste één e-mailaccount te selecteren om te verwijderen."
-
-msgid "You must select a network interface."
-msgstr "U dient een netwerkinterface te selecteren."
 
 msgid "You must select at least one plugin."
 msgstr "Selecteer minimaal 1 invoegtoepassing."

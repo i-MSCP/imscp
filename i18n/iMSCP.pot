@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-23 17:50+0200\n"
+"POT-Creation-Date: 2016-09-01 10:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -926,7 +926,7 @@ msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr ""
 
 #, php-format
-msgid "Are you sure you want to delete the `%%s' IP addresse?"
+msgid "Are you sure you want to delete the `%%s' IP address?"
 msgstr ""
 
 #, php-format
@@ -975,6 +975,9 @@ msgid "Assign existing SQL user"
 msgstr ""
 
 msgid "Assign group"
+msgstr ""
+
+msgid "Assigned to at least one reseller"
 msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
@@ -1044,6 +1047,9 @@ msgid "Bad password."
 msgstr ""
 
 msgid "Bad request."
+msgstr ""
+
+msgid "Bad requests."
 msgstr ""
 
 msgid "Behind"
@@ -1206,6 +1212,9 @@ msgid "Click to activate"
 msgstr ""
 
 msgid "Click to deactivate"
+msgstr ""
+
+msgid "Click to edit"
 msgstr ""
 
 msgid "Client / Databases / Add SQL Database"
@@ -2682,7 +2691,13 @@ msgstr ""
 msgid "IP assignments"
 msgstr ""
 
+msgid "IP errors"
+msgstr ""
+
 msgid "IP management"
+msgstr ""
+
+msgid "IP netmask"
 msgstr ""
 
 msgid "IP usage"
@@ -3206,7 +3221,7 @@ msgstr ""
 msgid "Name cannot be empty."
 msgstr ""
 
-msgid "Network interface"
+msgid "Network interface (NIC)"
 msgstr ""
 
 msgid "Never"
@@ -3345,6 +3360,10 @@ msgid "Not provided"
 msgstr ""
 
 msgid "Not used"
+msgstr ""
+
+msgid ""
+"Note that in manual mode, the NIC and the subnet mask are only indicative."
 msgstr ""
 
 msgid "Nothing found - sorry"
@@ -5387,10 +5406,13 @@ msgstr ""
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr ""
 
-msgid "Wrong IP address."
+msgid "Wrong mail syntax in forward list."
 msgstr ""
 
-msgid "Wrong mail syntax in forward list."
+msgid "Wrong or unallowed IP address."
+msgstr ""
+
+msgid "Wrong or unallowed IP netmask."
 msgstr ""
 
 msgid "Wrong request."
@@ -5673,9 +5695,6 @@ msgid "You must select a least one item to delete"
 msgstr ""
 
 msgid "You must select a least one mail account to delete."
-msgstr ""
-
-msgid "You must select a network interface."
 msgstr ""
 
 msgid "You must select at least one plugin."

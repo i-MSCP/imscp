@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-07-23 17:50+0200\n"
-"PO-Revision-Date: 2016-07-23 15:50+0000\n"
+"POT-Creation-Date: 2016-09-01 10:39+0200\n"
+"PO-Revision-Date: 2016-09-01 08:41+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/i-mscp/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -594,7 +594,7 @@ msgid "Admin / Settings"
 msgstr "Администратор / Настройки"
 
 msgid "Admin / Settings / IP Management"
-msgstr "Админ / Настройки / Управление IP"
+msgstr "Администратор / Настройки / Управление IP"
 
 msgid "Admin / Settings / Languages"
 msgstr "Администратор / Настройки / Языки"
@@ -633,12 +633,12 @@ msgid "Admin / Statistics / Reseller Statistics"
 msgstr "Администратор / Статистика / Статистика реселлеров"
 
 msgid "Admin / Statistics / Reseller Statistics / User Statistics"
-msgstr "Админ / Статистика / Статистика реселлера / Статистика пользователя"
+msgstr "Администратор / Статистика / Статистика реселлера / Статистика пользователя"
 
 msgid ""
 "Admin / Statistics / Reseller Statistics / User Statistics / {USERNAME} user"
 " statistics"
-msgstr "Админ / Статистика / Статистика реселлера / Статистика пользователя / Статистика пользователя  {USERNAME} "
+msgstr "Администратор / Статистика / Статистика реселлера / Статистика пользователя / Статистика пользователя  {USERNAME} "
 
 msgid "Admin / Statistics / Server Statistics"
 msgstr "Администратор / Статистика / Статистика сервера"
@@ -820,7 +820,7 @@ msgid "Already in use"
 msgstr "Уже используется"
 
 msgid "Alternate URL to reach your website."
-msgstr ""
+msgstr "Альтернативный URL для доступа к сайту."
 
 msgid "Alternative URL to reach your website"
 msgstr "Альтернативный URL для доступа к сайту"
@@ -928,8 +928,8 @@ msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Вы уверены, что хотите удалить тикет %s ?"
 
 #, php-format
-msgid "Are you sure you want to delete the `%%s' IP addresse?"
-msgstr "Вы уверены что хотите удалить IP адрес %%s?"
+msgid "Are you sure you want to delete the `%%s' IP address?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
@@ -978,6 +978,9 @@ msgstr "Назначит существующего SQL пользователя
 
 msgid "Assign group"
 msgstr "Назначить группу"
+
+msgid "Assigned to at least one reseller"
+msgstr ""
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Сначала Вам нужно создать базу данный SQL имеющую хотябы одного пользователя."
@@ -1047,6 +1050,9 @@ msgstr "Неверный пароль."
 
 msgid "Bad request."
 msgstr "Неверный запрос."
+
+msgid "Bad requests."
+msgstr ""
 
 msgid "Behind"
 msgstr "После"
@@ -1209,6 +1215,9 @@ msgstr "Щелкните для активации"
 
 msgid "Click to deactivate"
 msgstr "Щелкните для деактивации"
+
+msgid "Click to edit"
+msgstr ""
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "Клиент / Базы данных / Добавить БД"
@@ -2572,7 +2581,7 @@ msgid "HSTS (HTTP Strict Transport Security)"
 msgstr "HSTS (HTTP Strict Transport Security)"
 
 msgid "HSTS includeSubDomains directive"
-msgstr "HSTS директива includeSubDomains"
+msgstr "HSTS директивы includeSubDomains"
 
 msgid "HSTS max-age directive value"
 msgstr "HSTS значение директивы max-age"
@@ -2678,8 +2687,14 @@ msgstr "IP адреса под контролем i-MSCP."
 msgid "IP assignments"
 msgstr "Назначение IP"
 
+msgid "IP errors"
+msgstr ""
+
 msgid "IP management"
 msgstr "Управление IP"
+
+msgid "IP netmask"
+msgstr ""
 
 msgid "IP usage"
 msgstr "Использование IP"
@@ -3202,8 +3217,8 @@ msgstr "Имя"
 msgid "Name cannot be empty."
 msgstr "Имя не может пустовать"
 
-msgid "Network interface"
-msgstr "Сетевой интерфейс"
+msgid "Network interface (NIC)"
+msgstr ""
 
 msgid "Never"
 msgstr "Никогда"
@@ -3342,6 +3357,10 @@ msgstr "Не предусмотрено"
 
 msgid "Not used"
 msgstr "Не используется"
+
+msgid ""
+"Note that in manual mode, the NIC and the subnet mask are only indicative."
+msgstr ""
 
 msgid "Nothing found - sorry"
 msgstr "Ничего не найдено"
@@ -5385,11 +5404,14 @@ msgstr "В автоматическом режиме IP адрес будет н
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr "В ручном режиме администратор может настроить IP адрес сам."
 
-msgid "Wrong IP address."
-msgstr "Неверный IP адрес."
-
 msgid "Wrong mail syntax in forward list."
 msgstr "Неверный почтовый синтаксис списка перенаправления."
+
+msgid "Wrong or unallowed IP address."
+msgstr ""
+
+msgid "Wrong or unallowed IP netmask."
+msgstr ""
 
 msgid "Wrong request."
 msgstr "Неверный запрос."
@@ -5679,9 +5701,6 @@ msgstr "Вы должны выбрать как минимум один пунк
 
 msgid "You must select a least one mail account to delete."
 msgstr "Вы должны выбрать как минимум один почтовый ящик для удаления."
-
-msgid "You must select a network interface."
-msgstr "Вы должны выбрать сетевой интерфейс."
 
 msgid "You must select at least one plugin."
 msgstr "Вы должны выбрать по крайней мере один плагин."
