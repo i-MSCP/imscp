@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-09-01 10:44+0200\n"
-"PO-Revision-Date: 2016-09-01 08:46+0000\n"
+"POT-Creation-Date: 2016-09-01 14:55+0200\n"
+"PO-Revision-Date: 2016-09-01 12:56+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/i-mscp/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -1213,7 +1213,7 @@ msgid "Click to deactivate"
 msgstr "Clic para desactivar"
 
 msgid "Click to edit"
-msgstr ""
+msgstr "Clic para editar"
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "Cliente / Bases de Datos / Añadir Base de Datos SQL"
@@ -2677,6 +2677,9 @@ msgstr "Dirección IP programada correctamente para su adición."
 msgid "IP address successfully scheduled for deletion."
 msgstr "Dirección IP correctamente programada para eliminación."
 
+msgid "IP address successfully scheduled for modification."
+msgstr ""
+
 msgid "IP addresses under control of i-MSCP"
 msgstr "Direcciones IP bajo el control de i-MSCP"
 
@@ -2684,13 +2687,13 @@ msgid "IP assignments"
 msgstr "Asignaciones de IP"
 
 msgid "IP errors"
-msgstr ""
+msgstr "Errores IP"
 
 msgid "IP management"
 msgstr "Administración de IP"
 
 msgid "IP netmask"
-msgstr ""
+msgstr "Mascara de red IP"
 
 msgid "IP usage"
 msgstr "Uso de IP"
@@ -3214,7 +3217,7 @@ msgid "Name cannot be empty."
 msgstr "El nombre no puede estar vacío."
 
 msgid "Network interface (NIC)"
-msgstr ""
+msgstr "Interfaz de red (NIC)"
 
 msgid "Never"
 msgstr "Nunca"

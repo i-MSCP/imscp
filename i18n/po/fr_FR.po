@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-09-01 10:44+0200\n"
-"PO-Revision-Date: 2016-09-01 08:46+0000\n"
+"POT-Creation-Date: 2016-09-01 14:55+0200\n"
+"PO-Revision-Date: 2016-09-01 12:56+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/i-mscp/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -927,7 +927,7 @@ msgstr "Etes-vous certain de vouloir supprimer le ticket '%s' ?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s' IP address?"
-msgstr ""
+msgstr "Êtes-vous certain de vouloir supprimer l'adresse IP `%%s' ?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
@@ -978,7 +978,7 @@ msgid "Assign group"
 msgstr "Assigner le group"
 
 msgid "Assigned to at least one reseller"
-msgstr ""
+msgstr "Assignée à un ou plusieurs revendeurs"
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Vous devez d'abord créer une base de donnée qui contient au moins un utilisateur SQL."
@@ -1212,7 +1212,7 @@ msgid "Click to deactivate"
 msgstr "Cliquez pour désactiver"
 
 msgid "Click to edit"
-msgstr ""
+msgstr "Cliquez pour éditer"
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "Client / Bases de données / Ajouter une base de données SQL"
@@ -2676,6 +2676,9 @@ msgstr "L'adresse IP va être ajoutée."
 msgid "IP address successfully scheduled for deletion."
 msgstr "L'adresse IP va être supprimée."
 
+msgid "IP address successfully scheduled for modification."
+msgstr ""
+
 msgid "IP addresses under control of i-MSCP"
 msgstr "Adresses IP contrôlées par i-MSCP"
 
@@ -2683,13 +2686,13 @@ msgid "IP assignments"
 msgstr "Assignation des adresses IP"
 
 msgid "IP errors"
-msgstr ""
+msgstr "Erreurs liées aux adresses IP"
 
 msgid "IP management"
 msgstr "Gestion des adresses IP"
 
 msgid "IP netmask"
-msgstr ""
+msgstr "Masque de sous-réseau"
 
 msgid "IP usage"
 msgstr "Utilisation des adresses IP"
@@ -3213,7 +3216,7 @@ msgid "Name cannot be empty."
 msgstr "Le nom de peut pas être vide."
 
 msgid "Network interface (NIC)"
-msgstr ""
+msgstr "Interface réseau (NIC)"
 
 msgid "Never"
 msgstr "Jamais"
@@ -3355,7 +3358,7 @@ msgstr "Non utilisé"
 
 msgid ""
 "Note that in manual mode, the NIC and the subnet mask are only indicative."
-msgstr ""
+msgstr "Notez que dans le mode manuel, la carte réseau ainsi que le masque de sous-réseau ne sont qu'indicatifs."
 
 msgid "Nothing found - sorry"
 msgstr "Rien a été trouvé - Désolé"
@@ -5403,10 +5406,10 @@ msgid "Wrong mail syntax in forward list."
 msgstr "E-mail invalide dans la liste de transfert."
 
 msgid "Wrong or unallowed IP address."
-msgstr ""
+msgstr "Adresse IP incorrecte ou non-autorisée."
 
 msgid "Wrong or unallowed IP netmask."
-msgstr ""
+msgstr "Masque de sous-réseau incorrect ou non-autorisé."
 
 msgid "Wrong request."
 msgstr "Requête erronée. "
