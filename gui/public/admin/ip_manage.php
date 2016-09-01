@@ -305,7 +305,7 @@ function addIpAddr()
     $ipAddr = isset($_POST['ip_number']) ? clean_input($_POST['ip_number']) : '';
     $ipNetmask = isset($_POST['ip_netmask']) ? clean_input($_POST['ip_netmask']) : '';
     $ipCard = isset($_POST['ip_card']) ? clean_input($_POST['ip_card']) : '';
-    $ipConfigMode = isset($_POST['ip_config_mode']) ? clean_input($_POST['ip_card']) : '';
+    $ipConfigMode = isset($_POST['ip_config_mode']) ? clean_input($_POST['ip_config_mode']) : '';
 
     if (!checkIpData($ipAddr, $ipNetmask, $ipConfigMode, $ipCard)) {
         return;
@@ -350,11 +350,11 @@ $eventManager->dispatch(Events::onAdminScriptStart);
 check_login('admin');
 
 if (!empty($_POST)) {
-    if (!is_xhr()) {
-        addIpAddr();
+    if (is_xhr()) {
+        editIpAddr();
     }
 
-    editIpAddr();
+    addIpAddr();
 }
 
 $tpl = new TemplateEngine();

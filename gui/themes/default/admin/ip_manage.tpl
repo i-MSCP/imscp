@@ -5,12 +5,12 @@
                 "class": "flash_message " + type,
                 "html": $.parseHTML(message),
                 "hide": true
-            }).prependTo(".body").trigger('message_timeout');
+            }).prependTo(".body").trigger("message_timeout");
         }
         
         function doRequest(data) {
-            $.post("/admin/ip_manage.php", data, null, 'json').done(function () {
-                window.location.href = '/admin/ip_manage.php';
+            $.post("/admin/ip_manage.php", data, null, "json").done(function () {
+                window.location.href = "/admin/ip_manage.php";
             }).fail(function (jqXHR) {
                 if (jqXHR.status == 403) {
                     window.location.replace("/index.php");
@@ -21,46 +21,50 @@
         }
 
         $.each(imscp_i18n.core.err_fields_stack, function () {
-            $("#" + this).css('border-color', '#ca1d11');
+            $("#" + this).css("border-color", "#ca1d11");
         });
 
+        var $ipNumber = $("#ip_number");
+        var $netmask = $("#ip_netmask");
+        var $ipCard = $("#ip_card");
+        
         $('.datatable').dataTable({
             language: imscp_i18n.core.dataTable,
             stateSave: true,
             pagingType: "simple",
-            columnDefs: [{sortable: false, searchable: false, targets: [3, 4]}]
-        }).on('click', ':radio', function () {
+            columnDefs: [{ sortable: false, searchable: false, targets: [3, 4] }]
+        }).on("click", ":radio", function () {
             var data  = $(this).serializeArray();
-            data.push({ name: 'ip_id', value: $(this).data('ip-id') });
+            data.push({ name: "ip_id", value: $(this).data("ip-id") });
             doRequest($.param(data));
             return false;
         }).find("tbody > tr").each(function () { // Make some fields editable at runtime
             $(this).find("td").slice(1, 3).each(function () {
-                var $el = $(this).find('span').filter(':first');
+                var $el = $(this).find("span").filter(":first");
 
-                if (!$el.data('editable')) return;
+                if (!$el.data("editable")) return;
 
                 $el.addClass("tips");
-                $el.before($("<span>", { "class": "icon i_help ", "title": imscp_i18n.core.edit_tooltip }).tooltip({
+                $el.before($("<span>", { "class": "icon i_help", "title": imscp_i18n.core.edit_tooltip }).tooltip({
                     tooltipClass: "ui-tooltip-notice", track: true
-                }), '&nbsp;').on('click', function () {
+                }), "&nbsp;").on("click", function () {
                     var $elDeepCopy = $el.clone(true);
                     var $newEl = $('<span>');
 
                     $(this).replaceWith(function () {
-                        switch ($(this).data('type')) {
-                            case 'netmask':
-                                $newEl.append($('#ip_netmask').clone().prop(
+                        switch ($(this).data("type")) {
+                            case "netmask":
+                                $newEl.append($netmask.clone().attr(
                                     'max', $(this).data("ip").indexOf(":") != -1 ? 128 : 32
                                 ).val($(this).text()).css({ "min-width": "unset", "width": "40px" }));
                                 break;
-                            case 'card':
-                                $newEl.append($("#ip_card").clone().val($el.text()));
+                            case "card":
+                                $newEl.append($ipCard.clone().val($el.text()));
                                 break;
                         }
 
                         $newEl.append($('<input>', { "type": "hidden", "name": "ip_id", "value": $(this).data("ip-id") }));
-                        $newEl.on('blur', 'input, select', function () {
+                        $newEl.on("blur", "input, select", function () {
                             if ($(this).val() != $el.text()) {
                                 doRequest($(this).parent().find('input,select').serialize());
                             }
@@ -78,9 +82,17 @@
             });
         });
 
-        $('#ip_number').on('keyup', function () {
-            $("#ip_netmask").attr($(this).val().indexOf(":") != -1 ? {min: 1, max: 128} : {min: 1, max: 32});
-        }).trigger("keyup", true);
+        var ipv6colC = $ipNumber.val().split(':', 3).length;
+        $ipNumber.on("keyup", function (e, keepNetmaskVal) {
+            $netmask.attr($(this).val().indexOf(":") != -1 ? { min: 1, max: 128 } : { min: 1, max: 32 });
+            var ipv6NColC = $(this).val().split(':', 3).length;
+            if(!keepNetmaskVal
+               && ((ipv6colC < 3 || (ipv6colC < 3 && ipv6NColC < 3)) || parseInt($netmask.val()) > parseInt($netmask.attr("max")) )) {
+                $netmask.val($netmask.attr("max"));
+            }
+
+            ipv6colC = ipv6NColC;
+        }).trigger("change", true);
 
         $(".i_delete").on("click", function () {
             return confirm(sprintf(imscp_i18n.core.confirm_deletion_msg, $(this).data("ip")));
@@ -151,7 +163,7 @@
         </tr>
         <tr>
             <td><label for="ip_number">{TR_IP}</label></td>
-            <td><input name="ip_number" id="ip_number" type="text" value="{VALUE_IP}" maxlength="32"></td>
+            <td><input name="ip_number" id="ip_number" type="text" value="{VALUE_IP}" maxlength="32" autocomplete="off"></td>
         </tr>
         <tr>
             <td><label for="ip_netmask">{TR_IP_NETMASK}</label></td>
