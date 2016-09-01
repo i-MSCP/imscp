@@ -288,7 +288,7 @@ function editIpAddr()
 
         send_request();
         write_log(sprintf("Configuration for the `%s' IP address has been changed by %s", $row['ip_number'], $_SESSION['user_logged']), E_USER_NOTICE);
-        set_page_message('Configuration successfully scheduled for modification.', 'success');
+        set_page_message(tr('IP address successfully scheduled for modification.'), 'success');
         sendJsonResponse(200);
     } catch (\Exception $e) {
         sendJsonResponse(500, array('message' => sprintf('An unexpected error occurred: %s', $e->getMessage())));
