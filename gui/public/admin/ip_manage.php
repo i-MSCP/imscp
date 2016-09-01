@@ -270,7 +270,7 @@ function editIpAddr()
 
         if (!checkIpData($row['ip_number'], $ipNetmask, $ipConfigMode, $ipCard)) {
             Session::namespaceUnset('pageMessages');
-            sendJsonResponse(400, array('message' => tr('Bad requests.')));
+            sendJsonResponse(400, array('message' => tr('Bad request.')));
         }
 
         EventManager::getInstance()->dispatch(Events::onEditIpAddr, array(
