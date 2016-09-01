@@ -263,7 +263,7 @@ function changeIpConfigMode()
 
         send_request();
         write_log(sprintf("The configuration mode for the `%s' IP address has been changed by %s", $row['ip_number'], $_SESSION['user_logged']), E_USER_NOTICE);
-        set_page_message('Configuration mode successfully scheduled for modification.', 'success');
+        set_page_message(tr('Configuration mode successfully scheduled for modification.'), 'success');
         sendJsonResponse(200);
     } catch (\Exception $e) {
         sendJsonResponse(500, array('message' => sprintf('An unexpected error occurred: %s', $e->getMessage())));
@@ -355,7 +355,7 @@ $eventManager->registerListener('onGetJsTranslations', function ($e) {
     $translation = $e->getParam('translations');
     $translation['core']['datatable'] = getDataTablesPluginTranslations(false);
     $translation['core']['err_fields_stack'] = Registry::isRegistered('errFieldsStack') ? Registry::get('errFieldsStack') : array();
-    $translation['core']['confirm_deletion_msg'] = tr("Are you sure you want to delete the `%%s' IP addresse?");
+    $translation['core']['confirm_deletion_msg'] = tr("Are you sure you want to delete the `%%s' IP addresses?");
 });
 
 generateNavigation($tpl);
