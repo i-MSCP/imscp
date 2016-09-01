@@ -1,23 +1,15 @@
-
 <script>
     $(function () {
         function flashMessage(type, message) {
-            $("<div>", { "class": "flash_message " + type, "html": $.parseHTML(message), "hide": true }).prependTo(".body").trigger('message_timeout');
+            $("<div>", {
+                "class": "flash_message " + type,
+                "html": $.parseHTML(message),
+                "hide": true
+            }).prependTo(".body").trigger('message_timeout');
         }
-
-        $.each(imscp_i18n.core.err_fields_stack, function () {
-            $("#" + this).css('border-color', '#ca1d11');
-        });
-
-        $('.datatable').dataTable(
-                {
-                    language: imscp_i18n.core.dataTable,
-                    stateSave: true,
-                    pagingType: "simple",
-                    columnDefs: [{sortable: false, searchable: false, targets: [2, 3]}]
-                }
-        ).on('click', 'input', function () {
-            $.post("/admin/ip_manage.php", $(this).serialize(), null, 'json').done(function () {
+        
+        function doRequest(data) {
+            $.post("/admin/ip_manage.php", data, null, 'json').done(function () {
                 window.location.href = '/admin/ip_manage.php';
             }).fail(function (jqXHR) {
                 if (jqXHR.status == 403) {
@@ -26,11 +18,70 @@
                     flashMessage("error", jqXHR.responseJSON.message);
                 }
             });
+        }
 
-            return false;
+        $.each(imscp_i18n.core.err_fields_stack, function () {
+            $("#" + this).css('border-color', '#ca1d11');
         });
-        
-        $(".i_delete").on("click", function() {
+
+        $('.datatable').dataTable({
+            language: imscp_i18n.core.dataTable,
+            stateSave: true,
+            pagingType: "simple",
+            columnDefs: [{sortable: false, searchable: false, targets: [3, 4]}]
+        }).on('click', ':radio', function () {
+            var data  = $(this).serializeArray();
+            data.push({ name: 'ip_id', value: $(this).data('ip-id') });
+            doRequest($.param(data));
+            return false;
+        }).find("tbody > tr").each(function () { // Make some fields editable at runtime
+            $(this).find("td").slice(1, 3).each(function () {
+                var $el = $(this).find('span').filter(':first');
+
+                if (!$el.data('editable')) return;
+
+                $el.addClass("tips");
+                $el.before($("<span>", { "class": "icon i_help ", "title": imscp_i18n.core.edit_tooltip }).tooltip({
+                    tooltipClass: "ui-tooltip-notice", track: true
+                }), '&nbsp;').on('click', function () {
+                    var $elDeepCopy = $el.clone(true);
+                    var $newEl = $('<span>');
+
+                    $(this).replaceWith(function () {
+                        switch ($(this).data('type')) {
+                            case 'netmask':
+                                $newEl.append($('#ip_netmask').clone().prop(
+                                    'max', $(this).data("ip").indexOf(":") != -1 ? 128 : 32
+                                ).val($(this).text()).css({ "min-width": "unset", "width": "40px" }));
+                                break;
+                            case 'card':
+                                $newEl.append($("#ip_card").clone().val($el.text()));
+                                break;
+                        }
+
+                        $newEl.append($('<input>', { "type": "hidden", "name": "ip_id", "value": $(this).data("ip-id") }));
+                        $newEl.on('blur', 'input, select', function () {
+                            if ($(this).val() != $el.text()) {
+                                doRequest($(this).parent().find('input,select').serialize());
+                            }
+
+                            $el = $elDeepCopy;
+                            $(this).parent().replaceWith($elDeepCopy);
+                        });
+
+                        return $newEl;
+                    });
+
+                    $newEl.children(":first").focus();
+                });
+            });
+        });
+
+        $('#ip_number').on('keyup', function () {
+            $("#ip_netmask").attr($(this).val().indexOf(":") != -1 ? {min: 1, max: 128} : {min: 1, max: 32});
+        }).trigger("keyup", true);
+
+        $(".i_delete").on("click", function () {
             return confirm(sprintf(imscp_i18n.core.confirm_deletion_msg, $(this).data("ip")));
         });
     });
@@ -44,6 +95,7 @@
     <thead>
     <tr>
         <th>{TR_IP}</th>
+        <th>{TR_IP_NETMASK}</th>
         <th>{TR_NETWORK_CARD}</th>
         <th>{TR_CONFIG_MODE}</th>
         <th>{TR_ACTION}</th>
@@ -53,20 +105,22 @@
     <!-- BDP: ip_address_block -->
     <tr>
         <td>{IP}</td>
-        <td>{NETWORK_CARD}</td>
+        <td><span data-editable="{IP_EDITABLE}" data-type="netmask" data-ip="{IP}" data-ip-id="{IP_ID}">{IP_NETMASK}</span></td>
+        <td><span data-editable="{IP_EDITABLE}" data-type="card" data-ip-id="{IP_ID}">{NETWORK_CARD}</span></td>
         <td>
             <!-- BDP: ip_config_mode_block -->
                 <div class="radio">
-                    <input type="radio" name="ip_config_mode[{IP_ID}]" id="ip_config_mode_auto_{IP_ID}" value="auto"{IP_CONFIG_AUTO} data-ip_addr="{IP}">
+                    <input type="radio" name="ip_config_mode[{IP_ID}]" id="ip_config_mode_auto_{IP_ID}" value="auto"{IP_CONFIG_AUTO} data-ip-id="{IP_ID}">
                     <label for="ip_config_mode_auto_{IP_ID}">{TR_AUTO}</label>
-                    <input type="radio" name="ip_config_mode[{IP_ID}]" id="ip_config_mode_manual_{IP_ID}" value="manual"{IP_CONFIG_MANUAL} data-ip_addr="{IP}">
+                    <input type="radio" name="ip_config_mode[{IP_ID}]" id="ip_config_mode_manual_{IP_ID}" value="manual"{IP_CONFIG_MANUAL} data-ip-id="{IP_ID}">
                     <label for="ip_config_mode_manual_{IP_ID}">{TR_MANUAL}</label>
                 </div>
             <!-- EDP: ip_config_mode_block -->
         </td>
         <td>
             <!-- BDP: ip_action_delete -->
-            <a class="icon i_delete" href="ip_delete.php?ip_id={ACTION_IP_ID}" data-ip="{IP}" title="{ACTION_NAME}">{ACTION_NAME}</a>
+            <a class="icon i_delete" href="ip_delete.php?ip_id={ACTION_IP_ID}" data-ip="{IP}"
+               title="{ACTION_NAME}">{ACTION_NAME}</a>
             <!-- EDP: ip_action_delete -->
         </td>
     </tr>
@@ -96,7 +150,11 @@
         </tr>
         <tr>
             <td><label for="ip_number">{TR_IP}</label></td>
-            <td><input name="ip_number" id="ip_number" type="text" value="{VALUE_IP}" maxlength="39"></td>
+            <td><input name="ip_number" id="ip_number" type="text" value="{VALUE_IP}" maxlength="32"></td>
+        </tr>
+        <tr>
+            <td><label for="ip_netmask">{TR_IP_NETMASK}</label></td>
+            <td><input name="ip_netmask" id="ip_netmask" type="number" value="{VALUE_IP_NETMASK}"></td>
         </tr>
         <tr>
             <td>
@@ -106,7 +164,8 @@
                 <div class="radio">
                     <input type="radio" name="ip_config_mode" id="ip_config_mode_auto" value="auto"{IP_CONFIG_AUTO}>
                     <label for="ip_config_mode_auto">{TR_AUTO}</label>
-                    <input type="radio" name="ip_config_mode" id="ip_config_mode_manual" value="manual"{IP_CONFIG_MANUAL}>
+                    <input type="radio" name="ip_config_mode" id="ip_config_mode_manual"
+                           value="manual"{IP_CONFIG_MANUAL}>
                     <label for="ip_config_mode_manual">{TR_MANUAL}</label>
                 </div>
             </td>

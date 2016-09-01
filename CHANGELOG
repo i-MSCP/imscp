@@ -20,6 +20,7 @@ CONTRIB
 BACKEND
     Added: iMSCP::Mount::isMountpoint() function (iMSCP::Mount library)
     Added: iMSCP::Syscall library
+    Added: Regexp support for begin and ending tags (iMSCP::TemplateParser library)
     Added: Support for `rbind' (iMSCP::Mount library)
     Fixed: Could not bind mount socket files (iMSCP::Mount library)
     Rewritten: iMSCP::Mount library - Make direct syscalls instead of calling mount(8)/umount(8)
@@ -93,6 +94,7 @@ SKELETON
     Added: Dedicated `domain_disabled_pages' directory for pages of disabled domains
 
 YOUTRACK
+    #IP-0135 IPs managemnet - The NIC and netmask should be editable for each IP
     #IP-1316 Could not add CNAME with underscore in name for DKIM
     #IP-1429 Make main domains forwardable
     #IP-1508 Revise acceptable password characters

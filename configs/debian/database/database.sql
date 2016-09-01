@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '241');
+  ('DATABASE_REVISION', '243');
 
 -- --------------------------------------------------------
 
@@ -534,6 +534,7 @@ CREATE TABLE IF NOT EXISTS `reseller_props` (
 CREATE TABLE IF NOT EXISTS `server_ips` (
   `ip_id` int(10) unsigned NOT NULL auto_increment,
   `ip_number` varchar(40) collate utf8_unicode_ci DEFAULT NULL,
+  `ip_netmask` tinyint(1) unsigned DEFAULT NULL,
   `ip_card` varchar(255) collate utf8_unicode_ci DEFAULT NULL,
   `ip_config_mode` varchar(15) collate utf8_unicode_ci DEFAULT 'auto',
   `ip_status` varchar(255) collate utf8_unicode_ci DEFAULT NULL,

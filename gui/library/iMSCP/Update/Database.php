@@ -56,7 +56,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 241;
+    protected $lastUpdate = 243;
 
     /**
      * Singleton - Make new unavailable
@@ -3572,5 +3572,41 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected function r241()
     {
         return "DELETE FROM htaccess_groups WHERE ugroup = 'statistics'";
+    }
+
+    /**
+     * Add servers_ips.ip_netmask column
+     *
+     * @return null|string SQL statement to be executed
+     */
+    protected function r242()
+    {
+        return $this->addColumn('server_ips', 'ip_netmask', 'TINYINT(1) UNSIGNED DEFAULT NULL AFTER ip_number');
+    }
+
+    /**
+     * Populate servers_ips.ip_netmask column
+     *
+     * @return null
+     */
+    protected function r243()
+    {
+        $cfg = iMSCP_Registry::get('config');
+        $stmt = execute_query('SELECT ip_id, ip_number, ip_netmask FROM server_ips');
+        while ($row = $stmt->fetchRow()) {
+            if ($cfg['BASE_SERVER_IP'] === $row['ip_number'] || $row['ip_netmask'] !== NULL) {
+                continue;
+            }
+
+            if (strpos($row['ip_number'], ':') !== false) {
+                $netmask = '64';
+            } else {
+                $netmask = '32';
+            }
+
+            exec_query("UPDATE server_ips SET ip_netmask = ? WHERE ip_id = ?", array($netmask, $row['ip_id']));
+        }
+
+        return null;
     }
 }

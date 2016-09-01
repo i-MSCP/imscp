@@ -22,7 +22,7 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -36,28 +36,28 @@ $ESCAPER = new Zend_Escaper_Escaper('UTF-8');
  */
 function clean_html($text)
 {
-	$search = array(
-		'@<script[^>]*?>.*?</script[\s]*>@si', // remove JavaScript
-		'@<[\/\!]*?[^<>]*?>@si', // remove HTML tags
-		'@([\r\n])[\s]+@', // remove spaces
-		'@&(quot|#34|#034);@i', // change HTML entities
-		'@&(apos|#39|#039);@i', // change HTML entities
-		'@&(amp|#38);@i',
-		'@&(lt|#60);@i',
-		'@&(gt|#62);@i',
-		'@&(nbsp|#160);@i',
-		'@&(iexcl|#161);@i',
-		'@&(cent|#162);@i',
-		'@&(pound|#163);@i',
-		'@&(copy|#169);@i' /*,
-		'@&#(\d+);@e'*/
-	); // handle as php
+    $search = array(
+        '@<script[^>]*?>.*?</script[\s]*>@si', // remove JavaScript
+        '@<[\/\!]*?[^<>]*?>@si', // remove HTML tags
+        '@([\r\n])[\s]+@', // remove spaces
+        '@&(quot|#34|#034);@i', // change HTML entities
+        '@&(apos|#39|#039);@i', // change HTML entities
+        '@&(amp|#38);@i',
+        '@&(lt|#60);@i',
+        '@&(gt|#62);@i',
+        '@&(nbsp|#160);@i',
+        '@&(iexcl|#161);@i',
+        '@&(cent|#162);@i',
+        '@&(pound|#163);@i',
+        '@&(copy|#169);@i'
+        /*'@&#(\d+);@e'*/
+    ); // handle as php
 
-	$replace = array('', '', '\1', '"', "'", '&', '<', '>', ' ', chr(161), chr(162), chr(163), chr(169),);
-	$text = preg_replace($search, $replace, $text);
-	$text = strip_tags($text);
+    $replace = array('', '', '\1', '"', "'", '&', '<', '>', ' ', chr(161), chr(162), chr(163), chr(169),);
+    $text = preg_replace($search, $replace, $text);
+    $text = strip_tags($text);
 
-	return $text;
+    return $text;
 }
 
 /**
@@ -69,19 +69,19 @@ function clean_html($text)
  */
 function clean_input($input, $htmlencode = false)
 {
-	// Trim leading and trealing white spaces
-	$input = trim($input, "\x20");
-	$input = trim($input, '{..}');
+    // Trim leading and trealing white spaces
+    $input = trim($input, "\x20");
+    $input = trim($input, '{..}');
 
-	if(get_magic_quotes_gpc()) {
-		$input = stripslashes($input);
-	}
+    if (get_magic_quotes_gpc()) {
+        $input = stripslashes($input);
+    }
 
-	if($htmlencode) {
-		return tohtml($input, 'htmlAttr');
-	} else {
-		return $input;
-	}
+    if ($htmlencode) {
+        return tohtml($input, 'htmlAttr');
+    }
+
+    return $input;
 }
 
 /**
@@ -94,15 +94,17 @@ function clean_input($input, $htmlencode = false)
  */
 function tohtml($string, $escapeType = 'html')
 {
-	global $ESCAPER;
+    global $ESCAPER;
 
-	if($escapeType == 'html') {
-		return $ESCAPER->escapeHtml($string);
-	} elseif($escapeType == 'htmlAttr') {
-		return $ESCAPER->escapeHtmlAttr($string);
-	} else {
-		throw new iMSCP_Exception('Unknown escape type');
-	}
+    if ($escapeType == 'html') {
+        return $ESCAPER->escapeHtml($string);
+    }
+
+    if ($escapeType == 'htmlAttr') {
+        return $ESCAPER->escapeHtmlAttr($string);
+    }
+
+    throw new iMSCP_Exception('Unknown escape type');
 }
 
 /**
@@ -113,8 +115,8 @@ function tohtml($string, $escapeType = 'html')
  */
 function tojs($string)
 {
-	global $ESCAPER;
-	return $ESCAPER->escapeJs($string);
+    global $ESCAPER;
+    return $ESCAPER->escapeJs($string);
 }
 
 /**
@@ -125,8 +127,8 @@ function tojs($string)
  */
 function tourl($string)
 {
-	global $ESCAPER;
-	return $ESCAPER->escapeUrl($string);
+    global $ESCAPER;
+    return $ESCAPER->escapeUrl($string);
 }
 
 /**
@@ -139,51 +141,48 @@ function tourl($string)
  */
 function checkPasswordSyntax($password, $unallowedChars = '/[^\x21-\x7e]/', $noErrorMsg = false)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-	$ret = true;
-	$passwordLength = strlen($password);
+    /** @var $cfg iMSCP_Config_Handler_File */
+    $cfg = iMSCP_Registry::get('config');
+    $ret = true;
+    $passwordLength = strlen($password);
 
-	if($cfg['PASSWD_CHARS'] < 6) {
-		$cfg['PASSWD_CHARS'] = 6;
-	} elseif($cfg['PASSWD_CHARS'] > 30) {
-		$cfg['PASSWD_CHARS'] = 30;
-	}
+    if ($cfg['PASSWD_CHARS'] < 6) {
+        $cfg['PASSWD_CHARS'] = 6;
+    } elseif ($cfg['PASSWD_CHARS'] > 30) {
+        $cfg['PASSWD_CHARS'] = 30;
+    }
 
-	if($passwordLength < $cfg['PASSWD_CHARS']) {
-		if(!$noErrorMsg) {
-			set_page_message(tr('Password is shorter than %s characters.', $cfg['PASSWD_CHARS']), 'error');
-		}
+    if ($passwordLength < $cfg['PASSWD_CHARS']) {
+        if (!$noErrorMsg) {
+            set_page_message(tr('Password is shorter than %s characters.', $cfg['PASSWD_CHARS']), 'error');
+        }
 
-		$ret = false;
-	} elseif($passwordLength > 30) {
-		if(!$noErrorMsg) {
-			set_page_message(tr('Password cannot be longer than 30 characters.'), 'error');
-		}
+        $ret = false;
+    } elseif ($passwordLength > 30) {
+        if (!$noErrorMsg) {
+            set_page_message(tr('Password cannot be longer than 30 characters.'), 'error');
+        }
 
-		$ret = false;
-	}
+        $ret = false;
+    }
 
-	if(!empty($unallowedChars) && preg_match($unallowedChars, $password)) {
-		if(!$noErrorMsg) {
-			set_page_message(tr('Password contains unallowed characters.'), 'error');
-		}
+    if (!empty($unallowedChars) && preg_match($unallowedChars, $password)) {
+        if (!$noErrorMsg) {
+            set_page_message(tr('Password contains unallowed characters.'), 'error');
+        }
 
-		$ret = false;
-	}
+        $ret = false;
+    }
 
-	if($cfg['PASSWD_STRONG'] && !(preg_match('/[0-9]/', $password) && preg_match('/[a-zA-Z]/', $password))) {
-		if(!$noErrorMsg) {
-			set_page_message(
-				tr('Password must be at least %s characters long and contain letters and numbers to be valid.', $cfg['PASSWD_CHARS']),
-				'error'
-			);
-		}
+    if ($cfg['PASSWD_STRONG'] && !(preg_match('/[0-9]/', $password) && preg_match('/[a-zA-Z]/', $password))) {
+        if (!$noErrorMsg) {
+            set_page_message(tr('Password must be at least %s characters long and contain letters and numbers to be valid.', $cfg['PASSWD_CHARS']), 'error');
+        }
 
-		$ret = false;
-	}
+        $ret = false;
+    }
 
-	return $ret;
+    return $ret;
 }
 
 /**
@@ -201,9 +200,8 @@ function checkPasswordSyntax($password, $unallowedChars = '/[^\x21-\x7e]/', $noE
  */
 function validates_username($username, $min_char = 2, $max_char = 30)
 {
-	$pattern = '@^[[:alnum:]](:?(?<![-_])(:?-*|[_.])?(?![-_])[[:alnum:]]*)*?(?<![-_.])$@';
-
-	return (bool)(preg_match($pattern, $username) && strlen($username) >= $min_char && strlen($username) <= $max_char);
+    $pattern = '@^[[:alnum:]](:?(?<![-_])(:?-*|[_.])?(?![-_])[[:alnum:]]*)*?(?<![-_.])$@';
+    return (bool)(preg_match($pattern, $username) && strlen($username) >= $min_char && strlen($username) <= $max_char);
 }
 
 /**
@@ -215,13 +213,13 @@ function validates_username($username, $min_char = 2, $max_char = 30)
  */
 function chk_email($email, $localPartOnly = false)
 {
-	$options = array();
+    $options = array();
 
-	if($localPartOnly) {
-		$options['onlyLocalPart'] = true;
-	}
+    if ($localPartOnly) {
+        $options['onlyLocalPart'] = true;
+    }
 
-	return iMSCP_Validate::getInstance()->email($email, $options);
+    return iMSCP_Validate::getInstance()->email($email, $options);
 }
 
 /**
@@ -232,52 +230,60 @@ function chk_email($email, $localPartOnly = false)
  */
 function isValidDomainName($domainName)
 {
-	global $dmnNameValidationErrMsg;
+    global $dmnNameValidationErrMsg;
 
-	if(strpos($domainName, '.') === 0 || substr($domainName, -1) == '.') {
-		$dmnNameValidationErrMsg = tr('Domain name cannot start nor end with dot.');
-		return false;
-	} elseif(($asciiDomainName = encode_idna($domainName)) !== false) {
-		$asciiDomainName = strtolower($asciiDomainName);
+    if (strpos($domainName, '.') === 0 || substr($domainName, -1) == '.') {
+        $dmnNameValidationErrMsg = tr('Domain name cannot start nor end with dot.');
+        return false;
+    }
 
-		if(strlen($asciiDomainName) > 255) {
-			$dmnNameValidationErrMsg = tr('Domain name (ASCII form) cannot be greater than 255 characters.');
-			return false;
-		}
+    if (($asciiDomainName = encode_idna($domainName)) !== false) {
+        $asciiDomainName = strtolower($asciiDomainName);
 
-		if(preg_match('/([^a-z0-9\-\.])/', $asciiDomainName, $m)) {
-			$dmnNameValidationErrMsg = tr('Domain name contains an invalid character: %s', $m[1]);
-			return false;
-		} elseif(strpos($asciiDomainName, '..') !== false) {
-			$dmnNameValidationErrMsg = tr('Usage of dot in domain name labels is prohibited.');
-			return false;
-		}
+        if (strlen($asciiDomainName) > 255) {
+            $dmnNameValidationErrMsg = tr('Domain name (ASCII form) cannot be greater than 255 characters.');
+            return false;
+        }
 
-		$labels = explode('.', $asciiDomainName);
+        if (preg_match('/([^a-z0-9\-\.])/', $asciiDomainName, $m)) {
+            $dmnNameValidationErrMsg = tr('Domain name contains an invalid character: %s', $m[1]);
+            return false;
+        }
 
-		if(sizeof($labels) > 1) {
-			foreach($labels as $label) {
-				if(strlen($label) > 63) {
-					$dmnNameValidationErrMsg = tr('Domain name labels cannot be greater than 63 characters.');
-					return false;
-				} elseif(preg_match('/([^a-z0-9\-])/', $label, $m)) {
-					$dmnNameValidationErrMsg = tr("Domain name label '%s' contain an invalid character: %s", $label, $m[1]);
-					return false;
-				} elseif(preg_match('/^[\-]|[\-]$/', $label)) {
-					$dmnNameValidationErrMsg = tr('Domain name labels cannot start nor end with hyphen.');
-					return false;
-				}
-			}
-		} else {
-			$dmnNameValidationErrMsg = tr('Invalid domain name.');
-			return false;
-		}
-	} else {
-		$dmnNameValidationErrMsg = tr('Invalid domain name.');
-		return false;
-	}
+        if (strpos($asciiDomainName, '..') !== false) {
+            $dmnNameValidationErrMsg = tr('Usage of dot in domain name labels is prohibited.');
+            return false;
+        }
 
-	return true;
+        $labels = explode('.', $asciiDomainName);
+
+        if (sizeof($labels) > 1) {
+            foreach ($labels as $label) {
+                if (strlen($label) > 63) {
+                    $dmnNameValidationErrMsg = tr('Domain name labels cannot be greater than 63 characters.');
+                    return false;
+                }
+
+                if (preg_match('/([^a-z0-9\-])/', $label, $m)) {
+                    $dmnNameValidationErrMsg = tr("Domain name label '%s' contain an invalid character: %s", $label, $m[1]);
+                    return false;
+                }
+
+                if (preg_match('/^[\-]|[\-]$/', $label)) {
+                    $dmnNameValidationErrMsg = tr('Domain name labels cannot start nor end with hyphen.');
+                    return false;
+                }
+            }
+        } else {
+            $dmnNameValidationErrMsg = tr('Invalid domain name.');
+            return false;
+        }
+    } else {
+        $dmnNameValidationErrMsg = tr('Invalid domain name.');
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -289,24 +295,24 @@ function isValidDomainName($domainName)
  */
 function imscp_limit_check($data, $extra = -1)
 {
-	if($extra !== null && !is_bool($extra)) {
-		if(is_array($extra)) {
-			$nextra = '';
-			$max = count($extra);
+    if ($extra !== null && !is_bool($extra)) {
+        if (is_array($extra)) {
+            $nextra = '';
+            $max = count($extra);
 
-			foreach($extra as $n => $element) {
-				$nextra = $element . ($n < $max) ? '|' : '';
-			}
+            foreach ($extra as $n => $element) {
+                $nextra = $element . ($n < $max) ? '|' : '';
+            }
 
-			$extra = $nextra;
-		} else {
-			$extra .= '|';
-		}
-	} else {
-		$extra = '';
-	}
+            $extra = $nextra;
+        } else {
+            $extra .= '|';
+        }
+    } else {
+        $extra = '';
+    }
 
-	return (bool)preg_match("/^(${extra}0|[1-9][0-9]*)$/D", $data);
+    return (bool)preg_match("/^(${extra}0|[1-9][0-9]*)$/D", $data);
 }
 
 /**
@@ -320,261 +326,261 @@ function imscp_limit_check($data, $extra = -1)
  */
 function who_owns_this($id, $type = 'dmn', $forcefinal = false)
 {
-	$who = null;
-	// Fix $type according to type or by alias
-	switch($type) {
-		case 'dmn_id':
-			$type = 'domain_id';
-			break;
-		case 'sub_id':
-			$type = 'subdomain_id';
-			break;
-		case 'als_id':
-			$type = 'alias_id';
-			break;
-		case 'user':
-			$type = 'client';
-			break;
-		case 'admin_sys_uid':
-			$type = 'uid';
-			break;
-		case 'ticket':
-			$type = 'ticket_id';
-			break;
-		case 'admin_sys_gid':
-			$type = 'gid';
-			break;
-		case 'sqlu_id':
-		case 'sqluser_id':
-			$type = 'sql_user_id';
-			break;
-		case 'sqld_id':
-		case 'sqldatabase_id':
-			$type = 'sql_database_id';
-			break;
-		case 'ftpuser':
-		case 'ftpuserid':
-		case 'ftp_userid':
-			$type = 'ftp_user';
-			break;
-		case 'sqluser':
-		case 'sqlu':
-		case 'sqlu_name':
-			// Can't guess by type
-			$type = 'sql_user';
-			break;
-		case 'sqldatabase':
-		case 'sqld':
-		case 'sqld_name':
-			// Can't guess by type
-			$type = 'sql_database';
-			break;
-		case 'dmn':
-		case 'normal':
-		case 'domain':
-			if(!is_numeric($id)) {
-				$type = 'domain';
-			} else {
-				$type = 'domain_id';
-			}
-			break;
-		case 'als':
-		case 'alias':
-		case 'domain_alias':
-			if(!is_numeric($id)) {
-				$type = 'alias';
-			} else {
-				$type = 'alias_id';
-			}
-			break;
-		case 'sub':
-		case 'subdom':
-		case 'subdomain':
-			if(!is_numeric($id)) {
-				$type = 'subdomain';
-			} else {
-				$type = 'subdomain_id';
-			}
-			break;
-		case 'alssub':
-			if(!is_numeric($id)) {
-				$type = 'subdomain_alias';
-			} else {
-				$type = 'subdomain_alias_id';
-			}
-			break;
-	}
+    $who = null;
+    // Fix $type according to type or by alias
+    switch ($type) {
+        case 'dmn_id':
+            $type = 'domain_id';
+            break;
+        case 'sub_id':
+            $type = 'subdomain_id';
+            break;
+        case 'als_id':
+            $type = 'alias_id';
+            break;
+        case 'user':
+            $type = 'client';
+            break;
+        case 'admin_sys_uid':
+            $type = 'uid';
+            break;
+        case 'ticket':
+            $type = 'ticket_id';
+            break;
+        case 'admin_sys_gid':
+            $type = 'gid';
+            break;
+        case 'sqlu_id':
+        case 'sqluser_id':
+            $type = 'sql_user_id';
+            break;
+        case 'sqld_id':
+        case 'sqldatabase_id':
+            $type = 'sql_database_id';
+            break;
+        case 'ftpuser':
+        case 'ftpuserid':
+        case 'ftp_userid':
+            $type = 'ftp_user';
+            break;
+        case 'sqluser':
+        case 'sqlu':
+        case 'sqlu_name':
+            // Can't guess by type
+            $type = 'sql_user';
+            break;
+        case 'sqldatabase':
+        case 'sqld':
+        case 'sqld_name':
+            // Can't guess by type
+            $type = 'sql_database';
+            break;
+        case 'dmn':
+        case 'normal':
+        case 'domain':
+            if (!is_numeric($id)) {
+                $type = 'domain';
+            } else {
+                $type = 'domain_id';
+            }
+            break;
+        case 'als':
+        case 'alias':
+        case 'domain_alias':
+            if (!is_numeric($id)) {
+                $type = 'alias';
+            } else {
+                $type = 'alias_id';
+            }
+            break;
+        case 'sub':
+        case 'subdom':
+        case 'subdomain':
+            if (!is_numeric($id)) {
+                $type = 'subdomain';
+            } else {
+                $type = 'subdomain_id';
+            }
+            break;
+        case 'alssub':
+            if (!is_numeric($id)) {
+                $type = 'subdomain_alias';
+            } else {
+                $type = 'subdomain_alias_id';
+            }
+            break;
+    }
 
-	/**
-	 * $resolvers is a multi-dimensional array.
-	 * Its elements keys are the value that will be matched by $type.
-	 * Each element is an array, containing at least two elements:
-	 * 'query' and 'is_final'
-	 * The former is the SQL query that should only SELECT one item; or false in case a query isn't used.
-	 * The latter is a boolean which specifies whether the result of that 'resolver' is an admin id or not
-	 *
-	 * Other elements might be:
-	 * 'next', 'separator', 'pos'
-	 *
-	 * 'next' is the $type value for the next call to who_owns_this (only used when 'is_final' is false)
-	 * 'separator' is the separator to be used when exploding the $id (only used when 'query' is false)
-	 * 'post' is the position in the array/result of exploding $id (only used when 'query' is false)
-	 *
-	 * NOTE: 'query' MUST be formated like: 'SELECT something FROM...' in order to correctly detect the field being selected
-	 */
-	$resolvers = array();
+    /**
+     * $resolvers is a multi-dimensional array.
+     * Its elements keys are the value that will be matched by $type.
+     * Each element is an array, containing at least two elements:
+     * 'query' and 'is_final'
+     * The former is the SQL query that should only SELECT one item; or false in case a query isn't used.
+     * The latter is a boolean which specifies whether the result of that 'resolver' is an admin id or not
+     *
+     * Other elements might be:
+     * 'next', 'separator', 'pos'
+     *
+     * 'next' is the $type value for the next call to who_owns_this (only used when 'is_final' is false)
+     * 'separator' is the separator to be used when exploding the $id (only used when 'query' is false)
+     * 'post' is the position in the array/result of exploding $id (only used when 'query' is false)
+     *
+     * NOTE: 'query' MUST be formated like: 'SELECT something FROM...' in order to correctly detect the field being selected
+     */
+    $resolvers = array();
 
-	$resolvers['domain_id'] = array();
-	$resolvers['domain_id']['query'] = 'SELECT `domain_admin_id` FROM `domain` WHERE `domain_id` = ? LIMIT 1;';
-	$resolvers['domain_id']['is_final'] = true;
+    $resolvers['domain_id'] = array();
+    $resolvers['domain_id']['query'] = 'SELECT `domain_admin_id` FROM `domain` WHERE `domain_id` = ? LIMIT 1;';
+    $resolvers['domain_id']['is_final'] = true;
 
-	$resolvers['alias_id'] = array();
-	$resolvers['alias_id']['query'] = 'SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_id` = ? LIMIT 1;';
-	$resolvers['alias_id']['is_final'] = false;
-	$resolvers['alias_id']['next'] = 'dmn';
+    $resolvers['alias_id'] = array();
+    $resolvers['alias_id']['query'] = 'SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_id` = ? LIMIT 1;';
+    $resolvers['alias_id']['is_final'] = false;
+    $resolvers['alias_id']['next'] = 'dmn';
 
-	$resolvers['alias'] = array();
-	$resolvers['alias']['query'] = 'SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name` = ? LIMIT 1;';
-	$resolvers['alias']['is_final'] = false;
-	$resolvers['alias']['next'] = 'dmn';
+    $resolvers['alias'] = array();
+    $resolvers['alias']['query'] = 'SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name` = ? LIMIT 1;';
+    $resolvers['alias']['is_final'] = false;
+    $resolvers['alias']['next'] = 'dmn';
 
-	$resolvers['subdomain_id'] = array();
-	$resolvers['subdomain_id']['query'] = 'SELECT `domain_id` FROM `subdomain` WHERE `subdomain_id` = ? LIMIT 1;';
-	$resolvers['subdomain_id']['is_final'] = false;
-	$resolvers['subdomain_id']['next'] = 'dmn';
+    $resolvers['subdomain_id'] = array();
+    $resolvers['subdomain_id']['query'] = 'SELECT `domain_id` FROM `subdomain` WHERE `subdomain_id` = ? LIMIT 1;';
+    $resolvers['subdomain_id']['is_final'] = false;
+    $resolvers['subdomain_id']['next'] = 'dmn';
 
-	$resolvers['subdomain'] = array();
-	$resolvers['subdomain']['query'] = false;
-	$resolvers['subdomain']['separator'] = '.';
-	$resolvers['subdomain']['pos'] = 1;
-	$resolvers['subdomain']['is_final'] = false;
-	$resolvers['subdomain']['next'] = 'dmn';
+    $resolvers['subdomain'] = array();
+    $resolvers['subdomain']['query'] = false;
+    $resolvers['subdomain']['separator'] = '.';
+    $resolvers['subdomain']['pos'] = 1;
+    $resolvers['subdomain']['is_final'] = false;
+    $resolvers['subdomain']['next'] = 'dmn';
 
-	$resolvers['subdomain_alias_id'] = array();
-	$resolvers['subdomain_alias_id']['query'] = 'SELECT `alias_id` FROM `subdomain_alias` WHERE `subdomain_alias_id` = ? LIMIT 1;';
-	$resolvers['subdomain_alias_id']['is_final'] = false;
-	$resolvers['subdomain_alias_id']['next'] = 'alias';
+    $resolvers['subdomain_alias_id'] = array();
+    $resolvers['subdomain_alias_id']['query'] = 'SELECT `alias_id` FROM `subdomain_alias` WHERE `subdomain_alias_id` = ? LIMIT 1;';
+    $resolvers['subdomain_alias_id']['is_final'] = false;
+    $resolvers['subdomain_alias_id']['next'] = 'alias';
 
-	$resolvers['subdomain_alias'] = array();
-	$resolvers['subdomain_alias']['query'] = false;
-	$resolvers['subdomain_alias']['separator'] = '.';
-	$resolvers['subdomain_alias']['pos'] = 1;
-	$resolvers['subdomain_alias']['is_final'] = false;
-	$resolvers['subdomain_alias']['next'] = 'alias';
+    $resolvers['subdomain_alias'] = array();
+    $resolvers['subdomain_alias']['query'] = false;
+    $resolvers['subdomain_alias']['separator'] = '.';
+    $resolvers['subdomain_alias']['pos'] = 1;
+    $resolvers['subdomain_alias']['is_final'] = false;
+    $resolvers['subdomain_alias']['next'] = 'alias';
 
-	$resolvers['client'] = array();
-	$resolvers['client']['query'] = 'SELECT `created_by` FROM `admin` WHERE `admin_id` = ? LIMIT 1;';
-	$resolvers['client']['is_final'] = true;
+    $resolvers['client'] = array();
+    $resolvers['client']['query'] = 'SELECT `created_by` FROM `admin` WHERE `admin_id` = ? LIMIT 1;';
+    $resolvers['client']['is_final'] = true;
 
-	$resolvers['reseller'] = $resolvers['admin'] = $resolvers['client'];
+    $resolvers['reseller'] = $resolvers['admin'] = $resolvers['client'];
 
-	$resolvers['domain'] = array();
-	$resolvers['domain']['query'] = 'SELECT `domain_admin_id` FROM `domain` WHERE `domain` = ? LIMIT 1;';
-	$resolvers['domain']['is_final'] = true;
+    $resolvers['domain'] = array();
+    $resolvers['domain']['query'] = 'SELECT `domain_admin_id` FROM `domain` WHERE `domain` = ? LIMIT 1;';
+    $resolvers['domain']['is_final'] = true;
 
-	$resolvers['ticket_id'] = array();
-	$resolvers['ticket_id']['query'] = 'SELECT `ticket_from` FROM `ticket` WHERE `ticket_id` = ? LIMIT 1;';
-	$resolvers['ticket_id']['is_final'] = true;
+    $resolvers['ticket_id'] = array();
+    $resolvers['ticket_id']['query'] = 'SELECT `ticket_from` FROM `ticket` WHERE `ticket_id` = ? LIMIT 1;';
+    $resolvers['ticket_id']['is_final'] = true;
 
-	$resolvers['uid'] = array();
-	$resolvers['uid']['query'] = 'SELECT `admin_id` FROM `admin` WHERE `admin_sys_uid` = ? LIMIT 1;';
-	$resolvers['uid']['is_final'] = true;
+    $resolvers['uid'] = array();
+    $resolvers['uid']['query'] = 'SELECT `admin_id` FROM `admin` WHERE `admin_sys_uid` = ? LIMIT 1;';
+    $resolvers['uid']['is_final'] = true;
 
-	$resolvers['gid'] = array();
-	$resolvers['gid']['query'] = 'SELECT `admin_id` FROM `admin` WHERE `admin_sys_gid` = ? LIMIT 1;';
-	$resolvers['gid']['is_final'] = true;
+    $resolvers['gid'] = array();
+    $resolvers['gid']['query'] = 'SELECT `admin_id` FROM `admin` WHERE `admin_sys_gid` = ? LIMIT 1;';
+    $resolvers['gid']['is_final'] = true;
 
-	$resolvers['ftp_user'] = array();
-	$resolvers['ftp_user']['query'] = 'SELECT `admin_id` FROM `ftp_users` WHERE `userid` = ? LIMIT 1;';
-	$resolvers['ftp_user']['is_final'] = true;
+    $resolvers['ftp_user'] = array();
+    $resolvers['ftp_user']['query'] = 'SELECT `admin_id` FROM `ftp_users` WHERE `userid` = ? LIMIT 1;';
+    $resolvers['ftp_user']['is_final'] = true;
 
-	$resolvers['sql_user_id'] = array();
-	$resolvers['sql_user_id']['query'] = 'SELECT `sqld_id` FROM `sql_user` WHERE `sqlu_id` = ? LIMIT 1;';
-	$resolvers['sql_user_id']['is_final'] = false;
-	$resolvers['sql_user_id']['next'] = 'sqld_id';
+    $resolvers['sql_user_id'] = array();
+    $resolvers['sql_user_id']['query'] = 'SELECT `sqld_id` FROM `sql_user` WHERE `sqlu_id` = ? LIMIT 1;';
+    $resolvers['sql_user_id']['is_final'] = false;
+    $resolvers['sql_user_id']['next'] = 'sqld_id';
 
-	$resolvers['sql_database_id'] = array();
-	$resolvers['sql_database_id']['query'] = 'SELECT `domain_id` FROM `sql_database` WHERE `sqld_id` = ? LIMIT 1;';
-	$resolvers['sql_database_id']['is_final'] = false;
-	$resolvers['sql_database_id']['next'] = 'dmn';
+    $resolvers['sql_database_id'] = array();
+    $resolvers['sql_database_id']['query'] = 'SELECT `domain_id` FROM `sql_database` WHERE `sqld_id` = ? LIMIT 1;';
+    $resolvers['sql_database_id']['is_final'] = false;
+    $resolvers['sql_database_id']['next'] = 'dmn';
 
-	$resolvers['sql_user'] = array();
-	$resolvers['sql_user']['query'] = 'SELECT sqld_id FROM sql_user WHERE sqlu_name = ? LIMIT 1;';
-	$resolvers['sql_user']['is_final'] = false;
-	$resolvers['sql_user']['next'] = 'sqld_id';
+    $resolvers['sql_user'] = array();
+    $resolvers['sql_user']['query'] = 'SELECT sqld_id FROM sql_user WHERE sqlu_name = ? LIMIT 1;';
+    $resolvers['sql_user']['is_final'] = false;
+    $resolvers['sql_user']['next'] = 'sqld_id';
 
-	$resolvers['sql_database'] = array();
-	$resolvers['sql_database']['query'] = 'SELECT `domain_id` FROM `sql_database` WHERE `sqld_name` = ? LIMIT 1;';
-	$resolvers['sql_database']['is_final'] = false;
-	$resolvers['sql_database']['next'] = 'dmn';
+    $resolvers['sql_database'] = array();
+    $resolvers['sql_database']['query'] = 'SELECT `domain_id` FROM `sql_database` WHERE `sqld_name` = ? LIMIT 1;';
+    $resolvers['sql_database']['is_final'] = false;
+    $resolvers['sql_database']['next'] = 'dmn';
 
-	$resolvers['mail_id'] = array();
-	$resolvers['mail_id']['query'] = 'SELECT `domain_id` FROM `mail_users` WHERE `mail_id` = ? LIMIT 1;';
-	$resolvers['mail_id']['is_final'] = false;
-	$resolvers['mail_id']['next'] = 'dmn';
+    $resolvers['mail_id'] = array();
+    $resolvers['mail_id']['query'] = 'SELECT `domain_id` FROM `mail_users` WHERE `mail_id` = ? LIMIT 1;';
+    $resolvers['mail_id']['is_final'] = false;
+    $resolvers['mail_id']['next'] = 'dmn';
 
-	$resolvers['mail'] = array();
-	$resolvers['mail']['query'] = false;
-	$resolvers['mail']['separator'] = '@';
-	$resolvers['mail']['post'] = 1;
-	$resolvers['mail']['is_final'] = false;
-	$resolvers['mail']['next'] = 'dmn';
+    $resolvers['mail'] = array();
+    $resolvers['mail']['query'] = false;
+    $resolvers['mail']['separator'] = '@';
+    $resolvers['mail']['post'] = 1;
+    $resolvers['mail']['is_final'] = false;
+    $resolvers['mail']['next'] = 'dmn';
 
-	$resolvers['htaccess_id'] = array();
-	$resolvers['htaccess_id']['query'] = 'SELECT `dmn_id` FROM `htaccess` WHERE `id` = ? LIMIT 1;';
-	$resolvers['htaccess_id']['is_final'] = false;
-	$resolvers['htaccess_id']['next'] = 'dmn';
+    $resolvers['htaccess_id'] = array();
+    $resolvers['htaccess_id']['query'] = 'SELECT `dmn_id` FROM `htaccess` WHERE `id` = ? LIMIT 1;';
+    $resolvers['htaccess_id']['is_final'] = false;
+    $resolvers['htaccess_id']['next'] = 'dmn';
 
-	$resolvers['htaccess_group_id'] = array();
-	$resolvers['htaccess_group_id']['query'] = 'SELECT `dmn_id` FROM `htaccess_groups` WHERE `id` = ? LIMIT 1;';
-	$resolvers['htaccess_group_id']['is_final'] = false;
-	$resolvers['htaccess_group_id']['next'] = 'dmn';
+    $resolvers['htaccess_group_id'] = array();
+    $resolvers['htaccess_group_id']['query'] = 'SELECT `dmn_id` FROM `htaccess_groups` WHERE `id` = ? LIMIT 1;';
+    $resolvers['htaccess_group_id']['is_final'] = false;
+    $resolvers['htaccess_group_id']['next'] = 'dmn';
 
-	$resolvers['htaccess_user_id'] = array();
-	$resolvers['htaccess_user_id']['query'] = 'SELECT `dmn_id` FROM `htaccess_users` WHERE `id` = ? LIMIT 1;';
-	$resolvers['htaccess_user_id']['is_final'] = false;
-	$resolvers['htaccess_user_id']['next'] = 'dmn';
+    $resolvers['htaccess_user_id'] = array();
+    $resolvers['htaccess_user_id']['query'] = 'SELECT `dmn_id` FROM `htaccess_users` WHERE `id` = ? LIMIT 1;';
+    $resolvers['htaccess_user_id']['is_final'] = false;
+    $resolvers['htaccess_user_id']['next'] = 'dmn';
 
-	$resolvers['hosting_plan_id'] = array();
-	$resolvers['hosting_plan_id']['query'] = 'SELECT `reseller_id` FROM `hosting_plans` WHERE `id` = ? LIMIT 1;';
-	$resolvers['hosting_plan_id']['is_final'] = true;
+    $resolvers['hosting_plan_id'] = array();
+    $resolvers['hosting_plan_id']['query'] = 'SELECT `reseller_id` FROM `hosting_plans` WHERE `id` = ? LIMIT 1;';
+    $resolvers['hosting_plan_id']['is_final'] = true;
 
-	if(isset($resolvers[$type])) {
-		$r = $resolvers[$type];
+    if (isset($resolvers[$type])) {
+        $r = $resolvers[$type];
 
-		if($r['query']) {
-			$matches = array();
+        if ($r['query']) {
+            $matches = array();
 
-			if(!preg_match('/SELECT[ \t]+`([\w]+)`[ \t]+FROM/i', $r['query'], $matches)) {
-				throw new iMSCP_Exception(tr('Malformed resolver SQL query'));
-			}
+            if (!preg_match('/SELECT[ \t]+`([\w]+)`[ \t]+FROM/i', $r['query'], $matches)) {
+                throw new iMSCP_Exception(tr('Malformed resolver SQL query'));
+            }
 
-			$select = $matches[1];
-			$stmt = exec_query($r['query'], $id);
+            $select = $matches[1];
+            $stmt = exec_query($r['query'], $id);
 
-			if($stmt->rowCount()) {
-				if($r['is_final'] || $forcefinal) {
-					$who = $stmt->fields[$select];
-				} else {
-					$who = who_owns_this($stmt->fields[$select], $r['next']);
-				}
-			}
-		} else {
-			$ex = explode($r['separator'], $id);
+            if ($stmt->rowCount()) {
+                if ($r['is_final'] || $forcefinal) {
+                    $who = $stmt->fields[$select];
+                } else {
+                    $who = who_owns_this($stmt->fields[$select], $r['next']);
+                }
+            }
+        } else {
+            $ex = explode($r['separator'], $id);
 
-			if(!$r['is_final'] && !$forcefinal) {
-				$who = who_owns_this($r['pos'], $r['next']);
-			} else {
-				$who = $ex[$r['pos']];
-			}
-		}
-	}
+            if (!$r['is_final'] && !$forcefinal) {
+                $who = who_owns_this($r['pos'], $r['next']);
+            } else {
+                $who = $ex[$r['pos']];
+            }
+        }
+    }
 
-	if($type != 'admin' && (empty($who) || $who <= 0)) {
-		$who = null;
-	}
+    if ($type != 'admin' && (empty($who) || $who <= 0)) {
+        $who = null;
+    }
 
-	return $who;
+    return $who;
 }
 
 /**
@@ -586,13 +592,12 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false)
  */
 function checkMimeType($pathFile, array $mimeTypes)
 {
-	$mimeTypes['headerCheck'] = true;
+    $mimeTypes['headerCheck'] = true;
+    $validator = new Zend_Validate_File_MimeType($mimeTypes);
 
-	$validator = new Zend_Validate_File_MimeType($mimeTypes);
+    if ($validator->isValid($pathFile)) {
+        return true;
+    }
 
-	if($validator->isValid($pathFile)) {
-		return true;
-	}
-
-	return false;
+    return false;
 }

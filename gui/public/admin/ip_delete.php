@@ -50,8 +50,8 @@ $ipAddr = $row['ip_number'];
 
 $stmt = execute_query('SELECT reseller_ips FROM reseller_props');
 while ($row = $stmt->fetchRow()) {
-    if (in_array($ipId, explode(';', $row['reseller_ips']))) {
-        set_page_message(tr("You cannot remove an IP that is assigned to a reseller."), 'error');
+    if (in_array($ipId, explode(';', $row['reseller_ips'], -1))) {
+        set_page_message(tr('You cannot remove an IP that is assigned to a reseller.'), 'error');
         redirectTo('ip_manage.php');
     }
 }

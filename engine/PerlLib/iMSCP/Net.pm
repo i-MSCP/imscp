@@ -184,6 +184,23 @@ sub getAddrLabel
     $self->{'addresses'}->{$addr}->{'device_label'};
 }
 
+=item getAddrNetmask($addr)
+
+ Return the addr netmask
+
+ Param string $addr IP address
+ Return string Addr netmask, croak if the given IP is either invalid or not known by this module
+
+=cut
+
+sub getAddrNetmask
+{
+    my ($self, $addr) = @_;
+
+    $self->isKnownAddr( $addr ) or croak( sprintf( 'Unknown IP address: %s', $addr ) );
+    $self->{'addresses'}->{$self->normalizeAddr( $addr )}->{'prefix_length'};
+}
+
 =item isKnownAddr($addr)
 
  Is the given IP known?

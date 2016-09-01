@@ -49,54 +49,66 @@ our @EXPORT = qw/ process getBloc replaceBloc /;
 
 =cut
 
-sub process
+sub process($$)
 {
     my ($data, $template) = @_;
+
     return $template unless ref $data eq 'HASH';
+
     while (my ($placeholder, $value) = each( %{$data} )) {
         next unless defined $value;
         $template =~ s/\Q{$placeholder}\E/$value/gim
     }
+
     $template;
 }
 
 =item getBloc($beginTag, $endingTag, $template [, $includeTags = false ])
 
- Get first block matching the given tags within the given template
+ Get the first block matching the given begin and ending tags within the given template
 
  Param string $beginTag Bloc begin tag
  Param string $endingTag Bloc ending tag
- param string $template Template content which contain the bloc to return
+ param string $template Template content
  Param bool $includeTags OPTIONAL Whether or not begin and ending tag should be included in result
  Return string Bloc content, including or not the begin and ending tags
 
 =cut
 
-sub getBloc
+sub getBloc($$$;$)
 {
     my ($beginTag, $endingTag, $template, $includeTags) = @_;
-    my $reg = qr/[\t ]*\Q$beginTag\E(.*?)[\t ]*\Q$endingTag\E/is;
-    ($includeTags ? $template =~ /($reg)/ : $template =~ /$reg/) ? $1 : '';
+
+    $beginTag = "\Q$beginTag\E" unless ref $beginTag eq 'Regexp';
+    $endingTag = "\Q$endingTag\E" unless ref $endingTag eq 'Regexp';
+    ($includeTags
+        ? $template =~ /([\t ]*$beginTag.*?[\t ]*$endingTag)/s
+        : $template =~ /[\t ]*$beginTag(.*?)[\t ]*$endingTag/s
+    ) ? $1 : '';
 }
 
 =item replaceBloc($beginTag, $endingTag, $repl, $template [, $preserveTags = false ])
 
- Replace all blocs matching the given tags within the given template
+ Replace all blocs matching the given begin and ending tags within the given template
 
- Param string $beginTag Bloc begin tag
- Param string $endingTag Bloc ending tag
+ Param string|Regexp $beginTag Bloc begin tag
+ Param string|Regexp $endingTag Bloc ending tag
  Param string $repl Bloc replacement string
- param string $template Template
- Param bool $preserveTags OPTIONAL Whether or not begin and ending tag should be preverved
- Return string Parsed template content
+ param string $template Template content
+ Param bool $preserveTags OPTIONAL Whether or not begin and ending tags must be preverved
+ Return string Template content
 
 =cut
 
-sub replaceBloc
+sub replaceBloc($$$$;$)
 {
     my ($beginTag, $endingTag, $repl, $template, $preserveTags) = @_;
-    my $reg = qr/[\t ]*\Q$beginTag\E.*?[\t ]*\Q$endingTag\E/is;
-    $preserveTags ? $template =~ s/($reg)/$repl$1/gr : $template =~ s/$reg/$repl/gr;
+
+    $beginTag = "\Q$beginTag\E" unless ref $beginTag eq 'Regexp';
+    $endingTag = "\Q$endingTag\E" unless ref $endingTag eq 'Regexp';
+    $preserveTags
+        ? $template =~ s/[\t ]*($beginTag).*?[\t ]*($endingTag)/$repl$1$2/grs
+        : $template =~ s/[\t ]*($beginTag).*?[\t ]*($endingTag)/$repl/grs;
 }
 
 =back

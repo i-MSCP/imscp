@@ -61,9 +61,10 @@ sub process
         local $@;
         eval {
             my $data = {
-                id             => $row->{'ip_id'},
+                ip_id          => $row->{'ip_id'},
                 ip_card        => $row->{'ip_card'},
                 ip_address     => $row->{'ip_number'},
+                ip_netmask     => $row->{'ip_netmask'},
                 ip_config_mode => $row->{'ip_config_mode'}
             };
 

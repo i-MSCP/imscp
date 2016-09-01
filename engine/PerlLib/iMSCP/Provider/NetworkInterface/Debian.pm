@@ -62,28 +62,41 @@ sub addIpAddr
 
     $data = { } unless defined $data && ref $data eq 'HASH';
 
-    for(qw/ id ip_card ip_address ip_config_mode /) {
+    for(qw/ ip_id ip_card ip_address ip_config_mode /) {
         defined $data->{$_} or croak( sprintf( "The `%s' parameter is not defined", $_ ) );
     }
 
-    $data->{'id'} =~ /^\d+$/ or croak( 'id parameter must be an integer' );
+    $data->{'ip_id'} =~ /^\d+$/ or croak( 'ip_id parameter must be an integer' );
+    $data->{'ip_id'} += 1000;
+
     $self->{'net'}->isKnownDevice( $data->{'ip_card'} ) or croak(
         sprintf( "The '%s` network interface is unknown", $data->{'ip_card'} )
     );
     $self->{'net'}->isValidAddr( $data->{'ip_address'} ) or croak(
         sprintf( "The `%s' IP address is not valid", $data->{'ip_address'} )
     );
-    $data->{'id'} += 1000;
-    $data->{'netmask'} = $self->{'net'}->getAddrVersion( $data->{'ip_address'} ) eq 'ipv4' ? '32' : '64';
+
+    $data->{'ip_netmask'} ||= $self->{'net'}->getAddrVersion( $data->{'ip_address'} ) eq 'ipv4' ? '32' : '128';
+    
+    my $isKnownIpAddr = $self->{net}->isKnownAddr($data->{'ip_address'});
+
     $self->_updateInterfacesFile( 'add', $data ) == 0 or die('Could not update interfaces file');
 
-    return 0 unless $data->{'ip_config_mode'} eq 'auto' &&
-        $self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'id'}" );
+    return 0 unless $data->{'ip_config_mode'} eq 'auto'; #&&
+        #$self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'ip_id'}" );
+
+    # Handle case where the IP netmask or NIC has been changed
+    if($self->{net}->isKnownAddr($data->{'ip_address'})
+        && ($self->{'net'}->getAddrDevice($data->{'ip_address'}) ne $data->{'ip_card'}
+        || $self->{'net'}->getAddrNetmask($data->{'ip_address'}) ne $data->{'ip_netmask'})
+    ) {
+        $self->{'net'}->delAddr( $data->{'ip_address'} );
+    }
 
     my ($stdout, $stderr);
-    execute( [ $COMMANDS{'ifup'}, '--force', "$data->{'ip_card'}:$data->{'id'}" ], \$stdout, \$stderr ) == 0 or die(
+    execute( [ $COMMANDS{'ifup'}, '--force', "$data->{'ip_card'}:$data->{'ip_id'}" ], \$stdout, \$stderr ) == 0 or die(
         sprintf(
-            "Could not bring up the `%s' network interface: %s", "$data->{'ip_card'}:$data->{'id'}",
+            "Could not bring up the `%s' network interface: %s", "$data->{'ip_card'}:$data->{'ip_id'}",
             $stderr || 'Unknown error'
         )
     );
@@ -103,26 +116,26 @@ sub removeIpAddr
 
     $data = { } unless defined $data && ref $data eq 'HASH';
 
-    for(qw/ id ip_card ip_address ip_config_mode /) {
+    for(qw/ ip_id ip_card ip_address ip_config_mode /) {
         defined $data->{$_} or croak( sprintf( "The `%s' parameter is not defined", $_ ) );
     }
 
-    if ($data->{'ip_config_mode'} eq 'auto' && $self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'id'}" )) {
-        $data->{'id'} =~ /^\d+$/ or croak( 'id parameter must be an integer' );
-        $data->{'id'} += 1000;
+    $data->{'ip_id'} =~ /^\d+$/ or croak( 'ip_id parameter must be an integer' );
+    $data->{'ip_id'} += 1000;
 
+    if ($data->{'ip_config_mode'} eq 'auto' && $self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'ip_id'}" )) {
         my ($stdout, $stderr);
-        execute( "$COMMANDS{'ifdown'} --force $data->{'ip_card'}:$data->{'id'}", \$stdout, \$stderr ) == 0 or die(
+        execute( "$COMMANDS{'ifdown'} --force $data->{'ip_card'}:$data->{'ip_id'}", \$stdout, \$stderr ) == 0 or die(
             sprintf(
-                "Could not bring down the `%s' network interface: %s", "$data->{'ip_card'}:$data->{'id'}",
+                "Could not bring down the `%s' network interface: %s", "$data->{'ip_card'}:$data->{'ip_id'}",
                 $stderr || 'Unknown error'
             )
         );
     } elsif ($data->{'ip_config_mode'} eq 'auto') {
-        $self->{'net'}->delAddr( $data->{'ip_address'} )
+        $self->{'net'}->delAddr( $data->{'ip_address'} );
     }
 
-    $self->_updateInterfaces( 'remove', $data ) == 0 or die('Could not update interfaces file');
+    $self->_updateInterfacesFile( 'remove', $data ) == 0 or die('Could not update interfaces file');
     $self;
 }
 
@@ -164,39 +177,40 @@ sub _updateInterfacesFile
     my $rs = $file->copyFile( $INTERFACES_FILE_PATH.'.bak' );
     return $rs if $rs;
 
+    my $cAddr = $self->{'net'}->normalizeAddr( $data->{'ip_address'} );
+    
     my $fileContent = $file->get();
     $fileContent = iMSCP::TemplateParser::replaceBloc(
-        "\n# i-MSCP [$data->{'ip_card'}:$data->{'id'}] entry BEGIN\n",
-        "# i-MSCP [$data->{'ip_card'}:$data->{'id'}] entry ENDING\n",
+        qr/\n?# i-MSCP \[(?:.*\Q:$data->{'ip_id'}\E|\Q$cAddr\E)\] entry BEGIN\n/,
+        qr/# i-MSCP \[(?:.*\Q:$data->{'ip_id'}\E|\Q$cAddr\E)\] entry ENDING\n/,
         '',
         $fileContent
     );
 
     if ($action eq 'add' && $data->{'ip_config_mode'} eq 'auto') {
-        my $cAddr = $self->{'net'}->normalizeAddr( $data->{'ip_address'} );
         my $eAddr = $self->{'net'}->expandAddr( $data->{'ip_address'} );
 
         # Add IP addresse only if not already present (e.g: manually configured IP addresses)
-        if ($fileContent !~ /^[^#]*(?:address|ip\s+addr.*?)\s+(?:$cAddr|$eAddr|$data->{'ip_address'})(?:\s+|\n)/gm) {
+        #if ($fileContent !~ /^[^#]*(?:address|ip\s+addr.*?)\s+(?:$cAddr|$eAddr|$data->{'ip_address'})(?:\s+|\n)/gm) {
             $fileContent .= iMSCP::TemplateParser::process(
                 {
-                    id          => $data->{'id'},
+                    ip_id       => $data->{'ip_id'},
                     ip_card     => $data->{'ip_card'},
-                    addr_family => $data->{'netmask'} == 32 ? 'inet' : 'inet6',
-                    address     => $cAddr,
-                    netmask     => $data->{'netmask'}
+                    ip_address  => $cAddr,
+                    ip_netmask  => $data->{'ip_netmask'},
+                    addr_family => $self->{'net'}->getAddrVersion( $cAddr ) eq 'ipv4' ? 'inet' : 'inet6'
                 },
                 <<STANZA
 
-# i-MSCP [{ip_card}:{id}] entry BEGIN
-auto {ip_card}:{id}
-iface {ip_card}:{id} {addr_family} static
-    address {address}
-    netmask {netmask}
-# i-MSCP [{ip_card}:{id}] entry ENDING
+# i-MSCP [{ip_address}] entry BEGIN
+auto {ip_card}:{ip_id}
+iface {ip_card}:{ip_id} {addr_family} static
+    address {ip_address}
+    netmask {ip_netmask}
+# i-MSCP [{ip_address}] entry ENDING
 STANZA
             );
-        }
+        #}
     }
 
     $rs = $file->set( $fileContent );
