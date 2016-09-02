@@ -1503,6 +1503,48 @@ function getUriScheme()
 }
 
 /**
+ * Get URI host
+ *
+ * Code borrowed to Symfony project
+ *
+ * @return string
+ */
+function getUriHost()
+{
+    $possibleHostSources = array('HTTP_X_FORWARDED_HOST', 'HTTP_HOST', 'SERVER_NAME', 'SERVER_ADDR');
+    $sourceTransformations = array(
+        "HTTP_X_FORWARDED_HOST" => function ($value) {
+            $elements = explode(',', $value);
+            return trim(end($elements));
+        }
+    );
+
+    $host = '';
+    foreach ($possibleHostSources as $source) {
+        if (!empty($host)) break;
+        if (empty($_SERVER[$source])) continue;
+
+        $host = $_SERVER[$source];
+        if (array_key_exists($source, $sourceTransformations)) {
+            $host = $sourceTransformations[$source]($host);
+        }
+    }
+
+    // trim and remove port number from host
+    // host is lowercase as per RFC 952/2181
+    $host = strtolower(preg_replace('/:\d+$/', '', trim($host)));
+
+    // as the host can come from the user (HTTP_HOST and depending on the configuration, SERVER_NAME too can come from the user)
+    // check that it does not contain forbidden characters (see RFC 952 and RFC 2181)
+    // use preg_replace() instead of preg_match() to prevent DoS attacks with long host names
+    if ($host && '' !== preg_replace('/(?:^\[)?[a-zA-Z0-9-:\]_]+\.?/', '', $host)) {
+        throw new \UnexpectedValueException(sprintf('Invalid Host "%s"', $host));
+    }
+
+    return $host;
+}
+
+/**
  * Get URI port
  *
  * @return string
@@ -1524,7 +1566,7 @@ function getUriPort()
 function getBaseUrl()
 {
     $port = getUriPort();
-    return getUriScheme() . $_SERVER['SERVER_NAME'] . (($port) ? ':' . $port : '');
+    return getUriScheme() . getUriHost() . (($port) ? ':' . $port : '');
 }
 
 /***********************************************************************************************************************

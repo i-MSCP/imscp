@@ -33,7 +33,7 @@ function _client_pmaGetLoginCredentials($dbUserId)
 {
     $stmt = exec_query(
         '
-            SELECT sqlu_name, sqlu_pass FROM sql_user t1
+            SELECT sqlu_name AS pma_username, sqlu_pass AS pma_password FROM sql_user t1
             INNER JOIN domain t2 ON(t2.domain_admin_id = ?)
             INNER JOIN sql_database t3 ON(t3.domain_id = t2.domain_id)
             WHERE t1.sqld_id = t3.sqld_id
@@ -42,7 +42,11 @@ function _client_pmaGetLoginCredentials($dbUserId)
         array($_SESSION['user_id'], $dbUserId)
     );
 
-    return $stmt->fetchRow(PDO::FETCH_NUM);
+    if($stmt->rowCount()) {
+        return $stmt->fetchRow(PDO::FETCH_ASSOC);
+    }
+    
+    return array();
 }
 
 /**
@@ -88,39 +92,24 @@ function _client_pmaSetLanguage($location)
  */
 function client_pmaAuth($dbUserId)
 {
-    $credentials = _client_pmaGetLoginCredentials($dbUserId);
+    $data = _client_pmaGetLoginCredentials($dbUserId);
 
-    if (!$credentials) {
+    if (!$data) {
         set_page_message(tr('Unknown SQL user'), 'error');
         return false;
     }
 
-    $postData = http_build_query(array(
-        'server' => 1,
-        'pma_username' => $credentials[0],
-        'pma_password' => stripcslashes($credentials[1]),
-        'token' => '',
-    ));
-    $contextOptions = array();
-
-    // Prepares PhpMyadmin absolute Uri to use
-    if (isSecureRequest()) {
-        $contextOptions = array(
-            'ssl' => array(
-                'verify_peer' => false,
-                'allow_self_signed' => true
-            )
-        );
-    }
-
+    $data['server'] = 1;
+    $data['token'] = '';
+    $postData = http_build_query($data);
     $pmaBaseUrl = getBaseUrl() . '/pma/';
     $port = getUriPort();
-    $contextOptions = array_merge($contextOptions, array(
+    $contextOptions = array(
         'http' => array(
             'method' => 'POST',
             'protocol_version' => '1.1',
             'header' => array(
-                'Host: ' . $_SERVER['SERVER_NAME'] . (($port) ? ':' . $port : ''),
+                'Host: ' . getUriHost() . ($port ? ':' . $port : ''),
                 'Content-Type: application/x-www-form-urlencoded',
                 'Content-Length: ' . strlen($postData),
                 'User-Agent: i-MSCP',
@@ -129,11 +118,17 @@ function client_pmaAuth($dbUserId)
             'content' => $postData,
             'max_redirects' => 1
         )
-    ));
+    );
+
+    if (!isSecureRequest()) {
+        $contextOptions['ssl'] = array(
+            'verify_peer' => false,
+            'allow_self_signed' => true
+        );
+    }
 
     stream_context_set_default($contextOptions);
 
-    // Gets the headers from PhpMyAdmin
     $headers = get_headers($pmaBaseUrl, true);
     if ($headers && isset($headers['Location'])) {
         _client_pmaCreateCookies($headers['Set-Cookie']);
@@ -141,7 +136,6 @@ function client_pmaAuth($dbUserId)
     }
 
     set_page_message(tr('An error occurred during authentication.'), 'error');
-
     return false;
 }
 
