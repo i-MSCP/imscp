@@ -102,21 +102,20 @@ function client_pmaAuth($dbUserId)
     $data['server'] = 1;
     $data['token'] = '';
     $postData = http_build_query($data);
-    $pmaBaseUrl = getBaseUrl() . '/pma/';
-    $port = getUriPort();
+    $pmaBaseUrl = getRequestBaseUrl() . '/pma/';
     $contextOptions = array(
         'http' => array(
             'method' => 'POST',
             'protocol_version' => '1.1',
             'header' => array(
-                'Host: ' . getUriHost() . ($port ? ':' . $port : ''),
+                'Host: ' . getHttpHost(),
                 'Content-Type: application/x-www-form-urlencoded',
                 'Content-Length: ' . strlen($postData),
                 'User-Agent: i-MSCP',
                 'Connection: close',
             ),
             'content' => $postData,
-            'max_redirects' => 1
+            'max_redirects' => 5
         )
     );
 

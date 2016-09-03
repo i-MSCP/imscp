@@ -176,13 +176,7 @@ function client_addSqlUser($customerId, $dbId)
             return;
         }
 
-        if (strlen($password) > 32) {
-            set_page_message(tr('Password is too long.'), 'error');
-            return;
-        }
-
         if (!checkPasswordSyntax($password)) {
-            set_page_message(tr('Only printable characters from the ASCII table (not extended), excepted the space, are allowed.'), 'error');
             return;
         }
 

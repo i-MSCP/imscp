@@ -86,22 +86,22 @@ function client_pydioAuth($userId)
         ));
     }
 
-    $pydioBaseUrl = getBaseUrl() . '/ftp/';
-    $port = getUriPort();
+    $httpHost = getHttpHost();
 
     // Pydio authentication
-
     $context = stream_context_create(array_merge($contextOptions, array(
         'http' => array(
             'method' => 'GET',
             'protocol_version' => '1.1',
             'header' => array(
-                'Host: ' . $_SERVER['SERVER_NAME'] . (($port) ? ':' . $port : ''),
+                'Host: ' . $httpHost,
                 'User-Agent: i-MSCP',
                 'Connection: close'
             )
         )
     )));
+
+    $pydioBaseUrl = getRequestBaseUrl() . '/ftp/';
 
     # Getting secure token
     $secureToken = file_get_contents("$pydioBaseUrl/index.php?action=get_secure_token", false, $context);
@@ -110,7 +110,7 @@ function client_pydioAuth($userId)
         'userid' => $credentials[0],
         'login_seed' => '-1',
         "remember_me" => 'false',
-        'password' => stripcslashes($credentials[1]),
+        'password' => $credentials[1],
         '_method' => 'put'
     ));
     $contextOptions = array_merge($contextOptions, array(
@@ -118,7 +118,7 @@ function client_pydioAuth($userId)
             'method' => 'POST',
             'protocol_version' => '1.1',
             'header' => array(
-                'Host: ' . $_SERVER['SERVER_NAME'] . (($port) ? ':' . $port : ''),
+                'Host: ' . $httpHost,
                 'Content-Type: application/x-www-form-urlencoded',
                 'X-Requested-With: XMLHttpRequest',
                 'Content-Length: ' . strlen($postData),
@@ -130,7 +130,6 @@ function client_pydioAuth($userId)
     ));
 
     stream_context_set_default($contextOptions);
-    # TODO Parse the full response and display error message on authentication failure
     $headers = get_headers("{$pydioBaseUrl}?secure_token={$secureToken}", true);
     _client_pydioCreateCookies($headers['Set-Cookie']);
     redirectTo($pydioBaseUrl);

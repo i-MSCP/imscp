@@ -37,7 +37,8 @@ FRONTEND
     Added: `onAddIpAddr', `onChangeIpConfigMode' and `onDeleteIpAddr' events (admin level)
     Changed: Listening ports are now 8880 (http) and 8443 (https). (Required by CloudFlare)
     Changed: Frontend is now run through an isolated PHP-FPM Daemon (see errata file)
-    Fixed: Authentication failure when accessing panel through IP (PhpMyAdmin autologin feature)
+    Fixed: Authentication failure when accessing panel through IP (PhpMyAdmin/Pydio auto-login feature)
+    Fixed: Possible authentication failure when accessing panel through proxy (PhpMyAdmin/Pydio auto-login feature)
     Fixed: Customer PHP permissions are not synced with reseller PHP permissions in some contexts
     Fixed: General error: 1366 Incorrect integer value: '_no_' for column 'mail_auto_respond'
     Fixed: IPv6 - Possible duplicate entries - It is possible to add an IPv6 twice (uncompressed and compressed)
@@ -114,6 +115,7 @@ YOUTRACK
     #IP-1600 All domain names must be lowercased using mb_strtolower() PHP function
     #IP-1604 Any customer can access AWStats interface of other customers
     #IP-1609 Quota script shouldn't include apache log files
+    #IP-1611 Could not authenticate to PMA through auto-login feature when PanelRedirect plugin is installed (Proxy mode)
     #IP-1613 PhpMyAdmin auto-login feature doesn't support backslashes in passwords
 
 ------------------------------------------------------------------------------------------------------------------------

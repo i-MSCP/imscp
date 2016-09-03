@@ -204,13 +204,12 @@ function check_login($userLevel = '', $preventExternalLogin = true)
 		redirectTo('/index.php');
 	}
 
-	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$identity = $auth->getIdentity();
 
-	if ($cfg->MAINTENANCEMODE && $identity->admin_type != 'admin' &&
-		(!isset($_SESSION['logged_from_type']) || $_SESSION['logged_from_type'] != 'admin')
+	if ($cfg['MAINTENANCEMODE'] && $identity->admin_type != 'admin'
+		&& (!isset($_SESSION['logged_from_type']) || $_SESSION['logged_from_type'] != 'admin')
 	) {
 		$auth->unsetIdentity();
 		redirectTo('/index.php');
@@ -218,40 +217,18 @@ function check_login($userLevel = '', $preventExternalLogin = true)
 
 	// Check user level
 	if (!empty($userLevel) && ($userType = $identity->admin_type) != $userLevel) {
-		if ($userType != 'admin' && (!isset($_SESSION['logged_from']) || $_SESSION['logged_from'] != 'admin')) {
-			$loggedUser = isset($_SESSION['logged_from']) ? $_SESSION['logged_from'] : $identity->admin_name;
-			write_log('Warning! user |' . $loggedUser . '| requested |' . tohtml($_SERVER['REQUEST_URI']) .
-				'| with REQUEST_METHOD |' . $_SERVER['REQUEST_METHOD'] . '|', E_USER_WARNING);
-		}
-
 		redirectTo('/index.php');
 	}
 
 	// prevent external login / check for referer
-	if ($preventExternalLogin && !empty($_SERVER['HTTP_REFERER'])) {
-		// Extracting hostname from referer URL
-		// Note2: We remove any braket in referer (ipv6 issue)
-		$refererHostname = str_replace(array('[', ']'), '', parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST));
-
-		// The URL does contains the host element ?
-		if (!is_null($refererHostname)) {
-			// Note1: We don't care about the scheme, we only want make parse_url() happy
-			// Note2: We remove any braket in hostname (ipv6 issue)
-			$http_host = str_replace(array('[', ']'), '', parse_url("http://{$_SERVER['HTTP_HOST']}", PHP_URL_HOST));
-
-			// The referer doesn't match the panel hostname ?
-			if (!in_array($refererHostname, array($http_host, $_SERVER['SERVER_NAME']))) {
-				set_page_message(tr('Request from foreign host was blocked.'), 'info');
-
-				# Quick fix for #96 (will be rewritten ASAP)
-				isset($_SERVER['REDIRECT_URL']) ? : $_SERVER['REDIRECT_URL'] = '';
-
-				if (!(substr($_SERVER['SCRIPT_FILENAME'], (int)-strlen($_SERVER['REDIRECT_URL']),
-						strlen($_SERVER['REDIRECT_URL'])) == $_SERVER['REDIRECT_URL'])
-				) {
-					redirectToUiLevel();
-				}
-			}
+	if ($preventExternalLogin
+		&& !empty($_SERVER['HTTP_REFERER'])
+		&& ($fromHost = parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST))
+		&& $fromHost !== getRequestHost()
+	) {
+		if ($fromHost !== getRequestHost()) {
+			set_page_message(tr('Request from foreign host was blocked.'), 'info');
+			redirectToUiLevel();
 		}
 	}
 

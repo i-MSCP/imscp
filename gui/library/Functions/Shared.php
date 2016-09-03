@@ -1483,8 +1483,13 @@ function isJson($string)
  */
 function isSecureRequest()
 {
-    if ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
-        (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
+    if ((!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off')
+        || (
+            !empty($_SERVER['HTTP_X_FORWARDED_PROTO'])
+            && in_array(strtolower(
+                current(explode(',', $_SERVER['HTTP_X_FORWARDED_PROTO']))), array('https', 'on', 'ssl', '1')
+            )
+        )
     ) {
         return true;
     }
@@ -1493,23 +1498,23 @@ function isSecureRequest()
 }
 
 /**
- * Get URI scheme
+ * Get request scheme
  *
  * @return string
  */
-function getUriScheme()
+function getRequestScheme()
 {
-    return isSecureRequest() ? 'https://' : 'http://';
+    return isSecureRequest() ? 'https' : 'http';
 }
 
 /**
- * Get URI host
+ * Get request host
  *
  * Code borrowed to Symfony project
  *
  * @return string
  */
-function getUriHost()
+function getRequestHost()
 {
     $possibleHostSources = array('HTTP_X_FORWARDED_HOST', 'HTTP_HOST', 'SERVER_NAME', 'SERVER_ADDR');
     $sourceTransformations = array(
@@ -1545,28 +1550,71 @@ function getUriHost()
 }
 
 /**
- * Get URI port
+ * Get request port
  *
  * @return string
  */
-function getUriPort()
+function getRequestPort()
 {
-    $config = iMSCP_Registry::get('config');
+    if (!empty($_SERVER['HTTP_X_FORWARDED_PORT'])) {
+        return $_SERVER['HTTP_X_FORWARDED_PORT'];
+    }
 
-    return isSecureRequest()
-        ? ($config['BASE_SERVER_VHOST_HTTPS_PORT'] == 443 ? '' : $config['BASE_SERVER_VHOST_HTTPS_PORT'])
-        : ($config['BASE_SERVER_VHOST_HTTP_PORT'] == 80 ? '' : $config['BASE_SERVER_VHOST_HTTP_PORT']);
+    if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+        return 443;
+    }
+
+    if ($host = $_SERVER['HTTP_HOST']) {
+        if ($host[0] === '[') {
+            $pos = strpos($host, ':', strrpos($host, ']'));
+        } else {
+            $pos = strrpos($host, ':');
+        }
+
+        if (false !== $pos) {
+            return (int)substr($host, $pos + 1);
+        }
+
+        return 'https' === getRequestScheme() ? 443 : 80;
+    }
+
+    return $_SERVER['SERVER_PORT'];
 }
 
 /**
- * Get base URL
+ * Get HTTP host
+ *
+ * The port name will be appended to the host if it's non-standard.
  *
  * @return string
  */
-function getBaseUrl()
+function getHttpHost()
 {
-    $port = getUriPort();
-    return getUriScheme() . getUriHost() . (($port) ? ':' . $port : '');
+    $scheme = getRequestScheme();
+    $port = getRequestPort();
+
+    if (('http' == $scheme && $port == 80) || ('https' == $scheme && $port == 443)) {
+        return getRequestHost();
+    }
+
+    return getRequestHost() . ':' . $port;
+}
+
+/**
+ * Get request base URL
+ *
+ * @return string
+ */
+function getRequestBaseUrl()
+{
+    $scheme = getRequestScheme();
+    $port = getRequestPort();
+
+    if (('http' == $scheme && $port == 80) || ('https' == $scheme && $port == 443)) {
+        return $scheme . '://' . getRequestHost();
+    }
+
+    return $scheme . '://' . getRequestHost() . ':' . $port;
 }
 
 /***********************************************************************************************************************
