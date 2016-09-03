@@ -287,7 +287,7 @@ sub disableDmn
     my $net = iMSCP::Net->getInstance();
     my $isApache24 = version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' );
 
-    my @domainIPs = ($main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}, $data->{'DOMAIN_IP'});
+    my @domainIPs = ($main::imscpConfig{'BASE_SERVER_IP'}, $data->{'DOMAIN_IP'});
     $rs = $self->{'eventManager'}->trigger( 'onAddHttpdVhostIps', $data, \@domainIPs );
     return $rs if $rs;
 
@@ -1428,7 +1428,7 @@ sub _addCfg
     my $isApache24 = version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' );
     my $phpVersion = $self->{'phpConfig'}->{'PHP_VERSION'};
 
-    my @domainIPs = ($main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}, $data->{'DOMAIN_IP'});
+    my @domainIPs = ($main::imscpConfig{'BASE_SERVER_IP'}, $data->{'DOMAIN_IP'});
     $rs = $self->{'eventManager'}->trigger( 'onAddHttpdVhostIps', $data, \@domainIPs );
     return $rs if $rs;
 
