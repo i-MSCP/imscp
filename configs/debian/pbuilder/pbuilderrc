@@ -1,10 +1,14 @@
 AUTO_DEBSIGN=${AUTO_DEBSIGN:-no}
-AUTOCLEANAPTCACHE=yes
-APTCONFDIR=/tmp
+AUTOCLEANAPTCACHE="yes"
+APTCONFDIR="/tmp/imscp_apt"
+#APTKEYRINGS="/usr/share/keyrings/debian-archive-keyring.gpg"
 CODENAME=$(lsb_release -cs)
+DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--variant=buildd" "--keyring=/usr/share/keyrings/debian-archive-keyring.gpg")
 DEBBUILDOPTS=-b
 MIRRORSITE=http://httpredir.debian.org/debian/
+HOOKDIR=""
 
+mkdir -p $APTCONFDIR
 cat > "$APTCONFDIR/sources.list" <<EOF
 deb $MIRRORSITE $CODENAME main contrib non-free
 deb-src $MIRRORSITE $CODENAME main contrib non-free

@@ -225,12 +225,13 @@ sub copyFile
     my (undef, undef, $mode, undef, $uid, $gid) = lstat( $self->{'filename'} );
     $mode = $mode & 07777;
 
-    unless (chmod( $mode, $dest )) {
-        error( sprintf( 'Could not change mode for %s: %s', $dest, $! ) );
-        return 1;
-    }
     unless (chown( $uid, $gid, $dest )) {
         error( sprintf( 'Could not change owner and group for %s: %s', $dest, $! ) );
+        return 1;
+    }
+
+    unless (chmod( $mode, $dest )) {
+        error( sprintf( 'Could not change mode for %s: %s', $dest, $! ) );
         return 1;
     }
 

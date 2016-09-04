@@ -380,7 +380,7 @@ sub _parseOptions($)
     map { s/\s+//g } @options;
 
     # Process mount flags (excluding any propagation flag)
-    my ($mflags, @roptions) = (0, ());
+    my ($mflags, @roptions) = (0);
     for (@options) {
         push(@roptions, $_) && next unless exists $OPTIONS{$_};
         $mflags = $OPTIONS{$_}->( $mflags );

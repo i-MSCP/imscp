@@ -1747,12 +1747,10 @@ function write_log($msg, $logLevel = E_USER_WARNING)
         return;
     }
 
-    $cfg = iMSCP_Registry::get('config');
-    $clientIp = getIpAddr() ? getIpAddr() : 'unknown';
-    $msg = replace_html($msg . '<br><small>User IP: ' . $clientIp . '</small>');
-
+    $msg = replace_html($msg);
     exec_query('INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)', $msg);
 
+    $cfg = iMSCP_Registry::get('config');
     if ($logLevel > $cfg['LOG_LEVEL']) {
         return;
     }
@@ -1773,16 +1771,17 @@ function write_log($msg, $logLevel = E_USER_WARNING)
         'mail_id' => 'imscp-log',
         'username' => tr('administrator'),
         'email' => $cfg['DEFAULT_ADMIN_ADDRESS'],
-        'subject' => "i-MSCP $severity",
+        'subject' => "i-MSCP Notification ($severity)",
         'message' => tr('Dear {NAME},
 
-This is an automatic email sent by i-MSCP:
+This is an automatic email sent by your i-MSCP control panel:
 
 Server name: {HOSTNAME}
-Server IP: {SERVER_IP}
-Version: {VERSION}
-Build: {BUILDDATE}
-Message severity: {MESSAGE_SEVERITY}
+Server IP:   {SERVER_IP}
+Client IP:   {CLIENT_IP}
+Version:     {VERSION}
+Build:       {BUILDDATE}
+Severity:    {MESSAGE_SEVERITY}
 
 ==========================================================================
 {MESSAGE}
@@ -1790,12 +1789,13 @@ Message severity: {MESSAGE_SEVERITY}
 
 Please do not reply to this email.
 
-___________________________
+________________
 i-MSCP Mailer'),
         'placeholders' => array(
             '{USERNAME}' => tr('administrator'),
             '{HOSTNAME}' => $cfg['SERVER_HOSTNAME'],
             '{SERVER_IP}' => $cfg['BASE_SERVER_PUBLIC_IP'],
+            '{CLIENT_IP}' => getIpAddr() ? getIpAddr() : 'unknown',
             '{VERSION}' => $cfg['Version'],
             '{BUILDDATE}' => $cfg['BuildDate'] ?: tr('Unavailable'),
             '{MESSAGE_SEVERITY}' => $severity,
