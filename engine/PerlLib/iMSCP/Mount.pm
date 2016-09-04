@@ -67,17 +67,17 @@ use constant {
 };
 use constant {
     # Flags that can be altered by MS_REMOUNT (see sys/mount.h)
-    #MS_RMT_MASK     => (MS_RDONLY | MS_SYNCHRONOUS | MS_MANDLOCK | MS_I_VERSION),
+    MS_RMT_MASK     => (MS_RDONLY | MS_SYNCHRONOUS | MS_MANDLOCK | MS_I_VERSION),
 
     # Magic mount flag number. Has to be or-ed to the flag values. (see sys/mount.h)
-    MS_MGC_VAL => 0xc0ed0000, # Magic flag number to indicate "new" flags
-    #MS_MGC_MSK     => 0xffff0000, # Magic flag number mask */
+    MS_MGC_VAL      => 0xc0ed0000, # Magic flag number to indicate "new" flags
+    MS_MGC_MSK      => 0xffff0000, # Magic flag number mask */
 
     # Possible value for FLAGS parameter of `umount2' (see sys/mount.h)
-    #MNT_FORCE       => 1,
-    MNT_DETACH => 2,
-    #MNT_EXPIRE      => 4,
-    #UMOUNT_NOFOLLOW => 8
+    MNT_FORCE       => 1,
+    MNT_DETACH      => 2,
+    MNT_EXPIRE      => 4,
+    UMOUNT_NOFOLLOW => 8
 };
 
 # List taken from libmount/src/optmap.c (util-linux 2.25.2)
@@ -146,6 +146,7 @@ my %OPTIONS = (
 
 sub mount($)
 {
+
     my $fields = shift;
     $fields = { } unless defined $fields && ref $fields eq 'HASH';
 
@@ -161,22 +162,22 @@ sub mount($)
     debug("$fsSpec, $fsFile, $fields->{'fs_vfstype'}, $fields->{'fs_mntops'}");
 
     my ($mflags, $pflags, $data) = _parseOptions($fields->{'fs_mntops'});
-    my @syscallsArgv;
+    $mflags |= MS_MGC_VAL unless $mflags & MS_MGC_MSK;
 
+    my @syscallsArgv;
     if ($mflags & MS_BIND) {
         if ($mflags & MS_REMOUNT) {
-            push @syscallsArgv, [ MS_MGC_VAL | $mflags, $data ];
+            push @syscallsArgv, [ $mflags, $data ];
         } else {
             my $rs = umount($fsFile);
             return $rs if $rs;
-            push @syscallsArgv, [ MS_MGC_VAL | ($mflags & MS_REC ? MS_BIND | MS_REC : MS_BIND), 0 ];
-            push @syscallsArgv, [ MS_MGC_VAL | MS_REMOUNT | $mflags, $data ] if $mflags & ~(MS_BIND | MS_REC) || $data;
+            push @syscallsArgv, [ ($mflags & MS_REC ? MS_BIND | MS_REC : MS_BIND), 0 ];
+            push @syscallsArgv, [ MS_REMOUNT | $mflags, $data ] if $mflags & ~(MS_BIND | MS_REC) || $data;
         }
     } else {
-        push @syscallsArgv, [ MS_MGC_VAL | $mflags, $data ] unless !($mflags & MS_REMOUNT) && isMountpoint($fsFile);
+        push @syscallsArgv, [ $mflags, $data ] unless !($mflags & MS_REMOUNT) && isMountpoint($fsFile);
     }
     push @syscallsArgv, [ $pflags, 0 ] if $pflags;
-
     for(@syscallsArgv) {
         unless (syscall(&iMSCP::Syscall::SYS_mount, $fsSpec, $fsFile, $fields->{'fs_vfstype'}, @{$_} ) == 0) {
             error( sprintf( 'Error while calling mount(): %s', $! || 'Unknown error' ) );
@@ -380,16 +381,16 @@ sub _parseOptions($)
     map { s/\s+//g } @options;
 
     # Process mount flags (excluding any propagation flag)
-    my ($mflags, @roptions) = (0);
+    my ($mflags, @roptions) = (0, ());
     for (@options) {
-        push @roptions, $_ && next unless exists $OPTIONS{$_};
+        push(@roptions, $_) && next unless exists $OPTIONS{$_};
         $mflags = $OPTIONS{$_}->( $mflags );
     }
 
     # Process propagation flags
     my ($pflags, @data) = (0);
     for (@roptions) {
-        push @data, $_ && next unless exists $OPTIONS{$_};
+        push(@data, $_) && next unless exists $OPTIONS{$_};
         $pflags = $OPTIONS{$_}->( $pflags );
     }
 
