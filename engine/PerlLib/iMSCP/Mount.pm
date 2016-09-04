@@ -146,7 +146,6 @@ my %OPTIONS = (
 
 sub mount($)
 {
-
     my $fields = shift;
     $fields = { } unless defined $fields && ref $fields eq 'HASH';
 
