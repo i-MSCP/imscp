@@ -1178,7 +1178,7 @@ class iMSCP_Plugin_Manager
 
         if ($this->pluginIsKnown($name)) {
             $oldInfo = $this->pluginGetInfo($name);
-            if ($oldInfo['version'] > $info['version']) {
+            if (version_compare($oldInfo['version'], $info['version'], '>')) {
                 throw new iMSCP_Plugin_Exception(tr('Plugin Manager: Downgrade of %s plugin is not allowed.', $name), 'error');
             }
         }

@@ -38,6 +38,7 @@ FRONTEND
     Changed: Listening ports are now 8880 (http) and 8443 (https). (Required by CloudFlare)
     Changed: Frontend is now run through an isolated PHP-FPM Daemon (see errata file)
     Fixed: Authentication failure when accessing panel through IP (PhpMyAdmin/Pydio auto-login feature)
+    Fixed: Could not upload new plugin version (Bad version check)
     Fixed: Possible authentication failure when accessing panel through proxy (PhpMyAdmin/Pydio auto-login feature)
     Fixed: Customer PHP permissions are not synced with reseller PHP permissions in some contexts
     Fixed: General error: 1366 Incorrect integer value: '_no_' for column 'mail_auto_respond'
