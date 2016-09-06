@@ -113,7 +113,6 @@ class iMSCP_Plugin_Manager
      *
      * @param string $pluginRootDir Plugins root directory
      * @throws iMSCP_Plugin_Exception
-     * @return iMSCP_Plugin_Manager
      */
     public function __construct($pluginRootDir)
     {
@@ -557,7 +556,7 @@ class iMSCP_Plugin_Manager
      *
      * @see pluginEnable() subaction
      * @param string $name Plugin name
-     * @return self::ACTION_SUCCESS|self::ACTION_STOPPED|self::ACTION_FAILURE
+     * @return int
      */
     public function pluginInstall($name)
     {
@@ -658,7 +657,7 @@ class iMSCP_Plugin_Manager
      * Uninstall the given plugin
      *
      * @param string $name Plugin name
-     * @return self::ACTION_SUCCESS|self::ACTION_STOPPED|self::ACTION_FAILURE
+     * @return int
      */
     public function pluginUninstall($name)
     {
@@ -733,7 +732,7 @@ class iMSCP_Plugin_Manager
      * @see pluginUpdate() action
      * @param string $name Plugin name
      * @param bool $isSubaction Whether this action is run as subaction
-     * @return self::ACTION_SUCCESS|self::ACTION_STOPPED|self::ACTION_FAILURE
+     * @return int
      */
     public function pluginEnable($name, $isSubaction = false)
     {
@@ -822,7 +821,7 @@ class iMSCP_Plugin_Manager
      *
      * @param string $name Plugin name
      * @param bool $isSubaction Whether this action is run as subaction
-     * @return self::ACTION_SUCCESS|self::ACTION_STOPPED|self::ACTION_FAILURE
+     * @return int
      */
     public function pluginDisable($name, $isSubaction = false)
     {
@@ -883,7 +882,7 @@ class iMSCP_Plugin_Manager
      * @see pluginDisable() subaction
      * @see pluginEnable() subaction
      * @param string $name Plugin name
-     * @return self::ACTION_SUCCESS|self::ACTION_STOPPED|self::ACTION_FAILURE
+     * @return int
      */
     public function pluginChange($name)
     {
@@ -945,7 +944,7 @@ class iMSCP_Plugin_Manager
      * @see pluginDisable() subaction
      * @see pluginEnable() subaction
      * @param string $name Plugin name
-     * @return self::ACTION_SUCCESS|self::ACTION_STOPPED|self::ACTION_FAILURE
+     * @return int
      */
     public function pluginUpdate($name)
     {
@@ -1016,9 +1015,8 @@ class iMSCP_Plugin_Manager
     /**
      * Delete the given plugin
      *
-     * @throws iMSCP_Plugin_Exception
      * @param string $name Plugin name
-     * @return self::ACTION_SUCCESS|self::ACTION_STOPPED|self::ACTION_FAILURE
+     * @return int
      */
     public function pluginDelete($name)
     {
@@ -1074,7 +1072,7 @@ class iMSCP_Plugin_Manager
      *
      * @throws iMSCP_Plugin_Exception in case the given plugin is not known
      * @param string $name Plugin name
-     * @return self::ACTION_SUCCESS|self::ACTION_STOPPED|self::ACTION_FAILURE
+     * @return int
      */
     public function pluginIsProtected($name)
     {
@@ -1319,7 +1317,7 @@ class iMSCP_Plugin_Manager
     {
         $this->pluginData = array();
         $this->pluginsByType = array();
-        
+
         $stmt = execute_query('SELECT * FROM plugin ORDER BY plugin_priority DESC');
         while ($plugin = $stmt->fetchRow()) {
             $this->pluginData[$plugin['plugin_name']] = array(
