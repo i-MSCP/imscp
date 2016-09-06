@@ -1353,8 +1353,8 @@ sub umountLogsFolder
         "$data->{'HOME_DIR'}/logs".($data->{'DOMAIN_TYPE'} ne 'dmn' ? "/$data->{'DOMAIN_NAME'}" : '')
     );
     my $rs = $self->{'eventManager'}->trigger( 'beforeUnmountLogsFolder', $data, $fsFile );
-    $rs ||= umount( $fsFile );
     $rs ||= removeMountEntry( qr%.*?[ \t]+\Q$fsFile\E(?:/|[ \t]+)[^\n]+% );
+    $rs ||= umount( $fsFile );
     $rs ||= $self->{'eventManager'}->trigger( 'afterUmountMountLogsFolder', $data, $fsFile );
 }
 
