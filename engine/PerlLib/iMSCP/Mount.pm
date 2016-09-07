@@ -80,8 +80,9 @@ use constant {
     UMOUNT_NOFOLLOW => 8
 };
 
+# Mount options
 # List taken from libmount/src/optmap.c (util-linux 2.25.2)
-my %OPTIONS = (
+my %MOUNT_FLAGS = (
     defaults      => sub { 0 },
     bind          => sub { $_[0] | MS_BIND },
     rbind         => sub { $_[0] | MS_BIND | MS_REC },
@@ -112,15 +113,20 @@ my %OPTIONS = (
     norelatime    => sub { $_[0] & ~MS_RELATIME },
     strictatime   => sub { $_[0] | MS_STRICTATIME },
     nostrictatime => sub { $_[0] & ~MS_STRICTATIME },
-    lazytime      => sub { $_[0] & ~MS_LAZYTIME },
-    unbindable    => sub { $_[0] | MS_UNBINDABLE },
-    runbindable   => sub { $_[0] | MS_UNBINDABLE | MS_REC},
-    private       => sub { $_[0] | MS_PRIVATE },
-    rprivate      => sub { $_[0] | MS_PRIVATE | MS_REC },
-    slave         => sub { $_[0] | MS_SLAVE },
-    rslave        => sub { $_[0] | MS_SLAVE | MS_REC },
-    shared        => sub { $_[0] | MS_SHARED },
-    rshared       => sub { $_[0] | MS_SHARED | MS_REC }
+    lazytime      => sub { $_[0] & ~MS_LAZYTIME }
+);
+
+# Propagation flags
+# List taken from libmount/src/optmap.c (util-linux 2.25.2)
+my %PROPAGATION_FLAGS = (
+    unbindable  => sub { $_[0] | MS_UNBINDABLE },
+    runbindable => sub { $_[0] | MS_UNBINDABLE | MS_REC},
+    private     => sub { $_[0] | MS_PRIVATE },
+    rprivate    => sub { $_[0] | MS_PRIVATE | MS_REC },
+    slave       => sub { $_[0] | MS_SLAVE },
+    rslave      => sub { $_[0] | MS_SLAVE | MS_REC },
+    shared      => sub { $_[0] | MS_SHARED },
+    rshared     => sub { $_[0] | MS_SHARED | MS_REC }
 );
 
 =head1 DESCRIPTION
@@ -207,7 +213,7 @@ sub umount($)
         return 1;
     }
 
-    debug("$fsFile");
+    debug($fsFile);
 
     my $cmd = 'tac /proc/mounts | awk \'{print $2}\''
         .' | grep \'^'.quotemeta( File::Spec->canonpath( $fsFile ) ).'\(/\|\(\|\\\\\\040(deleted)\)$\)\'';
@@ -241,8 +247,8 @@ sub umount($)
 
 sub setPropagationFlag($;$)
 {
-    my ($fsFile, $flag) = @_;
-    $flag ||= 'private';
+    my ($fsFile, $pflag) = @_;
+    $pflag ||= 'private';
 
     unless (defined $fsFile) {
         error( '$fsFile parameter is not defined' );
@@ -251,15 +257,15 @@ sub setPropagationFlag($;$)
 
     $fsFile = File::Spec->canonpath( $fsFile );
 
-    debug("$fsFile $flag");
+    debug("$fsFile $pflag");
 
-    (undef, $flag) = _parseOptions($flag);
-    unless ($flag) {
+    (undef, $pflag) = _parseOptions($pflag);
+    unless ($pflag) {
         error('Invalid propagation flags');
         return 1;
     }
 
-    unless (syscall(&iMSCP::Syscall::SYS_mount, 0, $fsFile, 0, $flag, 0 ) == 0) {
+    unless (syscall(&iMSCP::Syscall::SYS_mount, 0, $fsFile, 0, $pflag, 0 ) == 0) {
         error( sprintf( 'Error while changing propagation flag on %s: %s', $fsFile, $! || 'Unknown error' ) );
         return 1;
     }
@@ -375,22 +381,21 @@ sub _parseOptions($)
 {
     my $options = shift;
 
-    # Turn options string into option list and remove leading and trailing whitespaces
-    my @options = split ',', $options;
-    map { s/\s+//g } @options;
+    # Turn options string into option list
+    my @options = map { s/\s+//gr } split ',', $options;
 
     # Process mount flags (excluding any propagation flag)
     my ($mflags, @roptions) = (0);
     for (@options) {
-        push(@roptions, $_) && next unless exists $OPTIONS{$_};
-        $mflags = $OPTIONS{$_}->( $mflags );
+        push(@roptions, $_) && next unless exists $MOUNT_FLAGS{$_};
+        $mflags = $MOUNT_FLAGS{$_}->( $mflags );
     }
 
     # Process propagation flags
     my ($pflags, @data) = (0);
     for (@roptions) {
-        push(@data, $_) && next unless exists $OPTIONS{$_};
-        $pflags = $OPTIONS{$_}->( $pflags );
+        push(@data, $_) && next unless exists $PROPAGATION_FLAGS{$_};
+        $pflags = $PROPAGATION_FLAGS{$_}->( $pflags );
     }
 
     ($mflags, $pflags, (@data) ? join ',', @data : 0);
