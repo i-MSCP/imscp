@@ -139,7 +139,7 @@ my %PROPAGATION_FLAGS = (
 
 =item mount(\%fields)
 
- Mount a file system
+ Create a new mount, or remount an existing mount, or/and change the propagation type of an existing mount
 
  Param hashref \%fields Hash describing filesystem to mount:
   - fs_spec:    Field describing the block special device or remote filesystem to be mounted
@@ -163,28 +163,42 @@ sub mount($)
 
     my $fsSpec = File::Spec->canonpath( $fields->{'fs_spec'} );
     my $fsFile = File::Spec->canonpath( $fields->{'fs_file'} );
+    my $fsVfstype = $fields->{'fs_vfstype'};
 
-    debug("$fsSpec, $fsFile, $fields->{'fs_vfstype'}, $fields->{'fs_mntops'}");
+    debug("$fsSpec, $fsFile, $fsVfstype, $fields->{'fs_mntops'}");
 
     my ($mflags, $pflags, $data) = _parseOptions($fields->{'fs_mntops'});
     $mflags |= MS_MGC_VAL unless $mflags & MS_MGC_MSK;
 
-    my @syscallsArgv;
+    my @mountArgv;
+
+    # Create a bind mount or remount an existing bind mount
     if ($mflags & MS_BIND) {
-        if ($mflags & MS_REMOUNT) {
-            push @syscallsArgv, [ $mflags, $data ];
-        } else {
-            my $rs = umount($fsFile);
-            return $rs if $rs;
-            push @syscallsArgv, [ ($mflags & MS_REC ? MS_BIND | MS_REC : MS_BIND), 0 ];
-            push @syscallsArgv, [ MS_REMOUNT | $mflags, $data ] if $mflags & ~(MS_BIND | MS_REC) || $data;
+        push @mountArgv, [ $fsSpec, $fsFile, $fsVfstype, $mflags, $data ];
+
+        # If MS_REMOUNT was not specified, and if there is mountflags other
+        # than MS_BIND and MS_REC, schedule an additional mount(2) call to
+        # change mountflags on existing mount. This is needed since mountflags
+        # other than MS_BIND and MS_REC are ignored.
+        if (!($mflags & MS_REMOUNT) && ($mflags & ~(MS_BIND | MS_REC))) {
+            push @mountArgv, [ $fsSpec, $fsFile, $fsVfstype, MS_REMOUNT | $mflags, $data ];
         }
-    } else {
-        push @syscallsArgv, [ $mflags, $data ] unless !($mflags & MS_REMOUNT) && isMountpoint($fsFile);
     }
-    push @syscallsArgv, [ $pflags, 0 ] if $pflags;
-    for(@syscallsArgv) {
-        unless (syscall(&iMSCP::Syscall::SYS_mount, $fsSpec, $fsFile, $fields->{'fs_vfstype'}, @{$_} ) == 0) {
+
+    # Create a new mount or remount an existing mount:
+    #  - If MS_REMOUNT is specified and if there is also other mountflags,
+    #    remount an existing mount.
+    #  - If the mount doesn't exists, create a new mount.
+    elsif ((($mflags & MS_REMOUNT) && $mflags != MS_REMOUNT) || !isMountpoint($fsFile)) {
+        push @mountArgv, [ $fsSpec, $fsFile, $fsVfstype, $mflags, $data ];
+    }
+
+    # Change the propagation type of an existing mount
+    push @mountArgv, [ 'none', $fsFile, 0, $pflags, 0 ] if $pflags;
+
+    # Process the mount(2) calls
+    for(@mountArgv) {
+        unless (syscall(&iMSCP::Syscall::SYS_mount, @{$_} ) == 0) {
             error( sprintf( 'Error while calling mount(): %s', $! || 'Unknown error' ) );
             return 1;
         }
@@ -213,6 +227,8 @@ sub umount($)
         return 1;
     }
 
+    return 0 if $fsFile eq '/'; # Prevent umounting root fs
+
     debug($fsFile);
 
     my $cmd = 'tac /proc/mounts | awk \'{print $2}\''
@@ -238,7 +254,7 @@ sub umount($)
 
 =item setPropagationFlag($fsFile [, $flag = 'private' ])
 
- Set propagation type of an existing mount
+ Change the propagation type of an existing mount
 
  Parameter string $fsFile Mount point
  Parameter string $flag Propagation flag as string (private,slave,shared,unbindable,rprivate,rslave,rshared,runbindable)
@@ -265,7 +281,7 @@ sub setPropagationFlag($;$)
         return 1;
     }
 
-    unless (syscall(&iMSCP::Syscall::SYS_mount, 0, $fsFile, 0, $pflag, 0 ) == 0) {
+    unless (syscall(&iMSCP::Syscall::SYS_mount, my $src = 'none', $fsFile, 0, $pflag, 0 ) == 0) {
         error( sprintf( 'Error while changing propagation flag on %s: %s', $fsFile, $! || 'Unknown error' ) );
         return 1;
     }
@@ -370,7 +386,7 @@ sub removeMountEntry($)
 
 =item _parseOptions($options)
 
- Parse mount options (mount flags, propagation flags and data)
+ Parse mountflags, propagation flags and data
 
  Param string $options String containing options, each comma separated
  Return list List containing mount flags, propagation flags and data
@@ -384,14 +400,14 @@ sub _parseOptions($)
     # Turn options string into option list
     my @options = map { s/\s+//gr } split ',', $options;
 
-    # Process mount flags (excluding any propagation flag)
+    # Parse mount flags (excluding any propagation flag)
     my ($mflags, @roptions) = (0);
     for (@options) {
         push(@roptions, $_) && next unless exists $MOUNT_FLAGS{$_};
         $mflags = $MOUNT_FLAGS{$_}->( $mflags );
     }
 
-    # Process propagation flags
+    # Parse propagation flags
     my ($pflags, @data) = (0);
     for (@roptions) {
         push(@data, $_) && next unless exists $PROPAGATION_FLAGS{$_};
