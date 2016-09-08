@@ -211,7 +211,7 @@ sub mount($)
 
  Umount the given file system
 
- Note: Operation is recursive. Any mount below the given mount will be umounted.
+ Note: Operation is recursive. Any mount below the given mount (or directory) will be umounted.
 
  Param string $fsFile Mount point of file system to umount
  Return int 0 on success, other on failure
