@@ -271,15 +271,16 @@
         <package>libfile-copy-recursive-perl</package>
         <package>libfile-homedir-perl</package>
         <package>libhash-merge-perl</package>
+        <package>libjson-perl</package>
         <package>libmailtools-perl</package>
         <package>libmime-tools-perl</package>
         <package>libnet-dns-perl</package>
         <package>libnet-libidn-perl</package>
+        <package>libquota-perl</package>
         <package>libtimedate-perl</package>
         <package>libunix-mknod-perl</package>
         <package>libxml-parser-perl</package>
         <package>libxml-simple-perl</package>
-        <package>libjson-perl</package>
     </perl>
     <other>
         <package>at</package>

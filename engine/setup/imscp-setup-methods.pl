@@ -48,7 +48,9 @@ use iMSCP::Packages;
 use iMSCP::Plugins;
 use iMSCP::Getopt;
 use iMSCP::Service;
+use iMSCP::Mount qw / mount addMountEntry /;
 use Servers::sqld;
+use Quota;
 
 # Boot
 sub setupBoot
@@ -183,7 +185,7 @@ sub setupTasks
     my @steps = (
         [ \&setupSaveConfig,              'Saving configuration' ],
         [ \&setupCreateMasterUser,        'Creating system master user' ],
-        [ \&setupCreateSystemDirectories, 'Creating system directories' ],
+        [ \&setupSystemDirectories,       'Setup system directories' ],
         [ \&setupServerHostname,          'Setting server hostname' ],
         [ \&setupServiceSsl,              'Setup SSL for i-MSCP services' ],
         [ \&setupServices,                'Setup i-MSCP services' ],
@@ -198,7 +200,7 @@ sub setupTasks
         [ \&setupSetPermissions,          'Setting permissions...' ],
         [ \&setupDbTasks,                 'Processing DB tasks...' ],
         [ \&setupRestartServices,         'Restarting services...' ],
-        [ \&setupSyncConfig,         'Syncing configuration file...']
+        [ \&setupSyncConfig,              'Syncing configuration file...']
     );
 
     my $step = 1;
@@ -911,13 +913,13 @@ sub setupCreateMasterUser
     $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupCreateMasterUser');
 }
 
-sub setupCreateSystemDirectories
+sub setupSystemDirectories
 {
     my @systemDirectories  = (
         [ $main::imscpConfig{'BACKUP_FILE_DIR'}, $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}, 0750 ]
     );
 
-    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupCreateSystemDirectories', \@systemDirectories);
+    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupSystemDirectories', \@systemDirectories);
     return $rs if $rs;
 
     for my $dir(@systemDirectories) {
@@ -932,7 +934,31 @@ sub setupCreateSystemDirectories
         return $rs if $rs;
     }
 
-    iMSCP::EventManager->getInstance()->trigger('afterSetupCreateSystemDirectories');
+    # Make sure that the root directory is marked as shared in regards to mount
+    # propagation, even when not using systemd.
+    # See https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=739593 for explanations
+    my ($device, $path, $type, $options);
+    Quota::setmntent();
+    while(($device, $path, $type, $options) = Quota::getmntent()) {
+        last if $path eq '/';
+    }
+    Quota::endmntent();
+    
+    unless(defined $device) {
+        error('Could not find device name for the root directory.');
+        return 1;
+    }
+    
+    $rs = mount(
+        {
+            fs_spec    => $device,
+            fs_file    => '/',
+            fs_vfstype => $type,
+            fs_mntops  => "remount,rshared,$options"
+        }
+    );
+    $rs = addMountEntry("$device / $type remount,rshared,$options");
+    $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupSystemDirectories');
 }
 
 sub setupServerHostname
@@ -1668,7 +1694,7 @@ sub setupRestartServices
 
     my $serviceMngr = iMSCP::Service->getInstance();
     unshift @services, (
-        [ sub { $serviceMngr->restart('imscp_mountall'); 0; }, 'Mounts i-MSCP filesystems' ],
+        [ sub { $serviceMngr->start('imscp_mountall'); 0; }, 'Mounts i-MSCP filesystems' ],
         [ sub { $serviceMngr->restart('imscp_traffic'); 0; }, 'i-MSCP Traffic Logger' ],
         [ sub { $serviceMngr->start('imscp_daemon'); 0; }, 'i-MSCP Daemon' ]
     );
