@@ -5,7 +5,7 @@
 
     DocumentRoot {WEB_DIR}/htdocs
 
-    DirectoryIndex index.html
+    DirectoryIndex index.html index.xhtml index.htm
 
     LogLevel error
     ErrorLog {HTTPD_LOG_DIR}/{DOMAIN_NAME}/error.log

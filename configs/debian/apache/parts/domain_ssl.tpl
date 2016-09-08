@@ -8,7 +8,7 @@
 
     DocumentRoot {WEB_DIR}/htdocs
 
-    DirectoryIndex index.html
+    DirectoryIndex index.html index.xhtml index.htm
 
     Alias /errors/ {HOME_DIR}/errors/
 

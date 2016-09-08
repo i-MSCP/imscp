@@ -5,6 +5,7 @@ Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
 CONFIG
+    Added: index.xhtml and index.htm to DirectoryIndex directive (Apache2 vhosts)
     Added: `localhost' to `mydestination' parameter (Postfix)
     Added: `PHP_OPCODE_CACHE_ENABLED' and `PHP_OPCODE_CACHE_MAX_MEMORY' in php/php.data conffile
     Fixed: FastCGI handler name for PHP must be static
