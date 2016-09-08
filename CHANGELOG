@@ -97,7 +97,7 @@ SKELETON
     Added: Dedicated `domain_disabled_pages' directory for pages of disabled domains
 
 SYSTEM
-    Fixed: Make sure that / is marked as shared in regards to mount propagation, even when not using systemd.
+    Fixed: Make sure that / is marked as shared in regards to mount propagation, even when not using systemd
 
 YOUTRACK
     #IP-0135 IPs managemnet - The NIC and netmask should be editable for each IP
