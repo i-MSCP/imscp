@@ -199,6 +199,7 @@ sub owner
 
  Param string $dest Destination path
  Param hash $options Options
+    preserve (yes|no): Whether or not file permissions must be preserved (default yes)
  Return int 0 on success, 1 on failure
 
 =cut
@@ -220,7 +221,7 @@ sub copyFile
 
     $dest .= '/'.basename( $self->{'filename'} ) if -d $dest;
 
-    return 0 unless !defined $options->{'preserve'} || $options->{'preserve'} ne 'no';
+    return 0 if defined $options->{'preserve'} && $options->{'preserve'} eq 'no';
 
     my (undef, undef, $mode, undef, $uid, $gid) = lstat( $self->{'filename'} );
     $mode = $mode & 07777;

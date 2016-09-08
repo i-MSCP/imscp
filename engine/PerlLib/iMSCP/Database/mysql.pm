@@ -92,6 +92,7 @@ sub connect
         my $oldaction = POSIX::SigAction->new();
         sigaction( SIGALRM, $action, $oldaction );
 
+        local $@;
         eval {
             alarm 5;
             $self->{'connection'} = DBI->connect(
@@ -128,21 +129,19 @@ sub useDatabase
 {
     my ($self, $database) = @_;
 
-    defined $database or die( '$database parameter is not defined' );
-
-    return $database if $database eq '' || $self->{'db'}->{'DATABASE_NAME'} eq $database;
+    defined $database && $database ne '' or die( '$database parameter is not defined or invalid' );
 
     my $oldDatabase = $self->{'db'}->{'DATABASE_NAME'};
-    my $qDatabase = $self->quoteIdentifier( $database );
-
-    my $rawDb = $self->getRawDb();
-    $rawDb->{'RaiseError'} = 1;
-
+    my $dbh = $self->getRawDb();
+    unless($dbh->ping()) {
+        $self->connect();
+        $dbh = $self->getRawDb();
+    }
+    $dbh->{'RaiseError'} = 1;
     local $@;
-    eval { $self->getRawDb->do( "use $qDatabase" ); };
-    $rawDb->{'RaiseError'} = 0;
+    eval { $dbh->do( 'use '.$self->quoteIdentifier( $database ) ); };
+    $dbh->{'RaiseError'} = 0;
     die( $@ ) if $@;
-
     $self->{'db'}->{'DATABASE_NAME'} = $database;
     $oldDatabase;
 }
