@@ -957,7 +957,7 @@ sub setupSystemDirectories
             fs_mntops  => "remount,rshared,$options"
         }
     );
-    $rs = addMountEntry("$device / $type remount,rshared,$options");
+    $rs ||= addMountEntry("$device / $type remount,rshared,$options");
     $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupSystemDirectories');
 }
 
