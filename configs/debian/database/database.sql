@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '243');
+  ('DATABASE_REVISION', '244');
 
 -- --------------------------------------------------------
 
@@ -434,7 +434,7 @@ CREATE TABLE IF NOT EXISTS `plugin` (
   `plugin_status` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `plugin_error` text COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `plugin_backend` varchar(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
-  `plugin_locked` tinyint UNSIGNED NOT NULL DEFAULT '0',
+  `plugin_lockers` text COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`plugin_id`),
   UNIQUE KEY `name` (`plugin_name`),
   INDEX `plugin_priority` (`plugin_priority`)

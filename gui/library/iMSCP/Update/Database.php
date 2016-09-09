@@ -56,7 +56,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 243;
+    protected $lastUpdate = 244;
 
     /**
      * Singleton - Make new unavailable
@@ -3608,5 +3608,21 @@ class iMSCP_Update_Database extends iMSCP_Update
         }
 
         return null;
+    }
+
+    /**
+     * Renamed plugin.plugin_lock table to plugin.plugin_lockers and set default value
+     * 
+     * @return array SQL statements to be executed
+     */
+    protected function r244()
+    {
+        return array(
+            "
+                ALTER TABLE plugin CHANGE plugin_locked plugin_lockers
+                TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL;
+            ",
+            "UPDATE plugin SET plugin_lockers = '{}'"
+        );
     }
 }
