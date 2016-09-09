@@ -172,8 +172,7 @@ sub mount($)
 
     my @mountArgv;
 
-    # Create a bind mount or remount an existing bind mount
-    if ($mflags & MS_BIND) {
+    if ($mflags & MS_BIND) { # Create a bind mount or remount an existing bind mount
         push @mountArgv, [ $fsSpec, $fsFile, $fsVfstype, $mflags, $data ];
 
         # If MS_REMOUNT was not specified, and if there is mountflags other
@@ -183,13 +182,7 @@ sub mount($)
         if (!($mflags & MS_REMOUNT) && ($mflags & ~(MS_BIND | MS_REC))) {
             push @mountArgv, [ $fsSpec, $fsFile, $fsVfstype, MS_REMOUNT | $mflags, $data ];
         }
-    }
-
-    # Create a new mount or remount an existing mount:
-    #  - If MS_REMOUNT is specified and if there is also other mountflags,
-    #    remount an existing mount.
-    #  - If the mount doesn't exists, create a new mount.
-    elsif ((($mflags & MS_REMOUNT) && $mflags != MS_REMOUNT) || !isMountpoint($fsFile)) {
+    } else { # Create a new mount or remount an existing mount:
         push @mountArgv, [ $fsSpec, $fsFile, $fsVfstype, $mflags, $data ];
     }
 
