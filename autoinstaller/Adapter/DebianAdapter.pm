@@ -511,7 +511,7 @@ sub _updateAptSourceList
     my $file = iMSCP::File->new( filename => '/etc/apt/sources.list' );
     unless (-f '/etc/apt/sources.list.bkp') {
         my $rs = $file->copyFile( '/etc/apt/sources.list.bkp' );
-        return $rs;
+        return $rs if $rs;
     }
 
     my $fileContent = $file->get();

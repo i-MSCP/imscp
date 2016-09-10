@@ -27,8 +27,6 @@ use parent 'autoinstaller::Adapter::DebianAdapter';
 
  i-MSCP autoinstaller adapter implementation for Ubuntu.
 
- See the autoinstaller::Adapter::Debian autoinstaller adapter for more information.
-
 =head1 PRIVATE METHODS
 
 =over 4
