@@ -1,6 +1,6 @@
 =head1 NAME
 
- autoinstaller::Adapter::DebianAdapter - Debian autoinstaller adapter class
+ autoinstaller::Adapter::DebianAdapter - Debian autoinstaller adapter
 
 =cut
 

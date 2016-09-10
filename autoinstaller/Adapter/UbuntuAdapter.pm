@@ -1,6 +1,6 @@
 =head1 NAME
 
- autoinstaller::Adapter::UbuntuAdapter - Ubuntu autoinstaller adapter class
+ autoinstaller::Adapter::UbuntuAdapter - Ubuntu autoinstaller adapter
 
 =cut
 
@@ -21,11 +21,6 @@ package autoinstaller::Adapter::UbuntuAdapter;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
-use iMSCP::Execute;
-use iMSCP::EventManager;
-use iMSCP::Getopt;
-use version;
 use parent 'autoinstaller::Adapter::DebianAdapter';
 
 =head1 DESCRIPTION
@@ -50,25 +45,12 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->SUPER::_init();
     $self->{'repositorySections'} = [ 'main', 'universe', 'multiverse' ];
     $self->{'preRequiredPackages'} = [
         'binutils', 'debconf-utils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl', 'lsb-release',
         'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'wget', 'rsync'
     ];
-    $self->{'aptRepositoriesToRemove'} = [ ];
-    $self->{'aptRepositoriesToAdd'} = [ ];
-    $self->{'aptPreferences'} = [ ];
-    $self->{'packagesToInstall'} = [ ];
-    $self->{'packagesToInstallDelayed'} = [ ];
-    $self->{'packagesToPreUninstall'} = [ ];
-    $self->{'packagesToUninstall'} = [ ];
-    $self->{'packagesToRebuild'} = { };
-    $self->{'need_pbuilder_update'} = 1;
-    delete $ENV{'DEBCONF_FORCE_DIALOG'};
-    $ENV{'DEBIAN_FRONTEND'} = 'noninteractive' if iMSCP::Getopt->noprompt;
-    $ENV{'DEBFULLNAME'} = 'i-MSCP Installer';
-    $ENV{'DEBEMAIL'} = 'team@i-mscp.net';
     $self;
 }
 
