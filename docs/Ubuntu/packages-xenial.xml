@@ -115,12 +115,12 @@
             <package>mysql-common</package>
         </mariadb_10.0>
         <remote_server
-                pinning_package="libmysqlclient18 mysql-client-5.6 mysql-common"
+                pinning_package="libmysqlclient20 mysql-client-5.7 mysql-common"
                 pinning_pin="release o=Ubuntu,n=xenial"
                 pinning_pin_priority="1001"
         >
-            <package>libmysqlclient18</package>
-            <package>mysql-client-5.6</package>
+            <package>libmysqlclient20</package>
+            <package>mysql-client-5.7</package>
             <package>mysql-common</package>
         </remote_server>
     </sql>

@@ -91,6 +91,7 @@ SERVERS
     Fixed: Enforce installation of our own sysvinit script for ProFTPD to prevent restart failure on log rotation
     Fixed: HSTS - Follow RFC 6797 recommendations for non-secure-to-secure redirects (status code 301 instead of 307)
     Fixed: HSTS - Wrong redirect when domain is forwarded (Apache server impl.)
+    Fixed: mysql-client-5.6 package not available in Ubuntu 16.04 repositories (Remote server)
     Fixed: Permissions on courier-authdaemon rundir are reseted on reboot (systemd tmpfiles.d)
     Fixed: Process $ORIGIN substitutions before triggering the `afterNamedAddCustomDNS' event (Bind9 server impl.)
     Fixed: Wrong argument passed to Servers::named::bind::_updateSOAserialNumber
