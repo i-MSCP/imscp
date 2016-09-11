@@ -167,7 +167,7 @@
         </tr>
         <tr>
             <td><label for="ip_netmask">{TR_IP_NETMASK}</label></td>
-            <td><input name="ip_netmask" id="ip_netmask" type="number" value="{VALUE_IP_NETMASK}"></td>
+            <td><input name="ip_netmask" id="ip_netmask" type="number" value="{VALUE_IP_NETMASK}" min="1" max="32"></td>
         </tr>
         <tr>
             <td>
