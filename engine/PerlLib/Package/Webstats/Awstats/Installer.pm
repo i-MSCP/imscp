@@ -217,7 +217,7 @@ sub _setupApache2
             DATABASE_PASSWORD  => $pass,
             DATABASE_NAME      => $dbName,
             ERROR_DOCS         => "$main::imscpConfig{'GUI_ROOT_DIR'}/public/errordocs/",
-            NAMEVIRTUALHOST    => $isApache24 ? '' : 'NameVirtualHost 127.0.0.1:8889',
+            NAMEVIRTUALHOST    => $isApache24 ? '' : 'NameVirtualHost 127.0.0.1:8889'
         }
     );
 
