@@ -224,12 +224,14 @@ sub umount($)
         return 1;
     }
 
+    $fsFile = File::Spec->canonpath( $fsFile );
+
     return 0 if $fsFile eq '/'; # Prevent umounting root fs
 
     debug($fsFile);
 
     my $cmd = 'tac /proc/mounts | awk \'{print $2}\''
-        .' | grep \'^'.quotemeta( File::Spec->canonpath( $fsFile ) ).'\(/\|\(\|\\\\\\040(deleted)\)$\)\'';
+        .' | grep \'^'.quotemeta( $fsFile ).'\(/\|\(\|\\\\\\040(deleted)\)$\)\'';
 
     my $fh;
     unless (open( $fh, '-|', $cmd )) {
