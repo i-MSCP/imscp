@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-09-01 14:55+0200\n"
-"PO-Revision-Date: 2016-09-01 12:56+0000\n"
+"POT-Creation-Date: 2016-09-13 16:35+0200\n"
+"PO-Revision-Date: 2016-09-13 14:36+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/i-mscp/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -929,7 +929,7 @@ msgstr "Вы уверены, что хотите удалить тикет %s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s' IP address?"
-msgstr ""
+msgstr "Вы уверены что хотите удалить IP адрес %%s?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
@@ -980,7 +980,7 @@ msgid "Assign group"
 msgstr "Назначить группу"
 
 msgid "Assigned to at least one reseller"
-msgstr ""
+msgstr "Закреплено как минимум за одним реселлером"
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Сначала Вам нужно создать базу данный SQL имеющую хотябы одного пользователя."
@@ -1214,7 +1214,7 @@ msgid "Click to deactivate"
 msgstr "Щелкните для деактивации"
 
 msgid "Click to edit"
-msgstr ""
+msgstr "Щелкните для редактирования"
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "Клиент / Базы данных / Добавить БД"
@@ -1772,13 +1772,14 @@ msgstr "Уважаемый {Name},\n\nпожалуйста кликните на
 msgid ""
 "Dear {NAME},\n"
 "\n"
-"This is an automatic email sent by i-MSCP:\n"
+"This is an automatic email sent by your i-MSCP control panel:\n"
 "\n"
 "Server name: {HOSTNAME}\n"
-"Server IP: {SERVER_IP}\n"
-"Version: {VERSION}\n"
-"Build: {BUILDDATE}\n"
-"Message severity: {MESSAGE_SEVERITY}\n"
+"Server IP:   {SERVER_IP}\n"
+"Client IP:   {CLIENT_IP}\n"
+"Version:     {VERSION}\n"
+"Build:       {BUILDDATE}\n"
+"Severity:    {MESSAGE_SEVERITY}\n"
 "\n"
 "==========================================================================\n"
 "{MESSAGE}\n"
@@ -1786,9 +1787,9 @@ msgid ""
 "\n"
 "Please do not reply to this email.\n"
 "\n"
-"___________________________\n"
+"________________\n"
 "i-MSCP Mailer"
-msgstr "Уважаемый {NAME},\n\nэто автоматическое сообщение было отправлено i-MSCP:\n\nНазвание сервера: {HOSTNAME}\nIP-адрес сервера: {SERVER_IP}\nВерсия: {VERSION}\nДата сборки: {BUILDDATE}\nВажность сообщения: {MESSAGE_SEVERITY}\n\n==========================================================================\n{MESSAGE}\n==========================================================================\n\nПожалуйста не отвечайте на это сообщение.\n\n___________________________\nКоманда i-MSCP"
+msgstr ""
 
 msgid ""
 "Dear {NAME},\n"
@@ -2679,7 +2680,7 @@ msgid "IP address successfully scheduled for deletion."
 msgstr "IP адрес успешно помечен для удаления."
 
 msgid "IP address successfully scheduled for modification."
-msgstr ""
+msgstr "IP адрес успешно помечен для модификации."
 
 msgid "IP addresses under control of i-MSCP"
 msgstr "IP адреса под контролем i-MSCP."
@@ -2688,13 +2689,13 @@ msgid "IP assignments"
 msgstr "Назначение IP"
 
 msgid "IP errors"
-msgstr ""
+msgstr "Ошибки IP"
 
 msgid "IP management"
 msgstr "Управление IP"
 
 msgid "IP netmask"
-msgstr ""
+msgstr "Сетевая маска"
 
 msgid "IP usage"
 msgstr "Использование IP"
@@ -3218,7 +3219,7 @@ msgid "Name cannot be empty."
 msgstr "Имя не может пустовать"
 
 msgid "Network interface (NIC)"
-msgstr ""
+msgstr "Сетевой интерфейс (NIC)"
 
 msgid "Never"
 msgstr "Никогда"
@@ -3360,7 +3361,7 @@ msgstr "Не используется"
 
 msgid ""
 "Note that in manual mode, the NIC and the subnet mask are only indicative."
-msgstr ""
+msgstr "Заметьте, что в ручном режиме NIC и маска подсети только отображается. "
 
 msgid "Nothing found - sorry"
 msgstr "Ничего не найдено"
@@ -3400,11 +3401,6 @@ msgstr "Разрешены только числа от 0 до 65535"
 
 msgid "Only positive numbers are allowed."
 msgstr "Разрешены только положительные числа"
-
-msgid ""
-"Only printable characters from the ASCII table (not extended), excepted the "
-"space, are allowed."
-msgstr "Разрешены только печатные символы из таблицы ASCII (не расширенной), кроме пробела."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "Поддерживаются только tar.gz, tar.bz2 и zip архивы."
@@ -3573,9 +3569,6 @@ msgstr "Пароль отсутствует."
 #, php-format
 msgid "Password is shorter than %s characters."
 msgstr "Пароль короче чем %s знаков."
-
-msgid "Password is too long."
-msgstr "Пароль слишком длинный."
 
 msgid "Password minimum length"
 msgstr "Минимальная длина пароля"
@@ -5408,10 +5401,10 @@ msgid "Wrong mail syntax in forward list."
 msgstr "Неверный почтовый синтаксис списка перенаправления."
 
 msgid "Wrong or unallowed IP address."
-msgstr ""
+msgstr "Неверный или неразрешенный IP адрес."
 
 msgid "Wrong or unallowed IP netmask."
-msgstr ""
+msgstr "Неверная или неразрешенная сетевая маска."
 
 msgid "Wrong request."
 msgstr "Неверный запрос."

@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-09-01 14:55+0200\n"
-"PO-Revision-Date: 2016-09-01 12:56+0000\n"
+"POT-Creation-Date: 2016-09-13 16:35+0200\n"
+"PO-Revision-Date: 2016-09-13 14:36+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/i-mscp/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -198,7 +198,7 @@ msgstr "%s: El consumo (%s) de los clientes de este revendedor es mayor al nuevo
 msgid ""
 "%s: The total of items (%s) already assigned by the reseller is greater than"
 " the new limit."
-msgstr "%s: El total de items (%s) ya asignados por el revendedor es mayor al nuevo límite."
+msgstr "%s: El total de items (%s) ya asignados por el revendedor es mayor que el nuevo límite."
 
 #, php-format
 msgid "%s: This reseller has customer(s) with unlimited items."
@@ -928,7 +928,7 @@ msgstr "¿Estas seguro de que quieres eliminar el ticket '%s' ?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s' IP address?"
-msgstr ""
+msgstr "Estas seguro que deseas eliminar la dirección IP `%%s'?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
@@ -979,7 +979,7 @@ msgid "Assign group"
 msgstr "Asignar grupo"
 
 msgid "Assigned to at least one reseller"
-msgstr ""
+msgstr "Asignada al menos a un revendedor"
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "¡Primero debes crear una Base de Datos que tenga al menos un usuario SQL!"
@@ -1771,13 +1771,14 @@ msgstr "Estimado {NAME},\n\nPor favor has clic en el siguiente enlace para renov
 msgid ""
 "Dear {NAME},\n"
 "\n"
-"This is an automatic email sent by i-MSCP:\n"
+"This is an automatic email sent by your i-MSCP control panel:\n"
 "\n"
 "Server name: {HOSTNAME}\n"
-"Server IP: {SERVER_IP}\n"
-"Version: {VERSION}\n"
-"Build: {BUILDDATE}\n"
-"Message severity: {MESSAGE_SEVERITY}\n"
+"Server IP:   {SERVER_IP}\n"
+"Client IP:   {CLIENT_IP}\n"
+"Version:     {VERSION}\n"
+"Build:       {BUILDDATE}\n"
+"Severity:    {MESSAGE_SEVERITY}\n"
 "\n"
 "==========================================================================\n"
 "{MESSAGE}\n"
@@ -1785,9 +1786,9 @@ msgid ""
 "\n"
 "Please do not reply to this email.\n"
 "\n"
-"___________________________\n"
+"________________\n"
 "i-MSCP Mailer"
-msgstr "Estimado {NAME},\n\nEste es un correo automatico enviado por i-MSCP:\n\nNombre del Servidor: {HOSTNAME}\nIP del Servidor: {SERVER_IP}\nVersión: {VERSION}\nCompilación: {BUILDDATE}\nSeveridad del mensaje: {MESSAGE_SEVERITY}\n\n==========================================================================\n{MESSAGE}\n==========================================================================\n\nPor favor no respondas este correo.\n\n___________________________\ni-MSCP Mailer"
+msgstr ""
 
 msgid ""
 "Dear {NAME},\n"
@@ -2678,7 +2679,7 @@ msgid "IP address successfully scheduled for deletion."
 msgstr "Dirección IP correctamente programada para eliminación."
 
 msgid "IP address successfully scheduled for modification."
-msgstr ""
+msgstr "Dirección IP correctamente programada para modificación"
 
 msgid "IP addresses under control of i-MSCP"
 msgstr "Direcciones IP bajo el control de i-MSCP"
@@ -2885,10 +2886,10 @@ msgid "Invalid htaccess group name."
 msgstr "Nombre de grupo htaccess no válido."
 
 msgid "Invalid menu order."
-msgstr "Orden de menú no válido."
+msgstr "Orden de menú inválido."
 
 msgid "Invalid name."
-msgstr "Nombre no válido."
+msgstr "Nombre inválido."
 
 msgid "Invalid payload received from GitHub"
 msgstr "Payload invalido recibido desde GitHub"
@@ -2898,7 +2899,7 @@ msgid "Invalid plugin directory: %s"
 msgstr "Directorio de Plugin inválido: %s"
 
 msgid "Invalid private key or passphrase."
-msgstr "Clave privada o frase de contraseña no válida."
+msgstr "Clave privada o frase de contraseña inválida."
 
 msgid "Invalid target."
 msgstr "Destino no válido."
@@ -3359,7 +3360,7 @@ msgstr "No usado"
 
 msgid ""
 "Note that in manual mode, the NIC and the subnet mask are only indicative."
-msgstr ""
+msgstr "Note que en modo manual, la NIC y la mascara de red son solamente indicativas."
 
 msgid "Nothing found - sorry"
 msgstr "Nada encontrado - disculpa"
@@ -3399,11 +3400,6 @@ msgstr "Sólo se permiten números en el rango entre 0 y 65535."
 
 msgid "Only positive numbers are allowed."
 msgstr "Solo se admiten números positivos."
-
-msgid ""
-"Only printable characters from the ASCII table (not extended), excepted the "
-"space, are allowed."
-msgstr "Sólo los caracteres imprimibles de la tabla ASCII (no extendida), exceptuando el espacio, están permitidos."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "Sólo tar.gz, tar.bz2 y archivos zip son aceptados."
@@ -3572,9 +3568,6 @@ msgstr "Falta la contraseña."
 #, php-format
 msgid "Password is shorter than %s characters."
 msgstr "La contraseña es menor que %s caracteres."
-
-msgid "Password is too long."
-msgstr "La contraseña es demasiado larga."
 
 msgid "Password minimum length"
 msgstr "Longitud mínima de contraseña"
@@ -5407,10 +5400,10 @@ msgid "Wrong mail syntax in forward list."
 msgstr "Sintaxis de correo incorrecta en la lista de reenvio."
 
 msgid "Wrong or unallowed IP address."
-msgstr ""
+msgstr "Dirección IP incorrecta o no disponible"
 
 msgid "Wrong or unallowed IP netmask."
-msgstr ""
+msgstr "Mascara de red IP incorrecta o no disponible"
 
 msgid "Wrong request."
 msgstr "Peticion errónea."

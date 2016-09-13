@@ -6,14 +6,16 @@
 # Andreas Sutor, 2016
 # Arthur Mayer <mayer.arthur@gmail.com>, 2016
 # Laurent Declercq <l.declercq@nuxwin.com>, 2016
+# Moritz Straub <z@aian.de>, 2016
 # Ninos Ego <me@ninosego.de>, 2016
 # Thomas <thomasbjoh@gmx.de>, 2016
+# Timo Vomstein <info@vomstein.me>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-09-01 14:55+0200\n"
-"PO-Revision-Date: 2016-09-01 12:56+0000\n"
+"POT-Creation-Date: 2016-09-13 16:35+0200\n"
+"PO-Revision-Date: 2016-09-13 14:36+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/i-mscp/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -931,7 +933,7 @@ msgstr "Sind Sie sicher, dass Sie das '%s' Ticket löschen wollen?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s' IP address?"
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie die IP `%%s' löschen möchten?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
@@ -982,7 +984,7 @@ msgid "Assign group"
 msgstr "Gruppe zuweisen"
 
 msgid "Assigned to at least one reseller"
-msgstr ""
+msgstr "Mindestens einem Reseller zugeordnet"
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "Als erstes müssen Sie eine Datenbank mit mindestens einem SQL-Benutzer erstellen."
@@ -1216,7 +1218,7 @@ msgid "Click to deactivate"
 msgstr "Klicke zum Deaktivieren"
 
 msgid "Click to edit"
-msgstr ""
+msgstr "Klicken zum Ändern"
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "Kunde / Datenbanken / SQL-Datenbank hinzufügen"
@@ -1774,13 +1776,14 @@ msgstr "Hallo {NAME},\n\nBitte benutzen Sie den folgenden Link um Ihr Passwort z
 msgid ""
 "Dear {NAME},\n"
 "\n"
-"This is an automatic email sent by i-MSCP:\n"
+"This is an automatic email sent by your i-MSCP control panel:\n"
 "\n"
 "Server name: {HOSTNAME}\n"
-"Server IP: {SERVER_IP}\n"
-"Version: {VERSION}\n"
-"Build: {BUILDDATE}\n"
-"Message severity: {MESSAGE_SEVERITY}\n"
+"Server IP:   {SERVER_IP}\n"
+"Client IP:   {CLIENT_IP}\n"
+"Version:     {VERSION}\n"
+"Build:       {BUILDDATE}\n"
+"Severity:    {MESSAGE_SEVERITY}\n"
 "\n"
 "==========================================================================\n"
 "{MESSAGE}\n"
@@ -1788,9 +1791,9 @@ msgid ""
 "\n"
 "Please do not reply to this email.\n"
 "\n"
-"___________________________\n"
+"________________\n"
 "i-MSCP Mailer"
-msgstr "Hallo {NAME},\n\nDies ist eine automatisch verschickte E-Mail von i-MSCP:\n\nServername: {HOSTNAME}\nServer IP: {SERVER_IP}\nVersion: {VERSION}\nBuild: {BUILDDATE}\nNachrichtenpriorität : {MESSAGE_SEVERITY}\n\n==========================================================================\n{MESSAGE}\n==========================================================================\n\nBitte antworten Sie nicht auf diese E-Mail.\n\n___________________________\ni-MSCP Mailer"
+msgstr ""
 
 msgid ""
 "Dear {NAME},\n"
@@ -2681,7 +2684,7 @@ msgid "IP address successfully scheduled for deletion."
 msgstr "IP-Adresse erfolgreich zum Löschen vorgemerkt."
 
 msgid "IP address successfully scheduled for modification."
-msgstr ""
+msgstr "IP-Adresse erfolgreich zum Ändern vorgemerkt."
 
 msgid "IP addresses under control of i-MSCP"
 msgstr "IP-Adresse unter der Kontrolle von i-MSCP."
@@ -2690,13 +2693,13 @@ msgid "IP assignments"
 msgstr "IP Zuweisungen"
 
 msgid "IP errors"
-msgstr ""
+msgstr "IP Fehler"
 
 msgid "IP management"
 msgstr "IP Verwaltung"
 
 msgid "IP netmask"
-msgstr ""
+msgstr "IP Netzmaske"
 
 msgid "IP usage"
 msgstr "IP Nutzung"
@@ -3220,7 +3223,7 @@ msgid "Name cannot be empty."
 msgstr "Name darf nicht leer sein."
 
 msgid "Network interface (NIC)"
-msgstr ""
+msgstr "Netzwerkschnittstelle (NIC)"
 
 msgid "Never"
 msgstr "Niemals"
@@ -3362,7 +3365,7 @@ msgstr "Nicht benutzt"
 
 msgid ""
 "Note that in manual mode, the NIC and the subnet mask are only indicative."
-msgstr ""
+msgstr "Beachten Sie, dass im manuellen Modus die NIC und die Subnet Maske nur indikativ sind."
 
 msgid "Nothing found - sorry"
 msgstr "Leider nichts gefunden"
@@ -3402,11 +3405,6 @@ msgstr "Es sind nur Zahlen im Bereich von 0 bis 65535 erlaubt."
 
 msgid "Only positive numbers are allowed."
 msgstr "Nur positive Zahlen sind erlaubt."
-
-msgid ""
-"Only printable characters from the ASCII table (not extended), excepted the "
-"space, are allowed."
-msgstr "Es sind nur darstellbare Zeichen aus der (nicht erweiterten) ASCII-Tabelle, ausgenommen dem Leerzeichen, erlaubt."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "Es werden nur tar.gz, tar.bz2 und zip Archive akzeptiert."
@@ -3575,9 +3573,6 @@ msgstr "Passwort fehlt."
 #, php-format
 msgid "Password is shorter than %s characters."
 msgstr "Passwort ist kürzer als %s Zeichen."
-
-msgid "Password is too long."
-msgstr "Passwort ist zu lang"
 
 msgid "Password minimum length"
 msgstr "Minimale Passwortlänge"
@@ -5410,10 +5405,10 @@ msgid "Wrong mail syntax in forward list."
 msgstr "Falsche Mail-Syntax in der Weiterleitungsliste."
 
 msgid "Wrong or unallowed IP address."
-msgstr ""
+msgstr "Falsche oder nicht erlaubte IP Adresse."
 
 msgid "Wrong or unallowed IP netmask."
-msgstr ""
+msgstr "Falsche oder nicht erlaubte IP Netzmaske."
 
 msgid "Wrong request."
 msgstr "Falsche Anfrage."
