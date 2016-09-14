@@ -93,12 +93,12 @@ Any LTS version >= 12.04 (Ubuntu 16.04 recommended)
 #### 3. Download and untar the distribution files
 
     # cd /usr/local/src
-    # wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
-    # tar -xzf <version>.tar.gz
+    # wget https://github.com/i-MSCP/imscp/archive/1.3.1.tar.gz
+    # tar -xzf 1.3.1.tar.gz
 
 #### 4. Change to the newly created directory
 
-    # cd imscp-<version>
+    # cd imscp-1.3.1
 
 #### 5. Install i-MSCP by running its installer
 
@@ -114,12 +114,12 @@ Any LTS version >= 12.04 (Ubuntu 16.04 recommended)
 #### 2. Download and untar the distribution files
 
     # cd /usr/local/src
-    # wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
-    # tar -xzf <version>.tar.gz
+    # wget https://github.com/i-MSCP/imscp/archive/1.3.1.tar.gz
+    # tar -xzf 1.3.1.tar.gz
 
 #### 3. Change to the newly created directory
 
-    # cd imscp-<version>
+    # cd imscp-1.3.1
 
 #### 4. Update i-MSCP by running its installer
 
