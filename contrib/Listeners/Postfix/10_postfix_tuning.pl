@@ -61,7 +61,7 @@ $em->register(
         while(my ($param, $value) = each( %mainCfParameters )) {
             $params{$param} = {
                 'action' => 'replace',
-                'values' => split /,\s+/, $value
+                'values' => [ split /,\s+/, $value ]
             };
         }
 
