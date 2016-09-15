@@ -1897,6 +1897,10 @@ sub _cleanTemplate
                     "# SECTION proxy_redirect BEGIN.\n", "# SECTION proxy_redirect END.\n", '', $$cfgTpl
                 );
             }
+        } else {
+            $$cfgTpl = replaceBloc(
+                "# SECTION proxy_redirect BEGIN.\n", "# SECTION proxy_redirect END.\n", '', $$cfgTpl
+            );
         }
 
         if ($isSSLVhost && !$data->{'HSTS_SUPPORT'}) {
