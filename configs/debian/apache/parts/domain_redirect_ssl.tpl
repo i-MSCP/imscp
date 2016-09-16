@@ -20,10 +20,8 @@
     # SECTION ssl_proxy BEGIN.
     SSLProxyEngine on
     # SECTION ssl_proxy END.
-    RequestHeader set X-Forwarded-Host "{DOMAIN_NAME}"
-    RequestHeader set X-Forwarded-For %{REMOTE_ADDR}e
-    RequestHeader add X-Forwarded-Ssl on
     RequestHeader set X-Forwarded-Proto "https"
+    RequestHeader set X-Forwarded-Port 443
     ProxyPreserveHost {FORWARD_PRESERVE_HOST}
     ProxyPass /errors/ !
     ProxyPass /.well-known/ !
