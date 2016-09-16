@@ -2629,7 +2629,6 @@ function showNotFoundErrorPage()
  */
 function showForbiddenErrorPage()
 {
-
     $cfg = iMSCP_Registry::get('config');
     $filePath = $cfg['GUI_ROOT_DIR'] . '/public/errordocs/403.html';
     header("Status: 403 Forbidden");
