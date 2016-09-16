@@ -26,12 +26,12 @@
     </httpd>
     <php default="php7.0">
         <php7.0
-		repository="http://packages.dotdeb.org jessie all"
+                repository="http://packages.dotdeb.org jessie all"
                 repository_key_uri="https://www.dotdeb.org/dotdeb.gpg"
                 pinning_package="*"
                 pinning_pin="origin packages.dotdeb.org"
                 pinning_pin_priority="1001"
-		>
+        >
             <package>php7.0</package>
             <package>php7.0-cli</package>
             <package>php7.0-common</package>
@@ -84,7 +84,9 @@
             <package_conflict>vsftpd</package_conflict>
         </proftpd>
         <vsftpd>
-            <package rebuild_with_patches="libpam-mysql/patches" patch_sys_type="dpatch" pkg_src_name="pam-mysql">libpam-mysql</package>
+            <package rebuild_with_patches="libpam-mysql/patches" patch_sys_type="dpatch" pkg_src_name="pam-mysql">
+                libpam-mysql
+            </package>
             <package>vsftpd</package>
             <package_conflict>proftpd-basic</package_conflict>
         </vsftpd>

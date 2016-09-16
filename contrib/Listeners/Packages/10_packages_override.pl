@@ -1,4 +1,4 @@
-# i-MSCP Listener::Apache2::DualStack listener file
+# i-MSCP Listener::Packages::Override listener file
 # Copyright (C) 2015-2016 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -31,9 +31,9 @@ my $DISTRO_PACKAGES_FILE = '/path/to/your/own/package/file';
 # Please don't edit anything below this line
 
 iMSCP::EventManager->getInstance()->register('onBuildPackageList', sub {
-	my $pkgFile = shift;
-	$$pkgFile = $DISTRO_PACKAGES_FILE;
-	0;
+    my $pkgFile = shift;
+    $$pkgFile = $DISTRO_PACKAGES_FILE;
+    0;
 });
 
 
