@@ -94,6 +94,12 @@ Provides dual stack support for bind9.
 
 Activates HTTP Strict Transport Security (HSTS).
 
+## Packages listener files
+
+### 10_packages_override.pl
+
+Replaces package file with custom one.
+
 ## PHP listener files
 
 ### 10_php_confoptions_override.pl
@@ -173,6 +179,6 @@ Changes the Roundcube Webmail configuration to connect through TLS.
 
 ## System listener files
 
-## 10_system_hosts.pl
+### 10_system_hosts.pl
 
 Allows to add host entries in the system hosts file (eg. /etc/hosts).

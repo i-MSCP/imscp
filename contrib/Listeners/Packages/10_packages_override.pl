@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Replace package file with custom one.
+## Replaces package file with custom one.
 #
 
 package Listener::Packages::Override;
