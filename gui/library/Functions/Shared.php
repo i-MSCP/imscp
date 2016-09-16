@@ -2623,6 +2623,51 @@ function showNotFoundErrorPage()
 }
 
 /**
+ * Show 404 error page
+ *
+ * @return void
+ */
+function showForbiddenErrorPage()
+{
+
+    $cfg = iMSCP_Registry::get('config');
+    $filePath = $cfg['GUI_ROOT_DIR'] . '/public/errordocs/403.html';
+    header("Status: 403 Forbidden");
+    $response = '';
+
+    if (isset($_SERVER['HTTP_ACCEPT'])) {
+        if (
+            (
+                strpos($_SERVER['HTTP_ACCEPT'], 'text/html') !== false ||
+                strpos($_SERVER['HTTP_ACCEPT'], 'application/xhtml') !== false
+            ) && !is_xhr()
+        ) {
+            $response = file_get_contents($filePath);
+        } elseif (strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
+            header("Content-type: application/json");
+            $response = json_encode(array('code' => 404, 'message' => 'Forbidden'));
+        } elseif (strpos($_SERVER['HTTP_ACCEPT'], 'application/xmls') !== false) {
+            header("Content-type: text/xml;charset=utf-8");
+            $response = '<?xml version="1.0" encoding="utf-8"?>';
+            $response = $response . '<response><code>403</code>';
+            $response = $response . '<message>Forbidden</message></response>';
+        } elseif (!is_xhr()) {
+            include $filePath;
+        }
+    } elseif (!is_xhr()) {
+        $response = file_get_contents($filePath);
+    }
+
+    if ($response != '') {
+        echo $response;
+    }
+
+    exit;
+}
+
+
+
+/**
  * @param  $crnt
  * @param  $max
  * @param  $bars_max

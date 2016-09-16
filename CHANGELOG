@@ -4,6 +4,10 @@
 Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
+FRONTEND
+    Added: showforbiddenErrorPage() function
+    Fixed: Too many redirects when attemping to login from an external host (when external login is dissalowed)
+
 LISTENERS
     Fixed: Can't use string ("all") as an ARRAY ref while "strict refs" in use (10_postfix_tuning.pl)
 
