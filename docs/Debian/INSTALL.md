@@ -108,21 +108,31 @@ Any released version >= 7.x (Debian 8.x recommended)
 
 ### 3) i-MSCP Upgrade
 
-#### 1. Make sure that your system is up-to-date
+#### 1. Make sure to have a backup of your current data
+
+Before any upgrade attempt it is highly recommended to perform a backup of the following directories
+
+    /var/www/virtual
+    /var/mail/virtual
+
+Those directories hold the data of your customers and it is really important to backup them for an easy recovering in
+case something goes wrong during upgrade.
+
+#### 2. Make sure that your system is up-to-date
 
     # apt-get update
     # apt-get dist-upgrade
 
-#### 2. Download and untar the distribution files
+#### 3. Download and untar the distribution files
 
     # cd /usr/local/src
     # wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
     # tar -xzf <version>.tar.gz
 
-#### 3. Change to the newly created directory
+#### 4. Change to the newly created directory
 
     # cd imscp-<version>
 
-#### 4. Update i-MSCP by running its installer
+#### 5. Update i-MSCP by running its installer
 
     # perl imscp-autoinstall -d
