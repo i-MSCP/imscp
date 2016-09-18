@@ -332,8 +332,8 @@ function checkAction($pluginManager, $pluginName, $action)
 
     switch ($action) {
         case 'install':
-            if (!in_array($pluginStatus, array('toinstall', 'uninstalled'))
-                || !$pluginManager->pluginIsInstallable($pluginName)
+            if (!$pluginManager->pluginIsInstallable($pluginName)
+                || !in_array($pluginStatus, array('toinstall', 'uninstalled'))
             ) {
                 set_page_message(tr('Plugin %s cannot be installed.', $pluginName), 'warning');
                 $ret = false;
@@ -341,8 +341,8 @@ function checkAction($pluginManager, $pluginName, $action)
 
             break;
         case 'uninstall':
-            if (!in_array($pluginStatus, array('touninstall', 'disabled'))
-                || !$pluginManager->pluginIsUninstallable($pluginName)
+            if(!$pluginManager->pluginIsUninstallable($pluginName) ||
+                !in_array($pluginStatus, array('touninstall', 'disabled'))
             ) {
                 set_page_message(tr('Plugin %s cannot be uninstalled.', $pluginName), 'warning');
                 $ret = false;
@@ -378,10 +378,12 @@ function checkAction($pluginManager, $pluginName, $action)
 
             break;
         case 'delete':
-            if (!in_array($pluginStatus, array('todelete'))) {
-                if ($pluginManager->pluginIsUninstallable($pluginName) && $pluginStatus != 'uninstalled') {
-                    $ret = false;
-                } elseif (!$pluginManager->pluginIsUninstallable($pluginName) && $pluginStatus != 'disabled') {
+            if ($pluginStatus != 'todelete') {
+                if($pluginManager->pluginIsUninstallable($pluginName)) {
+                    if($pluginStatus != 'uninstalled') {
+                        $ret = false;
+                    }
+                } elseif(!in_array($pluginStatus, array('uninstalled', 'disabled'))) {
                     $ret = false;
                 }
 
@@ -392,7 +394,7 @@ function checkAction($pluginManager, $pluginName, $action)
 
             break;
         case 'protect':
-            if (!in_array($pluginStatus, array('enabled'))) {
+            if ($pluginStatus != 'enabled') {
                 set_page_message(tr('Plugin %s cannot be protected.', $pluginName), 'warning');
                 $ret = false;
             }
