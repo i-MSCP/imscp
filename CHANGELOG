@@ -10,6 +10,9 @@ BACKEND
 CONFIGS
     Updated: Request headers in redirect vhosts (Apache2)
 
+CRONJOBS
+    Fixed: run() subroutine is run twice per process - imscp-disable-accounts
+
 FRONTEND
     Added: showForbiddenErrorPage() function
     Fixed: Too many redirects when attempting to login from an external host (when external login is disallowed)

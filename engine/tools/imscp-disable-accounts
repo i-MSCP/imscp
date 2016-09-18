@@ -132,7 +132,7 @@ sub run
 
 my $rs = run();
 $bootstrapper->unlock('/tmp/imscp-disable-accounts.lock');
-exit run();
+exit $rs;
 
 =head1 AUTHOR
 
