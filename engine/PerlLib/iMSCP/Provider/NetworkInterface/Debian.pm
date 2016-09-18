@@ -177,6 +177,7 @@ sub _updateInterfacesFile
     return $rs if $rs;
 
     my $cAddr = $self->{'net'}->normalizeAddr( $data->{'ip_address'} );
+    my $eAddr = $self->{'net'}->expandAddr( $data->{'ip_address'} );
     
     my $fileContent = $file->get();
     $fileContent = iMSCP::TemplateParser::replaceBloc(
@@ -186,8 +187,10 @@ sub _updateInterfacesFile
         $fileContent
     );
 
-    if ($action eq 'add' && $data->{'ip_config_mode'} eq 'auto') {
-        my $eAddr = $self->{'net'}->expandAddr( $data->{'ip_address'} );
+    if ($action eq 'add'
+        && $data->{'ip_config_mode'} eq 'auto'
+        && $fileContent !~ /^[^#]*(?:address|ip\s+addr.*?)\s+(?:$cAddr|$eAddr|$data->{'ip_address'})(?:\s+|\n)/gm
+    ) {
         $fileContent .= iMSCP::TemplateParser::process(
             {
                 ip_id       => $data->{'ip_id'},

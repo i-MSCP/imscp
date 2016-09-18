@@ -4,6 +4,9 @@
 Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
+BACKEND
+    Fixed: An IP address must not be added in the interfaces file if already present, even if auto mode is set
+
 CONFIGS
     Updated: Request headers in redirect vhosts (Apache2)
 
@@ -26,6 +29,14 @@ YOUTRACK
 2016-09-14: Laurent Declercq
     RELEASE i-MSCP 1.3.1
 
+BACKEND
+    Added: iMSCP::Mount::isMountpoint() function (iMSCP::Mount library)
+    Added: iMSCP::Syscall library
+    Added: Regexp support for begin and ending tags (iMSCP::TemplateParser library)
+    Added: Support for `rbind' (iMSCP::Mount library)
+    Fixed: Could not bind mount socket files (iMSCP::Mount library)
+    Rewritten: iMSCP::Mount library - Make direct syscalls instead of calling mount(8)/umount(8)
+
 CONFIG
     Added: index.xhtml and index.htm to DirectoryIndex directive (Apache2 vhosts)
     Added: `localhost' to `mydestination' parameter (Postfix)
@@ -39,14 +50,6 @@ CONTRIB
     Added: 10_named_override_default_rr.pl listener
     Removed: 10_named_tuning.pl listener (replaced by 10_named_override_default_rr.pl listener)
     Removed: 10_named_tuning2.pl listener (replaced by 10_named_override_default_ns_rr.pl listener)
-
-BACKEND
-    Added: iMSCP::Mount::isMountpoint() function (iMSCP::Mount library)
-    Added: iMSCP::Syscall library
-    Added: Regexp support for begin and ending tags (iMSCP::TemplateParser library)
-    Added: Support for `rbind' (iMSCP::Mount library)
-    Fixed: Could not bind mount socket files (iMSCP::Mount library)
-    Rewritten: iMSCP::Mount library - Make direct syscalls instead of calling mount(8)/umount(8)
 
 DATABASE
     Added: Compound unique index on the domain_traffic table to avoid slow query and duplicate entries
