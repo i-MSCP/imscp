@@ -26,7 +26,7 @@ PLUGINS
     Fixed: Could not delete plugins which implement the install() method but not the uninstall method()
 
 SERVERS
-    Fixed: Installation fail if current main.cf is missing or misconfigured (Servers::mta::postfix::installer)
+    Fixed: Installation fail if main.cf is missing or misconfigured (Servers::mta::postfix::installer)
 
 YOUTRACK
     #IP-1616 ProxyPass entries not removed in vhost file if HSTS is enabled
