@@ -31,6 +31,7 @@ SERVERS
 YOUTRACK
     #IP-1616 ProxyPass entries not removed in vhost file if HSTS is enabled
     #IP-1617 Reverse proxy: Localhost is not allowed as address
+    #IP-1623 SQL root user is deleted when upgrading from an i-MSCP version older than 1.3.0
 
 ------------------------------------------------------------------------------------------------------------------------
 1.3.1
