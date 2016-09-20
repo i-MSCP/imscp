@@ -170,7 +170,7 @@ sub unlock
     $self;
 }
 
-=item unlock([$lockFile])
+=item DESTROY()
 
  Unlock any locked file
 
