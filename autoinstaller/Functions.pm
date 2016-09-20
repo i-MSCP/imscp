@@ -264,9 +264,9 @@ sub install
     if (@runningJobs) {
         iMSCP::Dialog->getInstance()->msgbox( <<"EOF" );
 
-i-MSCP jobs are currently running on your system.
+There is i-MSCP jobs currently running on your system.
 
-You must wait until the end of these jobs and re-run the installer.
+You must wait until the end of these jobs for run the installer.
 
 Running jobs are: @runningJobs
 EOF

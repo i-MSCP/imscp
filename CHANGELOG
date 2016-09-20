@@ -6,6 +6,8 @@ Git 1.3.x
 
 BACKEND
     Fixed: An IP address must not be added in the interfaces file if already present, even if auto mode is set
+    Fixed: Lock files are never deleted
+    Fixed: Remove any lock on shutdown (iMSCP::Bootstrapper)
 
 CONFIGS
     Updated: Request headers in redirect vhosts (Apache2)

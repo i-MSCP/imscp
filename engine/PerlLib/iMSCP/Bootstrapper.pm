@@ -166,7 +166,21 @@ sub unlock
     );
     close $self->{'locks'}->{$lockFile};
     delete $self->{'locks'}->{$lockFile};
+    unlink $lockFile;
     $self;
+}
+
+=item unlock([$lockFile])
+
+ Unlock any locked file
+
+=cut
+
+sub DESTROY
+{
+    my $self = shift;
+
+    $self->unlock( $_ ) for keys %{$self->{'locks'}};
 }
 
 =back
