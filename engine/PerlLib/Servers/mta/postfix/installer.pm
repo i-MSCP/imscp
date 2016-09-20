@@ -81,8 +81,8 @@ sub install
     my $self = shift;
 
     my $rs = $self->_createPostfixMaps();
-    $rs ||= $self->_buildAliasesDb();
     $rs ||= $self->_buildConf();
+    $rs ||= $self->_buildAliasesDb();
     $rs ||= $self->_saveConf();
     $rs ||= $self->_oldEngineCompatibility();
 }
@@ -500,7 +500,12 @@ sub _buildMainCfFile
         MTA_MAILBOX_GID          => $gid
     };
 
-    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'postfix', 'main.cf', \ my $cfgTpl, $data );
+    # We always create a dummy postfix main.cf file
+    # This cover cases where the main.cf is missing or misconfigured, leading to postconf command failure 
+    my $file = iMSCP::File->new( filename => $self->{'config'}->{'POSTFIX_CONF_FILE'} );
+    my $rs = $file->save();
+
+    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'postfix', 'main.cf', \ my $cfgTpl, $data );
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
@@ -531,9 +536,6 @@ sub _buildMainCfFile
     }
 
     $rs = $self->{'eventManager'}->trigger( 'afterMtaBuildMainCfFile', \ $cfgTpl, 'main.cf' );
-    return $rs if $rs;
-
-    my $file = iMSCP::File->new( filename => $self->{'config'}->{'POSTFIX_CONF_FILE'} );
     $rs ||= $file->set( $cfgTpl );
     $rs ||= $file->save();
     return $rs if $rs;
