@@ -42,26 +42,6 @@ use locale;
 setlocale(LC_ALL, 'C.UTF-8');
 $ENV{'LANG'} = 'C.UTF-8';
 
-newDebug('imscp-disable-accounts.log');
-
-# Parse command line options
-iMSCP::Getopt->parseNoDefault(sprintf('Usage: perl %s [OPTION]...', basename($0)) . qq {
-
-Script that deactivates expired client accounts
-
-OPTIONS:
- -v,    --verbose       Enable verbose mode.},
- 'verbose|v' => sub { setVerbose(@_); }
-);
-
-my $bootstrapper = iMSCP::Bootstrapper->getInstance();
-exit unless $bootstrapper->lock('/tmp/imscp-disable-accounts.lock', 'nowait');
-$bootstrapper->getInstance()->boot(
-    {
-        nolock => 'yes', norequirements => 'yes', config_readonly => 'yes'
-    }
-);
-
 sub run
 {
     my $db = iMSCP::Database->factory();
@@ -129,6 +109,26 @@ sub run
 
     $rs;
 }
+
+newDebug('imscp-disable-accounts.log');
+
+# Parse command line options
+iMSCP::Getopt->parseNoDefault(sprintf('Usage: perl %s [OPTION]...', basename($0)) . qq {
+
+Script that deactivates expired client accounts
+
+OPTIONS:
+ -v,    --verbose       Enable verbose mode.},
+ 'verbose|v' => sub { setVerbose(@_); }
+);
+
+my $bootstrapper = iMSCP::Bootstrapper->getInstance();
+exit unless $bootstrapper->lock('/tmp/imscp-disable-accounts.lock', 'nowait');
+$bootstrapper->getInstance()->boot(
+    {
+        nolock => 'yes', norequirements => 'yes', config_readonly => 'yes'
+    }
+);
 
 my $rs = run();
 $bootstrapper->unlock('/tmp/imscp-disable-accounts.lock');
