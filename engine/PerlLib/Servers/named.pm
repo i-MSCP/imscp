@@ -52,27 +52,19 @@ sub factory
     return $instance if defined $instance;
 
     my $sName = $main::imscpConfig{'NAMED_SERVER'};
-    my $package = undef;
 
-    if ($sName eq 'external_server') {
-        if (defined $main::imscpOldConfig) {
-            my $oldSname = $main::imscpOldConfig{'NAMED_SERVER'} || '';
+    if (defined $main::execmode && $main::execmode eq 'setup') {
+        if ($sName eq 'external_server' && $main::imscpOldConfig{'NAMED_SERVER'} ne '') {
+            my $package = "Servers::named::$main::imscpConfig{'NAMED_SERVER'}";
+            eval "require $package";
+            fatal( $@ ) if $@;
 
-            if ($oldSname ne '' && $oldSname ne 'external_server') {
-                $package = "Servers::named::$oldSname";
-                eval "require $package";
-                fatal( $@ ) if $@;
-
-                my $rs = $package->getInstance()->uninstall();
-                fatal( spritnf( "Could not uninstall `%s' server", $oldSname ) ) if $rs;
-            }
+            my $rs = $package->getInstance()->uninstall();
+            fatal( sprintf( "Could not uninstall `%s' server", $main::imscpConfig{'NAMED_SERVER'} ) ) if $rs;
         }
-
-        $package = 'Servers::noserver';
-    } else {
-        $package = "Servers::named::$sName";
     }
 
+    my $package = ($sName eq 'external_server') ? 'Servers::noserver' : "Servers::named::$sName";
     eval "require $package";
     fatal( $@ ) if $@;
     $instance = $package->getInstance();

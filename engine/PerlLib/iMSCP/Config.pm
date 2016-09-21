@@ -51,7 +51,7 @@ use parent 'Common::Object';
   - nocreate: Do not create file if it doesn't already exist (throws a fatal error instead)
   - nofail: Do not throws fatal error in case configuration file doesn't exist
   - readonly: Sets a read-only access on the tied configuration file
-  - temporary: Enable temporary overriding of configuration values ( changes are not persistent )
+  - temporary: Enable temporary overriding of configuration values (changes are not persistent)
 
 =cut
 
@@ -269,9 +269,8 @@ sub CLEAR
 sub _replaceConfig
 {
     my ($self, $paramName, $value) = @_;
-
-    $value = '' unless defined $value;
-
+    $value //= '';
+    
     unless ($self->{'temporary'}) {
         @{$self->{'confFile'}}[$self->{'lineMap'}->{$paramName}] = "$paramName = $value";
     }
@@ -292,10 +291,13 @@ sub _replaceConfig
 sub _insertConfig
 {
     my ($self, $paramName, $value) = @_;
+    $value //= '';
 
-    $value ||= '' unless defined $value;
-    push @{$self->{'confFile'}}, "$paramName = $value";
-    $self->{'lineMap'}->{$paramName} = $#{$self->{confFile}};
+    unless($self->{temporary}) {
+        push @{$self->{'confFile'}}, "$paramName = $value";
+        $self->{'lineMap'}->{$paramName} = $#{$self->{confFile}};
+    }
+
     $self->{'configValues'}->{$paramName} = $value;
 }
 

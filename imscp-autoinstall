@@ -56,7 +56,7 @@ iMSCP::Requirements->new()->user();
 newDebug('imscp-autoinstall.log');
 
 # Set backend mode
-$main::execmode = 'setup' unless $main::execmode;
+$main::execmode = 'setup' unless defined $main::execmode;
 
 # Init variable that holds questions
 %main::questions = () unless %main::questions;

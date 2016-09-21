@@ -48,29 +48,18 @@ use iMSCP::Packages;
 use iMSCP::Plugins;
 use iMSCP::Getopt;
 use iMSCP::Service;
-use iMSCP::Mount qw / mount addMountEntry /;
+use iMSCP::Mount qw / mount umount addMountEntry isMountpoint /;
 use Servers::sqld;
 use Quota;
 
 # Boot
 sub setupBoot
 {
-    # Reset config variables
-    undef %main::imscpConfig;
-    undef %main::imscpOldConfig;
-
+    # Untie previous configuration object if any (i-MSCP installer context)
+    untie %main::imscpConfig;
     # We do not try to establish connection to the database since needed data can be unavailable at this stage
     iMSCP::Bootstrapper->getInstance()->boot({ mode => 'setup', nodatabase => 'yes' });
-
-    # Make sure that we have an old conffile
-    unless (-f "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf") {
-        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf" )->copyFile(
-            "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf"
-        );
-        return $rs if $rs;
-    }
-
-    tie %main::imscpOldConfig, 'iMSCP::Config', fileName => "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf";
+    %main::imscpOldConfig = %main::imscpConfig unless %main::imscpOldConfig;
     0;
 }
 
@@ -185,7 +174,6 @@ sub setupTasks
     my @steps = (
         [ \&setupSaveConfig,              'Saving configuration' ],
         [ \&setupCreateMasterUser,        'Creating system master user' ],
-        [ \&setupSystemDirectories,       'Setup system directories' ],
         [ \&setupServerHostname,          'Setting server hostname' ],
         [ \&setupServiceSsl,              'Setup SSL for i-MSCP services' ],
         [ \&setupServices,                'Setup i-MSCP services' ],
@@ -193,14 +181,14 @@ sub setupTasks
         [ \&setupRegisterPluginListeners, 'Register plugin setup listeners' ],
         [ \&setupPreInstallServers,       'Servers pre-installation...' ],
         [ \&setupPreInstallPackages,      'Packages pre-installation...' ],
+        [ \&setupSystemDirectories,       'Setup system directories' ],
         [ \&setupInstallServers,          'Servers installation...' ],
         [ \&setupInstallPackages,         'Packages installation...' ],
         [ \&setupPostInstallServers,      'Servers post-installation...' ],
         [ \&setupPostInstallPackages,     'Packages post-installation...' ],
         [ \&setupSetPermissions,          'Setting permissions...' ],
         [ \&setupDbTasks,                 'Processing DB tasks...' ],
-        [ \&setupRestartServices,         'Restarting services...' ],
-        [ \&setupSyncConfig,              'Syncing configuration file...']
+        [ \&setupRestartServices,         'Restarting services...' ]
     );
 
     my $step = 1;
@@ -915,49 +903,34 @@ sub setupCreateMasterUser
 
 sub setupSystemDirectories
 {
-    my @systemDirectories  = (
-        [ $main::imscpConfig{'BACKUP_FILE_DIR'}, $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}, 0750 ]
-    );
-
-    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupSystemDirectories', \@systemDirectories);
+    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupSystemDirectories');
     return $rs if $rs;
 
-    for my $dir(@systemDirectories) {
-        $rs = iMSCP::Dir->new( dirname => $dir->[0] )->make(
+    my $parentUserWebDir = dirname($main::imscpConfig{'USER_WEB_DIR'});
+    $rs = umount($parentUserWebDir ne '/' ? $parentUserWebDir : $main::imscpConfig{'USER_WEB_DIR'});
+    return $rs if $rs;
+
+    # Make sure that mount event are propagated as expected
+    unless($parentUserWebDir eq '/') {
+        $rs = mount(
             {
-                user => $dir->[1],
-                group => $dir->[2],
-                mode => $dir->[3],
-                fixpermissions => iMSCP::Getopt->fixPermissions
+                fs_spec    => $parentUserWebDir,
+                fs_file    => $parentUserWebDir,
+                fs_vfstype => 'none',
+                fs_mntops  => "bind,slave"
             }
         );
-        return $rs if $rs;
+        $rs ||= addMountEntry("$parentUserWebDir $parentUserWebDir none bind,slave");
     }
-
-    # Make sure that the root directory is marked as shared in regards to mount
-    # propagation, even when not using systemd.
-    # See https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=739593 for explanations
-    my ($device, $path, $type, $options);
-    Quota::setmntent();
-    while(($device, $path, $type, $options) = Quota::getmntent()) {
-        last if $path eq '/';
-    }
-    Quota::endmntent();
-    
-    unless(defined $device) {
-        error('Could not find device name for the root directory.');
-        return 1;
-    }
-    
     $rs = mount(
         {
-            fs_spec    => $device,
-            fs_file    => '/',
-            fs_vfstype => $type,
-            fs_mntops  => "remount,rshared,$options"
+            fs_spec    => $main::imscpConfig{'USER_WEB_DIR'},
+            fs_file    => $main::imscpConfig{'USER_WEB_DIR'},
+            fs_vfstype => 'none',
+            fs_mntops  => "bind,shared"
         }
     );
-    $rs ||= addMountEntry("$device / $type remount,rshared,$options");
+    $rs ||= addMountEntry("$main::imscpConfig{'USER_WEB_DIR'} $main::imscpConfig{'USER_WEB_DIR'} none bind,shared");
     $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupSystemDirectories');
 }
 
@@ -1057,6 +1030,9 @@ sub setupServices
 {
     my $serviceMngr = iMSCP::Service->getInstance();
     $serviceMngr->enable($_) for 'imscp_daemon', 'imscp_traffic', 'imscp_mountall';
+    
+    # Make sure that the imscp_mountall service is started
+    $serviceMngr->start('imscp_mountall');
     0;
 }
 
@@ -1694,7 +1670,6 @@ sub setupRestartServices
 
     my $serviceMngr = iMSCP::Service->getInstance();
     unshift @services, (
-        [ sub { $serviceMngr->start('imscp_mountall'); 0; }, 'Mounts i-MSCP filesystems' ],
         [ sub { $serviceMngr->restart('imscp_traffic'); 0; }, 'i-MSCP Traffic Logger' ],
         [ sub { $serviceMngr->start('imscp_daemon'); 0; }, 'i-MSCP Daemon' ]
     );
@@ -1711,16 +1686,6 @@ sub setupRestartServices
 
     endDetail();
     iMSCP::EventManager->getInstance()->trigger('afterSetupRestartServices');
-}
-
-sub setupSyncConfig
-{
-    iMSCP::EventManager->getInstance()->trigger('beforeSetupSyncConfig');
-    untie %main::imscpOldConfig;
-    my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf" )->copyFile(
-        "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf"
-    );
-    $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupSyncConfig');
 }
 
 #

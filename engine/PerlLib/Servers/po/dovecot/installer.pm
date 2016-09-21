@@ -203,16 +203,7 @@ sub install
     my $rs = $self->_setupSqlUser();
     $rs = $self->_buildConf();
     $rs ||= $self->_saveConf();
-    return $rs if $rs;
-
-    if ($main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} eq 'courier') {
-        $rs = $self->_migrateFromCourier();
-        return $rs if $rs;
-
-        $main::imscpOldConfig{'PO_SERVER'} = 'dovecot';
-    }
-
-    0;
+    $rs ||= $self->_migrateFromCourier();
 }
 
 =back

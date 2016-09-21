@@ -60,6 +60,7 @@ sub preinstall
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaPreInstall', 'postfix' );
+    $rs ||= $self->stop();
     $rs ||= $rs = Servers::mta::postfix::installer->getInstance()->preinstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaPreInstall', 'postfix' );
 }
@@ -123,7 +124,7 @@ sub postinstall
                                 last if $rs;
                             }
 
-                            $rs ||= $self->restart();
+                            $rs ||= $self->start();
                         }
                     },
                     'Postfix'
@@ -167,6 +168,56 @@ sub setEnginePermissions
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaSetEnginePermissions' );
     $rs ||= Servers::mta::postfix::installer->getInstance()->setEnginePermissions();
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaSetEnginePermissions' );
+}
+
+=item start()
+
+ Start Postfix server
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub start
+{
+    my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaStart' );
+    return $rs if $rs;
+
+    local $@;
+    eval { iMSCP::Service->getInstance()->start( $self->{'config'}->{'MTA_SNAME'} ); };
+    if ($@) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterMtaStart' );
+}
+
+=item stop()
+
+ Stop Postfix server
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub stop
+{
+    my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaStop' );
+    return $rs if $rs;
+
+    local $@;
+    eval { iMSCP::Service->getInstance()->stop( $self->{'config'}->{'MTA_SNAME'} ); };
+    if ($@) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterMtaStop' );
 }
 
 =item restart()

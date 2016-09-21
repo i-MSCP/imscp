@@ -311,16 +311,8 @@ sub install
     $rs ||= $self->_buildConf();
     $rs ||= $self->_buildCyrusSaslConfFile();
     $rs ||= $self->_saveConf();
-    return $rs if $rs;
-
-    if ($main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} eq 'dovecot') {
-        $rs = $self->_migrateFromDovecot();
-        return $rs if $rs;
-
-        $main::imscpOldConfig{'PO_SERVER'} = 'courier';
-    }
-
-    $self->_oldEngineCompatibility();
+    $rs ||= $self->_migrateFromDovecot();
+    $rs ||= $self->_oldEngineCompatibility();
 }
 
 =item setEnginePermissions()

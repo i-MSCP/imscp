@@ -57,6 +57,12 @@ sub preinstall
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeCronPreinstall', 'cron' );
+    local $@;
+    eval { iMSCP::Service->getInstance()->stop('cron'); };
+    if($@) {
+        error($@);
+        return 1;
+    }
     $rs ||= $self->{'eventManager'}->trigger( 'afterCronPreinstall', 'cron' );
 }
 
@@ -138,7 +144,7 @@ sub postinstall
             push @{$_[0]},
                 [
                     sub {
-                        $srvMngr->restart( $self->{'config'}->{'CRON_SNAME'} );
+                        $srvMngr->start( $self->{'config'}->{'CRON_SNAME'} );
                         0;
                     },
                     'Cron'

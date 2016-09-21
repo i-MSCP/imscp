@@ -88,8 +88,8 @@ sub preinstall
 
         # Disable dovecot.socket unit if any
         # Dovecot as configured by i-MSCP doesn't rely on systemd activation socket
-        # This also solve problem on boxes where IPv6 is not available (default dovecot.socket unit file make
-        # assumption that IPv6 is available without further checks)
+        # This also solve problem on boxes where IPv6 is not available; default dovecot.socket unit file make
+        # assumption that IPv6 is available without further checks...
         if($serviceMngr->isSystemd() && $serviceMngr->hasService('dovecot.socket')) {
             $serviceMngr->stop('dovecot.socket');
             $serviceMngr->disable('dovecot.socket');

@@ -38,7 +38,7 @@ use iMSCP::Execute;
 use iMSCP::Ext2Attributes qw/ setImmutable clearImmutable isImmutable /;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::Mount qw / mount umount addMountEntry removeMountEntry /;
+use iMSCP::Mount qw / mount umount isMountpoint addMountEntry removeMountEntry /;
 use iMSCP::Net;
 use iMSCP::ProgramFinder;
 use iMSCP::Rights;
@@ -1313,8 +1313,7 @@ sub mountLogsFolder
     my $rs = $self->{'eventManager'}->trigger( 'beforeMountLogsFolder', $data, $fields );
     $rs ||= iMSCP::Dir->new( dirname => $fsFile )->make();
     $rs ||= addMountEntry( "$fields->{'fs_spec'} $fields->{'fs_file'} $fields->{'fs_vfstype'} $fields->{'fs_mntops'}" );
-    $rs ||= umount( $fsFile ); # Avoid duplicate mounts
-    $rs ||= mount( $fields );
+    $rs ||= mount( $fields ) unless isMountpoint( $fields->{'fs_file'} );
     $rs ||= $self->{'eventManager'}->trigger( 'afterMountLogsFolder', $data, $fields );
 }
 

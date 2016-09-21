@@ -32,7 +32,9 @@ use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::Syscall;
+use Quota;
 use parent 'Exporter';
+use Scalar::Defer;
 
 our @EXPORT_OK = qw/ mount umount setPropagationFlag isMountpoint addMountEntry removeMountEntry /;
 
@@ -129,6 +131,18 @@ my %PROPAGATION_FLAGS = (
     rshared     => sub { $_[0] | MS_SHARED | MS_REC }
 );
 
+# Lazy-load mount entries
+my $MOUNTS = lazy
+    {
+        my @entries;
+        Quota::setmntent();
+        while(my (undef, $fsFile) = Quota::getmntent() ) {
+            push @entries, $fsFile;
+        }
+        Quota::endmntent();
+        \@entries;
+    };
+
 =head1 DESCRIPTION
 
  Library for mounting/unmounting file systems.
@@ -161,11 +175,12 @@ sub mount($)
         return 1;
     }
 
+    force $MOUNTS; # Force loading of mount entries
     my $fsSpec = File::Spec->canonpath( $fields->{'fs_spec'} );
     my $fsFile = File::Spec->canonpath( $fields->{'fs_file'} );
     my $fsVfstype = $fields->{'fs_vfstype'};
 
-    debug("$fsSpec, $fsFile, $fsVfstype, $fields->{'fs_mntops'}");
+    debug("$fsSpec $fsFile $fsVfstype $fields->{'fs_mntops'}");
 
     my ($mflags, $pflags, $data) = _parseOptions($fields->{'fs_mntops'});
     $mflags |= MS_MGC_VAL unless $mflags & MS_MGC_MSK;
@@ -201,6 +216,7 @@ sub mount($)
         }
     }
 
+    push @{$MOUNTS}, $fsFile unless $mflags & MS_REMOUNT;
     0;
 }
 
@@ -228,25 +244,19 @@ sub umount($)
 
     return 0 if $fsFile eq '/'; # Prevent umounting root fs
 
-    debug($fsFile);
-
-    my $cmd = 'tac /proc/mounts | awk \'{print $2}\''
-        .' | grep \'^'.quotemeta( $fsFile ).'\(/\|\(\|\\\\\\040(deleted)\)$\)\'';
-
-    my $fh;
-    unless (open( $fh, '-|', $cmd )) {
-        error( sprintf( 'Could not pipe on %s', $cmd ) );
-        return 1;
-    }
-
-    while($fsFile = <$fh>) {
-        chomp( $fsFile );
-        $fsFile =~ s/\\040\(deleted\)$//;
-        unless (syscall(&iMSCP::Syscall::SYS_umount2, $fsFile, MNT_DETACH) == 0 || $!{'EINVAL'}) {
-            error( sprintf( 'Could not umount %s: %s', $fsFile, $! || 'Unknown error' ) );
-            return 1;
+    @${MOUNTS} = reverse grep {
+        if (m%^\Q$fsFile\E(/|(|\\040\(deleted\)))%) {
+            s/\\040\(deleted\)$//;
+            debug($_);
+            unless (syscall(&iMSCP::Syscall::SYS_umount2, $_, MNT_DETACH) == 0 || $!{'EINVAL'}) {
+                error( sprintf( 'Could not umount %s: %s', $_, $! || 'Unknown error' ) );
+                return 1;
+            }
+            0;
+        } else {
+            1;
         }
-    }
+    } reverse @${MOUNTS};
 
     0;
 }
@@ -290,9 +300,7 @@ sub setPropagationFlag($;$)
 
 =item isMountpoint()
 
- Is the given path a mountpoint?
-
- Note that bind mounts are never recognized as mountpoints. There is not way to check them.
+ Is the given path a mountpoint or bind mount?
  
  See also mountpoint(1)
 
@@ -305,6 +313,8 @@ sub isMountpoint($)
 {
     my $path = shift;
 
+    $path = File::Spec->canonpath( $path );
+    return 1 if grep { $_ eq $path } @{$MOUNTS};
     return 0 unless -d $path;
     my $st = File::stat::populate(CORE::stat( _ ));
     my $st2 = File::stat::stat("$path/..");
