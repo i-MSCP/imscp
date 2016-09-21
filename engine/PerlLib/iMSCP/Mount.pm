@@ -29,12 +29,10 @@ use Errno qw / EINVAL /;
 use File::Spec;
 use File::stat ();
 use iMSCP::Debug;
-use iMSCP::Dir;
-use iMSCP::File;
 use iMSCP::Syscall;
+use Scalar::Defer;
 use Quota;
 use parent 'Exporter';
-use Scalar::Defer;
 
 our @EXPORT_OK = qw/ mount umount setPropagationFlag isMountpoint addMountEntry removeMountEntry /;
 
@@ -298,7 +296,7 @@ sub setPropagationFlag($;$)
     0;
 }
 
-=item isMountpoint()
+=item isMountpoint($path)
 
  Is the given path a mountpoint or bind mount?
  
@@ -338,9 +336,6 @@ sub addMountEntry($)
         error( '$entry parameter is not defined' );
         return 1;
     }
-
-    my $rs = removeMountEntry( $entry );
-    return $rs if $rs;
 
     my $fh;
     unless (open $fh, '>>', "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf") {

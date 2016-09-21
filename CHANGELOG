@@ -9,7 +9,7 @@ BACKEND
     Fixed: An IP address must not be added in the interfaces file if already present, even if auto mode is set
     Fixed: Lock files are never deleted
     Fixed: Remove any lock on shutdown (iMSCP::Bootstrapper)
-    Fixed: Read mount entries once per run (IMSCP::Mount)
+    Fixed: Read mount entries once per run (iMSCP::Mount)
 
 CONFIGS
     Updated: Request headers in redirect vhosts (Apache2)
