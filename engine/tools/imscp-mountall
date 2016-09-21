@@ -52,7 +52,7 @@ sub process
 
     open my $fh, '<', $fstab or die(sprintf('Could not open %s: %s', $fstab, $!));
     while(<$fh>) {
-        next if /^\s*#/;
+        next if /^(#|$)/; # Ignore comment and empty lines
         chomp;
         my $entryFields;
         @{$entryFields}{ qw/ fs_spec fs_file fs_vfstype fs_mntops / } = split /\s+/;
