@@ -26,6 +26,8 @@ FRONTEND
     Fixed: Too many redirects when attempting to login from an external host (when external login is disallowed)
 
 LISTENERS
+    Added: 10_packages_override.pl listener file (Allows to override package files)
+    Added: debian_jessie_php7.0.xml package file (for use with the 10_packages_override.pl listener file)
     Fixed: Can't use string ("all") as an ARRAY ref while "strict refs" in use (10_postfix_tuning.pl)
 
 PLUGINS
