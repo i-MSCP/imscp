@@ -44,12 +44,10 @@ function reseller_gen_mail_quota_limit_mgs($customerId)
     );
 
     $row = $stmt->fetchRow();
-
-    if ($mainDmnProps['mail_quota'] == 0) {
-        return array(bytesHuman($row['quota']), tr('Unlimited'));
-    }
-
-    return array(bytesHuman($row), bytesHuman($mainDmnProps['mail_quota']));
+    return array(
+        bytesHuman($row['quota']),
+        $mainDmnProps['mail_quota'] == 0 ? tr('Unlimited') : bytesHuman($mainDmnProps['mail_quota'])
+    );
 }
 
 /**

@@ -20,6 +20,7 @@ CRONJOBS
 
 FRONTEND
     Added: showForbiddenErrorPage() function
+    Fixed: Error on reseller/domain_details.php page; Unsupported operand types
     Fixed: The `onBeforeAddDomain' event is triggered too early
     Fixed: Too many redirects when attempting to login from an external host (when external login is disallowed)
 
