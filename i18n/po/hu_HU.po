@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Ádám Radovits <adamradovits12@hotmail.com>, 2016
 # David Molnar <molnar.david@gmail.com>, 2016
 # Zsolt Bertalan <bercy42@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-09-14 12:41+0200\n"
-"PO-Revision-Date: 2016-09-14 07:28+0000\n"
-"Last-Translator: Zsolt Bertalan <bercy42@gmail.com>\n"
+"POT-Creation-Date: 2016-09-22 10:22+0200\n"
+"PO-Revision-Date: 2016-09-22 08:23+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/i-mscp/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -155,6 +156,10 @@ msgstr "%s IP címnek várnia kell %s másodpercet."
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "%s azonosító sikeresen törölve"
+
+#, php-format
+msgid "%s doens't look like an i-MSCP plugin archive."
+msgstr ""
 
 #, php-format
 msgid "%s doesn't exist or is empty."
@@ -1399,8 +1404,8 @@ msgid "Could not add/update SSL certificate. An unexpected error occurred."
 msgstr "Nem lehet hozzáadni/frissíteni az SSL tanúsítványt. Váratlan hiba történt."
 
 #, php-format
-msgid "Could not backup %s plugin directory."
-msgstr "Nem sikerült a(z) %s bővítmény könyvtáráról biztonsági mentést csinálni."
+msgid "Could not backup current `%s' plugin directory."
+msgstr ""
 
 #, php-format
 msgid "Could not change the %s plugin: %s"
@@ -1434,35 +1439,15 @@ msgstr "%s bővítményt nem lehet deaktiválni: %s"
 msgid "Could not enable the %s plugin: %s"
 msgstr "%s bővítményt nem lehet aktiválni: %s"
 
-msgid "Could not extract info.php file"
-msgstr "Nem lehet kitömöríteni az info.php fájlt"
-
-msgid "Could not extract plugin archive."
-msgstr "Nem sikerült kibontani a bővítmény archívumát."
-
-#, php-format
-msgid "Could not extract plugin archive: %s"
-msgstr "Nem sikerült kibontani a bővítmény archívumát: %s"
-
 msgid "Could not find any network interface. You cannot add new IP addresses."
 msgstr "Nem található hálózati csatoló. Új IP-cím hozzáadása nem lehetséges. "
-
-msgid "Could not find plugin root directory within archive."
-msgstr "Nem található a bővítmény gyökérkönyvtára az archiv állományban."
 
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr "Nem lehet SSL tanúsítványt generálni. Váratlan hiba történt."
 
 #, php-format
-msgid "Could not get stats for file %s."
-msgstr "Nem sikerült a(z) %s fájl statisztikáit lekérni."
-
-#, php-format
 msgid "Could not install the %s plugin: %s"
 msgstr "%s bővítményt nem lehet telepíteni: %s"
-
-msgid "Could not open plugin archive."
-msgstr "Nem sikerült megnyitni a bővítmény archívumát."
 
 #, php-format
 msgid "Could not protect the %s plugin: %s"
@@ -1736,7 +1721,7 @@ msgid ""
 "\n"
 "___________________________\n"
 "i-MSCP Mailer"
-msgstr ""
+msgstr "Kedves {NAME}!\n\nFelhasználói fiókja elkészült!\n\nFiók adatai:\n\nFiók típusa: {USERTYPE}\nFelhasználónév: {USERNAME}\nJelszó: {PASSWORD}\n\nKérjük, első belépés után, illetve néha változtassa meg a jelszavát a biztonság kedvéért!\n\nA következő oldalon tud belépni: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\nKérjük, ne válaszoljon erre a levélre!\n\n___________________________\ni-MSCP levélküldő"
 
 msgid ""
 "Dear {NAME},\n"
@@ -2435,10 +2420,6 @@ msgstr "%s fájl nem létezik vagy nem elérhető!"
 #, php-format
 msgid "File %s doesn't look like a migration file."
 msgstr "„%s” fájl nem egy migrációs fájlnak tűnik."
-
-#, php-format
-msgid "File %s is missing in plugin archive."
-msgstr "„%s” fájl hiányzik a bővítmény archívumából."
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
@@ -3401,6 +3382,9 @@ msgstr "Csak számokat adhatsz meg 0-tól 65535-ig."
 msgid "Only positive numbers are allowed."
 msgstr "Csak pozitív szám adható meg"
 
+msgid "Only tar.gz and tar.bz2 archives are supported."
+msgstr ""
+
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "Csak a tar.gz, tar.bz2 és a zip archívumok az elfogadottak."
 
@@ -3829,10 +3813,8 @@ msgstr "Bővítmány aktiválási hiba: %s"
 msgid "Plugin archive"
 msgstr "Tömöritett bővítmény"
 
-#, php-format
-msgid ""
-"Plugin archive exceeds the maximum upload size (%s). Max upload size is: %s."
-msgstr "A bővítmény archívuma meghaladja a feltöltési méret korlátot (%s). Feltöltési korlát: %s."
+msgid "Plugin archive exceeds the maximum upload size"
+msgstr ""
 
 #, php-format
 msgid "Plugin change has failed: %s"
@@ -4049,9 +4031,6 @@ msgstr "Válasz"
 
 msgid "Request Timeout: The server took too long to send the data."
 msgstr "Kérés időtúllépés: A szervernek túl sokáig tartott elküldeni az adatot."
-
-msgid "Request from foreign host was blocked."
-msgstr "Külföldi oldalról érkező kérelem blokkolva"
 
 msgid "Requires Database?"
 msgstr "Adatbázis szükséges?"
@@ -5478,9 +5457,6 @@ msgstr "Túlléped az aldomain limited!"
 msgid "You are not allowed to act on your own session."
 msgstr "Saját munkamenet - session - nem engedélyezett."
 
-msgid "You are not allowed to update a protected plugin."
-msgstr "Nem frissítheted a védett bővítményt!"
-
 msgid "You can only upload images."
 msgstr "Csak képeket tud feltölteni"
 
@@ -5527,6 +5503,9 @@ msgstr "Lejárati dátum nem lehet korábbi ."
 
 msgid "You cannot unassign an IP address already in use."
 msgstr "Nem lehet visszavonni a már használatban lévő IP-címet."
+
+msgid "You cannot update a protected plugin."
+msgstr ""
 
 msgid "You do not have DNS resource records."
 msgstr "Nincs DNS forrás rekordod."

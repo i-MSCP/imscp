@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-09-14 12:41+0200\n"
-"PO-Revision-Date: 2016-09-13 18:55+0000\n"
-"Last-Translator: Lukasz Nowak <qkash@o2.pl>\n"
+"POT-Creation-Date: 2016-09-22 10:22+0200\n"
+"PO-Revision-Date: 2016-09-22 08:23+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/i-mscp/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -161,6 +161,10 @@ msgstr "%s IP-Adresse wartet %s Sekunden"
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "%s Konto erfolgreich gelöscht."
+
+#, php-format
+msgid "%s doens't look like an i-MSCP plugin archive."
+msgstr ""
 
 #, php-format
 msgid "%s doesn't exist or is empty."
@@ -1405,8 +1409,8 @@ msgid "Could not add/update SSL certificate. An unexpected error occurred."
 msgstr "SSL-Zertifikat konnte nicht hinzugefügt/aktualisiert werden. Ein unerwarteter Fehler ist aufgetreten."
 
 #, php-format
-msgid "Could not backup %s plugin directory."
-msgstr "Konnte den Ordner des Plugins %s nicht sichern."
+msgid "Could not backup current `%s' plugin directory."
+msgstr ""
 
 #, php-format
 msgid "Could not change the %s plugin: %s"
@@ -1440,35 +1444,15 @@ msgstr "Konnte das Plugin %s nicht deaktivieren: %s"
 msgid "Could not enable the %s plugin: %s"
 msgstr "Konnte das Plugin %s nicht aktivieren: %s"
 
-msgid "Could not extract info.php file"
-msgstr "Konnte die Datei info.php nicht entpacken"
-
-msgid "Could not extract plugin archive."
-msgstr "Konnte das Plugin-Archiv nicht entpacken."
-
-#, php-format
-msgid "Could not extract plugin archive: %s"
-msgstr "Konnte das Plugin-Archiv nicht entpacken: %s"
-
 msgid "Could not find any network interface. You cannot add new IP addresses."
 msgstr "Konnte kein Netzwerkinterface finden. Sie können keine neuen IP-Adressen hinzufügen."
-
-msgid "Could not find plugin root directory within archive."
-msgstr "Konnte in dem Archiv keinen Plugin Ordner finden."
 
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr "SSL-Zertifikat konnte nicht erstellt werden. Ein unerwarteter Fehler ist aufgetreten."
 
 #, php-format
-msgid "Could not get stats for file %s."
-msgstr "Konnte keine Statistik für Datei %s sammeln."
-
-#, php-format
 msgid "Could not install the %s plugin: %s"
 msgstr "Konnte das Plugin %s nicht installieren: %s"
-
-msgid "Could not open plugin archive."
-msgstr "Konnte das Plugin-Archiv nicht öffnen."
 
 #, php-format
 msgid "Could not protect the %s plugin: %s"
@@ -2443,10 +2427,6 @@ msgid "File %s doesn't look like a migration file."
 msgstr "Datei %s sieht nicht nach einer Migrationsdatei aus."
 
 #, php-format
-msgid "File %s is missing in plugin archive."
-msgstr "Datei %s fehlt im Plugin-Archiv."
-
-#, php-format
 msgid "File does not exist. %1$s.tar.gz"
 msgstr "Datei existiert nicht. %1$s.tar.gz"
 
@@ -3407,6 +3387,9 @@ msgstr "Es sind nur Zahlen im Bereich von 0 bis 65535 erlaubt."
 msgid "Only positive numbers are allowed."
 msgstr "Nur positive Zahlen sind erlaubt."
 
+msgid "Only tar.gz and tar.bz2 archives are supported."
+msgstr ""
+
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "Es werden nur tar.gz, tar.bz2 und zip Archive akzeptiert."
 
@@ -3835,10 +3818,8 @@ msgstr "Plugins-Aktivierung fehlgeschlagen: %s"
 msgid "Plugin archive"
 msgstr "Plugin-Archiv"
 
-#, php-format
-msgid ""
-"Plugin archive exceeds the maximum upload size (%s). Max upload size is: %s."
-msgstr "Plugin-Archiv überschreitet die maximale Upload-Größe (%s). Max. Upload-Größe ist: %s."
+msgid "Plugin archive exceeds the maximum upload size"
+msgstr ""
 
 #, php-format
 msgid "Plugin change has failed: %s"
@@ -4055,9 +4036,6 @@ msgstr "Antwort"
 
 msgid "Request Timeout: The server took too long to send the data."
 msgstr "Anfrage-Timeout: Der Server brauchte zu lange um die Daten zu  senden."
-
-msgid "Request from foreign host was blocked."
-msgstr "Anfragen von einem fremden Server wurden geblockt."
 
 msgid "Requires Database?"
 msgstr "Datenbank benötigt?"
@@ -5484,9 +5462,6 @@ msgstr "Sie überschreiten Ihr Subdomain Limit."
 msgid "You are not allowed to act on your own session."
 msgstr "Es ist Ihnen nicht erlaubt auf Ihre eigene Sitzung Einfluß zu nehmen."
 
-msgid "You are not allowed to update a protected plugin."
-msgstr "Es ist ihnen nicht erlaubt ein geschütztes Plugin zu aktualisieren."
-
 msgid "You can only upload images."
 msgstr "Sie können nur Bilder hochladen."
 
@@ -5533,6 +5508,9 @@ msgstr "Sie können kein Ablaufdatum in der Vergangenheit verwenden."
 
 msgid "You cannot unassign an IP address already in use."
 msgstr "Sie können die Zuweisung einer bereits verwendeten IP-Adresse nicht aufheben."
+
+msgid "You cannot update a protected plugin."
+msgstr ""
 
 msgid "You do not have DNS resource records."
 msgstr "Sie haben keine DNS Ressourceneinträge."
