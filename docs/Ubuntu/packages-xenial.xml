@@ -88,7 +88,9 @@
             <package>resolvconf</package>
             <package>bind9</package>
         </bind>
-        <external_server/>
+        <external_server>
+            <package_conflict>avahi-daemon</package_conflict>
+        </external_server>
     </named>
     <sql default="mysql_5.7">
         <mysql_5.7

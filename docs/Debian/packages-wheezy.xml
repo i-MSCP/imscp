@@ -103,8 +103,11 @@
         <bind>
             <package>resolvconf</package>
             <package>bind9</package>
+            <package_conflict>avahi-daemon</package_conflict>
         </bind>
-        <external_server/>
+        <external_server>
+            <package_conflict>avahi-daemon</package_conflict>
+        </external_server>
     </named>
     <sql default="mysql_5.5">
         <mysql_5.5

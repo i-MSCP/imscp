@@ -15,6 +15,9 @@ CONFIGS
     Updated: Request headers in redirect vhosts (Apache2)
     Removed:  /etc/imscp/imscp.old.conf configuration file
 
+DISTRIBUTIONS
+    Added: Conflict on the `avahi-daemon' package
+
 CRONJOBS
     Fixed: run() subroutine is run twice per process (imscp-disable-accounts)
 
