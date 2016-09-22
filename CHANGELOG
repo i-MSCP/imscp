@@ -30,6 +30,7 @@ LISTENERS
 
 PLUGINS
     Fixed: Could not delete plugins which implement the install() method but not the uninstall method()
+    Removed: Support for ZIP plugin archives (only tar.gz and tar.bz2 archives are now supported)
 
 SERVERS
     Fixed: Installation fail if main.cf is missing or misconfigured (Servers::mta::postfix::installer)
