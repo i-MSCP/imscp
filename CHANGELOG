@@ -40,6 +40,7 @@ YOUTRACK
     #IP-1618 OpenVZ - Could not remount root directory as shared subtree
     #IP-1621 Parameters from the imscp.conf file are reseted to their default values on upgrade (only in some contexts)
     #IP-1623 SQL root user is deleted when upgrading from a version older than 1.3.0
+    #IP-1624 Default SPF DNS record not removed when adding custom SPF DNS record
 
 ------------------------------------------------------------------------------------------------------------------------
 1.3.1

@@ -643,44 +643,39 @@ sub addCustomDNS
         push @customDNS, join "\t", @{$_};
     }
 
-    # Removes any default SPF DNS resource record that is overwritten by a custom DNS resource record
-    my $wrkDbFileContentTmp = $wrkDbFileContent;
-    $wrkDbFileContent = '';
-
     my $fh;
-    unless (open( $fh, '<', \$wrkDbFileContentTmp )) {
-        error( sprinf( 'Could not open in memory file: %s', $! ) );
+    unless (open( $fh, '<', \$wrkDbFileContent )) {
+        error( sprintf( 'Could not open in memory file: %s', $! ) );
         return 1;
     }
 
-    my $origin = '';
+    my ($newWrkDbFileContent, $origin) = ('', '');
     while(my $line = <$fh>) {
         my $isOrigin = $line =~ /^\$ORIGIN\s+([^\s;]+).*\n$/;
-        # Update $ORIGIN if needed
-        $origin = $1 if $isOrigin;
+        $origin = $1 if $isOrigin; # Update $ORIGIN if needed
 
         unless($isOrigin || index($line, '$') == 0 || index($line, ';') == 0) {
             # Process $ORIGIN substitutions
             $line =~ s/\@/$origin/g;
             $line =~ s/^(\S+?[^\s.])\s+/$1.$origin\t/;
-
             # Skip default SPF record line if SPF record for the same DNS name exists in @customDNS
-            next if $line =~ /^(\S+).*?\sv=spf1\s/ && grep(/^(?:\Q$1\E|\Q$1.$origin\E)\s+.*?v=spf1\s/, @customDNS);
+            next if $line =~ /^(\S+)\s+.*?\s+"v=\bspf1\b.*?"/ && grep /^\Q$1\E\s+.*?\s+"v=\bspf1\b.*?"/, @customDNS;
         }
 
-        $wrkDbFileContent .= $line;
+        $newWrkDbFileContent .= $line;
     }
     close( $fh );
+    undef $wrkDbFileContent;
 
-    $wrkDbFileContent = replaceBloc(
+    $newWrkDbFileContent = replaceBloc(
         "; custom DNS entries BEGIN\n",
         "; custom DNS entries ENDING\n",
         "; custom DNS entries BEGIN\n".( join "\n", @customDNS, '' )."; custom DNS entries ENDING\n",
-        $wrkDbFileContent
+        $newWrkDbFileContent
     );
 
-    $rs = $self->{'eventManager'}->trigger( 'afterNamedAddCustomDNS', \$wrkDbFileContent, $data );
-    $rs ||= $wrkDbFile->set( $wrkDbFileContent );
+    $rs = $self->{'eventManager'}->trigger( 'afterNamedAddCustomDNS', \$newWrkDbFileContent, $data );
+    $rs ||= $wrkDbFile->set( $newWrkDbFileContent );
     $rs ||= $wrkDbFile->save();
     return $rs if $rs;
 
