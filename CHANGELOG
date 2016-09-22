@@ -13,7 +13,7 @@ BACKEND
 
 CONFIGS
     Updated: Request headers in redirect vhosts (Apache2)
-    Removed: imscp.old.conf configuration file
+    Removed:  /etc/imscp/imscp.old.conf configuration file
 
 CRONJOBS
     Fixed: run() subroutine is run twice per process (imscp-disable-accounts)
@@ -32,7 +32,7 @@ SERVERS
     Fixed: Installation fail if main.cf is missing or misconfigured (Servers::mta::postfix::installer)
     
 SERVICES
-    Fixed: Empty lines are not ignored in the mounts.conf conffile (imscp_mountall)
+    Fixed: Empty lines are not ignored in the /etc/imscp/mounts/mounts.conf configuration file (imscp_mountall)
 
 YOUTRACK
     #IP-1616 ProxyPass entries not removed in vhost file if HSTS is enabled
