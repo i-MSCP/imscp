@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-09-14 12:41+0200\n"
-"PO-Revision-Date: 2016-09-13 15:08+0000\n"
-"Last-Translator: Thom Heemstra <thom@heemstra.xyz>\n"
+"POT-Creation-Date: 2016-09-22 10:22+0200\n"
+"PO-Revision-Date: 2016-09-22 08:23+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/i-mscp/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -156,6 +156,10 @@ msgstr "IP-adres %s is voor %s minuten wachtende."
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "%s account is verwijderd."
+
+#, php-format
+msgid "%s doens't look like an i-MSCP plugin archive."
+msgstr ""
 
 #, php-format
 msgid "%s doesn't exist or is empty."
@@ -1400,8 +1404,8 @@ msgid "Could not add/update SSL certificate. An unexpected error occurred."
 msgstr "Bewerken of toevoegen van SSL-certificaat is mislukt. Er is een onverwachte fout opgetreden."
 
 #, php-format
-msgid "Could not backup %s plugin directory."
-msgstr "Kon geen back-up maken van de %s invoegtoepassingsmap."
+msgid "Could not backup current `%s' plugin directory."
+msgstr ""
 
 #, php-format
 msgid "Could not change the %s plugin: %s"
@@ -1435,35 +1439,15 @@ msgstr "Kon de %s invoegtoepassing niet uitschakelen: %s"
 msgid "Could not enable the %s plugin: %s"
 msgstr "Kon de %s invoegtoepassing niet inschakelen: %s"
 
-msgid "Could not extract info.php file"
-msgstr "Kon het info.php-bestand niet uitpakken."
-
-msgid "Could not extract plugin archive."
-msgstr "Kon het invoegtoepassingsarchief niet uitpakken."
-
-#, php-format
-msgid "Could not extract plugin archive: %s"
-msgstr "Kon het invoegtoepassingsarchief niet uitpakken: %s"
-
 msgid "Could not find any network interface. You cannot add new IP addresses."
 msgstr "Kon deze netwerkinterface niet vinden. U kunt geen nieuwe IP-adressen invullen."
-
-msgid "Could not find plugin root directory within archive."
-msgstr "Kon de invoegtoepassingsmap niet vinden in het archief."
 
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr "Genereren van SSL-certificaat is mislukt. Er is een onverwachte fout opgetreden."
 
 #, php-format
-msgid "Could not get stats for file %s."
-msgstr "Kon geen statistieken voor bestand %s verkrijgen."
-
-#, php-format
 msgid "Could not install the %s plugin: %s"
 msgstr "Kon de invoegtoepassing %s niet installeren: %s"
-
-msgid "Could not open plugin archive."
-msgstr "Kon het invoegtoepassingsarchief niet openen."
 
 #, php-format
 msgid "Could not protect the %s plugin: %s"
@@ -2438,10 +2422,6 @@ msgid "File %s doesn't look like a migration file."
 msgstr "Het bestand %s lijkt niet op een migratiebestand."
 
 #, php-format
-msgid "File %s is missing in plugin archive."
-msgstr "Het bestand %s mist uit het invoegtoepassingsinarchief."
-
-#, php-format
 msgid "File does not exist. %1$s.tar.gz"
 msgstr "Bestand bestaat niet. %1$s.tar.gz"
 
@@ -3402,6 +3382,9 @@ msgstr "Enkel nummers tussen 0 en 65535 zijn toegestaan."
 msgid "Only positive numbers are allowed."
 msgstr "Enkel positieve nummers toegestaan."
 
+msgid "Only tar.gz and tar.bz2 archives are supported."
+msgstr ""
+
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "Enkel tar.gz-, tar.bz2- en zip-archieven worden geaccepteerd."
 
@@ -3830,10 +3813,8 @@ msgstr "Activeren van invoegtoepassing is mislukt: %s"
 msgid "Plugin archive"
 msgstr "Invoegtoepassingsarchief"
 
-#, php-format
-msgid ""
-"Plugin archive exceeds the maximum upload size (%s). Max upload size is: %s."
-msgstr "Invoegtoepassingsarchief overschrijdt de maximumgrootte (%s). Maximale uploadgrootte is %s."
+msgid "Plugin archive exceeds the maximum upload size"
+msgstr ""
 
 #, php-format
 msgid "Plugin change has failed: %s"
@@ -4050,9 +4031,6 @@ msgstr "Antwoorden"
 
 msgid "Request Timeout: The server took too long to send the data."
 msgstr "Geen antwoord: De server deed er te lang over om data te versturen."
-
-msgid "Request from foreign host was blocked."
-msgstr "Verzoek van externe host is geblokkeerd."
 
 msgid "Requires Database?"
 msgstr "Databank vereist?"
@@ -5479,9 +5457,6 @@ msgstr "U overschrijdt uw subdomeinlimiet."
 msgid "You are not allowed to act on your own session."
 msgstr "U heeft geen rechten om te handelen in uw eigen sessie."
 
-msgid "You are not allowed to update a protected plugin."
-msgstr "U heeft geen rechten om een beveiligde invoegtoepassing bij te werken."
-
 msgid "You can only upload images."
 msgstr "U kunt alleen afbeeldingen uploaden."
 
@@ -5528,6 +5503,9 @@ msgstr "U kunt geen vervaldatum in het verleden instellen."
 
 msgid "You cannot unassign an IP address already in use."
 msgstr "IP-adressen welke zijn toegewezen aan wederverkopers kunt u niet intrekken."
+
+msgid "You cannot update a protected plugin."
+msgstr ""
 
 msgid "You do not have DNS resource records."
 msgstr "U heeft geen DNS-records."

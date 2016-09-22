@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-09-14 12:41+0200\n"
-"PO-Revision-Date: 2016-09-13 14:36+0000\n"
+"POT-Creation-Date: 2016-09-22 10:22+0200\n"
+"PO-Revision-Date: 2016-09-22 08:23+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/i-mscp/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -153,6 +153,10 @@ msgstr "%s のIPアドレス  は %s 秒間待っています。"
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "%s のアカウントは削除されました。"
+
+#, php-format
+msgid "%s doens't look like an i-MSCP plugin archive."
+msgstr ""
 
 #, php-format
 msgid "%s doesn't exist or is empty."
@@ -1397,7 +1401,7 @@ msgid "Could not add/update SSL certificate. An unexpected error occurred."
 msgstr ""
 
 #, php-format
-msgid "Could not backup %s plugin directory."
+msgid "Could not backup current `%s' plugin directory."
 msgstr ""
 
 #, php-format
@@ -1432,34 +1436,14 @@ msgstr ""
 msgid "Could not enable the %s plugin: %s"
 msgstr ""
 
-msgid "Could not extract info.php file"
-msgstr ""
-
-msgid "Could not extract plugin archive."
-msgstr ""
-
-#, php-format
-msgid "Could not extract plugin archive: %s"
-msgstr ""
-
 msgid "Could not find any network interface. You cannot add new IP addresses."
-msgstr ""
-
-msgid "Could not find plugin root directory within archive."
 msgstr ""
 
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr ""
 
 #, php-format
-msgid "Could not get stats for file %s."
-msgstr ""
-
-#, php-format
 msgid "Could not install the %s plugin: %s"
-msgstr ""
-
-msgid "Could not open plugin archive."
 msgstr ""
 
 #, php-format
@@ -2435,10 +2419,6 @@ msgid "File %s doesn't look like a migration file."
 msgstr "%s ファイルは、移行ファイルのようには見えません。"
 
 #, php-format
-msgid "File %s is missing in plugin archive."
-msgstr "%s ファイルは、プラグインアーカイブにはありません。"
-
-#, php-format
 msgid "File does not exist. %1$s.tar.gz"
 msgstr "ファイルが存在しません。 %1$s.tar.gz"
 
@@ -3399,6 +3379,9 @@ msgstr "0〜65535の範囲の数値だけが許可されます。"
 msgid "Only positive numbers are allowed."
 msgstr "正の数値のみが許可されます。"
 
+msgid "Only tar.gz and tar.bz2 archives are supported."
+msgstr ""
+
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "tar.gz、tar.bz2、そしてzipアーカイブのみが受け入れられます。"
 
@@ -3827,10 +3810,8 @@ msgstr ""
 msgid "Plugin archive"
 msgstr "プラグインアーカイブ"
 
-#, php-format
-msgid ""
-"Plugin archive exceeds the maximum upload size (%s). Max upload size is: %s."
-msgstr "プラグインのアーカイブは、最大アップロードサイズ(%s)を超えています。最大アップロードサイズは、次のとおりです。：%s。"
+msgid "Plugin archive exceeds the maximum upload size"
+msgstr ""
 
 #, php-format
 msgid "Plugin change has failed: %s"
@@ -4047,9 +4028,6 @@ msgstr "返信"
 
 msgid "Request Timeout: The server took too long to send the data."
 msgstr "リクエストタイムアウト：サーバーはデータを送信するにはあまりにも時間がかかった。"
-
-msgid "Request from foreign host was blocked."
-msgstr "外部ホストからの要求がブロックされました。"
 
 msgid "Requires Database?"
 msgstr "データベースは必要ですか？"
@@ -5476,9 +5454,6 @@ msgstr "サブドメイン数の制限を超えています。"
 msgid "You are not allowed to act on your own session."
 msgstr "自分のセッションに基づいて行動することは許されません。"
 
-msgid "You are not allowed to update a protected plugin."
-msgstr "保護されたプラグインの更新が許可されていません。"
-
 msgid "You can only upload images."
 msgstr "イメージをアップロードすることができるだけです。"
 
@@ -5525,6 +5500,9 @@ msgstr "過去に有効期限を設定することはできません。"
 
 msgid "You cannot unassign an IP address already in use."
 msgstr "既に使用中のIPアドレスの割り当てを解除することはできません。"
+
+msgid "You cannot update a protected plugin."
+msgstr ""
 
 msgid "You do not have DNS resource records."
 msgstr "DNSリソースレコードを持っていません。"

@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-09-14 12:41+0200\n"
-"PO-Revision-Date: 2016-09-13 14:36+0000\n"
+"POT-Creation-Date: 2016-09-22 10:22+0200\n"
+"PO-Revision-Date: 2016-09-22 08:23+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -155,6 +155,10 @@ msgstr "%s IP 位址要等 %s 秒鐘。"
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "%s 帳號已經成功地刪除"
+
+#, php-format
+msgid "%s doens't look like an i-MSCP plugin archive."
+msgstr ""
 
 #, php-format
 msgid "%s doesn't exist or is empty."
@@ -1399,8 +1403,8 @@ msgid "Could not add/update SSL certificate. An unexpected error occurred."
 msgstr "無法新增/更新 SSL 憑證。已產生無法預期的錯誤。"
 
 #, php-format
-msgid "Could not backup %s plugin directory."
-msgstr "可能無法備份 %s 外掛目錄。"
+msgid "Could not backup current `%s' plugin directory."
+msgstr ""
 
 #, php-format
 msgid "Could not change the %s plugin: %s"
@@ -1434,35 +1438,15 @@ msgstr "可能無法停用 %s 外掛: %s"
 msgid "Could not enable the %s plugin: %s"
 msgstr "可能無法啟用 %s 外掛: %s"
 
-msgid "Could not extract info.php file"
-msgstr "可能無法解開 info.php 檔案"
-
-msgid "Could not extract plugin archive."
-msgstr "可能無法解開外掛的壓縮檔"
-
-#, php-format
-msgid "Could not extract plugin archive: %s"
-msgstr "可能無法解開外掛的壓縮檔: %s"
-
 msgid "Could not find any network interface. You cannot add new IP addresses."
 msgstr ""
-
-msgid "Could not find plugin root directory within archive."
-msgstr "可能無法找到有壓縮檔的外掛根目錄。"
 
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr "無法產生 SSL 憑證。已產生無法預期的錯誤。"
 
 #, php-format
-msgid "Could not get stats for file %s."
-msgstr "可能無法取得 %s 檔案的狀態。"
-
-#, php-format
 msgid "Could not install the %s plugin: %s"
 msgstr "可能無法安裝 %s 外掛: %s"
-
-msgid "Could not open plugin archive."
-msgstr "可能無法開啟外掛的壓縮檔"
 
 #, php-format
 msgid "Could not protect the %s plugin: %s"
@@ -2437,10 +2421,6 @@ msgid "File %s doesn't look like a migration file."
 msgstr "檔案 %s 看起來不像是個搬移檔案。"
 
 #, php-format
-msgid "File %s is missing in plugin archive."
-msgstr "檔案 %s 遺失在外掛壓縮檔。"
-
-#, php-format
 msgid "File does not exist. %1$s.tar.gz"
 msgstr "檔案不存在。 %1$s.tar.gz"
 
@@ -3401,6 +3381,9 @@ msgstr "只允許從0到65535範圍的數字。"
 msgid "Only positive numbers are allowed."
 msgstr "只允許正數。"
 
+msgid "Only tar.gz and tar.bz2 archives are supported."
+msgstr ""
+
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "只允許 tar.gz，tar.bz2 和 zip 壓縮檔。"
 
@@ -3829,10 +3812,8 @@ msgstr "外掛啟用失敗: %s"
 msgid "Plugin archive"
 msgstr "外掛壓縮"
 
-#, php-format
-msgid ""
-"Plugin archive exceeds the maximum upload size (%s). Max upload size is: %s."
-msgstr "外掛壓縮檔超過最大的上傳大小 (%s). 最大上傳大小為: %s."
+msgid "Plugin archive exceeds the maximum upload size"
+msgstr ""
 
 #, php-format
 msgid "Plugin change has failed: %s"
@@ -4049,9 +4030,6 @@ msgstr "回覆"
 
 msgid "Request Timeout: The server took too long to send the data."
 msgstr "需求超時: 此伺服器花太多時間傳送資料。"
-
-msgid "Request from foreign host was blocked."
-msgstr "從外部主機的連線需求已封鎖。"
 
 msgid "Requires Database?"
 msgstr "必須有資料庫?"
@@ -5478,9 +5456,6 @@ msgstr "您已經超出您的子網域數量限制。"
 msgid "You are not allowed to act on your own session."
 msgstr "您不被允許在您目前的連線上動作。"
 
-msgid "You are not allowed to update a protected plugin."
-msgstr "您不被允許上傳已保護的外掛。"
-
 msgid "You can only upload images."
 msgstr "您僅能上傳圖片"
 
@@ -5527,6 +5502,9 @@ msgstr "您不能將到期日設為過去"
 
 msgid "You cannot unassign an IP address already in use."
 msgstr "您不能解除已被使用 IP 地址的指派。"
+
+msgid "You cannot update a protected plugin."
+msgstr ""
 
 msgid "You do not have DNS resource records."
 msgstr "您沒有任何 DNS 紀錄。"

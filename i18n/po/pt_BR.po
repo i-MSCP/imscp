@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-09-14 12:41+0200\n"
-"PO-Revision-Date: 2016-09-13 14:36+0000\n"
+"POT-Creation-Date: 2016-09-22 10:22+0200\n"
+"PO-Revision-Date: 2016-09-22 08:23+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/i-mscp/i-MSCP/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -153,6 +153,10 @@ msgstr "O endereço IP %s está esperando por %s segundos."
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "A conta %s foi excluída com sucesso."
+
+#, php-format
+msgid "%s doens't look like an i-MSCP plugin archive."
+msgstr ""
 
 #, php-format
 msgid "%s doesn't exist or is empty."
@@ -1397,7 +1401,7 @@ msgid "Could not add/update SSL certificate. An unexpected error occurred."
 msgstr ""
 
 #, php-format
-msgid "Could not backup %s plugin directory."
+msgid "Could not backup current `%s' plugin directory."
 msgstr ""
 
 #, php-format
@@ -1432,34 +1436,14 @@ msgstr ""
 msgid "Could not enable the %s plugin: %s"
 msgstr ""
 
-msgid "Could not extract info.php file"
-msgstr ""
-
-msgid "Could not extract plugin archive."
-msgstr ""
-
-#, php-format
-msgid "Could not extract plugin archive: %s"
-msgstr ""
-
 msgid "Could not find any network interface. You cannot add new IP addresses."
-msgstr ""
-
-msgid "Could not find plugin root directory within archive."
 msgstr ""
 
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr ""
 
 #, php-format
-msgid "Could not get stats for file %s."
-msgstr ""
-
-#, php-format
 msgid "Could not install the %s plugin: %s"
-msgstr ""
-
-msgid "Could not open plugin archive."
 msgstr ""
 
 #, php-format
@@ -2435,10 +2419,6 @@ msgid "File %s doesn't look like a migration file."
 msgstr "O arquivo %s não se parece com um arquivo de migração."
 
 #, php-format
-msgid "File %s is missing in plugin archive."
-msgstr "O arquivo %s está faltando no depósito de plugin."
-
-#, php-format
 msgid "File does not exist. %1$s.tar.gz"
 msgstr "Arquivo não existe. %1$s.tar.gz"
 
@@ -3399,6 +3379,9 @@ msgstr "Somente os números de 0 a 65535 são permitidos."
 msgid "Only positive numbers are allowed."
 msgstr "Apenas números positivos são permitidos."
 
+msgid "Only tar.gz and tar.bz2 archives are supported."
+msgstr ""
+
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "Só tar.gz, tar.bz2 e zip são arquivos aceitos"
 
@@ -3827,10 +3810,8 @@ msgstr ""
 msgid "Plugin archive"
 msgstr "Arquivo do plugin"
 
-#, php-format
-msgid ""
-"Plugin archive exceeds the maximum upload size (%s). Max upload size is: %s."
-msgstr "Arquivo do Plugin excede o tamanho máximo de upload (%s). Tamanho máximo de upload é: %s."
+msgid "Plugin archive exceeds the maximum upload size"
+msgstr ""
 
 #, php-format
 msgid "Plugin change has failed: %s"
@@ -4047,9 +4028,6 @@ msgstr "Responder"
 
 msgid "Request Timeout: The server took too long to send the data."
 msgstr "Timeout: O servidor levou muito tempo para enviar os dados."
-
-msgid "Request from foreign host was blocked."
-msgstr "Consultar estrangeira foi bloqueado."
 
 msgid "Requires Database?"
 msgstr "Requer banco de dados?"
@@ -5476,9 +5454,6 @@ msgstr "Você excedeu o limite de subdomínio."
 msgid "You are not allowed to act on your own session."
 msgstr "Você não está autorizado a agir em sua sessão."
 
-msgid "You are not allowed to update a protected plugin."
-msgstr "Você não tem permissão para atualizar um plugin."
-
 msgid "You can only upload images."
 msgstr "Você só pode fazer upload de imagens."
 
@@ -5525,6 +5500,9 @@ msgstr "Não é possível definir a data de validade para o passado."
 
 msgid "You cannot unassign an IP address already in use."
 msgstr "Você não pode atribuir um endereço de IP que está em uso."
+
+msgid "You cannot update a protected plugin."
+msgstr ""
 
 msgid "You do not have DNS resource records."
 msgstr "Você não tem registros de recursos DNS."

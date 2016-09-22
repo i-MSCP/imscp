@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-09-14 12:41+0200\n"
-"PO-Revision-Date: 2016-09-13 18:54+0000\n"
-"Last-Translator: Lukasz Nowak <qkash@o2.pl>\n"
+"POT-Creation-Date: 2016-09-22 10:22+0200\n"
+"PO-Revision-Date: 2016-09-22 08:23+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/i-mscp/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -157,6 +157,10 @@ msgstr " IP адрес %s ожидает %s секунд."
 #, php-format
 msgid "%s account successfully deleted."
 msgstr "%s учетная запись успешно удалена."
+
+#, php-format
+msgid "%s doens't look like an i-MSCP plugin archive."
+msgstr ""
 
 #, php-format
 msgid "%s doesn't exist or is empty."
@@ -1401,8 +1405,8 @@ msgid "Could not add/update SSL certificate. An unexpected error occurred."
 msgstr "Не удалось добавить/обновить SSL сертификат. Произошла неожиданная ошибка."
 
 #, php-format
-msgid "Could not backup %s plugin directory."
-msgstr "Невозможно сделать резервную копию плагина %s."
+msgid "Could not backup current `%s' plugin directory."
+msgstr ""
 
 #, php-format
 msgid "Could not change the %s plugin: %s"
@@ -1436,35 +1440,15 @@ msgstr "Невозможно отключить плагин %s: %s"
 msgid "Could not enable the %s plugin: %s"
 msgstr "Невозможно включить плагин %s: %s"
 
-msgid "Could not extract info.php file"
-msgstr "Невозможно извлечь файл info.php"
-
-msgid "Could not extract plugin archive."
-msgstr "Невозможно извлечь архив плагина."
-
-#, php-format
-msgid "Could not extract plugin archive: %s"
-msgstr "Невозможно извлечь архив плагина: %s"
-
 msgid "Could not find any network interface. You cannot add new IP addresses."
 msgstr "Невозможно найти сетевой интерфейс. Вы не можете добавить новый IP адрес."
-
-msgid "Could not find plugin root directory within archive."
-msgstr "Невозможно найти корневой каталог плагина в архиве."
 
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr "Не удалось сгенерировать SSL сертификат. Произошла неожиданная ошибка."
 
 #, php-format
-msgid "Could not get stats for file %s."
-msgstr "Невозможно получить статистику для файла %s."
-
-#, php-format
 msgid "Could not install the %s plugin: %s"
 msgstr "Невозможно установить плагин %s : %s"
-
-msgid "Could not open plugin archive."
-msgstr "Невозможно открыть архив плагина."
 
 #, php-format
 msgid "Could not protect the %s plugin: %s"
@@ -2439,10 +2423,6 @@ msgid "File %s doesn't look like a migration file."
 msgstr "Файл %s не соответствует файлу миграции."
 
 #, php-format
-msgid "File %s is missing in plugin archive."
-msgstr "Файл %s отсутствует в архиве плагина."
-
-#, php-format
 msgid "File does not exist. %1$s.tar.gz"
 msgstr "Файл не существует. %1$s.tar.gz"
 
@@ -3403,6 +3383,9 @@ msgstr "Разрешены только числа от 0 до 65535"
 msgid "Only positive numbers are allowed."
 msgstr "Разрешены только положительные числа"
 
+msgid "Only tar.gz and tar.bz2 archives are supported."
+msgstr ""
+
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "Поддерживаются только tar.gz, tar.bz2 и zip архивы."
 
@@ -3831,10 +3814,8 @@ msgstr "Активация плагина не удалась: %s"
 msgid "Plugin archive"
 msgstr "Архив с плагином"
 
-#, php-format
-msgid ""
-"Plugin archive exceeds the maximum upload size (%s). Max upload size is: %s."
-msgstr "Архив с плагином достиг максимального размера файла для загрузки (%s). Максимальный размер файла: %s."
+msgid "Plugin archive exceeds the maximum upload size"
+msgstr ""
 
 #, php-format
 msgid "Plugin change has failed: %s"
@@ -4051,9 +4032,6 @@ msgstr "Ответ"
 
 msgid "Request Timeout: The server took too long to send the data."
 msgstr "Задержка зарпоса: Сервер ожидает слишком долго."
-
-msgid "Request from foreign host was blocked."
-msgstr "Запрос с иностранного хоста был заблокирован."
 
 msgid "Requires Database?"
 msgstr "Требуется база данных?"
@@ -5480,9 +5458,6 @@ msgstr "Вы превысили лимит субдоменов."
 msgid "You are not allowed to act on your own session."
 msgstr "Вам не разрешено действовать в собственной сессии."
 
-msgid "You are not allowed to update a protected plugin."
-msgstr "Вам не разрешается обновлять защищенные плагины"
-
 msgid "You can only upload images."
 msgstr "Вы можете загружать только изображения."
 
@@ -5529,6 +5504,9 @@ msgstr "Дата истечения не может быть в прошлом."
 
 msgid "You cannot unassign an IP address already in use."
 msgstr "Вы не можете открепить IP адрес, который уже используется."
+
+msgid "You cannot update a protected plugin."
+msgstr ""
 
 msgid "You do not have DNS resource records."
 msgstr "У Вас нет записей ресурсов DNS."
