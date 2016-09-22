@@ -23,6 +23,7 @@ CRONJOBS
 
 FRONTEND
     Added: showForbiddenErrorPage() function
+    Fixed: The `onBeforeAddDomain' event is triggered too early
     Fixed: Too many redirects when attempting to login from an external host (when external login is disallowed)
 
 LISTENERS

@@ -160,17 +160,7 @@ function addCustomer()
 
     try {
         $db->beginTransaction();
-
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddDomain, array(
-            'domainName' => $dmnName,
-            'createdBy' => $_SESSION['user_id'],
-            'customerId' => $customerId,
-            'customerEmail' => $email,
-            'forwardUrl' => $dmnUrlForward,
-            'forwardType' => $dmnTypeForward,
-            'forwardHost' => $dmnHostForward
-        ));
-
+        
         exec_query(
             '
                 INSERT INTO admin (
@@ -188,6 +178,16 @@ function addCustomer()
 
         $adminId = $db->insertId();
 
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddDomain, array(
+            'domainName' => $dmnName,
+            'createdBy' => $_SESSION['user_id'],
+            'customerId' => $adminId,
+            'customerEmail' => $email,
+            'forwardUrl' => $dmnUrlForward,
+            'forwardType' => $dmnTypeForward,
+            'forwardHost' => $dmnHostForward
+        ));
+        
         exec_query(
             '
                 INSERT INTO domain (
