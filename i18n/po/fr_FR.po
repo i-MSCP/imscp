@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-09-22 10:22+0200\n"
-"PO-Revision-Date: 2016-09-22 08:23+0000\n"
+"POT-Creation-Date: 2016-09-22 10:48+0200\n"
+"PO-Revision-Date: 2016-09-22 08:32+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/i-mscp/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -157,7 +157,7 @@ msgstr "Le compte %s a été supprimé."
 
 #, php-format
 msgid "%s doens't look like an i-MSCP plugin archive."
-msgstr ""
+msgstr "%s ne ressemble pas à une archive d'extension pour i-MSCP."
 
 #, php-format
 msgid "%s doesn't exist or is empty."
@@ -1403,7 +1403,7 @@ msgstr "Impossible d'ajouter ou mettre à jour le certificat SSL. Une erreur ina
 
 #, php-format
 msgid "Could not backup current `%s' plugin directory."
-msgstr ""
+msgstr "Impossible de sauvegarder le répertoire courant du plugin `%s'."
 
 #, php-format
 msgid "Could not change the %s plugin: %s"
@@ -3381,7 +3381,7 @@ msgid "Only positive numbers are allowed."
 msgstr "Seuls les nombre positifs sont autorisés."
 
 msgid "Only tar.gz and tar.bz2 archives are supported."
-msgstr ""
+msgstr "Seules les archives tar.gz et  tar.bz2 sont supportées."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "Seules les archives tar.gz, tar.bz2 et zip sont acceptées."
@@ -3812,7 +3812,7 @@ msgid "Plugin archive"
 msgstr "Archive d'extension"
 
 msgid "Plugin archive exceeds the maximum upload size"
-msgstr ""
+msgstr "L'archive de l'extension excède la taille maximum d'envoi de données sur le serveur."
 
 #, php-format
 msgid "Plugin change has failed: %s"
@@ -5503,7 +5503,7 @@ msgid "You cannot unassign an IP address already in use."
 msgstr "Vous ne pouvez pas dés-assigner une adresse IP déjà utilisée."
 
 msgid "You cannot update a protected plugin."
-msgstr ""
+msgstr "Vous ne pouvez pas mettre à jour une extension protégée."
 
 msgid "You do not have DNS resource records."
 msgstr "Vous n'avez pas d'enrengistrements DNS personnalisés."

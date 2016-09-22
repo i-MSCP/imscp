@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-09-22 10:22+0200\n"
-"PO-Revision-Date: 2016-09-22 08:23+0000\n"
+"POT-Creation-Date: 2016-09-22 10:48+0200\n"
+"PO-Revision-Date: 2016-09-22 08:33+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/i-mscp/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -158,7 +158,7 @@ msgstr "%s account successfully deleted."
 
 #, php-format
 msgid "%s doens't look like an i-MSCP plugin archive."
-msgstr ""
+msgstr "%s doens't look like an i-MSCP plugin archive."
 
 #, php-format
 msgid "%s doesn't exist or is empty."
@@ -1404,7 +1404,7 @@ msgstr "Could not add/update SSL certificate. An unexpected error occurred."
 
 #, php-format
 msgid "Could not backup current `%s' plugin directory."
-msgstr ""
+msgstr "Could not backup current `%s' plugin directory."
 
 #, php-format
 msgid "Could not change the %s plugin: %s"
@@ -3382,7 +3382,7 @@ msgid "Only positive numbers are allowed."
 msgstr "Only positive numbers are allowed."
 
 msgid "Only tar.gz and tar.bz2 archives are supported."
-msgstr ""
+msgstr "Only tar.gz and tar.bz2 archives are supported."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "Only tar.gz, tar.bz2 and zip archives are accepted."
@@ -3813,7 +3813,7 @@ msgid "Plugin archive"
 msgstr "Plugin archive"
 
 msgid "Plugin archive exceeds the maximum upload size"
-msgstr ""
+msgstr "Plugin archive exceeds the maximum upload size"
 
 #, php-format
 msgid "Plugin change has failed: %s"
@@ -5504,7 +5504,7 @@ msgid "You cannot unassign an IP address already in use."
 msgstr "You cannot unassign an IP address already in use."
 
 msgid "You cannot update a protected plugin."
-msgstr ""
+msgstr "You cannot update a protected plugin."
 
 msgid "You do not have DNS resource records."
 msgstr "You do not have DNS resource records."
