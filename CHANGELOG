@@ -40,6 +40,7 @@ SERVICES
     Fixed: Empty lines are not ignored in the /etc/imscp/mounts/mounts.conf configuration file (imscp_mountall)
 
 YOUTRACK
+    #IP-0815 Dovecot LDA - Enable support for address extensions
     #IP-1616 ProxyPass entries not removed in vhost file if HSTS is enabled
     #IP-1617 Reverse proxy: Localhost is not allowed as address
     #IP-1618 OpenVZ - Could not remount root directory as shared subtree

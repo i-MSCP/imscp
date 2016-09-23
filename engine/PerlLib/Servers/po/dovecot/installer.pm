@@ -257,14 +257,13 @@ sub configurePostfix
         my $configSnippet = <<'EOF';
 
 dovecot   unix  -       n       n       -       -       pipe
-  flags=DRhu user={MTA_MAILBOX_UID_NAME}:{MTA_MAILBOX_GID_NAME} argv={DOVECOT_DELIVER_PATH} -f ${sender} -d ${recipient} {SFLAG}
+  flags=DRhu user={MTA_MAILBOX_UID_NAME}:{MTA_MAILBOX_GID_NAME} argv={DOVECOT_DELIVER_PATH} -f ${sender} -d ${user}@${nexthop} -m INBOX.${extension}
 EOF
         $$fileContent .= iMSCP::TemplateParser::process(
             {
                 MTA_MAILBOX_UID_NAME => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
                 MTA_MAILBOX_GID_NAME => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
-                DOVECOT_DELIVER_PATH => $self->{'config'}->{'DOVECOT_DELIVER_PATH'},
-                SFLAG                => version->parse( $self->{'version'} ) < version->parse( '2.0.0' ) ? '-s' : ''
+                DOVECOT_DELIVER_PATH => $self->{'config'}->{'DOVECOT_DELIVER_PATH'}
             },
             $configSnippet
         );
