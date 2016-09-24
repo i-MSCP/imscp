@@ -13,7 +13,7 @@ BACKEND
 
 CONFIGS
     Updated: Request headers in redirect vhosts (Apache2)
-    Removed:  /etc/imscp/imscp.old.conf configuration file
+    Removed: /etc/imscp/imscp.old.conf configuration file
 
 CRONJOBS
     Fixed: run() subroutine is run twice per process (imscp-disable-accounts)
