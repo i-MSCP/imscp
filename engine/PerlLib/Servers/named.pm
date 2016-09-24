@@ -51,16 +51,19 @@ sub factory
 {
     return $instance if defined $instance;
 
-    my $sName = $main::imscpConfig{'NAMED_SERVER'};
+    my $sName = $main::imscpConfig{'NAMED_SERVER'} || 'external_server';
 
     if (defined $main::execmode && $main::execmode eq 'setup') {
-        if ($sName eq 'external_server' && $main::imscpOldConfig{'NAMED_SERVER'} ne '') {
-            my $package = "Servers::named::$main::imscpConfig{'NAMED_SERVER'}";
+        if ($sName eq 'external_server'
+            && $main::imscpOldConfig{'NAMED_SERVER'} ne ''
+            && $main::imscpOldConfig{'NAMED_SERVER'} ne $sName
+        ) {
+            my $package = "Servers::named::$main::imscpOldConfig{'NAMED_SERVER'}";
             eval "require $package";
             fatal( $@ ) if $@;
 
             my $rs = $package->getInstance()->uninstall();
-            fatal( sprintf( "Could not uninstall `%s' server", $main::imscpConfig{'NAMED_SERVER'} ) ) if $rs;
+            fatal( sprintf( "Could not uninstall the `%s' server", $main::imscpOldConfig{'NAMED_SERVER'} ) ) if $rs;
         }
     }
 
