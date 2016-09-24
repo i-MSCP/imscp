@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-09-22 10:48+0200\n"
-"PO-Revision-Date: 2016-09-22 08:23+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2016-09-25 00:35+0200\n"
+"PO-Revision-Date: 2016-09-24 21:58+0000\n"
+"Last-Translator: Lukasz Nowak <qkash@o2.pl>\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/i-mscp/i-MSCP/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -157,7 +157,7 @@ msgstr "%s konto usunięte poprawnie."
 
 #, php-format
 msgid "%s doens't look like an i-MSCP plugin archive."
-msgstr ""
+msgstr "%s nie wygląda jak archiwum pluginu i-MSCP."
 
 #, php-format
 msgid "%s doesn't exist or is empty."
@@ -1403,7 +1403,7 @@ msgstr "Nie można dodać/zmienić certyfikatu SSL. Wystąpił nieoczekiwany bł
 
 #, php-format
 msgid "Could not backup current `%s' plugin directory."
-msgstr ""
+msgstr "Nie można wykonać kopii bieżącego katalogu rozszerzenia %s."
 
 #, php-format
 msgid "Could not change the %s plugin: %s"
@@ -3381,7 +3381,7 @@ msgid "Only positive numbers are allowed."
 msgstr "Dozwolone są tylko liczby dodatnie."
 
 msgid "Only tar.gz and tar.bz2 archives are supported."
-msgstr ""
+msgstr "Obsługiwane są tylko archiwa tar.gz oraz tar.bz2."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "Akceptowane są tylko archiwa tar.gz, tar.bz2 i zip."
@@ -3812,7 +3812,7 @@ msgid "Plugin archive"
 msgstr "Archiwum rozszerzenia"
 
 msgid "Plugin archive exceeds the maximum upload size"
-msgstr ""
+msgstr "Archiwum pluginu przekracza maksymalny dopuszczalny rozmiar."
 
 #, php-format
 msgid "Plugin change has failed: %s"
@@ -5503,7 +5503,7 @@ msgid "You cannot unassign an IP address already in use."
 msgstr "Nie można odłączyć adresu IP będącego w użyciu."
 
 msgid "You cannot update a protected plugin."
-msgstr ""
+msgstr "Nie możesz zaktualizować pluginu chronionego."
 
 msgid "You do not have DNS resource records."
 msgstr "Nie posiadasz zasobów rekordów DNS."
