@@ -209,7 +209,7 @@ sub mount($)
     # Process the mount(2) calls
     for(@mountArgv) {
         unless (syscall(&iMSCP::Syscall::SYS_mount, @{$_} ) == 0) {
-            error( sprintf( 'Error while calling mount(): %s', $! || 'Unknown error' ) );
+            error( sprintf( 'Error while calling mount(%s): %s', join(', ', @{$_}), $! || 'Unknown error' ) );
             return 1;
         }
     }
@@ -247,7 +247,7 @@ sub umount($)
             s/\\040\(deleted\)$//;
             debug($_);
             unless (syscall(&iMSCP::Syscall::SYS_umount2, $_, MNT_DETACH) == 0 || $!{'EINVAL'}) {
-                error( sprintf( 'Could not umount %s: %s', $_, $! || 'Unknown error' ) );
+                error( sprintf( 'Error while calling umount($_): %s', $_, $! || 'Unknown error' ) );
                 return 1;
             }
             0;
