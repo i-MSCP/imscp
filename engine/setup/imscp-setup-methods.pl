@@ -922,7 +922,7 @@ sub setupSystemDirectories
         );
         $rs ||= addMountEntry("$parentUserWebDir $parentUserWebDir none bind,slave");
     }
-    $rs = mount(
+    $rs ||= mount(
         {
             fs_spec    => $main::imscpConfig{'USER_WEB_DIR'},
             fs_file    => $main::imscpConfig{'USER_WEB_DIR'},
