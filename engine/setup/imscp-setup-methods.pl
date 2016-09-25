@@ -846,22 +846,6 @@ EOF
 ## Setup subroutines
 #
 
-#sub setupSaveOldConfig
-#{
-#    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupSaveOldConfig');
-#    return $rs if $rs;
-#
-#    unless(-f "$main::imscpConfig{'CONF_DIR'}/imscp.conf") {
-#        error(sprintf('File %s not found', "$main::imscpConfig{'CONF_DIR'}/imscp.conf"));
-#        return 1;
-#    }
-#
-#    $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf" )->copyFile(
-#        "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf"
-#    );
-#   $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupSaveOldConfig');
-#}
-
 # Write configuration into imscp.conf file
 sub setupSaveConfig
 {
