@@ -62,7 +62,6 @@ sub process
         chomp;
         my $entryFields;
         @{$entryFields}{ qw/ fs_spec fs_file fs_vfstype fs_mntops / } = split /\s+/;
-        debug("$action $_");
         $rs = $action eq 'start' ? mount($entryFields) : umount($entryFields->{'fs_file'});
         last if $rs;
     }
