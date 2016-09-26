@@ -231,7 +231,14 @@ sub mount($)
 
 sub umount($;$)
 {
-    my ($fsFile, $bindMountsOnly) = (File::Spec->canonpath( shift ), shift);
+    my ($fsFile, $bindMountsOnly) = @_;
+
+    unless (defined $fsFile) {
+        error( '$fsFile parameter is not defined' );
+        return 1;
+    }
+
+    $fsFile = File::Spec->canonpath( $fsFile );
 
     return 0 if $fsFile eq '/'; # Prevent umounting root fs
 
@@ -246,7 +253,7 @@ sub umount($;$)
                 }
                 $!{'EINVAL'};
             } else {
-                debug(sprintf("`%s' is not a bind mount - skipping..."));
+                debug( sprintf( "`%s' is not a bind mount - skipping...", $_ ) );
                 1;
             }
         } else {
@@ -307,9 +314,16 @@ sub setPropagationFlag($;$)
 
 sub isMountpoint($;$)
 {
-    my ($path, $includeBindmount) = (File::Spec->canonpath(shift), shift);
+    my ($path, $includeBindmount) = @_;
 
-    if($includeBindmount) {
+    unless (defined $path) {
+        error( '$path parameter is not defined' );
+        return 1;
+    }
+
+    $path = File::Spec->canonpath( $path );
+
+    if ($includeBindmount) {
         return 1 if grep { $_ eq $path } @{$MOUNTS};
     }
 
