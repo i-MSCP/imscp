@@ -50,12 +50,19 @@ sub process
     my $fstab = "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf";
     return $rs unless -f $fstab;
 
-    open my $fh, '<', $fstab or die(sprintf('Could not open %s: %s', $fstab, $!));
+    my $fh;
+    if($action eq 'start') {
+        open $fh, '<', $fstab or die(sprintf('Could not open %s: %s', $fstab, $!));
+    } else {
+        open $fh, '-|', 'tac', $fstab or die(sprintf('Could not open %s: %s', $fstab, $!));  
+    }
+
     while(<$fh>) {
         next if /^(#|$)/; # Ignore comment and empty lines
         chomp;
         my $entryFields;
         @{$entryFields}{ qw/ fs_spec fs_file fs_vfstype fs_mntops / } = split /\s+/;
+        debug("$action $_");
         $rs = $action eq 'start' ? mount($entryFields) : umount($entryFields->{'fs_file'});
         last if $rs;
     }

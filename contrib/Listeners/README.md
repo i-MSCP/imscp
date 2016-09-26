@@ -182,3 +182,9 @@ Changes the Roundcube Webmail configuration to connect through TLS.
 ### 10_system_hosts.pl
 
 Allows to add host entries in the system hosts file (eg. /etc/hosts).
+
+### 10_system_mount_userwebdir.pl
+
+Allows mounting of USER_WEB_DIR from another location into /var/www/virtual
+
+Listener file compatible with i-MSCP >= 1.3.4

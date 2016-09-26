@@ -138,7 +138,7 @@ my $MOUNTS = lazy
             push @entries, $fsFile;
         }
         Quota::endmntent();
-        \@entries;
+        [ reverse @entries ];
     };
 
 =head1 DESCRIPTION
@@ -214,11 +214,11 @@ sub mount($)
         }
     }
 
-    push @{$MOUNTS}, $fsFile unless $mflags & MS_REMOUNT;
+    unshift @{$MOUNTS}, $fsFile unless $mflags & MS_REMOUNT;
     0;
 }
 
-=item umount($fsFile)
+=item umount($fsFile [, $bindMountsOnly = FALSE ])
 
  Umount the given file system
 
@@ -229,33 +229,30 @@ sub mount($)
 
 =cut
 
-sub umount($)
+sub umount($;$)
 {
-    my $fsFile = shift;
-
-    unless (defined $fsFile) {
-        error( '$fsFile parameter is not defined' );
-        return 1;
-    }
-
-    $fsFile = File::Spec->canonpath( $fsFile );
+    my ($fsFile, $bindMountsOnly) = (File::Spec->canonpath( shift ), shift);
 
     return 0 if $fsFile eq '/'; # Prevent umounting root fs
 
-    @${MOUNTS} = reverse grep {
+    @${MOUNTS} = grep {
         if (m%^\Q$fsFile\E(/|(|\\040\(deleted\)))%) {
             s/\\040\(deleted\)$//;
-            debug($_);
-            unless (syscall(&iMSCP::Syscall::SYS_umount2, $_, MNT_DETACH) == 0 || $!{'EINVAL'}) {
-                error( sprintf( 'Error while calling umount($_): %s', $_, $! || 'Unknown error' ) );
-                return 1;
+            unless ($bindMountsOnly && isMountpoint($_)) {
+                debug($_);
+                unless (syscall(&iMSCP::Syscall::SYS_umount2, $_, MNT_DETACH) == 0 || $!{'EINVAL'}) {
+                    error( sprintf( 'Error while calling umount($_): %s', $_, $! || 'Unknown error' ) );
+                    return 1;
+                }
+                $!{'EINVAL'};
+            } else {
+                debug(sprintf("`%s' is not a bind mount - skipping..."));
+                1;
             }
-            0;
         } else {
             1;
         }
-    } reverse @${MOUNTS};
-
+    } @${MOUNTS};
     0;
 }
 
@@ -296,24 +293,28 @@ sub setPropagationFlag($;$)
     0;
 }
 
-=item isMountpoint($path)
+=item isMountpoint($path [, $includeBindmounts = FALSE ])
 
- Is the given path a mountpoint or bind mount?
+ Is the given path a mountpoint?
  
  See also mountpoint(1)
 
  Param string $path Path to test
+ Param bool $includeBindmount Whether or not the bind mounts shall be considered as mountpoints (default: no)
  Return bool TRUE if $path look like a mount point, FALSE otherwise
 
 =cut
 
-sub isMountpoint($)
+sub isMountpoint($;$)
 {
-    my $path = shift;
+    my ($path, $includeBindmount) = (File::Spec->canonpath(shift), shift);
 
-    $path = File::Spec->canonpath( $path );
-    return 1 if grep { $_ eq $path } @{$MOUNTS};
+    if($includeBindmount) {
+        return 1 if grep { $_ eq $path } @{$MOUNTS};
+    }
+
     return 0 unless -d $path;
+
     my $st = File::stat::populate(CORE::stat( _ ));
     my $st2 = File::stat::stat("$path/..");
     ($st->dev != $st2->dev) || ($st->dev == $st2->dev && $st->ino == $st2->ino);

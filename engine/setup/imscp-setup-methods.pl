@@ -887,34 +887,62 @@ sub setupCreateMasterUser
 
 sub setupSystemDirectories
 {
-    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupSystemDirectories');
-    return $rs if $rs;
-
     my $parentUserWebDir = dirname($main::imscpConfig{'USER_WEB_DIR'});
-    $rs = umount($parentUserWebDir ne '/' ? $parentUserWebDir : $main::imscpConfig{'USER_WEB_DIR'});
+
+    #
+    ## Umount current bind mounts if any
+    #
+
+    # Umount USER_WEB_DIR, only if it is a bind mount
+    my $rs = umount($main::imscpConfig{'USER_WEB_DIR'}, 'bindMountsOnly'); # e.g: /var/www/virtual
+
+    # Umount the USER_WEB_DIR parent, only if it is a bind mount and not the / root directory
+    $rs ||= umount($parentUserWebDir, 'bindMountsOnly'); # e.g: /var/www
+
+    $rs ||= iMSCP::EventManager->getInstance()->trigger('beforeSetupSystemDirectories');
     return $rs if $rs;
 
-    # Make sure that mount event are propagated as expected
+    #
+    ## Make sure that mount and umount events are propagated as expected
+    #
+
+    # Remount the USER_WEB_DIR parent directory as slave substree, excepted if it is the / root directory
     unless($parentUserWebDir eq '/') {
         $rs = mount(
             {
                 fs_spec    => $parentUserWebDir,
                 fs_file    => $parentUserWebDir,
                 fs_vfstype => 'none',
-                fs_mntops  => "bind,slave"
+                fs_mntops  => "rbind,rslave"
             }
         );
-        $rs ||= addMountEntry("$parentUserWebDir $parentUserWebDir none bind,slave");
+        $rs ||= addMountEntry("$parentUserWebDir $parentUserWebDir none rbind,rslave");
     }
-    $rs ||= mount(
-        {
-            fs_spec    => $main::imscpConfig{'USER_WEB_DIR'},
-            fs_file    => $main::imscpConfig{'USER_WEB_DIR'},
-            fs_vfstype => 'none',
-            fs_mntops  => "bind,shared"
-        }
-    );
-    $rs ||= addMountEntry("$main::imscpConfig{'USER_WEB_DIR'} $main::imscpConfig{'USER_WEB_DIR'} none bind,shared");
+    
+    if(!isMountpoint($main::imscpConfig{'USER_WEB_DIR'}, 'includeBindMounts')) {
+        # Remount USER_WEB_DIR as shared subtree
+        $rs ||= mount(
+            {
+                fs_spec    => $main::imscpConfig{'USER_WEB_DIR'},
+                fs_file    => $main::imscpConfig{'USER_WEB_DIR'},
+                fs_vfstype => 'none',
+                fs_mntops  => "rbind,rshared"
+            }
+        );
+        $rs ||= addMountEntry("$main::imscpConfig{'USER_WEB_DIR'} $main::imscpConfig{'USER_WEB_DIR'} none rbind,rshared");
+    } else {
+        # Remount USER_WEB_DIR as shared subtree
+        $rs ||= mount(
+            {
+                fs_spec    => $main::imscpConfig{'USER_WEB_DIR'},
+                fs_file    => $main::imscpConfig{'USER_WEB_DIR'},
+                fs_vfstype => 'none',
+                fs_mntops  => "rbind,remount,rshared"
+            }
+        );
+        $rs ||= addMountEntry("$main::imscpConfig{'USER_WEB_DIR'} $main::imscpConfig{'USER_WEB_DIR'} none rbind,remount,rshared");
+    }
+
     $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupSystemDirectories');
 }
 

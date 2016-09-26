@@ -1317,7 +1317,7 @@ sub mountLogsFolder
     my $rs = $self->{'eventManager'}->trigger( 'beforeMountLogsFolder', $data, $fields );
     $rs ||= iMSCP::Dir->new( dirname => $fsFile )->make();
     $rs ||= addMountEntry( "$fields->{'fs_spec'} $fields->{'fs_file'} $fields->{'fs_vfstype'} $fields->{'fs_mntops'}" );
-    $rs ||= mount( $fields ) unless isMountpoint( $fields->{'fs_file'} );
+    $rs ||= mount( $fields ) unless isMountpoint( $fields->{'fs_file'}, 'includeBindMounts' );
     $rs ||= mount( $fields );
     $rs ||= $self->{'eventManager'}->trigger( 'afterMountLogsFolder', $data, $fields );
 }
