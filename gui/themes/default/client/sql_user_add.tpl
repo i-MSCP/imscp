@@ -11,11 +11,13 @@
 		<tr>
 			<td><label for="sqluser_id">{TR_SQL_USER_NAME}</label></td>
 			<td>
+				<!--email_off-->
 				<select name="sqluser_id" id="sqluser_id">
 					<!-- BDP: sqluser_list -->
 					<option value="{SQLUSER_ID}">{SQLUSER_NAME}@{SQLUSER_HOST}</option>
 					<!-- EDP: sqluser_list -->
 				</select>
+				<!--/email_off-->
 			</td>
 		</tr>
 		</tbody>
@@ -59,8 +61,8 @@
 				<!-- BDP: mysql_prefix_all -->
 				<label>
 					<select name="id_pos">
-						<option value="start"{START_ID_POS_CHECKED}>{TR_START_ID_POS}</option>
-						<option value="end"{START_ID_POS_CHECKED}>{TR_END_ID_POS}</option>
+						<option value="start"{START_ID_POS_SELECTED}>{TR_START_ID_POS}</option>
+						<option value="end"{END_ID_POS_SELECTED}>{TR_END_ID_POS}</option>
 					</select>
 				</label>
 				<!-- EDP: mysql_prefix_all -->

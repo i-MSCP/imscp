@@ -309,16 +309,16 @@ function client_generatePage($tpl, $databaseId)
             'USER_NAME' => isset($_POST['user_name']) ? tohtml($_POST['user_name'], true) : '',
             'USER_HOST' => isset($_POST['user_host']) ? tohtml($_POST['user_host'], true) : '',
             'USE_DMN_ID' => isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' ? ' checked' : '',
-            'START_ID_POS_SELECTED' => isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end' ? ' checked' : '',
-            'END_ID_POS_SELECTED' => isset($_POST['id_pos']) && $_POST['id_pos'] === 'end' ? ' checked' : ''
+            'START_ID_POS_SELECTED' => isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end' ? ' selected' : '',
+            'END_ID_POS_SELECTED' => isset($_POST['id_pos']) && $_POST['id_pos'] === 'end' ? ' selected' : ''
         ));
     } else {
         $tpl->assign(array(
             'USER_NAME' => '',
             'USER_HOST' => tohtml($cfg['DATABASE_USER_HOST'] == '127.0.0.1' ? 'localhost' : decode_idna($cfg['DATABASE_USER_HOST'])),
             'USE_DMN_ID' => '',
-            'START_ID_POS_SELECTED' => '',
-            'END_ID_POS_SELECTED' => $cfg['HTML_CHECKED']
+            'START_ID_POS_SELECTED' => ' selected',
+            'END_ID_POS_SELECTED' => ''
         ));
     }
 
