@@ -135,7 +135,7 @@ my $MOUNTS = lazy
         my @entries;
         Quota::setmntent();
         while(my (undef, $fsFile) = Quota::getmntent() ) {
-            push @entries, $fsFile;
+            push @entries, $fsFile =~ s/\\040\(deleted\)$//r;
         }
         Quota::endmntent();
         [ reverse @entries ];
@@ -243,8 +243,7 @@ sub umount($;$)
     return 0 if $fsFile eq '/'; # Prevent umounting root fs
 
     @${MOUNTS} = grep {
-        if (m%^\Q$fsFile\E(/|(|\\040\(deleted\)))%) {
-            s/\\040\(deleted\)$//;
+        if (m%^\Q$fsFile\E(/|)%) {
             unless ($bindMountsOnly && isMountpoint($_)) {
                 debug($_);
                 unless (syscall(&iMSCP::Syscall::SYS_umount2, $_, MNT_DETACH) == 0 || $!{'EINVAL'}) {

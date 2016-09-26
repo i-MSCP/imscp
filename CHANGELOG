@@ -17,7 +17,7 @@ INSTALLER
     Fixed: Error not catched on mount failure
 
 LISTENERS
-    Added: 10_mount_userwebdir.pl listener file (Allow to mount USER_WEB_DIR into /var/www/virtual from another place)
+    Added: 10_mount_userwebdir.pl listener file (Allows to mount USER_WEB_DIR into /var/www/virtual from another place)
 
 SERVICES
     Fixed: Mount entries processed in wrong order while stopping service (imscp_mountall)
