@@ -177,6 +177,7 @@ function reseller_generatePage($tpl)
         'FORWARD_TYPE_302' => ($forwardType == '302') ? ' checked' : '',
         'FORWARD_TYPE_303' => ($forwardType == '303') ? ' checked' : '',
         'FORWARD_TYPE_307' => ($forwardType == '307') ? ' checked' : '',
+        'FORWARD_TYPE_PROXY' => ($forwardType == 'proxy') ? ' checked' : '',
         'FORWARD_HOST' => ($forwardHost == 'On') ? ' checked' : '',
         'DATEPICKER_VALUE' => isset($_POST['datepicker']) ? tohtml($_POST['datepicker']) : '',
         'DATEPICKER_DISABLED' => isset($_POST['datepicker']) ? '' : ' disabled',
