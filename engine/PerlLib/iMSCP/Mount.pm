@@ -218,7 +218,7 @@ sub mount($)
     0;
 }
 
-=item umount($fsFile [, $bindMountsOnly = FALSE ])
+=item umount($fsFile)
 
  Umount the given file system
 
@@ -229,9 +229,9 @@ sub mount($)
 
 =cut
 
-sub umount($;$)
+sub umount($)
 {
-    my ($fsFile, $bindMountsOnly) = @_;
+    my $fsFile = shift;
 
     unless (defined $fsFile) {
         error( '$fsFile parameter is not defined' );
@@ -246,15 +246,11 @@ sub umount($;$)
 
     @${MOUNTS} = grep {
         if (/^\Q$fsFile\E(\/|$)/) {
-            unless ($bindMountsOnly && !isBindMount($_)) {
-                unless (syscall(&iMSCP::Syscall::SYS_umount2, $_, MNT_DETACH) == 0 || $!{'EINVAL'}) {
-                    error( sprintf( 'Error while calling umount($_): %s', $_, $! || 'Unknown error' ) );
-                    return 1;
-                }
-                $!{'EINVAL'};
-            } else {
-                1;
+            unless (syscall(&iMSCP::Syscall::SYS_umount2, $_, MNT_DETACH) == 0 || $!{'EINVAL'}) {
+                error( sprintf( 'Error while calling umount($_): %s', $_, $! || 'Unknown error' ) );
+                return 1;
             }
+            $!{'EINVAL'};
         } else {
             1;
         }
@@ -299,50 +295,18 @@ sub setPropagationFlag($;$)
     0;
 }
 
-=item isMountpoint($path [, $includeBindmounts = FALSE ])
+=item isMountpoint($path)
 
- Is the given path a mountpoint?
+ Is the given path a mountpoint or bind mount?
  
  See also mountpoint(1)
 
  Param string $path Path to test
- Param bool $includeBindmount Whether or not the bind mounts shall be considered as mountpoints (default: no)
  Return bool TRUE if $path look like a mount point, FALSE otherwise
 
 =cut
 
-sub isMountpoint($;$)
-{
-    my ($path, $includeBindmount) = @_;
-
-    unless (defined $path) {
-        error( '$path parameter is not defined' );
-        return 1;
-    }
-
-    $path = File::Spec->canonpath( $path );
-
-    if ($includeBindmount) {
-        return 1 if grep { $_ eq $path } @{$MOUNTS};
-    }
-
-    return 0 unless -d $path;
-
-    my $st = File::stat::populate(CORE::stat( _ ));
-    my $st2 = File::stat::stat("$path/..");
-    ($st->dev != $st2->dev) || ($st->dev == $st2->dev && $st->ino == $st2->ino);
-}
-
-=item isMountpoint($path)
-
- Is the given path a bind mount?
-
- Param string $path Path to test
- Return bool TRUE if $path look like a bind mount, FALSE otherwise
-
-=cut
-
-sub isBindMount($)
+sub isMountpoint($)
 {
     my $path = shift;
 
@@ -353,7 +317,12 @@ sub isBindMount($)
 
     $path = File::Spec->canonpath( $path );
 
-    grep { $_ eq $path } @{$MOUNTS} && !isMountpoint($path);
+    return 1 if grep { $_ eq $path } @{$MOUNTS};
+    return 0 unless -d $path;
+
+    my $st = File::stat::populate(CORE::stat( _ ));
+    my $st2 = File::stat::stat("$path/..");
+    ($st->dev != $st2->dev) || ($st->dev == $st2->dev && $st->ino == $st2->ino);
 }
 
 =item addMountEntry($entry)
