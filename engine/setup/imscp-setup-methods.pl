@@ -920,7 +920,7 @@ sub setupSystemDirectories
     }
     
     if(!isMountpoint($main::imscpConfig{'USER_WEB_DIR'}, 'includeBindMounts')) {
-        # Remount USER_WEB_DIR as shared subtree
+        # Mount USER_WEB_DIR on himself and mark it as shared subtree
         $rs ||= mount(
             {
                 fs_spec    => $main::imscpConfig{'USER_WEB_DIR'},
@@ -931,7 +931,7 @@ sub setupSystemDirectories
         );
         $rs ||= addMountEntry("$main::imscpConfig{'USER_WEB_DIR'} $main::imscpConfig{'USER_WEB_DIR'} none rbind,rshared");
     } else {
-        # Remount USER_WEB_DIR as shared subtree
+        # Mark USER_WEB_DIR as shared subtree
         $rs ||= mount(
             {
                 fs_spec    => $main::imscpConfig{'USER_WEB_DIR'},

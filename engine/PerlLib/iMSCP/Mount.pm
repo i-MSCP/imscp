@@ -34,7 +34,7 @@ use Scalar::Defer;
 use Quota;
 use parent 'Exporter';
 
-our @EXPORT_OK = qw/ mount umount setPropagationFlag isMountpoint addMountEntry removeMountEntry /;
+our @EXPORT_OK = qw/ mount umount setPropagationFlag isMountpoint isBindMount addMountEntry removeMountEntry /;
 
 # These are the fs-independent mount-flags (see sys/mount.h)
 # See http://man7.org/linux/man-pages/man2/mount.2.html for a description of these flags
@@ -71,7 +71,7 @@ use constant {
 
     # Magic mount flag number. Has to be or-ed to the flag values. (see sys/mount.h)
     MS_MGC_VAL      => 0xc0ed0000, # Magic flag number to indicate "new" flags
-    MS_MGC_MSK      => 0xffff0000, # Magic flag number mask */
+    MS_MGC_MSK      => 0xffff0000, # Magic flag number mask
 
     # Possible value for FLAGS parameter of `umount2' (see sys/mount.h)
     MNT_FORCE       => 1,
@@ -242,17 +242,17 @@ sub umount($;$)
 
     return 0 if $fsFile eq '/'; # Prevent umounting root fs
 
+    debug($fsFile);
+
     @${MOUNTS} = grep {
-        if (m%^\Q$fsFile\E(/|)%) {
-            unless ($bindMountsOnly && isMountpoint($_)) {
-                debug($_);
+        if (/^\Q$fsFile\E(\/|$)/) {
+            unless ($bindMountsOnly && !isBindMount($_)) {
                 unless (syscall(&iMSCP::Syscall::SYS_umount2, $_, MNT_DETACH) == 0 || $!{'EINVAL'}) {
                     error( sprintf( 'Error while calling umount($_): %s', $_, $! || 'Unknown error' ) );
                     return 1;
                 }
                 $!{'EINVAL'};
             } else {
-                debug( sprintf( "`%s' is not a bind mount - skipping...", $_ ) );
                 1;
             }
         } else {
@@ -331,6 +331,29 @@ sub isMountpoint($;$)
     my $st = File::stat::populate(CORE::stat( _ ));
     my $st2 = File::stat::stat("$path/..");
     ($st->dev != $st2->dev) || ($st->dev == $st2->dev && $st->ino == $st2->ino);
+}
+
+=item isMountpoint($path)
+
+ Is the given path a bind mount?
+
+ Param string $path Path to test
+ Return bool TRUE if $path look like a bind mount, FALSE otherwise
+
+=cut
+
+sub isBindMount($)
+{
+    my $path = shift;
+
+    unless (defined $path) {
+        error( '$path parameter is not defined' );
+        return 1;
+    }
+
+    $path = File::Spec->canonpath( $path );
+
+    grep { $_ eq $path } @{$MOUNTS} && !isMountpoint($path);
 }
 
 =item addMountEntry($entry)
