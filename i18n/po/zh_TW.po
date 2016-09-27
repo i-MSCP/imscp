@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-09-25 00:35+0200\n"
-"PO-Revision-Date: 2016-09-22 08:23+0000\n"
+"POT-Creation-Date: 2016-09-27 14:08+0200\n"
+"PO-Revision-Date: 2016-09-27 12:10+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -5058,6 +5058,12 @@ msgstr "無法設定 sslverifypeer 選項"
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr "無法上傳檔案. 是否最大. 上傳檔案大小 (%1$d MB) 已到達?"
+
+msgid "Unallowed port in forward URL. Only ports above 1024 are allowed"
+msgstr ""
+
+msgid "Unallowed port in forward URL. Only ports above 1024 are allowed."
+msgstr ""
 
 msgid "Unauthorized"
 msgstr "未驗證"
