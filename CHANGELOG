@@ -24,6 +24,7 @@ SERVICES
 
 YOUTRACK
     #IP-1628 Could not remount /var/www/virtual as shared subtree when /var/www is a separated fs
+    #IP-1630 Proxy Redirect - Restict ports to > 1024 (no system reserved ports)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.3.3

@@ -260,6 +260,13 @@ function client_addSubdomain()
                 );
             }
 
+            if ($forwardType == 'proxy') {
+                $port = $uri->getPort();
+                if ($port && $port < 1025) {
+                    throw new iMSCP_Exception(tr('Unallowed port in forward URL. Only ports above 1024 are allowed.', 'error'));
+                }
+            }
+
             $forwardUrl = $uri->getUri();
         } catch (Exception $e) {
             set_page_message($e->getMessage(), 'error');
