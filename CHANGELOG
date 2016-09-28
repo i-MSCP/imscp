@@ -15,7 +15,7 @@ BACKEND
 
 FRONTEND
     Fixed: Prevent CloudFlare to obfuscate SQL users by enclosing the select element in <!--email_off--> comment tags
-    Fixed: Previous value for the `forward_type field' not retained on error (reseller/user_add1.php)
+    Fixed: Previous value for the `forward_type' field not retained on error (reseller/user_add1.php)
     Fixed: Unknown `START_ID_POS_CHECKED' and `START_ID_POS_CHECKED' tags in sql_user_add.tpl
 
 INSTALLER
