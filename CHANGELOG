@@ -4,6 +4,9 @@
 Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
+CONFIGS
+    Fixed: Re-added ProxyErrorOverride directive in 00_nameserver.conf (Close: #IP-1406 which has been reopened)
+
 BACKEND
     Fixed: Avoid to reverse mount entries each time umount() subroutine is called (iMSCP::Mount)
     Fixed: Don't remove mount entries which were not really removed (iMSCP::Mount)
