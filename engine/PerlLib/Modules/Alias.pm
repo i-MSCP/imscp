@@ -230,12 +230,6 @@ sub _loadData
         return 1;
     }
 
-    if (!exists $rdata->{$aliasId}) {
-        if (exists $rdata->{$aliasId}) {
-
-        }
-    }
-
     unless ($rdata->{$aliasId}) {
         error( sprintf( 'Domain alias with ID %s has not been found or is in an inconsistent state', $aliasId ) );
         return 1;
