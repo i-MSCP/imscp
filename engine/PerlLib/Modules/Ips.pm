@@ -183,14 +183,14 @@ sub _getHttpdData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'httpd'} => do {
+    Readonly::Scalar $self->{'_httpd'} => do {
         {
             IPS     => $self->{'ipaddrs'},
             SSL_IPS => $self->{'ssl_ipaddrs'}
         }
-    } unless $self->{'httpd'};
+    } unless $self->{'_httpd'};
 
-    $self->{'httpd'};
+    $self->{'_httpd'};
 }
 
 =back

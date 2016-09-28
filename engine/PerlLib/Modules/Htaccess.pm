@@ -184,7 +184,7 @@ sub _getHttpdData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'httpd'} => do {
+    Readonly::Scalar $self->{'_httpd'} => do {
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
             ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
         my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
@@ -202,9 +202,9 @@ sub _getHttpdData
             HTUSERS         => $self->{'users'},
             HTGROUPS        => $self->{'groups'}
         }
-    } unless $self->{'httpd'};
+    } unless $self->{'_httpd'};
 
-    $self->{'httpd'};
+    $self->{'_httpd'};
 }
 
 =back

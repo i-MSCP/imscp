@@ -237,22 +237,6 @@ sub delete
 
 =over 4
 
-=item _init()
-
- Initialize instance
-
- Return Modules::User
-
-=cut
-
-sub _init
-{
-    my $self = shift;
-
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self;
-}
-
 =item _loadData($userId)
 
  Load data
@@ -301,7 +285,7 @@ sub _getHttpdData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'httpd'} => do {
+    Readonly::Scalar $self->{'_httpd'} => do {
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
             ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 
@@ -309,9 +293,9 @@ sub _getHttpdData
             USER  => $userName,
             GROUP => $groupName
         }
-    } unless $self->{'httpd'};
+    } unless $self->{'_httpd'};
 
-    $self->{'httpd'};
+    $self->{'_httpd'};
 }
 
 =item _getFtpdData($action)
@@ -327,7 +311,7 @@ sub _getFtpdData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'ftpd'} => do {
+    Readonly::Scalar $self->{'_ftpd'} => do {
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
             ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 
@@ -339,9 +323,9 @@ sub _getFtpdData
             USER         => $userName,
             GROUP        => $groupName
         }
-    } unless $self->{'ftpd'};
+    } unless $self->{'_ftpd'};
 
-    $self->{'ftpd'};
+    $self->{'_ftpd'};
 }
 
 =back

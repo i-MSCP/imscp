@@ -402,7 +402,7 @@ sub _getHttpdData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'httpd'} => do {
+    Readonly::Scalar $self->{'_httpd'} => do {
         my $httpd = Servers::httpd->factory();
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
             ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
@@ -468,9 +468,9 @@ sub _getHttpdData
             ALLOW_URL_FOPEN         => $phpini->{$self->{'domain_id'}}->{'allow_url_fopen'} || 'off',
             PHP_FPM_LISTEN_PORT     => ($phpini->{$self->{'domain_id'}}->{'id'} // 0) - 1
         }
-    } unless $self->{'httpd'};
+    } unless $self->{'_httpd'};
 
-    $self->{'httpd'};
+    $self->{'_httpd'};
 }
 
 =item _getMtaData($action)
@@ -486,7 +486,7 @@ sub _getMtaData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'mta'} => do {
+    Readonly::Scalar $self->{'_mta'} => do {
         {
             DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
             DOMAIN_NAME     => $self->{'domain_name'},
@@ -496,9 +496,9 @@ sub _getMtaData
                 $self->{'external_mail'} eq 'off' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
             )
         }
-    } unless $self->{'mta'};
+    } unless $self->{'_mta'};
 
-    $self->{'mta'};
+    $self->{'_mta'};
 }
 
 =item _getNamedData($action)
@@ -514,7 +514,7 @@ sub _getNamedData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'named'} => do {
+    Readonly::Scalar $self->{'_named'} => do {
         my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
             ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
         {
@@ -526,9 +526,9 @@ sub _getNamedData
                 $self->{'external_mail'} eq 'off' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
             )
         }
-    } unless $self->{'named'};
+    } unless $self->{'_named'};
 
-    $self->{'named'};
+    $self->{'_named'};
 }
 
 =item _getPackagesData($action)
@@ -544,7 +544,7 @@ sub _getPackagesData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'packages'} => do {
+    Readonly::Scalar $self->{'_packages'} => do {
         my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
             ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
         my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
@@ -562,9 +562,9 @@ sub _getPackagesData
             FORWARD_TYPE          => '',
             WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
         }
-    } unless $self->{'packages'};
+    } unless $self->{'_packages'};
 
-    $self->{'packages'};
+    $self->{'_packages'};
 }
 
 =item isValidCertificate($domainName)

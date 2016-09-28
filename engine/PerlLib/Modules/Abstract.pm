@@ -26,6 +26,7 @@ package Modules::Abstract;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use iMSCP::EventManager;
 use iMSCP::Packages;
 use iMSCP::Servers;
 use parent 'Common::Object';
@@ -129,6 +130,23 @@ sub disable
 =head1 PRIVATES METHODS
 
 =over 4
+
+=item _init()
+
+ Initialize instance
+
+ Return Modules::User
+
+=cut
+
+sub _init
+{
+    my $self = shift;
+
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    @{$self}{qw / _cron _ftpd _httpd _named _mta _po _sqld _packages / } = ({ }, { }, { }, { }, { }, { }, { }, { });
+    $self;
+}
 
 =item _runAction($action, \@items, $itemType)
 
@@ -238,22 +256,6 @@ sub _runAllActions
     0;
 }
 
-=item _getPackagesData($action)
-
- Data provider method for i-MSCP packages
-
- This method must be implemented by any module which provides data for i-MSCP packages.
-
- Param string $action Action
- Return hashref Reference to a hash containing data
-
-=cut
-
-sub _getPackagesData
-{
-    { };
-}
-
 =item _getCronData($action)
 
  Data provider method for cron servers
@@ -267,7 +269,7 @@ sub _getPackagesData
 
 sub _getCronData
 {
-    { };
+    $_[0]->{'_cron'};
 }
 
 =item _getFtpdData($action)
@@ -283,7 +285,7 @@ sub _getCronData
 
 sub _getFtpdData
 {
-    { };
+    $_[0]->{'_ftpd'};
 }
 
 =item _getHttpdData($action)
@@ -299,7 +301,7 @@ sub _getFtpdData
 
 sub _getHttpdData
 {
-    { };
+    $_[0]->{'_httpd'};
 }
 
 =item _getMtaData($action)
@@ -315,7 +317,7 @@ sub _getHttpdData
 
 sub _getMtaData
 {
-    { };
+    $_[0]->{'_mta'};
 }
 
 =item _getNamedData($action)
@@ -331,7 +333,7 @@ sub _getMtaData
 
 sub _getNamedData
 {
-    { };
+    $_[0]->{'_named'};
 }
 
 =item _getPoData($action)
@@ -347,7 +349,7 @@ sub _getNamedData
 
 sub _getPoData
 {
-    { };
+    $_[0]->{'_po'};
 }
 
 =item _getSqldData($action)
@@ -363,7 +365,23 @@ sub _getPoData
 
 sub _getSqldData
 {
-    { };
+    $_[0]->{'_sqld'};
+}
+
+=item _getPackagesData($action)
+
+ Data provider method for i-MSCP packages
+
+ This method must be implemented by any module which provides data for i-MSCP packages.
+
+ Param string $action Action
+ Return hashref Reference to a hash containing data
+
+=cut
+
+sub _getPackagesData
+{
+    $_[0]->{'_packages'};
 }
 
 =back

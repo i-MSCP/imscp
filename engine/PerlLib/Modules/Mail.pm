@@ -154,7 +154,7 @@ sub _getMtaData
 {
     my $self = shift;
 
-    Readonly::Scalar $self->{'mta'} => do {
+    Readonly::Scalar $self->{'_mta'} => do {
         my ($user, $domain) = split '@', $self->{'mail_addr'};
 
         {
@@ -168,9 +168,9 @@ sub _getMtaData
             MAIL_ADDR               => $self->{'mail_addr'},
             MAIL_CATCHALL           => index( $self->{'mail_type'}, '_catchall' ) != -1 ? $self->{'mail_acc'} : ''
         }
-    } unless $self->{'mta'};
+    } unless $self->{'_mta'};
 
-    $self->{'mta'};
+    $self->{'_mta'};
 }
 
 =item _getPoData($action)
@@ -186,7 +186,7 @@ sub _getPoData
 {
     my $self = shift;
 
-    Readonly::Scalar $self->{'po'} => do {
+    Readonly::Scalar $self->{'_po'} => do {
         my ($user, $domain) = split '@', $self->{'mail_addr'};
 
         {
@@ -199,9 +199,9 @@ sub _getPoData
             MAIL_ADDR     => $self->{'mail_addr'},
             MAIL_CATCHALL => index( $self->{'mail_type'}, '_catchall' ) != -1 ? $self->{'mail_acc'} : ''
         }
-    } unless $self->{'po'};
+    } unless $self->{'_po'};
 
-    $self->{'po'};
+    $self->{'_po'};
 }
 
 =item _getPackagesData($action)
@@ -217,7 +217,7 @@ sub _getPackagesData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'packages'} => do {
+    Readonly::Scalar $self->{'_packages'} => do {
         my ($user, $domain) = split '@', $self->{'mail_addr'};
 
         {
@@ -228,9 +228,9 @@ sub _getPackagesData
             MAIL_ADDR     => $self->{'mail_addr'},
             MAIL_CATCHALL => index( $self->{'mail_type'}, '_catchall' ) != -1 ? $self->{'mail_acc'} : ''
         }
-    } unless $self->{'packages'};
+    } unless $self->{'_packages'};
 
-    $self->{'packages'};
+    $self->{'_packages'};
 }
 
 =back

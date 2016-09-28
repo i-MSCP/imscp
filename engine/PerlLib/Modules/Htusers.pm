@@ -162,7 +162,7 @@ sub _getHttpdData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'httpd'} => do {
+    Readonly::Scalar $self->{'_httpd'} => do {
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
             ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
@@ -176,9 +176,9 @@ sub _getHttpdData
             HTUSER_DMN            => $self->{'domain_name'},
             WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
         }
-    } unless $self->{'httpd'};
+    } unless $self->{'_httpd'};
 
-    $self->{'httpd'};
+    $self->{'_httpd'};
 }
 
 =back

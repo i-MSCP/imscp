@@ -147,7 +147,7 @@ sub _getFtpdData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'ftpd'} => do {
+    Readonly::Scalar $self->{'_ftpd'} => do {
         my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.(
             $main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'}
         );
@@ -164,9 +164,9 @@ sub _getFtpdData
             USER_SYS_NAME  => $userName,
             USER_SYS_GNAME => $groupName
         }
-    } unless $self->{'ftpd'};
+    } unless $self->{'_ftpd'};
 
-    $self->{'ftpd'};
+    $self->{'_ftpd'};
 }
 
 =back

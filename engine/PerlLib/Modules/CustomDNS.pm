@@ -144,7 +144,7 @@ sub _init
     $self->{'db'} = iMSCP::Database->factory();
     $self->{'domain_name'} = undef;
     $self->{'dns_records'} = [ ];
-    $self;
+    $self->SUPER::_init();
 }
 
 =item _loadData($domainType, $domainId)
@@ -213,15 +213,15 @@ sub _getNamedData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'named'} => do {
+    Readonly::Scalar $self->{'_named'} => do {
         {
             DOMAIN_NAME => $self->{'domain_name'},
             DOMAIN_IP   => $self->{'domain_ip'},
             DNS_RECORDS => [ @{$self->{'dns_records'}} ]
         }
-    } unless $self->{'named'};
+    } unless $self->{'_named'};
 
-    $self->{'named'};
+    $self->{'_named'};
 }
 
 =back

@@ -179,7 +179,7 @@ sub _init
         { mode => 0750, user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'} }
     );
     fatal( sprintf( 'Could not create %s SSL certificate directory', $self->{'certsDir'} ) ) if $rs;
-    $self;
+    $self->SUPER::_init();
 }
 
 =item _loadData($certificateId)
