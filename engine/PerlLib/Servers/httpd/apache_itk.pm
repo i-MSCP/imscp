@@ -1714,10 +1714,9 @@ sub _addFiles
         }
 
         if ($data->{'WEB_FOLDER_PROTECTION'} eq 'yes') {
+            my $dir = $data->{'WEB_DIR'};
             my $userWebDir = File::Spec->canonpath( $main::imscpConfig{'USER_WEB_DIR'} );
-            do {
-                setImmutable( $data->{'WEB_DIR'} );
-            } while (($data->{'WEB_DIR'} = dirname( $data->{'WEB_DIR'} )) ne $userWebDir);
+            do { setImmutable( $dir ); } while (($dir = dirname( $dir )) ne $userWebDir);
         }
     }
 

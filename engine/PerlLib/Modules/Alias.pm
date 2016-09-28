@@ -32,6 +32,7 @@ use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::OpenSSL;
 use Net::LibIDN qw/idn_to_unicode/;
+use Readonly;
 use Servers::httpd;
 use parent 'Modules::Abstract';
 
@@ -229,6 +230,12 @@ sub _loadData
         return 1;
     }
 
+    if (!exists $rdata->{$aliasId}) {
+        if (exists $rdata->{$aliasId}) {
+
+        }
+    }
+
     unless ($rdata->{$aliasId}) {
         error( sprintf( 'Domain alias with ID %s has not been found or is in an inconsistent state', $aliasId ) );
         return 1;
@@ -243,7 +250,7 @@ sub _loadData
  Data provider method for Httpd servers
 
  Param string $action Action
- Return hash Hash containing module data, die on failure
+ Return hashref Reference to a hash containing data, die on failure
 
 =cut
 
@@ -251,75 +258,77 @@ sub _getHttpdData
 {
     my ($self, $action) = @_;
 
-    return %{$self->{'httpd'}} if $self->{'httpd'};
+    Readonly::Scalar $self->{'httpd'} => do {
+        my $httpd = Servers::httpd->factory();
+        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
+            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+        my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}" );
+        my $webDir = File::Spec->canonpath( "$homeDir/$self->{'alias_mount'}" );
+        my $db = iMSCP::Database->factory();
+        my $confLevel = $httpd->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} eq 'per_user' ? 'dmn' : 'als';
 
-    my $httpd = Servers::httpd->factory();
-    my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
-        ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-    my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}" );
-    my $webDir = File::Spec->canonpath( "$homeDir/$self->{'alias_mount'}" );
-    my $db = iMSCP::Database->factory();
-    my $confLevel = $httpd->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} eq 'per_user' ? 'dmn' : 'als';
+        my $phpiniMatchId = $confLevel eq 'dmn' ? $self->{'domain_id'} : $self->{'alias_id'};
+        my $phpini = $db->doQuery(
+            'domain_id', 'SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = ?', $phpiniMatchId, $confLevel
+        );
+        ref $phpini eq 'HASH' or die( $phpini );
 
-    my $phpiniMatchId = $confLevel eq 'dmn' ? $self->{'domain_id'} : $self->{'alias_id'};
-    my $phpini = $db->doQuery(
-        'domain_id', 'SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = ?', $phpiniMatchId, $confLevel
-    );
-    ref $phpini eq 'HASH' or die( $phpini );
+        my $certData = $db->doQuery(
+            'domain_id', 'SELECT * FROM ssl_certs WHERE domain_id = ? AND domain_type = ? AND status = ?',
+            $self->{'alias_id'}, 'als', 'ok'
+        );
+        ref $certData eq 'HASH' or die( $certData );
 
-    my $certData = $db->doQuery(
-        'domain_id', 'SELECT * FROM ssl_certs WHERE domain_id = ? AND domain_type = ? AND status = ?',
-        $self->{'alias_id'}, 'als', 'ok'
-    );
-    ref $certData eq 'HASH' or die( $certData );
+        my $haveCert = ($certData->{$self->{'alias_id'}} && $self->isValidCertificate( $self->{'alias_name'} ));
+        my $allowHSTS = ($haveCert && $certData->{$self->{'alias_id'}}->{'allow_hsts'} eq 'on');
+        my $hstsMaxAge = $allowHSTS ? $certData->{$self->{'alias_id'}}->{'hsts_max_age'} : '';
+        my $hstsIncludeSubDomains = ($allowHSTS && $certData->{$self->{'alias_id'}}->{'hsts_include_subdomains'} eq 'on')
+            ? '; includeSubDomains' : '';
 
-    my $haveCert = ($certData->{$self->{'alias_id'}} && $self->isValidCertificate( $self->{'alias_name'} ));
-    my $allowHSTS = ($haveCert && $certData->{$self->{'alias_id'}}->{'allow_hsts'} eq 'on');
-    my $hstsMaxAge = $allowHSTS ? $certData->{$self->{'alias_id'}}->{'hsts_max_age'} : '';
-    my $hstsIncludeSubDomains = ($allowHSTS && $certData->{$self->{'alias_id'}}->{'hsts_include_subdomains'} eq 'on')
-        ? '; includeSubDomains' : '';
+        {
+            DOMAIN_ADMIN_ID         => $self->{'domain_admin_id'},
+            DOMAIN_NAME             => $self->{'alias_name'},
+            DOMAIN_NAME_UNICODE     => idn_to_unicode( $self->{'alias_name'}, 'utf-8' ),
+            DOMAIN_IP               => $self->{'ip_number'},
+            DOMAIN_TYPE             => 'als',
+            PARENT_DOMAIN_NAME      => $self->{'alias_name'},
+            ROOT_DOMAIN_NAME        => $self->{'user_home'},
+            HOME_DIR                => $homeDir,
+            WEB_DIR                 => $webDir,
+            MOUNT_POINT             => $self->{'alias_mount'},
+            SHARED_MOUNT_POINT      => $self->_sharedMountPoint(),
+            PEAR_DIR                => $httpd->{'phpConfig'}->{'PHP_PEAR_DIR'},
+            TIMEZONE                => $main::imscpConfig{'TIMEZONE'},
+            USER                    => $userName,
+            GROUP                   => $groupName,
+            PHP_SUPPORT             => $self->{'domain_php'},
+            CGI_SUPPORT             => $self->{'domain_cgi'},
+            WEB_FOLDER_PROTECTION   => $self->{'web_folder_protection'},
+            SSL_SUPPORT             => $haveCert,
+            HSTS_SUPPORT            => $allowHSTS,
+            HSTS_MAX_AGE            => $hstsMaxAge,
+            HSTS_INCLUDE_SUBDOMAINS => $hstsIncludeSubDomains,
+            BWLIMIT                 => $self->{'domain_traffic_limit'},
+            ALIAS                   => $userName.'als'.$self->{'alias_id'},
+            FORWARD                 => $self->{'url_forward'} || 'no',
+            FORWARD_TYPE            => $self->{'type_forward'} || '',
+            FORWARD_PRESERVE_HOST   => $self->{'host_forward'} || 'Off',
+            DISABLE_FUNCTIONS       => $phpini->{$phpiniMatchId}->{'disable_functions'} //
+                'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
+            MAX_EXECUTION_TIME      => $phpini->{$phpiniMatchId}->{'max_execution_time'} // 30,
+            MAX_INPUT_TIME          => $phpini->{$phpiniMatchId}->{'max_input_time'} // 60,
+            MEMORY_LIMIT            => $phpini->{$phpiniMatchId}->{'memory_limit'} // 128,
+            ERROR_REPORTING         =>
+            $phpini->{$phpiniMatchId}->{'error_reporting'} || 'E_ALL & ~E_DEPRECATED & ~E_STRICT',
+            DISPLAY_ERRORS          => $phpini->{$phpiniMatchId}->{'display_errors'} || 'off',
+            POST_MAX_SIZE           => $phpini->{$phpiniMatchId}->{'post_max_size'} // 8,
+            UPLOAD_MAX_FILESIZE     => $phpini->{$phpiniMatchId}->{'upload_max_filesize'} // 2,
+            ALLOW_URL_FOPEN         => $phpini->{$phpiniMatchId}->{'allow_url_fopen'} || 'off',
+            PHP_FPM_LISTEN_PORT     => ($phpini->{$phpiniMatchId}->{'id'} // 0) - 1
+        }
+    } unless $self->{'httpd'};
 
-    $self->{'httpd'} = {
-        DOMAIN_ADMIN_ID         => $self->{'domain_admin_id'},
-        DOMAIN_NAME             => $self->{'alias_name'},
-        DOMAIN_NAME_UNICODE     => idn_to_unicode( $self->{'alias_name'}, 'utf-8' ),
-        DOMAIN_IP               => $self->{'ip_number'},
-        DOMAIN_TYPE             => 'als',
-        PARENT_DOMAIN_NAME      => $self->{'alias_name'},
-        ROOT_DOMAIN_NAME        => $self->{'user_home'},
-        HOME_DIR                => $homeDir,
-        WEB_DIR                 => $webDir,
-        MOUNT_POINT             => $self->{'alias_mount'},
-        SHARED_MOUNT_POINT      => $self->_sharedMountPoint(),
-        PEAR_DIR                => $httpd->{'phpConfig'}->{'PHP_PEAR_DIR'},
-        TIMEZONE                => $main::imscpConfig{'TIMEZONE'},
-        USER                    => $userName,
-        GROUP                   => $groupName,
-        PHP_SUPPORT             => $self->{'domain_php'},
-        CGI_SUPPORT             => $self->{'domain_cgi'},
-        WEB_FOLDER_PROTECTION   => $self->{'web_folder_protection'},
-        SSL_SUPPORT             => $haveCert,
-        HSTS_SUPPORT            => $allowHSTS,
-        HSTS_MAX_AGE            => $hstsMaxAge,
-        HSTS_INCLUDE_SUBDOMAINS => $hstsIncludeSubDomains,
-        BWLIMIT                 => $self->{'domain_traffic_limit'},
-        ALIAS                   => $userName.'als'.$self->{'alias_id'},
-        FORWARD                 => $self->{'url_forward'} || 'no',
-        FORWARD_TYPE            => $self->{'type_forward'} || '',
-        FORWARD_PRESERVE_HOST   => $self->{'host_forward'} || 'Off',
-        DISABLE_FUNCTIONS       => $phpini->{$phpiniMatchId}->{'disable_functions'} //
-            'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
-        MAX_EXECUTION_TIME      => $phpini->{$phpiniMatchId}->{'max_execution_time'} // 30,
-        MAX_INPUT_TIME          => $phpini->{$phpiniMatchId}->{'max_input_time'} // 60,
-        MEMORY_LIMIT            => $phpini->{$phpiniMatchId}->{'memory_limit'} // 128,
-        ERROR_REPORTING         => $phpini->{$phpiniMatchId}->{'error_reporting'} || 'E_ALL & ~E_DEPRECATED & ~E_STRICT',
-        DISPLAY_ERRORS          => $phpini->{$phpiniMatchId}->{'display_errors'} || 'off',
-        POST_MAX_SIZE           => $phpini->{$phpiniMatchId}->{'post_max_size'} // 8,
-        UPLOAD_MAX_FILESIZE     => $phpini->{$phpiniMatchId}->{'upload_max_filesize'} // 2,
-        ALLOW_URL_FOPEN         => $phpini->{$phpiniMatchId}->{'allow_url_fopen'} || 'off',
-        PHP_FPM_LISTEN_PORT     => ($phpini->{$phpiniMatchId}->{'id'} // 0) - 1
-    };
-    %{$self->{'httpd'}};
+    $self->{'httpd'};
 }
 
 =item _getMtaData($action)
@@ -327,7 +336,7 @@ sub _getHttpdData
  Data provider method for MTA servers
 
  Param string $action Action
- Return hash Hash containing module data
+ Return hashref Reference to a hash containing data
 
 =cut
 
@@ -335,18 +344,19 @@ sub _getMtaData
 {
     my ($self, $action) = @_;
 
-    return %{$self->{'mta'}} if $self->{'mta'};
+    Readonly::Scalar $self->{'mta'} => do {
+        {
+            DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
+            DOMAIN_NAME     => $self->{'alias_name'},
+            DOMAIN_TYPE     => $self->getType(),
+            EXTERNAL_MAIL   => $self->{'external_mail'},
+            MAIL_ENABLED    => (
+                $self->{'external_mail'} eq 'off' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
+            )
+        }
+    } unless $self->{'mta'};
 
-    $self->{'mta'} = {
-        DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
-        DOMAIN_NAME     => $self->{'alias_name'},
-        DOMAIN_TYPE     => $self->getType(),
-        EXTERNAL_MAIL   => $self->{'external_mail'},
-        MAIL_ENABLED    => (
-            $self->{'external_mail'} eq 'off' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
-        )
-    };
-    %{$self->{'mta'}};
+    $self->{'mta'};
 }
 
 =item _getNamedData($action)
@@ -354,7 +364,7 @@ sub _getMtaData
  Data provider method for named servers
 
  Param string $action Action
- Return hash Hash containing module data, die on failure
+ Return hashref Reference to a hash containing data
 
 =cut
 
@@ -362,21 +372,21 @@ sub _getNamedData
 {
     my ($self, $action) = @_;
 
-    return %{$self->{'named'}} if $self->{'named'};
+    Readonly::Scalar $self->{'named'} => do {
+        my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
+            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+        {
+            DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
+            DOMAIN_NAME     => $self->{'alias_name'},
+            DOMAIN_IP       => $self->{'ip_number'},
+            USER_NAME       => $userName.'als'.$self->{'alias_id'},
+            MAIL_ENABLED    => (
+                $self->{'external_mail'} eq 'off' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
+            )
+        }
+    } unless $self->{'named'};
 
-    my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
-        ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-
-    $self->{'named'} = {
-        DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
-        DOMAIN_NAME     => $self->{'alias_name'},
-        DOMAIN_IP       => $self->{'ip_number'},
-        USER_NAME       => $userName.'als'.$self->{'alias_id'},
-        MAIL_ENABLED    => (
-            $self->{'external_mail'} eq 'off' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
-        )
-    };
-    %{$self->{'named'}};
+    $self->{'named'};
 }
 
 =item _getPackagesData($action)
@@ -384,7 +394,7 @@ sub _getNamedData
  Data provider method for i-MSCP packages
 
  Param string $action Action
- Return hash Hash containing module data
+ Return hashref Reference to a hash containing data
 
 =cut
 
@@ -392,27 +402,28 @@ sub _getPackagesData
 {
     my ($self, $action) = @_;
 
-    return %{$self->{'packages'}} if $self->{'packages'};
+    Readonly::Scalar $self->{'packages'} => do {
+        my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
+            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+        my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}" );
+        my $webDir = File::Spec->canonpath( "$homeDir/$self->{'user_home'}/$self->{'alias_mount'}" );
 
-    my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
-        ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-    my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}" );
-    my $webDir = File::Spec->canonpath( "$homeDir/$self->{'user_home'}/$self->{'alias_mount'}" );
+        {
+            DOMAIN_ADMIN_ID       => $self->{'domain_admin_id'},
+            ALIAS                 => $userName,
+            DOMAIN_NAME           => $self->{'alias_name'},
+            ROOT_DOMAIN_NAME      => $self->{'user_home'},
+            USER                  => $userName,
+            GROUP                 => $groupName,
+            HOME_DIR              => $homeDir,
+            WEB_DIR               => $webDir,
+            FORWARD               => $self->{'url_forward'} || 'no',
+            FORWARD_TYPE          => $self->{'type_forward'} || '',
+            WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
+        }
+    } unless $self->{'packages'};
 
-    $self->{'packages'} = {
-        DOMAIN_ADMIN_ID       => $self->{'domain_admin_id'},
-        ALIAS                 => $userName,
-        DOMAIN_NAME           => $self->{'alias_name'},
-        ROOT_DOMAIN_NAME      => $self->{'user_home'},
-        USER                  => $userName,
-        GROUP                 => $groupName,
-        HOME_DIR              => $homeDir,
-        WEB_DIR               => $webDir,
-        FORWARD               => $self->{'url_forward'} || 'no',
-        FORWARD_TYPE          => $self->{'type_forward'} || '',
-        WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
-    };
-    %{$self->{'packages'}};
+    $self->{'packages'};
 }
 
 =item _sharedMountPoint()
@@ -475,9 +486,8 @@ sub isValidCertificate
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

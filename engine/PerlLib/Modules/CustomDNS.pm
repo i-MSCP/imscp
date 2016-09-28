@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::Database;
+use Readonly;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -204,7 +205,7 @@ sub _loadData
  Data provider method for named servers
 
  Param string $action Action
- Return hash Hash containing module data
+ Return hashref Reference to a hash containing data
 
 =cut
 
@@ -212,14 +213,15 @@ sub _getNamedData
 {
     my ($self, $action) = @_;
 
-    return %{$self->{'named'}} if $self->{'named'};
+    Readonly::Scalar $self->{'named'} => do {
+        {
+            DOMAIN_NAME => $self->{'domain_name'},
+            DOMAIN_IP   => $self->{'domain_ip'},
+            DNS_RECORDS => [ @{$self->{'dns_records'}} ]
+        }
+    } unless $self->{'named'};
 
-    $self->{'named'} = {
-        DOMAIN_NAME => $self->{'domain_name'},
-        DOMAIN_IP   => $self->{'domain_ip'},
-        DNS_RECORDS => [ @{$self->{'dns_records'}} ]
-    };
-    %{$self->{'named'}};
+    $self->{'named'};
 }
 
 =back

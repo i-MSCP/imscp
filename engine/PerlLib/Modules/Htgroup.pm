@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::Database;
+use Readonly;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -169,7 +170,7 @@ sub _loadData
  Data provider method for Httpd servers
 
  Param string $action Action
- Return hash Hash containing module data
+ Return hashref Reference to a hash containing data
 
 =cut
 
@@ -177,29 +178,29 @@ sub _getHttpdData
 {
     my ($self, $action) = @_;
 
-    return %{$self->{'httpd'}} if $self->{'httpd'};
+    Readonly::Scalar $self->{'httpd'} => do {
+        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
+            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
-    my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
-        ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+        {
+            DOMAIN_ADMIN_ID       => $self->{'domain_admin_id'},
+            USER                  => $userName,
+            GROUP                 => $groupName,
+            WEB_DIR               => "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}",
+            HTGROUP_NAME          => $self->{'ugroup'},
+            HTGROUP_USERS         => $self->{'users'},
+            HTGROUP_DMN           => $self->{'domain_name'},
+            WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
+        }
+    } unless $self->{'httpd'};
 
-    $self->{'httpd'} = {
-        DOMAIN_ADMIN_ID       => $self->{'domain_admin_id'},
-        USER                  => $userName,
-        GROUP                 => $groupName,
-        WEB_DIR               => "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}",
-        HTGROUP_NAME          => $self->{'ugroup'},
-        HTGROUP_USERS         => $self->{'users'},
-        HTGROUP_DMN           => $self->{'domain_name'},
-        WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
-    };
-    %{$self->{'httpd'}};
+    $self->{'httpd'};
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

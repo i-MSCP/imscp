@@ -26,8 +26,8 @@ package Modules::SSLcertificate;
 use strict;
 use warnings;
 use iMSCP::Debug;
-use iMSCP::File;
 use iMSCP::Dir;
+use iMSCP::File;
 use iMSCP::OpenSSL;
 use File::Temp;
 use parent 'Modules::Abstract';
@@ -244,9 +244,8 @@ sub _loadData
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

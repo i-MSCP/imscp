@@ -26,8 +26,8 @@ package Modules::Abstract;
 use strict;
 use warnings;
 use iMSCP::Debug;
-use iMSCP::Servers;
 use iMSCP::Packages;
+use iMSCP::Servers;
 use parent 'Common::Object';
 
 =head1 DESCRIPTION
@@ -68,7 +68,7 @@ sub process
 
  Add item
 
- Should be called for items with 'toadd|tochange|toenable' status.
+ Called for items with 'toadd|tochange|toenable' status.
 
  Return int 0 on success, other on failure
 
@@ -83,7 +83,7 @@ sub add
 
  Delete item
 
- Should be called for items with 'todelete' status.
+ Called for items with 'todelete' status.
 
  Return int 0 on success, other on failure
 
@@ -98,7 +98,7 @@ sub delete
 
  Restore item
 
- Should be called for items with 'torestore' status.
+ Called for items with 'torestore' status.
 
  Return int 0 on success, other on failure
 
@@ -113,7 +113,7 @@ sub restore
 
  Disable item
 
- Should be called for items with 'todisable' status.
+ Called for items with 'todisable' status.
 
  Return int 0 on success, other on failure
 
@@ -129,19 +129,6 @@ sub disable
 =head1 PRIVATES METHODS
 
 =over 4
-
-=item _loadData()
-
- Load module data
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _loadData
-{
-    fatal( ref( $_[0] ).' module must implement the _loadData() method' );
-}
 
 =item _runAction($action, \@items, $itemType)
 
@@ -163,20 +150,20 @@ sub _runAction
             next if $item eq 'noserver';
 
             my $dataProvider = '_get'.ucfirst( $item ).'Data';
-            my %moduleData = eval { $self->$dataProvider( $action ); };
+            my $moduleData = eval { $self->$dataProvider( $action ); };
             if ($@) {
                 error( $@ );
                 return 1;
             }
 
-            if (%moduleData) {
+            if (%{$moduleData}) {
                 my $package = "Servers::$item";
                 eval "require $package";
                 unless ($@) {
                     $package = $package->factory();
                     if ($package->can( $action )) {
                         debug( "Calling action $action on Servers::$item" );
-                        my $rs = $package->$action( \%moduleData );
+                        my $rs = $package->$action( $moduleData );
                         return $rs if $rs;
                     }
                 } else {
@@ -190,20 +177,20 @@ sub _runAction
 
     for my $item (@{$items}) {
         my $dataProvider = '_getPackagesData';
-        my %moduleData = eval { $self->$dataProvider( $action ); };
+        my $moduleData = eval { $self->$dataProvider( $action ); };
         if ($@) {
             error( $@ );
             return 1;
         }
 
-        if (%moduleData) {
+        if (%{$moduleData}) {
             my $package = "Package::$item";
             eval "require $package";
             unless ($@) {
                 $package = $package->getInstance();
                 if ($package->can( $action )) {
                     debug( "Calling action $action on Package::$item" );
-                    my $rs = $package->$action( \%moduleData );
+                    my $rs = $package->$action( $moduleData );
                     return $rs if $rs;
                 }
             } else {
@@ -258,13 +245,13 @@ sub _runAllActions
  This method must be implemented by any module which provides data for i-MSCP packages.
 
  Param string $action Action
- Return hash Hash containing data
+ Return hashref Reference to a hash containing data
 
 =cut
 
 sub _getPackagesData
 {
-    ();
+    { };
 }
 
 =item _getCronData($action)
@@ -274,13 +261,13 @@ sub _getPackagesData
  This method must be implemented by any module which provides data for cron servers.
 
  Param string $action Action
- Return hash Hash containing data
+ Return hashref Reference to a hash containing data
 
 =cut
 
 sub _getCronData
 {
-    ();
+    { };
 }
 
 =item _getFtpdData($action)
@@ -290,13 +277,13 @@ sub _getCronData
  This method must be implemented by any module which provides data for Ftpd servers.
 
  Param string $action Action
- Return hash Hash containing data
+ Return hashref Reference to a hash containing data
 
 =cut
 
 sub _getFtpdData
 {
-    ();
+    { };
 }
 
 =item _getHttpdData($action)
@@ -306,13 +293,13 @@ sub _getFtpdData
  This method must be implemented by any module which provides data for Httpd servers.
 
  Param string $action Action
- Return hash Hash containing data
+ Return hashref Reference to a hash containing data
 
 =cut
 
 sub _getHttpdData
 {
-    ();
+    { };
 }
 
 =item _getMtaData($action)
@@ -322,13 +309,13 @@ sub _getHttpdData
  This method must be implemented by any module which provides data for MTA servers.
 
  Param string $action Action
- Return hash Hash containing data
+ Return hashref Reference to a hash containing data
 
 =cut
 
 sub _getMtaData
 {
-    ();
+    { };
 }
 
 =item _getNamedData($action)
@@ -338,13 +325,13 @@ sub _getMtaData
  This method must be implemented by any module which provides data for named servers.
 
  Param string $action Action
- Return hash Hash containing data
+ Return hashref Reference to a hash containing data
 
 =cut
 
 sub _getNamedData
 {
-    ();
+    { };
 }
 
 =item _getPoData($action)
@@ -354,13 +341,13 @@ sub _getNamedData
  This method should be implemented by any module which provides data for IMAP/POP3 servers.
 
  Param string $action Action
- Return hash Hash containing data
+ Return hashref Reference to a hash containing data
 
 =cut
 
 sub _getPoData
 {
-    ();
+    { };
 }
 
 =item _getSqldData($action)
@@ -370,20 +357,19 @@ sub _getPoData
  This method should be implemented by any module which provides data for SQL servers.
 
  Param string $action Action
- Return hash Hash containing data
+ Return hashref Reference to a hash containing data
 
 =cut
 
 sub _getSqldData
 {
-    ();
+    { };
 }
 
 =back
 
 =head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

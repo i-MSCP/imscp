@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Database;
 use iMSCP::Debug;
+use Readonly;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -145,7 +146,7 @@ sub _loadData
  Data provider method for MTA servers
 
  Param string $action Action
- Return hash Hash containing module data
+ Return hashref Reference to a hash containing data
 
 =cut
 
@@ -153,22 +154,23 @@ sub _getMtaData
 {
     my $self = shift;
 
-    return %{$self->{'mta'}} if $self->{'mta'};
+    Readonly::Scalar $self->{'mta'} => do {
+        my ($user, $domain) = split '@', $self->{'mail_addr'};
 
-    my ($user, $domain) = split '@', $self->{'mail_addr'};
+        {
+            DOMAIN_NAME             => $domain,
+            MAIL_ACC                => $user,
+            MAIL_PASS               => $self->{'mail_pass'},
+            MAIL_FORWARD            => $self->{'mail_forward'},
+            MAIL_TYPE               => $self->{'mail_type'},
+            MAIL_HAS_AUTO_RESPONDER => $self->{'mail_auto_respond'},
+            MAIL_STATUS             => $self->{'status'},
+            MAIL_ADDR               => $self->{'mail_addr'},
+            MAIL_CATCHALL           => index( $self->{'mail_type'}, '_catchall' ) != -1 ? $self->{'mail_acc'} : ''
+        }
+    } unless $self->{'mta'};
 
-    $self->{'mta'} = {
-        DOMAIN_NAME             => $domain,
-        MAIL_ACC                => $user,
-        MAIL_PASS               => $self->{'mail_pass'},
-        MAIL_FORWARD            => $self->{'mail_forward'},
-        MAIL_TYPE               => $self->{'mail_type'},
-        MAIL_HAS_AUTO_RESPONDER => $self->{'mail_auto_respond'},
-        MAIL_STATUS             => $self->{'status'},
-        MAIL_ADDR               => $self->{'mail_addr'},
-        MAIL_CATCHALL           => index( $self->{'mail_type'}, '_catchall' ) != -1 ? $self->{'mail_acc'} : ''
-    };
-    %{$self->{'mta'}};
+    $self->{'mta'};
 }
 
 =item _getPoData($action)
@@ -176,7 +178,7 @@ sub _getMtaData
  Data provider method for IMAP/POP3 servers
 
  Param string $action Action
- Return hash Hash containing module data
+ Return hashref Reference to a hash containing data
 
 =cut
 
@@ -184,21 +186,22 @@ sub _getPoData
 {
     my $self = shift;
 
-    return %{$self->{'po'}} if $self->{'po'};
+    Readonly::Scalar $self->{'po'} => do {
+        my ($user, $domain) = split '@', $self->{'mail_addr'};
 
-    my ($user, $domain) = split '@', $self->{'mail_addr'};
+        {
+            DOMAIN_NAME   => $domain,
+            MAIL_ACC      => $user,
+            MAIL_PASS     => $self->{'mail_pass'},
+            MAIL_TYPE     => $self->{'mail_type'},
+            MAIL_QUOTA    => $self->{'quota'},
+            MAIL_STATUS   => $self->{'status'},
+            MAIL_ADDR     => $self->{'mail_addr'},
+            MAIL_CATCHALL => index( $self->{'mail_type'}, '_catchall' ) != -1 ? $self->{'mail_acc'} : ''
+        }
+    } unless $self->{'po'};
 
-    $self->{'po'} = {
-        DOMAIN_NAME   => $domain,
-        MAIL_ACC      => $user,
-        MAIL_PASS     => $self->{'mail_pass'},
-        MAIL_TYPE     => $self->{'mail_type'},
-        MAIL_QUOTA    => $self->{'quota'},
-        MAIL_STATUS   => $self->{'status'},
-        MAIL_ADDR     => $self->{'mail_addr'},
-        MAIL_CATCHALL => index( $self->{'mail_type'}, '_catchall' ) != -1 ? $self->{'mail_acc'} : ''
-    };
-    %{$self->{'po'}};
+    $self->{'po'};
 }
 
 =item _getPackagesData($action)
@@ -206,7 +209,7 @@ sub _getPoData
  Data provider method for i-MSCP packages
 
  Param string $action Action
- Return hash Hash containing module data
+ Return hashref Reference to a hash containing data
 
 =cut
 
@@ -214,19 +217,20 @@ sub _getPackagesData
 {
     my ($self, $action) = @_;
 
-    return %{$self->{'packages'}} if $self->{'packages'};
+    Readonly::Scalar $self->{'packages'} => do {
+        my ($user, $domain) = split '@', $self->{'mail_addr'};
 
-    my ($user, $domain) = split '@', $self->{'mail_addr'};
+        {
+            DOMAIN_NAME   => $domain,
+            MAIL_ACC      => $user,
+            MAIL_PASS     => $self->{'mail_pass'},
+            MAIL_TYPE     => $self->{'mail_type'},
+            MAIL_ADDR     => $self->{'mail_addr'},
+            MAIL_CATCHALL => index( $self->{'mail_type'}, '_catchall' ) != -1 ? $self->{'mail_acc'} : ''
+        }
+    } unless $self->{'packages'};
 
-    $self->{'packages'} = {
-        DOMAIN_NAME   => $domain,
-        MAIL_ACC      => $user,
-        MAIL_PASS     => $self->{'mail_pass'},
-        MAIL_TYPE     => $self->{'mail_type'},
-        MAIL_ADDR     => $self->{'mail_addr'},
-        MAIL_CATCHALL => index( $self->{'mail_type'}, '_catchall' ) != -1 ? $self->{'mail_acc'} : ''
-    };
-    %{$self->{'packages'}};
+    $self->{'packages'};
 }
 
 =back

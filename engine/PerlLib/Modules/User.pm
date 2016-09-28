@@ -34,6 +34,7 @@ use iMSCP::SystemUser;
 use iMSCP::Rights;
 use iMSCP::File;
 use iMSCP::Ext2Attributes qw(setImmutable clearImmutable);
+use Readonly;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -292,7 +293,7 @@ sub _loadData
  Data provider method for Httpd servers
 
  Param string $action Action
- Return hash Hash containing module data
+ Return hashref Reference to a hash containing data
 
 =cut
 
@@ -300,16 +301,17 @@ sub _getHttpdData
 {
     my ($self, $action) = @_;
 
-    return %{$self->{'httpd'}} if $self->{'httpd'};
+    Readonly::Scalar $self->{'httpd'} => do {
+        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
+            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 
-    my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
-        ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
+        {
+            USER  => $userName,
+            GROUP => $groupName
+        }
+    } unless $self->{'httpd'};
 
-    $self->{'httpd'} = {
-        USER  => $userName,
-        GROUP => $groupName
-    };
-    %{$self->{'httpd'}};
+    $self->{'httpd'};
 }
 
 =item _getFtpdData($action)
@@ -317,7 +319,7 @@ sub _getHttpdData
  Data provider method for Ftpd servers
 
  Param string $action Action
- Return hash Hash containing module data
+ Return hashref Reference to a hash containing data
 
 =cut
 
@@ -325,27 +327,27 @@ sub _getFtpdData
 {
     my ($self, $action) = @_;
 
-    return %{$self->{'ftpd'}} if $self->{'ftpd'};
+    Readonly::Scalar $self->{'ftpd'} => do {
+        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
+            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 
-    my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
-        ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
+        {
+            USER_ID      => $self->{'admin_id'},
+            USER_SYS_UID => $self->{'admin_sys_uid'},
+            USER_SYS_GID => $self->{'admin_sys_gid'},
+            USERNAME     => $self->{'admin_name'},
+            USER         => $userName,
+            GROUP        => $groupName
+        }
+    } unless $self->{'ftpd'};
 
-    $self->{'ftpd'} = {
-        USER_ID      => $self->{'admin_id'},
-        USER_SYS_UID => $self->{'admin_sys_uid'},
-        USER_SYS_GID => $self->{'admin_sys_gid'},
-        USERNAME     => $self->{'admin_name'},
-        USER         => $userName,
-        GROUP        => $groupName
-    };
-    %{$self->{'ftpd'}};
+    $self->{'ftpd'};
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

@@ -71,15 +71,20 @@ sub process
     local $@;
     eval { $self->{$_} = decode_json( $self->{$_} ) for qw/ info config config_prev /; };
     unless ($@) {
-        $self->{'action'} = 'run';
-        my $method = '_run';
-        if ($self->{'plugin_status'} =~ /^to(install|change|update|uninstall|enable|disable)$/) {
+        my $method;
+        if($self->{'plugin_status'} eq 'enabled') {
+            $self->{'action'} = 'run';
+            $method = '_run'
+        } elsif ($self->{'plugin_status'} =~ /^to(install|change|update|uninstall|enable|disable)$/) {
             $self->{'action'} = $1;
             $method = '_'.$1;
+        } else {
+            error( sprintf( 'Unknown plugin status: %s', $self->{'plugin_status'} ) );
+            return 1;
         }
         $rs = $self->$method();
     } else {
-        error( sprintf( 'Could not decode plugin JSON property: %s', $@ ) );
+        error( sprintf( 'Could not decode plugin JSON object: %s', $@ ) );
         $rs = 1;
     }
 

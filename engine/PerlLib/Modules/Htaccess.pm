@@ -25,9 +25,10 @@ package Modules::Htaccess;
 
 use strict;
 use warnings;
+use File::Spec;
 use iMSCP::Debug;
 use iMSCP::Database;
-use File::Spec;
+use Readonly;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -175,7 +176,7 @@ sub _loadData
  Data provider method for Httpd servers
 
  Param string $action Action
- Return hash Hash containing module data
+ Return hashref Reference to a hash containing data
 
 =cut
 
@@ -183,33 +184,33 @@ sub _getHttpdData
 {
     my ($self, $action) = @_;
 
-    return %{$self->{'httpd'}} if $self->{'httpd'};
+    Readonly::Scalar $self->{'httpd'} => do {
+        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
+            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+        my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
+        my $pathDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}/$self->{'path'}" );
 
-    my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
-        ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-    my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
-    my $pathDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}/$self->{'path'}" );
+        {
+            DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
+            USER            => $userName,
+            GROUP           => $groupName,
+            AUTH_TYPE       => $self->{'auth_type'},
+            AUTH_NAME       => $self->{'auth_name'},
+            AUTH_PATH       => $pathDir,
+            HOME_PATH       => $homeDir,
+            DOMAIN_NAME     => $self->{'domain_name'},
+            HTUSERS         => $self->{'users'},
+            HTGROUPS        => $self->{'groups'}
+        }
+    } unless $self->{'httpd'};
 
-    $self->{'httpd'} = {
-        DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
-        USER            => $userName,
-        GROUP           => $groupName,
-        AUTH_TYPE       => $self->{'auth_type'},
-        AUTH_NAME       => $self->{'auth_name'},
-        AUTH_PATH       => $pathDir,
-        HOME_PATH       => $homeDir,
-        DOMAIN_NAME     => $self->{'domain_name'},
-        HTUSERS         => $self->{'users'},
-        HTGROUPS        => $self->{'groups'}
-    };
-    %{$self->{'httpd'}};
+    $self->{'httpd'};
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

@@ -29,6 +29,7 @@ use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Net;
+use Readonly;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -174,7 +175,7 @@ sub _loadData
  Data provider method for Httpd servers
 
  Param string $action Action
- Return hash Hash containing module data
+ Return hashref Reference to a hash containing data
 
 =cut
 
@@ -182,13 +183,14 @@ sub _getHttpdData
 {
     my ($self, $action) = @_;
 
-    return %{$self->{'httpd'}} if $self->{'httpd'};
+    Readonly::Scalar $self->{'httpd'} => do {
+        {
+            IPS     => $self->{'ipaddrs'},
+            SSL_IPS => $self->{'ssl_ipaddrs'}
+        }
+    } unless $self->{'httpd'};
 
-    $self->{'httpd'} = {
-        IPS     => $self->{'ipaddrs'},
-        SSL_IPS => $self->{'ssl_ipaddrs'}
-    };
-    %{$self->{'httpd'}};
+    $self->{'httpd'};
 }
 
 =back

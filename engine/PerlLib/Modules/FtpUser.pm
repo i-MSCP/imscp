@@ -26,6 +26,7 @@ package Modules::FtpUser;
 use strict;
 use warnings;
 use iMSCP::Database;
+use Readonly;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -138,7 +139,7 @@ sub _loadData
  Data provider method for Ftpd servers
 
  Param string $action Action
- Return hash Hash containing module data
+ Return hashref Reference to a hash containing data
 
 =cut
 
@@ -146,25 +147,26 @@ sub _getFtpdData
 {
     my ($self, $action) = @_;
 
-    return %{$self->{'ftpd'}} if $self->{'ftpd'};
+    Readonly::Scalar $self->{'ftpd'} => do {
+        my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.(
+            $main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'}
+        );
 
-    my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.(
-        $main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'}
-    );
+        {
+            OWNER_ID       => $self->{'admin_id'},
+            USERNAME       => $self->{'userid'},
+            PASSWORD_CRYPT => $self->{'passwd'},
+            PASSWORD_CLEAR => $self->{'rawpasswd'},
+            SHELL          => $self->{'shell'},
+            HOMEDIR        => $self->{'homedir'},
+            USER_SYS_GID   => $self->{'uid'},
+            USER_SYS_GID   => $self->{'gid'},
+            USER_SYS_NAME  => $userName,
+            USER_SYS_GNAME => $groupName
+        }
+    } unless $self->{'ftpd'};
 
-    $self->{'ftpd'} = {
-        OWNER_ID       => $self->{'admin_id'},
-        USERNAME       => $self->{'userid'},
-        PASSWORD_CRYPT => $self->{'passwd'},
-        PASSWORD_CLEAR => $self->{'rawpasswd'},
-        SHELL          => $self->{'shell'},
-        HOMEDIR        => $self->{'homedir'},
-        USER_SYS_GID   => $self->{'uid'},
-        USER_SYS_GID   => $self->{'gid'},
-        USER_SYS_NAME  => $userName,
-        USER_SYS_GNAME => $groupName
-    };
-    %{$self->{'ftpd'}};
+    $self->{'ftpd'};
 }
 
 =back
