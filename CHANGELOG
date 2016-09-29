@@ -9,9 +9,9 @@ CONFIGS
 
 BACKEND
     Fixed: Avoid to reverse mount entries each time umount() subroutine is called (iMSCP::Mount)
-    Fixed: Don't remove mount entries which were not really removed (iMSCP::Mount)
+    Fixed: Don't remove a mount entry if the mount has not been really unmounted (iMSCP::Mount)
     Fixed: Data provided by modules must be immutable
-    Improvement: Save CPU time and memory consumption by returning hashref instead of hash copy
+    Improvement: Save CPU time and memory consumption by returning hashref instead of hash copy (Modules)
 
 FRONTEND
     Fixed: Prevent CloudFlare to obfuscate SQL users by enclosing the select element in <!--email_off--> comment tags
