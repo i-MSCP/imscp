@@ -166,7 +166,6 @@ sub postaddMail
 {
     my ($self, $data) = @_;
 
-    return 0;
     return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
 
     my $mta = Servers::mta->factory();
