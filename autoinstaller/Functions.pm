@@ -214,9 +214,13 @@ sub install
 {
     newDebug( 'imscp-setup.log' );
 
+    {
+        package main;
+        require "$FindBin::Bin/engine/setup/imscp-setup-methods.pl";
+    }
+
     # Not really the right place to do that job but we have not really choice because this must be done before
     # installation of new files
-    require iMSCP::Service;
     my $serviceMngr = iMSCP::Service->getInstance();
     if ($serviceMngr->hasService( 'imscp_network' )) {
         $serviceMngr->remove( 'imscp_network' );
@@ -252,13 +256,14 @@ EOF
     }
 
     my @steps = (
-        [ \&_installFiles, 'Installing files' ],
+        [ \&main::setupSystemDirectories, 'Setup system directories' ],
+        [ \&main::setupInstallFiles, 'Installing files' ],
         [ \&main::setupBoot, 'Setup bootstrapping' ],
         [ \&main::setServerCapabilities, 'Set server capabilities' ],
         [ \&main::setupRegisterListeners, 'Registering servers/packages event listeners' ],
         [ \&main::setupDialog, 'Processing setup dialog' ],
         [ \&main::setupTasks, 'Processing setup tasks' ],
-        [ \&_deleteBuildDir, 'Deleting Build directory' ]
+        [ \&main::setupDeleteBuildDir, 'Deleting Build directory' ]
     );
 
     my $rs = iMSCP::EventManager->getInstance()->trigger( 'beforeInstall', \@steps );
@@ -891,52 +896,6 @@ sub _cleanup
     }
 
     0;
-}
-
-=item _installFiles()
-
- Install files from build directory
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _installFiles
-{
-    # i-MSCP daemon must be stopped before changing any file on the files system
-    iMSCP::Service->getInstance()->stop( 'imscp_daemon' );
-
-    # Process cleanup to avoid any security risks and conflicts
-    for(qw/ daemon engine gui /) {
-        my $rs = execute( "rm -fR $main::imscpConfig{'ROOT_DIR'}/$_", \ my $stdout, \ my $stderr );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        return $rs if $rs;
-    }
-
-    # Install new i-MSCP files on the files system
-    my $rs = execute( "rsync -OKa $main::{'INST_PREF'}/* /", \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
-    $rs;
-}
-
-=item _deleteBuildDir()
-
- Delete build directory
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _deleteBuildDir
-{
-    return 0 unless $main::{'INST_PREF'} && -d $main::{'INST_PREF'};
-
-    my $rs = execute( "rm -fR $main::{'INST_PREF'}", \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
-    $rs;
 }
 
 =item _processXmlFile($filepath)

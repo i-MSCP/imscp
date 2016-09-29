@@ -273,7 +273,7 @@ sub _init
     $self->{'repositorySections'} = [ 'main', 'contrib', 'non-free' ];
     $self->{'preRequiredPackages'} = [
         'binutils', 'debconf-utils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl', 'lsb-release',
-        'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'wget', 'rsync'
+        'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'wget'
     ];
     $self->{'aptRepositoriesToRemove'} = [ ];
     $self->{'aptRepositoriesToAdd'} = [ ];

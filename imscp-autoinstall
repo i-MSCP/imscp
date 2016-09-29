@@ -132,8 +132,6 @@ my $ret = build();
 
 unless($ret) {
     unless ($main::buildonly) {
-        # Install steps
-        require "$FindBin::Bin/engine/setup/imscp-setup-methods.pl";
         $ret = install();
     } else {
         my $msg = <<EOF;

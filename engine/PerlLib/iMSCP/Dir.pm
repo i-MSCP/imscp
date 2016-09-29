@@ -290,7 +290,7 @@ sub rcopy
 
     $options = { } unless defined $options && ref $options eq 'HASH';
 
-    defined $destDir or die( '$destDir attribute is not defined' );
+    defined $destDir or die( '$destDir parameter is not defined' );
     defined $self->{'dirname'} or die( '`dirname` attribute is not defined' );
 
     unless (-d $destDir) {

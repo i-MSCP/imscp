@@ -47,7 +47,7 @@ sub _init
     $self->{'repositorySections'} = [ 'main', 'universe', 'multiverse' ];
     $self->{'preRequiredPackages'} = [
         'binutils', 'debconf-utils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl', 'lsb-release',
-        'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'wget', 'rsync'
+        'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'wget'
     ];
     $self;
 }

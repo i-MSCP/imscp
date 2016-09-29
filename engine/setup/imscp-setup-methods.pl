@@ -48,9 +48,31 @@ use iMSCP::Packages;
 use iMSCP::Plugins;
 use iMSCP::Getopt;
 use iMSCP::Service;
-use iMSCP::Mount qw / mount umount addMountEntry isMountpoint /;
 use Servers::sqld;
-use Quota;
+
+sub setupSystemDirectories
+{
+    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupSystemDirectories');
+    $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupSystemDirectories');
+}
+
+sub setupInstallFiles
+{
+    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupInstallFiles', $main::{'INST_PREF'});
+    return $rs if $rs;
+
+    # i-MSCP daemon must be stopped before changing any file on the files system
+    iMSCP::Service->getInstance()->stop( 'imscp_daemon' );
+
+    # Process cleanup to avoid any security risks and conflicts
+    for(qw/ daemon engine gui /) {
+        $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/$_" )->remove();
+        return $rs if $rs;
+    }
+
+    $rs = iMSCP::Dir->new( dirname => $main::{'INST_PREF'} )->rcopy( '/' );
+    $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupInstallFiles', $main::{'INST_PREF'});
+}
 
 # Boot
 sub setupBoot
@@ -201,6 +223,13 @@ sub setupTasks
     iMSCP::Dialog->getInstance()->endGauge();
 
     iMSCP::EventManager->getInstance()->trigger('afterSetupTasks');
+}
+
+sub setupDeleteBuildDir
+{
+    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupDeleteBuildDir', $main::{'INST_PREF'});
+    $rs ||= iMSCP::Dir->new( dirname => $main::{'INST_PREF'} )->remove();
+    $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupDeleteBuildDir', $main::{'INST_PREF'});
 }
 
 #

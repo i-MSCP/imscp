@@ -21,6 +21,7 @@ FRONTEND
 INSTALLER
     Added: Documentation link for installer modes
     Fixed: Error not catched on mount failure
+    Fixed: Avoid usage of rsync command to copy distribution files
 
 LISTENERS
     Added: 10_mount_userwebdir.pl listener file (Allows to mount USER_WEB_DIR into /var/www/virtual from another place)
