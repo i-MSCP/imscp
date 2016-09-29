@@ -188,7 +188,7 @@ sub _getHttpdData
             IPS     => $self->{'ipaddrs'},
             SSL_IPS => $self->{'ssl_ipaddrs'}
         }
-    } unless $self->{'_httpd'};
+    } unless %{$self->{'_httpd'}};
 
     $self->{'_httpd'};
 }

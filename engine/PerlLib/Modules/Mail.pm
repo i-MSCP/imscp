@@ -168,7 +168,7 @@ sub _getMtaData
             MAIL_ADDR               => $self->{'mail_addr'},
             MAIL_CATCHALL           => index( $self->{'mail_type'}, '_catchall' ) != -1 ? $self->{'mail_acc'} : ''
         }
-    } unless $self->{'_mta'};
+    } unless %{$self->{'_mta'}};
 
     $self->{'_mta'};
 }
@@ -199,7 +199,7 @@ sub _getPoData
             MAIL_ADDR     => $self->{'mail_addr'},
             MAIL_CATCHALL => index( $self->{'mail_type'}, '_catchall' ) != -1 ? $self->{'mail_acc'} : ''
         }
-    } unless $self->{'_po'};
+    } unless %{$self->{'_po'}};
 
     $self->{'_po'};
 }
@@ -228,7 +228,7 @@ sub _getPackagesData
             MAIL_ADDR     => $self->{'mail_addr'},
             MAIL_CATCHALL => index( $self->{'mail_type'}, '_catchall' ) != -1 ? $self->{'mail_acc'} : ''
         }
-    } unless $self->{'_packages'};
+    } unless %{$self->{'_packages'}};
 
     $self->{'_packages'};
 }

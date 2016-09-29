@@ -255,7 +255,7 @@ sub _getHttpdData
             ALLOW_URL_FOPEN         => $phpini->{$phpiniMatchId}->{'allow_url_fopen'} || 'off',
             PHP_FPM_LISTEN_PORT     => ($phpini->{$phpiniMatchId}->{'id'} // 0) - 1
         }
-    } unless $self->{'_httpd'};
+    } unless %{$self->{'_httpd'}};
 
     $self->{'_httpd'};
 }
@@ -283,7 +283,7 @@ sub _getMtaData
                 $self->{'external_mail'} eq 'off' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
             )
         }
-    } unless $self->{'_mta'};
+    } unless %{$self->{'_mta'}};
 
     $self->{'_mta'};
 }
@@ -315,7 +315,7 @@ sub _getNamedData
                 $self->{'external_mail'} eq 'off' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
             )
         }
-    } unless $self->{'_named'};
+    } unless %{$self->{'_named'}};
 
     $self->{'_named'};
 }
@@ -352,7 +352,7 @@ sub _getPackagesData
             FORWARD_TYPE          => $self->{'subdomain_alias_type_forward'} || '',
             WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
         }
-    } unless $self->{'_packages'};
+    } unless %{$self->{'_packages'}};
 
     $self->{'_packages'}
 }

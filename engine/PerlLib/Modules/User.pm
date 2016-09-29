@@ -293,7 +293,7 @@ sub _getHttpdData
             USER  => $userName,
             GROUP => $groupName
         }
-    } unless $self->{'_httpd'};
+    } unless %{$self->{'_httpd'}};
 
     $self->{'_httpd'};
 }
@@ -323,7 +323,7 @@ sub _getFtpdData
             USER         => $userName,
             GROUP        => $groupName
         }
-    } unless $self->{'_ftpd'};
+    } unless %{$self->{'_ftpd'}};
 
     $self->{'_ftpd'};
 }

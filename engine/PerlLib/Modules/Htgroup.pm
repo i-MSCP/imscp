@@ -192,7 +192,7 @@ sub _getHttpdData
             HTGROUP_DMN           => $self->{'domain_name'},
             WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
         }
-    } unless $self->{'_httpd'};
+    } unless %{$self->{'_httpd'}};
 
     $self->{'_httpd'};
 }

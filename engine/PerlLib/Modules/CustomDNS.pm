@@ -219,7 +219,7 @@ sub _getNamedData
             DOMAIN_IP   => $self->{'domain_ip'},
             DNS_RECORDS => [ @{$self->{'dns_records'}} ]
         }
-    } unless $self->{'_named'};
+    } unless %{$self->{'_named'}};
 
     $self->{'_named'};
 }

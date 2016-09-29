@@ -202,7 +202,7 @@ sub _getHttpdData
             HTUSERS         => $self->{'users'},
             HTGROUPS        => $self->{'groups'}
         }
-    } unless $self->{'_httpd'};
+    } unless %{$self->{'_httpd'}};
 
     $self->{'_httpd'};
 }

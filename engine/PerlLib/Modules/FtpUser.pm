@@ -164,7 +164,7 @@ sub _getFtpdData
             USER_SYS_NAME  => $userName,
             USER_SYS_GNAME => $groupName
         }
-    } unless $self->{'_ftpd'};
+    } unless %{$self->{'_ftpd'}};
 
     $self->{'_ftpd'};
 }
