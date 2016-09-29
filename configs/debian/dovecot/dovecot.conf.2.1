@@ -5,6 +5,26 @@ namespace inbox {
 	prefix = INBOX.
 	inbox = yes
 	type = private
+
+	mailbox Drafts {
+		special_use = \Drafts
+		auto=subscribe
+	}
+
+	mailbox Junk {
+		special_use = \Junk
+		auto=subscribe
+	}
+
+	mailbox Sent {
+		special_use = \Sent
+		auto=subscribe
+	}
+
+	mailbox Trash {
+		special_use = \Trash
+		auto=subscribe
+	}
 }
 
 mail_plugins = quota

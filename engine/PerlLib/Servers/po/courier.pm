@@ -201,8 +201,8 @@ sub postaddMail
     my $mailUidName = $mta->{'config'}->{'MTA_MAILBOX_UID_NAME'};
     my $mailGidName = $mta->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
-    for my $dir("$mailDir/.Drafts", "$mailDir/.Junk", "$mailDir/.Sent", "$mailDir/.Trash") {
-        my $rs = iMSCP::Dir->new( dirname => $dir )->make(
+    for my $mailbox('.Drafts', '.Junk', '.Sent', '.Trash') {
+        my $rs = iMSCP::Dir->new( dirname => "$mailDir/$mailbox" )->make(
             {
                 user => $mailUidName,
                 group => $mailGidName,
@@ -212,8 +212,8 @@ sub postaddMail
         );
         return $rs if $rs;
 
-        for my $subdir ('cur', 'new', 'tmp') {
-            my $rs = iMSCP::Dir->new( dirname => "$dir/$subdir" )->make(
+        for ('cur', 'new', 'tmp') {
+            $rs = iMSCP::Dir->new( dirname => "$mailDir/$mailbox/$_" )->make(
                 {
                     user => $mailUidName,
                     group => $mailGidName,
@@ -226,27 +226,26 @@ sub postaddMail
     }
 
     my @subscribedFolders = ('INBOX.Drafts', 'INBOX.Junk', 'INBOX.Sent', 'INBOX.Trash');
-    my $courierimapsubscribedFile = iMSCP::File->new( filename => "$mailDir/courierimapsubscribed" );
+    my $subscriptionsFile = iMSCP::File->new( filename => "$mailDir/courierimapsubscribed" );
 
     if (-f "$mailDir/courierimapsubscribed") {
-        my $courierimapsubscribedFileContent = $courierimapsubscribedFile->get();
-
-        unless (defined $courierimapsubscribedFileContent) {
-            error( 'Unable to read courier courierimapsubscribed file' );
+        my $subscriptionsFileContent = $subscriptionsFile->get();
+        unless (defined $subscriptionsFile) {
+            error( 'Could not read Courier subscriptions file' );
             return 1;
         }
 
-        if ($courierimapsubscribedFileContent ne '') {
-            @subscribedFolders = (@subscribedFolders, split( "\n", $courierimapsubscribedFileContent ));
+        if ($subscriptionsFileContent ne '') {
+            @subscribedFolders = (@subscribedFolders, split( "\n", $subscriptionsFileContent ));
             require List::MoreUtils;
-            @subscribedFolders = sort(List::MoreUtils::uniq(@subscribedFolders));
+            @subscribedFolders = sort { lc $a cmp lc $b } List::MoreUtils::uniq(@subscribedFolders);
         }
     }
 
-    my $rs = $courierimapsubscribedFile->set( (join "\n", @subscribedFolders)."\n" );
-    $rs = $courierimapsubscribedFile->save();
-    $rs ||= $courierimapsubscribedFile->owner( $mailUidName, $mailGidName );
-    $rs ||= $courierimapsubscribedFile->mode( 0640 );
+    my $rs = $subscriptionsFile->set( (join "\n", @subscribedFolders)."\n" );
+    $rs = $subscriptionsFile->save();
+    $rs ||= $subscriptionsFile->owner( $mailUidName, $mailGidName );
+    $rs ||= $subscriptionsFile->mode( 0640 );
     return $rs if $rs;
 
     if (defined( $data->{'MAIL_QUOTA'} ) && $data->{'MAIL_QUOTA'} != 0) {

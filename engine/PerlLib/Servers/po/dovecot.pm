@@ -166,6 +166,7 @@ sub postaddMail
 {
     my ($self, $data) = @_;
 
+    return 0;
     return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
 
     my $mta = Servers::mta->factory();
@@ -173,8 +174,8 @@ sub postaddMail
     my $mailUidName = $mta->{'config'}->{'MTA_MAILBOX_UID_NAME'};
     my $mailGidName = $mta->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
-    for my $dir("$mailDir/.Drafts", "$mailDir/.Junk", "$mailDir/.Sent", "$mailDir/.Trash") {
-        my $rs = iMSCP::Dir->new( dirname => $dir )->make(
+    for my $mailbox('.Drafts', '.Junk', '.Sent', '.Trash') {
+        my $rs = iMSCP::Dir->new( dirname => "$mailDir/$mailbox" )->make(
             {
                 user => $mailUidName,
                 group => $mailGidName,
@@ -184,8 +185,8 @@ sub postaddMail
         );
         return $rs if $rs;
 
-        for my $subdir ('cur', 'new', 'tmp') {
-            $rs = iMSCP::Dir->new( dirname => "$dir/$subdir" )->make(
+        for ('cur', 'new', 'tmp') {
+            $rs = iMSCP::Dir->new( dirname => "$mailDir/$mailbox/$_" )->make(
                 {
                     user => $mailUidName,
                     group => $mailGidName,
@@ -203,14 +204,14 @@ sub postaddMail
     if (-f "$mailDir/subscriptions") {
         my $subscriptionsFileContent = $subscriptionsFile->get();
         unless (defined $subscriptionsFileContent) {
-            error( 'Could not read dovecot subscriptions file' );
+            error( 'Could not read Dovecot subscriptions file' );
             return 1;
         }
 
         if ($subscriptionsFileContent ne '') {
             @subscribedFolders = (@subscribedFolders, split( "\n", $subscriptionsFileContent ));
             require List::MoreUtils;
-            @subscribedFolders = sort(List::MoreUtils::uniq(@subscribedFolders));
+            @subscribedFolders = sort { lc $a cmp lc $b } List::MoreUtils::uniq(@subscribedFolders);
         }
     }
 
