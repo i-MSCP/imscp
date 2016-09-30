@@ -28,6 +28,7 @@ PLUGINS
 
 SERVERS
     Fixed: Tells the mail clients what are the mailboxes they must use and subscribe by implementing RFC 6154 (Dovecot)
+    Fixed: Template cleanup of redirects & hsts did not worked on domain_ssl.tpl (Apache2)
     Re-added ProxyErrorOverride directive in 00_nameserver.conf (Close: #IP-1406 which has been reopened) (Apache2)
 
 SERVICES

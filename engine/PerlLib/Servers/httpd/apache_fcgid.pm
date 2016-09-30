@@ -1874,7 +1874,7 @@ sub _cleanTemplate
         $$cfgTpl = replaceBloc( "# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', $$cfgTpl );
     }
 
-    if ($filename =~ /^domain_(?:disabled|redirect)?(_ssl)?\.tpl$/) {
+    if ($filename =~ /^domain(?:_disabled|_redirect)?(_ssl)?\.tpl$/) {
         my $isSSLVhost = defined $1;
 
         if ($data->{'FORWARD'} ne 'no') {
