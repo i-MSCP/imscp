@@ -27,8 +27,9 @@ PLUGINS
     Updated: API version to 1.0.6
 
 SERVERS
-    Fixed: Tells the mail clients what are the mailboxes they must use and subscribe by implementing RFC 6154 (Dovecot)
     Fixed: Redirects and HSTS sections are not removed in SSL vhost files when they have to be (Apache2)
+    Fixed: Tells the mail clients what are the mailboxes they must use and subscribe by implementing RFC 6154 (Dovecot)
+    Fixed: Unexpected behavior with `disablereuse' parameter set to `Off' (Apache2 mod_proxy)
     Re-added ProxyErrorOverride directive in 00_nameserver.conf (Close: #IP-1406 which has been reopened) (Apache2)
 
 SERVICES

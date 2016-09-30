@@ -27,7 +27,7 @@
     Alias /php-fcgi /var/lib/apache2/fastcgi/php-fcgi-{DOMAIN_NAME}
 
     FastCGIExternalServer /var/lib/apache2/fastcgi/php-fcgi-{DOMAIN_NAME} \
-        -{FASTCGI_LISTEN_MODE} {FASTCGI_LISTEN_ENDPOINT} \
+        -{PHP_FPM_FASTCGI_LISTEN_MODE} {PHP_FPM_FASTCGI_LISTEN_ENDPOINT} \
         -idle-timeout 900 \
         -pass-header Authorization
     # SECTION mod_fastcgi END.
@@ -35,7 +35,8 @@
     # SECTION mod_proxy_fcgi BEGIN.
     SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1
 
-    <Proxy "{PROXY_LISTEN_MODE}:{PROXY_LISTEN_ENDPOINT}" disablereuse=off max=10 timeout=7200>
+    <Proxy "{PROXY_LISTEN_MODE}:{PROXY_LISTEN_ENDPOINT}">
+        ProxySet timeout=7200
     </Proxy>
 
     <FilesMatch ".+\.ph(p[3457]?|t|tml)$">
