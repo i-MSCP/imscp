@@ -111,7 +111,6 @@ sub quotaFiles
                 }
             }
 
-            my ($stdout, $stderr);
             for(@items) {
                 my ($dirType, $dir) = %{$_};
                 next unless -d $dir;
@@ -121,20 +120,21 @@ sub quotaFiles
                             'nice', '-n', '15', 'ionice', '-c2', '-n5', 'du', '--exclude=backups/*', '--exclude=logs/*',
                             '-s', '-B1', $dir
                         ],
-                        \$stdout,
-                        \$stderr
+                        \my $stdout,
+                        \my $stderr
                     );
                     error($stderr) if $stderr && $rs;
-                    ($webDiskUsage) = $stdout =~ /^(\d+)/ if defined $stdout;
+                    $webDiskUsage = $1 if $stdout && $stdout =~ /^(\d+)/;
                 } else {
                     $rs = execute(
                         [ 'nice', '-n', '15', 'ionice', '-c2', '-n5', 'du', '-s', '-B1', $dir ],
-                        \$stdout, \$stderr
+                        \my $stdout,
+                        \my $stderr
                     );
                     error($stderr) if $stderr && $rs;
-                    ($mailDiskUsage) += $stdout =~ /^(\d+)/ if defined $stdout;
+                    $mailDiskUsage += $1 if $stdout && $stdout =~ /^(\d+)/;
                 }
-                
+
                 return $rs if $rs;
             }
 
