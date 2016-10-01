@@ -5,10 +5,10 @@ Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
+    Changed: Save CPU time and memory consumption by returning a ref to a readonly hash instead of a hash copy (Modules)
     Fixed: Avoid to reverse mount entries each time umount() subroutine is called (iMSCP::Mount)
     Fixed: Don't remove a mount entry if the mount has not been really unmounted (iMSCP::Mount)
     Fixed: Data provided by modules must be immutable
-    Improvement: Save CPU time and memory consumption by returning hashref instead of hash copy (Modules)
 
 FRONTEND
     Fixed: Prevent CloudFlare to obfuscate SQL users by enclosing the select element in <!--email_off--> comment tags
