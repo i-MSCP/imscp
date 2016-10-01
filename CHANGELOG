@@ -23,7 +23,7 @@ BACKEND
 FRONTEND
     Fixed: Prevent CloudFlare to obfuscate SQL users by enclosing the select element in <!--email_off--> comment tags
     Fixed: Previous value for the `forward_type' field not retained on error (reseller/user_add1.php)
-    Fixed: Unknown `START_ID_POS_CHECKED' and `START_ID_POS_CHECKED' tags in sql_user_add.tpl
+    Fixed: Unknown `START_ID_POS_CHECKED' and `END_ID_POS_CHECKED' tags in sql_user_add.tpl
 
 INSTALLER
     Added: Documentation link for installer modes
@@ -40,7 +40,7 @@ SERVERS
     Fixed: Redirects and HSTS sections are not removed in SSL vhost files when they have to be (Apache2)
     Fixed: Tells the mail clients what are the mailboxes they must use and subscribe by implementing RFC 6154 (Dovecot)
     Fixed: Unexpected behavior with `disablereuse' parameter set to `Off' (Apache2 mod_proxy)
-    Re-added ProxyErrorOverride directive in 00_nameserver.conf (Close: #IP-1406 which has been reopened) (Apache2)
+    Re-added: ProxyErrorOverride directive in 00_nameserver.conf (Close: #IP-1406 which has been reopened) (Apache2)
 
 SERVICES
     Fixed: Mount entries processed in wrong order while stopping service (imscp_mountall)
