@@ -28,7 +28,6 @@ use warnings;
 use File::Spec;
 use iMSCP::Debug;
 use iMSCP::Database;
-use Readonly;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -184,7 +183,7 @@ sub _getHttpdData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'_httpd'} => do {
+    $self->{'_httpd'} = do {
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
             ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
         my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );

@@ -27,7 +27,6 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::Database;
-use Readonly;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -213,7 +212,7 @@ sub _getNamedData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'_named'} => do {
+    $self->{'_named'} = do {
         {
             DOMAIN_NAME => $self->{'domain_name'},
             DOMAIN_IP   => $self->{'domain_ip'},

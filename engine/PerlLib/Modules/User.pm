@@ -34,7 +34,6 @@ use iMSCP::SystemUser;
 use iMSCP::Rights;
 use iMSCP::File;
 use iMSCP::Ext2Attributes qw(setImmutable clearImmutable);
-use Readonly;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -285,7 +284,7 @@ sub _getHttpdData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'_httpd'} => do {
+    $self->{'_httpd'} = do {
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
             ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 
@@ -311,7 +310,7 @@ sub _getFtpdData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'_ftpd'} => do {
+    $self->{'_ftpd'} = do {
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
             ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 

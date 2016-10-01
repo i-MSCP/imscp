@@ -29,7 +29,6 @@ use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Net;
-use Readonly;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -183,7 +182,7 @@ sub _getHttpdData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'_httpd'} => do {
+    $self->{'_httpd'} = do {
         {
             IPS     => $self->{'ipaddrs'},
             SSL_IPS => $self->{'ssl_ipaddrs'}

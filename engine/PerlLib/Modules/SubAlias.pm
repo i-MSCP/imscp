@@ -32,7 +32,6 @@ use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::OpenSSL;
 use Net::LibIDN qw/idn_to_unicode/;
-use Readonly;
 use Servers::httpd;
 use parent 'Modules::Abstract';
 
@@ -175,7 +174,7 @@ sub _getHttpdData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'_httpd'} => do {
+    $self->{'_httpd'} = do {
         my $httpd = Servers::httpd->factory();
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
             ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
@@ -273,7 +272,7 @@ sub _getMtaData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'_mta'} => do {
+    $self->{'_mta'} = do {
         {
             DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
             DOMAIN_NAME     => $self->{'subdomain_alias_name'}.'.'.$self->{'alias_name'},
@@ -301,7 +300,7 @@ sub _getNamedData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'_named'} => do {
+    $self->{'_named'} = do {
         my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
             ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
@@ -333,7 +332,7 @@ sub _getPackagesData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'_packages'} => do {
+    $self->{'_packages'} = do {
         my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
             ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
         my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}" );

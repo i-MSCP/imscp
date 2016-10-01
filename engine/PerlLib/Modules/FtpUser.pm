@@ -26,7 +26,6 @@ package Modules::FtpUser;
 use strict;
 use warnings;
 use iMSCP::Database;
-use Readonly;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -147,7 +146,7 @@ sub _getFtpdData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'_ftpd'} => do {
+    $self->{'_ftpd'} = do {
         my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.(
             $main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'}
         );

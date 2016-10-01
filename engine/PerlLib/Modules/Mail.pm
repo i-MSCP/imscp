@@ -27,7 +27,6 @@ use strict;
 use warnings;
 use iMSCP::Database;
 use iMSCP::Debug;
-use Readonly;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -154,7 +153,7 @@ sub _getMtaData
 {
     my $self = shift;
 
-    Readonly::Scalar $self->{'_mta'} => do {
+    $self->{'_mta'} = do {
         my ($user, $domain) = split '@', $self->{'mail_addr'};
 
         {
@@ -186,7 +185,7 @@ sub _getPoData
 {
     my $self = shift;
 
-    Readonly::Scalar $self->{'_po'} => do {
+    $self->{'_po'} = do {
         my ($user, $domain) = split '@', $self->{'mail_addr'};
 
         {
@@ -217,7 +216,7 @@ sub _getPackagesData
 {
     my ($self, $action) = @_;
 
-    Readonly::Scalar $self->{'_packages'} => do {
+    $self->{'_packages'} = do {
         my ($user, $domain) = split '@', $self->{'mail_addr'};
 
         {
