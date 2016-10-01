@@ -1587,7 +1587,7 @@ sub _addFiles
             }
         } else { # Remove unwanted files/directories for forwarded dmn
             for(iMSCP::Dir->new( dirname => $tmpDir )->getAll()) {
-                next if /^(backups|errors|logs|\.htgroup|\.htpasswd|phptmp)$/;
+                next if /^(?:backups|errors|logs|\.htgroup|\.htpasswd|phptmp)$/;
                 if (-f "$tmpDir/$_") {
                     $rs = iMSCP::File->new( filename => "$tmpDir/$_" )->delFile();
                 } else {
@@ -1802,6 +1802,7 @@ sub _buildPHPConfig
         $self->setData(
             {
                 FCGID_NAME            => $fcgidName,
+                PEAR_DIR              => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
                 PHP_VERSION           => $phpVersion,
                 PHP_FCGI_MAX_REQUESTS => $self->{'phpConfig'}->{'PHP_FCGI_MAX_REQUESTS'},
                 PHP_FCGI_CHILDREN     => $self->{'phpConfig'}->{'PHP_FCGI_CHILDREN'},
