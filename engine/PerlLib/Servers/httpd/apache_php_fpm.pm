@@ -1802,7 +1802,6 @@ sub _buildPHPConfig
     if ($data->{'FORWARD'} eq 'no' && $data->{'PHP_SUPPORT'} eq 'yes') {
         $self->setData(
             {
-                PEAR_DIR                     => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
                 PHP_VERSION                  => $phpVersion,
                 POOL_NAME                    => $poolName,
                 TMPDIR                       => $data->{'HOME_DIR'}.'/phptmp',

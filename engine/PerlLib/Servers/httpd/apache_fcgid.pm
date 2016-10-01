@@ -1802,7 +1802,6 @@ sub _buildPHPConfig
         $self->setData(
             {
                 FCGID_NAME            => $fcgidName,
-                PEAR_DIR              => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
                 PHP_VERSION           => $phpVersion,
                 PHP_FCGI_MAX_REQUESTS => $self->{'phpConfig'}->{'PHP_FCGI_MAX_REQUESTS'},
                 PHP_FCGI_CHILDREN     => $self->{'phpConfig'}->{'PHP_FCGI_CHILDREN'},
