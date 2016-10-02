@@ -88,10 +88,11 @@ sub showDialog
         || grep { !exists $self->{'PACKAGES'}->{$_} && $_ ne 'No' } keys %selectedPackages
     ) {
         ($rs, my $packages) = $dialog->checkbox(
-            <<"EOF", [ keys %{$self->{'PACKAGES'}} ], grep { exists $self->{'PACKAGES'}->{$_} && $_ ne 'No' } keys %selectedPackages );
+            <<'EOF', [ keys %{$self->{'PACKAGES'}} ], grep { exists $self->{'PACKAGES'}->{$_} && $_ ne 'No' } keys %selectedPackages );
 
 Please select the Webstats packages you want to install
 EOF
+        %selectedPackages = ();
         @{selectedPackages}{@{$packages}} = ();
     }
 
