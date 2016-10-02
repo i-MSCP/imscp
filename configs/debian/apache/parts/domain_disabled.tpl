@@ -8,13 +8,13 @@
     LogLevel error
     ErrorLog {HTTPD_LOG_DIR}/{DOMAIN_NAME}/error.log
 
-    Alias /errors/ {HOME_DIR}/errors/
-
-    <Directory {HOME_DIR}/errors>
-        {AUTHZ_ALLOW_ALL}
-    </Directory>
-
     <Directory {USER_WEB_DIR}/domain_disabled_pages>
+        Options None
+        AllowOverride None
         {AUTHZ_ALLOW_ALL}
     </Directory>
+
+    RewriteEngine on
+    RewriteCond %{REQUEST_URI} !^/(?:images/(?:favicon\.ico|(?:imscp_logo32|stripe)\.png))?$ [NC]
+    RewriteRule ^.*$ http://www.{DOMAIN_NAME}/ [R=303,L]
 </VirtualHost>

@@ -7,6 +7,9 @@ Git 1.3.x
 INSTALLER
     Fixed: Packages such as `Rainloop' remain selected even when they are unchecked in setup dialog
 
+YOUTRACK
+    #IP-1633 Disabled domains - All sub-pages should be redirected to the root page instead of sending a 404 HTTP error
+
 ------------------------------------------------------------------------------------------------------------------------
 1.3.5
 ------------------------------------------------------------------------------------------------------------------------

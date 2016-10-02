@@ -8,13 +8,9 @@
     LogLevel error
     ErrorLog {HTTPD_LOG_DIR}/{DOMAIN_NAME}/error.log
 
-    Alias /errors/ {HOME_DIR}/errors/
-
-    <Directory {HOME_DIR}/errors>
-        {AUTHZ_ALLOW_ALL}
-    </Directory>
-
     <Directory {USER_WEB_DIR}/domain_disabled_pages>
+        Options None
+        AllowOverride None
         {AUTHZ_ALLOW_ALL}
     </Directory>
 
@@ -25,4 +21,8 @@
     # SECTION hsts BEGIN.
     Header always set Strict-Transport-Security "max-age={HSTS_MAX_AGE}{HSTS_INCLUDE_SUBDOMAINS}"
     # SECTION hsts END.
+
+    RewriteEngine on
+    RewriteCond %{REQUEST_URI} !^/(?:images/(?:favicon\.ico|(?:imscp_logo32|stripe)\.png))?$ [NC]
+    RewriteRule ^.*$ https://www.{DOMAIN_NAME}/ [R=303,L]
 </VirtualHost>
