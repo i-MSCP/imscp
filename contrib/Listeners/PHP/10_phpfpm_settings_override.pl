@@ -34,11 +34,11 @@ use iMSCP::EventManager;
 
 # Add or overrides the PHP-FPM settings globally or per domain.
 # - The per domain PHP-FPM settings take precedence over global PHP-FPM settings.
-# - The PHP-FPM settings take precedence over those which are defined through /etc/imscp/php/php.data file.
+# - The PHP-FPM settings take precedence over those which are defined in the /etc/imscp/php/php.data file.
 #
 # Note that domain names must be in ASCII format.
 my %SETTINGS = (
-    # Global PHP-FPM setting - Any setting added here will apply globally (to all domains).
+    # Global PHP-FPM settings - Any setting added here will apply globally (to all domains).
     '*'                    => {
         'pm'                      => 'ondemand',
         'pm.max_children'         => 6,
