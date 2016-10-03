@@ -115,6 +115,17 @@ can do this by running:
 # perl /var/www/imscp/engine/setup/imscp-reconfigure -dar php
 ```
 
+### 10_phpfpm_settings_override.pl
+
+Allows overriding of PHP-FPM settings in pool configuration files.
+
+Note: When you want operate on a per domain basis, don't forget to set the PHP configuration level to 'per_site'. You
+can do this by running:
+
+```
+# perl /var/www/imscp/engine/setup/imscp-reconfigure -dar php
+```
+
 ## PhpMyAdmin listener files
 
 ### 10_phpmyadmin_conffile.pl
