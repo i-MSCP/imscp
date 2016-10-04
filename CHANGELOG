@@ -8,10 +8,12 @@ INSTALLER
     Fixed: Packages such as `Rainloop' remain selected even when they are unchecked in setup dialog
 
 LISTENERS
-    Added: 10_phpfpm_settings_override.pl (Allows to override settings in PHP-FPM pool configuration file)
+    Added: 10_phpfpm_settings_override.pl (Allows to override PHP-FPM settings in pool configuration files)
+    Fixed: User web directory must be mounted as slave subtree (10_system_mount_userwebdir.pl)
 
 YOUTRACK
     #IP-1633 Disabled domains - All sub-pages should be redirected to the root page instead of sending a 404 HTTP error
+    #IP-1637 Duplicate mount entries in /etc/imscp/mount/mounts.conf
 
 ------------------------------------------------------------------------------------------------------------------------
 1.3.5

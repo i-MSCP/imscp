@@ -20,7 +20,7 @@
 ##
 ## Be aware that only Fcgid and PHP-FPM Apache2 httpd server implementations are supported.
 ## Note: When you want operate on a per domain basis, don't forget to set the PHP configuration level to 'per_site'.
-## You can do this by running: perl imscp-autoinstall -dar httpd
+## You can do this by running: perl /var/www/imscp/engine/setup/imscp-reconfigure -dar php
 #
 
 package Listener::Php::ConfOptions::Override;
@@ -45,17 +45,16 @@ use iMSCP::EventManager;
 #
 # Note that domain names must be in ASCII format.
 my %configOptions = (
-    '*'             => { # Any PHP configuration option added here will apply globally (to all domains).
+    # Any PHP configuration option added here will apply globally (to all domains).
+    '*'             => {
         '<option_name1>' => '<option_value1>',
         '<option_name2>' => '<option_value2>'
     },
-    '<domain1.tld>' => { # Any PHP configuration added here will apply to domain1.tld only
-        '<option_name1>' => '<option_value1>',
-        '<option_name2>' => '<option_value2>'
-    },
-    '<domain2.tld>' => { # Any PHP configuration added here will apply to domain2.tld only
-        '<option_name1>' => '<option_value1>',
-        '<option_name2>' => '<option_value2>'
+
+    # Any PHP configuration added here will apply to domain1.tld only
+    'test.domain.tld' => {
+        'option_name1' => 'option_value1',
+        'option_name2' => 'option_value2'
     }
 );
 

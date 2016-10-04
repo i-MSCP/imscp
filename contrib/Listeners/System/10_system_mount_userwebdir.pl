@@ -17,7 +17,7 @@
 
 #
 ## Remount your own USER_WEB_DIR to USER_WEB_DIR. For instance `/home/virtual' to `/var/www/virtual'
-## Note that with this listener, it is unecessary to add the mount entry in the system /etc/fstab file.
+## Note that when using this listener, you must not add the mount entry in the system /etc/fstab file.
 ## Listener file compatible with i-MSCP >= 1.3.4
 #
 
@@ -28,23 +28,32 @@ use warnings;
 use iMSCP::EventManager;
 use iMSCP::Mount qw/ mount umount addMountEntry /;
 
+#
+## Configuration parameters
+#
+
 # Path to your own USER_WEB_DIR  directory
 my $USER_WEB_DIR = '/home/virtual';
 
-# Please don't edit anything below this line
+#
+## Please don't edit anything below this line
+#
 
-iMSCP::EventManager->getInstance()->register('beforeSetupSystemDirectories', sub {
-    my $rs = umount(main::imscpConfig{'USER_WEB_DIR'});
-    $rs ||= mount(
-        {
-            fs_spec    => $USER_WEB_DIR,
-            fs_file    => $main::imscpConfig{'USER_WEB_DIR'},
-            fs_vfstype => 'none',
-            fs_mntops  => 'rbind'
-        }
-    );
-    $rs ||= addMountEntry("$USER_WEB_DIR $main::imscpConfig{'USER_WEB_DIR'} none rbind");
-});
+iMSCP::EventManager->getInstance()->register(
+    'beforeSetupSystemDirectories',
+    sub {
+        my $rs = umount($main::imscpConfig{'USER_WEB_DIR'});
+        $rs ||= mount(
+            {
+                fs_spec    => $USER_WEB_DIR,
+                fs_file    => $main::imscpConfig{'USER_WEB_DIR'},
+                fs_vfstype => 'none',
+                fs_mntops  => 'rbind,rslave'
+            }
+        );
+        $rs ||= addMountEntry("$USER_WEB_DIR $main::imscpConfig{'USER_WEB_DIR'} none rbind,rslave");
+    }
+);
 
 1;
 __END__

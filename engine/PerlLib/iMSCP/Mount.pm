@@ -343,6 +343,9 @@ sub addMountEntry($)
         return 1;
     }
 
+    my $rs = removeMountEntry($entry); # Avoid duplicate entries
+    return $rs if $rs;
+
     my $fh;
     unless (open $fh, '>>', "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf") {
         error( sprintf( "Could not open `%s' file: %s", "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf", $! ) );

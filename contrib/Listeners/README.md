@@ -117,7 +117,7 @@ can do this by running:
 
 ### 10_phpfpm_settings_override.pl
 
-Allows overriding of PHP-FPM settings in pool configuration files.
+Allows to override PHP-FPM settings in pool configuration files.
 
 Note: When you want operate on a per domain basis, don't forget to set the PHP configuration level to 'per_site'. You
 can do this by running:
