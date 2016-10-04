@@ -499,10 +499,6 @@ EOF
         $main::imscpConfig{uc( $section ).'_SERVER'} = $sAlt;
     }
 
-#    use Data::Dumper;
-#    print Dumper($self);
-#    exit;
-
     0;
 }
 
