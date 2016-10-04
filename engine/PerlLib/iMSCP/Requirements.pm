@@ -145,11 +145,13 @@ sub _init
         'Net::LibIDN'            => undef,
         'XML::Simple'            => undef
     };
-    $self->{'php_modules'} = [ qw/
-        ctype curl date dom fileinfo filter ftp gd gettext hash iconv imap intl json libxml mbstring mcrypt mysqli
-        openssl pcntl pcre PDO pdo_mysql Phar posix Reflection session SimpleXML sockets SPL xml xmlreader xmlwriter
-        zip zlib
-        / ];
+    $self->{'php_modules'} = [
+        qw/
+            ctype curl date dom fileinfo filter ftp gd gettext hash iconv imap intl json libxml mbstring mcrypt mysqli
+            openssl pcntl pcre PDO pdo_mysql Phar posix pspell Reflection session SimpleXML sockets SPL xml xmlreader
+            xmlwriter zip zlib
+        /
+    ];
     $self;
 }
 
@@ -231,12 +233,12 @@ sub _checkPhpModules
 {
     my $self = shift;
 
-    open my $fh, '-|', 'php', '-d', 'date.timezone=UTC', '-m' or die( sprintf( 'Could not pipe to PHP', $! ) );
+    open my $fh, '-|', 'php', '-d', 'date.timezone=UTC', '-m' or die( sprintf( 'Could not pipe to php', $! ) );
     chomp( my @modules = <$fh> );
 
     my @missingModules = ();
     for my $module(@{$self->{'php_modules'}}) {
-        push @missingModules, $module unless grep($_ eq $module, @modules);
+        push @missingModules, $module unless grep(lc($_) eq lc($module), @modules);
     }
 
     return undef unless @missingModules;
@@ -246,7 +248,7 @@ sub _checkPhpModules
             sprintf( "The following PHP modules are not installed or not enabled: %s\n", join ', ', @missingModules )
         );
     } else {
-        die( sprintf( "The `%s' PHP module is not installed or not enabled.\n",  pop @missingModules ) );
+        die( sprintf( "The `%s' PHP module is not installed or not enabled.\n", pop @missingModules ) );
     }
 
     undef;

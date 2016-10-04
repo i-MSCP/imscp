@@ -72,7 +72,7 @@ sub can
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>
 

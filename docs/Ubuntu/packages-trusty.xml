@@ -29,16 +29,16 @@
         <php5>
             <package>php5</package>
             <package>php5-cli</package>
-            <package>php5-curl</package>
+            <package post_install_cmd="php5dismod opcache pdo &amp;&amp; php5enmod opcache pdo/10">php5-common</package>
+            <package post_install_cmd="php5dismod curl &amp;&amp; php5enmod curl">php5-curl</package>
+            <package post_install_cmd="php5dismod gd &amp;&amp; php5enmod gd">php5-gd</package>
+            <package post_install_cmd="php5dismod imap &amp;&amp; php5enmod imap">php5-imap</package>
+            <package post_install_cmd="php5dismod intl &amp;&amp; php5enmod intl">php5-intl</package>
+            <package post_install_cmd="php5dismod json &amp;&amp; php5enmod json">php5-json</package>
+            <package post_install_cmd="php5dismod mcrypt &amp;&amp; php5enmod mcrypt">php5-mcrypt</package>
+            <package post_install_cmd="php5dismod mysql mysqli mysqlnd pdo_mysql &amp;&amp; php5enmod mysql mysqli mysqlnd/10 pdo_mysql">php5-mysqlnd</package>
+            <package post_install_cmd="php5dismod pspell &amp;&amp; php5enmod pspell">php5-pspell</package>
             <package>php-pear</package>
-            <package>php5</package>
-            <package>php5-gd</package>
-            <package>php-gettext</package>
-            <package>php5-imap</package>
-            <package>php5-intl</package>
-            <package>php5-json</package>
-            <package>php5-mcrypt</package>
-            <package>php5-mysqlnd</package>
             <package_conflict>php-apc</package_conflict>
             <package_conflict>php5-suhosin</package_conflict>
         </php5>
@@ -94,7 +94,7 @@
                 pinning_pin="release o=Ubuntu,n=trusty"
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.6,mysql_5.7,mariadb_5.5,mariadb_10.0,mariadb_10.1,percona_5.5,percona_5.6,percona_5.7,remote_server"
-                >
+        >
             <package>libmysqlclient18</package>
             <package>mysql-client-5.5</package>
             <package>mysql-common</package>
@@ -105,7 +105,7 @@
                 pinning_pin="release o=Ubuntu,n=trusty"
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.7,percona_5.6,percona_5.7,remote_server"
-                >
+        >
             <package>libmysqlclient18</package>
             <package>mysql-client-5.6</package>
             <package>mysql-common</package>
@@ -119,7 +119,7 @@
                 pinning_pin="origin repo.mysql.com"
                 pinning_pin_priority="1001"
                 allow_switch="percona_5.7,remote_server"
-                >
+        >
             <package>libmysqlclient18=5.5*</package>
             <package>libmysqlclient20</package>
             <package>mysql-community-client</package>
@@ -131,7 +131,7 @@
                 pinning_pin="release o=Ubuntu,n=trusty"
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.5,mysql_5.6,mysql_5.7,mariadb_10.0,mariadb_10.1,percona_5.5,percona_5.6,percona_5.7,remote_server"
-                >
+        >
             <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>
             <package>mariadb-client-5.5</package>
@@ -147,7 +147,7 @@
                 pinning_pin="origin mirror2.hs-esslingen.de"
                 pinning_pin_priority="1001"
                 allow_switch="mariadb_10.1,remote_server"
-                >
+        >
             <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>
             <package>mariadb-client-10.0</package>
@@ -163,7 +163,7 @@
                 pinning_pin="origin mirror.netcologne.de"
                 pinning_pin_priority="1001"
                 allow_switch="remote_server"
-                >
+        >
             <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>
             <package>mariadb-client-10.1</package>
@@ -179,7 +179,7 @@
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.5,mysql_5.6,mysql_5.7,mariadb_5.5,mariadb_10.0,mariadb_10.1,percona_5.6,percona_5.7,remote_server"
-                >
+        >
             <package>libmysqlclient18</package>
             <package>libperconaserverclient18</package>
             <package>percona-server-client-5.5</package>
@@ -195,7 +195,7 @@
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.7,percona_5.7,remote_server"
-                >
+        >
             <package>libmysqlclient18</package>
             <package>libperconaserverclient18.1</package>
             <package>mysql-common=5.5*</package>
@@ -211,7 +211,7 @@
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.7,remote_server"
-                >
+        >
             <package>libmysqlclient18=5.5*</package>
             <package>libperconaserverclient20</package>
             <package>mysql-common</package>
@@ -223,7 +223,7 @@
                 pinning_package="libmysqlclient18 mysql-common mysql-server-5.5"
                 pinning_pin="release o=Ubuntu,n=trusty"
                 pinning_pin_priority="1001"
-                >
+        >
             <package>libmysqlclient18</package>
             <package>mysql-client-5.5</package>
             <package>mysql-common</package>

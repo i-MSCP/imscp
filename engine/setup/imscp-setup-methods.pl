@@ -97,38 +97,27 @@ sub setServerCapabilities
 # Allow any server/package to register its setup event listeners before any other task
 sub setupRegisterListeners
 {
-    my ($eventManager, $rs) = (iMSCP::EventManager->getInstance(), 0);
+    my $eventManager = iMSCP::EventManager->getInstance();
 
-    for(iMSCP::Servers->getInstance()->get()) {
-        next if $_ eq 'noserver';
-        my $server = "Servers::$_";
+    for my $server(iMSCP::Servers->getInstance()->getListWithFullNames()) {
         eval "require $server";
-        unless($@) {
-            my $instance = $server->factory();
-            $rs = $instance->registerSetupListeners($eventManager) if $instance->can('registerSetupListeners');
+        my $instance = $server->factory();
+        if(my $subref = $instance->can( 'registerSetupListeners' )) {
+            my $rs = $subref->( $instance, $eventManager );
             return $rs if $rs;
-            next;
         }
-
-        error($@);
-        return 1;
     }
 
-    for(iMSCP::Packages->getInstance()->get()) {
-        my $package = "Package::$_";
+    for my $package(iMSCP::Packages->getInstance()->getListWithFullNames()) {
         eval "require $package";
-        unless($@) {
-            my $instance = $package->getInstance();
-            $rs = $instance->registerSetupListeners($eventManager) if $instance->can('registerSetupListeners');
+        my $instance = $package->getInstance();
+        if(my $subref = $instance->can( 'registerSetupListeners' )) {
+            my $rs = $subref->( $instance, $eventManager );
             return $rs if $rs;
-            next;
         }
-
-        error($@);
-        return 1;
     }
 
-    $rs;
+    0;
 }
 
 # Trigger all dialog subroutines
@@ -187,6 +176,15 @@ sub setupDialog
     iMSCP::EventManager->getInstance()->trigger('afterSetupDialog');
 }
 
+# Process composer setup tasks
+sub setupComposerPackages
+{
+    iMSCP::Dialog->getInstance()->endGauge();
+    my $composer = iMSCP::Composer->getInstance();
+    iMSCP::EventManager->getInstance()->trigger('beforeSetupComposerPackages', $composer);
+    $composer->installPackages();
+}
+
 # Process setup tasks
 sub setupTasks
 {
@@ -195,19 +193,15 @@ sub setupTasks
 
     my @steps = (
         [ \&setupSaveConfig,              'Saving configuration' ],
+        #[ \&main::setupComposerPackages,  'Installing composer packages' ],
         [ \&setupCreateMasterUser,        'Creating system master user' ],
-        [ \&setupServerHostname,          'Setting server hostname' ],
-        [ \&setupServiceSsl,              'Setup SSL for i-MSCP services' ],
-        [ \&setupServices,                'Setup i-MSCP services' ],
-        [ \&setupRegisterDelayedTasks,    'Register delayed tasks' ],
-        [ \&setupRegisterPluginListeners, 'Register plugin setup listeners' ],
-        [ \&setupPreInstallServers,       'Servers pre-installation...' ],
-        [ \&setupPreInstallPackages,      'Packages pre-installation...' ],
-        [ \&setupInstallServers,          'Servers installation...' ],
-        [ \&setupInstallPackages,         'Packages installation...' ],
-        [ \&setupPostInstallServers,      'Servers post-installation...' ],
-        [ \&setupPostInstallPackages,     'Packages post-installation...' ],
-        [ \&setupSetPermissions,          'Setting permissions...' ],
+        [ \&setupServerHostname,          'Setting up server hostname' ],
+        [ \&setupServiceSsl,              'Configuring SSL for i-MSCP services' ],
+        [ \&setupServices,                'Enabling i-MSCP services' ],
+        [ \&setupRegisterDelayedTasks,    'Registering delayed tasks' ],
+        [ \&setupRegisterPluginListeners, 'Registering plugin setup listeners' ],
+        [ \&setupServersAndPackages,      'Processing servers/packages' ],
+        [ \&setupSetPermissions,          'Setting up permissions...' ],
         [ \&setupDbTasks,                 'Processing DB tasks...' ],
         [ \&setupRestartServices,         'Restarting services...' ]
     );
@@ -1018,13 +1012,13 @@ sub setupServices
 sub setupRegisterDelayedTasks
 {
     my $eventManager = iMSCP::EventManager->getInstance();
-    $eventManager->register('afterSqldPreinstall', \&setupCreateMasterSqlUser);
+    $eventManager->register('afterSqldPreinstall', \&setupMasterSqlUser);
     $eventManager->register('afterSqldPreinstall', \&setupSecureSqlInstallation);
-    $eventManager->register('afterSqldPreinstall', \&setupCreateDatabase);
+    $eventManager->register('afterSqldPreinstall', \&setupDatabase);
     $eventManager->register('afterSqldPreinstall', \&setupPrimaryIP);
 }
 
-sub setupCreateMasterSqlUser
+sub setupMasterSqlUser
 {
     my $user = setupGetQuestion( 'DATABASE_USER' );
     my $userHost = setupGetQuestion( 'DATABASE_USER_HOST' );
@@ -1100,11 +1094,12 @@ sub setupPrimaryIP
     iMSCP::EventManager->getInstance()->trigger('afterSetupPrimaryIP', $primaryIP);
 }
 
-sub setupCreateDatabase
+# Create/Update i-MSCP core database
+sub setupDatabase
 {
     my $dbName = setupGetQuestion('DATABASE_NAME');
 
-    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupCreateDatabase', \$dbName);
+    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupDatabase', \$dbName);
     return $rs if $rs;
 
     unless(setupIsImscpDb($dbName)) {
@@ -1126,7 +1121,7 @@ sub setupCreateDatabase
     # In all cases, we process database update. This is important because sometime some developer forget to update the
     # database revision in the main database.sql file.
     $rs = setupUpdateDatabase();
-    $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupCreateDatabase');
+    $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupDatabase');
 }
 
 sub setupUpdateDatabase
@@ -1391,253 +1386,71 @@ sub setupRegisterPluginListeners
 
     my $eventManager = iMSCP::EventManager->getInstance();
 
-    for my $pluginPath(iMSCP::Plugins->getInstance()->get()) {
+    for my $pluginPath(iMSCP::Plugins->getInstance()->getList()) {
         my $pluginName = basename($pluginPath, '.pm');
         next unless grep($_ eq $pluginName, @{$pluginNames});
         eval { require $pluginPath; };
-        unless($@) {
-            my $plugin = 'Plugin::' . $pluginName;
-            my $rs = $plugin->registerSetupListeners($eventManager) if $plugin->can('registerSetupListeners');
-            return $rs if $rs;
-            next;
-        }
+        my $plugin = 'Plugin::' . $pluginName;
 
-        error($@);
-        return 1
+        if(my $subref = $plugin->can( 'registerSetupListeners') ) {
+            $rs = $subref->( $plugin, $eventManager );
+            return $rs if $rs;
+        }
     }
 
     iMSCP::EventManager->getInstance()->trigger('afterSetupRegisterPluginListeners');
 }
 
-sub setupPreInstallServers
+sub setupServersAndPackages
 {
-    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupPreInstallServers');
-    return $rs if $rs;
+    my $eventManager = iMSCP::EventManager->getInstance();
+    my @srvs = iMSCP::Servers->getInstance()->getListWithFullNames();
+    my @pkgs = iMSCP::Packages->getInstance()->getListWithFullNames();
+    my $nSteps = @srvs + @pkgs;
+    my $rs = 0;
 
-    startDetail();
+    for my $task(qw/ PreInstall Install PostInstall /) {
+        my $lcTask = lc($task);
 
-    my @servers = iMSCP::Servers->getInstance()->get();
-    my $nbServers = scalar @servers;
-    my $step = 1;
-    for(@servers) {
-        next if $_ eq 'noserver';
-        my $package = "Servers::$_";
-        eval "require $package";
-        unless($@) {
-            my $server = $package->factory();
-            if($server->can('preinstall')) {
-                $rs = step(
-                    sub { $server->preinstall() },
-                    sprintf('Running %s preinstall tasks...', ref $server),
-                    $nbServers,
-                    $step
-                );
+        $rs ||= $eventManager->trigger('beforeSetup' . $task . 'Servers');
+        return $rs if $rs;
 
+        startDetail();
+        my $nStep = 1;
+
+        for my $srv(@srvs) {
+            eval "require $srv";
+            my $instance = $srv->factory();
+            if(my $subref = $instance->can($lcTask)) {
+                $rs = step(sub { $subref->($instance) }, sprintf("Running %s %s tasks...", $srv, $lcTask), $nSteps, $nStep);
                 last if $rs;
             }
-        } else {
-            error($@);
-            $rs = 1;
-            last;
+            $nStep++;
         }
 
-        $step++;
-    }
+        $rs ||= $eventManager->trigger('afterSetup'.$task.'Servers');
 
-    endDetail();
-    $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupPreInstallServers');
-}
-
-sub setupPreInstallPackages
-{
-    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupPreInstallPackages');
-    return $rs if $rs;
-
-    startDetail();
-
-    my @packages = iMSCP::Packages->getInstance()->get();
-    my $nbPackages = scalar @packages;
-    my $step = 1;
-    for(@packages) {
-        my $package = "Package::$_";
-        eval "require $package";
-        unless($@) {
-            my $package = $package->getInstance();
-            if($package->can('preinstall')) {
-                $rs = step(
-                    sub { $package->preinstall() },
-                    sprintf('Running %s preinstall tasks...', ref $package),
-                    $nbPackages,
-                    $step
-                );
-
-                last if $rs;
+        unless($rs) {            
+            $rs ||= $eventManager->trigger('beforeSetup'.$task.'Packages');
+            unless($rs) {
+                for my $pkg(@pkgs) {
+                    eval "require $pkg";
+                    my $instance = $pkg->getInstance();
+                    if(my $subref = $instance->can($lcTask)) {
+                        $rs = step(sub { $subref->($instance) }, sprintf("Running %s %s tasks...", $pkg, $lcTask), $nSteps, $nStep);
+                        last if $rs;
+                    }
+                    $nStep++;
+                }
             }
-        } else {
-            error($@);
-            $rs = 1;
-            last;
-        }
+        }    
 
-        $step++;
+        endDetail();
+        $rs ||= $eventManager->trigger('afterSetup'.$task.'Packages');
+        last if $rs;
     }
 
-    endDetail();
-    $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupPreInstallPackages');
-}
-
-sub setupInstallServers
-{
-    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupInstallServers');
-    return $rs if $rs;
-
-    startDetail();
-
-    my @servers = iMSCP::Servers->getInstance()->get();
-    my $nbServers = scalar @servers;
-    my $step = 1;
-    for(@servers) {
-        my $package = "Servers::$_";
-        eval "require $package";
-        unless($@) {
-            next if $_ eq 'noserver';
-            my $server = $package->factory();
-            if($server->can('install')) {
-                $rs = step(
-                    sub { $server->install() },
-                    sprintf('Running %s install tasks...', ref $server),
-                    $nbServers,
-                    $step
-                );
-
-                last if $rs;
-            }
-        } else {
-            error($@);
-            $rs = 1;
-            last;
-        }
-
-        $step++;
-    }
-
-    endDetail();
-    $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupInstallServers');
-}
-
-sub setupInstallPackages
-{
-    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupInstallPackages');
-    return $rs if $rs;
-
-    startDetail();
-
-    my @packages = iMSCP::Packages->getInstance()->get();
-    my $nbPackages = scalar @packages;
-    my $step = 1;
-    for(@packages) {
-        my $package = "Package::$_";
-        eval "require $package";
-        unless($@) {
-            my $package = $package->getInstance();
-            if($package->can('install')) {
-                $rs = step(
-                    sub { $package->install() },
-                    sprintf('Running %s install tasks...', ref $package),
-                    $nbPackages,
-                    $step
-                );
-
-                last if $rs;
-            }
-        } else {
-            error($@);
-            $rs = 1;
-            last;
-        }
-
-        $step++;
-    }
-
-    endDetail();
-    $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupInstallPackages');
-}
-
-sub setupPostInstallServers
-{
-    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupPostInstallServers');
-    return $rs if $rs;
-
-    startDetail();
-
-    my @servers = iMSCP::Servers->getInstance()->get();
-    my $nbServers = scalar @servers;
-    my $step = 1;
-    for(@servers) {
-        next if $_ eq 'noserver';
-        my $package = "Servers::$_";
-        eval "require $package";
-        unless($@) {
-            my $server = $package->factory();
-            if($server->can('postinstall')) {
-                $rs = step(
-                    sub { $server->postinstall() },
-                    sprintf('Running %s postinstall tasks...', ref $server),
-                    $nbServers,
-                    $step
-                );
-
-                last if $rs;
-            }
-        } else {
-            error($@);
-            $rs = 1;
-            last;
-        }
-
-        $step++;
-    }
-
-    endDetail();
-    $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupPostInstallServers');
-}
-
-sub setupPostInstallPackages
-{
-    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupPostInstallPackages');
-    return $rs if $rs;
-
-    startDetail();
-
-    my @packages = iMSCP::Packages->getInstance()->get();
-    my $nbPackages = scalar @packages;
-    my $step = 1;
-    for(@packages) {
-        my $package = "Package::$_";
-        eval "require $package";
-        unless($@) {
-            my $package = $package->getInstance();
-            if($package->can('postinstall')) {
-                $rs = step(
-                    sub { $package->postinstall() },
-                    sprintf('Running %s postinstall tasks...', ref $package),
-                    $nbPackages,
-                    $step
-                );
-
-                last if $rs;
-            }
-        } else {
-            error($@);
-            $rs = 1;
-            last;
-        }
-
-        $step++;
-    }
-
-    endDetail();
-    $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupPostInstallPackages');
+    $rs;
 }
 
 sub setupRestartServices

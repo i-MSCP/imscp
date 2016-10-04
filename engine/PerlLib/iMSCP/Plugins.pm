@@ -35,7 +35,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item get()
+=item getList()
 
  Get plugin paths list
 
@@ -43,7 +43,7 @@ use parent 'Common::SingletonClass';
 
 =cut
 
-sub get
+sub getList
 {
     @{$_[0]->{'plugins'}};
 }

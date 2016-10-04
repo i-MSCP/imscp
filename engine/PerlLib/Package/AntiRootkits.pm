@@ -354,7 +354,6 @@ sub _installPackages
     my $stdout;
     my $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef, \ my $stderr );
     error( sprintf( 'Could not install packages: %s', $stderr || 'Unknown error' ) ) if $rs;
-    return $rs if $rs;
     $rs;
 }
 
@@ -362,7 +361,7 @@ sub _installPackages
 
  Remove distribution packages
 
- Param list @packages List of distribution packages to remove
+ Param list @packages Packages to remove
  Return int 0 on success, other on failure
 
 =cut

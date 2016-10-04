@@ -36,7 +36,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item get()
+=item getList()
 
  Get package list
 
@@ -44,9 +44,22 @@ use parent 'Common::SingletonClass';
 
 =cut
 
-sub get
+sub getList
 {
     @{$_[0]->{'packages'}};
+}
+
+=item getListWithFullNames()
+
+ Get package list with full names
+
+ Return package list
+
+=cut
+
+sub getListWithFullNames
+{
+    @{$_[0]->{'packages_full_names'}};
 }
 
 =back
@@ -70,6 +83,7 @@ sub _init
     $_ = basename( $_, '.pm' ) for @{$self->{'packages'}} = glob (
         "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/*.pm"
     );
+    @{$self->{'packages_full_names'}} = map { 'Package::'.$_ } @{$self->{'packages'}};
     $self;
 }
 

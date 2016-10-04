@@ -64,42 +64,24 @@ iMSCP::Bootstrapper->getInstance()->boot(
 );
 
 my $rs = 0;
-my @toProcess = ();
+my @items = ();
 
-for(iMSCP::Servers->getInstance()->get()) {
-    my $package = "Servers::$_";
-    eval "require $package";
-    if ($@) {
-        error( $@ );
-        $rs = 1;
-        next;
-    }
-
-    $package = $package->factory();
-    push @toProcess, [ $_, $package ] if $package->can( 'setGuiPermissions' );;
+for my $server(iMSCP::Servers->getInstance()->getListWithFullNames()) {
+    eval "require $server";
+    push @items, $server->factory() if $server->can( 'setGuiPermissions' );
 }
 
-for(iMSCP::Packages->getInstance()->get()) {
-    my $package = "Package::$_";
+for my $package (iMSCP::Packages->getInstance()->getListWithFullNames()) {
     eval "require $package";
-    if ($@) {
-        error( $@ );
-        $rs = 1;
-        next;
-    }
-
-    $package = $package->getInstance();
-    push @toProcess, [ $_, $package ] if $package->can( 'setGuiPermissions' );
+    push @items, $package->getInstance() if $package->can( 'setGuiPermissions' );
 }
 
-my $totalItems = @toProcess;
+my $totalItems = scalar @items;
 my $count = 1;
-
-for(@toProcess) {
-    my ($package, $instance) = @{$_};
-    debug( sprintf( 'Setting %s (gui) permissions', $package ) );
-    printf( "Setting %s (gui) permissions\t%s\t%s\n", $package, $totalItems, $count ) if $main::execmode eq 'setup';
-    $rs |= $instance->setGuiPermissions();
+for(@items) {
+    debug( sprintf( 'Setting %s frontEnd permissions', ref ) );
+    printf( "Setting %s frontEnd permissions\t%s\t%s\n", ref, $totalItems, $count ) if $main::execmode eq 'setup';
+    $rs |= $_->setGuiPermissions();
     $count++;
 }
 

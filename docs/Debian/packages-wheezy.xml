@@ -40,15 +40,17 @@
         <php5>
             <package>php5</package>
             <package>php5-cli</package>
-            <package>php5-curl</package>
+            <package post_install_cmd="php5dismod pdo &amp;&amp; php5enmod pdo/10">php5-common</package>
+            <package post_install_cmd="php5dismod curl &amp;&amp; php5enmod curl">php5-curl</package>
+            <package post_install_cmd="php5dismod gd &amp;&amp; php5enmod gd">php5-gd</package>
+            <package post_install_cmd="php5dismod imap &amp;&amp; php5enmod imap">php5-imap</package>
+            <package post_install_cmd="php5dismod intl &amp;&amp; php5enmod intl">php5-intl</package>
+            <package post_install_cmd="php5dismod mcrypt &amp;&amp; php5enmod mcrypt">php5-mcrypt</package>
+            <package post_install_cmd="php5dismod mysql mysqli mysqlnd pdo_mysql &amp;&amp; php5enmod mysql mysqli mysqlnd/10 pdo_mysql">php5-mysqlnd</package>
+            <package post_install_cmd="php5dismod pspell &amp;&amp; php5enmod pspell">php5-pspell</package>
+            <package post_install_cmd="php5dismod apc &amp;&amp; php5enmod apc">php-apc</package>
             <package>php-pear</package>
-            <package>php5-gd</package>
-            <package>php-gettext</package>
-            <package>php5-imap</package>
-            <package>php5-intl</package>
-            <package>php5-mcrypt</package>
-            <package>php5-mysqlnd</package>
-            <package>php-apc</package>
+            <package_conflict>php5-suhosin</package_conflict>
         </php5>
     </php>
     <po default="dovecot">

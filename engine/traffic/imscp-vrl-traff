@@ -53,27 +53,18 @@ sub run
     my %trafficDb;
 
     # Collects traffic data
-    for my $service(iMSCP::Servers->getInstance()->get()) {
-        next if $service eq 'noserver';
-        my $package = "Servers::$service";
-        eval "require $package";
-        unless($@) {
-            if ($package->can('getTraffic')) {
-                my $instance = $package->factory();
-                eval {
-                    debug("Calling Servers::${service}::getTraffic()");
-                    $trafficDb{$service} = $instance->getTraffic();
-                };
-                if ($@) {
-                    error($@);
-                    $rs = 1;
-                    last;
-                }
+    for my $server(iMSCP::Servers->getInstance()->getListWithFullNames()) {
+        eval "require $server";
+        if (my $subref = $server->can('getTraffic')) {
+            eval {
+                debug("Calling $server::getTraffic()");
+                $trafficDb{$service} = $subref->($server->factory());
+            };
+            if ($@) {
+                error($@);
+                $rs = 1;
+                last;
             }
-        } else {
-            error($@);
-            $rs = 1;
-            last;
         }
     }
 

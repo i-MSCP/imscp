@@ -162,6 +162,12 @@ sub installPackages
         return $rs if $rs;
     }
 
+    for my $cmd(@{$self->{'packagesPostInstallCmd'}}) {
+        $rs = execute($cmd, \my $stdout, \my $stderr);
+        debug($stdout) if $stdout;
+        error($stderr || 'Unknown error') if $rs;
+    }
+
     while(my ($package, $metadata) = each( %{$self->{'packagesToRebuild'}} )) {
         $rs = $self->_rebuildAndInstallPackage(
             $package, $metadata->{'pkg_src_name'}, $metadata->{'patches_directory'}, $metadata->{'discard_patches'},
@@ -283,6 +289,7 @@ sub _init
     $self->{'packagesToPreUninstall'} = [ ];
     $self->{'packagesToUninstall'} = [ ];
     $self->{'packagesToRebuild'} = { };
+    $self->{'packagesPostInstallCmd'} = [ ];
     $self->{'need_pbuilder_update'} = 1;
     delete $ENV{'DEBCONF_FORCE_DIALOG'};
     $ENV{'DEBIAN_FRONTEND'} = 'noninteractive' if iMSCP::Getopt->noprompt;
@@ -476,6 +483,7 @@ EOF
                         };
                     } else {
                         push @{$self->{'packagesToInstall'}}, $_->{'content'};
+                        push @{$self->{'packagesPostInstallCmd'}}, $_->{'post_install_cmd'} if $_->{'post_install_cmd'};
                     }
                 } else {
                     push @{$self->{'packagesToInstall'}}, $_;
@@ -490,6 +498,10 @@ EOF
         # Set server implementation to use
         $main::imscpConfig{uc( $section ).'_SERVER'} = $sAlt;
     }
+
+#    use Data::Dumper;
+#    print Dumper($self);
+#    exit;
 
     0;
 }

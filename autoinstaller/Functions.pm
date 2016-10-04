@@ -155,14 +155,15 @@ sub build
     return $rs if $rs;
 
     my @steps = (
-        $main::skippackages ? () : [ \&_processDistroPackages, 'Processing distribution packages' ],
-        [ \&_checkRequirements, 'Checking for requirements' ],
+        [ \&_checkRequirements,      'Checking for requirements' ],
         [ \&_buildDistributionFiles, 'Building distribution files' ],
-        [ \&_compileDaemon, 'Compiling daemon' ],
-        [ \&_savePersistentData, 'Saving persistent data' ],
-        [ \&_cleanup, 'Process cleanup tasks' ]
+        [ \&_compileDaemon,          'Compiling daemon' ],
+        [ \&_savePersistentData,     'Saving persistent data' ],
+        [ \&_cleanup,                'Processing cleanup tasks' ]
     );
 
+    unshift @steps, [ \&_processDistroPackages, 'Processing distribution packages' ] unless $main::skippackages;
+    
     $rs = $eventManager->trigger( 'beforeBuild', \@steps );
     return $rs if $rs;
 
@@ -181,6 +182,8 @@ sub build
     $rs ||= $eventManager->trigger( 'beforePostBuild' );
     $rs ||= _getDistroAdapter()->postBuild();
     return $rs if $rs;
+
+    undef $autoinstallerAdapterInstance;
 
     # Write new configuration
     tie my %newConfig, 'iMSCP::Config', fileName => "$main::{'SYSTEM_CONF'}/imscp.conf";
@@ -256,14 +259,14 @@ EOF
     }
 
     my @steps = (
-        [ \&main::setupSystemDirectories, 'Setup system directories' ],
-        [ \&main::setupInstallFiles, 'Installing files' ],
-        [ \&main::setupBoot, 'Setup bootstrapping' ],
-        [ \&main::setServerCapabilities, 'Set server capabilities' ],
+        [ \&main::setupInstallFiles,      'Installing distribution files' ],
+        [ \&main::setupSystemDirectories, 'Setting up system directories' ],
+        [ \&main::setupBoot,              'Bootstrapping installer' ],
+        [ \&main::setServerCapabilities,  'Setting up server capabilities' ],
         [ \&main::setupRegisterListeners, 'Registering servers/packages event listeners' ],
-        [ \&main::setupDialog, 'Processing setup dialog' ],
-        [ \&main::setupTasks, 'Processing setup tasks' ],
-        [ \&main::setupDeleteBuildDir, 'Deleting Build directory' ]
+        [ \&main::setupDialog,            'Processing setup dialog' ],
+        [ \&main::setupTasks,             'Processing setup tasks' ],
+        [ \&main::setupDeleteBuildDir,    'Deleting build directory' ]
     );
 
     my $rs = iMSCP::EventManager->getInstance()->trigger( 'beforeInstall', \@steps );
@@ -1189,7 +1192,7 @@ sub _getDistroAdapter
         my $adapterClass = "autoinstaller::Adapter::${distribution}Adapter";
 
         require $file;
-        $autoinstallerAdapterInstance = $adapterClass->getInstance()
+        $autoinstallerAdapterInstance = $adapterClass->new()
     };
 
     fatal( sprintf( 'Could not instantiate %s autoinstaller adapter: %s', $distribution, $@ ) ) if $@;

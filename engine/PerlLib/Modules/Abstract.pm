@@ -148,26 +148,24 @@ sub _init
     $self;
 }
 
-=item _runAction($action, \@items, $itemType)
+=item _runAction($action, $itemType)
 
- Run the given action on all servers/packages which implement it
+ Run the given action on all servers or packages that implement it
 
  Param string $action Action to run
- Param array \@items List of item to process
- Param string $itemType Item type ( server|package )
- Return int 0 on success, other on failure
+ Param string $itemType Item type (server|package)
+ Return int 0 on success, other or die on failure
 
 =cut
 
 sub _runAction
 {
-    my ($self, $action, $items, $itemType) = @_;
+    my ($self, $action, $itemType) = @_;
 
     if ($itemType eq 'server') {
-        for my $item (@{$items}) {
-            next if $item eq 'noserver';
-
-            my $dataProvider = '_get'.ucfirst( $item ).'Data';
+        for my $server (iMSCP::Servers->getInstance()->getListWithFullNames()) {
+            eval "require $server";
+            my $dataProvider = '_get'.ucfirst( substr( $server, 9 ) ).'Data';
             my $moduleData = eval { $self->$dataProvider( $action ); };
             if ($@) {
                 error( $@ );
@@ -175,25 +173,19 @@ sub _runAction
             }
 
             if (%{$moduleData}) {
-                my $package = "Servers::$item";
-                eval "require $package";
-                unless ($@) {
-                    $package = $package->factory();
-                    if ($package->can( $action )) {
-                        debug( "Calling action $action on Servers::$item" );
-                        my $rs = $package->$action( $moduleData );
-                        return $rs if $rs;
-                    }
-                } else {
-                    error( $@ );
-                    return 1;
+                my $instance = $server->factory();
+                if (my $subref = $instance->can( $action )) {
+                    debug( "Calling action $action on $server" );
+                    my $rs = $subref->( $instance, $moduleData );
+                    return $rs if $rs;
                 }
             }
         }
         return 0;
     }
 
-    for my $item (@{$items}) {
+    for my $package (iMSCP::Packages->getInstance()->getListWithFullNames()) {
+        eval "require $package";
         my $dataProvider = '_getPackagesData';
         my $moduleData = eval { $self->$dataProvider( $action ); };
         if ($@) {
@@ -202,18 +194,11 @@ sub _runAction
         }
 
         if (%{$moduleData}) {
-            my $package = "Package::$item";
-            eval "require $package";
-            unless ($@) {
-                $package = $package->getInstance();
-                if ($package->can( $action )) {
-                    debug( "Calling action $action on Package::$item" );
-                    my $rs = $package->$action( $moduleData );
-                    return $rs if $rs;
-                }
-            } else {
-                error( $@ );
-                return 1;
+            my $instance = $package->getInstance();
+            if (my $subref = $instance->can( $action )) {
+                debug( "Calling action $action on $package" );
+                my $rs = $subref->( $instance, $moduleData );
+                return $rs if $rs;
             }
         }
     }
@@ -233,14 +218,12 @@ sub _runAllActions
 {
     my ($self, $action) = @_;
 
-    my @servers = iMSCP::Servers->getInstance()->get();
-    my @packages = iMSCP::Packages->getInstance()->get();
     my $moduleType = $self->getType();
 
     if ($action =~ /^(?:add|restore)$/) {
         for('pre', '', 'post') {
-            my $rs = $self->_runAction( "$_$action$moduleType", \@servers, 'server' );
-            $rs ||= $self->_runAction( "$_$action$moduleType", \@packages, 'package' );
+            my $rs = $self->_runAction( "$_$action$moduleType", 'server' );
+            $rs ||= $self->_runAction( "$_$action$moduleType", 'package' );
             return $rs if $rs;
         }
 
@@ -248,8 +231,8 @@ sub _runAllActions
     }
 
     for('pre', '', 'post') {
-        my $rs = $self->_runAction( "$_$action$moduleType", \@packages, 'package' );
-        $rs ||= $self->_runAction( "$_$action$moduleType", \@servers, 'server' );
+        my $rs = $self->_runAction( "$_$action$moduleType", 'package' );
+        $rs ||= $self->_runAction( "$_$action$moduleType", 'server' );
         return $rs if $rs;
     }
 

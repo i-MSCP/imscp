@@ -31,16 +31,17 @@
         <php5>
             <package>php5</package>
             <package>php5-cli</package>
+            <package>php5-common</package>
             <package>php5-curl</package>
-            <package>php-pear</package>
             <package>php5-gd</package>
-            <package>php-gettext</package>
             <package>php5-imap</package>
             <package>php5-intl</package>
             <package>php5-mcrypt</package>
             <package>php5-mysqlnd</package>
-            <package>php5-suhosin</package>
+            <package>php5-pspell</package>
             <package>php-apc</package>
+            <package>php-pear</package>
+            <package_conflict>php5-suhosin</package_conflict>
         </php5>
     </php>
     <po default="dovecot">
@@ -94,7 +95,7 @@
                 pinning_pin="release o=Ubuntu,n=precise"
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.6,mysql_5.7,mariadb_5.5,mariadb_10.0,mariadb_10.1,percona_5.5,percona_5.6,percona_5.7,remote_server"
-                >
+        >
             <package>libmysqlclient18</package>
             <package>mysql-client-5.5</package>
             <package>mysql-common</package>
@@ -108,7 +109,7 @@
                 pinning_pin="origin repo.mysql.com"
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.7,percona_5.6,percona_5.7,remote_server"
-                >
+        >
             <package>libmysqlclient18</package>
             <package>mysql-community-client</package>
             <package>mysql-common</package>
@@ -122,7 +123,7 @@
                 pinning_pin="origin repo.mysql.com"
                 pinning_pin_priority="1001"
                 allow_switch="percona_5.7,remote_server"
-                >
+        >
             <package>libmysqlclient18=5.5*</package>
             <package>libmysqlclient20</package>
             <package>mysql-community-client</package>
@@ -137,7 +138,7 @@
                 repository_key_srv="keyserver.ubuntu.com"
                 repository_key_id="0xcbcb082a1bb943db"
                 allow_switch="mysql_5.5,mysql_5.6,mysql_5.7,mariadb_10.0,mariadb_10.1,percona_5.5,percona_5.6,percona_5.7,remote_server"
-                >
+        >
             <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>
             <package>mariadb-client-5.5</package>
@@ -153,7 +154,7 @@
                 repository_key_srv="keyserver.ubuntu.com"
                 repository_key_id="0xcbcb082a1bb943db"
                 allow_switch="mariadb_10.1,remote_server"
-                >
+        >
             <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>
             <package>mariadb-client-10.0</package>
@@ -169,7 +170,7 @@
                 pinning_pin="origin mirror.netcologne.de"
                 pinning_pin_priority="1001"
                 allow_switch="remote_server"
-                >
+        >
             <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>
             <package>mariadb-client-10.1</package>
@@ -185,7 +186,7 @@
                 repository_key_srv="keys.gnupg.net"
                 repository_key_id="1C4CBDCDCD2EFD2A"
                 allow_switch="mysql_5.5,mysql_5.6,mysql_5.7,mariadb_5.5,mariadb_10.0,mariadb_10.1,percona_5.6,percona_5.7,remote_server"
-                >
+        >
             <package>libmysqlclient18</package>
             <package>libperconaserverclient18</package>
             <package>percona-server-client-5.5</package>
@@ -201,7 +202,7 @@
                 repository_key_srv="keys.gnupg.net"
                 repository_key_id="1C4CBDCDCD2EFD2A"
                 allow_switch="mysql_5.7,percona_5.7,remote_server"
-                >
+        >
             <package>libmysqlclient18</package>
             <package>libperconaserverclient18.1</package>
             <package>mysql-common</package>
@@ -217,7 +218,7 @@
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.7,remote_server"
-                >
+        >
             <package>libmysqlclient18=5.5*</package>
             <package>libperconaserverclient20</package>
             <package>mysql-common</package>
@@ -229,7 +230,7 @@
                 pinning_package="libmysqlclient18 mysql-common mysql-server-5.5"
                 pinning_pin="release o=Ubuntu,n=precise"
                 pinning_pin_priority="1001"
-                >
+        >
             <package>libmysqlclient18</package>
             <package>mysql-client-5.5</package>
             <package>mysql-common</package>

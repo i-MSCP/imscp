@@ -25,12 +25,12 @@ package autoinstaller::Adapter::AbstractAdapter;
 
 use strict;
 use warnings;
-use parent 'Common::SingletonClass';
+use parent 'Common::Object';
 
 =head1 DESCRIPTION
 
  Abstract class for distro autoinstaller adapters. Any distro autoinstaller adapter class *should* implement methods of
-this class.
+ this class.
 
 =head1 PUBLIC METHODS
 

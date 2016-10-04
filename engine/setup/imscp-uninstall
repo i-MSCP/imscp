@@ -182,74 +182,45 @@ sub _removeCustomers
 
 sub _uninstallPackages
 {
-    my $rs = 0;
-
     startDetail();
 
-    my @packages = iMSCP::Packages->getInstance()->get();
-    my $nbPackages = scalar @packages;
-    my $step = 1;
+    my @packages = iMSCP::Packages->getInstance()->getListWithFullNames();
+    my $nbSteps = scalar @packages;
+    my ($step, $rs) = (1, 0);
 
-    for(@packages) {
-        my $package = "Package::$_";
+    for my $package (@packages) {
         eval "require $package";
-        unless($@) {
-            my $package = $package->getInstance();
-
-            if($package->can('uninstall')) {
-                $rs = step(
-                    sub { $package->uninstall }, sprintf('Running %s uninstall tasks...', ref $package),
-                    $nbPackages,
-                    $step
-                );
-                last if $rs;
-            }
-        } else {
-            error($@);
-            $rs = 1;
-            last;
+        my $instance = $package->getInstance();
+        if(my $subref = $instance->can('uninstall')) {
+             $rs = step(
+                 sub { $subref->($instance) }, sprintf('Running %s uninstall tasks...', $package), $nbSteps, $step
+             );
+             last if $rs;
         }
-
         $step++;
     }
 
     endDetail();
-
     $rs;
 }
 
 sub _uninstallServers
 {
-    my $rs = 0;
-
     startDetail();
 
-    my @servers = iMSCP::Servers->getInstance()->get();
-    my $nbServers = scalar @servers;
-    my $step = 1;
+    my @servers = iMSCP::Servers->getInstance()->getListWithFullNames();
+    my $nbSteps = scalar @servers;
+    my ($step, $rs) = (1, 0);
 
-    for(@servers) {
-        next if $_ eq 'noserver';
-        my $package = "Servers::$_";
-        eval "require $package";
-        unless($@) {
-            my $server = $package->factory();
-
-            if($server->can('uninstall')) {
-                $rs = step(
-                    sub { $server->uninstall },
-                    sprintf('Running %s uninstall tasks...', ref $server),
-                    $nbServers,
-                    $step
-                );
-                last if $rs;
-            }
-        } else {
-            error($@);
-            $rs = 1;
-            last;
+    for my $server(@servers) {
+        eval "require $server";
+        my $instance = $package->factory();
+        if(my $subref = $server->can('uninstall')) {
+            $rs = step(
+                sub { $subref->($instance) }, sprintf('Running %s uninstall tasks...', $server), $nbSteps, $step
+            );
+            last if $rs;
         }
-
         $step++;
     }
 

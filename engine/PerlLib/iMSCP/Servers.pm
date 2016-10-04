@@ -36,17 +36,30 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item get()
+=item getList()
 
- Get servers list
+ Get server list
 
  Return server list
 
 =cut
 
-sub get
+sub getList
 {
     @{$_[0]->{'servers'}};
+}
+
+=item getListWithFullNames()
+
+ Get server list with full names
+
+ Return server list
+
+=cut
+
+sub getListWithFullNames
+{
+    @{$_[0]->{'servers_full_names'}};
 }
 
 =back
@@ -67,9 +80,12 @@ sub _init
 {
     my $self = shift;
 
-    $_ = basename( $_, '.pm' ) for @{$self->{'servers'}} = glob(
+    use Data::Dumper;
+    
+    $_ = basename( $_, '.pm' ) for @{$self->{'servers'}} = grep { $_ !~ /\/noserver.pm$/ } glob(
         "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers/*.pm"
     );
+    @{$self->{'servers_full_names'}} = map { 'Servers::'.$_ } @{$self->{'servers'}};
     $self;
 }
 

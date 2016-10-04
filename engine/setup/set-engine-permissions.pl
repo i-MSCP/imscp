@@ -67,35 +67,19 @@ iMSCP::Bootstrapper->getInstance()->boot(
 );
 
 my $rs = 0;
-my @toProcess = ();
+my @items = ();
 
-for(iMSCP::Servers->getInstance()->get()) {
-    my $package = "Servers::$_";
-    eval "require $package";
-    if ($@) {
-        error( $@ );
-        $rs = 1;
-        next;
-    }
-
-    $package = $package->factory();
-    push @toProcess, [ $_, $package ] if $package->can( 'setEnginePermissions' );
+for my $server(iMSCP::Servers->getInstance()->getListWithFullNames()) {
+    eval "require $server";
+    push @items, $server->factory()if $server->can( 'setEnginePermissions' );
 }
 
-for(iMSCP::Packages->getInstance()->get()) {
-    my $package = "Package::$_";
+for my $package(iMSCP::Packages->getInstance()->getListWithFullNames()) {
     eval "require $package";
-    if ($@) {
-        error( $@ );
-        $rs = 1;
-        next;
-    }
-
-    $package = $package->getInstance();
-    push @toProcess, [ $_, $package ] if $package->can( 'setEnginePermissions' );
+    push @items, $package->getInstance() if $package->can( 'setEnginePermissions' );
 }
 
-my $totalItems = @toProcess + 1;
+my $totalItems = scalar @items + 1;
 my $count = 1;
 
 debug( 'Setting base (engine) permissions' );
@@ -125,12 +109,10 @@ $rs |= setRights( $main::imscpConfig{'LOG_DIR'}, { user => $rootUName, group => 
 
 $count++;
 
-for(@toProcess) {
-    my ($package, $instance) = @{$_};
-
-    debug( sprintf( 'Setting %s (engine) permissions', $package ) );
-    printf( "Setting %s (engine) permissions\t%s\t%s\n", $package, $totalItems, $count ) if $main::execmode eq 'setup';
-    $rs |= $instance->setEnginePermissions();
+for(@items) {
+    debug( sprintf( 'Setting %s engine permissions', ref ) );
+    printf( "Setting %s engine permissions\t%s\t%s\n", ref, $totalItems, $count ) if $main::execmode eq 'setup';
+    $rs |= $_->setEnginePermissions();
     $count++;
 }
 

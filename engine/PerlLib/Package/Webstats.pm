@@ -519,7 +519,7 @@ sub _installPackages
     $rs;
 }
 
-=item _removePackages(\@packages)
+=item _removePackages(@packages)
 
  Remove distribution packages
 
