@@ -176,15 +176,6 @@ sub setupDialog
     iMSCP::EventManager->getInstance()->trigger('afterSetupDialog');
 }
 
-# Process composer setup tasks
-sub setupComposerPackages
-{
-    iMSCP::Dialog->getInstance()->endGauge();
-    my $composer = iMSCP::Composer->getInstance();
-    iMSCP::EventManager->getInstance()->trigger('beforeSetupComposerPackages', $composer);
-    $composer->installPackages();
-}
-
 # Process setup tasks
 sub setupTasks
 {
@@ -193,7 +184,6 @@ sub setupTasks
 
     my @steps = (
         [ \&setupSaveConfig,              'Saving configuration' ],
-        #[ \&main::setupComposerPackages,  'Installing composer packages' ],
         [ \&setupCreateMasterUser,        'Creating system master user' ],
         [ \&setupServerHostname,          'Setting up server hostname' ],
         [ \&setupServiceSsl,              'Configuring SSL for i-MSCP services' ],
