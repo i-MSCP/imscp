@@ -119,7 +119,7 @@ function client_pmaAuth($dbUserId)
         )
     );
 
-    if (!isSecureRequest()) {
+    if (isSecureRequest()) {
         $contextOptions['ssl'] = array(
             'verify_peer' => false,
             'allow_self_signed' => true

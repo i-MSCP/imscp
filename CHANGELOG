@@ -4,6 +4,9 @@
 Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
+FRONTEND
+    Fixed: PhpMyAdmin auto-login doesn't works when connecting through SSL with a self-signed certificate
+
 INSTALLER
     Added: Support for package post installation commands (autoinstaller::Adapter::DebianAdapter)
     Fixed: Making sure that all required PHP modules are enabled by executing php5enmod/phpenmod (Debian/Ubuntu)
