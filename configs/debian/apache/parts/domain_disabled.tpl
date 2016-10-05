@@ -5,6 +5,8 @@
 
     DocumentRoot {USER_WEB_DIR}/domain_disabled_pages
 
+    DirectoryIndex index.html
+
     LogLevel error
     ErrorLog {HTTPD_LOG_DIR}/{DOMAIN_NAME}/error.log
 
@@ -14,7 +16,5 @@
         {AUTHZ_ALLOW_ALL}
     </Directory>
 
-    RewriteEngine on
-    RewriteCond %{REQUEST_URI} !^/(?:images/(?:favicon\.ico|(?:imscp_logo32|stripe)\.png))?$ [NC]
-    RewriteRule ^.*$ http://www.{DOMAIN_NAME}/ [R=303,L]
+    RedirectMatch 303 ^/(?!(?:images/.+|index\.html|$)) http://www.{DOMAIN_NAME}/
 </VirtualHost>
