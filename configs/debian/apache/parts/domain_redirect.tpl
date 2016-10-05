@@ -12,9 +12,7 @@
     </Directory>
 
     # SECTION standard_redirect BEGIN.
-    <LocationMatch "^/(?!.well-known/)">
-        Redirect {FORWARD_TYPE} / {FORWARD}
-    </LocationMatch>
+    RedirectMatch {FORWARD_TYPE} ^/((?!(?:\.well-known|errors)/).*) {FORWARD}$1
     # SECTION standard_redirect END.
     # SECTION proxy_redirect BEGIN.
     # SECTION ssl_proxy BEGIN.
@@ -23,9 +21,7 @@
     RequestHeader set X-Forwarded-Proto "http"
     RequestHeader set X-Forwarded-Port 80
     ProxyPreserveHost {FORWARD_PRESERVE_HOST}
-    ProxyPass /errors/ !
-    ProxyPass /.well-known/ !
-    ProxyPass / {FORWARD} retry=30 timeout=7200
+    ProxyPassMatch ^/((?!(?:\.well-known|errors)/).*) {FORWARD}$1 retry=30 timeout=7200
     ProxyPassReverse / {FORWARD}
     # SECTION proxy_redirect END.
 </VirtualHost>
