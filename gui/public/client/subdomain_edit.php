@@ -53,7 +53,7 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
     } else {
         $query = '
             SELECT t1.subdomain_alias_name AS subdomain_name, t1.subdomain_alias_mount AS subdomain_mount,
-              t1.subdomain_alias_document_root AS document_root t1.subdomain_alias_url_forward AS forward_url,
+              t1.subdomain_alias_document_root AS document_root, t1.subdomain_alias_url_forward AS forward_url,
               t1.subdomain_alias_type_forward AS type_forward, t1.subdomain_alias_host_forward AS host_forward,
               t2.alias_name AS alias_name
             FROM subdomain_alias AS t1 INNER JOIN domain_aliasses AS t2 USING(alias_id)
@@ -102,7 +102,7 @@ function client_generatePage($tpl)
 
     if (empty($_POST)) {
         $documentRoot = isset($subdomainData['document_root']) ? $subdomainData['document_root'] : '/';
-        $documentRoot = substr($documentRoot, 7); # remove virtual root dir to show it as '/'
+        $documentRoot = substr($documentRoot, 7);
 
         if ($subdomainData['forward_url'] != 'no') {
             $urlForwarding = true;
@@ -181,8 +181,7 @@ function client_editSubdomain()
     }
 
     if(isset($_POST['document_root'])) {
-        $documentRoot = isset($domainData['document_root']) ? $domainData['document_root'] : '/';
-        $documentRoot = substr($documentRoot, 7);
+        $documentRoot = rtrim(clean_input($_POST['document_root']), '/');
 
         if($documentRoot != '') {
             $vfs = new iMSCP_VirtualFileSystem($_SESSION['user_logged'], $subdomainData['subdomain_mount'] . '/htdocs');

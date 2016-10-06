@@ -59,7 +59,7 @@ function generateDomainsList($tpl)
 
     $stmt = exec_query(
         "
-            SELECT t1.domain_id, t1.domain_name, t1.domain_status, t1.url_forward, t2.status as ssl_status
+            SELECT t1.domain_id, t1.domain_name, t1.document_root, t1.domain_status, t1.url_forward, t2.status as ssl_status
             FROM domain AS t1
             LEFT JOIN ssl_certs AS t2 ON(t2.domain_id = t1.domain_id AND t2.domain_type = 'dmn')
             WHERE domain_admin_id = ? ORDER BY domain_name
@@ -91,6 +91,7 @@ function generateDomainsList($tpl)
 
         $tpl->assign(array(
             'DOMAIN_NAME' => tohtml($domainName),
+            'DOMAIN_DOCUMENT_ROOT' => tohtml($row['document_root']),
             'DOMAIN_STATUS' => translate_dmn_status($row['domain_status']),
             'DOMAIN_SSL_STATUS' => is_null($row['ssl_status'])
                 ? tr('Disabled')
@@ -188,7 +189,7 @@ function generateDomainAliasesList($tpl)
     $domainId = get_user_domain_id($_SESSION['user_id']);
     $stmt = exec_query(
         "
-            SELECT t1.alias_id, t1.alias_name, t1.alias_status, t1.alias_mount, t1.alias_ip_id, t1.url_forward,
+            SELECT t1.alias_id, t1.alias_name, t1.alias_status, t1.alias_mount, t1.alias_document_root, t1.alias_ip_id, t1.url_forward,
                 t2.status AS ssl_status
             FROM domain_aliasses AS t1
             LEFT JOIN ssl_certs AS t2 ON(t1.alias_id = t2.domain_id AND t2.domain_type = 'als')
@@ -234,7 +235,7 @@ function generateDomainAliasesList($tpl)
 
         $tpl->assign(array(
             'ALS_NAME' => tohtml($alsName),
-            'ALS_MOUNT' => tohtml($row['alias_mount']),
+            'ALS_DOCUMENT_ROOT' => tohtml($row['alias_mount'] . $row['alias_document_root']),
             'ALS_STATUS' => translate_dmn_status($row['alias_status']),
             'ALS_SSL_STATUS' => is_null($row['ssl_status'])
                 ? tr('Disabled')
@@ -349,8 +350,8 @@ function generateSubdomainsList($tpl)
     // Subdomains
     $stmt1 = exec_query(
         "
-            SELECT t1.subdomain_id, t1.subdomain_name, t1.subdomain_mount, t1.subdomain_status,
-                t1.subdomain_url_forward, t2.domain_name, t3.status AS ssl_status
+            SELECT t1.subdomain_id, t1.subdomain_name, t1.subdomain_mount, t1.subdomain_document_root,
+              t1.subdomain_status, t1.subdomain_url_forward, t2.domain_name, t3.status AS ssl_status
             FROM subdomain AS t1 JOIN domain AS t2 USING(domain_id)
             LEFT JOIN ssl_certs AS t3 ON(t1.subdomain_id = t3.domain_id AND t3.domain_type = 'sub')
             WHERE t1.domain_id = ? ORDER BY t1.subdomain_name
@@ -362,7 +363,8 @@ function generateSubdomainsList($tpl)
     $stmt2 = exec_query(
         "
             SELECT t1.subdomain_alias_id, t1.subdomain_alias_name, t1.subdomain_alias_mount,
-                t1.subdomain_alias_url_forward, t1.subdomain_alias_status, t2.alias_name, t3.status AS ssl_status
+              t1.subdomain_alias_document_root, t1.subdomain_alias_url_forward, t1.subdomain_alias_status, t2.alias_name,
+              t3.status AS ssl_status
             FROM subdomain_alias AS t1 JOIN domain_aliasses AS t2 USING(alias_id)
             LEFT JOIN ssl_certs AS t3 ON(t1.subdomain_alias_id = t3.domain_id AND t3.domain_type = 'alssub')
             WHERE t2.domain_id = ?
@@ -412,7 +414,7 @@ function generateSubdomainsList($tpl)
         }
 
         $tpl->assign(array(
-            'SUB_MOUNT' => tohtml($row['subdomain_mount']),
+            'SUB_DOCUMENT_ROOT' => tohtml($row['subdomain_mount'] . $row['subdomain_document_root']),
             'SUB_REDIRECT' => $redirectUrl,
             'SUB_STATUS' => translate_dmn_status($row['subdomain_status']),
             'SUB_SSL_STATUS' => is_null($row['ssl_status'])
@@ -465,7 +467,7 @@ function generateSubdomainsList($tpl)
 
         $tpl->assign(array(
             'SUB_NAME' => tohtml($name),
-            'SUB_MOUNT' => tohtml($row['subdomain_alias_mount']),
+            'SUB_DOCUMENT_ROOT' => tohtml($row['subdomain_alias_mount'] . $row['subdomain_alias_document_root']),
             'SUB_REDIRECT' => $redirectUrl,
             'SUB_STATUS' => translate_dmn_status($row['subdomain_alias_status']),
             'SUB_SSL_STATUS' => is_null($row['ssl_status'])
@@ -640,7 +642,7 @@ $tpl->assign(array(
     'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
     'TR_SUBDOMAINS' => tr('Subdomains'),
     'TR_NAME' => tr('Name'),
-    'TR_MOUNT' => tr('Mount point'),
+    'TR_DOCUMENT_ROOT' => tr('Document root'),
     'TR_REDIRECT' => tr('Redirect'),
     'TR_STATUS' => tr('Status'),
     'TR_SSL_STATUS' => tr('SSL status'),

@@ -190,7 +190,7 @@ function generatePage($tpl)
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
     # Set parameters for the FTP chooser
-    $_SESSION['vftp_root_dir'] = '';
+    $_SESSION['vftp_root_dir'] = '/';
     $_SESSION['vftp_hidden_dirs'] = array('00_private', 'backups', 'errors', 'logs', 'phptmp');
     $_SESSION['vftp_unselectable_dirs'] = $mountpoints;
 

@@ -33,7 +33,7 @@
     <thead>
     <tr>
         <th>{TR_NAME}</th>
-        <th>{TR_MOUNT}</th>
+        <th>{TR_DOCUMENT_ROOT}</th>
         <th>{TR_REDIRECT}</th>
         <th>{TR_STATUS}</th>
         <th>{TR_SSL_STATUS}</th>
@@ -54,7 +54,7 @@
             <span class="tips icon i_domain_icon" title="{DOMAIN_NAME}">{DOMAIN_NAME}</span>
         </td>
         <!-- EDP: domain_status_reload_false -->
-        <td>/</td>
+        <td>{DOMAIN_DOCUMENT_ROOT}</td>
         <td>{DOMAIN_REDIRECT}</td>
         <td>{DOMAIN_STATUS}</td>
         <td>{DOMAIN_SSL_STATUS}</td>
@@ -78,7 +78,7 @@
     <thead>
     <tr>
         <th>{TR_NAME}</th>
-        <th>{TR_MOUNT}</th>
+        <th>{TR_DOCUMENT_ROOT}</th>
         <th>{TR_REDIRECT}</th>
         <th>{TR_STATUS}</th>
         <th>{TR_SSL_STATUS}</th>
@@ -99,7 +99,7 @@
             <span class="tips icon i_domain_icon" title="{ALS_NAME}">{ALS_NAME}</span>
         </td>
         <!-- EDP: als_status_reload_false -->
-        <td>{ALS_MOUNT}</td>
+        <td>{ALS_DOCUMENT_ROOT}</td>
         <td>{ALS_REDIRECT}</td>
         <td>{ALS_STATUS}</td>
         <td>{ALS_SSL_STATUS}</td>
@@ -125,7 +125,7 @@
     <thead>
     <tr>
         <th>{TR_NAME}</th>
-        <th>{TR_MOUNT}</th>
+        <th>{TR_DOCUMENT_ROOT}</th>
         <th>{TR_REDIRECT}</th>
         <th>{TR_STATUS}</th>
         <th>{TR_SSL_STATUS}</th>
@@ -146,7 +146,7 @@
             <span class="tips icon i_domain_icon" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</span>
         </td>
         <!-- EDP: sub_status_reload_false -->
-        <td>{SUB_MOUNT}</td>
+        <td>{SUB_DOCUMENT_ROOT}</td>
         <td>{SUB_REDIRECT}</td>
         <td>{SUB_STATUS}</td>
         <td>{SUB_SSL_STATUS}</td>

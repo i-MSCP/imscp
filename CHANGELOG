@@ -8,6 +8,7 @@ FEATURES
     Added: Editable DocumentRoot (see the errata file for further details)
 
 FRONTEND
+    Changed: Show document root in place of mount points on domains_manage.php page (client side)
     Fixed: Make parent directory choosable (FTP directory chooser)
     Fixed: PhpMyAdmin auto-login doesn't works when connecting through SSL with a self-signed certificate
 
