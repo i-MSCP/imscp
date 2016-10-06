@@ -406,6 +406,7 @@ sub _getHttpdData
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
             ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
         my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
+        my $documentRoot = File::Spec->canonpath( "$homeDir/$self->{'document_root'}" );
         my $db = iMSCP::Database->factory();
 
         my $phpini = $db->doQuery(
@@ -436,6 +437,7 @@ sub _getHttpdData
             HOME_DIR                => $homeDir,
             WEB_DIR                 => $homeDir,
             MOUNT_POINT             => '/',
+            DOCUMENT_ROOT           => $documentRoot,
             SHARED_MOUNT_POINT      => 0,
             PEAR_DIR                => $httpd->{'phpConfig'}->{'PHP_PEAR_DIR'},
             TIMEZONE                => $main::imscpConfig{'TIMEZONE'},

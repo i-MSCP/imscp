@@ -56,7 +56,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 244;
+    protected $lastUpdate = 245;
 
     /**
      * Singleton - Make new unavailable
@@ -3623,6 +3623,41 @@ class iMSCP_Update_Database extends iMSCP_Update
                 TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL;
             ",
             "UPDATE plugin SET plugin_lockers = '{}'"
+        );
+    }
+
+    /**
+     * Add columns for alternative document root feature
+     * - Add the domain.document_root column
+     * - Add the subdomain.subdomain_document_root column
+     * - Add the domain_aliasses.alias_document_root column
+     * - Add the subdomain_alias.subdomain_alias_document_root column
+     * 
+     * @return array SQL statements to be executed
+     */
+    protected function r245()
+    {
+        return array(
+            $this->addColumn(
+                'domain',
+                'document_root',
+                "varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT '/htdocs' AFTER mail_quota"
+            ),
+            $this->addColumn(
+                'subdomain',
+                'subdomain_document_root',
+                "varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT '/htdocs' AFTER subdomain_mount"
+            ),
+            $this->addColumn(
+                'domain_aliasses',
+                'alias_document_root',
+                "varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT '/htdocs' AFTER alias_mount"
+            ),
+            $this->addColumn(
+                'subdomain_alias',
+                'subdomain_alias_document_root',
+                "varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT '/htdocs' AFTER subdomain_alias_mount"
+            ),
         );
     }
 }

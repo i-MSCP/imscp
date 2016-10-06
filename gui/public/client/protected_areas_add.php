@@ -189,8 +189,9 @@ function generatePage($tpl)
 
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
-    # Set hidden and unselectable directories for FTP chooser
-    $_SESSION['vftp_hidden_dirs'] = array('00_private', 'backups', 'disabled', 'errors', 'logs', 'phptmp');
+    # Set parameters for the FTP chooser
+    $_SESSION['vftp_root_dir'] = '';
+    $_SESSION['vftp_hidden_dirs'] = array('00_private', 'backups', 'errors', 'logs', 'phptmp');
     $_SESSION['vftp_unselectable_dirs'] = $mountpoints;
 
     if (!isset($_GET['id'])) {
@@ -200,7 +201,7 @@ function generatePage($tpl)
         $groupIds = 0;
         $tpl->assign(array(
             'AREA_NAME' => isset($_POST['protected_area_name']) ? tohtml($_POST['protected_area_name'], 'htmlAttr') : '',
-            'PATH' => isset($_POST['protected_area_path']) ? tohtml($_POST['protected_area_path'], 'htmlAttr') : '/htdocs'
+            'PATH' => isset($_POST['protected_area_path']) ? tohtml($_POST['protected_area_path'], 'htmlAttr') : '/' . $mainDmnProps['document_root']
         ));
     } else {
         $edit = 'yes';

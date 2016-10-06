@@ -47,7 +47,12 @@ class iMSCP_VirtualFileSystem
 	 *
 	 * @var string
 	 */
-	protected $_domain = '';
+	protected $_domain;
+
+	/**
+	* @var string Virtual root path (relative to domain root dir)
+	*/
+	protected $_virtual_root_path;
 
 	/**
 	 * FTP connection handle
@@ -75,16 +80,17 @@ class iMSCP_VirtualFileSystem
 	 *
 	 * Creates a new Virtual File System object for the specified domain.
 	 *
-	 * @param string $domain Domain name of the new VFS.
+	 * @param string $domain Domain name of the new VFS
+	 * @param string $virtualRootPath Virtual root path relative to $domain root dir
 	 */
-	public function __construct($domain)
+	public function __construct($domain, $virtualRootPath = '/')
 	{
-		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
 
 		$this->_domain = $domain;
+		$this->_virtual_root_path = $virtualRootPath;
 
-		defined('VFS_TMP_DIR') or define('VFS_TMP_DIR', $cfg->GUI_ROOT_DIR . '/data/tmp');
+		defined('VFS_TMP_DIR') or define('VFS_TMP_DIR', $cfg['GUI_ROOT_DIR'] . '/data/tmp');
 
 		$_ENV['PHP_TMPDIR'] = VFS_TMP_DIR;
 		$_ENV['TMPDIR'] = VFS_TMP_DIR;
@@ -106,7 +112,7 @@ class iMSCP_VirtualFileSystem
 	/**
 	 * Open the virtual file system
 	 *
-	 * @return boolean TRUE on success, FALSE on failure.
+	 * @return boolean TRUE on success, FALSE on failure
 	 */
 	public function open()
 	{
@@ -166,7 +172,7 @@ class iMSCP_VirtualFileSystem
 	 * Get the directory listing of a specified dir, either in short (default) or long mode.
 	 *
 	 * @param string $dirname VFS directory path.
-	 * @return array An array of directory entries, FALSE on failure.
+	 * @return array|bool An array of directory entries, FALSE on failure.
 	 */
 	public function ls($dirname)
 	{
@@ -187,8 +193,7 @@ class iMSCP_VirtualFileSystem
 		}
 
 		for ($i = 0, $len = count($list); $i < $len; $i++) {
-			$parts = preg_split("/[\s]+/", $list[$i], 9);
-
+			$parts = preg_split('/\s+/', $list[$i], 9);
 			$list[$i] = array(
 				'perms' => $parts[0],
 				'number' => $parts[1],
@@ -367,7 +372,7 @@ class iMSCP_VirtualFileSystem
 		exec_query(
 			'INSERT INTO ftp_users (userid, passwd, uid, gid, shell, homedir, status) VALUES (?, ?, ?, ?, ?, ?, ?)', array(
 			$this->_user, $password, $row['admin_sys_uid'], $row['admin_sys_gid'], '/bin/sh',
-			$cfg['USER_WEB_DIR'] . '/' . $this->_domain, 'ok'
+			$cfg['USER_WEB_DIR'] . '/' . rtrim($this->_domain . $this->_virtual_root_path, '/'), 'ok'
 		));
 
 		return true;

@@ -75,6 +75,8 @@ function client_generatePage($tpl)
     $forwardHost = 'Off';
 
     if (empty($_POST)) {
+        $documentRoot = isset($domainData['document_root']) ? $domainData['document_root'] : '/htdocs';
+
         if ($domainData['url_forward'] != 'no') {
             $urlForwarding = true;
             $uri = iMSCP_Uri_Redirect::fromString($domainData['url_forward']);
@@ -89,6 +91,7 @@ function client_generatePage($tpl)
             $forwardType = '302';
         }
     } else {
+        $documentRoot = isset($_POST['document_root']) ? $_POST['document_root'] : '/htdocs';
         $urlForwarding = (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? true : false;
         $forwardUrlScheme = (isset($_POST['forward_url_scheme'])) ? $_POST['forward_url_scheme'] : 'http://';
         $forwardUrl = isset($_POST['forward_url']) ? $_POST['forward_url'] : '';
@@ -99,9 +102,15 @@ function client_generatePage($tpl)
         }
     }
 
+    # Set parameters for the FTP chooser
+    $_SESSION['vftp_root_dir'] = '/htdocs';
+    $_SESSION['vftp_hidden_dirs'] = array();
+    $_SESSION['vftp_unselectable_dirs'] = array();
+
     $tpl->assign(array(
         'DOMAIN_ID' => $domainId,
         'DOMAIN_NAME' => tohtml($domainData['domain_name_utf8']),
+        'DOCUMENT_ROOT' => tohtml($documentRoot),
         'FORWARD_URL_YES' => ($urlForwarding) ? ' checked' : '',
         'FORWARD_URL_NO' => ($urlForwarding) ? '' : ' checked',
         'HTTP_YES' => ($forwardUrlScheme == 'http://') ? ' selected' : '',
@@ -132,6 +141,22 @@ function client_editDomain()
 
     if ($domainData === false) {
         showBadRequestErrorPage();
+    }
+
+    if(isset($_POST['document_root'])) {
+        $documentRoot = rtrim(clean_input($_POST['document_root']), '/');
+        if(!preg_match('%^/htdocs(/.+)?$%', $documentRoot)) {
+            set_page_message(tr('The new document root must live inside default /htdocs document root'), 'error');
+            return false;
+        } else {
+            $vfs = new iMSCP_VirtualFileSystem($domainData['domain_name']);
+            if(!$vfs->exists($documentRoot)) {
+                set_page_message(tr('The new document root must exists.'), 'error');
+                return false;
+            }
+        }
+    } else {
+        $documentRoot = '/htdocs';
     }
 
     // Check for URL forwarding option
@@ -189,18 +214,24 @@ function client_editDomain()
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditDomain, array(
         'domainId' => $domainId,
+        'documentRoot' => $documentRoot,
         'forwardUrl' => $forwardUrl,
         'forwardType' => $forwardType,
         'forwardHost' => $forwardHost
     ));
 
     exec_query(
-        'UPDATE domain SET url_forward = ?, type_forward = ?, host_forward = ?, domain_status = ? WHERE domain_id = ?',
-        array($forwardUrl, $forwardType, $forwardHost, 'tochange', $domainId)
+        '
+          UPDATE domain
+          SET document_root = ?, url_forward = ?, type_forward = ?, host_forward = ?, domain_status = ?
+          WHERE domain_id = ?
+        ',
+        array($documentRoot, $forwardUrl, $forwardType, $forwardHost, 'tochange', $domainId)
     );
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditDomain, array(
         'domainId' => $domainId,
+        'documentRoot' => $documentRoot,
         'forwardUrl' => $forwardUrl,
         'forwardType' => $forwardType,
         'forwardHost' => $forwardHost
@@ -235,6 +266,9 @@ $tpl->assign(array(
     'TR_PAGE_TITLE' => tr('Client / Domains / Edit Domain'),
     'TR_DOMAIN' => tr('Domain'),
     'TR_DOMAIN_NAME' => tr('Domain name'),
+    'TR_DOCUMENT_ROOT' => tr('Document root'),
+    'TR_DOCUMENT_ROOT_TOOLTIP' => tr("You can set an alternative document root. This is mostly needed when using a PHP framework such as Symfony. Note that the new document root will live inside the default  document root that is `/htdocs. Be aware that the directory for the new document root must exists."),
+    'TR_CHOOSE_DIR' => tr('Choose dir'),
     'TR_URL_FORWARDING' => tr('URL forwarding'),
     'TR_FORWARD_TO_URL' => tr('Forward to URL'),
     'TR_URL_FORWARDING_TOOLTIP' => tr('Allows to forward any request made to this domain to a specific URL.'),
@@ -252,6 +286,13 @@ $tpl->assign(array(
     'TR_UPDATE' => tr('Update'),
     'TR_CANCEL' => tr('Cancel')
 ));
+
+iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+    /** @var $e iMSCP_Events_Event */
+    $translations = $e->getParam('translations');
+    $translations['core']['close'] = tr('Close');
+    $translations['core']['ftp_directories'] = tr('Select your own document root');
+});
 
 generateNavigation($tpl);
 client_generatePage($tpl);

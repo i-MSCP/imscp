@@ -149,8 +149,9 @@ function generatePage($tpl, $ftpUserId)
 {
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
-    # Set hidden and unselectable directories for FTP chooser
-    $_SESSION['vftp_hidden_dirs'] = array('disabled', 'errors', 'phptmp');
+    # Set parameters for the FTP chooser
+    $_SESSION['vftp_root_dir'] = '';
+    $_SESSION['vftp_hidden_dirs'] = array('errors', 'phptmp');
     $_SESSION['vftp_unselectable_dirs'] = array();
 
     $cfg = iMSCP_Registry::get('config');

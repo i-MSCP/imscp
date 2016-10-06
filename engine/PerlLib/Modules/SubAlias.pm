@@ -180,6 +180,7 @@ sub _getHttpdData
             ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
         my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}" );
         my $webDir = File::Spec->canonpath( "$homeDir/$self->{'subdomain_alias_mount'}" );
+        my $documentRoot = File::Spec->canonpath( "$webDir/$self->{'subdomain_alias_document_root'}" );
         my $db = iMSCP::Database->factory();
         my $confLevel = $httpd->{'phpConfig'}->{'PHP_CONFIG_LEVEL'};
 
@@ -224,6 +225,7 @@ sub _getHttpdData
             HOME_DIR                => $homeDir,
             WEB_DIR                 => $webDir,
             MOUNT_POINT             => $self->{'subdomain_alias_mount'},
+            DOCUMENT_ROOT           => $documentRoot,
             SHARED_MOUNT_POINT      => $self->_sharedMountPoint(),
             PEAR_DIR                => $httpd->{'phpConfig'}->{'PHP_PEAR_DIR'},
             TIMEZONE                => $main::imscpConfig{'TIMEZONE'},

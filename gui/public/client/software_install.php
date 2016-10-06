@@ -23,27 +23,25 @@
 
 /**
  * Generate Page
- *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * 
+ * @throws iMSCP_Exception
+ * @param iMSCP_pTemplate $tpl
  * @param int $softwareId Software uique identifier
- * @return int Software unique identifier
+ * @return void
  */
 function client_generatePage($tpl, $softwareId)
 {
-	$customerId = $_SESSION['user_id'];
-	$domainProperties = get_domain_default_props($customerId);
+	$domainProperties = get_domain_default_props($_SESSION['user_id']);
+	$stmt = exec_query('SELECT created_by FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
 
-	$stmt = exec_query('SELECT created_by FROM admin WHERE admin_id = ?', $customerId);
-
-	if ($stmt->rowCount()) {
-		$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-
-		get_software_props_install(
-			$tpl, $domainProperties['domain_id'], $softwareId, $row['created_by'], $domainProperties['domain_sqld_limit']
-		);
-	} else {
+	if (!$stmt->rowCount()) {
 		throw new iMSCP_Exception('An unexpected error occurred. Please contact your reseller.');
 	}
+ 
+	$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+	get_software_props_install(
+		$tpl, $domainProperties['domain_id'], $softwareId, $row['created_by'], $domainProperties['domain_sqld_limit']
+	);
 }
 
 /***********************************************************************************************************************
@@ -132,7 +130,7 @@ if (isset($_GET['id']) && is_number($_GET['id'])) {
 								$stmt = exec_query(
 									'
 										SELECT
-											alias_mount mpoint
+											alias_mount AS mpoint, alis_document_root AS document_root
 										FROM
 											domain_aliasses
 										WHERE
@@ -146,7 +144,7 @@ if (isset($_GET['id']) && is_number($_GET['id'])) {
 								$stmt = exec_query(
 									'
 										SELECT
-											subdomain_mount mpoint
+											subdomain_mount AS mpoint, subdomain_document_root AS document_root
 										FROM
 											subdomain
 										WHERE
@@ -160,7 +158,7 @@ if (isset($_GET['id']) && is_number($_GET['id'])) {
 								$stmt = exec_query(
 									'
 										SELECT
-											subdomain_alias_mount mpoint
+											subdomain_alias_mount AS mpoint, subdomain_alias_document_root AS document_root
 										FROM
 											subdomain_alias
 										INNER JOIN
@@ -175,16 +173,18 @@ if (isset($_GET['id']) && is_number($_GET['id'])) {
 							}
 							if ($stmt->rowCount()) {
 								$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-								$targetBasePath = $row['mpoint'];
+								$targetBasePath = $row['mpoint'] . '/';
+							$documentRoot = $row['document_root'];
 							} else {
 								showBadRequestErrorPage();
 								exit;
 							}
 						} else {
 							$targetBasePath = '';
+							$documentRoot = $domainProps['document_root'];
 						}
 
-						$targetPathReg = '%^' . quotemeta($targetBasePath . '/htdocs') . '(?:/.*)?$%';
+						$targetPathReg = '%^' . quotemeta($targetBasePath . '/' . $documentRoot) . '(?:/.*)?$%';
 
 						if (!preg_match($targetPathReg, $otherDir)) {
 							set_page_message(

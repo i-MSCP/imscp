@@ -30,10 +30,10 @@
  */
 function isVisibleDir($directory)
 {
-    global $hiddenDirs, $mountpoints;
+    global $vftpHiddenDirs, $mountpoints;
 
     foreach ($mountpoints as $mountpoint) {
-        if (preg_match("%^($mountpoint/(?:$hiddenDirs)|$hiddenDirs)$%", $directory)) {
+        if (preg_match("%^($mountpoint/(?:$vftpHiddenDirs)|$vftpHiddenDirs)$%", $directory)) {
             return false;
         }
     }
@@ -49,10 +49,10 @@ function isVisibleDir($directory)
  */
 function isSelectableDir($directory)
 {
-    global $unselectableDirs, $mountpoints;
+    global $vftpUnselectableDirs, $mountpoints;
 
     foreach ($mountpoints as $mountpoint) {
-        if (preg_match("%^($mountpoint/(?:$unselectableDirs)|$unselectableDirs)$%", $directory)) {
+        if (preg_match("%^($mountpoint/(?:$vftpUnselectableDirs)|$vftpUnselectableDirs)$%", $directory)) {
             return false;
         }
     }
@@ -68,8 +68,11 @@ function isSelectableDir($directory)
  */
 function generateDirectoryList($tpl)
 {
+    global $vftpRootDir;
+
     // Initialize variables
-    $path = isset($_GET['cur_dir']) ? clean_input($_GET['cur_dir']) : '';
+    $curDir = isset($_GET['cur_dir']) ? clean_input($_GET['cur_dir']) : '';
+    $path = preg_match("%^$vftpRootDir/.+%", $curDir) ? $curDir : $vftpRootDir;
     $domain = $_SESSION['user_logged'];
 
     $vfs = new iMSCP_VirtualFileSystem($domain);
@@ -160,8 +163,9 @@ $tpl->assign(array(
 ));
 
 $mountpoints = getMountpoints(get_user_domain_id($_SESSION['user_id']));
-$hiddenDirs = isset($_SESSION['vftp_hidden_dirs']) ? implode('|', $_SESSION['vftp_hidden_dirs']) : '';
-$unselectableDirs = isset($_SESSION['vftp_unselectable_dirs']) ? implode('|', $_SESSION['vftp_unselectable_dirs']) : '';
+$vftpRootDir = isset($_SESSION['vftp_root_dir']) ? $_SESSION['vftp_root_dir'] : '';
+$vftpHiddenDirs = isset($_SESSION['vftp_hidden_dirs']) ? implode('|', $_SESSION['vftp_hidden_dirs']) : '';
+$vftpUnselectableDirs = isset($_SESSION['vftp_unselectable_dirs']) ? implode('|', $_SESSION['vftp_unselectable_dirs']) : '';
 
 generateDirectoryList($tpl);
 generatePageMessage($tpl);

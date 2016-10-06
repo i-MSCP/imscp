@@ -3,7 +3,7 @@
     ServerName {DOMAIN_NAME}
     ServerAlias www.{DOMAIN_NAME} {ALIAS}.{BASE_SERVER_VHOST}
 
-    DocumentRoot {WEB_DIR}/htdocs
+    DocumentRoot {DOCUMENT_ROOT}
 
     DirectoryIndex index.html index.xhtml index.htm
 
@@ -51,7 +51,7 @@
         {AUTHZ_ALLOW_ALL}
     </Directory>
 
-    <Directory {WEB_DIR}/htdocs>
+    <Directory {DOCUMENT_ROOT}>
         # SECTION php_disabled BEGIN.
         AllowOverride AuthConfig Indexes Limit Options=Indexes \
             Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule

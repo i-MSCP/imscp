@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '244');
+  ('DATABASE_REVISION', '245');
 
 -- --------------------------------------------------------
 
@@ -141,6 +141,7 @@ CREATE TABLE IF NOT EXISTS `domain` (
   `external_mail` varchar(15) collate utf8_unicode_ci NOT NULL DEFAULT 'off',
   `web_folder_protection` varchar(5) collate utf8_unicode_ci NOT NULL DEFAULT 'yes',
   `mail_quota` bigint(20) unsigned NOT NULL,
+  `document_root` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT '/htdocs',
   `url_forward` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT 'no',
   `type_forward` varchar(5) collate utf8_unicode_ci DEFAULT NULL,
   `host_forward` varchar(3) collate utf8_unicode_ci NOT NULL DEFAULT 'Off',
@@ -161,6 +162,7 @@ CREATE TABLE IF NOT EXISTS `domain_aliasses` (
   `alias_name` varchar(200) collate utf8_unicode_ci DEFAULT NULL,
   `alias_status` varchar(255) collate utf8_unicode_ci DEFAULT NULL,
   `alias_mount` varchar(200) collate utf8_unicode_ci DEFAULT NULL,
+  `alias_document_root` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT '/htdocs',
   `alias_ip_id` int(10) unsigned DEFAULT NULL,
   `url_forward` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT 'no',
   `type_forward` varchar(5) collate utf8_unicode_ci DEFAULT NULL,
@@ -628,6 +630,7 @@ CREATE TABLE IF NOT EXISTS `subdomain` (
   `domain_id` int(10) unsigned DEFAULT NULL,
   `subdomain_name` varchar(200) collate utf8_unicode_ci DEFAULT NULL,
   `subdomain_mount` varchar(200) collate utf8_unicode_ci DEFAULT NULL,
+  `subdomain_document_root` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT '/htdocs',
   `subdomain_url_forward` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT 'no',
   `subdomain_type_forward` varchar(5) collate utf8_unicode_ci DEFAULT NULL,
   `subdomain_host_forward` varchar(3) collate utf8_unicode_ci NOT NULL DEFAULT 'Off',
@@ -647,6 +650,7 @@ CREATE TABLE IF NOT EXISTS `subdomain_alias` (
   `alias_id` int(10) unsigned DEFAULT NULL,
   `subdomain_alias_name` varchar(200) collate utf8_unicode_ci DEFAULT NULL,
   `subdomain_alias_mount` varchar(200) collate utf8_unicode_ci DEFAULT NULL,
+  `subdomain_alias_document_root` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT '/htdocs',
   `subdomain_alias_url_forward` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT 'no',
   `subdomain_alias_type_forward` varchar(5) collate utf8_unicode_ci DEFAULT NULL,
   `subdomain_alias_host_forward` varchar(3) collate utf8_unicode_ci NOT NULL DEFAULT 'Off',

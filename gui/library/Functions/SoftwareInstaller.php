@@ -1330,12 +1330,14 @@ function get_software_props_install($tpl, $dmn_id, $software_id, $dmn_created_id
 function gen_user_domain_list($tpl, $customerId)
 {
     $domainId = get_user_domain_id($customerId);
-    $rsdomain = exec_query("SELECT domain_name FROM domain WHERE domain_status = 'ok' AND domain_id = ?", $domainId);
+    $rsdomain = exec_query(
+        "SELECT domain_name, document_root FROM domain WHERE domain_status = 'ok' AND domain_id = ?", $domainId
+    );
 
     // Get Aliase
     $stmtAliases = exec_query(
         "
-            SELECT alias_id, alias_name, alias_mount FROM domain_aliasses
+            SELECT alias_id, alias_name, alias_mount, alias_document_root, FROM domain_aliasses
             WHERE alias_status = 'ok' AND url_forward = 'no' AND domain_id = ?
         ",
         $domainId
@@ -1344,7 +1346,7 @@ function gen_user_domain_list($tpl, $customerId)
     // Get Subdomains
     $stmtSubdomains = exec_query(
         "
-            SELECT subdomain_id, subdomain_name, subdomain_mount, domain_name FROM subdomain
+            SELECT subdomain_id, subdomain_name, subdomain_mount, subdomain_document_root, domain_name FROM subdomain
             INNER JOIN domain USING (domain_id) WHERE subdomain_status = 'ok' AND domain_id = ?
         ",
         $domainId
@@ -1353,7 +1355,7 @@ function gen_user_domain_list($tpl, $customerId)
     // Get Subaliase
     $stmtSubAliases = exec_query(
         "
-            SELECT subdomain_alias_id, subdomain_alias_name, subdomain_alias_mount, alias_name
+            SELECT subdomain_alias_id, subdomain_alias_name, subdomain_alias_mount, subdomain_alias_document_root, alias_name
             FROM subdomain_alias JOIN domain_aliasses USING (alias_id)
             WHERE subdomain_alias_status = 'ok' AND domain_id = ?
         ",
@@ -1384,7 +1386,7 @@ function gen_user_domain_list($tpl, $customerId)
                 array(
                     'SELECTED_DOMAIN' => $selectedDomain,
                     'DOMAIN_NAME_VALUES' => $domainId . ';' . $stmtAliases->fields['alias_id'] . ';0;0;' .
-                        $stmtAliases->fields['alias_mount'] . '/htdocs',
+                        $stmtAliases->fields['alias_mount'] . $stmtAliases->fields['document_root'],
                     'DOMAIN_NAME' => tohtml(decode_idna($stmtAliases->fields['alias_name']))
                 )
             );
@@ -1409,7 +1411,7 @@ function gen_user_domain_list($tpl, $customerId)
             $tpl->assign(array(
                 'SELECTED_DOMAIN' => $selectedDomain,
                 'DOMAIN_NAME_VALUES' => $domainId . ';0;' . $stmtSubdomains->fields['subdomain_id'] . ';0;' .
-                    $stmtSubdomains->fields['subdomain_mount'] . '/htdocs',
+                    $stmtSubdomains->fields['subdomain_mount'] . $stmtSubdomains->fields['document_root'] ,
                 'DOMAIN_NAME' => tohtml(decode_idna($subdomainname))
             ));
             $tpl->parse('SHOW_DOMAIN_LIST', '.show_domain_list');
@@ -1431,7 +1433,7 @@ function gen_user_domain_list($tpl, $customerId)
             $tpl->assign(array(
                 'SELECTED_DOMAIN' => $selectedDomain,
                 'DOMAIN_NAME_VALUES' => $domainId . ';0;0;' . $stmtSubAliases->fields['subdomain_alias_id'] . ';' .
-                    $stmtSubAliases->fields['subdomain_alias_mount'] . '/htdocs',
+                    $stmtSubAliases->fields['subdomain_alias_mount'] . $stmtSubAliases->fields['document_root'],
                 'DOMAIN_NAME' => tohtml(decode_idna($subAliasName))
             ));
 
@@ -1440,7 +1442,7 @@ function gen_user_domain_list($tpl, $customerId)
         }
 
         $tpl->assign(array(
-            'DOMAINSTANDARD_NAME_VALUES' => $domainId . ';0;0;0;/htdocs',
+            'DOMAINSTANDARD_NAME_VALUES' => $domainId . ';0;0;0;' . $rsdomain->fields['document_root'],
             'DOMAINSTANDARD_NAME' => tohtml(decode_idna($rsdomain->fields['domain_name']))
         ));
     } else {
@@ -1448,7 +1450,7 @@ function gen_user_domain_list($tpl, $customerId)
             'SELECTED_DOMAIN' => '',
             'DOMAIN_NAME_VALUES' => '',
             'DOMAIN_NAME' => '',
-            'DOMAINSTANDARD_NAME_VALUES' => $domainId . ';0;0;0;/htdocs',
+            'DOMAINSTANDARD_NAME_VALUES' => $domainId . ';0;0;0;' . $rsdomain->fields['document_root'],
             'DOMAINSTANDARD_NAME' => tohtml(decode_idna($rsdomain->fields['domain_name'])),
             'SHOW_DOMAIN_LIST' => ''
         ));
