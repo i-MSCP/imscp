@@ -828,6 +828,7 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - domainId: An integer representing the ID of the domain being edited
+     * - documentRoot: A string representing the DocumentRoot
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
      * - forwardType: A string representing the forward type
      * - forwardHost: A string indicating whether or not Proxy Host must be preserved
@@ -842,6 +843,7 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - domainId: An integer reprensenting the ID of the domain that has been edited
+     * - documentRoot: A string representing the DocumentRoot
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
      * - forwardType: A string representing the forward type
      * - forwardHost: A string indicating whether or not Proxy Host must be preserved
@@ -893,6 +895,7 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - subdomainId: An integer representing the ID of the subdomain being edited
+     * - documentRoot: A string representing the DocumentRoot
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
      * - forwardType: A string representing the forward type
      * - forwardHost: A string indicating whether or not Proxy Host must be preserved
@@ -907,6 +910,7 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - subdomainId: An integer representing the ID of the subdomain that has been edited
+     * - documentRoot: A string representing the DocumentRoot
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
      * - forwardType: A string representing the forward type
      * - forwardHost: A string indicating whether or not Proxy Host must be preserved
@@ -978,6 +982,7 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - domainAliasId: An integer representing the ID of the domain alias being edited
+     * - documentRoot: A string representing the DocumentRoot
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
      * - forwardType: A string representing the forward type
      * - forwardHost: A string indicating whether or not Proxy Host must be preserved
@@ -992,6 +997,7 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - domainAliasId: An integer representing the ID of the domain alias that has been edited
+     * - documentRoot: A string representing the DocumentRoot
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
      * - forwardType: A string representing the forward type
      * - forwardHost: A string indicating whether or not Proxy Host must be preserved

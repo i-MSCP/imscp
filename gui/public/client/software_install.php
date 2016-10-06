@@ -130,7 +130,7 @@ if (isset($_GET['id']) && is_number($_GET['id'])) {
 								$stmt = exec_query(
 									'
 										SELECT
-											alias_mount AS mpoint, alis_document_root AS document_root
+											alias_mount AS mpoint, alias_document_root AS document_root
 										FROM
 											domain_aliasses
 										WHERE
@@ -174,7 +174,7 @@ if (isset($_GET['id']) && is_number($_GET['id'])) {
 							if ($stmt->rowCount()) {
 								$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 								$targetBasePath = $row['mpoint'] . '/';
-							$documentRoot = $row['document_root'];
+								$documentRoot = $row['document_root'];
 							} else {
 								showBadRequestErrorPage();
 								exit;
