@@ -376,7 +376,7 @@ class iMSCP_VirtualFileSystem
 		exec_query(
 			'INSERT INTO ftp_users (userid, passwd, uid, gid, shell, homedir, status) VALUES (?, ?, ?, ?, ?, ?, ?)', array(
 			$this->_user, $password, $row['admin_sys_uid'], $row['admin_sys_gid'], '/bin/sh',
-            $cfg['USER_WEB_DIR'] . '/' . $this->_domain, 'ok'
+			$cfg['USER_WEB_DIR'] . '/' . $this->_domain, 'ok'
 		));
 
 		return true;

@@ -45,16 +45,17 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
     if ($subdomainType == 'dmn') {
         $query = '
             SELECT subdomain_name , subdomain_mount AS subdomain_mount, subdomain_document_root AS document_root,
-              subdomain_url_forward AS forward_url, subdomain_type_forward AS type_forward, subdomain_host_forward AS host_forward
+              subdomain_url_forward AS forward_url, subdomain_type_forward AS type_forward,
+              subdomain_host_forward AS host_forward
             FROM subdomain
             WHERE subdomain_id = ? AND domain_id = ? AND subdomain_status = ?
         ';
     } else {
         $query = '
             SELECT t1.subdomain_alias_name AS subdomain_name, t1.subdomain_alias_mount AS subdomain_mount,
-              t1.subdomain_alias_document_root AS document_root
-              t1.subdomain_alias_url_forward AS forward_url, t1.subdomain_alias_type_forward AS type_forward,
-              t1.subdomain_alias_host_forward AS host_forward, t2.alias_name aliasName
+              t1.subdomain_alias_document_root AS document_root t1.subdomain_alias_url_forward AS forward_url,
+              t1.subdomain_alias_type_forward AS type_forward, t1.subdomain_alias_host_forward AS host_forward,
+              t2.alias_name AS alias_name
             FROM subdomain_alias AS t1 INNER JOIN domain_aliasses AS t2 USING(alias_id)
             WHERE subdomain_alias_id = ? AND t2.domain_id = ? AND t1.subdomain_alias_status = ?
         ';
@@ -71,7 +72,7 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
         $subdomainData['subdomain_name'] .= '.' . $domainName;
         $subdomainData['subdomain_name_utf8'] = decode_idna($subdomainData['subdomain_name']);
     } else {
-        $subdomainData['subdomain_name'] .= '.' . $subdomainData['aliasName'];
+        $subdomainData['subdomain_name'] .= '.' . $subdomainData['alias_name'];
         $subdomainData['subdomain_name_utf8'] = decode_idna($subdomainData['subdomain_name']);
     }
 

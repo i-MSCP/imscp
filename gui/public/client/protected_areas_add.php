@@ -201,7 +201,7 @@ function generatePage($tpl)
         $groupIds = 0;
         $tpl->assign(array(
             'AREA_NAME' => isset($_POST['protected_area_name']) ? tohtml($_POST['protected_area_name'], 'htmlAttr') : '',
-            'PATH' => isset($_POST['protected_area_path']) ? tohtml($_POST['protected_area_path'], 'htmlAttr') : '/' . $mainDmnProps['document_root']
+            'PATH' => isset($_POST['protected_area_path']) ? tohtml($_POST['protected_area_path'], 'htmlAttr') : $mainDmnProps['document_root']
         ));
     } else {
         $edit = 'yes';
