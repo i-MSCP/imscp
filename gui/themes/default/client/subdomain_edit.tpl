@@ -43,7 +43,8 @@
                 <span class="icon i_help" title="{TR_DOCUMENT_ROOT_TOOLTIP}"></span>
             </td>
             <td>
-                <input type="text" name="document_root" id="ftp_directory" class="textinput" placeholder="/htdocs" value="{DOCUMENT_ROOT}">
+                <span class="bold">/htdocs</span>
+                <input type="text" name="document_root" id="ftp_directory" class="textinput" placeholder="/" value="{DOCUMENT_ROOT}">
                 <span class="icon i_bc_folder ftp_choose_dir clickable">{TR_CHOOSE_DIR}</span>
             </td>
         </tr>

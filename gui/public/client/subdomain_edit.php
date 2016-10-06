@@ -44,14 +44,15 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
 
     if ($subdomainType == 'dmn') {
         $query = '
-            SELECT subdomain_name , subdomain_mount AS subdomain_mount, subdomain_url_forward AS forward_url,
-              subdomain_type_forward AS type_forward, subdomain_host_forward AS host_forward
+            SELECT subdomain_name , subdomain_mount AS subdomain_mount, subdomain_document_root AS document_root,
+              subdomain_url_forward AS forward_url, subdomain_type_forward AS type_forward, subdomain_host_forward AS host_forward
             FROM subdomain
             WHERE subdomain_id = ? AND domain_id = ? AND subdomain_status = ?
         ';
     } else {
         $query = '
             SELECT t1.subdomain_alias_name AS subdomain_name, t1.subdomain_alias_mount AS subdomain_mount,
+              t1.subdomain_alias_document_root AS document_root
               t1.subdomain_alias_url_forward AS forward_url, t1.subdomain_alias_type_forward AS type_forward,
               t1.subdomain_alias_host_forward AS host_forward, t2.alias_name aliasName
             FROM subdomain_alias AS t1 INNER JOIN domain_aliasses AS t2 USING(alias_id)
@@ -99,7 +100,8 @@ function client_generatePage($tpl)
     $forwardHost = 'Off';
 
     if (empty($_POST)) {
-        $documentRoot = isset($domainData['document_root']) ? $domainData['document_root'] : '/htdocs';
+        $documentRoot = isset($subdomainData['document_root']) ? $subdomainData['document_root'] : '/';
+        $documentRoot = substr($documentRoot, 7); # remove virtual root dir to show it as '/'
 
         if ($subdomainData['forward_url'] != 'no') {
             $urlForwarding = true;
@@ -115,7 +117,7 @@ function client_generatePage($tpl)
             $forwardType = '302';
         }
     } else {
-        $documentRoot = isset($_POST['document_root']) ? $_POST['document_root'] : '/htdocs';
+        $documentRoot = isset($_POST['document_root']) ? $_POST['document_root'] : '/';
         $urlForwarding = (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? true : false;
         $forwardUrlScheme = isset($_POST['forward_url_scheme']) ? $_POST['forward_url_scheme'] : 'http://';
         $forwardUrl = isset($_POST['forward_url']) ? $_POST['forward_url'] : '';
@@ -127,7 +129,7 @@ function client_generatePage($tpl)
     }
 
     # Set parameters for the FTP chooser
-    $_SESSION['vftp_root_dir'] = '/htdocs';
+    $_SESSION['vftp_root_dir'] = $subdomainData['subdomain_mount'] . '/htdocs';
     $_SESSION['vftp_hidden_dirs'] = array();
     $_SESSION['vftp_unselectable_dirs'] = array();
 
@@ -153,7 +155,7 @@ function client_generatePage($tpl)
     // In such a case the customer must first disable the redirection, and edit the subdomain again to set an
     // alternative DocumentRoot
     $vfs = new iMSCP_VirtualFileSystem($_SESSION['user_logged'], $subdomainData['subdomain_mount']);
-    if(!$vfs->exists('/htdocs')) {
+    if(!$vfs->exists('/htdocs', iMSCP_VirtualFileSystem::VFS_TYPE_DIR)) {
         $tpl->assign('DOCUMENT_ROOT_BLOC', '');
     }
 }
@@ -178,17 +180,18 @@ function client_editSubdomain()
     }
 
     if(isset($_POST['document_root'])) {
-        $documentRoot = rtrim(clean_input($_POST['document_root']), '/');
-        if(!preg_match('%^/htdocs(/.+)?$%', $documentRoot)) {
-            set_page_message(tr('The new document root must live inside default /htdocs document root'), 'error');
-            return false;
-        } else {
-            $vfs = new iMSCP_VirtualFileSystem($_SESSION['user_logged'], $subdomainData['subdomain_mount']);
-            if(!$vfs->exists($documentRoot)) {
-                set_page_message(tr('The new document root must exists.'), 'error');
+        $documentRoot = isset($domainData['document_root']) ? $domainData['document_root'] : '/';
+        $documentRoot = substr($documentRoot, 7);
+
+        if($documentRoot != '') {
+            $vfs = new iMSCP_VirtualFileSystem($_SESSION['user_logged'], $subdomainData['subdomain_mount'] . '/htdocs');
+            if(!$vfs->exists($documentRoot, iMSCP_VirtualFileSystem::VFS_TYPE_DIR)) {
+                set_page_message(tr('The new document root must pre-exists inside the /htdocs directory.'), 'error');
                 return false;
             }
         }
+
+        $documentRoot = '/htdocs' . $documentRoot;
     } else {
         $documentRoot = '/htdocs';
     }
@@ -313,7 +316,7 @@ $tpl->assign(array(
     'TR_SUBDOMAIN' => tr('Subdomain'),
     'TR_SUBDOMAIN_NAME' => tr('Subdomain name'),
     'TR_DOCUMENT_ROOT' => tr('Document root'),
-    'TR_DOCUMENT_ROOT_TOOLTIP' => tr("You can set an alternative document root. This is mostly needed when using a PHP framework such as Symfony. Note that the new document root will live inside the default  document root that is `/htdocs. Be aware that the directory for the new document root must exists."),
+    'TR_DOCUMENT_ROOT_TOOLTIP' => tr("You can set an alternative document root. This is mostly needed when using a PHP framework such as Symfony. Note that the new document root will live inside the default  `/htdocs' document root. Be aware that the directory for the new document root must pre-exist."),
     'TR_CHOOSE_DIR' => tr('Choose dir'),
     'TR_URL_FORWARDING' => tr('URL forwarding'),
     'TR_FORWARD_TO_URL' => tr('Forward to URL'),

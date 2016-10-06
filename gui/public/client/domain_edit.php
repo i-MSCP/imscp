@@ -39,7 +39,7 @@ function _client_getDomainData($domainId)
 
     $stmt = exec_query(
         '
-            SELECT domain_name, url_forward, type_forward, host_forward
+            SELECT domain_name, document_root, url_forward, type_forward, host_forward
             FROM domain WHERE domain_id = ? AND domain_admin_id = ? AND domain_status = ?
         ',
         array($domainId, $_SESSION['user_id'], 'ok')
@@ -75,7 +75,8 @@ function client_generatePage($tpl)
     $forwardHost = 'Off';
 
     if (empty($_POST)) {
-        $documentRoot = isset($domainData['document_root']) ? $domainData['document_root'] : '/htdocs';
+        $documentRoot = isset($domainData['document_root']) ? $domainData['document_root'] : '';
+        $documentRoot = substr($documentRoot, 7);
 
         if ($domainData['url_forward'] != 'no') {
             $urlForwarding = true;
@@ -91,7 +92,7 @@ function client_generatePage($tpl)
             $forwardType = '302';
         }
     } else {
-        $documentRoot = isset($_POST['document_root']) ? $_POST['document_root'] : '/htdocs';
+        $documentRoot = isset($_POST['document_root']) ? $_POST['document_root'] : '';
         $urlForwarding = (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? true : false;
         $forwardUrlScheme = (isset($_POST['forward_url_scheme'])) ? $_POST['forward_url_scheme'] : 'http://';
         $forwardUrl = isset($_POST['forward_url']) ? $_POST['forward_url'] : '';
@@ -123,6 +124,14 @@ function client_generatePage($tpl)
         'FORWARD_TYPE_PROXY' => ($forwardType == 'proxy') ? ' checked' : '',
         'FORWARD_HOST' => ($forwardHost == 'On') ? ' checked' : ''
     ));
+
+    // Cover the case where the domain is currently redirected to another domain
+    // In such a case the customer must first disable the redirection, and edit the domain again to set an
+    // alternative DocumentRoot
+    $vfs = new iMSCP_VirtualFileSystem($_SESSION['user_logged']);
+    if(!$vfs->exists('/htdocs', iMSCP_VirtualFileSystem::VFS_TYPE_DIR)) {
+        $tpl->assign('DOCUMENT_ROOT_BLOC',  '');
+    }
 }
 
 /**
@@ -145,16 +154,16 @@ function client_editDomain()
 
     if(isset($_POST['document_root'])) {
         $documentRoot = rtrim(clean_input($_POST['document_root']), '/');
-        if(!preg_match('%^/htdocs(/.+)?$%', $documentRoot)) {
-            set_page_message(tr('The new document root must live inside default /htdocs document root'), 'error');
-            return false;
-        } else {
-            $vfs = new iMSCP_VirtualFileSystem($domainData['domain_name']);
-            if(!$vfs->exists($documentRoot)) {
-                set_page_message(tr('The new document root must exists.'), 'error');
+
+        if($documentRoot != '') {
+            $vfs = new iMSCP_VirtualFileSystem($domainData['domain_name'], '/htdocs');
+            if(!$vfs->exists($documentRoot, iMSCP_VirtualFileSystem::VFS_TYPE_DIR)) {
+                set_page_message(tr('The new document root must pre-exists inside the /htdocs directory.'), 'error');
                 return false;
             }
         }
+
+        $documentRoot = '/htdocs' . $documentRoot;
     } else {
         $documentRoot = '/htdocs';
     }
@@ -260,14 +269,15 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'client/domain_edit.tpl',
-    'page_message' => 'layout'
+    'page_message' => 'layout',
+    'document_root_bloc' => 'page'
 ));
 $tpl->assign(array(
     'TR_PAGE_TITLE' => tr('Client / Domains / Edit Domain'),
     'TR_DOMAIN' => tr('Domain'),
     'TR_DOMAIN_NAME' => tr('Domain name'),
     'TR_DOCUMENT_ROOT' => tr('Document root'),
-    'TR_DOCUMENT_ROOT_TOOLTIP' => tr("You can set an alternative document root. This is mostly needed when using a PHP framework such as Symfony. Note that the new document root will live inside the default  document root that is `/htdocs. Be aware that the directory for the new document root must exists."),
+    'TR_DOCUMENT_ROOT_TOOLTIP' => tr("You can set an alternative document root. This is mostly needed when using a PHP framework such as Symfony. Note that the new document root will live inside the default  `/htdocs' document root. Be aware that the directory for the new document root must pre-exist."),
     'TR_CHOOSE_DIR' => tr('Choose dir'),
     'TR_URL_FORWARDING' => tr('URL forwarding'),
     'TR_FORWARD_TO_URL' => tr('Forward to URL'),

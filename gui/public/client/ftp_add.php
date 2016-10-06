@@ -34,7 +34,7 @@ function isAllowedDir($directory)
     $mountpoints = getMountpoints($mainDmnProps['domain_id']);
 
     foreach ($mountpoints as $mountpoint) {
-        if (preg_match("%^$mountpoint/(?:disabled|errors|phptmp)$%", $directory)) {
+        if (preg_match("%^$mountpoint/(?:errors|phptmp)$%", $directory)) {
             return false;
         }
     }
@@ -214,7 +214,7 @@ function addAccount()
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
     $vfs = new iMSCP_VirtualFileSystem($mainDmnProps['domain_name']);
-    if ($homeDir !== '/' && !$vfs->exists($homeDir)) {
+    if ($homeDir !== '/' && !$vfs->exists($homeDir, iMSCP_VirtualFileSystem::VFS_TYPE_DIR)) {
         set_page_message(tr("Directory '%s' doesn't exists.", $homeDir), 'error');
         return false;
     } elseif (strpos($homeDir, '..') !== false || !isAllowedDir($homeDir)) {

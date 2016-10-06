@@ -195,7 +195,7 @@ if (isset($_GET['id']) && is_number($_GET['id'])) {
 						} else {
 							$vfs = new iMSCP_VirtualFileSystem($domainProps['domain_name']);
 
-							if (!$vfs->exists($otherDir, 'd')) {
+							if (!$vfs->exists($otherDir, iMSCP_VirtualFileSystem::VFS_TYPE_DIR)) {
 								set_page_message(
 									tr(
 										"The directory %s doesn't exists. Please create that directory using your file manager.",

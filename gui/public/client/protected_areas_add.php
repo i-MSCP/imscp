@@ -103,7 +103,7 @@ function handleProtectedArea()
 
 
     $vfs = new iMSCP_VirtualFileSystem($mainDmnProps['domain_name']);
-    if ($protectedAreaPath !== '/' && !$vfs->exists($protectedAreaPath)) {
+    if ($protectedAreaPath !== '/' && !$vfs->exists($protectedAreaPath, iMSCP_VirtualFileSystem::VFS_TYPE_DIR)) {
         set_page_message(tr("Directory '%s' doesn't exists.", $protectedAreaPath), 'error');
         return;
     } elseif (strpos($protectedAreaPath, '..') !== false || !isAllowedDir($protectedAreaPath)) {

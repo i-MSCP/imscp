@@ -303,7 +303,9 @@
 
             if($dialog.length) {
                 if(href == "#") { // '#' means that we want set directory.
-                    $("#ftp_directory").val($(this).data("directory"));
+                    var directory = $(this).data("directory");
+                    if(directory == '') directory = '/';
+                    $("#ftp_directory").val(directory);
                     $dialog.dialog("close");
                 } else { // We already have a dialog. We just update it content
                     $.get(href, function(data) {

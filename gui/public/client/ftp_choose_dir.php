@@ -31,7 +31,7 @@
 function isVisibleDir($directory)
 {
     global $vftpHiddenDirs, $mountpoints;
-
+    
     foreach ($mountpoints as $mountpoint) {
         if (preg_match("%^($mountpoint/(?:$vftpHiddenDirs)|$vftpHiddenDirs)$%", $directory)) {
             return false;
@@ -70,12 +70,9 @@ function generateDirectoryList($tpl)
 {
     global $vftpRootDir;
 
-    // Initialize variables
-    $curDir = isset($_GET['cur_dir']) ? clean_input($_GET['cur_dir']) : '';
-    $path = preg_match("%^$vftpRootDir/.+%", $curDir) ? $curDir : $vftpRootDir;
+    $path = isset($_GET['cur_dir']) ? clean_input($_GET['cur_dir']) : '';
     $domain = $_SESSION['user_logged'];
-
-    $vfs = new iMSCP_VirtualFileSystem($domain);
+    $vfs = new iMSCP_VirtualFileSystem($domain, $vftpRootDir);
     $list = $vfs->ls($path);
 
     if (!$list) {
@@ -90,11 +87,13 @@ function generateDirectoryList($tpl)
     $parent = explode('/', $path);
     array_pop($parent);
     $parent = implode('/', $parent);
+
     $tpl->assign(array(
-        'ACTION_LINK' => '',
-        'ACTION' => '',
+        //'ACTION_LINK' => '', # Since 1.3.6 (make parent directory choosable)
+        //'ACTION' => '',
         'ICON' => 'parent',
         'DIR_NAME' => tr('Parent directory'),
+        'DIRECTORY' => tohtml($parent, 'htmlAttr'),
         'LINK' => tohtml("ftp_choose_dir.php?cur_dir=$parent", 'htmlAttr')
     ));
     $tpl->parse('DIR_ITEM', '.dir_item');
@@ -163,7 +162,7 @@ $tpl->assign(array(
 ));
 
 $mountpoints = getMountpoints(get_user_domain_id($_SESSION['user_id']));
-$vftpRootDir = isset($_SESSION['vftp_root_dir']) ? $_SESSION['vftp_root_dir'] : '';
+$vftpRootDir = isset($_SESSION['vftp_root_dir']) ? $_SESSION['vftp_root_dir'] : '/';
 $vftpHiddenDirs = isset($_SESSION['vftp_hidden_dirs']) ? implode('|', $_SESSION['vftp_hidden_dirs']) : '';
 $vftpUnselectableDirs = isset($_SESSION['vftp_unselectable_dirs']) ? implode('|', $_SESSION['vftp_unselectable_dirs']) : '';
 

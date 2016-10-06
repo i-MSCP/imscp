@@ -75,7 +75,9 @@ function client_generatePage($tpl)
     $forwardHost = 'Off';
 
     if (empty($_POST)) {
-        $documentRoot = isset($domainData['document_root']) ? $domainData['document_root'] : '/htdocs';
+        $documentRoot = isset($domainAliasData['alias_document_root']) ? $domainAliasData['alias_document_root'] : '';
+        $documentRoot = substr($documentRoot, 7);
+
         if ($domainAliasData['url_forward'] != 'no') {
             $urlForwarding = true;
             $uri = iMSCP_Uri_Redirect::fromString($domainAliasData['url_forward']);
@@ -90,7 +92,7 @@ function client_generatePage($tpl)
             $forwardType = '302';
         }
     } else {
-        $documentRoot = isset($_POST['document_root']) ? $_POST['document_root'] : '/htdocs';
+        $documentRoot = isset($_POST['document_root']) ? $_POST['document_root'] : '';
         $urlForwarding = (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? true : false;
         $forwardUrlScheme = (isset($_POST['forward_url_scheme'])) ? $_POST['forward_url_scheme'] : 'http://';
         $forwardUrl = (isset($_POST['forward_url'])) ? $_POST['forward_url'] : '';
@@ -102,7 +104,7 @@ function client_generatePage($tpl)
     }
 
     # Set parameters for the FTP chooser
-    $_SESSION['vftp_root_dir'] = '/htdocs';
+    $_SESSION['vftp_root_dir'] = $domainAliasData['alias_mount'] . '/htdocs';
     $_SESSION['vftp_hidden_dirs'] = array();
     $_SESSION['vftp_unselectable_dirs'] = array();
 
@@ -127,7 +129,7 @@ function client_generatePage($tpl)
     // In such a case the customer must first disable the redirection, and edit the domain alias again to set an
     // alternative DocumentRoot
     $vfs = new iMSCP_VirtualFileSystem($_SESSION['user_logged'], $domainAliasData['alias_mount']);
-    if(!$vfs->exists('/htdocs')) {
+    if(!$vfs->exists('/htdocs', iMSCP_VirtualFileSystem::VFS_TYPE_DIR)) {
         $tpl->assign('DOCUMENT_ROOT_BLOC',  '');
     }
 }
@@ -152,16 +154,16 @@ function client_editDomainAlias()
 
     if(isset($_POST['document_root'])) {
         $documentRoot = rtrim(clean_input($_POST['document_root']), '/');
-        if(!preg_match('%^/htdocs(/.+)?$%', $documentRoot)) {
-            set_page_message(tr('The new document root must live inside default /htdocs document root', 'error'));
-            return false;
-        } else {
-            $vfs = new iMSCP_VirtualFileSystem($_SESSION['user_logged'], $domainAliasData['alias_mount']);
-            if(!$vfs->exists($documentRoot)) {
-                set_page_message(tr('The new document root must exists.', 'error'));
+
+        if($documentRoot != '') {
+            $vfs = new iMSCP_VirtualFileSystem($_SESSION['user_logged'], $domainAliasData['alias_mount'] . '/htdocs');
+            if(!$vfs->exists($documentRoot, iMSCP_VirtualFileSystem::VFS_TYPE_DIR)) {
+                set_page_message(tr('The new document root must pre-exists inside the /htdocs directory.'), 'error');
                 return false;
             }
         }
+
+        $documentRoot = '/htdocs' . $documentRoot;
     } else {
         $documentRoot = '/htdocs';
     }
@@ -230,7 +232,7 @@ function client_editDomainAlias()
     exec_query(
         '
           UPDATE domain_aliasses
-          SET alias_document_root, url_forward = ?, type_forward = ?, host_forward = ?, alias_status = ?
+          SET alias_document_root = ?, url_forward = ?, type_forward = ?, host_forward = ?, alias_status = ?
           WHERE alias_id = ?
         ',
         array($documentRoot, $forwardUrl, $forwardType, $forwardHost, 'tochange', $domainAliasId)
@@ -277,7 +279,7 @@ $tpl->assign(array(
     'TR_DOMAIN_ALIAS' => tr('Domain alias'),
     'TR_DOMAIN_ALIAS_NAME' => tr('Domain alias name'),
     'TR_DOCUMENT_ROOT' => tr('Document root'),
-    'TR_DOCUMENT_ROOT_TOOLTIP' => tr("You can set an alternative document root. This is mostly needed when using a PHP framework such as Symfony. Note that the new document root will live inside the default  document root that is `/htdocs. Be aware that the directory for the new document root must exists."),
+    'TR_DOCUMENT_ROOT_TOOLTIP' => tr("You can set an alternative document root. This is mostly needed when using a PHP framework such as Symfony. Note that the new document root will live inside the default  `/htdocs' document root. Be aware that the directory for the new document root must pre-exist."),
     'TR_CHOOSE_DIR' => tr('Choose dir'),
     'TR_URL_FORWARDING' => tr('URL forwarding'),
     'TR_FORWARD_TO_URL' => tr('Forward to URL'),

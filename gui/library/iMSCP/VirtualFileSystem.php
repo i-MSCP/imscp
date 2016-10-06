@@ -181,6 +181,10 @@ class iMSCP_VirtualFileSystem
 			return false;
 		}
 
+		if($this->_virtual_root_path != '/') {
+			$dirname = $this->_virtual_root_path . $dirname;
+		}
+
 		// Path is always relative to the root vfs
 		if (substr($dirname, 0, 1) != '/') {
 			$dirname = '/' . $dirname;
@@ -372,7 +376,7 @@ class iMSCP_VirtualFileSystem
 		exec_query(
 			'INSERT INTO ftp_users (userid, passwd, uid, gid, shell, homedir, status) VALUES (?, ?, ?, ?, ?, ?, ?)', array(
 			$this->_user, $password, $row['admin_sys_uid'], $row['admin_sys_gid'], '/bin/sh',
-			$cfg['USER_WEB_DIR'] . '/' . rtrim($this->_domain . $this->_virtual_root_path, '/'), 'ok'
+            $cfg['USER_WEB_DIR'] . '/' . $this->_domain, 'ok'
 		));
 
 		return true;
