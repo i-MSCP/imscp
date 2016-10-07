@@ -31,7 +31,7 @@
 function isVisibleDir($directory)
 {
     global $vftpHiddenDirs, $mountpoints;
-    
+
     foreach ($mountpoints as $mountpoint) {
         if (preg_match("%^($mountpoint/(?:$vftpHiddenDirs)|$vftpHiddenDirs)$%", $directory)) {
             return false;
@@ -71,12 +71,11 @@ function generateDirectoryList($tpl)
     global $vftpRootDir;
 
     $path = isset($_GET['cur_dir']) ? clean_input($_GET['cur_dir']) : '';
-    $domain = $_SESSION['user_logged'];
-    $vfs = new iMSCP_VirtualFileSystem($domain, $vftpRootDir);
+    $vfs = new iMSCP_VirtualFileSystem($_SESSION['user_logged'], $vftpRootDir);
     $list = $vfs->ls($path);
 
     if (!$list) {
-        if ($path == '/') {
+        if ($path == '/' || $path == '') {
             set_page_message(tr('Could not retrieve directories. Please contact your reseller.'), 'error');
             $tpl->assign('FTP_CHOOSER', '');
         } else {
@@ -89,8 +88,6 @@ function generateDirectoryList($tpl)
     $parent = implode('/', $parent);
 
     $tpl->assign(array(
-        //'ACTION_LINK' => '', # Since 1.3.6 (make parent directory choosable)
-        //'ACTION' => '',
         'ICON' => 'parent',
         'DIR_NAME' => tr('Parent directory'),
         'DIRECTORY' => tohtml($parent, 'htmlAttr'),
@@ -155,8 +152,7 @@ $tpl->define_dynamic(array(
     'layout' => ''
 ));
 $tpl->assign(array(
-    'TR_DIRECTORY_TREE' => tr('Directory tree'),
-    'TR_DIRECTORIES' => tr('Directories'),
+    'TOOLTIP_CHOOSE' => tohtml(tr('Choose'), 'htmlAttr'),
     'CHOOSE' => tr('Choose'),
     'layout' => ''
 ));

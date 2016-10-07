@@ -18,9 +18,12 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
+
+use iMSCP\Crypt as Crypt;
+use iMSCP_Registry as Registry;
 
 /**
  * Virtual File System class
@@ -29,366 +32,308 @@
  */
 class iMSCP_VirtualFileSystem
 {
-	/**
-	 * File types definition
-	 */
-	const VFS_TYPE_DIR = 'd';
-	const VFS_TYPE_LINK = 'l';
-	const VFS_TYPE_FILE = '-';
+    /**
+     * @var string VFS filetype
+     */
+    const
+        VFS_TYPE_DIR = 'd', 
+        VFS_TYPE_LINK = 'l', 
+        VFS_TYPE_FILE = '-';
 
-	/**
-	 * Possible VFS Transfer modes
-	 */
-	const VFS_ASCII = FTP_ASCII;
-	const VFS_BINARY = FTP_BINARY;
+    /**
+     * @var int VFS Transfer modes
+     */
+    const
+        VFS_ASCII = FTP_ASCII, 
+        VFS_BINARY = FTP_BINARY;
 
-	/**
-	 * Domain name of this filesystem
-	 *
-	 * @var string
-	 */
-	protected $_domain;
+    /**
+     * @var string Domain name of this virtual file system
+     */
+    protected $domain;
 
-	/**
-	* @var string Virtual root path (relative to domain root dir)
-	*/
-	protected $_virtual_root_path;
+    /**
+     * @var string FTP username
+     */
+    protected $user;
 
-	/**
-	 * FTP connection handle
-	 *
-	 * @var resource
-	 */
-	protected $_handle = null;
+    /**
+     * @var string Plaintext FTP user password
+     */
+    protected $passwd;
 
-	/**
-	 * FTP temporary user name
-	 *
-	 * @var string
-	 */
-	protected $_user = '';
+    /**
+     * @var string Virtual file system root directory (relative to domain root directory)
+     */
+    protected $rootdir;
 
-	/**
-	 * FTP password
-	 *
-	 * @var string
-	 */
-	protected $_passwd = '';
+    /**
+     * @var resource FTP stream
+     */
+    protected $stream;
 
-	/**
-	 * Constructor - Create a new Virtual File System
-	 *
-	 * Creates a new Virtual File System object for the specified domain.
-	 *
-	 * @param string $domain Domain name of the new VFS
-	 * @param string $virtualRootPath Virtual root path relative to $domain root dir
-	 */
-	public function __construct($domain, $virtualRootPath = '/')
-	{
-		$cfg = iMSCP_Registry::get('config');
+    /**
+     * Constructor
+     *
+     * Creates a virtual file system object for the given $domain using $rootDir as root directory.
+     *
+     * @param string $domain Domain name of the the virtual file system
+     * @param string $rootDir OPTIONAL Root directory of the virtual file system (relative to $domain root directory)
+     */
+    public function __construct($domain, $rootDir = '/')
+    {
+        $this->domain = $domain;
+        $this->rootdir = $rootDir;
+    }
 
-		$this->_domain = $domain;
-		$this->_virtual_root_path = $virtualRootPath;
+    /**
+     * Destructor, ensure that we logout and remove the temporary user
+     *
+     * @return void
+     */
+    public function __destruct()
+    {
+        $this->close();
+    }
 
-		defined('VFS_TMP_DIR') or define('VFS_TMP_DIR', $cfg['GUI_ROOT_DIR'] . '/data/tmp');
+    /**
+     * Open the virtual file system
+     *
+     * @return boolean TRUE on success, FALSE on failure
+     */
+    public function open()
+    {
+        if ($this->stream) {
+            return true;
+        }
 
-		$_ENV['PHP_TMPDIR'] = VFS_TMP_DIR;
-		$_ENV['TMPDIR'] = VFS_TMP_DIR;
+        if (!$this->createFtpUser()) {
+            return false;
+        }
 
-		putenv("PHP_TMPDIR={$_ENV['PHP_TMPDIR']}");
-		putenv("TMPDIR={$_ENV['PHP_TMPDIR']}");
-	}
+        if (!($this->stream = @ftp_connect('127.0.0.1', 21, 60))
+            || !@ftp_login($this->stream, $this->user, $this->passwd)
+        ) {
+            $this->close();
+            return false;
+        }
 
-	/**
-	 * Destructor, ensure that we logout and remove the temporary user
-	 *
-	 * @return void
-	 */
-	public function __destruct()
-	{
-		$this->close();
-	}
+        return true;
+    }
 
-	/**
-	 * Open the virtual file system
-	 *
-	 * @return boolean TRUE on success, FALSE on failure
-	 */
-	public function open()
-	{
-		// Check if we're already open
-		if (is_resource($this->_handle)) {
-			return true;
-		}
+    /**
+     * Closes the virtual file system
+     *
+     * @return void
+     */
+    public function close()
+    {
+        if ($this->stream) {
+            ftp_close($this->stream);
+            $this->stream = null;
+        }
 
-		// Create the temporary ftp account
-		$result = $this->_createTmpUser();
+        if ($this->user) {
+            $this->removeFtpUser();
+        }
+    }
 
-		if (!$result) {
-			return false;
-		}
+    /**
+     * Get directory listing
+     *
+     * @param string $dirname Directory path inside the virtual file system
+     * @return array|bool An array of directory entries on success, FALSE on failure
+     */
+    public function ls($dirname)
+    {
+        if (!$this->open()) {
+            return false;
+        }
 
-		// 'localhost' for testing purposes. I have to study if a better
-		// $this->_domain would work on all situations
-		$this->_handle = @ftp_connect('127.0.0.1');
+        if ($this->rootdir != '/') {
+            $dirname = $this->rootdir . $dirname;
+        }
 
-		if (!is_resource($this->_handle)) {
-			$this->close();
-			return false;
-		}
+        // Path is always relative to the root vfs
+        if (substr($dirname, 0, 1) != '/') {
+            $dirname = '/' . $dirname;
+        }
 
-		// Perform actual login
-		$response = @ftp_login($this->_handle, $this->_user, $this->_passwd);
+        // No security implications, the FTP server handles this for us
+        $list = ftp_rawlist($this->stream, "-a $dirname", false);
+        if (!$list) {
+            return false;
+        }
 
-		if (!$response) {
-			$this->close();
-			return false;
-		}
+        for ($i = 0, $len = count($list); $i < $len; $i++) {
+            $chunks = preg_split('/\s+/', $list[$i], 9);
+            $list[$i] = array(
+                'perms' => $chunks[0],
+                'number' => $chunks[1],
+                'owner' => $chunks[2],
+                'group' => $chunks[3],
+                'size' => $chunks[4],
+                'month' => $chunks[5],
+                'day' => $chunks[6],
+                'time' => $chunks[7],
+                'file' => $chunks[8],
+                'type' => substr($chunks[0], 0, 1)
+            );
+        }
 
-		// All went ok! :)
-		return true;
-	}
+        return $list;
+    }
 
-	/**
-	 * Closes the virtual file system
-	 */
-	public function close()
-	{
-		// Close FTP connection
-		if ($this->_handle) {
-			ftp_close($this->_handle);
-			$this->_handle = null;
-		}
+    /**
+     * Checks if the given file exists inside this virtual file system
+     *
+     * @param string $file File path inside the virtual file system
+     * @param int $type Type of the file to match
+     * @return boolean TRUE if file exists, FALSE otherwise
+     */
+    public function exists($file, $type = null)
+    {
+        $list = $this->ls(dirname($file));
 
-		// Remove temporary user
-		if ($this->_user) {
-			$this->_removeTmpUser();
-		}
-	}
+        if (!$list) {
+            return false;
+        }
 
-	/**
-	 * Get directory listing
-	 *
-	 * Get the directory listing of a specified dir, either in short (default) or long mode.
-	 *
-	 * @param string $dirname VFS directory path.
-	 * @return array|bool An array of directory entries, FALSE on failure.
-	 */
-	public function ls($dirname)
-	{
-		// Ensure that we're open
-		if (!$this->open()) {
-			return false;
-		}
+        // We get filenames only from the listing
+        $file = basename($file);
 
-		if($this->_virtual_root_path != '/') {
-			$dirname = $this->_virtual_root_path . $dirname;
-		}
+        // Try to match it
+        foreach ($list as $entry) {
+            // Skip non-matching files
+            if ($entry['file'] != $file) {
+                continue;
+            }
 
-		// Path is always relative to the root vfs
-		if (substr($dirname, 0, 1) != '/') {
-			$dirname = '/' . $dirname;
-		}
+            // Check type if needed
+            if ($type && $entry['type'] != $type) {
+                return false;
+            }
 
-		// No security implications, the FTP server handles this for us
-		$list = ftp_rawlist($this->_handle, "-a $dirname", false);
-		if (!$list) {
-			return false;
-		}
+            // Matched and same type (or no type specified)
+            return true;
+        }
 
-		for ($i = 0, $len = count($list); $i < $len; $i++) {
-			$parts = preg_split('/\s+/', $list[$i], 9);
-			$list[$i] = array(
-				'perms' => $parts[0],
-				'number' => $parts[1],
-				'owner' => $parts[2],
-				'group' => $parts[3],
-				'size' => $parts[4],
-				'month' => $parts[5],
-				'day' => $parts[6],
-				'time' => $parts[7],
-				'file' => $parts[8],
-				'type' => substr($parts[0], 0, 1)
-			);
-		}
+        return false;
+    }
 
-		return $list;
-	}
+    /**
+     * Get the content of the given file from this virtual file system
+     *
+     * @param string $file VFS file path
+     * @param int $mode VFS transfer mode
+     * @return string|bool File content on success, FALSE on failure
+     */
+    public function get($file, $mode = self::VFS_ASCII)
+    {
+        if (!$this->open()) {
+            return false;
+        }
 
-	/**
-	 * Checks for file existence
-	 *
-	 * @param string $file VFS file path.
-	 * @param int $type Type of the file to match. Must be either
-	 * {@link self::VFS_TYPE_DIR}, {@link self::VFS_TYPE_LINK} or
-	 * {@link self::VFS_TYPE_FILE}.
-	 * @return boolean TRUE if file exists, FALSE otherwise.
-	 */
-	public function exists($file, $type = null)
-	{
-		// Ensure that we're open
-		if (false === $this->open()) {
-			return false;
-		}
+        // Get a temporary file name
+        $cfg = iMSCP_Registry::get('config');
+        $tmp = tempnam($cfg['GUI_ROOT_DIR'] . '/data/tmp', 'vfs_');
 
-		// Actually get the listing
-		$directoryName = dirname($file);
-		$list = $this->ls($directoryName);
+        // Get the actual file from the virtual file system
+        $rs = ftp_get($this->stream, $tmp, $file, $mode);
 
-		if (!$list) {
-			return false;
-		}
+        if (false === $rs) {
+            return false;
+        }
 
-		// We get filenames only from the listing
-		$file = basename($file);
+        // Retrieve file contents
+        $rs = @file_get_contents($tmp);
 
-		// Try to match it
-		foreach ($list as $entry) {
-			// Skip non-matching files
-			if ($entry['file'] != $file) {
-				continue;
-			}
+        // Unlink the temporary file
+        @unlink($tmp);
 
-			// Check type
-			if ($type !== null && $entry['type'] != $type) {
-				return false;
-			}
+        return $rs;
+    }
 
-			// Matched and same type (or no type specified)
-			return true;
-		}
+    /**
+     * Stores the content of the given file inside this virtual file system
+     *
+     * @param string $file New file path inside the virtual file system
+     * @param string $content File content
+     * @param int $mode VFS transfer mode
+     * @return boolean TRUE on success, FALSE on failure
+     */
+    public function put($file, $content, $mode = self::VFS_ASCII)
+    {
+        if (!$this->open()) {
+            return false;
+        }
 
-		return false;
-	}
+        // Get a temporary file name
+        $cfg = Registry::get('config');
+        $tmp = tempnam($cfg['GUI_ROOT_DIR'] . '/data/tmp', 'vfs_');
 
-	/**
-	 * Retrieves a file from the virtual file system
-	 *
-	 * @param string $file VFS file path.
-	 * @param int $mode VFS transfer mode. Must be either {@link self::VFS_ASCII} or {@link self::VFS_BINARY}.
-	 * @return string|bool File content on success, FALSE on failure.
-	 */
-	public function get($file, $mode = self::VFS_ASCII)
-	{
-		// Ensure that we're open
-		if (!$this->open()) {
-			return false;
-		}
+        // Save temporary file
+        if (false === file_put_contents($tmp, $content)) {
+            return false;
+        }
+        
+        // Store the file in the virtual file system
+        if (!ftp_put($this->stream, $file, $tmp, $mode)) {
+            return false;
+        }
 
-		// Get a temporary file name
-		$tmp = tempnam(VFS_TMP_DIR, 'vfs_');
+        // Unlink the temporary file
+        @unlink($tmp);
 
-		// Get the actual file
-		$res = ftp_get($this->_handle, $tmp, $file, $mode);
+        return true;
+    }
 
-		if (false === $res) {
-			return false;
-		}
+    /**
+     * Create a FTP user for accessing this virtual file system
+     *
+     * @throws iMSCP_Exception
+     * @throws iMSCP_Exception_Database
+     * @return bool TRUE on success, FALSE on failure
+     */
+    protected function createFtpUser()
+    {
+        $cfg = Registry::get('config');
+        $stmt = exec_query(
+            '
+              SELECT admin_sys_uid, admin_sys_gid
+              FROM admin
+              INNER JOIN domain ON (domain_admin_id = admin_id)
+              WHERE domain_name = ?
+            ',
+            $this->domain
+        );
 
-		// Retrieve file contents
-		$res = file_get_contents($tmp);
+        if (!$stmt->rowCount()) {
+            return false;
+        }
 
-		// Delete temporary file
-		unlink($tmp);
+        $row = $stmt->fetchRow();
+        $this->user = $this->domain;
+        $this->passwd = Crypt::randomStr(16);
 
-		return $res;
-	}
+        exec_query(
+            'INSERT INTO ftp_users (userid, passwd, uid, gid, shell, homedir, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            array(
+                $this->user, Crypt::sha512($this->passwd), $row['admin_sys_uid'], $row['admin_sys_gid'],
+                '/bin/sh', $cfg['USER_WEB_DIR'] . '/' . $this->domain, 'ok'
+            )
+        );
 
-	/**
-	 * Stores a file inside the virtual file system
-	 *
-	 * @param string $file VFS file path.
-	 * @param string $content File content.
-	 * @param int $mode VFS transfer mode. Must be either {@link self::VFS_ASCII} or {@link self::VFS_BINARY}.
-	 * @return boolean TRUE on success, FALSE on failure.
-	 */
-	public function put($file, $content, $mode = self::VFS_ASCII)
-	{
-		// Ensure that we're open
-		if (!$this->open()) {
-			return false;
-		}
+        return true;
+    }
 
-		// Get a temporary file name
-		$tmp = tempnam(VFS_TMP_DIR, 'vfs_');
-
-		// Save temporary file
-		$res = file_put_contents($tmp, $content);
-
-		if (false === $res) {
-			return false;
-		}
-
-		// Upload it
-		$res = ftp_put($this->_handle, $file, $tmp, $mode);
-		if (!$res) {
-			return false;
-		}
-
-		// Remove temp file
-		unlink($tmp);
-
-		return true;
-	}
-
-	/**
-	 * Create a temporary FTP user
-	 *
-	 * @throws iMSCP_Exception
-	 * @throws iMSCP_Exception_Database
-	 * @return bool TRUE on success, FALSE on failure
-	 */
-	protected function _createTmpUser()
-	{
-		/** @var $cfg iMSCP_Config_Handler_File */
-		$cfg = iMSCP_Registry::get('config');
-		$stmt = exec_query(
-			'
-				SELECT
-					admin_sys_uid, admin_sys_gid
-				FROM
-					admin
-				INNER JOIN
-					domain ON (domain_admin_id = admin_id)
-				WHERE
-					domain_name = ?
-			',
-			$this->_domain
-		);
-
-		if (!$stmt->rowCount()) {
-			return false;
-		}
-
-		$row = $stmt->fetchRow();
-
-		if ($cfg['FTPD_SERVER'] == 'vsftpd') {
-			# For vsftpd, we use the domain name as userid.
-			# This matches default local_root (e.g: /var/www/virtual/$USER)
-			$this->_user = $this->_domain;
-		} else {
-			$this->_user = uniqid('tmp_') . '@' . $this->_domain;
-		}
-
-		$this->_passwd = uniqid('tmp_', true);
-		$password = cryptPasswordWithSalt($this->_passwd);
-
-		exec_query(
-			'INSERT INTO ftp_users (userid, passwd, uid, gid, shell, homedir, status) VALUES (?, ?, ?, ?, ?, ?, ?)', array(
-			$this->_user, $password, $row['admin_sys_uid'], $row['admin_sys_gid'], '/bin/sh',
-			$cfg['USER_WEB_DIR'] . '/' . $this->_domain, 'ok'
-		));
-
-		return true;
-	}
-
-	/**
-	 * Removes the temporary FTP user
-	 *
-	 * @return void
-	 */
-	protected function _removeTmpUser()
-	{
-		exec_query('DELETE FROM `ftp_users` WHERE `userid` = ?', $this->_user);
-	}
+    /**
+     * Removes the FTP user associated with this virtual file system
+     *
+     * @return void
+     */
+    protected function removeFtpUser()
+    {
+        exec_query('DELETE FROM `ftp_users` WHERE `userid` = ?', $this->user);
+    }
 }

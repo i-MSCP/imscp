@@ -297,19 +297,22 @@
 // Initialize FTP chooser event handler
 (function($) {
     $(function() {
-        $("body").on("click", "span.ftp_choose_dir, a.ftp_choose_dir", function (e) {
+        if(!$(".ftp_choose_dir").length) return; // Avoid attaching event handler when not necessary
+
+        $("body").on("click", ".ftp_choose_dir", function () {
             var $dialog = $("#ftp_choose_dir_dialog");
-            var href = $(this).attr("href") || 'none';
 
             if($dialog.length) {
-                if(href == "#") { // '#' means that we want set directory.
+                var link = $(this).data("link") || 'none';
+
+                if(link == "none") { // 'none' means that we want set directory.
                     var directory = $(this).data("directory");
                     if(directory == '') directory = '/';
                     $("#ftp_directory").val(directory);
                     $dialog.dialog("close");
-                } else { // We already have a dialog. We just update it content
-                    $.get(href, function(data) {
-                        $dialog.html(data).dialog("open").find('table').trigger('updateTable');
+                } else { // We already have a dialog. We just need to update it content
+                    $.get(link, function(data) {
+                        $dialog.html(data).dialog("open").find('span').trigger('updateTable').tooltip();
                     }).fail(function() {
                         alert("Request failed");
                     });
@@ -334,7 +337,7 @@
                         }],
                         open: function () {
                             var $dialog = $(this);
-                            $dialog.find('table').trigger('updateTable');
+                            $dialog.find('table').trigger('updateTable').tooltip();
                             $(window).on("resize scroll", function() {
                                 $dialog.dialog("option", "position", { my: "center", at: "center", of: window });
                             });
@@ -348,8 +351,6 @@
                     alert("Request failed")
                 });
             }
-
-            e.preventDefault(); // Cancel default action (navigation) on the click
         });
     });
 })(jQuery);

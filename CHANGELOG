@@ -8,9 +8,12 @@ FEATURES
     Added: Editable DocumentRoot (see the errata file for further details)
 
 FRONTEND
-    Changed: Show document root in place of mount points on domains_manage.php page (client side)
+    Changed: Show document roots in place of mount points on domains_manage.php page (client side)
+    Fixed: Avoid attaching event handler when not necessary (FTP directory chooser)
+    Fixed: Hide URLs on hover event (FTP directory chooser)
     Fixed: Make parent directory choosable (FTP directory chooser)
     Fixed: PhpMyAdmin auto-login doesn't works when connecting through SSL with a self-signed certificate
+    Fixed: Tooltips not initialized in dialog box (FTP directory chooser)
 
 INSTALLER
     Added: Support for package post installation commands (autoinstaller::Adapter::DebianAdapter)

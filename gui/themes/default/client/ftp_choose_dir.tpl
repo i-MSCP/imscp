@@ -9,10 +9,12 @@
         <tbody>
         <!-- BDP: dir_item -->
         <tr>
-            <td style="width:80%"><a href="{LINK}" class="icon i_bc_{ICON} ftp_choose_dir">{DIR_NAME}</a></td>
+            <td style="width:80%">
+                <span data-link="{LINK}" class="icon i_bc_{ICON} ftp_choose_dir clickable">{DIR_NAME}</span>
+            </td>
             <td>
                 <!-- BDP: action_link -->
-                <a href="#" data-directory="{DIRECTORY}" class="ftp_choose_dir" title="{CHOOSE}">{CHOOSE}</a>
+                <span data-directory="{DIRECTORY}" class="ftp_choose_dir clickable" title="{TOOLTIP_CHOOSE}">{CHOOSE}</span>
                 <!-- EDP: action_link -->
             </td>
         </tr>
