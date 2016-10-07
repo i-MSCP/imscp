@@ -175,9 +175,7 @@
 (function ($) {
     $(function () {
         var $phpEditorDialog = $("#php_editor_dialog");
-        if (!$phpEditorDialog.length) {
-            return;
-        }
+        if (!$phpEditorDialog.length) return; // Avoid attaching event handler when not necessary
 
         $phpEditorDialog.dialog({
             hide: "blind",
@@ -312,7 +310,7 @@
                     $dialog.dialog("close");
                 } else { // We already have a dialog. We just need to update it content
                     $.get(link, function(data) {
-                        $dialog.html(data).dialog("open").find('span').trigger('updateTable').tooltip();
+                        $dialog.html(data).dialog("open").find('table').trigger('updateTable').tooltip();
                     }).fail(function() {
                         alert("Request failed");
                     });
@@ -459,33 +457,4 @@ function sprintf() {
     }
 
     return str;
-}
-
-/*******************************************************************************
- *
- * Ajax related functions
- *
- * Note: require JQUERY
- */
-
-/**
- * Jquery XMLHttpRequest Error Handling
- */
-
-/**
- * Must be documented
- *
- * Note: Should be used as error callback funct of the jquery ajax request
- * @since r2587
- */
-function iMSCPajxError(xhr, settings, exception) {
-
-    switch (xhr.status) {
-        // We receive this status when the session is expired
-        case 403:
-            window.location = '/index.php';
-            break;
-        default:
-            alert('HTTP ERROR: An Unexpected HTTP Error occurred during the request');
-    }
 }

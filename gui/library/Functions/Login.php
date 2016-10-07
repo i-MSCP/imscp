@@ -303,16 +303,21 @@ function redirectToUiLevel($actionScript = 'index.php')
         return;
     }
 
-    $userType = $auth->getIdentity()->admin_type;
-    switch ($userType) {
+    switch ($auth->getIdentity()->admin_type) {
         case 'user':
+            $userType = 'client';
+            break;
         case 'admin':
+            $userType = 'admin';
+            break;
         case 'reseller':
-            // Prevents display of any old message when switching to another user level
-            Zend_Session::namespaceUnset('pageMessages');
-            redirectTo('/' . (($userType == 'user') ? 'client' : $userType . '/' . $actionScript));
-            exit;
+            $userType = 'reseller';
+            break;
         default:
             throw new iMSCP_Exception('Unknown UI level');
     }
+
+    // Prevents display of any old message when switching to another user level
+    Zend_Session::namespaceUnset('pageMessages');
+    redirectTo('/' . $userType . '/' . $actionScript);
 }
