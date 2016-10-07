@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP\VirtualFileSystem as VirtualFileSystem;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -71,7 +73,7 @@ function generateDirectoryList($tpl)
     global $vftpRootDir;
 
     $path = isset($_GET['cur_dir']) ? clean_input($_GET['cur_dir']) : '';
-    $vfs = new iMSCP_VirtualFileSystem($_SESSION['user_logged'], $vftpRootDir);
+    $vfs = new VirtualFileSystem($_SESSION['user_logged'], $vftpRootDir);
     $list = $vfs->ls($path);
 
     if (!$list) {
@@ -96,7 +98,7 @@ function generateDirectoryList($tpl)
     $tpl->parse('DIR_ITEM', '.dir_item');
 
     foreach ($list as $entry) {
-        if ($entry['type'] != iMSCP_VirtualFileSystem::VFS_TYPE_DIR
+        if ($entry['type'] != VirtualFileSystem::VFS_TYPE_DIR
             || $entry['file'] == '.'
             || $entry['file'] == '..'
         ) {

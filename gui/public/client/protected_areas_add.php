@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP\VirtualFileSystem as VirtualFileSystem;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -32,8 +34,8 @@ function isAllowedDir($directory)
 {
     global $mountpoints;
     $disallowedDirs = implode('|', array_merge($mountpoints, array(
-        '/', '00_private', 'backups', 'disabled', 'errors', 'logs', 'phptmp')
-    ));
+        '/', '00_private', 'backups', 'errors', 'logs', 'phptmp'
+    )));
 
     foreach ($mountpoints as $mountpoint) {
         if (preg_match("%^($mountpoint/(?:$disallowedDirs)|$disallowedDirs)$%", $directory)) {
@@ -84,29 +86,13 @@ function handleProtectedArea()
     }
 
     $protectedAreaName = clean_input($_POST['protected_area_name']);
-    $protectedAreaPath = clean_input($_POST['protected_area_path']);
+    $protectedAreaPath = utils_normalizePath(clean_input($_POST['protected_area_path']));
 
-    // Cleanup path:
-    // - Ensure that path start by a slash
-    // - Removes double slashes
-    // - Remove trailing slash if any
-    if ($protectedAreaPath !== '/') {
-        $cleanPath = array();
-        foreach (explode(DIRECTORY_SEPARATOR, $protectedAreaPath) as $dir) {
-            if ($dir != '') {
-                $cleanPath[] = $dir;
-            }
-        }
-
-        $protectedAreaPath = '/' . implode(DIRECTORY_SEPARATOR, $cleanPath);
-    }
-
-
-    $vfs = new iMSCP_VirtualFileSystem($mainDmnProps['domain_name']);
-    if ($protectedAreaPath !== '/' && !$vfs->exists($protectedAreaPath, iMSCP_VirtualFileSystem::VFS_TYPE_DIR)) {
+    $vfs = new VirtualFileSystem($mainDmnProps['domain_name']);
+    if ($protectedAreaPath !== '/' && !$vfs->exists($protectedAreaPath, VirtualFileSystem::VFS_TYPE_DIR)) {
         set_page_message(tr("Directory '%s' doesn't exists.", $protectedAreaPath), 'error');
         return;
-    } elseif (strpos($protectedAreaPath, '..') !== false || !isAllowedDir($protectedAreaPath)) {
+    } elseif (!isAllowedDir($protectedAreaPath)) {
         set_page_message(tr("Directory '%s' is not allowed or invalid.", $protectedAreaPath), 'error');
         return;
     }

@@ -1,50 +1,47 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "ispCP - ISP Control Panel".
- *
- * The Initial Developer of the Original Code is ispCP Team.
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP\Crypt as Crypt;
+namespace iMSCP;
+
 use iMSCP_Registry as Registry;
 
 /**
  * Virtual File System class
  *
- * This class provides a FTP layer allowing to browse and edit all customer's files from i-MSCP.
+ * This class provides a FTP layer allowing to browse and edit all customer's files from i-MSCP frontEnd.
  */
-class iMSCP_VirtualFileSystem
+class VirtualFileSystem
 {
     /**
      * @var string VFS filetype
      */
     const
-        VFS_TYPE_DIR = 'd', 
-        VFS_TYPE_LINK = 'l', 
+        VFS_TYPE_DIR = 'd',
+        VFS_TYPE_LINK = 'l',
         VFS_TYPE_FILE = '-';
 
     /**
      * @var int VFS Transfer modes
      */
     const
-        VFS_ASCII = FTP_ASCII, 
+        VFS_ASCII = FTP_ASCII,
         VFS_BINARY = FTP_BINARY;
 
     /**
@@ -202,19 +199,15 @@ class iMSCP_VirtualFileSystem
         // We get filenames only from the listing
         $file = basename($file);
 
-        // Try to match it
         foreach ($list as $entry) {
-            // Skip non-matching files
             if ($entry['file'] != $file) {
                 continue;
             }
 
-            // Check type if needed
             if ($type && $entry['type'] != $type) {
                 return false;
             }
 
-            // Matched and same type (or no type specified)
             return true;
         }
 
@@ -234,23 +227,25 @@ class iMSCP_VirtualFileSystem
             return false;
         }
 
-        // Get a temporary file name
+        // Path is always relative to the root vfs
+        if (substr($file, 0, 1) != '/') {
+            $file = '/' . $file;
+        }
+
+        if ($this->rootdir != '/') {
+            $file = $this->rootdir . $file;
+        }
+
         $cfg = iMSCP_Registry::get('config');
         $tmp = tempnam($cfg['GUI_ROOT_DIR'] . '/data/tmp', 'vfs_');
 
-        // Get the actual file from the virtual file system
         $rs = ftp_get($this->stream, $tmp, $file, $mode);
-
         if (false === $rs) {
             return false;
         }
 
-        // Retrieve file contents
         $rs = @file_get_contents($tmp);
-
-        // Unlink the temporary file
         @unlink($tmp);
-
         return $rs;
     }
 
@@ -268,23 +263,27 @@ class iMSCP_VirtualFileSystem
             return false;
         }
 
-        // Get a temporary file name
+        // Path is always relative to the root vfs
+        if (substr($file, 0, 1) != '/') {
+            $file = '/' . $file;
+        }
+
+        if ($this->rootdir != '/') {
+            $file = $this->rootdir . $file;
+        }
+
         $cfg = Registry::get('config');
         $tmp = tempnam($cfg['GUI_ROOT_DIR'] . '/data/tmp', 'vfs_');
 
-        // Save temporary file
         if (false === file_put_contents($tmp, $content)) {
             return false;
         }
-        
-        // Store the file in the virtual file system
+
         if (!ftp_put($this->stream, $file, $tmp, $mode)) {
             return false;
         }
 
-        // Unlink the temporary file
         @unlink($tmp);
-
         return true;
     }
 

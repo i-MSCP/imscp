@@ -1,110 +1,117 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
+use iMSCP\VirtualFileSystem as VirtualFileSystem;
 
 /***********************************************************************************************************************
  * Functions
  */
 
 /**
- * Generate edit page
+ * Write error page
+ *
+ * @param int $eid Error page unique identifier
+ * @return bool TRUE on success, FALSE otherwise
+ */
+function writeErrorPage($eid)
+{
+    $vfs = new VirtualFileSystem($_SESSION['user_logged'], '/errors');
+    return $vfs->put($eid . '.html', $_POST['error']);
+}
+
+/**
+ * Edit an error page
+ *
+ * @param int $eid Error page unique identifier
+ * @return TRUE on success, FALSE on failure
+ */
+function editErrorPage($eid)
+{
+    if (!isset($_POST['error'])) {
+        showBadRequestErrorPage();
+    }
+
+    if (in_array($eid, array(401, 403, 404, 500, 503)) && writeErrorPage($eid)) {
+        set_page_message(tr('Custom error page updated.'), 'success');
+        return true;
+    }
+
+    set_page_message(tr('System error - custom error page was not updated.'), 'error');
+    return false;
+}
+
+/**
+ * Generate page
  *
  * @param iMSCP_pTemplate $tpl
- * @param $errorPageId
+ * @param int $eid Error page unique identifier
  * @return void
  */
-function generateErrorPageData($tpl, $errorPageId)
+function generatePage($tpl, $eid)
 {
-	$domain = $_SESSION['user_logged'];
-
-	// Check if we already have an error page
-	$vfs = new iMSCP_VirtualFileSystem($domain);
-	$errorPageContent = $vfs->get('/errors/' . $errorPageId . '.html');
-
-	if (false !== $errorPageContent) {
-		// We already have an error page, return it
-		$tpl->assign('ERROR', tohtml($errorPageContent));
-		return;
-	}
-	// No error page
-	$tpl->assign('ERROR', '');
+    $vfs = new VirtualFileSystem($_SESSION['user_logged'], '/errors');
+    $errorPageContent = $vfs->get($eid . '.html');
+    $tpl->assign('ERROR', ($errorPageContent !== false) ? tohtml($errorPageContent) : '');
 }
 
 /***********************************************************************************************************************
  * Main
  */
 
-// Include core library
 require_once 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
 check_login('user');
 
-customerHasFeature('custom_error_pages') or showBadRequestErrorPage();
+if (!customerHasFeature('custom_error_pages') || !isset($_REQUEST['eid'])) {
+    showBadRequestErrorPage();
+}
 
-if (!isset($_GET['eid'])) {
-	showBadRequestErrorPage();
-	exit;
-} else {
-	$errorPageId = intval($_GET['eid']);
+$eid = intval($_REQUEST['eid']);
+
+if (!in_array($eid, array('401', '403', '404', '500', '503'))) {
+    showBadRequestErrorPage();
+}
+
+if (!empty($_POST) && editErrorPage($eid)) {
+    redirectTo('error_pages.php');
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'client/error_edit.tpl',
-		'page_message' => 'layout'
-	)
-);
-
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr(' Client / Webtools / Custom Error Pages / Edit Custom Error Page'),
-		'TR_ERROR_EDIT_PAGE' => tr('Edit error page'),
-		'TR_SAVE' => tr('Save'),
-		'TR_CANCEL' => tr('Cancel'),
-		'EID' => $errorPageId
-	)
-);
-
-if (in_array($errorPageId, array('401', '403', '404', '500', '503'))) {
-	generateErrorPageData($tpl, $errorPageId);
-} else {
-	showBadRequestErrorPage();
-}
+$tpl->define_dynamic(array(
+    'layout' => 'shared/layouts/ui.tpl',
+    'page' => 'client/error_edit.tpl',
+    'page_message' => 'layout'
+));
+$tpl->assign(array(
+    'TR_PAGE_TITLE' => tr(' Client / Webtools / Custom Error Pages / Edit Custom Error Page'),
+    'TR_ERROR_EDIT_PAGE' => tr('Edit error page'),
+    'TR_SAVE' => tr('Save'),
+    'TR_CANCEL' => tr('Cancel'),
+    'EID' => $eid
+));
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
+generatePage($tpl, $eid);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
-
 $tpl->prnt();
-
-unsetMessages();

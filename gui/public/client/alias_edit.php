@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP\VirtualFileSystem as VirtualFileSystem;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -128,8 +130,8 @@ function client_generatePage($tpl)
     // Cover the case where the domain alias is currently redirected to another domain
     // In such a case the customer must first disable the redirection, and edit the domain alias again to set an
     // alternative DocumentRoot
-    $vfs = new iMSCP_VirtualFileSystem($_SESSION['user_logged'], $domainAliasData['alias_mount']);
-    if(!$vfs->exists('/htdocs', iMSCP_VirtualFileSystem::VFS_TYPE_DIR)) {
+    $vfs = new VirtualFileSystem($_SESSION['user_logged'], $domainAliasData['alias_mount']);
+    if(!$vfs->exists('/htdocs', VirtualFileSystem::VFS_TYPE_DIR)) {
         $tpl->assign('DOCUMENT_ROOT_BLOC',  '');
     }
 }
@@ -153,11 +155,11 @@ function client_editDomainAlias()
     }
 
     if(isset($_POST['document_root'])) {
-        $documentRoot = rtrim(clean_input($_POST['document_root']), '/');
+        $documentRoot = rtrim(utils_normalizePath(clean_input($_POST['document_root'])), '/');
 
         if($documentRoot != '') {
-            $vfs = new iMSCP_VirtualFileSystem($_SESSION['user_logged'], $domainAliasData['alias_mount'] . '/htdocs');
-            if(!$vfs->exists($documentRoot, iMSCP_VirtualFileSystem::VFS_TYPE_DIR)) {
+            $vfs = new VirtualFileSystem($_SESSION['user_logged'], $domainAliasData['alias_mount'] . '/htdocs');
+            if(!$vfs->exists($documentRoot, VirtualFileSystem::VFS_TYPE_DIR)) {
                 set_page_message(tr('The new document root must pre-exists inside the /htdocs directory.'), 'error');
                 return false;
             }

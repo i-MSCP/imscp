@@ -1292,6 +1292,55 @@ function utils_getPhpValueInBytes($value)
 }
 
 /**
+ * Normalize the given path
+ *
+ * @param string $path Path
+ * @return string
+ */
+function utils_normalizePath($path)
+{
+    if (!strlen($path)) {
+        return '.';
+    }
+
+    $isAbsolute = $path[0];
+    $trailingSlash = $path[strlen($path) - 1];
+    $up = 0;
+    $parts = array_values(array_filter(explode('/', $path), function ($n) {
+        return !!$n;
+    }));
+
+    for ($i = count($parts) - 1; $i >= 0; $i--) {
+        $last = $parts[$i];
+
+        if ($last == '.') {
+            array_splice($parts, $i, 1);
+        } else {
+            if ($last == '..') {
+                array_splice($parts, $i, 1);
+                $up++;
+            } else {
+                if ($up) {
+                    array_splice($parts, $i, 1);
+                    $up--;
+                }
+            }
+        }
+    }
+
+    $path = implode('/', $parts);
+    if (!$path && !$isAbsolute) {
+        $path = '.';
+    }
+
+    if ($path && $trailingSlash == '/') {
+        $path .= '/';
+    }
+
+    return ($isAbsolute == '/' ? '/' : '') . $path;
+}
+
+/**
  * Remove the given directory recusively
  *
  * @param string $directory Path of directory to remove

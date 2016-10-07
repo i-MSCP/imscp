@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP\VirtualFileSystem as VirtualFileSystem;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -169,7 +171,7 @@ function addAccount()
     $dmnName = mb_strtolower(clean_input($_POST['domain_name']));
     $passwd = clean_input($_POST['password']);
     $passwdRepeat = clean_input($_POST['password_repeat']);
-    $homeDir = clean_input($_POST['home_dir']);
+    $homeDir = utils_normalizePath(clean_input($_POST['home_dir']));
 
     if (!customerHasDomain($dmnName, $_SESSION['user_id'])) {
         showBadRequestErrorPage();
@@ -196,28 +198,13 @@ function addAccount()
         return false;
     }
 
-    // Cleanup path:
-    // - Ensure that path start by a slash
-    // - Removes double slashes
-    // - Remove trailing slash if any
-    if ($homeDir != '/') {
-        $cleanPath = array();
-        foreach (explode(DIRECTORY_SEPARATOR, $homeDir) as $dir) {
-            if ($dir != '') {
-                $cleanPath[] = $dir;
-            }
-        }
-
-        $homeDir = '/' . implode(DIRECTORY_SEPARATOR, $cleanPath);
-    }
-
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
-    $vfs = new iMSCP_VirtualFileSystem($mainDmnProps['domain_name']);
-    if ($homeDir !== '/' && !$vfs->exists($homeDir, iMSCP_VirtualFileSystem::VFS_TYPE_DIR)) {
+    $vfs = new VirtualFileSystem($mainDmnProps['domain_name']);
+    if ($homeDir !== '/' && !$vfs->exists($homeDir, VirtualFileSystem::VFS_TYPE_DIR)) {
         set_page_message(tr("Directory '%s' doesn't exists.", $homeDir), 'error');
         return false;
-    } elseif (strpos($homeDir, '..') !== false || !isAllowedDir($homeDir)) {
+    } elseif (!isAllowedDir($homeDir)) {
         set_page_message(tr("Directory '%s' is not allowed or invalid.", $homeDir), 'error');
         return false;
     }
@@ -226,7 +213,7 @@ function addAccount()
     $username .= '@' . encode_idna($dmnName);
     $encryptedPassword = cryptPasswordWithSalt($passwd);
     $shell = '/bin/sh';
-    $homeDir = $cfg['USER_WEB_DIR'] . '/' . $mainDmnProps['domain_name'] . $homeDir;
+    $homeDir = utils_normalizePath($cfg['USER_WEB_DIR'] . '/' . $mainDmnProps['domain_name'] . $homeDir);
     $stmt = exec_query(
         '
             SELECT t1.admin_name, t1.admin_sys_uid, t1.admin_sys_gid, t2.domain_disk_limit,

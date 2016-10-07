@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP\VirtualFileSystem as VirtualFileSystem;
+
 /***********************************************************************************************************************
  *  Script functions
  */
@@ -90,7 +92,7 @@ if (isset($_GET['id']) && is_number($_GET['id'])) {
 			isset($_POST['install_password']) && isset($_POST['install_email'])
 		) {
 			# Required data
-			$otherDir = clean_input($_POST['other_dir']);
+			$otherDir = utils_normalizePath(clean_input($_POST['other_dir']));
 			$appLoginName = clean_input($_POST['install_username']);
 			$appPassword = clean_input($_POST['install_password']);
 			$appEmail = clean_input($_POST['install_email']);
@@ -180,7 +182,7 @@ if (isset($_GET['id']) && is_number($_GET['id'])) {
 								exit;
 							}
 						} else {
-							$targetBasePath = '';
+							$targetBasePath = '/';
 							$documentRoot = $domainProps['document_root'];
 						}
 
@@ -188,7 +190,7 @@ if (isset($_GET['id']) && is_number($_GET['id'])) {
 
 						if (!preg_match($targetPathReg, $otherDir)) {
 							set_page_message(
-								tr("You can't install the software outside the htdocs directory of the selected domain."),
+								tr("You can't install the software outside of the document root of the selected domain."),
 								'error'
 							);
 							$error = true;
