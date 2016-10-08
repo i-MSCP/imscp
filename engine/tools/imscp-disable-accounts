@@ -126,7 +126,9 @@ my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-disable-accounts.lock', 'nowait');
 $bootstrapper->getInstance()->boot(
     {
-        nolock => 'yes', norequirements => 'yes', config_readonly => 'yes'
+        nolock          => 1,
+        norequirements  => 1,
+        config_readonly => 1
     }
 );
 

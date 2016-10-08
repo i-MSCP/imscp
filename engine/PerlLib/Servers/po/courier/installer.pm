@@ -948,6 +948,8 @@ sub _migrateFromDovecot
 {
     my $self = shift;
 
+    return 0 unless $main::imscpConfig{'PO_SERVER'} ne $main::imscpOldConfig{'PO_SERVER'};
+
     my $rs = $self->{'eventManager'}->trigger( 'beforePoMigrateFromDovecot' );
     return $rs if $rs;
 

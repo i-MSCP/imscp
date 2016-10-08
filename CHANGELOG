@@ -17,7 +17,9 @@ FRONTEND
 
 INSTALLER
     Added: Support for package post installation commands (autoinstaller::Adapter::DebianAdapter)
+    Fixed: Main configuration parameters are saved too early
     Fixed: Making sure that all required PHP modules are enabled by executing php5enmod/phpenmod (Debian/Ubuntu)
+    Fixed: Migration script is always run while reconfiguration, forcing clients to re-download all mails (PO servers)
     Fixed: Packages such as `Rainloop' remain selected even when they are unchecked in setup dialog
     Fixed: Some PHP modules such as `mcrypt' and `imap' are not enabled after a fresh installation (Ubuntu 14.04)
     Fixed: The setupSystemDirectories() subroutine is called too early

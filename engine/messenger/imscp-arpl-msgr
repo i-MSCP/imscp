@@ -35,7 +35,13 @@ $ENV{'LANG'} = 'C.UTF-8';
 
 newDebug('imscp-arpl-msgr/imscp-arpl-msgr.log');
 
-iMSCP::Bootstrapper->getInstance()->boot({ nolock => 'yes', norequirements => 'yes', config_readonly => 'yes' });
+iMSCP::Bootstrapper->getInstance()->boot(
+    {
+        nolock          => 1,
+        norequirements  => 1,
+        config_readonly => 1
+    }
+);
 
 eval {
     my $dbh = iMSCP::Database->factory()->getRawDb();

@@ -76,7 +76,7 @@ sub registerSetupListeners
         $rs ||= $eventManager->register( 'beforeMtaBuildMainCfFile', sub { $self->configurePostfix( @_ ); } );
         $rs ||= $eventManager->register( 'beforeMtaBuildMasterCfFile', sub { $self->configurePostfix( @_ ); } );
     } else {
-        $main::imscpConfig{'PO_SERVER'} = 'no';
+        main::setupSetQuestion('PO_SERVER', 'no');
         warning( 'i-MSCP Dovecot PO server require the Postfix MTA. Installation skipped...' );
         0;
     }
@@ -565,6 +565,8 @@ sub _saveConf
 sub _migrateFromCourier
 {
     my $self = shift;
+
+    return 0 unless $main::imscpConfig{'PO_SERVER'} ne $main::imscpOldConfig{'PO_SERVER'};
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoMigrateFromCourier' );
     return $rs if $rs;

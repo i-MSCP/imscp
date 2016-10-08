@@ -79,7 +79,7 @@ sub _init
     $self->{'lineMap'} = { };
     $self->{'confFileName'} = $self->{'fileName'};
 
-    debug( sprintf( 'Tying %s file', $self->{'confFileName'} ) );
+    debug( sprintf( 'Tying %s file in %s mode', $self->{'confFileName'}, $self->{'readonly'} ? 'readonly' : 'writing' ) );
 
     $self->_loadConfig();
     $self->_parseConfig();
@@ -142,27 +142,27 @@ sub _parseConfig
     undef;
 }
 
-=item FETCH($paramName)
+=item FETCH($param)
 
  Return value of the given configuration parameter
 
- Param string $paramName Configuration parameter name
+ Param string param Configuration parameter name
  Return scalar|undef Configuration parameter value or undef if config parameter is not defined
 
 =cut
 
 sub FETCH
 {
-    my ($self, $paramName) = @_;
+    my ($self, $param) = @_;
 
-    return $self->{'configValues'}->{$paramName} if exists $self->{'configValues'}->{$paramName};
+    return $self->{'configValues'}->{$param} if exists $self->{'configValues'}->{$param};
 
     unless ($self->{'nowarn'}) {
         my (undef, $file, $line) = caller;
         warning(
             sprintf(
                 'Accessing non existing config value %s from the %s file (see file %s at line %s)',
-                $paramName, $self->{'fileName'}, $file, $line
+                $param, $self->{'fileName'}, $file, $line
             )
         );
     }
@@ -170,11 +170,11 @@ sub FETCH
     undef;
 }
 
-=item STORE($paramName, $value)
+=item STORE($param, $value)
 
  Store the given configuration parameter
 
- Param string $paramName Configuration parameter name
+ Param string param Configuration parameter name
  Param string $value Configuration parameter value
  Return string Stored value
 
@@ -182,14 +182,16 @@ sub FETCH
 
 sub STORE
 {
-    my ($self, $paramName, $value) = @_;
+    my ($self, $param, $value) = @_;
 
-    !$self->{'readonly'} || $self->{'temporary'} or die( 'Config object is readonly' );
+    !$self->{'readonly'} || $self->{'temporary'} or die(
+        sprintf("Could not change value for the `%s' parameter: config object is readonly", $param )
+    );
 
-    unless (exists $self->{'configValues'}->{$paramName}) {
-        $self->_insertConfig( $paramName, $value );
+    unless (exists $self->{'configValues'}->{$param}) {
+        $self->_insertConfig( $param, $value );
     } else {
-        $self->_replaceConfig( $paramName, $value );
+        $self->_replaceConfig( $param, $value );
     }
 
     $value;
@@ -224,20 +226,20 @@ sub NEXTKEY
     shift @{$_[0]->{'_list'}};
 }
 
-=item EXISTS($paramName)
+=item EXISTS($param)
 
  Verify that the given configuration parameter exists
 
- Param string $paramName configuration parameter name
+ Param string param configuration parameter name
  Return true if the given configuration parameter exists, false otherwise
 
 =cut
 
 sub EXISTS
 {
-    my ($self, $paramName) = @_;
+    my ($self, $param) = @_;
 
-    exists $self->{'configValues'}->{$paramName};
+    exists $self->{'configValues'}->{$param};
 }
 
 =item CLEAR()
@@ -256,11 +258,11 @@ sub CLEAR
     $self;
 }
 
-=item _replaceConfig($paramName, $value)
+=item _replaceConfig($param, $value)
 
  Replace the given configuration parameter value
 
- Param string $paramName Configuration parameter name
+ Param string param Configuration parameter name
  Param string $value Configuration parameter value
  Return string Configuration parameter value
 
@@ -268,21 +270,21 @@ sub CLEAR
 
 sub _replaceConfig
 {
-    my ($self, $paramName, $value) = @_;
+    my ($self, $param, $value) = @_;
     $value //= '';
     
     unless ($self->{'temporary'}) {
-        @{$self->{'confFile'}}[$self->{'lineMap'}->{$paramName}] = "$paramName = $value";
+        @{$self->{'confFile'}}[$self->{'lineMap'}->{$param}] = "$param = $value";
     }
 
-    $self->{'configValues'}->{$paramName} = $value;
+    $self->{'configValues'}->{$param} = $value;
 }
 
-=item _insertConfig($paramName, $value)
+=item _insertConfig($param, $value)
 
  Insert the given configuration parameter
 
- Param string $paramName Configuration parameter name
+ Param string param Configuration parameter name
  Param string $config Configuration parameter value
  Return string $value Configuration parameter value
 
@@ -290,15 +292,15 @@ sub _replaceConfig
 
 sub _insertConfig
 {
-    my ($self, $paramName, $value) = @_;
+    my ($self, $param, $value) = @_;
     $value //= '';
 
     unless($self->{temporary}) {
-        push @{$self->{'confFile'}}, "$paramName = $value";
-        $self->{'lineMap'}->{$paramName} = $#{$self->{confFile}};
+        push @{$self->{'confFile'}}, "$param = $value";
+        $self->{'lineMap'}->{$param} = $#{$self->{confFile}};
     }
 
-    $self->{'configValues'}->{$paramName} = $value;
+    $self->{'configValues'}->{$param} = $value;
 }
 
 =back

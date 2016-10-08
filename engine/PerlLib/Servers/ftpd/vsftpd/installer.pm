@@ -127,8 +127,6 @@ EOF
 
 Please, enter a password for the VsFTPd SQL user (blank for autogenerate):$msg
 EOF
-
-
                     if ($dbPass ne '') {
                         if (length $dbPass < 6) {
                             $msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";

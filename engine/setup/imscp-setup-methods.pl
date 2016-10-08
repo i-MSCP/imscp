@@ -79,8 +79,14 @@ sub setupBoot
 {
     # Untie previous configuration object if any (i-MSCP installer context)
     untie %main::imscpConfig;
-    # We do not try to establish connection to the database since needed data can be unavailable at this stage
-    iMSCP::Bootstrapper->getInstance()->boot({ mode => 'setup', nodatabase => 'yes' });
+    
+    iMSCP::Bootstrapper->getInstance()->boot(
+        {
+            mode            => 'setup', # Backend mode
+            config_readonly => 1, # We do not allow writting ing conffile at this time
+            nodatabase      => 1 # We do not establish connection to the database at this time
+        }
+    );
     %main::imscpOldConfig = %main::imscpConfig unless %main::imscpOldConfig;
     0;
 }
@@ -90,7 +96,7 @@ sub setupBoot
 sub setServerCapabilities
 {
     # FIXME: It is sufficient for check of IPv6 support?
-    $main::imscpConfig{'IPV6_SUPPORT'} = -f '/proc/net/if_inet6' ? 1 : 0;
+    main::setupSetQuestion('IPV6_SUPPORT', -f '/proc/net/if_inet6' ? 1 : 0);
     0;
 }
 
@@ -183,7 +189,6 @@ sub setupTasks
     return $rs if $rs;
 
     my @steps = (
-        [ \&setupSaveConfig,              'Saving configuration' ],
         [ \&setupCreateMasterUser,        'Creating system master user' ],
         [ \&setupServerHostname,          'Setting up server hostname' ],
         [ \&setupServiceSsl,              'Configuring SSL for i-MSCP services' ],
@@ -191,6 +196,7 @@ sub setupTasks
         [ \&setupRegisterDelayedTasks,    'Registering delayed tasks' ],
         [ \&setupRegisterPluginListeners, 'Registering plugin setup listeners' ],
         [ \&setupServersAndPackages,      'Processing servers/packages' ],
+        [ \&setupSaveConfig,              'Saving configuration' ],
         [ \&setupSetPermissions,          'Setting up permissions...' ],
         [ \&setupDbTasks,                 'Processing DB tasks...' ],
         [ \&setupRestartServices,         'Restarting services...' ]
@@ -858,21 +864,6 @@ EOF
 ## Setup subroutines
 #
 
-# Write configuration into imscp.conf file
-sub setupSaveConfig
-{
-    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupSaveConfig');
-    return $rs if $rs;
-
-    for my $question(keys %main::questions) {
-        if(exists $main::imscpConfig{$question}) {
-            $main::imscpConfig{$question} = $main::questions{$question};
-        }
-    }
-
-    iMSCP::EventManager->getInstance()->trigger('afterSetupSaveConfig');
-}
-
 sub setupCreateMasterUser
 {
     my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupCreateMasterUser');
@@ -1241,8 +1232,8 @@ sub setupSetPermissions
     my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupSetPermissions');
     return $rs if $rs;
 
-    my $debug = $main::imscpConfig{'DEBUG'} || 0;
-    $main::imscpConfig{'DEBUG'} = iMSCP::Getopt->debug ? 1 : 0;
+    (tied %main::imscpConfig)->{'temporary'} = 1;
+    $main::imscpConfig{'DEBUG'} = iMSCP::Getopt->debug;
 
     for my $script ('set-engine-permissions.pl', 'set-gui-permissions.pl') {
         startDetail();
@@ -1268,7 +1259,6 @@ sub setupSetPermissions
         return $rs if $rs;
     }
 
-    $main::imscpConfig{'DEBUG'} = $debug;
     iMSCP::EventManager->getInstance()->trigger('afterSetupSetPermissions');
 }
 
@@ -1441,6 +1431,38 @@ sub setupServersAndPackages
     }
 
     $rs;
+}
+
+sub setupSaveConfig
+{
+    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupSaveConfig');
+    return $rs if $rs;
+
+    # Re-open main configuration file in read/write mode
+    iMSCP::Bootstrapper->getInstance()->loadMainConfig(
+        {
+            nocreate        => 1,
+            nofail          => 0,
+            config_readonly => 0
+        }
+    );
+
+    for my $question(keys %main::questions) {
+        if(exists $main::imscpConfig{$question}) {
+            $main::imscpConfig{$question} = $main::questions{$question};
+        }
+    }
+
+    # Re-open main configuration file in read only mode
+    iMSCP::Bootstrapper->getInstance()->loadMainConfig(
+        {
+            nocreate        => 1,
+            nofail          => 0,
+            config_readonly => 1
+        }
+    );
+
+    iMSCP::EventManager->getInstance()->trigger('afterSetupSaveConfig');
 }
 
 sub setupRestartServices

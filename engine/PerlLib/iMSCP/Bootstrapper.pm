@@ -25,16 +25,12 @@ package iMSCP::Bootstrapper;
 
 use strict;
 use warnings;
-use Fcntl ':flock';
-use iMSCP::Config;
-use iMSCP::Database;
+use Fcntl qw/ :flock /;
 use iMSCP::Debug;
 use iMSCP::EventManager;
-use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::Requirements;
 use IO::Handle;
-use POSIX qw(tzset);
+use POSIX qw / tzset /;
 use parent 'Common::SingletonClass';
 
 $SIG{INT} = 'IGNORE';
@@ -67,19 +63,13 @@ sub boot
 {
     my ($self, $options) = @_;
 
-    # Set debug mode for booting time
-    setDebug( 1 );
+    setDebug( 1 ); # Set debug mode for booting time
 
     my $mode = $options->{'mode'} || 'backend';
     debug( sprintf( 'Booting %s....', $mode ) );
 
-    tie
-        %main::imscpConfig,
-        'iMSCP::Config',
-        fileName => ($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/').'imscp/imscp.conf',
-        nocreate => 1, # Do not create file if it doesn't exist (raise error instead)
-        nofail   => $options->{'nofail'} && $options->{'nofail'} eq 'yes' ? 1 : 0,
-        readonly => $options->{'config_readonly'} && $options->{'config_readonly'} eq 'yes' ? 1 : 0;
+    $self->lock() unless $options->{'nolock'};
+    $self->loadMainConfig( $options );
 
     # Set timezone unless we are in setup mode (needed to show current local timezone in setup dialog)
     unless ($mode eq 'setup') {
@@ -87,42 +77,50 @@ sub boot
         tzset;
     }
 
-    # Set debug mode
-    setDebug( iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0 );
+    setDebug( iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0 ); # Set debug mode
 
-    unless ($options->{'norequirements'} && $options->{'norequirements'} eq 'yes') {
+    unless ($options->{'norequirements'}) {
+        require iMSCP::Requirements;
         my $test = ($mode eq 'setup') ? 'all' : 'user';
         iMSCP::Requirements->new()->$test();
     }
 
-    $self->lock() unless $options->{'nolock'} && $options->{'nolock'} eq 'yes';
-    $self->_genKeys() unless $options->{'nokeys'} && $options->{'nokeys'} eq 'yes';
+    $self->_genKeys() unless $options->{'nokeys'};
+    $self->_dbConnect() unless $options->{'nodatabase'};
 
-    return $self if $options->{'nodatabase'} && $options->{'nodatabase'} eq 'yes';
-
-    my $database = iMSCP::Database->factory();
-    require iMSCP::Crypt;
-
-    $database->set( 'DATABASE_HOST', $main::imscpConfig{'DATABASE_HOST'} );
-    $database->set( 'DATABASE_PORT', $main::imscpConfig{'DATABASE_PORT'} );
-    $database->set( 'DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'} );
-    $database->set( 'DATABASE_USER', $main::imscpConfig{'DATABASE_USER'} );
-    $database->set(
-        'DATABASE_PASSWORD',
-        iMSCP::Crypt::decryptBlowfishCBC( $main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'} )
-    );
-    my $rs = $database->connect();
-    !$rs || ($options->{'nofail'} && $options->{'nofail'} eq 'yes') or die(
-        sprintf( 'Could not connect to the SQL server: %s', $rs )
-    );
-
-    iMSCP::EventManager->getInstance()->trigger('onBoot', $mode) == 0 or die(
-        getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'An unexpected error occurred'
+    iMSCP::EventManager->getInstance()->trigger( 'onBoot', $mode ) == 0 or die(
+        getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
     );
     $self;
 }
 
-=item lock([$lockFile [, $nowait ]])
+=item loadMainConfig(\%options)
+
+ Load main configuration file using given options
+
+ Param hashref \%options Options for iMSCP::Config object
+ Return int 0 on success, die on failure
+
+=cut
+
+sub loadMainConfig
+{
+    my ($self, $options) = @_;
+
+    require iMSCP::Config;
+    untie %main::imscpConfig;
+    tie
+        %main::imscpConfig,
+        'iMSCP::Config',
+        fileName => ($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/').'imscp/imscp.conf',
+        nowarn   => $options->{'nowarn'} // 0,
+        nocreate => $options->{'nocreate'} // 1,
+        nofail   => $options->{'nofail'} // 0,
+        readonly => $options->{'config_readonly'} // 0,
+        temporary => $options->{'config_temporary'} // 0;
+}
+
+=item lock([ $lockFile [, $nowait ] ])
 
  Acquire an exclusive lock on the given file (default to /tmp/imscp.lock)
 
@@ -137,7 +135,7 @@ sub lock
     my $lockFile = shift || '/tmp/imscp.lock';
     my $nowait = shift || 0;
 
-    return 1 if defined $self->{'locks'}->{$lockFile};
+    return 1 if exists $self->{'locks'}->{$lockFile};
 
     debug( sprintf( 'Acquire exclusive lock on %s', $lockFile ) );
     open $self->{'locks'}->{$lockFile}, '>', $lockFile or die( sprintf( 'Could not open %s file', $lockFile ) );
@@ -158,7 +156,7 @@ sub unlock
 {
     my ($self, $lockFile) = (shift, shift || '/tmp/imscp.lock');
 
-    return $self unless defined $self->{'locks'}->{$lockFile};
+    return $self unless exists $self->{'locks'}->{$lockFile};
 
     debug( sprintf( 'Releasing exclusive lock on %s', $lockFile ) );
     flock( $self->{'locks'}->{$lockFile}, LOCK_UN ) or die(
@@ -208,32 +206,64 @@ sub _genKeys
     require "$keyFile" if -f $keyFile;
 
     if ($db_pass_key eq '{KEY}' || $db_pass_iv eq '{IV}') {
+        require iMSCP::Crypt;
+        require Data::Dumper;
+        Data::Dumper->import();
+
         debug( 'Generating database keys...' );
 
-        if (-d $main::imscpConfig{'CONF_DIR'}) {
-            require iMSCP::Crypt;
-            require Data::Dumper;
-            Data::Dumper->import();
+        -d $main::imscpConfig{'CONF_DIR'} or die(
+            sprintf("%s doesn't exist or is not a directory", $main::imscpConfig{'CONF_DIR'} )
+        );
 
-            open( my $fh, '>:utf8', "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys" ) or die(
-                sprintf('Could not open %s file for writing: %s', "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys", $!)
+        open my $fh, '>:utf8', "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys" or die(
+            sprintf('Could not open %s file for writing: %s', "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys", $!)
+        );
+
+        print {$fh} Data::Dumper->Dump( 
+                [
+                    iMSCP::Crypt::randomStr( 32 ),
+                    iMSCP::Crypt::randomStr( 8 )
+                ],
+                [ qw/ db_pass_key db_pass_iv / ]
             );
 
-            print {$fh} Data::Dumper->Dump(
-                [ iMSCP::Crypt::randomStr( 32 ), iMSCP::Crypt::randomStr( 8 ) ], [ qw(db_pass_key db_pass_iv) ]
-            );
-
-            close $fh;
-        } else {
-            die( "Destination path $main::imscpConfig{'CONF_DIR'} doesn't exist or is not a directory" );
-        }
-
+        close $fh;
         require "$keyFile";
     }
 
     $main::imscpDBKey = $db_pass_key;
     $main::imscpDBiv = $db_pass_iv;
     undef;
+}
+
+=item _dbConnect()
+
+ Establish connection with the database
+
+ Return int 0 on success, die on failure
+
+=cut
+
+sub _dbConnect
+{
+    my ($self, $options) = @_;
+
+    require iMSCP::Database;
+    require iMSCP::Crypt;
+
+    my $database = iMSCP::Database->factory();
+    $database->set( 'DATABASE_HOST', $main::imscpConfig{'DATABASE_HOST'} );
+    $database->set( 'DATABASE_PORT', $main::imscpConfig{'DATABASE_PORT'} );
+    $database->set( 'DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'} );
+    $database->set( 'DATABASE_USER', $main::imscpConfig{'DATABASE_USER'} );
+    $database->set(
+        'DATABASE_PASSWORD',
+        iMSCP::Crypt::decryptBlowfishCBC( $main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'} )
+    );
+    my $rs = $database->connect();
+    !$rs || $options->{'nofail'} or die( sprintf( 'Could not connect to the SQL server: %s', $rs ) );
+    0;
 }
 
 =back

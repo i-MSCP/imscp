@@ -59,7 +59,10 @@ OPTIONS
 
 iMSCP::Bootstrapper->getInstance()->boot(
     {
-        norequirements => 'yes', nolock => 'yes', nodatabase => 'yes', nokeys => 'yes'
+        norequirements => 1,
+        nolock         => 1,
+        nodatabase     => 1,
+        nokeys         => 1
     }
 );
 

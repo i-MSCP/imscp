@@ -360,8 +360,8 @@ EOF
     }
 
     # For usage of unix socket
-    main::setupSetQuestion('DATABASE_HOST', 'localhost');
-    $main::imscpConfig{'DATABASE_HOST'} = 'localhost';
+    #main::setupSetQuestion('DATABASE_HOST', 'localhost');
+    #$main::imscpConfig{'DATABASE_HOST'} = 'localhost';
     0;
 }
 
