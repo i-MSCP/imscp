@@ -34,6 +34,7 @@ SERVERS
 YOUTRACK
     #IP-1633 Disabled domains - All sub-pages should be redirected to the root page instead of sending a 404 HTTP error
     #IP-1637 Duplicate mount entries in /etc/imscp/mount/mounts.conf
+    #IP-1638 Apache workers not closed on mis-configured vlogger
 
 ------------------------------------------------------------------------------------------------------------------------
 1.3.5

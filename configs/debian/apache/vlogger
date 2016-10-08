@@ -34,12 +34,17 @@
 # 1.7    version by i-MSCP Team (bugfix release)
 # 1.8    version by i-MSCP Team (maintenance release)
 # 1.9    Version by i-MSCP Team (bugfix release):
-#           - SQL statement must be prepared once per dump process
-#           - Avoid useless SELECT query
-#
+#         - SQL statement must be prepared once per dump process
+#         - Avoid useless SELECT query
+# 1.10   Version by i-MSCP Team (bugfix release):
+#         - Possible out of memory problems (Closes: #IP-1638)
+#         - Possible `Unknown MySQL server host' on reconnect (Closes: #IP-1638)
+#         - Usage of cached MySQL connection (Performance improvement)
+#         - Usage of cached prepared statement (Performance improvement)
+#         - CS fixes
 $ENV{'PATH'} = '/bin:/usr/bin:/usr/local/bin';
 
-my $VERSION = '1.9';
+my $VERSION = '1.10';
 
 =head1 NAME
 
@@ -123,12 +128,12 @@ mod_logio variables at the end in your LogFormat:
 
 =head1 DBI USAGE TRACKER
 
-    Vlogger can automatically keep track of per-virtualhost usage statistics in a
+    vlogger can automatically keep track of per-virtualhost usage statistics in a
 MySQL database. DBI and the relevant DBD::mysql needs to be installed for this to work.
 Create a table in your database to hold the data. A "vlogger.sql" script is provided for
 using this feature with MySQL. Configure the dsn, user, pass and dump values in the
 vlogger-dbi.conf file. The "dump" parameter controls how often vlogger will dump its stats
-into the database (the default is 30 seconds). Copy this file to somewhere convienient on
+into the database (the default is 60 seconds). Copy this file to somewhere convienient on
 your filesystem ( like /etc/apache/vlogger-dbi.conf ) and start vlogger with
 "-d /etc/apache/vlogger-dbi.conf". You might want to use this feature to easily bill
 customers on a daily/weekly/monthly basis for bandwidth usage.
@@ -157,20 +162,25 @@ use IO::Handle;
 
 # get command line options
 our %OPTS;
-getopts('f:t:s:hu:g:aeivr:d:n', \%OPTS);
+getopts('f:t:s:h?u:g:aeivr:d:n', \%OPTS);
 
 # print out version
 if ($OPTS{'v'}) {
-    print "\nVLogger $VERSION (apache logfile parser)\n";
-    print "Written by Steve J. Kondik <shade\@chemlab.org>\n";
-    print "Re-written by Laurent Declercq <l.declercq\@nuxwin.com> for i-MSCP project.\n\n";
-    print "This is free software; see the source for copying conditions. There is NO\n";
-    print "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n";
+    print <<"EOF";
+
+vlogger $VERSION (apache logfile parser)
+Written by Steve J. Kondik <shade\@chemlab.org>
+Re-written by Laurent Declercq <l.declercq\@nuxwin.com> for i-MSCP project.
+
+This is free software; see the source for copying conditions. There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+EOF
     exit;
 }
 
 # print help
-if ($OPTS{'h'} || !$ARGV[0]) {
+if ($OPTS{'h'} || $OPTS{'?'} || !$ARGV[0]) {
     usage();
     exit;
 }
@@ -226,7 +236,6 @@ if ($> == 0) {
 }
 
 # set up DBI stuffs
-my $DBH;
 my $DBI_DSN;
 my $DBI_USER;
 my $DBI_PASS;
@@ -242,8 +251,11 @@ if ($OPTS{'d'}) {
         if(-f $OPTS{'d'}) {
             if(open CONF, '<', $OPTS{'d'}) {
                 while (<CONF>) {
+                    next if /^(#|$)/; # Ignore comment and empty lines
                     chomp;
+
                     my @conf = split;
+                    next if scalar @conf < 2;
 
                     if ($conf[0] eq 'dsn') {
                         $DBI_DSN = $conf[1];
@@ -251,7 +263,7 @@ if ($OPTS{'d'}) {
                         $DBI_USER = $conf[1];
                     } elsif ($conf[0] eq 'pass') {
                         $DBI_PASS = $conf[1];
-                    } elsif ($conf[0] eq 'dump') {
+                    } elsif ($conf[0] eq 'dump' && $conf[1] =~ /^\d+$/) {
                         $DBI_DUMP = $conf[1];
                     }
                 }
@@ -259,31 +271,29 @@ if ($OPTS{'d'}) {
                 close CONF;
 
                 unless ($DBI_DSN && $DBI_USER && $DBI_PASS) {
-                    logs('alert', 'all values for DBI configuration are not properly defined');
+                    logs('alert', 'all values for DBI usage tracker configuration are not properly defined');
                     delete $OPTS{'d'};
                 } else {
-                    no warnings qw(once);
-
                     # test DB connection
-                    my $dbh = DBI->connect($DBI_DSN, $DBI_USER, $DBI_PASS, { PrintError => 0 });
-
-                    if($dbh) {
-                        $dbh->disconnect();
-
+                    eval { DBI->connect_cached($DBI_DSN, $DBI_USER, $DBI_PASS, { PrintError => 0, RaiseError => 1 }); };
+                    unless($@) {
                         # SIGALRM dumps the tracker hash
-                        my $mask = POSIX::SigSet->new(SIGALRM);
-                        my $action = POSIX::SigAction->new(\&dumpTracker, $mask);
-                        my $oldaction = POSIX::SigAction->new();
-                        sigaction(SIGALRM, $action, $oldaction);
+                        my $sigset = POSIX::SigSet->new(SIGALRM);
+                        my $sigaction = POSIX::SigAction->new(\&dumpTracker, $sigset);
+                        $sigaction->safe(1);
+                        if(POSIX::sigaction(SIGALRM, $sigaction) == -1) {
+                            logs('alert', sprintf('could not install signal handler: %s', $!));
+                            exit;
+                        }
                         alarm($DBI_DUMP);
-                        logs('notice', sprintf('dump interval set to %d seconds', $DBI_DUMP));
+                        logs('notice', sprintf('DBI usage tracker dump interval set to %d seconds', $DBI_DUMP));
                     } else {
-                        logs('alert', sprintf('could not connect to MySQL server: %s', $DBI::errstr));
+                        logs('alert', sprintf('could not connect to SQL server: %s', $@));
                         delete $OPTS{'d'};
                     }
                 }
             } else {
-                logs('alert', sprintf('could not open %s file. Tracker feature turned off', $OPTS{'d'}));
+                logs('alert', sprintf('could not open %s file: %s', $OPTS{'d'}, $!));
                 delete $OPTS{'d'};
             }
         } else {
@@ -295,7 +305,7 @@ if ($OPTS{'d'}) {
         delete $OPTS{'d'};
     }
 
-    logs('alert', 'tracker feature turned off') unless $OPTS{'d'};
+    logs('notice', 'DBI usage tracker feature turned off') unless $OPTS{'d'};
 }
 
 # max files to keep open
@@ -303,7 +313,7 @@ my $MAXFILES;
 if ($OPTS{'f'}) {
     $MAXFILES = $OPTS{'f'};
 } else {
-    $MAXFILES = '70';
+    $MAXFILES = '100';
 }
 
 # filesize rotation
@@ -338,11 +348,18 @@ if ($OPTS{'s'}) {
     $OPTS{'s'} = $1;
 }
 
-chdir($LOGDIR);
-chroot('.');
+chdir('/');
+
+# Temporarely disabled. Once chroot() has been called, SQL server hostname
+# cannot longer be resolved, leading to `Unknown MySQL server host' error.
+# FIXME: Retrieve SQL server hostname and resolve it before the chroot() call,
+# then use the resulting IP for connection.
+#chdir($LOGDIR);
+#chroot('.');  
 
 my %logs = ();
 my %tracker = ();
+my $dumpMaxAttempts = 0;
 
 # pick a mode
 if ($OPTS{'e'}) {
@@ -422,7 +439,7 @@ if ($OPTS{'e'}) {
             my $logTime = time();
             # check how many files we have open, close the oldest one
             if (keys(%logs) > $MAXFILES) {
-                my ($key, $value) = sort { $logs{$a} <=> $logs{$b} } (keys(%logs));
+                my ($key, $value) = sort { $logs{$a} <=> $logs{$b} } keys %logs;
                 close $key;
                 delete $logs{$key};
             }
@@ -443,15 +460,15 @@ if ($OPTS{'e'}) {
             }
         }
 
-        $logs{$vhost} = time();
-        $tracker{$vhost} += $reqSize if $reqSize =~ m/^\d*$/ && $reqSize > 0;
+        $logs{$vhost} = time(),   
+        $tracker{$vhost} += $reqSize if $OPTS{'d'} && $reqSize =~ /^\d+$/ && $reqSize > 0;
         print $vhost "@logLine\n";
     }
 }
 
 sub logs
 {
-    print STDERR sprintf("[%s] [%s] i-MSCP Vlogger: %s\n", scalar localtime, shift, shift);
+    print STDERR sprintf("[%s] [%s] vlogger: %s\n", scalar localtime, shift, shift);
 }
 
 sub closeFiles
@@ -485,68 +502,97 @@ sub openErrorLog
 
 sub dumpTracker
 {
-    unless (%tracker) {
+    unless(keys(%tracker) > 0) {
         alarm($DBI_DUMP);
         return;
     }
 
     eval {
-        my $dbh = DBI->connect($DBI_DSN, $DBI_USER, $DBI_PASS, { AutoCommit => 1, PrintError => 0, RaiseError => 1 });
-        my $sth = $dbh->prepare(
+        my $date = time2str('%Y%m%d', time());
+        my $dbh = DBI->connect_cached($DBI_DSN, $DBI_USER, $DBI_PASS, { PrintError => 0, RaiseError => 1 });
+        my $sth = $dbh->prepare_cached(
             'INSERT INTO httpd_vlogger (vhost, ldate, bytes) VALUE (?, ?, ?) ON DUPLICATE KEY UPDATE bytes = bytes + ?'
         );
 
-        my $date = time2str('%Y%m%d', time());
         while(my($vhost, $bytes) = each(%tracker)) {
             next unless defined $vhost;
             $sth->execute($vhost, $date, $bytes, $bytes);
         }
-
-        $dbh->disconnect();
+        
         %tracker = ();
     };
 
-    logs('alert', sprintf('error while tracker dump: %s', $@)) if $@;
-    alarm($DBI_DUMP);
+    unless($@) {
+        $dumpMaxAttempts = 0 if $dumpMaxAttempts;
+        alarm($DBI_DUMP);
+        return;
+    }
+
+    logs('alert', sprintf('error while DBI usage tracker dump: %s', $@));
+
+    if($dumpMaxAttempts < 3) {
+        logs('notice', 'a new DBI usage tracker dump attempt will be made in 2 minutes' );
+        alarm(120);
+        return;
+    }
+
+    $dumpMaxAttempts++;
+    %tracker = ();
+    delete $OPTS{'d'};
+    logs('notice', 'maximum number of dump attempts has been reached. DBI usage tracker feature turned off' );
 }
 
 sub shutdown
 {
     logs('notice', sprintf('caught %s, shutting down', shift));
     closeFiles();
-    dumpTracker() if $OPTS{'d'};
+
+    if($OPTS{'d'}) {
+        dumpTracker();
+        my $dbh = eval { DBI->connect_cached($DBI_DSN, $DBI_USER, $DBI_PASS, { PrintError => 0, RaiseError => 1 }); };
+        $dbh->disconnect() unless $@;
+        undef $dbh;
+    }
+
     exit;
 }
 
 sub usage
 {
-    print "\nUsage: vlogger [OPTIONS]... [LOGDIR]\n";
-    print "Handles a piped logfile from a webserver, splitting it into it's\n";
-    print "host components, and rotates the files daily.\n\n";
-    print "  -a                          do not autoflush files\n";
-    print "  -e                          errorlog mode\n";
-    print "  -n                          don't rotate files\n";
-    print "  -f MAXFILES                 max number of files to keep open\n";
-    print "  -u UID                      uid to switch to when running as root\n";
-    print "  -g GID                      gid to switch to when running as root\n";
-    print "  -t TEMPLATE                 filename template (see perldoc Date::Format)\n";
-    print "  -s SYMLINK                  maintain a symlink to most recent file\n";
-    print "  -r SIZE                     rotate when file reaches SIZE\n";
-    print "  -d CONFIG                   use DBI usage tracker (see perldoc vlogger)\n";
-    print "  -i                          extract mod_logio instead of filesize\n";
-    print "  -h                          display this help\n";
-    print "  -v                          output version information\n\n";
-    print "TEMPLATE may be a filename with Date::Format codes. The default template\n";
-    print "is %m%d%Y-access.log. SYMLINK is the name of a file that will be linked to\n";
-    print "the most recent file inside the log directory. The default is access.log.\n";
-    print "MAXFILES is the maximum number of filehandles to cache. This defaults to 100.\n";
-    print "When running with -a, performance may improve, but this might confuse some\n";
-    print "log analysis software that expects complete log entries at all times.\n";
-    print "Errorlog mode is used when running with an Apache errorlog. In this mode,\n";
-    print "virtualhost parsing is disabled, and a single file is written in LOGDIR\n";
-    print "using the TEMPLATE (%m%d%Y-error.log is default for -e). When running with\n";
-    print "-r, the template becomes %m%d%Y-%T-xxx.log. SIZE is given in bytes.\n\n";
-    print "Report bugs at https://youtrack.i-mscp.net/\n\n";
+    print <<'EOF';
+
+Usage: vlogger [OPTIONS]... [LOGDIR]
+Handles a piped logfile from a webserver, splitting it into it's
+host components, and rotates the files daily.
+
+  -a              Do not autoflush files
+  -e              Errorlog mode
+  -n              Don't rotate files
+  -f MAXFILES     Max number of files to keep open
+  -u UID          Uid to switch to when running as root
+  -g GID          Gid to switch to when running as root
+  -t TEMPLATE     Filename template (see perldoc Date::Format)
+  -s SYMLINK      Maintain a symlink to most recent file
+  -r SIZE         Rotate when file reaches SIZE
+  -d CONFIG       Use DBI usage tracker (see perldoc vlogger)
+  -i              Extract mod_logio instead of filesize
+  -h,?            Display this help
+  -v              Output version information
+
+TEMPLATE may be a filename with Date::Format codes. The default template
+is %m%d%Y-access.log. SYMLINK is the name of a file that will be linked to
+the most recent file inside the log directory. The default is access.log.
+MAXFILES is the maximum number of filehandles to cache. This defaults to 100.
+When running with -a, performance may improve, but this might confuse some
+log analysis software that expects complete log entries at all times.
+Errorlog mode is used when running with an Apache errorlog. In this mode,
+virtualhost parsing is disabled, and a single file is written in LOGDIR
+using the TEMPLATE (%m%d%Y-error.log is default for -e). When running with
+-r, the template becomes %m%d%Y-%T-xxx.log. SIZE is given in bytes.
+
+Report bugs at https://youtrack.i-mscp.net/
+
+EOF
 }
 
 1;
