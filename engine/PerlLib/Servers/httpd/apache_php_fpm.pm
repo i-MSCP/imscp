@@ -1621,31 +1621,16 @@ sub _addFiles
         }
 
         if ($data->{'DOMAIN_TYPE'} eq 'dmn') {
-            $fixPermissions = 1 unless -d "$data->{'WEB_DIR'}/errors";
-
-            if (-d "$tmpDir/errors") {
-                # We cannot use the ProxyErrorOverride directive due to a bug in the
-                # mod_proxy_fcgi Apache2 module.
-                # See https://bz.apache.org/bugzilla/show_bug.cgi?id=55415
-                # As a workaround, we wrap the error documents in PHP scripts
-                for(qw/ 401 403 404 500 503 /) {
-                    # Never override existent error documents. They can have been
-                    # customized by the customer
-                    if (-f "$data->{'WEB_DIR'}/errors/$.html") {
-                        $rs = iMSCP::File->new( filename => "$tmpDir/errors/$_.html" )->delFile();
-                        return $rs if $rs;
-                    }
-
-                    my $file = iMSCP::File->new( filename => "$tmpDir/errors/$_.php" );
-                    $rs = $file->set( "<?php\ninclude '$_.html';\n" );
-                    $rs ||= $file->save();
-                    $rs ||= $file->mode( 0440 );
-                    $rs ||= $file->owner( $data->{'USER'}, $data->{'GROUP'} );
-                    return $rs if $rs;
-                }
-            } else {
+            if (-d "$data->{'WEB_DIR'}/errors"
+                && !iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/errors" )->isEmpty()
+            ) {
+                $rs = iMSCP::Dir->new( dirname => "$tmpDir/errors" )->remove();
+                return $rs if $rs;
+            } elsif (!-d "$tmpDir/errors") {
                 error( "The `domain' Web folder skeleton must provides the `errors' directory." );
                 return 1;
+            } else {
+                $fixPermissions = 1;
             }
 
             if ($self->{'config'}->{'MOUNT_CUSTOMER_LOGS'} ne 'yes') {

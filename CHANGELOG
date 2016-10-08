@@ -29,10 +29,10 @@ LISTENERS
     Fixed: User web directory must be mounted as slave subtree (10_system_mount_userwebdir.pl)
 
 SERVERS
+    Added: Rewrite rule for handling of 404 errors when necessary (Closes: #IP-1406) (Apache2 with mod_proxy_fcgi)
     Added: SQL query for user iteration through `doveadm' (Dovecot)
     Fixed: Authorization problems - You don't have permission to access / on this server (redirect vhosts)
     Fixed: Could not access error documents on error (redirect vhosts)
-    Fixed: Wrap error documents in PHP scripts when necessary (Close: #IP-1406) (Apache2 with mod_proxy_fcgi)
     Removed: ProxyErrorOverride directive which cause too many problems due to a underlying but in mod_proxy_fcgi
 
 YOUTRACK
@@ -83,7 +83,7 @@ SERVERS
     Fixed: Redirects and HSTS sections are not removed in SSL vhost files when they have to be (Apache2)
     Fixed: Tells the mail clients what are the mailboxes they must use and subscribe by implementing RFC 6154 (Dovecot)
     Fixed: Unexpected behavior with `disablereuse' parameter set to `Off' (Apache2 mod_proxy)
-    Re-added: ProxyErrorOverride directive in 00_nameserver.conf (Close: #IP-1406 which has been reopened) (Apache2)
+    Re-added: ProxyErrorOverride directive in 00_nameserver.conf (Closes: #IP-1406 which has been reopened) (Apache2)
 
 SERVICES
     Fixed: Mount entries processed in wrong order while stopping service (imscp_mountall)
