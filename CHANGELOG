@@ -32,6 +32,8 @@ SERVERS
     Added: SQL query for user iteration through `doveadm' (Dovecot)
     Fixed: Authorization problems - You don't have permission to access / on this server (redirect vhosts)
     Fixed: Could not access error documents on error (redirect vhosts)
+    Fixed: Wrap error documents in PHP scripts when necessary (Close: #IP-1406) (Apache2 with mod_proxy_fcgi)
+    Removed: ProxyErrorOverride directive which cause too many problems due to a underlying but in mod_proxy_fcgi
 
 YOUTRACK
     #IP-1633 Disabled domains - All sub-pages should be redirected to the root page instead of sending a 404 HTTP error
