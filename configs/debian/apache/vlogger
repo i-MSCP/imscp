@@ -460,7 +460,7 @@ if ($OPTS{'e'}) {
             }
         }
 
-        $logs{$vhost} = time(),   
+        $logs{$vhost} = time();
         $tracker{$vhost} += $reqSize if $OPTS{'d'} && $reqSize =~ /^\d+$/ && $reqSize > 0;
         print $vhost "@logLine\n";
     }
