@@ -91,6 +91,7 @@ function generateDomainsList($tpl)
 
         $tpl->assign(array(
             'DOMAIN_NAME' => tohtml($domainName),
+            'DOMAIN_MOUNT_POINT' => '/',
             'DOMAIN_DOCUMENT_ROOT' => tohtml(utils_normalizePath($row['document_root'])),
             'DOMAIN_STATUS' => translate_dmn_status($row['domain_status']),
             'DOMAIN_SSL_STATUS' => is_null($row['ssl_status'])
@@ -235,7 +236,8 @@ function generateDomainAliasesList($tpl)
 
         $tpl->assign(array(
             'ALS_NAME' => tohtml($alsName),
-            'ALS_DOCUMENT_ROOT' => tohtml(utils_normalizePath($row['alias_mount'] . $row['alias_document_root'])),
+            'ALS_MOUNT_POINT' => tohtml(utils_normalizePath($row['alias_mount'])),
+            'ALS_DOCUMENT_ROOT' => tohtml(utils_normalizePath($row['alias_document_root'])),
             'ALS_STATUS' => translate_dmn_status($row['alias_status']),
             'ALS_SSL_STATUS' => is_null($row['ssl_status'])
                 ? tr('Disabled')
@@ -414,7 +416,8 @@ function generateSubdomainsList($tpl)
         }
 
         $tpl->assign(array(
-            'SUB_DOCUMENT_ROOT' => tohtml(utils_normalizePath($row['subdomain_mount'] . $row['subdomain_document_root'])),
+            'SUB_MOUNT_POINT' => tohtml(utils_normalizePath($row['subdomain_mount'])),
+            'SUB_DOCUMENT_ROOT' => tohtml(utils_normalizePath($row['subdomain_document_root'])),
             'SUB_REDIRECT' => $redirectUrl,
             'SUB_STATUS' => translate_dmn_status($row['subdomain_status']),
             'SUB_SSL_STATUS' => is_null($row['ssl_status'])
@@ -467,7 +470,8 @@ function generateSubdomainsList($tpl)
 
         $tpl->assign(array(
             'SUB_NAME' => tohtml($name),
-            'SUB_DOCUMENT_ROOT' => tohtml(utils_normalizePath($row['subdomain_alias_mount'] . $row['subdomain_alias_document_root'])),
+            'SUB_MOUNT_POINT' => tohtml(utils_normalizePath($row['subdomain_alias_mount'])),
+            'SUB_DOCUMENT_ROOT' => tohtml(utils_normalizePath($row['subdomain_alias_document_root'])),
             'SUB_REDIRECT' => $redirectUrl,
             'SUB_STATUS' => translate_dmn_status($row['subdomain_alias_status']),
             'SUB_SSL_STATUS' => is_null($row['ssl_status'])
@@ -642,6 +646,7 @@ $tpl->assign(array(
     'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
     'TR_SUBDOMAINS' => tr('Subdomains'),
     'TR_NAME' => tr('Name'),
+    'TR_MOUNT_POINT' => tr('Mount point'),
     'TR_DOCUMENT_ROOT' => tr('Document root'),
     'TR_REDIRECT' => tr('Redirect'),
     'TR_STATUS' => tr('Status'),
