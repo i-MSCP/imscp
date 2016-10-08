@@ -348,13 +348,12 @@ if ($OPTS{'s'}) {
     $OPTS{'s'} = $1;
 }
 
-chdir('/');
+chdir($LOGDIR);
 
 # Temporarely disabled. Once chroot() has been called, SQL server hostname
 # cannot longer be resolved, leading to `Unknown MySQL server host' error.
 # FIXME: Retrieve SQL server hostname and resolve it before the chroot() call,
 # then use the resulting IP for connection.
-#chdir($LOGDIR);
 #chroot('.');  
 
 my %logs = ();
