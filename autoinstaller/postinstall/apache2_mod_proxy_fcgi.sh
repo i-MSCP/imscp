@@ -27,14 +27,13 @@ SRC_DIR=/usr/local/src/imscp-apache_src
 # Don't process if the module has been already patched
 [ -f /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST ] && exit
 
-rm -fR $SRC_DIR
-mkdir -p $SRC_DIR
-cd $SRC_DIR
+rm -fR ${SRC_DIR}
+mkdir -p ${SRC_DIR}
+cd ${SRC_DIR}
 service apache2 stop
 apt-get install apache2-dev patch
 apt-get source apache2
 cd apache2*/modules/proxy
-dpkg-divert --divert /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST --rename /usr/lib/apache2/modules/mod_proxy_fcgi.so
 patch -p0 <<EOF
 --- mod_proxy_fcgi.c	2016-10-09 01:05:17.000000000 +0200
 +++ imscp_mod_proxy_fcgi.c	2016-10-09 01:20:38.711978843 +0200
@@ -49,6 +48,8 @@ patch -p0 <<EOF
                                   * set script_error_status to discard
                                   * everything after the headers
 EOF
-apxs -i -c mod_proxy_fcgi.c
+apxs -c mod_proxy_fcgi.c
+dpkg-divert --divert /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST --rename /usr/lib/apache2/modules/mod_proxy_fcgi.so
+apxs -i mod_proxy_fcgi.la
 cd /
-rm -fR $SRC_DIR
+rm -fR ${SRC_DIR}
