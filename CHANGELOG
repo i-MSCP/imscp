@@ -8,6 +8,7 @@ FEATURES
     Added: Editable DocumentRoot (see the errata file for further details)
 
 FRONTEND
+    Added: Events for custom DNS records
     Added: Show document roots (relative to mount points) on domains_manage.php page (client side)
     Fixed: Avoid attaching event handler when not necessary (FTP directory chooser)
     Fixed: Hide URLs on hover event (FTP directory chooser)

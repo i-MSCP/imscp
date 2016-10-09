@@ -527,6 +527,83 @@ class iMSCP_Events
     const onAfterDeleteSqlDb = 'onAfterSqlDb';
 
     /**
+     * The onBeforeAddCustomDNSrecord event is triggered when a custom DNS record is being added.
+     * 
+     * The listeners receive an iMSCP_Events_Event object with the following parameters:
+     *
+     * - domainId: An integer representing the main domain unique identifier
+     * - aliasId:  An integer representing the domain alias unique idenfifier (0 if the DNS record belongs to the main domain)
+     * - name:     A string representing the DNS record name
+     * - class:    A string representing the DNS record class
+     * - type:     A string representing the DNS record type
+     * - data:     A stirng representing the DNS record data
+     */
+    const onBeforeAddCustomDNSrecord = 'onBeforeAddCustomDNSrecord';
+
+    /**
+     * The onAfterAddCustomDNSrecord event is triggered when a custom DNS record has been added.
+     * 
+     * The listeners receive an iMSCP_Events_Event object with the following parameters:
+     *
+     * - id:       An integer representing the DNS record unique identifier
+     * - domainId: An integer representing the main domain unique identifier
+     * - aliasId:  An integer representing the domain alias unique idenfifier (0 if the DNS record belongs to the main domain)
+     * - name:     A string representing the DNS record name
+     * - class:    A string representing the DNS record class
+     * - type:     A string representing the DNS record type
+     * - data:     A stirng representing the DNS record data
+     */
+    const onAfterAddCustomDNSrecord = 'onAfterAddCustomDNSrecord';
+
+    /**
+     * The onBeforeEditCustomDNSrecord event is triggered when a custom DNS record is being edited.
+     * 
+     * The listeners receive an iMSCP_Events_Event object with the following parameters:
+     *
+     * - id:       An integer representing the DNS record unique identifier
+     * - domainId: An integer representing the main domain unique identifier
+     * - aliasId:  An integer representing the domain alias unique idenfifier (0 if the DNS record belongs to the main domain)
+     * - name:     A string representing the DNS record name
+     * - class:    A string representing the DNS record class
+     * - type:     A string representing the DNS record type
+     * - data:     A stirng representing the DNS record data
+     */
+    const onBeforeEditCustomDNSrecord = 'onBeforeEditCustomDNSrecord';
+
+    /**
+     * The onAfterEditCustomDNSrecord event is triggered when a custom DNS record has been edited.
+     * 
+     * The listeners receive an iMSCP_Events_Event object with the following parameters:
+     *
+     * - id:       An integer representing the DNS record unique identifier
+     * - domainId: An integer representing the main domain unique identifier
+     * - aliasId:  An integer representing the domain alias unique idenfifier (0 if the DNS record belongs to the main domain)
+     * - name:     A string representing the DNS record name
+     * - class:    A string representing the DNS record class
+     * - type:     A string representing the DNS record type
+     * - data:     A stirng representing the DNS record data
+     */
+    const onAfterEditCustomDNSrecord = 'onAfterEditCustomDNSrecord';
+
+    /**
+     * The onBeforeDeleteCustomDNSrecord event is triggered when a custom DNS record is being deleted
+     * 
+     * The listeners receive an iMSCP_Events_Event object with the following parameter:
+     * 
+     * - id: Custom DNS record unique identifier
+     */
+    const onBeforeDeleteCustomDNSrecord = 'onBeforeDeleteCustomDNSrecord';
+
+    /**
+     * The onAfterDeleteCustomDNSrecord event is triggered when a custom DNS record has been deleted
+     * 
+     * The listeners receive an iMSCP_Events_Event object with the following parameter:
+     * 
+     * - id: Custom DNS record unique identifier
+     */
+    const onAfterDeleteCustomDNSrecord = 'onAfterDeleteCustomDNSrecord';
+    
+    /**
      * The onBeforePluginRoute event is triggered before routing of plugins.
      *
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
