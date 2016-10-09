@@ -19,7 +19,7 @@
             <package_delayed>libapache2-mpm-itk</package_delayed>
         </apache_itk>
         <apache_php_fpm>
-            <package>apache2</package>
+            <package post_install_cmd="sh apache2_mod_proxy_fcgi.sh">apache2</package>
             <package>apache2-suexec-custom</package>
             <package>php7.0-fpm</package>
         </apache_php_fpm>

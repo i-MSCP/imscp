@@ -162,10 +162,21 @@ sub installPackages
         return $rs if $rs;
     }
 
+    my $oldDir = cwd();
+    unless (chdir "$FindBin::Bin/autoinstaller/postinstall") {
+        error( sprintf( 'Could not change current directory to: %s', "$FindBin::Bin/autoinstaller/postinstall", $! ) );
+        return 1;
+    }
+
     for my $cmd(@{$self->{'packagesPostInstallCmd'}}) {
         $rs = execute($cmd, \my $stdout, \my $stderr);
         debug($stdout) if $stdout;
         error($stderr || 'Unknown error') if $rs;
+    }
+
+    unless (chdir $oldDir) {
+        error( sprintf( 'Could not change current directory to: %s', $oldDir, $! ) );
+        return 1;
     }
 
     while(my ($package, $metadata) = each( %{$self->{'packagesToRebuild'}} )) {
