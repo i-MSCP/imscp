@@ -17,6 +17,7 @@ FRONTEND
     Fixed: Tooltips not initialized in dialog box (FTP directory chooser)
 
 INSTALLER
+    Added: fix_apache2_mod_proxy_fcgi.sh apache2 post install task (patch and rebuild mod_proxy_fcgi module)
     Added: Support for package post installation tasks (autoinstaller::Adapter::DebianAdapter)
     Fixed: Main configuration parameters are saved too early (imscp.conf file)
     Fixed: Making sure that all required PHP modules are enabled by executing php5enmod/phpenmod (Debian/Ubuntu)

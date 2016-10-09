@@ -168,11 +168,31 @@ sub installPackages
         return 1;
     }
 
+    my $nbTasks = scalar @{$self->{'packagesPostInstallTasks'}};
+    my $cTask = 1;
+
+    startDetail();
+
     for my $task(@{$self->{'packagesPostInstallTasks'}}) {
-        $rs = execute($task, \my $stdout, \my $stderr);
-        debug($stdout) if $stdout;
-        error($stderr || sprintf("Unknown error while executing the `%s' task", $task)) if $rs;
+        $rs ||= step(
+            sub {
+                my $stdout;
+                my $rs = execute(
+                    $task, (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout), \ my $stderr
+                );
+                error(
+                    $stderr || sprintf("Unknown error while executing the `%s' package postinstall task", $task)
+                ) if $rs;
+                $rs;
+            },
+            sprintf( "Executing `%s' package postinstall task...", $task, ), $nbTasks, $cTask
+        );
+        last if $rs;
+        $cTask++;
     }
+
+    endDetail();
+    return $rs if $rs;
 
     unless (chdir $oldDir) {
         error( sprintf( 'Could not change current directory to: %s', $oldDir, $! ) );
