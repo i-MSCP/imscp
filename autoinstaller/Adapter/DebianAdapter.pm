@@ -168,10 +168,10 @@ sub installPackages
         return 1;
     }
 
-    for my $cmd(@{$self->{'packagesPostInstallCmd'}}) {
-        $rs = execute($cmd, \my $stdout, \my $stderr);
+    for my $task(@{$self->{'packagesPostInstallTasks'}}) {
+        $rs = execute($task, \my $stdout, \my $stderr);
         debug($stdout) if $stdout;
-        error($stderr || 'Unknown error') if $rs;
+        error($stderr || sprintf("Unknown error while executing the `%s' task", $task)) if $rs;
     }
 
     unless (chdir $oldDir) {
@@ -300,7 +300,7 @@ sub _init
     $self->{'packagesToPreUninstall'} = [ ];
     $self->{'packagesToUninstall'} = [ ];
     $self->{'packagesToRebuild'} = { };
-    $self->{'packagesPostInstallCmd'} = [ ];
+    $self->{'packagesPostInstallTasks'} = [ ];
     $self->{'need_pbuilder_update'} = 1;
     delete $ENV{'DEBCONF_FORCE_DIALOG'};
     $ENV{'DEBIAN_FRONTEND'} = 'noninteractive' if iMSCP::Getopt->noprompt;
@@ -494,8 +494,9 @@ EOF
                         };
                     } else {
                         push @{$self->{'packagesToInstall'}}, $_->{'content'};
-                        push @{$self->{'packagesPostInstallCmd'}}, $_->{'post_install_cmd'} if $_->{'post_install_cmd'};
                     }
+
+                    push @{$self->{'packagesPostInstallTasks'}}, $_->{'post_install_task'} if $_->{'post_install_task'};
                 } else {
                     push @{$self->{'packagesToInstall'}}, $_;
                 }

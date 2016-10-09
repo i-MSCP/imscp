@@ -8,7 +8,7 @@ FEATURES
     Added: Editable DocumentRoot (see the errata file for further details)
 
 FRONTEND
-    Changed: Show document roots (relative to mount points) on domains_manage.php page (client side)
+    Added: Show document roots (relative to mount points) on domains_manage.php page (client side)
     Fixed: Avoid attaching event handler when not necessary (FTP directory chooser)
     Fixed: Hide URLs on hover event (FTP directory chooser)
     Fixed: Make parent directory choosable (FTP directory chooser)
@@ -16,8 +16,8 @@ FRONTEND
     Fixed: Tooltips not initialized in dialog box (FTP directory chooser)
 
 INSTALLER
-    Added: Support for package post installation commands (autoinstaller::Adapter::DebianAdapter)
-    Fixed: Main configuration parameters are saved too early
+    Added: Support for package post installation tasks (autoinstaller::Adapter::DebianAdapter)
+    Fixed: Main configuration parameters are saved too early (imscp.conf file)
     Fixed: Making sure that all required PHP modules are enabled by executing php5enmod/phpenmod (Debian/Ubuntu)
     Fixed: Migration script is always run while reconfiguration, forcing clients to re-download all mails (PO servers)
     Fixed: Packages such as `Rainloop' remain selected even when they are unchecked in setup dialog
