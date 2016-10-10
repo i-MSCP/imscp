@@ -946,7 +946,7 @@ sub _makeDirs
 
 =item _createPhpBinarySymlink()
 
- Create symlink to systeù PHP binary for imscp_panel service
+ Create symlink to system PHP binary for imscp_panel service
 
  Return int 0 on success, other on failure
 
