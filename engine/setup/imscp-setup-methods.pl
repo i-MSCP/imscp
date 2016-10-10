@@ -1499,7 +1499,7 @@ sub setupRestartServices
 sub setupGetQuestion
 {
     my ($qname, $default) = @_;
-    $default ||= '';
+    $default //= '';
 
     return exists $main::questions{$qname} ? $main::questions{$qname} : (
         exists $main::imscpConfig{$qname} && $main::imscpConfig{$qname} ne ''
