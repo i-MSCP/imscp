@@ -567,7 +567,14 @@ sub _migrateFromCourier
 {
     my $self = shift;
 
-    return 0 unless $main::imscpConfig{'PO_SERVER'} ne $main::imscpOldConfig{'PO_SERVER'};
+    if($main::imscpConfig{'PO_SERVER'} eq $main::imscpOldConfig{'PO_SERVER'}
+        && !-f "$main::imscpConfig{'CONF_DIR'}/.dovecot_migrated"
+    ) {
+        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/.dovecot_migrated")->save();
+        return $rs if $rs;
+    }
+
+    return 0 if -f "$main::imscpConfig{'CONF_DIR'}/.dovecot_migrated";
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoMigrateFromCourier' );
     return $rs if $rs;
@@ -584,7 +591,16 @@ sub _migrateFromCourier
     debug( $stdout ) if $stdout;
     debug( $stderr ) if $stderr && !$rs;
     error( $stderr ) if $stderr && $rs;
-    error( 'Error while converting mailboxes to devecot format' ) if !$stderr && $rs;
+    error( $stderr || 'Error while migrating from Courier to Dovecot' ) if $rs;
+    return $rs if $rs;
+
+    $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/.dovecot_migrated")->save();
+    return $rs if $rs;
+
+    if(-f "$main::imscpConfig{'CONF_DIR'}/.courier_migrated") {
+        $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/.courier_migrated")->delFile();
+    }
+
     $rs ||= $self->{'eventManager'}->trigger( 'afterPoMigrateFromCourier' );
 }
 
