@@ -379,8 +379,8 @@ sub _getNamedData
             DOMAIN_ADMIN_ID       => $self->{'domain_admin_id'},
             DOMAIN_NAME           => $self->{'alias_name'},
             DOMAIN_IP             => $self->{'ip_number'},
-            USER_NAME         => $userName.'als'.$self->{'alias_id'},
-            MAIL_ENABLED      => (
+            USER_NAME             => $userName.'als'.$self->{'alias_id'},
+            MAIL_ENABLED          => (
                 $self->{'external_mail'} eq 'off' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
             )
         }
