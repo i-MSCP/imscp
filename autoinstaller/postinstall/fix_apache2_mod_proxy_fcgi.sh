@@ -14,7 +14,7 @@
 
 set -e
 
-# Fix for https://bz.apache.org/bugzilla/attachment.cgi?bugid=55415
+# Fix for https://bz.apache.org/bugzilla/show_bug.cgi?id=55415
 # diff -Naur mod_proxy_fcgi.c imscp_mod_proxy_fcgi.c
 #
 # Howto remove divert:
