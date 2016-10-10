@@ -36,6 +36,9 @@ SERVERS
     Fixed: Authorization problems - You don't have permission to access / on this server (redirect vhosts)
     Fixed: Could not access error documents on error (redirect vhosts)
 
+SERVICE
+    Changed: Create a symlink instead of copying the system PHP binary for the imscp_panel service (Partially closes: #IP-1641)
+
 YOUTRACK
     #IP-1633 Disabled domains - All sub-pages should be redirected to the root page instead of sending a 404 HTTP error
     #IP-1637 Duplicate mount entries in /etc/imscp/mount/mounts.conf

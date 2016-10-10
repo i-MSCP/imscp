@@ -480,7 +480,7 @@ sub install
     $rs ||= $self->_setHttpdVersion();
     $rs ||= $self->_addMasterWebUser();
     $rs ||= $self->_makeDirs();
-    $rs ||= $self->_copyPhpBinary();
+    $rs ||= $self->_createPhpBinarySymlink();
     $rs ||= $self->_buildPhpConfig();
     $rs ||= $self->_buildHttpdConfig();
     $rs ||= $self->_deleteDnsZone();
@@ -944,19 +944,19 @@ sub _makeDirs
     $self->{'eventManager'}->trigger( 'afterFrontEndMakeDirs' );
 }
 
-=item _copyPhpBinary()
+=item _createPhpBinarySymlink()
 
- Copy PHP binary for imscp_panel service
+ Create symlink to systeù PHP binary for imscp_panel service
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _copyPhpBinary
+sub _createPhpBinarySymlink
 {
     my $self = shift;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndCopyPhpBinary' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndCreateSymlinkToPhpBinary' );
     return $rs if $rs;
 
     my $phpBinaryPath = (version->parse( "$self->{'phpConfig'}->{'PHP_VERSION'}" ) < version->parse( '7' ))
@@ -968,10 +968,17 @@ sub _copyPhpBinary
         return 1;
     }
 
-    $rs ||= iMSCP::File->new( filename => $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} )->copyFile(
-        '/usr/local/sbin/imscp_panel'
-    );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndCopyPhpBinary' );
+    if (-e '/usr/local/sbin/imscp_panel') {
+        $rs = iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
+        return $rs if $rs;
+    }
+
+    unless (symlink($phpBinaryPath, '/usr/local/sbin/imscp_panel')) {
+        error( sprintf("Could not create the `%s' symlink: %s", '/usr/local/sbin/imscp_panel', $!));
+        return 1;
+    }
+
+    $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndCreateSymlinkToPhpBinary' );
 }
 
 =item _buildPhpConfig()
