@@ -93,6 +93,7 @@ sub authdaemonSqlUserDialog
 {
     my ($self, $dialog) = @_;
 
+    my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER' );
     my $dbUser = main::setupGetQuestion(
         'AUTHDAEMON_SQL_USER', $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} || 'authdaemon_user'
     );
@@ -115,7 +116,7 @@ sub authdaemonSqlUserDialog
 
 Please enter an username for the Courier Authdaemon SQL user:$msg
 EOF
-            if (lc( $dbUser ) eq lc( $main::imscpConfig{'DATABASE_USER'} )) {
+            if (lc( $dbUser ) eq lc( $masterSqlUser )) {
                 $msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
                 $dbUser = '';
             } elsif (lc( $dbUser ) eq 'root') {
@@ -199,6 +200,7 @@ sub cyrusSaslSqlUserDialog
 {
     my ($self, $dialog) = @_;
 
+    my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER' );
     my $dbUser = main::setupGetQuestion( 'SASL_SQL_USER', $self->{'config'}->{'SASL_DATABASE_USER'} || 'sasl_user' );
     my $dbPass = main::setupGetQuestion( 'SASL_SQL_PASSWORD', $self->{'config'}->{'SASL_DATABASE_PASSWORD'} );
 
@@ -217,7 +219,7 @@ sub cyrusSaslSqlUserDialog
                 "\nPlease enter an username for the Postfix SASL SQL user:$msg", $dbUser
             );
 
-            if ($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
+            if (lc( $dbUser) eq lc( $masterSqlUser )) {
                 $msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
                 $dbUser = '';
             } elsif (length $dbUser > 16) {
@@ -652,12 +654,12 @@ sub _buildConf
     return $rs if $rs;
 
     my $data = {
-        DATABASE_HOST        => $main::imscpConfig{'DATABASE_HOST'},
-        DATABASE_PORT        => $main::imscpConfig{'DATABASE_PORT'},
+        DATABASE_HOST        => main::setupGetQuestion( 'DATABASE_HOST' ),
+        DATABASE_PORT        => main::setupGetQuestion( 'DATABASE_PORT' ),
         DATABASE_USER        => $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'},
         DATABASE_PASSWORD    => $self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'},
-        DATABASE_NAME        => $main::imscpConfig{'DATABASE_NAME'},
-        HOST_NAME            => $main::imscpConfig{'SERVER_HOSTNAME'},
+        DATABASE_NAME        => main::setupGetQuestion( 'DATABASE_NAME' ),
+        HOST_NAME            => main::setupGetQuestion( 'SERVER_HOSTNAME' ),
         MTA_MAILBOX_UID      => scalar getpwnam( $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'} ),
         MTA_MAILBOX_GID      => scalar getgrnam( $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'} ),
         MTA_VIRTUAL_MAIL_DIR => $self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}
@@ -754,12 +756,12 @@ sub _buildCyrusSaslConfFile
     my $rs = $self->_bkpConfFile( "self->{'config'}->{'SASL_CONF_DIR'}/smtpd.conf" );
     return $rs if $rs;
 
-    my $dbHost = $main::imscpConfig{'DATABASE_HOST'};
+    my $dbHost = main::setupGetQuestion( 'DATABASE_HOST' );
 
     my $data = {
         DATABASE_HOST     => ($dbHost eq 'localhost') ? '127.0.0.1' : $dbHost, # Force TCP connection
-        DATABASE_PORT     => $main::imscpConfig{'DATABASE_PORT'},
-        DATABASE_NAME     => $main::imscpConfig{'DATABASE_NAME'},
+        DATABASE_PORT     => main::setupGetQuestion( 'DATABASE_PORT' ),
+        DATABASE_NAME     => main::setupGetQuestion( 'DATABASE_NAME' ),
         DATABASE_USER     => $self->{'config'}->{'SASL_DATABASE_USER'},
         DATABASE_PASSWORD => $self->{'config'}->{'SASL_DATABASE_PASSWORD'}
     };
@@ -883,7 +885,7 @@ sub _buildSslConfFiles
 {
     my $self = shift;
 
-    return 0 unless ($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes');
+    return 0 unless main::setupGetQuestion( 'SERVICES_SSL_ENABLED' ) eq 'yes';
 
     for my $conffile($self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
         my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'courier', $conffile, \ my $cfgTpl, { } );

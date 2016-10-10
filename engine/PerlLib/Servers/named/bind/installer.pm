@@ -206,7 +206,7 @@ sub askIPv6Support
 {
     my ($self, $dialog) = @_;
 
-    unless ($main::imscpConfig{'IPV6_SUPPORT'}) {
+    unless (main::setupGetQuestion( 'IPV6_SUPPORT' )) {
         $self->{'config'}->{'BIND_IPV6'} = 'no';
         return 0;
     }

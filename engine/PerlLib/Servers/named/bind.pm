@@ -197,15 +197,14 @@ sub postaddDmn
     if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
         $rs = $self->addDmn(
             {
-                DOMAIN_NAME       => $main::imscpConfig{'BASE_SERVER_VHOST'},
-                DOMAIN_IP         => $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'},
+                DOMAIN_NAME       => $data->{'BASE_SERVER_VHOST'},
+                DOMAIN_IP         => $data->{'BASE_SERVER_PUBLIC_IP'},
                 MAIL_ENABLED      => 1,
                 CTM_ALS_ENTRY_ADD => {
                     NAME  => $data->{'USER_NAME'},
                     CLASS => 'IN',
-                    TYPE  => iMSCP::Net->getInstance()->getAddrVersion( $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'} )
-                            eq 'ipv4' ? 'A' : 'AAAA',
-                    DATA  => $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}
+                    TYPE  => iMSCP::Net->getInstance()->getAddrVersion($data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4' ? 'A' : 'AAAA',
+                    DATA  => $data->{'BASE_SERVER_PUBLIC_IP'}
                 }
             }
         );
@@ -307,8 +306,8 @@ sub postdeleteDmn
     if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
         $rs = $self->addDmn(
             {
-                DOMAIN_NAME       => $main::imscpConfig{'BASE_SERVER_VHOST'},
-                DOMAIN_IP         => $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'},
+                DOMAIN_NAME       => $data->{'BASE_SERVER_VHOST'},
+                DOMAIN_IP         => $data->{'BASE_SERVER_PUBLIC_IP'},
                 MAIL_ENABLED      => 1,
                 CTM_ALS_ENTRY_DEL => { NAME => $data->{'USER_NAME'} }
             }
@@ -371,9 +370,9 @@ sub addSub
             "; sub MAIL entry ENDING\n",
             process(
                 {
-                    BASE_SERVER_IP_TYPE => ($net->getAddrVersion( $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4')
+                    BASE_SERVER_IP_TYPE => ($net->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4')
                         ? 'A' : 'AAAA',
-                    BASE_SERVER_IP      => $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'},
+                    BASE_SERVER_IP      => $data->{'BASE_SERVER_PUBLIC_IP'},
                     DOMAIN_NAME         => $data->{'PARENT_DOMAIN_NAME'}
                 },
                 getBloc( "; sub MAIL entry BEGIN\n", "; sub MAIL entry ENDING\n", $subEntry )
@@ -384,8 +383,8 @@ sub addSub
         $subEntry = replaceBloc( "; sub MAIL entry BEGIN\n", "; sub MAIL entry ENDING\n", '', $subEntry );
     }
 
-    my $domainIP = ($main::imscpConfig{'BASE_SERVER_IP'} eq $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'})
-        ? $data->{'DOMAIN_IP'} : $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
+    my $domainIP = ($data->{'BASE_SERVER_IP'} eq $data->{'BASE_SERVER_PUBLIC_IP'})
+        ? $data->{'DOMAIN_IP'} : $data->{'BASE_SERVER_PUBLIC_IP'};
 
     $subEntry = process(
         {
@@ -452,15 +451,15 @@ sub postaddSub
     if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
         $rs = $self->addDmn(
             {
-                DOMAIN_NAME       => $main::imscpConfig{'BASE_SERVER_VHOST'},
-                DOMAIN_IP         => $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'},
+                DOMAIN_NAME       => $data->{'BASE_SERVER_VHOST'},
+                DOMAIN_IP         => $data->{'BASE_SERVER_PUBLIC_IP'},
                 MAIL_ENABLED      => 1,
                 CTM_ALS_ENTRY_ADD => {
                     NAME  => $data->{'USER_NAME'},
                     CLASS => 'IN',
-                    TYPE  => iMSCP::Net->getInstance()->getAddrVersion( $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'} )
+                    TYPE  => iMSCP::Net->getInstance()->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} )
                             eq 'ipv4' ? 'A' : 'AAAA',
-                    DATA  => $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}
+                    DATA  => $data->{'BASE_SERVER_PUBLIC_IP'}
                 }
             }
         );
@@ -593,8 +592,8 @@ sub postdeleteSub
     if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
         $rs = $self->addDmn(
             {
-                DOMAIN_NAME       => $main::imscpConfig{'BASE_SERVER_VHOST'},
-                DOMAIN_IP         => $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'},
+                DOMAIN_NAME       => $data->{'BASE_SERVER_VHOST'},
+                DOMAIN_IP         => $data->{'BASE_SERVER_PUBLIC_IP'},
                 MAIL_ENABLED      => 1,
                 CTM_ALS_ENTRY_DEL => { NAME => $data->{'USER_NAME'} }
             }
@@ -967,8 +966,8 @@ sub _addDmnDb
 
     my $dmnNsEntry = getBloc( "; dmn NS entry BEGIN\n", "; dmn NS entry ENDING\n", $tplDbFileContent );
     my $dmnNsAEntry = getBloc( "; dmn NS A entry BEGIN\n", "; dmn NS A entry ENDING\n", $tplDbFileContent );
-    my $domainIP = ($main::imscpConfig{'BASE_SERVER_IP'} eq $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'})
-        ? $data->{'DOMAIN_IP'} : $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'};
+    my $domainIP = ($data->{'BASE_SERVER_IP'} eq $data->{'BASE_SERVER_PUBLIC_IP'})
+        ? $data->{'DOMAIN_IP'} : $data->{'BASE_SERVER_PUBLIC_IP'};
 
     my @nsIPs = (
         $domainIP,
@@ -1002,9 +1001,9 @@ sub _addDmnDb
     if ($data->{'MAIL_ENABLED'}) {
         $dmnMailEntry = process(
             {
-                BASE_SERVER_IP_TYPE => ($net->getAddrVersion( $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4')
+                BASE_SERVER_IP_TYPE => ($net->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4')
                     ? 'A' : 'AAAA',
-                BASE_SERVER_IP      => $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}
+                BASE_SERVER_IP      => $data->{'BASE_SERVER_PUBLIC_IP'}
             },
             getBloc( "; dmn MAIL entry BEGIN\n", "; dmn MAIL entry ENDING\n", $tplDbFileContent )
         )
@@ -1013,7 +1012,7 @@ sub _addDmnDb
         "; dmn MAIL entry BEGIN\n", "; dmn MAIL entry ENDING\n", $dmnMailEntry, $tplDbFileContent
     );
 
-    if ($data->{'DOMAIN_NAME'} eq $main::imscpConfig{'BASE_SERVER_VHOST'} && defined $wrkDbFileContent) {
+    if ($data->{'DOMAIN_NAME'} eq $data->{'BASE_SERVER_VHOST'} && defined $wrkDbFileContent) {
         if (exists $data->{'CTM_ALS_ENTRY_ADD'}) {
             $wrkDbFileContent =~ s/^$data->{'CTM_ALS_ENTRY_ADD'}->{'NAME'}\s+[^\n]*\n//m;
             $tplDbFileContent = replaceBloc(

@@ -389,7 +389,7 @@ sub _buildAliasesDb
 
     # Add alias for local root user
     $cfgTpl =~ s/^root:.*\n//gim;
-    $cfgTpl .= "root: $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'}\n";
+    $cfgTpl .= 'root: '.main::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' )."\n";
 
     $rs = $self->{'eventManager'}->trigger( 'afterMtaBuildAliasesDbFile', \ $cfgTpl, 'aliases' );
     return $rs if $rs;
@@ -476,14 +476,15 @@ sub _buildMainCfFile
 {
     my $self = shift;
 
-    my $baseServerIpType = iMSCP::Net->getInstance->getAddrVersion( $main::imscpConfig{'BASE_SERVER_IP'} );
+    my $baseServerIp = main::setupGetQuestion( 'BASE_SERVER_IP' );
+    my $baseServerIpType = iMSCP::Net->getInstance->getAddrVersion( $baseServerIp );
     my $gid = getgrnam( $self->{'config'}->{'MTA_MAILBOX_GID_NAME'} );
     my $uid = getpwnam( $self->{'config'}->{'MTA_MAILBOX_UID_NAME'} );
-    my $hostname = $main::imscpConfig{'SERVER_HOSTNAME'};
+    my $hostname = main::setupGetQuestion( 'SERVER_HOSTNAME' );
     my $data = {
         MTA_INET_PROTOCOLS       => $baseServerIpType,
-        MTA_SMTP_BIND_ADDRESS    => $baseServerIpType eq 'ipv4' ? $main::imscpConfig{'BASE_SERVER_IP'} : '',
-        MTA_SMTP_BIND_ADDRESS6   => $baseServerIpType eq 'ipv6' ? $main::imscpConfig{'BASE_SERVER_IP'} : '',
+        MTA_SMTP_BIND_ADDRESS    => $baseServerIpType eq 'ipv4' ? $baseServerIp : '',
+        MTA_SMTP_BIND_ADDRESS6   => $baseServerIpType eq 'ipv6' ? $baseServerIp : '',
         MTA_HOSTNAME             => $hostname,
         MTA_LOCAL_DOMAIN         => "$hostname.local",
         MTA_VERSION              => $main::imscpConfig{'Version'},
@@ -541,7 +542,7 @@ sub _buildMainCfFile
     return $rs if $rs;
 
     # Add TLS parameters if required
-    return 0 unless $main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes';
+    return 0 unless main::setupGetQuestion( 'SERVICES_SSL_ENABLED' ) eq 'yes';
 
     $self->{'eventManager'}->register(
         'afterMtaBuildConf',

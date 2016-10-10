@@ -31,8 +31,8 @@ rm -fR ${SRC_DIR}
 mkdir -p ${SRC_DIR}
 cd ${SRC_DIR}
 service apache2 stop
-apt-get install apache2-dev patch
-apt-get source apache2
+apt-get -y install apache2-dev patch
+apt-get -y source apache2
 cd apache2*/modules/proxy
 patch -p0 <<EOF
 --- mod_proxy_fcgi.c	2016-10-09 01:05:17.000000000 +0200

@@ -965,7 +965,7 @@ sub setupServiceSsl
         )->createSelfSignedCertificate(
             {
                 common_name => setupGetQuestion('SERVER_HOSTNAME'),
-                email => $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'}
+                email => main::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' )
             }
         );
     }

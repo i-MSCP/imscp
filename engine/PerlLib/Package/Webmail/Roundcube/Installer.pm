@@ -68,6 +68,7 @@ sub showDialog
 {
     my ($self, $dialog) = @_;
 
+    my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER' );
     my $dbUser = main::setupGetQuestion( 'ROUNDCUBE_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || 'roundcube_user' );
     my $dbPass = main::setupGetQuestion( 'ROUNDCUBE_SQL_PASSWORD', $self->{'config'}->{'DATABASE_PASSWORD'} );
     my ($rs, $msg) = (0, '');
@@ -84,7 +85,7 @@ sub showDialog
 
 Please enter an username for the Roundcube SQL user:$msg
 EOF
-            if (lc($dbUser) eq lc($main::imscpConfig{'DATABASE_USER'})) {
+            if (lc($dbUser) eq lc($masterSqlUser)) {
                 $msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
                 $dbUser = '';
             } elsif(lc($dbUser) eq 'root') {
@@ -525,7 +526,7 @@ sub _buildRoundcubeConfig
     (my $dbPass = main::setupGetQuestion( 'ROUNDCUBE_SQL_PASSWORD' )) =~ s%(')%\\$1%g;
 
     my $data = {
-        BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
+        BASE_SERVER_VHOST => main::setupGetQuestion( 'BASE_SERVER_VHOST' ),
         DB_NAME           => $dbName,
         DB_HOST           => $dbHost,
         DB_PORT           => $dbPort,
@@ -569,7 +570,7 @@ sub _updateDatabase
     my $self = shift;
 
     my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
-    my $roundcubeDbName = $main::imscpConfig{'DATABASE_NAME'}.'_roundcube';
+    my $roundcubeDbName = main::setupGetQuestion( 'DATABASE_NAME' ).'_roundcube';
     my $fromVersion = $self->{'config'}->{'ROUNDCUBE_VERSION'} || '0.8.4';
 
     my $rs = execute(

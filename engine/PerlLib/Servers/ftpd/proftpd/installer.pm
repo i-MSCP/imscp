@@ -85,6 +85,7 @@ sub sqlUserDialog
 {
     my ($self, $dialog) = @_;
 
+    my $masterDbUser = main::setupGetQuestion( 'DATABASE_USER' );
     my $dbUser = main::setupGetQuestion( 'FTPD_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || 'vftp_user' );
     my $dbPass = main::setupGetQuestion( 'FTPD_SQL_PASSWORD', $self->{'config'}->{'DATABASE_PASSWORD'} );
 
@@ -102,7 +103,7 @@ sub sqlUserDialog
 
 Please enter an username for the ProFTPD SQL user:$msg
 EOF
-            if (lc($dbUser) eq lc($main::imscpConfig{'DATABASE_USER'})) {
+            if (lc($dbUser) eq lc($masterDbUser)) {
                 $msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
                 $dbUser = '';
             } elsif(lc($dbUser) eq 'root') {
@@ -424,11 +425,11 @@ sub _buildConfigFile
     (my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'}) =~ s%("|\\)%\\$1%g;
 
     my $data = {
-        IPV6_SUPPORT            => $main::imscpConfig{'IPV6_SUPPORT'} ? 'on' : 'off',
-        HOSTNAME                => $main::imscpConfig{'SERVER_HOSTNAME'},
-        DATABASE_NAME           => $main::imscpConfig{'DATABASE_NAME'},
-        DATABASE_HOST           => $main::imscpConfig{'DATABASE_HOST'},
-        DATABASE_PORT           => $main::imscpConfig{'DATABASE_PORT'},
+        IPV6_SUPPORT            => main::setupGetQuestion( 'IPV6_SUPPORT' ) ? 'on' : 'off',
+        HOSTNAME                => main::setupGetQuestion( 'SERVER_HOSTNAME' ),
+        DATABASE_NAME           => main::setupGetQuestion( 'DATABASE_NAME' ),
+        DATABASE_HOST           => main::setupGetQuestion( 'DATABASE_HOST' ),
+        DATABASE_PORT           => main::setupGetQuestion( 'DATABASE_PORT' ),
         DATABASE_USER           => '"'.$dbUser.'"',
         DATABASE_PASS           => '"'.$dbPass.'"',
         FTPD_MIN_UID            => $self->{'config'}->{'MIN_UID'},
@@ -457,11 +458,12 @@ sub _buildConfigFile
     $rs = $self->{'eventManager'}->trigger( 'beforeFtpdBuildConf', \$cfgTpl, 'proftpd.conf' );
     return $rs if $rs;
 
-    if ($main::imscpConfig{'BASE_SERVER_IP'} ne $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}) {
+    my $baseServerPublicIp = main::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
+    if (main::setupGetQuestion( 'BASE_SERVER_IP' ) ne $baseServerPublicIp) {
         $cfgTpl .= <<EOF;
 
 # ProFTPD behind NAT - Use public IP address
-MasqueradeAddress $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}
+MasqueradeAddress $baseServerPublicIp
 EOF
     }
 

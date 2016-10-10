@@ -336,7 +336,7 @@ sub _makeDirs
             0750
         ],
         [
-            "$self->{'config'}->{'HTTPD_LOG_DIR'}/$main::imscpConfig{'BASE_SERVER_VHOST'}",
+            "$self->{'config'}->{'HTTPD_LOG_DIR'}/" . main::setupGetQuestion( 'BASE_SERVER_VHOST' ),
             $main::imscpConfig{'ROOT_USER'},
             $main::imscpConfig{'ROOT_GROUP'},
             0750
@@ -389,7 +389,7 @@ sub _buildPhpConfFiles
     $self->{'httpd'}->setData(
         {
             PEAR_DIR                    => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
-            TIMEZONE                    => $main::imscpConfig{'TIMEZONE'},
+            TIMEZONE                    => main::setupGetQuestion( 'TIMEZONE' ),
             PHP_OPCODE_CACHE_ENABLED    => $self->{'phpConfig'}->{'PHP_OPCODE_CACHE_ENABLED'},
             PHP_OPCODE_CACHE_MAX_MEMORY => $self->{'phpConfig'}->{'PHP_OPCODE_CACHE_MAX_MEMORY'}
         }

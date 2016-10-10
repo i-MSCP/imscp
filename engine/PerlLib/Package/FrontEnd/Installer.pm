@@ -746,7 +746,7 @@ sub _setupSsl
         )->createSelfSignedCertificate(
             {
                 common_name => $domainName,
-                email       => $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'}
+                email       => main::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' )
             }
         );
     }
@@ -997,7 +997,7 @@ sub _buildPhpConfig
         {
             CHKROOTKIT_LOG            => $main::imscpConfig{'CHKROOTKIT_LOG'},
             CONF_DIR                  => $main::imscpConfig{'CONF_DIR'},
-            DOMAIN                    => $main::imscpConfig{'BASE_SERVER_VHOST'},
+            DOMAIN                    => main::setupGetQuestion( 'BASE_SERVER_VHOST' ),
             DISTRO_OPENSSL_CNF        => $main::imscpConfig{'DISTRO_OPENSSL_CNF'},
             DISTRO_CA_BUNDLE          => $main::imscpConfig{'DISTRO_CA_BUNDLE'},
             FRONTEND_FCGI_CHILDREN    => $self->{'config'}->{'FRONTEND_FCGI_CHILDREN'},
@@ -1009,7 +1009,7 @@ sub _buildPhpConfig
             OTHER_ROOTKIT_LOG         => $main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne ''
                 ? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : '',
             RKHUNTER_LOG              => $main::imscpConfig{'RKHUNTER_LOG'},
-            TIMEZONE                  => $main::imscpConfig{'TIMEZONE'},
+            TIMEZONE                  => main::setupGetQuestion( 'TIMEZONE' ),
             WEB_DIR                   => $main::imscpConfig{'GUI_ROOT_DIR'},
         },
         {
@@ -1024,7 +1024,7 @@ sub _buildPhpConfig
         {
 
             PEAR_DIR => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
-            TIMEZONE => $main::imscpConfig{'TIMEZONE'},
+            TIMEZONE => main::setupGetQuestion( 'TIMEZONE' ),
             WEB_DIR  => $main::imscpConfig{'GUI_ROOT_DIR'}
         },
         {
@@ -1071,15 +1071,15 @@ sub _buildHttpdConfig
     $rs = $self->{'frontend'}->buildConfFile(
         "$self->{'cfgDir'}/nginx.conf",
         {
-            'HTTPD_USER'               => $self->{'config'}->{'HTTPD_USER'},
-            'HTTPD_WORKER_PROCESSES'   => $nbCPUcores,
-            'HTTPD_WORKER_CONNECTIONS' => $self->{'config'}->{'HTTPD_WORKER_CONNECTIONS'},
-            'HTTPD_RLIMIT_NOFILE'      => $self->{'config'}->{'HTTPD_RLIMIT_NOFILE'},
-            'HTTPD_LOG_DIR'            => $self->{'config'}->{'HTTPD_LOG_DIR'},
-            'HTTPD_PID_FILE'           => $self->{'config'}->{'HTTPD_PID_FILE'},
-            'HTTPD_CONF_DIR'           => $self->{'config'}->{'HTTPD_CONF_DIR'},
-            'HTTPD_LOG_DIR'            => $self->{'config'}->{'HTTPD_LOG_DIR'},
-            'HTTPD_SITES_ENABLED_DIR'  => $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}
+            HTTPD_USER               => $self->{'config'}->{'HTTPD_USER'},
+            HTTPD_WORKER_PROCESSES   => $nbCPUcores,
+            HTTPD_WORKER_CONNECTIONS => $self->{'config'}->{'HTTPD_WORKER_CONNECTIONS'},
+            HTTPD_RLIMIT_NOFILE      => $self->{'config'}->{'HTTPD_RLIMIT_NOFILE'},
+            HTTPD_LOG_DIR            => $self->{'config'}->{'HTTPD_LOG_DIR'},
+            HTTPD_PID_FILE           => $self->{'config'}->{'HTTPD_PID_FILE'},
+            HTTPD_CONF_DIR           => $self->{'config'}->{'HTTPD_CONF_DIR'},
+            HTTPD_LOG_DIR            => $self->{'config'}->{'HTTPD_LOG_DIR'},
+            HTTPD_SITES_ENABLED_DIR  => $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}
         },
         {
             destination => "$self->{'config'}->{'HTTPD_CONF_DIR'}/nginx.conf",
@@ -1112,13 +1112,13 @@ sub _buildHttpdConfig
     $rs ||= $self->{'eventManager'}->trigger( 'beforeFrontEndBuildHttpdVhosts' );
     return $rs if $rs;
 
-    my $httpsPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
+    my $httpsPort = main::setupGetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT' );
     my $tplVars = {
-        BASE_SERVER_VHOST            => $main::imscpConfig{'BASE_SERVER_VHOST'},
+        BASE_SERVER_VHOST            => main::setupGetQuestion( 'BASE_SERVER_VHOST' ),
         BASE_SERVER_IP               =>
-            iMSCP::Net->getInstance()->getAddrVersion( $main::imscpConfig{'BASE_SERVER_IP'} ) eq 'ipv4'
-            ? $main::imscpConfig{'BASE_SERVER_IP'} : "[$main::imscpConfig{'BASE_SERVER_IP'}]",
-        BASE_SERVER_VHOST_HTTP_PORT  => $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'},
+            iMSCP::Net->getInstance()->getAddrVersion( main::setupGetQuestion( 'BASE_SERVER_IP' ) ) eq 'ipv4'
+            ? main::setupGetQuestion( 'BASE_SERVER_IP' ) : '['.main::setupGetQuestion( 'BASE_SERVER_IP' ).']',
+        BASE_SERVER_VHOST_HTTP_PORT  => main::setupGetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT' ),
         BASE_SERVER_VHOST_HTTPS_PORT => $httpsPort,
         WEB_DIR                      => $main::imscpConfig{'GUI_ROOT_DIR'},
         CONF_DIR                     => $main::imscpConfig{'CONF_DIR'}
@@ -1130,7 +1130,7 @@ sub _buildHttpdConfig
             my ($cfgTpl, $tplName) = @_;
 
             if ($tplName eq '00_master.conf') {
-                if ($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'https://') {
+                if (main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) eq 'https://') {
                     $$cfgTpl = replaceBloc(
                         "# SECTION custom BEGIN.\n",
                         "# SECTION custom END.\n",
@@ -1146,7 +1146,7 @@ sub _buildHttpdConfig
                     );
                 }
 
-                unless ($main::imscpConfig{'IPV6_SUPPORT'}) {
+                unless (main::setupGetQuestion( 'IPV6_SUPPORT' )) {
                     $$cfgTpl = replaceBloc(
                         '# SECTION IPv6 BEGIN.',
                         '# SECTION IPv6 END.',
@@ -1154,7 +1154,7 @@ sub _buildHttpdConfig
                         $$cfgTpl
                     );
                 }
-            } elsif ($tplName eq '00_master_ssl.conf' && !$main::imscpConfig{'IPV6_SUPPORT'}) {
+            } elsif ($tplName eq '00_master_ssl.conf' && !main::setupGetQuestion( 'IPV6_SUPPORT' )) {
                 $$cfgTpl = replaceBloc(
                     '# SECTION IPv6 BEGIN.',
                     '# SECTION IPv6 END.',
@@ -1180,7 +1180,7 @@ sub _buildHttpdConfig
     $rs ||= $self->{'frontend'}->enableSites( '00_master.conf' );
     return $rs if $rs;
 
-    if ($main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes') {
+    if (main::setupGetQuestion( 'PANEL_SSL_ENABLED' ) eq 'yes') {
         $rs = $self->{'frontend'}->buildConfFile(
             '00_master_ssl.conf',
             $tplVars,
@@ -1226,9 +1226,12 @@ sub _addDnsZone
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedAddMasterZone' );
     $rs ||= Servers::named->factory()->addDmn(
         {
-            DOMAIN_NAME  => $main::imscpConfig{'BASE_SERVER_VHOST'},
-            DOMAIN_IP    => $main::imscpConfig{'BASE_SERVER_IP'},
-            MAIL_ENABLED => 1
+            BASE_SERVER_VHOST     => main::setupGetQuestion( 'BASE_SERVER_VHOST' ),
+            BASE_SERVER_IP        => main::setupGetQuestion( 'BASE_SERVER_IP' ),
+            BASE_SERVER_PUBLIC_IP => main::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' ),
+            DOMAIN_NAME           => main::setupGetQuestion( 'BASE_SERVER_VHOST' ),
+            DOMAIN_IP             => main::setupGetQuestion( 'BASE_SERVER_IP' ),
+            MAIL_ENABLED          => 1
         }
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterNamedAddMasterZone' );
@@ -1247,7 +1250,7 @@ sub _deleteDnsZone
     my $self = shift;
 
     return 0 unless $main::imscpOldConfig{'BASE_SERVER_VHOST'} &&
-        $main::imscpOldConfig{'BASE_SERVER_VHOST'} ne $main::imscpConfig{'BASE_SERVER_VHOST'};
+        $main::imscpOldConfig{'BASE_SERVER_VHOST'} ne main::setupGetQuestion( 'BASE_SERVER_VHOST' );
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedDeleteMasterZone' );
     $rs ||= Servers::named->factory()->deleteDmn( { DOMAIN_NAME => $main::imscpOldConfig{'BASE_SERVER_VHOST'} } );

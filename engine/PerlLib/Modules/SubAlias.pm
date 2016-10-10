@@ -213,6 +213,8 @@ sub _getHttpdData
             ? '; includeSubDomains' : '';
 
         {
+            BASE_SERVER_VHOST       => $main::imscpConfig{'BASE_SERVER_VHOST'},
+            BASE_SERVER_IP          => $main::imscpConfig{'BASE_SERVER_IP'},
             DOMAIN_ADMIN_ID         => $self->{'domain_admin_id'},
             DOMAIN_NAME             => $self->{'subdomain_alias_name'}.'.'.$self->{'alias_name'},
             DOMAIN_NAME_UNICODE     => idn_to_unicode(
@@ -307,12 +309,15 @@ sub _getNamedData
             ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
         {
-            DOMAIN_ADMIN_ID    => $self->{'domain_admin_id'},
-            DOMAIN_NAME        => $self->{'subdomain_alias_name'}.'.'.$self->{'alias_name'},
-            PARENT_DOMAIN_NAME => $self->{'alias_name'},
-            DOMAIN_IP          => $self->{'ip_number'},
-            USER_NAME          => $userName.'alssub'.$self->{'subdomain_alias_id'},
-            MAIL_ENABLED       => (
+            BASE_SERVER_VHOST     => $main::imscpConfig{'BASE_SERVER_VHOST'},
+            BASE_SERVER_IP        => $main::imscpConfig{'BASE_SERVER_IP'},
+            BASE_SERVER_PUBLIC_IP => $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'},
+            DOMAIN_ADMIN_ID       => $self->{'domain_admin_id'},
+            DOMAIN_NAME           => $self->{'subdomain_alias_name'}.'.'.$self->{'alias_name'},
+            PARENT_DOMAIN_NAME    => $self->{'alias_name'},
+            DOMAIN_IP             => $self->{'ip_number'},
+            USER_NAME             => $userName.'alssub'.$self->{'subdomain_alias_id'},
+            MAIL_ENABLED          => (
                 $self->{'external_mail'} eq 'off' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
             )
         }

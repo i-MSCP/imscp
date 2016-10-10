@@ -162,7 +162,7 @@ sub build
         [ \&_cleanup,                'Processing cleanup tasks' ]
     );
 
-    unshift @steps, [ \&_processDistroPackages, 'Processing distribution packages' ] unless $main::skippackages;
+    unshift @steps, [ \&_installDistroPackages, 'Installing distribution packages' ] unless $main::skippackages;
     
     $rs = $eventManager->trigger( 'beforeBuild', \@steps );
     return $rs if $rs;
@@ -512,7 +512,7 @@ EOF
     0;
 }
 
-=item _processDistroPackages()
+=item _installDistroPackages()
 
  Trigger packages installation/uninstallation tasks from distro autoinstaller adapter
 
@@ -520,7 +520,7 @@ EOF
 
 =cut
 
-sub _processDistroPackages
+sub _installDistroPackages
 {
     my $rs = _getDistroAdapter()->installPackages();
     $rs ||= _getDistroAdapter()->uninstallPackages();

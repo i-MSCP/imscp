@@ -244,11 +244,11 @@ password = "{DATABASE_PASSWORD}"
 socket   = {SQLD_SOCK_DIR}/mysqld.sock
 EOF
 
-    (my $user = $main::imscpConfig{'DATABASE_USER'} ) =~ s/"/\\"/g;
-    (my $pwd = decryptBlowfishCBC( $main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'} ) ) =~ s/"/\\"/g;
+    (my $user = main::setupGetQuestion( 'DATABASE_USER' ) ) =~ s/"/\\"/g;
+    (my $pwd = decryptBlowfishCBC( $main::imscpDBKey, $main::imscpDBiv, main::setupGetQuestion( 'DATABASE_PASSWORD' ) ) ) =~ s/"/\\"/g;
     my $variables = {
-        DATABASE_HOST     => $main::imscpConfig{'DATABASE_HOST'},
-        DATABASE_PORT     => $main::imscpConfig{'DATABASE_PORT'},
+        DATABASE_HOST     => main::setupGetQuestion( 'DATABASE_HOST' ),
+        DATABASE_PORT     => main::setupGetQuestion( 'DATABASE_PORT' ),
         DATABASE_USER     => $user,
         DATABASE_PASSWORD => $pwd,
         SQLD_SOCK_DIR     => $self->{'config'}->{'SQLD_SOCK_DIR'}

@@ -95,6 +95,7 @@ sub showDialog
 {
     my ($self, $dialog) = @_;
 
+    my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER' );
     my $dbUser = main::setupGetQuestion( 'DOVECOT_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || 'dovecot_user' );
     my $dbPass = main::setupGetQuestion( 'DOVECOT_SQL_PASSWORD', $self->{'config'}->{'DATABASE_PASSWORD'} );
 
@@ -113,7 +114,7 @@ sub showDialog
 
 Please enter an username for the Dovecot SQL user:$msg
 EOF
-            if (lc( $dbUser ) eq lc( $main::imscpConfig{'DATABASE_USER'} )) {
+            if (lc( $dbUser ) eq lc( $masterSqlUser )) {
                 $msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
                 $dbUser = '';
             } elsif (lc( $dbUser ) eq 'root') {
@@ -449,16 +450,16 @@ sub _buildConf
     (my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'}) =~ s%('|"|\\)%\\$1%g;
 
     my $data = {
-        DATABASE_TYPE                 => $main::imscpConfig{'DATABASE_TYPE'},
-        DATABASE_HOST                 => $main::imscpConfig{'DATABASE_HOST'},
-        DATABASE_PORT                 => $main::imscpConfig{'DATABASE_PORT'},
+        DATABASE_TYPE                 => main::setupGetQuestion( 'DATABASE_TYPE' ),
+        DATABASE_HOST                 => main::setupGetQuestion( 'DATABASE_HOST' ),
+        DATABASE_PORT                 => main::setupGetQuestion( 'DATABASE_PORT' ),
         DATABASE_NAME                 => $dbName,
         DATABASE_USER                 => $dbUser,
         DATABASE_PASSWORD             => $dbPass,
         CONF_DIR                      => $main::imscpConfig{'CONF_DIR'},
-        HOSTNAME                      => $main::imscpConfig{'SERVER_HOSTNAME'},
-        DOVECOT_SSL                   => $main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes' ? 'yes' : 'no',
-        COMMENT_SSL                   => $main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes' ? '' : '#',
+        HOSTNAME                      => main::setupGetQuestion( 'SERVER_HOSTNAME' ),
+        DOVECOT_SSL                   => main::setupGetQuestion( 'SERVICES_SSL_ENABLED' ) eq 'yes' ? 'yes' : 'no',
+        COMMENT_SSL                   => main::setupGetQuestion( 'SERVICES_SSL_ENABLED' ) eq 'yes' ? '' : '#',
         CERTIFICATE                   => 'imscp_services',
         IMSCP_GROUP                   => $main::imscpConfig{'IMSCP_GROUP'},
         MTA_VIRTUAL_MAIL_DIR          => $self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
@@ -466,7 +467,7 @@ sub _buildConf
         MTA_MAILBOX_GID_NAME          => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
         MTA_MAILBOX_UID               => scalar getpwnam( $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'} ),
         MTA_MAILBOX_GID               => scalar getgrnam( $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'} ),
-        NETWORK_PROTOCOLS             => $main::imscpConfig{'IPV6_SUPPORT'} ? '*, [::]' : '*',
+        NETWORK_PROTOCOLS             => main::setupGetQuestion( 'IPV6_SUPPORT' ) ? '*, [::]' : '*',
         POSTFIX_SENDMAIL_PATH         => $self->{'mta'}->{'config'}->{'POSTFIX_SENDMAIL_PATH'},
         DOVECOT_CONF_DIR              => $self->{'config'}->{'DOVECOT_CONF_DIR'},
         DOVECOT_DELIVER_PATH          => $self->{'config'}->{'DOVECOT_DELIVER_PATH'},

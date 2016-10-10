@@ -91,6 +91,7 @@ sub showDialog
 {
     my ($self, $dialog) = @_;
 
+    my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER' );
     my $dbUser = main::setupGetQuestion( 'PHPMYADMIN_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || 'pma_user' );
     my $dbPass = main::setupGetQuestion( 'PHPMYADMIN_SQL_PASSWORD', $self->{'config'}->{'DATABASE_PASSWORD'} );
     my ($rs, $msg) = (0, '');
@@ -107,7 +108,7 @@ sub showDialog
 
 Please enter an username for the PhpMyAdmin SQL user:$msg
 EOF
-            if (lc( $dbUser ) eq lc( $main::imscpConfig{'DATABASE_USER'} )) {
+            if (lc( $dbUser ) eq lc( $masterSqlUser )) {
                 $msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
                 $dbUser = '';
             } elsif (lc( $dbUser ) eq 'root') {

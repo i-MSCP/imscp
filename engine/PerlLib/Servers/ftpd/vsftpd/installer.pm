@@ -85,6 +85,7 @@ sub sqlUserDialog
 {
     my ($self, $dialog) = @_;
 
+    my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER' );
     my $dbUser = main::setupGetQuestion( 'FTPD_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || 'vftp_user' );
     my $dbPass = main::setupGetQuestion( 'FTPD_SQL_PASSWORD', $self->{'config'}->{'DATABASE_PASSWORD'} );
 
@@ -99,7 +100,7 @@ sub sqlUserDialog
 
 Please enter an username for the VsFTPd SQL user:$msg
 EOF
-            if (lc( $dbUser ) eq lc( $main::imscpConfig{'DATABASE_USER'} )) {
+            if (lc( $dbUser ) eq lc( $masterSqlUser )) {
                 $msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
                 $dbUser = '';
             } elsif (lc( $dbUser ) eq 'root') {
@@ -370,9 +371,9 @@ sub _buildConfigFile
 
     my ($passvMinPort, $passvMaxPort) = split( /\s+/, $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'} );
     my $data = {
-        DATABASE_NAME          => $main::imscpConfig{'DATABASE_NAME'},
-        DATABASE_HOST          => $main::imscpConfig{'DATABASE_HOST'},
-        DATABASE_PORT          => $main::imscpConfig{'DATABASE_PORT'},
+        DATABASE_NAME          => main::setupGetQuestion( 'DATABASE_NAME' ),
+        DATABASE_HOST          => main::setupGetQuestion( 'DATABASE_HOST' ),
+        DATABASE_PORT          => main::setupGetQuestion( 'DATABASE_PORT' ),
         DATABASE_USER          => $self->{'config'}->{'DATABASE_USER'},
         DATABASE_PASS          => $self->{'config'}->{'DATABASE_PASSWORD'},
         FTPD_BANNER            => $self->{'config'}->{'FTPD_BANNER'},
@@ -413,11 +414,12 @@ seccomp_sandbox=NO
 EOF
     }
 
-    if ($main::imscpConfig{'BASE_SERVER_IP'} ne $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}) {
+    my $baseServerPublicIp = main::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
+    if ($main::imscpConfig{'BASE_SERVER_IP'} ne $baseServerPublicIp) {
         $cfgTpl .= <<EOF;
 
 # VsFTPd behind NAT - Use public IP address
-pasv_address=$main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}
+pasv_address=$baseServerPublicIp
 pasv_promiscuous=YES
 EOF
     }
