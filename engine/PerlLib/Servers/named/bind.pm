@@ -197,13 +197,16 @@ sub postaddDmn
     if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
         $rs = $self->addDmn(
             {
-                DOMAIN_NAME       => $data->{'BASE_SERVER_VHOST'},
-                DOMAIN_IP         => $data->{'BASE_SERVER_PUBLIC_IP'},
-                MAIL_ENABLED      => 1,
-                CTM_ALS_ENTRY_ADD => {
+                BASE_SERVER_VHOST     => $data->{'BASE_SERVER_VHOST'},
+                BASE_SERVER_IP        => $data->{'BASE_SERVER_IP'},
+                BASE_SERVER_PUBLIC_IP => $data->{'BASE_SERVER_PUBLIC_IP'},
+                DOMAIN_NAME           => $data->{'BASE_SERVER_VHOST'},
+                DOMAIN_IP             => $data->{'BASE_SERVER_PUBLIC_IP'},
+                MAIL_ENABLED          => 1,
+                CTM_ALS_ENTRY_ADD     => {
                     NAME  => $data->{'USER_NAME'},
                     CLASS => 'IN',
-                    TYPE  => iMSCP::Net->getInstance()->getAddrVersion($data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4' ? 'A' : 'AAAA',
+                    TYPE  => iMSCP::Net->getInstance()->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4' ? 'A' : 'AAAA',
                     DATA  => $data->{'BASE_SERVER_PUBLIC_IP'}
                 }
             }
@@ -306,10 +309,15 @@ sub postdeleteDmn
     if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
         $rs = $self->addDmn(
             {
-                DOMAIN_NAME       => $data->{'BASE_SERVER_VHOST'},
-                DOMAIN_IP         => $data->{'BASE_SERVER_PUBLIC_IP'},
-                MAIL_ENABLED      => 1,
-                CTM_ALS_ENTRY_DEL => { NAME => $data->{'USER_NAME'} }
+                BASE_SERVER_VHOST     => $data->{'BASE_SERVER_VHOST'},
+                BASE_SERVER_IP        => $data->{'BASE_SERVER_IP'},
+                BASE_SERVER_PUBLIC_IP => $data->{'BASE_SERVER_PUBLIC_IP'},
+                DOMAIN_NAME           => $data->{'BASE_SERVER_VHOST'},
+                DOMAIN_IP             => $data->{'BASE_SERVER_PUBLIC_IP'},
+                MAIL_ENABLED          => 1,
+                CTM_ALS_ENTRY_DEL     => {
+                    NAME => $data->{'USER_NAME'}
+                }
             }
         );
         return $rs if $rs;
@@ -451,14 +459,16 @@ sub postaddSub
     if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
         $rs = $self->addDmn(
             {
-                DOMAIN_NAME       => $data->{'BASE_SERVER_VHOST'},
-                DOMAIN_IP         => $data->{'BASE_SERVER_PUBLIC_IP'},
-                MAIL_ENABLED      => 1,
-                CTM_ALS_ENTRY_ADD => {
+                BASE_SERVER_VHOST     => $data->{'BASE_SERVER_VHOST'},
+                BASE_SERVER_IP        => $data->{'BASE_SERVER_IP'},
+                BASE_SERVER_PUBLIC_IP => $data->{'BASE_SERVER_PUBLIC_IP'},
+                DOMAIN_NAME           => $data->{'BASE_SERVER_VHOST'},
+                DOMAIN_IP             => $data->{'BASE_SERVER_PUBLIC_IP'},
+                MAIL_ENABLED          => 1,
+                CTM_ALS_ENTRY_ADD     => {
                     NAME  => $data->{'USER_NAME'},
                     CLASS => 'IN',
-                    TYPE  => iMSCP::Net->getInstance()->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} )
-                            eq 'ipv4' ? 'A' : 'AAAA',
+                    TYPE  => iMSCP::Net->getInstance()->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4' ? 'A' : 'AAAA',
                     DATA  => $data->{'BASE_SERVER_PUBLIC_IP'}
                 }
             }
@@ -592,10 +602,15 @@ sub postdeleteSub
     if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
         $rs = $self->addDmn(
             {
-                DOMAIN_NAME       => $data->{'BASE_SERVER_VHOST'},
-                DOMAIN_IP         => $data->{'BASE_SERVER_PUBLIC_IP'},
-                MAIL_ENABLED      => 1,
-                CTM_ALS_ENTRY_DEL => { NAME => $data->{'USER_NAME'} }
+                BASE_SERVER_VHOST     => $data->{'BASE_SERVER_VHOST'},
+                BASE_SERVER_IP        => $data->{'BASE_SERVER_IP'},
+                BASE_SERVER_PUBLIC_IP => $data->{'BASE_SERVER_PUBLIC_IP'},
+                DOMAIN_NAME           => $data->{'BASE_SERVER_VHOST'},
+                DOMAIN_IP             => $data->{'BASE_SERVER_PUBLIC_IP'},
+                MAIL_ENABLED          => 1,
+                CTM_ALS_ENTRY_DEL     => {
+                    NAME => $data->{'USER_NAME'}
+                }
             }
         );
         return $rs if $rs;
