@@ -11,6 +11,7 @@ FRONTEND
     Added: Events for custom DNS records
     Added: Show document roots (relative to mount points) on domains_manage.php page (client side)
     Fixed: Avoid attaching event handler when not necessary (FTP directory chooser)
+    Fixed: Forbid direct access to the `/tools' directory
     Fixed: Hide URLs on hover event (FTP directory chooser)
     Fixed: Lets the applications choose the charset they want use (panel, pma, net2ftp...)
     Fixed: Make parent directory choosable (FTP directory chooser)
