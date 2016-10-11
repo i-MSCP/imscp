@@ -32,6 +32,9 @@ LISTENERS
     Added: 10_phpfpm_settings_override.pl (Allows to override PHP-FPM settings in pool configuration files)
     Fixed: User web directory must be mounted as slave subtree (10_system_mount_userwebdir.pl)
 
+PACKAGES
+    Updated: MonstaFTP filemanager package for use of Monsta FTP 2.1.x serie
+
 SERVERS
     Added: SQL query for user iteration through `doveadm' (Dovecot)
     Fixed: Proxy loop caused by the `ProxyErrorOverride' directive (See the errata file for further details)

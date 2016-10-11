@@ -35,6 +35,8 @@ use iMSCP::TemplateParser;
 use Package::FrontEnd;
 use parent 'Common::SingletonClass';
 
+our $VERSION = '2.1.x';
+
 =head1 DESCRIPTION
 
  i-MSCP MonstaFTP package installer.
@@ -55,7 +57,7 @@ sub preinstall
 {
     my $self = shift;
 
-    my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/monsta-ftp', '1.8.x' );
+    my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/monsta-ftp', $VERSION );
     $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 
@@ -173,7 +175,7 @@ sub _installFiles
 
     my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
     $rs ||= iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" );
-    $rs ||= iMSCP::File->new( filename => "$packageDir/iMSCP/config.php" )->copyFile(
+    $rs ||= iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy(
         "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp"
     );
 }
@@ -209,12 +211,17 @@ sub _buildConfig
     my $self = shift;
 
     my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-    my $conffile = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/config.php";
+    my $cfgTpl;
+
+    # config.php file
+
+    my $conffile = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/settings/config.php";
     my $data = {
+        TIMEZONE => main::setupGetQuestion('TIMEZONE', 'UTC'),
         TMP_PATH => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp"
     };
 
-    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'monstaftp', 'config.php', \ my $cfgTpl, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'monstaftp', 'config.php', \ $cfgTpl, $data );
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
@@ -230,7 +237,43 @@ sub _buildConfig
     my $file = iMSCP::File->new( filename => $conffile );
     $rs = $file->set( $cfgTpl );
     $rs ||= $file->save();
-    $rs ||= $file->mode( 0640 );
+    $rs ||= $file->mode( 0440 );
+    $rs ||= $file->owner( $panelUName, $panelGName );
+    return $rs if $rs;
+
+    # settings.json file
+    require JSON;
+
+    $conffile = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/settings/settings.json";
+    $data = {
+        showDotFiles            => JSON::true,
+        language                => 'en_us',
+        editNewFilesImmediately => JSON::true,
+        editableFileExtensions  => 'txt,htm,html,php,asp,aspx,js,css,xhtml,cfm,pl,py,c,cpp,rb,java,xml,json',
+        hideProUpgradeMessages  => JSON::true,
+        disableMasterLogin      => JSON::true,
+        connectionRestrictions  => {
+            types => [
+                'ftp'
+            ],
+            ftp   => {
+                host             => '127.0.0.1',
+                port             => 21,
+                passive          => JSON::true,
+                ssl              => main::setupGetQuestion( 'SERVICES_SSL_ENABLED' ) eq 'yes' ? JSON::true : JSON::false,
+                initialDirectory => '/'
+            }
+        }
+    };
+
+    $cfgTpl = undef;
+    $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'monstaftp', 'settings.json', \ $cfgTpl, $data );
+    return $rs if $rs;
+
+    $file = iMSCP::File->new( filename => $conffile );
+    $rs = $file->set( $cfgTpl || JSON->new()->utf8( 1 )->pretty( 1 )->encode( $data ) );
+    $rs ||= $file->save();
+    $rs ||= $file->mode( 0440 );
     $rs ||= $file->owner( $panelUName, $panelGName );
 }
 
