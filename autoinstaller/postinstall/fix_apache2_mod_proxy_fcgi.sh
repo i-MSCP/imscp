@@ -26,7 +26,7 @@ SRC_DIR=/usr/local/src/imscp-apache_src
 APACHE_VERSION=`dpkg-query --show --showformat '${Version}' apache2`
 
 # Don't process if the module has been already patched or if apache2 version is
-# lower that 2.4.10
+# lower than 2.4.10
 if [ -f /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST ] \
    || dpkg --compare-versions "$APACHE_VERSION" lt "2.4.10" ; then
     exit;
