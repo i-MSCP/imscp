@@ -36,6 +36,8 @@ SERVERS
     Fixed: Proxy loop caused by the `ProxyErrorOverride' directive (See the errata file for further details)
     Fixed: Authorization problems - You don't have permission to access / on this server (redirect vhosts)
     Fixed: Could not access error documents on error (redirect vhosts)
+    Fixed: Could not list directory when accessing FTP server via LAN, and when passive mode is enabled (ProFTPD)
+    Rewritten: Configuration file (ProFTPD)
 
 SERVICE
     Changed: Create a symlink instead of copying the system PHP binary for the imscp_panel service (Partially closes: #IP-1641)

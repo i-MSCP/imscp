@@ -437,8 +437,7 @@ sub _buildConfigFile
         FTPD_PASSIVE_PORT_RANGE => $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'},
         CONF_DIR                => $main::imscpConfig{'CONF_DIR'},
         CERTIFICATE             => 'imscp_services',
-        TLSOPTIONS              =>
-            version->parse( "$self->{'config'}->{'PROFTPD_VERSION'}" ) >= version->parse( '1.3.3' )
+        TLSOPTIONS              =>  version->parse( "$self->{'config'}->{'PROFTPD_VERSION'}" ) >= version->parse( '1.3.3' )
             ? 'NoCertRequest NoSessionReuseRequired' : 'NoCertRequest',
         MAX_INSTANCES           => $self->{'config'}->{'MAX_INSTANCES'},
         MAX_CLIENT_PER_HOST     => $self->{'config'}->{'MAX_CLIENT_PER_HOST'}
@@ -458,19 +457,11 @@ sub _buildConfigFile
     $rs = $self->{'eventManager'}->trigger( 'beforeFtpdBuildConf', \$cfgTpl, 'proftpd.conf' );
     return $rs if $rs;
 
-    my $baseServerPublicIp = main::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
-    if (main::setupGetQuestion( 'BASE_SERVER_IP' ) ne $baseServerPublicIp) {
-        $cfgTpl .= <<EOF;
-
-# ProFTPD behind NAT - Use public IP address
-MasqueradeAddress $baseServerPublicIp
-EOF
-    }
-
     if (main::setupGetQuestion( 'SERVICES_SSL_ENABLED' ) eq 'yes') {
         $cfgTpl .= <<'EOF';
 
 # SSL configuration
+<Global>
 <IfModule mod_tls.c>
   TLSEngine                on
   TLSRequired              off
@@ -481,6 +472,24 @@ EOF
   TLSRSACertificateKeyFile {CONF_DIR}/{CERTIFICATE}.pem
   TLSVerifyClient          off
 </IfModule>
+</Global>
+EOF
+    }
+
+    my $baseServerIp = main::setupGetQuestion( 'BASE_SERVER_IP' );
+    my $baseServerPublicIp = main::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
+
+    if ($baseServerIp ne $baseServerPublicIp) {
+        my @hostList = ( '127.0.0.1', (main::setupGetQuestion( 'IPV6_SUPPORT' ) ? '::1' : ()), $baseServerIp );
+        $cfgTpl .= <<"EOF";
+
+# ProFTPD behind NAT - Usage of public IP address (default server only)
+MasqueradeAddress $baseServerPublicIp
+
+# VirtualHost for access from LAN (No IP masquering)
+<VirtualHost @hostList>
+    ServerName "{HOSTNAME}.local"
+</VirtualHost>
 EOF
     }
 
