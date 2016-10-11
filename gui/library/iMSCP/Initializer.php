@@ -106,6 +106,7 @@ class iMSCP_Initializer
 		$this->initializeDatabase();
 		$this->loadConfig();
 		$this->setInternalEncoding();
+		$this->setCharset();
 		$this->setTimezone();
 		$this->initializeUserGuiProperties();
 		$this->initializeLocalization();
@@ -133,6 +134,7 @@ class iMSCP_Initializer
 		$this->initializeDatabase();
 		$this->loadConfig();
 		$this->setInternalEncoding();
+		$this->setCharset();
 		$this->setTimezone();
 		$this->initializeUserGuiProperties();
 		$this->initializeLocalization();
@@ -154,6 +156,7 @@ class iMSCP_Initializer
 		$this->initializeDatabase();
 		$this->loadConfig();
 		$this->setInternalEncoding();
+		$this->setCharset();
 		$this->setTimezone();
 		$this->initializeLocalization(); // Needed for rebuilt of languages index
 
@@ -301,6 +304,16 @@ class iMSCP_Initializer
 
 		// Register Database instance in registry for further usage.
 		iMSCP_Registry::set('db', $connection);
+	}
+
+	/**
+	 * Sets default charset
+	 * 
+	 * @return void
+	 */
+	protected function setCharset()
+	{
+		ini_set('default_charset', 'UTF-8');
 	}
 
 	/**

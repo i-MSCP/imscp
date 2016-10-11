@@ -12,6 +12,7 @@ FRONTEND
     Added: Show document roots (relative to mount points) on domains_manage.php page (client side)
     Fixed: Avoid attaching event handler when not necessary (FTP directory chooser)
     Fixed: Hide URLs on hover event (FTP directory chooser)
+    Fixed: Lets the applications choose the charset they want use (panel, pma, net2ftp...)
     Fixed: Make parent directory choosable (FTP directory chooser)
     Fixed: PhpMyAdmin auto-login doesn't works when connecting through SSL with a self-signed certificate
     Fixed: Tooltips not initialized in dialog box (FTP directory chooser)

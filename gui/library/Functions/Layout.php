@@ -310,8 +310,6 @@ function layout_init($event)
 		$themesAssetsVersion = $cfg->THEME_ASSETS_VERSION;
 	}
 
-	ini_set('default_charset', 'UTF-8');
-
 	if (isset($_SESSION['user_theme_color'])) {
 		$color = $_SESSION['user_theme_color'];
 	} elseif (isset($_SESSION['user_id'])) {
