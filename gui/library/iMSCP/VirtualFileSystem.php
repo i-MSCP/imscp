@@ -46,7 +46,7 @@ class VirtualFileSystem
         VFS_BINARY = FTP_BINARY;
 
     /**
-     * @var string Domain name of this virtual file system
+     * @var string Domain of this virtual file system
      */
     protected $domain;
 
@@ -80,8 +80,8 @@ class VirtualFileSystem
      */
     public function __construct($domain, $rootDir = '/')
     {
-        $this->domain = $domain;
-        $this->rootdir = $rootDir;
+        $this->domain = (string)$domain;
+        $this->rootdir = (string)$rootDir;
     }
 
     /**
@@ -110,24 +110,27 @@ class VirtualFileSystem
         }
 
         if (Registry::get('config')->SERVICES_SSL_ENABLED == 'yes') {
-            $this->stream = @ftp_ssl_connect('127.0.0.1', 21, 60);
+            $this->stream = @ftp_ssl_connect('127.0.0.1', 21, 30);
+            if ($this->stream === false) {
+                $this->writeLog('Could not connect to FTP server through SSL.', E_USER_NOTICE);
+            }
         }
 
         # If no SSL or SSL connect failed, connect without SSL
         if (!$this->stream) {
-            $this->stream = @ftp_connect('127.0.0.1', 21, 60);
+            $this->stream = @ftp_connect('127.0.0.1', 21, 30);
         }
 
         if (!$this->stream || !@ftp_login($this->stream, $this->user, $this->passwd)) {
+            $this->writeLog('Could not connect to FTP server.');
             $this->close();
-
-            $error = error_get_last();
-            write_log(sprintf('Could not connect to FTP server for virtual file system access: %s', $error['message']), E_USER_ERROR);
             return false;
         }
 
         # Try to enable passive mode
-        @ftp_pasv($this->stream, true);
+        if (!@ftp_pasv($this->stream, true)) {
+            $this->writeLog('Could not enable passive mode.', E_USER_NOTICE);
+        }
 
         return true;
     }
@@ -140,7 +143,10 @@ class VirtualFileSystem
     public function close()
     {
         if ($this->stream) {
-            ftp_close($this->stream);
+            if (!@ftp_close($this->stream)) {
+                $this->writeLog('Could not close connection.', E_USER_WARNING);
+            }
+
             $this->stream = null;
         }
 
@@ -152,27 +158,34 @@ class VirtualFileSystem
     /**
      * Get directory listing
      *
-     * @param string $dirname Directory path inside the virtual file system
+     * @param string $dirname OTPIONAL Directory path inside the virtual file system
      * @return array|bool An array of directory entries on success, FALSE on failure
      */
-    public function ls($dirname)
+    public function ls($dirname = '/')
     {
-        if (!$this->open()) {
+        if (!is_string($dirname) || !$this->open()) {
             return false;
+        }
+
+        $dirname = utils_normalizePath($dirname);
+
+        if (strlen($dirname) == 0) {
+            $dirname = '/';
+        }
+
+        // Path is always relative to the root vfs
+        if ($dirname[0] != '/') {
+            $dirname = '/' . $dirname;
         }
 
         if ($this->rootdir != '/') {
             $dirname = $this->rootdir . $dirname;
         }
 
-        // Path is always relative to the root vfs
-        if (substr($dirname, 0, 1) != '/') {
-            $dirname = '/' . $dirname;
-        }
-
         // No security implications, the FTP server handles this for us
-        $list = ftp_rawlist($this->stream, "-a $dirname", false);
+        $list = @ftp_rawlist($this->stream, "-a $dirname", false);
         if (!$list) {
+            $this->writeLog('Could not list directory.');
             return false;
         }
 
@@ -204,7 +217,11 @@ class VirtualFileSystem
      */
     public function exists($file, $type = null)
     {
-        $list = $this->ls(dirname($file));
+        if (!is_string($file) || strlen($file) == 0) {
+            return false;
+        }
+
+        $list = $this->ls(dirname(utils_normalizePath($file)));
 
         if (!$list) {
             return false;
@@ -232,17 +249,19 @@ class VirtualFileSystem
      * Get the content of the given file from this virtual file system
      *
      * @param string $file VFS file path
-     * @param int $mode VFS transfer mode
+     * @param int $transferMode VFS transfer mode
      * @return string|bool File content on success, FALSE on failure
      */
-    public function get($file, $mode = self::VFS_ASCII)
+    public function get($file, $transferMode = self::VFS_ASCII)
     {
-        if (!$this->open()) {
+        if (is_string($file) || strlen($file) == 0 || !$this->open()) {
             return false;
         }
 
+        $file = utils_normalizePath($file);
+
         // Path is always relative to the root vfs
-        if (substr($file, 0, 1) != '/') {
+        if ($file[0] != '/') {
             $file = '/' . $file;
         }
 
@@ -250,16 +269,28 @@ class VirtualFileSystem
             $file = $this->rootdir . $file;
         }
 
-        $tmp = tempnam(Registry::get('config')->GUI_ROOT_DIR . '/data/tmp', 'vfs_');
-
-        $rs = ftp_get($this->stream, $tmp, $file, $mode);
-        if (false === $rs) {
+        $tmpFile = @tempnam(Registry::get('config')->GUI_ROOT_DIR . '/data/tmp', 'vfs_');
+        if ($tmpFile === false) {
+            $this->writeLog('Could not create temporary file.');
             return false;
         }
 
-        $rs = @file_get_contents($tmp);
-        @unlink($tmp);
-        return $rs;
+        $ret = true;
+        if (@ftp_get($this->stream, $tmpFile, $file, $transferMode) === false) {
+            $this->writeLog('Could not get file content.');
+            $ret = false;
+        }
+
+        if ($ret && @file_get_contents($tmpFile) === false) {
+            $this->writeLog('Could not get file content.');
+            $ret = false;
+        }
+
+        if (file_exists($tmpFile) && !@unlink($tmpFile)) {
+            $this->writeLog('Could not remove temporary file.');
+        }
+
+        return $ret;
     }
 
     /**
@@ -267,17 +298,19 @@ class VirtualFileSystem
      *
      * @param string $file New file path inside the virtual file system
      * @param string $content File content
-     * @param int $mode VFS transfer mode
+     * @param int $transferMode VFS transfer mode
      * @return boolean TRUE on success, FALSE on failure
      */
-    public function put($file, $content, $mode = self::VFS_ASCII)
+    public function put($file, $content, $transferMode = self::VFS_ASCII)
     {
-        if (!$this->open()) {
+        if (!is_string($file) || strlen($file) == 0 || !$this->open()) {
             return false;
         }
 
+        $file = utils_normalizePath($file);
+
         // Path is always relative to the root vfs
-        if (substr($file, 0, 1) != '/') {
+        if ($file[0] != '/') {
             $file = '/' . $file;
         }
 
@@ -285,18 +318,28 @@ class VirtualFileSystem
             $file = $this->rootdir . $file;
         }
 
-        $tmp = tempnam(Registry::get('config')->GUI_ROOT_DIR . '/data/tmp', 'vfs_');
-
-        if (false === file_put_contents($tmp, $content)) {
+        $tmpFile = @tempnam(Registry::get('config')->GUI_ROOT_DIR . '/data/tmp', 'vfs_');
+        if ($tmpFile === false) {
+            $this->writeLog('Could not create temporary file.', E_USER_ERROR);
             return false;
         }
 
-        if (!ftp_put($this->stream, $file, $tmp, $mode)) {
-            return false;
+        $ret = true;
+        if (@file_put_contents($tmpFile, $content) === false) {
+            $this->writeLog('Could not write file content.', E_USER_ERROR);
+            $ret = false;
         }
 
-        @unlink($tmp);
-        return true;
+        if ($ret && !@ftp_put($this->stream, $file, $tmpFile, $transferMode)) {
+            $this->writeLog('Could not upload file', E_USER_ERROR);
+            $ret = false;
+        }
+
+        if (file_exists($tmpFile) && !@unlink($tmpFile)) {
+            $this->writeLog('Could not remove temporary file.');
+        }
+
+        return $ret;
     }
 
     /**
@@ -339,11 +382,11 @@ class VirtualFileSystem
             );
         } catch (\Exception $e) {
             if ($e instanceof DatabaseException && $e->getCode() == 23000) {
-                set_page_message(tr('Concurrent FTP connections for the same domain are not allowed.'), 'error');
+                $this->writeLog('Concurrent FTP connections are not allowed.', E_USER_WARNING);
                 return false;
             }
 
-            write_log(sprintf('Could not create FTP user for virtual file system access: %s', $e->getMessage()), E_USER_ERROR);
+            $this->writeLog(sprintf('Could not create FTP user: %s', $e->getMessage()));
             return false;
         }
 
@@ -358,5 +401,16 @@ class VirtualFileSystem
     protected function removeFtpUser()
     {
         exec_query('DELETE FROM `ftp_users` WHERE `userid` = ?', $this->user);
+    }
+
+    /**
+     * Write log
+     *
+     * @param string $message Message to write
+     * @param int $level Message level
+     */
+    protected function writeLog($message, $level = E_USER_ERROR)
+    {
+        write_log(sprintf('VirtualFileSystem: %s', $message), $level);
     }
 }
