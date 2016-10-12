@@ -109,7 +109,7 @@ class VirtualFileSystem
             return false;
         }
 
-        if (Registry::get('config')->PANEL_SSL_ENABLED == 'yes') {
+        if (Registry::get('config')->SERVICES_SSL_ENABLED == 'yes') {
             $this->stream = @ftp_ssl_connect('127.0.0.1', 21, 60);
         }
 
