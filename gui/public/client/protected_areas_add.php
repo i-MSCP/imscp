@@ -33,12 +33,16 @@ use iMSCP\VirtualFileSystem as VirtualFileSystem;
 function isAllowedDir($directory)
 {
     global $mountpoints;
-    $disallowedDirs = implode('|', array_merge($mountpoints, array(
-        '/', '00_private', 'backups', 'errors', 'logs', 'phptmp'
-    )));
+    $disallowedDirs = implode('|', array_map('quotemeta', array_merge($mountpoints, array(
+        '00_private', 'backups', 'errors', 'logs', 'phptmp'
+    ))));
 
     foreach ($mountpoints as $mountpoint) {
-        if (preg_match("%^($mountpoint/(?:$disallowedDirs)|$disallowedDirs)$%", $directory)) {
+        if (substr($mountpoint, -1) != '/') {
+            $mountpoint .= '/';
+        }
+
+        if (preg_match("%^(?:$mountpoint(?:$disallowedDirs)|$disallowedDirs)/?$%", $directory)) {
             return false;
         }
     }
@@ -289,7 +293,6 @@ customerHasFeature('protected_areas') or showBadRequestErrorPage();
 
 $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 $mountpoints = getMountpoints($mainDmnProps['domain_id']);
-array_pop($mountpoints);
 
 if (!empty($_POST)) {
     handleProtectedArea();

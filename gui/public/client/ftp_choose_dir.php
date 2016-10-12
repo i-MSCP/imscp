@@ -34,8 +34,16 @@ function isVisibleDir($directory)
 {
     global $vftpHiddenDirs, $mountpoints;
 
+    if ($vftpHiddenDirs == '') {
+        return true;
+    }
+
     foreach ($mountpoints as $mountpoint) {
-        if (preg_match("%^($mountpoint/(?:$vftpHiddenDirs)|$vftpHiddenDirs)$%", $directory)) {
+        if (substr($mountpoint, -1) != '/') {
+            $mountpoint .= '/';
+        }
+
+        if (preg_match("%^(?:$mountpoint(?:$vftpHiddenDirs)|$vftpHiddenDirs)/?$%", $directory)) {
             return false;
         }
     }
@@ -53,8 +61,16 @@ function isSelectableDir($directory)
 {
     global $vftpUnselectableDirs, $mountpoints;
 
+    if ($vftpUnselectableDirs === '') {
+        return true;
+    }
+
     foreach ($mountpoints as $mountpoint) {
-        if (preg_match("%^($mountpoint/(?:$vftpUnselectableDirs)|$vftpUnselectableDirs)$%", $directory)) {
+        if (substr($mountpoint, -1) != '/') {
+            $mountpoint .= '/';
+        }
+
+        if (preg_match("%^(?:$mountpoint(?:$vftpUnselectableDirs)|$vftpUnselectableDirs)/?$%", $directory)) {
             return false;
         }
     }
@@ -72,29 +88,36 @@ function generateDirectoryList($tpl)
 {
     global $vftpRootDir;
 
-    $path = isset($_GET['cur_dir']) ? clean_input($_GET['cur_dir']) : '';
+    $path = isset($_GET['cur_dir']) ? utils_normalizePath(clean_input($_GET['cur_dir'] ?: '/')) : '/';
     $vfs = new VirtualFileSystem($_SESSION['user_logged'], $vftpRootDir);
     $list = $vfs->ls($path);
 
     if (!$list) {
-        if(!Zend_Session::namespaceIsset('pageMessages')) {
-            set_page_message(tr('Could not retrieve directories. Please contact your reseller.'), 'error');
-        }
-
+        set_page_message(tr('Could not retrieve directories. Please contact your reseller.'), 'error');
         $tpl->assign('FTP_CHOOSER', '');
         return;
     }
 
-    $parent = explode('/', $path);
-    array_pop($parent);
-    $parent = implode('/', $parent);
+    if ($path != '/') {
+        $parent = dirname($path);
+    } else {
+        $parent = '/';
+    }
 
     $tpl->assign(array(
         'ICON' => 'parent',
         'DIR_NAME' => tr('Parent directory'),
-        'DIRECTORY' => tohtml($parent, 'htmlAttr'),
         'LINK' => tohtml("ftp_choose_dir.php?cur_dir=$parent", 'htmlAttr')
     ));
+
+    if (substr_count($parent, '/') < 2 // Only check for unselectable parent directory when needed
+        && !isSelectableDir($parent)
+    ) {
+        $tpl->assign('ACTION_LINK', '');
+    } else {
+        $tpl->assign('DIRECTORY', tohtml($parent, 'htmlAttr'));
+    }
+
     $tpl->parse('DIR_ITEM', '.dir_item');
 
     foreach ($list as $entry) {
@@ -105,8 +128,9 @@ function generateDirectoryList($tpl)
             continue;
         }
 
-        $directory = $path . '/' . $entry['file'];
-        if (substr_count($directory, '/') < 4) { // Only check for hidden/unselectable directories when needed
+        $directory = utils_normalizePath($path . '/' . $entry['file']);
+
+        if (substr_count($directory, '/') < 3) { // Only check for hidden/unselectable directories when needed
             if (!isVisibleDir($directory)) {
                 continue;
             }
@@ -160,9 +184,13 @@ $tpl->assign(array(
 ));
 
 $mountpoints = getMountpoints(get_user_domain_id($_SESSION['user_id']));
-$vftpRootDir = isset($_SESSION['vftp_root_dir']) ? $_SESSION['vftp_root_dir'] : '/';
-$vftpHiddenDirs = isset($_SESSION['vftp_hidden_dirs']) ? implode('|', $_SESSION['vftp_hidden_dirs']) : '';
-$vftpUnselectableDirs = isset($_SESSION['vftp_unselectable_dirs']) ? implode('|', $_SESSION['vftp_unselectable_dirs']) : '';
+$vftpRootDir = !empty($_SESSION['vftp_root_dir']) ? (string)$_SESSION['vftp_root_dir'] : '/';
+$vftpHiddenDirs = !empty($_SESSION['vftp_hidden_dirs'])
+    ? implode('|', array_map('quotemeta', (array)$_SESSION['vftp_hidden_dirs']))
+    : '';
+$vftpUnselectableDirs = !empty($_SESSION['vftp_unselectable_dirs'])
+    ? implode('|', array_map('quotemeta', (array)$_SESSION['vftp_unselectable_dirs']))
+    : '';
 
 generateDirectoryList($tpl);
 generatePageMessage($tpl);

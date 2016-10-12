@@ -425,7 +425,7 @@ function getMountpoints($domainId)
             $mountpoints = $stmt->fetchAll(PDO::FETCH_COLUMN);
         }
 
-        $mountpoints[] = ''; // Represent root mount point
+        array_unshift($mountpoints, '/'); // main domain mount point
     }
 
     return $mountpoints;

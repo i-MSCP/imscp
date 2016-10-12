@@ -25,26 +25,6 @@ use iMSCP\VirtualFileSystem as VirtualFileSystem;
  */
 
 /**
- * Is allowed directory?
- *
- * @param string $directory Directory path
- * @return bool
- */
-function isAllowedDir($directory)
-{
-    global $mainDmnProps;
-    $mountpoints = getMountpoints($mainDmnProps['domain_id']);
-
-    foreach ($mountpoints as $mountpoint) {
-        if (preg_match("%^$mountpoint/(?:errors|phptmp)$%", $directory)) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-/**
  * Generate domain type list
  *
  * @throws iMSCP_Exception
@@ -204,9 +184,6 @@ function addAccount()
     if ($homeDir !== '/' && !$vfs->exists($homeDir, VirtualFileSystem::VFS_TYPE_DIR)) {
         set_page_message(tr("Directory '%s' doesn't exists.", $homeDir), 'error');
         return false;
-    } elseif (!isAllowedDir($homeDir)) {
-        set_page_message(tr("Directory '%s' is not allowed or invalid.", $homeDir), 'error');
-        return false;
     }
 
     $cfg = iMSCP_Registry::get('config');
@@ -324,7 +301,7 @@ function generatePage($tpl)
 
     # Set parameters for the FTP chooser
     $_SESSION['vftp_root_dir'] = '/';
-    $_SESSION['vftp_hidden_dirs'] = array('errors', 'phptmp');
+    $_SESSION['vftp_hidden_dirs'] = array();
     $_SESSION['vftp_unselectable_dirs'] = array();
 
     $tpl->assign(array(

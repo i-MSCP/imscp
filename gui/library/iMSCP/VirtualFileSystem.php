@@ -158,22 +158,18 @@ class VirtualFileSystem
     /**
      * Get directory listing
      *
-     * @param string $dirname OTPIONAL Directory path inside the virtual file system
+     * @param string $dirname OPTIONAL Directory path inside the virtual file system
      * @return array|bool An array of directory entries on success, FALSE on failure
      */
     public function ls($dirname = '/')
     {
-        if (!is_string($dirname) || !$this->open()) {
+        if (!is_string($dirname) || strlen($dirname) == 0 || !$this->open()) {
             return false;
         }
 
         $dirname = utils_normalizePath($dirname);
 
-        if (strlen($dirname) == 0) {
-            $dirname = '/';
-        }
-
-        // Path is always relative to the root vfs
+        // Make sure that $dirname is relative to the root vfs
         if ($dirname[0] != '/') {
             $dirname = '/' . $dirname;
         }
@@ -212,7 +208,7 @@ class VirtualFileSystem
      * Checks if the given file exists inside this virtual file system
      *
      * @param string $file File path inside the virtual file system
-     * @param int $type Type of the file to match
+     * @param int $type OPTIONAL Type of the file to match
      * @return boolean TRUE if file exists, FALSE otherwise
      */
     public function exists($file, $type = null)
@@ -249,7 +245,7 @@ class VirtualFileSystem
      * Get the content of the given file from this virtual file system
      *
      * @param string $file VFS file path
-     * @param int $transferMode VFS transfer mode
+     * @param int $transferMode OPTIONAL VFS transfer mode
      * @return string|bool File content on success, FALSE on failure
      */
     public function get($file, $transferMode = self::VFS_ASCII)
@@ -260,7 +256,7 @@ class VirtualFileSystem
 
         $file = utils_normalizePath($file);
 
-        // Path is always relative to the root vfs
+        // Make sure that $file is relative to the root vfs
         if ($file[0] != '/') {
             $file = '/' . $file;
         }
@@ -303,13 +299,13 @@ class VirtualFileSystem
      */
     public function put($file, $content, $transferMode = self::VFS_ASCII)
     {
-        if (!is_string($file) || strlen($file) == 0 || !$this->open()) {
+        if (!is_string($file) || strlen($file) == 0 || !is_string($content) || !$this->open()) {
             return false;
         }
 
         $file = utils_normalizePath($file);
 
-        // Path is always relative to the root vfs
+        // Make sure that $file is relative to the root vfs
         if ($file[0] != '/') {
             $file = '/' . $file;
         }
@@ -400,14 +396,14 @@ class VirtualFileSystem
      */
     protected function removeFtpUser()
     {
-        exec_query('DELETE FROM `ftp_users` WHERE `userid` = ?', $this->user);
+        exec_query('DELETE FROM ftp_users WHERE userid = ?', $this->user);
     }
 
     /**
      * Write log
      *
      * @param string $message Message to write
-     * @param int $level Message level
+     * @param int $level OPTIONAL Message level
      */
     protected function writeLog($message, $level = E_USER_ERROR)
     {

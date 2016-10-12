@@ -25,26 +25,6 @@ use iMSCP\VirtualFileSystem as VirtualFileSystem;
  */
 
 /**
- * Is allowed directory?
- *
- * @param string $directory Directory path
- * @return bool
- */
-function isAllowedDir($directory)
-{
-    global $mainDmnProps;
-    $mountpoints = getMountpoints($mainDmnProps['domain_id']);
-
-    foreach ($mountpoints as $mountpoint) {
-        if (preg_match("%^$mountpoint/(?:disabled|errors|phptmp)$%", $directory)) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-/**
  * Update Ftp account
  *
  * @param string $userid Ftp userid
@@ -91,9 +71,6 @@ function updateFtpAccount($userid)
     if ($homeDir !== '/' && !$vfs->exists($homeDir, VirtualFileSystem::VFS_TYPE_DIR)) {
         set_page_message(tr("Directory '%s' doesn't exists.", $homeDir), 'error');
         return false;
-    } elseif (!isAllowedDir($homeDir)) {
-        set_page_message(tr("Directory '%s' is not allowed or invalid.", $homeDir), 'error');
-        return false;
     }
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditFtp, array(
@@ -138,7 +115,7 @@ function generatePage($tpl, $ftpUserId)
 
     # Set parameters for the FTP chooser
     $_SESSION['vftp_root_dir'] = '/';
-    $_SESSION['vftp_hidden_dirs'] = array('errors', 'phptmp');
+    $_SESSION['vftp_hidden_dirs'] = array();
     $_SESSION['vftp_unselectable_dirs'] = array();
 
     $cfg = iMSCP_Registry::get('config');
@@ -170,9 +147,8 @@ require_once 'imscp-lib.php';
 $eventManager = iMSCP_Events_Aggregator::getInstance();
 $eventManager->dispatch(iMSCP_Events::onClientScriptStart);
 check_login('user');
-customerHasFeature('ftp') or showBadRequestErrorPage();
 
-if (!isset($_GET['id'])) {
+if (!customerHasFeature('ftp') || !isset($_GET['id'])) {
     showBadRequestErrorPage();
 }
 
