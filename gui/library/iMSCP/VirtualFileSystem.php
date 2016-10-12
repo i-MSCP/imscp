@@ -20,6 +20,7 @@
 
 namespace iMSCP;
 
+use iMSCP_Exception_Database as DatabaseException;
 use iMSCP_Registry as Registry;
 
 /**
@@ -108,12 +109,25 @@ class VirtualFileSystem
             return false;
         }
 
-        if (!($this->stream = @ftp_connect('127.0.0.1', 21, 60))
-            || !@ftp_login($this->stream, $this->user, $this->passwd)
-        ) {
+        if (Registry::get('config')->PANEL_SSL_ENABLED == 'yes') {
+            $this->stream = @ftp_ssl_connect('127.0.0.1', 21, 60);
+        }
+
+        # If no SSL or SSL connect failed, connect without SSL
+        if (!$this->stream) {
+            $this->stream = @ftp_connect('127.0.0.1', 21, 60);
+        }
+
+        if (!$this->stream || !@ftp_login($this->stream, $this->user, $this->passwd)) {
             $this->close();
+
+            $error = error_get_last();
+            write_log(sprintf('Could not connect to FTP server for virtual file system access: %s', $error['message']), E_USER_ERROR);
             return false;
         }
+
+        # Try to enable passive mode
+        @ftp_pasv($this->stream, true);
 
         return true;
     }
@@ -236,8 +250,7 @@ class VirtualFileSystem
             $file = $this->rootdir . $file;
         }
 
-        $cfg = iMSCP_Registry::get('config');
-        $tmp = tempnam($cfg['GUI_ROOT_DIR'] . '/data/tmp', 'vfs_');
+        $tmp = tempnam(Registry::get('config')->GUI_ROOT_DIR . '/data/tmp', 'vfs_');
 
         $rs = ftp_get($this->stream, $tmp, $file, $mode);
         if (false === $rs) {
@@ -272,8 +285,7 @@ class VirtualFileSystem
             $file = $this->rootdir . $file;
         }
 
-        $cfg = Registry::get('config');
-        $tmp = tempnam($cfg['GUI_ROOT_DIR'] . '/data/tmp', 'vfs_');
+        $tmp = tempnam(Registry::get('config')->GUI_ROOT_DIR . '/data/tmp', 'vfs_');
 
         if (false === file_put_contents($tmp, $content)) {
             return false;
@@ -290,38 +302,50 @@ class VirtualFileSystem
     /**
      * Create a FTP user for accessing this virtual file system
      *
-     * @throws iMSCP_Exception
-     * @throws iMSCP_Exception_Database
+     * @throws DatabaseException
      * @return bool TRUE on success, FALSE on failure
      */
     protected function createFtpUser()
     {
-        $cfg = Registry::get('config');
-        $stmt = exec_query(
-            '
-              SELECT admin_sys_uid, admin_sys_gid
-              FROM admin
-              INNER JOIN domain ON (domain_admin_id = admin_id)
-              WHERE domain_name = ?
-            ',
-            $this->domain
-        );
+        try {
+            $stmt = exec_query(
+                '
+                  SELECT admin_sys_uid, admin_sys_gid
+                  FROM admin
+                  INNER JOIN domain ON (domain_admin_id = admin_id)
+                  WHERE domain_name = ?
+                ',
+                $this->domain
+            );
 
-        if (!$stmt->rowCount()) {
+            if (!$stmt->rowCount()) {
+                return false;
+            }
+
+            $row = $stmt->fetchRow();
+            $this->user = $this->domain;
+            $this->passwd = Crypt::randomStr(16);
+
+            exec_query(
+                'INSERT INTO ftp_users (userid, passwd, uid, gid, shell, homedir, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                array(
+                    $this->user,
+                    Crypt::sha512($this->passwd),
+                    $row['admin_sys_uid'],
+                    $row['admin_sys_gid'],
+                    '/bin/sh',
+                    Registry::get('config')->USER_WEB_DIR . '/' . $this->domain, 'ok'
+                )
+            );
+        } catch (\Exception $e) {
+            if ($e instanceof DatabaseException && $e->getCode() == 23000) {
+                set_page_message(tr('Concurrent FTP connections for the same domain are not allowed.'), 'error');
+                return false;
+            }
+
+            write_log(sprintf('Could not create FTP user for virtual file system access: %s', $e->getMessage()), E_USER_ERROR);
             return false;
         }
-
-        $row = $stmt->fetchRow();
-        $this->user = $this->domain;
-        $this->passwd = Crypt::randomStr(16);
-
-        exec_query(
-            'INSERT INTO ftp_users (userid, passwd, uid, gid, shell, homedir, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            array(
-                $this->user, Crypt::sha512($this->passwd), $row['admin_sys_uid'], $row['admin_sys_gid'],
-                '/bin/sh', $cfg['USER_WEB_DIR'] . '/' . $this->domain, 'ok'
-            )
-        );
 
         return true;
     }

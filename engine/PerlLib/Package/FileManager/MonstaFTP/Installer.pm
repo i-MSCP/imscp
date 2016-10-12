@@ -260,7 +260,7 @@ sub _buildConfig
                 host             => '127.0.0.1',
                 port             => 21,
                 passive          => JSON::true,
-                ssl              => main::setupGetQuestion( 'SERVICES_SSL_ENABLED' ) eq 'yes' ? JSON::true : JSON::false,
+                ssl              => main::setupGetQuestion( 'PANEL_SSL_ENABLED' ) eq 'yes' ? JSON::true : JSON::false,
                 initialDirectory => '/'
             }
         }

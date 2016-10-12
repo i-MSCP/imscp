@@ -77,12 +77,12 @@ function generateDirectoryList($tpl)
     $list = $vfs->ls($path);
 
     if (!$list) {
-        if ($path == '/' || $path == '') {
+        if(!Zend_Session::namespaceIsset('pageMessages')) {
             set_page_message(tr('Could not retrieve directories. Please contact your reseller.'), 'error');
-            $tpl->assign('FTP_CHOOSER', '');
-        } else {
-            showBadRequestErrorPage();
         }
+
+        $tpl->assign('FTP_CHOOSER', '');
+        return;
     }
 
     $parent = explode('/', $path);
