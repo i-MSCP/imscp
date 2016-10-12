@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Rafael Tavares <rafael@ibinetwork.com.br>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-10-01 11:41+0200\n"
-"PO-Revision-Date: 2016-10-01 09:43+0000\n"
+"POT-Creation-Date: 2016-10-12 02:35+0200\n"
+"PO-Revision-Date: 2016-10-12 00:35+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/i-mscp/i-MSCP/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -990,16 +991,16 @@ msgid "At least one intermediate certificate is invalid or missing."
 msgstr "Pelo menos um certificado intermediário é inválido ou está faltando."
 
 msgid "Authentication by group"
-msgstr ""
+msgstr "Autenticação por grupo"
 
 msgid "Authentication by user"
-msgstr ""
+msgstr "Autenticação por usuário"
 
 msgid "Authentication data"
-msgstr ""
+msgstr "Dados de autenticação"
 
 msgid "Auto"
-msgstr ""
+msgstr "Auto"
 
 msgid "Auto (Browser language)"
 msgstr "Auto (Idioma do Navegador)"
@@ -1215,7 +1216,7 @@ msgid "Click to deactivate"
 msgstr "Clique para desativar"
 
 msgid "Click to edit"
-msgstr ""
+msgstr "Clique para editar"
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "Cliente / Banco de dados / Adicionar  banco de dados SQL"
@@ -1230,13 +1231,13 @@ msgid "Client / Databases / Overview / Update SQL User Password"
 msgstr "Cliente / Banco de dados / Resumo / Atualize a senha do usuário SQL"
 
 msgid "Client / Domain / Edit DNS resource record"
-msgstr ""
+msgstr "Cliente / Domínio /Editar registro DNS "
 
 msgid "Client / Domains"
 msgstr "Cliente / Domínios"
 
 msgid "Client / Domains / Add DNS resource record"
-msgstr ""
+msgstr "Cliente / Domínios / Adicionar Registro DNS Personalizado"
 
 msgid "Client / Domains / Add Domain Alias"
 msgstr "Cliente / Domínios / Adicionar alias de domínio"
@@ -1245,7 +1246,7 @@ msgid "Client / Domains / Add Subdomain"
 msgstr "Cliente / Domínios / Adicionar subdomínio"
 
 msgid "Client / Domains / Edit Domain"
-msgstr ""
+msgstr "Cliente / Domínios / Editar Domínio"
 
 msgid "Client / Domains / Edit Domain Alias"
 msgstr "Cliente / Domínios / Editar Alias"
@@ -1272,7 +1273,7 @@ msgid "Client / Email / Edit Email Account"
 msgstr "Cliente / E-mail / Editar E-mail"
 
 msgid "Client / Email / External Mail Feature"
-msgstr ""
+msgstr "Cliente / E-mail / Servidores de e-mail Externo"
 
 msgid "Client / Email / Overview"
 msgstr "Cliente / E-mail / Resumo"
@@ -1388,8 +1389,11 @@ msgstr "Empresa"
 msgid "Compress HTML output"
 msgstr "Compactar saída HTML"
 
-msgid "Configuration mode"
+msgid "Concurrent FTP connections for the same domain are not allowed."
 msgstr ""
+
+msgid "Configuration mode"
+msgstr "Modo de configuração"
 
 msgid "Core data"
 msgstr "Dados principais"
@@ -1625,7 +1629,7 @@ msgid "Daily backup"
 msgstr "Backup diário"
 
 msgid "Data"
-msgstr ""
+msgstr "Dados"
 
 msgid "Data were altered. Please try again."
 msgstr ""
@@ -1879,7 +1883,7 @@ msgid "Debugger"
 msgstr "Depurador"
 
 msgid "Default"
-msgstr ""
+msgstr "Padrão"
 
 msgid "Default language"
 msgstr "Idioma padrão"
@@ -1937,9 +1941,6 @@ msgstr "A descrição não pode ser vazio."
 msgid "Details"
 msgstr "Detalhes"
 
-msgid "Directories"
-msgstr "Diretórios"
-
 #, php-format
 msgid "Directory %s doesn't exists."
 msgstr "O diretório %s não existe."
@@ -1984,6 +1985,9 @@ msgstr "Detalhadamento do uso do disco"
 
 msgid "Display errors"
 msgstr "Exibir Erros"
+
+msgid "Document root"
+msgstr ""
 
 msgid "Domain"
 msgstr "Domínio"
@@ -2052,7 +2056,7 @@ msgid "Domain and SQL databases"
 msgstr "Bancos de dados SQL e domínio "
 
 msgid "Domain data"
-msgstr ""
+msgstr "Dados do dominio"
 
 msgid "Domain data were altered. Please try again."
 msgstr ""
@@ -2336,7 +2340,7 @@ msgid "Excl. default mails"
 msgstr "Excl. e-mails padrão"
 
 msgid "Execute tasks"
-msgstr ""
+msgstr "Executar tarefas"
 
 msgid "Expire date"
 msgstr "Data de expiração"
@@ -2666,13 +2670,13 @@ msgid "IP assignments"
 msgstr "Atribuições de IP"
 
 msgid "IP errors"
-msgstr ""
+msgstr "Erros de IP"
 
 msgid "IP management"
 msgstr "Gerenciamento de IPs"
 
 msgid "IP netmask"
-msgstr ""
+msgstr "Mascara de Rede"
 
 msgid "IP usage"
 msgstr "Uso de IPs"
@@ -2681,7 +2685,7 @@ msgid "IPv6 address"
 msgstr "Endereço IPv6"
 
 msgid "Id"
-msgstr ""
+msgstr "Id"
 
 msgid "If set to `yes`, Web folders will be protected against deletion."
 msgstr ""
@@ -4333,6 +4337,9 @@ msgstr ""
 msgid "Select group"
 msgstr "Selecione o grupo"
 
+msgid "Select your own document root"
+msgstr ""
+
 msgid "Send"
 msgstr "Enviar"
 
@@ -4781,6 +4788,9 @@ msgstr "O domínio que você está tentando editar não existe."
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "O menu que você está tentando editar não existe."
+
+msgid "The new document root must pre-exists inside the /htdocs directory."
+msgstr ""
 
 msgid "The package is corrupt. Please correct it."
 msgstr "O pacote está corrompido. Por favor, corrija-o."
@@ -5461,9 +5471,16 @@ msgid "You can only upload images."
 msgstr "Você só pode fazer upload de imagens."
 
 msgid ""
-"You can't install the software outside the htdocs directory of the selected "
+"You can set an alternative document root. This is mostly needed when using a"
+" PHP framework such as Symfony. Note that the new document root will live "
+"inside the default  `/htdocs' document root. Be aware that the directory for"
+" the new document root must pre-exist."
+msgstr ""
+
+msgid ""
+"You can't install the software outside of the document root of the selected "
 "domain."
-msgstr "Você não pode instalar o software fora do diretório htdocs do domínio selecionado."
+msgstr ""
 
 msgid ""
 "You cannot add new email account. You have already assigned all your email "

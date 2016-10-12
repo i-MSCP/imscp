@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-10-01 11:41+0200\n"
-"PO-Revision-Date: 2016-10-01 09:43+0000\n"
+"POT-Creation-Date: 2016-10-12 02:35+0200\n"
+"PO-Revision-Date: 2016-10-12 00:35+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/i-mscp/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -1391,6 +1391,9 @@ msgstr "Bedrijf"
 msgid "Compress HTML output"
 msgstr "Compressie toepassen op HTML-output"
 
+msgid "Concurrent FTP connections for the same domain are not allowed."
+msgstr ""
+
 msgid "Configuration mode"
 msgstr "Configuratiemode"
 
@@ -1940,9 +1943,6 @@ msgstr "Beschrijving kan niet leeg zijn."
 msgid "Details"
 msgstr "Bekijk details"
 
-msgid "Directories"
-msgstr "Mappen"
-
 #, php-format
 msgid "Directory %s doesn't exists."
 msgstr "Map %s bestaat niet."
@@ -1987,6 +1987,9 @@ msgstr "Schijfgebruik"
 
 msgid "Display errors"
 msgstr "Laat fouten zien"
+
+msgid "Document root"
+msgstr ""
 
 msgid "Domain"
 msgstr "Domein"
@@ -4336,6 +4339,9 @@ msgstr "Veligheidscode is verlopen"
 msgid "Select group"
 msgstr "Selecteer groep"
 
+msgid "Select your own document root"
+msgstr ""
+
 msgid "Send"
 msgstr "Verzenden"
 
@@ -4784,6 +4790,9 @@ msgstr "Het domein dat u probeert te bewerken bestaat niet."
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "Het menu dat u probeert te bewerken bestaat niet."
+
+msgid "The new document root must pre-exists inside the /htdocs directory."
+msgstr ""
 
 msgid "The package is corrupt. Please correct it."
 msgstr "Het pakket is corrupt. Gelieve het te corrigeren."
@@ -5464,9 +5473,16 @@ msgid "You can only upload images."
 msgstr "U kunt alleen afbeeldingen uploaden."
 
 msgid ""
-"You can't install the software outside the htdocs directory of the selected "
+"You can set an alternative document root. This is mostly needed when using a"
+" PHP framework such as Symfony. Note that the new document root will live "
+"inside the default  `/htdocs' document root. Be aware that the directory for"
+" the new document root must pre-exist."
+msgstr ""
+
+msgid ""
+"You can't install the software outside of the document root of the selected "
 "domain."
-msgstr "U kunt deze software niet installeren buiten de htdocs-map van het geselecteerde domein."
+msgstr ""
 
 msgid ""
 "You cannot add new email account. You have already assigned all your email "

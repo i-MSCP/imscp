@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-10-01 11:41+0200\n"
-"PO-Revision-Date: 2016-10-01 09:43+0000\n"
+"POT-Creation-Date: 2016-10-12 02:35+0200\n"
+"PO-Revision-Date: 2016-10-12 00:35+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Greek (http://www.transifex.com/i-mscp/i-MSCP/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -1389,6 +1389,9 @@ msgstr "Εταιρεία"
 msgid "Compress HTML output"
 msgstr ""
 
+msgid "Concurrent FTP connections for the same domain are not allowed."
+msgstr ""
+
 msgid "Configuration mode"
 msgstr ""
 
@@ -1938,9 +1941,6 @@ msgstr "Η περιγραφή δεν μπορεί να είναι άδεια."
 msgid "Details"
 msgstr "Λεπτομέρειες"
 
-msgid "Directories"
-msgstr "Κατάλογοι"
-
 #, php-format
 msgid "Directory %s doesn't exists."
 msgstr "Ο κατάλογος %s δεν υπάρχει."
@@ -1985,6 +1985,9 @@ msgstr "Λεπτομέρειες χρήσης δίσκου"
 
 msgid "Display errors"
 msgstr "Εμφάνιση λαθών"
+
+msgid "Document root"
+msgstr ""
 
 msgid "Domain"
 msgstr "Domain"
@@ -4334,6 +4337,9 @@ msgstr ""
 msgid "Select group"
 msgstr ""
 
+msgid "Select your own document root"
+msgstr ""
+
 msgid "Send"
 msgstr "Αποστολή"
 
@@ -4781,6 +4787,9 @@ msgid "The domain you are trying to edit doesn't exist."
 msgstr ""
 
 msgid "The menu you are trying to edit doesn't exist."
+msgstr ""
+
+msgid "The new document root must pre-exists inside the /htdocs directory."
 msgstr ""
 
 msgid "The package is corrupt. Please correct it."
@@ -5462,7 +5471,14 @@ msgid "You can only upload images."
 msgstr ""
 
 msgid ""
-"You can't install the software outside the htdocs directory of the selected "
+"You can set an alternative document root. This is mostly needed when using a"
+" PHP framework such as Symfony. Note that the new document root will live "
+"inside the default  `/htdocs' document root. Be aware that the directory for"
+" the new document root must pre-exist."
+msgstr ""
+
+msgid ""
+"You can't install the software outside of the document root of the selected "
 "domain."
 msgstr ""
 

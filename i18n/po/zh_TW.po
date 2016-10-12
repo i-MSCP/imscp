@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-10-01 11:41+0200\n"
-"PO-Revision-Date: 2016-10-01 09:43+0000\n"
+"POT-Creation-Date: 2016-10-12 02:35+0200\n"
+"PO-Revision-Date: 2016-10-12 00:35+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -1390,6 +1390,9 @@ msgstr "公司名稱"
 msgid "Compress HTML output"
 msgstr "HTML 壓縮輸出"
 
+msgid "Concurrent FTP connections for the same domain are not allowed."
+msgstr ""
+
 msgid "Configuration mode"
 msgstr ""
 
@@ -1939,9 +1942,6 @@ msgstr "描述不可以空白"
 msgid "Details"
 msgstr "詳細"
 
-msgid "Directories"
-msgstr "目錄"
-
 #, php-format
 msgid "Directory %s doesn't exists."
 msgstr "目錄 %s 不存在。"
@@ -1986,6 +1986,9 @@ msgstr "硬碟使用量資訊"
 
 msgid "Display errors"
 msgstr "顯示錯誤訊息"
+
+msgid "Document root"
+msgstr ""
 
 msgid "Domain"
 msgstr "網域"
@@ -4335,6 +4338,9 @@ msgstr "安全碼已過期"
 msgid "Select group"
 msgstr "選擇群組"
 
+msgid "Select your own document root"
+msgstr ""
+
 msgid "Send"
 msgstr "發送"
 
@@ -4783,6 +4789,9 @@ msgstr "您試著編輯的網域是不存在的。"
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "您試著編輯的選單是不存在的。"
+
+msgid "The new document root must pre-exists inside the /htdocs directory."
+msgstr ""
 
 msgid "The package is corrupt. Please correct it."
 msgstr "此套件是損壞的。請用正常的。"
@@ -5463,9 +5472,16 @@ msgid "You can only upload images."
 msgstr "您僅能上傳圖片"
 
 msgid ""
-"You can't install the software outside the htdocs directory of the selected "
+"You can set an alternative document root. This is mostly needed when using a"
+" PHP framework such as Symfony. Note that the new document root will live "
+"inside the default  `/htdocs' document root. Be aware that the directory for"
+" the new document root must pre-exist."
+msgstr ""
+
+msgid ""
+"You can't install the software outside of the document root of the selected "
 "domain."
-msgstr "您不可以在選擇的網域中安裝軟體到htdocs 目錄以外的地方。"
+msgstr ""
 
 msgid ""
 "You cannot add new email account. You have already assigned all your email "

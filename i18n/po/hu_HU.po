@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-10-01 11:41+0200\n"
-"PO-Revision-Date: 2016-10-01 09:43+0000\n"
+"POT-Creation-Date: 2016-10-12 02:35+0200\n"
+"PO-Revision-Date: 2016-10-12 00:35+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/i-mscp/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -1392,6 +1392,9 @@ msgstr "Cég"
 msgid "Compress HTML output"
 msgstr "Tömöritett HTML kimenet"
 
+msgid "Concurrent FTP connections for the same domain are not allowed."
+msgstr ""
+
 msgid "Configuration mode"
 msgstr "Beállítás üzemmód"
 
@@ -1941,9 +1944,6 @@ msgstr "Leírás nem lehet üres."
 msgid "Details"
 msgstr "Részletek"
 
-msgid "Directories"
-msgstr "Könyvtárak"
-
 #, php-format
 msgid "Directory %s doesn't exists."
 msgstr "„%s” könyvtár nem létezik."
@@ -1988,6 +1988,9 @@ msgstr "Tárhely használat részletesen "
 
 msgid "Display errors"
 msgstr "Hibák kijelzése"
+
+msgid "Document root"
+msgstr ""
 
 msgid "Domain"
 msgstr "Domain"
@@ -4337,6 +4340,9 @@ msgstr "A biztonsági kód lejárt."
 msgid "Select group"
 msgstr "Csoport kiválasztása"
 
+msgid "Select your own document root"
+msgstr ""
+
 msgid "Send"
 msgstr "Küldés"
 
@@ -4785,6 +4791,9 @@ msgstr "A módosítani kívánt domain név nem létezik"
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "A módosítani kívánt menü nem létezik."
+
+msgid "The new document root must pre-exists inside the /htdocs directory."
+msgstr ""
 
 msgid "The package is corrupt. Please correct it."
 msgstr "A csomag nem megfelelő, kérjük javítsd ki!"
@@ -5465,9 +5474,16 @@ msgid "You can only upload images."
 msgstr "Csak képeket tud feltölteni"
 
 msgid ""
-"You can't install the software outside the htdocs directory of the selected "
+"You can set an alternative document root. This is mostly needed when using a"
+" PHP framework such as Symfony. Note that the new document root will live "
+"inside the default  `/htdocs' document root. Be aware that the directory for"
+" the new document root must pre-exist."
+msgstr ""
+
+msgid ""
+"You can't install the software outside of the document root of the selected "
 "domain."
-msgstr "Nem telepíthetsz alkalmazást a kiválasztott domain htdocs könyvtárán kívül."
+msgstr ""
 
 msgid ""
 "You cannot add new email account. You have already assigned all your email "

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-10-01 11:41+0200\n"
+"POT-Creation-Date: 2016-10-12 02:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1389,6 +1389,9 @@ msgstr ""
 msgid "Compress HTML output"
 msgstr ""
 
+msgid "Concurrent FTP connections for the same domain are not allowed."
+msgstr ""
+
 msgid "Configuration mode"
 msgstr ""
 
@@ -1944,9 +1947,6 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
-msgid "Directories"
-msgstr ""
-
 #, php-format
 msgid "Directory %s doesn't exists."
 msgstr ""
@@ -1990,6 +1990,9 @@ msgid "Disk usage detail"
 msgstr ""
 
 msgid "Display errors"
+msgstr ""
+
+msgid "Document root"
 msgstr ""
 
 msgid "Domain"
@@ -4340,6 +4343,9 @@ msgstr ""
 msgid "Select group"
 msgstr ""
 
+msgid "Select your own document root"
+msgstr ""
+
 msgid "Send"
 msgstr ""
 
@@ -4786,6 +4792,9 @@ msgid "The domain you are trying to edit doesn't exist."
 msgstr ""
 
 msgid "The menu you are trying to edit doesn't exist."
+msgstr ""
+
+msgid "The new document root must pre-exists inside the /htdocs directory."
 msgstr ""
 
 msgid "The package is corrupt. Please correct it."
@@ -5466,7 +5475,14 @@ msgid "You can only upload images."
 msgstr ""
 
 msgid ""
-"You can't install the software outside the htdocs directory of the selected "
+"You can set an alternative document root. This is mostly needed when using a "
+"PHP framework such as Symfony. Note that the new document root will live "
+"inside the default  `/htdocs' document root. Be aware that the directory for "
+"the new document root must pre-exist."
+msgstr ""
+
+msgid ""
+"You can't install the software outside of the document root of the selected "
 "domain."
 msgstr ""
 

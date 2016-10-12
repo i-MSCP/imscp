@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-10-01 11:41+0200\n"
-"PO-Revision-Date: 2016-10-01 09:43+0000\n"
+"POT-Creation-Date: 2016-10-12 02:35+0200\n"
+"PO-Revision-Date: 2016-10-12 00:35+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/i-mscp/i-MSCP/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
@@ -109,7 +109,7 @@ msgstr "%1$s - Oprogramowanie"
 
 #, php-format
 msgid "%d %s remaining until account expiration"
-msgstr "%d %s do wygaśnięcia konta"
+msgstr "%d %s pozostało do wygaśnięcia konta"
 
 #, php-format
 msgid "%d / unlimited"
@@ -189,7 +189,7 @@ msgstr "rekord %s"
 
 #, php-format
 msgid "%s webmail"
-msgstr "%s poczta"
+msgstr "%s webmail"
 
 #, php-format
 msgid ""
@@ -286,13 +286,13 @@ msgstr "'%%value%%' wygląda jak nazwa domeny, ale nie można wyodrębnić czę�
 msgid ""
 "'%%value%%' appears to be a domain name but cannot match TLD against known "
 "list"
-msgstr "'%%value%%' wygląda jak nazwa domeny, ale nie pasuje ze znaną listą TLD"
+msgstr "'%%value%%' wygląda jak nazwa domeny, ale TLD tej domeny nie występuje na liście znanych TLD"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but cannot match against domain name"
 " schema for TLD '%%tld%%'"
-msgstr "'%%value%%' wygląda jak nazwa domeny, ale nie pasuje ze znanym schematem dla TLD '%%tld%%'"
+msgstr "'%%value%%' wygląda jak nazwa domeny, ale nie pokrywa się ze znanym schematem dla TLD '%%tld%%'"
 
 #, php-format
 msgid ""
@@ -304,7 +304,7 @@ msgstr "'%%value%%' wygląda jak nazwa domeny, ale zawiera myślnik w złym miej
 msgid ""
 "'%%value%%' appears to be a domain name but the given punycode notation "
 "cannot be decoded"
-msgstr "'%%value%%' wygląda jak nazwa domeny, ale podany zapis IDN nie może zostać przekonwertowany"
+msgstr "'%%value%%' wygląda jak nazwa domeny, ale podany zapis IDN punycode nie może zostać zdekodowany"
 
 #, php-format
 msgid ""
@@ -1389,6 +1389,9 @@ msgstr "Firma"
 msgid "Compress HTML output"
 msgstr "Kompresuj wynik HTML"
 
+msgid "Concurrent FTP connections for the same domain are not allowed."
+msgstr ""
+
 msgid "Configuration mode"
 msgstr "Tryb konfiguracji"
 
@@ -1938,9 +1941,6 @@ msgstr "Musisz podać opis."
 msgid "Details"
 msgstr "Szczegóły"
 
-msgid "Directories"
-msgstr "Katalogi"
-
 #, php-format
 msgid "Directory %s doesn't exists."
 msgstr "Folder %s nie istnieje."
@@ -1985,6 +1985,9 @@ msgstr "Szczegóły wykorzystania dysku"
 
 msgid "Display errors"
 msgstr "Wyświetl błędy"
+
+msgid "Document root"
+msgstr ""
 
 msgid "Domain"
 msgstr "Domena"
@@ -4334,6 +4337,9 @@ msgstr "Kod bezpieczeństwa wygasł "
 msgid "Select group"
 msgstr "Wybierz grupę"
 
+msgid "Select your own document root"
+msgstr ""
+
 msgid "Send"
 msgstr "Wyślij"
 
@@ -4782,6 +4788,9 @@ msgstr "Domena którą próbujesz edytować nie istnieje."
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "Menu które próbujesz edytować nie istnieje."
+
+msgid "The new document root must pre-exists inside the /htdocs directory."
+msgstr ""
 
 msgid "The package is corrupt. Please correct it."
 msgstr "Pakiet jest uszkodzony. Proszę to poprawić."
@@ -5462,9 +5471,16 @@ msgid "You can only upload images."
 msgstr "Możesz tylko przesyłać obrazki."
 
 msgid ""
-"You can't install the software outside the htdocs directory of the selected "
+"You can set an alternative document root. This is mostly needed when using a"
+" PHP framework such as Symfony. Note that the new document root will live "
+"inside the default  `/htdocs' document root. Be aware that the directory for"
+" the new document root must pre-exist."
+msgstr ""
+
+msgid ""
+"You can't install the software outside of the document root of the selected "
 "domain."
-msgstr "Nie można zainstalować oprogramowania spoza katalogu htdocs wybranej domenie."
+msgstr ""
 
 msgid ""
 "You cannot add new email account. You have already assigned all your email "
