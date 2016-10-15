@@ -483,10 +483,10 @@ EOF
         my @hostList = ( '127.0.0.1', (main::setupGetQuestion( 'IPV6_SUPPORT' ) ? '::1' : ()) );
         $cfgTpl .= <<"EOF";
 
-# ProFTPD behind NAT - Advertise public IP address (default server only)
+# Server behind NAT - Advertise public IP address
 MasqueradeAddress $baseServerPublicIp
 
-# VirtualHost for access from LAN (No IP masquerading)
+# VirtualHost for access from loopback (No IP masquerading)
 <VirtualHost @hostList>
     ServerName "{HOSTNAME}.local"
 </VirtualHost>

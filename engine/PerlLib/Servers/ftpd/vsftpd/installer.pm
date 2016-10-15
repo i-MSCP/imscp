@@ -418,7 +418,7 @@ EOF
     if ($main::imscpConfig{'BASE_SERVER_IP'} ne $baseServerPublicIp) {
         $cfgTpl .= <<EOF;
 
-# VsFTPd behind NAT - Use public IP address
+# Server behind NAT - Advertise public IP address
 pasv_address=$baseServerPublicIp
 pasv_promiscuous=YES
 EOF
