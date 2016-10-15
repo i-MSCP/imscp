@@ -13,10 +13,10 @@ FRONTEND
     Fixed: Avoid attaching event handler when not necessary (FTP directory chooser)
     Fixed: Connection must be made through SSL when SSL is enabled for the frontEnd (VirtualFileSystem)
     Fixed: Forbid direct access to the `/tools' directory
+    Fixed: FTP passive mode should be enabled whenever possible (VirtualFileSystem)
     Fixed: Hide URLs on hover event (FTP directory chooser)
     Fixed: Lets the applications choose the charset they want use (panel, pma, net2ftp...)
     Fixed: Make parent directory choosable (FTP directory chooser)
-    Fixed: Passive mode should be enabled whenever possible (VirtualFileSystem)
     Fixed: PhpMyAdmin auto-login doesn't works when connecting through SSL with a self-signed certificate
     Fixed: Tooltips not initialized in dialog box (FTP directory chooser)
     Review: Better error handling (VirtualFileSystem)
@@ -25,7 +25,7 @@ INSTALLER
     Added: fix_apache2_mod_proxy_fcgi.sh apache2 post install task (patch and rebuild mod_proxy_fcgi module)
     Added: Support for package post installation tasks (autoinstaller::Adapter::DebianAdapter)
     Fixed: Main configuration parameters are saved too early (imscp.conf file)
-    Fixed: Making sure that all required PHP modules are enabled by executing php5enmod/phpenmod (Debian/Ubuntu)
+    Fixed: Making sure that all required PHP modules are enabled by executing php5enmod/phpenmod (regression fix)
     Fixed: Migration script is always run while reconfiguration, forcing clients to re-download all mails (PO servers)
     Fixed: Packages such as `Rainloop' remain selected even when they are unchecked in setup dialog
     Fixed: Some PHP modules such as `mcrypt' and `imap' are not enabled after a fresh installation (Ubuntu 14.04)
@@ -43,7 +43,7 @@ SERVERS
     Fixed: Proxy loop caused by the `ProxyErrorOverride' directive (See the errata file for further details)
     Fixed: Authorization problems - You don't have permission to access / on this server (redirect vhosts)
     Fixed: Could not access error documents on error (redirect vhosts)
-    Fixed: Could not list directory when accessing FTP server via LAN, and when passive mode is enabled (ProFTPD)
+    Fixed: Could not list directory when accessing FTP server via localhost, and when passive mode is enabled (ProFTPD)
     Rewritten: Configuration file (ProFTPD)
 
 SERVICE

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <copy>${SYSTEM_ENGINE_ROOT}/tools/imscp-*</copy>
+    <copy>${SYSTEM_ENGINE_ROOT}/tools/imscp-disable-accounts</copy>
+    <copy>${SYSTEM_ENGINE_ROOT}/tools/imscp-mountall</copy>
+    <copy>${SYSTEM_ENGINE_ROOT}/tools/imscp-net-traffic-logger</copy>
 </install>

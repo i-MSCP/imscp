@@ -533,7 +533,7 @@ sub setupAskSqlUserHost
             do {
                 ($rs, $host) = $dialog->inputbox(<<"EOF", idn_to_unicode($host, 'utf-8'));
 
-Please, enter the host from which SQL users created by i-MSCP must be allowed to connect to your SQL server:$msg
+Please enter the host from which SQL users created by i-MSCP must be allowed to connect to your SQL server:$msg
 
 Please refer to http://dev.mysql.com/doc/refman/5.5/en/account-names.html for allowed values.
 EOF

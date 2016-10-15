@@ -169,7 +169,7 @@ function do_session_timeout()
  * @param string $userLevel User level (admin|reseller|user)
  * @param bool $preventExternalLogin If TRUE, external login is disallowed
  */
-function check_login($userLevel = '', $preventExternalLogin = true)
+function check_login($userLevel, $preventExternalLogin = true)
 {
     do_session_timeout();
     $auth = iMSCP_Authentication::getInstance();
@@ -196,7 +196,7 @@ function check_login($userLevel = '', $preventExternalLogin = true)
     }
 
     // Check user level
-    if (!empty($userLevel) && $identity->admin_type != $userLevel) {
+    if (empty($userLevel) || $identity->admin_type != $userLevel) {
         $auth->unsetIdentity();
         redirectTo('/index.php');
     }

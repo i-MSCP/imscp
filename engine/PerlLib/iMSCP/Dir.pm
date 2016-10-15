@@ -306,25 +306,26 @@ sub rcopy
     opendir my $dh, $self->{'dirname'} or die( sprintf( 'Could not open %s: %s', $self->{'dirname'}, $! ) );
 
     for my $entry (readdir $dh) {
-        if ($entry ne '.' && $entry ne '..') {
-            my $src = "$self->{'dirname'}/$entry";
-            my $dst = "$destDir/$entry";
+        next if $entry eq '.' || $entry eq '..';
 
-            if (-d $src) {
-                my $opts = { };
-                if ($options->{'preserve'}) {
-                    my (undef, undef, $mode, undef, $uid, $gid) = lstat( $src );
-                    $opts = { user => $uid, mode => $mode & 07777, group => $gid }
-                }
+        my $src = "$self->{'dirname'}/$entry";
+        my $dst = "$destDir/$entry";
 
-                iMSCP::Dir->new( dirname => $dst )->make( $opts );
-                iMSCP::Dir->new( dirname => $src )->rcopy( $dst, $options );
-            } else {
-                iMSCP::File->new( filename => $src )->copyFile( $dst, $options ) == 0 or die(
-                    sprintf( 'Could not copy file %s into %s: %s', $src, $dst, getLastError() )
-                );
+        if (-d $src) {
+            my $opts = { };
+            if ($options->{'preserve'}) {
+                my (undef, undef, $mode, undef, $uid, $gid) = lstat( $src );
+                $opts = { user => $uid, mode => $mode & 07777, group => $gid }
             }
+
+            iMSCP::Dir->new( dirname => $dst )->make( $opts );
+            iMSCP::Dir->new( dirname => $src )->rcopy( $dst, $options );
+            next;
         }
+
+        iMSCP::File->new( filename => $src )->copyFile( $dst, $options ) == 0 or die(
+            sprintf( 'Could not copy file %s into %s: %s', $src, $dst, getLastError() )
+        );
     }
 
     closedir $dh;

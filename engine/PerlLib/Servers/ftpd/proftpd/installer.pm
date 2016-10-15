@@ -480,13 +480,13 @@ EOF
     my $baseServerPublicIp = main::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
 
     if ($baseServerIp ne $baseServerPublicIp) {
-        my @hostList = ( '127.0.0.1', (main::setupGetQuestion( 'IPV6_SUPPORT' ) ? '::1' : ()), $baseServerIp );
+        my @hostList = ( '127.0.0.1', (main::setupGetQuestion( 'IPV6_SUPPORT' ) ? '::1' : ()) );
         $cfgTpl .= <<"EOF";
 
-# ProFTPD behind NAT - Usage of public IP address (default server only)
+# ProFTPD behind NAT - Advertise public IP address (default server only)
 MasqueradeAddress $baseServerPublicIp
 
-# VirtualHost for access from LAN (No IP masquering)
+# VirtualHost for access from LAN (No IP masquerading)
 <VirtualHost @hostList>
     ServerName "{HOSTNAME}.local"
 </VirtualHost>

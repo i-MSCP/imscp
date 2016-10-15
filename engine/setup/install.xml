@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <copy>${SYSTEM_ENGINE_ROOT}/setup/imscp*</copy>
-    <copy>${SYSTEM_ENGINE_ROOT}/setup/set*</copy>
+    <copy>${SYSTEM_ENGINE_ROOT}/setup/imscp-reconfigure</copy>
+    <copy>${SYSTEM_ENGINE_ROOT}/setup/imscp-setup-methods.pl</copy>
+    <copy>${SYSTEM_ENGINE_ROOT}/setup/imscp-uninstall</copy>
+    <copy>${SYSTEM_ENGINE_ROOT}/setup/set-engine-permissions.pl</copy>
+    <copy>${SYSTEM_ENGINE_ROOT}/setup/set-gui-permissions.pl</copy>
     <copy>${SYSTEM_ENGINE_ROOT}/setup/updDB.php</copy>
 </install>

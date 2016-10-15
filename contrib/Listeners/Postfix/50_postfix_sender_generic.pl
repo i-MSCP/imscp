@@ -31,7 +31,6 @@ use Servers::mta;
 #
 
 my $postfixSmtpGenericMap = '/etc/postfix/imscp/smtp_outgoing_rewrite';
-my $addSmtpGenericMap = "smtp_generic_maps = hash:/etc/postfix/smtp_outgoing_rewrite\n";
 
 #
 ## Please, don't edit anything below this line

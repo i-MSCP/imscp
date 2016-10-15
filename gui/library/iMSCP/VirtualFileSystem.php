@@ -127,8 +127,9 @@ class VirtualFileSystem
             return false;
         }
 
-        # Try to enable passive mode
-        if (!@ftp_pasv($this->stream, true)) {
+        // Try to enable passive mode, excepted if the FTP daemon is vsftpd
+        // vsftpd doesn't allows to operate on a per IP basic (IP masquerading)
+        if (Registry::get('config')->FTPD_SERVER != 'vsftpd' && !@ftp_pasv($this->stream, true)) {
             $this->writeLog('Could not enable passive mode.', E_USER_NOTICE);
         }
 

@@ -431,7 +431,6 @@ sub _confirmDistro
     my $distribution = $lsbRelease->getId( 'short' );
     my $codename = lc( $lsbRelease->getCodename( 'short' ) );
     my $release = $lsbRelease->getRelease( 'short' );
-    my $description = $lsbRelease->getDescription( 'short' );
     my $packagesFile = "$FindBin::Bin/docs/$distribution/packages-$codename.xml";
 
     if ($distribution ne 'n/a' && $codename ne 'n/a' && lc( $distribution ) =~ /^(?:debian|ubuntu)$/ ) {
@@ -668,10 +667,7 @@ sub _buildEngineFiles
 
 sub _buildFrontendFiles
 {
-    my $rs = execute( "cp -fR $FindBin::Bin/gui $main::{'SYSTEM_ROOT'}", \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
-    $rs;
+    iMSCP::Dir->new( dirname => "$FindBin::Bin/gui" )->rcopy( "$main::{'SYSTEM_ROOT'}/gui" );
 }
 
 =item _compileDaemon()
@@ -709,146 +705,59 @@ sub _savePersistentData
 {
     my $destdir = $main::{'INST_PREF'};
 
-    ## Config files
-
-    # Save Web directories skeletons
-
     # Move old skel directory to new location
-    if (-d "$main::imscpConfig{'CONF_DIR'}/apache/skel") {
-        my $rs = execute(
-            "mv $main::imscpConfig{'CONF_DIR'}/apache/skel $main::imscpConfig{'CONF_DIR'}/skel",
-            \ my $stdout,
-            \ my $stderr
-        );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        return $rs if $rs;
-    }
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/apache/skel" )->rcopy(
+        "$main::imscpConfig{'CONF_DIR'}/skel"
+    ) if -d "$main::imscpConfig{'CONF_DIR'}/apache/skel";
 
-    if (-d "$main::imscpConfig{'CONF_DIR'}/skel") {
-        my $rs = execute(
-            "cp -fRT $main::imscpConfig{'CONF_DIR'}/skel $destdir$main::imscpConfig{'CONF_DIR'}/skel",
-            \ my $stdout,
-            \ my $stderr
-        );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        return $rs if $rs;
-    }
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/skel" )->rcopy(
+        "$destdir$main::imscpConfig{'CONF_DIR'}/skel"
+    ) if -d "$main::imscpConfig{'CONF_DIR'}/skel";
 
     # Move old listener files to new location
-    if (-d "$main::imscpConfig{'CONF_DIR'}/hooks.d") {
-        my $rs = execute(
-            "mv $main::imscpConfig{'CONF_DIR'}/hooks.d $main::imscpConfig{'CONF_DIR'}/listeners.d", \ my $stdout,
-            \ my $stderr
-        );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        return $rs if $rs;
-    }
-
-    ## GUI files
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/hooks.d" )->rcopy(
+        "$main::imscpConfig{'CONF_DIR'}/listeners.d"
+    ) if -d "$main::imscpConfig{'CONF_DIR'}/hooks.d";
 
     # Save ISP logos (older location)
-    if (-d "$main::imscpConfig{'ROOT_DIR'}/gui/themes/user_logos") {
-        my $rs = execute(
-            "cp -fRT $main::imscpConfig{'ROOT_DIR'}/gui/themes/user_logos ".
-                "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/ispLogos",
-            \ my $stdout,
-            \ my $stderr
-        );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        return $rs if $rs;
-    }
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/themes/user_logos" )->rcopy(
+        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/ispLogos"
+    ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/themes/user_logos";
 
     # Save ISP logos (new location)
-    if (-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/ispLogos") {
-        my $rs = execute(
-            "cp -fRT $main::imscpConfig{'ROOT_DIR'}/gui/data/ispLogos ".
-                "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/ispLogos",
-            \ my $stdout,
-            \ my $stderr
-        );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        return $rs if $rs;
-    }
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/data/ispLogos" )->rcopy(
+        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/ispLogos"
+    ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/data/ispLogos";
 
     # Save GUI logs
-    if (-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/logs") {
-        my $rs = execute(
-            "cp -fRT $main::imscpConfig{'ROOT_DIR'}/gui/data/logs $destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/logs",
-            \ my $stdout,
-            \ my $stderr
-        );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        return $rs if $rs;
-    }
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/data/logs" )->rcopy(
+        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/logs"
+    ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/data/logs";
 
     # Save persistent data
-    if (-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent") {
-        my $rs = execute(
-            "cp -fRT $main::imscpConfig{'ROOT_DIR'}/gui/data/persistent ".
-                "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent",
-            \ my $stdout,
-            \ my $stderr
-        );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        return $rs if $rs;
-    }
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent" )->rcopy(
+        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent"
+    ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent";
 
     # Save software (older path ./gui/data/softwares) to new path (./gui/data/persistent/softwares)
-    if (-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/softwares") {
-        my $rs = execute(
-            "cp -fRT $main::imscpConfig{'ROOT_DIR'}/gui/data/softwares ".
-                "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/softwares",
-            \ my $stdout,
-            \ my $stderr
-        );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        return $rs if $rs;
-    }
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/data/softwares" )->rcopy(
+        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/softwares"
+    ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/data/softwares";
 
     # Save plugins
-    if (-d $main::imscpConfig{'PLUGINS_DIR'}) {
-        my $rs = execute(
-            "cp -fRT $main::imscpConfig{'PLUGINS_DIR'} $destdir$main::imscpConfig{'PLUGINS_DIR'}",
-            \ my $stdout,
-            \ my $stderr
-        );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        return $rs if $rs;
-    }
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'PLUGINS_DIR'}" )->rcopy(
+        "$destdir$main::imscpConfig{'PLUGINS_DIR'}"
+    ) if -d $main::imscpConfig{'PLUGINS_DIR'};
 
-    # Quick fix for #IP-1340 ( Removes old filemanager directory which is no longer used )
-    if (-d "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager") {
-        my $rs = execute(
-            "rm -rf $main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager",
-            \ my $stdout,
-            \ my $stderr
-        );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        return $rs if $rs;
-    }
+    # Quick fix for #IP-1340 (Removes old filemanager directory which is no longer used)
+    iMSCP::Dir->new( dirname => "main::imscpConfig{'PLUGINS_DIR'}" )->remove(
+        "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager"
+    ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager";
 
     # Save tools
-    if (-d "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools") {
-        my $rs = execute(
-            "cp -fRT $main::imscpConfig{'ROOT_DIR'}/gui/public/tools "
-                ."$destdir$main::imscpConfig{'ROOT_DIR'}/gui/public/tools",
-            \ my $stdout,
-            \ my $stderr
-        );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        return $rs if $rs;
-    }
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools" )->rcopy(
+        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/public/tools"
+    ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools";
 
     0;
 }
@@ -1064,14 +973,9 @@ sub _copyConfig
     my $source = -f $name ? $name : "$alternativeFolder/$name";
 
     if (-d $source) {
-        my $rs = execute( "cp -fR $source $path", \ my $stdout, \ my $stderr );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        return $rs if $rs;
+        iMSCP::Dir->new( dirname => $source )->rcopy( "$path/$name" );
     } else {
-        my $rs = execute( "cp -f $source $path", \ my $stdout, \ my $stderr );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
+        my $rs = iMSCP::File->new( filename => $source )->copyFile($path);
         return $rs if $rs;
     }
 
@@ -1103,14 +1007,17 @@ sub _copy
 
     my ($name, $path) = fileparse( $data->{'content'} );
 
-    my $rs = execute( "cp -fR $name $path", \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
-    return $rs if $rs;
+    if (-d $name) {
+        iMSCP::Dir->new( dirname => $name )->rcopy( "$path/$name" );
+    } else {
+        my $rs = iMSCP::File->new( filename => $name )->copyFile($path);
+        return $rs if $rs;
+    }
+
     return 0 unless $data->{'user'} || $data->{'group'} || $data->{'mode'};
 
     my $file = iMSCP::File->new( filename => -e "$path/$name" ? "$path/$name" : $path );
-    $rs = $file->mode( oct( $data->{'mode'} ) ) if defined $data->{'mode'};
+    my $rs = $file->mode( oct( $data->{'mode'} ) ) if defined $data->{'mode'};
     return $rs if $rs;
     return 0 unless defined $data->{'user'} || defined $data->{'group'};
 

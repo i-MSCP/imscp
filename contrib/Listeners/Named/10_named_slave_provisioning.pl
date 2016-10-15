@@ -59,9 +59,6 @@ my $realm = 'i-MSCP provisioning service for slave DNS servers';
 ## Other parameters
 #
 
-# Nginx configuration directory
-my $nginxConfDir = '/etc/nginx';
-
 #
 ## Please, don't edit anything below this line
 #
