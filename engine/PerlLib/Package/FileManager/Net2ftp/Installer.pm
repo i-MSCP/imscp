@@ -25,6 +25,7 @@ package Package::FileManager::Net2ftp::Installer;
 
 use strict;
 use warnings;
+use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::EventManager;
@@ -177,21 +178,6 @@ sub _installFiles
     $rs ||= iMSCP::Dir->new( dirname => "$packageDir" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" );
 }
 
-=item _generateMd5SaltString()
-
- Generate MD5 salt string
-
- Return string Salt string
-
-=cut
-
-sub _generateMd5SaltString
-{
-    my $saltString = '';
-    $saltString .= ('A' .. 'Z', '0' .. '9')[rand( 35 )] for 1 .. 38;
-    $saltString;
-}
-
 =item _buildHttpdConfig()
 
  Build Httpd configuration
@@ -225,9 +211,8 @@ sub _buildConfig
     my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
     my $conffile = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/settings.inc.php";
     my $data = {
-        ADMIN_EMAIL     =>
-            $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} ? $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} : '',
-        MD5_SALT_STRING => $self->_generateMd5SaltString()
+        ADMIN_EMAIL     => $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} ? $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} : '',
+        MD5_SALT_STRING => randomStr(16, iMSCP::Crypt::ALNUM)
     };
 
     my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'net2ftp', 'settings.inc.php', \my $cfgTpl, $data );

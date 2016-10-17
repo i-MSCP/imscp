@@ -312,7 +312,6 @@ sub _installFiles
 
     if (-d $destDir) {
         my $dataSrcDir = "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_";
-        my $dataDestDir = "${destDir}-new/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_";
 
         # Copy files from previous installation
         if (-d "$dataSrcDir/storage") {
@@ -365,8 +364,7 @@ sub _mergeConfig
     if (%{$self->{'rainloop'}->{'config'}}) {
         my %oldConfig = %{$self->{'rainloop'}->{'config'}};
 
-        tie %{$self->{'rainloop'}->{'config'}}, 'iMSCP::Config', fileName =>
-            "$self->{'rainloop'}->{'cfgDir'}/rainloop.data";
+        tie %{$self->{'rainloop'}->{'config'}}, 'iMSCP::Config', fileName => "$self->{'rainloop'}->{'cfgDir'}/rainloop.data";
 
         for my $oldConf(keys %oldConfig) {
             if (exists $self->{'rainloop'}->{'config'}->{$oldConf}) {
@@ -406,8 +404,7 @@ sub _setupDatabase
     my $db = iMSCP::Database->factory();
     my $quotedDbName = $db->quoteIdentifier( $rainLoopDbName );
 
-    my $rs = $db->doQuery( 'c',
-        "CREATE DATABASE IF NOT EXISTS $quotedDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci" );
+    my $rs = $db->doQuery( 'c', "CREATE DATABASE IF NOT EXISTS $quotedDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci" );
     unless (ref $rs eq 'HASH') {
         error( sprintf( 'Could not create SQL database: %s', $rs ) );
         return 1;
