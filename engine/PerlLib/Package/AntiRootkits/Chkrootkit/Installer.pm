@@ -152,8 +152,7 @@ sub _scheduleCheck
         "echo 'bash chkrootkit -e > $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1' | batch", \ my $stdout, \ my $stderr
     );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
-    error( 'Could not schedule Chkrootkit check' ) if $rs && !$stderr;
+    error( $stderr || 'Unknown error' ) if $rs;
     $rs;
 }
 

@@ -220,8 +220,7 @@ sub _scheduleCheck
         \ my $stderr
     );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
-    error( 'Could not schedule Rkhunter check' ) if $rs && !$stderr;
+    error( $stderr || 'Unknown error' ) if $rs;
     $rs;
 }
 

@@ -37,7 +37,12 @@ use parent 'Common::SingletonClass';
 $Module::Load::Conditional::FIND_VERSION = 0;
 $Module::Load::Conditional::VERBOSE = 0;
 
-my $init = lazy { _detectInit() };
+my $init = lazy
+    {
+        my $init = _detectInit();
+        debug( sprintf( '%s init system has been detected', ucfirst($init) ) );
+        $init;
+    };
 
 =head1 DESCRIPTION
 
@@ -83,7 +88,7 @@ sub enable
             && $self->{'provider'}->enable( $service )
             && $self->{'eventManager'}->trigger( 'onAfterEnableService', $service ) == 0;
     };
-    $ret && !$@ or die( sprintf( 'Could not enable the %s service: %s', $service, $@ || $self->_getLastError() ) );
+    $ret && !$@ or die( sprintf( "Could not enable the `%s' service: %s", $service, $@ || $self->_getLastError() ) );
     $ret;
 }
 
@@ -107,7 +112,7 @@ sub disable
             && $self->{'provider'}->disable( $service )
             && $self->{'eventManager'}->trigger( 'onAfterDisableService', $service ) == 0;
     };
-    $ret && !$@ or die( sprintf( 'Could not disable the %s service: %s', $service, $@ || $self->_getLastError() ) );
+    $ret && !$@ or die( sprintf( "Could not disable the `%s' service: %s", $service, $@ || $self->_getLastError() ) );
     $ret;
 }
 
@@ -125,14 +130,36 @@ sub remove
     my ($self, $service) = @_;
 
     defined $service or die( 'parameter $service is not defined' );
+
     local $@;
-    my $ret = eval {
-        $self->{'eventManager'}->trigger( 'onBeforeRemoveService', $service ) == 0
-            && $self->{'provider'}->remove( $service )
-            && $self->{'eventManager'}->trigger( 'onAfterRemoveService', $service ) == 0;
+    eval {
+        $self->{'eventManager'}->trigger( 'onBeforeRemoveService', $service ) == 0 or die( $self->_getLastError() );
+        $self->{'provider'}->remove( $service ) or die($self->_getLastError() );
+
+        unless($init eq 'sysvinit') {
+            my $provider = $self->getProvider( $_ );
+
+            if($init eq 'upstart') {
+                for(qw / service socket/) {
+                    my $unitFilePath = eval { $self->getUnitFilePath( "$service.$_" ); };
+                    if (defined $unitFilePath) {
+                        iMSCP::File->new( filename => $unitFilePath )->delFile() == 0 or die( $self->_getLastError() );
+                    }
+                }
+            } else {
+                for (qw / conf override /) {
+                    my $jobfilePath = eval { $provider->getJobFilePath( $service, $_ ); };
+                    if (defined $jobfilePath) {
+                        iMSCP::File->new( filename => $jobfilePath )->delFile() == 0 or die( $self->_getLastError() );
+                    }
+                }
+            }
+        }
+
+        $self->{'eventManager'}->trigger( 'onAfterRemoveService', $service ) == 0 or die( $self->_getLastError() );
     };
-    $ret && !$@ or die( sprintf( 'Could not remove the %s service: %s', $service, $@ || $self->_getLastError() ) );
-    $ret;
+    !$@ or die( sprintf( "Could not remove the `%s' service: %s", $service, $@ ) );
+    1;
 }
 
 =item start($service)
@@ -155,7 +182,7 @@ sub start
             && $self->{'provider'}->start( $service )
             && $self->{'eventManager'}->trigger( 'onAfterStartService', $service ) == 0;
     };
-    $ret && !$@ or die( sprintf( 'Could not start the %s service: %s', $service, $@ || $self->_getLastError() ) );
+    $ret && !$@ or die( sprintf( "Could not start the `%s' service: %s", $service, $@ || $self->_getLastError() ) );
     $ret;
 }
 
@@ -179,7 +206,7 @@ sub stop
             && $self->{'provider'}->stop( $service )
             && $self->{'eventManager'}->trigger( 'onAfterStopService', $service ) == 0
     };
-    $ret && !$@ or die( sprintf( 'Could not stop the %s service: %s', $service, $@ || $self->_getLastError() ) );
+    $ret && !$@ or die( sprintf( "Could not stop the `%s' service: %s", $service, $@ || $self->_getLastError() ) );
     $ret;
 }
 
@@ -203,7 +230,7 @@ sub restart
             && $self->{'provider'}->restart( $service )
             && $self->{'eventManager'}->trigger( 'onAfterRestartService', $service ) == 0;
     };
-    $ret && !$@ or die( sprintf( 'Could not restart the %s service: %s', $service, $@ || $self->_getLastError() ) );
+    $ret && !$@ or die( sprintf( "Could not restart the `%s' service: %s", $service, $@ || $self->_getLastError() ) );
     $ret;
 }
 
@@ -227,7 +254,7 @@ sub reload
             && $self->{'provider'}->reload( $service )
             && $self->{'eventManager'}->trigger( 'onAfterReloadService', $service ) == 0;
     };
-    $ret && !$@ or die( sprintf( 'Could not reload the %s service: %s', $service, $@ || $self->_getLastError() ) );
+    $ret && !$@ or die( sprintf( "Could not reload the `%s' service: %s", $service, $@ || $self->_getLastError() ) );
     $ret;
 }
 
@@ -315,7 +342,7 @@ sub isSystemd
 
 sub getProvider
 {
-    my ($self, $providerName) = @_;
+    my (undef, $providerName) = @_;
 
     $providerName = ucfirst( lc( $providerName // $init ) );
     my $id = iMSCP::LsbRelease->getInstance->getId( 'short' );
@@ -325,7 +352,7 @@ sub getProvider
         $provider = "iMSCP::Provider::Service::${providerName}"; # Fallback to the base provider
     }
     can_load( modules => { $provider => undef } ) or die(
-        sprintf( 'Could not load the %s service provider: %s', $provider, $Module::Load::Conditional::ERROR )
+        sprintf( "Could not load the `%s' service provider: %s", $provider, $Module::Load::Conditional::ERROR )
     );
     $provider->getInstance();
 }
@@ -363,16 +390,15 @@ sub _init
 
 sub _detectInit
 {
-    my $init = 'sysvinit';
-
     if (-d '/run/systemd/system') {
-        $init = 'systemd';
-    } elsif (iMSCP::ProgramFinder::find( 'initctl' ) && execute( 'initctl version 2>/dev/null | grep -q upstart' ) == 0) {
-        $init = 'upstart';
+        return 'systemd';
     }
 
-    debug( sprintf( '%s init system has been detected', ucfirst($init) ) );
-    $init;
+    if (iMSCP::ProgramFinder::find( 'initctl' ) && execute( 'initctl version 2>/dev/null | grep -q upstart' ) == 0) {
+        return 'upstart';
+    }
+
+    'sysvinit'
 }
 
 =item _getLastError()
@@ -385,7 +411,7 @@ sub _detectInit
 
 sub _getLastError
 {
-    getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'An unexpected error occurred';
+    getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error';
 }
 
 =back

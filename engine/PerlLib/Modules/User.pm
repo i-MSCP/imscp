@@ -156,7 +156,7 @@ sub add
         );
         $rs = execute( "@cmd", \my $stdout, \my $stderr );
         debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs && $rs != 12;
+        error( $stderr || 'Unknown error' ) if $rs && $rs != 12;
         return $rs if $rs && $rs != 12;
 
         # Modifying existents i-MSCP unix group
@@ -167,7 +167,7 @@ sub add
         );
         $rs = execute( "@cmd", \$stdout, \$stderr );
         debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
+        error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
     }
 
@@ -271,18 +271,17 @@ sub _loadData
     0;
 }
 
-=item _getHttpdData($action)
+=item _getHttpdData()
 
  Data provider method for Httpd servers
 
- Param string $action Action
  Return hashref Reference to a hash containing data
 
 =cut
 
 sub _getHttpdData
 {
-    my ($self, $action) = @_;
+    my $self = shift;
 
     $self->{'_httpd'} = do {
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
@@ -297,18 +296,17 @@ sub _getHttpdData
     $self->{'_httpd'};
 }
 
-=item _getFtpdData($action)
+=item _getFtpdData()
 
  Data provider method for Ftpd servers
 
- Param string $action Action
  Return hashref Reference to a hash containing data
 
 =cut
 
 sub _getFtpdData
 {
-    my ($self, $action) = @_;
+    my $self = shift;
 
     $self->{'_ftpd'} = do {
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.

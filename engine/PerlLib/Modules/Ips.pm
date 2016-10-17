@@ -169,18 +169,17 @@ sub _loadData
     0;
 }
 
-=item _getHttpdData($action)
+=item _getHttpdData()
 
  Data provider method for Httpd servers
 
- Param string $action Action
  Return hashref Reference to a hash containing data
 
 =cut
 
 sub _getHttpdData
 {
-    my ($self, $action) = @_;
+    my $self = shift;
 
     $self->{'_httpd'} = do {
         {

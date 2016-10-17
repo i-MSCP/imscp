@@ -374,7 +374,7 @@ sub _validateCronTask
 
 sub _validateAttribute
 {
-    my ($self, $name, $value) = @_;
+    my (undef, $name, $value) = @_;
 
     defined $name or die( '$name is undefined' );
     defined $value or die( '$value is undefined' );

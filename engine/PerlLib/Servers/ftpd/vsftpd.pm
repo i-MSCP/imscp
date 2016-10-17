@@ -55,7 +55,7 @@ use parent 'Common::SingletonClass';
 
 sub registerSetupListeners
 {
-    my ($self, $eventManager) = @_;
+    my (undef, $eventManager) = @_;
 
     Servers::ftpd::vsftpd::installer->getInstance()->registerSetupListeners( $eventManager );
 }

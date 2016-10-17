@@ -25,7 +25,6 @@ package Servers::noserver;
 
 use strict;
 use warnings;
-use vars qw/$AUTOLOAD/;
 use parent 'Common::SingletonClass';
 
 our $instance;

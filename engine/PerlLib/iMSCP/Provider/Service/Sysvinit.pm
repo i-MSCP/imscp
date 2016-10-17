@@ -306,17 +306,17 @@ sub _isSysvinit
 
 sub _searchInitScript
 {
-    my ($self, $service) = @_;
+    my (undef, $service) = @_;
 
-    for my $path(@{$SYSVINITSCRIPTPATHS}) {
-        my $filepath = File::Spec->join( $path, $service );
-        return $filepath if -f $filepath;
+    for (@{$SYSVINITSCRIPTPATHS}) {
+        my $initScriptPath = File::Spec->join( $_, $service );
+        return $initScriptPath if -f $initScriptPath;
 
-        $filepath .= '.sh';
-        return $filepath if -f $filepath;
+        $initScriptPath .= '.sh';
+        return $initScriptPath if -f $initScriptPath;
     }
 
-    die( sprintf( 'Could not find sysvinit script for the %s service', $service ) );
+    die( sprintf( "Could not find sysvinit script for the `%s' service", $service ) );
 }
 
 =item _exec($command)
@@ -329,9 +329,10 @@ sub _searchInitScript
 
 sub _exec
 {
-    my ($self, @command) = @_;
+    my (undef, @command) = @_;
 
-    my $ret = execute( "@command", \ my $stdout, \ my $stderr );
+    my $ret = execute( [ @command ], \ my $stdout, \ my $stderr );
+    debug($stdout) if $stdout;
     error( $stderr ) if $ret && $stderr;
     $ret;
 }
@@ -346,8 +347,6 @@ sub _exec
 
 sub _getPs
 {
-    my ($self) = shift;
-
     # Fixme: iMSCP::LsbRelease is Linux specific. We must rewrite it to support all platforms below.
     my $id = iMSCP::LsbRelease->getInstance()->getId( 'short' );
     if ($id eq 'OpenWrt') {
@@ -375,7 +374,7 @@ sub _getPid
     defined $pattern or die( '$pattern parameter is not defined' );
 
     my $ps = $self->_getPs();
-    open my $fh, '-|', $ps or die( sprintf( 'Could not open pipe to %s: %s', $ps, $! ) );
+    open my $fh, '-|', $ps or die( sprintf( 'Could not pipe to %s: %s', $ps, $! ) );
 
     my $regex = qr/$pattern/;
     while(<$fh>) {

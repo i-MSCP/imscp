@@ -55,7 +55,7 @@ sub run
     while(my ($chain, $target) = each %chains) {
         my $rs = execute("iptables -nvxL $chain", $target, \$stderr);
         debug($$target) if $$target;
-        error($stderr) if $stderr && $rs;
+        error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
     }
 

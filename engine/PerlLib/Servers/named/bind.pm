@@ -59,7 +59,7 @@ use parent 'Common::SingletonClass';
 
 sub registerSetupListeners
 {
-    my ($self, $eventManager) = @_;
+    my (undef, $eventManager) = @_;
 
     Servers::named::bind::installer->getInstance()->registerSetupListeners( $eventManager );
 }

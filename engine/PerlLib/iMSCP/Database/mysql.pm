@@ -311,8 +311,7 @@ sub dumpdb
 
     my $rs = execute( "@cmd", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
-    error( sprintf( 'Could not dump `%s` database', $dbName ) ) if $rs && !$stderr;
+    error( $stderr || 'Unknown error' ) if $rs;
     $rs;
 }
 

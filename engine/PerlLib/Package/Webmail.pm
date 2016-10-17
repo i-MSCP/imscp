@@ -104,7 +104,7 @@ EOF
             $package = $package->getInstance();
             next unless $package->can( 'showDialog' );
             debug( sprintf( 'Calling action showDialog on %s', ref $package ) );
-            my $rs = $package->showDialog( $dialog );
+            $rs = $package->showDialog( $dialog );
             return $rs if $rs;
         } else {
             error( $@ );

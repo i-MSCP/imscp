@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use Cwd;
 use iMSCP::Config;
+use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Execute;
@@ -147,13 +148,10 @@ EOF
             }
 
             if ($rs < 30) {
-                my @allowedChr = map { chr } (0x30 .. 0x39, 0x41 .. 0x5a, 0x61 .. 0x7a);
-                $dbPass = '';
-                $dbPass .= $allowedChr[rand @allowedChr] for 1 .. 16;
-
+                $dbPass = randomStr(16, iMSCP::Crypt::ALNUM) unless $dbPass;
                 $dialog->msgbox( <<"EOF" );
 
-Password for the VsFTPd SQL user set to: $dbPass"
+Password for the VsFTPd SQL user set to: $dbPass
 EOF
             }
         }
@@ -262,9 +260,10 @@ sub _init
     return $self unless -f $oldConf;
 
     tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-    for my $param(keys %oldConfig) {
-        next unless exists $self->{'config'}->{$param};
-        $self->{'config'}->{$param} = $oldConfig{$param};
+
+    while(my($key, $value) = each(%oldConfig)) {
+        next unless exists $self->{'config'}->{$key};
+        $self->{'config'}->{$key} = $value;
     }
 
     $self;
@@ -285,7 +284,7 @@ sub _setVersion
     # Version is print through STDIN (see: strace vsftpd -v)
     my $rs = execute( 'vsftpd -v 0>&1', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
+    error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
     if ($stdout !~ m%([\d.]+)%) {

@@ -59,7 +59,7 @@ filters.
 
 sub showDialog
 {
-    my ($self, $dialog) = @_;
+    my (undef, $dialog) = @_;
 
     Package::Webmail::Roundcube::Installer->getInstance()->showDialog( $dialog );
 }
@@ -127,7 +127,7 @@ sub setGuiPermissions
 
 sub deleteMail
 {
-    my ($self, $data) = @_;
+    my (undef, $data) = @_;
 
     my $roundcubeDbName = $main::imscpConfig{'DATABASE_NAME'}.'_roundcube';
 

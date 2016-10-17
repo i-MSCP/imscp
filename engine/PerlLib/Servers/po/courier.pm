@@ -58,7 +58,7 @@ use parent 'Common::SingletonClass';
 
 sub registerSetupListeners
 {
-    my ($self, $eventManager) = @_;
+    my (undef, $eventManager) = @_;
 
     Servers::po::courier::installer->getInstance()->registerSetupListeners( $eventManager );
 }
@@ -192,7 +192,7 @@ sub setEnginePermissions
 
 sub postaddMail
 {
-    my ($self, $data) = @_;
+    my (undef, $data) = @_;
 
     return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
 
@@ -252,7 +252,7 @@ sub postaddMail
         my @maildirmakeCmdArgs = (escapeShell( "$data->{'MAIL_QUOTA'}S" ), escapeShell( "$mailDir" ));
         $rs = execute( "maildirmake -q @maildirmakeCmdArgs", \my $stdout, \my $stderr );
         debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
+        error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
 
         if (-f "$mailDir/maildirsize") {

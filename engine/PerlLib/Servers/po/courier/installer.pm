@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use File::Basename;
 use iMSCP::Config;
+use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Dir;
@@ -164,12 +165,7 @@ EOF
             }
 
             if ($rs < 30) {
-                unless ($dbPass) {
-                    my @allowedChr = map { chr } (0x30 .. 0x39, 0x41 .. 0x5a, 0x61 .. 0x7a);
-                    $dbPass = '';
-                    $dbPass .= $allowedChr[rand @allowedChr] for 1 .. 16;
-                }
-
+                $dbPass = randomStr(16, iMSCP::Crypt::ALNUM) unless $dbPass;
                 $dialog->msgbox( <<"EOF" );
 
 Password for the authdaemon SQL user set to: $dbPass
@@ -264,12 +260,7 @@ sub cyrusSaslSqlUserDialog
             }
 
             if ($rs < 30) {
-                unless ($dbPass) {
-                    my @allowedChr = map { chr } (0x30 .. 0x39, 0x41 .. 0x5a, 0x61 .. 0x7a);
-                    $dbPass = '';
-                    $dbPass .= $allowedChr[rand @allowedChr] for 1 .. 16;
-                }
-
+                $dbPass = randomStr(16, iMSCP::Crypt::ALNUM) unless $dbPass;
                 $dialog->msgbox( "\nPassword for the SASL SQL user set to: $dbPass" );
             }
         }
@@ -448,10 +439,10 @@ sub _init
     my $oldConf = "$self->{'cfgDir'}/courier.old.data";
     if (-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-        for my $param(keys %oldConfig) {
-            if (exists $self->{'config'}->{$param}) {
-                $self->{'config'}->{$param} = $oldConfig{$param};
-            }
+
+        while(my($key, $value) = each(%oldConfig)) {
+            next unless exists $self->{'config'}->{$key};
+            $self->{'config'}->{$key} = $value;
         }
     }
 
@@ -827,11 +818,13 @@ sub _buildDHparametersFile
     my $rs = step(
         sub {
             my $rs = execute( 'DH_BITS=2048 mkdhparams', \ my $stdout, \ my $stderr );
-            error( $stderr ) if $stderr && $rs;
+            debug($stdout) if $stdout;
+            error( $stderr || 'Unknown error' ) if $rs;
             $rs;
         }, 'Generating DH parameter file. Please be patient...', 1, 1
     );
     endDetail();
+    $rs;
 }
 
 =item _buildAuthdaemonrcFile()
@@ -950,14 +943,7 @@ sub _migrateFromDovecot
 {
     my $self = shift;
 
-    if($main::imscpConfig{'PO_SERVER'} eq $main::imscpOldConfig{'PO_SERVER'}
-        && !-f "$main::imscpConfig{'CONF_DIR'}/.courier_migrated"
-    ) {
-        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/.courier_migrated")->save();
-        return $rs if $rs;
-    }
-
-    return 0 if -f "$main::imscpConfig{'CONF_DIR'}/.courier_migrated";
+    return 0 if $main::imscpConfig{'PO_SERVER'} eq $main::imscpOldConfig{'PO_SERVER'};
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoMigrateFromDovecot' );
     return $rs if $rs;
@@ -972,17 +958,10 @@ sub _migrateFromDovecot
     );
     $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    debug( $stderr ) if $stderr && !$rs;
-    error( $stderr || 'Error while migrating from Dovecot to Courier' ) if $rs;
-    return $rs if $rs;
+    error( $stderr || 'Unknown error' ) if $rs;
 
-    $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/.courier_migrated")->save();
-    return $rs if $rs;
+    $main::imscpOldConfig{'PO_SERVER'} = 'courier' unless $rs;
 
-    if(-f "$main::imscpConfig{'CONF_DIR'}/.dovecot_migrated") {
-        $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/.dovecot_migrated")->delFile();
-    }
-    
     $rs ||= $self->{'eventManager'}->trigger( 'afterPoMigrateFromDovecot' );
 }
 
@@ -1010,7 +989,7 @@ sub _oldEngineCompatibility
 
         $rs = execute( "makeuserdb -f $self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
+        error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
     }
 

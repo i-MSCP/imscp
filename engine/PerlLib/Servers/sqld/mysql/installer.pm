@@ -115,10 +115,10 @@ sub _init
     my $oldConf = "$self->{'cfgDir'}/mysql.old.data";
     if (-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-        for my $param(keys %oldConfig) {
-            if (exists $self->{'config'}->{$param}) {
-                $self->{'config'}->{$param} = $oldConfig{$param};
-            }
+
+        while(my($key, $value) = each(%oldConfig)) {
+            next unless exists $self->{'config'}->{$key};
+            $self->{'config'}->{$key} = $value;
         }
     }
 
@@ -299,6 +299,8 @@ sub _updateServerConfig
         my $rs = execute(
             "dpkg -l mysql-community* percona-server-* | cut -d' ' -f1 | grep -q 'ii'", \my $stdout, \my $stderr
         );
+        debug($stdout) if $stdout;
+        debug($stderr) if $stderr;
 
         # Upgrade server system tables
         # See #IP-1482 for further details.
@@ -318,9 +320,9 @@ EOF
 
             # Filter all "duplicate column", "duplicate key" and "unknown column"
             # errors as the command is designed to be idempotent.
-            my $rs = execute(
+            $rs = execute(
                 "mysql_upgrade --defaults-file=$conffile 2>&1 | egrep -v '^(1|\@had|ERROR (1054|1060|1061))'",
-                \my $stdout
+                \$stdout
             );
             error(sprintf('Could not upgrade SQL server system tables: %s', $stdout)) if $rs;
             return $rs if $rs;

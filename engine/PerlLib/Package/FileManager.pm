@@ -163,8 +163,6 @@ sub preinstallListener
 
 sub installListener
 {
-    my $self = shift;
-
     my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
@@ -193,7 +191,7 @@ sub installListener
 
 sub uninstall
 {
-    my ($self, $package) = @_;
+    my (undef, $package) = @_;
 
     $package ||= $main::imscpConfig{'FILEMANAGER_PACKAGE'};
 
@@ -296,11 +294,9 @@ sub _init()
 
 sub _getPhpVersion
 {
-    my $self = shift;
-
     my $rs = execute( 'php -d date.timezone=UTC -v', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
+    error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
     $stdout =~ /PHP\s+([\d.]+)/ or die(

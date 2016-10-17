@@ -58,7 +58,7 @@ use parent 'Common::SingletonClass';
 
 sub registerSetupListeners
 {
-    my ($self, $eventManager) = @_;
+    my (undef, $eventManager) = @_;
 
     Servers::po::dovecot::installer->getInstance()->registerSetupListeners( $eventManager );
 }
@@ -83,7 +83,7 @@ sub preinstall
     $rs = eval {
         my $serviceMngr = iMSCP::Service->getInstance();
 
-        my $rs = $self->stop();
+        $rs = $self->stop();
         return $rs if $rs;
 
         # Disable dovecot.socket unit if any
@@ -164,7 +164,7 @@ sub postinstall
 
 sub postaddMail
 {
-    my ($self, $data) = @_;
+    my (undef, $data) = @_;
 
     return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
 

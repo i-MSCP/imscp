@@ -172,8 +172,7 @@ sub _removeCustomers
 
     my $rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \my $stdout, \my $stderr);
     debug($stdout) if $stdout;
-    error($stderr) if $stderr && $rs;
-    error('Error while deleting customers') if $rs && !$stderr;
+    error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
     iMSCP::Bootstrapper->getInstance()->lock();
@@ -232,15 +231,6 @@ sub _uninstallServices
 {
     my $serviceMngr = iMSCP::Service->getInstance();
     $serviceMngr->remove($_) for 'imscp_daemon', 'imscp_traffic', 'imscp_mountall';
-
-    for my $pFormat('/etc/init.d/%s', '/etc/init/%s.conf', '/etc/init/%s.override', '/etc/systemd/system/%s.service') {
-        for my $service('imscp_network', 'imscp_daemon') {
-            my $file = sprintf($pFormat, $service);
-            next unless -f $file;
-            my $rs = iMSCP::File->new( filename => $file )->delFile();
-            return $rs if $rs;
-        }
-    }
 
     for my $service('bind9', 'bind9-resolvconf') {
         $serviceMngr->disable($service) if $serviceMngr->isSystemd();

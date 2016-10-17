@@ -133,18 +133,17 @@ sub _loadData
     0;
 }
 
-=item _getFtpdData($action)
+=item _getFtpdData()
 
  Data provider method for Ftpd servers
 
- Param string $action Action
  Return hashref Reference to a hash containing data
 
 =cut
 
 sub _getFtpdData
 {
-    my ($self, $action) = @_;
+    my $self = shift;
 
     $self->{'_ftpd'} = do {
         my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.(

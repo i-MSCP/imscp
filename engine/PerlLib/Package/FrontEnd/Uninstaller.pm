@@ -92,20 +92,11 @@ sub _init
 
 sub _deconfigurePHP
 {
-    my $self = shift;
-
     local $@;
     eval { iMSCP::Service->getInstance()->remove( 'imscp_panel' ); };
     if ($@) {
         error( $@ );
         return 1;
-    }
-
-    for ('/etc/init.d/%s', '/etc/systemd/system/%s.service', '/etc/init/%s.conf', '/etc/init/%s.override') {
-        my $file = sprintf( $_, 'imscp_panel' );
-        next unless -f $file;
-        my $rs = iMSCP::File->new( filename => $file )->delFile();
-        return $rs if $rs;
     }
 
     if (-f '/etc/default/imscp_panel') {
@@ -186,8 +177,6 @@ sub _deconfigureHTTPD
 
 sub _deleteMasterWebUser
 {
-    my $self = shift;
-
     my $rs = iMSCP::SystemUser->new( force => 'yes' )->delSystemUser(
         $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'}
     );

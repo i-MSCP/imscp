@@ -238,7 +238,7 @@ sub getDistroInformation
 
 sub _lookupCodename
 {
-    my ($self, $release, $unknown) = @_;
+    my (undef, $release, $unknown) = @_;
 
     return $unknown unless $release =~ /(\d+)\.(\d+)(r(\d+))?/;
 
@@ -260,7 +260,7 @@ my %longnames = ( 'v' => 'version', 'o' => 'origin', 'a' => 'suite', 'c' => 'com
 
 sub _parsePolicyLine
 {
-    my ($self, @bits) = ($_[0], split ',', $_[1]);
+    my @bits = split ',', $_[1];
 
     my %retval = ();
     for(@bits) {
@@ -281,7 +281,7 @@ sub _parsePolicyLine
 
 sub _releaseIndex
 {
-    my ($self, $suite) = ($_[0], $_[1]->{'suite'} || undef);
+    my $suite = $_[1]->{'suite'} || undef;
 
     if ($suite) {
         if (grep($_ eq $suite, @RELEASES_ORDER)) {
@@ -322,7 +322,7 @@ sub _parseAptPolicy
     close $out;
     close $err;
     waitpid( $pid, 0 ) or die "$!\n";
-    die( sprintf('Could not parse APT policy: %s', $stderr ) ) if $stderr && $?;
+    die( sprintf('Could not parse APT policy: %s', $stderr || 'Unknown error' ) ) if $?;
 
     my @data = ();
     my $priority;
@@ -528,8 +528,6 @@ sub _guessDebianRelease
 
 sub _getLsbInformation
 {
-    my $self = $_[0];
-
     my %distInfo = ();
     my $etcLsbFile = $ENV{'LSB_ETC_LSB_RELEASE'} || '/etc/lsb-release';
 

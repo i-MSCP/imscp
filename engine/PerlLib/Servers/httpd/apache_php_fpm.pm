@@ -733,8 +733,6 @@ sub deleteHtaccess
     # Note: It's temporary fix for 1.1.0-rc2 (See #749)
     return 0 unless -d $data->{'AUTH_PATH'};
 
-    my $fileUser = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_USERS_FILENAME'}";
-    my $fileGroup = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_GROUPS_FILENAME'}";
     my $filePath = "$data->{'AUTH_PATH'}/.htaccess";
 
     my $isImmutable = isImmutable( $data->{'AUTH_PATH'} );
@@ -1044,9 +1042,9 @@ sub enableSites
             next;
         }
 
-        my $rs = execute( [ 'a2ensite', $_ ], \ my $stdout, \ my $stderr );
+        $rs = execute( [ 'a2ensite', $_ ], \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
+        error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
         $self->{'restart'} = 1;
     }
@@ -1072,9 +1070,9 @@ sub disableSites
 
     for (@sites) {
         next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
-        my $rs = execute( [ 'a2dissite', $_ ], \ my $stdout, \ my $stderr );
+        $rs = execute( [ 'a2dissite', $_ ], \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
+        error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
         $self->{'restart'} = 1;
     }
@@ -1102,7 +1100,7 @@ sub enableModules
         next unless -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_.load";
         $rs = execute( [ 'a2enmod', $_ ], \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
+        error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
         $self->{'restart'} = 1;
     }
@@ -1130,7 +1128,7 @@ sub disableModules
         next unless -l "$self->{'config'}->{'HTTPD_MODS_ENABLED_DIR'}/$_.load";
         $rs = execute( [ 'a2dismod', $_ ], \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
+        error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
         $self->{'restart'} = 1;
     }
@@ -1161,9 +1159,9 @@ sub enableConfs
                 next;
             }
 
-            my $rs = execute( [ 'a2enconf', $_ ], \ my $stdout, \ my $stderr );
+            $rs = execute( [ 'a2enconf', $_ ], \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
-            error( $stderr ) if $stderr && $rs;
+            error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
             $self->{'restart'} = 1;
         }
@@ -1191,9 +1189,9 @@ sub disableConfs
     if (iMSCP::ProgramFinder::find( 'a2disconf' ) && -d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available") {
         for (@conffiles) {
             next unless -f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/$_";
-            my $rs = execute( [ 'a2disconf', $_ ], \ my $stdout, \ my $stderr );
+            $rs = execute( [ 'a2disconf', $_ ], \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
-            error( $stderr ) if $stderr && $rs;
+            error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
             $self->{'restart'} = 1;
         }
@@ -1582,7 +1580,7 @@ sub _addFiles
         my $tmpDir = File::Temp->newdir();
         $rs = execute( "cp -RT $skelDir $tmpDir", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
+        error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
 
         if ($data->{'FORWARD'} eq 'no') {
@@ -1663,7 +1661,7 @@ sub _addFiles
 
         $rs = execute( "cp -nRT $tmpDir $data->{'WEB_DIR'}", \ $stdout, \ $stderr );
         debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
+        error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
 
         # Cleanup (Transitional)

@@ -126,7 +126,7 @@ sub run
                 # Remove any previous backup file
                 my $rs = execute("rm -fR $bkpDir/*", \$stdout, \$stderr);
                 debug($stdout) if $stdout;
-                error($stderr) if $stderr && $rs;
+                error( $stderr || 'Unknown error' ) if $rs;
 
                 if($rs) {
                     $ret ||= $rs;
@@ -150,8 +150,7 @@ sub run
 
                     # Tar exit with status 1 only if some files were changed while being read. We want ignore this.
                     if($rs > 1) {
-                        error($stderr) if $stderr;
-                        error(sprintf('Could not backup %s', $homeDir)) if !$stderr;
+                        error($stderr || 'Unknown error') if $stderr;
                         $ret |= $rs;
                     }
 
@@ -194,8 +193,7 @@ sub run
                             );
                             $rs = execute("@cmd", \$stdout, \$stderr);
                             debug($stdout) if $stdout;
-                            error($stderr) if $stderr && $rs;
-                            error(sprintf('Could not compress the %s database dump file', "$dbName.sql")) if $rs && !$stderr;
+                            error( $stderr || 'Unknown error' ) if $rs;
                             $ret ||= $rs;
                         }
                     }
@@ -247,8 +245,7 @@ sub run
 
                             # Tar exit with status 1 only if some files were changed while being read. We want ignore this.
                             if($rs > 1) {
-                                error($stderr) if $stderr;
-                                error(sprintf('Could not backup %s', $mailDir)) unless $stderr;
+                                error($stderr || 'Unknown error');
                                 $ret |= $rs;
                             }
 

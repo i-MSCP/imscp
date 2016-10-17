@@ -496,7 +496,7 @@ sub _init
 
 sub _installPackages
 {
-    my ($self, @packages) = @_;
+    my (undef, @packages) = @_;
 
     my $cmd = '';
     unless (iMSCP::Getopt->noprompt) {
@@ -530,7 +530,7 @@ sub _installPackages
 
 sub _removePackages
 {
-    my ($self, @packages) = @_;
+    my (undef, @packages) = @_;
 
     # Do not try to uninstall packages that are not available
     my $rs = execute( "dpkg-query -W -f='\${Package}\\n' @packages 2>/dev/null", \ my $stdout );

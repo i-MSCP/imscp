@@ -68,37 +68,39 @@ sub loadConfig
     my $lsbRelease = iMSCP::LsbRelease->getInstance();
     my $distroConffile = "$FindBin::Bin/configs/".lc( $lsbRelease->getId( 1 ) ).'/imscp.conf';
     my $defaultConffile = "$FindBin::Bin/configs/debian/imscp.conf";
+    my $newConffile = (-f $distroConffile) ? $distroConffile : $defaultConffile;
 
     # Load new configuration
-    tie %main::imscpConfig,
-        'iMSCP::Config',
-        fileName  => (-f $distroConffile) ? $distroConffile : $defaultConffile,
-        readonly  => 1,
-        temporary => 1;
+    tie %main::imscpConfig, 'iMSCP::Config', fileName => $newConffile, readonly => 1, temporary => 1;
 
+    # Load old configuration
+    if (-f "$main::imscpConfig{'CONF_DIR'}/imscpOld.conf") {
+        # imscpOld.conf file only exists on error
+        tie %main::imscpOldConfig,
+            'iMSCP::Config', fileName => "$main::imscpConfig{'CONF_DIR'}/imscpOld.conf", readonly => 1;
+    } elsif (-f "$main::imscpConfig{'CONF_DIR'}/imscp.conf") {
+        # On update there is one old imscp.conf file
+        tie %main::imscpOldConfig,
+            'iMSCP::Config', fileName => "$main::imscpConfig{'CONF_DIR'}/imscp.conf", readonly => 1;
+    } else {
+        # On fresh installation there is not old conffile
+        %main::imscpOldConfig = %main::imscpConfig;
+    }
+
+    if (tied(%main::imscpOldConfig)) {
+        debug('Merging old configuration with new configuration...');
+        # Merge old configuration in new configuration, excluding upstream defined values
+        while(my ($key, $value) = each(%main::imscpOldConfig)) {
+            next unless exists $main::imscpConfig{$key};
+            next if $key =~ /^(?:BuildDate|Version|CodeName|THEME_ASSETS_VERSION)$/;
+            $main::imscpConfig{$key} = $value;
+        }
+    }
+
+    # Set system based values
     $main::imscpConfig{'DISTRO_ID'} = lc( iMSCP::LsbRelease->getInstance()->getId( 'short' ) );
     $main::imscpConfig{'DISTRO_CODENAME'} = lc( iMSCP::LsbRelease->getInstance()->getCodename( 'short' ) );
     $main::imscpConfig{'DISTRO_RELEASE'} = iMSCP::LsbRelease->getInstance()->getRelease( 'short', 'force_numeric' );
-
-    # Load old configuration
-    if (-f "$main::imscpConfig{'CONF_DIR'}/imscp.conf") {
-        
-        tie %main::imscpOldConfig,
-            'iMSCP::Config',
-            fileName  => "$main::imscpConfig{'CONF_DIR'}/imscp.conf",
-            readonly  => 1,
-            temporary => 1;
-
-        # Merge old configuration in new configuration, excluding installer runtime based values
-        while(my ($param, $value) = each(%main::imscpOldConfig)) {
-            next unless exists $main::imscpConfig{$param}
-                && $param !~ /^(?:BuildDate|Version|CodeName|THEME_ASSETS_VERSION|DISTRO_(?:ID|CODENAME|RELEASE))$/;
-            $main::imscpConfig{$param} = $main::imscpOldConfig{$param};
-        }
-    } else {
-        # Fresh installation (old config = new config)
-        %main::imscpOldConfig = %main::imscpConfig;
-    }
 
     $eventManager = iMSCP::EventManager->getInstance();
     undef;
@@ -115,10 +117,10 @@ sub loadConfig
 sub build
 {
     newDebug( 'imscp-build.log' );
-
-    if ($main::skippackages && !iMSCP::Getopt->preseed && !$main::imscpConfig{'HTTPD_SERVER'}
-        || !$main::imscpConfig{'PO_SERVER'} || !$main::imscpConfig{'MTA_SERVER'} || !$main::imscpConfig{'FTPD_SERVER'}
-        || !$main::imscpConfig{'NAMED_SERVER'} || !$main::imscpConfig{'SQL_SERVER'} || !$main::imscpConfig{'PHP_SERVER'}
+    
+    if (!iMSCP::Getopt->preseed && (!$main::imscpConfig{'HTTPD_SERVER'} || !$main::imscpConfig{'PO_SERVER'} ||
+        !$main::imscpConfig{'MTA_SERVER'} || !$main::imscpConfig{'FTPD_SERVER'} || !$main::imscpConfig{'NAMED_SERVER'}
+        || !$main::imscpConfig{'SQL_SERVER'} || !$main::imscpConfig{'PHP_SERVER'})
     ) {
         iMSCP::Getopt->noprompt( 0 );
         $main::skippackages = 0;
@@ -185,11 +187,6 @@ sub build
 
     undef $autoinstallerAdapterInstance;
 
-    # Write new configuration
-    tie my %newConfig, 'iMSCP::Config', fileName => "$main::{'SYSTEM_CONF'}/imscp.conf";
-    @newConfig{ keys %main::imscpConfig } = values %main::imscpConfig;
-    untie %newConfig;
-
     # Clean build directory (remove any .gitignore|empty-file)
     find(
         sub {
@@ -201,6 +198,19 @@ sub build
 
     $rs = $eventManager->trigger( 'afterPostBuild' );
     return $rs if $rs;
+
+    my %confmap = (
+        imscp => \ %main::imscpConfig,
+        imscpOld => \ %main::imscpOldConfig
+    );
+
+    # Write configuration
+    while( my ($name, $config) = each %confmap ) {
+        tie my %config, 'iMSCP::Config', fileName => "$main::{'SYSTEM_CONF'}/$name.conf";
+        @config{ keys %{$config} } = values %{$config};
+        untie %config;
+    }
+    undef %confmap;
 
     endDebug();
 }
@@ -227,13 +237,6 @@ sub install
     my $serviceMngr = iMSCP::Service->getInstance();
     if ($serviceMngr->hasService( 'imscp_network' )) {
         $serviceMngr->remove( 'imscp_network' );
-        for ('/etc/init.d/%s', '/etc/init/%s.conf') {
-            my $file = sprintf( $_, 'imscp_network' );
-            if (-f $file) {
-                my $rs = iMSCP::File->new( filename => $file )->delFile();
-                return $rs if $rs;
-            }
-        }
     }
 
     my $bootstrapper = iMSCP::Bootstrapper->getInstance();
@@ -249,14 +252,16 @@ sub install
     if (@runningJobs) {
         iMSCP::Dialog->getInstance()->msgbox( <<"EOF" );
 
-There is i-MSCP jobs currently running on your system.
+There are jobs currently running on your system that can not be locked by the installer.
 
-You must wait until the end of these jobs for run the installer.
+You must wait until the end of these jobs.
 
 Running jobs are: @runningJobs
 EOF
         return 1;
     }
+
+    undef @runningJobs;
 
     my @steps = (
         [ \&main::setupInstallFiles,      'Installing distribution files' ],
@@ -687,8 +692,7 @@ sub _compileDaemon
 
     my $rs = execute( 'make clean imscp_daemon', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
-    error( 'Could not build i-MSCP daemon' ) if $rs;
+    error( $stderr || 'Unknown error' ) if $rs;
     $rs ||= iMSCP::Dir->new( dirname => "$main::{'SYSTEM_ROOT'}/daemon" )->make();
     $rs ||= iMSCP::File->new( filename => 'imscp_daemon' )->copyFile( "$main::{'SYSTEM_ROOT'}/daemon" );
 }
@@ -1056,7 +1060,7 @@ sub _chownFile
 
     my $rs = execute( "chown $data->{'owner'}:$data->{'group'} $data->{'content'}", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
+    error( $stderr || 'Unknown error' ) if $rs;
     $rs;
 }
 
@@ -1076,7 +1080,7 @@ sub _chmodFile
 
     my $rs = execute( "chmod $data->{'mode'} $data->{'content'}", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
+    error( $stderr || 'Unknown error' ) if $rs;
     $rs;
 }
 

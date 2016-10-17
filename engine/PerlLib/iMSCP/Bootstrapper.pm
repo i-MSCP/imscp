@@ -105,7 +105,7 @@ sub boot
 
 sub loadMainConfig
 {
-    my ($self, $options) = @_;
+    my (undef, $options) = @_;
 
     require iMSCP::Config;
     untie %main::imscpConfig;
@@ -197,8 +197,6 @@ sub DESTROY
 
 sub _genKeys
 {
-    my $self = shift;
-
     my $keyFile = "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys";
     our $db_pass_key = '{KEY}';
     our $db_pass_iv = '{IV}';
@@ -247,7 +245,7 @@ sub _genKeys
 
 sub _dbConnect
 {
-    my ($self, $options) = @_;
+    my (undef, $options) = @_;
 
     require iMSCP::Database;
     require iMSCP::Crypt;

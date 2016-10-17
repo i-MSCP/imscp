@@ -180,10 +180,10 @@ sub _init
     my $oldConf = "$self->{'cfgDir'}/postfix.old.data";
     if (-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-        for my $param(keys %oldConfig) {
-            if (exists $self->{'config'}->{$param}) {
-                $self->{'config'}->{$param} = $oldConfig{$param};
-            }
+
+        while(my($key, $value) = each(%oldConfig)) {
+            next unless exists $self->{'config'}->{$key};
+            $self->{'config'}->{$key} = $value;
         }
     }
 

@@ -29,6 +29,7 @@ use Cwd;
 use File::Basename;
 use File::Temp;
 use iMSCP::Config;
+use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Dir;
@@ -247,10 +248,10 @@ sub _init
     my $oldConf = "$self->{'apacheCfgDir'}/apache.old.data";
     if (-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-        for (keys %oldConfig) {
-            if (exists $self->{'config'}->{$_}) {
-                $self->{'config'}->{$_} = $oldConfig{$_};
-            }
+
+        while(my($key, $value) = each(%oldConfig)) {
+            next unless exists $self->{'config'}->{$key};
+            $self->{'config'}->{$key} = $value;
         }
     }
 
@@ -260,10 +261,10 @@ sub _init
     $oldConf = "$self->{'phpCfgDir'}/php.old.data";
     if (-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-        for (keys %oldConfig) {
-            if (exists $self->{'phpConfig'}->{$_}) {
-                $self->{'phpConfig'}->{$_} = $oldConfig{$_};
-            }
+
+        while(my($key, $value) = each(%oldConfig)) {
+            next unless exists $self->{'phpConfig'}->{$key};
+            $self->{'phpConfig'}->{$key} = $value;
         }
     }
 
@@ -339,7 +340,7 @@ sub _setApacheVersion
 
     my $rs = execute( 'apache2ctl -v', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
+    error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
     if ($stdout !~ m%Apache/([\d.]+)%) {
@@ -385,8 +386,6 @@ sub _makeDirs
 
 sub _copyDomainDisablePages
 {
-    my $self = shift;
-
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/skel/domain_disabled_pages" )->rcopy(
         "$main::imscpConfig{'USER_WEB_DIR'}/domain_disabled_pages"
     );
@@ -659,10 +658,7 @@ sub _setupVlogger
     my $userHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
     $userHost = '127.0.0.1' if $userHost eq 'localhost';
     my $oldUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'} || '';
-
-    my @allowedChr = map { chr } (0x30 .. 0x39, 0x41 .. 0x5a, 0x61 .. 0x7a);
-    my $pass = '';
-    $pass .= $allowedChr[ rand @allowedChr ] for 1 .. 16;
+    my $pass = randomStr(16, iMSCP::Crypt::ALNUM);
 
     my $db = iMSCP::Database->factory();
     my $rs = main::setupImportSqlSchema( $db, "$self->{'apacheCfgDir'}/vlogger.sql" );
@@ -757,7 +753,8 @@ sub _cleanup
     }
 
     $rs = execute( "rm -f $main::imscpConfig{'USER_WEB_DIR'}/*/logs/*.log", \ my $stdout, \ my $stderr );
-    error( $stderr ) if $rs && $stderr;
+    debug($stdout) if $stdout;
+    error( $stderr || 'Unknown error' ) if $rs;
     $rs;
 }
 

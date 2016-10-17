@@ -203,18 +203,17 @@ sub _getPoData
     $self->{'_po'};
 }
 
-=item _getPackagesData($action)
+=item _getPackagesData()
 
  Data provider method for i-MSCP packages
 
- Param string $action Action
  Return hashref Reference to a hash containing data
 
 =cut
 
 sub _getPackagesData
 {
-    my ($self, $action) = @_;
+    my $self = shift;
 
     $self->{'_packages'} = do {
         my ($user, $domain) = split '@', $self->{'mail_addr'};

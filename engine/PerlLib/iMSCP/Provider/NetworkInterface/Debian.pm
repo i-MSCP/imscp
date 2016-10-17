@@ -77,8 +77,6 @@ sub addIpAddr
     );
 
     $data->{'ip_netmask'} ||= $self->{'net'}->getAddrVersion( $data->{'ip_address'} ) eq 'ipv4' ? '32' : '128';
-    
-    my $isKnownIpAddr = $self->{net}->isKnownAddr($data->{'ip_address'});
 
     $self->_updateInterfacesFile( 'add', $data ) == 0 or die('Could not update interfaces file');
 
@@ -226,7 +224,7 @@ STANZA
 
 sub _isDefinedInterface
 {
-    my ($self, $interface) = @_;
+    my (undef, $interface) = @_;
 
     execute( "$COMMANDS{'ifquery'} --list | grep -q '^$interface\$'" ) == 0;
 }

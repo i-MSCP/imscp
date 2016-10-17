@@ -49,7 +49,7 @@ use parent 'Common::SingletonClass';
 
 sub addSystemGroup
 {
-    my ($self, $groupname, $systemgroup) = @_;
+    my (undef, $groupname, $systemgroup) = @_;
 
     unless (defined $groupname) {
         error( '$groupname parameter is not defined' );
@@ -63,8 +63,7 @@ sub addSystemGroup
     my @cmd = ('groupadd', $^O !~ /bsd$/ ? $systemgroup : '', escapeShell( $groupname ));
     my $rs = execute( "@cmd", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
-    debug( $stderr ) if $stderr && !$rs;
+    error( $stderr || 'Unknown error' ) if $rs;
     $rs;
 }
 
@@ -79,7 +78,7 @@ sub addSystemGroup
 
 sub delSystemGroup
 {
-    my ($self, $groupname) = @_;
+    my (undef, $groupname) = @_;
 
     unless (defined $groupname) {
         error( '$groupname parameter is not defined' );
@@ -90,8 +89,7 @@ sub delSystemGroup
 
     my $rs = execute( 'groupdel '.escapeShell( $groupname ), \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
-    debug( $stderr ) if $stderr && !$rs;
+    error( $stderr || 'Unknown error' ) if $rs;
     $rs;
 }
 

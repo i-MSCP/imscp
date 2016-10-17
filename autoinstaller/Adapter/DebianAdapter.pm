@@ -177,7 +177,7 @@ sub installPackages
         $rs ||= step(
             sub {
                 my $stdout;
-                my $rs = execute(
+                $rs = execute(
                     $task, (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout), \ my $stderr
                 );
                 error(
@@ -266,7 +266,7 @@ sub uninstallPackages
 
             my $cmd = !iMSCP::Getopt->noprompt ? 'debconf-apt-progress --logstderr -- ' : '';
             $cmd .= "apt-get -y --auto-remove --purge --no-install-recommends remove @{$packagesToUninstall}";
-            my $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef, \ $stderr );
+            $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef, \ $stderr );
             error( sprintf( 'Could not uninstall packages: %s', $stderr || 'Unknown error' ) ) if $rs;
             return $rs if $rs;
         }
@@ -343,7 +343,7 @@ sub _init
 
 sub _setupInitScriptPolicyLayer
 {
-    my ($self, $action) = @_;
+    my (undef, $action) = @_;
 
     if ($action eq 'enable') {
         # Prevents invoke-rc.d (which is invoked by package maintainer scripts) to start some services
@@ -567,7 +567,8 @@ sub _updateAptSourceList
 
             if ($fileContent !~ /^deb\s+$rc{'uri'}\s+\b$rc{'distrib'}\b\s+.*\b$sec\b/m) {
                 my $rs = execute( "wget --spider $rc{'uri'}/dists/$rc{'distrib'}/$sec/", \ my $stdout, \ my $stderr );
-                debug( $stderr ) if $rs && $stderr;
+                debug($stdout) if $stdout;
+                debug( $stderr || 'Unknown error' ) if $rs;
                 unless ($rs) {
                     $fsec = 1;
                     $fileContent =~ s/^($rf)$/$1 $sec/m;
@@ -578,9 +579,9 @@ sub _updateAptSourceList
             }
 
             if ($fsec && $fileContent !~ /^deb-src\s+$rc{'uri'}\s+\b$rc{'distrib'}\b\s+.*\b$sec\b/m) {
-                my $rs = execute(
-                    "wget --spider $rc{'uri'}/dists/$rc{'distrib'}/$sec/source/", \ my $stdout, \ my $stderr );
-                debug( $stderr ) if $rs && $stderr;
+                my $rs = execute("wget --spider $rc{'uri'}/dists/$rc{'distrib'}/$sec/source/", \ my $stdout, \ my $stderr );
+                debug( $stdout ) if $stdout;
+                debug( $stderr || 'Unknown error' ) if $rs;
 
                 unless ($rs) {
                     if ($fileContent !~ /^deb-src\s+$rc{'uri'}\s+$rc{'distrib'}\s.*/m) {
@@ -662,7 +663,7 @@ EOF
         if (@cmd) {
             $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
-            error( $stderr ) if $stderr && $rs;
+            error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
         }
     }
@@ -727,8 +728,6 @@ EOF
 
 sub _updatePackagesIndex
 {
-    my $self = shift;
-
     my $cmd = 'apt-get';
     unless (iMSCP::Getopt->noprompt) {
         iMSCP::Dialog->getInstance->endGauge() if iMSCP::ProgramFinder::find( 'dialog' );
@@ -853,8 +852,8 @@ EOF
 
     if ($sqlServer ne 'remote_server' && iMSCP::Getopt->preseed && $sqlServerQuestionOwner) {
         $selectionsFileContent .= <<"EOF";
-$sqlServerQuestionOwner $sqlServerQuestionPrefix/root_password password $main::questions{'SQL_ROOT_USER'}
-$sqlServerQuestionOwner $sqlServerQuestionPrefix/root_password_again password $main::questions{'SQL_ROOT_PASSWORD'};
+$sqlServerQuestionOwner $sqlServerQuestionPrefix/root_password password $main::questions{'SQL_ROOT_PASSWORD'}
+$sqlServerQuestionOwner $sqlServerQuestionPrefix/root_password_again password $main::questions{'SQL_ROOT_PASSWORD'}
 EOF
     }
 
@@ -924,7 +923,6 @@ sub _rebuildAndInstallPackage
         sub {
             if ($self->{'need_pbuilder_update'}) {
                 $self->{'need_pbuilder_update'} = 0;
-                my $dialog = iMSCP::Dialog->getInstance();
                 my $msgHeader = "Creating/Updating pbuilder environment\n\n";
                 my $msgFooter = "\nPlease wait, depending on your connection, this may take few minutes...";
                 my $cmd = [
@@ -957,11 +955,12 @@ sub _rebuildAndInstallPackage
     );
     $rs ||= step(
         sub {
-            my $rs = execute(
-                "apt-get -y source $pkgSrc",
+            $rs = execute(
+                [ 'apt-get', '-y', 'source', $pkgSrc ],
                 (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ my $stdout),
                 \ my $stderr
             );
+            debug( $stdout ) if $stdout;
             error( sprintf( 'Could not get %s Debian source package: %s', $pkgSrc,
                     $stderr || 'Unknown error' ) ) if $rs;
             $rs;
@@ -998,12 +997,12 @@ sub _rebuildAndInstallPackage
     );
     $rs ||= step(
         sub {
-            my $rs = execute(
-                "dch --local '~i-mscp-' 'Automatically patched by i-MSCP installer for compatibility.'",
+            $rs = execute(
+                [ 'dch', '--local', '~i-mscp-', 'Automatically patched by i-MSCP installer for compatibility.' ],
                 \ my $stdout,
                 \ my $stderr
             );
-            error( sprintf( 'Could not add `imscp` local suffix: %s', $stderr || 'Unknown error' ) ) if $rs;
+            error( sprintf( "Could not add `imscp' local suffix: %s", $stderr || 'Unknown error' ) ) if $rs;
             return $rs if $rs;
 
             $rs = execute(
@@ -1032,11 +1031,11 @@ sub _rebuildAndInstallPackage
             }
 
             # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
-            execute( "LANG=C apt-mark unhold $pkg", \ my $stdout, \ my $stderr );
+            execute( ['apt-mark', 'unhold', $pkg ], \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
             debug( $stderr ) if $stderr;
 
-            my $rs = execute(
+            $rs = execute(
                 "dpkg --force-confnew -i /var/cache/pbuilder/result/${pkg}_*.deb",
                 (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout),
                 \ $stderr
@@ -1050,7 +1049,7 @@ sub _rebuildAndInstallPackage
             return $rs if $rs;
 
             # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
-            execute( "LANG=C apt-mark hold $pkg", \ $stdout, \ $stderr );
+            execute([ 'apt-mark', 'hold', $pkg ], \ $stdout, \ $stderr );
             debug( $stdout ) if $stdout;
             debug( $stderr ) if $stderr;
             0;

@@ -114,7 +114,7 @@ sub pop_el
 #
 sub dump_el
 {
-    my ($el, $fname) = @_;
+    my (undef, $fname) = @_;
 
     my  $fh;
     if ($fname ne 'stdout' && $fname ne 'stderr') {

@@ -155,10 +155,10 @@ sub remove
     return 0 unless $self->stop( $job );
 
     local $@;
-    for my $jobFileType('conf', 'override') {
-        my $filepath = eval { $self->getJobFilePath( $job, $jobFileType ); };
-        if (defined $filepath) {
-            return 0 if iMSCP::File->new( filename => $filepath )->delFile();
+    for (qw/ conf override /) {
+        my $jobFilePath = eval { $self->getJobFilePath( $job, $_ ); };
+        if (defined $jobFilePath) {
+            return 0 if iMSCP::File->new( filename => $jobFilePath )->delFile();
         }
     }
 
@@ -286,7 +286,7 @@ sub isRunning
     defined $job or die( 'parameter $job is not defined' );
 
     if ($self->_isUpstart( $job )) {
-        execute( "$COMMANDS{'status'} $job", \ my $stdout, \ my $stderr );
+        execute( "$COMMANDS{'status'} $job 2>/dev/null", \ my $stdout );
         return $stdout =~ /start/;
     }
 
@@ -405,7 +405,7 @@ sub _versionIsPost090
 
 sub _isEnabledPre067
 {
-    my ($self, $jobFileContent) = @_;
+    my (undef, $jobFileContent) = @_;
 
     # Upstart version < 0.6.7 means no `manual' stanza.
     $jobFileContent =~ /$START_ON/;
@@ -422,7 +422,7 @@ sub _isEnabledPre067
 
 sub _isEnabledPre090
 {
-    my ($self, $jobFileContent) = @_;
+    my (undef, $jobFileContent) = @_;
 
     # Upstart versions < 0.9.0 means no override files. Thus,
     # we check to see if an uncommented `start on' or `manual'
@@ -453,7 +453,7 @@ sub _isEnabledPre090
 
 sub _isEnabledPost090
 {
-    my ($self, $jobFileContent, $jobOverrideFileContent) = @_;
+    my (undef, $jobFileContent, $jobOverrideFileContent) = @_;
 
     # Upstart versions >= 0.9.0 has `manual' stanzas and override
     # files. Thus, we check to see if an uncommented `start on' or
@@ -779,7 +779,7 @@ sub _ensureDisabledWithManualStanza
 
 sub _searchJobFile
 {
-    my ($self, $job, $jobFileType) = @_;
+    my (undef, $job, $jobFileType) = @_;
 
     my $jobFile = $job.'.'.($jobFileType || 'conf');
 
@@ -788,7 +788,7 @@ sub _searchJobFile
         return $filepath if -f $filepath;
     }
 
-    die( sprintf( 'Could not find the upstart %s job file', $jobFile ) );
+    die( sprintf( "Could not find the upstart `%s' job file", $jobFile ) );
 }
 
 =item _readJobFile($job)
@@ -805,7 +805,7 @@ sub _readJobFile
     my ($self, $job) = @_;
 
     my $filepath = $self->getJobFilePath( $job );
-    iMSCP::File->new( filename => $filepath )->get() or die( sprintf( 'Could not read %s file', $filepath ) );
+    iMSCP::File->new( filename => $filepath )->get() or die( sprintf( "Could not read `%s' file", $filepath ) );
 }
 
 =item _readJobOverrideFile($job)
@@ -825,7 +825,7 @@ sub _readJobOverrideFile
     my $filepath = eval { $self->getJobFilePath( $job, 'override' ) };
     if (defined $filepath) {
         my $fileContent = iMSCP::File->new( filename => $filepath )->get();
-        defined $fileContent or die( sprintf( 'Could not read %s file', $filepath ) );
+        defined $fileContent or die( sprintf( "Could not read `%s' file", $filepath ) );
         return $fileContent;
     }
 
@@ -852,10 +852,10 @@ sub _writeFile
 
     if ($fileContent ne '') {
         $file->set( $fileContent ) == 0 && $file->save() == 0 && $file->mode( 0644 ) == 0 or die(
-            sprintf( 'Could not write %s file', $filepath )
+            sprintf( "Could not write `%s' file", $filepath )
         );
     } elsif ($filepath =~ /\.override$/ && -f $filepath) {
-        $file->delFile() == 0 or die( sprintf( 'Could not unlink %s file', $filepath ) );
+        $file->delFile() == 0 or die( sprintf( "Could not unlink `%s' file", $filepath ) );
     } else {
         1;
     }

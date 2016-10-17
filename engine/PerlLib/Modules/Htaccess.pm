@@ -162,7 +162,11 @@ sub _loadData
         my @sql = (
             'UPDATE htaccess SET status = ? WHERE id = ?', 'Orphan entry: '.Dumper( $rdata->{$htaccessId} ), $htaccessId
         );
-        $db->doQuery( 'dummy', @sql );
+        my $qrs = $db->doQuery( 'u', @sql );
+        unless(ref $qrs eq 'HASH') {
+            error($qrs);
+        }
+
         return 1;
     }
 
@@ -170,18 +174,17 @@ sub _loadData
     0;
 }
 
-=item _getHttpdData($action)
+=item _getHttpdData()
 
  Data provider method for Httpd servers
 
- Param string $action Action
  Return hashref Reference to a hash containing data
 
 =cut
 
 sub _getHttpdData
 {
-    my ($self, $action) = @_;
+    my $self = shift;
 
     $self->{'_httpd'} = do {
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.

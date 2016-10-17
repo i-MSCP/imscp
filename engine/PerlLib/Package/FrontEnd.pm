@@ -56,7 +56,7 @@ use parent 'Common::SingletonClass';
 
 sub registerSetupListeners
 {
-    my ($self, $eventManager) = @_;
+    my (undef, $eventManager) = @_;
 
     Package::FrontEnd::Installer->getInstance()->registerSetupListeners( $eventManager );
 }

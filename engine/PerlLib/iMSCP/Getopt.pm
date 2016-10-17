@@ -164,7 +164,7 @@ EOF
 
 sub showUsage
 {
-    my ($class, $exitCode) = @_;
+    my (undef, $exitCode) = @_;
 
     $exitCode //= 1;
     ref $showUsage eq 'CODE' or die( 'ShowUsage() is not defined.' );
@@ -188,7 +188,7 @@ our @reconfigurationItems = sort(
 
 sub reconfigure
 {
-    my ($class, $item) = @_;
+    my (undef, $item) = @_;
 
     return $options->{'reconfigure'} ||= 'none' unless defined $item;
 
@@ -224,7 +224,7 @@ EOF
 
 sub preseed
 {
-    my ($class, $file) = @_;
+    my (undef, $file) = @_;
 
     return $options->{'preseed'} unless defined $file;
 
@@ -243,7 +243,7 @@ sub preseed
 
 sub listener
 {
-    my ($class, $file) = @_;
+    my (undef, $file) = @_;
 
     return $options->{'listener'} unless defined $file;
 
@@ -266,8 +266,7 @@ sub AUTOLOAD
 
     no strict 'refs';
     *{$AUTOLOAD} = sub {
-        my $this = shift;
-
+        shift;
         return $options->{$field} unless @_;
         $options->{$field} = shift;
     };

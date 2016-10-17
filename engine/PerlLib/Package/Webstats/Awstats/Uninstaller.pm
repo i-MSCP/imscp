@@ -93,14 +93,14 @@ sub _deleteFiles
     if (-d $main::imscpConfig{'AWSTATS_CACHE_DIR'}) {
         my $rs = execute( "rm -fR $main::imscpConfig{'AWSTATS_CACHE_DIR'}/*", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
+        error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
     }
 
     return 0 unless -d $main::imscpConfig{'AWSTATS_CONFIG_DIR'};
     my $rs = execute( "rm -f $main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.*.conf", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
+    error( $stderr || 'Unknown error' ) if $rs;
     $rs;
 }
 

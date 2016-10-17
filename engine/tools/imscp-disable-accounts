@@ -103,8 +103,7 @@ sub run
     unless($rs) {
         $rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \ my $stdout, \ my $stderr);
         debug $stdout if $stdout;
-        error($stderr) if $stderr && $rs;
-        warning($stderr) if $stderr && !$rs;
+        error( $stderr || 'Unknown error' ) if $rs;
     }
 
     $rs;

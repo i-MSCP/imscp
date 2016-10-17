@@ -80,7 +80,7 @@ sub user
 
 sub checkVersion
 {
-    my ($self, $version, $minVersion, $maxVersion) = @_;
+    my (undef, $version, $minVersion, $maxVersion) = @_;
 
     if (version->parse( $version ) < version->parse( $minVersion )) {
         die( sprintf( "version %s is too old. Minimum supported version is %s\n", $version, $minVersion ) );
@@ -177,7 +177,7 @@ sub _checkPrograms
         next unless $self->{'programs'}->{$programName}->{'version_command'};
 
         eval {
-            my $result = $self->_programVersions(
+            $self->_programVersions(
                 $self->{'programs'}->{$programName}->{'version_command'},
                 $self->{'programs'}->{$programName}->{'version_regexp'},
                 $self->{'programs'}->{$programName}->{'min_version'},

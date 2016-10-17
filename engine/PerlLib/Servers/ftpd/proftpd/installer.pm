@@ -25,9 +25,10 @@ package Servers::ftpd::proftpd::installer;
 
 use strict;
 use warnings;
+use iMSCP::Config;
+use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;
-use iMSCP::Config;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Dir;
@@ -150,12 +151,7 @@ EOF
             }
 
             if ($rs < 30) {
-                unless ($dbPass) {
-                    my @allowedChr = map { chr } (0x30 .. 0x39, 0x41 .. 0x5a, 0x61 .. 0x7a);
-                    $dbPass = '';
-                    $dbPass .= $allowedChr[rand @allowedChr] for 1 .. 16;
-                }
-
+                $dbPass = randomStr(16, iMSCP::Crypt::ALNUM) unless $dbPass;
                 $dialog->msgbox( <<"EOF" );
 
 Password for the proftpd SQL user set to: $dbPass
@@ -267,14 +263,15 @@ sub _init
     $self->{'config'} = $self->{'ftpd'}->{'config'};
 
     my $oldConf = "$self->{'cfgDir'}/proftpd.old.data";
-    if (-f $oldConf) {
-        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-        for my $param(keys %oldConfig) {
-            if (exists $self->{'config'}->{$param}) {
-                $self->{'config'}->{$param} = $oldConfig{$param};
-            }
-        }
+    return $self unless -f $oldConf;
+
+    tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
+
+    while(my($key, $value) = each(%oldConfig)) {
+        next unless exists $self->{'config'}->{$key};
+        $self->{'config'}->{$key} = $value;
     }
+
 
     $self;
 }
@@ -296,7 +293,7 @@ sub _bkpConfFile
 
     if (-f $cfgFile) {
         my $file = iMSCP::File->new( filename => $cfgFile );
-        my ($filename, $directories, $suffix) = fileparse( $cfgFile );
+        my ($filename, undef, $suffix) = fileparse( $cfgFile );
 
         unless (-f "$self->{'bkpDir'}/$filename$suffix.system") {
             $rs = $file->copyFile( "$self->{'bkpDir'}/$filename$suffix.system" );
@@ -324,7 +321,7 @@ sub _setVersion
 
     my $rs = execute( 'proftpd -v', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
+    error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
     if ($stdout !~ m%([\d.]+)%) {

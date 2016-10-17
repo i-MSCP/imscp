@@ -110,10 +110,10 @@ sub postinstall
             push @{$_[0]},
                 [
                     sub {
-                        my $rs = 0;
+                        $rs = 0;
                         for my $mapPath(keys %{$self->{'_maps'}}) {
                             my $file = iMSCP::File->new( filename => $mapPath );
-                            my $rs = $file->set( $self->{'_maps'}->{$mapPath} );
+                            $rs = $file->set( $self->{'_maps'}->{$mapPath} );
                             $rs ||= $file->save();
                             $rs ||= $file->mode(0640)
                         }
@@ -591,7 +591,7 @@ sub getTraffic
 
             # Extract postfix data
             my $tmpFile2 = File::Temp->new( UNLINK => 1 );
-            my ($stdout, $stderr);
+            my $stderr;
             execute( "grep postfix $tmpFile1 | maillogconvert.pl standard 1> $tmpFile2", undef, \$stderr ) == 0 or die(
                 sprintf( 'Could not extract postfix data: %s', $stderr || 'Unknown error' )
             );
@@ -697,10 +697,11 @@ sub deleteMapEntry
 
 sub postmap
 {
-    my ($self, $mapPath, $mapType) = @_;
+    my (undef, $mapPath, $mapType) = @_;
     $mapType ||= 'hash';
 
     my $rs = execute( "postmap $mapType:$mapPath", \ my $stdout, \ my $stderr );
+    debug($stdout) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     $rs;
 }
@@ -784,7 +785,7 @@ sub postconf
             },
             sub { $stderr .= shift }
         );
-        warning( $stderr ) if $stderr;
+        debug( $stderr ) if $stderr;
         $rs;
     };
     if ($@) {
@@ -903,7 +904,7 @@ END
         unless (defined $main::execmode && $main::execmode eq 'setup') {
             for my $mapPath(keys %{$self->{'_maps'}}) {
                 my $file = iMSCP::File->new( filename => $mapPath );
-                my $rs = $file->set( $self->{'_maps'}->{$mapPath} );
+                $rs = $file->set( $self->{'_maps'}->{$mapPath} );
                 $rs ||= $file->save();
                 $rs ||= $file->mode(0640)
             }

@@ -167,8 +167,6 @@ sub _init
 
 sub _installFiles
 {
-    my $self = shift;
-
     my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/ajaxplorer";
     unless (-d $packageDir) {
         error( 'Could not find the imscp/ajaxplorer (Pydio) package into the packages cache directory' );

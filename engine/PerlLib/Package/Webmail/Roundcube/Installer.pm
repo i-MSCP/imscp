@@ -26,6 +26,7 @@ package Package::Webmail::Roundcube::Installer;
 use strict;
 use warnings;
 use iMSCP::Config;
+use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::EventManager;
@@ -131,12 +132,7 @@ EOF
             }
 
             if ($rs < 30) {
-                unless ($dbPass) {
-                    my @allowedChr = map { chr } (0x30 .. 0x39, 0x41 .. 0x5a, 0x61 .. 0x7a);
-                    $dbPass = '';
-                    $dbPass .= $allowedChr[rand @allowedChr] for 1 .. 16;
-                }
-
+                $dbPass = randomStr(16, iMSCP::Crypt::ALNUM) unless $dbPass;
                 $dialog->msgbox( <<"EOF" );
 
 Password for the roundcube SQL user set to: $dbPass
@@ -295,11 +291,9 @@ sub _init
 
 sub _getPhpVersion
 {
-    my $self = shift;
-
     my $rs = execute( 'php -d date.timezone=UTC -v', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
+    error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
     $stdout =~ /PHP\s+([\d.]+)/ or die(
@@ -439,7 +433,6 @@ sub _setupDatabase
             return 1;
         }
 
-        my $db = iMSCP::Database->factory();
         my $oldDatabase = $db->useDatabase($roundcubeDbName);
         $rs = main::setupImportSqlSchema( $db, "$roundcubeDir/SQL/mysql.initial.sql" );
         return $rs if $rs;
@@ -578,8 +571,7 @@ sub _updateDatabase
         \my $stdout, \my $stderr
     );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
-    error( 'Could not to update roundcube database schema.' ) if $rs && !$stderr;
+    error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
     # Ensure tha users.mail_host entries are set to 'localhost'
@@ -637,7 +629,7 @@ sub _setVersion
 
 sub _buildHttpdConfig
 {
-    my ($self, $tplContent, $tplName) = @_;
+    my $self = shift;
 
     if (-f "$self->{'wrkDir'}/imscp_roundcube.conf") {
         my $rs = iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp_roundcube.conf" )->copyFile(
@@ -649,8 +641,12 @@ sub _buildHttpdConfig
     my $frontEnd = Package::FrontEnd->getInstance();
     my $rs = $frontEnd->buildConfFile(
         "$self->{'cfgDir'}/nginx/imscp_roundcube.conf",
-        { WEB_DIR => $main::imscpConfig{'GUI_ROOT_DIR'} },
-        { destination => "$self->{'wrkDir'}/imscp_roundcube.conf" }
+        {
+            WEB_DIR => $main::imscpConfig{'GUI_ROOT_DIR'}
+        },
+        {
+            destination => "$self->{'wrkDir'}/imscp_roundcube.conf"
+        }
     );
     $rs ||= iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp_roundcube.conf" )->copyFile(
         "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf"

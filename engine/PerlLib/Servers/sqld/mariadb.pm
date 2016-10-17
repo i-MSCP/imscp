@@ -49,7 +49,7 @@ use parent 'Servers::sqld::mysql';
 
 sub createUser
 {
-    my ($self, $user, $host, $password) = @_;
+    my (undef, $user, $host, $password) = @_;
 
     defined $user or die( '$user parameter is not defined' );
     defined $host or die( '$host parameter is not defined' );

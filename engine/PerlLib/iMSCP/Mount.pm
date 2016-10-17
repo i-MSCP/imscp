@@ -287,7 +287,8 @@ sub setPropagationFlag($;$)
         return 1;
     }
 
-    unless (syscall(&iMSCP::Syscall::SYS_mount, my $src = 'none', $fsFile, 0, $pflag, 0 ) == 0) {
+    my $src = 'none';
+    unless (syscall(&iMSCP::Syscall::SYS_mount, $src, $fsFile, 0, $pflag, 0 ) == 0) {
         error( sprintf( 'Error while changing propagation flag on %s: %s', $fsFile, $! || 'Unknown error' ) );
         return 1;
     }

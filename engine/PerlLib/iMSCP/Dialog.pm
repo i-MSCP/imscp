@@ -547,7 +547,7 @@ sub _findBin
 
 sub _stripFormats
 {
-    my ($self, $string) = @_;
+    my (undef, $string) = @_;
 
     $string =~ s/\\Z[0-9bBuUrRn]//gmi;
     $string;

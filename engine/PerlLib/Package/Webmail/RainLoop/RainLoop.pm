@@ -58,7 +58,7 @@ my $dbInitialized = undef;
 
 sub showDialog
 {
-    my ($self, $dialog) = @_;
+    my (undef, $dialog) = @_;
 
     Package::Webmail::RainLoop::Installer->getInstance()->showDialog( $dialog );
 }
@@ -126,7 +126,7 @@ sub setGuiPermissions
 
 sub deleteMail
 {
-    my ($self, $data) = @_;
+    my (undef, $data) = @_;
 
     return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
 

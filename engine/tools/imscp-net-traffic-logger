@@ -52,7 +52,7 @@ sub start
     ) {
         my $rs = execute("iptables $chain", \ my $stdout, \ my $stderr);
         debug($stdout) if $stdout;
-        error($stderr) if $stderr && $rs;
+        error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
     }
 
@@ -64,31 +64,31 @@ sub start
 
         my $rs = execute("iptables -I IMSCP_INPUT -p tcp --dport $port", \ my $stdout, \ my $stderr);
         debug($stdout) if $stdout;
-        error($stderr) if $stderr && $rs;
+        error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
 
         $rs = execute("iptables -I IMSCP_OUTPUT -p tcp --sport $port", \$stdout, \$stderr);
         debug($stdout) if $stdout;
-        error($stderr) if $stderr && $rs;
+        error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
     }
 
     for my $port(qw(25 465 587)) {
         my $rs = execute("iptables -I IMSCP_INPUT -p tcp --sport $port", \ my $stdout, \ my $stderr);
         debug($stdout) if $stdout;
-        error($stderr) if $stderr && $rs;
+        error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
 
         $rs = execute("iptables -I IMSCP_OUTPUT -p tcp --dport $port", \$stdout, \$stderr);
         debug($stdout) if $stdout;
-        error($stderr) if $stderr && $rs;
+        error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
     }
 
     for my $chain('IMSCP_INPUT', 'IMSCP_OUTPUT') {
         my $rs = execute("iptables -A $chain -j RETURN", \ my $stdout, \ my $stderr);
         debug($stdout) if $stdout;
-        error($stderr) if $stderr && $rs;
+        error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
     }
 
@@ -99,7 +99,7 @@ sub stop
 {
     my $rs = execute('iptables -S', \ my $stdout, \ my $stderr);
     debug($stdout) if $stdout;
-    error($stderr) if $stderr && $rs;
+    error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
     my %data;
@@ -111,7 +111,7 @@ sub stop
             for my $op('-F', '-X') {
                 $rs = execute("iptables $op $1", \$stdout, \$stderr);
                 debug($stdout) if $stdout;
-                error($stderr) if $stderr && $rs;
+                error( $stderr || 'Unknown error' ) if $rs;
                 return $rs if $rs;
             }
         }
@@ -123,7 +123,7 @@ sub stop
         for my $op('-D', '-F', '-X') {
             $rs = execute($op eq '-D' ? "iptables $op $rule" : "iptables $op $chain", \$stdout, \$stderr);
             debug($stdout) if $stdout;
-            error($stderr) if $stderr && $rs;
+            error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
         }
     }

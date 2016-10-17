@@ -25,6 +25,7 @@ package Package::Webstats::Awstats::Installer;
 
 use strict;
 use warnings;
+use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::TemplateParser;
@@ -175,10 +176,7 @@ sub _setupApache2
     my $userHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
     $userHost = '127.0.0.1' if $userHost eq 'localhost';
     my $oldUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'} || '';
-
-    my @allowedChr = map { chr } (0x30 .. 0x39, 0x41 .. 0x5a, 0x61 .. 0x7a);
-    my $pass = '';
-    $pass .= $allowedChr[ rand @allowedChr ] for 1 .. 16;
+    my $pass = randomStr(16, iMSCP::Crypt::ALNUM);
 
     my $sqld = Servers::sqld->factory();
     for ($userHost, $oldUserHost, 'localhost') {

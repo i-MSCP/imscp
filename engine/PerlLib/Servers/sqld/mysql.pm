@@ -194,7 +194,7 @@ sub createUser
 
 sub dropUser
 {
-    my ($self, $user, $host) = @_;
+    my (undef, $user, $host) = @_;
 
     defined $user or die( '$user parameter not defined' );
     defined $host or die( '$host parameter not defined' );

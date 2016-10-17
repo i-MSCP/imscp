@@ -22,16 +22,16 @@ use warnings;
 use FindBin;
 use DateTime;
 use DateTime::TimeZone;
-use Net::LibIDN qw/idn_to_ascii idn_to_unicode/;
-use Data::Validate::Domain qw/is_domain/;
-use Scalar::Util qw(openhandle);
+use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
+use Data::Validate::Domain qw/ is_domain /;
+use Scalar::Util qw/ openhandle /;
 use File::Basename;
 use iMSCP::Debug;
 use iMSCP::Net;
 use iMSCP::Bootstrapper;
 use iMSCP::Dialog;
 use iMSCP::Stepper;
-use iMSCP::Crypt qw/encryptBlowfishCBC decryptBlowfishCBC/;
+use iMSCP::Crypt qw/ randomStr encryptBlowfishCBC decryptBlowfishCBC /;
 use iMSCP::Database;
 use iMSCP::DbTasksProcessor;
 use iMSCP::Dir;
@@ -77,17 +77,25 @@ sub setupInstallFiles
 # Boot
 sub setupBoot
 {
-    # Untie previous configuration object if any (i-MSCP installer context)
-    untie %main::imscpConfig;
-    
     iMSCP::Bootstrapper->getInstance()->boot(
         {
             mode            => 'setup', # Backend mode
-            config_readonly => 1, # We do not allow writting ing conffile at this time
+            config_readonly => 1, # We do not allow writing in conffile at this time
             nodatabase      => 1 # We do not establish connection to the database at this time
         }
     );
-    %main::imscpOldConfig = %main::imscpConfig unless %main::imscpOldConfig;
+
+    untie(%main::imscpOldConfig) if %main::imscpOldConfig;
+     
+    unless(-f "$main::imscpConfig{'CONF_DIR'}/imscpOld.conf") {
+        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf" )->copyFile(
+            "$main::imscpConfig{'CONF_DIR'}/imscpOld.conf"
+        );
+        return $rs if $rs;
+    }
+
+    tie %main::imscpOldConfig, 'iMSCP::Config', fileName => "$main::imscpConfig{'CONF_DIR'}/imscpOld.conf";
+
     0;
 }
 
@@ -189,6 +197,7 @@ sub setupTasks
     return $rs if $rs;
 
     my @steps = (
+        [ \&setupSaveConfig,              'Saving configuration' ],
         [ \&setupCreateMasterUser,        'Creating system master user' ],
         [ \&setupServerHostname,          'Setting up server hostname' ],
         [ \&setupServiceSsl,              'Configuring SSL for i-MSCP services' ],
@@ -196,10 +205,10 @@ sub setupTasks
         [ \&setupRegisterDelayedTasks,    'Registering delayed tasks' ],
         [ \&setupRegisterPluginListeners, 'Registering plugin setup listeners' ],
         [ \&setupServersAndPackages,      'Processing servers/packages' ],
-        [ \&setupSaveConfig,              'Saving configuration' ],
-        [ \&setupSetPermissions,          'Setting up permissions...' ],
-        [ \&setupDbTasks,                 'Processing DB tasks...' ],
-        [ \&setupRestartServices,         'Restarting services...' ]
+        [ \&setupSetPermissions,          'Setting up permissions' ],
+        [ \&setupDbTasks,                 'Processing DB tasks' ],
+        [ \&setupRestartServices,         'Restarting services' ],
+        [ \&setupRemoveOldConfig,         'Removing old configuration ']
     );
 
     my $step = 1;
@@ -446,12 +455,15 @@ sub askMasterSqlUser
     my ($rs, $msg) = (0, '');
 
     $pwd = decryptBlowfishCBC($main::imscpDBKey, $main::imscpDBiv, $pwd) unless $pwd eq '' || iMSCP::Getopt->preseed;
+    
+    $rs = askSqlRootUser($dialog) if iMSCP::Getopt->preseed;
+    return $rs if $rs;
 
-    if($main::reconfigure =~ /^(?:sql|servers|all|forced)$/
+    if($main::reconfigure =~ /(?:sql|servers|all|forced)$/
         || $host eq '' || $port eq '' || $user eq '' || $user eq 'root' || $pwd eq ''
-        || tryDbConnect($host, $port, $user, $pwd)
+        || (!iMSCP::Getopt->preseed && tryDbConnect($host, $port, $user, $pwd))
     ) {
-        $rs = askSqlRootUser($dialog);
+        $rs = askSqlRootUser($dialog) unless iMSCP::Getopt->preseed;
         return $rs if $rs >= 30;
 
         do {
@@ -488,12 +500,7 @@ EOF
             } while ($rs < 30 && $msg ne '');
 
             if ($rs < 30) {
-                unless ($pwd) {
-                    my @allowedChr = map { chr } (0x30 .. 0x39, 0x41 .. 0x5a, 0x61 .. 0x7a);
-                    $pwd = '';
-                    $pwd .= $allowedChr[rand @allowedChr] for 1 .. 16;
-                }
-
+                $pwd = randomStr(16, iMSCP::Crypt::ALNUM) unless $pwd;
                 $dialog->msgbox( <<"EOF" );
 
 Password for master i-MSCP SQL user set to: $pwd
@@ -510,6 +517,12 @@ EOF
         setupSetQuestion('SQL_ROOT_USER', setupGetQuestion('SQL_ROOT_USER', $user));
         setupSetQuestion('SQL_ROOT_PASSWORD', setupGetQuestion('SQL_ROOT_PASSWORD', $pwd));
     }
+    
+    #print setupGetQuestion('DATABASE_USER') . "\n";
+    #print setupGetQuestion('DATABASE_PASSWORD') . "\n";
+    #print setupGetQuestion('SQL_ROOT_USER') . "\n";
+    #print setupGetQuestion('SQL_ROOT_PASSWORD') . "\n";
+    #exit;
 
     $rs;
 }
@@ -864,6 +877,37 @@ EOF
 ## Setup subroutines
 #
 
+sub setupSaveConfig
+{
+    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupSaveConfig');
+    return $rs if $rs;
+
+    # Re-open main configuration file in read/write mode
+    iMSCP::Bootstrapper->getInstance()->loadMainConfig(
+        {
+            nocreate        => 1,
+            nofail          => 0,
+            config_readonly => 0
+        }
+    );
+
+    for (keys %main::questions) {
+        next unless exists $main::imscpConfig{$_};
+        $main::imscpConfig{$_} = $main::questions{$_};
+    }
+
+    # Re-open main configuration file in read only mode
+    iMSCP::Bootstrapper->getInstance()->loadMainConfig(
+        {
+            nocreate        => 1,
+            nofail          => 0,
+            config_readonly => 1
+        }
+    );
+
+    iMSCP::EventManager->getInstance()->trigger('afterSetupSaveConfig');
+}
+
 sub setupCreateMasterUser
 {
     my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupCreateMasterUser');
@@ -1080,54 +1124,36 @@ sub setupDatabase
 {
     my $dbName = setupGetQuestion('DATABASE_NAME');
 
-    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupDatabase', \$dbName);
-    return $rs if $rs;
-
     unless(setupIsImscpDb($dbName)) {
+        my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupDatabase', \$dbName);
+        return $rs if $rs;
+
         my $db = iMSCP::Database->factory();
         my $qdbName = $db->quoteIdentifier($dbName);
-        my $rs = $db->doQuery('c', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
+        $rs = $db->doQuery('c', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
 
         if(ref $rs ne 'HASH') {
-            error(sprintf("Could not create the '%s' SQL database: %s", $dbName, $rs));
+            error(sprintf("Could not create the `%s' SQL database: %s", $dbName, $rs));
             return 1;
         }
 
         $db->set('DATABASE_NAME', $dbName);
         !$db->connect() or die('Could not reconnect to SQL server');
         $rs = setupImportSqlSchema($db, "$main::imscpConfig{'CONF_DIR'}/database/database.sql");
+        $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupDatabase', \$dbName);
         return $rs if $rs;
     }
 
     # In all cases, we process database update. This is important because sometime some developer forget to update the
     # database revision in the main database.sql file.
-    $rs = setupUpdateDatabase();
-    $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupDatabase');
-}
-
-sub setupUpdateDatabase
-{
     my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupUpdateDatabase');
-    return $rs if $rs;
-
-    my $file = iMSCP::File->new( filename => "$main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php" );
-    my $content = $file->get();
-    unless(defined $content) {
-        error(sprintf('Could not read %s file', "$main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php"));
-        return 1;
-    }
-
-    if($content =~ s/\{GUI_ROOT_DIR\}/$main::imscpConfig{'GUI_ROOT_DIR'}/) {
-        $rs = $file->set($content);
-        $rs ||= $file->save();
-        return $rs if $rs;
-    }
-
-    $rs = execute(
-        "php -d date.timezone=UTC $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php", \my $stdout, \my $stderr
+    $rs ||= execute(
+        "php -d date.timezone=UTC $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php",
+        \my $stdout,
+        \my $stderr
     );
     debug($stdout) if $stdout;
-    error($stderr) if $rs && $stderr;
+    error($stderr || 'Unknown error') if $rs;
     $rs ||= iMSCP::EventManager->getInstance()->trigger('afterSetupUpdateDatabase');
 }
 
@@ -1254,8 +1280,7 @@ sub setupSetPermissions
 
         endDetail();
 
-        error(sprintf('Error while setting permissions: %s', $stderr)) if $stderr && $rs;
-        error('Error while setting permissions: Unknown error') if $rs && !$stderr;
+        error(sprintf('Error while setting permissions: %s', $stderr || 'Unknown error')) if $rs;
         return $rs if $rs;
     }
 
@@ -1433,38 +1458,6 @@ sub setupServersAndPackages
     $rs;
 }
 
-sub setupSaveConfig
-{
-    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupSaveConfig');
-    return $rs if $rs;
-
-    # Re-open main configuration file in read/write mode
-    iMSCP::Bootstrapper->getInstance()->loadMainConfig(
-        {
-            nocreate        => 1,
-            nofail          => 0,
-            config_readonly => 0
-        }
-    );
-
-    for my $question(keys %main::questions) {
-        if(exists $main::imscpConfig{$question}) {
-            $main::imscpConfig{$question} = $main::questions{$question};
-        }
-    }
-
-    # Re-open main configuration file in read only mode
-    iMSCP::Bootstrapper->getInstance()->loadMainConfig(
-        {
-            nocreate        => 1,
-            nofail          => 0,
-            config_readonly => 1
-        }
-    );
-
-    iMSCP::EventManager->getInstance()->trigger('afterSetupSaveConfig');
-}
-
 sub setupRestartServices
 {
     my @services = ();
@@ -1490,6 +1483,12 @@ sub setupRestartServices
 
     endDetail();
     iMSCP::EventManager->getInstance()->trigger('afterSetupRestartServices');
+}
+
+sub setupRemoveOldConfig
+{
+    untie %main::imscpOldConfig;
+    iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscpOld.conf")->delFile();
 }
 
 #

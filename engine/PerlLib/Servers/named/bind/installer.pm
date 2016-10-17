@@ -305,10 +305,10 @@ sub _init
     my $oldConf = "$self->{'cfgDir'}/bind.old.data";
     if (-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-        for my $param(keys %oldConfig) {
-            if (exists $self->{'config'}->{$param}) {
-                $self->{'config'}->{$param} = $oldConfig{$param};
-            }
+
+        while(my($key, $value) = each(%oldConfig)) {
+            next unless exists $self->{'config'}->{$key};
+            $self->{'config'}->{$key} = $value;
         }
     }
 
@@ -566,7 +566,7 @@ sub _saveConf
 
 sub _checkIps
 {
-    my ($self, @ips) = @_;
+    my (undef, @ips) = @_;
 
     my $net = iMSCP::Net->getInstance();
 
@@ -617,7 +617,7 @@ sub _oldEngineCompatibility
     return $rs if $rs;
 
     if (iMSCP::ProgramFinder::find( 'resolvconf' )) {
-        my $rs = execute( "resolvconf -d lo.imscp", \ my $stdout, \ my $stderr );
+        $rs = execute( "resolvconf -d lo.imscp", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;

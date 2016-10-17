@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use File::Basename;
 use iMSCP::Config;
+use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Dir;
@@ -161,12 +162,7 @@ EOF
             }
 
             if ($rs < 30) {
-                unless ($dbPass) {
-                    my @allowedChr = map { chr } (0x30 .. 0x39, 0x41 .. 0x5a, 0x61 .. 0x7a);
-                    $dbPass = '';
-                    $dbPass .= $allowedChr[rand @allowedChr] for 1 .. 16;
-                }
-
+                $dbPass = randomStr(16, iMSCP::Crypt::ALNUM) unless $dbPass;
                 $dialog->msgbox( <<"EOF" );
 
 Password for the dovecot SQL user set to: $dbPass
@@ -302,10 +298,10 @@ sub _init
     my $oldConf = "$self->{'cfgDir'}/dovecot.old.data";
     if (-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-        for my $param(keys %oldConfig) {
-            if (exists $self->{'config'}->{$param}) {
-                $self->{'config'}->{$param} = $oldConfig{$param};
-            }
+
+        while(my($key, $value) = each(%oldConfig)) {
+            next unless exists $self->{'config'}->{$key};
+            $self->{'config'}->{$key} = $value;
         }
     }
 
@@ -330,8 +326,7 @@ sub _getVersion
 
     $rs = execute( '/usr/sbin/dovecot --version', \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr;
-    error( 'Could not get dovecot version' ) if $rs && !$stderr;
+    error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
     chomp( $stdout );
@@ -567,14 +562,7 @@ sub _migrateFromCourier
 {
     my $self = shift;
 
-    if($main::imscpConfig{'PO_SERVER'} eq $main::imscpOldConfig{'PO_SERVER'}
-        && !-f "$main::imscpConfig{'CONF_DIR'}/.dovecot_migrated"
-    ) {
-        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/.dovecot_migrated")->save();
-        return $rs if $rs;
-    }
-
-    return 0 if -f "$main::imscpConfig{'CONF_DIR'}/.dovecot_migrated";
+    return 0 if $main::imscpConfig{'PO_SERVER'} eq $main::imscpOldConfig{'PO_SERVER'};
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoMigrateFromCourier' );
     return $rs if $rs;
@@ -589,18 +577,11 @@ sub _migrateFromCourier
     );
     $rs = execute( "@cmd", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
-    debug( $stderr ) if $stderr && !$rs;
-    error( $stderr ) if $stderr && $rs;
+    error( $stderr || 'Unknown error' ) if $rs;
     error( $stderr || 'Error while migrating from Courier to Dovecot' ) if $rs;
-    return $rs if $rs;
 
-    $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/.dovecot_migrated")->save();
-    return $rs if $rs;
-
-    if(-f "$main::imscpConfig{'CONF_DIR'}/.courier_migrated") {
-        $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/.courier_migrated")->delFile();
-    }
-
+    $main::imscpOldConfig{'PO_SERVER'} = 'dovecot' unless $rs;
+    
     $rs ||= $self->{'eventManager'}->trigger( 'afterPoMigrateFromCourier' );
 }
 

@@ -93,7 +93,7 @@ sub registerSetupListeners
 
 sub askMasterAdminData
 {
-    my ($self, $dialog) = @_;
+    my (undef, $dialog) = @_;
 
     my ($login, $password, $rpassword) = ('', '', '');
     my $email = main::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' );
@@ -194,7 +194,7 @@ EOF
             } while ($rs < 30 && !Email::Valid->address( $email ));
         }
     } else {
-        $password = '';
+        $password = '' unless iMSCP::Getopt->preseed
     }
 
     if ($rs < 30) {
@@ -217,7 +217,7 @@ EOF
 
 sub askDomain
 {
-    my ($self, $dialog) = @_;
+    my (undef, $dialog) = @_;
 
     my $vhost = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
     my $options = { domain_private_tld => qr /.*/ };
@@ -257,7 +257,7 @@ EOF
 
 sub askSsl
 {
-    my ($self, $dialog) = @_;
+    my (undef, $dialog) = @_;
 
     my $domainName = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
     my $domainNameUnicode = idn_to_unicode( $domainName, 'utf-8' );
@@ -416,7 +416,7 @@ EOF
 
 sub askHttpPorts
 {
-    my ($self, $dialog) = @_;
+    my (undef, $dialog) = @_;
 
     my $httpPort = main::setupGetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT' );
     my $httpsPort = main::setupGetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT' );
@@ -498,8 +498,6 @@ sub install
 
 sub setGuiPermissions
 {
-    my $self = shift;
-
     my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
     my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
     my $guiRootDir = $main::imscpConfig{'GUI_ROOT_DIR'};
@@ -542,8 +540,6 @@ sub setEnginePermissions
 {
     my $self = shift;
 
-    my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-    my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
     my $rootUName = $main::imscpConfig{'ROOT_USER'};
     my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
     my $httpdUser = $self->{'config'}->{'HTTPD_USER'};
@@ -624,13 +620,11 @@ sub _init
     $self->{'config'} = $self->{'frontend'}->{'config'};
     $self->{'phpConfig'} = $self->{'frontend'}->{'phpConfig'};
 
-    my $oldConf = "$self->{'cfgDir'}/frontend.old.data";
-    if (-f $oldConf) {
-        tie %{$self->{'oldConfig'}}, 'iMSCP::Config', fileName => $oldConf, 'noerrors' => 1;
-        for my $oldConf(keys %{$self->{'oldConfig'}}) {
-            if (exists $self->{'config'}->{$oldConf}) {
-                $self->{'config'}->{$oldConf} = $self->{'oldConfig'}->{$oldConf};
-            }
+    if (-f "$self->{'cfgDir'}/frontend.old.data") {
+        tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.old.data";
+        while(my ($key, $value) = each(%oldConfig)) {
+            next unless exists $self->{'config'}->{$key};
+            $self->{'config'}->{$key} = $value;
         }
     }
 
@@ -697,7 +691,7 @@ sub _setupMasterAdmin
                 LAST_INSERT_ID(), ?, ?, ?, ?, ?
             )
         ',
-        'auto', 'default', 'black', '', '1'
+        'auto', 'default', 'black', '', '0'
     );
     unless (ref $rs eq 'HASH') {
         error( $rs );
@@ -775,7 +769,7 @@ sub _setHttpdVersion()
 
     my $rs = execute( 'nginx -v', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
+    error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
     if ($stderr !~ m%nginx/([\d.]+)%) {
@@ -857,12 +851,12 @@ sub _addMasterWebUser
 
         $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
-        debug( $stderr ) if $stderr && $rs;
+        debug( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
 
         @cmd = ('groupmod', '-n', escapeShell( $groupName ), escapeShell( $adminSysGname ));
         debug( $stdout ) if $stdout;
-        debug( $stderr ) if $stderr && $rs;
+        debug( $stderr || 'Unknown error' ) if $rs;
         $rs = execute( "@cmd", \$stdout, \$stderr );
         return $rs if $rs;
     }
@@ -901,8 +895,6 @@ sub _makeDirs
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndMakeDirs' );
     return $rs if $rs;
 
-    my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-    my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
     my $rootUName = $main::imscpConfig{'ROOT_USER'};
     my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
     my $phpStarterDir = $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'};
@@ -1064,6 +1056,7 @@ sub _buildHttpdConfig
     if ($nbCPUcores eq 'auto') {
         $rs = execute( 'grep processor /proc/cpuinfo | wc -l', \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
+        debug($stderr) if $stderr;
         debug( 'Could not detect number of CPU cores. nginx worker_processes value set to 2' ) if $rs;
 
         unless ($rs) {

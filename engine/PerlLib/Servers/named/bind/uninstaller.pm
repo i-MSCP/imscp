@@ -125,12 +125,12 @@ sub _deleteDbFiles
 
     my $rs = execute( "rm -f $self->{'config'}->{'BIND_DB_DIR'}/*.db", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
+    error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
     $rs = execute( "rm -f $self->{'wrkDir'}/*", \$stdout, \$stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
+    error( $stderr || 'Unknown error' ) if $rs;
 
     $rs ||= iMSCP::Dir->new( dirname => "$self->{'config'}->{'BIND_DB_DIR'}/slave" )->remove();
 }

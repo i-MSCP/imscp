@@ -169,8 +169,6 @@ sub _restoreApacheConfig
 
 sub _restorePhpfpmConfig
 {
-    my $self = shift;
-
     return 0 unless -f "/etc/init/php5-fpm.override";
     iMSCP::File->new( filename => "/etc/init/php5-fpm.override" )->delFile();
 }

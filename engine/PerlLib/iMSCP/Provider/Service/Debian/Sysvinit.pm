@@ -31,16 +31,16 @@ use parent 'iMSCP::Provider::Service::Sysvinit';
 
 # Commands used in that package
 my %COMMANDS = (
-    dpkg          => '/usr/bin/dpkg',
-    'invoke-rc.d' => '/usr/sbin/invoke-rc.d',
-    'update-rc.d' => '/usr/sbin/update-rc.d'
+    dpkg          => [ '/usr/bin/dpkg' ],
+    'invoke-rc.d' => [ '/usr/sbin/invoke-rc.d' ],
+    'update-rc.d' => [ '/usr/sbin/update-rc.d' ]
 );
 
 # Enable compatibility mode if sysv-rc package version is lower than version 2.88
 my $SYSVRC_COMPAT_MODE = lazy
     {
         __PACKAGE__->_exec(
-            $COMMANDS{'dpkg'}, '--compare-versions', '$(dpkg-query -W -f \'${Version}\' sysv-rc)', 'lt', '2.88'
+            "@{$COMMANDS{'dpkg'}} --compare-versions \$(dpkg-query -W -f '\${Version}' sysv-rc) lt 2.88"
         ) == 0;
     };
 
@@ -69,7 +69,7 @@ sub isEnabled
     my ($self, $service) = @_;
 
     defined $service or die( 'parameter $service is not defined' );
-    my $ret = $self->_exec( $COMMANDS{'invoke-rc.d'}, '--quiet', '--query', $service, 'start' );
+    my $ret = $self->_exec( @{$COMMANDS{'invoke-rc.d'}}, '--quiet', '--query', $service, 'start' );
 
     # 104 is the exit status when you query start an enabled service.
     # 106 is the exit status when the policy layer supplies a fallback action
@@ -83,7 +83,8 @@ sub isEnabled
         # The debian policy states that the initscript should support methods of query
         # For those that do not, peform the checks manually
         # http://www.debian.org/doc/debian-policy/ch-opersys.html
-        return (my @count = glob( "/etc/rc*.d/S??$service" )) >= 4;
+        my @count = glob( "/etc/rc*.d/S??$service" );
+        return @count >= 4;
     }
 
     0;
@@ -105,12 +106,12 @@ sub enable
     defined $service or die( 'parameter $service is not defined' );
 
     #if ($SYSVRC_COMPAT_MODE) {
-    return $self->_exec( $COMMANDS{'update-rc.d'}, '-f', $service, 'remove' ) == 0
-        && $self->_exec( $COMMANDS{'update-rc.d'}, $service, 'defaults' ) == 0;
+    return $self->_exec( @{$COMMANDS{'update-rc.d'}}, '-f', $service, 'remove' ) == 0
+        && $self->_exec( @{$COMMANDS{'update-rc.d'}}, $service, 'defaults' ) == 0;
     #}
 
-    #$self->_exec( $COMMANDS{'update-rc.d'}, $service, 'defaults' ) == 0
-    #    && $self->_exec( $COMMANDS{'update-rc.d'}, $service, 'enable' ) == 0;
+    #$self->_exec( @{$COMMANDS{'update-rc.d'}}, $service, 'defaults' ) == 0
+    #    && $self->_exec( @{$COMMANDS{'update-rc.d'}}, $service, 'enable' ) == 0;
 }
 
 =item disable($service)
@@ -129,13 +130,13 @@ sub disable
     defined $service or die( 'parameter $service is not defined' );
 
     if ($SYSVRC_COMPAT_MODE) {
-        return $self->_exec( $COMMANDS{'update-rc.d'}, '-f', $service, 'remove' ) == 0
-            && $self->_exec( $COMMANDS{'update-rc.d'}, $service, 'stop', '00', '1', '2', '3', '4', '5', '6', '.' ) == 0;
+        return $self->_exec( @{$COMMANDS{'update-rc.d'}}, '-f', $service, 'remove' ) == 0
+            && $self->_exec( @{$COMMANDS{'update-rc.d'}}, $service, 'stop', '00', '1', '2', '3', '4', '5', '6', '.' ) == 0;
     }
 
-    #$self->_exec( $COMMANDS{'update-rc.d'}, $service, 'defaults' ) == 0
-    #&& $self->_exec( $COMMANDS{'update-rc.d'}, $service, 'disable' ) == 0;
-    $self->_exec( $COMMANDS{'update-rc.d'}, $service, 'disable' ) == 0;
+    #$self->_exec( @{$COMMANDS{'update-rc.d'}}, $service, 'defaults' ) == 0
+    #&& $self->_exec( @{$COMMANDS{'update-rc.d'}}, $service, 'disable' ) == 0;
+    $self->_exec( @{$COMMANDS{'update-rc.d'}}, $service, 'disable' ) == 0;
 }
 
 =item remove($service)
@@ -152,7 +153,7 @@ sub remove
     my ($self, $service) = @_;
 
     defined $service or die( 'parameter $service is not defined' );
-    $self->stop( $service ) && $self->_exec( $COMMANDS{'update-rc.d'}, '-f', $service, 'remove' ) == 0
+    $self->stop( $service ) && $self->_exec( @{$COMMANDS{'update-rc.d'}}, '-f', $service, 'remove' ) == 0
         && $self->SUPER::remove( $service );
 }
 

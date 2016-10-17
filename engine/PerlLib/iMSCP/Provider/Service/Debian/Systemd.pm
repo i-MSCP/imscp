@@ -32,15 +32,15 @@ use parent qw/ iMSCP::Provider::Service::Systemd iMSCP::Provider::Service::Debia
 
 # Commands used in that package
 my %COMMANDS = (
-    dpkg      => '/usr/bin/dpkg',
-    systemctl => '/bin/systemctl'
+    dpkg      => [ '/usr/bin/dpkg' ],
+    systemctl => [ '/bin/systemctl' ]
 );
 
 # Enable compatibility mode if systemd version is lower than version 204-3
 my $SYSTEMCTL_COMPAT_MODE = lazy
     {
         __PACKAGE__->_exec(
-            $COMMANDS{'dpkg'}, '--compare-versions', '$(dpkg-query -W -f=\'${Version}\' systemd)', 'lt', '204-3'
+            "@{$COMMANDS{'dpkg'}} --compare-versions \$(dpkg-query -W -f='\${Version}' systemd) lt 204-3"
         ) == 0;
     };
 
@@ -114,7 +114,7 @@ sub enable
         # of changes.
         if ($self->_isSysvinit( $unit )) {
             return $self->iMSCP::Provider::Service::Debian::Sysvinit::enable( $unit )
-                && $self->_exec( $COMMANDS{'systemctl'}, 'daemon-reload' ) == 0
+                && $self->_exec( @{$COMMANDS{'systemctl'}}, 'daemon-reload' ) == 0
         }
 
         return 1;
@@ -157,7 +157,7 @@ sub disable
         # of changes.
         if ($self->_isSysvinit( $unit )) {
             return $self->iMSCP::Provider::Service::Debian::Sysvinit::disable( $unit )
-                && $self->_exec( $COMMANDS{'systemctl'}, 'daemon-reload' ) == 0;
+                && $self->_exec( @{$COMMANDS{'systemctl'}}, 'daemon-reload' ) == 0;
         }
 
         return 1;
@@ -189,7 +189,7 @@ sub remove
     # Remove the underlying sysvinit script if any and make systemd aware of changes
     if ($self->_isSysvinit( $unit )) {
         return $self->iMSCP::Provider::Service::Debian::Sysvinit::remove( $unit )
-            && $self->_exec( $COMMANDS{'systemctl'}, 'daemon-reload' ) == 0;
+            && $self->_exec( @{$COMMANDS{'systemctl'}}, 'daemon-reload' ) == 0;
     }
 
     1;

@@ -255,7 +255,7 @@ sub restore
 
                 my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
                 debug( $stdout ) if $stdout;
-                warning( sprintf( 'Could not to restore SQL database: %s', $stderr ) ) if $stderr && $rs;
+                warning( sprintf( 'Could not restore SQL database: %s', $stderr || 'Unknown error' ) ) if $rs;
             } elsif ($bkpFile =~ /^(?!mail-).+?\.tar(?:\.(bz2|gz|lzma|xz))?$/) {
                 # Restore domain files
                 my $archType = $1 || '';
@@ -328,7 +328,7 @@ sub restore
 
                 my $rs = execute( $cmd, \ my $stdout, \ my $stderr );
                 debug( $stdout ) if $stdout;
-                error( $stderr ) if $stderr && $rs;
+                error( $stderr || 'Unknown error' ) if $rs;
 
                 #                my $groupName =
                 #                    my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
@@ -388,18 +388,17 @@ sub _loadData
     0;
 }
 
-=item _getHttpdData($action)
+=item _getHttpdData()
 
  Data provider method for Httpd servers
 
- Param string $action Action
  Return hashref Reference to a hash containing data, die on failure
 
 =cut
 
 sub _getHttpdData
 {
-    my ($self, $action) = @_;
+    my $self = shift;
 
     $self->{'_httpd'} = do {
         my $httpd = Servers::httpd->factory();
@@ -476,18 +475,17 @@ sub _getHttpdData
     $self->{'_httpd'};
 }
 
-=item _getMtaData($action)
+=item _getMtaData()
 
  Data provider method for MTA servers
 
- Param string $action Action
  Return hashref Reference to a hash containing data
 
 =cut
 
 sub _getMtaData
 {
-    my ($self, $action) = @_;
+    my $self = shift;
 
     $self->{'_mta'} = do {
         {
@@ -504,18 +502,17 @@ sub _getMtaData
     $self->{'_mta'};
 }
 
-=item _getNamedData($action)
+=item _getNamedData()
 
  Data provider method for named servers
 
- Param string $action Action
  Return hashref Reference to a hash containing data
 
 =cut
 
 sub _getNamedData
 {
-    my ($self, $action) = @_;
+    my $self = shift;
 
     $self->{'_named'} = do {
         my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
@@ -537,18 +534,17 @@ sub _getNamedData
     $self->{'_named'};
 }
 
-=item _getPackagesData($action)
+=item _getPackagesData()
 
  Data provider method for i-MSCP packages
 
- Param string $action Action
  Return hashref Reference to a hash containing data
 
 =cut
 
 sub _getPackagesData
 {
-    my ($self, $action) = @_;
+    my $self = shift;
 
     $self->{'_packages'} = do {
         my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
@@ -584,7 +580,7 @@ sub _getPackagesData
 
 sub isValidCertificate
 {
-    my ($self, $domainName) = @_;
+    my (undef, $domainName) = @_;
 
     my $certFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$domainName.pem";
     my $openSSL = iMSCP::OpenSSL->new(

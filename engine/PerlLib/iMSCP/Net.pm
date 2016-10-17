@@ -128,7 +128,7 @@ sub getAddrVersion
 
     $self->isValidAddr( $addr ) or croak( sprintf( 'Invalid IP address: %s', $addr ) );
     my $version = ip_get_version( $addr ) or croak( sprint( 'Could not guess version of the %s IP address', $addr ) );
-    ip_get_version( $addr ) == 4 ? 'ipv4' : 'ipv6';
+    $version == 4 ? 'ipv4' : 'ipv6';
 }
 
 =item getAddrType($addr)
@@ -228,7 +228,7 @@ sub isKnownAddr
 
 sub isValidAddr
 {
-    my ($self, $addr) = @_;
+    my (undef, $addr) = @_;
 
     is_ipv4( $addr ) || is_ipv6( $addr );
 }
@@ -423,8 +423,6 @@ sub _init
 
 sub _extractDevices
 {
-    my $self = shift;
-
     my ($stdout, $stderr);
     execute( [ 'ip', '-o', 'link', 'show' ], \$stdout, \$stderr ) == 0 or die(
         sprintf( 'Could not extract network devices data: %s', $stderr || 'Unknown error' )

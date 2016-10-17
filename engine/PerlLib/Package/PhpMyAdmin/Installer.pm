@@ -26,10 +26,10 @@ package Package::PhpMyAdmin::Installer;
 use strict;
 use warnings;
 use iMSCP::Config;
+use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Dir;
-use Package::PhpMyAdmin;
 use iMSCP::EventManager;
 use iMSCP::TemplateParser;
 use iMSCP::Composer;
@@ -37,6 +37,7 @@ use iMSCP::Execute;
 use iMSCP::Rights;
 use iMSCP::File;
 use Package::FrontEnd;
+use Package::PhpMyAdmin;
 use Servers::sqld;
 use File::Basename;
 use JSON;
@@ -155,12 +156,7 @@ EOF
             }
 
             if ($rs < 30) {
-                unless ($dbPass) {
-                    my @allowedChr = map { chr } (0x30 .. 0x39, 0x41 .. 0x5a, 0x61 .. 0x7a);
-                    $dbPass = '';
-                    $dbPass .= $allowedChr[rand @allowedChr] for 1 .. 16;
-                }
-
+                $dbPass = randomStr(16, iMSCP::Crypt::ALNUM) unless $dbPass;
                 $dialog->msgbox( <<"EOF" );
 
 Password for the phpmyadmin SQL user set to: $dbPass
@@ -305,13 +301,11 @@ sub _init
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'config'} = $self->{'phpmyadmin'}->{'config'};
 
-    my $oldConf = "$self->{'cfgDir'}/phpmyadmin.old.data";
-    if (-f $oldConf) {
-        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-        for my $oldConf(keys %oldConfig) {
-            if (exists $self->{'config'}->{$oldConf}) {
-                $self->{'config'}->{$oldConf} = $oldConfig{$oldConf};
-            }
+    if (-f "$self->{'cfgDir'}/phpmyadmin.old.data") {
+        tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.old.data";
+        while(my ($key, $value) = each(%oldConfig)) {
+            next unless exists $self->{'config'}->{$key};
+            $self->{'config'}->{$key} = $value;
         }
     }
 
@@ -328,11 +322,9 @@ sub _init
 
 sub _getPhpVersion
 {
-    my $self = shift;
-
     my $rs = execute( 'php -d date.timezone=UTC -v', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
+    error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
     $stdout =~ /PHP\s+([\d.]+)/ or die(
@@ -626,11 +618,7 @@ sub _setVersion
 
 sub _generateBlowfishSecret
 {
-
-    my @allowedChr = map { chr } (0x30 .. 0x39, 0x41 .. 0x5a, 0x61 .. 0x7a);
-    my $blowfishSecret = '';
-    $blowfishSecret .= $allowedChr[rand @allowedChr] for 1 .. 16;
-    $_[0]->{'config'}->{'BLOWFISH_SECRET'} = $blowfishSecret;
+    $_[0]->{'config'}->{'BLOWFISH_SECRET'} = randomStr(16, iMSCP::Crypt::ALNUM);
     0;
 }
 

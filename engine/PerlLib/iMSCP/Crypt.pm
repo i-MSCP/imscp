@@ -31,14 +31,17 @@ use Crypt::Eksblowfish::Bcrypt ();
 use Digest::SHA ();
 use Digest::MD5 ();
 use MIME::Base64;
-use constant BASE64 => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-use constant ALPHA64 => './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 use parent 'Exporter';
 
-our @EXPORT_OK = qw(
+
+use constant ALNUM => '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+use constant ALPHA64 => './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+use constant BASE64 => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+
+our @EXPORT_OK = qw/
     randomStr md5 sha256 sha512 bcrypt htpasswd verify hashEqual encryptBlowfishCBC decryptBlowfishCBC
     encryptRijndaelCBC decryptRijndaelCBC
-    );
+/;
 
 =head1 DESCRIPTION
 

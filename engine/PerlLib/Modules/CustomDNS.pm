@@ -199,18 +199,17 @@ sub _loadData
     0;
 }
 
-=item _getNamedData($action)
+=item _getNamedData()
 
  Data provider method for named servers
 
- Param string $action Action
  Return hashref Reference to a hash containing data
 
 =cut
 
 sub _getNamedData
 {
-    my ($self, $action) = @_;
+    my $self = shift;
 
     $self->{'_named'} = do {
         {

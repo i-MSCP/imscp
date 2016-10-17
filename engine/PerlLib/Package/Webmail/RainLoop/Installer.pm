@@ -26,6 +26,7 @@ package Package::Webmail::RainLoop::Installer;
 use strict;
 use warnings;
 use iMSCP::Config;
+use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::EventManager;
@@ -133,12 +134,7 @@ EOF
             }
 
             if ($rs < 30) {
-                unless ($dbPass) {
-                    my @allowedChr = map { chr } (0x30 .. 0x39, 0x41 .. 0x5a, 0x61 .. 0x7a);
-                    $dbPass = '';
-                    $dbPass .= $allowedChr[rand @allowedChr] for 1 .. 16;
-                }
-
+                $dbPass = randomStr(16, iMSCP::Crypt::ALNUM) unless $dbPass;
                 $dialog->msgbox( <<"EOF" );
 
 Password for the rainloop SQL user set to: $dbPass
@@ -540,12 +536,16 @@ sub _setVersion
 
 sub _buildHttpdConfig
 {
-    my ($self, $tplContent, $tplName) = @_;
+    my $self = shift;
 
     $self->{'frontend'}->buildConfFile(
         "$self->{'rainloop'}->{'cfgDir'}/nginx/imscp_rainloop.conf",
-        { GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },
-        { destination => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf" }
+        {
+            GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'}
+        },
+        {
+            destination => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf"
+        }
     );
 }
 

@@ -18,25 +18,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Update_Database as DbUpdater;
+
 define('IMSCP_SETUP', true);
 
-$guiRootDir = rtrim('{GUI_ROOT_DIR}', '/');
-
-if (strpos($guiRootDir, 'GUI_ROOT_DIR') !== false) {
-    fwrite(STDERR, '[ERROR] The GUI root directory is not defined');
-    exit(1);
-}
-
-require_once "$guiRootDir/library/imscp-lib.php";
-unset($guiRootDir);
-
 try {
-    $dbUpdater = iMSCP_Update_Database::getInstance();
-    $lastAppliedDbUpdate = $dbUpdater->getLastAppliedUpdate();
-    $lastDbUpdate = $dbUpdater->getLastUpdate();
+    chdir(dirname(__FILE__));
+    require_once '../../gui/library/imscp-lib.php';
 
-    if($lastAppliedDbUpdate > $lastDbUpdate) {
-        throw new iMSCP_Exception('A downgrade attempt has been detected. Downgrade is unsupported.');
+    $dbUpdater = DbUpdater::getInstance();
+
+    if($dbUpdater->getLastAppliedUpdate() > $dbUpdater->getLastUpdate()) {
+        throw new iMSCP_Exception('An i-MSCP downgrade attempt has been detected. Downgrade is not supported.');
     }
 
     if (!$dbUpdater->applyUpdates()) {

@@ -111,7 +111,7 @@ EOF
 
 sub _sendMail
 {
-    my ($self, $subject, $message, $severity) = @_;
+    my (undef, $subject, $message, $severity) = @_;
 
     my $sendmail = iMSCP::ProgramFinder::find( 'sendmail' ) or die( 'Could not find sendmail executable' );
     my $host = $main::imscpConfig{'BASE_SERVER_VHOST'};

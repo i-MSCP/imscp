@@ -243,10 +243,6 @@ sub _addAwstatsSection
 
     return 0 unless $tplName =~ /^domain(?:_ssl)?\.tpl$/ && $data->{'FORWARD'} eq 'no';
 
-    require Servers::httpd;
-    my $httpd = Servers::httpd->factory();
-    my $httpdVersion = $httpd->{'config'}->{'HTTPD_VERSION'};
-
     $$cfgTpl = replaceBloc(
         "# SECTION addons BEGIN.\n",
         "# SECTION addons END.\n",
@@ -292,7 +288,7 @@ EOF
 
 sub _addAwstatsConfig
 {
-    my ($self, $data) = @_;
+    my (undef, $data) = @_;
 
     my $awstatsPackageRootDir = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats";
     my $tplFileContent = iMSCP::File->new( filename => "$awstatsPackageRootDir/Config/awstats.imscp_tpl.conf" )->get();

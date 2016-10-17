@@ -103,8 +103,7 @@ sub addSystemUser
 
     my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs && $rs != 12;
-    debug( $stderr ) if $stderr && !$rs;
+    error( $stderr || 'Unknown error' ) if $rs && $rs != 12;
     return $rs if $rs && $rs != 12;
     0;
 }
@@ -142,8 +141,7 @@ sub delSystemUser
     );
     my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs && $rs != 12;
-    debug( $stderr ) if $stderr && !$rs;
+    error( $stderr || 'Unknown error' ) if $rs && $rs != 12;
     return $rs if $rs && $rs != 12;
     0;
 }
@@ -191,8 +189,7 @@ sub addToGroup
         my @cmd = ('usermod', escapeShell( $username ), '-G', escapeShell( $newGroups ));
         my $rs = execute( "@cmd", \my $stdout, \my $stderr );
         debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        debug( $stderr ) if $stderr && !$rs;
+        error( $stderr || 'Unknown error' ) if $rs;
         return $rs;
     }
 
@@ -200,8 +197,7 @@ sub addToGroup
     my @cmd = ('gpasswd', '-a', escapeShell( $username ), escapeShell( $groupname ));
     my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs && $rs != 3;
-    debug( $stderr ) if $stderr && !$rs;
+    error( $stderr || 'Unknown error' ) if $rs && $rs != 3;
     return $rs if $rs && $rs != 3;
     0;
 }
@@ -247,16 +243,14 @@ sub removeFromGroup
         my @cmd = ('usermod', escapeShell( $username ), '-G', escapeShell( $newGroups ));
         my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
-        error( $stderr ) if $stderr && $rs;
-        debug( $stderr ) if $stderr && !$rs;
+        error( $stderr || 'Unknown error' ) if $rs;
         return $rs;
     }
 
     my @cmd = ('gpasswd', '-d', escapeShell( $username ), escapeShell( $groupname ));
     my $rs = execute( "@cmd", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs && $rs != 3;
-    debug( $stderr ) if $stderr && !$rs;
+    error( $stderr || 'Unknown error' ) if $rs && $rs != 3;
     return $rs if $rs && $rs != 3;
     0;
 }
@@ -285,8 +279,7 @@ sub getUserGroups
 
     my $rs = execute( 'id -nG '.escapeShell( $username ), \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $stderr && $rs;
-    debug( $stderr ) if $stderr && !$rs;
+    error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
     %{$self->{'userGroups'}} = map { $_ => 1 } split ' ', $stdout;
