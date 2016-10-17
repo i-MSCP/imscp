@@ -410,7 +410,7 @@ sub _init
 
  Param string $module Module name to process
  Param string $sql SQL statement for retrieval of list of items to process by the given module
- Return int Number of items that were processed on success, die on failure
+ Return int 1 if at least one item has been processed, 0 if no item has been processed, die on failure
 
 =cut
 
@@ -456,7 +456,7 @@ sub _process
         endDebug();
     }
 
-    $nSteps;
+    1;
 }
 
 =back
