@@ -1,68 +1,102 @@
 #!/usr/bin/perl
 
-# i-MSCP preseed.pl template file for installer preseeding
+# i-MSCP preseed.pl template file for installer preseeding (unattended installation)
 #
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2016.08.03
+# Last update: 2016.10.17
 
 %main::questions = (
-
-    #
-    ## i-MSCP server implementations
-    #
-
-    # FTP server
-    # Possible values: proftpd, vsftpd
-    FTPD_SERVER                         => 'proftpd',
-
-    # Web server
-    # Possible values: apache_itk, apache_fcgid, apache_php_fpm
-    HTTPD_SERVER                        => 'apache_php_fpm',
-
-    # DNS server
-    # Possible values: bind, external_server
-    NAMED_SERVER                        => 'bind',
-
-    # SMTP server
-    # Possible values: postfix
-    MTA_SERVER                          => 'postfix',
-
-    # POP/IMAP servers
-    # Possible values: courier, dovecot
-    PO_SERVER                           => 'dovecot',
-
-    # SQL server
-    # Please consult the docs/<distro>/packages-<distro>.xml file for available options.
-    SQL_SERVER                          => 'mysql_5.5',
-
     #
     # System configuration
     #
 
     # Server hostname
     # Possible values: A fully qualified hostname name
-    SERVER_HOSTNAME                     => 'host.domain.tld',
+    SERVER_HOSTNAME                     => '',
 
-    # Primary server IP
+    # Server primary IP
     # Possible values: An already configured IPv4 or IPv6
-    BASE_SERVER_IP                      => '192.168.1.110',
+    BASE_SERVER_IP                      => '',
 
     # WAN IP
-    # Only relevant if your primary IP is in private range (e.g. when your server is behind NAT).
-    # You can force usage of a private IP by putting BASE_SERVER_IP IP value
+    # Only relevant if your server primary IP is in private range (e.g. when your server is behind a NAT).
+    # You can force usage of a private IP by putting the BASE_SERVER_IP IP value
     # Possible values: Ipv4 or IPv6
     BASE_SERVER_PUBLIC_IP               => '',
 
+    # Timezone
+    # Possible values: A valid timezone (see http://php.net/manual/en/timezones.php)
+    TIMEZONE                            => 'UTC',
+
     #
-    ## Control panel configuration
+    # Backup configuration parameters
+    #
+
+    # i-MSCP backup feature (database and configuration files)
+    # Enable backup for i-MSCP
+    # Possible values: yes, no
+    BACKUP_IMSCP                        => 'yes',
+
+    # Enable backup feature for customers
+    # Possible values: yes, no
+    BACKUP_DOMAINS                      => 'yes',
+
+    #
+    ## SQL server configuration parameters
+    #
+
+    # SQL server implementation
+    # Please consult the docs/<distro>/packages-<distro>.xml file for available options.
+    SQL_SERVER                          => 'mysql_5.5',
+
+    # Database name
+    DATABASE_NAME                       => 'imscp',
+
+    #
+    ## SQL server configuration
+    #
+
+    # Databas hostname
+    # Possible values: A valid hostname or IP address
+    DATABASE_HOST                       => 'localhost',
+
+    # Database port
+    # Note that this port is used only for connections through TCP
+    # Possible values: A valid port
+    DATABASE_PORT                       => '3306',
+
+    # SQL root user
+    # Note: This user is only used while installation/reconfiguration
+    SQL_ROOT_USER                       => 'root',
+    SQL_ROOT_PASSWORD                   => '',
+
+    # i-MSCP Master SQL user
+    # Note that this SQL user must have full privileges on the SQL server. It is used to to connect to the i-MSCP
+    # database and also to create/delete SQL users for your customers
+    # Be aware that it is not allowed to use SQL root user
+    # Only ASCII alphabet characters and numbers are allowed in password.
+    DATABASE_USER                       => 'imscp_user',
+    DATABASE_PASSWORD                   => '',
+
+    # Database user host for SQL user created by i-MSCP
+    # That is the host from which SQL users created by i-MSCP are allowed to connect to the SQL server
+    # Possible values: A valid hostname or IP address
+    DATABASE_USER_HOST                  => 'localhost',
+
+    # Enable or disable prefix/suffix for customer SQL database names
+    # Possible values: behind, infront, none
+    MYSQL_PREFIX                        => 'none',
+
+    #
+    ## Control panel configuration parameters
     #
 
     # Control panel domain
     # This is the domain name from which the control panel will be reachable
     # Possible values: A fully qualified domain name
-    BASE_SERVER_VHOST                   => 'panel.domain.tld',
+    BASE_SERVER_VHOST                   => '',
 
     # Control panel http port
     # Possible values: A port in range 1025-65535
@@ -110,29 +144,13 @@
     # Possible value: A valid email address. Be aware that mails sent to local root user will be forwarded to that email.
     DEFAULT_ADMIN_ADDRESS               => '',
 
-    # Database name
-    DATABASE_NAME                       => 'imscp',
-
-    # SQL user
-    # Note that this SQL user must have full privileges on the SQL server. It is used to to connect to the i-MSCP
-    # database and also to create/delete SQL users for your customers
-    # Be aware that it is not allowed to use SQL root user
-    # Only ASCII alphabet characters and numbers are allowed in password.
-    DATABASE_USER                       => 'imscp_user',
-    DATABASE_PASSWORD                   => '',
-
-    # Database user host for SQL user created by i-MSCP
-    # That is the host from which SQL users created by i-MSCP are allowed to connect to the SQL server
-    # Possible values: A valid hostname or IP address
-    DATABASE_USER_HOST                  => 'localhost',
-
-    # Enable or disable prefix/suffix for SQL database names
-    # Possible values: behind, infront, none
-    MYSQL_PREFIX                        => 'none',
-
     #
     ## DNS server configuration
     #
+
+    # DNS server implementation
+    # Possible values: bind, external_server
+    NAMED_SERVER                        => 'bind',
 
     # DNS server mode
     # Only relevant with 'bind' server implementation
@@ -161,8 +179,33 @@
     LOCAL_DNS_RESOLVER                  => 'yes',
 
     #
-    ## FTP server configuration parameters
+    ## HTTTPd server configuration parameters
     #
+
+    # HTTPd server implementation
+    # Possible values: apache_itk, apache_fcgid, apache_php_fpm
+    HTTPD_SERVER                        => 'apache_php_fpm',
+
+    #
+    ## PHP configuration parameters
+    #
+
+    # PHP configuration level
+    # Possible values: per_user, per_domain, per_site
+    PHP_CONFIG_LEVEL                    => 'per_site',
+
+    # PHP-FPM listen socket type
+    # Only relevant with 'apache_php_fpm' sever implementation
+    # Possible values: uds, tcp
+    PHP_FPM_LISTEN_MODE                 => 'uds',
+
+    #
+    ## FTPd server configuration parameters
+    #
+
+    # FTPd server implementation
+    # Possible values: proftpd, vsftpd
+    FTPD_SERVER                         => 'proftpd',
 
     # FTP SQL user
     # Only ASCII alphabet characters and numbers are allowed in password.
@@ -174,27 +217,20 @@
     FTPD_PASSIVE_PORT_RANGE             => '32768 60999',
 
     #
-    ## SQL server configuration
+    ## MTA server configuration parameters
     #
 
-    # Databas hostname
-    # Possible values: A valid hostname or IP address
-    DATABASE_HOST                       => '127.0.0.1',
-
-    # Database port
-    # Note that port is used only for connections through TCP
-    # Possible values: A valid port
-    DATABASE_PORT                       => '3306',
-
-    # SQL root user
-    # Note: This user is only used while installation/reconfiguration
-    # Only ASCII alphabet characters and numbers are allowed in password.
-    SQL_ROOT_USER                       => 'root',
-    SQL_ROOT_PASSWORD                   => '',
+    # MTA server implementation
+    # Possible values: postfix
+    MTA_SERVER                          => 'postfix',
 
     #
-    ## Courier, POP server configuration
+    ## IMAP, POP server configuration parameters
     #
+
+    # POP/IMAP servers implementation
+    # Possible values: courier, dovecot
+    PO_SERVER                           => 'dovecot',
 
     # Authdaemon SQL user
     # Only ASCII alphabet characters and numbers are allowed in password.
@@ -214,34 +250,8 @@
     DOVECOT_SQL_PASSWORD                => '',
 
     #
-    ## PHP configuration parameters
+    ## Services (FTP, SMTP, IMAP POP) SSL configuration parameters
     #
-
-    # PHP configuration level
-    # Possible values: per_user, per_domain, per_site
-    PHP_CONFIG_LEVEL                    => 'per_site',
-
-    # PHP-FPM listen socket type
-    # Only relevant with 'apache_php_fpm' sever implementation
-    # Possible values: uds, tcp
-    PHP_FPM_LISTEN_MODE                 => 'uds',
-
-    # Timezone
-    # Possible values: A valid timezone (see http://php.net/manual/en/timezones.php)
-    TIMEZONE                            => 'UTC',
-
-    #
-    ## Backup configuration
-    #
-
-    # i-MSCP backup feature (database and configuration files)
-    # Enable backup for i-MSCP
-    # Possible values: yes, no
-    BACKUP_IMSCP                        => 'yes',
-
-    # Enable backup feature for customers
-    # Possible values: yes, no
-    BACKUP_DOMAINS                      => 'yes',
 
     #
     ## SSL configuration for FTP, IMAP/POP and SMTP services
@@ -277,7 +287,7 @@
     SERVICES_SSL_CERTIFICATE_PATH       => '',
 
     #
-    ## i-MSCP packages configuration
+    ## Packages configuration parameters
     #
 
     # Webstats package
