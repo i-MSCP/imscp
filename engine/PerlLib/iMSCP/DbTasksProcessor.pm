@@ -57,7 +57,7 @@ sub process
     # Process plugins tasks
     # Must always be processed first to allow the plugins registering their listeners on the event manager
     $self->_process(
-        'Plugin',
+        'Modules::Plugin',
         "
             SELECT plugin_id AS id, plugin_name AS name, plugin_status AS status FROM plugin
             WHERE plugin_status IN ('enabled', 'toinstall', 'toenable', 'toupdate', 'tochange', 'todisable', 'touninstall')
@@ -67,7 +67,7 @@ sub process
 
     # Process network interface tasks
     $self->_process(
-        'NetworkInterfaces',
+        'Modules::NetworkInterfaces',
         "
             SELECT 'all' AS id, 'network interfaces' AS name, 'any' AS status
             FROM server_ips WHERE ip_status <> 'ok' LIMIT 1
@@ -76,7 +76,7 @@ sub process
 
     # Process SSL certificate toadd|tochange SSL certificates tasks
     $self->_process(
-        'SSLcertificate',
+        'Modules::SSLcertificate',
         "
             SELECT cert_id AS id, domain_type AS name, status AS status FROM ssl_certs
             WHERE status IN ('toadd', 'tochange', 'todelete') ORDER BY cert_id ASC
@@ -85,7 +85,7 @@ sub process
 
     # Process toadd|tochange users tasks
     $self->_process(
-        'User',
+        'Modules::User',
         "
             SELECT admin_id AS id, admin_name AS name, admin_status AS status FROM admin
             WHERE admin_type = 'user' AND admin_status IN ('toadd', 'tochange') ORDER BY admin_id ASC
@@ -95,7 +95,7 @@ sub process
     # Process toadd|tochange|torestore|toenable|todisable domain tasks
     # For each entitty, process only if the parent entity is in a consistent state
     my $ipsModule = $self->_process(
-        'Domain',
+        'Modules::Domain',
         "
             SELECT domain_id AS id, domain_name AS name, domain_status AS status FROM domain
             INNER JOIN admin ON(admin_id = domain_admin_id)
@@ -107,7 +107,7 @@ sub process
     # Process toadd|tochange|torestore|toenable|todisable subdomains tasks
     # For each entitty, process only if the parent entity is in a consistent state
     $ipsModule += $self->_process(
-        'Subdomain',
+        'Modules::Subdomain',
         "
             SELECT subdomain_id AS id, CONCAT(subdomain_name, '.', domain_name) AS name, subdomain_status AS status
             FROM subdomain INNER JOIN domain USING(domain_id)
@@ -119,7 +119,7 @@ sub process
     # Process toadd|tochange|torestore|toenable|todisable domain aliases tasks
     # (for each entitty, process only if the parent entity is in a consistent state)
     $ipsModule += $self->_process(
-        'Alias',
+        'Modules::Alias',
         "
            SELECT alias_id AS id, alias_name AS name, alias_status AS status FROM domain_aliasses
            INNER JOIN domain USING(domain_id)
@@ -131,7 +131,7 @@ sub process
     # Process toadd|tochange|torestore|toenable|todisable subdomains of domain aliases tasks
     # For each entitty, process only if the parent entity is in a consistent state
     $ipsModule += $self->_process(
-        'SubAlias',
+        'Modules::SubAlias',
         "
             SELECT subdomain_alias_id AS id, CONCAT(subdomain_alias_name, '.', alias_name) AS name,
                 subdomain_alias_status AS status FROM subdomain_alias
@@ -145,7 +145,7 @@ sub process
     # Process toadd|tochange|toenable||todisable|todelete custom DNS records which belong to domains
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_process(
-        'CustomDNS',
+        'Modules::CustomDNS',
         "
             SELECT DISTINCT CONCAT('domain_', domain_id) AS id, domain_name AS name, 'any' AS status
             FROM domain_dns INNER JOIN domain USING(domain_id)
@@ -157,7 +157,7 @@ sub process
     # Process toadd|tochange|toenable|todisable|todelete custom DNS records which belong to domain aliases
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_process(
-        'CustomDNS',
+        'Modules::CustomDNS',
         "
             SELECT DISTINCT CONCAT('alias_', alias_id) AS id, alias_name AS name, 'any' AS status FROM domain_dns
             INNER JOIN domain_aliasses USING(alias_id)
@@ -169,7 +169,7 @@ sub process
     # Process toadd|tochange|toenable|todisable|todelete ftp users tasks
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_process(
-        'FtpUser',
+        'Modules::FtpUser',
         "
             SELECT userid AS id, userid AS name, status AS status
             FROM ftp_users INNER JOIN domain ON(domain_admin_id = admin_id)
@@ -181,7 +181,7 @@ sub process
     # Process toadd|tochange|toenable|todisable|todelete mail tasks
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_process(
-        'Mail',
+        'Modules::Mail',
         "
             SELECT mail_id AS id, mail_addr AS name, status AS status FROM mail_users
             INNER JOIN domain USING(domain_id)
@@ -193,7 +193,7 @@ sub process
     # Process toadd|tochange|toenable|todisable|todelete Htusers tasks
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_process(
-        'Htusers',
+        'Modules::Htusers',
         "
             SELECT id, CONCAT(uname, ':', id) AS name, status
             FROM htaccess_users INNER JOIN domain ON(domain_id = dmn_id)
@@ -205,7 +205,7 @@ sub process
     # Process toadd|tochange|toenable|todisable|todelete Htgroups tasks
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_process(
-        'Htgroup',
+        'Modules::Htgroup',
         "
             SELECT id, CONCAT(ugroup, ':', id) AS name, status FROM htaccess_groups
             INNER JOIN domain ON(domain_id = dmn_id)
@@ -217,7 +217,7 @@ sub process
     # Process toadd|tochange|toenable|todisable|todelete Htaccess tasks
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_process(
-        'Htaccess',
+        'Modules::Htaccess',
         "
             SELECT id, CONCAT(auth_name, ':', id) AS name, status FROM htaccess INNER JOIN domain ON(domain_id = dmn_id)
             WHERE status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
@@ -227,7 +227,7 @@ sub process
 
     # Process todelete subdomain aliases tasks
     $ipsModule += $self->_process(
-        'SubAlias',
+        'Modules::SubAlias',
         "
             SELECT subdomain_alias_id AS id, concat(subdomain_alias_name, '.', alias_name) AS name,
                 subdomain_alias_status AS status FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
@@ -238,7 +238,7 @@ sub process
     # Process todelete domain aliases tasks
     # For each entity, process only if the entity do not have any direct children
     $ipsModule += $self->_process(
-        'Alias',
+        'Modules::Alias',
         "
             SELECT alias_id AS id, alias_name AS name, alias_status AS status
             FROM domain_aliasses
@@ -251,7 +251,7 @@ sub process
 
     # Process todelete subdomains tasks
     $ipsModule += $self->_process(
-        'Subdomain',
+        'Modules::Subdomain',
         "
             SELECT subdomain_id AS id, CONCAT(subdomain_name, '.', domain_name) AS name, subdomain_status AS status
             FROM subdomain INNER JOIN domain USING(domain_id)
@@ -262,7 +262,7 @@ sub process
     # Process todelete domains tasks
     # For each entity, process only if the entity do not have any direct children
     $ipsModule += $self->_process(
-        'Domain',
+        'Modules::Domain',
         "
             SELECT domain_id AS id, domain_name AS name, domain_status AS status
             FROM domain
@@ -276,7 +276,7 @@ sub process
     # Process todelete users tasks
     # For each entity, process only if the entity do not have any direct children
     $self->_process(
-        'User',
+        'Modules::User',
         "
             SELECT admin_id AS id, admin_name AS name, admin_status AS status FROM admin
             LEFT JOIN domain ON(domain_admin_id = admin_id)
@@ -418,7 +418,7 @@ sub _process
 {
     my ($self, $module, $sql) = @_;
 
-    debug( sprintf( 'Processing %s module tasks...', $module ) );
+    debug( sprintf( 'Processing %s tasks...', $module ) );
 
     my $dbh = $self->{'db'}->getRawDb();
     my $rows = $dbh->selectall_arrayref( $sql, { Slice => { } } );
@@ -426,9 +426,11 @@ sub _process
     defined $rows && !$dbh->err() or die( $dbh->errstr() );
 
     unless (@{$rows}) {
-        debug( sprintf( 'No task to process for the %s module.', $module ) );
+        debug( sprintf( 'No task to process for %s', $module ) );
         return 0;
     }
+
+    eval "require $module" or die( sprintf( 'Could not load %s: %s', $module, $@ ) );
 
     my ($nStep, $nSteps) = (0, scalar @{$rows});
 
@@ -436,20 +438,17 @@ sub _process
         my ($id, $name, $status) = ($row->{'id'}, $row->{'name'}, $row->{'status'});
 
         debug( sprintf( 'Processing %s (%s) tasks for: %s (ID %s)', $module, $status, $name, $id ) );
-        newDebug( "${module}_module_$name.log" );
-
-        my $package = "Modules::$module";
-        eval "require $package" or die( sprintf( 'Could not load the %s module: %s', $package, $@ ) );
+        newDebug( "${module}_$name.log" );
 
         if ($self->{'mode'} eq 'setup') {
             step(
-                sub { $package->new()->process( $id ) },
-                sprintf( 'Processing %s (%s) tasks for: %s (ID %s)', $package, $status, $name, $id ), $nSteps, ++$nStep
+                sub { $module->new()->process( $id ) },
+                sprintf( 'Processing %s (%s) tasks for: %s (ID %s)', $module, $status, $name, $id ), $nSteps, ++$nStep
             ) == 0 or die(
                 getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
             );
         } else {
-            $package->new()->process( $id ) == 0 or die(
+            $module->new()->process( $id ) == 0 or die(
                 getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
             );
         }
