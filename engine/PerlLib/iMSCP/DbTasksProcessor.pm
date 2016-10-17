@@ -438,18 +438,18 @@ sub _process
         debug( sprintf( 'Processing %s (%s) tasks for: %s (ID %s)', $module, $status, $name, $id ) );
         newDebug( "${module}_module_$name.log" );
 
-        $module = "Modules::$module";
-        eval "require $module" or die( sprintf( 'Could not load the %s module: %s', $module, $@ ) );
+        my $package = "Modules::$module";
+        eval "require $package" or die( sprintf( 'Could not load the %s module: %s', $package, $@ ) );
 
         if ($self->{'mode'} eq 'setup') {
             step(
-                sub { $module->new()->process( $id ) },
-                sprintf( 'Processing %s (%s) tasks for: %s (ID %s)', $module, $status, $name, $id ), $nSteps, ++$nStep
+                sub { $package->new()->process( $id ) },
+                sprintf( 'Processing %s (%s) tasks for: %s (ID %s)', $package, $status, $name, $id ), $nSteps, ++$nStep
             ) == 0 or die(
                 getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
             );
         } else {
-            $module->new()->process( $id ) == 0 or die(
+            $package->new()->process( $id ) == 0 or die(
                 getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
             );
         }

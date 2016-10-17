@@ -9,7 +9,7 @@
 
 %main::questions = (
     #
-    # System configuration
+    ## System configuration
     #
 
     # Server hostname
@@ -31,7 +31,7 @@
     TIMEZONE                            => 'UTC',
 
     #
-    # Backup configuration parameters
+    ## Backup configuration parameters
     #
 
     # i-MSCP backup feature (database and configuration files)
@@ -248,10 +248,6 @@
     # Only ASCII alphabet characters and numbers are allowed in password.
     DOVECOT_SQL_USER                    => 'dovecot_user',
     DOVECOT_SQL_PASSWORD                => '',
-
-    #
-    ## Services (FTP, SMTP, IMAP POP) SSL configuration parameters
-    #
 
     #
     ## SSL configuration for FTP, IMAP/POP and SMTP services

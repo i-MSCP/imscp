@@ -891,10 +891,10 @@ sub setupSaveConfig
         }
     );
 
-    for (keys %main::questions) {
-        next unless exists $main::imscpConfig{$_};
-        $main::imscpConfig{$_} = $main::questions{$_};
-    }
+    while(my($key, $value) = each(%main::questions)) {
+        next unless exists $main::imscpConfig{$key};
+        $main::imscpConfig{$_} = $value;
+    } 
 
     # Re-open main configuration file in read only mode
     iMSCP::Bootstrapper->getInstance()->loadMainConfig(
