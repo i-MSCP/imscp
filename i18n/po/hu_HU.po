@@ -6,13 +6,14 @@
 # Ádám Radovits <adamradovits12@hotmail.com>, 2016
 # David Molnar <molnar.david@gmail.com>, 2016
 # Lukasz Nowak <qkash@o2.pl>, 2016
+# Robert Kiss, 2016
 # Zsolt Bertalan <bercy42@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-10-12 02:35+0200\n"
-"PO-Revision-Date: 2016-10-12 00:35+0000\n"
+"POT-Creation-Date: 2016-10-18 12:08+0200\n"
+"PO-Revision-Date: 2016-10-18 10:08+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/i-mscp/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -1392,9 +1393,6 @@ msgstr "Cég"
 msgid "Compress HTML output"
 msgstr "Tömöritett HTML kimenet"
 
-msgid "Concurrent FTP connections for the same domain are not allowed."
-msgstr ""
-
 msgid "Configuration mode"
 msgstr "Beállítás üzemmód"
 
@@ -2673,7 +2671,7 @@ msgid "IP assignments"
 msgstr "IP-cím kiosztás"
 
 msgid "IP errors"
-msgstr ""
+msgstr "IP hibák"
 
 msgid "IP management"
 msgstr "IP-cím kezelő"
@@ -5392,10 +5390,10 @@ msgid "Wrong mail syntax in forward list."
 msgstr "Hibás levelező szintaktika a továbbítási listában."
 
 msgid "Wrong or unallowed IP address."
-msgstr ""
+msgstr "Hibás vagy tiltott IP cím."
 
 msgid "Wrong or unallowed IP netmask."
-msgstr ""
+msgstr "Hibás vagy tiltott IP hálózati maszk."
 
 msgid "Wrong request."
 msgstr "Hibás kérés"
@@ -5525,7 +5523,7 @@ msgid "You cannot unassign an IP address already in use."
 msgstr "Nem lehet visszavonni a már használatban lévő IP-címet."
 
 msgid "You cannot update a protected plugin."
-msgstr ""
+msgstr "Nem tudsz frissíteni védett bővítményt!"
 
 msgid "You do not have DNS resource records."
 msgstr "Nincs DNS forrás rekordod."

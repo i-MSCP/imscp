@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-10-12 02:35+0200\n"
+"POT-Creation-Date: 2016-10-18 12:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1387,9 +1387,6 @@ msgid "Company"
 msgstr ""
 
 msgid "Compress HTML output"
-msgstr ""
-
-msgid "Concurrent FTP connections for the same domain are not allowed."
 msgstr ""
 
 msgid "Configuration mode"

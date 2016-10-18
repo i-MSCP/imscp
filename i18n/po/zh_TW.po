@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-10-12 02:35+0200\n"
-"PO-Revision-Date: 2016-10-12 00:35+0000\n"
+"POT-Creation-Date: 2016-10-18 12:08+0200\n"
+"PO-Revision-Date: 2016-10-18 10:08+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -158,7 +158,7 @@ msgstr "%s 帳號已經成功地刪除"
 
 #, php-format
 msgid "%s doens't look like an i-MSCP plugin archive."
-msgstr ""
+msgstr "%s 看起來不像 i-MSCP 外掛壓縮檔。"
 
 #, php-format
 msgid "%s doesn't exist or is empty."
@@ -231,115 +231,115 @@ msgstr "'%%hostname%%' 不可以出現給電子郵件用的 MX 紀錄 '%%value%%
 
 #, php-format
 msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
-msgstr ""
+msgstr "'%%hostname%%' 在電子郵件中是不正確的主機名稱 '%%value%%'"
 
 #, php-format
 msgid ""
 "'%%hostname%%' is not in a routable network segment. The email address "
 "'%%value%%' should not be resolved from public network"
-msgstr ""
+msgstr "'%%hostname%%' 不是正確的路由網段。此電子郵件 '%%value%%' 應該不是從公開網路解析的"
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against dot-atom format"
-msgstr ""
+msgstr "'%%localPart%%' 不能不符合 dot-atom 格式"
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against quoted-string format"
-msgstr ""
+msgstr "'%%localPart%%' 不能不符合 quoted-string 格式"
 
 #, php-format
 msgid "'%%localPart%%' is no valid local part for email address '%%value%%'"
-msgstr ""
+msgstr "'%%localPart%%' 在電子郵件中是不正確的 local part '%%value%%'"
 
 #, php-format
 msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
-msgstr ""
+msgstr "'%%value%%' 看起來是 DNS 主機名稱但是無法取得 TLD 的部份"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but cannot match TLD against known "
 "list"
-msgstr ""
+msgstr "'%%value%%' 看起來是 DNS 主機名稱但是不符合 TLD 已知列表"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but cannot match against hostname "
 "schema for TLD '%%tld%%'"
-msgstr ""
+msgstr "'%%value%%' 看起來是 DNS 主機名稱但是無法符合 TLD 主機名稱模式 '%%tld%%'"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but contains a dash in an invalid "
 "position"
-msgstr ""
+msgstr "'%%value%%' 看起來是 DNS 主機名稱但是在不正確的位置上有\"-\"符號"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but the given punycode notation "
 "cannot be decoded"
-msgstr ""
+msgstr "'%%value%%' 看起來是 DNS 主機名稱但是指定的 punycode 符號不能解碼"
 
 #, php-format
 msgid "'%%value%%' appears to be a domain name but cannot extract TLD part"
-msgstr ""
+msgstr "'%%value%%' 看起來是網域名稱但是無法取得 TLD 的部份"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but cannot match TLD against known "
 "list"
-msgstr ""
+msgstr "'%%value%%' 看起來是網域名稱但是不符合 TLD 已知列表"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but cannot match against domain name"
 " schema for TLD '%%tld%%'"
-msgstr ""
+msgstr "'%%value%%' 看起來是網域名稱但是無法符合 TLD 網域名稱模式 '%%tld%%'"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but contains a dash in an invalid "
 "position"
-msgstr ""
+msgstr "'%%value%%' 看起來是網域名稱但是在不正確的位置上有\"-\"符號"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but the given punycode notation "
 "cannot be decoded"
-msgstr ""
+msgstr "'%%value%%' 看起來是網域名稱但是指定的 punycode 符號不能解碼"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a local network name but local network names are "
 "not allowed"
-msgstr ""
+msgstr "'%%value%%' 看起來是本機網路名稱但是本機網路名稱是不允許的"
 
 #, php-format
 msgid "'%%value%%' appears to be a subdomain name but cannot extract TLD part"
-msgstr ""
+msgstr "'%%value%%' 看起來是子網域名稱但是無法取得 TLD 的部份"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but cannot match TLD against "
 "known list"
-msgstr ""
+msgstr "'%%value%%' 看起來是子網域名稱但是不符合 TLD 已知列表"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but cannot match against "
 "subdomain schema for TLD '%%tld%%'"
-msgstr ""
+msgstr "'%%value%%' 看起來是子網域名稱但是無法符合 TLD 子網域名稱模式 '%%tld%%'"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but contains a dash in an invalid"
 " position"
-msgstr ""
+msgstr "'%%value%%' 看起來是子網域名稱但是在不正確的位置上有\"-\"符號"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but the given punycode notation "
 "cannot be decoded"
-msgstr ""
+msgstr "'%%value%%' 看起來是子網域名稱但是指定的 punycode 符號不能解碼"
 
 #, php-format
 msgid ""
@@ -393,13 +393,13 @@ msgstr "<b>%1$s</b> 已有無限制的權限給 <b>%2$s</b> 這個服務。<br>"
 msgid ""
 "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
 "reseller.<br>"
-msgstr ""
+msgstr "<b>%1$s</b> 已超過經銷商 <b>%2$s</b><br>所限制的服務。<br>"
 
 #, php-format
 msgid ""
 "<b>%s</b> has IP address that cannot be managed from the destination "
 "reseller!<br>This user cannot be moved!"
-msgstr ""
+msgstr "<b>%s</b> 此 IP 位址不能讓經銷商管理!<br>這個使用者不可以移動!"
 
 msgid "A PHP extension stopped the file upload."
 msgstr "PHP extension 停用了檔案上傳。"
@@ -414,7 +414,7 @@ msgid "A new i-MSCP version is available"
 msgstr "i-MSCP 目前已經有最新版本"
 
 msgid "A new software package has been uploaded"
-msgstr ""
+msgstr "新的軟體庫已上傳"
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "透過 Web 介面存取您的網域狀態。"
@@ -480,7 +480,7 @@ msgid "Add"
 msgstr "增加"
 
 msgid "Add DNS resource record"
-msgstr ""
+msgstr "新增 DNS 紀錄"
 
 msgid "Add FTP account"
 msgstr "新增 FTP 帳號"
@@ -597,7 +597,7 @@ msgid "Admin / Settings"
 msgstr "管理 / 設定"
 
 msgid "Admin / Settings / IP Management"
-msgstr ""
+msgstr "管理 / 設定 / IP 位址管理"
 
 msgid "Admin / Settings / Languages"
 msgstr "管理 / 設定 / 語系"
@@ -814,7 +814,7 @@ msgid "Allow URL fopen"
 msgstr "允許 URL fopen"
 
 msgid "Allows to forward any request made to this domain to a specific URL."
-msgstr ""
+msgstr "允許轉址任何需求來達成這個網域指到特定的 URL。"
 
 msgid "Allows to share the mount point of another domain."
 msgstr "允許分享掛載點到其他網域上。"
@@ -823,7 +823,7 @@ msgid "Already in use"
 msgstr "已經被使用"
 
 msgid "Alternate URL to reach your website."
-msgstr ""
+msgstr "您的臨時網址"
 
 msgid "Alternative URL to reach your website"
 msgstr "您的臨時網址"
@@ -932,15 +932,15 @@ msgstr "您確定要刪除 '%s' 服務單?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s' IP address?"
-msgstr ""
+msgstr "你確定想刪除此 `%%s' IP 位址?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
-msgstr ""
+msgstr "你確定想刪除此 `%%s` FTP 使用者?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` protected area?"
-msgstr ""
+msgstr "你確定想刪除此 `%%s` 受保護區域?"
 
 msgid "Are you sure you want to delete this DNS record?"
 msgstr "您確定要刪除這個 DNS 紀錄?"
@@ -983,7 +983,7 @@ msgid "Assign group"
 msgstr "指派群組"
 
 msgid "Assigned to at least one reseller"
-msgstr ""
+msgstr "至少分配一個經銷商"
 
 msgid "At first you must create a database which have at least one SQL user."
 msgstr "首先您必須建立資料庫及至少一個 SQL 使用者。"
@@ -992,16 +992,16 @@ msgid "At least one intermediate certificate is invalid or missing."
 msgstr "至少有一個中繈憑證是無效或遺失。"
 
 msgid "Authentication by group"
-msgstr ""
+msgstr "依群組驗證"
 
 msgid "Authentication by user"
-msgstr ""
+msgstr "依使用者驗證"
 
 msgid "Authentication data"
-msgstr ""
+msgstr "驗證日期"
 
 msgid "Auto"
-msgstr ""
+msgstr "自動"
 
 msgid "Auto (Browser language)"
 msgstr "自動 (瀏覽器語言)"
@@ -1062,7 +1062,7 @@ msgid ""
 "domains. Note that activating the external mail feature configures our "
 "server to relay your mail through your own mail server, but that no DNS "
 "record is created for it."
-msgstr ""
+msgstr "以下，您可以啟用外部郵件主機功能給一個或多個您的網域。注意這個啟用外部郵件主機功能設置將會把我們伺服器的郵件轉送到您指定的郵件主機，但是不會產生 DNS 紀錄。"
 
 msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
@@ -1143,7 +1143,7 @@ msgid "Change personal data"
 msgstr "變更個人資料"
 
 msgid "Change status of this item for a new attempt"
-msgstr ""
+msgstr "試著變更這個項目的狀態"
 
 msgid "Check for update"
 msgstr "檢查更新"
@@ -1217,7 +1217,7 @@ msgid "Click to deactivate"
 msgstr "點選停用"
 
 msgid "Click to edit"
-msgstr ""
+msgstr "點選編輯"
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "客戶 / 資料庫 / 新增 SQL 資料庫"
@@ -1247,7 +1247,7 @@ msgid "Client / Domains / Add Subdomain"
 msgstr "客戶 / 網域 / 新增子網域"
 
 msgid "Client / Domains / Edit Domain"
-msgstr ""
+msgstr "客戶 / 網域 / 編輯網域"
 
 msgid "Client / Domains / Edit Domain Alias"
 msgstr "客戶 / 網域 / 編輯網域別名"
@@ -1390,11 +1390,8 @@ msgstr "公司名稱"
 msgid "Compress HTML output"
 msgstr "HTML 壓縮輸出"
 
-msgid "Concurrent FTP connections for the same domain are not allowed."
-msgstr ""
-
 msgid "Configuration mode"
-msgstr ""
+msgstr "設置模式"
 
 msgid "Core data"
 msgstr "核心資料"
@@ -1407,7 +1404,7 @@ msgstr "無法新增/更新 SSL 憑證。已產生無法預期的錯誤。"
 
 #, php-format
 msgid "Could not backup current `%s' plugin directory."
-msgstr ""
+msgstr "可能無法備份目前 %s 外掛目錄。"
 
 #, php-format
 msgid "Could not change the %s plugin: %s"
@@ -1442,7 +1439,7 @@ msgid "Could not enable the %s plugin: %s"
 msgstr "可能無法啟用 %s 外掛: %s"
 
 msgid "Could not find any network interface. You cannot add new IP addresses."
-msgstr ""
+msgstr "無法找到任何網路介面。您無法新增 IP 位址。"
 
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr "無法產生 SSL 憑證。已產生無法預期的錯誤。"
@@ -1753,7 +1750,7 @@ msgid ""
 "\n"
 "___________________________\n"
 "i-MSCP Mailer"
-msgstr ""
+msgstr "親愛的 {NAME},\n\n請點擊以下的連結來更新您的密碼:\n\n{LINK}\n\n注意: 假如您沒有提出更新您的密碼需求，您可以忽略這封郵件。\n\n請不要回覆這封郵件。\n\n___________________________\ni-MSCP Mailer"
 
 msgid ""
 "Dear {NAME},\n"
@@ -1775,7 +1772,7 @@ msgid ""
 "\n"
 "________________\n"
 "i-MSCP Mailer"
-msgstr ""
+msgstr "親愛的 {NAME},\n\n這是一封由您的 i-MSCP 控制台自動發送給您的郵件:\n\n伺服器名稱: {HOSTNAME}\n伺服器 IP:   {SERVER_IP}\n客戶端 IP:   {CLIENT_IP}\n版本:     {VERSION}\n建立時間:       {BUILDDATE}\n嚴重性:    {MESSAGE_SEVERITY}\n\n==========================================================================\n{MESSAGE}\n==========================================================================\n\n請不要回覆這封郵件。\n\n________________\ni-MSCP Mailer"
 
 msgid ""
 "Dear {NAME},\n"
@@ -1794,7 +1791,7 @@ msgid ""
 "\n"
 "___________________________\n"
 "i-MSCP Mailer"
-msgstr ""
+msgstr "親愛的 {NAME},\n\n您有新的支援單需要解答:\n\n==========================================================================\n優先權: {PRIORITY}\n\n{MESSAGE}\n==========================================================================\n\n您可以登入到 {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT} 來回答。\n\n請不要回覆這封郵件。\n\n___________________________\ni-MSCP Mailer"
 
 msgid ""
 "Dear {NAME},\n"
@@ -1813,7 +1810,7 @@ msgid ""
 "\n"
 "___________________________\n"
 "i-MSCP Mailer"
-msgstr ""
+msgstr "親愛的 {NAME},\n\n您有新的支援單:\n\n==========================================================================\n優先權: {PRIORITY}\n\n{MESSAGE}\n==========================================================================\n\n您可以登入到 {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT} 來回答。\n\n請不要回覆這封郵件。\n\n___________________________\ni-MSCP Mailer"
 
 msgid ""
 "Dear {NAME},\n"
@@ -1829,7 +1826,7 @@ msgid ""
 "\n"
 "___________________________\n"
 "i-MSCP Mailer"
-msgstr ""
+msgstr "親愛的 {NAME},\n\n您的客戶 {CUSTOMER} 正在等待審核通過新的網域別名:\n\n{ALIAS}\n\n登入到 {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php 來啟動這個網域別名。\n\n請不要回覆這封郵件。\n\n___________________________\ni-MSCP Mailer"
 
 msgid ""
 "Dear {NAME},\n"
@@ -1844,7 +1841,7 @@ msgid ""
 "\n"
 "___________________________\n"
 "i-MSCP Mailer"
-msgstr ""
+msgstr "親愛的 {NAME},\n\n您的密碼已成功的更新了。\n\n您的新密碼是: {PASSWORD}\n\n您可以登入到 {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n\n請不要回覆這封郵件。\n\n___________________________\ni-MSCP Mailer"
 
 msgid ""
 "Dear {NAME},\n"
@@ -1864,7 +1861,7 @@ msgid ""
 "\n"
 "___________________________\n"
 "i-MSCP Mailer"
-msgstr ""
+msgstr "親愛的 {NAME},\n\n您的軟體套件已經刪除了。\n\n軟體套件: {SOFTWARE_PACKAGE}\n軟體 ID: {SOFTWARE_ID}\n\n您的管理者給您的郵件:\n\n==========================================================================\n{ADMIN_MESSAGE}\n==========================================================================\n\n請不要回覆這封郵件。\n\n___________________________\ni-MSCP Mailer"
 
 msgid ""
 "Dear {NAME},\n"
@@ -1878,7 +1875,7 @@ msgid ""
 "\n"
 "___________________________\n"
 "i-MSCP Mailer."
-msgstr ""
+msgstr "親愛的 {NAME},\n\n您的軟體套件已成功啟用。\n\n軟體套件: {SOFTWARE_PACKAGE}\n軟體 ID: {SOFTWARE_ID}\n\n請不要回覆這封郵件。\n\n___________________________\ni-MSCP Mailer."
 
 msgid "Debugger"
 msgstr "除錯"
@@ -1988,14 +1985,14 @@ msgid "Display errors"
 msgstr "顯示錯誤訊息"
 
 msgid "Document root"
-msgstr ""
+msgstr "根目錄"
 
 msgid "Domain"
 msgstr "網域"
 
 #, php-format
 msgid "Domain %s cannot be forwarded on itself."
-msgstr ""
+msgstr "網域 %s 不能轉址到自己身上。"
 
 #, php-format
 msgid "Domain %s is unavailable."
@@ -2128,7 +2125,7 @@ msgid "Domain status is not ok."
 msgstr "網域狀態不正常。"
 
 msgid "Domain successfully scheduled for update."
-msgstr ""
+msgstr "更新網域的排程已成功"
 
 msgid "Domain successfully updated."
 msgstr "網域已成功更新。"
@@ -2662,7 +2659,7 @@ msgid "IP address successfully scheduled for deletion."
 msgstr "刪除 IP 位址的排程已成功"
 
 msgid "IP address successfully scheduled for modification."
-msgstr ""
+msgstr "修改 IP 位址的排程已成功"
 
 msgid "IP addresses under control of i-MSCP"
 msgstr "IP 位址在 i-MSCP 管理之下。"
@@ -2671,13 +2668,13 @@ msgid "IP assignments"
 msgstr "IP 分配"
 
 msgid "IP errors"
-msgstr ""
+msgstr "IP 錯誤"
 
 msgid "IP management"
 msgstr "IP 管理"
 
 msgid "IP netmask"
-msgstr ""
+msgstr "IP 網路遮罩"
 
 msgid "IP usage"
 msgstr "IP 使用清單"
@@ -2888,7 +2885,7 @@ msgid "Invalid target."
 msgstr "不正確的目標。"
 
 msgid "Invalid type given. String expected"
-msgstr ""
+msgstr "指定了無效的類型。應該是字串"
 
 msgid "Invalid username."
 msgstr "不正確的使用者名稱。"
@@ -3089,7 +3086,7 @@ msgid "Manage your protected areas, users and groups."
 msgstr "管理您的保護區域、使用者、群組。"
 
 msgid "Manual"
-msgstr ""
+msgstr "手動"
 
 msgid "Mark"
 msgstr "標記"
@@ -3201,7 +3198,7 @@ msgid "Name cannot be empty."
 msgstr "Name 不可以空白。"
 
 msgid "Network interface (NIC)"
-msgstr ""
+msgstr "網路介面 (NIC)"
 
 msgid "Never"
 msgstr "從不過期"
@@ -3343,7 +3340,7 @@ msgstr "未使用"
 
 msgid ""
 "Note that in manual mode, the NIC and the subnet mask are only indicative."
-msgstr ""
+msgstr "注意在手動模式下，網卡和子網路遮罩都只有指示用。"
 
 msgid "Nothing found - sorry"
 msgstr "沒有找到 - 抱歉"
@@ -3385,7 +3382,7 @@ msgid "Only positive numbers are allowed."
 msgstr "只允許正數。"
 
 msgid "Only tar.gz and tar.bz2 archives are supported."
-msgstr ""
+msgstr "只支援 tar.gz 和 tar.bz2 壓縮檔。"
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "只允許 tar.gz，tar.bz2 和 zip 壓縮檔。"
@@ -3816,7 +3813,7 @@ msgid "Plugin archive"
 msgstr "外掛壓縮"
 
 msgid "Plugin archive exceeds the maximum upload size"
-msgstr ""
+msgstr "外掛壓縮檔超過最大的上傳大小"
 
 #, php-format
 msgid "Plugin change has failed: %s"
@@ -3878,7 +3875,7 @@ msgid "Port"
 msgstr "連接埠"
 
 msgid "Preserve Host"
-msgstr ""
+msgstr "保留主機"
 
 msgid "Prevent external login for admins"
 msgstr "防止從外部登入管理帳號"
@@ -4339,7 +4336,7 @@ msgid "Select group"
 msgstr "選擇群組"
 
 msgid "Select your own document root"
-msgstr ""
+msgstr "選擇您的根目錄"
 
 msgid "Send"
 msgstr "發送"
@@ -4791,7 +4788,7 @@ msgid "The menu you are trying to edit doesn't exist."
 msgstr "您試著編輯的選單是不存在的。"
 
 msgid "The new document root must pre-exists inside the /htdocs directory."
-msgstr ""
+msgstr "此根目錄必須已存在於 /htdocs 目錄內。"
 
 msgid "The package is corrupt. Please correct it."
 msgstr "此套件是損壞的。請用正常的。"
@@ -4864,7 +4861,7 @@ msgid "This htaccess user already exist."
 msgstr "這個 htaccess 使用者已經存在"
 
 msgid "This interface allow to add or remove IP addresses."
-msgstr ""
+msgstr "這個介面允許新增或移除 IP 地址。"
 
 #, php-format
 msgid ""
@@ -5069,7 +5066,7 @@ msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr "無法上傳檔案. 是否最大. 上傳檔案大小 (%1$d MB) 已到達?"
 
 msgid "Unallowed port in forward URL. Only ports above 1024 are allowed."
-msgstr ""
+msgstr "轉送網址有不允許的連接埠。只允許1024以上的連接埠。"
 
 msgid "Unauthorized"
 msgstr "未驗證"
@@ -5381,19 +5378,19 @@ msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr "當設定為 '是'，您的 PHP scripts 可以呼叫 PHP exec() 功能。"
 
 msgid "When set to `Auto', the IP address is automatically configured."
-msgstr ""
+msgstr "當設定為 `自動'，IP地址會自動設置。"
 
 msgid "When set to `Manual', the configuration is left to the administrator."
-msgstr ""
+msgstr "當設定為 `手動'，設置將由管理員自行設定。"
 
 msgid "Wrong mail syntax in forward list."
 msgstr "轉寄列表裡面的郵件格式是錯誤的"
 
 msgid "Wrong or unallowed IP address."
-msgstr ""
+msgstr "錯誤或是不允許的 IP 地址。"
 
 msgid "Wrong or unallowed IP netmask."
-msgstr ""
+msgstr "錯誤或是不允許的 IP 網路遮罩。"
 
 msgid "Wrong request."
 msgstr "錯誤的請求"
@@ -5476,12 +5473,12 @@ msgid ""
 " PHP framework such as Symfony. Note that the new document root will live "
 "inside the default  `/htdocs' document root. Be aware that the directory for"
 " the new document root must pre-exist."
-msgstr ""
+msgstr "您可以設定替代的根目錄。這常用在當使用類似於Symfony的 PHP 框架。注意新的根目錄將會存在預設的 `/htdocs' 根目錄裡面。並注意新的根目錄必須已經存在。"
 
 msgid ""
 "You can't install the software outside of the document root of the selected "
 "domain."
-msgstr ""
+msgstr "您不可以安裝軟體於已選擇網域的根目錄之外，"
 
 msgid ""
 "You cannot add new email account. You have already assigned all your email "
@@ -5514,7 +5511,7 @@ msgid "You cannot protect an area without selected htaccess user(s)."
 msgstr "您不可以保護一個沒有選擇 htaccess 使用者的區域。"
 
 msgid "You cannot remove an IP that is assigned to a reseller."
-msgstr ""
+msgstr "您不能移除指派到經銷商的 IP 位址。"
 
 msgid "You cannot set expire date in past."
 msgstr "您不能將到期日設為過去"
@@ -5523,7 +5520,7 @@ msgid "You cannot unassign an IP address already in use."
 msgstr "您不能解除已被使用 IP 地址的指派。"
 
 msgid "You cannot update a protected plugin."
-msgstr ""
+msgstr "您不能更新已被保護的外掛。"
 
 msgid "You do not have DNS resource records."
 msgstr "您沒有任何 DNS 紀錄。"
@@ -5750,10 +5747,10 @@ msgid "Your request for password renewal is either invalid or has expired."
 msgstr "您更新密碼的需求是無效或已經過期了。"
 
 msgid "Your software package has been activated"
-msgstr "您的軟體庫已啟用"
+msgstr "您的軟體套件已啟用"
 
 msgid "Your software package has been deleted"
-msgstr "您的軟體庫已刪除"
+msgstr "您的軟體套件已刪除"
 
 msgid "ZB"
 msgstr "ZB"
