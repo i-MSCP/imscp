@@ -4,6 +4,9 @@
 Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
+SERVERS
+    Fixed: TLSProtocol directive not allowed in global context (ProFTPD)
+
 ------------------------------------------------------------------------------------------------------------------------
 1.3.6
 ------------------------------------------------------------------------------------------------------------------------
@@ -21,7 +24,7 @@ FRONTEND
     Added: Events for custom DNS records
     Added: Show document roots (relative to mount points) on domains_manage.php page (client side)
     Fixed: Avoid attaching event handler when not necessary (FTP directory chooser)
-    Fixed: Connection must be made through SSL when SSL is enabled for the frontEnd (VirtualFileSystem)
+    Fixed: Connection must be made through SSL when SSL is enabled for the services (VirtualFileSystem)
     Fixed: Forbid direct access to the `/tools' directory
     Fixed: FTP passive mode should be enabled whenever possible (VirtualFileSystem)
     Fixed: Hide URLs on hover event (FTP directory chooser)
@@ -58,7 +61,7 @@ SERVERS
     Fixed: Proxy loop caused by the `ProxyErrorOverride' directive (See the errata file for further details)
     Rewritten: Configuration file (ProFTPD)
 
-SERVICE
+SERVICES
     Changed: Create a symlink instead of copying the system PHP binary for the imscp_panel service (Partially closes: #IP-1641)
 
 YOUTRACK

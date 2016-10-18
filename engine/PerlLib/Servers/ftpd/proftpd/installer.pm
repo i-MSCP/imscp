@@ -463,13 +463,15 @@ sub _buildConfigFile
   TLSEngine                on
   TLSRequired              off
   TLSLog                   /var/log/proftpd/ftp_ssl.log
-  TLSProtocol              TLSv1
   TLSOptions               {TLSOPTIONS}
   TLSRSACertificateFile    {CONF_DIR}/{CERTIFICATE}.pem
   TLSRSACertificateKeyFile {CONF_DIR}/{CERTIFICATE}.pem
   TLSVerifyClient          off
 </IfModule>
 </Global>
+<IfModule mod_tls.c>
+  TLSProtocol TLSv1
+</IfModule>
 EOF
     }
 
