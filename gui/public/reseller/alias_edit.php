@@ -27,7 +27,7 @@
  *
  * @access private
  * @param int $domainAliasId Subdomain unique identifier
- * @return array Domain alias data. If any error occurs FALSE is returned
+ * @return array|bool Domain alias data. If any error occurs FALSE is returned
  */
 function _reseller_getAliasData($domainAliasId)
 {
@@ -201,7 +201,7 @@ function reseller_editDomainAlias()
         array($forwardUrl, $forwardType, $forwardHost, 'tochange', $domainAliasId)
     );
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditDomainALias, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditDomainAlias, array(
         'domainAliasId' => $domainAliasId,
         'forwardUrl' => $forwardUrl,
         'forwardType' => $forwardType,

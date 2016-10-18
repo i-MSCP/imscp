@@ -240,7 +240,7 @@ function client_editDomainAlias()
         array($documentRoot, $forwardUrl, $forwardType, $forwardHost, 'tochange', $domainAliasId)
     );
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditDomainALias, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditDomainAlias, array(
         'domainAliasId' => $domainAliasId,
         'documentRoot' => $documentRoot,
         'forwardUrl' => $forwardUrl,

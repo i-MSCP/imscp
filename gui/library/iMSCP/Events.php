@@ -135,7 +135,7 @@ class iMSCP_Events
     const onClientScriptEnd = 'onClientScriptEnd';
 
     /**
-     * The onExceptioToBrowserStart event is triggered before of exception browser write process.
+     * The onExceptionToBrowserStart event is triggered before of exception browser write process.
      *
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
@@ -532,11 +532,11 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameters:
      *
      * - domainId: An integer representing the main domain unique identifier
-     * - aliasId:  An integer representing the domain alias unique idenfifier (0 if the DNS record belongs to the main domain)
+     * - aliasId:  An integer representing the domain alias unique identifier (0 if the DNS record belongs to the main domain)
      * - name:     A string representing the DNS record name
      * - class:    A string representing the DNS record class
      * - type:     A string representing the DNS record type
-     * - data:     A stirng representing the DNS record data
+     * - data:     A string representing the DNS record data
      */
     const onBeforeAddCustomDNSrecord = 'onBeforeAddCustomDNSrecord';
 
@@ -547,11 +547,11 @@ class iMSCP_Events
      *
      * - id:       An integer representing the DNS record unique identifier
      * - domainId: An integer representing the main domain unique identifier
-     * - aliasId:  An integer representing the domain alias unique idenfifier (0 if the DNS record belongs to the main domain)
+     * - aliasId:  An integer representing the domain alias unique identifier (0 if the DNS record belongs to the main domain)
      * - name:     A string representing the DNS record name
      * - class:    A string representing the DNS record class
      * - type:     A string representing the DNS record type
-     * - data:     A stirng representing the DNS record data
+     * - data:     A string representing the DNS record data
      */
     const onAfterAddCustomDNSrecord = 'onAfterAddCustomDNSrecord';
 
@@ -562,11 +562,11 @@ class iMSCP_Events
      *
      * - id:       An integer representing the DNS record unique identifier
      * - domainId: An integer representing the main domain unique identifier
-     * - aliasId:  An integer representing the domain alias unique idenfifier (0 if the DNS record belongs to the main domain)
+     * - aliasId:  An integer representing the domain alias unique identifier (0 if the DNS record belongs to the main domain)
      * - name:     A string representing the DNS record name
      * - class:    A string representing the DNS record class
      * - type:     A string representing the DNS record type
-     * - data:     A stirng representing the DNS record data
+     * - data:     A string representing the DNS record data
      */
     const onBeforeEditCustomDNSrecord = 'onBeforeEditCustomDNSrecord';
 
@@ -577,11 +577,11 @@ class iMSCP_Events
      *
      * - id:       An integer representing the DNS record unique identifier
      * - domainId: An integer representing the main domain unique identifier
-     * - aliasId:  An integer representing the domain alias unique idenfifier (0 if the DNS record belongs to the main domain)
+     * - aliasId:  An integer representing the domain alias unique identifier (0 if the DNS record belongs to the main domain)
      * - name:     A string representing the DNS record name
      * - class:    A string representing the DNS record class
      * - type:     A string representing the DNS record type
-     * - data:     A stirng representing the DNS record data
+     * - data:     A string representing the DNS record data
      */
     const onAfterEditCustomDNSrecord = 'onAfterEditCustomDNSrecord';
 
@@ -620,7 +620,7 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - pluginManager: iMSCP_Plugin_Manager instance
-     * - controllePath: Plugin controller path
+     * - scriptPath: Action script path
      *
      * @const string
      */
@@ -646,7 +646,7 @@ class iMSCP_Events
      *
      * @const string
      */
-    const onAfterUpdatePluginList = 'onAfterUpdatePLuginList';
+    const onAfterUpdatePluginList = 'onAfterUpdatePluginList';
 
     /**
      * The onBeforeInstallPlugin event is triggered before a plugin installation.
@@ -727,7 +727,7 @@ class iMSCP_Events
      *
      * - pluginManager: iMSCP_Plugin_Manager instance
      * - pluginName: Plugin name
-     * - pluginFromVersion: Version from wich plugin is being updated
+     * - pluginFromVersion: Version from which plugin is being updated
      * - PluginToVersion: Version to which plugin is being updated
      *
      * @const string
@@ -854,7 +854,7 @@ class iMSCP_Events
     const onBeforeUnlockPlugin = 'onBeforeUnlockPlugin';
 
     /**
-     * The onAfternlockPlugin event is triggered after a plugin is unlocked
+     * The onAfterUnlockPlugin event is triggered after a plugin is unlocked
      *
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
@@ -871,7 +871,7 @@ class iMSCP_Events
      *
      * - domainName: A string representing the name of the domain being created
      * - createdBy: An integer representing the ID of the reseller that adds the domain
-     * - customerId: An integer representitng the ID of the customer for which the domain is added
+     * - customerId: An integer representing the ID of the customer for which the domain is added
      * - customerEmail: A string representing the email of the customer for which the domain is added
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
      * - forwardType: A string representing the forward type
@@ -915,11 +915,11 @@ class iMSCP_Events
     const onBeforeEditDomain = 'onBeforeEditDomain';
 
     /**
-     * The onAfterEditDomain event is triggered agfter a domain is edited.
+     * The onAfterEditDomain event is triggered after a domain is edited.
      *
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
-     * - domainId: An integer reprensenting the ID of the domain that has been edited
+     * - domainId: An integer representing the ID of the domain that has been edited
      * - documentRoot: A string representing the DocumentRoot
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
      * - forwardType: A string representing the forward type
@@ -959,8 +959,8 @@ class iMSCP_Events
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
      * - forwardType: A string representing the forward type
      * - forwardHost: A string indicating whether or not Proxy Host must be preserved
-     * - customerId: An integer representing the ID of the customer for wich the subdomain has been added
-     * - subdomainId: An integer representing the ID of thesubdomain that has been added
+     * - customerId: An integer representing the ID of the customer for which the subdomain has been added
+     * - subdomainId: An integer representing the ID of the subdomain that has been added
      *
      * @const string
      */
@@ -1009,7 +1009,7 @@ class iMSCP_Events
     const onBeforeDeleteSubdomain = 'onBeforeDeleteSubdomain';
 
     /**
-     * The onAfterDeleteSubdomain event is triggered after a subdomain is delteded.
+     * The onAfterDeleteSubdomain event is triggered after a subdomain is deleted.
      *
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
@@ -1069,7 +1069,7 @@ class iMSCP_Events
     const onBeforeEditDomainAlias = 'onBeforeEditDomainAlias';
 
     /**
-     * The onAfterEditDomainALias event is triggered after a domain alias is edited.
+     * The onAfterEditDomainAlias event is triggered after a domain alias is edited.
      *
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
@@ -1081,7 +1081,7 @@ class iMSCP_Events
      *
      * @const string
      */
-    const onAfterEditDomainALias = 'onAfterEditDomainAlias';
+    const onAfterEditDomainAlias = 'onAfterEditDomainAlias';
 
     /**
      * The onBeforeDeleteDomainAlias event is triggered before a domain alias is deleted.
@@ -1180,7 +1180,7 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameters:
      *
      * - mailCatchall: A string representing the catchall being added
-     * - mailForwardList: An array representing list of mail addresses to which catched mails must be forwarded
+     * - mailForwardList: An array representing list of mail addresses to which catchall must be forwarded
      *
      * @const string
      */
@@ -1193,7 +1193,7 @@ class iMSCP_Events
      *
      * - mailCatchallId: An integer representing the ID of the mail catchall that has been added
      * - mailCatchall: A string representing the catchall that has been added
-     * - mailForwardList: A array representing list of mail addresses to which catched mails must be forwarded
+     * - mailForwardList: A array representing list of mail addresses to which catchall must be forwarded
      *
      * @const string
      */
@@ -1219,7 +1219,7 @@ class iMSCP_Events
      *
      * @const string
      */
-    const onafterDeleteMailCatchall = 'onafterDeleteMailCatchall';
+    const onAfterDeleteMailCatchall = 'onAfterDeleteMailCatchall';
 
     /**
      * The onBeforeQueryPrepare event is triggered before an SQL statement is prepared for execution.
@@ -1283,7 +1283,7 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameters:
      *
      * - context: An iMSCP_pTemplate object, the context in which the event is triggered
-     * - templatePath: The filepath of the template being loaded
+     * - templatePath: The file path of the template being loaded
      *
      * @const string
      */
@@ -1307,7 +1307,7 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameters:
      *
      * - context: An iMSCP_pTemplate object, the context in which the event is triggered
-     * - templatePath: The filepath of the template being loaded
+     * - templatePath: The file path of the template being loaded
      *
      * @const string
      */
@@ -1337,7 +1337,7 @@ class iMSCP_Events
     const onParseTemplate = 'onParseTemplate';
 
     /**
-     * The onBeforeGenerateNavigation event is triggeed before the navigation is generated.
+     * The onBeforeGenerateNavigation event is triggered before the navigation is generated.
      *
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
@@ -1386,7 +1386,7 @@ class iMSCP_Events
      *
      * The listeners receive an iMSCP_Events_Event object with the following parameters:
      *
-     * - customerId: An integer representing the ID of the customer for wich the subdomain has been added
+     * - customerId: An integer representing the ID of the customer for which the subdomain has been added
      * - action: An string representing the action being processed (activate|deactivate)
      *
      * @const string
@@ -1398,7 +1398,7 @@ class iMSCP_Events
      *
      * The listeners receive an iMSCP_Events_Event object with the following parameters:
      *
-     * - customerId: An integer representing the ID of the customer for wich the subdomain has been added
+     * - customerId: An integer representing the ID of the customer for which the subdomain has been added
      * - action: - action: An string representing the action that was processed (activate|deactivate)
      *
      * @const string
@@ -1412,8 +1412,8 @@ class iMSCP_Events
      *
      * - sender_name Sender name
      * - sender_email Sender email
-     * - rcpt_to recipient type (all_users, aministrator_resellers, administrators_customers, resellers_customers,
-     *  administrators, resellers, customers)
+     * - rcpt_to recipient type (all_users, administrators_resellers, administrators_customers, resellers_customers,
+     *                           administrators, resellers, customers)
      * - subject Circular subject
      * - body Circular body
      */
@@ -1426,8 +1426,8 @@ class iMSCP_Events
      *
      * - sender_name Sender name
      * - sender_email Sender email
-     * - rcpt_to recipient type (all_users, aministrator_resellers, administrators_customers, resellers_customers,
-     *  administrators, resellers, customers)
+     * - rcpt_to recipient type (all_users, administrators_resellers, administrators_customers, resellers_customers,
+     *                           administrators, resellers, customers)
      * - subject Circular subject
      * - body Circular body
      */
@@ -1467,11 +1467,11 @@ class iMSCP_Events
     /**
      * The onAddIpAddr event is triggered when a new IP is added.
      * 
-     * The listeners recevei an iMSCP_Events_Event object with the following parameters:
-     * - ip_number      : IP addresse
+     * The listeners receive an iMSCP_Events_Event object with the following parameters:
+     * - ip_number      : IP address
      * - ip_netmask     : IP netmask
-     * - ip_card        : Network interface to which IP addresse is attached
-     * - ip_config_mode : Ip addresse configuration mode (auto|manual)
+     * - ip_card        : Network interface to which IP address is attached
+     * - ip_config_mode : Ip address configuration mode (auto|manual)
      * 
      */
     const onAddIpAddr = 'onAddIpAddr';
@@ -1481,10 +1481,10 @@ class iMSCP_Events
      *
      * The listeners receive an iMSCP_Events_Event object with the following parameters:
      * - ip_id          : IP address unique identifier
-     * - ip_number      : IP addresse
+     * - ip_number      : IP address
      * - ip_netmask     : IP netmask
-     * - ip_card        : Network interface to which IP addresse is attached
-     * - ip_config_mode : Ip addresse configuration mode (auto|manual)
+     * - ip_card        : Network interface to which IP address is attached
+     * - ip_config_mode : Ip address configuration mode (auto|manual)
      *
      */
     const onEditIpAddr = 'onEditIpAddr';
@@ -1492,7 +1492,7 @@ class iMSCP_Events
     /**
      * The onDeleteIpAddr event is triggered when a new IP is added.
      *
-     * The listeners recevei an iMSCP_Events_Event object with the following parameters:
+     * The listeners receive an iMSCP_Events_Event object with the following parameters:
      * - ip_id : IP unique identifier
      *
      */
