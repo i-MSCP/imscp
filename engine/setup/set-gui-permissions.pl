@@ -66,17 +66,21 @@ iMSCP::Bootstrapper->getInstance()->boot(
     }
 );
 
+use Data::Dumper;
+
 my $rs = 0;
 my @items = ();
 
 for my $server(iMSCP::Servers->getInstance()->getListWithFullNames()) {
     eval "require $server";
-    push @items, $server->factory() if $server->can( 'setGuiPermissions' );
+    $server = $server->factory();
+    push @items, $server if $server->can( 'setGuiPermissions' );
 }
 
 for my $package (iMSCP::Packages->getInstance()->getListWithFullNames()) {
     eval "require $package";
-    push @items, $package->getInstance() if $package->can( 'setGuiPermissions' );
+    $package = $package->getInstance();
+    push @items, $package if $package->can( 'setGuiPermissions' );
 }
 
 my $totalItems = scalar @items;

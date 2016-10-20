@@ -9,9 +9,13 @@ BACKEND
 
 PACKAGES
     Fixed: Bareword "JSON::true" not allowed while "strict subs" in use (MonstaFTP package installer)
+    Fixed: Permissions are not set (any package)
 
 SERVERS
     Fixed: `TLSProtocol' directive not allowed in global context (ProFTPD)
+
+YOUTRACK
+    #IP-1644 Pydio - Could not write into the AJXP_DATA_PATH folder
 
 ------------------------------------------------------------------------------------------------------------------------
 1.3.6

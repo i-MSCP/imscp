@@ -74,12 +74,14 @@ my @items = ();
 
 for my $server(iMSCP::Servers->getInstance()->getListWithFullNames()) {
     eval "require $server";
-    push @items, $server->factory()if $server->can( 'setEnginePermissions' );
+    $server = $server->factory();
+    push @items, $server if $server->can( 'setEnginePermissions' );
 }
 
 for my $package(iMSCP::Packages->getInstance()->getListWithFullNames()) {
     eval "require $package";
-    push @items, $package->getInstance() if $package->can( 'setEnginePermissions' );
+    $package = $package->getInstance();
+    push @items, $package if $package->can( 'setEnginePermissions' );
 }
 
 my $totalItems = scalar @items + 1;
