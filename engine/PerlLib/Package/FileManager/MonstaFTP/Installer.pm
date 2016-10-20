@@ -32,6 +32,7 @@ use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Rights;
 use iMSCP::TemplateParser;
+use JSON;
 use Package::FrontEnd;
 use parent 'Common::SingletonClass';
 
@@ -240,9 +241,6 @@ sub _buildConfig
     $rs ||= $file->mode( 0440 );
     $rs ||= $file->owner( $panelUName, $panelGName );
     return $rs if $rs;
-
-    # settings.json file
-    require JSON;
 
     $conffile = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/settings/settings.json";
     $data = {
