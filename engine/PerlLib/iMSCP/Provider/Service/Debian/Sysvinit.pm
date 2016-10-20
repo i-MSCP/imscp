@@ -57,7 +57,7 @@ my $SYSVRC_COMPAT_MODE = lazy
 
 =item isEnabled($service)
 
- Does the given service is enabled?
+ Is the given service enabled?
 
  Param string $service Service name
  Return bool TRUE if the given service is enabled, FALSE otherwise

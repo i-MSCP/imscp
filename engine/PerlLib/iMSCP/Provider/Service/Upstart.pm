@@ -66,7 +66,7 @@ my @JOBFILEPATHS = ( '/etc/init' );
 
 =item isEnabled($job)
 
- Is the given job is enabled?
+ Is the given job enabled?
 
  Return bool TRUE if the given job is enabled, FALSE otherwise
 
@@ -293,7 +293,7 @@ sub isRunning
     $self->SUPER::isRunning( $job );
 }
 
-=item getJobFilePath($job [ , $jobFileType = 'conf' ])
+=item getJobFilePath($job [, $jobFileType = 'conf' ])
 
  Get full path of the job configuration file or job override file which belongs to the given job
 

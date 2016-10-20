@@ -31,7 +31,7 @@ use parent 'iMSCP::Provider::Service::Sysvinit';
 
 # Commands used in that package
 my %COMMANDS = (
-    systemctl => [ '/bin/systemctl', '--system' ]
+    systemctl => '/bin/systemctl'
 );
 
 # Paths in which service units must be searched
@@ -57,7 +57,7 @@ my @UNITFILEPATHS = (
 
 =item isEnabled($unit)
 
- Is the given service/socket unit is enabled?
+ Is the given service/socket unit enabled?
 
  Param string $unit Unit name
  Return bool TRUE if the given unit is enabled, FALSE otherwise
@@ -70,7 +70,7 @@ sub isEnabled
 
     defined $unit or die( 'parameter $unit is not defined' );
     $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
-    $self->_exec( @{$COMMANDS{'systemctl'}}, '--quiet', 'is-enabled', $unit ) == 0;
+    $self->_exec( $COMMANDS{'systemctl'}, '--system', '--quiet', 'is-enabled', $unit ) == 0;
 }
 
 =item enable($unit)
@@ -88,7 +88,7 @@ sub enable
 
     defined $unit or die( 'parameter $unit is not defined' );
     $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
-    $self->_exec( @{$COMMANDS{'systemctl'}}, '--force', '--quiet', 'enable', $unit ) == 0;
+    $self->_exec( $COMMANDS{'systemctl'}, '--system', '--force', '--quiet', 'enable', $unit ) == 0;
 }
 
 =item disable($unit)
@@ -106,7 +106,7 @@ sub disable
 
     defined $unit or die( 'parameter $unit is not defined' );
     $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
-    $self->_exec( @{$COMMANDS{'systemctl'}}, '--quiet', 'disable', $unit ) == 0;
+    $self->_exec( $COMMANDS{'systemctl'}, '--system', '--quiet', 'disable', $unit ) == 0;
 }
 
 =item remove($unit)
@@ -132,7 +132,7 @@ sub remove
         return 0 if iMSCP::File->new( filename => $unitFilePath )->delFile();
     }
 
-    $self->_exec( @{$COMMANDS{'systemctl'}}, 'daemon-reload' ) == 0;
+    $self->_exec( $COMMANDS{'systemctl'}, '--system', 'daemon-reload' ) == 0;
 }
 
 =item start($unit)
@@ -150,7 +150,7 @@ sub start
 
     defined $unit or die( 'parameter $unit is not defined' );
     $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
-    $self->_exec( @{$COMMANDS{'systemctl'}}, 'start', $unit ) == 0;
+    $self->_exec( $COMMANDS{'systemctl'}, '--system', 'start', $unit ) == 0;
 }
 
 =item stop($unit)
@@ -169,7 +169,7 @@ sub stop
     defined $unit or die( 'parameter $unit is not defined' );
     $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
     return 1 unless $self->isRunning( $unit );
-    $self->_exec( @{$COMMANDS{'systemctl'}}, 'stop', $unit ) == 0;
+    $self->_exec( $COMMANDS{'systemctl'}, '--system', 'stop', $unit ) == 0;
 }
 
 =item restart($unit)
@@ -187,8 +187,8 @@ sub restart
 
     defined $unit or die( 'parameter $unit is not defined' );
     $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
-    return $self->_exec( @{$COMMANDS{'systemctl'}}, 'restart', $unit ) == 0 if $self->isRunning( $unit );
-    $self->_exec( @{$COMMANDS{'systemctl'}}, 'start', $unit ) == 0;
+    return $self->_exec( $COMMANDS{'systemctl'}, 'restart', $unit ) == 0 if $self->isRunning( $unit );
+    $self->_exec( $COMMANDS{'systemctl'}, '--system', 'start', $unit ) == 0;
 }
 
 =item reload($service)
@@ -208,7 +208,7 @@ sub reload
 
     defined $unit or die( 'parameter $unit is not defined' );
     $unit .= '.service' unless $unit =~ /\.service$/;
-    return $self->_exec( @{$COMMANDS{'systemctl'}}, 'reload', $unit ) == 0 if $self->isRunning( $unit );
+    return $self->_exec( $COMMANDS{'systemctl'}, '--system', 'reload', $unit ) == 0 if $self->isRunning( $unit );
     $self->start( $unit );
 }
 
@@ -227,7 +227,7 @@ sub isRunning
 
     defined $unit or die( 'parameter $unit is not defined' );
     $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
-    $self->_exec( @{$COMMANDS{'systemctl'}}, 'is-active', $unit ) == 0;
+    $self->_exec( $COMMANDS{'systemctl'}, '--system', 'is-active', $unit ) == 0;
 }
 
 =item getUnitFilePath($unit)

@@ -77,7 +77,7 @@ sub getInstance
 
 =item isEnabled($service)
 
- Does the given service is enabled?
+ Is the given service enabled?
 
  Param string $service Service name
  Return bool TRUE
@@ -332,7 +332,7 @@ sub _exec
     my (undef, @command) = @_;
 
     my $ret = execute( [ @command ], \ my $stdout, \ my $stderr );
-    debug($stdout) if $stdout;
+    debug( $stdout ) if $stdout;
     error( $stderr ) if $ret && $stderr;
     $ret;
 }
