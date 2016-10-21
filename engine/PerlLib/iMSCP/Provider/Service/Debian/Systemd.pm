@@ -32,8 +32,8 @@ use parent qw/ iMSCP::Provider::Service::Systemd iMSCP::Provider::Service::Debia
 
 # Commands used in that package
 my %COMMANDS = (
-    dpkg => '/usr/bin/dpkg',
-    %iMSCP::Provider::Service::Systemd::COMMANDS
+    dpkg      => '/usr/bin/dpkg',
+    systemctl => '/bin/systemctl'
 );
 
 # Enable compatibility mode if systemd version is lower than version 204-3

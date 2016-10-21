@@ -134,19 +134,19 @@ sub remove
     local $@;
     eval {
         $self->{'eventManager'}->trigger( 'onBeforeRemoveService', $service ) == 0 or die( $self->_getLastError() );
-        $self->{'provider'}->remove( $service ) or die($self->_getLastError() );
+        $self->{'provider'}->remove( $service ) or die( $self->_getLastError() );
 
-        unless($init eq 'sysvinit') {
-            if($init eq 'upstart') {
-                my $provider = $self->getProvider( 'systemd' );
-                for(qw / service socket/) {
+        unless ($init eq 'sysvinit') {
+            my $provider = $self->getProvider( $init );
+
+            if ($init eq 'upstart') {
+                for(qw / service socket /) {
                     my $unitFilePath = eval { $provider->getUnitFilePath( "$service.$_" ); };
                     if (defined $unitFilePath) {
                         iMSCP::File->new( filename => $unitFilePath )->delFile() == 0 or die( $self->_getLastError() );
                     }
                 }
             } else {
-                my $provider = $self->getProvider( 'upstart' );
                 for (qw / conf override /) {
                     my $jobfilePath = eval { $provider->getJobFilePath( $service, $_ ); };
                     if (defined $jobfilePath) {
