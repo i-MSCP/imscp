@@ -137,7 +137,7 @@ sub remove
         $self->{'provider'}->remove( $service ) or die( $self->_getLastError() );
 
         unless ($init eq 'sysvinit') {
-            my $provider = $self->getProvider( $init );
+            my $provider = $self->getProvider( ($init eq 'upstart') ? 'systemd' : 'upstart' );
 
             if ($init eq 'upstart') {
                 for(qw / service socket /) {
