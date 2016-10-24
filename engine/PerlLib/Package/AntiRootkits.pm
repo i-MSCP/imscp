@@ -312,7 +312,7 @@ sub setEnginePermissions
 
 =cut
 
-sub _init()
+sub _init
 {
     my $self = shift;
 

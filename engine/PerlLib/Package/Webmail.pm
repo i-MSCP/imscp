@@ -327,7 +327,7 @@ sub deleteMail
 
 =cut
 
-sub _init()
+sub _init
 {
     my $self = shift;
 
