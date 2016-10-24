@@ -377,7 +377,7 @@ function change_domain_status($customerId, $action)
     } else if ($action == 'activate') {
         $newStatus = 'toenable';
     } else {
-        throw new iMSCP_Exception("Unknow action: $action");
+        throw new iMSCP_Exception("Unknown action: $action");
     }
 
     $stmt = exec_query(

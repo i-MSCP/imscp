@@ -31,7 +31,7 @@ use iMSCP_Registry as Registry;
 class VirtualFileSystem
 {
     /**
-     * @var string VFS filetype
+     * @var string VFS file type
      */
     const
         VFS_TYPE_DIR = 'd',
@@ -80,6 +80,7 @@ class VirtualFileSystem
      */
     public function __construct($domain, $rootDir = '/')
     {
+        ignore_user_abort(true);
         $this->domain = (string)$domain;
         $this->rootdir = (string)$rootDir;
     }
