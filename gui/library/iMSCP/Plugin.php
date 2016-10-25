@@ -502,6 +502,8 @@ abstract class iMSCP_Plugin
      */
     protected function migrateDb($migrationMode = 'up')
     {
+        ignore_user_abort(true);
+
         $pluginName = $this->getName();
         $pluginManager = $this->getPluginManager();
         $sqlDir = $pluginManager->pluginGetDirectory() . '/' . $pluginName . '/sql';

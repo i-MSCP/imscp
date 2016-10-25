@@ -8,7 +8,10 @@ BACKEND
     Fixed: Wrong provider used while removing services (iMSCP::Service)
 
 FRONTEND
-    Fixed: ignore user abort (VirtualFileSystem)
+    Fixed: Ignore user abort while listing directory (VirtualFileSystem)
+
+PLUGINS
+    Fixed: Ignore user abort while migrating database
 
 ------------------------------------------------------------------------------------------------------------------------
 1.3.7
