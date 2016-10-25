@@ -301,7 +301,7 @@ sub _init
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'config'} = $self->{'phpmyadmin'}->{'config'};
 
-    if (-f "$self->{'cfgDir'}/phpmyadmin.old.data") {
+    if (defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/phpmyadmin.old.data") {
         tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.old.data";
         while(my ($key, $value) = each(%oldConfig)) {
             next unless exists $self->{'config'}->{$key};

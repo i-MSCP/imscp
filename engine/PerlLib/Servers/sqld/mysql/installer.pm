@@ -113,9 +113,9 @@ sub _init
     $self->{'config'} = $self->{'sqld'}->{'config'};
 
     my $oldConf = "$self->{'cfgDir'}/mysql.old.data";
-    if (-f $oldConf) {
-        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
 
+    if(defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
+        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
         while(my($key, $value) = each(%oldConfig)) {
             next unless exists $self->{'config'}->{$key};
             $self->{'config'}->{$key} = $value;

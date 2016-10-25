@@ -620,7 +620,7 @@ sub _init
     $self->{'config'} = $self->{'frontend'}->{'config'};
     $self->{'phpConfig'} = $self->{'frontend'}->{'phpConfig'};
 
-    if (-f "$self->{'cfgDir'}/frontend.old.data") {
+    if (defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/frontend.old.data") {
         tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.old.data";
         while(my ($key, $value) = each(%oldConfig)) {
             next unless exists $self->{'config'}->{$key};

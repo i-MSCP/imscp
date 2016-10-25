@@ -62,11 +62,12 @@ OPTIONS:
 
 iMSCP::Bootstrapper->getInstance()->boot(
     {
-        mode           => $main::execmode,
-        norequirements => 1,
-        nolock         => 1,
-        nodatabase     => 1,
-        nokeys         => 1
+        mode            => $main::execmode,
+        norequirements  => 1,
+        nolock          => 1,
+        nodatabase      => 1,
+        nokeys          => 1,
+        config_readonly => 1
     }
 );
 

@@ -182,7 +182,9 @@ sub _init
     if (-f "$self->{'cfgDir'}/roundcube.data") {
         $self->{'config'} = lazy
             {
-                tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/roundcube.data";
+                tie my %c, 'iMSCP::Config',
+                    fileName => "$self->{'cfgDir'}/roundcube.data",
+                    readonly => (defined $main::execmode && $main::execmode eq 'setup') ? 0 : 1;
                 \%c;
             };
     } else {

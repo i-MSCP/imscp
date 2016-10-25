@@ -257,13 +257,13 @@ sub _init
     $self->{'config'} = $self->{'ftpd'}->{'config'};
 
     my $oldConf = "$self->{'cfgDir'}/vsftpd.old.data";
-    return $self unless -f $oldConf;
 
-    tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-
-    while(my($key, $value) = each(%oldConfig)) {
-        next unless exists $self->{'config'}->{$key};
-        $self->{'config'}->{$key} = $value;
+    if(defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
+        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
+        while(my ($key, $value) = each(%oldConfig)) {
+            next unless exists $self->{'config'}->{$key};
+            $self->{'config'}->{$key} = $value;
+        }
     }
 
     $self;
