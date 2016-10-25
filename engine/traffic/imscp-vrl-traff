@@ -95,13 +95,16 @@ sub run
             my $domainName = $domainRow->{'domain_name'};
             my $upperDomainId = $domainRow->{'upper_domain_id'};
 
-            next unless $trafficDb{'httpd'}->{$domainName} || $trafficDb{'ftpd'}->{$domainName} ||
-                $trafficDb{'mta'}->{$domainName} || $trafficDb{'po'}->{$domainName};
+            next unless
+                $trafficDb{'Servers::httpd'}->{$domainName}
+                || $trafficDb{'Servers::ftpd'}->{$domainName}
+                || $trafficDb{'Servers::mta'}->{$domainName}
+                || $trafficDb{'Servers::po'}->{$domainName};
 
-            my $httpdTraffic = $trafficDb{'httpd'}->{$domainName} || 0;
-            my $ftpdTraffic = $trafficDb{'ftpd'}->{$domainName} || 0;
-            my $mtaTraffic = $trafficDb{'mta'}->{$domainName} || 0;
-            my $poTraffic = $trafficDb{'po'}->{$domainName} || 0;
+            my $httpdTraffic = $trafficDb{'Servers::httpd'}->{$domainName} || 0;
+            my $ftpdTraffic = $trafficDb{'Servers::ftpd'}->{$domainName} || 0;
+            my $mtaTraffic = $trafficDb{'Servers::mta'}->{$domainName} || 0;
+            my $poTraffic = $trafficDb{'Servers::po'}->{$domainName} || 0;
 
             $dbh->do(
                 '
@@ -125,10 +128,10 @@ sub run
                 error($dbh->errstr);
                 $rs = 1;
             } else {
-                $trafficDb{'httpd'}->{$domainName} = 0;
-                $trafficDb{'ftpd'}->{$domainName} = 0;
-                $trafficDb{'mta'}->{$domainName} = 0;
-                $trafficDb{'po'}->{$domainName} = 0;
+                $trafficDb{'Servers::httpd'}->{$domainName} = 0;
+                $trafficDb{'Servers::ftpd'}->{$domainName} = 0;
+                $trafficDb{'Servers::mta'}->{$domainName} = 0;
+                $trafficDb{'Servers::po'}->{$domainName} = 0;
             }
         }
     }
