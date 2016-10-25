@@ -416,7 +416,9 @@ sub _init
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'commentChar'} = '#';
     $self->{'config'} = lazy {
-            tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/proftpd.data";
+            tie my %c, 'iMSCP::Config',
+                fileName => "$self->{'cfgDir'}/proftpd.data",
+                readonly => (defined $main::execmode && $main::execmode eq 'setup') ? 0 : 1;
             \%c;
         };
     $self;

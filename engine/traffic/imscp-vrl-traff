@@ -162,6 +162,7 @@ my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-vrl-traff.lock', 'nowait');
 $bootstrapper->boot(
     {
+        mode            => 'backend',
         norequirements  => 1,
         nolock          => 1,
         config_readonly => 1

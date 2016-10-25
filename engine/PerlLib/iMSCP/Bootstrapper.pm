@@ -168,19 +168,6 @@ sub unlock
     $self;
 }
 
-=item DESTROY()
-
- Unlock any locked file
-
-=cut
-
-sub DESTROY
-{
-    my $self = shift;
-
-    $self->unlock( $_ ) for keys %{$self->{'locks'}};
-}
-
 =back
 
 =head1 PRIVATE METHODS
@@ -262,6 +249,17 @@ sub _dbConnect
     my $rs = $database->connect();
     !$rs || $options->{'nofail'} or die( sprintf( 'Could not connect to the SQL server: %s', $rs ) );
     0;
+}
+
+=item END
+
+ Process ending tasks (Release of lock files)
+
+=cut
+
+END {
+    my $self = __PACKAGE__->getInstance();
+    $self->unlock( $_ ) for keys %{$self->{'locks'}};
 }
 
 =back

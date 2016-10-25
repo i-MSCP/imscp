@@ -512,7 +512,9 @@ sub _init
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'config'} = lazy {
-            tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/courier.data";
+            tie my %c, 'iMSCP::Config',
+                fileName => "$self->{'cfgDir'}/courier.data",
+                readonly => (defined $main::execmode && $main::execmode eq 'setup') ? 0 : 1;
             \%c;
         };
     $self;

@@ -410,7 +410,9 @@ sub _init
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/vsftpd";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'config'} = lazy {
-            tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/vsftpd.data";
+            tie my %c, 'iMSCP::Config',
+                fileName => "$self->{'cfgDir'}/vsftpd.data",
+                readonly => (defined $main::execmode && $main::execmode eq 'setup') ? 0 : 1;
             \%c
         };
     $self;

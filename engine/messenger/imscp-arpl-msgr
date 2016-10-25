@@ -37,6 +37,7 @@ newDebug('imscp-arpl-msgr/imscp-arpl-msgr.log');
 
 iMSCP::Bootstrapper->getInstance()->boot(
     {
+        mode            => 'backend',
         nolock          => 1,
         norequirements  => 1,
         config_readonly => 1

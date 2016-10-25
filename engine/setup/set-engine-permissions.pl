@@ -46,7 +46,7 @@ $ENV{'LANG'} = 'C.UTF-8';
 
 newDebug( 'imscp-set-engine-permissions.log' );
 
-$main::execmode = '';
+$main::execmode = 'backend';
 iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 ) ).qq {
 
 Set i-MSCP engine permissions.
@@ -62,6 +62,7 @@ OPTIONS:
 
 iMSCP::Bootstrapper->getInstance()->boot(
     {
+        mode           => $main::execmode,
         norequirements => 1,
         nolock         => 1,
         nodatabase     => 1,

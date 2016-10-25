@@ -790,7 +790,9 @@ sub _init
     $self->{'tplDir'} = "$self->{'cfgDir'}/parts";
     $self->{'config'} = lazy
         {
-            tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/bind.data";
+            tie my %c, 'iMSCP::Config',
+                fileName => "$self->{'cfgDir'}/bind.data",
+                readonly => (defined $main::execmode && $main::execmode eq 'setup') ? 0 : 1;
             \%c;
         };
     $self;

@@ -53,7 +53,13 @@ OPTIONS:
  'verbose|v' => sub { setVerbose(@_); }
 );
 
-iMSCP::Bootstrapper->getInstance()->boot( { norequirements => 1 } );
+iMSCP::Bootstrapper->getInstance()->boot(
+    {
+        mode            => 'backend',
+        norequirements  => 1,
+        config_readonly => 1
+    }
+);
 iMSCP::DbTasksProcessor->getInstance( mode => 'backend' )->process();
 
 =head1 AUTHOR

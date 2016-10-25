@@ -129,7 +129,9 @@ sub _init
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'config'} = lazy
         {
-            tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.data";
+            tie my %c, 'iMSCP::Config',
+                fileName => "$self->{'cfgDir'}/phpmyadmin.data",
+                readonly => (defined $main::execmode && $main::execmode eq 'setup') ? 0 : 1;
             \%c;
         };
     iMSCP::EventManager->getInstance()->register(

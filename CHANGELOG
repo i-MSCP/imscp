@@ -5,6 +5,9 @@ Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
+    Fixed: Boot mode not set when it is expected to be (iMSCP::Bootstrapper)
+    Fixed: Configuration files must be opened read-only outside of setup context
+    Fixed: Lock files must be released before processing of debug messages (dump)
     Fixed: Wrong provider used while removing services (iMSCP::Service)
 
 FRONTEND

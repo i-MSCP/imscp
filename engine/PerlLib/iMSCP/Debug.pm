@@ -52,7 +52,8 @@ my $self = {
     targets        => [ iMSCP::Log->new( id => 'default' ) ]
 };
 
-$self->{'default'} = $self->{'target'} = $self->{'targets'}->[0];
+$self->{'target'} = $self->{'targets'}->[0];
+$self->{'default'} = $self->{'target'};
 
 =head1 DESCRIPTION
 
@@ -389,6 +390,12 @@ sub _getMessages
     $bf .= "[$_->{'when'}] [$_->{'tag'}] $_->{'message'}\n" for $logObject->flush();
     $bf;
 }
+
+=item END
+
+ Process ending tasks (Dump of messages)
+
+=cut
 
 END {
     my $exitCode = $?;

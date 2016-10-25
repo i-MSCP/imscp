@@ -221,7 +221,9 @@ sub _init
     if (-f "$self->{'cfgDir'}/rainloop.data") {
         $self->{'config'} = lazy
             {
-                tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/rainloop.data";
+                tie my %c, 'iMSCP::Config',
+                    fileName => "$self->{'cfgDir'}/rainloop.data",
+                    readonly => (defined $main::execmode && $main::execmode eq 'setup') ? 0 : 1;
                 \%c;
             };
     } else {

@@ -78,12 +78,12 @@ OPTIONS:
 
 iMSCP::Bootstrapper->getInstance()->boot(
     {
+        mode            => 'backend',
         norequirements  => 1,
         nokeys          => 1,
         nodatabase      => 1,
         nolock          => 1,
-        config_readonly => 1,
-        mode            => 'backend'
+        config_readonly => 1
     }
 );
 
