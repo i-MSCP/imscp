@@ -459,15 +459,14 @@ sub addMail
                         # Add autoresponder if autoresponder is enabled for this account
                         .($data->{'MAIL_HAS_AUTO_RESPONDER'} ? ",$responderEntry" : '')
                 );
+                return $rs if $rs;
             }
-
-            return $rs if $rs;
         }
 
         if ($isForwardAccount) {
             $rs = $self->addMapEntry(
                 $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'},
-                "$data->{'MAIL_ADDR'}" # Recipient
+                $data->{'MAIL_ADDR'} # Recipient
                     ."\t"
                     # Add recipient itself in case of mailbox + forward account
                     .($isMailAccount ? "$data->{'MAIL_ADDR'}," : '')

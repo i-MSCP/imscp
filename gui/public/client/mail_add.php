@@ -313,7 +313,7 @@ function client_generatePage($tpl)
 	if ($mainDmnProps['mail_quota'] != '0' && $quota >= $mainDmnProps['mail_quota']) {
 		set_page_message(
 			tr('You cannot add new email account. You have already assigned all your email quota to other mailboxes. Please first, review your quota assignments.'),
-			'warning'
+			'static_info'
 		);
 		$tpl->assign('MAIL_ACCOUNT', '');
 	} else {
@@ -418,7 +418,7 @@ $tpl->assign(
 	)
 );
 
-client_generatePage($tpl, $_SESSION['user_id']);
+client_generatePage($tpl);
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
