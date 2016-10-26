@@ -105,11 +105,6 @@ function client_generatePage($tpl)
         }
     }
 
-    # Set parameters for the FTP chooser
-    $_SESSION['vftp_root_dir'] = '/htdocs';
-    $_SESSION['vftp_hidden_dirs'] = array();
-    $_SESSION['vftp_unselectable_dirs'] = array();
-
     $tpl->assign(array(
         'DOMAIN_ID' => $domainId,
         'DOMAIN_NAME' => tohtml($domainData['domain_name_utf8']),
@@ -133,6 +128,11 @@ function client_generatePage($tpl)
     $vfs = new VirtualFileSystem($_SESSION['user_logged']);
     if(!$vfs->exists('/htdocs', VirtualFileSystem::VFS_TYPE_DIR)) {
         $tpl->assign('DOCUMENT_ROOT_BLOC',  '');
+    } else {
+        # Set parameters for the FTP chooser
+        $_SESSION['vftp_root_dir'] = '/htdocs';
+        $_SESSION['vftp_hidden_dirs'] = array();
+        $_SESSION['vftp_unselectable_dirs'] = array();
     }
 }
 
@@ -155,9 +155,10 @@ function client_editDomain()
     }
 
     if(isset($_POST['document_root'])) {
-        $documentRoot = rtrim(utils_normalizePath(clean_input($_POST['document_root'])), '/');
+        $documentRoot = clean_input($_POST['document_root']);
 
-        if($documentRoot != '') {
+        if($documentRoot !== '') {
+            $documentRoot = rtrim(utils_normalizePath(clean_input($_POST['document_root'])), '/');
             $vfs = new VirtualFileSystem($domainData['domain_name'], '/htdocs');
             if(!$vfs->exists($documentRoot, VirtualFileSystem::VFS_TYPE_DIR)) {
                 set_page_message(tr('The new document root must pre-exists inside the /htdocs directory.'), 'error');

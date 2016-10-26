@@ -131,11 +131,6 @@ function client_generatePage($tpl)
         }
     }
 
-    # Set parameters for the FTP chooser
-    $_SESSION['vftp_root_dir'] = $subdomainData['subdomain_mount'] . '/htdocs';
-    $_SESSION['vftp_hidden_dirs'] = array();
-    $_SESSION['vftp_unselectable_dirs'] = array();
-
     $tpl->assign(array(
         'SUBDOMAIN_ID' => $subdomainId,
         'SUBDOMAIN_TYPE' => $subdomainType,
@@ -157,9 +152,14 @@ function client_generatePage($tpl)
     // Cover the case where the subdomain is currently redirected to another domain
     // In such a case the customer must first disable the redirection, and edit the subdomain again to set an
     // alternative DocumentRoot
-    $vfs = new VirtualFileSystem($_SESSION['user_logged'], $subdomainData['subdomain_mount']);
-    if(!$vfs->exists('/htdocs', VirtualFileSystem::VFS_TYPE_DIR)) {
+    $vfs = new VirtualFileSystem($_SESSION['user_logged']);
+    if(!$vfs->exists($subdomainData['subdomain_mount'], VirtualFileSystem::VFS_TYPE_DIR)) {
         $tpl->assign('DOCUMENT_ROOT_BLOC', '');
+    } else {
+        # Set parameters for the FTP chooser
+        $_SESSION['vftp_root_dir'] = $subdomainData['subdomain_mount'] . '/htdocs';
+        $_SESSION['vftp_hidden_dirs'] = array();
+        $_SESSION['vftp_unselectable_dirs'] = array();
     }
 }
 
@@ -183,9 +183,10 @@ function client_editSubdomain()
     }
 
     if(isset($_POST['document_root'])) {
-        $documentRoot = rtrim(utils_normalizePath(clean_input($_POST['document_root'])), '/');
+        $documentRoot = clean_input($_POST['document_root']);
 
-        if($documentRoot != '') {
+        if($documentRoot !== '') {
+            $documentRoot = rtrim(utils_normalizePath(clean_input($_POST['document_root'])), '/');
             $vfs = new VirtualFileSystem($_SESSION['user_logged'], $subdomainData['subdomain_mount'] . '/htdocs');
             if(!$vfs->exists($documentRoot, VirtualFileSystem::VFS_TYPE_DIR)) {
                 set_page_message(tr('The new document root must pre-exists inside the /htdocs directory.'), 'error');

@@ -105,11 +105,6 @@ function client_generatePage($tpl)
         }
     }
 
-    # Set parameters for the FTP chooser
-    $_SESSION['vftp_root_dir'] = $domainAliasData['alias_mount'] . '/htdocs';
-    $_SESSION['vftp_hidden_dirs'] = array();
-    $_SESSION['vftp_unselectable_dirs'] = array();
-
     $tpl->assign(array(
         'DOMAIN_ALIAS_ID' => $domainAliasId,
         'DOMAIN_ALIAS_NAME' => tohtml($domainAliasData['alias_name_utf8']),
@@ -130,9 +125,14 @@ function client_generatePage($tpl)
     // Cover the case where the domain alias is currently redirected to another domain
     // In such a case the customer must first disable the redirection, and edit the domain alias again to set an
     // alternative DocumentRoot
-    $vfs = new VirtualFileSystem($_SESSION['user_logged'], $domainAliasData['alias_mount']);
-    if(!$vfs->exists('/htdocs', VirtualFileSystem::VFS_TYPE_DIR)) {
+    $vfs = new VirtualFileSystem($_SESSION['user_logged']);
+    if(!$vfs->exists($domainAliasData['alias_mount'], VirtualFileSystem::VFS_TYPE_DIR)) {
         $tpl->assign('DOCUMENT_ROOT_BLOC',  '');
+    } else {
+        # Set parameters for the FTP chooser
+        $_SESSION['vftp_root_dir'] = $domainAliasData['alias_mount'] . '/htdocs';
+        $_SESSION['vftp_hidden_dirs'] = array();
+        $_SESSION['vftp_unselectable_dirs'] = array();
     }
 }
 
@@ -155,9 +155,10 @@ function client_editDomainAlias()
     }
 
     if(isset($_POST['document_root'])) {
-        $documentRoot = rtrim(utils_normalizePath(clean_input($_POST['document_root'])), '/');
+        $documentRoot = clean_input($_POST['document_root']);
 
-        if($documentRoot != '') {
+        if($documentRoot !== '') {
+            $documentRoot = rtrim(utils_normalizePath(clean_input($_POST['document_root'])), '/');
             $vfs = new VirtualFileSystem($_SESSION['user_logged'], $domainAliasData['alias_mount'] . '/htdocs');
             if(!$vfs->exists($documentRoot, VirtualFileSystem::VFS_TYPE_DIR)) {
                 set_page_message(tr('The new document root must pre-exists inside the /htdocs directory.'), 'error');

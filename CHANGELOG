@@ -11,6 +11,7 @@ BACKEND
     Fixed: Wrong provider used while removing services (iMSCP::Service)
 
 FRONTEND
+    Fixed: Could not list directory error when domain alias or subdomain is forwarded (Client side)
     Fixed: Ignore user abort while listing directory (VirtualFileSystem)
 
 PLUGINS
@@ -19,6 +20,7 @@ PLUGINS
 YOUTRACK
     #IP-1649 Domain traffic data missing
     #IP-1650 When a catchall is deleted, the mailbox used with the catchall is also deleted
+    #IP-1651 Forward URL - The new document root must pre-exists inside the /htdocs directory
 
 ------------------------------------------------------------------------------------------------------------------------
 1.3.7
