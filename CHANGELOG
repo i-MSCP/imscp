@@ -11,7 +11,7 @@ BACKEND
     Fixed: Wrong provider used while removing services (iMSCP::Service)
 
 FRONTEND
-    Fixed: Could not list directory error when domain alias or subdomain is forwarded (Client side)
+    Fixed: Could not list directory when domain alias or subdomain is forwarded (Client side)
     Fixed: Ignore user abort while listing directory (VirtualFileSystem)
 
 PLUGINS
