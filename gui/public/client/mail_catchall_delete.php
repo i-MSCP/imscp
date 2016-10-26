@@ -21,7 +21,7 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2016 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -29,42 +29,39 @@
  * Main
  */
 
-// Include core library
 require_once 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
 check_login('user');
-
 customerHasFeature('mail') or showBadRequestErrorPage();
 
-if(isset($_GET['id'])) {
-	$catchallId = intval($_GET['id']);
-
-	$stmt = exec_query(
-		'SELECT mail_id FROM mail_users WHERE domain_id = ? AND mail_id = ?',
-		array(get_user_domain_id($_SESSION['user_id']), $catchallId)
-	);
-
-	if(!$stmt->rowCount()) {
-		showBadRequestErrorPage();
-	}
-
-	iMSCP_Events_Aggregator::getInstance()->dispatch(
-		iMSCP_Events::onBeforeDeleteMailCatchall, array('mailCatchallId' => $catchallId)
-	);
-
-	exec_query('UPDATE mail_users SET status = ? WHERE mail_id = ?', array('todelete', $catchallId));
-
-	iMSCP_Events_Aggregator::getInstance()->dispatch(
-		iMSCP_Events::onAfterDeleteMailCatchall, array('mailCatchallId' => $catchallId)
-	);
-
-	send_request();
-
-	write_log($_SESSION['user_logged'] . ': deletes email catch all!', E_USER_NOTICE);
-	set_page_message(tr('Catch all successfully scheduled for deletion.'), 'success');
-	redirectTo('mail_catchall.php');
+if (!isset($_GET['id'])) {
+    showBadRequestErrorPage();
 }
 
-showBadRequestErrorPage();
+$catchallId = intval($_GET['id']);
+
+$stmt = exec_query(
+    'SELECT mail_id FROM mail_users WHERE domain_id = ? AND mail_id = ?',
+    array(get_user_domain_id($_SESSION['user_id']), $catchallId)
+);
+
+if (!$stmt->rowCount()) {
+    showBadRequestErrorPage();
+}
+
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteMailCatchall, array(
+    'mailCatchallId' => $catchallId
+));
+
+exec_query('UPDATE mail_users SET status = ? WHERE mail_id = ?', array('todelete', $catchallId));
+
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMailCatchall, array(
+    'mailCatchallId' => $catchallId
+));
+
+send_request();
+
+write_log($_SESSION['user_logged'] . ': deletes email catch all!', E_USER_NOTICE);
+set_page_message(tr('Catch all successfully scheduled for deletion.'), 'success');
+redirectTo('mail_catchall.php');
