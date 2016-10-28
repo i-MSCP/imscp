@@ -11,6 +11,7 @@ BACKEND
     Fixed: Wrong provider used while removing services (iMSCP::Service)
 
 FRONTEND
+    Fixed: Allow the resellers to change customer passwords by removing useless verification on the current password
     Fixed: Could not list directory when domain alias or subdomain is forwarded (Client side)
     Fixed: Ignore user abort while listing directory (VirtualFileSystem)
 

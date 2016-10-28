@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by i-MSCP Team
+ * Copyright (C) 2010-2016 by i-MSCP Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,104 +18,69 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/************************************************************************************
- * Script function script
+/***********************************************************************************************************************
+ * Functions
  */
 
 /**
- * Update admin password.
+ * Update admin password
  *
  * @return void
  */
 function reseller_updatePassword()
 {
-	if(!empty($_POST)) {
-		$userId = $_SESSION['user_id'];
+    if (empty($_POST)) {
+        return;
+    }
 
-		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $userId));
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array(
+        'userId' => $_SESSION['user_id']
+    ));
 
-		if (empty($_POST['current_password']) || empty($_POST['password']) || empty($_POST['password_confirmation'])) {
-			set_page_message(tr('All fields are required.'), 'error');
-		} else if (!_reseller_checkCurrentPassword($_POST['current_password'])) {
-			set_page_message(tr('Current password is invalid.'), 'error');
-		} else if ($_POST['password'] !== $_POST['password_confirmation']) {
-			set_page_message(tr("Passwords do not match."), 'error');
-		} elseif (checkPasswordSyntax($_POST['password'])) {
-			$query = 'UPDATE `admin` SET `admin_pass` = ? WHERE `admin_id` = ?';
-			exec_query($query, array(cryptPasswordWithSalt($_POST['password']), $userId));
+    if (empty($_POST['password']) || empty($_POST['password_confirmation'])) {
+        set_page_message(tr('All fields are required.'), 'error');
+    } else if ($_POST['password'] !== $_POST['password_confirmation']) {
+        set_page_message(tr("Passwords do not match."), 'error');
+    } elseif (checkPasswordSyntax($_POST['password'])) {
+        $query = 'UPDATE `admin` SET `admin_pass` = ? WHERE `admin_id` = ?';
+        exec_query($query, array(cryptPasswordWithSalt($_POST['password']), $_SESSION['user_id']));
 
-			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $userId));
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array(
+            'userId' => $_SESSION['user_id']
+        ));
 
-			write_log($_SESSION['user_logged'] . ': updated password.', E_USER_NOTICE);
-			set_page_message(tr('Password successfully updated.'), 'success');
-		}
-	}
+        write_log($_SESSION['user_logged'] . ': updated password.', E_USER_NOTICE);
+        set_page_message(tr('Password successfully updated.'), 'success');
+    }
 }
 
-/**
- * Check admin current password.
- *
- * @access private
- * @param string $password Admin current password
- * @return bool TRUE if current password is valid, FALSE otherwise
- */
-function _reseller_checkCurrentPassword($password)
-{
-	$stmt = exec_query('SELECT `admin_pass` FROM `admin` WHERE `admin_id` = ?', $_SESSION['user_id']);
-
-	if (!$stmt->rowCount()) {
-		set_page_message(tr('Unable to retrieve your password from the database.'), 'error');
-		return false;
-	} elseif (cryptPasswordWithSalt($password, $stmt->fields['admin_pass']) !== $stmt->fields['admin_pass']) {
-		return false;
-	}
-
-	return true;
-}
-
-/************************************************************************************
- * Main script
+/***********************************************************************************************************************
+ * Main
  */
 
-// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
-
 check_login('reseller');
-
 reseller_updatePassword();
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'shared/partials/forms/password_update.tpl',
-		'page_message' => 'layout'
-	)
-);
-
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Reseller / Profile / Password'),
-		'TR_PASSWORD_DATA' => tr('Password data'),
-		'TR_CURRENT_PASSWORD' => tr('Current password'),
-		'TR_PASSWORD' => tr('Password'),
-		'TR_PASSWORD_CONFIRMATION' => tr('Password confirmation'),
-		'TR_UPDATE' => tr('Update')
-	)
-);
+$tpl->define_dynamic(array(
+    'layout'       => 'shared/layouts/ui.tpl',
+    'page'         => 'shared/partials/forms/password_update.tpl',
+    'page_message' => 'layout'
+));
+$tpl->assign(array(
+    'TR_PAGE_TITLE'            => tr('Reseller / Profile / Password'),
+    'TR_PASSWORD_DATA'         => tr('Password data'),
+    'TR_PASSWORD'              => tr('Password'),
+    'TR_PASSWORD_CONFIRMATION' => tr('Password confirmation'),
+    'TR_UPDATE'                => tr('Update')
+));
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
-
 $tpl->prnt();
-
-unsetMessages();
