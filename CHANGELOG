@@ -15,6 +15,9 @@ FRONTEND
     Fixed: Could not list directory when domain alias or subdomain is forwarded (Client side)
     Fixed: Ignore user abort while listing directory (VirtualFileSystem)
 
+LISTENERS
+    Added: 10_frontend_templates_override.pl (Allows to override default frontEnd template files)
+
 PACKAGES
     Fixed: AH01102: error reading status line from remote server 127.0.0.1:8889
 

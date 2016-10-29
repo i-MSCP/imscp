@@ -56,6 +56,12 @@ longer supported in i-MSCP 1.3.x.
 
 Allows to modify default service-login configuration options. This listener file requires dovecot version 2.1.0 or newer.
 
+## FrontEnd listener files
+
+### 10_frontend_templates_override.pl
+
+Allows to override frontEnd default template files
+
 ## Named (Bind9) listener files
 
 ### 10_bind9_localnets.pl
