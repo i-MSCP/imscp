@@ -195,7 +195,7 @@ sub _buildConf
             DATABASE_HOST     => main::setupGetQuestion( 'DATABASE_HOST' ),
             DATABASE_PORT     => main::setupGetQuestion( 'DATABASE_PORT' ),
             DATABASE_PASSWORD => $pwd,
-            DATABASE_USER     => $user,
+            DATABASE_USER     => $user
         },
         $cfgTpl
     );
