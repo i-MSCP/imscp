@@ -24,6 +24,9 @@ PACKAGES
 PLUGINS
     Fixed: Ignore user abort while migrating database
 
+SERVERS:
+    Fixed: Only double quotes must be escaped in master SQL user password (Servers::sqld::remote_server)
+
 YOUTRACK
     #IP-1649 Domain traffic data missing
     #IP-1650 When a catchall is deleted, the mailbox used with the catchall is also deleted

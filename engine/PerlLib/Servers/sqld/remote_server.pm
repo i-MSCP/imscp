@@ -148,9 +148,13 @@ sub _buildConf
     my $confDir = $self->{'config'}->{'SQLD_CONF_DIR'};
 
     # Make sure that the conf.d directory exists
-    $rs = iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make( {
-            user => $rootUName, group => $rootGName, mode => 0755
-        } );
+    $rs = iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make(
+        {
+            user => $rootUName,
+            group => $rootGName,
+            mode => 0755
+        }
+    );
     return $rs if $rs;
 
     # Create the /etc/mysql/my.cnf file if missing
@@ -183,16 +187,16 @@ sub _buildConf
         }
     }
 
+    (my $user = main::setupGetQuestion( 'DATABASE_USER' ) ) =~ s/"/\\"/g;
+    (my $pwd = decryptBlowfishCBC( $main::imscpDBKey, $main::imscpDBiv, main::setupGetQuestion( 'DATABASE_PASSWORD' ) ) ) =~ s/"/\\"/g;
+
     $cfgTpl = process(
         {
-            DATABASE_HOST     => $main::imscpConfig{'DATABASE_HOST'},
-            DATABASE_PORT     => $main::imscpConfig{'DATABASE_PORT'},
-            DATABASE_PASSWORD => escapeShell( decryptBlowfishCBC(
-                    $main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'}
-                ) ),
-            DATABASE_USER     => $main::imscpConfig{'DATABASE_USER'},
-        }
-        ,
+            DATABASE_HOST     => main::setupGetQuestion( 'DATABASE_HOST' ),
+            DATABASE_PORT     => main::setupGetQuestion( 'DATABASE_PORT' ),
+            DATABASE_PASSWORD => $pwd,
+            DATABASE_USER     => $user,
+        },
         $cfgTpl
     );
 
