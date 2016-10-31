@@ -38,13 +38,16 @@ use iMSCP::Net;
 ## Configuration variables
 #
 
-# Zone defining nameservers
+# Zone defining name servers
 # Warning: For IDN, you must use the Punycode notation.
 my $ZONE_NAME = 'zone.tld';
 
-# Names servers
+# Name servers
 # Replace entries with your own data and delete those which are not needed for
 # your use case. The first two entries correspond to this server.
+#
+# Note that the name from first entry is used as name-server in SOA RR.
+#
 # Warning: For IDNs, you must use the Punycode notation.
 my @NAMESERVERS = (
     [ "ns1.$ZONE_NAME", '<ipv4>' ], # MASTER DNS IP (IPv4 ; this server)
@@ -64,8 +67,9 @@ iMSCP::EventManager->getInstance()->register(
     sub {
         my ($tpl, $data) = @_;
 
-        # Override default SOA record (for all zones)
-        ${$tpl} =~ s/\Qns1.{DOMAIN_NAME}.\E/ns1.$ZONE_NAME./gm;
+        # Override default SOA RR (for all zones)
+        my $nameserver = (@NAMESERVERS)[0]->[0];
+        ${$tpl} =~ s/\Qns1.{DOMAIN_NAME}.\E/$nameserver./gm;
         ${$tpl} =~ s/\Qhostmaster.{DOMAIN_NAME}.\E/hostmaster.$ZONE_NAME./gm;
 
         # Set NS and glue record entries (for all zones)
@@ -85,8 +89,8 @@ iMSCP::EventManager->getInstance()->register(
                     $nsRecordB
                 );
 
-                # Glue records must be set only if $data->{'DOMAIN_NAME'] is equal to $ZONE_NAME
-                # Note that if $name is out-of-zone data, it will be automatically ignored by the `named-compilezone'
+                # Glue RR must be set only if $data->{'DOMAIN_NAME'] is equal to $ZONE_NAME
+                # Note that if $name is out-of-zone, it will be automatically ignored by the `named-compilezone'
                 # command during the dump (expected behavior).
                 $glueRecords .= process(
                     {
