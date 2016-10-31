@@ -43,7 +43,7 @@ use iMSCP::Net;
 my $ZONE_NAME = 'zone.tld';
 
 # Names servers
-# Replace values with your own data and delete those which are not needed for
+# Replace entries with your own data and delete those which are not needed for
 # your use case. The first two entries correspond to this server.
 # Warning: For IDNs, you must use the Punycode notation.
 my @NAMESERVERS = (
@@ -64,18 +64,18 @@ iMSCP::EventManager->getInstance()->register(
     sub {
         my ($tpl, $data) = @_;
 
-        ## Override default SOA record (for all zones)
+        # Override default SOA record (for all zones)
         ${$tpl} =~ s/\Qns1.{DOMAIN_NAME}.\E/ns1.$ZONE_NAME./gm;
         ${$tpl} =~ s/\Qhostmaster.{DOMAIN_NAME}.\E/hostmaster.$ZONE_NAME./gm;
 
-        ## Set NS and glue record entries (for all zones)
+        # Set NS and glue record entries (for all zones)
         my $nsRecordB = getBloc( "; dmn NS RECORD entry BEGIN\n", "; dmn NS RECORD entry ENDING\n", ${$tpl} );
         my $glueRecordB = getBloc( "; dmn NS GLUE RECORD entry BEGIN\n", "; dmn NS GLUE RECORD entry ENDING\n", ${$tpl} );
         my ($nsRecords, $glueRecords) = ('', '');
         my $net = iMSCP::Net->getInstance();
 
         for my $ipAddrType(qw/ ipv4 ipv6 /) {
-            for my $nameserverData(@{NAMESERVERS}) {
+            for my $nameserverData(@NAMESERVERS) {
                 my ($name, $ipAddr) = @{$nameserverData};
                 next unless $net->getAddrVersion( $ipAddr ) eq $ipAddrType;
                 $nsRecords .= process(
@@ -85,7 +85,7 @@ iMSCP::EventManager->getInstance()->register(
                     $nsRecordB
                 );
 
-                # Glue records must be added only if $data->{'DOMAIN_NAME'] is equal to $ZONE_NAME
+                # Glue records must be set only if $data->{'DOMAIN_NAME'] is equal to $ZONE_NAME
                 # Note that if $name is out-of-zone data, it will be automatically ignored by the `named-compilezone'
                 # command during the dump (expected behavior).
                 $glueRecords .= process(
