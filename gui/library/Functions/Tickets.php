@@ -70,6 +70,9 @@ function createTicket($userId, $adminId, $urgency, $subject, $message, $userLeve
  */
 function showTicketContent($tpl, $ticketId, $userId)
 {
+    # Always show last replies first
+    _showTicketReplies($tpl, $ticketId);
+
     $cfg = iMSCP_Registry::get('config');
     $stmt = exec_query(
         '
@@ -80,7 +83,7 @@ function showTicketContent($tpl, $ticketId, $userId)
     );
 
     if (!$stmt->rowCount()) {
-        $tpl->assign('TICKETS_LIST', '');
+        $tpl->assign('TICKET', '');
         set_page_message(tr("Ticket with Id '%d' was not found.", $ticketId), 'error');
         return false;
     }
@@ -103,7 +106,7 @@ function showTicketContent($tpl, $ticketId, $userId)
     $tpl->assign(array(
         'TR_TICKET_ACTION' => $trAction,
         'TICKET_ACTION_VAL' => $action,
-        'TICKET_DATE_VAL' => date($cfg['DATE_FORMAT'], $row['ticket_date']),
+        'TICKET_DATE_VAL' => date($cfg['DATE_FORMAT']. ' (H:n)', $row['ticket_date']),
         'TICKET_SUBJECT_VAL' => tohtml($ticketSubject),
         'TICKET_CONTENT_VAL' => nl2br(tohtml($row['ticket_message'])),
         'TICKET_ID_VAL' => $row['ticket_id'],
@@ -111,9 +114,8 @@ function showTicketContent($tpl, $ticketId, $userId)
         'TICKET_URGENCY_ID_VAL' => $ticketUrgency,
         'TICKET_FROM_VAL' => tohtml($from)
     ));
-    $tpl->parse('TICKETS_ITEM', 'tickets_item');
+    $tpl->parse('TICKET_MESSAGE', '.ticket_message');
 
-    _showTicketReplies($tpl, $ticketId);
     return true;
 }
 
@@ -238,7 +240,7 @@ function deleteTickets($status, $userId)
  * @param iMSCP_pTemplate $tpl Template engine
  * @param int $userId User unique identifier
  * @param int $start First ticket to show (pagination)
- * @param int $count Mmaximal count of shown tickets (pagination)
+ * @param int $count Maximal count of shown tickets (pagination)
  * @param String $userLevel User level
  * @param String $status Status of the tickets to be showed: 'open' or 'closed'
  * @return void
@@ -544,16 +546,21 @@ function hasTicketSystem($userId = null)
 
     if (!$cfg['IMSCP_SUPPORT_SYSTEM']) {
         return false;
-    } elseif ($userId !== null) {
+    }
+
+    if ($userId !== null) {
         $stmt = exec_query('SELECT support_system FROM reseller_props WHERE reseller_id = ?', $userId);
+
         if ($stmt->rowCount()) {
             $row = $stmt->fetchRow();
             if ($row['support_system'] == 'no') {
                 return false;
             }
-        } else {
-            return false;
+
+            return true;
         }
+
+        return false;
     }
 
     return true;
@@ -573,21 +580,19 @@ function _showTicketReplies($tpl, $ticketId)
     $stmt = exec_query(
         '
             SELECT ticket_id, ticket_urgency, ticket_date, ticket_message FROM tickets
-            WHERE ticket_reply = ? ORDER BY ticket_date ASC
+            WHERE ticket_reply = ? ORDER BY ticket_date DESC
         ',
         $ticketId
     );
 
     if ($stmt->rowCount()) {
         while ($row = $stmt->fetchRow()) {
-            $ticketId = $row['ticket_id'];
-            $ticketDate = $row['ticket_date'];
             $tpl->assign(array(
-                'TICKET_FROM_VAL' => _getTicketSender($ticketId),
-                'TICKET_DATE_VAL' => date($cfg['DATE_FORMAT'], $ticketDate),
+                'TICKET_FROM_VAL' => _getTicketSender($row['ticket_id']),
+                'TICKET_DATE_VAL' => date($cfg['DATE_FORMAT']. ' (H:n)', $row['ticket_date']),
                 'TICKET_CONTENT_VAL' => nl2br(tohtml($row['ticket_message']))
             ));
-            $tpl->parse('TICKETS_ITEM', '.tickets_item');
+            $tpl->parse('TICKET_MESSAGE', '.ticket_message');
         }
     }
 }

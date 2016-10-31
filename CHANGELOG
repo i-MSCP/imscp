@@ -11,9 +11,13 @@ BACKEND
     Fixed: Wrong provider used while removing services (iMSCP::Service)
 
 FRONTEND
+    Added: Hour and minute fields in message headers (Support Tickets)
     Fixed: Allow the resellers to change customer passwords by removing useless verification on the current password
     Fixed: Could not list directory when domain alias or subdomain is forwarded (Client side)
     Fixed: Ignore user abort while listing directory (VirtualFileSystem)
+    Fixed: It hard to differentiate different answers (Support Tickets)
+    Fixed: Messages are hard to read because they are greyed (Support Tickets)
+    Fixed: Messages should be displayed in LIFO order (last in, first out) (Support Tickets)
 
 LISTENERS
     Added: 10_frontend_templates_override.pl (Allows to override default frontEnd template files)
@@ -36,6 +40,7 @@ YOUTRACK
     #IP-1649 Domain traffic data missing
     #IP-1650 When a catchall is deleted, the mailbox used with the catchall is also deleted
     #IP-1651 Forward URL - The new document root must pre-exists inside the /htdocs directory
+    #IP-1654 Support - Several issues in view ticket interface
 
 ------------------------------------------------------------------------------------------------------------------------
 1.3.7
