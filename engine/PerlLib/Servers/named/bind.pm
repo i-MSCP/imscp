@@ -966,23 +966,23 @@ sub _addDmnDb
         $wrkDbFile = iMSCP::File->new( filename => $wrkDbFile );
     }
 
-    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind', 'db.tpl', \ my $tplDbFileContent, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind', 'db.tpl', \ my $tplDbFileC, $data );
     return $rs if $rs;
 
-    unless (defined $tplDbFileContent) {
-        $tplDbFileContent = iMSCP::File->new( filename => "$self->{'tplDir'}/db.tpl" )->get();
-        unless (defined $tplDbFileContent) {
+    unless (defined $tplDbFileC) {
+        $tplDbFileC = iMSCP::File->new( filename => "$self->{'tplDir'}/db.tpl" )->get();
+        unless (defined $tplDbFileC) {
             error( sprintf( 'Could not read %s file', "$self->{'tplDir'}/db.tpl" ) );
             return 1;
         }
     }
 
-    $rs = $self->_updateSOAserialNumber( $data->{'DOMAIN_NAME'}, \$tplDbFileContent, \$wrkDbFileContent );
-    $rs ||= $self->{'eventManager'}->trigger( 'beforeNamedAddDmnDb', \$tplDbFileContent, $data );
+    $rs = $self->_updateSOAserialNumber( $data->{'DOMAIN_NAME'}, \$tplDbFileC, \$wrkDbFileContent );
+    $rs ||= $self->{'eventManager'}->trigger( 'beforeNamedAddDmnDb', \$tplDbFileC, $data );
     return $rs if $rs;
 
-    my $dmnNsEntry = getBloc( "; dmn NS entry BEGIN\n", "; dmn NS entry ENDING\n", $tplDbFileContent );
-    my $dmnNsAEntry = getBloc( "; dmn NS A entry BEGIN\n", "; dmn NS A entry ENDING\n", $tplDbFileContent );
+    my $nsRecordB = getBloc( "; dmn NS RECORD entry BEGIN\n", "; dmn NS RECORD entry ENDING\n", $tplDbFileC );
+    my $glueRecordB = getBloc( "; dmn NS GLUE RECORD entry BEGIN\n", "; dmn NS GLUE RECORD entry ENDING\n", $tplDbFileC );
     my $domainIP = ($data->{'BASE_SERVER_IP'} eq $data->{'BASE_SERVER_PUBLIC_IP'})
         ? $data->{'DOMAIN_IP'} : $data->{'BASE_SERVER_PUBLIC_IP'};
 
@@ -992,27 +992,43 @@ sub _addDmnDb
     );
 
     my $net = iMSCP::Net->getInstance();
-    my ($dmnNsEntries, $dmnNsAentries, $nsNumber) = (undef, undef, 1);
 
-    for (@nsIPs) {
-        $dmnNsEntries .= process( { NS_NUMBER => $nsNumber }, $dmnNsEntry );
-        $dmnNsAentries .= process(
-            {
-                NS_NUMBER  => $nsNumber,
-                NS_IP_TYPE => $net->getAddrVersion( $_ ) eq 'ipv4' ? 'A' : 'AAAA',
-                NS_IP      => $_
-            },
-            $dmnNsAEntry
-        );
-        $nsNumber++;
+    unless($nsRecordB eq '' && $glueRecordB eq '') {
+        my ($nsRecords, $glueRecords) = ('', '');
+
+        for my $ipAddrType(qw/ ipv4 ipv6 /) {
+            my $nsNumber = 1;
+
+            for my $ipAddr(@nsIPs) {
+                next unless $net->getAddrVersion( $ipAddr ) eq $ipAddrType;
+                $nsRecords .= process(
+                    {
+                        NS_NAME => 'ns'.$nsNumber
+                    },
+                    $nsRecordB
+                ) if $nsRecordB ne '';
+
+                $glueRecords .= process(
+                    {
+                        NS_NAME    => 'ns'.$nsNumber,
+                        NS_IP_TYPE => ($ipAddrType eq 'ipv4') ? 'A' : 'AAAA',
+                        NS_IP      => $ipAddr
+                    },
+                    $glueRecordB
+                ) if $glueRecordB ne '';
+
+                $nsNumber++;
+            }
+        }
+
+        $tplDbFileC = replaceBloc(
+            "; dmn NS RECORD entry BEGIN\n", "; dmn NS RECORD entry ENDING\n", $nsRecords, $tplDbFileC
+        ) if $nsRecordB ne '';
+
+        $tplDbFileC = replaceBloc(
+            "; dmn NS GLUE RECORD entry BEGIN\n", "; dmn NS GLUE RECORD entry ENDING\n", $glueRecords, $tplDbFileC
+        ) if $glueRecordB ne '';
     }
-
-    $tplDbFileContent = replaceBloc(
-        "; dmn NS entry BEGIN\n", "; dmn NS entry ENDING\n", $dmnNsEntries, $tplDbFileContent
-    );
-    $tplDbFileContent = replaceBloc(
-        "; dmn NS A entry BEGIN\n", "; dmn NS A entry ENDING\n", $dmnNsAentries, $tplDbFileContent
-    );
 
     my $dmnMailEntry = '';
     if ($data->{'MAIL_ENABLED'}) {
@@ -1022,17 +1038,15 @@ sub _addDmnDb
                     ? 'A' : 'AAAA',
                 BASE_SERVER_IP      => $data->{'BASE_SERVER_PUBLIC_IP'}
             },
-            getBloc( "; dmn MAIL entry BEGIN\n", "; dmn MAIL entry ENDING\n", $tplDbFileContent )
+            getBloc( "; dmn MAIL entry BEGIN\n", "; dmn MAIL entry ENDING\n", $tplDbFileC )
         )
     }
-    $tplDbFileContent = replaceBloc(
-        "; dmn MAIL entry BEGIN\n", "; dmn MAIL entry ENDING\n", $dmnMailEntry, $tplDbFileContent
-    );
+    $tplDbFileC = replaceBloc( "; dmn MAIL entry BEGIN\n", "; dmn MAIL entry ENDING\n", $dmnMailEntry, $tplDbFileC );
 
     if ($data->{'DOMAIN_NAME'} eq $data->{'BASE_SERVER_VHOST'} && defined $wrkDbFileContent) {
         if (exists $data->{'CTM_ALS_ENTRY_ADD'}) {
             $wrkDbFileContent =~ s/^$data->{'CTM_ALS_ENTRY_ADD'}->{'NAME'}\s+[^\n]*\n//m;
-            $tplDbFileContent = replaceBloc(
+            $tplDbFileC = replaceBloc(
                 "; ctm als entries BEGIN\n",
                 "; ctm als entries ENDING\n",
                 "; ctm als entries BEGIN\n".
@@ -1047,33 +1061,33 @@ sub _addDmnDb
                         "{NAME}\t{CLASS}\t{TYPE}\t{DATA}\n"
                     ).
                     "; ctm als entries ENDING\n",
-                $tplDbFileContent
+                $tplDbFileC
             );
         } else {
-            $tplDbFileContent = replaceBloc(
+            $tplDbFileC = replaceBloc(
                 "; ctm als entries BEGIN\n",
                 "; ctm als entries ENDING\n",
                 getBloc( "; ctm als entries BEGIN\n", "; ctm als entries ENDING\n", $wrkDbFileContent, 1 ),
-                $tplDbFileContent
+                $tplDbFileC
             );
 
             if (exists $data->{'CTM_ALS_ENTRY_DEL'}) {
-                $tplDbFileContent =~ s/^$data->{'CTM_ALS_ENTRY_DEL'}->{'NAME'}\s+[^\n]*\n//m;
+                $tplDbFileC =~ s/^$data->{'CTM_ALS_ENTRY_DEL'}->{'NAME'}\s+[^\n]*\n//m;
             }
         }
     }
 
-    $tplDbFileContent = process(
+    $tplDbFileC = process(
         {
             DOMAIN_NAME => $data->{'DOMAIN_NAME'},
             IP_TYPE     => $net->getAddrVersion( $domainIP ) eq 'ipv4' ? 'A' : 'AAAA',
             DOMAIN_IP   => $domainIP
         },
-        $tplDbFileContent
+        $tplDbFileC
     );
 
-    $rs = $self->{'eventManager'}->trigger( 'afterNamedAddDmnDb', \$tplDbFileContent, $data );
-    $rs ||= $wrkDbFile->set( $tplDbFileContent );
+    $rs = $self->{'eventManager'}->trigger( 'afterNamedAddDmnDb', \$tplDbFileC, $data );
+    $rs ||= $wrkDbFile->set( $tplDbFileC );
     $rs ||= $wrkDbFile->save();
     return $rs if $rs;
 

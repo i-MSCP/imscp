@@ -7,13 +7,13 @@ $ORIGIN {DOMAIN_NAME}.
 	2W; Expire
 	1H; Minimum TTL
 )
-; dmn NS entry BEGIN
-@		IN	NS	ns{NS_NUMBER}
-; dmn NS entry ENDING
+; dmn NS RECORD entry BEGIN
+@		IN	NS	{NS_NAME}
+; dmn NS RECORD entry ENDING
 @		IN	{IP_TYPE}	{DOMAIN_IP}
-; dmn NS A entry BEGIN
-ns{NS_NUMBER}	IN	{NS_IP_TYPE}	{NS_IP}
-; dmn NS A entry ENDING
+; dmn NS GLUE RECORD entry BEGIN
+{NS_NAME}	IN	{NS_IP_TYPE}	{NS_IP}
+; dmn NS GLUE RECORD entry ENDING
 www		IN	CNAME	@
 ftp		IN	{IP_TYPE}	{DOMAIN_IP}
 ; dmn MAIL entry BEGIN

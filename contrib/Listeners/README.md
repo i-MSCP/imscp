@@ -52,29 +52,38 @@ Activates the Perfect Forward Secrecy logging.
 Disables plaintext logins and enforce TLS. Also remove the cram-md5 and digest-md5 authentication mechanisms that are no
 longer supported in i-MSCP 1.3.x.
 
-### 60_dovecot_service_login.pl
+### 60_dovecot_service_login.pl (requires Dovecot 2.1.0 or newer)
 
-Allows to modify default service-login configuration options. This listener file requires dovecot version 2.1.0 or newer.
+Allows to modify default service-login configuration options. This listener file.
 
 ## FrontEnd listener files
 
 ### 10_frontend_templates_override.pl
 
-Allows to override frontEnd default template files
+Listener file that allows to override frontEnd default template files
 
-## Named (Bind9) listener files
+## Named listener files
 
-### 10_bind9_localnets.pl
+### 10_named_rrl.pl
 
-Allows to setup Bind9 for local network.
+Listener file that implements RRL (Response-Rate-Limiting)
 
-### 10_bind9_rrl.pl
+### 10_named_global_ns.pl (requires i-MSCP 1.3.8 or newer)
 
-Listener implementing RRL (Response-Rate-Limiting)
+Listener file that allows to set identical NS entries in all zones
 
-### 10_named_override_default_ns_rr.pl
+**Warning:**  Warning: Don't forget to declare your slave DNS servers to i-MSCP. Don't forget also to activate IPv6
+support if needed. All this can be done by reconfiguring the `named` service as follow:
 
-Listener that allows overriding of default NS DNS resource records.
+```
+   perl /var/www/imscp/engine/setup/imscp-reconfigure -dr named
+```
+
+If you don't do so, zone transfers to your slave DNS servers won't be allowed.
+
+### 10_named_localnets.pl
+
+Listener file that setup Bind9 for local network.
 
 ### 10_named_override_default_rr.pl
 
@@ -85,12 +94,11 @@ Following DNS resource records can be overriden:
  - @   IN {IP_TYPE} {DOMAIN_IP}
  - www IN CNAME     @
 
-### 10_named_slave_provisioning.pl
+### 10_named_slave_provisioning.pl (requires i-MSCP 1.2.12 or newer)
 
 Provides slave DNS server(s) provisioning service.
-This listener file requires i-MSCP 1.2.12 or newer.
 
-### 20_bind9_dualstack.pl
+### 20_named_dualstack.pl
 
 Provides dual stack support for bind9.
 

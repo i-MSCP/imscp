@@ -1,4 +1,4 @@
-# i-MSCP Listener::Named::Tuning listener file
+# i-MSCP Listener::Named::Rrl listener file
 # Copyright (C) 2015-2016 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 ##
 #
 
-package Listener::Bind9::Rrl;
+package Listener::Named::Rrl;
 
 use strict;
 use warnings;
