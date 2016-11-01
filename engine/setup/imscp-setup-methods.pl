@@ -517,12 +517,6 @@ EOF
         setupSetQuestion('SQL_ROOT_USER', setupGetQuestion('SQL_ROOT_USER', $user));
         setupSetQuestion('SQL_ROOT_PASSWORD', setupGetQuestion('SQL_ROOT_PASSWORD', $pwd));
     }
-    
-    #print setupGetQuestion('DATABASE_USER') . "\n";
-    #print setupGetQuestion('DATABASE_PASSWORD') . "\n";
-    #print setupGetQuestion('SQL_ROOT_USER') . "\n";
-    #print setupGetQuestion('SQL_ROOT_PASSWORD') . "\n";
-    #exit;
 
     $rs;
 }

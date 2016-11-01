@@ -37,6 +37,7 @@ use iMSCP::ProgramFinder;
 use iMSCP::TemplateParser;
 use iMSCP::Net;
 use iMSCP::Service;
+use POSIX qw / tzset /;
 use Scalar::Defer;
 use parent 'Common::SingletonClass';
 
@@ -1136,7 +1137,15 @@ sub _updateSOAserialNumber
     $oldZoneContent = $zoneContent unless defined $$oldZoneContent;
     (my $date, my $nn, my $var) = $$oldZoneContent =~ /^\s+(?:(\d{8})(\d{2})|(\{TIMESTAMP\}))\s*;[^\n]*\n/m;
     if (defined $date || defined $var) {
+        my $oTimezone = $ENV{TZ} || 'UTC';
+        $ENV{TZ} = 'UTC';
+        tzset;
+
         my $todayDate = Date::Simple->new();
+
+        # Restore old timezone
+        $ENV{TZ} = $oTimezone;
+        tzset;
 
         if (defined $var) {
             $self->{'serials'}->{$zone} = $todayDate->as_d8().'00';

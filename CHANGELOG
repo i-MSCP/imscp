@@ -15,7 +15,7 @@ FRONTEND
     Fixed: Allow the resellers to change customer passwords by removing useless verification on the current password
     Fixed: Could not list directory when domain alias or subdomain is forwarded (Client side)
     Fixed: Ignore user abort while listing directory (VirtualFileSystem)
-    Fixed: It hard to differentiate different answers (Support Tickets)
+    Fixed: It is too hard to differentiate different answers (Support Tickets)
     Fixed: Messages are hard to read because they are greyed (Support Tickets)
     Fixed: Messages should be displayed in LIFO order (last in, first out) (Support Tickets)
 
@@ -35,6 +35,7 @@ SERVERS
     Fixed: Name server names are badly generated in dual-stack context
     Fixed: Name server names should be configurable, at least through event listeners (bind9 db.tpl template file)
     Fixed: Only double quotes must be escaped in master SQL user password (Servers::sqld::remote_server)
+    Fixed: SOA serial numbers must be generated using UTC timezone (Servers::named::bind)
 
 YOUTRACK
     #IP-1649 Domain traffic data missing
