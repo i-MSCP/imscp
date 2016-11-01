@@ -106,7 +106,7 @@ function showTicketContent($tpl, $ticketId, $userId)
     $tpl->assign(array(
         'TR_TICKET_ACTION' => $trAction,
         'TICKET_ACTION_VAL' => $action,
-        'TICKET_DATE_VAL' => date($cfg['DATE_FORMAT']. ' (H:n)', $row['ticket_date']),
+        'TICKET_DATE_VAL' => date($cfg['DATE_FORMAT']. ' (H:i)', $row['ticket_date']),
         'TICKET_SUBJECT_VAL' => tohtml($ticketSubject),
         'TICKET_CONTENT_VAL' => nl2br(tohtml($row['ticket_message'])),
         'TICKET_ID_VAL' => $row['ticket_id'],
@@ -589,7 +589,7 @@ function _showTicketReplies($tpl, $ticketId)
         while ($row = $stmt->fetchRow()) {
             $tpl->assign(array(
                 'TICKET_FROM_VAL' => _getTicketSender($row['ticket_id']),
-                'TICKET_DATE_VAL' => date($cfg['DATE_FORMAT']. ' (H:n)', $row['ticket_date']),
+                'TICKET_DATE_VAL' => date($cfg['DATE_FORMAT']. ' (H:i)', $row['ticket_date']),
                 'TICKET_CONTENT_VAL' => nl2br(tohtml($row['ticket_message']))
             ));
             $tpl->parse('TICKET_MESSAGE', '.ticket_message');
