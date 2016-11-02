@@ -19,6 +19,9 @@ FRONTEND
     Fixed: Messages are hard to read because they are greyed (Support Tickets)
     Fixed: Messages should be displayed in LIFO order (last in, first out) (Support Tickets)
 
+INSTALLER
+    Fixed: Could not set host value to `%' (host from which SQL users created by i-MSCP must be allowed to connect)
+
 LISTENERS
     Added: 10_frontend_templates_override.pl (Allows to override default frontEnd template files)
     Added: 10_named_global_ns.pl (Allows to set identical NS entries in all zones)

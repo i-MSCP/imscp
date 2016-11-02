@@ -549,8 +549,10 @@ EOF
 
                 if($host ne '%'
                     && !is_domain($host, \%options)
-                    && !$net->isValidAddr($host)
-                    || $net->getAddrType($host) =~ /^(?:LOOPBACK|LINK-LOCAL-UNICAST)$/
+                    && (
+                        !$net->isValidAddr($host)
+                        || $net->getAddrType($host) =~ /^(?:LOOPBACK|LINK-LOCAL-UNICAST)$/
+                    )
                 ) {
                     $msg = sprintf("\n\n\\Z1Error: '%s' is not valid or not allowed.\\Zn\n\nPlease try again:", $host);
                 }
