@@ -169,26 +169,28 @@ sub _loadData
     0;
 }
 
-=item _getHttpdData()
+=item _getData($action)
 
- Data provider method for Httpd servers
+ Data provider method for servers and packages
 
+ Param string $action Action
  Return hashref Reference to a hash containing data
 
 =cut
 
-sub _getHttpdData
+sub _getData
 {
-    my $self = shift;
+    my ($self, $action) = @_;
 
-    $self->{'_httpd'} = do {
+    $self->{'_data'} = do {
         {
+            ACTION  => $action,
             IPS     => $self->{'ipaddrs'},
             SSL_IPS => $self->{'ssl_ipaddrs'}
         }
-    } unless %{$self->{'_httpd'}};
+    } unless %{$self->{'_data'}};
 
-    $self->{'_httpd'};
+    $self->{'_data'};
 }
 
 =back

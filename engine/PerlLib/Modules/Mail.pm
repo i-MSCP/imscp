@@ -140,95 +140,39 @@ sub _loadData
     0;
 }
 
-=item _getMtaData($action)
+=item _getData($action)
 
- Data provider method for MTA servers
+ Data provider method for servers and packages
 
  Param string $action Action
  Return hashref Reference to a hash containing data
 
 =cut
 
-sub _getMtaData
+sub _getData
 {
-    my $self = shift;
+    my ($self, $action) = @_;
 
-    $self->{'_mta'} = do {
+    $self->{'_data'} = do {
         my ($user, $domain) = split '@', $self->{'mail_addr'};
 
         {
+            ACTION                  => $action,
+            STATUS                  => $self->{'status'},
             DOMAIN_NAME             => $domain,
             MAIL_ACC                => $user,
             MAIL_PASS               => $self->{'mail_pass'},
             MAIL_FORWARD            => $self->{'mail_forward'},
             MAIL_TYPE               => $self->{'mail_type'},
+            MAIL_QUOTA              => $self->{'quota'},
             MAIL_HAS_AUTO_RESPONDER => $self->{'mail_auto_respond'},
             MAIL_STATUS             => $self->{'status'},
             MAIL_ADDR               => $self->{'mail_addr'},
             MAIL_CATCHALL           => (index( $self->{'mail_type'}, '_catchall' ) != -1) ? $self->{'mail_acc'} : ''
         }
-    } unless %{$self->{'_mta'}};
+    } unless %{$self->{'_data'}};
 
-    $self->{'_mta'};
-}
-
-=item _getPoData($action)
-
- Data provider method for IMAP/POP3 servers
-
- Param string $action Action
- Return hashref Reference to a hash containing data
-
-=cut
-
-sub _getPoData
-{
-    my $self = shift;
-
-    $self->{'_po'} = do {
-        my ($user, $domain) = split '@', $self->{'mail_addr'};
-
-        {
-            DOMAIN_NAME   => $domain,
-            MAIL_ACC      => $user,
-            MAIL_PASS     => $self->{'mail_pass'},
-            MAIL_TYPE     => $self->{'mail_type'},
-            MAIL_QUOTA    => $self->{'quota'},
-            MAIL_STATUS   => $self->{'status'},
-            MAIL_ADDR     => $self->{'mail_addr'},
-            MAIL_CATCHALL => (index( $self->{'mail_type'}, '_catchall' ) != -1) ? $self->{'mail_acc'} : ''
-        }
-    } unless %{$self->{'_po'}};
-
-    $self->{'_po'};
-}
-
-=item _getPackagesData()
-
- Data provider method for i-MSCP packages
-
- Return hashref Reference to a hash containing data
-
-=cut
-
-sub _getPackagesData
-{
-    my $self = shift;
-
-    $self->{'_packages'} = do {
-        my ($user, $domain) = split '@', $self->{'mail_addr'};
-
-        {
-            DOMAIN_NAME   => $domain,
-            MAIL_ACC      => $user,
-            MAIL_PASS     => $self->{'mail_pass'},
-            MAIL_TYPE     => $self->{'mail_type'},
-            MAIL_ADDR     => $self->{'mail_addr'},
-            MAIL_CATCHALL => (index( $self->{'mail_type'}, '_catchall' ) != -1) ? $self->{'mail_acc'} : ''
-        }
-    } unless %{$self->{'_packages'}};
-
-    $self->{'_packages'};
+    $self->{'_data'};
 }
 
 =back

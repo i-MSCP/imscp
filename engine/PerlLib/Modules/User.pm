@@ -271,58 +271,36 @@ sub _loadData
     0;
 }
 
-=item _getHttpdData()
+=item _getData($action)
 
- Data provider method for Httpd servers
+ Data provider method for servers and packages
 
+ Param string $action Action
  Return hashref Reference to a hash containing data
 
 =cut
 
-sub _getHttpdData
+sub _getData
 {
-    my $self = shift;
+    my ($self, $action) = @_;
 
-    $self->{'_httpd'} = do {
+    $self->{'_data'} = do {
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
             ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 
         {
-            USER  => $userName,
-            GROUP => $groupName
+            ACTION        => $action,
+            STATUS        => $self->{'admin_status'},
+            USER_ID       => $self->{'admin_id'},
+            USER_SYS_UID  => $self->{'admin_sys_uid'},
+            USER_SYS_GID  => $self->{'admin_sys_gid'},
+            USERNAME      => $self->{'admin_name'},
+            USER          => $userName,
+            GROUP         => $groupName
         }
-    } unless %{$self->{'_httpd'}};
+    } unless %{$self->{'_data'}};
 
-    $self->{'_httpd'};
-}
-
-=item _getFtpdData()
-
- Data provider method for Ftpd servers
-
- Return hashref Reference to a hash containing data
-
-=cut
-
-sub _getFtpdData
-{
-    my $self = shift;
-
-    $self->{'_ftpd'} = do {
-        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
-            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
-
-        {
-            USER_ID      => $self->{'admin_id'},
-            USER_SYS_UID => $self->{'admin_sys_uid'},
-            USER_SYS_GID => $self->{'admin_sys_gid'},
-            USERNAME     => $self->{'admin_name'},
-            USER         => $userName,
-            GROUP        => $groupName
-        }
-    } unless %{$self->{'_ftpd'}};
-
-    $self->{'_ftpd'};
+    $self->{'_data'};
 }
 
 =back

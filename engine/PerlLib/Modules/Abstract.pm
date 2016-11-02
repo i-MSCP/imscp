@@ -144,7 +144,7 @@ sub _init
     my $self = shift;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    @{$self}{qw / _cron _ftpd _httpd _named _mta _po _sqld _packages / } = ({ }, { }, { }, { }, { }, { }, { }, { });
+    $self->{'_data'} = { };
     $self;
 }
 
@@ -165,20 +165,12 @@ sub _runAction
     if ($itemType eq 'server') {
         for my $server (iMSCP::Servers->getInstance()->getListWithFullNames()) {
             eval "require $server";
-            my $dataProvider = '_get'.ucfirst( substr( $server, 9 ) ).'Data';
-            my $moduleData = eval { $self->$dataProvider( $action ); };
-            if ($@) {
-                error( $@ );
-                return 1;
-            }
 
-            if (%{$moduleData}) {
-                my $instance = $server->factory();
-                if (my $subref = $instance->can( $action )) {
-                    debug( "Calling action $action on $server" );
-                    my $rs = $subref->( $instance, $moduleData );
-                    return $rs if $rs;
-                }
+            my $instance = $server->factory();
+            if (my $subref = $instance->can( $action )) {
+                debug( "Calling action $action on $server" );
+                my $rs = $subref->( $instance, $self->_getData( $action ) );
+                return $rs if $rs;
             }
         }
         return 0;
@@ -186,20 +178,11 @@ sub _runAction
 
     for my $package (iMSCP::Packages->getInstance()->getListWithFullNames()) {
         eval "require $package";
-        my $dataProvider = '_getPackagesData';
-        my $moduleData = eval { $self->$dataProvider( $action ); };
-        if ($@) {
-            error( $@ );
-            return 1;
-        }
-
-        if (%{$moduleData}) {
-            my $instance = $package->getInstance();
-            if (my $subref = $instance->can( $action )) {
-                debug( "Calling action $action on $package" );
-                my $rs = $subref->( $instance, $moduleData );
-                return $rs if $rs;
-            }
+        my $instance = $package->getInstance();
+        if (my $subref = $instance->can( $action )) {
+            debug( "Calling action $action on $package" );
+            my $rs = $subref->( $instance, $self->_getData( $action ) );
+            return $rs if $rs;
         }
     }
 
@@ -239,132 +222,18 @@ sub _runAllActions
     0;
 }
 
-=item _getCronData($action)
+=item _getData($action)
 
- Data provider method for cron servers
-
- This method must be implemented by any module which provides data for cron servers.
+ Data provider method for i-MSCP servers and packages
 
  Param string $action Action
- Return hashref Reference to a hash containing data
+ Return hashref Reference to a hash containing data, die on failure
 
 =cut
 
-sub _getCronData
+sub _getData
 {
-    $_[0]->{'_cron'};
-}
-
-=item _getFtpdData($action)
-
- Data provider method for Ftpd servers
-
- This method must be implemented by any module which provides data for Ftpd servers.
-
- Param string $action Action
- Return hashref Reference to a hash containing data
-
-=cut
-
-sub _getFtpdData
-{
-    $_[0]->{'_ftpd'};
-}
-
-=item _getHttpdData($action)
-
- Data provider method for Httpd servers
-
- This method must be implemented by any module which provides data for Httpd servers.
-
- Param string $action Action
- Return hashref Reference to a hash containing data
-
-=cut
-
-sub _getHttpdData
-{
-    $_[0]->{'_httpd'};
-}
-
-=item _getMtaData($action)
-
- Data provider method for MTA servers
-
- This method must be implemented by any module which provides data for MTA servers.
-
- Param string $action Action
- Return hashref Reference to a hash containing data
-
-=cut
-
-sub _getMtaData
-{
-    $_[0]->{'_mta'};
-}
-
-=item _getNamedData($action)
-
- Data provider method for named servers
-
- This method must be implemented by any module which provides data for named servers.
-
- Param string $action Action
- Return hashref Reference to a hash containing data
-
-=cut
-
-sub _getNamedData
-{
-    $_[0]->{'_named'};
-}
-
-=item _getPoData($action)
-
- Data provider method for IMAP/POP3 servers
-
- This method should be implemented by any module which provides data for IMAP/POP3 servers.
-
- Param string $action Action
- Return hashref Reference to a hash containing data
-
-=cut
-
-sub _getPoData
-{
-    $_[0]->{'_po'};
-}
-
-=item _getSqldData($action)
-
- Data provider method for SQL servers
-
- This method should be implemented by any module which provides data for SQL servers.
-
- Param string $action Action
- Return hashref Reference to a hash containing data
-
-=cut
-
-sub _getSqldData
-{
-    $_[0]->{'_sqld'};
-}
-
-=item _getPackagesData($action)
-
- Data provider method for i-MSCP packages
-
- This method must be implemented by any module which provides data for i-MSCP packages.
-
- Param string $action Action
- Return hashref Reference to a hash containing data
-
-=cut
-
-sub _getPackagesData
-{
-    $_[0]->{'_packages'};
+    $_[0]->{'_data'};
 }
 
 =back

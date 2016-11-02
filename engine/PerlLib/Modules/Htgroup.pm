@@ -164,23 +164,26 @@ sub _loadData
     0;
 }
 
-=item _getHttpdData()
+=item _getData($action)
 
- Data provider method for Httpd servers
+ Data provider method for servers and packages
 
+ Param string $action Action
  Return hashref Reference to a hash containing data
 
 =cut
 
-sub _getHttpdData
+sub _getData
 {
-    my $self = shift;
+    my ($self, $action) = @_;
 
-    $self->{'_httpd'} = do {
+    $self->{'_data'} = do {
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
             ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
         {
+            ACTION                => $action,
+            STATUS                => $self->{'status'},
             DOMAIN_ADMIN_ID       => $self->{'domain_admin_id'},
             USER                  => $userName,
             GROUP                 => $groupName,
@@ -190,9 +193,9 @@ sub _getHttpdData
             HTGROUP_DMN           => $self->{'domain_name'},
             WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
         }
-    } unless %{$self->{'_httpd'}};
+    } unless %{$self->{'_data'}};
 
-    $self->{'_httpd'};
+    $self->{'_data'};
 }
 
 =back

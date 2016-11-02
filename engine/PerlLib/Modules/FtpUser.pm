@@ -133,24 +133,27 @@ sub _loadData
     0;
 }
 
-=item _getFtpdData()
+=item _getData($action)
 
- Data provider method for Ftpd servers
+ Data provider method for servers and packages
 
+ Param string $action Action
  Return hashref Reference to a hash containing data
 
 =cut
 
-sub _getFtpdData
+sub _getData
 {
-    my $self = shift;
+    my ($self, $action) = @_;
 
-    $self->{'_ftpd'} = do {
+    $self->{'_data'} = do {
         my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.(
             $main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'}
         );
 
         {
+            ACTION         => $action,
+            STATUS         => $self->{'status'},
             OWNER_ID       => $self->{'admin_id'},
             USERNAME       => $self->{'userid'},
             PASSWORD_CRYPT => $self->{'passwd'},
@@ -162,9 +165,9 @@ sub _getFtpdData
             USER_SYS_NAME  => $userName,
             USER_SYS_GNAME => $groupName
         }
-    } unless %{$self->{'_ftpd'}};
+    } unless %{$self->{'_data'}};
 
-    $self->{'_ftpd'};
+    $self->{'_data'};
 }
 
 =back

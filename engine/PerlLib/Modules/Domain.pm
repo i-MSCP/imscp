@@ -388,19 +388,20 @@ sub _loadData
     0;
 }
 
-=item _getHttpdData()
+=item _getData($action)
 
- Data provider method for Httpd servers
+ Data provider method for servers and packages
 
+ Param string $action Action
  Return hashref Reference to a hash containing data, die on failure
 
 =cut
 
-sub _getHttpdData
+sub _getData
 {
-    my $self = shift;
+    my ($self, $action) = @_;
 
-    $self->{'_httpd'} = do {
+    $self->{'_data'} = do {
         my $httpd = Servers::httpd->factory();
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
             ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
@@ -426,8 +427,11 @@ sub _getHttpdData
             ? '; includeSubDomains' : '';
 
         {
+            ACTION                  => $action,
+            STATUS                  => $self->{'domain_status'},
             BASE_SERVER_VHOST       => $main::imscpConfig{'BASE_SERVER_VHOST'},
             BASE_SERVER_IP          => $main::imscpConfig{'BASE_SERVER_IP'},
+            BASE_SERVER_PUBLIC_IP   => $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'},
             DOMAIN_ADMIN_ID         => $self->{'domain_admin_id'},
             DOMAIN_NAME             => $self->{'domain_name'},
             DOMAIN_NAME_UNICODE     => idn_to_unicode( $self->{'domain_name'}, 'utf-8' ),
@@ -457,116 +461,22 @@ sub _getHttpdData
             FORWARD                 => $self->{'url_forward'} || 'no',
             FORWARD_TYPE            => $self->{'type_forward'} || '',
             FORWARD_PRESERVE_HOST   => $self->{'host_forward'} || 'Off',
-            DISABLE_FUNCTIONS       => $phpini->{$self->{'domain_id'}}->{'disable_functions'} //
-                'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
+            DISABLE_FUNCTIONS       => $phpini->{$self->{'domain_id'}}->{'disable_functions'} // 'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
             MAX_EXECUTION_TIME      => $phpini->{$self->{'domain_id'}}->{'max_execution_time'} // 30,
             MAX_INPUT_TIME          => $phpini->{$self->{'domain_id'}}->{'max_input_time'} // 60,
             MEMORY_LIMIT            => $phpini->{$self->{'domain_id'}}->{'memory_limit'} // 128,
-            ERROR_REPORTING         => $phpini->{$self->{'domain_id'}}->{'error_reporting'}
-                || 'E_ALL & ~E_DEPRECATED & ~E_STRICT',
+            ERROR_REPORTING         => $phpini->{$self->{'domain_id'}}->{'error_reporting'} || 'E_ALL & ~E_DEPRECATED & ~E_STRICT',
             DISPLAY_ERRORS          => $phpini->{$self->{'domain_id'}}->{'display_errors'} || 'off',
             POST_MAX_SIZE           => $phpini->{$self->{'domain_id'}}->{'post_max_size'} // 8,
             UPLOAD_MAX_FILESIZE     => $phpini->{$self->{'domain_id'}}->{'upload_max_filesize'} // 2,
             ALLOW_URL_FOPEN         => $phpini->{$self->{'domain_id'}}->{'allow_url_fopen'} || 'off',
-            PHP_FPM_LISTEN_PORT     => ($phpini->{$self->{'domain_id'}}->{'id'} // 0) - 1
+            PHP_FPM_LISTEN_PORT     => ($phpini->{$self->{'domain_id'}}->{'id'} // 0) - 1,
+            EXTERNAL_MAIL           => $self->{'external_mail'},
+            MAIL_ENABLED            => ($self->{'external_mail'} eq 'off' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0))
         }
-    } unless %{$self->{'_httpd'}};
+    } unless %{$self->{'_data'}};
 
-    $self->{'_httpd'};
-}
-
-=item _getMtaData()
-
- Data provider method for MTA servers
-
- Return hashref Reference to a hash containing data
-
-=cut
-
-sub _getMtaData
-{
-    my $self = shift;
-
-    $self->{'_mta'} = do {
-        {
-            DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
-            DOMAIN_NAME     => $self->{'domain_name'},
-            DOMAIN_TYPE     => $self->getType(),
-            EXTERNAL_MAIL   => $self->{'external_mail'},
-            MAIL_ENABLED    => (
-                $self->{'external_mail'} eq 'off' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
-            )
-        }
-    } unless %{$self->{'_mta'}};
-
-    $self->{'_mta'};
-}
-
-=item _getNamedData()
-
- Data provider method for named servers
-
- Return hashref Reference to a hash containing data
-
-=cut
-
-sub _getNamedData
-{
-    my $self = shift;
-
-    $self->{'_named'} = do {
-        my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
-            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-        {
-            BASE_SERVER_VHOST     => $main::imscpConfig{'BASE_SERVER_VHOST'},
-            BASE_SERVER_IP        => $main::imscpConfig{'BASE_SERVER_IP'},
-            BASE_SERVER_PUBLIC_IP => $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'},
-            DOMAIN_ADMIN_ID       => $self->{'domain_admin_id'},
-            DOMAIN_NAME           => $self->{'domain_name'},
-            DOMAIN_IP             => $self->{'ip_number'},
-            USER_NAME             => $userName,
-            MAIL_ENABLED          => (
-                $self->{'external_mail'} eq 'off' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
-            )
-        }
-    } unless %{$self->{'_named'}};
-    
-    $self->{'_named'};
-}
-
-=item _getPackagesData()
-
- Data provider method for i-MSCP packages
-
- Return hashref Reference to a hash containing data
-
-=cut
-
-sub _getPackagesData
-{
-    my $self = shift;
-
-    $self->{'_packages'} = do {
-        my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
-            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-        my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
-
-        {
-            DOMAIN_ADMIN_ID       => $self->{'domain_admin_id'},
-            ALIAS                 => $userName,
-            DOMAIN_NAME           => $self->{'domain_name'},
-            ROOT_DOMAIN_NAME      => $self->{'domain_name'},
-            USER                  => $userName,
-            GROUP                 => $groupName,
-            HOME_DIR              => $homeDir,
-            WEB_DIR               => $homeDir,
-            FORWARD               => 'no',
-            FORWARD_TYPE          => '',
-            WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
-        }
-    } unless %{$self->{'_packages'}};
-
-    $self->{'_packages'};
+    $self->{'_data'};
 }
 
 =item isValidCertificate($domainName)

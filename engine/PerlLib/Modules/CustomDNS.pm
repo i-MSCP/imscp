@@ -199,27 +199,29 @@ sub _loadData
     0;
 }
 
-=item _getNamedData()
+=item _getData($action)
 
- Data provider method for named servers
+ Data provider method for servers and packages
 
+ Param string $action Action
  Return hashref Reference to a hash containing data
 
 =cut
 
-sub _getNamedData
+sub _getData
 {
-    my $self = shift;
+    my ($self, $action) = @_;
 
-    $self->{'_named'} = do {
+    $self->{'_data'} = do {
         {
+            ACTION      => $action,
             DOMAIN_NAME => $self->{'domain_name'},
             DOMAIN_IP   => $self->{'domain_ip'},
             DNS_RECORDS => [ @{$self->{'dns_records'}} ]
         }
-    } unless %{$self->{'_named'}};
+    } unless %{$self->{'_data'}};
 
-    $self->{'_named'};
+    $self->{'_data'};
 }
 
 =back
