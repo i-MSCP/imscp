@@ -39,6 +39,9 @@ SERVERS
     Fixed: Name server names should be configurable, at least through event listeners (bind9 db.tpl template file)
     Fixed: Only double quotes must be escaped in master SQL user password (Servers::sqld::remote_server)
     Fixed: SOA serial numbers must be generated using UTC timezone (Servers::named::bind)
+    
+SERVICES
+    Reverted: Changes made regarding #IP-1641 issue (See the issue for further details)
 
 YOUTRACK
     #IP-1649 Domain traffic data missing
