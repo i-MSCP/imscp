@@ -632,7 +632,7 @@ function admin_checkAndUpdateData($resellerId)
 
             if ($data['password'] != '') {
                 $setPassword = '`admin_pass` = ?,';
-                array_unshift($bindParams, cryptPasswordWithSalt($data['password']));
+                array_unshift($bindParams, \iMSCP\Crypt::apr1MD5($data['password']));
             } else {
                 $setPassword = '';
             }
@@ -654,7 +654,8 @@ function admin_checkAndUpdateData($resellerId)
                         max_dmn_cnt = ?, max_sub_cnt = ?, max_als_cnt = ?, max_mail_cnt = ?, max_ftp_cnt = ?,
                         max_sql_db_cnt = ?, max_sql_user_cnt = ?, max_traff_amnt = ?, max_disk_amnt = ?,
                         reseller_ips = ?, customer_id = ?, software_allowed = ?, softwaredepot_allowed = ?,
-                        websoftwaredepot_allowed = ?, support_system = ?, php_ini_system = ?, php_ini_al_disable_functions = ?, php_ini_al_mail_function = ?,
+                        websoftwaredepot_allowed = ?, support_system = ?, php_ini_system = ?,
+                        php_ini_al_disable_functions = ?, php_ini_al_mail_function = ?,
                         php_ini_al_allow_url_fopen = ?, php_ini_al_display_errors = ?, php_ini_max_post_max_size = ?,
                         php_ini_max_upload_max_filesize = ?, php_ini_max_max_execution_time = ?,
                         php_ini_max_max_input_time = ?, php_ini_max_memory_limit = ?

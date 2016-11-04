@@ -86,7 +86,7 @@ function admin_updateUserData($userId)
 		exec_query(
 			$query,
 			array(
-				cryptPasswordWithSalt($_POST['password']), $fname, $lname, $firm, $zip, $city, $state, $country, $email,
+                \iMSCP\Crypt::apr1MD5($_POST['password']), $fname, $lname, $firm, $zip, $city, $state, $country, $email,
 				$phone, $fax, $street1, $street2, $gender, $userId
 			)
 		);

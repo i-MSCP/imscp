@@ -81,10 +81,9 @@ function updateFtpAccount($userid)
     $homeDir = utils_normalizePath($cfg['USER_WEB_DIR'] . '/' . $mainDmnProps['domain_name'] . $homeDir);
 
     if ($passwd !== '') {
-        $encryptedPassword = cryptPasswordWithSalt($passwd);
         exec_query(
             'UPDATE ftp_users SET passwd = ?, rawpasswd = ?, homedir = ?, status = ? WHERE userid = ?',
-            array($encryptedPassword, $passwd, $homeDir, 'tochange', $userid)
+            array(\iMSCP\Crypt::sha512($passwd), $passwd, $homeDir, 'tochange', $userid)
         );
     } else {
         exec_query('UPDATE ftp_users SET homedir = ?, status = ? WHERE userid = ?', array(

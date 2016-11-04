@@ -51,8 +51,6 @@ function client_updateHtaccessUser(&$dmn_id, &$uuser_id)
 				return;
 			}
 
-			$nadmin_password = cryptPasswordWithSalt($_POST['pass'], generateRandomSalt(true));
-
 			$change_status = 'tochange';
 
 			$query = "
@@ -65,7 +63,7 @@ function client_updateHtaccessUser(&$dmn_id, &$uuser_id)
 				AND
 					`id` = ?
 			";
-			exec_query($query, array($nadmin_password, $change_status, $dmn_id, $uuser_id,));
+			exec_query($query, array(\iMSCP\Crypt::apr1MD5($_POST['pass']), $change_status, $dmn_id, $uuser_id,));
 
 			send_request();
 

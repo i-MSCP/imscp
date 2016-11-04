@@ -155,7 +155,7 @@ function addCustomer()
     $aps = str_replace('_', '', $aps);
     $extMailServer = str_replace('_', '', $extMailServer);
     $webFolderProtection = str_replace('_', '', $webFolderProtection);
-    $encryptedPassword = cryptPasswordWithSalt($password);
+    $encryptedPassword = \iMSCP\Crypt::apr1MD5($password);
     $db = iMSCP_Database::getInstance();
 
     try {

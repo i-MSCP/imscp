@@ -88,7 +88,7 @@ sub process
         'Modules::User',
         "
             SELECT admin_id AS id, admin_name AS name, admin_status AS status FROM admin
-            WHERE admin_type = 'user' AND admin_status IN ('toadd', 'tochange') ORDER BY admin_id ASC
+            WHERE admin_type = 'user' AND admin_status IN ('toadd', 'tochange', 'tochangepwd') ORDER BY admin_id ASC
         "
     );
 

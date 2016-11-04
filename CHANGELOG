@@ -9,15 +9,20 @@ BACKEND
     Fixed: Configuration files must be opened read-only outside of setup context
     Fixed: Lock files must be released before processing of debug messages (dump)
     Fixed: Wrong provider used while removing services (iMSCP::Service)
+    Review: Merged module data provider methods (All servers/packages are now receiving identical set of data)
 
 FRONTEND
     Added: Hour and minute fields in message headers (Support Tickets)
+    Changed: Htuser passwords are now hashed using APR-1 algorithm
+    Changed: Panel user passwords are now hashed using APR-1 algorithm (See the errata file for further details)
     Fixed: Allow the resellers to change customer passwords by removing useless verification on the current password
     Fixed: Could not list directory when domain alias or subdomain is forwarded (Client side)
+    Fixed: HTML <br> tags not rendered in messages (Support Tickets)
     Fixed: Ignore user abort while listing directory (VirtualFileSystem)
     Fixed: It is too hard to differentiate different answers (Support Tickets)
     Fixed: Messages are hard to read because they are greyed (Support Tickets)
-    Fixed: Messages should be displayed in LIFO order (last in, first out) (Support Tickets)
+    Fixed: Messages should be displayed in LIFO order (Support Tickets)
+    Removed: cryptPasswordWithSalt(), generateRandomSalt() and _passgen() functions (replaced by \iMSCP\Crypt library)
 
 INSTALLER
     Fixed: Could not set host value to `%' (host from which SQL users created by i-MSCP must be allowed to connect)
@@ -29,6 +34,7 @@ LISTENERS
     Removed: 10_named_override_default_ns_rr.pl (replaced by the all-in-one 10_named_global_ns.pl listener file)
 
 PACKAGES
+    Changed: Authentication provider for Awstats (Apache mod_authn_file instead of mod_dbd)
     Fixed: AH01102: error reading status line from remote server 127.0.0.1:8889
 
 PLUGINS

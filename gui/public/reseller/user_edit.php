@@ -157,7 +157,7 @@ function reseller_updateUserData($adminId)
 			redirectTo('user_edit.php?edit_id=' . $adminId);
 		}
 
-		$encryptedPassword = cryptPasswordWithSalt($password);
+		$encryptedPassword = \iMSCP\Crypt::apr1MD5($password);
 
 		exec_query(
 			'
@@ -165,7 +165,7 @@ function reseller_updateUserData($adminId)
 					admin
 				SET
 					admin_pass = ?, fname = ?, lname = ?, firm = ?, zip = ?, city = ?, state = ?, country = ?, email = ?,
-					phone = ?, fax = ?, street1 = ?, street2 = ?, gender = ?, customer_id = ?
+					phone = ?, fax = ?, street1 = ?, street2 = ?, gender = ?, customer_id = ?, admin_status = ?
 				WHERE
 					admin_id = ?
 				AND
@@ -173,7 +173,7 @@ function reseller_updateUserData($adminId)
 			',
 			array(
 				$encryptedPassword, $firstName, $lastName, $firm, $zip, $city, $state, $country, $email, $phone, $fax,
-				$street1, $street2, $gender, $customerId, $adminId, $resellerId
+				$street1, $street2, $gender, $customerId, $adminId, $resellerId, 'tochangepwd'
 			)
 		);
 

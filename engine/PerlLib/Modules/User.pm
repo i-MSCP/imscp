@@ -74,7 +74,7 @@ sub process
     return $rs if $rs;
 
     my @sql;
-    if ($self->{'admin_status'} =~ /^to(?:add|change)$/) {
+    if ($self->{'admin_status'} =~ /^to(?:add|change(?:pwd)?)$/) {
         $rs = $self->add();
         @sql = (
             'UPDATE admin SET admin_status = ? WHERE admin_id = ?',
@@ -112,95 +112,97 @@ sub add
 {
     my $self = shift;
 
-    my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
-        ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
-    my $password = '';
-    my $comment = 'i-MSCP Web User';
-    my $homedir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'admin_name'}";
-    my $skeletonPath = $self->{'skeletonPath'} || '/dev/null';
-    my $shell = '/bin/false';
+    if ($self->{'admin_status'} ne 'tochangepwd') {
+        my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
+            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
+        my $password = '';
+        my $comment = 'i-MSCP Web User';
+        my $homedir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'admin_name'}";
+        my $skeletonPath = $self->{'skeletonPath'} || '/dev/null';
+        my $shell = '/bin/false';
 
-    my ($oldUserName, undef, $userUid, $userGid) = getpwuid( $self->{'admin_sys_uid'} );
-    my $rs = $self->{'eventManager'}->trigger(
-        'onBeforeAddImscpUnixUser', $self->{'admin_id'}, $userName, \$password, $groupName, \$comment, \$homedir,
-        \$skeletonPath, \$shell, $userUid, $userGid
-    );
-    return $rs if $rs;
+        my ($oldUserName, undef, $userUid, $userGid) = getpwuid( $self->{'admin_sys_uid'} );
+        my $rs = $self->{'eventManager'}->trigger(
+            'onBeforeAddImscpUnixUser', $self->{'admin_id'}, $userName, \$password, $groupName, \$comment, \$homedir,
+            \$skeletonPath, \$shell, $userUid, $userGid
+        );
+        return $rs if $rs;
 
-    clearImmutable( $homedir ) if -d $homedir;
+        clearImmutable( $homedir ) if -d $homedir;
 
-    if (!$oldUserName || $userUid == 0) {
-        # Creating i-MSCP unix user
+        if (!$oldUserName || $userUid == 0) {
+            # Creating i-MSCP unix user
+            $rs = iMSCP::SystemUser->new(
+                password     => $password,
+                comment      => $comment,
+                home         => $homedir,
+                skeletonPath => $skeletonPath,
+                shell        => $shell
+            )->addSystemUser( $userName );
+            return $rs if $rs;
+
+            $userUid = getpwnam( $userName );
+            $userGid = getgrnam( $groupName );
+        } else {
+            # Modifying existents i-MSCP unix user
+            my @cmd = (
+                'pkill -KILL -u', escapeShell( $oldUserName ), ';',
+                'usermod',
+                '-c', escapeShell( $comment ), # New comment
+                '-d', escapeShell( $homedir ), # New homedir
+                '-l', escapeShell( $userName ), # New login
+                '-m', # Move current homedir content to new homedir
+                '-s', escapeShell( $shell ), #  New Shell
+                escapeShell( $self->{'admin_sys_name'} ) # Old username
+            );
+            $rs = execute( "@cmd", \my $stdout, \my $stderr );
+            debug( $stdout ) if $stdout;
+            error( $stderr || 'Unknown error' ) if $rs && $rs != 12;
+            return $rs if $rs && $rs != 12;
+
+            # Modifying existents i-MSCP unix group
+            @cmd = (
+                'groupmod',
+                '-n', escapeShell( $groupName ), # New group name
+                escapeShell( $self->{'admin_sys_gname'} ) # Current group name
+            );
+            $rs = execute( "@cmd", \$stdout, \$stderr );
+            debug( $stdout ) if $stdout;
+            error( $stderr || 'Unknown error' ) if $rs;
+            return $rs if $rs;
+        }
+
+        # Add i-MSCP frontEnd user (e.g vu2000) to user group. Needed for some server such as vsftpd (since 1.2.15)
         $rs = iMSCP::SystemUser->new(
-            'password'     => $password,
-            'comment'      => $comment,
-            'home'         => $homedir,
-            'skeletonPath' => $skeletonPath,
-            'shell'        => $shell
-        )->addSystemUser( $userName );
+            username => $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'}
+        )->addToGroup(
+            $groupName
+        );
         return $rs if $rs;
 
-        $userUid = getpwnam( $userName );
-        $userGid = getgrnam( $groupName );
-    } else {
-        # Modifying existents i-MSCP unix user
-        my @cmd = (
-            'pkill -KILL -u', escapeShell( $oldUserName ), ';',
-            'usermod',
-            '-c', escapeShell( $comment ), # New comment
-            '-d', escapeShell( $homedir ), # New homedir
-            '-l', escapeShell( $userName ), # New login
-            '-m', # Move current homedir content to new homedir
-            '-s', escapeShell( $shell ), #  New Shell
-            escapeShell( $self->{'admin_sys_name'} ) # Old username
-        );
-        $rs = execute( "@cmd", \my $stdout, \my $stderr );
-        debug( $stdout ) if $stdout;
-        error( $stderr || 'Unknown error' ) if $rs && $rs != 12;
-        return $rs if $rs && $rs != 12;
-
-        # Modifying existents i-MSCP unix group
-        @cmd = (
-            'groupmod',
-            '-n', escapeShell( $groupName ), # New group name
-            escapeShell( $self->{'admin_sys_gname'} ) # Current group name
-        );
-        $rs = execute( "@cmd", \$stdout, \$stderr );
-        debug( $stdout ) if $stdout;
-        error( $stderr || 'Unknown error' ) if $rs;
-        return $rs if $rs;
-    }
-
-    # Add i-MSCP frontEnd user (e.g vu2000) to user group. Needed for some server such as vsftpd (since 1.2.15)
-    $rs = iMSCP::SystemUser->new(
-        username => $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'}
-    )->addToGroup(
-        $groupName
-    );
-    return $rs if $rs;
-
-    # Updating admin.admin_sys_name, admin.admin_sys_uid, admin.admin_sys_gname and admin.admin_sys_gid columns
-    my @sql = (
-        '
+        # Updating admin.admin_sys_name, admin.admin_sys_uid, admin.admin_sys_gname and admin.admin_sys_gid columns
+        my @sql = (
+            '
             UPDATE admin SET admin_sys_name = ?, admin_sys_uid = ?, admin_sys_gname = ?, admin_sys_gid = ?
             WHERE admin_id = ?
         ',
-        $userName, $userUid, $groupName, $userGid, $self->{'admin_id'}
-    );
-    my $rdata = iMSCP::Database->factory()->doQuery( 'dummy', @sql );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
-        return 1;
-    }
+            $userName, $userUid, $groupName, $userGid, $self->{'admin_id'}
+        );
+        my $rdata = iMSCP::Database->factory()->doQuery( 'dummy', @sql );
+        unless (ref $rdata eq 'HASH') {
+            error( $rdata );
+            return 1;
+        }
 
-    $self->{'admin_sys_name'} = $userName;
-    $self->{'admin_sys_uid'} = $userUid;
-    $self->{'admin_sys_gname'} = $groupName;
-    $self->{'admin_sys_gid'} = $userGid;
-    $self->{'eventManager'}->trigger(
-        'onAfterAddImscpUnixUser', $self->{'admin_id'}, $userName, $password, $groupName, $comment, $homedir,
-        $skeletonPath, $shell, $userUid, $userGid
-    );
+        $self->{'admin_sys_name'} = $userName;
+        $self->{'admin_sys_uid'} = $userUid;
+        $self->{'admin_sys_gname'} = $groupName;
+        $self->{'admin_sys_gid'} = $userGid;
+        $self->{'eventManager'}->trigger(
+            'onAfterAddImscpUnixUser', $self->{'admin_id'}, $userName, $password, $groupName, $comment, $homedir,
+            $skeletonPath, $shell, $userUid, $userGid
+        );
+    }
 
     # Run the preaddUser(), addUser() and postaddUser() methods on servers/packages that implement them
     $self->SUPER::add();
@@ -252,8 +254,8 @@ sub _loadData
     my $rdata = iMSCP::Database->factory()->doQuery(
         'admin_id',
         '
-            SELECT admin_id, admin_name, admin_sys_name, admin_sys_uid, admin_sys_gname, admin_sys_gid, admin_status
-            FROM admin
+            SELECT admin_id, admin_name, admin_pass, admin_sys_name, admin_sys_uid, admin_sys_gname, admin_sys_gid,
+            admin_status FROM admin
             WHERE admin_id = ?
         ',
         $userId
@@ -295,6 +297,7 @@ sub _getData
             USER_SYS_UID  => $self->{'admin_sys_uid'},
             USER_SYS_GID  => $self->{'admin_sys_gid'},
             USERNAME      => $self->{'admin_name'},
+            PASSWORD_HASH => $self->{'admin_pass'},
             USER          => $userName,
             GROUP         => $groupName
         }

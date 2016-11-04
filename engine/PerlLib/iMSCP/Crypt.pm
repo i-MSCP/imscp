@@ -39,7 +39,7 @@ use constant ALPHA64 => './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 use constant BASE64 => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 our @EXPORT_OK = qw/
-    randomStr md5 sha256 sha512 bcrypt htpasswd verify hashEqual encryptBlowfishCBC decryptBlowfishCBC
+    randomStr md5 sha256 sha512 bcrypt apr1MD5 htpasswd verify hashEqual encryptBlowfishCBC decryptBlowfishCBC
     encryptRijndaelCBC decryptRijndaelCBC
 /;
 
@@ -200,6 +200,63 @@ sub bcrypt($;$$)
     Crypt::Eksblowfish::Bcrypt::bcrypt( $password, '$2a$'.$cost.'$'.Crypt::Eksblowfish::Bcrypt::en_base64( $salt ) );
 }
 
+=item apr1MD5($password [, $salt = randomStr(8, ALPHA64) ])
+
+ APR1 MD5 algorithm (see http://svn.apache.org/viewvc/apr/apr/trunk/crypto/apr_md5.c?view=markup)
+
+ Param string $password The password to be hashed
+ Param string $salt Salt An optional salt string to base the hashing on
+ Return string
+
+=cut
+
+sub apr1MD5($;$)
+{
+    my ($password, $salt) = @_;
+
+    if ($salt) {
+        length $salt == 8 or croak( 'The salt length for md5 (APR1) algorithm must be 8 bytes long' );
+        my $regexp = qr/[^${\(ALPHA64)}]/;
+        $salt !~ /$regexp/ or croak( 'The salt must be a string in the alphabet "./0-9A-Za-z"' );
+    } else {
+        $salt = randomStr( 8, ALPHA64 );
+    }
+
+    my $len = length $password;
+    my $context = $password.'$apr1$'.$salt;
+    my $bin = pack( 'H32', Digest::MD5::md5_hex( $password.$salt.$password ) );
+
+    for (my $i = $len; $i > 0; $i -= 16) {
+        $context .= substr( $bin, 0, (16, $i)[16 > $i] );
+    }
+
+    my @password = split //, $password;
+    for (my $i = $len; $i > 0; $i >>= 1) {
+        $context .= ($i & 1) ? chr( 0 ) : $password[0];
+    }
+
+    $bin = pack( 'H32', Digest::MD5::md5_hex( $context ) );
+
+    for (my $i = 0; $i < 1000; $i++) {
+        my $new = ($i & 1) ? $password : $bin;
+        $new .= $salt if $i % 3;
+        $new .= $password if $i % 7;
+        $new .= ($i & 1) ? $bin : $password;
+        $bin = pack( 'H32', Digest::MD5::md5_hex( $new ) );
+    }
+
+    my @bin = split //, $bin;
+    my $tmp = '';
+    for (my $i = 0; $i < 5; $i++) {
+        my $k = $i + 6;
+        my $j = $i + 12;
+        $j = 5 if $j == 16;
+        $tmp = $bin[$i].$bin[$k].$bin[$j].$tmp;
+    }
+
+    '$apr1$'.$salt.'$'._toAlphabet64( chr( 0 ).chr( 0 ).$bin[11].$tmp );
+}
+
 =item htpasswd($password [, $cost = 10 [, $salt = randomStr [, $format = 'md5' ] ] ])
 
  Create an htpasswd password hash of the given password using the given algorithm
@@ -240,7 +297,7 @@ sub htpasswd($;$$)
     }
 
     if ($format eq 'md5') {
-        return _apr1Md5( $password, $salt );
+        return apr1MD5( $password, $salt );
     }
 
     croak(
@@ -270,7 +327,7 @@ sub verify($$)
         # htpasswd md5 (APR1) hashed password
         my @token = split /\$/, $hash;
         $token[2] or croak( 'APR1 password format is not valid' );
-        return hashEqual( $hash, _apr1Md5( $password, $token[2] ) );
+        return hashEqual( $hash, apr1MD5( $password, $token[2] ) );
     }
 
     if (substr( $hash, 0, 4 ) eq '$2a$') { # bcrypt hashed password
@@ -456,63 +513,6 @@ sub _toAlphabet64($)
     $string = reverse( substr( encode_base64( $string, '' ), 2 ) );
     eval "\$string =~ tr#${\(BASE64)}#${\(ALPHA64)}#";
     $string;
-}
-
-=item _apr1Md5($password [, $salt = randomStr(8, ALPHA64) ])
-
- APR1 MD5 algorithm (see http://svn.apache.org/viewvc/apr/apr/trunk/crypto/apr_md5.c?view=markup)
-
- Param string $password The password to be hashed
- Param string $salt Salt An optional salt string to base the hashing on
- Return string
-
-=cut
-
-sub _apr1Md5($;$)
-{
-    my ($password, $salt) = @_;
-
-    if ($salt) {
-        length $salt == 8 or croak( 'The salt length for md5 (APR1) algorithm must be 8 bytes long' );
-        my $regexp = qr/[^${\(ALPHA64)}]/;
-        $salt !~ /$regexp/ or croak( 'The salt must be a string in the alphabet "./0-9A-Za-z"' );
-    } else {
-        $salt = randomStr( 8, ALPHA64 );
-    }
-
-    my $len = length $password;
-    my $text = $password.'$apr1$'.$salt;
-    my $bin = pack( 'H32', Digest::MD5::md5_hex( $password.$salt.$password ) );
-
-    for (my $i = $len; $i > 0; $i -= 16) {
-        $text .= substr( $bin, 0, (16, $i)[16 > $i] );
-    }
-
-    my @password = split //, $password;
-    for (my $i = $len; $i > 0; $i >>= 1) {
-        $text .= ($i & 1) ? chr( 0 ) : $password[0];
-    }
-
-    $bin = pack( 'H32', Digest::MD5::md5_hex( $text ) );
-
-    for (my $i = 0; $i < 1000; $i++) {
-        my $new = ($i & 1) ? $password : $bin;
-        $new .= $salt if $i % 3;
-        $new .= $password if $i % 7;
-        $new .= ($i & 1) ? $bin : $password;
-        $bin = pack( 'H32', Digest::MD5::md5_hex( $new ) );
-    }
-
-    my @bin = split //, $bin;
-    my $tmp = '';
-    for (my $i = 0; $i < 5; $i++) {
-        my $k = $i + 6;
-        my $j = $i + 12;
-        $j = 5 if $j == 16;
-        $tmp = $bin[$i].$bin[$k].$bin[$j].$tmp;
-    }
-
-    '$apr1$'.$salt.'$'._toAlphabet64( chr( 0 ).chr( 0 ).$bin[11].$tmp );
 }
 
 =back

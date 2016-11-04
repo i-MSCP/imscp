@@ -42,13 +42,14 @@ function customer_updatePassword()
     } else if ($_POST['password'] !== $_POST['password_confirmation']) {
         set_page_message(tr("Passwords do not match."), 'error');
     } elseif (checkPasswordSyntax($_POST['password'])) {
-        $query = 'UPDATE `admin` SET `admin_pass` = ? WHERE `admin_id` = ?';
-        exec_query($query, array(cryptPasswordWithSalt($_POST['password']), $_SESSION['user_id']));
+        $query = 'UPDATE `admin` SET `admin_pass` = ?, admin_status = ? WHERE `admin_id` = ?';
+        exec_query($query, array(\iMSCP\Crypt::apr1MD5($_POST['password']), 'tochangepwd', $_SESSION['user_id']));
 
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array(
             'userId' => $_SESSION['user_id']
         ));
 
+        send_request();
         write_log($_SESSION['user_logged'] . ': updated password.', E_USER_NOTICE);
         set_page_message(tr('Password successfully updated.'), 'success');
     }

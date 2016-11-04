@@ -30,7 +30,7 @@ use Email::Valid;
 use File::Basename;
 use iMSCP::Debug;
 use iMSCP::Config;
-use iMSCP::Crypt 'sha512';
+use iMSCP::Crypt 'apr1MD5';
 use iMSCP::Database;
 use iMSCP::Dir;
 use iMSCP::Execute;
@@ -648,7 +648,7 @@ sub _setupMasterAdmin
 
     return 0 if $password eq '';
 
-    $password = sha512( $password );
+    $password = apr1MD5( $password );
 
     my $db = iMSCP::Database->factory();
     $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) );

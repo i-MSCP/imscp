@@ -154,6 +154,8 @@ sub addUser
 {
     my ($self, $data) = @_;
 
+    return 0 if $data->{'STATUS'} eq 'tochangepwd';
+
     $self->{'eventManager'}->trigger( 'beforeFtpdAddUser', $data );
 
     my $db = iMSCP::Database->factory();

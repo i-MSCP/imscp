@@ -40,9 +40,9 @@ function debugger_getUserErrors($tpl)
     $stmt = exec_query(
         "
             SELECT `admin_name`, `admin_status`, `admin_id` FROM `admin`
-            WHERE `admin_type` = 'user' AND `admin_status` NOT IN (?, ?, ?, ?)
+            WHERE `admin_type` = 'user' AND `admin_status` NOT IN (?, ?, ?, ?, ?)
         ",
-        array('ok', 'toadd', 'tochange', 'todelete')
+        array('ok', 'toadd', 'tochange', 'tochangepwd', 'todelete')
     );
 
     if (!$stmt->rowCount()) {

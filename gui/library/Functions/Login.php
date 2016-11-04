@@ -76,18 +76,24 @@ function login_credentials($event)
             );
         } else {
             $identity = $stmt->fetchRow(PDO::FETCH_OBJ);
-            $dbPassword = $identity->admin_pass;
-
-            if ($dbPassword != md5($password) && crypt($password, $dbPassword) != $dbPassword) {
+            $passwordHash = $identity->admin_pass;
+            
+            if (\iMSCP\Crypt::hashEqual(md5($password), $passwordHash) && !\iMSCP\Crypt::verify($password, $passwordHash)) {
                 $result = new iMSCP_Authentication_Result(
                     iMSCP_Authentication_Result::FAILURE_CREDENTIAL_INVALID, null, tr('Bad password.')
                 );
             } else {
-                if (strpos($dbPassword, '$') !== 0) { # Not a password encrypted with crypt(), then re-encrypt it
-                    exec_query('UPDATE admin SET admin_pass = ? WHERE admin_id = ?', array(
-                        cryptPasswordWithSalt($password), $identity->admin_id
+                if (strpos($passwordHash, '$apr1$') !== 0) { # Not an APR-1 hashed password, we recreate the hash
+                    exec_query('UPDATE admin SET admin_pass = ?, admin_status = ? WHERE admin_id = ?', array(
+                        \iMSCP\Crypt::apr1MD5($password),
+                        ($identity->admin_type) == 'user' ? 'tochangepwd' : 'ok',
+                        $identity->admin_id
                     ));
-                    write_log(sprintf('Info: Password for user %s has been re-encrypted using the best available algorithm', $identity->admin_name), E_USER_NOTICE);
+                    write_log(sprintf('Password for user %s has been re-encrypted using APR-1 algorithm', $identity->admin_name), E_USER_NOTICE);
+
+                    if($identity->admin_type == 'user') {
+                        send_request();
+                    }
                 }
 
                 $result = new iMSCP_Authentication_Result(iMSCP_Authentication_Result::SUCCESS, $identity);

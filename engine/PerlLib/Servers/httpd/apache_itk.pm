@@ -185,6 +185,8 @@ sub addUser
 {
     my ($self, $data) = @_;
 
+    return 0 if $data->{'STATUS'} eq 'tochangepwd';
+
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdAddUser', $data );
     $self->setData( $data );
     $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'HTTPD_USER'} )->addToGroup( $data->{'GROUP'} );

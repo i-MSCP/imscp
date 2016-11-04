@@ -162,6 +162,7 @@ function generate_users_list($tpl, $resellerId)
                 $statusBool = false;
                 $canChange = true;
             } else if (
+                $row['admin_status'] == 'tochange' || $row['admin_status'] == 'tochangepwd' ||
                 $row['domain_status'] == 'toadd' || $row['domain_status'] == 'torestore' ||
                 $row['domain_status'] == 'tochange' || $row['domain_status'] == 'toenable' ||
                 $row['domain_status'] == 'todisable' || $row['domain_status'] == 'todelete'

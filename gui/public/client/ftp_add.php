@@ -188,7 +188,7 @@ function addAccount()
 
     $cfg = iMSCP_Registry::get('config');
     $username .= '@' . encode_idna($dmnName);
-    $encryptedPassword = cryptPasswordWithSalt($passwd);
+    $encryptedPassword = \iMSCP\Crypt::sha512($passwd);
     $shell = '/bin/sh';
     $homeDir = utils_normalizePath($cfg['USER_WEB_DIR'] . '/' . $mainDmnProps['domain_name'] . $homeDir);
     $stmt = exec_query(

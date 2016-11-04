@@ -489,10 +489,10 @@ function admin_checkAndCreateResellerAccount()
                     )
                 ',
                 array(
-                    $data['admin_name'], cryptPasswordWithSalt($data['password']), 'reseller', time(), $_SESSION['user_id'],
-                    $data['fname'], $data['lname'], $data['firm'], $data['zip'], $data['city'], $data['state'],
-                    $data['country'], $data['email'], $data['phone'], $data['fax'], $data['street1'], $data['street2'],
-                    $data['gender']
+                    $data['admin_name'], \iMSCP\Crypt::apr1MD5(clean_input($data['password'])), 'reseller', time(),
+                    $_SESSION['user_id'], $data['fname'], $data['lname'], $data['firm'], $data['zip'], $data['city'],
+                    $data['state'], $data['country'], $data['email'], $data['phone'], $data['fax'], $data['street1'],
+                    $data['street2'], $data['gender']
                 )
             );
 

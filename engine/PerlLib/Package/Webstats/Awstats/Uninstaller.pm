@@ -26,13 +26,11 @@ package Package::Webstats::Awstats::Uninstaller;
 use strict;
 use warnings;
 use iMSCP::Debug;
-use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Execute;
+use iMSCP::File;
 use Servers::httpd;
 use Servers::cron;
-use Servers::sqld;
-use iMSCP::Ext2Attributes qw(setImmutable clearImmutable isImmutable);
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -55,8 +53,7 @@ sub uninstall
 {
     my $self = shift;
 
-    my $rs = $self->_removeSqlUser();
-    $rs ||= $self->_deleteFiles();
+    my $rs = $self->_deleteFiles();
     $rs ||= $self->_removeVhost();
     $rs ||= $self->_restoreDebianConfig();
 }
@@ -66,19 +63,6 @@ sub uninstall
 =head1 PRIVATE METHODS
 
 =over 4
-
-=item _removeSqlUser()
-
- Remove SQL user
-
- Return int 0
-
-=cut
-
-sub _removeSqlUser
-{
-    Servers::sqld->factory()->dropUser( 'imscp_awstats', $main::imscpConfig{'DATABASE_USER_HOST'} );
-}
 
 =item _deleteFiles()
 
@@ -90,15 +74,18 @@ sub _removeSqlUser
 
 sub _deleteFiles
 {
-    if (-d $main::imscpConfig{'AWSTATS_CACHE_DIR'}) {
-        my $rs = execute( "rm -fR $main::imscpConfig{'AWSTATS_CACHE_DIR'}/*", \ my $stdout, \ my $stderr );
-        debug( $stdout ) if $stdout;
-        error( $stderr || 'Unknown error' ) if $rs;
+    my $httpd = Servers::httpd->factory();
+
+    if(-f "$httpd->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats") {
+        my $rs = iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats")->delFile();
         return $rs if $rs;
     }
 
+    my $rs = iMSCP::Dir->new( dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'})->remove();
+    return $rs if $rs;
+
     return 0 unless -d $main::imscpConfig{'AWSTATS_CONFIG_DIR'};
-    my $rs = execute( "rm -f $main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.*.conf", \ my $stdout, \ my $stderr );
+    $rs = execute( "rm -f $main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.*.conf", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     $rs;
@@ -117,6 +104,7 @@ sub _removeVhost
     my $httpd = Servers::httpd->factory();
 
     return 0 unless -f "$httpd->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/01_awstats.conf";
+
     my $rs = $httpd->disableSites( '01_awstats.conf' );
     $rs ||= iMSCP::File->new(
         filename => "$httpd->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/01_awstats.conf"

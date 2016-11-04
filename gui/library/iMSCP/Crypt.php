@@ -150,48 +150,6 @@ class Crypt
     }
 
     /**
-     * Create an htpasswd password hash of the given password using the given algorithm
-     *
-     * See http://httpd.apache.org/docs/2.4/misc/password_encryptions.html
-     *
-     * @throws \InvalidArgumentException
-     * @param string $password The password to be hashed
-     * @param int $cost Base-2 logarithm of the iteration count (only relevant for bcrypt format)
-     * @param null|string $salt An optional salt string to base the hashing on (only relevant for bcrypt, crypt and md5 formats)
-     * @param string $format Format in which the password must be hashed (bcrypt|crypt|md5|sha1) -  Default is md5 (APR1)
-     * @return string
-     */
-    static public function htpasswd($password, $cost = 10, $salt = null, $format = 'md5')
-    {
-        switch ($format) {
-            case 'bcrypt':
-                return static::bcrypt($password, $cost, $salt);
-            case 'crypt':
-                if ($salt !== null) {
-                    if (strlen($salt) != 2) {
-                        throw new \InvalidArgumentException('The salt length must be 2 bytes long');
-                    }
-
-                    if (preg_match('%[^' . static::ALPHA64 . ']%', $salt)) {
-                        throw new \InvalidArgumentException('The salt must be a string in the alphabet "./0-9A-Za-z"');
-                    }
-                } else {
-                    $salt = static::randomStr(2, static::ALPHA64);
-                }
-
-                return crypt($password, $salt);
-            case 'sha1':
-                return '{SHA}' . base64_encode(sha1($password, true));
-            case 'md5':
-                return static::apr1Md5($password, $salt);
-            default:
-                throw new \InvalidArgumentException(sprintf(
-                    'The %s format is not valid. The supported formats are: %s', $format, 'bcrypt, crypt, md5 and sha1'
-                ));
-        }
-    }
-
-    /**
      * Create a hash of the given password using the bcrypt algorithm
      *
      * @throws \InvalidArgumentException|\RuntimeException
@@ -235,7 +193,7 @@ class Crypt
      * @param null|string $salt Salt An optional salt string to base the hashing on
      * @return string
      */
-    static protected function apr1Md5($password, $salt = null)
+    static public function apr1MD5($password, $salt = null)
     {
         if ($salt !== null) {
             if (strlen($salt) !== 8) {
@@ -250,18 +208,18 @@ class Crypt
         }
 
         $len = strlen($password);
-        $text = $password . '$apr1$' . $salt;
+        $context = $password . '$apr1$' . $salt;
         $bin = pack('H32', md5($password . $salt . $password));
 
         for ($i = $len; $i > 0; $i -= 16) {
-            $text .= substr($bin, 0, min(16, $i));
+            $context .= substr($bin, 0, min(16, $i));
         }
 
         for ($i = $len; $i > 0; $i >>= 1) {
-            $text .= ($i & 1) ? chr(0) : $password[0];
+            $context .= ($i & 1) ? chr(0) : $password[0];
         }
 
-        $bin = pack('H32', md5($text));
+        $bin = pack('H32', md5($context));
 
         for ($i = 0; $i < 1000; $i++) {
             $new = ($i & 1) ? $password : $bin;
@@ -295,6 +253,48 @@ class Crypt
     }
 
     /**
+     * Create an htpasswd password hash of the given password using the given algorithm
+     *
+     * See http://httpd.apache.org/docs/2.4/misc/password_encryptions.html
+     *
+     * @throws \InvalidArgumentException
+     * @param string $password The password to be hashed
+     * @param int $cost Base-2 logarithm of the iteration count (only relevant for bcrypt format)
+     * @param null|string $salt An optional salt string to base the hashing on (only relevant for bcrypt, crypt and md5 formats)
+     * @param string $format Format in which the password must be hashed (bcrypt|crypt|md5|sha1) -  Default is md5 (APR1)
+     * @return string
+     */
+    static public function htpasswd($password, $cost = 10, $salt = null, $format = 'md5')
+    {
+        switch ($format) {
+            case 'bcrypt':
+                return static::bcrypt($password, $cost, $salt);
+            case 'crypt':
+                if ($salt !== null) {
+                    if (strlen($salt) != 2) {
+                        throw new \InvalidArgumentException('The salt length must be 2 bytes long');
+                    }
+
+                    if (preg_match('%[^' . static::ALPHA64 . ']%', $salt)) {
+                        throw new \InvalidArgumentException('The salt must be a string in the alphabet "./0-9A-Za-z"');
+                    }
+                } else {
+                    $salt = static::randomStr(2, static::ALPHA64);
+                }
+
+                return crypt($password, $salt);
+            case 'sha1':
+                return '{SHA}' . base64_encode(sha1($password, true));
+            case 'md5':
+                return static::apr1MD5($password, $salt);
+            default:
+                throw new \InvalidArgumentException(sprintf(
+                    'The %s format is not valid. The supported formats are: %s', $format, 'bcrypt, crypt, md5 and sha1'
+                ));
+        }
+    }
+
+    /**
      * Convert a binary string using the "./0-9A-Za-z" alphabet
      *
      * @param string $string String to be converted
@@ -319,14 +319,14 @@ class Crypt
             return static::hashEqual($hash, '{SHA}' . base64_encode(sha1($password, true)));
         }
 
-        if (substr($hash, 0, 6) === '$apr1$') { // htpasswd md5 hashed paswords
+        if (substr($hash, 0, 6) === '$apr1$') { // htpasswd APR-1 hashed passwords
             $token = explode('$', $hash);
 
             if (empty($token[2])) {
                 throw new \InvalidArgumentException('APR1 password format is not valid');
             }
 
-            return static::hashEqual($hash, static::apr1Md5($password, $token[2]));
+            return static::hashEqual($hash, static::apr1MD5($password, $token[2]));
         }
 
         // Crypt DES/MD5/BLOWFISH/SHA256/SHA512 hashed password

@@ -301,6 +301,41 @@ sub setEnginePermissions
     0;
 }
 
+=item addUser(\%data)
+
+ Process addUser tasks
+
+ Param hash \%data User data
+ Return int 0 on success, other on failure
+
+=cut
+
+sub addUser
+{
+    my ($self, $data) = @_;
+
+    my %selectedPackages;
+    @{selectedPackages}{ split ',', $main::imscpConfig{'WEBSTATS_PACKAGES'} } = ();
+
+    for (keys %{$self->{'PACKAGES'}}) {
+        next unless exists $selectedPackages{$_};
+        my $package = "Package::Webstats::${_}::${_}";
+        eval "require $package";
+        unless ($@) {
+            $package = $package->getInstance();
+            next unless $package->can( 'addUser' );
+            debug( sprintf( 'Calling action addUser on %s', ref $package ) );
+            my $rs = $package->addUser( $data );
+            return $rs if $rs;
+        } else {
+            error( $@ );
+            return 1;
+        }
+    }
+
+    0;
+}
+
 =item preaddDmn(\%data)
 
  Process preAddDmn tasks

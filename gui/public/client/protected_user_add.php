@@ -56,7 +56,6 @@ function client_addHtaccessUser($domainId)
 
 			$status = 'toadd';
 			$uname = clean_input($_POST['username']);
-			$upass = cryptPasswordWithSalt($_POST['pass'], generateRandomSalt(true));
 
 			$query = "
 				SELECT
@@ -78,7 +77,7 @@ function client_addHtaccessUser($domainId)
 					    ?, ?, ?, ?
 					)
 				";
-				exec_query($query, array($domainId, $uname, $upass, $status));
+				exec_query($query, array($domainId, $uname, \iMSCP\Crypt::apr1MD5($_POST['pass']), $status));
 
 				send_request();
 

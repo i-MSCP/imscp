@@ -157,6 +157,8 @@ sub addUser
 {
     my ($self, $data) = @_;
 
+    return 0 if $data->{'STATUS'} eq 'tochangepwd';
+
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdAddUser', $data );
     return $rs if $rs;
 

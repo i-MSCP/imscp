@@ -117,7 +117,7 @@ function setUniqKey($adminName, $uniqueKey)
 function setPassword($uniqueKey, $userPassword)
 {
     exec_query('UPDATE admin SET admin_pass = ?, uniqkey = NULL, uniqkey_time = NULL WHERE uniqkey = ?', array(
-        cryptPasswordWithSalt($userPassword), $uniqueKey
+        \iMSCP\Crypt::apr1MD5($userPassword), $uniqueKey
     ));
 }
 
@@ -215,7 +215,9 @@ function sendPassword($uniqueKey)
         }
 
         # Generate new user password
-        $userPassword = passgen();
+        $cfg = iMSCP_Registry::get('config');
+        $passwordLength = isset($cfg['PASSWD_CHARS']) ? $cfg['PASSWD_CHARS'] : 6;
+        $userPassword = \iMSCP\Crypt::randomStr($passwordLength);
         setPassword($uniqueKey, $userPassword);
         write_log(sprintf('Lostpassword: A New password has been set for %s user', $row['admin_name']), E_USER_NOTICE);
 
@@ -245,9 +247,8 @@ function sendPassword($uniqueKey)
         }
 
         return true;
-    } else {
-        set_page_message(tr('Your request for password renewal is either invalid or has expired.'), 'error');
     }
-
+    
+    set_page_message(tr('Your request for password renewal is either invalid or has expired.'), 'error');
     return false;
 }

@@ -28,13 +28,13 @@ use warnings;
 use Class::Autouse qw/ Package::Webstats::Awstats::Installer Package::Webstats::Awstats::Uninstaller /;
 use iMSCP::Database;
 use iMSCP::Debug;
+use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
-use iMSCP::TemplateParser;
-use iMSCP::Dir;
-use iMSCP::File;
 use iMSCP::Ext2Attributes qw(setImmutable clearImmutable);
+use iMSCP::File;
 use iMSCP::Rights;
+use iMSCP::TemplateParser;
 use Servers::cron;
 use Servers::httpd;
 use version;
@@ -103,7 +103,33 @@ sub setEnginePermissions
 
 sub getDistroPackages
 {
-    ('awstats', 'libaprutil1-dbd-mysql');
+    ('awstats');
+}
+
+=item addUser(\%data)
+
+ Process addUser tasks
+
+ Param hash \%data User data
+ Return int 0 on success, other on failure
+
+=cut
+
+sub addUser
+{
+    my ($self, $data) = @_;
+
+    my $filePath = "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats";
+    my $file = iMSCP::File->new( filename => $filePath );
+    my $fileContent = $file->get() if -f $filePath;
+    $fileContent = '' unless defined $fileContent;
+    $fileContent =~ s/^$data->{'USERNAME'}:[^\n]*\n//gim;
+    $fileContent .= "$data->{'USERNAME'}:$data->{'PASSWORD_HASH'}\n";
+
+    my $rs ||= $file->set( $fileContent );
+    $rs ||= $file->save();
+    $rs ||= $file->mode( 0640 );
+    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'httpd'}->getRunningGroup() );
 }
 
 =item addDmn(\%data)
@@ -214,6 +240,7 @@ sub _init
 {
     my $self = shift;
 
+    $self->{'httpd'} = Servers::httpd->factory();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/awstats";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
@@ -243,18 +270,18 @@ sub _addAwstatsSection
 
     return 0 unless $tplName =~ /^domain(?:_ssl)?\.tpl$/ && $data->{'FORWARD'} eq 'no';
 
-    $$cfgTpl = replaceBloc(
+    ${$cfgTpl} = replaceBloc(
         "# SECTION addons BEGIN.\n",
         "# SECTION addons END.\n",
         "    # SECTION addons BEGIN.\n".
             getBloc(
                 "# SECTION addons BEGIN.\n",
                 "# SECTION addons END.\n",
-                $$cfgTpl
+                ${$cfgTpl}
             ).
             process({ DOMAIN_NAME => $data->{'DOMAIN_NAME'} }, $self->_getApacheConfSnippet()).
             "    # SECTION addons END.\n",
-        $$cfgTpl
+        ${$cfgTpl}
     );
     0;
 }
@@ -269,7 +296,7 @@ sub _addAwstatsSection
 
 sub _getApacheConfSnippet
 {
-    <<EOF;
+    <<"EOF";
     <Location /stats>
         ProxyPass http://127.0.0.1:8889/stats/{DOMAIN_NAME} retry=1 acquire=3000 timeout=600 Keepalive=On
         ProxyPassReverse http://127.0.0.1:8889/stats/{DOMAIN_NAME}
@@ -288,7 +315,7 @@ EOF
 
 sub _addAwstatsConfig
 {
-    my (undef, $data) = @_;
+    my ($self, $data) = @_;
 
     my $awstatsPackageRootDir = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats";
     my $tplFileContent = iMSCP::File->new( filename => "$awstatsPackageRootDir/Config/awstats.imscp_tpl.conf" )->get();
@@ -307,7 +334,6 @@ sub _addAwstatsConfig
         erro(sprintf('Could not retrieve data from admin whith ID %d', $data->{'DOMAIN_ADMIN_ID'})),
     }
 
-    my $httpd = Servers::httpd->factory();
     my $tags = {
         ALIAS               => $data->{'ALIAS'},
         AUTH_USER           => "$qrs->{$data->{'DOMAIN_ADMIN_ID'}}->{'admin_name'}",
@@ -316,7 +342,7 @@ sub _addAwstatsConfig
         AWSTATS_WEB_DIR     => $main::imscpConfig{'AWSTATS_WEB_DIR'},
         CMD_LOGRESOLVEMERGE => "perl $awstatsPackageRootDir/Scripts/logresolvemerge.pl",
         DOMAIN_NAME         => $data->{'DOMAIN_NAME'},
-        LOG_DIR             => "$httpd->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}"
+        LOG_DIR             => "$self->{'httpd'}->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}"
     };
 
     $tplFileContent = process( $tags, $tplFileContent );
