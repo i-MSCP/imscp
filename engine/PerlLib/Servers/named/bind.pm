@@ -205,7 +205,7 @@ sub postaddDmn
                 DOMAIN_IP             => $data->{'BASE_SERVER_PUBLIC_IP'},
                 MAIL_ENABLED          => 1,
                 CTM_ALS_ENTRY_ADD     => {
-                    NAME  => $data->{'USER_NAME'},
+                    NAME  => $data->{'ALIAS'},
                     CLASS => 'IN',
                     TYPE  => iMSCP::Net->getInstance()->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4' ? 'A' : 'AAAA',
                     DATA  => $data->{'BASE_SERVER_PUBLIC_IP'}
@@ -317,7 +317,7 @@ sub postdeleteDmn
                 DOMAIN_IP             => $data->{'BASE_SERVER_PUBLIC_IP'},
                 MAIL_ENABLED          => 1,
                 CTM_ALS_ENTRY_DEL     => {
-                    NAME => $data->{'USER_NAME'}
+                    NAME => $data->{'ALIAS'}
                 }
             }
         );
@@ -467,7 +467,7 @@ sub postaddSub
                 DOMAIN_IP             => $data->{'BASE_SERVER_PUBLIC_IP'},
                 MAIL_ENABLED          => 1,
                 CTM_ALS_ENTRY_ADD     => {
-                    NAME  => $data->{'USER_NAME'},
+                    NAME  => $data->{'ALIAS'},
                     CLASS => 'IN',
                     TYPE  => iMSCP::Net->getInstance()->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4' ? 'A' : 'AAAA',
                     DATA  => $data->{'BASE_SERVER_PUBLIC_IP'}
@@ -610,7 +610,7 @@ sub postdeleteSub
                 DOMAIN_IP             => $data->{'BASE_SERVER_PUBLIC_IP'},
                 MAIL_ENABLED          => 1,
                 CTM_ALS_ENTRY_DEL     => {
-                    NAME => $data->{'USER_NAME'}
+                    NAME => $data->{'ALIAS'}
                 }
             }
         );
