@@ -504,15 +504,25 @@ sub dpkgPostInvokeTasks
         ? iMSCP::ProgramFinder::find( "php$self->{'phpConfig'}->{'PHP_VERSION'}-fpm" )
         : iMSCP::ProgramFinder::find( "php-fpm$self->{'phpConfig'}->{'PHP_VERSION'}" );
 
-    return 0 unless defined $phpBinaryPath; # Cover case where administrator removed the package
+    if(defined $phpBinaryPath) {
+        if (-f '/usr/local/sbin/imscp_panel') {
+            my $v1 = $self->getFullPhpVersionFor( $phpBinaryPath );
+            my $v2 = $self->getFullPhpVersionFor( '/usr/local/sbin/imscp_panel' );
+            # Don't act when not necessary
+            return 0 unless defined $v1 && defined $v2 && $v1 ne $v2;
+            debug(sprintf("Updating imscp_panel service PHP binary path from version %s to version %s", $v2, $v1));
+        }
 
-    # TODO Only act if version are differents
-
-    # On APT update, we must ensure that copied PHP binary for imscp_panel service matches with latest system PHP
-    # binary. See #IP-1641 for further details.
-    my $rs = $self->{'frontend'}->stop();
-    $rs ||= $self->_copyPhpBinary();
-    $rs ||= $self->{'frontend'}->start();
+        # On APT update, we must ensure that copied PHP binary for imscp_panel service matches with latest system PHP
+        # binary. See #IP-1641 for further details.
+        my $rs = $self->{'frontend'}->stop();
+        $rs ||= $self->_copyPhpBinary();
+        $rs ||= $self->{'frontend'}->start();
+    } elsif(-f '/usr/local/sbin/imscp_panel') {
+        # Cover case where administrator removed the package
+        my $rs = $self->{'frontend'}->stop();
+        $rs || iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
+    }
 }
 
 =item setGuiPermissions()
@@ -1299,6 +1309,26 @@ sub _saveConfig
     my $rs = $file->owner( $rootUname, $rootGname );
     $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( "$self->{'cfgDir'}/frontend.old.data" );
+}
+
+=item getFullPhpVersionFor($binaryPath)
+
+ Get full PHP version for the given PHP binary
+
+ Param string $binaryPath Path to PHP binary
+ Return int 0 on success, other on failure
+
+=cut
+
+sub getFullPhpVersionFor
+{
+    my (undef, $binaryPath) = @_;
+
+    my $rs = execute([ $binaryPath, '-nv' ], \my $stdout, \my $stderr );
+    error($stderr || 'Unknown error') if $rs;
+    return undef unless $stdout;
+    $stdout =~ /PHP\s+([^\s]+)/;
+    $1;
 }
 
 =back
