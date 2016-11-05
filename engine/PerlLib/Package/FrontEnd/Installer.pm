@@ -504,7 +504,7 @@ sub dpkgPostInvokeTasks
         ? iMSCP::ProgramFinder::find( "php$self->{'phpConfig'}->{'PHP_VERSION'}-fpm" )
         : iMSCP::ProgramFinder::find( "php-fpm$self->{'phpConfig'}->{'PHP_VERSION'}" );
 
-    if(defined $phpBinaryPath) {
+    if (defined $phpBinaryPath) {
         if (-f '/usr/local/sbin/imscp_panel') {
             my $v1 = $self->getFullPhpVersionFor( $phpBinaryPath );
             my $v2 = $self->getFullPhpVersionFor( '/usr/local/sbin/imscp_panel' );
@@ -518,7 +518,7 @@ sub dpkgPostInvokeTasks
         my $rs = $self->{'frontend'}->stop();
         $rs ||= $self->_copyPhpBinary();
         $rs ||= $self->{'frontend'}->start();
-    } elsif(-f '/usr/local/sbin/imscp_panel') {
+    } elsif (-f '/usr/local/sbin/imscp_panel') {
         # Cover case where administrator removed the package
         my $rs = $self->{'frontend'}->stop();
         $rs || iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
