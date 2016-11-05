@@ -513,8 +513,8 @@ sub dpkgPostInvokeTasks
             debug(sprintf("Updating imscp_panel service PHP binary from version `%s' to version `%s'", $v2, $v1));
         }
 
-        # On APT update, we must ensure that copied PHP binary for imscp_panel service matches with latest system PHP
-        # binary. See #IP-1641 for further details.
+        # We must ensure that PHP binary for imscp_panel service matches with latest system PHP binary.
+        # See #IP-1641 for further details.
         my $rs = $self->{'frontend'}->stop();
         $rs ||= $self->_copyPhpBinary();
         $rs ||= $self->{'frontend'}->start();
