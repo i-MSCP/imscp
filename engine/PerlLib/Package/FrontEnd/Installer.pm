@@ -510,7 +510,7 @@ sub dpkgPostInvokeTasks
             my $v2 = $self->getFullPhpVersionFor( '/usr/local/sbin/imscp_panel' );
             # Don't act when not necessary
             return 0 unless defined $v1 && defined $v2 && $v1 ne $v2;
-            debug(sprintf("Updating imscp_panel service PHP binary path from version %s to version %s", $v2, $v1));
+            debug(sprintf("Updating imscp_panel service PHP binary from version `%s' to version `%s'", $v2, $v1));
         }
 
         # On APT update, we must ensure that copied PHP binary for imscp_panel service matches with latest system PHP
