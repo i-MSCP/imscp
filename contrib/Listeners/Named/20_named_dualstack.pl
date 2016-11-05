@@ -84,15 +84,9 @@ sub addCustomDNSrecord
     $$tplDbFileContent = replaceBloc(
         "; custom DNS entries BEGIN\n",
         "; custom DNS entries ENDING\n",
-        "; custom DNS entries BEGIN\n".
-            getBloc(
-                "; custom DNS entries BEGIN\n",
-                "; custom DNS entries ENDING\n",
-                $$tplDbFileContent
-            ).
-            join( "\n", @formattedEntries )."\n".
-            "; custom DNS entries ENDING\n",
-        $$tplDbFileContent
+        join( "\n", @formattedEntries )."\n",
+        $$tplDbFileContent,
+        'PreserveTags'
     );
     undef @formattedEntries;
     0;
