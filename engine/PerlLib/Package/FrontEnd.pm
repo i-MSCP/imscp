@@ -131,6 +131,23 @@ sub postinstall
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndPostInstall' );
 }
 
+=item dpkgPostInvokeTasks()
+
+ Process postinstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub dpkgPostInvokeTasks
+{
+    my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndDpkgPostInvokeTasks' );
+    $rs ||= Package::FrontEnd::Installer->getInstance()->dpkgPostInvokeTasks();
+    $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndDpkgPostInvokeTasks' );
+}
+
 =item uninstall()
 
  Process uninstall tasks

@@ -284,7 +284,7 @@ sub _removeSqlData
         $sqlServer->dropUser($rdata->{$_}->{'sqlu_name'}, $rdata->{$_}->{'sqlu_host'});
     }
 
-    # Remove customer's sql datatabases
+    # Remove customer's sql databases
     $rdata = $database->doQuery('sqld_name', 'SELECT sqld_name FROM sql_database');
     unless(ref $rdata eq 'HASH') {
         error($rdata);
@@ -311,19 +311,22 @@ sub _removeFiles
 {
     chdir('/');
 
+    if(-f '/usr/local/sbin/imscp-dpkg-post-invoke.pl') {
+        my $rs = iMSCP::File->new( filename => '/usr/local/sbin/imscp-dpkg-post-invoke.pl' )->delFile();
+        return $rs if $rs;
+    }
+
     for ($main::imscpConfig{'CONF_DIR'}, $main::imscpConfig{'USER_WEB_DIR'}, $main::imscpConfig{'LOG_DIR'},
-        $main::imscpConfig{'ROOT_DIR'},
+        $main::imscpConfig{'ROOT_DIR'}
     ) {
         my $rs = iMSCP::Dir->new( dirname => $_ )->remove();
         return $rs if $rs;
     }
 
     0;
-
 }
 
 my $rs = 0;
-
 $rs ||= startUp();
 $rs ||= process();
 $rs ||= shutDown();

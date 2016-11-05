@@ -488,6 +488,33 @@ sub install
     $rs ||= $self->_saveConfig();
 }
 
+=item dpkgPostInvokeTasks()
+
+ Process dpkg post-invoke tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub dpkgPostInvokeTasks
+{
+    my $self = shift;
+
+    my $phpBinaryPath = (version->parse( "$self->{'phpConfig'}->{'PHP_VERSION'}" ) < version->parse( '7' ))
+        ? iMSCP::ProgramFinder::find( "php$self->{'phpConfig'}->{'PHP_VERSION'}-fpm" )
+        : iMSCP::ProgramFinder::find( "php-fpm$self->{'phpConfig'}->{'PHP_VERSION'}" );
+
+    return 0 unless defined $phpBinaryPath; # Cover case where administrator removed the package
+
+    # TODO Only act if version are differents
+
+    # On APT update, we must ensure that copied PHP binary for imscp_panel service matches with latest system PHP
+    # binary. See #IP-1641 for further details.
+    my $rs = $self->{'frontend'}->stop();
+    $rs ||= $self->_copyPhpBinary();
+    $rs ||= $self->{'frontend'}->start();
+}
+
 =item setGuiPermissions()
 
  Set gui permissions
