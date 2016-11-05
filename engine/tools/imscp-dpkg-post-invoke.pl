@@ -34,7 +34,6 @@ use lib "/var/www/imscp/engine/PerlLib", "/var/www/imscp/engine/PerlVendor"; # F
 use File::Basename;
 use iMSCP::Debug;
 use iMSCP::Bootstrapper;
-use iMSCP::Execute;
 use iMSCP::Getopt;
 use iMSCP::Servers;
 use iMSCP::Packages;
