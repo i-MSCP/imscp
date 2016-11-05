@@ -311,9 +311,12 @@ sub _removeFiles
 {
     chdir('/');
 
-    if(-f '/usr/local/sbin/imscp-dpkg-post-invoke.pl') {
-        my $rs = iMSCP::File->new( filename => '/usr/local/sbin/imscp-dpkg-post-invoke.pl' )->delFile();
-        return $rs if $rs;
+    for('/usr/local/sbin/imscp-dpkg-post-invoke.pl', '/etc/apt/apt.conf.d/90imscp') {
+        if(-f '/usr/local/sbin/imscp-dpkg-post-invoke.pl') {
+            next unless -f $_;
+            my $rs = iMSCP::File->new( filename => $_ )->delFile();
+            return $rs if $rs;
+        }
     }
 
     for ($main::imscpConfig{'CONF_DIR'}, $main::imscpConfig{'USER_WEB_DIR'}, $main::imscpConfig{'LOG_DIR'},
