@@ -78,7 +78,7 @@ function login_credentials($event)
             $identity = $stmt->fetchRow(PDO::FETCH_OBJ);
             $passwordHash = $identity->admin_pass;
             
-            if (\iMSCP\Crypt::hashEqual(md5($password), $passwordHash) && !\iMSCP\Crypt::verify($password, $passwordHash)) {
+            if (!\iMSCP\Crypt::hashEqual(md5($password), $passwordHash) && !\iMSCP\Crypt::verify($password, $passwordHash)) {
                 $result = new iMSCP_Authentication_Result(
                     iMSCP_Authentication_Result::FAILURE_CREDENTIAL_INVALID, null, tr('Bad password.')
                 );
