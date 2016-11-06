@@ -492,6 +492,8 @@ sub install
 
  Process dpkg post-invoke tasks
 
+ See See #IP-1641 for further details.
+
  Return int 0 on success, other on failure
 
 =cut
@@ -504,25 +506,23 @@ sub dpkgPostInvokeTasks
         ? iMSCP::ProgramFinder::find( "php$self->{'phpConfig'}->{'PHP_VERSION'}-fpm" )
         : iMSCP::ProgramFinder::find( "php-fpm$self->{'phpConfig'}->{'PHP_VERSION'}" );
 
-    if (defined $phpBinaryPath) {
-        if (-f '/usr/local/sbin/imscp_panel') {
-            my $v1 = $self->getFullPhpVersionFor( $phpBinaryPath );
-            my $v2 = $self->getFullPhpVersionFor( '/usr/local/sbin/imscp_panel' );
-            # Don't act when not necessary
-            return 0 unless defined $v1 && defined $v2 && $v1 ne $v2;
-            debug(sprintf("Updating imscp_panel service PHP binary from version `%s' to version `%s'", $v2, $v1));
-        }
+    return 0 unless -f '/usr/local/sbin/imscp_panel' || defined $phpBinaryPath;
 
-        # We must ensure that PHP binary for imscp_panel service matches with latest system PHP binary.
-        # See #IP-1641 for further details.
+    if (-f _ && !defined $phpBinaryPath) { # Cover case where administrator removed the package
         my $rs = $self->{'frontend'}->stop();
-        $rs ||= $self->_copyPhpBinary();
-        $rs ||= $self->{'frontend'}->start();
-    } elsif (-f '/usr/local/sbin/imscp_panel') {
-        # Cover case where administrator removed the package
-        my $rs = $self->{'frontend'}->stop();
-        $rs || iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
+        $rs ||= iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
+        return $rs;
     }
+
+    if (-f _) {
+        my $v1 = $self->getFullPhpVersionFor( $phpBinaryPath );
+        my $v2 = $self->getFullPhpVersionFor( '/usr/local/sbin/imscp_panel' );
+        return 0 unless defined $v1 && defined $v2 && $v1 ne $v2; # Don't act when not necessary
+        debug(sprintf("Updating imscp_panel service PHP binary from version `%s' to version `%s'", $v2, $v1));
+    }
+
+    my $rs = $self->_copyPhpBinary();
+    $rs ||= $self->{'frontend'}->restart();
 }
 
 =item setGuiPermissions()
