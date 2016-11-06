@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-10-18 12:08+0200\n"
-"PO-Revision-Date: 2016-10-18 10:08+0000\n"
+"POT-Creation-Date: 2016-11-06 10:42+0100\n"
+"PO-Revision-Date: 2016-11-06 09:43+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/i-mscp/i-MSCP/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
@@ -1503,12 +1503,6 @@ msgstr "Vytvořil"
 
 msgid "Creation date"
 msgstr "Vytvořeno dne"
-
-msgid "Current password"
-msgstr "Stávající heslo"
-
-msgid "Current password is invalid."
-msgstr ""
 
 msgid "Custom DNS errors"
 msgstr ""
@@ -3131,9 +3125,6 @@ msgstr "Šablona informační zprávy"
 msgid "Message to reseller before deleting the software"
 msgstr "Zpráva partnerovi před odstraněním softwaru"
 
-msgid "Messages"
-msgstr "Zprávy"
-
 msgid "MiB"
 msgstr "MiB"
 
@@ -4351,9 +4342,6 @@ msgstr "Poslat zprávu"
 msgid "Send new login data"
 msgstr "Poslat nové přihlašovací údaje"
 
-msgid "Send new reply"
-msgstr "Odeslat novou odpověď"
-
 msgid "Send reply"
 msgstr "Odpovědět"
 
@@ -4902,14 +4890,8 @@ msgstr "Toto uživatelské jméno již existuje."
 msgid "TiB"
 msgstr "TiB"
 
-msgid "Ticket Information"
-msgstr "Informace o tiketu"
-
 msgid "Ticket information"
 msgstr "Informace o tiketu"
-
-msgid "Ticket not found."
-msgstr "Tiket nenalezen."
 
 msgid "Ticket successfully closed."
 msgstr "Tiket úspěšně uzavřen."
@@ -5039,9 +5021,6 @@ msgstr ""
 #, php-format
 msgid "Unable to reopen ticket with Id '%s'."
 msgstr "Nelze znovuotevřít tiket s ID ''%s."
-
-msgid "Unable to retrieve your password from the database."
-msgstr ""
 
 msgid ""
 "Unable to schedule deletion of the customer account. A message has been sent"
@@ -5300,9 +5279,6 @@ msgstr "Náhled"
 
 msgid "View SSL certificate"
 msgstr ""
-
-msgid "View Support Ticket"
-msgstr "Zobrazit tiket podpory"
 
 msgid "View aliases"
 msgstr "Zobrazit aliasy"

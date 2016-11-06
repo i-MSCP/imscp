@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-10-18 12:08+0200\n"
-"PO-Revision-Date: 2016-10-18 10:08+0000\n"
+"POT-Creation-Date: 2016-11-06 10:42+0100\n"
+"PO-Revision-Date: 2016-11-06 09:43+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/i-mscp/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -1504,12 +1504,6 @@ msgstr "Créé par"
 
 msgid "Creation date"
 msgstr "Date de création"
-
-msgid "Current password"
-msgstr "Mot de passe actuel"
-
-msgid "Current password is invalid."
-msgstr "Mot de passe actuel invalide."
 
 msgid "Custom DNS errors"
 msgstr "Errors liées aux enregistrements DNS"
@@ -3132,9 +3126,6 @@ msgstr "Variables disponibles pour le modèle"
 msgid "Message to reseller before deleting the software"
 msgstr "Message à envoyer au revendeur avant de supprimer le logiciel"
 
-msgid "Messages"
-msgstr "Messages"
-
 msgid "MiB"
 msgstr "MiB"
 
@@ -4352,9 +4343,6 @@ msgstr "Envoyer un message à"
 msgid "Send new login data"
 msgstr "Envoyer les nouvelles données d'authentification"
 
-msgid "Send new reply"
-msgstr "Envoyer un nouvelle réponse"
-
 msgid "Send reply"
 msgstr "Envoyer la réponse"
 
@@ -4903,14 +4891,8 @@ msgstr "Ce nom d'utilisateur est déjà utilisé."
 msgid "TiB"
 msgstr "TiB"
 
-msgid "Ticket Information"
-msgstr "Information concernant le ticket"
-
 msgid "Ticket information"
 msgstr "Information concernant le ticket"
-
-msgid "Ticket not found."
-msgstr "Ticket non trouvé."
 
 msgid "Ticket successfully closed."
 msgstr "Le ticket a été fermé."
@@ -5040,9 +5022,6 @@ msgstr "Impossible de lire le fichier XML du logiciel Web."
 #, php-format
 msgid "Unable to reopen ticket with Id '%s'."
 msgstr "Impossible de ré-ouvrir le ticket ayant pour identifiant: '%s'."
-
-msgid "Unable to retrieve your password from the database."
-msgstr "Impossible de récupérer votre mot de passe à partir de la base de données."
 
 msgid ""
 "Unable to schedule deletion of the customer account. A message has been sent"
@@ -5301,9 +5280,6 @@ msgstr "Afficher"
 
 msgid "View SSL certificate"
 msgstr "Voir le certificat SSL"
-
-msgid "View Support Ticket"
-msgstr "Afficher les tickets de support"
 
 msgid "View aliases"
 msgstr "Afficher les alias"

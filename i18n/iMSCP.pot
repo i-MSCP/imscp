@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-10-18 12:08+0200\n"
+"POT-Creation-Date: 2016-11-06 10:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1503,12 +1503,6 @@ msgid "Created by"
 msgstr ""
 
 msgid "Creation date"
-msgstr ""
-
-msgid "Current password"
-msgstr ""
-
-msgid "Current password is invalid."
 msgstr ""
 
 msgid "Custom DNS errors"
@@ -3138,9 +3132,6 @@ msgstr ""
 msgid "Message to reseller before deleting the software"
 msgstr ""
 
-msgid "Messages"
-msgstr ""
-
 msgid "MiB"
 msgstr ""
 
@@ -4358,9 +4349,6 @@ msgstr ""
 msgid "Send new login data"
 msgstr ""
 
-msgid "Send new reply"
-msgstr ""
-
 msgid "Send reply"
 msgstr ""
 
@@ -4908,13 +4896,7 @@ msgstr ""
 msgid "TiB"
 msgstr ""
 
-msgid "Ticket Information"
-msgstr ""
-
 msgid "Ticket information"
-msgstr ""
-
-msgid "Ticket not found."
 msgstr ""
 
 msgid "Ticket successfully closed."
@@ -5043,9 +5025,6 @@ msgstr ""
 
 #, php-format
 msgid "Unable to reopen ticket with Id '%s'."
-msgstr ""
-
-msgid "Unable to retrieve your password from the database."
 msgstr ""
 
 msgid ""
@@ -5304,9 +5283,6 @@ msgid "View"
 msgstr ""
 
 msgid "View SSL certificate"
-msgstr ""
-
-msgid "View Support Ticket"
 msgstr ""
 
 msgid "View aliases"

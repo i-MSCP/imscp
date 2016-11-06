@@ -4,15 +4,15 @@
 # 
 # Translators:
 # Arthur Mayer <mayer.arthur@gmail.com>, 2016
-# Lukasz Nowak <qkash@o2.pl>, 2016
+# Lukasz Nowak <theqkash@theqkash.pl>, 2016
 # Thom Heemstra <thom@heemstra.xyz>, 2016
 # Vitaliy Zhukov <DragonZX@yandex.ru>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-10-18 12:08+0200\n"
-"PO-Revision-Date: 2016-10-18 10:08+0000\n"
+"POT-Creation-Date: 2016-11-06 10:42+0100\n"
+"PO-Revision-Date: 2016-11-06 09:43+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/i-mscp/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -1507,12 +1507,6 @@ msgstr "Создал"
 
 msgid "Creation date"
 msgstr "Дата создания"
-
-msgid "Current password"
-msgstr "Текущий пароль"
-
-msgid "Current password is invalid."
-msgstr "Текущий пароль неверен."
 
 msgid "Custom DNS errors"
 msgstr "Ошибки внешних DNS"
@@ -3135,9 +3129,6 @@ msgstr "Информация о шаблоне"
 msgid "Message to reseller before deleting the software"
 msgstr "Сообщите реселлеру перед удалением этого ПО"
 
-msgid "Messages"
-msgstr "Сообщения"
-
 msgid "MiB"
 msgstr "МБ"
 
@@ -4355,9 +4346,6 @@ msgstr "Кому отправить"
 msgid "Send new login data"
 msgstr "Отправить новую информацию для входа"
 
-msgid "Send new reply"
-msgstr "Отравить новый ответ"
-
 msgid "Send reply"
 msgstr "Отправить ответ"
 
@@ -4906,14 +4894,8 @@ msgstr "Имя пользователя уже существует."
 msgid "TiB"
 msgstr "Тб"
 
-msgid "Ticket Information"
-msgstr "Информация о тикете"
-
 msgid "Ticket information"
 msgstr "Информация о тикете"
-
-msgid "Ticket not found."
-msgstr "Тикет не найден."
 
 msgid "Ticket successfully closed."
 msgstr "Тикет успешно закрыт."
@@ -5043,9 +5025,6 @@ msgstr "Невозможно прочесть xml файл Web-репозито�
 #, php-format
 msgid "Unable to reopen ticket with Id '%s'."
 msgstr "Не удается открыть тикет с Id '%s'."
-
-msgid "Unable to retrieve your password from the database."
-msgstr "Не удается проверить ваш пароль к базе данных."
 
 msgid ""
 "Unable to schedule deletion of the customer account. A message has been sent"
@@ -5304,9 +5283,6 @@ msgstr "Просмотр"
 
 msgid "View SSL certificate"
 msgstr "Просмотреть SSL сертификат"
-
-msgid "View Support Ticket"
-msgstr "Просмотреть тикет службы поддержки"
 
 msgid "View aliases"
 msgstr "Показать алиасы"

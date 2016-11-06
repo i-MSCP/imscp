@@ -6,7 +6,7 @@
 # Andreas Sutor, 2016
 # Arthur Mayer <mayer.arthur@gmail.com>, 2016
 # Laurent Declercq <l.declercq@nuxwin.com>, 2016
-# Lukasz Nowak <qkash@o2.pl>, 2016
+# Lukasz Nowak <theqkash@theqkash.pl>, 2016
 # Moritz Straub <z@aian.de>, 2016
 # Ninos Ego <me@ninosego.de>, 2016
 # Thomas <thomasbjoh@gmx.de>, 2016
@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-10-18 12:08+0200\n"
-"PO-Revision-Date: 2016-10-18 10:08+0000\n"
+"POT-Creation-Date: 2016-11-06 10:42+0100\n"
+"PO-Revision-Date: 2016-11-06 09:43+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/i-mscp/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -1511,12 +1511,6 @@ msgstr "Erstellt von"
 
 msgid "Creation date"
 msgstr "Erstellt am"
-
-msgid "Current password"
-msgstr "Aktuelles Passwort"
-
-msgid "Current password is invalid."
-msgstr "Aktuelles Passwort ist ungültig."
 
 msgid "Custom DNS errors"
 msgstr "Kunden DNS Fehler"
@@ -3139,9 +3133,6 @@ msgstr "Informationen über Nachrichtenvorlage"
 msgid "Message to reseller before deleting the software"
 msgstr "Nachricht an Reseller vor dem Löschen der Software"
 
-msgid "Messages"
-msgstr "Meldungen"
-
 msgid "MiB"
 msgstr "MiB"
 
@@ -4359,9 +4350,6 @@ msgstr "Nachricht senden an"
 msgid "Send new login data"
 msgstr "Neue Zugangsdaten versenden"
 
-msgid "Send new reply"
-msgstr "Neue Antwort senden"
-
 msgid "Send reply"
 msgstr "Antwort senden"
 
@@ -4910,14 +4898,8 @@ msgstr "Dieser Benutzername existiert bereits."
 msgid "TiB"
 msgstr "TiB"
 
-msgid "Ticket Information"
-msgstr "Ticket Informationen"
-
 msgid "Ticket information"
 msgstr "Ticketinformationen"
-
-msgid "Ticket not found."
-msgstr "Ticket wurde nicht gefunden."
 
 msgid "Ticket successfully closed."
 msgstr "Ticket erfolgreich geschlossen."
@@ -5047,9 +5029,6 @@ msgstr "Kann xml Datei für Web Software nicht lesen."
 #, php-format
 msgid "Unable to reopen ticket with Id '%s'."
 msgstr "Erneutes Öffnen des Tickets mit der ID '%s' nicht möglich."
-
-msgid "Unable to retrieve your password from the database."
-msgstr "Es war nicht möglich Ihr Passwort aus der Datenbank abzufragen."
 
 msgid ""
 "Unable to schedule deletion of the customer account. A message has been sent"
@@ -5308,9 +5287,6 @@ msgstr "Anzeigen"
 
 msgid "View SSL certificate"
 msgstr "SSL-Zertifikat anzeigen"
-
-msgid "View Support Ticket"
-msgstr "Support Ticket ansehen"
 
 msgid "View aliases"
 msgstr "Aliase anzeigen"

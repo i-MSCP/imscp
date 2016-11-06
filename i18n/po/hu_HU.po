@@ -5,15 +5,15 @@
 # Translators:
 # Ádám Radovits <adamradovits12@hotmail.com>, 2016
 # David Molnar <molnar.david@gmail.com>, 2016
-# Lukasz Nowak <qkash@o2.pl>, 2016
+# Lukasz Nowak <theqkash@theqkash.pl>, 2016
 # Robert Kiss, 2016
 # Zsolt Bertalan <bercy42@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-10-18 12:08+0200\n"
-"PO-Revision-Date: 2016-10-18 10:08+0000\n"
+"POT-Creation-Date: 2016-11-06 10:42+0100\n"
+"PO-Revision-Date: 2016-11-06 09:43+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/i-mscp/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -1508,12 +1508,6 @@ msgstr "Létrehozta"
 
 msgid "Creation date"
 msgstr "Létrehozva"
-
-msgid "Current password"
-msgstr "Jelenlegi jelszó"
-
-msgid "Current password is invalid."
-msgstr "Jelenlegi jelszó érvénytelen"
 
 msgid "Custom DNS errors"
 msgstr "Egyedi DNS hibák"
@@ -3136,9 +3130,6 @@ msgstr "Üzenetsablon információk"
 msgid "Message to reseller before deleting the software"
 msgstr "Üzenet a viszonteladónak az alkalmazás törlése előtt"
 
-msgid "Messages"
-msgstr "Üzenetek"
-
 msgid "MiB"
 msgstr "MB"
 
@@ -4356,9 +4347,6 @@ msgstr "Üzenet címzettje"
 msgid "Send new login data"
 msgstr "Új bejelentkezési információ küldése"
 
-msgid "Send new reply"
-msgstr "Válaszüzenet küldése"
-
 msgid "Send reply"
 msgstr "Válasz küldése"
 
@@ -4907,14 +4895,8 @@ msgstr "Ez a felhasználónév már létezik"
 msgid "TiB"
 msgstr "TB"
 
-msgid "Ticket Information"
-msgstr "Hibajegy információ"
-
 msgid "Ticket information"
 msgstr "Hibajegy információ"
-
-msgid "Ticket not found."
-msgstr "Hibajegy nem található"
 
 msgid "Ticket successfully closed."
 msgstr "Hibajegy sikeresen lezárva"
@@ -5044,9 +5026,6 @@ msgstr "Nem olvasható a webes alkalmazásokhoz tartozó xml fájl."
 #, php-format
 msgid "Unable to reopen ticket with Id '%s'."
 msgstr "„%s”azonosítójú hibajegyet nem lehet újranyitni."
-
-msgid "Unable to retrieve your password from the database."
-msgstr "Nem sikerült beolvasni az adatbázisból a jelszót."
 
 msgid ""
 "Unable to schedule deletion of the customer account. A message has been sent"
@@ -5305,9 +5284,6 @@ msgstr "Megjelenítés"
 
 msgid "View SSL certificate"
 msgstr "SSL tanúsítvány megjelenítése"
-
-msgid "View Support Ticket"
-msgstr "Hibajegy megtekintése"
 
 msgid "View aliases"
 msgstr "Domain álnevek megjelenítése"

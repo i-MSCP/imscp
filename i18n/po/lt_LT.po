@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-10-18 12:08+0200\n"
-"PO-Revision-Date: 2016-10-18 10:08+0000\n"
+"POT-Creation-Date: 2016-11-06 10:42+0100\n"
+"PO-Revision-Date: 2016-11-06 09:43+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Lithuanian (Lithuania) (http://www.transifex.com/i-mscp/i-MSCP/language/lt_LT/)\n"
 "MIME-Version: 1.0\n"
@@ -1502,12 +1502,6 @@ msgid "Created by"
 msgstr ""
 
 msgid "Creation date"
-msgstr ""
-
-msgid "Current password"
-msgstr "Dabartinis slaptaþodis"
-
-msgid "Current password is invalid."
 msgstr ""
 
 msgid "Custom DNS errors"
@@ -3131,9 +3125,6 @@ msgstr ""
 msgid "Message to reseller before deleting the software"
 msgstr ""
 
-msgid "Messages"
-msgstr "Praneðimai"
-
 msgid "MiB"
 msgstr ""
 
@@ -4351,9 +4342,6 @@ msgstr "Siøsti praneðima kam"
 msgid "Send new login data"
 msgstr "Siøsti naujus prisijungimo duomenius"
 
-msgid "Send new reply"
-msgstr ""
-
 msgid "Send reply"
 msgstr "Siøsti atsakymà"
 
@@ -4902,13 +4890,7 @@ msgstr ""
 msgid "TiB"
 msgstr ""
 
-msgid "Ticket Information"
-msgstr ""
-
 msgid "Ticket information"
-msgstr ""
-
-msgid "Ticket not found."
 msgstr ""
 
 msgid "Ticket successfully closed."
@@ -5038,9 +5020,6 @@ msgstr ""
 
 #, php-format
 msgid "Unable to reopen ticket with Id '%s'."
-msgstr ""
-
-msgid "Unable to retrieve your password from the database."
 msgstr ""
 
 msgid ""
@@ -5299,9 +5278,6 @@ msgid "View"
 msgstr "Rodyti"
 
 msgid "View SSL certificate"
-msgstr ""
-
-msgid "View Support Ticket"
 msgstr ""
 
 msgid "View aliases"

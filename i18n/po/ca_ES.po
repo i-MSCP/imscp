@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-10-18 12:08+0200\n"
-"PO-Revision-Date: 2016-10-18 10:08+0000\n"
+"POT-Creation-Date: 2016-11-06 10:42+0100\n"
+"PO-Revision-Date: 2016-11-06 09:43+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/i-mscp/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -1503,12 +1503,6 @@ msgstr "Creat per"
 
 msgid "Creation date"
 msgstr "Data de creació"
-
-msgid "Current password"
-msgstr "Contrasenya actual"
-
-msgid "Current password is invalid."
-msgstr "La contrasenya actual no és vàlida."
 
 msgid "Custom DNS errors"
 msgstr ""
@@ -3131,9 +3125,6 @@ msgstr "Informació de la plantilla del missatge"
 msgid "Message to reseller before deleting the software"
 msgstr "Missatge per al distribuïdor abans d'eliminar l'aplicació"
 
-msgid "Messages"
-msgstr "Missatges"
-
 msgid "MiB"
 msgstr "MiB"
 
@@ -4351,9 +4342,6 @@ msgstr "Enviar el missatge a "
 msgid "Send new login data"
 msgstr "Enviar noves dades d'accés"
 
-msgid "Send new reply"
-msgstr "Enviar resposta"
-
 msgid "Send reply"
 msgstr "Enviar resposta"
 
@@ -4902,14 +4890,8 @@ msgstr "Aquest nom d'usuari ja existeix."
 msgid "TiB"
 msgstr "TiB"
 
-msgid "Ticket Information"
-msgstr ""
-
 msgid "Ticket information"
 msgstr "Informació del tiquet"
-
-msgid "Ticket not found."
-msgstr "Tiquet no trobat."
 
 msgid "Ticket successfully closed."
 msgstr "Tiquet tancat correctament."
@@ -5039,9 +5021,6 @@ msgstr ""
 #, php-format
 msgid "Unable to reopen ticket with Id '%s'."
 msgstr "No s'ha pogut re.obrir el tiquet amb Id '%s'"
-
-msgid "Unable to retrieve your password from the database."
-msgstr ""
 
 msgid ""
 "Unable to schedule deletion of the customer account. A message has been sent"
@@ -5300,9 +5279,6 @@ msgstr "Veure"
 
 msgid "View SSL certificate"
 msgstr "Veure el certificat SSL"
-
-msgid "View Support Ticket"
-msgstr "Veure tiquet"
 
 msgid "View aliases"
 msgstr "Veure àlies"

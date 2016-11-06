@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-10-18 12:08+0200\n"
-"PO-Revision-Date: 2016-10-18 10:08+0000\n"
+"POT-Creation-Date: 2016-11-06 10:42+0100\n"
+"PO-Revision-Date: 2016-11-06 09:43+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/i-mscp/i-MSCP/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
@@ -1504,12 +1504,6 @@ msgstr "Създаден от"
 
 msgid "Creation date"
 msgstr "Дата на създаване"
-
-msgid "Current password"
-msgstr "Текуща парола"
-
-msgid "Current password is invalid."
-msgstr ""
 
 msgid "Custom DNS errors"
 msgstr ""
@@ -3132,9 +3126,6 @@ msgstr "Информация за шаблона"
 msgid "Message to reseller before deleting the software"
 msgstr "Съобщение до Риселъра  преди изтриването на софтуера"
 
-msgid "Messages"
-msgstr "Съобщения"
-
 msgid "MiB"
 msgstr ""
 
@@ -4352,9 +4343,6 @@ msgstr "Изпрати до"
 msgid "Send new login data"
 msgstr "Изпрати новата информация за вход"
 
-msgid "Send new reply"
-msgstr "Изпрати нов отговор"
-
 msgid "Send reply"
 msgstr "Отправит ответ"
 
@@ -4903,14 +4891,8 @@ msgstr "Потребителското има вече съществува."
 msgid "TiB"
 msgstr ""
 
-msgid "Ticket Information"
-msgstr ""
-
 msgid "Ticket information"
 msgstr "Информация за билет"
-
-msgid "Ticket not found."
-msgstr "Билета не е намерен."
 
 msgid "Ticket successfully closed."
 msgstr ""
@@ -5039,9 +5021,6 @@ msgstr ""
 
 #, php-format
 msgid "Unable to reopen ticket with Id '%s'."
-msgstr ""
-
-msgid "Unable to retrieve your password from the database."
 msgstr ""
 
 msgid ""
@@ -5300,9 +5279,6 @@ msgid "View"
 msgstr "Преглед"
 
 msgid "View SSL certificate"
-msgstr ""
-
-msgid "View Support Ticket"
 msgstr ""
 
 msgid "View aliases"

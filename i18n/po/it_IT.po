@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-10-18 12:08+0200\n"
-"PO-Revision-Date: 2016-10-18 10:08+0000\n"
+"POT-Creation-Date: 2016-11-06 10:42+0100\n"
+"PO-Revision-Date: 2016-11-06 09:43+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/i-mscp/i-MSCP/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -1506,12 +1506,6 @@ msgstr "Creato da"
 
 msgid "Creation date"
 msgstr "Data di creazione"
-
-msgid "Current password"
-msgstr "Password attuale"
-
-msgid "Current password is invalid."
-msgstr "La password corrente è invalida."
 
 msgid "Custom DNS errors"
 msgstr "Errori DNS personalizzati"
@@ -3134,9 +3128,6 @@ msgstr "Informazioni sul template del messaggio"
 msgid "Message to reseller before deleting the software"
 msgstr "Manda un messaggio ai rivenditori prima di cancellare il software."
 
-msgid "Messages"
-msgstr "Messaggi"
-
 msgid "MiB"
 msgstr "MiB"
 
@@ -4354,9 +4345,6 @@ msgstr "Invia il messaggio a"
 msgid "Send new login data"
 msgstr "Invia nuovi dati di accesso"
 
-msgid "Send new reply"
-msgstr "Invia una nuova risposta"
-
 msgid "Send reply"
 msgstr "Invia la risposta"
 
@@ -4905,14 +4893,8 @@ msgstr "Questo nome utente esiste già."
 msgid "TiB"
 msgstr "TiB"
 
-msgid "Ticket Information"
-msgstr "Informazione Ticket"
-
 msgid "Ticket information"
 msgstr "Informazione ticket"
-
-msgid "Ticket not found."
-msgstr "Ticket non trovato."
 
 msgid "Ticket successfully closed."
 msgstr "Ticket chiuso con successo."
@@ -5042,9 +5024,6 @@ msgstr "Impossibile leggere il file XML per il software web."
 #, php-format
 msgid "Unable to reopen ticket with Id '%s'."
 msgstr "Non è possibile riaprire il ticket con id '%s'."
-
-msgid "Unable to retrieve your password from the database."
-msgstr "Impossibile recuperare la password dal database."
 
 msgid ""
 "Unable to schedule deletion of the customer account. A message has been sent"
@@ -5303,9 +5282,6 @@ msgstr "Visualizza"
 
 msgid "View SSL certificate"
 msgstr "Visualizza Certificato SSL"
-
-msgid "View Support Ticket"
-msgstr "Visualizza Supporto Ticket"
 
 msgid "View aliases"
 msgstr "visualizza aliases"
