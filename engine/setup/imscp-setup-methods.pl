@@ -690,7 +690,7 @@ sub setupAskServicesSsl
     my $selfSignedCertificate = setupGetQuestion('SERVICES_SSL_SELFSIGNED_CERTIFICATE', 'no');
     my $privateKeyPath = setupGetQuestion('SERVICES_SSL_PRIVATE_KEY_PATH', '/root');
     my $passphrase = setupGetQuestion('SERVICES_SSL_PRIVATE_KEY_PASSPHRASE');
-    my $certificatPath = setupGetQuestion('SERVICES_SSL_CERTIFICATE_PATH', '/root');
+    my $certificatePath = setupGetQuestion('SERVICES_SSL_CERTIFICATE_PATH', '/root');
     my $caBundlePath = setupGetQuestion('SERVICES_SSL_CA_BUNDLE_PATH', '/root');
     my $openSSL = iMSCP::OpenSSL->new();
     my $rs = 0;
@@ -772,11 +772,11 @@ EOF
 \\Z1Wrong SSL certificate. Please try again.\\Zn
 EOF
                         do {
-                            ($rs, $certificatPath) = $dialog->fselect($certificatPath);
-                        } while($rs < 30 && !($certificatPath && -f $certificatPath));
+                            ($rs, $certificatePath) = $dialog->fselect($certificatePath);
+                        } while($rs < 30 && !($certificatePath && -f $certificatePath));
 
                          getMessageByType('error', { remove => 1 });
-                        $openSSL->{'certificate_container_path'} = $certificatPath if $rs < 30;
+                        $openSSL->{'certificate_container_path'} = $certificatePath if $rs < 30;
                     } while($rs < 30 && $openSSL->validateCertificate());
                 }
             } else {
@@ -811,7 +811,7 @@ EOF
         setupSetQuestion('SERVICES_SSL_SELFSIGNED_CERTIFICATE', $selfSignedCertificate);
         setupSetQuestion('SERVICES_SSL_PRIVATE_KEY_PATH', $privateKeyPath);
         setupSetQuestion('SERVICES_SSL_PRIVATE_KEY_PASSPHRASE', $passphrase);
-        setupSetQuestion('SERVICES_SSL_CERTIFICATE_PATH', $certificatPath);
+        setupSetQuestion('SERVICES_SSL_CERTIFICATE_PATH', $certificatePath);
         setupSetQuestion('SERVICES_SSL_CA_BUNDLE_PATH', $caBundlePath);
     }
 

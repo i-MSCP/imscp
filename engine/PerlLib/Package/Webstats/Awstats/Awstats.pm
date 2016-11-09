@@ -121,15 +121,13 @@ sub addUser
 
     my $filePath = "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats";
     my $file = iMSCP::File->new( filename => $filePath );
-    my $fileContent = $file->get() if -f $filePath;
+    my $fileContent = $file->get();
     $fileContent = '' unless defined $fileContent;
     $fileContent =~ s/^$data->{'USERNAME'}:[^\n]*\n//gim;
     $fileContent .= "$data->{'USERNAME'}:$data->{'PASSWORD_HASH'}\n";
 
     my $rs ||= $file->set( $fileContent );
     $rs ||= $file->save();
-    $rs ||= $file->mode( 0640 );
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'httpd'}->getRunningGroup() );
 }
 
 =item addDmn(\%data)

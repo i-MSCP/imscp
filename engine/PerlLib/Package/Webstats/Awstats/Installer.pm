@@ -170,7 +170,8 @@ sub _setupApache2
     # Create Basic authentication file
 
     my $file = iMSCP::File->new( filename => "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats" );
-    my $rs = $file->save();
+    my $rs ||= $file->set(''); # Make sure to start with empty file on update/reconfiguration
+    $rs = $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'httpd'}->getRunningGroup() );
     $rs ||= $file->mode( 0640 );
     return $rs if $rs;
