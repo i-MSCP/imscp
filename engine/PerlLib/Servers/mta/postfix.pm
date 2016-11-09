@@ -690,7 +690,7 @@ sub addMapEntry
  Delete the given entry from the given Postfix map
 
  Param string $mapPath Map file path
- Param Regexp $entry Regexp mathing map entry to delete
+ Param Regexp $entry Regexp matching map entry to delete
  Return int 0 on success, other on failure
 
 =cut
