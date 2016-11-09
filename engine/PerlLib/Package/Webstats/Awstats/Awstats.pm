@@ -160,32 +160,31 @@ sub addDmn
 
 sub deleteDmn
 {
-    my ($self, $data) = @_;
+    my (undef, $data) = @_;
 
     my $cfgFileName = "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DOMAIN_NAME'}.conf";
-    my $wrkFileName = "$self->{'wrkDir'}/awstats.$data->{'DOMAIN_NAME'}.conf";
-
-    my $rs = 0;
-    $rs = iMSCP::File->new( filename => $cfgFileName )->delFile() if -f $cfgFileName;
-    $rs ||= iMSCP::File->new( filename => $wrkFileName )->delFile() if -f $wrkFileName;
-    return $rs if $rs;
+    if (-f $cfgFileName) {
+        my $rs = iMSCP::File->new( filename => $cfgFileName )->delFile();
+        return $rs if $rs;
+    }
 
     my $awstatsCacheDir = $main::imscpConfig{'AWSTATS_CACHE_DIR'};
-    if (-d $awstatsCacheDir) {
-        my @awstatsCacheFiles = iMSCP::Dir->new(
-            dirname  => $awstatsCacheDir,
-            fileType => '^(?:awstats[0-9]+|dnscachelastupdate)'.quotemeta( ".$data->{'DOMAIN_NAME'}.txt" )
-        )->getFiles();
+    return 0 unless -d $awstatsCacheDir;
 
-        if (@awstatsCacheFiles) {
-            my $file = iMSCP::File->new();
-            for(@awstatsCacheFiles) {
-                $file->{'filename'} = "$awstatsCacheDir/$_";
-                $rs = $file->delFile();
-                return $rs if $rs;
-            }
-        }
+    my @awstatsCacheFiles = iMSCP::Dir->new(
+        dirname  => $awstatsCacheDir,
+        fileType => '^(?:awstats[0-9]+|dnscachelastupdate)'.quotemeta( ".$data->{'DOMAIN_NAME'}.txt" )
+    )->getFiles();
+
+    return 0 unless @awstatsCacheFiles;
+
+    for(@awstatsCacheFiles) {
+        my $file = iMSCP::File->new( filename => "$awstatsCacheDir/$_" );
+        my $rs = $file->delFile();
+        return $rs if $rs;
     }
+
+    0;
 }
 
 =item addSub(\%data)
@@ -239,11 +238,6 @@ sub _init
     my $self = shift;
 
     $self->{'httpd'} = Servers::httpd->factory();
-    $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/awstats";
-    $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-    $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-    $self->{'tplDir'} = "$self->{'cfgDir'}/parts";
-
     iMSCP::EventManager->getInstance()->register( 'afterHttpdBuildConf', sub { $self->_addAwstatsSection( @_ ); } );
     $self;
 }

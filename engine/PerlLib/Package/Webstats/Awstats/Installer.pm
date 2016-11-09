@@ -95,14 +95,6 @@ sub setEnginePermissions
         }
     );
     $rs ||= setRights(
-        "$self->{'httpd'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/01_awstats.conf",
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'ROOT_GROUP'},
-            mode  => '0640'
-        }
-    );
-    $rs ||= setRights(
         "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats",
         {
             user  => $main::imscpConfig{'ROOT_USER'},
@@ -198,10 +190,7 @@ sub _setupApache2
     );
 
     $rs = $self->{'httpd'}->buildConfFile(
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Config/01_awstats.conf",
-        {
-            mode => 0640
-        }
+        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Config/01_awstats.conf"
     );
     $rs ||= $self->{'httpd'}->enableSites( '01_awstats.conf' );
 }
