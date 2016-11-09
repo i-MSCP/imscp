@@ -242,10 +242,9 @@ sub umount($)
 
     return 0 if $fsFile eq '/'; # Prevent umounting root fs
 
-    debug($fsFile);
-
     @${MOUNTS} = grep {
         if (/^\Q$fsFile\E(\/|$)/) {
+            debug($_);
             unless (syscall(&iMSCP::Syscall::SYS_umount2, $_, MNT_DETACH) == 0 || $!{'EINVAL'}) {
                 error( sprintf( 'Error while calling umount($_): %s', $_, $! || 'Unknown error' ) );
                 return 1;

@@ -34,7 +34,7 @@ use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVe
 use iMSCP::Bootstrapper;
 use iMSCP::Debug;
 use iMSCP::Getopt;
-use iMSCP::Mount qw/ mount umount /;
+use iMSCP::Mount qw/ mount umount isMountpoint /;
 use File::Basename;
 use POSIX qw(locale_h);
 use locale;
@@ -58,7 +58,13 @@ sub process
         chomp;
         my $entryFields;
         @{$entryFields}{ qw/ fs_spec fs_file fs_vfstype fs_mntops / } = split;
-        $rs = $action eq 'start' ? mount($entryFields) : umount($entryFields->{'fs_file'});
+        
+        if($action eq 'start') {
+            $rs = mount($entryFields) unless isMountpoint($entryFields->{'fs_file'});
+        } else {
+            $rs = umount($entryFields->{'fs_file'});
+        }
+
         last if $rs;
     }
 
