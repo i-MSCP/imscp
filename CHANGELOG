@@ -50,6 +50,7 @@ SERVERS
     
 SERVICES
     Added: dpkg post-invoke task for updating the imscp_panel PHP binary when the system PHP binary is updated
+    Fixed: All customer sites running a PHP application get a 503 error (related to #IP-1641)
     Reverted: Changes made regarding #IP-1641 issue (See the issue for further details)
 
 UNINSTALLER
