@@ -213,8 +213,8 @@ sub _uninstallServers
 
     for my $server(@servers) {
         eval "require $server";
-        my $instance = $package->factory();
-        if(my $subref = $server->can('uninstall')) {
+        my $instance = $server->factory();
+        if(my $subref = $instance->can('uninstall')) {
             $rs = step(
                 sub { $subref->($instance) }, sprintf('Running %s uninstall tasks...', $server), $nbSteps, $step
             );

@@ -52,6 +52,9 @@ SERVICES
     Added: dpkg post-invoke task for updating the imscp_panel PHP binary when the system PHP binary is updated
     Reverted: Changes made regarding #IP-1641 issue (See the issue for further details)
 
+UNINSTALLER
+    Fixed: Global symbol "$package" requires explicit package name at imscp-uninstall line 216
+
 YOUTRACK
     #IP-1641 PHP binary for the imscp_panel service must be updated when the system PHP binary has been updated
     #IP-1649 Domain traffic data missing
