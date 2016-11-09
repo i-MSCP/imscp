@@ -46,8 +46,9 @@ SERVERS
     Fixed: Name server names are badly generated in dual-stack context
     Fixed: Name server names should be configurable, at least through event listeners (bind9 db.tpl template file)
     Fixed: Only double quotes must be escaped in master SQL user password (Servers::sqld::remote_server)
+    Fixed: Postfix maps not written in some contexts (especially on error)
     Fixed: SOA serial numbers must be generated using UTC timezone (Servers::named::bind)
-    
+
 SERVICES
     Added: dpkg post-invoke task for updating the imscp_panel PHP binary when the system PHP binary is updated
     Fixed: All customer sites running a PHP application get a 503 error (related to #IP-1641)

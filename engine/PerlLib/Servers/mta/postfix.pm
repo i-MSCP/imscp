@@ -111,21 +111,13 @@ sub postinstall
                 [
                     sub {
                         $rs = 0;
-                        for my $mapPath(keys %{$self->{'_maps'}}) {
-                            my $file = iMSCP::File->new( filename => $mapPath );
-                            $rs = $file->set( $self->{'_maps'}->{$mapPath} );
-                            $rs ||= $file->save();
-                            $rs ||= $file->mode(0640)
+                        while(my ($mapPath, $mapFileObject) = each(%{$self->{'_maps'}})) {
+                            $rs ||= $mapFileObject->mode( 0640 );
+                            $rs ||= $self->postmap( $mapPath );
+                            last if $rs;
                         }
 
-                        unless($rs) {
-                            for my $mapPath(keys %{$self->{'postmap'}}) {
-                                $rs = $self->postmap( $mapPath );
-                                last if $rs;
-                            }
-
-                            $rs ||= $self->start();
-                        }
+                        $rs ||= $self->start();
                     },
                     'Postfix'
                 ];
@@ -651,14 +643,14 @@ sub getTraffic
     \%trafficDb;
 }
 
-=item addMapEntry($mapPath, $entry)
+=item addMapEntry($mapPath [, $entry ])
 
- Add the given entry into the given Postfix map
+ Create the given Postfix map or add the given entry into the given Postfix map
 
  Note: without any $entry passed-in, the map will be simply created or updated.
 
  Param string $mapPath Map file path
- Param string $entry Map entry to add
+ Param string $entry OPTIONAL Map entry to add if any
  Return int 0 on success, other on failure
 
 =cut
@@ -667,22 +659,30 @@ sub addMapEntry
 {
     my ($self, $mapPath, $entry) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeAddPostfixMapEntry', $mapPath, $entry );
-    return $rs if $rs;
-
     local $@;
-    my $mapContent = eval { $self->_getMapContent( $mapPath ); };
+    my $file = eval { $self->_getMapFileObject( $mapPath ); };
     if ($@) {
-        error( $@ );
+        error($@);
         return 1;
     }
 
-    if(defined $entry) {
-        $$mapContent =~ s/^\Q$entry\E\n//gim;
-        $$mapContent .= "$entry\n";
+    my $mapFileContent = $file->get();
+    unless (defined $mapFileContent) {
+        error(sprintf('Could not read %s file', $file->{'filename'}));
+        return 1;
     }
 
-    $self->{'eventManager'}->trigger( 'beforeAddPostfixMapEntry', $mapPath, $entry );
+    return 0 unless defined $entry;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeAddPostfixMapEntry', $mapPath, $entry );
+    return $rs if $rs;
+
+    $mapFileContent =~ s/^\Q$entry\E\n//gim;
+    $mapFileContent .= "$entry\n";
+
+    $rs = $file->set( $mapFileContent );
+    $rs ||= $file->save();
+    $rs ||= $self->{'eventManager'}->trigger( 'beforeAddPostfixMapEntry', $mapPath, $entry );
 }
 
 =item deleteMapEntry($mapPath, $entry)
@@ -690,7 +690,7 @@ sub addMapEntry
  Delete the given entry from the given Postfix map
 
  Param string $mapPath Map file path
- Param Regexp $entry Regexp representing map entry to delete
+ Param Regexp $entry Regexp mathing map entry to delete
  Return int 0 on success, other on failure
 
 =cut
@@ -700,14 +700,26 @@ sub deleteMapEntry
     my ($self, $mapPath, $entry) = @_;
 
     local $@;
-    my $mapContent = eval { $self->_getMapContent( $mapPath ); };
+    my $file = eval { $self->_getMapFileObject( $mapPath ); };
     if ($@) {
-        error( $@ );
+        error($@);
         return 1;
     }
 
-    $$mapContent =~ s/^$entry\n//gim;
-    0;
+    my $mapFileContent = $file->get();
+    unless (defined $mapFileContent) {
+        error(sprintf('Could not read %s file', $file->{'filename'}));
+        return 1;
+    }
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeDeletePostfixMapEntry', $mapPath, $entry );
+    return $rs if $rs;
+
+    $mapFileContent =~ s/^$entry\n//gim;
+
+    $rs = $file->set( $mapFileContent );
+    $rs ||= $file->save();
+    $rs ||= $self->{'eventManager'}->trigger( 'beforeDeletePostfixMapEntry', $mapPath, $entry );
 }
 
 =item postmap($mapPath [, $mapType = 'hash' ])
@@ -882,38 +894,38 @@ sub _init
     $self;
 }
 
-=item _getMapContent(mapPath)
+=item _getMapFileObject(mapPath)
 
- Get given postfix map content
+ Get iMSCP::File object for the given postfix map
 
  Param string $mapPath Postfix map path
- Return scalarref Reference to map content
+ Return iMSCP::File, die on failure
 
 =cut
 
-sub _getMapContent
+sub _getMapFileObject
 {
     my ($self, $mapPath) = @_;
 
-    unless (defined $self->{'_maps'}->{$mapPath}) {
-        if(-f $mapPath) {
-            my $file = iMSCP::File->new( filename => $mapPath );
-            $self->{'_maps'}->{$mapPath} = $file->get();
-            unless (defined $self->{'_maps'}->{$mapPath}) {
-                die( sprintf( 'Could not read %s file', $mapPath ) );
-            }
-        } else {
-            my $basename = basename($mapPath);
-            $self->{'_maps'}->{$mapPath} = <<EOF;
+    return $self->{'_maps'}->{$mapPath} if exists $self->{'_maps'}->{$mapPath};
+
+    $self->{'_maps'}->{$mapPath} = iMSCP::File->new( filename => $mapPath );
+
+    unless (-f $mapPath) {
+        my $basename = basename($mapPath);
+        $self->{'_maps'}->{$mapPath}->set( <<"EOF"
 # Postfix $basename - auto-generated by i-MSCP
 #     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN
 EOF
-        }
+        );
 
-        $self->{'postmap'}->{$mapPath} = 1;
+        $self->{'_maps'}->{$mapPath}->save() == 0 && $self->{'_maps'}->{$mapPath}->mode( 0640 ) == 0 or die(
+            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+        );
     }
 
-    \$self->{'_maps'}->{$mapPath};
+    $self->{'postmap'}->{$mapPath} = 1;
+    $self->{'_maps'}->{$mapPath};
 }
 
 =item END
@@ -929,18 +941,10 @@ END
         my $rs = 0;
 
         unless (defined $main::execmode && $main::execmode eq 'setup') {
-            for my $mapPath(keys %{$self->{'_maps'}}) {
-                my $file = iMSCP::File->new( filename => $mapPath );
-                $rs = $file->set( $self->{'_maps'}->{$mapPath} );
-                $rs ||= $file->save();
-                $rs ||= $file->mode(0640)
-            }
-
-            unless($rs) {
-                for my $mapPath(keys %{$self->{'postmap'}}) {
-                    $rs = $self->postmap( $mapPath );
-                    last if $rs;
-                }
+            while(my ($mapPath, $mapFileObject) = each(%{$self->{'_maps'}})) {
+                $rs ||= $mapFileObject->mode( 0640 );
+                $rs ||= $self->postmap( $mapPath );
+                last if $rs;
             }
         }
 

@@ -50,12 +50,12 @@ sub get
 {
     my $self = shift;
 
+    return $self->{'fileContent'} if defined $self->{'fileContent'};
+
     unless (defined $self->{'filename'}) {
         error( "Attribut `filename' is not set" );
         return undef;
     }
-
-    return $self->{'fileContent'} if defined $self->{'fileContent'};
 
     my $fh;
     unless(open($fh, '<', $self->{'filename'})) {
@@ -65,6 +65,8 @@ sub get
 
     local $/;
     $self->{'fileContent'} = <$fh>;
+    close($fh);
+    $self->{'fileContent'}
 }
 
 =item set($content)
@@ -109,6 +111,7 @@ sub save
 
     $self->{'fileContent'} //= '';
     print {$fh} $self->{'fileContent'};
+    close($fh);
     0;
 }
 
