@@ -15,11 +15,11 @@ FRONTEND
     Added: Hour and minute fields in message headers (Support Tickets)
     Changed: Htuser passwords are now hashed using APR-1 algorithm
     Changed: Panel user passwords are now hashed using APR-1 algorithm (See the errata file for further details)
-    Fixed: Allow the resellers to change customer passwords by removing useless verification on the current password
+    Fixed: Resellers cannot change customer passwords due to useless verification on the current password
     Fixed: Could not list directory when domain alias or subdomain is forwarded (Client side)
     Fixed: HTML <br> tags not rendered in messages (Support Tickets)
     Fixed: Ignore user abort while listing directory (VirtualFileSystem)
-    Fixed: It is too hard to differentiate different answers (Support Tickets)
+    Fixed: It is too hard to differentiate different messages (Support Tickets)
     Fixed: Messages are hard to read because they are greyed (Support Tickets)
     Fixed: Messages should be displayed in LIFO order (Support Tickets)
     Removed: cryptPasswordWithSalt(), generateRandomSalt() and _passgen() functions (replaced by \iMSCP\Crypt library)
@@ -35,32 +35,32 @@ LISTENERS
     Removed: 10_named_override_default_ns_rr.pl (replaced by the all-in-one 10_named_global_ns.pl listener file)
 
 PACKAGES
-    Changed: Authentication provider for Awstats (Apache mod_authn_file instead of mod_dbd)
-    Fixed: AH01102: error reading status line from remote server 127.0.0.1:8889
+    Added: dpkg post-invoke task for updating the `imscp_panel' PHP binary when the system PHP binary is updated (FrontEnd)
+    Changed: Authentication provider for Awstats (Apache mod_authn_file instead of mod_dbd) (AWStats)
+    Fixed: AH01102: error reading status line from remote server 127.0.0.1:8889 (AWStats)
 
 PLUGINS
     Fixed: Ignore user abort while migrating database
 
 SERVERS
-    Added: `PHP_FPM_RLIMIT_FILES" configuration parameter in php.data configuration file (Servers::httpd::apache_php_fpm)
-    Changed: PHP-FPM rlimit_files value to avoid the `Too many open files (24)' error on start-up (Servers::httpd::apache_php_fpm)
-    Fixed: Duplicate bind mounts due to unwanted iMSCP::Mount::mount() call (Servers::httpd::apache_fcgid)
-    Fixed: Name server names are badly generated in dual-stack context
-    Fixed: Name server names should be configurable, at least through event listeners (bind9 db.tpl template file)
-    Fixed: Only double quotes must be escaped in master SQL user password (Servers::sqld::remote_server)
-    Fixed: Postfix maps not written in some contexts (especially on error)
-    Fixed: SOA serial numbers must be generated using UTC timezone (Servers::named::bind)
+    Added: `PHP_FPM_RLIMIT_FILES" configuration parameter in php.data configuration file (PHP-FPM)
+    Changed: PHP-FPM `rlimit_files' value to avoid the `Too many open files (24)' error on start-up (PHP-FPM)
+    Fixed: Duplicate bind mounts due to unwanted iMSCP::Mount::mount() call (Apache2 FCGID)
+    Fixed: Name server names are badly generated in dual-stack context (Bind9)
+    Fixed: Name server names should be configurable, at least through event listeners (Bind9)
+    Fixed: Only double quotes must be escaped in master SQL user password (Remote SQL server)
+    Fixed: Postfix maps not written in some contexts (especially on error) (Postfix)
+    Fixed: SOA serial numbers must be generated using UTC timezone (Bind9)
 
 SERVICES
-    Added: dpkg post-invoke task for updating the imscp_panel PHP binary when the system PHP binary is updated
-    Fixed: All customer sites running a PHP application get a 503 error (related to #IP-1641)
+    Fixed: All customer sites running a PHP application get a 503 error when restarting the `imscp_panel service' (related to #IP-1641)
     Reverted: Changes made regarding #IP-1641 issue (See the issue for further details)
 
 UNINSTALLER
     Fixed: Global symbol "$package" requires explicit package name at imscp-uninstall line 216
 
 YOUTRACK
-    #IP-1641 PHP binary for the imscp_panel service must be updated when the system PHP binary has been updated
+    #IP-1641 PHP binary for the imscp_panel service must be updated when the system PHP binary is updated
     #IP-1649 Domain traffic data missing
     #IP-1650 When a catchall is deleted, the mailbox used with the catchall is also deleted
     #IP-1651 Forward URL - The new document root must pre-exists inside the /htdocs directory
@@ -77,7 +77,7 @@ BACKEND
     Fixed: Could not remove service (iMSCP::Service)
 
 PACKAGES
-    Fixed: Bareword "JSON::true" not allowed while "strict subs" in use (MonstaFTP package installer)
+    Fixed: Bareword "JSON::true" not allowed while "strict subs" in use (MonstaFTP)
     Fixed: Permissions are not set (any package)
 
 SERVERS
@@ -134,10 +134,10 @@ PACKAGES
 
 SERVERS
     Added: SQL query for user iteration through `doveadm' (Dovecot)
-    Fixed: Authorization problems - You don't have permission to access / on this server (redirect vhosts)
-    Fixed: Could not access error documents on error (redirect vhosts)
+    Fixed: Authorization problems - You don't have permission to access / on this server (Apache2)
+    Fixed: Could not access error documents on error (redirect vhosts) (Apache2)
     Fixed: Could not list directory when accessing FTP server via localhost, and when passive mode is enabled (ProFTPD)
-    Fixed: Proxy loop caused by the `ProxyErrorOverride' directive (See the errata file for further details)
+    Fixed: Proxy loop caused by the `ProxyErrorOverride' directive (See the errata file for further details) (Apache2)
     Rewritten: Configuration file (ProFTPD)
 
 SERVICES
@@ -295,8 +295,8 @@ DATABASE
     Added: Compound unique index on the domain_traffic table to avoid slow query and duplicate entries
     Added: Compound unique key on the `php_ini' table
     Fixed: Missing primary key on httpd_vlogger table
-    Changed: Default value for the dtraff_web, dtraff_ftp, dtraff_mail domain_traffic columns (NULL to 0)
-    Fixed: Disallow NULL value on domain_traffic.domain_id and domain_traffic.dtraff_time columns
+    Changed: Default value for the `dtraff_web', `dtraff_ftp', `dtraff_mail' and `domain_traffic' columns (NULL to 0)
+    Fixed: Disallow NULL value on `domain_traffic.domain_id' and `domain_traffic.dtraff_time' columns
     Fixed: Make queries compatible with `only_full_group_by' SQL mode which is par of default modes in MySQL > 5.7
 
 FRONTEND
@@ -323,7 +323,7 @@ INSTALLER
     Added: Requirements check for PHP modules
     Fixed: Cannot create pbuilder environment - Wrong repository (pbuilder use first entry from sources.list)
     Fixed: Could not install pre-required packages error on first run
-    Fixed: Could not remove deprecated `phptmp' directories on update (Httpd server impl.)
+    Fixed: Could not remove deprecated `phptmp' directories on update (Httpd servers)
     Fixed: Ensure that DEFAULT_ADMIN_ADDRESS parameter is set
     Fixed: SQL server data directory must not be hardcoded
     Fixed: Update and Security repositories are missing in pbuilder environments
@@ -331,22 +331,22 @@ INSTALLER
     Removed: `ips' item from the list of reconfigurable items (--reconfigure command line option)
 
 LISTENERS
-    Fixed: Script for slave DNS provisionning won't work if HTML compression is disabled in panel
+    Fixed: Script for slave DNS provisioning won't work if HTML compression is disabled in panel
 
 PACKAGES
-    Changed: AWStats is now accessible through dedicated port (8889)
-    Changed: Usage for Apache2 mod_dbd to authenticate AWStats users
-    Fixed: AWStats data can be accessed through localhost without any authentication
-    Fixed: AWStats (domains) configuration files are not generated (regression fix)
-    Fixed: Awstats package is never installed (regression fix)
-    Fixed: Could not authenticate to AWStats interface of domain aliases and subdomains
-    Removed: Support for AWStats static mode
+    Changed: AWStats is now accessible through dedicated port (8889) (AWStats)
+    Changed: Usage for Apache2 mod_dbd to authenticate AWStats users (AWStats)
+    Fixed: Data can be accessed through localhost without any authentication (AWStats)
+    Fixed: Configuration files are not generated (regression fix) (AWStats)
+    Fixed: Distribution package (awstats) is not installed (regression fix) (AWStats)
+    Fixed: Could not authenticate to AWStats interface of domain aliases and subdomains (AWStats)
+    Removed: Support for AWStats static mode (AWStats)
 
 PLUGINS
     Fixed: A plugin must be lockable by more than one plugin
     Updated: API version to 1.0.5 (needed due to changes in iMSCP::Mount library)
 
-PRESEED
+PRESEEDING
     Removed: SERVER_IPS parameter according changes made in installer
 
 SERVERS
@@ -358,7 +358,7 @@ SERVERS
     Fixed: HSTS - Follow RFC 6797 recommendations for non-secure-to-secure redirects (status code 301 instead of 307)
     Fixed: HSTS - Wrong redirect when domain is forwarded (Apache server impl.)
     Fixed: mysql-client-5.6 package not available in Ubuntu 16.04 repositories (Remote server)
-    Fixed: Permissions on courier-authdaemon rundir are reseted on reboot (systemd tmpfiles.d)
+    Fixed: Permissions on courier-authdaemon rundir are resetted on reboot (systemd tmpfiles.d)
     Fixed: Process $ORIGIN substitutions before triggering the `afterNamedAddCustomDNS' event (Bind9 server impl.)
     Fixed: Wrong argument passed to Servers::named::bind::_updateSOAserialNumber
 
@@ -369,7 +369,7 @@ SYSTEM
     Fixed: Make sure that / is marked as shared in regards to mount propagation, even when not using systemd
 
 YOUTRACK
-    #IP-0135 IPs managemnet - The NIC and netmask should be editable for each IP
+    #IP-0135 IPs management - The NIC and netmask should be editable for each IP
     #IP-1316 Could not add CNAME with underscore in name for DKIM
     #IP-1429 Make main domains forwardable
     #IP-1508 Revise acceptable password characters
@@ -548,12 +548,12 @@ INSTALLER
 
 PACKAGES
     Added: Monsta FTP package
-    Disabled: Pydio in case PHP >= 7.0.0 is detected
-    Fixed: As of 2012-6-7, the md5 algorithm is "no longer considered safe" (Package::FrontEnd::Installer)
-    Fixed: `ERR_INCOMPLETE_CHUNKED_ENCODING' error due to wrong permissions on nginx fastcgi cache directory (FrontEnd)
-    Fixed: Missing IP version check (Package::FrontEnd::Installer)
+    Disabled: Pydio in case PHP >= 7.0.0 is detected (Pydio)
+    Fixed: As of 2012-6-7, the md5 algorithm is "no longer considered safe" (FrontEnd)
+    Fixed: `ERR_INCOMPLETE_CHUNKED_ENCODING' error due to wrong permissions on nginx fastCGI cache directory (FrontEnd)
+    Fixed: Missing IP version check (FrontEnd)
     Fixed: White page due to `net::ERR_INCOMPLETE_CHUNKED_ENCODING' errors (related to #IP-1530) (PhpMyAdmin)
-    Updated: PhpMyAdmin version to 4.6.0 - Only for servers with PHP/MySQL >= 5.5 (Package::PhpMyAdmin::Installer)
+    Updated: PhpMyAdmin version to 4.6.0 - Only for servers with PHP/MySQL >= 5.5 (PhpMyAdmin)
 
 PLUGINS
     Enhancement: Plugin backend packages can now be simple objects
