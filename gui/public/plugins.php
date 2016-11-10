@@ -63,7 +63,7 @@ foreach ($plugins as $plugin) {
 }
 
 if (null === $pluginActionScriptPath) {
-    showBadRequestErrorPage();
+    showNotFoundErrorPage();
 }
 
 $eventsManager->dispatch(iMSCP_Events::onAfterPluginsRoute, array(

@@ -2587,46 +2587,65 @@ function getDataTablesPluginTranslations($json = true)
 }
 
 /**
+ * Show the given error page
+ * 
+ * @param int $code Code of error page to show (400, 403 or 404)
+ * @throws iMSCP_Exception
+ * @return void
+ */
+function showErrorPage($code)
+{
+    switch ($code) {
+        case 400:
+            $message = 'Bad Request';
+            break;
+        case 403:
+            $message = 'Forbidden';
+            break;
+        case 404:
+            $message = 'Not Found';
+            break;
+        default:
+            throw new iMSCP_Exception(500, 'Unknown error page');
+    }
+
+    header("Status: $code $message");
+
+    if (isset($_SERVER['HTTP_ACCEPT'])) {
+        if (strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
+            header("Content-type: application/json");
+            exit(json_encode(array('code' => 404, 'message' => $message)));
+        }
+
+        if (strpos($_SERVER['HTTP_ACCEPT'], 'application/xmls') !== false) {
+            header("Content-type: text/xml;charset=utf-8");
+            exit(<<<EOF
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+    <code>$code</code>
+    <message>$message</message>
+</response>
+EOF
+            );
+        }
+    }
+
+    if (!is_xhr()) {
+        $cfg = iMSCP_Registry::get('config');
+        include($cfg['GUI_ROOT_DIR'] . "/public/errordocs/$code.html");
+    }
+
+    exit;
+}
+
+/**
  * Show 400 error page
  *
  * @return void
  */
 function showBadRequestErrorPage()
 {
-
-    $cfg = iMSCP_Registry::get('config');
-    $filePath = $cfg['GUI_ROOT_DIR'] . '/public/errordocs/400.html';
-    header("Status: 400 Bad Request");
-    $response = '';
-
-    if (isset($_SERVER['HTTP_ACCEPT'])) {
-        if (
-            (
-                strpos($_SERVER['HTTP_ACCEPT'], 'text/html') !== false ||
-                strpos($_SERVER['HTTP_ACCEPT'], 'application/xhtml') !== false
-            ) && !is_xhr()
-        ) {
-            $response = file_get_contents($filePath);
-        } elseif (strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
-            header("Content-type: application/json");
-            $response = json_encode(array('code' => 400, 'message' => 'Bad Request'));
-        } elseif (strpos($_SERVER['HTTP_ACCEPT'], 'application/xmls') !== false) {
-            header("Content-type: text/xml;charset=utf-8");
-            $response = '<?xml version="1.0" encoding="utf-8"?>';
-            $response = $response . '<response><code>400</code>';
-            $response = $response . '<message>Bad Request</message></response>';
-        } elseif (!is_xhr()) {
-            include $filePath;
-        }
-    } elseif (!is_xhr()) {
-        $response = file_get_contents($filePath);
-    }
-
-    if ($response != '') {
-        echo $response;
-    }
-
-    exit;
+    showErrorPage(400);
 }
 
 /**
@@ -2636,40 +2655,7 @@ function showBadRequestErrorPage()
  */
 function showNotFoundErrorPage()
 {
-
-    $cfg = iMSCP_Registry::get('config');
-    $filePath = $cfg['GUI_ROOT_DIR'] . '/public/errordocs/404.html';
-    header("Status: 404 Not Found");
-    $response = '';
-
-    if (isset($_SERVER['HTTP_ACCEPT'])) {
-        if (
-            (
-                strpos($_SERVER['HTTP_ACCEPT'], 'text/html') !== false ||
-                strpos($_SERVER['HTTP_ACCEPT'], 'application/xhtml') !== false
-            ) && !is_xhr()
-        ) {
-            $response = file_get_contents($filePath);
-        } elseif (strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
-            header("Content-type: application/json");
-            $response = json_encode(array('code' => 404, 'message' => 'Not Found'));
-        } elseif (strpos($_SERVER['HTTP_ACCEPT'], 'application/xmls') !== false) {
-            header("Content-type: text/xml;charset=utf-8");
-            $response = '<?xml version="1.0" encoding="utf-8"?>';
-            $response = $response . '<response><code>404</code>';
-            $response = $response . '<message>Not Found</message></response>';
-        } elseif (!is_xhr()) {
-            include $filePath;
-        }
-    } elseif (!is_xhr()) {
-        $response = file_get_contents($filePath);
-    }
-
-    if ($response != '') {
-        echo $response;
-    }
-
-    exit;
+    showErrorPage(404);
 }
 
 /**
@@ -2679,42 +2665,8 @@ function showNotFoundErrorPage()
  */
 function showForbiddenErrorPage()
 {
-    $cfg = iMSCP_Registry::get('config');
-    $filePath = $cfg['GUI_ROOT_DIR'] . '/public/errordocs/403.html';
-    header("Status: 403 Forbidden");
-    $response = '';
-
-    if (isset($_SERVER['HTTP_ACCEPT'])) {
-        if (
-            (
-                strpos($_SERVER['HTTP_ACCEPT'], 'text/html') !== false ||
-                strpos($_SERVER['HTTP_ACCEPT'], 'application/xhtml') !== false
-            ) && !is_xhr()
-        ) {
-            $response = file_get_contents($filePath);
-        } elseif (strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
-            header("Content-type: application/json");
-            $response = json_encode(array('code' => 404, 'message' => 'Forbidden'));
-        } elseif (strpos($_SERVER['HTTP_ACCEPT'], 'application/xmls') !== false) {
-            header("Content-type: text/xml;charset=utf-8");
-            $response = '<?xml version="1.0" encoding="utf-8"?>';
-            $response = $response . '<response><code>403</code>';
-            $response = $response . '<message>Forbidden</message></response>';
-        } elseif (!is_xhr()) {
-            include $filePath;
-        }
-    } elseif (!is_xhr()) {
-        $response = file_get_contents($filePath);
-    }
-
-    if ($response != '') {
-        echo $response;
-    }
-
-    exit;
+    showErrorPage(403);
 }
-
-
 
 /**
  * @param  $crnt
