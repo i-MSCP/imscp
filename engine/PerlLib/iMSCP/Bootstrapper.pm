@@ -125,7 +125,7 @@ sub loadMainConfig
  Acquire an exclusive lock on the given file (default to /tmp/imscp.lock)
 
  Param bool $nowait Whether or not wait for lock
- Return int 1 on success, other on failure
+ Return int 1 if lock has been acquired, 0 if lock file has not been acquired (nowait case), die on failure
 
 =cut
 

@@ -333,7 +333,9 @@ sub createCertificateChain
 {
     my $self = shift;
 
-    $self->importPrivateKey() || $self->importCertificate() || $self->importCaBundle();
+    my $rs = $self->importPrivateKey();
+    $rs ||= $self->importCertificate();
+    $rs ||= $self->importCaBundle();
 }
 
 =item getCertificateExpiryTime( [ certificatePath = $self->{'certificate_container_path'} ] )

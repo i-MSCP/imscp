@@ -100,7 +100,7 @@ function _client_updateDomainStatus($domainType, $domainId)
 }
 
 /**
- * Generate temporary openssl coonfiguration file
+ * Generate temporary openssl configuration file
  *
  * @throws iMSCP_Exception_Database
  * @param array $data User data

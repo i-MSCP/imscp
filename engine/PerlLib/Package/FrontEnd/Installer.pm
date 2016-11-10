@@ -265,7 +265,7 @@ sub askSsl
     my $selfSignedCertificate = main::setupGetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE', 'no' );
     my $privateKeyPath = main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH', '/root' );
     my $passphrase = main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PASSPHRASE' );
-    my $certificatPath = main::setupGetQuestion( 'PANEL_SSL_CERTIFICATE_PATH', '/root' );
+    my $certificatePath = main::setupGetQuestion( 'PANEL_SSL_CERTIFICATE_PATH', '/root' );
     my $caBundlePath = main::setupGetQuestion( 'PANEL_SSL_CA_BUNDLE_PATH', '/root' );
     my $baseServerVhostPrefix = main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX', 'http://' );
     my $openSSL = iMSCP::OpenSSL->new();
@@ -349,11 +349,11 @@ EOF
                         $dialog->msgbox( "\n\\Z1Wrong SSL certificate. Please try again.\\Zn\n\n" ) unless $rs;
 
                         do {
-                            ($rs, $certificatPath) = $dialog->fselect( $certificatPath );
-                        } while ($rs < 30 && !($certificatPath && -f $certificatPath));
+                            ($rs, $certificatePath) = $dialog->fselect( $certificatePath );
+                        } while ($rs < 30 && !($certificatePath && -f $certificatePath));
 
                         getMessageByType( 'error', { remove => 1 } );
-                        $openSSL->{'certificate_container_path'} = $certificatPath if $rs < 30;
+                        $openSSL->{'certificate_container_path'} = $certificatePath if $rs < 30;
                     } while ($rs < 30 && $openSSL->validateCertificate());
                 }
             } else {
@@ -397,7 +397,7 @@ EOF
         main::setupSetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE', $selfSignedCertificate );
         main::setupSetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH', $privateKeyPath );
         main::setupSetQuestion( 'PANEL_SSL_PRIVATE_KEY_PASSPHRASE', $passphrase );
-        main::setupSetQuestion( 'PANEL_SSL_CERTIFICATE_PATH', $certificatPath );
+        main::setupSetQuestion( 'PANEL_SSL_CERTIFICATE_PATH', $certificatePath );
         main::setupSetQuestion( 'PANEL_SSL_CA_BUNDLE_PATH', $caBundlePath );
         main::setupSetQuestion( 'BASE_SERVER_VHOST_PREFIX', $sslEnabled eq 'yes' ? $baseServerVhostPrefix : 'http://' );
     }
