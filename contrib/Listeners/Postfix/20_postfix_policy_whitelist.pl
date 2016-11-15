@@ -23,7 +23,7 @@ package Listener::Postfix::Policy::Whitelist;
 
 use strict;
 use warnings;
-use iMSCP::EventMaanger;
+use iMSCP::EventManager;
 use Servers::mta;
 
 #
@@ -47,7 +47,7 @@ iMSCP::EventManager->getInstance()->register(
             (
                 smtpd_recipient_restrictions => {
                     action => 'add',
-                    before => qr/check_policy_service\s+.*/,
+                    before => qr/permit/,
                     values => [
                         "check_client_access hash:$policyClientWhitelistTable",
                         "check_recipient_access hash:$policyRecipientWhitelistTable"

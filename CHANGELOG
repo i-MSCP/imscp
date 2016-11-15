@@ -37,6 +37,8 @@ LISTENERS
     Added: 10_frontend_templates_override.pl (Allows to override default frontEnd template files)
     Added: 10_named_global_ns.pl (Allows to set identical NS entries in all zones)
     Fixed: DNS entries are always overridden after custom DNS processing (20_named_dualstack.pl)
+    Fixed: Entries not added in Postfix main.cf file (20_postfix_policy_whitelist.pl)
+    Fixed: Typo in package name leading to compilation failure (20_postfix_policy_whitelist.pl)
     Fixed: Wrong namespace used for many listeners (Named namespace)
     Removed: 10_named_override_default_ns_rr.pl (replaced by the all-in-one 10_named_global_ns.pl listener file)
 
