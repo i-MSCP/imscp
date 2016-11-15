@@ -754,11 +754,11 @@ sub postmap
   - before          : OPTIONAL option allowing to add values before the given value (expressed as a Regexp)
   - after           : OPTIONAL option allowing to add values after the given value (expressed as a Regexp)
 
-    Note that the `before' and `after' option are only supported by the `add' action. Note also that the `before'
-    option has highter precedence than the `after' option.
+  Note that the `before' and `after' options are only supported by the `add' action. Note also that the `before'
+  option has highter precedence than the `after' option.
 
   For instance, let's assume that we want add both, the `check_client_access <table>' value and the
-  `check_recipient_access <table>' value to the `smtpd_recipient_restrictions' parameter, after the
+  `check_recipient_access <table>' value to the `smtpd_recipient_restrictions' parameter, before the
   `check_policy_service ...' value. The following hash passed as parameter of this method will do the job:
 
       my %params = (
