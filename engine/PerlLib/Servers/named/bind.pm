@@ -1136,7 +1136,7 @@ sub _updateSOAserialNumber
 
     if (${$oldZoneContent} =~ /^\s+(?:(?<date>\d{8})(?<nn>\d{2})|(?<variable>\{TIMESTAMP\}))\s*;[^\n]*\n/m) {
         my %rc = %+;
-        my (undef, undef, undef, $d, $m, $y) = gmtime();
+        my ($d, $m, $y) = (gmtime())[3 .. 5];
         my $nowDate = sprintf("%d%02d%02d", $y + 1900, $m + 1, $d);
 
         if ($rc{'variable'}) {
