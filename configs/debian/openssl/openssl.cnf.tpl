@@ -1,6 +1,7 @@
 # i-MSCP openssl.cnf template file for self-signed certificates
 
 [req]
+req_extensions = v3_req
 distinguished_name = req_distinguished_name
 default_bits = 2048
 default_md = sha256

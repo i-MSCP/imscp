@@ -4,6 +4,9 @@
 Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
+CONFIG
+    Added: `req_extensions' in openssl.cnf template file
+
 BACKEND
     Fixed: Boot mode not set when it is expected to be (iMSCP::Bootstrapper)
     Fixed: Configuration files must be opened read-only outside of setup context
