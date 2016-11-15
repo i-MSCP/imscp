@@ -31,6 +31,7 @@ FRONTEND
 
 INSTALLER
     Fixed: Could not set host value to `%' (host from which SQL users created by i-MSCP must be allowed to connect)
+    Review: Prefer IPv4 family (Wget)
 
 LISTENERS
     Added: 10_frontend_templates_override.pl (Allows to override default frontEnd template files)

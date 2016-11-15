@@ -668,7 +668,7 @@ EOF
                 escapeShell( $repository->{'repository_key_id'} )
             );
         } elsif ($repository->{'repository_key_uri'}) { # Add the repository key by fetching it from the given URI
-            @cmd = ('wget -qO-', escapeShell( $repository->{'repository_key_uri'} ), '| apt-key add -');
+            @cmd = ('wget --prefer-family=IPv4 -qO-', escapeShell( $repository->{'repository_key_uri'} ), '| apt-key add -');
         }
 
         if (@cmd) {
