@@ -13,15 +13,20 @@ BACKEND
 
 FRONTEND
     Added: Hour and minute fields in message headers (Support Tickets)
+    Changed: HTML input tag by textarea tag for TXT and SPF records data field (Custom DNS interface)
     Changed: Htuser passwords are now hashed using APR-1 algorithm
     Changed: Panel user passwords are now hashed using APR-1 algorithm (See the errata file for further details)
-    Fixed: Resellers cannot change customer passwords due to useless verification on the current password
+    Fixed: Any printable ASCII character must be allowed inside TXT record data field (Custom DNS interface)
     Fixed: Could not list directory when domain alias or subdomain is forwarded (Client side)
+    Fixed: Double-quotes inside a character string of a TXT/SPF data field must be escaped (Custom DNS interface)
     Fixed: HTML <br> tags not rendered in messages (Support Tickets)
     Fixed: Ignore user abort while listing directory (VirtualFileSystem)
-    Fixed: It is too hard to differentiate different messages (Support Tickets)
+    Fixed: It is too hard to differentiate different messages (Support Tickets
+    Fixed: Leading and trailing double-quotes from TXT and SPF record data field must be removed before showing them (Custom DNS interface)
     Fixed: Messages are hard to read because they are greyed (Support Tickets)
     Fixed: Messages should be displayed in LIFO order (Support Tickets)
+    Fixed: Resellers cannot change customer passwords due to useless verification on the current password
+    Fixed: Tooltips not showed correctly in some contexts (UI)
     Removed: cryptPasswordWithSalt(), generateRandomSalt() and _passgen() functions (replaced by \iMSCP\Crypt library)
 
 INSTALLER
@@ -65,6 +70,7 @@ YOUTRACK
     #IP-1650 When a catchall is deleted, the mailbox used with the catchall is also deleted
     #IP-1651 Forward URL - The new document root must pre-exists inside the /htdocs directory
     #IP-1654 Support - Several issues in view ticket interface
+    #IP-1663 Bind9 Server implementation - Cannot add TXT-DATA for which character string is longer than 255 characters
 
 ------------------------------------------------------------------------------------------------------------------------
 1.3.7
@@ -325,6 +331,7 @@ INSTALLER
     Fixed: Could not install pre-required packages error on first run
     Fixed: Could not remove deprecated `phptmp' directories on update (Httpd servers)
     Fixed: Ensure that DEFAULT_ADMIN_ADDRESS parameter is set
+    Fixed: Prefer IPv4 address family on IPv6 capable hosts (Wget)
     Fixed: SQL server data directory must not be hardcoded
     Fixed: Update and Security repositories are missing in pbuilder environments
     Removed: Additional IP configuration dialog (see the errata file for more details)

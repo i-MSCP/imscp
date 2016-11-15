@@ -25,14 +25,14 @@
 /**
  * Get post value
  *
- * @param string $id Data identifier
+ * @param string $varname POST variable name
  * @param string $defaultValue Value returned in case Data has not been found in $_POST
  * @return string
  */
-function client_getPost($id, $defaultValue = '')
+function client_getPost($varname, $defaultValue = '')
 {
-    if (isset($_POST[$id])) {
-        return clean_input($_POST[$id]);
+    if (isset($_POST[$varname])) {
+        return clean_input($_POST[$varname]);
     }
 
     return $defaultValue;
@@ -172,7 +172,7 @@ function client_validate_TXT($data, &$errorString)
         return false;
     }
 
-    if (!preg_match('/^([a-zA-Z0-9\+\?\-\*_~=:. \/;@])+$/', str_replace('"', '', $data))) {
+    if(!preg_match('/^[[:print:]]+$/', $data)) {
         $errorString .= tr('Invalid `%s` field.', tr('Data'));
         return false;
     }
@@ -332,7 +332,7 @@ function client_decodeDnsRecordData($data)
                 }
                 break;
             default:
-                $txt = $data['domain_text'];
+                $txt = stripcslashes(trim($data['domain_text'], '"'));
         }
     }
 
@@ -421,7 +421,7 @@ function client_saveDnsRecord($dnsRecordId)
     # Disallow out-of-zone record
     if ($dnsRecordName !== '' && !preg_match("/(?:.*?\\.)?$domainName\\.$/", $dnsRecordName)) {
         set_page_message(tr('Could not validate DNS resource record: %s', 'out-of-zone data'), 'error');
-    } // Remove trailing dot for validation process (will be readded after)
+    } // Remove trailing dot for validation process (will be re-added after)
     else {
         $dnsRecordName = rtrim($dnsRecordName, '.');
         if (!client_validate_NAME($dnsRecordName, $dnsRecordType, $nameValidationError)) {
@@ -481,7 +481,7 @@ function client_saveDnsRecord($dnsRecordId)
             }
 
             $host = encode_idna($host);
-            // Remove trailing dot for validation process (will be readded after)
+            // Remove trailing dot for validation process (will be re-added after)
             $host = rtrim($host, '.');
 
             if (!client_validate_MX($pref, $host, $errorString)) {
@@ -507,7 +507,7 @@ function client_saveDnsRecord($dnsRecordId)
             }
 
             $srvTarget = encode_idna($srvTarget);
-            // Remove trailing dot for validation process (will be readded after)
+            // Remove trailing dot for validation process (will be re-added after)
             $srvTarget = rtrim($srvTarget, '.');
 
             if (!client_validate_SRV($srvName, $srvProto, $srvPrio, $srvWeight, $srvPort, $srvTarget, $errorString)) {
@@ -519,11 +519,13 @@ function client_saveDnsRecord($dnsRecordId)
             break;
         case 'SPF':
         case 'TXT':
-            if (!client_validate_TXT(client_getPost('dns_txt_data'), $errorString)) {
+            $data = client_getPost('dns_txt_data');
+
+            if (!client_validate_TXT($data, $errorString)) {
                 set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
             }
 
-            $dnsRecordData = '"' . str_replace('"', '', $_POST['dns_txt_data']) . '"';
+            $dnsRecordData = '"' .  addcslashes(trim($data, '"'), '"') . '"';
             break;
         default :
             showBadRequestErrorPage();

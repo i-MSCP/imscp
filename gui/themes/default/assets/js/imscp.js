@@ -36,6 +36,7 @@
                 {
                     tooltipClass: "ui-tooltip-notice",
                     track: true,
+                    position: { collision: "flipfit" },
                     content: function() {
                         return $(this).attr('title');
                     }
@@ -47,6 +48,7 @@
                 {
                     tooltipClass: "ui-tooltip-notice",
                     track: true,
+                    position: { collision: "flipfit" },
                     content: function() {
                         var title = $( this ).attr("title") || "";
                         return $(this).attr('title');

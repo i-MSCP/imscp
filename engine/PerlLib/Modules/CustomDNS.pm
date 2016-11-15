@@ -191,9 +191,22 @@ sub _loadData
     $self->{'domain_name'} = $rows->[0]->[5];
     $self->{'domain_ip'} = $rows->[0]->[6];
 
-    # Filter DNS records which must be disabled or deleted
+    # 1. Filter DNS records which must be disabled or deleted
+    # 2. For TXT/SPF records, split data field to several <character-string>s when <character-string> is longer than 255
+    #    characters. See: https://tools.ietf.org/html/rfc4408#section-3.1.3
     for my $record(@{$rows}) {
-        push @{$self->{'dns_records'}}, [ (@{$record})[0 .. 3] ] unless $record->[4] =~ /^to(?:disable|delete)$/;
+        next if $record->[4] =~ /^to(?:disable|delete)$/;
+
+        if (($record->[2] eq 'TXT' || $record->[2] eq 'SPF') && length($record->[3]) > 257) {
+            my ($data, @chuncks) = ($record->[3] =~ s/^"|"$//gr, ());
+            for (my $i = 0, my $length = length $data; $i < $length; $i += 255) {
+                push(@chuncks, substr($data, $i, 255));
+            }
+
+            $record->[3] = join ' ', map(qq/"$_"/, @chuncks);
+        }
+
+        push @{$self->{'dns_records'}}, [ (@{$record})[0 .. 3] ];
     }
 
     0;
