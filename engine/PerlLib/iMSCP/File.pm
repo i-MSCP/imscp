@@ -226,7 +226,7 @@ sub copyFile
 
     return 0 if defined $options->{'preserve'} && $options->{'preserve'} eq 'no';
 
-    my (undef, undef, $mode, undef, $uid, $gid) = lstat( $self->{'filename'} );
+    my ($mode, $uid, $gid) = (lstat( $self->{'filename'} ))[2, 4, 5];
     $mode = $mode & 07777;
 
     unless (chown( $uid, $gid, $dest )) {

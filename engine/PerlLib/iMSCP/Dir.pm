@@ -296,7 +296,7 @@ sub rcopy
     unless (-d $destDir) {
         my $opts = { };
         if ($options->{'preserve'}) {
-            my (undef, undef, $mode, undef, $uid, $gid) = lstat( $self->{'dirname'} );
+            my ($mode, $uid, $gid) = (lstat( $self->{'dirname'} ))[2, 4, 5];
             $opts = { user => $uid, mode => $mode & 07777, group => $gid }
         }
 
@@ -314,7 +314,7 @@ sub rcopy
         if (-d $src) {
             my $opts = { };
             if ($options->{'preserve'}) {
-                my (undef, undef, $mode, undef, $uid, $gid) = lstat( $src );
+                my ($mode, $uid, $gid) = (lstat( $src ))[2, 4, 5];
                 $opts = { user => $uid, mode => $mode & 07777, group => $gid }
             }
 
