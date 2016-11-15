@@ -4,9 +4,6 @@
 Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
-CONFIG
-    Added: `req_extensions' in openssl.cnf template file
-
 BACKEND
     Fixed: Boot mode not set when it is expected to be (iMSCP::Bootstrapper)
     Fixed: Configuration files must be opened read-only outside of setup context
@@ -16,20 +13,20 @@ BACKEND
 
 FRONTEND
     Added: Hour and minute fields in message headers (Support Tickets)
-    Changed: HTML input tag by textarea tag for TXT and SPF records data field (Custom DNS interface)
     Changed: Htuser passwords are now hashed using APR-1 algorithm
     Changed: Panel user passwords are now hashed using APR-1 algorithm (See the errata file for further details)
+    Changed: Usage of HTML textarea tag instead of input tag for data field (Custom DNS interface)
     Fixed: Any printable ASCII character must be allowed inside TXT record data field (Custom DNS interface)
     Fixed: Could not list directory when domain alias or subdomain is forwarded (Client side)
     Fixed: Double-quotes inside a character string of a TXT/SPF data field must be escaped (Custom DNS interface)
     Fixed: HTML <br> tags not rendered in messages (Support Tickets)
     Fixed: Ignore user abort while listing directory (VirtualFileSystem)
-    Fixed: It is too hard to differentiate different messages (Support Tickets
-    Fixed: Leading and trailing double-quotes from TXT and SPF record data field must be removed before showing them (Custom DNS interface)
+    Fixed: It is too hard to differentiate messages (Support Tickets)
+    Fixed: Leading and trailing double-quotes from TXT/SPF data field must be removed before rendering (Custom DNS interface)
     Fixed: Messages are hard to read because they are greyed (Support Tickets)
     Fixed: Messages should be displayed in LIFO order (Support Tickets)
     Fixed: Resellers cannot change customer passwords due to useless verification on the current password
-    Fixed: Tooltips not showed correctly in some contexts (UI)
+    Fixed: Tooltips not rendered correctly in some contexts (UI)
     Removed: cryptPasswordWithSalt(), generateRandomSalt() and _passgen() functions (replaced by \iMSCP\Crypt library)
 
 INSTALLER
@@ -41,7 +38,7 @@ LISTENERS
     Added: 10_named_global_ns.pl (Allows to set identical NS entries in all zones)
     Fixed: DNS entries are always overridden after custom DNS processing (20_named_dualstack.pl)
     Fixed: Entries not added in Postfix main.cf file (20_postfix_policy_whitelist.pl)
-    Fixed: Typo in package name leading to compilation failure (20_postfix_policy_whitelist.pl)
+    Fixed: Typo in package name, leading to compilation failure (20_postfix_policy_whitelist.pl)
     Fixed: Wrong namespace used for many listeners (Named namespace)
     Removed: 10_named_override_default_ns_rr.pl (replaced by the all-in-one 10_named_global_ns.pl listener file)
 
@@ -55,13 +52,13 @@ PLUGINS
 
 SERVERS
     Added: `PHP_FPM_RLIMIT_FILES" configuration parameter in php.data configuration file (PHP-FPM)
+    Changed: Calculate SOA serial numbers using GMT timezone (Bind9)
     Changed: PHP-FPM `rlimit_files' value to avoid the `Too many open files (24)' error on start-up (PHP-FPM)
     Fixed: Duplicate bind mounts due to unwanted iMSCP::Mount::mount() call (Apache2 FCGID)
     Fixed: Name server names are badly generated in dual-stack context (Bind9)
     Fixed: Name server names should be configurable, at least through event listeners (Bind9)
     Fixed: Only double quotes must be escaped in master SQL user password (Remote SQL server)
     Fixed: Postfix maps not written in some contexts (especially on error) (Postfix)
-    Fixed: SOA serial numbers must be generated using UTC timezone (Bind9)
 
 SERVICES
     Fixed: All customer sites running a PHP application get a 503 error when restarting the `imscp_panel service' (related to #IP-1641)
@@ -76,7 +73,7 @@ YOUTRACK
     #IP-1650 When a catchall is deleted, the mailbox used with the catchall is also deleted
     #IP-1651 Forward URL - The new document root must pre-exists inside the /htdocs directory
     #IP-1654 Support - Several issues in view ticket interface
-    #IP-1663 Bind9 Server implementation - Cannot add TXT-DATA for which character string is longer than 255 characters
+    #IP-1663 Custom DNS - Could not add TXT-DATA when the character string is longer than 255 characters
 
 ------------------------------------------------------------------------------------------------------------------------
 1.3.7

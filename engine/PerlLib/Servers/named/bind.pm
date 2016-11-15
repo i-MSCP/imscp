@@ -26,7 +26,6 @@ package Servers::named::bind;
 use strict;
 use warnings;
 use Class::Autouse qw/ Servers::named::bind::installer Servers::named::bind::uninstaller /;
-use Date::Simple;
 use File::Basename;
 use iMSCP::Debug;
 use iMSCP::Config;
@@ -37,7 +36,6 @@ use iMSCP::ProgramFinder;
 use iMSCP::TemplateParser;
 use iMSCP::Net;
 use iMSCP::Service;
-use POSIX qw / tzset /;
 use Scalar::Defer;
 use parent 'Common::SingletonClass';
 
@@ -1112,7 +1110,7 @@ sub _addDmnDb
 
  Update SOA serial number for the given zone
  
- Note: Format follows RFC 1912 recommendations
+ Note: Format follows RFC1912 section 2.2 recommendations.
 
  Param string zone Zone name
  Param scalarref $zoneContent Zone content
@@ -1126,7 +1124,7 @@ sub _updateSOAserialNumber
     my ($self, $zone, $zoneContent, $oldZoneContent) = @_;
 
     if (exists $self->{'serials'}->{$zone}) {
-        unless ($$zoneContent =~ s/^(\s+)(?:\d{10}|\{TIMESTAMP\})(\s*;[^\n]*\n)/$1$self->{'serials'}->{$zone}$2/m) {
+        unless (${$zoneContent} =~ s/^(\s+)(?:\d{10}|\{TIMESTAMP\})(\s*;[^\n]*\n)/$1$self->{'serials'}->{$zone}$2/m) {
             error( sprintf( 'Could not update SOA serial number for the %s DNS zone', $zone ) );
             return 1;
         }
@@ -1134,40 +1132,34 @@ sub _updateSOAserialNumber
         return 0;
     }
 
-    $oldZoneContent = $zoneContent unless defined $$oldZoneContent;
-    (my $date, my $nn, my $var) = $$oldZoneContent =~ /^\s+(?:(\d{8})(\d{2})|(\{TIMESTAMP\}))\s*;[^\n]*\n/m;
-    if (defined $date || defined $var) {
-        my $oTimezone = $ENV{TZ} || 'UTC';
-        $ENV{TZ} = 'UTC';
-        tzset;
+    $oldZoneContent = $zoneContent unless defined ${$oldZoneContent};
 
-        my $todayDate = Date::Simple->new();
+    if (${$oldZoneContent} =~ /^\s+(?:(?<date>\d{8})(?<nn>\d{2})|(?<variable>\{TIMESTAMP\}))\s*;[^\n]*\n/m) {
+        my %rc = %+;
+        my (undef, undef, undef, $d, $m, $y) = gmtime();
+        my $nowDate = $y + 1900 .$m + 1 .$d;
 
-        # Restore old timezone
-        $ENV{TZ} = $oTimezone;
-        tzset;
-
-        if (defined $var) {
-            $self->{'serials'}->{$zone} = $todayDate->as_d8().'00';
-            $$zoneContent = process( { TIMESTAMP => $self->{'serials'}->{$zone} }, $$zoneContent );
+        if ($rc{'variable'}) {
+            $self->{'serials'}->{$zone} = $nowDate.'00';
+            ${$zoneContent} = process( { TIMESTAMP => $self->{'serials'}->{$zone} }, ${$zoneContent} );
             return 0;
         }
 
-        $date = Date::Simple->new( $date );
-        if (defined $date && $date >= $todayDate) {
-            $nn++;
-            if ($nn >= 99) {
-                $nn = '00';
-                $date = $date->next();
+        if ($rc{'date'} >= $nowDate) {
+            $rc{'nn'}++;
+
+            if ($rc{'nn'} >= 99) {
+                $rc{'nn'} = '00';
+                $rc{'date'}++;
             }
         } else {
-            $date = $todayDate;
-            undef $todayDate;
-            $nn = '00';
+            $rc{'date'} = $nowDate;
+            $rc{'nn'} = '00';
         }
 
-        $self->{'serials'}->{$zone} = $date->as_d8().$nn;
-        if ($$zoneContent =~ s/^(\s+)(?:\d{10}|\{TIMESTAMP\})(\s*;[^\n]*\n)/$1$self->{'serials'}->{$zone}$2/m) {
+        $self->{'serials'}->{$zone} = $rc{'date'}.$rc{'nn'};
+
+        if (${$zoneContent} =~ s/^(\s+)(?:\d{10}|\{TIMESTAMP\})(\s*;[^\n]*\n)/$1$self->{'serials'}->{$zone}$2/m) {
             return 0;
         }
     }

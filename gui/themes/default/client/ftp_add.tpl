@@ -1,7 +1,4 @@
 <script>
-    var js_i18n_tr_ftp_directories = '{TR_FTP_DIRECTORIES}';
-    var js_i18n_tr_close = '{TR_CLOSE}';
-
     $(function () {
         $('#domain_type').change(function () {
             $.post(
