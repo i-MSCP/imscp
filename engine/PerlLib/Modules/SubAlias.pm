@@ -205,8 +205,10 @@ sub _getData
         );
         ref $certData eq 'HASH' or die( $certData );
 
-        my $haveCert = ($certData->{$self->{'subdomain_alias_id'}}
-            && $self->isValidCertificate( $self->{'subdomain_alias_name'}.'.'.$self->{'alias_name'} ));
+        my $haveCert = (
+            $certData->{$self->{'subdomain_alias_id'}}
+            && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'subdomain_alias_name'}.$self->{'alias_name'}.pem"
+        );
         my $allowHSTS = ($haveCert && $certData->{$self->{'subdomain_alias_id'}}->{'allow_hsts'} eq 'on');
         my $hstsMaxAge = $allowHSTS ? $certData->{$self->{'subdomain_alias_id'}}->{'hsts_max_age'} : '';
         my $hstsIncludeSubDomains = ($allowHSTS && $certData->{$self->{'subdomain_alias_id'}}->{'hsts_include_subdomains'} eq 'on')
@@ -300,28 +302,6 @@ sub _sharedMountPoint
 
     die( $db->errstr ) if $db->err;
     ($nbSharedMountPoints || $self->{'subdomain_alias_mount'} eq '/');
-}
-
-=item isValidCertificate($subdomainAliasName)
-
- Does the SSL certificate which belongs to the subdomain alias is valid?
-
- Param string $subdomainAliasName Subdomain alias name
- Return bool TRUE if the domain SSL certificate is valid, FALSE otherwise
-
-=cut
-
-sub isValidCertificate
-{
-    my (undef, $subdomainAliasName) = @_;
-
-    my $certFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$subdomainAliasName.pem";
-    my $openSSL = iMSCP::OpenSSL->new(
-        'private_key_container_path' => $certFile,
-        'certificate_container_path' => $certFile,
-        'ca_bundle_container_path'   => $certFile
-    );
-    !$openSSL->validateCertificateChain();
 }
 
 =back

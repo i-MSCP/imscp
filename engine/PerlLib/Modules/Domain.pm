@@ -420,7 +420,11 @@ sub _getData
         );
         ref $certData eq 'HASH' or die( $certData );
 
-        my $haveCert = ($certData->{$self->{'domain_id'}} && $self->isValidCertificate( $self->{'domain_name'} ));
+        #my $haveCert = ($certData->{$self->{'domain_id'}} && $self->isValidCertificate( $self->{'domain_name'} ));
+        my $haveCert = (
+            $certData->{$self->{'domain_id'}}
+            && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'domain_name'}.pem"
+        );
         my $allowHSTS = ($haveCert && $certData->{$self->{'domain_id'}}->{'allow_hsts'} eq 'on');
         my $hstsMaxAge = $allowHSTS ? $certData->{$self->{'domain_id'}}->{'hsts_max_age'} : '';
         my $hstsIncludeSubDomains = ($allowHSTS && $certData->{$self->{'domain_id'}}->{'hsts_include_subdomains'} eq 'on')
@@ -477,28 +481,6 @@ sub _getData
     } unless %{$self->{'_data'}};
 
     $self->{'_data'};
-}
-
-=item isValidCertificate($domainName)
-
- Does the SSL certificate which belongs to the domain is valid?
-
- Param string $domainName Domain name
- Return bool TRUE if the domain SSL certificate is valid, FALSE otherwise
-
-=cut
-
-sub isValidCertificate
-{
-    my (undef, $domainName) = @_;
-
-    my $certFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$domainName.pem";
-    my $openSSL = iMSCP::OpenSSL->new(
-        'private_key_container_path' => $certFile,
-        'certificate_container_path' => $certFile,
-        'ca_bundle_container_path'   => $certFile
-    );
-    !$openSSL->validateCertificateChain();
 }
 
 =back

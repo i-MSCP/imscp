@@ -72,12 +72,12 @@ sub validatePrivateKey
         $passphraseFile->flush();
     }
 
-    my @cmd = (
-        'openssl', 'pkey', '-in', escapeShell( $self->{'private_key_container_path'} ), '-noout',
-        ($passphraseFile ? ('-passin', escapeShell( "file:$passphraseFile" )) : '')
-    );
+    my $cmd = [
+        'openssl', 'pkey', '-in', $self->{'private_key_container_path'}, '-noout',
+        (($passphraseFile) ? ('-passin', "file:$passphraseFile") : ())
+    ];
 
-    my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
+    my $rs = execute( $cmd, \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error(
         sprintf(
@@ -123,22 +123,18 @@ sub validateCertificate
         }
     }
 
-    my @cmd = (
-        'openssl', 'verify', $caBundle ? ('-CAfile', escapeShell( $self->{'ca_bundle_container_path'} )) : '',
-        '-purpose', 'sslserver', escapeShell( $self->{'certificate_container_path'} )
-    );
+    my $cmd = [
+        'openssl', 'verify', (($caBundle) ? ('-CAfile', $self->{'ca_bundle_container_path'}) : ()),
+        '-purpose', 'sslserver', $self->{'certificate_container_path'}
+    ];
 
-    my $rs = execute( "@cmd", \my $stdout, \my $stderr );
+    my $rs = execute( $cmd, \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
-    error( sprintf( 'SSL certificate is not valid: %s', $stderr || 'unknown error' ) ) if $rs || $stderr;
-    return 1 if $rs || $stderr;
-
-    if ($stdout !~ /$self->{'certificate_container_path'}:.*OK/ms) {
-        error( sprintf( 'SSL certificate is not valid: %s', $stdout ) );
-        return 1;
-    }
-
-    0;
+    error(sprintf(
+        "SSL certificate is not valid: %s",
+        ($stderr || $stdout || 'Unknown error') =~ s/$self->{'certificate_container_path'}:\s+//r
+    )) if $rs;
+    $rs;
 }
 
 =item validateCertificateChain()
@@ -178,13 +174,13 @@ sub importPrivateKey
         $passphraseFile->flush();
     }
 
-    my @cmd = (
-        'openssl', 'pkey', '-in', escapeShell( $self->{'private_key_container_path'} ),
-        '-out', escapeShell( "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem" ),
-        ($passphraseFile ? ('-passin', escapeShell( "file:$passphraseFile" )) : '')
-    );
+    my $cmd = [
+        'openssl', 'pkey', '-in', $self->{'private_key_container_path'},
+        '-out', "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem",
+        (($passphraseFile) ? ('-passin', "file:$passphraseFile") : ())
+    ];
 
-    my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
+    my $rs = execute( $cmd, \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( sprintf( 'Could not import SSL private key: %s', $stderr || 'unknown error' ) ) if $rs;
     $rs;
@@ -307,15 +303,13 @@ sub createSelfSignedCertificate
 
     $openSSLConffile->flush();
 
-    my @cmd = (
-        'openssl', 'req', '-x509', '-nodes', '-days', '365',
-        '-config', escapeShell( $openSSLConffile ),
-        '-newkey', 'rsa',
-        '-keyout', escapeShell( "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem" ),
-        '-out', escapeShell( "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem" )
-    );
+    my $cmd = [
+        'openssl', 'req', '-x509', '-nodes', '-days', '365', '-config', $openSSLConffile, '-newkey', 'rsa',
+        '-keyout', "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem",
+        '-out', "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem"
+    ];
 
-    my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
+    my $rs = execute( $cmd, \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( sprintf( 'Could not to generate self-signed certificate: %s', $stderr || 'unknown error' ) ) if $rs;
     $rs
@@ -357,8 +351,9 @@ sub getCertificateExpiryTime
         return undef;
     }
 
-    my @cmd = ( 'openssl', 'x509', '-enddate', '-noout', '-in', escapeShell( $certificatePath ) );
-    my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
+    my $rs = execute(
+        [ 'openssl', 'x509', '-enddate', '-noout', '-in', $certificatePath ], \ my $stdout, \ my $stderr
+    );
     debug( $stdout ) if $stdout;
 
     unless ($rs == 0 && $stdout =~ /^notAfter=(.*)/i) {

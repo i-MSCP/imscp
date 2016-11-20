@@ -478,7 +478,8 @@ function client_generatePage($tpl, $domainId, $domainType)
         $trAction = tr('Update');
         $status = $row['status'];
         $tpl->assign('STATUS', in_array($status, array('toadd', 'tochange', 'todelete', 'ok'))
-            ? translate_dmn_status($status) : '<span style="color: red;font-weight: bold">' . tr('Invalid SSL certificate') . "</span>");
+            ? translate_dmn_status($status) : '<span style="color: red;font-weight: bold">' . $status . "</span>"
+        );
     } elseif (customerHasFeature('ssl')) {
         $dynTitle = tr('Add SSL certificate');
         $trAction = tr('Add');

@@ -72,15 +72,19 @@ sub process
     my @sql;
     if ($self->{'status'} =~ /^to(?:add|change)$/) {
         $rs = $self->add();
+        $rs ||= $self->delete() if $rs; # If the SSL certificate is not valid, we remove it
         @sql = (
             'UPDATE ssl_certs SET status = ? WHERE cert_id = ?',
-            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'ok'), $certificateId
+            ($rs ? (getMessageByType( 'error', { remove => 1 } ) || 'Unknown error') =~ s/iMSCP::OpenSSL::validateCertificate:\s+//r : 'ok'),
+            $certificateId
         );
     } elsif ($self->{'status'} eq 'todelete') {
         $rs = $self->delete();
         if ($rs) {
             @sql = (
-                'UPDATE ssl_certs SET status = ? WHERE cert_id = ?', scalar getMessageByType( 'error' ), $certificateId
+                'UPDATE ssl_certs SET status = ? WHERE cert_id = ?',
+                scalar getMessageByType( 'error' ) || 'Unknown error',
+                $certificateId
             );
         } else {
             @sql = ('DELETE FROM ssl_certs WHERE cert_id = ?', $certificateId);
@@ -94,9 +98,9 @@ sub process
     }
 
     # (since 1.2.16 - See #IP-1500)
-    # Return 0 to avoid any failure on update when a customer's SSL certificate is expired or invalid.
-    # It is the customer responsability to update the certificate throught his interface
-    0;
+    # On toadd and to change actions, return 0 to avoid any failure on update when a customer's SSL certificate is
+    # expired or invalid. It is the customer responsability to update the certificate throught his interface
+    ($self->{'status'} =~ /^to(?:add|change)$/) ? 0: $rs;
 }
 
 =item add()

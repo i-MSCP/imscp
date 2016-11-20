@@ -7,6 +7,8 @@ Git 1.3.x
 BACKEND
     Fixed: Boot mode not set when it is expected to be (iMSCP::Bootstrapper)
     Fixed: Configuration files must be opened read-only outside of setup context
+    Fixed: Customer SSL certificates are validated twice per add/change actions
+    Fixed: Don't display error messages related to invalid customer SSL certificates while i-MSCP update/reconfiguration
     Fixed: Lock files must be released before processing of debug messages (dump)
     Fixed: Wrong provider used while removing services (iMSCP::Service)
     Review: Merged module data provider methods (All servers/packages are now receiving identical set of data)
