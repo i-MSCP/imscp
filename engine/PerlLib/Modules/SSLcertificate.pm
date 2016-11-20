@@ -72,7 +72,7 @@ sub process
     my @sql;
     if ($self->{'status'} =~ /^to(?:add|change)$/) {
         $rs = $self->add();
-        $rs ||= $self->delete() if $rs; # If the SSL certificate is not valid, we remove it
+        $self->delete() if $rs; # If the SSL certificate is not valid, we remove it
         @sql = (
             'UPDATE ssl_certs SET status = ? WHERE cert_id = ?',
             ($rs ? (getMessageByType( 'error', { remove => 1 } ) || 'Unknown error') =~ s/iMSCP::OpenSSL::validateCertificate:\s+//r : 'ok'),
@@ -144,8 +144,10 @@ sub add
 
     # Check certificate chain
     my $rs = $openSSL->validateCertificateChain();
+    
     # Create certificate chain (private key, certificate and CA bundle)
     $rs ||= $openSSL->createCertificateChain();
+    
 }
 
 =item delete()
