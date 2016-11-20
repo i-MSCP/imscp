@@ -71,7 +71,6 @@ sub process
 
     my @sql;
     if ($self->{'status'} =~ /^to(?:add|change)$/) {
-        $rs = $self->add();
         $self->delete() if $rs; # If the SSL certificate is not valid, we remove it
         @sql = (
             'UPDATE ssl_certs SET status = ? WHERE cert_id = ?',
@@ -115,6 +114,10 @@ sub add
 {
     my $self = shift;
 
+    # Remove previous SSL certificate if any
+    my $rs = $self->delete();
+    return $rs if $rs;
+
     # Private key
     my $privateKeyContainer = File::Temp->new( UNLINK => 1 );
     print $privateKeyContainer $self->{'private_key'};
@@ -135,19 +138,17 @@ sub add
 
     # Create OpenSSL object
     my $openSSL = iMSCP::OpenSSL->new(
-        'certificate_chains_storage_dir' => $self->{'certsDir'},
-        'certificate_chain_name'         => $self->{'domain_name'},
-        'private_key_container_path'     => $privateKeyContainer,
-        'certificate_container_path'     => $certificateContainer,
-        'ca_bundle_container_path'       => defined $caBundleContainer ? $caBundleContainer : ''
+        certificate_chains_storage_dir => $self->{'certsDir'},
+        certificate_chain_name         => $self->{'domain_name'},
+        private_key_container_path     => $privateKeyContainer,
+        certificate_container_path     => $certificateContainer,
+        ca_bundle_container_path       => defined $caBundleContainer ? $caBundleContainer : ''
     );
 
     # Check certificate chain
-    my $rs = $openSSL->validateCertificateChain();
-    
+    $rs = $openSSL->validateCertificateChain();
     # Create certificate chain (private key, certificate and CA bundle)
     $rs ||= $openSSL->createCertificateChain();
-    
 }
 
 =item delete()
@@ -163,7 +164,6 @@ sub delete
     my $self = shift;
 
     return 0 unless -f "$self->{'certsDir'}/$self->{'domain_name'}.pem";
-
     iMSCP::File->new( filename => "$self->{'certsDir'}/$self->{'domain_name'}.pem" )->delFile();
 }
 
