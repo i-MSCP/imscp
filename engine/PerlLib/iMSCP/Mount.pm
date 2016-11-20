@@ -189,7 +189,7 @@ sub mount($)
     if ($mflags & MS_BIND) {
         push @mountArgv, [ $fsSpec, $fsFile, $fsVfstype, $mflags, $data ];
 
-        # If MS_REMOUNT was not specified, and if there is mountflags other
+        # If MS_REMOUNT was not specified, and if there are mountflags other
         # than MS_BIND and MS_REC, schedule an additional mount(2) call to
         # change mountflags on existing mount. This is needed since mountflags
         # other than MS_BIND and MS_REC are ignored in first call.

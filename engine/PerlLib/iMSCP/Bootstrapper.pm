@@ -30,7 +30,8 @@ use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Getopt;
 use IO::Handle;
-use POSIX qw / tzset /;
+use locale;
+use POSIX qw / tzset locale_h /;
 use parent 'Common::SingletonClass';
 
 $SIG{INT} = 'IGNORE';
@@ -39,6 +40,10 @@ umask 022;
 
 STDOUT->autoflush( 1 );
 STDERR->autoflush( 1 );
+
+setlocale(LC_ALL, 'C.UTF-8');
+$ENV{'LC_ALL'} = 'C.UTF-8';
+$ENV{'LANG'} = 'C.UTF-8';
 
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 $ENV{'HOME'} = (getpwuid $>)[7] or die( 'Could not find running user homedir' );

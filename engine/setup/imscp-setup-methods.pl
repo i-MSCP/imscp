@@ -658,7 +658,7 @@ sub setupAskTimezone
 {
     my $dialog = shift;
 
-    my $defaultTimezone = DateTime->new(year => 0, time_zone => 'local')->time_zone->name;
+    my $defaultTimezone = DateTime::TimeZone->new( name => 'local' );
     my $timezone = setupGetQuestion('TIMEZONE');
     my $rs = 0;
 
