@@ -88,6 +88,7 @@ abstract class iMSCP_Plugin
      * version: Plugin version
      * require_api: Required i-MSCP plugin API version
      * date: Last modified date of the plugin in YYYY-MM-DD format
+     * build: Last build of the plugin in YYYYMMDDNN format
      * name: Plugin name
      * desc: Plugin short description (text only)
      * url: Website in which it's possible to found more information about the plugin
@@ -137,6 +138,7 @@ abstract class iMSCP_Plugin
                 'version' => '0.0.0',
                 'require_api' => '99.0.0',
                 'date' => '0000-00-00',
+                'build' => '0000000000',
                 'name' => $this->getName(),
                 'desc' => tr('Not provided'),
                 'url' => ''

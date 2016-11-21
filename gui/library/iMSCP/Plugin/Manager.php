@@ -749,24 +749,24 @@ class iMSCP_Plugin_Manager
      *
      * @see pluginUpdate() action
      * @param string $pluginName Plugin name
-     * @param bool $isSubaction Whether this action is run as subaction
+     * @param bool $isSubAction Whether this action is run as subaction
      * @return int
      */
-    public function pluginEnable($pluginName, $isSubaction = false)
+    public function pluginEnable($pluginName, $isSubAction = false)
     {
         if (!$this->pluginIsKnown($pluginName)) {
             return self::ACTION_FAILURE;
         }
 
         $pluginStatus = $this->pluginGetStatus($pluginName);
-        if (!$isSubaction && !in_array($pluginStatus, array('toenable', 'disabled'))) {
+        if (!$isSubAction && !in_array($pluginStatus, array('toenable', 'disabled'))) {
             return self::ACTION_FAILURE;
         }
 
         try {
             $pluginInstance = $this->pluginLoad($pluginName);
 
-            if (!$isSubaction) {
+            if (!$isSubAction) {
                 $pluginInfo = $this->pluginGetInfo($pluginName);
 
                 if (version_compare($pluginInfo['version'], $pluginInfo['__nversion__'], '<')) {
@@ -797,14 +797,14 @@ class iMSCP_Plugin_Manager
 
                 if ($this->pluginHasBackend($pluginName)) {
                     $this->backendRequest = true;
-                } elseif (!$isSubaction) {
+                } elseif (!$isSubAction) {
                     $this->pluginSetStatus($pluginName, 'enabled');
                 }
 
                 return self::ACTION_SUCCESS;
             }
 
-            if (!$isSubaction) {
+            if (!$isSubAction) {
                 $this->pluginSetStatus($pluginName, $pluginStatus);
             }
 
@@ -838,24 +838,24 @@ class iMSCP_Plugin_Manager
      * Disable the given plugin
      *
      * @param string $pluginName Plugin name
-     * @param bool $isSubaction Whether this action is run as subaction
+     * @param bool $isSubAction Whether this action is run as subaction
      * @return int
      */
-    public function pluginDisable($pluginName, $isSubaction = false)
+    public function pluginDisable($pluginName, $isSubAction = false)
     {
         if (!$this->pluginIsKnown($pluginName)) {
             return self::ACTION_FAILURE;
         }
 
         $pluginStatus = $this->pluginGetStatus($pluginName);
-        if (!$isSubaction && !in_array($pluginStatus, array('todisable', 'enabled'))) {
+        if (!$isSubAction && !in_array($pluginStatus, array('todisable', 'enabled'))) {
             return self::ACTION_FAILURE;
         }
 
         try {
             $pluginInstance = $this->pluginLoad($pluginName);
 
-            if (!$isSubaction) {
+            if (!$isSubAction) {
                 $this->pluginSetStatus($pluginName, 'todisable');
             }
 
@@ -874,14 +874,14 @@ class iMSCP_Plugin_Manager
 
                 if ($this->pluginHasBackend($pluginName)) {
                     $this->backendRequest = true;
-                } elseif (!$isSubaction) {
+                } elseif (!$isSubAction) {
                     $this->pluginSetStatus($pluginName, 'disabled');
                 }
 
                 return self::ACTION_SUCCESS;
             }
 
-            if (!$isSubaction) {
+            if (!$isSubAction) {
                 $this->pluginSetStatus($pluginName, $pluginStatus);
             }
 
@@ -1263,13 +1263,20 @@ class iMSCP_Plugin_Manager
                 $needUpdate = version_compare($info['version'], $info['__nversion__'], '<');
                 /** @var \iMSCP\Json\LazyDecoder $lockers */
                 $lockers = $this->pluginData[$pluginName]['lockers'];
+                $oldBuild = isset($infoPrev['build']) ? $infoPrev['build'] : '0000000000';
+                $newBuild = $info['build'];
 
                 if (!in_array($status, array('uninstalled', 'toinstall', 'touninstall', 'todelete'))
-                    && $config != $configPrev || $infoPrev['__need_change__']
+                    && (
+                        $config != $configPrev || $infoPrev['__need_change__'] || $newBuild > $oldBuild ||
+                        new DateTime($info['date']) > new DateTime($infoPrev['date'])
+                    )
                 ) {
                     $needChange = true;
                 } elseif ($config != $configPrev) {
                     $configPrev = $config;
+                    $needDataUpdate = true;
+                } elseif ($newBuild > $oldBuild || new DateTime($info['date']) > new DateTime($infoPrev['date'])) {
                     $needDataUpdate = true;
                 }
             }

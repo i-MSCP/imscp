@@ -50,6 +50,8 @@ PACKAGES
     Fixed: AH01102: error reading status line from remote server 127.0.0.1:8889 (AWStats)
 
 PLUGINS
+    Added: Support for optional build field (versioning)
+    Fixed: Update plugin data when date or build fields are increased
     Fixed: Ignore user abort while migrating database
 
 SERVERS

@@ -195,6 +195,7 @@ function generatePage($tpl, $pluginManager)
             'PLUGIN_DESCRIPTION' => tr($pluginInfo['desc']),
             'PLUGIN_STATUS' => $pluginManager->pluginHasError($pluginName) ? tr('Unexpected error') : translateStatus($pluginStatus),
             'PLUGIN_VERSION' => isset($pluginInfo['__nversion__']) ? tohtml($pluginInfo['__nversion__']) : tr('Unknown'),
+            'PLUGIN_BUILD' => (isset($pluginInfo['build']) && $pluginInfo['build'] > 0) ? tohtml($pluginInfo['build']) : tr('N/A'),
             'PLUGIN_AUTHOR' => tohtml($pluginInfo['author']),
             'PLUGIN_MAILTO' => tohtml($pluginInfo['email']),
             'PLUGIN_SITE' => tohtml($pluginInfo['url'])

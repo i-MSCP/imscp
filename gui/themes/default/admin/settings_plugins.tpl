@@ -66,7 +66,7 @@
         <thead>
         <tr style="border: none;">
             <th style="width:21px;"><label><input type="checkbox"></label></th>
-            <th style="width:150px">{TR_PLUGIN}</th>
+            <th style="width:200px">{TR_PLUGIN}</th>
             <th>{TR_DESCRIPTION}</th>
             <th>{TR_STATUS}</th>
             <th>{TR_ACTIONS}</th>
@@ -85,15 +85,13 @@
         <!-- BDP: plugin_block -->
         <tr>
             <td><label><input type='checkbox' name='checked[]' value="{PLUGIN_NAME}"></label></td>
-            <td><p><strong>{PLUGIN_NAME}</strong></p></td>
+            <td><p style="font-size: 110%"><strong>{PLUGIN_NAME}</strong></p></td>
             <td>
-                <p>{PLUGIN_DESCRIPTION}</p>
-                <span class="bold italic">
-                    <small>
-                        {TR_VERSION} {PLUGIN_VERSION} |
-                        <a href="mailto:{PLUGIN_MAILTO}">{TR_BY} {PLUGIN_AUTHOR}</a> |
-                        <a href="{PLUGIN_SITE}" target="_blank">{TR_VISIT_PLUGIN_SITE}</a>
-                    </small>
+                <p class="bold" style="font-size: 110%">{PLUGIN_DESCRIPTION}</p>
+                <span class="italic" style="font-size: 90%">
+                    <span class="bold">{TR_VERSION} {PLUGIN_VERSION}</span> (Build {PLUGIN_BUILD})<br>
+                    <a href="mailto:{PLUGIN_MAILTO}">{TR_BY} {PLUGIN_AUTHOR}</a> |
+                    <a href="{PLUGIN_SITE}" target="_blank">{TR_VISIT_PLUGIN_SITE}</a>
                 </span>
             </td>
             <td>
