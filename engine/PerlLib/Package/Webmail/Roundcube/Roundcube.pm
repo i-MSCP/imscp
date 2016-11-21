@@ -25,7 +25,7 @@ package Package::Webmail::Roundcube::Roundcube;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ Package::Webmail::Roundcube::Installer Package::Webmail::Roundcube::Uninstaller /;
+use Class::Autouse qw/ :nostat Package::Webmail::Roundcube::Installer Package::Webmail::Roundcube::Uninstaller /;
 use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Database;

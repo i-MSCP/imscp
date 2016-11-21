@@ -25,7 +25,7 @@ package Package::PhpMyAdmin;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ Package::PhpMyAdmin::Installer /;
+use Class::Autouse qw/ :nostat Package::PhpMyAdmin::Installer /;
 use iMSCP::Config;
 use Scalar::Defer;
 use parent 'Common::SingletonClass';

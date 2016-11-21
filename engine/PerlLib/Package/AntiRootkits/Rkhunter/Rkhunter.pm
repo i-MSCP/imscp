@@ -25,7 +25,7 @@ package Package::AntiRootkits::Rkhunter::Rkhunter;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ Package::AntiRootkits::Rkhunter::Installer Package::AntiRootkits::Rkhunter::Uninstaller /;
+use Class::Autouse qw/ :nostat Package::AntiRootkits::Rkhunter::Installer Package::AntiRootkits::Rkhunter::Uninstaller /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

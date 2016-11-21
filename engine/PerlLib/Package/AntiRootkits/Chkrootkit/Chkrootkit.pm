@@ -25,7 +25,7 @@ package Package::AntiRootkits::Chkrootkit::Chkrootkit;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ Package::AntiRootkits::Chkrootkit::Installer Package::AntiRootkits::Chkrootkit::Uninstaller /;
+use Class::Autouse qw/ :nostat Package::AntiRootkits::Chkrootkit::Installer Package::AntiRootkits::Chkrootkit::Uninstaller /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

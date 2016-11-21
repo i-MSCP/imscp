@@ -25,7 +25,7 @@ package Package::FileManager::Net2ftp::Net2ftp;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ Package::FileManager::Net2ftp::Installer Package::FileManager::Net2ftp::Uninstaller /;
+use Class::Autouse qw/ :nostat Package::FileManager::Net2ftp::Installer Package::FileManager::Net2ftp::Uninstaller /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

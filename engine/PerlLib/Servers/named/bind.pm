@@ -25,7 +25,7 @@ package Servers::named::bind;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ Servers::named::bind::installer Servers::named::bind::uninstaller /;
+use Class::Autouse qw/ :nostat Servers::named::bind::installer Servers::named::bind::uninstaller /;
 use File::Basename;
 use iMSCP::Debug;
 use iMSCP::Config;

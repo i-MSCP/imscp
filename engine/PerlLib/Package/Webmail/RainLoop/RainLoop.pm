@@ -25,7 +25,7 @@ package Package::Webmail::RainLoop::RainLoop;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ Package::Webmail::RainLoop::Installer Package::Webmail::RainLoop::Uninstaller /;
+use Class::Autouse qw/ :nostat Package::Webmail::RainLoop::Installer Package::Webmail::RainLoop::Uninstaller /;
 use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Database;

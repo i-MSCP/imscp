@@ -25,7 +25,7 @@ package Servers::httpd::apache_php_fpm;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ Servers::httpd::apache_php_fpm::installer Servers::httpd::apache_php_fpm::uninstaller /;
+use Class::Autouse qw/ :nostat Servers::httpd::apache_php_fpm::installer Servers::httpd::apache_php_fpm::uninstaller /;
 use File::Basename;
 use File::Spec;
 use File::Temp;

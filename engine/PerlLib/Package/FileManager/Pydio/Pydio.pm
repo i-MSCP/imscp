@@ -25,7 +25,7 @@ package Package::FileManager::Pydio::Pydio;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ Package::FileManager::Pydio::Installer Package::FileManager::Pydio::Uninstaller /;
+use Class::Autouse qw/ :nostat Package::FileManager::Pydio::Installer Package::FileManager::Pydio::Uninstaller /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

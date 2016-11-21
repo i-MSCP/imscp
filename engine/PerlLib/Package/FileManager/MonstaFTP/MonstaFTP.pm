@@ -25,7 +25,7 @@ package Package::FileManager::MonstaFTP::MonstaFTP;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ Package::FileManager::MonstaFTP::Installer Package::FileManager::MonstaFTP::Uninstaller /;
+use Class::Autouse qw/ :nostat Package::FileManager::MonstaFTP::Installer Package::FileManager::MonstaFTP::Uninstaller /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

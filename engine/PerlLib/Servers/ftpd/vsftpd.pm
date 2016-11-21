@@ -33,7 +33,7 @@ use iMSCP::Service;
 use iMSCP::TemplateParser;
 use File::Basename;
 use Scalar::Defer;
-use Class::Autouse qw/Servers::ftpd::vsftpd::installer Servers::ftpd::vsftpd::uninstaller/;
+use Class::Autouse qw/ :nostat Servers::ftpd::vsftpd::installer Servers::ftpd::vsftpd::uninstaller /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

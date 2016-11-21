@@ -25,7 +25,7 @@ package Servers::mta::postfix;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ File::Temp Servers::mta::postfix::installer Servers::mta::postfix::uninstaller /;
+use Class::Autouse qw/ :nostat File::Temp Servers::mta::postfix::installer Servers::mta::postfix::uninstaller /;
 use File::Basename;
 use iMSCP::Config;
 use iMSCP::Debug;

@@ -25,7 +25,7 @@ package Package::Webstats::Awstats::Awstats;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ Package::Webstats::Awstats::Installer Package::Webstats::Awstats::Uninstaller /;
+use Class::Autouse qw/ :nostat Package::Webstats::Awstats::Installer Package::Webstats::Awstats::Uninstaller /;
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Dir;

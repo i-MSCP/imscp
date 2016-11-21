@@ -25,7 +25,7 @@ package Package::FrontEnd;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ Package::FrontEnd::Installer Package::FrontEnd::Uninstaller /;
+use Class::Autouse qw/ :nostat Package::FrontEnd::Installer Package::FrontEnd::Uninstaller /;
 use File::Basename;
 use iMSCP::Config;
 use iMSCP::Debug;

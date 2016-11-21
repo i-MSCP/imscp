@@ -33,7 +33,7 @@ use iMSCP::Execute;
 use iMSCP::Service;
 use Scalar::Defer;
 use version;
-use Class::Autouse qw/Servers::sqld::mysql::installer Servers::sqld::mysql::uninstaller/;
+use Class::Autouse qw/ :nostat Servers::sqld::mysql::installer Servers::sqld::mysql::uninstaller /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

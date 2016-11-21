@@ -30,7 +30,7 @@ use iMSCP::Execute qw/escapeShell/;
 use iMSCP::Crypt qw/decryptBlowfishCBC/;
 use iMSCP::TemplateParser;
 use version;
-use Class::Autouse qw/Servers::sqld::mysql::installer/;
+use Class::Autouse qw/ :nostat Servers::sqld::mysql::installer /;
 use parent 'Servers::sqld::mysql';
 
 =head1 DESCRIPTION

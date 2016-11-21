@@ -36,7 +36,7 @@ use iMSCP::Service;
 use Servers::mta;
 use Tie::File;
 use Scalar::Defer;
-use Class::Autouse qw/Servers::po::dovecot::installer Servers::po::dovecot::uninstaller/;
+use Class::Autouse qw/ :nostat Servers::po::dovecot::installer Servers::po::dovecot::uninstaller /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

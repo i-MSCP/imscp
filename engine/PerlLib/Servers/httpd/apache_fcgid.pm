@@ -25,7 +25,7 @@ package Servers::httpd::apache_fcgid;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ Servers::httpd::apache_fcgid::installer Servers::httpd::apache_fcgid::uninstaller /;
+use Class::Autouse qw/ :nostat Servers::httpd::apache_fcgid::installer Servers::httpd::apache_fcgid::uninstaller /;
 use File::Basename;
 use File::Spec;
 use File::Temp;
