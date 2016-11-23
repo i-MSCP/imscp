@@ -517,7 +517,7 @@ function layout_deleteUserLogo($logoFilePath = NULL, $onlyFile = false)
     $logoFilePath = $cfg['GUI_ROOT_DIR'] . '/data/persistent/ispLogos/' . basename($logoFilePath);
 
     if (file_exists($logoFilePath) && !@unlink($logoFilePath)) {
-        write_log(tr("Could not remove '%s' user logo.", $logoFilePath), E_USER_WARNING);
+        write_log(sprintf('Could not remove %s file.', $logoFilePath), E_USER_WARNING);
         return false;
     }
 
