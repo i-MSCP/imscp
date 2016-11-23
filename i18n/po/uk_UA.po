@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-06 10:42+0100\n"
-"PO-Revision-Date: 2016-11-06 09:43+0000\n"
+"POT-Creation-Date: 2016-11-23 20:16+0100\n"
+"PO-Revision-Date: 2016-11-23 19:17+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/i-mscp/i-MSCP/language/uk_UA/)\n"
 "MIME-Version: 1.0\n"
@@ -1453,6 +1453,10 @@ msgstr "Невозможно установить плагин %s : %s"
 #, php-format
 msgid "Could not protect the %s plugin: %s"
 msgstr "Невозможно защитить плагин %s: %s"
+
+#, php-format
+msgid "Could not remove '%s' user logo."
+msgstr ""
 
 #, php-format
 msgid "Could not restore %s plugin directory"
@@ -4692,10 +4696,6 @@ msgstr "Системная ошибка - пользовательская  ст
 
 msgid "System information"
 msgstr "Системная информация"
-
-#, php-format
-msgid "System is unable to remove '%s' user logo."
-msgstr "Система не может удалить '%s' пользователя логотип. "
 
 msgid "System tools"
 msgstr "Системні інструменти"

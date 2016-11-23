@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-06 10:42+0100\n"
-"PO-Revision-Date: 2016-11-06 09:43+0000\n"
+"POT-Creation-Date: 2016-11-23 20:16+0100\n"
+"PO-Revision-Date: 2016-11-23 19:17+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/i-mscp/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -1450,6 +1450,10 @@ msgstr "Impossible d'installer l'extension %s: %s"
 #, php-format
 msgid "Could not protect the %s plugin: %s"
 msgstr "Impossible de protéger l'extension %s: %s"
+
+#, php-format
+msgid "Could not remove '%s' user logo."
+msgstr ""
 
 #, php-format
 msgid "Could not restore %s plugin directory"
@@ -4689,10 +4693,6 @@ msgstr "Erreur système - la page d'erreur personnalisée n'a pas été mise à 
 
 msgid "System information"
 msgstr "Informations sur le système"
-
-#, php-format
-msgid "System is unable to remove '%s' user logo."
-msgstr "Le système n'a pas été capable de supprimer le logo de l'utilisateur '%s'."
 
 msgid "System tools"
 msgstr "Outils système"
