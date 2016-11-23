@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-23 20:16+0100\n"
+"POT-Creation-Date: 2016-11-23 20:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1449,10 +1449,6 @@ msgstr ""
 
 #, php-format
 msgid "Could not protect the %s plugin: %s"
-msgstr ""
-
-#, php-format
-msgid "Could not remove '%s' user logo."
 msgstr ""
 
 #, php-format
