@@ -55,9 +55,7 @@ function client_validate_NAME($name, &$errorString)
     // As per RFC 1034: Names that are not host names can consist of any printable ASCII character
     // AS per RFC 4871: All DKIM keys are stored in a subdomain named "_domainkey" ...
     // Here we remove any underscore to pass hostname validation
-    $name = preg_replace('/_/', '', $name);
-
-    if (!isValidDomainName($name)) {
+    if (!isValidDomainName(str_replace('_', '', $name))) {
         $errorString .= tr('Invalid `%s` field.', tr('Name'));
         return false;
     }
@@ -84,9 +82,7 @@ function client_validate_CNAME($cname, &$errorString)
     // As per RFC 1034: Names that are not host names can consist of any printable ASCII character
     // AS per RFC 4871: All DKIM keys are stored in a subdomain named "_domainkey" ...
     // Here we remove any underscore to pass hostname validation
-    $cname = preg_replace('/_/', '', $cname);
-    
-    if ($cname != '@' && !isValidDomainName($cname)) {
+    if ($cname != '@' && !isValidDomainName(str_replace('_', '', $cname))) {
         $errorString .= tr('Invalid `%s` field.', tr('Canonical name'));
         return false;
     }
