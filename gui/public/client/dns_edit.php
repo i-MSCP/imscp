@@ -42,20 +42,20 @@ function client_getPost($varname, $defaultValue = '')
  * Validate name field of a DNS resource record
  *
  * @param string $name Name
- * @param string $type DNS record type
  * @param string &$errorString Error string
  * @return bool TRUE if name is valid, FALSE otherwise
  */
-function client_validate_NAME($name, $type, &$errorString)
+function client_validate_NAME($name, &$errorString)
 {
     if ($name === '') {
         $errorString .= tr('`%s` field cannot be empty.', tr('Name'));
         return false;
     }
 
-    if ($type == 'TXT' || $type == 'CNAME') {
-        $name = preg_replace('/_/', '', $name); // Only to fullfit DMARC/DKIM records validation
-    }
+    // As per RFC 1034: Names that are not host names can consist of any printable ASCII character
+    // AS per RFC 4871: All DKIM keys are stored in a subdomain named "_domainkey" ...
+    // Here we remove any underscore to pass hostname validation
+    $name = preg_replace('/_/', '', $name);
 
     if (!isValidDomainName($name)) {
         $errorString .= tr('Invalid `%s` field.', tr('Name'));
@@ -74,11 +74,18 @@ function client_validate_NAME($name, $type, &$errorString)
  */
 function client_validate_CNAME($cname, &$errorString)
 {
+    
+
     if ($cname === '') {
         $errorString .= tr('`%s` field cannot be empty.', tr('Canonical name'));
         return false;
     }
 
+    // As per RFC 1034: Names that are not host names can consist of any printable ASCII character
+    // AS per RFC 4871: All DKIM keys are stored in a subdomain named "_domainkey" ...
+    // Here we remove any underscore to pass hostname validation
+    $cname = preg_replace('/_/', '', $cname);
+    
     if ($cname != '@' && !isValidDomainName($cname)) {
         $errorString .= tr('Invalid `%s` field.', tr('Canonical name'));
         return false;
@@ -424,7 +431,7 @@ function client_saveDnsRecord($dnsRecordId)
     } // Remove trailing dot for validation process (will be re-added after)
     else {
         $dnsRecordName = rtrim($dnsRecordName, '.');
-        if (!client_validate_NAME($dnsRecordName, $dnsRecordType, $nameValidationError)) {
+        if (!client_validate_NAME($dnsRecordName, $nameValidationError)) {
             set_page_message(tr('Could not validate DNS resource record: %s', $nameValidationError), 'error');
         }
     }
