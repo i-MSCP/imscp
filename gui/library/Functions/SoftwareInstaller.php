@@ -1334,10 +1334,10 @@ function gen_user_domain_list($tpl, $customerId)
         "SELECT domain_name, document_root FROM domain WHERE domain_status = 'ok' AND domain_id = ?", $domainId
     );
 
-    // Get Aliase
+    // Get Alias
     $stmtAliases = exec_query(
         "
-            SELECT alias_id, alias_name, alias_mount, alias_document_root, FROM domain_aliasses
+            SELECT alias_id, alias_name, alias_mount, alias_document_root FROM domain_aliasses
             WHERE alias_status = 'ok' AND url_forward = 'no' AND domain_id = ?
         ",
         $domainId
@@ -1465,7 +1465,7 @@ function gen_user_domain_list($tpl, $customerId)
  * @param iMSCP_pTemplate $tpl
  * @param int $dmnId
  * @param int $sqlDbLimit
- * @return int
+ * @return void
  */
 function generate_sqlDbUserLists($tpl, $dmnId, $sqlDbLimit)
 {

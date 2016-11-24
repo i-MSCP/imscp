@@ -4,6 +4,9 @@
 Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
+FRONTEND
+    Fixed: Wrong SQL query leading to an exception (Software installer)
+
 YOUTRACK
     #IP-1665 Allow underscore in CNAME-record
 
