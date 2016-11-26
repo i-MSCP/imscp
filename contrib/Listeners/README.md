@@ -23,6 +23,10 @@ Allows to overwrite Apache2 ServerAlias directive.
 
 Allows to redirect/proxy i-MSCP tools (pma,webmail...) in customers Apache2 vhost files.
 
+### 40_apache2_security_headers.pl
+
+Allows to add Apache2 security headers - https://securityheaders.io
+
 ## Dovecot listener files
 
 ### 10_dovecot_compress.pl
