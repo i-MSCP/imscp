@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-27 17:50+0100\n"
-"PO-Revision-Date: 2016-11-27 16:51+0000\n"
+"POT-Creation-Date: 2016-11-27 17:59+0100\n"
+"PO-Revision-Date: 2016-11-27 17:01+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/i-mscp/i-MSCP/language/uk_UA/)\n"
 "MIME-Version: 1.0\n"
@@ -29,6 +29,15 @@ msgstr "Клиент / Инструменты / Пользовательские
 
 msgid " Wrong IP address."
 msgstr "Неверный IP адрес."
+
+msgid ""
+"$ORIGIN is automatically appended to unqualified names, hosts and canonical "
+"names"
+msgstr ""
+
+#, php-format
+msgid "$ORIGIN value is currently set to: %s"
+msgstr ""
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -1395,6 +1404,10 @@ msgstr "Сжать вывод HTML"
 msgid "Configuration mode"
 msgstr "Режим конфигурации"
 
+#, php-format
+msgid "Conflict with the `%s' DNS resource record."
+msgstr ""
+
 msgid "Core data"
 msgstr "Основні дані"
 
@@ -1609,6 +1622,9 @@ msgstr "DNS запись помечена для обновления."
 
 msgid "DNS resource records"
 msgstr "Записи ресурсов DNS"
+
+msgid "DNS zone in which you want add this DNS resource record."
+msgstr ""
 
 msgid "DOWN"
 msgstr "НЕ ПРАЦЮЄ"
@@ -2066,9 +2082,6 @@ msgstr "Должна быть заполнена дата истечения д�
 
 msgid "Domain for which PHP Editor must act."
 msgstr "Домен, для которого вы включаете редактор PHP"
-
-msgid "Domain for which you want add this DNS resource record."
-msgstr "Домен, которому вы хотите добавить запись DNS."
 
 msgid "Domain limit"
 msgstr "Лимит доменов"
@@ -2688,6 +2701,11 @@ msgid ""
 "his customers, else, the PHP mail function is disabled."
 msgstr "Если да, то реселлер может включать и выключать PHP mail() функцию. Иначе PHP mail() выключено."
 
+msgid ""
+"If the name field is filled with the @ sign or left blank, it will be "
+"automatically substituted by $ORIGIN value."
+msgstr ""
+
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "Если Вы хотите ограничить реселлера, Вы сначала должны ограничить его клиентов."
 
@@ -3177,6 +3195,9 @@ msgstr "Перемещение отменено."
 
 msgid "N/A"
 msgstr "Недоступно"
+
+msgid "NS DNS resource records are only allowed for subzone delegation."
+msgstr ""
 
 msgid "Name"
 msgstr "Ім'я"

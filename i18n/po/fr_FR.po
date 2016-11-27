@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-27 17:50+0100\n"
-"PO-Revision-Date: 2016-11-27 16:51+0000\n"
+"POT-Creation-Date: 2016-11-27 17:59+0100\n"
+"PO-Revision-Date: 2016-11-27 17:01+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/i-mscp/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -26,6 +26,15 @@ msgstr "Client / Outils Internet / Pages d'erreur personnalisées / Éditer une 
 
 msgid " Wrong IP address."
 msgstr "Adresse IP incorrecte."
+
+msgid ""
+"$ORIGIN is automatically appended to unqualified names, hosts and canonical "
+"names"
+msgstr ""
+
+#, php-format
+msgid "$ORIGIN value is currently set to: %s"
+msgstr ""
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -1392,6 +1401,10 @@ msgstr "Activer la compression HTML"
 msgid "Configuration mode"
 msgstr "Mode de configuration"
 
+#, php-format
+msgid "Conflict with the `%s' DNS resource record."
+msgstr ""
+
 msgid "Core data"
 msgstr "Données principales"
 
@@ -1606,6 +1619,9 @@ msgstr "L'enregistrement DNS va être mis à jour."
 
 msgid "DNS resource records"
 msgstr "Enregistrements de resource DNS"
+
+msgid "DNS zone in which you want add this DNS resource record."
+msgstr ""
 
 msgid "DOWN"
 msgstr "Arrêté"
@@ -2063,9 +2079,6 @@ msgstr "La date d'expiration du domaine doit être fournit."
 
 msgid "Domain for which PHP Editor must act."
 msgstr "Domaine pour lequel l'éditeur PHP doit agir."
-
-msgid "Domain for which you want add this DNS resource record."
-msgstr "Domaine pour lequel vous voulez ajouter cet enregistrement DNS."
 
 msgid "Domain limit"
 msgstr "Limite du domaine"
@@ -2685,6 +2698,11 @@ msgid ""
 "his customers, else, the PHP mail function is disabled."
 msgstr "Si oui, le revendeur peut activer/désactiver la function mail() pour ses clients. Sinon, la function mail() sera indisponible."
 
+msgid ""
+"If the name field is filled with the @ sign or left blank, it will be "
+"automatically substituted by $ORIGIN value."
+msgstr ""
+
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "Si vous désirez limiter le revendeur, vous devez commencer par limiter ses clients."
 
@@ -3174,6 +3192,9 @@ msgstr "Déplacement annulé."
 
 msgid "N/A"
 msgstr "N/D"
+
+msgid "NS DNS resource records are only allowed for subzone delegation."
+msgstr ""
 
 msgid "Name"
 msgstr "Nom"
