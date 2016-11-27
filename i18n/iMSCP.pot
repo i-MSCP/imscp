@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-23 20:22+0100\n"
+"POT-Creation-Date: 2016-11-27 17:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1664,9 +1664,6 @@ msgstr ""
 msgid "Database users"
 msgstr ""
 
-msgid "Database with comma(s) in name is not accepted."
-msgstr ""
-
 msgid "Databases"
 msgstr ""
 
@@ -2253,9 +2250,6 @@ msgid "Email accounts are hard suspended"
 msgstr ""
 
 msgid "Email address"
-msgstr ""
-
-msgid "Email address with comma(s) are not accepted."
 msgstr ""
 
 msgid "Email forward"
@@ -3563,9 +3557,6 @@ msgstr ""
 msgid "Password successfully updated."
 msgstr ""
 
-msgid "Password with comma(s) are not accepted."
-msgstr ""
-
 msgid "Passwords do not match"
 msgstr ""
 
@@ -4287,9 +4278,6 @@ msgid "SQL user successfully added."
 msgstr ""
 
 msgid "SQL user successfully deleted."
-msgstr ""
-
-msgid "SQL user with comma(s) in name is not accepted."
 msgstr ""
 
 msgid "SQL users"

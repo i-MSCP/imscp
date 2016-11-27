@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-23 20:22+0100\n"
-"PO-Revision-Date: 2016-11-23 19:23+0000\n"
+"POT-Creation-Date: 2016-11-27 17:50+0100\n"
+"PO-Revision-Date: 2016-11-27 16:51+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/i-mscp/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -1663,9 +1663,6 @@ msgstr "Ús de la base de dades"
 msgid "Database users"
 msgstr "Usuaris de base de dades"
 
-msgid "Database with comma(s) in name is not accepted."
-msgstr ""
-
 msgid "Databases"
 msgstr "Bases de dades"
 
@@ -2247,9 +2244,6 @@ msgstr ""
 
 msgid "Email address"
 msgstr "Adreça d'email"
-
-msgid "Email address with comma(s) are not accepted."
-msgstr ""
 
 msgid "Email forward"
 msgstr "Reenviament d'email"
@@ -3556,9 +3550,6 @@ msgstr "Paràmetres de la contrasenya"
 msgid "Password successfully updated."
 msgstr "Contrasenya actualitzada."
 
-msgid "Password with comma(s) are not accepted."
-msgstr ""
-
 msgid "Passwords do not match"
 msgstr ""
 
@@ -4281,9 +4272,6 @@ msgstr "Usuari SQL afegit correctament."
 
 msgid "SQL user successfully deleted."
 msgstr "Usuari SQL esborrat correctament."
-
-msgid "SQL user with comma(s) in name is not accepted."
-msgstr ""
 
 msgid "SQL users"
 msgstr "Usuaris SQL"

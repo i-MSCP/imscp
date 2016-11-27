@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-23 20:22+0100\n"
-"PO-Revision-Date: 2016-11-23 19:23+0000\n"
+"POT-Creation-Date: 2016-11-27 17:50+0100\n"
+"PO-Revision-Date: 2016-11-27 16:51+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Slovak (Slovakia) (http://www.transifex.com/i-mscp/i-MSCP/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
@@ -1664,9 +1664,6 @@ msgstr "Použitie databáze"
 msgid "Database users"
 msgstr "Užívateľia databázy"
 
-msgid "Database with comma(s) in name is not accepted."
-msgstr ""
-
 msgid "Databases"
 msgstr "Databáze"
 
@@ -2248,9 +2245,6 @@ msgstr ""
 
 msgid "Email address"
 msgstr "Emailová adresa"
-
-msgid "Email address with comma(s) are not accepted."
-msgstr ""
 
 msgid "Email forward"
 msgstr "Emailové presmerovanie"
@@ -3557,9 +3551,6 @@ msgstr "Nastavenie hesla"
 msgid "Password successfully updated."
 msgstr "Heslo bolo úspešne obnovené."
 
-msgid "Password with comma(s) are not accepted."
-msgstr ""
-
 msgid "Passwords do not match"
 msgstr "Hesla sa nezhodujú"
 
@@ -4281,9 +4272,6 @@ msgid "SQL user successfully added."
 msgstr ""
 
 msgid "SQL user successfully deleted."
-msgstr ""
-
-msgid "SQL user with comma(s) in name is not accepted."
 msgstr ""
 
 msgid "SQL users"

@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-23 20:22+0100\n"
-"PO-Revision-Date: 2016-11-23 19:23+0000\n"
+"POT-Creation-Date: 2016-11-27 17:50+0100\n"
+"PO-Revision-Date: 2016-11-27 16:51+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/i-mscp/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -1665,9 +1665,6 @@ msgstr "データベースを使用"
 msgid "Database users"
 msgstr "データベースユーザー"
 
-msgid "Database with comma(s) in name is not accepted."
-msgstr "名前にカンマを持つデータベースは受け付けられません。"
-
 msgid "Databases"
 msgstr "データベース"
 
@@ -2249,9 +2246,6 @@ msgstr "Eメールアカウントは、一時停止されます"
 
 msgid "Email address"
 msgstr "Eメールアドレス"
-
-msgid "Email address with comma(s) are not accepted."
-msgstr "カンマがあるＥメールアドレスは受付けられません。"
 
 msgid "Email forward"
 msgstr "Email forward"
@@ -3558,9 +3552,6 @@ msgstr "パスワード設定"
 msgid "Password successfully updated."
 msgstr "パスワードは更新されました。"
 
-msgid "Password with comma(s) are not accepted."
-msgstr "カンマがあるパスワードは受け付けられません。"
-
 msgid "Passwords do not match"
 msgstr "パスワードが一致しません"
 
@@ -4283,9 +4274,6 @@ msgstr "SQLユーザーを追加しました。"
 
 msgid "SQL user successfully deleted."
 msgstr "SQLユーザーを削除しました。"
-
-msgid "SQL user with comma(s) in name is not accepted."
-msgstr "名前にカンマを持つSQLユーザは受け付けません。"
 
 msgid "SQL users"
 msgstr "SQLユーザー"

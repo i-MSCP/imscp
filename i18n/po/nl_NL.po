@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-23 20:22+0100\n"
-"PO-Revision-Date: 2016-11-23 19:23+0000\n"
+"POT-Creation-Date: 2016-11-27 17:50+0100\n"
+"PO-Revision-Date: 2016-11-27 16:51+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/i-mscp/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -1666,9 +1666,6 @@ msgstr "Databankgebruik"
 msgid "Database users"
 msgstr "Databankgebruikers"
 
-msgid "Database with comma(s) in name is not accepted."
-msgstr "Databank met komma('s) in de naam is niet toegestaan."
-
 msgid "Databases"
 msgstr "Databanken"
 
@@ -2250,9 +2247,6 @@ msgstr "E-mailaccounts worden ook opgeschort"
 
 msgid "Email address"
 msgstr "E-mailadres"
-
-msgid "Email address with comma(s) are not accepted."
-msgstr "E-mailadressen met komma('s) worden niet geaccepteerd."
 
 msgid "Email forward"
 msgstr "Doorstuuradres"
@@ -3559,9 +3553,6 @@ msgstr "Wachtwoordinstellingen"
 msgid "Password successfully updated."
 msgstr "Wachtwoord succesvol bijgewerkt"
 
-msgid "Password with comma(s) are not accepted."
-msgstr "Wachtwoorden met komma('s) worden niet geaccepteerd."
-
 msgid "Passwords do not match"
 msgstr "Wachtwoorden komen niet overeen"
 
@@ -4284,9 +4275,6 @@ msgstr "SQL-gebruiker succesvol toegevoegd."
 
 msgid "SQL user successfully deleted."
 msgstr "SQL-gebruiker is verwijderd."
-
-msgid "SQL user with comma(s) in name is not accepted."
-msgstr "SQL-gebruikersnamen met komma('s) worden niet geaccepteerd."
 
 msgid "SQL users"
 msgstr "MySQL-gebruikers"

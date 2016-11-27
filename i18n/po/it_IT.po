@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-23 20:22+0100\n"
-"PO-Revision-Date: 2016-11-23 19:23+0000\n"
+"POT-Creation-Date: 2016-11-27 17:50+0100\n"
+"PO-Revision-Date: 2016-11-27 16:51+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/i-mscp/i-MSCP/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -1666,9 +1666,6 @@ msgstr "Utilizzo database"
 msgid "Database users"
 msgstr "Utenti del database"
 
-msgid "Database with comma(s) in name is not accepted."
-msgstr "Nomi database con la virgola(e) non sono accettati"
-
 msgid "Databases"
 msgstr "SQL Databases"
 
@@ -2250,9 +2247,6 @@ msgstr "Gli account e-mail sono permanentemente sospesi"
 
 msgid "Email address"
 msgstr "Indirizzo email"
-
-msgid "Email address with comma(s) are not accepted."
-msgstr "Indirizzi email  con la virgola(e) non sono accettati"
 
 msgid "Email forward"
 msgstr "Inoltro email"
@@ -3559,9 +3553,6 @@ msgstr "Configurazione password"
 msgid "Password successfully updated."
 msgstr "Password aggiornata con successo."
 
-msgid "Password with comma(s) are not accepted."
-msgstr "Password con la virgola(e) non sono accettate"
-
 msgid "Passwords do not match"
 msgstr "Le password non corrispondono"
 
@@ -4284,9 +4275,6 @@ msgstr "Utente SQL aggiunto con successo."
 
 msgid "SQL user successfully deleted."
 msgstr "Utente SQL eliminato con successo."
-
-msgid "SQL user with comma(s) in name is not accepted."
-msgstr "Nomi utenti SQL con la virgola(e) non sono accettati"
 
 msgid "SQL users"
 msgstr "Utenti SQL"

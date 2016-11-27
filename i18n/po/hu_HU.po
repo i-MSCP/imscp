@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-23 20:22+0100\n"
-"PO-Revision-Date: 2016-11-23 19:23+0000\n"
+"POT-Creation-Date: 2016-11-27 17:50+0100\n"
+"PO-Revision-Date: 2016-11-27 16:51+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/i-mscp/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -1668,9 +1668,6 @@ msgstr "Adatbázisok tárhely foglaltsága"
 msgid "Database users"
 msgstr "Adatbázis felhasználók"
 
-msgid "Database with comma(s) in name is not accepted."
-msgstr "A vesszővel jelölt adatbázis neve nem elfogadható."
-
 msgid "Databases"
 msgstr "Adatbázisok"
 
@@ -2252,9 +2249,6 @@ msgstr "Postafiókok felfüggesztve"
 
 msgid "Email address"
 msgstr "Email címek"
-
-msgid "Email address with comma(s) are not accepted."
-msgstr "A vesszővel jelölt e-mail cím neve nem elfogadható."
 
 msgid "Email forward"
 msgstr "Továbbított email"
@@ -3561,9 +3555,6 @@ msgstr "Jelszavak beállításai"
 msgid "Password successfully updated."
 msgstr "A jelszó sikeresen frissítve"
 
-msgid "Password with comma(s) are not accepted."
-msgstr "A vesszővel jelölt jelszó nem elfogadható."
-
 msgid "Passwords do not match"
 msgstr "A jelszavak nem egyeznek."
 
@@ -4286,9 +4277,6 @@ msgstr "SQL felhasználó sikeresen hozzáadva"
 
 msgid "SQL user successfully deleted."
 msgstr "SQL felhasználó sikeresen törölve"
-
-msgid "SQL user with comma(s) in name is not accepted."
-msgstr "A vesszővel jelölt SQL felhasználó neve nem elfogadható."
 
 msgid "SQL users"
 msgstr "SQL felhasználók"

@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-23 20:22+0100\n"
-"PO-Revision-Date: 2016-11-23 19:23+0000\n"
+"POT-Creation-Date: 2016-11-27 17:50+0100\n"
+"PO-Revision-Date: 2016-11-27 16:51+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/i-mscp/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -1666,9 +1666,6 @@ msgstr "Database usage"
 msgid "Database users"
 msgstr "Database users"
 
-msgid "Database with comma(s) in name is not accepted."
-msgstr "Database with comma(s) in name is not accepted."
-
 msgid "Databases"
 msgstr "Databases"
 
@@ -2250,9 +2247,6 @@ msgstr "Email accounts are hard suspended"
 
 msgid "Email address"
 msgstr "Email address"
-
-msgid "Email address with comma(s) are not accepted."
-msgstr "Email address with comma(s) are not accepted."
 
 msgid "Email forward"
 msgstr "Email forward"
@@ -3559,9 +3553,6 @@ msgstr "Password settings"
 msgid "Password successfully updated."
 msgstr "Password successfully updated."
 
-msgid "Password with comma(s) are not accepted."
-msgstr "Password with comma(s) are not accepted."
-
 msgid "Passwords do not match"
 msgstr "Passwords do not match"
 
@@ -4284,9 +4275,6 @@ msgstr "SQL user successfully added."
 
 msgid "SQL user successfully deleted."
 msgstr "SQL user successfully deleted."
-
-msgid "SQL user with comma(s) in name is not accepted."
-msgstr "SQL user with comma(s) in name is not accepted."
 
 msgid "SQL users"
 msgstr "SQL users"

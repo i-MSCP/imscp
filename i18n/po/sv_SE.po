@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-23 20:22+0100\n"
-"PO-Revision-Date: 2016-11-23 19:23+0000\n"
+"POT-Creation-Date: 2016-11-27 17:50+0100\n"
+"PO-Revision-Date: 2016-11-27 16:51+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/i-mscp/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -1667,9 +1667,6 @@ msgstr "Database usage"
 msgid "Database users"
 msgstr "Databasanvändare"
 
-msgid "Database with comma(s) in name is not accepted."
-msgstr "Databas med kommatecken (er) i namn accepteras inte."
-
 msgid "Databases"
 msgstr "Databaser"
 
@@ -2251,9 +2248,6 @@ msgstr "E-postkonton är hårdavstängda"
 
 msgid "Email address"
 msgstr "E-mail adr."
-
-msgid "Email address with comma(s) are not accepted."
-msgstr "E-postadress med kommatecken (s) är inte tillåtna."
 
 msgid "Email forward"
 msgstr "Email forward"
@@ -3560,9 +3554,6 @@ msgstr "Lösenordsinställningar"
 msgid "Password successfully updated."
 msgstr "Lösenord uppdaterats."
 
-msgid "Password with comma(s) are not accepted."
-msgstr "Lösenord med kommatecken är inte tillåtna."
-
 msgid "Passwords do not match"
 msgstr "Lösenord matchar inte."
 
@@ -4285,9 +4276,6 @@ msgstr "SQL användare skapades."
 
 msgid "SQL user successfully deleted."
 msgstr "SQL användare raderades."
-
-msgid "SQL user with comma(s) in name is not accepted."
-msgstr "SQL användare med kommatecken (er) i namn accepteras inte."
 
 msgid "SQL users"
 msgstr "SQL-användare"

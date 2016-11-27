@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-23 20:22+0100\n"
-"PO-Revision-Date: 2016-11-23 19:23+0000\n"
+"POT-Creation-Date: 2016-11-27 17:50+0100\n"
+"PO-Revision-Date: 2016-11-27 16:51+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/i-mscp/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -1663,9 +1663,6 @@ msgstr "Database forbrug"
 msgid "Database users"
 msgstr "Databasebrugere"
 
-msgid "Database with comma(s) in name is not accepted."
-msgstr "Database med komma(r) i navn accepteres ikke."
-
 msgid "Databases"
 msgstr "Databaser"
 
@@ -2247,9 +2244,6 @@ msgstr "E-mail konti er admin suspenderet"
 
 msgid "Email address"
 msgstr "E-mail-adresse"
-
-msgid "Email address with comma(s) are not accepted."
-msgstr "E-mail-adresse med komma(r) accepteres ikke."
 
 msgid "Email forward"
 msgstr "E-mail forward"
@@ -3556,9 +3550,6 @@ msgstr "Adgangskode indstillinger"
 msgid "Password successfully updated."
 msgstr "Password opdateret."
 
-msgid "Password with comma(s) are not accepted."
-msgstr "E-mail-adresse med komma(r) accepteres ikke."
-
 msgid "Passwords do not match"
 msgstr "Passwords matcher ikke"
 
@@ -4281,9 +4272,6 @@ msgstr "SQL bruger tilføjet."
 
 msgid "SQL user successfully deleted."
 msgstr "SQL bruger blev slettet."
-
-msgid "SQL user with comma(s) in name is not accepted."
-msgstr "SQL bruger med komma(r) i navn accepteres ikke."
 
 msgid "SQL users"
 msgstr "SQL brugere"
