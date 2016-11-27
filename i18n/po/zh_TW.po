@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-27 17:50+0100\n"
-"PO-Revision-Date: 2016-11-27 16:51+0000\n"
+"POT-Creation-Date: 2016-11-27 17:59+0100\n"
+"PO-Revision-Date: 2016-11-27 17:01+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -28,6 +28,15 @@ msgstr " 客戶 / 網頁工具 / 自訂錯誤頁面 / 編輯自訂錯誤頁面"
 
 msgid " Wrong IP address."
 msgstr "錯誤的 IP 地址"
+
+msgid ""
+"$ORIGIN is automatically appended to unqualified names, hosts and canonical "
+"names"
+msgstr ""
+
+#, php-format
+msgid "$ORIGIN value is currently set to: %s"
+msgstr ""
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -1394,6 +1403,10 @@ msgstr "HTML 壓縮輸出"
 msgid "Configuration mode"
 msgstr "設置模式"
 
+#, php-format
+msgid "Conflict with the `%s' DNS resource record."
+msgstr ""
+
 msgid "Core data"
 msgstr "核心資料"
 
@@ -1608,6 +1621,9 @@ msgstr "更新 DNS 紀錄的排程已成功"
 
 msgid "DNS resource records"
 msgstr "DNS 紀錄"
+
+msgid "DNS zone in which you want add this DNS resource record."
+msgstr ""
 
 msgid "DOWN"
 msgstr "未運行"
@@ -2065,9 +2081,6 @@ msgstr "網域到期日必須填寫"
 
 msgid "Domain for which PHP Editor must act."
 msgstr "網域的 PHP 編輯器必須啟動。"
-
-msgid "Domain for which you want add this DNS resource record."
-msgstr "這裡可以新增您想要的 DNS 紀錄在此網域。"
 
 msgid "Domain limit"
 msgstr "網域限制"
@@ -2687,6 +2700,11 @@ msgid ""
 "his customers, else, the PHP mail function is disabled."
 msgstr "假如設定 `是`，此經銷商可以啟用/停用此 PHP 郵件功能給這個客戶，不然，此 PHP 郵件功能是停用的。"
 
+msgid ""
+"If the name field is filled with the @ sign or left blank, it will be "
+"automatically substituted by $ORIGIN value."
+msgstr ""
+
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "假如您要限制經銷商，您必須先限制這個客戶。"
 
@@ -3176,6 +3194,9 @@ msgstr "放棄移動。"
 
 msgid "N/A"
 msgstr "空"
+
+msgid "NS DNS resource records are only allowed for subzone delegation."
+msgstr ""
 
 msgid "Name"
 msgstr "名稱"

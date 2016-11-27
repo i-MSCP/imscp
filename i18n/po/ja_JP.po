@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-27 17:50+0100\n"
-"PO-Revision-Date: 2016-11-27 16:51+0000\n"
+"POT-Creation-Date: 2016-11-27 17:59+0100\n"
+"PO-Revision-Date: 2016-11-27 17:01+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/i-mscp/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -27,6 +27,15 @@ msgstr " クライアント / Webツール / カスタムエラーページ / �
 
 msgid " Wrong IP address."
 msgstr "間違ったIPアドレス。"
+
+msgid ""
+"$ORIGIN is automatically appended to unqualified names, hosts and canonical "
+"names"
+msgstr ""
+
+#, php-format
+msgid "$ORIGIN value is currently set to: %s"
+msgstr ""
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -1393,6 +1402,10 @@ msgstr "圧縮HTML出力"
 msgid "Configuration mode"
 msgstr "設定モード"
 
+#, php-format
+msgid "Conflict with the `%s' DNS resource record."
+msgstr ""
+
 msgid "Core data"
 msgstr "基本情報"
 
@@ -1607,6 +1620,9 @@ msgstr "DNSリソースレコードの更新が予定されました。"
 
 msgid "DNS resource records"
 msgstr "DNSリソースレコード"
+
+msgid "DNS zone in which you want add this DNS resource record."
+msgstr ""
 
 msgid "DOWN"
 msgstr "DOWN"
@@ -2064,9 +2080,6 @@ msgstr "ドメイン有効期限を入力する必要があります。"
 
 msgid "Domain for which PHP Editor must act."
 msgstr "PHPエディタが作用しなければならないドメイン。"
-
-msgid "Domain for which you want add this DNS resource record."
-msgstr "このドメインのために、DNSリソースレコードを追加します。"
 
 msgid "Domain limit"
 msgstr "ドメイン制限数"
@@ -2686,6 +2699,11 @@ msgid ""
 "his customers, else, the PHP mail function is disabled."
 msgstr "`yes`に設定した場合、代理店は顧客のPHPのメール機能を有効/無効にすることができ、そうでなければ、PHPのメール機能は無効になります。"
 
+msgid ""
+"If the name field is filled with the @ sign or left blank, it will be "
+"automatically substituted by $ORIGIN value."
+msgstr ""
+
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "この設定のリセラーを制限する場合、先に顧客を制限する必要があります。"
 
@@ -3175,6 +3193,9 @@ msgstr "移動を中止しました。"
 
 msgid "N/A"
 msgstr "利用不可"
+
+msgid "NS DNS resource records are only allowed for subzone delegation."
+msgstr ""
 
 msgid "Name"
 msgstr "ネーム"

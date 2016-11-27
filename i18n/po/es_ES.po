@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-27 17:50+0100\n"
-"PO-Revision-Date: 2016-11-27 16:51+0000\n"
+"POT-Creation-Date: 2016-11-27 17:59+0100\n"
+"PO-Revision-Date: 2016-11-27 17:01+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/i-mscp/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -28,6 +28,15 @@ msgstr "Cliente / Herramientas Web / Páginas de Error Personalizadas / Editar P
 
 msgid " Wrong IP address."
 msgstr "Dirección IP incorrecta."
+
+msgid ""
+"$ORIGIN is automatically appended to unqualified names, hosts and canonical "
+"names"
+msgstr ""
+
+#, php-format
+msgid "$ORIGIN value is currently set to: %s"
+msgstr ""
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -1394,6 +1403,10 @@ msgstr "Comprimir salida HTML"
 msgid "Configuration mode"
 msgstr "Modo Configuración"
 
+#, php-format
+msgid "Conflict with the `%s' DNS resource record."
+msgstr ""
+
 msgid "Core data"
 msgstr "Datos del núcleo"
 
@@ -1608,6 +1621,9 @@ msgstr "Registro de recurso DNS programado para ser actualizado."
 
 msgid "DNS resource records"
 msgstr "Los registros de recursos DNS"
+
+msgid "DNS zone in which you want add this DNS resource record."
+msgstr ""
 
 msgid "DOWN"
 msgstr "ABAJO"
@@ -2065,9 +2081,6 @@ msgstr "Debes poner la fecha de expiración del dominio."
 
 msgid "Domain for which PHP Editor must act."
 msgstr "Dominio en el cual el Editor PHP deberia actuar."
-
-msgid "Domain for which you want add this DNS resource record."
-msgstr "Dominio en el cual deseas añadir este registro del recurso DNS."
 
 msgid "Domain limit"
 msgstr "Límite del Dominio"
@@ -2687,6 +2700,11 @@ msgid ""
 "his customers, else, the PHP mail function is disabled."
 msgstr "Si se establece en `yes`, el revendedor puede habilitar/deshabilitar la función PHP mail a sus clientes, de lo contrario, la función PHP mail estará deshabilitada."
 
+msgid ""
+"If the name field is filled with the @ sign or left blank, it will be "
+"automatically substituted by $ORIGIN value."
+msgstr ""
+
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "Si quieres ponerle limites a un revendedor, primero debes ponerle límites a sus clientes."
 
@@ -3176,6 +3194,9 @@ msgstr "Mover abortado."
 
 msgid "N/A"
 msgstr "N/D"
+
+msgid "NS DNS resource records are only allowed for subzone delegation."
+msgstr ""
 
 msgid "Name"
 msgstr "Nombre"

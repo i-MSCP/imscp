@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-27 17:50+0100\n"
-"PO-Revision-Date: 2016-11-27 16:51+0000\n"
+"POT-Creation-Date: 2016-11-27 17:59+0100\n"
+"PO-Revision-Date: 2016-11-27 17:01+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/i-mscp/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -29,6 +29,15 @@ msgstr "Client / Webtools / Custom Error Pages / Edit Custom Error Page"
 
 msgid " Wrong IP address."
 msgstr "Fel IP-adress."
+
+msgid ""
+"$ORIGIN is automatically appended to unqualified names, hosts and canonical "
+"names"
+msgstr ""
+
+#, php-format
+msgid "$ORIGIN value is currently set to: %s"
+msgstr ""
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -1395,6 +1404,10 @@ msgstr "Komprimera HTML-utdata"
 msgid "Configuration mode"
 msgstr "konfigurationsläge"
 
+#, php-format
+msgid "Conflict with the `%s' DNS resource record."
+msgstr ""
+
 msgid "Core data"
 msgstr "Kärndata"
 
@@ -1609,6 +1622,9 @@ msgstr "DNS resurspost planerad för uppdatering."
 
 msgid "DNS resource records"
 msgstr "DNS-urkunder för resursen"
+
+msgid "DNS zone in which you want add this DNS resource record."
+msgstr ""
 
 msgid "DOWN"
 msgstr "NER"
@@ -2066,9 +2082,6 @@ msgstr "Domain utgångsdatum måste fyllas i."
 
 msgid "Domain for which PHP Editor must act."
 msgstr "Domain for which PHP Editor must act."
-
-msgid "Domain for which you want add this DNS resource record."
-msgstr "Domän som du inte kan lägga till DNS-resursposten."
 
 msgid "Domain limit"
 msgstr "Domain Limit"
@@ -2688,6 +2701,11 @@ msgid ""
 "his customers, else, the PHP mail function is disabled."
 msgstr "Om satt till `ja anges kan alltid aktivera / inaktivera PHP postfunktionen för sina kunder, annars är PHP postfunktionen inaktiverad."
 
+msgid ""
+"If the name field is filled with the @ sign or left blank, it will be "
+"automatically substituted by $ORIGIN value."
+msgstr ""
+
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "Om du vill begränsa återförsäljare, måste du begränsa först sina kunder."
 
@@ -3177,6 +3195,9 @@ msgstr "Flytta avbröts."
 
 msgid "N/A"
 msgstr "Inte tillgänglig"
+
+msgid "NS DNS resource records are only allowed for subzone delegation."
+msgstr ""
 
 msgid "Name"
 msgstr "Namn"
