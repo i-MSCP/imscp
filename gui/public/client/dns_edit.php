@@ -59,7 +59,7 @@ function hasConflict($rrName, $rrType, $isNewRecord, &$errorString)
         /** @var Net_DNS2_Packet_Response $response */
         $response = $resolver->query($rrName, 'CNAME');
 
-        if (!$isNewRecord && $rrType == 'CNAME' && $rrName == $response->answer[0]->name) {
+        if (empty($response->answer) || (!$isNewRecord && $rrType == 'CNAME' && $rrName == $response->answer[0]->name)) {
             return false;
         }
 
