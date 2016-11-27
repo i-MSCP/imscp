@@ -1,9 +1,15 @@
 
 <script>
+    $(function() {
+        $("#zone_id").on("change", function() {
+            $("#origin").html('<strong>' + $(this).find("option:selected").text() + '.</strong>');
+        }).trigger('change');
+    });
+
     var inputFields = ['name', 'ip_address', 'ip_address_v6', 'srv_name', 'srv_protocol', 'srv_ttl', 'srv_prio',
         'srv_weight', 'srv_host', 'srv_port', 'cname', 'txt_data'];
     var inputFieldsLength = inputFields.length;
-
+    
     function dns_show_rows(inputFieldsToShow) {
         for (var i = 0; i < inputFieldsLength; i++) {
             var trName = 'tr_dns_' + inputFields[i];
@@ -18,12 +24,14 @@
     }
 
     function change_dns_type(value) {
-        if (value == 'MX') {
-            dns_show_rows(['name', 'srv_ttl', 'srv_prio', 'srv_host']);
-        } else if (value == 'A') {
+        if (value == 'A') {
             dns_show_rows(['name', 'srv_ttl', 'ip_address']);
         } else if (value == 'AAAA') {
             dns_show_rows(['name', 'srv_ttl', 'ip_address_v6']);
+        } else if (value == 'MX') {
+            dns_show_rows(['name', 'srv_ttl', 'srv_prio', 'srv_host']);
+        } else if (value == 'NS') {
+            dns_show_rows(['name', 'srv_ttl', 'srv_host']);
         } else if (value == 'CNAME') {
             dns_show_rows(['name', 'srv_ttl', 'cname']);
         } else if (value == 'SPF' || value == 'TXT') {
@@ -67,6 +75,12 @@
     });
 </script>
 
+<p class="static_info">
+    <?= tr('$ORIGIN is automatically appended to unqualified names, hosts and canonical names') ?>.<br>
+    <?= tr('If the name field is filled with the @ sign or left blank, it will be automatically substituted by $ORIGIN value.') ?><br>
+    <?= tr('$ORIGIN value is currently set to: %s', '<span id="origin"></span>') ?>
+</p>
+
 <form name="edit_dns_frm" method="post" action="{ACTION_MODE}">
     <table class="firstColFixed">
         <thead>
@@ -78,12 +92,12 @@
         <!-- BDP: add_record -->
         <tr>
             <td>
-                <label for="domain_id">{TR_DOMAIN}</label>
-                <span class="icon i_help" title="{TR_DOMAIN_HELP}"></span>
+                <label for="zone_id">{TR_ZONE}</label>
+                <span class="icon i_help" title="{TR_ZONE_HELP}"></span>
             </td>
             <td>
-                <select id="domain_id" name="domain_id">
-                    {SELECT_DOMAINS}
+                <select id="zone_id" name="zone_id">
+                    {SELECT_ZONES}
                 </select>
             </td>
         </tr>
@@ -96,7 +110,11 @@
         </tr>
         <tr id="tr_dns_srv_protocol">
             <td><label for="srv_protocol">{TR_DNS_SRV_PROTOCOL}</label></td>
-            <td><select name="srv_proto" id="srv_protocol">{SELECT_DNS_SRV_PROTOCOL}</select></td>
+            <td>
+                <select name="srv_proto" id="srv_protocol">
+                    {SELECT_DNS_SRV_PROTOCOL}
+                </select>
+            </td>
         </tr>
         <tr id="tr_dns_name">
             <td><label for="dns_name">{TR_DNS_NAME}</label></td>
@@ -110,18 +128,18 @@
             </td>
         </tr>
         <tr>
-            <td><label for="dns_type">{TR_DNS_TYPE}</label></td>
-            <td>
-                <select id="dns_type" onchange="change_dns_type(this.value)" name="type"{DNS_TYPE_DISABLED}>
-                    {SELECT_DNS_TYPE}
-                </select>
-            </td>
-        </tr>
-        <tr>
             <td><label for="class">{TR_DNS_CLASS}</label></td>
             <td>
                 <select id="class" name="class">
                     {SELECT_DNS_CLASS}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="dns_type">{TR_DNS_TYPE}</label></td>
+            <td>
+                <select id="dns_type" onchange="change_dns_type(this.value)" name="type"{DNS_TYPE_DISABLED}>
+                    {SELECT_DNS_TYPE}
                 </select>
             </td>
         </tr>

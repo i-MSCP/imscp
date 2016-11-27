@@ -5,6 +5,8 @@ Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
 FRONTEND
+    Added: Static info in custom DNS management interface explaining rules for substitution with $ORIGIN
+    Added: Support for NS DNS resource record (only allowed for subzone delegation)
     Fixed: Could not install new software instance due to a bad check on installation path (Software installer)
     Fixed: Installation of new software instances on forwarded domains must be prohibited (Software installer)
     Fixed: installation of new software outside of the document root must be prohibited (Software installer)
@@ -18,6 +20,7 @@ LISTENER
 
 YOUTRACK
     #IP-1665 Allow underscore in CNAME-record
+    #IP-1666 Could not dump domain.tld when two DNS entries have same name
     #IP-1667 ITK httpd server implementation - Variables not replaced in vhost template
 
 ------------------------------------------------------------------------------------------------------------------------
