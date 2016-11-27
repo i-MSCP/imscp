@@ -55,7 +55,7 @@ function setFtpRootDir()
         $_SESSION['vftp_unselectable_dirs'] = array();
     } else {
         header('Status: 400 Bad Request');
-        $data['message'] = tr('Bad Request.');
+        $data['message'] = tr('Bad request.');
     }
 
     echo json_encode($data);
