@@ -37,7 +37,7 @@ use locale;
 setlocale(LC_ALL, 'C.UTF-8');
 $ENV{'LANG'} = 'C.UTF-8';
 
-defined $ARGV[0] or die('Expects a base64 encoded string containg JSON data as first argument');
+defined $ARGV[0] or die('Expects a base64 encoded string containing JSON data as first argument');
 
 # Decoding received data
 my (

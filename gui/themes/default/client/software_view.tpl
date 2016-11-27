@@ -6,6 +6,7 @@
 		<th colspan="2">{TR_TITLE}</th>
 	</tr>
 	</thead>
+	<tbody>
 	<tr>
 		<td>{TR_NAME}</td>
 		<td>{SOFTWARE_NAME}</td>
@@ -32,25 +33,23 @@
 	</tr>
 	<!-- EDP: software_message -->
 	<tr>
-		<td colspan="2">{TR_DESC}<br/><br/>
-			<table>
-				<tr>
-					<td>{SOFTWARE_DESC}</td>
-				</tr>
-			</table>
-		</td>
+		<td>{TR_DESC}</td>
+		<td>{SOFTWARE_DESC}</td>
 	</tr>
 	<tr>
 		<td>{TR_LINK}</td>
 		<td><a href="{SOFTWARE_LINK}" target="_blank">{SOFTWARE_LINK}</a></td>
 	</tr>
 	<!-- BDP: installed_software_info -->
-	<tr>
-		<td colspan="2">&nbsp;</td>
-	</tr>
+	</tbody>
+</table>
+<table>
+	<thead>
 	<tr>
 		<th colspan="2">{TR_SOFTWARE_INFO}</th>
 	</tr>
+	</thead>
+	<tbody>
 	<tr>
 		<td>{TR_SOFTWARE_STATUS}</td>
 		<td>{SOFTWARE_STATUS}</td>
@@ -64,17 +63,13 @@
 		<td>{SOFTWARE_INSTALL_DATABASE}</td>
 	</tr>
 	<!-- EDP: installed_software_info -->
-	<tr>
-		<td colspan="2">
-			<form name="scriptActions" method="post" action="#">
-				<div class="buttons">
-					<a class="link_as_button" href="software.php">{TR_BACK}</a>
-					<!-- BDP: software_install -->
-					<a class="link_as_button" href="{SOFTWARE_INSTALL_BUTTON}">{TR_INSTALL}</a>
-					<!-- EDP: software_install -->
-				</div>
-			</form>
-		</td>
-	</tr>
+	</tbody>
 </table>
+
+<div class="buttons">
+	<a class="link_as_button" href="software.php">{TR_BACK}</a>
+	<!-- BDP: software_install -->
+	<a class="link_as_button" href="{SOFTWARE_INSTALL_BUTTON}">{TR_INSTALL}</a>
+	<!-- EDP: software_install -->
+</div>
 <!-- EDP: software_item -->

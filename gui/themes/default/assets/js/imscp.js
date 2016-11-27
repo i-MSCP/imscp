@@ -127,10 +127,8 @@
             }).insertAfter($pwdGenerator);
 
             // Prefill password field if needed
-            if($(".pwd_prefill").length) {
+            if($(".pwd_prefill").length && $pwdElements.val() == '') {
                 $("#pwd_generate").trigger("click");
-            } else {
-                $pwdElements.val("");
             }
         }
     };

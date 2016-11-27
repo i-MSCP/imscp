@@ -1287,37 +1287,40 @@ function get_software_props_install($tpl, $dmn_id, $software_id, $dmn_created_id
     if (!check_software_avail($software_id, $dmn_created_id)) {
         set_page_message(tr('Software not found!'), 'error');
         redirectTo('software.php');
-    } else {
-        gen_user_domain_list($tpl, $_SESSION['user_id']);
-        $query = "
-            SELECT `software_name`, `software_type`, `software_db` FROM `web_software`
-            WHERE `software_id` = ? AND `reseller_id` = ?
-        ";
-        $stmt = exec_query($query, array($software_id, $dmn_created_id));
+    }
 
-        check_is_installed($tpl, $dmn_id, $software_id);
+    gen_user_domain_list($tpl, $_SESSION['user_id']);
 
-        if ($stmt->fields['software_db'] == 1) {
-            $tpl->assign('SOFTWARE_DB', tr('yes'));
+    $stmt = exec_query(
+        '
+          SELECT `software_name`, `software_type`, `software_db` FROM `web_software`
+          WHERE `software_id` = ? AND `reseller_id` = ?
+        ',
+        array($software_id, $dmn_created_id)
+    );
 
-            if ($dmn_sqld_limit == '-1') {
-                $tpl->parse('REQUIRE_INSTALLDB', '.require_installdb');
-            }
+    check_is_installed($tpl, $dmn_id, $software_id);
 
-            generate_sqlDbUserLists($tpl, $dmn_id, $dmn_sqld_limit);
-        } else {
-            $tpl->assign(array(
-                'SOFTWARE_DB' => tr('no'),
-                'REQUIRE_INSTALLDB' => ''
-            ));
+    if ($stmt->fields['software_db'] == 1) {
+        $tpl->assign('SOFTWARE_DB', tr('yes'));
+
+        if ($dmn_sqld_limit == '-1') {
+            $tpl->parse('REQUIRE_INSTALLDB', '.require_installdb');
         }
 
+        generate_sqlDbUserLists($tpl, $dmn_id, $dmn_sqld_limit);
+    } else {
         $tpl->assign(array(
-            'TR_SOFTWARE_NAME' => $stmt->fields['software_name'],
-            'SOFTWARE_TYPE' => $stmt->fields['software_type']
+            'SOFTWARE_DB'       => tr('no'),
+            'REQUIRE_INSTALLDB' => ''
         ));
-        $tpl->parse('SOFTWARE_ITEM', '.software_item');
     }
+
+    $tpl->assign(array(
+        'TR_SOFTWARE_NAME' => $stmt->fields['software_name'],
+        'SOFTWARE_TYPE'    => $stmt->fields['software_type']
+    ));
+    $tpl->parse('SOFTWARE_ITEM', '.software_item');
 }
 
 /**
@@ -1329,16 +1332,28 @@ function get_software_props_install($tpl, $dmn_id, $software_id, $dmn_created_id
  */
 function gen_user_domain_list($tpl, $customerId)
 {
+    $domainFound = false;
+
     $domainId = get_user_domain_id($customerId);
-    $rsdomain = exec_query(
-        "SELECT domain_name, document_root FROM domain WHERE domain_status = 'ok' AND domain_id = ?", $domainId
+    $stmtDomain = exec_query(
+        "
+          SELECT domain_id, domain_name, document_root
+          FROM domain
+          WHERE domain_id = ?
+          AND domain_status = 'ok'
+          AND url_forward = 'no'
+        ",
+        $domainId
     );
 
     // Get Alias
     $stmtAliases = exec_query(
         "
-            SELECT alias_id, alias_name, alias_mount, alias_document_root FROM domain_aliasses
-            WHERE alias_status = 'ok' AND url_forward = 'no' AND domain_id = ?
+            SELECT alias_id, alias_name, alias_mount, alias_document_root AS document_root
+            FROM domain_aliasses
+            WHERE domain_id = ?
+            AND alias_status = 'ok'
+            AND url_forward = 'no'
         ",
         $domainId
     );
@@ -1346,114 +1361,114 @@ function gen_user_domain_list($tpl, $customerId)
     // Get Subdomains
     $stmtSubdomains = exec_query(
         "
-            SELECT subdomain_id, subdomain_name, subdomain_mount, subdomain_document_root, domain_name FROM subdomain
-            INNER JOIN domain USING (domain_id) WHERE subdomain_status = 'ok' AND domain_id = ?
+            SELECT subdomain_id, subdomain_name, subdomain_mount, subdomain_document_root AS document_root, domain_name
+            FROM subdomain
+            INNER JOIN domain USING (domain_id)
+            WHERE subdomain_url_forward = 'no'
+            AND subdomain_status = 'ok'
+            AND domain_id = ?
         ",
         $domainId
     );
 
-    // Get Subaliase
+    // Get sub alias
     $stmtSubAliases = exec_query(
         "
-            SELECT subdomain_alias_id, subdomain_alias_name, subdomain_alias_mount, subdomain_alias_document_root, alias_name
-            FROM subdomain_alias JOIN domain_aliasses USING (alias_id)
-            WHERE subdomain_alias_status = 'ok' AND domain_id = ?
+            SELECT subdomain_alias_id, subdomain_alias_name, subdomain_alias_mount,
+              subdomain_alias_document_root AS document_root, alias_name
+            FROM subdomain_alias
+            JOIN domain_aliasses USING (alias_id)
+            WHERE subdomain_alias_url_forward = 'no'
+            AND subdomain_alias_status = 'ok'
+            AND domain_id = ?
         ",
         $domainId
     );
 
     if (isset($_POST['selected_domain'])) {
-        list (, $postAliasId, $postSubId, $postSubAliasId) = explode(';', $_POST['selected_domain']);
+        list ($postDomainId, $postDomainType) = explode(';', $_POST['selected_domain']);
     } else {
-        $postAliasId = 0;
-        $postSubId = 0;
-        $postSubAliasId = 0;
+        $postDomainId = 0;
+        $postDomainType = 0;
     }
 
-    if ($stmtAliases->rowCount() || $stmtSubdomains->rowCount() || $stmtSubAliases->rowCount()) {
-        while (!$stmtAliases->EOF) {
-            if (isset($_POST['selected_domain']) && $postAliasId != 0) {
-                if ($postAliasId == $stmtAliases->fields['alias_id']) {
-                    $selectedDomain = ' selected';
-                } else {
-                    $selectedDomain = '';
-                }
-            } else {
-                $selectedDomain = '';
-            }
-
-            $tpl->assign(
-                array(
-                    'SELECTED_DOMAIN' => $selectedDomain,
-                    'DOMAIN_NAME_VALUES' => $domainId . ';' . $stmtAliases->fields['alias_id'] . ';0;0;' .
-                        $stmtAliases->fields['alias_mount'] . $stmtAliases->fields['document_root'],
-                    'DOMAIN_NAME' => tohtml(decode_idna($stmtAliases->fields['alias_name']))
-                )
-            );
-
-            $tpl->parse('SHOW_DOMAIN_LIST', '.show_domain_list');
-            $stmtAliases->moveNext();
-        }
-
-        while (!$stmtSubdomains->EOF) {
-            if (isset($_POST['selected_domain']) && $postSubId != 0) {
-                if ($postSubId == $stmtSubdomains->fields['subdomain_id']) {
-                    $selectedDomain = ' selected';
-                } else {
-                    $selectedDomain = '';
-                }
-            } else {
-                $selectedDomain = '';
-            }
-
-            $subdomainname = $stmtSubdomains->fields['subdomain_name'] . '.' . $stmtSubdomains->fields['domain_name'];
-
-            $tpl->assign(array(
-                'SELECTED_DOMAIN' => $selectedDomain,
-                'DOMAIN_NAME_VALUES' => $domainId . ';0;' . $stmtSubdomains->fields['subdomain_id'] . ';0;' .
-                    $stmtSubdomains->fields['subdomain_mount'] . $stmtSubdomains->fields['document_root'] ,
-                'DOMAIN_NAME' => tohtml(decode_idna($subdomainname))
-            ));
-            $tpl->parse('SHOW_DOMAIN_LIST', '.show_domain_list');
-            $stmtSubdomains->moveNext();
-        }
-
-        while (!$stmtSubAliases->EOF) {
-            if (isset($_POST['selected_domain']) && $postSubAliasId != 0) {
-                if ($postSubAliasId == $stmtSubAliases->fields['subdomain_alias_id']) {
-                    $selectedDomain = ' selected';
-                } else {
-                    $selectedDomain = '';
-                }
-            } else {
-                $selectedDomain = '';
-            }
-
-            $subAliasName = $stmtSubAliases->fields['subdomain_alias_name'] . '.' . $stmtSubAliases->fields['alias_name'];
-            $tpl->assign(array(
-                'SELECTED_DOMAIN' => $selectedDomain,
-                'DOMAIN_NAME_VALUES' => $domainId . ';0;0;' . $stmtSubAliases->fields['subdomain_alias_id'] . ';' .
-                    $stmtSubAliases->fields['subdomain_alias_mount'] . $stmtSubAliases->fields['document_root'],
-                'DOMAIN_NAME' => tohtml(decode_idna($subAliasName))
-            ));
-
-            $tpl->parse('SHOW_DOMAIN_LIST', '.show_domain_list');
-            $stmtSubAliases->moveNext();
+    if($stmtDomain->rowCount()) {
+        $domainFound = true;
+        $row = $stmtDomain->fetchRow();
+        if ($postDomainType == 'dmn' && isset($_POST['selected_domain'])  && $postDomainId == $row['domain_id']) {
+            $selectedDomain = ' selected';
+        } else {
+            $selectedDomain = '';
         }
 
         $tpl->assign(array(
-            'DOMAINSTANDARD_NAME_VALUES' => $domainId . ';0;0;0;' . $rsdomain->fields['document_root'],
-            'DOMAINSTANDARD_NAME' => tohtml(decode_idna($rsdomain->fields['domain_name']))
+            'SELECTED_DOMAIN'    => $selectedDomain,
+            'DOMAIN_NAME_VALUES' => $row['domain_id'] .';dmn;' . utils_normalizePath('/' . $row['document_root']),
+            'DOMAIN_NAME'        => tohtml(decode_idna($row['domain_name']))
         ));
-    } else {
-        $tpl->assign(array(
-            'SELECTED_DOMAIN' => '',
-            'DOMAIN_NAME_VALUES' => '',
-            'DOMAIN_NAME' => '',
-            'DOMAINSTANDARD_NAME_VALUES' => $domainId . ';0;0;0;' . $rsdomain->fields['document_root'],
-            'DOMAINSTANDARD_NAME' => tohtml(decode_idna($rsdomain->fields['domain_name'])),
-            'SHOW_DOMAIN_LIST' => ''
-        ));
+        $tpl->parse('SHOW_DOMAIN_LIST', '.show_domain_list');
+    }
+    
+    if ($stmtAliases->rowCount()) {
+        $domainFound = true;
+
+        while ($row = $stmtAliases->fetchRow()) {
+            if ($postDomainType == 'als' && isset($_POST['selected_domain']) && $postDomainId == $row['alias_id']) {
+                $selectedDomain = ' selected';
+            } else {
+                $selectedDomain = '';
+            }
+
+            $tpl->assign(array(
+                'SELECTED_DOMAIN'    => $selectedDomain,
+                'DOMAIN_NAME_VALUES' =>  $row['alias_id'] . ';als' . utils_normalizePath($row['alias_mount'] . '/' . $row['document_root']),
+                'DOMAIN_NAME'        => tohtml(decode_idna($row['alias_name']))
+            ));
+            $tpl->parse('SHOW_DOMAIN_LIST', '.show_domain_list');
+        }
+    }
+
+    if($stmtSubdomains->rowCount()) {
+        $domainFound = true;
+
+        while ($row = $stmtSubdomains->fetchRow()) {
+            if ($postDomainType == 'sub' && isset($_POST['selected_domain']) && $postDomainId == $row['subdomain_id']) {
+                $selectedDomain = ' selected';
+            } else {
+                $selectedDomain = '';
+            }
+
+            $tpl->assign(array(
+                'SELECTED_DOMAIN'    => $selectedDomain,
+                'DOMAIN_NAME_VALUES' => $row['subdomain_id'] . ';sub;' . utils_normalizePath($row['subdomain_mount'] . '/' . $row['document_root']),
+                'DOMAIN_NAME'        => tohtml(decode_idna($row['subdomain_name'] . '.' . $row['domain_name']))
+            ));
+            $tpl->parse('SHOW_DOMAIN_LIST', '.show_domain_list');
+        }
+    }
+    
+    if($stmtSubAliases->rowCount()) {
+        $domainFound = true;
+
+        while ($row = $stmtSubAliases->fetchRow()) {
+            if ($postDomainType == 'alssub' && isset($_POST['selected_domain']) && $postDomainId == $row['subdomain_alias_id']) {
+                $selectedDomain = ' selected';
+            } else {
+                $selectedDomain = '';
+            }
+
+            $tpl->assign(array(
+                'SELECTED_DOMAIN'    => $selectedDomain,
+                'DOMAIN_NAME_VALUES' => $row['subdomain_alias_id'] . 'alssub;' . utils_normalizePath($row['subdomain_alias_mount'] . '/' . $row['document_root']),
+                'DOMAIN_NAME'        => tohtml(decode_idna($row['subdomain_alias_name'] . '.' .$row['alias_name']))
+            ));
+            $tpl->parse('SHOW_DOMAIN_LIST', '.show_domain_list');
+        }
+    }
+    
+    if(!$domainFound) {
+        set_page_message('No domain available for new software installation.', 'warning');
+        redirectTo('software.php');
     }
 }
 

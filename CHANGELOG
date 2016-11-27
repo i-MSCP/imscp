@@ -5,6 +5,11 @@ Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
 FRONTEND
+    Fixed: Could not install new software instance due to a bad check on installation path (Software installer)
+    Fixed: Installation of new software instances on forwarded domains must be prohibited (Software installer)
+    Fixed: installation of new software outside of the document root must be prohibited (Software installer)
+    Fixed: Several layout issues in admin/software_rights.tpl (Software installer)
+    Fixed: Several layout issues in client/software_view.tpl (Software installer)
     Fixed: Wrong SQL query leading to an exception (Software installer)
 
 LISTENER

@@ -37,7 +37,7 @@ $tpl->define_dynamic(
 		'no_reseller_list' => 'page',
 		'no_select_reseller' => 'page',
 		'select_reseller' => 'page',
-		'reseller_item' => 'page'));
+		'reseller_item' => 'select_reseller'));
 
 if (isset($_GET['id']) || isset($_POST['id'])) {
 	if (isset($_GET['id']) && is_numeric($_GET['id'])) {
