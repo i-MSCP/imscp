@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-23 20:22+0100\n"
-"PO-Revision-Date: 2016-11-23 19:23+0000\n"
+"POT-Creation-Date: 2016-11-27 17:50+0100\n"
+"PO-Revision-Date: 2016-11-27 16:51+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/i-mscp/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -1664,9 +1664,6 @@ msgstr "Utilisation des bases de données"
 msgid "Database users"
 msgstr "Utilisateurs de la base de données"
 
-msgid "Database with comma(s) in name is not accepted."
-msgstr "Les virgules ne sont pas acceptées dans les noms de base de données."
-
 msgid "Databases"
 msgstr "Base de données"
 
@@ -2248,9 +2245,6 @@ msgstr "Les comptes e-mail sont suspendus"
 
 msgid "Email address"
 msgstr "Adresse courriel"
-
-msgid "Email address with comma(s) are not accepted."
-msgstr "Les virgules ne sont pas acceptées dans les adresses e-mail."
 
 msgid "Email forward"
 msgstr "Transfert d'e-mail"
@@ -3557,9 +3551,6 @@ msgstr "Paramètres des mots de passe"
 msgid "Password successfully updated."
 msgstr "Le mot de pass a été mis à jour."
 
-msgid "Password with comma(s) are not accepted."
-msgstr "Les virgules ne sont pas acceptées dans les mots de passes."
-
 msgid "Passwords do not match"
 msgstr "Les mots de passes ne correspondent pas"
 
@@ -4282,9 +4273,6 @@ msgstr "L'utilisateur SQL a été ajouté."
 
 msgid "SQL user successfully deleted."
 msgstr "L'utilisateur SQL a été supprimé."
-
-msgid "SQL user with comma(s) in name is not accepted."
-msgstr "Les virgules ne sont pas acceptées dans les noms des utilisateurs SQL."
 
 msgid "SQL users"
 msgstr "Utilisateurs SQL"

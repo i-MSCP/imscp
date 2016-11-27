@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-23 20:22+0100\n"
-"PO-Revision-Date: 2016-11-23 19:23+0000\n"
+"POT-Creation-Date: 2016-11-27 17:50+0100\n"
+"PO-Revision-Date: 2016-11-27 16:51+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Argentina) (http://www.transifex.com/i-mscp/i-MSCP/language/es_AR/)\n"
 "MIME-Version: 1.0\n"
@@ -1663,9 +1663,6 @@ msgstr "Utilización Base de Datos"
 msgid "Database users"
 msgstr "Usuarios de base de datos"
 
-msgid "Database with comma(s) in name is not accepted."
-msgstr "No se aceptan Bases de Datos con coma(s) en el nombre."
-
 msgid "Databases"
 msgstr "Base de Datos"
 
@@ -2247,9 +2244,6 @@ msgstr "Cuentas de correo suspendidas completamente."
 
 msgid "Email address"
 msgstr "Dirección de correo"
-
-msgid "Email address with comma(s) are not accepted."
-msgstr "No se aceptan direcciones de correo con coma(s)."
 
 msgid "Email forward"
 msgstr "Reenvío de correo"
@@ -3556,9 +3550,6 @@ msgstr "Configuración de la contraseña"
 msgid "Password successfully updated."
 msgstr "La contraseña ha sido actualizada satisfactoriamente"
 
-msgid "Password with comma(s) are not accepted."
-msgstr "No se permite contraseña con coma(s)."
-
 msgid "Passwords do not match"
 msgstr "Las contraseñas no coinciden."
 
@@ -4281,9 +4272,6 @@ msgstr "Usuario SQL añadido satisfactoriamente."
 
 msgid "SQL user successfully deleted."
 msgstr ""
-
-msgid "SQL user with comma(s) in name is not accepted."
-msgstr "No se aceptan coma(s) en el nombre del usuario SQL."
 
 msgid "SQL users"
 msgstr "Usuarios SQL"

@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-23 20:22+0100\n"
-"PO-Revision-Date: 2016-11-23 19:23+0000\n"
+"POT-Creation-Date: 2016-11-27 17:50+0100\n"
+"PO-Revision-Date: 2016-11-27 16:51+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/i-mscp/i-MSCP/language/uk_UA/)\n"
 "MIME-Version: 1.0\n"
@@ -1667,9 +1667,6 @@ msgstr "Использование БД"
 msgid "Database users"
 msgstr "Пользователи базы данных"
 
-msgid "Database with comma(s) in name is not accepted."
-msgstr "Имя базы данных не должно содержать запятые."
-
 msgid "Databases"
 msgstr "Базы данных"
 
@@ -2251,9 +2248,6 @@ msgstr "Учетные записи почты приостановлены"
 
 msgid "Email address"
 msgstr "Email алрес"
-
-msgid "Email address with comma(s) are not accepted."
-msgstr "Почтовый адрес не должен содержать запятые."
 
 msgid "Email forward"
 msgstr "Перенаправление почты"
@@ -3560,9 +3554,6 @@ msgstr "Налаштування пароля"
 msgid "Password successfully updated."
 msgstr "Пароль успешно обновлен."
 
-msgid "Password with comma(s) are not accepted."
-msgstr "Парль не должен содержать запятые"
-
 msgid "Passwords do not match"
 msgstr "Пароли не совпадают."
 
@@ -4285,9 +4276,6 @@ msgstr "Пользователь SQL успешно добавлен."
 
 msgid "SQL user successfully deleted."
 msgstr "Пользователь SQL успешно удален."
-
-msgid "SQL user with comma(s) in name is not accepted."
-msgstr "Пользователь SQL не должен содержать запятые"
 
 msgid "SQL users"
 msgstr "Користувачі SQL"

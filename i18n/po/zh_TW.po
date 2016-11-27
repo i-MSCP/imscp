@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-23 20:22+0100\n"
-"PO-Revision-Date: 2016-11-23 19:23+0000\n"
+"POT-Creation-Date: 2016-11-27 17:50+0100\n"
+"PO-Revision-Date: 2016-11-27 16:51+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -1666,9 +1666,6 @@ msgstr "資料庫使用量"
 msgid "Database users"
 msgstr "資料庫使用者"
 
-msgid "Database with comma(s) in name is not accepted."
-msgstr "資料庫名稱是不允許使用逗號。"
-
 msgid "Databases"
 msgstr "資料庫"
 
@@ -2250,9 +2247,6 @@ msgstr "電子郵件帳號強制暫停"
 
 msgid "Email address"
 msgstr "電子郵件地址"
-
-msgid "Email address with comma(s) are not accepted."
-msgstr "電子郵件地址不允許使用逗號。"
 
 msgid "Email forward"
 msgstr "郵件轉寄"
@@ -3559,9 +3553,6 @@ msgstr "密碼設定"
 msgid "Password successfully updated."
 msgstr "密碼已經成功更新"
 
-msgid "Password with comma(s) are not accepted."
-msgstr "密碼是不允許使用逗號。"
-
 msgid "Passwords do not match"
 msgstr "密碼不正確！"
 
@@ -4284,9 +4275,6 @@ msgstr "SQL 使用者已經成功新增"
 
 msgid "SQL user successfully deleted."
 msgstr "SQL 使用者已成功刪除。"
-
-msgid "SQL user with comma(s) in name is not accepted."
-msgstr "SQL 使用者名稱是不允許裡面有逗號。"
 
 msgid "SQL users"
 msgstr "SQL 使用者"
