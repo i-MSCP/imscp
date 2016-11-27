@@ -102,7 +102,7 @@ Please, choose the PHP configuration level you want use. Available levels are:
 
 \\Z4Per user:\\Zn Changes made through the PHP Editor apply to all domains
 \\Z4Per domain:\\Zn Changes made through the PHP editor apply to selected domain, including its subdomains
-\\Z4Per site:\\Zn Change made through PHP the editor apply to selected domain only
+\\Z4Per site:\\Zn Change made through the PHP editor apply to selected domain only
 EOF
     }
 

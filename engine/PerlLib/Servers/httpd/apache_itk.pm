@@ -1402,6 +1402,15 @@ sub _addCfg
 
     $self->setData( $data );
 
+    if ($data->{'FORWARD'} eq 'no' && $data->{'PHP_SUPPORT'} eq 'yes') {
+        $self->setData(
+            {
+                EMAIL_DOMAIN => $data->{'DOMAIN_NAME'},
+                TMPDIR       => $data->{'HOME_DIR'}.'/phptmp'
+            }
+        );
+    }
+
     my $net = iMSCP::Net->getInstance();
     my $isApache24 = version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' );
 
