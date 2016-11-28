@@ -20,7 +20,7 @@ LISTENER
 
 SCRIPTS
     Fixed: Hide DEBUG messages from the imscp-dpkg-post-invoke.pl script when running APT
-    Fixed: Missing `--debug' command line options in several scripts
+    Fixed: Missing `--debug' command line option in several scripts
 
 YOUTRACK
     #IP-1665 Allow underscore in CNAME-record
