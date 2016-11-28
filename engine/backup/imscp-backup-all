@@ -78,7 +78,7 @@ sub run
         'domain_id',
         "
             SELECT domain_id, domain_name, domain_admin_id, allowbackup, admin_sys_name, admin_sys_gname
-            FROM domain NNNER JOIN admin ON (admin_id = domain_admin_id)
+            FROM domain INNER JOIN admin ON (admin_id = domain_admin_id)
             WHERE domain_status = 'ok' AND allowbackup <> ''
         "
     );
