@@ -111,13 +111,14 @@ sub run
 
 newDebug('imscp-disable-accounts.log');
 
-# Parse command line options
 iMSCP::Getopt->parseNoDefault(sprintf('Usage: perl %s [OPTION]...', basename($0)) . qq {
 
 Script that deactivates expired client accounts
 
 OPTIONS:
+ -d,    --debug         Enable debug mode.
  -v,    --verbose       Enable verbose mode.},
+ 'debug|d'   => sub { iMSCP::Getopt->debug(@_) },
  'verbose|v' => sub { setVerbose(@_); }
 );
 

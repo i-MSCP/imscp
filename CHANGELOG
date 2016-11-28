@@ -18,6 +18,10 @@ LISTENER
     Added: 40_apache2_security_headers.pl listener file for Apache2 security headers - https://securityheaders.io
     Fixed: 10_proftpd_tuning.pl listener file is broken
 
+SCRIPTS
+    Fixed: Hide DEBUG messages from the imscp-dpkg-post-invoke.pl script when running APT
+    Fixed: Missing `--debug' command line options in several scripts
+
 YOUTRACK
     #IP-1665 Allow underscore in CNAME-record
     #IP-1666 Could not dump domain.tld when two DNS entries have same name

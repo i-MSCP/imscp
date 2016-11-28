@@ -19,7 +19,7 @@
 
 =head1 NAME
 
-imscp-disable-accounts - Deactivates expired client accounts
+imscp-dpkg-post-invoke.pl - Process dpkg post invoke tasks
 
 =head1 SYNOPSIS
 
@@ -45,13 +45,14 @@ $ENV{'LANG'} = 'C.UTF-8';
 
 newDebug('imscp-dpkg-post-invoke.log');
 
-# Parse command line options
 iMSCP::Getopt->parseNoDefault(sprintf('Usage: perl %s [OPTION]...', basename($0)) . qq {
 
-Script for process dpkg post invoke tasks
+Process dpkg post invoke tasks
 
 OPTIONS:
+ -d,    --debug         Enable debug mode.
  -v,    --verbose       Enable verbose mode.},
+ 'debug|d'   => sub { iMSCP::Getopt->debug(@_) },
  'verbose|v' => sub { setVerbose(@_); }
 );
 
@@ -87,6 +88,7 @@ for(@items) {
 }
 
 $bootstrapper->unlock('/tmp/imscp-dpkg-post-invoke.lock');
+exit $rs;
 
 =head1 AUTHOR
 

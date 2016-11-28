@@ -154,7 +154,9 @@ iMSCP::Getopt->parseNoDefault(sprintf('Usage: perl %s [OPTION]...', basename($0)
 Script which collects i-MSCP customers' traffic data (Httpd, Ftpd, Mta, Po).
 
 OPTIONS:
+ -d,    --debug         Enable debug mode.
  -v,    --verbose       Enable verbose mode.},
+ 'debug|d'   => sub { iMSCP::Getopt->debug(@_) },
  'verbose|v' => sub { setVerbose(@_); }
 );
 

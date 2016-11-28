@@ -52,8 +52,10 @@ Set i-MSCP gui permissions.
 
 OPTIONS
  -s,    --setup         Setup mode.
+ -d,    --debug         Enable debug mode.
  -v,    --verbose       Enable verbose mode},
     'setup|s'   => sub { $main::execmode = 'setup' },
+    'debug|d'   => sub { iMSCP::Getopt->debug( @_ ) },
     'verbose|v' => sub { setVerbose( @_ ); }
 );
 

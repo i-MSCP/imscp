@@ -52,7 +52,9 @@ iMSCP::Getopt->parseNoDefault(sprintf('Usage: perl %s [OPTION]...', basename($0)
 Script which computes customer's quota.
 
 OPTIONS:
+ -d,    --debug         Enable debug mode.
  -v,    --verbose       Enable verbose mode.},
+ 'debug|d'   => sub { iMSCP::Getopt->debug(@_) },
  'verbose|v' => sub { setVerbose(@_); }
 );
 

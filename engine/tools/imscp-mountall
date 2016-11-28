@@ -78,7 +78,9 @@ iMSCP::Getopt->parseNoDefault(sprintf('Usage: perl %s [OPTION]... start|stop', b
 Mount or umount filesystems by reading entries i-MSCP fstab-like file.
 
 OPTIONS:
+ -d,    --debug         Enable debug mode.
  -v,    --verbose       Enable verbose mode.},
+ 'debug|d'   => sub { iMSCP::Getopt->debug(@_) },
  'verbose|v' => sub { setVerbose(@_); }
 );
 
