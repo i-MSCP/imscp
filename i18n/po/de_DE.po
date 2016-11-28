@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-27 17:59+0100\n"
-"PO-Revision-Date: 2016-11-27 17:01+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2016-11-28 17:18+0100\n"
+"PO-Revision-Date: 2016-11-27 18:11+0000\n"
+"Last-Translator: Arthur Mayer <mayer.arthur@gmail.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/i-mscp/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,11 +37,11 @@ msgstr "Falsche IP Adresse."
 msgid ""
 "$ORIGIN is automatically appended to unqualified names, hosts and canonical "
 "names"
-msgstr ""
+msgstr "$ORIGIN wird automatisch an unqualifizierte Namen, Hosts und kanonische Namen angefügt"
 
 #, php-format
 msgid "$ORIGIN value is currently set to: %s"
-msgstr ""
+msgstr "Der aktuelle Wert von $ORIGIN ist: %s"
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -1410,7 +1410,7 @@ msgstr "Konfigurationsmodus"
 
 #, php-format
 msgid "Conflict with the `%s' DNS resource record."
-msgstr ""
+msgstr "Konflikt mit dem `%s' DNS-Eintrag."
 
 msgid "Core data"
 msgstr "Stammdaten"
@@ -1628,7 +1628,7 @@ msgid "DNS resource records"
 msgstr "DNS Ressourceneintrag"
 
 msgid "DNS zone in which you want add this DNS resource record."
-msgstr ""
+msgstr "DNS-Zone, zu der Sie diesen DNS-Eintrag hinzufügen möchten."
 
 msgid "DOWN"
 msgstr "LÄUFT NICHT"
@@ -2708,7 +2708,7 @@ msgstr "Wenn auf 'ja' gesetzt, kann der Reseller die PHP Mail Funktion für sein
 msgid ""
 "If the name field is filled with the @ sign or left blank, it will be "
 "automatically substituted by $ORIGIN value."
-msgstr ""
+msgstr "Wenn Sie im Namens-Feld ein @ eintragen, oder es leer lassen, wird es automatisch durch $ORIGIN ersetzt."
 
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "Wenn Sie den Reseller begrenzen wollen, müssen Sie zunächst seine Kunden begrenzen."
@@ -3201,7 +3201,7 @@ msgid "N/A"
 msgstr "N/V"
 
 msgid "NS DNS resource records are only allowed for subzone delegation."
-msgstr ""
+msgstr "NS DNS-Eiträge sind nur für die Sub-Zonen Delegation erlaubt."
 
 msgid "Name"
 msgstr "Name"

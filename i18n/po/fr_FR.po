@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-27 17:59+0100\n"
-"PO-Revision-Date: 2016-11-27 17:01+0000\n"
+"POT-Creation-Date: 2016-11-28 17:18+0100\n"
+"PO-Revision-Date: 2016-11-27 17:07+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/i-mscp/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -30,11 +30,11 @@ msgstr "Adresse IP incorrecte."
 msgid ""
 "$ORIGIN is automatically appended to unqualified names, hosts and canonical "
 "names"
-msgstr ""
+msgstr "$ORIGIN est automatiquement ajouté aux noms qui ne sont pas pleinement qualifiés."
 
 #, php-format
 msgid "$ORIGIN value is currently set to: %s"
-msgstr ""
+msgstr "La valeur pour $ORIGIN est actuellement: %s"
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -1403,7 +1403,7 @@ msgstr "Mode de configuration"
 
 #, php-format
 msgid "Conflict with the `%s' DNS resource record."
-msgstr ""
+msgstr "Conflit avec l'enregistrement DNS `%s'."
 
 msgid "Core data"
 msgstr "Données principales"
@@ -1621,7 +1621,7 @@ msgid "DNS resource records"
 msgstr "Enregistrements de resource DNS"
 
 msgid "DNS zone in which you want add this DNS resource record."
-msgstr ""
+msgstr "Zone DNS dans laquelle vous voulez ajouter cet enregistrement DNS."
 
 msgid "DOWN"
 msgstr "Arrêté"
@@ -2701,7 +2701,7 @@ msgstr "Si oui, le revendeur peut activer/désactiver la function mail() pour se
 msgid ""
 "If the name field is filled with the @ sign or left blank, it will be "
 "automatically substituted by $ORIGIN value."
-msgstr ""
+msgstr "Si le champ `nom' contient le signe @, ou si il est laissé blanc, il sera automatiquement remplacé par la valeur de $ORIGIN."
 
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "Si vous désirez limiter le revendeur, vous devez commencer par limiter ses clients."
@@ -3194,7 +3194,7 @@ msgid "N/A"
 msgstr "N/D"
 
 msgid "NS DNS resource records are only allowed for subzone delegation."
-msgstr ""
+msgstr "Les enregistrements NS ne sont autorisés que pour la délégation des sous-zones."
 
 msgid "Name"
 msgstr "Nom"
