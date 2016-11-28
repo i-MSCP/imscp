@@ -14,7 +14,7 @@ FRONTEND
     Fixed: Several layout issues in client/software_view.tpl (Software installer)
     Fixed: Wrong SQL query leading to an exception (Software installer)
 
-LISTENER
+LISTENERS
     Added: 40_apache2_security_headers.pl listener file for Apache2 security headers - https://securityheaders.io
     Fixed: 10_proftpd_tuning.pl listener file is broken
 
