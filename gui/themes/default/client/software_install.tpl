@@ -11,10 +11,11 @@
         var $select = $("#selected_domain");
         $select.data("current", $select.val()).on("change", function () {
             var curVal = $(this).val();
-            var $otherDir = (curVal.split(';'))[2];
+            var data = curVal.split(';');
 
-            $.post(window.location.href, {vftp_root_dir: $otherDir}, null, "json").done(function () {
-                $("#ftp_directory").val($otherDir);
+            $.post(window.location.href, { domain_id: data[0], domain_type: data[1] }, null, "json").done(function (data) {
+                console.log(data.document_root);
+                $("#document_root").html(data.document_root);
                 $select.data("current", curVal);
             }).fail(function (jqXHR) {
                 if (jqXHR.status == 403) window.location.replace("/index.php");
@@ -58,9 +59,10 @@
             </td>
         </tr>
         <tr>
-            <td><label for="path">{TR_PATH}</label></td>
+            <td><label for="ftp_directory">{TR_PATH}</label></td>
             <td>
-                <label><input type="text" id="ftp_directory" name="other_dir" value="{VAL_OTHER_DIR}"></label>
+                <span class="bold" id="document_root">{DOCUMENT_ROOT}</span>
+                <input type="text" id="ftp_directory" name="other_dir" class="textinput" placeholder="/" value="{VAL_OTHER_DIR}">
                 <span class="icon i_bc_folder ftp_choose_dir clickable">{TR_CHOOSE_DIR}</span>
             </td>
         </tr>

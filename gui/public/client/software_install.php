@@ -26,36 +26,55 @@ use iMSCP\VirtualFileSystem as VirtualFileSystem;
 /**
  * Set FTP root dir
  *
+ * @param null|iMSCP_pTemplate $tpl
  * @return void
  */
-function setFtpRootDir()
+function setFtpRootDir($tpl = null)
 {
+    $domainProps = get_domain_default_props($_SESSION['user_id']);
+
     if (!is_xhr()) {
+        list($mountPoint, $documentRoot) = getDomainMountpoint($domainProps['domain_id'], 'dmn', $_SESSION['user_id']);
+
+        $tpl->assign('DOCUMENT_ROOT', tohtml(utils_normalizePath($documentRoot)));
+
         # Set parameters for the FTP chooser
-        $_SESSION['vftp_root_dir'] = '/htdocs';
-        $_SESSION['vftp_hidden_dirs'] = array();
-        $_SESSION['vftp_unselectable_dirs'] = array();
+        $_SESSION['ftp_chooser_domain_id'] = $domainProps['domain_id'];
+        $_SESSION['ftp_chooser_user'] = $_SESSION['user_logged'];
+        $_SESSION['ftp_chooser_root_dir'] = utils_normalizePath($mountPoint . '/' . $documentRoot);
+        $_SESSION['ftp_chooser_hidden_dirs'] = array();
+        $_SESSION['ftp_chooser_unselectable_dirs'] = array();
         return;
     }
-
-    $ftpRootDir = strval(clean_input($_POST['vftp_root_dir']));
-    $domainProps = get_domain_default_props($_SESSION['user_id']);
-    $vfs = new VirtualFileSystem($domainProps['domain_name']);
 
     header('Cache-Control: no-cache, must-revalidate');
     header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
     header('Content-type: application/json');
 
     $data = array();
-    if ($vfs->exists($ftpRootDir, VirtualFileSystem::VFS_TYPE_DIR)) {
-        header('Status: 200 OK');
-        # Set parameters for the FTP chooser
-        $_SESSION['vftp_root_dir'] = $ftpRootDir;
-        $_SESSION['vftp_hidden_dirs'] = array();
-        $_SESSION['vftp_unselectable_dirs'] = array();
-    } else {
+
+    if (!isset($_POST['domain_id']) || !isset($_POST['domain_type'])) {
         header('Status: 400 Bad Request');
         $data['message'] = tr('Bad request.');
+    } else {
+        try {
+            list($mountPoint, $documentRoot) = getDomainMountpoint(
+                intval($_POST['domain_id']), clean_input($_POST['domain_type']), $_SESSION['user_id']
+            );
+
+            # Update parameters for the FTP chooser
+            $_SESSION['ftp_chooser_domain_id'] = $domainProps['domain_id'];
+            $_SESSION['ftp_chooser_user'] = $_SESSION['user_logged'];
+            $_SESSION['ftp_chooser_root_dir'] = utils_normalizePath($mountPoint . '/' . $documentRoot);
+            $_SESSION['ftp_chooser_hidden_dirs'] = array();
+            $_SESSION['ftp_chooser_unselectable_dirs'] = array();
+
+            header('Status: 200 OK');
+            $data['document_root'] = utils_normalizePath($documentRoot);
+        } catch (iMSCP_Exception $e) {
+            header('Status: 400 Bad Request');
+            $data['message'] = tr('Bad request.') . ' ' . $e->getMessage();
+        }
     }
 
     echo json_encode($data);
@@ -121,14 +140,10 @@ $tpl->define_dynamic(array(
 ));
 
 if (!empty($_POST)) {
-    if (is_xhr() && isset($_POST['vftp_root_dir'])) {
+    if (is_xhr()) {
         setFtpRootDir();
     }
 
-    #echo '<pre>';
-    #print_r($_POST);
-    #exit;
-    
     if (!isset($_POST['selected_domain']) || !isset($_POST['other_dir']) || !isset($_POST['install_username'])
         || !isset($_POST['install_password']) || !isset($_POST['install_email'])
     ) {
@@ -157,12 +172,12 @@ if (!empty($_POST)) {
     $softwareData = $stmt->fetchRow(PDO::FETCH_ASSOC);
     $postData = explode(';', $_POST['selected_domain']);
 
-    if (sizeof($postData) != 3) {
+    if (sizeof($postData) != 2) {
         showBadRequestErrorPage();
     }
 
     $domainId = intval($postData[0]);
-    $domainType = strval($postData[1]);
+    $domainType = clean_input($postData[1]);
     $domainProps = get_domain_default_props($_SESSION['user_id']);
     $aliasId = $subId = $aliasSubId = 0;
 
@@ -198,7 +213,7 @@ if (!empty($_POST)) {
             $aliasId = $domainId;
             $stmt = exec_query(
                 '
-                  SELECT alias_mount AS mpoint, alias_document_root AS document_root
+                  SELECT alias_mount AS mpoint, alias_document_root AS document_root
                   FROM domain_aliasses
                   WHERE alias_id = ?
                   AND domain_id = ?
@@ -229,45 +244,39 @@ if (!empty($_POST)) {
     }
 
     $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-    $targetBasePath = $row['mpoint'] . '/';
-    $documentRoot = $row['document_root'];
+    $installPath = utils_normalizePath($row['mpoint'] . '/htdocs/' . $otherDir);
     $error = false;
 
-    if (!preg_match('%^' . quotemeta(utils_normalizePath($targetBasePath . $documentRoot)) . '(?:/.*)?$%', $otherDir)) {
-        set_page_message(tr("You can't install the software outside of the document root of the selected domain."), 'error');
+    $vfs = new VirtualFileSystem($_SESSION['user_logged']);
+    if (!$vfs->exists($installPath, VirtualFileSystem::VFS_TYPE_DIR)) {
+        set_page_message(tr("The directory %s doesn't exists. Please create that directory using your file manager.", $otherDir), 'error');
         $error = true;
     } else {
-        $vfs = new VirtualFileSystem($domainProps['domain_name']);
-        if (!$vfs->exists($otherDir, VirtualFileSystem::VFS_TYPE_DIR)) {
-            set_page_message(tr("The directory %s doesn't exists. Please create that directory using your file manager.", $otherDir), 'error');
-            $error = true;
-        } else {
-            $stmt = exec_query(
-                'SELECT software_name, software_version FROM web_software_inst WHERE domain_id = ? AND path = ?', array(
-                $domainId, $otherDir
-            ));
+        $stmt = exec_query(
+            'SELECT software_name, software_version FROM web_software_inst WHERE domain_id = ? AND path = ?', array(
+            $domainId, $installPath
+        ));
 
-            if ($stmt->rowCount()) {
-                $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-                set_page_message(tr('Please select another directory. %s (%s) is installed there.', $row['software_name'], $row['software_version']), 'error');
-                $error = true;
-            }
+        if ($stmt->rowCount()) {
+            $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+            set_page_message(tr('Please select another directory. %s (%s) is installed there.', $row['software_name'], $row['software_version']), 'error');
+            $error = true;
         }
     }
 
     # Check application username
-    if (!validates_username($appLoginName)) {
+    if (strpos($appLoginName, ',') !== FALSE || !validates_username($appLoginName)) {
         set_page_message(tr('Invalid username.'), 'error');
         $error = true;
     }
 
     # Check application password
-    if (!checkPasswordSyntax($appPassword)) {
+    if (strpos($appPassword, ',') !== FALSE || !checkPasswordSyntax($appPassword)) {
         $error = true;
     }
 
     # Check application email
-    if (!chk_email($appEmail)) {
+    if (strpos($appEmail, ',') !== FALSE || !chk_email($appEmail)) {
         set_page_message(tr('Invalid email address.'), 'error');
         $error = true;
     }
@@ -327,7 +336,7 @@ if (!empty($_POST)) {
             array(
                 $domainProps['domain_id'], $aliasId, $subId, $aliasSubId, $softwareId, $softwareData['software_master_id'],
                 $softwareData['software_name'], $softwareData['software_version'], $softwareData['software_language'],
-                rtrim($otherDir, '/'), $softwarePrefix, $appDatabase, $appSqlUser, $appSqlPassword, $appLoginName,
+                $installPath, $softwarePrefix, $appDatabase, $appSqlUser, $appSqlPassword, $appLoginName,
                 $appPassword, $appEmail, 'toadd', $softwareData['software_depot']
             )
         );
@@ -338,8 +347,8 @@ if (!empty($_POST)) {
         redirectTo('software.php');
     }
 } else {
-    setFtpRootDir();
-    $otherDir = '/htdocs';
+    setFtpRootDir($tpl);
+    $otherDir = '';
     $appLoginName = 'admin';
     $appPassword = '';
     $appEmail = $_SESSION['user_email'];

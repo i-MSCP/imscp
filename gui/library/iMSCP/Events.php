@@ -75,6 +75,26 @@ class iMSCP_Events
     const onLostPasswordScriptEnd = 'onLostPasswordScriptEnd';
 
     /**
+     * The onSharedScriptStart event is triggered at the very beginning of shared scripts.
+     *
+     * The listeners receive an iMSCP_Events_Event object.
+     *
+     * @const string
+     */
+    const onSharedScriptStart = 'onSharedScriptStart';
+
+    /**
+     * The onSharedScriptEnd event is triggered at the end of shared scripts.
+     *
+     * The listeners receive an iMSCP_Events_Event object with the following parameter:
+     *
+     * - templateEngine: An iMSCP_pTemplate object
+     *
+     * @const string
+     */
+    const onSharedScriptEnd = 'onSharedScriptEnd';
+    
+    /**
      * The onAdminScriptStart event is triggered at the very beginning of admin scripts.
      *
      * The listeners receive an iMSCP_Events_Event object.
@@ -281,7 +301,7 @@ class iMSCP_Events
      *
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
-     * - userId: An integer representing the ID of user being edited.
+     * - userId: An integer representing the ID of user being edited
      *
      * @const string
      */
@@ -873,6 +893,8 @@ class iMSCP_Events
      * - createdBy: An integer representing the ID of the reseller that adds the domain
      * - customerId: An integer representing the ID of the customer for which the domain is added
      * - customerEmail: A string representing the email of the customer for which the domain is added
+     * - mountPoint: A string representing the mount point of the domain
+     * - documentRoot: A string representing the DocumentRoot of the domain
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
      * - forwardType: A string representing the forward type
      * - forwardHost: A string indicating whether or not Proxy Host must be preserved
@@ -891,6 +913,8 @@ class iMSCP_Events
      * - customerId: An integer representing the ID of the customer for which the domain has been added
      * - customerEmail: A string representing the email of customer for which the domain has been added
      * - domainId: An integer representing the ID of the domain that has been added
+     * - mountPoint: A string representing the mount point of the domain
+     * - documentRoot: A string representing the DocumentRoot of the domain
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
      * - forwardType: A string representing the forward type
      * - forwardHost: A string indicating whether or not Proxy Host must be preserved
@@ -905,7 +929,8 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - domainId: An integer representing the ID of the domain being edited
-     * - documentRoot: A string representing the DocumentRoot
+     * - mountPoint: A string representing the mount point of the domain
+     * - documentRoot: A string representing the DocumentRoot of the domain
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
      * - forwardType: A string representing the forward type
      * - forwardHost: A string indicating whether or not Proxy Host must be preserved
@@ -920,7 +945,8 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - domainId: An integer representing the ID of the domain that has been edited
-     * - documentRoot: A string representing the DocumentRoot
+     * - mountPoint: A string representing the mount point of the domain
+     * - documentRoot: A string representing the DocumentRoot of the domain
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
      * - forwardType: A string representing the forward type
      * - forwardHost: A string indicating whether or not Proxy Host must be preserved
@@ -938,6 +964,7 @@ class iMSCP_Events
      * - subdomainType: A string representing the type of subdomain (als|dmn)
      * - parentDomainId: An integer representing the ID of the parent domain
      * - mountPoint: A string representing the mount point of the subdomain
+     * - documentRoot: A string representing the DocumentRoot of the subdomain
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
      * - forwardType: A string representing the forward type
      * - forwardHost: A string indicating whether or not Proxy Host must be preserved
@@ -956,6 +983,7 @@ class iMSCP_Events
      * - subdomainType: A string representing the type of subdomain (als|dmn)
      * - parentDomainId: An integer representing the ID of the parent domain
      * - mountPoint: A string representing the mount point of the subdomain
+     * - documentRoot: A string representing the DocumentRoot of the subdomain
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
      * - forwardType: A string representing the forward type
      * - forwardHost: A string indicating whether or not Proxy Host must be preserved
@@ -972,7 +1000,8 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - subdomainId: An integer representing the ID of the subdomain being edited
-     * - documentRoot: A string representing the DocumentRoot
+     * - mountPoint: A string representing the mount point of the subdomain
+     * - documentRoot: A string representing the DocumentRoot of the subdomain
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
      * - forwardType: A string representing the forward type
      * - forwardHost: A string indicating whether or not Proxy Host must be preserved
@@ -987,7 +1016,8 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - subdomainId: An integer representing the ID of the subdomain that has been edited
-     * - documentRoot: A string representing the DocumentRoot
+     * - mountPoint: A string representing the mount point of the subdomain
+     * - documentRoot: A string representing the DocumentRoot of the subdomain
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
      * - forwardType: A string representing the forward type
      * - forwardHost: A string indicating whether or not Proxy Host must be preserved
@@ -1027,7 +1057,8 @@ class iMSCP_Events
      *
      * - domainId: An integer representing the ID of the parent domain
      * - domainAliasName: A string representing the name of the domain alias being added
-     * - mountPoint: A string representing the mount point of the subdomain
+     * - mountPoint: A string representing the mount point of the domain alias
+     * - documentRoot: A string representing the DocumentRoot of the domain alias
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
      * - forwardType: A string representing the forward type
      * - forwardHost: A string indicating whether or not Proxy Host must be preserved
@@ -1044,7 +1075,8 @@ class iMSCP_Events
      * - domainId: An integer representing the ID of the parent domain
      * - domainAliasName: A string representing the name of the domain alias that has been added
      * - domainAliasId: An integer representing the ID of the domain alias that has been added
-     * - mountPoint: A string representing the mount point of the subdomain
+     * - mountPoint: A string representing the mount point of the domain alias
+     * - documentRoot: A string representing the DocumentRoot of the domain alias
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
      * - forwardType: A string representing the forward type
      * - forwardHost: A string indicating whether or not Proxy Host must be preserved
@@ -1059,7 +1091,8 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - domainAliasId: An integer representing the ID of the domain alias being edited
-     * - documentRoot: A string representing the DocumentRoot
+     * - mountPoint: A string representing the mount point of the domain alias
+     * - documentRoot: A string representing the DocumentRoot of the domain alias
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
      * - forwardType: A string representing the forward type
      * - forwardHost: A string indicating whether or not Proxy Host must be preserved
@@ -1074,7 +1107,8 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - domainAliasId: An integer representing the ID of the domain alias that has been edited
-     * - documentRoot: A string representing the DocumentRoot
+     * - mountPoint: A string representing the mount point of the domain alias
+     * - documentRoot: A string representing the DocumentRoot of the domain alias
      * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
      * - forwardType: A string representing the forward type
      * - forwardHost: A string indicating whether or not Proxy Host must be preserved

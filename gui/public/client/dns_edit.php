@@ -421,7 +421,9 @@ function client_saveDnsRecord($dnsRecordId)
     if ($dnsRecordId == 0) {
         $dnsRecordType = client_getPost('type');
 
-        if ($dnsRecordClass != 'IN' || !in_array($dnsRecordType, array('A', 'AAAA', 'CNAME', 'MX', 'NS', 'SPF', 'SRV', 'TXT'))) {
+        if ($dnsRecordClass != 'IN'
+            || !in_array($dnsRecordType, array('A', 'AAAA', 'CNAME', 'MX', 'NS', 'SPF', 'SRV', 'TXT'))
+        ) {
             showBadRequestErrorPage();
         }
 
@@ -450,7 +452,8 @@ function client_saveDnsRecord($dnsRecordId)
                 FROM domain_dns AS t1
                 LEFT JOIN domain AS t2 USING(domain_id)
                 LEFT JOIN domain_aliasses AS t3 USING (alias_id)
-                WHERE domain_dns_id = ? AND t1.domain_id = ?
+                WHERE domain_dns_id = ?
+                AND t1.domain_id = ?
             ',
             array($dnsRecordId, $mainDmnId)
         );

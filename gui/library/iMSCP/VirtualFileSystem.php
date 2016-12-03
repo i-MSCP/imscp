@@ -26,7 +26,7 @@ use iMSCP_Registry as Registry;
 /**
  * Virtual File System class
  *
- * This class provides a FTP layer allowing to browse and edit all customer's files from i-MSCP frontEnd.
+ * This class provides a FTP layer allowing to browse and edit customers's files from the i-MSCP frontEnd.
  */
 class VirtualFileSystem
 {
@@ -46,11 +46,6 @@ class VirtualFileSystem
         VFS_BINARY = FTP_BINARY;
 
     /**
-     * @var string Domain of this virtual file system
-     */
-    protected $domain;
-
-    /**
      * @var string FTP username
      */
     protected $user;
@@ -63,7 +58,7 @@ class VirtualFileSystem
     /**
      * @var string Virtual file system root directory (relative to domain root directory)
      */
-    protected $rootdir;
+    protected $rootDir;
 
     /**
      * @var resource FTP stream
@@ -73,16 +68,16 @@ class VirtualFileSystem
     /**
      * Constructor
      *
-     * Creates a virtual file system object for the given $domain using $rootDir as root directory.
+     * Creates a virtual file system object for the given $user using $rootDir as root directory.
      *
-     * @param string $domain Domain name of the the virtual file system
+     * @param string $user FTP username. That is, the username that matches with the unix user's homedir
      * @param string $rootDir OPTIONAL Root directory of the virtual file system (relative to $domain root directory)
      */
-    public function __construct($domain, $rootDir = '/')
+    public function __construct($user, $rootDir = '/')
     {
         ignore_user_abort(true);
-        $this->domain = (string)$domain;
-        $this->rootdir = (string)$rootDir;
+        $this->user = (string)$user;
+        $this->rootDir = (string)$rootDir;
     }
 
     /**
@@ -149,7 +144,7 @@ class VirtualFileSystem
                 $this->writeLog('Could not close connection.', E_USER_WARNING);
             }
 
-            $this->stream = null;
+            $this->stream = NULL;
         }
 
         if ($this->user) {
@@ -176,8 +171,8 @@ class VirtualFileSystem
             $dirname = '/' . $dirname;
         }
 
-        if ($this->rootdir != '/') {
-            $dirname = $this->rootdir . $dirname;
+        if ($this->rootDir != '/') {
+            $dirname = $this->rootDir . $dirname;
         }
 
         // No security implications, the FTP server handles this for us
@@ -190,16 +185,16 @@ class VirtualFileSystem
         for ($i = 0, $len = count($list); $i < $len; $i++) {
             $chunks = preg_split('/\s+/', $list[$i], 9);
             $list[$i] = array(
-                'perms' => $chunks[0],
+                'perms'  => $chunks[0],
                 'number' => $chunks[1],
-                'owner' => $chunks[2],
-                'group' => $chunks[3],
-                'size' => $chunks[4],
-                'month' => $chunks[5],
-                'day' => $chunks[6],
-                'time' => $chunks[7],
-                'file' => $chunks[8],
-                'type' => substr($chunks[0], 0, 1)
+                'owner'  => $chunks[2],
+                'group'  => $chunks[3],
+                'size'   => $chunks[4],
+                'month'  => $chunks[5],
+                'day'    => $chunks[6],
+                'time'   => $chunks[7],
+                'file'   => $chunks[8],
+                'type'   => substr($chunks[0], 0, 1)
             );
         }
 
@@ -213,7 +208,7 @@ class VirtualFileSystem
      * @param int $type OPTIONAL Type of the file to match
      * @return boolean TRUE if file exists, FALSE otherwise
      */
-    public function exists($file, $type = null)
+    public function exists($file, $type = NULL)
     {
         if (!is_string($file) || strlen($file) == 0) {
             return false;
@@ -225,7 +220,7 @@ class VirtualFileSystem
             return false;
         }
 
-        // We get filenames only from the listing
+        // We get file names only from the listing
         $file = basename($file);
 
         foreach ($list as $entry) {
@@ -263,8 +258,8 @@ class VirtualFileSystem
             $file = '/' . $file;
         }
 
-        if ($this->rootdir != '/') {
-            $file = $this->rootdir . $file;
+        if ($this->rootDir != '/') {
+            $file = $this->rootDir . $file;
         }
 
         $tmpFile = @tempnam(Registry::get('config')->GUI_ROOT_DIR . '/data/tmp', 'vfs_');
@@ -312,8 +307,8 @@ class VirtualFileSystem
             $file = '/' . $file;
         }
 
-        if ($this->rootdir != '/') {
-            $file = $this->rootdir . $file;
+        if ($this->rootDir != '/') {
+            $file = $this->rootDir . $file;
         }
 
         $tmpFile = @tempnam(Registry::get('config')->GUI_ROOT_DIR . '/data/tmp', 'vfs_');
@@ -349,22 +344,13 @@ class VirtualFileSystem
     protected function createFtpUser()
     {
         try {
-            $stmt = exec_query(
-                '
-                  SELECT admin_sys_uid, admin_sys_gid
-                  FROM admin
-                  INNER JOIN domain ON (domain_admin_id = admin_id)
-                  WHERE domain_name = ?
-                ',
-                $this->domain
-            );
+            $stmt = exec_query('SELECT admin_sys_uid, admin_sys_gid FROM admin WHERE admin_name = ?', $this->user);
 
             if (!$stmt->rowCount()) {
                 return false;
             }
 
             $row = $stmt->fetchRow();
-            $this->user = $this->domain;
             $this->passwd = Crypt::randomStr(16);
 
             exec_query(
@@ -375,7 +361,7 @@ class VirtualFileSystem
                     $row['admin_sys_uid'],
                     $row['admin_sys_gid'],
                     '/bin/sh',
-                    Registry::get('config')->USER_WEB_DIR . '/' . $this->domain, 'ok'
+                    utils_normalizePath(Registry::get('config')->USER_WEB_DIR . '/' . $this->user), 'ok'
                 )
             );
         } catch (\Exception $e) {

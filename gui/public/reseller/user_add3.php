@@ -35,7 +35,7 @@ function getPreviousStepData()
     $dmnUrlForward = $_SESSION['dmn_url_forward'];
     $dmnTypeForward = $_SESSION['dmn_type_forward'];
     $dmnHostForward = $_SESSION['dmn_host_forward'];
-    
+
     if (isset($_SESSION['step_one'])) {
         $stepTwo = $_SESSION['dmn_name'] . ';' . $_SESSION['dmn_tpl'];
         $hpId = $_SESSION['dmn_tpl'];
@@ -77,23 +77,23 @@ function generatePage($tpl)
     $adminName = decode_idna($adminName);
 
     $tpl->assign(array(
-        'VL_USERNAME' => tohtml($adminName, 'htmlAttr'),
-        'VL_MAIL' => tohtml($email, 'htmlAttr'),
-        'VL_USR_ID' => tohtml($customerId, 'htmlAttr'),
-        'VL_USR_NAME' => tohtml($firstName, 'htmlAttr'),
+        'VL_USERNAME'     => tohtml($adminName, 'htmlAttr'),
+        'VL_MAIL'         => tohtml($email, 'htmlAttr'),
+        'VL_USR_ID'       => tohtml($customerId, 'htmlAttr'),
+        'VL_USR_NAME'     => tohtml($firstName, 'htmlAttr'),
         'VL_LAST_USRNAME' => tohtml($lastName, 'htmlAttr'),
-        'VL_USR_FIRM' => tohtml($firm, 'htmlAttr'),
+        'VL_USR_FIRM'     => tohtml($firm, 'htmlAttr'),
         'VL_USR_POSTCODE' => tohtml($zip, 'htmlAttr'),
-        'VL_USRCITY' => tohtml($city, 'htmlAttr'),
-        'VL_USRSTATE' => tohtml($state, 'htmlAttr'),
-        'VL_MALE' => $gender == 'M' ? ' selected' : '',
-        'VL_FEMALE' => $gender == 'F' ? ' selected' : '',
-        'VL_UNKNOWN' => $gender == 'U' ? ' selected' : '',
-        'VL_COUNTRY' => tohtml($country, 'htmlAttr'),
-        'VL_STREET1' => tohtml($street1, 'htmlAttr'),
-        'VL_STREET2' => tohtml($street2, 'htmlAttr'),
-        'VL_PHONE' => tohtml($phone, 'htmlAttr'),
-        'VL_FAX' => tohtml($fax, 'htmlAttr')
+        'VL_USRCITY'      => tohtml($city, 'htmlAttr'),
+        'VL_USRSTATE'     => tohtml($state, 'htmlAttr'),
+        'VL_MALE'         => $gender == 'M' ? ' selected' : '',
+        'VL_FEMALE'       => $gender == 'F' ? ' selected' : '',
+        'VL_UNKNOWN'      => $gender == 'U' ? ' selected' : '',
+        'VL_COUNTRY'      => tohtml($country, 'htmlAttr'),
+        'VL_STREET1'      => tohtml($street1, 'htmlAttr'),
+        'VL_STREET2'      => tohtml($street2, 'htmlAttr'),
+        'VL_PHONE'        => tohtml($phone, 'htmlAttr'),
+        'VL_FAX'          => tohtml($fax, 'htmlAttr')
     ));
 
     reseller_generate_ip_list($tpl, $_SESSION['user_id'], $domainIp);
@@ -160,7 +160,7 @@ function addCustomer()
 
     try {
         $db->beginTransaction();
-        
+
         exec_query(
             '
                 INSERT INTO admin (
@@ -179,15 +179,17 @@ function addCustomer()
         $adminId = $db->insertId();
 
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddDomain, array(
-            'domainName' => $dmnName,
-            'createdBy' => $_SESSION['user_id'],
-            'customerId' => $adminId,
+            'domainName'    => $dmnName,
+            'createdBy'     => $_SESSION['user_id'],
+            'customerId'    => $adminId,
             'customerEmail' => $email,
-            'forwardUrl' => $dmnUrlForward,
-            'forwardType' => $dmnTypeForward,
-            'forwardHost' => $dmnHostForward
+            'mountPoint'    => '/',
+            'documentRoot'  => '/htdocs',
+            'forwardUrl'    => $dmnUrlForward,
+            'forwardType'   => $dmnTypeForward,
+            'forwardHost'   => $dmnHostForward
         ));
-        
+
         exec_query(
             '
                 INSERT INTO domain (
@@ -231,14 +233,16 @@ function addCustomer()
         update_reseller_c_props($_SESSION['user_id']);
 
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddDomain, array(
-            'domainName' => $dmnName,
-            'createdBy' => $_SESSION['user_id'],
-            'customerId' => $adminId,
+            'domainName'    => $dmnName,
+            'createdBy'     => $_SESSION['user_id'],
+            'customerId'    => $adminId,
             'customerEmail' => $email,
-            'domainId' => $dmnId,
-            'forwardUrl' => $dmnUrlForward,
-            'forwardType' => $dmnTypeForward,
-            'forwardHost' => $dmnHostForward
+            'domainId'      => $dmnId,
+            'mountPoint'    => '/',
+            'documentRoot'  => '/htdocs',
+            'forwardUrl'    => $dmnUrlForward,
+            'forwardType'   => $dmnTypeForward,
+            'forwardHost'   => $dmnHostForward
         ));
 
         $db->commit();
@@ -288,40 +292,40 @@ if (isset($_POST['uaction']) && 'user_add3_nxt' == $_POST['uaction'] && !isset($
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'reseller/user_add3.tpl',
-    'page_message' => 'layout',
-    'ip_entry' => 'page',
+    'layout'        => 'shared/layouts/ui.tpl',
+    'page'          => 'reseller/user_add3.tpl',
+    'page_message'  => 'layout',
+    'ip_entry'      => 'page',
     'alias_feature' => 'page'
 ));
 $tpl->assign(array(
-    'TR_PAGE_TITLE' => tr('Reseller / Customers / Add Customer - Next Step'),
-    'TR_ADD_USER' => tr('Add user'),
-    'TR_CORE_DATA' => tr('Core data'),
-    'TR_USERNAME' => tr('Username'),
-    'TR_PASSWORD' => tr('Password'),
-    'TR_REP_PASSWORD' => tr('Repeat password'),
-    'TR_DOMAIN_IP' => tr('Domain IP'),
-    'TR_USREMAIL' => tr('Email'),
+    'TR_PAGE_TITLE'      => tr('Reseller / Customers / Add Customer - Next Step'),
+    'TR_ADD_USER'        => tr('Add user'),
+    'TR_CORE_DATA'       => tr('Core data'),
+    'TR_USERNAME'        => tr('Username'),
+    'TR_PASSWORD'        => tr('Password'),
+    'TR_REP_PASSWORD'    => tr('Repeat password'),
+    'TR_DOMAIN_IP'       => tr('Domain IP'),
+    'TR_USREMAIL'        => tr('Email'),
     'TR_ADDITIONAL_DATA' => tr('Additional data'),
-    'TR_CUSTOMER_ID' => tr('Customer ID'),
-    'TR_FIRSTNAME' => tr('First name'),
-    'TR_LASTNAME' => tr('Last name'),
-    'TR_GENDER' => tr('Gender'),
-    'TR_MALE' => tr('Male'),
-    'TR_FEMALE' => tr('Female'),
-    'TR_UNKNOWN' => tr('Unknown'),
-    'TR_COMPANY' => tr('Company'),
-    'TR_POST_CODE' => tr('Zip'),
-    'TR_CITY' => tr('City'),
-    'TR_STATE_PROVINCE' => tr('State/Province'),
-    'TR_COUNTRY' => tr('Country'),
-    'TR_STREET1' => tr('Street 1'),
-    'TR_STREET2' => tr('Street 2'),
-    'TR_MAIL' => tr('Email'),
-    'TR_PHONE' => tr('Phone'),
-    'TR_FAX' => tr('Fax'),
-    'TR_BTN_ADD_USER' => tr('Add user')
+    'TR_CUSTOMER_ID'     => tr('Customer ID'),
+    'TR_FIRSTNAME'       => tr('First name'),
+    'TR_LASTNAME'        => tr('Last name'),
+    'TR_GENDER'          => tr('Gender'),
+    'TR_MALE'            => tr('Male'),
+    'TR_FEMALE'          => tr('Female'),
+    'TR_UNKNOWN'         => tr('Unknown'),
+    'TR_COMPANY'         => tr('Company'),
+    'TR_POST_CODE'       => tr('Zip'),
+    'TR_CITY'            => tr('City'),
+    'TR_STATE_PROVINCE'  => tr('State/Province'),
+    'TR_COUNTRY'         => tr('Country'),
+    'TR_STREET1'         => tr('Street 1'),
+    'TR_STREET2'         => tr('Street 2'),
+    'TR_MAIL'            => tr('Email'),
+    'TR_PHONE'           => tr('Phone'),
+    'TR_FAX'             => tr('Fax'),
+    'TR_BTN_ADD_USER'    => tr('Add user')
 ));
 
 generateNavigation($tpl);

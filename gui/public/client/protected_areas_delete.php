@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2016 by i-MSCP Team
+ * Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,16 +22,15 @@ require_once 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 check_login('user');
-customerHasFeature('protected_areas') && isset($_GET['id']) or showBadRequestErrorPage();
+
+if (!customerHasFeature('protected_areas') || !isset($_GET['id'])) {
+    showBadRequestErrorPage();
+}
 
 $id = intval($_GET['id']);
-$stmt = exec_query(
-    "
-        UPDATE htaccess SET status = 'todelete'
-        WHERE id = ? AND dmn_id = ? AND status NOT IN('toadd', 'tochange', 'todelete')
-    ",
-    array($id, get_user_domain_id($_SESSION['user_id']))
-);
+$stmt = exec_query('UPDATE htaccess SET status = ? WHERE id = ? AND dmn_id = ? AND status = ?', array(
+    'todelete', $id, get_user_domain_id($_SESSION['user_id']), 'ok'
+));
 
 if (!$stmt->rowCount()) {
     showBadRequestErrorPage();

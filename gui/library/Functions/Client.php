@@ -432,6 +432,61 @@ function getMountpoints($domainId)
 }
 
 /**
+ * Get mount point and document root for the given domain
+ *
+ * @throws iMSCP_Exception
+ * @param int $domainId Domain unique identifier
+ * @param string $domainType Domain type (dmn,als,sub,alssub)
+ * @param int $ownerId Domain owner unique identifier
+ * @return array Array containing domain mount point and document root
+ */
+function getDomainMountpoint($domainId, $domainType, $ownerId)
+{
+    switch ($domainType) {
+        case 'dmn':
+            $query = "SELECT '/' AS mount_point, document_root FROM domain WHERE domain_id = ? AND domain_admin_id = ?";
+            break;
+        case 'sub':
+            $query = '
+              SELECT subdomain_mount AS mount_point, subdomain_document_root AS document_root
+              FROM subdomain
+              INNER JOIN domain USING(domain_id)
+              WHERE subdomain_id = ?
+              AND domain_admin_id = ?
+            ';
+            break;
+        case 'als':
+            $query = '
+              SELECT alias_mount AS mount_point, alias_document_root AS document_root
+              FROM domain_aliasses
+              INNER JOIN domain USING(domain_id)
+              WHERE alias_id = ?
+              AND domain_admin_id = ?
+            ';
+            break;
+        case 'alssub':
+            $query = '
+              SELECT subdomain_alias_mount AS mount_point, subdomain_alias_document_root AS document_root
+              FROM subdomain_alias
+              INNER JOIN  domain_aliasses USING(alias_id)
+              INNER JOIN domain USING(domain_id)
+              WHERE subdomain_alias_id = ?
+              AND domain_admin_id = ?
+            ';
+            break;
+        default:
+            throw new iMSCP_Exception('Unknown domain type');
+    }
+
+    $stmt = exec_query($query, array($domainId, $ownerId));
+    if (!$stmt->rowCount()) {
+        throw new iMSCP_Exception('Could not find domain data');
+    }
+
+    return $stmt->fetchRow(PDO::FETCH_NUM);
+}
+
+/**
  * Send alias order email
  *
  * @param  string $aliasName

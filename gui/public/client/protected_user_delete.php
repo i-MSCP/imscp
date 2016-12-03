@@ -1,116 +1,100 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Include core library
 require_once 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
 check_login('user');
 
-customerHasFeature('protected_areas') or showBadRequestErrorPage();
-
-$dmn_id = get_user_domain_id($_SESSION['user_id']);
-
-if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])) {
-	$uuser_id = $_GET['uname'];
-} else {
-	redirectTo('protected_areas.php');
+if (!customerHasFeature('protected_areas') || !isset($_GET['uname'])) {
+    showBadRequestErrorPage();
 }
 
-$query = "SELECT `uname` FROM `htaccess_users` WHERE `dmn_id` = ? AND `id` = ?";
-$rs = exec_query($query, array($dmn_id, $uuser_id));
+try {
+    iMSCP_Database::getInstance()->beginTransaction();
 
-$uname = $rs->fields['uname'];
+    $htuserId = intval($_GET['uname']);
+    $domainId = get_user_domain_id($_SESSION['user_id']);
 
-$change_status = 'todelete';
-// let's delete the user from the SQL
-$query = "UPDATE `htaccess_users` SET `status` = ? WHERE `id` = ? AND `dmn_id` = ?";
-$rs = exec_query($query, array($change_status, $uuser_id, $dmn_id));
+    $stmt = exec_query('SELECT uname FROM htaccess_users WHERE dmn_id = ? AND id = ?', array($domainId, $htuserId));
 
-// let's delete this user if assigned to a group
-$query = "SELECT `id`, `members` FROM `htaccess_groups` WHERE `dmn_id` = ?";
-$rs = exec_query($query, $dmn_id);
+    if (!$stmt->rowCount()) {
+        showBadRequestErrorPage();
+    }
 
- if ($rs->recordCount() !== 0) {
+    $row = $stmt->fetchRow();
+    $htuserName = $row['uname'];
 
-	 while (!$rs->EOF) {
-		$members = explode(',',$rs->fields['members']);
-		$group_id = $rs->fields['id'];
-		$key = array_search($uuser_id, $members);
-		if ($key !== false) {
-			unset($members[$key]);
-			$members = implode(",", $members);
-			$change_status = 'tochange';
-			$update_query = "
-				UPDATE
-					`htaccess_groups`
-				SET
-					`members` = ?, `status` = ?
-				WHERE
-					`id` = ?
-			";
-			$rs_update = exec_query($update_query, array($members, $change_status, $group_id));
-		}
-		$rs->moveNext();
-	 }
- }
+    // Remove the user from any group for which it is member and schedule .htgroup file change
+    $stmt = exec_query('SELECT id, members FROM htaccess_groups WHERE dmn_id = ?', $domainId);
 
-// let's delete or update htaccess files if this user is assigned
-$query = "SELECT * FROM `htaccess` WHERE `dmn_id` = ?";
-$rs = exec_query($query, $dmn_id);
+    while ($row = $stmt->fetchRow()) {
+        $htuserList = explode(',', $row['members']);
+        $candidate = array_search($row['id'], $members);
 
-while (!$rs->EOF) {
-	$ht_id = $rs->fields['id'];
-	$usr_id = $rs->fields['user_id'];
+        if ($candidate === false)
+            continue;
 
-	$usr_id_splited = explode(',', $usr_id);
+        unset($members[$candidate]);
 
-	$key = array_search($uuser_id,$usr_id_splited);
-	if ($key !== false) {
-		unset($usr_id_splited[$key]);
-		if (count($usr_id_splited) == 0) {
-			$status = 'todelete';
-		} else {
-			$usr_id = implode(",", $usr_id_splited);
-			$status = 'tochange';
-		}
+        exec_query('UPDATE htaccess_groups SET members = ?, status = ? WHERE id = ?', array(
+            implode(',', $htuserList), 'tochange', $row['id']
+        ));
+    }
 
-		$update_query = "UPDATE `htaccess` SET `user_id` = ?, `status` = ? WHERE `id` = ?";
-		$rs_update = exec_query($update_query, array($usr_id, $status, $ht_id));
-	}
+    // Schedule deletion or update of any .htaccess files in which the htuser was used
+    $stmt = exec_query('SELECT * FROM htaccess WHERE dmn_id = ?', $domainId);
 
-	$rs->moveNext();
+    while ($row = $stmt->fetchRow()) {
+        $htuserList = explode(',', $row['user_id']);
+        $candidate = array_search($htuserId, $htuserList);
+
+        if ($key == false)
+            continue;
+
+        unset($htuserList[$candidate]);
+
+        if (empty($htuserList)) {
+            $status = 'todelete';
+        } else {
+            $htuserList = implode(',', $htuserList);
+            $status = 'tochange';
+        }
+
+        exec_query('UPDATE htaccess SET user_id = ?, status = ? WHERE id = ?', array($htuserList, $status, $row['id']));
+    }
+
+    // Schedule htuser deletion
+    $stmt = exec_query('UPDATE htaccess_users SET status = ? WHERE id = ? AND dmn_id = ?', array(
+        'todelete', $htuserId, $domainId
+    ));
+
+    iMSCP_Database::getInstance()->commit();
+
+    set_page_message(tr('User scheduled for deletion.'), 'success');
+    send_request();
+    write_log(sprintf('%s deletes user ID (protected areas): %s', $_SESSION['user_logged'], $htuserName), E_USER_NOTICE);
+} catch (iMSCP_Exception_Database $e) {
+    iMSCP_Database::getInstance()->rollBack();
+    set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
+    write_log(sprintf('Could not delete htaccess user: %s', $e->getMessage()));
 }
 
-set_page_message(tr('User scheduled for deletion.'), 'success');
-
-send_request();
-
-$admin_login = $_SESSION['user_logged'];
-write_log("$admin_login: deletes user ID (protected areas): $uname", E_USER_NOTICE);
 redirectTo('protected_user_manage.php');

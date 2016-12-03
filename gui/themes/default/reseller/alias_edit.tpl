@@ -34,6 +34,19 @@
                 <input type="text" name="domain_alias_name" id="domain_alias_name" value="{DOMAIN_ALIAS_NAME}" readonly="readonly">
             </td>
         </tr>
+        <!-- BDP: document_root_bloc -->
+        <tr id="document_root">
+            <td>
+                <label for="ftp_directory">{TR_DOCUMENT_ROOT}</label>
+                <span class="icon i_help" title="{TR_DOCUMENT_ROOT_TOOLTIP}"></span>
+            </td>
+            <td>
+                <span class="bold">/htdocs</span>
+                <input type="text" name="document_root" id="ftp_directory" class="textinput" placeholder="/" value="{DOCUMENT_ROOT}">
+                <span class="icon i_bc_folder ftp_choose_dir clickable">{TR_CHOOSE_DIR}</span>
+            </td>
+        </tr>
+        <!-- EDP: document_root_bloc -->
         <tr>
             <td>
                 {TR_URL_FORWARDING}

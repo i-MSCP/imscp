@@ -334,7 +334,7 @@ sub _sw_add_data
 
 	# Encoding data to send
 	# TODO, we should not use comma as delimiter here. We should encode them to JSON in place.
-	# We cannot do this right now without updating software all packages. Thus, comma character usage in user input
+	# We cannot do this right now without updating all software packages. Thus, comma character usage in user input
 	# has been disallowed in GUI (temporary fix)
 	my $imscp_software_install_pushstring = encode_base64(
 		"install,$sw_software_db,$sw_software_prefix,$sw_database,$sw_database_user,$sw_database_tmp_pwd," .

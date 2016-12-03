@@ -34,7 +34,7 @@ function generateDomainRedirectAndEditLink($id, $status, $redirectUrl)
 {
     if ($redirectUrl == 'no') {
         if ($status == 'ok') {
-            return array('-', tohtml("domain_edit.php?id=$id", 'htmlAttr'), tr('Edit'));
+            return array(tr('N/A'), tohtml("domain_edit.php?id=$id", 'htmlAttr'), tr('Edit'));
         }
 
         return array(tr('N/A'), '#', tr('N/A'));
@@ -91,8 +91,10 @@ function generateDomainsList($tpl)
 
         $tpl->assign(array(
             'DOMAIN_NAME' => tohtml($domainName),
-            'DOMAIN_MOUNT_POINT' => '/',
-            'DOMAIN_DOCUMENT_ROOT' => tohtml(utils_normalizePath($row['document_root'])),
+            'DOMAIN_MOUNT_POINT' => tohtml(($row['url_forward'] == 'no') ? '/' : tr('N/A')),
+            'DOMAIN_DOCUMENT_ROOT' => tohtml(
+                ($row['url_forward'] == 'no') ? utils_normalizePath($row['document_root']) : tr('N/A')
+            ),
             'DOMAIN_STATUS' => translate_dmn_status($row['domain_status']),
             'DOMAIN_SSL_STATUS' => is_null($row['ssl_status'])
                 ? tr('Disabled')
@@ -151,11 +153,11 @@ function generateDomainAliasRedirectAndEditLink($id, $status, $redirectUrl)
 {
     if ($redirectUrl == 'no') {
         if ($status == 'ok') {
-            return array('-', tohtml("alias_edit.php?id=$id", 'htmlAttr'), tr('Edit'));
+            return array(tr('N/A'), tohtml("alias_edit.php?id=$id", 'htmlAttr'), tr('Edit'));
         }
 
         if ($status == 'ordered') {
-            return array('-', '#', tr('N/A'));
+            return array(tr('N/A'), '#', tr('N/A'));
         }
 
         return array(tr('N/A'), '#', tr('N/A'));
@@ -236,8 +238,12 @@ function generateDomainAliasesList($tpl)
 
         $tpl->assign(array(
             'ALS_NAME' => tohtml($alsName),
-            'ALS_MOUNT_POINT' => tohtml(utils_normalizePath($row['alias_mount'])),
-            'ALS_DOCUMENT_ROOT' => tohtml(utils_normalizePath($row['alias_document_root'])),
+            'ALS_MOUNT_POINT' => tohtml(
+                ($row['url_forward'] == 'no') ? utils_normalizePath($row['alias_mount']) : tr('N/A')
+            ),
+            'ALS_DOCUMENT_ROOT' => tohtml(
+                ($row['url_forward'] == 'no') ? utils_normalizePath($row['alias_document_root']) : tr('N/A')
+            ),
             'ALS_STATUS' => translate_dmn_status($row['alias_status']),
             'ALS_SSL_STATUS' => is_null($row['ssl_status'])
                 ? tr('Disabled')
@@ -320,14 +326,14 @@ function generateSubdomainRedirectAndEditLink($id, $status, $redirectUrl, $entit
 {
     if ($status == 'ok') {
         return array(
-            $redirectUrl == 'no' ? '-' : $redirectUrl,
+            $redirectUrl == 'no' ? tr('N/A') : $redirectUrl,
             tohtml("subdomain_edit.php?id=$id&type=$entityType", 'htmlAttr'),
             tr('Edit')
         );
     }
 
     if ($status == 'ordered') {
-        return array($redirectUrl == 'no' ? '-' : $redirectUrl, '#', tr('N/A'));
+        return array($redirectUrl == 'no' ? tr('N/A') : $redirectUrl, '#', tr('N/A'));
     }
 
     return array(tr('N/A'), '#', tr('N/A'));
@@ -416,8 +422,13 @@ function generateSubdomainsList($tpl)
         }
 
         $tpl->assign(array(
-            'SUB_MOUNT_POINT' => tohtml(utils_normalizePath($row['subdomain_mount'])),
-            'SUB_DOCUMENT_ROOT' => tohtml(utils_normalizePath($row['subdomain_document_root'])),
+            'SUB_MOUNT_POINT' => tohtml(
+                ($row['subdomain_url_forward'] == 'no') ? utils_normalizePath($row['subdomain_mount']) : tr('N/A')
+            ),
+            'SUB_DOCUMENT_ROOT' => tohtml(
+                ($row['subdomain_url_forward'] == 'no')
+                    ? utils_normalizePath($row['subdomain_document_root']) : tr('N/A')
+            ),
             'SUB_REDIRECT' => $redirectUrl,
             'SUB_STATUS' => translate_dmn_status($row['subdomain_status']),
             'SUB_SSL_STATUS' => is_null($row['ssl_status'])
@@ -470,8 +481,14 @@ function generateSubdomainsList($tpl)
 
         $tpl->assign(array(
             'SUB_NAME' => tohtml($name),
-            'SUB_MOUNT_POINT' => tohtml(utils_normalizePath($row['subdomain_alias_mount'])),
-            'SUB_DOCUMENT_ROOT' => tohtml(utils_normalizePath($row['subdomain_alias_document_root'])),
+            'SUB_MOUNT_POINT' => tohtml(
+                ($row['subdomain_alias_url_forward'] == 'no')
+                    ? utils_normalizePath($row['subdomain_alias_mount']) : tr('N/A')
+            ),
+            'SUB_DOCUMENT_ROOT' => tohtml(
+                ($row['subdomain_alias_url_forward'] == 'no')
+                    ? utils_normalizePath($row['subdomain_alias_document_root']) : tr('N/A')
+            ),
             'SUB_REDIRECT' => $redirectUrl,
             'SUB_STATUS' => translate_dmn_status($row['subdomain_alias_status']),
             'SUB_SSL_STATUS' => is_null($row['ssl_status'])

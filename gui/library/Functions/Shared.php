@@ -1293,56 +1293,54 @@ function utils_getPhpValueInBytes($value)
 }
 
 /**
- * Normalize the given path
+ * Normalize the given path (e.g. A//B, A/./B and A/foo/../B all become A/B)
+ *
+ * It should be understood that this may change the meaning of the path if it contains symbolic links.
  *
  * @param string $path Path
- * @return string
+ * @param bool $posixCompliant Be POSIX compliant regarding initial slashes?
+ * @return string Normalized path
  */
-function utils_normalizePath($path)
+function utils_normalizePath($path, $posixCompliant = false)
 {
-    if (!strlen($path)) {
+    if (strlen($path) == 0)
         return '.';
+
+    // Attempt to avoid path encoding problems.
+    $path = iconv('UTF-8', 'UTF-8//IGNORE//TRANSLIT', $path);
+
+    $initialSlashes = strpos($path, '/') === 0;
+    # POSIX allows one or two initial slashes, but treats three or more as single slash.
+    if ($posixCompliant && $initialSlashes && strpos($path, '//') === 0 && strpos($path, '///') !== 0) {
+        $initialSlashes = 2;
     }
 
-    $isAbsolute = $path[0];
-    $trailingSlash = $path[strlen($path) - 1];
-    $up = 0;
-    $parts = array_values(array_filter(explode('/', $path), function ($n) {
-        return !!$n;
-    }));
+    $segments = explode('/', $path);
+    $newSegments = array();
 
-    for ($i = count($parts) - 1; $i >= 0; $i--) {
-        $last = $parts[$i];
+    foreach ($segments as $segment) {
 
-        if ($last == '.') {
-            array_splice($parts, $i, 1);
-        } else {
-            if ($last == '..') {
-                array_splice($parts, $i, 1);
-                $up++;
-            } else {
-                if ($up) {
-                    array_splice($parts, $i, 1);
-                    $up--;
-                }
-            }
+        if ($segment === '' || $segment === '.')
+            continue;
+
+        if ($segment !== '..' || (!$initialSlashes && !$newSegments) || ($newSegments && end($newSegments) === '..')) {
+            array_push($newSegments, $segment);
+        } elseif ($newSegments) {
+            array_pop($newSegments);
         }
     }
 
-    $path = implode('/', $parts);
-    if (!$path && !$isAbsolute) {
-        $path = '.';
-    }
+    $path = implode('/', $newSegments);
 
-    if ($path && $trailingSlash == '/') {
-        $path .= '/';
-    }
+    if ($initialSlashes)
+        $path = str_repeat('/', $initialSlashes) . $path;
 
-    return ($isAbsolute == '/' ? '/' : '') . $path;
+    return (isset($path)) ? $path : '.';
 }
 
+
 /**
- * Remove the given directory recusively
+ * Remove the given directory recursively
  *
  * @param string $directory Path of directory to remove
  * @return boolean TRUE on success, FALSE otherwise

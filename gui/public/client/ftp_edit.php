@@ -42,8 +42,7 @@ function updateFtpAccount($userid)
     $error = false;
     $passwd = clean_input($_POST['password']);
     $passwdRepeat = clean_input($_POST['password_repeat']);
-    $homeDir = utils_normalizePath(clean_input($_POST['home_dir']));
-
+    $homeDir = utils_normalizePath('/' . clean_input($_POST['home_dir']));
 
     if ($passwd !== '') {
         if ($passwd !== $passwdRepeat) {
@@ -67,7 +66,7 @@ function updateFtpAccount($userid)
 
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
-    $vfs = new VirtualFileSystem($mainDmnProps['domain_name']);
+    $vfs = new VirtualFileSystem($_SESSION['user_logged']);
     if ($homeDir !== '/' && !$vfs->exists($homeDir, VirtualFileSystem::VFS_TYPE_DIR)) {
         set_page_message(tr("Directory '%s' doesn't exists.", $homeDir), 'error');
         return false;
@@ -78,16 +77,16 @@ function updateFtpAccount($userid)
     ));
 
     $cfg = iMSCP_Registry::get('config');
-    $homeDir = utils_normalizePath($cfg['USER_WEB_DIR'] . '/' . $mainDmnProps['domain_name'] . $homeDir);
+    $homeDir = utils_normalizePath($cfg['USER_WEB_DIR'] . '/' . $mainDmnProps['domain_name'] . '/' . $homeDir);
 
     if ($passwd !== '') {
         exec_query(
-            'UPDATE ftp_users SET passwd = ?, rawpasswd = ?, homedir = ?, status = ? WHERE userid = ?',
-            array(\iMSCP\Crypt::sha512($passwd), $passwd, $homeDir, 'tochange', $userid)
+            'UPDATE ftp_users SET passwd = ?, rawpasswd = ?, homedir = ?, status = ? WHERE userid = ? AND admin_id = ?',
+            array(\iMSCP\Crypt::sha512($passwd), $passwd, $homeDir, 'tochange', $userid, $_SESSION['user_id'])
         );
     } else {
-        exec_query('UPDATE ftp_users SET homedir = ?, status = ? WHERE userid = ?', array(
-            $homeDir, 'tochange', $userid
+        exec_query('UPDATE ftp_users SET homedir = ?, status = ? WHERE userid = ? AND admin_id = ?', array(
+            $homeDir, 'tochange', $userid, $_SESSION['user_id']
         ));
     }
 
@@ -113,16 +112,18 @@ function generatePage($tpl, $ftpUserId)
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
     # Set parameters for the FTP chooser
-    $_SESSION['vftp_root_dir'] = '/';
-    $_SESSION['vftp_hidden_dirs'] = array();
-    $_SESSION['vftp_unselectable_dirs'] = array();
+    $_SESSION['ftp_chooser_domain_id'] = $mainDmnProps['domain_id'];
+    $_SESSION['ftp_chooser_user'] = $_SESSION['user_logged'];
+    $_SESSION['ftp_chooser_root_dir'] = '/';
+    $_SESSION['ftp_chooser_hidden_dirs'] = array();
+    $_SESSION['ftp_chooser_unselectable_dirs'] = array();
 
     $cfg = iMSCP_Registry::get('config');
     $stmt = exec_query('SELECT homedir FROM ftp_users WHERE userid = ?', $ftpUserId);
     $row = $stmt->fetchRow();
 
-    $ftpHomeDir = $row['homedir'];
-    $customerHomeDir = $cfg['USER_WEB_DIR'] . '/' . $mainDmnProps['domain_name'];
+    $ftpHomeDir = utils_normalizePath('/' . $row['homedir']);
+    $customerHomeDir = utils_normalizePath('/' . $cfg['USER_WEB_DIR'] . '/' . $mainDmnProps['domain_name']);
 
     if ($ftpHomeDir == $customerHomeDir) {
         $customFtpHomeDir = '/';
@@ -132,8 +133,8 @@ function generatePage($tpl, $ftpUserId)
 
     $tpl->assign(array(
         'USERNAME' => tohtml(decode_idna($ftpUserId), 'htmlAttr'),
-        'HOME_DIR' => isset($_POST['home_dir']) ? tohtml($_POST['home_dir']) : tohtml($customFtpHomeDir),
-        'ID' => tohtml($ftpUserId, 'htmlAttr'),
+        'HOME_DIR' => (isset($_POST['home_dir'])) ? tohtml($_POST['home_dir']) : tohtml($customFtpHomeDir),
+        'ID'       => tohtml($ftpUserId, 'htmlAttr'),
     ));
 }
 
@@ -164,20 +165,20 @@ if (!empty($_POST)) {
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'client/ftp_edit.tpl',
+    'layout'       => 'shared/layouts/ui.tpl',
+    'page'         => 'client/ftp_edit.tpl',
     'page_message' => 'layout'
 ));
 $tpl->assign(array(
-    'TR_PAGE_TITLE' => tr('Client / FTP / Overview / Edit FTP Account'),
-    'TR_FTP_USER_DATA' => tr('Ftp account data'),
-    'TR_USERNAME' => tr('Username'),
-    'TR_PASSWORD' => tr('Password'),
+    'TR_PAGE_TITLE'      => tr('Client / FTP / Overview / Edit FTP Account'),
+    'TR_FTP_USER_DATA'   => tr('Ftp account data'),
+    'TR_USERNAME'        => tr('Username'),
+    'TR_PASSWORD'        => tr('Password'),
     'TR_PASSWORD_REPEAT' => tr('Repeat password'),
-    'TR_HOME_DIR' => tr('Home directory'),
-    'TR_CHOOSE_DIR' => tr('Choose dir'),
-    'TR_CHANGE' => tr('Update'),
-    'TR_CANCEL' => tr('Cancel')
+    'TR_HOME_DIR'        => tr('Home directory'),
+    'TR_CHOOSE_DIR'      => tr('Choose dir'),
+    'TR_CHANGE'          => tr('Update'),
+    'TR_CANCEL'          => tr('Cancel')
 ));
 
 $eventManager->registerListener('onGetJsTranslations', function ($e) {

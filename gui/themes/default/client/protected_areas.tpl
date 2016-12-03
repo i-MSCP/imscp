@@ -1,3 +1,5 @@
+
+<!-- BDP: protected_areas -->
 <script>
     $(function () {
         $('.datatable').dataTable(
@@ -19,8 +21,6 @@
         });
     });
 </script>
-
-<!-- BDP: protected_areas -->
 <table class="datatable">
     <thead>
     <tr>
@@ -38,8 +38,8 @@
         <td>{STATUS}</td>
         <td>
             <!-- BDP: action_links -->
-            <a href="protected_areas_add.php?id={PID}" class="icon i_edit">{TR_EDIT}</a>
-            <a href="protected_areas_delete.php?id={PID}" data-name="{DATA_AREA_NAME}" class="icon i_delete">{TR_DELETE}</a>
+            <a href="protected_areas_add.php?id={ID}" class="icon i_edit">{TR_EDIT}</a>
+            <a href="protected_areas_delete.php?id={ID}" data-name="{DATA_AREA_NAME}" class="icon i_delete">{TR_DELETE}</a>
             <!-- EDP: action_links -->
         </td>
     </tr>

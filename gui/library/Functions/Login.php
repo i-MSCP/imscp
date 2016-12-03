@@ -202,7 +202,7 @@ function check_login($userLevel, $preventExternalLogin = true)
     }
 
     // Check user level
-    if (empty($userLevel) || $identity->admin_type != $userLevel) {
+    if (empty($userLevel) || ($userLevel !== 'all' && $identity->admin_type != $userLevel)) {
         $auth->unsetIdentity();
         redirectTo('/index.php');
     }

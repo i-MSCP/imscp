@@ -316,7 +316,7 @@
                     });
                 }
             } else { // No dialog. We create one
-                $.get("ftp_choose_dir.php", function(data) {
+                $.get("/shared/ftp_choose_dir.php", function(data) {
                     $dialog = $('<div id="ftp_choose_dir_dialog">').html(data).dialog({
                         hide: "blind",
                         show: "slide",

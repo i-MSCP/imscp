@@ -48,20 +48,20 @@ function generateDomainTypeList($mainDmnId, $tpl)
     );
     $row = $stmt->fetchRow();
 
-    $dmns = array(
+    $domains = array(
         array('count' => '1', 'type' => 'dmn', 'tr' => tr('Domain')),
         array('count' => $row['sub_count'], 'type' => 'sub', 'tr' => tr('Subdomain')),
         array('count' => $row['als_count'], 'type' => 'als', 'tr' => tr('Domain alias')),
         array('count' => $row['alssub_count'], 'type' => 'alssub', 'tr' => tr('Subdomain alias'))
     );
 
-    foreach ($dmns as $dmn) {
-        if ($dmn['count']) {
+    foreach ($domains as $domain) {
+        if ($domain['count']) {
             $tpl->assign(array(
-                'DOMAIN_TYPE' => tohtml($dmn['type']),
-                'DOMAIN_TYPE_SELECTED' => isset($_POST['domain_type']) && $_POST['domain_type'] == $dmn['type']
-                    ? ' selected' : ($dmn['type'] == 'dmn' ? ' selected' : ''),
-                'TR_DOMAIN_TYPE' => $dmn['tr']
+                'DOMAIN_TYPE'          => tohtml($domain['type']),
+                'DOMAIN_TYPE_SELECTED' => (isset($_POST['domain_type']) && $_POST['domain_type'] == $domain['type'])
+                    ? ' selected' : ($domain['type'] == 'dmn' ? ' selected' : ''),
+                'TR_DOMAIN_TYPE'       => $domain['tr']
             ));
             $tpl->parse('DOMAIN_TYPES', '.domain_types');
         }
@@ -82,7 +82,7 @@ function getDomainList($mainDmnName, $mainDmnId, $dmnType = 'dmn')
         $domainName = decode_idna($mainDmnName);
         return array(array(
             'domain_name_val' => $domainName,
-            'domain_name' => $domainName
+            'domain_name'     => $domainName
         ));
     }
 
@@ -120,7 +120,7 @@ function getDomainList($mainDmnName, $mainDmnId, $dmnType = 'dmn')
         $domainName = decode_idna($row['name']);
         $dmnList[] = array(
             'domain_name_val' => $domainName,
-            'domain_name' => $domainName
+            'domain_name'     => $domainName
         );
     }
 
@@ -151,7 +151,7 @@ function addAccount()
     $dmnName = mb_strtolower(clean_input($_POST['domain_name']));
     $passwd = clean_input($_POST['password']);
     $passwdRepeat = clean_input($_POST['password_repeat']);
-    $homeDir = utils_normalizePath(clean_input($_POST['home_dir']));
+    $homeDir = utils_normalizePath('/' . clean_input($_POST['home_dir']));
 
     if (!customerHasDomain($dmnName, $_SESSION['user_id'])) {
         showBadRequestErrorPage();
@@ -180,7 +180,7 @@ function addAccount()
 
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
-    $vfs = new VirtualFileSystem($mainDmnProps['domain_name']);
+    $vfs = new VirtualFileSystem($_SESSION['user_logged']);
     if ($homeDir !== '/' && !$vfs->exists($homeDir, VirtualFileSystem::VFS_TYPE_DIR)) {
         set_page_message(tr("Directory '%s' doesn't exists.", $homeDir), 'error');
         return false;
@@ -190,7 +190,7 @@ function addAccount()
     $username .= '@' . encode_idna($dmnName);
     $encryptedPassword = \iMSCP\Crypt::sha512($passwd);
     $shell = '/bin/sh';
-    $homeDir = utils_normalizePath($cfg['USER_WEB_DIR'] . '/' . $mainDmnProps['domain_name'] . $homeDir);
+    $homeDir = utils_normalizePath( '/' . $cfg['USER_WEB_DIR'] . '/' . $mainDmnProps['domain_name'] . '/' . $homeDir);
     $stmt = exec_query(
         '
             SELECT t1.admin_name, t1.admin_sys_uid, t1.admin_sys_gid, t2.domain_disk_limit,
@@ -210,13 +210,13 @@ function addAccount()
         $db->beginTransaction();
 
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddFtp, array(
-            'ftpUserId' => $username,
-            'ftpPassword' => $encryptedPassword,
+            'ftpUserId'      => $username,
+            'ftpPassword'    => $encryptedPassword,
             'ftpRawPassword' => $passwd,
-            'ftpUserUid' => $row1['admin_sys_uid'],
-            'ftpUserGid' => $row1['admin_sys_gid'],
-            'ftpUserShell' => $shell,
-            'ftpUserHome' => $homeDir
+            'ftpUserUid'     => $row1['admin_sys_uid'],
+            'ftpUserGid'     => $row1['admin_sys_gid'],
+            'ftpUserShell'   => $shell,
+            'ftpUserHome'    => $homeDir
         ));
 
         exec_query(
@@ -263,13 +263,13 @@ function addAccount()
         }
 
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddFtp, array(
-            'ftpUserId' => $username,
-            'ftpPassword' => $encryptedPassword,
+            'ftpUserId'      => $username,
+            'ftpPassword'    => $encryptedPassword,
             'ftpRawPassword' => $passwd,
-            'ftpUserUid' => $row1['admin_sys_uid'],
-            'ftpUserGid' => $row1['admin_sys_gid'],
-            'ftpUserShell' => $shell,
-            'ftpUserHome' => $homeDir
+            'ftpUserUid'     => $row1['admin_sys_uid'],
+            'ftpUserGid'     => $row1['admin_sys_gid'],
+            'ftpUserShell'   => $shell,
+            'ftpUserHome'    => $homeDir
         ));
 
         $db->commit();
@@ -300,9 +300,11 @@ function generatePage($tpl)
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
     # Set parameters for the FTP chooser
-    $_SESSION['vftp_root_dir'] = '/';
-    $_SESSION['vftp_hidden_dirs'] = array();
-    $_SESSION['vftp_unselectable_dirs'] = array();
+    $_SESSION['ftp_chooser_domain_id'] = $mainDmnProps['domain_id'];
+    $_SESSION['ftp_chooser_user'] = $_SESSION['user_logged'];
+    $_SESSION['ftp_chooser_root_dir'] = '/';
+    $_SESSION['ftp_chooser_hidden_dirs'] = array();
+    $_SESSION['ftp_chooser_unselectable_dirs'] = array();
 
     $tpl->assign(array(
         'USERNAME' => isset($_POST['username']) ? tohtml($_POST['username'], 'htmlAttr') : '',
@@ -313,14 +315,14 @@ function generatePage($tpl)
     $dmnList = getDomainList(
         $mainDmnProps['domain_name'],
         $mainDmnProps['domain_id'],
-        isset($_POST['domain_type']) ? clean_input($_POST['domain_type']) : 'dmn'
+        (isset($_POST['domain_type'])) ? clean_input($_POST['domain_type']) : 'dmn'
     );
 
     foreach ($dmnList as $dmn) {
         $tpl->assign(array(
-            'DOMAIN_NAME_VAL' => tohtml($dmn['domain_name_val'], 'htmlAttr'),
-            'DOMAIN_NAME' => tohtml($dmn['domain_name']),
-            'DOMAIN_NAME_SELECTED' => isset($_POST['domain_name']) && $_POST['domain_name'] == $dmn['domain_name']
+            'DOMAIN_NAME_VAL'      => tohtml($dmn['domain_name_val'], 'htmlAttr'),
+            'DOMAIN_NAME'          => tohtml($dmn['domain_name']),
+            'DOMAIN_NAME_SELECTED' => (isset($_POST['domain_name']) && $_POST['domain_name'] == $dmn['domain_name'])
                 ? ' selected' : ''
         ));
         $tpl->parse('DOMAIN_LIST', '.domain_list');
@@ -361,23 +363,23 @@ if (!empty($_POST)) {
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'client/ftp_add.tpl',
+    'layout'       => 'shared/layouts/ui.tpl',
+    'page'         => 'client/ftp_add.tpl',
     'page_message' => 'layout',
-    'domain_list' => 'page',
+    'domain_list'  => 'page',
     'domain_types' => 'page'
 ));
 $tpl->assign(array(
-    'TR_PAGE_TITLE' => tr('Client / FTP / Add FTP Account'),
-    'TR_FTP_ACCOUNT_DATA' => tr('Ftp account data'),
+    'TR_PAGE_TITLE'        => tr('Client / FTP / Add FTP Account'),
+    'TR_FTP_ACCOUNT_DATA'  => tr('Ftp account data'),
     'TR_DOMAIN_TYPE_LABEL' => tr('Domain type'),
-    'TR_USERNAME' => tr('Username'),
-    'TR_PASSWORD' => tr('Password'),
-    'TR_PASSWORD_REPEAT' => tr('Repeat password'),
-    'TR_HOME_DIR' => tr('Home directory'),
-    'TR_CHOOSE_DIR' => tr('Choose dir'),
-    'TR_ADD' => tr('Add'),
-    'TR_CANCEL' => tr('Cancel')
+    'TR_USERNAME'          => tr('Username'),
+    'TR_PASSWORD'          => tr('Password'),
+    'TR_PASSWORD_REPEAT'   => tr('Repeat password'),
+    'TR_HOME_DIR'          => tr('Home directory'),
+    'TR_CHOOSE_DIR'        => tr('Choose dir'),
+    'TR_ADD'               => tr('Add'),
+    'TR_CANCEL'            => tr('Cancel')
 ));
 
 $eventManager->registerListener('onGetJsTranslations', function ($e) {

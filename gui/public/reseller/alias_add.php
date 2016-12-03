@@ -29,9 +29,9 @@
  */
 function getCustomersList()
 {
-    static $customersList = null;
+    static $customersList = NULL;
 
-    if (null !== $customersList) {
+    if (NULL !== $customersList) {
         return $customersList;
     }
 
@@ -59,19 +59,21 @@ function getCustomersList()
  */
 function getDomainsList($customerId)
 {
-    static $domainsList = null;
+    static $domainsList = NULL;
 
-    if (null !== $domainsList) {
+    if (NULL !== $domainsList) {
         return $domainsList;
     }
 
     $mainDmnProps = get_domain_default_props($customerId, $_SESSION['user_id']);
-    $domainsList = array(array(
-        'name' => $mainDmnProps['domain_name'],
-        'id' => $mainDmnProps['domain_id'],
-        'type' => 'dmn',
-        'mount_point' => '/'
-    ));
+    $domainsList = array(
+        array(
+            'name'        => $mainDmnProps['domain_name'],
+            'id'          => $mainDmnProps['domain_id'],
+            'type'        => 'dmn',
+            'mount_point' => '/'
+        )
+    );
 
     $stmt = exec_query(
         "
@@ -86,7 +88,10 @@ function getDomainsList($customerId)
             FROM subdomain_alias AS t1 INNER JOIN domain_aliasses AS t2 USING(alias_id)
             WHERE t2.domain_id = :domain_id AND subdomain_alias_status = :status_ok
         ",
-        array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => 'ok')
+        array(
+            'domain_id' => $mainDmnProps['domain_id'],
+            'status_ok' => 'ok'
+        )
     );
 
     if ($stmt->rowCount()) {
@@ -111,7 +116,7 @@ function getJsonDomainsList($customerId)
 
     foreach (getDomainsList($customerId) as $domain) {
         $jsonData[] = array(
-            'domain_name' => tohtml($domain['name']),
+            'domain_name'         => tohtml($domain['name']),
             'domain_name_unicode' => tohtml(decode_idna($domain['name']))
         );
     }
@@ -131,40 +136,47 @@ function generatePage($tpl)
 
     foreach ($customersList as $customer) {
         $tpl->assign(array(
-            'CUSTOMER_ID' => tohtml($customer['admin_id']),
-            'CUSTOMER_NAME' => tohtml(decode_idna($customer['admin_name'])),
+            'CUSTOMER_ID'       => tohtml($customer['admin_id']),
+            'CUSTOMER_NAME'     => tohtml(decode_idna($customer['admin_name'])),
             'CUSTOMER_SELECTED' => isset($_POST['customer']) ? ' selected' : ''
         ));
         $tpl->parse('CUSTOMER_OPTION', '.customer_option');
     }
 
-    $forwardType = (isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307', 'proxy'), true)) ? $_POST['forward_type'] : '302';
+    $forwardType = (
+        isset($_POST['forward_type'])
+        && in_array($_POST['forward_type'], array('301', '302', '303', '307', 'proxy'), true)
+    ) ? $_POST['forward_type'] : '302';
     $forwardHost = ($forwardType == 'proxy' && isset($_POST['forward_host'])) ? 'On' : 'Off';
 
     $tpl->assign(array(
-        'DOMAIN_ALIAS_NAME' => isset($_POST['domain_alias_name']) ? tohtml($_POST['domain_alias_name']) : '',
+        'DOMAIN_ALIAS_NAME'      => (isset($_POST['domain_alias_name'])) ? tohtml($_POST['domain_alias_name']) : '',
         'SHARED_MOUNT_POINT_YES' => (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes') ? ' checked' : '',
-        'SHARED_MOUNT_POINT_NO' => (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes') ? '' : ' checked',
-        'FORWARD_URL_YES' => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? ' checked' : '',
-        'FORWARD_URL_NO' => isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes' ? '' : ' checked',
-        'HTTP_YES' => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'http://') ? ' checked' : '',
-        'HTTPS_YES' => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'https://') ? ' checked' : '',
-        'FORWARD_URL' => isset($_POST['forward_url']) ? tohtml(decode_idna($_POST['forward_url'])) : '',
-        'FORWARD_TYPE_301' => ($forwardType == '301') ? ' checked' : '',
-        'FORWARD_TYPE_302' => ($forwardType == '302') ? ' checked' : '',
-        'FORWARD_TYPE_303' => ($forwardType == '303') ? ' checked' : '',
-        'FORWARD_TYPE_307' => ($forwardType == '307') ? ' checked' : '',
-        'FORWARD_TYPE_PROXY' => ($forwardType == 'proxy') ? ' checked' : '',
-        'FORWARD_HOST' => ($forwardHost == 'On') ? ' checked' : ''
+        'SHARED_MOUNT_POINT_NO'  => (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes') ? '' : ' checked',
+        'FORWARD_URL_YES'        => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? ' checked' : '',
+        'FORWARD_URL_NO'         => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? '' : ' checked',
+        'HTTP_YES'               => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'http://') ? ' selected' : '',
+        'HTTPS_YES'              => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'https://') ? ' selected' : '',
+        'FORWARD_URL'            => (isset($_POST['forward_url'])) ? tohtml($_POST['forward_url']) : '',
+        'FORWARD_TYPE_301'       => ($forwardType == '301') ? ' checked' : '',
+        'FORWARD_TYPE_302'       => ($forwardType == '302') ? ' checked' : '',
+        'FORWARD_TYPE_303'       => ($forwardType == '303') ? ' checked' : '',
+        'FORWARD_TYPE_307'       => ($forwardType == '307') ? ' checked' : '',
+        'FORWARD_TYPE_PROXY'     => ($forwardType == 'proxy') ? ' checked' : '',
+        'FORWARD_HOST'           => ($forwardHost == 'On') ? ' checked' : ''
     ));
 
-    $domainList = getDomainsList(isset($_POST['customer_id']) ? clean_input($_POST['customer_id']) : $customersList[0]['admin_id']);
+    $domainList = getDomainsList(
+        isset($_POST['customer_id']) ? clean_input($_POST['customer_id']) : $customersList[0]['admin_id']
+    );
 
     foreach ($domainList as $domain) {
         $tpl->assign(array(
-            'DOMAIN_NAME' => tohtml($domain['name']),
-            'DOMAIN_NAME_UNICODE' => tohtml(decode_idna($domain['name'])),
-            'SHARED_MOUNT_POINT_DOMAIN_SELECTED' => isset($_POST['shared_mount_point_domain']) && $_POST['shared_mount_point_domain'] == $domain['name'] ? ' selected' : ''
+            'DOMAIN_NAME'                        => tohtml($domain['name']),
+            'DOMAIN_NAME_UNICODE'                => tohtml(decode_idna($domain['name'])),
+            'SHARED_MOUNT_POINT_DOMAIN_SELECTED' => (
+                isset($_POST['shared_mount_point_domain']) && $_POST['shared_mount_point_domain'] == $domain['name']
+            ) ? ' selected' : ''
         ));
         $tpl->parse('SHARED_MOUNT_POINT_DOMAIN', '.shared_mount_point_domain');
     }
@@ -234,12 +246,17 @@ function addDomainAlias()
         }
     }
 
-    // Check for URL forwarding option
+    // Default values
+    $documentRoot = '/htdocs';
     $forwardUrl = 'no';
-    $forwardType = null;
+    $forwardType = NULL;
     $forwardHost = 'Off';
-    if (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes' &&
-        isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307', 'proxy'), true)
+
+    // Check for URL forwarding option
+    if (isset($_POST['url_forwarding'])
+        && $_POST['url_forwarding'] == 'yes'
+        && isset($_POST['forward_type'])
+        && in_array($_POST['forward_type'], array('301', '302', '303', '307', 'proxy'), true)
     ) {
         if (!isset($_POST['forward_url_scheme']) || !isset($_POST['forward_url'])) {
             showBadRequestErrorPage();
@@ -259,10 +276,8 @@ function addDomainAlias()
                 throw new iMSCP_Exception(tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>"));
             }
 
-            $uri->setHost(encode_idna(mb_strtolower($uri->getHost())));
-
-            $uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/'; // normalize path
-            $uri->setPath($uriPath);
+            $uri->setHost(encode_idna(mb_strtolower($uri->getHost()))); // Normalize URI host
+            $uri->setPath(rtrim(utils_normalizePath($uri->getPath()), '/') . '/'); // Normalize URI path
 
             if ($uri->getHost() == $domainAliasNameAscii && $uri->getPath() == '/') {
                 throw new iMSCP_Exception(
@@ -293,25 +308,27 @@ function addDomainAlias()
         $db->beginTransaction();
 
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddDomainAlias, array(
-            'domainId' => $mainDmnProps['domain_id'],
+            'domainId'        => $mainDmnProps['domain_id'],
             'domainAliasName' => $domainAliasNameAscii,
-            'mountPoint' => $mountPoint,
-            'forwardUrl' => $forwardUrl,
-            'forwardType' => $forwardType,
-            'forwardHost' => $forwardHost
+            'mountPoint'      => $mountPoint,
+            'documentRoot'    => $documentRoot,
+            'forwardUrl'      => $forwardUrl,
+            'forwardType'     => $forwardType,
+            'forwardHost'     => $forwardHost
         ));
 
         exec_query(
             '
                 INSERT INTO domain_aliasses (
-                    domain_id, alias_name, alias_mount, alias_status, alias_ip_id, url_forward, type_forward, host_forward
+                    domain_id, alias_name, alias_mount, alias_document_root, alias_status, alias_ip_id, url_forward,
+                    type_forward, host_forward
                 ) VALUES (
-                    ?, ?, ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?
                 )
             ',
             array(
-                $mainDmnProps['domain_id'], $domainAliasNameAscii, $mountPoint, 'toadd', $mainDmnProps['domain_ip_id'],
-                $forwardUrl, $forwardType, $forwardHost
+                $mainDmnProps['domain_id'], $domainAliasNameAscii, $mountPoint, $documentRoot, 'toadd',
+                $mainDmnProps['domain_ip_id'], $forwardUrl, $forwardType, $forwardHost
             )
         );
 
@@ -330,13 +347,14 @@ function addDomainAlias()
         }
 
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddDomainAlias, array(
-            'domainId' => $mainDmnProps['domain_id'],
+            'domainId'        => $mainDmnProps['domain_id'],
             'domainAliasName' => $domainAliasNameAscii,
-            'domainAliasId' => $id,
-            'mountPoint' => $mountPoint,
-            'forwardUrl' => $forwardUrl,
-            'forwardType' => $forwardType,
-            'forwardHost' => $forwardHost
+            'domainAliasId'   => $id,
+            'mountPoint'      => $mountPoint,
+            'documentRoot'    => $documentRoot,
+            'forwardUrl'      => $forwardUrl,
+            'forwardType'     => $forwardType,
+            'forwardHost'     => $forwardHost
         ));
 
         $db->commit();
@@ -378,35 +396,35 @@ if (!empty($_POST) && addDomainAlias()) {
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'reseller/alias_add.tpl',
-    'page_message' => 'layout',
-    'customer_option' => 'page',
+    'layout'                    => 'shared/layouts/ui.tpl',
+    'page'                      => 'reseller/alias_add.tpl',
+    'page_message'              => 'layout',
+    'customer_option'           => 'page',
     'shared_mount_point_domain' => 'page'
 ));
 $tpl->assign(array(
-    'TR_PAGE_TITLE' => tr('Reseller / Domains / Add Domain Alias'),
-    'TR_CUSTOMER_ACCOUNT' => tr('Customer account'),
-    'TR_DOMAIN_ALIAS' => tr('Domain alias'),
-    'TR_DOMAIN_ALIAS_NAME' => tr('Domain alias name'),
-    'TR_SHARED_MOUNT_POINT' => tr('Shared mount point'),
+    'TR_PAGE_TITLE'                 => tr('Reseller / Domains / Add Domain Alias'),
+    'TR_CUSTOMER_ACCOUNT'           => tr('Customer account'),
+    'TR_DOMAIN_ALIAS'               => tr('Domain alias'),
+    'TR_DOMAIN_ALIAS_NAME'          => tr('Domain alias name'),
+    'TR_SHARED_MOUNT_POINT'         => tr('Shared mount point'),
     'TR_SHARED_MOUNT_POINT_TOOLTIP' => tr('Allows to share the mount point of another domain.'),
-    'TR_URL_FORWARDING' => tr('URL forwarding'),
-    'TR_URL_FORWARDING_TOOLTIP' => tr('Allows to forward any request made to this domain to a specific URL.'),
-    'TR_FORWARD_TO_URL' => tr('Forward to URL'),
-    'TR_YES' => tr('Yes'),
-    'TR_NO' => tr('No'),
-    'TR_HTTP' => 'http://',
-    'TR_HTTPS' => 'https://',
-    'TR_FORWARD_TYPE' => tr('Forward type'),
-    'TR_301' => '301',
-    'TR_302' => '302',
-    'TR_303' => '303',
-    'TR_307' => '307',
-    'TR_PROXY' => 'PROXY',
-    'TR_PROXY_PRESERVE_HOST' => tr('Preserve Host'),
-    'TR_ADD' => tr('Add'),
-    'TR_CANCEL' => tr('Cancel')
+    'TR_URL_FORWARDING'             => tr('URL forwarding'),
+    'TR_URL_FORWARDING_TOOLTIP'     => tr('Allows to forward any request made to this domain to a specific URL.'),
+    'TR_FORWARD_TO_URL'             => tr('Forward to URL'),
+    'TR_YES'                        => tr('Yes'),
+    'TR_NO'                         => tr('No'),
+    'TR_HTTP'                       => 'http://',
+    'TR_HTTPS'                      => 'https://',
+    'TR_FORWARD_TYPE'               => tr('Forward type'),
+    'TR_301'                        => '301',
+    'TR_302'                        => '302',
+    'TR_303'                        => '303',
+    'TR_307'                        => '307',
+    'TR_PROXY'                      => 'PROXY',
+    'TR_PROXY_PRESERVE_HOST'        => tr('Preserve Host'),
+    'TR_ADD'                        => tr('Add'),
+    'TR_CANCEL'                     => tr('Cancel')
 ));
 
 generateNavigation($tpl);

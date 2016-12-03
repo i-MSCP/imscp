@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2016 by i-MSCP Team
+ * Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -38,12 +38,12 @@ function generatePage($tpl)
         $tpl->assign(array(
             'AREA_NAME' => tohtml($row['auth_name']),
             'AREA_PATH' => tohtml($row['path']),
-            'STATUS' => translate_dmn_status($row['status'])
+            'STATUS'    => translate_dmn_status($row['status'])
         ));
 
         if (!in_array($row['status'], array('toadd', 'tochange', 'todelete'))) {
             $tpl->assign(array(
-                'PID' => $row['id'],
+                'ID'             => tohtml($row['id'], 'htmlAttr'),
                 'DATA_AREA_NAME' => tohtml($row['auth_name'], 'htmlAttr'),
             ));
             $tpl->parse('ACTION_LINKS', 'action_links');
@@ -61,35 +61,32 @@ function generatePage($tpl)
 
 require_once 'imscp-lib.php';
 
-$eventManager = iMSCP_Events_Aggregator::getInstance();
-$eventManager->dispatch(iMSCP_Events::onClientScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 check_login('user');
 customerHasFeature('protected_areas') or showBadRequestErrorPage();
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'client/protected_areas.tpl',
-    'page_message' => 'layout',
+    'layout'          => 'shared/layouts/ui.tpl',
+    'page'            => 'client/protected_areas.tpl',
+    'page_message'    => 'layout',
     'protected_areas' => 'page',
-    'dir_item' => 'protected_areas',
-    'action_links' => 'dir_item'
+    'dir_item'        => 'protected_areas',
+    'action_links'    => 'dir_item'
 ));
 $tpl->assign(array(
-    'TR_PAGE_TITLE' => tr('Client / Webtools / Protected Areas'),
-    'TR_HTACCESS' => tr('Protected areas'),
-    'TR_DIRECTORY_TREE' => tr('Directory tree'),
-    'TR_NAME' => tr('Name'),
-    'TR_PATH' => tr('Path'),
-    'TR_ACTIONS' => tr('Actions'),
-    'TR_MANAGE_USERS_AND_GROUPS' => tr('Manage users and groups'),
-    'TR_EDIT' => tr('Edit'),
-    'TR_DELETE' => tr('Delete'),
-    'TR_STATUS' => tr('Status'),
-    'TR_ADD_PROTECTED_AREA' => tr('Add new protected area')
+    'TR_PAGE_TITLE'              => tr('Client / Webtools / Protected Areas'),
+    'TR_NAME'                    => tr('Name'),
+    'TR_PATH'                    => tr('Path'),
+    'TR_STATUS'                  => tr('Status'),
+    'TR_ACTIONS'                 => tr('Actions'),
+    'TR_EDIT'                    => tr('Edit'),
+    'TR_DELETE'                  => tr('Delete'),
+    'TR_ADD_PROTECTED_AREA'      => tr('Add new protected area'),
+    'TR_MANAGE_USERS_AND_GROUPS' => tr('Manage users and groups')
 ));
 
-$eventManager->registerListener('onGetJsTranslations', function ($e) {
+iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
     /* @var $e iMSCP_Events_Event */
     $translations = $e->getParam('translations');
     $translations['core']['dataTable'] = getDataTablesPluginTranslations();
@@ -101,7 +98,5 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-$eventManager->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 $tpl->prnt();
-
-unsetMessages();

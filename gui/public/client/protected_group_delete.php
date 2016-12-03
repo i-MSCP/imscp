@@ -1,100 +1,76 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Include core library
 require_once 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
 check_login('user');
 
-customerHasFeature('protected_areas') or showBadRequestErrorPage();
-
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
-$dmn_id = get_user_domain_id($_SESSION['user_id']);
-
-if (isset($_GET['gname']) && $_GET['gname'] !== '' && is_numeric($_GET['gname'])) {
-	$group_id = $_GET['gname'];
-} else {
-	redirectTo('protected_areas.php');
-	exit;
+if (!customerHasFeature('protected_areas') || !isset($_GET['gname'])) {
+    showBadRequestErrorPage();
 }
 
-$change_status = 'todelete';
+try {
+    iMSCP_Database::getInstance()->beginTransaction();
 
-$query = "
-	UPDATE
-		`htaccess_groups`
-	SET
-		`status` = ?
-	WHERE
-		`id` = ?
-	AND
-		`dmn_id` = ?
-";
-$rs = exec_query($query, array($change_status, $group_id, $dmn_id));
+    $htgroupId = intval($_GET['gname']);
+    $domainId = get_user_domain_id($_SESSION['user_id']);
 
-$query = "SELECT *  FROM `htaccess` WHERE `dmn_id` = ?";
-$rs = exec_query($query, $dmn_id);
+    // Schedule deletion or update of any .htaccess files in which the htgroup was used
+    $stmt = exec_query('SELECT * FROM htaccess WHERE dmn_id = ?', $domainId);
 
-while (!$rs->EOF) {
-	$ht_id = $rs->fields['id'];
-	$grp_id = $rs->fields['group_id'];
+    while ($row = $stmt->fetchRow()) {
+        $htgroupList = explode(',', $row['group_id']);
+        $candidate = array_search($htgroupId, $htgroupList);
 
-	$grp_id_splited = explode(',', $grp_id);
+        if ($candidate === false)
+            continue;
 
-	$key = array_search($group_id,$grp_id_splited);
-	if ($key !== false) {
-		unset($grp_id_splited[$key]);
-		if (count($grp_id_splited) == 0) {
-			$status = 'todelete';
-		} else {
-			$grp_id = implode(",", $grp_id_splited);
-			$status = 'tochange';
-		}
-		$update_query = "
-			UPDATE
-				`htaccess`
-			SET
-				`group_id` = ?, `status` = ?
-			WHERE
-				`id` = ?
-		";
-		$rs_update = exec_query($update_query, array($grp_id, $status, $ht_id));
-	}
+        unset($htgroupList[$candidate]);
 
-	$rs->moveNext();
+        if (empty($htgroupList)) {
+            $status = 'todelete';
+        } else {
+            $htgroupList = implode(',', $htgroupList);
+            $status = 'tochange';
+        }
+
+        exec_query('UPDATE htaccess SET group_id = ?, status = ? WHERE id = ?', array(
+            $htgroupList, $status, $row['id']
+        ));
+    }
+
+    // Schedule htgroup deletion
+    exec_query('UPDATE htaccess_groups SET status = ? WHERE id = ? AND dmn_id = ?', array(
+        'todelete', $htgroupId, $domainId
+    ));
+
+    iMSCP_Database::getInstance()->commit();
+
+    set_page_message(tr('Htaccess group successfully scheduled for deletion.'), 'success');
+    send_request();
+    write_log(sprintf('%s deleted Htaccess group ID: %s', $_SESSION['user_logged'], $htgroupId), E_USER_NOTICE);
+} catch (iMSCP_Exception_Database $e) {
+    iMSCP_Database::getInstance()->rollBack();
+    set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
+    write_log(sprintf('Could not delete htaccess group: %s', $e->getMessage()));
 }
 
-set_page_message(tr('Htaccess group successfully scheduled for deletion.'), 'success');
-
-send_request();
-
-write_log($_SESSION['user_logged'].": deleted Htaccess group ID: $group_id", E_USER_NOTICE);
 redirectTo('protected_user_manage.php');

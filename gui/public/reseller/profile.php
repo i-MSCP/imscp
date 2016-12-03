@@ -1,6 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,66 +18,54 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/*******************************************************************************
- * Script functions
+/***********************************************************************************************************************
+ * Functions
  */
 
 /**
- * Generates page.
+ * Generates page
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
+ * @return void
  */
-function reseller_generatePage($tpl)
+function generatePage($tpl)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$query = "SELECT domain_created from admin where admin_id = ?";
-	$stmt = exec_query($query, (int)$_SESSION['user_id']);
-
-	$tpl->assign(
-		array(
-			'TR_ACCOUNT_SUMMARY' => tr('Account summary'),
-			'TR_USERNAME' => tr('Username'),
-			'USERNAME' => tohtml($_SESSION['user_logged']),
-			'TR_ACCOUNT_TYPE' => tr('Account type'),
-			'ACCOUNT_TYPE' => $_SESSION['user_type'],
-			'TR_REGISTRATION_DATE' => tr('Registration date'),
-			'REGISTRATION_DATE' => ($stmt->fields['domain_created'] != 0) ? date($cfg->DATE_FORMAT, $stmt->fields['domain_created']) : tr('Unknown')
-		));
+    $cfg = iMSCP_Registry::get('config');
+    $stmt = exec_query('SELECT domain_created FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
+    $row = $stmt->fetchRow();
+    $tpl->assign(array(
+        'TR_ACCOUNT_SUMMARY'   => tr('Account summary'),
+        'TR_USERNAME'          => tr('Username'),
+        'USERNAME'             => tohtml($_SESSION['user_logged']),
+        'TR_ACCOUNT_TYPE'      => tr('Account type'),
+        'ACCOUNT_TYPE'         => tr('Reseller'),
+        'TR_REGISTRATION_DATE' => tr('Registration date'),
+        'REGISTRATION_DATE'    => ($row['domain_created'] != 0)
+            ? tohtml(date($cfg['DATE_FORMAT'], $row['domain_created'])) : tr('Unknown')
+    ));
 }
 
-/*******************************************************************************
- * Main script
+/***********************************************************************************************************************
+ * Main
  */
 
-// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
-
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
 check_login('reseller');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'reseller/profile.tpl',
-		'page_message' => 'layout'));
-
+$tpl->define_dynamic(array(
+    'layout'       => 'shared/layouts/ui.tpl',
+    'page'         => 'shared/partials/profile.tpl',
+    'page_message' => 'layout'
+));
 $tpl->assign('TR_PAGE_TITLE', tr('Reseller / Profile / Account Summary'));
 
 generateNavigation($tpl);
-reseller_generatePage($tpl);
+generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
-
 $tpl->prnt();
-
-unsetMessages();

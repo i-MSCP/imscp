@@ -1,36 +1,29 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2016 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2015 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/************************************************************************************
- * Script functions
+/***********************************************************************************************************************
+ * Functions
  */
 
 /**
- * Generates user action.
+ * Generates user action
  *
  * @access private
  * @param string $status User status
@@ -38,15 +31,21 @@
  */
 function _client_generateUserAction($status)
 {
-	if ($status == 'ok') {
-		return array(tr('Delete'), "action_delete('protected_user_delete.php?uname={USER_ID}', '{UNAME}')", tr('Edit'), "protected_user_edit.php?uname={USER_ID}");
-	} else {
-		return array(tr('N/A'), '', tr('N/A'), '#');
-	}
+    if ($status === 'ok') {
+        return array(
+            tr('Delete'),
+            "action_delete('protected_user_delete.php?uname={USER_ID}',
+            '{UNAME}')",
+            tr('Edit'),
+            "protected_user_edit.php?uname={USER_ID}"
+        );
+    }
+
+    return array(tr('N/A'), '', tr('N/A'), '#');
 }
 
 /**
- * Generates group actions.
+ * Generates group actions
  *
  * @access private
  * @param string $status Group status
@@ -54,166 +53,145 @@ function _client_generateUserAction($status)
  */
 function _client_generateHtgroupAction($status)
 {
-	if ($status == 'ok') {
-		return array(tr('Delete'), "action_delete('protected_group_delete.php?gname={GROUP_ID}', '{GNAME}')");
-	} else {
-		return array(tr('N/A'), '');
-	}
+    if ($status === 'ok') {
+        return array(tr('Delete'), "action_delete('protected_group_delete.php?gname={GROUP_ID}', '{GNAME}')");
+    }
+
+    return array(tr('N/A'), '');
 }
 
 /**
- * Generates users list.
+ * Generates users list
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
- * @param int $domainId Domain unique identifier
  * @return void
  */
-function client_generateUsersList($tpl, $domainId)
+function client_generateUsersList($tpl)
 {
-	$query = "SELECT * FROM `htaccess_users` WHERE `dmn_id` = ? ORDER BY `dmn_id` DESC";
-	$stmt = exec_query($query, $domainId);
+    $domainId = get_user_domain_id($_SESSION['user_id']);
+    $stmt = exec_query('SELECT * FROM `htaccess_users` WHERE `dmn_id` = ? ORDER BY `dmn_id` DESC', $domainId);
 
-	if (!$stmt->rowCount()) {
-		$tpl->assign(
-			array(
-				 'USERS_BLOCK' => '',
-				 'USERS_MESSAGE' => tr('No user found.')));
-	} else {
-		$tpl->assign('USERS_MESSAGE_BLOCK', '');
+    if (!$stmt->rowCount()) {
+        $tpl->assign(array(
+            'USERS_BLOCK'   => '',
+            'USERS_MESSAGE' => tr('No user found.')
+        ));
+        return;
+    }
 
-		while (!$stmt->EOF) {
-			list(
-				$userDeleteTranslation, $userDeleteJsScript, $userEditTranslation,
-				$htuserEditJsScript
-			) = _client_generateUserAction($stmt->fields['status']);
+    $tpl->assign('USERS_MESSAGE_BLOCK', '');
 
-			$tpl->assign(
-				array(
-					 'UNAME' => tohtml($stmt->fields['uname']),
-					 'USTATUS' => translate_dmn_status($stmt->fields['status']),
-					 'USER_ID' => $stmt->fields['id'],
-					 'USER_DELETE' => $userDeleteTranslation,
-					 'USER_DELETE_SCRIPT' => $userDeleteJsScript,
-					 'USER_EDIT' => $userEditTranslation,
-					 'USER_EDIT_SCRIPT' => $htuserEditJsScript));
+    while ($row = $stmt->fetchRow()) {
+        list(
+            $userDeleteTranslation, $userDeleteJsScript, $userEditTranslation, $htuserEditJsScript
+        ) = _client_generateUserAction($row['status']);
 
-			$tpl->parse('USER_BLOCK', '.user_block');
-			$stmt->moveNext();
-		}
-	}
+        $tpl->assign(array(
+            'UNAME'              => tohtml($row['uname']),
+            'USTATUS'            => translate_dmn_status($row['status']),
+            'USER_ID'            => $row['id'],
+            'USER_DELETE'        => $userDeleteTranslation,
+            'USER_DELETE_SCRIPT' => $userDeleteJsScript,
+            'USER_EDIT'          => $userEditTranslation,
+            'USER_EDIT_SCRIPT'   => $htuserEditJsScript
+        ));
+        $tpl->parse('USER_BLOCK', '.user_block');
+    }
 }
 
 /**
- * Generates groups list.
+ * Generates groups list
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
- * @param int $domainId Domain unique identifier
  * @return void
  */
-function client_genetateGroupsList($tpl, $domainId)
+function client_generateGroupsList($tpl)
 {
-	$query = "SELECT * FROM `htaccess_groups` WHERE `dmn_id` = ? ORDER BY `dmn_id` DESC";
-	$stmt = exec_query($query, $domainId);
+    $domainId = get_user_domain_id($_SESSION['user_id']);
+    $stmt = exec_query('SELECT * FROM htaccess_groups WHERE dmn_id = ? ORDER BY dmn_id DESC', $domainId);
 
-	if (!$stmt->rowCount()) {
-		$tpl->assign(
-			array(
-			  'GROUPS_MESSAGE' => tr('No group found.'),
-			  'GROUPS_BLOCK' => ''));
-	} else {
-		$tpl->assign('GROUPS_MESSAGE_BLOCK', '');
+    if (!$stmt->rowCount()) {
+        $tpl->assign(array(
+            'GROUPS_MESSAGE' => tr('No group found.'),
+            'GROUPS_BLOCK'   => ''
+        ));
+        return;
+    }
 
-		foreach($stmt->fetchAll() as $group) {
-			list(
-				$groupDeleteTranslation, $groupDeleteJsScript
-			) = _client_generateHtgroupAction($group['status']);
+    $tpl->assign('GROUPS_MESSAGE_BLOCK', '');
 
-			$tpl->assign(
-				array(
-					 'GNAME' => tohtml($group['ugroup']),
-					 'GSTATUS' => translate_dmn_status($group['status']),
-					 'GROUP_ID' => $group['id'],
-					 'GROUP_DELETE' => $groupDeleteTranslation,
-					 'GROUP_DELETE_SCRIPT' => $groupDeleteJsScript));
+    while ($row = $stmt->fetchRow()) {
+        list($groupDeleteTranslation, $groupDeleteJsScript) = _client_generateHtgroupAction($row['status']);
 
-			if (empty($group['members'])) {
-				$tpl->assign('GROUP_MEMBERS', '');
-			} else {
-				$query = "SELECT `uname` FROM `htaccess_users` WHERE `id` IN({$group['members']})";
-				$stmt = execute_query($query);
+        $tpl->assign(array(
+            'GNAME'               => tohtml($row['ugroup']),
+            'GSTATUS'             => translate_dmn_status($row['status']),
+            'GROUP_ID'            => $row['id'],
+            'GROUP_DELETE'        => $groupDeleteTranslation,
+            'GROUP_DELETE_SCRIPT' => $groupDeleteJsScript
+        ));
 
-				$tpl->assign('MEMBER', tohtml(implode(', ', $stmt->fetchAll(PDO::FETCH_COLUMN))));
-				$tpl->parse('GROUP_MEMBERS', '.group_members');
-			}
+        if (empty($row['members'])) {
+            $tpl->assign('GROUP_MEMBERS', '');
+        } else {
+            $stmt = execute_query(
+                'SELECT uname FROM htaccess_users WHERE id IN(' . array_map('quoteValue', explode(',', $row['members'])) .')'
+            );
+            $tpl->assign('MEMBER', tohtml(implode(', ', $stmt->fetchAll(PDO::FETCH_COLUMN))));
+            $tpl->parse('GROUP_MEMBERS', '.group_members');
+        }
 
-			$tpl->parse('GROUP_BLOCK', '.group_block');
-			$tpl->assign('GROUP_MEMBERS', '');
-			$stmt->moveNext();
-		}
-	}
+        $tpl->parse('GROUP_BLOCK', '.group_block');
+        $tpl->assign('GROUP_MEMBERS', '');
+    }
 }
 
-/************************************************************************************
- * Main script
+/***********************************************************************************************************************
+ * Main
  */
 
-// Include core library
 require_once 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
 check_login('user');
-
 customerHasFeature('protected_areas') or showBadRequestErrorPage();
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic(
-	array(
-		 'page' => 'client/puser_manage.tpl',
-		 'page_message' => 'layout',
-		 'users_message_block' => 'page',
-		 'users_block' => 'page',
-		 'user_block' => 'users_block',
-		 'groups_message_block' => 'page',
-		 'groups_block' => 'page',
-		 'group_block' => 'groups_block',
-		 'group_members' => 'group_block'));
+$tpl->define_dynamic(array(
+    'layout'               => 'shared/layouts/ui.tpl',
+    'page'                 => 'client/puser_manage.tpl',
+    'page_message'         => 'layout',
+    'users_message_block'  => 'page',
+    'users_block'          => 'page',
+    'user_block'           => 'users_block',
+    'groups_message_block' => 'page',
+    'groups_block'         => 'page',
+    'group_block'          => 'groups_block',
+    'group_members'        => 'group_block'
+));
+$tpl->assign(array(
+    'TR_PAGE_TITLE'     => tr('Client / Webtools / Protected Areas / Manage Users and Groups'),
+    'TR_ACTIONS'        => tr('Actions'),
+    'TR_USERS'          => tr('Users'),
+    'TR_USERNAME'       => tr('Username'),
+    'TR_ADD_USER'       => tr('Add user'),
+    'TR_GROUPNAME'      => tr('Group name'),
+    'TR_GROUP_MEMBERS'  => tr('Group members'),
+    'TR_ADD_GROUP'      => tr('Add group'),
+    'TR_CANCEL'         => tr('Cancel'),
+    'TR_GROUP'          => tr('Group'),
+    'TR_GROUPS'         => tr('Groups'),
+    'TR_PASSWORD'       => tr('Password'),
+    'TR_STATUS'         => tr('Status'),
+    'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s'),
+));
 
-$tpl->assign(
-	array(
-		 'TR_PAGE_TITLE' => tr('Client / Webtools / Protected Areas / Manage Users and Groups'),
-		 'TR_HTACCESS' => tr('Protected areas'),
-		 'TR_ACTIONS' => tr('Actions'),
-		 'TR_USERS_GROUPS_MANAGE' => tr('Manage users and groups'),
-		 'TR_USERS' => tr('Users'),
-		 'TR_USERNAME' => tr('Username'),
-		 'TR_ADD_USER' => tr('Add user'),
-		 'TR_GROUPNAME' => tr('Group name'),
-		 'TR_GROUP_MEMBERS' => tr('Group members'),
-		 'TR_ADD_GROUP' => tr('Add group'),
-		 'TR_GROUP' => tr('Group'),
-		 'TR_GROUPS' => tr('Groups'),
-		 'TR_PASSWORD' => tr('Password'),
-		 'TR_STATUS' => tr('Status'),
-		 'TR_PASSWORD_REPEAT' => tr('Repeat password'),
-		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s'),
-		 'TR_HTACCESS_USER' => tr('Manage users and groups')));
 
 generateNavigation($tpl);
-
-$domainId = get_user_domain_id($_SESSION['user_id']);
-client_generateUsersList($tpl, $domainId);
-client_genetateGroupsList($tpl, $domainId);
+client_generateUsersList($tpl);
+client_generateGroupsList($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
-
 $tpl->prnt();
-
-unsetMessages();
