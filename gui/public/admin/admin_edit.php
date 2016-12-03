@@ -79,7 +79,8 @@ function admin_updateUserData($userId)
 				`admin`
 			SET
 				`admin_pass` = ?, `fname` = ?, `lname` = ?, `firm` = ?, `zip` = ?, `city` = ?, `state` = ?,
-				`country` = ?, `email` = ?, `phone` = ?, `fax` = ?, `street1` = ?, `street2` = ?, `gender` = ?
+				`country` = ?, `email` = ?, `phone` = ?, `fax` = ?, `street1` = ?, `street2` = ?, `gender` = ?,
+				`admin_status` = IF(admin_type = 'user', 'tochangepwd', admin_status)
 			WHERE
 				`admin_id` = ?
 		";
@@ -88,12 +89,7 @@ function admin_updateUserData($userId)
 			$phone, $fax, $street1, $street2, $gender, $userId
 		));
 
-		$query = "DELETE FROM `login` WHERE `user_name` = ?";
-		$stmt = exec_query($query, $userName);
-
-		if ($stmt->rowCount()) {
-			set_page_message(tr('User session successfully killed for password change.'), 'success');
-		}
+		exec_query('DELETE FROM `login` WHERE `user_name` = ?', $userName);
 	}
 
 	iMSCP_Events_Aggregator::getInstance()->dispatch(
@@ -101,8 +97,8 @@ function admin_updateUserData($userId)
 	);
 
 	if (isset($_POST['send_data']) && !empty($_POST['password'])) {
-		$query = 'SELECT `admin_type` FROM `admin` WHERE `admin_id` = ?';
-		$stmt = exec_query($query, $userId);
+		$stmt = exec_query('SELECT `admin_type` FROM `admin` WHERE `admin_id` = ?', $userId);
+		$adminType = $stmt->fields['admin_type'];
 
 		if ($stmt->fields['admin_type'] == 'admin') {
 			$admin_type = tr('Administrator');
@@ -110,12 +106,10 @@ function admin_updateUserData($userId)
 			$admin_type = tr('Reseller');
 		} else {
 			$admin_type = tr('Customer');
+			send_request();
 		}
 
-		send_add_user_auto_msg(
-			$userId, $userName, $_POST['password'], $_POST['email'], $_POST['fname'], $_POST['lname'], $admin_type
-		);
-
+		send_add_user_auto_msg($userId, $userName, $_POST['password'], $_POST['email'], $_POST['fname'], $_POST['lname'], $admin_type);
 		set_page_message(tr('Login data successfully sent to %s.', $userName), 'success');
 	}
 }

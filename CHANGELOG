@@ -9,6 +9,7 @@ FRONTEND
     Added: Static info in custom DNS management interface explaining rules for substitution with $ORIGIN (Custom DNS)
     Added: Support for DNS NS resource record - only allowed for subzone delegation (Custom DNS)
     Changed: FTP chooser script (ftp_choose_dir.php) is now a shared script (previously, it was a client script)
+    Fixed: A backend request must be triggered when a customer password is being updated by the administrator (Admin level)
     Fixed: Authentication data (htuser(s)/htgroup(s)) must remain selected upon errors (Protected area form)
     Fixed: Could not install a new software instance due to a bad check on installation path (Software installer)
     Fixed: Installation of a new software instance on forwarded domains must be prohibited (Software installer)
@@ -16,6 +17,7 @@ FRONTEND
     Fixed: MCRYPT extension is being deprecated in PHP 7.1.x and will be removed in PHP 7.2.x
     Fixed: Missing check on FTP user owner while editing (Ftp user edit form - Security flaw)
     Fixed: Missing check on Htuser(s)/Htgroup(s) owner while editing (Protected area form - Security flaw)
+    Fixed: Password hash is not updated on customer password change (Reseller level)
     Fixed: Reseller cannot edit DocumentRoot of domain aliases (Reseller alias edit form)
     Fixed: Several layout issues in admin/software_rights.tpl (Software installer)
     Fixed: Several layout issues in client/software_view.tpl (Software installer)

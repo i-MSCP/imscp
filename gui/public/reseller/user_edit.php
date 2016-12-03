@@ -148,7 +148,7 @@ function reseller_updateUserData($adminId)
 			)
 		);
 	} else { // Change password
-		if($password != $passwordRepeat) {
+		if($password !== $passwordRepeat) {
 			set_page_message(tr("Passwords do not match."), 'error');
 			redirectTo('user_edit.php?edit_id=' . $adminId);
 		}
@@ -173,12 +173,11 @@ function reseller_updateUserData($adminId)
 			',
 			array(
 				$encryptedPassword, $firstName, $lastName, $firm, $zip, $city, $state, $country, $email, $phone, $fax,
-				$street1, $street2, $gender, $customerId, $adminId, $resellerId, 'tochangepwd'
+				$street1, $street2, $gender, $customerId, 'tochangepwd', $adminId, $resellerId
 			)
 		);
 
 		$adminName = get_user_name($adminId);
-
 		exec_query('DELETE FROM login WHERE user_name = ?', $adminName);
 	}
 
@@ -189,6 +188,7 @@ function reseller_updateUserData($adminId)
 
 	if(isset($_POST['send_data']) && $password !== '') {
 		send_add_user_auto_msg($resellerId, $adminName, $password, $email, $firstName, $lastName, tr('Customer'));
+		send_request();
 	}
 
 	redirectTo('users.php');
