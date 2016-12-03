@@ -1,6 +1,6 @@
 =head1 NAME
 
- Modules::Htusers - i-MSCP Htusers module
+ Modules::Htpasswd - i-MSCP Htusers module
 
 =cut
 
@@ -21,7 +21,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-package Modules::Htusers;
+package Modules::Htpasswd;
 
 use strict;
 use warnings;
@@ -31,7 +31,7 @@ use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
 
- i-MSCP Htuser module.
+ i-MSCP Htpasswd module.
 
 =head1 PUBLIC METHODS
 
@@ -47,7 +47,7 @@ use parent 'Modules::Abstract';
 
 sub getType
 {
-    'Htuser';
+    'Htpasswd';
 }
 
 =item process($htuserId)

@@ -193,7 +193,7 @@ sub process
     # Process toadd|tochange|toenable|todisable|todelete Htusers tasks
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_process(
-        'Modules::Htusers',
+        'Modules::Htpasswd',
         "
             SELECT id, CONCAT(uname, ':', id) AS name, status
             FROM htaccess_users INNER JOIN domain ON(domain_id = dmn_id)

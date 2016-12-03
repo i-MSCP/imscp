@@ -19,6 +19,9 @@ LISTENERS
     Added: 40_apache2_security_headers.pl listener file for Apache2 security headers - https://securityheaders.io
     Fixed: 10_proftpd_tuning.pl listener file is broken
 
+MODULES
+    Renamed: Modules::Htusers package to Modules::Htpasswd package
+
 SCRIPTS
     Fixed: Hide DEBUG messages from the imscp-dpkg-post-invoke.pl script when running APT
     Fixed: Missing `--debug' command line option in several scripts
