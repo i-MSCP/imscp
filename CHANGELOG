@@ -10,6 +10,7 @@ FRONTEND
     Fixed: Could not install a new software instance due to a bad check on installation path (Software installer)
     Fixed: Installation of a new software instance on forwarded domains must be prohibited (Software installer)
     Fixed: Installation of a new software instance outside of the document root must be prohibited (Software installer)
+    Fixed: MCRYPT extension is being deprecated in PHP 7.1.x and will be removed in PHP 7.2.x
     Fixed: Several layout issues in admin/software_rights.tpl (Software installer)
     Fixed: Several layout issues in client/software_view.tpl (Software installer)
     Fixed: Wrong SQL query leading to an exception (Software installer)
@@ -21,6 +22,12 @@ LISTENERS
 SCRIPTS
     Fixed: Hide DEBUG messages from the imscp-dpkg-post-invoke.pl script when running APT
     Fixed: Missing `--debug' command line option in several scripts
+
+SECURITY
+    Changed: Usage of AES-256 (Rijndael) algorithm to encrypt data in place of the Blowfish algorithm (see the errata)
+
+UPGRADE
+    Dropped: Upgrade support for i-MSCP version older than 1.1.0 (See the errata file for further details)
 
 YOUTRACK
     #IP-1665 Allow underscore in CNAME-record

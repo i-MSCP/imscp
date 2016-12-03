@@ -31,7 +31,7 @@ use iMSCP::Net;
 use iMSCP::Bootstrapper;
 use iMSCP::Dialog;
 use iMSCP::Stepper;
-use iMSCP::Crypt qw/ randomStr encryptBlowfishCBC decryptBlowfishCBC /;
+use iMSCP::Crypt qw/ randomStr encryptRijndaelCBC decryptRijndaelCBC /;
 use iMSCP::Database;
 use iMSCP::DbTasksProcessor;
 use iMSCP::Dir;
@@ -454,7 +454,7 @@ sub askMasterSqlUser
     my $pwd = setupGetQuestion('DATABASE_PASSWORD');
     my ($rs, $msg) = (0, '');
 
-    $pwd = decryptBlowfishCBC($main::imscpDBKey, $main::imscpDBiv, $pwd) unless $pwd eq '' || iMSCP::Getopt->preseed;
+    $pwd = decryptRijndaelCBC($main::imscpDBKey, $main::imscpDBiv, $pwd) unless $pwd eq '' || iMSCP::Getopt->preseed;
     
     $rs = askSqlRootUser($dialog) if iMSCP::Getopt->preseed;
     return $rs if $rs;
@@ -511,7 +511,7 @@ EOF
 
     if($rs < 30) {
         setupSetQuestion('DATABASE_USER', $user);
-        setupSetQuestion('DATABASE_PASSWORD', encryptBlowfishCBC($main::imscpDBKey, $main::imscpDBiv, $pwd));
+        setupSetQuestion('DATABASE_PASSWORD', encryptRijndaelCBC($main::imscpDBKey, $main::imscpDBiv, $pwd));
 
         # Substitute SQL root user data with i-MSCP master user data if needed
         setupSetQuestion('SQL_ROOT_USER', setupGetQuestion('SQL_ROOT_USER', $user));
@@ -658,7 +658,7 @@ sub setupAskTimezone
 {
     my $dialog = shift;
 
-    my $defaultTimezone = DateTime::TimeZone->new( name => 'local' );
+    my $defaultTimezone = DateTime::TimeZone->new( name => 'local' )->name();
     my $timezone = setupGetQuestion('TIMEZONE');
     my $rs = 0;
 
@@ -1044,7 +1044,7 @@ sub setupMasterSqlUser
     my $user = setupGetQuestion( 'DATABASE_USER' );
     my $userHost = setupGetQuestion( 'DATABASE_USER_HOST' );
     my $oldUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'} || '';
-    my $pwd = decryptBlowfishCBC($main::imscpDBKey, $main::imscpDBiv, setupGetQuestion( 'DATABASE_PASSWORD' ));
+    my $pwd = decryptRijndaelCBC($main::imscpDBKey, $main::imscpDBiv, setupGetQuestion( 'DATABASE_PASSWORD' ));
     my $oldUser = $main::imscpOldConfig{'DATABASE_USER'} || '';
 
     my $sqlServer = Servers::sqld->factory();

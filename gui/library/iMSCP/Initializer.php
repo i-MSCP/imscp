@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use \iMSCP\Crypt as Crypt;
+
 /**
  * Class iMSCP_Initializer
  */
@@ -264,15 +266,12 @@ class iMSCP_Initializer
             eval(@file_get_contents($this->config->CONF_DIR . '/imscp-db-keys'));
 
             if (empty($db_pass_key) || empty($db_pass_iv)) {
-                throw new iMSCP_Exception('Database key and/or initialization vector was not generated.');
+                throw new iMSCP_Exception('Missing encryption key and/or initialization vector.');
             }
-
-            iMSCP_Registry::set('MCRYPT_KEY', $db_pass_key);
-            iMSCP_Registry::set('MCRYPT_IV', $db_pass_iv);
 
             $connection = iMSCP_Database::connect(
                 $this->config->DATABASE_USER,
-                decryptBlowfishCbcPassword($this->config->DATABASE_PASSWORD),
+                Crypt::decryptRijndaelCBC($db_pass_key, $db_pass_iv, $this->config->DATABASE_PASSWORD),
                 $this->config->DATABASE_TYPE,
                 $this->config->DATABASE_HOST,
                 $this->config->DATABASE_NAME

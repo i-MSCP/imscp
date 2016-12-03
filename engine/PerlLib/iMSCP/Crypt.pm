@@ -33,7 +33,6 @@ use Digest::MD5 ();
 use MIME::Base64;
 use parent 'Exporter';
 
-
 use constant ALNUM => '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 use constant ALPHA64 => './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 use constant BASE64 => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
@@ -41,7 +40,7 @@ use constant BASE64 => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123
 our @EXPORT_OK = qw/
     randomStr md5 sha256 sha512 bcrypt apr1MD5 htpasswd verify hashEqual encryptBlowfishCBC decryptBlowfishCBC
     encryptRijndaelCBC decryptRijndaelCBC
-/;
+    /;
 
 =head1 DESCRIPTION
 
@@ -370,10 +369,10 @@ sub hashEqual($$)
 
 =item encryptBlowfishCBC($key, $iv, $data)
 
- Returns a base64 string representation of the given data encrypted in CBC mode using the Blowfish algorithm
+ Encrypt the given data using the Blowfish algorithm (Cipher) in CBC mode
 
- Param string $key Encryption key (56 bytes long)
- Param string $iv Initialization vector (8 bytes long)
+ Param string $key Encryption key (4 up to 56 bytes long (32 up to 448 bits))
+ Param string $iv Initialization vector (8 bytes long (64 bits))
  Param string $data Data to encrypt
  Return string A base64 encoded string representing encrypted data, croak on failure
 
@@ -386,10 +385,12 @@ sub encryptBlowfishCBC($$$)
 
 =item decryptBlowfishCBC($key, $iv, $data)
 
- Decrypt the given data in CBC mode using Blowfish algorithm
+ Decrypt the given data using the Blowfish algorithm (Cipher) in CBC mode
 
- Param string $key Decryption key (56 bytes long)
- Param string $iv Initialization vector (8 bytes long)
+ Note: PKCS#5/PKCS#7 padding is assumed.
+
+ Param string $key Decryption key (4 up to 56 bytes long (32 up to 448 bits))
+ Param string $iv Initialization vector (8 bytes long (64 bits))
  Param string $data A base64 encoded string representing encrypted data
  Return string, croak on failure
 
@@ -402,10 +403,12 @@ sub decryptBlowfishCBC($$$)
 
 =item encryptRijndaelCBC($key, $iv, $data)
 
- Returns a base64 string representation of the given data encrypted in CBC mode using the AES (Rijndael) algorithm
+ Encrypt the given data using the AES (Rijndael) algorithm (Cipher) in CBC mode
 
- Param string $key Encryption key (32 bytes long)
- Param string $iv Initialization vector (16 bytes long)
+ Note: PKCS#5/PKCS#7 padding is assumed.
+
+ Param string $key Encryption key (16, 24, 32 or bytes long (128, 192 or 256 bits))
+ Param string $iv Initialization vector (16 bytes long (128 bits))
  Param string $data Data to encrypt
  Return A string base64 encoded string representing encrypted data, croak on failure
 
@@ -418,10 +421,12 @@ sub encryptRijndaelCBC($$$)
 
 =item decryptRijndaelCBC($key, $iv, $data)
 
- Decrypt the given data in CBC mode using AES (Rijndael) algorithm
+ Decrypt the given data using the AES (Rijndael) algorithm (Cipher) in CBC mode
 
- Param string $key Decryption key (32 bytes long)
- Param string $iv Initialization vector (16 bytes long)
+ Note: PKCS#5/PKCS#7 padding is assumed.
+
+ Param string $key Decryption key (16, 24, 32 or bytes long (128, 192 or 256 bits))
+ Param string $iv Initialization vector (16 bytes long (128 bits))
  Param string $data A base64 encoded string representing encrypted data
  Return string, croak on failure
 
@@ -440,7 +445,9 @@ sub decryptRijndaelCBC($$$)
 
 =item _encryptCBC($algorithm, $key, $iv, $data)
 
- Returns a base64 string representation of the given data encrypted in CBC mode using the given algorithm
+ Encrypt the given data using the given algorithm (Cipher) in CBC mode
+
+ Note: PKCS#5/PKCS#7 padding is assumed.
 
  Param string $algorithm Algorithm
  Param string $key Encryption key
@@ -456,23 +463,26 @@ sub _encryptCBC($$$$)
 
     encode_base64(
         Crypt::CBC->new(
-            -cipher         => $algorithm,
-            -key            => $key,
-            -keysize        => length $key,
-            -regenerate_key => 0,
-            -iv             => $iv,
-            -header         => 'none',
-            -padding        => 'space',
+            -cipher      => $algorithm,
+            -key         => $key,
+            -keysize     => length $key,
+            -blocksize   => length $iv,
+            -literal_key => 1,
+            -iv          => $iv,
+            -header      => 'none',
+            -padding     => 'standard'
         )->encrypt( $data ),
         ''
     );
 }
 
-=item _decryptCBC($algo, $key, $iv, $data)
+=item _decryptCBC($algorithm, $key, $iv, $data)
 
- Decrypt the given data in CBC mode using the given algorithm
+ Decrypt the given data using the given algorithm (Cipher) in CBC mode
 
- Param string $algo Algorithm
+ Note: PKCS#5/PKCS#7 padding is assumed.
+
+ Param string $algorithm Algorithm
  Param string $key Decryption key
  Param string $iv Initialization vector
  Param string $data A base64 encoded string representing encrypted data
@@ -485,13 +495,14 @@ sub _decryptCBC($$$$)
     my ($algorithm, $key, $iv, $data) = @_;
 
     Crypt::CBC->new(
-        -cipher         => $algorithm,
-        -key            => $key,
-        -keysize        => length $key,
-        -regenerate_key => 0,
-        -iv             => $iv,
-        -header         => 'none',
-        -padding        => 'space',
+        -cipher      => $algorithm,
+        -key         => $key,
+        -keysize     => length $key,
+        -blocksize   => length $iv,
+        -literal_key => 1,
+        -iv          => $iv,
+        -header      => 'none',
+        -padding     => 'standard'
     )->decrypt(
         decode_base64( $data )
     );

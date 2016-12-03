@@ -195,7 +195,7 @@ sub _genKeys
 
     require "$keyFile" if -f $keyFile;
 
-    if ($db_pass_key eq '{KEY}' || $db_pass_iv eq '{IV}') {
+    if ($db_pass_key eq '{KEY}' || length($db_pass_key) != 32 || $db_pass_iv eq '{IV}' || length($db_pass_iv) != 16) {
         require iMSCP::Crypt;
         require Data::Dumper;
         Data::Dumper->import();
@@ -213,12 +213,14 @@ sub _genKeys
         print {$fh} Data::Dumper->Dump( 
                 [
                     iMSCP::Crypt::randomStr( 32 ),
-                    iMSCP::Crypt::randomStr( 8 )
+                    iMSCP::Crypt::randomStr( 16 )
                 ],
                 [ qw/ db_pass_key db_pass_iv / ]
             );
 
         close $fh;
+
+        delete $INC{$keyFile}; # Force reload of keyfile
         require "$keyFile";
     }
 
@@ -249,7 +251,7 @@ sub _dbConnect
     $database->set( 'DATABASE_USER', $main::imscpConfig{'DATABASE_USER'} );
     $database->set(
         'DATABASE_PASSWORD',
-        iMSCP::Crypt::decryptBlowfishCBC( $main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'} )
+        iMSCP::Crypt::decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'} )
     );
     my $rs = $database->connect();
     !$rs || $options->{'nofail'} or die( sprintf( 'Could not connect to the SQL server: %s', $rs ) );

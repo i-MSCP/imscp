@@ -26,8 +26,7 @@ package Servers::sqld::remote_server;
 use strict;
 use warnings;
 use iMSCP::Database;
-use iMSCP::Execute qw/escapeShell/;
-use iMSCP::Crypt qw/decryptBlowfishCBC/;
+use iMSCP::Crypt qw/ decryptRijndaelCBC /;
 use iMSCP::TemplateParser;
 use version;
 use Class::Autouse qw/ :nostat Servers::sqld::mysql::installer /;
@@ -188,7 +187,7 @@ sub _buildConf
     }
 
     (my $user = main::setupGetQuestion( 'DATABASE_USER' ) ) =~ s/"/\\"/g;
-    (my $pwd = decryptBlowfishCBC( $main::imscpDBKey, $main::imscpDBiv, main::setupGetQuestion( 'DATABASE_PASSWORD' ) ) ) =~ s/"/\\"/g;
+    (my $pwd = decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv, main::setupGetQuestion( 'DATABASE_PASSWORD' ) ) ) =~ s/"/\\"/g;
 
     $cfgTpl = process(
         {

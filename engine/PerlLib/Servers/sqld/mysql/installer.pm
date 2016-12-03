@@ -26,7 +26,7 @@ package Servers::sqld::mysql::installer;
 use strict;
 use warnings;
 use iMSCP::Config;
-use iMSCP::Crypt qw/decryptBlowfishCBC/;
+use iMSCP::Crypt qw/ decryptRijndaelCBC /;
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Dir;
@@ -245,7 +245,7 @@ socket   = {SQLD_SOCK_DIR}/mysqld.sock
 EOF
 
     (my $user = main::setupGetQuestion( 'DATABASE_USER' ) ) =~ s/"/\\"/g;
-    (my $pwd = decryptBlowfishCBC( $main::imscpDBKey, $main::imscpDBiv, main::setupGetQuestion( 'DATABASE_PASSWORD' ) ) ) =~ s/"/\\"/g;
+    (my $pwd = decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv, main::setupGetQuestion( 'DATABASE_PASSWORD' ) ) ) =~ s/"/\\"/g;
     my $variables = {
         DATABASE_HOST     => main::setupGetQuestion( 'DATABASE_HOST' ),
         DATABASE_PORT     => main::setupGetQuestion( 'DATABASE_PORT' ),

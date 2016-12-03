@@ -42,9 +42,9 @@ class Crypt
      * @return string
      * @deprecated As of 2012-6-7, this algorithm is "no longer considered safe" by its author. Use bcrypt instead.
      */
-    static public function md5($password, $salt = null)
+    static public function md5($password, $salt = NULL)
     {
-        if ($salt !== null) {
+        if ($salt !== NULL) {
             if (strlen($salt) < 8) {
                 throw new \InvalidArgumentException('The salt length must be at least 8 bytes long');
             }
@@ -65,8 +65,8 @@ class Crypt
      */
     static public function randomStr($length, $charList = self::BASE64)
     {
-        if (!extension_loaded('mcrypt')) {
-            throw new \RuntimeException('Mcrypt extension is not available');
+        if (!extension_loaded('openssl')) {
+            throw new \RuntimeException('OpenSSL extension is not available');
         }
 
         $length = (int)$length;
@@ -79,7 +79,7 @@ class Crypt
             return str_repeat($charList, $length);
         }
 
-        $bytes = mcrypt_create_iv($length, MCRYPT_DEV_URANDOM);
+        $bytes = openssl_random_pseudo_bytes($length);
         $pos = 0;
         $str = '';
 
@@ -96,11 +96,11 @@ class Crypt
      *
      * @throws \InvalidArgumentException
      * @param string $password Password to be hashed
-     * @param int $rounds A numeric value  used to indicate how many times the hashing loop should be executed
+     * @param int $rounds A numeric value used to indicate how many times the hashing loop should be executed
      * @param null|string $salt An optional salt string to base the hashing on
      * @return string
      */
-    static public function sha256($password, $rounds = 5000, $salt = null)
+    static public function sha256($password, $rounds = 5000, $salt = NULL)
     {
         $rounds = (int)$rounds;
         if ($rounds < 1000 || $rounds > 5000) {
@@ -109,7 +109,7 @@ class Crypt
 
         $rounds = sprintf('%1$04d', $rounds);
 
-        if ($salt !== null) {
+        if ($salt !== NULL) {
             if (strlen($salt) < 16) {
                 throw new \InvalidArgumentException('The salt length must be at least 16 bytes long');
             }
@@ -129,7 +129,7 @@ class Crypt
      * @param null||string $salt An optional salt string to base the hashing on
      * @return string
      */
-    static public function sha512($password, $rounds = 5000, $salt = null)
+    static public function sha512($password, $rounds = 5000, $salt = NULL)
     {
         $rounds = (int)$rounds;
         if ($rounds < 1000 || $rounds > 5000) {
@@ -138,7 +138,7 @@ class Crypt
 
         $rounds = sprintf('%1$04d', $rounds);
 
-        if ($salt !== null) {
+        if ($salt !== NULL) {
             if (strlen($salt) < 16) {
                 throw new \InvalidArgumentException('The salt length must be at least 16 bytes long');
             }
@@ -158,7 +158,7 @@ class Crypt
      * @param null|string $salt An optional salt string to base the hashing on
      * @return string
      */
-    static public function bcrypt($password, $cost = 10, $salt = null)
+    static public function bcrypt($password, $cost = 10, $salt = NULL)
     {
         $cost = (int)$cost;
         if ($cost < 4 || $cost > 31) {
@@ -167,7 +167,7 @@ class Crypt
 
         $cost = sprintf('%1$02d', $cost);
 
-        if ($salt !== null) {
+        if ($salt !== NULL) {
             if (strlen($salt) < 16) {
                 throw new \InvalidArgumentException('The salt length must be at least 16 bytes long');
             }
@@ -193,9 +193,9 @@ class Crypt
      * @param null|string $salt Salt An optional salt string to base the hashing on
      * @return string
      */
-    static public function apr1MD5($password, $salt = null)
+    static public function apr1MD5($password, $salt = NULL)
     {
-        if ($salt !== null) {
+        if ($salt !== NULL) {
             if (strlen($salt) !== 8) {
                 throw new \InvalidArgumentException('The salt for APR1 algorithm must be 8 characters long');
             }
@@ -264,13 +264,13 @@ class Crypt
      * @param string $format Format in which the password must be hashed (bcrypt|crypt|md5|sha1) -  Default is md5 (APR1)
      * @return string
      */
-    static public function htpasswd($password, $cost = 10, $salt = null, $format = 'md5')
+    static public function htpasswd($password, $cost = 10, $salt = NULL, $format = 'md5')
     {
         switch ($format) {
             case 'bcrypt':
                 return static::bcrypt($password, $cost, $salt);
             case 'crypt':
-                if ($salt !== null) {
+                if ($salt !== NULL) {
                     if (strlen($salt) != 2) {
                         throw new \InvalidArgumentException('The salt length must be 2 bytes long');
                     }
@@ -315,7 +315,7 @@ class Crypt
      */
     static public function verify($password, $hash)
     {
-        if (substr($hash, 0, 5) === '{SHA}') { // htpasswd sha1 hashed paswords
+        if (substr($hash, 0, 5) === '{SHA}') { // htpasswd sha1 hashed passwords
             return static::hashEqual($hash, '{SHA}' . base64_encode(sha1($password, true)));
         }
 
@@ -364,78 +364,113 @@ class Crypt
     }
 
     /**
-     * Encrypt the given data in CBC mode using the Blowfish algorithm
+     * Encrypt the given data using the Blowfish algorithm (Cipher) in CBC mode
      *
-     * @param string $key Encryption key (56 bytes long)
-     * @param string $iv Initialization vector (8 bytes long)
+     * Note: PKCS#5/PKCS#7 padding is assumed.
+     *
+     * @param string $key Encryption key (4 up to 56 bytes long (32 up to 448 bits))
+     * @param string $iv Initialization vector (8 bytes long (64 bits))
      * @param string $data Data to encrypt
      * @return string A base64 string representing encrypted data
      */
     static function encryptBlowfishCBC($key, $iv, $data)
     {
-        return static::encryptCBC(MCRYPT_BLOWFISH, $key, $iv, $data);
+        return static::encrypt('BF-CBC', $key, $iv, $data);
     }
 
     /**
-     * Decrypt the given data in CBC mode using the Blowfish algorithm
+     * Decrypt the given data using the Blowfish algorithm (Cipher) in CBC mode
      *
-     * @param string $key Decryption key (56 bytes long)
-     * @param string $iv Initialization vector (8 bytes long)
+     * Note: PKCS#5/PKCS#7 padding is assumed.
+     *
+     * @param string $key Decryption key (4 up to 56 bytes long (32 up to 448 bits))
+     * @param string $iv Initialization vector (8 bytes long (64 bits))
      * @param string $data A base64 encoded string representing encrypted data
      * @return string
      */
     static function decryptBlowfishCBC($key, $iv, $data)
     {
-        return static::decryptCBC(MCRYPT_BLOWFISH, $key, $iv, $data);
+        return static::decrypt('BF-CBC', $key, $iv, $data);
     }
 
     /**
-     * Encrypt the given data in CBC mode using the AES (Rijndael) algorithm
+     * Encrypt the given data using the AES (Rijndael) algorithm (Cipher) in CBC mode
      *
-     * @param string $key Encryption key
-     * @param string $iv Initialization vector
+     * Note: PKCS#5/PKCS#7 padding is assumed.
+     *
+     * @param string $key Encryption key (16, 24, 32 or bytes long (128, 192 or 256 bits))
+     * @param string $iv Initialization vector (16 bytes long (128 bits))
      * @param string $data Data to encrypt
      * @return string A base64 encoded string representing encrypted data
      */
     static function encryptRijndaelCBC($key, $iv, $data)
     {
-        return static::encryptCBC(MCRYPT_RIJNDAEL_128, $key, $iv, $data);
+        switch (strlen($key)) {
+            case 16:
+                $algorithm = 'AES-128-CBC';
+                break;
+            case 24:
+                $algorithm = 'AES-192-CBC';
+                break;
+            case 32:
+                $algorithm = 'AES-256-CBC';
+                break;
+            default:
+                throw new \InvalidArgumentException('Unsupported key length');
+        }
+
+        return static::encrypt($algorithm, $key, $iv, $data);
     }
 
     /**
-     * Decrypt the given data in CBC mode using the AES (Rijndael) algorithm,
+     * Decrypt the given data using the AES (Rijndael) algorithm (Cipher) in CBC mode
      *
-     * @param string $key Decryption key
-     * @param string $iv Initialization vector
+     * Note: PKCS#5/PKCS#7 padding is assumed.
+     *
+     * @param string $key Decryption key (16, 24, 32 or bytes long (128, 192 or 256 bits))
+     * @param string $iv Initialization vector (16 bytes long (128 bits))
      * @param string $data A base64 encoded string representing encrypted data
      * @return string
      */
     static function decryptRijndaelCBC($key, $iv, $data)
     {
-        return static::decryptCBC(MCRYPT_RIJNDAEL_128, $key, $iv, $data);
+        switch (strlen($key)) {
+            case 16:
+                $algorithm = 'AES-128-CBC';
+                break;
+            case 24:
+                $algorithm = 'AES-192-CBC';
+                break;
+            case 32:
+                $algorithm = 'AES-256-CBC';
+                break;
+            default:
+                throw new \InvalidArgumentException('Unsupported key length');
+        }
+
+        return static::decrypt($algorithm, $key, $iv, $data);
     }
 
     /**
-     * Encrypt the given data in CBC mode using the given algorithm
+     * Encrypt the given data using the given algorithm (Cipher)
      *
-     * @throws \InvalidArgumentException
+     * Note: PKCS#5/PKCS#7 padding is assumed.
+     *
      * @param int $algorithm Algorithm
      * @param string $key Encryption key
      * @param string $iv Initialization vector
      * @param string $data Data to encrypt
      * @return string A base64 encoded string representing encrypted data
      */
-    static protected function encryptCBC($algorithm, $key, $iv, $data)
+    static protected function encrypt($algorithm, $key, $iv, $data)
     {
-        if (!extension_loaded('mcrypt')) {
-            throw new \RuntimeException('Mcrypt extension is not available');
-        }
-
-        return base64_encode(mcrypt_encrypt($algorithm, $key, $data, MCRYPT_MODE_CBC, $iv));
+        return openssl_encrypt($data, $algorithm, $key, 0, $iv);
     }
 
     /**
-     * Decrypt the given data in CBC mode using the given algorithm
+     * Decrypt the given data using the given algorithm (Cipher)
+     *
+     * Note: PKCS#5/PKCS#7 padding assumed.
      *
      * @throws \RuntimeException
      * @param int $algorithm Algorithm
@@ -444,12 +479,12 @@ class Crypt
      * @param string $data A base64 encoded string representing encrypted data
      * @return string
      */
-    static protected function decryptCBC($algorithm, $key, $iv, $data)
+    static protected function decrypt($algorithm, $key, $iv, $data)
     {
-        if (!extension_loaded('mcrypt')) {
-            throw new \RuntimeException('Mcrypt extension is not available');
+        if (!extension_loaded('openssl')) {
+            throw new \RuntimeException('OpenSSL extension is not available');
         }
 
-        return mcrypt_decrypt($algorithm, $key, base64_decode($data), MCRYPT_MODE_CBC, $iv);
+        return openssl_decrypt($data, $algorithm, $key, 0, $iv);
     }
 }
