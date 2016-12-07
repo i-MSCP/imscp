@@ -139,7 +139,7 @@ function client_addMailAccount()
 			$mailAddr = $username . '@' . $domainName;
 
 			if ($mailTypeNormal) {
-				// Check for pasword
+				// Check for password
 				$password = clean_input($_POST['password']);
 				$password_rep = clean_input($_POST['password_rep']);
 

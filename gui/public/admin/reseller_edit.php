@@ -441,7 +441,7 @@ function admin_checkAndUpdateData($resellerId)
         $db->beginTransaction();
 
         // check for password (if needed)
-        if ($data['password'] !== '' && $data['pasword_confirmation'] !== '') {
+        if ($data['password'] !== '' && $data['password_confirmation'] !== '') {
             if ($data['password'] !== $data['password_confirmation']) {
                 set_page_message(tr('Passwords do not match.'), 'error');
             }
