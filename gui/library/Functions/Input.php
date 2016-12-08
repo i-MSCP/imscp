@@ -69,7 +69,7 @@ function clean_html($text)
  */
 function clean_input($input, $htmlencode = false)
 {
-    // Trim leading and trealing white spaces
+    // Trim leading and trailing white spaces
     $input = trim($input, "\x20");
     $input = trim($input, '{..}');
 
