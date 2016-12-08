@@ -160,24 +160,20 @@ EOF
             $msg = '';
             do {
                 do {
-                    ($rs, $password) = $dialog->passwordbox( <<"EOF", $password );
+                    ($rs, $password) = $dialog->passwordbox( <<"EOF", '' );
 
 Please enter master administrator password:$msg
 EOF
                     $msg = '\n\n\\Z1The password must be at least 6 characters long.\\Zn\n\nPlease try again:';
                 } while ($rs < 30 && length $password < 6);
 
-                # Ask for administrator password confirmation
                 if ($rs < 30) {
                     $msg = '';
-
-                    do {
-                        ($rs, $rpassword) = $dialog->passwordbox( <<"EOF", '' );
+                    ($rs, $rpassword) = $dialog->passwordbox( <<"EOF", '' );
 
 Please confirm master administrator password:$msg
 EOF
-                        $msg = "\n\n\\Z1Passwords do not match.\\Zn\n\nPlease try again:";
-                    } while ($rs < 30 && $rpassword ne $password);
+                    $msg = "\n\n\\Z1Passwords do not match.\\Zn\n\nPlease try again:";
                 }
             } while ($rs < 30 && $password ne $rpassword);
         }
