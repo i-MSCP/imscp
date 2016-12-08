@@ -45,6 +45,8 @@ UPGRADE
     Dropped: Upgrade support for i-MSCP versions older than 1.1.0 (See the errata)
 
 YOUTRACK
+    #IP-1639 When editing a hosting plan, some PHP INI values are not always those that were set while creation
+    #IP-1640 When editing reseller properties, customers's PHP INI values are updated with incorrect values
     #IP-1665 Allow underscore in CNAME-record
     #IP-1666 Could not dump domain.tld when two DNS entries have same name
     #IP-1667 ITK httpd server implementation - Variables not replaced in vhost template

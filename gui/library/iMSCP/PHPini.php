@@ -49,11 +49,17 @@ class iMSCP_PHPini
     protected $isDefaultDomainIni = true;
 
     /**
+     * @var string PHP INI level
+     */
+    protected $iniLevel;
+
+    /**
      * Singleton object - Make new unavailable
      */
     private function __construct()
     {
-
+        set_time_limit(0);
+        ignore_user_abort(true);
     }
 
     /**
@@ -63,7 +69,7 @@ class iMSCP_PHPini
      */
     static public function getInstance()
     {
-        if (null === self::$instance) {
+        if (NULL === self::$instance) {
             self::$instance = new self();
         }
 
@@ -82,9 +88,9 @@ class iMSCP_PHPini
      * @param int|null $resellerId Reseller unique identifier
      * @return void
      */
-    public function loadResellerPermissions($resellerId = null)
+    public function loadResellerPermissions($resellerId = NULL)
     {
-        if (null !== $resellerId) {
+        if (NULL !== $resellerId) {
             $stmt = exec_query(
                 '
                     SELECT php_ini_system, php_ini_al_disable_functions, php_ini_al_mail_function,
@@ -216,9 +222,9 @@ class iMSCP_PHPini
      * @param string|null $permission Permission name or null for all permissions
      * @return mixed
      */
-    public function getResellerPermission($permission = null)
+    public function getResellerPermission($permission = NULL)
     {
-        if (null === $permission) {
+        if (NULL === $permission) {
             return $this->resellerPermissions;
         }
 
@@ -260,17 +266,16 @@ class iMSCP_PHPini
      * If a client identifier is given, try to load permissions from
      * database, else, load default client permissions.
      *
-     * @throws iMSCP_Exception
-     * @throws iMSCP_Exception_Database
+     * @throws iMSCP_Exception|iMSCP_Exception_Database
      * @param int|null $clientId Domain unique identifier
      */
-    public function loadClientPermissions($clientId = null)
+    public function loadClientPermissions($clientId = NULL)
     {
         if (empty($this->resellerPermissions)) {
             throw new iMSCP_Exception('You must first load reseller permissions');
         }
 
-        if (null !== $clientId) {
+        if (NULL !== $clientId) {
             $stmt = exec_query(
                 '
                     SELECT phpini_perm_system, phpini_perm_allow_url_fopen, phpini_perm_display_errors,
@@ -327,7 +332,7 @@ class iMSCP_PHPini
     }
 
     /**
-     * Sets the value of a client PHP permission
+     * Sets client permission value
      *
      * We are safe here. New value is set only if valid and if client' reseller has the needed permission.
      *
@@ -384,9 +389,9 @@ class iMSCP_PHPini
      * @param string|null $permission Permission name or null for all permissions
      * @return mixed
      */
-    public function getClientPermission($permission = null)
+    public function getClientPermission($permission = NULL)
     {
-        if (null === $permission) {
+        if (NULL === $permission) {
             return $this->clientPermissions;
         }
 
@@ -427,20 +432,20 @@ class iMSCP_PHPini
     }
 
     /**
-     * Loads domain configuration options
+     * Loads domain INI values
      *
      * @throws iMSCP_Exception
      * @param int|null $adminId Owner unique identifier
      * @param int|null $domainId Domain unique identifier
      * @param string|null $domainType Domain type (dmn|als|sub|subals)
      */
-    public function loadDomainIni($adminId = null, $domainId = null, $domainType = null)
+    public function loadDomainIni($adminId = NULL, $domainId = NULL, $domainType = NULL)
     {
         if (empty($this->clientPermissions)) {
             throw new iMSCP_Exception('You must first load client permissions.');
         }
 
-        if (null !== $adminId && null !== $domainId && null !== $domainType) {
+        if (NULL !== $adminId && NULL !== $domainId && NULL !== $domainType) {
             $stmt = exec_query('SELECT * FROM php_ini WHERE admin_id = ? AND domain_id = ? AND domain_type = ?', array(
                 $adminId, $domainId, $domainType
             ));
@@ -483,7 +488,7 @@ class iMSCP_PHPini
     }
 
     /**
-     * Saves domain configuration options
+     * Saves domain INI values
      *
      * @throws iMSCP_Exception if domain PHP configuration options were not loaded
      * @param int $adminId Owner unique identifier
@@ -515,18 +520,18 @@ class iMSCP_PHPini
                     memory_limit = :memory_limit
             ',
             array(
-                'admin_id' => $adminId,
-                'domain_id' => $domainId,
-                'domain_type' => $domainType,
-                'disable_functions' => $this->domainIni['phpiniDisableFunctions'],
-                'allow_url_fopen' => $this->domainIni['phpiniAllowUrlFopen'],
-                'display_errors' => $this->domainIni['phpiniDisplayErrors'],
-                'error_reporting' => $this->domainIni['phpiniErrorReporting'],
-                'post_max_size' => $this->domainIni['phpiniPostMaxSize'],
+                'admin_id'             => $adminId,
+                'domain_id'            => $domainId,
+                'domain_type'          => $domainType,
+                'disable_functions'    => $this->domainIni['phpiniDisableFunctions'],
+                'allow_url_fopen'      => $this->domainIni['phpiniAllowUrlFopen'],
+                'display_errors'       => $this->domainIni['phpiniDisplayErrors'],
+                'error_reporting'      => $this->domainIni['phpiniErrorReporting'],
+                'post_max_size'        => $this->domainIni['phpiniPostMaxSize'],
                 'upload_max_file_size' => $this->domainIni['phpiniUploadMaxFileSize'],
-                'max_execution_time' => $this->domainIni['phpiniMaxExecutionTime'],
-                'max_input_time' => $this->domainIni['phpiniMaxInputTime'],
-                'memory_limit' => $this->domainIni['phpiniMemoryLimit']
+                'max_execution_time'   => $this->domainIni['phpiniMaxExecutionTime'],
+                'max_input_time'       => $this->domainIni['phpiniMaxInputTime'],
+                'memory_limit'         => $this->domainIni['phpiniMemoryLimit']
             )
         );
 
@@ -534,7 +539,7 @@ class iMSCP_PHPini
     }
 
     /**
-     * Sets the value of a domain configuration option
+     * Sets value for a domain INI option
      *
      * We are safe here. New value is set only if valid.
      *
@@ -575,15 +580,15 @@ class iMSCP_PHPini
     }
 
     /**
-     * Gets domain configuration option(s)
+     * Gets domain INI option value(s)
      *
      * @throws iMSCP_Exception if $varname is unknown
      * @param string|null $varname Domain configuration option name or null for all configuration options
      * @return mixed
      */
-    public function getDomainIni($varname = null)
+    public function getDomainIni($varname = NULL)
     {
-        if (null === $varname) {
+        if (NULL === $varname) {
             return $this->domainIni;
         }
 
@@ -595,7 +600,7 @@ class iMSCP_PHPini
     }
 
     /**
-     * Whether or not domain INI values are set with default values
+     * Whether or not domain INI option values are set with default option values
      *
      * @return boolean
      */
@@ -608,7 +613,7 @@ class iMSCP_PHPini
      * Validate value for the given PHP permission
      *
      * @throws iMSCP_Exception if $permission is unknown
-     * @param string $permission Permision name
+     * @param string $permission Permission name
      * @param string $value Permission value
      * @return bool TRUE if $permission is valid, FALSE otherwise
      *
@@ -685,21 +690,17 @@ class iMSCP_PHPini
     }
 
     /**
-     * Update domain configuration options for the given client
+     * Update client domain INI options for the given client
      *
      * @throws iMSCP_Exception_Database
+     * @param null|array $domainIni New Domain INI values
      * @param int $clientId Client identifier
      * @param bool $needChange OPTIONAL whether or not client domains must be updated
      * @return bool Boolean indicating whether or not a backend request is needed
      */
-    public function updateDomainConfigOptions($clientId, $needChange = false)
+    public function updateClientDomainIni($domainIni, $clientId, $needChange = false)
     {
         $needBackendRequest = false;
-        $config = iMSCP_Registry::get('config');
-        $confDir = $config['CONF_DIR'];
-        $srvConfig = new iMSCP_Config_Handler_File("$confDir/php/php.data");
-        $configLevel = $srvConfig['PHP_CONFIG_LEVEL'];
-        $domainConfOptions = $this->getDomainIni();
 
         // We must ensure that there is no missing PHP INI entries (since 1.3.1)
         $this->createMissingPhpIniEntries($clientId);
@@ -740,13 +741,19 @@ class iMSCP_PHPini
                         }
                     }
 
-                    foreach (array('phpiniMemoryLimit', 'phpiniPostMaxSize', 'phpiniUploadMaxFileSize',
-                                 'phpiniMaxExecutionTime', 'phpiniMaxInputTime') as $option
+                    foreach (
+                        array(
+                            'phpiniMemoryLimit', 'phpiniPostMaxSize', 'phpiniUploadMaxFileSize',
+                            'phpiniMaxExecutionTime', 'phpiniMaxInputTime'
+                        ) as $option
                     ) {
-                        if (isset($domainConfOptions[$option])) {
-                            $this->setDomainIni($option, $domainConfOptions[$option]);
+                        if (NULL !== $domainIni) {
+                            // Set new INI value
+                            $this->setDomainIni($option, $domainIni[$option]);
                         }
 
+
+                        // We ensure that client domain INI value is not greater than reseller value
                         $optionValue = $this->getResellerPermission($option);
                         if ($this->getDomainIni($option) > $optionValue) {
                             $this->setDomainIni($option, $optionValue);
@@ -755,7 +762,7 @@ class iMSCP_PHPini
                 }
 
                 if ($needChange || $this->saveDomainIni($clientId, $row['domain_id'], $row['domain_type'])) {
-                    $this->updateDomainStatuses($configLevel, $clientId, $row['domain_id'], $row['domain_type']);
+                    $this->updateDomainStatuses($this->getIniLevel(), $clientId, $row['domain_id'], $row['domain_type']);
                     $needBackendRequest = true;
                 }
             } catch (iMSCP_Exception_Database $e) {
@@ -767,7 +774,7 @@ class iMSCP_PHPini
     }
 
     /**
-     * Synchronise client PHP permissions with reseller PHP permissions
+     * Synchronise client PHP permissions (including domain INI options) with reseller PHP permissions
      *
      * @param int $resellerId Reseller unique identifier
      * @throws iMSCP_Exception_Database
@@ -808,8 +815,10 @@ class iMSCP_PHPini
                     $needBackendRequest = true;
                 }
 
-                // Update client domain PHP configuration options
-                if ($this->updateDomainConfigOptions($row['admin_id'], $needChange)) {
+                // Sync client PHP INI values with reseller values
+                // We are passing NULL for the domain INI values because we don't want set new domain INI values. We
+                // only want lower them when needed (client domain INI values cannot be greater than reseller values)
+                if ($this->updateClientDomainIni(NULL, $row['admin_id'], $needChange)) {
                     $needBackendRequest = true;
                 }
             } catch (iMSCP_Exception_Database $e) {
@@ -823,10 +832,9 @@ class iMSCP_PHPini
     /**
      * Update domain statuses
      *
-     * @throws iMSCP_Exception
-     * @throws iMSCP_Exception_Database
+     * @throws iMSCP_Exception|iMSCP_Exception_Database
      * @param string $configLevel PHP configuration level (per_user|per_domain|per_site)
-     * @param int $adminId Owner uique identifier
+     * @param int $adminId Owner unique identifier
      * @param int $domainId Domain unique identifier
      * @param string $domainType Domain type (dmn|als|sub|subals)
      */
@@ -886,25 +894,24 @@ class iMSCP_PHPini
      *
      * Handle case were an entry has been removed by mistake in the php_ini table
      *
-     * @throws iMSCP_Exception
-     * @throws iMSCP_Exception_Database
+     * @throws iMSCP_Exception|iMSCP_Exception_Database
      * @param int $clientId Customer unique identifier
      * @return void
      */
     protected function createMissingPhpIniEntries($clientId)
     {
         $phpini = clone($this);
-
         $domain = exec_query('SELECT domain_id FROM domain WHERE domain_admin_id = ?', $clientId);
-        $domain = $domain->fetchRow();
-        $phpini->loadDomainIni($clientId, $domain['domain_id'], 'dmn');
+        $domainId = $domain->fetchRow(PDO::FETCH_COLUMN);
+
+        $phpini->loadDomainIni($clientId, $domainId, 'dmn');
         if ($phpini->isDefaultDomainIni()) { // If no entry found, create one with default values
-            $phpini->saveDomainIni($clientId, $domain['domain_id'], 'dmn');
+            $phpini->saveDomainIni($clientId, $domainId, 'dmn');
         }
 
         $subdomains = exec_query(
             'SELECT subdomain_id FROM subdomain WHERE domain_id = ? AND subdomain_status <> ?',
-            array($domain['domain_id'], 'todelete')
+            array($domainId, 'todelete')
         );
         while ($subdomain = $subdomains->fetchRow()) {
             $phpini->loadDomainIni($clientId, $subdomain['subdomain_id'], 'sub');
@@ -916,7 +923,7 @@ class iMSCP_PHPini
 
         $domainAliases = exec_query(
             'SELECT alias_id FROM domain_aliasses WHERE domain_id = ? AND alias_status <> ?',
-            array($domain['domain_id'], 'todelete')
+            array($domainId, 'todelete')
         );
         while ($domainAlias = $domainAliases->fetchRow()) {
             $phpini->loadDomainIni($clientId, $domainAlias['alias_id'], 'als');
@@ -931,7 +938,7 @@ class iMSCP_PHPini
                 SELECT subdomain_alias_id FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
                 WHERE domain_id = ? AND subdomain_alias_status <> ?
             ',
-            array($domain['domain_id'], 'todelete')
+            array($domainId, 'todelete')
         );
         while ($subdomainAlias = $subdomainAliases->fetchRow()) {
             $phpini->loadDomainIni($clientId, $subdomainAlias['subdomain_alias_id'], 'subals');
@@ -940,5 +947,22 @@ class iMSCP_PHPini
             }
         }
         unset($subdomainAliases);
+    }
+
+    /**
+     * Return current PHP ini level
+     *
+     * @return string
+     */
+    protected function getIniLevel()
+    {
+        if (NULL === $this->iniLevel) {
+            $phpConfig = new iMSCP_Config_Handler_File(utils_normalizePath(
+                iMSCP_Registry::get('config')->CONF_DIR . '/php/php.data'
+            ));
+            $this->iniLevel = $phpConfig['PHP_CONFIG_LEVEL'];
+        }
+
+        return $this->iniLevel;
     }
 }

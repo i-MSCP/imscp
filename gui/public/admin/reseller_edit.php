@@ -614,10 +614,11 @@ function admin_checkAndUpdateData($resellerId)
                 }
             }
 
+            $needPHPiniChange = ($curResPhpPerms != $phpini->getResellerPermission());
+            unset($curResPhpPerms);
+
             // Nothing has been changed ?
-            if ($newValues == $oldValues
-                && $curResPhpPerms == $phpini->getResellerPermission()
-            ) {
+            if ($newValues == $oldValues && !$needPHPiniChange) {
                 set_page_message(tr('Nothing has been changed.'), 'info');
                 return true;
             }
@@ -682,7 +683,7 @@ function admin_checkAndUpdateData($resellerId)
             );
 
             // Sync client PHP permissions with reseller PHP permissions
-            if($phpini->syncClientPermissionsWithResellerPermissions($resellerId)) {
+            if($needPHPiniChange && $phpini->syncClientPermissionsWithResellerPermissions($resellerId)) {
                 $needDaemonRequest = true;
             } else {
                 $needDaemonRequest = false;

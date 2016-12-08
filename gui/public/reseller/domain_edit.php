@@ -842,7 +842,7 @@ function reseller_checkAndUpdateData($domainId)
                 'domainId' => $domainId
             ));
 
-            if($phpini->updateDomainConfigOptions($data['admin_id'])) {
+            if($phpini->updateClientDomainIni($phpini->getDomainIni(), $data['admin_id'])) {
                 $needDaemonRequest = true;
             }
 

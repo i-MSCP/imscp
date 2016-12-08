@@ -62,7 +62,8 @@ function loadHostingPlan()
     $phpini->setClientPermission('phpiniDisplayErrors', $phpDisplayErrors);
     $phpini->setClientPermission('phpiniDisableFunctions', $phpDisableFunctions);
     $phpini->setClientPermission('phpiniMailFunction', $phpiniMailFunction);
-    $phpini->setDomainIni('phpiniPostMaxSize', $phpPostMaxSizeValue);
+    $phpini->setDomainIni('phpiniMemoryLimit', $phpMemoryLimitValue); // Must be set before phpiniPostMaxSize
+    $phpini->setDomainIni('phpiniPostMaxSize', $phpPostMaxSizeValue); // Must be set before phpiniUploadMaxFileSize
     $phpini->setDomainIni('phpiniUploadMaxFileSize', $phpUploadMaxFilesizeValue);
     $phpini->setDomainIni('phpiniMaxExecutionTime', $phpMaxExecutionTimeValue);
     $phpini->setDomainIni('phpiniMaxInputTime', $phpMaxInputTimeValue);
