@@ -15,6 +15,7 @@ FRONTEND
     Fixed: A backend request must be triggered when a customer password is being updated by the administrator (Admin level)
     Fixed: Authentication data (htuser(s)/htgroup(s)) must remain selected upon errors (Protected area form)
     Fixed: Could not install a new software instance due to a bad check on installation path (Software installer)
+    Fixed: Favicon not loaded in some browsers, specially MSIE
     Fixed: Installation of a new software instance on forwarded domains must be prohibited (Software installer)
     Fixed: Installation of a new software instance outside of the document root must be prohibited (Software installer)
     Fixed: MCRYPT extension is being deprecated in PHP 7.1.x and will be removed in PHP 7.2.x
