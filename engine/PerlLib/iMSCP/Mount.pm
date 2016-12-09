@@ -135,7 +135,7 @@ my $MOUNTS = lazy
         my @entries;
         Quota::setmntent();
         while(my (undef, $fsFile) = Quota::getmntent() ) {
-            push @entries, $fsFile =~ s/\\040\(deleted\)$//r;
+            push @entries, $fsFile =~ s/\s+\(deleted\)$//r;
         }
         Quota::endmntent();
         [ reverse @entries ];
@@ -246,7 +246,7 @@ sub umount($)
         if (/^\Q$fsFile\E(\/|$)/) {
             debug($_);
             unless (syscall(&iMSCP::Syscall::SYS_umount2, $_, MNT_DETACH) == 0 || $!{'EINVAL'}) {
-                error( sprintf( 'Error while calling umount($_): %s', $_, $! || 'Unknown error' ) );
+                error( sprintf( "Error while calling umount($_): %s", $_, $! || 'Unknown error' ) );
                 return 1;
             }
             $!{'EINVAL'};

@@ -4,6 +4,9 @@
 Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
+BACKEND
+    Fixed: Wrong substitution for deleted mount points (iMSCP::Mount)
+
 FRONTEND
     Added: `onSharedScriptStart' and `onSharedScriptEnd' events
     Added: Static info in custom DNS management interface explaining rules for substitution with $ORIGIN (Custom DNS)
