@@ -63,7 +63,7 @@ function admin_deleteUser($userId)
         'user_gui_props' => 'user_id = ?'
     );
 
-    // Note: Admin can also have they own hosting_plans bug must not be considerated
+    // Note: Admin can also have they own hosting_plans bug must not be considered
     // as common item since first admin must be never removed
     if ($userType == 'reseller') {
         // Getting reseller's software packages to remove if any
@@ -107,7 +107,7 @@ function admin_deleteUser($userId)
         // We are safe here. We don't stop the process even if files cannot be removed. That can result in garbages but
         // the sysadmin can easily delete them through ssh.
 
-        // Deleting reseller software instaler local repository
+        // Deleting reseller software installer local repository
         if (isset($swPackages) && !empty($swPackages)) {
             _admin_deleteResellerSwPackages($userId, $swPackages);
         } elseif ($userType == 'reseller'
@@ -228,9 +228,10 @@ if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) { # admin/reseller 
         set_page_message(tr('Customer account successfully scheduled for deletion.'), 'success');
         write_log(sprintf('%s scheduled deletion of the customer account with ID %d', $_SESSION['user_logged'], $userId), E_USER_NOTICE);
     } catch (iMSCP_Exception $e) {
-        if (($previous = $e->getPrevious()) && ($previous instanceof iMSCP_Exception_Database)) {
-            /** @var $previous iMSCP_Exception_Database */
+        if (($previous = $e->getPrevious()) && $previous instanceof iMSCP_Exception_Database) {
             $queryMessagePart = ' Query was: ' . $previous->getQuery();
+        } elseif ($e instanceof iMSCP_Exception_Database) {
+            $queryMessagePart = ' Query was: ' . $e->getQuery();
         } else {
             $queryMessagePart = '';
         }

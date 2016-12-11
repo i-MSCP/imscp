@@ -601,23 +601,19 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
         return false;
     }
 
-    $row = $stmt->fetchRow();
-    $customerName = $row['admin_name'];
-    $mainDomainId = $row['domain_id'];
-    $resellerId = $row['created_by'];
-    $deleteStatus = 'todelete';
+    $data = $stmt->fetchRow();
 
     $db = iMSCP_Database::getInstance();
 
     try {
         // First, we remove customer sessions to prevent any problems
-        exec_query('DELETE FROM login WHERE user_name = ?', $customerName);
+        exec_query('DELETE FROM login WHERE user_name = ?', $data['admin_name']);
 
         // Remove customer's databases and Sql users
-        $stmt = exec_query('SELECT sqld_id FROM sql_database WHERE domain_id = ?', $mainDomainId);
+        $stmt = exec_query('SELECT sqld_id FROM sql_database WHERE domain_id = ?', $data['domain_id']);
 
         while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-            delete_sql_database($mainDomainId, $row['sqld_id']);
+            delete_sql_database($data['domain_id'], $row['sqld_id']);
         }
 
         $db->beginTransaction();
@@ -636,14 +632,14 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
                 LEFT JOIN htaccess_groups AS t4 ON (t4.dmn_id = t1.domain_id)
                 WHERE t1.domain_id = ?
             ',
-            $mainDomainId
+            $data['domain_id']
         );
 
-        exec_query('DELETE FROM domain_traffic WHERE domain_id = ?', $mainDomainId);
-        exec_query('DELETE FROM domain_dns WHERE domain_id = ?', $mainDomainId);
-        exec_query('DELETE FROM ftp_group WHERE groupname = ?', $customerName);
-        exec_query('DELETE FROM quotalimits WHERE name = ?', $customerName);
-        exec_query('DELETE FROM quotatallies WHERE name = ?', $customerName);
+        exec_query('DELETE FROM domain_traffic WHERE domain_id = ?', $data['domain_id']);
+        exec_query('DELETE FROM domain_dns WHERE domain_id = ?', $data['domain_id']);
+        exec_query('DELETE FROM ftp_group WHERE groupname = ?', $data['admin_name']);
+        exec_query('DELETE FROM quotalimits WHERE name = ?', $data['admin_name']);
+        exec_query('DELETE FROM quotatallies WHERE name = ?', $data['admin_name']);
         exec_query('DELETE FROM tickets WHERE ticket_from = ? OR ticket_to = ?', array($customerId, $customerId));
         exec_query('DELETE FROM user_gui_props WHERE user_id = ?', $customerId);
         exec_query('DELETE FROM php_ini WHERE admin_id = ?', $customerId);
@@ -653,34 +649,34 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
         //
 
         exec_query('UPDATE ftp_users SET status = ? WHERE admin_id = ?', array('todelete', $customerId));
-        exec_query('UPDATE mail_users SET status = ? WHERE domain_id = ?', array($deleteStatus, $mainDomainId));
+        exec_query('UPDATE mail_users SET status = ? WHERE domain_id = ?', array('todelete', $data['domain_id']));
         exec_query(
             '
                 UPDATE subdomain_alias AS t1 JOIN domain_aliasses AS t2 ON(t2.domain_id = ?)
                 SET t1.subdomain_alias_status = ? WHERE t1.alias_id = t2.alias_id
             ',
-            array($mainDomainId, $deleteStatus)
+            array($data['domain_id'], 'todelete')
         );
-        exec_query('UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', array($deleteStatus, $mainDomainId));
-        exec_query('UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', array($deleteStatus, $mainDomainId));
-        exec_query('UPDATE domain SET domain_status = ? WHERE domain_id = ?', array($deleteStatus, $mainDomainId));
-        exec_query('UPDATE admin SET admin_status = ? WHERE admin_id = ?', array($deleteStatus, $customerId));
+        exec_query('UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', array('todelete', $data['domain_id']));
+        exec_query('UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', array('todelete', $data['domain_id']));
+        exec_query('UPDATE domain SET domain_status = ? WHERE domain_id = ?', array('todelete', $data['domain_id']));
+        exec_query('UPDATE admin SET admin_status = ? WHERE admin_id = ?', array('todelete', $customerId));
         exec_query("UPDATE ssl_certs SET status = ? WHERE domain_type = 'dmn' AND domain_id = ?", array(
-            $deleteStatus, $mainDomainId
+            'todelete', $data['domain_id']
         ));
         exec_query(
             "
                 UPDATE ssl_certs SET status = ?
                 WHERE domain_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?) AND domain_type = ?
             ",
-            array($deleteStatus, $mainDomainId, 'als')
+            array('todelete', $data['domain_id'], 'als')
         );
         exec_query(
             "
                 UPDATE ssl_certs SET status = ?
                 WHERE domain_id IN (SELECT subdomain_id FROM subdomain WHERE domain_id = ?) AND domain_type = ?
             ",
-            array($deleteStatus, $mainDomainId, 'sub')
+            array('todelete', $data['domain_id'], 'sub')
         );
         exec_query(
             "
@@ -691,14 +687,14 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
                 )
                 AND domain_type = ?
             ",
-            array($deleteStatus, $mainDomainId, 'alssub')
+            array('todelete', $data['domain_id'], 'alssub')
         );
 
         //
         // Delegated tasks - end
         //
 
-        update_reseller_c_props($resellerId);
+        update_reseller_c_props($data['created_by']);
 
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteCustomer, array(
             'customerId' => $customerId
