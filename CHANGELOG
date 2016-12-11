@@ -46,6 +46,9 @@ SCRIPTS
 SECURITY
     Changed: Usage of AES-256 (Rijndael) algorithm to encrypt data in place of the Blowfish algorithm (see the errata)
 
+SERVERS
+    Fixed: Several issues with ProxyErrorOverride directive. See https://i-mscp.net/index.php/Thread/15502
+
 UPGRADE
     Dropped: Upgrade support for i-MSCP versions older than 1.1.0 (See the errata)
 

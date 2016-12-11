@@ -35,13 +35,14 @@
     # SECTION mod_proxy_fcgi BEGIN.
     SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1
 
-    <Proxy "{PROXY_LISTEN_MODE}:{PROXY_LISTEN_ENDPOINT}">
-        ProxySet timeout=7200
+    <Proxy "{PROXY_FCGI_PATH}{PROXY_FCGI_URL}" retry=0>
+        ProxySet connectiontimeout=5 timeout=7200
     </Proxy>
 
-    <FilesMatch ".+\.ph(p[3457]?|t|tml)$">
-        SetHandler proxy:{PROXY_LISTEN_MODE}:{PROXY_LISTEN_ENDPOINT}
-    </FilesMatch>
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} \.ph(p[3457]?|t|tml)$
+    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f
+    RewriteRule (.*) - [H=proxy:{PROXY_FCGI_URL},NC]
     # SECTION mod_proxy_fcgi END.
     # SECTION php_fpm END.
     # SECTION php_enabled END.

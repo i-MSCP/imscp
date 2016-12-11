@@ -1455,10 +1455,13 @@ sub _addCfg
                 ? "/var/run/php5-fpm-$confLevel.sock"
                 : '127.0.0.1:'.($self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'} + $data->{'PHP_FPM_LISTEN_PORT'}),
             # proxy_fcgi module case (Apache2 >= 2.4.10)
-            PROXY_LISTEN_MODE       => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds' ? 'unix' : 'fcgi',
-            PROXY_LISTEN_ENDPOINT   => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
-                ? "/var/run/php$phpVersion-fpm-$confLevel.sock|fcgi://$confLevel"
-                : '//127.0.0.1:'.($self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'} + $data->{'PHP_FPM_LISTEN_PORT'})
+            PROXY_FCGI_PATH         => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
+                ? "unix:/var/run/php$phpVersion-fpm-$confLevel.sock|"
+                : '',
+            PROXY_FCGI_URL          => 'fcgi://'.($self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
+                ? $confLevel
+                : '127.0.0.1:'.($self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'} + $data->{'PHP_FPM_LISTEN_PORT'})
+            )
         }
     );
 
