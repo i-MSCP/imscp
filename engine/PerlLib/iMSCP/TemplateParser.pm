@@ -57,7 +57,7 @@ sub process($$)
 
     while (my ($placeholder, $value) = each( %{$data} )) {
         next unless defined $value;
-        $template =~ s/\Q{$placeholder}\E/$value/gim
+        $template =~ s/(?<!%)\Q{$placeholder}\E/$value/gim
     }
 
     $template;

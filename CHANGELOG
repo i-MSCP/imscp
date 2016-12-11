@@ -5,6 +5,7 @@ Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
+    Fixed: Prevent replacement of Apache2 variables in vhost files (MSCP::TemplateParser)
     Fixed: Wrong substitution for deleted mount points (iMSCP::Mount)
 
 FRONTEND
