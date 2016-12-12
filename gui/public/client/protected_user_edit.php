@@ -76,7 +76,7 @@ if (!isset($_REQUEST['uname'])) {
 $htuserId = intval($_REQUEST['uname']);
 $domainId = get_user_domain_id($_SESSION['user_id']);
 
-$stmt = exec_query('SELECT uname FROM htaccess_users WHERE id = ? AND dmn_id', array($htuserId, $domainId));
+$stmt = exec_query('SELECT uname FROM htaccess_users WHERE id = ? AND dmn_id = ?', array($htuserId, $domainId));
 
 if (!$stmt->rowCount()) {
     showBadRequestErrorPage();
