@@ -191,8 +191,8 @@ class iMSCP_Authentication
         $lastAccess = time();
 
         exec_query('INSERT INTO login (session_id, ipaddr, lastaccess, user_name) VALUES (?, ?, ?, ?)', array(
-                session_id(), getIpAddr(), $lastAccess, $identity->admin_name)
-        );
+            session_id(), getIpAddr(), $lastAccess, $identity->admin_name
+        ));
 
         $_SESSION['user_logged'] = $identity->admin_name;
         $_SESSION['user_type'] = $identity->admin_type;
