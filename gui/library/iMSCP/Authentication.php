@@ -25,7 +25,7 @@
  * implemented as an event listener that listen on the onAuthenticate event.
  *
  * An authentication handler which was successful must short-circuit the execution of any other authentication handlers
- * by stopping the propagation of the onAuthentication event .
+ * by stopping the propagation of the onAuthentication event.
  *
  * On success, an authentication handler should always return an iMSCP_Authentication_Result object, excepted when it is
  * part of a multi-factor authentication process, in which case it can return NULL.
