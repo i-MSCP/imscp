@@ -39,10 +39,11 @@
         ProxySet connectiontimeout=5 timeout=7200
     </Proxy>
 
-    RewriteEngine On
-    RewriteCond %{REQUEST_URI} \.ph(p[3457]?|t|tml)$
-    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f
-    RewriteRule (.*) - [H=proxy:{PROXY_FCGI_URL},NC]
+    <FilesMatch \.ph(p[3457]?|t|tml)$>
+        RewriteEngine On
+        RewriteCond %{REQUEST_FILENAME} -f
+        RewriteRule .* - [H=proxy:{PROXY_FCGI_URL},NC]
+    </FilesMatch>
     # SECTION mod_proxy_fcgi END.
     # SECTION php_fpm END.
     # SECTION php_enabled END.
