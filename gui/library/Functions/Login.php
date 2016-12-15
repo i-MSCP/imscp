@@ -37,8 +37,8 @@ function init_login($eventManager)
         $bruteforce->register($eventManager);
     }
 
-    // Register default authentication handler with lower priority
-    $eventManager->registerListener(iMSCP_Events::onAuthentication, 'login_credentials', -99);
+    // Register default authentication handler with high-priority
+    $eventManager->registerListener(iMSCP_Events::onAuthentication, 'login_credentials', 99);
     // Register listener that is responsible to check domain status and expire date
     $eventManager->registerListener(iMSCP_Events::onBeforeSetIdentity, 'login_checkDomainAccount');
 }
@@ -46,72 +46,72 @@ function init_login($eventManager)
 /**
  * Credentials authentication handler
  *
- * @param iMSCP_Events_Event $event
- * @return iMSCP_Authentication_Result
  * @throws iMSCP_Exception_Database
+ * @param iMSCP_Authentication_AuthEvent
+ * @return void
  */
-function login_credentials($event)
+function login_credentials(iMSCP_Authentication_AuthEvent $authEvent)
 {
     $username = (!empty($_POST['uname'])) ? encode_idna(clean_input($_POST['uname'])) : '';
     $password = (!empty($_POST['upass'])) ? clean_input($_POST['upass']) : '';
 
-    if (empty($username) || empty($password)) {
+    if ($username === '' || $password === '') {
+        $message = array();
+
         if (empty($username)) {
             $message[] = tr('The username field is empty.');
         }
+
         if (empty($password)) {
             $message[] = tr('The password field is empty.');
         }
-    }
 
-    if (!isset($message)) {
-        $stmt = exec_query(
-            'SELECT admin_id, admin_name, admin_pass, admin_type, email, created_by FROM admin WHERE admin_name = ?',
-            $username
-        );
-
-        if (!$stmt->rowCount()) {
-            $result = new iMSCP_Authentication_Result(
-                iMSCP_Authentication_Result::FAILURE_IDENTITY_NOT_FOUND, null, tr('Unknown username.')
-            );
-        } else {
-            $identity = $stmt->fetchRow(PDO::FETCH_OBJ);
-            $passwordHash = $identity->admin_pass;
-            
-            if (!\iMSCP\Crypt::hashEqual(md5($password), $passwordHash) && !\iMSCP\Crypt::verify($password, $passwordHash)) {
-                $result = new iMSCP_Authentication_Result(
-                    iMSCP_Authentication_Result::FAILURE_CREDENTIAL_INVALID, null, tr('Bad password.')
-                );
-            } else {
-                if (strpos($passwordHash, '$apr1$') !== 0) { # Not an APR-1 hashed password, we recreate the hash
-                    exec_query('UPDATE admin SET admin_pass = ?, admin_status = ? WHERE admin_id = ?', array(
-                        \iMSCP\Crypt::apr1MD5($password),
-                        ($identity->admin_type) == 'user' ? 'tochangepwd' : 'ok',
-                        $identity->admin_id
-                    ));
-                    write_log(sprintf('Password for user %s has been re-encrypted using APR-1 algorithm', $identity->admin_name), E_USER_NOTICE);
-
-                    if($identity->admin_type == 'user') {
-                        send_request();
-                    }
-                }
-
-                $result = new iMSCP_Authentication_Result(iMSCP_Authentication_Result::SUCCESS, $identity);
-                $event->stopPropagation();
-            }
-        }
-    } else {
-        $result = new iMSCP_Authentication_Result(
+        $authEvent->setAuthenticationResult(new iMSCP_Authentication_Result(
             (count($message) == 2)
                 ? iMSCP_Authentication_Result::FAILURE_CREDENTIAL_EMPTY
                 : iMSCP_Authentication_Result::FAILURE_CREDENTIAL_INVALID
             ,
-            null,
+            NULL,
             $message
-        );
+        ));
+        return;
     }
 
-    return $result;
+    $stmt = exec_query(
+        'SELECT admin_id, admin_name, admin_pass, admin_type, email, created_by FROM admin WHERE admin_name = ?',
+        $username
+    );
+
+    if (!$stmt->rowCount()) {
+        $authEvent->setAuthenticationResult(new iMSCP_Authentication_Result(
+            iMSCP_Authentication_Result::FAILURE_IDENTITY_NOT_FOUND, NULL, tr('Unknown username.')
+        ));
+        return;
+    }
+
+    $identity = $stmt->fetchRow(PDO::FETCH_OBJ);
+
+    if (!\iMSCP\Crypt::hashEqual(md5($password), $identity->admin_pass) && !\iMSCP\Crypt::verify($password, $identity->admin_pass)) {
+        $authEvent->setAuthenticationResult(new iMSCP_Authentication_Result(
+            iMSCP_Authentication_Result::FAILURE_CREDENTIAL_INVALID, NULL, tr('Bad password.')
+        ));
+        return;
+    }
+    
+        if (strpos($identity->admin_pass, '$apr1$') !== 0) { # Not an APR-1 hashed password, we recreate the hash
+            exec_query('UPDATE admin SET admin_pass = ?, admin_status = ? WHERE admin_id = ?', array(
+                \iMSCP\Crypt::apr1MD5($password), ($identity->admin_type) == 'user' ? 'tochangepwd' : 'ok',
+                $identity->admin_id
+            ));
+        }
+
+        if ($identity->admin_type == 'user') {
+            write_log(sprintf('Password for user %s has been re-encrypted using APR-1 algorithm', $identity->admin_name), E_USER_NOTICE);
+            send_request();
+        }
+  
+
+    $authEvent->setAuthenticationResult( new iMSCP_Authentication_Result(iMSCP_Authentication_Result::SUCCESS, $identity));
 }
 
 /**

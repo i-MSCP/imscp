@@ -26,7 +26,7 @@ class iMSCP_Plugin_Manager
     /**
      * @const string Plugin API version
      */
-    const PLUGIN_API_VERSION = '1.0.6';
+    const PLUGIN_API_VERSION = '1.0.7';
 
     /**
      * @const int Action success
@@ -74,7 +74,7 @@ class iMSCP_Plugin_Manager
     protected $pluginsDirectory;
 
     /**
-     * @var array Keys are plugin names and values are array containing plugin data
+     * @var array[][\iMSCP\Json\LazyDecoder] Keys are plugin names and values are array containing plugin data
      */
     protected $pluginData = array();
 
@@ -1355,7 +1355,13 @@ class iMSCP_Plugin_Manager
         $this->pluginData = array();
         $this->pluginsByType = array();
 
-        $stmt = execute_query('SELECT * FROM plugin ORDER BY plugin_priority DESC');
+        $stmt = execute_query(
+            '
+              SELECT plugin_name, plugin_type, plugin_info, plugin_status, plugin_error, plugin_backend, plugin_lockers
+              FROM plugin
+              ORDER BY plugin_priority DESC
+            '
+        );
         while ($plugin = $stmt->fetchRow()) {
             $this->pluginData[$plugin['plugin_name']] = array(
                 'info' => new iMSCP\Json\LazyDecoder($plugin['plugin_info']),
