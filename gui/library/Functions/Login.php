@@ -97,21 +97,38 @@ function login_credentials(iMSCP_Authentication_AuthEvent $authEvent)
         ));
         return;
     }
-    
-        if (strpos($identity->admin_pass, '$apr1$') !== 0) { # Not an APR-1 hashed password, we recreate the hash
-            exec_query('UPDATE admin SET admin_pass = ?, admin_status = ? WHERE admin_id = ?', array(
-                \iMSCP\Crypt::apr1MD5($password), ($identity->admin_type) == 'user' ? 'tochangepwd' : 'ok',
-                $identity->admin_id
-            ));
-        }
 
-        if ($identity->admin_type == 'user') {
-            write_log(sprintf('Password for user %s has been re-encrypted using APR-1 algorithm', $identity->admin_name), E_USER_NOTICE);
-            send_request();
-        }
-  
+    if (strpos($identity->admin_pass, '$apr1$') !== 0) { # Not an APR-1 hashed password, we recreate the hash
+        // We must postpone update until the onAfterAuthentication event to handle cases where the authentication process
+        // fail later on (case of a multi-factor authentication process)
+        iMSCP_Events_Aggregator::getInstance()->registerListener(
+            iMSCP_Events::onAfterAuthentication,
+            function (iMSCP_Events_Event $event) use ($password) {
+                /** @var iMSCP_Authentication_Result $authResult */
+                $authResult = $event->getParam('authResult');
 
-    $authEvent->setAuthenticationResult( new iMSCP_Authentication_Result(iMSCP_Authentication_Result::SUCCESS, $identity));
+                if (!$authResult->isValid()) {
+                    return;
+                }
+
+                $identity = $authResult->getIdentity();
+
+                exec_query('UPDATE admin SET admin_pass = ?, admin_status = ? WHERE admin_id = ?', array(
+                    \iMSCP\Crypt::apr1MD5($password), ($identity->admin_type) == 'user' ? 'tochangepwd' : 'ok',
+                    $identity->admin_id
+                ));
+
+                write_log(sprintf('Password for user %s has been re-encrypted using APR-1 algorithm', $identity->admin_name), E_USER_NOTICE);
+
+                if ($identity->admin_type == 'user') {
+                    send_request();
+                }
+            },
+            array('password' => $password, 'identity' => $identity)
+        );
+    }
+
+    $authEvent->setAuthenticationResult(new iMSCP_Authentication_Result(iMSCP_Authentication_Result::SUCCESS, $identity));
 }
 
 /**
