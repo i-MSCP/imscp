@@ -115,8 +115,12 @@ class iMSCP_Authentication
             $authEvent = new AuthEvent();
 
             // Process authentication through registered handlers
-            $em->dispatch($authEvent, array('context' => $this));
-            $authResult = $authEvent->getAuthenticationResult();
+            // Note: In versions pre1.3.9, the auth result was pulled from the response object. To stay compatible with
+            // plugins that were developed for versions pre1.3.9, we first try to pull the auth result from the response
+            // object and if it is not defined, we pull it from the new auth event that has been introduced in version
+            // 1.3.9. Plugin that make use of the new auth event must requires the i-MSCP API 1.0.7.
+            $response = $em->dispatch($authEvent, array('context' => $this));
+            $authResult = $response->last() ?: $authEvent->getAuthenticationResult();
 
             // Covers case where no one of authentication handlers has set an authentication result
             if (!$authResult instanceof AuthResult) {
