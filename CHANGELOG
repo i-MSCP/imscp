@@ -5,7 +5,7 @@ Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-    Fixed: Prevent replacement of Apache2 variables in vhost files (MSCP::TemplateParser)
+    Fixed: Prevent replacement of Apache2 variables in vhost files (iMSCP::TemplateParser)
     Fixed: Wrong substitution for deleted mount points (iMSCP::Mount)
 
 FRONTEND
@@ -13,16 +13,16 @@ FRONTEND
     Added: `onSharedScriptStart' and `onSharedScriptEnd' events
     Added: Static info in custom DNS management interface explaining rules for substitution with $ORIGIN (Custom DNS)
     Added: Support for DNS NS resource record - only allowed for subzone delegation (Custom DNS)
-    Changed: Authentication service class now expect an authentication result object pulled from authentication event
+    Changed: Authentication service class now expects an authentication result object pulled from authentication event
     Changed: FTP chooser script (ftp_choose_dir.php) is now a shared script (previously, it was a client script)
     Fixed: A backend request must be triggered when a customer password is being updated by the administrator (Admin level)
     Fixed: Authentication data (htuser(s)/htgroup(s)) must remain selected upon errors (Protected area form)
     Fixed: Could not install a new software instance due to a bad check on installation path (Software installer)
-    Fixed: Default (credentials) authentication handler must not stop propagation of authentication event  on failure
+    Fixed: Default (credentials) authentication handler must not stop propagation of authentication event on failure
     Fixed: Favicon not loaded in some browsers, specially MSIE
     Fixed: Installation of a new software instance on forwarded domains must be prohibited (Software installer)
     Fixed: Installation of a new software instance outside of the document root must be prohibited (Software installer)
-    Fixed: MCRYPT extension is being deprecated in PHP 7.1.x and will be removed in PHP 7.2.x
+    Fixed: MCRYPT extension is being deprecated in PHP 7.1.x and will be removed in PHP 7.2.x (replaced by openssl)
     Fixed: Missing check on FTP user owner while editing (Ftp user edit form - Security flaw)
     Fixed: Missing check on Htuser(s)/Htgroup(s) owner while editing (Protected area form - Security flaw)
     Fixed: Password hash is not updated on customer password change (Reseller level)
