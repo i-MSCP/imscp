@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Arthur Mayer <mayer.arthur@gmail.com>, 2016
+# Laurent Declercq <l.declercq@nuxwin.com>, 2016
 # Lukasz Nowak <theqkash@theqkash.pl>, 2016
 # Thom Heemstra <thom@heemstra.xyz>, 2016
 # Vitaliy Zhukov <DragonZX@yandex.ru>, 2016
@@ -11,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-12-16 11:55+0100\n"
-"PO-Revision-Date: 2016-12-16 10:57+0000\n"
+"POT-Creation-Date: 2016-12-16 12:20+0100\n"
+"PO-Revision-Date: 2016-12-16 11:18+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/i-mscp/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -1009,10 +1010,10 @@ msgid "Authentication by user"
 msgstr "Аутентификация по пользователю"
 
 msgid "Authentication users"
-msgstr ""
+msgstr "Аутентификация пользователи"
 
 msgid "Authentication users/groups"
-msgstr ""
+msgstr "Аутентификация пользователи/группе"
 
 msgid "Auto"
 msgstr "Автоматически"
@@ -1475,7 +1476,7 @@ msgid "Could not restore %s plugin directory"
 msgstr "Невозможно восстановить резервную копию плагина %s ."
 
 msgid "Could not retrieve directories."
-msgstr ""
+msgstr "Невозможно получить список каталогов для Вашего домена."
 
 #, php-format
 msgid "Could not uninstall the %s plugin: %s"
@@ -3241,7 +3242,7 @@ msgid "No database update available."
 msgstr "Нет обновлений базы данных."
 
 msgid "No domain available for new software instance."
-msgstr ""
+msgstr "Нет домена для нового экземпляра программного обеспечения."
 
 msgid "No error found"
 msgstr "Ошибок не найдено"
@@ -3608,10 +3609,10 @@ msgid "Please activate your new i-MSCP password"
 msgstr "Пожалуйста, активируйте ваш новый I-MSCP пароль"
 
 msgid "Please choose at least one htaccess user."
-msgstr ""
+msgstr "Пожалуйста, укажите хотябы одного пользователя. "
 
 msgid "Please choose at least one htaccess user/group."
-msgstr ""
+msgstr "Пожалуйста, выберите htaccess пользователя или группу."
 
 msgid "Please confirm the password."
 msgstr "Пожалуйста, подтвердите пароль."

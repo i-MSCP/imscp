@@ -4,14 +4,15 @@
 # 
 # Translators:
 # Cloudeasy <a9100a9957@gmail.com>, 2016
+# Laurent Declercq <l.declercq@nuxwin.com>, 2016
 # Lukasz Nowak <theqkash@theqkash.pl>, 2016
 # 吳汝剛 <ak6783@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-12-16 11:55+0100\n"
-"PO-Revision-Date: 2016-12-16 10:57+0000\n"
+"POT-Creation-Date: 2016-12-16 12:20+0100\n"
+"PO-Revision-Date: 2016-12-16 11:19+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -1008,7 +1009,7 @@ msgid "Authentication by user"
 msgstr "依使用者驗證"
 
 msgid "Authentication users"
-msgstr ""
+msgstr "使用者驗證"
 
 msgid "Authentication users/groups"
 msgstr ""

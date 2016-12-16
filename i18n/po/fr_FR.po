@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-12-16 11:55+0100\n"
-"PO-Revision-Date: 2016-12-16 10:57+0000\n"
+"POT-Creation-Date: 2016-12-16 12:20+0100\n"
+"PO-Revision-Date: 2016-12-16 11:02+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/i-mscp/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -1006,10 +1006,10 @@ msgid "Authentication by user"
 msgstr "Authentification par utilisateur"
 
 msgid "Authentication users"
-msgstr ""
+msgstr "Utilisateurs htaccess"
 
 msgid "Authentication users/groups"
-msgstr ""
+msgstr "Utilisateurs et groupes htaccess"
 
 msgid "Auto"
 msgstr "Automatique"
@@ -1472,7 +1472,7 @@ msgid "Could not restore %s plugin directory"
 msgstr "Impossible de restaurer le répertoire de l'extension %s"
 
 msgid "Could not retrieve directories."
-msgstr ""
+msgstr "Impossible d'obtenir la liste des répertoires."
 
 #, php-format
 msgid "Could not uninstall the %s plugin: %s"
@@ -3238,7 +3238,7 @@ msgid "No database update available."
 msgstr "Aucun mise à jour pour la base de données disponible."
 
 msgid "No domain available for new software instance."
-msgstr ""
+msgstr "Aucun domaine disponible pour l'installation du logiciel."
 
 msgid "No error found"
 msgstr "Aucune erreur trouvée"
@@ -3605,10 +3605,10 @@ msgid "Please activate your new i-MSCP password"
 msgstr "Veuillez activer votre nouveau mot de passe i-MSCP"
 
 msgid "Please choose at least one htaccess user."
-msgstr ""
+msgstr "Veuillez choisir au moins un utilisateur htaccess."
 
 msgid "Please choose at least one htaccess user/group."
-msgstr ""
+msgstr "Veuillez choisir au moins un utilisateur/groupe htaccess."
 
 msgid "Please confirm the password."
 msgstr "Veuillez confirmer le mot de passe."
