@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-28 17:18+0100\n"
-"PO-Revision-Date: 2016-11-27 17:07+0000\n"
+"POT-Creation-Date: 2016-12-16 11:55+0100\n"
+"PO-Revision-Date: 2016-12-16 10:57+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/i-mscp/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -1005,8 +1005,11 @@ msgstr "Authentification par groupe"
 msgid "Authentication by user"
 msgstr "Authentification par utilisateur"
 
-msgid "Authentication data"
-msgstr "Données d'authentification"
+msgid "Authentication users"
+msgstr ""
+
+msgid "Authentication users/groups"
+msgstr ""
 
 msgid "Auto"
 msgstr "Automatique"
@@ -1468,8 +1471,8 @@ msgstr "Impossible de protéger l'extension %s: %s"
 msgid "Could not restore %s plugin directory"
 msgstr "Impossible de restaurer le répertoire de l'extension %s"
 
-msgid "Could not retrieve directories. Please contact your reseller."
-msgstr "Impossible d'obtenir la liste des répertoires. Veuilez contacter votre revendeur."
+msgid "Could not retrieve directories."
+msgstr ""
 
 #, php-format
 msgid "Could not uninstall the %s plugin: %s"
@@ -1508,9 +1511,6 @@ msgstr "Créer un e-mail collecteur (CatchAll)"
 
 msgid "Create default email addresses"
 msgstr "Créer les adresses e-mail par défaut"
-
-msgid "Create protected area"
-msgstr "Créer une zone protégée"
 
 msgid "Created by"
 msgstr "Créé par"
@@ -1956,9 +1956,6 @@ msgstr "Le répertoire '%s' n'éxiste pas."
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
 msgstr "Le répertoire '%s' est soit pas autorisé soit invalide."
-
-msgid "Directory tree"
-msgstr "Arborescence des répertoires"
 
 msgid "Disable"
 msgstr "Désactiver"
@@ -2867,9 +2864,6 @@ msgstr "Nom de compte de messagerie invalide."
 msgid "Invalid group name!"
 msgstr "Nom du groupe invalide !"
 
-msgid "Invalid htaccess group name."
-msgstr "Groupe htaccess invalide."
-
 msgid "Invalid menu order."
 msgstr "Ordre du menu invalide."
 
@@ -2978,10 +2972,6 @@ msgstr "Connexion"
 
 msgid "Login As"
 msgstr "Connecté comme"
-
-#, php-format
-msgid "Login data successfully sent to %s."
-msgstr "Les informations d'authentification on été envoyées a %s."
 
 msgid "Login into phpMyAdmin"
 msgstr "Se connecter à PhpMyAdmin"
@@ -3246,6 +3236,9 @@ msgstr "Aucun comptes clients trouvés."
 
 msgid "No database update available."
 msgstr "Aucun mise à jour pour la base de données disponible."
+
+msgid "No domain available for new software instance."
+msgstr ""
 
 msgid "No error found"
 msgstr "Aucune erreur trouvée"
@@ -3611,8 +3604,11 @@ msgstr "PiB"
 msgid "Please activate your new i-MSCP password"
 msgstr "Veuillez activer votre nouveau mot de passe i-MSCP"
 
-msgid "Please choose htaccess user or htaccess group."
-msgstr "Veuillez choisir un utilisateur htaccess ou un groupe htaccess."
+msgid "Please choose at least one htaccess user."
+msgstr ""
+
+msgid "Please choose at least one htaccess user/group."
+msgstr ""
 
 msgid "Please confirm the password."
 msgstr "Veuillez confirmer le mot de passe."
@@ -5114,9 +5110,6 @@ msgstr "Statut inconnu"
 msgid "Unknown type."
 msgstr "Type inconnu."
 
-msgid "Unknown user type"
-msgstr "Type d'utilisateur inconnu"
-
 msgid "Unknown username."
 msgstr "Nom d'utilisateur inconnu."
 
@@ -5154,9 +5147,6 @@ msgstr "La mise à jour de l'index du dépôt de logiciels Web a été annulée.
 
 msgid "Update password"
 msgstr "Mise à jour du mot de passe"
-
-msgid "Update protected area"
-msgstr "Mettre à jour"
 
 msgid "Updates"
 msgstr "Mises à jour"
@@ -5236,9 +5226,6 @@ msgstr "L'utilisateur va être supprimé."
 
 msgid "User session successfully destroyed."
 msgstr "La session de l'utilisateur a été détruite."
-
-msgid "User session successfully killed for password change."
-msgstr "La session de l'utilisateur a bien été supprimé pour le renouvellement du mot de passe."
 
 msgid "User statistics"
 msgstr "Statistics des utilisateurs"
@@ -5456,11 +5443,6 @@ msgid ""
 msgstr "Vous pouvez choisir une racine des documents autre que celle par défaut. Ceci est généralement nécessaire quand vous utilisez un framework PHP comme Symfony. Notez que la nouvelle racine des documents va être située dans la racine des documents par défaut qui est le répertoire `/htdocs'. Soyez conscient que le répertoire pour la nouvelle racine des documents doit pré-exister."
 
 msgid ""
-"You can't install the software outside of the document root of the selected "
-"domain."
-msgstr "Vous ne pouvez pas installer un logiciel en dehors de la racine des documents du domaine sélectionné."
-
-msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
 msgstr "Vous ne pouvez pas ajouter de nouveau compte de messageries. Vous avez déjà assigné tous vos quotas de mails aux autres comptes de messageries. Veuillez d'abord revoir l'assignement de vos quotas de mails."
@@ -5483,12 +5465,6 @@ msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service."
 msgstr "Vous ne pouvez pas déplacer <b>%1$s</b> vers ce revendeur,<br>car il a des droits limités pour le service <b>%2$s</b>."
-
-msgid "You cannot protect an area without selected htaccess group(s)."
-msgstr "Vous ne pouvez pas protéger une zone sans avoir sélectionner au moins un groupe."
-
-msgid "You cannot protect an area without selected htaccess user(s)."
-msgstr "Vous ne pouvez pas protéger une zone sans avoir sélectionner au moins un utilisateur."
 
 msgid "You cannot remove an IP that is assigned to a reseller."
 msgstr "Vous ne pouvez pas supprimer une adresse IP qui est assignée à un revendeur."

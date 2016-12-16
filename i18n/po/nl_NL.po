@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-28 17:18+0100\n"
-"PO-Revision-Date: 2016-11-27 17:59+0000\n"
-"Last-Translator: Thom Heemstra <thom@heemstra.xyz>\n"
+"POT-Creation-Date: 2016-12-16 11:55+0100\n"
+"PO-Revision-Date: 2016-12-16 10:57+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/i-mscp/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1007,8 +1007,11 @@ msgstr "Authenticatie per groep"
 msgid "Authentication by user"
 msgstr "Authenticatie per gebruiker"
 
-msgid "Authentication data"
-msgstr "Authenticatiegegevens"
+msgid "Authentication users"
+msgstr ""
+
+msgid "Authentication users/groups"
+msgstr ""
 
 msgid "Auto"
 msgstr "Automatisch"
@@ -1470,8 +1473,8 @@ msgstr "Kon de invoegtoepassing %s niet beveiligen: %s"
 msgid "Could not restore %s plugin directory"
 msgstr "Kon de %s invoegtoepassingsmap niet terugzetten"
 
-msgid "Could not retrieve directories. Please contact your reseller."
-msgstr "Kon mappen niet verkrijgen, neem contact op met uw wederverkoper."
+msgid "Could not retrieve directories."
+msgstr ""
 
 #, php-format
 msgid "Could not uninstall the %s plugin: %s"
@@ -1510,9 +1513,6 @@ msgstr "Maak catch-all"
 
 msgid "Create default email addresses"
 msgstr "Maak standaarde-mailadres aan"
-
-msgid "Create protected area"
-msgstr "Maak een beveiligde map aan"
 
 msgid "Created by"
 msgstr "Gemaakt door"
@@ -1958,9 +1958,6 @@ msgstr "Map '%s' bestaat niet."
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
 msgstr "Map '%s' is niet toegestaan of niet geldig."
-
-msgid "Directory tree"
-msgstr "Mappenlijst"
 
 msgid "Disable"
 msgstr "Uitschakelen"
@@ -2869,9 +2866,6 @@ msgstr "Foutieve e-mailgebruikersnaam"
 msgid "Invalid group name!"
 msgstr "Ongeldige groepsnaam!"
 
-msgid "Invalid htaccess group name."
-msgstr "Ongeldige htaccess groepsnaam."
-
 msgid "Invalid menu order."
 msgstr "Ongeldige menuvolgorde."
 
@@ -2980,10 +2974,6 @@ msgstr "Login"
 
 msgid "Login As"
 msgstr "Inloggen als"
-
-#, php-format
-msgid "Login data successfully sent to %s."
-msgstr "Logingegevens succesvol verzonden naar %s."
 
 msgid "Login into phpMyAdmin"
 msgstr "Inloggen in phpMyAdmin"
@@ -3248,6 +3238,9 @@ msgstr "Geen klantenaccount gevonden"
 
 msgid "No database update available."
 msgstr "Geen databankupdate beschikbaar."
+
+msgid "No domain available for new software instance."
+msgstr ""
 
 msgid "No error found"
 msgstr "Geen foutmeldingen"
@@ -3613,8 +3606,11 @@ msgstr "PiB"
 msgid "Please activate your new i-MSCP password"
 msgstr "Activeer uw nieuwe i-MSCP-wachtwoord"
 
-msgid "Please choose htaccess user or htaccess group."
-msgstr "Kies een htaccess-gebruiker of htaccess-groep"
+msgid "Please choose at least one htaccess user."
+msgstr ""
+
+msgid "Please choose at least one htaccess user/group."
+msgstr ""
 
 msgid "Please confirm the password."
 msgstr "Bevestig het wachtwoord"
@@ -5116,9 +5112,6 @@ msgstr "Onbekende status"
 msgid "Unknown type."
 msgstr "Onbekend type."
 
-msgid "Unknown user type"
-msgstr "Onbekend gebruikerstype"
-
 msgid "Unknown username."
 msgstr "Onbekende gebruikersnaam."
 
@@ -5156,9 +5149,6 @@ msgstr "Bijwerken van de index van het softwareberging is afgebroken. Er zijn le
 
 msgid "Update password"
 msgstr "Werk wachtwoord bij"
-
-msgid "Update protected area"
-msgstr "Beveiligde map bijwerken"
 
 msgid "Updates"
 msgstr "Updates"
@@ -5238,9 +5228,6 @@ msgstr "Gebruiker gepland voor verwijdering."
 
 msgid "User session successfully destroyed."
 msgstr "Sessie van gebruiker succesvol afgebroken."
-
-msgid "User session successfully killed for password change."
-msgstr "Sessie van gebruiker succesvol afgesloten voor wachtwoordverandering."
 
 msgid "User statistics"
 msgstr "Gebruikersstatistieken"
@@ -5458,11 +5445,6 @@ msgid ""
 msgstr "U kunt een alternatieve startmap laden. Dit kan nodig zijn als u een PHP-framework gebruik, bijvoorbeeld Symfony. Let wel: deze map zal in de htdocs-map te vinden zijn en moet reeds bestaan."
 
 msgid ""
-"You can't install the software outside of the document root of the selected "
-"domain."
-msgstr "U kunt geen software installeren buiten de startmap van het geselecteerde domein."
-
-msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
 msgstr "U kunt geen nieuwe e-mailaccounts meer maken. U heeft al uw e-mailquota al aan andere mailaccounts toegewezen. Controleert u deze eerst."
@@ -5485,12 +5467,6 @@ msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service."
 msgstr "U kunt de <b>%1$s</b> in de nieuwe wederverkoper niet verplaatsen.<br>Deze heeft limieten voor de <b>%2$s</b> service."
-
-msgid "You cannot protect an area without selected htaccess group(s)."
-msgstr "U kunt een map niet beveiligen zonder htaccess-groepen te selecteren."
-
-msgid "You cannot protect an area without selected htaccess user(s)."
-msgstr "U kunt een map niet beveiligen zonder htaccess-gebruikers te selecteren."
 
 msgid "You cannot remove an IP that is assigned to a reseller."
 msgstr "U kunt geen IP-adressen verwijderen, als ze zijn toegewezen aan een wederverkoper."

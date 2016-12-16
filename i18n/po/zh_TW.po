@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-28 17:18+0100\n"
-"PO-Revision-Date: 2016-11-27 17:01+0000\n"
+"POT-Creation-Date: 2016-12-16 11:55+0100\n"
+"PO-Revision-Date: 2016-12-16 10:57+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/i-mscp/i-MSCP/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -32,11 +32,11 @@ msgstr "錯誤的 IP 地址"
 msgid ""
 "$ORIGIN is automatically appended to unqualified names, hosts and canonical "
 "names"
-msgstr ""
+msgstr "$ORIGIN 將自動附加到不正確的名稱，主機名和標準名稱上。"
 
 #, php-format
 msgid "$ORIGIN value is currently set to: %s"
-msgstr ""
+msgstr "$ORIGIN 的值目前設定為: %s"
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -1007,8 +1007,11 @@ msgstr "依群組驗證"
 msgid "Authentication by user"
 msgstr "依使用者驗證"
 
-msgid "Authentication data"
-msgstr "驗證日期"
+msgid "Authentication users"
+msgstr ""
+
+msgid "Authentication users/groups"
+msgstr ""
 
 msgid "Auto"
 msgstr "自動"
@@ -1405,7 +1408,7 @@ msgstr "設置模式"
 
 #, php-format
 msgid "Conflict with the `%s' DNS resource record."
-msgstr ""
+msgstr "與 `%s' DNS 紀錄衝突。"
 
 msgid "Core data"
 msgstr "核心資料"
@@ -1470,8 +1473,8 @@ msgstr "可能無法保護 %s 外掛: %s"
 msgid "Could not restore %s plugin directory"
 msgstr "可能無法還原 %s 外掛目錄"
 
-msgid "Could not retrieve directories. Please contact your reseller."
-msgstr "可能無法下載目錄。請聯絡您的經銷商。"
+msgid "Could not retrieve directories."
+msgstr ""
 
 #, php-format
 msgid "Could not uninstall the %s plugin: %s"
@@ -1510,9 +1513,6 @@ msgstr "建立抓取外部郵件"
 
 msgid "Create default email addresses"
 msgstr "建立預設郵件地址"
-
-msgid "Create protected area"
-msgstr "建立保護區域"
 
 msgid "Created by"
 msgstr "建立者"
@@ -1623,7 +1623,7 @@ msgid "DNS resource records"
 msgstr "DNS 紀錄"
 
 msgid "DNS zone in which you want add this DNS resource record."
-msgstr ""
+msgstr "DNS 區域是讓您可以在其中新增 DNS 紀錄"
 
 msgid "DOWN"
 msgstr "未運行"
@@ -1958,9 +1958,6 @@ msgstr "目錄 '%s' 不存在。"
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
 msgstr "目錄 '%s' 是不允許或是無效的。"
-
-msgid "Directory tree"
-msgstr "目錄結構"
 
 msgid "Disable"
 msgstr "停用"
@@ -2703,7 +2700,7 @@ msgstr "假如設定 `是`，此經銷商可以啟用/停用此 PHP 郵件功能
 msgid ""
 "If the name field is filled with the @ sign or left blank, it will be "
 "automatically substituted by $ORIGIN value."
-msgstr ""
+msgstr "假如名稱欄位是填上 @ 或是保留空白，這將會自動設定為 $ORIGIN 的值。"
 
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "假如您要限制經銷商，您必須先限制這個客戶。"
@@ -2869,9 +2866,6 @@ msgstr "無效的郵件使用者名稱。"
 msgid "Invalid group name!"
 msgstr "無效的群組名稱！"
 
-msgid "Invalid htaccess group name."
-msgstr "無效的 htaccess 群組名稱。"
-
 msgid "Invalid menu order."
 msgstr "無效的選單訂購。"
 
@@ -2980,10 +2974,6 @@ msgstr "登入"
 
 msgid "Login As"
 msgstr "登入為"
-
-#, php-format
-msgid "Login data successfully sent to %s."
-msgstr "登入資料已經成功寄送至 %s."
 
 msgid "Login into phpMyAdmin"
 msgstr "登入到 phpMyAdmin"
@@ -3196,7 +3186,7 @@ msgid "N/A"
 msgstr "空"
 
 msgid "NS DNS resource records are only allowed for subzone delegation."
-msgstr ""
+msgstr "NS DNS 紀錄只允許使用在分區授權。"
 
 msgid "Name"
 msgstr "名稱"
@@ -3248,6 +3238,9 @@ msgstr "找不到客戶帳號。"
 
 msgid "No database update available."
 msgstr "沒有可用的資料庫更新"
+
+msgid "No domain available for new software instance."
+msgstr ""
 
 msgid "No error found"
 msgstr "沒有找到錯誤"
@@ -3613,8 +3606,11 @@ msgstr "PiB"
 msgid "Please activate your new i-MSCP password"
 msgstr "請啟用新的 i-MSCP 密碼"
 
-msgid "Please choose htaccess user or htaccess group."
-msgstr "請選擇 htaccess 使用者或htaccess 群組."
+msgid "Please choose at least one htaccess user."
+msgstr ""
+
+msgid "Please choose at least one htaccess user/group."
+msgstr ""
 
 msgid "Please confirm the password."
 msgstr "請確認密碼"
@@ -5116,9 +5112,6 @@ msgstr "未知的狀態"
 msgid "Unknown type."
 msgstr "未知的類型"
 
-msgid "Unknown user type"
-msgstr "未知的使用者類型"
-
 msgid "Unknown username."
 msgstr "未知的使用者名稱"
 
@@ -5156,9 +5149,6 @@ msgstr "已放棄更新網站軟體庫的索引。遺失或空白的欄位。"
 
 msgid "Update password"
 msgstr "修改密碼"
-
-msgid "Update protected area"
-msgstr "更新保護區域"
 
 msgid "Updates"
 msgstr "更新"
@@ -5238,9 +5228,6 @@ msgstr "刪除使用者的行程。"
 
 msgid "User session successfully destroyed."
 msgstr "使用者連線已成功中斷了。"
-
-msgid "User session successfully killed for password change."
-msgstr "在密碼變更後使用者連線已成功刪除了。"
 
 msgid "User statistics"
 msgstr "使用者狀態"
@@ -5458,11 +5445,6 @@ msgid ""
 msgstr "您可以設定替代的根目錄。這常用在當使用類似於Symfony的 PHP 框架。注意新的根目錄將會存在預設的 `/htdocs' 根目錄裡面。並注意新的根目錄必須已經存在。"
 
 msgid ""
-"You can't install the software outside of the document root of the selected "
-"domain."
-msgstr "您不可以安裝軟體於已選擇網域的根目錄之外，"
-
-msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
 msgstr "您不可以新增電子郵件帳號。您已經分配您的郵件配額到其他信箱中。請先檢視您的配額分配。"
@@ -5485,12 +5467,6 @@ msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service."
 msgstr "您不可以移動 <b>%1$s</b> 到目標經銷商，<br>這已經有限制在 <b>%2$s</b> 服務中。"
-
-msgid "You cannot protect an area without selected htaccess group(s)."
-msgstr "您不可以保護一個沒有選擇 htaccess 群組的區域。"
-
-msgid "You cannot protect an area without selected htaccess user(s)."
-msgstr "您不可以保護一個沒有選擇 htaccess 使用者的區域。"
 
 msgid "You cannot remove an IP that is assigned to a reseller."
 msgstr "您不能移除指派到經銷商的 IP 位址。"

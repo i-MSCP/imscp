@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-28 17:18+0100\n"
-"PO-Revision-Date: 2016-11-27 17:02+0000\n"
+"POT-Creation-Date: 2016-12-16 11:55+0100\n"
+"PO-Revision-Date: 2016-12-16 10:57+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/i-mscp/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -1007,8 +1007,11 @@ msgstr "Authentication by group"
 msgid "Authentication by user"
 msgstr "Authentication by user"
 
-msgid "Authentication data"
-msgstr "Authentication data"
+msgid "Authentication users"
+msgstr ""
+
+msgid "Authentication users/groups"
+msgstr ""
 
 msgid "Auto"
 msgstr "Auto"
@@ -1470,8 +1473,8 @@ msgstr "Could not protect the %s plugin: %s"
 msgid "Could not restore %s plugin directory"
 msgstr "Could not restore %s plugin directory"
 
-msgid "Could not retrieve directories. Please contact your reseller."
-msgstr "Could not retrieve directories. Please contact your reseller."
+msgid "Could not retrieve directories."
+msgstr ""
 
 #, php-format
 msgid "Could not uninstall the %s plugin: %s"
@@ -1510,9 +1513,6 @@ msgstr "Create catch all"
 
 msgid "Create default email addresses"
 msgstr "Create default email addresses"
-
-msgid "Create protected area"
-msgstr "Create protected area"
 
 msgid "Created by"
 msgstr "Created by"
@@ -1958,9 +1958,6 @@ msgstr "Directory '%s' doesn't exists."
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
 msgstr "Directory '%s' is not allowed or invalid."
-
-msgid "Directory tree"
-msgstr "Directory tree"
 
 msgid "Disable"
 msgstr "Disable"
@@ -2869,9 +2866,6 @@ msgstr "Invalid email username."
 msgid "Invalid group name!"
 msgstr "Invalid group name!"
 
-msgid "Invalid htaccess group name."
-msgstr "Invalid htaccess group name."
-
 msgid "Invalid menu order."
 msgstr "Invalid menu order."
 
@@ -2980,10 +2974,6 @@ msgstr "Login"
 
 msgid "Login As"
 msgstr "Login As"
-
-#, php-format
-msgid "Login data successfully sent to %s."
-msgstr "Login data successfully sent to %s."
 
 msgid "Login into phpMyAdmin"
 msgstr "Login into phpMyAdmin"
@@ -3248,6 +3238,9 @@ msgstr "No customer accounts found."
 
 msgid "No database update available."
 msgstr "No database update available."
+
+msgid "No domain available for new software instance."
+msgstr ""
 
 msgid "No error found"
 msgstr "No error found"
@@ -3613,8 +3606,11 @@ msgstr "PiB"
 msgid "Please activate your new i-MSCP password"
 msgstr "Please activate your new i-MSCP password"
 
-msgid "Please choose htaccess user or htaccess group."
-msgstr "Please choose htaccess user or htaccess group."
+msgid "Please choose at least one htaccess user."
+msgstr ""
+
+msgid "Please choose at least one htaccess user/group."
+msgstr ""
 
 msgid "Please confirm the password."
 msgstr "Please confirm the password."
@@ -5116,9 +5112,6 @@ msgstr "Unknown status"
 msgid "Unknown type."
 msgstr "Unknown type."
 
-msgid "Unknown user type"
-msgstr "Unknown user type"
-
 msgid "Unknown username."
 msgstr "Unknown username."
 
@@ -5156,9 +5149,6 @@ msgstr "Update of Web software repository index has been aborted. Missing or emp
 
 msgid "Update password"
 msgstr "Update password"
-
-msgid "Update protected area"
-msgstr "Update protected area"
 
 msgid "Updates"
 msgstr "Updates"
@@ -5238,9 +5228,6 @@ msgstr "User scheduled for deletion."
 
 msgid "User session successfully destroyed."
 msgstr "User session successfully destroyed."
-
-msgid "User session successfully killed for password change."
-msgstr "User session successfully killed for password change."
 
 msgid "User statistics"
 msgstr "User statistics"
@@ -5458,11 +5445,6 @@ msgid ""
 msgstr "You can set an alternative document root. This is mostly needed when using a PHP framework such as Symfony. Note that the new document root will live inside the default  `/htdocs' document root. Be aware that the directory for the new document root must pre-exist."
 
 msgid ""
-"You can't install the software outside of the document root of the selected "
-"domain."
-msgstr "You can't install the software outside of the document root of the selected domain."
-
-msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
 msgstr "You cannot add new email account. You have already assigned all your email quota to other mailboxes. Please first, review your quota assignments."
@@ -5485,12 +5467,6 @@ msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service."
 msgstr "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service."
-
-msgid "You cannot protect an area without selected htaccess group(s)."
-msgstr "You cannot protect an area without selected htaccess group(s)."
-
-msgid "You cannot protect an area without selected htaccess user(s)."
-msgstr "You cannot protect an area without selected htaccess user(s)."
 
 msgid "You cannot remove an IP that is assigned to a reseller."
 msgstr "You cannot remove an IP that is assigned to a reseller."

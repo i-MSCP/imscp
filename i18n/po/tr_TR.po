@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Nurullah Ciftci <nciftci@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-28 17:18+0100\n"
-"PO-Revision-Date: 2016-11-27 17:01+0000\n"
+"POT-Creation-Date: 2016-12-16 11:55+0100\n"
+"PO-Revision-Date: 2016-12-16 10:57+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/i-mscp/i-MSCP/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -794,7 +795,7 @@ msgid "All fields are required."
 msgstr "Tüm alanlar gereklidir."
 
 msgid "All fields are valid."
-msgstr ""
+msgstr "Tüm alanlar geçerli."
 
 msgid "All in"
 msgstr "Tüm gelenler"
@@ -1004,7 +1005,10 @@ msgstr ""
 msgid "Authentication by user"
 msgstr ""
 
-msgid "Authentication data"
+msgid "Authentication users"
+msgstr ""
+
+msgid "Authentication users/groups"
 msgstr ""
 
 msgid "Auto"
@@ -1224,25 +1228,25 @@ msgid "Click to deactivate"
 msgstr "Devre dışı bırakmak için tıklayın"
 
 msgid "Click to edit"
-msgstr ""
+msgstr "Düzenlemek için tıklayın"
 
 msgid "Client / Databases / Add SQL Database"
-msgstr ""
+msgstr "Müşteri / Veritabanları / SQL Veritabanı Ekle"
 
 msgid "Client / Databases / Overview"
-msgstr ""
+msgstr "Müşteri / Veritabanları / Genel Bakış"
 
 msgid "Client / Databases / Overview / Add SQL User"
-msgstr ""
+msgstr "Müşteri / Veritabanları / Genel Bakış / SQL Kullanıcısı Ekle"
 
 msgid "Client / Databases / Overview / Update SQL User Password"
-msgstr ""
+msgstr "Müşteri / Veritabanları / Genel Bakış / SQL Kullanıcı Şifresini Güncelle"
 
 msgid "Client / Domain / Edit DNS resource record"
 msgstr ""
 
 msgid "Client / Domains"
-msgstr ""
+msgstr "Müşteri / Alan adları"
 
 msgid "Client / Domains / Add DNS resource record"
 msgstr ""
@@ -1254,7 +1258,7 @@ msgid "Client / Domains / Add Subdomain"
 msgstr ""
 
 msgid "Client / Domains / Edit Domain"
-msgstr ""
+msgstr "Müşteri / Alan adları / Alan adı düzenle"
 
 msgid "Client / Domains / Edit Domain Alias"
 msgstr ""
@@ -1467,7 +1471,7 @@ msgstr ""
 msgid "Could not restore %s plugin directory"
 msgstr ""
 
-msgid "Could not retrieve directories. Please contact your reseller."
+msgid "Could not retrieve directories."
 msgstr ""
 
 #, php-format
@@ -1506,9 +1510,6 @@ msgid "Create catch all"
 msgstr "Tümünü Yakala oluştur"
 
 msgid "Create default email addresses"
-msgstr ""
-
-msgid "Create protected area"
 msgstr ""
 
 msgid "Created by"
@@ -1889,7 +1890,7 @@ msgid "Default"
 msgstr ""
 
 msgid "Default language"
-msgstr ""
+msgstr "Varsayılan dil"
 
 msgid "Default language successfully updated."
 msgstr ""
@@ -1955,9 +1956,6 @@ msgstr ""
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
 msgstr ""
-
-msgid "Directory tree"
-msgstr "Dizin yapısı"
 
 msgid "Disable"
 msgstr "Kapalı"
@@ -2074,7 +2072,7 @@ msgid "Domain expiration date"
 msgstr "Domain bitiş tarihi"
 
 msgid "Domain expiration date must be filled."
-msgstr ""
+msgstr "Alan adının son kullanma tarihi girilmeli."
 
 msgid "Domain for which PHP Editor must act."
 msgstr ""
@@ -2092,10 +2090,10 @@ msgid "Domain name (ASCII form) cannot be greater than 255 characters."
 msgstr ""
 
 msgid "Domain name cannot be empty."
-msgstr ""
+msgstr "Alan adı boş bırakılamaz."
 
 msgid "Domain name cannot start nor end with dot."
-msgstr ""
+msgstr "Alan adı nokta ile başlayamaz veya bitemez."
 
 #, php-format
 msgid "Domain name contains an invalid character: %s"
@@ -2115,7 +2113,7 @@ msgid "Domain new expiration date"
 msgstr "Domain yeni bitiş tarihi"
 
 msgid "Domain overview"
-msgstr ""
+msgstr "Alan adı genel bakış"
 
 msgid "Domain scheduled for update."
 msgstr "Domain güncellenmek için işleme alındı."
@@ -2130,7 +2128,7 @@ msgid "Domain successfully scheduled for update."
 msgstr ""
 
 msgid "Domain successfully updated."
-msgstr ""
+msgstr "Alan adı başarıyla güncellendi"
 
 msgid "Domain type"
 msgstr "Domain türü"
@@ -2866,9 +2864,6 @@ msgstr "Geçersiz eposta kullanıcı adı."
 msgid "Invalid group name!"
 msgstr "Geçersiz grup adı!"
 
-msgid "Invalid htaccess group name."
-msgstr "Geçersiz htaccess grup adı."
-
 msgid "Invalid menu order."
 msgstr "Geçersiz menü sırası."
 
@@ -2977,10 +2972,6 @@ msgstr "Giriş"
 
 msgid "Login As"
 msgstr "Giriş yap"
-
-#, php-format
-msgid "Login data successfully sent to %s."
-msgstr ""
 
 msgid "Login into phpMyAdmin"
 msgstr ""
@@ -3244,6 +3235,9 @@ msgid "No customer accounts found."
 msgstr ""
 
 msgid "No database update available."
+msgstr ""
+
+msgid "No domain available for new software instance."
 msgstr ""
 
 msgid "No error found"
@@ -3572,28 +3566,28 @@ msgid "Password successfully updated."
 msgstr ""
 
 msgid "Passwords do not match"
-msgstr ""
+msgstr "Şifreler uyuşmuyor"
 
 msgid "Passwords do not match."
-msgstr ""
+msgstr "Şifreler uyuşmuyor"
 
 msgid "Path"
 msgstr "Yol"
 
 msgid "Pending tasks"
-msgstr ""
+msgstr "Bekleyen görevler"
 
 msgid "Percent"
 msgstr "Yüzde"
 
 msgid "Permissions"
-msgstr ""
+msgstr "İzinler"
 
 msgid "Personal data"
 msgstr "Kişisel bilgi"
 
 msgid "Personal data successfully updated."
-msgstr ""
+msgstr "Kişisel veri başarıyla güncellendi."
 
 msgid "Personalise template"
 msgstr "Görünümü kişiselleştir"
@@ -3610,11 +3604,14 @@ msgstr ""
 msgid "Please activate your new i-MSCP password"
 msgstr ""
 
-msgid "Please choose htaccess user or htaccess group."
+msgid "Please choose at least one htaccess user."
+msgstr ""
+
+msgid "Please choose at least one htaccess user/group."
 msgstr ""
 
 msgid "Please confirm the password."
-msgstr ""
+msgstr "Lütfen şifreyi onaylayın."
 
 msgid ""
 "Please contact the administrator!<br>Ask him for the permissions to use this"
@@ -4427,7 +4424,7 @@ msgid "Settings"
 msgstr "Ayarlar"
 
 msgid "Settings saved."
-msgstr ""
+msgstr "Ayarlar kaydedildi."
 
 msgid "Shared mount point"
 msgstr "Paylaşılan bağlantı noktası"
@@ -5113,9 +5110,6 @@ msgstr ""
 msgid "Unknown type."
 msgstr "Bilinmeyen tip."
 
-msgid "Unknown user type"
-msgstr ""
-
 msgid "Unknown username."
 msgstr "Bilinmeyen kullanıcı."
 
@@ -5153,9 +5147,6 @@ msgstr ""
 
 msgid "Update password"
 msgstr "Şifreyi güncelle"
-
-msgid "Update protected area"
-msgstr ""
 
 msgid "Updates"
 msgstr "Güncellemeler"
@@ -5234,9 +5225,6 @@ msgid "User scheduled for deletion."
 msgstr "Kullanıcı silinmek için işleme alındı."
 
 msgid "User session successfully destroyed."
-msgstr ""
-
-msgid "User session successfully killed for password change."
 msgstr ""
 
 msgid "User statistics"
@@ -5455,11 +5443,6 @@ msgid ""
 msgstr ""
 
 msgid ""
-"You can't install the software outside of the document root of the selected "
-"domain."
-msgstr ""
-
-msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
 msgstr ""
@@ -5481,12 +5464,6 @@ msgstr "%s kendine yönlendirilemez."
 msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service."
-msgstr ""
-
-msgid "You cannot protect an area without selected htaccess group(s)."
-msgstr ""
-
-msgid "You cannot protect an area without selected htaccess user(s)."
 msgstr ""
 
 msgid "You cannot remove an IP that is assigned to a reseller."

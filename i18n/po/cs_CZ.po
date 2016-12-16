@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-28 17:18+0100\n"
-"PO-Revision-Date: 2016-11-27 17:01+0000\n"
+"POT-Creation-Date: 2016-12-16 11:55+0100\n"
+"PO-Revision-Date: 2016-12-16 10:57+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/i-mscp/i-MSCP/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
@@ -1004,7 +1004,10 @@ msgstr ""
 msgid "Authentication by user"
 msgstr ""
 
-msgid "Authentication data"
+msgid "Authentication users"
+msgstr ""
+
+msgid "Authentication users/groups"
 msgstr ""
 
 msgid "Auto"
@@ -1467,7 +1470,7 @@ msgstr ""
 msgid "Could not restore %s plugin directory"
 msgstr ""
 
-msgid "Could not retrieve directories. Please contact your reseller."
+msgid "Could not retrieve directories."
 msgstr ""
 
 #, php-format
@@ -1507,9 +1510,6 @@ msgstr "Vytvořit doménový koš"
 
 msgid "Create default email addresses"
 msgstr "Vytvořit standardní E-mailové adresy"
-
-msgid "Create protected area"
-msgstr ""
 
 msgid "Created by"
 msgstr "Vytvořil"
@@ -1955,9 +1955,6 @@ msgstr ""
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
 msgstr ""
-
-msgid "Directory tree"
-msgstr "Strom adresářů"
 
 msgid "Disable"
 msgstr "Vypnout"
@@ -2866,9 +2863,6 @@ msgstr ""
 msgid "Invalid group name!"
 msgstr "Nesprávné jméno skupiny!"
 
-msgid "Invalid htaccess group name."
-msgstr ""
-
 msgid "Invalid menu order."
 msgstr ""
 
@@ -2977,10 +2971,6 @@ msgstr "Přihlášení"
 
 msgid "Login As"
 msgstr "Přihlásit se jako"
-
-#, php-format
-msgid "Login data successfully sent to %s."
-msgstr ""
 
 msgid "Login into phpMyAdmin"
 msgstr "Přihlásit se do phpMyAdminu"
@@ -3244,6 +3234,9 @@ msgid "No customer accounts found."
 msgstr "Nenalezeny žádné účty zákazníka."
 
 msgid "No database update available."
+msgstr ""
+
+msgid "No domain available for new software instance."
 msgstr ""
 
 msgid "No error found"
@@ -3610,7 +3603,10 @@ msgstr "PiB"
 msgid "Please activate your new i-MSCP password"
 msgstr ""
 
-msgid "Please choose htaccess user or htaccess group."
+msgid "Please choose at least one htaccess user."
+msgstr ""
+
+msgid "Please choose at least one htaccess user/group."
 msgstr ""
 
 msgid "Please confirm the password."
@@ -5113,9 +5109,6 @@ msgstr ""
 msgid "Unknown type."
 msgstr ""
 
-msgid "Unknown user type"
-msgstr ""
-
 msgid "Unknown username."
 msgstr ""
 
@@ -5152,9 +5145,6 @@ msgid ""
 msgstr ""
 
 msgid "Update password"
-msgstr ""
-
-msgid "Update protected area"
 msgstr ""
 
 msgid "Updates"
@@ -5234,9 +5224,6 @@ msgid "User scheduled for deletion."
 msgstr ""
 
 msgid "User session successfully destroyed."
-msgstr ""
-
-msgid "User session successfully killed for password change."
 msgstr ""
 
 msgid "User statistics"
@@ -5455,11 +5442,6 @@ msgid ""
 msgstr ""
 
 msgid ""
-"You can't install the software outside of the document root of the selected "
-"domain."
-msgstr ""
-
-msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
 msgstr ""
@@ -5481,12 +5463,6 @@ msgstr ""
 msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service."
-msgstr ""
-
-msgid "You cannot protect an area without selected htaccess group(s)."
-msgstr ""
-
-msgid "You cannot protect an area without selected htaccess user(s)."
 msgstr ""
 
 msgid "You cannot remove an IP that is assigned to a reseller."

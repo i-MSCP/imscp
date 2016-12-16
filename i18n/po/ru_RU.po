@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-28 17:18+0100\n"
-"PO-Revision-Date: 2016-11-27 18:10+0000\n"
-"Last-Translator: Arthur Mayer <mayer.arthur@gmail.com>\n"
+"POT-Creation-Date: 2016-12-16 11:55+0100\n"
+"PO-Revision-Date: 2016-12-16 10:57+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/i-mscp/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1008,8 +1008,11 @@ msgstr "Аутентификация по группе"
 msgid "Authentication by user"
 msgstr "Аутентификация по пользователю"
 
-msgid "Authentication data"
-msgstr "Данные аутентификации"
+msgid "Authentication users"
+msgstr ""
+
+msgid "Authentication users/groups"
+msgstr ""
 
 msgid "Auto"
 msgstr "Автоматически"
@@ -1471,8 +1474,8 @@ msgstr "Невозможно защитить плагин %s: %s"
 msgid "Could not restore %s plugin directory"
 msgstr "Невозможно восстановить резервную копию плагина %s ."
 
-msgid "Could not retrieve directories. Please contact your reseller."
-msgstr "Невозможно получить список каталогов для Вашего домена. Пожалуйста, свяжитесь с вашим реселлером."
+msgid "Could not retrieve directories."
+msgstr ""
 
 #, php-format
 msgid "Could not uninstall the %s plugin: %s"
@@ -1511,9 +1514,6 @@ msgstr "Создать Catch all"
 
 msgid "Create default email addresses"
 msgstr "Создать email адреса по умолчанию"
-
-msgid "Create protected area"
-msgstr "Создать защищённую зону"
 
 msgid "Created by"
 msgstr "Создал"
@@ -1959,9 +1959,6 @@ msgstr "Домашний каталог '%s' не существует"
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
 msgstr "Домашний каталог %s не разрешен или неверен."
-
-msgid "Directory tree"
-msgstr "Дерево папок"
 
 msgid "Disable"
 msgstr "Отключить"
@@ -2870,9 +2867,6 @@ msgstr "Неверное имя пользователя почтового ящ
 msgid "Invalid group name!"
 msgstr "Неправильное имя группы!"
 
-msgid "Invalid htaccess group name."
-msgstr "Неверное имя группы htaccess."
-
 msgid "Invalid menu order."
 msgstr "Неверный заказ меню."
 
@@ -2981,10 +2975,6 @@ msgstr "Войти"
 
 msgid "Login As"
 msgstr "Войти как"
-
-#, php-format
-msgid "Login data successfully sent to %s."
-msgstr "Данные для входа успешно отправлены на %s."
 
 msgid "Login into phpMyAdmin"
 msgstr "Войти в phpMyAdmin"
@@ -3249,6 +3239,9 @@ msgstr "Не найдено учетных записей клиентов."
 
 msgid "No database update available."
 msgstr "Нет обновлений базы данных."
+
+msgid "No domain available for new software instance."
+msgstr ""
 
 msgid "No error found"
 msgstr "Ошибок не найдено"
@@ -3614,8 +3607,11 @@ msgstr "Пб"
 msgid "Please activate your new i-MSCP password"
 msgstr "Пожалуйста, активируйте ваш новый I-MSCP пароль"
 
-msgid "Please choose htaccess user or htaccess group."
-msgstr "Пожалуйста, выберите htaccess пользователя или группу."
+msgid "Please choose at least one htaccess user."
+msgstr ""
+
+msgid "Please choose at least one htaccess user/group."
+msgstr ""
 
 msgid "Please confirm the password."
 msgstr "Пожалуйста, подтвердите пароль."
@@ -5117,9 +5113,6 @@ msgstr "Неизвестный статус"
 msgid "Unknown type."
 msgstr "Неизвестный тип."
 
-msgid "Unknown user type"
-msgstr "Неизвестный тип пользователя"
-
 msgid "Unknown username."
 msgstr "Неизвестное имя пользователя."
 
@@ -5157,9 +5150,6 @@ msgstr "Обновление индекса Web-репозитория было 
 
 msgid "Update password"
 msgstr "Обновить пароль"
-
-msgid "Update protected area"
-msgstr "Обновить новую защищённую зону"
 
 msgid "Updates"
 msgstr "Обновления"
@@ -5239,9 +5229,6 @@ msgstr "Пользователь помечен для удаления."
 
 msgid "User session successfully destroyed."
 msgstr "Сессия пользователя успешно уничтожена."
-
-msgid "User session successfully killed for password change."
-msgstr "Сессия пользователя успешно завершена для смены пароля."
 
 msgid "User statistics"
 msgstr "Статистика пользователя"
@@ -5459,11 +5446,6 @@ msgid ""
 msgstr "Вы можете указать альтернативную корневую директорию. В основном это требуется некоторым PHP фреймворкам как Symfony. Новая корневая директория будет находиться в каталоге /htdocs. Внимание, каталог, который Вы хотите использовать в качестве корневой директории, должен быть создан заранее."
 
 msgid ""
-"You can't install the software outside of the document root of the selected "
-"domain."
-msgstr "Вы не можете устанавливать ПО вне корневой директории данного домена."
-
-msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
 msgstr "Вы не можете добавить новый почтовый ящик. Вы уже исчерпали всё доступное для ящиков пространство. Пожалуйста, пересмотрите Вашу политику использования почтовых ящиков."
@@ -5486,12 +5468,6 @@ msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service."
 msgstr "Вы не можете переместить <b>%1$s</b> для целевого реселлера,<br>у которого есть ограничения на службу <b>%2$s</b>."
-
-msgid "You cannot protect an area without selected htaccess group(s)."
-msgstr "Вы не можете защитить зону без выбора групп htaccess."
-
-msgid "You cannot protect an area without selected htaccess user(s)."
-msgstr "Вы не можете защитить зону без выбора пользователей htaccess."
 
 msgid "You cannot remove an IP that is assigned to a reseller."
 msgstr "IP адрес, который вы пытаетесь удалить, назначен реселлеру."

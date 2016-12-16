@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-28 17:18+0100\n"
-"PO-Revision-Date: 2016-11-27 17:01+0000\n"
+"POT-Creation-Date: 2016-12-16 11:55+0100\n"
+"PO-Revision-Date: 2016-12-16 10:57+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/i-mscp/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -1008,8 +1008,11 @@ msgstr "Autentisering av grupp"
 msgid "Authentication by user"
 msgstr "Autentisering av användare"
 
-msgid "Authentication data"
-msgstr "Autentiseringsuppgifter"
+msgid "Authentication users"
+msgstr ""
+
+msgid "Authentication users/groups"
+msgstr ""
 
 msgid "Auto"
 msgstr "Auto"
@@ -1471,8 +1474,8 @@ msgstr "Det gick inte att skydda %s plugin: %s"
 msgid "Could not restore %s plugin directory"
 msgstr "Kunde inte återställa %s plugin katalog"
 
-msgid "Could not retrieve directories. Please contact your reseller."
-msgstr "Det gick inte att hämta kataloger. Vänligen kontakta din återförsäljare."
+msgid "Could not retrieve directories."
+msgstr ""
 
 #, php-format
 msgid "Could not uninstall the %s plugin: %s"
@@ -1511,9 +1514,6 @@ msgstr "Skapa catch-all"
 
 msgid "Create default email addresses"
 msgstr "Skapa standard e-postadresser"
-
-msgid "Create protected area"
-msgstr "Skapa skyddat område"
 
 msgid "Created by"
 msgstr "Skapad av"
@@ -1959,9 +1959,6 @@ msgstr "Katalogen '%s' existerar inte."
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
 msgstr "Katalogen '%s' är inte tillåten eller ogiltig."
-
-msgid "Directory tree"
-msgstr "Katalogträd"
 
 msgid "Disable"
 msgstr "Inaktivera"
@@ -2870,9 +2867,6 @@ msgstr "Ogiltig e-mail användarnamn."
 msgid "Invalid group name!"
 msgstr "Ogiltigt gruppnamn!"
 
-msgid "Invalid htaccess group name."
-msgstr "Invalid htaccess group name."
-
 msgid "Invalid menu order."
 msgstr "Invalid menu order."
 
@@ -2981,10 +2975,6 @@ msgstr "Logga in"
 
 msgid "Login As"
 msgstr "Logga in som"
-
-#, php-format
-msgid "Login data successfully sent to %s."
-msgstr "Inloggningsdata har skickats till %s."
 
 msgid "Login into phpMyAdmin"
 msgstr "Logga in till PhpMyAdmin"
@@ -3249,6 +3239,9 @@ msgstr "Ingen kundkonto hittats."
 
 msgid "No database update available."
 msgstr "No database update available."
+
+msgid "No domain available for new software instance."
+msgstr ""
 
 msgid "No error found"
 msgstr "Inget fel hittades"
@@ -3614,8 +3607,11 @@ msgstr "PiB"
 msgid "Please activate your new i-MSCP password"
 msgstr "Aktivera ditt nya i-MSCP lösenord"
 
-msgid "Please choose htaccess user or htaccess group."
-msgstr "Please choose htaccess user or htaccess group."
+msgid "Please choose at least one htaccess user."
+msgstr ""
+
+msgid "Please choose at least one htaccess user/group."
+msgstr ""
 
 msgid "Please confirm the password."
 msgstr "Du måste bekräfta lösenord."
@@ -5117,9 +5113,6 @@ msgstr "Unknown status"
 msgid "Unknown type."
 msgstr "Okänd typ."
 
-msgid "Unknown user type"
-msgstr "Okänd användartyp"
-
 msgid "Unknown username."
 msgstr "Okänt användarnamn."
 
@@ -5157,9 +5150,6 @@ msgstr "Uppdatering av webben programvaruförråd index har avbrutits. Saknas el
 
 msgid "Update password"
 msgstr "Uppdatera lösenord"
-
-msgid "Update protected area"
-msgstr "Uppdatering skyddat område"
 
 msgid "Updates"
 msgstr "Updates"
@@ -5239,9 +5229,6 @@ msgstr "Användare schemalagd för radering."
 
 msgid "User session successfully destroyed."
 msgstr "Användarsessionen har förstörts."
-
-msgid "User session successfully killed for password change."
-msgstr "Användare sessionen avlivas för ändring av lösenord."
 
 msgid "User statistics"
 msgstr "Användarstatistik"
@@ -5459,11 +5446,6 @@ msgid ""
 msgstr "Du kan ställa in ett alternativ dokument rot. Detta behövs främst vid användning av en PHP-ramverk som Symfony. Observera att det nya dokumentet roten kommer att leva inuti default `/htdocs' dokument rot. Var medveten om att katalogen för det nya dokumentet roten måste i förväg existera."
 
 msgid ""
-"You can't install the software outside of the document root of the selected "
-"domain."
-msgstr "Du kan inte installera programvaran utanför dokumentroten av den valda domänen."
-
-msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
 msgstr "Du kan inte lägga till nya e-postkonto. Du har redan tilldelats hela din e-kvoter till andra brevlådor. Vänligen först, granska dina kvot."
@@ -5486,12 +5468,6 @@ msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service."
 msgstr "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service."
-
-msgid "You cannot protect an area without selected htaccess group(s)."
-msgstr "You cannot protect an area without selected htaccess group(s)."
-
-msgid "You cannot protect an area without selected htaccess user(s)."
-msgstr "You cannot protect an area without selected htaccess user(s)."
 
 msgid "You cannot remove an IP that is assigned to a reseller."
 msgstr "Du kan inte ta bort en IP som tilldelas en återförsäljare."

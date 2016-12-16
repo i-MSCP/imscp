@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-28 17:18+0100\n"
-"PO-Revision-Date: 2016-11-28 06:18+0000\n"
-"Last-Translator: Robert Kiss\n"
+"POT-Creation-Date: 2016-12-16 11:55+0100\n"
+"PO-Revision-Date: 2016-12-16 10:57+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/i-mscp/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1009,8 +1009,11 @@ msgstr "Hitelesítés csoportként"
 msgid "Authentication by user"
 msgstr "Hitelesítés felhasználóként"
 
-msgid "Authentication data"
-msgstr "Hitelesítési adat"
+msgid "Authentication users"
+msgstr ""
+
+msgid "Authentication users/groups"
+msgstr ""
 
 msgid "Auto"
 msgstr "Auto"
@@ -1472,8 +1475,8 @@ msgstr "%s bővítményt nem lehet védeni: %s"
 msgid "Could not restore %s plugin directory"
 msgstr "Nem lehet visszaállítani a(z) %s bővítmény könyvtárát"
 
-msgid "Could not retrieve directories. Please contact your reseller."
-msgstr "Nem sikerült lekérdezni a könyvtárak listáját. Forduljon a viszonteladójához!"
+msgid "Could not retrieve directories."
+msgstr ""
 
 #, php-format
 msgid "Could not uninstall the %s plugin: %s"
@@ -1512,9 +1515,6 @@ msgstr "Catch-all létrehozása"
 
 msgid "Create default email addresses"
 msgstr "Alapértelmezett postafiókok létrehozása"
-
-msgid "Create protected area"
-msgstr "Védett terület létrehozása"
 
 msgid "Created by"
 msgstr "Létrehozta"
@@ -1960,9 +1960,6 @@ msgstr "'%s' könyvtár nem létezik."
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
 msgstr "'%s' könyvtár nem engedélyezett, vagy hibás."
-
-msgid "Directory tree"
-msgstr "Könyvtárfa"
 
 msgid "Disable"
 msgstr "Letiltás"
@@ -2871,9 +2868,6 @@ msgstr "Érvénytelen e-mail felhasználónév."
 msgid "Invalid group name!"
 msgstr "Érvénytelen csoportnév"
 
-msgid "Invalid htaccess group name."
-msgstr "Érvénytelen htaccess csoportnév"
-
 msgid "Invalid menu order."
 msgstr "Érvénytelen megrendelés menü"
 
@@ -2982,10 +2976,6 @@ msgstr "Bejelentkezés"
 
 msgid "Login As"
 msgstr "Fájlkezelő megnyitása"
-
-#, php-format
-msgid "Login data successfully sent to %s."
-msgstr "Bejelentkezési adatokat sikerült %s -nek elküldeni"
 
 msgid "Login into phpMyAdmin"
 msgstr "Belépés az adatbáziskezelőbe"
@@ -3250,6 +3240,9 @@ msgstr "Nincsenek ügyfelek"
 
 msgid "No database update available."
 msgstr "Nincs elérhető adatbázis frissítés"
+
+msgid "No domain available for new software instance."
+msgstr ""
 
 msgid "No error found"
 msgstr "Nem található hiba"
@@ -3615,8 +3608,11 @@ msgstr "PB"
 msgid "Please activate your new i-MSCP password"
 msgstr "Kérjük, aktiválja az új jelszavát!"
 
-msgid "Please choose htaccess user or htaccess group."
-msgstr "Kérem, válasszon védett felhasználót vagy védett csoportot!"
+msgid "Please choose at least one htaccess user."
+msgstr ""
+
+msgid "Please choose at least one htaccess user/group."
+msgstr ""
 
 msgid "Please confirm the password."
 msgstr "Kérjük, erősítsd meg a jelszót!"
@@ -5118,9 +5114,6 @@ msgstr "Ismeretlen állapot"
 msgid "Unknown type."
 msgstr "Ismeretlen típus"
 
-msgid "Unknown user type"
-msgstr "Ismeretlen felhasználó típus"
-
 msgid "Unknown username."
 msgstr "Ismeretlen felhasználói név"
 
@@ -5158,9 +5151,6 @@ msgstr "A webes alkalmazásokhoz tartozó index frissítése megszakadt. Hiányz
 
 msgid "Update password"
 msgstr "Jelszó frissítése"
-
-msgid "Update protected area"
-msgstr "Védett terület frissítése"
 
 msgid "Updates"
 msgstr "Frissítések"
@@ -5240,9 +5230,6 @@ msgstr "Felhasználó törlése beütemezve"
 
 msgid "User session successfully destroyed."
 msgstr "Felhasználó munkafolyamata (session) megszakítva"
-
-msgid "User session successfully killed for password change."
-msgstr "Felhasználó jelszavának megváltoztatása nem sikerült"
 
 msgid "User statistics"
 msgstr "Felhasználói statisztikák"
@@ -5460,11 +5447,6 @@ msgid ""
 msgstr ""
 
 msgid ""
-"You can't install the software outside of the document root of the selected "
-"domain."
-msgstr ""
-
-msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
 msgstr "Nem adhatsz hozzá új postafiókot, mivel elérted a postafiók korlátod. Kérjük, először nézd meg a korlátod."
@@ -5487,12 +5469,6 @@ msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service."
 msgstr "Nem lehet átadni a(z) <b>%1$s</b> felhasználót a cél viszonteladónak,<br>mert számára korlátozott a <b>%2$s</b> szolgáltatás!"
-
-msgid "You cannot protect an area without selected htaccess group(s)."
-msgstr "Nem tudja megvédeni a kijelölt területet védett csoport(ok) kiválasztása nélkül"
-
-msgid "You cannot protect an area without selected htaccess user(s)."
-msgstr "Nem tudja megvédeni a kijelölt területet védett felhasználó(ok) kiválasztása nélkül"
 
 msgid "You cannot remove an IP that is assigned to a reseller."
 msgstr "Az IP-cím, amit próbál eltávolítani, hozzá van rendelve egy viszonteladóhoz"

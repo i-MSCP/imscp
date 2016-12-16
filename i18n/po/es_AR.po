@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-28 17:18+0100\n"
-"PO-Revision-Date: 2016-11-27 17:01+0000\n"
+"POT-Creation-Date: 2016-12-16 11:55+0100\n"
+"PO-Revision-Date: 2016-12-16 10:57+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Argentina) (http://www.transifex.com/i-mscp/i-MSCP/language/es_AR/)\n"
 "MIME-Version: 1.0\n"
@@ -1004,7 +1004,10 @@ msgstr ""
 msgid "Authentication by user"
 msgstr ""
 
-msgid "Authentication data"
+msgid "Authentication users"
+msgstr ""
+
+msgid "Authentication users/groups"
 msgstr ""
 
 msgid "Auto"
@@ -1467,7 +1470,7 @@ msgstr ""
 msgid "Could not restore %s plugin directory"
 msgstr ""
 
-msgid "Could not retrieve directories. Please contact your reseller."
+msgid "Could not retrieve directories."
 msgstr ""
 
 #, php-format
@@ -1507,9 +1510,6 @@ msgstr "Crear CatchAll"
 
 msgid "Create default email addresses"
 msgstr "Crear direcciones de correo predeterminadas"
-
-msgid "Create protected area"
-msgstr ""
 
 msgid "Created by"
 msgstr "Creado por"
@@ -1955,9 +1955,6 @@ msgstr ""
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
 msgstr ""
-
-msgid "Directory tree"
-msgstr "Árbol de directorios"
 
 msgid "Disable"
 msgstr "Deshabilitar"
@@ -2866,9 +2863,6 @@ msgstr "Nombre de usuario de correo inválido."
 msgid "Invalid group name!"
 msgstr "¡Nombre de grupo inválido!"
 
-msgid "Invalid htaccess group name."
-msgstr "Nombre de grupo htaccess inválido"
-
 msgid "Invalid menu order."
 msgstr "Orden del menú inválido."
 
@@ -2977,10 +2971,6 @@ msgstr "Iniciar sesión"
 
 msgid "Login As"
 msgstr "Iniciar sesión como"
-
-#, php-format
-msgid "Login data successfully sent to %s."
-msgstr "Datos de registro enviados satisfactoriamente a %s."
 
 msgid "Login into phpMyAdmin"
 msgstr "Iniciar sesión en phpMyAdmin"
@@ -3245,6 +3235,9 @@ msgstr "No se encontraron cuentas de clientes."
 
 msgid "No database update available."
 msgstr "No hay actualizaciones de bases de datos disponibles."
+
+msgid "No domain available for new software instance."
+msgstr ""
 
 msgid "No error found"
 msgstr ""
@@ -3610,8 +3603,11 @@ msgstr "PiB"
 msgid "Please activate your new i-MSCP password"
 msgstr "Por favor activá tu nueva contraseña de i-MSCP"
 
-msgid "Please choose htaccess user or htaccess group."
-msgstr "Por favor seleccioná un usuario htaccess o un grupo htaccess."
+msgid "Please choose at least one htaccess user."
+msgstr ""
+
+msgid "Please choose at least one htaccess user/group."
+msgstr ""
 
 msgid "Please confirm the password."
 msgstr "Por favor, confirmá la contraseña."
@@ -5113,9 +5109,6 @@ msgstr "Estado desconocido"
 msgid "Unknown type."
 msgstr "Tipo desconocido."
 
-msgid "Unknown user type"
-msgstr "Tipo de usuario desconocido"
-
 msgid "Unknown username."
 msgstr "Nombre de usuario desconocido."
 
@@ -5153,9 +5146,6 @@ msgstr "La actualización del índice del repositorio web de software ha sido ab
 
 msgid "Update password"
 msgstr "Actualizar contraseña"
-
-msgid "Update protected area"
-msgstr ""
 
 msgid "Updates"
 msgstr "Actualizaciones"
@@ -5235,9 +5225,6 @@ msgstr "Usuario programado para su eliminación."
 
 msgid "User session successfully destroyed."
 msgstr "Sesión de usuario eliminada satisfactoriamente."
-
-msgid "User session successfully killed for password change."
-msgstr "Sesión de usuario eliminada por cambio de contraseña."
 
 msgid "User statistics"
 msgstr "Estadísticas de revendedor"
@@ -5455,11 +5442,6 @@ msgid ""
 msgstr ""
 
 msgid ""
-"You can't install the software outside of the document root of the selected "
-"domain."
-msgstr ""
-
-msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
 msgstr "No podés agregar una nueva cuenta de correo. Tenés asignada toda la cuota de almacenamiento de correo en otras casillas. Por favor, revisá la asignación de cuotas de almacenamiento."
@@ -5482,12 +5464,6 @@ msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service."
 msgstr ""
-
-msgid "You cannot protect an area without selected htaccess group(s)."
-msgstr "No podés proteger un área sin seleccionar grupo(s) htaccess."
-
-msgid "You cannot protect an area without selected htaccess user(s)."
-msgstr "No podés proteger un área sin seleccionar usuario(s) htaccess."
 
 msgid "You cannot remove an IP that is assigned to a reseller."
 msgstr ""

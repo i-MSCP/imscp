@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-28 17:18+0100\n"
-"PO-Revision-Date: 2016-11-27 17:01+0000\n"
+"POT-Creation-Date: 2016-12-16 11:55+0100\n"
+"PO-Revision-Date: 2016-12-16 10:57+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/i-mscp/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -1006,8 +1006,11 @@ msgstr "グループによる認証"
 msgid "Authentication by user"
 msgstr "ユーザによる認証"
 
-msgid "Authentication data"
-msgstr "認証データ"
+msgid "Authentication users"
+msgstr ""
+
+msgid "Authentication users/groups"
+msgstr ""
 
 msgid "Auto"
 msgstr "自動"
@@ -1469,8 +1472,8 @@ msgstr "%sのプラグインを保護することができませんでした: %s
 msgid "Could not restore %s plugin directory"
 msgstr "%sのプラグインディレクトリを復元できませんでした"
 
-msgid "Could not retrieve directories. Please contact your reseller."
-msgstr "ディレクトリを取得できませんでした。代理店にお問い合わせください。"
+msgid "Could not retrieve directories."
+msgstr ""
 
 #, php-format
 msgid "Could not uninstall the %s plugin: %s"
@@ -1509,9 +1512,6 @@ msgstr "キャッチオール作成"
 
 msgid "Create default email addresses"
 msgstr "デフォルトEメールアドレスを作成"
-
-msgid "Create protected area"
-msgstr "保護領域を作成"
 
 msgid "Created by"
 msgstr "作成者"
@@ -1957,9 +1957,6 @@ msgstr "ディレクトリ'%s'は存在しません。"
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
 msgstr "ディレクトリ'%s'は許可または無効にされていません。"
-
-msgid "Directory tree"
-msgstr "ディレクトリツリー"
 
 msgid "Disable"
 msgstr "無効"
@@ -2868,9 +2865,6 @@ msgstr "無効なEメールユーザ名です。"
 msgid "Invalid group name!"
 msgstr "無効なグループ名！"
 
-msgid "Invalid htaccess group name."
-msgstr "無効なhtaccessグループ名。"
-
 msgid "Invalid menu order."
 msgstr "無効なメニューの順序。"
 
@@ -2979,10 +2973,6 @@ msgstr "ログイン"
 
 msgid "Login As"
 msgstr "ログイン"
-
-#, php-format
-msgid "Login data successfully sent to %s."
-msgstr "ログインデータを %s に送りました。"
 
 msgid "Login into phpMyAdmin"
 msgstr "phpMyAdminにログイン"
@@ -3247,6 +3237,9 @@ msgstr "顧客アカウントが見つかりません。"
 
 msgid "No database update available."
 msgstr "利用可能なデータベースの更新はありません。"
+
+msgid "No domain available for new software instance."
+msgstr ""
 
 msgid "No error found"
 msgstr "エラーが見つかりません"
@@ -3612,8 +3605,11 @@ msgstr "PB"
 msgid "Please activate your new i-MSCP password"
 msgstr "新しいi-MSCPのパスワードを有効にしてください"
 
-msgid "Please choose htaccess user or htaccess group."
-msgstr "htaccessユーザーまたはhtaccessグループを選択してください。"
+msgid "Please choose at least one htaccess user."
+msgstr ""
+
+msgid "Please choose at least one htaccess user/group."
+msgstr ""
 
 msgid "Please confirm the password."
 msgstr "パスワードを確認してください。"
@@ -5115,9 +5111,6 @@ msgstr "未確認状態"
 msgid "Unknown type."
 msgstr "不明な種別が指定されました。"
 
-msgid "Unknown user type"
-msgstr "未知のユーザタイプ"
-
 msgid "Unknown username."
 msgstr "未知のユーザー名。"
 
@@ -5155,9 +5148,6 @@ msgstr "Webソフトウェアリポジトリ索引の更新が中止されまし
 
 msgid "Update password"
 msgstr "パスワードを更新"
-
-msgid "Update protected area"
-msgstr "アップデート保護領域"
 
 msgid "Updates"
 msgstr "アップデート"
@@ -5237,9 +5227,6 @@ msgstr "ユーザーの削除が予定されました。"
 
 msgid "User session successfully destroyed."
 msgstr "ユーザーセッションが破棄に成功。"
-
-msgid "User session successfully killed for password change."
-msgstr "ユーザーセッションは、パスワード変更のため切断されました。"
 
 msgid "User statistics"
 msgstr "Web統計"
@@ -5457,11 +5444,6 @@ msgid ""
 msgstr "代替ドキュメントルートを設定することができます。symfonyのようなほとんどのPHPフレームワークを使用する場合は必要とされています。新しいドキュメントルートがデフォルトの `/ htdocsの'ドキュメントルートの内側に居ることに注意してください。新しいドキュメントルートのディレクトリは事前に存在しなければならないことに注意してください。"
 
 msgid ""
-"You can't install the software outside of the document root of the selected "
-"domain."
-msgstr "選択したドメインのドキュメントルートの外にソフトウェアをインストールすることはできません。"
-
-msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
 msgstr "新しいEメールアカウントを追加することはできません。既に他のメールボックスに全てのEメールの容量を割り当てている。まず、あなたの容量の割り当てを確認してください。"
@@ -5484,12 +5466,6 @@ msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service."
 msgstr "<b>%1$s</b>に代理店を移動することはできません ,<br><b>%2$s</b> サービスの制限をにより。"
-
-msgid "You cannot protect an area without selected htaccess group(s)."
-msgstr "選択したhtaccessファイルグループ（複数可）を使用せずに領域を保護することはできません。"
-
-msgid "You cannot protect an area without selected htaccess user(s)."
-msgstr "選択したhtaccessのユーザー（複数可）を使用せずに領域を保護することはできません。"
 
 msgid "You cannot remove an IP that is assigned to a reseller."
 msgstr "代理店に割り当てられているIPアドレスを削除することはできません。"

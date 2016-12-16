@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-28 17:18+0100\n"
-"PO-Revision-Date: 2016-11-27 17:01+0000\n"
+"POT-Creation-Date: 2016-12-16 11:55+0100\n"
+"PO-Revision-Date: 2016-12-16 10:57+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Slovak (Slovakia) (http://www.transifex.com/i-mscp/i-MSCP/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
@@ -1005,7 +1005,10 @@ msgstr ""
 msgid "Authentication by user"
 msgstr ""
 
-msgid "Authentication data"
+msgid "Authentication users"
+msgstr ""
+
+msgid "Authentication users/groups"
 msgstr ""
 
 msgid "Auto"
@@ -1468,7 +1471,7 @@ msgstr ""
 msgid "Could not restore %s plugin directory"
 msgstr ""
 
-msgid "Could not retrieve directories. Please contact your reseller."
+msgid "Could not retrieve directories."
 msgstr ""
 
 #, php-format
@@ -1507,9 +1510,6 @@ msgid "Create catch all"
 msgstr "Vytvoriť \"zachytiť všetko\""
 
 msgid "Create default email addresses"
-msgstr ""
-
-msgid "Create protected area"
 msgstr ""
 
 msgid "Created by"
@@ -1956,9 +1956,6 @@ msgstr ""
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
 msgstr ""
-
-msgid "Directory tree"
-msgstr "Strom adresárov"
 
 msgid "Disable"
 msgstr "Vypnúť"
@@ -2867,9 +2864,6 @@ msgstr ""
 msgid "Invalid group name!"
 msgstr "Zlé časové obdobie!"
 
-msgid "Invalid htaccess group name."
-msgstr ""
-
 msgid "Invalid menu order."
 msgstr ""
 
@@ -2978,10 +2972,6 @@ msgstr "Prihlásenie"
 
 msgid "Login As"
 msgstr "Prihlásiť ako"
-
-#, php-format
-msgid "Login data successfully sent to %s."
-msgstr ""
 
 msgid "Login into phpMyAdmin"
 msgstr ""
@@ -3245,6 +3235,9 @@ msgid "No customer accounts found."
 msgstr "Nenašli sa žiadne konta predajcov."
 
 msgid "No database update available."
+msgstr ""
+
+msgid "No domain available for new software instance."
 msgstr ""
 
 msgid "No error found"
@@ -3611,7 +3604,10 @@ msgstr ""
 msgid "Please activate your new i-MSCP password"
 msgstr "Prosím aktivujte si Vaše nové i-MSCP heslo"
 
-msgid "Please choose htaccess user or htaccess group."
+msgid "Please choose at least one htaccess user."
+msgstr ""
+
+msgid "Please choose at least one htaccess user/group."
 msgstr ""
 
 msgid "Please confirm the password."
@@ -5114,9 +5110,6 @@ msgstr "Neznámy status"
 msgid "Unknown type."
 msgstr ""
 
-msgid "Unknown user type"
-msgstr ""
-
 msgid "Unknown username."
 msgstr ""
 
@@ -5154,9 +5147,6 @@ msgstr ""
 
 msgid "Update password"
 msgstr "Aktualizovať heslo"
-
-msgid "Update protected area"
-msgstr ""
 
 msgid "Updates"
 msgstr ""
@@ -5235,9 +5225,6 @@ msgid "User scheduled for deletion."
 msgstr "Užívateľ bol naplánovaný na vymazanie."
 
 msgid "User session successfully destroyed."
-msgstr ""
-
-msgid "User session successfully killed for password change."
 msgstr ""
 
 msgid "User statistics"
@@ -5456,11 +5443,6 @@ msgid ""
 msgstr ""
 
 msgid ""
-"You can't install the software outside of the document root of the selected "
-"domain."
-msgstr ""
-
-msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
 msgstr ""
@@ -5483,12 +5465,6 @@ msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service."
 msgstr ""
-
-msgid "You cannot protect an area without selected htaccess group(s)."
-msgstr "Nemôžete ochrániť oblasť bez vybraných htaccess skupín(y)."
-
-msgid "You cannot protect an area without selected htaccess user(s)."
-msgstr "Nemôžete ochrániť oblasť bez vybraného htaccess užívateľa(ov)."
 
 msgid "You cannot remove an IP that is assigned to a reseller."
 msgstr ""

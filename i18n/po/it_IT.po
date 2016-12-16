@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-11-28 17:18+0100\n"
-"PO-Revision-Date: 2016-11-27 17:01+0000\n"
+"POT-Creation-Date: 2016-12-16 11:55+0100\n"
+"PO-Revision-Date: 2016-12-16 10:57+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/i-mscp/i-MSCP/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -1007,8 +1007,11 @@ msgstr "Autenticazione tramite gruppo"
 msgid "Authentication by user"
 msgstr "Autenticazione tramite utente"
 
-msgid "Authentication data"
-msgstr "Diati di autenticazione"
+msgid "Authentication users"
+msgstr ""
+
+msgid "Authentication users/groups"
+msgstr ""
 
 msgid "Auto"
 msgstr "Auto"
@@ -1470,8 +1473,8 @@ msgstr "Non è stato possibile proteggere il plugin %s: %s"
 msgid "Could not restore %s plugin directory"
 msgstr "Non è stato possibile ripristinare la directory del plugin %s"
 
-msgid "Could not retrieve directories. Please contact your reseller."
-msgstr "Non è stato possibile richiamare le directories. Per favore contatta il tuo rivenditore."
+msgid "Could not retrieve directories."
+msgstr ""
 
 #, php-format
 msgid "Could not uninstall the %s plugin: %s"
@@ -1510,9 +1513,6 @@ msgstr "Crea un'email per catturarle tutte"
 
 msgid "Create default email addresses"
 msgstr "Crea indirizzi email di base"
-
-msgid "Create protected area"
-msgstr "Crea area protetta"
 
 msgid "Created by"
 msgstr "Creato da"
@@ -1958,9 +1958,6 @@ msgstr "La directory '%s' non esiste."
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
 msgstr "La directory '%s' non è consentita o è non valida."
-
-msgid "Directory tree"
-msgstr "Albero delle directory"
 
 msgid "Disable"
 msgstr "Disabilitare"
@@ -2869,9 +2866,6 @@ msgstr "Email utente non valido."
 msgid "Invalid group name!"
 msgstr "Nome gruppo non valido!"
 
-msgid "Invalid htaccess group name."
-msgstr "Nome gruppo htaccess non valido."
-
 msgid "Invalid menu order."
 msgstr "Ordine del menù non valido."
 
@@ -2980,10 +2974,6 @@ msgstr "Accesso"
 
 msgid "Login As"
 msgstr "Accesso come"
-
-#, php-format
-msgid "Login data successfully sent to %s."
-msgstr "Dati di accesso spediti con successo a %s."
 
 msgid "Login into phpMyAdmin"
 msgstr "Accedi a phpMyAdmin"
@@ -3248,6 +3238,9 @@ msgstr "Nessun account cliente trovato."
 
 msgid "No database update available."
 msgstr "Nessun aggiornamento disponibile del database."
+
+msgid "No domain available for new software instance."
+msgstr ""
 
 msgid "No error found"
 msgstr "Nessun errore rilevato"
@@ -3613,8 +3606,11 @@ msgstr "PiB"
 msgid "Please activate your new i-MSCP password"
 msgstr "Attivare la nuova password i-MSCP"
 
-msgid "Please choose htaccess user or htaccess group."
-msgstr "Scegliere un utente htaccess o un gruppo htaccess."
+msgid "Please choose at least one htaccess user."
+msgstr ""
+
+msgid "Please choose at least one htaccess user/group."
+msgstr ""
 
 msgid "Please confirm the password."
 msgstr "Conferma, per favore, la password."
@@ -5116,9 +5112,6 @@ msgstr "Stato sconosciuto"
 msgid "Unknown type."
 msgstr "Tipo sconosciuto."
 
-msgid "Unknown user type"
-msgstr "Tipologia di utente  sconosciuto."
-
 msgid "Unknown username."
 msgstr "Username sconosciuto."
 
@@ -5156,9 +5149,6 @@ msgstr "L'aggiornamento dell'indice del repository software Web è stato interro
 
 msgid "Update password"
 msgstr "Aggiornamento password"
-
-msgid "Update protected area"
-msgstr "Aggiorna area protetta"
 
 msgid "Updates"
 msgstr "Aggiornamenti"
@@ -5238,9 +5228,6 @@ msgstr "Utente preparato per l'eliminazione."
 
 msgid "User session successfully destroyed."
 msgstr "Sessione Utente distrutta con successo."
-
-msgid "User session successfully killed for password change."
-msgstr "La sessione Utente distrutta con successo per cambio password."
 
 msgid "User statistics"
 msgstr "Statistiche Cliente"
@@ -5458,11 +5445,6 @@ msgid ""
 msgstr "Puoi impostare una document root differente. è necessario se utilizzi un framework PHP come ad esempio Symfony. Nota che la nuova document root sarà all'interno della directory `/htdocs' standard. Attenzione, la nuova directory per la nuova document root dovrà essere creata preventivamente."
 
 msgid ""
-"You can't install the software outside of the document root of the selected "
-"domain."
-msgstr "Non puoi installare il software all'esterno della document root del dominio scelto."
-
-msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
 msgstr "Non puoi aggiungere un altro account email. Hai già assegnato tutti lo spazio disponibile ad altri account email. Per procedere oltre, devi rivedere le tue precedenti assegnazioni di quote."
@@ -5485,12 +5467,6 @@ msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service."
 msgstr "Non puoi spostare <b>%1$s</b> in un rivenditore,<br>che ha dei limiti per il servizio <b>%2$s</b>."
-
-msgid "You cannot protect an area without selected htaccess group(s)."
-msgstr "Non puoi proteggere un'area senza selezionare un gruppo htaccess."
-
-msgid "You cannot protect an area without selected htaccess user(s)."
-msgstr "Non puoi proteggere un area senza selezionare un utente htaccess."
 
 msgid "You cannot remove an IP that is assigned to a reseller."
 msgstr "Non puoi rimuovere un indirizzo IP che è assegnato ad un rivenditore."
