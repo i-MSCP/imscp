@@ -38,8 +38,10 @@
         ProxySet connectiontimeout=5 timeout=7200
     </Proxy>
 
+    RewriteEngine on
+    RewriteOptions Inherit
+    
     <FilesMatch \.ph(p[3457]?|t|tml)$>
-        RewriteEngine On
         RewriteCond %{REQUEST_FILENAME} -f
         RewriteRule .* - [H=proxy:{PROXY_FCGI_URL},NC]
     </FilesMatch>
