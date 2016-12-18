@@ -135,7 +135,7 @@ function client_generateGroupsList($tpl)
             $tpl->assign('GROUP_MEMBERS', '');
         } else {
             $stmt = execute_query(
-                'SELECT uname FROM htaccess_users WHERE id IN(' . array_map('quoteValue', explode(',', $row['members'])) .')'
+                'SELECT uname FROM htaccess_users WHERE id IN(' . implode(', ', array_map('quoteValue', explode(',', $row['members']))) .')'
             );
             $tpl->assign('MEMBER', tohtml(implode(', ', $stmt->fetchAll(PDO::FETCH_COLUMN))));
             $tpl->parse('GROUP_MEMBERS', '.group_members');

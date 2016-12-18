@@ -5,13 +5,20 @@ Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-    Fixed: Wrong cipher used in `imscp_common_methods.pl` for decrypting  database password
+    Fixed: Bad cipher used in `imscp_common_methods.pl` for decrypting  database password, breaking software installer
 
 FRONTEND
     Added: Minified version of imscp.js file
+    Fixed: Could not assign/un-assign htgroup (Protected area feature)
+    Fixed: When creating/editing a htuser, credentials are not written in .htpasswd file (Protected area feature)
+    Fixed: When deleting htuser, credentials are not removed from the .htpasswd file (Protected area feature)
+    Fixed: Wrong SQL statement leading to 400 error page (Protected area feature)
 
 SERVERS
-    Fixed: Rewrite rules put in htaccess files are never applied in some contexts (apache2_php_fpm server impl.)
+    Fixed: Rewrite rules put in .htaccess files are never applied in some contexts (apache2_php_fpm server impl.)
+
+YOUTRACK
+    #IP-1678 Protected area feature - Several issues with htusers/htgroups
 
 ------------------------------------------------------------------------------------------------------------------------
 1.3.9

@@ -31,13 +31,21 @@
  */
 function client_getHtaccessUsername($htuserId, $domainId)
 {
-    $stmt = exec_query('SELECT uname FROM htaccess_users WHERE id = ? AND dmn_id = ?', array($htuserId, $domainId));
+    $stmt = exec_query('SELECT uname, status FROM htaccess_users WHERE id = ? AND dmn_id = ?', array(
+        $htuserId, $domainId
+    ));
 
     if (!$stmt->rowCount()) {
-        redirectTo('protected_user_manage.php');
+        showBadRequestErrorPage();
     }
 
     $row = $stmt->fetchRow();
+
+    if ($row['status'] != 'ok') {
+        set_page_message(tr('A task is in progress for this htuser.'));
+        redirectTo('protected_user_manage.php');
+    }
+
     return $row['uname'];
 }
 
@@ -51,12 +59,12 @@ function client_generatePage($tpl)
 {
     $domainId = get_user_domain_id($_SESSION['user_id']);
 
-    if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])) {
-        $htuserId = $_GET['uname'];
+    if (isset($_GET['uname']) && is_number($_GET['uname'])) {
+        $htuserId = intval($_GET['uname']);
         $tpl->assign('UNAME', tohtml(client_getHtaccessUsername($htuserId, $domainId)));
         $tpl->assign('UID', $htuserId);
-    } else if (isset($_POST['nadmin_name']) && !empty($_POST['nadmin_name']) && is_numeric($_POST['nadmin_name'])) {
-        $htuserId = $_POST['nadmin_name'];
+    } elseif (isset($_POST['nadmin_name']) && is_number($_POST['nadmin_name'])) {
+        $htuserId = intval($_POST['nadmin_name']);
         $tpl->assign('UNAME', tohtml(client_getHtaccessUsername($htuserId, $domainId)));
         $tpl->assign('UID', $htuserId);
     } else {
@@ -72,48 +80,46 @@ function client_generatePage($tpl)
         redirectTo('protected_user_manage.php');
     }
 
-    $added_in = 0;
-    $not_added_in = 0;
+    $addedIn = 0;
+    $notAddedIn = 0;
 
-    while (!$stmt->EOF) {
-        $group_id = $stmt->fields['id'];
-        $group_name = $stmt->fields['ugroup'];
-        $members = $stmt->fields['members'];
+    while ($row = $stmt->fetchRow()) {
+        $groupId = $row['id'];
+        $groupName = $row['ugroup'];
+        $members = $row['members'];
 
-        $members = explode(",", $members);
+        $members = explode(',', $members);
         $grp_in = 0;
         // let's generate all groups where the user is assigned
         for ($i = 0, $cnt_members = count($members); $i < $cnt_members; $i++) {
             if ($htuserId == $members[$i]) {
                 $tpl->assign(array(
-                    'GRP_IN'    => tohtml($group_name),
-                    'GRP_IN_ID' => $group_id,
+                    'GRP_IN'    => tohtml($groupName),
+                    'GRP_IN_ID' => $groupId,
                 ));
 
                 $tpl->parse('ALREADY_IN', '.already_in');
-                $grp_in = $group_id;
-                $added_in++;
+                $grp_in = $groupId;
+                $addedIn++;
             }
         }
 
-        if ($grp_in !== $group_id) {
+        if ($grp_in !== $groupId) {
             $tpl->assign(array(
-                'GRP_NAME' => tohtml($group_name),
-                'GRP_ID'   => $group_id
+                'GRP_NAME' => tohtml($groupName),
+                'GRP_ID'   => $groupId
             ));
             $tpl->parse('GRP_AVLB', '.grp_avlb');
-            $not_added_in++;
+            $notAddedIn++;
         }
-
-        $stmt->moveNext();
     }
 
     // generate add/remove buttons
-    if ($added_in < 1) {
+    if ($addedIn < 1) {
         $tpl->assign('IN_GROUP', '');
     }
 
-    if ($not_added_in < 1) {
+    if ($notAddedIn < 1) {
         $tpl->assign('NOT_IN_GROUP', '');
     }
 }
@@ -125,16 +131,23 @@ function client_generatePage($tpl)
  */
 function client_addHtaccessUserToHtaccessGroup()
 {
-    if(empty($_POST))
+    if (empty($_POST))
         return;
 
-    if (!isset($_POST['uaction'])
-        || $_POST['uaction'] !== 'add'
+    if (!isset($_POST['uaction'])) {
+        showBadRequestErrorPage();
+    }
+
+    if ($_POST['uaction'] != 'add') {
+        return;
+    }
+
+    if (!isset($_GET['uname'])
         || !isset($_POST['groups'])
         || empty($_POST['groups'])
         || !isset($_POST['nadmin_name'])
-        || !is_numeric($_POST['groups'])
-        || !is_numeric($_POST['nadmin_name'])
+        || !is_number($_POST['groups'])
+        || !is_number($_POST['nadmin_name'])
     ) {
         showBadRequestErrorPage();
     }
@@ -146,7 +159,12 @@ function client_addHtaccessUserToHtaccessGroup()
         $domainId, $htgroupId
     ));
 
-    $members = $stmt->fields['members'];
+    if (!$stmt->rowCount()) {
+        showBadRequestErrorPage();
+    }
+
+    $row = $stmt->fetchRow();
+    $members = $row['members'];
     if ($members == '') {
         $members = $htuserId;
     } else {
@@ -158,7 +176,8 @@ function client_addHtaccessUserToHtaccessGroup()
     ));
 
     send_request();
-    set_page_message(tr('Htaccess user successfully assigned to the %s htaccess group', $stmt->fields['ugroup']), 'success');
+    set_page_message(tr('Htaccess user successfully assigned to the %s htaccess group', $row['ugroup']), 'success');
+    redirectTo('protected_user_manage.php');
 }
 
 /**
@@ -168,17 +187,22 @@ function client_addHtaccessUserToHtaccessGroup()
  */
 function client_removeHtaccessUserFromHtaccessGroup()
 {
-    
-    if(empty($_POST))
+    if (empty($_POST))
         return;
-    
-    if (!isset($_POST['uaction'])
-        || $_POST['uaction'] !== 'remove'
-        || !isset($_POST['groups_in'])
+
+    if (!isset($_POST['uaction'])) {
+        showBadRequestErrorPage();
+    }
+
+    if ($_POST['uaction'] != 'remove') {
+        return;
+    }
+
+    if (!isset($_POST['groups_in'])
         || empty($_POST['groups_in'])
         || !isset($_POST['nadmin_name'])
-        || !is_numeric($_POST['groups_in'])
-        || !is_numeric($_POST['nadmin_name'])
+        || !is_number($_POST['groups_in'])
+        || !is_number($_POST['nadmin_name'])
     ) {
         showBadRequestErrorPage();
     }
@@ -187,15 +211,23 @@ function client_removeHtaccessUserFromHtaccessGroup()
     $htgroupId = intval($_POST['groups_in']);
     $htuserId = clean_input($_POST['nadmin_name']);
 
-    $stmt = exec_query('SELECT id, ugroup, members FROM htaccess_groups WHERE id = ? AND dmn_id = ?', array(
+    $stmt = exec_query('SELECT ugroup, members FROM htaccess_groups WHERE id = ? AND dmn_id = ?', array(
         $htgroupId, $domainId
     ));
 
-    $members = explode(',', $stmt->fields['members']);
+    if (!$stmt->rowCount()) {
+        showBadRequestErrorPage();
+    }
+
+    $row = $stmt->fetchRow();
+
+    $members = explode(',', $row['members']);
     $key = array_search($htuserId, $members);
+
     if ($key === false) {
         return;
     }
+
     unset($members[$key]);
     $members = implode(',', $members);
     exec_query('UPDATE htaccess_groups SET members = ?, status = ? WHERE id = ? AND dmn_id = ?', array(
@@ -203,7 +235,8 @@ function client_removeHtaccessUserFromHtaccessGroup()
     ));
 
     send_request();
-    set_page_message(tr('Htaccess user successfully deleted from the %s htaccess group ', $stmt->fields['ugroup']), 'success');
+    set_page_message(tr('Htaccess user successfully deleted from the %s htaccess group ', $row['ugroup']), 'success');
+    redirectTo('protected_user_manage.php');
 }
 
 /***********************************************************************************************************************
@@ -224,12 +257,12 @@ $tpl->define_dynamic(array(
     'layout'        => 'shared/layouts/ui.tpl',
     'page'          => 'client/puser_assign.tpl',
     'page_message'  => 'layout',
-    'already_in'    => 'page',
-    'grp_avlb'      => 'page',
-    'add_button'    => 'page',
-    'remove_button' => 'page',
     'in_group'      => 'page',
-    'not_in_group'  => 'page'
+    'already_in'    => 'in_group',
+    'remove_button' => 'in_group',
+    'not_in_group'  => 'page',
+    'grp_avlb'      => 'not_in_group',
+    'add_button'    => 'not_in_group'
 ));
 $tpl->assign(array(
     'TR_PAGE_TITLE'      => 'Client / Webtools / Protected Areas / Manage Users and Groups / Assign Group',

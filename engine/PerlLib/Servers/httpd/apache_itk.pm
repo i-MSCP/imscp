@@ -507,16 +507,16 @@ sub deleteSub
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdDelSub', $data );
 }
 
-=item AddHtuser(\%data)
+=item addHtpasswd(\%data)
 
- Process AddHtuser tasks
+ Process addHtpasswd tasks
 
- Param hash \%data Htuser data
+ Param hash \%data Htpasswd entry data
  Return int 0 on success, other on failure
 
 =cut
 
-sub addHtuser
+sub addHtpasswd
 {
     my ($self, $data) = @_;
 
@@ -529,13 +529,13 @@ sub addHtuser
     my $fileContent = $file->get() if -f $filePath;
     $fileContent = '' unless defined $fileContent;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdAddHtuser', \$fileContent, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdAddHtpasswd', \$fileContent, $data );
     return $rs if $rs;
 
     $fileContent =~ s/^$data->{'HTUSER_NAME'}:[^\n]*\n//gim;
     $fileContent .= "$data->{'HTUSER_NAME'}:$data->{'HTUSER_PASS'}\n";
 
-    $rs = $self->{'eventManager'}->trigger( 'afterHttpdAddHtuser', \$fileContent, $data );
+    $rs = $self->{'eventManager'}->trigger( 'afterHttpdAddHtpasswd', \$fileContent, $data );
     $rs ||= $file->set( $fileContent );
     $rs ||= $file->save();
     $rs ||= $file->mode( 0640 );
@@ -546,16 +546,16 @@ sub addHtuser
     0;
 }
 
-=item deleteHtuser(\%data)
+=item deleteHtpasswd(\%data)
 
- Process deleteHtuser tasks
+ Process deleteHtpasswd tasks
 
- Param hash \%data Htuser data
+ Param hash \%data Htpasswd data
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteHtuser
+sub deleteHtpasswd
 {
     my ($self, $data) = @_;
 
@@ -568,12 +568,12 @@ sub deleteHtuser
     my $fileContent = $file->get() if -f $filePath;
     $fileContent = '' unless defined $fileContent;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdDelHtuser', \$fileContent, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdDelHtpasswd', \$fileContent, $data );
     return $rs if $rs;
 
     $fileContent =~ s/^$data->{'HTUSER_NAME'}:[^\n]*\n//gim;
 
-    $rs = $self->{'eventManager'}->trigger( 'afterHttpdDelHtuser', \$fileContent, $data );
+    $rs = $self->{'eventManager'}->trigger( 'afterHttpdDelHtpasswd', \$fileContent, $data );
     $rs ||= $file->set( $fileContent );
     $rs ||= $file->save();
     $rs ||= $file->mode( 0640 );
