@@ -351,25 +351,23 @@ sub decrypt_db_password
         return (1, '');
     }
 
-    if (length( $main::db_pass_key ) != 32 || length( $main::db_pass_iv ) != 8) {
+    if (length( $main::db_pass_key ) != 32 || length( $main::db_pass_iv ) != 16) {
         push_el( \@main::el, 'decrypt_db_password()', '[ERROR] KEY or IV has invalid length' );
         return (1, '');
     }
 
-    my $cipher = Crypt::CBC->new(
-        {
-            'key'            => $main::db_pass_key,
-            'keysize'        => 32,
-            'cipher'         => 'Blowfish',
-            'iv'             => $main::db_pass_iv,
-            'regenerate_key' => 0,
-            'padding'        => 'space',
-            'prepend_iv'     => 0
-        }
+    my $plaintext = Crypt::CBC->new(
+        -cipher      => 'Crypt::Rijndael',
+        -key         => $main::db_pass_key,
+        -keysize     => length $main::db_pass_key,
+        -blocksize   => length $main::db_pass_iv,
+        -literal_key => 1,
+        -iv          => $main::db_pass_iv,
+        -header      => 'none',
+        -padding     => 'standard'
+    )->decrypt(
+        decode_base64( $pass )
     );
-
-    my $decoded = decode_base64( "$pass\n" );
-    my $plaintext = $cipher->decrypt( $decoded );
 
     push_el( \@main::el, 'decrypt_db_password()', 'Ending...' );
     return (0, $plaintext);
