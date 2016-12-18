@@ -44,8 +44,7 @@ class iMSCP_Plugin_Manager
     const ACTION_STOPPED = -1;
 
     /**
-     * Events which are triggered by the event manager
-     * @var array
+     * @var array Events triggered by this object
      */
     protected $events = array(
         iMSCP_Events::onBeforeUpdatePluginList,
@@ -148,17 +147,19 @@ class iMSCP_Plugin_Manager
     public function _autoload($className)
     {
         // Do not try to load class outside the plugin namespace
-        if (strpos($className, 'iMSCP_Plugin_', 0) === 0) {
-            $basename = substr($className, 13);
-            $filePath = $this->pluginGetDirectory() . "/$basename/$basename.php";
-            @include_once $filePath;
+        if (strpos($className, 'iMSCP_Plugin_', 0) !== 0) {
+            return;
         }
+
+        $basename = substr($className, 13);
+        $filePath = $this->pluginGetDirectory() . "/$basename/$basename.php";
+        @include_once $filePath;
     }
 
     /**
      * Get event manager
      *
-     * @return iMSCP_Events_Manager
+     * @return iMSCP_Events_Aggregator
      */
     public function getEventManager()
     {
@@ -211,29 +212,16 @@ class iMSCP_Plugin_Manager
      */
     public function pluginGetList($type = 'all', $enabledOnly = true)
     {
-        if ($type == 'all') {
-            return array_keys(
-                $enabledOnly ? array_filter(
-                    $this->pluginData,
-                    function ($pluginData) {
-                        return ($pluginData['status'] == 'enabled');
-                    }
-                ) : $this->pluginData
-            );
+        if ($type != 'all' && !isset($this->pluginsByType[$type])) {
+            return array();
         }
 
-        if (isset($this->pluginsByType[$type])) {
-            $pluginData = $this->pluginData;
-            return $enabledOnly
-                ? array_filter(
-                    $this->pluginsByType[$type],
-                    function ($pluginName) use ($pluginData) {
-                        return ($pluginData[$pluginName]['status'] == 'enabled');
-                    }
-                ) : $this->pluginsByType[$type];
-        }
+        $pluginNames = array_keys(($type != 'all') ? $this->pluginsByType[$type] : $this->pluginData);
+        $pluginData =& $this->pluginData;
 
-        return array();
+        return ($enabledOnly) ? array_filter($pluginNames, function ($pluginName) use ($pluginData) {
+            return $pluginData[$pluginName]['status'] == 'enabled';
+        }) : $pluginNames;
     }
 
     /**
@@ -256,7 +244,7 @@ class iMSCP_Plugin_Manager
 
         $this->loadedPlugins[$pluginName] = new $className($this);
 
-        if ($this->loadedPlugins[$pluginName] instanceof iMSCP_Plugin_Action) {
+        if ($this->pluginIsKnown($pluginName) && $this->loadedPlugins[$pluginName] instanceof iMSCP_Plugin_Action) {
             $this->loadedPlugins[$pluginName]->register($this->getEventManager());
         }
 
@@ -277,17 +265,17 @@ class iMSCP_Plugin_Manager
     /**
      * Get list of loaded plugins by type
      *
-     * @param string $type Type of loaded plugins to return
+     * @param string $type Type of loaded plugins to return (default: all types)
      * @return iMSCP_Plugin[]|iMSCP_Plugin_Action[] Array containing plugins instances
      */
-    public function pluginGetLoaded($type = 'all')
+    public function pluginGetLoaded($type = 'Action')
     {
         if ($type == 'all') {
             return $this->loadedPlugins;
         }
 
         if (isset($this->pluginsByType[$type])) {
-            return array_intersect_key($this->loadedPlugins, array_flip($this->pluginsByType[$type]));
+            return array_intersect_key($this->loadedPlugins, $this->pluginsByType[$type]);
         }
 
         return array();
@@ -471,7 +459,7 @@ class iMSCP_Plugin_Manager
         }
 
         $responses = $this->eventsManager->dispatch(iMSCP_Events::onBeforeLockPlugin, array(
-            'pluginName' => $pluginName,
+            'pluginName'   => $pluginName,
             'pluginLocker' => $locker
         ));
 
@@ -483,7 +471,7 @@ class iMSCP_Plugin_Manager
                 array(json_encode($lockers->toArray(), JSON_FORCE_OBJECT), $pluginName)
             );
             $this->eventsManager->dispatch(iMSCP_Events::onAfterLockPlugin, array(
-                'pluginName' => $pluginName,
+                'pluginName'   => $pluginName,
                 'pluginLocker' => $locker
             ));
         }
@@ -508,7 +496,7 @@ class iMSCP_Plugin_Manager
             return;
         }
         $responses = $this->eventsManager->dispatch(iMSCP_Events::onBeforeUnlockPlugin, array(
-            'pluginName' => $pluginName,
+            'pluginName'     => $pluginName,
             'pluginUnlocker' => $unlocker
         ));
 
@@ -521,7 +509,7 @@ class iMSCP_Plugin_Manager
                 array(json_encode($lockers->toArray(), JSON_FORCE_OBJECT), $pluginName)
             );
             $this->eventsManager->dispatch(iMSCP_Events::onAfterUnlockPlugin, array(
-                'pluginName' => $pluginName,
+                'pluginName'     => $pluginName,
                 'pluginUnlocker' => $unlocker
             ));
         }
@@ -593,14 +581,14 @@ class iMSCP_Plugin_Manager
             $this->pluginSetError($pluginName, NULL);
             $responses = $this->eventsManager->dispatch(iMSCP_Events::onBeforeInstallPlugin, array(
                 'pluginManager' => $this,
-                'pluginName' => $pluginName
+                'pluginName'    => $pluginName
             ));
 
             if (!$responses->isStopped()) {
                 $pluginInstance->install($this);
                 $this->eventsManager->dispatch(iMSCP_Events::onAfterInstallPlugin, array(
                     'pluginManager' => $this,
-                    'pluginName' => $pluginName
+                    'pluginName'    => $pluginName
                 ));
 
                 $ret = $this->pluginEnable($pluginName, true);
@@ -695,14 +683,14 @@ class iMSCP_Plugin_Manager
                 $this->pluginSetError($pluginName, NULL);
                 $responses = $this->eventsManager->dispatch(iMSCP_Events::onBeforeUninstallPlugin, array(
                     'pluginManager' => $this,
-                    'pluginName' => $pluginName
+                    'pluginName'    => $pluginName
                 ));
 
                 if (!$responses->isStopped()) {
                     $pluginInstance->uninstall($this);
                     $this->eventsManager->dispatch(iMSCP_Events::onAfterUninstallPlugin, array(
                         'pluginManager' => $this,
-                        'pluginName' => $pluginName
+                        'pluginName'    => $pluginName
                     ));
 
                     if ($this->pluginHasBackend($pluginName)) {
@@ -785,14 +773,14 @@ class iMSCP_Plugin_Manager
             $this->pluginSetError($pluginName, NULL);
             $responses = $this->eventsManager->dispatch(iMSCP_Events::onBeforeEnablePlugin, array(
                 'pluginManager' => $this,
-                'pluginName' => $pluginName
+                'pluginName'    => $pluginName
             ));
 
             if (!$responses->isStopped()) {
                 $pluginInstance->enable($this);
                 $this->eventsManager->dispatch(iMSCP_Events::onAfterEnablePlugin, array(
                     'pluginManager' => $this,
-                    'pluginName' => $pluginName
+                    'pluginName'    => $pluginName
                 ));
 
                 if ($this->pluginHasBackend($pluginName)) {
@@ -862,14 +850,14 @@ class iMSCP_Plugin_Manager
             $this->pluginSetError($pluginName, NULL);
             $responses = $this->eventsManager->dispatch(iMSCP_Events::onBeforeDisablePlugin, array(
                 'pluginManager' => $this,
-                'pluginName' => $pluginName
+                'pluginName'    => $pluginName
             ));
 
             if (!$responses->isStopped()) {
                 $pluginInstance->disable($this);
                 $this->eventsManager->dispatch(iMSCP_Events::onAfterDisablePlugin, array(
                     'pluginManager' => $this,
-                    'pluginName' => $pluginName
+                    'pluginName'    => $pluginName
                 ));
 
                 if ($this->pluginHasBackend($pluginName)) {
@@ -930,7 +918,7 @@ class iMSCP_Plugin_Manager
                         $this->pluginUpdateInfo($pluginName, $pluginInfo->toArray());
 
                         try {
-                            exec_query('UPDATE plugin set plugin_config_prev = plugin_config WHERE plugin_name = ?', $pluginName);
+                            exec_query('UPDATE plugin SET plugin_config_prev = plugin_config WHERE plugin_name = ?', $pluginName);
                             $this->pluginSetStatus($pluginName, 'enabled');
                         } catch (iMSCP_Exception_Database $e) {
                             throw new iMSCP_Plugin_Exception($e->getMessage(), $e->getCode(), $e);
@@ -985,18 +973,18 @@ class iMSCP_Plugin_Manager
                 $pluginInfo = $this->pluginGetInfo($pluginName);
                 $responses = $this->eventsManager->dispatch(iMSCP_Events::onBeforeUpdatePlugin, array(
                     'pluginManager' => $this,
-                    'pluginName' => $pluginName,
-                    'fromVersion' => $pluginInfo['version'],
-                    'toVersion' => $pluginInfo['__nversion__']
+                    'pluginName'    => $pluginName,
+                    'fromVersion'   => $pluginInfo['version'],
+                    'toVersion'     => $pluginInfo['__nversion__']
                 ));
 
                 if (!$responses->isStopped()) {
                     $pluginInstance->update($this, $pluginInfo['version'], $pluginInfo['__nversion__']);
                     $this->eventsManager->dispatch(iMSCP_Events::onAfterUpdatePlugin, array(
                         'pluginManager' => $this,
-                        'pluginName' => $pluginName,
-                        'fromVersion' => $pluginInfo['version'],
-                        'toVersion' => $pluginInfo['__nversion__']
+                        'pluginName'    => $pluginName,
+                        'fromVersion'   => $pluginInfo['version'],
+                        'toVersion'     => $pluginInfo['__nversion__']
                     ));
 
                     $ret = $this->pluginEnable($pluginName, true);
@@ -1053,7 +1041,7 @@ class iMSCP_Plugin_Manager
             $this->pluginSetError($pluginName, NULL);
             $responses = $this->eventsManager->dispatch(iMSCP_Events::onBeforeDeletePlugin, array(
                 'pluginManager' => $this,
-                'pluginName' => $pluginName
+                'pluginName'    => $pluginName
             ));
 
             if (!$responses->isStopped()) {
@@ -1068,7 +1056,7 @@ class iMSCP_Plugin_Manager
 
                 $this->eventsManager->dispatch(iMSCP_Events::onAfterDeletePlugin, array(
                     'pluginManager' => $this,
-                    'pluginName' => $pluginName
+                    'pluginName'    => $pluginName
                 ));
 
                 return self::ACTION_SUCCESS;
@@ -1189,13 +1177,17 @@ class iMSCP_Plugin_Manager
         if (!isset($info['require_api'])
             || version_compare($this->pluginGetApiVersion(), $info['require_api'], '<')
         ) {
-            throw new iMSCP_Plugin_Exception(tr('The %s plugin version %s is not compatible with your i-MSCP version.', $pluginName, $info['version']));
+            throw new iMSCP_Plugin_Exception(
+                tr('The %s plugin version %s is not compatible with your i-MSCP version.', $pluginName, $info['version'])
+            );
         }
 
         if ($this->pluginIsKnown($pluginName)) {
             $oldInfo = $this->pluginGetInfo($pluginName);
             if (version_compare($oldInfo['version'], $info['version'], '>')) {
-                throw new iMSCP_Plugin_Exception(tr('Plugin Manager: Downgrade of %s plugin is not allowed.', $pluginName), 'error');
+                throw new iMSCP_Plugin_Exception(
+                    tr('Plugin Manager: Downgrade of %s plugin is not allowed.', $pluginName), 'error'
+                );
             }
         }
     }
@@ -1285,15 +1277,15 @@ class iMSCP_Plugin_Manager
 
             if ($needDataUpdate || $needUpdate || $needChange) {
                 $this->pluginUpdateData(array(
-                    'name' => $pluginName,
-                    'type' => $plugin->getType(),
-                    'info' => json_encode($info),
-                    'config' => json_encode($config),
+                    'name'        => $pluginName,
+                    'type'        => $plugin->getType(),
+                    'info'        => json_encode($info),
+                    'config'      => json_encode($config),
                     'config_prev' => json_encode($configPrev),
-                    'priority' => isset($info['priority']) ? intval($info['priority']) : 0,
-                    'status' => $status,
-                    'backend' => file_exists($file->getPathname() . "/backend/$pluginName.pm") ? 'yes' : 'no',
-                    'lockers' => json_encode($lockers->toArray(), JSON_FORCE_OBJECT),
+                    'priority'    => isset($info['priority']) ? intval($info['priority']) : 0,
+                    'status'      => $status,
+                    'backend'     => file_exists($file->getPathname() . "/backend/$pluginName.pm") ? 'yes' : 'no',
+                    'lockers'     => json_encode($lockers->toArray(), JSON_FORCE_OBJECT),
                 ));
 
                 if ($status == 'enabled' || $status == 'tochange' || $status == 'toupdate') {
@@ -1364,13 +1356,13 @@ class iMSCP_Plugin_Manager
         );
         while ($plugin = $stmt->fetchRow()) {
             $this->pluginData[$plugin['plugin_name']] = array(
-                'info' => new iMSCP\Json\LazyDecoder($plugin['plugin_info']),
-                'status' => $plugin['plugin_status'],
-                'error' => $plugin['plugin_error'],
+                'info'    => new iMSCP\Json\LazyDecoder($plugin['plugin_info']),
+                'status'  => $plugin['plugin_status'],
+                'error'   => $plugin['plugin_error'],
                 'backend' => $plugin['plugin_backend'],
                 'lockers' => new iMSCP\Json\LazyDecoder($plugin['plugin_lockers'])
             );
-            $this->pluginsByType[$plugin['plugin_type']][] = $plugin['plugin_name'];
+            $this->pluginsByType[$plugin['plugin_type']][$plugin['plugin_name']] =& $this->pluginData[$plugin['plugin_name']];
         }
     }
 

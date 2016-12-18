@@ -14,6 +14,9 @@ FRONTEND
     Fixed: When deleting htuser, credentials are not removed from the .htpasswd file (Protected area feature)
     Fixed: Wrong SQL statement leading to 400 error page (Protected area feature)
 
+PLUGINS
+    Fixed: Do not register listeners provided by a plugin that is not yet known by the plugin manager
+
 SERVERS
     Fixed: Rewrite rules put in .htaccess files are never applied in some contexts (apache2_php_fpm server impl.)
 

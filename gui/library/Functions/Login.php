@@ -234,7 +234,7 @@ function check_login($userLevel, $preventExternalLogin = true)
         showForbiddenErrorPage();
     }
 
-    // If all goes fine update session and lastaccess
+    // If all goes fine update session and last access
     $_SESSION['user_login_time'] = time();
     exec_query('UPDATE login SET lastaccess = ? WHERE session_id = ?', array($_SESSION['user_login_time'], session_id()));
 }
@@ -296,7 +296,7 @@ function change_user_interface($fromId, $toId)
         $auth->setIdentity($to);
 
         if ($from->admin_type != 'user' && $to->admin_type != 'admin') {
-            // Set additional data about user from wich we are logged from
+            // Set additional data about user from which we are logged from
             $_SESSION['logged_from_type'] = $from->admin_type;
             $_SESSION['logged_from'] = $from->admin_name;
             $_SESSION['logged_from_id'] = $from->admin_id;
