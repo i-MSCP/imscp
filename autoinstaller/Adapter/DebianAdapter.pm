@@ -37,9 +37,6 @@ use File::Temp;
 use version;
 use parent 'autoinstaller::Adapter::AbstractAdapter';
 
-# Kept selfref for use in END block
-my $instance = undef;
-
 =head1 DESCRIPTION
 
  i-MSCP autoinstaller adapter implementation for Debian.
@@ -309,13 +306,6 @@ sub postBuild
 sub _init
 {
     my $self = shift;
-
-    $instance = $self;
-
-    # Prevent dpkg post-invoke tasks to be triggered in setup context
-    my $dpkgLockFile = '/tmp/imscp-dpkg-post-invoke.lock';
-    open $self->{'dpkg_lock_file'}, '>', $dpkgLockFile or die( sprintf( 'Could not open %s file', $dpkgLockFile ) );
-    flock( $self->{'dpkg_lock_file'}, LOCK_EX ) or die( sprintf( 'Could not acquire exclusive lock on %s', $dpkgLockFile ) );
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'repositorySections'} = [ 'main', 'contrib', 'non-free' ];
@@ -1075,22 +1065,6 @@ sub _rebuildAndInstallPackage
     }
 
     $rs;
-}
-
-=item END
-
- Process ending tasks (Release of lock files)
-
-=cut
-
-END {
-    debug( sprintf( 'Releasing exclusive lock on %s', '/tmp/imscp-dpkg-post-invoke.lock' ) );
-    flock( $instance->{'dpkg_lock_file'}, LOCK_UN ) or die(
-        sprintf( 'Could not release exclusive lock on %s', '/tmp/imscp-dpkg-post-invoke.lock' )
-    );
-    close $instance->{'dpkg_lock_file'};
-    delete $instance->{'dpkg_lock_file'};
-    unlink '/tmp/imscp-dpkg-post-invoke.lock';
 }
 
 =back

@@ -518,7 +518,9 @@ sub dpkgPostInvokeTasks
     }
 
     my $rs = $self->_copyPhpBinary();
-    $rs ||= $self->{'frontend'}->restart();
+    return $rs if $rs || !-f '/usr/local/etc/imscp_panel/php-fpm.conf';
+
+    $self->{'frontend'}->restart();
 }
 
 =item setGuiPermissions()
