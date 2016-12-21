@@ -33,16 +33,14 @@
     # SECTION mod_fastcgi END.
 
     # SECTION mod_proxy_fcgi BEGIN.
-    SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1
-
     <Proxy "{PROXY_FCGI_PATH}{PROXY_FCGI_URL}" retry=0>
         ProxySet connectiontimeout=5 timeout=7200
     </Proxy>
 
-    RewriteEngine on
-    RewriteOptions Inherit
-    
     <FilesMatch \.ph(p[3457]?|t|tml)$>
+        SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1
+        RewriteEngine On
+        RewriteOptions Inherit
         RewriteCond %{REQUEST_FILENAME} -f
         RewriteRule .* - [H=proxy:{PROXY_FCGI_URL},NC]
     </FilesMatch>
