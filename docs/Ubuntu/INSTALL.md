@@ -65,7 +65,7 @@ Note that these operations must be done on the host, not in the container.
 - https://help.ubuntu.com/lts/serverguide/lxc.html#lxc-apparmor
 - http://wiki.apparmor.net/index.php/AppArmor_Core_Policy_Reference#Mount_rules_.28AppArmor_2.8_and_later.29
 
-#### OpenVZ users (Proxmox and Virtuozzo)
+#### OpenVZ containers (Proxmox and Virtuozzo)
 
 You could have to increase the `fs.ve-mount-nr` limit, else, an error such as `mount: Cannot allocate memory` could be
 threw by CageFS. To avoid this problem you must:
