@@ -1,3 +1,3 @@
 DPkg::Post-Invoke {
-    "if [ -x /usr/local/sbin/imscp-dpkg-post-invoke.pl ] ; then /usr/bin/perl /usr/local/sbin/imscp-dpkg-post-invoke.pl -d; fi";
+    "if [ -x /usr/local/sbin/imscp-dpkg-post-invoke.pl -a ${IMSCP_SETUP:=0} -eq 0 ]; then /usr/bin/perl /usr/local/sbin/imscp-dpkg-post-invoke.pl -d; fi";
 };

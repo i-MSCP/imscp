@@ -43,6 +43,9 @@ use locale;
 setlocale(LC_ALL, 'C.UTF-8');
 $ENV{'LANG'} = 'C.UTF-8';
 
+# Needed to make any sub-process aware of i-MSCP setup process
+$ENV{'IMSCP_SETUP'} = 1;
+
 newDebug('imscp-setup.log');
 
 # Set backend mode
