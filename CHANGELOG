@@ -8,6 +8,9 @@ INSTALLER
     Added: `IMSCP_SETUP' environment variable to make any sub-process aware of i-MSCP setup process
     Fixed: Installation fail on first attempt due to dpkg(1) post-invoke-tasks that are run too early
 
+PACKAGES
+    Fixed: Blowfish secret is too short (Package::PhpMyAdmin::Installer)
+
 SERVERS
     Fixed: PHP scripts are outputted without even being interpreted when the rewrite engine is disabled in .htaccess files (apache2_php_fpm server impl.)
 

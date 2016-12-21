@@ -502,8 +502,6 @@ sub _setupSqlUser
 
 sub _setupDatabase
 {
-    my $self = shift;
-
     my $phpmyadminDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
     my $phpmyadminDbName = main::setupGetQuestion( 'DATABASE_NAME' ).'_pma';
 
@@ -618,7 +616,7 @@ sub _setVersion
 
 sub _generateBlowfishSecret
 {
-    $_[0]->{'config'}->{'BLOWFISH_SECRET'} = randomStr(16, iMSCP::Crypt::ALNUM);
+    $_[0]->{'config'}->{'BLOWFISH_SECRET'} = randomStr(32, iMSCP::Crypt::ALNUM);
     0;
 }
 
