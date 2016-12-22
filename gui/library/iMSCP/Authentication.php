@@ -124,7 +124,7 @@ class iMSCP_Authentication
 
             // Covers case where no one of authentication handlers has set an authentication result
             if (!$authResult instanceof AuthResult) {
-                $authResult = new AuthResult(AuthResult::FAILURE_UNCATEGORIZED, tr('Unknown reason.'));
+                $authResult = new AuthResult(AuthResult::FAILURE_UNCATEGORIZED, NULL, tr('Unknown reason.'));
             }
 
             if ($authResult->isValid()) {

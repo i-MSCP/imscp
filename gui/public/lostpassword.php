@@ -79,7 +79,7 @@ if (isset($_GET['key'])) { // Password request validation
             redirectTo('lostpassword.php');
         }
 
-        $bruteForce->recordAttempt();
+        $bruteForce->logLoginAttempt();
     }
 
     if(!isset($_SESSION['capcode'])) {
