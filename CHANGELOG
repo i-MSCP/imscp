@@ -5,8 +5,8 @@ Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
 FRONTEND
-    Fixed: Users cannot do new login attempts after a blocking timeout (BruteForce core plugin)
-    Fixed: Waiting time is never put off even when expected to be (BruteForce core plugin)
+    Fixed: Users cannot make new login attempts after a blocking timeout (BruteForce core plugin)
+    Fixed: Waiting time between login attempts is never put off, even when expected to be (BruteForce core plugin)
     Fixed: Wrong parameter passed-in to authentication result (Authentication service class)
 
 INSTALLER
