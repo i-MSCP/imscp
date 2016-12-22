@@ -1,8 +1,11 @@
 ﻿i-MSCP ChangeLog
 
 ------------------------------------------------------------------------------------------------------------------------
-Git 1.3.x
+1.3.11
 ------------------------------------------------------------------------------------------------------------------------
+
+2016-12-22: Laurent Declercq
+    RELEASE i-MSCP 1.3.11
 
 FRONTEND
     Fixed: Users cannot make new login attempts after a blocking timeout (BruteForce core plugin)
