@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-12-19 15:04+0100\n"
-"PO-Revision-Date: 2016-12-19 14:06+0000\n"
+"POT-Creation-Date: 2016-12-22 18:55+0100\n"
+"PO-Revision-Date: 2016-12-22 17:57+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/i-mscp/i-MSCP/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
@@ -151,14 +151,6 @@ msgstr ""
 #, php-format
 msgid "%s / unlimited"
 msgstr "%s / без Ограничение"
-
-#, php-format
-msgid "%s IP address is blocked for %s minutes."
-msgstr "%s IP address is blocked for %s minutes."
-
-#, php-format
-msgid "%s IP address is waiting %s seconds."
-msgstr ""
 
 #, php-format
 msgid "%s account successfully deleted."
@@ -5564,6 +5556,10 @@ msgid ""
 "You have a subdomain limit. You cannot add a user with unlimited subdomains."
 msgstr ""
 
+#, php-format
+msgid "You have been blocked for %s minutes."
+msgstr ""
+
 msgid "You have been successfully logged out."
 msgstr ""
 
@@ -5649,6 +5645,10 @@ msgstr "Трябва да посочите съобщение."
 
 msgid "You must specify a subject."
 msgstr "Трябва да зададете въпрос."
+
+#, php-format
+msgid "You must wait %s minutes before the next attempt."
+msgstr ""
 
 msgid "You need a Database for this software"
 msgstr ""

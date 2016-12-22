@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-12-19 15:04+0100\n"
+"POT-Creation-Date: 2016-12-22 18:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -150,14 +150,6 @@ msgstr ""
 
 #, php-format
 msgid "%s / unlimited"
-msgstr ""
-
-#, php-format
-msgid "%s IP address is blocked for %s minutes."
-msgstr ""
-
-#, php-format
-msgid "%s IP address is waiting %s seconds."
 msgstr ""
 
 #, php-format
@@ -5567,6 +5559,10 @@ msgid ""
 "You have a subdomain limit. You cannot add a user with unlimited subdomains."
 msgstr ""
 
+#, php-format
+msgid "You have been blocked for %s minutes."
+msgstr ""
+
 msgid "You have been successfully logged out."
 msgstr ""
 
@@ -5651,6 +5647,10 @@ msgid "You must specify a message."
 msgstr ""
 
 msgid "You must specify a subject."
+msgstr ""
+
+#, php-format
+msgid "You must wait %s minutes before the next attempt."
 msgstr ""
 
 msgid "You need a Database for this software"
