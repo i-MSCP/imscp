@@ -156,29 +156,29 @@ if (is_readable(CONFIG_CACHE_FILE_PATH)) {
     // Enable or disable lost password support
     $config['LOSTPASSWORD'] = 1;
 
-    // Uniqkeytimeout in minutes
+    // Uniq keys timeout in minutes
     $config['LOSTPASSWORD_TIMEOUT'] = 30;
 
-    // Enable or disable bruteforcedetection
+    // Enable/disable countermeasures for bruteforce and dictionary attacks
     $config['BRUTEFORCE'] = 1;
 
-    // Blocktime in minutes
-    $config['BRUTEFORCE_BLOCK_TIME'] = 30;
-
-    // Max login before block
-    $config['BRUTEFORCE_MAX_LOGIN'] = 3;
-
-    // Max login attempts before forced to wait
-    $config['BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT'] = 2;
-
-    // Max captcha failed attempts before block
-    $config['BRUTEFORCE_MAX_CAPTCHA'] = 5;
-
-    // Enable or disable time between logins
+    // Enable/disable waiting time between login/captcha attempts
     $config['BRUTEFORCE_BETWEEN'] = 1;
 
-    // Time between logins in seconds
+    // Max login/captcha attempts before waiting time
+    $config['BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT'] = 2;
+
+    // Waiting time between login/captcha attempts
     $config['BRUTEFORCE_BETWEEN_TIME'] = 30;
+
+    // Blocking time in minutes
+    $config['BRUTEFORCE_BLOCK_TIME'] = 15;
+
+    // Max login attempts before blocking time
+    $config['BRUTEFORCE_MAX_LOGIN'] = 5;
+
+    // Max captcha attempts before blocking time
+    $config['BRUTEFORCE_MAX_CAPTCHA'] = 5;
 
     // Enable or disable maintenance mode
     // 1: Maintenance mode enabled

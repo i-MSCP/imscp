@@ -21,7 +21,7 @@
 /**
  * iMSCP_Plugin class
  *
- * Please, do not inherite from this class. Instead, inherite from the specialized classes localized into
+ * Please, do not inherit from this class. Instead, inherit from the specialized classes localized into
  * gui/library/iMSCP/Plugin/
  */
 abstract class iMSCP_Plugin
@@ -60,7 +60,6 @@ abstract class iMSCP_Plugin
      * Constructor
      *
      * @param iMSCP_Plugin_Manager $pluginManager
-     * @return iMSCP_Plugin
      */
     public function __construct(iMSCP_Plugin_Manager $pluginManager)
     {
@@ -133,15 +132,15 @@ abstract class iMSCP_Plugin
 
         return array_merge(
             array(
-                'author' => tr('Unknown'),
-                'email' => '',
-                'version' => '0.0.0',
+                'author'      => tr('Unknown'),
+                'email'       => '',
+                'version'     => '0.0.0',
                 'require_api' => '99.0.0',
-                'date' => '0000-00-00',
-                'build' => '0000000000',
-                'name' => $this->getName(),
-                'desc' => tr('Not provided'),
-                'url' => ''
+                'date'        => '0000-00-00',
+                'build'       => '0000000000',
+                'name'        => $this->getName(),
+                'desc'        => tr('Not provided'),
+                'url'         => ''
             ),
             $info
         );
@@ -154,7 +153,7 @@ abstract class iMSCP_Plugin
      */
     final public function getType()
     {
-        if (null === $this->pluginType) {
+        if (NULL === $this->pluginType) {
             list(, , $this->pluginType) = explode('_', get_parent_class($this), 3);
         }
 
@@ -168,7 +167,7 @@ abstract class iMSCP_Plugin
      */
     final public function getName()
     {
-        if (null === $this->pluginName) {
+        if (NULL === $this->pluginName) {
             list(, , $this->pluginName) = explode('_', get_class($this), 3);
         }
 
@@ -254,7 +253,7 @@ abstract class iMSCP_Plugin
      * @param mixed $default Default value returned in case $paramName is not found
      * @return mixed Configuration parameter value or $default if $paramName not found
      */
-    final public function getConfigParam($paramName, $default = null)
+    final public function getConfigParam($paramName, $default = NULL)
     {
         if (!$this->isLoadedConfig) {
             $this->loadConfig();
@@ -270,7 +269,7 @@ abstract class iMSCP_Plugin
      * @param mixed $default Default value returned in case $paramName is not found
      * @return mixed Configuration parameter value or $default if $paramName not found
      */
-    final public function getConfigPrevParam($paramName, $default = null)
+    final public function getConfigPrevParam($paramName, $default = NULL)
     {
         if (!$this->isLoadedConfig) {
             $this->loadConfig();

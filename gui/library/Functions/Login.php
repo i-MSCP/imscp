@@ -29,7 +29,6 @@ function init_login($eventManager)
     // Purge expired sessions
     do_session_timeout();
 
-    /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
     if ($cfg['BRUTEFORCE']) {
