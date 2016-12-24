@@ -375,7 +375,7 @@ sub _writeLogfile
     my ($logObject, $logfilePath) = @_;
 
     # Make error message free of any ANSI color and end of line codes
-    (my $messages = _getMessages( $logObject )) =~ s/\x1B\[([0  -  9]{1,3}((;[0  -  9]{1,3})*)?)?[m|K]//g;
+    (my $messages = _getMessages( $logObject )) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
 
     if (open( my $fh, '>', $logfilePath )) {
         print {$fh} $messages;
@@ -428,7 +428,7 @@ END {
     $? = $exitCode;
 
     close($debugSTDOUT);
-    close($debugSTDERR)
+    close($debugSTDERR);
 }
 
 =back
