@@ -32,9 +32,6 @@ use iMSCP::ProgramFinder;
 use open qw/ :std :utf8 /;
 use parent 'Common::SingletonClass';
 
-# Unbuffered output is required.
-$| = 1;
-
 =head1 DESCRIPTION
 
  Class that wrap dialog and cdialog programs.
@@ -300,7 +297,6 @@ sub startGauge
     );
 
     $self->{'gauge'}->autoflush( 1 );
-    #$self->{'gauge'}->binmode(':utf8');
     debugRegisterCallBack( sub { $self->endGauge(); } );
     $SIG{'PIPE'} = sub { $self->endGauge(); };
     0;
@@ -398,7 +394,6 @@ sub set
 sub _init
 {
     my $self = $_[0];
-
 
     # These environment variable screws up at least whiptail with the
     # way we call it. Posix does not allow safe arg passing like

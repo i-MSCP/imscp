@@ -26,7 +26,7 @@ package iMSCP::Debug;
 use strict;
 use warnings;
 use iMSCP::Log;
-use open qw/ :std :utf8 /;
+use open OUT => ':utf8';
 use parent 'Exporter';
 
 our @EXPORT = qw/
@@ -36,12 +36,12 @@ our @EXPORT = qw/
 
 BEGIN {
     # Catch uncaught exceptions
-    $SIG{__DIE__} = sub {
+    $SIG{'__DIE__'} = sub {
         fatal( @_, (caller( 1 ))[3] || 'main' ) if defined $^S && !$^S
     };
 
     # Catch warns
-    $SIG{__WARN__} = sub {
+    $SIG{'__WARN__'} = sub {
         warning( @_, (caller( 1 ))[3] || 'main' );
     };
 }
@@ -55,6 +55,14 @@ my $self = {
 
 $self->{'target'} = $self->{'targets'}->[0];
 $self->{'default'} = $self->{'target'};
+
+# Dup STDOUT and STDERR
+open(my $debugSTDOUT, '>&STDOUT') or die(sprintf('Could not dup STDOUT: %s', $!));
+$debugSTDOUT->autoflush(1);
+
+# Dup STDERR
+open(my $debugSTDERR, '>&STDERR') or die(sprintf('Could not dup STDERR: %s', $!));
+$debugSTDERR->autoflush(1);
 
 =head1 DESCRIPTION
 
@@ -162,9 +170,13 @@ sub endDebug
     my $logDir = $main::imscpConfig{'LOG_DIR'} || '/tmp';
     if ($logDir ne '/tmp' && !-d $logDir) {
         require iMSCP::Dir;
-        my $rs = iMSCP::Dir->new( dirname => $logDir )->make( {
-                user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => 0750
-            } );
+        my $rs = iMSCP::Dir->new( dirname => $logDir )->make(
+            {
+                user  => $main::imscpConfig{'ROOT_USER'},
+                group => $main::imscpConfig{'ROOT_GROUP'},
+                mode  => 0750
+            }
+        );
         $logDir = '/tmp' if $rs;
     }
 
@@ -192,13 +204,13 @@ sub debug
 
     my $caller = (caller( 1 ))[3] || 'main';
     $self->{'target'}->store( message => "$caller: $message", tag => 'debug' ) if $self->{'debug'};
-    print STDOUT output( "$caller: $message", 'debug' ) if $self->{'verbose'};
+    print {$debugSTDOUT} output( "$caller: $message", 'debug' ) if $self->{'verbose'};
     undef;
 }
 
 =item warning($message [, $caller ])
 
- Log warning message and print it on STDERR if not in silent mode
+ Log warning message
 
  Param string $message Warning message
  Param string $caller OPTIONAL Caller
@@ -217,7 +229,7 @@ sub warning
 
 =item error($message)
 
- Log error message and print it on STDERR if not in silent mode
+ Log error message
 
  Param string $message Error message
  Return int undef
@@ -235,7 +247,7 @@ sub error
 
 =item fatal($message [, $caller ])
 
- Log fatal message and print it on STDERR if not in silent mode and exit
+ Log fatal message
 
  Param string $message Fatal message
  Param string $caller OPTIONAL Caller
@@ -363,7 +375,7 @@ sub _writeLogfile
     my ($logObject, $logfilePath) = @_;
 
     # Make error message free of any ANSI color and end of line codes
-    (my $messages = _getMessages( $logObject )) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
+    (my $messages = _getMessages( $logObject )) =~ s/\x1B\[([0  -  9]{1,3}((;[0  -  9]{1,3})*)?)?[m|K]//g;
 
     if (open( my $fh, '>', $logfilePath )) {
         print {$fh} $messages;
@@ -402,7 +414,7 @@ sub _getMessages
 END {
     my $exitCode = $?;
 
-    &$_ for @{$self->{'debugCallBacks'}};
+    &{$_} for @{$self->{'debugCallBacks'}};
     endDebug() for @{$self->{'targets'}};
 
     my @output;
@@ -412,8 +424,11 @@ END {
         push @output, output( join( "\n", @messages ), $logLevel ) if @messages;
     }
 
-    print STDERR "@output" if @output;
+    print {$debugSTDERR} "@output" if @output;
     $? = $exitCode;
+
+    close($debugSTDOUT);
+    close($debugSTDERR)
 }
 
 =back

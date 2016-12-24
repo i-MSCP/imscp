@@ -34,6 +34,7 @@ use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Stepper;
 use iMSCP::TemplateParser;
+use open IN => 'utf8';
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

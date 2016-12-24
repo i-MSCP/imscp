@@ -9,6 +9,9 @@ BACKEND
     Fixed: Several encoding issues (wide characters)
     Fixed: Unless otherwise stated, config object must die when accessing a non-existent parameter (iMSCP::Config)
 
+INSTALLER
+    Fixed: Failure when there are wide characters outputted to a filehandle for which utf8 layer is not set
+
 SERVERS
     Fixed: Usage of rewrite engine for setting up FCGI handlers leads to many troubles (apache2_php_fpm server)
     Review: Remove any comment and empty lines in production configuration files (Http server impl.)
