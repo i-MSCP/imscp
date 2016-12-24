@@ -31,15 +31,13 @@ use iMSCP::EventManager;
 use iMSCP::Getopt;
 use IO::Handle;
 use locale;
+use open qw/ :std :utf8 /;
 use POSIX qw / tzset locale_h /;
 use parent 'Common::SingletonClass';
 
 $SIG{INT} = 'IGNORE';
 
 umask 022;
-
-STDOUT->autoflush( 1 );
-STDERR->autoflush( 1 );
 
 setlocale(LC_ALL, 'C.UTF-8');
 $ENV{'LC_ALL'} = 'C.UTF-8';
@@ -117,11 +115,11 @@ sub loadMainConfig
     tie
         %main::imscpConfig,
         'iMSCP::Config',
-        fileName => ($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/').'imscp/imscp.conf',
-        nowarn   => $options->{'nowarn'} // 0,
-        nocreate => $options->{'nocreate'} // 1,
-        nofail   => $options->{'nofail'} // 0,
-        readonly => $options->{'config_readonly'} // 0,
+        fileName  => ($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/').'imscp/imscp.conf',
+        nodie    => $options->{'nodie'} // 0,
+        nocreate  => $options->{'nocreate'} // 1,
+        nofail    => $options->{'nofail'} // 0,
+        readonly  => $options->{'config_readonly'} // 0,
         temporary => $options->{'config_temporary'} // 0;
 }
 
@@ -206,7 +204,7 @@ sub _genKeys
             sprintf("%s doesn't exist or is not a directory", $main::imscpConfig{'CONF_DIR'} )
         );
 
-        open my $fh, '>:utf8', "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys" or die(
+        open my $fh, '>', "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys" or die(
             sprintf('Could not open %s file for writing: %s', "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys", $!)
         );
 

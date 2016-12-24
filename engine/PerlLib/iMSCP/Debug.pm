@@ -26,6 +26,7 @@ package iMSCP::Debug;
 use strict;
 use warnings;
 use iMSCP::Log;
+use open qw/ :std :utf8 /;
 use parent 'Exporter';
 
 our @EXPORT = qw/
@@ -364,7 +365,7 @@ sub _writeLogfile
     # Make error message free of any ANSI color and end of line codes
     (my $messages = _getMessages( $logObject )) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
 
-    if (open( my $fh, '>utf8', $logfilePath )) {
+    if (open( my $fh, '>', $logfilePath )) {
         print {$fh} $messages;
         close $fh;
         return 0;

@@ -255,7 +255,7 @@ sub first
 =item final()
 
  Retrieve the last item(s) stored on the stack. It will default to only retrieving one if called with no arguments, and
-will always return results in reverse chronological order.
+ will always return results in reverse chronological order.
 
  If you only supply one argument, it is assumed to be the amount you wish returned.
 

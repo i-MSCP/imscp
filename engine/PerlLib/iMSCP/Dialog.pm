@@ -29,6 +29,7 @@ use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
+use open qw/ :std :utf8 /;
 use parent 'Common::SingletonClass';
 
 # Unbuffered output is required.
@@ -299,6 +300,7 @@ sub startGauge
     );
 
     $self->{'gauge'}->autoflush( 1 );
+    #$self->{'gauge'}->binmode(':utf8');
     debugRegisterCallBack( sub { $self->endGauge(); } );
     $SIG{'PIPE'} = sub { $self->endGauge(); };
     0;

@@ -28,6 +28,7 @@ use warnings;
 use iMSCP::Debug;
 use File::Copy;
 use File::Basename;
+use open qw/ :std :utf8 /;
 use parent 'Common::Object';
 
 =head1 DESCRIPTION
