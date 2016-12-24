@@ -25,6 +25,7 @@ package iMSCP::Config;
 
 use strict;
 use warnings;
+use 5.012;
 use iMSCP::Debug;
 use Fcntl 'O_RDWR', 'O_CREAT', 'O_RDONLY';
 use Tie::File;
@@ -47,7 +48,7 @@ use parent 'Common::Object';
   - fileName: Filename of the configuration file (including path)
 
  Optional arguments for the tie function are:
-  - nowarn: Do not warn when trying to access to an inexistent configuration parameter
+  - nodie: Do not die when accessing to an non-existent configuration parameter
   - nocreate: Do not create file if it doesn't already exist (throws a fatal error instead)
   - nofail: Do not throws fatal error in case configuration file doesn't exist
   - readonly: Sets a read-only access on the tied configuration file
@@ -129,14 +130,10 @@ sub _parseConfig
 {
     my $self = shift;
 
-    my $lineNo = 0;
-    for (@{$self->{'confFile'}}) {
-        if (/^([^#\s=]+)\s{0,}=\s{0,}(.{0,})$/) {
-            $self->{'configValues'}->{$1} = $2;
-            $self->{'lineMap'}->{$1} = $lineNo;
-        }
-
-        $lineNo++;
+    while(my($lineNo, $value) = each(@{$self->{'confFile'}})) {
+        next unless $value =~ /^([^#\s=]+)\s*=\s*(.*)$/;
+        $self->{'configValues'}->{$1} = $2;
+        $self->{'lineMap'}->{$1} = $lineNo;
     }
 
     undef;
@@ -147,7 +144,7 @@ sub _parseConfig
  Return value of the given configuration parameter
 
  Param string param Configuration parameter name
- Return scalar|undef Configuration parameter value or undef if config parameter is not defined
+ Return scalar|undef Configuration parameter value if defined or undef 'nodie' attribute is set
 
 =cut
 
@@ -156,18 +153,13 @@ sub FETCH
     my ($self, $param) = @_;
 
     return $self->{'configValues'}->{$param} if exists $self->{'configValues'}->{$param};
-
-    unless ($self->{'nowarn'}) {
-        my (undef, $file, $line) = caller;
-        warning(
-            sprintf(
-                'Accessing non existing config value %s from the %s file (see file %s at line %s)',
-                $param, $self->{'fileName'}, $file, $line
-            )
-        );
-    }
-
-    undef;
+    return if $self->{'nodie'};
+    die(sprintf(
+        'Accessing a non-existing parameter: %s in %s file from: %s (line %s)',
+        $param,
+        $self->{'fileName'},
+        (caller)[1, 2]
+    ));
 }
 
 =item STORE($param, $value)
@@ -271,12 +263,9 @@ sub CLEAR
 sub _replaceConfig
 {
     my ($self, $param, $value) = @_;
-    $value //= '';
-    
-    unless ($self->{'temporary'}) {
-        @{$self->{'confFile'}}[$self->{'lineMap'}->{$param}] = "$param = $value";
-    }
 
+    $value //= '';
+    @{$self->{'confFile'}}[$self->{'lineMap'}->{$param}] = "$param = $value" unless $self->{'temporary'};
     $self->{'configValues'}->{$param} = $value;
 }
 

@@ -947,7 +947,7 @@ sub getTraffic
     my $trafficDbPath = "$main::imscpConfig{'IMSCP_HOMEDIR'}/http_traffic.db";
 
     # Load traffic database (create it if doesn't exist)
-    tie my %trafficDb, 'iMSCP::Config', fileName => $trafficDbPath, nowarn => 1;
+    tie my %trafficDb, 'iMSCP::Config', fileName => $trafficDbPath, nodie => 1;
 
     require Date::Format;
     Date::Format->import();

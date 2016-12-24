@@ -561,7 +561,7 @@ sub getTraffic
 
     # Load traffic database
     unless (ref $trafficDb eq 'HASH') {
-        tie %trafficDb, 'iMSCP::Config', fileName => $trafficDbPath, nowarn => 1;
+        tie %trafficDb, 'iMSCP::Config', fileName => $trafficDbPath, nodie => 1;
         $selfCall = 0;
     } else {
         %trafficDb = %{$trafficDb};
@@ -572,7 +572,7 @@ sub getTraffic
 
     if (-f -s $trafficDataSrc) {
         # We use a small file to memorize number of the last line that has been read and his content
-        tie my %indexDb, 'iMSCP::Config', fileName => "$trafficDir/traffic_index.db", nowarn => 1;
+        tie my %indexDb, 'iMSCP::Config', fileName => "$trafficDir/traffic_index.db", nodie => 1;
 
         my $lastParsedLineNo = $indexDb{'smtp_lineNo'} || 0;
         my $lastParsedLineContent = $indexDb{'smtp_lineContent'} || '';
