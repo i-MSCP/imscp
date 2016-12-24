@@ -425,10 +425,11 @@ END {
     }
 
     print {$debugSTDERR} "@output" if @output;
-    $? = $exitCode;
 
     close($debugSTDOUT);
     close($debugSTDERR);
+    
+    $? = $exitCode;
 }
 
 =back
