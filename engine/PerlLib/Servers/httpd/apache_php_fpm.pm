@@ -1849,7 +1849,7 @@ sub _buildPHPConfig
 
 =item _cleanTemplate(\$tpl, $filename, \%data)
 
- Event listener which is responsible to remove useless configuration snippets in vhost template files
+ Event listener which is responsible to cleanup production configuration files
 
  Param string \$tpl Template content
  Param string $name Template name
@@ -1908,7 +1908,7 @@ sub _cleanTemplate
         }
     }
 
-    ${$tpl} =~ s/^(?:[ \t]+)?(?:#.*?(?:BEGIN|END)\.)?\n//gmi;
+    ${$tpl} =~ s/^\s*(?:[#;].*)?\n//gmi;
     0;
 }
 
