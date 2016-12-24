@@ -1737,12 +1737,12 @@ sub _addFiles
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdAddFiles', $data );
 }
 
-=item _cleanTemplate(\$cfgTpl, $filename, \%data)
+=item _cleanTemplate(\$tpl, $name, \%data)
 
  Event listener which is responsible to remove useless configuration snippets in vhost template files
 
- Param string \$cfgTpl Template content
- Param string $filename Template filename
+ Param string \$tpl Template content
+ Param string $name Template name
  Param hash \%data Data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return int 0
 
@@ -1750,54 +1750,51 @@ sub _addFiles
 
 sub _cleanTemplate
 {
-    my (undef, $cfgTpl, $filename, $data) = @_;
+    my (undef, $tpl, $name, $data) = @_;
 
-    if ($filename =~ /^domain(?:_ssl)?\.tpl$/) {
-        $$cfgTpl = replaceBloc( "# SECTION suexec BEGIN.\n", "# SECTION suexec END.\n", '', $$cfgTpl );
+    if ($name =~ /^domain(?:_ssl)?\.tpl$/) {
+        ${$tpl} = replaceBloc( "# SECTION suexec BEGIN.\n", "# SECTION suexec END.\n", '', ${$tpl} );
 
         unless ($data->{'CGI_SUPPORT'} eq 'yes') {
-            $$cfgTpl = replaceBloc( "# SECTION cgi_support BEGIN.\n", "# SECTION cgi_support END.\n", '', $$cfgTpl );
+            ${$tpl} = replaceBloc( "# SECTION cgi_support BEGIN.\n", "# SECTION cgi_support END.\n", '', ${$tpl} );
         }
 
         if ($data->{'PHP_SUPPORT'} eq 'yes') {
-            $$cfgTpl = replaceBloc( "# SECTION php_disabled BEGIN.\n", "# SECTION php_disabled END.\n", '', $$cfgTpl );
+            ${$tpl} = replaceBloc( "# SECTION php_disabled BEGIN.\n", "# SECTION php_disabled END.\n", '', ${$tpl} );
+            ${$tpl} = replaceBloc( "# SECTION fcgid BEGIN.\n", "# SECTION fcgid END.\n", '', ${$tpl} );
+            ${$tpl} = replaceBloc( "# SECTION mod_fastcgi BEGIN.\n", "# SECTION mod_fastcgi END.\n", '', ${$tpl} );
+            ${$tpl} = replaceBloc(
+                "# SECTION mod_proxy_fcgi BEGIN.\n", "# SECTION mod_proxy_fcgi END.\n", '', ${$tpl}
+            );
         } else {
-            $$cfgTpl = replaceBloc( "# SECTION php_enabled BEGIN.\n", "# SECTION php_enabled END.\n", '', $$cfgTpl );
+            ${$tpl} = replaceBloc( "# SECTION php_enabled BEGIN.\n", "# SECTION php_enabled END.\n", '', ${$tpl} );
         }
-
-        $$cfgTpl = replaceBloc( "# SECTION fcgid BEGIN.\n", "# SECTION fcgid END.\n", '', $$cfgTpl );
-        $$cfgTpl = replaceBloc( "# SECTION php_fpm BEGIN.\n", "# SECTION php_fpm END.\n", '', $$cfgTpl );
-    }
-
-    if ($filename =~ /^domain(?:_disabled|_redirect)?(_ssl)?\.tpl$/) {
+    } elsif ($name =~ /^domain(?:_disabled|_redirect)?(_ssl)?\.tpl$/) {
         my $isSSLVhost = defined $1;
 
         if ($data->{'FORWARD'} ne 'no') {
             if ($data->{'FORWARD_TYPE'} eq 'proxy' && (!$data->{'HSTS_SUPPORT'} || $isSSLVhost)) {
-                $$cfgTpl = replaceBloc(
-                    "# SECTION standard_redirect BEGIN.\n", "# SECTION standard_redirect END.\n", '', $$cfgTpl
+                ${$tpl} = replaceBloc(
+                    "# SECTION standard_redirect BEGIN.\n", "# SECTION standard_redirect END.\n", '', ${$tpl}
                 );
                 if ($data->{'FORWARD'} !~ /^https/) {
-                    $$cfgTpl = replaceBloc("# SECTION ssl_proxy BEGIN.\n", "# SECTION ssl_proxy END.\n", '', $$cfgTpl);
+                    ${$tpl} = replaceBloc("# SECTION ssl_proxy BEGIN.\n", "# SECTION ssl_proxy END.\n", '', ${$tpl});
                 }
             } else {
-                $$cfgTpl = replaceBloc(
-                    "# SECTION proxy_redirect BEGIN.\n", "# SECTION proxy_redirect END.\n", '', $$cfgTpl
+                ${$tpl} = replaceBloc(
+                    "# SECTION proxy_redirect BEGIN.\n", "# SECTION proxy_redirect END.\n", '', ${$tpl}
                 );
             }
         } else {
-            $$cfgTpl = replaceBloc(
-                "# SECTION proxy_redirect BEGIN.\n", "# SECTION proxy_redirect END.\n", '', $$cfgTpl
-            );
+            ${$tpl} = replaceBloc("# SECTION proxy_redirect BEGIN.\n", "# SECTION proxy_redirect END.\n", '', ${$tpl});
         }
 
         if ($isSSLVhost && !$data->{'HSTS_SUPPORT'}) {
-            $$cfgTpl = replaceBloc( "# SECTION hsts BEGIN.\n", "# SECTION hsts END.\n", '', $$cfgTpl );
+            ${$tpl} = replaceBloc( "# SECTION hsts BEGIN.\n", "# SECTION hsts END.\n", '', ${$tpl} );
         }
     }
 
-    $$cfgTpl =~ s/^[ \t]+#.*?(?:BEGIN|END)\.\n//gim;
-    $$cfgTpl =~ s/\n{3}/\n\n/g;
+    ${$tpl} =~ s/^(?:[ \t]+)?(?:#.*?(?:BEGIN|END)\.)?\n//gmi;
     0;
 }
 
