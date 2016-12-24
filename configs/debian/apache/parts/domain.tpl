@@ -15,6 +15,7 @@
     # SECTION itk BEGIN.
     AssignUserID {USER} {GROUP}
     # SECTION itk END.
+
     # SECTION suexec BEGIN.
     SuexecUserGroup {USER} {GROUP}
     # SECTION suexec END.
@@ -22,30 +23,18 @@
     # SECTION php_enabled BEGIN.
     DirectoryIndex index.php
 
-    # SECTION php_fpm BEGIN.
     # SECTION mod_fastcgi BEGIN.
     Alias /php-fcgi /var/lib/apache2/fastcgi/php-fcgi-{DOMAIN_NAME}
-
     FastCGIExternalServer /var/lib/apache2/fastcgi/php-fcgi-{DOMAIN_NAME} \
         -{FASTCGI_LISTEN_MODE} {FASTCGI_LISTEN_ENDPOINT} \
         -idle-timeout 900 \
         -pass-header Authorization
     # SECTION mod_fastcgi END.
-
     # SECTION mod_proxy_fcgi BEGIN.
     <Proxy "{PROXY_FCGI_PATH}{PROXY_FCGI_URL}" retry=0>
         ProxySet connectiontimeout=5 timeout=7200
     </Proxy>
-
-    <FilesMatch \.ph(p[3457]?|t|tml)$>
-        SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1
-        RewriteEngine On
-        RewriteOptions Inherit
-        RewriteCond %{REQUEST_FILENAME} -f
-        RewriteRule .* - [H=proxy:{PROXY_FCGI_URL},NC]
-    </FilesMatch>
     # SECTION mod_proxy_fcgi END.
-    # SECTION php_fpm END.
     # SECTION php_enabled END.
 
     <Directory {HOME_DIR}>
@@ -79,6 +68,12 @@
         php_admin_value upload_max_filesize "{UPLOAD_MAX_FILESIZE}M"
         php_admin_flag allow_url_fopen {ALLOW_URL_FOPEN}
         # SECTION itk END.
+        # SECTION mod_proxy_fcgi BEGIN.
+        <If "%{REQUEST_FILENAME} =~ /\.ph(?:p[3457]?|t|tml)$/ && -f %{REQUEST_FILENAME}">
+            SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1
+            SetHandler proxy:{PROXY_FCGI_URL}
+        </If>
+        # SECTION mod_proxy_fcgi END.
         # SECTION php_enabled END.
     </Directory>
 

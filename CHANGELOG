@@ -4,6 +4,9 @@
 Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
+SERVERS
+    Fixed: Usage of rewrite engine for setting up FCGI handlers leads to many troubles (apache2_php_fpm server)
+
 ------------------------------------------------------------------------------------------------------------------------
 1.3.11
 ------------------------------------------------------------------------------------------------------------------------
@@ -24,7 +27,7 @@ PACKAGES
     Fixed: Blowfish secret is too short (Package::PhpMyAdmin::Installer)
 
 SERVERS
-    Fixed: PHP scripts are outputted without even being interpreted when the rewrite engine is disabled in .htaccess files (apache2_php_fpm server impl.)
+    Fixed: PHP scripts are outputted without even being interpreted when the rewrite engine is disabled in .htaccess files (apache2_php_fpm server)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.3.10
