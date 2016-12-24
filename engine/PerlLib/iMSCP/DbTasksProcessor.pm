@@ -78,7 +78,7 @@ sub process
     $self->_process(
         'Modules::SSLcertificate',
         "
-            SELECT cert_id AS id, domain_type AS name, status AS status FROM ssl_certs
+            SELECT cert_id AS id, CONCAT(domain_type, ':', cert_id) AS name, status AS status FROM ssl_certs
             WHERE status IN ('toadd', 'tochange', 'todelete') ORDER BY cert_id ASC
         "
     );

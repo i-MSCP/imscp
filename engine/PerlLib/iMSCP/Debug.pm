@@ -168,6 +168,7 @@ sub endDebug
     }
 
     # Write logfile
+    $targetId =~ s#[\s?+%/:]+#:#gs; # Replace unwanted characters in logfile names
     _writeLogfile( $target, "$logDir/$targetId" );
 
     # Set previous log object as target for new messages
@@ -369,7 +370,7 @@ sub _writeLogfile
         return 0;
     }
 
-    print STDERR sprintf( 'Could not to open log file %s for writting: %s', $logfilePath, $! );
+    print output( sprintf("Could not to open log file `%s' for writting: %s", $logfilePath, $! ), 'error');
     0;
 }
 
