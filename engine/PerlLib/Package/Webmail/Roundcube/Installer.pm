@@ -370,11 +370,12 @@ sub _mergeConfig
 
     if (%{$self->{'config'}}) {
         my %oldConfig = %{$self->{'config'}};
+
         tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/roundcube.data";
-        for my $oldConf(keys %oldConfig) {
-            if (exists $self->{'config'}->{$oldConf}) {
-                $self->{'config'}->{$oldConf} = $oldConfig{$oldConf};
-            }
+
+        while(my ($key, $value) = each(%oldConfig)) {
+            next unless exists $self->{'config'}->{$key};
+            $self->{'config'}->{$key} = $value;
         }
 
         return 0;
@@ -648,6 +649,8 @@ sub _buildHttpdConfig
 sub _saveConfig
 {
     my $self = shift;
+
+    (tied %{$self->{'config'}})->flush();
 
     iMSCP::File->new( filename => "$self->{'cfgDir'}/roundcube.data" )->copyFile(
         "$self->{'cfgDir'}/roundcube.old.data"

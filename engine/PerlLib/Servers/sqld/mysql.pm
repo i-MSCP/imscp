@@ -264,9 +264,7 @@ sub _init
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/mysql";
     $self->{'config'} = $self->{'mysql'}->{'config'};
     $self->{'config'} = lazy {
-            tie my %c, 'iMSCP::Config',
-                fileName => "$self->{'cfgDir'}/mysql.data",
-                readonly => (defined $main::execmode && $main::execmode eq 'setup') ? 0 : 1;
+            tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/mysql.data", readonly => 1;
             \%c;
         };
     $self;

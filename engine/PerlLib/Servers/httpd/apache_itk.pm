@@ -1375,9 +1375,7 @@ sub _init
     $self->{'phpCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/php";
     $self->{'phpConfig'} = lazy
         {
-            tie my %c, 'iMSCP::Config',
-                fileName => "$self->{'phpCfgDir'}/php.data",
-                readonly => (defined $main::execmode && $main::execmode eq 'setup') ? 0 : 1;
+            tie my %c, 'iMSCP::Config', fileName => "$self->{'phpCfgDir'}/php.data", readonly => 1;
             \%c;
         };
     $self->{'eventManager'}->register( 'afterHttpdBuildConfFile', sub { $self->_cleanTemplate( @_ )} );

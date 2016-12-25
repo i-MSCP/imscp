@@ -366,17 +366,15 @@ sub _mergeConfig
 
         tie %{$self->{'rainloop'}->{'config'}}, 'iMSCP::Config', fileName => "$self->{'rainloop'}->{'cfgDir'}/rainloop.data";
 
-        for my $oldConf(keys %oldConfig) {
-            if (exists $self->{'rainloop'}->{'config'}->{$oldConf}) {
-                $self->{'rainloop'}->{'config'}->{$oldConf} = $oldConfig{$oldConf};
-            }
+        while(my ($key, $value) = each(%oldConfig)) {
+            next unless exists $self->{'rainloop'}->{'config'}->{$key};
+            $self->{'rainloop'}->{'config'}->{$key} = $value;
         }
 
         return 0;
     }
 
-    tie %{$self->{'rainloop'}->{'config'}}, 'iMSCP::Config', fileName =>
-        "$self->{'rainloop'}->{'cfgDir'}/rainloop.data";
+    tie %{$self->{'rainloop'}->{'config'}}, 'iMSCP::Config', fileName => "$self->{'rainloop'}->{'cfgDir'}/rainloop.data";
     0;
 }
 
@@ -557,6 +555,8 @@ sub _buildHttpdConfig
 sub _saveConfig
 {
     my $self = shift;
+
+    (tied %{$self->{'rainloop'}->{'config'}})->flush();
 
     iMSCP::File->new( filename => "$self->{'rainloop'}->{'cfgDir'}/rainloop.data" )->copyFile(
         "$self->{'rainloop'}->{'cfgDir'}/rainloop.old.data"

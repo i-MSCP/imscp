@@ -453,9 +453,7 @@ sub _init
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/frontend";
     $self->{'config'} = lazy
         {
-            tie my %c, 'iMSCP::Config',
-                fileName => "$self->{'cfgDir'}/frontend.data",
-                readonly => (defined $main::execmode && $main::execmode eq 'setup') ? 0 : 1;
+            tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.data", readonly => 1;
             \%c;
         };
     $self->{'phpConfig'} = Servers::httpd->factory()->{'phpConfig'};

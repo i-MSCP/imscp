@@ -301,6 +301,11 @@ sub _init
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'config'} = $self->{'phpmyadmin'}->{'config'};
 
+    # Be sure to work with newest conffile
+    # Cover case where the conffile has been loaded prior installation of new files (even if discouraged)
+    untie(%{$self->{'config'}});
+    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.data";
+    
     if (defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/phpmyadmin.old.data") {
         tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.old.data";
         while(my ($key, $value) = each(%oldConfig)) {
@@ -382,6 +387,8 @@ sub _installFiles
 sub _saveConfig
 {
     my $self = shift;
+
+    (tied %{$self->{'config'}})->flush();
 
     iMSCP::File->new( filename => "$self->{'cfgDir'}/phpmyadmin.data" )->copyFile(
         "$self->{'cfgDir'}/phpmyadmin.old.data"

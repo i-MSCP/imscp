@@ -302,6 +302,11 @@ sub _init
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'config'} = $self->{'named'}->{'config'};
 
+    # Be sure to work with newest conffile
+    # Cover case where the conffile has been loaded prior installation of new files (even if discouraged)
+    untie(%{$self->{'config'}});
+    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/bind.data";
+
     my $oldConf = "$self->{'cfgDir'}/bind.old.data";
     
     if(defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
@@ -552,6 +557,7 @@ sub _saveConf
 {
     my $self = shift;
 
+    (tied %{$self->{'config'}})->flush();
     iMSCP::File->new( filename => "$self->{'cfgDir'}/bind.data" )->copyFile( "$self->{'cfgDir'}/bind.old.data" );
 }
 

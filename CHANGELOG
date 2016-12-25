@@ -6,11 +6,16 @@ Git 1.3.x
 
 BACKEND
     Fixed: Could not write log files for the Modules::Htaccess module due to possible slash in names
+    Fixed: Missing flush() method to return underlying tied array to immediate-write mode (iMSCP::Config)
     Fixed: Several encoding issues (wide characters)
     Fixed: Unless otherwise stated, config object must die when accessing a non-existent parameter (iMSCP::Config)
 
 INSTALLER
     Fixed: Failure when there are wide characters outputted to a filehandle for which utf8 layer is not set
+    Fixed: Possible corruption of server/package configuration files
+
+LISTENERS
+    Fixed: Servers::httpd config is loaded too early in 10_apache2_dualstack.pl
 
 SERVERS
     Fixed: Usage of rewrite engine for setting up FCGI handlers leads to many troubles (apache2_php_fpm server)

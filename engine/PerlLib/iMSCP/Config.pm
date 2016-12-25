@@ -250,6 +250,19 @@ sub CLEAR
     $self;
 }
 
+=item flush()
+
+ Write data immediately in file
+
+=cut
+
+sub flush
+{
+    my $self = shift;
+
+    (tied @{$self->{'confFile'}})->flush();
+}
+
 =item _replaceConfig($param, $value)
 
  Replace the given configuration parameter value

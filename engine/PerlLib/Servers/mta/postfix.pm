@@ -885,9 +885,7 @@ sub _init
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'config'} = lazy
         {
-            tie my %c, 'iMSCP::Config',
-                fileName => "$self->{'cfgDir'}/postfix.data",
-                readonly => (defined $main::execmode && $main::execmode eq 'setup') ? 0 : 1;
+            tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/postfix.data", readonly => 1;
             \%c;
         };
     $self->{'_maps'} = { };

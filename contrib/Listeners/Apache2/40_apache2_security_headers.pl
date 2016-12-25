@@ -29,7 +29,7 @@ use iMSCP::TemplateParser;
 iMSCP::EventManager->getInstance()->register(
     'beforeHttpdBuildConf',
     sub {
-        my ($cfgTpl, $tplName, $data) = @_;
+        my ($cfgTpl, $tplName) = @_;
 
         my $cfgSnippet = <<EOF;
     # BEGIN Listener::Apache2::Security::Headers

@@ -177,6 +177,11 @@ sub _init
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
     $self->{'config'} = $self->{'mta'}->{'config'};
 
+    # Be sure to work with newest conffile
+    # Cover case where the conffile has been loaded prior installation of new files (even if discouraged)
+    untie(%{$self->{'config'}});
+    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/postfix.data";
+
     my $oldConf = "$self->{'cfgDir'}/postfix.old.data";
 
     if(defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
@@ -419,6 +424,7 @@ sub _saveConf
 {
     my $self = shift;
 
+    (tied %{$self->{'config'}})->flush();
     iMSCP::File->new( filename => "$self->{'cfgDir'}/postfix.data" )->copyFile( "$self->{'cfgDir'}/postfix.old.data" );
 }
 

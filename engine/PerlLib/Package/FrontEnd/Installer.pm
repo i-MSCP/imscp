@@ -655,6 +655,11 @@ sub _init
     $self->{'config'} = $self->{'frontend'}->{'config'};
     $self->{'phpConfig'} = $self->{'frontend'}->{'phpConfig'};
 
+    # Be sure to work with newest conffile
+    # Cover case where the conffile has been loaded prior installation of new files (even if discouraged)
+    untie(%{$self->{'config'}});
+    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.data";
+
     if (defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/frontend.old.data") {
         tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.old.data";
         while(my ($key, $value) = each(%oldConfig)) {
@@ -1300,6 +1305,8 @@ sub _deleteDnsZone
 sub _saveConfig
 {
     my $self = shift;
+
+    (tied %{$self->{'config'}})->flush();
 
     my $rootUname = $main::imscpConfig{'ROOT_USER'};
     my $rootGname = $main::imscpConfig{'ROOT_GROUP'};

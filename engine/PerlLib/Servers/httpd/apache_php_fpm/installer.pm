@@ -245,11 +245,16 @@ sub _init
     $self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
     $self->{'config'} = $self->{'httpd'}->{'config'};
 
+    # Be sure to work with newest conffile
+    # Cover case where the conffile has been loaded prior installation of new files (even if discouraged)
+    untie(%{$self->{'config'}});
+    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'apacheCfgDir'}/apache.data";
+
     my $oldConf = "$self->{'apacheCfgDir'}/apache.old.data";
 
-    if(defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
+    if (defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
-        while(my($key, $value) = each(%oldConfig)) {
+        while(my ($key, $value) = each(%oldConfig)) {
             next unless exists $self->{'config'}->{$key};
             $self->{'config'}->{$key} = $value;
         }
@@ -257,6 +262,11 @@ sub _init
 
     $self->{'phpCfgDir'} = $self->{'httpd'}->{'phpCfgDir'};
     $self->{'phpConfig'} = $self->{'httpd'}->{'phpConfig'};
+
+    # Be sure to work with newest conffile
+    # Cover case where the conffile has been loaded prior installation of new files (even if discouraged)
+    untie(%{$self->{'phpConfig'}});
+    tie %{$self->{'phpConfig'}}, 'iMSCP::Config', fileName => "$self->{'phpCfgDir'}/php.data";
 
     $oldConf = "$self->{'phpCfgDir'}/php.old.data";
 
@@ -706,6 +716,9 @@ sub _setupVlogger
 sub _saveConf
 {
     my $self = shift;
+
+    (tied %{$self->{'config'}})->flush();
+    (tied %{$self->{'phpConfig'}})->flush();
 
     my %filesToDir = (
         'apache' => $self->{'apacheCfgDir'},
