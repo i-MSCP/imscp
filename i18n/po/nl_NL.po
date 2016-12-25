@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-12-22 18:55+0100\n"
-"PO-Revision-Date: 2016-12-22 17:57+0000\n"
+"POT-Creation-Date: 2016-12-25 07:13+0100\n"
+"PO-Revision-Date: 2016-12-22 18:06+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/i-mscp/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -5560,7 +5560,7 @@ msgstr "U heeft een limiet aan subdomeinen, u kunt geen klanten met een onbeperk
 
 #, php-format
 msgid "You have been blocked for %s minutes."
-msgstr ""
+msgstr "U geblokkeerd gedurende %s minuten."
 
 msgid "You have been successfully logged out."
 msgstr "U bent succesvol uitgelogd."
@@ -5650,7 +5650,7 @@ msgstr "U dient een onderwerp te specificeren."
 
 #, php-format
 msgid "You must wait %s minutes before the next attempt."
-msgstr ""
+msgstr "Je moet %s minuten wachten voordat de volgende poging."
 
 msgid "You need a Database for this software"
 msgstr "U heeft een databank nodig voor deze nieuwe software"

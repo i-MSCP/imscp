@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-12-22 18:55+0100\n"
-"PO-Revision-Date: 2016-12-22 17:57+0000\n"
+"POT-Creation-Date: 2016-12-25 07:13+0100\n"
+"PO-Revision-Date: 2016-12-22 17:59+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/i-mscp/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -419,7 +419,7 @@ msgid "A new software package has been uploaded"
 msgstr "A new software package has been uploaded"
 
 msgid "A task is in progress for this htuser."
-msgstr ""
+msgstr "A task is in progress for this htuser."
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Access your domain statistics through the Web interface."
@@ -5560,7 +5560,7 @@ msgstr "You have a subdomain limit. You cannot add a user with unlimited subdoma
 
 #, php-format
 msgid "You have been blocked for %s minutes."
-msgstr ""
+msgstr "You have been blocked for %s minutes."
 
 msgid "You have been successfully logged out."
 msgstr "You have been successfully logged out."
@@ -5650,7 +5650,7 @@ msgstr "You must specify a subject."
 
 #, php-format
 msgid "You must wait %s minutes before the next attempt."
-msgstr ""
+msgstr "You must wait %s minutes before the next attempt."
 
 msgid "You need a Database for this software"
 msgstr "You need a Database for this software"
