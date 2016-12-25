@@ -1870,8 +1870,6 @@ sub _cleanTemplate
 
         if ($data->{'PHP_SUPPORT'} eq 'yes') {
             ${$tpl} = replaceBloc( "# SECTION php_disabled BEGIN.\n", "# SECTION php_disabled END.\n", '', ${$tpl} );
-            ${$tpl} = replaceBloc( "# SECTION fcgid BEGIN.\n", "# SECTION fcgid END.\n", '', ${$tpl} );
-            ${$tpl} = replaceBloc( "# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', ${$tpl} );
 
             if (version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.10' )) {
                 ${$tpl} = replaceBloc( "# SECTION mod_fastcgi BEGIN.\n", "# SECTION mod_fastcgi END.\n", '', ${$tpl} );
@@ -1883,6 +1881,9 @@ sub _cleanTemplate
         } else {
             ${$tpl} = replaceBloc( "# SECTION php_enabled BEGIN.\n", "# SECTION php_enabled END.\n", '', ${$tpl} );
         }
+
+        ${$tpl} = replaceBloc( "# SECTION fcgid BEGIN.\n", "# SECTION fcgid END.\n", '', ${$tpl} );
+        ${$tpl} = replaceBloc( "# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', ${$tpl} );
     } elsif ($name =~ /^domain(?:_disabled|_redirect)?(_ssl)?\.tpl$/) {
         my $isSSLVhost = defined $1;
 

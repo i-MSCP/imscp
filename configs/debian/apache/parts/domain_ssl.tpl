@@ -23,6 +23,7 @@
     # SECTION php_enabled BEGIN.
     DirectoryIndex index.php
 
+    # SECTION php_fpm BEGIN.
     # SECTION mod_fastcgi BEGIN.
     Alias /php-fcgi /var/lib/apache2/fastcgi/php-fcgi-{DOMAIN_NAME}-ssl
     FastCGIExternalServer /var/lib/apache2/fastcgi/php-fcgi-{DOMAIN_NAME}-ssl \
@@ -35,6 +36,7 @@
         ProxySet connectiontimeout=5 timeout=7200
     </Proxy>
     # SECTION mod_proxy_fcgi END.
+    # SECTION php_fpm END.
     # SECTION php_enabled END.
 
     <Directory {HOME_DIR}>
@@ -68,12 +70,14 @@
         php_admin_value upload_max_filesize "{UPLOAD_MAX_FILESIZE}M"
         php_admin_flag allow_url_fopen {ALLOW_URL_FOPEN}
         # SECTION itk END.
+        # SECTION php_fpm BEGIN.
         # SECTION mod_proxy_fcgi BEGIN.
         <If "%{REQUEST_FILENAME} =~ /\.ph(?:p[3457]?|t|tml)$/ && -f %{REQUEST_FILENAME}">
             SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1
             SetHandler proxy:{PROXY_FCGI_URL}
         </If>
         # SECTION mod_proxy_fcgi END.
+        # SECTION php_fpm END.
         # SECTION php_enabled END.
     </Directory>
 
