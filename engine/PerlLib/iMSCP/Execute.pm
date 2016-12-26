@@ -37,7 +37,6 @@ my $vendorLibDir;
 BEGIN { $vendorLibDir = realpath( dirname( __FILE__ ).'/../../PerlVendor' ); }
 use lib $vendorLibDir;
 use Capture::Tiny ':all';
-use open qw/ :std :utf8 /;
 use parent 'Exporter';
 
 our @EXPORT = qw/ execute executeNoWait escapeShell getExitCode /;

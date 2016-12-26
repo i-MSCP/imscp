@@ -30,7 +30,6 @@ use File::Spec;
 use File::stat ();
 use iMSCP::Debug;
 use iMSCP::Syscall;
-use open qw/ :std :utf8 /;
 use Scalar::Defer;
 use Quota;
 use parent 'Exporter';

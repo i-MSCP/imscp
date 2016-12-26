@@ -31,7 +31,7 @@ use iMSCP::EventManager;
 use iMSCP::Getopt;
 use IO::Handle;
 use locale;
-use open qw/ :std :utf8 /;
+use open OUT => ':utf8';
 use POSIX qw / tzset locale_h /;
 use parent 'Common::SingletonClass';
 

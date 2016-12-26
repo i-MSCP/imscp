@@ -786,7 +786,7 @@ sub postconf
             [ 'postconf', '-c', $self->{'config'}->{'POSTFIX_CONF_DIR'}, keys %params ],
             sub {
                 my $buffer = shift;
-                open my $stdout, '<:utf8', \$buffer or die( sprintf( 'Could not open: %s', $! ) );
+                open my $stdout, '<', \$buffer or die( sprintf( 'Could not open in-memory file: %s', $! ) );
                 while(<$stdout>) {
                     /^([^=]+)\s+=\s+(.*)/;
                     next unless defined $1 && defined $2;
