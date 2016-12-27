@@ -1873,6 +1873,7 @@ sub _cleanTemplate
 
         ${$tpl} = replaceBloc( "# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', ${$tpl} );
         ${$tpl} = replaceBloc("# SECTION php_fpm BEGIN.\n", "# SECTION php_fpm END.\n", '', ${$tpl});
+        ${$tpl} =~ s/^\s*(?:[#;].*)?\n//gmi;
     } elsif ($name =~ /^domain(?:_disabled|_redirect)?(_ssl)?\.tpl$/) {
         my $isSSLVhost = defined $1;
 
@@ -1896,9 +1897,12 @@ sub _cleanTemplate
         if ($isSSLVhost && !$data->{'HSTS_SUPPORT'}) {
             ${$tpl} = replaceBloc( "# SECTION hsts BEGIN.\n", "# SECTION hsts END.\n", '', ${$tpl} );
         }
+
+        ${$tpl} =~ s/^\s*(?:[#;].*)?\n//gmi;
+    } else {
+        ${$tpl} =~ s/^\s*(?:;.*)?\n//gmi;
     }
 
-    ${$tpl} =~ s/^\s*(?:[#;].*)?\n//gmi;
     0;
 }
 
