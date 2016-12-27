@@ -276,12 +276,6 @@ class iMSCP_Initializer
                 $this->config->DATABASE_HOST,
                 $this->config->DATABASE_NAME
             );
-
-            if (!$connection->execute('SET NAMES `utf8`')) {
-                throw new iMSCP_Exception(
-                    sprintf('Could not set charset for database communication. SQL returned: %s', $connection->errorMsg())
-                );
-            }
         } catch (PDOException $e) {
             throw new iMSCP_Exception_Database(
                 sprintf('Could not establish connection to the database: %s', $e->getMessage()), NULL, $e->getCode(), $e

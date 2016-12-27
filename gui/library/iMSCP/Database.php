@@ -76,13 +76,18 @@ class iMSCP_Database
      * @param string $type PDO driver
      * @param string $host Mysql server hostname
      * @param string $name Database name
-     * @param array $options OPTIONAL Driver options
-     * @return iMSCP_Database
+     * @param array $driverOptions OPTIONAL Driver options
      */
-    private function __construct($user, $pass, $type, $host, $name, $options = array())
+    private function __construct($user, $pass, $type, $host, $name, $driverOptions = array())
     {
-        $this->_db = new PDO($type . ':host=' . $host . ';dbname=' . $name, $user, $pass, $options);
+        $driverOptions[PDO::MYSQL_ATTR_INIT_COMMAND] = "SET NAMES 'utf8'";
+        $driverOptions[PDO::ATTR_EMULATE_PREPARES] = true; # TODO should be FALSE but we must first update code (including plugins)
+        $driverOptions[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
+        $this->_db = new PDO($type . ':host=' . $host . ';dbname=' . $name, $user, $pass, $driverOptions);
         $this->_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->_db->setAttribute(PDO::ATTR_CASE, PDO::CASE_NATURAL);
+        $this->_db->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
+        $this->_db->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
     }
 
     /**
