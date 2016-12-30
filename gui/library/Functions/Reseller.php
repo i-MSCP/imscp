@@ -611,22 +611,11 @@ function resellerHasCustomers($minNbCustomers = 1)
 
 	if (null === $customerCount ) {
 		$stmt = exec_query(
-			'
-				SELECT
-					COUNT(admin_id) AS cnt
-				FROM
-					admin
-				WHERE
-					admin_type = ?
-				AND
-					created_by = ?
-				AND
-					admin_status <> ?
-			',
-			array('user', $_SESSION['user_id'], 'todelete')
+			"SELECT COUNT(admin_id) FROM admin WHERE admin_type = 'user' AND created_by = ? AND admin_status <> 'todelete'",
+			$_SESSION['user_id']
 		);
 
-		$customerCount = $stmt->fields['cnt'];
+		$customerCount = $stmt->fetchRow(PDO::FETCH_COLUMN);
 	}
 
 	return ($customerCount >= $minNbCustomers);

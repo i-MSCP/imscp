@@ -1,6 +1,7 @@
 
 <script>
     $(function () {
+        <!-- BDP: shared_mount_point_option_js -->
         $("input[name='shared_mount_point']").on('change', function () {
             if ($("#shared_mount_point_no").is(':checked')) {
                 $("#shared_mount_point_domain").hide();
@@ -8,6 +9,7 @@
                 $("#shared_mount_point_domain").show();
             }
         }).trigger('change');
+        <!-- EDP: shared_mount_point_option_js -->
 
         $("input[name='url_forwarding']").on('change', function () {
             if ($("#url_forwarding_no").is(':checked')) {
@@ -44,6 +46,7 @@
                 <input type="text" name="domain_alias_name" id="domain_alias_name" value="{DOMAIN_ALIAS_NAME}">
             </td>
         </tr>
+        <!-- BDP: shared_mount_point_option -->
         <tr>
             <td>
                 {TR_SHARED_MOUNT_POINT}
@@ -65,6 +68,7 @@
                 </label>
             </td>
         </tr>
+        <!-- EDP: shared_mount_point_option -->
         <tr>
             <td>
                 {TR_URL_FORWARDING}
