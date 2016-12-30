@@ -75,6 +75,7 @@ class VirtualFileSystem
      */
     public function __construct($user, $rootDir = '/')
     {
+        set_time_limit(0);
         ignore_user_abort(true);
         $this->user = (string)$user;
         $this->rootDir = (string)$rootDir;
@@ -178,7 +179,6 @@ class VirtualFileSystem
         // No security implications, the FTP server handles this for us
         $list = @ftp_rawlist($this->stream, "-a $dirname", false);
         if (!$list) {
-            $this->writeLog('Could not list directory.');
             return false;
         }
 

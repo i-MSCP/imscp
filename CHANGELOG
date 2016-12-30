@@ -15,6 +15,9 @@ BACKEND
 DISTRIBUTIONS
     Fixed: `/etc/mtab' file not a symlink to `/proc/mounts', leading to duplicate mounts - See #IP-1679 (Ubuntu < 16.04)
 
+FRONTEND
+    Fixed: `VirtualFileSystem: Could not list directory error' when editing forwarded domain, alias or subdomain
+
 INSTALLER
     Added: preInstall() and postInstall() methods (autoinstaller::Adapter::AbstractAdapter)
     Removed: `afterPreBuild', `beforeBuild' and `beforePostBuild' events
