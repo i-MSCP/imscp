@@ -61,7 +61,7 @@ $tpl->define_dynamic(array(
 $tpl->assign(array(
     'productLongName' => tr('internet Multi Server Control Panel'),
     'productLink' => 'http://www.i-mscp.net',
-    'productCopyright' => tr('© 2010-2016 i-MSCP Team<br>All Rights Reserved')
+    'productCopyright' => tr('© 2010-2017 i-MSCP Team<br>All Rights Reserved')
 ));
 
 $cfg = iMSCP_Registry::get('config');

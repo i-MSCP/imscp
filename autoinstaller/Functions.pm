@@ -359,7 +359,7 @@ i-MSCP was designed for professional Hosting Service Providers (HSPs), Internet 
 
 Unless otherwise stated all code is licensed under GPL 2.0 and has the following copyright:
 
-        \\ZbCopyright 2010-2016 by i-MSCP Team - All rights reserved\\ZB
+        \\ZbCopyright 2010-2017 by i-MSCP Team - All rights reserved\\ZB
 
 \\Zb\\Z4Credits\\Zn\\ZB
 
