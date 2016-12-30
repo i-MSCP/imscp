@@ -87,8 +87,8 @@ sub process
     );
 
     my $step = 1;
-    for (@steps){
-        my $rs = step($_->[0], $_->[1], scalar @steps, $step);
+    for (@steps) {
+        my $rs = step(@{$_}, scalar @steps, $step);
         return $rs if $rs;
         $step++;
     }

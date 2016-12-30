@@ -214,7 +214,7 @@ sub setupTasks
     my $step = 1;
     my $nbSteps = @steps;
     for (@steps) {
-        $rs = step($_->[0], $_->[1], $nbSteps, $step);
+        $rs = step(@{$_}, $nbSteps, $step);
         return $rs if $rs;
         $step++;
     }
@@ -882,7 +882,6 @@ sub setupSaveConfig
     iMSCP::Bootstrapper->getInstance()->loadMainConfig(
         {
             nocreate        => 1,
-            nofail          => 0,
             config_readonly => 0
         }
     );
@@ -896,7 +895,6 @@ sub setupSaveConfig
     iMSCP::Bootstrapper->getInstance()->loadMainConfig(
         {
             nocreate        => 1,
-            nofail          => 0,
             config_readonly => 1
         }
     );

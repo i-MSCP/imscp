@@ -1308,12 +1308,9 @@ sub _saveConfig
 
     (tied %{$self->{'config'}})->flush();
 
-    my $rootUname = $main::imscpConfig{'ROOT_USER'};
-    my $rootGname = $main::imscpConfig{'ROOT_GROUP'};
-    my $file = iMSCP::File->new( filename => "$self->{'cfgDir'}/frontend.data" );
-    my $rs = $file->owner( $rootUname, $rootGname );
-    $rs ||= $file->mode( 0640 );
-    $rs ||= $file->copyFile( "$self->{'cfgDir'}/frontend.old.data" );
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/frontend.data" )->copyFile(
+        "$self->{'cfgDir'}/frontend.old.data"
+    );
 }
 
 =item getFullPhpVersionFor($binaryPath)

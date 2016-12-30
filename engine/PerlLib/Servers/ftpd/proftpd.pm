@@ -364,8 +364,11 @@ sub getTraffic
 
         # Create snapshot of traffic data source file
         my $tmpFile = File::Temp->new( UNLINK => 1 );
-        iMSCP::File->new( filename =>
-            $trafficDataSrc )->copyFile( $tmpFile ) == 0 or die( iMSCP::Debug::getLastError() );
+        iMSCP::File->new(
+            filename => $trafficDataSrc
+        )->copyFile(
+            $tmpFile
+        ) == 0 or die( iMSCP::Debug::getLastError());
 
         # Reset traffic data source file
         truncate( $trafficDataSrc, 0 ) or die( sprintf( 'Could not truncate %s file: %s', $trafficDataSrc, $! ) );

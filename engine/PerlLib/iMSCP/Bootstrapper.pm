@@ -118,7 +118,6 @@ sub loadMainConfig
         fileName  => ($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/').'imscp/imscp.conf',
         nodie    => $options->{'nodie'} // 0,
         nocreate  => $options->{'nocreate'} // 1,
-        nofail    => $options->{'nofail'} // 0,
         readonly  => $options->{'config_readonly'} // 0,
         temporary => $options->{'config_temporary'} // 0;
 }
@@ -252,7 +251,7 @@ sub _dbConnect
         iMSCP::Crypt::decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'} )
     );
     my $rs = $database->connect();
-    !$rs || $options->{'nofail'} or die( sprintf( 'Could not connect to the SQL server: %s', $rs ) );
+    !$rs or die( sprintf( 'Could not connect to the SQL server: %s', $rs ) );
     0;
 }
 

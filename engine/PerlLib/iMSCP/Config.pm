@@ -33,8 +33,29 @@ use parent 'Common::Object';
 
 =head1 DESCRIPTION
 
- This class allow to tie an i-MSCP configuration file to a hash variable.
- See perl tie and tie::file for more information.
+ Provides access to various i-MSCP configuration files through tied hash variable
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item flush()
+
+ Write data immediately in file
+ Return int 0;
+
+=cut
+
+sub flush
+{
+    my $self = shift;
+
+    return 0 if $self->{'readonly'} || !($self->{'tiedObject'}->{'defer'} || $self->{'tiedObject'}->{'autodeferring'});
+    $self->{'tiedObject'}->flush();
+    0;
+}
+
+=back
 
 =head1 PRIVATE METHODS
 
@@ -44,14 +65,12 @@ use parent 'Common::Object';
 
  Constructor. Called by the tie function
 
- The required arguments for the tie function are:
-  - fileName: Filename of the configuration file (including path)
-
- Optional arguments for the tie function are:
+ Required arguments for tie()
+  - fileName: Configuration file path
+ Optional arguments for tie()
+  - nocreate: Do not create file if it doesn't already exist, die instead
   - nodie: Do not die when accessing to an non-existent configuration parameter
-  - nocreate: Do not create file if it doesn't already exist (throws a fatal error instead)
-  - nofail: Do not throws fatal error in case configuration file doesn't exist
-  - readonly: Sets a read-only access on the tied configuration file
+  - readonly: Sets a read-only access on the configuration file
   - temporary: Enable temporary overriding of configuration values (changes are not persistent)
 
 =cut
@@ -59,84 +78,6 @@ use parent 'Common::Object';
 sub TIEHASH
 {
     (shift)->new( @_ );
-}
-
-=item _init()
-
- Initialization
-
- Return iMSCP::Config
-
-=cut
-
-sub _init
-{
-    my $self = shift;
-
-    defined $self->{'fileName'} or die( 'fileName attribut is not defined' );
-
-    @{$self->{'confFile'}} = ();
-    $self->{'configValues'} = { };
-    $self->{'lineMap'} = { };
-    $self->{'confFileName'} = $self->{'fileName'};
-
-    debug( sprintf( 'Tying %s file in %s mode', $self->{'confFileName'}, $self->{'readonly'} ? 'readonly' : 'writing' ) );
-
-    $self->_loadConfig();
-    $self->_parseConfig();
-    $self;
-}
-
-=item _loadConfig()
-
- Load i-MSCP configuration file
-
- Return undef
-
-=cut
-
-sub _loadConfig
-{
-    my $self = shift;
-
-    my $mode;
-
-    if ($self->{'nocreate'}) {
-        $mode = $self->{'readonly'} ? O_RDONLY : O_RDWR;
-    } elsif ($self->{'readonly'}) {
-        $mode = O_RDONLY;
-    } else {
-        $mode = O_RDWR | O_CREAT;
-    }
-
-    return if tie @{$self->{'confFile'}}, 'Tie::File', $self->{'confFileName'}, 'mode' => $mode;
-
-    $self->{'nofail'} or die( sprintf( 'Could not tie %s file: %s', $self->{'confFileName'}, $! ) );
-
-    require Tie::Array;
-    tie @{$self->{'confFile'}}, 'Tie::StdArray';
-    undef;
-}
-
-=item _parseConfig()
-
- Parse configuration file
-
- Return undef
-
-=cut
-
-sub _parseConfig
-{
-    my $self = shift;
-
-    while(my($lineNo, $value) = each(@{$self->{'confFile'}})) {
-        next unless $value =~ /^([^#\s=]+)\s*=\s*(.*)$/;
-        $self->{'configValues'}->{$1} = $2;
-        $self->{'lineMap'}->{$1} = $lineNo;
-    }
-
-    undef;
 }
 
 =item FETCH($param)
@@ -244,23 +185,85 @@ sub CLEAR
 {
     my $self = shift;
 
-    @{$self->{'confFile'}} = ();
+    @{$self->{'tiefile'}} = ();
     $self->{'configValues'} = { };
     $self->{'lineMap'} = { };
     $self;
 }
 
-=item flush()
+=item DESTROY()
 
- Write data immediately in file
+ Destroy
 
 =cut
 
-sub flush
+sub DESTROY
 {
     my $self = shift;
 
-    (tied @{$self->{'confFile'}})->flush();
+    undef $self->{'tiedObject'};
+    untie(@{$self->{'tiefile'}});
+}
+
+=item _init()
+
+ Initialization
+
+ Return iMSCP::Config, die on failure
+
+=cut
+
+sub _init
+{
+    my $self = shift;
+
+    defined $self->{'fileName'} or die( 'fileName attribut is not defined' );
+
+    @{$self->{'tiefile'}} = ();
+    $self->{'configValues'} = { };
+    $self->{'lineMap'} = { };
+    $self->{'confFileName'} = $self->{'fileName'};
+    $self->_loadConfig();
+    $self;
+}
+
+=item _loadConfig()
+
+ Load i-MSCP configuration file
+
+ Return undef or die on failure
+
+=cut
+
+sub _loadConfig
+{
+    my $self = shift;
+
+    my $mode;
+
+    if ($self->{'nocreate'}) {
+        $mode = $self->{'readonly'} ? O_RDONLY : O_RDWR;
+    } elsif ($self->{'readonly'}) {
+        $mode = O_RDONLY;
+    } else {
+        $mode = O_RDWR | O_CREAT;
+    }
+
+    debug( sprintf( 'Tying %s file in %s mode', $self->{'confFileName'}, $self->{'readonly'} ? 'readonly' : 'writing' ) );
+
+    $self->{'tiedObject'} = tie @{$self->{'tiefile'}}, 'Tie::File', $self->{'confFileName'}, mode => $mode;
+    $self->{'tiedObject'} or die( sprintf( 'Could not tie %s file: %s', $self->{'confFileName'}, $! ) );
+
+    # Enable deffered writing if we are in writing mode
+    $self->{'tiedObject'}->defer(1) unless $self->{'readonly'};
+
+    while(my ($lineNo, $value) = each(@{$self->{'tiefile'}})) {
+        next unless $value =~ /^([^#\s=]+)\s*=\s*(.*)$/;
+        $self->{'configValues'}->{$1} = $2;
+        $self->{'lineMap'}->{$1} = $lineNo;
+    }
+
+    undef;
 }
 
 =item _replaceConfig($param, $value)
@@ -278,7 +281,7 @@ sub _replaceConfig
     my ($self, $param, $value) = @_;
 
     $value //= '';
-    @{$self->{'confFile'}}[$self->{'lineMap'}->{$param}] = "$param = $value" unless $self->{'temporary'};
+    @{$self->{'tiefile'}}[$self->{'lineMap'}->{$param}] = "$param = $value" unless $self->{'temporary'};
     $self->{'configValues'}->{$param} = $value;
 }
 
@@ -297,9 +300,9 @@ sub _insertConfig
     my ($self, $param, $value) = @_;
     $value //= '';
 
-    unless($self->{temporary}) {
-        push @{$self->{'confFile'}}, "$param = $value";
-        $self->{'lineMap'}->{$param} = $#{$self->{confFile}};
+    unless ($self->{'temporary'}) {
+        push @{$self->{'tiefile'}}, "$param = $value";
+        $self->{'lineMap'}->{$param} = $#{$self->{'tiefile'}};
     }
 
     $self->{'configValues'}->{$param} = $value;
