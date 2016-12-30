@@ -150,7 +150,7 @@ my $MOUNTS = lazy
 
  Get list of mounts
 
- Return List of mounts (duplicate entries are discarded)
+ Return List of mounts (duplicate mounts are discarded)
 
 =over 4
 
@@ -160,8 +160,6 @@ my $MOUNTS = lazy
 
 sub getMounts
 {
-    use Data::Dumper;
-    print Dumper(\%{$MOUNTS});
     return nsort keys %{$MOUNTS};
 }
 
