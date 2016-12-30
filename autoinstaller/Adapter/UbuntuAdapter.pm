@@ -27,6 +27,29 @@ use parent 'autoinstaller::Adapter::DebianAdapter';
 
  i-MSCP autoinstaller adapter implementation for Ubuntu.
 
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item preInstall(\@steps)
+
+ Process preInstall tasks
+
+ Param array \@steps List of install steps
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preInstall
+{
+    my ($self, $steps) = @_;
+
+    unshift @{$steps}, [ sub { $self->_updateSystemMTAB() }, 'Updating system /etc/mtab file' ];
+    0;
+}
+
+=back
+
 =head1 PRIVATE METHODS
 
 =over 4
@@ -50,6 +73,32 @@ sub _init
         'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'wget'
     ];
     $self;
+}
+
+=item _updateSystemMTAB()
+
+ Ensure that /etc/mtab file is a symlink to /proc/mounts
+ 
+ See #IP-1679
+
+ Return int 0 on success, die on failure
+
+=cut
+
+sub _updateSystemMTAB
+{
+    return 0 if -l '/etc/mtab' && readlink('/etc/mtab') eq '/proc/mounts';
+
+    if (-l _) {
+        unlink '/etc/mtab' or die(sprintf('Could not remove default system /etc/mtab symlink: %s', $!));
+    } else {
+        rename('/etc/mtab', '/etc/mtab.DIST') or die(
+            sprintf('Could not rename default system /etc/mtab to /etc/mtab.DIST: %s', $!)
+        );
+    }
+
+    symlink('/proc/mounts', '/etc/mtab') or die(sprintf('Could not create /etc/mtab symlink to /proc/mounts: %s', $!));
+    0;
 }
 
 =back

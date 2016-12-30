@@ -10,6 +10,18 @@ BACKEND
     Removed: Unwanted `nofail' option in iMSCP::Bootstrapper library
     Removed: Unwanted `nofail' option in iMSCP::Config library
 
+DISTRIBUTIONS
+    Fixed: `/etc/mtab' file not a symlink to `/proc/mounts', leading to duplicate mounts - See #IP-1679 (Ubuntu < 16.04)
+
+INSTALLER
+    Added: preInstall() and postInstall() methods (autoinstaller::Adapter::AbstractAdapter)
+    Removed: `afterPreBuild', `beforeBuild' and `beforePostBuild' events
+    Renamed: `beforePreBuild' event to `preBuild', and `afterBuild' event to `postBuild'
+    Renamed: `beforeInstall' event to `preInstall` and `afterInstall' event to `postInstall`
+    
+YOUTRACK
+    #IP-1679 Duplicate bind mounts leading to un-deletable Web folders (Ubuntu < 16.04)
+
 ------------------------------------------------------------------------------------------------------------------------
 1.3.14
 ------------------------------------------------------------------------------------------------------------------------

@@ -83,35 +83,28 @@ sub installPreRequiredPackages
     $rs ||= $self->{'eventManager'}->trigger( 'afterInstallPreRequiredPackages' );
 }
 
-=item preBuild()
+=item preBuild(\@steps)
 
  Process preBuild tasks
 
+ Param array \@steps List of build steps
  Return int 0 on success, other on failure
 
 =cut
 
 sub preBuild
 {
-    my $self = shift;
+    my ($self, $steps) = @_;
 
     return 0 if $main::skippackages;
 
-    my @steps = (
+    unshift @{$steps}, (
         [ sub { $self->_buildPackageList() }, 'Building list of packages to install/uninstall' ],
         [ sub { $self->_prefillDebconfDatabase() }, 'Pre-fill Debconf database' ],
         [ sub { $self->_processAptRepositories() }, 'Processing APT repositories if any' ],
         [ sub { $self->_processAptPreferences() }, 'Processing APT preferences if any' ],
         [ sub { $self->_updatePackagesIndex() }, 'Updating packages index' ]
     );
-
-    my $step = 1;
-    my $nbSteps = scalar @steps;
-    for (@steps) {
-        my $rs = step( $_->[0], $_->[1], $nbSteps, $step );
-        return $rs if $rs;
-        $step++;
-    }
 
     0
 }
@@ -274,19 +267,6 @@ sub uninstallPackages
     }
 
     $self->{'eventManager'}->trigger( 'afterUninstallPackages' );
-}
-
-=item postBuild()
-
- Process postBuild tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub postBuild
-{
-    0
 }
 
 =back

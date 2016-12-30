@@ -151,11 +151,6 @@ sub build
 
     $rs = _askInstallerMode( $dialog ) unless iMSCP::Getopt->noprompt || $main::buildonly || $main::reconfigure ne 'none';
 
-    $rs ||= $eventManager->trigger( 'beforePreBuild' );
-    $rs ||= _getDistroAdapter()->preBuild();
-    $rs ||= $eventManager->trigger( 'afterPreBuild' );
-    return $rs if $rs;
-
     my @steps = (
         [ \&_checkRequirements,      'Checking for requirements' ],
         [ \&_buildDistributionFiles, 'Building distribution files' ],
@@ -165,14 +160,15 @@ sub build
     );
 
     unshift @steps, [ \&_installDistroPackages, 'Installing distribution packages' ] unless $main::skippackages;
-    
-    $rs = $eventManager->trigger( 'beforeBuild', \@steps );
+
+    $rs ||= $eventManager->trigger( 'preBuild', \@steps );
+    $rs ||= _getDistroAdapter()->preBuild( \@steps );
     return $rs if $rs;
 
     my $step = 1;
     my $nbSteps = scalar @steps;
     for (@steps) {
-        $rs = step( $_->[0], $_->[1], $nbSteps, $step );
+        $rs = step( @{$_}, $nbSteps, $step );
         error( 'An error occurred while performing build steps' ) if $rs;
         return $rs if $rs;
         $step++;
@@ -180,8 +176,7 @@ sub build
 
     iMSCP::Dialog->getInstance()->endGauge();
 
-    $rs = $eventManager->trigger( 'afterBuild' );
-    $rs ||= $eventManager->trigger( 'beforePostBuild' );
+    $rs = $eventManager->trigger( 'postBuild' );
     $rs ||= _getDistroAdapter()->postBuild();
     return $rs if $rs;
 
@@ -274,13 +269,14 @@ EOF
         [ \&main::setupDeleteBuildDir,    'Deleting build directory' ]
     );
 
-    my $rs = iMSCP::EventManager->getInstance()->trigger( 'beforeInstall', \@steps );
+    my $rs = $eventManager->trigger( 'preInstall', \@steps );
+    $rs ||= _getDistroAdapter()->preInstall( \@steps );
     return $rs if $rs;
 
     my $step = 1;
     my $nbSteps = scalar @steps;
     for (@steps) {
-        $rs = step( $_->[0], $_->[1], $nbSteps, $step );
+        $rs = step( @{$_}, $nbSteps, $step );
         error( 'An error occurred while performing installation steps' ) if $rs;
         return $rs if $rs;
         $step++;
@@ -288,7 +284,8 @@ EOF
 
     iMSCP::Dialog->getInstance()->endGauge();
 
-    $rs = iMSCP::EventManager->getInstance()->trigger( 'afterInstall' );
+    $rs = $eventManager->trigger( 'postInstall' );
+    $rs ||= _getDistroAdapter()->postInstall();
     return $rs if $rs;
 
     require Net::LibIDN;

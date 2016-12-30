@@ -53,7 +53,7 @@ sub sample
     exit 0;
 }
 
-iMSCP::EventManager->getInstance()->register('beforeInstall', \&sample);
+iMSCP::EventManager->getInstance()->register('preInstall', \&sample);
 
 1;
 ```
