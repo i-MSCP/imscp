@@ -50,9 +50,10 @@ sub flush
 {
     my $self = shift;
 
-    return 0 if $self->{'readonly'} || !($self->{'tiedObject'}->{'defer'} || $self->{'tiedObject'}->{'autodeferring'});
-    $self->{'tiedObject'}->flush();
-    0;
+    return 0 if $self->{'readonly'}
+        || !($self->{'tieFileObject'}->{'defer'} || $self->{'tieFileObject'}->{'autodeferring'});
+
+    $self->{'tieFileObject'}->flush();
 }
 
 =back
@@ -201,7 +202,7 @@ sub DESTROY
 {
     my $self = shift;
 
-    undef $self->{'tiedObject'};
+    undef $self->{'tieFileObject'};
     untie(@{$self->{'tiefile'}});
 }
 
@@ -220,6 +221,7 @@ sub _init
     defined $self->{'fileName'} or die( 'fileName attribut is not defined' );
 
     @{$self->{'tiefile'}} = ();
+    $self->{'tieFileObject'} = undef;
     $self->{'configValues'} = { };
     $self->{'lineMap'} = { };
     $self->{'confFileName'} = $self->{'fileName'};
@@ -251,11 +253,11 @@ sub _loadConfig
 
     debug( sprintf( 'Tying %s file in %s mode', $self->{'confFileName'}, $self->{'readonly'} ? 'readonly' : 'writing' ) );
 
-    $self->{'tiedObject'} = tie @{$self->{'tiefile'}}, 'Tie::File', $self->{'confFileName'}, mode => $mode;
-    $self->{'tiedObject'} or die( sprintf( 'Could not tie %s file: %s', $self->{'confFileName'}, $! ) );
+    $self->{'tieFileObject'} = tie @{$self->{'tiefile'}}, 'Tie::File', $self->{'confFileName'}, mode => $mode;
+    $self->{'tieFileObject'} or die( sprintf( 'Could not tie %s file: %s', $self->{'confFileName'}, $! ) );
 
     # Enable deffered writing if we are in writing mode
-    $self->{'tiedObject'}->defer(1) unless $self->{'readonly'};
+    $self->{'tieFileObject'}->defer unless $self->{'readonly'};
 
     while(my ($lineNo, $value) = each(@{$self->{'tiefile'}})) {
         next unless $value =~ /^([^#\s=]+)\s*=\s*(.*)$/;
