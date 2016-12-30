@@ -61,7 +61,7 @@ function getDomainsList()
             FROM domain_aliasses
             WHERE domain_id = :domain_id
             AND alias_status = :status_ok
-            AND  url_forward = 'no'
+            AND url_forward = 'no'
             UNION ALL
             SELECT CONCAT(t1.subdomain_alias_name, '.', t2.alias_name) AS name, t1.subdomain_alias_mount AS mount_point
             FROM subdomain_alias AS t1 INNER JOIN domain_aliasses AS t2 USING(alias_id)

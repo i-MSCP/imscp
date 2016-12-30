@@ -80,13 +80,13 @@ function getDomainsList($customerId)
     $stmt = exec_query(
         "
             SELECT CONCAT(t1.subdomain_name, '.', t2.domain_name) AS name, t1.subdomain_mount AS mount_point
-            FROM  subdomain AS t1 INNER JOIN domain AS t2 USING(domain_id)
+            FROM subdomain AS t1 INNER JOIN domain AS t2 USING(domain_id)
             WHERE t1.domain_id = :domain_id
             AND t1.subdomain_status = :status_ok
             AND t1.subdomain_url_forward = 'no'
             UNION ALL
             SELECT alias_name AS name, alias_mount AS mount_point
-            FROM  domain_aliasses WHERE domain_id = :domain_id
+            FROM domain_aliasses WHERE domain_id = :domain_id
             AND alias_status = :status_ok
             AND url_forward = 'no'
             UNION ALL
