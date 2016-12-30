@@ -78,7 +78,7 @@ sub _init
 
 =item _updateSystemMTAB()
 
- Ensure that /etc/mtab file is a symlink to /proc/mounts
+ Ensure that /etc/mtab file is a symlink to /proc/mounts or /proc/self/mounts
  
  See #IP-1679
 
@@ -88,13 +88,16 @@ sub _init
 
 sub _updateSystemMTAB
 {
-    return 0 if -l '/etc/mtab' && readlink('/etc/mtab') eq '/proc/mounts';
+    if (-l '/etc/mtab') {
+        my $resolved = readlink('/etc/mtab');
+        return 0 if $resolved eq '/proc/mounts' || $resolved eq '/proc/self/mounts';
+    }
 
     if (-l _) {
         unlink '/etc/mtab' or die(sprintf('Could not remove default system /etc/mtab symlink: %s', $!));
     } else {
         rename('/etc/mtab', '/etc/mtab.DIST') or die(
-            sprintf('Could not rename default system /etc/mtab to /etc/mtab.DIST: %s', $!)
+            sprintf('Could not rename default system /etc/mtab file to /etc/mtab.DIST: %s', $!)
         );
     }
 
