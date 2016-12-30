@@ -35,29 +35,39 @@ function getDomainsList()
         return $domainsList;
     }
 
+    $domainsList = array();
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
-    $domainsList = array(
-        array(
-            'name'        => $mainDmnProps['domain_name'],
-            'id'          => $mainDmnProps['domain_id'],
-            'type'        => 'dmn',
-            'mount_point' => '/'
-        )
-    );
+
+    if($mainDmnProps['url_forward'] == 'no') {
+        $domainsList = array(
+            array(
+                'name'        => $mainDmnProps['domain_name'],
+                'id'          => $mainDmnProps['domain_id'],
+                'type'        => 'dmn',
+                'mount_point' => '/'
+            )
+        );
+    }
 
     $stmt = exec_query(
         "
             SELECT CONCAT(t1.subdomain_name, '.', t2.domain_name) AS name, t1.subdomain_mount AS mount_point
             FROM subdomain AS t1 INNER JOIN domain AS t2 USING(domain_id)
-            WHERE t1.domain_id = :domain_id AND t1.subdomain_status = :status_ok
+            WHERE t1.domain_id = :domain_id
+            AND t1.subdomain_status = :status_ok
+            AND t1.subdomain_url_forward = 'no'
             UNION ALL
             SELECT alias_name AS name, alias_mount AS mount_point
             FROM domain_aliasses
-            WHERE domain_id = :domain_id AND alias_status = :status_ok
+            WHERE domain_id = :domain_id
+            AND alias_status = :status_ok
+            AND url_forward = 'no'
             UNION ALL
             SELECT CONCAT(t1.subdomain_alias_name, '.', t2.alias_name) AS name, t1.subdomain_alias_mount AS mount_point
             FROM subdomain_alias AS t1 INNER JOIN domain_aliasses AS t2 USING(alias_id)
-            WHERE t2.domain_id = :domain_id AND subdomain_alias_status = :status_ok
+            WHERE t2.domain_id = :domain_id
+            AND subdomain_alias_status = :status_ok
+            AND subdomain_alias_url_forward = 'no'
         ",
         array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => 'ok')
     );

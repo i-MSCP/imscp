@@ -17,6 +17,7 @@ DISTRIBUTIONS
 
 FRONTEND
     Fixed: `VirtualFileSystem: Could not list directory error' when editing forwarded domain, alias or subdomain
+    Fixed: Discard forwarded domains from list of shareable mount points
 
 INSTALLER
     Added: preInstall() and postInstall() methods (autoinstaller::Adapter::AbstractAdapter)
