@@ -1321,8 +1321,6 @@ sub mountLogsFolder
 
  Umount logs folder which belong to the given domain from customer's logs folder
 
- Note: In case of a partial path, any file systems below this path will be umounted.
-
  Param hash \%data Domain data
  Return int 0 on success, other on failure
 
@@ -1332,13 +1330,19 @@ sub umountLogsFolder
 {
     my ($self, $data) = @_;
 
-    # If domain type is 'dmn' (full account) we operate recursively to handle case of dangling mounts
-    my $fsFile = File::Spec->canonpath(
-        "$data->{'HOME_DIR'}/logs".($data->{'DOMAIN_TYPE'} ne 'dmn' ? "/$data->{'DOMAIN_NAME'}" : '')
-    );
+    my $recursive = 1;
+    my $fsFile;
+    $fsFile = "$data->{'HOME_DIR'}/logs";
+
+    # If operate recursively only if domain type is 'dmn' (full account) - handle case of dangling mounts
+    if ($data->{'DOMAIN_TYPE'} ne 'dmn') {
+        $recursive = 0;
+        $fsFile = "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}";
+    }
+
     my $rs = $self->{'eventManager'}->trigger( 'beforeUnmountLogsFolder', $data, $fsFile );
     $rs ||= removeMountEntry( qr%.*?[ \t]+\Q$fsFile\E(?:/|[ \t]+)[^\n]+% );
-    $rs ||= umount( $fsFile );
+    $rs ||= umount( $fsFile, $recursive );
     $rs ||= $self->{'eventManager'}->trigger( 'afterUmountMountLogsFolder', $data, $fsFile );
 }
 

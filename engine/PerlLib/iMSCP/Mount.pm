@@ -31,10 +31,11 @@ use File::stat ();
 use iMSCP::Debug;
 use iMSCP::Syscall;
 use Scalar::Defer;
+use Sort::Naturally;
 use Quota;
 use parent 'Exporter';
 
-our @EXPORT_OK = qw/ mount umount setPropagationFlag isMountpoint isBindMount addMountEntry removeMountEntry /;
+our @EXPORT_OK = qw/ mount umount setPropagationFlag isMountpoint isBindMount addMountEntry removeMountEntry getMounts /;
 
 # These are the fs-independent mount-flags (see sys/mount.h)
 # See http://man7.org/linux/man-pages/man2/mount.2.html for a description of these flags
@@ -132,13 +133,13 @@ my %PROPAGATION_FLAGS = (
 # Lazy-load mount entries
 my $MOUNTS = lazy
     {
-        my @entries;
+        my $entries;
         Quota::setmntent();
         while(my (undef, $fsFile) = Quota::getmntent() ) {
-            push @entries, $fsFile =~ s/\s+\(deleted\)$//r;
+            $entries->{$fsFile =~ s/\s+\(deleted\)$//r}++ ;
         }
         Quota::endmntent();
-        [ reverse @entries ];
+        $entries;
     };
 
 =head1 DESCRIPTION
@@ -147,7 +148,22 @@ my $MOUNTS = lazy
 
 =head1 PUBLIC FUNCTIONS
 
+ Get list of mounts
+
+ Return List of mounts (duplicate entries are discarded)
+
 =over 4
+
+=item getMounts()
+
+=cut
+
+sub getMounts
+{
+    use Data::Dumper;
+    print Dumper(\%{$MOUNTS});
+    return nsort keys %{$MOUNTS};
+}
 
 =item mount(\%fields)
 
@@ -173,7 +189,7 @@ sub mount($)
         return 1;
     }
 
-    force $MOUNTS; # Force loading of mount entries
+    force $MOUNTS; # Force loading of mount entries if not already done
     my $fsSpec = File::Spec->canonpath( $fields->{'fs_spec'} );
     my $fsFile = File::Spec->canonpath( $fields->{'fs_file'} );
     my $fsVfstype = $fields->{'fs_vfstype'};
@@ -214,46 +230,63 @@ sub mount($)
         }
     }
 
-    unshift @{$MOUNTS}, $fsFile unless $mflags & MS_REMOUNT;
+    $MOUNTS->{$fsFile}++ unless $mflags & MS_REMOUNT;
     0;
 }
 
-=item umount($fsFile)
+=item umount($fsFile [, $recursive = TRUE ])
 
  Umount the given file system
 
- Note: Operation is recursive. Any mount below the given mount (or directory) will be umounted.
+ Note: When umount operation is recursive, any mount below the given mount (or directory) will be umounted.
 
  Param string $fsFile Mount point of file system to umount
+ Param bool $recursive Whether or not umount operation must be recursive (default: true)
  Return int 0 on success, other on failure
 
 =cut
 
-sub umount($)
+sub umount($;$)
 {
-    my $fsFile = shift;
+    my ($fsFile, $recursive) = @_;
 
     unless (defined $fsFile) {
         error( '$fsFile parameter is not defined' );
         return 1;
     }
 
+    $recursive //= 1; # Operation is recursive by default
     $fsFile = File::Spec->canonpath( $fsFile );
 
     return 0 if $fsFile eq '/'; # Prevent umounting root fs
 
-    @${MOUNTS} = grep {
-        if (/^\Q$fsFile\E(\/|$)/) {
-            debug($_);
-            unless (syscall(&iMSCP::Syscall::SYS_umount2, $_, MNT_DETACH) == 0 || $!{'EINVAL'}) {
-                error( sprintf( "Error while calling umount($_): %s", $_, $! || 'Unknown error' ) );
+    unless ($recursive) {
+        return 0 unless $MOUNTS->{$fsFile};
+
+        do {
+            debug($fsFile);
+            unless (syscall(&iMSCP::Syscall::SYS_umount2, $fsFile, MNT_DETACH) == 0 || $!{'EINVAL'}) {
+                error( sprintf( "Error while calling umount(%s): %s", $fsFile, $! || 'Unknown error' ) );
                 return 1;
             }
-            $!{'EINVAL'};
-        } else {
-            1;
-        }
-    } @${MOUNTS};
+            ($MOUNTS->{$fsFile} > 1) ? $MOUNTS->{$fsFile}-- : delete $MOUNTS->{$fsFile};
+        } while $MOUNTS->{$fsFile};
+
+        return 0;
+    }
+
+    for(reverse nsort keys %{$MOUNTS}) {
+        next unless /^\Q$fsFile\E(\/|$)/;
+        do {
+            debug($_);
+            unless (syscall(&iMSCP::Syscall::SYS_umount2, $_, MNT_DETACH) == 0 || $!{'EINVAL'}) {
+                error( sprintf( "Error while calling umount(%s): %s", $_, $! || 'Unknown error' ) );
+                return 1;
+            }
+            ($MOUNTS->{$_} > 1) ? $MOUNTS->{$_}-- : delete $MOUNTS->{$_};
+        } while $MOUNTS->{$_};
+    }
+
     0;
 }
 
@@ -317,7 +350,7 @@ sub isMountpoint($)
 
     $path = File::Spec->canonpath( $path );
 
-    return 1 if grep { $_ eq $path } @{$MOUNTS};
+    return 1 if $MOUNTS->{$path};
     return 0 unless -d $path;
 
     my $st = File::stat::populate(CORE::stat( _ ));
