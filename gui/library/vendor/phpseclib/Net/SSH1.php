@@ -558,6 +558,21 @@ class Net_SSH1
     }
 
     /**
+     * PHP4 compatible Default Constructor.
+     *
+     * @see self::__construct()
+     * @param string $host
+     * @param int $port
+     * @param int $timeout
+     * @param int $cipher
+     * @access public
+     */
+    function Net_SSH1($host, $port = 22, $timeout = 10, $cipher = NET_SSH1_CIPHER_3DES)
+    {
+        $this->__construct($host, $port, $timeout, $cipher);
+    }
+
+    /**
      * Connect to an SSHv1 server
      *
      * @return bool

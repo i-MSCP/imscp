@@ -400,7 +400,7 @@ class Net_SSH2
     var $server_public_host_key;
 
     /**
-     * Session identifer
+     * Session identifier
      *
      * "The exchange hash H from the first key exchange is additionally
      *  used as the session identifier, which is a unique identifier for
@@ -990,6 +990,20 @@ class Net_SSH2
             $this->port = $port;
             $this->timeout = $timeout;
         }
+    }
+
+    /**
+     * PHP4 compatible Default Constructor.
+     *
+     * @see self::__construct()
+     * @param mixed $host
+     * @param int $port
+     * @param int $timeout
+     * @access public
+     */
+    function Net_SSH2($host, $port = 22, $timeout = 10)
+    {
+        $this->__construct($host, $port, $timeout);
     }
 
     /**
@@ -2478,7 +2492,7 @@ class Net_SSH2
 
         // RFC4254 defines the (client) window size as "bytes the other party can send before it must wait for the window to
         // be adjusted".  0x7FFFFFFF is, at 2GB, the max size.  technically, it should probably be decremented, but,
-        // honestly, if you're transfering more than 2GB, you probably shouldn't be using phpseclib, anyway.
+        // honestly, if you're transferring more than 2GB, you probably shouldn't be using phpseclib, anyway.
         // see http://tools.ietf.org/html/rfc4254#section-5.2 for more info
         $this->window_size_server_to_client[NET_SSH2_CHANNEL_EXEC] = $this->window_size;
         // 0x8000 is the maximum max packet size, per http://tools.ietf.org/html/rfc4253#section-6.1, although since PuTTy
@@ -3473,7 +3487,9 @@ class Net_SSH2
                     }
 
                     $this->channel_status[$channel] = NET_SSH2_MSG_CHANNEL_CLOSE;
-                    return true;
+                    if ($client_channel == $channel) {
+                        return true;
+                    }
                 case NET_SSH2_MSG_CHANNEL_EOF:
                     break;
                 default:

@@ -196,6 +196,17 @@ class File_ANSI
     }
 
     /**
+     * PHP4 compatible Default Constructor.
+     *
+     * @see self::__construct()
+     * @access public
+     */
+    function File_ANSI()
+    {
+        $this->__construct($mode);
+    }
+
+    /**
      * Set terminal width and height
      *
      * Resets the screen as well

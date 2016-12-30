@@ -282,7 +282,7 @@ class Crypt_RSA
     /**
      * Precomputed Zero
      *
-     * @var array
+     * @var Math_BigInteger
      * @access private
      */
     var $zero;
@@ -290,7 +290,7 @@ class Crypt_RSA
     /**
      * Precomputed One
      *
-     * @var array
+     * @var Math_BigInteger
      * @access private
      */
     var $one;
@@ -539,6 +539,7 @@ class Crypt_RSA
                         case !isset($versions['Header']):
                         case !isset($versions['Library']):
                         case $versions['Header'] == $versions['Library']:
+                        case version_compare($versions['Header'], '1.0.0') >= 0 && version_compare($versions['Library'], '1.0.0') >= 0:
                             define('CRYPT_RSA_MODE', CRYPT_RSA_MODE_OPENSSL);
                             break;
                         default:
@@ -559,6 +560,17 @@ class Crypt_RSA
         $this->hashName = 'sha1';
         $this->mgfHash = new Crypt_Hash('sha1');
         $this->mgfHLen = $this->mgfHash->getLength();
+    }
+
+    /**
+     * PHP4 compatible Default Constructor.
+     *
+     * @see self::__construct()
+     * @access public
+     */
+    function Crypt_RSA()
+    {
+        $this->__construct();
     }
 
     /**
@@ -2163,8 +2175,14 @@ class Crypt_RSA
      */
     function _exponentiate($x)
     {
-        if (empty($this->primes) || empty($this->coefficients) || empty($this->exponents)) {
-            return $x->modPow($this->exponent, $this->modulus);
+        switch (true) {
+            case empty($this->primes):
+            case $this->primes[1]->equals($this->zero):
+            case empty($this->coefficients):
+            case $this->coefficients[2]->equals($this->zero):
+            case empty($this->exponents):
+            case $this->exponents[1]->equals($this->zero):
+                return $x->modPow($this->exponent, $this->modulus);
         }
 
         $num_primes = count($this->primes);
@@ -2639,7 +2657,7 @@ class Crypt_RSA
         // be output.
 
         $emLen = ($emBits + 1) >> 3; // ie. ceil($emBits / 8)
-        $sLen = $this->sLen ? $this->sLen : $this->hLen;
+        $sLen = $this->sLen !== null ? $this->sLen : $this->hLen;
 
         $mHash = $this->hash->hash($m);
         if ($emLen < $this->hLen + $sLen + 2) {
@@ -2677,7 +2695,7 @@ class Crypt_RSA
         // be output.
 
         $emLen = ($emBits + 1) >> 3; // ie. ceil($emBits / 8);
-        $sLen = $this->sLen ? $this->sLen : $this->hLen;
+        $sLen = $this->sLen !== null ? $this->sLen : $this->hLen;
 
         $mHash = $this->hash->hash($m);
         if ($emLen < $this->hLen + $sLen + 2) {

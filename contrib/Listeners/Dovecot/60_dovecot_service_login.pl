@@ -1,5 +1,5 @@
 # i-MSCP Listener::Dovecot::Service::Login listener file
-# Copyright (C) 2016 Sven Jantzen <info@svenjantzen.de>
+# Copyright (C) 2016-2017 Sven Jantzen <info@svenjantzen.de>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public

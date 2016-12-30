@@ -202,7 +202,7 @@ class Crypt_TripleDES extends Crypt_DES
             // In case of CRYPT_DES_MODE_3CBC, we init as CRYPT_DES_MODE_CBC
             // and additional flag us internally as 3CBC
             case CRYPT_DES_MODE_3CBC:
-                parent::__construct(CRYPT_MODE_CBC);
+                parent::Crypt_Base(CRYPT_MODE_CBC);
                 $this->mode_3cbc = true;
 
                 // This three $des'es will do the 3CBC work (if $key > 64bits)
@@ -221,6 +221,18 @@ class Crypt_TripleDES extends Crypt_DES
             default:
                 parent::__construct($mode);
         }
+    }
+
+    /**
+     * PHP4 compatible Default Constructor.
+     *
+     * @see self::__construct()
+     * @param int $mode
+     * @access public
+     */
+    function Crypt_TripleDES($mode = CRYPT_MODE_CBC)
+    {
+        $this->__construct($mode);
     }
 
     /**

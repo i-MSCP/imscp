@@ -532,6 +532,18 @@ class Crypt_Base
     }
 
     /**
+     * PHP4 compatible Default Constructor.
+     *
+     * @see self::__construct()
+     * @param int $mode
+     * @access public
+     */
+    function Crypt_Base($mode = CRYPT_MODE_CBC)
+    {
+        $this->__construct($mode);
+    }
+
+    /**
      * Sets the initialization vector. (optional)
      *
      * SetIV is not required when CRYPT_MODE_ECB (or ie for AES: CRYPT_AES_MODE_ECB) is being used.  If not explicitly set, it'll be assumed
@@ -814,7 +826,7 @@ class Crypt_Base
                 $this->changed = false;
             }
             if ($this->enchanged) {
-                mcrypt_generic_init($this->enmcrypt, $this->key, $this->encryptIV);
+                @mcrypt_generic_init($this->enmcrypt, $this->key, $this->encryptIV);
                 $this->enchanged = false;
             }
 
@@ -847,15 +859,15 @@ class Crypt_Base
                 if ($len >= $block_size) {
                     if ($this->enbuffer['enmcrypt_init'] === false || $len > $this->cfb_init_len) {
                         if ($this->enbuffer['enmcrypt_init'] === true) {
-                            mcrypt_generic_init($this->enmcrypt, $this->key, $iv);
+                            @mcrypt_generic_init($this->enmcrypt, $this->key, $iv);
                             $this->enbuffer['enmcrypt_init'] = false;
                         }
-                        $ciphertext.= mcrypt_generic($this->enmcrypt, substr($plaintext, $i, $len - $len % $block_size));
+                        $ciphertext.= @mcrypt_generic($this->enmcrypt, substr($plaintext, $i, $len - $len % $block_size));
                         $iv = substr($ciphertext, -$block_size);
                         $len%= $block_size;
                     } else {
                         while ($len >= $block_size) {
-                            $iv = mcrypt_generic($this->ecb, $iv) ^ substr($plaintext, $i, $block_size);
+                            $iv = @mcrypt_generic($this->ecb, $iv) ^ substr($plaintext, $i, $block_size);
                             $ciphertext.= $iv;
                             $len-= $block_size;
                             $i+= $block_size;
@@ -864,7 +876,7 @@ class Crypt_Base
                 }
 
                 if ($len) {
-                    $iv = mcrypt_generic($this->ecb, $iv);
+                    $iv = @mcrypt_generic($this->ecb, $iv);
                     $block = $iv ^ substr($plaintext, -$len);
                     $iv = substr_replace($iv, $block, 0, $len);
                     $ciphertext.= $block;
@@ -874,10 +886,10 @@ class Crypt_Base
                 return $ciphertext;
             }
 
-            $ciphertext = mcrypt_generic($this->enmcrypt, $plaintext);
+            $ciphertext = @mcrypt_generic($this->enmcrypt, $plaintext);
 
             if (!$this->continuousBuffer) {
-                mcrypt_generic_init($this->enmcrypt, $this->key, $this->encryptIV);
+                @mcrypt_generic_init($this->enmcrypt, $this->key, $this->encryptIV);
             }
 
             return $ciphertext;
@@ -1126,7 +1138,7 @@ class Crypt_Base
                 $this->changed = false;
             }
             if ($this->dechanged) {
-                mcrypt_generic_init($this->demcrypt, $this->key, $this->decryptIV);
+                @mcrypt_generic_init($this->demcrypt, $this->key, $this->decryptIV);
                 $this->dechanged = false;
             }
 
@@ -1154,12 +1166,12 @@ class Crypt_Base
                 }
                 if ($len >= $block_size) {
                     $cb = substr($ciphertext, $i, $len - $len % $block_size);
-                    $plaintext.= mcrypt_generic($this->ecb, $iv . $cb) ^ $cb;
+                    $plaintext.= @mcrypt_generic($this->ecb, $iv . $cb) ^ $cb;
                     $iv = substr($cb, -$block_size);
                     $len%= $block_size;
                 }
                 if ($len) {
-                    $iv = mcrypt_generic($this->ecb, $iv);
+                    $iv = @mcrypt_generic($this->ecb, $iv);
                     $plaintext.= $iv ^ substr($ciphertext, -$len);
                     $iv = substr_replace($iv, substr($ciphertext, -$len), 0, $len);
                     $pos = $len;
@@ -1168,10 +1180,10 @@ class Crypt_Base
                 return $plaintext;
             }
 
-            $plaintext = mdecrypt_generic($this->demcrypt, $ciphertext);
+            $plaintext = @mdecrypt_generic($this->demcrypt, $ciphertext);
 
             if (!$this->continuousBuffer) {
-                mcrypt_generic_init($this->demcrypt, $this->key, $this->decryptIV);
+                @mcrypt_generic_init($this->demcrypt, $this->key, $this->decryptIV);
             }
 
             return $this->paddable ? $this->_unpad($plaintext) : $plaintext;
@@ -1314,7 +1326,7 @@ class Crypt_Base
      * PHP's OpenSSL bindings do not operate in continuous mode so we'll wrap around it. Since the keystream
      * for CTR is the same for both encrypting and decrypting this function is re-used by both Crypt_Base::encrypt()
      * and Crypt_Base::decrypt(). Also, OpenSSL doesn't implement CTR for all of it's symmetric ciphers so this
-     * function will emulate CTR with ECB when necesary.
+     * function will emulate CTR with ECB when necessary.
      *
      * @see self::encrypt()
      * @see self::decrypt()
@@ -1633,7 +1645,7 @@ class Crypt_Base
             case CRYPT_ENGINE_MCRYPT:
                 return $this->cipher_name_mcrypt &&
                        extension_loaded('mcrypt') &&
-                       in_array($this->cipher_name_mcrypt, mcrypt_list_algorithms());
+                       in_array($this->cipher_name_mcrypt, @mcrypt_list_algorithms());
             case CRYPT_ENGINE_INTERNAL:
                 return true;
         }
@@ -1712,13 +1724,13 @@ class Crypt_Base
         if ($this->engine != CRYPT_ENGINE_MCRYPT && $this->enmcrypt) {
             // Closing the current mcrypt resource(s). _mcryptSetup() will, if needed,
             // (re)open them with the module named in $this->cipher_name_mcrypt
-            mcrypt_module_close($this->enmcrypt);
-            mcrypt_module_close($this->demcrypt);
+            @mcrypt_module_close($this->enmcrypt);
+            @mcrypt_module_close($this->demcrypt);
             $this->enmcrypt = null;
             $this->demcrypt = null;
 
             if ($this->ecb) {
-                mcrypt_module_close($this->ecb);
+                @mcrypt_module_close($this->ecb);
                 $this->ecb = null;
             }
         }
@@ -1838,19 +1850,19 @@ class Crypt_Base
                 CRYPT_MODE_STREAM => MCRYPT_MODE_STREAM,
             );
 
-            $this->demcrypt = mcrypt_module_open($this->cipher_name_mcrypt, '', $mcrypt_modes[$this->mode], '');
-            $this->enmcrypt = mcrypt_module_open($this->cipher_name_mcrypt, '', $mcrypt_modes[$this->mode], '');
+            $this->demcrypt = @mcrypt_module_open($this->cipher_name_mcrypt, '', $mcrypt_modes[$this->mode], '');
+            $this->enmcrypt = @mcrypt_module_open($this->cipher_name_mcrypt, '', $mcrypt_modes[$this->mode], '');
 
             // we need the $ecb mcrypt resource (only) in MODE_CFB with enableContinuousBuffer()
             // to workaround mcrypt's broken ncfb implementation in buffered mode
             // see: {@link http://phpseclib.sourceforge.net/cfb-demo.phps}
             if ($this->mode == CRYPT_MODE_CFB) {
-                $this->ecb = mcrypt_module_open($this->cipher_name_mcrypt, '', MCRYPT_MODE_ECB, '');
+                $this->ecb = @mcrypt_module_open($this->cipher_name_mcrypt, '', MCRYPT_MODE_ECB, '');
             }
         } // else should mcrypt_generic_deinit be called?
 
         if ($this->mode == CRYPT_MODE_CFB) {
-            mcrypt_generic_init($this->ecb, $this->key, str_repeat("\0", $this->block_size));
+            @mcrypt_generic_init($this->ecb, $this->key, str_repeat("\0", $this->block_size));
         }
     }
 
@@ -2549,7 +2561,7 @@ class Crypt_Base
      * is stored, classwide (!), here for reusing.
      *
      * The string-based index of $function is a classwide
-     * uniqe value representing, at least, the $mode of
+     * unique value representing, at least, the $mode of
      * operation (or more... depends of the optimizing level)
      * for which $mode the lambda function was created.
      *

@@ -5,7 +5,7 @@
 
 This directory allow to store plugin local configuration files. Local configuration files allow to override the default
 plugin parameters defined in the default configuration files in persistent way, without having to restore them after
-updating your plugins to a newer version. It's the responsability of the admin to check that parameters added in these
+updating your plugins to a newer version. It's the responsibility of the admin to check that parameters added in these
 files still apply to the newest plugin versions.
 
 **Note:** To avoid any accidental configuration data loss, the local configuration files are never automatically deleted.

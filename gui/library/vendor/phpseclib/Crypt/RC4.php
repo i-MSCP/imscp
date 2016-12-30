@@ -167,6 +167,17 @@ class Crypt_RC4 extends Crypt_Base
     }
 
     /**
+     * PHP4 compatible Default Constructor.
+     *
+     * @see self::__construct()
+     * @access public
+     */
+    function Crypt_RC4()
+    {
+        $this->__construct();
+    }
+
+    /**
      * Test for engine validity
      *
      * This is mainly just a wrapper to set things up for Crypt_Base::isValidEngine()
