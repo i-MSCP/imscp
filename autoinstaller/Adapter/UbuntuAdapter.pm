@@ -45,7 +45,8 @@ sub preInstall
     my ($self, $steps) = @_;
 
     unshift @{$steps}, [ sub { $self->_updateSystemMTAB() }, 'Updating system /etc/mtab file' ];
-    0;
+
+    $self->SUPER::preInstall();
 }
 
 =back
