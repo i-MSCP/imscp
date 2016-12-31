@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-12-25 07:13+0100\n"
-"PO-Revision-Date: 2016-12-22 17:57+0000\n"
+"POT-Creation-Date: 2016-12-31 12:11+0100\n"
+"PO-Revision-Date: 2016-12-31 11:13+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/i-mscp/i-MSCP/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
@@ -211,7 +211,7 @@ msgstr "%s Този търговец има клиент (и) с неогран�
 #, php-format
 msgid ""
 "%s: You cannot disable a service already consumed by reseller's customers."
-msgstr ""
+msgstr "%s: Вие не можете да деактивирате услугата тя вече се използва от клиенти или дилър."
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
@@ -405,22 +405,22 @@ msgid "A PHP extension stopped the file upload."
 msgstr ""
 
 msgid "A database update is available"
-msgstr ""
+msgstr "актуализацията на база данни е на разположение"
 
 msgid "A hosting plan with same name already exists."
-msgstr ""
+msgstr "Хостинг план с това име вече съществува."
 
 msgid "A new i-MSCP version is available"
 msgstr "Нов i-MSCP ъпдейт е наличен"
 
 msgid "A new software package has been uploaded"
-msgstr ""
+msgstr "Новият пакет софтуер е качен"
 
 msgid "A task is in progress for this htuser."
 msgstr ""
 
 msgid "Access your domain statistics through the Web interface."
-msgstr ""
+msgstr "Достъп до статистиката на домейна Ви през уеб интерфейс."
 
 msgid "Access your files through the web interface."
 msgstr "Достъп до вашите файлове чрез уеб интерфейс."
@@ -429,7 +429,7 @@ msgid "Access your mail through the web interface."
 msgstr "Достъп до вашата поща чрез уеб интерфейс."
 
 msgid "Account data"
-msgstr ""
+msgstr "Данни за профила"
 
 msgid "Account limits"
 msgstr "Акаунт лимит"
@@ -438,7 +438,7 @@ msgid "Account name"
 msgstr "Име на акаунта"
 
 msgid "Account overview"
-msgstr ""
+msgstr "Преглед на профила"
 
 msgid "Account summary"
 msgstr ""
@@ -450,10 +450,10 @@ msgid "Action"
 msgstr "Действие"
 
 msgid "Action has been stopped."
-msgstr ""
+msgstr "Действието е спряно"
 
 msgid "Action has failed."
-msgstr ""
+msgstr "Дейстието е неуспешно"
 
 msgid "Actions"
 msgstr "Действия"
@@ -597,10 +597,10 @@ msgid "Admin / Profile / Personal Data"
 msgstr ""
 
 msgid "Admin / Settings"
-msgstr ""
+msgstr "Админ / Настройки"
 
 msgid "Admin / Settings / IP Management"
-msgstr ""
+msgstr "Админ / Настройки / IP настройки"
 
 msgid "Admin / Settings / Languages"
 msgstr "Админ / Настройки / Език"
@@ -624,7 +624,7 @@ msgid "Admin / Settings / Software Options"
 msgstr ""
 
 msgid "Admin / Settings / Welcome Email"
-msgstr ""
+msgstr "Админ / Настройки / Поздравителен Email"
 
 msgid "Admin / Settings / {TR_DYNAMIC_TITLE}"
 msgstr ""
@@ -633,10 +633,10 @@ msgid "Admin / Software Management / Reseller Software"
 msgstr ""
 
 msgid "Admin / Statistics / IP Usage"
-msgstr ""
+msgstr "Админ / Статистика /  Използвани IP адреси"
 
 msgid "Admin / Statistics / Reseller Statistics"
-msgstr ""
+msgstr "Админ / Статистика /  Реселър статистика"
 
 msgid "Admin / Statistics / Reseller Statistics / User Statistics"
 msgstr ""
@@ -656,7 +656,7 @@ msgid "Admin / Support / Closed Tickets"
 msgstr ""
 
 msgid "Admin / Support / View Ticket"
-msgstr ""
+msgstr "Администратор / Поддръжка / Виж Билета"
 
 msgid "Admin / System Tools / Anti-Rootkits Logs"
 msgstr ""
@@ -826,7 +826,7 @@ msgid "Already in use"
 msgstr "Ок"
 
 msgid "Alternate URL to reach your website."
-msgstr ""
+msgstr "Алтернативно URL до вашия уеб сайт"
 
 msgid "Alternative URL to reach your website"
 msgstr "Алтернативно URL до вашия уеб сайт"
@@ -880,14 +880,14 @@ msgid "Are you sure to install this package from the webdepot?"
 msgstr "Сигурен ли сте , че искате да инсталирате този пакет от уеб депото?"
 
 msgid "Are you sure to install this package?"
-msgstr ""
+msgstr "Сигурен ли сте , че искате да изтриете този пакет"
 
 msgid "Are you sure to remove the permissions ?"
 msgstr ""
 
 #, php-format
 msgid "Are you sure you want delete the %s SQL user?"
-msgstr ""
+msgstr "Сигурни ли сте , че искате да изтриете този '%s' SQL потребител?"
 
 msgid "Are you sure you want to activate this package?"
 msgstr "Сигурен ли си , че искате да активирате този пакет?"
@@ -904,7 +904,7 @@ msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Сигурни ли сте , че искате да изтриете всички приключени запитвания?"
 
 msgid "Are you sure you want to delete all selected items?"
-msgstr ""
+msgstr "Сигурни ли сте , че искате да изтриете всички избрани?"
 
 msgid "Are you sure you want to delete all tickets?"
 msgstr "Сигурни ли сте , че искате да изтриете всички билети?"
@@ -923,11 +923,11 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias?"
-msgstr ""
+msgstr "Сигурни ли сте , че искате да изтриете този '%s' псевдоним на домейна?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
-msgstr ""
+msgstr "Сигурни ли сте , че искате да изтриете това %s меню?"
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -946,19 +946,19 @@ msgid "Are you sure you want to delete the `%%s` protected area?"
 msgstr ""
 
 msgid "Are you sure you want to delete this DNS record?"
-msgstr ""
+msgstr "Сигурни ли сте , че искате да изтриете тоа %s DNS запис?"
 
 msgid "Are you sure you want to delete this domain alias?"
 msgstr ""
 
 msgid "Are you sure you want to delete this hosting plan?"
-msgstr ""
+msgstr "Сигурен ли сте , че искате да изтриете този хостинг план?"
 
 msgid "Are you sure you want to delete this package?"
 msgstr "Сигурен ли сте , че искате да изтриете този пакет"
 
 msgid "Are you sure you want to delete this subdomain?"
-msgstr ""
+msgstr "Уверени ли сте,че искате да изтриете този поддомейн?"
 
 msgid ""
 "Are you sure you want to import this package into the local software "
@@ -1010,10 +1010,10 @@ msgid "Auto"
 msgstr ""
 
 msgid "Auto (Browser language)"
-msgstr ""
+msgstr "Автоматично (Език на браузъра)"
 
 msgid "Auto responder"
-msgstr ""
+msgstr "Авто отговор"
 
 msgid "Auto-responder message cannot be empty."
 msgstr ""
@@ -1028,10 +1028,10 @@ msgid "Auto-responder successfully scheduled for update."
 msgstr ""
 
 msgid "Available"
-msgstr ""
+msgstr "На разположение"
 
 msgid "Available software"
-msgstr ""
+msgstr "Софтуер на разположение"
 
 msgid "Awaiting activation"
 msgstr "Изчакване на активирането"
@@ -1055,7 +1055,7 @@ msgid "Backup has been successfully scheduled for restoration."
 msgstr ""
 
 msgid "Bad password."
-msgstr ""
+msgstr "Грешна парола"
 
 msgid "Bad request."
 msgstr ""
@@ -1108,7 +1108,7 @@ msgid "CPU Information"
 msgstr ""
 
 msgid "Cache"
-msgstr ""
+msgstr "Кеш"
 
 #, php-format
 msgid "Can edit the PHP %s configuration option"
@@ -1192,7 +1192,7 @@ msgid "Choose layout color"
 msgstr ""
 
 msgid "Choose your language"
-msgstr ""
+msgstr "Избери език"
 
 msgid "Circular"
 msgstr "Кръгов"
@@ -1241,34 +1241,34 @@ msgid "Client / Domain / Edit DNS resource record"
 msgstr ""
 
 msgid "Client / Domains"
-msgstr ""
+msgstr "Клиент / Домейни"
 
 msgid "Client / Domains / Add DNS resource record"
-msgstr ""
+msgstr "Клиент / Домейни / Добавяне на собствен DNS запис"
 
 msgid "Client / Domains / Add Domain Alias"
-msgstr ""
+msgstr "Клиент / Домейни / Добави Домейн псевдоним"
 
 msgid "Client / Domains / Add Subdomain"
-msgstr ""
+msgstr "Клиент / Домейни / Добави поддомейн"
 
 msgid "Client / Domains / Edit Domain"
-msgstr ""
+msgstr "Клиент / Домейни / Редакция на Домейн"
 
 msgid "Client / Domains / Edit Domain Alias"
 msgstr ""
 
 msgid "Client / Domains / Edit Subdomain"
-msgstr ""
+msgstr "Клиент / Домейни / Редакция на поддомейн"
 
 msgid "Client / Domains / PHP Settings"
-msgstr ""
+msgstr "Клиент / Домейни / PHP настройки"
 
 msgid "Client / Domains / SSL Certificate"
 msgstr ""
 
 msgid "Client / Email / Add Email Account"
-msgstr ""
+msgstr "Клиент / Е-Маил / Добави Е-маил"
 
 msgid "Client / Email / Catchall"
 msgstr ""
@@ -1277,7 +1277,7 @@ msgid "Client / Email / Catchall / Add Catchall"
 msgstr ""
 
 msgid "Client / Email / Edit Email Account"
-msgstr ""
+msgstr "Клиент / Е-Маил / Редакция на Е-маил"
 
 msgid "Client / Email / External Mail Feature"
 msgstr ""
@@ -1292,7 +1292,7 @@ msgid "Client / Email / Overview / Enable Auto Responder"
 msgstr ""
 
 msgid "Client / FTP / Add FTP Account"
-msgstr ""
+msgstr "Клиент / FTP / Добави FTP Акаунт"
 
 msgid "Client / FTP / Overview"
 msgstr ""
@@ -1307,19 +1307,19 @@ msgid "Client / Profile / Account Summary"
 msgstr ""
 
 msgid "Client / Profile / Language"
-msgstr ""
+msgstr "Клиент / Профил / Език"
 
 msgid "Client / Profile / Layout"
 msgstr ""
 
 msgid "Client / Profile / Password"
-msgstr ""
+msgstr "Клиент / Профил / Парола"
 
 msgid "Client / Profile / Personal Data"
-msgstr ""
+msgstr "Клиент / Профил / Лични данни"
 
 msgid "Client / Statistics"
-msgstr ""
+msgstr "Клиент / Статистика"
 
 msgid "Client / Support / Closed Tickets"
 msgstr ""
@@ -1382,7 +1382,7 @@ msgid "Close the ticket"
 msgstr "Затваряне на билет"
 
 msgid "Close ticket"
-msgstr ""
+msgstr "Закрити билети"
 
 msgid "Closed tickets"
 msgstr "Закрити билети"
@@ -1407,10 +1407,10 @@ msgid "Core data"
 msgstr "Данни на ядрото"
 
 msgid "Cores"
-msgstr ""
+msgstr "Ядра"
 
 msgid "Could not add/update SSL certificate. An unexpected error occurred."
-msgstr ""
+msgstr "Не може да добавите / актуализация сертификат SSL. Възникна неочаквана грешка"
 
 #, php-format
 msgid "Could not backup current `%s' plugin directory."
@@ -1505,7 +1505,7 @@ msgid "Create catch all"
 msgstr "Създай catch all"
 
 msgid "Create default email addresses"
-msgstr ""
+msgstr "Създаване на имейл адреси по подразбиране"
 
 msgid "Created by"
 msgstr "Създаден от"
@@ -1547,7 +1547,7 @@ msgid "Custom menus"
 msgstr "Персонално меню"
 
 msgid "Customer"
-msgstr ""
+msgstr "Клиент"
 
 msgid "Customer ID"
 msgstr "Клиент ID"
@@ -1556,19 +1556,19 @@ msgid "Customer ID cannot have more than 200 characters"
 msgstr ""
 
 msgid "Customer account"
-msgstr ""
+msgstr "Клиент акаунт."
 
 msgid "Customer account successfully scheduled for activation."
-msgstr ""
+msgstr "Клиентския акаунт е  успешно маркиран  за актевиране."
 
 msgid "Customer account successfully scheduled for creation."
-msgstr ""
+msgstr "Клиентския акаунт е  успешно маркиран  за създаване."
 
 msgid "Customer account successfully scheduled for deactivation."
-msgstr ""
+msgstr "Клиентския акаунт е  успешно маркиран  за деактевиране."
 
 msgid "Customer account successfully scheduled for deletion."
-msgstr ""
+msgstr "Клиентския акаунт е  успешно маркиран  за изтриване."
 
 msgid "Customer account successfully updated."
 msgstr "Профила на клиента успешно обновен."
@@ -1580,16 +1580,16 @@ msgid "Customer consumption"
 msgstr ""
 
 msgid "Customer level"
-msgstr ""
+msgstr "Клиент ниво"
 
 msgid "Customer successfully scheduled for addition."
 msgstr ""
 
 msgid "Customer successfully scheduled for deletion."
-msgstr ""
+msgstr "Клиента е  успешно маркиран  за изтриване."
 
 msgid "Customer's layout color successfully updated."
-msgstr ""
+msgstr "Клиента е  успешно маркиран  за обновяване."
 
 msgid "Customer(s) successfully moved."
 msgstr ""
@@ -1667,7 +1667,7 @@ msgid "Database required"
 msgstr "Изисква се база от данни"
 
 msgid "Database update"
-msgstr ""
+msgstr "Актуализацията на база данни"
 
 msgid "Database usage"
 msgstr ""
@@ -1685,7 +1685,7 @@ msgid "Day"
 msgstr "Ден"
 
 msgid "Day statistics"
-msgstr ""
+msgstr "Дневна статистика"
 
 msgid "Days"
 msgstr "Дни"
@@ -1920,7 +1920,7 @@ msgid "Delete this plugin"
 msgstr ""
 
 msgid "Delete ticket"
-msgstr ""
+msgstr "Изтриване на билет"
 
 msgid "Deletion in progress"
 msgstr ""
@@ -1968,10 +1968,10 @@ msgid "Disk"
 msgstr "Диск"
 
 msgid "Disk space"
-msgstr ""
+msgstr "Дисково пространство"
 
 msgid "Disk space limit [MiB]"
-msgstr ""
+msgstr "Ограничение на дисковото пространство"
 
 msgid "Disk usage"
 msgstr "Използвано дисково пространство"
@@ -2012,7 +2012,7 @@ msgid "Domain account expired."
 msgstr " Domain акаунтът е изтекъл."
 
 msgid "Domain accounts"
-msgstr ""
+msgstr "Домейн акаунт"
 
 msgid "Domain alias"
 msgstr "Псевдоними на домейни"
@@ -2064,7 +2064,7 @@ msgid "Domain errors"
 msgstr "Грешки домейни"
 
 msgid "Domain expiration date"
-msgstr ""
+msgstr "Домейн срока на изтичане"
 
 msgid "Domain expiration date must be filled."
 msgstr "Domain срока на изтичане трябва да бъде попълнен"
@@ -2073,10 +2073,10 @@ msgid "Domain for which PHP Editor must act."
 msgstr ""
 
 msgid "Domain limit"
-msgstr ""
+msgstr "Домейн лимит"
 
 msgid "Domain mail"
-msgstr ""
+msgstr "Домейна поща"
 
 msgid "Domain name"
 msgstr "Име на Домейна"
@@ -2126,7 +2126,7 @@ msgid "Domain successfully updated."
 msgstr ""
 
 msgid "Domain type"
-msgstr ""
+msgstr "Домейн тип"
 
 msgid "Domains"
 msgstr "Домейни"
@@ -5581,7 +5581,7 @@ msgid "You have not service ports defined."
 msgstr ""
 
 msgid ""
-"You have reached the maximum number of domain aliasses allowed by your "
+"You have reached the maximum number of domain aliases allowed by your "
 "subscription."
 msgstr ""
 
@@ -5950,5 +5950,5 @@ msgstr "да"
 msgid "{USERNAME} user statistics"
 msgstr ""
 
-msgid "© 2010-2016 i-MSCP Team<br>All Rights Reserved"
+msgid "© 2010-2017 i-MSCP Team<br>All Rights Reserved"
 msgstr ""

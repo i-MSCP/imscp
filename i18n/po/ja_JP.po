@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-12-25 07:13+0100\n"
-"PO-Revision-Date: 2016-12-22 17:57+0000\n"
+"POT-Creation-Date: 2016-12-31 12:11+0100\n"
+"PO-Revision-Date: 2016-12-31 11:13+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/i-mscp/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -31,11 +31,11 @@ msgstr "間違ったIPアドレス。"
 msgid ""
 "$ORIGIN is automatically appended to unqualified names, hosts and canonical "
 "names"
-msgstr ""
+msgstr "$ORIGINは、修飾されていない名前、ホスト、正規名に自動的に付加されます"
 
 #, php-format
 msgid "$ORIGIN value is currently set to: %s"
-msgstr ""
+msgstr "$ORIGINの値は現在：%sに設定されています"
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -418,7 +418,7 @@ msgid "A new software package has been uploaded"
 msgstr "新しいソフトウェアパッケージがアップロードされました"
 
 msgid "A task is in progress for this htuser."
-msgstr ""
+msgstr "htuserのタスクが進行中です。"
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Webインターフェイスを介してドメインの統計情報にアクセスします。"
@@ -1002,10 +1002,10 @@ msgid "Authentication by user"
 msgstr "ユーザによる認証"
 
 msgid "Authentication users"
-msgstr ""
+msgstr "認証ユーザー"
 
 msgid "Authentication users/groups"
-msgstr ""
+msgstr "認証ユーザー/グループ"
 
 msgid "Auto"
 msgstr "自動"
@@ -1402,7 +1402,7 @@ msgstr "設定モード"
 
 #, php-format
 msgid "Conflict with the `%s' DNS resource record."
-msgstr ""
+msgstr "`%s' DNSリソースレコードと競合しています。"
 
 msgid "Core data"
 msgstr "基本情報"
@@ -1468,7 +1468,7 @@ msgid "Could not restore %s plugin directory"
 msgstr "%sのプラグインディレクトリを復元できませんでした"
 
 msgid "Could not retrieve directories."
-msgstr ""
+msgstr "ディレクトリを取得できませんでした。"
 
 #, php-format
 msgid "Could not uninstall the %s plugin: %s"
@@ -1617,7 +1617,7 @@ msgid "DNS resource records"
 msgstr "DNSリソースレコード"
 
 msgid "DNS zone in which you want add this DNS resource record."
-msgstr ""
+msgstr "DNSゾーンは、DNSリソースレコードを追加します。"
 
 msgid "DOWN"
 msgstr "DOWN"
@@ -2694,7 +2694,7 @@ msgstr "`yes`に設定した場合、代理店は顧客のPHPのメール機能�
 msgid ""
 "If the name field is filled with the @ sign or left blank, it will be "
 "automatically substituted by $ORIGIN value."
-msgstr ""
+msgstr "名前フィールドが@記号で埋められるか空白のままになると、自動的に$ORIGIN値に置き換えられます。"
 
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "この設定のリセラーを制限する場合、先に顧客を制限する必要があります。"
@@ -3180,7 +3180,7 @@ msgid "N/A"
 msgstr "利用不可"
 
 msgid "NS DNS resource records are only allowed for subzone delegation."
-msgstr ""
+msgstr "NS DNSリソースレコードはサブゾーン委任のために許可されます。"
 
 msgid "Name"
 msgstr "ネーム"
@@ -3234,7 +3234,7 @@ msgid "No database update available."
 msgstr "利用可能なデータベースの更新はありません。"
 
 msgid "No domain available for new software instance."
-msgstr ""
+msgstr "新しいソフトウェアインスタンスに利用可能なドメインはありません。"
 
 msgid "No error found"
 msgstr "エラーが見つかりません"
@@ -3601,10 +3601,10 @@ msgid "Please activate your new i-MSCP password"
 msgstr "新しいi-MSCPのパスワードを有効にしてください"
 
 msgid "Please choose at least one htaccess user."
-msgstr ""
+msgstr "少なくとも1つのhtaccessのユーザーを選択してください。"
 
 msgid "Please choose at least one htaccess user/group."
-msgstr ""
+msgstr "少なくとも1つのhtaccessのユーザー/グループを選択してください。"
 
 msgid "Please confirm the password."
 msgstr "パスワードを確認してください。"
@@ -5556,7 +5556,7 @@ msgstr "サブドメインの制限があります。無制限のサブドメイ
 
 #, php-format
 msgid "You have been blocked for %s minutes."
-msgstr ""
+msgstr "%s分間ブロックされています。"
 
 msgid "You have been successfully logged out."
 msgstr "ログアウトしました。"
@@ -5579,9 +5579,9 @@ msgid "You have not service ports defined."
 msgstr "サービスポートは定義されていません。"
 
 msgid ""
-"You have reached the maximum number of domain aliasses allowed by your "
+"You have reached the maximum number of domain aliases allowed by your "
 "subscription."
-msgstr "サブスクリプションによって許可されたドメインエイリアスの最大数に達しました。"
+msgstr ""
 
 msgid ""
 "You have reached the maximum number of email accounts allowed by your "
@@ -5646,7 +5646,7 @@ msgstr "件名を指定する必要があります。"
 
 #, php-format
 msgid "You must wait %s minutes before the next attempt."
-msgstr ""
+msgstr "次の試行の前に%s分待つ必要があります。"
 
 msgid "You need a Database for this software"
 msgstr "このソフトウェアはデータベースが必要です"
@@ -5948,5 +5948,5 @@ msgstr "はい"
 msgid "{USERNAME} user statistics"
 msgstr "Web統計 - {USERNAME} "
 
-msgid "© 2010-2016 i-MSCP Team<br>All Rights Reserved"
-msgstr "© 2010-2016 i-MSCP チーム<br>All Rights Reserved"
+msgid "© 2010-2017 i-MSCP Team<br>All Rights Reserved"
+msgstr ""

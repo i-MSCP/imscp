@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# kilburn <shadow+transifex@la3.org>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-12-25 07:13+0100\n"
-"PO-Revision-Date: 2016-12-22 17:57+0000\n"
+"POT-Creation-Date: 2016-12-31 12:11+0100\n"
+"PO-Revision-Date: 2016-12-31 11:13+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/i-mscp/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -24,20 +25,20 @@ msgid " Client / Webtools / Custom Error Pages / Edit Custom Error Page"
 msgstr " Client / Eines web / Pàgines personalitzades d'error / Editar pàgina personalitzada d'error"
 
 msgid " Wrong IP address."
-msgstr ""
+msgstr "Adreça IP incorrecte."
 
 msgid ""
 "$ORIGIN is automatically appended to unqualified names, hosts and canonical "
 "names"
-msgstr ""
+msgstr "$ORIGIN s'afegeix automàticament als noms no qualificats (nom enlloc de nom.domini.tld.)"
 
 #, php-format
 msgid "$ORIGIN value is currently set to: %s"
-msgstr ""
+msgstr "$ORIGIN és actualment: %s"
 
 #, php-format
 msgid "%%s must be lower than %%s."
-msgstr ""
+msgstr "%%s ha d'ésser menor que %%s."
 
 #, php-format
 msgid "%1$d / %2$d"
@@ -125,7 +126,7 @@ msgstr "%d / il·limitat"
 
 #, php-format
 msgid "%d Service(s) port successfully updateds"
-msgstr ""
+msgstr "%d Port(s) actualitzat(s) correctament"
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been created."
@@ -145,7 +146,7 @@ msgstr "%d cadenes traduïdes"
 
 #, php-format
 msgid "%s / %s of %s"
-msgstr ""
+msgstr "%s / %s de %s"
 
 #, php-format
 msgid "%s / unlimited"
@@ -157,11 +158,11 @@ msgstr "compte %s eliminat correctament."
 
 #, php-format
 msgid "%s doens't look like an i-MSCP plugin archive."
-msgstr ""
+msgstr "%s no sembla un repositori de plugins d'i-MSCP."
 
 #, php-format
 msgid "%s doesn't exist or is empty."
-msgstr ""
+msgstr "%s no existeix o és buit."
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -169,7 +170,7 @@ msgstr "%s no és un fitxer d'idioma vàlid per i-MSCP."
 
 #, php-format
 msgid "%s is not allowed as subdomain label."
-msgstr ""
+msgstr "%s no és vàlid com a subdomini."
 
 #, php-format
 msgid "%s of %s"
@@ -189,7 +190,7 @@ msgstr "entrada %s"
 
 #, php-format
 msgid "%s webmail"
-msgstr ""
+msgstr "%s webmail"
 
 #, php-format
 msgid ""
@@ -210,7 +211,7 @@ msgstr "%s: El distribuïdor te client(s) amb ítems il·limitats."
 #, php-format
 msgid ""
 "%s: You cannot disable a service already consumed by reseller's customers."
-msgstr ""
+msgstr "%s: No pots deshabilitar un servei que ja està essent utilitzat per els usuaris del distribuïdor."
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
@@ -220,35 +221,35 @@ msgstr "%s: No podeu deshabilitar un servei que ja s'ha venut als clients del di
 msgid ""
 "%s::getInfo() not implemented and %s not found. This is a bug in the %s "
 "plugin which must be reported to the author(s)."
-msgstr ""
+msgstr "%s::getInfo() no està implementat i %s no existeix. Això és una errada al plugin %s i ho hauríeu de reportar al(s) seu(s) autor(s)."
 
 #, php-format
 msgid ""
 "'%%hostname%%' does not appear to have a valid MX record for the email "
 "address '%%value%%'"
-msgstr ""
+msgstr "'%%hostname%%' no sembla tenir un registre MX vàlid per l'adreça '%%value%%'"
 
 #, php-format
 msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
-msgstr ""
+msgstr "'%%hostname%%' no és un nom de host vàlid per l'adreça '%%value%%'"
 
 #, php-format
 msgid ""
 "'%%hostname%%' is not in a routable network segment. The email address "
 "'%%value%%' should not be resolved from public network"
-msgstr ""
+msgstr "'%%hostname%%' resol a una IP no enrutable. L'adreça '%%value%%' no es pot contactar des d'una xarxa pública"
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against dot-atom format"
-msgstr ""
+msgstr "'%%localPart%%' no està en format correcte"
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against quoted-string format"
-msgstr ""
+msgstr "'%%localPart%%' no està en format correcte"
 
 #, php-format
 msgid "'%%localPart%%' is no valid local part for email address '%%value%%'"
-msgstr ""
+msgstr "'%%localPart%%' no és correcte per l'adreça '%%value%%'"
 
 #, php-format
 msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
@@ -5580,7 +5581,7 @@ msgid "You have not service ports defined."
 msgstr ""
 
 msgid ""
-"You have reached the maximum number of domain aliasses allowed by your "
+"You have reached the maximum number of domain aliases allowed by your "
 "subscription."
 msgstr ""
 
@@ -5949,5 +5950,5 @@ msgstr "sí"
 msgid "{USERNAME} user statistics"
 msgstr ""
 
-msgid "© 2010-2016 i-MSCP Team<br>All Rights Reserved"
+msgid "© 2010-2017 i-MSCP Team<br>All Rights Reserved"
 msgstr ""
