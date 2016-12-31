@@ -30,7 +30,7 @@ INSTALLER
     Renamed: `beforeInstall' event to `preInstall` and `afterInstall' event to `postInstall`
 
 SERVERS
-    Fixed: Path must be cleaned before use in to regexes (HTTPD servers)
+    Fixed: Path must be cleaned before use in regexes (HTTPD servers)
 
 YOUTRACK
     #IP-1679 Duplicate bind mounts leading to un-deletable Web folders (Ubuntu < 16.04)
