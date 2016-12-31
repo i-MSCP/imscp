@@ -31,6 +31,7 @@ INSTALLER
 
 SERVERS
     Fixed: Path must be cleaned before use in regexes (HTTPD servers)
+    Fixed: Skip cleanup of custom.conf.tpl, index.html, vlogger.conf.tpl and php-fcgi-starter template files (HTTPD servers)
 
 YOUTRACK
     #IP-1679 Duplicate bind mounts leading to un-deletable Web folders (Ubuntu < 16.04)

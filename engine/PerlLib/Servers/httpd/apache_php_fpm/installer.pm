@@ -701,7 +701,9 @@ sub _setupVlogger
     );
 
     $self->{'httpd'}->buildConfFile(
-        "$self->{'apacheCfgDir'}/vlogger.conf.tpl", { }, { destination => "$self->{'apacheCfgDir'}/vlogger.conf" }
+        "$self->{'apacheCfgDir'}/vlogger.conf.tpl",
+        { SKIP_TEMPLATE_CLEANER => 1 },
+        { destination => "$self->{'apacheCfgDir'}/vlogger.conf" }
     );
 }
 

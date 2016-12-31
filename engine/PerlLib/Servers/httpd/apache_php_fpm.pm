@@ -351,6 +351,7 @@ sub disableDmn
 
     # Ensure that custom httpd conffile exists (cover case where file has been removed for any reasons)
     unless (-f "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf") {
+        $data->{'SKIP_TEMPLATE_CLEANER'} = 1;
         $rs = $self->buildConfFile(
             "$self->{'apacheTplDir'}/custom.conf.tpl",
             $data,
@@ -876,7 +877,7 @@ sub buildConfFile
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
-        $file = "$self->{'apacheCfgDir'}/$file" unless -d $path && $path ne './';
+        $file = File::Spec->canonpath("$self->{'apacheCfgDir'}/$filename") if $path eq './';
         $cfgTpl = iMSCP::File->new( filename => $file )->get();
         unless (defined $cfgTpl) {
             error( sprintf( 'Could not read %s file', $file ) );
@@ -1512,6 +1513,7 @@ sub _addCfg
     }
 
     unless (-f "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf") {
+        $data->{'SKIP_TEMPLATE_CLEANER'} = 1;
         $rs = $self->buildConfFile(
             "$self->{'apacheTplDir'}/custom.conf.tpl",
             $data,
@@ -1601,6 +1603,7 @@ sub _addFiles
                 if (-d "$tmpDir/htdocs") {
                     # Test needed in case admin removed the index.html file from the skeleton
                     if (-f "$tmpDir/htdocs/index.html") {
+                        $data->{SKIP_TEMPLATE_CLEANER} = 1;
                         my $fileSource = "$tmpDir/htdocs/index.html";
                         $rs = $self->buildConfFile( $fileSource, $data, { destination => $fileSource } );
                         return $rs if $rs;
@@ -1863,6 +1866,11 @@ sub _cleanTemplate
 {
     my ($self, $tpl, $name, $data) = @_;
 
+    if ($data->{'SKIP_TEMPLATE_CLEANER'}) {
+        delete $data->{'SKIP_TEMPLATE_CLEANER'};
+        return 0;
+    }
+
     if ($name =~ /^domain(?:_ssl)?\.tpl$/) {
         unless ($data->{'CGI_SUPPORT'} eq 'yes') {
             ${$tpl} = replaceBloc( "# SECTION suexec BEGIN.\n", "# SECTION suexec END.\n", '', ${$tpl} );
@@ -1885,7 +1893,6 @@ sub _cleanTemplate
 
         ${$tpl} = replaceBloc( "# SECTION fcgid BEGIN.\n", "# SECTION fcgid END.\n", '', ${$tpl} );
         ${$tpl} = replaceBloc( "# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', ${$tpl} );
-        ${$tpl} =~ s/^\s*(?:[#;].*)?\n//gmi;
     } elsif ($name =~ /^domain(?:_disabled|_redirect)?(_ssl)?\.tpl$/) {
         my $isSSLVhost = defined $1;
 
@@ -1894,7 +1901,7 @@ sub _cleanTemplate
                 ${$tpl} = replaceBloc(
                     "# SECTION standard_redirect BEGIN.\n", "# SECTION standard_redirect END.\n", '', ${$tpl}
                 );
-                if ($data->{'FORWARD'} !~ /^https/) {
+                if (index($data->{'FORWARD'}, 'https') != 0) {
                     ${$tpl} = replaceBloc("# SECTION ssl_proxy BEGIN.\n", "# SECTION ssl_proxy END.\n", '', ${$tpl});
                 }
             } else {
@@ -1909,11 +1916,9 @@ sub _cleanTemplate
         if ($isSSLVhost && !$data->{'HSTS_SUPPORT'}) {
             ${$tpl} = replaceBloc( "# SECTION hsts BEGIN.\n", "# SECTION hsts END.\n", '', ${$tpl} );
         }
-
-        ${$tpl} =~ s/^\s*(?:[#;].*)?\n//gmi;
-    } else {
-        ${$tpl} =~ s/^\s*(?:;.*)?\n//gmi;
     }
+
+    ${$tpl} =~ s/^\s*(?:[#;].*)?\n//gmi;
 
     0;
 }
