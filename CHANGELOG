@@ -10,6 +10,7 @@ CONFIGS
 BACKEND
     Added iMSCP::Mount::getMounts() function (iMSCP::Mount)
     Added: Missing DESTROY() method (iMSCP::Config)
+    Fixed: Could not delete domain due to duplicate mounts (See #IP-1679)
     Fixed: Don't attempt to flush() when tied file is readonly or when deffered writing is disabled (iMSCP::Config)
     Fixed: Recursion must be optional in iMSCP::Mount::umount() (iMSCP::Mount)
     Removed: Unwanted `nofail' option in iMSCP::Bootstrapper library
@@ -27,7 +28,10 @@ INSTALLER
     Removed: `afterPreBuild', `beforeBuild' and `beforePostBuild' events
     Renamed: `beforePreBuild' event to `preBuild', and `afterBuild' event to `postBuild'
     Renamed: `beforeInstall' event to `preInstall` and `afterInstall' event to `postInstall`
-    
+
+SERVERS
+    Fixed: Path must be cleaned before use in to regexes (HTTPD servers)
+
 YOUTRACK
     #IP-1679 Duplicate bind mounts leading to un-deletable Web folders (Ubuntu < 16.04)
 

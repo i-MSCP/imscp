@@ -1347,14 +1347,15 @@ sub umountLogsFolder
     my ($self, $data) = @_;
 
     my $recursive = 1;
-    my $fsFile;
-    $fsFile = "$data->{'HOME_DIR'}/logs";
+    my $fsFile = "$data->{'HOME_DIR'}/logs";
 
-    # If operate recursively only if domain type is 'dmn' (full account) - handle case of dangling mounts
+    # We operate recursively only if domain type is 'dmn' (full account)
     if ($data->{'DOMAIN_TYPE'} ne 'dmn') {
         $recursive = 0;
-        $fsFile = "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}";
+        $fsFile .= "/$data->{'DOMAIN_NAME'}";
     }
+
+    $fsFile = File::Spec->canonpath($fsFile);
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeUnmountLogsFolder', $data, $fsFile );
     $rs ||= removeMountEntry( qr%.*?[ \t]+\Q$fsFile\E(?:/|[ \t]+)[^\n]+% );
