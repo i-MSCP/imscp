@@ -31,6 +31,7 @@ use File::Basename qw/ dirname /;
 use iMSCP::Debug qw/ debug error /;
 use IO::Select;
 use IPC::Open3;
+use open qw / :std :utf8 /;
 use Symbol 'gensym';
 
 my $vendorLibDir;
@@ -125,12 +126,6 @@ sub executeNoWait($;$$)
     my $pid = open3( my $stdin, my $stdout, my $stderr = gensym, $multitArgs ? @{$command} : $command );
     close $stdin;
 
-    open my $printSTDOUT, '>&STDOUT' or die(sprintf('Could not dup STDOUT: %s', $!));
-    $printSTDOUT->autoflush(1);
-
-    open my $printSTERR, '>&STDERR' or die(sprintf('Could not dup STDERR: %s', $!));
-    $printSTERR->autoflush(1);
-
     my %buffers = ( $stdout => '', $stderr => '' );
     my $sel = IO::Select->new( $stdout, $stderr );
 
@@ -148,14 +143,11 @@ sub executeNoWait($;$$)
 
             if ($buffers{$fh} =~ s/^(.*\n)$//s) {
                 $fh == $stderr
-                    ? (defined $stderrSubref ? $stderrSubref->( $1 ) : print {$printSTDOUT} $1)
-                    : (defined $stdoutSubref ? $stdoutSubref->( $1 ) : print {$printSTERR} $1);
+                    ? (defined $stderrSubref ? $stderrSubref->( $1 ) : print STDERR $1)
+                    : (defined $stdoutSubref ? $stdoutSubref->( $1 ) : print STDOUT $1);
             }
         }
     }
-
-    close($printSTDOUT);
-    close($printSTERR);
 
     waitpid( $pid, 0 );
     getExitCode();

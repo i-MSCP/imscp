@@ -25,6 +25,7 @@ package iMSCP::Provider::Service::Upstart;
 
 use strict;
 use warnings;
+use Encode qw/ encode_utf8 /;
 use File::Basename;
 use File::Spec;
 use iMSCP::Execute;
@@ -428,7 +429,7 @@ sub _isEnabledPre090
     # we check to see if an uncommented `start on' or `manual'
     # stanza is the last one in the file. The last one in the
     # file wins.
-    open my $fh, '<', \$jobFileContent or die ( sprintf( 'Could not open in-memory file: %s', $! ) );
+    open my $fh, '<', \encode_utf8( $jobFileContent ) or die ( sprintf( 'Could not open in-memory file: %s', $! ) );
     my $enabled = 0;
     while(<$fh>) {
         if (/$START_ON/) {
@@ -460,8 +461,8 @@ sub _isEnabledPost090
     # `manual' stanza is the last one in the conf file and any
     # override files. The last one in the file wins.
     my $enabled = 0;
-    for (\$jobFileContent, \$jobOverrideFileContent) {
-        open my $fh, '<', $_ or die ( sprintf( 'Could not open in-memory file: %s', $! ) );
+    for ($jobFileContent, $jobOverrideFileContent) {
+        open my $fh, '<', \encode_utf8( $_ ) or die ( sprintf( 'Could not open in-memory file: %s', $! ) );
         while(<$fh>) {
             if (/$START_ON/) {
                 $enabled = 1;

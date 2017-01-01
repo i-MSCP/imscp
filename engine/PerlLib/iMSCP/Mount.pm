@@ -30,6 +30,7 @@ use File::Spec;
 use File::stat ();
 use iMSCP::Debug;
 use iMSCP::Syscall;
+use open IO => ':utf8';
 use Scalar::Defer;
 use Sort::Naturally;
 use Quota;

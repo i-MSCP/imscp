@@ -35,6 +35,7 @@ SERVERS
 
 YOUTRACK
     #IP-1679 Duplicate bind mounts leading to un-deletable Web folders (Ubuntu < 16.04)
+    #IP-1680 UTF-8 characters get corrupted on template processing (on web folder skeleton files)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.3.14

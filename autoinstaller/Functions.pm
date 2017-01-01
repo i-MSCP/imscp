@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use autouse 'iMSCP::Stepper' => qw/ step /;
 use Cwd;
+use Encode qw/ decode_utf8 /;
 use File::Basename;
 use File::Find;
 use iMSCP::Bootstrapper;
@@ -294,7 +295,7 @@ EOF
     my $port = $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://'
         ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
         : $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
-    my $vhost = idn_to_unicode( $main::imscpConfig{'BASE_SERVER_VHOST'}, 'utf-8' );
+    my $vhost = decode_utf8( idn_to_unicode( $main::imscpConfig{'BASE_SERVER_VHOST'}, 'utf-8' ) );
 
     iMSCP::Dialog->getInstance()->infobox( <<"EOF" );
 

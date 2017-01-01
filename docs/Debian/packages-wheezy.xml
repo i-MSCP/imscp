@@ -7,7 +7,7 @@
                 repository="http://nginx.org/packages/debian wheezy nginx"
                 repository_key_uri="http://nginx.org/keys/nginx_signing.key"
                 repository_key_id="7BD9BF62"
-                repository_conflict="http://nginx.org/packages/ubuntu"
+                repository_conflict="http://nginx.org/packages/debian"
         >
             <package>nginx</package>
             <package>php5-fpm</package>

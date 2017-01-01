@@ -31,7 +31,6 @@ use iMSCP::EventManager;
 use iMSCP::Getopt;
 use IO::Handle;
 use locale;
-use open OUT => ':utf8';
 use POSIX qw / tzset locale_h /;
 use parent 'Common::SingletonClass';
 
@@ -236,8 +235,6 @@ sub _genKeys
 
 sub _dbConnect
 {
-    my (undef, $options) = @_;
-
     require iMSCP::Database;
     require iMSCP::Crypt;
 

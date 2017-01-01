@@ -26,6 +26,7 @@ package Servers::mta::postfix;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat File::Temp Servers::mta::postfix::installer Servers::mta::postfix::uninstaller /;
+use Encode qw/ encode_utf8 /;
 use File::Basename;
 use iMSCP::Config;
 use iMSCP::Debug;
@@ -786,7 +787,7 @@ sub postconf
             [ 'postconf', '-c', $self->{'config'}->{'POSTFIX_CONF_DIR'}, keys %params ],
             sub {
                 my $buffer = shift;
-                open my $stdout, '<', \$buffer or die( sprintf( 'Could not open in-memory file: %s', $! ) );
+                open my $stdout, '<', \encode_utf8( $buffer ) or die( sprintf( 'Could not open in-memory file: %s', $! ) );
                 while(<$stdout>) {
                     /^([^=]+)\s+=\s+(.*)/;
                     next unless defined $1 && defined $2;

@@ -25,6 +25,7 @@ package Modules::Subdomain;
 
 use strict;
 use warnings;
+use Encode qw/ decode_utf8 /;
 use File::Spec;
 use iMSCP::Database;
 use iMSCP::Debug;
@@ -213,7 +214,7 @@ sub _getData
             BASE_SERVER_PUBLIC_IP   => $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'},
             DOMAIN_ADMIN_ID         => $self->{'domain_admin_id'},
             DOMAIN_NAME             => $self->{'subdomain_name'}.'.'.$self->{'user_home'},
-            DOMAIN_NAME_UNICODE     => idn_to_unicode( $self->{'subdomain_name'}.'.'.$self->{'user_home'}, 'utf-8' ),
+            DOMAIN_NAME_UNICODE     => decode_utf8( idn_to_unicode( $self->{'subdomain_name'}.'.'.$self->{'user_home'}, 'utf-8' ) ),
             DOMAIN_IP               => $self->{'ip_number'},
             DOMAIN_TYPE             => 'sub',
             PARENT_DOMAIN_NAME      => $self->{'user_home'},

@@ -28,7 +28,7 @@ use warnings;
 use iMSCP::Debug;
 use File::Copy;
 use File::Basename;
-use open OUT => ':utf8';
+use open IO => ':utf8';
 use parent 'Common::Object';
 
 =head1 DESCRIPTION

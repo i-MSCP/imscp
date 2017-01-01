@@ -26,6 +26,7 @@ package Servers::named::bind;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Servers::named::bind::installer Servers::named::bind::uninstaller /;
+use Encode qw/ encode_utf8 /;
 use File::Basename;
 use iMSCP::Debug;
 use iMSCP::Config;
@@ -657,8 +658,8 @@ sub addCustomDNS
     }
 
     my $fh;
-    unless (open( $fh, '<', \$wrkDbFileContent )) {
-        error( sprintf( 'Could not open in memory file: %s', $! ) );
+    unless (open( $fh, '<', \encode_utf8( $wrkDbFileContent ) )) {
+        error( sprintf( 'Could not open in-memory file: %s', $! ) );
         return 1;
     }
 

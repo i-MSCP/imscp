@@ -25,6 +25,7 @@ package Package::FrontEnd::Installer;
 
 use strict;
 use warnings;
+use Encode qw / decode_utf8 /;
 use Data::Validate::Domain 'is_domain';
 use Email::Valid;
 use File::Basename;
@@ -227,7 +228,7 @@ sub askDomain
             $vhost = 'panel.'.join( '.', @domain[1 .. $#domain] );
         }
 
-        $vhost = idn_to_unicode( $vhost, 'utf-8' );
+        $vhost = decode_utf8( idn_to_unicode( $vhost, 'utf-8' ) );
 
         do {
             ($rs, $vhost) = $dialog->inputbox( <<"EOF", $vhost, 'utf-8' );
@@ -256,7 +257,7 @@ sub askSsl
     my (undef, $dialog) = @_;
 
     my $domainName = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
-    my $domainNameUnicode = idn_to_unicode( $domainName, 'utf-8' );
+    my $domainNameUnicode = decode_utf8( idn_to_unicode( $domainName, 'utf-8' ) );
     my $sslEnabled = main::setupGetQuestion( 'PANEL_SSL_ENABLED' );
     my $selfSignedCertificate = main::setupGetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE', 'no' );
     my $privateKeyPath = main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH', '/root' );

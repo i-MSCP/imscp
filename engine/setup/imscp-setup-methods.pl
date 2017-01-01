@@ -22,6 +22,7 @@ use warnings;
 use FindBin;
 use DateTime;
 use DateTime::TimeZone;
+use Encode qw/ decode_utf8 /;
 use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
 use Data::Validate::Domain qw/ is_domain /;
 use Scalar::Util qw/ openhandle /;
@@ -248,7 +249,7 @@ sub setupAskServerHostname
         || split(/\./, $hostname) < 3 || !is_domain($hostname, $options)
     ) {
         chomp($hostname) unless($hostname || execute('hostname -f', \$hostname, \my $stderr));
-        $hostname = idn_to_unicode($hostname, 'utf-8');
+        $hostname = decode_utf8( idn_to_unicode($hostname, 'utf-8') );
 
         do {
             ($rs, $hostname) = $dialog->inputbox(<<"EOF", $hostname);
@@ -538,7 +539,7 @@ sub setupAskSqlUserHost
             my $msg = '';
 
             do {
-                ($rs, $host) = $dialog->inputbox(<<"EOF", idn_to_unicode($host, 'utf-8'));
+                ($rs, $host) = $dialog->inputbox(<<"EOF", decode_utf8(idn_to_unicode($host, 'utf-8')));
 
 Please enter the host from which SQL users created by i-MSCP must be allowed to connect to your SQL server:$msg
 
@@ -685,7 +686,7 @@ sub setupAskServicesSsl
     my ($dialog) = @_;
 
     my $hostname = setupGetQuestion('SERVER_HOSTNAME');
-    my $hostnameUnicode = idn_to_unicode($hostname, 'utf-8');
+    my $hostnameUnicode = decode_utf8(idn_to_unicode($hostname, 'utf-8'));
     my $sslEnabled = setupGetQuestion('SERVICES_SSL_ENABLED');
     my $selfSignedCertificate = setupGetQuestion('SERVICES_SSL_SELFSIGNED_CERTIFICATE', 'no');
     my $privateKeyPath = setupGetQuestion('SERVICES_SSL_PRIVATE_KEY_PATH', '/root');
