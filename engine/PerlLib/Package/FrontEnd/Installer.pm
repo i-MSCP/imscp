@@ -83,7 +83,7 @@ sub registerSetupListeners
     );
 }
 
-=item askMasterAdminData(\%dialog)
+=item askMasterAdminCredentials(\%dialog)
 
  Ask for master administrator credentials
 
