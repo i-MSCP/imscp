@@ -180,7 +180,7 @@ sub cyrusSaslSqlUserDialog
 
         if (isStringNotInList($dbUser, keys %main::sqlUsers)) {
             do {
-                ($rs, $dbPass) = $dialog->passwordbox( <<"EOF", randomStr(16, iMSCP::Crypt::ALNUM) );
+                ($rs, $dbPass) = $dialog->inputbox( <<"EOF", $dbPass || randomStr(16, iMSCP::Crypt::ALNUM) );
 
 Please enter a password for the Postfix SASL SQL user:$msg
 EOF

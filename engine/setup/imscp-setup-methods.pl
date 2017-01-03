@@ -463,7 +463,7 @@ EOF
 
         $pwd = '';
         do {
-            ($rs, $pwd) = $dialog->passwordbox( <<"EOF", $pwd || randomStr(16, iMSCP::Crypt::ALNUM));
+            ($rs, $pwd) = $dialog->inputbox( <<"EOF", $pwd || randomStr(16, iMSCP::Crypt::ALNUM));
 
 Please enter a password for the master i-MSCP SQL user:$msg
 EOF
