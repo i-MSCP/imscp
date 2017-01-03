@@ -145,45 +145,42 @@ sub passivePortRangeDialog
 {
     my ($self, $dialog) = @_;
 
-    my ($rs, $msg) = (0, '');
     my $passivePortRange = main::setupGetQuestion( 'FTPD_PASSIVE_PORT_RANGE' )
         || $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'};
+    my ($startOfRange, $endOfRange);
 
     if ($main::reconfigure =~ /^(?:ftpd|servers|all|forced)$/
-        || !isValidNumberRange($passivePortRange)
-        || !isNumberInRange($1, 32768, 60999)
-        || !isNumberInRange($2, $1, 60999)
-        || $1 >= $2
+        || !isValidNumberRange($passivePortRange, \$startOfRange, \$endOfRange)
+        || !isNumberInRange($startOfRange, 32768, 60999)
+        || !isNumberInRange($endOfRange, $startOfRange, 60999)
     ) {
-        $passivePortRange = '32768 60999' unless $1 && $2;
+        $passivePortRange = '32768 60999' unless $startOfRange && $endOfRange;
+        my ($rs, $msg) = (0, '');
 
         do {
-            ($rs, $passivePortRange) = $dialog->inputbox( <<"EOF"
+            ($rs, $passivePortRange) = $dialog->inputbox( <<"EOF", $passivePortRange);
 
 \\Z4\\Zb\\ZuProFTPD passive port range\\Zn
 
 Please choose the passive port range for ProFTPD.
 
-Be aware that if you're behind a NAT, you must forward those ports to this server.$msg
+Note that if you're behind a NAT, you must forward those ports to this server.$msg
 EOF
-                ,
-                $passivePortRange
-            );
-
             $msg = '';
-            if (!isValidNumberRange($passivePortRange)
-                || !isNumberInRange($1, 32768, 60999)
-                || !isNumberInRange($2, $1, 60999)
+            if (!isValidNumberRange($passivePortRange, \$startOfRange, \$endOfRange)
+                || !isNumberInRange($startOfRange, 32768, 60999)
+                || !isNumberInRange($endOfRange, $startOfRange, 60999)
             ) {
                 $passivePortRange = '32768 60999';
                 $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             }
         } while $rs < 30 && $msg;
+        return $rs if $rs >= 30;
 
         $passivePortRange = "$1 $2";
     }
 
-    $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'} = $passivePortRange if $rs < 30;
+    $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'} = $passivePortRange;
     $rs;
 }
 

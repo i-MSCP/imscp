@@ -34,8 +34,8 @@ use parent 'Exporter';
 
 our @EXPORT = qw/
     isValidUsername isValidPassword isValidEmail isValidHostname isValidDomain isValidIpAddr isValidTimezone
-    isValidDbName isNumber isNumberInRange isStringNotInList isValidNumberRange isNotEmpty
-/;
+        isValidDbName isNumber isNumberInRange isStringNotInList isValidNumberRange isNotEmpty
+    /;
 
 our $lastValidationError = '';
 
@@ -52,7 +52,7 @@ our $lastValidationError = '';
  Is the given username valid?
 
  Param string $username Username
- Return bool TRUE if the give username is valid, FALSE otherwise
+ Return bool TRUE if the given username is valid, FALSE otherwise
 
 =cut
 
@@ -61,12 +61,7 @@ sub isValidUsername($)
     my $username = shift;
     my $length = length $username;
 
-    if ($length >= 3
-        && $length <= 16
-        && $username =~ /^[\x30-\x39\x41-\x5a\x61-\x7a\x5f]+$/
-    ) {
-        return 1;
-    }
+    return 1 if $length >= 3 && $length <= 16 && $username =~ /^[\x30-\x39\x41-\x5a\x61-\x7a\x5f]+$/;
 
     $lastValidationError = <<"EOF";
 
@@ -87,7 +82,7 @@ EOF
  Is the given password valid?
  
  Param string $password Password
- Return bool TRUE if the give password is valid, FALSE otherwise
+ Return bool TRUE if the given password is valid, FALSE otherwise
 
 =cut
 
@@ -96,12 +91,7 @@ sub isValidPassword($)
     my $password = shift;
     my $length = length $password;
 
-    if ($length >= 6
-        && $length <= 32
-        && $password =~ /^[\x30-\x39\x41-\x5a\x61-\x7a]+$/
-    ) {
-        return 1;
-    }
+    return 1 if $length >= 6 && $length <= 32 && $password =~ /^[\x30-\x39\x41-\x5a\x61-\x7a]+$/;
 
     $lastValidationError = <<"EOF";
 
@@ -120,7 +110,7 @@ EOF
  Is the given email valid?
  
  Param string $email Email
- Return bool TRUE if the give email is valid, FALSE otherwise
+ Return bool TRUE if the given email is valid, FALSE otherwise
 
 =cut
 
@@ -128,9 +118,7 @@ sub isValidEmail($)
 {
     my $email = shift;
 
-    if (Email::Valid->address( $email )) {
-        return 1;
-    }
+    return 1 if Email::Valid->address( $email );
 
     $lastValidationError = <<"EOF";
 
@@ -148,7 +136,7 @@ EOF
  Is the given hostname valid?
  
  Param string $hostname Hostname
- Return bool TRUE if the give hostname is valid, FALSE otherwise
+ Return bool TRUE if the given hostname is valid, FALSE otherwise
 
 =cut
 
@@ -156,18 +144,15 @@ sub isValidHostname($)
 {
     my $hostname = shift;
 
-    if (($hostname =~ tr/.//) >= 3
-        && is_domain( idn_to_ascii( $hostname, 'utf-8' ), { domain_disable_tld_validation => 1 } )
-    ) {
-        return 1;
-    }
+    return 1 if $hostname !~ /\.$/ && ($hostname =~ tr/.//) >= 3
+        && is_domain( idn_to_ascii( $hostname, 'utf-8' ), { domain_disable_tld_validation => 1 } );
 
     $lastValidationError = <<"EOF";
 
 
 \\Z1Invalid hostname.\\Zn
 
- - Hostname must be fully-qualifed.
+ - The hostname must be a fully qualified hostname (FQHN).
 
 Please try again:
 EOF
@@ -180,7 +165,7 @@ EOF
  Is the given domain name valid?
  
  Param string $domain Domain name
- Return bool TRUE if the give domain name is valid, FALSE otherwise
+ Return bool TRUE if the given domain name is valid, FALSE otherwise
 
 =cut
 
@@ -188,16 +173,13 @@ sub isValidDomain($)
 {
     my $domainName = shift;
 
-    if ($domainName !~ /\.$/
-        && is_domain( idn_to_ascii( $domainName, 'utf-8' ), { domain_disable_tld_validation => 1 } )
-    ) {
-        return 1;
-    }
+    return 1 if $domainName !~ /\.$/
+        && is_domain( idn_to_ascii( $domainName, 'utf-8' ), { domain_disable_tld_validation => 1 } );
 
     $lastValidationError = <<"EOF";
 
 
-\\Z1Invalid domain.\\Zn
+\\Z1Invalid domain name.\\Zn
 
 Please try again:
 EOF
@@ -211,7 +193,7 @@ EOF
  
  Param string $ipAddr IP address
  Param regexp|undef typeReg Regexp defining allowed IP type
- Return bool TRUE if the give IP address is valid, FALSE otherwise
+ Return bool TRUE if the given IP address is valid, FALSE otherwise
 
 =cut
 
@@ -238,7 +220,7 @@ EOF
  Is the given database name valid?
  
  Param string $email Email
- Return bool TRUE if the give email is valid, FALSE otherwise
+ Return bool TRUE if the given email is valid, FALSE otherwise
 
 =cut
 
@@ -247,12 +229,7 @@ sub isValidDbName($)
     my $dbName = shift;
     my $length = length $dbName;
 
-    if ($length >= 3
-        && $length <= 16
-        && $dbName =~ /^[\x30-\x39\x41-\x5a\x61-\x7a\x5f]+$/
-    ) {
-        return 1;
-    }
+    return 1 if $length >= 3 && $length <= 16 && $dbName =~ /^[\x30-\x39\x41-\x5a\x61-\x7a\x5f]+$/;
 
     $lastValidationError = <<"EOF";
 
@@ -273,7 +250,7 @@ EOF
  Is the given timzone name valid?
  
  Param string timezone Timezone
- Return bool TRUE if the give timezone is valid, FALSE otherwise
+ Return bool TRUE if the given timezone is valid, FALSE otherwise
 
 =cut
 
@@ -301,7 +278,7 @@ EOF
  Is the given number valid?
 
  Param int $number Number
- Return bool TRUE if the give number is valid, FALSE otherwise
+ Return bool TRUE if the given number is valid, FALSE otherwise
 
 =cut
 
@@ -309,9 +286,7 @@ sub isNumber($)
 {
     my $number = shift;
 
-    if ($number =~ /^[\x30-\x39]+$/) {
-        return 1;
-    }
+    return 1 if $number =~ /^[\x30-\x39]+$/;
 
     $lastValidationError = <<"EOF";
 
@@ -324,22 +299,26 @@ EOF
     0;
 }
 
-=item isValidNumberRange($numberRange)
+=item isValidNumberRange($numberRange, \$n1, \$n2 )
 
  Is the given number range a valid number range?
 
- Param string numberRange Number range
+ Param string $numberRange Number range
+ Param scalar_ref numberRange First  number in range (filled only when number range is valid)
+ Param scalar_ref numberRange Last number in range (filled only with number range valid)
  Return bool TRUE if the given number range is valid, FALSE otherwise
 
 =cut
 
-sub isValidNumberRange($)
+sub isValidNumberRange($$$)
 {
-    my $numberRange = shift;
+    my ($numberRange, $n1, $n2) = @_;
 
     if ($numberRange =~ /^([\x30-\x39]+)\s+([\x30-\x39]+)$/) {
-        return 0;
-    }
+        ${$n1} = $1;
+        ${$n2} = $2;
+        return 1;
+    };
 
     $lastValidationError = <<"EOF";
 
@@ -368,18 +347,14 @@ sub isNumberInRange($$$)
     my ($number, $start, $end) = @_;
 
     no warnings;
-    if ($number >= $start
-        && $number <= $end
-    ) {
-        return 1;
-    }
+    return 1 if $number >= $start && $number <= $end;
 
     $lastValidationError = <<"EOF";
 
 
 \\Z1Invalid number.\\Zn
 
- - Number must be in range from $start to $end.
+ - Number $number must be in range from $start to $end.
 
 Please try again:
 EOF
@@ -403,9 +378,7 @@ sub isStringNotInList($@)
 {
     my ($string, @stringList) = @_;
 
-    unless (grep { lc $string eq lc $_ } @stringList) {
-        return 1;
-    }
+    return 1 unless grep { lc $string eq lc $_ } @stringList;
 
     my $entries = join ', ', @stringList;
     $lastValidationError = <<"EOF";
