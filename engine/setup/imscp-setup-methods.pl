@@ -302,9 +302,7 @@ EOF
             }
 
             do {
-            
-            
-                ($rs, $wanIP) = $dialog->inputbox(<<"EOF", $wanIP || _guessPublicIP());
+                ($rs, $wanIP) = $dialog->inputbox(<<"EOF", $wanIP);
 
 The IP address that you selected is inside private IP range.
 
