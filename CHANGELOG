@@ -36,7 +36,7 @@ SERVERS
     Fixed: Path must be cleaned before use in regexes (HTTPD servers)
     Fixed: Skip cleanup of custom.conf.tpl, index.html, vlogger.conf.tpl and php-fcgi-starter template files (HTTPD servers)
 
-VENDOR:
+VENDOR
     Added: Data::Validate::Domain Perl module version 0.14
     Updated: Capture::Tiny Perl module from version 0.40 to version 0.44
     Updated: Net::Domain::TLD Perm module from version 1.74 to version 1.75
