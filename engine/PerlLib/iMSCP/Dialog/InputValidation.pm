@@ -34,8 +34,8 @@ use parent 'Exporter';
 
 our @EXPORT = qw/
     isValidUsername isValidPassword isValidEmail isValidHostname isValidDomain isValidIpAddr isValidTimezone
-        isValidDbName isNumber isNumberInRange isStringNotInList isValidNumberRange isNotEmpty
-    /;
+    isValidDbName isNumber isNumberInRange isStringNotInList isValidNumberRange isNotEmpty
+/;
 
 our $lastValidationError = '';
 
@@ -108,7 +108,7 @@ EOF
 =item isValidEmail($email)
 
  Is the given email valid?
- 
+
  Param string $email Email
  Return bool TRUE if the given email is valid, FALSE otherwise
 
@@ -163,7 +163,7 @@ EOF
 =item isValidDomain($domainName)
 
  Is the given domain name valid?
- 
+
  Param string $domain Domain name
  Return bool TRUE if the given domain name is valid, FALSE otherwise
 
@@ -187,10 +187,10 @@ EOF
     0;
 }
 
-=item isValidIpAddr($ipAddr [$typeReg = ANY ])
+=item isValidIpAddr($ipAddr [, $typeReg = ANY ])
 
  Is the given IP address valid?
- 
+
  Param string $ipAddr IP address
  Param regexp|undef typeReg Regexp defining allowed IP type
  Return bool TRUE if the given IP address is valid, FALSE otherwise
@@ -202,7 +202,7 @@ sub isValidIpAddr($;$)
     my ($ipAddr, $typeReg) = @_;
 
     my $net = iMSCP::Net->getInstance();
-    return 1 if $net->isValidAddr($ipAddr) && (!defined $typeReg || $net->getAddrType($ipAddr) =~ /$typeReg/);
+    return 1 if $net->isValidAddr($ipAddr) && (!defined $typeReg || $net->getAddrType($ipAddr) =~ /^$typeReg$/);
 
     $lastValidationError = <<"EOF";
 
@@ -218,7 +218,7 @@ EOF
 =item isValidDbName($dbName)
 
  Is the given database name valid?
- 
+
  Param string $email Email
  Return bool TRUE if the given email is valid, FALSE otherwise
 
@@ -248,7 +248,7 @@ EOF
 =item isValidTimezone($timezone)
 
  Is the given timzone name valid?
- 
+
  Param string timezone Timezone
  Return bool TRUE if the given timezone is valid, FALSE otherwise
 
@@ -412,7 +412,7 @@ sub isNotEmpty($)
     $lastValidationError = <<"EOF";
 
 
-\\Z1Value cannot be empty.\\Zn
+\\Z1Entry cannot be empty.\\Zn
 
 Please try again:
 EOF

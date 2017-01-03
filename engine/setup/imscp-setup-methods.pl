@@ -268,7 +268,7 @@ sub setupAskServerPrimaryIP
 {
     my $dialog = shift;
     my @ipList = sort grep {
-        isValidIpAddr($_, /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/)
+        isValidIpAddr($_, qr/(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)/)
     } iMSCP::Net->getInstance()->getAddresses();
     unless(@ipList) {
         error('Could not get list of server IP addresses. At least one public or private IP address must be configured.');
@@ -280,7 +280,7 @@ sub setupAskServerPrimaryIP
 
     if($main::reconfigure =~ /^(?:primary_ip|all|forced)$/
         || !grep($_ eq $lanIP, @ipList)
-        || !isValidIpAddr($wanIP, qr/^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/)
+        || !isValidIpAddr($wanIP, qr/(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)/)
     ) {
         my ($rs, $msg) = (0, '');
 
@@ -293,7 +293,7 @@ EOF
         return $rs if $rs >= 30;
 
         # IP inside private IP range?
-        if(!isValidIpAddr($lanIP, qr/^(?:PUBLIC|GLOBAL-UNICAST)$/)) {
+        if(!isValidIpAddr($lanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/)) {
             do {
                 ($rs, $wanIP) = $dialog->inputbox(<<"EOF", $wanIP);
 
@@ -303,7 +303,7 @@ Please enter your public IP address (WAN IP), or leave blank to force usage of t
 EOF
                 $msg = '';
                 if($wanIP
-                    && !isValidIpAddr($wanIP, qr/^(?:PUBLIC|GLOBAL-UNICAST)$/)
+                    && !isValidIpAddr($wanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/)
                 ) {
                     $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
                 } else {
