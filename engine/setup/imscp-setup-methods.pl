@@ -297,7 +297,7 @@ EOF
             do {
                 ($rs, $wanIP) = $dialog->inputbox(<<"EOF", $wanIP);
 
-The IP address that you entered is inside private IP range.
+The IP address that you selected is inside private IP range.
 
 Please enter your public IP address (WAN IP), or leave blank to force usage of the private IP address:$msg
 EOF
