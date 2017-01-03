@@ -90,27 +90,26 @@ sub showPhpConfigLevelDialog
 {
     my ($self, $dialog) = @_;
 
-    my $rs = 0;
     my $confLevel = main::setupGetQuestion( 'PHP_CONFIG_LEVEL', $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} );
 
     if ($main::reconfigure =~ /^(?:httpd|php|servers|all|forced)$/ || $confLevel !~ /^per_(?:site|domain|user)$/) {
         $confLevel =~ s/_/ /;
-
-        ($rs, $confLevel) = $dialog->radiolist(
+        (my $rs, $confLevel) = $dialog->radiolist(
             <<"EOF", [ 'per_site', 'per_domain', 'per_user' ], $confLevel =~ /^per (?:user|domain)$/ ? $confLevel : 'per site' );
 
 \\Z4\\Zb\\ZuPHP configuration level\\Zn
 
-Please, choose the PHP configuration level you want use. Available levels are:
+Please choose the PHP configuration level you want use. Available levels are:
 
 \\Z4Per user:\\Zn One pool configuration file per user
 \\Z4Per domain:\\Zn One pool configuration file per domain (including subdomains)
 \\Z4Per site:\\Zn One pool configuration per domain
 EOF
+        return $rs if $rs >= 30;
     }
 
-    ($self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} = $confLevel) =~ s/ /_/ if $rs < 30;
-    $rs;
+    ($self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} = $confLevel) =~ s/ /_/;
+    0;
 }
 
 =item showListenModeDialog()

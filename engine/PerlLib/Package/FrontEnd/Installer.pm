@@ -26,13 +26,12 @@ package Package::FrontEnd::Installer;
 use strict;
 use warnings;
 use Encode qw / decode_utf8 /;
-use Data::Validate::Domain 'is_domain';
-use Email::Valid;
 use File::Basename;
-use iMSCP::Debug;
 use iMSCP::Config;
-use iMSCP::Crypt 'apr1MD5';
+use iMSCP::Crypt qw/ apr1MD5 randomStr /;
 use iMSCP::Database;
+use iMSCP::Debug;
+use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::File;
@@ -74,7 +73,8 @@ sub registerSetupListeners
         'beforeSetupDialog',
         sub {
             push @{$_[0]},
-                sub { $self->askMasterAdminData( @_ )},
+                sub { $self->askMasterAdminCredentials( @_ )},
+                sub { $self->askMasterAdminEmail( @_ )},
                 sub { $self->askDomain( @_ ) },
                 sub { $self->askSsl( @_ ) },
                 sub { $self->askHttpPorts( @_ ) };
@@ -85,20 +85,19 @@ sub registerSetupListeners
 
 =item askMasterAdminData(\%dialog)
 
- Ask for master administrator data
+ Ask for master administrator credentials
 
  Param iMSCP::Dialog \%dialog
  Return int 0 or 30
 
 =cut
 
-sub askMasterAdminData
+sub askMasterAdminCredentials
 {
     my (undef, $dialog) = @_;
 
-    my ($login, $password, $rpassword) = ('', '', '');
+    my ($username, $password) = ('', '');
     my $email = main::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' );
-    my ($rs, $msg) = (0, '');
 
     my $db = iMSCP::Database->factory();
     local $@;
@@ -106,7 +105,7 @@ sub askMasterAdminData
     $db = undef if $@;
 
     if (iMSCP::Getopt->preseed) {
-        $login = main::setupGetQuestion( 'ADMIN_LOGIN_NAME' );
+        $username = main::setupGetQuestion( 'ADMIN_LOGIN_NAME' );
         $password = main::setupGetQuestion( 'ADMIN_PASSWORD' );
     } elsif ($db) {
         my $defaultAdmin = $db->doQuery(
@@ -121,86 +120,92 @@ sub askMasterAdminData
         }
 
         if (%{$defaultAdmin}) {
-            $login = $defaultAdmin->{'0'}->{'admin_name'} // '';
+            $username = $defaultAdmin->{'0'}->{'admin_name'} // '';
             $password = $defaultAdmin->{'0'}->{'admin_pass'} // '';
         }
     }
 
-    main::setupSetQuestion( 'ADMIN_OLD_LOGIN_NAME', $login );
+    main::setupSetQuestion( 'ADMIN_OLD_LOGIN_NAME', $username );
 
-    if ($login eq '' || $password eq '' || $email eq '' || $main::reconfigure =~ /^(?:admin|all|forced)$/) {
+    if ($main::reconfigure =~ /^(?:admin|admin_credentials|all|forced)$/
+        || !isValidUsername($username)
+        || $password eq ''
+        || !isValidEmail($email)
+    ) {
         $password = '';
+        my ($rs, $msg) = (0, '');
 
         do {
-            ($rs, $login) = $dialog->inputbox( <<"EOF", $login || 'admin' );
+            ($rs, $username) = $dialog->inputbox( <<"EOF", $username || 'admin' );
 
-Please enter master administrator login name:$msg
+Please enter a username for the master administrator:$msg
 EOF
             $msg = '';
-            if ($login eq '') {
-                $msg = '\n\n\\Z1Admin login name cannot be empty.\\Zn\n\nPlease try again:';
-            } elsif (length $login <= 2
-                || $login !~ /^[a-z0-9](:?(?<![-_])(:?-*|[_.])?(?![-_])[a-z0-9]*)*?(?<![-_.])$/i
-            ) {
-                $msg = '\n\n\\Z1Bad admin login name syntax or length.\\Zn\n\nPlease try again:'
+            if (!isValidUsername($username)) {
+                $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             } elsif ($db) {
                 my $rdata = $db->doQuery(
-                    'admin_id', 'SELECT admin_id FROM admin WHERE admin_name = ? AND created_by <> 0 LIMIT 1',
-                    $login
+                    'admin_id', 'SELECT admin_id FROM admin WHERE admin_name = ? AND created_by <> 0 LIMIT 1', $username
                 );
                 unless (ref $rdata eq 'HASH') {
                     error( $rdata );
                     return 1;
                 } elsif (%{$rdata}) {
-                    $msg = '\n\n\\Z1This login name already exists.\\Zn\n\nPlease try again:'
+                    $msg = '\n\n\\Z1This username is not available.\\Zn\n\nPlease try again:'
                 }
             }
-        } while ($rs < 30 && $msg);
+        } while $rs < 30 && $msg;
+        return $rs if $rs >= 30;
 
-        if ($rs < 30) {
-            $msg = '';
-            do {
-                do {
-                    ($rs, $password) = $dialog->passwordbox( <<"EOF", '' );
+        do {
+            ($rs, $password) = $dialog->inputbox( <<"EOF", randomStr(16, iMSCP::Crypt::ALNUM) );
 
-Please enter master administrator password:$msg
+Please enter a password for the master administrator:$msg
 EOF
-                    $msg = '\n\n\\Z1The password must be at least 6 characters long.\\Zn\n\nPlease try again:';
-                } while ($rs < 30 && length $password < 6);
-
-                if ($rs < 30) {
-                    $msg = '';
-                    ($rs, $rpassword) = $dialog->passwordbox( <<"EOF", '' );
-
-Please confirm master administrator password:$msg
-EOF
-                    $msg = "\n\n\\Z1Passwords do not match.\\Zn\n\nPlease try again:";
-                }
-            } while ($rs < 30 && $password ne $rpassword);
-        }
-
-        if ($rs < 30) {
-            $msg = '';
-
-            do {
-                ($rs, $email) = $dialog->inputbox( <<"EOF", $email );
-
-Please enter master administrator email address:$msg
-EOF
-                $msg = "\n\n\\Z1'$email' is not a valid email address.\\Zn\n\nPlease try again:";
-            } while ($rs < 30 && !Email::Valid->address( $email ));
-        }
+            $msg = (isValidPassword($password)) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
+        } while $rs < 30 && $msg;
+        return $rs if $rs >= 30;
     } else {
         $password = '' unless iMSCP::Getopt->preseed
     }
 
-    if ($rs < 30) {
-        main::setupSetQuestion( 'ADMIN_LOGIN_NAME', $login );
-        main::setupSetQuestion( 'ADMIN_PASSWORD', $password );
-        main::setupSetQuestion( 'DEFAULT_ADMIN_ADDRESS', $email );
+    main::setupSetQuestion( 'ADMIN_LOGIN_NAME', $username );
+    main::setupSetQuestion( 'ADMIN_PASSWORD', $password );
+    0;
+}
+
+=item askMasterAdminEmail(\%dialog)
+
+ Ask for master administrator email address
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 or 30
+
+=cut
+
+sub askMasterAdminEmail
+{
+    my (undef, $dialog) = @_;
+
+    my $email = main::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' );
+
+    if ($main::reconfigure =~ /^(?:admin|admin_email|all|forced)$/
+        || !isValidEmail($email)
+    ) {
+        my ($rs, $msg) = (0, '');
+
+        do {
+            ($rs, $email) = $dialog->inputbox( <<"EOF", $email );
+
+Please enter an email address for the master administrator:$msg
+EOF
+            $msg = (isValidEmail($email)) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
+        } while $rs < 30 && $msg;
+        return $rs if $rs >= 30;
     }
 
-    $rs;
+    main::setupSetQuestion( 'DEFAULT_ADMIN_ADDRESS', $email );
+    0;
 }
 
 =item askDomain(\%dialog)
@@ -216,31 +221,31 @@ sub askDomain
 {
     my (undef, $dialog) = @_;
 
-    my $vhost = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
-    my $options = { domain_private_tld => qr /.*/ };
-    my ($rs, $msg) = (0, '');
+    my $domainName = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
 
-    if ($main::reconfigure =~ /^(?:panel|panel_hostname|hostnames|all|forced)$/ || split( /\./, $vhost ) < 3
-        || !is_domain( $vhost, $options )
+    if ($main::reconfigure =~ /^(?:panel|panel_hostname|hostnames|all|forced)$/
+        || !isValidDomain($domainName)
     ) {
-        unless ($vhost) {
-            my @domain = split( /\./, main::setupGetQuestion( 'SERVER_HOSTNAME' ) );
-            $vhost = 'panel.'.join( '.', @domain[1 .. $#domain] );
+        unless ($domainName) {
+            my @domainLabels = split /\./, main::setupGetQuestion( 'SERVER_HOSTNAME' );
+            $domainName = 'panel.'.join( '.', @domainLabels[1 .. $#domainLabels] );
         }
 
-        $vhost = decode_utf8( idn_to_unicode( $vhost, 'utf-8' ) );
+        $domainName = decode_utf8( idn_to_unicode( $domainName, 'utf-8' ) );
+        my ($rs, $msg) = (0, '');
 
         do {
-            ($rs, $vhost) = $dialog->inputbox( <<"EOF", $vhost, 'utf-8' );
+            ($rs, $domainName) = $dialog->inputbox( <<"EOF", $domainName, 'utf-8' );
 
-Please enter a fully-qualified domain name for the control panel:$msg
+Please enter a domain name for the control panel:$msg
 EOF
-            $msg = "\n\n\\Z1'$vhost' is not a fully-qualified domain name.\\Zn\n\nPlease try again:";
-        } while ($rs < 30 && (split( /\./, $vhost ) < 3 || !is_domain( idn_to_ascii( $vhost, 'utf-8' ), $options )));
+            $msg = (isValidDomain($domainName)) ? '' :  $iMSCP::Dialog::InputValidation::lastValidationError;
+        } while $rs < 30 && 1;
+        return $rs if $rs >= 30;
     }
 
-    main::setupSetQuestion( 'BASE_SERVER_VHOST', idn_to_ascii( $vhost, 'utf-8' ) ) if $rs < 30;
-    $rs;
+    main::setupSetQuestion( 'BASE_SERVER_VHOST', idn_to_ascii( $domainName, 'utf-8' ) );
+    0;
 }
 
 =item askSsl(\%dialog)

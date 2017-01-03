@@ -30,6 +30,7 @@ use iMSCP::Config;
 use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;
+use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
@@ -39,8 +40,8 @@ use iMSCP::Rights;
 use iMSCP::ProgramFinder;
 use iMSCP::Stepper;
 use iMSCP::TemplateParser;
-use Servers::po::courier;
 use Servers::mta::postfix;
+use Servers::po::courier;
 use Servers::sqld;
 use parent 'Common::SingletonClass';
 
@@ -95,92 +96,48 @@ sub authdaemonSqlUserDialog
     my ($self, $dialog) = @_;
 
     my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER' );
-    my $dbUser = main::setupGetQuestion(
-        'AUTHDAEMON_SQL_USER', $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} || 'authdaemon_user'
-    );
-    my $dbPass = main::setupGetQuestion(
-        'AUTHDAEMON_SQL_PASSWORD', $self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'}
-    );
-
-    my ($rs, $msg) = (0, '');
+    my $dbUser = main::setupGetQuestion('AUTHDAEMON_SQL_USER', $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} || 'authdaemon_user');
+    my $dbPass = main::setupGetQuestion('AUTHDAEMON_SQL_PASSWORD', $self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'});
 
     if ($main::reconfigure =~ /^(?:po|servers|all|forced)$/
-        || length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/
-        || length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/
+        || !isValidUsername($dbUser)
+        || !isStringNotInList($dbUser, 'root', $masterSqlUser)
+        || !isValidPassword($dbPass)
     ) {
-        # Ensure no special chars are present in password. If we don't, dialog will not let user set new password
-        $dbPass = '';
+        my ($rs, $msg) = (0, '');
 
-        # Ask for the authdaemon restricted SQL username
         do {
             ($rs, $dbUser) = $dialog->inputbox( <<"EOF", $dbUser );
 
 Please enter an username for the Courier Authdaemon SQL user:$msg
 EOF
-            if (lc( $dbUser ) eq lc( $masterSqlUser )) {
-                $msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
-                $dbUser = '';
-            } elsif (lc( $dbUser ) eq 'root') {
-                $msg = "\n\n\\Z1Usage of SQL root user is prohibited.\\Zn\n\nPlease try again:";
-                $dbUser = '';
-            } elsif (length $dbUser > 16) {
-                $msg = "\n\n\\Username can be up to 16 characters long.\\Zn\n\nPlease try again:";
-                $dbUser = '';
-            } elsif (length $dbUser < 6) {
-                $msg = "\n\n\\Z1Username must be at least 6 characters long.\\Zn\n\nPlease try again:";
-                $dbUser = '';
-            } elsif ($dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
-                $msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease try again:";
-                $dbUser = '';
-            }
-        } while ($rs < 30 && !$dbUser);
-
-        if ($rs < 30) {
             $msg = '';
-
-            # Ask for the authdaemon SQL user password unless we reuses existent SQL user
-            unless (grep($_ eq $dbUser, ( keys %main::sqlUsers ))) {
-                do {
-                    # Ask for the authdaemon restricted SQL user password
-                    ($rs, $dbPass) = $dialog->passwordbox( <<"EOF", $dbPass );
-
-Please, enter a password for the authdaemon SQL user (blank for autogenerate):$msg
-EOF
-                    if ($dbPass ne '') {
-                        if (length $dbPass < 6) {
-                            $msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
-                            $dbPass = '';
-                        } elsif ($dbPass =~ /[^\x30-\x39\x41-\x5a\x61-\x7a]/) {
-                            $msg = "\n\n\\Z1Only ASCII alphabet characters and numbers are allowed.\\Zn\n\nPlease try again:";
-                            $dbPass = '';
-                        } else {
-                            $msg = '';
-                        }
-                    } else {
-                        $msg = '';
-                    }
-                } while ($rs < 30 && $msg);
-            } else {
-                $dbPass = $main::sqlUsers{$dbUser};
+            if (!isValidUsername($dbUser)
+                || !isStringNotInList($dbUser, 'root', $masterSqlUser)
+            ) {
+                $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             }
+        } while $rs < 30 && $msg;
+        return $rs if $rs >= 30;
 
-            if ($rs < 30) {
-                $dbPass = randomStr(16, iMSCP::Crypt::ALNUM) unless $dbPass;
-                $dialog->msgbox( <<"EOF" );
+        if (isStringNotInList($dbUser, keys %main::sqlUsers)) {
+            do {
+                ($rs, $dbPass) = $dialog->inputbox( <<"EOF", $dbPass || randomStr(16, iMSCP::Crypt::ALNUM) );
 
-Password for the authdaemon SQL user set to: $dbPass
+Please enter a password for the Courier Authdaemon SQL user:$msg
 EOF
-            }
+                $msg = (isValidPassword($dbPass)) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
+            } while $rs < 30 && $msg;
+            return $rs if $rs >= 30;
+        } else {
+            $dbPass = $main::sqlUsers{$dbUser};
         }
     }
 
-    if ($rs < 30) {
-        main::setupSetQuestion( 'AUTHDAEMON_SQL_USER', $dbUser );
-        main::setupSetQuestion( 'AUTHDAEMON_SQL_PASSWORD', $dbPass );
-        $main::sqlUsers{$dbUser} = $dbPass;
-    }
-
-    $rs;
+    main::setupSetQuestion( 'AUTHDAEMON_SQL_USER', $dbUser );
+    main::setupSetQuestion( 'AUTHDAEMON_SQL_PASSWORD', $dbPass );
+    $main::sqlUsers{$dbUser} = $dbPass;
+    0;
 }
 
 =item cyrusSaslSqlUserDialog(\%dialog)
@@ -200,79 +157,45 @@ sub cyrusSaslSqlUserDialog
     my $dbUser = main::setupGetQuestion( 'SASL_SQL_USER', $self->{'config'}->{'SASL_DATABASE_USER'} || 'sasl_user' );
     my $dbPass = main::setupGetQuestion( 'SASL_SQL_PASSWORD', $self->{'config'}->{'SASL_DATABASE_PASSWORD'} );
 
-    my ($rs, $msg) = (0, '');
-
     if ($main::reconfigure =~ /^(?:po|servers|all|forced)$/
-        || length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/
-        || length $dbPass < 6 || $dbPass !~ /^[\x21-\x5b\x5d-\x7e]+$/
+        || !isValidUsername($dbUser)
+        || !isStringNotInList($dbUser, 'root', $masterSqlUser)
+        || !isValidPassword($dbPass)
     ) {
-        # Ensure no special chars are present in password. If we don't, dialog will not let user set new password
-        $dbPass = '';
+        my ($rs, $msg) = (0, '');
 
-        # Ask for the SASL restricted SQL username
         do {
             ($rs, $dbUser) = $dialog->inputbox(
-                "\nPlease enter an username for the Postfix SASL SQL user:$msg", $dbUser
+                "\nPlease enter a username for the Postfix SASL SQL user:$msg", $dbUser
             );
 
-            if (lc( $dbUser) eq lc( $masterSqlUser )) {
-                $msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
-                $dbUser = '';
-            } elsif (length $dbUser > 16) {
-                $msg = "\n\n\\Username can be up to 16 characters long.\\Zn\n\nPlease try again:";
-                $dbUser = '';
-            } elsif (length $dbUser < 6) {
-                $msg = "\n\n\\Z1Username must be at least 6 characters long.\\Zn\n\nPlease try again:";
-                $dbUser = '';
-            } elsif ($dbUser !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
-                $msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease try again:";
-                $dbUser = '';
-            }
-        } while ($rs < 30 && !$dbUser);
-
-        if ($rs < 30) {
             $msg = '';
-
-            # Ask for the SASL SQL user password unless we reuses existent SQL user
-            unless (grep($_ eq $dbUser, ( keys %main::sqlUsers ))) {
-                do {
-                    # Ask for the SASL restricted SQL user password
-                    ($rs, $dbPass) = $dialog->passwordbox(
-                        "\nPlease, enter a password for the sasl SQL user (blank for autogenerate):$msg", $dbPass
-                    );
-
-                    if ($dbPass ne '') {
-                        if (length $dbPass < 6) {
-                            $msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
-                            $dbPass = '';
-                        } elsif ($dbPass =~ /[^\x30-\x39\x41-\x5a\x61-\x7a]/) {
-                            $msg = "\n\n\\Z1Only ASCII alphabet characters and numbers are allowed.\\Zn\n\nPlease try again:";
-                            $dbPass = '';
-                        } else {
-                            $msg = '';
-                        }
-                    } else {
-                        $msg = '';
-                    }
-                } while ($rs < 30 && $msg);
-            } else {
-                $dbPass = $main::sqlUsers{$dbUser};
+            if (!isValidUsername($dbUser)
+                || !isStringNotInList($dbUser, 'root', $masterSqlUser)
+            ) {
+                $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             }
+        } while $rs < 30 && $msg;
+        return $rs if $rs >= 30;
 
-            if ($rs < 30) {
-                $dbPass = randomStr(16, iMSCP::Crypt::ALNUM) unless $dbPass;
-                $dialog->msgbox( "\nPassword for the SASL SQL user set to: $dbPass" );
-            }
+        if (isStringNotInList($dbUser, keys %main::sqlUsers)) {
+            do {
+                ($rs, $dbPass) = $dialog->passwordbox( <<"EOF", randomStr(16, iMSCP::Crypt::ALNUM) );
+
+Please enter a password for the Postfix SASL SQL user:$msg
+EOF
+                $msg = (isValidPassword($dbPass)) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
+            } while $rs < 30 && $msg;
+            return $rs if $rs >= 30;
+        } else {
+            $dbPass = $main::sqlUsers{$dbUser};
         }
     }
 
-    if ($rs < 30) {
-        main::setupSetQuestion( 'SASL_SQL_USER', $dbUser );
-        main::setupSetQuestion( 'SASL_SQL_PASSWORD', $dbPass );
-        $main::sqlUsers{$dbUser} = $dbPass;
-    }
-
-    $rs;
+    main::setupSetQuestion( 'SASL_SQL_USER', $dbUser );
+    main::setupSetQuestion( 'SASL_SQL_PASSWORD', $dbPass );
+    $main::sqlUsers{$dbUser} = $dbPass;
+    0;
 }
 
 =item install()

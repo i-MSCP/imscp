@@ -8,7 +8,8 @@ CONFIGS
     Fixed: Unwanted wide character in configs/debian/apache/00_nameserver.conf template file
 
 BACKEND
-    Added iMSCP::Mount::getMounts() function (iMSCP::Mount)
+    Added: iMSCP::Dialog::InputValidation library for ease of user input validation
+    Added: iMSCP::Mount::getMounts() function (iMSCP::Mount)
     Added: Missing DESTROY() method (iMSCP::Config)
     Fixed: Could not delete domain due to duplicate mounts (See #IP-1679)
     Fixed: Don't attempt to flush() when tied file is readonly or when deffered writing is disabled (iMSCP::Config)
@@ -18,12 +19,14 @@ BACKEND
 
 DISTRIBUTIONS
     Fixed: `/etc/mtab' file not a symlink to `/proc/mounts', leading to duplicate mounts (See #IP-1679)
+    Removed: libdata-validate-domain-perl package from package files (provided module version 0.10 is too old)
 
 FRONTEND
     Fixed: `VirtualFileSystem: Could not list directory error' when editing forwarded domain, alias or subdomain
     Fixed: Discard forwarded domains from list of shareable mount points
 
 INSTALLER
+    Added: `admin_credentials' and `admin_email' reconfiguration items
     Added: preInstall() and postInstall() methods (autoinstaller::Adapter::AbstractAdapter)
     Removed: `afterPreBuild', `beforeBuild' and `beforePostBuild' events
     Renamed: `beforePreBuild' event to `preBuild', and `afterBuild' event to `postBuild'
@@ -32,6 +35,11 @@ INSTALLER
 SERVERS
     Fixed: Path must be cleaned before use in regexes (HTTPD servers)
     Fixed: Skip cleanup of custom.conf.tpl, index.html, vlogger.conf.tpl and php-fcgi-starter template files (HTTPD servers)
+
+VENDOR:
+    Added: Data::Validate::Domain Perl module version 0.14
+    Updated: Capture::Tiny Perl module from version 0.40 to version 0.44
+    Updated: Net::Domain::TLD Perm module from version 1.74 to version 1.75
 
 YOUTRACK
     #IP-1679 Duplicate bind mounts leading to un-deletable Web folders (Ubuntu < 16.04)

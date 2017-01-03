@@ -23,32 +23,32 @@ use FindBin;
 use DateTime;
 use DateTime::TimeZone;
 use Encode qw/ decode_utf8 /;
-use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
-use Data::Validate::Domain qw/ is_domain /;
-use Scalar::Util qw/ openhandle /;
 use File::Basename;
-use iMSCP::Debug;
-use iMSCP::Net;
 use iMSCP::Bootstrapper;
-use iMSCP::Dialog;
-use iMSCP::Stepper;
 use iMSCP::Crypt qw/ randomStr encryptRijndaelCBC decryptRijndaelCBC /;
 use iMSCP::Database;
 use iMSCP::DbTasksProcessor;
+use iMSCP::Debug;
+use iMSCP::Dialog;
+use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
-use iMSCP::File;
-use iMSCP::Execute;
+use iMSCP::Net;
 use iMSCP::EventManager;
-use iMSCP::Rights;
-use iMSCP::TemplateParser;
-use iMSCP::SystemGroup;
-use iMSCP::SystemUser;
+use iMSCP::Execute;
+use iMSCP::File;
+use iMSCP::Getopt;
 use iMSCP::OpenSSL;
-use iMSCP::Servers;
+use iMSCP::Rights;
 use iMSCP::Packages;
 use iMSCP::Plugins;
-use iMSCP::Getopt;
+use iMSCP::Servers;
 use iMSCP::Service;
+use iMSCP::Stepper;
+use iMSCP::SystemGroup;
+use iMSCP::SystemUser;
+use iMSCP::TemplateParser;
+use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
+use Scalar::Util qw/ openhandle /;
 use Servers::sqld;
 
 sub setupSystemDirectories
@@ -240,121 +240,96 @@ sub setupDeleteBuildDir
 sub setupAskServerHostname
 {
     my $dialog = shift;
-
     my $hostname = setupGetQuestion('SERVER_HOSTNAME');
-    my $options = { domain_private_tld => qr /.*/ };
-    my ($rs, $msg) = (0, '');
 
     if($main::reconfigure =~ /^(?:system_hostname|hostnames|all|forced)$/
-        || split(/\./, $hostname) < 3 || !is_domain($hostname, $options)
+        || !isValidHostname($hostname)
     ) {
         chomp($hostname) unless($hostname || execute('hostname -f', \$hostname, \my $stderr));
         $hostname = decode_utf8( idn_to_unicode($hostname, 'utf-8') );
 
+        my ($rs, $msg) = (0, '');
         do {
-            ($rs, $hostname) = $dialog->inputbox(<<"EOF", $hostname);
+            (my $rs, $hostname) = $dialog->inputbox(<<"EOF", $hostname);
 
-Please enter a fully-qualified hostname for the server:$msg
+Please enter your server hostname:$msg
 EOF
-            $msg = "\n\n\\Z1'$hostname' is not a valid fully-qualified host name.\\Zn\n\nPlease try again:";
-        } while($rs < 30 && (split(/\./, $hostname) < 3 || !is_domain(idn_to_ascii($hostname, 'utf-8'), $options)));
+            $msg = (isValidHostname($hostname)) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
+        } while($rs < 30 && $msg);
+        return $rs if $rs >= 30;
     }
 
-    setupSetQuestion('SERVER_HOSTNAME', idn_to_ascii($hostname, 'utf-8')) if $rs < 30;
-    $rs;
+    setupSetQuestion('SERVER_HOSTNAME', idn_to_ascii( $hostname, 'utf-8' ) );
+    0;
 }
 
 # Ask for server's primary IP
 sub setupAskServerPrimaryIP
 {
     my $dialog = shift;
-
-    my $primaryIP = setupGetQuestion('BASE_SERVER_IP');
-    my $publicIP = setupGetQuestion('BASE_SERVER_PUBLIC_IP');
-    my $net = iMSCP::Net->getInstance();
-    my ($rs, $msg) = (0, '');
-
-    # Retrieve list of available IP addresses
-    my @ipAddresses = sort grep {
-        $net->getAddrType($_) =~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/
-    } $net->getAddresses();
-    unless(@ipAddresses) {
-        error('Could not retrieve server IP addresses. At least one public or private IP adddress must be configured.');
+    my @ipList = sort grep {
+        isValidIpAddr($_, /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/)
+    } iMSCP::Net->getInstance()->getAddresses();
+    unless(@ipList) {
+        error('Could not get list of server IP addresses. At least one public or private IP address must be configured.');
         return 1;
     }
 
+    my $lanIP = setupGetQuestion('BASE_SERVER_IP');
+    my $wanIP = setupGetQuestion('BASE_SERVER_PUBLIC_IP');
+
     if($main::reconfigure =~ /^(?:primary_ip|all|forced)$/
-        || !grep($_ eq $primaryIP, @ipAddresses)
-        || !$net->isValidAddr($publicIP)
-        || $net->getAddrType($publicIP) !~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/
+        || !grep($_ eq $lanIP, @ipList)
+        || !isValidIpAddr($wanIP, qr/^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/)
     ) {
+        my ($rs, $msg) = (0, '');
+
         do {
-            # Ask user for the primary server IP
-            ($rs, $primaryIP) = $dialog->radiolist(
-                <<"EOF", [ @ipAddresses ], grep($_ eq $primaryIP, @ipAddresses) ? $primaryIP : $ipAddresses[0]);
+            ($rs, $lanIP) = $dialog->radiolist(<<"EOF", [ @ipList ], grep($_ eq $lanIP, @ipList) ? $lanIP : $ipList[0]);
 
-Please, select your primary server IP address:
+Please select your primary server IP address:
 EOF
-        } while($rs < 30 && !$primaryIP);
+        } while $rs < 30 && !isValidIpAddr($lanIP);
+        return $rs if $rs >= 30;
 
-        if($rs < 30) {
-            # Server inside private LAN?
-            if($net->getAddrType($primaryIP) =~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST)$/) {
-                if (!$net->isValidAddr($publicIP)
-                    || $net->getAddrType($publicIP) !~ /^(?:PUBLIC|GLOBAL-UNICAST)$/
-                ) {
-                    $publicIP = '';
-                }
+        # IP inside private IP range?
+        if(!isValidIpAddr($lanIP, qr/^(?:PUBLIC|GLOBAL-UNICAST)$/)) {
+            do {
+                ($rs, $wanIP) = $dialog->inputbox(<<"EOF", $wanIP);
 
+The IP address that you entered is inside private IP range.
+
+Please enter your public IP address (WAN IP), or leave blank to force usage of the private IP address:$msg
+EOF
                 $msg = '';
-
-                do {
-                    ($rs, $publicIP) = $dialog->inputbox(<<"EOF", $publicIP);
-
-The system has detected that your server is inside a private LAN.
-
-Please enter your public IP address:$msg
-
-\\ZbNote:\\Zn Leave blank to force usage of the private IP address.
-EOF
-                    if($publicIP) {
-                        unless($net->isValidAddr($publicIP)) {
-                            $msg = "\n\n\\Z1Invalid or unallowed IP address.\\Zn\n\nPlease try again:";
-                        } elsif($net->getAddrType($publicIP) !~ /^(?:PUBLIC|GLOBAL-UNICAST)$/) {
-                            $msg = "\n\n\\Z1Unallowed IP address. IP address must be public.\\Zn\n\nPlease try again:";
-                        } else {
-                            $msg = '';
-                        }
-                    } else {
-                        $publicIP = $primaryIP;
-                        $msg = ''
-                    }
-                } while($rs < 30 && $msg);
-            } else {
-                $publicIP = $primaryIP
-            }
+                if($wanIP
+                    && !isValidIpAddr($wanIP, qr/^(?:PUBLIC|GLOBAL-UNICAST)$/)
+                ) {
+                    $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
+                } else {
+                    $wanIP = $lanIP;
+                }
+            } while $rs < 30 && $msg;
+            return $rs if $rs >= 30;
+        } else {
+            $wanIP = $lanIP
         }
     }
 
-    if($rs < 30) {
-        setupSetQuestion('BASE_SERVER_IP', $primaryIP);
-        setupSetQuestion('BASE_SERVER_PUBLIC_IP', $publicIP);
-    }
-
-    $rs;
+    setupSetQuestion('BASE_SERVER_IP', $lanIP);
+    setupSetQuestion('BASE_SERVER_PUBLIC_IP', $wanIP);
+    0;
 }
 
 sub askSqlRootUser
 {
-    my ($dialog) = @_;
-
-    my $host = setupGetQuestion('DATABASE_HOST', $main::imscpConfig{'SQL_SERVER'} eq 'remote_server' ? '' : 'localhost');
+    my $dialog = shift;
+    my $hostname = setupGetQuestion('DATABASE_HOST', $main::imscpConfig{'SQL_SERVER'} eq 'remote_server' ? '' : 'localhost');
     my $port = setupGetQuestion('DATABASE_PORT', 3306);
     my $user = setupGetQuestion('SQL_ROOT_USER', 'root');
     my $pwd = setupGetQuestion('SQL_ROOT_PASSWORD');
-    my ($rs, $msg) = (0, '');
 
-    if($host eq 'localhost') {
+    if($hostname eq 'localhost') {
         # If authentication is made through unix socket, password is normally not required.
         # We try a connect without password with 'root' as user and we return on success
         for('localhost', '127.0.0.1') {
@@ -368,16 +343,21 @@ sub askSqlRootUser
         }
     }
 
+    my ($rs, $msg) = (0, '');
+
     do {
-        ($rs, $host) = $dialog->inputbox(<<"EOF", $host, 'utf-8');
+        ($rs, $hostname) = $dialog->inputbox(<<"EOF", $hostname);
 
 Please enter your SQL server hostname or IP address:$msg
 EOF
-        $msg = ($host eq '' || $host ne 'localhost') && !is_domain($host, { domain_private_tld => qr /.*/ } )
-            && !iMSCP::Net->getInstance()->isValidAddr($host)
-            ? "\n\n\\Z1SQL server hostname or IP address is not valid.\\Zn\n\nPlease try again:" : '';
-    } while($rs < 30 && $msg ne '');
-
+        $msg = '';
+        if($hostname ne 'localhost'
+            && !isValidHostname($hostname)
+            && !isValidIpAddr($hostname)
+        ) {
+            $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
+        }
+    } while $rs < 30 && $msg;
     return $rs if $rs >= 30;
 
     do {
@@ -385,10 +365,13 @@ EOF
 
 Please enter your SQL server port:$msg
 EOF
-        $msg = $port !~ /^[\d]+$/ || $port < 1025 || $port > 65535
-            ? "\n\n\\Z1SQL server port is not valid.\\Zn\n\nPlease try again:" : '';
-    } while($rs < 30 && $msg ne '');
-
+        $msg = '';
+        if(!isNumber($port)
+            || !isNumberInRange($port, 1025, 65535)
+        ) {
+            $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
+        }
+    } while $rs < 30 && $msg;
     return $rs if $rs >= 30;
 
     do {
@@ -399,9 +382,8 @@ Please enter your SQL root username:$msg
 Note that this user must have full privileges on the SQL server.
 i-MSCP only uses that user while installation or reconfiguration.
 EOF
-        $msg = $user eq '' ? "\n\n\\Z1A SQL root user is required.\\Zn\n\nPlease try again:" : '';
-    } while($rs < 30 && $msg) ne '';
-
+        $msg = (isNotEmpty($user)) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
+    } while $rs < 30 && $msg;
     return $rs if $rs >= 30;
 
     do {
@@ -409,19 +391,18 @@ EOF
 
 Please enter your SQL root user password:$msg
 EOF
-        $msg = $pwd eq ''? "\n\n\\Z1SQL root user password is required.\\Zn\n\nPlease try again:" : '';
+        $msg = (isNotEmpty($pwd)) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError; 
     } while($rs < 30 && $msg);
-
     return $rs if $rs >= 30;
 
-    if(my $connectError = tryDbConnect($host, $port, $user, $pwd)) {
-        $rs = $dialog->msgbox(<<"EOF");
+    if(my $connectError = tryDbConnect(idn_to_ascii( $hostname, 'utf-8' ), $port, $user, $pwd)) {
+        $dialog->msgbox(<<"EOF");
 
 \\Z1Connection to SQL server failed\\Zn
 
 i-MSCP installer could not connect to SQL server using the following data:
 
-\\Z4Host:\\Zn $host
+\\Z4Host:\\Zn $hostname
 \\Z4Port:\\Zn $port
 \\Z4Username:\\Zn $user
 \\Z4Password:\\Zn $pwd
@@ -430,210 +411,175 @@ Error was: \\Z1$connectError\\Zn
 
 Please try again.
 EOF
-        goto &{askSqlRootUser} unless $rs >= 30;
+        goto &{askSqlRootUser};
     }
 
-    if($rs < 30) {
-        setupSetQuestion('DATABASE_TYPE', 'mysql');
-        setupSetQuestion('DATABASE_HOST', idn_to_ascii($host, 'utf-8'));
-        setupSetQuestion('DATABASE_PORT', $port);
-        setupSetQuestion('SQL_ROOT_USER', $user);
-        setupSetQuestion('SQL_ROOT_PASSWORD', $pwd);
-    }
-
-    $rs;
+    setupSetQuestion('DATABASE_TYPE', 'mysql');
+    setupSetQuestion('DATABASE_HOST', idn_to_ascii($hostname, 'utf-8'));
+    setupSetQuestion('DATABASE_PORT', $port);
+    setupSetQuestion('SQL_ROOT_USER', $user);
+    setupSetQuestion('SQL_ROOT_PASSWORD', $pwd);
+    0;
 }
 
 sub askMasterSqlUser
 {
     my $dialog = shift;
-
-    my $host = setupGetQuestion('DATABASE_HOST');
+    my $hostname = setupGetQuestion('DATABASE_HOST');
     my $port = setupGetQuestion('DATABASE_PORT');
     my $user = setupGetQuestion('DATABASE_USER', 'imscp_user');
     $user = 'imscp_user' if lc($user) eq 'root'; # Handle upgrade case
     my $pwd = setupGetQuestion('DATABASE_PASSWORD');
-    my ($rs, $msg) = (0, '');
-
     $pwd = decryptRijndaelCBC($main::imscpDBKey, $main::imscpDBiv, $pwd) unless $pwd eq '' || iMSCP::Getopt->preseed;
-    
-    $rs = askSqlRootUser($dialog) if iMSCP::Getopt->preseed;
+
+    my $rs = askSqlRootUser($dialog) if iMSCP::Getopt->preseed;
     return $rs if $rs;
 
     if($main::reconfigure =~ /(?:sql|servers|all|forced)$/
-        || $host eq '' || $port eq '' || $user eq '' || $user eq 'root' || $pwd eq ''
-        || (!iMSCP::Getopt->preseed && tryDbConnect($host, $port, $user, $pwd))
+        || !isNotEmpty($hostname)
+        || !isNotEmpty($port)
+        || !isNotEmpty($user)
+        || !isStringNotInList($user, 'root')
+        || !isNotEmpty($pwd)
+        || (!iMSCP::Getopt->preseed && tryDbConnect($hostname, $port, $user, $pwd))
     ) {
         $rs = askSqlRootUser($dialog) unless iMSCP::Getopt->preseed;
         return $rs if $rs >= 30;
 
+        my $msg = '';
         do {
-            ($rs, $user) = $dialog->inputbox( <<"EOF", $msg eq '' ? $user : '' );
+            ($rs, $user) = $dialog->inputbox( <<"EOF", $user);
 
 Please enter a username for the master i-MSCP SQL user:$msg
 EOF
-            if (lc($user) eq 'root') {
-                $msg = "\n\n\\Z1Usage of SQL root user is prohibited. \\Zn\n\nPlease try again:";
-            } elsif (length $user > 16) {
-                $msg = "\n\n\\Username can be up to 16 characters long.\\Zn\n\nPlease try again:";
-            } elsif (length $user < 6) {
-                $msg = "\n\n\\Z1Username must be at least 6 characters long.\\Zn\n\nPlease try again:";
-            } elsif ($user !~ /^[\x21-\x5b\x5d-\x7e]+$/) {
-                $msg = "\n\n\\Z1Only printable ASCII characters (excepted space and backslash) are allowed.\\Zn\n\nPlease try again:";
-            } else {
-                $msg = '';
+            $msg = '';
+            if(!isValidUsername($user)
+                || !isStringNotInList($user, 'root')
+            ) {
+                $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             }
-        } while ($rs < 30 && $msg ne '');
+        } while $rs < 30 && $msg;
+        return $rs if $rs >= 30;
 
-        if ($rs < 30) {
-            $pwd = '';
-            do {
-                ($rs, $pwd) = $dialog->passwordbox( <<"EOF", $msg eq '' ? $pwd : '');
-Please enter a password for the master i-MSCP SQL user (blank for autogenerate):$msg
+        $pwd = '';
+        do {
+            ($rs, $pwd) = $dialog->passwordbox( <<"EOF", $pwd || randomStr(16, iMSCP::Crypt::ALNUM));
+
+Please enter a password for the master i-MSCP SQL user:$msg
 EOF
-                if ($pwd ne '' && length $pwd < 6) {
-                    $msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
-                } elsif ($pwd =~ /[^\x30-\x39\x41-\x5a\x61-\x7a]/) {
-                    $msg = "\n\n\\Z1Only ASCII alphabet characters and numbers are allowed.\\Zn\n\nPlease try again:";
-                } else {
-                    $msg = '';
-                }
-            } while ($rs < 30 && $msg ne '');
-
-            if ($rs < 30) {
-                $pwd = randomStr(16, iMSCP::Crypt::ALNUM) unless $pwd;
-                $dialog->msgbox( <<"EOF" );
-
-Password for master i-MSCP SQL user set to: $pwd
-EOF
-            }
-        }
+            $msg = (isValidPassword($pwd)) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
+        } while $rs < 30 && $msg;
+        return $rs if $rs >= 30;
     }
 
-    if($rs < 30) {
-        setupSetQuestion('DATABASE_USER', $user);
-        setupSetQuestion('DATABASE_PASSWORD', encryptRijndaelCBC($main::imscpDBKey, $main::imscpDBiv, $pwd));
-
-        # Substitute SQL root user data with i-MSCP master user data if needed
-        setupSetQuestion('SQL_ROOT_USER', setupGetQuestion('SQL_ROOT_USER', $user));
-        setupSetQuestion('SQL_ROOT_PASSWORD', setupGetQuestion('SQL_ROOT_PASSWORD', $pwd));
-    }
-
-    $rs;
+    setupSetQuestion('DATABASE_USER', $user);
+    setupSetQuestion('DATABASE_PASSWORD', encryptRijndaelCBC($main::imscpDBKey, $main::imscpDBiv, $pwd));
+    # Substitute SQL root user data with i-MSCP master user data if needed
+    setupSetQuestion('SQL_ROOT_USER', setupGetQuestion('SQL_ROOT_USER', $user));
+    setupSetQuestion('SQL_ROOT_PASSWORD', setupGetQuestion('SQL_ROOT_PASSWORD', $pwd));
+    0;
 }
 
-# Ask for hosts from which SQL users are allowed to connect from
 sub setupAskSqlUserHost
 {
     my $dialog = shift;
 
-    my $host = idn_to_ascii(setupGetQuestion('DATABASE_USER_HOST', setupGetQuestion('BASE_SERVER_PUBLIC_IP')), 'utf-8');
-    my %options = (domain_private_tld => qr /.*/);
-    my $net = iMSCP::Net->getInstance();
-    my $rs = 0;
-
-    if($main::imscpConfig{'SQL_SERVER'} eq 'remote_server') { # Remote MySQL server
-        if(($main::reconfigure =~ /^(?:sql|servers|all|forced)$/ || $host ne '%') && !is_domain($host, \%options)
-           && !$net->isValidAddr($host)
-        ) {
-            my $msg = '';
-
-            do {
-                ($rs, $host) = $dialog->inputbox(<<"EOF", decode_utf8(idn_to_unicode($host, 'utf-8')));
-
-Please enter the host from which SQL users created by i-MSCP must be allowed to connect to your SQL server:$msg
-
-Please refer to http://dev.mysql.com/doc/refman/5.5/en/account-names.html for allowed values.
-EOF
-                $msg = '';
-                $host = idn_to_ascii($host, 'utf-8');
-
-                if($host ne '%'
-                    && !is_domain($host, \%options)
-                    && (
-                        !$net->isValidAddr($host)
-                        || $net->getAddrType($host) =~ /^(?:LOOPBACK|LINK-LOCAL-UNICAST)$/
-                    )
-                ) {
-                    $msg = sprintf("\n\n\\Z1Error: '%s' is not valid or not allowed.\\Zn\n\nPlease try again:", $host);
-                }
-
-            } while($rs < 30 && $msg ne '');
-        }
-
-        setupSetQuestion('DATABASE_USER_HOST', $host) if $rs < 30;
-    } else {
+    if($main::imscpConfig{'SQL_SERVER'} ne 'remote_server') {
         setupSetQuestion('DATABASE_USER_HOST', 'localhost');
+        return 0;
     }
 
-    $rs;
+    my $hostname = setupGetQuestion('DATABASE_USER_HOST', setupGetQuestion('BASE_SERVER_PUBLIC_IP'));
+
+    if($main::reconfigure =~ /^(?:sql|servers|all|forced)$/
+       || (
+           $hostname ne '%'
+           && !isValidHostname($hostname)
+           && !isValidIpAddr($hostname, qr/^(?:PUBLIC|GLOBAL-UNICAST)$/)
+       )
+    ) {
+        my ($rs, $msg) = (0, '');
+        do {
+            ($rs, $hostname) = $dialog->inputbox(<<"EOF", decode_utf8( idn_to_unicode($hostname, 'utf-8') ) );
+
+Please enter the host from which SQL users created by i-MSCP must be allowed to connect:$msg
+EOF
+            $msg = '';
+            if($hostname ne '%'
+                && !isValidHostname($hostname)
+                && !isValidIpAddr($hostname, qr/^(?:PUBLIC|GLOBAL-UNICAST)$/)
+            ) {
+               $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
+            }
+       } while $rs < 30 && $msg;
+       return $rs if $rs >= 30;
+   }
+
+   setupSetQuestion('DATABASE_USER_HOST', idn_to_ascii( $hostname, 'utf-8' ));
+   0;
 }
 
-# Ask for i-MSCP database name
 sub setupAskImscpDbName
 {
-    my($dialog) = @_;
-
+    my $dialog = shift;
     my $dbName = setupGetQuestion('DATABASE_NAME', 'imscp');
-    my $rs = 0;
+    my ($rs, $msg) = (0, '');
 
-    if($main::reconfigure =~ /^(?:sql|servers|all|forced)$/ || (!setupIsImscpDb($dbName) && !iMSCP::Getopt->preseed)) {
-        my $msg = '';
-
+    if($main::reconfigure =~ /^(?:sql|servers|all|forced)$/
+        || (!setupIsImscpDb($dbName) && !iMSCP::Getopt->preseed)
+    ) {
+        my ($rs, $msg) = (0, '');
         do {
             ($rs, $dbName) = $dialog->inputbox(<<"EOF", $dbName);
 
 Please enter a database name for i-MSCP:$msg
 EOF
             $msg = '';
-            unless($dbName) {
-                $msg = "\n\n\\Z1Database name cannot be empty.\\Zn\n\nPlease try again:";
-            } elsif($dbName =~ /[:;]/) {
-                $msg = "\n\n\\Z1Database name contain illegal characters ':' and/or ';'.\\Zn\n\nPlease try again:";
+            if(!isValidDbName($dbName)) {
+                $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             } else {
                 my $db = iMSCP::Database->factory();
                 local $@;
                 eval { $db->useDatabase($dbName); };
                 if(!$@ && !setupIsImscpDb($dbName)) {
-                    $msg = "\n\n\\Z1Database '$dbName' exists but do not look like an i-MSCP database.\\Zn\n\nPlease try again:";
+                    $msg = "\n\n\\Z1Database '$dbName' exists but doesn't looks like an i-MSCP database.\\Zn\n\nPlease try again:";
                 }
             }
-        } while ($rs < 30 && $msg ne '');
+        } while $rs < 30 && $msg;
+        return $rs if $rs >= 30;
 
-        if($rs < 30) {
-            my $oldDbName = setupGetQuestion('DATABASE_NAME');
-
-            if($oldDbName && $dbName ne $oldDbName && setupIsImscpDb($oldDbName)) {
-                if($dialog->yesno(<<"EOF", 1)) {
+        my $oldDbName = setupGetQuestion('DATABASE_NAME');
+        if($oldDbName
+            && $dbName ne $oldDbName
+            && setupIsImscpDb($oldDbName)
+        ) {
+            if($dialog->yesno(<<"EOF", 1)) {
 A database '$main::imscpConfig{'DATABASE_NAME'}' for i-MSCP already exists.
 
-Are you sure you want to create a new database?
-
+Are you sure you want to create a new database for i-MSCP?
 Keep in mind that the new database will be free of any reseller and customer data.
 
 \\Z4Note:\\Zn If the database you want to create already exists, nothing will happen.
 EOF
-                    goto &{setupAskImscpDbName};
-                }
+                goto &{setupAskImscpDbName};
             }
         }
     }
 
-    setupSetQuestion('DATABASE_NAME', $dbName) if $rs < 30;
-    $rs;
+    setupSetQuestion('DATABASE_NAME', $dbName);
+    0;
 }
 
 # Ask for database prefix/suffix
 sub setupAskDbPrefixSuffix
 {
     my $dialog = shift;
-
     my $prefix = setupGetQuestion('MYSQL_PREFIX');
-    my $rs = 0;
 
-    if($main::reconfigure =~ /^(?:sql|servers|all|forced)$/ || $prefix !~ /^(?:behind|infront|none)$/) {
-        ($rs, $prefix) = $dialog->radiolist(
-            <<"EOF", [ 'infront', 'behind', 'none' ], $prefix =~ /^(?:behind|infront)$/ ? $prefix : 'none');
+    if($main::reconfigure =~ /^(?:sql|servers|all|forced)$/
+        || $prefix !~ /^(?:behind|infront|none)$/
+    ) {
+        (my $rs, $prefix) = $dialog->radiolist(<<"EOF", [ 'infront', 'behind', 'none' ], $prefix =~ /^(?:behind|infront)$/ ? $prefix : 'none');
 
 \\Z4\\Zb\\ZuMySQL Database Prefix/Suffix\\Zn
 
@@ -645,46 +591,41 @@ Do you want use a prefix or suffix for customer's SQL databases?
          SQL user and database name.
    \\Z4None\\Zn: Choice will be let to customer.
 EOF
+        return $rs if $rs >= 30;
     }
 
-    if($rs < 30) {
-        setupSetQuestion('MYSQL_PREFIX', $prefix);
-    }
-
-    $rs;
+    setupSetQuestion('MYSQL_PREFIX', $prefix);
+    0;
 }
 
 # Ask for timezone
 sub setupAskTimezone
 {
     my $dialog = shift;
+    my $timezone = setupGetQuestion('TIMEZONE' || DateTime::TimeZone->new( name => 'local' )->name());
 
-    my $defaultTimezone = DateTime::TimeZone->new( name => 'local' )->name();
-    my $timezone = setupGetQuestion('TIMEZONE');
-    my $rs = 0;
-
-    if($main::reconfigure =~ /^(?:timezone|all|forced)$/ || !($timezone && DateTime::TimeZone->is_valid_name($timezone))) {
-        $timezone = $defaultTimezone unless $timezone;
-        my $msg = '';
-
+    if($main::reconfigure =~ /^(?:timezone|all|forced)$/
+        || !isValidTimezone($timezone)
+    ) {
+        my ($rs, $msg) = (0, '');
         do {
             ($rs, $timezone) = $dialog->inputbox(<<"EOF", $timezone);
 
 Please enter your timezone:$msg
 EOF
-            $msg = "\n\n\\Z1'$timezone' is not a valid timezone.\\Zn\n\nPlease try again:";
-        } while($rs < 30 && !DateTime::TimeZone->is_valid_name($timezone));
+            $msg = (isValidTimezone($timezone)) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError; 
+        } while $rs < 30 && $msg;
+        return $rs if $rs >= 30;
     }
 
-    setupSetQuestion('TIMEZONE', $timezone) if $rs < 30;
-    $rs;
+    setupSetQuestion('TIMEZONE', $timezone);
+    0;
 }
 
 # Ask for services SSL
 sub setupAskServicesSsl
 {
-    my ($dialog) = @_;
-
+    my $dialog = shift;
     my $hostname = setupGetQuestion('SERVER_HOSTNAME');
     my $hostnameUnicode = decode_utf8(idn_to_unicode($hostname, 'utf-8'));
     my $sslEnabled = setupGetQuestion('SERVICES_SSL_ENABLED');
@@ -694,25 +635,22 @@ sub setupAskServicesSsl
     my $certificatePath = setupGetQuestion('SERVICES_SSL_CERTIFICATE_PATH', '/root');
     my $caBundlePath = setupGetQuestion('SERVICES_SSL_CA_BUNDLE_PATH', '/root');
     my $openSSL = iMSCP::OpenSSL->new();
-    my $rs = 0;
 
-    if($main::reconfigure =~ /^(?:services_ssl|ssl|all|forced)$/ || $sslEnabled !~ /^(?:yes|no)$/
+    if($main::reconfigure =~ /^(?:services_ssl|ssl|all|forced)$/
+        || $sslEnabled !~ /^(?:yes|no)$/
         || ($sslEnabled eq 'yes' && $main::reconfigure =~ /^(?:system_hostname|hostnames)$/)
     ) {
-        # Ask for SSL
-        $rs = $dialog->yesno(<<"EOF", $sslEnabled eq 'no' ? 1 : 0);
+        my $rs = $dialog->yesno(<<"EOF", $sslEnabled eq 'no' ? 1 : 0);
 
-Do you want to activate SSL for SMTP, POP/IMAP and FTP services?
+Do you want to activate SSL for FTP and MAIL services?
 EOF
         if($rs == 0) {
             $sslEnabled = 'yes';
-            # Ask for self-signed certificate
             $rs = $dialog->yesno(<<"EOF", $selfSignedCertificate eq 'no' ? 1 : 0);
 
-Do you have an SSL certificate for the $hostnameUnicode domain?
+Do you have a SSL certificate for the $hostnameUnicode domain?
 EOF
             if($rs == 0) {
-                # Ask for private key
                 my $msg = '';
                 do {
                     $dialog->msgbox(<<"EOF");
@@ -722,70 +660,64 @@ EOF
                     do {
                         ($rs, $privateKeyPath) = $dialog->fselect($privateKeyPath);
                     } while($rs < 30 && !($privateKeyPath && -f $privateKeyPath));
+                    return $rs if $rs >= 30;
 
-                    if($rs < 30) {
-                        ($rs, $passphrase) = $dialog->passwordbox(<<"EOF", $passphrase);
+                    ($rs, $passphrase) = $dialog->passwordbox(<<"EOF", $passphrase);
 
 Please enter the passphrase for your private key if any:
 EOF
+                    return $rs if $rs >= 30;
+
+                    $openSSL->{'private_key_container_path'} = $privateKeyPath;
+                    $openSSL->{'private_key_passphrase'} = $passphrase;
+
+                    $msg = '';
+                    if($openSSL->validatePrivateKey()) {
+                        getMessageByType('error', { remove => 1 });
+                        $msg = "\n\\Z1Wrong private key or passphrase. Please try again.\\Zn\n\n";
                     }
+                } while $rs < 30 && $msg;
+                return $rs if $rs >= 30;
 
-                    if($rs < 30) {
-                        $openSSL->{'private_key_container_path'} = $privateKeyPath;
-                        $openSSL->{'private_key_passphrase'} = $passphrase;
+                $rs = $dialog->yesno(<<"EOF");
 
-                        if($openSSL->validatePrivateKey()) {
-                            getMessageByType('error', { remove => 1 });
-                            $msg = "\n\\Z1Wrong private key or passphrase. Please try again.\\Zn\n\n";
-                        } else {
-                            $msg = '';
-                        }
-                    }
-                } while($rs < 30 && $msg);
-
-                # Ask for CA bundle
-                if($rs < 30) {
-                    $rs = $dialog->yesno(<<"EOF");
-
-Do you have an SSL CA Bundle?
+Do you have a SSL CA Bundle?
 EOF
-                    if($rs == 0) {
-                        do {
-                            ($rs, $caBundlePath) = $dialog->fselect($caBundlePath);
-                        } while($rs < 30 && !($caBundlePath && -f $caBundlePath));
+                if($rs == 0) {
+                    do {
+                        ($rs, $caBundlePath) = $dialog->fselect($caBundlePath);
+                    } while($rs < 30 && !($caBundlePath && -f $caBundlePath));
+                    return $rs if $rs >= 30;
 
-                        $openSSL->{'ca_bundle_container_path'} = $caBundlePath if $rs < 30;
-                    } else {
-                        $openSSL->{'ca_bundle_container_path'} = '';
-                    }
+                    $openSSL->{'ca_bundle_container_path'} = $caBundlePath;
+                } else {
+                    $openSSL->{'ca_bundle_container_path'} = '';
                 }
 
-                if($rs < 30) {
-                    $dialog->msgbox(<<"EOF");
+                $dialog->msgbox(<<"EOF");
 
 Please select your SSL certificate in next dialog.
 EOF
-                    $rs = 1;
+                $rs = 1;
 
-                    do {
-                        $dialog->msgbox(<<"EOF") unless $rs;
+                do {
+                    $dialog->msgbox(<<"EOF") unless $rs;
 
-\\Z1Wrong SSL certificate. Please try again.\\Zn
+\\Z1Invalid SSL certificate. Please try again.\\Zn
 EOF
-                        do {
-                            ($rs, $certificatePath) = $dialog->fselect($certificatePath);
-                        } while($rs < 30 && !($certificatePath && -f $certificatePath));
+                    do {
+                        ($rs, $certificatePath) = $dialog->fselect($certificatePath);
+                    } while($rs < 30 && !($certificatePath && -f $certificatePath));
+                    return $rs if $rs >= 30;
 
-                         getMessageByType('error', { remove => 1 });
-                        $openSSL->{'certificate_container_path'} = $certificatePath if $rs < 30;
-                    } while($rs < 30 && $openSSL->validateCertificate());
-                }
+                    getMessageByType('error', { remove => 1 });
+                    $openSSL->{'certificate_container_path'} = $certificatePath;
+                } while($rs < 30 && $openSSL->validateCertificate());
+                return $rs if $rs >= 30;
             } else {
-                $rs = 0;
                 $selfSignedCertificate = 'yes';
             }
         } else {
-            $rs = 0;
             $sslEnabled = 'no';
         }
     } elsif($sslEnabled eq 'yes' && !iMSCP::Getopt->preseed) {
@@ -797,7 +729,7 @@ EOF
             getMessageByType('error', { remove => 1 });
             iMSCP::Dialog->getInstance()->msgbox(<<"EOF");
 
-Your SSL certificate for the SMTP, POP/IMAP and FTP services is missing or not valid.
+Your SSL certificate for the FTP and MAIL services is missing or invalid.
 EOF
             setupSetQuestion('SERVICES_SSL_ENABLED', '');
             goto &{setupAskServicesSsl};
@@ -807,28 +739,25 @@ EOF
         setupSetQuestion('SERVICES_SSL_SETUP', 'no');
     }
 
-    if($rs < 30) {
-        setupSetQuestion('SERVICES_SSL_ENABLED', $sslEnabled);
-        setupSetQuestion('SERVICES_SSL_SELFSIGNED_CERTIFICATE', $selfSignedCertificate);
-        setupSetQuestion('SERVICES_SSL_PRIVATE_KEY_PATH', $privateKeyPath);
-        setupSetQuestion('SERVICES_SSL_PRIVATE_KEY_PASSPHRASE', $passphrase);
-        setupSetQuestion('SERVICES_SSL_CERTIFICATE_PATH', $certificatePath);
-        setupSetQuestion('SERVICES_SSL_CA_BUNDLE_PATH', $caBundlePath);
-    }
-
-    $rs;
+    setupSetQuestion('SERVICES_SSL_ENABLED', $sslEnabled);
+    setupSetQuestion('SERVICES_SSL_SELFSIGNED_CERTIFICATE', $selfSignedCertificate);
+    setupSetQuestion('SERVICES_SSL_PRIVATE_KEY_PATH', $privateKeyPath);
+    setupSetQuestion('SERVICES_SSL_PRIVATE_KEY_PASSPHRASE', $passphrase);
+    setupSetQuestion('SERVICES_SSL_CERTIFICATE_PATH', $certificatePath);
+    setupSetQuestion('SERVICES_SSL_CA_BUNDLE_PATH', $caBundlePath);
+    0;
 }
 
 # Ask for i-MSCP backup feature
 sub setupAskImscpBackup
 {
     my $dialog = shift;
-
     my $backupImscp = setupGetQuestion('BACKUP_IMSCP');
-    my $rs = 0;
 
-    if($main::reconfigure =~ /^(?:backup|all|forced)$/ || $backupImscp !~ /^(?:yes|no)$/) {
-        ($rs, $backupImscp) = $dialog->radiolist(<<"EOF", [ 'yes', 'no' ], $backupImscp ne 'no' ? 'yes' : 'no');
+    if($main::reconfigure =~ /^(?:backup|all|forced)$/
+        || $backupImscp !~ /^(?:yes|no)$/
+    ) {
+        (my $rs, $backupImscp) = $dialog->radiolist(<<"EOF", [ 'yes', 'no' ], $backupImscp ne 'no' ? 'yes' : 'no');
 
 \\Z4\\Zb\\Zui-MSCP Backup Feature\\Zn
 
@@ -836,22 +765,23 @@ Do you want to activate the backup feature for i-MSCP?
 
 The backup feature for i-MSCP allows the daily save of all i-MSCP configuration files and its database. It's greatly recommended to activate this feature.
 EOF
+        return $rs if $rs >= 30;
     }
 
-    setupSetQuestion('BACKUP_IMSCP', $backupImscp) if $rs < 30;
-    $rs;
+    setupSetQuestion('BACKUP_IMSCP', $backupImscp);
+    0;
 }
 
 # Ask for customer backup feature
 sub setupAskDomainBackup
 {
     my $dialog = shift;
-
     my $backupDomains = setupGetQuestion('BACKUP_DOMAINS');
-    my $rs = 0;
 
-    if($main::reconfigure =~ /^(?:backup|all|forced)$/ || $backupDomains !~ /^(?:yes|no)$/) {
-        ($rs, $backupDomains) = $dialog->radiolist(<<"EOF", [ 'yes', 'no' ], $backupDomains ne 'no' ? 'yes' : 'no');
+    if($main::reconfigure =~ /^(?:backup|all|forced)$/
+        || $backupDomains !~ /^(?:yes|no)$/
+    ) {
+        (my $rs, $backupDomains) = $dialog->radiolist(<<"EOF", [ 'yes', 'no' ], $backupDomains ne 'no' ? 'yes' : 'no');
 
 \\Z4\\Zb\\ZuDomains Backup Feature\\Zn
 
@@ -864,10 +794,11 @@ This feature allows resellers to enable backup for their customers such as:
  - SQL databases only
  - None (no backup)
 EOF
+        return $rs if $rs >= 30;
     }
 
-    setupSetQuestion('BACKUP_DOMAINS', $backupDomains) if $rs < 30;
-    $rs;
+    setupSetQuestion('BACKUP_DOMAINS', $backupDomains);
+    0;
 }
 
 #
@@ -930,9 +861,9 @@ sub setupCreateMasterUser
 sub setupServerHostname
 {
     my $hostname = setupGetQuestion('SERVER_HOSTNAME');
-    my $primaryIP = setupGetQuestion('BASE_SERVER_IP');
+    my $lanIP = setupGetQuestion('BASE_SERVER_IP');
 
-    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupServerHostname', \$hostname, \$primaryIP);
+    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupServerHostname', \$hostname, \$lanIP);
     return $rs if $rs;
 
     my @labels = split /\./, $hostname;
@@ -946,10 +877,10 @@ sub setupServerHostname
     my $net = iMSCP::Net->getInstance();
     my $content = "# 'hosts' file configuration.\n\n";
     $content .= "127.0.0.1\t$hostnameLocal\tlocalhost\n";
-    $content .= "$primaryIP\t$hostname\t$host\n";
-    $content .= "::ffff:$primaryIP\t$hostname\t$host\n" if $net->getAddrVersion($primaryIP) eq 'ipv4';
-    $content .= "::1\tip6-localhost\tip6-loopback\n" if $net->getAddrVersion($primaryIP) eq 'ipv4';
-    $content .= "::1\tip6-localhost\tip6-loopback\t$host\n" if $net->getAddrVersion($primaryIP) eq 'ipv6';
+    $content .= "$lanIP\t$hostname\t$host\n";
+    $content .= "::ffff:$lanIP\t$hostname\t$host\n" if $net->getAddrVersion($lanIP) eq 'ipv4';
+    $content .= "::1\tip6-localhost\tip6-loopback\n" if $net->getAddrVersion($lanIP) eq 'ipv4';
+    $content .= "::1\tip6-localhost\tip6-loopback\t$host\n" if $net->getAddrVersion($lanIP) eq 'ipv6';
     $content .= "fe00::0\tip6-localnet\n";
     $content .= "ff00::0\tip6-mcastprefix\n";
     $content .= "ff02::1\tip6-allnodes\n";

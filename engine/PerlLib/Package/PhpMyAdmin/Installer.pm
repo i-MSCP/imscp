@@ -25,21 +25,22 @@ package Package::PhpMyAdmin::Installer;
 
 use strict;
 use warnings;
+use File::Basename;
+use iMSCP::Composer;
 use iMSCP::Config;
 use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;
+use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::TemplateParser;
-use iMSCP::Composer;
 use iMSCP::Execute;
-use iMSCP::Rights;
 use iMSCP::File;
+use iMSCP::Rights;
+use iMSCP::TemplateParser;
 use Package::FrontEnd;
 use Package::PhpMyAdmin;
 use Servers::sqld;
-use File::Basename;
 use JSON;
 use version;
 use parent 'Common::SingletonClass';
@@ -95,83 +96,46 @@ sub showDialog
     my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER' );
     my $dbUser = main::setupGetQuestion( 'PHPMYADMIN_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || 'pma_user' );
     my $dbPass = main::setupGetQuestion( 'PHPMYADMIN_SQL_PASSWORD', $self->{'config'}->{'DATABASE_PASSWORD'} );
-    my ($rs, $msg) = (0, '');
 
     if ($main::reconfigure =~ /^(?:sqlmanager|all|forced)$/
-        || length $dbUser < 6 || length $dbUser > 16 || $dbUser !~ /^[\x21-\x7e]+$/
-        || length $dbPass < 6 || $dbPass !~ /^[\x21-\x7e]+$/
+        || !isValidUsername($dbUser)
+        || !isStringNotInList($dbUser, 'root', $masterSqlUser)
+        || !isValidPassword($dbPass)
     ) {
-        # Ensure no special chars are present in password. If we don't, dialog will not let user set new password
-        $dbPass = '';
+        my ($rs, $msg) = (0, '');
 
         do {
             ($rs, $dbUser) = $dialog->inputbox( <<"EOF", $dbUser );
 
-Please enter an username for the PhpMyAdmin SQL user:$msg
+Please enter a username for the PhpMyAdmin SQL user:$msg
 EOF
-            if (lc( $dbUser ) eq lc( $masterSqlUser )) {
-                $msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease try again:";
-                $dbUser = '';
-            } elsif (lc( $dbUser ) eq 'root') {
-                $msg = "\n\n\\Z1Usage of SQL root user is prohibited.\\Zn\n\nPlease try again:";
-                $dbUser = '';
-            } elsif (length $dbUser > 16) {
-                $msg = "\n\n\\Username can be up to 16 characters long.\\Zn\n\nPlease try again:";
-                $dbUser = '';
-            } elsif (length $dbUser < 6) {
-                $msg = "\n\n\\Z1Username must be at least 6 characters long.\\Zn\n\nPlease try again:";
-                $dbUser = '';
-            } elsif ($dbUser !~ /^[\x21-\x7e]+$/) {
-                $msg = "\n\n\\Z1Only printable ASCII characters (excepted space) are allowed.\\Zn\n\nPlease try again:";
-                $dbUser = '';
-            }
-        } while ($rs < 30 && !$dbUser);
-
-        if ($rs < 30) {
             $msg = '';
-
-            # Ask for the phpmyadmin restricted SQL user password unless we reuses existent SQL user
-            unless (grep($_ eq $dbUser, ( keys %main::sqlUsers ))) {
-                do {
-                    ($rs, $dbPass) = $dialog->passwordbox( <<"EOF", $dbPass );
-
-Please, enter a password for the phpmyadmin SQL user (blank for autogenerate):$msg
-EOF
-                    if ($dbPass ne '') {
-                        if (length $dbPass < 6) {
-                            $msg = "\n\n\\Z1Password must be at least 6 characters long.\\Zn\n\nPlease try again:";
-                            $dbPass = '';
-                        } elsif ($dbPass =~ /[^\x30-\x39\x41-\x5a\x61-\x7a]/) {
-                            $msg = "\n\n\\Z1Only ASCII alphabet characters and numbers are allowed.\\Zn\n\nPlease try again:";
-                            $dbPass = '';
-                        } else {
-                            $msg = '';
-                        }
-                    } else {
-                        $msg = '';
-                    }
-                } while ($rs < 30 && $msg);
-            } else {
-                $dbPass = $main::sqlUsers{$dbUser};
+            if (!isValidUsername($dbUser)
+                || !isStringNotInList($dbUser, 'root', $masterSqlUser)
+            ) {
+                $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             }
+        } while $rs < 30 && $msg;
+        return $rs if $rs >= 30;
 
-            if ($rs < 30) {
-                $dbPass = randomStr(16, iMSCP::Crypt::ALNUM) unless $dbPass;
-                $dialog->msgbox( <<"EOF" );
+        if (isStringNotInList($dbUser, keys %main::sqlUsers)) {
+            do {
+                ($rs, $dbPass) = $dialog->inputbox( <<"EOF", $dbPass || randomStr(16, iMSCP::Crypt::ALNUM) );
 
-Password for the phpmyadmin SQL user set to: $dbPass
+Please enter a password for the PhpMyAdmin SQL user:$msg
 EOF
-            }
+                $msg = (isValidPassword($dbPass)) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
+            } while $rs < 30 && $msg;
+            return $rs if $rs >= 30;
+        } else {
+            $dbPass = $main::sqlUsers{$dbUser};
         }
     }
 
-    if ($rs < 30) {
-        main::setupSetQuestion( 'PHPMYADMIN_SQL_USER', $dbUser );
-        main::setupSetQuestion( 'PHPMYADMIN_SQL_PASSWORD', $dbPass );
-        $main::sqlUsers{$dbUser} = $dbPass;
-    }
-
-    $rs;
+    main::setupSetQuestion( 'PHPMYADMIN_SQL_USER', $dbUser );
+    main::setupSetQuestion( 'PHPMYADMIN_SQL_PASSWORD', $dbPass );
+    $main::sqlUsers{$dbUser} = $dbPass;
+    0;
 }
 
 =item preinstall()

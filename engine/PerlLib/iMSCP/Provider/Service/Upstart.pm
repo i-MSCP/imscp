@@ -461,8 +461,8 @@ sub _isEnabledPost090
     # `manual' stanza is the last one in the conf file and any
     # override files. The last one in the file wins.
     my $enabled = 0;
-    for ($jobFileContent, $jobOverrideFileContent) {
-        open my $fh, '<', \encode_utf8( $_ ) or die ( sprintf( 'Could not open in-memory file: %s', $! ) );
+    for (\$jobFileContent, \$jobOverrideFileContent) {
+        open my $fh, '<', \encode_utf8( ${$_} ) or die ( sprintf( 'Could not open in-memory file: %s', $! ) );
         while(<$fh>) {
             if (/$START_ON/) {
                 $enabled = 1;
