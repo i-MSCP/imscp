@@ -170,11 +170,13 @@ EOF
                 || !isNumberInRange($startOfRange, 32768, 60999)
                 || !isNumberInRange($endOfRange, $startOfRange, 60999)
             ) {
-                $passivePortRange = '32768 60999';
+                $passivePortRange = '32768 60999' unless $startOfRange && $endOfRange;
                 $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             }
         } while $rs < 30 && $msg;
         return $rs if $rs >= 30;
+
+        $passivePortRange = "$startOfRange $endOfRange";
     }
 
     $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'} = $passivePortRange;
