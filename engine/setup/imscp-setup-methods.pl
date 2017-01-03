@@ -47,6 +47,7 @@ use iMSCP::Stepper;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
 use iMSCP::TemplateParser;
+use LWP::Simple;
 use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
 use Scalar::Util qw/ openhandle /;
 use Servers::sqld;
@@ -280,7 +281,7 @@ sub setupAskServerPrimaryIP
 
     if($main::reconfigure =~ /^(?:primary_ip|all|forced)$/
         || !grep($_ eq $lanIP, @ipList)
-        || !isValidIpAddr($wanIP, qr/(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)/)
+        || ($wanIP ne $lanIP && !isValidIpAddr($wanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/))
     ) {
         my ($rs, $msg) = (0, '');
 
@@ -294,8 +295,16 @@ EOF
 
         # IP inside private IP range?
         if(!isValidIpAddr($lanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/)) {
+            unless($wanIP) { # Try to guess WAN ip using ipinfo.io Web service
+                $wanIP = get('http://ipinfo.io/ip');
+                $wanIP //= '';
+                chomp($wanIP);
+            }
+
             do {
-                ($rs, $wanIP) = $dialog->inputbox(<<"EOF", $wanIP);
+            
+            
+                ($rs, $wanIP) = $dialog->inputbox(<<"EOF", $wanIP || _guessPublicIP());
 
 The IP address that you selected is inside private IP range.
 
@@ -303,10 +312,11 @@ Please enter your public IP address (WAN IP), or leave blank to force usage of t
 EOF
                 $msg = '';
                 if($wanIP
+                    && $wanIP ne $lanIP
                     && !isValidIpAddr($wanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/)
                 ) {
                     $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
-                } else {
+                } elsif(!$wanIP) {
                     $wanIP = $lanIP;
                 }
             } while $rs < 30 && $msg;

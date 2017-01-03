@@ -28,6 +28,7 @@ FRONTEND
 INSTALLER
     Added: `admin_credentials' and `admin_email' reconfiguration items
     Added: preInstall() and postInstall() methods (autoinstaller::Adapter::AbstractAdapter)
+    Enhancement: Try to guess WAN IP using ipinfo.io Web service
     Removed: `afterPreBuild', `beforeBuild' and `beforePostBuild' events
     Renamed: `beforePreBuild' event to `preBuild', and `afterBuild' event to `postBuild'
     Renamed: `beforeInstall' event to `preInstall` and `afterInstall' event to `postInstall`
