@@ -1,6 +1,6 @@
 =head1 NAME
 
-iMSCP::Dialog::InputValidation - Provides set of routines for ease of user inputs validation (as required by i-MSCP)
+iMSCP::Dialog::InputValidation
 
 =cut
 
@@ -25,7 +25,7 @@ package iMSCP::Dialog::InputValidation;
 
 use strict;
 use warnings;
-use Data::Validate::Domain 'is_domain';
+use Data::Validate::Domain qw/ is_domain is_hostname /;
 use DateTime::TimeZone;
 use Email::Valid;
 use iMSCP::Net;
@@ -33,15 +33,16 @@ use Net::LibIDN qw/ idn_to_ascii /;
 use parent 'Exporter';
 
 our @EXPORT = qw/
-    isValidUsername isValidPassword isValidEmail isValidHostname isValidDomain isValidIpAddr isValidTimezone
-    isValidDbName isNumber isNumberInRange isStringNotInList isValidNumberRange isNotEmpty
+    isValidUsername isValidPassword isValidEmail isValidHostname isValidDomain
+    isValidIpAddr isValidTimezone isValidDbName isNumber isNumberInRange
+    isStringNotInList isValidNumberRange isNotEmpty
 /;
 
 our $lastValidationError = '';
 
 =head1 DESCRIPTION
 
- Provides set of routines for ease of user inputs validation (as required by i-MSCP).
+ Provides set of routines for ease of user inputs validation.
 
 =head1 PUBLIC METHODS
 
@@ -61,7 +62,8 @@ sub isValidUsername($)
     my $username = shift;
     my $length = length $username;
 
-    return 1 if $length >= 3 && $length <= 16 && $username =~ /^[\x30-\x39\x41-\x5a\x61-\x7a\x5f]+$/;
+    return 1 if $length >= 3 && $length <= 16
+        && $username =~ /^[\x30-\x39\x41-\x5a\x61-\x7a\x5f]+$/;
 
     $lastValidationError = <<"EOF";
 
@@ -91,7 +93,8 @@ sub isValidPassword($)
     my $password = shift;
     my $length = length $password;
 
-    return 1 if $length >= 6 && $length <= 32 && $password =~ /^[\x30-\x39\x41-\x5a\x61-\x7a]+$/;
+    return 1 if $length >= 6 && $length <= 32
+        && $password =~ /^[\x30-\x39\x41-\x5a\x61-\x7a]+$/;
 
     $lastValidationError = <<"EOF";
 
@@ -145,13 +148,14 @@ sub isValidHostname($)
     my $hostname = shift;
 
     return 1 if $hostname !~ /\.$/ && ($hostname =~ tr/.//) >= 2
-        && is_domain( idn_to_ascii( $hostname, 'utf-8' ), { domain_disable_tld_validation => 1 } );
+        && is_hostname( idn_to_ascii( $hostname, 'utf-8' ) );
 
     $lastValidationError = <<"EOF";
 
 
 \\Z1Invalid hostname.\\Zn
 
+ - Hostname must comply to RFC 1123 and 5890
  - The hostname must be a fully qualified hostname (FQHN).
 
 Please try again:
@@ -173,13 +177,17 @@ sub isValidDomain($)
 {
     my $domainName = shift;
 
-    return 1 if $domainName !~ /\.$/
-        && is_domain( idn_to_ascii( $domainName, 'utf-8' ), { domain_disable_tld_validation => 1 } );
+    return 1 if $domainName !~ /\.$/ && is_domain(
+        idn_to_ascii($domainName, 'utf-8'),
+        { domain_disable_tld_validation => 1 }
+    );
 
     $lastValidationError = <<"EOF";
 
 
 \\Z1Invalid domain name.\\Zn
+
+ - Domain name must comply to RFC 1123 and 5890
 
 Please try again:
 EOF
@@ -202,7 +210,8 @@ sub isValidIpAddr($;$)
     my ($ipAddr, $typeReg) = @_;
 
     my $net = iMSCP::Net->getInstance();
-    return 1 if $net->isValidAddr($ipAddr) && (!defined $typeReg || $net->getAddrType($ipAddr) =~ /^$typeReg$/);
+    return 1 if $net->isValidAddr($ipAddr)
+        && (!defined $typeReg || $net->getAddrType($ipAddr) =~ /^$typeReg$/);
 
     $lastValidationError = <<"EOF";
 
@@ -229,7 +238,8 @@ sub isValidDbName($)
     my $dbName = shift;
     my $length = length $dbName;
 
-    return 1 if $length >= 3 && $length <= 16 && $dbName =~ /^[\x30-\x39\x41-\x5a\x61-\x7a\x5f]+$/;
+    return 1 if $length >= 3 && $length <= 16
+        && $dbName =~ /^[\x30-\x39\x41-\x5a\x61-\x7a\x5f]+$/;
 
     $lastValidationError = <<"EOF";
 
@@ -304,8 +314,8 @@ EOF
  Is the given number range a valid number range?
 
  Param string $numberRange Number range
- Param scalar_ref numberRange First  number in range (filled only when number range is valid)
- Param scalar_ref numberRange Last number in range (filled only with number range valid)
+ Param scalar_ref \$n1 First  number in range
+ Param scalar_ref \$n2 Last number in range
  Return bool TRUE if the given number range is valid, FALSE otherwise
 
 =cut
@@ -314,16 +324,15 @@ sub isValidNumberRange($$$)
 {
     my ($numberRange, $n1, $n2) = @_;
 
-    if ($numberRange =~ /^([\x30-\x39]+)\s+([\x30-\x39]+)$/) {
-        ${$n1} = $1;
-        ${$n2} = $2;
-        return 1;
-    };
+    return 1 if (${$n1}, ${$n2}) =
+        $numberRange =~ /^([\x30-\x39]+)\s+([\x30-\x39]+)$/;
 
     $lastValidationError = <<"EOF";
 
 
 \\Z1Invalid number range.\\Zn
+
+- Number range must be two numbers separated by a space.
 
 Please try again:
 EOF
@@ -370,7 +379,7 @@ EOF
 
  Param string string String
  Param list @stringList String list
- Return bool TRUE if the given string is not contained in the given string list, FALSE otherwise
+ Return bool TRUE if the given string is the given list, FALSE otherwise
 
 =cut
 

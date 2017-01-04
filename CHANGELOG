@@ -5,7 +5,7 @@ Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
 CONFIGS
-    Fixed: Unwanted wide character in configs/debian/apache/00_nameserver.conf template file
+    Fixed: Unexpected wide character in 00_nameserver.conf Apache2 conffile, causing memory leak
 
 BACKEND
     Added: iMSCP::Dialog::InputValidation library for ease of user input validation

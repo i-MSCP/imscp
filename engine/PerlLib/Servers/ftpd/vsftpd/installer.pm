@@ -148,10 +148,10 @@ sub passivePortRangeDialog
     my $passivePortRange = main::setupGetQuestion( 'FTPD_PASSIVE_PORT_RANGE' ) || $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'};
     my ($startOfRange, $endOfRange);
 
-    if ($main::reconfigure =~ /^(?:ftpd|servers|all|forced)$/
-        || !isValidNumberRange($passivePortRange, \$startOfRange, \$endOfRange)
+    if (!isValidNumberRange($passivePortRange, \$startOfRange, \$endOfRange)
         || !isNumberInRange($startOfRange, 32768, 60999)
         || !isNumberInRange($endOfRange, $startOfRange, 60999)
+        || $main::reconfigure =~ /^(?:ftpd|servers|all|forced)$/
     ) {
         $passivePortRange = '32768 60999' unless $startOfRange && $endOfRange;
         my ($rs, $msg) = (0, '');
@@ -170,7 +170,6 @@ EOF
                 || !isNumberInRange($startOfRange, 32768, 60999)
                 || !isNumberInRange($endOfRange, $startOfRange, 60999)
             ) {
-                $passivePortRange = '32768 60999' unless $startOfRange && $endOfRange;
                 $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             }
         } while $rs < 30 && $msg;
