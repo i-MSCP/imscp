@@ -97,7 +97,6 @@ sub askMasterAdminCredentials
     my (undef, $dialog) = @_;
 
     my ($username, $password) = ('', '');
-    my $email = main::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' );
 
     my $db = iMSCP::Database->factory();
     local $@;
@@ -130,7 +129,6 @@ sub askMasterAdminCredentials
     if ($main::reconfigure =~ /^(?:admin|admin_credentials|all|forced)$/
         || !isValidUsername($username)
         || $password eq ''
-        || !isValidEmail($email)
     ) {
         $password = '';
         my ($rs, $msg) = (0, '');
@@ -271,27 +269,24 @@ sub askSsl
     my $caBundlePath = main::setupGetQuestion( 'PANEL_SSL_CA_BUNDLE_PATH', '/root' );
     my $baseServerVhostPrefix = main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX', 'http://' );
     my $openSSL = iMSCP::OpenSSL->new();
-    my $rs = 0;
 
-    if ($main::reconfigure =~ /^(?:panel|panel_ssl|ssl|all|forced)$/ || $sslEnabled !~ /^(?:yes|no)$/
+    if ($main::reconfigure =~ /^(?:panel|panel_ssl|ssl|all|forced)$/
+        || $sslEnabled !~ /^(?:yes|no)$/
         || ($sslEnabled eq 'yes' && $main::reconfigure =~ /^(?:panel_hostname|hostnames)$/)
     ) {
-        # Ask for SSL
-        ($rs, $sslEnabled) = $dialog->yesno( <<"EOF", $sslEnabled eq 'no' ? 1 : 0 );
+        my $rs = $dialog->yesno( <<"EOF", $sslEnabled eq 'no' ? 1 : 0 );
 
-Do you want to activate SSL for the control panel?
+Do you want to enable SSL for the control panel?
 EOF
         if ($rs == 0) {
             $sslEnabled = 'yes';
-
-            # Ask for self-signed certificate
             $rs = $dialog->yesno( <<"EOF", $selfSignedCertificate eq 'no' ? 1 : 0 );
 
-Do you have an SSL certificate for the $domainNameUnicode domain?
+Do you have a SSL certificate for the $domainNameUnicode domain?
 EOF
             if ($rs == 0) {
-                # Ask for private key
                 my $msg = '';
+
                 do {
                     $dialog->msgbox( <<"EOF" );
 
@@ -300,79 +295,75 @@ Please select your private key in next dialog.
 EOF
                     do {
                         ($rs, $privateKeyPath) = $dialog->fselect( $privateKeyPath );
-                    } while ($rs < 30 && !($privateKeyPath && -f $privateKeyPath));
+                    } while $rs < 30 && !($privateKeyPath && -f $privateKeyPath);
+                    return $rs if $rs >= 30;
 
-                    if ($rs < 30) {
-                        ($rs, $passphrase) = $dialog->passwordbox( <<"EOF", $passphrase );
+                    ($rs, $passphrase) = $dialog->passwordbox( <<"EOF", $passphrase );
 
 Please enter the passphrase for your private key if any:
 EOF
+                    return $rs if $rs >= 30;
+
+                    $openSSL->{'private_key_container_path'} = $privateKeyPath;
+                    $openSSL->{'private_key_passphrase'} = $passphrase;
+
+                    $msg = '';
+                    if ($openSSL->validatePrivateKey()) {
+                        getMessageByType( 'error', { remove => 1 } );
+                        $msg = "\n\\Z1Invalid private key or passphrase.\\Zn\n\nPlease try again.";
                     }
+                } while $rs < 30 && $msg;
+                return $rs if $rs >= 30;
 
-                    if ($rs < 30) {
-                        $openSSL->{'private_key_container_path'} = $privateKeyPath;
-                        $openSSL->{'private_key_passphrase'} = $passphrase;
+                $rs = $dialog->yesno( <<"EOF" );
 
-                        if ($openSSL->validatePrivateKey()) {
-                            getMessageByType( 'error', { remove => 1 } );
-                            $msg = "\n\\Z1Wrong private key or passphrase. Please try again.\\Zn\n\n";
-                        } else {
-                            $msg = '';
-                        }
-                    }
-                } while ($rs < 30 && $msg);
-
-                # Ask for CA bundle
-                if ($rs < 30) {
-                    $rs = $dialog->yesno( <<"EOF" );
-
-Do you have an SSL CA Bundle?
+Do you have a SSL CA Bundle?
 EOF
-                    if ($rs == 0) {
-                        do {
-                            ($rs, $caBundlePath) = $dialog->fselect( $caBundlePath );
-                        } while ($rs < 30 && !($caBundlePath && -f $caBundlePath));
+                if ($rs == 0) {
+                    do {
+                        ($rs, $caBundlePath) = $dialog->fselect( $caBundlePath );
+                    } while $rs < 30 && !($caBundlePath && -f $caBundlePath);
+                    return $rs if $rs >= 30;
 
-                        $openSSL->{'ca_bundle_container_path'} = $caBundlePath if $rs < 30;
-                    } else {
-                        $openSSL->{'ca_bundle_container_path'} = '';
-                    }
+                    $openSSL->{'ca_bundle_container_path'} = $caBundlePath;
+                } else {
+                    $openSSL->{'ca_bundle_container_path'} = '';
                 }
 
-                if ($rs < 30) {
-                    $dialog->msgbox( <<"EOF" );
+                $dialog->msgbox( <<"EOF" );
 
 Please select your SSL certificate in next dialog.
 EOF
+                $rs = 1;
+                do {
+                    $dialog->msgbox(<<"EOF") unless $rs;
+                    
+\\Z1Invalid SSL certificate.\\Zn
 
-                    $rs = 1;
-
+Please try again.
+EOF
                     do {
-                        $dialog->msgbox( "\n\\Z1Wrong SSL certificate. Please try again.\\Zn\n\n" ) unless $rs;
+                        ($rs, $certificatePath) = $dialog->fselect( $certificatePath );
+                    } while $rs < 30 && !($certificatePath && -f $certificatePath);
+                    return $rs if $rs >= 30;
 
-                        do {
-                            ($rs, $certificatePath) = $dialog->fselect( $certificatePath );
-                        } while ($rs < 30 && !($certificatePath && -f $certificatePath));
-
-                        getMessageByType( 'error', { remove => 1 } );
-                        $openSSL->{'certificate_container_path'} = $certificatePath if $rs < 30;
-                    } while ($rs < 30 && $openSSL->validateCertificate());
-                }
+                    getMessageByType( 'error', { remove => 1 } );
+                    $openSSL->{'certificate_container_path'} = $certificatePath;
+                } while $rs < 30 && $openSSL->validateCertificate();
+                return $rs if $rs >= 30;
             } else {
-                $rs = 0;
                 $selfSignedCertificate = 'yes';
             }
 
-            if ($rs < 30 && $sslEnabled eq 'yes') {
+            if ($sslEnabled eq 'yes') {
                 ($rs, $baseServerVhostPrefix) = $dialog->radiolist(
                     <<"EOF", [ 'https', 'http' ], $baseServerVhostPrefix eq 'https://' ? 'https' : 'http' );
 
-Please, choose the default HTTP access mode for the control panel:
+Please choose the default HTTP access mode for the control panel:
 EOF
                 $baseServerVhostPrefix .= '://'
             }
         } else {
-            $rs = 0;
             $sslEnabled = 'no';
         }
     } elsif ($sslEnabled eq 'yes' && !iMSCP::Getopt->preseed) {
@@ -384,7 +375,7 @@ EOF
             getMessageByType( 'error', { remove => 1 } );
             $dialog->msgbox( <<"EOF" );
 
-Your SSL certificate for the control panel is missing or not valid.
+Your SSL certificate for the control panel is missing or invalid.
 EOF
             main::setupSetQuestion( 'PANEL_SSL_ENABLED', '' );
             goto &{askSsl};
@@ -394,17 +385,14 @@ EOF
         main::setupSetQuestion( 'PANEL_SSL_SETUP', 'no' );
     }
 
-    if ($rs < 30) {
-        main::setupSetQuestion( 'PANEL_SSL_ENABLED', $sslEnabled );
-        main::setupSetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE', $selfSignedCertificate );
-        main::setupSetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH', $privateKeyPath );
-        main::setupSetQuestion( 'PANEL_SSL_PRIVATE_KEY_PASSPHRASE', $passphrase );
-        main::setupSetQuestion( 'PANEL_SSL_CERTIFICATE_PATH', $certificatePath );
-        main::setupSetQuestion( 'PANEL_SSL_CA_BUNDLE_PATH', $caBundlePath );
-        main::setupSetQuestion( 'BASE_SERVER_VHOST_PREFIX', $sslEnabled eq 'yes' ? $baseServerVhostPrefix : 'http://' );
-    }
-
-    $rs;
+    main::setupSetQuestion( 'PANEL_SSL_ENABLED', $sslEnabled );
+    main::setupSetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE', $selfSignedCertificate );
+    main::setupSetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH', $privateKeyPath );
+    main::setupSetQuestion( 'PANEL_SSL_PRIVATE_KEY_PASSPHRASE', $passphrase );
+    main::setupSetQuestion( 'PANEL_SSL_CERTIFICATE_PATH', $certificatePath );
+    main::setupSetQuestion( 'PANEL_SSL_CA_BUNDLE_PATH', $caBundlePath );
+    main::setupSetQuestion( 'BASE_SERVER_VHOST_PREFIX', $sslEnabled eq 'yes' ? $baseServerVhostPrefix : 'http://' );
+    0;
 }
 
 =item askHttpPorts(\%dialog)
@@ -423,46 +411,58 @@ sub askHttpPorts
     my $httpPort = main::setupGetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT' );
     my $httpsPort = main::setupGetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT' );
     my $ssl = main::setupGetQuestion( 'PANEL_SSL_ENABLED' );
-    my $rs = 0;
+    my ($rs, $msg) = (0, '');
 
     if ($main::reconfigure =~ /^(?:panel|panel_ports|all|forced)$/
-        || $httpPort !~ /^\d+$/ || $httpPort < 1025 || $httpPort > 65535 || $httpsPort eq $httpPort
+        || !isNumber($httpPort)
+        || !isNumberInRange($httpPort, 1025, 65535)
+        || !isStringNotInList($httpPort, $httpsPort)
     ) {
-        my $msg = '';
-
         do {
             ($rs, $httpPort) = $dialog->inputbox( <<"EOF", $httpPort ? $httpPort : 8880 );
 
 Please enter the http port for the control panel:$msg
 EOF
-            $msg = "\n\n\\Z1The port '$httpPort' is reserved or not valid.\\Zn\n\nPlease try again:";
-        } while ($rs < 30 && ($httpPort !~ /^\d+$/ || $httpPort < 1025 || $httpPort > 65535 || $httpsPort eq $httpPort));
+            $msg = '';
+            if (!isNumber($httpPort)
+                || !isNumberInRange($httpPort, 1025, 65535)
+                || !isStringNotInList($httpPort, $httpsPort)
+            ) {
+                $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
+            }
+        } while $rs < 30 && $msg;
+        return $rs if $rs >= 30;
     }
 
-    main::setupSetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT', $httpPort ) if $rs < 30;
+    main::setupSetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT', $httpPort );
 
-    if ($rs < 30 && $ssl eq 'yes') {
+    if ($ssl eq 'yes') {
         if ($main::reconfigure =~ /^(?:panel|panel_ports|all|forced)$/
-            || $httpsPort !~ /^\d+$/ || $httpsPort < 1025 || $httpsPort > 65535 || $httpsPort == $httpPort
+            || !isNumber($httpsPort)
+            || !isNumberInRange($httpsPort, 1025, 65535)
+            || !isStringNotInList($httpsPort, $httpPort)
         ) {
-            my $msg = '';
-
             do {
                 ($rs, $httpsPort) = $dialog->inputbox( <<"EOF", $httpsPort ? $httpsPort : 8443 );
 
 Please enter the https port for the control panel:$msg
 EOF
-                $msg = "\n\n\\Z1The port '$httpsPort' is reserved or not valid.\\Zn\n\nPlease try again:";
-            } while (
-                $rs < 30 && ($httpsPort !~ /^\d+$/ || $httpsPort < 1025 || $httpsPort > 65535 || $httpsPort eq $httpPort)
-            );
+                $msg = '';
+                if (!isNumber($httpsPort)
+                    || !isNumberInRange($httpsPort, 1025, 65535)
+                    || !isStringNotInList($httpsPort, $httpPort)
+                ) {
+                    $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
+                }
+            } while $rs < 30 && $msg;
+            return $rs if $rs >= 30;
         }
     } else {
         $httpsPort ||= 8443;
     }
 
-    main::setupSetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT', $httpsPort ) if $rs < 30;
-    $rs;
+    main::setupSetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT', $httpsPort );
+    0;
 }
 
 =item install()

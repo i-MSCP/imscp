@@ -331,7 +331,7 @@ EOF
 
 sub askSqlRootUser
 {
-    my $dialog = shift;
+    my ($dialog) = @_;
     my $hostname = setupGetQuestion('DATABASE_HOST', $main::imscpConfig{'SQL_SERVER'} eq 'remote_server' ? '' : 'localhost');
     my $port = setupGetQuestion('DATABASE_PORT', 3306);
     my $user = setupGetQuestion('SQL_ROOT_USER', 'root');
@@ -633,7 +633,7 @@ EOF
 # Ask for services SSL
 sub setupAskServicesSsl
 {
-    my $dialog = shift;
+    my ($dialog) = @_;
     my $hostname = setupGetQuestion('SERVER_HOSTNAME');
     my $hostnameUnicode = decode_utf8(idn_to_unicode($hostname, 'utf-8'));
     my $sslEnabled = setupGetQuestion('SERVICES_SSL_ENABLED');
@@ -650,7 +650,7 @@ sub setupAskServicesSsl
     ) {
         my $rs = $dialog->yesno(<<"EOF", $sslEnabled eq 'no' ? 1 : 0);
 
-Do you want to activate SSL for FTP and MAIL services?
+Do you want to enable SSL for FTP and MAIL services?
 EOF
         if($rs == 0) {
             $sslEnabled = 'yes';
@@ -660,6 +660,7 @@ Do you have a SSL certificate for the $hostnameUnicode domain?
 EOF
             if($rs == 0) {
                 my $msg = '';
+
                 do {
                     $dialog->msgbox(<<"EOF");
 $msg
@@ -682,7 +683,7 @@ EOF
                     $msg = '';
                     if($openSSL->validatePrivateKey()) {
                         getMessageByType('error', { remove => 1 });
-                        $msg = "\n\\Z1Wrong private key or passphrase. Please try again.\\Zn\n\n";
+                        $msg = "\n\\Z1Invalid private key or passphrase.\\Zn\n\nPlease try again.";
                     }
                 } while $rs < 30 && $msg;
                 return $rs if $rs >= 30;
@@ -707,7 +708,6 @@ EOF
 Please select your SSL certificate in next dialog.
 EOF
                 $rs = 1;
-
                 do {
                     $dialog->msgbox(<<"EOF") unless $rs;
 
