@@ -144,7 +144,7 @@ sub isValidHostname($)
 {
     my $hostname = shift;
 
-    return 1 if $hostname !~ /\.$/ && ($hostname =~ tr/.//) >= 3
+    return 1 if $hostname !~ /\.$/ && ($hostname =~ tr/.//) >= 2
         && is_domain( idn_to_ascii( $hostname, 'utf-8' ), { domain_disable_tld_validation => 1 } );
 
     $lastValidationError = <<"EOF";
