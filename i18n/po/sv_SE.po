@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Cool <barni@telia.com>, 2016
+# Cool <barni@telia.com>, 2016-2017
 # Laurent Declercq <l.declercq@nuxwin.com>, 2016
 # Lukasz Nowak <theqkash@theqkash.pl>, 2016
 # Thom Heemstra <thom@heemstra.xyz>, 2016
@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2016-12-31 12:11+0100\n"
-"PO-Revision-Date: 2016-12-31 11:13+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2017-01-05 05:08+0100\n"
+"PO-Revision-Date: 2017-01-03 12:26+0000\n"
+"Last-Translator: Cool <barni@telia.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/i-mscp/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,11 +33,11 @@ msgstr "Fel IP-adress."
 msgid ""
 "$ORIGIN is automatically appended to unqualified names, hosts and canonical "
 "names"
-msgstr ""
+msgstr "$ORIGIN automatiskt läggs till okvalificerade namn, värdar och kanoniska namn"
 
 #, php-format
 msgid "$ORIGIN value is currently set to: %s"
-msgstr ""
+msgstr "$ORIGIN värde är inställd till: %s"
 
 #, php-format
 msgid "%%s must be lower than %%s."
@@ -420,7 +420,7 @@ msgid "A new software package has been uploaded"
 msgstr "Ett nytt programpaket har laddats upp"
 
 msgid "A task is in progress for this htuser."
-msgstr ""
+msgstr "En uppgift pågår för denna htuser."
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Tillgång till din domän statistik via webbgränssnittet."
@@ -1004,10 +1004,10 @@ msgid "Authentication by user"
 msgstr "Autentisering av användare"
 
 msgid "Authentication users"
-msgstr ""
+msgstr "autentiserings användare"
 
 msgid "Authentication users/groups"
-msgstr ""
+msgstr "Autentiserings användare / grupper"
 
 msgid "Auto"
 msgstr "Auto"
@@ -1404,7 +1404,7 @@ msgstr "konfigurationsläge"
 
 #, php-format
 msgid "Conflict with the `%s' DNS resource record."
-msgstr ""
+msgstr "Konflikt med det så kallade `%s' rekord DNS resurs."
 
 msgid "Core data"
 msgstr "Kärndata"
@@ -1470,7 +1470,7 @@ msgid "Could not restore %s plugin directory"
 msgstr "Kunde inte återställa %s plugin katalog"
 
 msgid "Could not retrieve directories."
-msgstr ""
+msgstr "Det gick inte att hämta kataloger."
 
 #, php-format
 msgid "Could not uninstall the %s plugin: %s"
@@ -1619,7 +1619,7 @@ msgid "DNS resource records"
 msgstr "DNS-urkunder för resursen"
 
 msgid "DNS zone in which you want add this DNS resource record."
-msgstr ""
+msgstr "DNS-zonen som du vill lägga till den här DNS-resursposten ."
 
 msgid "DOWN"
 msgstr "NER"
@@ -2696,7 +2696,7 @@ msgstr "Om satt till `ja anges kan alltid aktivera / inaktivera PHP postfunktion
 msgid ""
 "If the name field is filled with the @ sign or left blank, it will be "
 "automatically substituted by $ORIGIN value."
-msgstr ""
+msgstr "Om namnfältet fylls med @ -tecknet eller lämnas tomt, kommer den att automatiskt ersättas med $ORIGIN värde."
 
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "Om du vill begränsa återförsäljare, måste du begränsa först sina kunder."
@@ -3182,7 +3182,7 @@ msgid "N/A"
 msgstr "Inte tillgänglig"
 
 msgid "NS DNS resource records are only allowed for subzone delegation."
-msgstr ""
+msgstr "NS DNS resursposterna är endast tillåtna för delzon delegation."
 
 msgid "Name"
 msgstr "Namn"
@@ -3236,7 +3236,7 @@ msgid "No database update available."
 msgstr "No database update available."
 
 msgid "No domain available for new software instance."
-msgstr ""
+msgstr "Ingen domän för ny programvara instans."
 
 msgid "No error found"
 msgstr "Inget fel hittades"
@@ -3603,10 +3603,10 @@ msgid "Please activate your new i-MSCP password"
 msgstr "Aktivera ditt nya i-MSCP lösenord"
 
 msgid "Please choose at least one htaccess user."
-msgstr ""
+msgstr "Välj minst en htaccess användare."
 
 msgid "Please choose at least one htaccess user/group."
-msgstr ""
+msgstr "Välj minst en htaccess användare / grupp."
 
 msgid "Please confirm the password."
 msgstr "Du måste bekräfta lösenord."
@@ -5561,7 +5561,7 @@ msgstr "Du har en underdomän gräns. Du kan inte lägga till en användare med 
 
 #, php-format
 msgid "You have been blocked for %s minutes."
-msgstr ""
+msgstr "du har blockerats för %s minuter."
 
 msgid "You have been successfully logged out."
 msgstr "Du blev utloggad."
@@ -5586,7 +5586,7 @@ msgstr "Du har ingen service port definierats."
 msgid ""
 "You have reached the maximum number of domain aliases allowed by your "
 "subscription."
-msgstr ""
+msgstr "Du har nått maximalt antal domän aliasses tillåts av din prenumeration."
 
 msgid ""
 "You have reached the maximum number of email accounts allowed by your "
@@ -5651,7 +5651,7 @@ msgstr "Du måste ange ett ämne."
 
 #, php-format
 msgid "You must wait %s minutes before the next attempt."
-msgstr ""
+msgstr "Du måste vänta %s minuter innan nästa försök."
 
 msgid "You need a Database for this software"
 msgstr "Du behöver en databas för denna mjukvara"
@@ -5954,4 +5954,4 @@ msgid "{USERNAME} user statistics"
 msgstr "{USERNAME} användarstatistik"
 
 msgid "© 2010-2017 i-MSCP Team<br>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2017 i-MSCP Team<br>All Rights Reserved"
