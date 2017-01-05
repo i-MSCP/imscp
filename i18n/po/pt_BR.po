@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Laurent Declercq <l.declercq@nuxwin.com>, 2017
 # Rafael Tavares <rafael@ibinetwork.com.br>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-01-05 05:08+0100\n"
-"PO-Revision-Date: 2016-12-31 11:13+0000\n"
+"POT-Creation-Date: 2017-01-05 20:09+0100\n"
+"PO-Revision-Date: 2017-01-05 19:10+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/i-mscp/i-MSCP/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -3732,19 +3733,19 @@ msgstr "Plugin %s programado para a mudança."
 
 #, php-format
 msgid "Plugin %s scheduled for deactivation."
-msgstr "Plugin %s agendado para desativação."
+msgstr "Plugin %s agendado para desativação."
 
 #, php-format
 msgid "Plugin %s scheduled for installation."
-msgstr "Plugin %s marcado para instalação."
+msgstr "Plugin %s marcado para instalação."
 
 #, php-format
 msgid "Plugin %s scheduled for uninstallation."
-msgstr "Plugin %s programado para desinstalação."
+msgstr "Plugin %s programado para desinstalação."
 
 #, php-format
 msgid "Plugin %s scheduled for update."
-msgstr "Plugin %s marcado para atualização."
+msgstr "Plugin %s marcado para atualização."
 
 #, php-format
 msgid "Plugin %s uninstalled."
@@ -3752,7 +3753,7 @@ msgstr "Plugin %s desinstalado."
 
 #, php-format
 msgid "Plugin %s updated."
-msgstr "Plugin %s atualizado."
+msgstr "Plugin %s atualizado."
 
 #, php-format
 msgid "Plugin Manager: Could not change the %s plugin: %s"
@@ -3821,7 +3822,7 @@ msgid "Plugin deletion has failed: %s"
 msgstr ""
 
 msgid "Plugin errors"
-msgstr "Plugin erros "
+msgstr "Plugin erros"
 
 msgid "Plugin has been successfully uploaded."
 msgstr "O plugin foi enviado com sucesso."
@@ -3831,10 +3832,10 @@ msgid "Plugin installation has failed: %s"
 msgstr ""
 
 msgid "Plugin item errors"
-msgstr "Plugin Erros de itens "
+msgstr "Plugin Erros de itens"
 
 msgid "Plugin list is empty."
-msgstr "Plugin lista está vazia."
+msgstr "Plugin lista está vazia."
 
 msgid "Plugin management"
 msgstr "Gerenciamento de plugins"

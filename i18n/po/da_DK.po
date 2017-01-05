@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Laurent Declercq <l.declercq@nuxwin.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-01-05 05:08+0100\n"
-"PO-Revision-Date: 2016-12-31 11:13+0000\n"
+"POT-Creation-Date: 2017-01-05 20:09+0100\n"
+"PO-Revision-Date: 2017-01-05 19:05+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/i-mscp/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -220,7 +221,7 @@ msgstr "%s: Du kan ikke deaktivere en tjeneste allerede solgt til forhandler's k
 msgid ""
 "%s::getInfo() not implemented and %s not found. This is a bug in the %s "
 "plugin which must be reported to the author(s)."
-msgstr "%s::getInfo() ikke implementeret og %s ikke fundet. Dette er en fejl i %s plugin og bør indberettes til plugin udvikler(ne)."
+msgstr "%s::getInfo() ikke implementeret og %s ikke fundet. Dette er en fejl i %s plugin og bør indberettes til plugin udvikler(ne)."
 
 #, php-format
 msgid ""
@@ -2974,7 +2975,7 @@ msgid "Login password"
 msgstr "Log ind password"
 
 msgid "Login username"
-msgstr "Log ind brugernavn"
+msgstr "Log ind brugernavn"
 
 msgid "Login with your FTP account"
 msgstr "Login med din FTP konto"
@@ -3469,13 +3470,13 @@ msgid "Package actions"
 msgstr "Pakke handlinger"
 
 msgid "Package already exists in the reseller depot!"
-msgstr "Pakke findes allerede i forhandler depot!"
+msgstr "Pakke findes allerede i forhandler depot!"
 
 msgid "Package already exists in the software depot!"
-msgstr "Pakke findes allerede i software depot!"
+msgstr "Pakke findes allerede i software depot!"
 
 msgid "Package already exists in the software repository!"
-msgstr "Pakke findes allerede i softwarearkiv!"
+msgstr "Pakke findes allerede i softwarearkiv!"
 
 msgid "Package already exists in your software repository!"
 msgstr "Pakke findes allerede i dit softwarearkiv!"
@@ -4840,7 +4841,7 @@ msgid "This htaccess group already exists."
 msgstr "Denne htaccess gruppe findes allerede."
 
 msgid "This htaccess user already exist."
-msgstr "Denne htaccess bruger eksisterer allerede."
+msgstr "Denne htaccess bruger eksisterer allerede."
 
 msgid "This interface allow to add or remove IP addresses."
 msgstr ""
@@ -4850,7 +4851,7 @@ msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
 "SQL server. Enter the %s wildcard character to allow this SQL user to "
 "connect from any host."
-msgstr "Det er den host, hvorfra denne SQL bruger skal have lov til at forbinde til SQL server. Indtast %s wildcard karakter til at tillade denne SQL bruger til at oprette forbindelse fra enhver vært."
+msgstr "Det er den host, hvorfra denne SQL bruger skal have lov til at forbinde til SQL server. Indtast %s wildcard karakter til at tillade denne SQL bruger til at oprette forbindelse fra enhver vært."
 
 msgid "This package already exists in the administrator software repository."
 msgstr "Denne pakke findes allerede i administratorens softwarearkiv."
@@ -4989,7 +4990,7 @@ msgid "Unable to delete i-MSCP info file."
 msgstr "Kan ikke slette i-MSCP info fil."
 
 msgid "Unable to get the IP address list. Please fix this problem."
-msgstr "Kan ikke hente IP adresse listen. Venligst løs dette problem."
+msgstr "Kan ikke hente IP adresse listen. Venligst løs dette problem."
 
 msgid "Unable to get update info from Github"
 msgstr "Kunne ikke få update info fra Github"
