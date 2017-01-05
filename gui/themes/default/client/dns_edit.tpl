@@ -1,6 +1,6 @@
 
 <script>
-    $(function() {
+    $(function() {
         $("#zone_id").on("change", function() {
             $("#origin").html('<strong>' + $(this).find("option:selected").text() + '.</strong>');
         }).trigger('change');

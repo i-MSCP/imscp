@@ -94,7 +94,7 @@
     var passwordGenerator = function() {
         var $pwdGenerator = $(".pwd_generator");
 
-        if($pwdGenerator.length) {
+        if($pwdGenerator.length) {
             var $pwdElements = $("#password,#cpassword");
 
             $("<span>", {
@@ -293,7 +293,7 @@
 
 
 // Initialize FTP chooser event handler
-(function($) {
+(function($) {
     $(function() {
         if(!$(".ftp_choose_dir").length) return; // Avoid attaching event handler when not necessary
 

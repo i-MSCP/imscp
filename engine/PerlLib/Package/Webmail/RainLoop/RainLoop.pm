@@ -41,7 +41,7 @@ my $dbInitialized = undef;
 
  RainLoop Webmail is a simple, modern and fast Web-based email client.
 
- Project homepage: http://http://rainloop.net/
+ Project homepage: http://http://rainloop.net/
 
 =head1 PUBLIC METHODS
 

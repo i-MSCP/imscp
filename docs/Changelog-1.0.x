@@ -464,8 +464,8 @@ Tickets:
 	- Fixed #38:  Defect - Missing checkbox for hostingplan Terms of Service
 	- Fixed #39:  Cosmetics - Missing background for the datepicker header
 	- Fixed #40:  Updated phpMyAdmin to version 3.3.8.1
-	- Fixed #42:  Cosmetics - Wrong design in phpMyAdmin
-	- Fixed #44:  Update - Net::DNS v1.0.7 is available
+	- Fixed #42:  Cosmetics - Wrong design in phpMyAdmin
+	- Fixed #44:  Update - Net::DNS v1.0.7 is available
 	- Fixed #48:  Task - Licence header for create_release.sh
 	- Fixed #49:  Cosmetics - Some improvements on multilanguage.php
 	- Fixed #50:  Malfunction - Patch to fix the exception when switching users

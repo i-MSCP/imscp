@@ -34,7 +34,7 @@ use parent 'Common::SingletonClass';
 
  MonstaFTP is a web-based FTP client written in PHP.
 
- Project homepage: http://www.monstaftp.com//
+ Project homepage: http://www.monstaftp.com//
 
 =head1 PUBLIC METHODS
 

@@ -1,7 +1,7 @@
 
 <script>
 	$(function () {
-		$("#normal, #forward").on('change', function() {
+		$("#normal, #forward").on('change', function() {
 			if($(this).val() == 'normal' && $(this).is(':checked')) {
 				$("#mail_id").prop('disabled', false);
 				$("#forward_list").prop('disabled', true).val('');

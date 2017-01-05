@@ -427,7 +427,7 @@ sub _isEnabledPre090
 
     # Upstart versions < 0.9.0 means no override files. Thus,
     # we check to see if an uncommented `start on' or `manual'
-    # stanza is the last one in the file. The last one in the
+    # stanza is the last one in the file. The last one in the
     # file wins.
     open my $fh, '<', \encode_utf8( $jobFileContent ) or die ( sprintf( 'Could not open in-memory file: %s', $! ) );
     my $enabled = 0;

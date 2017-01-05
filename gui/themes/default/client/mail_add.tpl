@@ -65,7 +65,7 @@
 
 <script>
 	$(function () {
-		$("#normal, #forward, #normal_forward").on('change', function() {
+		$("#normal, #forward, #normal_forward").on('change', function() {
 			if($(this).val() == '1') {
 				if($(this).is(':checked')) {
 					$("#tr_password, #tr_password_rep, #tr_quota").show();

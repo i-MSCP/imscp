@@ -308,7 +308,7 @@ sub _updateServerConfig
         debug($stderr) if $stderr;
 
         # Upgrade server system tables
-        # See #IP-1482 for further details.
+        # See #IP-1482 for further details.
         unless ($rs) {
             my $host = main::setupGetQuestion( 'DATABASE_HOST' );
             (my $user = main::setupGetQuestion( 'SQL_ROOT_USER' )) =~ s/"/\\"/g;

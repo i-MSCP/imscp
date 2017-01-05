@@ -217,7 +217,7 @@
                         </tr>
                         <tr>
                             <td><label for="memory_limit">{TR_MEMORY_LIMIT}</label></td>
-                            <td><input type="text" name="memory_limit" id="memory_limit" data-limit="{MEMORY_LIMIT_LIMIT}" value="{MEMORY_LIMIT}"> <span>{TR_MIB}</span>
+                            <td><input type="text" name="memory_limit" id="memory_limit" data-limit="{MEMORY_LIMIT_LIMIT}" value="{MEMORY_LIMIT}"> <span>{TR_MIB}</span>
                             </td>
                         </tr>
                         <tr>

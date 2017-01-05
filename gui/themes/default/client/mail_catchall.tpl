@@ -3,7 +3,7 @@
 	function action(action, mailacc) {
 		if (action == 'create') {
 			return true;
-		} else if(action == 'N/A') {
+		} else if(action == 'N/A') {
 			return false;
 		} else {
 			return confirm(sprintf("{TR_MESSAGE_DELETE}", mailacc));

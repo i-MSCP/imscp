@@ -194,7 +194,7 @@ sub msgbox
     ($_[0]->_textbox( $_[1], 'msgbox' ))[0];
 }
 
-=item yesno($text [, $defaultno ])
+=item yesno($text [, $defaultno ])
 
  Show boolean dialog box
 

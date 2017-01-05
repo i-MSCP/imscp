@@ -393,7 +393,7 @@ sub _call
 
         # Return value from the run() action is ignored by default because it's the responsability of the plugins to set
         # error status for their items. In case a plugin doesn't manage any item, it can force return value by defining
-        # the FORCE_RETVAL attribute and set it value to 'yes'
+        # the FORCE_RETVAL attribute and set it value to 'yes'
         if ($method ne 'run' || (defined $plugin->{'FORCE_RETVAL'} && $plugin->{'FORCE_RETVAL'} eq 'yes')) {
             return $rs;
         }

@@ -42,7 +42,7 @@ filters.
 
  The user interface is fully skinnable using XHTML and CSS 2.
 
- Project homepage: http://www.roundcube.net/
+ Project homepage: http://www.roundcube.net/
 
 =head1 PUBLIC METHODS
 

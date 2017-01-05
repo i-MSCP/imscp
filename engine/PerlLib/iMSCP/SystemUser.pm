@@ -146,7 +146,7 @@ sub delSystemUser
     0;
 }
 
-=item addToGroup([ $groupname =  $self->{'groupname'} [, $username = $self->{'username'} ] ])
+=item addToGroup([ $groupname =  $self->{'groupname'} [, $username = $self->{'username'} ] ])
 
  Add given UNIX user to the given UNIX group
 
@@ -202,7 +202,7 @@ sub addToGroup
     0;
 }
 
-=item addToGroup([ $groupname = $self->{'groupname'} [, $username = $self->{'username'} ] ])
+=item addToGroup([ $groupname = $self->{'groupname'} [, $username = $self->{'username'} ] ])
 
  Remove given UNIX user from the given UNIX group
 

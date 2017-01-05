@@ -33,9 +33,9 @@ use parent 'Common::SingletonClass';
  i-MSCP Pydio package.
 
  Pydio ( formely AjaXplorer ) is a software that can turn any web server into a powerfull file management system and an
-alternative to mainstream cloud storage providers.
+ alternative to mainstream cloud storage providers.
 
- Project homepage: https://pyd.io/
+ Project homepage: https://pyd.io/
 
 =head1 PUBLIC METHODS
 

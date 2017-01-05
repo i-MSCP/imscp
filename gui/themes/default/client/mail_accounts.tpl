@@ -36,11 +36,11 @@
 			}
 		});
 
-		$("input[type=submit]").click(function() {
+		$("input[type=submit]").click(function() {
 			var items = $(":checkbox:checked", oTable.fnGetNodes());
 
 			if(items.length > 0) {
-				if(confirm("{TR_MESSAGE_DELETE_SELECTED_ITEMS}")) {
+				if(confirm("{TR_MESSAGE_DELETE_SELECTED_ITEMS}")) {
 					return true;
 				}
 			} else {

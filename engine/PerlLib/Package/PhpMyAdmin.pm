@@ -58,7 +58,7 @@ use parent 'Common::SingletonClass';
  * manage InnoDB tables and foreign keys;
  and is fully internationalized and localized in dozens of languages.
 
- Project homepage: : http://www.phpmyadmin.net/
+ Project homepage: http://www.phpmyadmin.net/
 
 =head1 PUBLIC METHODS
 

@@ -7,7 +7,7 @@
 					stateSave: true,
 					pagingType: "simple",
 					columnDefs: [
-						{ type: "natural", targets: [ 1 ] }
+						{ type: "natural", targets: [ 1 ] }
 					]
 				}
 		);
