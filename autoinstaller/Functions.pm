@@ -132,10 +132,6 @@ sub build
     return $rs if $rs;
 
     my $dialog = iMSCP::Dialog->getInstance();
-    $dialog->set( 'ok-label', 'Ok' );
-    $dialog->set( 'yes-label', 'Yes' );
-    $dialog->set( 'no-label', 'No' );
-    $dialog->set( 'cancel-label', 'Back' );
 
     unless (iMSCP::Getopt->noprompt || $main::reconfigure ne 'none') {
         $rs = _showWelcomeMsg( $dialog );
@@ -166,11 +162,10 @@ sub build
     $rs ||= _getDistroAdapter()->preBuild( \@steps );
     return $rs if $rs;
 
-    my $step = 1;
-    my $nbSteps = scalar @steps;
+    my ($step, $nbSteps) = (1, scalar @steps);
     for (@steps) {
         $rs = step( @{$_}, $nbSteps, $step );
-        error( 'An error occurred while performing build steps' ) if $rs;
+        error( 'An error occurred while performing build steps' ) if $rs && $rs != 50;
         return $rs if $rs;
         $step++;
     }

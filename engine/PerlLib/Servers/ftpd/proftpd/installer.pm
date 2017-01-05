@@ -180,7 +180,7 @@ EOF
     }
 
     $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'} = $passivePortRange;
-    $rs;
+    0;
 }
 
 =item install()

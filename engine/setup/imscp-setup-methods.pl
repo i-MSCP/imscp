@@ -20,7 +20,6 @@
 use strict;
 use warnings;
 use FindBin;
-use DateTime;
 use DateTime::TimeZone;
 use Encode qw/ decode_utf8 /;
 use File::Basename;
@@ -157,36 +156,26 @@ sub setupDialog
         \&setupAskDomainBackup
     ));
 
-    my $dialog = iMSCP::Dialog->getInstance();
-    $dialog->set('ok-label', 'Ok');
-    $dialog->set('yes-label', 'Yes');
-    $dialog->set('no-label', 'No');
-    $dialog->set('cancel-label', 'Back');
-
     # Implements a simple state machine (backup capability)
     # Any dialog subroutine *should* allow user to step back by returning 30 when 'back' button is pushed
     # In case of yesno dialog box, there is no back button. Instead, user can back up using the ESC keystroke
     # In any other context, the ESC keystroke allows user to abort.
-    my ($state, $nbDialog) = (0, scalar @{$dialogStack});
+    my ($state, $nbDialog, $dialog) = (0, scalar @{$dialogStack}, iMSCP::Dialog->getInstance());
+    while($state < $nbDialog) {
+        $dialog->set('no-cancel', $state == 0 ? '' : undef);
 
-    while($state != $nbDialog) {
         $rs = $dialogStack->[$state]->($dialog);
         exit($rs) if $rs > 30;
         return $rs if $rs && $rs < 30;
 
-        # User asked for step back?
         if($rs == 30) {
-            if($state > 0) {
-                $state = $state - 1;
-            } else {
-                $state = 0; # We don't allow to step back before first question
-            }
-
             $main::reconfigure = 'forced' if $main::reconfigure eq 'none';
-        } else {
-            $main::reconfigure = 'none' if $main::reconfigure eq 'forced';
-            $state++;
+            $state--;
+            next;
         }
+
+        $main::reconfigure = 'none' if $main::reconfigure eq 'forced';
+        $state++;
     }
 
     iMSCP::EventManager->getInstance()->trigger('afterSetupDialog');
@@ -251,7 +240,7 @@ sub setupAskServerHostname
 
         my ($rs, $msg) = (0, '');
         do {
-            (my $rs, $hostname) = $dialog->inputbox(<<"EOF", $hostname);
+            ($rs, $hostname) = $dialog->inputbox(<<"EOF", $hostname);
 
 Please enter your server hostname:$msg
 EOF
@@ -400,7 +389,7 @@ EOF
 Please enter your SQL root user password:$msg
 EOF
         $msg = (isNotEmpty($pwd)) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError; 
-    } while($rs < 30 && $msg);
+    } while $rs < 30 && $msg;
     return $rs if $rs >= 30;
 
     if(my $connectError = tryDbConnect(idn_to_ascii( $hostname, 'utf-8' ), $port, $user, $pwd)) {
@@ -439,8 +428,9 @@ sub askMasterSqlUser
     $user = 'imscp_user' if lc($user) eq 'root'; # Handle upgrade case
     my $pwd = setupGetQuestion('DATABASE_PASSWORD');
     $pwd = decryptRijndaelCBC($main::imscpDBKey, $main::imscpDBiv, $pwd) unless $pwd eq '' || iMSCP::Getopt->preseed;
+    my $rs = 0;
 
-    my $rs = askSqlRootUser($dialog) if iMSCP::Getopt->preseed;
+    $rs = askSqlRootUser($dialog) if iMSCP::Getopt->preseed;
     return $rs if $rs;
 
     if($main::reconfigure =~ /(?:sql|servers|all|forced)$/
@@ -610,14 +600,14 @@ EOF
 sub setupAskTimezone
 {
     my $dialog = shift;
-    my $timezone = setupGetQuestion('TIMEZONE' || DateTime::TimeZone->new( name => 'local' )->name());
+    my $timezone = setupGetQuestion('TIMEZONE');
 
     if($main::reconfigure =~ /^(?:timezone|all|forced)$/
         || !isValidTimezone($timezone)
     ) {
         my ($rs, $msg) = (0, '');
         do {
-            ($rs, $timezone) = $dialog->inputbox(<<"EOF", $timezone);
+            ($rs, $timezone) = $dialog->inputbox(<<"EOF", $timezone || DateTime::TimeZone->new( name => 'local' )->name());
 
 Please enter your timezone:$msg
 EOF

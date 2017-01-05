@@ -238,7 +238,7 @@ sub askDomain
 Please enter a domain name for the control panel:$msg
 EOF
             $msg = (isValidDomain($domainName)) ? '' :  $iMSCP::Dialog::InputValidation::lastValidationError;
-        } while $rs < 30 && 1;
+        } while $rs < 30 && $msg;
         return $rs if $rs >= 30;
     }
 

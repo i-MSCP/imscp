@@ -391,6 +391,9 @@ sub _buildPackageList
         return 1;
     }
 
+    my $dialog = iMSCP::Dialog->getInstance();
+    $dialog->set( 'no-cancel', '' );
+
     while(my ($section, $data) = each( %{$pkgData} )) {
         # Simple list of packages to install
         if ($data->{'package'}) {
@@ -427,13 +430,11 @@ sub _buildPackageList
 
         # Ask user for alternative list of packages to install if any
         if (@alts > 1 && ($forceDialog || grep($_ eq $main::reconfigure, ( $section, 'servers', 'all' )))) {
-            iMSCP::Dialog->getInstance()->set( 'no-cancel', '' );
-            (my $ret, $sAlt) = iMSCP::Dialog->getInstance()->radiolist( <<"EOF", [ sort @alts ], $sAlt );
+            (my $ret, $sAlt) = $dialog->radiolist( <<"EOF", [ sort @alts ], $sAlt );
 
 Please, choose the server you want use for the $section service:
 EOF
             return $ret if $ret; # Handle ESC case
-            iMSCP::Dialog->getInstance()->set( 'no-cancel' );
         }
 
         while(my ($alt, $altData) = each( %{$data} )) {
@@ -513,6 +514,7 @@ EOF
         $main::imscpConfig{uc( $section ).'_SERVER'} = $sAlt;
     }
 
+    $dialog->set( 'no-cancel', '' );
     0;
 }
 
