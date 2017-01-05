@@ -62,5 +62,4 @@ smtpd_data_restrictions = reject_multi_recipient_bounce, reject_unauth_pipelinin
 imscp-arpl_destination_concurrency_limit = 2
 imscp-arpl_destination_recipient_limit = 1
 
-## Other parameters
-## Those parameters are dynamically added by i-MSCP or 3rd-party softwares
+# Parameters added at run-time by i-MSCP or 3rd-party components
