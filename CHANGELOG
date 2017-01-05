@@ -8,9 +8,8 @@ CONFIGS
     Fixed: Unexpected wide character in 00_nameserver.conf Apache2 conffile, causing memory leak
 
 BACKEND
-    Added: iMSCP::Dialog::InputValidation library for ease of user input validation
-    Added: iMSCP::Mount::getMounts() function (iMSCP::Mount)
-    Added: Missing DESTROY() method (iMSCP::Config)
+    Added: iMSCP::Mount::getMounts() function
+    Added: Missing iMSCP::Config::DESTROY() method
     Fixed: Could not delete domain due to duplicate mounts (See #IP-1679)
     Fixed: Don't attempt to flush() when tied file is readonly or when deffered writing is disabled (iMSCP::Config)
     Fixed: Recursion must be optional in iMSCP::Mount::umount() (iMSCP::Mount)
@@ -22,25 +21,26 @@ DISTRIBUTIONS
     Removed: libdata-validate-domain-perl package from package files (provided module version 0.10 is too old)
 
 FRONTEND
-    Fixed: `VirtualFileSystem: Could not list directory error' when editing forwarded domain, alias or subdomain
     Fixed: Discard forwarded domains from list of shareable mount points
+    Fixed: Unexpected error `VirtualFileSystem: Could not list directory' when editing a forwarded domain, alias or subdomain
 
 INSTALLER
     Added: `admin_credentials' and `admin_email' reconfiguration items
+    Added: iMSCP::Dialog::InputValidation library for ease of user input validation
     Added: preInstall() and postInstall() methods (autoinstaller::Adapter::AbstractAdapter)
     Enhancement: Try to guess WAN IP using ipinfo.io Web service
     Removed: `afterPreBuild', `beforeBuild' and `beforePostBuild' events
-    Renamed: `beforePreBuild' event to `preBuild', and `afterBuild' event to `postBuild'
     Renamed: `beforeInstall' event to `preInstall` and `afterInstall' event to `postInstall`
+    Renamed: `beforePreBuild' event to `preBuild', and `afterBuild' event to `postBuild'
 
 SERVERS
     Fixed: Path must be cleaned before use in regexes (HTTPD servers)
-    Fixed: Skip cleanup of custom.conf.tpl, index.html, vlogger.conf.tpl and php-fcgi-starter template files (HTTPD servers)
+    Fixed: Skip cleanup of custom.conf.tpl, index.html, vlogger.conf.tpl and php-fcgi-starter conffiles (HTTPD servers)
 
 VENDOR
     Added: Data::Validate::Domain Perl module version 0.14
     Updated: Capture::Tiny Perl module from version 0.40 to version 0.44
-    Updated: Net::Domain::TLD Perm module from version 1.74 to version 1.75
+    Updated: Net::Domain::TLD Perl module from version 1.74 to version 1.75
 
 YOUTRACK
     #IP-1679 Duplicate bind mounts leading to un-deletable Web folders (Ubuntu < 16.04)
