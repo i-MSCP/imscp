@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::sqld::remote_server - i-MSCP remote SQL server implementation
+ Servers::sqld::remote_server - i-MSCP Remote MySQL server implementation
 
 =cut
 
@@ -25,14 +25,14 @@ package Servers::sqld::remote_server;
 
 use strict;
 use warnings;
+use Class::Autouse qw/ :nostat Servers::sqld::remote_server::installer Servers::sqld::remote_server::uninstaller /;
 use iMSCP::Database;
 use version;
-use Class::Autouse qw/ :nostat Servers::sqld::remote_server::installer Servers::sqld::remote_server::uninstaller /;
 use parent 'Servers::sqld::mysql';
 
 =head1 DESCRIPTION
 
- i-MSCP remote SQL server implementation.
+ i-MSCP Remote MySQL server implementation.
 
 =head1 PUBLIC METHODS
 

@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::sqld::remote_server::uninstaller - i-MSCP Remote MySQL server uninstaller implementation
+ Servers::sqld::remote_server::uninstaller - i-MSCP Percona MySQL server uninstaller implementation
 
 =cut
 
@@ -21,16 +21,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package Servers::sqld::remote_server::uninstaller;
+package Servers::sqld::percona::uninstaller;
 
 use strict;
 use warnings;
-use Servers::sqld::remote_server;
+use Servers::sqld::percona;
 use parent 'Servers::sqld::mysql::uninstaller';
 
 =head1 DESCRIPTION
 
- i-MSCP Remote MySQL server uninstaller implementation.
+ i-MSCP Percona MySQL server uninstaller implementation.
 
 =head1 PRIVATE METHODS
 
@@ -40,7 +40,7 @@ use parent 'Servers::sqld::mysql::uninstaller';
 
  Initialize instance
 
- Return Servers::sqld::remote_server:uninstaller
+ Return Servers::sqld::percona:uninstaller
 
 =cut
 
@@ -48,7 +48,7 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'sqld'} = Servers::sqld::remote_server->getInstance();
+    $self->{'sqld'} = Servers::sqld::percona->getInstance();
     $self;
 }
 

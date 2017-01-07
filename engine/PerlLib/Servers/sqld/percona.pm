@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::sqld::percona - i-MSCP Percona server implementation
+ Servers::sqld::percona - i-MSCP Percona MySQL server implementation
 
 =cut
 
@@ -25,11 +25,84 @@ package Servers::sqld::percona;
 
 use strict;
 use warnings;
+use Class::Autouse qw/ :nostat Servers::sqld::percona::installer Servers::sqld::percona::uninstaller /;
+use iMSCP::Service;
 use parent 'Servers::sqld::mysql';
 
 =head1 DESCRIPTION
 
- i-MSCP Percona server implementation.
+ i-MSCP Percona MySQL server implementation.
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item preinstall()
+
+ Process preinstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preinstall
+{
+    my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'percona' );
+    $rs ||= Servers::sqld::percona::installer->getInstance()->preinstall();
+    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPreinstall', 'percona' )
+}
+
+=item postinstall()
+
+ Process postinstall tasks
+
+ Return int 0
+
+=cut
+
+sub postinstall
+{
+    my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'percona' );
+
+    local $@;
+    eval { iMSCP::Service->getInstance()->enable( 'mysql' ); };
+    if ($@) {
+        error( $@ );
+        return 1;
+    }
+
+    $rs = $self->{'eventManager'}->register(
+        'beforeSetupRestartServices', sub {
+            push @{$_[0]}, [ sub { $self->restart(); }, 'SQL' ];
+            0;
+        }
+    );
+
+    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'percona' );
+}
+
+=item uninstall()
+
+ Process uninstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub uninstall
+{
+    my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'percona' );
+    $rs ||= Servers::sqld::percona::uninstaller->getInstance()->uninstall();
+    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldUninstall', 'percona' );
+}
+
+=back
 
 =head1 AUTHOR
 

@@ -119,9 +119,9 @@ sub _init
 
     my $oldConf = "$self->{'cfgDir'}/mysql.old.data";
 
-    if(defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
+    if (defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
-        while(my($key, $value) = each(%oldConfig)) {
+        while(my ($key, $value) = each(%oldConfig)) {
             next unless exists $self->{'config'}->{$key};
             $self->{'config'}->{$key} = $value;
         }
@@ -157,9 +157,9 @@ sub _setTypeAndVersion
     }
 
     my $type = 'mysql';
-    if (index( lc( ${$rdata}[0]->[0] ), 'mariadb' ) != -1) {
+    if (index( lc( ${$rdata}[0]->[0] ), 'mariadb' ) != - 1) {
         $type = 'mariadb';
-    } elsif (index( lc( ${$rdata}[0]->[1] ), 'percona' ) != -1) {
+    } elsif (index( lc( ${$rdata}[0]->[1] ), 'percona' ) != - 1) {
         $type = 'percona';
     }
 
@@ -199,9 +199,9 @@ sub _buildConf
     # Make sure that the conf.d directory exists
     $rs = iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make(
         {
-            user => $rootUName,
+            user  => $rootUName,
             group => $rootGName,
-            mode => 0755
+            mode  => 0755
         }
     );
     return $rs if $rs;
