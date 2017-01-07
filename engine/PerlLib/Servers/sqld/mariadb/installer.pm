@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::sqld::mariadb::installer - i-MSCP MariaDB MySQL server installer implementation
+ Servers::sqld::mariadb::installer - i-MSCP MariaDB server installer implementation
 
 =cut
 
@@ -32,7 +32,7 @@ use parent 'Servers::sqld::mysql::installer';
 
 =head1 DESCRIPTION
 
- i-MSCP MariaDB MySQL server installer implementation.
+ i-MSCP MariaDB server installer implementation.
 
 =head1 PRIVATE METHODS
 

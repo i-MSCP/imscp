@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::sqld::mariadb::uninstaller - i-MSCP MariaDB MySQL server uninstaller implementation
+ Servers::sqld::mariadb::uninstaller - i-MSCP MariaDB server uninstaller implementation
 
 =cut
 
@@ -30,7 +30,7 @@ use parent 'Servers::sqld::mysql::uninstaller';
 
 =head1 DESCRIPTION
 
- i-MSCP MariaDB MySQL server uninstaller implementation.
+ i-MSCP MariaDB server uninstaller implementation.
 
 =head1 PRIVATE METHODS
 

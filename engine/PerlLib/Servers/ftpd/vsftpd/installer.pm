@@ -93,7 +93,7 @@ sub sqlUserDialog
 
     if ($main::reconfigure =~ /^(?:ftpd|servers|all|forced)$/
         || !isValidUsername($dbUser)
-        || !isStringNotInList($dbUser, 'root', $masterSqlUser)
+        || !isStringNotInList($dbUser, 'root', 'debian-sys-maint', $masterSqlUser)
         || !isValidPassword($dbPass)
     ) {
         my ($rs, $msg) = (0, '');
@@ -105,7 +105,7 @@ Please enter a username for the VsFTPd SQL user:$msg
 EOF
             $msg = '';
             if (!isValidUsername($dbUser)
-                || !isStringNotInList($dbUser, 'root', $masterSqlUser)
+                || !isStringNotInList($dbUser, 'root', 'debian-sys-maint', $masterSqlUser)
             ) {
                 $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             }

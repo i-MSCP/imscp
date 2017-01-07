@@ -99,7 +99,7 @@ sub showDialog
 
     if ($main::reconfigure =~ /^(?:sqlmanager|all|forced)$/
         || !isValidUsername($dbUser)
-        || !isStringNotInList($dbUser, 'root', $masterSqlUser)
+        || !isStringNotInList($dbUser, 'root', 'debian-sys-maint', $masterSqlUser)
         || !isValidPassword($dbPass)
     ) {
         my ($rs, $msg) = (0, '');
@@ -111,7 +111,7 @@ Please enter a username for the PhpMyAdmin SQL user:$msg
 EOF
             $msg = '';
             if (!isValidUsername($dbUser)
-                || !isStringNotInList($dbUser, 'root', $masterSqlUser)
+                || !isStringNotInList($dbUser, 'root', 'debian-sys-maint', $masterSqlUser)
             ) {
                 $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             }

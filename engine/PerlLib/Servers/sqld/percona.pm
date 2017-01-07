@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::sqld::percona - i-MSCP Percona MySQL server implementation
+ Servers::sqld::percona - i-MSCP Percona server implementation
 
 =cut
 
@@ -31,7 +31,7 @@ use parent 'Servers::sqld::mysql';
 
 =head1 DESCRIPTION
 
- i-MSCP Percona MySQL server implementation.
+ i-MSCP Percona server implementation.
 
 =head1 PUBLIC METHODS
 
@@ -77,7 +77,7 @@ sub postinstall
 
     $rs = $self->{'eventManager'}->register(
         'beforeSetupRestartServices', sub {
-            push @{$_[0]}, [ sub { $self->restart(); }, 'SQL' ];
+            push @{$_[0]}, [ sub { $self->restart(); }, 'Percona MySQL server' ];
             0;
         }
     );

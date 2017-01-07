@@ -101,7 +101,7 @@ sub authdaemonSqlUserDialog
 
     if ($main::reconfigure =~ /^(?:po|servers|all|forced)$/
         || !isValidUsername($dbUser)
-        || !isStringNotInList($dbUser, 'root', $masterSqlUser)
+        || !isStringNotInList($dbUser, 'root', 'debian-sys-maint', $masterSqlUser)
         || !isValidPassword($dbPass)
     ) {
         my ($rs, $msg) = (0, '');
@@ -113,7 +113,7 @@ Please enter an username for the Courier Authdaemon SQL user:$msg
 EOF
             $msg = '';
             if (!isValidUsername($dbUser)
-                || !isStringNotInList($dbUser, 'root', $masterSqlUser)
+                || !isStringNotInList($dbUser, 'root', 'debian-sys-maint', $masterSqlUser)
             ) {
                 $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             }
@@ -159,7 +159,7 @@ sub cyrusSaslSqlUserDialog
 
     if ($main::reconfigure =~ /^(?:po|servers|all|forced)$/
         || !isValidUsername($dbUser)
-        || !isStringNotInList($dbUser, 'root', $masterSqlUser)
+        || !isStringNotInList($dbUser, 'root', 'debian-sys-maint', $masterSqlUser)
         || !isValidPassword($dbPass)
     ) {
         my ($rs, $msg) = (0, '');
@@ -171,7 +171,7 @@ sub cyrusSaslSqlUserDialog
 
             $msg = '';
             if (!isValidUsername($dbUser)
-                || !isStringNotInList($dbUser, 'root', $masterSqlUser)
+                || !isStringNotInList($dbUser, 'root', 'debian-sys-maint', $masterSqlUser)
             ) {
                 $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             }

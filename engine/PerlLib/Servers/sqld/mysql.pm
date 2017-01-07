@@ -84,7 +84,7 @@ sub postinstall
 
     $rs = $self->{'eventManager'}->register(
         'beforeSetupRestartServices', sub {
-            push @{$_[0]}, [ sub { $self->restart(); }, 'SQL' ];
+            push @{$_[0]}, [ sub { $self->restart(); }, 'MySQL server' ];
             0;
         }
     );

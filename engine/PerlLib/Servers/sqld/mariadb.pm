@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::sqld::mariadb - i-MSCP MariaDB MySQL server implementation
+ Servers::sqld::mariadb - i-MSCP MariaDB SQL server implementation
 
 =cut
 
@@ -32,7 +32,7 @@ use parent 'Servers::sqld::mysql';
 
 =head1 DESCRIPTION
 
- i-MSCP MariaDB MySQL server implementation.
+ i-MSCP MariaDB server implementation.
 
 =head1 PUBLIC METHODS
 
@@ -78,7 +78,7 @@ sub postinstall
 
     $rs = $self->{'eventManager'}->register(
         'beforeSetupRestartServices', sub {
-            push @{$_[0]}, [ sub { $self->restart(); }, 'SQL' ];
+            push @{$_[0]}, [ sub { $self->restart(); }, 'MariaDB server' ];
             0;
         }
     );

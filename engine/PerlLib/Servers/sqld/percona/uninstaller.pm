@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::sqld::remote_server::uninstaller - i-MSCP Percona MySQL server uninstaller implementation
+ Servers::sqld::remote_server::uninstaller - i-MSCP Percona server uninstaller implementation
 
 =cut
 
@@ -30,7 +30,7 @@ use parent 'Servers::sqld::mysql::uninstaller';
 
 =head1 DESCRIPTION
 
- i-MSCP Percona MySQL server uninstaller implementation.
+ i-MSCP Percona server uninstaller implementation.
 
 =head1 PRIVATE METHODS
 

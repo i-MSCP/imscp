@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::sqld::percona::installer - i-MSCP Percona MySQL server installer implementation
+ Servers::sqld::percona::installer - i-MSCP Percona server installer implementation
 
 =cut
 
@@ -32,7 +32,7 @@ use parent 'Servers::sqld::mysql::installer';
 
 =head1 DESCRIPTION
 
- i-MSCP Percona MySQL server installer implementation.
+ i-MSCP Percona server installer implementation.
 
 =head1 PRIVATE METHODS
 
