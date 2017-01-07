@@ -38,14 +38,13 @@ use iMSCP::Execute;
 use iMSCP::Ext2Attributes qw/ setImmutable clearImmutable isImmutable /;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::Mount qw / mount umount isMountpoint addMountEntry removeMountEntry /;
+use iMSCP::Mount qw/ mount umount isMountpoint addMountEntry removeMountEntry /;
 use iMSCP::Net;
 use iMSCP::ProgramFinder;
 use iMSCP::Rights;
 use iMSCP::TemplateParser;
 use iMSCP::Service;
-use List::MoreUtils qw(uniq);
-use Scalar::Defer;
+use List::MoreUtils qw/ uniq /;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -1375,19 +1374,9 @@ sub _init
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'apacheCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
     $self->{'apacheTplDir'} = "$self->{'apacheCfgDir'}/parts";
-    $self->{'config'} = lazy
-        {
-            tie my %c, 'iMSCP::Config',
-                fileName => "$self->{'apacheCfgDir'}/apache.data",
-                readonly => (defined $main::execmode && $main::execmode eq 'setup') ? 0 : 1;
-            \%c;
-        };
+    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'apacheCfgDir'}/apache.data", readonly => 1;
     $self->{'phpCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/php";
-    $self->{'phpConfig'} = lazy
-        {
-            tie my %c, 'iMSCP::Config', fileName => "$self->{'phpCfgDir'}/php.data", readonly => 1;
-            \%c;
-        };
+    tie %{$self->{'phpConfig'}}, 'iMSCP::Config', fileName => "$self->{'phpCfgDir'}/php.data", readonly => 1;
     $self->{'eventManager'}->register( 'afterHttpdBuildConfFile', sub { $self->_cleanTemplate( @_ )} );
     $self;
 }

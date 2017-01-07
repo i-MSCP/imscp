@@ -120,7 +120,7 @@ sub _init
     my $oldConf = "$self->{'cfgDir'}/mysql.old.data";
 
     if(defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
-        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
+        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
         while(my($key, $value) = each(%oldConfig)) {
             next unless exists $self->{'config'}->{$key};
             $self->{'config'}->{$key} = $value;
@@ -349,7 +349,7 @@ EOF
         && version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '10.0' ))
         || (version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.6.6' ))
     ) {
-        for my $plugin(qw/cracklib_password_check simple_password_check validate_password/) {
+        for my $plugin(qw/ cracklib_password_check simple_password_check validate_password /) {
             $qrs = $db->doQuery( 'name', "SELECT name FROM mysql.plugin WHERE name = '$plugin'" );
             unless (ref $qrs eq 'HASH') {
                 error( $qrs );
@@ -366,9 +366,6 @@ EOF
         }
     }
 
-    # For usage of unix socket
-    #main::setupSetQuestion('DATABASE_HOST', 'localhost');
-    #$main::imscpConfig{'DATABASE_HOST'} = 'localhost';
     0;
 }
 

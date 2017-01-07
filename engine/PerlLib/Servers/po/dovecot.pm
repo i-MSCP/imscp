@@ -35,7 +35,6 @@ use iMSCP::Getopt;
 use iMSCP::Service;
 use Servers::mta;
 use Tie::File;
-use Scalar::Defer;
 use Class::Autouse qw/ :nostat Servers::po::dovecot::installer Servers::po::dovecot::uninstaller /;
 use parent 'Common::SingletonClass';
 
@@ -445,10 +444,7 @@ sub _init
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-    $self->{'config'} = lazy {
-            tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/dovecot.data", readonly => 1;
-            \%c;
-        };
+    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/dovecot.data", readonly => 1;
     $self;
 }
 

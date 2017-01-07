@@ -37,7 +37,6 @@ use iMSCP::ProgramFinder;
 use iMSCP::TemplateParser;
 use iMSCP::Net;
 use iMSCP::Service;
-use Scalar::Defer;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -788,11 +787,7 @@ sub _init
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'tplDir'} = "$self->{'cfgDir'}/parts";
-    $self->{'config'} = lazy
-        {
-            tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/bind.data", readonly => 1;
-            \%c;
-        };
+    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/bind.data", readonly => 1;
     $self;
 }
 

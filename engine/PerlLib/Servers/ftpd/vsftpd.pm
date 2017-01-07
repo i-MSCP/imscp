@@ -32,7 +32,6 @@ use iMSCP::File;
 use iMSCP::Service;
 use iMSCP::TemplateParser;
 use File::Basename;
-use Scalar::Defer;
 use Class::Autouse qw/ :nostat Servers::ftpd::vsftpd::installer Servers::ftpd::vsftpd::uninstaller /;
 use parent 'Common::SingletonClass';
 
@@ -414,10 +413,7 @@ sub _init
     $self->{'reload'} = 0;
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/vsftpd";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-    $self->{'config'} = lazy {
-            tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/vsftpd.data", readonly => 1;
-            \%c
-        };
+    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/vsftpd.data", readonly => 1;
     $self;
 }
 

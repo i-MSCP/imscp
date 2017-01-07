@@ -35,7 +35,6 @@ use iMSCP::Getopt;
 use iMSCP::Service;
 use Servers::mta;
 use Tie::File;
-use Scalar::Defer;
 use Class::Autouse qw/ :nostat Servers::po::courier::installer Servers::po::courier::uninstaller /;
 use parent 'Common::SingletonClass';
 
@@ -511,10 +510,7 @@ sub _init
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-    $self->{'config'} = lazy {
-            tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/courier.data", readonly => 1;
-            \%c;
-        };
+    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/courier.data", readonly => 1;
     $self;
 }
 

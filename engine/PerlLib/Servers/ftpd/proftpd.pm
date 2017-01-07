@@ -32,7 +32,6 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Service;
 use File::Basename;
-use Scalar::Defer;
 use Class::Autouse qw/ :nostat Servers::ftpd::proftpd::installer Servers::ftpd::proftpd::uninstaller /;
 use parent 'Common::SingletonClass';
 
@@ -420,10 +419,7 @@ sub _init
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'commentChar'} = '#';
-    $self->{'config'} = lazy {
-            tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/proftpd.data", readonly => 1;
-            \%c;
-        };
+    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/proftpd.data", readonly => 1;
     $self;
 }
 

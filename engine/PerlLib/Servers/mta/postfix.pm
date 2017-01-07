@@ -36,7 +36,6 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Service;
-use Scalar::Defer;
 use Tie::File;
 use parent 'Common::SingletonClass';
 
@@ -884,11 +883,7 @@ sub _init
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-    $self->{'config'} = lazy
-        {
-            tie my %c, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/postfix.data", readonly => 1;
-            \%c;
-        };
+    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/postfix.data", readonly => 1;
     $self->{'_maps'} = { };
     $self;
 }

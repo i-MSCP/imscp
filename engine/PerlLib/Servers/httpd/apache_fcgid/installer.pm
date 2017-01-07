@@ -223,7 +223,7 @@ sub _init
     my $oldConf = "$self->{'apacheCfgDir'}/apache.old.data";
 
     if(defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
-        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
+        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
         while(my($key, $value) = each(%oldConfig)) {
             next unless exists $self->{'config'}->{$key};
             $self->{'config'}->{$key} = $value;
@@ -241,7 +241,7 @@ sub _init
     $oldConf = "$self->{'phpCfgDir'}/php.old.data";
 
     if(defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
-        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
+        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
         while(my($key, $value) = each(%oldConfig)) {
             next unless exists $self->{'phpConfig'}->{$key};
             $self->{'phpConfig'}->{$key} = $value;

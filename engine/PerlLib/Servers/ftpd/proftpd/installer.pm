@@ -236,7 +236,7 @@ sub _init
     my $oldConf = "$self->{'cfgDir'}/proftpd.old.data";
 
     if(defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
-        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf;
+        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
         while(my ($key, $value) = each(%oldConfig)) {
             next unless exists $self->{'config'}->{$key};
             $self->{'config'}->{$key} = $value;

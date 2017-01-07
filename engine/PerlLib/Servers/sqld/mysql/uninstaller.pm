@@ -25,7 +25,6 @@ package Servers::sqld::mysql::uninstaller;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
 use iMSCP::File;
 use Servers::sqld::mysql;
 use parent 'Common::SingletonClass';
@@ -71,7 +70,7 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'sqld'} = Servers::sqld->factory()->getInstance();
+    $self->{'sqld'} = Servers::sqld::mysql->getInstance();
     $self;
 }
 
