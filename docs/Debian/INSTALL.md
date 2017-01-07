@@ -93,12 +93,12 @@ Any released version >= 7.x (Debian 8.x recommended)
 #### 3. Download and untar the distribution files
 
     # cd /usr/local/src
-    # wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
-    # tar -xzf <version>.tar.gz
+    # wget https://github.com/i-MSCP/imscp/archive/1.3.16.tar.gz
+    # tar -xzf 1.3.16.tar.gz
 
 #### 4. Change to the newly created directory
 
-    # cd imscp-<version>
+    # cd imscp-1.3.16
 
 #### 5. Install i-MSCP by running its installer
 
@@ -124,12 +124,12 @@ case something goes wrong during upgrade.
 #### 3. Download and untar the distribution files
 
     # cd /usr/local/src
-    # wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
-    # tar -xzf <version>.tar.gz
+    # wget https://github.com/i-MSCP/imscp/archive/1.3.16.tar.gz
+    # tar -xzf 1.3.16.tar.gz
 
 #### 4. Change to the newly created directory
 
-    # cd imscp-<version>
+    # cd imscp-1.3.16
 
 #### 5. Update i-MSCP by running its installer
 
