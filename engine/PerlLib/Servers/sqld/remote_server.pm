@@ -26,10 +26,8 @@ package Servers::sqld::remote_server;
 use strict;
 use warnings;
 use iMSCP::Database;
-use iMSCP::Crypt qw/ decryptRijndaelCBC /;
-use iMSCP::TemplateParser;
 use version;
-use Class::Autouse qw/ :nostat Servers::sqld::mysql::installer /;
+use Class::Autouse qw/ :nostat Servers::sqld::remote_server::installer Servers::sqld::remote_server::uninstaller /;
 use parent 'Servers::sqld::mysql';
 
 =head1 DESCRIPTION
@@ -52,12 +50,9 @@ sub preinstall
 {
     my $self = shift;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall' );
-    my $installer = Servers::sqld::mysql::installer->getInstance();
-    $rs ||= $installer->_setTypeAndVersion();
-    $rs ||= $self->_buildConf();
-    $rs ||= $installer->_saveConf();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPreinstall' )
+    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'remote_server' );
+    $rs ||= Servers::sqld::remote_server::installer->getInstance()->preinstall();
+    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPreinstall', 'remote_server' )
 }
 
 =item postinstall()
@@ -72,8 +67,25 @@ sub postinstall
 {
     my $self = shift;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'mysql' );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'mysql' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'remote_server' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'remote_server' );
+}
+
+=item uninstall()
+
+ Process uninstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub uninstall
+{
+    my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'remote_server' );
+    $rs ||= Servers::sqld::remote_server::uninstaller->getInstance()->uninstall();
+    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldUninstall', 'remote_server' );
 }
 
 =item restart()
@@ -86,7 +98,7 @@ sub postinstall
 
 sub restart
 {
-    0; # Nothing to do there; Only here to prevent parent method to be called
+    0;
 }
 
 =item createUser($user, $host, $password)
@@ -118,95 +130,6 @@ sub createUser
     );
     ref $qrs eq 'HASH' or die( sprintf( 'Could not create the %s@%s SQL user: %s', $user, $host, $qrs ) );
     0;
-}
-
-=back
-
-=head1 PRIVATE METHODS
-
-=over 4
-
-=item _buildConf()
-
- Build configuration file
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _buildConf
-{
-    my $self = shift;
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldBuildConf' );
-    return $rs if $rs;
-
-    my $rootUName = $main::imscpConfig{'ROOT_USER'};
-    my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-    my $mysqlGName = $self->{'config'}->{'SQLD_GROUP'};
-    my $confDir = $self->{'config'}->{'SQLD_CONF_DIR'};
-
-    # Make sure that the conf.d directory exists
-    $rs = iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make(
-        {
-            user => $rootUName,
-            group => $rootGName,
-            mode => 0755
-        }
-    );
-    return $rs if $rs;
-
-    # Create the /etc/mysql/my.cnf file if missing
-    unless (-f "$confDir/my.cnf") {
-        $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'my.cnf', \my $cfgTpl, { } );
-        return $rs if $rs;
-
-        unless (defined $cfgTpl) {
-            $cfgTpl = "!includedir $confDir/conf.d/\n";
-        } elsif ($cfgTpl !~ m%^!includedir\s+$confDir/conf.d/\n%m) {
-            $cfgTpl .= "!includedir $confDir/conf.d/\n";
-        }
-
-        my $file = iMSCP::File->new( filename => "$confDir/my.cnf" );
-        $rs = $file->set( $cfgTpl );
-        $rs ||= $file->save();
-        $rs ||= $file->owner( $rootUName, $rootGName );
-        $rs ||= $file->mode( 0644 );
-        return $rs if $rs;
-    }
-
-    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'imscp.cnf', \my $cfgTpl, { } );
-    return $rs if $rs;
-
-    unless (defined $cfgTpl) {
-        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp.cnf" )->get();
-        unless (defined $cfgTpl) {
-            error( sprintf( 'Could not read %s', "$self->{'cfgDir'}/imscp.cnf" ) );
-            return 1;
-        }
-    }
-
-    (my $user = main::setupGetQuestion( 'DATABASE_USER' ) ) =~ s/"/\\"/g;
-    (my $pwd = decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv, main::setupGetQuestion( 'DATABASE_PASSWORD' ) ) ) =~ s/"/\\"/g;
-
-    $cfgTpl = process(
-        {
-            DATABASE_HOST     => main::setupGetQuestion( 'DATABASE_HOST' ),
-            DATABASE_PORT     => main::setupGetQuestion( 'DATABASE_PORT' ),
-            DATABASE_PASSWORD => $pwd,
-            DATABASE_USER     => $user
-        },
-        $cfgTpl
-    );
-
-    my $file = iMSCP::File->new( filename => "$confDir/conf.d/imscp.cnf" );
-    $rs ||= $file->set( $cfgTpl );
-    $rs ||= $file->save();
-    $rs ||= $file->owner( $rootUName, $mysqlGName );
-    $rs ||= $file->mode( 0640 );
-    return $rs if $rs;
-
-    $self->{'eventManager'}->trigger( 'afterSqldBuildConf' );
 }
 
 =back
