@@ -40,30 +40,6 @@ use parent 'Servers::sqld::mysql::installer';
 
  i-MSCP SQL remote server installer implementation.
 
-=head1 PUBLIC METHODS
-
-=over 4
-
-=item preinstall()
-
- Process preinstall tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub preinstall
-{
-    my $self = shift;
-
-    my $rs = $self->_setTypeAndVersion();
-    $rs ||= $self->_buildConf();
-    $rs ||= $self->_updateServerConfig();
-    $rs ||= $self->_saveConf();
-}
-
-=back
-
 =head1 PRIVATE METHODS
 
 =over 4
