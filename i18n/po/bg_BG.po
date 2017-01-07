@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# stanimir iliev <stanimiriliev@gmail.com>, 2016
+# stanimir iliev <stanimiriliev@gmail.com>, 2016-2017
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-01-05 20:12+0100\n"
-"PO-Revision-Date: 2016-12-31 11:13+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2017-01-07 03:24+0100\n"
+"PO-Revision-Date: 2017-01-06 14:19+0000\n"
+"Last-Translator: stanimir iliev <stanimiriliev@gmail.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/i-mscp/i-MSCP/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -417,7 +417,7 @@ msgid "A new software package has been uploaded"
 msgstr "Новият пакет софтуер е качен"
 
 msgid "A task is in progress for this htuser."
-msgstr ""
+msgstr "Задачата се изпълнява за този потребител"
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Достъп до статистиката на домейна Ви през уеб интерфейс."
@@ -507,7 +507,7 @@ msgid "Add admin"
 msgstr "Добави админ"
 
 msgid "Add catchall"
-msgstr ""
+msgstr "Добави пренасочване"
 
 msgid "Add custom menu"
 msgstr "Добави Персонално меню"
@@ -707,13 +707,13 @@ msgid "Admin / Users / Sessions"
 msgstr ""
 
 msgid "Admin account successfully created."
-msgstr ""
+msgstr "Администраторския акаунт е създаден успешно."
 
 msgid "Admin log"
 msgstr "Лог админ"
 
 msgid "Admin not available"
-msgstr ""
+msgstr "Администраторът не е наличен"
 
 msgid "Admin users"
 msgstr "Администратори"
@@ -728,7 +728,7 @@ msgid "Administrator and Reseller levels"
 msgstr ""
 
 msgid "Administrator and customer"
-msgstr ""
+msgstr "Администратор и клиент"
 
 msgid "Administrator and customer levels"
 msgstr ""
@@ -746,7 +746,7 @@ msgid "Administrators"
 msgstr "Администратори"
 
 msgid "Administrators and customers"
-msgstr ""
+msgstr "Администраторите и клиенти"
 
 msgid "Administrators and resellers"
 msgstr ""
@@ -757,16 +757,16 @@ msgid ""
 msgstr ""
 
 msgid "Alias forward"
-msgstr ""
+msgstr "Пренасочване псевдоними"
 
 msgid "Alias mail"
-msgstr ""
+msgstr "Псевдоним поща"
 
 msgid "Alias subdomain forward"
-msgstr ""
+msgstr "Пренасочване поддомейн псевдоним"
 
 msgid "Alias subdomain mail"
-msgstr ""
+msgstr "Псевдоним на пощенска кутия"
 
 msgid "Aliases"
 msgstr "Псевдоним"
@@ -778,7 +778,7 @@ msgid "All closed tickets were successfully deleted."
 msgstr "Всички затворени билети бяха изтрити."
 
 msgid "All errors (Development)"
-msgstr ""
+msgstr "Всички грешки (развитие)"
 
 msgid "All errors, except E_DEPRECATED and E_STRICT (Production)"
 msgstr ""
@@ -2354,16 +2354,16 @@ msgid "FTP account"
 msgstr "FTP акаунт"
 
 msgid "FTP account already exists."
-msgstr ""
+msgstr "FTP акаунта вече съществува"
 
 msgid "FTP account limit"
-msgstr ""
+msgstr "ограничения за FTP акаунт"
 
 msgid "FTP account limit reached."
 msgstr ""
 
 msgid "FTP account successfully added."
-msgstr ""
+msgstr "FTP акаунта е успешно добавен"
 
 msgid "FTP account successfully deleted."
 msgstr ""
@@ -2633,7 +2633,7 @@ msgid "Htaccess user successfully scheduled for addition."
 msgstr ""
 
 msgid "Http traffic"
-msgstr ""
+msgstr "Http трафик"
 
 msgid "IP Address"
 msgstr ""
@@ -2702,7 +2702,7 @@ msgid "Images have to be smaller than 500 x 90 pixels."
 msgstr ""
 
 msgid "Import"
-msgstr ""
+msgstr "Импорт"
 
 msgid "Import in local repository"
 msgstr "Качване в местното хранилище"
@@ -2783,7 +2783,7 @@ msgid "Install"
 msgstr "Инсталиране"
 
 msgid "Install in progress"
-msgstr ""
+msgstr "Инсталирането е в процес"
 
 msgid "Install this plugin"
 msgstr ""
@@ -2863,7 +2863,7 @@ msgid "Invalid menu order."
 msgstr ""
 
 msgid "Invalid name."
-msgstr ""
+msgstr "Неправилно име"
 
 msgid "Invalid payload received from GitHub"
 msgstr ""
@@ -2882,7 +2882,7 @@ msgid "Invalid type given. String expected"
 msgstr "Невалиден тип e зададен."
 
 msgid "Invalid username."
-msgstr ""
+msgstr "Неправилно потребителско име"
 
 msgid "Kernel Version"
 msgstr "Кернъл Версия "
@@ -2900,13 +2900,13 @@ msgid "Language file"
 msgstr "Файл на езика"
 
 msgid "Language file successfully installed."
-msgstr ""
+msgstr "Езиковият фаил е успешно инсталиран"
 
 msgid "Language successfully updated."
-msgstr ""
+msgstr "Езикът е успешно обновен"
 
 msgid "Languages"
-msgstr ""
+msgstr "Език"
 
 msgid "Languages index was successfully re-built."
 msgstr "Индекса на езиците бе успешно преконфигуриран"
@@ -2921,7 +2921,7 @@ msgid "Last name"
 msgstr "Фамилия"
 
 msgid "Last name cannot have more than 200 characters."
-msgstr ""
+msgstr "Фамилия не може да има повече от 200 знака."
 
 msgid "Last reply date"
 msgstr "Последна дата на отговор"
@@ -2945,7 +2945,7 @@ msgid "Limit value"
 msgstr ""
 
 msgid "Limits"
-msgstr ""
+msgstr "Ограничения"
 
 msgid "Link"
 msgstr ""
@@ -2972,10 +2972,10 @@ msgid "Login into phpMyAdmin"
 msgstr ""
 
 msgid "Login password"
-msgstr ""
+msgstr "Парола за достъп"
 
 msgid "Login username"
-msgstr ""
+msgstr "Потребителско име за достъп"
 
 msgid "Login with your FTP account"
 msgstr "Влезте с вашия FTP акаунт"
@@ -3140,7 +3140,7 @@ msgid "Missing domain"
 msgstr "Липсва Домейн"
 
 msgid "Model"
-msgstr ""
+msgstr "Модел"
 
 msgid "Modification in progress..."
 msgstr ""
@@ -3185,13 +3185,13 @@ msgid "Name"
 msgstr "Име"
 
 msgid "Name cannot be empty."
-msgstr ""
+msgstr "Името неможе да бъде прозно"
 
 msgid "Network interface (NIC)"
 msgstr ""
 
 msgid "Never"
-msgstr ""
+msgstr "Никога"
 
 msgid "New SQL user data"
 msgstr ""
@@ -3440,7 +3440,7 @@ msgid "PHP Permissions"
 msgstr ""
 
 msgid "PHP Settings"
-msgstr ""
+msgstr "PHP Настройки"
 
 msgid "PHP configuration scheduled for update."
 msgstr ""
@@ -3452,7 +3452,7 @@ msgid "PHP exec() function"
 msgstr ""
 
 msgid "PHP settings"
-msgstr ""
+msgstr "PHP Настройки"
 
 msgid "POP3/IMAP"
 msgstr ""
@@ -3561,10 +3561,10 @@ msgid "Password successfully updated."
 msgstr "Паролата е успешно обновена."
 
 msgid "Passwords do not match"
-msgstr ""
+msgstr "Паролите не съвпадат!"
 
 msgid "Passwords do not match."
-msgstr ""
+msgstr "Паролите не съвпадат!"
 
 msgid "Path"
 msgstr "Път"
@@ -3916,7 +3916,7 @@ msgid "Properties for reseller with ID %d were not found in database."
 msgstr ""
 
 msgid "Protect"
-msgstr ""
+msgstr "Защити"
 
 msgid "Protect this plugin"
 msgstr ""
@@ -4220,10 +4220,10 @@ msgid "SQL"
 msgstr "SQL"
 
 msgid "SQL database"
-msgstr ""
+msgstr "База данни SQL"
 
 msgid "SQL database limit"
-msgstr ""
+msgstr "База данни SQL лимит"
 
 msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr ""
@@ -4281,10 +4281,10 @@ msgid "SQL user prefix/suffix"
 msgstr ""
 
 msgid "SQL user successfully added."
-msgstr ""
+msgstr "SQL потребителя е успешно добавен"
 
 msgid "SQL user successfully deleted."
-msgstr ""
+msgstr "SQL потребителя е успешно изтрит"
 
 msgid "SQL users"
 msgstr "SQL потребителии"
@@ -4347,16 +4347,16 @@ msgid "Send reply"
 msgstr "Отправит ответ"
 
 msgid "Send to"
-msgstr ""
+msgstr "Изпрати до"
 
 msgid "Sender email"
-msgstr ""
+msgstr "Адрес на изпращача"
 
 msgid "Sender email is missing."
-msgstr ""
+msgstr "Адрес на изпращача"
 
 msgid "Sender name"
-msgstr ""
+msgstr "Изпращач"
 
 msgid "Sender name is missing."
 msgstr ""
@@ -4395,13 +4395,13 @@ msgid "Service name"
 msgstr "Име на Услуга"
 
 msgid "Service name already exists."
-msgstr ""
+msgstr "Потребителското има вече съществува."
 
 msgid "Service port successfully added"
-msgstr ""
+msgstr "порта е успешно добавен."
 
 msgid "Service port successfully removed."
-msgstr ""
+msgstr "порта е успешно изтрит."
 
 msgid "Service ports"
 msgstr ""
@@ -5141,7 +5141,7 @@ msgid ""
 msgstr ""
 
 msgid "Update password"
-msgstr ""
+msgstr "Смени паролата"
 
 msgid "Updates"
 msgstr ""
@@ -5186,7 +5186,7 @@ msgid "User assignment"
 msgstr "Назначи потребител"
 
 msgid "User data successfully updated"
-msgstr ""
+msgstr "Личните данни са актуализирани успешно."
 
 msgid "User data successfully updated."
 msgstr ""
@@ -5295,7 +5295,7 @@ msgid "Web files only"
 msgstr ""
 
 msgid "Web folder protection"
-msgstr ""
+msgstr "Защита на папки"
 
 msgid "Web in"
 msgstr "Уеб-вход"
@@ -5682,13 +5682,13 @@ msgid "Your message"
 msgstr "Вашето съобщение"
 
 msgid "Your message has been successfully sent."
-msgstr ""
+msgstr "Съобщението е изпратено успешно"
 
 msgid "Your new i-MSCP login"
-msgstr ""
+msgstr "Вашето ново потребителско име"
 
 msgid "Your new password"
-msgstr ""
+msgstr "Вашата нова парола"
 
 msgid "Your package is corrupt. Please correct it!"
 msgstr ""
@@ -5746,7 +5746,7 @@ msgid "`%s` field cannot be empty."
 msgstr ""
 
 msgid "activated"
-msgstr ""
+msgstr "Активиран "
 
 msgid "activated (Softwaredepot)"
 msgstr ""
@@ -5755,7 +5755,7 @@ msgid "addition"
 msgstr ""
 
 msgid "administrator"
-msgstr ""
+msgstr "Администратор"
 
 msgid "and"
 msgstr ""
