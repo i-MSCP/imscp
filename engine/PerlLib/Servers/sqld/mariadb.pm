@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::sqld::mariadb - i-MSCP MariaDB SQL server implementation
+ Servers::sqld::mariadb - i-MSCP MariaDB server implementation
 
 =cut
 
