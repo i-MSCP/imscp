@@ -5,6 +5,7 @@ Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
 INSTALLER
+    Fixed: Default value for DATABASE_USER_HOST parameter cannot be local host (when using SQL remote server impl.)
     Fixed: iMSCP::Dialog::InputValidation::isNotEmpty() validation method always return true, causing unexpected results
     Fixed: iMSCP::Dialog::InputValidation::isValidPassword() validation method always return true, causing security hole
 

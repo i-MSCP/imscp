@@ -488,6 +488,9 @@ sub setupAskSqlUserHost
     }
 
     my $hostname = setupGetQuestion('DATABASE_USER_HOST', setupGetQuestion('BASE_SERVER_PUBLIC_IP'));
+    if(grep { $hostname eq $_ } ('localhost', '127.0.0.1', '::1')) {
+        $hostname = setupGetQuestion('BASE_SERVER_PUBLIC_IP');
+    }
 
     if($main::reconfigure =~ /^(?:sql|servers|all|forced)$/
        || (
