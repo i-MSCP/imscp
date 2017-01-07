@@ -1,8 +1,11 @@
 ﻿i-MSCP ChangeLog
 
 ------------------------------------------------------------------------------------------------------------------------
-Git 1.3.x
+1.3.16
 ------------------------------------------------------------------------------------------------------------------------
+
+2017-01-07: Laurent Declercq
+    RELEASE i-MSCP 1.3.16
 
 INSTALLER
     Fixed: Default value for the `DATABASE_USER_HOST' parameter cannot be a local host when using SQL remote server
