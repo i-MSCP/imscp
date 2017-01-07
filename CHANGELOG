@@ -8,6 +8,10 @@ INSTALLER
     Fixed: Default value for the `DATABASE_USER_HOST' parameter cannot be a local host when using SQL remote server
     Fixed: iMSCP::Dialog::InputValidation::isNotEmpty() validation method always return true, causing unexpected results
     Fixed: iMSCP::Dialog::InputValidation::isValidPassword() validation method always return true, causing security hole
+           due to acceptance of empty passwords
+
+PACKAGES
+    Review: Configuration files are no longer lazy-loaded
 
 SERVERS
     Fixed: Could not create SQL user (SQL remote server impl.)
