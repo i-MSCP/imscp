@@ -4,6 +4,10 @@
 Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
+INSTALLER
+    Fixed: iMSCP::Dialog::InputValidation::isNotEmpty() validation method always return true, causing unexpected results
+    Fixed: iMSCP::Dialog::InputValidation::isValidPassword() validation method always return true, causing security hole
+
 SERVERS
     Changed: Configuration files are no longer lazy-loaded
     Fixed: Could not create SQL user (SQL remote server impl.)

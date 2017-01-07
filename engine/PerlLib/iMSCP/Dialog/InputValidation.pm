@@ -106,6 +106,8 @@ sub isValidPassword($)
 
 Please try again:
 EOF
+
+    0;
 }
 
 =item isValidEmail($email)
@@ -425,6 +427,8 @@ sub isNotEmpty($)
 
 Please try again:
 EOF
+
+    0;
 }
 
 =back
