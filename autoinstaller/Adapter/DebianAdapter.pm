@@ -422,17 +422,14 @@ sub _buildPackageList
 
         if (!$forceDialog && $data->{$sAlt}->{'allow_switch'}) {
             # Filter unallowed alternatives
-            @alts = grep {
-                my $__ = $_;
-                grep($_ eq $__, @alts)
-            } split( ',', $data->{$sAlt}->{'allow_switch'} ), $sAlt;
+            @alts = (split( ',', $data->{$sAlt}->{'allow_switch'} ), $sAlt);
         }
 
         # Ask user for alternative list of packages to install if any
         if (@alts > 1 && ($forceDialog || grep($_ eq $main::reconfigure, ( $section, 'servers', 'all' )))) {
             (my $ret, $sAlt) = $dialog->radiolist( <<"EOF", [ sort @alts ], $sAlt );
 
-Please, choose the server you want use for the $section service:
+Please choose the $section implementation you want use:
 EOF
             return $ret if $ret; # Handle ESC case
         }

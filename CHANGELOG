@@ -8,6 +8,10 @@ BACKEND
     Changed: Do no longer load listener files from old /etc/imscp/hooks.d directory
     Fixed: Avoid to connect to MySQL server when not required
 
+DISTRIBUTIONS
+    Added: PHP 5.5 and PHP 5.6 alternatives for Debian Wheezy through Dotdeb repository
+    Added: PHP 7.0 alternative for Debian Jessie through Dotdeb repository
+
 INSTALLER
     Review: Forbid usage of `debian-sys-maint' SQL user
 

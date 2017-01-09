@@ -2,7 +2,6 @@
     <frontend default="nginx">
         <nginx repository_conflict="http://nginx.org/packages/ubuntu">
             <package>nginx-light</package>
-            <package>php7.0-fpm</package>
             <package_conflict>nginx</package_conflict>
         </nginx>
     </frontend>
@@ -11,7 +10,6 @@
             <package>apache2</package>
             <package>apache2-suexec-custom</package>
             <package>libapache2-mod-fcgid</package>
-            <package>php7.0-cgi</package>
         </apache_fcgid>
         <apache_itk>
             <package>apache2</package>
@@ -21,13 +19,14 @@
         <apache_php_fpm>
             <package post_install_task="sh fix_apache2_mod_proxy_fcgi.sh">apache2</package>
             <package>apache2-suexec-custom</package>
-            <package>php7.0-fpm</package>
         </apache_php_fpm>
     </httpd>
     <php default="php7.0">
         <php7.0>
             <package>php7.0</package>
+            <package>php7.0-cgi</package>
             <package>php7.0-cli</package>
+            <package>php7.0-fpm</package>
             <package post_install_task="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php7.0-common</package>
             <package post_install_task="phpenmod curl">php7.0-curl</package>
             <package post_install_task="phpenmod gd">php7.0-gd</package>
@@ -119,6 +118,7 @@
                 pinning_package="libmysqlclient20 mysql-client-5.7 mysql-common"
                 pinning_pin="release o=Ubuntu,n=xenial"
                 pinning_pin_priority="1001"
+                allow_switch="mysql_5.7,mariadb_10.0,mariadb_10.1"
         >
             <package>libmysqlclient20</package>
             <package>mysql-client-5.7</package>

@@ -2,7 +2,6 @@
     <frontend default="nginx">
         <nginx repository_conflict="http://nginx.org/packages/ubuntu">
             <package>nginx-light</package>
-            <package>php5-fpm</package>
             <package_conflict>nginx</package_conflict>
         </nginx>
     </frontend>
@@ -11,7 +10,6 @@
             <package>apache2</package>
             <package>apache2-suexec-custom</package>
             <package>libapache2-mod-fcgid</package>
-            <package>php5-cgi</package>
         </apache_fcgid>
         <apache_itk>
             <package>apache2</package>
@@ -22,13 +20,14 @@
             <package>apache2</package>
             <package>apache2-suexec-custom</package>
             <package>libapache2-mod-fastcgi</package>
-            <package>php5-fpm</package>
         </apache_php_fpm>
     </httpd>
-    <php default="php5">
-        <php5>
+    <php default="php5.5">
+        <php5.5>
             <package>php5</package>
+            <package>php5-cgi</package>
             <package>php5-cli</package>
+            <package>php5-fpm</package>
             <package post_install_task="php5dismod opcache pdo &amp;&amp; php5enmod opcache pdo/10">php5-common</package>
             <package post_install_task="php5dismod curl &amp;&amp; php5enmod curl">php5-curl</package>
             <package post_install_task="php5dismod gd &amp;&amp; php5enmod gd">php5-gd</package>
@@ -41,7 +40,7 @@
             <package>php-pear</package>
             <package_conflict>php-apc</package_conflict>
             <package_conflict>php5-suhosin</package_conflict>
-        </php5>
+        </php5.5>
     </php>
     <po default="dovecot">
         <courier>
@@ -223,6 +222,7 @@
                 pinning_package="libmysqlclient18 mysql-common mysql-server-5.5"
                 pinning_pin="release o=Ubuntu,n=trusty"
                 pinning_pin_priority="1001"
+                allow_switch="mysql_5.5,mysql_5.6,mysql_5.7,mariadb_5.5,mariadb_10.0,mariadb_10.1,percona_5.5,percona_5.6,percona_5.7"
         >
             <package>libmysqlclient18</package>
             <package>mysql-client-5.5</package>
