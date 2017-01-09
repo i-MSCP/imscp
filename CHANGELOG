@@ -13,7 +13,9 @@ DISTRIBUTIONS
     Added: PHP 7.0 alternative for Debian Jessie through Dotdeb repository
 
 INSTALLER
+    Moved: Distribution package files from ./docs directory to ./autoinstaller/Packages directory
     Review: Forbid usage of `debian-sys-maint' SQL user
+    Updated: ./docs/preseed.pl preseeding template file
 
 LISTENERS
     Updated: 10_roundcube_tls.pl default hostname must be overridden to prevent hostname mismatches

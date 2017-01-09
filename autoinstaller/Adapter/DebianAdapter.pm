@@ -373,19 +373,21 @@ sub _buildPackageList
 {
     my $self = shift;
 
-    my $rs = $self->{'eventManager'}->trigger( 'onBuildPackageList', \ my $pkgFile );
+    my $rs = $self->{'eventManager'}->trigger( 'onBuildPackageList', \ my $packageFilePath );
     return $rs if $rs;
 
-    unless (defined $pkgFile) {
+    unless (defined $packageFilePath) {
         my $lsbRelease = iMSCP::LsbRelease->getInstance();
-        my $dist = lc( $lsbRelease->getId( 'short' ) );
-        my $codename = lc( $lsbRelease->getCodename( 'short' ) );
-        $pkgFile = "$FindBin::Bin/docs/".ucfirst( $dist )."/packages-$codename.xml";
+        my $distroID = $lsbRelease->getId( 'short' );
+        my $distroCodename = $lsbRelease->getCodename( 'short' );
+        $packageFilePath = "$FindBin::Bin/autoinstaller/Packages/".lc($distroID).'-'.lc($distroCodename).'.xml';
     }
 
     eval "use XML::Simple; 1" or die( $@ );
     my $xml = XML::Simple->new( NoEscape => 1 );
-    my $pkgData = eval { $xml->XMLin( $pkgFile, ForceArray => [ 'package', 'package_delayed', 'package_conflict' ] ) };
+    my $pkgData = eval {
+        $xml->XMLin($packageFilePath, ForceArray => [ 'package', 'package_delayed', 'package_conflict' ] );
+    };
     if ($@) {
         error( $@ );
         return 1;

@@ -1,11 +1,11 @@
 #!/usr/bin/perl
 
-# i-MSCP preseed.pl template file for installer preseeding (unattended installation)
+# i-MSCP preseed.pl template file for installer preseeding (unattended installation) - Default for Debian Jessie
 #
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2016.10.17
+# Last update: 2017.01.09
 
 %main::questions = (
     #
@@ -48,7 +48,7 @@
     #
 
     # SQL server implementation
-    # Please consult the docs/<distro>/packages-<distro>.xml file for available options.
+    # Please consult the ../autoinstaller/Packages/<distro>-<codename>.xml file for available options.
     SQL_SERVER                          => 'mysql_5.5',
 
     # Database name
@@ -75,7 +75,7 @@
     # i-MSCP Master SQL user
     # Note that this SQL user must have full privileges on the SQL server. It is used to to connect to the i-MSCP
     # database and also to create/delete SQL users for your customers
-    # Be aware that it is not allowed to use SQL root user
+    # Be aware that it is not allowed to use SQL root user, nor debian-sys-maint user
     # Only ASCII alphabet characters and numbers are allowed in password.
     DATABASE_USER                       => 'imscp_user',
     DATABASE_PASSWORD                   => '',
@@ -190,6 +190,10 @@
     ## PHP configuration parameters
     #
 
+    # PHP version to use
+    # Please consult the ../autoinstaller/Packages/<distro>-<codename>.xml file for available options.
+    PHP_SERVER                          => 'php5.6',
+
     # PHP configuration level
     # Possible values: per_user, per_domain, per_site
     PHP_CONFIG_LEVEL                    => 'per_site',
@@ -214,7 +218,8 @@
 
     # Passive port range
     # Possible values: A valid port range in range 32768-60999
-    FTPD_PASSIVE_PORT_RANGE             => '32768 60999',
+    # Don't forgot to forward TCP traffic on those ports on your server if you're behind a firewall
+    FTPD_PASSIVE_PORT_RANGE             => '32800 33800',
 
     #
     ## MTA server configuration parameters

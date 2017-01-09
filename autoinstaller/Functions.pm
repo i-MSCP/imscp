@@ -426,18 +426,17 @@ sub _confirmDistro
     $dialog->infobox( "\nDetecting target distribution..." );
 
     my $lsbRelease = iMSCP::LsbRelease->getInstance();
-    my $distribution = $lsbRelease->getId( 'short' );
-    my $codename = lc( $lsbRelease->getCodename( 'short' ) );
-    my $release = $lsbRelease->getRelease( 'short' );
-    my $packagesFile = "$FindBin::Bin/docs/$distribution/packages-$codename.xml";
+    my $distroID = $lsbRelease->getId( 'short' );
+    my $distroCodename = ucfirst($lsbRelease->getCodename( 'short' ));
+    my $distroRelease = $lsbRelease->getRelease( 'short' );
 
-    if ($distribution ne 'n/a' && $codename ne 'n/a' && lc( $distribution ) =~ /^(?:debian|ubuntu)$/ ) {
-        unless (-f $packagesFile) {
+    if ($distroID ne 'n/a' && $distroCodename ne 'n/a' && $distroID =~ /^(?:debian|ubuntu)$/i ) {
+        unless (-f "$FindBin::Bin/autoinstaller/Packages/".lc($distroID).'-'.lc($distroCodename).'.xml') {
             $dialog->msgbox( <<"EOF" );
 
-\\Z1$distribution $release ($codename) not supported yet\\Zn
+\\Z1$distroID $distroCodename ($distroRelease) not supported yet\\Zn
 
-We are sorry but your $distribution version is not supported.
+We are sorry but your $distroID version is not supported.
 
 Thanks for choosing i-MSCP.
 EOF
@@ -447,7 +446,7 @@ EOF
 
         my $rs = $dialog->yesno( <<"EOF" );
 
-$distribution $release ($codename) has been detected. Is this ok?
+$distroID $distroCodename ($distroRelease) has been detected. Is this ok?
 EOF
 
         $dialog->msgbox( <<"EOF" ) if $rs;
