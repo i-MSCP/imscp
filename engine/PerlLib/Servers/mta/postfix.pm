@@ -833,28 +833,30 @@ sub postmap
 
 =item postconf($conffile, %params)
 
- Provide interface to postconf for editing parameters from Postfix main.cf configuration file
+ Provides an interface to POSTCONF(1) for editing parameters in Postfix main.cf configuration file
 
- Param hash %params A hash where keys are Postfix parameters names and values a hashes describing in order:
+ Param hash %params A hash where each key is a Postfix parameter name and associated value, a hashes describing in order:
   - action          : The action to be performed (add|replace|remove)
-  - values          : An array containing parameters values to add, replace or remove
-  - values_separator: Values separator
+  - values          : An array containing parameter value(s) to add, replace or remove
+  - values_separator: Separator to use for parameter values
   - before          : OPTIONAL option allowing to add values before the given value (expressed as a Regexp)
   - after           : OPTIONAL option allowing to add values after the given value (expressed as a Regexp)
 
-  Note that the `before' and `after' options are only supported by the `add' action. Note also that the `before'
-  option has highter precedence than the `after' option.
+  Note that the `before' and `after' options are only relevant for the `add' action. Note also that the `before'
+  option has a highter precedence than the `after' option.
 
   For instance, let's assume that we want add both, the `check_client_access <table>' value and the
-  `check_recipient_access <table>' value to the `smtpd_recipient_restrictions' parameter, before the
-  `check_policy_service ...' value. The following hash passed as parameter of this method will do the job:
+  `check_recipient_access <table>' value to the `smtpd_recipient_restrictions' Postfix parameter, before the
+  `check_policy_service ...' value. The following would do the job:
 
-      my %params = (
+  Servers::mta::postfix->getInstance(
+    (
         smtpd_recipient_restrictions => {
-          action           => 'add',
-          values           => [ 'check_client_access <table>', 'check_recipient_access <table>' ],
-          before           => qr/check_policy_service\s+.*/,
+            action => 'add',
+            values => [ 'check_client_access <table>', 'check_recipient_access <table>' ],
+            before => qr/check_policy_service\s+.*/,
         }
+    )
   );
 
  Return int 0 on success, other on failure
@@ -865,6 +867,13 @@ sub postconf
 {
     my ($self, %params) = @_;
 
+    # Avoid POSTCONF(1) being slow by waiting 2 seconds before next processing
+    # See https://groups.google.com/forum/#!topic/list.postfix.users/MkhEqTR6yRM
+    my $time = time();
+    utime $time, $time - 3, $self->{'config'}->{'POSTFIX_CONF_FILE'} or die (
+        sprintf( "Couldn't touch %s file: %s", $self->{'config'}->{'POSTFIX_CONF_FILE'} )
+    );
+
     my @paramsToRemove = ();
 
     local $@;
@@ -874,39 +883,35 @@ sub postconf
             [ 'postconf', '-c', $self->{'config'}->{'POSTFIX_CONF_DIR'}, keys %params ],
             sub {
                 my $buffer = shift;
-                open my $stdout, '<', \encode_utf8( $buffer ) or die( sprintf( 'Could not open in-memory file: %s', $! ) );
-                while(<$stdout>) {
-                    /^([^=]+)\s+=\s+(.*)/;
-                    next unless defined $1 && defined $2;
-
-                    my @replace;
-                    my @values = split /,\s*/, $2;
-                    for my $value(@{$params{$1}->{'values'}}) {
-                        if (!defined $params{$1}->{'action'} || $params{$1}->{'action'} eq 'add') {
+                open my $fh, '<', \encode_utf8( $buffer ) or die( sprintf( 'Could not open in-memory file: %s', $! ) );
+                while(<$fh>) {
+                    next unless (my $pName, my $pValue) = /^([^=]+)\s+=\s+(.*)/;
+                    my (@values, @replace) = (split(/,\s*/, $pValue), ());
+                    for my $value(@{$params{$pName}->{'values'}}) {
+                        if (!defined $params{$pName}->{'action'} || $params{$pName}->{'action'} eq 'add') {
                             next if grep { $_ eq $value } @values;
-
-                            if (defined $params{$1}->{'before'} || defined $params{$1}->{'after'}) {
-                                my $regexp = $params{$1}->{'before'} || $params{$1}->{'after'};
+                            if (defined $params{$pName}->{'before'} || defined $params{$pName}->{'after'}) {
+                                my $regexp = $params{$pName}->{'before'} || $params{$pName}->{'after'};
                                 my ($index) = grep { $values[$_] =~ /^$regexp$/ } (0 .. @values - 1);
                                 next unless defined $index;
-                                splice( @values, (defined $params{$1}->{'before'} ? $index : ++$index), 0, $value );
+                                splice( @values, (defined $params{$pName}->{'before'} ? $index : ++$index), 0, $value );
                             } else {
                                 push @values, $value;
                             }
-                        } elsif ($params{$1}->{'action'} eq 'replace') {
+                        } elsif ($params{$pName}->{'action'} eq 'replace') {
                             push @replace, $value;
-                        } elsif ($params{$1}->{'action'} eq 'remove') {
+                        } elsif ($params{$pName}->{'action'} eq 'remove') {
                             @values = grep { $_ !~ /^$value$/ } @values;
                         }
                     }
 
-                    $params{$1} = join ', ', @replace ? @replace : @values;
-                    if ($params{$1} eq '') {
-                        push @paramsToRemove, $1;
-                        delete $params{$1};
+                    $params{$pName} = join ', ', @replace ? @replace : @values;
+                    if ($params{$pName} eq '') {
+                        push @paramsToRemove, $pName;
+                        delete $params{$pName};
                     }
                 }
-                close $stdout;
+                close $fh;
             },
             sub { $stderr .= shift }
         );
@@ -930,6 +935,12 @@ sub postconf
         debug( $stdout ) if $stdout;
         error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
+
+        # Avoid POSTCONF(1) being slow by waiting 2 seconds before next processing
+        # See https://groups.google.com/forum/#!topic/list.postfix.users/MkhEqTR6yRM
+        utime $time, $time - 3, $self->{'config'}->{'POSTFIX_CONF_FILE'} or die (
+            sprintf( "Couldn't touch %s file: %s", $self->{'config'}->{'POSTFIX_CONF_FILE'} )
+        );
     }
 
     return 0 unless @paramsToRemove;
@@ -946,6 +957,8 @@ sub postconf
     $fileContent =~ s/^\Q$_\E\s*=[^\n]+\n//gim for @paramsToRemove;
     $rs = $file->set( $fileContent );
     $rs ||= $file->save;
+    $self->{'reload'} = 1 unless $rs;
+    $rs;
 }
 
 =back
