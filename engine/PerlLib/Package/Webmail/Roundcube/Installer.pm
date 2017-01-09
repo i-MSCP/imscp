@@ -495,25 +495,24 @@ sub _updateDatabase
     error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
-    # Ensure tha users.mail_host entries are set to 'localhost'
-
+    # Ensure tha users.mail_host entries are set with expected hostname (default to `localhost')
     my $db = iMSCP::Database->factory();
     my $oldDatabase = $db->useDatabase($roundcubeDbName);
-
-    $rs = $db->doQuery( 'u', "UPDATE IGNORE users SET mail_host = 'localhost'" );
+    my $hostname = 'localhost';
+    $rs = $self->{'eventManager'}->trigger('beforeUpdateRoundCubeMailHostEntries', \$hostname);
+    return $rs if $rs;
+    $rs = $db->doQuery( 'u', 'UPDATE IGNORE users SET mail_host = ?', $hostname );
     unless (ref $rs eq 'HASH') {
         error( $rs );
         return 1;
     }
-
-    $rs = $db->doQuery( 'd', "DELETE FROM users WHERE mail_host <> 'localhost'" );
+    $rs = $db->doQuery( 'd', 'DELETE FROM users WHERE mail_host <> ?', $hostname );
     unless (ref $rs eq 'HASH') {
         error( $rs );
         return 1;
     }
 
     $db->useDatabase($oldDatabase);
-
     0;
 }
 
