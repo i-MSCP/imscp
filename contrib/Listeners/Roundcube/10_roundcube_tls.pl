@@ -25,6 +25,10 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 
+#
+## Please, don't edit anything below this line unless you known what you're doing
+#
+
 iMSCP::EventManager->getInstance()->register(
     'afterSetupTasks',
     sub {
@@ -33,15 +37,20 @@ iMSCP::EventManager->getInstance()->register(
         );
         my $fileContent = $file->get();
         unless (defined $fileContent) {
-            error( sprintf( 'Could not read %s file',
-                    "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php" ) );
+            error( sprintf( 'Could not read %s file', $self->{'filename'} ) );
             return 1;
         }
-
         $fileContent =~ s/(\$config\['(?:default_host|smtp_server)?'\]\s+=\s+').*(';)/$1tls:\/\/$main::imscpConfig{'BASE_SERVER_VHOST'}$2/g;
-
         my $rs = $file->set( $fileContent );
         $rs ||= $file->save();
+    }
+);
+iMSCP::EventManager->getInstance()->register(
+    'beforeUpdateRoundCubeMailHostEntries',
+    sub {
+        my $hostname = shift;
+        ${$hostname} = $main::imscpConfig{'BASE_SERVER_VHOST'};
+        0;
     }
 );
 

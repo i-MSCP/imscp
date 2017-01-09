@@ -36,7 +36,6 @@ use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
-use iMSCP::Rights;
 use iMSCP::TemplateParser;
 use JSON;
 use Package::FrontEnd;
@@ -152,32 +151,6 @@ sub install
     $rs ||= $self->_buildHttpdConfig();
     $rs ||= $self->_setVersion();
     $rs ||= $self->_saveConfig();
-}
-
-=item setGuiPermissions()
-
- Set gui permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setGuiPermissions
-{
-    my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
-
-    return 0 unless -d "$guiPublicDir/tools/webmail";
-
-    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-
-    my $rs = setRights(
-        "$guiPublicDir/tools/webmail",
-        { user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1 }
-    );
-    $rs ||= setRights(
-        "$guiPublicDir/tools/webmail/logs",
-        { user => $panelUName, group => $panelGName, dirmode => '0750', filemode => '0640', recursive => 1 }
-    );
 }
 
 =back
@@ -371,9 +344,7 @@ sub _setupDatabase
     my $oldDbUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'} || '';
     my $dbPass = main::setupGetQuestion( 'ROUNDCUBE_SQL_PASSWORD' );
     my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
-
     my $db = iMSCP::Database->factory();
-
     my $quotedDbName = $db->quoteIdentifier( $roundcubeDbName );
 
     my $rs = $db->doQuery( '1', 'SHOW DATABASES LIKE ?', $roundcubeDbName );

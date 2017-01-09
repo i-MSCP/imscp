@@ -11,6 +11,12 @@ BACKEND
 INSTALLER
     Review: Forbid usage of `debian-sys-maint' SQL user
 
+LISTENERS
+    Updated: 10_roundcube_tls.pl default hostname must be overridden to prevent hostname mismatches
+
+PACKAGES
+    Added: `beforeUpdateRoundCubeMailHostEntries' event listener (RoundCube package installer)
+
 ------------------------------------------------------------------------------------------------------------------------
 1.3.16
 ------------------------------------------------------------------------------------------------------------------------
