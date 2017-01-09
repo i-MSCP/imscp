@@ -156,23 +156,9 @@ sub _init
 
     $EVENTS{$self} = { };
 
-    # Load listener files
-    #
-    # We try to load listeners from the hooks.d directory first (old location) to be sure that the listeners are loaded
-    # even on upgrade
-    my $listenersDir;
-
-    if (-d "$main::imscpConfig{'CONF_DIR'}/hooks.d") {
-        $listenersDir = "$main::imscpConfig{'CONF_DIR'}/hooks.d";
-    } elsif (-d "$main::imscpConfig{'CONF_DIR'}/listeners.d") {
-        $listenersDir = "$main::imscpConfig{'CONF_DIR'}/listeners.d";
-    }
-
-    if ($listenersDir) {
-        for my $listenerFile(glob "$listenersDir/*.pl") {
-            debug( sprintf( 'Loading %s listener file', $listenerFile ) );
-            require $listenerFile;
-        }
+    for my $listenerFile(glob "$main::imscpConfig{'CONF_DIR'}/listeners.d/*.pl") {
+        debug( sprintf( 'Loading %s listener file', $listenerFile ) );
+        require $listenerFile;
     }
 
     $self;
