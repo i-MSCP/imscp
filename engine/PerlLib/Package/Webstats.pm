@@ -28,6 +28,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::Dialog;
 use iMSCP::Dir;
+use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
@@ -207,6 +208,9 @@ sub install
 {
     my $self = shift;
 
+    my $rs = $self->{'eventManager'}->trigger( 'beforeWebstatsSetGuiPermissions' );
+    return $rs if $rs;
+
     my %selectedPackages;
     @{selectedPackages}{ split ',', main::setupGetQuestion( 'WEBSTATS_PACKAGES' ) } = ();
 
@@ -218,7 +222,7 @@ sub install
             $package = $package->getInstance();
             next unless $package->can( 'install' );
             debug( sprintf( 'Calling action install on %s', ref $package ) );
-            my $rs = $package->install();
+            $rs = $package->install();
             return $rs if $rs;
         } else {
             error( $@ );
@@ -226,7 +230,7 @@ sub install
         }
     }
 
-    0;
+    $self->{'eventManager'}->trigger( 'AfterWebstatsSetGuiPermissions' );
 }
 
 =item uninstall()
@@ -513,6 +517,7 @@ sub _init
 {
     my $self = shift;
 
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     # Find list of available AntiRootkits packages
     @{$self->{'PACKAGES'}}{
         iMSCP::Dir->new( dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats" )->getDirs()

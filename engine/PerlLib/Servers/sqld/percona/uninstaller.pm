@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::sqld::remote_server::uninstaller - i-MSCP Percona server uninstaller implementation
+ Servers::sqld::percona::uninstaller - i-MSCP Percona server uninstaller implementation
 
 =cut
 

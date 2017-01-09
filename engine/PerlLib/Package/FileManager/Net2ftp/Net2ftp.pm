@@ -26,6 +26,7 @@ package Package::FileManager::Net2ftp::Net2ftp;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Package::FileManager::Net2ftp::Installer Package::FileManager::Net2ftp::Uninstaller /;
+use iMSCP::Rights;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -89,7 +90,18 @@ sub uninstall
 
 sub setGuiPermissions
 {
-    Package::FileManager::Net2ftp::Installer->getInstance()->setGuiPermissions();
+    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+
+    setRights(
+        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp",
+        {
+            user      => $panelUName,
+            group     => $panelGName,
+            dirmode   => '0550',
+            filemode  => '0440',
+            recursive => 1
+        }
+    );
 }
 
 =back

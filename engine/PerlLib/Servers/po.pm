@@ -74,14 +74,8 @@ sub can
 
 END
     {
-        return if defined $main::execmode && $main::execmode eq 'setup';
-        my $rs = $?;
-
-        if ($Servers::po::instance->{'restart'}) {
-            $rs ||= $Servers::po::instance->restart();
-        }
-
-        $? = $rs;
+        return if $? || (defined $main::execmode && $main::execmode eq 'setup');
+        $? = $Servers::po::instance->restart() if $Servers::po::instance->{'restart'};
     }
 
 =back

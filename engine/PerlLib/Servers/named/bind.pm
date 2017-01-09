@@ -36,6 +36,7 @@ use iMSCP::File;
 use iMSCP::ProgramFinder;
 use iMSCP::TemplateParser;
 use iMSCP::Net;
+use iMSCP::Rights;
 use iMSCP::Service;
 use parent 'Common::SingletonClass';
 
@@ -150,6 +151,23 @@ sub uninstall
     }
 
     $self->{'eventManager'}->trigger( 'afterNamedUninstall', 'bind' );
+}
+
+=item setEnginePermissions()
+
+ Set engine permissions
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setEnginePermissions
+{
+    my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedSetEnginePermissions' );
+    # TODO
+    $rs ||= $self->{'eventManager'}->trigger( 'afterNamedSetEnginePermissions' );
 }
 
 =item addDmn(\%data)

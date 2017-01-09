@@ -167,7 +167,51 @@ sub setEnginePermissions
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdSetEnginePermissions' );
-    $rs ||= Servers::httpd::apache_fcgid::installer->getInstance()->setEnginePermissions();
+    $rs ||= setRights(
+        $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'},
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
+            mode  => '0555'
+        }
+    );
+    $rs ||= setRights(
+        '/usr/local/sbin/vlogger',
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
+            mode  => '0750'
+        }
+    );
+    # Fix permissions on root log dir (e.g: /var/log/apache2) in any cases
+    # Fix permissions on root log dir (e.g: /var/log/apache2) content only with --fix-permissions option
+    $rs ||= setRights(
+        $self->{'config'}->{'HTTPD_LOG_DIR'},
+        {
+            user      => $main::imscpConfig{'ROOT_USER'},
+            group     => $main::imscpConfig{'ROOT_GROUP'},
+            dirmode   => '0755',
+            filemode  => '0644',
+            recursive => 1
+        }
+    );
+    $rs ||= setRights(
+        $self->{'config'}->{'HTTPD_LOG_DIR'},
+        {
+            group => $main::imscpConfig{'ADM_GROUP'},
+            mode  => '0750'
+        }
+    );
+    $rs ||= setRights(
+        "$main::imscpConfig{'USER_WEB_DIR'}/domain_disabled_pages",
+        {
+            user      => $main::imscpConfig{'ROOT_USER'},
+            group     => $self->{'config'}->{'HTTPD_GROUP'},
+            dirmode   => '0550',
+            filemode  => '0440',
+            recursive => 1
+        }
+    );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdSetEnginePermissions' );
 }
 

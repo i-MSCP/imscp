@@ -73,16 +73,13 @@ sub can
 
 END
     {
-        return if defined $main::execmode && $main::execmode eq 'setup';
-        my $rs = $?;
+        return if $? || (defined $main::execmode && $main::execmode eq 'setup');
 
         if ($Servers::mta::instance->{'restart'}) {
-            $rs ||= $Servers::mta::instance->restart();
+            $? = $Servers::mta::instance->restart();
         } elsif ($Servers::mta::instance->{'reload'}) {
-            $rs ||= $Servers::mta::instance->reload();
+            $? = $Servers::mta::instance->reload();
         }
-
-        $? = $rs;
     }
 
 =back

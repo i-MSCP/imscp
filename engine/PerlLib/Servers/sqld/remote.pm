@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::sqld::remote_server - i-MSCP Remote MySQL server implementation
+ Servers::sqld::remote - i-MSCP Remote MySQL server implementation
 
 =cut
 
@@ -21,11 +21,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package Servers::sqld::remote_server;
+package Servers::sqld::remote;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ :nostat Servers::sqld::remote_server::installer Servers::sqld::remote_server::uninstaller /;
+use Class::Autouse qw/ :nostat Servers::sqld::remote::installer Servers::sqld::remote::uninstaller /;
 use iMSCP::Database;
 use version;
 use parent 'Servers::sqld::mysql';
@@ -50,9 +50,9 @@ sub preinstall
 {
     my $self = shift;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'remote_server' );
-    $rs ||= Servers::sqld::remote_server::installer->getInstance()->preinstall();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPreinstall', 'remote_server' )
+    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'remote' );
+    $rs ||= Servers::sqld::remote::installer->getInstance()->preinstall();
+    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPreinstall', 'remote' )
 }
 
 =item postinstall()
@@ -67,8 +67,8 @@ sub postinstall
 {
     my $self = shift;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'remote_server' );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'remote_server' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'remote' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'remote' );
 }
 
 =item uninstall()
@@ -83,9 +83,9 @@ sub uninstall
 {
     my $self = shift;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'remote_server' );
-    $rs ||= Servers::sqld::remote_server::uninstaller->getInstance()->uninstall();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldUninstall', 'remote_server' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'remote' );
+    $rs ||= Servers::sqld::remote::uninstaller->getInstance()->uninstall();
+    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldUninstall', 'remote' );
 }
 
 =item restart()

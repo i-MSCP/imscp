@@ -29,7 +29,7 @@ use Class::Autouse qw/ :nostat Package::Webmail::Roundcube::Installer Package::W
 use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Database;
-use Scalar::Defer;
+use iMSCP::Rights;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -37,8 +37,8 @@ use parent 'Common::SingletonClass';
  Roundcube package for i-MSCP.
 
  RoundCube Webmail is a browser-based multilingual IMAP client with an application-like user interface. It provides full
-functionality expected from an email client, including MIME support, address book, folder manipulation and message
-filters.
+ functionality expected from an email client, including MIME support, address book, folder manipulation and message
+ filters.
 
  The user interface is fully skinnable using XHTML and CSS 2.
 
@@ -113,7 +113,32 @@ sub uninstall
 
 sub setGuiPermissions
 {
-    Package::Webmail::Roundcube::Installer->getInstance()->setGuiPermissions();
+    my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
+
+    return 0 unless -d "$guiPublicDir/tools/webmail";
+
+    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+
+    my $rs = setRights(
+        "$guiPublicDir/tools/webmail",
+        {
+            user      => $panelUName,
+            group     => $panelGName,
+            dirmode   => '0550',
+            filemode  => '0440',
+            recursive => 1
+        }
+    );
+    $rs ||= setRights(
+        "$guiPublicDir/tools/webmail/logs",
+        {
+            user      => $panelUName,
+            group     => $panelGName,
+            dirmode   => '0750',
+            filemode  => '0640',
+            recursive => 1
+        }
+    );
 }
 
 =item deleteMail(\%data)
@@ -129,31 +154,16 @@ sub deleteMail
 {
     my (undef, $data) = @_;
 
-    my $roundcubeDbName = $main::imscpConfig{'DATABASE_NAME'}.'_roundcube';
-
     return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
 
     my $db = iMSCP::Database->factory();
-    $db->set( 'DATABASE_NAME', $roundcubeDbName );
-    my $rs = $db->connect();
-    if ($rs) {
-        error( $rs );
-        return 1;
-    }
-
+    my $oldDatabase = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'}.'_roundcube' );
     my $rdata = $db->doQuery( 'dummy', 'DELETE FROM `users` WHERE `username` = ?', $data->{'MAIL_ADDR'} );
     unless (ref $rdata eq 'HASH') {
         error( sprintf( "Could not remove mail user '%s' from roundcube database: %s", $data->{'MAIL_ADDR'}, $rdata ) );
         return 1;
     }
-
-    $db->set( 'DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'} );
-
-    if ($db->connect()) {
-        error( sprintf( 'Could not restore connection to i-MSCP database: %s', $rs ) );
-        return 1;
-    }
-
+    $db->useDatabase( $oldDatabase );
     0
 }
 

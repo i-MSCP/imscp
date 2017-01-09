@@ -97,7 +97,7 @@ EOF
     eval "require $package";
     unless ($@) {
         $package = $package->getInstance();
-        if($package->can( 'showDialog' )) {
+        if ($package->can( 'showDialog' )) {
             debug( sprintf( 'Calling action showDialog on %s', ref $package ) );
             $rs = $package->showDialog( $dialog );
             return $rs if $rs;
@@ -216,17 +216,20 @@ sub uninstall
     0;
 }
 
-=item setPermissionsListener()
+=item setGuiPermissionsListener()
 
- Set gui permissions
+ Set gui permissions listener
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub setPermissionsListener
+sub setGuiPermissionsListener
 {
     my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeFileManagerSetGuiPermissions' );
+    return $rs if $rs;
 
     my $package = $main::imscpConfig{'FILEMANAGER_PACKAGE'};
 
@@ -239,14 +242,14 @@ sub setPermissionsListener
         $package = $package->getInstance();
         next unless $package->can( 'setGuiPermissions' );
         debug( sprintf( 'Calling action setGuiPermissions on %s', ref $package ) );
-        my $rs = $package->setGuiPermissions();
+        $rs = $package->setGuiPermissions();
         return $rs if $rs;
     } else {
         error( $@ );
         return 1;
     }
 
-    0;
+    $self->{'eventManager'}->trigger( 'afterFileManagerSetGuiPermissions' );
 }
 
 =back
@@ -267,20 +270,16 @@ sub _init
 {
     my $self = shift;
 
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     # Find list of available FileManager packages
     @{$self->{'PACKAGES'}}{
         iMSCP::Dir->new( dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager" )->getDirs()
     } = ();
-
     # Quick fix for disabling Pydio package if PHP >= 7 is detected
     if (defined $main::execmode && $main::execmode eq 'setup') {
         delete $self->{'PACKAGES'}->{'Pydio'} if version->parse( $self->_getPhpVersion() ) >= version->parse( '7.0.0' );
     }
-
-    iMSCP::EventManager->getInstance()->register(
-        'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener( @_ ); }
-    );
-
+    $self->{'eventManager'}->register('afterFrontendSetGuiPermissions', sub { $self->setGuiPermissionsListener( ); });
     $self;
 }
 

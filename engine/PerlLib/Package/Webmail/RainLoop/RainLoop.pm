@@ -30,6 +30,7 @@ use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Database;
 use iMSCP::Dir;
+use iMSCP::Rights;
 use parent 'Common::SingletonClass';
 
 my $dbInitialized = undef;
@@ -111,7 +112,29 @@ sub uninstall
 
 sub setGuiPermissions
 {
-    Package::Webmail::RainLoop::Installer->getInstance()->setGuiPermissions();
+    return 0 unless -d "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop";
+
+    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $rs = setRights(
+        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop",
+        {
+            user      => $panelUName,
+            group     => $panelGName,
+            dirmode   => '0550',
+            filemode  => '0440',
+            recursive => 1
+        }
+    );
+    $rs ||= setRights(
+        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop/data",
+        {
+            user      => $panelUName,
+            group     => $panelGName,
+            dirmode   => '0750',
+            filemode  => '0640',
+            recursive => 1
+        }
+    );
 }
 
 =item deleteMail(\%data)
@@ -139,44 +162,31 @@ sub deleteMail
             return 1;
         }
 
-        if (%{$rs}) {
-            $dbInitialized = 1;
-        }
+        $dbInitialized = 1 if %{$rs};
     }
 
     if ($dbInitialized) {
-        $db->set( 'DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'}.'_rainloop' );
-        my $rs = $db->connect();
-
-        unless ($rs) {
-            $rs = $db->doQuery(
-                'dummy',
-                '
-                    DELETE u, c, p FROM rainloop_users u JOIN rainloop_ab_contacts c USING(id_user)
-                    JOIN rainloop_ab_properties p USING(id_user) WHERE rl_email = ?
-                ',
-                $data->{'MAIL_ADDR'}
+        my $oldDatabase = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'}.'_rainloop' );
+        my $rs = $db->doQuery(
+            'd',
+            '
+                DELETE u, c, p FROM rainloop_users u JOIN rainloop_ab_contacts c USING(id_user)
+                JOIN rainloop_ab_properties p USING(id_user) WHERE rl_email = ?
+            ',
+            $data->{'MAIL_ADDR'}
+        );
+        unless (ref $rs eq 'HASH') {
+            error(
+                sprintf( "Could not remove mail user '%s' from rainloop database: %s", $data->{'MAIL_ADDR'}, $rs )
             );
-            unless (ref $rs eq 'HASH') {
-                error(
-                    sprintf( "Could not remove mail user '%s' from rainloop database: %s", $data->{'MAIL_ADDR'}, $rs )
-                );
-                return 1;
-            }
-        } else {
-            error( $rs );
             return 1;
         }
 
-        $db->set( 'DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'} );
-        if ($db->connect()) {
-            error( sprintf( "Could not restore connection to i-MSCP database: %s", $rs ) );
-            return 1;
-        }
+        $db->useDatabase( $oldDatabase );
     }
 
-    my $storageDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop".
-        "/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_/storage";
+    my $storageDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop"
+        .'/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_/storage';
 
     (my $email = $data->{'MAIL_ADDR'}) =~ s/[^a-z0-9\-\.@]+/_/;
     (my $storagePath = substr( $email, 0, 2 )) =~ s/\@$//;
@@ -184,14 +194,11 @@ sub deleteMail
     for my $storageType('cfg', 'data', 'files') {
         my $rs = iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath/$email" )->remove();
         return $rs if $rs;
-
-        if (-d "$storageDir/$storageType/$storagePath") {
-            my $dir = iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath" );
-            if ($dir->isEmpty()) {
-                $rs = $dir->remove();
-                return $rs if $rs;
-            }
-        }
+        next unless -d "$storageDir/$storageType/$storagePath";
+        my $dir = iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath" );
+        next unless $dir->isEmpty();
+        $rs = $dir->remove();
+        return $rs if $rs;
     }
 
     0;

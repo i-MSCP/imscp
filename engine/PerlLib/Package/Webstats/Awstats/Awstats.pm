@@ -90,7 +90,34 @@ sub uninstall
 
 sub setEnginePermissions
 {
-    Package::Webstats::Awstats::Installer->getInstance()->setEnginePermissions();
+    my $self = shift;
+
+    my $rs = setRights(
+        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_updateall.pl",
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_USER'},
+            mode  => '0700'
+        }
+    );
+    $rs ||= setRights(
+        $main::imscpConfig{'AWSTATS_CACHE_DIR'},
+        {
+            user      => $main::imscpConfig{'ROOT_USER'},
+            group     => $self->{'httpd'}->getRunningGroup(),
+            dirmode   => '02750',
+            filemode  => '0640',
+            recursive => 1
+        }
+    );
+    $rs ||= setRights(
+        "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats",
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $self->{'httpd'}->getRunningGroup(),
+            mode  => '0640'
+        }
+    );
 }
 
 =item getDistroPackages()

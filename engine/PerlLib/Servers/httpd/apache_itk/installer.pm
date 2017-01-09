@@ -36,7 +36,6 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
-use iMSCP::Rights;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
 use iMSCP::TemplateParser;
@@ -133,57 +132,6 @@ sub install
     $rs ||= $self->_cleanup();
 }
 
-=item setEnginePermissions
-
- Set engine permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setEnginePermissions
-{
-    my $self = shift;
-
-    my $rs = setRights(
-        '/usr/local/sbin/vlogger',
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'ROOT_GROUP'},
-            mode  => '0750'
-        }
-    );
-    # Fix permissions on root log dir (e.g: /var/log/apache2) in any cases
-    # Fix permissions on root log dir (e.g: /var/log/apache2) content only with --fix-permissions option
-    $rs ||= setRights(
-        $self->{'config'}->{'HTTPD_LOG_DIR'},
-        {
-            user      => $main::imscpConfig{'ROOT_USER'},
-            group     => $main::imscpConfig{'ROOT_GROUP'},
-            dirmode   => '0755',
-            filemode  => '0644',
-            recursive => 1
-        }
-    );
-    $rs ||= setRights(
-        $self->{'config'}->{'HTTPD_LOG_DIR'},
-        {
-            group => $main::imscpConfig{'ADM_GROUP'},
-            mode  => '0750'
-        }
-    );
-    $rs ||= setRights(
-        "$main::imscpConfig{'USER_WEB_DIR'}/domain_disabled_pages",
-        {
-            user      => $main::imscpConfig{'ROOT_USER'},
-            group     => $self->{'config'}->{'HTTPD_GROUP'},
-            dirmode   => '0550',
-            filemode  => '0440',
-            recursive => 1
-        }
-    );
-}
-
 =back
 
 =head1 PRIVATE METHODS
@@ -213,8 +161,7 @@ sub _init
     tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'apacheCfgDir'}/apache.data";
 
     my $oldConf = "$self->{'apacheCfgDir'}/apache.old.data";
-
-    if(defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
+    if(-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
         while(my($key, $value) = each(%oldConfig)) {
             next unless exists $self->{'config'}->{$key};
@@ -231,8 +178,7 @@ sub _init
     tie %{$self->{'phpConfig'}}, 'iMSCP::Config', fileName => "$self->{'phpCfgDir'}/php.data";
 
     $oldConf = "$self->{'phpCfgDir'}/php.old.data";
-
-    if(defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
+    if(-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
         while(my($key, $value) = each(%oldConfig)) {
             next unless exists $self->{'phpConfig'}->{$key};
@@ -240,7 +186,7 @@ sub _init
         }
     }
 
-    $self->_guessPhpVariables() if defined $main::execmode && $main::execmode eq 'setup';
+    $self->_guessPhpVariables();
     $self;
 }
 
@@ -256,20 +202,19 @@ sub _guessPhpVariables
 {
     my $self = shift;
 
-    my ($phpVersion) = $main::imscpConfig{'PHP_SERVER'} =~ /^php([\d.]+)/;
-    unless (defined $phpVersion) {
-        die( sprintf( "Could not guess value for the `%s' PHP configuration parameter.", 'PHP_VERSION' ) );
-    }
-
-    $self->{'phpConfig'}->{'PHP_VERSION'} = $phpVersion;
+    (my $phpVersion) = $main::imscpConfig{'PHP_SERVER'} =~ /^php([\d.]+)/ or die(
+        sprintf( "Could not guess value for the `%s' PHP configuration parameter.", 'PHP_VERSION' )
+    );
 
     if (version->parse( $phpVersion ) < version->parse( '7.0' )) {
+        $self->{'phpConfig'}->{'PHP_VERSION'} = 5;
         $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = '/etc/php5';
         $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = '/etc/php5/fpm/pool.d';
         $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5' ) || '';
         $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5-cgi' ) || '';
         $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5-fpm' ) || '';
     } else {
+        $self->{'phpConfig'}->{'PHP_VERSION'} = $phpVersion;
         $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = "/etc/php/$phpVersion";
         $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = "/etc/php/$phpVersion/fpm/pool.d";
         $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php$phpVersion" ) || '';

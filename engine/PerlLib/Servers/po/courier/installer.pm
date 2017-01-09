@@ -36,7 +36,6 @@ use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::Rights;
 use iMSCP::ProgramFinder;
 use iMSCP::Stepper;
 use iMSCP::TemplateParser;
@@ -231,43 +230,6 @@ sub install
     $rs ||= $self->_oldEngineCompatibility();
 }
 
-=item setEnginePermissions()
-
- Set engine permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setEnginePermissions
-{
-    my $self = shift;
-
-    my $rs = setRights(
-        $self->{'config'}->{'AUTHLIB_SOCKET_DIR'},
-        {
-            user  => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-            group => $self->{'config'}->{'AUTHDAEMON_GROUP'},
-            mode  => '0750'
-        }
-    );
-    return $rs if $rs;
-
-    if (-f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem") {
-        $rs = setRights(
-            "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem",
-            {
-                user  => $self->{'config'}->{'AUTHDAEMON_USER'},
-                group => $main::imscpConfig{'ROOT_GROUP'},
-                mode  => '0600'
-            }
-        );
-        return $rs if $rs;
-    }
-
-    0;
-}
-
 =back
 
 =head1 EVENT LISTENERS
@@ -365,8 +327,7 @@ sub _init
     tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/courier.data";
 
     my $oldConf = "$self->{'cfgDir'}/courier.old.data";
-
-    if(defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
+    if(-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
         while(my($key, $value) = each(%oldConfig)) {
             next unless exists $self->{'config'}->{$key};

@@ -32,6 +32,7 @@ use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::EventManager;
 use iMSCP::TemplateParser;
+use iMSCP::Rights;
 use iMSCP::Service;
 use Servers::httpd;
 use parent 'Common::SingletonClass';
@@ -164,23 +165,6 @@ sub uninstall
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndUninstall' );
 }
 
-=item setGuiPermissions()
-
- Set gui permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setGuiPermissions
-{
-    my $self = shift;
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFrontendSetGuiPermissions' );
-    $rs ||= Package::FrontEnd::Installer->getInstance()->setGuiPermissions();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterFrontendSetGuiPermissions' );
-}
-
 =item setEnginePermissions()
 
  Set engine permissions
@@ -194,8 +178,187 @@ sub setEnginePermissions
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndSetEnginePermissions' );
-    $rs ||= Package::FrontEnd::Installer->getInstance()->setEnginePermissions();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndSetEnginePermissions' );
+    return $rs if $rs;
+
+    my $rootUName = $main::imscpConfig{'ROOT_USER'};
+    my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
+    my $httpdUser = $self->{'config'}->{'HTTPD_USER'};
+    my $httpdGroup = $self->{'config'}->{'HTTPD_GROUP'};
+
+    $rs = setRights(
+        $self->{'config'}->{'HTTPD_CONF_DIR'},
+        {
+            user      => $rootUName,
+            group     => $rootGName,
+            dirmode   => '0755',
+            filemode  => '0644',
+            recursive => 1
+        }
+    );
+    $rs ||= setRights(
+        $self->{'config'}->{'HTTPD_LOG_DIR'},
+        {
+            user      => $rootUName,
+            group     => $rootGName,
+            dirmode   => '0755',
+            filemode  => '0640',
+            recursive => 1
+        }
+    );
+    return $rs if $rs;
+
+    # Temporary directories as provided by nginx package (from Debian Team)
+    if (-d "$self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'}") {
+        $rs = setRights(
+            $self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'},
+            {
+                user  => $rootUName,
+                group => $rootGName }
+        );
+
+        for my $tmp('body', 'fastcgi', 'proxy', 'scgi', 'uwsgi') {
+            next unless -d "$self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'}/$tmp";
+
+            $rs = setRights(
+                "$self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'}/$tmp",
+                {
+                    user      => $httpdUser,
+                    group     => $httpdGroup,
+                    dirnmode  => '0700',
+                    filemode  => '0640',
+                    recursive => 1
+                }
+            );
+            $rs ||= setRights(
+                "$self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'}/$tmp",
+                {
+                    user  => $httpdUser,
+                    group => $rootGName,
+                    mode  => '0700'
+                }
+            );
+            return $rs if $rs;
+        }
+    }
+
+    # Temporary directories as provided by nginx package (from nginx Team)
+    return 0 unless -d "$self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'}";
+
+    $rs = setRights(
+        $self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'},
+        {
+            user  => $rootUName,
+            group => $rootGName
+        }
+    );
+
+    for my $tmp('client_temp', 'fastcgi_temp', 'proxy_temp', 'scgi_temp', 'uwsgi_temp') {
+        next unless -d "$self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'}/$tmp";
+
+        $rs = setRights(
+            "$self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'}/$tmp",
+            {
+                user      => $httpdUser,
+                group     => $httpdGroup,
+                dirnmode  => '0700',
+                filemode  => '0640',
+                recursive => 1
+            }
+        );
+        $rs ||= setRights(
+            "$self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'}/$tmp",
+            {
+                user  => $httpdUser,
+                group => $rootGName,
+                mode  => '0700'
+            }
+        );
+        return $rs if $rs;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterFrontEndSetEnginePermissions' );
+}
+
+=item setGuiPermissions()
+
+ Set gui permissions
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setGuiPermissions
+{
+    my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeFrontendSetGuiPermissions' );
+    return $rs if $rs;
+
+    my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $guiRootDir = $main::imscpConfig{'GUI_ROOT_DIR'};
+
+    $rs = setRights(
+        $guiRootDir,
+        {
+            user      => $panelUName,
+            group     => $panelGName,
+            dirmode   => '0550',
+            filemode  => '0440',
+            recursive => 1
+        }
+    );
+    $rs ||= setRights(
+        "$guiRootDir/themes",
+        {
+            user      => $panelUName,
+            group     => $panelGName,
+            dirmode   => '0550',
+            filemode  => '0440',
+            recursive => 1
+        }
+    );
+    $rs ||= setRights(
+        "$guiRootDir/data",
+        {
+            user      => $panelUName,
+            group     => $panelGName,
+            dirmode   => '0750',
+            filemode  => '0640',
+            recursive => 1
+        }
+    );
+    $rs ||= setRights(
+        "$guiRootDir/data/persistent",
+        {
+            user      => $panelUName,
+            group     => $panelGName,
+            dirmode   => '0750',
+            filemode  => '0640',
+            recursive => 1
+        }
+    );
+    $rs ||= setRights(
+        "$guiRootDir/i18n",
+        {
+            user      => $panelUName,
+            group     => $panelGName,
+            dirmode   => '0750',
+            filemode  => '0640',
+            recursive => 1
+        }
+    );
+    $rs ||= setRights(
+        "$guiRootDir/plugins",
+        {
+            user      => $panelUName,
+            group     => $panelGName,
+            dirmode   => '0750',
+            filemode  => '0640',
+            recursive => 1
+        }
+    );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterFrontendSetGuiPermissions' );
 }
 
 =item enableSites(@sites)
@@ -490,15 +653,15 @@ sub _buildConf
 
 END
     {
-        unless ($? || defined $main::execmode && $main::execmode eq 'setup') {
-            my $self = Package::FrontEnd->getInstance();
-            if ($self->{'start'}) {
-                $? = $self->start();
-            } elsif ($self->{'restart'}) {
-                $? = $self->restart();
-            } elsif ($self->{'reload'}) {
-                $? = $self->reload();
-            }
+        return if $? || (defined $main::execmode && $main::execmode eq 'setup');
+
+        my $self = Package::FrontEnd->getInstance();
+        if ($self->{'start'}) {
+            $? = $self->start();
+        } elsif ($self->{'restart'}) {
+            $? = $self->restart();
+        } elsif ($self->{'reload'}) {
+            $? = $self->reload();
         }
     }
 

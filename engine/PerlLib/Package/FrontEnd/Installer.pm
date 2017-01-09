@@ -37,7 +37,6 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::OpenSSL;
-use iMSCP::Rights;
 use iMSCP::Net;
 use iMSCP::ProgramFinder;
 use iMSCP::SystemUser;
@@ -191,7 +190,6 @@ sub askMasterAdminEmail
         || !isValidEmail($email)
     ) {
         my ($rs, $msg) = (0, '');
-
         do {
             ($rs, $email) = $dialog->inputbox( <<"EOF", $email );
 
@@ -231,7 +229,6 @@ sub askDomain
 
         $domainName = decode_utf8( idn_to_unicode( $domainName, 'utf-8' ) );
         my ($rs, $msg) = (0, '');
-
         do {
             ($rs, $domainName) = $dialog->inputbox( <<"EOF", $domainName, 'utf-8' );
 
@@ -525,116 +522,7 @@ sub dpkgPostInvokeTasks
 
     my $rs = $self->_copyPhpBinary();
     return $rs if $rs || !-f '/usr/local/etc/imscp_panel/php-fpm.conf';
-
     $self->{'frontend'}->restart();
-}
-
-=item setGuiPermissions()
-
- Set gui permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setGuiPermissions
-{
-    my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-    my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-    my $guiRootDir = $main::imscpConfig{'GUI_ROOT_DIR'};
-
-    my $rs = setRights(
-        $guiRootDir,
-        { user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1 }
-    );
-    $rs ||= setRights(
-        "$guiRootDir/themes",
-        { user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1 }
-    );
-    $rs ||= setRights(
-        "$guiRootDir/data",
-        { user => $panelUName, group => $panelGName, dirmode => '0750', filemode => '0640', recursive => 1 }
-    );
-    $rs ||= setRights(
-        "$guiRootDir/data/persistent",
-        { user => $panelUName, group => $panelGName, dirmode => '0750', filemode => '0640', recursive => 1 }
-    );
-    $rs ||= setRights(
-        "$guiRootDir/i18n",
-        { user => $panelUName, group => $panelGName, dirmode => '0750', filemode => '0640', recursive => 1 }
-    );
-    $rs ||= setRights(
-        "$guiRootDir/plugins",
-        { user => $panelUName, 'group' => $panelGName, 'dirmode' => '0750', 'filemode' => '0640', recursive => 1 }
-    );
-}
-
-=item setEnginePermissions()
-
- Set engine permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setEnginePermissions
-{
-    my $self = shift;
-
-    my $rootUName = $main::imscpConfig{'ROOT_USER'};
-    my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-    my $httpdUser = $self->{'config'}->{'HTTPD_USER'};
-    my $httpdGroup = $self->{'config'}->{'HTTPD_GROUP'};
-
-    my $rs = setRights(
-        $self->{'config'}->{'HTTPD_CONF_DIR'},
-        { user => $rootUName, group => $rootGName, dirmode => '0755', filemode => '0644', recursive => 1 }
-    );
-    $rs ||= setRights(
-        $self->{'config'}->{'HTTPD_LOG_DIR'},
-        { user => $rootUName, group => $rootGName, dirmode => '0755', filemode => '0640', recursive => 1 }
-    );
-    return $rs if $rs;
-
-    # Temporary directories as provided by nginx package (from Debian Team)
-    if (-d "$self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'}") {
-        $rs = setRights( $self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'}, { user => $rootUName, group => $rootGName } );
-
-        for my $tmp('body', 'fastcgi', 'proxy', 'scgi', 'uwsgi') {
-            next unless -d "$self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'}/$tmp";
-
-            $rs = setRights(
-                "$self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'}/$tmp",
-                { user => $httpdUser, group => $httpdGroup, dirnmode => '0700', filemode => '0640', recursive => 1 }
-            );
-            $rs ||= setRights(
-                "$self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'}/$tmp",
-                { user => $httpdUser, group => $rootGName, mode => '0700' }
-            );
-            return $rs if $rs;
-        }
-    }
-
-    # Temporary directories as provided by nginx package (from nginx Team)
-    return 0 unless -d "$self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'}";
-
-    $rs = setRights( $self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'}, { user => $rootUName, group => $rootGName } );
-
-    for my $tmp('client_temp', 'fastcgi_temp', 'proxy_temp', 'scgi_temp', 'uwsgi_temp') {
-        next unless -d "$self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'}/$tmp";
-
-        $rs = setRights(
-            "$self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'}/$tmp",
-            { user => $httpdUser, group => $httpdGroup, dirnmode => '0700', filemode => '0640', recursive => 1 }
-        );
-        $rs ||= setRights(
-            "$self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'}/$tmp",
-            { user => $httpdUser, group => $rootGName, mode => '0700' }
-        );
-        return $rs if $rs;
-    }
-
-    0;
 }
 
 =back
@@ -666,7 +554,7 @@ sub _init
     untie(%{$self->{'config'}});
     tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.data";
 
-    if (defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/frontend.old.data") {
+    if (-f "$self->{'cfgDir'}/frontend.old.data") {
         tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.old.data", readonly => 1;
         while(my ($key, $value) = each(%oldConfig)) {
             next unless exists $self->{'config'}->{$key};

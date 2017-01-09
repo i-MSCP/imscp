@@ -29,7 +29,6 @@ use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::File;
-use iMSCP::Rights;
 use iMSCP::TemplateParser;
 use Servers::cron;
 use Servers::httpd;
@@ -62,46 +61,6 @@ sub install
     $rs ||= $self->_createCacheDir();
     $rs ||= $self->_setupApache2();
     $rs ||= $self->_addAwstatsCronTask();
-}
-
-=item setEnginePermissions()
-
- Set engine permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setEnginePermissions
-{
-    my $self = shift;
-
-    my $rs = setRights(
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_updateall.pl",
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'ROOT_USER'},
-            mode  => '0700'
-        }
-    );
-    $rs ||= setRights(
-        $main::imscpConfig{'AWSTATS_CACHE_DIR'},
-        {
-            user      => $main::imscpConfig{'ROOT_USER'},
-            group     => $self->{'httpd'}->getRunningGroup(),
-            dirmode   => '02750',
-            filemode  => '0640',
-            recursive => 1
-        }
-    );
-    $rs ||= setRights(
-        "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats",
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $self->{'httpd'}->getRunningGroup(),
-            mode  => '0640'
-        }
-    );
 }
 
 =back

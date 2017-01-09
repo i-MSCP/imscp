@@ -32,6 +32,7 @@ use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
+use iMSCP::Rights;
 use iMSCP::Service;
 use Servers::mta;
 use Tie::File;
@@ -152,6 +153,24 @@ sub postinstall
     $rs ||= $self->{'eventManager'}->trigger( 'afterPoPostinstall', 'dovecot' );
 }
 
+=item uninstall()
+
+ Process uninstall tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub uninstall
+{
+    my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePoUninstall', 'dovecot' );
+    $rs ||= Servers::po::dovecot::uninstaller->getInstance()->uninstall();
+    $rs ||= $self->restart();
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPoUninstall', 'dovecot' );
+}
+
 =item postaddMail(\%data)
 
  Process postaddMail tasks
@@ -227,22 +246,52 @@ sub postaddMail
     0;
 }
 
-=item uninstall()
+=item setEnginePermissions()
 
- Process uninstall tasks.
+ Set engine permissions
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub uninstall
+sub setEnginePermissions
 {
     my $self = shift;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoUninstall', 'dovecot' );
-    $rs ||= Servers::po::dovecot::uninstaller->getInstance()->uninstall();
-    $rs ||= $self->restart();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPoUninstall', 'dovecot' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforePoSetEnginePermissions' );
+    $rs ||= setRights(
+        $self->{'config'}->{'DOVECOT_CONF_DIR'},
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
+            mode  => '0755'
+        }
+    );
+    $rs ||= setRights(
+        "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot.conf",
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+            mode  => '0640'
+        }
+    );
+    $rs ||= setRights(
+        "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf",
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+            mode  => '0640'
+        }
+    );
+    $rs ||= setRights(
+        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/quota/imscp-dovecot-quota.sh",
+        {
+            user  => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+            group => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+            mode  => '0750'
+        }
+    );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPoSetEnginePermissions' );
 }
 
 =item start()

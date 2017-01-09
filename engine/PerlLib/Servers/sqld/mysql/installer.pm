@@ -34,7 +34,6 @@ use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::ProgramFinder;
-use iMSCP::Rights;
 use iMSCP::TemplateParser;
 use File::Temp;
 use Servers::sqld::mysql;
@@ -67,28 +66,6 @@ sub preinstall
     $rs ||= $self->_saveConf();
 }
 
-=item setEnginePermissions()
-
- Set engine permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setEnginePermissions
-{
-    my $self = shift;
-
-    my $rs = setRights(
-        "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf",
-        { user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => '0644' }
-    );
-    $rs ||= setRights(
-        "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf",
-        { user => $main::imscpConfig{'ROOT_USER'}, group => $self->{'config'}->{'SQLD_GROUP'}, mode => '0640' }
-    );
-}
-
 =back
 
 =head1 PRIVATE METHODS
@@ -118,8 +95,7 @@ sub _init
     tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/mysql.data";
 
     my $oldConf = "$self->{'cfgDir'}/mysql.old.data";
-
-    if (defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
+    if (-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
         while(my ($key, $value) = each(%oldConfig)) {
             next unless exists $self->{'config'}->{$key};

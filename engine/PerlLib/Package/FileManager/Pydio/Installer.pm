@@ -28,7 +28,6 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::Rights;
 use iMSCP::Composer;
 use iMSCP::TemplateParser;
 use Package::FrontEnd;
@@ -74,27 +73,6 @@ sub install
 
     my $rs = $self->_installFiles();
     $rs ||= $self->_buildHttpdConfig();
-}
-
-=item setGuiPermissions()
-
- Set gui permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setGuiPermissions
-{
-    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-    my $rs = setRights(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp",
-        { user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1 }
-    );
-    $rs ||= setRights(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/data",
-        { user => $panelUName, group => $panelGName, dirmode => '0750', filemode => '0640', recursive => 1 }
-    );
 }
 
 =back
@@ -193,8 +171,12 @@ sub _buildHttpdConfig
     my $frontEnd = Package::FrontEnd->getInstance();
     $frontEnd->buildConfFile(
         "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/ajaxplorer/iMSCP/config/nginx/imscp_pydio.conf",
-        { GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },
-        { destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pydio.conf" }
+        {
+            GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'}
+        },
+        {
+            destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pydio.conf"
+        }
     );
 }
 

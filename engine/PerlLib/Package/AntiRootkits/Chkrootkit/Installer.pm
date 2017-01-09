@@ -28,7 +28,6 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Execute;
-use iMSCP::Rights;
 use Servers::cron;
 use parent 'Common::SingletonClass';
 
@@ -67,22 +66,6 @@ sub install
 
     my $rs = $self->_addCronTask();
     $rs ||= $self->_scheduleCheck();
-}
-
-=item setEnginePermissions
-
- Set engine permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setEnginePermissions()
-{
-    setRights(
-        $main::imscpConfig{'CHKROOTKIT_LOG'},
-        { user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'IMSCP_GROUP'}, mode => '0640' }
-    );
 }
 
 =back

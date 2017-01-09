@@ -224,7 +224,7 @@ sub installListener
 
 sub uninstall
 {
-    my ($self, @packages) = @_;
+    my $self = shift;
 
     for (keys %{$self->{'PACKAGES'}}) {
         my $package = "Package::Webmail::${_}::${_}";
@@ -244,17 +244,20 @@ sub uninstall
     0;
 }
 
-=item setPermissionsListener()
+=item setGuiPermissionsListener()
 
- Set gui permissions
+ Set gui permissions listener
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub setPermissionsListener
+sub setGuiPermissionsListener
 {
     my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeWebmailSetGuiPermissions' );
+    return $rs if $rs;
 
     my %selectedPackages;
     @{selectedPackages}{ split ',', $main::imscpConfig{'WEBMAIL_PACKAGES'} } = ();
@@ -267,7 +270,7 @@ sub setPermissionsListener
             $package = $package->getInstance();
             next unless $package->can( 'setGuiPermissions' );
             debug( sprintf( 'Calling action setGuiPermissions on %s', ref $package ) );
-            my $rs = $package->setGuiPermissions();
+            $rs = $package->setGuiPermissions();
             return $rs if $rs;
         } else {
             error( $@ );
@@ -275,7 +278,7 @@ sub setPermissionsListener
         }
     }
 
-    0;
+    $self->{'eventManager'}->trigger( 'afterWebmailSetGuiPermissions' );
 }
 
 =item deleteMail(\%data)
@@ -331,12 +334,13 @@ sub _init
 {
     my $self = shift;
 
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     # Find list of available Webmail packages
     @{$self->{'PACKAGES'}}{
         iMSCP::Dir->new( dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webmail" )->getDirs()
     } = ();
-    iMSCP::EventManager->getInstance()->register(
-        'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener( @_ ); }
+    $self->{'eventManager'}->register(
+        'afterFrontendSetGuiPermissions', sub { $self->setGuiPermissionsListener( @_ ); }
     );
     $self;
 }

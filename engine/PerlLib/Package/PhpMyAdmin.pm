@@ -25,8 +25,10 @@ package Package::PhpMyAdmin;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ :nostat Package::PhpMyAdmin::Installer /;
+use Class::Autouse qw/ :nostat Package::PhpMyAdmin::Installer Package::PhpMyAdmin::Uninstaller /;
 use iMSCP::Config;
+use iMSCP::EventManager;
+use iMSCP::Rights;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -92,17 +94,36 @@ sub uninstall
     Package::PhpMyAdmin::Uninstaller->getInstance()->uninstall();
 }
 
-=item setPermissionsListener()
+=item setGuiPermissionsListener()
 
- Set gui permissions
+ Set gui permissions event listener
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub setPermissionsListener
+sub setGuiPermissionsListener
 {
-    Package::PhpMyAdmin::Installer->getInstance()->setGuiPermissions();
+    my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpMyAdminSetGuiPermissions' );
+    return $rs if $rs;
+
+    return 0 unless -d "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
+
+    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+
+    $rs ||= setRights(
+        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma",
+        {
+            user      => $panelUName,
+            group     => $panelGName,
+            dirmode   => '0550',
+            filemode  => '0440',
+            recursive => 1
+        }
+    );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpMyAdminSetGuiPermissions' );
 }
 
 =back
@@ -123,13 +144,12 @@ sub _init
 {
     my $self = shift;
 
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/pma";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.data", readonly => 1;
-    iMSCP::EventManager->getInstance()->register(
-        'afterFrontendSetGuiPermissions', sub { $self->setPermissionsListener(); }
-    );
+    $self->{'eventManager'}->register('afterFrontendSetGuiPermissions', sub { $self->setGuiPermissionsListener(); });
     $self;
 }
 

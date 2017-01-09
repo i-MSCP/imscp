@@ -25,13 +25,14 @@ package Servers::ftpd::vsftpd;
 
 use strict;
 use warnings;
+use File::Basename;
 use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::File;
+use iMSCP::Rights;
 use iMSCP::Service;
 use iMSCP::TemplateParser;
-use File::Basename;
 use Class::Autouse qw/ :nostat Servers::ftpd::vsftpd::installer Servers::ftpd::vsftpd::uninstaller /;
 use parent 'Common::SingletonClass';
 
@@ -138,6 +139,30 @@ sub uninstall
     $rs ||= Servers::ftpd::vsftpd::uninstaller->getInstance()->uninstall();
     $rs || ($self->{'restart'} = 1);
     $rs ||= $self->{'eventManager'}->trigger( 'afterFtpdUninstall', 'vsftpd' );
+}
+
+=item setEnginePermissions()
+
+ Set engine permissions
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setEnginePermissions
+{
+    my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdSetEnginePermissions' );
+    $rs ||= setRights(
+        $self->{'config'}->{'FTPD_CONF_FILE'},
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
+            mode  => '0640'
+        }
+    );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterFtpdSetEnginePermissions' );
 }
 
 =item addUser(\%data)

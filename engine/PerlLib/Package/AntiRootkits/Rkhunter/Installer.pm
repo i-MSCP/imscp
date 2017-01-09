@@ -69,33 +69,6 @@ sub install
     $rs ||= $self->_scheduleCheck();
 }
 
-=item setEnginePermissions()
-
- Set engine permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setEnginePermissions
-{
-    require iMSCP::Rights;
-    iMSCP::Rights->import();
-
-    my $rs = setRights(
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl",
-        { user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_USER'}, mode => '0700' }
-    );
-    return $rs if $rs;
-
-    return 0 unless -f $main::imscpConfig{'RKHUNTER_LOG'};
-
-    setRights(
-        $main::imscpConfig{'RKHUNTER_LOG'},
-        { user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'IMSCP_GROUP'}, mode => '0640' }
-    );
-}
-
 =back
 
 =head1 PRIVATE METHODS
@@ -188,9 +161,9 @@ sub _addCronTask
             DWEEK   => '',
             USER    => $main::imscpConfig{'ROOT_USER'},
             COMMAND =>
-            'nice -n 15 ionice -c2 -n5 perl '.
-                "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl ".
-                "> /dev/null 2>&1"
+            'nice -n 15 ionice -c2 -n5 perl '
+                ."$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl "
+                ."> /dev/null 2>&1"
         }
     );
 }
@@ -214,8 +187,8 @@ sub _scheduleCheck
     return $rs if $rs;
 
     $rs = execute(
-        "echo 'perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl > /dev/null 2>&1' ".
-            "| batch",
+        "echo 'perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl > /dev/null 2>&1' "
+            ."| batch",
         \ my $stdout,
         \ my $stderr
     );

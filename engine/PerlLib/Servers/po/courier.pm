@@ -32,6 +32,7 @@ use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
+use iMSCP::Rights;
 use iMSCP::Service;
 use Servers::mta;
 use Tie::File;
@@ -176,8 +177,43 @@ sub setEnginePermissions
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoSetEnginePermissions' );
-    $rs ||= Servers::po::courier::installer->getInstance()->setEnginePermissions();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPoSetEnginePermissions' );
+    $rs ||= setRights(
+        $self->{'config'}->{'AUTHLIB_SOCKET_DIR'},
+        {
+            user  => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+            group => $self->{'config'}->{'AUTHDAEMON_GROUP'},
+            mode  => '0750'
+        }
+    );
+    $rs ||= setRights(
+        "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/authmysqlrc",
+        {
+            user  => $self->{'config'}->{'AUTHDAEMON_USER'},
+            group => $self->{'config'}->{'AUTHDAEMON_GROUP'},
+            mode  => '0660'
+        }
+    );
+    $rs ||= setRights(
+        $self->{'config'}->{'QUOTA_WARN_MSG_PATH'},
+        {
+            user  => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
+            mode  => '0640'
+        }
+    );
+    if (-f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem") {
+        $rs = setRights(
+            "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem",
+            {
+                user  => $self->{'config'}->{'AUTHDAEMON_USER'},
+                group => $main::imscpConfig{'ROOT_GROUP'},
+                mode  => '0600'
+            }
+        );
+        return $rs if $rs;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterPoSetEnginePermissions' );
 }
 
 =item postaddMail(\%data)

@@ -77,7 +77,7 @@ sub postinstall
 
     $rs = $self->{'eventManager'}->register(
         'beforeSetupRestartServices', sub {
-            push @{$_[0]}, [ sub { $self->restart(); }, 'Percona MySQL server' ];
+            push @{$_[0]}, [ sub { $self->restart(); }, 'Percona' ];
             0;
         }
     );

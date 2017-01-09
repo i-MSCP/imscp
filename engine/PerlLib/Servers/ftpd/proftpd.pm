@@ -25,13 +25,14 @@ package Servers::ftpd::proftpd;
 
 use strict;
 use warnings;
+use File::Basename;
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
+use iMSCP::Rights;
 use iMSCP::Service;
-use File::Basename;
 use Class::Autouse qw/ :nostat Servers::ftpd::proftpd::installer Servers::ftpd::proftpd::uninstaller /;
 use parent 'Common::SingletonClass';
 
@@ -141,6 +142,30 @@ sub uninstall
     $rs ||= Servers::ftpd::proftpd::uninstaller->getInstance()->uninstall();
     $self->{'restart'} = 1 unless $rs;
     $rs ||= $self->{'eventManager'}->trigger( 'afterFtpdUninstall', 'proftpd' );
+}
+
+=item setEnginePermissions()
+
+ Set engine permissions
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setEnginePermissions
+{
+    my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdSetEnginePermissions' );
+    $rs ||= setRights(
+        $self->{'config'}->{'FTPD_CONF_FILE'},
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
+            mode  => '0640'
+        }
+    );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterFtpdSetEnginePermissions' );
 }
 
 =item addUser(\%data)

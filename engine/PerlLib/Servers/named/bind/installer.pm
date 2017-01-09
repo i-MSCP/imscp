@@ -308,8 +308,7 @@ sub _init
     tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/bind.data";
 
     my $oldConf = "$self->{'cfgDir'}/bind.old.data";
-    
-    if(defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
+    if(-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
         while(my($key, $value) = each(%oldConfig)) {
             next unless exists $self->{'config'}->{$key};

@@ -50,6 +50,7 @@ sub factory
     return $instance if defined $instance;
 
     (my $sName = $main::imscpConfig{'SQL_SERVER'}) =~ s/_\d+\.\d+$//;
+    $sName = 'remote' if $sName eq 'remote_server';
     my $package = "Servers::sqld::$sName";
     eval "require $package";
     fatal( $@ ) if $@;

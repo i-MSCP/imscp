@@ -33,7 +33,6 @@ use iMSCP::Execute;
 use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::Rights;
 use iMSCP::TemplateParser;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
@@ -87,73 +86,6 @@ sub install
     $rs ||= $self->_oldEngineCompatibility();
 }
 
-=item setEnginePermissions()
-
- Set engine permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setEnginePermissions
-{
-    my $self = shift;
-
-    my $rootUName = $main::imscpConfig{'ROOT_USER'};
-    my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-    my $imscpGName = $main::imscpConfig{'IMSCP_GROUP'};
-    my $mtaUName = $self->{'config'}->{'MTA_MAILBOX_UID_NAME'};
-    my $mtaGName = $self->{'config'}->{'MTA_MAILBOX_GID_NAME'};
-
-    # eg. /etc/postfix/main.cf
-    my $rs = setRights(
-        $self->{'config'}->{'POSTFIX_CONF_FILE'}, { user => $rootUName, group => $rootGName, mode => '0644' }
-    );
-    # eg. /etc/postfix/master.cf
-    $rs ||= setRights(
-        $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}, { user => $rootUName, group => $rootGName, mode => '0644' }
-    );
-    # eg. /etc/aliases
-    $rs ||= setRights(
-        $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'}, { user => $rootUName, group => $rootGName, mode => '0644' }
-    );
-    # eg. /etc/postfix/imscp
-    $rs ||= setRights(
-        $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'},
-        { user => $rootUName, group => $rootGName, dirmode => '0750', filemode => '0640', recursive => 1 }
-    );
-    # eg. /var/www/imscp/engine/messenger
-    $rs ||= setRights(
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/messenger",
-        { user => $rootUName, group => $imscpGName, dirmode => '0750', filemode => '0750', recursive => 1 }
-    );
-    # eg. /var/log/imscp/imscp-arpl-msgr
-    $rs ||= setRights(
-        "$main::imscpConfig{'LOG_DIR'}/imscp-arpl-msgr",
-        { user => $mtaUName, group => $imscpGName, dirmode => '0750', filemode => '0600', recursive => 1 }
-    );
-    # eg. /var/mail/virtual
-    $rs ||= setRights(
-        $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
-        {
-            user      => $mtaUName,
-            group     => $mtaGName,
-            dirmode   => '0750',
-            filemode  => '0640',
-            recursive => iMSCP::Getopt->fixPermissions
-        }
-    );
-    # eg. /usr/sbin/maillogconvert.pl
-    $rs ||= setRights(
-        $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'},
-        {
-            user  => $rootUName,
-            group => $rootGName,
-            mode  => '0750'
-        }
-    );
-}
-
 =back
 
 =head1 PRIVATE METHODS
@@ -183,8 +115,7 @@ sub _init
     tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/postfix.data";
 
     my $oldConf = "$self->{'cfgDir'}/postfix.old.data";
-
-    if(defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
+    if(-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
         while(my($key, $value) = each(%oldConfig)) {
             next unless exists $self->{'config'}->{$key};
@@ -507,12 +438,7 @@ sub _buildMainCfFile
         MTA_MAILBOX_GID          => $gid
     };
 
-    # We always create a dummy postfix main.cf file
-    # This cover cases where the main.cf is missing or misconfigured, leading to postconf command failure 
-    my $file = iMSCP::File->new( filename => $self->{'config'}->{'POSTFIX_CONF_FILE'} );
-    my $rs = $file->save();
-
-    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'postfix', 'main.cf', \ my $cfgTpl, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'postfix', 'main.cf', \ my $cfgTpl, $data );
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
@@ -528,13 +454,13 @@ sub _buildMainCfFile
 
     $cfgTpl = process( $data, $cfgTpl );
 
-    execute( "postconf -h mail_version", \ my $stdout, \ my $stderr );
+    execute( [ 'postconf', '-d', '-h', 'mail_version' ], \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    debug( $stderr );
+    debug( $stderr || 'Unknown error' ) if $rs;
 
     chomp( $stdout );
     unless ($stdout =~ /^\d+\.\d+\.\d+$/) {
-        error( 'Could not to find Postfix version' );
+        error( 'Unexpected value returned by POSTCONF(1) command.' );
         return 1;
     }
 
@@ -543,6 +469,7 @@ sub _buildMainCfFile
     }
 
     $rs = $self->{'eventManager'}->trigger( 'afterMtaBuildMainCfFile', \ $cfgTpl, 'main.cf' );
+    my $file = iMSCP::File->new( filename => $self->{'config'}->{'POSTFIX_CONF_FILE'} );
     $rs ||= $file->set( $cfgTpl );
     $rs ||= $file->save();
     return $rs if $rs;

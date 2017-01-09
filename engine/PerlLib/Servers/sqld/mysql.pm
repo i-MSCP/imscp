@@ -31,6 +31,7 @@ use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Execute;
+use iMSCP::Rights;
 use iMSCP::Service;
 use version;
 use parent 'Common::SingletonClass';
@@ -84,7 +85,7 @@ sub postinstall
 
     $rs = $self->{'eventManager'}->register(
         'beforeSetupRestartServices', sub {
-            push @{$_[0]}, [ sub { $self->restart(); }, 'MySQL server' ];
+            push @{$_[0]}, [ sub { $self->restart(); }, 'MySQL' ];
             0;
         }
     );
@@ -122,8 +123,23 @@ sub setEnginePermissions
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldSetEnginePermissions' );
-    $rs ||= Servers::sqld::mysql::installer->getInstance()->setEnginePermissions();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldSetEnginePermissions' );
+    $rs ||= setRights(
+        "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf",
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
+            mode  => '0644'
+        }
+    );
+    $rs ||= setRights(
+        "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf",
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $self->{'config'}->{'SQLD_GROUP'},
+            mode  => '0640'
+        }
+    );
+    $rs = $self->{'eventManager'}->trigger( 'afterSqldSetEnginePermissions' );
 }
 
 =item restart()

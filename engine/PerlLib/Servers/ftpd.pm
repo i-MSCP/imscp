@@ -73,18 +73,15 @@ sub can
 
 END
     {
-        return if defined $main::execmode && $main::execmode eq 'setup';
-        my $rs = $?;
+        return if $? || (defined $main::execmode && $main::execmode eq 'setup');
 
         if ($Servers::ftpd::instance->{'start'}) {
-            $rs ||= $Servers::ftpd::instance->start();
+            $? = $Servers::ftpd::instance->start();
         } elsif ($Servers::ftpd::instance->{'restart'}) {
-            $rs ||= $Servers::ftpd::instance->restart();
+            $? = $Servers::ftpd::instance->restart();
         } elsif ($Servers::ftpd::instance->{'reload'}) {
-            $rs ||= $Servers::ftpd::instance->reload();
+            $? = $Servers::ftpd::instance->reload();
         }
-
-        $? = $rs;
     }
 
 =back

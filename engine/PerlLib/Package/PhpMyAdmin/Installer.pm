@@ -36,7 +36,6 @@ use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
-use iMSCP::Rights;
 use iMSCP::TemplateParser;
 use Package::FrontEnd;
 use Package::PhpMyAdmin;
@@ -182,26 +181,6 @@ sub install
     $rs ||= $self->_saveConfig();
 }
 
-=item setGuiPermissions()
-
- Set gui permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setGuiPermissions
-{
-    return 0 unless -d "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
-
-    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-
-    setRights(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma",
-        { user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1 }
-    );
-}
-
 =back
 
 =head1 EVENT LISTENERS
@@ -270,7 +249,7 @@ sub _init
     untie(%{$self->{'config'}});
     tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.data";
     
-    if (defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/phpmyadmin.old.data") {
+    if (-f "$self->{'cfgDir'}/phpmyadmin.old.data") {
         tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.old.data", readonly => 1;
         while(my ($key, $value) = each(%oldConfig)) {
             next unless exists $self->{'config'}->{$key};
@@ -315,7 +294,6 @@ sub _backupConfigFile
     my ($self, $cfgFile) = @_;
 
     return 0 unless -f $cfgFile && -d $self->{'bkpDir'};
-
     iMSCP::File->new( filename => $cfgFile )->copyFile( $self->{'bkpDir'}.'/'.fileparse( $cfgFile ).'.'.time );
 }
 
@@ -548,8 +526,12 @@ sub _buildHttpdConfig
     my $frontEnd = Package::FrontEnd->getInstance();
     $frontEnd->buildConfFile(
         "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/PhpMyAdmin/config/nginx/imscp_pma.conf",
-        { GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },
-        { destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pma.conf" }
+        {
+            GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'}
+        },
+        {
+            destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pma.conf"
+        }
     );
 }
 

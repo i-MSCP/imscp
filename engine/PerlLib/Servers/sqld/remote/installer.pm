@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::sqld::remote_server::installer - i-MSCP Remote MySQL server installer implementation
+ Servers::sqld::remote::installer - i-MSCP Remote MySQL server installer implementation
 
 =cut
 
@@ -21,7 +21,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package Servers::sqld::remote_server::installer;
+package Servers::sqld::remote::installer;
 
 use strict;
 use warnings;
@@ -32,7 +32,7 @@ use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::TemplateParser;
-use Servers::sqld::remote_server;
+use Servers::sqld::remote;
 use version;
 use parent 'Servers::sqld::mysql::installer';
 
@@ -48,7 +48,7 @@ use parent 'Servers::sqld::mysql::installer';
 
  Initialize instance
 
- Return Servers::sqld::remote_server:installer
+ Return Servers::sqld::remote:installer
 
 =cut
 
@@ -57,7 +57,7 @@ sub _init
     my $self = shift;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'sqld'} = Servers::sqld::remote_server->getInstance();
+    $self->{'sqld'} = Servers::sqld::remote->getInstance();
     $self->{'cfgDir'} = $self->{'sqld'}->{'cfgDir'};
     $self->{'config'} = $self->{'sqld'}->{'config'};
 
@@ -67,8 +67,7 @@ sub _init
     tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/mysql.data";
 
     my $oldConf = "$self->{'cfgDir'}/mysql.old.data";
-
-    if (defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
+    if (-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
         while(my ($key, $value) = each(%oldConfig)) {
             next unless exists $self->{'config'}->{$key};

@@ -322,6 +322,9 @@ sub askSqlRootUser
 {
     my ($dialog) = @_;
     my $hostname = setupGetQuestion('DATABASE_HOST', $main::imscpConfig{'SQL_SERVER'} eq 'remote_server' ? '' : 'localhost');
+    if($main::imscpConfig{'SQL_SERVER'} eq 'remote_server' && grep { $hostname eq $_ } ('localhost', '127.0.0.1', '::1')) {
+        $hostname = '';
+    }
     my $port = setupGetQuestion('DATABASE_PORT', 3306);
     my $user = setupGetQuestion('SQL_ROOT_USER', 'root');
     my $pwd = setupGetQuestion('SQL_ROOT_PASSWORD');

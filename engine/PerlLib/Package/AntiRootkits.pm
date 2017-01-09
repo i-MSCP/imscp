@@ -28,6 +28,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::Dialog;
 use iMSCP::Dir;
+use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
@@ -276,6 +277,9 @@ sub setEnginePermissions
 {
     my $self = shift;
 
+    my $rs = $self->{'eventManager'}->trigger( 'beforeAntiRootkisSetGuiPermissions' );
+    return $rs if $rs;
+
     my %selectedPackages;
     @{selectedPackages}{ split ',', $main::imscpConfig{'ANTI_ROOTKITS_PACKAGES'} } = ();
 
@@ -287,7 +291,7 @@ sub setEnginePermissions
             $package = $package->getInstance();
             next unless $package->can( 'setEnginePermissions' );
             debug( sprintf( 'Calling action setEnginePermissions on %s', ref $package ) );
-            my $rs = $package->setEnginePermissions();
+            $rs = $package->setEnginePermissions();
             return $rs if $rs;
         } else {
             error( $@ );
@@ -295,7 +299,7 @@ sub setEnginePermissions
         }
     }
 
-    0;
+    $self->{'eventManager'}->trigger( 'beforeAntiRootkisSetGuiPermissions' );
 }
 
 =back
@@ -316,6 +320,7 @@ sub _init
 {
     my $self = shift;
 
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     # Find list of available AntiRootkits packages
     @{$self->{'PACKAGES'}}{
         iMSCP::Dir->new( dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits" )->getDirs()

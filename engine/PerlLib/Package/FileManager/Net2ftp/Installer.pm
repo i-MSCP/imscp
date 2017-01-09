@@ -29,7 +29,6 @@ use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::Rights;
 use iMSCP::Composer;
 use iMSCP::TemplateParser;
 use iMSCP::File;
@@ -77,24 +76,6 @@ sub install
     my $rs = $self->_installFiles();
     $rs ||= $self->_buildHttpdConfig();
     $rs ||= $self->_buildConfig();
-}
-
-=item setGuiPermissions()
-
- Set gui permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setGuiPermissions
-{
-    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-
-    setRights(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp",
-        { user => $panelUName, group => $panelGName, dirmode => '0550', filemode => '0440', recursive => 1 }
-    );
 }
 
 =back
@@ -191,8 +172,12 @@ sub _buildHttpdConfig
     my $frontEnd = Package::FrontEnd->getInstance();
     $frontEnd->buildConfFile(
         "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager/Net2ftp/config/nginx/imscp_net2ftp.conf",
-        { GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },
-        { destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_net2ftp.conf" }
+        {
+            GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'}
+        },
+        {
+            destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_net2ftp.conf"
+        }
     );
 }
 
