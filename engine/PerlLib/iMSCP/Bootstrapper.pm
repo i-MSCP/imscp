@@ -88,7 +88,7 @@ sub boot
     }
 
     $self->_genKeys() unless $options->{'nokeys'};
-    $self->_dbConnect() unless $options->{'nodatabase'};
+    $self->_setDbSettings() unless $options->{'nodatabase'};
 
     iMSCP::EventManager->getInstance()->trigger( 'onBoot', $mode ) == 0 or die(
         getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
@@ -225,15 +225,15 @@ sub _genKeys
     undef;
 }
 
-=item _dbConnect()
+=item _setDbSettings()
 
- Establish connection with the database
+ Set database connection settings
 
  Return int 0 on success, die on failure
 
 =cut
 
-sub _dbConnect
+sub _setDbSettings
 {
     require iMSCP::Database;
     require iMSCP::Crypt;
@@ -247,8 +247,6 @@ sub _dbConnect
         'DATABASE_PASSWORD',
         iMSCP::Crypt::decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'} )
     );
-    my $rs = $database->connect();
-    !$rs or die( sprintf( 'Could not connect to the SQL server: %s', $rs ) );
     0;
 }
 

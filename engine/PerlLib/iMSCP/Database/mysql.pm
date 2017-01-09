@@ -56,11 +56,9 @@ sub set
 {
     my ($self, $prop, $value) = @_;
 
-    if (exists $self->{'db'}->{$prop}) {
-        $self->{'db'}->{$prop} = $value;
-    } else {
-        undef;
-    }
+    return unless exists $self->{'db'}->{$prop};
+
+    $self->{'db'}->{$prop} = $value;
 }
 
 =item connect()
@@ -219,7 +217,7 @@ sub doQuery
 
     $query or return 'No query provided';
 
-    $self->{'sth'} = $self->{'connection'}->prepare( $query ) or return "Error while preparing statement: $DBI::errstr";
+    $self->{'sth'} = $self->getRawDb()->prepare( $query ) or return "Error while preparing statement: $DBI::errstr";
     $self->{'sth'}->execute( @bindValues ) or return "Error while executing statement: $DBI::errstr";
 
     if ($fetchMode eq 'hashref') {
@@ -243,7 +241,7 @@ sub getDBTables
 {
     my $self = shift;
 
-    $self->{'sth'} = $self->{'connection'}->prepare(
+    $self->{'sth'} = $self->getRawDb()->prepare(
         'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ?', $self->{'db'}->{'DATABASE_NAME'}
     );
 
@@ -266,7 +264,7 @@ sub getTableColumns
 {
     my ($self, $tableName) = @_;
 
-    $self->{'sth'} = $self->{'connection'}->prepare(
+    $self->{'sth'} = $self->getRawDb()->prepare(
         'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?',
         $self->{'db'}->{'DATABASE_NAME'},
         $tableName
@@ -328,7 +326,7 @@ sub quoteIdentifier
     my ($self, $identifier) = @_;
 
     $identifier = join( ', ', $identifier ) if ref $identifier eq 'ARRAY';
-    $self->{'connection'}->quote_identifier( $identifier );
+    $self->getRawDb()->quote_identifier( $identifier );
 }
 
 =item quote($string)
@@ -343,7 +341,7 @@ sub quote
 {
     my ($self, $string) = @_;
 
-    $self->{'connection'}->quote( $string );
+    $self->getRawDb()->quote( $string );
 }
 
 =back
