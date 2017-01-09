@@ -37,7 +37,7 @@ iMSCP::EventManager->getInstance()->register(
         );
         my $fileContent = $file->get();
         unless (defined $fileContent) {
-            error( sprintf( 'Could not read %s file', $self->{'filename'} ) );
+            error( sprintf( 'Could not read %s file', $file->{'filename'} ) );
             return 1;
         }
         $fileContent =~ s/(\$config\['(?:default_host|smtp_server)?'\]\s+=\s+').*(';)/$1tls:\/\/$main::imscpConfig{'BASE_SERVER_VHOST'}$2/g;
