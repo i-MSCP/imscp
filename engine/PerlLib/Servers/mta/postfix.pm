@@ -770,7 +770,7 @@ sub addMapEntry
 
     $rs = $file->set( $mapFileContent );
     $rs ||= $file->save();
-    $rs ||= $self->{'eventManager'}->trigger( 'beforeAddPostfixMapEntry', $mapPath, $entry );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterAddPostfixMapEntry', $mapPath, $entry );
 }
 
 =item deleteMapEntry($mapPath, $entry)
@@ -807,7 +807,7 @@ sub deleteMapEntry
 
     $rs = $file->set( $mapFileContent );
     $rs ||= $file->save();
-    $rs ||= $self->{'eventManager'}->trigger( 'beforeDeletePostfixMapEntry', $mapPath, $entry );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterDeletePostfixMapEntry', $mapPath, $entry );
 }
 
 =item postmap($mapPath [, $mapType = 'hash' ])
@@ -1031,19 +1031,18 @@ EOF
 
 END
     {
-        my $self = __PACKAGE__->getInstance();
-        my $exitCode = $?;
-        my $rs = 0;
+        return if defined $main::execmode && $main::execmode eq 'setup';
 
-        unless (defined $main::execmode && $main::execmode eq 'setup') {
-            while(my ($mapPath, $mapFileObject) = each(%{$self->{'_maps'}})) {
-                $rs ||= $mapFileObject->mode( 0640 );
-                $rs ||= $self->postmap( $mapPath );
-                last if $rs;
-            }
+        my $self = __PACKAGE__->getInstance();
+        my $ret = 0;
+
+        while(my ($mapPath, $mapFileObject) = each(%{$self->{'_maps'}})) {
+            my $rs = $mapFileObject->mode( 0640 );
+            $rs ||= $self->postmap( $mapPath );
+            $ret ||= $rs;
         }
 
-        $? = $exitCode || $rs;
+        $? ||= $ret;
     }
 
 =back
