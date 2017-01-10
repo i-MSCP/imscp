@@ -156,6 +156,10 @@ Allows to override default PhpMyAdmin configuration template file
 
 Configure Postfix to route all mails to a smarthost using SASL authentication.
 
+### 10_postfix_transport_table.pl
+
+Add entries in Postfix transport(5) table
+
 ### 10_postfix_tuning.pl
 
 Tune up Postfix configuration files (main.cf and master.cf).

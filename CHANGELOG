@@ -5,7 +5,7 @@ Git 1.3.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-    Changed: Do no longer load listener files from old /etc/imscp/hooks.d directory
+    Changed: Listener files from old /etc/imscp/hooks.d directory are now ignored
     Fixed: Avoid to connect to MySQL server when not required
 
 DISTRIBUTIONS
@@ -18,7 +18,8 @@ INSTALLER
     Updated: ./docs/preseed.pl preseeding template file
 
 LISTENERS
-    Updated: 10_roundcube_tls.pl default hostname must be overridden to prevent hostname mismatches
+    Added: 10_postfix_transport_table.pl listener file (Allows to add entries in Postfix transport(5) table)
+    Fixed: Default hostname must be overridden to prevent hostname mismatches (10_roundcube_tls.pl)
 
 PACKAGES
     Added: `beforeUpdateRoundCubeMailHostEntries' event listener (RoundCube package installer)
