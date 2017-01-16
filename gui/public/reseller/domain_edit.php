@@ -846,12 +846,18 @@ function reseller_checkAndUpdateData($domainId)
                 $needDaemonRequest = true;
             }
 
-            // PHP or CGI was either enabled or disabled or PHP settings were changed, web folder protection
-            // properties have been updated, or domain IP was changed, so we must schedule daemon request.
-            if ($data['domain_php'] != $data['fallback_domain_php']
+            // Domain IP has been changed
+            // Email feature has been enabled/disabled or
+            // PHP feature has been enabled/disabled or
+            // CGI feature has been enabled/disabled or
+            // Web folder protection feature has been enabled or disabled
+            if ($data['domain_ip_id'] != $data['fallback_domain_ip_id']
+                || ($data['domain_mailacc_limit'] == '-1' && $data['fallback_domain_mailacc_limit'] != '-1'
+                    || $data['domain_mailacc_limit'] != '-1' && $data['fallback_domain_mailacc_limit'] == '-1'
+                )
+                || $data['domain_php'] != $data['fallback_domain_php']
                 || $data['domain_cgi'] != $data['fallback_domain_cgi']
                 || $data['web_folder_protection'] != $data['fallback_web_folder_protection']
-                || $data['domain_ip_id'] != $data['fallback_domain_ip_id']
             ) {
                 $needDaemonRequest = true;
             }
