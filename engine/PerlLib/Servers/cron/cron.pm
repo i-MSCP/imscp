@@ -159,14 +159,14 @@ sub postinstall
  Add a new cron task
 
  Param hash \%data Cron task data:
-  - TASKID Cron task unique identifier
-  - OPTIONAL MINUTE field: Minute time or shortcut such as @daily, @monthly... - Default to @daily
-  - OPTIONAL HOUR field: HOUR Hour time - ignored if the MINUTE field define a shortcut - Default to *
-  - OPTIONAL DAY field: DAY Day of month date - ignored if the MINUTE field define a shortcut - Default to *
-  - OPTIONAL MONTH field: MONTH Month date - ignored if the MINUTE field define a shortcut - Default to *
-  - OPTIONAL DWEEK field: DWEEK Day of week date - ignored if the MINUTE field define a shortcut - Default to *
-  - USER user under which the command must be run
-  - COMMAND Command
+  - TASKID :Cron task unique identifier
+  - MINUTE  : OPTIONAL Minute or shortcut such as @daily, @monthly... (Default: @daily)
+  - HOUR    : OPTIONAL Hour - ignored if the MINUTE field defines a shortcut (Default: *)
+  - DAY     : OPTIONAL Day of month - ignored if the MINUTE field defines a shortcut (Default: *)
+  - MONTH   : OPTIONAL Month - ignored if the MINUTE field defines a shortcut - Default (Default: *)
+  - DWEEK   : OPTIONAL Day of week - ignored if the MINUTE field defines a shortcut - (Default: *)
+  - USER    : OPTIONAL Use under which the command must be run (default: root)
+  - COMMAND : Command to run
   Param string $file OPTIONAL Absolute path to cron file (default: imscp cron file)
   Return int 0 on success, other on failure
 
