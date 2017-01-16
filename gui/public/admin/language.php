@@ -25,68 +25,55 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Main script
  */
 
-// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
-
 check_login('admin');
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'admin/language.tpl',
-		'page_message' => 'layout',
-		'languages_available' => 'page',
-		'def_language' => 'languages_available'
-	)
-);
+$tpl->define_dynamic(array(
+    'layout'              => 'shared/layouts/ui.tpl',
+    'page'                => 'admin/language.tpl',
+    'page_message'        => 'layout',
+    'languages_available' => 'page',
+    'def_language'        => 'languages_available'
+));
 
 // Getting current admin language
 $adminCurrentLanguage = $_SESSION['user_def_lang'];
 
 if (!empty($_POST)) {
     $adminNewLanguage = clean_input($_POST['def_language']);
+    if ($adminCurrentLanguage != $adminNewLanguage) {
+        exec_query('UPDATE user_gui_props SET lang = ? WHERE user_id = ?', array(
+            $adminNewLanguage, $_SESSION['user_id']
+        ));
+        $_SESSION['user_def_lang'] = $adminNewLanguage;
+        set_page_message(tr('Language successfully updated.'), 'success');
+    } else {
+        set_page_message(tr("Nothing has been changed."), 'info');
+    }
 
-	if ($adminCurrentLanguage != $adminNewLanguage) {
-		$query = "UPDATE `user_gui_props` SET `lang` = ? WHERE `user_id` = ?";
-		exec_query($query, array($adminNewLanguage, $_SESSION['user_id']));
-
-		$_SESSION['user_def_lang'] = $adminNewLanguage;
-
-		set_page_message(tr('Language successfully updated.'), 'success');
-	} else {
-		set_page_message(tr("Nothing has been changed."), 'info');
-	}
-
-	// Force update on next load
-	redirectTo('profile.php');
+    redirectTo('profile.php');
 }
 
-$tpl->assign(
-	array(
-		 'TR_PAGE_TITLE' => tr('Admin / Profile / Language'),
-		 'TR_LANGUAGE' => tr('Language'),
-		 'TR_CHOOSE_LANGUAGE' => tr('Choose your language'),
-		 'TR_UPDATE' => tr('Update')));
+$tpl->assign(array(
+    'TR_PAGE_TITLE'      => tr('Admin / Profile / Language'),
+    'TR_LANGUAGE'        => tr('Language'),
+    'TR_CHOOSE_LANGUAGE' => tr('Choose your language'),
+    'TR_UPDATE'          => tr('Update')
+));
 
 generateNavigation($tpl);
-generateLoggedFrom($tpl);
 gen_def_language($tpl, $adminCurrentLanguage);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
-
 $tpl->prnt();
-
 unsetMessages();

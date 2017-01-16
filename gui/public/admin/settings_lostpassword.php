@@ -25,93 +25,76 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
-// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
-
 check_login('admin');
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'admin/settings_lostpassword.tpl',
-		'page_message' => 'layout',
-		'logged_from' => 'page',
-		'custom_buttons' => 'page'));
-
-$selected_on = '';
-$selected_off = '';
-$data_1 = get_lostpassword_activation_email($_SESSION['user_id']);
-$data_2 = get_lostpassword_password_email($_SESSION['user_id']);
-
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
-	$err_message = '';
+    $errorMessage = '';
+    $activationEmailData['subject'] = isset($_POST['subject1']) ? clean_input($_POST['subject1']) : '';
+    $activationEmailData['message'] = isset($_POST['subject1']) ? clean_input($_POST['message1']) : '';
+    $passwordEmailData['subject'] = isset($_POST['subject1']) ? clean_input($_POST['subject2']) : '';
+    $passwordEmailData['message'] = isset($_POST['subject1']) ? clean_input($_POST['message2']) : '';
 
-	$data_1['subject'] = clean_input($_POST['subject1'], false);
-	$data_1['message'] = clean_input($_POST['message1'], false);
-	$data_2['subject'] = clean_input($_POST['subject2'], false);
-	$data_2['message'] = clean_input($_POST['message2'], false);
+    if ($activationEmailData['subject'] == '' || $passwordEmailData['subject'] == '') {
+        $errorMessage = tr('Please specify a message subject.');
+    }
 
-	if (empty($data_1['subject']) || empty($data_2['subject'])) {
-		$err_message = tr('Please specify a message subject.');
-	}
-	if (empty($data_1['message']) || empty($data_2['message'])) {
-		$err_message = tr('Please specify a message content.');
-	}
+    if ($activationEmailData['message'] == '' || $passwordEmailData['message'] == '') {
+        $errorMessage = tr('Please specify a message content.');
+    }
 
-	if (!empty($err_message)) {
-		set_page_message($err_message, 'error');
-	} else {
-		set_lostpassword_activation_email(0, $data_1);
-		set_lostpassword_password_email(0, $data_2);
-		set_page_message(tr('Lost password email templates were updated.'), 'success');
-	}
+    if (!empty($errorMessage)) {
+        set_page_message($errorMessage, 'error');
+    } else {
+        set_lostpassword_activation_email(0, $activationEmailData);
+        set_lostpassword_password_email(0, $passwordEmailData);
+        set_page_message(tr('Lost password email templates were updated.'), 'success');
+        redirectTo('settings_lostpassword.php');
+    }
+} else {
+    $activationEmailData = get_lostpassword_activation_email($_SESSION['user_id']);
+    $passwordEmailData = get_lostpassword_password_email($_SESSION['user_id']);
 }
 
-$tpl->assign('TR_PAGE_TITLE', tr('Admin / Settings / Lost Password Email'));
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic(array(
+    'layout'         => 'shared/layouts/ui.tpl',
+    'page'           => 'admin/settings_lostpassword.tpl',
+    'page_message'   => 'layout'
+));
+$tpl->assign(array(
+    'TR_PAGE_TITLE'               => tr('Admin / Settings / Lost Password Email'),
+    'TR_LOSTPW_EMAIL'             => tr('Lost password email'),
+    'TR_MESSAGE_TEMPLATE_INFO'    => tr('Message template info'),
+    'TR_MESSAGE_TEMPLATE'         => tr('Message template'),
+    'SUBJECT_VALUE1'              => tohtml($activationEmailData['subject']),
+    'MESSAGE_VALUE1'              => tohtml($activationEmailData['message']),
+    'SUBJECT_VALUE2'              => tohtml($passwordEmailData['subject']),
+    'MESSAGE_VALUE2'              => tohtml($passwordEmailData['message']),
+    'SENDER_EMAIL_VALUE'          => tohtml($activationEmailData['sender_email']),
+    'SENDER_NAME_VALUE'           => tohtml($activationEmailData['sender_name']),
+    'TR_ACTIVATION_EMAIL'         => tr('Activation email'),
+    'TR_PASSWORD_EMAIL'           => tr('Password email'),
+    'TR_USER_LOGIN_NAME'          => tr('User login (system) name'),
+    'TR_USER_PASSWORD'            => tr('User password'),
+    'TR_USER_REAL_NAME'           => tr('User (first and last) name'),
+    'TR_LOSTPW_LINK'              => tr('Lost password link'),
+    'TR_SUBJECT'                  => tr('Subject'),
+    'TR_MESSAGE'                  => tr('Message'),
+    'TR_SENDER_EMAIL'             => tr('Sender email'),
+    'TR_SENDER_NAME'              => tr('Sender name'),
+    'TR_APPLY_CHANGES'            => tr('Apply changes'),
+    'TR_BASE_SERVER_VHOST_PREFIX' => tr('URL protocol'),
+    'TR_BASE_SERVER_VHOST'        => tr('URL to this admin panel'),
+    'TR_BASE_SERVER_VHOST_PORT'   => tr('URL port')
+));
 
 generateNavigation($tpl);
-generateLoggedFrom($tpl);
-
-$tpl->assign(
-	array(
-		'TR_LOSTPW_EMAIL' => tr('Lost password email'),
-		'TR_MESSAGE_TEMPLATE_INFO' => tr('Message template info'),
-		'TR_MESSAGE_TEMPLATE' => tr('Message template'),
-		'SUBJECT_VALUE1' => clean_input($data_1['subject'], true),
-		'MESSAGE_VALUE1' => tohtml($data_1['message']),
-		'SUBJECT_VALUE2' => clean_input($data_2['subject'], true),
-		'MESSAGE_VALUE2' => tohtml($data_2['message']),
-		'SENDER_EMAIL_VALUE' => tohtml($data_1['sender_email']),
-		'SENDER_NAME_VALUE' => tohtml($data_1['sender_name']),
-		'TR_ACTIVATION_EMAIL' => tr('Activation email'),
-		'TR_PASSWORD_EMAIL' => tr('Password email'),
-		'TR_USER_LOGIN_NAME' => tr('User login (system) name'),
-		'TR_USER_PASSWORD' => tr('User password'),
-		'TR_USER_REAL_NAME' => tr('User (first and last) name'),
-		'TR_LOSTPW_LINK' => tr('Lost password link'),
-		'TR_SUBJECT' => tr('Subject'),
-		'TR_MESSAGE' => tr('Message'),
-		'TR_SENDER_EMAIL' => tr('Sender email'),
-		'TR_SENDER_NAME' => tr('Sender name'),
-		'TR_APPLY_CHANGES' => tr('Apply changes'),
-		'TR_BASE_SERVER_VHOST_PREFIX' => tr('URL protocol'),
-		'TR_BASE_SERVER_VHOST' => tr('URL to this admin panel'),
-		'TR_BASE_SERVER_VHOST_PORT' => tr('URL port')
-	)
-);
-
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
-
 $tpl->prnt();
-
 unsetMessages();

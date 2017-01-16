@@ -52,10 +52,10 @@ $data_2 = get_lostpassword_password_email($_SESSION['user_id']);
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$err_message = '';
 
-	$data_1['subject'] = clean_input($_POST['subject1'], false);
-	$data_1['message'] = clean_input($_POST['message1'], false);
-	$data_2['subject'] = clean_input($_POST['subject2'], false);
-	$data_2['message'] = clean_input($_POST['message2'], false);
+	$data_1['subject'] = clean_input($_POST['subject1']);
+	$data_1['message'] = clean_input($_POST['message1']);
+	$data_2['subject'] = clean_input($_POST['subject2']);
+	$data_2['message'] = clean_input($_POST['message2']);
 
 	if (empty($data_1['subject']) || empty($data_2['subject'])) {
 		set_page_message(tr('You must specify a subject.'), 'error');

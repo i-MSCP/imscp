@@ -25,70 +25,72 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
-// Include core library
+/***********************************************************************************************************************
+ * Main
+ */
+
 require 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
-
 check_login('reseller');
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'reseller/settings_welcome_mail.tpl',
-		'page_message' => 'layout'));
+$tpl->define_dynamic(array(
+    'layout'       => 'shared/layouts/ui.tpl',
+    'page'         => 'reseller/settings_welcome_mail.tpl',
+    'page_message' => 'layout'
+));
+
+if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
+    $data['subject'] = (isset($_POST['auto_subject'])) ? clean_input($_POST['auto_subject']) : '';
+    $data['message'] = (isset($_POST['auto_message'])) ? clean_input($_POST['auto_message']) : '';
+    $error = false;
+
+    if ($data['subject'] == '') {
+        set_page_message(tr('You must specify a subject.'), 'error');
+        $error = true;
+    }
+
+    if ($data['message'] == '') {
+        set_page_message(tr('You must specify a message.'), 'error');
+        $error = true;
+    }
+
+    if (!$error) {
+        set_welcome_email($_SESSION['user_id'], $data);
+        set_page_message(tr('Welcome email template has been updated.'), 'success');
+        redirectTo('settings_welcome_mail.php');
+    }
+}
 
 $data = get_welcome_email($_SESSION['user_id']);
 
-if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
-	$data['subject'] = clean_input($_POST['auto_subject']);
-	$data['message'] = clean_input($_POST['auto_message']);
-
-	if ($data['subject'] == '') {
-		set_page_message(tr('You must specify a subject.'), 'error');
-	} elseif ($data['message'] == '') {
-		set_page_message(tr('You must specify a message.'), 'error');
-	} else {
-		set_welcome_email($_SESSION['user_id'], $data);
-		set_page_message (tr('Welcome email template has been updated.'), 'success');
-	}
-}
-
-$tpl->assign('TR_PAGE_TITLE', tr('Reseller / Customers / Welcome Email'));
+$tpl->assign(array(
+    'TR_PAGE_TITLE'               => tr('Reseller / Customers / Welcome Email'),
+    'TR_MESSAGE_TEMPLATE_INFO'    => tr('Message template info'),
+    'TR_USER_LOGIN_NAME'          => tr('User login (system) name'),
+    'TR_USER_PASSWORD'            => tr('User password'),
+    'TR_USER_REAL_NAME'           => tr('User real (first and last) name'),
+    'TR_MESSAGE_TEMPLATE'         => tr('Message template'),
+    'TR_SUBJECT'                  => tr('Subject'),
+    'TR_MESSAGE'                  => tr('Message'),
+    'TR_SENDER_EMAIL'             => tr('Sender email'),
+    'TR_SENDER_NAME'              => tr('Sender name'),
+    'TR_UPDATE'                   => tr('Update'),
+    'TR_USERTYPE'                 => tr('User type (admin, reseller, user)'),
+    'TR_BASE_SERVER_VHOST_PREFIX' => tr('URL protocol'),
+    'TR_BASE_SERVER_VHOST'        => tr('URL to this admin panel'),
+    'TR_BASE_SERVER_VHOST_PORT'   => tr('URL port'),
+    'SUBJECT_VALUE'               => tohtml($data['subject']),
+    'MESSAGE_VALUE'               => tohtml($data['message']),
+    'SENDER_EMAIL_VALUE'          => tohtml($data['sender_email']),
+    'SENDER_NAME_VALUE'           => tohtml(!empty($data['sender_name'])) ? $data['sender_name'] : tr('Unknown')
+));
 
 generateNavigation($tpl);
-
-$tpl->assign(
-	array(
-		'TR_MESSAGE_TEMPLATE_INFO' => tr('Message template info'),
-		'TR_USER_LOGIN_NAME' => tr('User login (system) name'),
-		'TR_USER_PASSWORD' => tr('User password'),
-		'TR_USER_REAL_NAME' => tr('User real (first and last) name'),
-		'TR_MESSAGE_TEMPLATE' => tr('Message template'),
-		'TR_SUBJECT' => tr('Subject'),
-		'TR_MESSAGE' => tr('Message'),
-		'TR_SENDER_EMAIL' => tr('Sender email'),
-		'TR_SENDER_NAME' => tr('Sender name'),
-		'TR_UPDATE' => tr('Update'),
-		'TR_USERTYPE' => tr('User type (admin, reseller, user)'),
-		'TR_BASE_SERVER_VHOST_PREFIX' => tr('URL protocol'),
-		'TR_BASE_SERVER_VHOST' => tr('URL to this admin panel'),
-		'TR_BASE_SERVER_VHOST_PORT' => tr('URL port'),
-		'SUBJECT_VALUE' => tohtml($data['subject']),
-		'MESSAGE_VALUE' => tohtml($data['message']),
-		'SENDER_EMAIL_VALUE' => tohtml($data['sender_email']),
-		'SENDER_NAME_VALUE' => tohtml(!empty($data['sender_name'])) ? $data['sender_name'] : tr('Unknown')));
-
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
-
 $tpl->prnt();
-
 unsetMessages();

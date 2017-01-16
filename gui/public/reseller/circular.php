@@ -129,8 +129,8 @@ function reseller_sendCircular()
 
     $senderName = clean_input($_POST['sender_name']);
     $senderEmail = clean_input($_POST['sender_email']);
-    $subject = clean_input($_POST['subject'], false);
-    $body = clean_input($_POST['body'], false);
+    $subject = clean_input($_POST['subject']);
+    $body = clean_input($_POST['body']);
 
     if (!reseller_isValidCircular($senderName, $senderEmail, $subject, $body)) {
         return false;

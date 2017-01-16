@@ -40,7 +40,7 @@ $tpl->define_dynamic(
  */
 function gen_page_data($tpl) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_delmessage') {
-		$tpl->assign('DELETE_MESSAGE_TEXT', clean_input($_POST['delete_msg_text'], false));
+		$tpl->assign('DELETE_MESSAGE_TEXT', clean_input($_POST['delete_msg_text']));
 	} else {
 		$tpl->assign(
 			array(

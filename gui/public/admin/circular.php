@@ -137,6 +137,7 @@ function admin_isValidCircular($senderName, $senderEmail, $subject, $body)
         set_page_message(tr('Sender name is missing.'), 'error');
         $ret = false;
     }
+
     if ($senderEmail == '') {
         set_page_message(tr('Sender email is missing.'), 'error');
         $ret = false;
@@ -144,10 +145,12 @@ function admin_isValidCircular($senderName, $senderEmail, $subject, $body)
         set_page_message(tr("Incorrect email length or syntax."), 'error');
         $ret = false;
     }
+
     if ($subject == '') {
         set_page_message(tr('Subject is missing.'), 'error');
         $ret = false;
     }
+
     if ($body == '') {
         set_page_message(tr('Body is missing.'), 'error');
         $ret = false;
@@ -163,8 +166,11 @@ function admin_isValidCircular($senderName, $senderEmail, $subject, $body)
  */
 function admin_sendCircular()
 {
-    if (!isset($_POST['sender_name']) || !isset($_POST['sender_email']) || !isset($_POST['rcpt_to'])
-        || !isset($_POST['subject']) || !isset($_POST['body'])
+    if (!isset($_POST['sender_name'])
+        || !isset($_POST['sender_email'])
+        || !isset($_POST['rcpt_to'])
+        || !isset($_POST['subject'])
+        || !isset($_POST['body'])
     ) {
         showBadRequestErrorPage();
     }
@@ -172,8 +178,8 @@ function admin_sendCircular()
     $senderName = clean_input($_POST['sender_name']);
     $senderEmail = clean_input($_POST['sender_email']);
     $rcptTo = clean_input($_POST['rcpt_to']);
-    $subject = clean_input($_POST['subject'], false);
-    $body = clean_input($_POST['body'], false);
+    $subject = clean_input($_POST['subject']);
+    $body = clean_input($_POST['body']);
 
     if (!admin_isValidCircular($senderName, $senderEmail, $subject, $body)) {
         return false;
@@ -194,17 +200,25 @@ function admin_sendCircular()
     set_time_limit(0);
     ignore_user_abort(true);
 
-    if ($rcptTo == 'all_users' || $rcptTo == 'administrators_resellers'
-        || $rcptTo == 'administrators_customers' || $rcptTo == 'administrators'
+    if ($rcptTo == 'all_users'
+        || $rcptTo == 'administrators_resellers'
+        || $rcptTo == 'administrators_customers'
+        || $rcptTo == 'administrators'
     ) {
         admin_sendToAdministrators($senderName, $senderEmail, $subject, $body);
     }
-    if ($rcptTo == 'all_users' || $rcptTo == 'administrators_resellers' || $rcptTo == 'resellers_customers'
+
+    if ($rcptTo == 'all_users'
+        || $rcptTo == 'administrators_resellers'
+        || $rcptTo == 'resellers_customers'
         || $rcptTo == 'resellers'
     ) {
         admin_sendToResellers($senderName, $senderEmail, $subject, $body);
     }
-    if ($rcptTo == 'all_users' || $rcptTo == 'administrators_customers' || $rcptTo == 'resellers_customers'
+
+    if ($rcptTo == 'all_users'
+        || $rcptTo == 'administrators_customers'
+        || $rcptTo == 'resellers_customers'
         || $rcptTo == 'customers'
     ) {
         admin_sendToCustomers($senderName, $senderEmail, $subject, $body);
@@ -223,12 +237,12 @@ function admin_sendCircular()
 }
 
 /**
- * Generate page data
+ * Generate page
  *
  * @param iMSCP_pTemplate $tpl
  * @return void
  */
-function admin_generatePageData($tpl)
+function generatePage($tpl)
 {
     $senderName = isset($_POST['sender_name']) ? $_POST['sender_name'] : '';
     $senderEmail = isset($_POST['sender_email']) ? $_POST['sender_email'] : '';
@@ -236,7 +250,9 @@ function admin_generatePageData($tpl)
     $subject = isset($_POST['subject']) ? $_POST['subject'] : '';
     $body = isset($_POST['body']) ? $_POST['body'] : '';
 
-    if ($senderName == '' && $senderEmail == '') {
+    if ($senderName == ''
+        && $senderEmail == ''
+    ) {
         $stmt = exec_query('SELECT admin_name, fname, lname, email FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
         $row = $stmt->fetchRow();
 
@@ -276,18 +292,23 @@ function admin_generatePageData($tpl)
     if (systemHasManyAdmins() && systemHasResellers()) {
         $rcptToOptions[] = array('administrators_resellers', tr('Administrators and resellers'));
     }
+
     if (systemHasManyAdmins() && systemHasCustomers()) {
         $rcptToOptions[] = array('administrators_customers', tr('Administrators and customers'));
     }
+
     if (systemHasResellers() && systemHasCustomers()) {
         $rcptToOptions[] = array('resellers_customers', tr('Resellers and customers'));
     }
+
     if (systemHasManyAdmins()) {
         $rcptToOptions[] = array('administrators', tr('Administrators'));
     }
+
     if (systemHasResellers()) {
         $rcptToOptions[] = array('resellers', tr('Resellers'));
     }
+
     if (systemHasCustomers()) {
         $rcptToOptions[] = array('customers', tr('Customers'));
     }
@@ -340,7 +361,7 @@ $tpl->assign(array(
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
-admin_generatePageData($tpl);
+generatePage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));

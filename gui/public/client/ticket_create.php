@@ -81,9 +81,8 @@ switch ($userdata['URGENCY']) {
 		$userdata['OPT_URGENCY_2'] = $cfg->HTML_SELECTED;
 }
 
-$userdata['SUBJECT'] = isset($_POST['subject']) ? clean_input($_POST['subject'], true) : '';
-$userdata['USER_MESSAGE'] = isset($_POST['user_message']) ?
-	clean_input($_POST['user_message'], true) : '';
+$userdata['SUBJECT'] = isset($_POST['subject']) ? clean_input($_POST['subject']) : '';
+$userdata['USER_MESSAGE'] = isset($_POST['user_message']) ? clean_input($_POST['user_message']) : '';
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');

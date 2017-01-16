@@ -66,7 +66,7 @@ function client_generatePage($tpl)
         && $_POST['uaction'] == 'add_db'
     ) {
         $tpl->assign(array(
-            'DB_NAME' => clean_input($_POST['db_name'], true),
+            'DB_NAME' => clean_input($_POST['db_name']),
             'USE_DMN_ID' => isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' ? ' checked' : '',
             'START_ID_POS_SELECTED' => isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end' ? ' checked' : '',
             'END_ID_POS_SELECTED' => isset($_POST['id_pos']) && $_POST['id_pos'] === 'end' ? ' checked' : ''
