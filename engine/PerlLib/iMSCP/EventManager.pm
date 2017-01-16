@@ -156,9 +156,9 @@ sub _init
 
     $EVENTS{$self} = { };
 
-    for my $listenerFile(glob "$main::imscpConfig{'CONF_DIR'}/listeners.d/*.pl") {
-        debug( sprintf( 'Loading %s listener file', $listenerFile ) );
-        require $listenerFile;
+    for (glob "$main::imscpConfig{'CONF_DIR'}/listeners.d/*.pl") {
+        debug( sprintf( 'Loading %s listener file', $_ ) );
+        require $_;
     }
 
     $self;

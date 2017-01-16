@@ -774,6 +774,7 @@ sub _cleanup
         "$main::imscpConfig{'CONF_DIR'}/apache/backup",
         "$main::imscpConfig{'CONF_DIR'}/apache/working",
         "$main::imscpConfig{'CONF_DIR'}/fcgi",
+        "$main::imscpConfig{'CONF_DIR'}/hooks.d",
         "$main::imscpConfig{'CONF_DIR'}/init.d",
         "$main::imscpConfig{'CONF_DIR'}/nginx",
         "$main::imscpConfig{'CONF_DIR'}/php-fpm",
