@@ -61,27 +61,14 @@ function clean_html($text)
 }
 
 /**
- * clean_input
+ * Clean input
  *
- * @param String $input input data (eg. post-var) to be cleaned
- * @param boolean $htmlencode should return value be html encoded (& -> &amp;)
- * @return String space trimmed, {|} trimmed, stripslashed, eventually htmlencoded input string
+ * @param string $input input data (eg. post-var) to be cleaned
+ * @return string space trimmed input string
  */
-function clean_input($input, $htmlencode = false)
+function clean_input($input)
 {
-    // Trim leading and trailing white spaces
-    $input = trim($input, "\x20");
-    $input = trim($input, '{..}');
-
-    if (get_magic_quotes_gpc()) {
-        $input = stripslashes($input);
-    }
-
-    if ($htmlencode) {
-        return tohtml($input, 'htmlAttr');
-    }
-
-    return $input;
+    return trim($input, "\x20");
 }
 
 /**
