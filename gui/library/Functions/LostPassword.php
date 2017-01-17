@@ -44,16 +44,15 @@ function createImage($strSessionVar)
 
     imagecolorallocate($image, $rgBgColor[0], $rgBgColor[1], $rgBgColor[2]);
     $textColor = imagecolorallocate($image, $rgTextColor[0], $rgTextColor[1], $rgTextColor[2]);
-    $white = imagecolorallocate($image, 0xFF, 0xFF, 0xFF);
     $nbLetters = 6;
 
     $x = ($cfg['LOSTPASSWORD_CAPTCHA_WIDTH'] / 2) - ($nbLetters * 20 / 2);
-    $y = mt_rand(15, 30);
+    $y = mt_rand(15, 25);
 
-    $string = \iMSCP\Crypt::randomStr($nbLetters);
+    $string = \iMSCP\Crypt::randomStr($nbLetters, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
     for ($i = 0; $i < $nbLetters; $i++) {
         $fontFile = LIBRARY_PATH . '/Resources/Fonts/' . $cfg['LOSTPASSWORD_CAPTCHA_FONTS'][mt_rand(0, count($cfg['LOSTPASSWORD_CAPTCHA_FONTS']) - 1)];
-        imagettftext($image, 20, 0, $x, $y, $textColor, $fontFile, $string[$i]);
+        imagettftext($image, 17, rand(-30, 30), $x, $y, $textColor, $fontFile, $string[$i]);
         $x += 20;
         $y = mt_rand(15, 25);
     }
@@ -61,6 +60,7 @@ function createImage($strSessionVar)
     $_SESSION[$strSessionVar] = $string;
 
     // obfuscation
+    $white = imagecolorallocate($image, 0xFF, 0xFF, 0xFF);
     for ($i = 0; $i < 5; $i++) {
         $x1 = mt_rand(0, $x - 1);
         $y1 = mt_rand(0, round($y / 10, 0));
@@ -174,15 +174,15 @@ function sendPasswordRequestValidation($adminName)
     setUniqKey($adminName, $uniqueKey);
 
     $ret = send_mail(array(
-        'mail_id' => 'lostpw-msg-1',
-        'fname' => $row['fname'],
-        'lname' => $row['lname'],
-        'username' => $adminName,
-        'email' => $row['email'],
-        'subject' => $data['subject'],
-        'message' => $data['message'],
+        'mail_id'      => 'lostpw-msg-1',
+        'fname'        => $row['fname'],
+        'lname'        => $row['lname'],
+        'username'     => $adminName,
+        'email'        => $row['email'],
+        'subject'      => $data['subject'],
+        'message'      => $data['message'],
         'placeholders' => array(
-            '{LINK}' => "{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/lostpassword.php?key=$uniqueKey",
+            '{LINK}' => getRequestBaseUrl() . '/lostpassword.php?key=' . $uniqueKey
         )
     ));
 
@@ -228,13 +228,13 @@ function sendPassword($uniqueKey)
 
         $data = get_lostpassword_password_email($createdBy);
         $ret = send_mail(array(
-            'mail_id' => 'lostpw-msg-2',
-            'fname' => $row['fname'],
-            'lname' => $row['lname'],
-            'username' => $row['admin_name'],
-            'email' => $row['email'],
-            'subject' => $data['subject'],
-            'message' => $data['message'],
+            'mail_id'      => 'lostpw-msg-2',
+            'fname'        => $row['fname'],
+            'lname'        => $row['lname'],
+            'username'     => $row['admin_name'],
+            'email'        => $row['email'],
+            'subject'      => $data['subject'],
+            'message'      => $data['message'],
             'placeholders' => array(
                 '{PASSWORD}' => $userPassword
             )
@@ -248,7 +248,7 @@ function sendPassword($uniqueKey)
 
         return true;
     }
-    
+
     set_page_message(tr('Your request for password renewal is either invalid or has expired.'), 'error');
     return false;
 }
