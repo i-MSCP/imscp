@@ -289,25 +289,18 @@ sub getTableColumns
 
 sub dumpdb
 {
-    my ($self, $dbName, $filename) = @_;
+    my (undef, $dbName, $filename) = @_;
 
     debug(sprintf('Dump `%s` database into %s', $dbName, $filename) );
 
-    my @cmd = (
-        'mysqldump',
-        '--defaults-file=' . escapeShell( "$self->{'sqld_config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf" ),
-        '--opt',
-        '--complete-insert',
-        '--add-drop-database',
-        '--allow-keywords',
-        '--compress',
-        '--default-character-set=utf8',
-        '--quote-names',
-        "--result-file=" . escapeShell( $filename ),
-        escapeShell( $dbName )
+    my $rs = execute(
+        [
+            'mysqldump', '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords', '--compress',
+            '--quote-names', '-r', $filename, '-B', $dbName
+        ],
+        \my $stdout,
+        \my $stderr
     );
-
-    my $rs = execute( "@cmd", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     $rs;

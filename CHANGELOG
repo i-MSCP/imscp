@@ -7,6 +7,8 @@ Git 1.4.x
 BACKEND
     Changed: Listener files from deprecated /etc/imscp/hooks.d directory are now ignored
     Fixed: Avoid to connect to MySQL server when not required
+    Fixed: Force addition of `CREATE DATABASE` statement in SQL dumps, even for empty databases
+    Fixed: Restore database using master i-MSCP SQL user in place of customer SQL user
 
 DISTRIBUTIONS
     Added: PHP 5.5 and PHP 5.6 alternatives for Debian Wheezy through Dotdeb repository

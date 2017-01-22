@@ -1,4 +1,4 @@
-[mysqldump]
+[client]
 host     = {DATABASE_HOST}
 port     = {DATABASE_PORT}
 user     = "{DATABASE_USER}"

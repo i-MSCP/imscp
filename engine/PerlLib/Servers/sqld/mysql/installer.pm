@@ -217,12 +217,6 @@ sub _buildConf
 performance_schema = 0
 sql_mode = "NO_AUTO_CREATE_USER"
 max_connections = 500
-[mysql_upgrade]
-host     = {DATABASE_HOST}
-port     = {DATABASE_PORT}
-user     = "{DATABASE_USER}"
-password = "{DATABASE_PASSWORD}"
-socket   = {SQLD_SOCK_DIR}/mysqld.sock
 EOF
 
     (my $user = main::setupGetQuestion( 'DATABASE_USER' ) ) =~ s/"/\\"/g;
@@ -236,8 +230,8 @@ EOF
     };
 
     if (version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.5.0' )) {
-        $cfgTpl =~ s/(\[mysqld\]\n)/$1innodb_use_native_aio = {INNODB_USE_NATIVE_AIO}\n/i;
-        $variables->{'INNODB_USE_NATIVE_AIO'} = $self->_isMysqldInsideCt() ? '0' : '1';
+        my $innoDbUseNativeAIO = $self->_isMysqldInsideCt() ? '0' : '1';
+        $cfgTpl .= "innodb_use_native_aio = $innoDbUseNativeAIO\n";
     }
 
     # For backward compatibility - We will review this in later version
@@ -245,10 +239,10 @@ EOF
     if (version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.7.4' )
         && $main::imscpConfig{'SQL_SERVER'} !~ /^mariadb/
     ) {
-        $cfgTpl =~ s/(\[mysqld\]\n)/$1default_password_lifetime = 0\n/i;
+        $cfgTpl .= "default_password_lifetime = 0\n";
     }
 
-    $cfgTpl =~ s/(\[mysqld\]\n)/$1event_scheduler = DISABLED\n/i;
+    $cfgTpl .= "event_scheduler = DISABLED\n";
     $cfgTpl = process( $variables, $cfgTpl );
 
     my $file = iMSCP::File->new( filename => "$confDir/conf.d/imscp.cnf" );
@@ -286,25 +280,9 @@ sub _updateServerConfig
         # Upgrade server system tables
         # See #IP-1482 for further details.
         unless ($rs) {
-            my $host = main::setupGetQuestion( 'DATABASE_HOST' );
-            (my $user = main::setupGetQuestion( 'SQL_ROOT_USER' )) =~ s/"/\\"/g;
-            (my $pwd = main::setupGetQuestion( 'SQL_ROOT_PASSWORD' ) ) =~ s/"/\\"/g;
-            my $conffile = File::Temp->new( UNLINK => 1 );
-
-            print $conffile <<"EOF";
-[mysql_upgrade]
-host     = $host
-user     = "$user"
-password = "$pwd"
-EOF
-            $conffile->flush();
-
             # Filter all "duplicate column", "duplicate key" and "unknown column"
             # errors as the command is designed to be idempotent.
-            $rs = execute(
-                "mysql_upgrade --defaults-file=$conffile 2>&1 | egrep -v '^(1|\@had|ERROR (1054|1060|1061))'",
-                \$stdout
-            );
+            $rs = execute("mysql_upgrade  2>&1 | egrep -v '^(1|\@had|ERROR (1054|1060|1061))'", \$stdout);
             error(sprintf('Could not upgrade SQL server system tables: %s', $stdout)) if $rs;
             return $rs if $rs;
             debug( $stdout ) if $stdout;
