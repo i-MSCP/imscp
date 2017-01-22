@@ -32,6 +32,7 @@ use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::TemplateParser;
+use iMSCP::Umask;
 use Servers::sqld::remote;
 use version;
 use parent 'Servers::sqld::mysql::installer';
@@ -150,6 +151,8 @@ sub _buildConf
         },
         $cfgTpl
     );
+
+    local $UMASK = 027; # imscp.cnf file must not be created world-readable
 
     my $file = iMSCP::File->new( filename => "$confDir/conf.d/imscp.cnf" );
     $rs ||= $file->set( $cfgTpl );

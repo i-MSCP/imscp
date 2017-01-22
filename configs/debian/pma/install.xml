@@ -3,5 +3,5 @@
     <folders>${SYSTEM_CONF}/pma</folders>
     <folders>${SYSTEM_CONF}/pma/backup</folders>
     <folders>${SYSTEM_CONF}/pma/working</folders>
-    <copy_config>${SYSTEM_CONF}/pma/phpmyadmin.data</copy_config>
+    <copy_config mode="0640">${SYSTEM_CONF}/pma/phpmyadmin.data</copy_config>
 </install>

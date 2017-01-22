@@ -30,13 +30,14 @@ use iMSCP::Config;
 use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;
+use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::TemplateParser;
-use iMSCP::Dialog::InputValidation;
+use iMSCP::Umask;
 use Servers::mta::postfix;
 use Servers::po::dovecot;
 use Servers::sqld;
@@ -468,34 +469,38 @@ sub _buildConf
         ]
     );
 
-    for my $conffile(keys %cfgFiles) {
-        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'dovecot', $conffile, \my $cfgTpl, $data );
-        return $rs if $rs;
+    {
+        local $UMASK = 027; # dovecot-sql.conf file must not be created/copied world-readable
 
-        unless (defined $cfgTpl) {
-            $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/$conffile" )->get();
+        for my $conffile(keys %cfgFiles) {
+            my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'dovecot', $conffile, \my $cfgTpl, $data );
+            return $rs if $rs;
+
             unless (defined $cfgTpl) {
-                error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/$conffile" ) );
-                return 1;
+                $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/$conffile" )->get();
+                unless (defined $cfgTpl) {
+                    error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/$conffile" ) );
+                    return 1;
+                }
             }
+
+            $rs = $self->{'eventManager'}->trigger( 'beforePoBuildConf', \$cfgTpl, $conffile );
+            return $rs if $rs;
+
+            $cfgTpl = process( $data, $cfgTpl );
+
+            $rs = $self->{'eventManager'}->trigger( 'afterPoBuildConf', \$cfgTpl, $conffile );
+            return $rs if $rs;
+
+            my $filename = fileparse( $cfgFiles{$conffile}->[0] );
+            my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
+            $rs = $file->set( $cfgTpl );
+            $rs ||= $file->save();
+            $rs ||= $file->owner( $cfgFiles{$conffile}->[1], $cfgFiles{$conffile}->[2] );
+            $rs ||= $file->mode( $cfgFiles{$conffile}->[3] );
+            $rs ||= $file->copyFile( $cfgFiles{$conffile}->[0] );
+            return $rs if $rs;
         }
-
-        $rs = $self->{'eventManager'}->trigger( 'beforePoBuildConf', \$cfgTpl, $conffile );
-        return $rs if $rs;
-
-        $cfgTpl = process( $data, $cfgTpl );
-
-        $rs = $self->{'eventManager'}->trigger( 'afterPoBuildConf', \$cfgTpl, $conffile );
-        return $rs if $rs;
-
-        my $filename = fileparse( $cfgFiles{$conffile}->[0] );
-        my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
-        $rs = $file->set( $cfgTpl );
-        $rs ||= $file->save();
-        $rs ||= $file->owner( $cfgFiles{$conffile}->[1], $cfgFiles{$conffile}->[2] );
-        $rs ||= $file->mode( $cfgFiles{$conffile}->[3] );
-        $rs ||= $file->copyFile( $cfgFiles{$conffile}->[0] );
-        return $rs if $rs;
     }
 
     0;

@@ -35,7 +35,7 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::ProgramFinder;
 use iMSCP::TemplateParser;
-use File::Temp;
+use iMSCP::Umask;
 use Servers::sqld::mysql;
 use version;
 use parent 'Common::SingletonClass';
@@ -244,6 +244,8 @@ EOF
 
     $cfgTpl .= "event_scheduler = DISABLED\n";
     $cfgTpl = process( $variables, $cfgTpl );
+
+    local $UMASK = 027; # imscp.cnf file must not be created world-readable
 
     my $file = iMSCP::File->new( filename => "$confDir/conf.d/imscp.cnf" );
     $rs ||= $file->set( $cfgTpl );

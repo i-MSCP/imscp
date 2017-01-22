@@ -3,7 +3,7 @@
     <folders>${SYSTEM_CONF}/dovecot</folders>
     <folders>${SYSTEM_CONF}/dovecot/backup</folders>
     <folders>${SYSTEM_CONF}/dovecot/working</folders>
-    <copy_config>${SYSTEM_CONF}/dovecot/dovecot.data</copy_config>
+    <copy_config mode="0640">${SYSTEM_CONF}/dovecot/dovecot.data</copy_config>
     <copy_config>${SYSTEM_CONF}/dovecot/dovecot.conf.2.0</copy_config>
     <copy_config>${SYSTEM_CONF}/dovecot/dovecot.conf.2.1</copy_config>
     <copy_config>${SYSTEM_CONF}/dovecot/dovecot-sql.conf</copy_config>

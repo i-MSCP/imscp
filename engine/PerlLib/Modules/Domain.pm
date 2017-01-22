@@ -247,10 +247,6 @@ sub restore
                     'ionice', '-c2', '-n5', # Reduce the I/O priority
                     $cmd,
                     escapeShell( "$bkpDir/$bkpFile" ), '|', 'mysql',
-                    '-h', escapeShell( $main::imscpConfig{'DATABASE_HOST'} ),
-                    '-P', escapeShell( $main::imscpConfig{'DATABASE_PORT'} ),
-                    '-u', escapeShell( $rdata->{$sqldName}->{'sqlu_name'} ),
-                    '-p'.escapeShell( $rdata->{$sqldName}->{'sqlu_pass'} ),
                     escapeShell( $rdata->{$sqldName}->{'sqld_name'} )
                 );
 
@@ -424,7 +420,7 @@ sub _getData
         #my $haveCert = ($certData->{$self->{'domain_id'}} && $self->isValidCertificate( $self->{'domain_name'} ));
         my $haveCert = (
             $certData->{$self->{'domain_id'}}
-            && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'domain_name'}.pem"
+                && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'domain_name'}.pem"
         );
         my $allowHSTS = ($haveCert && $certData->{$self->{'domain_id'}}->{'allow_hsts'} eq 'on');
         my $hstsMaxAge = $allowHSTS ? $certData->{$self->{'domain_id'}}->{'hsts_max_age'} : '';

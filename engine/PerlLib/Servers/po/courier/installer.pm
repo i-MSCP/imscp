@@ -39,6 +39,7 @@ use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
 use iMSCP::Stepper;
 use iMSCP::TemplateParser;
+use iMSCP::Umask;
 use Servers::mta::postfix;
 use Servers::po::courier;
 use Servers::sqld;
@@ -550,7 +551,7 @@ sub _buildConf
             "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/authmysqlrc", # Destpath
             $self->{'config'}->{'AUTHDAEMON_USER'}, # Owner
             $self->{'config'}->{'AUTHDAEMON_GROUP'}, # Group
-            0660 # Permissions
+            0640 # Permissions
         ],
         'quota-warning' => [
             $self->{'config'}->{'QUOTA_WARN_MSG_PATH'}, # Destpath
@@ -560,35 +561,39 @@ sub _buildConf
         ]
     );
 
-    for my $conffile(keys %cfgFiles) {
-        $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'courier', $conffile, \ my $cfgTpl, $data );
-        return $rs if $rs;
+    {
+        local $UMASK = 027; # authmysqlrc file must not be created/copied world-readable
 
-        unless (defined $cfgTpl) {
-            $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/$conffile" )->get();
+        for my $conffile(keys %cfgFiles) {
+            $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'courier', $conffile, \ my $cfgTpl, $data );
+            return $rs if $rs;
+
             unless (defined $cfgTpl) {
-                error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/$conffile" ) );
-                return 1;
+                $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/$conffile" )->get();
+                unless (defined $cfgTpl) {
+                    error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/$conffile" ) );
+                    return 1;
+                }
             }
+
+            $rs = $self->{'eventManager'}->trigger( 'beforePoBuildConf', \ $cfgTpl, $conffile );
+            return $rs if $rs;
+
+            $cfgTpl = process( $data, $cfgTpl );
+
+            $rs = $self->{'eventManager'}->trigger( 'afterPoBuildConf', \ $cfgTpl, $conffile );
+            return $rs if $rs;
+
+            my $filename = fileparse( $cfgFiles{$conffile}->[0] );
+
+            my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
+            $rs = $file->set( $cfgTpl );
+            $rs ||= $file->save();
+            $rs ||= $file->owner( $cfgFiles{$conffile}->[1], $cfgFiles{$conffile}->[2] );
+            $rs ||= $file->mode( $cfgFiles{$conffile}->[3] );
+            $rs ||= $file->copyFile( $cfgFiles{$conffile}->[0] );
+            return $rs if $rs;
         }
-
-        $rs = $self->{'eventManager'}->trigger( 'beforePoBuildConf', \ $cfgTpl, $conffile );
-        return $rs if $rs;
-
-        $cfgTpl = process( $data, $cfgTpl );
-
-        $rs = $self->{'eventManager'}->trigger( 'afterPoBuildConf', \ $cfgTpl, $conffile );
-        return $rs if $rs;
-
-        my $filename = fileparse( $cfgFiles{$conffile}->[0] );
-
-        my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
-        $rs = $file->set( $cfgTpl );
-        $rs ||= $file->save();
-        $rs ||= $file->owner( $cfgFiles{$conffile}->[1], $cfgFiles{$conffile}->[2] );
-        $rs ||= $file->mode( $cfgFiles{$conffile}->[3] );
-        $rs ||= $file->copyFile( $cfgFiles{$conffile}->[0] );
-        return $rs if $rs;
     }
 
     if (-f "$self->{'cfgDir'}/imapd.local") {
@@ -646,6 +651,8 @@ sub _buildCyrusSaslConfFile
         DATABASE_PASSWORD => $self->{'config'}->{'SASL_DATABASE_PASSWORD'}
     };
 
+    local $UMASK = 027; # smtpd.conf file must not be created/copied world-readable
+    
     $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'courier', 'smtpd.conf', \ my $cfgTpl, $data );
     return $rs if $rs;
 

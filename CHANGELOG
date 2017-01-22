@@ -15,6 +15,7 @@ DISTRIBUTIONS
     Added: PHP 7.0 alternative for Debian Jessie through Dotdeb repository
 
 INSTALLER
+    Fixed: Several files containing critical data are created world-readable, giving time to other processes to read them
     Moved: Distribution package files from ./docs directory to ./autoinstaller/Packages directory
     Review: Forbid usage of `debian-sys-maint' SQL user
     Updated: ./docs/preseed.pl preseeding template file

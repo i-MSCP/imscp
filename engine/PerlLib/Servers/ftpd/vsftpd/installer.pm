@@ -36,6 +36,7 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Stepper;
 use iMSCP::TemplateParser;
+use iMSCP::Umask;
 use Servers::ftpd::vsftpd;
 use Servers::sqld;
 use version;
@@ -428,6 +429,8 @@ EOF
     # VsFTPd pam-mysql configuration file
     undef $cfgTpl;
 
+    local $UMASK = 027; # vsftpd.pam file must not be created/copied world-readable
+    
     $rs = $self->_bkpConfFile( $self->{'config'}->{'FTPD_PAM_CONF_FILE'} );
     $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'vsftpd', 'vsftpd.pam', \$cfgTpl, $data );
     return $rs if $rs;

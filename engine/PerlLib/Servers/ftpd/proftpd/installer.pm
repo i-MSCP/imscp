@@ -30,12 +30,13 @@ use iMSCP::Config;
 use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;
+use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::TemplateParser;
-use iMSCP::Dialog::InputValidation;
+use iMSCP::Umask;
 use Servers::ftpd::proftpd;
 use Servers::sqld;
 use version;
@@ -467,11 +468,13 @@ EOF
     $rs = $self->{'eventManager'}->trigger( 'afterFtpdBuildConf', \$cfgTpl, 'proftpd.conf' );
     return $rs if $rs;
 
+    local $UMASK = 027; # proftpd.conf file must not be created/copied world-readable
+
     my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/proftpd.conf" );
     $rs = $file->set( $cfgTpl );
     $rs ||= $file->save();
-    $rs ||= $file->mode( 0640 );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+    $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( $self->{'config'}->{'FTPD_CONF_FILE'} );
     return $rs if $rs;
 

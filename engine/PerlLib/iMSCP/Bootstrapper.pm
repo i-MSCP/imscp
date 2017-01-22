@@ -29,6 +29,7 @@ use Fcntl qw/ :flock /;
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Getopt;
+use iMSCP::Umask;
 use IO::Handle;
 use locale;
 use POSIX qw / tzset locale_h /;
@@ -194,7 +195,6 @@ sub _genKeys
     if ($db_pass_key eq '{KEY}' || length($db_pass_key) != 32 || $db_pass_iv eq '{IV}' || length($db_pass_iv) != 16) {
         require iMSCP::Crypt;
         require Data::Dumper;
-        Data::Dumper->import();
 
         debug( 'Generating database keys...' );
 
@@ -202,26 +202,25 @@ sub _genKeys
             sprintf("%s doesn't exist or is not a directory", $main::imscpConfig{'CONF_DIR'} )
         );
 
+        local $UMASK = 027; # imscp-db-keys file must not be created world-readable
+
         open my $fh, '>', "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys" or die(
             sprintf('Could not open %s file for writing: %s', "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys", $!)
         );
 
-        print {$fh} Data::Dumper->Dump( 
-                [
-                    iMSCP::Crypt::randomStr( 32 ),
-                    iMSCP::Crypt::randomStr( 16 )
-                ],
-                [ qw/ db_pass_key db_pass_iv / ]
-            );
+        print {$fh} Data::Dumper->Dump(
+            [ iMSCP::Crypt::randomStr( 32 ), iMSCP::Crypt::randomStr( 16 ) ], [ qw/ db_pass_key db_pass_iv / ]
+        );
 
         close $fh;
-
         delete $INC{$keyFile}; # Force reload of keyfile
         require "$keyFile";
     }
 
     $main::imscpDBKey = $db_pass_key;
+    undef $db_pass_key;
     $main::imscpDBiv = $db_pass_iv;
+    undef $db_pass_iv;
     undef;
 }
 
