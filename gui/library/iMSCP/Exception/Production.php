@@ -26,6 +26,9 @@ class iMSCP_Exception_Production extends iMSCP_Exception
     /**
      * Constructor
      *
+     * Note: We cannot enforce type declaration of Exception since we want be compatible with both PHP5 and PHP 7.
+     *       See http://php.net/manual/fr/migration70.incompatible.php
+     * 
      * @param string $message
      * @param int $code
      * @param Exception|Throwable $previous OPTIONAL Previous exception

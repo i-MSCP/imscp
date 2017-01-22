@@ -23,98 +23,98 @@
  */
 class iMSCP_Exception_Handler
 {
-	/** @var iMSCP_Events_Manager */
-	protected $em;
+    /** @var iMSCP_Events_Manager */
+    protected $em;
 
-	/**
-	 * @var array Exception writers class names
-	 */
-	protected $writers = array(
-		'iMSCP_Exception_Writer_Browser',
-		'iMSCP_Exception_Writer_Mail'
-	);
+    /**
+     * @var array Exception writers class names
+     */
+    protected $writers = array(
+        'iMSCP_Exception_Writer_Browser',
+        'iMSCP_Exception_Writer_Mail'
+    );
 
-	/**
-	 * Constructor
-	 */
-	public function __construct()
-	{
-		$this->em = new iMSCP_Events_Manager();
-		$this->setExceptionHandler();
-	}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->em = new iMSCP_Events_Manager();
+        $this->setExceptionHandler();
+    }
 
-	/**
-	 * Add exception writer
-	 *
-	 * @param string $className Exception writer class name
-	 * @return void
-	 */
-	public function addWriter($className)
-	{
-		$className = (string)$className;
+    /**
+     * Add exception writer
+     *
+     * @param string $className Exception writer class name
+     * @return void
+     */
+    public function addWriter($className)
+    {
+        $className = (string)$className;
 
-		if(!in_array($className, $this->writers)) {
-			$this->writers[] = $className;
-		}
-	}
+        if (!in_array($className, $this->writers)) {
+            $this->writers[] = $className;
+        }
+    }
 
-	/**
-	 * Remove exception writer
-	 *
-	 * @param string $className Exception writer class name
-	 * @return void
-	 */
-	public function removeWriter($className)
-	{
-		$classname = (string)$className;
-		unset($this->writers[$classname]);
-	}
+    /**
+     * Remove exception writer
+     *
+     * @param string $className Exception writer class name
+     * @return void
+     */
+    public function removeWriter($className)
+    {
+        $className = (string)$className;
+        unset($this->writers[$className]);
+    }
 
-	/**
-	 * Sets exception handler
-	 *
-	 * @see exceptionHandler()
-	 * @return void
-	 */
-	public function setExceptionHandler()
-	{
-		set_exception_handler(array($this, 'handleException'));
-	}
+    /**
+     * Sets exception handler
+     *
+     * @see exceptionHandler()
+     * @return void
+     */
+    public function setExceptionHandler()
+    {
+        set_exception_handler(array($this, 'handleException'));
+    }
 
-	/**
-	 * Unset exception handler
-	 *
-	 * @return void
-	 */
-	public function unsetExceptionHandler()
-	{
-		restore_exception_handler();
-	}
+    /**
+     * Unset exception handler
+     *
+     * @return void
+     */
+    public function unsetExceptionHandler()
+    {
+        restore_exception_handler();
+    }
 
-	/**
-	 * Handle uncaught exceptions
-	 *
-	 * Note: We cannot enforce type declaraction of Exception since we want be compatible with both PHP5 and PHP 7.
-	 *       See http://php.net/manual/fr/migration70.incompatible.php
-	 * 
-	 * @param Exception|Throwable $exception Uncaught exception
-	 * @return void
-	 */
-	public function handleException($exception)
-	{
-		try {
-			foreach($this->writers as $writer) {
-				$this->em->registerListener('onUncaughtException', new $writer);
-			}
+    /**
+     * Handle uncaught exceptions
+     *
+     * Note: We cannot enforce type declaration of Exception since we want be compatible with both PHP5 and PHP 7.
+     *       See http://php.net/manual/fr/migration70.incompatible.php
+     *
+     * @param Exception|Throwable $exception Uncaught exception
+     * @return void
+     */
+    public function handleException($exception)
+    {
+        try {
+            foreach ($this->writers as $writer) {
+                $this->em->registerListener('onUncaughtException', new $writer);
+            }
 
-			$this->em->dispatch(new iMSCP_Exception_Event($exception));
-		} catch(Exception $e) {
-			die(sprintf(
-				'Unable to handle uncaught exception thrown in file %s at line %s with message: %s',
-				$e->getFile(),
-				$e->getLine(),
-				$e->getMessage()
-			));
-		}
-	}
+            $this->em->dispatch(new iMSCP_Exception_Event($exception));
+        } catch (Exception $e) {
+            die(sprintf(
+                'Unable to handle uncaught exception thrown in file %s at line %s with message: %s',
+                $e->getFile(),
+                $e->getLine(),
+                $e->getMessage()
+            ));
+        }
+    }
 }

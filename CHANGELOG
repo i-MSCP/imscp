@@ -14,6 +14,9 @@ DISTRIBUTIONS
     Added: PHP 5.5 and PHP 5.6 alternatives for Debian Wheezy through Dotdeb repository
     Added: PHP 7.0 alternative for Debian Jessie through Dotdeb repository
 
+FRONTEND
+    Fixed: iMSCP_Exception_Production class not compatible with PHP > 7
+
 INSTALLER
     Fixed: Several files containing critical data are created world-readable, giving time to other processes to read them
     Moved: Distribution package files from ./docs directory to ./autoinstaller/Packages directory
