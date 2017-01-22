@@ -89,7 +89,7 @@
     };
 
     // Function to initialize password generator
-    // To enable the password generator for an password input field, just add the .pwd_generator class to it
+    // To enable the password generator for a password input field, just add the .pwd_generator class to it
     // Only password input fields with the password and cpassword identifier are filled
     var passwordGenerator = function() {
         var $pwdGenerator = $(".pwd_generator");
@@ -102,7 +102,8 @@
                 html: [
                     $("<button>", { id: "pwd_generate", type: "button", text: imscp_i18n.core.generate }).pGenerator({
                         'passwordElement': $pwdElements,
-                        'passwordLength': imscp_i18n.core.password_length
+                        'passwordLength': 16,
+                        'specialChars': false
                     }),
                     $("<button>", { id: "pwd_show", type: "button", text: imscp_i18n.core.show }).click(function() {
                         var password = $pwdElements.first().val();

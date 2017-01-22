@@ -15,6 +15,7 @@ DISTRIBUTIONS
     Added: PHP 7.0 alternative for Debian Jessie through Dotdeb repository
 
 FRONTEND
+    Changed: Restricts character range for password generator to alphabet and numbers
     Fixed: iMSCP_Exception_Production class not compatible with PHP > 7
 
 INSTALLER
