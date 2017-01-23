@@ -19,7 +19,7 @@
  */
 
 /***********************************************************************************************************************
- * Script functions
+ * Functions
  */
 
 /**
@@ -41,15 +41,10 @@ function generatePage($tpl)
         return;
     }
 
-    $cfg = iMSCP_Registry::get('config');
-    if (!isset($cfg['FILEMANAGER_PACKAGE']) || $cfg['FILEMANAGER_PACKAGE'] != 'Pydio') {
-        $tpl->assign('FTP_EASY_LOGIN', '');
-    }
-
     while ($row = $stmt->fetchRow()) {
         $tpl->assign(array(
-            'FTP_ACCOUNT' => tohtml($row['userid']),
-            'UID' => tohtml($row['userid'], 'htmlAttr'),
+            'FTP_ACCOUNT'        => tohtml($row['userid']),
+            'UID'                => tohtml($row['userid'], 'htmlAttr'),
             'FTP_ACCOUNT_STATUS' => translate_dmn_status($row['status'])
         ));
         $tpl->parse('FTP_ITEM', '.ftp_item');
@@ -57,7 +52,7 @@ function generatePage($tpl)
 }
 
 /***********************************************************************************************************************
- * Main script
+ * Main
  */
 
 require_once 'imscp-lib.php';
@@ -69,24 +64,22 @@ customerHasFeature('ftp') or showBadRequestErrorPage();
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'client/ftp_accounts.tpl',
+    'layout'       => 'shared/layouts/ui.tpl',
+    'page'         => 'client/ftp_accounts.tpl',
     'page_message' => 'layout',
-    'ftp_message' => 'page',
+    'ftp_message'  => 'page',
     'ftp_accounts' => 'page',
-    'ftp_item' => 'ftp_accounts',
-    'ftp_actions' => 'ftp_item',
-    'ftp_easy_login' => 'ftp_actions'
+    'ftp_item'     => 'ftp_accounts',
+    'ftp_actions'  => 'ftp_item'
 ));
 $tpl->assign(array(
-    'TR_PAGE_TITLE' => tr('Client / FTP / Overview'),
-    'TR_FTP_ACCOUNT' => tr('FTP account'),
-    'TR_FTP_ACTIONS' => tr('Actions'),
+    'TR_PAGE_TITLE'         => tr('Client / FTP / Overview'),
+    'TR_FTP_ACCOUNT'        => tr('FTP account'),
+    'TR_FTP_ACTIONS'        => tr('Actions'),
     'TR_FTP_ACCOUNT_STATUS' => tr('Status'),
-    'TR_LOGINAS' => tr('Login As'),
-    'TR_EDIT' => tr('Edit'),
-    'TR_DELETE' => tr('Delete'),
-    'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s FTP user?', '%s'),
+    'TR_EDIT'               => tr('Edit'),
+    'TR_DELETE'             => tr('Delete'),
+    'TR_MESSAGE_DELETE'     => tr('Are you sure you want to delete the %s FTP user?', '%s'),
 ));
 
 $eventManager->registerListener('onGetJsTranslations', function ($e) {

@@ -17,6 +17,8 @@ DISTRIBUTIONS
 FRONTEND
     Changed: Restricts character range for password generator to alphabet and numbers
     Fixed: iMSCP_Exception_Production class not compatible with PHP > 7
+    Removed: PhpMyAdmin auto-login feature (password for SQL database are no longer stored plaintext in database)
+    Removed: Pydio auto-login feature (password for FTP users are no longer stored plaintext in database)
 
 INSTALLER
     Fixed: Several files containing critical data are created world-readable, giving time to other processes to read them
@@ -39,6 +41,7 @@ SERVERS
     Fixed: Wrong events triggered (Servers::mta::postfix)
 
 YOUTRACK
+    #IP-1383 Security - Remove auto-login feature to remove plaintext passwords
     #IP-1686 Fields beginning or ending with braced tags are corrupted by the clean_input function.
     #IP-1688 /etc/postfix/domains.db entry not added if mail value was changed from -1 (disabled) to enabled (0 or a value)
     #IP-1689 Password reset conflict with PanelRedirect
