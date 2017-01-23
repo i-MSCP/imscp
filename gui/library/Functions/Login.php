@@ -292,7 +292,6 @@ function change_user_interface($fromId, $toId)
         // Set new identity
         $auth = iMSCP_Authentication::getInstance();
         $auth->unsetIdentity();
-        $auth->setIdentity($to);
 
         if ($from->admin_type != 'user' && $to->admin_type != 'admin') {
             // Set additional data about user from which we are logged from
@@ -304,6 +303,7 @@ function change_user_interface($fromId, $toId)
             write_log(sprintf("%s switched back from %s's interface", $to->admin_name, decode_idna($from->admin_name)), E_USER_NOTICE);
         }
 
+        $auth->setIdentity($to);
         break;
     }
 
@@ -313,7 +313,7 @@ function change_user_interface($fromId, $toId)
 /**
  * Redirects to user ui level
  *
- * @throws iMSCP_Exception in case ui level is unknow
+ * @throws iMSCP_Exception in case ui level is unknown
  * @param string $actionScript Action script on which user should be redirected
  * @return void
  */
