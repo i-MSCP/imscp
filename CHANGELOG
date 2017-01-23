@@ -16,6 +16,7 @@ DISTRIBUTIONS
 
 FRONTEND
     Changed: Restricts character range for password generator to alphabet and numbers
+    Fixed: Administrators cannot switch onto reseller/customer interface when database update is available
     Fixed: iMSCP_Exception_Production class not compatible with PHP > 7
     Removed: PhpMyAdmin auto-login feature (password for SQL database are no longer stored plaintext in database)
     Removed: Pydio auto-login feature (password for FTP users are no longer stored plaintext in database)
