@@ -30,12 +30,12 @@ use File::Spec;
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Dir;
-use iMSCP::Ext2Attributes qw(clearImmutable);
+use iMSCP::Ext2Attributes qw/ clearImmutable /;
 use iMSCP::Execute;
 use iMSCP::OpenSSL;
 use iMSCP::Rights;
 use Modules::User;
-use Net::LibIDN qw/idn_to_unicode/;
+use Net::LibIDN qw/ idn_to_unicode /;
 use Servers::httpd;
 use parent 'Modules::Abstract';
 
@@ -212,20 +212,19 @@ sub restore
                 my $sqldName = $1;
                 my $archType = $2 || '';
 
+                # Make sure that the databas is not orphaned
                 my $rdata = iMSCP::Database->factory()->doQuery(
-                    'sqld_name',
-                    '
-                        SELECT * FROM sql_database INNER JOIN sql_user USING(sqld_id)
-                        WHERE domain_id = ? AND sqld_name = ? LIMIT 1
-                    ',
-                    $self->{'domain_id'}, $sqldName
+                    1,
+                    'SELECT 1 FROM sql_database WHERE domain_id = ? AND sqld_name = ? LIMIT 1',
+                    $self->{'domain_id'},
+                    $sqldName
                 );
                 unless (ref $rdata eq 'HASH') {
                     error( $rdata );
                     return 1;
                 }
                 unless (%{$rdata}) {
-                    warning(sprintf( 'Orphaned db (%s) or missing SQL user for this db. skipping...', $sqldName ));
+                    debug(sprintf( "Orphaned `%s' database. skipping...", $sqldName ));
                     next;
                 }
 
@@ -246,8 +245,9 @@ sub restore
                     'nice', '-n', '15', # Reduce the CPU priority
                     'ionice', '-c2', '-n5', # Reduce the I/O priority
                     $cmd,
-                    escapeShell( "$bkpDir/$bkpFile" ), '|', 'mysql',
-                    escapeShell( $rdata->{$sqldName}->{'sqld_name'} )
+                    escapeShell( "$bkpDir/$bkpFile" ),
+                    '|', 'mysql',
+                    escapeShell( $rdata->{$sqldName}->{'sqld_name'})
                 );
 
                 my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
@@ -279,7 +279,7 @@ sub restore
 
                 # Update status of any sub to 'torestore'
                 my $rdata = $db->doQuery(
-                    'dummy', 'UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', 'torestore',
+                    'u', 'UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', 'torestore',
                     $self->{'domain_id'}
                 );
                 unless (ref $rdata eq 'HASH') {
@@ -289,7 +289,7 @@ sub restore
 
                 # Update status of any als to 'torestore'
                 $rdata = $db->doQuery(
-                    'dummy', 'UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', 'torestore',
+                    'u', 'UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', 'torestore',
                     $self->{'domain_id'}
                 );
                 unless (ref $rdata eq 'HASH') {
@@ -299,7 +299,7 @@ sub restore
 
                 # Update status of any alssub to 'torestore'
                 $rdata = $db->doQuery(
-                    'dummy',
+                    'u',
                     "
                         UPDATE subdomain_alias SET subdomain_alias_status = 'torestore'
                         WHERE alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
@@ -311,27 +311,21 @@ sub restore
                     return 1;
                 }
 
-                # Un-protect folders recursively
-                clearImmutable( $dmnDir, 1 );
+                clearImmutable( $dmnDir, 1 ); # Un-protect folders recursively
 
                 my $cmd;
                 if ($archType ne '') {
-                    $cmd = "nice -n 12 ionice -c2 -n5 tar -x -p --$archType -C ".escapeShell( $dmnDir ).' -f '.
-                        escapeShell( "$bkpDir/$bkpFile" );
+                    $cmd = "nice -n 12 ionice -c2 -n5 tar -x -p --$archType -C ".escapeShell( $dmnDir ).' -f '
+                        .escapeShell( "$bkpDir/$bkpFile" );
                 } else {
-                    $cmd = 'nice -n 12 ionice -c2 -n5 tar -x -p -C '.escapeShell( $dmnDir ).' -f '.
-                        escapeShell( "$bkpDir/$bkpFile" );
+                    $cmd = 'nice -n 12 ionice -c2 -n5 tar -x -p -C '.escapeShell( $dmnDir ).' -f '
+                        .escapeShell( "$bkpDir/$bkpFile" );
                 }
 
                 my $rs = execute( $cmd, \ my $stdout, \ my $stderr );
                 debug( $stdout ) if $stdout;
                 error( $stderr || 'Unknown error' ) if $rs;
 
-                #                my $groupName =
-                #                    my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
-                #                    ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-                #
-                #                $rs = setRights( $dmnDir, { user => $userName, group => $groupName, recursive => 1 } );
                 $rs ||= $self->SUPER::restore();
                 return $rs if $rs;
             }
