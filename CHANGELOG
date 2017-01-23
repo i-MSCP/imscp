@@ -6,7 +6,7 @@ Git 1.4.x
 
 BACKEND
     Changed: Listener files from deprecated /etc/imscp/hooks.d directory are now ignored
-    Fixed: Avoid to connect to MySQL server when not required
+    Fixed: Do not connect to SQL server when that is not needed
     Fixed: Force addition of `CREATE DATABASE` statement in SQL dumps, even for empty databases
     Fixed: Restore database using master i-MSCP SQL user in place of customer SQL user
 

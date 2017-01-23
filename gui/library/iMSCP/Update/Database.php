@@ -1719,13 +1719,13 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Drop ftp_user.rawpasswd column
+     * Drop ftp_users.rawpasswd column
      *
      * @return null|string
      */
     protected function r246()
     {
-        return $this->dropColumn('ftp_user', 'rawpasswd');
+        return $this->dropColumn('ftp_users', 'rawpasswd');
     }
 
     /**

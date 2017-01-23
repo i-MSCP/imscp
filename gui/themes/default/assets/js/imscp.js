@@ -102,7 +102,7 @@
                 html: [
                     $("<button>", { id: "pwd_generate", type: "button", text: imscp_i18n.core.generate }).pGenerator({
                         'passwordElement': $pwdElements,
-                        'passwordLength': 16,
+                        'passwordLength': imscp_i18n.core.password_length > 16 ? imscp_i18n.core.password_length : 16,
                         'specialChars': false
                     }),
                     $("<button>", { id: "pwd_show", type: "button", text: imscp_i18n.core.show }).click(function() {
