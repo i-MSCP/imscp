@@ -81,8 +81,8 @@ function updateFtpAccount($userid)
 
     if ($passwd !== '') {
         exec_query(
-            'UPDATE ftp_users SET passwd = ?, rawpasswd = ?, homedir = ?, status = ? WHERE userid = ? AND admin_id = ?',
-            array(\iMSCP\Crypt::sha512($passwd), $passwd, $homeDir, 'tochange', $userid, $_SESSION['user_id'])
+            'UPDATE ftp_users SET passwd = ?, homedir = ?, status = ? WHERE userid = ? AND admin_id = ?',
+            array(\iMSCP\Crypt::sha512($passwd), $homeDir, 'tochange', $userid, $_SESSION['user_id'])
         );
     } else {
         exec_query('UPDATE ftp_users SET homedir = ?, status = ? WHERE userid = ? AND admin_id = ?', array(

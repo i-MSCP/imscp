@@ -212,7 +212,6 @@ function addAccount()
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddFtp, array(
             'ftpUserId'      => $username,
             'ftpPassword'    => $encryptedPassword,
-            'ftpRawPassword' => $passwd,
             'ftpUserUid'     => $row1['admin_sys_uid'],
             'ftpUserGid'     => $row1['admin_sys_gid'],
             'ftpUserShell'   => $shell,
@@ -222,14 +221,15 @@ function addAccount()
         exec_query(
             '
                 INSERT INTO ftp_users (
-                    userid, admin_id, passwd, rawpasswd, uid, gid, shell, homedir, status
+                    userid, admin_id, passwd, uid, gid, shell, homedir, status
                 ) VALUES (
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, ?, ?, ?, ?, ?
                 )
             ',
             array(
-                $username, $_SESSION['user_id'], $encryptedPassword, $passwd, $row1['admin_sys_uid'],
-                $row1['admin_sys_gid'], $shell, $homeDir, 'toadd')
+                $username, $_SESSION['user_id'], $encryptedPassword, $row1['admin_sys_uid'], $row1['admin_sys_gid'],
+                $shell, $homeDir, 'toadd'
+            )
         );
 
         $stmt = exec_query('SELECT COUNT(*) AS cnt FROM ftp_group WHERE groupname = ?', $row1['admin_name']);
@@ -265,7 +265,6 @@ function addAccount()
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddFtp, array(
             'ftpUserId'      => $username,
             'ftpPassword'    => $encryptedPassword,
-            'ftpRawPassword' => $passwd,
             'ftpUserUid'     => $row1['admin_sys_uid'],
             'ftpUserGid'     => $row1['admin_sys_gid'],
             'ftpUserShell'   => $shell,

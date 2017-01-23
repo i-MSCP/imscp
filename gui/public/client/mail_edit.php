@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP\Crypt as Crypt;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -30,9 +32,9 @@
  */
 function client_getEmailAccountData($mailId)
 {
-    static $mailData = null;
+    static $mailData = NULL;
 
-    if (null !== $mailData) {
+    if (NULL !== $mailData) {
         return $mailData;
     }
 
@@ -44,8 +46,7 @@ function client_getEmailAccountData($mailId)
         showBadRequestErrorPage();
     }
 
-    $mailData = $stmt->fetchRow();
-    return $mailData;
+    return $stmt->fetchRow();
 }
 
 /**
@@ -56,8 +57,12 @@ function client_getEmailAccountData($mailId)
  */
 function client_editMailAccount()
 {
-    if (!isset($_POST['password']) || !isset($_POST['password_rep']) || !isset($_POST['quota'])
+    if (!isset($_POST['password'])
+        || !isset($_POST['password_rep'])
+        || !isset($_POST['quota'])
         || !isset($_POST['forward_list'])
+        || !isset($_POST['account_type'])
+        || !in_array($_POST['account_type'], array('1', '2', '3'), true)
     ) {
         showBadRequestErrorPage();
     }
@@ -66,15 +71,15 @@ function client_editMailAccount()
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
     $password = $forwardList = '_no_';
     $mailType = '';
-    $quota = null;
+    $quota = NULL;
 
     if (!preg_match('/^(.*?)_(?:mail|forward)/', $mailData['mail_type'], $match)) {
         throw new iMSCP_Exception('Could not determine mail type');
     }
 
     $domainType = $match[1];
-    $mailTypeNormal = isset($_POST['account_type']) && in_array($_POST['account_type'], array('1', '3'));
-    $mailTypeForward = isset($_POST['account_type']) && in_array($_POST['account_type'], array('2', '3'));
+    $mailTypeNormal = in_array($_POST['account_type'], array('1', '3'));
+    $mailTypeForward = in_array($_POST['account_type'], array('2', '3'));
 
     if (!$mailTypeNormal && !$mailTypeForward) {
         showBadRequestErrorPage();
@@ -84,50 +89,58 @@ function client_editMailAccount()
 
     if ($mailTypeNormal) {
         $password = clean_input($_POST['password']);
-        $password_rep = clean_input($_POST['password_rep']);
+        $passwordRep = clean_input($_POST['password_rep']);
 
-        if ($mailData['mail_pass'] == '_no_' || $password != '' || $password_rep != '') {
+        if ($mailData['mail_pass'] == '_no_' || $password != '' || $passwordRep != '') {
             if ($password == '') {
                 set_page_message(tr('Password is missing.'), 'error');
                 return false;
-            } elseif ($password_rep == '') {
+            }
+
+            if ($passwordRep == '') {
                 set_page_message(tr('You must confirm your password.'), 'error');
                 return false;
-            } elseif ($password !== $password_rep) {
+            }
+
+            if ($password !== $passwordRep) {
                 set_page_message(tr("Passwords do not match."), 'error');
                 return false;
-            } elseif (!checkPasswordSyntax($password)) {
+            }
+
+            if (!checkPasswordSyntax($password)) {
                 return false;
             }
+
+            $password = Crypt::sha512($password);
         } else {
             $password = $mailData['mail_pass'];
         }
 
         $quota = clean_input($_POST['quota']);
 
-        if (is_number($quota)) {
-            $quota *= 1048576; // MiB to Bytes
-            if ($mainDmnProps['mail_quota'] != '0') {
-                if ($quota == '0') {
-                    set_page_message(tr('Incorrect Email quota.'), 'error');
-                    return false;
-                }
-
-                $stmt = exec_query(
-                    'SELECT IFNULL(SUM(quota), 0) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
-                    $mainDmnProps['domain_id']
-                );
-                $row = $stmt->fetchRow();
-
-                $quotaLimit = floor($mainDmnProps['mail_quota'] - ($row['quota'] - $mailData['quota']));
-                if ($quota > $quotaLimit) {
-                    set_page_message(tr('Email quota cannot be bigger than %s', bytesHuman($quotaLimit, 'MiB')), 'error');
-                    return false;
-                }
-            }
-        } else {
+        if (!is_number($quota)) {
             set_page_message(tr('Email quota must be a number.'), 'error');
             return false;
+        }
+
+        $quota *= 1048576; // MiB to Bytes
+        if ($mainDmnProps['mail_quota'] != '0') {
+            if ($quota == '0') {
+                set_page_message(tr('Incorrect Email quota.'), 'error');
+                return false;
+            }
+
+            $stmt = exec_query(
+                'SELECT IFNULL(SUM(quota), 0) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
+                $mainDmnProps['domain_id']
+            );
+            $row = $stmt->fetchRow();
+
+            $quotaLimit = floor($mainDmnProps['mail_quota'] - ($row['quota'] - $mailData['quota']));
+            if ($quota > $quotaLimit) {
+                set_page_message(tr('Email quota cannot be bigger than %s', bytesHuman($quotaLimit, 'MiB')), 'error');
+                return false;
+            }
         }
 
         switch ($domainType) {
@@ -218,14 +231,15 @@ function client_generatePage($tpl)
     $row = $stmt->fetchRow();
 
     $quota = $row['quota'];
-    $checked = ' checked';
-    $selected = ' selected';
     $mailType = '';
 
-    if (!isset($_POST['account_type']) || !in_array($_POST['account_type'], array('1', '2', '3'))) {
+    if (!isset($_POST['account_type'])
+        || !in_array($_POST['account_type'], array('1', '2', '3'))
+    ) {
         if (preg_match('/_mail/', $mailData['mail_type'])) {
             $mailType = '1';
         }
+
         if (preg_match('/_forward/', $mailData['mail_type'])) {
             $mailType = ($mailType == '1') ? '3' : '2';
         }
@@ -234,32 +248,28 @@ function client_generatePage($tpl)
     }
 
     $tpl->assign(array(
-        'MAIL_ID' => tohtml($mailId),
-        'USERNAME' => tohtml($username),
-        'NORMAL_CHECKED' => ($mailType == '1') ? $checked : '',
-        'FORWARD_CHECKED' => ($mailType == '2') ? $checked : '',
-        'NORMAL_FORWARD_CHECKED' => ($mailType == '3') ? $checked : '',
-        'PASSWORD' => isset($_POST['password']) ? tohtml($_POST['password']) : '',
-        'PASSWORD_REP' => isset($_POST['password_rep']) ? tohtml($_POST['password_rep']) : '',
-        'TR_QUOTA' => ($mainDmnProps['mail_quota'] == '0')
-            ? tr('Quota in MiB (0 for unlimited)')
-            : tr('Quota in MiB (Max: %s)', bytesHuman($mainDmnProps['mail_quota'] - ($quota - $mailData['quota']), 'MiB')),
-        'QUOTA' => isset($_POST['quota']) ? tohtml($_POST['quota']) : ($quota !== NULL ? floor($mailData['quota'] / 1048576) : ''),
-        'FORWARD_LIST' => isset($_POST['forward_list'])
-            ? tohtml($_POST['forward_list']) : ($mailData['mail_forward'] != '_no_' ? tohtml($mailData['mail_forward']) : '')
+        'MAIL_ID'                => tohtml($mailId),
+        'USERNAME'               => tohtml($username),
+        'NORMAL_CHECKED'         => ($mailType == '1') ? ' checked' : '',
+        'FORWARD_CHECKED'        => ($mailType == '2') ? ' checked' : '',
+        'NORMAL_FORWARD_CHECKED' => ($mailType == '3') ? ' checked' : '',
+        'PASSWORD'               => isset($_POST['password']) ? tohtml($_POST['password']) : '',
+        'PASSWORD_REP'           => isset($_POST['password_rep']) ? tohtml($_POST['password_rep']) : '',
+        'TR_QUOTA'               => ($mainDmnProps['mail_quota'] == '0') ? tr('Quota in MiB (0 for unlimited)') : tr('Quota in MiB (Max: %s)', bytesHuman($mainDmnProps['mail_quota'] - ($quota - $mailData['quota']), 'MiB')),
+        'QUOTA'                  => isset($_POST['quota']) ? tohtml($_POST['quota']) : ($quota !== NULL ? floor($mailData['quota'] / 1048576) : ''),
+        'FORWARD_LIST'           => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : ($mailData['mail_forward'] != '_no_' ? tohtml($mailData['mail_forward']) : '')
     ));
 
     $tpl->assign(array(
-        'DOMAIN_NAME' => tohtml($domainName),
-        'DOMAIN_NAME_UNICODE' => tohtml(decode_idna($domainName)),
-        'DOMAIN_NAME_SELECTED' => $selected,
+        'DOMAIN_NAME'          => tohtml($domainName),
+        'DOMAIN_NAME_UNICODE'  => tohtml(decode_idna($domainName)),
+        'DOMAIN_NAME_SELECTED' => ' selected'
     ));
 }
 
 /***********************************************************************************************************************
  * Main
  */
-
 
 require 'imscp-lib.php';
 
@@ -270,33 +280,31 @@ if (!isset($_GET['id']) || !customerHasFeature('mail')) {
     showBadRequestErrorPage();
 }
 
-if (!empty($_POST)) {
-    if (client_editMailAccount()) {
-        redirectTo('mail_accounts.php');
-    }
+if (!empty($_POST) && client_editMailAccount()) {
+    redirectTo('mail_accounts.php');
 }
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'client/mail_edit.tpl',
+    'layout'       => 'shared/layouts/ui.tpl',
+    'page'         => 'client/mail_edit.tpl',
     'page_message' => 'layout'
 ));
 $tpl->assign(array(
-    'TR_PAGE_TITLE' => tr('Client / Email / Edit Email Account'),
-    'TR_MAIl_ACCOUNT_DATA' => tr('Email account data'),
-    'TR_USERNAME' => tr('Username'),
-    'TR_DOMAIN_NAME' => tr('Domain name'),
-    'TR_MAIL_ACCOUNT_TYPE' => tr('Mail account type'),
-    'TR_NORMAL_MAIL' => tr('Normal'),
-    'TR_FORWARD_MAIL' => tr('Forward'),
+    'TR_PAGE_TITLE'          => tr('Client / Email / Edit Email Account'),
+    'TR_MAIl_ACCOUNT_DATA'   => tr('Email account data'),
+    'TR_USERNAME'            => tr('Username'),
+    'TR_DOMAIN_NAME'         => tr('Domain name'),
+    'TR_MAIL_ACCOUNT_TYPE'   => tr('Mail account type'),
+    'TR_NORMAL_MAIL'         => tr('Normal'),
+    'TR_FORWARD_MAIL'        => tr('Forward'),
     'TR_FORWARD_NORMAL_MAIL' => tr('Normal + Forward'),
-    'TR_PASSWORD' => tr('Password'),
-    'TR_PASSWORD_REPEAT' => tr('Password confirmation'),
-    'TR_FORWARD_TO' => tr('Forward to'),
-    'TR_FWD_HELP' => tr('Separate multiple email addresses by comma or a line-break.'),
-    'TR_UPDATE' => tr('Update'),
-    'TR_CANCEL' => tr('Cancel')
+    'TR_PASSWORD'            => tr('Password'),
+    'TR_PASSWORD_REPEAT'     => tr('Password confirmation'),
+    'TR_FORWARD_TO'          => tr('Forward to'),
+    'TR_FWD_HELP'            => tr('Separate multiple email addresses by comma or a line-break.'),
+    'TR_UPDATE'              => tr('Update'),
+    'TR_CANCEL'              => tr('Cancel')
 ));
 
 client_generatePage($tpl);
@@ -306,4 +314,3 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 $tpl->prnt();
-

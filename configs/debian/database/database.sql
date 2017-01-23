@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '245');
+  ('DATABASE_REVISION', '249');
 
 -- --------------------------------------------------------
 
@@ -264,7 +264,6 @@ CREATE TABLE IF NOT EXISTS `ftp_users` (
   `userid` varchar(255) collate utf8_unicode_ci DEFAULT NULL,
   `admin_id` int(10) unsigned NOT NULL DEFAULT '0',
   `passwd` varchar(255) collate utf8_unicode_ci DEFAULT NULL,
-  `rawpasswd` varchar(255) collate utf8_unicode_ci DEFAULT NULL,
   `uid` int(10) unsigned NOT NULL DEFAULT '0',
   `gid` int(10) unsigned NOT NULL DEFAULT '0',
   `shell` varchar(255) collate utf8_unicode_ci DEFAULT NULL,
@@ -376,7 +375,7 @@ CREATE TABLE IF NOT EXISTS `login` (
 CREATE TABLE IF NOT EXISTS `mail_users` (
   `mail_id` int(10) unsigned NOT NULL auto_increment,
   `mail_acc` text collate utf8_unicode_ci DEFAULT NULL,
-  `mail_pass` varchar(150) collate utf8_unicode_ci DEFAULT NULL,
+  `mail_pass` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT '_no_',
   `mail_forward` text collate utf8_unicode_ci,
   `domain_id` int(10) unsigned DEFAULT NULL,
   `mail_type` varchar(30) collate utf8_unicode_ci DEFAULT NULL,
@@ -591,7 +590,6 @@ CREATE TABLE IF NOT EXISTS `sql_user` (
   `sqld_id` int(10) unsigned NOT NULL,
   `sqlu_name` varchar(16) collate utf8_unicode_ci NOT NULL,
   `sqlu_host` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `sqlu_pass` varchar(64) collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`sqlu_id`),
   INDEX `sqld_id` (`sqld_id`),
   INDEX `sqlu_name` (`sqlu_name`),

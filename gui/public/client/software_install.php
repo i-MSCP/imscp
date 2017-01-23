@@ -30,7 +30,7 @@ use iMSCP\VirtualFileSystem as VirtualFileSystem;
  * @param null|iMSCP_pTemplate $tpl
  * @return void
  */
-function setFtpRootDir($tpl = null)
+function setFtpRootDir($tpl = NULL)
 {
     $domainProps = get_domain_default_props($_SESSION['user_id']);
 
@@ -123,21 +123,14 @@ $softwareId = intval($_GET['id']);
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
-    'layout'                 => 'shared/layouts/ui.tpl',
-    'page'                   => 'client/software_install.tpl',
-    'page_message'           => 'layout',
-    'software_item'          => 'page',
-    'show_domain_list'       => 'page',
-    'software_install'       => 'page',
-    'no_software'            => 'page',
-    'installdb_item'         => 'page',
-    'select_installdb'       => 'page',
-    'require_installdb'      => 'page',
-    'select_installdbuser'   => 'page',
-    'installdbuser_item'     => 'page',
-    'softwaredbuser_message' => 'page',
-    'create_db'              => 'page',
-    'create_message_db'      => 'page'
+    'layout'            => 'shared/layouts/ui.tpl',
+    'page'              => 'client/software_install.tpl',
+    'page_message'      => 'layout',
+    'software_item'     => 'page',
+    'show_domain_list'  => 'page',
+    'software_install'  => 'page',
+    'no_software'       => 'page',
+    'require_installdb' => 'page'
 ));
 
 if (!empty($_POST)) {
@@ -145,8 +138,11 @@ if (!empty($_POST)) {
         setFtpRootDir();
     }
 
-    if (!isset($_POST['selected_domain']) || !isset($_POST['other_dir']) || !isset($_POST['install_username'])
-        || !isset($_POST['install_password']) || !isset($_POST['install_email'])
+    if (!isset($_POST['selected_domain'])
+        || !isset($_POST['other_dir'])
+        || !isset($_POST['install_username'])
+        || !isset($_POST['install_password'])
+        || !isset($_POST['install_email'])
     ) {
         showBadRequestErrorPage();
     }
@@ -284,37 +280,39 @@ if (!empty($_POST)) {
 
     # Check application database if required
     if ($softwareData['software_db']) {
-        if (!isset($_POST['selected_db']) || !isset($_POST['sql_user'])) {
+        if (!isset($_POST['database_name'])
+            || !isset($_POST['database_user'])
+            || !isset($_POST['database_pwd'])
+        ) {
             showBadRequestErrorPage();
         }
 
-        $appDatabase = clean_input($_POST['selected_db']);
-        $appSqlUser = clean_input($_POST['sql_user']);
+        $appDatabase = clean_input($_POST['database_name']);
+        $appSqlUser = clean_input($_POST['database_user']);
+        $appSqlPassword = clean_input($_POST['database_pwd']);
 
-        # Ensure that both SQL user and database are owned by customer and get SQL password
-        $stmt = exec_query(
-            '
-              SELECT sqlu_pass
-              FROM sql_user
-              INNER JOIN sql_database USING(sqld_id)
-              INNER JOIN domain USING(domain_id)
-              WHERE sqlu_name = ?
-              AND sqld_name = ?
-              AND domain_admin_id = ?
-            ',
-            array($appSqlUser, $appDatabase, $_SESSION['user_id'])
-        );
-
+        # Checks that database exists and is owned by the customer
+        $stmt = exec_query('SELECT sqld_id FROM sql_database WHERE domain_id = ? AND sqld_name = ?', array(
+            $domainProps['domain_id'], $appDatabase
+        ));
         if (!$stmt->rowCount()) {
-            showBadRequestErrorPage();
-        }
-
-        $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-        if (check_db_connection($appDatabase, $appSqlUser, $row['sqlu_pass'])) {
-            $appSqlPassword = $row['sqlu_pass'];
-        } else {
-            set_page_message(tr('Unable to connect to the selected database using the selected SQL user.'), 'error');
+            set_page_message(tr("Unknown `%s' database. Database must exists.", $appDatabase), 'error');
             $error = true;
+        } else {
+            $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+
+            # Check that SQL user belongs to the given database
+            $stmt = exec_query('SELECT COUNT(sqlu_id) FROM sql_user WHERE sqld_id = ? AND sqlu_name', array(
+                $row['sqld_id'], $appSqlUser
+            ));
+            if (!$stmt->fetchRow(PDO::FETCH_COLUMN)) {
+                set_page_message(tr('Invalid SQL user. SQL user must exists and belong to the provided database.'), 'error');
+                $error = true;
+            } # Check database connection using provided SQL user/password
+            elseif (!check_db_connection($appDatabase, $appSqlUser, $appSqlPassword)) {
+                set_page_message(tr("Could not connect to the `%s' database. Please check the password.", $appDatabase), 'error');
+                $error = true;
+            }
         }
 
         $softwarePrefix = $softwareData['software_prefix'];
@@ -322,36 +320,37 @@ if (!empty($_POST)) {
         $softwarePrefix = $appDatabase = $appSqlUser = $appSqlPassword = 'no_required';
     }
 
-    if (!$error && isset($appSqlPassword)) {
-        exec_query(
-            '
-              INSERT INTO web_software_inst (
-                domain_id, alias_id, subdomain_id, subdomain_alias_id, software_id, software_master_id,
-                software_name, software_version, software_language, path, software_prefix, db,
-                database_user, database_tmp_pwd, install_username, install_password, install_email,
-                software_status, software_depot
-              ) VALUES (
-                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-              )
-            ',
-            array(
-                $domainProps['domain_id'], $aliasId, $subId, $aliasSubId, $softwareId, $softwareData['software_master_id'],
-                $softwareData['software_name'], $softwareData['software_version'], $softwareData['software_language'],
-                $installPath, $softwarePrefix, $appDatabase, $appSqlUser, $appSqlPassword, $appLoginName,
-                $appPassword, $appEmail, 'toadd', $softwareData['software_depot']
-            )
-        );
-
-        write_log(sprintf('%s added new software instance: %s', decode_idna($_SESSION['user_logged']), $softwareData['software_name']), E_USER_NOTICE);
-        send_request();
-        set_page_message(tr('Software instance has been scheduled for installation'), 'success');
-        redirectTo('software.php');
+    if ($error) {
+        return;
     }
+
+    exec_query(
+        '
+          INSERT INTO web_software_inst (
+            domain_id, alias_id, subdomain_id, subdomain_alias_id, software_id, software_master_id, software_name,
+            software_version, software_language, path, software_prefix, db, database_user, database_tmp_pwd,
+            install_username, install_password, install_email, software_status, software_depot
+          ) VALUES (
+            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+          )
+        ',
+        array(
+            $domainProps['domain_id'], $aliasId, $subId, $aliasSubId, $softwareId, $softwareData['software_master_id'],
+            $softwareData['software_name'], $softwareData['software_version'], $softwareData['software_language'],
+            $installPath, $softwarePrefix, $appDatabase, $appSqlUser, $appSqlPassword, $appLoginName,  $appPassword,
+            $appEmail, 'toadd', $softwareData['software_depot']
+        )
+    );
+
+    write_log(sprintf('%s added new software instance: %s', decode_idna($_SESSION['user_logged']), $softwareData['software_name']), E_USER_NOTICE);
+    send_request();
+    set_page_message(tr('Software instance has been scheduled for installation'), 'success');
+    redirectTo('software.php');
+
 } else {
     setFtpRootDir($tpl);
-    $otherDir = '';
+    $otherDir = $appPassword = $appDatabase = $appDatabase = $appSqlUser = '';
     $appLoginName = 'admin';
-    $appPassword = '';
     $appEmail = $_SESSION['user_email'];
 }
 
@@ -366,10 +365,10 @@ $tpl->assign(array(
     'TR_INSTALL'                  => tr('Install'),
     'TR_PATH'                     => tr('Installation path'),
     'TR_CHOOSE_DIR'               => tr('Choose dir'),
-    'TR_SELECT_DB'                => tr('Database'),
-    'TR_SQL_USER'                 => tr('SQL user'),
-    'TR_SQL_PWD'                  => tr('Password'),
-    'TR_SOFTWARE_MENU'            => tr('Software installation'),
+    'TR_DATABASE_DATA'            => tr('Database data'),
+    'TR_DATABASE_NAME'            => tr('Database name'),
+    'TR_DATABASE_USER'            => tr('Database user'),
+    'TR_DATABASE_PWD'             => tr('Database password'),
     'TR_INSTALLATION'             => tr('Installation details'),
     'TR_INSTALLATION_INFORMATION' => tr('Username and password for application login'),
     'TR_INSTALL_USER'             => tr('Login username'),
@@ -378,7 +377,9 @@ $tpl->assign(array(
     'VAL_OTHER_DIR'               => tohtml($otherDir),
     'VAL_INSTALL_USERNAME'        => tohtml($appLoginName),
     'VAL_INSTALL_PASSWORD'        => tohtml($appPassword),
-    'VAL_INSTALL_EMAIL'           => tohtml($appEmail)
+    'VAL_INSTALL_EMAIL'           => tohtml($appEmail),
+    'VAL_DATABASE_NAME'           => tohtml($appDatabase),
+    'VAL_DATABASE_USER'           => tohtml($appSqlUser)
 ));
 
 iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {

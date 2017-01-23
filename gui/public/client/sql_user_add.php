@@ -197,18 +197,18 @@ function client_addSqlUser($customerId, $dbId)
         }
 
         if (strlen($user) > 16) {
-            set_page_message(tr('Username is too long.'), 'error');
+            set_page_message(tr('SQL username is too long.'), 'error');
             return;
         }
 
-        if (client_isSqlUser($user, $host)) {
-            set_page_message(tr('SQL user %s already exits.', $user . '@' . decode_idna($host)), 'error');
+        if (client_isSqlUser($user, $host) || $user == 'root' || $user == 'debian-sys-maint') {
+            set_page_message(tr("The `%s' SQL user is not available or not permitted.", $user . '@' . decode_idna($host)), 'error');
             return;
         }
     } elseif (isset($_POST['sqluser_id'])) { // Using existing SQL user as specified in input data
         $needUserCreate = false;
         $userId = intval($_POST['sqluser_id']);
-        $stmt = exec_query('SELECT sqlu_name, sqlu_host, sqlu_pass FROM sql_user WHERE sqlu_id = ?', $userId);
+        $stmt = exec_query('SELECT sqlu_name, sqlu_host FROM sql_user WHERE sqlu_id = ?', $userId);
 
         if (!$stmt->rowCount()) {
             showBadRequestErrorPage();
@@ -217,7 +217,6 @@ function client_addSqlUser($customerId, $dbId)
         $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
         $user = $row['sqlu_name'];
         $host = $row['sqlu_host'];
-        $password = $row['sqlu_pass'];
     } else {
         showBadRequestErrorPage();
         return;
@@ -240,7 +239,7 @@ function client_addSqlUser($customerId, $dbId)
     // those statements first to let the i-MSCP database in clean state if one of them fails.
     // See https://dev.mysql.com/doc/refman/5.7/en/implicit-commit.html for more details
 
-    if($needUserCreate) {
+    if($needUserCreate && isset($password)) {
         if ($mysqlConfig['SQLD_TYPE'] == 'mariadb' || version_compare($mysqlConfig['SQLD_VERSION'], '5.7.6', '<')) {
             exec_query('CREATE USER ?@? IDENTIFIED BY ?', array($user, $host, $password));
         } else {
@@ -258,8 +257,8 @@ function client_addSqlUser($customerId, $dbId)
     $dbName = preg_replace('/([%_])/', '\\\\$1', $dbName);
 
     exec_query(sprintf('GRANT ALL PRIVILEGES ON %s.* to ?@?', quoteIdentifier($dbName)), array($user, $host));
-    exec_query('INSERT INTO sql_user (sqld_id, sqlu_name, sqlu_host, sqlu_pass) VALUES (?, ?, ?, ?)', array(
-        $dbId, $user, $host, $password
+    exec_query('INSERT INTO sql_user (sqld_id, sqlu_name, sqlu_host) VALUES (?, ?, ?)', array(
+        $dbId, $user, $host
     ));
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlUser);

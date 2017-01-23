@@ -26,65 +26,87 @@
 /**
  * Must be documented
  *
- * @param int $software_id Software unique identifier
- * @param int $reseller_id Reseller unique identifier
- * @param int $software_master_id
- * @param bool $software_deleted
+ * @param int $softwareId Software unique identifier
+ * @param int $resellerId Reseller unique identifier
+ * @param int $softwareMasterId
+ * @param bool $softwareDeleted
  * @return void
  */
 function update_existing_client_installations_res_upload(
-    $software_id, $reseller_id, $software_master_id, $software_deleted = false)
+    $softwareId, $resellerId, $softwareMasterId, $softwareDeleted = false)
 {
-    $query = "
-        SELECT domain_id FROM domain INNER JOIN admin on (admin_id = domain_admin_id)
-        WHERE domain_software_allowed = 'yes' AND created_by = ?
-    ";
-    $stmt = exec_query($query, $reseller_id);
+    $stmt = exec_query(
+        "
+          SELECT domain_id
+          FROM domain
+          INNER JOIN admin ON (admin_id = domain_admin_id)
+          WHERE domain_software_allowed = 'yes'
+          AND created_by = ?
+        ",
+        $resellerId
+    );
 
-    if ($stmt->rowCount()) {
-        while ($row = $stmt->fetchRow()) {
-            if ($software_deleted === false) {
-                $update_query = "
-                    UPDATE `web_software_inst` SET `software_id` = ?, `software_master_id` = ?, `software_depot` = ?
-                    WHERE `software_id` = ? AND `domain_id` = ?
-                ";
-                exec_query($update_query, array(
-                        $software_id, $software_master_id, 'yes', $software_master_id, $row['domain_id'])
-                );
-            } else {
-                $update_query = "
-                    UPDATE `web_software_inst` SET `software_res_del` = 1 WHERE `software_id` = ? AND `domain_id` = ?
-                ";
-                exec_query($update_query, array($software_id, $row['domain_id']));
-            }
+    if (!$stmt->rowCount()) {
+        return;
+    }
+
+    while ($row = $stmt->fetchRow()) {
+        if ($softwareDeleted === false) {
+            exec_query(
+                '
+                  UPDATE web_software_inst
+                  SET software_id = ?, software_master_id = ?, software_depot = ?
+                  WHERE software_id = ?
+                  AND domain_id = ?
+                ',
+                array($softwareId, $softwareMasterId, 'yes', $softwareMasterId, $row['domain_id'])
+            );
+            continue;
         }
+
+        exec_query(
+            'UPDATE web_software_inst SET software_res_del = 1 WHERE software_id = ? AND domain_id = ?',
+            array($softwareId, $row['domain_id'])
+        );
     }
 }
 
 /**
  * Must be documented
  *
- * @param int $software_id Software unique identifier
- * @param int $software_master_id
- * @param int $reseller_id
+ * @param int $softwareId Software unique identifier
+ * @param int $softwareMasterId
+ * @param int $resellerId
  * @return void
  */
-function update_existing_client_installations_sw_depot($software_id, $software_master_id, $reseller_id)
+function update_existing_client_installations_sw_depot($softwareId, $softwareMasterId, $resellerId)
 {
-    $query = "
-        SELECT domain_id FROM domain INNER JOIN admin ON(admin_id = domain_admin_id)
-        WHERE domain_software_allowed = 'yes' AND created_by = ?
-     ";
-    $stmt = exec_query($query, $reseller_id);
+    $stmt = exec_query(
+        "
+          SELECT domain_id
+          FROM domain
+          INNER JOIN admin ON(admin_id = domain_admin_id)
+          WHERE domain_software_allowed = 'yes'
+          AND created_by = ?
+        ",
+        $resellerId
+    );
 
-    if ($stmt->rowCount()) {
-        while ($row = $stmt->fetchRow()) {
-            $update_query = "
-                UPDATE `web_software_inst` SET `software_id` = ?, `software_res_del` = 0
-                WHERE `software_master_id` = ? AND `software_res_del` = 1 AND `domain_id` = ?
-            ";
-            exec_query($update_query, array($software_id, $software_master_id, $row['domain_id']));
-        }
+    if (!$stmt->rowCount()) {
+        return;
+    }
+
+    while ($row = $stmt->fetchRow()) {
+        exec_query(
+            '
+              UPDATE web_software_inst
+              SET software_id = ?, software_res_del = 0
+              WHERE software_master_id = ?
+              AND software_res_del = 1
+              AND domain_id = ?
+            ',
+            array($softwareId, $softwareMasterId, $row['domain_id'])
+        );
     }
 }
 
@@ -101,13 +123,13 @@ function send_activated_sw($resellerId, $softwarePackage, $softwareId)
     $stmt = exec_query('SELECT admin_name, created_by, fname, lname, email FROM admin WHERE admin_id = ?', $resellerId);
     $resellerData = $stmt->fetchRow();
     $ret = send_mail(array(
-        'mail_id' => 'software-installer-activate-sw',
-        'fname' => $resellerData['fname'],
-        'lname' => $resellerData['lname'],
-        'username' => $resellerData['admin_name'],
-        'email' => $resellerData['email'],
-        'subject' => tr('Your software package has been activated'),
-        'message' => tr('Dear {NAME},
+        'mail_id'      => 'software-installer-activate-sw',
+        'fname'        => $resellerData['fname'],
+        'lname'        => $resellerData['lname'],
+        'username'     => $resellerData['admin_name'],
+        'email'        => $resellerData['email'],
+        'subject'      => tr('Your software package has been activated'),
+        'message'      => tr('Dear {NAME},
 
 Your software package has been successfully activated.
 
@@ -120,12 +142,12 @@ ___________________________
 i-MSCP Mailer.'),
         'placeholders' => array(
             '{SOFTWARE_PACKAGE}' => $softwarePackage,
-            '{SOFTWARE_ID}' => $softwareId
+            '{SOFTWARE_ID}'      => $softwareId
         )
     ));
 
     if (!$ret) {
-        write_log(sprintf('Could not send software activation notifiication to %s', $resellerData['admin_name']), E_USER_ERROR);
+        write_log(sprintf('Could not send software activation notification to %s', $resellerData['admin_name']), E_USER_ERROR);
         return false;
     }
 
@@ -146,13 +168,13 @@ function send_deleted_sw($resellerId, $softwarePackage, $softwareId, $adminMessa
     $stmt = exec_query('SELECT admin_name, created_by, fname, lname, email FROM admin WHERE admin_id = ?', $resellerId);
     $resellerData = $stmt->fetchRow();
     $ret = send_mail(array(
-        'mail_id' => 'software-installer-delete-sw',
-        'fname' => $resellerData['fname'],
-        'lname' => $resellerData['lname'],
-        'username' => $resellerData['admin_name'],
-        'email' => $resellerData['email'],
-        'subject' => tr('Your software package has been deleted'),
-        'message' => tr('Dear {NAME},
+        'mail_id'      => 'software-installer-delete-sw',
+        'fname'        => $resellerData['fname'],
+        'lname'        => $resellerData['lname'],
+        'username'     => $resellerData['admin_name'],
+        'email'        => $resellerData['email'],
+        'subject'      => tr('Your software package has been deleted'),
+        'message'      => tr('Dear {NAME},
 
 Your software package has been deleted.
 
@@ -171,13 +193,13 @@ ___________________________
 i-MSCP Mailer'),
         'placeholders' => array(
             '{SOFTWARE_PACKAGE}' => $softwarePackage,
-            '{SOFTWARE_ID}' => $softwareId,
-            '{ADMIN_MESSAGE}' => $adminMessage
+            '{SOFTWARE_ID}'      => $softwareId,
+            '{ADMIN_MESSAGE}'    => $adminMessage
         )
     ));
 
     if (!$ret) {
-        write_log(sprintf('Could not send software activation notifiication to %s', $resellerData['admin_name']), E_USER_ERROR);
+        write_log(sprintf('Could not send software activation notification to %s', $resellerData['admin_name']), E_USER_ERROR);
         return false;
     }
 
@@ -192,274 +214,272 @@ i-MSCP Mailer'),
  */
 function get_avail_software($tpl)
 {
-    $query = "
-        SELECT `a`.`software_id` as `id`, `a`.`software_name` as `name`,
-            `a`.`software_version` as `version`,
-            `a`.`software_language` as `language`, `a`.`software_type` as `type`,
-            `a`.`software_desc` as `description`, `a`.`reseller_id`, `b`.`admin_id`,
-            `b`.`admin_name` as `reseller`
-        FROM `web_software` a, `admin` b
-        WHERE `a`.`software_active` = 0 AND `a`.`reseller_id` = `b`.`admin_id` AND `a`.software_depot = 'no'
-        ORDER BY `a`.`reseller_id` ASC, `a`.`software_type` ASC, `a`.`software_name` ASC
-    ";
-    $rs = execute_query($query);
+    $stmt = execute_query(
+        "
+          SELECT a.software_id AS id, a.software_name AS name, a.software_version AS version,
+            a.software_language AS language, a.software_type AS type, a.software_desc AS description,
+            a.reseller_id, b.admin_id, b.admin_name AS reseller
+          FROM web_software a, admin b
+          WHERE a.software_active = 0 AND a.reseller_id = b.admin_id AND a.software_depot = 'no'
+          ORDER BY a.reseller_id ASC, a.software_type ASC, a.software_name ASC
+        "
+    );
 
-    if ($rs->rowCount()) {
-        while (!$rs->EOF) {
-            $import_url = "software_import.php?id=" . $rs->fields['id'];
-            $act_url = "software_activate.php?id=" . $rs->fields['id'];
-            $del_url = "software_delete.php?id=" . $rs->fields['id'];
-            $dow_url = "software_download.php?id=" . $rs->fields['id'];
+    if ($stmt->rowCount()) {
+        while ($row = $stmt->fetchRow()) {
+            $importURL = "software_import.php?id=" . $row['id'];
+            $actURL = "software_activate.php?id=" . $row['id'];
+            $delURL = "software_delete.php?id=" . $row['id'];
+            $downloadURL = "software_download.php?id=" . $row['id'];
             $tpl->assign(array(
-                'TR_NAME' => $rs->fields['name'],
-                'TR_TOOLTIP' => $rs->fields['description'],
-                'TR_VERSION' => $rs->fields['version'],
-                'TR_LANGUAGE' => $rs->fields['language'],
-                'TR_TYPE' => $rs->fields['type'],
-                'TR_RESELLER' => $rs->fields['reseller'],
-                'DOWNLOAD_LINK' => $dow_url,
-                'TR_DOWNLOAD' => tr('Download'),
-                'ACTIVATE_LINK' => $act_url,
-                'IMPORT_LINK' => $import_url,
+                'TR_NAME'       => $row['name'],
+                'TR_TOOLTIP'    => $row['description'],
+                'TR_VERSION'    => $row['version'],
+                'TR_LANGUAGE'   => $row['language'],
+                'TR_TYPE'       => $row['type'],
+                'TR_RESELLER'   => $row['reseller'],
+                'DOWNLOAD_LINK' => $downloadURL,
+                'TR_DOWNLOAD'   => tr('Download'),
+                'ACTIVATE_LINK' => $actURL,
+                'IMPORT_LINK'   => $importURL,
                 'TR_ACTIVATION' => tr('Activate'),
-                'TR_IMPORT' => tr('Import'),
-                'DELETE_LINK' => $del_url,
-                'TR_DELETE' => tr('Delete')
+                'TR_IMPORT'     => tr('Import'),
+                'DELETE_LINK'   => $delURL,
+                'TR_DELETE'     => tr('Delete')
             ));
             $tpl->parse('LIST_SOFTWARE', '.list_software');
-            $rs->moveNext();
         }
         $tpl->assign('NO_SOFTWARE_LIST', '');
-    } else {
-        $tpl->assign(array('NO_SOFTWARE' => tr('No software is waiting for activation')));
-        $tpl->parse('NO_SOFTWARE_LIST', '.no_software_list');
-        $tpl->assign('LIST_SOFTWARE', '');
+        return $stmt->rowCount();
     }
 
-    return $rs->recordCount();
+    $tpl->assign(array('NO_SOFTWARE' => tr('No software is waiting for activation')));
+    $tpl->parse('NO_SOFTWARE_LIST', '.no_software_list');
+    $tpl->assign('LIST_SOFTWARE', '');
+    return 0;
 }
 
 /**
  * Must be documented.
  *
- * @param iMSCP_pTemplate $tpl Teamplate engine
+ * @param iMSCP_pTemplate $tpl template engine
  * @return int
  */
 function get_avail_softwaredepot($tpl)
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
+    $stmt = execute_query(
+        "
+          SELECT a.software_id AS id, a.software_name AS name, a.software_version AS version,
+            a.software_language AS language, a.software_type AS type, a.software_desc AS description,
+            a.reseller_id, a.software_archive AS filename, a.software_status AS swstatus, b.admin_id,
+            b.admin_name AS admin
+          FROM web_software a, admin b
+          WHERE a.software_depot = 'yes' AND a.software_master_id = 0 AND a.reseller_id = b.admin_id
+          ORDER BY a.reseller_id ASC, a.software_type ASC, a.software_name ASC
+        "
+    );
 
-    $query = "
-        SELECT `a`.`software_id` as `id`, `a`.`software_name` as `name`,
-            `a`.`software_version` as `version`, `a`.`software_language` as `language`,
-            `a`.`software_type` as `type`, `a`.`software_desc` as `description`,
-            `a`.`reseller_id`, `a`.`software_archive` as `filename`,
-            `a`.`software_status` as `swstatus`, `b`.`admin_id`,
-            `b`.`admin_name` as `admin`
-        FROM `web_software` a, `admin` b
-        WHERE `a`.`software_depot` = 'yes' AND `a`.`software_master_id` = 0 AND `a`.`reseller_id` = `b`.`admin_id`
-        ORDER BY `a`.`reseller_id` ASC, `a`.`software_type` ASC, `a`.`software_name` ASC
-    ";
-    $rs = execute_query($query);
-
-    if ($rs->rowCount()) {
-        while (!$rs->EOF) {
-            if ($rs->fields['swstatus'] == 'ok' || $rs->fields['swstatus'] == 'ready') {
-                if ($rs->fields['swstatus'] == 'ready') {
-                    $updatequery = "UPDATE `web_software` SET `software_status` = 'ok' WHERE `software_id` = ?";
-                    exec_query($updatequery, $rs->fields['id']);
+    if ($stmt->rowCount()) {
+        while ($row = $stmt->fetchRow()) {
+            if ($row['swstatus'] == 'ok' || $row['swstatus'] == 'ready') {
+                if ($row['swstatus'] == 'ready') {
+                    exec_query("UPDATE web_software SET software_status = 'ok' WHERE software_id = ?", $row['id']);
                     set_page_message(tr('Package installed successfully!'), 'success');
                 }
 
-                $del_url = 'software_delete.php?id=' . $rs->fields['id'];
-                $dow_url = 'software_download.php?id=' . $rs->fields['id'];
-                $rights_url = 'software_rights.php?id=' . $rs->fields['id'];
+                $delURL = 'software_delete.php?id=' . $row['id'];
+                $downloadURL = 'software_download.php?id=' . $row['id'];
+                $permsURL = 'software_rights.php?id=' . $row['id'];
                 $tpl->assign(array(
-                    'TR_NAME' => $rs->fields['name'],
-                    'LINK_COLOR' => '#000000',
-                    'TR_TOOLTIP' => $rs->fields['description'],
-                    'TR_VERSION' => $rs->fields['version'],
-                    'TR_LANGUAGE' => $rs->fields['language'],
-                    'TR_TYPE' => $rs->fields['type'],
-                    'TR_ADMIN' => $rs->fields['admin'],
-                    'DOWNLOAD_LINK' => $dow_url,
-                    'TR_DOWNLOAD' => tr('Download'),
-                    'DELETE_LINK' => $del_url,
-                    'TR_DELETE' => tr('Delete'),
-                    'SOFTWARE_ICON' => 'edit',
-                    'SOFTWARE_RIGHTS_LINK' => $rights_url,
-                    'RIGHTS_LINK' => tr('Rights'),
-                    'TR_SOFTWARE_RIGHTS' => tr('Permissions')
+                    'TR_NAME'              => $row['name'],
+                    'LINK_COLOR'           => '#000000',
+                    'TR_TOOLTIP'           => $row['description'],
+                    'TR_VERSION'           => $row['version'],
+                    'TR_LANGUAGE'          => $row['language'],
+                    'TR_TYPE'              => $row['type'],
+                    'TR_ADMIN'             => $row['admin'],
+                    'DOWNLOAD_LINK'        => $downloadURL,
+                    'TR_DOWNLOAD'          => tr('Download'),
+                    'DELETE_LINK'          => $delURL,
+                    'TR_DELETE'            => tr('Delete'),
+                    'SOFTWARE_ICON'        => 'edit',
+                    'SOFTWARE_RIGHTS_LINK' => $permsURL,
+                    'RIGHTS_LINK'          => tr('Rights'),
+                    'TR_SOFTWARE_RIGHTS'   => tr('Permissions')
                 ));
             } else {
-                if ($rs->fields['swstatus'] == 'toadd') {
-                    $del_url = 'software_delete.php?id=' . $rs->fields['id'];
+                if ($row['swstatus'] == 'toadd') {
+                    $delURL = 'software_delete.php?id=' . $row['id'];
                     $tpl->assign(array(
-                        'TR_NAME' => tr('Installing your uploaded package. Please refresh this page.'),
-                        'LINK_COLOR' => '#FF0000',
-                        'TR_VERSION' => '',
-                        'TR_LANGUAGE' => '',
-                        'TR_TOOLTIP' => tr('The package will be installed automatically to your system after upload.<br>Refresh your site to see the new status!'),
-                        'TR_DOWNLOAD' => '',
-                        'DOWNLOAD_LINK' => '',
-                        'DELETE_LINK' => $del_url,
-                        'TR_DELETE' => tr('Delete'),
-                        'TR_TYPE' => '<span  style="color:#FF0000">' . tr('installing') . '</span>',
-                        'TR_ADMIN' => $rs->fields['admin'],
-                        'SOFTWARE_ICON' => 'disabled',
-                        'RIGHTS_LINK' => '',
-                        'TR_SOFTWARE_RIGHTS' => '',
+                        'TR_NAME'              => tr('Installing your uploaded package. Please refresh this page.'),
+                        'LINK_COLOR'           => '#FF0000',
+                        'TR_VERSION'           => '',
+                        'TR_LANGUAGE'          => '',
+                        'TR_TOOLTIP'           => tr('The package will be installed automatically to your system after upload.<br>Refresh your site to see the new status!'),
+                        'TR_DOWNLOAD'          => '',
+                        'DOWNLOAD_LINK'        => '',
+                        'DELETE_LINK'          => $delURL,
+                        'TR_DELETE'            => tr('Delete'),
+                        'TR_TYPE'              => '<span  style="color:#FF0000">' . tr('installing') . '</span>',
+                        'TR_ADMIN'             => $row['admin'],
+                        'SOFTWARE_ICON'        => 'disabled',
+                        'RIGHTS_LINK'          => '',
+                        'TR_SOFTWARE_RIGHTS'   => '',
                         'SOFTWARE_RIGHTS_LINK' => ''
                     ));
                 } else {
-                    if ($rs->fields['swstatus'] == 'todelete') {
+                    if ($row['swstatus'] == 'todelete') {
                         $tpl->assign(array(
-                            'TR_NAME' => tr('Failure in the package. Deleting!'),
-                            'LINK_COLOR' => '#FF0000',
-                            'TR_VERSION' => '',
-                            'TR_LANGUAGE' => '',
-                            'TR_TOOLTIP' => tr('There is an Error inside your package. Please check it!<br>Refresh your site to see the new status!'),
-                            'TR_DOWNLOAD' => '',
-                            'DOWNLOAD_LINK' => '',
-                            'DELETE_LINK' => '',
-                            'TR_DELETE' => '',
-                            'TR_TYPE' => '<span  style="color:#FF0000">' . tr('deleting') . '</span>',
-                            'TR_ADMIN' => $rs->fields['admin'],
-                            'SOFTWARE_ICON' => 'delete',
-                            'RIGHTS_LINK' => '',
-                            'TR_SOFTWARE_RIGHTS' => '',
+                            'TR_NAME'              => tr('Failure in the package. Deleting!'),
+                            'LINK_COLOR'           => '#FF0000',
+                            'TR_VERSION'           => '',
+                            'TR_LANGUAGE'          => '',
+                            'TR_TOOLTIP'           => tr('There is an Error inside your package. Please check it!<br>Refresh your site to see the new status!'),
+                            'TR_DOWNLOAD'          => '',
+                            'DOWNLOAD_LINK'        => '',
+                            'DELETE_LINK'          => '',
+                            'TR_DELETE'            => '',
+                            'TR_TYPE'              => '<span  style="color:#FF0000">' . tr('deleting') . '</span>',
+                            'TR_ADMIN'             => $row['admin'],
+                            'SOFTWARE_ICON'        => 'delete',
+                            'RIGHTS_LINK'          => '',
+                            'TR_SOFTWARE_RIGHTS'   => '',
                             'SOFTWARE_RIGHTS_LINK' => ''
                         ));
                         set_page_message(tr('Your package is corrupt. Please correct it!'), 'error');
-                    } elseif (preg_match('/double_depot_/i', $rs->fields['swstatus'])) {
+                    } elseif (preg_match('/double_depot_/i', $row['swstatus'])) {
                         $tpl->assign(array(
-                            'TR_NAME' => tr('Package already exists in the software depot!'),
-                            'LINK_COLOR' => '#FF0000',
-                            'TR_VERSION' => '',
-                            'TR_LANGUAGE' => '',
-                            'TR_TOOLTIP' => tr('Check your software depot uploads!<br>It is not allowed to upload this package two times.<br>Refresh your site to see the new status!'),
-                            'TR_DOWNLOAD' => '',
-                            'DOWNLOAD_LINK' => '',
-                            'DELETE_LINK' => '',
-                            'TR_DELETE' => '',
-                            'TR_TYPE' => '<span style="color:#FF0000">' . tr('deleting') . '</span>',
-                            'TR_ADMIN' => $rs->fields['admin'],
-                            'SOFTWARE_ICON' => 'delete',
-                            'RIGHTS_LINK' => '',
-                            'TR_SOFTWARE_RIGHTS' => '',
+                            'TR_NAME'              => tr('Package already exists in the software depot!'),
+                            'LINK_COLOR'           => '#FF0000',
+                            'TR_VERSION'           => '',
+                            'TR_LANGUAGE'          => '',
+                            'TR_TOOLTIP'           => tr('Check your software depot uploads!<br>It is not allowed to upload this package two times.<br>Refresh your site to see the new status!'),
+                            'TR_DOWNLOAD'          => '',
+                            'DOWNLOAD_LINK'        => '',
+                            'DELETE_LINK'          => '',
+                            'TR_DELETE'            => '',
+                            'TR_TYPE'              => '<span style="color:#FF0000">' . tr('deleting') . '</span>',
+                            'TR_ADMIN'             => $row['admin'],
+                            'SOFTWARE_ICON'        => 'delete',
+                            'RIGHTS_LINK'          => '',
+                            'TR_SOFTWARE_RIGHTS'   => '',
                             'SOFTWARE_RIGHTS_LINK' => ''
                         ));
                         set_page_message(tr('This package already exists in the software depot!'), 'warning');
-                    } elseif (preg_match('/double_res_/i', $rs->fields['swstatus'])) {
+                    } elseif (preg_match('/double_res_/i', $row['swstatus'])) {
                         $tpl->assign(array(
-                            'TR_NAME' => tr('Package already exists in the reseller depot!'),
-                            'LINK_COLOR' => '#FF0000',
-                            'TR_VERSION' => '',
-                            'TR_LANGUAGE' => '',
-                            'TR_TOOLTIP' => tr('Check the reseller uploads!<br>It is not allowed to upload this package two times.<br>Refresh your site to see the new status!'),
-                            'TR_DOWNLOAD' => '',
-                            'DOWNLOAD_LINK' => '',
-                            'DELETE_LINK' => '',
-                            'TR_DELETE' => '',
-                            'TR_TYPE' => '<span style="color:#FF0000">' . tr('deleting') . '</span>',
-                            'TR_ADMIN' => $rs->fields['admin'],
-                            'SOFTWARE_ICON' => 'delete',
-                            'RIGHTS_LINK' => '',
-                            'TR_SOFTWARE_RIGHTS' => '',
+                            'TR_NAME'              => tr('Package already exists in the reseller depot!'),
+                            'LINK_COLOR'           => '#FF0000',
+                            'TR_VERSION'           => '',
+                            'TR_LANGUAGE'          => '',
+                            'TR_TOOLTIP'           => tr('Check the reseller uploads!<br>It is not allowed to upload this package two times.<br>Refresh your site to see the new status!'),
+                            'TR_DOWNLOAD'          => '',
+                            'DOWNLOAD_LINK'        => '',
+                            'DELETE_LINK'          => '',
+                            'TR_DELETE'            => '',
+                            'TR_TYPE'              => '<span style="color:#FF0000">' . tr('deleting') . '</span>',
+                            'TR_ADMIN'             => $row['admin'],
+                            'SOFTWARE_ICON'        => 'delete',
+                            'RIGHTS_LINK'          => '',
+                            'TR_SOFTWARE_RIGHTS'   => '',
                             'SOFTWARE_RIGHTS_LINK' => ''
                         ));
-                        $exist_software_id = substr(strrchr($rs->fields['swstatus'], '_'), 1);
-                        $query = "
-                            SELECT `a`.`reseller_id`,  `b`.`admin_id`,  `b`.`admin_name` as `resellername`
-                            FROM `web_software` a, `admin` b
-                            WHERE a.`software_id` = ? AND a.`reseller_id` = b.`admin_id`
-                        ";
-                        $rs_res = exec_query($query, $exist_software_id);
-                        set_page_message(tr('This package already exists in the depot of the reseller "%1$s"!', $rs_res->fields['resellername']), 'warning');
+                        $stmt2 = exec_query(
+                            "
+                              SELECT t1.admin_name
+                              FROM admin AS t1
+                              INNER JOIN web_software AS t2 ON(t2.reseller_id = t1.admin_id)
+                              WHERE t2.software_id = ?
+                            ",
+                            substr(strrchr($row['swstatus'], '_'), 1)
+                        );
+                        if ($stmt2->rowCount()) {
+                            set_page_message(tr('This package already exists in the depot of the reseller "%1$s"!', $stmt2->fetchRow(PDO::FETCH_COLUMN)), 'warning');
+                        }
                     }
 
-                    $del_path = $cfg['GUI_APS_DEPOT_DIR'] . '/' . $rs->fields['filename'] . '-' . $rs->fields['id'] . '.tar.gz';
-                    @unlink($del_path);
-                    $delete = "DELETE FROM `web_software` WHERE `software_id` = ?";
-                    exec_query($delete, $rs->fields['id']);
+                    $cfg = iMSCP_Registry::get('config');
+                    @unlink(utils_normalizePath($cfg['GUI_APS_DEPOT_DIR'] . '/' . $row['filename'] . '-' . $row['id'] . '.tar.gz'));
+                    exec_query('DELETE FROM web_software WHERE software_id = ?', $row['id']);
                 }
             }
 
             $tpl->parse('LIST_SOFTWAREDEPOT', '.list_softwaredepot');
-            $rs->moveNext();
         }
 
         $tpl->assign('NO_SOFTWAREDEPOT_LIST', '');
-    } else {
-        $tpl->assign('NO_SOFTWAREDEPOT', tr('No software in software depot available!'));
-        $tpl->parse('NO_SOFTWAREDEPOT_LIST', '.no_softwaredepot_list');
-        $tpl->assign('LIST_SOFTWAREDEPOT', '');
+        return $stmt->rowCount();
     }
 
-    return $rs->recordCount();
+    $tpl->assign('NO_SOFTWAREDEPOT', tr('No software in software depot available!'));
+    $tpl->parse('NO_SOFTWAREDEPOT_LIST', '.no_softwaredepot_list');
+    $tpl->assign('LIST_SOFTWAREDEPOT', '');
+    return 0;
 }
 
 /**
  * Must be documented.
  *
  * @param iMSCP_pTemplate $tpl Template engine
- * @param int $reseller_id
+ * @param int $resellerId
  * @return int
  */
-function get_installed_res_software($tpl, $reseller_id)
+function get_installed_res_software($tpl, $resellerId)
 {
-    $query = "
-        SELECT a.`software_id` as id, a.`software_name` as name,
-            a.`software_version` as version, a.`software_language` as language,
-            a.`software_type` as type, a.`software_desc` as description,
-            a.`reseller_id`, a.`software_archive` as filename,
-            a.`software_status` as swstatus, a.`software_depot` as swdepot,
-            b.`admin_id`, b.`admin_name` as admin
-        FROM `web_software` a, `admin` b
-        WHERE a.`reseller_id` = b.`admin_id` AND a.`reseller_id` = ? AND a.`software_status` = 'ok'
-        ORDER BY a.`software_type` ASC, a.`software_name` ASC
-    ";
-    $rs = exec_query($query, $reseller_id);
+    $stmt = exec_query(
+        "
+          SELECT a.software_id AS id, a.software_name AS name, a.software_version AS version,
+            a.software_language AS language, a.software_type AS type, a.software_desc AS description,
+            a.reseller_id, a.software_archive AS filename, a.software_status AS swstatus, a.software_depot AS swdepot,
+            b.admin_id, b.admin_name AS admin
+          FROM web_software AS a, admin AS b
+          WHERE a.reseller_id = b.admin_id
+          AND a.reseller_id = ?
+          AND a.software_status = 'ok'
+          ORDER BY a.software_type ASC, a.software_name ASC
+        ",
+        $resellerId
+    );
 
-    if ($rs->rowCount()) {
-        while (!$rs->EOF) {
-            $query2 = "
-                SELECT `domain`.`domain_id` as did, `domain`.`domain_name` as domain,
-                    `web_software_inst`.`domain_id` as wdid, `web_software_inst`.`software_id` as sid,
-                    `web_software`.`software_id` as wsid
-                FROM `domain`, `web_software`, `web_software_inst`
-                WHERE `web_software_inst`.`software_id`= ?
-                AND `web_software`.`software_id` = `web_software_inst`.`software_id`
-                AND `domain`.`domain_id` = `web_software_inst`.`domain_id`
-            ";
-            $rs2 = exec_query($query2, $rs->fields['id']);
+    if ($stmt->rowCount()) {
+        while ($row = $stmt->fetchRow()) {
+            $stmt2 = exec_query(
+                "
+                  SELECT domain.domain_id AS did, domain.domain_name AS domain, web_software_inst.domain_id AS wdid,
+                    web_software_inst.software_id AS sid, web_software.software_id AS wsid
+                  FROM domain, web_software, web_software_inst
+                  WHERE web_software_inst.software_id= ?
+                  AND web_software.software_id = web_software_inst.software_id
+                  AND domain.domain_id = web_software_inst.domain_id
+                ",
+                $row['id']
+            );
 
-            if ($rs2->rowCount()) {
-                $swinstalled_domain = tr('This package is installed on following domain(s):');
-                $swinstalled_domain .= "<ul>";
+            if ($stmt2->rowCount()) {
+                $swInstalledDomain = tr('This package is installed on following domain(s):');
+                $swInstalledDomain .= "<ul>";
 
-                while (!$rs2->EOF) {
-                    $swinstalled_domain .= "<li>" . $rs2->fields['domain'] . "</li>";
-                    $rs2->moveNext();
+                while ($row2 = $stmt->fetchRow()) {
+                    $swInstalledDomain .= "<li>" . $row2['domain'] . "</li>";
                 }
-                $swinstalled_domain .= "</ul>";
-                $tpl->assign('SW_INSTALLED', $swinstalled_domain);
+
+                $swInstalledDomain .= "</ul>";
+                $tpl->assign('SW_INSTALLED', $swInstalledDomain);
             } else {
                 $tpl->assign('SW_INSTALLED', tr('This package is not installed'));
             }
 
-            if ($rs->fields['swdepot'] == "yes") {
-                $tpl->assign('TR_NAME', tr('%1$s - (Softwaredepot)', $rs->fields['name']));
+            if ($row['swdepot'] == "yes") {
+                $tpl->assign('TR_NAME', tr('%1$s - (Softwaredepot)', $row['name']));
                 $tpl->assign('SOFTWARE_IS_NOT_IN_SOFTWAREDEPOT', '');
                 $tpl->parse('SOFTWARE_IS_IN_SOFTWAREDEPOT', 'software_is_in_softwaredepot');
             } else {
-                $import_url = "software_import.php?id=" . $rs->fields['id'];
-                $del_url = "software_delete.php?id=" . $rs->fields['id'];
+                $importURL = "software_import.php?id=" . $row['id'];
+                $delURL = "software_delete.php?id=" . $row['id'];
                 $tpl->assign(array(
-                    'TR_NAME' => $rs->fields['name'],
-                    'IMPORT_LINK' => $import_url,
-                    'DELETE_LINK' => $del_url
+                    'TR_NAME'     => $row['name'],
+                    'IMPORT_LINK' => $importURL,
+                    'DELETE_LINK' => $delURL
                 ));
 
                 $tpl->parse('SOFTWARE_IS_NOT_IN_SOFTWAREDEPOT', 'software_is_not_in_softwaredepot');
@@ -467,46 +487,46 @@ function get_installed_res_software($tpl, $reseller_id)
             }
 
             $tpl->assign(array(
-                'LINK_COLOR' => '#000000',
-                'TR_TOOLTIP' => $rs->fields['description'],
-                'TR_VERSION' => $rs->fields['version'],
-                'TR_LANGUAGE' => $rs->fields['language'],
-                'TR_TYPE' => $rs->fields['type'],
-                'TR_ADMIN' => 'List',
-                'TR_RESELLER' => $rs->fields['admin'],
-                'TR_SOFTWARE_DEPOT' => tr('%1$s`s - Software', $rs->fields['admin']),
-                'TR_IMPORT' => tr('Import'),
-                'TR_SOFTWARE_IMPORT' => tr('Depot import'),
-                'TR_SOFTWARE_DELETE' => tr('Delete'),
-                'TR_DELETE' => tr('Delete'),
+                'LINK_COLOR'          => '#000000',
+                'TR_TOOLTIP'          => $row['description'],
+                'TR_VERSION'          => $row['version'],
+                'TR_LANGUAGE'         => $row['language'],
+                'TR_TYPE'             => $row['type'],
+                'TR_ADMIN'            => 'List',
+                'TR_RESELLER'         => $row['admin'],
+                'TR_SOFTWARE_DEPOT'   => tr('%1$ss - Software', $row['admin']),
+                'TR_IMPORT'           => tr('Import'),
+                'TR_SOFTWARE_IMPORT'  => tr('Depot import'),
+                'TR_SOFTWARE_DELETE'  => tr('Delete'),
+                'TR_DELETE'           => tr('Delete'),
                 'IS_IN_SOFTWAREDEPOT' => tr('N/A'),
-                'TR_MESSAGE_IMPORT' => tr('Are you sure you want to import this package into the software depot?'),
-                'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?')
+                'TR_MESSAGE_IMPORT'   => tr('Are you sure you want to import this package into the software depot?'),
+                'TR_MESSAGE_DELETE'   => tr('Are you sure you want to delete this package?')
             ));
             $tpl->parse('LIST_SOFTWAREDEPOT', '.list_softwaredepot');
-            $rs->moveNext();
         }
-        $tpl->assign('NO_SOFTWAREDEPOT_LIST', '');
-    } else {
-        $query = "SELECT `admin_name` as admin FROM `admin` WHERE `admin_id` = ?";
-        $reseller = exec_query($query, $reseller_id);
 
-        if ($reseller->rowCount()) {
-            $tpl->assign(array(
-                'NO_SOFTWAREDEPOT' => tr('No software available'),
-                'TR_SOFTWARE_DEPOT' => tr('%1$s`s - Software', $reseller->fields['admin']),
-                'TR_SOFTWARE_IMPORT' => tr('Depot import'),
-                'TR_SOFTWARE_DELETE' => tr('Delete')
-            ));
-            $tpl->parse('NO_SOFTWAREDEPOT_LIST', 'no_softwaredepot_list');
-            $tpl->assign('LIST_SOFTWAREDEPOT', '');
-        } else {
-            set_page_message(tr('Wrong reseller id.'), 'error');
-            redirectTo('software_manage.php');
-        }
+        $tpl->assign('NO_SOFTWAREDEPOT_LIST', '');
+        return $stmt->rowCount();
     }
 
-    return $rs->recordCount();
+    $stmt = exec_query('SELECT admin_name FROM admin WHERE admin_id = ?', $resellerId);
+
+    if (!$stmt->rowCount()) {
+        set_page_message(tr('Wrong reseller id.'), 'error');
+        redirectTo('software_manage.php');
+    }
+
+    $tpl->assign(array(
+        'NO_SOFTWAREDEPOT'   => tr('No software available'),
+        'TR_SOFTWARE_DEPOT'  => tr('%1$ss - Software', $stmt->fetchRow(PDO::FETCH_COLUMN)),
+        'TR_SOFTWARE_IMPORT' => tr('Depot import'),
+        'TR_SOFTWARE_DELETE' => tr('Delete')
+    ));
+    $tpl->parse('NO_SOFTWAREDEPOT_LIST', 'no_softwaredepot_list');
+    $tpl->assign('LIST_SOFTWAREDEPOT', '');
+
+    return 0;
 }
 
 /**
@@ -517,70 +537,78 @@ function get_installed_res_software($tpl, $reseller_id)
  */
 function get_reseller_software($tpl)
 {
-    $query = "
-        SELECT t1.`admin_id` as reseller_id, t1.`admin_name` as reseller
-        FROM `admin` t1 LEFT JOIN `reseller_props` AS t2 ON t2.reseller_id = t1.`admin_id`
-        WHERE t1.`admin_type` = 'reseller' AND t2.`software_allowed` = 'yes' ORDER BY t1.`admin_id` ASC
-    ";
-    $rs = execute_query($query);
+    $stmt = execute_query(
+        "
+          SELECT t1.admin_id AS reseller_id, t1.admin_name AS reseller
+          FROM admin t1
+          LEFT JOIN reseller_props AS t2 ON t2.reseller_id = t1.admin_id
+          WHERE t1.admin_type = 'reseller'
+          AND t2.software_allowed = 'yes'
+          ORDER BY t1.admin_id ASC
+        "
+    );
 
-    if ($rs->rowCount()) {
-        while (!$rs->EOF) {
-            $query = "SELECT `software_id` FROM `web_software` WHERE `reseller_id` = ?";
-            $rssoftware = exec_query($query, $rs->fields['reseller_id']);
+    if ($stmt->rowCount()) {
+        while ($row = $stmt->fetchRow()) {
+            $stmt2 = exec_query('SELECT software_id FROM web_software WHERE reseller_id = ?', $row['reseller_id']);
+
             $software_ids = array();
-
-            while ($data = $rssoftware->fetchRow()) {
+            while ($data = $stmt2->fetchRow()) {
                 $software_ids[] = $data['software_id'];
             }
 
-            $query = "
-                SELECT count(`software_id`) as swdepot FROM `web_software`
-                WHERE `software_active` = 1 AND `software_depot` = 'yes' AND `reseller_id` = ?
-            ";
-            $rscountswdepot = exec_query($query, $rs->fields['reseller_id']);
-            $query = "
-                SELECT count(`software_id`) as waiting FROM `web_software`
-                WHERE `software_active` = 0 AND `reseller_id` = ?
-            ";
-            $rscountwaiting = exec_query($query, $rs->fields['reseller_id']);
-            $query = "
-                SELECT count(`software_id`) as activated FROM `web_software`
-                WHERE `software_active` = 1 AND `reseller_id` = ?
-            ";
-            $rscountactivated = exec_query($query, $rs->fields['reseller_id']);
+            $countSwDepot = exec_query(
+                "
+                  SELECT count(software_id) AS swdepot
+                  FROM web_software
+                  WHERE software_active = 1
+                  AND software_depot = 'yes'
+                  AND reseller_id = ?
+                ",
+                $row['reseller_id']
+            )->fetchRow(PDO::FETCH_COLUMN);;
+
+            $countWaiting = exec_query(
+                "SELECT count(software_id) FROM web_software WHERE software_active = 0 AND reseller_id = ?",
+                $row['reseller_id']
+            )->fetchRow(PDO::FETCH_COLUMN);
+
+            $countActivated = exec_query(
+                "SELECT count(software_id) FROM web_software WHERE software_active = 1 AND reseller_id = ?",
+                $row['reseller_id']
+            )->fetchRow(PDO::FETCH_COLUMN);;
 
             if (count($software_ids) > 0) {
-                $query = "
-                    SELECT count(`domain_id`) as in_use
-                    FROM `web_software_inst`
-                    WHERE `software_id` IN (" . implode(',', $software_ids) . ") AND `software_status` = 'ok'
-                ";
-                $rscountin_use = execute_query($query);
-                $sw_in_use = $rscountin_use->fields['in_use'];
+                $swInUse = execute_query(
+                    "
+                      SELECT count(domain_id)
+                      FROM web_software_inst
+                      WHERE software_id IN (" . implode(',', $software_ids) . ") AND software_status = 'ok'
+                    "
+                )->fetchRow(PDO::FETCH_COLUMN);
             } else {
-                $sw_in_use = 0;
+                $swInUse = 0;
             }
 
             $tpl->assign(array(
-                'RESELLER_NAME' => $rs->fields['reseller'],
-                'RESELLER_ID' => $rs->fields['reseller_id'],
-                'RESELLER_COUNT_SWDEPOT' => $rscountswdepot->fields['swdepot'],
-                'RESELLER_COUNT_WAITING' => $rscountwaiting->fields['waiting'],
-                'RESELLER_COUNT_ACTIVATED' => $rscountactivated->fields['activated'],
-                'RESELLER_SOFTWARE_IN_USE' => $sw_in_use
+                'RESELLER_NAME'            => $row['reseller'],
+                'RESELLER_ID'              => $row['reseller_id'],
+                'RESELLER_COUNT_SWDEPOT'   => $countSwDepot,
+                'RESELLER_COUNT_WAITING'   => $countWaiting,
+                'RESELLER_COUNT_ACTIVATED' => $countActivated,
+                'RESELLER_SOFTWARE_IN_USE' => $swInUse
             ));
             $tpl->parse('LIST_RESELLER', '.list_reseller');
-            $rs->moveNext();
         }
+
         $tpl->assign('NO_RESELLER_LIST', '');
-    } else {
-        $tpl->assign('NO_RESELLER', tr('No reseller with activated software installer found!'));
-        $tpl->parse('NO_RESELLER_LIST', '.no_reseller_list');
-        $tpl->assign('LIST_RESELLER', '');
+        return $stmt->rowCount();
     }
 
-    return $rs->recordCount();
+    $tpl->assign('NO_RESELLER', tr('No reseller with activated software installer found!'));
+    $tpl->parse('NO_RESELLER_LIST', '.no_reseller_list');
+    $tpl->assign('LIST_RESELLER', '');
+    return 0;
 }
 
 
@@ -588,110 +616,109 @@ function get_reseller_software($tpl)
  * Must be documented
  *
  * @param iMSCP_pTemplate $tpl Template engine
- * @param int $software_id
+ * @param int $softwareId
  * @return int
  */
-function get_reseller_rights($tpl, $software_id)
+function get_reseller_rights($tpl, $softwareId)
 {
-    $query = "
-        SELECT a.`software_id`, a.`software_master_id`, a.`reseller_id`, a.`rights_add_by`, b.`admin_name` as reseller
-        FROM `web_software` a, `admin` b
-        WHERE a.`reseller_id` = b.`admin_id` AND a.`software_depot` = 'yes' AND a.`software_master_id` = ?
-    ";
-    $rs = exec_query($query, $software_id);
+    $stmt = exec_query(
+        "
+          SELECT a.software_id, a.software_master_id, a.reseller_id, a.rights_add_by, b.admin_name AS reseller
+          FROM web_software a, admin b
+          WHERE a.reseller_id = b.admin_id
+          AND a.software_depot = 'yes'
+          AND a.software_master_id = ?
+        ",
+        $softwareId
+    );
 
-    if ($rs->rowCount()) {
-        while (!$rs->EOF) {
-            $adminquery = " SELECT `admin_name` as administrator FROM `admin` WHERE `admin_id` = ?";
-            $rs_admin = exec_query($adminquery, $rs->fields['rights_add_by']);
-
-            if ($rs_admin->fields['administrator'] == '') {
-                $added_by = tr('Admin not available');
-            } else {
-                $added_by = $rs_admin->fields['administrator'];
-            }
-
-            $remove_rights_url = "software_change_rights.php?id=" . $rs->fields['software_master_id'] . "&reseller_id=" . $rs->fields['reseller_id'];
+    if ($stmt->rowCount()) {
+        while ($row = $stmt->fetchRow()) {
+            $stmt2 = exec_query('SELECT admin_name FROM admin WHERE admin_id = ?', $row['rights_add_by']);
             $tpl->assign(array(
-                'RESELLER' => $rs->fields['reseller'],
-                'ADMINISTRATOR' => $added_by,
-                'TR_REMOVE_RIGHT' => tr('Remove'),
+                'RESELLER'          => $row['reseller'],
+                'ADMINISTRATOR'     => ($stmt2->rowCount()) ? $stmt2->fetchRow(PDO::FETCH_COLUMN) : tr('Admin not available'),
+                'TR_REMOVE_RIGHT'   => tr('Remove'),
                 'TR_MESSAGE_REMOVE' => tr('Are you sure to remove the permissions ?'),
-                'REMOVE_RIGHT_LINK' => $remove_rights_url
+                'REMOVE_RIGHT_LINK' => "software_change_rights.php?id=" . $row['software_master_id'] . "&reseller_id=" . $row['reseller_id']
             ));
             $tpl->parse('LIST_RESELLER', '.list_reseller');
-            $rs->moveNext();
         }
+
         $tpl->assign('NO_RESELLER_LIST', '');
-    } else {
-        $tpl->assign(array(
-            'NO_RESELLER' => tr('No reseller with permissions for this software found.'),
-            'LIST_RESELLER' => ''
-        ));
-        $tpl->parse('NO_RESELLER_LIST', '.no_reseller_list');
+        return $stmt->rowCount();
     }
 
-    return $rs->recordCount();
+    $tpl->assign(array(
+        'NO_RESELLER'   => tr('No reseller with permissions for this software found.'),
+        'LIST_RESELLER' => ''
+    ));
+    $tpl->parse('NO_RESELLER_LIST', '.no_reseller_list');
+    return 0;
 }
 
 /**
  * Must be documented.
  *
  * @param iMSCP_pTemplate $tpl Template engine
- * @param int $software_id
+ * @param int $softwareId software unique identifier
  * @return void
  */
-function get_reseller_list($tpl, $software_id)
+function get_reseller_list($tpl, $softwareId)
 {
-    $query = "
-        SELECT a.`reseller_id`, b.`admin_name` as reseller
-        FROM `reseller_props` a, `admin` b
-        WHERE a.`reseller_id` = b.`admin_id` AND a.`software_allowed` = 'yes' AND a.`softwaredepot_allowed` = 'yes'
-    ";
-    $rs = execute_query($query);
+    $stmt = execute_query(
+        "
+          SELECT a.reseller_id, b.admin_name AS reseller
+          FROM reseller_props a, admin b
+          WHERE a.reseller_id = b.admin_id
+          AND a.software_allowed = 'yes'
+          AND a.softwaredepot_allowed = 'yes'
+        "
+    );
 
-    if ($rs->rowCount()) {
-        $reseller_count = 0;
+    if ($stmt->rowCount()) {
+        $resellerCount = 0;
 
-        while (!$rs->EOF) {
-            $query2 = "SELECT `reseller_id` FROM `web_software` WHERE `reseller_id` = ? AND `software_master_id` = ?";
-            $rs2 = exec_query($query2, array($rs->fields['reseller_id'], $software_id));
+        while ($row = $stmt->fetchRow()) {
+            $stmt2 = exec_query(
+                'SELECT reseller_id FROM web_software WHERE reseller_id = ? AND software_master_id = ?',
+                array($row['reseller_id'], $softwareId)
+            );
 
-            if (!$rs2->rowCount()) {
+            if (!$stmt2->rowCount()) {
                 $tpl->assign(array(
                     'ALL_RESELLER_NAME' => tr('All reseller'),
-                    'RESELLER_ID' => $rs->fields['reseller_id'],
-                    'RESELLER_NAME' => $rs->fields['reseller'],
-                    'SOFTWARE_ID_VALUE' => $software_id
+                    'RESELLER_ID'       => $row['reseller_id'],
+                    'RESELLER_NAME'     => $row['reseller'],
+                    'SOFTWARE_ID_VALUE' => $softwareId
                 ));
                 $tpl->parse('RESELLER_ITEM', '.reseller_item');
-                $reseller_count++;
+                $resellerCount++;
             }
-
-            $rs->moveNext();
         }
 
-        if ($reseller_count > 0) {
+        if ($resellerCount) {
             $tpl->parse('SELECT_RESELLER', '.select_reseller');
             $tpl->assign('NO_SELECT_RESELLER', '');
         } else {
             $tpl->assign(array(
                 'NO_RESELLER_AVAILABLE' => tr('No reseller available to add the permissions.'),
-                'SELECT_RESELLER' => '',
-                'RESELLER_ITEM' => ''
+                'SELECT_RESELLER'       => '',
+                'RESELLER_ITEM'         => ''
             ));
             $tpl->parse('NO_SELECT_RESELLER', '.no_select_reseller');
         }
-    } else {
-        $tpl->assign(array(
-            'NO_RESELLER_AVAILABLE' => tr('No reseller available to add the permissions.'),
-            'SELECT_RESELLER' => '',
-            'RESELLER_ITEM' => ''
-        ));
-        $tpl->parse('NO_SELECT_RESELLER', '.no_select_reseller');
-    }
-}
 
+        return;
+    }
+
+    $tpl->assign(array(
+        'NO_RESELLER_AVAILABLE' => tr('No reseller available to add the permissions.'),
+        'SELECT_RESELLER'       => '',
+        'RESELLER_ITEM'         => ''
+    ));
+    $tpl->parse('NO_SELECT_RESELLER', '.no_select_reseller');
+}
 
 /***********************************************************************************************************************
  * These functions are used by reseller
@@ -712,15 +739,14 @@ function send_new_sw_upload($resellerId, $softwarePackage, $softwareId)
 
     $stmt = exec_query('SELECT admin_name, fname, lname, email FROM admin WHERE admin_id = ?', $resellerData['created_by']);
     $adminData = $stmt->fetchRow();
-
     $ret = send_mail(array(
-        'mail_id' => 'software-installer-upload-sw',
-        'fname' => $adminData['fname'],
-        'lname' => $adminData['lname'],
-        'username' => $adminData['admin_name'],
-        'email' => $adminData['email'],
-        'subject' => tr('A new software package has been uploaded'),
-        'message' => tr('Dear {NAME},
+        'mail_id'      => 'software-installer-upload-sw',
+        'fname'        => $adminData['fname'],
+        'lname'        => $adminData['lname'],
+        'username'     => $adminData['admin_name'],
+        'email'        => $adminData['email'],
+        'subject'      => tr('A new software package has been uploaded'),
+        'message'      => tr('Dear {NAME},
 
 A new software package has been uploaded by a reseller.
 
@@ -733,14 +759,14 @@ Please do not reply to this email.
 ___________________________
 i-MSCP Mailer'),
         'placeholders' => array(
-            '{RESELLER_ID}' => $resellerId,
+            '{RESELLER_ID}'      => $resellerId,
             '{SOFTWARE_ARCHIVE}' => $softwarePackage,
-            '{SOFTWARE_ID}' => $softwareId
+            '{SOFTWARE_ID}'      => $softwareId
         )
     ));
 
     if (!$ret) {
-        write_log(sprintf('Could not send software upload notifiication to %s', $adminData['admin_name']), E_USER_ERROR);
+        write_log(sprintf('Could not send software upload notification to %s', $adminData['admin_name']), E_USER_ERROR);
         return false;
     }
 
@@ -748,214 +774,189 @@ i-MSCP Mailer'),
 }
 
 /**
- * Check wheter the reseller has access to the websoftware depot
+ * Check wheter the reseller has access to the web software depot
  *
- * @param int $user_id
+ * @param int $userId
  * @return string yes if reseller has access to the web software repository, no otherwise
  */
-function ask_reseller_is_allowed_web_depot($user_id)
+function ask_reseller_is_allowed_web_depot($userId)
 {
-    $query = "SELECT `websoftwaredepot_allowed` FROM `reseller_props` WHERE `reseller_id` = ?";
-    $rs = exec_query($query, $user_id);
+    return exec_query(
+        'SELECT websoftwaredepot_allowed FROM reseller_props WHERE reseller_id = ?', $userId
+    )->fetchRow(PDO::FETCH_COLUMN);
 
-    return $rs->fields['websoftwaredepot_allowed'];
 }
 
 /**
  * Must be documented.
  *
  * @param iMSCP_pTemplate $tpl
- * @param int $user_id Reseller unique identifier
+ * @param int $userId Reseller unique identifier
  * @return int
  */
-function get_avail_software_reseller($tpl, $user_id)
+function get_avail_software_reseller($tpl, $userId)
 {
-    $cfg = iMSCP_Registry::get('config');
+    ini_set('display_errors', 1);
+    $softwareAllowed = exec_query(
+        'SELECT software_allowed FROM reseller_props WHERE reseller_id = ?', $userId
+    )->fetchRow(PDO::FETCH_COLUMN);
 
-    $query = "SELECT `software_allowed` FROM `reseller_props` WHERE `reseller_id` = ?";
-    $rs = exec_query($query, $user_id);
+    if ($softwareAllowed == 'yes') {
+        $stmt = exec_query(
+            "
+              SELECT software_id AS id, reseller_id AS resellerid, software_name AS name, software_version AS version,
+                software_language AS language, software_desc AS description, software_type AS type,
+                software_active AS swactive, software_archive AS filename, software_status AS swstatus,
+                software_depot AS softwaredepot
+              FROM web_software
+              WHERE reseller_id = ?
+            ",
+            $userId
+        );
 
-    $software_allowed = $rs->fields('software_allowed');
-
-    if ($software_allowed == 'yes') {
-        if (isset($_GET['sortby']) && isset($_GET['order'])) {
-            if ($_GET['order'] === 'asc' || $_GET['order'] === "desc") {
-                if ($_GET['sortby'] === 'name') {
-                    $ordertype = "`software_name` " . $_GET['order'];
-                } elseif ($_GET['sortby'] === 'status') {
-                    $ordertype = "`software_active` " . $_GET['order'];
-                } elseif ($_GET['sortby'] === 'language') {
-                    $ordertype = '`software_language` ' . $_GET['order'];
-                } elseif ($_GET['sortby'] === 'type') {
-                    $ordertype = '`software_type` ' . $_GET['order'];
-                } else {
-                    $ordertype = '`software_active` ASC, `software_type` ASC';
-                }
-            } else {
-                $ordertype = '`software_active` ASC, `software_type` ASC';
-            }
-        } else {
-            $ordertype = '`software_active` ASC, `software_type` ASC';
-        }
-
-        $query = "
-            SELECT `software_id` as id, `reseller_id` as resellerid,
-                `software_name` as name, `software_version` as version,
-                `software_language` as language, `software_desc` as description,
-                `software_type` as type, `software_active` as swactive,
-                `software_archive` as filename, `software_status` as swstatus,
-                `software_depot` as softwaredepot
-            FROM `web_software` WHERE `reseller_id` = ? ORDER BY $ordertype
-        ";
-        $rs = exec_query($query, $user_id);
-
-        if ($rs->rowCount()) {
-            while (!$rs->EOF) {
-                if ($rs->fields['swstatus'] == 'ok' || $rs->fields['swstatus'] == 'ready') {
-                    if ($rs->fields['swstatus'] == "ready") {
-                        $updatequery = "UPDATE `web_software` SET `software_status` = 'ok' WHERE `software_id` = ?";
-                        exec_query($updatequery, $rs->fields['id']);
-                        send_new_sw_upload($user_id, $rs->fields['filename'] . ".tar.gz", $rs->fields['id']);
+        if ($stmt->rowCount()) {
+            while ($row = $stmt->fetchRow()) {
+                if ($row['swstatus'] == 'ok' || $row['swstatus'] == 'ready') {
+                    if ($row['swstatus'] == 'ready') {
+                        exec_query("UPDATE web_software SET software_status = 'ok' WHERE software_id = ?", $row['id']);
+                        send_new_sw_upload($userId, $row['filename'] . '.tar.gz', $row['id']);
                         set_page_message(tr('Package installed successfully... Awaiting release from admin!'), 'success');
                     }
 
-                    $url = "software_delete.php?id=" . $rs->fields['id'];
+                    $url = "software_delete.php?id=" . $row['id'];
 
-                    $query2 = "
-                        SELECT `domain`.`domain_id` as did,
-                            `domain`.`domain_name` as domain,
-                            `web_software_inst`.`domain_id` as wdid,
-                            `web_software_inst`.`software_id` as sid,
-                            `web_software`.`software_id` as wsid
-                        FROM `domain`, `web_software`, `web_software_inst`
-                        WHERE `web_software_inst`.`software_id` = ?
-                        AND `web_software`.`software_id` = `web_software_inst`.`software_id`
-                        AND `domain`.`domain_id` = `web_software_inst`.`domain_id`
-                    ";
-                    $rs2 = exec_query($query2, $rs->fields['id']);
+                    $stmt2 = exec_query(
+                        "
+                          SELECT domain.domain_id AS did, domain.domain_name AS domain,
+                            web_software_inst.domain_id AS wdid, web_software_inst.software_id AS sid,
+                            web_software.software_id AS wsid
+                          FROM domain, web_software, web_software_inst
+                          WHERE web_software_inst.software_id = ?
+                          AND web_software.software_id = web_software_inst.software_id
+                          AND domain.domain_id = web_software_inst.domain_id
+                        ",
+                        $row['id']
+                    );
 
-                    if ($rs2->rowCount()) {
-                        $swinstalled_domain = tr('This software is installed on following domain(s):');
-                        $swinstalled_domain .= "<ul>";
+                    if ($stmt2->rowCount()) {
+                        $swInstalledDomain = tr('This software is installed on following domain(s):');
+                        $swInstalledDomain .= '<ul>';
 
-                        while (!$rs2->EOF) {
-                            $swinstalled_domain .= "<li>" . $rs2->fields['domain'] . "</li>";
-                            $rs2->moveNext();
+                        while ($row2 = $stmt2->fetchRow()) {
+                            $swInstalledDomain .= '<li>' . $row2['domain'] . '</li>';
                         }
 
-                        $swinstalled_domain .= "</ul>";
-                        $tpl->assign('SW_INSTALLED', $swinstalled_domain);
+                        $swInstalledDomain .= '</ul>';
+                        $tpl->assign('SW_INSTALLED', $swInstalledDomain);
                     } else {
                         $tpl->assign('SW_INSTALLED', tr('This package is not installed yet'));
                     }
 
                     $tpl->assign(array(
-                        'SW_NAME' => $rs->fields['name'],
-                        'LINK_COLOR' => '#000000',
-                        'SW_VERSION' => $rs->fields['version'],
-                        'SW_LANGUAGE' => $rs->fields['language'],
-                        'SW_DESCRIPTION' => $rs->fields['description'],
-                        'SW_TYPE' => $rs->fields['type'],
-                        'DELETE' => $url,
-                        'TR_DELETE' => tr('Delete'),
+                        'SW_NAME'               => tohtml($row['name']),
+                        'LINK_COLOR'            => '#000000',
+                        'SW_VERSION'            => tohtml($row['version']),
+                        'SW_LANGUAGE'           => tohtml($row['language']),
+                        'SW_DESCRIPTION'        => tohtml($row['description'], 'htmlAttr'),
+                        'SW_TYPE'               => tohtml($row['type']),
+                        'DELETE'                => tohtml($url, 'htmlAttr'),
+                        'TR_DELETE'             => tr('Delete'),
                         'WAITING_SOFTWARE_LIST' => '',
-                        'SOFTWARE_ICON' => 'delete'
+                        'SOFTWARE_ICON'         => 'delete'
                     ));
 
-                    if ($rs->fields['swactive'] == "0") {
+                    if ($row['swactive'] == '0') {
                         $tpl->assign('SW_STATUS', tr('waiting for activation'));
-                    } elseif ($rs->fields['swactive'] == "1" && $rs->fields['softwaredepot'] == "yes") {
+                    } elseif ($row['swactive'] == '1' && $row['softwaredepot'] == 'yes') {
                         $tpl->assign('SW_STATUS', tr('activated (Softwaredepot)'));
                     } else {
                         $tpl->assign('SW_STATUS', tr('activated'));
                     }
                 } else {
-                    if ($rs->fields['swstatus'] == 'toadd') {
-                        $url = 'software_delete.php?id=' . $rs->fields['id'];
+                    if ($row['swstatus'] == 'toadd') {
+                        $url = 'software_delete.php?id=' . $row['id'];
                         $tpl->assign(array(
-                            'SW_NAME' => tr('Installing your uploaded package. Please refresh this page.'),
-                            'LINK_COLOR' => '#FF0000',
-                            'SW_VERSION' => '',
-                            'SW_LANGUAGE' => '',
+                            'SW_NAME'        => tr('Installing your uploaded package. Please refresh this page.'),
+                            'LINK_COLOR'     => '#FF0000',
+                            'SW_VERSION'     => '',
+                            'SW_LANGUAGE'    => '',
                             'SW_DESCRIPTION' => tr('After your upload the package it will be installed on your systems.<br>Refresh your site to see the new status!'),
-                            'SW_TYPE' => '',
-                            'DELETE' => $url,
-                            'TR_DELETE' => tr('Delete'),
-                            'SW_STATUS' => tr('installing'),
-                            'SOFTWARE_ICON' => 'disabled'));
+                            'SW_TYPE'        => '',
+                            'DELETE'         => $url,
+                            'TR_DELETE'      => tr('Delete'),
+                            'SW_STATUS'      => tr('installing'),
+                            'SOFTWARE_ICON'  => 'disabled'));
                     } else {
-                        if ($rs->fields['swstatus'] == 'todelete') {
+                        if ($row['swstatus'] == 'todelete') {
                             $tpl->assign(array(
-                                'SW_NAME' => tr('Failure in the package. Deleting!'),
-                                'LINK_COLOR' => '#FF0000',
-                                'SW_VERSION' => '',
-                                'SW_LANGUAGE' => '',
+                                'SW_NAME'        => tr('Failure in the package. Deleting!'),
+                                'LINK_COLOR'     => '#FF0000',
+                                'SW_VERSION'     => '',
+                                'SW_LANGUAGE'    => '',
                                 'SW_DESCRIPTION' => tr('Check your package. There is an error inside!<br>Refresh your site to see the new status!'),
-                                'SW_TYPE' => '',
-                                'DELETE' => '',
-                                'TR_DELETE' => '',
-                                'SW_STATUS' => tr('deleting'),
-                                'SOFTWARE_ICON' => 'disabled'
+                                'SW_TYPE'        => '',
+                                'DELETE'         => '',
+                                'TR_DELETE'      => '',
+                                'SW_STATUS'      => tr('deleting'),
+                                'SOFTWARE_ICON'  => 'disabled'
                             ));
                             set_page_message(tr('The package is corrupt. Please correct it.'), 'error');
-                        } elseif (preg_match("/double_depot_/i", $rs->fields['swstatus'])) {
+                        } elseif (preg_match('/double_depot_/i', $row['swstatus'])) {
                             $tpl->assign(array(
-                                'SW_NAME' => tr('Package already exists in the software repository!'),
-                                'LINK_COLOR' => '#FF0000',
-                                'SW_VERSION' => '',
-                                'SW_LANGUAGE' => '',
+                                'SW_NAME'        => tr('Package already exists in the software repository!'),
+                                'LINK_COLOR'     => '#FF0000',
+                                'SW_VERSION'     => '',
+                                'SW_LANGUAGE'    => '',
                                 'SW_DESCRIPTION' => tr('Please contact the administrator!<br>Ask him for the permissions to use this package.<br>It is not allowed to upload this packet two times.<br>Refresh your site to see the new status!'),
-                                'SW_TYPE' => '',
-                                'DELETE' => '',
-                                'TR_DELETE' => '',
-                                'SW_STATUS' => tr('deleting'),
-                                'SOFTWARE_ICON' => 'disabled'
+                                'SW_TYPE'        => '',
+                                'DELETE'         => '',
+                                'TR_DELETE'      => '',
+                                'SW_STATUS'      => tr('deleting'),
+                                'SOFTWARE_ICON'  => 'disabled'
                             ));
                             set_page_message(tr('This package already exists in the administrator software repository.'), 'error');
-                        } elseif (preg_match("/double_res_/i", $rs->fields['swstatus'])) {
+                        } elseif (preg_match('/double_res_/i', $row['swstatus'])) {
                             $tpl->assign(array(
-                                'SW_NAME' => tr('Package already exists in your software repository!'),
-                                'LINK_COLOR' => '#FF0000',
-                                'SW_VERSION' => '',
-                                'SW_LANGUAGE' => '',
+                                'SW_NAME'        => tr('Package already exists in your software repository!'),
+                                'LINK_COLOR'     => '#FF0000',
+                                'SW_VERSION'     => '',
+                                'SW_LANGUAGE'    => '',
                                 'SW_DESCRIPTION' => tr('Check your own uploads!<br>Ask the administrator if you don\'t find the package.<br>It is not allowed to upload this packages two times.<br>Refresh your site to see the new status!'),
-                                'SW_TYPE' => '',
-                                'DELETE' => '',
-                                'TR_DELETE' => '',
-                                'SW_STATUS' => tr('deleting'),
-                                'SOFTWARE_ICON' => 'disabled'
+                                'SW_TYPE'        => '',
+                                'DELETE'         => '',
+                                'TR_DELETE'      => '',
+                                'SW_STATUS'      => tr('deleting'),
+                                'SOFTWARE_ICON'  => 'disabled'
                             ));
                             set_page_message(tr('This package already exists in your software repository.'), 'error');
                         }
 
-                        $del_path = $cfg['GUI_APS_DIR'] . "/" . $rs->fields['resellerid'] . '/' . $rs->fields['filename'] . '-' . $rs->fields['id'] . '.tar.gz';
-                        @unlink($del_path);
-                        $delete = "DELETE FROM `web_software` WHERE `software_id` = ?";
-                        exec_query($delete, $rs->fields['id']);
+                        $cfg = iMSCP_Registry::get('config');
+                        @unlink(utils_normalizePath($cfg['GUI_APS_DIR'] . '/' . $row['resellerid'] . '/' . $row['filename'] . '-' . $row['id'] . '.tar.gz'));
+                        exec_query('DELETE FROM web_software WHERE software_id = ?', $row['id']);
                     }
                 }
-
                 $tpl->parse('LIST_SOFTWARE', '.list_software');
-                $rs->moveNext();
             }
 
             $tpl->assign('NO_SOFTWARE_LIST', '');
         } else {
             $tpl->assign(array(
-                'NO_SOFTWARE' => tr('You do not have any software uploaded yet'),
+                'NO_SOFTWARE'   => tr('You do not have any software uploaded yet'),
                 'LIST_SOFTWARE' => ''
             ));
             $tpl->parse('NO_SOFTWARE_LIST', '.no_software_list');
         }
-        return $rs->recordCount();
-    } else {
-        $tpl->assign(array(
-            'NO_SOFTWARE' => tr('You do not have permissions to upload software'),
-            'LIST_SOFTWARE' => ''
-        ));
-        $tpl->parse('NO_SOFTWARE_LIST', '.no_software_list');
-        return 0;
+
+        return $stmt->rowCount();
     }
+
+    $tpl->assign(array(
+        'NO_SOFTWARE'   => tr('You do not have permissions to upload software'),
+        'LIST_SOFTWARE' => ''
+    ));
+    $tpl->parse('NO_SOFTWARE_LIST', '.no_software_list');
+    return 0;
 }
 
 /***********************************************************************************************************************
@@ -963,29 +964,32 @@ function get_avail_software_reseller($tpl, $user_id)
  */
 
 /**
- * Generate user actions for a specific software.
+ * Generate user actions for a specific software
  *
- * @param int $software_id Software unique identifier
- * @param int $dmn_id Domain unique identifier
+ * @param int $softwareId Software unique identifier
+ * @param int $dmnId Domain unique identifier
  * @param iMSCP_pTemplate $tpl Template engine instance
  * @return array
  */
-function gen_user_software_action($software_id, $dmn_id, $tpl)
+function gen_user_software_action($softwareId, $dmnId, $tpl)
 {
-    $query = "SELECT `software_status` FROM `web_software_inst` WHERE `software_id` = ? AND `domain_id` = ?";
-    $stmt = exec_query($query, array($software_id, $dmn_id));
+    $stmt = exec_query('SELECT software_status FROM web_software_inst WHERE software_id = ? AND domain_id = ?', array(
+        $softwareId, $dmnId
+    ));
 
     if (!$stmt->rowCount()) {
         $software_status = 'not installed';
         $software_icon = 'edit';
     } else {
-        if ($stmt->fields['software_status'] == 'ok') {
+        $row = $stmt->fetchRow();
+
+        if ($row['software_status'] == 'ok') {
             $software_status = 'installed';
             $software_icon = 'delete';
-        } elseif ($stmt->fields['software_status'] == 'toadd') {
+        } elseif ($row['software_status'] == 'toadd') {
             $software_status = 'installing';
             $software_icon = 'disabled';
-        } elseif ($stmt->fields['software_status'] == 'todelete') {
+        } elseif ($row['software_status'] == 'todelete') {
             $software_status = 'deleting';
             $software_icon = 'delete';
         } else {
@@ -993,38 +997,43 @@ function gen_user_software_action($software_id, $dmn_id, $tpl)
             $software_icon = 'disabled';
         }
     }
+
     if ($software_status == 'installing') {
         $tpl->assign(array(
-            'TR_MESSAGE_DELETE' => '',
+            'TR_MESSAGE_DELETE'  => '',
             'TR_MESSAGE_INSTALL' => ''
         ));
         $tpl->parse('SOFTWARE_ACTION_DELETE', '');
         return array(tr('Install in progress'), '', '', $software_status, $software_icon);
-    } elseif ($software_status == 'deleting') {
+    }
+
+    if ($software_status == 'deleting') {
         $tpl->assign(array(
-            'TR_MESSAGE_DELETE' => '',
+            'TR_MESSAGE_DELETE'  => '',
             'TR_MESSAGE_INSTALL' => ''
         ));
         $tpl->parse('SOFTWARE_ACTION_DELETE', '');
         return array(tr('Deletion in progress'), '', '', $software_status, $software_icon);
-    } elseif ($software_status == 'installed') {
+    }
+
+    if ($software_status == 'installed') {
         $tpl->assign(array(
-            'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?'),
+            'TR_MESSAGE_DELETE'       => tr('Are you sure you want to delete this package?'),
             'SOFTWARE_ACTION_INSTALL' => ''
         ));
-        return array(tr('Uninstall'), 'software_delete.php?id=' . $software_id, 'software_view.php?id=' . $software_id, $software_status, $software_icon);
-    } else {
-        $tpl->assign(array(
-            'TR_MESSAGE_INSTALL' => tr('Are you sure to install this package?'),
-            'SOFTWARE_ACTION_DELETE' => ''
-        ));
-
-        return array(tr('Install'), 'software_install.php?id=' . $software_id, 'software_view.php?id=' . $software_id, $software_status, $software_icon);
+        return array(tr('Uninstall'), 'software_delete.php?id=' . $softwareId, 'software_view.php?id=' . $softwareId, $software_status, $software_icon);
     }
+
+    $tpl->assign(array(
+        'TR_MESSAGE_INSTALL'     => tr('Are you sure to install this package?'),
+        'SOFTWARE_ACTION_DELETE' => ''
+    ));
+
+    return array(tr('Install'), 'software_install.php?id=' . $softwareId, 'software_view.php?id=' . $softwareId, $software_status, $software_icon);
 }
 
 /**
- * Generate available software list for a specific customer.
+ * Generate available software list for a specific customer
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
  * @param int $domainId Domain unique identifier
@@ -1033,39 +1042,43 @@ function gen_user_software_action($software_id, $dmn_id, $tpl)
  */
 function gen_software_list($tpl, $domainId, $resellerId)
 {
-    $query = "
-        SELECT `software_id`, `software_status`, `software_res_del`, `software_name`, `software_version`
-        FROM `web_software_inst` WHERE `domain_id` = ? AND software_res_del = ?
-    ";
-    $stmt = exec_query($query, array($domainId, 1));
+    $stmt = exec_query(
+        '
+          SELECT software_id, software_status, software_res_del, software_name, software_version
+          FROM web_software_inst
+          WHERE domain_id = ?
+          AND software_res_del = ?
+        ',
+        array($domainId, 1)
+    );
 
     if (!$stmt->rowCount()) {
         $tpl->assign(array(
-            'SOFTWARE_DEL_ITEM' => '',
+            'SOFTWARE_DEL_ITEM'    => '',
             'DEL_SOFTWARE_SUPPORT' => ''
         ));
     } else {
-        while (!$stmt->EOF) {
-            if ($stmt->fields['software_status'] == 'ok') {
+        while ($row = $stmt->fetchRow()) {
+            if ($row['software_status'] == 'ok') {
                 $delsoftware_status = 'installed';
-                $del_software_action_script = "software_delete.php?id=" . $stmt->fields['software_id'];
+                $del_software_action_script = "software_delete.php?id=" . $row['software_id'];
                 $tpl->assign(array(
-                    'DEL_SOFTWARE_ACTION' => tr('Uninstall'),
+                    'DEL_SOFTWARE_ACTION'   => tr('Uninstall'),
                     'TR_RES_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?')
                 ));
-            } elseif ($stmt->fields['software_status'] == 'toadd') {
+            } elseif ($row['software_status'] == 'toadd') {
                 $delsoftware_status = 'installing';
-                $del_software_action_script = "software_delete.php?id=" . $stmt->fields['software_id'];
+                $del_software_action_script = "software_delete.php?id=" . $row['software_id'];
                 $tpl->assign(array(
-                    'DEL_SOFTWARE_ACTION' => tr('Uninstall'),
+                    'DEL_SOFTWARE_ACTION'   => tr('Uninstall'),
                     'TR_RES_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?')
                 ));
-            } elseif ($stmt->fields['software_status'] == 'todelete') {
+            } elseif ($row['software_status'] == 'todelete') {
                 $delsoftware_status = 'deleting';
                 $del_software_action_script = '';
 
                 $tpl->assign(array(
-                    'DEL_SOFTWARE_ACTION' => '',
+                    'DEL_SOFTWARE_ACTION'   => '',
                     'TR_RES_MESSAGE_DELETE' => ''
                 ));
             } else {
@@ -1073,218 +1086,208 @@ function gen_software_list($tpl, $domainId, $resellerId)
                 $del_software_action_script = '';
             }
 
-            $software_name = $stmt->fields['software_name'];
-            $software_version = $stmt->fields['software_version'];
+            $software_name = $row['software_name'];
+            $software_version = $row['software_version'];
 
             $tpl->assign(array(
-                'SOFTWARE_DEL_RES_MESSAGE' => tr('This Package (%s, V%s) was deleted by your reseller. You can only uninstall this package!<br>Please delete the files and database for this package manually!', $software_name, $software_version),
-                'DEL_SOFTWARE_STATUS' => $delsoftware_status,
+                'SOFTWARE_DEL_RES_MESSAGE'   => tr('This Package (%s, V%s) was deleted by your reseller. You can only uninstall this package!<br>Please delete the files and database for this package manually!', $software_name, $software_version),
+                'DEL_SOFTWARE_STATUS'        => $delsoftware_status,
                 'DEL_SOFTWARE_ACTION_SCRIPT' => $del_software_action_script
             ));
             $tpl->parse('DEL_SOFTWARE_ITEM', '.del_software_item');
-            $stmt->moveNext();
         }
 
         $tpl->assign(array(
             'TR_DEL_SOFTWARE' => tr('Installed Package which was deleted by your reseller.'),
-            'TR_DEL_STATUS' => tr('Status'),
-            'TR_DEL_ACTION' => tr('Action')
+            'TR_DEL_STATUS'   => tr('Status'),
+            'TR_DEL_ACTION'   => tr('Action')
         ));
         $tpl->parse('DEL_SOFTWARE_SUPPORT', '.del_software_support');
     }
 
-    $query = "
-            SELECT `software_id`, `software_name`, `software_version`, `software_language`, `software_type`,
-                `software_db`, `software_desc`
-            FROM `web_software` WHERE `reseller_id` = ? AND `software_active` = ? ORDER BY `software_name`
-        ";
-    $stmt = exec_query($query, array($resellerId, 1));
+    $domainProperties = get_domain_default_props($_SESSION['user_id']);
+    $optCond = ($domainProperties['sqld_limit'] == '-1') ? 'AND software_db <> 1' : '';
+    $stmt = exec_query(
+        "
+          SELECT software_id, software_name, software_version, software_language, software_type, software_db,
+              software_desc
+          FROM web_software
+          WHERE reseller_id = ?
+          AND software_active = ?
+          $optCond
+          ORDER BY software_name
+        ",
+        array($resellerId, 1)
+    );
 
     if (!$stmt->rowCount()) {
         $tpl->assign(array(
             'NO_SOFTWARE_AVAIL' => tr('No software available'),
-            'SOFTWARE_LIST' => ''
+            'SOFTWARE_LIST'     => ''
         ));
         return 0;
-    } else {
-        $tpl->assign('NO_SOFTWARE_SUPPORT', '');
+    }
 
-        while (!$stmt->EOF) {
-            list(
-                $software_action, $software_action_script, $view_software_script, $software_status, $software_icon
-                ) = gen_user_software_action($stmt->fields['software_id'], $domainId, $tpl);
+    $tpl->assign('NO_SOFTWARE_SUPPORT', '');
 
-            $tpl->assign(array(
-                'SOFTWARE_NAME' => $stmt->fields['software_name'],
-                'SOFTWARE_DESCRIPTION' => $stmt->fields['software_desc'],
-                'SOFTWARE_VERSION' => $stmt->fields['software_version'],
-                'SOFTWARE_LANGUAGE' => $stmt->fields['software_language'],
-                'SOFTWARE_TYPE' => $stmt->fields['software_type'],
-                'SOFTWARE_STATUS' => $software_status,
-                'SOFTWARE_ACTION' => $software_action,
-                'SOFTWARE_ACTION_SCRIPT' => $software_action_script,
-                'VIEW_SOFTWARE_SCRIPT' => $view_software_script,
-                'SOFTWARE_ICON' => $software_icon
-            ));
+    while ($row = $stmt->fetchRow()) {
+        list(
+            $software_action, $software_action_script, $view_software_script, $software_status, $software_icon
+            ) = gen_user_software_action($row['software_id'], $domainId, $tpl);
 
-            if ($stmt->fields['software_db'] == '1') {
-                $tpl->assign('SOFTWARE_NEED_DATABASE', tr('required'));
-            } else {
-                $tpl->assign('SOFTWARE_NEED_DATABASE', tr('not required'));
-            }
+        $tpl->assign(array(
+            'SOFTWARE_NAME'          => $row['software_name'],
+            'SOFTWARE_DESCRIPTION'   => $row['software_desc'],
+            'SOFTWARE_VERSION'       => $row['software_version'],
+            'SOFTWARE_LANGUAGE'      => $row['software_language'],
+            'SOFTWARE_TYPE'          => $row['software_type'],
+            'SOFTWARE_STATUS'        => $software_status,
+            'SOFTWARE_ACTION'        => $software_action,
+            'SOFTWARE_ACTION_SCRIPT' => $software_action_script,
+            'VIEW_SOFTWARE_SCRIPT'   => $view_software_script,
+            'SOFTWARE_ICON'          => $software_icon
+        ));
 
-            if ($software_status == 'installed') {
-                $tpl->parse('SOFTWARE_ACTION_DELETE', 'software_action_delete');
-            } elseif ($software_status == "not installed") {
-                $tpl->parse('SOFTWARE_ACTION_INSTALL', 'software_action_install');
-            }
-
-            $tpl->parse('SOFTWARE_ITEM', '.software_item');
-            $stmt->moveNext();
+        if ($row['software_db'] == '1') {
+            $tpl->assign('SOFTWARE_NEED_DATABASE', tr('required'));
+        } else {
+            $tpl->assign('SOFTWARE_NEED_DATABASE', tr('not required'));
         }
 
-        return $stmt->rowCount();
+        if ($software_status == 'installed') {
+            $tpl->parse('SOFTWARE_ACTION_DELETE', 'software_action_delete');
+        } elseif ($software_status == "not installed") {
+            $tpl->parse('SOFTWARE_ACTION_INSTALL', 'software_action_install');
+        }
+
+        $tpl->parse('SOFTWARE_ITEM', '.software_item');
     }
+
+    return $stmt->rowCount();
 }
 
 /**
- * Must be documented.
+ * Must be documented
  *
- * @param  $software_id
- * @param $dmn_created_id
+ * @param  $softwareId
+ * @param $dmnCreatedId
  * @return bool
  */
-function check_software_avail($software_id, $dmn_created_id)
+function check_software_avail($softwareId, $dmnCreatedId)
 {
-    $check_avail = "SELECT `reseller_id` AS reseller FROM `web_software` WHERE `software_id` = ? AND `reseller_id` = ?";
-    $stmt = exec_query($check_avail, array($software_id, $dmn_created_id));
+    $stmt = exec_query('SELECT COUNT(software_id) FROM web_software WHERE software_id = ? AND reseller_id = ?', array(
+        $softwareId, $dmnCreatedId
+    ));
 
-    if (!$stmt->rowCount()) {
-        return false;
-    }
-
-    return true;
+    return (bool)$stmt->fetchRow(PDO::FETCH_COLUMN);
 }
 
 /**
  * Check if the given software is installed for the given domain
  *
  * @param  iMSCP_pTemplate $tpl
- * @param $dmn_id
- * @param $software_id
+ * @param $dmnId
+ * @param int $softwareId
  * @return void
  */
-function check_is_installed($tpl, $dmn_id, $software_id)
+function check_is_installed($tpl, $dmnId, $softwareId)
 {
-    $is_installed = "
-        SELECT `software_id`, `software_prefix`, `db`, `path` FROM `web_software_inst`
-        WHERE `domain_id` = ? AND `software_id` = ?
-    ";
-    $stmt = exec_query($is_installed, array($dmn_id, $software_id));
+    $stmt = exec_query(
+        '
+          SELECT software_id, software_prefix, db, path
+          FROM web_software_inst
+          WHERE domain_id = ?
+          AND software_id = ?
+        ',
+        array($dmnId, $softwareId)
+    );
 
     if (!$stmt->rowCount()) {
         $tpl->assign(array(
             'INSTALLED_SOFTWARE_INFO' => '',
-            'SOFTWARE_INSTALL_BUTTON' => 'software_install.php?id=' . $software_id
+            'SOFTWARE_INSTALL_BUTTON' => 'software_install.php?id=' . $softwareId
         ));
         $tpl->parse('SOFTWARE_INSTALL', '.software_install');
-    } else {
-        $tpl->assign(array(
-            'SOFTWARE_INSTALL_BUTTON' => '',
-            'SOFTWARE_STATUS' => tr('installed'),
-            'SOFTWARE_INSTALL_PATH' => $stmt->fields['path'],
-            'SOFTWARE_INSTALL_DATABASE' => $stmt->fields['db'],
-            'TR_SOFTWARE_INFO' => tr('Installation details'),
-            'TR_SOFTWARE_STATUS' => tr('Software status'),
-            'TR_SOFTWARE_INSTALL_PATH' => tr('Installation path'),
-            'TR_SOFTWARE_INSTALL_DATABASE' => tr('Used database'),
-            'SOFTWARE_INSTALL' => ''
-        ));
-        $tpl->parse('INSTALLED_SOFTWARE_INFO', '.installed_software_info');
+        return;
     }
+
+    $row = $stmt->fetchRow();
+    $tpl->assign(array(
+        'SOFTWARE_INSTALL_BUTTON'      => '',
+        'SOFTWARE_STATUS'              => tr('installed'),
+        'SOFTWARE_INSTALL_PATH'        => $row['path'],
+        'SOFTWARE_INSTALL_DATABASE'    => $row['db'],
+        'TR_SOFTWARE_INFO'             => tr('Installation details'),
+        'TR_SOFTWARE_STATUS'           => tr('Software status'),
+        'TR_SOFTWARE_INSTALL_PATH'     => tr('Installation path'),
+        'TR_SOFTWARE_INSTALL_DATABASE' => tr('Used database'),
+        'SOFTWARE_INSTALL'             => ''
+    ));
+    $tpl->parse('INSTALLED_SOFTWARE_INFO', '.installed_software_info');
 }
 
 /**
  * Get software properties
  *
- * @param  iMSCP_pTemplate $tpl
- * @param $dmn_id
- * @param $software_id
- * @param $dmn_created_id
- * @param $dmn_sqld_limit
+ * @param iMSCP_pTemplate $tpl
+ * @param int $dmnId
+ * @param int $softwareId
+ * @param int $dmnCreatedId
  * @return void
  */
-function get_software_props($tpl, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit)
+function get_software_props($tpl, $dmnId, $softwareId, $dmnCreatedId)
 {
-    if (!check_software_avail($software_id, $dmn_created_id)) {
+    if (!check_software_avail($softwareId, $dmnCreatedId)) {
         set_page_message(tr('Software not found!'), 'error');
         redirectTo('software.php');
-        exit;
-    } else {
-        $query = "
-            SELECT `software_name`, `software_version`, `software_language`, `software_type`, `software_db`,
-                `software_link`, `software_desc`
-            FROM `web_software` WHERE `software_id` = ? AND `reseller_id` = ?
-        ";
-        $stmt = exec_query($query, array($software_id, $dmn_created_id));
-
-        if ($stmt->fields['software_db'] == 1) {
-            $tpl->assign('SOFTWARE_DB', tr('yes'));
-
-            if ($dmn_sqld_limit == '-1') {
-                $tpl->assign(array(
-                    'STATUS_COLOR' => 'red',
-                    'STATUS_MESSAGE' => tr('You need a Database for this software')
-                ));
-                $tpl->parse('SOFTWARE_MESSAGE', '.software_message');
-            } else {
-                $tpl->assign(array(
-                    'STATUS_COLOR' => 'green',
-                    'STATUS_MESSAGE' => '',
-                    'SOFTWARE_MESSAGE' => ''
-                ));
-            }
-        } else {
-            $tpl->assign(array(
-                'SOFTWARE_DB' => tr('no'),
-                'SOFTWARE_MESSAGE' => '',
-                'STATUS_MESSAGE' => ''
-            ));
-        }
-
-        $sw_link = $stmt->fields['software_link'];
-
-        if (!preg_match("/http:/", $sw_link) && !preg_match("/https:/", $sw_link)) {
-            $sw_link = "http://" . $sw_link;
-        }
-
-        $tpl->assign(array(
-            'SOFTWARE_NAME' => $stmt->fields['software_name'],
-            'SOFTWARE_VERSION' => $stmt->fields['software_version'],
-            'SOFTWARE_LANGUAGE' => $stmt->fields['software_language'],
-            'SOFTWARE_TYPE' => $stmt->fields['software_type'],
-            'SOFTWARE_LINK' => $sw_link,
-            'SOFTWARE_DESC' => tohtml($stmt->fields['software_desc'])
-        ));
-
-        check_is_installed($tpl, $dmn_id, $software_id);
-        $tpl->parse('SOFTWARE_ITEM', 'software_item');
     }
+
+    $stmt = exec_query(
+        '
+          SELECT software_name, software_version, software_language, software_type, software_db, software_link,
+            software_desc
+          FROM web_software
+          WHERE software_id = ?
+          AND reseller_id = ?
+        ',
+        array($softwareId, $dmnCreatedId)
+    );
+    $row = $stmt->fetchRow();
+
+    $tpl->assign('SOFTWARE_DB', ($row['software_db'] == 1) ? tr('Yes') : tr('No'));
+
+    $swLink = $row['software_link'];
+
+    if (!preg_match('/http:/', $swLink) && !preg_match('/https:/', $swLink)) {
+        $swLink = 'http://' . $swLink;
+    }
+
+    $tpl->assign(array(
+        'SOFTWARE_NAME'     => $row['software_name'],
+        'SOFTWARE_VERSION'  => $row['software_version'],
+        'SOFTWARE_LANGUAGE' => $row['software_language'],
+        'SOFTWARE_TYPE'     => $row['software_type'],
+        'SOFTWARE_LINK'     => $swLink,
+        'SOFTWARE_DESC'     => tohtml($row['software_desc'])
+    ));
+
+    check_is_installed($tpl, $dmnId, $softwareId);
+    $tpl->parse('SOFTWARE_ITEM', 'software_item');
 }
 
 /**
- * Must be documented.
+ * Must be documented
  *
  * @param  iMSCP_pTemplate $tpl
- * @param $dmn_id
- * @param $software_id
- * @param $dmn_created_id
- * @param $dmn_sqld_limit
+ * @param int $dmnId
+ * @param int $softwareId
+ * @param int $dmnCreatedId
+ * @param int $dmnSqldLimit
  * @return void
  */
-function get_software_props_install($tpl, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit)
+function get_software_props_install($tpl, $dmnId, $softwareId, $dmnCreatedId, $dmnSqldLimit)
 {
-    if (!check_software_avail($software_id, $dmn_created_id)) {
+    if (!check_software_avail($softwareId, $dmnCreatedId)) {
         set_page_message(tr('Software not found!'), 'error');
         redirectTo('software.php');
     }
@@ -1293,22 +1296,22 @@ function get_software_props_install($tpl, $dmn_id, $software_id, $dmn_created_id
 
     $stmt = exec_query(
         '
-          SELECT `software_name`, `software_type`, `software_db` FROM `web_software`
-          WHERE `software_id` = ? AND `reseller_id` = ?
+          SELECT software_name, software_type, software_db FROM web_software
+          WHERE software_id = ? AND reseller_id = ?
         ',
-        array($software_id, $dmn_created_id)
+        array($softwareId, $dmnCreatedId)
     );
+    $row = $stmt->fetchRow();
 
-    check_is_installed($tpl, $dmn_id, $software_id);
+    check_is_installed($tpl, $dmnId, $softwareId);
 
-    if ($stmt->fields['software_db'] == 1) {
+    if ($row['software_db'] == 1) {
         $tpl->assign('SOFTWARE_DB', tr('yes'));
 
-        if ($dmn_sqld_limit == '-1') {
-            $tpl->parse('REQUIRE_INSTALLDB', '.require_installdb');
+        if ($dmnSqldLimit == '-1') {
+            # Customer cannot install software that require SQL database if it has not SQL feature enabled
+            showBadRequestErrorPage();
         }
-
-        generate_sqlDbUserLists($tpl, $dmn_id, $dmn_sqld_limit);
     } else {
         $tpl->assign(array(
             'SOFTWARE_DB'       => tr('no'),
@@ -1317,8 +1320,8 @@ function get_software_props_install($tpl, $dmn_id, $software_id, $dmn_created_id
     }
 
     $tpl->assign(array(
-        'TR_SOFTWARE_NAME' => $stmt->fields['software_name'],
-        'SOFTWARE_TYPE'    => $stmt->fields['software_type']
+        'TR_SOFTWARE_NAME' => $row['software_name'],
+        'SOFTWARE_TYPE'    => $row['software_type']
     ));
     $tpl->parse('SOFTWARE_ITEM', '.software_item');
 }
@@ -1377,10 +1380,10 @@ function gen_user_domain_list($tpl, $customerId)
     );
     if ($stmt->rowCount()) {
         $domainFound = true;
+
         while ($row = $stmt->fetchRow()) {
             $tpl->assign(array(
-                'SELECTED_DOMAIN'    => ($postDomainType == 'als' && $postDomainId == $row['alias_id'])
-                    ? ' selected' : '',
+                'SELECTED_DOMAIN'    => ($postDomainType == 'als' && $postDomainId == $row['alias_id']) ? ' selected' : '',
                 'DOMAIN_NAME_VALUES' => tohtml($row['alias_id'] . ';als', 'htmlAttr'),
                 'DOMAIN_NAME'        => tohtml(decode_idna($row['alias_name']))
             ));
@@ -1402,10 +1405,10 @@ function gen_user_domain_list($tpl, $customerId)
     );
     if ($stmt->rowCount()) {
         $domainFound = true;
+
         while ($row = $stmt->fetchRow()) {
             $tpl->assign(array(
-                'SELECTED_DOMAIN'    => ($postDomainType == 'sub' && $postDomainId == $row['subdomain_id'])
-                    ? ' selected' : '',
+                'SELECTED_DOMAIN'    => ($postDomainType == 'sub' && $postDomainId == $row['subdomain_id']) ? ' selected' : '',
                 'DOMAIN_NAME_VALUES' => tohtml($row['subdomain_id'] . ';sub', 'htmlAttr'),
                 'DOMAIN_NAME'        => tohtml(decode_idna($row['subdomain_name']))
             ));
@@ -1427,10 +1430,10 @@ function gen_user_domain_list($tpl, $customerId)
     );
     if ($stmt->rowCount()) {
         $domainFound = true;
+
         while ($row = $stmt->fetchRow()) {
             $tpl->assign(array(
-                'SELECTED_DOMAIN'    => ($postDomainType == 'alssub' && $postDomainId == $row['subdomain_alias_id'])
-                    ? ' selected' : '',
+                'SELECTED_DOMAIN'    => ($postDomainType == 'alssub' && $postDomainId == $row['subdomain_alias_id']) ? ' selected' : '',
                 'DOMAIN_NAME_VALUES' => tohtml($row['subdomain_alias_id'] . ';alssub', 'htmlAttr'),
                 'DOMAIN_NAME'        => tohtml(decode_idna($row['subdomain_alias_name']))
             ));
@@ -1445,95 +1448,19 @@ function gen_user_domain_list($tpl, $customerId)
 }
 
 /**
- * Create lists of databases and their associated SQL users
+ * Check database connection
  *
- * Note: Any database which doesn't have at least one SQL user is skipped.
- *
- * @param iMSCP_pTemplate $tpl
- * @param int $dmnId
- * @param int $sqlDbLimit
- * @return void
- */
-function generate_sqlDbUserLists($tpl, $dmnId, $sqlDbLimit)
-{
-    $sqlUserFound = false;
-    $stmt = exec_query('SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ? ORDER BY sqld_name', $dmnId);
-    $dbCount = $stmt->rowCount();
-
-    if ($dbCount) {
-        while ($db = $stmt->fetchRow()) {
-            $stmt1 = exec_query(
-                'SELECT sqlu_id, sqlu_name FROM sql_user WHERE sqld_id = ? ORDER BY sqlu_name', $db['sqld_id']
-            );
-
-            if ($stmt1->rowCount()) {
-                $sqlUserFound = true;
-                $tpl->assign(array(
-                    'DB_NAME' => tohtml($db['sqld_name']),
-                    'SELECTED_DB' => isset($_POST['selected_db']) && $_POST['selected_db'] == $db['sqld_name'] ? ' selected' : ''
-                ));
-                $tpl->parse('INSTALLDB_ITEM', '.installdb_item');
-
-                while ($sqlUser = $stmt1->fetchRow()) {
-                    $tpl->assign(array(
-                        'SQLUSER_NAME' => tohtml($sqlUser['sqlu_name']),
-                        'SELECTED_DBUSER' => isset($_POST['sql_user']) && $_POST['sql_user'] == $sqlUser['sqlu_name'] ? ' selected' : ''
-                    ));
-                    $tpl->parse('INSTALLDBUSER_ITEM', '.installdbuser_item');
-                }
-            }
-        }
-
-        if (!$sqlUserFound) {
-            goto NO_DATABASE_WITH_SQL_USER;
-        } else {
-            $tpl->assign(array(
-                'CREATE_MESSAGE_DB' => '',
-                'SOFTWAREDBUSER_MESSAGE' => ''
-            ));
-        }
-    } else {
-        NO_DATABASE_WITH_SQL_USER:
-        $tpl->assign(array(
-            'SELECT_INSTALLDB' => '',
-            'SELECT_INSTALLDBUSER' => '',
-            'ADD_DATABASE_MESSAGE' => tr('At first you must create a database which have at least one SQL user.'),
-            'SOFTWAREDBUSER_MESSAGE' => '',
-            'SOFTWARE_INSTALL' => ''
-        ));
-        $tpl->parse('CREATE_MESSAGE_DB', '.create_message_db');
-    }
-
-    if ($dbCount < $sqlDbLimit or $sqlDbLimit == 0) {
-        $tpl->assign(array(
-            'ADD_DB_LINK' => 'sql_database_add.php',
-            'BUTTON_ADD_DB' => tr('Add new database')
-        ));
-        $tpl->parse('CREATE_DB', '.create_db');
-    } else {
-        $tpl->assign(array(
-            'CREATE_DB' => '',
-            'CREATE_MESSAGE_DB' => ''
-        ));
-    }
-}
-
-/**
- * Check database connection.
- *
- * @param string $sql_database
- * @param string $sql_user
- * @param string $sql_pass
+ * @param string $dbName Database name
+ * @param string $dbUser Database user
+ * @param string $dbPass Database password
  * @return bool
  */
-function check_db_connection($sql_database, $sql_user, $sql_pass)
+function check_db_connection($dbName, $dbUser, $dbPass)
 {
     $cfg = iMSCP_Registry::get('config');
 
     try {
-        iMSCP_Database::connect(
-            $sql_user, $sql_pass, $cfg['DATABASE_TYPE'], $cfg['DATABASE_HOST'], $sql_database, 'privateConnection'
-        );
+        iMSCP_Database::connect($dbUser, $dbPass, $cfg['DATABASE_TYPE'], $cfg['DATABASE_HOST'], $dbName, 'testConn');
     } catch (PDOException $e) {
         return false;
     }

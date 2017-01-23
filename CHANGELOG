@@ -10,6 +10,10 @@ BACKEND
     Fixed: Force addition of `CREATE DATABASE` statement in SQL dumps, even for empty databases
     Fixed: Restore database using master i-MSCP SQL user in place of customer SQL user
 
+DATABASE
+    Removed: ftp_users.rawpasswd column (i-MSCP database)
+    Removed: sql_user.sqlu_pass column (i-MSCP database)
+
 DISTRIBUTIONS
     Added: PHP 5.5 and PHP 5.6 alternatives for Debian Wheezy through Dotdeb repository
     Added: PHP 7.0 alternative for Debian Jessie through Dotdeb repository
@@ -17,6 +21,7 @@ DISTRIBUTIONS
 FRONTEND
     Changed: Restricts character range for password generator to alphabet and numbers
     Fixed: Administrators cannot switch onto reseller/customer interface when database update is available
+    Fixed: Do not list software that require database for customers that have not SQL feature enabled
     Fixed: iMSCP_Exception_Production class not compatible with PHP > 7
     Removed: PhpMyAdmin auto-login feature (password for SQL database are no longer stored plaintext in database)
     Removed: Pydio auto-login feature (password for FTP users are no longer stored plaintext in database)
@@ -42,6 +47,7 @@ SERVERS
     Fixed: Wrong events triggered (Servers::mta::postfix)
 
 YOUTRACK
+    #IP-0826 Any password should be encrypted
     #IP-1383 Security - Remove auto-login feature to remove plaintext passwords
     #IP-1686 Fields beginning or ending with braced tags are corrupted by the clean_input function.
     #IP-1688 /etc/postfix/domains.db entry not added if mail value was changed from -1 (disabled) to enabled (0 or a value)

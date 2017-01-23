@@ -2059,12 +2059,12 @@ function get_webdepot_software_list($tpl, $userId)
     if ($rowCount) {
         while ($row = $stmt->fetchRow()) {
             $tpl->assign(array(
-                'TR_PACKAGE_NAME' => $row['package_title'],
-                'TR_PACKAGE_TOOLTIP' => $row['package_description'],
-                'TR_PACKAGE_INSTALL_TYPE' => $row['package_install_type'],
-                'TR_PACKAGE_VERSION' => $row['package_version'],
-                'TR_PACKAGE_LANGUAGE' => $row['package_language'],
-                'TR_PACKAGE_TYPE' => $row['package_type'],
+                'TR_PACKAGE_NAME' => tohtml($row['package_title']),
+                'TR_PACKAGE_TOOLTIP' => tohtml($row['package_description'], 'htmlAttr'),
+                'TR_PACKAGE_INSTALL_TYPE' => tohtml($row['package_install_type']),
+                'TR_PACKAGE_VERSION' => tohtml($row['package_version']),
+                'TR_PACKAGE_LANGUAGE' => tohtml($row['package_language']),
+                'TR_PACKAGE_TYPE' => tohtml($row['package_type']),
                 'TR_PACKAGE_VENDOR_HP' => $row['package_vendor_hp'] === ''
                     ? tr('N/A') : '<a href="' . $row['package_vendor_hp'] . '" target="_blank">' . tr('Vendor hompage') . '</a>'
             ));

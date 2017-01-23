@@ -1,3 +1,4 @@
+
 <script>
     function flashMessage(type, message) {
         $("<div>", {
@@ -13,7 +14,10 @@
             var curVal = $(this).val();
             var data = curVal.split(';');
 
-            $.post(window.location.href, { domain_id: data[0], domain_type: data[1] }, null, "json").done(function (data) {
+            $.post(window.location.href, {
+                domain_id: data[0],
+                domain_type: data[1]
+            }, null, "json").done(function (data) {
                 console.log(data.document_root);
                 $("#document_root").html(data.document_root);
                 $select.data("current", curVal);
@@ -33,7 +37,6 @@
             <th colspan="2">{TR_INSTALLATION}</th>
         </tr>
         </thead>
-        
         <tbody>
         <!-- BDP: software_item -->
         <tr>
@@ -66,43 +69,31 @@
                 <span class="icon i_bc_folder ftp_choose_dir clickable">{TR_CHOOSE_DIR}</span>
             </td>
         </tr>
-        <!-- BDP: require_installdb -->
+    </table>
+
+    <!-- BDP: require_installdb -->
+    <table class="firstColFixed">
+        <thead>
         <tr>
-            <td><label for="selected_db">{TR_SELECT_DB}</label></td>
-            <td>
-                <!-- BDP: select_installdb -->
-                <select name="selected_db" id="selected_db">
-                    <!-- BDP: installdb_item -->
-                    <option value="{DB_NAME}"{SELECTED_DB}>{DB_NAME}</option>
-                    <!-- EDP: installdb_item -->
-                </select>
-                <!-- EDP: select_installdb -->
-                <!-- BDP: create_db -->
-                <a class="link_as_button" href="{ADD_DB_LINK}">{BUTTON_ADD_DB}</a>
-                <!-- EDP: create_db -->
-            </td>
+            <th colspan="2">{TR_DATABASE_DATA}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><label for="database_name">{TR_DATABASE_NAME}</label></td>
+            <td><input type="text" id="database_name" name="database_name" value="{VAL_DATABASE_NAME}"></td>
         </tr>
         <tr>
-            <td><label for="sql_user">{TR_SQL_USER}<label</td>
-            <td>
-                <!-- BDP: select_installdbuser -->
-                <select name="sql_user" id="sql_user">
-                    <!-- BDP: installdbuser_item -->
-                    <option value="{SQLUSER_NAME}"{SELECTED_DBUSER}>{SQLUSER_NAME}</option>
-                    <!-- EDP: installdbuser_item -->
-                </select>
-                <!-- EDP: select_installdbuser -->
-                <!-- BDP: create_message_db -->
-                <span style="color:#ff0000">{ADD_DATABASE_MESSAGE}</span>
-                <!-- EDP: create_message_db -->
-                <!-- BDP: softwaredbuser_message -->
-                <span style="color:{STATUS_COLOR}">{SQLUSER_STATUS_MESSAGE}</span>
-                <!-- EDP: softwaredbuser_message -->
-            </td>
+            <td><label for="database_user">{TR_DATABASE_USER}</label></td>
+            <td><input type="text" id="database_user" name="database_user" value="{VAL_DATABASE_USER}"></td>
         </tr>
-        <!-- EDP: require_installdb -->
+        <tr>
+            <td><label for="database_pwd">{TR_DATABASE_PWD}</label></td>
+            <td><input type="password" id="database_pwd" name="database_pwd"></td>
+        </tr>
         </tbody>
     </table>
+    <!-- EDP: require_installdb -->
 
     <table class="firstColFixed">
         <thead>

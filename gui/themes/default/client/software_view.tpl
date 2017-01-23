@@ -25,13 +25,8 @@
 	</tr>
 	<tr>
 		<td>{TR_DB}</td>
-		<td><span style="color:{STATUS_COLOR}">{SOFTWARE_DB}</span></td>
+		<td>{SOFTWARE_DB}</td>
 	</tr>
-	<!-- BDP: software_message -->
-	<tr>
-		<td colspan="2">{STATUS_MESSAGE}</td>
-	</tr>
-	<!-- EDP: software_message -->
 	<tr>
 		<td>{TR_DESC}</td>
 		<td>{SOFTWARE_DESC}</td>

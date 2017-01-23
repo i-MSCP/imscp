@@ -38,7 +38,7 @@
  */
 function client_generatePage($tpl, $id)
 {
-    $stmt = exec_query('SELECT sqlu_name, sqlu_host, sqlu_pass FROM sql_user WHERE sqlu_id = ?', $id);
+    $stmt = exec_query('SELECT sqlu_name, sqlu_host FROM sql_user WHERE sqlu_id = ?', $id);
 
     if (!$stmt->rowCount()) {
         showBadRequestErrorPage();
@@ -50,7 +50,7 @@ function client_generatePage($tpl, $id)
         'ID' => tohtml($id)
     ));
 
-    return array($row['sqlu_name'], $row['sqlu_host'], $row['sqlu_pass']);
+    return array($row['sqlu_name'], $row['sqlu_host']);
 }
 
 /**
@@ -108,8 +108,6 @@ function client_updateSqlUserPassword($id, $user, $host)
     } else {
         exec_query('ALTER USER ?@? IDENTIFIED BY ? PASSWORD EXPIRE NEVER', array($user, $host, $password));
     }
-
-    exec_query('UPDATE sql_user SET sqlu_pass = ? WHERE sqlu_name = ? AND sqlu_host = ?', array($password, $user, $host));
 
     set_page_message(tr('SQL user password successfully updated.'), 'success');
     write_log(sprintf('%s updated %s@%s SQL user password.', decode_idna($_SESSION['user_logged']), $user, $host), E_USER_NOTICE);
