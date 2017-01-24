@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use File::Find;
+use Lchown;
 use parent 'Exporter';
 
 our @EXPORT = qw/ setRights /;
@@ -84,33 +85,36 @@ sub setRights
                 {
                     wanted      => sub {
                         if ($options->{'user'} || $options->{'group'}) {
-                            chown $uid, $gid, $_ or die( sprintf( 'Could not set user/group on %s: %s', $_, $! ) );
+                            lchown $uid, $gid, $_ or die( sprintf( 'Could not set user/group on %s: %s', $_, $! ) );
                         }
 
+                        return if -l $_; # chmod cannot operates on dangling symlinks and we do not want operate on targets
+                        
                         if ($mode) {
                             chmod $mode, $_ or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
-                        } elsif ($dirmode && -d) {
+                        } elsif ($dirmode && -d _) {
                             chmod $dirmode, $_ or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
                         } elsif ($filemode) {
                             chmod $filemode, $_ or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
                         }
                     },
-                    follow_skip => 1,
                     no_chdir    => 1
                 },
                 $target
             );
         } else {
             if ($options->{'user'} || $options->{'group'}) {
-                chown $uid, $gid, $target or die( sprintf( 'Could not set user/group on %s: %s', $target, $! ) );
+                lchown $uid, $gid, $target or die( sprintf( 'Could not set user/group on %s: %s', $target, $! ) );
             }
 
-            if ($mode) {
-                chmod $mode, $target or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
-            } elsif ($dirmode && -d $target) {
-                chmod $dirmode, $target or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
-            } elsif ($filemode) {
-                chmod $filemode, $target or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
+            unless(-l $target) { # chmod cannot operates on dangling symlinks and we do not want operate on targets
+                if ($mode) {
+                    chmod $mode, $target or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
+                } elsif ($dirmode && -d _) {
+                    chmod $dirmode, $target or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
+                } elsif ($filemode) {
+                    chmod $filemode, $target or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
+                }
             }
         }
     };

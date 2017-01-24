@@ -6,9 +6,12 @@ Git 1.4.x
 
 BACKEND
     Changed: Listener files from deprecated /etc/imscp/hooks.d directory are now ignored
+    Fixed: Do not change symlinks mode, nor mode of their targets (iMSCP::Rights)
     Fixed: Do not connect to SQL server when that is not needed
     Fixed: Force addition of `CREATE DATABASE` statement in SQL dumps, even for empty databases
+    Fixed: iMSCP::Rights::setRights function fails on dangling symlinks (iMSCP::Rights)
     Fixed: Restore database using master i-MSCP SQL user in place of customer SQL user
+    Fixed: Usage of the lchown(2) system call to avoid dereference of symlinks (iMSCP::Rights)
 
 DATABASE
     Removed: ftp_users.rawpasswd column (i-MSCP database)
