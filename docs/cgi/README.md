@@ -1,12 +1,12 @@
 # CGI support
 
-i-MSCP support execution of CGI scripts through a specific cgi-bin folder located at root of each customer Web folder.
+i-MSCP supports execution of CGI scripts through a specific `cgi-bin` folder located at root of each domain' Web folder.
 
-In order, to work with CGI scripts, a customer must have required privileges, given by his reseller. Any CGI script must
-be uploaded into the cgi-bin folder with correct permissions and ownership. For instance:
+In order, to work with CGI scripts, a customer must have CGI privileges, given by his reseller. Any CGI script must be
+uploaded into the `cgi-bin` folder with correct permissions and ownership. For instance:
 
 ```
-root@jessie:/var/www/virtual/<domain.tld/cgi-bin# ls -la
+root@jessie:/var/www/virtual/<domain.tld>/cgi-bin# ls -la
 total 16
 drwxr-x---  2 vu2004 vu2004 4096 janv. 25 06:24 .
 drwxr-x--- 14 vu2004 vu2004 4096 janv. 25 05:43 ..
