@@ -7,11 +7,12 @@ uploaded into the `cgi-bin` folder with correct permissions and ownership. For i
 
 ```
 root@jessie:/var/www/virtual/domain.tld/cgi-bin# ls -la
-total 16
-drwxr-x---  2 vu2004 vu2004 4096 janv. 25 06:24 .
+total 20
+drwxr-x---  2 vu2004 vu2004 4096 janv. 25 07:16 .
 drwxr-x--- 14 vu2004 vu2004 4096 janv. 25 05:43 ..
--rwxr-x---  1 vu2004 vu2004  217 janv. 23 05:35 sample.pl
--rwxr-x---  1 vu2004 vu2004  202 janv. 25 06:26 sample.py
+-rwxr-x---  1 vu2004 vu2004  215 janv. 25 06:42 sample.pl
+-rwxr-x---  1 vu2004 vu2004  200 janv. 25 06:42 sample.py
+-rwxr-x---  1 vu2004 vu2004  195 janv. 25 07:16 sample.rb
 ```
 
 URLs for end-users will be:
@@ -19,4 +20,4 @@ URLs for end-users will be:
 - http(s)://domain.tld/cgi-bin/sample.pl
 - http(s)://domain.tld/cgi-bin/sample.py
 
-You can find a CGI script sample for both Perl and Python in the ./docs/cgi directory inside the i-MSCP archive.
+You can find a CGI script sample for Perl, Python and Ruby in the ./docs/cgi directory inside the i-MSCP archive.

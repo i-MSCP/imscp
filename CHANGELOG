@@ -49,7 +49,7 @@ PLUGINS:
     Updated: API version to 1.4.0
 
 SERVERS
-    Added: Support for Python CGI scripts (Http server impl.)
+    Added: Support for Python and Ruby CGI scripts (Http server impl.)
     Fixed: POSTCONF(1) is being slow when called multiple-times, slowing down i-MSCP installer (Postfix server impl.)
     Fixed: Wrong events triggered (Servers::mta::postfix)
 

@@ -85,9 +85,9 @@
     Alias /cgi-bin/ {WEB_DIR}/cgi-bin/
     <Directory {WEB_DIR}/cgi-bin>
         AllowOverride AuthConfig Indexes Limit Options=Indexes
-        DirectoryIndex index.cgi index.pl index.py
+        DirectoryIndex index.cgi index.pl index.py index.rb
         Options +ExecCGI -MultiViews
-        AddHandler cgi-script .cgi .pl .py
+        AddHandler cgi-script .cgi .pl .py .rb
     </Directory>
     # SECTION cgi_support END.
 
