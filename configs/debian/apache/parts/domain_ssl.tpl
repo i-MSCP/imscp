@@ -82,13 +82,12 @@
     </Directory>
 
     # SECTION cgi_support BEGIN.
-    Alias /cgi-bin {WEB_DIR}/cgi-bin
-
+    Alias /cgi-bin/ {WEB_DIR}/cgi-bin/
     <Directory {WEB_DIR}/cgi-bin>
-        DirectoryIndex index.cgi index.pl
         AllowOverride AuthConfig Indexes Limit Options=Indexes
-        AddHandler cgi-script .cgi .pl
-        Options +ExecCGI
+        DirectoryIndex index.cgi index.pl index.py
+        Options +ExecCGI -MultiViews
+        AddHandler cgi-script .cgi .pl .py
     </Directory>
     # SECTION cgi_support END.
 

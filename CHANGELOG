@@ -21,6 +21,9 @@ DISTRIBUTIONS
     Added: PHP 5.5 and PHP 5.6 alternatives for Debian Wheezy through Dotdeb repository
     Added: PHP 7.0 alternative for Debian Jessie through Dotdeb repository
 
+DOCUMENTATION
+    Added: CGI script sample for both Perl and Python
+
 FRONTEND
     Changed: Restricts character range for password generator to ASCII alphabet characters and numbers
     Fixed: Administrators cannot switch onto reseller/customer interface when database update is available
@@ -46,6 +49,7 @@ PLUGINS:
     Updated: API version to 1.4.0
 
 SERVERS
+    Added: Support for Python CGI scripts (Http server impl.)
     Fixed: POSTCONF(1) is being slow when called multiple-times, slowing down i-MSCP installer (Postfix server impl.)
     Fixed: Wrong events triggered (Servers::mta::postfix)
 
