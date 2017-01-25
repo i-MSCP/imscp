@@ -6,12 +6,12 @@ Git 1.4.x
 
 BACKEND
     Changed: Listener files from deprecated /etc/imscp/hooks.d directory are now ignored
-    Fixed: Do not change symlinks mode, nor mode of their targets (iMSCP::Rights)
+    Fixed: Could not set user/group on dangling symlinks (iMSCP::Rights::setRights())
+    Fixed: Do not change symlinks mode, nor the mode of their targets (iMSCP::Rights::setRights())
     Fixed: Do not connect to SQL server when that is not needed
-    Fixed: Force addition of `CREATE DATABASE` statement in SQL dumps, even for empty databases
-    Fixed: iMSCP::Rights::setRights function fails on dangling symlinks (iMSCP::Rights)
+    Fixed: Force addition of `CREATE DATABASE' statement in SQL dumps, even for empty databases
     Fixed: Restore database using master i-MSCP SQL user in place of customer SQL user
-    Fixed: Usage of the lchown(2) system call to avoid dereference of symlinks (iMSCP::Rights)
+    Fixed: Usage of lchown(2) system call to avoid dereference of symlinks (iMSCP::Rights::setRights())
 
 DATABASE
     Removed: ftp_users.rawpasswd column (i-MSCP database)
@@ -22,10 +22,10 @@ DISTRIBUTIONS
     Added: PHP 7.0 alternative for Debian Jessie through Dotdeb repository
 
 FRONTEND
-    Changed: Restricts character range for password generator to alphabet and numbers
+    Changed: Restricts character range for password generator to ASCII alphabet characters and numbers
     Fixed: Administrators cannot switch onto reseller/customer interface when database update is available
     Fixed: Do not list software that require database for customers that have not SQL feature enabled
-    Fixed: iMSCP_Exception_Production class not compatible with PHP > 7
+    Fixed: iMSCP_Exception_Production class not compatible with PHP >= 7.0
     Removed: PhpMyAdmin auto-login feature (password for SQL database are no longer stored plaintext in database)
     Removed: Pydio auto-login feature (password for FTP users are no longer stored plaintext in database)
 
