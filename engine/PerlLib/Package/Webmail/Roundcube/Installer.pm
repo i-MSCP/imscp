@@ -277,21 +277,19 @@ sub _installFiles
         return 1;
     }
 
-    my $rs = execute( "rm -fR $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail", \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr ) if $rs && $stderr;
-    return $rs if $rs;
+    my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
+    local $@;
+    eval {
+        iMSCP::Dir->new( dirname => $destDir )->remove();
+        iMSCP::Dir->new( dirname => "$packageDir/iMSCP/config" )->rcopy( $self->{'cfgDir'} );
+        iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( $destDir );
+    };
+    if ($@) {
+        error($@);
+        return 1;
+    }
 
-    $rs = execute( "cp -fRT $packageDir/iMSCP/config $self->{'cfgDir'}", \$stdout, \$stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr ) if $rs && $stderr;
-    return $rs if $rs;
-
-    $rs = execute( "cp -fR $packageDir/src $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail", \$stdout, \$stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr ) if $rs && $stderr;
-    $rs;
-
+    0;
 }
 
 =item _mergeConfig

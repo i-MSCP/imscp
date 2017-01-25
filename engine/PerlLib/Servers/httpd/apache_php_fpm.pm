@@ -1603,6 +1603,8 @@ sub _addFiles
     }
 
     if ($data->{'DOMAIN_TYPE'} eq 'dmn' || $data->{'FORWARD'} eq 'no') {
+        local $@;
+
         # Whether or not permissions must be fixed recursively
         my $fixPermissions = iMSCP::Getopt->fixPermissions;
 
@@ -1616,11 +1618,13 @@ sub _addFiles
             $skelDir = "$main::imscpConfig{'CONF_DIR'}/skel/subdomain";
         }
 
+        # Copy skeleton in tmp dir
         my $tmpDir = File::Temp->newdir();
-        $rs = execute( "cp -RT $skelDir $tmpDir", \ my $stdout, \ my $stderr );
-        debug( $stdout ) if $stdout;
-        error( $stderr || 'Unknown error' ) if $rs;
-        return $rs if $rs;
+        eval { iMSCP::Dir->new( dirname => $skelDir )->rcopy( $tmpDir ); };
+        if ($@) {
+            error($@);
+            return 1;
+        }
 
         if ($data->{'FORWARD'} eq 'no') {
             # Build default page if needed (if htdocs doesn't exists or is empty)
@@ -1698,14 +1702,13 @@ sub _addFiles
         clearImmutable( $data->{'WEB_DIR'} ) if -d $data->{'WEB_DIR'};
 
         # Copy Web folder
-
-        $rs = execute( "cp -nRT $tmpDir $data->{'WEB_DIR'}", \ $stdout, \ $stderr );
-        debug( $stdout ) if $stdout;
-        error( $stderr || 'Unknown error' ) if $rs;
-        return $rs if $rs;
+        eval { iMSCP::Dir->new( dirname => $tmpDir )->rcopy( $data->{'WEB_DIR'} ); };
+        if ($@) {
+            error($@);
+            return 1;
+        }
 
         # Cleanup (Transitional)
-
         if ($data->{'DOMAIN_TYPE'} eq 'dmn') {
             # Remove deprecated `domain_disable_page' directory if any
             $rs = iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/domain_disable_page" )->remove();

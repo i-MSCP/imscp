@@ -25,9 +25,11 @@ package iMSCP::File;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
-use File::Copy;
-use File::Basename;
+use File::Basename qw/ basename /;
+use File::Copy qw/ copy mv /;
+use File::Spec;
+use iMSCP::Debug qw/ error /;
+use Lchown ();
 use open IO => ':utf8';
 use parent 'Common::Object';
 
@@ -39,7 +41,7 @@ use parent 'Common::Object';
 
 =over 4
 
-=item get()
+=item get( )
 
  Get file content
 
@@ -54,13 +56,13 @@ sub get
     return $self->{'fileContent'} if defined $self->{'fileContent'};
 
     unless (defined $self->{'filename'}) {
-        error( "Attribut `filename' is not set" );
+        error( "Attribut `filename' is not set." );
         return undef;
     }
 
     my $fh;
-    unless(open($fh, '<', $self->{'filename'})) {
-        error( sprintf( 'Could not open %s for reading: %s', $self->{'filename'}, $! ) );
+    unless (open($fh, '<', $self->{'filename'})) {
+        error( sprintf( "Could not open `%s' file for reading: %s", $self->{'filename'}, $! ) );
         return undef;
     }
 
@@ -70,7 +72,7 @@ sub get
     $self->{'fileContent'}
 }
 
-=item set($content)
+=item set( $content )
 
  Set file content
 
@@ -87,7 +89,7 @@ sub set
     0;
 }
 
-=item save()
+=item save( )
 
  Save file
 
@@ -100,13 +102,13 @@ sub save
     my $self = shift;
 
     unless (defined $self->{'filename'}) {
-        error( "Attribut 'filename' is not set" );
+        error( "Attribut `filename' is not set." );
         return undef;
     }
-    
+
     my $fh;
-    unless(open($fh, '>', $self->{'filename'})) {
-        error( sprintf( 'Could not open %s for writing: %s', $self->{'filename'}, $! ) );
+    unless (open($fh, '>', $self->{'filename'})) {
+        error( sprintf( "Could not open `%s' file for writing: %s", $self->{'filename'}, $! ) );
         return 1;
     }
 
@@ -116,7 +118,7 @@ sub save
     0;
 }
 
-=item delFile()
+=item delFile( )
 
  Delete file
 
@@ -129,21 +131,23 @@ sub delFile
     my $self = shift;
 
     unless (defined $self->{'filename'}) {
-        error( "Attribut `filename' is not set" );
+        error( "Attribut `filename' is not set." );
         return 1;
     }
 
     unless (unlink( $self->{'filename'} )) {
-        error( sprintf( 'Could not delete file %s: %s', $self->{'filename'}, $! ) );
+        error( sprintf( "Could not delete `%s' file: %s", $self->{'filename'}, $! ) );
         return 1;
     }
 
     0;
 }
 
-=item mode($mode)
+=item mode( $mode )
 
  Change file mode bits
+
+ This routine doesn't operates on symlinks. They are ignored silently.
 
  Param int $mode New file mode (octal number)
  Return int 0 on success, 1 on failure
@@ -155,24 +159,28 @@ sub mode
     my ($self, $mode) = @_;
 
     unless (defined $self->{'filename'}) {
-        error( "Attribut `filename' is not set" );
+        error( "Attribut `filename' is not set." );
         return 1;
     }
 
+    return if -l $self->{'filename'};
+
     unless (chmod( $mode, $self->{'filename'} )) {
-        error( sprintf( 'Could not change mode for %s: %s', $self->{'filename'}, $! ) );
+        error( sprintf( "Could not change `%s' file permissions: %s", $self->{'filename'}, $! ) );
         return 1;
     }
 
     0;
 }
 
-=item owner($owner, $group)
+=item owner( $owner, $group )
 
  Change file owner and group
 
- Param int|string $owner Either an username or user id
- Param int|string $group Either a groupname or group id
+ Symlinks are not dereferenced. That routine operates on them using lchown(2) system call.
+
+ Param int|string $owner Either an username or userid
+ Param int|string $group Either a groupname or groupid
  Return int 0 on success, 1 on failure
 
 =cut
@@ -182,15 +190,15 @@ sub owner
     my ($self, $owner, $group) = @_;
 
     unless (defined $self->{'filename'}) {
-        error( "Attribut `filename' is not set" );
+        error( "Attribut `filename' is not set." );
         return 1;
     }
 
-    my $uid = (($owner =~ /^\d+$/) ? $owner : getpwnam( $owner )) // -1;
-    my $gid = (($group =~ /^\d+$/) ? $group : getgrnam( $group )) // -1;
+    my $uid = (($owner =~ /^\d+$/) ? $owner : getpwnam( $owner )) // - 1;
+    my $gid = (($group =~ /^\d+$/) ? $group : getgrnam( $group )) // - 1;
 
-    unless (chown( $uid, $gid, $self->{'filename'} )) {
-        error( sprintf( 'Could not change owner and group for %s: %s', $self->{'filename'}, $! ) );
+    unless (Lchown::lchown( $uid, $gid, $self->{'filename'} )) {
+        error( sprintf( "Could not change `%s' file ownership: %s", $self->{'filename'}, $! ) );
         return 1;
     }
 
@@ -201,9 +209,11 @@ sub owner
 
  Copy file to the given destination
 
+ Symlinks are not dereferenced. That routine operates on them using lchown(2) system call. Mode is not set on symlinks.
+
  Param string $dest Destination path
  Param hash $options Options
-    preserve (yes|no): Whether or not file permissions must be preserved (default yes)
+    preserve (yes|no): preserve permissions and ownership (default yes)
  Return int 0 on success, 1 on failure
 
 =cut
@@ -212,38 +222,40 @@ sub copyFile
 {
     my ($self, $dest, $options) = @_;
 
-    $options = { } unless ref $options eq 'HASH';
+    $options = { } unless $options && ref $options eq 'HASH';
 
     unless (defined $self->{'filename'}) {
-        error( "Attribut `filename' is not set" );
-        return 1;
-    }
-    unless (copy( $self->{'filename'}, $dest )) {
-        error( sprintf( 'Could not copy %s to %s: %s', $self->{'filename'}, $dest, $! ) );
+        error( "Attribut `filename' is not set." );
         return 1;
     }
 
-    $dest .= '/'.basename( $self->{'filename'} ) if -d $dest;
+    unless (File::Copy::copy( $self->{'filename'}, $dest )) {
+        error( sprintf( "Could not copy `%s' file to `%s': %s", $self->{'filename'}, $dest, $! ) );
+        return 1;
+    }
 
     return 0 if defined $options->{'preserve'} && $options->{'preserve'} eq 'no';
 
-    my ($mode, $uid, $gid) = (lstat( $self->{'filename'} ))[2, 4, 5];
-    $mode = $mode & 07777;
+    $dest = File::Spec->catfile( $dest, basename( $self->{'filename'} ) ) if -d $dest;
 
-    unless (chown( $uid, $gid, $dest )) {
-        error( sprintf( 'Could not change owner and group for %s: %s', $dest, $! ) );
+    my ($mode, $uid, $gid) = (lstat( $self->{'filename'} ))[2, 4, 5];
+
+    unless (Lchown::lchown( $uid, $gid, $dest )) {
+        error( sprintf( "Could not change `%s' file ownership: %s", $dest, $! ) );
         return 1;
     }
 
-    unless (chmod( $mode, $dest )) {
-        error( sprintf( 'Could not change mode for %s: %s', $dest, $! ) );
+    return if -l _; # Skip setting of permissions for symlinks
+
+    unless (chmod( $mode & 07777, $dest )) {
+        error( sprintf( "Could not change `%s' file permissions: %s", $dest, $! ) );
         return 1;
     }
 
     0;
 }
 
-=item moveFile($dest)
+=item moveFile( $dest )
 
  Move file to the given destination
 
@@ -257,16 +269,38 @@ sub moveFile
     my ($self, $dest) = @_;
 
     unless (defined $self->{'filename'}) {
-        error( "Attribut `filename' is not set" );
+        error( "Attribut `filename' is not set." );
         return 1;
     }
 
-    unless (move( $self->{'filename'}, $dest )) {
-        error( sprintf( 'Could not move %s to %s: %s', $self->{'filename'}, $dest, $! ) );
+    unless (File::Copy::mv( $self->{'filename'}, $dest )) {
+        error( sprintf( "Could not move `%s' file to `%s': %s", $self->{'filename'}, $dest, $! ) );
         return 1;
     }
 
     0;
+}
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Initialize iMSCP::File object
+
+ iMSCP::File
+
+=cut
+
+sub _init
+{
+    my $self = shift;
+
+    $self->{'filename'} //= undef;
+    $self;
 }
 
 =back

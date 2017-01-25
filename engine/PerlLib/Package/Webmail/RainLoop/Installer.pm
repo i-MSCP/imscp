@@ -34,7 +34,6 @@ use iMSCP::Debug;
 use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::TemplateParser;
 use JSON;
@@ -235,54 +234,43 @@ sub _installFiles
 
     my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop";
 
-    # Install upstream files
-    my $rs = execute( "cp -fR $packageDir/src ${destDir}-new", \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr ) if $rs && $stderr;
-    return $rs if $rs;
+    local $@;
+    my $rs = eval {
+        # Install new files
+        iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( "${destDir}-new" );
 
-    # Copy i-MSCP files
-    $rs = execute( "cp -fRT $packageDir/iMSCP/src ${destDir}-new", \$stdout, \$stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr ) if $rs && $stderr;
-    return $rs if $rs;
+        # Copy new i-MSCP files
+        iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy( "${destDir}-new" );
 
-    if (-d $destDir) {
-        my $dataSrcDir = "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_";
+        if (-d $destDir) {
+            my $dataSrcDir = "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_";
 
-        # Copy files from previous installation
-        if (-d "$dataSrcDir/storage") {
-            $rs = execute( "cp -fR $dataSrcDir/storage ${destDir}-new/", \$stdout, \$stderr );
-            debug( $stdout ) if $stdout;
-            error( $stderr ) if $rs && $stderr;
-            return $rs if $rs;
+            # Copy files from previous installation
+            if (-d "$dataSrcDir/storage") {
+                iMSCP::Dir->new( dirname => "$dataSrcDir/storage" )->rcopy( "${destDir}-new/storage" );
+            }
+
+            # Remove files from previous installation
+            iMSCP::Dir->new( dirname => $destDir )->remove( );
+
+            # Remove file which are no longer needed
+            for ('application.ini', 'plugin-imscp-change-password.ini') {
+                next unless -f;
+                my $rs = iMSCP::File->new( filename => "$self->{'rainloop'}->{'cfgDir'}/$_")->delFile();
+                return $rs if $rs;
+            }
         }
 
-        # Remove files from previous installation
+        # Replace old files by new files
+        iMSCP::Dir->new( dirname => "${destDir}-new" )->moveDir( $destDir );
 
-        $rs = execute( "rm -fR $destDir", \$stdout, \$stderr );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $rs && $stderr;
-        return $rs if $rs;
-
-        # Remove file which are no longer needed
-        for my $file('application.ini', 'plugin-imscp-change-password.ini') {
-            $rs = execute( "rm -fR $self->{'rainloop'}->{'cfgDir'}/$file", \$stdout, \$stderr );
-            debug( $stdout ) if $stdout;
-            error( $stderr ) if $rs && $stderr;
-            return $rs if $rs;
-        }
+        # Copy configuration files
+        iMSCP::Dir->new( dirname => "$packageDir/iMSCP/config" )->rcopy( $self->{'rainloop'}->{'cfgDir'} );
+    };
+    if ($@) {
+        error($@);
+        return 1;
     }
-
-    $rs = execute( "mv ${destDir}-new $destDir", \$stdout, \$stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr ) if $rs && $stderr;
-    return $rs if $rs;
-
-    # Copy configuration files
-    $rs = execute( "cp -fRT $packageDir/iMSCP/config $self->{'rainloop'}->{'cfgDir'}", \$stdout, \$stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr ) if $rs && $stderr;
     $rs;
 }
 
