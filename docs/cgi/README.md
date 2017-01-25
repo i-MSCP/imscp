@@ -19,5 +19,6 @@ URLs for end-users will be:
 
 - http(s)://domain.tld/cgi-bin/sample.pl
 - http(s)://domain.tld/cgi-bin/sample.py
+- http(s)://domain.tld/cgi-bin/sample.rb
 
 You can find a CGI script sample for Perl, Python and Ruby in the ./docs/cgi directory inside the i-MSCP archive.
