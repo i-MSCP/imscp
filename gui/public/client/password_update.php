@@ -48,20 +48,23 @@ function customer_updatePassword()
         return;
     }
 
-    if (checkPasswordSyntax($_POST['password'])) {
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array(
-            'userId' => $_SESSION['user_id']
-        ));
-        exec_query('UPDATE admin SET admin_pass = ?, admin_status = ? WHERE admin_id = ?', array(
-            Crypt::apr1MD5($_POST['password']), 'tochangepwd', $_SESSION['user_id']
-        ));
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array(
-            'userId' => $_SESSION['user_id']
-        ));
-        send_request();
-        write_log(sprintf('%s: updated password.', $_SESSION['user_logged']), E_USER_NOTICE);
-        set_page_message(tr('Password successfully updated.'), 'success');
+    if (!checkPasswordSyntax($_POST['password'])) {
+        return;
     }
+
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array(
+        'userId' => $_SESSION['user_id']
+    ));
+    exec_query('UPDATE admin SET admin_pass = ?, admin_status = ? WHERE admin_id = ?', array(
+        Crypt::apr1MD5($_POST['password']), 'tochangepwd', $_SESSION['user_id']
+    ));
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array(
+        'userId' => $_SESSION['user_id']
+    ));
+    send_request();
+    write_log(sprintf('%s: updated password.', $_SESSION['user_logged']), E_USER_NOTICE);
+    set_page_message(tr('Password successfully updated.'), 'success');
+    redirectTo('password_update.php');
 }
 
 /***********************************************************************************************************************
