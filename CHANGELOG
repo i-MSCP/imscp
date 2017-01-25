@@ -44,6 +44,7 @@ LISTENERS
 
 PACKAGES
     Added: `beforeUpdateRoundCubeMailHostEntries' event listener (RoundCube package installer)
+    Fixed: Couldn't access symlinked icons (AWStats)
 
 PLUGINS:
     Updated: API version to 1.4.0
