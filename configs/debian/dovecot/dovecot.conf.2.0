@@ -24,7 +24,7 @@ plugin {
 	quota_warning2 = storage=80%% quota-warning 80 %u
 }
 
-auth_mechanisms = plain login cram-md5 digest-md5
+auth_mechanisms = plain login
 disable_plaintext_auth = no
 
 passdb {
@@ -83,7 +83,3 @@ protocol lda {
 	mail_plugins = $mail_plugins
 	postmaster_address = postmaster@{HOSTNAME}
 }
-
-ssl = {DOVECOT_SSL}
-{COMMENT_SSL}ssl_cert = <{CONF_DIR}/{CERTIFICATE}.pem
-{COMMENT_SSL}ssl_key = <{CONF_DIR}/{CERTIFICATE}.pem

@@ -47,6 +47,7 @@ INSTALLER
 LISTENERS
     Added: 10_postfix_transport_table.pl listener file (Allows to add entries in Postfix transport(5) table)
     Fixed: Default hostname must be overridden to prevent hostname mismatches (10_roundcube_tls.pl)
+    Updated: 50_dovecot_plaintext.pl listener file according new i-MSCP Serie
 
 PACKAGES
     Added: `beforeUpdateRoundCubeMailHostEntries' event listener (RoundCube package installer)

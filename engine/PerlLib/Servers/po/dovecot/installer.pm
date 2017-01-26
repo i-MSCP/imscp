@@ -418,11 +418,7 @@ sub _buildConf
         DATABASE_NAME                 => $dbName,
         DATABASE_USER                 => $dbUser,
         DATABASE_PASSWORD             => $dbPass,
-        CONF_DIR                      => $main::imscpConfig{'CONF_DIR'},
         HOSTNAME                      => main::setupGetQuestion( 'SERVER_HOSTNAME' ),
-        DOVECOT_SSL                   => main::setupGetQuestion( 'SERVICES_SSL_ENABLED' ) eq 'yes' ? 'yes' : 'no',
-        COMMENT_SSL                   => main::setupGetQuestion( 'SERVICES_SSL_ENABLED' ) eq 'yes' ? '' : '#',
-        CERTIFICATE                   => 'imscp_services',
         IMSCP_GROUP                   => $main::imscpConfig{'IMSCP_GROUP'},
         MTA_VIRTUAL_MAIL_DIR          => $self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
         MTA_MAILBOX_UID_NAME          => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
@@ -440,13 +436,15 @@ sub _buildConf
         POSTFIX_GROUP                 => $self->{'mta'}->{'config'}->{'POSTFIX_GROUP'},
     };
 
-    # Transitional code (should be removed in later version
+    # Transitional code (should be removed in later version)
     if (-f "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-dict-sql.conf") {
         iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-dict-sql.conf" )->delFile();
     }
 
+    my $isDovecot21 = version->parse( $self->{'version'} ) >= version->parse( '2.1.0' );
+
     my %cfgFiles = (
-        (version->parse( $self->{'version'} ) < version->parse( '2.1.0' ) ? 'dovecot.conf.2.0' : 'dovecot.conf.2.1') =>
+        (($isDovecot21) ? 'dovecot.conf.2.0' : 'dovecot.conf.2.1') =>
         [
             "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot.conf", # Destpath
             $main::imscpConfig{'ROOT_USER'}, # Owner
@@ -481,6 +479,19 @@ sub _buildConf
                 unless (defined $cfgTpl) {
                     error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/$conffile" ) );
                     return 1;
+                }
+            }
+
+            if (index( $conffile, 'dovecot.conf' ) != - 1) {
+                my $ssl = main::setupGetQuestion( 'SERVICES_SSL_ENABLED' );
+                $cfgTpl .= "\nssl = $ssl\n";
+
+                if ($ssl eq 'yes') {
+                    $cfgTpl .= "ssl_protocols = !SSLv2 !SSLv3\n" if $isDovecot21;
+                    $cfgTpl .= <<"EOF";
+ssl_cert = <$main::imscpConfig{'CONF_DIR'}/imscp_services.pem
+ssl_key = <$main::imscpConfig{'CONF_DIR'}/imscp_services.pem
+EOF
                 }
             }
 
