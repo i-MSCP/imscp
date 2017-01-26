@@ -16,8 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Disables plaintext logins and enforce TLS. Also remove the cram-md5 and digest-md5 authentication mechanisms that are
-## no longer supported in i-MSCP 1.3.x
+## Dissallow plaintext authentication if TLS is not used by client.
 #
 
 package Listener::Dovecot::Plaintext;
@@ -27,14 +26,11 @@ use warnings;
 use iMSCP::EventManager;
 
 iMSCP::EventManager->getInstance()->register(
-    'beforePoBuildConf',
+    'afterPoBuildConf',
     sub {
         my ($cfgTpl, $tplName) = @_;
-
         return 0 unless index( $tplName, 'dovecot.conf' ) != -1;
-
-        $$cfgTpl =~ s/\s+cram-md5\s+digest-md5//;
-        $$cfgTpl =~ s/^(disable_plaintext_auth\s+=\s+).*/$1yes/m;
+        $$cfgTpl =~ s/^(disable_plaintext_auth\s+=\s+).*/$1yes/ if $cfgTpl =~ /^ssl\s+=\s+yes/;
         0;
     }
 );
