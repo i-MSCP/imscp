@@ -53,11 +53,11 @@ eval {
     $mimeParser->tmp_to_core(1);
     
     # Parse MIME message
-    my $mimeEntity = $mimeParser->parse_data($message) or die('Could not parse message');
+    my $mimeEntity = $mimeParser->parse_data($message) or die('Could not parse MIME message');
     undef $mimeParser;
 
     # Retrieve MIME headers
-    my $mimeHeaders = $mimeEntity->head() or die('Could not get get MIME headers');
+    my $mimeHeaders = $mimeEntity->head() or die('Could not get MIME headers');
     undef $mimeEntity;
 
     # Return early if needed
@@ -70,7 +70,7 @@ eval {
     );
 
     # Get recipient address
-    my ($to) = Mail::Address->parse($mimeHeaders->get('from')) or die('Could not parse From field from message header');
+    my ($to) = Mail::Address->parse($mimeHeaders->get('from')) or die("Could not parse `From' MIME header");
     $to = $to->address();
 
     # Get original subject
