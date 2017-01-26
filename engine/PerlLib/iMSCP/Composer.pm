@@ -25,7 +25,6 @@ package iMSCP::Composer;
 
 use strict;
 use warnings;
-use Encode qw/ encode_utf8 /;
 use iMSCP::Debug;
 use iMSCP::Dialog;
 use iMSCP::Dir;
@@ -157,7 +156,7 @@ sub _getComposer
             ),
             (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : sub {
                     my $lines = shift;
-                    open( my $fh, '<', \encode_utf8( $lines ) ) or die ( $! );
+                    open( my $fh, '<', \$lines ) or die ( $! );
                     step( undef, "$msgHeader$_$msgFooter", 3, 1 ) while <$fh>;
                     close( $fh );
                 }
@@ -172,7 +171,7 @@ sub _getComposer
             ),
             (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : sub {
                     my $lines = shift;
-                    open( my $fh, '<', \encode_utf8( $lines ) ) or die ( $! );
+                    open( my $fh, '<', \$lines ) or die ( $! );
                     step( undef, "$msgHeader$_$msgFooter", 3, 1 ) while <$fh>;
                     close( $fh );
                 }
@@ -250,7 +249,7 @@ sub _installPackages
         sub { },
         (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : sub {
                 my $lines = shift;
-                open( my $fh, '<', \encode_utf8( $lines ) ) or die ( $! );
+                open( my $fh, '<', \$lines ) or die ( $! );
                 while(<$fh>) {
                     next if /^\s+downloading/i;
                     step( undef, "$msgHeader$_$msgFooter", 3, 3 );

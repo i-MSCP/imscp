@@ -25,6 +25,7 @@ package Modules::Htaccess;
 
 use strict;
 use warnings;
+use Encode qw / encode_utf8 /;
 use File::Spec;
 use iMSCP::Debug;
 use iMSCP::Database;
@@ -200,7 +201,7 @@ sub _getData
             USER            => $userName,
             GROUP           => $groupName,
             AUTH_TYPE       => $self->{'auth_type'},
-            AUTH_NAME       => $self->{'auth_name'},
+            AUTH_NAME       => encode_utf8( $self->{'auth_name'} ),
             AUTH_PATH       => $pathDir,
             HOME_PATH       => $homeDir,
             DOMAIN_NAME     => $self->{'domain_name'},

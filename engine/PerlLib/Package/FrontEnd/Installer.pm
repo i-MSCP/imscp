@@ -25,7 +25,6 @@ package Package::FrontEnd::Installer;
 
 use strict;
 use warnings;
-use Encode qw / decode_utf8 /;
 use File::Basename;
 use iMSCP::Config;
 use iMSCP::Crypt qw/ apr1MD5 randomStr /;
@@ -227,7 +226,7 @@ sub askDomain
             $domainName = 'panel.'.join( '.', @domainLabels[1 .. $#domainLabels] );
         }
 
-        $domainName = decode_utf8( idn_to_unicode( $domainName, 'utf-8' ) );
+        $domainName = idn_to_unicode( $domainName, 'utf-8' );
         my ($rs, $msg) = (0, '');
         do {
             ($rs, $domainName) = $dialog->inputbox( <<"EOF", $domainName, 'utf-8' );
@@ -257,7 +256,7 @@ sub askSsl
     my (undef, $dialog) = @_;
 
     my $domainName = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
-    my $domainNameUnicode = decode_utf8( idn_to_unicode( $domainName, 'utf-8' ) );
+    my $domainNameUnicode = idn_to_unicode( $domainName, 'utf-8' );
     my $sslEnabled = main::setupGetQuestion( 'PANEL_SSL_ENABLED' );
     my $selfSignedCertificate = main::setupGetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE', 'no' );
     my $privateKeyPath = main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH', '/root' );

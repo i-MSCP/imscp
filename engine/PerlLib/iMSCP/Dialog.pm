@@ -29,7 +29,6 @@ use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
-use open OUT => ':utf8';
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

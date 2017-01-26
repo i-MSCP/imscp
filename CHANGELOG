@@ -4,13 +4,19 @@
 Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
+ARPL
+    Fixed: ARPL is failing due to unexpected encoding
+    Removed: imscp-arpl-msgr log directory (ARPL error logs goes now into /var/log/mail.log)
+
 BACKEND
+    Changed: Event logging is now done on a per module basis (see the errata file for further details)
     Changed: Listener files from deprecated /etc/imscp/hooks.d directory are now ignored
     Fixed: Could not set user/group on dangling symlinks (iMSCP::Rights::setRights())
     Fixed: Do not change symlinks mode, nor the mode of their targets (iMSCP::Rights::setRights())
     Fixed: Do not connect to SQL server when that is not needed
     Fixed: Force addition of `CREATE DATABASE' statement in SQL dumps, even for empty databases
     Fixed: Restore database using master i-MSCP SQL user in place of customer SQL user
+    Fixed: Several encoding issues (regression fix)
     Fixed: Usage of lchown(2) system call to avoid dereference of symlinks (iMSCP::Rights::setRights())
 
 DATABASE

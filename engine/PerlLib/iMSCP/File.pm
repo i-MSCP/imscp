@@ -30,7 +30,6 @@ use File::Copy qw/ copy mv /;
 use File::Spec;
 use iMSCP::Debug qw/ error /;
 use Lchown ();
-use open IO => ':utf8';
 use parent 'Common::Object';
 
 =head1 DESCRIPTION

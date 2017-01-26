@@ -27,7 +27,6 @@ use strict;
 use warnings;
 use autouse 'iMSCP::Stepper' => qw/ step /;
 use Cwd;
-use Encode qw/ decode_utf8 /;
 use File::Basename;
 use File::Find;
 use iMSCP::Bootstrapper;
@@ -290,7 +289,7 @@ EOF
     my $port = $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://'
         ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
         : $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
-    my $vhost = decode_utf8( idn_to_unicode( $main::imscpConfig{'BASE_SERVER_VHOST'}, 'utf-8' ) );
+    my $vhost = idn_to_unicode( $main::imscpConfig{'BASE_SERVER_VHOST'}, 'utf-8' );
 
     iMSCP::Dialog->getInstance()->infobox( <<"EOF" );
 
@@ -768,9 +767,9 @@ sub _savePersistentData
 
 sub _cleanup
 {
-    for("$main::imscpConfig{'CONF_DIR'}/apache/skel/alias/phptmp",
+    for("$main::imscpConfig{'CACHE_DATA_DIR'}/addons",
+        "$main::imscpConfig{'CONF_DIR'}/apache/skel/alias/phptmp",
         "$main::imscpConfig{'CONF_DIR'}/apache/skel/subdomain/phptmp",
-        "$main::imscpConfig{'CACHE_DATA_DIR'}/addons",
         "$main::imscpConfig{'CONF_DIR'}/apache/backup",
         "$main::imscpConfig{'CONF_DIR'}/apache/working",
         "$main::imscpConfig{'CONF_DIR'}/fcgi",
@@ -782,7 +781,8 @@ sub _cleanup
         "$main::imscpConfig{'CONF_DIR'}/postfix/imscp",
         "$main::imscpConfig{'CONF_DIR'}/postfix/parts",
         "$main::imscpConfig{'CONF_DIR'}/postfix/working",
-        "$main::imscpConfig{'CONF_DIR'}/skel/domain/domain_disable_page"
+        "$main::imscpConfig{'CONF_DIR'}/skel/domain/domain_disable_page",
+        "$main::imscpConfig{'LOG_DIR'}/imscp-arpl-msgr"
     ) {
         my $rs ||= iMSCP::Dir->new( dirname => $_ )->remove();
         return $rs if $rs;

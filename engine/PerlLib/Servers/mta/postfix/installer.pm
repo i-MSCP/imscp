@@ -222,12 +222,6 @@ sub _makeDirs
             $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
             $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
             0750
-        ],
-        [
-            $main::imscpConfig{'LOG_DIR'}.'/imscp-arpl-msgr', # eg /var/log/imscp/imscp-arpl-msgr
-            $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-            $main::imscpConfig{'IMSCP_GROUP'},
-            0750
         ]
     );
 

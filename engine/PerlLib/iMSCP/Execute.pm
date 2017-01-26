@@ -31,7 +31,6 @@ use File::Basename qw/ dirname /;
 use iMSCP::Debug qw/ debug error /;
 use IO::Select;
 use IPC::Open3;
-use open qw / :std :utf8 /;
 use Symbol 'gensym';
 
 my $vendorLibDir;
@@ -125,10 +124,6 @@ sub executeNoWait($;$$)
 
     my $pid = open3( my $stdin, my $stdout, my $stderr = gensym, $multitArgs ? @{$command} : $command );
     close $stdin;
-
-    # Enforce :utf8 layer on open3 filehandles
-    binmode($stdout, ':utf8');
-    binmode($stderr, ':utf8');
 
     my %buffers = ( $stdout => '', $stderr => '' );
     my $sel = IO::Select->new( $stdout, $stderr );

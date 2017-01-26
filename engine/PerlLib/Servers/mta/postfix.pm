@@ -26,7 +26,6 @@ package Servers::mta::postfix;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat File::Temp Servers::mta::postfix::installer Servers::mta::postfix::uninstaller /;
-use Encode qw/ encode_utf8 /;
 use File::Basename;
 use iMSCP::Config;
 use iMSCP::Debug;
@@ -213,17 +212,6 @@ sub setEnginePermissions
             group     => $imscpGName,
             dirmode   => '0750',
             filemode  => '0750',
-            recursive => 1
-        }
-    );
-    # eg. /var/log/imscp/imscp-arpl-msgr
-    $rs ||= setRights(
-        "$main::imscpConfig{'LOG_DIR'}/imscp-arpl-msgr",
-        {
-            user      => $mtaUName,
-            group     => $imscpGName,
-            dirmode   => '0750',
-            filemode  => '0600',
             recursive => 1
         }
     );
@@ -883,7 +871,7 @@ sub postconf
             [ 'postconf', '-c', $self->{'config'}->{'POSTFIX_CONF_DIR'}, keys %params ],
             sub {
                 my $buffer = shift;
-                open my $fh, '<', \encode_utf8( $buffer ) or die( sprintf( 'Could not open in-memory file: %s', $! ) );
+                open my $fh, '<', \$buffer or die( sprintf( 'Could not open in-memory file: %s', $! ) );
                 while(<$fh>) {
                     next unless (my $pName, my $pValue) = /^([^=]+)\s+=\s+(.*)/;
                     my (@values, @replace) = (split(/,\s*/, $pValue), ());

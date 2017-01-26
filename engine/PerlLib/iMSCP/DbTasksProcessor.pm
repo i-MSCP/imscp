@@ -25,6 +25,7 @@ package iMSCP::DbTasksProcessor;
 
 use strict;
 use warnings;
+use Encode qw / encode_utf8 /;
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Dir;
@@ -59,9 +60,11 @@ sub process
     $self->_process(
         'Modules::Plugin',
         "
-            SELECT plugin_id AS id, plugin_name AS name, plugin_status AS status FROM plugin
+            SELECT plugin_id AS id, plugin_name AS name
+            FROM plugin
             WHERE plugin_status IN ('enabled', 'toinstall', 'toenable', 'toupdate', 'tochange', 'todisable', 'touninstall')
-            AND plugin_error IS NULL AND plugin_backend = 'yes' ORDER BY plugin_priority DESC
+            AND plugin_error IS NULL AND plugin_backend = 'yes'
+            ORDER BY plugin_priority DESC
         "
     );
 
@@ -69,8 +72,10 @@ sub process
     $self->_process(
         'Modules::NetworkInterfaces',
         "
-            SELECT 'all' AS id, 'network interfaces' AS name, 'any' AS status
-            FROM server_ips WHERE ip_status <> 'ok' LIMIT 1
+            SELECT 'any' AS id, 'network interfaces' AS name
+            FROM server_ips
+            WHERE ip_status <> 'ok'
+            LIMIT 1
         "
     );
 
@@ -78,7 +83,8 @@ sub process
     $self->_process(
         'Modules::SSLcertificate',
         "
-            SELECT cert_id AS id, CONCAT(domain_type, ':', cert_id) AS name, status AS status FROM ssl_certs
+            SELECT cert_id AS id, domain_type AS name
+            FROM ssl_certs
             WHERE status IN ('toadd', 'tochange', 'todelete') ORDER BY cert_id ASC
         "
     );
@@ -87,8 +93,11 @@ sub process
     $self->_process(
         'Modules::User',
         "
-            SELECT admin_id AS id, admin_name AS name, admin_status AS status FROM admin
-            WHERE admin_type = 'user' AND admin_status IN ('toadd', 'tochange', 'tochangepwd') ORDER BY admin_id ASC
+            SELECT admin_id AS id, admin_name AS name
+            FROM admin
+            WHERE admin_type = 'user'
+            AND admin_status IN ('toadd', 'tochange', 'tochangepwd')
+            ORDER BY admin_id ASC
         "
     );
 
@@ -97,10 +106,12 @@ sub process
     my $ipsModule = $self->_process(
         'Modules::Domain',
         "
-            SELECT domain_id AS id, domain_name AS name, domain_status AS status FROM domain
+            SELECT domain_id AS id, domain_name AS name
+            FROM domain
             INNER JOIN admin ON(admin_id = domain_admin_id)
             WHERE domain_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
-            AND admin_status IN('ok', 'disabled') ORDER BY domain_id ASC
+            AND admin_status IN('ok', 'disabled')
+            ORDER BY domain_id ASC
         "
     );
 
@@ -109,10 +120,11 @@ sub process
     $ipsModule += $self->_process(
         'Modules::Subdomain',
         "
-            SELECT subdomain_id AS id, CONCAT(subdomain_name, '.', domain_name) AS name, subdomain_status AS status
+            SELECT subdomain_id AS id, CONCAT(subdomain_name, '.', domain_name) AS name
             FROM subdomain INNER JOIN domain USING(domain_id)
             WHERE subdomain_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
-            AND domain_status IN('ok', 'disabled') ORDER BY subdomain_id ASC
+            AND domain_status IN('ok', 'disabled')
+            ORDER BY subdomain_id ASC
         "
     );
 
@@ -121,10 +133,12 @@ sub process
     $ipsModule += $self->_process(
         'Modules::Alias',
         "
-           SELECT alias_id AS id, alias_name AS name, alias_status AS status FROM domain_aliasses
+           SELECT alias_id AS id, alias_name AS name
+           FROM domain_aliasses
            INNER JOIN domain USING(domain_id)
            WHERE alias_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
-           AND domain_status IN('ok', 'disabled') ORDER BY alias_id ASC
+           AND domain_status IN('ok', 'disabled')
+           ORDER BY alias_id ASC
         "
     );
 
@@ -133,8 +147,8 @@ sub process
     $ipsModule += $self->_process(
         'Modules::SubAlias',
         "
-            SELECT subdomain_alias_id AS id, CONCAT(subdomain_alias_name, '.', alias_name) AS name,
-                subdomain_alias_status AS status FROM subdomain_alias
+            SELECT subdomain_alias_id AS id, CONCAT(subdomain_alias_name, '.', alias_name) AS name
+            FROM subdomain_alias
             INNER JOIN domain_aliasses USING(alias_id)
             WHERE subdomain_alias_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
             AND alias_status IN('ok', 'disabled')
@@ -147,10 +161,11 @@ sub process
     $self->_process(
         'Modules::CustomDNS',
         "
-            SELECT DISTINCT CONCAT('domain_', domain_id) AS id, domain_name AS name, 'any' AS status
+            SELECT DISTINCT CONCAT('domain_', domain_id) AS id, domain_name AS name
             FROM domain_dns INNER JOIN domain USING(domain_id)
             WHERE domain_dns_status IN ('toadd', 'tochange', 'toenable', 'todisable', 'todelete')
-            AND alias_id = '0' AND domain_status IN('ok', 'disabled')
+            AND alias_id = '0'
+            AND domain_status IN('ok', 'disabled')
         "
     );
 
@@ -159,10 +174,12 @@ sub process
     $self->_process(
         'Modules::CustomDNS',
         "
-            SELECT DISTINCT CONCAT('alias_', alias_id) AS id, alias_name AS name, 'any' AS status FROM domain_dns
+            SELECT DISTINCT CONCAT('alias_', alias_id) AS id, alias_name AS name
+            FROM domain_dns
             INNER JOIN domain_aliasses USING(alias_id)
             WHERE domain_dns_status IN ('toadd', 'tochange', 'toenable', 'todisable', 'todelete')
-            AND alias_id <> '0' AND alias_status IN('ok', 'disabled')
+            AND alias_id <> '0'
+            AND alias_status IN('ok', 'disabled')
         "
     );
 
@@ -171,10 +188,11 @@ sub process
     $self->_process(
         'Modules::FtpUser',
         "
-            SELECT userid AS id, userid AS name, status AS status
+            SELECT userid AS id, userid AS name
             FROM ftp_users INNER JOIN domain ON(domain_admin_id = admin_id)
             WHERE status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
-            AND domain_status IN('ok', 'todelete', 'disabled') ORDER BY userid ASC
+            AND domain_status IN('ok', 'todelete', 'disabled')
+            ORDER BY userid ASC
         "
     );
 
@@ -183,10 +201,12 @@ sub process
     $self->_process(
         'Modules::Mail',
         "
-            SELECT mail_id AS id, mail_addr AS name, status AS status FROM mail_users
+            SELECT mail_id AS id, mail_addr AS name
+            FROM mail_users
             INNER JOIN domain USING(domain_id)
             WHERE status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
-            AND domain_status IN('ok', 'todelete', 'disabled') ORDER BY mail_id ASC
+            AND domain_status IN('ok', 'todelete', 'disabled')
+            ORDER BY mail_id ASC
         "
     );
 
@@ -195,10 +215,11 @@ sub process
     $self->_process(
         'Modules::Htpasswd',
         "
-            SELECT id, CONCAT(uname, ':', id) AS name, status
+            SELECT id, uname AS name
             FROM htaccess_users INNER JOIN domain ON(domain_id = dmn_id)
             WHERE status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
-            AND domain_status IN('ok', 'todelete', 'disabled') ORDER BY id ASC
+            AND domain_status IN('ok', 'todelete', 'disabled')
+            ORDER BY id ASC
         "
     );
 
@@ -207,10 +228,12 @@ sub process
     $self->_process(
         'Modules::Htgroup',
         "
-            SELECT id, CONCAT(ugroup, ':', id) AS name, status FROM htaccess_groups
+            SELECT id, ugroup AS name
+            FROM htaccess_groups
             INNER JOIN domain ON(domain_id = dmn_id)
             WHERE status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
-            AND domain_status IN('ok', 'todelete', 'disabled') ORDER BY id ASC
+            AND domain_status IN('ok', 'todelete', 'disabled')
+            ORDER BY id ASC
         "
     );
 
@@ -219,9 +242,12 @@ sub process
     $self->_process(
         'Modules::Htaccess',
         "
-            SELECT id, CONCAT(auth_name, ':', id) AS name, status FROM htaccess INNER JOIN domain ON(domain_id = dmn_id)
+            SELECT id, auth_name AS name
+            FROM htaccess
+            INNER JOIN domain ON(domain_id = dmn_id)
             WHERE status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
-            AND domain_status IN('ok', 'todelete', 'disabled') ORDER BY id ASC
+            AND domain_status IN('ok', 'todelete', 'disabled')
+            ORDER BY id ASC
         "
     );
 
@@ -229,9 +255,10 @@ sub process
     $ipsModule += $self->_process(
         'Modules::SubAlias',
         "
-            SELECT subdomain_alias_id AS id, concat(subdomain_alias_name, '.', alias_name) AS name,
-                subdomain_alias_status AS status FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
-            WHERE subdomain_alias_status = 'todelete' ORDER BY subdomain_alias_id ASC
+            SELECT subdomain_alias_id AS id, concat(subdomain_alias_name, '.', alias_name) AS name
+            FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
+            WHERE subdomain_alias_status = 'todelete'
+            ORDER BY subdomain_alias_id ASC
         "
     );
 
@@ -240,7 +267,7 @@ sub process
     $ipsModule += $self->_process(
         'Modules::Alias',
         "
-            SELECT alias_id AS id, alias_name AS name, alias_status AS status
+            SELECT alias_id AS id, alias_name AS name
             FROM domain_aliasses
             LEFT JOIN (SELECT DISTINCT alias_id FROM subdomain_alias) AS subdomain_alias  USING(alias_id)
             WHERE alias_status = 'todelete'
@@ -253,9 +280,10 @@ sub process
     $ipsModule += $self->_process(
         'Modules::Subdomain',
         "
-            SELECT subdomain_id AS id, CONCAT(subdomain_name, '.', domain_name) AS name, subdomain_status AS status
+            SELECT subdomain_id AS id, CONCAT(subdomain_name, '.', domain_name) AS name
             FROM subdomain INNER JOIN domain USING(domain_id)
-            WHERE subdomain_status = 'todelete' ORDER BY subdomain_id ASC
+            WHERE subdomain_status = 'todelete'
+            ORDER BY subdomain_id ASC
         "
     );
 
@@ -264,7 +292,7 @@ sub process
     $ipsModule += $self->_process(
         'Modules::Domain',
         "
-            SELECT domain_id AS id, domain_name AS name, domain_status AS status
+            SELECT domain_id AS id, domain_name AS name
             FROM domain
             LEFT JOIN (SELECT DISTINCT domain_id FROM subdomain) as subdomain USING (domain_id)
             WHERE domain_status = 'todelete'
@@ -278,9 +306,13 @@ sub process
     $self->_process(
         'Modules::User',
         "
-            SELECT admin_id AS id, admin_name AS name, admin_status AS status FROM admin
+            SELECT admin_id AS id, admin_name AS name
+            FROM admin
             LEFT JOIN domain ON(domain_admin_id = admin_id)
-            WHERE admin_type = 'user' AND admin_status = 'todelete' AND domain_id IS NULL ORDER BY admin_id ASC
+            WHERE admin_type = 'user'
+            AND admin_status = 'todelete'
+            AND domain_id IS NULL
+            ORDER BY admin_id ASC
         "
     );
 
@@ -435,24 +467,21 @@ sub _process
     my ($nStep, $nSteps) = (0, scalar @{$rows});
 
     for my $row(@{$rows}) {
-        my ($id, $name, $status) = ($row->{'id'}, $row->{'name'}, $row->{'status'});
+        my ($id, $name, $rs) = ($row->{'id'}, encode_utf8( $row->{'name'} ));
 
-        debug( sprintf( 'Processing %s (%s) tasks for: %s (ID %s)', $module, $status, $name, $id ) );
-        newDebug( "${module}_$name.log" );
+        debug( sprintf( 'Processing %s tasks for: %s (ID %s)', $module, $name, $id ) );
+        newDebug( "$module.log" );
 
         if ($self->{'mode'} eq 'setup') {
-            step(
+            $rs = step(
                 sub { $module->new()->process( $id ) },
-                sprintf( 'Processing %s (%s) tasks for: %s (ID %s)', $module, $status, $name, $id ), $nSteps, ++$nStep
-            ) == 0 or die(
-                getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+                sprintf( 'Processing %s tasks for: %s (ID %s)', $module, $name, $id ), $nSteps, ++$nStep
             );
         } else {
-            $module->new()->process( $id ) == 0 or die(
-                getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-            );
+            $rs = $module->new()->process( $id );
         }
 
+        $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error');
         endDebug();
     }
 

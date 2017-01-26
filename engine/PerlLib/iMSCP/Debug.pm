@@ -25,8 +25,8 @@ package iMSCP::Debug;
 
 use strict;
 use warnings;
+use File::Spec;
 use iMSCP::Log;
-use open qw/ :std :utf8 /;
 use parent 'Exporter';
 
 our @EXPORT = qw/
@@ -173,8 +173,7 @@ sub endDebug
     }
 
     # Write logfile
-    $targetId =~ s#[\s?+%/:]+#:#gs; # Replace unwanted characters in logfile names
-    _writeLogfile( $target, "$logDir/$targetId" );
+    _writeLogfile( $target, File::Spec->catfile( $logDir, $targetId ) );
 
     # Set previous log object as target for new messages
     $self->{'target'} = @{$self->{'targets'}}[$#{$self->{'targets'}}];
