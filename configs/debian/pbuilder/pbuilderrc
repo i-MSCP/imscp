@@ -1,6 +1,6 @@
 AUTO_DEBSIGN=${AUTO_DEBSIGN:-no}
 AUTOCLEANAPTCACHE="yes"
-APTCONFDIR="/tmp/imscp_apt"
+APTCONFDIR=$(pwd)/.imscp
 #APTKEYRINGS="/usr/share/keyrings/debian-archive-keyring.gpg"
 CODENAME=$(lsb_release -cs)
 DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--variant=buildd" "--keyring=/usr/share/keyrings/debian-archive-keyring.gpg")

@@ -1,6 +1,6 @@
 AUTO_DEBSIGN=${AUTO_DEBSIGN:-no}
 AUTOCLEANAPTCACHE="yes"
-APTCONFDIR="/tmp/imscp_apt"
+APTCONFDIR=$(pwd)/.imscp
 #APTKEYRINGS=/usr/share/keyrings/ubuntu-archive-keyring.gpg
 CODENAME=$(lsb_release -cs)
 DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--variant=buildd" "--keyring=/usr/share/keyrings/ubuntu-archive-keyring.gpg")
@@ -9,12 +9,12 @@ MIRRORSITE=http://mirrors.kernel.org/ubuntu/
 HOOKDIR=""
 
 mkdir -p $APTCONFDIR
-cat >> "$APTCONFDIR/sources.list" <<EOF
+cat > "$APTCONFDIR/sources.list" <<EOF
 deb $MIRRORSITE $CODENAME main restricted universe multiverse
 deb-src $MIRRORSITE $CODENAME main restricted universe multiverse
 
 deb $MIRRORSITE ${CODENAME}-security main restricted universe multiverse
-deb-src $MIRRORSITE ${CODENAME}-updates main restricted universe multiverse
+deb-src $MIRRORSITE ${CODENAME}-security main restricted universe multiverse
 
 deb $MIRRORSITE ${CODENAME}-updates main restricted universe multiverse
 deb-src $MIRRORSITE ${CODENAME}-updates main restricted universe multiverse
