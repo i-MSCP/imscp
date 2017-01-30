@@ -23,7 +23,6 @@ use strict;
 use warnings;
 use autouse 'iMSCP::Stepper' => qw/ startDetail endDetail step /;
 use Cwd;
-use Encode qw/ encode_utf8 /;
 use Fcntl qw/ :flock /;
 use File::HomeDir;
 use FindBin;
@@ -925,7 +924,7 @@ sub _rebuildAndInstallPackage
                     $cmd,
                     (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : sub {
                             my $lines = shift;
-                            open( my $fh, '<', \encode_utf8( $lines ) ) or die ( $! );
+                            open( my $fh, '<', \$lines ) or die ( $! );
                             step( undef, $msgHeader.ucfirst( s/^I:\s+(.*)/$1/r ).$msgFooter, 5, 1 ) while <$fh>;
                             close( $fh );
                         }
