@@ -36,7 +36,7 @@ DISTRIBUTIONS
     Added: PHP 7.0 alternative for Debian Jessie through Dotdeb repository
 
 DOCUMENTATION
-    Added: CGI script sample for both Perl and Python
+    Added: CGI script sample for both Perl, Python and Ruby
 
 FRONTEND
     Changed: Restricts character range for password generator to ASCII alphabet characters and numbers
