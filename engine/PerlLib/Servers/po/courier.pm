@@ -177,15 +177,21 @@ sub setEnginePermissions
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoSetEnginePermissions' );
-    $rs ||= setRights(
-        $self->{'config'}->{'AUTHLIB_SOCKET_DIR'},
-        {
-            user  => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-            group => $self->{'config'}->{'AUTHDAEMON_GROUP'},
-            mode  => '0750'
-        }
-    );
-    $rs ||= setRights(
+    return $rs if $rs;
+
+    if (-d $self->{'config'}->{'AUTHLIB_SOCKET_DIR'}) {
+        $rs ||= setRights(
+            $self->{'config'}->{'AUTHLIB_SOCKET_DIR'},
+            {
+                user  => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+                group => $self->{'config'}->{'AUTHDAEMON_GROUP'},
+                mode  => '0750'
+            }
+        );
+        return $rs if $rs;
+    }
+
+    $rs = setRights(
         "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/authmysqlrc",
         {
             user  => $self->{'config'}->{'AUTHDAEMON_USER'},
@@ -201,6 +207,8 @@ sub setEnginePermissions
             mode  => '0640'
         }
     );
+    return $rs if $rs;
+
     if (-f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem") {
         $rs = setRights(
             "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem",
@@ -543,6 +551,7 @@ sub _init
 
     $self->{'restart'} = 0;
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'mta'} = Servers::mta::postfix->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
     tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/courier.data", readonly => 1;
     $self;

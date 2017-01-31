@@ -153,7 +153,6 @@ sub install
     my $self = shift;
 
     my $rs = $self->_setupAuthdaemonSqlUser();
-    $rs ||= $self->_overrideAuthdaemonInitScript();
     $rs ||= $self->_buildConf();
     $rs ||= $self->_setupCyrusSASL();
     $rs ||= $self->_saveConf();
@@ -338,37 +337,6 @@ sub _setupAuthdaemonSqlUser
     $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} = $dbUser;
     $self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'} = $dbPass;
     $self->{'eventManager'}->trigger( 'afterPoSetupAuthdaemonSqlUser' );
-}
-
-=item _overrideAuthdaemonInitScript()
-
- Override courier-authdaemon init script
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _overrideAuthdaemonInitScript
-{
-    my $self = shift;
-
-    my $file = iMSCP::File->new( filename => "/etc/init.d/$self->{'config'}->{'AUTHDAEMON_SNAME'}" );
-    my $fileContent = $file->get();
-    unless (defined $fileContent) {
-        error( sprintf( 'Could not read %s file', $file->{'filename'} ) );
-        return 1;
-    }
-
-    my $mailUser = $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'};
-    my $authdaemonUser = $self->{'config'}->{'AUTHDAEMON_USER'};
-    my $authdaemonGroup = $self->{'config'}->{'AUTHDAEMON_GROUP'};
-
-    $fileContent =~ s/$authdaemonUser:$authdaemonGroup\s+\$rundir$/$mailUser:$authdaemonGroup \$rundir/m;
-
-    my $rs = $file->set( $fileContent );
-    $rs ||= $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0755 );
 }
 
 =item _buildConf()

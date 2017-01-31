@@ -490,6 +490,7 @@ sub _init
 
     $self->{'restart'} = 0;
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'mta'} = Servers::mta::postfix->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";

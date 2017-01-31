@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Rights - Package providing basic utilities for filesystem (permissions handling).
+ iMSCP::Rights - Package providing function for setting file ownership and permissions.
 
 =cut
 
@@ -27,20 +27,20 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use File::Find;
-use autouse 'Lchown' => qw/ lchown /;
+use autouse Lchown => qw/ lchown /;
 use parent 'Exporter';
 
 our @EXPORT = qw/ setRights /;
 
 =head1 DESCRIPTION
 
-Package providing basic utilities for filesystem (permissions handling).
+ Package providing function for setting file ownership and permissions.
 
 =head1 PUBLIC FUNCTIONS
 
 =over 4
 
-=item setRights($target, \%options)
+=item setRights( $target, \%options )
 
  Depending on the given options, set owner, group and permissions on the given target
 
@@ -80,16 +80,16 @@ sub setRights
         my $filemode = defined $options->{'filemode'} ? oct( $options->{'filemode'} ) : undef;
 
         if ($options->{'recursive'}) {
-            local $SIG{__WARN__} = sub { die @_ };
+            local $SIG{'__WARN__'} = sub { die @_ };
             find(
                 {
-                    wanted      => sub {
+                    wanted   => sub {
                         if ($options->{'user'} || $options->{'group'}) {
                             lchown $uid, $gid, $_ or die( sprintf( 'Could not set user/group on %s: %s', $_, $! ) );
                         }
 
                         return if -l $_; # We do not call chmod on symkink targets
-                        
+
                         if ($mode) {
                             chmod $mode, $_ or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
                         } elsif ($dirmode && -d _) {
@@ -98,23 +98,25 @@ sub setRights
                             chmod $filemode, $_ or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
                         }
                     },
-                    no_chdir    => 1
+                    no_chdir => 1
                 },
                 $target
             );
-        } else {
-            if ($options->{'user'} || $options->{'group'}) {
-                lchown $uid, $gid, $target or die( sprintf( 'Could not set user/group on %s: %s', $target, $! ) );
-            }
 
-            unless(-l $target) { # We do not call chmod on symkink targets
-                if ($mode) {
-                    chmod $mode, $target or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
-                } elsif ($dirmode && -d _) {
-                    chmod $dirmode, $target or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
-                } elsif ($filemode) {
-                    chmod $filemode, $target or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
-                }
+            return 0;
+        }
+
+        if ($options->{'user'} || $options->{'group'}) {
+            lchown $uid, $gid, $target or die( sprintf( 'Could not set user/group on %s: %s', $target, $! ) );
+        }
+
+        unless (-l $target) { # We do not call chmod on symkink targets
+            if ($mode) {
+                chmod $mode, $target or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
+            } elsif ($dirmode && -d _) {
+                chmod $dirmode, $target or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
+            } elsif ($filemode) {
+                chmod $filemode, $target or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
             }
         }
     };
