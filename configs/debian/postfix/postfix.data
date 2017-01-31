@@ -1,9 +1,11 @@
+POSTFIX_VERSION = 
 POSTFIX_USER = postfix
 POSTFIX_GROUP = postfix
 POSTFIX_CONF_DIR = /etc/postfix
 POSTFIX_CONF_FILE = /etc/postfix/main.cf
 POSTFIX_MASTER_CONF_FILE = /etc/postfix/master.cf
 POSTFIX_SENDMAIL_PATH = /usr/sbin/sendmail
+POSTFIX_QUEUE_DIR = /var/spool/postfix
 
 MTA_VIRTUAL_CONF_DIR = /etc/postfix/imscp
 MTA_SNAME = postfix

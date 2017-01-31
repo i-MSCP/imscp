@@ -27,7 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use File::Find;
-use Lchown;
+use autouse 'Lchown' => qw/ lchown /;
 use parent 'Exporter';
 
 our @EXPORT = qw/ setRights /;
@@ -88,7 +88,7 @@ sub setRights
                             lchown $uid, $gid, $_ or die( sprintf( 'Could not set user/group on %s: %s', $_, $! ) );
                         }
 
-                        return if -l $_; # chmod cannot operates on dangling symlinks and we do not want operate on targets
+                        return if -l $_; # We do not call chmod on symkink targets
                         
                         if ($mode) {
                             chmod $mode, $_ or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
@@ -107,7 +107,7 @@ sub setRights
                 lchown $uid, $gid, $target or die( sprintf( 'Could not set user/group on %s: %s', $target, $! ) );
             }
 
-            unless(-l $target) { # chmod cannot operates on dangling symlinks and we do not want operate on targets
+            unless(-l $target) { # We do not call chmod on symkink targets
                 if ($mode) {
                     chmod $mode, $target or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
                 } elsif ($dirmode && -d _) {

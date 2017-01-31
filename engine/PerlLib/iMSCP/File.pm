@@ -25,11 +25,11 @@ package iMSCP::File;
 
 use strict;
 use warnings;
+use autouse 'Lchown' => qw/ lchown /;
 use File::Basename qw/ basename /;
 use File::Copy qw/ copy mv /;
 use File::Spec;
 use iMSCP::Debug qw/ error /;
-use Lchown ();
 use parent 'Common::Object';
 
 =head1 DESCRIPTION
@@ -176,7 +176,7 @@ sub mode
 
  Change file owner and group
 
- Symlinks are not dereferenced. That routine operates on them using lchown(2) system call.
+ Symlinks are not dereferenced.
 
  Param int|string $owner Either an username or userid
  Param int|string $group Either a groupname or groupid
@@ -196,7 +196,7 @@ sub owner
     my $uid = (($owner =~ /^\d+$/) ? $owner : getpwnam( $owner )) // - 1;
     my $gid = (($group =~ /^\d+$/) ? $group : getgrnam( $group )) // - 1;
 
-    unless (Lchown::lchown( $uid, $gid, $self->{'filename'} )) {
+    unless (lchown( $uid, $gid, $self->{'filename'} )) {
         error( sprintf( "Could not change `%s' file ownership: %s", $self->{'filename'}, $! ) );
         return 1;
     }
@@ -208,7 +208,8 @@ sub owner
 
  Copy file to the given destination
 
- Symlinks are not dereferenced. That routine operates on them using lchown(2) system call. Mode is not set on symlinks.
+ Symlinks are not dereferenced. 
+ Permissions are not set on symlink targets.
 
  Param string $dest Destination path
  Param hash $options Options
@@ -228,7 +229,7 @@ sub copyFile
         return 1;
     }
 
-    unless (File::Copy::copy( $self->{'filename'}, $dest )) {
+    unless (copy( $self->{'filename'}, $dest )) {
         error( sprintf( "Could not copy `%s' file to `%s': %s", $self->{'filename'}, $dest, $! ) );
         return 1;
     }
@@ -239,12 +240,12 @@ sub copyFile
 
     my ($mode, $uid, $gid) = (lstat( $self->{'filename'} ))[2, 4, 5];
 
-    unless (Lchown::lchown( $uid, $gid, $dest )) {
+    unless (lchown( $uid, $gid, $dest )) {
         error( sprintf( "Could not change `%s' file ownership: %s", $dest, $! ) );
         return 1;
     }
 
-    return if -l _; # Skip setting of permissions for symlinks
+    return if -l $dest; # We do not call chmod on symkink targets
 
     unless (chmod( $mode & 07777, $dest )) {
         error( sprintf( "Could not change `%s' file permissions: %s", $dest, $! ) );
@@ -272,7 +273,7 @@ sub moveFile
         return 1;
     }
 
-    unless (File::Copy::mv( $self->{'filename'}, $dest )) {
+    unless (mv( $self->{'filename'}, $dest )) {
         error( sprintf( "Could not move `%s' file to `%s': %s", $self->{'filename'}, $dest, $! ) );
         return 1;
     }

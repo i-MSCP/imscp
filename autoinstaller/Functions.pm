@@ -378,19 +378,22 @@ sub _showUpdateWarning
     my $warning = '';
     if ($main::imscpConfig{'Version'} !~ /git/i) {
         $warning = <<"EOF";
+
 Before continue, be sure to have read the errata file:
 
-    \\Zbhttps://github.com/i-MSCP/imscp/blob/1.3.x/docs/1.3.x_errata.md\\ZB
+    \\Zbhttps://github.com/i-MSCP/imscp/blob/1.4.x/docs/1.4.x_errata.md\\ZB
 EOF
 
     } else {
         $warning = <<"EOF";
 
-The installer detected that you intends to install i-MSCP \\ZbGit\\ZB version. Before continue, be sure to have read the errata file:
-
-    \\Zbhttps://github.com/i-MSCP/imscp/blob/1.3.x/docs/1.3.x_errata.md\\ZB
+The installer detected that you intends to install i-MSCP \\ZbGit\\ZB version.
 
 We would remind you that the Git version can be highly unstable and that the i-MSCP team do not provides any support for it.
+
+Before continue, be sure to have read the errata file:
+
+    \\Zbhttps://github.com/i-MSCP/imscp/blob/1.4.x/docs/1.4.x_errata.md\\ZB
 EOF
     }
 
@@ -398,7 +401,7 @@ EOF
 
     $dialog->set( 'yes-label', 'Continue' );
     $dialog->set( 'no-label', 'Abort' );
-    return 50 if $dialog->yesno( <<"EOF" );
+    return 50 if $dialog->yesno( <<"EOF", 'abort_by_default' );
 
 \\Zb\\Z1WARNING - PLEASE READ CAREFULLY\\Zn\\ZB
 $warning
@@ -583,7 +586,7 @@ sub _buildConfigFiles
     my $confDir = -d $distroConfigDir ? $distroConfigDir : $defaultConfigDir;
 
     unless (chdir( $confDir )) {
-        error( sprintf( 'Could not to change directory to %s: %s', $confDir, $! ) );
+        error( sprintf( 'Could not change directory to %s: %s', $confDir, $! ) );
         return 1;
     }
 
@@ -745,9 +748,7 @@ sub _savePersistentData
     ) if -d $main::imscpConfig{'PLUGINS_DIR'};
 
     # Quick fix for #IP-1340 (Removes old filemanager directory which is no longer used)
-    iMSCP::Dir->new( dirname => "main::imscpConfig{'PLUGINS_DIR'}" )->remove(
-        "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager"
-    ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager";
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager" )->remove(); 
 
     # Save tools
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools" )->rcopy(
@@ -777,6 +778,8 @@ sub _cleanup
         "$main::imscpConfig{'CONF_DIR'}/init.d",
         "$main::imscpConfig{'CONF_DIR'}/nginx",
         "$main::imscpConfig{'CONF_DIR'}/php-fpm",
+        "$main::imscpConfig{'CONF_DIR'}/courier/backup",
+        "$main::imscpConfig{'CONF_DIR'}/courier/working",
         "$main::imscpConfig{'CONF_DIR'}/postfix/backup",
         "$main::imscpConfig{'CONF_DIR'}/postfix/imscp",
         "$main::imscpConfig{'CONF_DIR'}/postfix/parts",

@@ -68,28 +68,28 @@ sub execute($;$$)
 
     if ($stdout) {
         ref $stdout eq 'SCALAR' or die( "Expects a scalar reference as second parameter for capture of STDOUT" );
-        $$stdout = '';
+        ${$stdout} = '';
     }
 
     if ($stderr) {
         ref $stderr eq 'SCALAR' or die( "Expects a scalar reference as third parameter for capture of STDERR" );
-        $$stderr = '';
+        ${$stderr} = '';
     }
 
     my $multitArgs = ref $command eq 'ARRAY';
     debug( $multitArgs ? "@{$command}" : $command );
 
     if ($stdout && $stderr) {
-        ($$stdout, $$stderr) = capture { system( $multitArgs ? @{$command} : $command); };
-        chomp( $$stdout, $$stderr );
+        (${$stdout}, ${$stderr}) = capture { system( $multitArgs ? @{$command} : $command); };
+        chomp( ${$stdout}, ${$stderr} );
     } elsif ($stdout) {
-        $$stdout = capture_stdout { system( $multitArgs ? @{$command} : $command ); };
-        chomp( $$stdout );
+        ${$stdout} = capture_stdout { system( $multitArgs ? @{$command} : $command ); };
+        chomp( ${$stdout} );
     } elsif ($stderr) {
-        $$stderr = capture_stderr { system( $multitArgs ? @{$command} : $command ); };
+        ${$stderr} = capture_stderr { system( $multitArgs ? @{$command} : $command ); };
         chomp( $stderr );
     } else {
-        system( $multitArgs ? @{$command} : $command ) != -1 or die(
+        system( $multitArgs ? @{$command} : $command ) != - 1 or die(
             sprintf( 'Could not execute command: %s', $! )
         );
     }
@@ -97,27 +97,26 @@ sub execute($;$$)
     getExitCode();
 }
 
-=item executeNoWait($command [, $stdoutSubref = undef [, $stderrSubref = undef ]])
+=item executeNoWait($command [, $stdoutSubref = CODE [, $stderrSubref = CODE ]])
 
- Execute the given command without wait
+ Execute the given command without wait, processing command STDOUT|STDERR line by line
 
  Param string|array $command Command to execute
- Param subref|undef OPTIONAL Subroutine responsible to process command STDOUT
- Param subref|undef OPTIONAL Subroutine responsible to process command STDERR
+ Param CODE OPTIONAL Subroutine for processing of command STDOUT line by line (default: print to STDOUT)
+ Param CODE OPTIONAL Subroutine for processing of command STDERR (line by line) (default: print to STDERR)
  Return int Command exit code or die on failure
 
 =cut
 
 sub executeNoWait($;$$)
 {
-    my ($command, $stdoutSubref, $stderrSubref) = @_;
+    my ($command, $subSTDOUT, $subSTDERR) = @_;
 
-    if (defined $stdoutSubref) {
-        ref $stdoutSubref eq 'CODE' or die( 'Expects a subroutine reference as second parameter for STDOUT processing' );
-    }
-    if (defined $stderrSubref) {
-        ref $stderrSubref eq 'CODE' or die( 'Expects a subroutine reference as third parameter for STDERR processing' );
-    }
+    $subSTDOUT ||= $subSTDOUT = sub { print STDOUT @_ };
+    ref $subSTDOUT eq 'CODE' or die( 'Expects CODE as second parameter for STDOUT processing' );
+
+    $subSTDERR ||= $subSTDERR = sub { print STDERR @_ };
+    ref $subSTDERR eq 'CODE' or die( 'Expects CODE as third parameter for STDERR processing' );
 
     my $multitArgs = ref $command eq 'ARRAY';
     debug( $multitArgs ? "@{$command}" : $command );
@@ -130,21 +129,23 @@ sub executeNoWait($;$$)
 
     while(my @ready = $sel->can_read) {
         for my $fh (@ready) {
-            my $ret = sysread( $fh, $buffers{$fh}, 4096, length ( $buffers{$fh} ) );
-            next if $!{EINTR};
+            # Read 1 byte at a time to avoid ending with multiple lines
+            my $ret = sysread( $fh, $buffers{$fh}, 1, length $buffers{$fh} );
 
-            defined $ret or die( $! );
+            next if $!{'EINTR'}; # Ignore signal interrupt
+
+            defined $ret or die( $! ); # Something goes wrong, abort early
+
             if ($ret == 0) {
+                # EOL
                 $sel->remove( $fh );
                 close( $fh );
                 next;
             }
 
-            if ($buffers{$fh} =~ s/^(.*\n)$//s) {
-                $fh == $stderr
-                    ? (defined $stderrSubref ? $stderrSubref->( $1 ) : print STDERR $1)
-                    : (defined $stdoutSubref ? $stdoutSubref->( $1 ) : print STDOUT $1);
-            }
+            next unless $buffers{$fh} =~ /\n\z/;
+            $fh == $stdout ? $subSTDOUT->( $buffers{$fh} ) : $subSTDERR->( $buffers{$fh} );
+            $buffers{$fh} = '';
         }
     }
 
@@ -183,7 +184,7 @@ sub getExitCode(;$)
 {
     my $ret = shift // $?;
 
-    if ($ret == -1) {
+    if ($ret == - 1) {
         debug('Could not execute command');
         return 1;
     }

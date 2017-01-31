@@ -154,12 +154,8 @@ sub _getComposer
                 $self->{'suCmdPattern'},
                 escapeShell( "curl -s http://getcomposer.org/installer | $self->{'phpCmd'}" )
             ),
-            (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : sub {
-                    my $lines = shift;
-                    open( my $fh, '<', \$lines ) or die ( $! );
-                    step( undef, "$msgHeader$_$msgFooter", 3, 1 ) while <$fh>;
-                    close( $fh );
-                }
+            (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose 
+                ? undef : sub { step( undef, $msgHeader . (shift) . $msgFooter, 3, 1 ); }
             ),
             sub { $stderr .= shift; }
         );
@@ -169,12 +165,8 @@ sub _getComposer
                 $self->{'suCmdPattern'},
                 escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} self-update" )
             ),
-            (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : sub {
-                    my $lines = shift;
-                    open( my $fh, '<', \$lines ) or die ( $! );
-                    step( undef, "$msgHeader$_$msgFooter", 3, 1 ) while <$fh>;
-                    close( $fh );
-                }
+            (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
+                ? undef : sub { step( undef, "$msgHeader" . (shift) .$msgFooter, 3, 1 ); }
             ),
             sub { $stderr .= shift; }
         );
@@ -210,7 +202,9 @@ sub _checkRequirements
                 $self->{'suCmdPattern'},
                 escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} show $package $version" )
             ),
-            (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : sub { step( undef, $msg, 3, 2 ); }),
+            (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
+                ? undef : sub { step( undef, $msg . (shift), 3, 2 ); }
+            ),
             sub { $stderr .= shift; }
         );
         if ($rs) {
@@ -247,14 +241,14 @@ sub _installPackages
             escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} update" )
         ),
         sub { },
-        (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : sub {
-                my $lines = shift;
-                open( my $fh, '<', \$lines ) or die ( $! );
-                while(<$fh>) {
-                    next if /^\s+downloading/i;
-                    step( undef, "$msgHeader$_$msgFooter", 3, 3 );
-                }
-                close( $fh );
+        (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
+            ? undef
+            : sub {
+                #while(<$fh>) {
+                #    next if /^\s+downloading/i;
+                #    step( undef, "$msgHeader$_$msgFooter", 3, 3 );
+                #}
+                step( undef, $msgHeader .(shift) . $msgFooter, 3, 3 );
             }
         )
     );

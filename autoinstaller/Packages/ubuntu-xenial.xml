@@ -141,7 +141,6 @@
         <package>libfile-homedir-perl</package>
         <package>libhash-merge-perl</package>
         <package>libjson-perl</package>
-        <package>liblchown-perl</package>
         <package>libmailtools-perl</package>
         <package>libmime-tools-perl</package>
         <package>libnet-dns-perl</package>

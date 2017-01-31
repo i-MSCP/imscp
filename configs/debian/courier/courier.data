@@ -18,8 +18,6 @@ POPD_SSL_SNAME = courier-pop-ssl
 
 # Cyrus SASL
 SASL_CONF_DIR = /etc/postfix/sasl
-SASL_DATABASE_USER =
-SASL_DATABASE_PASSWORD =
 
 # Maildrop
 QUOTA_WARN_MSG_PATH = /etc/quotawarnmsg

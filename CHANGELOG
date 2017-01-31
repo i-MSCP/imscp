@@ -9,19 +9,27 @@ ARPL
     Removed: imscp-arpl-msgr log directory (ARPL error logs goes now into /var/log/mail.log)
 
 BACKEND
-    Changed: Event logging is now done on a per module basis (see the errata file for further details)
+    Changed: Event logging is now done on a per module basis - see the errata file for further details
     Changed: Listener files from deprecated /etc/imscp/hooks.d directory are now ignored
-    Fixed: Could not set user/group on dangling symlinks (iMSCP::Rights::setRights())
-    Fixed: Do not change symlinks mode, nor the mode of their targets (iMSCP::Rights::setRights())
-    Fixed: Do not connect to SQL server when that is not needed
+    Fixed: Couldn't set user/group on dangling symlinks (iMSCP::Rights::setRights())
+    Fixed: Don't change permissions on symlink targets (iMSCP::File)
+    Fixed: Don't change permissions on symlink targets (iMSCP::Rights)
+    Fixed: Don't connect to SQL server when that is not needed
     Fixed: Force addition of `CREATE DATABASE' statement in SQL dumps, even for empty databases
     Fixed: Restore database using master i-MSCP SQL user in place of customer SQL user
     Fixed: Several encoding issues (regression fix)
     Fixed: Usage of lchown(2) system call to avoid dereference of symlinks (iMSCP::Rights::setRights())
+    Review: Read line by line to avoid opening in-memory file in STDOUT|STDERR routines (iMSCP::Execute::executeNoWait)
+
+CONFIG
+    Changed: Usage of Courier authdaemon as password verifier (Cyrus SASL) - see the errata file for further details
+    Updated: Courier configuration for use of new password scheme (SHA512-CRYPT)
+    Updated: Cyrus SALS configuration for use of new password scheme (SHA512-CRYPT)
+    Updated: Dovecot configuration for use of new password scheme (SHA512-CRYPT)
 
 DATABASE
-    Removed: ftp_users.rawpasswd column (i-MSCP database)
-    Removed: sql_user.sqlu_pass column (i-MSCP database)
+    Removed: `ftp_users.rawpasswd' column (i-MSCP database)
+    Removed: `sql_user.sqlu_pass' column (i-MSCP database)
 
 DISTRIBUTIONS
     Added: PHP 5.5 and PHP 5.6 alternatives for Debian Wheezy through Dotdeb repository
@@ -33,8 +41,8 @@ DOCUMENTATION
 FRONTEND
     Changed: Restricts character range for password generator to ASCII alphabet characters and numbers
     Fixed: Administrators cannot switch onto reseller/customer interface when database update is available
-    Fixed: Do not list software that require database for customers that have not SQL feature enabled
-    Fixed: iMSCP_Exception_Production class not compatible with PHP >= 7.0
+    Fixed: Don't list software that require database for customers that have not SQL feature enabled
+    Fixed: `iMSCP_Exception_Production' class not compatible with PHP >= 7.0
     Removed: PhpMyAdmin auto-login feature (password for SQL database are no longer stored plaintext in database)
     Removed: Pydio auto-login feature (password for FTP users are no longer stored plaintext in database)
 

@@ -544,8 +544,6 @@ sub _init
     $self->{'restart'} = 0;
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
-    $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-    $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/courier.data", readonly => 1;
     $self;
 }

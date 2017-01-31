@@ -8,7 +8,7 @@ MYSQL_PORT              {DATABASE_PORT}
 MYSQL_OPT               0
 MYSQL_DATABASE          {DATABASE_NAME}
 MYSQL_USER_TABLE        mail_users
-MYSQL_CLEAR_PWFIELD     mail_pass
+MYSQL_CRYPT_PWFIELD     mail_pass
 MYSQL_UID_FIELD         '{MTA_MAILBOX_UID}'
 MYSQL_GID_FIELD         '{MTA_MAILBOX_GID}'
 MYSQL_LOGIN_FIELD       mail_addr

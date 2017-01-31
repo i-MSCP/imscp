@@ -206,7 +206,23 @@ sub configurePostfix
                         smtpd_sasl_auth_enable                => { action => 'replace', values => [ 'yes' ] },
                         smtpd_sasl_security_options           => { action => 'replace', values => [ 'noanonymous' ] },
                         smtpd_sasl_authenticated_header       => { action => 'replace', values => [ 'yes' ] },
-                        broken_sasl_auth_clients              => { action => 'replace', values => [ 'yes' ] }
+                        broken_sasl_auth_clients              => { action => 'replace', values => [ 'yes' ] },
+                        # SMTP restrictions
+                        smtpd_helo_restrictions               => {
+                            action => 'add',
+                            values => [ 'permit_sasl_authenticated' ],
+                            after  => qr/permit_mynetworks/
+                        },
+                        smtpd_sender_restrictions             => {
+                            action => 'add',
+                            values => [ 'permit_sasl_authenticated' ],
+                            after  => qr/permit_mynetworks/
+                        },
+                        smtpd_recipient_restrictions          => {
+                            action => 'add',
+                            values => [ 'permit_sasl_authenticated' ],
+                            after  => qr/permit_mynetworks/
+                        }
                     )
                 );
             }
