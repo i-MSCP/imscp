@@ -97,7 +97,7 @@ sub execute($;$$)
     getExitCode();
 }
 
-=item executeNoWait($command [, $stdoutSubref = CODE [, $stderrSubref = CODE ]])
+=item executeNoWait($command [, $subSTDOUT = CODE [, $subSTDERR = CODE ]])
 
  Execute the given command without wait, processing command STDOUT|STDERR line by line
 
@@ -130,22 +130,23 @@ sub executeNoWait($;$$)
     while(my @ready = $sel->can_read) {
         for my $fh (@ready) {
             # Read 1 byte at a time to avoid ending with multiple lines
-            my $ret = sysread( $fh, $buffers{$fh}, 1, length $buffers{$fh} );
+            my $ret = sysread( $fh, my $nextbyte, 1 );
 
             next if $!{'EINTR'}; # Ignore signal interrupt
 
-            defined $ret or die( $! ); # Something goes wrong, abort early
+            defined $ret or die( $! ); # Something is going wrong; Best is to abort early
 
-            if ($ret == 0) {
-                # EOL
+            if ($ret == 0) { # EOL
                 $sel->remove( $fh );
                 close( $fh );
                 next;
             }
 
+            $buffers{$fh} .= $nextbyte;
+
             next unless $buffers{$fh} =~ /\n\z/;
             $fh == $stdout ? $subSTDOUT->( $buffers{$fh} ) : $subSTDERR->( $buffers{$fh} );
-            $buffers{$fh} = '';
+            $buffers{$fh} = ''; # Reset buffer for next line
         }
     }
 

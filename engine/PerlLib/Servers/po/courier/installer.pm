@@ -96,8 +96,7 @@ sub authdaemonSqlUserDialog
     my ($self, $dialog) = @_;
 
     my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER' );
-    my $dbUser = main::setupGetQuestion('AUTHDAEMON_SQL_USER',
-        $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} || 'authdaemon_user');
+    my $dbUser = main::setupGetQuestion('AUTHDAEMON_SQL_USER', $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} || 'authdaemon_user');
     my $dbPass = main::setupGetQuestion('AUTHDAEMON_SQL_PASSWORD', $self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'});
 
     if ($main::reconfigure =~ /^(?:po|servers|all|forced)$/
@@ -390,15 +389,15 @@ sub _buildConf
     return $rs if $rs;
 
     my $data = {
-        DATABASE_HOST     => main::setupGetQuestion( 'DATABASE_HOST' ),
-        DATABASE_PORT     => main::setupGetQuestion( 'DATABASE_PORT' ),
-        DATABASE_USER     => $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'},
-        DATABASE_PASSWORD => $self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'},
-        DATABASE_NAME     => main::setupGetQuestion( 'DATABASE_NAME' ),
-        HOST_NAME         => main::setupGetQuestion( 'SERVER_HOSTNAME' ),
-        MTA_MAILBOX_UID   => scalar getpwnam( $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'} ),
-            MTA_MAILBOX_GID => scalar getgrnam( $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'} ),
-                MTA_VIRTUAL_MAIL_DIR => $self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}
+        DATABASE_HOST        => main::setupGetQuestion( 'DATABASE_HOST' ),
+        DATABASE_PORT        => main::setupGetQuestion( 'DATABASE_PORT' ),
+        DATABASE_USER        => $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'},
+        DATABASE_PASSWORD    => $self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'},
+        DATABASE_NAME        => main::setupGetQuestion( 'DATABASE_NAME' ),
+        HOST_NAME            => main::setupGetQuestion( 'SERVER_HOSTNAME' ),
+        MTA_MAILBOX_UID      => scalar getpwnam( $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'} ),
+        MTA_MAILBOX_GID      => scalar getgrnam( $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'} ),
+        MTA_VIRTUAL_MAIL_DIR => $self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}
     };
 
     my %cfgFiles = (

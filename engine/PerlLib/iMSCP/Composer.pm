@@ -154,8 +154,8 @@ sub _getComposer
                 $self->{'suCmdPattern'},
                 escapeShell( "curl -s http://getcomposer.org/installer | $self->{'phpCmd'}" )
             ),
-            (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose 
-                ? undef : sub { step( undef, $msgHeader . (shift) . $msgFooter, 3, 1 ); }
+            (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
+                ? undef : sub { step( undef, $msgHeader.(shift).$msgFooter, 3, 1 ); }
             ),
             sub { $stderr .= shift; }
         );
@@ -166,7 +166,7 @@ sub _getComposer
                 escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} self-update" )
             ),
             (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                ? undef : sub { step( undef, "$msgHeader" . (shift) .$msgFooter, 3, 1 ); }
+                ? undef : sub { step( undef, "$msgHeader".(shift).$msgFooter, 3, 1 ); }
             ),
             sub { $stderr .= shift; }
         );
@@ -203,7 +203,7 @@ sub _checkRequirements
                 escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} show $package $version" )
             ),
             (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                ? undef : sub { step( undef, $msg . (shift), 3, 2 ); }
+                ? undef : sub { step( undef, $msg.(shift), 3, 2 ); }
             ),
             sub { $stderr .= shift; }
         );
@@ -242,14 +242,7 @@ sub _installPackages
         ),
         sub { },
         (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-            ? undef
-            : sub {
-                #while(<$fh>) {
-                #    next if /^\s+downloading/i;
-                #    step( undef, "$msgHeader$_$msgFooter", 3, 3 );
-                #}
-                step( undef, $msgHeader .(shift) . $msgFooter, 3, 3 );
-            }
+            ? undef : sub { step( undef, $msgHeader.(shift).$msgFooter, 3, 3 ); }
         )
     );
 
