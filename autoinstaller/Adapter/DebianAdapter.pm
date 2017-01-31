@@ -890,7 +890,7 @@ sub _rebuildAndInstallPackage
     }
 
     my $oldDir = cwd();
-    my $srcDir = File::Temp->newdir( CLEANUP => 0 );
+    my $srcDir = File::Temp->newdir( CLEANUP => 1 );
     unless (chdir $srcDir) {
         error( sprintf( 'Could not change current directory to: %s', $srcDir, $! ) );
         return 1;
