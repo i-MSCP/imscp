@@ -24,7 +24,7 @@ CFLAGS = -g -O2
 OBJECTS = daemon_cmd.o daemon_conn.o daemon_init.o daemon_main.o daemon_msg.o\
           daemon_notify.o daemon_signals.o daemon_sock_io.o
 
-$(EXEC): clean $(OBJECTS)
+$(EXEC): $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -o $@
 	strip -s $@
 	@echo "Compilation done"

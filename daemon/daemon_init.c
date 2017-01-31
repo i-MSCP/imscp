@@ -11,15 +11,14 @@ void daemon_init(void)
      *
      * The parent process has then to wait for the daemon process
      * to initialize to return a consistent exit value. For this
-     * pupose, the daemon process will send \"1\" into the pipe if
+     * purpose, the daemon process will send \"1\" into the pipe if
      * everything went well and \"0\" otherwise.
      */
     switch(fork()) {
         case -1:
             perror("failed to daemonize");
             exit(EXIT_FAILURE);
-
-        case 0: /* daemon process */
+        case 0: /* child process */
             close(notify_pipe[0]); /* close the read side of the pipe */
             break;
         default: { /* parent process */
