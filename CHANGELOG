@@ -28,7 +28,7 @@ CONFIG
     Updated: Dovecot configuration for use of new password scheme (SHA512-CRYPT)
 
 DAEMON
-    Fixed: Default Makefile target shouldn't involve clean target
+    Fixed: Default Makefile target must not involves the `clean' target
 
 DATABASE
     Removed: `ftp_users.rawpasswd' column (i-MSCP database)
