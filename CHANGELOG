@@ -69,6 +69,7 @@ PLUGINS:
 
 SERVERS
     Added: Support for Python and Ruby CGI scripts (Http server impl.)
+    Fixed: Make sure that PHP Apache2 SAPI is disabled when needed (httpd server impl.)
     Fixed: POSTCONF(1) is being slow when called multiple-times, slowing down i-MSCP installer (Postfix server impl.)
     Fixed: Wrong events triggered (Servers::mta::postfix)
     Fixed: Wrong permissions set on Courier Authdaemon socket dir, making maildrop MDA unable to connect

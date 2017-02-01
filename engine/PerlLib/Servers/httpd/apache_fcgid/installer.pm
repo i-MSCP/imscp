@@ -376,7 +376,7 @@ sub _buildFastCgiConfFiles
     return $rs if $rs;
 
     # # Transitional: fastcgi_imscp
-    my @modulesOff = ('fastcgi', 'fcgid', 'php5_cgi', 'php_fpm_imscp', 'fastcgi_imscp');
+    my @modulesOff = ('fastcgi', 'fcgid', 'php5', 'php5_cgi', 'php7.0', 'php7.1', 'php_fpm_imscp', 'fastcgi_imscp');
     my @modulesOn = ('actions', 'fcgid_imscp', 'version');
 
     if ($apache24) {
