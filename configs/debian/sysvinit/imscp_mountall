@@ -1,8 +1,8 @@
 #!/bin/sh
 ### BEGIN INIT INFO
 # Provides:          imscp_mountall
-# Required-Start:    $local_fs
-# Required-Stop:     $local_fs
+# Required-Start:    $all
+# Required-Stop:
 # Should-Start:
 # Should-Stop:
 # Default-Start:     2 3 4 5

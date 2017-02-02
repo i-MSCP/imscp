@@ -80,6 +80,9 @@ SERVERS
     Fixed: Wrong permissions set on Courier Authdaemon socket dir, making maildrop MDA unable to connect
     Fixed: Wrong permissions set on Dovecot configuration files
 
+SERVICES
+    Fixed: The `imscp_mountall' service must be started as late as possible on server boot
+
 YOUTRACK
     #IP-0826 Any password should be encrypted
     #IP-1383 Security - Remove auto-login feature to remove plaintext passwords
