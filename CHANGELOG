@@ -27,6 +27,10 @@ CONFIG
     Updated: Cyrus SALS configuration for use of new password scheme (SHA512-CRYPT)
     Updated: Dovecot configuration for use of new password scheme (SHA512-CRYPT)
 
+SCRIPTS
+    Added: Support for IPv6 traffic data (imscp-srv-traff)
+    Fixed: Missing iptables chains/rules for IPv6 traffic logging (imscp-net-traffic-logger)
+
 DAEMON
     Fixed: Default Makefile target must not involves the `clean' target
 
