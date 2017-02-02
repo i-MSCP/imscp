@@ -1,24 +1,23 @@
 
 <!-- BDP: ftp_accounts -->
 <script>
-    $(function() {
+    $(function () {
         $('.datatable').dataTable(
             {
                 language: imscp_i18n.core.dataTable,
                 stateSave: true,
                 pagingType: "simple",
                 columnDefs: [
-                    { type: "natural", targets: [1] }
+                    {type: "natural", targets: [1]}
                 ]
             }
         );
 
-        $(".i_delete").on('click', function(){
+        $(".i_delete").on('click', function () {
             return confirm(sprintf(imscp_i18n.core.deletion_confirm_msg, $(this).data('userid')))
         });
     })
 </script>
-
 <table class="datatable">
     <thead>
     <tr>

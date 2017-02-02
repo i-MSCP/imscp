@@ -1,3 +1,4 @@
+
 <script>
     $(function () {
         <!-- BDP: shared_mount_point_option_js -->
@@ -42,7 +43,6 @@
         });
     });
 </script>
-
 <form name="add_domain_alias_frm" method="post" action="alias_add.php">
     <table class="firstColFixed">
         <thead>
@@ -75,11 +75,9 @@
             <td>{TR_SHARED_MOUNT_POINT} <span class="icon i_help" title="{TR_SHARED_MOUNT_POINT_TOOLTIP}"></span></td>
             <td>
                 <div class="radio">
-                    <input type="radio" name="shared_mount_point" id="shared_mount_point_yes"
-                           value="yes"{SHARED_MOUNT_POINT_YES}>
+                    <input type="radio" name="shared_mount_point" id="shared_mount_point_yes" value="yes"{SHARED_MOUNT_POINT_YES}>
                     <label for="shared_mount_point_yes">{TR_YES}</label>
-                    <input type="radio" name="shared_mount_point" id="shared_mount_point_no"
-                           value="no"{SHARED_MOUNT_POINT_NO}>
+                    <input type="radio" name="shared_mount_point" id="shared_mount_point_no" value="no"{SHARED_MOUNT_POINT_NO}>
                     <label for="shared_mount_point_no">{TR_NO}</label>
                 </div>
                 <label for="shared_mount_point_domain">

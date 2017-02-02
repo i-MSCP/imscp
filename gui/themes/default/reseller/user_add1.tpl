@@ -40,7 +40,6 @@
         }).trigger('change');
     });
 </script>
-
 <form name="reseller_add_users_first_frm" method="post" action="user_add1.php">
     <table class="firstColFixed">
         <thead>
@@ -56,8 +55,6 @@
             </td>
             <td><input type="text" name="dmn_name" id="dmn_name" value="{DOMAIN_NAME_VALUE}"></td>
         </tr>
-
-
         <tr>
             <td>{TR_URL_FORWARDING} <span class="icon i_help" title="{TR_URL_FORWARDING_TOOLTIP}"></span></td>
             <td>

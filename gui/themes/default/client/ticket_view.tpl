@@ -33,9 +33,7 @@
 </table>
 <!-- EDP: ticket_message -->
 <!-- EDP: ticket -->
-
 <h2 class="doc"><span>{TR_TICKET_NEW_REPLY}</span></h2>
-
 <form name="ticketFrm" method="post" action="ticket_view.php?ticket_id={TICKET_ID_VAL}">
     <label><textarea name="user_message" style="height:250px"></textarea></label>
     <div class="buttons">

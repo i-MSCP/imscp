@@ -18,7 +18,6 @@
     });
 </script>
 <!-- EDP: auth_selectors_js -->
-
 <form name="addProtectedAreaFrm" method="post" action="protected_areas_add.php">
     <table class="firstColFixed">
         <thead>

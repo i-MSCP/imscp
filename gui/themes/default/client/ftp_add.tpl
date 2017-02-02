@@ -1,22 +1,22 @@
+
 <script>
     $(function () {
         $('#domain_type').change(function () {
             $.post(
-                    "ftp_add.php",
-                    { "domain_type": this.value },
-                    function (data) {
-                        var select = $("#domain_name");
-                        select.empty();
-                        for (var i = 0; i < data.length; i++) {
-                            select.append('<option value="' + data[i].domain_name_val + '">' + data[i].domain_name + '</option>');
-                        }
-                    },
-                    "json"
+                "ftp_add.php",
+                {"domain_type": this.value},
+                function (data) {
+                    var select = $("#domain_name");
+                    select.empty();
+                    for (var i = 0; i < data.length; i++) {
+                        select.append('<option value="' + data[i].domain_name_val + '">' + data[i].domain_name + '</option>');
+                    }
+                },
+                "json"
             );
         });
     });
 </script>
-
 <form name="add_ftp_account_frm" method="post" action="ftp_add.php">
     <table>
         <thead>

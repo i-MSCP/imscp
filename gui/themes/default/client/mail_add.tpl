@@ -25,7 +25,6 @@
         }).trigger('change');
     });
 </script>
-
 <!-- BDP: mail_account -->
 <form name="client_mail_add" action="mail_add.php" method="post">
     <table class="firstColFixed">

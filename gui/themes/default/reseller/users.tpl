@@ -4,7 +4,6 @@
         return confirm(sprintf("{TR_MESSAGE_DELETE}", dmn_name));
     }
 </script>
-
 <!-- BDP: users_search -->
 <form action="users.php" method="post" name="search_user" id="search_user">
     <div style="width=100%;vertical-align: middle;">
@@ -40,11 +39,9 @@
     <div style="clear:both"></div>
 </form>
 <!-- EDP: users_search -->
-
 <!-- BDP: usr_message -->
 <div class="static_info">{USR_MESSAGE}</div>
 <!-- EDP: usr_message -->
-
 <!-- BDP: users_list -->
 <table>
     <thead>
@@ -94,7 +91,6 @@
     <!-- EDP: user_entry -->
     </tbody>
 </table>
-
 <div class="paginator">
     <!-- BDP: scroll_prev -->
     <a class="icon i_prev" href="users.php?psi={PREV_PSI}" title="{TR_PREVIOUS}">{TR_PREVIOUS}</a>

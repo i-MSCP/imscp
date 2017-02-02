@@ -1,16 +1,15 @@
+
 <script>
     function action_remove_right() {
         return confirm("{TR_MESSAGE_REMOVE}");
     }
 </script>
-
 <!-- BDP: no_select_reseller -->
 <div class="static_info">{NO_RESELLER_AVAILABLE}</div>
 <!-- EDP: no_select_reseller -->
 <!-- BDP: no_reseller_list -->
 <div class="static_info">{NO_RESELLER}</div>
 <!-- EDP: no_reseller_list -->
-
 <table>
     <thead>
     <tr>

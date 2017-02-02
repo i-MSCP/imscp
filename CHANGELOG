@@ -50,6 +50,7 @@ FRONTEND
     Fixed: Administrators cannot switch onto reseller/customer interface when database update is available
     Fixed: Don't list software that require database for customers that have not SQL feature enabled
     Fixed: `iMSCP_Exception_Production' class not compatible with PHP >= 7.0
+    Fixed: IP address input field is too small (admin/ip_manage.php)
     Removed: PhpMyAdmin auto-login feature (password for SQL database are no longer stored plaintext in database)
     Removed: Pydio auto-login feature (password for FTP users are no longer stored plaintext in database)
 

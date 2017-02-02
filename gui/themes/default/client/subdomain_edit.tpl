@@ -20,7 +20,6 @@
         }).trigger('change');
     });
 </script>
-
 <form name="edit_subdomain_frm" method="post" action="subdomain_edit.php?id={SUBDOMAIN_ID}&amp;type={SUBDOMAIN_TYPE}">
     <table class="firstColFixed">
         <thead>

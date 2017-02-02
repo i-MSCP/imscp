@@ -16,8 +16,8 @@
         return (url != '#' && confirm(msg));
     }
 
-    $(function() {
-       $(".datatable").dataTable({
+    $(function () {
+        $(".datatable").dataTable({
             language: imscp_i18n.core.dataTable,
             displayLength: 10,
             stateSave: true,
@@ -25,9 +25,7 @@
         });
     });
 </script>
-
 <h3 class="domains"><span>{TR_DOMAINS}</span></h3>
-
 <!-- BDP: domain_list -->
 <table class="firstColFixed">
     <thead>
@@ -147,9 +145,7 @@
         </td>
         <!-- EDP: sub_status_reload_true -->
         <!-- BDP: sub_status_reload_false -->
-        <td>
-            <span class="tips icon i_domain_icon" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</span>
-        </td>
+        <td><span class="tips icon i_domain_icon" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</span></td>
         <!-- EDP: sub_status_reload_false -->
         <td>{SUB_MOUNT_POINT}</td>
         <td>{SUB_DOCUMENT_ROOT}</td>
@@ -167,7 +163,6 @@
 </table>
 <!-- EDP: sub_list -->
 <!-- EDP: subdomains_block -->
-
 <!-- BDP: custom_dns_records_block -->
 <h3 class="domains"><span>{TR_DNS}</span></h3>
 <!-- BDP: dns_message -->

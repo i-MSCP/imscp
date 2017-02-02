@@ -17,7 +17,8 @@
                     <!-- EDP: already_in -->
                 </select>
                 <!-- BDP: remove_button -->
-                <input name="Submit" type="submit" value="{TR_REMOVE}" onclick="return sbmt(document.forms[0],'remove');">
+                <input name="Submit" type="submit" value="{TR_REMOVE}"
+                       onclick="return sbmt(document.forms[0],'remove');">
                 <!-- EDP: remove_button -->
             </td>
         </tr>
@@ -39,7 +40,6 @@
         <!-- EDP: not_in_group -->
         </tbody>
     </table>
-
     <div class="buttons">
         <a class="link_as_button" href="protected_user_manage.php">{TR_CANCEL}</a>
         <input type="hidden" name="nadmin_name" value="{UID}">

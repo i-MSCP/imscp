@@ -8,13 +8,10 @@
         return false;
     }
 </script>
-
 <h2 class="groups"><span>{TR_USERS}</span></h2>
-
 <!-- BDP: users_message_block -->
 <div class="static_info">{USERS_MESSAGE}</div>
 <!-- EDP: users_message_block -->
-
 <!-- BDP: users_block -->
 <table class="firstColFixed">
     <thead>
@@ -39,17 +36,13 @@
     </tbody>
 </table>
 <!-- EDP: users_block -->
-
 <div class="buttons">
     <a class="link_as_button" href="protected_user_add.php">{TR_ADD_USER}</a>
 </div>
-
 <h2 class="groups"><span>{TR_GROUPS}</span></h2>
-
 <!-- BDP: groups_message_block -->
 <div class="static_info">{GROUPS_MESSAGE}</div>
 <!-- EDP: groups_message_block -->
-
 <!-- BDP: groups_block -->
 <table class="firstColFixed">
     <thead>
@@ -76,7 +69,6 @@
     </tbody>
 </table>
 <!-- EDP: groups_block -->
-
 <div class="buttons">
     <a class="link_as_button" href="protected_group_add.php">{TR_ADD_GROUP}</a>
     <a class="link_as_button" href="protected_areas.php">{TR_CANCEL}</a>

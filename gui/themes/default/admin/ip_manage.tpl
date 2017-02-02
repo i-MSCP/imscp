@@ -99,10 +99,8 @@
         });
     });
 </script>
-
 <p class="hint" style="font-variant: small-caps;font-size: small;">{TR_TIP}</p>
 <br>
-
 <!-- BDP: ip_addresses_block -->
 <table class="datatable">
     <thead>
@@ -141,7 +139,6 @@
     </tbody>
 </table>
 <!-- EDP: ip_addresses_block -->
-
 <!-- BDP: ip_address_form_block -->
 <form name="addIpFrm" method="post" action="ip_manage.php">
     <table class="firstColFixed">
@@ -154,7 +151,7 @@
         <tr>
             <td><label for="ip_card">{TR_NETWORK_CARD}</label></td>
             <td>
-                <select name="ip_card" id="ip_card">
+                <select name="ip_card" id="ip_card" mul>
                     <!-- BDP: network_card_block -->
                     <option{SELECTED}>{NETWORK_CARD}</option>
                     <!-- EDP: network_card_block -->
@@ -162,12 +159,12 @@
             </td>
         </tr>
         <tr>
-            <td><label for="ip_number">{TR_IP}</label></td>
-            <td><input name="ip_number" id="ip_number" type="text" value="{VALUE_IP}" maxlength="32" autocomplete="off"></td>
-        </tr>
-        <tr>
-            <td><label for="ip_netmask">{TR_IP_NETMASK}</label></td>
-            <td><input name="ip_netmask" id="ip_netmask" type="number" value="{VALUE_IP_NETMASK}" min="1" max="32"></td>
+            <td><label for="ip_number">{TR_IP} / {TR_IP_NETMASK}</label></td>
+            <td>
+                <input name="ip_number" id="ip_number" type="text" value="{VALUE_IP}" style="min-width:300px" maxlength="45" autocomplete="off">
+                <strong>/</strong>
+                <label><input name="ip_netmask" id="ip_netmask" type="number" value="{VALUE_IP_NETMASK}" style="min-width:40px" min="1" max="32"></label>
+            </td>
         </tr>
         <tr>
             <td>

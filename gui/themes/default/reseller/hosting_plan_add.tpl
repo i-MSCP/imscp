@@ -23,7 +23,6 @@
         });
     });
 </script>
-
 <form method="post" action="hosting_plan_add.php">
     <table class="firstColFixed">
         <thead>
@@ -52,50 +51,50 @@
         <!-- BDP: nb_subdomains -->
         <tr>
             <td><label for="sub">{TR_MAX_SUBDOMAINS}</label></td>
-            <td><input type="text" name="sub" id="sub" value="{MAX_SUB_LIMITS}"></td>
+            <td><input type="number" name="sub" id="sub" min="-1" value="{MAX_SUB_LIMITS}"></td>
         </tr>
         <!-- EDP: nb_subdomains -->
         <!-- BDP: nb_domain_aliases -->
         <tr>
             <td><label for="als">{TR_MAX_ALIASES}</label></td>
-            <td><input type="text" name="als" id="als" value="{MAX_ALS_VALUES}"></td>
+            <td><input type="number" name="als" id="als" min="-1" value="{MAX_ALS_VALUES}"></td>
         </tr>
         <!-- EDP: nb_domain_aliases -->
         <!-- BDP: nb_mail -->
         <tr>
             <td><label for="mail">{TR_MAX_MAILACCOUNTS}</label></td>
-            <td><input type="text" name="mail" id="mail" value="{MAIL_VALUE}"></td>
+            <td><input type="number" name="mail" id="mail" min="-1" value="{MAIL_VALUE}"></td>
         </tr>
         <tr>
             <td><label for="mail_quota">{TR_MAIL_QUOTA}</label></td>
-            <td><input type="text" name="mail_quota" id="mail_quota" value="{MAIL_QUOTA_VALUE}"></td>
+            <td><input type="number" name="mail_quota" id="mail_quota" min="0" value="{MAIL_QUOTA_VALUE}"></td>
         </tr>
         <!-- EDP: nb_mail -->
         <!-- BDP: nb_ftp -->
         <tr>
             <td><label for="ftp">{TR_MAX_FTP}</label></td>
-            <td><input type="text" name="ftp" id="ftp" value="{FTP_VALUE}"></td>
+            <td><input type="number" name="ftp" id="ftp" min="-1" value="{FTP_VALUE}"></td>
         </tr>
         <!-- EDP: nb_ftp -->
         <!-- BDP: nb_sqld -->
         <tr>
             <td><label for="sql_db">{TR_MAX_SQL}</label></td>
-            <td><input type="text" name="sql_db" id="sql_db" value="{SQL_DB_VALUE}"></td>
+            <td><input type="number" name="sql_db" id="sql_db" min="-1" value="{SQL_DB_VALUE}"></td>
         </tr>
         <!-- EDP: nb_sqld -->
         <!-- BDP: nb_sqlu -->
         <tr>
             <td><label for="sql_user">{TR_MAX_SQL_USERS}</label></td>
-            <td><input type="text" name="sql_user" id="sql_user" value="{SQL_USER_VALUE}"></td>
+            <td><input type="number" name="sql_user" id="sql_user" min="-1" value="{SQL_USER_VALUE}"></td>
         </tr>
         <!-- EDP: nb_sqlu -->
         <tr>
             <td><label for="traff">{TR_MAX_TRAFFIC}</label></td>
-            <td><input type="text" name="traff" id="traff" value="{TRAFF_VALUE}"></td>
+            <td><input type="number" name="traff" id="traff" min="0" value="{TRAFF_VALUE}"></td>
         </tr>
         <tr>
             <td><label for="disk">{TR_DISK_LIMIT}</label></td>
-            <td><input type="text" name="disk" id="disk" value="{DISK_VALUE}"></td>
+            <td><input type="number" name="disk" id="disk" min="0" value="{DISK_VALUE}"></td>
         </tr>
         </tbody>
     </table>

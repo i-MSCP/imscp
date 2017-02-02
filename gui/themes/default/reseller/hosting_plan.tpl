@@ -1,5 +1,10 @@
 
 <!-- BDP: hosting_plans -->
+<script>
+    function action_delete() {
+        return confirm(imscp_i18n.core.hp_delete_confirmation);
+    }
+</script>
 <table>
     <thead>
     <tr>
@@ -23,10 +28,4 @@
     <!-- EDP: hosting_plan -->
     </tbody>
 </table>
-
-<script>
-    function action_delete() {
-        return confirm(imscp_i18n.core.hp_delete_confirmation);
-    }
-</script>
 <!-- EDP: hosting_plans -->

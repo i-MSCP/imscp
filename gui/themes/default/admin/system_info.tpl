@@ -2,18 +2,17 @@
 <script>
     $(function () {
         $('.datatable').dataTable(
-                {
-                    language: imscp_i18n.core.dataTable,
-                    stateSave: true,
-                    pagingType: "simple",
-                    columnDefs: [
-                        {type: "natural", targets: [1]}
-                    ]
-                }
+            {
+                language: imscp_i18n.core.dataTable,
+                stateSave: true,
+                pagingType: "simple",
+                columnDefs: [
+                    {type: "natural", targets: [1]}
+                ]
+            }
         );
     });
 </script>
-
 <table class="firstColFixed">
     <thead>
     <tr>
@@ -35,9 +34,7 @@
     </tr>
     </tbody>
 </table>
-
 <h2 class="system_cpu"><span>{TR_CPU_INFO}</span></h2>
-
 <table class="firstColFixed">
     <thead>
     <tr>
@@ -67,9 +64,7 @@
     </tr>
     </tbody>
 </table>
-
 <h2 class="tools"><span>{TR_MEMORY_INFO}</span></h2>
-
 <table class="firstColFixed">
     <thead>
     <tr>
@@ -88,7 +83,6 @@
     </tr>
     </tbody>
 </table>
-
 <table class="firstColFixed">
     <thead>
     <tr>
@@ -107,9 +101,7 @@
     </tr>
     </tbody>
 </table>
-
 <h2 class="tools"><span>{TR_FILE_SYSTEM_INFO}</span></h2>
-
 <table class="firstColFixed datatable">
     <thead>
     <tr>

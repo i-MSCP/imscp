@@ -1,3 +1,4 @@
+
 <script>
     $(function () {
         var $dataTable = $(".datatable").dataTable({
@@ -57,9 +58,7 @@
         });
     });
 </script>
-
 <p class="hint" style="font-variant: small-caps;font-size: small;">{TR_PLUGIN_HINT}</p><br>
-
 <!-- BDP: plugins_block -->
 <form name="plugin_frm" action="settings_plugins.php" method="post">
     <table class="datatable">
@@ -103,8 +102,7 @@
             <td>
                 <!-- BDP: plugin_activate_link -->
                 <a style="vertical-align: middle;" class="icon i_open" href="settings_plugins.php?{ACTIVATE_ACTION}={PLUGIN_NAME}" title="{TR_ACTIVATE_TOOLTIP}"></a>
-                <a style="vertical-align: middle;" class="icon i_close"
-                   href="settings_plugins.php?{UNINSTALL_ACTION}={PLUGIN_NAME}" title="{TR_UNINSTALL_TOOLTIP}"></a>
+                <a style="vertical-align: middle;" class="icon i_close" href="settings_plugins.php?{UNINSTALL_ACTION}={PLUGIN_NAME}" title="{TR_UNINSTALL_TOOLTIP}"></a>
                 <!-- EDP: plugin_activate_link -->
                 <!-- BDP: plugin_deactivate_link -->
                 <a style="vertical-align: middle;" class="icon i_close" href="settings_plugins.php?disable={PLUGIN_NAME}" title="{TR_DEACTIVATE_TOOLTIP}"></a>

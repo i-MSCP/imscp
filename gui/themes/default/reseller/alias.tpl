@@ -1,3 +1,4 @@
+
 <script>
     $(function () {
         var $dataTable = $(".datatable").dataTable({
@@ -39,7 +40,6 @@
         return confirm(sprintf("{TR_MESSAGE_DELETE_ALIAS_ORDER}", name));
     }
 </script>
-
 <table class="datatable">
     <thead>
     <tr>
@@ -57,7 +57,6 @@
     </tr>
     </tbody>
 </table>
-
 <!-- BDP: als_add_button -->
 <div style="float:right;">
     <a class="link_as_button" href="alias_add.php">{TR_ADD_DOMAIN_ALIAS}</a>

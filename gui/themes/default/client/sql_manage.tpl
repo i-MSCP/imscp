@@ -15,7 +15,6 @@
         return false;
     }
 </script>
-
 <table class="firstColFixed">
     <thead>
     <tr>

@@ -1,12 +1,13 @@
+
 <script>
     $(function () {
         $('.datatable').dataTable(
-                {
-                    language: imscp_i18n.core.datatable,
-                    displayLength: 10,
-                    stateSave: true,
-                    pagingType: "simple"
-                }
+            {
+                language: imscp_i18n.core.datatable,
+                displayLength: 10,
+                stateSave: true,
+                pagingType: "simple"
+            }
         );
     });
 </script>
@@ -44,4 +45,3 @@
     <!-- EDP: item -->
     </tbody>
 </table>
-

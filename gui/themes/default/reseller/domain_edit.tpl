@@ -15,7 +15,6 @@
         });
     });
 </script>
-
 <form method="post" action="domain_edit.php?edit_id={EDIT_ID}" autocomplete="off">
     <table class="firstColFixed">
         <thead>
@@ -65,7 +64,7 @@
         <!-- BDP: subdomain_limit_block -->
         <tr>
             <td><label for="domain_subd_limit">{TR_SUBDOMAINS_LIMIT}</label></td>
-            <td><input type="text" name="domain_subd_limit" id="domain_subd_limit" value="{SUBDOMAIN_LIMIT}"></td>
+            <td><input type="number" name="domain_subd_limit" id="domain_subd_limit" min="-1" value="{SUBDOMAIN_LIMIT}"></td>
             <td>{TR_CUSTOMER_SUBDOMAINS_COMSUPTION}</td>
             <td>{TR_RESELLER_SUBDOMAINS_COMSUPTION}</td>
         </tr>
@@ -73,7 +72,7 @@
         <!-- BDP: domain_aliases_limit_block -->
         <tr>
             <td><label for="domain_alias_limit">{TR_ALIASSES_LIMIT}</label></td>
-            <td><input type="text" name="domain_alias_limit" id="domain_alias_limit" value="{DOMAIN_ALIASSES_LIMIT}"></td>
+            <td><input type="number" name="domain_alias_limit" id="domain_alias_limit" min="-1" value="{DOMAIN_ALIASSES_LIMIT}"></td>
             <td>{TR_CUSTOMER_DOMAIN_ALIASSES_COMSUPTION}</td>
             <td>{TR_RESELLER_DOMAIN_ALIASSES_COMSUPTION}</td>
         </tr>
@@ -81,13 +80,13 @@
         <!-- BDP: mail_accounts_limit_block -->
         <tr>
             <td><label for="domain_mailacc_limit">{TR_MAIL_ACCOUNTS_LIMIT}</label></td>
-            <td><input type="text" name="domain_mailacc_limit" id="domain_mailacc_limit" value="{MAIL_ACCOUNTS_LIMIT}"></td>
+            <td><input type="number" name="domain_mailacc_limit" id="domain_mailacc_limit" min="-1" value="{MAIL_ACCOUNTS_LIMIT}"></td>
             <td>{TR_CUSTOMER_MAIL_ACCOUNTS_COMSUPTION}</td>
             <td>{TR_RESELLER_MAIL_ACCOUNTS_COMSUPTION}</td>
         </tr>
         <tr>
             <td><label for="mail_quota">{TR_MAIL_QUOTA}</label></td>
-            <td><input type="text" name="mail_quota" id="mail_quota" value="{MAIL_QUOTA}"></td>
+            <td><input type="number" name="mail_quota" id="mail_quota" min="0" value="{MAIL_QUOTA}"></td>
             <td>{TR_CUSTOMER_MAIL_QUOTA_COMSUPTION}</td>
             <td>{TR_NO_AVAILABLE}</td>
         </tr>
@@ -95,7 +94,7 @@
         <!-- BDP: ftp_accounts_limit_block -->
         <tr>
             <td><label for="domain_ftpacc_limit">{TR_FTP_ACCOUNTS_LIMIT}</label></td>
-            <td><input type="text" name="domain_ftpacc_limit" id="domain_ftpacc_limit" value="{FTP_ACCOUNTS_LIMIT}"></td>
+            <td><input type="number" name="domain_ftpacc_limit" id="domain_ftpacc_limit" min="-1" value="{FTP_ACCOUNTS_LIMIT}"></td>
             <td>{TR_CUSTOMER_FTP_ACCOUNTS_COMSUPTION}</td>
             <td>{TR_RESELLER_FTP_ACCOUNTS_COMSUPTION}</td>
         </tr>
@@ -103,26 +102,26 @@
         <!-- BDP: sql_db_and_users_limit_block -->
         <tr>
             <td><label for="domain_sqld_limit">{TR_SQL_DATABASES_LIMIT}</label></td>
-            <td><input type="text" name="domain_sqld_limit" id="domain_sqld_limit" value="{SQL_DATABASES_LIMIT}"></td>
+            <td><input type="number" name="domain_sqld_limit" id="domain_sqld_limit" min="-1" value="{SQL_DATABASES_LIMIT}"></td>
             <td>{TR_CUSTOMER_SQL_DATABASES_COMSUPTION}</td>
             <td>{TR_RESELLER_SQL_DATABASES_COMSUPTION}</td>
         </tr>
         <tr>
             <td><label for="domain_sqlu_limit">{TR_SQL_USERS_LIMIT}</label></td>
-            <td><input type="text" name="domain_sqlu_limit" id="domain_sqlu_limit" value="{SQL_USERS_LIMIT}"></td>
+            <td><input type="number" name="domain_sqlu_limit" id="domain_sqlu_limit" min="-1" value="{SQL_USERS_LIMIT}"></td>
             <td>{TR_CUSTOMER_SQL_USERS_COMSUPTION}</td>
             <td>{TR_RESELLER_SQL_USERS_COMSUPTION}</td>
         </tr>
         <!-- EDP: sql_db_and_users_limit_block -->
         <tr>
             <td><label for="domain_traffic_limit">{TR_TRAFFIC_LIMIT}</label></td>
-            <td><input type="text" name="domain_traffic_limit" id="domain_traffic_limit" value="{TRAFFIC_LIMIT}"></td>
+            <td><input type="number" name="domain_traffic_limit" id="domain_traffic_limit" min="0" value="{TRAFFIC_LIMIT}"></td>
             <td>{TR_CUSTOMER_TRAFFIC_COMSUPTION}</td>
             <td>{TR_RESELLER_TRAFFIC_COMSUPTION}</td>
         </tr>
         <tr>
             <td><label for="domain_disk_limit">{TR_DISK_LIMIT}</label></td>
-            <td><input type="text" name="domain_disk_limit" id="domain_disk_limit" value="{DISK_LIMIT}"></td>
+            <td><input type="number" name="domain_disk_limit" id="domain_disk_limit" min="0" value="{DISK_LIMIT}"></td>
             <td>{TR_CUSTOMER_DISKPACE_COMSUPTION}</td>
             <td>{TR_RESELLER_DISKPACE_COMSUPTION}</td>
         </tr>

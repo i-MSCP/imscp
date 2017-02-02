@@ -1,3 +1,4 @@
+
 <script>
     $(function () {
         $.each(imscp_i18n.core.error_field_stack, function (i, k) {
@@ -19,7 +20,6 @@
         });
     });
 </script>
-
 <form name="editFrm" method="post" action="reseller_edit.php?edit_id={EDIT_ID}">
     <table class="firstColFixed">
         <thead>
@@ -47,7 +47,6 @@
         </tr>
         </tbody>
     </table>
-
     <!-- BDP: ips_block -->
     <table class="firstColFixed datatable">
         <thead>
@@ -68,7 +67,6 @@
         </tbody>
     </table>
     <!-- EDP: ips_block -->
-
     <table class="firstColFixed">
         <thead>
         <tr>
@@ -78,43 +76,42 @@
         <tbody>
         <tr>
             <td><label for="max_dmn_cnt">{TR_MAX_DMN_CNT}</label></td>
-            <td><input type="text" name="max_dmn_cnt" id="max_dmn_cnt" value="{MAX_DMN_CNT}"></td>
+            <td><input type="number" name="max_dmn_cnt" id="max_dmn_cnt" min="0" value="{MAX_DMN_CNT}"></td>
         </tr>
         <tr>
             <td><label for="max_sub_cnt">{TR_MAX_SUB_CNT}</label></td>
-            <td><input type="text" name="max_sub_cnt" id="max_sub_cnt" value="{MAX_SUB_CNT}"></td>
+            <td><input type="number" name="max_sub_cnt" id="max_sub_cnt" min="-1" value="{MAX_SUB_CNT}"></td>
         </tr>
         <tr>
             <td><label for="max_als_cnt">{TR_MAX_ALS_CNT}</label></td>
-            <td><input type="text" name="max_als_cnt" id="max_als_cnt" value="{MAX_ALS_CNT}"></td>
+            <td><input type="number" name="max_als_cnt" id="max_als_cnt" min="-1" value="{MAX_ALS_CNT}"></td>
         </tr>
         <tr>
             <td><label for="max_mail_cnt">{TR_MAX_MAIL_CNT}</label></td>
-            <td><input type="text" name="max_mail_cnt" id="max_mail_cnt" value="{MAX_MAIL_CNT}"></td>
+            <td><input type="number" name="max_mail_cnt" id="max_mail_cnt" min="-1" value="{MAX_MAIL_CNT}"></td>
         </tr>
         <tr>
             <td><label for="max_ftp_cnt">{TR_MAX_FTP_CNT}</label></td>
-            <td><input type="text" name="max_ftp_cnt" id="max_ftp_cnt" value="{MAX_FTP_CNT}"></td>
+            <td><input type="number" name="max_ftp_cnt" id="max_ftp_cnt" min="-1" value="{MAX_FTP_CNT}"></td>
         </tr>
         <tr>
             <td><label for="max_sql_db_cnt">{TR_MAX_SQL_DB_CNT}</label></td>
-            <td><input type="text" name="max_sql_db_cnt" id="max_sql_db_cnt" value="{MAX_SQL_DB_CNT}"></td>
+            <td><input type="text" name="max_sql_db_cnt" id="max_sql_db_cnt" min="-1" value="{MAX_SQL_DB_CNT}"></td>
         </tr>
         <tr>
             <td><label for="max_sql_user_cnt">{TR_MAX_SQL_USER_CNT}</label></td>
-            <td><input type="text" name="max_sql_user_cnt" id="max_sql_user_cnt" value="{MAX_SQL_USER_CNT}"></td>
+            <td><input type="number" name="max_sql_user_cnt" id="max_sql_user_cnt" min="-1" value="{MAX_SQL_USER_CNT}"></td>
         </tr>
         <tr>
             <td><label for="max_traff_amnt">{TR_MAX_TRAFF_AMNT}</label></td>
-            <td><input type="text" name="max_traff_amnt" id="max_traff_amnt" value="{MAX_TRAFF_AMNT}"></td>
+            <td><input type="number" name="max_traff_amnt" id="max_traff_amnt" min="0" value="{MAX_TRAFF_AMNT}"></td>
         </tr>
         <tr>
             <td><label for="max_disk_amnt">{TR_MAX_DISK_AMNT}</label></td>
-            <td><input type="text" name="max_disk_amnt" id="max_disk_amnt" value="{MAX_DISK_AMNT}"></td>
+            <td><input type="number" name="max_disk_amnt" id="max_disk_amnt" min="0" value="{MAX_DISK_AMNT}"></td>
         </tr>
         </tbody>
     </table>
-
     <table class="firstColFixed">
         <thead>
         <tr>

@@ -25,7 +25,6 @@
         }).trigger('change');
     });
 </script>
-
 <form name="client_mail_edit" action="mail_edit.php?id={MAIL_ID}" method="post">
     <table class="firstColFixed">
         <thead>
@@ -49,7 +48,7 @@
         </tr>
         <tr>
             <td><label for="username">{TR_USERNAME}</label></td>
-            <td><input type="text" name="username" id="username" value="{USERNAME}" disabled="disabled"/></td>
+            <td><input type="text" name="username" id="username" value="{USERNAME}" disabled="disabled"></td>
         </tr>
         <tr>
             <td><label for="domain_name">{TR_DOMAIN_NAME}</label></td>
@@ -61,8 +60,7 @@
         </tr>
         <tr id="tr_password">
             <td><label for="password">{TR_PASSWORD}</label></td>
-            <td><input id="password" type="password" name="password" value="" class="pwd_generator" autocomplete="off">
-            </td>
+            <td><input id="password" type="password" name="password" value="" class="pwd_generator" autocomplete="off"></td>
         </tr>
         <tr id="tr_password_rep">
             <td><label for="cpassword">{TR_PASSWORD_REPEAT}</label></td>

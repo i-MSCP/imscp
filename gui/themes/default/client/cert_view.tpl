@@ -8,7 +8,7 @@
             <!-- EDP: ssl_certificate_disabled_fields -->
         }
 
-        $("#allow_hsts_on,#allow_hsts_off").on('change', function() {
+        $("#allow_hsts_on,#allow_hsts_off").on('change', function () {
                 if ($("#allow_hsts_on").is(':checked')) {
                     $("#tr_hsts_max_age_data, #tr_hsts_include_subdomains_data").show();
                 } else {
@@ -16,7 +16,7 @@
                 }
             }
         ).trigger("change");
- 
+
         $("#selfsigned_on,#selfsigned_off").on('change', function () {
             if ($("#selfsigned_on").is(":checked")) {
                 $(".input_fields").hide();
@@ -26,7 +26,6 @@
         });
     });
 </script>
-
 <form name="ssl_cert_frm" method="post" action="cert_view.php?domain_id={DOMAIN_ID}&domain_type={DOMAIN_TYPE}">
     <table class="firstColFixed">
         <thead>

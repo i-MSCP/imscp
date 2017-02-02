@@ -29,7 +29,6 @@
         });
     });
 </script>
-
 <form method="post" action="{SOFTWARE_INSTALL_BUTTON}" autocomplete="off">
     <table class="firstColFixed">
         <thead>
@@ -70,7 +69,6 @@
             </td>
         </tr>
     </table>
-
     <!-- BDP: require_installdb -->
     <table class="firstColFixed">
         <thead>
@@ -94,7 +92,6 @@
         </tbody>
     </table>
     <!-- EDP: require_installdb -->
-
     <table class="firstColFixed">
         <thead>
         <tr>
@@ -119,7 +116,6 @@
         <!-- EDP: software_item -->
         </tbody>
     </table>
-
     <div class="buttons">
         <!-- BDP: software_install -->
         <input name="submit" type="submit" value="{TR_INSTALL}">

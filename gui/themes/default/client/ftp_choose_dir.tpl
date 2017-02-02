@@ -2,7 +2,6 @@
 <!-- BDP: page_message -->
 <div class="{MESSAGE_CLS}">{MESSAGE}</div>
 <!-- EDP: page_message -->
-
 <!-- BDP: ftp_chooser -->
 <div class="ftp_chooser">
     <table class="firstColFixed">

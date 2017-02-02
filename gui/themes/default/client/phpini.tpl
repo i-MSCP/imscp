@@ -3,13 +3,12 @@
     $(function () {
         $("#domain_id").on("change", function () {
             window.location.href = '?' + $.param({
-                domain_id: $(this).val(),
-                domain_type: $(this).find("option:selected").data("domain-type")
-            });
+                    domain_id: $(this).val(),
+                    domain_type: $(this).find("option:selected").data("domain-type")
+                });
         });
     });
 </script>
-
 <form name="editFrm" method="post" action="phpini.php">
     <table class="firstColFixed">
         <thead>
@@ -84,7 +83,7 @@
                     <label for="shell_exec">shell_exec</label>
                     <input type="checkbox" name="passthru" id="passthru" value="passthru"{PASSTHRU}>
                     <label for="passthru">passthru</label>
-                    <input name="exec" id="exec" type="checkbox"value="exec"{EXEC}>
+                    <input name="exec" id="exec" type="checkbox" value="exec"{EXEC}>
                     <label for="exec">exec</label>
                     <input type="checkbox" name="phpinfo" id="phpinfo" value="phpinfo"{PHPINFO}>
                     <label for="phpinfo">phpinfo</label>

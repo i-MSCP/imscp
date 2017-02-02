@@ -25,7 +25,6 @@
         return true;
     }
 </script>
-
 <table class="datatable">
     <thead>
     <tr>
@@ -62,11 +61,8 @@
     <!-- EDP: list_software -->
     </tbody>
 </table>
-
 <br/>
-
 <h2 class="apps_installer"><span>{TR_UPLOAD_SOFTWARE}</span></h2>
-
 <form action="software_upload.php" name="sw_upload_form" id="sw_upload_form" method="post" enctype="multipart/form-data">
     <table>
         <thead>
@@ -91,16 +87,12 @@
         <input type="hidden" name="send_software_upload_token" id="send_software_upload_token" value="{SOFTWARE_UPLOAD_TOKEN}">
     </div>
 </form>
-
 <!-- BDP: webdepot_list -->
 <br/>
-
 <h2 class="apps_installer"><span>{TR_WEBDEPOT}</span></h2>
-
 <!-- BDP: no_webdepotsoftware_list -->
 <div class="static_info">{NO_WEBDEPOTSOFTWARE_AVAILABLE}</div>
 <!-- EDP: no_webdepotsoftware_list -->
-
 <form action="software_upload.php" method="post" name="update_webdepot" id="update_webdepot">
     <!-- BDP: web_software_repository -->
     <table class="datatable">
@@ -140,7 +132,6 @@
         </tbody>
     </table>
     <!-- EDP: web_software_repository -->
-
     <div class="buttons">
         <input name="Submit" type="submit" value="{TR_APPLY_CHANGES}">
         <input type="hidden" name="uaction" value="updatewebdepot">

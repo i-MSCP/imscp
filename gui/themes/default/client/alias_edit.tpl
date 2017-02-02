@@ -20,7 +20,6 @@
         }).trigger('change');
     });
 </script>
-
 <form name="edit_domain_alias_frm" method="post" action="alias_edit.php?id={DOMAIN_ALIAS_ID}">
     <table class="firstColFixed">
         <thead>

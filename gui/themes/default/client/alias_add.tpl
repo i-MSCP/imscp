@@ -28,7 +28,6 @@
         }).trigger('change');
     });
 </script>
-
 <form name="add_domain_alias_frm" method="post" action="alias_add.php">
     <table class="firstColFixed">
         <thead>
@@ -120,7 +119,6 @@
         </tr>
         </tbody>
     </table>
-
     <div class="buttons">
         <input name="Submit" type="submit" value="{TR_ADD}">
         <a class="link_as_button" href="domains_manage.php">{TR_CANCEL}</a>

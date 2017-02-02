@@ -20,7 +20,6 @@
     </tr>
     </tbody>
 </table>
-
 <table class="firstColFixed">
     <thead>
     <tr>
@@ -95,25 +94,18 @@
     </tr>
     </tbody>
 </table>
-
 <h2 class="traffic"><span>{TR_TRAFFIC_USAGE}</span></h2>
-
 <!-- BDP: traffic_warning -->
 <div class="warning">{TR_TRAFFIC_WARNING}</div>
 <!-- EDP: traffic_warning -->
-
 <div class="graph"><span style="width:{TRAFFIC_PERCENT}%">&nbsp;</span></div>
 <p style="margin-left:5px;font-size: smaller;">{TRAFFIC_USAGE_DATA}</p>
-
 <h2 class="diskusage"><span>{TR_DISK_USAGE}</span></h2>
-
 <!-- BDP: disk_warning -->
 <div class="warning">{TR_DISK_WARNING}</div>
 <!-- EDP: disk_warning -->
-
 <div class="graph"><span style="width:{DISK_PERCENT}%">&nbsp;</span></div>
 <p style="margin-left:5px;font-size: smaller;">{DISK_USAGE_DATA}</p>
-
 <table class="firstColFixed">
     <thead>
     <tr>

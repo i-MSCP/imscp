@@ -1,7 +1,7 @@
 
 <script>
-    $(function() {
-        $("#zone_id").on("change", function() {
+    $(function () {
+        $("#zone_id").on("change", function () {
             $("#origin").html('<strong>' + $(this).find("option:selected").text() + '.</strong>');
         }).trigger('change');
     });
@@ -9,7 +9,7 @@
     var inputFields = ['name', 'ip_address', 'ip_address_v6', 'srv_name', 'srv_protocol', 'srv_ttl', 'srv_prio',
         'srv_weight', 'srv_host', 'srv_port', 'cname', 'txt_data'];
     var inputFieldsLength = inputFields.length;
-    
+
     function dns_show_rows(inputFieldsToShow) {
         for (var i = 0; i < inputFieldsLength; i++) {
             var trName = 'tr_dns_' + inputFields[i];
@@ -77,7 +77,8 @@
 
 <p class="static_info">
     <?= tr('$ORIGIN is automatically appended to unqualified names, hosts and canonical names') ?>.<br>
-    <?= tr('If the name field is filled with the @ sign or left blank, it will be automatically substituted by $ORIGIN value.') ?><br>
+    <?= tr('If the name field is filled with the @ sign or left blank, it will be automatically substituted by $ORIGIN value.') ?>
+    <br>
     <?= tr('$ORIGIN value is currently set to: %s', '<span id="origin"></span>') ?>
 </p>
 
@@ -153,9 +154,7 @@
         </tr>
         <tr id="tr_dns_srv_prio">
             <td><label for="dns_srv_prio">{TR_DNS_SRV_PRIO}</label></td>
-            <td>
-                <input id="dns_srv_prio" type="number" min="0" max="65535" name="dns_srv_prio" value="{DNS_SRV_PRIO}">
-            </td>
+            <td><input id="dns_srv_prio" type="number" min="0" max="65535" name="dns_srv_prio" value="{DNS_SRV_PRIO}"></td>
         </tr>
         <tr id="tr_dns_srv_weight">
             <td><label for="dns_srv_weight">{TR_DNS_SRV_WEIGHT}</label></td>

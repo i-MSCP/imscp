@@ -3,17 +3,17 @@
 <script>
     $(function () {
         $('.datatable').dataTable(
-                {
-                    language: imscp_i18n.core.dataTable,
-                    stateSave: true,
-                    pagingType: "simple",
-                    columnDefs: [
-                        {
-                            type: "natural",
-                            targets: [ 0, 1, 2 ]
-                        }
-                    ]
-                }
+            {
+                language: imscp_i18n.core.dataTable,
+                stateSave: true,
+                pagingType: "simple",
+                columnDefs: [
+                    {
+                        type: "natural",
+                        targets: [0, 1, 2]
+                    }
+                ]
+            }
         );
 
         $(".i_delete").on('click', function () {
@@ -39,7 +39,8 @@
         <td>
             <!-- BDP: action_links -->
             <a href="protected_areas_add.php?id={ID}" class="icon i_edit">{TR_EDIT}</a>
-            <a href="protected_areas_delete.php?id={ID}" data-name="{DATA_AREA_NAME}" class="icon i_delete">{TR_DELETE}</a>
+            <a href="protected_areas_delete.php?id={ID}" data-name="{DATA_AREA_NAME}"
+               class="icon i_delete">{TR_DELETE}</a>
             <!-- EDP: action_links -->
         </td>
     </tr>
@@ -47,7 +48,6 @@
     </tbody>
 </table>
 <!-- EDP: protected_areas -->
-
 <div class="buttons">
     <a class="link_as_button" href="protected_areas_add.php">{TR_ADD_PROTECTED_AREA}</a>
     <a class="link_as_button" href="protected_user_manage.php">{TR_MANAGE_USERS_AND_GROUPS}</a>

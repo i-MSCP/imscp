@@ -22,7 +22,6 @@
         });
     });
 </script>
-
 <form action="settings.php" method="post" name="frmsettings" id="frmsettings">
     <div class="accordion">
         <h1><strong>{TR_UPDATES}</strong></h1>
@@ -37,7 +36,6 @@
                 </div>
             </div>
         </div>
-
         <h1><strong>{TR_LOSTPASSWORD}</strong></h1>
         <div>
             <div class="odd">
@@ -53,12 +51,11 @@
                 <div class="even">
                     <div class="left"><label for="lostpassword_timeout">{TR_LOSTPASSWORD_TIMEOUT}</label></div>
                     <div class="right">
-                        <input type="text" name="lostpassword_timeout" id="lostpassword_timeout" value="{LOSTPASSWORD_TIMEOUT_VALUE}">
+                        <input type="number" name="lostpassword_timeout" id="lostpassword_timeout" min="1" max="1440" value="{LOSTPASSWORD_TIMEOUT_VALUE}">
                     </div>
                 </div>
             </div>
         </div>
-
         <h1><strong>{TR_PASSWORD_SETTINGS}</strong></h1>
         <div>
             <div class="odd">
@@ -74,12 +71,11 @@
                 <div class="even" style="width: 100%">
                     <div class="left"><label for="passwd_chars">{TR_PASSWD_CHARS}</label></div>
                     <div class="right">
-                        <input type="text" name="passwd_chars" id="passwd_chars" value="{PASSWD_CHARS}" maxlength="2">
+                        <input type="number" name="passwd_chars" id="passwd_chars" min="6" max="32" value="{PASSWD_CHARS}">
                     </div>
                 </div>
             </div>
         </div>
-
         <h1><strong>{TR_BRUTEFORCE}</strong></h1>
         <div>
             <div class="odd">
@@ -120,7 +116,8 @@
                     </div>
                 </div>
                 <div class="even">
-                    <div class="left"><label for="bruteforce_max_attempts_before_wait">{TR_BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT}</label></div>
+                    <div class="left"><label for="bruteforce_max_attempts_before_wait">{TR_BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT}</label>
+                    </div>
                     <div class="right">
                         <input name="bruteforce_max_attempts_before_wait" id="bruteforce_max_attempts_before_wait" type="text" value="{BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT}" maxlength="3">
                     </div>
@@ -133,7 +130,6 @@
                 </div>
             </div>
         </div>
-
         <h1><strong>{TR_MAIL_SETTINGS}</strong></h1>
         <div>
             <div class="odd">
@@ -146,7 +142,8 @@
                 </div>
             </div>
             <div class="even">
-                <div class="left"><label for="count_default_email_addresses">{TR_COUNT_DEFAULT_EMAIL_ADDRESSES}</label></div>
+                <div class="left"><label for="count_default_email_addresses">{TR_COUNT_DEFAULT_EMAIL_ADDRESSES}</label>
+                </div>
                 <div class="right">
                     <select name="count_default_email_addresses" id="count_default_email_addresses">
                         <option value="0"{COUNT_DEFAULT_EMAIL_ADDRESSES_OFF}>{TR_DISABLED}</option>
@@ -173,7 +170,6 @@
                 </div>
             </div>
         </div>
-
         <h1><strong>{TR_OTHER_SETTINGS}</strong></h1>
         <div>
             <div class="odd">
@@ -216,7 +212,8 @@
             <div class="odd">
                 <div class="left"><label for="domain_rows_per_page">{TR_DOMAIN_ROWS_PER_PAGE}</label></div>
                 <div class="right">
-                    <input name="domain_rows_per_page" id="domain_rows_per_page" type="text" value="{DOMAIN_ROWS_PER_PAGE}" maxlength="3">
+                    <input name="domain_rows_per_page" id="domain_rows_per_page" type="number" min="10" max="100"
+                           value="{DOMAIN_ROWS_PER_PAGE}" maxlength="5">
                 </div>
             </div>
             <div class="even">
@@ -231,7 +228,8 @@
                 </div>
             </div>
             <div class="odd">
-                <div class="left"><label for="prevent_external_login_admin">{TR_PREVENT_EXTERNAL_LOGIN_ADMIN}</label></div>
+                <div class="left"><label for="prevent_external_login_admin">{TR_PREVENT_EXTERNAL_LOGIN_ADMIN}</label>
+                </div>
                 <div class="right">
                     <select name="prevent_external_login_admin" id="prevent_external_login_admin">
                         <option value="0"{PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_OFF}>{TR_DISABLED}</option>
@@ -240,7 +238,8 @@
                 </div>
             </div>
             <div class="even">
-                <div class="left"><label for="prevent_external_login_reseller">{TR_PREVENT_EXTERNAL_LOGIN_RESELLER}</label></div>
+                <div class="left"><label
+                            for="prevent_external_login_reseller">{TR_PREVENT_EXTERNAL_LOGIN_RESELLER}</label></div>
                 <div class="right">
                     <select name="prevent_external_login_reseller" id="prevent_external_login_reseller">
                         <option value="0"{PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_OFF}>{TR_DISABLED}</option>
@@ -249,7 +248,8 @@
                 </div>
             </div>
             <div class="odd">
-                <div class="left"><label for="prevent_external_login_client">{TR_PREVENT_EXTERNAL_LOGIN_CLIENT}</label></div>
+                <div class="left"><label for="prevent_external_login_client">{TR_PREVENT_EXTERNAL_LOGIN_CLIENT}</label>
+                </div>
                 <div class="right">
                     <select name="prevent_external_login_client" id="prevent_external_login_client">
                         <option value="0"{PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_OFF}>{TR_DISABLED}</option>

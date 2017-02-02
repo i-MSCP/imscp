@@ -4,13 +4,10 @@
         return confirm(sprintf("{TR_MESSAGE_DELETE}", dmn_name));
     }
 </script>
-
 <h3 class="user_yellow"><span>{TR_ADMINISTRATORS}</span></h3>
-
 <!-- BDP: admin_message -->
 <div class="static_info">{ADMIN_MESSAGE}</div>
 <!-- EDP: admin_message -->
-
 <!-- BDP: admin_list -->
 <table class="firstColFixed">
     <thead>
@@ -38,13 +35,10 @@
     </tbody>
 </table>
 <!-- EDP: admin_list -->
-
 <h3 class="user_green"><span>{TR_RESELLERS}</span></h3>
-
 <!-- BDP: rsl_message -->
 <div class="static_info">{RSL_MESSAGE}</div>
 <!-- EDP: rsl_message -->
-
 <!-- BDP: rsl_list -->
 <table class="firstColFixed">
     <thead>
@@ -62,18 +56,18 @@
         <td>{RESELLER_CREATED_ON}</td>
         <td>{RSL_CREATED_BY}</td>
         <td>
-            <a class="icon i_details" href="{URL_CHANGE_INTERFACE}" title="{TR_CHANGE_USER_INTERFACE}">{GO_TO_USER_INTERFACE}</a>
+            <a class="icon i_details" href="{URL_CHANGE_INTERFACE}"
+               title="{TR_CHANGE_USER_INTERFACE}">{GO_TO_USER_INTERFACE}</a>
             <a href="{URL_EDIT_RSL}" class="icon i_user" title="{TR_EDIT}">{TR_EDIT}</a>
-            <a href="{URL_DELETE_RSL}" class="icon i_delete" title="{TR_DELETE}" onclick="return action_delete('{RSL_USERNAME}')">{TR_DELETE}</a>
+            <a href="{URL_DELETE_RSL}" class="icon i_delete" title="{TR_DELETE}"
+               onclick="return action_delete('{RSL_USERNAME}')">{TR_DELETE}</a>
         </td>
     </tr>
     <!-- EDP: rsl_item -->
     </tbody>
 </table>
 <!-- EDP: rsl_list -->
-
 <h3 class="user_blue"><span>{TR_CUSTOMERS}</span></h3>
-
 <!-- BDP: search_form -->
 <form action="manage_users.php" method="post" name="search_user" id="search_user">
     <div style="line-height:40px;vertical-align: middle; float: left">
@@ -101,16 +95,15 @@
         <input name="Submit" type="submit" value="{TR_SEARCH}">
     </div>
     <div style="line-height:40px;vertical-align: middle; float: right">
-        <a class="icon i_show_alias" href="#" title="{TR_VIEW_DETAILS}" onclick="return sbmt_details(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a>
+        <a class="icon i_show_alias" href="#" title="{TR_VIEW_DETAILS}"
+           onclick="return sbmt_details(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a>
     </div>
     <div style="clear:both"></div>
 </form>
 <!-- EDP: search_form -->
-
 <!-- BDP: usr_message -->
 <div class="static_info">{USR_MESSAGE}</div>
 <!-- EDP: usr_message -->
-
 <!-- BDP: usr_list -->
 <table>
     <thead>
@@ -127,7 +120,8 @@
     <tr>
         <td>
             <!-- BDP: domain_status_change -->
-            <a href="domain_status_change.php?domain_id={DOMAIN_ID}" class="icon i_{STATUS}" title="{STATUS_TOOLTIP}">{TR_STATUS}</a>
+            <a href="domain_status_change.php?domain_id={DOMAIN_ID}" class="icon i_{STATUS}"
+               title="{STATUS_TOOLTIP}">{TR_STATUS}</a>
             <!-- EDP: domain_status_change -->
             <!-- BDP: domain_status_nochange -->
             <span class="icon i_{STATUS}" title="{STATUS_TOOLTIP}">{TR_STATUS}</span>
@@ -162,7 +156,6 @@
     <!-- EDP: usr_item -->
     </tbody>
 </table>
-
 <div class="paginator">
     <!-- BDP: scroll_prev -->
     <a class="icon i_prev" href="manage_users.php?psi={PREV_PSI}" title="{TR_PREVIOUS}">{TR_PREVIOUS}</a>
