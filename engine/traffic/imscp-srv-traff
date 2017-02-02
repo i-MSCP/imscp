@@ -73,8 +73,8 @@ sub run
         }
 
         # Parse input and output traffic data
-        _parseTrafficData( $inputTraffic, \$smtpIn, \$poIn, \$httpIn, \$allIn ) if defined $inputTraffic;
-        _parseTrafficData( $outputTraffic, \$smtpOut, \$poOut, \$httpOut, \$allOut ) if defined $outputTraffic;
+        _parseTrafficData( \$inputTraffic, \$smtpIn, \$poIn, \$httpIn, \$allIn ) if defined $inputTraffic;
+        _parseTrafficData( \$outputTraffic, \$smtpOut, \$poOut, \$httpOut, \$allOut ) if defined $outputTraffic;
     }
 
     return 0 unless $smtpIn || $poIn || $httpIn || $allIn || $smtpOut || $poOut || $httpOut || $allOut;
@@ -113,7 +113,7 @@ sub _parseTrafficData
     my $frontEndHttpPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'};
     my $frontEndHttpsPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
 
-    while( $trafficData =~ /^\s+\d+\s+(\d+).*?(?:(?:dpt|spt):(\d+))?$/gm ) {
+    while( ${$trafficData} =~ /^\s+\d+\s+(\d+).*?(?:(?:dpt|spt):(\d+))?$/gm ) {
         my ($bytes, $port) = ($1, $2 // 0);
         if($port > 0) {
             ${$smtp} += $bytes if $port =~ /^(?:587|25|465)$/;
