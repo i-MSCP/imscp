@@ -841,22 +841,12 @@ sub addIps
         my $net = iMSCP::Net->getInstance();
 
         for (@{$data->{'SSL_IPS'}}) {
-            if ($net->getAddrVersion( $_ ) eq 'ipv4') {
-                $fileContent .= "NameVirtualHost $_:443\n";
-            } else {
-                $fileContent .= "NameVirtualHost [$_]:443\n";
-            }
+            $fileContent .= 'NameVirtualHost '.(($net->getAddrVersion( $_ ) eq 'ipv4') ? $_ : "[$_]").":443\n";
         }
 
         for (@{$data->{'IPS'}}) {
-            if ($net->getAddrVersion( $_ ) eq 'ipv4') {
-                $fileContent .= "NameVirtualHost $_:80\n";
-            } else {
-                $fileContent .= "NameVirtualHost [$_]:80\n";
-            }
+            $fileContent .= 'NameVirtualHost '.(($net->getAddrVersion( $_ ) eq 'ipv4') ? $_ : "[$_]").":80\n";
         }
-    } else {
-        $fileContent =~ s/^# NameVirtualHost entries\n//im;
     }
 
     $rs = $self->{'eventManager'}->trigger( 'afterHttpdAddIps', \$fileContent, $data );

@@ -490,7 +490,7 @@ sub _buildApacheConfFiles
         $rs = $self->{'eventManager'}->trigger( 'beforeHttpdBuildConfFile', \$cfgTpl, 'ports.conf' );
         return $rs if $rs;
 
-        $cfgTpl =~ s/^(NameVirtualHost\s+\*:80)/#$1/gmi;
+        $cfgTpl =~ s/^NameVirtualHost[^\n]+\n//gim;
 
         $rs = $self->{'eventManager'}->trigger( 'afterHttpdBuildConfFile', \$cfgTpl, 'ports.conf' );
         return $rs if $rs;

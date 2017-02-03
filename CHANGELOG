@@ -80,7 +80,8 @@ SERVERS
     Added: Support for Python and Ruby CGI scripts (Http server impl.)
     Fixed: apache2: Could not reliably determine the server's fully qualified domain name, using ::1 for ServerName
     Fixed: Make sure that PHP Apache2 SAPI is disabled when needed (httpd server impl.)
-    Fixed: Possible `nginx: [emerg] bind() to [xxxx:xxxx:xxxx:xxxx::1]:8443 failed (98: Address already in use)' error
+    Fixed: Possible `NameVirtualHost <ip>:<port> has no VirtualHosts' warning (Apache2)
+    Fixed: Possible `nginx: [emerg] bind() to <ip>:<port> failed (98: Address already in use)' error
     Fixed: POSTCONF(1) is being slow when called multiple-times, slowing down i-MSCP installer (Postfix server impl.)
     Fixed: Wrong events triggered (Servers::mta::postfix)
     Fixed: Wrong permissions set on Courier Authdaemon socket dir, making maildrop MDA unable to connect

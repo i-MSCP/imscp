@@ -317,7 +317,7 @@ sub process
     );
 
     # Process IP addresses tasks
-    if ($ipsModule || $self->{'mode'} eq 'setup') {
+    if ($ipsModule) {
         newDebug( 'Ips_module.log' );
         eval { require Modules::Ips } or die( sprintf( 'Could not load Module::Ips module: %s', $@ ) );
         Modules::Ips->new()->process() == 0 or die(
