@@ -56,7 +56,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 249;
+    protected $lastUpdate = 250;
 
     /**
      * Singleton - Make new unavailable
@@ -1765,5 +1765,17 @@ class iMSCP_Update_Database extends iMSCP_Update
                 iMSCP\Crypt::sha512($row['mail_pass']), $row['mail_id']
             ));
         }
+    }
+
+    /**
+     * Change server_ips.ip_number column length
+     *
+     * @return null|string
+     */
+    protected function r250()
+    {
+        return $this->changeColumn(
+            'server_ips', 'ip_number', 'ip_number VARCHAR(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL'
+        );
     }
 }

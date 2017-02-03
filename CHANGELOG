@@ -39,6 +39,7 @@ DAEMON
 DATABASE
     Removed: `ftp_users.rawpasswd' column (i-MSCP database)
     Removed: `sql_user.sqlu_pass' column (i-MSCP database)
+    Updated: `sever_ips.ip_number` column length (i-MSCP database)
 
 DISTRIBUTIONS
     Added: PHP 5.5 and PHP 5.6 alternatives for Debian Wheezy through Dotdeb repository
