@@ -80,7 +80,7 @@ function generatePage($tpl)
 
     $tpl->assign(array(
         'VALUE_IP' => isset($_POST['ip_number']) ? tohtml($_POST['ip_number']) : '',
-        'VALUE_IP_NETMASK' => isset($_POST['ip_netmask']) ? tohtml($_POST['ip_netmask']) : 32,
+        'VALUE_IP_NETMASK' => isset($_POST['ip_netmask']) ? tohtml($_POST['ip_netmask']) : 24,
         'IP_CONFIG_AUTO' => $ipConfigMode == 'auto' ? ' checked' : '',
         'IP_CONFIG_MANUAL' => $ipConfigMode == 'manual' ? ' checked' : ''
     ));
@@ -229,7 +229,7 @@ function checkIpData($ipAddr, $ipNetmask, $ipConfigMode, $ipCard)
     }
 
     // Validate IP addr configuration mode
-    if (!in_array($ipConfigMode, array('auto', 'manual'))) {
+    if (!in_array($ipConfigMode, array('auto', 'manual'), true)) {
         showBadRequestErrorPage();
     }
 

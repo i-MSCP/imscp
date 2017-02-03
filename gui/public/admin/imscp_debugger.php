@@ -423,7 +423,8 @@ function debugger_getIpErrors($tpl)
         while ($row = $stmt->fetchRow()) {
             $tpl->assign(array(
                 'IP_MESSAGE' => '',
-                'IP_NAME' => tohtml($row['ip_number'] . ' ' . '(' . $row['ip_card'] . ':' . ($row['ip_id'] + 1000) . ')'),
+                'IP_NAME' => tohtml($row['ip_number'] . ' ' . '(' . $row['ip_card']
+                    . (strpos($row['ip_number'], ':') == FALSE ? ':' . ($row['ip_id'] + 1000) : '') . ')'),
                 'IP_ERROR' => tohtml($row['ip_status']),
                 'CHANGE_ID' => tohtml($row['ip_id']),
                 'CHANGE_TYPE' => 'ip'

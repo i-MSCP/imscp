@@ -53,11 +53,12 @@ sub getAddresses
     wantarray ? keys %{$self->{'addresses'}} : join ' ', keys %{$self->{'addresses'}};
 }
 
-=item addAddr($addr, $dev [, $label ])
+=item addAddr($addr, $cidr, $dev [, $label ])
 
  Add the given IP to the given network device
 
  Param string $addr IP address
+ Param string $cidr CIDR (subnet mask)
  Param string $dev Network device name
  Param string $label OPTIONAL address label string (preserve compatibility with Linux-2.0 net aliases)
  Return int 0 on success, croak on failure
@@ -66,15 +67,18 @@ sub getAddresses
 
 sub addAddr
 {
-    my ($self, $addr, $dev, $label) = @_;
-
+    my ($self, $addr, $cidr, $dev, $label) = @_;
+    
     $self->isValidAddr( $addr ) or croak( sprintf( 'Invalid IP address: %s', $addr ) );
+    $self->isValidNetmask( $addr, $cidr ) or croak( sprintf( 'Invalid CIDR (subnet mask): %s', $cidr ) );
     $self->isKnownDevice( $dev ) or croak( sprintf( 'Unknown network device: %s', $dev ) );
-    my $cidr = ip_is_ipv4( $addr ) ? 32 : 64; # TODO should be configurable
+
     my ($stdout, $stderr);
-    execute(
-        [ 'ip', 'addr', 'add', "$addr/$cidr", 'dev', $dev, ($label ? ('label', $label) : '') ], \$stdout, \$stderr
-    ) == 0 or croak(
+    my @cmd = (
+        'ip', (($self->getAddrVersion($addr) eq 'ipv4') ? '-4' : '-6'), 'addr', 'add', "$addr/$cidr", 'dev', $dev
+    );
+    push @cmd, 'label', $label if $label;
+    execute( [ @cmd ], \$stdout, \$stderr ) == 0 or croak(
         sprintf('Could not add the %s IP address: %s', $addr, $dev, $stderr || 'Unknown error')
     );
     $self->{'addresses'}->{$addr} = {
@@ -231,6 +235,31 @@ sub isValidAddr
     my (undef, $addr) = @_;
 
     is_ipv4( $addr ) || is_ipv6( $addr );
+}
+
+=item isValidNetmask( $addr, $cidr )
+
+ Check whether or not the given netmask for the given IP is valid
+
+ Param string $addr IP address
+ Param string $cidr CIDR (subnet mask)
+ Return bool TRUE if valid, FALSE otherwise
+
+=cut
+
+sub isValidNetmask
+{
+    my (undef, $addr, $cidr) = @_;
+
+    return 0 if $cidr !~ /\d/;
+
+    my $addrVersion = ip_get_version( $addr );
+
+    if ($cidr < 1 || ($addrVersion eq 'ipv4' && $cidr > 32) || $cidr > 128) {
+        return 0;
+    }
+
+    1;
 }
 
 =item normalizeAddr($addr)

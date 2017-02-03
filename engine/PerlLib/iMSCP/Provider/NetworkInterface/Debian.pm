@@ -76,28 +76,38 @@ sub addIpAddr
         sprintf( "The `%s' IP address is not valid", $data->{'ip_address'} )
     );
 
-    $data->{'ip_netmask'} ||= $self->{'net'}->getAddrVersion( $data->{'ip_address'} ) eq 'ipv4' ? '32' : '128';
+    my $addrVersion = $self->{'net'}->getAddrVersion( $data->{'ip_address'} );
+
+    $data->{'ip_netmask'} ||= ($addrVersion eq 'ipv4') ? 24 : 64;
 
     $self->_updateInterfacesFile( 'add', $data ) == 0 or die('Could not update interfaces file');
 
     return 0 unless $data->{'ip_config_mode'} eq 'auto';
 
     # Handle case where the IP netmask or NIC has been changed
-    if($self->{net}->isKnownAddr($data->{'ip_address'})
+    if ($self->{'net'}->isKnownAddr($data->{'ip_address'})
         && ($self->{'net'}->getAddrDevice($data->{'ip_address'}) ne $data->{'ip_card'}
         || $self->{'net'}->getAddrNetmask($data->{'ip_address'}) ne $data->{'ip_netmask'})
     ) {
         $self->{'net'}->delAddr( $data->{'ip_address'} );
     }
 
-    my ($stdout, $stderr);
-    execute( [ $COMMANDS{'ifup'}, '--force', "$data->{'ip_card'}:$data->{'ip_id'}" ], \$stdout, \$stderr ) == 0 or die(
-        sprintf(
-            "Could not bring up the `%s' network interface: %s", "$data->{'ip_card'}:$data->{'ip_id'}",
-            $stderr || 'Unknown error'
-        )
-    );
+    if ($addrVersion eq 'ipv4') {
+        my ($stdout, $stderr);
+        execute( [ $COMMANDS{'ifup'}, '--force', "$data->{'ip_card'}:$data->{'ip_id'}" ], \$stdout,
+            \$stderr ) == 0 or die(
+            sprintf(
+                "Could not bring up the `%s' network interface: %s", "$data->{'ip_card'}:$data->{'ip_id'}",
+                $stderr || 'Unknown error'
+            )
+        );
+        return $self;
+    }
 
+    # IPv6 case: We do not set aliased interface because that is not supported everywhere
+    # For instance, on Ubuntu Precise, we end with the following error:
+    # `error: "net.ipv6.conf.eth0:0.autoconf" is an unknown key' when trying to bring up aliased interface
+    $self->{'net'}->addAddr( $data->{'ip_address'}, $data->{'ip_netmask'}, $data->{'ip_card'} );
     $self;
 }
 
@@ -120,7 +130,10 @@ sub removeIpAddr
     $data->{'ip_id'} =~ /^\d+$/ or croak( 'ip_id parameter must be an integer' );
     $data->{'ip_id'} += 1000;
 
-    if ($data->{'ip_config_mode'} eq 'auto' && $self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'ip_id'}" )) {
+    if ($data->{'ip_config_mode'} eq 'auto'
+        && $self->{'net'}->getAddrVersion( $data->{'ip_address'} ) eq 'ipv4'
+        && $self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'ip_id'}" )
+    ) {
         my ($stdout, $stderr);
         execute( "$COMMANDS{'ifdown'} --force $data->{'ip_card'}:$data->{'ip_id'}", \$stdout, \$stderr ) == 0 or die(
             sprintf(
@@ -129,6 +142,8 @@ sub removeIpAddr
             )
         );
     } elsif ($data->{'ip_config_mode'} eq 'auto') {
+        # Cover not aliased interface (IPv6) case
+        # Cover undefined interface case
         $self->{'net'}->delAddr( $data->{'ip_address'} );
     }
 
@@ -174,9 +189,10 @@ sub _updateInterfacesFile
     my $rs = $file->copyFile( $INTERFACES_FILE_PATH.'.bak' );
     return $rs if $rs;
 
+    my $addrVersion = $self->{'net'}->getAddrVersion( $data->{'ip_address'} );
     my $cAddr = $self->{'net'}->normalizeAddr( $data->{'ip_address'} );
     my $eAddr = $self->{'net'}->expandAddr( $data->{'ip_address'} );
-    
+
     my $fileContent = $file->get();
     $fileContent = iMSCP::TemplateParser::replaceBloc(
         qr/\n?# i-MSCP \[(?:.*\Q:$data->{'ip_id'}\E|\Q$cAddr\E)\] entry BEGIN\n/,
@@ -192,21 +208,27 @@ sub _updateInterfacesFile
         $fileContent .= iMSCP::TemplateParser::process(
             {
                 ip_id       => $data->{'ip_id'},
-                ip_card     => $data->{'ip_card'},
+                # For IPv6 addr, we do not create aliased interface because that is not suppported everywhere.
+                # For instance, on Ubuntu Precise, we end with the following error:
+                # `error: "net.ipv6.conf.eth0:0.autoconf" is an unknown key' when trying to bring up aliased interface
+                iface       => $data->{'ip_card'}.(($addrVersion eq 'ipv4') ? ':'.$data->{'ip_id'} : ''),
                 ip_address  => $cAddr,
                 ip_netmask  => $data->{'ip_netmask'},
-                addr_family => $self->{'net'}->getAddrVersion( $cAddr ) eq 'ipv4' ? 'inet' : 'inet6'
+                addr_family => $addrVersion eq 'ipv4' ? 'inet' : 'inet6'
             },
-            <<STANZA
+            <<"STANZA"
 
 # i-MSCP [{ip_address}] entry BEGIN
-auto {ip_card}:{ip_id}
-iface {ip_card}:{ip_id} {addr_family} static
+auto {iface}
+iface {iface} {addr_family} static
     address {ip_address}
     netmask {ip_netmask}
 # i-MSCP [{ip_address}] entry ENDING
 STANZA
         );
+
+        # We do add the `auto' stanza only for aliased interfaces
+        $fileContent =~ s/^auto.*\n//gm if $addrVersion ne 'ipv4';
     }
 
     $rs = $file->set( $fileContent );

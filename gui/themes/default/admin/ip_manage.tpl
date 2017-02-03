@@ -55,7 +55,7 @@
                         switch ($(this).data("type")) {
                             case "netmask":
                                 $newEl.append($netmask.clone().attr(
-                                    'max', $(this).data("ip").indexOf(":") != -1 ? 128 : 32
+                                    'max', $(this).data("ip").indexOf(":") != -1 ? 64 : 24
                                 ).val($(this).text()).css({ "min-width": "unset", "width": "40px" }));
                                 break;
                             case "card":
@@ -83,15 +83,19 @@
         });
 
         var ipv6colC = $ipNumber.val().split(':', 3).length;
-        $ipNumber.on("keyup", function (e, keepNetmaskVal) {
-            $netmask.attr($(this).val().indexOf(":") != -1 ? { min: 1, max: 128 } : { min: 1, max: 32 });
-            var ipv6NColC = $(this).val().split(':', 3).length;
-            if(!keepNetmaskVal
-               && ((ipv6colC < 3 || (ipv6colC < 3 && ipv6NColC < 3)) || parseInt($netmask.val()) > parseInt($netmask.attr("max")) )) {
-                $netmask.val($netmask.attr("max"));
-            }
+        $ipNumber.on("keyup paste copy cut", function (e, keepNetmaskVal) {
+            var element = this;
+            setTimeout(function() {
+                var isIPv6 = $(element).val().indexOf(":") != -1;
+                $netmask.attr(isIPv6 ? { min: 1, max: 128} : { min: 1, max: 32 });
+                var ipv6NColC = $(element).val().split(':', 3).length;
+                if (!keepNetmaskVal
+                    && ((ipv6colC < 3 || (ipv6colC < 3 && ipv6NColC < 3)) || parseInt($netmask.val()) > parseInt($netmask.attr("max")) )) {
+                    $netmask.val(isIPv6 ? 64 : 24)
+                }
 
-            ipv6colC = ipv6NColC;
+                ipv6colC = ipv6NColC;
+            }, 0)
         }).trigger("change", true);
 
         $(".i_delete").on("click", function () {
@@ -151,7 +155,7 @@
         <tr>
             <td><label for="ip_card">{TR_NETWORK_CARD}</label></td>
             <td>
-                <select name="ip_card" id="ip_card" mul>
+                <select name="ip_card" id="ip_card">
                     <!-- BDP: network_card_block -->
                     <option{SELECTED}>{NETWORK_CARD}</option>
                     <!-- EDP: network_card_block -->
