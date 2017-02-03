@@ -14,8 +14,7 @@ BACKEND
     Changed: Listener files from deprecated /etc/imscp/hooks.d directory are now ignored (iMSCP::EventManager)
     Fixed: Couldn't add IP address without label (iMSCP::Net::addAddr())
     Fixed: Couldn't set user/group on dangling symlinks (iMSCP::Rights::setRights())
-    Fixed: Don't change permissions on symlink targets (iMSCP::File)
-    Fixed: Don't change permissions on symlink targets (iMSCP::Rights)
+    Fixed: Don't change permissions on symlink targets (iMSCP::File & MSCP::Rights)
     Fixed: Don't connect to SQL server when that is not needed (iMSCP::Database::mysql)
     Fixed: Error `net.ipv6.conf.eth0:0.autoconf is an unknown key' (iMSCP::Provider::NetworkInterface::Debian)
     Fixed: Force addition of `CREATE DATABASE' statement in SQL dumps, even for empty databases

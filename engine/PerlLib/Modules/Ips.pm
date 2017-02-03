@@ -91,6 +91,21 @@ sub add
     $rs ||= $em->trigger( 'afterAddIps', $ips );
 }
 
+=item delete()
+
+ Delete IP addresses
+
+ Note: At this moment, we simply call the add() method again, assuming that any previously added IP will be first removed.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub delete
+{
+    $_[0]->add();
+}
+
 =back
 
 =head1 PRIVATE METHODS
@@ -117,7 +132,7 @@ sub _loadData
         "
             SELECT ip_number FROM domain INNER JOIN server_ips ON (domain.domain_ip_id = server_ips.ip_id)
             WHERE domain_status <> 'todelete'
-            UNION
+            UNION ALL
             SELECT ip_number FROM domain_aliasses
             INNER JOIN server_ips ON (domain_aliasses.alias_ip_id = server_ips.ip_id)
             WHERE alias_status NOT IN ('todelete', 'ordered')
@@ -128,7 +143,7 @@ sub _loadData
         return 1;
     }
 
-    $rdata->{$main::imscpConfig{'BASE_SERVER_IP'}} = undef;
+    $rdata->{$main::imscpConfig{'BASE_SERVER_IP'}} = 1 if %{$rdata};
     @{$self->{'ipaddrs'}} = map $net->normalizeAddr( $_ ), keys %{$rdata};
 
     $rdata = $db->doQuery(
@@ -138,18 +153,18 @@ sub _loadData
             INNER JOIN domain ON (ssl_certs.domain_id = domain.domain_id)
             INNER JOIN server_ips ON (domain.domain_ip_id = server_ips.ip_id)
             WHERE ssl_certs.domain_type = 'dmn'
-            UNION
+            UNION ALL
             SELECT ip_number FROM ssl_certs
             INNER JOIN domain_aliasses ON (ssl_certs.domain_id = domain_aliasses.alias_id)
             INNER JOIN server_ips ON (domain_aliasses.alias_ip_id = server_ips.ip_id)
             WHERE ssl_certs.domain_type = 'als'
-            UNION
+            UNION ALL
             SELECT ip_number FROM ssl_certs
             INNER JOIN subdomain_alias ON (ssl_certs.domain_id = subdomain_alias.subdomain_alias_id)
             INNER JOIN domain_aliasses ON (subdomain_alias.alias_id = domain_aliasses.alias_id)
             INNER JOIN server_ips ON (domain_aliasses.alias_ip_id = server_ips.ip_id)
             WHERE ssl_certs.domain_type = 'alssub'
-            UNION
+            UNION ALL
             SELECT ip_number FROM ssl_certs
             INNER JOIN subdomain ON (ssl_certs.domain_id = subdomain.subdomain_id)
             INNER JOIN domain ON (subdomain.domain_id = domain.domain_id)
@@ -161,9 +176,7 @@ sub _loadData
         return 1;
     }
 
-    if ($main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes') {
-        $rdata->{$main::imscpConfig{'BASE_SERVER_IP'}} = undef;
-    }
+    $rdata->{$main::imscpConfig{'BASE_SERVER_IP'}} = 1 if %{$rdata};
 
     @{$self->{'ssl_ipaddrs'}} = map $net->normalizeAddr( $_ ), keys %{$rdata};
     0;
