@@ -1042,12 +1042,13 @@ sub _buildHttpdConfig
     $rs ||= $self->{'eventManager'}->trigger( 'beforeFrontEndBuildHttpdVhosts' );
     return $rs if $rs;
 
+    my $baseServerIpVersion = iMSCP::Net->getInstance( )->getAddrVersion( main::setupGetQuestion( 'BASE_SERVER_IP' ) );
     my $httpsPort = main::setupGetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT' );
     my $tplVars = {
         BASE_SERVER_VHOST            => main::setupGetQuestion( 'BASE_SERVER_VHOST' ),
-        BASE_SERVER_IP               =>
-            iMSCP::Net->getInstance()->getAddrVersion( main::setupGetQuestion( 'BASE_SERVER_IP' ) ) eq 'ipv4'
-            ? main::setupGetQuestion( 'BASE_SERVER_IP' ) : '['.main::setupGetQuestion( 'BASE_SERVER_IP' ).']',
+        BASE_SERVER_IP               => ($baseServerIpVersion eq 'ipv4')
+            ? main::setupGetQuestion( 'BASE_SERVER_IP' )
+            : '['.main::setupGetQuestion( 'BASE_SERVER_IP' ).']',
         BASE_SERVER_VHOST_HTTP_PORT  => main::setupGetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT' ),
         BASE_SERVER_VHOST_HTTPS_PORT => $httpsPort,
         WEB_DIR                      => $main::imscpConfig{'GUI_ROOT_DIR'},
@@ -1061,36 +1062,24 @@ sub _buildHttpdConfig
 
             if ($tplName eq '00_master.conf') {
                 if (main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) eq 'https://') {
-                    $$cfgTpl = replaceBloc(
+                    ${$cfgTpl} = replaceBloc(
                         "# SECTION custom BEGIN.\n",
                         "# SECTION custom END.\n",
                         "    # SECTION custom BEGIN.\n".
-                            getBloc(
-                                "# SECTION custom BEGIN.\n",
-                                "# SECTION custom END.\n",
-                                $$cfgTpl
-                            ).
-                            "    rewrite .* https://\$host:$httpsPort\$request_uri redirect;\n".
-                            "    # SECTION custom END.\n",
-                        $$cfgTpl
+                            getBloc( "# SECTION custom BEGIN.\n", "# SECTION custom END.\n", ${$cfgTpl} )
+                            ."    rewrite .* https://\$host:$httpsPort\$request_uri redirect;\n"
+                            ."    # SECTION custom END.\n",
+                        ${$cfgTpl}
                     );
                 }
 
-                unless (main::setupGetQuestion( 'IPV6_SUPPORT' )) {
-                    $$cfgTpl = replaceBloc(
-                        '# SECTION IPv6 BEGIN.',
-                        '# SECTION IPv6 END.',
-                        '',
-                        $$cfgTpl
-                    );
+                if ($baseServerIpVersion eq 'ipv6' || !main::setupGetQuestion( 'IPV6_SUPPORT' )) {
+                    ${$cfgTpl} = replaceBloc( '# SECTION IPv6 BEGIN.', '# SECTION IPv6 END.', '', ${$cfgTpl} );
                 }
-            } elsif ($tplName eq '00_master_ssl.conf' && !main::setupGetQuestion( 'IPV6_SUPPORT' )) {
-                $$cfgTpl = replaceBloc(
-                    '# SECTION IPv6 BEGIN.',
-                    '# SECTION IPv6 END.',
-                    '',
-                    $$cfgTpl
-                );
+            } elsif ($tplName eq '00_master_ssl.conf'
+                && ($baseServerIpVersion eq 'ipv6' || !main::setupGetQuestion( 'IPV6_SUPPORT' ))
+            ) {
+                ${$cfgTpl} = replaceBloc( '# SECTION IPv6 BEGIN.', '# SECTION IPv6 END.', '', ${$cfgTpl} );
             }
 
             0;

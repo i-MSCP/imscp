@@ -878,18 +878,18 @@ sub setupServerHostname
     return $rs if $rs;
 
     my $net = iMSCP::Net->getInstance();
-    my $content = "# 'hosts' file configuration.\n\n";
-    $content .= "127.0.0.1\t$hostnameLocal\tlocalhost\n";
-    $content .= "$lanIP\t$hostname\t$host\n";
-    $content .= "::ffff:$lanIP\t$hostname\t$host\n" if $net->getAddrVersion($lanIP) eq 'ipv4';
-    $content .= "::1\tip6-localhost\tip6-loopback\n" if $net->getAddrVersion($lanIP) eq 'ipv4';
-    $content .= "::1\tip6-localhost\tip6-loopback\t$host\n" if $net->getAddrVersion($lanIP) eq 'ipv6';
-    $content .= "fe00::0\tip6-localnet\n";
-    $content .= "ff00::0\tip6-mcastprefix\n";
-    $content .= "ff02::1\tip6-allnodes\n";
-    $content .= "ff02::2\tip6-allrouters\n";
-    $content .= "ff02::3\tip6-allhosts\n";
+    my $content = <<"EOF";
+127.0.0.1   $hostnameLocal   localhost
+$lanIP  $hostname   $host
 
+# The following lines are desirable for IPv6 capable hosts
+::1 localhost  ip6-localhost   ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+ff02::3 ip6-allhosts
+EOF
     $rs = $file->set($content);
     $rs ||= $file->save();
     $rs ||= $file->mode(0644);
