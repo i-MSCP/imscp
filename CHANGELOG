@@ -18,7 +18,7 @@ BACKEND
     Fixed: Don't connect to SQL server when that is not needed (iMSCP::Database::mysql)
     Fixed: Error `net.ipv6.conf.eth0:0.autoconf is an unknown key' (iMSCP::Provider::NetworkInterface::Debian)
     Fixed: Force addition of `CREATE DATABASE' statement in SQL dumps, even for empty databases
-    Fixed: Restore database using master i-MSCP SQL user in place of customer SQL user (Modules::Domain)
+    Fixed: Restore database using temporary SQL user in place of customer SQL user (Modules::Domain)
     Fixed: Several encoding issues (regression fix)
     Fixed: Usage of lchown(2) system call to avoid dereference of symlinks (iMSCP::Rights::setRights())
     Review: Read line by line to avoid opening in-memory file in STDOUT|STDERR routines (iMSCP::Execute::executeNoWait())

@@ -25,7 +25,9 @@ package Modules::Domain;
 
 use strict;
 use warnings;
+use File::Basename;
 use File::Spec;
+use iMSCP::Crypt;
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Dir;
@@ -36,6 +38,7 @@ use iMSCP::Rights;
 use Modules::User;
 use Net::LibIDN qw/ idn_to_unicode /;
 use Servers::httpd;
+use Servers::sqld;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -198,63 +201,21 @@ sub restore
 {
     my $self = shift;
 
+    my $db = iMSCP::Database->factory();
     my $dmnDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
     my $bkpDir = "$dmnDir/backups";
-    my @bkpFiles = iMSCP::Dir->new( dirname => $bkpDir )->getFiles();
 
-    return 0 unless @bkpFiles;
-
-    for my $bkpFile(@bkpFiles) {
-        unless (-l "$bkpDir/$bkpFile") { # Doesn't follow any symlink (See #990)
-            if ($bkpFile =~ /^(.+?)\.sql(?:\.(bz2|gz|lzma|xz))?$/) {
-                # Restore SQL database
-                my $sqldName = $1;
-                my $archType = $2 || '';
-
-                # Make sure that the databas is not orphaned
-                my $rdata = iMSCP::Database->factory()->doQuery(
-                    1,
-                    'SELECT 1 FROM sql_database WHERE domain_id = ? AND sqld_name = ? LIMIT 1',
-                    $self->{'domain_id'},
-                    $sqldName
-                );
-                unless (ref $rdata eq 'HASH') {
-                    error( $rdata );
+    for my $bkpFile(iMSCP::Dir->new( dirname => $bkpDir )->getFiles()) {
+        unless (-l "$bkpDir/$bkpFile") { # Don't follow symlink (See #990)
+            if ($bkpFile =~ /^.+?\.sql(?:\.bz2|gz|lzma|xz)?$/) {
+                eval { $self->_restoreDatabase( File::Spec->catfile( $bkpDir, $bkpFile ) ); };
+                if ($@) {
+                    error($@);
                     return 1;
                 }
-                unless (%{$rdata}) {
-                    debug(sprintf( "Orphaned `%s' database. skipping...", $sqldName ));
-                    next;
-                }
-
-                my $cmd;
-                if ($archType eq 'bz2') {
-                    $cmd = 'bzcat -d ';
-                } elsif ($archType eq 'gz') {
-                    $cmd = 'zcat -d ';
-                } elsif ($archType eq 'lzma') {
-                    $cmd = 'lzma -dc ';
-                } elsif ($archType eq 'xz') {
-                    $cmd = 'xz -dc ';
-                } else {
-                    $cmd = 'cat ';
-                }
-
-                my @cmd = (
-                    'nice', '-n', '15', # Reduce the CPU priority
-                    'ionice', '-c2', '-n5', # Reduce the I/O priority
-                    $cmd,
-                    escapeShell( "$bkpDir/$bkpFile" ),
-                    '|', 'mysql',
-                    escapeShell( $rdata->{$sqldName}->{'sqld_name'})
-                );
-
-                my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
-                debug( $stdout ) if $stdout;
-                warning( sprintf( 'Could not restore SQL database: %s', $stderr || 'Unknown error' ) ) if $rs;
             } elsif ($bkpFile =~ /^(?!mail-).+?\.tar(?:\.(bz2|gz|lzma|xz))?$/) {
                 # Restore domain files
-                my $archType = $1 || '';
+                my $archFormat = $1 || '';
                 # Since we are now using immutable bit to protect some folders, we must in order do the following
                 # to restore a backup archive:
                 #
@@ -268,13 +229,11 @@ sub restore
                 #
                 # Note: This is a bunch of works but this will be fixed when the backup feature will be rewritten
 
-                if ($archType eq 'bz2') {
-                    $archType = 'bzip2';
-                } elsif ($archType eq 'gz') {
-                    $archType = 'gzip';
+                if ($archFormat eq 'bz2') {
+                    $archFormat = 'bzip2';
+                } elsif ($archFormat eq 'gz') {
+                    $archFormat = 'gzip';
                 }
-
-                my $db = iMSCP::Database->factory();
 
                 # Update status of any sub to 'torestore'
                 my $rdata = $db->doQuery(
@@ -313,8 +272,8 @@ sub restore
                 clearImmutable( $dmnDir, 1 ); # Un-protect folders recursively
 
                 my $cmd;
-                if ($archType ne '') {
-                    $cmd = "nice -n 12 ionice -c2 -n5 tar -x -p --$archType -C ".escapeShell( $dmnDir ).' -f '
+                if ($archFormat ne '') {
+                    $cmd = "nice -n 12 ionice -c2 -n5 tar -x -p --$archFormat -C ".escapeShell( $dmnDir ).' -f '
                         .escapeShell( "$bkpDir/$bkpFile" );
                 } else {
                     $cmd = 'nice -n 12 ionice -c2 -n5 tar -x -p -C '.escapeShell( $dmnDir ).' -f '
@@ -393,8 +352,8 @@ sub _getData
 
     $self->{'_data'} = do {
         my $httpd = Servers::httpd->factory();
-        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
-            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}
+            .($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
         my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
         my $documentRoot = File::Spec->canonpath( "$homeDir/$self->{'document_root'}" );
         my $db = iMSCP::Database->factory();
@@ -410,15 +369,14 @@ sub _getData
         );
         ref $certData eq 'HASH' or die( $certData );
 
-        #my $haveCert = ($certData->{$self->{'domain_id'}} && $self->isValidCertificate( $self->{'domain_name'} ));
         my $haveCert = (
             $certData->{$self->{'domain_id'}}
                 && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'domain_name'}.pem"
         );
         my $allowHSTS = ($haveCert && $certData->{$self->{'domain_id'}}->{'allow_hsts'} eq 'on');
         my $hstsMaxAge = $allowHSTS ? $certData->{$self->{'domain_id'}}->{'hsts_max_age'} : '';
-        my $hstsIncludeSubDomains = ($allowHSTS && $certData->{$self->{'domain_id'}}->{'hsts_include_subdomains'} eq 'on')
-            ? '; includeSubDomains' : '';
+        my $hstsIncludeSubDomains = ($allowHSTS
+                && $certData->{$self->{'domain_id'}}->{'hsts_include_subdomains'} eq 'on') ? '; includeSubDomains' : '';
 
         {
             ACTION                  => $action,
@@ -455,22 +413,106 @@ sub _getData
             FORWARD                 => $self->{'url_forward'} || 'no',
             FORWARD_TYPE            => $self->{'type_forward'} || '',
             FORWARD_PRESERVE_HOST   => $self->{'host_forward'} || 'Off',
-            DISABLE_FUNCTIONS       => $phpini->{$self->{'domain_id'}}->{'disable_functions'} // 'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
+            DISABLE_FUNCTIONS       => $phpini->{$self->{'domain_id'}}->{'disable_functions'}
+                // 'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
             MAX_EXECUTION_TIME      => $phpini->{$self->{'domain_id'}}->{'max_execution_time'} // 30,
             MAX_INPUT_TIME          => $phpini->{$self->{'domain_id'}}->{'max_input_time'} // 60,
             MEMORY_LIMIT            => $phpini->{$self->{'domain_id'}}->{'memory_limit'} // 128,
-            ERROR_REPORTING         => $phpini->{$self->{'domain_id'}}->{'error_reporting'} || 'E_ALL & ~E_DEPRECATED & ~E_STRICT',
+            ERROR_REPORTING         => $phpini->{$self->{'domain_id'}}->{'error_reporting'}
+                || 'E_ALL & ~E_DEPRECATED & ~E_STRICT',
             DISPLAY_ERRORS          => $phpini->{$self->{'domain_id'}}->{'display_errors'} || 'off',
             POST_MAX_SIZE           => $phpini->{$self->{'domain_id'}}->{'post_max_size'} // 8,
             UPLOAD_MAX_FILESIZE     => $phpini->{$self->{'domain_id'}}->{'upload_max_filesize'} // 2,
             ALLOW_URL_FOPEN         => $phpini->{$self->{'domain_id'}}->{'allow_url_fopen'} || 'off',
             PHP_FPM_LISTEN_PORT     => ($phpini->{$self->{'domain_id'}}->{'id'} // 0) - 1,
             EXTERNAL_MAIL           => $self->{'external_mail'},
-            MAIL_ENABLED            => ($self->{'external_mail'} eq 'off' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0))
+            MAIL_ENABLED            => ($self->{'external_mail'} eq 'off'
+                && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
+            )
         }
     } unless %{$self->{'_data'}};
 
     $self->{'_data'};
+}
+
+=item _restoreDatabase( $dbDumpFilePath )
+
+ Restore a database from the given database dump file
+ 
+ Param string $dbDumpFilePath Path to database dump file
+ Return 0 on success, die on failure
+
+=cut
+
+sub _restoreDatabase
+{
+    my ($self, $dbDumpFilePath) = @_;
+
+    my ($dbName, undef, $archFormat) = fileparse( $dbDumpFilePath, qr/\.(?:bz2|gz|lzma|xz)/ );
+    my $db = iMSCP::Database->factory();
+    
+    my $qrs = $db->doQuery(
+        1, 'SELECT 1 FROM sql_database WHERE domain_id = ? AND sqld_name = ? LIMIT 1', $self->{'domain_id'}, $dbName
+    );
+    ref $qrs eq 'HASH' or die( $qrs );
+
+    unless (%{$qrs}) {
+        debug(sprintf( "Orphaned `%s' database. skipping...", $dbName ));
+        return 0;
+    }
+
+    my $cmd;
+    if (defined $archFormat) {
+        if ($archFormat eq '.bz2') {
+            $cmd = 'bzcat -d ';
+        } elsif ($archFormat eq '.gz') {
+            $cmd = 'zcat -d ';
+        } elsif ($archFormat eq '.lzma') {
+            $cmd = 'lzma -dc ';
+        } elsif ($archFormat eq '.xz') {
+            $cmd = 'xz -dc ';
+        } else {
+            debug(sprintf( "Unsupported `%s' database dump archive format. skipping...", $archFormat ));
+            return 0;
+        }
+    } else {
+        $cmd = 'cat ';
+    }
+
+    my $dbUser = 'tmp_'.iMSCP::Crypt::randomStr( 12 );
+    my $dbUserHost = $main::imscpConfig{'DATABASE_USER_HOST'};
+    my $dbUserPwd = iMSCP::Crypt::randomStr( 16 );
+
+    Servers::sqld->factory()->createUser( $dbUser, $dbUserHost, $dbUserPwd );
+
+    (my $quotedDbName = $db->quoteIdentifier( $dbName )) =~ s/([%_])/\\$1/g;
+    $qrs = $db->doQuery( 'g', "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?\@?", $dbUser, $dbUserHost );
+    ref $qrs eq 'HASH' or die( $qrs );
+
+    my $sqlExtraFile = File::Temp->new( UNLINK => 0, SUFFIX => '.cnf' );
+    print $sqlExtraFile <<"EOF";
+[client]
+host     = $main::imscpConfig{'DATABASE_HOST'}
+port     = $main::imscpConfig{'DATABASE_PORT'}
+user     = $dbUser
+password = $dbUserPwd
+EOF
+    $sqlExtraFile->flush();
+
+    my @cmd = (
+        'nice', '-n', '15', 'ionice', '-c2', '-n5', $cmd, escapeShell( $dbDumpFilePath ), '|', 'mysql',
+        '--defaults-extra-file='.escapeShell( $sqlExtraFile ), escapeShell( $dbName )
+    );
+
+    my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
+    debug( $stdout ) if $stdout;
+
+    if ($rs) {
+        Servers::sqld->factory()->dropUser( $dbUser, $dbUserHost );
+        die( error( sprintf( 'Could not restore SQL database: %s', $stderr || 'Unknown error' ) ) );
+    }
+
+    Servers::sqld->factory()->dropUser( $dbUser, $dbUserHost );
 }
 
 =back
