@@ -96,7 +96,7 @@
         </tr>
         <tr>
             <td><label for="max_sql_db_cnt">{TR_MAX_SQL_DB_CNT}</label></td>
-            <td><input type="text" name="max_sql_db_cnt" id="max_sql_db_cnt" min="-1" value="{MAX_SQL_DB_CNT}"></td>
+            <td><input type="number" name="max_sql_db_cnt" id="max_sql_db_cnt" min="-1" value="{MAX_SQL_DB_CNT}"></td>
         </tr>
         <tr>
             <td><label for="max_sql_user_cnt">{TR_MAX_SQL_USER_CNT}</label></td>
@@ -211,23 +211,23 @@
                         <tbody id="php_ini_values">
                         <tr>
                             <td><label for="max_execution_time">{TR_MAX_EXECUTION_TIME}</label></td>
-                            <td><input type="text" name="max_execution_time" id="max_execution_time" data-limit="10000" value="{MAX_EXECUTION_TIME}"> <span>{TR_SEC}</span></td>
+                            <td><input type="number" name="max_execution_time" id="max_execution_time" min="1" max="10000" value="{MAX_EXECUTION_TIME}"> <span>{TR_SEC}</span></td>
                         </tr>
                         <tr>
                             <td><label for="max_input_time">{TR_MAX_INPUT_TIME}</label></td>
-                            <td><input type="text" name="max_input_time" id="max_input_time" data-limit="10000" value="{MAX_INPUT_TIME}"> <span>{TR_SEC}</span></td>
+                            <td><input type="number" name="max_input_time" id="max_input_time" min="1" max="10000" value="{MAX_INPUT_TIME}"> <span>{TR_SEC}</span></td>
                         </tr>
                         <tr>
                             <td><label for="memory_limit">{TR_MEMORY_LIMIT}</label></td>
-                            <td><input type="text" name="memory_limit" id="memory_limit" data-limit="10000" value="{MEMORY_LIMIT}"> <span>{TR_MIB}</span></td>
+                            <td><input type="number" name="memory_limit" id="memory_limit" min="1" max="10000" value="{MEMORY_LIMIT}"> <span>{TR_MIB}</span></td>
                         </tr>
                         <tr>
                             <td><label for="post_max_size">{TR_POST_MAX_SIZE}</label></td>
-                            <td><input type="text" name="post_max_size" id="post_max_size" data-limit="10000" value="{POST_MAX_SIZE}"> <span>{TR_MIB}</span></td>
+                            <td><input type="number" name="post_max_size" id="post_max_size" min="1" max="10000" value="{POST_MAX_SIZE}"> <span>{TR_MIB}</span></td>
                         </tr>
                         <tr>
                             <td><label for="upload_max_filesize">{TR_UPLOAD_MAX_FILESIZE}</label></td>
-                            <td><input type="text" name="upload_max_filesize" id="upload_max_filesize" data-limit="10000" value="{UPLOAD_MAX_FILESIZE}"> <span>{TR_MIB}</span></td>
+                            <td><input type="number" name="upload_max_filesize" id="upload_max_filesize" min="1" max="10000" value="{UPLOAD_MAX_FILESIZE}"> <span>{TR_MIB}</span></td>
                         </tr>
                         </tbody>
                     </table>

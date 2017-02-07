@@ -137,13 +137,11 @@
     // Function to fix/improve jQuery UI behaviors
     var fixJqueryUI = function () {
         // Dirty fix for http://bugs.jqueryui.com/ticket/7856
-        $('[type=checkbox]').on("change", function () {
-            if (!$(this).is(":checked")) {
-                $(this).blur();
-            }
+        $('input[type=radio], input[type=checkbox]').on("change", function () {
+            $(this).blur();
         });
 
-        $(document).on("click", "button,input", function () {
+        $(document).on("change", "button,input", function () {
             $("button,input").removeClass("ui-state-focus ui-state-hover");
         });
 
@@ -262,32 +260,31 @@
 
         var timerId;
         var $iniFields = $("#php_ini_values").find("input");
-        var validationRegexp = /^([1-9]\d*)$/;
 
-        $iniFields.on('keyup', function () {
+        $iniFields.on('keyup mouseup', function () {
             clearTimeout(timerId);
             timerId = setTimeout(function () {
                 $iniFields.each(function () { // We revalidate all fields because some are dependent of others
                     var id = $(this).attr("id");
-                    var value = $.trim($(this).val());
-                    var limit = parseInt($(this).data('limit'));
+                    var curLimit = parseInt($(this).val());
+                    var maxLimit = parseInt($(this).attr('max'));
 
-                    if (!validationRegexp.test(value) || parseInt(value) < 1 || parseInt(value) > limit) {
+                    if (curLimit < 1 || curLimit > maxLimit) {
                         $(this).addClass("ui-state-error");
-                        _updateMesssages(id, sprintf(imscp_i18n.core.out_of_range_value_error, '<strong>' + id + '</strong>', 1, limit));
-                    } else if (id == 'post_max_size' && parseInt($("#memory_limit").val()) <= parseInt(value)) {
+                        _updateMesssages(id, sprintf(imscp_i18n.core.out_of_range_value_error, '<strong>' + id + '</strong>', 1, maxLimit));
+                    } else if (id == 'post_max_size' && parseInt($("#memory_limit").val()) <= curLimit) {
                         $(this).addClass("ui-state-error");
                         _updateMesssages(id, sprintf(imscp_i18n.core.lower_value_expected_error, '<strong>' + id + '</strong>', '<strong>memory_limit</strong>'));
-                    } else if (id == 'upload_max_filesize' && parseInt($("#post_max_size").val()) <= parseInt(value)) {
+                    } else if (id == 'upload_max_filesize' && parseInt($("#post_max_size").val()) <= curLimit) {
                         $(this).addClass("ui-state-error");
                         _updateMesssages(id, sprintf(imscp_i18n.core.lower_value_expected_error, '<strong>' + id + '</strong>', '<strong>post_max_size</strong>'));
                     } else {
                         $(this).removeClass("ui-state-error");
                         _updateMesssages(id);
-                        $(this).val(value);
+                        $(this).val(curLimit);
                     }
                 });
-            }, 300);
+            }, 200);
         }).trigger('keyup'); // We trigger the keyup event on page load to catch any inconsistency with ini values
     })
 })(jQuery);
