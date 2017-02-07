@@ -1,15 +1,15 @@
 <script>
     $(function () {
         function flashMessage(type, message) {
+            $(".flash_message").remove();
             $("<div>", {
                 "class": "flash_message " + type,
-                "html": $.parseHTML(message),
-                "hide": true
+                "html": $.parseHTML(message)
             }).prependTo(".body").trigger("message_timeout");
         }
         
         function doRequest(data) {
-            $.post("/admin/ip_manage.php", data, null, "json").done(function () {
+            return $.post("/admin/ip_manage.php", data, null, "json").done(function () {
                 window.location.href = "/admin/ip_manage.php";
             }).fail(function (jqXHR) {
                 if (jqXHR.status == 403) {
@@ -33,16 +33,17 @@
             stateSave: true,
             pagingType: "simple",
             columnDefs: [{ sortable: false, searchable: false, targets: [3, 4] }]
-        }).on("click", ":radio", function () {
-            var data  = $(this).serializeArray();
-            data.push({ name: "ip_id", value: $(this).data("ip-id") });
-            doRequest($.param(data));
+        }).on("change", ".radio", function () {
+            var $this = $(this);
+            doRequest($this.parent().find("input").serialize()).fail(function () {
+                $this.find('input:not(:checked)').prop('checked', true).button('refresh');
+             });
             return false;
         }).find("tbody > tr").each(function () { // Make some fields editable at runtime
             $(this).find("td").slice(1, 3).each(function () {
                 var $el = $(this).find("span").filter(":first");
-
-                if (!$el.data("editable")) return;
+                if (!$el.data("editable"))
+                    return;
 
                 $el.addClass("tips");
                 $el.before($("<span>", { "class": "icon i_help", "title": imscp_i18n.core.edit_tooltip }).tooltip({
@@ -55,7 +56,7 @@
                         switch ($(this).data("type")) {
                             case "netmask":
                                 $newEl.append($netmask.clone().attr(
-                                    'max', $(this).data("ip").indexOf(":") != -1 ? 64 : 24
+                                    'max', $(this).data("ip").indexOf(":") != -1 ? 64 : 32
                                 ).val($(this).text()).css({ "min-width": "unset", "width": "40px" }));
                                 break;
                             case "card":
@@ -66,7 +67,7 @@
                         $newEl.append($('<input>', { "type": "hidden", "name": "ip_id", "value": $(this).data("ip-id") }));
                         $newEl.on("blur", "input, select", function () {
                             if ($(this).val() != $el.text()) {
-                                doRequest($(this).parent().find('input,select').serialize());
+                                doRequest($(this).parent().find('input, select').serialize());
                             }
 
                             $el = $elDeepCopy;
@@ -124,12 +125,13 @@
         <td><span data-editable="{IP_EDITABLE}" data-type="card" data-ip-id="{IP_ID}">{NETWORK_CARD}</span></td>
         <td>
             <!-- BDP: ip_config_mode_block -->
-                <div class="radio">
-                    <input type="radio" name="ip_config_mode[{IP_ID}]" id="ip_config_mode_auto_{IP_ID}" value="auto"{IP_CONFIG_AUTO} data-ip-id="{IP_ID}">
-                    <label for="ip_config_mode_auto_{IP_ID}">{TR_AUTO}</label>
-                    <input type="radio" name="ip_config_mode[{IP_ID}]" id="ip_config_mode_manual_{IP_ID}" value="manual"{IP_CONFIG_MANUAL} data-ip-id="{IP_ID}">
-                    <label for="ip_config_mode_manual_{IP_ID}">{TR_MANUAL}</label>
-                </div>
+            <div class="radio">
+                <input type="radio" name="ip_config_mode[{IP_ID}]" id="ip_config_mode_auto_{IP_ID}" value="auto"{IP_CONFIG_AUTO}>
+                <label for="ip_config_mode_auto_{IP_ID}">{TR_AUTO}</label>
+                <input type="radio" name="ip_config_mode[{IP_ID}]" id="ip_config_mode_manual_{IP_ID}" value="manual"{IP_CONFIG_MANUAL}>
+                <label for="ip_config_mode_manual_{IP_ID}">{TR_MANUAL}</label>
+            </div>
+            <input type="hidden" name="ip_id" value="{IP_ID}">
             <!-- EDP: ip_config_mode_block -->
         </td>
         <td>

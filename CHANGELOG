@@ -49,11 +49,17 @@ DOCUMENTATION
     Added: CGI script sample for Perl, Python and Ruby
 
 FRONTEND
+    Added: Method to get IP address version (iMSCP::Net)
+    Added: Method to get IP prefix length (iMSCP::Net)
+    Added: Methods to compress/expand IPv6 addresses (iMSCP::Net)
+    Changed: Defer loading of NIC and IP data (iMSCP::Net)
     Changed: Restricts character range for password generator to ASCII alphabet characters and numbers
     Fixed: Administrators cannot switch onto reseller/customer interface when database update is available
     Fixed: Don't list software that require database for customers that have not SQL feature enabled
     Fixed: `iMSCP_Exception_Production' class not compatible with PHP >= 7.0
     Fixed: IP address input field is too small (admin/ip_manage.php)
+    Fixed: Store compressed IPv6 (ip_manage.php)
+    Fixed: Try to guess the prefix length whenever possible (ip_manage.php)
     Fixed: When IP address is pasted, netmask input field is not updated (admin/ip_manage.php)
     Removed: PhpMyAdmin auto-login feature (password for SQL database are no longer stored plaintext in database)
     Removed: Pydio auto-login feature (password for FTP users are no longer stored plaintext in database)

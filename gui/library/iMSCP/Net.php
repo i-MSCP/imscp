@@ -42,6 +42,11 @@ class Net
     protected $ipAddresses = array();
 
     /**
+     * @var bool Whether or not NIC and IP data were loaded
+     */
+    protected $loadedData = false;
+
+    /**
      * Singleton pattern implementation -  makes "new" unavailable
      */
     protected function __construct()
@@ -59,10 +64,11 @@ class Net
 
     /**
      * Get Net instance
+     * @return Net
      */
     static public function getInstance()
     {
-        if (null === self::$instance) {
+        if (NULL === self::$instance) {
             self::$instance = new self;
         }
 
@@ -76,6 +82,7 @@ class Net
      */
     public function getDevices()
     {
+        $this->loadData();
         return array_keys($this->devices);
     }
 
@@ -86,7 +93,137 @@ class Net
      */
     public function getIpAddresses()
     {
+        $this->loadData();
         return array_keys($this->ipAddresses);
+    }
+
+    /**
+     * Get version of the given IP address
+     *
+     * @param string $ipAddr IP address
+     * @return int IP address version
+     */
+    public function getVersion($ipAddr)
+    {
+        return (strpos($ipAddr, ':') !== false) ? 6 : 4;
+    }
+
+    /**
+     * Get prefix length of the given IP address
+     *
+     * @param string $ipAddr IP address
+     * @return array|null
+     */
+    public function getIpPrefixLength($ipAddr)
+    {
+        $this->loadData();
+        $ipAddr = $this->compress($ipAddr);
+
+        if (isset($this->ipAddresses[$ipAddr])) {
+            return $this->ipAddresses[$ipAddr]['prefix_length'];
+        }
+
+        return NULL;
+    }
+
+    /**
+     * Compress the given IP
+     *
+     * @param string $ipAddr IP address
+     * @return mixed
+     */
+    public function compress($ipAddr)
+    {
+        $ipp = explode(':', $ipAddr);
+
+        for ($i = 0; $i < count($ipp); $i++) {
+            $ipp[$i] = dechex(hexdec($ipp[$i]));
+        }
+
+        $ipAddr = ':' . join(':', $ipp) . ':';
+        preg_match_all('/(:0)(:0)+/', $ipAddr, $zeros);
+
+        if (count($zeros[0]) > 0) {
+            $match = '';
+            foreach ($zeros[0] as $zero) {
+                if (strlen($zero) > strlen($match)) {
+                    $match = $zero;
+                }
+            }
+
+            $ipAddr = preg_replace('/' . $match . '/', ':', $ipAddr, 1);
+        }
+
+        $ipAddr = preg_replace('/((^:)|(:$))/', '', $ipAddr);
+        return preg_replace('/((^:)|(:$))/', '::', $ipAddr);
+    }
+
+    /**
+     * Expand the given IP address
+     *
+     * @param string $ipAddr IP address
+     * @return string
+     */
+    public function expand($ipAddr)
+    {
+        if (false !== strpos($ipAddr, '::')) {
+            list($ip1, $ip2) = explode('::', $ipAddr);
+
+            if ('' == $ip1) {
+                $c1 = -1;
+            } else {
+                $c1 = (0 < ($pos = substr_count($ip1, ':'))) ? $pos : 0;
+            }
+
+            if ('' == $ip2) {
+                $c2 = -1;
+            } else {
+                $c2 = (0 < ($pos = substr_count($ip2, ':'))) ? $pos : 0;
+            }
+
+            if (strstr($ip2, '.')) {
+                $c2++;
+            }
+
+            if (-1 == $c1 && -1 == $c2) {
+                $ipAddr = '0:0:0:0:0:0:0:0';
+            } elseif (-1 == $c1) {
+                $fill = str_repeat('0:', 7 - $c2);
+                $ipAddr = str_replace('::', $fill, $ipAddr);
+            } elseif (-1 == $c2) {
+                $fill = str_repeat(':0', 7 - $c1);
+                $ipAddr = str_replace('::', $fill, $ipAddr);
+            } else {
+                $fill = str_repeat(':0:', 6 - $c2 - $c1);
+                $ipAddr = str_replace('::', $fill, $ipAddr);
+                $ipAddr = str_replace('::', ':', $ipAddr);
+            }
+        }
+
+        $uipT = array();
+        $uiparts = explode(':', $ipAddr);
+
+        foreach ($uiparts as $p) {
+            $uipT[] = sprintf('%04s', $p);
+        }
+
+        return implode(':', $uipT);
+    }
+
+    /**
+     * Load IP data
+     *
+     * @return void
+     */
+    protected function loadData()
+    {
+        if ($this->loadedData) {
+            return;
+        }
+
+        $this->extractDevices();
+        $this->extractIpAddresses();
+        $this->loadedData = true;
     }
 
     /**
@@ -163,11 +300,11 @@ class Net
                 $line,
                 $matches
             )) {
-                $this->ipAddresses[$matches[3]] = array(
-                    'device' => $matches[1],
-                    'version' => $matches[2] == 'inet' ? 'ipv4' : 'ipv6',
+                $this->ipAddresses[$this->compress($matches[3])] = array(
+                    'device'        => $matches[1],
+                    'version'       => $matches[2] == 'inet' ? 'ipv4' : 'ipv6',
                     'prefix_length' => $matches[4],
-                    'device_label' => isset($matches[5]) ? $matches[5] : ''
+                    'device_label'  => isset($matches[5]) ? $matches[5] : ''
                 );
             }
         }
