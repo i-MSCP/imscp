@@ -110,16 +110,18 @@ sub run
         my $dialog = iMSCP::Dialog->getInstance();
 
         $dialog->set('title', 'i-MSCP Reconfiguration Dialog');
+        $dialog->set( 'yes-label', 'Continue' );
+        $dialog->set( 'no-label', 'Abort' );
 
-        exit 0 if $dialog->yesno(<<"EOF", 1);
+        exit 0 if $dialog->yesno(<<"EOF", 'abort_by_default');
 
 Welcome to the \\Z1i-MSCP $main::imscpConfig{'Version'}\\Zn reconfiguration dialog.
 
-This program will reconfigure i-MSCP on your system.
+This program will reconfigures your i-MSCP instance.
 
-During the process some or all services might require to be shutdown or restarted.
+During the process, some or all services might require to be shutdown or restarted.
 
-Do you want to continue?
+You can now either continue or abort.
 EOF
 
         $dialog->resetLabels();
