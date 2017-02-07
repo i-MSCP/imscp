@@ -222,7 +222,8 @@ sub postaddDmn
                 CTM_ALS_ENTRY_ADD     => {
                     NAME  => $data->{'ALIAS'},
                     CLASS => 'IN',
-                    TYPE  => iMSCP::Net->getInstance()->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4' ? 'A' : 'AAAA',
+                    TYPE  => (iMSCP::Net->getInstance()->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4')
+                        ? 'A' : 'AAAA',
                     DATA  => $data->{'BASE_SERVER_PUBLIC_IP'}
                 }
             }
@@ -407,13 +408,12 @@ sub addSub
         $subEntry = replaceBloc( "; sub MAIL entry BEGIN\n", "; sub MAIL entry ENDING\n", '', $subEntry );
     }
 
-    my $domainIP = ($data->{'BASE_SERVER_IP'} eq $data->{'BASE_SERVER_PUBLIC_IP'})
-        ? $data->{'DOMAIN_IP'} : $data->{'BASE_SERVER_PUBLIC_IP'};
+    my $domainIP = $net->isRoutableAddr( $data->{'DOMAIN_IP'} ) ? $data->{'DOMAIN_IP'} : $data->{'BASE_SERVER_PUBLIC_IP'};
 
     $subEntry = process(
         {
             SUBDOMAIN_NAME => $data->{'DOMAIN_NAME'},
-            IP_TYPE        => $net->getAddrVersion( $domainIP ) eq 'ipv4' ? 'A' : 'AAAA',
+            IP_TYPE        => ($net->getAddrVersion( $domainIP ) eq 'ipv4') ? 'A' : 'AAAA',
             DOMAIN_IP      => $domainIP
         },
         $subEntry
@@ -484,7 +484,8 @@ sub postaddSub
                 CTM_ALS_ENTRY_ADD     => {
                     NAME  => $data->{'ALIAS'},
                     CLASS => 'IN',
-                    TYPE  => iMSCP::Net->getInstance()->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4' ? 'A' : 'AAAA',
+                    TYPE  => (iMSCP::Net->getInstance()->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4')
+                        ? 'A' : 'AAAA',
                     DATA  => $data->{'BASE_SERVER_PUBLIC_IP'}
                 }
             }
@@ -993,17 +994,16 @@ sub _addDmnDb
 
     my $nsRecordB = getBloc( "; dmn NS RECORD entry BEGIN\n", "; dmn NS RECORD entry ENDING\n", $tplDbFileC );
     my $glueRecordB = getBloc( "; dmn NS GLUE RECORD entry BEGIN\n", "; dmn NS GLUE RECORD entry ENDING\n", $tplDbFileC );
-    my $domainIP = ($data->{'BASE_SERVER_IP'} eq $data->{'BASE_SERVER_PUBLIC_IP'})
-        ? $data->{'DOMAIN_IP'} : $data->{'BASE_SERVER_PUBLIC_IP'};
-
-    my @nsIPs = (
-        $domainIP,
-        ($self->{'config'}->{'SECONDARY_DNS'} eq 'no' ? () : split ';', $self->{'config'}->{'SECONDARY_DNS'})
-    );
 
     my $net = iMSCP::Net->getInstance();
+    my $domainIP = $net->isRoutableAddr( $data->{'DOMAIN_IP'} ) ? $data->{'DOMAIN_IP'} : $data->{'BASE_SERVER_PUBLIC_IP'};
 
     unless($nsRecordB eq '' && $glueRecordB eq '') {
+        my @nsIPs = (
+            $domainIP,
+            ($self->{'config'}->{'SECONDARY_DNS'} eq 'no' ? () : split ';', $self->{'config'}->{'SECONDARY_DNS'})
+        );
+
         my ($nsRecords, $glueRecords) = ('', '');
 
         for my $ipAddrType(qw/ ipv4 ipv6 /) {
@@ -1090,7 +1090,7 @@ sub _addDmnDb
     $tplDbFileC = process(
         {
             DOMAIN_NAME => $data->{'DOMAIN_NAME'},
-            IP_TYPE     => $net->getAddrVersion( $domainIP ) eq 'ipv4' ? 'A' : 'AAAA',
+            IP_TYPE     => ($net->getAddrVersion( $domainIP ) eq 'ipv4') ? 'A' : 'AAAA',
             DOMAIN_IP   => $domainIP
         },
         $tplDbFileC
