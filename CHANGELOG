@@ -9,7 +9,7 @@ ARPL
     Removed: imscp-arpl-msgr log directory (ARPL error logs goes now into /var/log/mail.log)
 
 BACKEND
-    Added: isRoutableAddr() method to check whether a given IP address is world- routable (iMSCP::Net)
+    Added: isRoutableAddr() method to check whether a given IP address is world-routable (iMSCP::Net)
     Added: Support for prefix length (iMSCP::Net::addAddr())
     Changed: Event logging is now done on a per module basis - see the errata file for further details
     Changed: Listener files from deprecated /etc/imscp/hooks.d directory are now ignored (iMSCP::EventManager)
