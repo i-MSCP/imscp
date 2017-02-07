@@ -73,10 +73,10 @@ sub addAddr
     $self->isValidNetmask( $addr, $cidr ) or croak( sprintf( 'Invalid CIDR (subnet mask): %s', $cidr ) );
     $self->isKnownDevice( $dev ) or croak( sprintf( 'Unknown network device: %s', $dev ) );
 
+    return 0 if $self->isKnownAddr( $addr );
+
     my ($stdout, $stderr);
-    my @cmd = (
-        'ip', (($self->getAddrVersion($addr) eq 'ipv4') ? '-4' : '-6'), 'addr', 'add', "$addr/$cidr", 'dev', $dev
-    );
+    my @cmd = ('ip', (($self->getAddrVersion($addr) eq 'ipv4') ? '-4' : '-6'), 'addr', 'add', "$addr/$cidr", 'dev', $dev);
     push @cmd, 'label', $label if $label;
     execute( [ @cmd ], \$stdout, \$stderr ) == 0 or croak(
         sprintf('Could not add the %s IP address: %s', $addr, $dev, $stderr || 'Unknown error')
@@ -207,7 +207,7 @@ sub getAddrNetmask
 
 =item isKnownAddr($addr)
 
- Is the given IP known?
+ Is the given IP address known?
 
  Param string $addr IP address
  Return bool TRUE if the given IP is known, FALSE otherwise
@@ -223,7 +223,7 @@ sub isKnownAddr
 
 =item isValidAddr($addr)
 
- Check whether or not the given IP is valid
+ Is the given IP address valid?
 
  Param string $addr IP address
  Return bool TRUE if valid, FALSE otherwise
@@ -235,6 +235,24 @@ sub isValidAddr
     my (undef, $addr) = @_;
 
     is_ipv4( $addr ) || is_ipv6( $addr );
+}
+
+=item isRoutableAddr($addr)
+
+ Is the given IP address routable?
+
+ Return bool TRUE if the given IP address is routable, FALSE otherwise
+
+=cut
+
+sub isRoutableAddr
+{
+    my ($self, $addr) = @_;
+
+    return 1 if $self->isValidAddr( $addr )
+        && $self->getAddrType( $addr ) =~ /^(?:PUBLIC|GLOBAL-UNICAST)$/;
+
+    0;
 }
 
 =item isValidNetmask( $addr, $cidr )
