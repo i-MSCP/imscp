@@ -134,6 +134,8 @@ class Net
      */
     public function compress($ipAddr)
     {
+        $ipAddr = $this->expand($ipAddr);
+
         $ipp = explode(':', $ipAddr);
 
         for ($i = 0; $i < count($ipp); $i++) {

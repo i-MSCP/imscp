@@ -41,6 +41,7 @@ my %COMMANDS = (
 
 #  Network interface configuration file for ifup/ifdown
 my $INTERFACES_FILE_PATH = '/etc/network/interfaces';
+my $IFUP_STATE_DIR = '/run/network';
 
 =head1 DESCRIPTION
 
@@ -50,7 +51,7 @@ my $INTERFACES_FILE_PATH = '/etc/network/interfaces';
 
 =over 4
 
-=item addIpAddr(\%data)
+=item addIpAddr( \%data )
 
  See iMSCP::Provider::NetworkInterface::Interface
 
@@ -85,33 +86,33 @@ sub addIpAddr
     return 0 unless $data->{'ip_config_mode'} eq 'auto';
 
     # Handle case where the IP netmask or NIC has been changed
-    if ($self->{'net'}->isKnownAddr($data->{'ip_address'})
-        && ($self->{'net'}->getAddrDevice($data->{'ip_address'}) ne $data->{'ip_card'}
-        || $self->{'net'}->getAddrNetmask($data->{'ip_address'}) ne $data->{'ip_netmask'})
+    if ($self->{'net'}->isKnownAddr( $data->{'ip_address'} )
+        && ($self->{'net'}->getAddrDevice( $data->{'ip_address'} ) ne $data->{'ip_card'}
+        || $self->{'net'}->getAddrNetmask( $data->{'ip_address'} ) ne $data->{'ip_netmask'})
     ) {
         $self->{'net'}->delAddr( $data->{'ip_address'} );
     }
 
     if ($addrVersion eq 'ipv4') {
+        my $netCard = ($self->_isDefinedInterface( "$data->{'ip_card'}:$data->{'ip_id'}" ))
+            ? "$data->{'ip_card'}:$data->{'ip_id'}" : $data->{'ip_card'};
+
         my ($stdout, $stderr);
-        execute( [ $COMMANDS{'ifup'}, '--force', "$data->{'ip_card'}:$data->{'ip_id'}" ], \$stdout,
-            \$stderr ) == 0 or die(
+        execute( [ $COMMANDS{'ifup'}, '--force', $netCard ], \$stdout, \$stderr ) == 0 or die(
             sprintf(
-                "Could not bring up the `%s' network interface: %s", "$data->{'ip_card'}:$data->{'ip_id'}",
+                "Couldn't bring up the `%s' network interface: %s", "$data->{'ip_card'}:$data->{'ip_id'}",
                 $stderr || 'Unknown error'
             )
         );
         return $self;
     }
 
-    # IPv6 case: We do not set aliased interface because that is not supported everywhere
-    # For instance, on Ubuntu Precise, we end with the following error:
-    # `error: "net.ipv6.conf.eth0:0.autoconf" is an unknown key' when trying to bring up aliased interface
+    # IPv6 case: We do not have aliased interface
     $self->{'net'}->addAddr( $data->{'ip_address'}, $data->{'ip_netmask'}, $data->{'ip_card'} );
     $self;
 }
 
-=item removeIpAddr(\%data)
+=item removeIpAddr( \%data )
 
  See iMSCP::Provider::NetworkInterface::Interface
 
@@ -137,10 +138,17 @@ sub removeIpAddr
         my ($stdout, $stderr);
         execute( "$COMMANDS{'ifdown'} --force $data->{'ip_card'}:$data->{'ip_id'}", \$stdout, \$stderr ) == 0 or die(
             sprintf(
-                "Could not bring down the `%s' network interface: %s", "$data->{'ip_card'}:$data->{'ip_id'}",
+                "Couldn't bring down the `%s' network interface: %s", "$data->{'ip_card'}:$data->{'ip_id'}",
                 $stderr || 'Unknown error'
             )
         );
+
+        my $ifupStateFile = $IFUP_STATE_DIR."/ifup.$data->{'ip_card'}:$data->{'ip_id'}";
+        if (-f $ifupStateFile) {
+            iMSCP::File->new( filename => $ifupStateFile )->delFile == 0 or die(
+                sprintf( "Couldn't remove `%s' ifup state file", $ifupStateFile )
+            );
+        }
     } elsif ($data->{'ip_config_mode'} eq 'auto') {
         # Cover not aliased interface (IPv6) case
         # Cover undefined interface case
@@ -157,7 +165,7 @@ sub removeIpAddr
 
 =over 4
 
-=item _init()
+=item _init( )
 
  See Common::Object
 
@@ -167,11 +175,11 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'net'} = iMSCP::Net->getInstance();
+    $self->{'net'} = iMSCP::Net->getInstance( );
     $self->SUPER::_init();
 }
 
-=item _updateInterfacesFile($action, \%data)
+=item _updateInterfacesFile( $action, \%data )
 
  Add or remove IP address in the interfaces configuration file
 
@@ -193,7 +201,7 @@ sub _updateInterfacesFile
     my $cAddr = $self->{'net'}->normalizeAddr( $data->{'ip_address'} );
     my $eAddr = $self->{'net'}->expandAddr( $data->{'ip_address'} );
 
-    my $fileContent = $file->get();
+    my $fileContent = $file->get( );
     $fileContent = iMSCP::TemplateParser::replaceBloc(
         qr/\n?# i-MSCP \[(?:.*\Q:$data->{'ip_id'}\E|\Q$cAddr\E)\] entry BEGIN\n/,
         qr/# i-MSCP \[(?:.*\Q:$data->{'ip_id'}\E|\Q$cAddr\E)\] entry ENDING\n/,
@@ -205,13 +213,15 @@ sub _updateInterfacesFile
         && $data->{'ip_config_mode'} eq 'auto'
         && $fileContent !~ /^[^#]*(?:address|ip\s+addr.*?)\s+(?:$cAddr|$eAddr|$data->{'ip_address'})(?:\s+|\n)/gm
     ) {
+        my $iface = $data->{'ip_card'}.(($addrVersion eq 'ipv4') ? ':'.$data->{'ip_id'} : '');
+
         $fileContent .= iMSCP::TemplateParser::process(
             {
                 ip_id       => $data->{'ip_id'},
                 # For IPv6 addr, we do not create aliased interface because that is not suppported everywhere.
                 # For instance, on Ubuntu Precise, we end with the following error:
                 # `error: "net.ipv6.conf.eth0:0.autoconf" is an unknown key' when trying to bring up aliased interface
-                iface       => $data->{'ip_card'}.(($addrVersion eq 'ipv4') ? ':'.$data->{'ip_id'} : ''),
+                iface       => $iface,
                 ip_address  => $cAddr,
                 ip_netmask  => $data->{'ip_netmask'},
                 addr_family => $addrVersion eq 'ipv4' ? 'inet' : 'inet6'
@@ -219,7 +229,6 @@ sub _updateInterfacesFile
             <<"STANZA"
 
 # i-MSCP [{ip_address}] entry BEGIN
-auto {iface}
 iface {iface} {addr_family} static
     address {ip_address}
     netmask {ip_netmask}
@@ -227,15 +236,15 @@ iface {iface} {addr_family} static
 STANZA
         );
 
-        # We do add the `auto' stanza only for aliased interfaces
-        $fileContent =~ s/^auto.*\n//gm if $addrVersion ne 'ipv4';
+        # We do add the `auto' stanza only for aliased interfaces, hence, for IPv4 only
+        $fileContent =~ s/^(# i-MSCP \[$cAddr\] entry BEGIN\n)/${1}auto $iface\n/m if $addrVersion eq 'ipv4';
     }
 
     $rs = $file->set( $fileContent );
-    $rs ||= $file->save();
+    $rs ||= $file->save( );
 }
 
-=item _isDefinedInterface($interface)
+=item _isDefinedInterface( $interface )
 
  Is the given interface defined in the interfaces configuration file?
 

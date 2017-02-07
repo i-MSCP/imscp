@@ -140,8 +140,7 @@ function generateIpsList($tpl)
 
         $tpl->assign(array(
             'IP'           => $row['ip_number'],
-            'IP_NETMASK'   => $row['ip_netmask']
-                ?: $net->getIpPrefixLength($net->compress($row['ip_number'])) ?: tr('N/A'),
+            'IP_NETMASK'   => $net->getIpPrefixLength($net->compress($row['ip_number'])) ?: $row['ip_netmask'] ?: tr('N/A'),
             'IP_EDITABLE'  => ($row['ip_status'] == 'ok'
                 && $baseServerIp != $ipAddr
                 && $row['ip_config_mode'] != 'manual'
