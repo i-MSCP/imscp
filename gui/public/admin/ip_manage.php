@@ -76,7 +76,8 @@ function generatePage($tpl)
     generateDevicesList($tpl);
 
     $ipConfigMode = isset($_POST['ip_config_mode']) && in_array($_POST['ip_config_mode'], array('auto', 'manual'))
-        ? $_POST['ip_config_mode'] : 'auto';
+        ? $_POST['ip_config_mode']
+        : 'auto';
 
     $tpl->assign(array(
         'VALUE_IP'         => isset($_POST['ip_number']) ? tohtml($_POST['ip_number']) : '',
@@ -84,17 +85,6 @@ function generatePage($tpl)
         'IP_CONFIG_AUTO'   => $ipConfigMode == 'auto' ? ' checked' : '',
         'IP_CONFIG_MANUAL' => $ipConfigMode == 'manual' ? ' checked' : ''
     ));
-}
-
-/*
- * Get prefix length of the given ip
- * 
- * @param string $ipAddr IP address
- */
-function getIpPrefixLength($ipAddr)
-{
-    $net = Net::getInstance();
-    return $net->getIpPrefixLength($net->compress($ipAddr)) ?: tr('N/A');
 }
 
 /**
@@ -125,12 +115,19 @@ function generateIpsList($tpl)
     }
 
     $cfg = Registry::get('config');
+    $net = Net::getInstance();
+    $baseServerIp = ($net->getVersion($cfg['BASE_SERVER_IP']) == 6)
+        ? $net->compress($cfg['BASE_SERVER_IP'])
+        : $cfg['BASE_SERVER_IP'];
+
     while ($row = $stmt->fetchRow()) {
-        if ($cfg['BASE_SERVER_IP'] === $row['ip_number']) {
+        $ipAddr = ($net->getVersion($row['ip_number']) == 6) ? $net->compress($row['ip_number']) : $row['ip_number'];
+
+        if ($baseServerIp === $ipAddr) {
             $actionName = $row['ip_status'] == 'ok' ? tr('Protected') : translate_dmn_status($row['ip_status']);
             $actionIpId = NULL;
         } elseif (in_array($row['ip_id'], $assignedIps)) {
-            $actionName = $row['ip_status'] == 'ok'
+            $actionName = ($row['ip_status'] == 'ok')
                 ? tr('Assigned to at least one reseller') : translate_dmn_status($row['ip_status']);
             $actionIpId = NULL;
         } elseif ($row['ip_status'] == 'ok') {
@@ -143,9 +140,10 @@ function generateIpsList($tpl)
 
         $tpl->assign(array(
             'IP'           => $row['ip_number'],
-            'IP_NETMASK'   => $row['ip_netmask'] ?: getIpPrefixLength($row['ip_number']),
+            'IP_NETMASK'   => $row['ip_netmask']
+                ?: $net->getIpPrefixLength($net->compress($row['ip_number'])) ?: tr('N/A'),
             'IP_EDITABLE'  => ($row['ip_status'] == 'ok'
-                && $cfg['BASE_SERVER_IP'] != $row['ip_number']
+                && $baseServerIp != $ipAddr
                 && $row['ip_config_mode'] != 'manual'
             ) ? true : false,
             'NETWORK_CARD' => $row['ip_card'] === NULL ? '' : tohtml($row['ip_card']),
@@ -198,7 +196,7 @@ function generateDevicesList($tpl)
     foreach ($netDevices as $netDevice) {
         $tpl->assign(array(
             'NETWORK_CARD' => $netDevice,
-            'SELECTED'     => isset($_POST['ip_card']) && $_POST['ip_card'] === $netDevice ? ' selected' : ''
+            'SELECTED'     => isset($_POST['ip_card']) && $_POST['ip_card'] == $netDevice ? ' selected' : ''
         ));
         $tpl->parse('NETWORK_CARD_BLOCK', '.network_card_block');
     }
@@ -224,7 +222,7 @@ function checkIpData($ipAddr, $ipNetmask, $ipConfigMode, $ipCard)
     }
 
     $net = Net::getInstance();
-    
+
     // Validate IP netmask
     $isIPv6 = $net->getVersion($ipAddr) == 6;
     if (!ctype_digit($ipNetmask)
@@ -338,13 +336,8 @@ function addIpAddr()
     // Make sure that $ipAddr is not already under the control of i-MSCP
     $stmt = execute_query('SELECT ip_number FROM server_ips');
     while ($row = $stmt->fetchRow()) {
-        if ($net->getVersion($row['ip_number']) == 6) {
-            $compareIpAddr = $net->compress($row['ip_number']);
-        } else {
-            $compareIpAddr = $row['ip_number'];
-        }
-
-        if ($compareIpAddr === $ipAddr) {
+        $cIpaddr = ($net->getVersion($row['ip_number']) == 6) ? $net->compress($row['ip_number']) : $row['ip_number'];
+        if ($cIpaddr === $ipAddr) {
             set_page_message(tr('IP address already under the control of i-MSCP.'), 'error');
             $errFieldsStack[] = 'ip_number';
             break;
