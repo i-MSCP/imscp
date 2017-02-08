@@ -68,7 +68,7 @@
         </tr>
         <tr id="tr_quota">
             <td><label for="quota">{TR_QUOTA}</label></td>
-            <td><input name="quota" id="quota" type="text" value="{QUOTA}"></td>
+            <td><input name="quota" id="quota" type="number" min="{MIN_QUOTA}" max="{MAX_QUOTA}" value="{QUOTA}"></td>
         </tr>
         <tr id="tr_forward_list">
             <td>

@@ -71,7 +71,7 @@ function client_editMailAccount()
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
     $password = $forwardList = '_no_';
     $mailType = '';
-    $quota = NULL;
+    $mailQuota = NULL;
 
     if (!preg_match('/^(.*?)_(?:mail|forward)/', $mailData['mail_type'], $match)) {
         throw new iMSCP_Exception('Could not determine mail type');
@@ -116,16 +116,12 @@ function client_editMailAccount()
             $password = $mailData['mail_pass'];
         }
 
-        $quota = clean_input($_POST['quota']);
+        // Check for quota
 
-        if (!is_number($quota)) {
-            set_page_message(tr('Email quota must be a number.'), 'error');
-            return false;
-        }
+        $mailQuota = intval($_POST['quota']) * 1048576; // MiB to Bytes
 
-        $quota *= 1048576; // MiB to Bytes
-        if ($mainDmnProps['mail_quota'] != '0') {
-            if ($quota == '0') {
+        if ($mainDmnProps['mail_quota'] != 0) {
+            if ($mailQuota == 0) {
                 set_page_message(tr('Incorrect Email quota.'), 'error');
                 return false;
             }
@@ -134,11 +130,12 @@ function client_editMailAccount()
                 'SELECT IFNULL(SUM(quota), 0) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
                 $mainDmnProps['domain_id']
             );
-            $row = $stmt->fetchRow();
 
-            $quotaLimit = floor($mainDmnProps['mail_quota'] - ($row['quota'] - $mailData['quota']));
-            if ($quota > $quotaLimit) {
-                set_page_message(tr('Email quota cannot be bigger than %s', bytesHuman($quotaLimit, 'MiB')), 'error');
+            $mailQuotaSumBytes = $stmt->fetchRow(PDO::FETCH_COLUMN);
+
+            $mailQuotaLimitBytes = floor(($mainDmnProps['mail_quota'] + $mailData['quota']) - $mailQuotaSumBytes);
+            if ($mailQuota > $mailQuotaLimitBytes) {
+                set_page_message(tr('Email quota cannot be bigger than %s', bytesHuman($mailQuotaLimitBytes, null, 0)), 'error');
                 return false;
             }
         }
@@ -200,7 +197,7 @@ function client_editMailAccount()
     ));
     exec_query(
         'UPDATE mail_users SET mail_pass = ?, mail_forward = ?, mail_type = ?, status = ?, quota = ? WHERE mail_id = ?',
-        array($password, $forwardList, $mailType, 'tochange', $quota, $mailData['mail_id'])
+        array($password, $forwardList, $mailType, 'tochange', $mailQuota, $mailData['mail_id'])
     );
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditMail, array(
@@ -225,12 +222,34 @@ function client_generatePage($tpl)
     list($username, $domainName) = explode('@', $mailData['mail_addr']);
 
     $stmt = exec_query(
-        'SELECT IFNULL(SUM(quota), 0) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
+        'SELECT COALESCE(SUM(quota), 0) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
         $mainDmnProps['domain_id']
     );
-    $row = $stmt->fetchRow();
 
-    $quota = $row['quota'];
+    $mailQuotaSumBytes = $stmt->fetchRow(PDO::FETCH_COLUMN);
+
+    if ($mainDmnProps['mail_quota'] == 0) {
+        $tpl->assign(array(
+            'TR_QUOTA'  => tohtml(tr('Quota in MiB (0 for unlimited)')),
+            'MIN_QUOTA' => 1,
+            'MAX_QUOTA' => tohtml(floor(PHP_INT_MAX / 1048576), 'htmlAttr'),
+            'QUOTA'     => isset($_POST['quota'])
+                ? tohtml($_POST['quota'], 'htmlAttr')
+                : tohtml(floor($mailData['quota'] / 1048576), 'htmlAttr')
+        ));
+    } else {
+        $mailQuotaLimitBytes = ($mainDmnProps['mail_quota'] + $mailData['quota']) - $mailQuotaSumBytes;
+        $mailQuotaLimitMiB = floor($mailQuotaLimitBytes  / 1048576);
+        $tpl->assign(array(
+            'TR_QUOTA'  => tohtml(tr('Quota in MiB (Max: %s)', bytesHuman($mailQuotaLimitBytes, NULL, 0))),
+            'MIN_QUOTA' => 1,
+            'MAX_QUOTA' => tohtml($mailQuotaLimitMiB, 'htmlAttr'),
+            'QUOTA'     => isset($_POST['quota'])
+                ? tohtml($_POST['quota'], 'htmlAttr')
+                : tohtml(floor($mailData['quota'] / 1048576), 'htmlAttr')
+        ));
+    }
+
     $mailType = '';
 
     if (!isset($_POST['account_type'])
@@ -255,12 +274,7 @@ function client_generatePage($tpl)
         'NORMAL_FORWARD_CHECKED' => ($mailType == '3') ? ' checked' : '',
         'PASSWORD'               => isset($_POST['password']) ? tohtml($_POST['password']) : '',
         'PASSWORD_REP'           => isset($_POST['password_rep']) ? tohtml($_POST['password_rep']) : '',
-        'TR_QUOTA'               => ($mainDmnProps['mail_quota'] == '0') ? tr('Quota in MiB (0 for unlimited)') : tr('Quota in MiB (Max: %s)', bytesHuman($mainDmnProps['mail_quota'] - ($quota - $mailData['quota']), 'MiB')),
-        'QUOTA'                  => isset($_POST['quota']) ? tohtml($_POST['quota']) : ($quota !== NULL ? floor($mailData['quota'] / 1048576) : ''),
-        'FORWARD_LIST'           => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : ($mailData['mail_forward'] != '_no_' ? tohtml($mailData['mail_forward']) : '')
-    ));
-
-    $tpl->assign(array(
+        'FORWARD_LIST'           => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : ($mailData['mail_forward'] != '_no_' ? tohtml($mailData['mail_forward']) : ''),
         'DOMAIN_NAME'          => tohtml($domainName),
         'DOMAIN_NAME_UNICODE'  => tohtml(decode_idna($domainName)),
         'DOMAIN_NAME_SELECTED' => ' selected'

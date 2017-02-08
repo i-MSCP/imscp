@@ -97,7 +97,7 @@ function client_addMailAccount()
     $mailType = $subId = '';
     $mailTypeNormal = in_array($_POST['account_type'], array('1', '3'));
     $mailTypeForward = in_array($_POST['account_type'], array('2', '3'));
-    $quota = NULL;
+    $mailQuota = NULL;
 
     // Check for username
     $username = mb_strtolower(clean_input($_POST['username']));
@@ -151,28 +151,29 @@ function client_addMailAccount()
         }
 
         // Check for quota
-        $quota = clean_input($_POST['quota']);
 
-        if (!is_number($quota)) {
-            set_page_message(tr('Email quota must be a number.'), 'error');
-            return false;
-        }
+        $mailQuota = intval($_POST['quota']) * 1048576; // MiB to Bytes
 
-        $quota *= 1048576; // MiB to Bytes
-
-        if ($mainDmnProps['mail_quota'] != '0') {
-            if ($quota == '0') {
+        if ($mainDmnProps['mail_quota'] != 0) {
+            if ($mailQuota == 0) {
                 set_page_message(tr('Incorrect email quota.'), 'error');
                 return false;
             }
 
             $stmt = exec_query(
-                'SELECT SUM(quota) FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL', $mainDmnProps['domain_id']
+                'SELECT COALESCE(SUM(quota), 0) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL', $mainDmnProps['domain_id']
             );
 
-            $quotaLimit = floor($mainDmnProps['mail_quota'] - ($stmt->fetchRow(PDO::FETCH_COLUMN)));
-            if ($quota > $quotaLimit) {
-                set_page_message(tr('Email quota cannot be bigger than %s', bytesHuman($quotaLimit, 'MiB')), 'error');
+            $mailQuotaSumBytes = $stmt->fetchRow(PDO::FETCH_COLUMN);
+
+            if ($mailQuotaSumBytes >= $mainDmnProps['mail_quota']) {
+                set_page_message(tr('You cannot add new email account. You have already assigned all your email quota to other mailboxes. Please first, review your quota assignments.'), 'warning');
+                redirectTo('mail_accounts.php');
+            }
+
+            $mailQuotaLimitBytes = floor($mainDmnProps['mail_quota'] - $mailQuotaSumBytes);
+            if ($mailQuota > $mailQuotaLimitBytes) {
+                set_page_message(tr('Email quota cannot be bigger than %s', bytesHuman($mailQuotaLimitBytes, null, 0)), 'error');
                 return false;
             }
         }
@@ -251,7 +252,7 @@ function client_addMailAccount()
               )
             ',
             array($username, $password, $forwardList, $mainDmnProps['domain_id'], $mailType, $subId, 'toadd', '0', NULL,
-                $quota, $mailAddr
+                $mailQuota, $mailAddr
             )
         );
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddMail, array(
@@ -281,24 +282,44 @@ function client_generatePage($tpl)
 {
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
     $stmt = exec_query(
-        'SELECT SUM(quota) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL', $mainDmnProps['domain_id']
+        'SELECT COALESCE(SUM(quota), 0) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL', $mainDmnProps['domain_id']
     );
-    $quota = $stmt->fetchRow(PDO::FETCH_COLUMN);
 
-    if ($mainDmnProps['mail_quota'] != '0' && $quota >= $mainDmnProps['mail_quota']) {
-        set_page_message(tr('You cannot add new email account. You have already assigned all your email quota to other mailboxes. Please first, review your quota assignments.'), 'static_info');
-        $tpl->assign('MAIL_ACCOUNT', '');
-        return;
+    $mailQuotaSumBytes = $stmt->fetchRow(PDO::FETCH_COLUMN);
+
+    if ($mainDmnProps['mail_quota'] != '0' && $mailQuotaSumBytes >= $mainDmnProps['mail_quota']) {
+        set_page_message(tr('You cannot add new email account. You have already assigned all your email quota to other mailboxes. Please first, review your quota assignments.'), 'warning');
+        redirectTo('mail_accounts.php');
     }
 
-    $mailType = (isset($_POST['account_type']) && in_array($_POST['account_type'], array('1', '2', '3'))) ? $_POST['account_type'] : '1';
+    if ($mainDmnProps['mail_quota'] == 0) {
+        $tpl->assign(array(
+            'TR_QUOTA'  => tohtml(tr('Quota in MiB (0 for unlimited)')),
+            'MIN_QUOTA' => 1,
+            'MAX_QUOTA' => tohtml(floor(PHP_INT_MAX / 1048576), 'htmlAttr'),
+            'QUOTA'     => isset($_POST['quota']) ? tohtml($_POST['quota'], 'htmlAttr') : 10
+        ));
+    } else {
+        $mailQuotaLimitBytes = $mainDmnProps['mail_quota'] - $mailQuotaSumBytes;
+        $mailQuotaLimitMiB = floor($mailQuotaLimitBytes / 1048576);
+        $tpl->assign(array(
+            'TR_QUOTA'  => tohtml(tr('Quota in MiB (Max: %s)', bytesHuman($mailQuotaLimitBytes, NULL, 0))),
+            'MIN_QUOTA' => 1,
+            'MAX_QUOTA' => tohtml($mailQuotaLimitMiB, 'htmlAttr'),
+            'QUOTA'     => isset($_POST['quota'])
+                ? tohtml($_POST['quota'], 'htmlAttr')
+                : tohtml(($mailQuotaLimitMiB >= 10) ? 10 : $mailQuotaLimitMiB, 'htmlAttr')
+        ));
+    }
+
+    $mailType = (isset($_POST['account_type']) && in_array($_POST['account_type'], array('1', '2', '3')))
+        ? $_POST['account_type'] : '1';
+
     $tpl->assign(array(
         'USERNAME'               => isset($_POST['username']) ? tohtml($_POST['username']) : '',
         'NORMAL_CHECKED'         => ($mailType == '1') ? ' checked' : '',
         'FORWARD_CHECKED'        => ($mailType == '2') ? ' checked' : '',
         'NORMAL_FORWARD_CHECKED' => ($mailType == '3') ? ' checked' : '',
-        'TR_QUOTA'               => ($mainDmnProps['mail_quota'] == '0') ? tr('Quota in MiB (0 for unlimited)') : tr('Quota in MiB (Max: %s)', bytesHuman($mainDmnProps['mail_quota'] - $quota, 'MiB')),
-        'QUOTA'                  => isset($_POST['quota']) ? tohtml($_POST['quota']) : '',
         'FORWARD_LIST'           => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : '',
     ));
 
@@ -306,7 +327,8 @@ function client_generatePage($tpl)
         $tpl->assign(array(
             'DOMAIN_NAME'          => tohtml($domain['name']),
             'DOMAIN_NAME_UNICODE'  => tohtml(decode_idna($domain['name'])),
-            'DOMAIN_NAME_SELECTED' => (isset($_POST['domain_name']) && $_POST['domain_name'] == $domain['name']) ? ' selected' : '',
+            'DOMAIN_NAME_SELECTED' => (isset($_POST['domain_name']) && $_POST['domain_name'] == $domain['name'])
+                ? ' selected' : '',
         ));
         $tpl->parse('DOMAIN_NAME_ITEM', '.domain_name_item');
     }
@@ -344,8 +366,7 @@ $tpl->define_dynamic(array(
     'layout'           => 'shared/layouts/ui.tpl',
     'page'             => 'client/mail_add.tpl',
     'page_message'     => 'layout',
-    'mail_account'     => 'page',
-    'domain_name_item' => 'mail_account'
+    'domain_name_item'     => 'page',
 ));
 $tpl->assign(array(
     'TR_PAGE_TITLE'          => tr('Client / Email / Add Email Account'),

@@ -25,7 +25,6 @@
         }).trigger('change');
     });
 </script>
-<!-- BDP: mail_account -->
 <form name="client_mail_add" action="mail_add.php" method="post">
     <table class="firstColFixed">
         <thead>
@@ -71,7 +70,7 @@
         </tr>
         <tr id="tr_quota">
             <td><label for="quota">{TR_QUOTA}</label></td>
-            <td><input name="quota" id="quota" type="text" value="{QUOTA}"></td>
+            <td><input name="quota" id="quota" type="number" min="{MIN_QUOTA}" max="{MAX_QUOTA}" value="{QUOTA}"></td>
         </tr>
         <tr id="tr_forward_list">
             <td>
@@ -87,4 +86,3 @@
         <a href="mail_accounts.php" class="link_as_button">{TR_CANCEL}</a>
     </div>
 </form>
-<!-- EDP: mail_account -->

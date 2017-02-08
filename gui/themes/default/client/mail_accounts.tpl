@@ -2,42 +2,42 @@
 <!-- BDP: mail_feature -->
 <script>
     $(function () {
-        var oTable = $('.datatable').dataTable(
+        var $oTable = $('.datatable').dataTable(
             {
                 language: imscp_i18n.core.dataTable,
                 displayLength: 10,
                 stateSave: true,
-                columnDefs: [{sortable: false, targets: [5]}],
+                columnDefs: [ { sortable: false, targets: [5] }],
                 pagingType: "simple"
             }
         );
 
         $(".dataTables_paginate").click(function () {
-            if ($("tbody :checkbox:checked").length == $("tbody :checkbox:not(':disabled')").length) {
-                $("thead :checkbox,tfoot :checkbox").prop('checked', true);
+            if ($oTable.find("tbody input[type=checkbox]:checked").length == $("tbody input[type=checkbox]:not(':disabled')").length) {
+                $oTable.find("thead input[type=checkbox],tfoot input[type=checkbox]").prop('checked', true);
             } else {
-                $("thead :checkbox,tfoot :checkbox").prop('checked', false);
+                $oTable.find("thead input[type=checkbox],tfoot input[type=checkbox]").prop('checked', false);
             }
         });
 
-        $("tbody").on("click", ":checkbox:not(':disabled')", function () {
-            if ($("tbody :checkbox:checked").length == $("tbody :checkbox:not(':disabled')").length) {
-                $("thead :checkbox,tfoot :checkbox").prop('checked', true);
+        $oTable.find("tbody").on("click", "input[type=checkbox]:not(':disabled')", function () {
+            if ($(this).find("input[type=checkbox]:checked").length == $("tbody input[type=checkbox]:not(':disabled')").length) {
+                $oTable.find("thead input[type=checkbox],tfoot input[type=checkbox]").prop('checked', true);
             } else {
-                $("thead :checkbox,tfoot :checkbox").prop('checked', false);
+                $oTable.find("thead input[type=checkbox],tfoot input[type=checkbox]").prop('checked', false);
             }
         });
 
-        $("thead :checkbox, tfoot :checkbox").click(function (e) {
-            if ($("tbody :checkbox:not(':disabled')").length != 0) {
-                $("table :checkbox:not(':disabled')").prop('checked', $(this).is(':checked'));
+        $oTable.find("thead :checkbox, tfoot input[type=checkbox]").click(function (e) {
+            if ($oTable.find("tbody input[type=checkbox]:not(':disabled')").length != 0) {
+                $oTable.find("input[type=checkbox]:not(':disabled')").prop('checked', $(this).is(':checked'));
             } else {
                 e.preventDefault();
             }
         });
 
         $("input[type=submit]").click(function () {
-            var items = $(":checkbox:checked", oTable.fnGetNodes());
+            var items = $("input[type=checkbox]:checked", oTable.fnGetNodes());
 
             if (items.length > 0) {
                 if (confirm("{TR_MESSAGE_DELETE_SELECTED_ITEMS}")) {
@@ -62,8 +62,8 @@
         <tr>
             <th>{TR_MAIL}</th>
             <th>{TR_TYPE}</th>
+            <th>{TR_QUOTA_ASSIGNMENT}</th>
             <th>{TR_STATUS}</th>
-            <th>{TR_QUOTA}</th>
             <th>{TR_ACTIONS}</th>
             <th style="width:21px"><label><input type="checkbox"/></label></th>
         </tr>
@@ -90,13 +90,13 @@
                 <!-- EDP: auto_respond_item -->
             </td>
             <td>{MAIL_TYPE}</td>
+            <td>{MAIL_QUOTA_ASSIGMENT}</td>
             <td>{MAIL_STATUS}</td>
-            <td>{MAIL_QUOTA_VALUE}</td>
             <td>
                 <a href="{MAIL_EDIT_SCRIPT}" title="{MAIL_EDIT}" class="icon i_edit">{MAIL_EDIT}</a>
                 <a href="{MAIL_DELETE_SCRIPT}" onclick="return action_delete('{MAIL_ADDR}')" title="{MAIL_DELETE}" class="icon i_delete">{MAIL_DELETE}</a>
             </td>
-            <td><label><input type="checkbox" name="id[]" value="{DEL_ITEM}"{DISABLED_DEL_ITEM} /></label></td>
+            <td><label><input type="checkbox" name="id[]" value="{DEL_ITEM}"{DISABLED_DEL_ITEM}/></label></td>
         </tr>
         <!-- EDP: mail_item -->
         </tbody>
