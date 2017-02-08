@@ -432,9 +432,9 @@ sub _buildConf
 
         $fileContent .= <<"EOF";
 
-#Servers::po::courier::installer - BEGIN
+# Servers::po::courier::installer - BEGIN
 . $self->{'cfgDir'}/imapd.local
-#Servers::po::courier::installer - ENDING
+# Servers::po::courier::installer - ENDING
 EOF
         $rs = $file->set( $fileContent );
         $rs ||= $file->save();
