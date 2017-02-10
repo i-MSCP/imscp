@@ -201,7 +201,7 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
             return $this->getLastMessage();
         }
 
-        $this->logLoginAttempt();
+        $this->logAttempt();
         return NULL;
     }
 
@@ -248,11 +248,11 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
     }
 
     /**
-     * Log login attempt
+     * Log a login or captcha attempt
      *
      * @return void
      */
-    public function logLoginAttempt()
+    public function logAttempt()
     {
         if (!$this->recordExists) {
             $this->createRecord();

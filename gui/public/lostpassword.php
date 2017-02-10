@@ -25,66 +25,79 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
-// Include core library
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventManager;
+use iMSCP_Exception as iMSCPException;
+use iMSCP_Plugin_Bruteforce as BruteForcePlugin;
+use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
+
 require_once 'imscp-lib.php';
 require_once LIBRARY_PATH . '/Functions/LostPassword.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onLostPasswordScriptStart);
+EventManager::getInstance()->dispatch(Events::onLostPasswordScriptStart);
 do_session_timeout();
 
-$cfg = iMSCP_Registry::get('config');
+$cfg = Registry::get('config');
 if (!$cfg['LOSTPASSWORD']) {
     showNotFoundErrorPage();
 }
 
 if (!function_exists('imagecreatetruecolor')) {
-    throw new iMSCP_Exception(tr("PHP GD extension not loaded."));
+    throw new iMSCPException(tr('PHP GD extension not loaded.'));
 }
 
 removeOldKeys($cfg['LOSTPASSWORD_TIMEOUT']);
 
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
-    'layout' => 'shared/layouts/simple.tpl',
-    'page' => 'lostpassword.tpl',
-    'page_message' => 'layout'
-));
-$tpl->assign(array(
-    'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Lost Password'),
-    'CONTEXT_CLASS' => '',
-    'productLongName' => tr('internet Multi Server Control Panel'),
-    'productLink' => 'http://www.i-mscp.net',
-    'productCopyright' => tr('© 2010-2017 i-MSCP Team<br>All Rights Reserved'),
-    'TR_CAPCODE' => tr('Security code'),
-    'GET_NEW_IMAGE' => tr('Get a new security code'),
-    'CAPTCHA_WIDTH' => $cfg['LOSTPASSWORD_CAPTCHA_WIDTH'],
-    'CAPTCHA_HEIGHT' => $cfg['LOSTPASSWORD_CAPTCHA_HEIGHT'],
-    'TR_USERNAME' => tr('Username'),
-    'TR_SEND' => tr('Send'),
-    'TR_CANCEL' => tr('Cancel')
-));
-
-if (isset($_GET['key'])) { // Password request validation
+if (isset($_GET['key'])) {
     $key = clean_input($_GET['key']);
     if (sendPassword($key)) {
-        set_page_message(tr('Your password has been successfully renewed. Check your emails.'), 'success');
+        set_page_message(tr('Your password has been successfully scheduled for renewal. Check your emails.'), 'success');
     }
 
     redirectTo('index.php');
-} elseif (!empty($_POST)) { // Request for new password
-    if ($cfg['BRUTEFORCE']) {
-        $bruteForce = new iMSCP_Plugin_Bruteforce(iMSCP_Registry::get('pluginManager'), 'captcha');
-        if ($bruteForce->isWaiting() || $bruteForce->isBlocked()) {
-            set_page_message($bruteForce->getLastMessage(), 'error');
-            redirectTo('lostpassword.php');
-        }
+}
 
-        $bruteForce->logLoginAttempt();
+$tpl = new TemplateEngine();
+$tpl->define_dynamic(array(
+    'layout'       => 'shared/layouts/simple.tpl',
+    'page'         => 'lostpassword.tpl',
+    'page_message' => 'layout'
+));
+$tpl->assign(array(
+    'TR_PAGE_TITLE'    => tr('i-MSCP - Multi Server Control Panel / Lost Password'),
+    'CONTEXT_CLASS'    => '',
+    'productLongName'  => tr('internet Multi Server Control Panel'),
+    'productLink'      => 'https://www.i-mscp.net',
+    'productCopyright' => tr('© 2010-2017 i-MSCP Team<br>All Rights Reserved'),
+    'TR_CAPCODE'       => tr('Security code'),
+    'GET_NEW_IMAGE'    => tr('Get a new security code'),
+    'CAPTCHA_WIDTH'    => tohtml($cfg['LOSTPASSWORD_CAPTCHA_WIDTH'], 'htmlAttr'),
+    'CAPTCHA_HEIGHT'   => tohtml($cfg['LOSTPASSWORD_CAPTCHA_HEIGHT'], 'htmlAttr'),
+    'TR_USERNAME'      => tr('Username'),
+    'TR_SEND'          => tr('Send'),
+    'TR_CANCEL'        => tr('Cancel'),
+    'UNAME'            => isset($_POST['uname']) ? $_POST['uname'] : ''
+));
+
+if ($cfg['BRUTEFORCE']) {
+    $bruteForce = new BruteForcePlugin(iMSCP_Registry::get('pluginManager'), 'captcha');
+    if ($bruteForce->isWaiting() || $bruteForce->isBlocked()) {
+        set_page_message($bruteForce->getLastMessage(), 'error');
+        redirectTo('lostpassword.php');
     }
 
-    if(!isset($_SESSION['capcode'])) {
+    $bruteForce->logAttempt();
+}
+
+if (!empty($_POST)) {
+    if (!isset($_POST['capcode']) || !isset($_POST['uname'])) {
+        showBadRequestErrorPage();
+    } elseif (!isset($_SESSION['capcode'])) {
         set_page_message(tr('Security code has expired'), 'error');
-    } elseif (isset($_POST['uname']) && isset($_POST['capcode'])) {
+    } elseif ($_POST['capcode'] == '' || $_POST['uname'] == '') {
+        set_page_message(tr('All fields are required.'), 'error');
+    } else {
         $uname = clean_input($_POST['uname']);
         $capcode = clean_input($_POST['capcode']);
 
@@ -94,15 +107,11 @@ if (isset($_GET['key'])) { // Password request validation
             set_page_message(tr('Your request for password renewal has been registered. You will receive an email with instructions to complete the process.'), 'success');
             redirectTo('index.php');
         }
-    } else {
-        set_page_message(tr('All fields are required.'), 'error');
     }
-
-    redirectTo('lostpassword.php');
 }
 
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onLostPasswordScriptEnd, array('templateEngine' => $tpl));
+EventManager::getInstance()->dispatch(Events::onLostPasswordScriptEnd, array('templateEngine' => $tpl));
 $tpl->prnt();

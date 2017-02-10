@@ -80,6 +80,7 @@ LISTENERS
 PACKAGES
     Added: `beforeUpdateRoundCubeMailHostEntries' event listener (RoundCube package installer)
     Fixed: Couldn't access symlinked icons (AWStats)
+    Fixed: Password not updated on customer password recovery (Fixed: AWStats)
 
 PLUGINS:
     Updated: API version to 1.4.0

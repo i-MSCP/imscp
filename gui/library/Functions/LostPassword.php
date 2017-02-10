@@ -25,6 +25,10 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
+use iMSCP\Crypt as Crypt;
+use iMSCP_Exception as iMSCPException;
+use iMSCP_Registry as Registry;
+
 /**
  * Create captcha image
  *
@@ -34,12 +38,12 @@
  */
 function createImage($strSessionVar)
 {
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
     $rgBgColor = $cfg['LOSTPASSWORD_CAPTCHA_BGCOLOR'];
     $rgTextColor = $cfg['LOSTPASSWORD_CAPTCHA_TEXTCOLOR'];
 
     if (!($image = imagecreate($cfg['LOSTPASSWORD_CAPTCHA_WIDTH'], $cfg['LOSTPASSWORD_CAPTCHA_HEIGHT']))) {
-        throw new iMSCP_Exception('Cannot initialize new GD image stream.');
+        throw new iMSCPException('Cannot initialize new GD image stream.');
     }
 
     imagecolorallocate($image, $rgBgColor[0], $rgBgColor[1], $rgBgColor[2]);
@@ -49,7 +53,7 @@ function createImage($strSessionVar)
     $x = ($cfg['LOSTPASSWORD_CAPTCHA_WIDTH'] / 2) - ($nbLetters * 20 / 2);
     $y = mt_rand(15, 25);
 
-    $string = \iMSCP\Crypt::randomStr($nbLetters, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
+    $string = Crypt::randomStr($nbLetters, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
     for ($i = 0; $i < $nbLetters; $i++) {
         $fontFile = LIBRARY_PATH . '/Resources/Fonts/' . $cfg['LOSTPASSWORD_CAPTCHA_FONTS'][mt_rand(0, count($cfg['LOSTPASSWORD_CAPTCHA_FONTS']) - 1)];
         imagettftext($image, 17, rand(-30, 30), $x, $y, $textColor, $fontFile, $string[$i]);
@@ -110,14 +114,31 @@ function setUniqKey($adminName, $uniqueKey)
 /**
  * Set password
  *
+ * @param string $userType User type (admin|reseller|user)
  * @param string $uniqueKey
  * @param string $userPassword
  * @return void
  */
-function setPassword($uniqueKey, $userPassword)
+function setPassword($userType, $uniqueKey, $userPassword)
 {
+    $passwordHash = Crypt::apr1MD5($userPassword);
+
+    if ($userType == 'user') {
+        exec_query(
+            '
+              UPDATE admin
+              SET admin_pass = ?, uniqkey = NULL, uniqkey_time = NULL, admin_status = ?
+              WHERE uniqkey = ?
+            ',
+            array($passwordHash, 'tochangepwd', $uniqueKey)
+        );
+
+        send_request();
+        return;
+    }
+
     exec_query('UPDATE admin SET admin_pass = ?, uniqkey = NULL, uniqkey_time = NULL WHERE uniqkey = ?', array(
-        \iMSCP\Crypt::apr1MD5($userPassword), $uniqueKey
+        $passwordHash, $uniqueKey
     ));
 }
 
@@ -141,7 +162,7 @@ function uniqueKeyExists($uniqueKey)
 function uniqkeygen()
 {
     do {
-        $uniqueKey = sha1(\iMSCP\Crypt::randomStr(32));
+        $uniqueKey = sha1(Crypt::randomStr(32));
     } while (uniqueKeyExists($uniqueKey));
 
     return $uniqueKey;
@@ -199,56 +220,63 @@ function sendPasswordRequestValidation($adminName)
  * Send new password
  *
  * @param string $uniqueKey
- * @return bool TRUE when password was sended, FALSE otherwise
+ * @return bool TRUE when new password is sent successfully, FALSE otherwise
  */
 function sendPassword($uniqueKey)
 {
     $stmt = exec_query(
-        'SELECT admin_id, admin_name, created_by, fname, lname, email, uniqkey FROM admin WHERE uniqkey = ?', $uniqueKey
+        "
+          SELECT admin_id, admin_name, admin_type, created_by, fname, lname, email, uniqkey, admin_status
+          FROM admin
+          WHERE uniqkey = ?
+        ",
+        $uniqueKey
     );
 
-    if ($stmt->rowCount()) {
-        $row = $stmt->fetchRow();
-
-        if (!\iMSCP\Crypt::hashEqual($row['uniqkey'], $uniqueKey)) {
-            showBadRequestErrorPage();
-        }
-
-        # Generate new user password
-        $cfg = iMSCP_Registry::get('config');
-        $passwordLength = isset($cfg['PASSWD_CHARS']) ? $cfg['PASSWD_CHARS'] : 6;
-        $userPassword = \iMSCP\Crypt::randomStr($passwordLength);
-        setPassword($uniqueKey, $userPassword);
-        write_log(sprintf('Lostpassword: A New password has been set for %s user', $row['admin_name']), E_USER_NOTICE);
-
-        $createdBy = $row['created_by'];
-        if ($createdBy == 0) {
-            $createdBy = $row['admin_id'];
-        }
-
-        $data = get_lostpassword_password_email($createdBy);
-        $ret = send_mail(array(
-            'mail_id'      => 'lostpw-msg-2',
-            'fname'        => $row['fname'],
-            'lname'        => $row['lname'],
-            'username'     => $row['admin_name'],
-            'email'        => $row['email'],
-            'subject'      => $data['subject'],
-            'message'      => $data['message'],
-            'placeholders' => array(
-                '{PASSWORD}' => $userPassword
-            )
-        ));
-
-        if (!$ret) {
-            write_log(sprintf('Could not send new passsword to %s', $row['admin_name']), E_USER_ERROR);
-            set_page_message(tr('An unexpected error occurred. Please contact your administrator.'));
-            return false;
-        }
-
-        return true;
+    if (!$stmt->rowCount()) {
+        set_page_message(tr('Your request for password renewal is either invalid or has expired.'), 'error');
+        return false;
     }
 
-    set_page_message(tr('Your request for password renewal is either invalid or has expired.'), 'error');
-    return false;
+    $row = $stmt->fetchRow();
+
+    if ($row['admin_status'] != 'ok') {
+        set_page_message(tr('Your request for password renewal cannot be honored. Please retry in few minutes.'), 'error');
+        return false;
+    }
+
+    $cfg = Registry::get('config');
+    $userPassword = Crypt::randomStr(
+        isset($cfg['PASSWD_CHARS']) ? $cfg['PASSWD_CHARS'] : 6,
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    );
+    setPassword($row['admin_type'], $uniqueKey, $userPassword);
+    write_log(sprintf('Lostpassword: A New password has been set for %s user', $row['admin_name']), E_USER_NOTICE);
+
+    $createdBy = $row['created_by'];
+    if ($createdBy == 0) {
+        $createdBy = $row['admin_id'];
+    }
+
+    $data = get_lostpassword_password_email($createdBy);
+    $ret = send_mail(array(
+        'mail_id'      => 'lostpw-msg-2',
+        'fname'        => $row['fname'],
+        'lname'        => $row['lname'],
+        'username'     => $row['admin_name'],
+        'email'        => $row['email'],
+        'subject'      => $data['subject'],
+        'message'      => $data['message'],
+        'placeholders' => array(
+            '{PASSWORD}' => $userPassword
+        )
+    ));
+
+    if (!$ret) {
+        write_log(sprintf('Could not send new passsword to %s', $row['admin_name']), E_USER_ERROR);
+        set_page_message(tr('An unexpected error occurred. Please contact your administrator.'));
+        return false;
+    }
+
+    return true;
 }
