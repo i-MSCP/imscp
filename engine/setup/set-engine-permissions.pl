@@ -59,7 +59,7 @@ OPTIONS:
     'setup|s'           => sub { $main::execmode = 'setup'; },
     'debug|d'           => \&iMSCP::Getopt::debug,
     'verbose|v'         => \&iMSCP::Getopt::verbose,
-    'fix-permissions|x' => \&iMSCP::Getopt::fixPermissions,
+    'fix-permissions|x' => \&iMSCP::Getopt::fixPermissions
 );
 
 setVerbose(iMSCP::Getopt->verbose);
