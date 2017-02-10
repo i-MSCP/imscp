@@ -87,10 +87,14 @@ PLUGINS:
 SERVERS
     Added: Support for Python and Ruby CGI scripts (Httpd server impl.)
     Fixed: apache2: Could not reliably determine the server's fully qualified domain name, using ::1 for ServerName
+    Fixed: Forward Secrecy not supported with reference browsers (Apache2)
     Fixed: Make sure that PHP Apache2 SAPI is disabled when needed (httpd server impl.)
+    Fixed: POODLE (SSLv3) vulnerability not mitigated (default Apache2.2 configuration)
     Fixed: Possible `NameVirtualHost <ip>:<port> has no VirtualHosts' warning (Apache2)
     Fixed: Possible `nginx: [emerg] bind() to <ip>:<port> failed (98: Address already in use)' error
     Fixed: POSTCONF(1) is being slow when called multiple-times, slowing down i-MSCP installer (Postfix server impl.)
+    Fixed: RC4 cipher is not safe (default Apache2.2 configuration)
+    Fixed: Set HSTS `max-age' value to zero when HSTS is disabled (See RFC 6797)
     Fixed: Wrong events triggered (Servers::mta::postfix)
     Fixed: Wrong permissions set on Courier Authdaemon socket dir, making maildrop MDA unable to connect
     Fixed: Wrong permissions set on Dovecot configuration files

@@ -1932,10 +1932,6 @@ sub _cleanTemplate
         } else {
             ${$tpl} = replaceBloc("# SECTION proxy_redirect BEGIN.\n", "# SECTION proxy_redirect END.\n", '', ${$tpl});
         }
-
-        if ($isSSLVhost && !$data->{'HSTS_SUPPORT'}) {
-            ${$tpl} = replaceBloc( "# SECTION hsts BEGIN.\n", "# SECTION hsts END.\n", '', ${$tpl} );
-        }
     }
 
     ${$tpl} =~ s/^\s*(?:[#;].*)?\n//gmi;

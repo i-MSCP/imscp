@@ -136,14 +136,15 @@ sub _loadData
         "
             SELECT t1.*, t2.alias_name, t2.external_mail, t3.domain_name AS user_home, t3.domain_admin_id,
                 t3.domain_php, t3.domain_cgi, t3.domain_traffic_limit, t3.domain_mailacc_limit, t3.domain_dns,
-                t3.domain_id, t3.web_folder_protection, t4.ip_number, t5.mail_on_domain
+                t3.domain_id, t3.web_folder_protection, t4.ip_number, t5.*, t6.mail_on_domain
             FROM subdomain_alias AS t1
-            INNER JOIN domain_aliasses AS t2 ON (t1.alias_id = t2.alias_id)
-            INNER JOIN domain AS t3 ON (t2.domain_id = t3.domain_id)
-            INNER JOIN server_ips AS t4 ON (t2.alias_ip_id = t4.ip_id)
+            INNER JOIN domain_aliasses AS t2 USING(alias_id)
+            INNER JOIN domain AS t3 USING (domain_id)
+            INNER JOIN server_ips AS t4 ON (t4.ip_id = t2.alias_ip_id)
+            LEFT JOIN ssl_certs AS t5 ON(t5.domain_id = t3.domain_id AND t5.domain_type = 'alssub' AND t5.status = 'ok')
             LEFT JOIN (
                 SELECT sub_id, COUNT(sub_id) AS mail_on_domain FROM mail_users WHERE mail_type LIKE 'alssub\\_%' GROUP BY sub_id
-            ) AS t5 ON (t1.subdomain_alias_id = t5.sub_id)
+            ) AS t6 ON (t6.sub_id = t1.subdomain_alias_id)
             WHERE t1.subdomain_alias_id = ?
         ",
         $subAliasId
@@ -199,20 +200,13 @@ sub _getData
         );
         ref $phpini eq 'HASH' or die( $phpini );
 
-        my $certData = $db->doQuery(
-            'domain_id', 'SELECT * FROM ssl_certs WHERE domain_id = ? AND domain_type = ? AND status = ?',
-            $self->{'subdomain_alias_id'}, 'alssub', 'ok'
-        );
-        ref $certData eq 'HASH' or die( $certData );
-
         my $haveCert = (
-            $certData->{$self->{'subdomain_alias_id'}}
-            && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'subdomain_alias_name'}.$self->{'alias_name'}.pem"
+            $self->{'cert_id'} && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'subdomain_alias_name'}.$self->{'alias_name'}.pem"
         );
-        my $allowHSTS = ($haveCert && $certData->{$self->{'subdomain_alias_id'}}->{'allow_hsts'} eq 'on');
-        my $hstsMaxAge = $allowHSTS ? $certData->{$self->{'subdomain_alias_id'}}->{'hsts_max_age'} : '';
-        my $hstsIncludeSubDomains = ($allowHSTS && $certData->{$self->{'subdomain_alias_id'}}->{'hsts_include_subdomains'} eq 'on')
-            ? '; includeSubDomains' : '';
+        my $allowHSTS = ($haveCert && $self->{'allow_hsts'} eq 'on');
+        my $hstsMaxAge = ($allowHSTS) ? $self->{'hsts_max_age'} : 0;
+        my $hstsIncludeSubDomains = ($allowHSTS && $self->{'hsts_include_subdomains'} eq 'on')
+            ? '; includeSubDomains' : (($allowHSTS) ? '' : '; includeSubDomains');
 
         {
             ACTION                  => $action,

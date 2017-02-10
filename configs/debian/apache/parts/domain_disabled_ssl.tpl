@@ -17,8 +17,10 @@
     </Directory>
 
     SSLEngine On
-    SSLCertificateFile {CERTIFICATE}
+    SSLCertificateFile      {CERTIFICATE}
     SSLCertificateChainFile {CERTIFICATE}
+
+    Header always set Strict-Transport-Security "max-age={HSTS_MAX_AGE}{HSTS_INCLUDE_SUBDOMAINS}"
 
     RedirectMatch 303 ^/(?!(?:images/.+|index\.html|$)) https://www.{DOMAIN_NAME}/
 </VirtualHost>

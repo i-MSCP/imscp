@@ -315,11 +315,13 @@ sub _loadData
     my $rdata = iMSCP::Database->factory()->doQuery(
         'domain_id',
         "
-            SELECT t1.*, t2.ip_number, t3.mail_on_domain FROM domain AS t1
-            INNER JOIN server_ips AS t2 ON (t1.domain_ip_id = t2.ip_id)
+            SELECT t1.*, t2.ip_number, t3.*, t4.mail_on_domain
+            FROM domain AS t1
+            INNER JOIN server_ips AS t2 ON (t2.ip_id = t1.domain_ip_id)
+            LEFT JOIN ssl_certs AS t3 ON(t3.domain_id = t1.domain_id AND t3.domain_type = 'dmn' AND t3.status = 'ok')
             LEFT JOIN (
                 SELECT domain_id, COUNT(domain_id) AS mail_on_domain FROM mail_users WHERE mail_type LIKE 'normal\\_%' GROUP BY domain_id
-            ) AS t3 ON(t1.domain_id = t3.domain_id)
+            ) AS t4 ON(t4.domain_id = t1.domain_id)
             WHERE t1.domain_id = ?
         ",
         $domainId
@@ -363,20 +365,13 @@ sub _getData
         );
         ref $phpini eq 'HASH' or die( $phpini );
 
-        my $certData = $db->doQuery(
-            'domain_id', 'SELECT * FROM ssl_certs WHERE domain_id = ? AND domain_type = ? AND status = ?',
-            $self->{'domain_id'}, 'dmn', 'ok'
-        );
-        ref $certData eq 'HASH' or die( $certData );
-
         my $haveCert = (
-            $certData->{$self->{'domain_id'}}
-                && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'domain_name'}.pem"
+            $self->{'cert_id'} && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'domain_name'}.pem"
         );
-        my $allowHSTS = ($haveCert && $certData->{$self->{'domain_id'}}->{'allow_hsts'} eq 'on');
-        my $hstsMaxAge = $allowHSTS ? $certData->{$self->{'domain_id'}}->{'hsts_max_age'} : '';
-        my $hstsIncludeSubDomains = ($allowHSTS
-                && $certData->{$self->{'domain_id'}}->{'hsts_include_subdomains'} eq 'on') ? '; includeSubDomains' : '';
+        my $allowHSTS = ($haveCert && $self->{'allow_hsts'} eq 'on');
+        my $hstsMaxAge = ($allowHSTS) ? $self->{'hsts_max_age'} : 0;
+        my $hstsIncludeSubDomains = ($allowHSTS && $self->{'hsts_include_subdomains'} eq 'on')
+            ? '; includeSubDomains' : (($allowHSTS) ? '' : '; includeSubDomains');
 
         {
             ACTION                  => $action,
@@ -489,7 +484,7 @@ sub _restoreDatabase
     $qrs = $db->doQuery( 'g', "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?\@?", $dbUser, $dbUserHost );
     ref $qrs eq 'HASH' or die( $qrs );
 
-    my $sqlExtraFile = File::Temp->new( UNLINK => 0, SUFFIX => '.cnf' );
+    my $sqlExtraFile = File::Temp->new( UNLINK => 1, SUFFIX => '.cnf' );
     print $sqlExtraFile <<"EOF";
 [client]
 host     = $main::imscpConfig{'DATABASE_HOST'}

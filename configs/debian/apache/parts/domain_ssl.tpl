@@ -107,12 +107,10 @@
     # SECTION addons END.
 
     SSLEngine On
-    SSLCertificateFile {CERTIFICATE}
+    SSLCertificateFile      {CERTIFICATE}
     SSLCertificateChainFile {CERTIFICATE}
 
-    # SECTION hsts BEGIN.
     Header always set Strict-Transport-Security "max-age={HSTS_MAX_AGE}{HSTS_INCLUDE_SUBDOMAINS}"
-    # SECTION hsts END.
 
     Include {HTTPD_CUSTOM_SITES_DIR}/{DOMAIN_NAME}.conf
 </VirtualHost>
