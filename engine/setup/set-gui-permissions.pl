@@ -54,10 +54,12 @@ OPTIONS
  -s,    --setup         Setup mode.
  -d,    --debug         Enable debug mode.
  -v,    --verbose       Enable verbose mode},
-    'setup|s'   => sub { $main::execmode = 'setup' },
-    'debug|d'   => sub { iMSCP::Getopt->debug( @_ ) },
-    'verbose|v' => sub { setVerbose( @_ ); }
+    'setup|s'   => sub { $main::execmode = 'setup'; },
+    'debug|d'   => \&iMSCP::Getopt::debug,
+    'verbose|v' => \&iMSCP::Getopt::verbose
 );
+
+setVerbose(iMSCP::Getopt->verbose);
 
 iMSCP::Bootstrapper->getInstance()->boot(
     {

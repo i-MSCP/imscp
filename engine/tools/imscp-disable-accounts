@@ -118,9 +118,11 @@ Script that deactivates expired client accounts
 OPTIONS:
  -d,    --debug         Enable debug mode.
  -v,    --verbose       Enable verbose mode.},
- 'debug|d'   => sub { iMSCP::Getopt->debug(@_) },
- 'verbose|v' => sub { setVerbose(@_); }
+ 'debug|d'   => \&iMSCP::Getopt::debug,
+ 'verbose|v' => \&iMSCP::Getopt::verbose
 );
+
+setVerbose(iMSCP::Getopt->verbose);
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-disable-accounts.lock', 'nowait');

@@ -280,8 +280,11 @@ Script which backup i-MSCP customer's data.
 
 OPTIONS:
  -v,    --verbose       Enable verbose mode.},
- 'verbose|v' => sub { setVerbose(@_); }
+ 'debug|d'   => \&iMSCP::Getopt::debug,
+ 'verbose|v' => \&iMSCP::Getopt::verbose
 );
+
+setVerbose(iMSCP::Getopt->verbose);
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-backup-all.lock', 'nowait');

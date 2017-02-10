@@ -57,10 +57,12 @@ OPTIONS:
  -v,    --verbose         Enable verbose mode.
  -x,    --fix-permissions Fix permissions recursively.},
     'setup|s'           => sub { $main::execmode = 'setup'; },
-    'debug|d'           => sub { iMSCP::Getopt->debug( @_ ) },
-    'verbose|v'         => sub { setVerbose( @_ ); },
-    'fix-permissions|x' => sub { iMSCP::Getopt->fixPermissions( 1 ); },
+    'debug|d'           => \&iMSCP::Getopt::debug,
+    'verbose|v'         => \&iMSCP::Getopt::verbose,
+    'fix-permissions|x' => \&iMSCP::Getopt::fixPermissions,
 );
+
+setVerbose(iMSCP::Getopt->verbose);
 
 iMSCP::Bootstrapper->getInstance()->boot(
     {

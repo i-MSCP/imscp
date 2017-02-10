@@ -80,9 +80,11 @@ Mount or umount filesystems by reading entries i-MSCP fstab-like file.
 OPTIONS:
  -d,    --debug         Enable debug mode.
  -v,    --verbose       Enable verbose mode.},
- 'debug|d'   => sub { iMSCP::Getopt->debug(@_) },
- 'verbose|v' => sub { setVerbose(@_); }
+ 'debug|d'   => \&iMSCP::Getopt::debug,
+ 'verbose|v' => \&iMSCP::Getopt::verbose
 );
+
+setVerbose(iMSCP::Getopt->verbose);
 
 iMSCP::Bootstrapper->getInstance()->boot(
     {

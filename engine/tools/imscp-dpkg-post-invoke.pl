@@ -52,9 +52,11 @@ Process dpkg post invoke tasks
 OPTIONS:
  -d,    --debug         Enable debug mode.
  -v,    --verbose       Enable verbose mode.},
- 'debug|d'   => sub { iMSCP::Getopt->debug(@_) },
- 'verbose|v' => sub { setVerbose(@_); }
+ 'debug|d'   => \&iMSCP::Getopt::debug,
+ 'verbose|v' => \&iMSCP::Getopt::verbose
 );
+
+setVerbose(iMSCP::Getopt->verbose);
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-dpkg-post-invoke.lock', 'nowait');
