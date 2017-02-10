@@ -66,6 +66,7 @@ FRONTEND
     Removed: Pydio auto-login feature (password for FTP users are no longer stored plaintext in database)
 
 INSTALLER
+    Fixed: Missing `mysql' group; the `mysql' group is only created by the mysql-server package (SQL remote server impl.)
     Fixed: Several files containing critical data are created world-readable, giving time to other processes to read them
     Moved: Distribution package files from ./docs directory to ./autoinstaller/Packages directory
     Review: Forbid usage of `debian-sys-maint' SQL user
@@ -84,7 +85,7 @@ PLUGINS:
     Updated: API version to 1.4.0
 
 SERVERS
-    Added: Support for Python and Ruby CGI scripts (Http server impl.)
+    Added: Support for Python and Ruby CGI scripts (Httpd server impl.)
     Fixed: apache2: Could not reliably determine the server's fully qualified domain name, using ::1 for ServerName
     Fixed: Make sure that PHP Apache2 SAPI is disabled when needed (httpd server impl.)
     Fixed: Possible `NameVirtualHost <ip>:<port> has no VirtualHosts' warning (Apache2)

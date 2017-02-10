@@ -96,7 +96,6 @@ sub _buildConf
 
     my $rootUName = $main::imscpConfig{'ROOT_USER'};
     my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-    my $mysqlGName = $self->{'config'}->{'SQLD_GROUP'};
     my $confDir = $self->{'config'}->{'SQLD_CONF_DIR'};
 
     # Make sure that the conf.d directory exists
@@ -157,11 +156,9 @@ sub _buildConf
     my $file = iMSCP::File->new( filename => "$confDir/conf.d/imscp.cnf" );
     $rs ||= $file->set( $cfgTpl );
     $rs ||= $file->save();
-    $rs ||= $file->owner( $rootUName, $mysqlGName );
+    $rs ||= $file->owner( $rootUName, $rootGName ); # The `mysql' group is only created by mysql-server package
     $rs ||= $file->mode( 0640 );
-    return $rs if $rs;
-
-    $self->{'eventManager'}->trigger( 'afterSqldBuildConf' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldBuildConf' );
 }
 
 =item _updateServerConfig()

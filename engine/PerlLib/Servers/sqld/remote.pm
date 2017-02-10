@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Servers::sqld::remote::installer Servers::sqld::remote::uninstaller /;
 use iMSCP::Database;
+use iMSCP::Rights;
 use version;
 use parent 'Servers::sqld::mysql';
 
@@ -99,6 +100,38 @@ sub uninstall
 sub restart
 {
     0;
+}
+
+=item setEnginePermissions()
+
+ Set engine permissions
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setEnginePermissions
+{
+    my $self = shift;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldSetEnginePermissions' );
+    $rs ||= setRights(
+        "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf",
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
+            mode  => '0644'
+        }
+    );
+    $rs ||= setRights(
+        "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf",
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
+            mode  => '0640'
+        }
+    );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldSetEnginePermissions' );
 }
 
 =item createUser($user, $host, $password)

@@ -139,7 +139,7 @@ sub setEnginePermissions
             mode  => '0640'
         }
     );
-    $rs = $self->{'eventManager'}->trigger( 'afterSqldSetEnginePermissions' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldSetEnginePermissions' );
 }
 
 =item restart()
