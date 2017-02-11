@@ -76,8 +76,8 @@
             <package_conflict>vsftpd</package_conflict>
         </proftpd>
         <vsftpd>
-            <package rebuild_with_patches="libpam-mysql/patches" patch_sys_type="dpatch" pkg_src_name="pam-mysql">libpam-mysql</package>
-            <package rebuild_with_patches="vsftpd/patches">vsftpd</package>
+            <package rebuild_with_patches="libpam-mysql/patches/dpatch" patch_sys_type="dpatch" pkg_src_name="pam-mysql">libpam-mysql</package>
+            <package rebuild_with_patches="vsftpd/patches/quilt">vsftpd</package>
             <package_conflict>proftpd-basic</package_conflict>
         </vsftpd>
     </ftpd>

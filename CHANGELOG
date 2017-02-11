@@ -69,6 +69,7 @@ FRONTEND
 INSTALLER
     Fixed: Missing `mysql' group; the `mysql' group is only created by the mysql-server package (SQL remote server impl.)
     Fixed: Patch for Apache 2 mod_proxy_fcgi module not required if Apache version is >= 2.4.24
+    Fixed: Patches for libpam-mysql not required if libpam-mysql version is >= 0.8.0
     Fixed: Several files containing critical data are created world-readable, giving time to other processes to read them
     Fixed: `W: Download is performed unsandboxed as root as file...' warning with newest APT versions
     Moved: Distribution package files from ./docs directory to ./autoinstaller/Packages directory
