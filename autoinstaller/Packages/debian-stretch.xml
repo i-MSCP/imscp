@@ -97,9 +97,9 @@
                 pinning_pin_priority="1001"
                 allow_switch="mariadb_10.1"
         >
-            <package>libmysqlclient18</package>
+            <package>libmariadbclient18</package>
             <package>mariadb-common</package>
-            <package>mysql-client-5.6</package>
+            <package>mariadb-client-10.1</package>
             <package>mysql-common</package>
         </remote_server>
     </sql>
