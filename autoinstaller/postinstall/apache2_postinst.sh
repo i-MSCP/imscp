@@ -22,21 +22,44 @@ set -e
 #  rm /usr/lib/apache2/modules/mod_proxy_fcgi.so
 #  dpkg-divert --rename --remove /usr/lib/apache2/modules/mod_proxy_fcgi.so
 
-SRC_DIR=/usr/local/src/imscp-apache_src
 APACHE_VERSION=`dpkg-query --show --showformat '${Version}' apache2`
 
-# Don't process if the module has been already patched or if apache2 version is
-# lower than 2.4.10
+service apache2 stop
+
+# Remove patch if version ge 2.4.24
 if [ -f /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST ] \
-   || dpkg --compare-versions "$APACHE_VERSION" lt "2.4.10" ; then
+    && dpkg --compare-versions "$APACHE_VERSION" ge "2.4.24" ; then
+    rm -f rm /usr/lib/apache2/modules/mod_proxy_fcgi.so
+    dpkg-divert --rename --remove /usr/lib/apache2/modules/mod_proxy_fcgi.so
     exit;
 fi
 
-rm -fR ${SRC_DIR}
-mkdir -p ${SRC_DIR}
+# Don't process if the module has been already patched or if apache2 version is
+# lt 2.4.7
+if [ -f /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST ] \
+   || dpkg --compare-versions "$APACHE_VERSION" lt "2.4.7" ; then
+    exit;
+fi
+
+# Don't process if the module has been already patched or if apache2 version is
+# lt 2.4.10 or ge 2.4.24
+if [ -f /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST ] \
+   || dpkg --compare-versions "$APACHE_VERSION" lt "2.4.7" \
+   || dpkg --compare-versions "$APACHE_VERSION" ge "2.4.24"; then
+   exit;
+fi
+
+rm -fR /tmp/imscp_apache2_src*
+SRC_DIR=$(mktemp -p /tmp -d imscp_apache2_src.XXXXXX)
+
+# Fix `W: Download is performed unsandboxed as root as file...' warning with
+# newest APT versions
+if id "_apt" >/dev/null 2>&1; then
+    chown _apt ${SRC_DIR}
+fi
+
 cd ${SRC_DIR}
-service apache2 stop
-apt-get -y install apache2-dev patch
+apt-get -y install apache2-dev dpkg-dev patch
 apt-get -y source apache2
 cd apache2*/modules/proxy
 patch -p0 <<EOF

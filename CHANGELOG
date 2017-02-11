@@ -45,6 +45,7 @@ DATABASE
 DISTRIBUTIONS
     Added: PHP 5.5 and PHP 5.6 alternatives for Debian Wheezy through Dotdeb repository
     Added: PHP 7.0 alternative for Debian Jessie through Dotdeb repository
+    Updated: Debian Stretch (9.0) packages file according last state of repository (full freeze since 20170205)
 
 DOCUMENTATION
     Added: CGI script sample for Perl, Python and Ruby
@@ -67,7 +68,9 @@ FRONTEND
 
 INSTALLER
     Fixed: Missing `mysql' group; the `mysql' group is only created by the mysql-server package (SQL remote server impl.)
+    Fixed: Patch for Apache 2 mod_proxy_fcgi module not required if Apache version is >= 2.4.24
     Fixed: Several files containing critical data are created world-readable, giving time to other processes to read them
+    Fixed: `W: Download is performed unsandboxed as root as file...' warning with newest APT versions
     Moved: Distribution package files from ./docs directory to ./autoinstaller/Packages directory
     Review: Forbid usage of `debian-sys-maint' SQL user
     Updated: ./docs/preseed.pl preseeding template file

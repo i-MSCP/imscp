@@ -891,6 +891,15 @@ sub _rebuildAndInstallPackage
 
     my $oldDir = cwd();
     my $srcDir = File::Temp->newdir( CLEANUP => 1 );
+
+    # Fix `W: Download is performed unsandboxed as root as file...' warning with newest APT versions
+    if ((undef, undef, my $uid) = getpwnam('_apt')) {
+        if (!chown $uid, - 1, $srcDir) {
+            error( sprintf( 'Could not change ownership for the %s directory to: %s', $srcDir, $! ) );
+            return 1;
+        }
+    }
+
     unless (chdir $srcDir) {
         error( sprintf( 'Could not change current directory to: %s', $srcDir, $! ) );
         return 1;

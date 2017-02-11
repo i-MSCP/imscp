@@ -162,8 +162,6 @@
     </named>
     <sql default="mysql_5.5">
         <mysql_5.5
-                repository_key_id="0xcbcb082a1bb943db"
-                repository_key_srv="keyserver.ubuntu.com"
                 pinning_package="libmysqlclient18 mysql-client-5.5 mysql-common mysql-server-5.5"
                 pinning_pin="release o=Debian,n=wheezy"
                 pinning_pin_priority="1001"

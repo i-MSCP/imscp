@@ -203,7 +203,7 @@ sub _checkRequirements
                 escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} show $package $version" )
             ),
             (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                ? undef : sub { step( undef, $msg.(shift), 3, 2 ); }
+                ? undef : sub { step( undef, $msg, 3, 2 ); }
             ),
             sub { $stderr .= shift; }
         );
