@@ -113,6 +113,7 @@ YOUTRACK
     #IP-1686 Fields beginning or ending with braced tags are corrupted by the clean_input function.
     #IP-1688 /etc/postfix/domains.db entry not added if mail value was changed from -1 (disabled) to enabled (0 or a value)
     #IP-1689 Password reset conflict with PanelRedirect
+    #IP-1694 Administrator: Order / Filter by Reseller
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series

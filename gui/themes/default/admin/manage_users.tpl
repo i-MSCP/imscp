@@ -74,20 +74,21 @@
         <label><input name="search_for" type="text" value="{SEARCH_FOR}"></label>
         <label>
             <select name="search_common">
-                <option value="domain_name" {M_DOMAIN_NAME_SELECTED}>{M_DOMAIN_NAME}</option>
-                <option value="customer_id" {M_CUSTOMER_ID_SELECTED}>{M_CUSTOMER_ID}</option>
-                <option value="lname" {M_LAST_NAME_SELECTED}>{M_LAST_NAME}</option>
-                <option value="firm" {M_COMPANY_SELECTED}>{M_COMPANY}</option>
-                <option value="city" {M_CITY_SELECTED}>{M_CITY}</option>
-                <option value="state" {M_STATE_SELECTED}>{M_STATE}</option>
-                <option value="country" {M_COUNTRY_SELECTED}>{M_COUNTRY}</option>
+                <option value="domain_name"{M_DOMAIN_NAME_SELECTED}>{M_DOMAIN_NAME}</option>
+                <option value="customer_id"{M_CUSTOMER_ID_SELECTED}>{M_CUSTOMER_ID}</option>
+                <option value="lname"{M_LAST_NAME_SELECTED}>{M_LAST_NAME}</option>
+                <option value="firm"{M_COMPANY_SELECTED}>{M_COMPANY}</option>
+                <option value="city"{M_CITY_SELECTED}>{M_CITY}</option>
+                <option value="state"{M_STATE_SELECTED}>{M_STATE}</option>
+                <option value="country"{M_COUNTRY_SELECTED}>{M_COUNTRY}</option>
+                <option value="reseller_name"{M_RESELLER_NAME_SELECTED}>{M_RESELLER_NAME}</option>
             </select>
         </label>
         <label>
             <select name="search_status">
-                <option value="all" {M_ALL_SELECTED}>{M_ALL}</option>
-                <option value="ok" {M_OK_SELECTED}>{M_OK}</option>
-                <option value="disabled" {M_SUSPENDED_SELECTED}>{M_SUSPENDED}</option>
+                <option value="all"{M_ALL_SELECTED}>{M_ALL}</option>
+                <option value="ok"{M_OK_SELECTED}>{M_OK}</option>
+                <option value="disabled"{M_SUSPENDED_SELECTED}>{M_SUSPENDED}</option>
             </select>
         </label>
         <input type="hidden" name="uaction" value="go_search">

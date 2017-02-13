@@ -560,7 +560,7 @@ function gen_user_list($tpl)
 {
     $cfg = iMSCP_Registry::get('config');
     $startIndex = 0;
-    $rowsPerPage = $cfg['DOMAIN_ROWS_PER_PAGE'];
+    $rowsPerPage = intval($cfg['DOMAIN_ROWS_PER_PAGE']);
 
     if (isset($_GET['psi']) && $_GET['psi'] == 'last') {
         if (isset($_SESSION['search_page'])) {
@@ -577,8 +577,8 @@ function gen_user_list($tpl)
     // Search request generated ?
     if (isset($_POST['uaction']) && !empty($_POST['uaction'])) {
         $_SESSION['search_for'] = clean_input($_POST['search_for']);
-        $_SESSION['search_common'] = $_POST['search_common'];
-        $_SESSION['search_status'] = $_POST['search_status'];
+        $_SESSION['search_common'] = clean_input($_POST['search_common']);
+        $_SESSION['search_status'] = clean_input($_POST['search_status']);
         $startIndex = 0;
     } elseif (isset($_SESSION['search_for']) && !isset($_GET['psi'])) {
         // He have not got scroll through patient records
@@ -597,17 +597,16 @@ function gen_user_list($tpl)
         gen_admin_domain_search_options(
             $tpl, $_SESSION['search_for'], $_SESSION['search_common'], $_SESSION['search_status']
         );
-        $stmt = exec_query($countQuery);
+        $stmt = execute_query($countQuery);
     } else {
         gen_admin_domain_query($searchQuery, $countQuery, $startIndex, $rowsPerPage, 'n/a', 'n/a', 'n/a');
         gen_admin_domain_search_options($tpl, 'n/a', 'n/a', 'n/a');
-        $stmt = exec_query($countQuery);
+        $stmt = execute_query($countQuery);
     }
 
-    $recordCount = $stmt->fields['cnt'];
-    $stmt = execute_query($searchQuery);
+    $recordCount = $stmt->fetchRow(PDO::FETCH_COLUMN);
 
-    if (!$stmt->rowCount()) {
+    if (!$recordCount) {
         if (isset($_SESSION['search_for'])) {
             $tpl->assign(array(
                 'USR_MESSAGE'     => tr('No records found matching the search criteria.'),
@@ -666,13 +665,9 @@ function gen_user_list($tpl)
         'TR_DETAILS'        => tr('Details')
     ));
 
-    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-        // user status icon
-        $domainCreatedBy = $row['created_by'];
-        $stmt2 = exec_query('SELECT admin_name, admin_status FROM admin WHERE admin_id = ?', $domainCreatedBy);
-        $row2 = $stmt2->fetchRow(PDO::FETCH_ASSOC);
-        $createdByName = (isset($row2['admin_name'])) ? $row2['admin_name'] : tr('N/A');
+    $stmt = execute_query($searchQuery);
 
+    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
         $tpl->assign(array(
             'USR_DELETE_SHOW'          => '',
             'USER_ID'                  => $row['admin_id'],
@@ -763,7 +758,7 @@ function gen_user_list($tpl)
         $tpl->assign(array(
             'USER_CREATED_ON'   => tohtml($domainCreated),
             'USER_EXPIRES_ON'   => $domainExpires,
-            'USR_CREATED_BY'    => tohtml($createdByName),
+            'USR_CREATED_BY'    => tohtml($row['reseller_name']),
             'USR_OPTIONS'       => '',
             'URL_EDIT_USR'      => 'admin_edit.php?edit_id=' . $row['domain_admin_id'],
             'TR_MESSAGE_DELETE' => tojs(tr('Are you sure you want to delete %s?', '%s'))
@@ -814,7 +809,7 @@ function gen_admin_domain_search_options($tpl, $searchFor, $searchCommon, $searc
 {
     $htmlSelected = ' selected';
     $domainSelected = $customerIdSelected = $lastnameSelected = $companySelected = $citySelected = $stateSelected =
-    $countrySelected = $allSelected = $okSelected = $suspendedSelected = '';
+    $countrySelected = $allSelected = $okSelected = $suspendedSelected = $resellerNameSelected = '';
 
     if ($searchFor == 'n/a' && $searchCommon == 'n/a' && $searchStatus == 'n/a') {
         // we have no search and let's generate search fields empty
@@ -836,6 +831,8 @@ function gen_admin_domain_search_options($tpl, $searchFor, $searchCommon, $searc
         $stateSelected = $htmlSelected;
     } elseif ($searchCommon == 'country') {
         $countrySelected = $htmlSelected;
+    } elseif ($searchCommon == 'reseller_name') {
+        $resellerNameSelected = $htmlSelected;
     }
 
     if ($searchStatus == 'all') {
@@ -864,6 +861,7 @@ function gen_admin_domain_search_options($tpl, $searchFor, $searchCommon, $searc
         'M_OK'                   => tr('OK'),
         'M_SUSPENDED'            => tr('Suspended'),
         'M_ERROR'                => tr('Error'),
+        'M_RESELLER_NAME'         => tr('Reseller name'),
         'M_DOMAIN_NAME_SELECTED' => $domainSelected,
         'M_CUSTOMER_ID_SELECTED' => $customerIdSelected,
         'M_LAST_NAME_SELECTED'   => $lastnameSelected,
@@ -873,7 +871,8 @@ function gen_admin_domain_search_options($tpl, $searchFor, $searchCommon, $searc
         'M_COUNTRY_SELECTED'     => $countrySelected,
         'M_ALL_SELECTED'         => $allSelected,
         'M_OK_SELECTED'          => $okSelected,
-        'M_SUSPENDED_SELECTED'   => $suspendedSelected
+        'M_SUSPENDED_SELECTED'   => $suspendedSelected,
+        'M_RESELLER_NAME_SELECTED' => $resellerNameSelected
     ));
 }
 
