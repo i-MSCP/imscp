@@ -214,7 +214,7 @@ function gen_admin_domain_query(
           $condition
         ";
         $searchQuery = "
-            SELECT t1.*, t2.admin_id, t2.admin_status,, t3.admin_name AS reseller_name
+            SELECT t1.*, t2.admin_id, t2.admin_status, t3.admin_name AS reseller_name
             FROM domain AS t1
             INNER JOIN admin AS t2 ON (t2.admin_id = t1.domain_admin_id)
             INNER JOIN admin AS t3 ON(t3.admin_id = t2.created_by)
