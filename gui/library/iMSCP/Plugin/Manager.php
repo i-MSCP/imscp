@@ -190,7 +190,7 @@ class iMSCP_Plugin_Manager
             throw new iMSCP_Plugin_Exception(tr("Plugin Manager: Directory %s doesn't exist or is not writable", $pluginDir));
         }
 
-        $this->pluginsDirectory = $pluginDir;
+        $this->pluginsDirectory = utils_normalizePath($pluginDir);
     }
 
     /**

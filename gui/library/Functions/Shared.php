@@ -2563,7 +2563,7 @@ function getDataTablesPluginTranslations($json = true)
                 <option value="15">15</option>
                 <option value="20">20</option>
                 <option value="50">50</option>
-                <option value="-1">' . tr('All') . '</option>
+                <option value="100">100</option>
                 </select>
             '
         ),

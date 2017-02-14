@@ -1128,7 +1128,7 @@ table .icon {
     margin-bottom: 0.5em;
 }
 
-.datatable thead th {
+th.sorting, th.sorting_asc, th.sorting_desc {
     cursor: pointer;
 }
 

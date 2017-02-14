@@ -25,7 +25,8 @@
                 displayLength: 10,
                 stateSave: true,
                 filter: false,
-                pagingType: "simple"
+                pagingType: "simple",
+                sort: false
             }
         );
 

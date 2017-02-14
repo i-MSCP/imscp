@@ -1,0 +1,77 @@
+<!-- BDP: language_block_js -->
+<script>
+    $(function () {
+        $('#languagesTable').find("input[type=radio]").button().change(function () {
+            $(this).closest("form").submit();
+        }).closest("table").dataTable({
+            language: <?= getDataTablesPluginTranslations(); ?>,
+            stateSave: true,
+            pagingType: "simple",
+            columnDefs: [
+                {type: "natural", targets: [1]},
+                {sortable: false, searchable: false, targets: [3]}
+            ]
+        });
+    });
+</script>
+<!-- EDP: language_block_js -->
+<!-- BDP: languages_block -->
+<table class="firstColFixed" id="languagesTable">
+    <thead>
+    <tr>
+        <th>{TR_LANGUAGE_NAME}</th>
+        <th>{TR_NUMBER_TRANSLATED_STRINGS}</th>
+        <th>{TR_LANGUAGE_REVISION}</th>
+        <th>{TR_LAST_TRANSLATOR}</th>
+        <th>{TR_DEFAULT_LANGUAGE}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- BDP: language_block -->
+    <tr>
+        <td><label for="defaultLanguage_{LOCALE}"><span class="icon i_locale">{LANGUAGE_NAME}</span></label></td>
+        <td>{NUMBER_TRANSLATED_STRINGS}</td>
+        <td>{LANGUAGE_REVISION}</td>
+        <td>{LAST_TRANSLATOR}</td>
+        <td>
+            <form method="post">
+                <label for="radio_defaultLanguage_{LOCALE}">{TR_DEFAULT}</label>
+                <input type="radio" name="defaultLanguage" id="radio_defaultLanguage_{LOCALE}" value="{LOCALE}"
+                       {LOCALE_CHECKED}>
+                <input type="hidden" name="uaction" id="uaction" value="changeLanguage">
+            </form>
+        </td>
+    </tr>
+    <!-- EDP: language_block -->
+    </tbody>
+    <tbody>
+    <tr>
+        <td class="buttons" colspan="5" style="background-color: #b0def5">
+            <form method="post">
+                <input name="rebuildIndex" type="submit" value="{TR_REBUILD_INDEX}">
+                <input type="hidden" name="uaction" id="uaction" value="rebuildIndex">
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<!-- EDP: languages_block -->
+<form method="post" enctype="multipart/form-data">
+    <table>
+        <thead>
+        <tr>
+            <th colspan="2">{TR_IMPORT_NEW_LANGUAGE}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{TR_LANGUAGE_FILE} <span class="icon i_help" title="{TR_UPLOAD_HELP}"></span></td>
+            <td>
+                <input type="file" name="languageFile">
+                <input name="uploadLanguage" type="submit" value="{TR_IMPORT}">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <input type="hidden" name="uaction" id="uaction" value="uploadLanguage">
+</form>

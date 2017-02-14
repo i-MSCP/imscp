@@ -87,35 +87,20 @@ function generateLoggedFrom($tpl)
 /**
  * Helper function to generates an html list of available languages
  *
- * This method generate a HTML list of available languages. The language used by the user is pre-selected.
- * If no language is found, a specific message is shown.
- *
  * @param  iMSCP_pTemplate $tpl Template engine
- * @param  string $userDefinedLanguage User defined language
+ * @param  string $selectedLanguage Selected language
  * @return void
  */
-function gen_def_language($tpl, $userDefinedLanguage)
+function gen_def_language($tpl, $selectedLanguage)
 {
-    $availableLanguages = i18n_getAvailableLanguages();
-    array_unshift($availableLanguages, array(
-        'locale'   => 'auto',
-        'language' => tr('Auto (Browser language)')
-    ));
-
-    if (!empty($availableLanguages)) {
-        foreach ($availableLanguages as $language) {
-            $tpl->assign(array(
-                'LANG_VALUE'    => $language['locale'],
-                'LANG_SELECTED' => ($language['locale'] == $userDefinedLanguage) ? ' selected' : '',
-                'LANG_NAME'     => tohtml($language['language'])
-            ));
-            $tpl->parse('DEF_LANGUAGE', '.def_language');
-        }
-        return;
+    foreach ( i18n_getAvailableLanguages() as $language) {
+        $tpl->assign(array(
+            'LANG_VALUE'    => tohtml($language['locale'], 'htmlAttr'),
+            'LANG_SELECTED' => ($language['locale'] == $selectedLanguage) ? ' selected' : '',
+            'LANG_NAME'     => tohtml($language['language'])
+        ));
+        $tpl->parse('DEF_LANGUAGE', '.def_language');
     }
-
-    $tpl->assign('LANGUAGES_AVAILABLE', '');
-    set_page_message(tr('No languages found.'), 'static_warning');
 }
 
 /**
@@ -574,14 +559,12 @@ function gen_user_list($tpl)
         $startIndex = $_GET['psi'];
     }
 
-    // Search request generated ?
     if (isset($_POST['uaction']) && !empty($_POST['uaction'])) {
         $_SESSION['search_for'] = clean_input($_POST['search_for']);
         $_SESSION['search_common'] = clean_input($_POST['search_common']);
         $_SESSION['search_status'] = clean_input($_POST['search_status']);
         $startIndex = 0;
     } elseif (isset($_SESSION['search_for']) && !isset($_GET['psi'])) {
-        // He have not got scroll through patient records
         unset($_SESSION['search_for']);
         unset($_SESSION['search_common']);
         unset($_SESSION['search_status']);
@@ -850,28 +833,28 @@ function gen_admin_domain_search_options($tpl, $searchFor, $searchCommon, $searc
     }
 
     $tpl->assign(array(
-        'M_DOMAIN_NAME'          => tr('Domain name'),
-        'M_CUSTOMER_ID'          => tr('Customer ID'),
-        'M_LAST_NAME'            => tr('Last name'),
-        'M_COMPANY'              => tr('Company'),
-        'M_CITY'                 => tr('City'),
-        'M_STATE'                => tr('State/Province'),
-        'M_COUNTRY'              => tr('Country'),
-        'M_ALL'                  => tr('All'),
-        'M_OK'                   => tr('OK'),
-        'M_SUSPENDED'            => tr('Suspended'),
-        'M_ERROR'                => tr('Error'),
-        'M_RESELLER_NAME'         => tr('Reseller name'),
-        'M_DOMAIN_NAME_SELECTED' => $domainSelected,
-        'M_CUSTOMER_ID_SELECTED' => $customerIdSelected,
-        'M_LAST_NAME_SELECTED'   => $lastnameSelected,
-        'M_COMPANY_SELECTED'     => $companySelected,
-        'M_CITY_SELECTED'        => $citySelected,
-        'M_STATE_SELECTED'       => $stateSelected,
-        'M_COUNTRY_SELECTED'     => $countrySelected,
-        'M_ALL_SELECTED'         => $allSelected,
-        'M_OK_SELECTED'          => $okSelected,
-        'M_SUSPENDED_SELECTED'   => $suspendedSelected,
+        'M_DOMAIN_NAME'            => tr('Domain name'),
+        'M_CUSTOMER_ID'            => tr('Customer ID'),
+        'M_LAST_NAME'              => tr('Last name'),
+        'M_COMPANY'                => tr('Company'),
+        'M_CITY'                   => tr('City'),
+        'M_STATE'                  => tr('State/Province'),
+        'M_COUNTRY'                => tr('Country'),
+        'M_ALL'                    => tr('All'),
+        'M_OK'                     => tr('OK'),
+        'M_SUSPENDED'              => tr('Suspended'),
+        'M_ERROR'                  => tr('Error'),
+        'M_RESELLER_NAME'          => tr('Reseller name'),
+        'M_DOMAIN_NAME_SELECTED'   => $domainSelected,
+        'M_CUSTOMER_ID_SELECTED'   => $customerIdSelected,
+        'M_LAST_NAME_SELECTED'     => $lastnameSelected,
+        'M_COMPANY_SELECTED'       => $companySelected,
+        'M_CITY_SELECTED'          => $citySelected,
+        'M_STATE_SELECTED'         => $stateSelected,
+        'M_COUNTRY_SELECTED'       => $countrySelected,
+        'M_ALL_SELECTED'           => $allSelected,
+        'M_OK_SELECTED'            => $okSelected,
+        'M_SUSPENDED_SELECTED'     => $suspendedSelected,
         'M_RESELLER_NAME_SELECTED' => $resellerNameSelected
     ));
 }

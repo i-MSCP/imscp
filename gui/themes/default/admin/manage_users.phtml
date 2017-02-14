@@ -3,13 +3,23 @@
     function action_delete(dmn_name) {
         return confirm(sprintf("{TR_MESSAGE_DELETE}", dmn_name));
     }
+    
+    $(function() {
+        $("#administrators_table, #resellers_table").dataTable({
+            language: <?= getDataTablesPluginTranslations(); ?>,
+            displayLength: 10,
+            stateSave: true,
+            pagingType: "simple",
+            columnDefs: [{sortable: false, searchable: false, targets: [3]}]
+        });
+    });
 </script>
 <h3 class="user_yellow"><span>{TR_ADMINISTRATORS}</span></h3>
 <!-- BDP: admin_message -->
 <div class="static_info">{ADMIN_MESSAGE}</div>
 <!-- EDP: admin_message -->
 <!-- BDP: admin_list -->
-<table class="firstColFixed">
+<table class="firstColFixed" id="administrators_table">
     <thead>
     <tr>
         <th>{TR_ADMIN_USERNAME}</th>
@@ -40,7 +50,7 @@
 <div class="static_info">{RSL_MESSAGE}</div>
 <!-- EDP: rsl_message -->
 <!-- BDP: rsl_list -->
-<table class="firstColFixed">
+<table class="firstColFixed" id="resellers_table">
     <thead>
     <tr>
         <th>{TR_RSL_USERNAME}</th>
@@ -106,7 +116,7 @@
 <div class="static_info">{USR_MESSAGE}</div>
 <!-- EDP: usr_message -->
 <!-- BDP: usr_list -->
-<table>
+<table id="customers_table">
     <thead>
     <tr>
         <th>{TR_USER_STATUS}</th>
@@ -155,7 +165,7 @@
     </tr>
     <!-- EDP: user_details -->
     <!-- EDP: usr_item -->
-    </tbody>
+    <tbody>
 </table>
 <div class="paginator">
     <!-- BDP: scroll_prev -->

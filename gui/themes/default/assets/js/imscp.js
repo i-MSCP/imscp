@@ -261,7 +261,7 @@
         var timerId;
         var $iniFields = $("#php_ini_values").find("input");
 
-        $iniFields.on('keyup mouseup', function () {
+        $iniFields.on('keyup mouseup paste copy cut', function () {
             clearTimeout(timerId);
             timerId = setTimeout(function () {
                 $iniFields.each(function () { // We revalidate all fields because some are dependent of others

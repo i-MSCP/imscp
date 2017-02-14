@@ -30,7 +30,7 @@ check_login('admin');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
     'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'admin/manage_users.tpl',
+    'page' => 'admin/manage_users.phtml',
     'page_message' => 'layout',
     'admin_message' => 'page',
     'admin_list' => 'page',

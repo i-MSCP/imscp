@@ -26,14 +26,13 @@
  */
 
 /***********************************************************************************************************************
- * Main script
+ * Main
  */
 
 require 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 check_login('admin');
-
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
@@ -44,7 +43,6 @@ $tpl->define_dynamic(array(
     'def_language'        => 'languages_available'
 ));
 
-// Getting current admin language
 $adminCurrentLanguage = $_SESSION['user_def_lang'];
 
 if (!empty($_POST)) {
@@ -76,4 +74,3 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
 $tpl->prnt();
-unsetMessages();

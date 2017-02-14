@@ -39,7 +39,7 @@
 function generate_users_list($tpl, $resellerId)
 {
     $cfg = iMSCP_Registry::get('config');
-    $rowsPerPage = $cfg['DOMAIN_ROWS_PER_PAGE'];
+    $rowsPerPage = intval($cfg['DOMAIN_ROWS_PER_PAGE']);
 
     if (isset($_POST['details']) && !empty($_POST['details'])) {
         $_SESSION['details'] = $_POST['details'];
@@ -57,7 +57,6 @@ function generate_users_list($tpl, $resellerId)
         }
     }
 
-    // Search request generated?
     if (isset($_POST['search_for']) && !empty($_POST['search_for'])) {
         $_SESSION['search_for'] = trim(clean_input($_POST['search_for']));
         $_SESSION['search_common'] = $_POST['search_common'];
@@ -67,7 +66,6 @@ function generate_users_list($tpl, $resellerId)
         $startIndex = isset($_GET['psi']) ? (int)$_GET['psi'] : 0;
 
         if (isset($_SESSION['search_for']) && !isset($_GET['psi'])) {
-            // He have not got scroll through patient records.
             unset($_SESSION['search_for']);
             unset($_SESSION['search_common']);
             unset($_SESSION['search_status']);

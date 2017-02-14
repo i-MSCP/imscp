@@ -6,11 +6,40 @@
         });
 
         $("#domain_expires").datepicker();
-        $("#domain_never_expires").change(function () {
+        $("#domain_never_expires").on('change', function () {
             if ($(this).is(":checked")) {
-                $("#domain_expires").val("").css("border-color", "#dfdfdf").attr("disabled", "disabled");
+                $("#domain_expires").val("").css("border-color", "#dfdfdf").prop("disabled", true);
             } else {
-                $("#domain_expires").removeAttr("disabled");
+                $("#domain_expires").prop("disabled", false);
+            }
+        });
+
+        $("#domain_disk_limit").on('keyup mouseup paste copy cut', function () {
+            var storageQuotaLimit = parseInt($(this).val());
+            var $mailQuotaField = $("#mail_quota");
+
+            if (storageQuotaLimit > 0) {
+                $mailQuotaField.attr("min", 1).attr("max", storageQuotaLimit);
+                return;
+            }
+
+            $mailQuotaField.attr("min", 0).removeAttr("max");
+        });
+
+        // Ensure that PHP is enabled when software installer is enabled
+        $("#domain_software_allowed_yes").on('change', function() {
+            if($(this).is(':checked')) {
+                var $el = $("#php_yes");
+                if(!$el.is(":checked")) {
+                    $el.prop("checked", true).button("refresh").trigger("change");
+                }
+            }
+        });
+
+        // Ensure that software installer is disabled when PHP is disabled
+        $("#php_no").on('change', function() {
+            if($(this).is(":checked")) {
+                $("#domain_software_allowed_no").prop("checked", true).button("refresh");
             }
         });
     });

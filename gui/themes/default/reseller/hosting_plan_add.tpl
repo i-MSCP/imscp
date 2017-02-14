@@ -5,8 +5,20 @@
             $("#" + k).css("border-color", "#ca1d11");
         });
 
+        $("#disk").on('keyup mouseup paste copy cut', function () {
+            var storageQuotaLimit = parseInt($(this).val());
+            var $mailQuotaField = $("#mail_quota");
+
+            if (storageQuotaLimit > 0) {
+                $mailQuotaField.attr("min", 1).attr("max", storageQuotaLimit);
+                return;
+            }
+
+            $mailQuotaField.attr("min", 0).removeAttr("max");
+        });
+
         // Ensure that PHP is enabled when software installer is enabled
-        $("#softwares_installer_yes").change(function() {
+        $("#softwares_installer_yes").on('change', function() {
             if($(this).is(":checked")) {
                 var $el = $("#php_yes");
                 if(!$el.is(":checked")) {
@@ -16,7 +28,7 @@
         });
 
         // Ensure that software installer is disabled when PHP is disabled
-        $("#php_no").change(function() {
+        $("#php_no").on('change', function() {
             if($(this).is(":checked")) {
                 $("#softwares_installer_no").prop("checked", true).button("refresh");
             }

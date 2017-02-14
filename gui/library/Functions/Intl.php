@@ -197,7 +197,17 @@ function i18n_getAvailableLanguages()
         i18n_buildLanguageIndex();
     }
 
-    return unserialize($cfg['AVAILABLE_LANGUAGES']);
+    $languages = unserialize($cfg['AVAILABLE_LANGUAGES']);
+
+    array_unshift($languages, array(
+        'locale'            => 'auto',
+        'revision'          => tr('N/A'),
+        'translatedStrings' => tr('N/A'),
+        'lastTranslator'    => tr('N/A'),
+        'language'          => tr('Auto (Browser language)')
+    ));
+
+    return $languages;
 }
 
 /**

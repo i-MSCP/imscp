@@ -6,21 +6,21 @@
 
         $datePicker.datepicker().on('change', function () {
             if ($(this).val() != '') {
-                $('#never_expire').attr('disabled', 'disabled');
+                $neverExpire.prop('disabled', true);
                 return;
             }
 
-            $(this).attr('disabled', 'disabled');
-            $neverExpire.prop('checked', true).removeAttr('disabled');
+            $(this).prop('disabled', true);
+            $neverExpire.prop('checked', true).prop("disabled", false);
         });
 
         $neverExpire.on('change', function () {
             if ($(this).is(':checked')) {
-                $('#datepicker').attr('disabled', 'disabled');
+                $datePicker.prop('disabled', true);
                 return;
             }
 
-            $datePicker.removeAttr('disabled');
+            $datePicker.prop('disabled', false);
         });
 
         $("input[name='url_forwarding']").on('change', function () {

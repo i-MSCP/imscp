@@ -70,4 +70,8 @@ $eventsManager->dispatch(iMSCP_Events::onAfterPluginsRoute, array(
     'pluginManager' => $pluginManager, 'scriptPath' => $pluginActionScriptPath
 ));
 
+if(!is_file($pluginActionScriptPath)) {
+    showNotFoundErrorPage();
+}
+
 include $pluginActionScriptPath;

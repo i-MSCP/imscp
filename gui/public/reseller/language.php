@@ -25,77 +25,63 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
-/************************************************************************************
- * Main script
+/***********************************************************************************************************************
+ * Main
  */
 
-// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
-
 check_login('reseller');
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'reseller/language.tpl',
-		'page_message' => 'layout',
-		'languages_available' => 'page',
-		'def_language' => 'languages_available'
-	)
-);
+$tpl->define_dynamic(array(
+    'layout'              => 'shared/layouts/ui.tpl',
+    'page'                => 'reseller/language.tpl',
+    'page_message'        => 'layout',
+    'languages_available' => 'page',
+    'def_language'        => 'languages_available'
+));
 
-// Getting current reseller language
 if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
-	list($resellerCurrentLanguage) = get_user_gui_props($_SESSION['user_id']);
+    list($resellerCurrentLanguage) = get_user_gui_props($_SESSION['user_id']);
 } else {
-	$resellerCurrentLanguage = $_SESSION['user_def_lang'];
+    $resellerCurrentLanguage = $_SESSION['user_def_lang'];
 }
 
 if (!empty($_POST)) {
-	$resellerNewLanguage = clean_input($_POST['def_language']);
+    $resellerNewLanguage = clean_input($_POST['def_language']);
 
-	if ($resellerCurrentLanguage != $resellerNewLanguage) {
-		$query = "UPDATE `user_gui_props` SET `lang` = ? WHERE `user_id` = ?";
-		exec_query($query, array($resellerNewLanguage, $_SESSION['user_id']));
+    if ($resellerCurrentLanguage != $resellerNewLanguage) {
+        exec_query('UPDATE user_gui_props SET lang = ? WHERE user_id = ?', array(
+                $resellerNewLanguage, $_SESSION['user_id'])
+        );
 
-		if (!isset($_SESSION['logged_from_id'])) {
-			unset($_SESSION['user_def_lang']);
-			$_SESSION['user_def_lang'] = $resellerNewLanguage;
-		}
+        if (!isset($_SESSION['logged_from_id'])) {
+            unset($_SESSION['user_def_lang']);
+            $_SESSION['user_def_lang'] = $resellerNewLanguage;
+        }
 
-		set_page_message(tr('Language successfully updated.'), 'success');
-	} else {
-		set_page_message(tr("Nothing has been changed."), 'info');
-	}
+        set_page_message(tr('Language successfully updated.'), 'success');
+    } else {
+        set_page_message(tr("Nothing has been changed."), 'info');
+    }
 
-	// Force update on next load
-	redirectTo('index.php');
+    redirectTo('index.php');
 }
 
 gen_def_language($tpl, $resellerCurrentLanguage);
 
-$tpl->assign(
-	array(
-		 'TR_PAGE_TITLE' => tr('Reseller / Profile / Language'),
-		 'TR_LANGUAGE' => tr('Language'),
-		 'TR_CHOOSE_LANGUAGE' => tr('Choose your language'),
-		 'TR_UPDATE' => tr('Update')
-	)
-);
+$tpl->assign(array(
+    'TR_PAGE_TITLE'      => tr('Reseller / Profile / Language'),
+    'TR_LANGUAGE'        => tr('Language'),
+    'TR_CHOOSE_LANGUAGE' => tr('Choose your language'),
+    'TR_UPDATE'          => tr('Update')
+));
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
-
 $tpl->prnt();
-
-unsetMessages();
