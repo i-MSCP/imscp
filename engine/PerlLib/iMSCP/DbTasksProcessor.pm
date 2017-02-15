@@ -451,7 +451,7 @@ sub _init
 sub _process
 {
     my ($self, $module, $sql, $perItemLogFile) = @_;
-    
+
     debug( sprintf( 'Processing %s tasks...', $module ) );
 
     my $dbh = $self->{'db'}->getRawDb();
