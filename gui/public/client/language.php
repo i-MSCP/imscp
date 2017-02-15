@@ -25,77 +25,65 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
-/************************************************************************************
- * Main script
+/***********************************************************************************************************************
+ * Main
  */
 
-// Include core library
 require_once 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
 check_login('user');
-
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic(
-	array(
-		'page' => 'client/language.tpl',
-		'page_message' => 'layout',
-		'languages_available' => 'page',
-		'def_language' => 'languages_available'
-	)
-);
+$tpl->define_dynamic(array(
+    'page'                => 'client/language.tpl',
+    'page_message'        => 'layout',
+    'languages_available' => 'page',
+    'def_language'        => 'languages_available'
+));
 
-// Getting current customer language
+
 if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
-	list($customerCurrentLanguage) = get_user_gui_props($_SESSION['user_id']);
+    list($customerCurrentLanguage) = get_user_gui_props($_SESSION['user_id']);
 } else {
-	$customerCurrentLanguage = $_SESSION['user_def_lang'];
+    $customerCurrentLanguage = $_SESSION['user_def_lang'];
 }
 
 if (!empty($_POST)) {
-	$customerId = $_SESSION['user_id'];
-	$customerNewLanguage = clean_input($_POST['def_language']);
+    $customerId = $_SESSION['user_id'];
+    $customerNewLanguage = clean_input($_POST['def_language']);
 
-	if ($customerCurrentLanguage != $customerNewLanguage) {
+    if ($customerCurrentLanguage != $customerNewLanguage) {
+        exec_query('UPDATE user_gui_props SET lang = ? WHERE user_id = ?', array(
+            $customerNewLanguage, $_SESSION['user_id']
+        ));
 
-		$query = "UPDATE `user_gui_props` SET `lang` = ? WHERE `user_id` = ?";
-		exec_query($query, array($customerNewLanguage, $_SESSION['user_id']));
+        if (!isset($_SESSION['logged_from_id'])) {
+            unset($_SESSION['user_def_lang']);
+            $_SESSION['user_def_lang'] = $customerNewLanguage;
+        }
 
-		if (!isset($_SESSION['logged_from_id'])) {
-			unset($_SESSION['user_def_lang']);
-			$_SESSION['user_def_lang'] = $customerNewLanguage;
-		}
+        set_page_message(tr('Language successfully updated.'), 'success');
+    } else {
+        set_page_message(tr("Nothing has been changed."), 'info');
+    }
 
-		set_page_message(tr('Language successfully updated.'), 'success');
-	} else {
-		set_page_message(tr("Nothing has been changed."), 'info');
-	}
-
-	// Force update on next load
-	redirectTo('index.php');
+    redirectTo('index.php');
 }
 
-$tpl->assign(
-	array(
-		 'TR_PAGE_TITLE' => tr('Client / Profile / Language'),
-		 'TR_GENERAL_INFO' => tr('General information'),
-		 'TR_LANGUAGE' => tr('Language'),
-		 'TR_CHOOSE_LANGUAGE' => tr('Choose your language'),
-		 'TR_UPDATE' => tr('Update')));
+$tpl->assign(array(
+    'TR_PAGE_TITLE'      => tr('Client / Profile / Language'),
+    'TR_GENERAL_INFO'    => tr('General information'),
+    'TR_LANGUAGE'        => tr('Language'),
+    'TR_CHOOSE_LANGUAGE' => tr('Choose your language'),
+    'TR_UPDATE'          => tr('Update')
+));
 
 generateNavigation($tpl);
 gen_def_language($tpl, $customerCurrentLanguage);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
-
 $tpl->prnt();
-
-unsetMessages();
