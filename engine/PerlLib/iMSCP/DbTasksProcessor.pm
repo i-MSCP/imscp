@@ -65,7 +65,8 @@ sub process
             WHERE plugin_status IN ('enabled', 'toinstall', 'toenable', 'toupdate', 'tochange', 'todisable', 'touninstall')
             AND plugin_error IS NULL AND plugin_backend = 'yes'
             ORDER BY plugin_priority DESC
-        "
+        ",
+        'per_item_log_file'
     );
 
     # Process network interface tasks
@@ -419,7 +420,7 @@ sub process
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -436,20 +437,21 @@ sub _init
     $self;
 }
 
-=item _process($module, $sql)
+=item _process( $module, $sql [, $perItemLogFile = FALSE ] )
 
  Process db tasks from the given module
 
  Param string $module Module name to process
  Param string $sql SQL statement for retrieval of list of items to process by the given module
+ Param bool $perItemLogFile Enable per item log file (default is per module log file)
  Return int 1 if at least one item has been processed, 0 if no item has been processed, die on failure
 
 =cut
 
 sub _process
 {
-    my ($self, $module, $sql) = @_;
-
+    my ($self, $module, $sql, $perItemLogFile) = @_;
+    
     debug( sprintf( 'Processing %s tasks...', $module ) );
 
     my $dbh = $self->{'db'}->getRawDb();
@@ -470,7 +472,7 @@ sub _process
         my ($id, $name, $rs) = ($row->{'id'}, encode_utf8( $row->{'name'} ));
 
         debug( sprintf( 'Processing %s tasks for: %s (ID %s)', $module, $name, $id ) );
-        newDebug( "$module.log" );
+        newDebug( $module.(($perItemLogFile) ? "_${name}" : '').'.log' );
 
         if ($self->{'mode'} eq 'setup') {
             $rs = step(
