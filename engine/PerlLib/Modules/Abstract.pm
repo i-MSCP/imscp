@@ -39,7 +39,7 @@ use parent 'Common::Object';
 
 =over 4
 
-=item getType()
+=item getType( )
 
  Get module type
 
@@ -49,12 +49,12 @@ use parent 'Common::Object';
 
 sub getType
 {
-    fatal( ref( $_[0] ).' module must implement the getType() method' );
+    fatal( ref( $_[0] ).' module must implements the getType() method' );
 }
 
-=item process()
+=item process( )
 
- Process action (add|delete|restore|disable) according item status.
+ Process add|delete|restore|disable action according item status.
 
  Return int 0 on success, other on failure
 
@@ -62,14 +62,14 @@ sub getType
 
 sub process
 {
-    fatal( ref( $_[0] ).' module must implement the process() method' );
+    fatal( ref( $_[0] ).' module must implements the process() method' );
 }
 
 =item add()
 
- Add item
+ Execute the `add' action on servers, packages
 
- Called for items with 'toadd|tochange|toenable' status.
+ Should be executed for items with 'toadd|tochange|toenable' status.
 
  Return int 0 on success, other on failure
 
@@ -77,14 +77,14 @@ sub process
 
 sub add
 {
-    $_[0]->_runAllActions( 'add' );
+    $_[0]->_execAllActions( 'add' );
 }
 
-=item delete()
+=item delete( )
 
- Delete item
+ Execute the `delete' action on servers, packages
 
- Called for items with 'todelete' status.
+ Should be executed for items with 'todelete' status.
 
  Return int 0 on success, other on failure
 
@@ -92,14 +92,14 @@ sub add
 
 sub delete
 {
-    $_[0]->_runAllActions( 'delete' );
+    $_[0]->_execAllActions( 'delete' );
 }
 
-=item restore()
+=item restore( )
 
- Restore item
+ Execute the `restore' action on servers, packages
 
- Called for items with 'torestore' status.
+ Should be executed for items with 'torestore' status.
 
  Return int 0 on success, other on failure
 
@@ -107,14 +107,14 @@ sub delete
 
 sub restore
 {
-    $_[0]->_runAllActions( 'restore' );
+    $_[0]->_execAllActions( 'restore' );
 }
 
-=item disable()
+=item disable( )
 
- Disable item
+ Execute the `disable' action on servers, packages
 
- Called for items with 'todisable' status.
+ Should be executed for items with 'todisable' status.
 
  Return int 0 on success, other on failure
 
@@ -122,7 +122,7 @@ sub restore
 
 sub disable
 {
-    $_[0]->_runAllActions( 'disable' );
+    $_[0]->_execAllActions( 'disable' );
 }
 
 =back
@@ -131,11 +131,11 @@ sub disable
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
- Return Modules::User
+ Return Modules::Abstract
 
 =cut
 
@@ -148,31 +148,32 @@ sub _init
     $self;
 }
 
-=item _runAction($action, $itemType)
+=item _execAction( $action, $pkgType )
 
- Run the given action on all servers or packages that implement it
+ Execute the given $action on all $pkgType that implement it
 
- Param string $action Action to run
- Param string $itemType Item type (server|package)
+ Param string $action Action to execute on servers, packages (<pre|post><action><moduleType>)
+ Param string $pkgType Package type (server|package)
  Return int 0 on success, other or die on failure
 
 =cut
 
-sub _runAction
+sub _execAction
 {
-    my ($self, $action, $itemType) = @_;
+    my ($self, $action, $pkgType) = @_;
 
-    if ($itemType eq 'server') {
+    if ($pkgType eq 'server') {
         for my $server (iMSCP::Servers->getInstance()->getListWithFullNames()) {
             eval "require $server";
 
             my $instance = $server->factory();
             if (my $subref = $instance->can( $action )) {
-                debug( "Calling action $action on $server" );
+                debug( "Executing action `$action' on $server" );
                 my $rs = $subref->( $instance, $self->_getData( $action ) );
                 return $rs if $rs;
             }
         }
+
         return 0;
     }
 
@@ -180,7 +181,7 @@ sub _runAction
         eval "require $package";
         my $instance = $package->getInstance();
         if (my $subref = $instance->can( $action )) {
-            debug( "Calling action $action on $package" );
+            debug( "Executing action `$action' on $package" );
             my $rs = $subref->( $instance, $self->_getData( $action ) );
             return $rs if $rs;
         }
@@ -189,15 +190,16 @@ sub _runAction
     0;
 }
 
-=item _runAllActions()
+=item _execAllActions( $action )
 
- Run actions (pre<Action>, <Action>, post<Action>) on each servers and packages
+ Execute pre$action, $action, post$action on servers, packages
 
+ Param string $action Action to execute on servers, packages (add|delete|restore|disable)
  Return int 0 on success, other on failure
 
 =cut
 
-sub _runAllActions
+sub _execAllActions
 {
     my ($self, $action) = @_;
 
@@ -205,8 +207,8 @@ sub _runAllActions
 
     if ($action =~ /^(?:add|restore)$/) {
         for('pre', '', 'post') {
-            my $rs = $self->_runAction( "$_$action$moduleType", 'server' );
-            $rs ||= $self->_runAction( "$_$action$moduleType", 'package' );
+            my $rs = $self->_execAction( "$_$action$moduleType", 'server' );
+            $rs ||= $self->_execAction( "$_$action$moduleType", 'package' );
             return $rs if $rs;
         }
 
@@ -214,19 +216,19 @@ sub _runAllActions
     }
 
     for('pre', '', 'post') {
-        my $rs = $self->_runAction( "$_$action$moduleType", 'package' );
-        $rs ||= $self->_runAction( "$_$action$moduleType", 'server' );
+        my $rs = $self->_execAction( "$_$action$moduleType", 'package' );
+        $rs ||= $self->_execAction( "$_$action$moduleType", 'server' );
         return $rs if $rs;
     }
 
     0;
 }
 
-=item _getData($action)
+=item _getData( $action )
 
  Data provider method for i-MSCP servers and packages
 
- Param string $action Action
+ Param string $action Action being executed (<pre|post><action><moduleType>) on servers, packages
  Return hashref Reference to a hash containing data, die on failure
 
 =cut
