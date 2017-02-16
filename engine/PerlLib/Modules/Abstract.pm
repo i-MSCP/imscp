@@ -168,7 +168,7 @@ sub _execAction
 
             my $instance = $server->factory();
             if (my $subref = $instance->can( $action )) {
-                debug( "Executing action `$action' on $server" );
+                debug( "Executing `$action' action on $server" );
                 my $rs = $subref->( $instance, $self->_getData( $action ) );
                 return $rs if $rs;
             }
@@ -181,7 +181,7 @@ sub _execAction
         eval "require $package";
         my $instance = $package->getInstance();
         if (my $subref = $instance->can( $action )) {
-            debug( "Executing action `$action' on $package" );
+            debug( "Executing `$action' action on $package" );
             my $rs = $subref->( $instance, $self->_getData( $action ) );
             return $rs if $rs;
         }

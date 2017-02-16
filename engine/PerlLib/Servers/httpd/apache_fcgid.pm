@@ -1577,7 +1577,7 @@ sub _addFiles
         local $@;
 
         # Whether or not permissions must be fixed recursively
-        my $fixPermissions = iMSCP::Getopt->fixPermissions;
+        my $fixPermissions = iMSCP::Getopt->fixPermissions || $data->{'ACTION'} =~ /^restore(?:Dmn|Sub)$/;
 
         # Prepare Web folder
         my $skelDir;
