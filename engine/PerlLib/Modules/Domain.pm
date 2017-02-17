@@ -315,7 +315,10 @@ sub _loadData
     my $rdata = iMSCP::Database->factory()->doQuery(
         'domain_id',
         "
-            SELECT t1.*, t2.ip_number, t3.*, t4.mail_on_domain
+            SELECT t1.*,
+                t2.ip_number,
+                t3.private_key, t3.certificate, t3.ca_bundle, t3.allow_hsts, t3.hsts_max_age, t3.hsts_include_subdomains,
+                t4.mail_on_domain
             FROM domain AS t1
             INNER JOIN server_ips AS t2 ON (t2.ip_id = t1.domain_ip_id)
             LEFT JOIN ssl_certs AS t3 ON(t3.domain_id = t1.domain_id AND t3.domain_type = 'dmn' AND t3.status = 'ok')
@@ -358,15 +361,13 @@ sub _getData
             .($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
         my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
         my $documentRoot = File::Spec->canonpath( "$homeDir/$self->{'document_root'}" );
-        my $db = iMSCP::Database->factory();
-
-        my $phpini = $db->doQuery(
+        my $phpini = iMSCP::Database->factory()->doQuery(
             'domain_id', "SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = 'dmn'", $self->{'domain_id'}
         );
         ref $phpini eq 'HASH' or die( $phpini );
 
         my $haveCert = (
-            $self->{'cert_id'} && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'domain_name'}.pem"
+            $self->{'certificate'} && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'domain_name'}.pem"
         );
         my $allowHSTS = ($haveCert && $self->{'allow_hsts'} eq 'on');
         my $hstsMaxAge = ($allowHSTS) ? $self->{'hsts_max_age'} : 0;
@@ -398,7 +399,6 @@ sub _getData
             PHP_SUPPORT             => $self->{'domain_php'},
             CGI_SUPPORT             => $self->{'domain_cgi'},
             WEB_FOLDER_PROTECTION   => $self->{'web_folder_protection'},
-            SSL_SUPPORT             => $haveCert,
             SSL_SUPPORT             => $haveCert,
             HSTS_SUPPORT            => $allowHSTS,
             HSTS_MAX_AGE            => $hstsMaxAge,

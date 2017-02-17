@@ -332,29 +332,34 @@ function update_reseller_c_props($resellerId)
 {
     exec_query(
         "
-            UPDATE reseller_props AS t1 INNER JOIN (
-                SELECT
-                    COUNT(domain_id) AS dmn_count,
-                    IFNULL(SUM(IF(domain_subd_limit >= 0, domain_subd_limit, 0)), 0) AS sub_count,
+            UPDATE reseller_props AS t1
+            JOIN (
+                SELECT COUNT(domain_id) AS dmn_count,
+                    IFNULL(SUM(IF(domain_subd_limit >= 0, domain_subd_limit, 0)), 0) AS sub_limit,
                     IFNULL(SUM(IF(domain_alias_limit >= 0, domain_alias_limit, 0)), 0) AS als_limit,
                     IFNULL(SUM(IF(domain_mailacc_limit >= 0, domain_mailacc_limit, 0)), 0) AS mail_limit,
                     IFNULL(SUM(IF(domain_ftpacc_limit >= 0, domain_ftpacc_limit, 0)), 0) AS ftp_limit,
                     IFNULL(SUM(IF(domain_sqld_limit >= 0, domain_sqld_limit, 0)), 0) AS sqld_limit,
                     IFNULL(SUM(IF(domain_sqlu_limit >= 0, domain_sqlu_limit, 0)), 0) AS sqlu_limit,
                     IFNULL(SUM(domain_disk_limit), 0) AS disk_limit,
-                    IFNULL(SUM(domain_traffic_limit), 0) AS traffic_limit,
-                    created_by
-                FROM domain
-                LEFT JOIN admin ON(domain_admin_id = admin_id)
-                WHERE domain_status <> 'todelete' AND created_by = :reseller_id
+                    IFNULL(SUM(domain_traffic_limit), 0) AS traffic_limit
+                FROM admin
+                JOIN domain ON(domain_admin_id = admin_id)
+                WHERE created_by = ?
+                AND domain_status <> 'todelete'
             ) AS t2
-            SET t1.current_dmn_cnt = t2.dmn_count, t1.current_sub_cnt = t2.sub_count, t1.current_als_cnt = t2.als_limit,
-                t1.current_mail_cnt = t2.mail_limit, t1.current_ftp_cnt = t2.ftp_limit,
-                t1.current_sql_db_cnt = t2.sqld_limit, t1.current_sql_user_cnt = t2.sqlu_limit,
-                t1.current_disk_amnt = t2.disk_limit, t1.current_traff_amnt = t2.traffic_limit
-            WHERE t1.reseller_id = :reseller_id
+            SET t1.current_dmn_cnt = t2.dmn_count,
+              t1.current_sub_cnt = t2.sub_limit,
+              t1.current_als_cnt = t2.als_limit,
+              t1.current_mail_cnt = t2.mail_limit,
+              t1.current_ftp_cnt = t2.ftp_limit,
+              t1.current_sql_db_cnt = t2.sqld_limit,
+              t1.current_sql_user_cnt = t2.sqlu_limit,
+              t1.current_disk_amnt = t2.disk_limit,
+              t1.current_traff_amnt = t2.traffic_limit
+            WHERE t1.reseller_id = ?
         ",
-        array('reseller_id' => $resellerId)
+        array($resellerId, $resellerId)
     );
 }
 

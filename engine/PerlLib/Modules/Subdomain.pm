@@ -134,9 +134,13 @@ sub _loadData
     my $rdata = iMSCP::Database->factory()->doQuery(
         'subdomain_id',
         "
-            SELECT t1.*, t2.domain_name AS user_home, t2.domain_admin_id, t2.domain_php, t2.domain_cgi,
+            SELECT t1.*,
+                t2.domain_name AS user_home, t2.domain_admin_id, t2.domain_php, t2.domain_cgi,
                 t2.domain_traffic_limit, t2.domain_mailacc_limit, t2.domain_dns, t2.external_mail,
-                t2.web_folder_protection, t3.ip_number, t4.*, t5.mail_on_domain
+                t2.web_folder_protection,
+                t3.ip_number,
+                t4.private_key, t4.certificate, t4.ca_bundle, t4.allow_hsts, t4.hsts_max_age, t4.hsts_include_subdomains,
+                t5.mail_on_domain
             FROM subdomain AS t1
             INNER JOIN domain AS t2 USING(domain_id)
             INNER JOIN server_ips AS t3 ON (t3.ip_id = t2.domain_ip_id)
@@ -181,18 +185,18 @@ sub _getData
         my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}" );
         my $webDir = File::Spec->canonpath( "$homeDir/$self->{'subdomain_mount'}" );
         my $documentRoot = File::Spec->canonpath( "$webDir/$self->{'subdomain_document_root'}" );
-        my $db = iMSCP::Database->factory();
         my $confLevel = $httpd->{'phpConfig'}->{'PHP_CONFIG_LEVEL'};
         $confLevel = $confLevel =~ /^per_(?:user|domain)$/ ? 'dmn' : 'sub';
 
         my $phpiniMatchId = $confLevel eq 'dmn' ? $self->{'domain_id'} : $self->{'subdomain_id'};
-        my $phpini = $db->doQuery(
+        my $phpini = iMSCP::Database->factory()->doQuery(
             'domain_id', 'SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = ?', $phpiniMatchId, $confLevel
         );
         ref $phpini eq 'HASH' or die( $phpini );
 
         my $haveCert = (
-            $self->{'cert_id'} && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'subdomain_name'}.$self->{'user_home'}.pem"
+            $self->{'certificate'}
+                && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'subdomain_name'}.$self->{'user_home'}.pem"
         );
         my $allowHSTS = ($haveCert && $self->{'allow_hsts'} eq 'on');
         my $hstsMaxAge = ($allowHSTS) ? $self->{'hsts_max_age'} : 0;

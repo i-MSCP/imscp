@@ -161,7 +161,7 @@ function client_addMailAccount()
             }
 
             $stmt = exec_query(
-                'SELECT COALESCE(SUM(quota), 0) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL', $mainDmnProps['domain_id']
+                'SELECT IFNULL(SUM(quota), 0) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL', $mainDmnProps['domain_id']
             );
 
             $mailQuotaSumBytes = $stmt->fetchRow(PDO::FETCH_COLUMN);
@@ -282,7 +282,7 @@ function client_generatePage($tpl)
 {
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
     $stmt = exec_query(
-        'SELECT COALESCE(SUM(quota), 0) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL', $mainDmnProps['domain_id']
+        'SELECT IFNULL(SUM(quota), 0) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL', $mainDmnProps['domain_id']
     );
 
     $mailQuotaSumBytes = $stmt->fetchRow(PDO::FETCH_COLUMN);

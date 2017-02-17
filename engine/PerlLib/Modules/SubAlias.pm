@@ -134,9 +134,13 @@ sub _loadData
     my $rdata = iMSCP::Database->factory()->doQuery(
         'subdomain_alias_id',
         "
-            SELECT t1.*, t2.alias_name, t2.external_mail, t3.domain_name AS user_home, t3.domain_admin_id,
-                t3.domain_php, t3.domain_cgi, t3.domain_traffic_limit, t3.domain_mailacc_limit, t3.domain_dns,
-                t3.domain_id, t3.web_folder_protection, t4.ip_number, t5.*, t6.mail_on_domain
+            SELECT t1.*,
+                t2.alias_name, t2.external_mail, t3.domain_name AS user_home,
+                t3.domain_admin_id, t3.domain_php, t3.domain_cgi, t3.domain_traffic_limit, t3.domain_mailacc_limit, t3.domain_dns,
+                t3.domain_id, t3.web_folder_protection,
+                t4.ip_number,
+                t5.private_key, t5.certificate, t5.ca_bundle, t5.allow_hsts, t5.hsts_max_age, t5.hsts_include_subdomains,
+                t6.mail_on_domain
             FROM subdomain_alias AS t1
             INNER JOIN domain_aliasses AS t2 USING(alias_id)
             INNER JOIN domain AS t3 USING (domain_id)
@@ -182,7 +186,6 @@ sub _getData
         my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}" );
         my $webDir = File::Spec->canonpath( "$homeDir/$self->{'subdomain_alias_mount'}" );
         my $documentRoot = File::Spec->canonpath( "$webDir/$self->{'subdomain_alias_document_root'}" );
-        my $db = iMSCP::Database->factory();
         my $confLevel = $httpd->{'phpConfig'}->{'PHP_CONFIG_LEVEL'};
 
         if ($confLevel eq 'per_user') {
@@ -195,13 +198,14 @@ sub _getData
 
         my $phpiniMatchId = $confLevel eq 'dmn'
             ? $self->{'domain_id'} : ($confLevel eq 'als' ? $self->{'alias_id'} : $self->{'subdomain_alias_id'});
-        my $phpini = $db->doQuery(
+        my $phpini = iMSCP::Database->factory()->doQuery(
             'domain_id', 'SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = ?', $phpiniMatchId, $confLevel
         );
         ref $phpini eq 'HASH' or die( $phpini );
 
         my $haveCert = (
-            $self->{'cert_id'} && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'subdomain_alias_name'}.$self->{'alias_name'}.pem"
+            $self->{'certificate'}
+                && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'subdomain_alias_name'}.$self->{'alias_name'}.pem"
         );
         my $allowHSTS = ($haveCert && $self->{'allow_hsts'} eq 'on');
         my $hstsMaxAge = ($allowHSTS) ? $self->{'hsts_max_age'} : 0;
