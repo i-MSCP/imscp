@@ -145,7 +145,7 @@ sub _loadData
             INNER JOIN domain_aliasses AS t2 USING(alias_id)
             INNER JOIN domain AS t3 USING (domain_id)
             INNER JOIN server_ips AS t4 ON (t4.ip_id = t2.alias_ip_id)
-            LEFT JOIN ssl_certs AS t5 ON(t5.domain_id = t3.domain_id AND t5.domain_type = 'alssub' AND t5.status = 'ok')
+            LEFT JOIN ssl_certs AS t5 ON(t5.domain_id = t1.subdomain_alias_id AND t5.domain_type = 'alssub' AND t5.status = 'ok')
             LEFT JOIN (
                 SELECT sub_id, COUNT(sub_id) AS mail_on_domain FROM mail_users WHERE mail_type LIKE 'alssub\\_%' GROUP BY sub_id
             ) AS t6 ON (t6.sub_id = t1.subdomain_alias_id)
@@ -204,7 +204,7 @@ sub _getData
         ref $phpini eq 'HASH' or die( $phpini );
 
         my $haveCert = (
-            $self->{'certificate'}
+            defined $self->{'certificate'}
                 && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'subdomain_alias_name'}.$self->{'alias_name'}.pem"
         );
         my $allowHSTS = ($haveCert && $self->{'allow_hsts'} eq 'on');
