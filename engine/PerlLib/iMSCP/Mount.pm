@@ -223,7 +223,7 @@ sub mount($)
     # Process the mount(2) calls
     for(@mountArgv) {
         unless (syscall(&iMSCP::Syscall::SYS_mount, @{$_} ) == 0) {
-            error( sprintf( 'Error while calling mount(%s): %s', join(', ', @{$_}), $! || 'Unknown error' ) );
+            error( sprintf( 'Error while executing mount(%s): %s', join(', ', @{$_}), $! || 'Unknown error' ) );
             return 1;
         }
     }
@@ -264,7 +264,7 @@ sub umount($;$)
         do {
             debug($fsFile);
             unless (syscall(&iMSCP::Syscall::SYS_umount2, $fsFile, MNT_DETACH) == 0 || $!{'EINVAL'}) {
-                error( sprintf( "Error while calling umount(%s): %s", $fsFile, $! || 'Unknown error' ) );
+                error( sprintf( "Error while executing umount(%s): %s", $fsFile, $! || 'Unknown error' ) );
                 return 1;
             }
             ($MOUNTS->{$fsFile} > 1) ? $MOUNTS->{$fsFile}-- : delete $MOUNTS->{$fsFile};
@@ -278,7 +278,7 @@ sub umount($;$)
         do {
             debug($_);
             unless (syscall(&iMSCP::Syscall::SYS_umount2, $_, MNT_DETACH) == 0 || $!{'EINVAL'}) {
-                error( sprintf( "Error while calling umount(%s): %s", $_, $! || 'Unknown error' ) );
+                error( sprintf( "Error while executing umount(%s): %s", $_, $! || 'Unknown error' ) );
                 return 1;
             }
             ($MOUNTS->{$_} > 1) ? $MOUNTS->{$_}-- : delete $MOUNTS->{$_};

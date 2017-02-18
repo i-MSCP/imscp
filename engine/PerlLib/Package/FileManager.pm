@@ -98,7 +98,7 @@ EOF
     unless ($@) {
         $package = $package->getInstance();
         if ($package->can( 'showDialog' )) {
-            debug( sprintf( 'Calling action showDialog on %s', ref $package ) );
+            debug( sprintf( 'Executing showDialog action on %s', ref $package ) );
             $rs = $package->showDialog( $dialog );
             return $rs if $rs;
         }
@@ -142,7 +142,7 @@ sub preinstallListener
     unless ($@) {
         $package = $package->getInstance();
         next unless $package->can( 'preinstall' );
-        debug( sprintf( 'Calling action preinstall on %s', ref $package ) );
+        debug( sprintf( 'Executing preinstall action on %s', ref $package ) );
         my $rs = $package->preinstall();
         return $rs if $rs;
     } else {
@@ -169,7 +169,7 @@ sub installListener
     unless ($@) {
         $package = $package->getInstance();
         next unless $package->can( 'install' );
-        debug( sprintf( 'Calling action install on %s', ref $package ) );
+        debug( sprintf( 'Executing install action on %s', ref $package ) );
         my $rs = $package->install();
         return $rs if $rs;
     } else {
@@ -205,7 +205,7 @@ sub uninstall
     unless ($@) {
         $package = $package->getInstance();
         next unless $package->can( 'uninstall' );
-        debug( sprintf( 'Calling action uninstall on %s', ref $package ) );
+        debug( sprintf( 'Executing uninstall action on %s', ref $package ) );
         my $rs = $package->uninstall();
         return $rs if $rs;
     } else {
@@ -241,7 +241,7 @@ sub setGuiPermissionsListener
     unless ($@) {
         $package = $package->getInstance();
         next unless $package->can( 'setGuiPermissions' );
-        debug( sprintf( 'Calling action setGuiPermissions on %s', ref $package ) );
+        debug( sprintf( 'Executing setGuiPermissions action on %s', ref $package ) );
         $rs = $package->setGuiPermissions();
         return $rs if $rs;
     } else {

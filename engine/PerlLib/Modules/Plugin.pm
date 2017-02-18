@@ -384,7 +384,7 @@ sub _call
     }
 
     if ($plugin) {
-        debug( sprintf( "Calling %s() method on %s", $method, ref $plugin ) );
+        debug( sprintf( "Executing %s() action on %s", $method, ref $plugin ) );
         my $rs = eval { $plugin->$method( $fromVersion, $toVersion ); };
         if ($@) {
             error( $@ );

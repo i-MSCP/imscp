@@ -240,7 +240,7 @@ sub postaddDmn
  Process disableDmn tasks
 
  When a domain is being disabled, we must ensure that the DNS data are still present for it (eg: when doing a full
- upgrade or reconfiguration). This explain here why we are calling the addDmn() method.
+ upgrade or reconfiguration). This explain here why we are executing the addDmn() action.
 
  Param hash \%data Domain data
  Return int 0 on success, other on failure
@@ -502,7 +502,7 @@ sub postaddSub
  Process disableSub tasks
 
  When a subdomain is being disabled, we must ensure that the DNS data are still present for it (eg: when doing a full
- upgrade or reconfiguration). This explain here why we are calling the addSub() method.
+ upgrade or reconfiguration). This explain here why we are executing the addSub() action.
 
  Param hash \%data Domain data
  Return int 0 on success, other on failure

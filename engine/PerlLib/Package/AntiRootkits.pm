@@ -106,7 +106,7 @@ EOF
         unless ($@) {
             $package = $package->getInstance();
             next unless $package->can( 'showDialog' );
-            debug( sprintf( 'Calling action showDialog on %s', ref $package ) );
+            debug( sprintf( 'Executing showDialog action on %s', ref $package ) );
             $rs = $package->showDialog( $dialog );
             return $rs if $rs;
         } else {
@@ -144,13 +144,13 @@ sub preinstall
             $package = $package->getInstance();
 
             if ($package->can( 'uninstall' )) {
-                debug( sprintf( 'Calling action uninstall on %s', ref $package ) );
+                debug( sprintf( 'Executing uninstall action on %s', ref $package ) );
                 my $rs = $package->uninstall();
                 return $rs if $rs;
             }
 
             next unless $package->can( 'getDistroPackages' );
-            debug( sprintf( 'Calling action getDistroPackages on %s', ref $package ) );
+            debug( sprintf( 'Executing getDistroPackages action on %s', ref $package ) );
             push @distroPackages, $package->getDistroPackages();
         } else {
             error( $@ );
@@ -172,13 +172,13 @@ sub preinstall
             $package = $package->getInstance();
 
             if ($package->can( 'preinstall' )) {
-                debug( sprintf( 'Calling action preinstall on %s', ref $package ) );
+                debug( sprintf( 'Executing preinstall action on %s', ref $package ) );
                 my $rs = $package->preinstall();
                 return $rs if $rs;
             }
 
             next unless $package->can( 'getDistroPackages' );
-            debug( sprintf( 'Calling action getDistroPackages on %s', ref $package ) );
+            debug( sprintf( 'Executing getDistroPackages action on %s', ref $package ) );
             push @distroPackages, $package->getDistroPackages();
         } else {
             error( $@ );
@@ -216,7 +216,7 @@ sub install
         unless ($@) {
             $package = $package->getInstance();
             next unless $package->can( 'install' );
-            debug( sprintf( 'Calling action install on %s', ref $package ) );
+            debug( sprintf( 'Executing install action on %s', ref $package ) );
             my $rs = $package->install();
             return $rs if $rs;
         } else {
@@ -248,13 +248,13 @@ sub uninstall
             $package = $package->getInstance();
 
             if ($package->can( 'uninstall' )) {
-                debug( sprintf( 'Calling action uninstall on %s', ref $package ) );
+                debug( sprintf( 'Executing uninstall action on %s', ref $package ) );
                 my $rs = $package->uninstall();
                 return $rs if $rs;
             }
 
             next unless $package->can( 'getDistroPackages' );
-            debug( sprintf( 'Calling action getDistroPackages on %s', ref $package ) );
+            debug( sprintf( 'Executing getDistroPackages action on %s', ref $package ) );
             push @distroPackages, $package->getDistroPackages();
         } else {
             error( $@ );
@@ -290,7 +290,7 @@ sub setEnginePermissions
         unless ($@) {
             $package = $package->getInstance();
             next unless $package->can( 'setEnginePermissions' );
-            debug( sprintf( 'Calling action setEnginePermissions on %s', ref $package ) );
+            debug( sprintf( 'Executing setEnginePermissions action on %s', ref $package ) );
             $rs = $package->setEnginePermissions();
             return $rs if $rs;
         } else {

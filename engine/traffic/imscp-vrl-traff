@@ -57,7 +57,7 @@ sub run
         eval "require $server";
         if (my $subref = $server->can('getTraffic')) {
             eval {
-                debug("Calling ${server}::getTraffic()");
+                debug("Executing ${server}::getTraffic()");
                 $trafficDb{$server} = $subref->($server->factory());
             };
             if ($@) {
