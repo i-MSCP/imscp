@@ -58,7 +58,7 @@
         <php5.5
                 repository="http://packages.dotdeb.org wheezy-php55 all"
                 repository_key_srv="keyserver.ubuntu.com"
-                repository_key_id="0x7e3f070089df5277"
+                repository_key_id="89DF5277"
                 pinning_package="*"
                 pinning_pin="origin packages.dotdeb.org"
                 pinning_pin_priority="1001"
@@ -82,7 +82,7 @@
         <php5.6
                 repository="http://packages.dotdeb.org wheezy-php56 all"
                 repository_key_srv="keyserver.ubuntu.com"
-                repository_key_id="0x7e3f070089df5277"
+                repository_key_id="89DF5277"
                 pinning_package="*"
                 pinning_pin="origin packages.dotdeb.org"
                 pinning_pin_priority="1001"
@@ -174,7 +174,7 @@
         </mysql_5.5>
         <mysql_5.6
                 repository="http://repo.mysql.com/apt/debian/ wheezy mysql-5.6"
-                repository_key_id="0x8c718d3b5072e1f5"
+                repository_key_id="5072E1F5"
                 repository_key_srv="keyserver.ubuntu.com"
                 pinning_package="*"
                 pinning_pin="origin repo.mysql.com"
@@ -188,7 +188,7 @@
         </mysql_5.6>
         <mysql_5.7
                 repository="http://repo.mysql.com/apt/debian/ wheezy mysql-5.7"
-                repository_key_id="0x8c718d3b5072e1f5"
+                repository_key_id="5072E1F5"
                 repository_key_srv="keyserver.ubuntu.com"
                 pinning_package="*"
                 pinning_pin="origin repo.mysql.com"
@@ -203,7 +203,7 @@
         </mysql_5.7>
         <mariadb_5.5
                 repository="http://mirror.netcologne.de/mariadb/repo/5.5/debian wheezy main"
-                repository_key_id="0xcbcb082a1bb943db"
+                repository_key_id="1BB943DB"
                 repository_key_srv="keyserver.ubuntu.com"
                 pinning_package="*"
                 pinning_pin="origin mirror.netcologne.de"
@@ -219,7 +219,7 @@
         </mariadb_5.5>
         <mariadb_10.0
                 repository="http://mirror.netcologne.de/mariadb/repo/10.0/debian wheezy main"
-                repository_key_id="0xcbcb082a1bb943db"
+                repository_key_id="1BB943DB"
                 repository_key_srv="keyserver.ubuntu.com"
                 pinning_package="*"
                 pinning_pin="origin mirror.netcologne.de"
@@ -235,7 +235,7 @@
         </mariadb_10.0>
         <mariadb_10.1
                 repository="http://mirror.netcologne.de/mariadb/repo/10.1/debian wheezy main"
-                repository_key_id="0xcbcb082a1bb943db"
+                repository_key_id="1BB943DB"
                 repository_key_srv="keyserver.ubuntu.com"
                 pinning_package="*"
                 pinning_pin="origin mirror.netcologne.de"
@@ -251,7 +251,7 @@
         </mariadb_10.1>
         <percona_5.5
                 repository="http://repo.percona.com/apt wheezy main"
-                repository_key_id="1C4CBDCDCD2EFD2A"
+                repository_key_id="CD2EFD2A"
                 repository_key_srv="keys.gnupg.net"
                 pinning_package="*"
                 pinning_pin="origin repo.percona.com"
@@ -267,7 +267,7 @@
         </percona_5.5>
         <percona_5.6
                 repository="http://repo.percona.com/apt wheezy main"
-                repository_key_id="1C4CBDCDCD2EFD2A"
+                repository_key_id="CD2EFD2A"
                 repository_key_srv="keys.gnupg.net"
                 pinning_package="*"
                 pinning_pin="origin repo.percona.com"
@@ -283,7 +283,7 @@
         </percona_5.6>
         <percona_5.7
                 repository="http://repo.percona.com/apt wheezy main"
-                repository_key_id="1C4CBDCDCD2EFD2A"
+                repository_key_id="CD2EFD2A"
                 repository_key_srv="keys.gnupg.net"
                 pinning_package="*"
                 pinning_pin="origin repo.percona.com"

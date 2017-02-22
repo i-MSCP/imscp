@@ -100,12 +100,12 @@ sub preBuild
     return 0 if $main::skippackages;
 
     unshift @{$steps}, (
-        [ sub { $self->_buildPackageList() }, 'Building list of packages to install/uninstall' ],
-        [ sub { $self->_prefillDebconfDatabase() }, 'Pre-fill Debconf database' ],
-        [ sub { $self->_processAptRepositories() }, 'Processing APT repositories if any' ],
-        [ sub { $self->_processAptPreferences() }, 'Processing APT preferences if any' ],
-        [ sub { $self->_updatePackagesIndex() }, 'Updating packages index' ]
-    );
+            [ sub { $self->_buildPackageList() }, 'Building list of packages to install/uninstall' ],
+            [ sub { $self->_prefillDebconfDatabase() }, 'Pre-fill Debconf database' ],
+            [ sub { $self->_processAptRepositories() }, 'Processing APT repositories if any' ],
+            [ sub { $self->_processAptPreferences() }, 'Processing APT preferences if any' ],
+            [ sub { $self->_updatePackagesIndex() }, 'Updating packages index' ]
+        );
 
     0
 }
@@ -458,9 +458,9 @@ EOF
         # APT preferences to add
         push @{$self->{'aptPreferences'}},
             {
-                'pinning_package'      => $data->{$sAlt}->{'pinning_package'},
-                'pinning_pin'          => $data->{$sAlt}->{'pinning_pin'} || undef,
-                'pinning_pin_priority' => $data->{$sAlt}->{'pinning_pin_priority'} || undef,
+                pinning_package      => $data->{$sAlt}->{'pinning_package'},
+                pinning_pin          => $data->{$sAlt}->{'pinning_pin'} || undef,
+                pinning_pin_priority => $data->{$sAlt}->{'pinning_pin_priority'} || undef,
             } if $data->{$sAlt}->{'pinning_package'};
 
         # Conflicting APT repository to remove
@@ -471,10 +471,10 @@ EOF
         if ($data->{$sAlt}->{'repository'}) {
             push @{$self->{'aptRepositoriesToAdd'}},
                 {
-                    'repository'         => $data->{$sAlt}->{'repository'},
-                    'repository_key_uri' => $data->{$sAlt}->{'repository_key_uri'} || undef,
-                    'repository_key_id'  => $data->{$sAlt}->{'repository_key_id'} || undef,
-                    'repository_key_srv' => $data->{$sAlt}->{'repository_key_srv'} || undef
+                    repository         => $data->{$sAlt}->{'repository'},
+                    repository_key_uri => $data->{$sAlt}->{'repository_key_uri'} || undef,
+                    repository_key_id  => $data->{$sAlt}->{'repository_key_id'} || undef,
+                    repository_key_srv => $data->{$sAlt}->{'repository_key_srv'} || undef
                 };
         }
 
@@ -489,7 +489,7 @@ EOF
             for(@{$data->{$sAlt}->{'package'}}) {
                 if (ref $_ eq 'HASH') {
                     if ($_->{'rebuild_with_patches'}) {
-                        $self->{packagesToRebuild}->{$_->{'content'}} = {
+                        $self->{'packagesToRebuild'}->{$_->{'content'}} = {
                             pkg_src_name      => $_->{'pkg_src_name'} || $_->{'content'},
                             patches_directory => $_->{'rebuild_with_patches'},
                             discard_patches   => [ $_->{'discard_patches'} ? split ',', $_->{'discard_patches'} : () ],
@@ -558,7 +558,9 @@ sub _updateAptSourceList
             }
 
             if ($fsec && $fileContent !~ /^deb-src\s+$rc{'uri'}\s+\b$rc{'distrib'}\b\s+.*\b$sec\b/m) {
-                my $rs = execute("wget --spider $rc{'uri'}/dists/$rc{'distrib'}/$sec/source/", \ my $stdout, \ my $stderr );
+                my $rs = execute(
+                    "wget --spider $rc{'uri'}/dists/$rc{'distrib'}/$sec/source/", \ my $stdout, \ my $stderr
+                );
                 debug( $stdout ) if $stdout;
                 debug( $stderr || 'Unknown error' ) if $rs;
 
@@ -624,19 +626,16 @@ deb $repository->{'repository'}
 deb-src $repository->{'repository'}
 EOF
 
-        # Only process if we have a repository key identifier and if gpg key is not already present
-        next unless $repository->{'repository_key_id'} &&
-            execute( "apt-key adv -k $repository->{'repository_key_id'} >/dev/null 2>&1" ) != 0;
-
         my @cmd = ();
         if ($repository->{'repository_key_srv'}) { # Add the repository key from the given key server
             @cmd = (
-                'apt-key adv --recv-keys --keyserver',
-                escapeShell( $repository->{'repository_key_srv'} ),
+                'apt-key adv --recv-keys --keyserver', escapeShell( $repository->{'repository_key_srv'} ),
                 escapeShell( $repository->{'repository_key_id'} )
             );
         } elsif ($repository->{'repository_key_uri'}) { # Add the repository key by fetching it from the given URI
-            @cmd = ('wget --prefer-family=IPv4 -qO-', escapeShell( $repository->{'repository_key_uri'} ), '| apt-key add -');
+            @cmd = (
+                'wget --prefer-family=IPv4 -qO-', escapeShell( $repository->{'repository_key_uri'} ), '| apt-key add -'
+            );
         }
 
         if (@cmd) {
@@ -959,7 +958,8 @@ sub _rebuildAndInstallPackage
                 ),
                 sub { $stderr .= shift }
             );
-            error( sprintf( 'Could not download %s Debian source package: %s', $pkgSrc, $stderr || 'Unknown error' ) ) if $rs;
+            error( sprintf( 'Could not download %s Debian source package: %s', $pkgSrc,
+                $stderr || 'Unknown error' ) ) if $rs;
             $rs;
         },
         sprintf( 'Downloading %s %s source package', $pkgSrc, $lsbRelease->getId( 1 ) ), 5, 2
@@ -972,7 +972,9 @@ sub _rebuildAndInstallPackage
                 return 1;
             }
 
-            my $serieFile = iMSCP::File->new(filename => "debian/patches/".($patchFormat eq 'quilt' ? 'series' : '00list'));
+            my $serieFile = iMSCP::File->new(
+                filename => "debian/patches/".($patchFormat eq 'quilt' ? 'series' : '00list')
+            );
             my $serieFileContent = $serieFile->get();
             unless (defined $serieFileContent) {
                 error( sprintf( 'Could not read %s', $serieFile->{'filename'} ) );
@@ -1020,7 +1022,8 @@ sub _rebuildAndInstallPackage
                 ),
                 sub { $stderr .= shift }
             );
-            error(sprintf('Could not build local %s %s package: %s', $pkg, $lsbRelease->getId( 1 ), $stderr || 'Unknown error')) if $rs;
+            error(sprintf('Could not build local %s %s package: %s', $pkg, $lsbRelease->getId( 1 ),
+                $stderr || 'Unknown error')) if $rs;
             $rs;
         },
         sprintf( 'Building local %s %s package', $pkg, $lsbRelease->getId( 1 ) ), 5, 4
@@ -1046,7 +1049,8 @@ sub _rebuildAndInstallPackage
                 ),
                 sub { $stderr .= shift }
             );
-            error(sprintf('Could not install local %s %s package: %s', $pkg, $lsbRelease->getId( 1 ), $stderr || 'Unknown error')) if $rs;
+            error(sprintf('Could not install local %s %s package: %s', $pkg, $lsbRelease->getId( 1 ),
+                $stderr || 'Unknown error')) if $rs;
             return $rs if $rs;
 
             # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug

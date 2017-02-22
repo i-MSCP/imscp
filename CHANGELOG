@@ -68,6 +68,7 @@ FRONTEND
     Removed: Pydio auto-login feature (password for FTP users are no longer stored plaintext in database)
 
 INSTALLER
+    Fixed: APT GPG keys not updated when required
     Fixed: Missing `mysql' group; the `mysql' group is only created by the mysql-server package (SQL remote server impl.)
     Fixed: Patch for Apache 2 mod_proxy_fcgi module not required if Apache version is >= 2.4.24
     Fixed: Patches for libpam-mysql not required if libpam-mysql version is >= 0.8.0
