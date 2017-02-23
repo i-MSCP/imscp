@@ -166,7 +166,7 @@ function reseller_getDatatable()
                 $actions = "<a href=\"alias_edit.php?id=$aliasId\" class=\"icon i_edit\" " .
                     "title=\"$trEdit\">$trEdit</a>";
 
-                $actions .= "\n<a href=\"alias_delete.php?id=$aliasId\" onclick=\"return delete_alias('$aliasName')\" " .
+                $actions .= "\n<a href=\"alias_delete.php?id=$aliasId\" onclick=\"return delete_alias(this, '". tojs($aliasName)."')\" " .
                     "class=\"icon i_close\" title=\"$trDelete\">$trDelete</a>";
                 break;
             case 'ordered':
@@ -174,7 +174,7 @@ function reseller_getDatatable()
                     "title=\"$trActivate\">$trActivate</a>";
 
                 $actions .= "\n<a href=\"alias_order.php?action=delete&del_id=$aliasId\" " .
-                    "onclick=\"return delete_alias_order('$aliasName')\" class=\"icon i_close\" " .
+                    "onclick=\"return delete_alias_order(this, '".tojs($aliasName)."')\" class=\"icon i_close\" " .
                     "title=\"$trDelete\">$trDelete</a>";
                 break;
             default;
@@ -227,8 +227,8 @@ $tpl->assign(array(
     'TR_CUSTOMER' => tr('Customer'),
     'TR_ACTIONS' => tr('Actions'),
     'TR_ADD_DOMAIN_ALIAS' => tr('Add domain alias'),
-    'TR_MESSAGE_DELETE_ALIAS' => tr('Are you sure you want to delete the %s domain alias?', '%s'),
-    'TR_MESSAGE_DELETE_ALIAS_ORDER' => tr('Are you sure you want to delete the %s domain alias order?', '%s'),
+    'TR_MESSAGE_DELETE_ALIAS' => tojs(tr('Are you sure you want to delete the %s domain alias?', '%s')),
+    'TR_MESSAGE_DELETE_ALIAS_ORDER' => tojs(tr('Are you sure you want to delete the %s domain alias order?', '%s')),
     'TR_PROCESSING_DATA' => tr('Processing...')
 ));
 

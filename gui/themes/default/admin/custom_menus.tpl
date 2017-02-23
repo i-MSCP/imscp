@@ -12,10 +12,6 @@
             pagingType: "simple"
         });
     });
-
-    function action_delete(url, subject) {
-        return confirm(sprintf({TR_MESSAGE_DELETE}, subject));
-    }
 </script>
 <!-- BDP: menus_list_block -->
 <table class="firstColFixed datatable">
@@ -39,7 +35,7 @@
         <td>
             <a href="custom_menus.php?edit_id={MENU_ID}" class="icon i_edit">{TR_EDIT}</a>
             <a href="custom_menus.php?delete_id={MENU_ID}" class="icon i_delete"
-               onclick="return action_delete('custom_menus.php?delete_id={MENU_ID}', '{MENU_NAME}')">{TR_DELETE}</a>
+               onclick="return jQuery.imscp.confirmOnclick(this, sprintf('{TR_MESSAGE_DELETE_JS}', '{MENU_NAME_JS}'))">{TR_DELETE}</a>
         </td>
     </tr>
     <!-- EDP: menu_block -->
@@ -67,7 +63,7 @@
             <td>
                 <select id="menu_target" name="menu_target">
                     <!-- BDP: menu_target_block -->
-                    <option value="{TARGET_VALUE}" {SELECTED_TARGET}>{TR_TARGET}</option>
+                    <option value="{TARGET_VALUE}"{SELECTED_TARGET}>{TR_TARGET}</option>
                     <!-- EDP: menu_target_block -->
                 </select>
             </td>
@@ -77,7 +73,7 @@
             <td>
                 <select name="menu_level" id="menu_level">
                     <!-- BDP: menu_level_block -->
-                    <option value="{LEVEL_VALUE}" {SELECTED_LEVEL}>{TR_LEVEL}</option>
+                    <option value="{LEVEL_VALUE}"{SELECTED_LEVEL}>{TR_LEVEL}</option>
                     <!-- EDP: menu_level_block -->
                 </select>
             </td>

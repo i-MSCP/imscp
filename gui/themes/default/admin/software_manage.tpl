@@ -1,4 +1,3 @@
-
 <script>
     $(function () {
         $('.datatable').dataTable(
@@ -11,27 +10,27 @@
         );
     });
 
-    function action_delete() {
-        return confirm("{TR_MESSAGE_DELETE}");
+    function action_delete(link) {
+        jQuery.imscp.confirmOnclick(link, "{TR_MESSAGE_DELETE}");
+        return false;
     }
 
-    function action_activate() {
-        return confirm("{TR_MESSAGE_ACTIVATE}");
+    function action_activate(link) {
+        jQuery.imscp.confirmOnclick(link, "{TR_MESSAGE_ACTIVATE}");
+        return false;
     }
 
-    function action_import() {
-        return confirm("{TR_MESSAGE_IMPORT}");
+    function action_import(link) {
+        jQuery.imscp.confirmOnclick(link, "{TR_MESSAGE_IMPORT}");
+        return false;
     }
 
-    function action_install(url) {
-        if (!confirm("{TR_MESSAGE_INSTALL}")) {
-            return false;
-        }
-
-        document.getElementById('sw_wget').value = url;
-        document.getElementById('sw_upload_form').submit();
-
-        return true;
+    function action_install(packageUrl) {
+        jQuery.imscp.confirm("{TR_MESSAGE_INSTALL}", function () {
+            $("#sw_wget").val(packageUrl);
+            $("#sw_upload_form").submit();
+        });
+        return false;
     }
 </script>
 <form action="software_manage.php" name="sw_upload_form" id="sw_upload_form" method="post"
@@ -91,7 +90,7 @@
         <td>{TR_TYPE}</td>
         <td>{TR_ADMIN}</td>
         <td><a target="_blank" class="icon i_app_download" href="{DOWNLOAD_LINK}">{TR_DOWNLOAD}</a></td>
-        <td><a href="{DELETE_LINK}" class="icon i_delete" onClick="return action_delete()">{TR_DELETE}</a></td>
+        <td><a href="{DELETE_LINK}" class="icon i_delete" onClick="return action_delete(this)">{TR_DELETE}</a></td>
         <td><a href="{SOFTWARE_RIGHTS_LINK}" class="icon i_{SOFTWARE_ICON}">{RIGHTS_LINK}</a></td>
     </tr>
     <!-- EDP: list_softwaredepot -->
@@ -182,10 +181,10 @@
         <td>{TR_LANGUAGE}</td>
         <td>{TR_TYPE}</td>
         <td>{TR_RESELLER}</td>
-        <td><a href="{IMPORT_LINK}" class="icon i_app_download" onClick="return action_import()">{TR_IMPORT}</a></td>
+        <td><a href="{IMPORT_LINK}" class="icon i_app_download" onClick="return action_import(this)">{TR_IMPORT}</a></td>
         <td><a href="{DOWNLOAD_LINK}" class="icon i_app_download" target="_blank">{TR_DOWNLOAD}</a></td>
-        <td><a href="{ACTIVATE_LINK}" class="icon i_edit" onClick="return action_activate()">{TR_ACTIVATION}</a></td>
-        <td><a href="{DELETE_LINK}" class="icon i_delete" onClick="return action_delete()">{TR_DELETE}</a></td>
+        <td><a href="{ACTIVATE_LINK}" class="icon i_edit" onClick="return action_activate(this)">{TR_ACTIVATION}</a></td>
+        <td><a href="{DELETE_LINK}" class="icon i_delete" onClick="return action_delete(this)">{TR_DELETE}</a></td>
     </tr>
     <!-- EDP: list_software -->
     </tbody>

@@ -100,7 +100,8 @@
         }).trigger("change", true);
 
         $(".i_delete").on("click", function () {
-            return confirm(sprintf(imscp_i18n.core.confirm_deletion_msg, $(this).data("ip")));
+            jQuery.imscp.confirmOnclick(this, sprintf(imscp_i18n.core.confirm_deletion_msg, $(this).data("ip")));
+            return false;
         });
     });
 </script>

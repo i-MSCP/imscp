@@ -744,7 +744,7 @@ function gen_user_list($tpl)
             'USR_CREATED_BY'    => tohtml($row['reseller_name']),
             'USR_OPTIONS'       => '',
             'URL_EDIT_USR'      => 'admin_edit.php?edit_id=' . $row['domain_admin_id'],
-            'TR_MESSAGE_DELETE' => tojs(tr('Are you sure you want to delete %s?', '%s'))
+            'TR_MESSAGE_DELETE' => tojs(tr("Are you sure you want to delete the %s user?", '%s'))
         ));
         gen_domain_details($tpl, $row['domain_id']);
         $tpl->parse('USR_ITEM', '.usr_item');

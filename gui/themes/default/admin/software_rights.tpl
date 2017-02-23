@@ -1,7 +1,8 @@
 
 <script>
-    function action_remove_right() {
-        return confirm("{TR_MESSAGE_REMOVE}");
+    function action_remove_right(link) {
+        jQuery.imscp.confirmOnclick(link, "{TR_MESSAGE_REMOVE}");
+        return false;
     }
 </script>
 <!-- BDP: no_select_reseller -->
@@ -50,7 +51,7 @@
         <td>{RESELLER}</td>
         <td>{ADMINISTRATOR}</td>
         <td>
-            <span class="icon i_delete"><a href="{REMOVE_RIGHT_LINK}" onClick="return action_remove_right()">{TR_REMOVE_RIGHT}</a></span>
+            <span class="icon i_delete"><a href="{REMOVE_RIGHT_LINK}" onClick="return action_remove_right(this)">{TR_REMOVE_RIGHT}</a></span>
         </td>
     </tr>
     <!-- EDP: list_reseller -->

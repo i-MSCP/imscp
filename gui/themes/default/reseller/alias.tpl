@@ -32,12 +32,14 @@
         });
     });
 
-    function delete_alias(name) {
-        return confirm(sprintf("{TR_MESSAGE_DELETE_ALIAS}", name));
+    function delete_alias(link, name) {
+        jQuery.imscp.confirmOnclick(link, sprintf("{TR_MESSAGE_DELETE_ALIAS}", name));
+        return false;
     }
 
-    function delete_alias_order(name) {
-        return confirm(sprintf("{TR_MESSAGE_DELETE_ALIAS_ORDER}", name));
+    function delete_alias_order(link, name) {
+        jQuery.imscp.confirmOnclick(link, sprintf("{TR_MESSAGE_DELETE_ALIAS_ORDER}", name));
+        return false;
     }
 </script>
 <table class="datatable">

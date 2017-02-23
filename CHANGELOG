@@ -52,6 +52,7 @@ DOCUMENTATION
     Added: CGI script sample for Perl, Python and Ruby
 
 FRONTEND
+    Added: jQuery.imscp.confirm() and jQuery.imscp.confirmOnclick() global functions for confirmation dialogs
     Added: Method to get IP address version (iMSCP::Net)
     Added: Method to get IP prefix length (iMSCP::Net)
     Added: Methods to compress/expand IPv6 addresses (iMSCP::Net)

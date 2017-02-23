@@ -37,22 +37,25 @@
         });
 
         $("input[type=submit]").click(function () {
-            var items = $("input[type=checkbox]:checked", oTable.fnGetNodes());
+            var button = this;
+            button.blur();
 
-            if (items.length > 0) {
-                if (confirm("{TR_MESSAGE_DELETE_SELECTED_ITEMS}")) {
-                    return true;
-                }
-            } else {
+            if($("input[type=checkbox]:checked", $oTable.fnGetNodes()).length < 1) {
                 alert("{TR_MESSAGE_DELETE_SELECTED_ITEMS_ERR}");
+                return false;
             }
+
+            jQuery.imscp.confirm("{TR_MESSAGE_DELETE_SELECTED_ITEMS}", function() {
+                $(button).closest("form").submit();
+            });
 
             return false;
         });
     });
 
-    function action_delete(subject) {
-        return confirm(sprintf("{TR_MESSAGE_DELETE}", subject));
+    function action_delete(link, subject) {
+        jQuery.imscp.confirmOnclick(link, sprintf("{TR_MESSAGE_DELETE}", subject));
+        return false;
     }
 </script>
 <!-- BDP: mail_items -->
@@ -94,7 +97,7 @@
             <td>{MAIL_STATUS}</td>
             <td>
                 <a href="{MAIL_EDIT_SCRIPT}" title="{MAIL_EDIT}" class="icon i_edit">{MAIL_EDIT}</a>
-                <a href="{MAIL_DELETE_SCRIPT}" onclick="return action_delete('{MAIL_ADDR}')" title="{MAIL_DELETE}" class="icon i_delete">{MAIL_DELETE}</a>
+                <a href="{MAIL_DELETE_SCRIPT}" onclick="return action_delete(this, '{MAIL_ADDR}')" title="{MAIL_DELETE}" class="icon i_delete">{MAIL_DELETE}</a>
             </td>
             <td><label><input type="checkbox" name="id[]" value="{DEL_ITEM}"{DISABLED_DEL_ITEM}/></label></td>
         </tr>
@@ -102,7 +105,7 @@
         </tbody>
     </table>
     <div class="buttons">
-        <input type="submit" name="Submit" value="{TR_DELETE_SELECTED_ITEMS}">
+        <input type="submit" name="submit" value="{TR_DELETE_SELECTED_ITEMS}">
     </div>
 </form>
 <!-- EDP: mail_items -->

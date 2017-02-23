@@ -34,8 +34,7 @@ function _client_generateUserAction($status)
     if ($status === 'ok') {
         return array(
             tr('Delete'),
-            "action_delete('protected_user_delete.php?uname={USER_ID}',
-            '{UNAME}')",
+            "action_delete('protected_user_delete.php?uname={USER_ID}', '{UNAME}')",
             tr('Edit'),
             "protected_user_edit.php?uname={USER_ID}"
         );

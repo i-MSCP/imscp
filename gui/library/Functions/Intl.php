@@ -380,6 +380,9 @@ function i18n_getJsTranslations()
     $translations = new ArrayObject(array(
         // Core translation strings
         'core' => array(
+            'yes'                     => tr('Yes'),
+            'no'                      => tr('no'),
+            'confirmation_required'   => tr('Confirmation required'),
             'close'                   => tr('Close'),
             'generate'                => tr('Generate'),
             'show'                    => tr('Show'),

@@ -74,6 +74,7 @@ function admin_generateMenusList($tpl)
 					'LEVEL' => tohtml($menuLevel),
 					'ORDER' => $menuOrder,
 					'MENU_NAME' => tohtml($menuName),
+                    'MENU_NAME_JS' => tojs($menuName),
 					'LINK' => tohtml($menuLink)
 				)
 			);
@@ -362,7 +363,7 @@ $tpl->assign(array(
 	'TR_TH_LEVEL' => tr('Level'),
 	'TR_TH_ORDER' => tr('Order'),
 	'TR_CANCEL' => tr('Cancel'),
-	'TR_MESSAGE_DELETE' => json_encode(tr('Are you sure you want to delete the %s menu?', '%s')),
+	'TR_MESSAGE_DELETE_JS' => tojs(tr('Are you sure you want to delete the %s menu?', '%s')),
 	'ERR_FIELDS_STACK' => iMSCP_Registry::isRegistered('errorFieldsStack')
 		? json_encode(iMSCP_Registry::get('errorFieldsStack')) : '[]'
 ));

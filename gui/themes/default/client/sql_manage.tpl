@@ -2,15 +2,16 @@
 <!-- BDP: sql_databases_users_list -->
 <script>
     function action_delete(url, subject, object) {
+        var msg;
         if (object == 'database') {
             msg = "{TR_DATABASE_MESSAGE_DELETE}"
         } else {
             msg = "{TR_USER_MESSAGE_DELETE}"
         }
 
-        if (confirm(sprintf(msg, subject))) {
-            location = url;
-        }
+        jQuery.imscp.confirm(sprintf(msg, subject), function() {
+            window.location.href = url;
+        });
 
         return false;
     }

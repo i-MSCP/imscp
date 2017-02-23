@@ -256,10 +256,10 @@ $tpl->assign(array(
     'TR_ACTIONS'                           => tr('Actions'),
     'TR_AUTORESPOND'                       => tr('Auto responder'),
     'TR_DELETE'                            => tr('Delete'),
-    'TR_MESSAGE_DELETE'                    => tr('Are you sure you want to delete %s?', '%s'),
-    'TR_MESSAGE_DELETE_SELECTED_ITEMS'     => tr('Are you sure you want to delete all selected mail accounts?'),
+    'TR_MESSAGE_DELETE'                    => tojs(tr('Are you sure you want to delete %s?', '%s')),
+    'TR_MESSAGE_DELETE_SELECTED_ITEMS'     => tojs(tr('Are you sure you want to delete all selected mail accounts?')),
     'TR_DELETE_SELECTED_ITEMS'             => tr('Delete selected mail accounts'),
-    'TR_MESSAGE_DELETE_SELECTED_ITEMS_ERR' => tr('You must select a least one mail account to delete')
+    'TR_MESSAGE_DELETE_SELECTED_ITEMS_ERR' => tojs(tr('You must select a least one mail account to delete'))
 ));
 
 iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {

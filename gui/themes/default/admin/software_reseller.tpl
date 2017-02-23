@@ -1,11 +1,13 @@
 
 <script>
-    function action_import() {
-        return confirm("{TR_MESSAGE_IMPORT}");
+    function action_import(link) {
+        jQuery.imscp.confirmOnclick(link, "{TR_MESSAGE_IMPORT}");
+        return false;
     }
 
-    function action_delete() {
-        return confirm("{TR_MESSAGE_DELETE}");
+    function action_delete(link) {
+        jQuery.imscp.confirmOnclick(link, "{TR_MESSAGE_DELETE}");
+        return false;
     }
 </script>
 <table>
@@ -41,8 +43,8 @@
         <td>{IS_IN_SOFTWAREDEPOT}</td>
         <!-- EDP: software_is_in_softwaredepot -->
         <!-- BDP: software_is_not_in_softwaredepot -->
-        <td><a href="{IMPORT_LINK}" class="icon i_app_download" onclick="return action_import()">{TR_IMPORT}</a></td>
-        <td><a href="{DELETE_LINK}" class="icon i_delete" onclick="return action_delete()">{TR_DELETE}</a></td>
+        <td><a href="{IMPORT_LINK}" class="icon i_app_download" onclick="return action_import(this)">{TR_IMPORT}</a></td>
+        <td><a href="{DELETE_LINK}" class="icon i_delete" onclick="return action_delete(this)">{TR_DELETE}</a></td>
         <!-- EDP: software_is_not_in_softwaredepot -->
         <td><span class="icon i_help" id="tld_help" title="{SW_INSTALLED}"></span></td>
         <td>{TR_VERSION}</td>

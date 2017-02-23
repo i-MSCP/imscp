@@ -17,7 +17,8 @@
         );
 
         $(".i_delete").on('click', function () {
-            return confirm(sprintf(imscp_i18n.core.deletion_confirm_msg, $(this).data('name')));
+            jQuery.imscp.confirmOnclick(this, sprintf(imscp_i18n.core.deletion_confirm_msg, $(this).data("name")));
+            return false;
         });
     });
 </script>

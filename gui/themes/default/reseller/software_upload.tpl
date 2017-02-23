@@ -10,19 +10,17 @@
         );
     });
 
-    function action_delete() {
-        return confirm("{TR_MESSAGE_DELETE}");
+    function action_delete(link) {
+        jQuery.imscp.confirmOnclick(link, "{TR_MESSAGE_DELETE}");
+        return false;
     }
 
-    function action_install(url) {
-        if (!confirm("{TR_MESSAGE_INSTALL}")) {
-            return false;
-        }
-
-        document.getElementById('sw_wget').value = url;
-        document.getElementById('sw_upload_form').submit();
-
-        return true;
+    function action_install(packageUrl) {
+        jQuery.imscp.confirm("{TR_MESSAGE_INSTALL}", function() {
+            $("#sw_wget").val(packageUrl);
+            $("#sw_upload_form").submit();
+        });
+        return false;
     }
 </script>
 <table class="datatable">
@@ -56,7 +54,7 @@
         <td>{SW_LANGUAGE}</td>
         <td><span class="tips icon i_app_installed" title="{SW_INSTALLED}">{SW_STATUS}</span></td>
         <td>{SW_TYPE}</td>
-        <td><a href="{DELETE}" class="icon i_{SOFTWARE_ICON}" onclick="return action_delete()">{TR_DELETE}</a></td>
+        <td><a href="{DELETE}" class="icon i_{SOFTWARE_ICON}" onclick="return action_delete(this)">{TR_DELETE}</a></td>
     </tr>
     <!-- EDP: list_software -->
     </tbody>

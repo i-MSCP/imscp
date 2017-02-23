@@ -469,7 +469,6 @@ class iMSCP_pTemplate
     /**
      * Checks if a namespace is defined.
      *
-     * @author Laurent Declercq <l.declercq@nuxwin.com>
      * @param string $namespace namespace
      * @return boolean TRUE if the namespace was define, FALSE otherwise
      */
@@ -561,8 +560,7 @@ class iMSCP_pTemplate
         $parent = '';
 
         if (isset($this->dtpl_name[$tname])
-            && (
-                strpos(@$this->dtpl_name[$tname], '_no_file_') === false
+            && (strpos(@$this->dtpl_name[$tname], '_no_file_') === false
                 && !preg_match('/\.(?:tpl|phtml)$/', $this->dtpl_name[$tname])
             )
         ) {
@@ -619,29 +617,22 @@ class iMSCP_pTemplate
             'templateEngine' => $this
         ));
 
-        if (!preg_match('/[A-Z0-9][A-Z0-9\_]*/', $pname)) {
-            return;
-        }
-
-        if (!preg_match('/[A-Za-z0-9][A-Za-z0-9\_]*/', $tname)) {
+        if (!preg_match('/[A-Z0-9][A-Z0-9_]*/', $pname) || !preg_match('/[A-Za-z0-9][A-Za-z0-9_]*/', $tname)) {
             return;
         }
 
         $ADD_FLAG = false;
 
-        if (preg_match('/^\./', $tname)) {
+        if (strpos($tname, '.') === 0) {
             $tname = substr($tname, 1);
             $ADD_FLAG = true;
         }
 
         if (isset($this->tpl_name[$tname])
-            && (
-                $this->tpl_name[$tname] == '_no_file_'
-                || preg_match('/\.(?:tpl|phtml)$/', $this->tpl_name[$tname])
-            )
+            && ($this->tpl_name[$tname] == '_no_file_' || preg_match('/\.(?:tpl|phtml)$/', $this->tpl_name[$tname]))
         ) {
             // static NO FILE - static FILE
-
+            
             if (isset($this->tpl_data[$tname]) && $this->tpl_data[$tname] == '') {
                 $this->tpl_data[$tname] = $this->get_file($this->tpl_name[$tname]);
             }
@@ -661,7 +652,7 @@ class iMSCP_pTemplate
             if (!$this->parse_dynamic($pname, $tname, $ADD_FLAG)) {
                 return;
             }
-
+            
             $this->last_parsed = $this->namespace[$pname];
         } else {
             if ($ADD_FLAG) {

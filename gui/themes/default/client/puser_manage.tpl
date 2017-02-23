@@ -1,9 +1,9 @@
 
 <script>
     function action_delete(url, subject) {
-        if (confirm(sprintf("{TR_MESSAGE_DELETE}", subject))) {
-            location.href = url;
-        }
+        jQuery.imscp.confirm(sprintf("{TR_MESSAGE_DELETE}", subject), function() {
+            window.location.href = url;
+        });
 
         return false;
     }

@@ -12,33 +12,27 @@
     });
 
     function action_delete(url) {
-        if (!confirm("{TR_MESSAGE_DELETE}")) {
-            return false;
-        }
-
-        location = url;
-
-        return true;
+        if(url == '') return false;
+        jQuery.imscp.confirm("{TR_MESSAGE_DELETE}", function() {
+            window.location.href = url;
+        });
+        return false;
     }
 
     function action_install(url) {
-        if (!confirm("{TR_MESSAGE_INSTALL}")) {
-            return false;
-        }
-
-        location = url;
-
-        return true;
+        if(url == '') return false;
+        jQuery.imscp.confirm("{TR_MESSAGE_INSTALL}", function() {
+            window.location.href = url;
+        });
+        return false;
     }
 
     function action_res_delete(url) {
-        if (!confirm("{TR_RES_MESSAGE_DELETE}")) {
-            return false;
-        }
-
-        location = url;
-
-        return true;
+        if(url == '') return false;
+        jQuery.imscp.confirm("{TR_RES_MESSAGE_DELETE}", function() {
+            window.location.href = url;
+        });
+        return false;
     }
 </script>
 <!-- BDP: no_software_support -->

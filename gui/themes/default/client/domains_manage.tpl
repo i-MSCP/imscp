@@ -1,6 +1,8 @@
 
 <script>
-    function action_delete(url, recordType) {
+    function action_delete(link, recordType) {
+        if(link.href == '#') return false;
+
         var msg;
         switch (recordType) {
             case 'als':
@@ -13,7 +15,8 @@
                 msg = imscp_i18n.core.dns_delete_alert;
         }
 
-        return (url != '#' && confirm(msg));
+        jQuery.imscp.confirmOnclick(link, msg);
+        return false;
     }
 
     $(function () {
@@ -108,7 +111,7 @@
         <td>
             <a href="{CERT_SCRIPT}" class="icon i_edit" title="{VIEW_CERT}">{VIEW_CERT}</a>
             <a class="icon i_edit" href="{ALS_EDIT_LINK}" title="{ALS_EDIT}">{ALS_EDIT}</a>
-            <a class="icon i_delete" href="{ALS_ACTION_SCRIPT}" onclick="return action_delete('{ALS_ACTION_SCRIPT}', 'als');" title="{ALS_ACTION}">{ALS_ACTION}</a>
+            <a class="icon i_delete" href="{ALS_ACTION_SCRIPT}" onclick="return action_delete(this, 'als');" title="{ALS_ACTION}">{ALS_ACTION}</a>
         </td>
     </tr>
     <!-- EDP: als_item -->
@@ -155,7 +158,7 @@
         <td>
             <a href="{CERT_SCRIPT}" class="icon i_edit" title="{VIEW_CERT}">{VIEW_CERT}</a>
             <a class="icon i_edit" href="{SUB_EDIT_LINK}" title="{SUB_EDIT}">{SUB_EDIT}</a>
-            <a class="icon i_delete" href="{SUB_ACTION_SCRIPT}" onclick="return action_delete('{SUB_ACTION_SCRIPT}', 'sub');">{SUB_ACTION}</a>
+            <a class="icon i_delete" href="{SUB_ACTION_SCRIPT}" onclick="return action_delete(this, 'sub');">{SUB_ACTION}</a>
         </td>
     </tr>
     <!-- EDP: sub_item -->
@@ -197,7 +200,7 @@
             <a class="icon i_edit" href="{DNS_ACTION_SCRIPT_EDIT}" title="{DNS_ACTION_EDIT}">{DNS_ACTION_EDIT}</a>
             <!-- EDP: dns_edit_link -->
             <!-- BDP: dns_delete_link -->
-            <a href="{DNS_ACTION_SCRIPT_DELETE}" class="icon i_delete" onclick="return action_delete('{DNS_ACTION_SCRIPT_DELETE}', 'dns');" title="{DNS_ACTION_DELETE}">{DNS_ACTION_DELETE}</a>
+            <a href="{DNS_ACTION_SCRIPT_DELETE}" class="icon i_delete" onclick="return action_delete(this, 'dns');" title="{DNS_ACTION_DELETE}">{DNS_ACTION_DELETE}</a>
             <!-- EDP: dns_delete_link -->
         </td>
     </tr>

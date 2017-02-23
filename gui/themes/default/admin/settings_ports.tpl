@@ -1,7 +1,8 @@
 
 <script>
-    function action_delete(service) {
-        return confirm(sprintf("{TR_MESSAGE_DELETE}", service));
+    function action_delete(link, service) {
+        jQuery.imscp.confirmOnclick(link, sprintf("{TR_MESSAGE_DELETE}", service));
+        return false;
     }
 
     function enable_for_post() {
@@ -83,7 +84,7 @@
             </td>
             <td>
                 <!-- BDP: port_delete_link -->
-                <a href="{URL_DELETE}" class="icon i_delete" onclick="return action_delete('{NAME}')">{TR_DELETE}</a>
+                <a href="{URL_DELETE}" class="icon i_delete" onclick="return action_delete(this, '{NAME}')">{TR_DELETE}</a>
                 <!-- EDP: port_delete_link -->
             </td>
         </tr>

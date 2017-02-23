@@ -1,13 +1,15 @@
-
 <script>
-    function action(action, mailacc) {
+    function action(link, action, mailacc) {
         if (action == 'create') {
             return true;
-        } else if (action == 'N/A') {
-            return false;
-        } else {
-            return confirm(sprintf("{TR_MESSAGE_DELETE}", mailacc));
         }
+
+        if (action == 'N/A') {
+            return false;
+        }
+
+        jQuery.imscp.confirmOnclick(link, sprintf("{TR_MESSAGE_DELETE}", mailacc));
+        return false;
     }
 
     $(function () {
@@ -38,7 +40,7 @@
         <td>{TR_CATCHALL_STATUS}</td>
         <td>
             <a href="{CATCHALL_ACTION_SCRIPT}" class="icon i_users<!-- BDP: del_icon --> i_delete<!-- EDP: del_icon -->"
-               onclick="return action('{CATCHALL_ACTION}', '{CATCHALL_ACC}')">{TR_CATCHALL_ACTION}</a>
+               onclick="return action(this, '{CATCHALL_ACTION}', '{CATCHALL_ACC}')">{TR_CATCHALL_ACTION}</a>
         </td>
     </tr>
     <!-- EDP: catchall_item -->

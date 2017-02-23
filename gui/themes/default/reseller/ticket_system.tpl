@@ -1,11 +1,12 @@
-
 <script>
-    function action_delete(subject) {
+    function action_delete(link, subject) {
         if (subject == '#__all__#') {
-            return confirm("{TR_TICKETS_DELETE_ALL_MESSAGE}");
+            jQuery.imscp.confirmOnclick(link, "{TR_TICKETS_DELETE_ALL_MESSAGE}");
         } else {
-            return confirm(sprintf("{TR_TICKETS_DELETE_MESSAGE}", subject));
+            jQuery.imscp.confirmOnclick(link, sprintf("{TR_TICKETS_DELETE_MESSAGE}", subject));
         }
+
+        return false;
     }
 </script>
 <!-- BDP: tickets_list -->
@@ -31,7 +32,7 @@
         <td>{TICKET_URGENCY_VAL}</td>
         <td>{TICKET_LAST_DATE_VAL}</td>
         <td>
-            <a href="ticket_delete.php?ticket_id={TICKET_ID_VAL}" class="icon i_delete" onclick="return action_delete('{TICKET_SUBJECT2_VAL}')" class="link" title="{TR_TICKET_DELETE_LINK}">{TR_TICKET_DELETE}</a>
+            <a href="ticket_delete.php?ticket_id={TICKET_ID_VAL}" class="icon i_delete" onclick="return action_delete(this, '{TICKET_SUBJECT2_VAL}')" class="link" title="{TR_TICKET_DELETE_LINK}">{TR_TICKET_DELETE}</a>
             <a href="ticket_system.php?ticket_id={TICKET_ID_VAL}" class="icon i_close" title="{TR_TICKET_CLOSE_LINK}">{TR_TICKET_CLOSE}</a>
         </td>
     </tr>
@@ -40,7 +41,7 @@
         <td colspan="6">
             <div class="buttons">
                 <a class="link_as_button" href="ticket_delete.php?delete=open"
-                   onclick="return action_delete('#__all__#')">{TR_TICKET_DELETE_ALL}</a>
+                   onclick="return action_delete(this, '#__all__#')">{TR_TICKET_DELETE_ALL}</a>
             </div>
         </td>
     </tr>

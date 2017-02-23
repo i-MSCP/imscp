@@ -170,6 +170,47 @@
     });
 })(jQuery);
 
+// Function for confirmation dialogs
+(function ($) {
+    $.imscp = {
+        confirm: function (message, callback, caption) {
+            caption = caption || imscp_i18n.core.confirmation_required;
+            $("<div>", {title: caption}).dialog({
+                draggable: false,
+                modal: true,
+                resizable: false,
+                witdh: 'auto',
+                buttons: [
+                    {
+                        text: imscp_i18n.core.yes,
+                        click: function () {
+                            $(this).dialog('close');
+                            callback();
+                        }
+                    },
+                    {
+                        text: imscp_i18n.core.no,
+                        click: function () {
+                            $(this).dialog('close');
+                        }
+                    }
+                ],
+                close: function () {
+                    $(this).remove()
+                }
+            }).html(message);
+            return false;
+        },
+        confirmOnclick: function (link, message) {
+            link.blur();
+            this.confirm(message, function () {
+                window.location.href = link.href;
+            });
+            return false;
+        }
+    };
+})(jQuery);
+
 // PHP editor (dialog and validation routines)
 (function ($) {
     $(function () {
@@ -288,7 +329,6 @@
         }).trigger('keyup'); // We trigger the keyup event on page load to catch any inconsistency with ini values
     })
 })(jQuery);
-
 
 // Initialize FTP chooser event handler
 (function($) {

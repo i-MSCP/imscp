@@ -1,7 +1,7 @@
-
 <script>
-    function action_delete(dmn_name) {
-        return confirm(sprintf("{TR_MESSAGE_DELETE}", dmn_name));
+    function action_delete(link, dmn_name) {
+        jQuery.imscp.confirmOnclick(link, sprintf("{TR_MESSAGE_DELETE}", dmn_name));
+        return false;
     }
 </script>
 <!-- BDP: users_search -->
@@ -80,7 +80,7 @@
             <a class="icon i_user" href="user_edit.php?edit_id={USER_ID}" title="{TR_EDIT_USER}">{TR_EDIT_USER}</a>
             <a class="icon i_details" href="change_user_interface.php?to_id={USER_ID}" title="{TR_CHANGE_INTERFACE}">{TR_CHANGE_INTERFACE}</a>
             <a class="icon i_stats" href="user_statistics_details.php?user_id={USER_ID}" title="{TR_STAT}">{TR_STAT}</a>
-            <a class="icon i_delete" href="user_delete.php?id={USER_ID}" onclick="return action_delete('{NAME}')" title="{TR_DELETE}">{TR_DELETE}</a>
+            <a class="icon i_delete" href="user_delete.php?id={USER_ID}" onclick="return action_delete(this, '{NAME}')" title="{TR_DELETE}">{TR_DELETE}</a>
         </td>
     </tr>
     <!-- BDP: user_details -->
