@@ -19,7 +19,7 @@
             </tr>
             <tr>
                 <td colspan="2" class="right">
-                    <button name="submit" type="submit" tabindex="3">{TR_SEND}</button>
+                    <button name="Submit" type="submit" tabindex="3">{TR_SEND}</button>
                     <a class="link_as_button" href="/" tabindex="4">{TR_CANCEL}</a>
                 </td>
             </tr>

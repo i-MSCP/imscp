@@ -21,7 +21,7 @@
         </tbody>
     </table>
     <div class="buttons">
-        <input name="submit" type="submit" value="{TR_UPDATE}">
+        <input name="Submit" type="submit" value="{TR_UPDATE}">
     </div>
 </form>
 <!-- EDP: languages_available -->

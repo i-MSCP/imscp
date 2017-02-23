@@ -80,7 +80,7 @@
         </tbody>
     </table>
     <div class="buttons">
-        <input type="submit" name="submit" value="{TR_UPDATE}">
+        <input type="submit" name="Submit" value="{TR_UPDATE}">
         <a href="mail_accounts.php" class="link_as_button">{TR_CANCEL}</a>
     </div>
 </form>

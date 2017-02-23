@@ -82,7 +82,7 @@
         </tbody>
     </table>
     <div class="buttons">
-        <input type="submit" name="submit" value="{TR_ADD}">
+        <input type="submit" name="Submit" value="{TR_ADD}">
         <a href="mail_accounts.php" class="link_as_button">{TR_CANCEL}</a>
     </div>
 </form>

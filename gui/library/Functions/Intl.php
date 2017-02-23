@@ -381,7 +381,7 @@ function i18n_getJsTranslations()
         // Core translation strings
         'core' => array(
             'yes'                     => tr('Yes'),
-            'no'                      => tr('no'),
+            'no'                      => tr('No'),
             'confirmation_required'   => tr('Confirmation required'),
             'close'                   => tr('Close'),
             'generate'                => tr('Generate'),

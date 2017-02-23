@@ -1,8 +1,7 @@
 <!-- BDP: hosting_plans -->
 <script>
     function action_delete(link) {
-        jQuery.imscp.confirmOnclick(link, imscp_i18n.core.hp_delete_confirmation);
-        return false;
+        return jQuery.imscp.confirmOnclick(link, imscp_i18n.core.hp_delete_confirmation);
     }
 </script>
 <table>

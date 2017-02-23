@@ -103,7 +103,7 @@
         </tbody>
     </table>
     <div class="buttons">
-        <input name="submit" type="submit" value="{TR_BTN_ADD_USER}">
+        <input name="Submit" type="submit" value="{TR_BTN_ADD_USER}">
         <input type="hidden" name="uaction" value="user_add3_nxt">
     </div>
 </form>

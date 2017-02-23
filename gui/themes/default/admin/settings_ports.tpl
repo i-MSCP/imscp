@@ -1,8 +1,7 @@
 
 <script>
     function action_delete(link, service) {
-        jQuery.imscp.confirmOnclick(link, sprintf("{TR_MESSAGE_DELETE}", service));
-        return false;
+        return jQuery.imscp.confirmOnclick(link, sprintf("{TR_MESSAGE_DELETE}", service));
     }
 
     function enable_for_post() {

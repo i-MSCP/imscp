@@ -338,7 +338,7 @@
         </tbody>
     </table>
     <div class="buttons">
-        <button name="submit" type="submit">{TR_CREATE}</button>
+        <button name="Submit" type="submit">{TR_CREATE}</button>
         <a class="link_as_button" href="manage_users.php">{TR_CANCEL}</a>
     </div>
 </form>

@@ -33,13 +33,11 @@
     });
 
     function delete_alias(link, name) {
-        jQuery.imscp.confirmOnclick(link, sprintf("{TR_MESSAGE_DELETE_ALIAS}", name));
-        return false;
+        return jQuery.imscp.confirmOnclick(link, sprintf("{TR_MESSAGE_DELETE_ALIAS}", name));
     }
 
     function delete_alias_order(link, name) {
-        jQuery.imscp.confirmOnclick(link, sprintf("{TR_MESSAGE_DELETE_ALIAS_ORDER}", name));
-        return false;
+        return jQuery.imscp.confirmOnclick(link, sprintf("{TR_MESSAGE_DELETE_ALIAS_ORDER}", name));
     }
 </script>
 <table class="datatable">

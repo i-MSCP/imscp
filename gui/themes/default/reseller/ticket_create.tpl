@@ -29,7 +29,7 @@
         </tbody>
     </table>
     <div class="buttons">
-        <input name="submit" type="submit" value="{TR_CREATE}">
+        <input name="Submit" type="submit" value="{TR_CREATE}">
         <input name="uaction" type="hidden" value="send_msg">
     </div>
 </form>

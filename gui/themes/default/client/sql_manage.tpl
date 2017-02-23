@@ -9,11 +9,11 @@
             msg = "{TR_USER_MESSAGE_DELETE}"
         }
 
-        jQuery.imscp.confirm(sprintf(msg, subject), function() {
-            window.location.href = url;
+        return jQuery.imscp.confirm(sprintf(msg, subject), function(ret) {
+            if(ret) {
+                window.location.href = url;
+            }
         });
-
-        return false;
     }
 </script>
 <table class="firstColFixed">

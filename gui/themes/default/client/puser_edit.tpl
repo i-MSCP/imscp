@@ -24,7 +24,7 @@
     </table>
     <div class="buttons">
         <input type="hidden" name="uname" value="{UID}">
-        <input name="submit" type="submit" value="{TR_UPDATE}">
+        <input name="Submit" type="submit" value="{TR_UPDATE}">
         <a class="link_as_button" href="protected_user_manage.php">{TR_CANCEL}</a>
     </div>
 </form>

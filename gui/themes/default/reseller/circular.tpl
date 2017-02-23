@@ -26,7 +26,7 @@
         </tbody>
     </table>
     <div class="buttons">
-        <input name="submit" type="submit" value="{TR_SEND_CIRCULAR}">
+        <input name="Submit" type="submit" value="{TR_SEND_CIRCULAR}">
         <a class="link_as_button" href="users.php">{TR_CANCEL}</a>
     </div>
 </form>

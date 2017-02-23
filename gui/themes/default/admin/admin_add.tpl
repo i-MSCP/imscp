@@ -91,7 +91,7 @@
     </table>
     <!-- EDP: props_list -->
     <div class="buttons">
-        <input name="submit" type="submit" value="{TR_ADD}">
         <input type="hidden" name="uaction" value="add_user">
+        <input type="submit" name="Submit"" value="{TR_ADD}">
     </div>
 </form>

@@ -15,7 +15,7 @@
                     <!-- BDP: lost_password_support -->
                     <a class="link_as_button" href="lostpassword.php">{TR_LOSTPW}</a>
                     <!-- EDP: lost_password_support -->
-                    <button type="submit" name="submit" tabindex="3">{TR_LOGIN}</button>
+                    <button type="submit" name="Submit" tabindex="3">{TR_LOGIN}</button>
                 </td>
             </tr>
             <!-- BDP: ssl_support -->

@@ -349,7 +349,7 @@
         </tbody>
     </table>
     <div class="buttons">
-        <input name="submit" type="submit" value="{TR_ADD}">
+        <input name="Submit" type="submit" value="{TR_ADD}">
         <a class="link_as_button" href="hosting_plan.php">{TR_CANCEL}</a>
     </div>
 </form>

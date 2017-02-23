@@ -1,11 +1,11 @@
 
 <script>
     function action_delete(url, subject) {
-        jQuery.imscp.confirm(sprintf("{TR_MESSAGE_DELETE}", subject), function() {
-            window.location.href = url;
+        return jQuery.imscp.confirm(sprintf("{TR_MESSAGE_DELETE}", subject), function(ret) {
+            if(ret) {
+                window.location.href = url;
+            }
         });
-
-        return false;
     }
 </script>
 <h2 class="groups"><span>{TR_USERS}</span></h2>

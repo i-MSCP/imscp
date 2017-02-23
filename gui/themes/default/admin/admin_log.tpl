@@ -122,7 +122,7 @@
                     <option value="26">{TR_CLEAR_LOG_LAST26}</option>
                     <option value="52">{TR_CLEAR_LOG_LAST52}</option>
                 </select>
-                <input name="submit" type="submit" value="{TR_CLEAR_LOG}">
+                <input name="Submit" type="submit" value="{TR_CLEAR_LOG}">
             </form>
         </td>
     </tr>

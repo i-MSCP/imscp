@@ -1,8 +1,7 @@
 
 <script>
     function action_remove_right(link) {
-        jQuery.imscp.confirmOnclick(link, "{TR_MESSAGE_REMOVE}");
-        return false;
+        return jQuery.imscp.confirmOnclick(link, "{TR_MESSAGE_REMOVE}");
     }
 </script>
 <!-- BDP: no_select_reseller -->
@@ -38,7 +37,7 @@
                     </select>
                 </label>
                 <div style="display: inline-block;">
-                    <input name="Button" type="submit" value="{TR_ADD_RIGHTS_BUTTON}">
+                    <input name="Submit" type="submit" value="{TR_ADD_RIGHTS_BUTTON}">
                     <input type="hidden" value="add" name="change">
                     <input type="hidden" value="{SOFTWARE_ID_VALUE}" name="id">
                 </div>

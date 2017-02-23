@@ -170,28 +170,34 @@
     });
 })(jQuery);
 
-// Function for confirmation dialogs
+// Functions for confirmation dialogs
 (function ($) {
     $.imscp = {
         confirm: function (message, callback, caption) {
             caption = caption || imscp_i18n.core.confirmation_required;
+
             $("<div>", {title: caption}).dialog({
                 draggable: false,
                 modal: true,
                 resizable: false,
                 witdh: 'auto',
+                closeOnEscape: false,
+                open: function (event, ui) {
+                    $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+                },
                 buttons: [
                     {
                         text: imscp_i18n.core.yes,
                         click: function () {
                             $(this).dialog('close');
-                            callback();
+                            callback(true);
                         }
                     },
                     {
                         text: imscp_i18n.core.no,
                         click: function () {
                             $(this).dialog('close');
+                            callback(false)
                         }
                     }
                 ],
@@ -199,14 +205,16 @@
                     $(this).remove()
                 }
             }).html(message);
+
             return false;
         },
         confirmOnclick: function (link, message) {
             link.blur();
-            this.confirm(message, function () {
-                window.location.href = link.href;
+            return this.confirm(message, function (ret) {
+                if (ret) {
+                    window.location.href = link.href;
+                }
             });
-            return false;
         }
     };
 })(jQuery);

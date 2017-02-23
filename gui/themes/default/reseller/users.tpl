@@ -1,7 +1,6 @@
 <script>
     function action_delete(link, dmn_name) {
-        jQuery.imscp.confirmOnclick(link, sprintf("{TR_MESSAGE_DELETE}", dmn_name));
-        return false;
+        return jQuery.imscp.confirmOnclick(link, sprintf("{TR_MESSAGE_DELETE}", dmn_name));
     }
 </script>
 <!-- BDP: users_search -->

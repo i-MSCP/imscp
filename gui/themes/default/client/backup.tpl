@@ -1,3 +1,16 @@
+<script>
+    $(function () {
+        $("input[type=submit]").on("click", function () {
+            var input = this;
+            this.blur();
+            return jQuery.imscp.confirm("{TR_CONFIRM_MESSAGE}", function (ret) {
+                if(ret) {
+                    $(input).closest("form").submit();
+                }
+            });
+        });
+    });
+</script>
 <h2>{TR_DOWNLOAD_DIRECTION}</h2>
 <ul>
     <li>{TR_FTP_LOG_ON}</li>
@@ -7,7 +20,7 @@
 <br/>
 <h2>{TR_RESTORE_BACKUP}</h2>
 <p>{TR_RESTORE_DIRECTIONS}</p>
-<form action="backup.php" method="post" id="backup_frm" onsubmit="return jQuery.imscp.confirmOnclick(this, '{TR_CONFIRM_MESSAGE}');">
+<form action="backup.php" method="post">
     <div class="buttons">
         <input type="hidden" name="uaction" value="bk_restore">
         <input type="submit" name="Submit" value="{TR_RESTORE}">

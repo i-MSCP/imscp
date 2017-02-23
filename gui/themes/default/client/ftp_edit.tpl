@@ -30,7 +30,7 @@
         </tbody>
     </table>
     <div class="buttons">
-        <input name="submit" type="submit" value="{TR_CHANGE}">
+        <input name="Submit" type="submit" value="{TR_CHANGE}">
         <a class="link_as_button" href="ftp_accounts.php">{TR_CANCEL}</a>
     </div>
 </form>

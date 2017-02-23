@@ -100,8 +100,7 @@
         }).trigger("change", true);
 
         $(".i_delete").on("click", function () {
-            jQuery.imscp.confirmOnclick(this, sprintf(imscp_i18n.core.confirm_deletion_msg, $(this).data("ip")));
-            return false;
+            return jQuery.imscp.confirmOnclick(this, sprintf(imscp_i18n.core.confirm_deletion_msg, $(this).data("ip")));
         });
     });
 </script>
@@ -189,7 +188,7 @@
         </tbody>
     </table>
     <div class="buttons">
-        <button name="submit" type="submit">{TR_ADD}</button>
+        <button name="Submit" type="submit">{TR_ADD}</button>
         <a class="link_as_button" href="settings.php">{TR_CANCEL}</a>
     </div>
 </form>

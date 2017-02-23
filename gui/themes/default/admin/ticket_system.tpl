@@ -2,12 +2,10 @@
 <script>
     function action_delete(link, subject) {
         if (subject == '#__all__#') {
-            jQuery.imscp.confirmOnclick(link, "{TR_TICKETS_DELETE_ALL_MESSAGE}");
-        } else {
-            jQuery.imscp.confirmOnclick(link, sprintf("{TR_TICKETS_DELETE_MESSAGE}", subject));
+            return jQuery.imscp.confirmOnclick(link, "{TR_TICKETS_DELETE_ALL_MESSAGE}");
         }
 
-        return false;
+        return jQuery.imscp.confirmOnclick(link, sprintf("{TR_TICKETS_DELETE_MESSAGE}", subject));
     }
 </script>
 <!-- BDP: tickets_list -->

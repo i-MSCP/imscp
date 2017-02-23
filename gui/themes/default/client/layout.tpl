@@ -22,7 +22,7 @@
     </table>
     <div class="buttons">
         <input type="hidden" name="uaction" value="changeLayoutColor">
-        <input name="submit" type="submit" value="{TR_UPDATE}">
+        <input name="Submit" type="submit" value="{TR_UPDATE}">
     </div>
 </form>
 <!-- EDP: layout_colors_block -->
@@ -47,6 +47,6 @@
     </table>
     <div class="buttons">
         <input type="hidden" name="uaction" value="changeShowLabels">
-        <input name="submit" type="submit" value="{TR_UPDATE}">
+        <input name="Submit" type="submit" value="{TR_UPDATE}">
     </div>
 </form>

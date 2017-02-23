@@ -90,7 +90,7 @@
         </tbody>
     </table>
     <div class="buttons">
-        <input name="submit" type="submit" value="{TR_UPDATE}">
+        <input name="Submit" type="submit" value="{TR_UPDATE}">
         <input id="send_data" type="checkbox" name="send_data" {SEND_DATA_CHECKED}>
         <label for="send_data">{TR_SEND_DATA}</label>
     </div>

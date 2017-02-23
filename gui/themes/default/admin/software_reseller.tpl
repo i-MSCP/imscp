@@ -1,13 +1,11 @@
 
 <script>
     function action_import(link) {
-        jQuery.imscp.confirmOnclick(link, "{TR_MESSAGE_IMPORT}");
-        return false;
+        return jQuery.imscp.confirmOnclick(link, "{TR_MESSAGE_IMPORT}");
     }
 
     function action_delete(link) {
-        jQuery.imscp.confirmOnclick(link, "{TR_MESSAGE_DELETE}");
-        return false;
+        return jQuery.imscp.confirmOnclick(link, "{TR_MESSAGE_DELETE}");
     }
 </script>
 <table>

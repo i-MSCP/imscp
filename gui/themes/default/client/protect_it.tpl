@@ -83,7 +83,7 @@
         </tbody>
     </table>
     <div class="buttons">
-        <input type="submit" name="submit" value="{TR_PROTECT_IT}">
+        <input type="submit" name="Submit" value="{TR_PROTECT_IT}">
         <input type="hidden" name="id" value="{ID}">
         <a class="link_as_button" href="protected_areas.php">{TR_CANCEL}</a>
     </div>

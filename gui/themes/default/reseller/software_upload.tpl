@@ -1,26 +1,24 @@
 <script>
     $(function () {
-        $('.datatable').dataTable(
-            {
-                language: imscp_i18n.core.dataTable,
-                displayLength: 10,
-                stateSave: true,
-                pagingType: "simple"
-            }
-        );
+        $('.datatable').dataTable({
+            language: imscp_i18n.core.dataTable,
+            displayLength: 10,
+            stateSave: true,
+            pagingType: "simple"
+        });
     });
 
     function action_delete(link) {
-        jQuery.imscp.confirmOnclick(link, "{TR_MESSAGE_DELETE}");
-        return false;
+        return jQuery.imscp.confirmOnclick(link, "{TR_MESSAGE_DELETE}");
     }
 
     function action_install(packageUrl) {
-        jQuery.imscp.confirm("{TR_MESSAGE_INSTALL}", function() {
-            $("#sw_wget").val(packageUrl);
-            $("#sw_upload_form").submit();
+        return jQuery.imscp.confirm("{TR_MESSAGE_INSTALL}", function(ret) {
+            if(ret) {
+                $("#sw_wget").val(packageUrl);
+                $("#sw_upload_form").submit();
+            }
         });
-        return false;
     }
 </script>
 <table class="datatable">

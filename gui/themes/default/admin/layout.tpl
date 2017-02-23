@@ -14,7 +14,7 @@
 
                 <div class="buttons">
                     <input type="hidden" name="uaction" value="deleteIspLogo"/>
-                    <input name="submit" type="submit" value="{TR_REMOVE}"/>
+                    <input name="Submit" type="submit" value="{TR_REMOVE}"/>
                 </div>
             </form>
         </td>
@@ -27,7 +27,7 @@
 
                 <div class="buttons" style="display: inline;">
                     <input type="hidden" name="uaction" value="updateIspLogo">
-                    <input name="submit" type="submit" value="{TR_UPLOAD}">
+                    <input name="Submit" type="submit" value="{TR_UPLOAD}">
                 </div>
             </form>
         </td>
@@ -52,7 +52,7 @@
                     <!-- EDP: layout_color_block -->
                 </select>
                 <input type="hidden" name="uaction" value="changeLayoutColor">
-                <input name="submit" type="submit" value="{TR_CHANGE}">
+                <input name="Submit" type="submit" value="{TR_CHANGE}">
             </td>
         </tr>
         </tbody>
@@ -75,7 +75,7 @@
                     <option value="1"{MAIN_MENU_SHOW_LABELS_ON}>{TR_ENABLED}</option>
                 </select>
                 <input type="hidden" name="uaction" value="changeShowLabels">
-                <input name="submit" type="submit" value="{TR_CHANGE}">
+                <input name="Submit" type="submit" value="{TR_CHANGE}">
             </td>
         </tr>
         </tbody>

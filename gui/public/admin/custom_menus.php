@@ -74,7 +74,7 @@ function admin_generateMenusList($tpl)
 					'LEVEL' => tohtml($menuLevel),
 					'ORDER' => $menuOrder,
 					'MENU_NAME' => tohtml($menuName),
-                    'MENU_NAME_JS' => tojs($menuName),
+					'MENU_NAME_JS' => tojs($menuName),
 					'LINK' => tohtml($menuLink)
 				)
 			);

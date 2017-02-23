@@ -37,25 +37,24 @@
         });
 
         $("input[type=submit]").click(function () {
-            var button = this;
-            button.blur();
+            var input = this;
+            input.blur();
 
             if($("input[type=checkbox]:checked", $oTable.fnGetNodes()).length < 1) {
                 alert("{TR_MESSAGE_DELETE_SELECTED_ITEMS_ERR}");
                 return false;
             }
 
-            jQuery.imscp.confirm("{TR_MESSAGE_DELETE_SELECTED_ITEMS}", function() {
-                $(button).closest("form").submit();
+            return jQuery.imscp.confirm("{TR_MESSAGE_DELETE_SELECTED_ITEMS}", function(ret) {
+                if(ret) {
+                    $(input).closest("form").submit();
+                }
             });
-
-            return false;
         });
     });
 
     function action_delete(link, subject) {
-        jQuery.imscp.confirmOnclick(link, sprintf("{TR_MESSAGE_DELETE}", subject));
-        return false;
+        return jQuery.imscp.confirmOnclick(link, sprintf("{TR_MESSAGE_DELETE}", subject));
     }
 </script>
 <!-- BDP: mail_items -->
@@ -105,7 +104,7 @@
         </tbody>
     </table>
     <div class="buttons">
-        <input type="submit" name="submit" value="{TR_DELETE_SELECTED_ITEMS}">
+        <input type="submit" name="Submit" value="{TR_DELETE_SELECTED_ITEMS}">
     </div>
 </form>
 <!-- EDP: mail_items -->

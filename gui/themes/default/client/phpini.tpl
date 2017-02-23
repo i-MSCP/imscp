@@ -122,7 +122,7 @@
         </tbody>
     </table>
     <div class="buttons">
-        <input name="submit" type="submit" value="{TR_UPDATE}">
+        <input name="Submit" type="submit" value="{TR_UPDATE}">
         <a class="link_as_button" href="domains_manage.php">{TR_CANCEL}</a>
     </div>
 </form>

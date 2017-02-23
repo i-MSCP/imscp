@@ -15,8 +15,7 @@
                 msg = imscp_i18n.core.dns_delete_alert;
         }
 
-        jQuery.imscp.confirmOnclick(link, msg);
-        return false;
+        return jQuery.imscp.confirmOnclick(link, msg);
     }
 
     $(function () {

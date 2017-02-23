@@ -8,19 +8,16 @@
             return false;
         }
 
-        jQuery.imscp.confirmOnclick(link, sprintf("{TR_MESSAGE_DELETE}", mailacc));
-        return false;
+        return jQuery.imscp.confirmOnclick(link, sprintf("{TR_MESSAGE_DELETE}", mailacc));
     }
 
     $(function () {
-        $('.datatable').dataTable(
-            {
-                language: imscp_i18n.core.dataTable,
-                displayLength: 10,
-                stateSave: true,
-                pagingType: "simple"
-            }
-        );
+        $('.datatable').dataTable({
+            language: imscp_i18n.core.dataTable,
+            displayLength: 10,
+            stateSave: true,
+            pagingType: "simple"
+        });
     });
 </script>
 <table class="firstColFixed datatable">

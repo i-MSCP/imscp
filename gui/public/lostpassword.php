@@ -80,17 +80,17 @@ $tpl->assign(array(
     'UNAME'            => isset($_POST['uname']) ? $_POST['uname'] : ''
 ));
 
-if ($cfg['BRUTEFORCE']) {
-    $bruteForce = new BruteForcePlugin(iMSCP_Registry::get('pluginManager'), 'captcha');
-    if ($bruteForce->isWaiting() || $bruteForce->isBlocked()) {
-        set_page_message($bruteForce->getLastMessage(), 'error');
-        redirectTo('lostpassword.php');
+if (!empty($_POST)) {
+    if ($cfg['BRUTEFORCE']) {
+        $bruteForce = new BruteForcePlugin(iMSCP_Registry::get('pluginManager'), 'captcha');
+        if ($bruteForce->isWaiting() || $bruteForce->isBlocked()) {
+            set_page_message($bruteForce->getLastMessage(), 'error');
+            redirectTo('index.php');
+        }
+
+        $bruteForce->logAttempt();
     }
 
-    $bruteForce->logAttempt();
-}
-
-if (!empty($_POST)) {
     if (!isset($_POST['capcode']) || !isset($_POST['uname'])) {
         showBadRequestErrorPage();
     } elseif (!isset($_SESSION['capcode'])) {

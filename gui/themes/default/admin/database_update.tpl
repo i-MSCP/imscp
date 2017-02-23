@@ -20,7 +20,7 @@
 
     <div class="buttons">
         <input type="hidden" name="uaction" id='execute' value="update">
-        <input type="submit" name="submit" value="{TR_PROCESS_UPDATES}">
+        <input type="submit" name="Submit" value="{TR_PROCESS_UPDATES}">
     </div>
 </form>
 <!-- EDP: database_updates -->

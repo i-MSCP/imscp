@@ -12,7 +12,7 @@
         <option value="{VALUE}" {OPTION_SELECTED}>{HUMAN_VALUE}</option>
         <!-- EDP: year_list -->
     </select>
-    <input name="submit" type="submit" value="{TR_SHOW}">
+    <input name="Submit" type="submit" value="{TR_SHOW}">
 </form>
 <!-- BDP: user_statistics_details_block -->
 <table>

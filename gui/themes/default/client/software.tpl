@@ -13,26 +13,29 @@
 
     function action_delete(url) {
         if(url == '') return false;
-        jQuery.imscp.confirm("{TR_MESSAGE_DELETE}", function() {
-            window.location.href = url;
+        return jQuery.imscp.confirm("{TR_MESSAGE_DELETE}", function(ret) {
+            if(ret) {
+                window.location.href = url;
+            }
         });
-        return false;
     }
 
     function action_install(url) {
         if(url == '') return false;
-        jQuery.imscp.confirm("{TR_MESSAGE_INSTALL}", function() {
-            window.location.href = url;
+        return jQuery.imscp.confirm("{TR_MESSAGE_INSTALL}", function(ret) {
+            if(ret) {
+                window.location.href = url;
+            }
         });
-        return false;
     }
 
     function action_res_delete(url) {
         if(url == '') return false;
-        jQuery.imscp.confirm("{TR_RES_MESSAGE_DELETE}", function() {
-            window.location.href = url;
+        return jQuery.imscp.confirm("{TR_RES_MESSAGE_DELETE}", function(ret) {
+            if(ret) {
+                window.location.href = url;
+            }
         });
-        return false;
     }
 </script>
 <!-- BDP: no_software_support -->
