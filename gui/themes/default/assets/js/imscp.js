@@ -170,8 +170,35 @@
     });
 })(jQuery);
 
-// Functions for confirmation dialogs
+// Functions for confirmation and alert dialogs
 (function ($) {
+    // Override native alert() function
+    window.alert = function (message, caption) {
+        caption = caption || imscp_i18n.core.warning;
+
+        $("<div>", {title: caption}).dialog({
+            draggable: false,
+            modal: true,
+            resizable: false,
+            witdh: 'auto',
+            closeOnEscape: false,
+            open: function (event, ui) {
+                $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+            },
+            buttons: [
+                {
+                    text: imscp_i18n.core.ok,
+                    click: function () {
+                        $(this).dialog('close');
+                    }
+                }
+            ],
+            close: function () {
+                $(this).remove()
+            }
+        }).html(message);
+    };
+
     $.imscp = {
         confirm: function (message, callback, caption) {
             caption = caption || imscp_i18n.core.confirmation_required;
