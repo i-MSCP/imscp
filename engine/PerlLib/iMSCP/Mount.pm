@@ -32,7 +32,6 @@ use iMSCP::Debug;
 use iMSCP::Syscall;
 use Scalar::Defer;
 use Sort::Naturally;
-use Quota;
 use parent 'Exporter';
 
 our @EXPORT_OK = qw/ mount umount setPropagationFlag isMountpoint isBindMount addMountEntry removeMountEntry getMounts /;
@@ -133,12 +132,14 @@ my %PROPAGATION_FLAGS = (
 # Lazy-load mount entries
 my $MOUNTS = lazy
     {
+        -f '/proc/self/mounts' or die( "Couldn't load mount entries. File /proc/self/mounts not found." );
+        open my $fh, '<', '/proc/self/mounts' or die( sprintf( "Couldn't read /proc/self/mounts file: %s", $! ) );
         my $entries;
-        Quota::setmntent();
-        while(my (undef, $fsFile) = Quota::getmntent() ) {
-            $entries->{$fsFile =~ s/\s+\(deleted\)$//r}++ ;
+        while(my $entry = <$fh>) {
+            my $fsFile = (split /\s+/, $entry)[1];
+            $entries->{$fsFile =~ s/\s+\(deleted\)$//r}++;
         }
-        Quota::endmntent();
+        close( $fh );
         $entries;
     };
 

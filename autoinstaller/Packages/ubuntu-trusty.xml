@@ -249,7 +249,6 @@
         <package>libmime-tools-perl</package>
         <package>libnet-dns-perl</package>
         <package>libnet-libidn-perl</package>
-        <package>libquota-perl</package>
         <package>libsort-naturally-perl</package>
         <package>libtimedate-perl</package>
         <package>libunix-mknod-perl</package>
