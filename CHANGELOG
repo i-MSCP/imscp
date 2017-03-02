@@ -24,7 +24,7 @@ BACKEND
     Fixed: Several encoding issues (regression fix)
     Fixed: Usage of lchown(2) system call to avoid dereference of symlinks (iMSCP::Rights::setRights())
     Review: Read line by line to avoid opening in-memory file in STDOUT|STDERR routines (iMSCP::Execute::executeNoWait())
-    Fixed: Read mount entries from /proc/self/mounts file to cover case where  /etc/mtab is not a symlink (iMSCP::Mount)
+    Fixed: Read mount entries from /proc/self/mounts file to cover case where /etc/mtab is not a symlink (iMSCP::Mount)
 
 CONFIG
     Changed: Usage of Courier authdaemon as password verifier (Cyrus SASL) - see the errata file for further details

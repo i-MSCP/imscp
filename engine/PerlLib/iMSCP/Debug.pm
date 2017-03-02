@@ -40,7 +40,6 @@ BEGIN {
 
     # Catch warns
     $SIG{'__WARN__'} = sub {
-        print "@_\n";
         warning( @_, (caller( 1 ))[3] || 'main' );
     };
 }
@@ -249,7 +248,7 @@ sub fatal
     my $caller = shift || (caller( 1 ))[3] || 'main';
 
     $self->{'logger'}()->store( message => "$caller: $message", tag => 'fatal' );
-    #exit 255;
+    exit 255;
 }
 
 =item getLastError()
