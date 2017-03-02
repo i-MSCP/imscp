@@ -95,6 +95,7 @@ PLUGINS:
     Updated: API version to 1.4.0
 
 SERVERS
+    Added: LAN IP address in virtualhost for local access (Servers::ftpd::proftpd::installer)
     Added: Support for Python and Ruby CGI scripts (Httpd server impl.)
     Fixed: apache2: Could not reliably determine the server's fully qualified domain name, using ::1 for ServerName
     Fixed: Forward Secrecy not supported with reference browsers (Apache2)

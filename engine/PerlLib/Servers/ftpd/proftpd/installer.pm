@@ -450,14 +450,14 @@ EOF
     my $baseServerPublicIp = main::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
 
     if ($baseServerIp ne $baseServerPublicIp) {
-        my @hostList = ( '127.0.0.1', (main::setupGetQuestion( 'IPV6_SUPPORT' ) ? '::1' : ()) );
+        my @virtualHostIps = ( '127.0.0.1', (main::setupGetQuestion( 'IPV6_SUPPORT' ) ? '::1' : ()), $baseServerIp );
         $cfgTpl .= <<"EOF";
 
 # Server behind NAT - Advertise public IP address
 MasqueradeAddress $baseServerPublicIp
 
-# VirtualHost for access from loopback (No IP masquerading)
-<VirtualHost @hostList>
+# VirtualHost for local access (No IP masquerading)
+<VirtualHost @virtualHostIps>
     ServerName "{HOSTNAME}.local"
 </VirtualHost>
 EOF
