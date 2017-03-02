@@ -33,12 +33,9 @@ our @EXPORT = qw/debug warning error fatal newDebug endDebug getMessage getLastE
     setDebug debugRegisterCallBack output silent/;
 
 BEGIN {
-    # Catch uncaught exceptions
     $SIG{'__DIE__'} = sub {
         fatal( @_, (caller( 1 ))[3] || 'main' ) if defined $^S && !$^S
     };
-
-    # Catch warns
     $SIG{'__WARN__'} = sub {
         warning( @_, (caller( 1 ))[3] || 'main' );
     };
@@ -77,7 +74,7 @@ sub setDebug
         return;
     }
 
-    for(@{$self->{'loggers'}}) { # Remove any debug message from all loggers
+    for(@{$self->{'loggers'}}) { # Remove any debug log message from all loggers
         $_->retrieve( tag => 'debug', remove => 1 );
     }
 
@@ -100,7 +97,7 @@ sub setVerbose
     undef;
 }
 
-=item silent()
+=item silent( )
 
  Method kept for backward compatibility with plugins
 
@@ -110,12 +107,12 @@ sub setVerbose
 
 sub silent
 {
-
+    undef;
 }
 
 =item newDebug( $logfileId )
 
- Create a new logger for the given log file identifier. New logger will becomes the current logger.
+ Create a new logger for the given log file identifier. New logger will becomes the current logger
 
  Param string $logfile Log file unique identifier (log file name)
  Return int 0
@@ -126,10 +123,10 @@ sub newDebug
 {
     my $logfileId = shift;
 
-    fatal( "log file unique identifier is expected" ) unless $logfileId;
+    fatal( "A log file unique identifier is expected" ) unless $logfileId;
 
     for(@{$self->{'loggers'}}) {
-        die( "Logger with same identifier already exists" ) if $_->getId() eq $logfileId;
+        die( "A logger with same identifier already exists" ) if $_->getId() eq $logfileId;
     }
 
     push @{$self->{'loggers'}}, iMSCP::Log->new( id => $logfileId );
@@ -138,7 +135,7 @@ sub newDebug
 
 =item endDebug( )
 
- Write all log messages from the current logger and remove it from loggers stack unless it is the default logger
+ Write all log messages from the current logger and remove it from loggers stack (unless it is the default logger)
 
  Return int 0
 
@@ -175,11 +172,11 @@ sub endDebug
 
 =item debug( $message [, $caller ] )
 
- Log a debug message into the current logger
+ Log a debug message in the current logger
 
  Param string $message Debug message
  Param string $caller OPTIONAL Caller
- Return int undef
+ Return undef
 
 =cut
 
@@ -189,18 +186,17 @@ sub debug
     my $caller = shift || (caller( 1 ))[3] || 'main';
 
     $self->{'logger'}()->store( message => "$caller: $message", tag => 'debug' ) if $self->{'debug'};
-
     print STDOUT output( "$caller: $message", 'debug' ) if $self->{'verbose'};
     undef;
 }
 
 =item warning( $message [, $caller ] )
 
- Log a warning message into the current logger
+ Log a warning message in the current logger
 
  Param string $message Warning message
  Param string $caller OPTIONAL Caller
- Return int undef
+ Return undef
 
 =cut
 
@@ -215,11 +211,11 @@ sub warning
 
 =item error( $message [, $caller ] )
 
- Log an error message into current logger
+ Log an error message in the current logger
 
  Param string $message Error message
  Param string $caller OPTIONAL Caller
- Return int undef
+ Return undef
 
 =cut
 
@@ -229,12 +225,12 @@ sub error
     my $caller = shift || (caller( 1 ))[3] || 'main';
 
     $self->{'logger'}()->store( message => "$caller: $message", tag => 'error' );
-    0;
+    undef;
 }
 
 =item fatal( $message [, $caller ] )
 
- Log a fatal message into the current logger and exit with status 255
+ Log a fatal message in the current logger and exit with status 255
 
  Param string $message Fatal message
  Param string $caller OPTIONAL Caller
@@ -253,9 +249,9 @@ sub fatal
 
 =item getLastError()
 
- Get last error message from the current logger
+ Get last error messages from the current logger as a string
 
- Return string last error message
+ Return string Last error messages
 
 =cut
 
@@ -266,11 +262,11 @@ sub getLastError
 
 =item getMessageByType( $type = 'error' [, \%options ] )
 
- Get message by type from current logger
+ Get message by type from current logger, according given options
 
  Param string $type Type or regexp
  Param hash %option|\%options Hash containing options (amount, chrono, remove)
- Return array|string Either an array containing messages or a string representing concatenation of messages
+ Return array|string An array of messages or a string of messages
 
 =cut
 
@@ -288,10 +284,12 @@ sub getMessageByType
     wantarray ? @messages : join "\n", @messages;
 }
 
-=item output( $text, $level )
+=item output( $text [, $level ] )
 
  Prepare the given text to be show on the console according the given level
 
+ Param string $text Text to format
+ Param string $level OPTIONAL Format level
  Return string Formatted message
 
 =cut
@@ -325,10 +323,10 @@ sub output
 
 =item debugRegisterCallBack($callback)
 
- Register the given callback which will be triggered before log processing
+ Register the given debug callback
 
  Param callback Callback to register
- Return int 0;
+ Return int 0
 
 =cut
 
@@ -348,7 +346,7 @@ sub debugRegisterCallBack
 
 =item _writeLogfile($logger, $logfilePath)
 
- Write all messages from the given logger
+ Write all log messages from the given logger
 
  Param iMSCP::Log $logger Logger
  Param string $logfilePath Logfile path in which log messages must be writen
@@ -398,7 +396,7 @@ sub _getMessages
 
 =item END
 
- Process ending tasks (Dump of messages)
+ Process ending tasks and print warn, error and fatal log messages to STDERR if any
 
 =cut
 
@@ -408,7 +406,7 @@ END {
     &{$_} for @{$self->{'debug_callbacks'}};
     endDebug() for @{$self->{'loggers'}};
 
-    for($self->{'logger'}()->retrieve( tag => qr/(?:warn|error|fatal)/, remove => 1)) {
+    for($self->{'logger'}()->retrieve( tag => qr/(?:warn|error|fatal)/, remove => 1 )) {
         print STDERR output($_->{'message'}, $_->{'tag'});
     }
 
