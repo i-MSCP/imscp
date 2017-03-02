@@ -627,7 +627,9 @@ deb-src $repository->{'repository'}
 EOF
 
         my @cmd = ();
-        if ($repository->{'repository_key_srv'}) { # Add the repository key from the given key server
+        if ($repository->{'repository_key_srv'}
+            && $repository->{'repository_key_id'}
+        ) { # Add the repository key from the given key server
             @cmd = (
                 'apt-key adv --recv-keys --keyserver', escapeShell( $repository->{'repository_key_srv'} ),
                 escapeShell( $repository->{'repository_key_id'} )
