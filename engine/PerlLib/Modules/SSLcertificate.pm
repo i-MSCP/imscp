@@ -74,7 +74,7 @@ sub process
         $rs = $self->add();
         @sql = (
             'UPDATE ssl_certs SET status = ? WHERE cert_id = ?',
-            ($rs ? (getMessageByType( 'error', { remove => 1 } ) || 'Unknown error') =~ s/iMSCP::OpenSSL::validateCertificate:\s+//r : 'ok'),
+            ($rs ? (getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error') =~ s/iMSCP::OpenSSL::validateCertificate:\s+//r : 'ok'),
             $certificateId
         );
     } elsif ($self->{'status'} eq 'todelete') {
@@ -82,7 +82,7 @@ sub process
         if ($rs) {
             @sql = (
                 'UPDATE ssl_certs SET status = ? WHERE cert_id = ?',
-                scalar getMessageByType( 'error' ) || 'Unknown error',
+                getLastError( 'error' ) || 'Unknown error',
                 $certificateId
             );
         } else {

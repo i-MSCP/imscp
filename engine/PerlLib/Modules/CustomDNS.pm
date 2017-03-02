@@ -81,11 +81,10 @@ sub process
     $rs = $self->add();
 
     if ($rs) {
-        my $errorStr = getMessageByType( 'error' );
         my $qrs = $self->{'db'}->doQuery(
             'u',
             "UPDATE domain_dns SET domain_dns_status = ? WHERE $condition AND domain_dns_status <> 'disabled'",
-            ($errorStr ? $errorStr : 'Invalid DNS resource record')
+            getLastError( 'error' ) || 'Invalid DNS resource record'
         );
         unless (ref $qrs eq 'HASH') {
             error( $qrs );

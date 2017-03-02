@@ -70,21 +70,19 @@ sub process
         $rs = $self->add();
         @sql = (
             'UPDATE ftp_users SET status = ? WHERE userid = ?',
-            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'ok'), $userId
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $userId
         );
     } elsif ($self->{'status'} eq 'todisable') {
         $rs = $self->disable();
         @sql = (
             'UPDATE ftp_users SET status = ? WHERE userid = ?',
-            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'disabled'), $userId
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'), $userId
         );
     } elsif ($self->{'status'} eq 'todelete') {
         $rs = $self->delete();
         if ($rs) {
             @sql = (
-                'UPDATE ftp_users SET status = ? WHERE userid = ?',
-                scalar getMessageByType( 'error' ) || 'Unknown error',
-                $userId
+                'UPDATE ftp_users SET status = ? WHERE userid = ?', getLastError( 'error' ) || 'Unknown error', $userId
             );
         } else {
             @sql = ('DELETE FROM ftp_users WHERE userid = ?', $userId);

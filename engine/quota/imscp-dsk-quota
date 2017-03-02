@@ -79,7 +79,6 @@ sub quotaFiles
 
     unless (ref $mainDomains eq 'HASH'){
         error($mainDomains);
-        iMSCP::Mail->new()->errmsg($mainDomains);
         $rs = 1;
     } else {
         my $mta = Servers::mta->factory();
@@ -114,7 +113,6 @@ sub quotaFiles
             );
             unless(ref $childDomains eq 'HASH') {
                 error($childDomains);
-                iMSCP::Mail->new()->errmsg($childDomains);
                 $rs = 1;
             } elsif(%{$childDomains}) {
                 for (keys %{$childDomains}) {
@@ -159,7 +157,6 @@ sub quotaFiles
                 my $rdata = $db->doQuery('update', $sql, $totalDiskUsage, $webDiskUsage, $mailDiskUsage, $domainId);
                 unless (ref $rdata eq 'HASH') {
                     error($rdata);
-                    iMSCP::Mail->new()->errmsg($rdata);
                     $rs = 1;
                 }
 
@@ -168,7 +165,6 @@ sub quotaFiles
                 );
                 unless (ref $rdata eq 'HASH') {
                     error($rdata);
-                    iMSCP::Mail->new()->errmsg($rdata);
                     $rs = 1;
                 }
             }
@@ -186,7 +182,6 @@ sub quotaSql
     my $databases = $db->doQuery('Database', 'SHOW DATABASES');
     unless (ref $databases eq 'HASH'){
         error($databases);
-        iMSCP::Mail->new()->errmsg($databases);
         return 1;
     }
 
@@ -195,7 +190,6 @@ sub quotaSql
     );
     unless (ref $rdata eq 'HASH') {
         error($rdata);
-        iMSCP::Mail->new()->errmsg($rdata);
         $rs = 1;
     } elsif(%{$rdata}) {
         for my $domainId (keys %{$rdata}) {
@@ -209,7 +203,6 @@ sub quotaSql
 
             unless (ref $customerDatabases eq 'HASH') {
                 error($customerDatabases);
-                iMSCP::Mail->new()->errmsg($customerDatabases);
                 $rs = 1;
             }
 
@@ -220,7 +213,6 @@ sub quotaSql
                     my $sqlDbTables = $db->doQuery('1', "SHOW TABLE STATUS FROM $quotedDbName");
                     unless (ref $sqlDbTables eq 'HASH') {
                         error($sqlDbTables);
-                        iMSCP::Mail->new()->errmsg($sqlDbTables);
                         $rs = 1;
                     } elsif(%{$sqlDbTables}) {
                         for my $sqlDbTable(keys %{$sqlDbTables}) {
@@ -231,7 +223,6 @@ sub quotaSql
                     }
                 } else {
                     warning("Database '$sqlDbName' exists only in table 'sql_database'");
-                    iMSCP::Mail->new()->errmsg("Database '$sqlDbName' exists only in table 'sql_database'");
                 }
             }
 
@@ -248,7 +239,6 @@ sub quotaSql
                 );
                 unless (ref $quota eq 'HASH') {
                     error($quota);
-                    iMSCP::Mail->new()->errmsg($quota);
                     $rs = 1;
                 }
 
@@ -257,7 +247,6 @@ sub quotaSql
                 );
                 unless (ref $quota eq 'HASH') {
                     error($quota);
-                    iMSCP::Mail->new()->errmsg($quota);
                     $rs = 1;
                 }
             }
@@ -269,6 +258,15 @@ sub quotaSql
 
 my $rs = quotaFiles();
 $rs |= quotaSql();
+
+if($rs) {
+    my @warningMessages = getMessageByType('warn');
+    iMSCP::Mail->new()->warnMsg("@warningMessages") if @warningMessages;
+
+    my @errorMessages = getMessageByType('error');
+    iMSCP::Mail->new()->errmsg("@errorMessages") if @errorMessages;
+}
+
 $bootstrapper->unlock('/tmp/imscp-dsk-quota.lock');
 exit $rs;
 

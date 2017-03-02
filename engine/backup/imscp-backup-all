@@ -262,11 +262,13 @@ sub run
         }
     }
 
-    my @warningMessages = getMessageByType('warn');
-    iMSCP::Mail->new()->warnMsg("@warningMessages") if @warningMessages;
+    if($ret) {
+        my @warningMessages = getMessageByType('warn');
+        iMSCP::Mail->new()->warnMsg("@warningMessages") if @warningMessages;
 
-    my @errorMessages = getMessageByType('error');
-    iMSCP::Mail->new()->errmsg("@errorMessages") if @errorMessages;
+        my @errorMessages = getMessageByType('error');
+        iMSCP::Mail->new()->errmsg("@errorMessages") if @errorMessages;
+    }
 
     $ret;
 }

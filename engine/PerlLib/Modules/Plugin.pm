@@ -91,7 +91,7 @@ sub process
     $self->{'eventManager'}->trigger( 'onBeforeSetPluginStatus', $self->{'plugin_name'}, \$self->{'plugin_status'} );
     my @sql = (
         "UPDATE plugin SET ".($rs ? 'plugin_error' : 'plugin_status')." = ? WHERE plugin_id = ?", undef,
-        ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : $STATUS_TO_NEW_STATUS{$self->{'plugin_status'}}),
+        ($rs ? getLastError( 'error' ) || 'Unknown error' : $STATUS_TO_NEW_STATUS{$self->{'plugin_status'}}),
         $pluginId
     );
     my $qrs = $self->{'dbh'}->do( @sql );

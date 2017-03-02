@@ -36,6 +36,7 @@ use iMSCP::Servers;
 use iMSCP::Database;
 use iMSCP::EventManager;
 use iMSCP::Getopt;
+use iMSCP::Mail;
 use File::Basename;
 use POSIX qw(locale_h);
 use locale;
@@ -139,8 +140,11 @@ sub run
     $rs ||= iMSCP::EventManager->getInstance()->trigger('afterVrlTraffic');
 
     if($rs) {
-        require iMSCP::Mail;
-        iMSCP::Mail->new()->errmsg(join "\n\n", iMSCP::Debug::getLastError());
+        my @warningMessages = getMessageByType('warn');
+        iMSCP::Mail->new()->warnMsg("@warningMessages") if @warningMessages;
+
+        my @errorMessages = getMessageByType('error');
+        iMSCP::Mail->new()->errmsg("@errorMessages") if @errorMessages;
     }
 
     $rs;

@@ -71,14 +71,15 @@ sub process
         $rs = $self->add();
         @sql = (
             'UPDATE mail_users SET status = ? WHERE mail_id = ?',
-            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'ok'), $mailId
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $mailId
         );
     } elsif ($self->{'status'} eq 'todelete') {
         $rs = $self->delete();
         if ($rs) {
             @sql = (
                 'UPDATE mail_users SET status = ? WHERE mail_id = ?',
-                scalar getMessageByType( 'error' ) || 'Unknown error', $mailId
+                getLastError( 'error' ) || 'Unknown error',
+                $mailId
             );
         } else {
             @sql = ('DELETE FROM mail_users WHERE mail_id = ?', $self->{'mail_id'});
@@ -87,7 +88,8 @@ sub process
         $rs = $self->disable();
         @sql = (
             'UPDATE mail_users SET status = ? WHERE mail_id = ?',
-            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'disabled'), $mailId
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'),
+            $mailId
         );
     }
 

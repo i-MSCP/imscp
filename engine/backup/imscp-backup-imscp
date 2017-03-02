@@ -38,6 +38,7 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Getopt;
+use iMSCP::Mail;
 use File::Basename;
 use POSIX qw/strftime/;
 use POSIX qw(locale_h);
@@ -88,15 +89,16 @@ sub run
     );
     debug($stdout) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
-    return $rs if $rs;
 
-    my @errorMessages = (getMessageByType('warn'), getMessageByType('error'));
-    if(@errorMessages) {
-        require iMSCP::Mail;
-        iMSCP::Mail->new()->errmsg("@errorMessages");
+    if($rs) {
+        my @warningMessages = getMessageByType('warn');
+        iMSCP::Mail->new()->warnMsg("@warningMessages") if @warningMessages;
+
+        my @errorMessages = getMessageByType('error');
+        iMSCP::Mail->new()->errmsg("@errorMessages") if @errorMessages;
     }
 
-    0;
+    $rs;
 }
 
 sub _backupDatabase

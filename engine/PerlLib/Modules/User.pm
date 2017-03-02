@@ -78,12 +78,17 @@ sub process
         $rs = $self->add();
         @sql = (
             'UPDATE admin SET admin_status = ? WHERE admin_id = ?',
-            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'ok'), $userId
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'),
+            $userId
         );
     } elsif ($self->{'admin_status'} eq 'todelete') {
         $rs = $self->delete();
         if ($rs) {
-            @sql = ('UPDATE admin SET admin_status = ? WHERE admin_id = ?', scalar getMessageByType( 'error' ), $userId)
+            @sql = (
+                'UPDATE admin SET admin_status = ? WHERE admin_id = ?',
+                getLastError( 'error' ) || 'Unknown error',
+                $userId
+            );
         } else {
             @sql = ('DELETE FROM admin WHERE admin_id = ?', $userId);
         }

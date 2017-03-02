@@ -71,7 +71,7 @@ sub process
         $rs = $self->add();
         @sql = (
             'UPDATE htaccess_groups SET status = ? WHERE id = ?',
-            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'ok'), $htgroupId
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $htgroupId
         );
     } elsif ($self->{'status'} eq 'todisable') {
         @sql = ('UPDATE htaccess_groups SET status = ? WHERE id = ?', 'disabled', $htgroupId);
@@ -79,8 +79,8 @@ sub process
         $rs = $self->delete();
         if ($rs) {
             @sql = (
-                'UPDATE htaccess_groups SET status = ? WHERE id = ?', scalar getMessageByType( 'error' ),
-                $htgroupId
+                'UPDATE htaccess_groups SET status = ? WHERE id = ?',
+                getLastError( 'error' ) || 'Unknown error', $htgroupId
             );
         } else {
             @sql = ('DELETE FROM htaccess_groups WHERE id = ?', $htgroupId);

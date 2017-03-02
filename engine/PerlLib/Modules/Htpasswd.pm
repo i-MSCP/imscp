@@ -71,14 +71,18 @@ sub process
         $rs = $self->add();
         @sql = (
             'UPDATE htaccess_users SET status = ? WHERE id = ?',
-            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'ok'), $htuserId
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $htuserId
         );
     } elsif ($self->{'status'} eq 'todisable') {
         @sql = ('UPDATE htaccess_users SET status = ? WHERE id = ?', 'disabled', $htuserId);
     } elsif ($self->{'status'} eq 'todelete') {
         $rs = $self->delete();
         if ($rs) {
-            @sql = ('UPDATE htaccess_users SET status = ? WHERE id = ?', scalar getMessageByType( 'error' ), $htuserId);
+            @sql = (
+                'UPDATE htaccess_users SET status = ? WHERE id = ?',
+                getLastError( 'error' ) || 'Unknown error',
+                $htuserId
+            );
         } else {
             @sql = ('DELETE FROM htaccess_users WHERE id = ?', $htuserId);
         }

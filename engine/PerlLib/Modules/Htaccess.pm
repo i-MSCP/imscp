@@ -72,7 +72,8 @@ sub process
     if ($self->{'status'} =~ /^to(?:add|change|enable)$/) {
         $rs = $self->add();
         @sql = (
-            'UPDATE htaccess SET status = ? WHERE id = ?', ($rs ? scalar getMessageByType( 'error' ) : 'ok'),
+            'UPDATE htaccess SET status = ? WHERE id = ?',
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'),
             $htaccessId
         );
     } elsif ($self->{'status'} eq 'todisable') {
@@ -81,8 +82,7 @@ sub process
         $rs = $self->delete();
         if ($rs) {
             @sql = (
-                'UPDATE htaccess SET status = ? WHERE id = ?', scalar getMessageByType( 'error' ) || 'Unknown error',
-                $htaccessId
+                'UPDATE htaccess SET status = ? WHERE id = ?', getLastError( 'error' ) || 'Unknown error', $htaccessId
             );
         } else {
             @sql = ('DELETE FROM htaccess WHERE id = ?', $htaccessId);

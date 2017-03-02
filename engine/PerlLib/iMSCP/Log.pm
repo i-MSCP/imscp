@@ -39,7 +39,7 @@ local $Params::Check::VERBOSE = 1;
 
 =over 4
 
-=item new()
+=item new( )
 
  Create new iMSCP::Log object
 
@@ -70,7 +70,7 @@ sub new
     bless $args, $class
 }
 
-=item getId()
+=item getId( )
 
  Get identifier
 
@@ -83,7 +83,7 @@ sub getId
     $_[0]->{'id'};
 }
 
-=item store()
+=item store( )
 
  Create a new item hash and store it on the stack.
 
@@ -98,7 +98,7 @@ sub getId
 
 =item tag
 
-The tag to add to this message. If not provided, default tag 'none' will be used.
+ The tag to add to this message. If not provided, default tag 'none' will be used.
 
 =item when
 
@@ -106,7 +106,7 @@ The tag to add to this message. If not provided, default tag 'none' will be used
 
 =back
 
-Return true upon success and undef upon failure, as well as issue a warning as to why it failed.
+ Return true upon success and undef upon failure, as well as issue a warning as to why it failed.
 
 =cut
 
@@ -149,7 +149,7 @@ sub store
     1;
 }
 
-=item retrieve()
+=item retrieve( )
 
  Retrieve all message items matching the criteria specified from the stack.
 
@@ -233,10 +233,10 @@ sub retrieve
     wantarray ? ($args->{'chrono'}) ? @list : reverse( @list ) : ($args->{'chrono'}) ? $list[0] : $list[$#list];
 }
 
-=item first()
+=item first( )
 
  Retrieve the first item(s) stored on the stack. It will default to only retrieving one if called with no arguments, and
-will always return results in chronological order.
+ will always return results in chronological order.
 
  If you only supply one argument, it is assumed to be the amount you wish returned.
 
@@ -252,7 +252,7 @@ sub first
     $self->retrieve( 'amount' => $amt, @_, 'chrono' => 1 );
 }
 
-=item final()
+=item final( )
 
  Retrieve the last item(s) stored on the stack. It will default to only retrieving one if called with no arguments, and
  will always return results in reverse chronological order.
@@ -271,7 +271,7 @@ sub final
     $self->retrieve( 'amount' => $amt, @_, 'chrono' => 0 );
 }
 
-=item flush()
+=item flush( )
 
  Removes all items from the stack and returns them to the caller
 

@@ -83,14 +83,14 @@ sub process
         $rs = $self->add();
         @sql = (
             'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
-            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'ok'), $domainId
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $domainId
         );
     } elsif ($self->{'domain_status'} eq 'todelete') {
         $rs = $self->delete();
         if ($rs) {
             @sql = (
                 'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
-                scalar getMessageByType( 'error' ) || 'Unknown error', $domainId
+                getLastError( 'error' ) || 'Unknown error', $domainId
             );
         } else {
             @sql = ('DELETE FROM domain WHERE domain_id = ?', $domainId);
@@ -99,13 +99,13 @@ sub process
         $rs = $self->disable();
         @sql = (
             'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
-            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'disabled'), $domainId
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'), $domainId
         );
     } elsif ($self->{'domain_status'} eq 'torestore') {
         $rs = $self->restore();
         @sql = (
             'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
-            ($rs ? scalar getMessageByType( 'error' ) || 'Unknown error' : 'ok'), $domainId
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $domainId
         );
     }
 

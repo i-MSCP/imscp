@@ -305,7 +305,7 @@ EOF
 
                     $msg = '';
                     if ($openSSL->validatePrivateKey()) {
-                        getMessageByType( 'error', { remove => 1 } );
+                        getMessageByType( 'error', { amount => 1, remove => 1 } );
                         $msg = "\n\\Z1Invalid private key or passphrase.\\Zn\n\nPlease try again.";
                     }
                 } while $rs < 30 && $msg;
@@ -343,7 +343,7 @@ EOF
                     } while $rs < 30 && !($certificatePath && -f $certificatePath);
                     return $rs if $rs >= 30;
 
-                    getMessageByType( 'error', { remove => 1 } );
+                    getMessageByType( 'error', { amount => 1, remove => 1 } );
                     $openSSL->{'certificate_container_path'} = $certificatePath;
                 } while $rs < 30 && $openSSL->validateCertificate();
                 return $rs if $rs >= 30;
@@ -368,7 +368,7 @@ EOF
         $openSSL->{'certificate_container_path'} = "$main::imscpConfig{'CONF_DIR'}/$domainName.pem";
 
         if ($openSSL->validateCertificateChain()) {
-            getMessageByType( 'error', { remove => 1 } );
+            getMessageByType( 'error', { amount => 1, remove => 1 } );
             $dialog->msgbox( <<"EOF" );
 
 Your SSL certificate for the control panel is missing or invalid.
