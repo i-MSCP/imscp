@@ -293,7 +293,7 @@ sub _init
     $self->{'preRequiredPackages'} = [
         'binutils', 'debconf-utils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl', 'lsb-release',
         'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'wget',
-        'liblchown-perl'
+        'liblchown-perl', 'apt-transport-https'
     ];
     $self->{'aptRepositoriesToRemove'} = [ ];
     $self->{'aptRepositoriesToAdd'} = [ ];
@@ -612,8 +612,8 @@ sub _processAptRepositories
 
     # Cleanup APT sources.list file
     for my $repository(@{$self->{'aptRepositoriesToRemove'}}, @{$self->{'aptRepositoriesToAdd'}}) {
-        my $escapedRepository = quotemeta( ref $repository eq 'HASH' ? $repository->{'repository'} : $repository );
-        $fileContent =~ s/^\n?(?:#\s*)?deb(?:-src)?\s+$escapedRepository.*?\n//gm;
+        my $escapedRepository = (ref $repository eq 'HASH') ? $repository->{'repository'} : $repository;
+        $fileContent =~ s/^\n?(?:#\s*)?deb(?:-src)?\s+\Q$escapedRepository\E.*?\n//gm;
     }
 
     # Add APT repositories

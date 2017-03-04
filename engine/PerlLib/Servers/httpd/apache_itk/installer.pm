@@ -202,41 +202,45 @@ sub _guessPhpVariables
 {
     my $self = shift;
 
-    (my $phpVersion) = $main::imscpConfig{'PHP_SERVER'} =~ /^php([\d.]+)/ or die(
-        sprintf( "Could not guess value for the `%s' PHP configuration parameter.", 'PHP_VERSION' )
+    my ($phpVersion) = $main::imscpConfig{'PHP_SERVER'} =~ /([\d.]+)$/ or die(
+        sprintf( "Couldn't guess value for the `%s' PHP configuration parameter.", 'PHP_VERSION' )
     );
 
-    if (version->parse( $phpVersion ) < version->parse( '7.0' )) {
-        $self->{'phpConfig'}->{'PHP_VERSION'} = 5;
-        $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = '/etc/php5';
-        $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = '/etc/php5/fpm/pool.d';
-        $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5' ) || '';
-        $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5-cgi' ) || '';
-        $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5-fpm' ) || '';
-    } else {
+    my $rs = execute( "php -d date.timezone=utc -i | grep '(php.ini) Path'", \my $stdout, \my $stderr );
+    debug( $stdout ) if $stdout;
+    die( $stderr || 'Unknown error' ) if $rs;
+
+    chomp( $stdout );
+    my ($phpConfDir) = $stdout =~ /\s([^\s]+)$/;
+    defined $phpConfDir or die( "Couldn't guess PHP configuration directory path." );
+    my $phpConfBaseDir = dirname($phpConfDir);
+
+    if ($phpConfBaseDir =~ m%php/\Q$phpVersion\E$%) {
         $self->{'phpConfig'}->{'PHP_VERSION'} = $phpVersion;
-        $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = "/etc/php/$phpVersion";
-        $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = "/etc/php/$phpVersion/fpm/pool.d";
+        $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = $phpConfBaseDir;
+        $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = "$phpConfBaseDir/fpm/pool.d";
         $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php$phpVersion" ) || '';
         $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-cgi$phpVersion" ) || '';
         $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-fpm$phpVersion" ) || '';
+    } else {
+        $self->{'phpConfig'}->{'PHP_VERSION'} = 5;
+        $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = $phpConfBaseDir;
+        $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = "$phpConfBaseDir/fpm/pool.d";
+        $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5' ) || '';
+        $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5-cgi' ) || '';
+        $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5-fpm' ) || '';
     }
 
-    unless (-d $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}) {
-        $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = '';
-        die(
-            sprintf(
-                "Could not guess value for the `%s' PHP configuration parameter: %s directory doesn't exists.",
-                'PHP_CONF_DIR_PATH',
-                $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}
-            )
-        );
-        $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = '';
+    for(qw/ PHP_CONF_DIR_PATH PHP_FPM_POOL_DIR_PATH /) {
+        unless (-d $self->{'phpConfig'}->{$_}) {
+            $self->{'phpConfig'}->{$_} = '';
+            die(sprintf("Couldn't guess value for the `%s' PHP configuration parameter: directory doesn't exists.", $_));
+        }
     }
 
-    for(qw/ PHP_CLI_BIN_PATH /) {
+    for(qw/ PHP_CLI_BIN_PATH PHP_FCGI_BIN_PATH PHP_FPM_BIN_PATH /) {
         next unless $self->{'phpConfig'}->{$_} eq '';
-        die( sprintf( "Could not guess value for the `%s' PHP configuration parameter.", $_ ) );
+        die( sprintf( "Couldn' guess value for the `%s' PHP configuration parameter.", $_ ) );
     }
 
     0;

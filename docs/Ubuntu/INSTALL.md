@@ -77,7 +77,7 @@ Note that these operations must be done on the host, not in the container.
 
 #### Supported Ubuntu versions
 
-Any LTS version >= 12.04 (Ubuntu 16.04 recommended)
+Any LTS version >= 14.04 (Ubuntu 16.04 recommended)
 
 ### 2) i-MSCP Installation
 

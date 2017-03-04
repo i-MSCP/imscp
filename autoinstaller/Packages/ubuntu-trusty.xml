@@ -22,25 +22,88 @@
             <package>libapache2-mod-fastcgi</package>
         </apache_php_fpm>
     </httpd>
-    <php default="php5.5">
-        <php5.5>
-            <package>php5</package>
-            <package>php5-cgi</package>
-            <package>php5-cli</package>
-            <package>php5-fpm</package>
-            <package post_install_task="php5dismod opcache pdo &amp;&amp; php5enmod opcache pdo/10">php5-common</package>
-            <package post_install_task="php5dismod curl &amp;&amp; php5enmod curl">php5-curl</package>
-            <package post_install_task="php5dismod gd &amp;&amp; php5enmod gd">php5-gd</package>
-            <package post_install_task="php5dismod imap &amp;&amp; php5enmod imap">php5-imap</package>
-            <package post_install_task="php5dismod intl &amp;&amp; php5enmod intl">php5-intl</package>
-            <package post_install_task="php5dismod json &amp;&amp; php5enmod json">php5-json</package>
-            <package post_install_task="php5dismod mcrypt &amp;&amp; php5enmod mcrypt">php5-mcrypt</package>
-            <package post_install_task="php5dismod mysql mysqli mysqlnd pdo_mysql &amp;&amp; php5enmod mysql mysqli mysqlnd/10 pdo_mysql">php5-mysqlnd</package>
-            <package post_install_task="php5dismod pspell &amp;&amp; php5enmod pspell">php5-pspell</package>
+    <php default="php7.1">
+        <php5.6
+                repository="http://ppa.launchpad.net/ondrej/php/ubuntu trusty main"
+                repository_key_id="E5267A6C"
+                repository_key_srv="keyserver.ubuntu.com"
+                pinning_package="*"
+                pinning_pin="origin ppa.launchpad.net"
+                pinning_pin_priority="1001"
+        >
+            <package>php5.6</package>
+            <package post_install_task="update-alternatives --set php /usr/bin/php5.6">php5.6-cli</package>
+            <package>php5.6-cgi</package>
+            <package>php5.6-fpm</package>
+            <package post_install_task="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php5.6-common</package>
+            <package post_install_task="phpenmod curl">php5.6-curl</package>
+            <package post_install_task="phpenmod gd">php5.6-gd</package>
+            <package post_install_task="phpenmod imap">php5.6-imap</package>
+            <package post_install_task="phpenmod intl">php5.6-intl</package>
+            <package post_install_task="phpenmod json">php5.6-json</package>
+            <package post_install_task="phpenmod mbstring">php5.6-mbstring</package>
+            <package post_install_task="phpenmod mcrypt">php5.6-mcrypt</package>
+            <package post_install_task="phpenmod mysqlnd mysqli pdo_mysql">php5.6-mysql</package>
+            <package post_install_task="phpenmod opcache">php5.6-opcache</package>
+            <package post_install_task="phpenmod pspell">php5.6-pspell</package>
+            <package post_install_task="phpenmod dom xml xmlreader xmlwriter">php5.6-xml</package>
+            <package post_install_task="phpenmod zip">php5.6-zip</package>
             <package>php-pear</package>
-            <package_conflict>php-apc</package_conflict>
-            <package_conflict>php5-suhosin</package_conflict>
-        </php5.5>
+        </php5.6>
+        <php7.0
+                repository="http://ppa.launchpad.net/ondrej/php/ubuntu trusty main"
+                repository_key_id="E5267A6C"
+                repository_key_srv="keyserver.ubuntu.com"
+                pinning_package="*"
+                pinning_pin="origin ppa.launchpad.net"
+                pinning_pin_priority="1001"
+        >
+            <package>php7.0</package>
+            <package post_install_task="update-alternatives --set php /usr/bin/php7.0">php7.0-cli</package>
+            <package>php7.0-cgi</package>
+            <package>php7.0-fpm</package>
+            <package post_install_task="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php7.0-common</package>
+            <package post_install_task="phpenmod curl">php7.0-curl</package>
+            <package post_install_task="phpenmod gd">php7.0-gd</package>
+            <package post_install_task="phpenmod imap">php7.0-imap</package>
+            <package post_install_task="phpenmod intl">php7.0-intl</package>
+            <package post_install_task="phpenmod json">php7.0-json</package>
+            <package post_install_task="phpenmod mbstring">php7.0-mbstring</package>
+            <package post_install_task="phpenmod mcrypt">php7.0-mcrypt</package>
+            <package post_install_task="phpenmod mysqlnd mysqli pdo_mysql">php7.0-mysql</package>
+            <package post_install_task="phpenmod opcache">php7.0-opcache</package>
+            <package post_install_task="phpenmod pspell">php7.0-pspell</package>
+            <package post_install_task="phpenmod dom xml xmlreader xmlwriter">php7.0-xml</package>
+            <package post_install_task="phpenmod zip">php7.0-zip</package>
+            <package>php-pear</package>
+        </php7.0>
+        <php7.1
+                repository="http://ppa.launchpad.net/ondrej/php/ubuntu trusty main"
+                repository_key_id="E5267A6C"
+                repository_key_srv="keyserver.ubuntu.com"
+                pinning_package="*"
+                pinning_pin="origin ppa.launchpad.net"
+                pinning_pin_priority="1001"
+        >
+            <package>php7.1</package>
+            <package post_install_task="update-alternatives --set php /usr/bin/php7.1">php7.1-cli</package>
+            <package>php7.1-cgi</package>
+            <package>php7.1-fpm</package>
+            <package post_install_task="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php7.1-common</package>
+            <package post_install_task="phpenmod curl">php7.1-curl</package>
+            <package post_install_task="phpenmod gd">php7.1-gd</package>
+            <package post_install_task="phpenmod imap">php7.1-imap</package>
+            <package post_install_task="phpenmod intl">php7.1-intl</package>
+            <package post_install_task="phpenmod json">php7.1-json</package>
+            <package post_install_task="phpenmod mbstring">php7.1-mbstring</package>
+            <package post_install_task="phpenmod mcrypt">php7.1-mcrypt</package>
+            <package post_install_task="phpenmod mysqlnd mysqli pdo_mysql">php7.1-mysql</package>
+            <package post_install_task="phpenmod opcache">php7.1-opcache</package>
+            <package post_install_task="phpenmod pspell">php7.1-pspell</package>
+            <package post_install_task="phpenmod dom xml xmlreader xmlwriter">php7.1-xml</package>
+            <package post_install_task="phpenmod zip">php7.1-zip</package>
+            <package>php-pear</package>
+        </php7.1>
     </php>
     <po default="dovecot">
         <courier>

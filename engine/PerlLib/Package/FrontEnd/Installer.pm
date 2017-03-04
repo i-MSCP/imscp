@@ -500,20 +500,17 @@ sub dpkgPostInvokeTasks
 {
     my $self = shift;
 
-    my $phpBinaryPath = (version->parse( "$self->{'phpConfig'}->{'PHP_VERSION'}" ) < version->parse( '7' ))
-        ? iMSCP::ProgramFinder::find( "php$self->{'phpConfig'}->{'PHP_VERSION'}-fpm" )
-        : iMSCP::ProgramFinder::find( "php-fpm$self->{'phpConfig'}->{'PHP_VERSION'}" );
+    return 0 unless -f '/usr/local/sbin/imscp_panel' || $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} eq '';
 
-    return 0 unless -f '/usr/local/sbin/imscp_panel' || defined $phpBinaryPath;
-
-    if (-f _ && !defined $phpBinaryPath) { # Cover case where administrator removed the package
+    if (-f _ && $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} eq '') {
+        # Cover case where administrator removed the package
         my $rs = $self->{'frontend'}->stop();
         $rs ||= iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
         return $rs;
     }
 
     if (-f _) {
-        my $v1 = $self->getFullPhpVersionFor( $phpBinaryPath );
+        my $v1 = $self->getFullPhpVersionFor( $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} );
         my $v2 = $self->getFullPhpVersionFor( '/usr/local/sbin/imscp_panel' );
         return 0 unless defined $v1 && defined $v2 && $v1 ne $v2; # Don't act when not necessary
         debug(sprintf("Updating imscp_panel service PHP binary from version `%s' to version `%s'", $v2, $v1));
@@ -884,12 +881,8 @@ sub _copyPhpBinary
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndCopyPhpBinary' );
     return $rs if $rs;
 
-    my $phpBinaryPath = (version->parse( "$self->{'phpConfig'}->{'PHP_VERSION'}" ) < version->parse( '7' ))
-        ? iMSCP::ProgramFinder::find( "php$self->{'phpConfig'}->{'PHP_VERSION'}-fpm" )
-        : iMSCP::ProgramFinder::find( "php-fpm$self->{'phpConfig'}->{'PHP_VERSION'}" );
-
-    unless (defined $phpBinaryPath) {
-        error( 'Could not find system PHP-FPM binary' );
+    if ($self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} eq '') {
+        error( "PHP `PHP_FPM_BIN_PATH' configuration parameter is not set." );
         return 1;
     }
 
