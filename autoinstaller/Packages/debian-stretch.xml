@@ -32,7 +32,7 @@
         >
             <package>php5.6</package>
             <package>php5.6-cgi</package>
-            <package>php5.6-cli</package>
+            <package post_install_task="update-alternatives --set php /usr/bin/php5.6">php5.6-cli</package>
             <package>php5.6-fpm</package>
             <package post_install_task="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php5.6-common</package>
             <package post_install_task="phpenmod curl">php5.6-curl</package>
@@ -48,13 +48,6 @@
             <package post_install_task="phpenmod dom xml xmlreader xmlwriter">php5.6-xml</package>
             <package post_install_task="phpenmod zip">php5.6-zip</package>
             <package>php-pear</package>
-            <package_conflict>php-apc</package_conflict>
-            <package_conflict>php5-suhosin</package_conflict>
-            <package_conflict>php5*</package_conflict>
-            <package_conflict>php7.0</package_conflict>
-            <package_conflict>php7.0-*</package_conflict>
-            <package_conflict>php7.1</package_conflict>
-            <package_conflict>php7.1-*</package_conflict>
         </php5.6>
         <php7.0
                 repository_conflict="http://packages.dotdeb.org"
@@ -66,7 +59,7 @@
         >
             <package>php7.0</package>
             <package>php7.0-cgi</package>
-            <package>php7.0-cli</package>
+            <package post_install_task="update-alternatives --set php /usr/bin/php7.0">php7.0-cli</package>
             <package>php7.0-fpm</package>
             <package post_install_task="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php7.0-common</package>
             <package post_install_task="phpenmod curl">php7.0-curl</package>
@@ -82,8 +75,6 @@
             <package post_install_task="phpenmod dom xml xmlreader xmlwriter">php7.0-xml</package>
             <package post_install_task="phpenmod zip">php7.0-zip</package>
             <package>php-pear</package>
-            <package_conflict>php-apc</package_conflict>
-            <package_conflict>php5-suhosin</package_conflict>
         </php7.0>
         <php7.1
                 repository_conflict="http://packages.dotdeb.org"
@@ -94,7 +85,7 @@
                 pinning_pin_priority="1001"
         >
             <package>php7.1</package>
-            <package>php7.1-cli</package>
+            <package post_install_task="update-alternatives --set php /usr/bin/php7.1">php7.1-cli</package>
             <package>php7.1-cgi</package>
             <package>php7.1-fpm</package>
             <package post_install_task="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php7.1-common</package>
@@ -111,8 +102,6 @@
             <package post_install_task="phpenmod dom xml xmlreader xmlwriter">php7.1-xml</package>
             <package post_install_task="phpenmod zip">php7.1-zip</package>
             <package>php-pear</package>
-            <package_conflict>php-apc</package_conflict>
-            <package_conflict>php5-suhosin</package_conflict>
         </php7.1>
     </php>
     <po default="dovecot">
