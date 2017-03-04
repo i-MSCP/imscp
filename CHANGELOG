@@ -66,6 +66,7 @@ FRONTEND
     Fixed: IP address input field is too small (admin/ip_manage.php)
     Fixed: Store compressed IPv6 (ip_manage.php)
     Fixed: Try to guess the prefix length whenever possible (ip_manage.php)
+    Fixed: Usage of non-numeric values (iMSCP_pTemplate)
     Fixed: When IP address is pasted, netmask input field is not updated (admin/ip_manage.php)
     Removed: PhpMyAdmin auto-login feature (password for SQL database are no longer stored plaintext in database)
     Removed: Pydio auto-login feature (password for FTP users are no longer stored plaintext in database)

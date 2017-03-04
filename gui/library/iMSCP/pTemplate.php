@@ -398,63 +398,61 @@ class iMSCP_pTemplate
      */
     private function substitute_dynamic($data)
     {
+        if (($curl_b = strpos($data, '{')) === FALSE) {
+            return $data; // there is nothing to substitute in $data; return early
+        }
+
         $this->sp = 0;
         $start_from = -1;
-        $curl_b = substr($data, (int)'{', $start_from);
+        $this->stack[$this->sp++] = array('{', $curl_b);
+        $curl = $this->find_next_curl($data, $start_from);
 
-        if ($curl_b) {
-            $this->stack[$this->sp++] = array('{', $curl_b);
-            $curl = $this->find_next_curl($data, $start_from);
+        while ($curl) {
+            if ($curl[0] == '{') {
+                $this->stack[$this->sp++] = $curl;
+                $start_from = $curl[1];
+            } else {
+                $curl_e = $curl[1];
 
-            while ($curl) {
-                if ($curl[0] == '{') {
-                    $this->stack[$this->sp++] = $curl;
-                    $start_from = $curl[1];
-                } else {
-                    $curl_e = $curl[1];
+                if ($this->sp > 0) {
+                    $curl = $this->stack[--$this->sp];
+                    // CHECK for empty stack must be done HERE !
+                    $curl_b = $curl[1];
 
-                    if ($this->sp > 0) {
-                        $curl = $this->stack [--$this->sp];
-                        // CHECK for empty stack must be done HERE !
-                        $curl_b = $curl[1];
+                    if ($curl_b < $curl_e + 1) {
+                        $var_name = substr($data, $curl_b + 1, $curl_e - $curl_b - 1);
 
-                        if ($curl_b < $curl_e + 1) {
-                            $var_name = substr($data, $curl_b + 1, $curl_e - $curl_b - 1);
-
-                            // The whole WORK goes here :)
-                            if (preg_match('/[A-Z0-9][A-Z0-9\_]*/', $var_name)) {
-                                if (isset($this->namespace[$var_name])) {
-                                    $data = substr_replace($data, $this->namespace[$var_name], $curl_b, $curl_e - $curl_b + 1);
-                                    $start_from = $curl_b - 1;
-                                    // new value may also begin with '{'
-                                } elseif (isset($this->dtpl_data[$var_name])) {
-                                    $data = substr_replace($data, $this->dtpl_data[$var_name], $curl_b, $curl_e - $curl_b + 1);
-                                    $start_from = $curl_b - 1;
-                                    // new value may also begin with '{'
-                                } else {
-                                    $start_from = $curl_b;
-                                    // no suitable value found -> go forward
-                                }
+                        // The whole WORK goes here :)
+                        if (preg_match('/[A-Z0-9][A-Z0-9\_]*/', $var_name)) {
+                            if (isset($this->namespace[$var_name])) {
+                                $data = substr_replace($data, $this->namespace[$var_name], $curl_b, $curl_e - $curl_b + 1);
+                                $start_from = $curl_b - 1;
+                                // new value may also begin with '{'
+                            } elseif (isset($this->dtpl_data[$var_name])) {
+                                $data = substr_replace($data, $this->dtpl_data[$var_name], $curl_b, $curl_e - $curl_b + 1);
+                                $start_from = $curl_b - 1;
+                                // new value may also begin with '{'
                             } else {
                                 $start_from = $curl_b;
-                                // go forward, we have {no variable} here.
+                                // no suitable value found -> go forward
                             }
                         } else {
-                            $start_from = $curl_e;
-                            // go forward, we have {} here.
+                            $start_from = $curl_b;
+                            // go forward, we have {no variable} here.
                         }
                     } else {
                         $start_from = $curl_e;
+                        // go forward, we have {} here.
                     }
+                } else {
+                    $start_from = $curl_e;
                 }
-
-                $curl = $this->find_next_curl($data, $start_from);
             }
 
-            return $data;
+            $curl = $this->find_next_curl($data, $start_from);
         }
 
-        return $data; // there is nothing to substitute in $data
+        return $data;
     }
 
     /**
