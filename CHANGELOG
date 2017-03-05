@@ -45,7 +45,7 @@ DATABASE
     Updated: `server_ips.ip_number` column length (i-MSCP database)
 
 DISTRIBUTIONS
-    Added: PHP 5.6 alternatives for Debian Wheezy through Dotdeb repository
+    Added: PHP 5.6 alternative for Debian Wheezy through Dotdeb repository
     Added: PHP 5.6, 7.0, 7.1 alternatives for Debian Jessie/Stretch through Ondřej Surý repository
     Added: PHP 5.6, 7.0, 7.1 alternatives for Ubuntu Trusty/Xenial through Ondřej Surý PPA
     Removed: Support for PHP versions that are considered EOL by upstream PHP team (Ubuntu/Debian)
