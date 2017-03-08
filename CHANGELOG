@@ -73,6 +73,7 @@ FRONTEND
     Fixed: When IP address is pasted, netmask input field is not updated (admin/ip_manage.php)
     Removed: PhpMyAdmin auto-login feature (password for SQL database are no longer stored plaintext in database)
     Removed: Pydio auto-login feature (password for FTP users are no longer stored plaintext in database)
+    Review: Increased value for PHP the `post_max_size' and `upload_max_filesize' directives
 
 INSTALLER
     Fixed: APT GPG keys not updated when required
