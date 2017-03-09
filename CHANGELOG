@@ -121,7 +121,7 @@ SERVICES
     Added: systemd-tmpfiles for creation of the /run/imscp directory
     Changed: run directory for imscp_panel service (/var/run to /run/imscp)
     Changed: run directory for PHP-FPM (/var/run to /run/php)
-    Fixed: Make sure that the /run/imscp directory is created by imscp_panel.conf upstart job configuration file
+    Fixed: Make sure that the /run/imscp directory is created by imscp_panel.conf Upstart job configuration file
     Fixed: Make sure that the /run/imscp directory is created by imscp_panel sysvinit script
     Fixed: The imscp_mountall service must be started as late as possible on server boot
     Removed: imscp_panel_checkconf as FPM often ends with zend_mm_heap corrupted, preventing service to be (re)started
