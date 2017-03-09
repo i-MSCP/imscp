@@ -170,7 +170,7 @@ sub _restoreApacheConfig
 sub _restorePhpfpmConfig
 {
     
-    for('5.6', '7.0', '7.0') {
+    for('5.6', '7.0', '7.1') {
         next unless -f "/etc/init/php$_-fpm.override";
         my $rs = iMSCP::File->new( filename => "/etc/init/php$_-fpm.override" )->delFile();
         return $rs if $rs;
