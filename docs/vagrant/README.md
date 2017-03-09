@@ -13,6 +13,6 @@ Then to start the VM and immediately start the i-MSCP install and get a root ssh
 
 	vagrant up
 	vagrant ssh
-	sudo -s
+	su
 
 Thanks, happy vagranting! This process may change over time, so check back if things stop working for some reason.
