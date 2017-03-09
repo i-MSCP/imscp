@@ -1471,11 +1471,11 @@ sub _addCfg
             # fastcgi module case (Apache2 < 2.4.10)
             FASTCGI_LISTEN_MODE     => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds' ? 'socket' : 'host',
             FASTCGI_LISTEN_ENDPOINT => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
-                ? "/var/run/php$phpVersion-fpm-$confLevel.sock"
+                ? "/run/php/php$phpVersion-fpm-$confLevel.sock"
                 : '127.0.0.1:'.($self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'} + $data->{'PHP_FPM_LISTEN_PORT'}),
             # proxy_fcgi module case (Apache2 >= 2.4.10)
             PROXY_FCGI_PATH         => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
-                ? "unix:/var/run/php$phpVersion-fpm-$confLevel.sock|"
+                ? "unix:/run/php/php$phpVersion-fpm-$confLevel.sock|"
                 : '',
             PROXY_FCGI_URL          => 'fcgi://'.($self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
                 ? $confLevel

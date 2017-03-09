@@ -134,7 +134,7 @@ sub showListenModeDialog
 
 Please, choose the FastCGI address type that you want use. Available types are:
 
-\\Z4uds:\\Zn Unix domain socket (e.g. /var/run/php<version>-fpm-domain.tld.sock)
+\\Z4uds:\\Zn Unix domain socket (e.g. /run/php/php<version>-fpm-domain.tld.sock)
 \\Z4tcp:\\Zn TCP/IP (e.g. 127.0.0.1:9000)
 
 Be aware that for high traffic sites, TCP/IP can require a tweaking of your kernel parameters (sysctl).

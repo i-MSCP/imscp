@@ -55,7 +55,7 @@ PHP_FPM_RLIMIT_FILES = 4096
 # Listen mode (FPM FastCGI addresse type):
 # Available modes:
 #  - 'tcp' (e.g. 192.168.1.136:9001)
-#  - 'uds' (e.g. /var/run/php<version>-fpm-domain.tld.sock)
+#  - 'uds' (e.g. /run/php/php<version>-fpm-domain.tld.sock)
 PHP_FPM_LISTEN_MODE =
 
 # Starting port for TCP/IP FastCGI address type
