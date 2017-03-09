@@ -24,6 +24,7 @@
     </httpd>
     <php default="php7.1">
         <php5.6
+                repository_conflict="http://packages.dotdeb.org"
                 repository="http://ppa.launchpad.net/ondrej/php/ubuntu trusty main"
                 repository_key_id="E5267A6C"
                 repository_key_srv="keyserver.ubuntu.com"
@@ -52,6 +53,7 @@
             <package_conflict>php5-common</package_conflict>
         </php5.6>
         <php7.0
+                repository_conflict="http://packages.dotdeb.org"
                 repository="http://ppa.launchpad.net/ondrej/php/ubuntu trusty main"
                 repository_key_id="E5267A6C"
                 repository_key_srv="keyserver.ubuntu.com"
@@ -80,6 +82,7 @@
             <package_conflict>php5-common</package_conflict>
         </php7.0>
         <php7.1
+                repository_conflict="http://packages.dotdeb.org"
                 repository="http://ppa.launchpad.net/ondrej/php/ubuntu trusty main"
                 repository_key_id="E5267A6C"
                 repository_key_srv="keyserver.ubuntu.com"

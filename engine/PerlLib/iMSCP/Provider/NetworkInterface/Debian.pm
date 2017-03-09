@@ -219,8 +219,6 @@ sub _updateInterfacesFile
             {
                 ip_id       => $data->{'ip_id'},
                 # For IPv6 addr, we do not create aliased interface because that is not suppported everywhere.
-                # For instance, on Ubuntu Precise, we end with the following error:
-                # `error: "net.ipv6.conf.eth0:0.autoconf" is an unknown key' when trying to bring up aliased interface
                 iface       => $iface,
                 ip_address  => $cAddr,
                 ip_netmask  => $data->{'ip_netmask'},

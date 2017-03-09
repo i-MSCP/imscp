@@ -1838,7 +1838,7 @@ sub _buildPHPConfig
                 TMPDIR                       => $data->{'HOME_DIR'}.'/phptmp',
                 EMAIL_DOMAIN                 => $emailDomain,
                 PHP_FPM_LISTEN_ENDPOINT      => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
-                    ? "/var/run/php$phpVersion-fpm-$poolName.sock"
+                    ? "/run/php/php$phpVersion-fpm-$poolName.sock"
                     : '127.0.0.1:'.($self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'} + $data->{'PHP_FPM_LISTEN_PORT'}),
                 PHP_FPM_PROCESS_MANAGER_MODE => $self->{'phpConfig'}->{'PHP_FPM_PROCESS_MANAGER_MODE'} || 'ondemand',
                 PHP_FPM_MAX_CHILDREN         => $self->{'phpConfig'}->{'PHP_FPM_MAX_CHILDREN'} || 6,

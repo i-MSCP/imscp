@@ -500,16 +500,16 @@ sub dpkgPostInvokeTasks
 {
     my $self = shift;
 
-    return 0 unless -f '/usr/local/sbin/imscp_panel' || $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} eq '';
-
-    if (-f _ && $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} eq '') {
+    if (-f '/usr/local/sbin/imscp_panel'
+        && ($self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} eq '' || !-f $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'})
+    ) {
         # Cover case where administrator removed the package
         my $rs = $self->{'frontend'}->stop();
         $rs ||= iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
         return $rs;
     }
 
-    if (-f _) {
+    if (-f '/usr/local/sbin/imscp_panel') {
         my $v1 = $self->getFullPhpVersionFor( $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} );
         my $v2 = $self->getFullPhpVersionFor( '/usr/local/sbin/imscp_panel' );
         return 0 unless defined $v1 && defined $v2 && $v1 ne $v2; # Don't act when not necessary

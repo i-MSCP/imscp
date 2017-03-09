@@ -45,11 +45,11 @@ DATABASE
     Updated: `server_ips.ip_number` column length (i-MSCP database)
 
 DISTRIBUTIONS
-    Added: PHP 5.6 alternative for Debian Wheezy through Dotdeb repository
     Added: PHP 5.6, 7.0, 7.1 alternatives for Debian Jessie/Stretch through Ondřej Surý repository
     Added: PHP 5.6, 7.0, 7.1 alternatives for Ubuntu Trusty/Xenial through Ondřej Surý PPA
-    Removed: Support for PHP versions that are considered EOL by upstream PHP team (Ubuntu/Debian)
-    Removed: Support for Ubuntu Precise Pangolin (12.04) - Will be EOL on April 2017
+    Dropped: Support for PHP versions that are considered EOL by upstream PHP team (Ubuntu/Debian)
+    Dropped: Support for Ubuntu Precise Pangolin (12.04) - Will be EOL on April 2017
+    Dropped; Support for Debian Wheezy - Many softwares and library are really too old
     Updated: Debian Stretch (9.0) packages file according last state of repository (full freeze since 20170205)
 
 DOCUMENTATION
@@ -116,7 +116,15 @@ SERVERS
     Fixed: Wrong permissions set on Dovecot configuration files
 
 SERVICES
-    Fixed: The `imscp_mountall' service must be started as late as possible on server boot
+    Added: Upstart job override files for PHP-FPM 5.6, 7.0 and 7.1 (reload with SIGUSR2)
+    Added: --nodaemonize option in imscp_panel Upstart job configuration file
+    Added: systemd-tmpfiles for creation of the /run/imscp directory
+    Changed: run directory for imscp_panel service (/var/run to /run/imscp)
+    Changed: run directory for PHP-FPM (/var/run to /run/php)
+    Fixed: Make sure that the /run/imscp directory is created by imscp_panel.conf upstart job configuration file
+    Fixed: Make sure that the /run/imscp directory is created by imscp_panel sysvinit script
+    Fixed: The imscp_mountall service must be started as late as possible on server boot
+    Removed: imscp_panel_checkconf as FPM often ends with zend_mm_heap corrupted, preventing service to be (re)started
 
 YOUTRACK
     #IP-0826 Any password should be encrypted

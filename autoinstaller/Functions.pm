@@ -800,7 +800,9 @@ sub _cleanup
         '/usr/sbin/maillogconvert.pl',
         # Due to a mistake in previous i-MSCP versions (Upstart conffile copied into systemd confdir)
         "/etc/systemd/system/php5-fpm.override",
-        "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf"
+        "/etc/init/php5-fpm.override", # Removed in 1.4.x
+        "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf",
+        "/usr/local/lib/imscp_panel/imscp_panel_checkconf" # Removed in 1.4.x
     ) {
         next unless -f;
         my $rs = iMSCP::File->new( filename => $_ )->delFile();
