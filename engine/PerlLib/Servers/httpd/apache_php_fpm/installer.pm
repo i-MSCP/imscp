@@ -706,8 +706,21 @@ sub _cleanup
     return $rs if $rs;
 
     #
-    ## Cleanup and disable unused PHP SAPIs
+    ## Cleanup and disable unused PHP versions/SAPIs
     #
+
+    if (-f '/etc/logrotate.d/php5-fpm') {
+        $rs = iMSCP::File->new( filename => '/etc/logrotate.d/php5-fpm' )->delFile();
+        return $rs if $rs;
+    }
+
+    $rs = iMSCP::Dir->new( dirname => '/etc/php5' )->remove();
+    return $rs if $rs;
+
+    for(grep !/^$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}$/, glob dirname($self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}).'/*') {
+        $rs = iMSCP::Dir->new( dirname => $_ )->remove();
+        return $rs if $rs;
+    }
 
     # CGI
     $rs = iMSCP::Dir->new( dirname => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'} )->remove();
