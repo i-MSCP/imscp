@@ -827,20 +827,6 @@ sub _makeDirs
 
     my $rootUName = $main::imscpConfig{'ROOT_USER'};
     my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-    my $phpStarterDir = $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'};
-
-    # Ensure that FCGI starter directory exists
-    $rs = iMSCP::Dir->new( dirname => $phpStarterDir )->make(
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'ROOT_GROUP'},
-            mode  => 0555
-        }
-    );
-
-    # Remove previous FCGI tree if any (needed to avoid any garbage from plugins)
-    $rs ||= iMSCP::Dir->new( dirname => "$phpStarterDir/master" )->remove();
-    return $rs if $rs;
 
     my $nginxTmpDir = $self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'};
     unless (-d $nginxTmpDir) {
@@ -853,11 +839,10 @@ sub _makeDirs
 
     for (
         [ $nginxTmpDir, $rootUName, $rootUName, 0755 ],
-        [ $self->{'config'}->{'HTTPD_CONF_DIR'}, $rootUName, $rootUName, 0755 ],
-        [ $self->{'config'}->{'HTTPD_LOG_DIR'}, $rootUName, $rootUName, 0755 ],
-        [ $self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}, $rootUName, $rootUName, 0755 ],
-        [ $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}, $rootUName, $rootUName, 0755 ],
-        [ $phpStarterDir, $rootUName, $rootGName, 0555 ]
+        [ $self->{'config'}->{'HTTPD_CONF_DIR'}, $rootUName, $rootGName, 0755 ],
+        [ $self->{'config'}->{'HTTPD_LOG_DIR'}, $rootUName, $rootGName, 0755 ],
+        [ $self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}, $rootUName, $rootGName, 0755 ],
+        [ $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}, $rootUName, $rootGName, 0755 ],
     ) {
         $rs = iMSCP::Dir->new( dirname => $_->[0] )->make( { user => $_->[1], group => $_->[2], mode => $_->[3] } );
         return $rs if $rs;

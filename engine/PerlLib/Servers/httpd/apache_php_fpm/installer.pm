@@ -329,7 +329,7 @@ sub _makeDirs
     return $rs if $rs;
 
     # Cleanup pools directory (prevent possible orphaned pool file when changing PHP configuration level)
-    unlink glob "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/*.conf";
+    unlink grep !/www\.conf$/, glob "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/*.conf";
     $self->{'eventManager'}->trigger( 'afterHttpdMakeDirs' );
 }
 
@@ -718,7 +718,15 @@ sub _cleanup
     $rs = execute( "rm -f $main::imscpConfig{'USER_WEB_DIR'}/*/logs/*.log", \ my $stdout, \ my $stderr );
     debug($stdout) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
-    $rs;
+    return $rs if $rs;
+
+    #
+    ## Cleanup and disable unused PHP SAPIs
+    #
+
+    # CGI
+    $rs = iMSCP::Dir->new( dirname => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'} )->remove();
+    return $rs if $rs;
 }
 
 =back

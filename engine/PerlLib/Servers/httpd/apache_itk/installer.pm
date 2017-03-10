@@ -36,6 +36,7 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
+use iMSCP::Service;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
 use iMSCP::TemplateParser;
@@ -306,11 +307,6 @@ sub _makeDirs
         return $rs if $rs;
     }
 
-    # Todo move this statement into the httpd apache_fcgid server implementation (uninstaller) when it will be ready for
-    # call when switching to another httpd server implementation.
-    $rs = iMSCP::Dir->new( dirname => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'} )->remove();
-    return $rs if $rs;
-
     $self->{'eventManager'}->trigger( 'afterHttpdMakeDirs' );
 }
 
@@ -358,20 +354,13 @@ sub _buildPhpConfFiles
         { },
         { destination => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/apache2/php.ini" }
     );
-    return $rs if $rs;
-
-    # Transitional: fastcgi_imscp
-    my @modulesOff = ( 'fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php_fpm_imscp', 'php5_cgi', 'suexec' );
-    my @modulesOn = ($main::imscpConfig{'PHP_SERVER'}, 'version');
-
-    if (version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' )) {
-        # MPM management is a mess in Jessie. We so disable all and re-enable only needed MPM
-        push @modulesOff, 'mpm_itk', 'mpm_prefork', 'mpm_event', 'mpm_prefork', 'mpm_worker';
-        push @modulesOn, 'mpm_itk', 'authz_groupfile';
-    }
-
-    $rs = $self->{'httpd'}->disableModules( @modulesOff );
-    $rs ||= $self->{'httpd'}->enableModules( @modulesOn );
+    $rs = $self->{'httpd'}->disableModules(
+        'fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php_fpm_imscp', 'suexec', 'php5', 'php5_cgi', 'php5filter',
+        'php5.6', 'php7.0', 'php7.1', 'mpm_itk', 'mpm_event', 'mpm_prefork', 'mpm_worker'
+    );
+    $rs ||= $self->{'httpd'}->enableModules(
+        'authz_groupfile', $main::imscpConfig{'PHP_SERVER'}, 'mpm_itk', 'version'
+    );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildPhpConfFiles' );
 }
 
@@ -613,7 +602,30 @@ sub _cleanup
     $rs = execute( "rm -f $main::imscpConfig{'USER_WEB_DIR'}/*/logs/*.log", \ my $stdout, \ my $stderr );
     debug($stdout) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
-    $rs;
+    return $rs if $rs;
+
+    #
+    ## Cleanup and disable unused PHP SAPIs
+    #
+
+    # CGI
+    $rs = iMSCP::Dir->new( dirname => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'} )->remove();
+    return $rs if $rs;
+
+    # FPM
+    unlink grep !/www\.conf$/, glob "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/*.conf";
+    local $@;
+    eval {
+        my $serviceMngr = iMSCP::Service->getInstance();
+        $serviceMngr->stop( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ) );
+        $serviceMngr->disable( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ) );
+    };
+    if ($@) {
+        error( $@ );
+        return 1;
+    }
+
+    0;
 }
 
 =back

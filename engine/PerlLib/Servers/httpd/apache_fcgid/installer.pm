@@ -36,6 +36,7 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
+use iMSCP::Service;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
 use iMSCP::TemplateParser;
@@ -377,19 +378,11 @@ sub _buildFastCgiConfFiles
     $rs ||= $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
-    return $rs if $rs;
-
-    # # Transitional: fastcgi_imscp
-    my @modulesOff = ('fastcgi', 'fcgid', 'php5', 'php5_cgi', 'php7.0', 'php7.1', 'php_fpm_imscp', 'fastcgi_imscp');
-    my @modulesOn = ('actions', 'fcgid_imscp', 'version');
-
-    if ($apache24) {
-        push @modulesOff, 'mpm_event', 'mpm_itk', 'mpm_prefork';
-        push @modulesOn, 'mpm_worker', 'authz_groupfile';
-    }
-
-    $rs = $self->{'httpd'}->disableModules( @modulesOff );
-    $rs ||= $self->{'httpd'}->enableModules( @modulesOn );
+    $rs = $self->{'httpd'}->disableModules(
+        'fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php_fpm_imscp', 'php5', 'php5_cgi', 'php5filter',
+        'php5.6', 'php7.0', 'php7.1', 'mpm_itk', 'mpm_event', 'mpm_prefork', 'mpm_worker'
+    );
+    $rs ||= $self->{'httpd'}->enableModules( 'actions', 'authz_groupfile', 'fcgid_imscp', 'mpm_worker', 'version' );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildFastCgiConfFiles' );
 }
 
@@ -640,7 +633,26 @@ sub _cleanup
     $rs = execute( "rm -f $main::imscpConfig{'USER_WEB_DIR'}/*/logs/*.log", \ my $stdout, \ my $stderr );
     debug($stdout) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
-    $rs;
+    return $rs if $rs;
+    
+    #
+    ## Cleanup and disable unused PHP SAPIs
+    #
+
+    # FPM
+    unlink grep !/www\.conf$/, glob "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/*.conf";
+    local $@;
+    eval {
+        my $serviceMngr = iMSCP::Service->getInstance();
+        $serviceMngr->stop( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ) );
+        $serviceMngr->disable( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ) );
+    };
+    if ($@) {
+        error( $@ );
+        return 1;
+    }
+
+    0;
 }
 
 =back
