@@ -41,7 +41,7 @@
 
     <Directory {HOME_DIR}>
         Options +SymLinksIfOwnerMatch
-        {AUTHZ_ALLOW_ALL}
+        Require all granted
     </Directory>
 
     <Directory {DOCUMENT_ROOT}>

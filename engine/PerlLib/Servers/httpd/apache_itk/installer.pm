@@ -355,8 +355,9 @@ sub _buildPhpConfFiles
         { destination => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/apache2/php.ini" }
     );
     $rs = $self->{'httpd'}->disableModules(
-        'fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php_fpm_imscp', 'suexec', 'php5', 'php5_cgi', 'php5filter',
-        'php5.6', 'php7.0', 'php7.1', 'mpm_itk', 'mpm_event', 'mpm_prefork', 'mpm_worker'
+        'actions', 'fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php_fpm_imscp', 'suexec', 'php5', 'php5_cgi',
+        'php5filter', 'php5.6', 'php7.0', 'php7.1', 'proxy_fcgi', 'proxy_handler', 'mpm_itk', 'mpm_event',
+        'mpm_prefork', 'mpm_worker'
     );
     $rs ||= $self->{'httpd'}->enableModules(
         'authz_groupfile', $main::imscpConfig{'PHP_SERVER'}, 'mpm_itk', 'version'
@@ -423,17 +424,11 @@ sub _buildApacheConfFiles
         return $rs if $rs;
     }
 
-    my $apache24 = version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' );
-
     $self->{'httpd'}->setData(
         {
             HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
             HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
             HTTPD_ROOT_DIR         => $self->{'config'}->{'HTTPD_ROOT_DIR'},
-            AUTHZ_DENY_ALL         => $apache24 ? 'Require all denied' : 'Deny from all',
-            AUTHZ_ALLOW_ALL        => $apache24 ? 'Require all granted' : 'Allow from all',
-            PIPE                   =>
-                version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.2.12' ) ? '||' : '|',
             VLOGGER_CONF           => "$self->{'apacheCfgDir'}/vlogger.conf"
         }
     );

@@ -13,7 +13,7 @@
     <Directory {USER_WEB_DIR}/domain_disabled_pages>
         Options None
         AllowOverride None
-        {AUTHZ_ALLOW_ALL}
+        Require all granted
     </Directory>
 
     RedirectMatch 303 ^/(?!(?:images/.+|index\.html|$)) http://www.{DOMAIN_NAME}/

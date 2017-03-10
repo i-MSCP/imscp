@@ -326,7 +326,6 @@ sub disableDmn
     $self->setData( $data );
 
     my $net = iMSCP::Net->getInstance();
-    my $isApache24 = version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' );
 
     my @domainIPs = ($data->{'BASE_SERVER_IP'}, $data->{'DOMAIN_IP'});
     $rs = $self->{'eventManager'}->trigger( 'onAddHttpdVhostIps', $data, \@domainIPs );
@@ -338,7 +337,6 @@ sub disableDmn
     $self->setData(
         {
             BASE_SERVER_VHOST => $data->{'BASE_SERVER_VHOST'},
-            AUTHZ_ALLOW_ALL   => $isApache24 ? 'Require all granted' : 'Allow from all',
             HTTPD_LOG_DIR     => $self->{'config'}->{'HTTPD_LOG_DIR'},
             DOMAIN_IPS        =>  join(' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]") . ':80' } @domainIPs),
             USER_WEB_DIR      => $main::imscpConfig{'USER_WEB_DIR'}
@@ -832,24 +830,7 @@ sub addIps
     }
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdAddIps', \$fileContent, $data );
-    return $rs if $rs;
-
-    # Cleanup previous entries if any
-    $fileContent =~ s/^NameVirtualHost[^\n]+\n//gim;
-
-    unless (version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' )) {
-        my $net = iMSCP::Net->getInstance();
-
-        for (@{$data->{'SSL_IPS'}}) {
-            $fileContent .= 'NameVirtualHost '.(($net->getAddrVersion( $_ ) eq 'ipv4') ? $_ : "[$_]").":443\n";
-        }
-
-        for (@{$data->{'IPS'}}) {
-            $fileContent .= 'NameVirtualHost '.(($net->getAddrVersion( $_ ) eq 'ipv4') ? $_ : "[$_]").":80\n";
-        }
-    }
-
-    $rs = $self->{'eventManager'}->trigger( 'afterHttpdAddIps', \$fileContent, $data );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdAddIps', \$fileContent, $data );
     $rs ||= $file->set( $fileContent );
     $rs ||= $file->save();
     $rs ||= $self->enableSites( '00_nameserver.conf' );
@@ -1443,7 +1424,6 @@ sub _addCfg
     }
 
     my $net = iMSCP::Net->getInstance();
-    my $isApache24 = version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' );
 
     my @domainIPs = ($data->{'BASE_SERVER_IP'}, $data->{'DOMAIN_IP'});
     $rs = $self->{'eventManager'}->trigger( 'onAddHttpdVhostIps', $data, \@domainIPs );
@@ -1458,8 +1438,6 @@ sub _addCfg
             HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
             PHP_FCGI_STARTER_DIR   => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'},
             HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
-            AUTHZ_ALLOW_ALL        => $isApache24 ? 'Require all granted' : 'Allow from all',
-            AUTHZ_DENY_ALL         => $isApache24 ? 'Require all denied' : 'Deny from all',
             DOMAIN_IPS             =>  join(' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]") . ':80' } @domainIPs),
             FCGID_NAME             => $confLevel
         }

@@ -8,7 +8,7 @@
 
     Alias /errors/ {HOME_DIR}/errors/
     <Directory {HOME_DIR}/errors/>
-        {AUTHZ_ALLOW_ALL}
+        Require all granted
     </Directory>
 
     # SECTION standard_redirect BEGIN.

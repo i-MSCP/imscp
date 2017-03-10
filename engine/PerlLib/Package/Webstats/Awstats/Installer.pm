@@ -127,24 +127,20 @@ sub _setupApache2
     $rs ||= $file->mode( 0640 );
     return $rs if $rs;
 
-    my $isApache24 = version->parse( "$self->{'httpd'}->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' );
-
     # Enable required Apache2 modules
 
-    $rs = $isApache24
-        ? $self->{'httpd'}->enableModules( 'rewrite', 'authn_core', 'authn_basic', 'authn_socache', 'proxy', 'proxy_http' )
-        : $self->{'httpd'}->enableModules( 'rewrite', 'authn_core', 'authn_basic', 'proxy', 'proxy_http' );
+    $rs = $self->{'httpd'}->enableModules(
+        'rewrite', 'authn_core', 'authn_basic', 'authn_socache', 'proxy', 'proxy_http'
+    );
     return $rs if $rs;
 
     # Create Apache2 vhost
 
     $self->{'httpd'}->setData(
         {
-            AUTHZ_ALLOW_ALL             => $isApache24 ? 'Require all granted' : 'Allow from all',
             AWSTATS_AUTH_USER_FILE_PATH => "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats",
             AWSTATS_ENGINE_DIR          => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
-            AWSTATS_WEB_DIR             => $main::imscpConfig{'AWSTATS_WEB_DIR'},
-            NAME_VIRTUALHOST            => $isApache24 ? '' : 'NameVirtualHost 127.0.0.1:8889'
+            AWSTATS_WEB_DIR             => $main::imscpConfig{'AWSTATS_WEB_DIR'}
         }
     );
 

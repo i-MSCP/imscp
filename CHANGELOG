@@ -102,7 +102,10 @@ PLUGINS
 SERVERS
     Added: LAN IP address in virtualhost for local access (Servers::ftpd::proftpd::installer)
     Added: Support for Python and Ruby CGI scripts (Httpd server impl.)
+    Changed: Usage of mpm_event in place of mpm_worker (PHP-FPM httpd server impl.)
+    Dropped: Compatibility for Apache2 < 2.4.x (Httpd server impl.)
     Fixed: apache2: Could not reliably determine the server's fully qualified domain name, using ::1 for ServerName
+    Fixed: Cleanup and disable unused PHP SAPIs
     Fixed: Forward Secrecy not supported with reference browsers (Apache2)
     Fixed: Make sure that PHP Apache2 SAPI is disabled when needed (httpd server impl.)
     Fixed: Possible `NameVirtualHost <ip>:<port> has no VirtualHosts' warning (Apache2)
@@ -112,7 +115,6 @@ SERVERS
     Fixed: Wrong events triggered (Servers::mta::postfix)
     Fixed: Wrong permissions set on Courier Authdaemon socket dir, making maildrop MDA unable to connect
     Fixed: Wrong permissions set on Dovecot configuration files
-    Fixed: Cleanup and disable unused PHP SAPIs
 
 SERVICES
     Added: Upstart job override files for PHP-FPM 5.6, 7.0 and 7.1 (reload with SIGUSR2)

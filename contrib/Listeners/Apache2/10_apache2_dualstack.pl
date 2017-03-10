@@ -24,11 +24,7 @@ package Listener::Apache2::DualStack;
 use strict;
 use warnings;
 use iMSCP::EventManager;
-use iMSCP::Net;
-use Servers::httpd;
-use List::MoreUtils qw(uniq);
-use Scalar::Defer;
-use version;
+use List::MoreUtils qw/ uniq /;
 
 #
 ## Configuration variables
@@ -51,49 +47,29 @@ my @ADDITIONAL_IPS = ( '<IP1>', '<IP2>' );
 ## Please, don't edit anything below this line
 #
 
-my $IS_APACHE24 = lazy {
-    my $APACHE_VERSION = Servers::httpd->factory()->{'config'}->{'HTTPD_VERSION'};
-    version->parse( "$APACHE_VERSION" ) >= version->parse( '2.4.0' );
-};
 my @IPS = ();
 my @SSL_IPS = ();
 
 # Listener that is responsible to add additional IPs in Apache2 vhost files
-sub addVhostIPs
-{
-    my ($data, $domainIps) = @_;
+iMSCP::EventManager->getInstance()->register(
+    'onAddHttpdVhostIps',
+    sub {
+        my ($data, $domainIps) = @_;
 
-    push @{$domainIps}, @ADDITIONAL_IPS;
+        push @{$domainIps}, @ADDITIONAL_IPS;
 
-    if (exists $PER_DOMAIN_ADDITIONAL_IPS{$data->{'DOMAIN_NAME'}}) {
-        push @{$domainIps}, @{$PER_DOMAIN_ADDITIONAL_IPS{$data->{'DOMAIN_NAME'}}};
+        if (exists $PER_DOMAIN_ADDITIONAL_IPS{$data->{'DOMAIN_NAME'}}) {
+            push @{$domainIps}, @{$PER_DOMAIN_ADDITIONAL_IPS{$data->{'DOMAIN_NAME'}}};
+        }
+
+        @IPS = uniq( @IPS, @ADDITIONAL_IPS, @{$PER_DOMAIN_ADDITIONAL_IPS{$data->{'DOMAIN_NAME'}}} );
+        if ($data->{'SSL_SUPPORT'}) {
+            @SSL_IPS = uniq( @SSL_IPS, @ADDITIONAL_IPS, @{$PER_DOMAIN_ADDITIONAL_IPS{$data->{'DOMAIN_NAME'}}} );
+        }
+
+        0;
     }
-
-    return 0 if force $IS_APACHE24;
-
-    @IPS = uniq( @IPS, @ADDITIONAL_IPS, @{$PER_DOMAIN_ADDITIONAL_IPS{$data->{'DOMAIN_NAME'}}} );
-
-    if ($data->{'SSL_SUPPORT'}) {
-        @SSL_IPS = uniq( @SSL_IPS, @ADDITIONAL_IPS, @{$PER_DOMAIN_ADDITIONAL_IPS{$data->{'DOMAIN_NAME'}}} );
-    }
-
-    0;
-}
-
-# Listener that is responsible to make the Apache Httpd server (version < 2.4)
-# aware of additional IPs
-sub addIPList
-{
-    my $data = $_[1];
-    return 0 if force $IS_APACHE24;
-    @{$data->{'IPS'}} = uniq( @{$data->{'IPS'}}, @IPS );
-    @{$data->{'SSL_IPS'}} = uniq( @{$data->{'SSL_IPS'}}, @SSL_IPS );
-    0;
-}
-
-my $eventManager = iMSCP::EventManager->getInstance();
-$eventManager->register( 'onAddHttpdVhostIps', \&addVhostIPs );
-$eventManager->register( 'beforeHttpdAddIps', \&addIPList );
+);
 
 1;
 __END__

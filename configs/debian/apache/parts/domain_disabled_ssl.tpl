@@ -13,7 +13,7 @@
     <Directory {USER_WEB_DIR}/domain_disabled_pages>
         Options None
         AllowOverride None
-        {AUTHZ_ALLOW_ALL}
+        Require all granted
     </Directory>
 
     SSLEngine On
@@ -21,6 +21,5 @@
     SSLCertificateChainFile {CERTIFICATE}
 
     Header always set Strict-Transport-Security "max-age={HSTS_MAX_AGE}{HSTS_INCLUDE_SUBDOMAINS}"
-
     RedirectMatch 303 ^/(?!(?:images/.+|index\.html|$)) https://www.{DOMAIN_NAME}/
 </VirtualHost>

@@ -342,15 +342,12 @@ sub _buildFastCgiConfFiles
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdBuildFastCgiConfFiles' );
-    my $version = $self->{'config'}->{'HTTPD_VERSION'};
-    my $apache24 = version->parse( $version ) >= version->parse( '2.4.0' );
 
     $self->{'httpd'}->setData(
         {
             SYSTEM_USER_PREFIX   => $main::imscpConfig{'SYSTEM_USER_PREFIX'},
             SYSTEM_USER_MIN_UID  => $main::imscpConfig{'SYSTEM_USER_MIN_UID'},
-            PHP_FCGI_STARTER_DIR => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'},
-            AUTHZ_ALLOW_ALL      => $apache24 ? 'Require all granted' : 'Allow from all'
+            PHP_FCGI_STARTER_DIR => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}
         }
     );
 
@@ -379,8 +376,9 @@ sub _buildFastCgiConfFiles
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
     $rs = $self->{'httpd'}->disableModules(
-        'fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php_fpm_imscp', 'php5', 'php5_cgi', 'php5filter',
-        'php5.6', 'php7.0', 'php7.1', 'mpm_itk', 'mpm_event', 'mpm_prefork', 'mpm_worker'
+        'actions', 'fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php_fpm_imscp', 'php5', 'php5_cgi',
+        'php5filter', 'php5.6', 'php7.0', 'php7.1', 'proxy_fcgi', 'proxy_handler', 'mpm_itk', 'mpm_event',
+        'mpm_prefork', 'mpm_worker'
     );
     $rs ||= $self->{'httpd'}->enableModules( 'actions', 'authz_groupfile', 'fcgid_imscp', 'mpm_worker', 'version' );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildFastCgiConfFiles' );
@@ -445,17 +443,11 @@ sub _buildApacheConfFiles
         return $rs if $rs;
     }
 
-    my $apache24 = version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' );
-
     $self->{'httpd'}->setData(
         {
             HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
             HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
             HTTPD_ROOT_DIR         => $self->{'config'}->{'HTTPD_ROOT_DIR'},
-            AUTHZ_DENY_ALL         => $apache24 ? 'Require all denied' : 'Deny from all',
-            AUTHZ_ALLOW_ALL        => $apache24 ? 'Require all granted' : 'Allow from all',
-            PIPE                   =>
-                version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.2.12' ) ? '||' : '|',
             VLOGGER_CONF           => "$self->{'apacheCfgDir'}/vlogger.conf"
         }
     );
@@ -469,7 +461,9 @@ sub _buildApacheConfFiles
                 : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/00_imscp.conf"
         }
     );
-    $rs ||= $self->{'httpd'}->enableModules( 'cgid', 'headers', 'proxy', 'proxy_http', 'rewrite', 'setenvif', 'ssl', 'suexec' );
+    $rs ||= $self->{'httpd'}->enableModules(
+        'cgid', 'headers', 'proxy', 'proxy_http', 'rewrite', 'setenvif', 'ssl', 'suexec'
+    );
     $rs ||= $self->{'httpd'}->enableSites( '00_nameserver.conf' );
     $rs ||= $self->{'httpd'}->enableConfs( '00_imscp.conf' );
     $rs ||= $self->{'httpd'}->disableSites( 'default', 'default-ssl', '000-default.conf', 'default-ssl.conf' );

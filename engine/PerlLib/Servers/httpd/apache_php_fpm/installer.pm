@@ -363,13 +363,9 @@ sub _buildFastCgiConfFiles
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdBuildFastCgiConfFiles' );
     return $rs if $rs;
 
-    my $apacheVersion = $self->{'config'}->{'HTTPD_VERSION'};
-
     $self->{'httpd'}->setData(
         {
-            AUTHZ_ALLOW_ALL => version->parse( $apacheVersion ) >= version->parse( '2.4.0' )
-                ? 'Require env REDIRECT_STATUS' : "Order allow,deny\n        Allow from env=REDIRECT_STATUS",
-            PHP_VERSION     => $self->{'phpConfig'}->{'PHP_VERSION'}
+            PHP_VERSION => $self->{'phpConfig'}->{'PHP_VERSION'}
         }
     );
 
@@ -385,22 +381,17 @@ sub _buildFastCgiConfFiles
     );
     return $rs if $rs;
 
-    # Transitional: fastcgi_imscp
-    my @modulesOff = ('fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php5', 'php5_cgi', 'php7.0', 'php7.1');
-    my @modulesOn = ('actions', 'suexec', 'version');
+    my @modulesOff = (
+        'actions', 'fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php_fpm_imscp', 'suexec', 'php5', 'php5_cgi',
+        'php5filter', 'php5.6', 'php7.0', 'php7.1', 'proxy_fcgi', 'proxy_handler', 'mpm_itk', 'mpm_event',
+        'mpm_prefork', 'mpm_worker'
+    );
+    my @modulesOn = ('authz_groupfile', 'mpm_event', 'suexec', 'version');
 
-    if (version->parse( $apacheVersion ) >= version->parse( '2.4.0' )) {
-        push @modulesOff, 'mpm_event', 'mpm_itk', 'mpm_prefork';
-        push @modulesOn, 'mpm_worker', 'authz_groupfile';
-    }
-
-    if (version->parse( $apacheVersion ) >= version->parse( '2.4.10' )) {
-        # Transitional: proxy_handler
-        push @modulesOff, 'php_fpm_imscp', 'proxy_handler';
+    if (version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.10' )) {
         push @modulesOn, 'proxy_fcgi';
     } else {
-        push @modulesOff, 'proxy_fcgi';
-        push @modulesOn, 'php_fpm_imscp';
+        push @modulesOn, 'actions', 'php_fpm_imscp';
     }
 
     $rs = $self->{'httpd'}->disableModules( @modulesOff );
@@ -520,17 +511,11 @@ sub _buildApacheConfFiles
         return $rs if $rs;
     }
 
-    my $apache24 = version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.0' );
-
     $self->{'httpd'}->setData(
         {
-            AUTHZ_ALLOW_ALL        => $apache24 ? 'Require all granted' : 'Allow from all',
-            AUTHZ_DENY_ALL         => $apache24 ? 'Require all denied' : 'Deny from all',
             HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
             HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
             HTTPD_ROOT_DIR         => $self->{'config'}->{'HTTPD_ROOT_DIR'},
-            PIPE                   =>
-                version->parse( "$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.2.12' ) ? '||' : '|',
             VLOGGER_CONF           => "$self->{'apacheCfgDir'}/vlogger.conf"
         }
     );
