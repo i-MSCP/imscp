@@ -13,7 +13,6 @@
         </apache_fcgid>
         <apache_itk>
             <package>apache2</package>
-            <package>libapache2-mod-php7.0</package>
             <package_delayed>libapache2-mpm-itk</package_delayed>
         </apache_itk>
         <apache_php_fpm>
@@ -49,6 +48,8 @@
             <package post_install_task="phpenmod dom xml xmlreader xmlwriter">php5.6-xml</package>
             <package post_install_task="phpenmod zip">php5.6-zip</package>
             <package>php-pear</package>
+            <package>libapache2-mod-php5.6</package>
+            <package_conflict>libapache2-mod-php5</package_conflict>
             <package_conflict>php5-common</package_conflict>
         </php5.6>
         <php7.0
@@ -78,7 +79,9 @@
             <package post_install_task="phpenmod dom xml xmlreader xmlwriter">php7.0-xml</package>
             <package post_install_task="phpenmod zip">php7.0-zip</package>
             <package>php-pear</package>
+            <package>libapache2-mod-php7.1</package>
             <package_conflict>php5-common</package_conflict>
+            <package_conflict>libapache2-mod-php5</package_conflict>
         </php7.0>
         <php7.1
                 repository="http://ppa.launchpad.net/ondrej/php/ubuntu xenial main"
@@ -106,7 +109,9 @@
             <package post_install_task="phpenmod dom xml xmlreader xmlwriter">php7.1-xml</package>
             <package post_install_task="phpenmod zip">php7.1-zip</package>
             <package>php-pear</package>
+            <package>libapache2-mod-php7.1</package>
             <package_conflict>php5-common</package_conflict>
+            <package_conflict>libapache2-mod-php5</package_conflict>
         </php7.1>
     </php>
     <po default="dovecot">
