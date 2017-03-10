@@ -47,10 +47,10 @@ DATABASE
 DISTRIBUTIONS
     Added: PHP 5.6, 7.0, 7.1 alternatives for Debian Jessie/Stretch through Ondřej Surý repository
     Added: PHP 5.6, 7.0, 7.1 alternatives for Ubuntu Trusty/Xenial through Ondřej Surý PPA
+    Dropped: Support for Debian Wheezy - Many softwares and library are really too old
     Dropped: Support for PHP versions that are considered EOL by upstream PHP team (Ubuntu/Debian)
     Dropped: Support for Ubuntu Precise Pangolin (12.04) - Will be EOL on April 2017
-    Dropped; Support for Debian Wheezy - Many softwares and library are really too old
-    Updated: Debian Stretch (9.0) packages file according last state of repository (full freeze since 20170205)
+    Updated: Debian Stretch packages file according last state of repository (full freeze since 20170205)
 
 DOCUMENTATION
     Added: CGI script sample for Perl, Python and Ruby
@@ -96,7 +96,7 @@ PACKAGES
     Fixed: Couldn't access symlinked icons (AWStats)
     Fixed: Password not updated on customer password recovery (AWStats)
 
-PLUGINS:
+PLUGINS
     Updated: API version to 1.4.0
 
 SERVERS
@@ -105,15 +105,14 @@ SERVERS
     Fixed: apache2: Could not reliably determine the server's fully qualified domain name, using ::1 for ServerName
     Fixed: Forward Secrecy not supported with reference browsers (Apache2)
     Fixed: Make sure that PHP Apache2 SAPI is disabled when needed (httpd server impl.)
-    Fixed: POODLE (SSLv3) vulnerability not mitigated (default Apache2.2 configuration)
     Fixed: Possible `NameVirtualHost <ip>:<port> has no VirtualHosts' warning (Apache2)
     Fixed: Possible `nginx: [emerg] bind() to <ip>:<port> failed (98: Address already in use)' error
     Fixed: POSTCONF(1) is being slow when called multiple-times, slowing down i-MSCP installer (Postfix server impl.)
-    Fixed: RC4 cipher is not safe (default Apache2.2 configuration)
     Fixed: Set HSTS `max-age' value to zero when HSTS is disabled (See RFC 6797)
     Fixed: Wrong events triggered (Servers::mta::postfix)
     Fixed: Wrong permissions set on Courier Authdaemon socket dir, making maildrop MDA unable to connect
     Fixed: Wrong permissions set on Dovecot configuration files
+    Fixed: Cleanup and disable unused PHP SAPIs
 
 SERVICES
     Added: Upstart job override files for PHP-FPM 5.6, 7.0 and 7.1 (reload with SIGUSR2)
