@@ -38,6 +38,7 @@ use iMSCP::Getopt;
 use iMSCP::OpenSSL;
 use iMSCP::Net;
 use iMSCP::ProgramFinder;
+use iMSCP::Service;
 use iMSCP::SystemUser;
 use iMSCP::TemplateParser;
 use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
@@ -846,6 +847,19 @@ sub _makeDirs
     ) {
         $rs = iMSCP::Dir->new( dirname => $_->[0] )->make( { user => $_->[1], group => $_->[2], mode => $_->[3] } );
         return $rs if $rs;
+    }
+
+    local $@;
+    eval {
+        if (iMSCP::Service->getInstance->isSystemd()) {
+            $rs = execute( 'systemd-tmpfiles --create', \my $stdout, \my $stderr );
+            debug($stdout) if $stdout;
+            die($stderr || 'Unknown error') if $rs;
+        }
+    };
+    if ($@) {
+        error($@);
+        return 1;
     }
 
     $self->{'eventManager'}->trigger( 'afterFrontEndMakeDirs' );
