@@ -93,6 +93,7 @@ LISTENERS
 
 PACKAGES
     Added: `beforeUpdateRoundCubeMailHostEntries' event listener (RoundCube package installer)
+    Fixed: Apache2 needs to be reloaded on password update (AWStats)
     Fixed: Couldn't access symlinked icons (AWStats)
     Fixed: Password not updated on customer password recovery (AWStats)
 

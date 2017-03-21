@@ -155,6 +155,9 @@ sub addUser
 
     my $rs ||= $file->set( $fileContent );
     $rs ||= $file->save();
+
+    $self->{'httpd'}->{'restart'} = 1 unless $rs;
+    $rs;
 }
 
 =item addDmn(\%data)
