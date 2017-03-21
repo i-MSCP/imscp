@@ -25,9 +25,6 @@
                 repository_conflict="http://packages.dotdeb.org"
                 repository="https://packages.sury.org/php/ stretch main"
                 repository_key_url="https://packages.sury.org/php/apt.gpg"
-                pinning_package="*"
-                pinning_pin="origin packages.sury.org"
-                pinning_pin_priority="1001"
         >
             <package>php5.6</package>
             <package>php5.6-cgi</package>
@@ -55,9 +52,6 @@
                 repository_conflict="http://packages.dotdeb.org"
                 repository="https://packages.sury.org/php/ stretch main"
                 repository_key_url="https://packages.sury.org/php/apt.gpg"
-                pinning_package="*"
-                pinning_pin="origin packages.sury.org"
-                pinning_pin_priority="1001"
         >
             <package>php7.0</package>
             <package>php7.0-cgi</package>
@@ -85,9 +79,6 @@
                 repository_conflict="http://packages.dotdeb.org"
                 repository="https://packages.sury.org/php/ stretch main"
                 repository_key_uri="https://packages.sury.org/php/apt.gpg"
-                pinning_package="*"
-                pinning_pin="origin packages.sury.org"
-                pinning_pin_priority="1001"
         >
             <package>php7.1</package>
             <package post_install_task="update-alternatives --set php /usr/bin/php7.1">php7.1-cli</package>

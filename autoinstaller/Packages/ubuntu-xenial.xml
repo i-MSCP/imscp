@@ -26,9 +26,6 @@
                 repository="http://ppa.launchpad.net/ondrej/php/ubuntu xenial main"
                 repository_key_id="E5267A6C"
                 repository_key_srv="keyserver.ubuntu.com"
-                pinning_package="*"
-                pinning_pin="origin ppa.launchpad.net"
-                pinning_pin_priority="1001"
         >
             <package>php5.6</package>
             <package post_install_task="update-alternatives --set php /usr/bin/php5.6">php5.6-cli</package>
@@ -57,9 +54,6 @@
                 repository="http://ppa.launchpad.net/ondrej/php/ubuntu xenial main"
                 repository_key_id="E5267A6C"
                 repository_key_srv="keyserver.ubuntu.com"
-                pinning_package="*"
-                pinning_pin="origin ppa.launchpad.net"
-                pinning_pin_priority="1001"
         >
             <package>php7.0</package>
             <package>php7.0-cgi</package>
@@ -87,9 +81,6 @@
                 repository="http://ppa.launchpad.net/ondrej/php/ubuntu xenial main"
                 repository_key_id="E5267A6C"
                 repository_key_srv="keyserver.ubuntu.com"
-                pinning_package="*"
-                pinning_pin="origin ppa.launchpad.net"
-                pinning_pin_priority="1001"
         >
             <package>php7.1</package>
             <package post_install_task="update-alternatives --set php /usr/bin/php7.1">php7.1-cli</package>
