@@ -63,9 +63,11 @@ FRONTEND
     Added: Methods to compress/expand IPv6 addresses (iMSCP::Net)
     Changed: Defer loading of NIC and IP data (iMSCP::Net)
     Changed: Restricts character range for password generator to ASCII alphabet characters and numbers
+    Fixed: {CUSTOMER} template variable is not replaced in reseller alias order email notification
     Fixed: Administrators cannot switch onto reseller/customer interface when database update is available
     Fixed: Don't list software that require database for customers that have not SQL feature enabled
     Fixed: `iMSCP_Exception_Production' class not compatible with PHP >= 7.0
+    Fixed: Infobox for new alias orders must be static (reseller/index.php)
     Fixed: IP address input field is too small (admin/ip_manage.php)
     Fixed: Store compressed IPv6 (ip_manage.php)
     Fixed: Try to guess the prefix length whenever possible (ip_manage.php)

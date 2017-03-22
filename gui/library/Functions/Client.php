@@ -508,6 +508,7 @@ function send_alias_order_email($aliasName)
         'subject' => $data['subject'],
         'message' => $data['message'],
         'placeholders' => array(
+            '{CUSTOMER}' => decode_idna($row['admin_name']),
             '{ALIAS}' => $aliasName
         )
     ));
