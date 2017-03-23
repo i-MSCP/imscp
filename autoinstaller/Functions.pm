@@ -177,7 +177,7 @@ sub build
 
     undef $autoinstallerAdapterInstance;
 
-    # Clean build directory (remove any .gitignore|empty-file)
+    # Clean build directory (remove any .gitkeep file)
     find(
         sub {
             return unless $_ eq '.gitkeep';
