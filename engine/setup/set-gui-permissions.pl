@@ -72,8 +72,6 @@ iMSCP::Bootstrapper->getInstance()->boot(
     }
 );
 
-use Data::Dumper;
-
 my $rs = 0;
 my @items = ();
 

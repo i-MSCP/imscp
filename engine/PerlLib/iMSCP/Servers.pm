@@ -80,8 +80,6 @@ sub _init
 {
     my $self = shift;
 
-    use Data::Dumper;
-    
     $_ = basename( $_, '.pm' ) for @{$self->{'servers'}} = grep { $_ !~ /\/noserver.pm$/ } glob(
         "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers/*.pm"
     );

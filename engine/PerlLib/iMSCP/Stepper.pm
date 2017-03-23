@@ -30,7 +30,6 @@ use iMSCP::Dialog;
 use iMSCP::Getopt;
 use Scalar::Defer;
 use parent 'Exporter';
-use Data::Dumper;
 
 our @EXPORT = qw/ startDetail endDetail step /;
 
