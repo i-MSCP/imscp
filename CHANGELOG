@@ -28,6 +28,9 @@ BACKEND
 
 CONFIG
     Changed: Usage of Courier authdaemon as password verifier (Cyrus SASL) - see the errata file for further details
+    Merged: domain_redirect.tpl, domain_redirect_ssl.tpl and domain_ssl.tpl templates in domain.tpl template (Apache2)
+    Merged: domain_disabled_ssl.tpl template in domain_disabled.tpl template (Apache2)
+    Removed: domain_ssl.tpl, domain_redirect.tpl, domain_redirect_ssl.tpl and domain_disabled_ssl template files (Apache2)
     Updated: Courier configuration for use of new password scheme (SHA512-CRYPT)
     Updated: Cyrus SALS configuration for use of new password scheme (SHA512-CRYPT)
     Updated: Dovecot configuration for use of new password scheme (SHA512-CRYPT)
@@ -91,11 +94,16 @@ INSTALLER
 LISTENERS
     Added: 10_postfix_transport_table.pl listener file (Allows to add entries in Postfix transport(5) table)
     Fixed: Default hostname must be overridden to prevent hostname mismatches (10_roundcube_tls.pl)
-    Updated: 50_dovecot_plaintext.pl listener file according new i-MSCP Serie
+    Updated: 10_apache2_dualstack.pl listener file for i-MSCP Serie 1.4.x
+    Updated: 20_apache2_serveralias_override.pl.pl listener file for i-MSCP Serie 1.4.x
+    Updated: 30_apache2_tools_proxy.pl.pl listener file for i-MSCP Serie 1.4.x
+    Updated: 40_apache2_security_headers.pl.pl listener for i-MSCP Serie 1.4.x
+    Updated: 50_dovecot_plaintext.pl listener file according for i-MSCP Serie 1.4.x
 
 PACKAGES
     Added: `beforeUpdateRoundCubeMailHostEntries' event listener (RoundCube package installer)
     Fixed: Apache2 needs to be reloaded on password update (AWStats)
+    Fixed: AWStats interface is not reachable for redirected or proxied sites (AWStats)
     Fixed: Couldn't access symlinked icons (AWStats)
     Fixed: Password not updated on customer password recovery (AWStats)
 
@@ -103,18 +111,22 @@ PLUGINS
     Updated: API version to 1.4.0
 
 SERVERS
+    Added: htdocs/.well-known folder to site skeletons (Httpd server impl.)
     Added: LAN IP address in virtualhost for local access (Servers::ftpd::proftpd::installer)
     Added: Support for Python and Ruby CGI scripts (Httpd server impl.)
     Changed: Usage of mpm_event in place of mpm_worker (PHP-FPM httpd server impl.)
     Dropped: Compatibility for Apache2 < 2.4.x (Httpd server impl.)
+    Fixed: Any site must have a document root, even when redirected or proxied (Httpd server impl.)
     Fixed: apache2: Could not reliably determine the server's fully qualified domain name, using ::1 for ServerName
     Fixed: Cleanup and disable unused PHP SAPIs
+    Fixed: Even when a site is redirected or proxied, its Web folder must be created (Httpd server impl.)
     Fixed: Forward Secrecy not supported with reference browsers (Apache2)
     Fixed: Make sure that PHP Apache2 SAPI is disabled when needed (httpd server impl.)
     Fixed: Possible `NameVirtualHost <ip>:<port> has no VirtualHosts' warning (Apache2)
     Fixed: Possible `nginx: [emerg] bind() to <ip>:<port> failed (98: Address already in use)' error
     Fixed: POSTCONF(1) is being slow when called multiple-times, slowing down i-MSCP installer (Postfix server impl.)
     Fixed: Set HSTS `max-age' value to zero when HSTS is disabled (See RFC 6797)
+    Fixed: The `.well-known' folder is not reacheable when a site is redirected or proxied (httpd server impl.)
     Fixed: Wrong events triggered (Servers::mta::postfix)
     Fixed: Wrong permissions set on Courier Authdaemon socket dir, making maildrop MDA unable to connect
     Fixed: Wrong permissions set on Dovecot configuration files

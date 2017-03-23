@@ -47,7 +47,7 @@ $self = {
     verbose         => 0,
     debug_callbacks => [ ],
     loggers         => [ iMSCP::Log->new( id => 'default' ) ],
-    logger          => sub { $self->{'loggers'}->[$#{$self->{'loggers'}}] },
+    logger          => sub { $self->{'loggers'}->[$#{$self->{'loggers'}}] }
 };
 
 =head1 DESCRIPTION
@@ -404,7 +404,12 @@ END {
     my $exitCode = $?;
 
     &{$_} for @{$self->{'debug_callbacks'}};
-    endDebug() for @{$self->{'loggers'}};
+    
+    my $countLoggers = scalar @{$self->{'loggers'}};
+    while($countLoggers > 0) {
+        endDebug();
+        $countLoggers--;
+    }
 
     for($self->{'logger'}()->retrieve( tag => qr/(?:warn|error|fatal)/, remove => 1 )) {
         print STDERR output($_->{'message'}, $_->{'tag'});

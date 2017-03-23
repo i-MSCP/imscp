@@ -1,4 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2017 by Laurent Declercq <l.declercq@nnuxwin.com>
 # Copyright (C) 2013-2017 by Sascha Bay
 #
 # This program is free software; you can redistribute it and/or
@@ -16,21 +17,22 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 #
-## Allows to overwrite Apache2 ServerAlias directive.
+## Allows to add additional server aliases in the given Apache2 vhosts.
 #
 
 package Listener::Apache2::ServerAlias::Override;
 
-use strict;
-use warnings;
 use iMSCP::EventManager;
 
 #
 ## Configuration variables
 #
 
-my $searchDomain = 'example.com';
-my $addServerAlias = 'example'; # Add more than one alias (example example-2 example-3.com)
+# Map Apache2 vhosts (domains) to additional server aliases 
+my %serverAliases = (
+    'example1.com' => 'example1.in example1.br', # Add example1.in and example1.br server aliases to exemple1.com vhost
+    'example2.com' => 'example2.in example2.br' # Add example2.in and example2.br server aliases to exemple2.com vhost
+);
 
 #
 ## Please, don't edit anything below this line
@@ -39,15 +41,12 @@ my $addServerAlias = 'example'; # Add more than one alias (example example-2 exa
 iMSCP::EventManager->getInstance()->register(
     'afterHttpdBuildConf',
     sub {
-        my ($tplFileContent, $tplFileName, $data) = @_;
+        my ($tplContent, $tplName, $data) = @_;
 
-        if ($data->{'DOMAIN_NAME'} && $data->{'DOMAIN_NAME'} eq $searchDomain &&
-            grep($_ eq $tplFileName, ( 'domain_redirect.tpl', 'domain.tpl', 'domain_redirect_ssl.tpl',
-                'domain_ssl.tpl' ))
-        ) {
-            $$tplFileContent =~ s/^(\s+ServerAlias.*)/$1 $addServerAlias/m;
-        }
+        return 0 unless $tplName eq 'domain.tpl'
+            && $serverAliases{$data->{'DOMAIN_NAME'}};
 
+        ${$tplContent} =~ s/^(\s+ServerAlias.*)/$1 $serverAliases{$data->{'DOMAIN_NAME'}}/m;
         0;
     }
 );

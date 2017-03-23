@@ -1441,7 +1441,8 @@ sub _addCfg
     }
 
     $rs = $self->buildConfFile(
-        "$self->{'apacheTplDir'}/".(($data->{'HSTS_SUPPORT'} || $data->{'FORWARD'} ne 'no') ? 'domain_redirect.tpl' : 'domain.tpl'),
+        "$self->{'apacheTplDir'}/".(($data->{'HSTS_SUPPORT'} || $data->{'FORWARD'} ne 'no')
+            ? 'domain_redirect.tpl' : 'domain.tpl'),
         $data,
         { destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
     );
@@ -1536,7 +1537,7 @@ sub _addFiles
         return $rs if $rs;
     }
 
-    if ($data->{'DOMAIN_TYPE'} eq 'dmn' || $data->{'FORWARD'} eq 'no') {
+    #if ($data->{'DOMAIN_TYPE'} eq 'dmn' || $data->{'FORWARD'} eq 'no') {
         local $@;
 
         # Whether or not permissions must be fixed recursively
@@ -1560,7 +1561,7 @@ sub _addFiles
             return 1;
         }
 
-        if ($data->{'FORWARD'} eq 'no') {
+        #if ($data->{'FORWARD'} eq 'no') {
             # Build default page if needed (if htdocs doesn't exists or is empty)
             if (!-d "$data->{'WEB_DIR'}/htdocs"
                 || iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/htdocs" )->isEmpty()
@@ -1568,7 +1569,7 @@ sub _addFiles
                 if (-d "$tmpDir/htdocs") {
                     # Test needed in case admin removed the index.html file from the skeleton
                     if (-f "$tmpDir/htdocs/index.html") {
-                        $data->{SKIP_TEMPLATE_CLEANER} = 1;
+                        $data->{'SKIP_TEMPLATE_CLEANER'} = 1;
                         my $fileSource = "$tmpDir/htdocs/index.html";
                         $rs = $self->buildConfFile( $fileSource, $data, { destination => $fileSource } );
                         return $rs if $rs;
@@ -1584,17 +1585,17 @@ sub _addFiles
                 $rs = iMSCP::Dir->new( dirname => "$tmpDir/htdocs" )->remove();
                 return $rs if $rs;
             }
-        } else { # Remove unwanted files/directories for forwarded dmn
-            for(iMSCP::Dir->new( dirname => $tmpDir )->getAll()) {
-                next if /^(?:backups|errors|logs|\.htgroup|\.htpasswd|phptmp)$/;
-                if (-f "$tmpDir/$_") {
-                    $rs = iMSCP::File->new( filename => "$tmpDir/$_" )->delFile();
-                } else {
-                    $rs = iMSCP::Dir->new( dirname => "$tmpDir/$_" )->remove();
-                    return $rs if $rs;
-                }
-            }
-        }
+        #} else { # Remove unwanted files/directories for forwarded dmn
+        #    for(iMSCP::Dir->new( dirname => $tmpDir )->getAll()) {
+        #        next if /^(?:backups|errors|logs|\.htgroup|\.htpasswd|phptmp)$/;
+        #        if (-f "$tmpDir/$_") {
+        #            $rs = iMSCP::File->new( filename => "$tmpDir/$_" )->delFile();
+        #        } else {
+        #            $rs = iMSCP::Dir->new( dirname => "$tmpDir/$_" )->remove();
+        #            return $rs if $rs;
+        #        }
+        #    }
+        #}
 
         if ($data->{'DOMAIN_TYPE'} eq 'dmn') {
             if (-d "$data->{'WEB_DIR'}/errors"
@@ -1733,7 +1734,7 @@ sub _addFiles
             my $userWebDir = File::Spec->canonpath( $main::imscpConfig{'USER_WEB_DIR'} );
             do { setImmutable( $dir ); } while (($dir = dirname( $dir )) ne $userWebDir);
         }
-    }
+    #}
 
     $rs = $self->mountLogsFolder( $data ) if $self->{'config'}->{'MOUNT_CUSTOMER_LOGS'} eq 'yes';
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdAddFiles', $data );

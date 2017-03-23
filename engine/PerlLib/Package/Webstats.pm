@@ -353,8 +353,6 @@ sub preaddDmn
 {
     my ($self, $data) = @_;
 
-    return 0 unless $data->{'FORWARD'} eq 'no';
-
     my %selectedPackages;
     @{selectedPackages}{ split ',', $main::imscpConfig{'WEBSTATS_PACKAGES'} } = ();
 
@@ -390,8 +388,6 @@ sub addDmn
 {
     my ($self, $data) = @_;
 
-    return 0 unless $data->{'FORWARD'} eq 'no';
-
     my %selectedPackages;
     @{selectedPackages}{ split ',', $main::imscpConfig{'WEBSTATS_PACKAGES'} } = ();
 
@@ -426,8 +422,6 @@ sub addDmn
 sub deleteDmn
 {
     my ($self, $data) = @_;
-
-    return 0 unless $data->{'FORWARD'} eq 'no';
 
     my %selectedPackages;
     @{selectedPackages}{ split ',', $main::imscpConfig{'WEBSTATS_PACKAGES'} } = ();
@@ -518,10 +512,11 @@ sub _init
     my $self = shift;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    # Find list of available AntiRootkits packages
+    # Find list of available Webstats packages
     @{$self->{'PACKAGES'}}{
         iMSCP::Dir->new( dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats" )->getDirs()
     } = ();
+
     $self;
 }
 

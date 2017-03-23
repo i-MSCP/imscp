@@ -4,7 +4,6 @@
     ServerAlias www.{DOMAIN_NAME} {ALIAS}.{BASE_SERVER_VHOST}
 
     DocumentRoot {DOCUMENT_ROOT}
-
     DirectoryIndex index.html index.xhtml index.htm
 
     LogLevel error
@@ -12,6 +11,15 @@
 
     Alias /errors/ {HOME_DIR}/errors/
 
+    # SECTION ssl BEGIN.
+    SSLEngine On
+    SSLCertificateFile      {CERTIFICATE}
+    SSLCertificateChainFile {CERTIFICATE}
+
+    Header always set Strict-Transport-Security "max-age={HSTS_MAX_AGE}{HSTS_INCLUDE_SUBDOMAINS}"
+    # SECTION ssl END.
+
+    # SECTION domain BEGIN.
     # SECTION itk BEGIN.
     AssignUserID {USER} {GROUP}
     # SECTION itk END.
@@ -102,6 +110,29 @@
     RemoveHandler .php .php3 .php4 .php5 .php7 .pht .phtml
     # SECTION php_fpm END.
     # SECTION php_disabled END.
+    # SECTION domain END.
+
+    # SECTION forward BEGIN.
+    <Directory {DOCUMENT_ROOT}>
+        AllowOverride AuthConfig Indexes Limit Options=Indexes \
+            Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule
+        Require all granted
+    </Directory>
+
+    # SECTION standard_redirect BEGIN.
+    RedirectMatch {FORWARD_TYPE} ^/((?!(?:awstatsicons|errors|stats|\.well-known)/).*) {FORWARD}$1
+    # SECTION standard_redirect END.
+    # SECTION proxy_redirect BEGIN.
+    # SECTION ssl_proxy BEGIN.
+    SSLProxyEngine on
+    # SECTION ssl_proxy END.
+    RequestHeader set X-Forwarded-Proto "http"
+    RequestHeader set X-Forwarded-Port 80
+    ProxyPreserveHost {FORWARD_PRESERVE_HOST}
+    ProxyPassMatch ^/((?!(?:awstatsicons|errors|stats|\.well-known)/).*) {FORWARD}$1 retry=30 timeout=7200
+    ProxyPassReverse / {FORWARD}
+    # SECTION proxy_redirect END.
+    # SECTION forward END.
 
     # SECTION addons BEGIN.
     # SECTION addons END.

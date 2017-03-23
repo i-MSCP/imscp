@@ -180,7 +180,7 @@ sub build
     # Clean build directory (remove any .gitignore|empty-file)
     find(
         sub {
-            return unless $_ eq '.gitignore' || $_ eq 'empty-file';
+            return unless $_ eq '.gitkeep';
             unlink or fatal( sprintf( 'Could not remove %s file: %s', $File::Find::name, $! ) );
         },
         $main::{'INST_PREF'}
@@ -769,9 +769,9 @@ sub _savePersistentData
 sub _cleanup
 {
     for("$main::imscpConfig{'CACHE_DATA_DIR'}/addons",
+        "$main::imscpConfig{'CONF_DIR'}/apache/backup",
         "$main::imscpConfig{'CONF_DIR'}/apache/skel/alias/phptmp",
         "$main::imscpConfig{'CONF_DIR'}/apache/skel/subdomain/phptmp",
-        "$main::imscpConfig{'CONF_DIR'}/apache/backup",
         "$main::imscpConfig{'CONF_DIR'}/apache/working",
         "$main::imscpConfig{'CONF_DIR'}/fcgi",
         "$main::imscpConfig{'CONF_DIR'}/hooks.d",
@@ -791,7 +791,11 @@ sub _cleanup
         return $rs if $rs;
     }
 
-    for("$main::imscpConfig{'CONF_DIR'}/vsftpd/imscp_allow_writeable_root.patch",
+    for("$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_disabled_ssl.tpl",
+        "$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_redirect.tpl",
+        "$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_redirect_ssl.tpl",
+        "$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_ssl.tpl",
+        "$main::imscpConfig{'CONF_DIR'}/vsftpd/imscp_allow_writeable_root.patch",
         "$main::imscpConfig{'CONF_DIR'}/vsftpd/imscp_pthread_cancel.patch",
         "$main::imscpConfig{'CONF_DIR'}/apache/parts/php5.itk.ini",
         '/etc/default/imscp_panel',
