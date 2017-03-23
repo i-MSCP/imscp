@@ -865,7 +865,7 @@ sub buildConf
 
     $data ||= { };
 
-    if ($data->{'VHOST_TYPE'}) {
+    if (grep($_ eq $filename, ( 'domain.tpl', 'domain_disabled_tpl'))) {
         if (grep($_ eq $data->{'VHOST_TYPE'}, ('domain', 'domain_disabled'))) {
             # Remove ssl and forward sections
             $cfgTpl = replaceBloc("# SECTION forward BEGIN.\n", "# SECTION forward END.\n", '', $cfgTpl);
@@ -1476,8 +1476,7 @@ sub _addCfg
             BASE_SERVER_VHOST       => $data->{'BASE_SERVER_VHOST'},
             HTTPD_LOG_DIR           => $self->{'config'}->{'HTTPD_LOG_DIR'},
             HTTPD_CUSTOM_SITES_DIR  => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
-            DOMAIN_IPS              =>
-            join(' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]").':80' } @domainIPs),
+            DOMAIN_IPS              => join(' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]").':80' } @domainIPs),
             PHP_VERSION             => $phpVersion,
             POOL_NAME               => $confLevel,
             # fastcgi module case (Apache2 < 2.4.10)
@@ -1649,7 +1648,6 @@ sub _addFiles
         return 1;
     }
 
-    #if ($data->{'FORWARD'} eq 'no') {
     # Build default page if needed (if htdocs doesn't exists or is empty)
     if (!-d "$data->{'WEB_DIR'}/htdocs"
         || iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/htdocs" )->isEmpty()
@@ -1936,7 +1934,7 @@ sub _cleanTemplate
 
         ${$tpl} = replaceBloc( "# SECTION fcgid BEGIN.\n", "# SECTION fcgid END.\n", '', ${$tpl} );
         ${$tpl} = replaceBloc( "# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', ${$tpl} );
-    } elsif($name eq 'domain.tpl') {
+    } elsif ($name eq 'domain.tpl') {
         if ($data->{'FORWARD'} ne 'no') {
             if ($data->{'FORWARD_TYPE'} eq 'proxy' && (!$data->{'HSTS_SUPPORT'} || $data->{'VHOST_TYPE'} =~ /ssl/)) {
                 ${$tpl} = replaceBloc(
