@@ -113,7 +113,7 @@ PLUGINS
 SERVERS
     Added: LAN IP address in virtualhost for local access (Servers::ftpd::proftpd::installer)
     Added: Support for Python and Ruby CGI scripts (Httpd server impl.)
-    Added: `.well-known' directory to site skeletons (Httpd server impl.)
+    Added: `/.well-known' directory to site skeletons (Httpd server impl.)
     Changed: Usage of mpm_event in place of mpm_worker (PHP-FPM httpd server impl.)
     Dropped: Compatibility for Apache2 < 2.4.x (Httpd server impl.)
     Fixed: Any site must have a document root, even when redirected or proxied (Httpd server impl.)
@@ -126,7 +126,7 @@ SERVERS
     Fixed: Possible `nginx: [emerg] bind() to <ip>:<port> failed (98: Address already in use)' error
     Fixed: POSTCONF(1) is being slow when called multiple-times, slowing down i-MSCP installer (Postfix server impl.)
     Fixed: Set HSTS `max-age' value to zero when HSTS is disabled (See RFC 6797)
-    Fixed: The `.well-known' directory is not reacheable when a site is redirected or proxied (httpd server impl.)
+    Fixed: The `/.well-known' directory is not reacheable when a site is redirected or proxied (httpd server impl.)
     Fixed: Wrong events triggered (Servers::mta::postfix)
     Fixed: Wrong permissions set on Courier Authdaemon socket dir, making maildrop MDA unable to connect
     Fixed: Wrong permissions set on Dovecot configuration files
