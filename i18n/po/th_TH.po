@@ -1,16 +1,16 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR i-MSCP Team - All rights reserved
 # This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
-# Translators:
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: i-MSCP\n"
+"Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-01-07 03:24+0100\n"
-"PO-Revision-Date: 2016-12-31 11:13+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
-"Language-Team: Thai (Thailand) (http://www.transifex.com/i-mscp/i-MSCP/language/th_TH/)\n"
+"POT-Creation-Date: 2017-03-25 03:04+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Language-Team: Thai (Thailand) (https://www.transifex.com/i-mscp/teams/576/th_TH/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -112,7 +112,7 @@ msgid "%1$s%% [%2$s of unlimited]"
 msgstr ""
 
 #, php-format
-msgid "%1$s`s - Software"
+msgid "%1$ss - Software"
 msgstr ""
 
 #, php-format
@@ -141,10 +141,6 @@ msgstr ""
 
 #, php-format
 msgid "%d strings translated"
-msgstr ""
-
-#, php-format
-msgid "%s / %s of %s"
 msgstr ""
 
 #, php-format
@@ -185,6 +181,10 @@ msgstr ""
 
 #, php-format
 msgid "%s record"
+msgstr ""
+
+#, php-format
+msgid "%s total available"
 msgstr ""
 
 #, php-format
@@ -479,7 +479,7 @@ msgid "Activation link expire time <small>(In minutes)</small>"
 msgstr ""
 
 msgid "Add"
-msgstr "เพิ่ม"
+msgstr ""
 
 msgid "Add DNS resource record"
 msgstr ""
@@ -494,16 +494,16 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr "เพิ่มฐานข้อมูล SQL"
+msgstr ""
 
 msgid "Add SQL user"
-msgstr "เพิ่มผู้ใช้ SQL"
+msgstr ""
 
 msgid "Add SSL certificate"
 msgstr ""
 
 msgid "Add admin"
-msgstr "เพิ่มผู้ดูแลระบบ"
+msgstr ""
 
 msgid "Add catchall"
 msgstr ""
@@ -518,25 +518,22 @@ msgid "Add customer - Next step"
 msgstr ""
 
 msgid "Add domain alias"
-msgstr "เพิ่ม domain alias"
+msgstr ""
 
 msgid "Add email account"
 msgstr ""
 
 msgid "Add group"
-msgstr "เพิ่มกลุ่ม"
+msgstr ""
 
 msgid "Add hosting plan"
-msgstr "เพิ่ม hosting plan"
+msgstr ""
 
 msgid "Add new IP address"
 msgstr ""
 
-msgid "Add new database"
-msgstr ""
-
 msgid "Add new protected area"
-msgstr "เพิ่ม protected area ใหม่"
+msgstr ""
 
 msgid "Add new service port"
 msgstr ""
@@ -551,13 +548,13 @@ msgid "Add protected area"
 msgstr ""
 
 msgid "Add reseller"
-msgstr "เพิ่มตัวแทนจำหน่าย"
+msgstr ""
 
 msgid "Add subdomain"
-msgstr "เพิ่ม subdomain"
+msgstr ""
 
 msgid "Add user"
-msgstr "เพิ่มผู้ใช้"
+msgstr ""
 
 msgid "Added by"
 msgstr ""
@@ -566,10 +563,10 @@ msgid "Addition in progress..."
 msgstr ""
 
 msgid "Additional data"
-msgstr "ข้อมูลเพิ่มเติม"
+msgstr ""
 
 msgid "Admin"
-msgstr "ผู้ดูแลระบบ"
+msgstr ""
 
 msgid "Admin / General / Admin Log"
 msgstr ""
@@ -709,7 +706,7 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr "บันทึกผู้ดูแลระบบ"
+msgstr ""
 
 msgid "Admin not available"
 msgstr ""
@@ -721,7 +718,7 @@ msgid "Admin/IP usage statistics"
 msgstr ""
 
 msgid "Administrator"
-msgstr "ผู้ดูแลระบบ"
+msgstr ""
 
 msgid "Administrator and Reseller levels"
 msgstr ""
@@ -742,7 +739,7 @@ msgid "Administrator login"
 msgstr ""
 
 msgid "Administrators"
-msgstr "ผู้ดูแลระบบ"
+msgstr ""
 
 msgid "Administrators and customers"
 msgstr ""
@@ -771,7 +768,7 @@ msgid "Aliases"
 msgstr ""
 
 msgid "All"
-msgstr "ทั้งหมด"
+msgstr ""
 
 msgid "All closed tickets were successfully deleted."
 msgstr ""
@@ -810,7 +807,7 @@ msgid "All traffic"
 msgstr ""
 
 msgid "All users"
-msgstr "ผู้ใช้ทั้งหมด"
+msgstr ""
 
 msgid "Allow URL fopen"
 msgstr ""
@@ -831,9 +828,6 @@ msgid "Alternative URL to reach your website"
 msgstr ""
 
 msgid "An email addresse is not valid in mail forward list."
-msgstr ""
-
-msgid "An error occurred during authentication."
 msgstr ""
 
 msgid "An unexpected error occurred"
@@ -902,7 +896,7 @@ msgstr ""
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr ""
 
-msgid "Are you sure you want to delete all selected items?"
+msgid "Are you sure you want to delete all selected mail accounts?"
 msgstr ""
 
 msgid "Are you sure you want to delete all tickets?"
@@ -926,6 +920,10 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the %s user?"
 msgstr ""
 
 #, php-format
@@ -985,9 +983,6 @@ msgid "Assign group"
 msgstr ""
 
 msgid "Assigned to at least one reseller"
-msgstr ""
-
-msgid "At first you must create a database which have at least one SQL user."
 msgstr ""
 
 msgid "At least one intermediate certificate is invalid or missing."
@@ -1118,7 +1113,7 @@ msgid "Can use the PHP %s function"
 msgstr ""
 
 msgid "Cancel"
-msgstr "ยกเลิก"
+msgstr ""
 
 msgid "Canonical name"
 msgstr ""
@@ -1142,10 +1137,10 @@ msgid "Certificate data"
 msgstr ""
 
 msgid "Change"
-msgstr "เปลี่ยน"
+msgstr ""
 
 msgid "Change personal data"
-msgstr "เปลี่ยนข้อมูลส่วนตัว"
+msgstr ""
 
 msgid "Change status of this item for a new attempt"
 msgstr ""
@@ -1175,7 +1170,7 @@ msgid ""
 msgstr ""
 
 msgid "Choose"
-msgstr "เลือก"
+msgstr ""
 
 msgid "Choose dir"
 msgstr ""
@@ -1200,7 +1195,7 @@ msgid "Circular successfully sent."
 msgstr ""
 
 msgid "City"
-msgstr "เมือง"
+msgstr ""
 
 msgid "Class"
 msgstr ""
@@ -1390,12 +1385,15 @@ msgid "Common name"
 msgstr ""
 
 msgid "Company"
-msgstr "บริษัท"
+msgstr ""
 
 msgid "Compress HTML output"
 msgstr ""
 
 msgid "Configuration mode"
+msgstr ""
+
+msgid "Confirmation required"
 msgstr ""
 
 #, php-format
@@ -1417,6 +1415,10 @@ msgstr ""
 
 #, php-format
 msgid "Could not change the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Could not connect to the `%s' database. Please check the password."
 msgstr ""
 
 #, php-format
@@ -1495,22 +1497,22 @@ msgid "Count default email addresses"
 msgstr ""
 
 msgid "Country"
-msgstr "ประเทศ"
+msgstr ""
 
 msgid "Create"
 msgstr ""
 
 msgid "Create catch all"
-msgstr "สร้าง catch all"
+msgstr ""
 
 msgid "Create default email addresses"
 msgstr ""
 
 msgid "Created by"
-msgstr "สร้างโดย"
+msgstr ""
 
 msgid "Creation date"
-msgstr "วันที่สร้าง"
+msgstr ""
 
 msgid "Custom DNS errors"
 msgstr ""
@@ -1647,6 +1649,9 @@ msgstr ""
 msgid "Database Update details"
 msgstr ""
 
+msgid "Database data"
+msgstr ""
+
 msgid "Database name"
 msgstr ""
 
@@ -1654,6 +1659,9 @@ msgid "Database name is too long."
 msgstr ""
 
 msgid "Database name is unavailable or unallowed."
+msgstr ""
+
+msgid "Database password"
 msgstr ""
 
 msgid "Database prefix"
@@ -1669,6 +1677,9 @@ msgid "Database update"
 msgstr ""
 
 msgid "Database usage"
+msgstr ""
+
+msgid "Database user"
 msgstr ""
 
 msgid "Database users"
@@ -1912,7 +1923,7 @@ msgstr ""
 msgid "Delete reseller software"
 msgstr ""
 
-msgid "Delete selected items"
+msgid "Delete selected mail accounts"
 msgstr ""
 
 msgid "Delete this plugin"
@@ -2274,9 +2285,6 @@ msgstr ""
 
 #, php-format
 msgid "Email quota cannot be unlimited. Max value is %d MiB."
-msgstr ""
-
-msgid "Email quota must be a number."
 msgstr ""
 
 msgid "Email settings"
@@ -2775,9 +2783,6 @@ msgstr ""
 msgid "Incorrect username length or syntax."
 msgstr ""
 
-msgid "Info Unavailable"
-msgstr ""
-
 msgid "Install"
 msgstr ""
 
@@ -2831,6 +2836,10 @@ msgstr ""
 
 #, php-format
 msgid "Invalid SQL user host: %s"
+msgstr ""
+
+msgid ""
+"Invalid SQL user. SQL user must exists and belong to the provided database."
 msgstr ""
 
 msgid "Invalid SSL certificate"
@@ -2925,6 +2934,9 @@ msgstr ""
 msgid "Last reply date"
 msgstr ""
 
+msgid "Last translator"
+msgstr ""
+
 msgid "Layout"
 msgstr ""
 
@@ -2962,12 +2974,6 @@ msgid "Log entries successfully deleted."
 msgstr ""
 
 msgid "Login"
-msgstr ""
-
-msgid "Login As"
-msgstr ""
-
-msgid "Login into phpMyAdmin"
 msgstr ""
 
 msgid "Login password"
@@ -3013,7 +3019,7 @@ msgid "MB"
 msgstr ""
 
 msgid "Mail"
-msgstr "e-mail"
+msgstr ""
 
 msgid "Mail Log Level"
 msgstr ""
@@ -3244,9 +3250,6 @@ msgid "No group found."
 msgstr ""
 
 msgid "No hosting plan available."
-msgstr ""
-
-msgid "No languages found."
 msgstr ""
 
 msgid "No records found matching the search criteria."
@@ -3947,7 +3950,7 @@ msgstr ""
 msgid "Protocol"
 msgstr ""
 
-msgid "Quota"
+msgid "Quota assignment"
 msgstr ""
 
 msgid "Quota in MiB (0 for unlimited)"
@@ -4251,10 +4254,6 @@ msgstr ""
 msgid "SQL user"
 msgstr ""
 
-#, php-format
-msgid "SQL user %s already exits."
-msgstr ""
-
 msgid "SQL user host"
 msgstr ""
 
@@ -4283,6 +4282,9 @@ msgid "SQL user successfully added."
 msgstr ""
 
 msgid "SQL user successfully deleted."
+msgstr ""
+
+msgid "SQL username is too long."
 msgstr ""
 
 msgid "SQL users"
@@ -4749,6 +4751,10 @@ msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr ""
 
 #, php-format
+msgid "The `%s' SQL user is not available or not permitted."
+msgstr ""
+
+#, php-format
 msgid ""
 "The directory %s doesn't exists. Please create that directory using your "
 "file manager."
@@ -4974,10 +4980,6 @@ msgstr ""
 msgid "Unable to close the ticket with Id '%s'."
 msgstr ""
 
-msgid ""
-"Unable to connect to the selected database using the selected SQL user."
-msgstr ""
-
 #, php-format
 msgid "Unable to create '%s' directory for language file."
 msgstr ""
@@ -5068,10 +5070,8 @@ msgstr ""
 msgid "Unknown Error"
 msgstr ""
 
-msgid "Unknown FTP user."
-msgstr ""
-
-msgid "Unknown SQL user"
+#, php-format
+msgid "Unknown `%s' database. Database must exists."
 msgstr ""
 
 msgid "Unknown action requested."
@@ -5239,9 +5239,6 @@ msgstr ""
 msgid "Username and password for application login"
 msgstr ""
 
-msgid "Username is too long."
-msgstr ""
-
 msgid "Users"
 msgstr ""
 
@@ -5277,6 +5274,9 @@ msgid "Visit plugin site"
 msgstr ""
 
 msgid "Warning traffic"
+msgstr ""
+
+msgid "Warning!"
 msgstr ""
 
 msgid "Warnings and Errors"
@@ -5388,10 +5388,10 @@ msgid "YB"
 msgstr ""
 
 msgid "Year"
-msgstr "ปี"
+msgstr ""
 
 msgid "Yes"
-msgstr "ใช่"
+msgstr ""
 
 msgid "YiB"
 msgstr ""
@@ -5627,7 +5627,7 @@ msgstr ""
 msgid "You must select a file to upload/download."
 msgstr ""
 
-msgid "You must select a least one item to delete"
+msgid "You must select a least one mail account to delete"
 msgstr ""
 
 msgid "You must select a least one mail account to delete."
@@ -5644,9 +5644,6 @@ msgstr ""
 
 #, php-format
 msgid "You must wait %s minutes before the next attempt."
-msgstr ""
-
-msgid "You need a Database for this software"
 msgstr ""
 
 msgid ""
@@ -5675,7 +5672,7 @@ msgid ""
 msgstr ""
 
 msgid "Your message"
-msgstr "ข้อความของคุณ"
+msgstr ""
 
 msgid "Your message has been successfully sent."
 msgstr ""
@@ -5689,11 +5686,18 @@ msgstr ""
 msgid "Your package is corrupt. Please correct it!"
 msgstr ""
 
-msgid "Your password has been successfully renewed. Check your emails."
+msgid ""
+"Your password has been successfully scheduled for renewal. Check your "
+"emails."
 msgstr ""
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
+msgstr ""
+
+msgid ""
+"Your request for password renewal cannot be honored. Please retry in few "
+"minutes."
 msgstr ""
 
 msgid ""
@@ -5723,7 +5727,7 @@ msgid "Zip code"
 msgstr ""
 
 msgid "Zip/Postal code"
-msgstr "รหัสไปรษณีย์"
+msgstr ""
 
 msgid "Zone"
 msgstr ""
@@ -5735,7 +5739,7 @@ msgid "[Re]"
 msgstr ""
 
 msgid "_: Localised language"
-msgstr "ไทย - Thai"
+msgstr ""
 
 #, php-format
 msgid "`%s` field cannot be empty."
@@ -5907,9 +5911,6 @@ msgstr ""
 msgid "orphan entry"
 msgstr ""
 
-msgid "phpMyAdmin"
-msgstr ""
-
 msgid "required"
 msgstr ""
 
@@ -5941,7 +5942,7 @@ msgid "waiting for activation"
 msgstr ""
 
 msgid "yes"
-msgstr "ใช่"
+msgstr ""
 
 msgid "{USERNAME} user statistics"
 msgstr ""
