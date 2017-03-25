@@ -88,7 +88,7 @@ Any LTS version >= 14.04 (Ubuntu 16.04 recommended)
 
 #### 2. Install the pre-required packages
 
-    # apt-get install ca-certificates perl wget whiptail
+    # apt-get --no-install-recommends install ca-certificates perl wget whiptail
 
 #### 3. Download and untar the distribution files
 

@@ -461,7 +461,7 @@ EOF
         } while $rs < 30 && $msg;
         return $rs if $rs >= 30;
 
-        $pwd = '';
+        $pwd = isValidPassword($pwd) ? $pwd : '';
         do {
             ($rs, $pwd) = $dialog->inputbox( <<"EOF", $pwd || randomStr(16, iMSCP::Crypt::ALNUM));
 

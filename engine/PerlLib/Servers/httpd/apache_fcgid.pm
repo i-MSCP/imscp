@@ -1201,19 +1201,17 @@ sub enableConfs
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdEnableConfs', \@conffiles );
     return $rs if $rs;
 
-    if (iMSCP::ProgramFinder::find( 'a2enconf' ) && -d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available") {
-        for (@conffiles) {
-            unless (-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/$_") {
-                warning( sprintf( "Configuration file %s doesn't exists", $_ ) );
-                next;
-            }
-
-            $rs = execute( [ 'a2enconf', $_ ], \ my $stdout, \ my $stderr );
-            debug( $stdout ) if $stdout;
-            error( $stderr || 'Unknown error' ) if $rs;
-            return $rs if $rs;
-            $self->{'restart'} = 1;
+    for (@conffiles) {
+        unless (-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/$_") {
+            warning( sprintf( "Configuration file %s doesn't exists", $_ ) );
+            next;
         }
+
+        $rs = execute( [ 'a2enconf', $_ ], \ my $stdout, \ my $stderr );
+        debug( $stdout ) if $stdout;
+        error( $stderr || 'Unknown error' ) if $rs;
+        return $rs if $rs;
+        $self->{'restart'} = 1;
     }
 
     $self->{'eventManager'}->trigger( 'afterHttpdEnableConfs', @conffiles );
@@ -1235,15 +1233,13 @@ sub disableConfs
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdDisableConfs', \@conffiles );
     return $rs if $rs;
 
-    if (iMSCP::ProgramFinder::find( 'a2disconf' ) && -d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available") {
-        for (@conffiles) {
-            next unless -f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/$_";
-            $rs = execute( [ 'a2disconf', $_ ], \ my $stdout, \ my $stderr );
-            debug( $stdout ) if $stdout;
-            error( $stderr || 'Unknown error' ) if $rs;
-            return $rs if $rs;
-            $self->{'restart'} = 1;
-        }
+    for (@conffiles) {
+        next unless -f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/$_";
+        $rs = execute( [ 'a2disconf', $_ ], \ my $stdout, \ my $stderr );
+        debug( $stdout ) if $stdout;
+        error( $stderr || 'Unknown error' ) if $rs;
+        return $rs if $rs;
+        $self->{'restart'} = 1;
     }
 
     $self->{'eventManager'}->trigger( 'afterHttpdDisableConfs', @conffiles );

@@ -88,7 +88,7 @@ Any released version >= 7.x (Debian 8.x recommended)
 
 #### 2. Install the pre-required packages
 
-    # apt-get install ca-certificates perl wget whiptail
+    # apt-get --no-install-recommends install ca-certificates perl wget whiptail
 
 #### 3. Download and untar the distribution files
 

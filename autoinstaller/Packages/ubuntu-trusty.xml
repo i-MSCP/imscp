@@ -27,6 +27,9 @@
                 repository="http://ppa.launchpad.net/ondrej/php/ubuntu trusty main"
                 repository_key_id="E5267A6C"
                 repository_key_srv="keyserver.ubuntu.com"
+                pinning_package="*"
+                pinning_pin="release o=LP-PPA-ondrej-php"
+                pinning_pin_priority="1001"
         >
             <package>php5.6</package>
             <package post_install_task="update-alternatives --set php /usr/bin/php5.6">php5.6-cli</package>
@@ -55,6 +58,9 @@
                 repository="http://ppa.launchpad.net/ondrej/php/ubuntu trusty main"
                 repository_key_id="E5267A6C"
                 repository_key_srv="keyserver.ubuntu.com"
+                pinning_package="*"
+                pinning_pin="release o=LP-PPA-ondrej-php"
+                pinning_pin_priority="1001"
         >
             <package>php7.0</package>
             <package post_install_task="update-alternatives --set php /usr/bin/php7.0">php7.0-cli</package>
@@ -83,6 +89,9 @@
                 repository="http://ppa.launchpad.net/ondrej/php/ubuntu trusty main"
                 repository_key_id="E5267A6C"
                 repository_key_srv="keyserver.ubuntu.com"
+                pinning_package="*"
+                pinning_pin="release o=LP-PPA-ondrej-php"
+                pinning_pin_priority="1001"
         >
             <package>php7.1</package>
             <package post_install_task="update-alternatives --set php /usr/bin/php7.1">php7.1-cli</package>
@@ -284,7 +293,7 @@
             <package>percona-server-server-5.7</package>
         </percona_5.7>
         <remote_server
-                pinning_package="libmysqlclient18 mysql-common mysql-server-5.5"
+                pinning_package="*"
                 pinning_pin="release o=Ubuntu,n=trusty"
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.5,mysql_5.6,mysql_5.7,mariadb_5.5,mariadb_10.0,mariadb_10.1,percona_5.5,percona_5.6,percona_5.7"

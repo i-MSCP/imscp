@@ -25,6 +25,9 @@
                 repository_conflict="http://packages.dotdeb.org"
                 repository="https://packages.sury.org/php/ jessie main"
                 repository_key_url="https://packages.sury.org/php/apt.gpg"
+                pinning_package="*"
+                pinning_pin="origin packages.sury.org"
+                pinning_pin_priority="1001"
         >
             <package>php5.6</package>
             <package>php5.6-cgi</package>
@@ -52,6 +55,9 @@
                 repository_conflict="http://packages.dotdeb.org"
                 repository="https://packages.sury.org/php/ jessie main"
                 repository_key_url="https://packages.sury.org/php/apt.gpg"
+                pinning_package="*"
+                pinning_pin="origin packages.sury.org"
+                pinning_pin_priority="1001"
         >
             <package>php7.0</package>
             <package post_install_task="update-alternatives --set php /usr/bin/php7.0">php7.0-cli</package>
@@ -79,6 +85,9 @@
                 repository_conflict="http://packages.dotdeb.org"
                 repository="https://packages.sury.org/php/ jessie main"
                 repository_key_uri="https://packages.sury.org/php/apt.gpg"
+                pinning_package="*"
+                pinning_pin="origin packages.sury.org"
+                pinning_pin_priority="1001"
         >
             <package>php7.1</package>
             <package post_install_task="update-alternatives --set php /usr/bin/php7.1">php7.1-cli</package>
@@ -190,7 +199,6 @@
             <package>mysql-community-server</package>
         </mysql_5.7>
         <mariadb_10.0
-                repository_conflict="http://mirror.netcologne.de/mariadb/repo/10.0/debian"
                 pinning_package="libmysqlclient18 mariadb-client-10.0 mariadb-common mariadb-server-10.0 mysql-common"
                 pinning_pin="release o=Debian,n=jessie"
                 pinning_pin_priority="1001"
@@ -267,7 +275,7 @@
             <package>percona-server-server-5.7</package>
         </percona_5.7>
         <remote_server
-                pinning_package="libmysqlclient18 mysql-client-5.5 mysql-common"
+                pinning_package="*"
                 pinning_pin="release o=Debian,n=jessie"
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.5,mysql_5.6,mysql_5.7,mariadb_10.0,mariadb_10.1,percona_5.5,percona_5.6,percona_5.7"

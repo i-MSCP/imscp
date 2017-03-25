@@ -427,15 +427,8 @@ sub _buildApacheConfFiles
     }
 
     # Turn off default access log provided by Debian package
-    if (-d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available") {
-        $rs = $self->{'httpd'}->disableConfs( 'other-vhosts-access-log.conf' );
-        return $rs if $rs;
-    } elsif (-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/other-vhosts-access-log") {
-        $rs = iMSCP::File->new(
-            filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/other-vhosts-access-log"
-        )->delFile();
-        return $rs if $rs;
-    }
+    $rs = $self->{'httpd'}->disableConfs( 'other-vhosts-access-log.conf' );
+    return $rs if $rs;
 
     # Remove default access log file provided by Debian package
     if (-f "$self->{'config'}->{'HTTPD_LOG_DIR'}/other_vhosts_access.log") {
@@ -456,9 +449,7 @@ sub _buildApacheConfFiles
         '00_imscp.conf',
         { },
         {
-            destination => -d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available"
-                ? "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/00_imscp.conf"
-                : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/00_imscp.conf"
+            destination => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/00_imscp.conf"
         }
     );
     $rs ||= $self->{'httpd'}->enableModules(
@@ -466,6 +457,11 @@ sub _buildApacheConfFiles
     );
     $rs ||= $self->{'httpd'}->enableSites( '00_nameserver.conf' );
     $rs ||= $self->{'httpd'}->enableConfs( '00_imscp.conf' );
+    $rs ||= $self->{'httpd'}->disableConfs(
+        'php5.6-cgi.conf', 'php7.0-cgi.conf', 'php7.1-cgi.conf',
+        'php5.6-fpm.conf', 'php7.0-fpm.conf', 'php7.1-fpm.conf',
+        'serve-cgi-bin.conf'
+    );
     $rs ||= $self->{'httpd'}->disableSites( 'default', 'default-ssl', '000-default.conf', 'default-ssl.conf' );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildApacheConfFiles' );
 }
