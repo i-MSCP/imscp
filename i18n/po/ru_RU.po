@@ -8,8 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-03-25 03:04+0100\n"
+"POT-Creation-Date: 2017-03-26 14:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Lukasz Nowak <theqkash@theqkash.pl>, 2017\n"
 "Language-Team: Russian (Russia) (https://www.transifex.com/i-mscp/teams/576/ru_RU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,1044 +19,1094 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 msgid " Admin / Support / Open Tickets"
-msgstr ""
+msgstr "Администратор / Служба поддержки / Открытые тикеты"
 
 msgid " Client / Webtools / Custom Error Pages / Edit Custom Error Page"
 msgstr ""
+"Клиент / Инструменты / Пользовательские страницы ошибок / Редактирование "
+"страницы"
 
 msgid " Wrong IP address."
-msgstr ""
+msgstr "Неверный IP адрес."
 
 msgid ""
 "$ORIGIN is automatically appended to unqualified names, hosts and canonical "
 "names"
 msgstr ""
+"$ORIGIN автоматически добавляется к неограниченным именам, хостам и "
+"каноническим именам"
 
 #, php-format
 msgid "$ORIGIN value is currently set to: %s"
-msgstr ""
+msgstr "Значение $ORIGIN на данный момент: %s"
 
 #, php-format
 msgid "%%s must be lower than %%s."
-msgstr ""
+msgstr "%%s должно быть ниже, чем %%s."
 
 #, php-format
 msgid "%1$d / %2$d"
-msgstr ""
+msgstr "%1$d / %2$d"
 
 #, php-format
 msgid "%1$d / %2$d of %3$d"
-msgstr ""
+msgstr "%1$d / %2$d из %3$d"
 
 #, php-format
 msgid "%1$d / %2$d of %3$d</b>"
-msgstr ""
+msgstr "%1$d / %2$d из %3$d</b>"
 
 #, php-format
 msgid "%1$d / %2$d of unlimited"
-msgstr ""
+msgstr "%1$d / %2$d из не ограничено"
 
 #, php-format
 msgid "%1$d of %2$d"
-msgstr ""
+msgstr "%1$d из %2$d"
 
 #, php-format
 msgid "%1$d%% [%2$s of %3$s]"
-msgstr ""
+msgstr "%1$d%% [%2$s из %3$s]"
 
 #, php-format
 msgid "%1$d%% [%2$s of unlimited]"
-msgstr ""
+msgstr "%1$d%% [%2$s из не ограничено]"
 
 #, php-format
 msgid "%1$s (%2$s)"
-msgstr ""
+msgstr "%1$s (%2$s)"
 
 #, php-format
 msgid "%1$s - (Softwaredepot)"
-msgstr ""
+msgstr "%1$s - (Репозиторий)"
 
 #, php-format
 msgid "%1$s - (Version: %2$s, Language: %3$s)"
-msgstr ""
+msgstr "%1$s - (Версия: %2$s, Язык: %3$s)"
 
 #, php-format
 msgid "%1$s / %2$s"
-msgstr ""
+msgstr "%1$s / %2$s"
 
 #, php-format
 msgid "%1$s / %2$s of %3$s"
-msgstr ""
+msgstr "%1$s / %2$s из %3$s"
 
 #, php-format
 msgid "%1$s / %2$s of unlimited"
-msgstr ""
+msgstr "%1$s / %2$s из не ограничено"
 
 #, php-format
 msgid "%1$s of %2$s"
-msgstr ""
+msgstr "%1$s из %2$s"
 
 #, php-format
 msgid "%1$s of <b>unlimited</b>"
-msgstr ""
+msgstr "%1$s из <b>не ограничено</b>"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
-msgstr ""
+msgstr "%1$s вы вошли как %2$s"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
-msgstr ""
+msgstr "%1$s%% [%2$s из %3$s]"
 
 #, php-format
 msgid "%1$s%% [%2$s of unlimited]"
-msgstr ""
+msgstr "%1$s%% [%2$s из не ограничено]"
 
 #, php-format
 msgid "%1$ss - Software"
-msgstr ""
+msgstr "%1$ss - Программное обеспечение"
 
 #, php-format
 msgid "%d %s remaining until account expiration"
-msgstr ""
+msgstr "%d %s до истечения срока"
 
 #, php-format
 msgid "%d / unlimited"
-msgstr ""
+msgstr "%d / не ограничено"
 
 #, php-format
 msgid "%d Service(s) port successfully updateds"
-msgstr ""
+msgstr "%d Порт(ов) служб были успешно обновлены"
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been created."
-msgstr ""
+msgstr "%d параметр(ов) конфигурации было создано."
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been updated."
-msgstr ""
+msgstr "%d параметр(ов) конфигурации было обновлено."
 
 #, php-format
 msgid "%d of %s"
-msgstr ""
+msgstr "%d из %s"
 
 #, php-format
 msgid "%d strings translated"
-msgstr ""
+msgstr "Переведено %d строк "
 
 #, php-format
 msgid "%s / unlimited"
-msgstr ""
+msgstr "%s / не ограничено"
 
 #, php-format
 msgid "%s account successfully deleted."
-msgstr ""
+msgstr "%s учетная запись успешно удалена."
 
 #, php-format
 msgid "%s doens't look like an i-MSCP plugin archive."
-msgstr ""
+msgstr "%s не является архивом плагина i-MSCP."
 
 #, php-format
 msgid "%s doesn't exist or is empty."
-msgstr ""
+msgstr "%s не существует или пуст"
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
-msgstr ""
+msgstr "%s неверный языковой файл i-MSCP."
 
 #, php-format
 msgid "%s is not allowed as subdomain label."
-msgstr ""
+msgstr "%s не разрешено использовать в качестве ярлыка поддомена"
 
 #, php-format
 msgid "%s of %s"
-msgstr ""
+msgstr "%s из %s"
 
 #, php-format
 msgid "%s of unlimited"
-msgstr ""
+msgstr "%s из не ограничено"
 
 #, php-format
 msgid "%s page"
-msgstr ""
+msgstr "%s страница"
 
 #, php-format
 msgid "%s record"
-msgstr ""
+msgstr "%s запись"
 
 #, php-format
 msgid "%s total available"
-msgstr ""
+msgstr "%s всего доступно"
 
 #, php-format
 msgid "%s webmail"
-msgstr ""
+msgstr "Веб-почта %s "
 
 #, php-format
 msgid ""
 "%s: The clients consumption (%s) for this reseller is greater than the new "
 "limit."
 msgstr ""
+"%s: Потребление клиентов (%s) этого реселлера больше чем новое ограничение."
 
 #, php-format
 msgid ""
 "%s: The total of items (%s) already assigned by the reseller is greater than"
 " the new limit."
 msgstr ""
+"%s: Предел значения (%s) уже назначенный реселлером, больше этого лимита."
 
 #, php-format
 msgid "%s: This reseller has customer(s) with unlimited items."
-msgstr ""
+msgstr "%s: у реселлера есть клиент(ы) с неограниченными службами."
 
 #, php-format
 msgid ""
 "%s: You cannot disable a service already consumed by reseller's customers."
-msgstr ""
+msgstr "%s: Вы не можете отключить службу, уже проданную клиенту."
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
-msgstr ""
+msgstr "%s: Вы не можете отключить службу, уже проданную клиенту."
 
 #, php-format
 msgid ""
 "%s::getInfo() not implemented and %s not found. This is a bug in the %s "
 "plugin which must be reported to the author(s)."
 msgstr ""
+"%s::getInfo() не реализован и %s не найден. Это баг плагина %s , и он должен"
+" быть отправлен автору(ам) плагина."
 
 #, php-format
 msgid ""
 "'%%hostname%%' does not appear to have a valid MX record for the email "
 "address '%%value%%'"
 msgstr ""
+"'%%hostname%%' имеет неверную MX запись для электронного адреса '%%value%%'"
 
 #, php-format
 msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
 msgstr ""
+"'%%hostname%%' - неверное имя хоста для электронного адреса '%%value%%'"
 
 #, php-format
 msgid ""
 "'%%hostname%%' is not in a routable network segment. The email address "
 "'%%value%%' should not be resolved from public network"
 msgstr ""
+"'%%hostname%%' - немаршрутизируемый сегмент сети. Электронный адрес "
+"'%%value%%' не будет доступен из всемирной сети"
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against dot-atom format"
-msgstr ""
+msgstr "'%%localPart%%' cне соответствует формату dot-atom"
 
 #, php-format
 msgid "'%%localPart%%' can not be matched against quoted-string format"
-msgstr ""
+msgstr "'%%localPart%%' не соответствует формату quoted-string"
 
 #, php-format
 msgid "'%%localPart%%' is no valid local part for email address '%%value%%'"
 msgstr ""
+"'%%localPart%%' неверная локальная часть для электронного адреса '%%value%%'"
 
 #, php-format
 msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
-msgstr ""
+msgstr "'%%value%%' является DNS именем узла, но не может извлечь TLD часть"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but cannot match TLD against known "
 "list"
 msgstr ""
+"'%%value%%'  является DNS именем узла, но оно не дожно быть из TLD-списка"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but cannot match against hostname "
 "schema for TLD '%%tld%%'"
 msgstr ""
+"'%%value%%'  является DNS именем узла, но не совпадает со схемой имен узла "
+"для TLD '%%tld%%'"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but contains a dash in an invalid "
 "position"
 msgstr ""
+"'%%value%%'  является DNS именем узла, но знак '-' находится в неправильном "
+"месте"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a DNS hostname but the given punycode notation "
 "cannot be decoded"
 msgstr ""
+"'%%value%%' является DNS именем узла, но данный punycode не может быть "
+"раскодирован"
 
 #, php-format
 msgid "'%%value%%' appears to be a domain name but cannot extract TLD part"
-msgstr ""
+msgstr "'%%value%%' является доменным именем, но невозможно извлечь TLD часть"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but cannot match TLD against known "
 "list"
 msgstr ""
+"'%%value%%' является доменным именем, но оно не дожно быть из TLD-списка"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but cannot match against domain name"
 " schema for TLD '%%tld%%'"
 msgstr ""
+"'%%value%%' является доменным именем, но не совпадает со схемой имен узла "
+"для TLD '%%tld%%'"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but contains a dash in an invalid "
 "position"
 msgstr ""
+"'%%value%%' является доменным именем, но знак '-' находится в неправильном "
+"месте"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a domain name but the given punycode notation "
 "cannot be decoded"
 msgstr ""
+"'%%value%%' является доменным именем, но данный punycode не может быть "
+"раскодирован"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a local network name but local network names are "
 "not allowed"
 msgstr ""
+"'%%value%%' является именем сети, но локальные сетевые имена не разрешены "
 
 #, php-format
 msgid "'%%value%%' appears to be a subdomain name but cannot extract TLD part"
-msgstr ""
+msgstr "'%%value%%' является поддоменом, но не может извлечь TLD часть"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but cannot match TLD against "
 "known list"
-msgstr ""
+msgstr "'%%value%%' является поддоменом, но оно не дожно быть из TLD-списка"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but cannot match against "
 "subdomain schema for TLD '%%tld%%'"
 msgstr ""
+"'%%value%%' является поддоменом, но не совпадает со схемой имен узла для TLD"
+" '%%tld%%' "
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but contains a dash in an invalid"
 " position"
 msgstr ""
+"'%%value%%' является поддоменом, но знак '-' находится в неправильном месте"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be a subdomain name but the given punycode notation "
 "cannot be decoded"
 msgstr ""
+"'%%value%%' является поддоменом, но данный punycode не может быть "
+"раскодирован"
 
 #, php-format
 msgid ""
 "'%%value%%' appears to be an IP address, but IP addresses are not allowed"
-msgstr ""
+msgstr "'%%value%%' является IP адресом, IP адреса запрещены."
 
 #, php-format
 msgid "'%%value%%' does not appear to be a valid IP address"
-msgstr ""
+msgstr "'%%value%%' является неверным IP адресом"
 
 #, php-format
 msgid "'%%value%%' does not appear to be a valid URI hostname"
-msgstr ""
+msgstr "'%%value%%' не является верным URI именем хоста"
 
 #, php-format
 msgid "'%%value%%' does not appear to be a valid local network name"
-msgstr ""
+msgstr "'%%value%%' не является верным локальным сетевым именем"
 
 #, php-format
 msgid "'%%value%%' does not match the expected structure for a DNS hostname"
-msgstr ""
+msgstr "'%%value%%' не соответствует ожидаемой структуре DNS-имени"
 
 #, php-format
 msgid "'%%value%%' does not match the expected structure for a domain name"
-msgstr ""
+msgstr "'%%value%%' не совпадает с ожидаемой структурой имени домена"
 
 #, php-format
 msgid "'%%value%%' does not match the expected structure for a subdomain name"
-msgstr ""
+msgstr "'%%value%%' не совпадает с ожидаемой структурой имени поддомена"
 
 #, php-format
 msgid "'%%value%%' exceeds the allowed length"
-msgstr ""
+msgstr "'%%value%%' превышает допустимую длину"
 
 msgid ""
 "'%%value%' is no valid email address in the basic format local-part@hostname"
 msgstr ""
+"'%%value%%' не является верным почтовым ящиком вида \"локальная-часть@имя-"
+"узла\""
 
 #, php-format
 msgid "(filtered from %s total records)"
-msgstr ""
+msgstr "(отфильтровано из %s записей)"
 
 msgid "(usually named"
-msgstr ""
+msgstr "(Обычное имя архива: "
 
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
-msgstr ""
+msgstr "<b>%1$s</b> имеет неограниченные права на <b>%2$s</b> службу.<br>"
 
 #, php-format
 msgid ""
 "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
 "reseller.<br>"
 msgstr ""
+"<b>%1$s</b> превышает ограниченя для <b>%2$s</b><br>службы целевого "
+"реселлера.<br>"
 
 #, php-format
 msgid ""
 "<b>%s</b> has IP address that cannot be managed from the destination "
 "reseller!<br>This user cannot be moved!"
 msgstr ""
+"<b>%s</b> имеет IP адрес, который не может управляться целевым "
+"реселлером!<br>Этот пользователь не может быть перемещен!"
 
 msgid "A PHP extension stopped the file upload."
-msgstr ""
+msgstr "Расширение PHP остановило загрузку файла."
 
 msgid "A database update is available"
-msgstr ""
+msgstr "Доступно обновление базы данных."
 
 msgid "A hosting plan with same name already exists."
-msgstr ""
+msgstr "Хостинг-план с таким именем уже существует."
 
 msgid "A new i-MSCP version is available"
-msgstr ""
+msgstr "Доступна новая версия i-MSCP"
 
 msgid "A new software package has been uploaded"
-msgstr ""
+msgstr "Новое программное обеспечение было добавлено."
 
 msgid "A task is in progress for this htuser."
-msgstr ""
+msgstr "Задание выполняется для этого пользователя."
 
 msgid "Access your domain statistics through the Web interface."
-msgstr ""
+msgstr "Получить доступ к статистике домена через Web-интерфейс."
 
 msgid "Access your files through the web interface."
-msgstr ""
+msgstr "Получить доступ к файлам через Web-интерфейс."
 
 msgid "Access your mail through the web interface."
-msgstr ""
+msgstr "Получить доступ к почте через Web-интерфейс."
 
 msgid "Account data"
-msgstr ""
+msgstr "Данные учетной записи"
 
 msgid "Account limits"
-msgstr ""
+msgstr "Ограничения учетной записи"
 
 msgid "Account name"
-msgstr ""
+msgstr "Имя учётной записи"
 
 msgid "Account overview"
-msgstr ""
+msgstr "Просмотр учетной записи"
 
 msgid "Account summary"
-msgstr ""
+msgstr "Учетная запись"
 
 msgid "Account type"
-msgstr ""
+msgstr "Тип учетной записи"
 
 msgid "Action"
-msgstr ""
+msgstr "Действие"
 
 msgid "Action has been stopped."
-msgstr ""
+msgstr "Действие было остановлено."
 
 msgid "Action has failed."
-msgstr ""
+msgstr "Действие не выполнено."
 
 msgid "Actions"
-msgstr ""
+msgstr "Действия"
 
 msgid "Activate"
-msgstr ""
+msgstr "Активировать"
 
 msgid "Activate this plugin"
-msgstr ""
+msgstr "Активировать плагин"
 
 msgid "Activated"
-msgstr ""
+msgstr "Активировано"
 
 msgid "Activated software"
-msgstr ""
+msgstr "Активированное ПО"
 
 msgid "Activation email"
-msgstr ""
+msgstr "Активационное письмо"
 
 msgid "Activation in progress..."
-msgstr ""
+msgstr "Активация в процессе..."
 
 msgid "Activation link expire time <small>(In minutes)</small>"
-msgstr ""
+msgstr "Время истечения ссылки активации <small>(В минутах)</small>"
 
 msgid "Add"
-msgstr ""
+msgstr "Добавить"
 
 msgid "Add DNS resource record"
-msgstr ""
+msgstr "Добавить запись DNS"
 
 msgid "Add FTP account"
-msgstr ""
+msgstr "Добавить учётную запись FTP"
 
 msgid "Add Htaccess group"
-msgstr ""
+msgstr "Добавить группу Htaccess"
 
 msgid "Add Htaccess user"
-msgstr ""
+msgstr "Добавить пользователя Htaccess"
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "Добавить базу данных"
 
 msgid "Add SQL user"
-msgstr ""
+msgstr "Добавить пользователя SQL"
 
 msgid "Add SSL certificate"
-msgstr ""
+msgstr "Добавить SSL сертификат"
 
 msgid "Add admin"
-msgstr ""
+msgstr "Добавить администратора"
 
 msgid "Add catchall"
-msgstr ""
+msgstr "Добавить перенаправление"
 
 msgid "Add custom menu"
-msgstr ""
+msgstr "Добавить пользовательское меню"
 
 msgid "Add customer"
-msgstr ""
+msgstr "Добавить клиента"
 
 msgid "Add customer - Next step"
-msgstr ""
+msgstr "Добавить клиента - Следующий шаг"
 
 msgid "Add domain alias"
-msgstr ""
+msgstr "Добавить алиас домена"
 
 msgid "Add email account"
-msgstr ""
+msgstr "Добавить почтовый ящик"
 
 msgid "Add group"
-msgstr ""
+msgstr "Добавить группу"
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "Добавить хостинг-план"
 
 msgid "Add new IP address"
-msgstr ""
+msgstr "Добавить новый IP адрес"
 
 msgid "Add new protected area"
-msgstr ""
+msgstr "Добавить новую защищённую зону"
 
 msgid "Add new service port"
-msgstr ""
+msgstr "Добавить новый порт служб"
 
 msgid "Add permissions"
-msgstr ""
+msgstr "Добавить разрешения"
 
 msgid "Add permissions for reseller to software:"
-msgstr ""
+msgstr "Добавить разрешения реселлера на ПО"
 
 msgid "Add protected area"
-msgstr ""
+msgstr "Добавить защищенную зону"
 
 msgid "Add reseller"
-msgstr ""
+msgstr "Добавить реселлера"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "Добавить поддомен"
 
 msgid "Add user"
-msgstr ""
+msgstr "Добавить пользователя"
 
 msgid "Added by"
-msgstr ""
+msgstr "Добавил"
 
 msgid "Addition in progress..."
-msgstr ""
+msgstr "Добавление в действии"
 
 msgid "Additional data"
-msgstr ""
+msgstr "Дополнительные данные"
 
 msgid "Admin"
-msgstr ""
+msgstr "Администратор"
 
 msgid "Admin / General / Admin Log"
-msgstr ""
+msgstr "Администратор / Основное / Журнал администратора"
 
 msgid "Admin / General / Overview"
-msgstr ""
+msgstr "Администратор / Основное / Обзор"
 
 msgid "Admin / General / Services Status"
-msgstr ""
+msgstr "Администратор / Основное / Статус служб"
 
 msgid "Admin / Profile / Account Summary"
-msgstr ""
+msgstr "Администратор / Профиль / Учетная запись"
 
 msgid "Admin / Profile / Language"
-msgstr ""
+msgstr "Администратор / Профиль / Язык"
 
 msgid "Admin / Profile / Layout"
-msgstr ""
+msgstr "Администратор / Профиль / Обложка"
 
 msgid "Admin / Profile / Password"
-msgstr ""
+msgstr "Администратор / Профиль / Пароль"
 
 msgid "Admin / Profile / Personal Data"
-msgstr ""
+msgstr "Администратор / Профиль / Персональные данные"
 
 msgid "Admin / Settings"
-msgstr ""
+msgstr "Администратор / Настройки"
 
 msgid "Admin / Settings / IP Management"
-msgstr ""
+msgstr "Администратор / Настройки / Управление IP"
 
 msgid "Admin / Settings / Languages"
-msgstr ""
+msgstr "Администратор / Настройки / Языки"
 
 msgid "Admin / Settings / Lost Password Email"
-msgstr ""
+msgstr "Администратор / Настройки / Письмо восстановления пароля"
 
 msgid "Admin / Settings / Plugin Management"
-msgstr ""
+msgstr "Администратор / Настройки / Управление плагинами"
 
 msgid "Admin / Settings / Server Traffic"
-msgstr ""
+msgstr "Администратор / Настройки / Трафик сервера"
 
 msgid "Admin / Settings / Service Ports"
-msgstr ""
+msgstr "Администратор / Настройки / Порты служб"
 
 msgid "Admin / Settings / Software Management"
-msgstr ""
+msgstr "Администратор / Настройки / Управление ПО"
 
 msgid "Admin / Settings / Software Options"
-msgstr ""
+msgstr "Администратор / Настройки / Настройки ПО"
 
 msgid "Admin / Settings / Welcome Email"
-msgstr ""
+msgstr "Администратор / Настройки / Приветственное письмо"
 
 msgid "Admin / Settings / {TR_DYNAMIC_TITLE}"
-msgstr ""
+msgstr "Администратор / Настройки / {TR_DYNAMIC_TITLE}"
 
 msgid "Admin / Software Management / Reseller Software"
-msgstr ""
+msgstr "Администратор / Управление ПО / ПО реселлера"
 
 msgid "Admin / Statistics / IP Usage"
-msgstr ""
+msgstr "Администратор / Статистика / Использование IP"
 
 msgid "Admin / Statistics / Reseller Statistics"
-msgstr ""
+msgstr "Администратор / Статистика / Статистика реселлеров"
 
 msgid "Admin / Statistics / Reseller Statistics / User Statistics"
 msgstr ""
+"Администратор / Статистика / Статистика реселлера / Статистика пользователя"
 
 msgid ""
 "Admin / Statistics / Reseller Statistics / User Statistics / {USERNAME} user"
 " statistics"
 msgstr ""
+"Администратор / Статистика / Статистика реселлера / Статистика пользователя "
+"/ Статистика пользователя  {USERNAME} "
 
 msgid "Admin / Statistics / Server Statistics"
-msgstr ""
+msgstr "Администратор / Статистика / Статистика сервера"
 
 msgid "Admin / Statistics / Server Statistics / Day Statistics"
-msgstr ""
+msgstr "Администратор / Статистика / Статистика сервера / Статистика дня"
 
 msgid "Admin / Support / Closed Tickets"
-msgstr ""
+msgstr "Администратор / Служба поддержки / Закрытые тикеты"
 
 msgid "Admin / Support / View Ticket"
-msgstr ""
+msgstr "Администратор / Служба поддержки / Просмотр тикетов"
 
 msgid "Admin / System Tools / Anti-Rootkits Logs"
-msgstr ""
+msgstr "Администратор / Системные инструменты / Логи антируткита"
 
 msgid "Admin / System Tools / Database Update"
-msgstr ""
+msgstr "Администратор / Системные инструменты / Обновление базы данных"
 
 msgid "Admin / System Tools / Debugger"
-msgstr ""
+msgstr "Администратор / Системные инструменты / Отладчик"
 
 msgid "Admin / System Tools / Maintenance Settings"
-msgstr ""
+msgstr "Администратор / Системные инструменты / Настройки техобслуживания"
 
 msgid "Admin / System Tools / System Information"
-msgstr ""
+msgstr "Администратор / Системные инструменты / Системная информация"
 
 msgid "Admin / System Tools / i-MSCP Updates"
-msgstr ""
+msgstr "Администратор / Системные инструменты / Обновления i-MSCP"
 
 msgid "Admin / Users / Add Admin"
-msgstr ""
+msgstr "Администратор / Пользователи / Добавить администратора"
 
 msgid "Admin / Users / Add Reseller"
-msgstr ""
+msgstr "Администратор / Пользователи / Добавить реселлера"
 
 msgid "Admin / Users / Circular"
-msgstr ""
+msgstr "Администратор / Пользователи / Почтовая рассылка"
 
 msgid "Admin / Users / Customers Assignment"
-msgstr ""
+msgstr "Администратор / Пользователи / Подтверждение клиента"
 
 msgid "Admin / Users / Edit Reseller"
-msgstr ""
+msgstr "Администратор / Пользователи / Изменить реселлера"
 
 msgid "Admin / Users / Overview"
-msgstr ""
+msgstr "Администратор / Пользователи / Обзор"
 
 msgid "Admin / Users / Overview / Domain Details"
-msgstr ""
+msgstr "Администратор / Пользователи / Обзор / Детали домена"
 
 msgid "Admin / Users / Overview / Edit Admin"
-msgstr ""
+msgstr "Администратор / Пользователи / Обзор / Редактировать домен"
 
 msgid "Admin / Users / Resellers Assignment"
-msgstr ""
+msgstr "Администратор / Пользователи / Подтверждение реселлера"
 
 msgid "Admin / Users / Sessions"
-msgstr ""
+msgstr "Администратор / Пользователи / Сессии"
 
 msgid "Admin account successfully created."
-msgstr ""
+msgstr "Учетная запись администратора успешно создана."
 
 msgid "Admin log"
-msgstr ""
+msgstr "Журнал администратора"
 
 msgid "Admin not available"
-msgstr ""
+msgstr "Администратор недоступен"
 
 msgid "Admin users"
-msgstr ""
+msgstr "Администраторы"
 
 msgid "Admin/IP usage statistics"
-msgstr ""
+msgstr "Администратор / Статистика использования IP"
 
 msgid "Administrator"
-msgstr ""
+msgstr "Администратор"
 
 msgid "Administrator and Reseller levels"
-msgstr ""
+msgstr "Администраторский и реселлерский уровень"
 
 msgid "Administrator and customer"
-msgstr ""
+msgstr "Администратор и клиент"
 
 msgid "Administrator and customer levels"
-msgstr ""
+msgstr "Администраторский и клиентский уровень"
 
 msgid "Administrator and reseller"
-msgstr ""
+msgstr "Администратор и реселлер"
 
 msgid "Administrator level"
-msgstr ""
+msgstr "Уровень администратора"
 
 msgid "Administrator login"
-msgstr ""
+msgstr "Вход администратора"
 
 msgid "Administrators"
-msgstr ""
+msgstr "Администраторы"
 
 msgid "Administrators and customers"
-msgstr ""
+msgstr "Администраторы и клиенты"
 
 msgid "Administrators and resellers"
-msgstr ""
+msgstr "Администраторы и реселлеры"
 
 msgid ""
 "After your upload the package it will be installed on your "
 "systems.<br>Refresh your site to see the new status!"
 msgstr ""
+"После загрузки пакета, он будет установлен в вашу систему.<br>Обновите Ваш "
+"сайт, чтобы увидеть новый статус!"
 
 msgid "Alias forward"
-msgstr ""
+msgstr "Перенаправление алиаса"
 
 msgid "Alias mail"
-msgstr ""
+msgstr "алиас почты"
 
 msgid "Alias subdomain forward"
-msgstr ""
+msgstr "Перенаправление поддомена алиаса"
 
 msgid "Alias subdomain mail"
-msgstr ""
+msgstr "Почтовый ящик алиаса"
 
 msgid "Aliases"
-msgstr ""
+msgstr "Алиасы"
 
 msgid "All"
-msgstr ""
+msgstr "Все"
 
 msgid "All closed tickets were successfully deleted."
-msgstr ""
+msgstr "Все закрытые тикеты были успешно удалены."
 
 msgid "All errors (Development)"
-msgstr ""
+msgstr "Все ошибки (разработка)"
 
 msgid "All errors, except E_DEPRECATED and E_STRICT (Production)"
-msgstr ""
+msgstr "Все ошибки, кроме E_DEPRECATED и E_STRICT (продуктивно)"
 
 msgid "All errors, except E_NOTICES, E_STRICT AND E_DEPRECATED (Default)"
-msgstr ""
+msgstr "Все ошибки, кроме E_NOTICE, E_STRICT и E_DEPRECATED (стандарт)"
 
 msgid "All fields are required."
-msgstr ""
+msgstr "Необходимо заполнить все поля."
 
 msgid "All fields are valid."
-msgstr ""
+msgstr "Все поля заполнены верно."
 
 msgid "All in"
-msgstr ""
+msgstr "Все вх"
 
 msgid "All levels"
-msgstr ""
+msgstr "Все уровни"
 
 msgid "All open tickets were successfully deleted."
-msgstr ""
+msgstr "Все открытые тикеты были успешно удалены"
 
 msgid "All out"
-msgstr ""
+msgstr "Все исх"
 
 msgid "All reseller"
-msgstr ""
+msgstr "Все реселлеры"
 
 msgid "All traffic"
-msgstr ""
+msgstr "Весь трафик"
 
 msgid "All users"
-msgstr ""
+msgstr "Все пользователи"
 
 msgid "Allow URL fopen"
-msgstr ""
+msgstr "Allow URL fopen"
 
 msgid "Allows to forward any request made to this domain to a specific URL."
 msgstr ""
+"Позволяет перенаправлять любой запрос, сделанный для домена на указанный URL"
 
 msgid "Allows to share the mount point of another domain."
-msgstr ""
+msgstr "Позволяет распределить точку монтирования другого домена."
 
 msgid "Already in use"
-msgstr ""
+msgstr "Уже используется"
 
 msgid "Alternate URL to reach your website."
-msgstr ""
+msgstr "Альтернативный URL для доступа к сайту."
 
 msgid "Alternative URL to reach your website"
-msgstr ""
+msgstr "Альтернативный URL для доступа к сайту"
 
 msgid "An email addresse is not valid in mail forward list."
-msgstr ""
+msgstr "Неверный синтаксис почтового адреса в списке перенаправления."
 
 msgid "An unexpected error occurred"
-msgstr ""
+msgstr "Произошла неожиданная ошибка."
 
 msgid "An unexpected error occurred."
-msgstr ""
+msgstr "Произошла неожиданная ошибка."
 
 msgid ""
 "An unexpected error occurred. Go to the debugger interface for more details."
 msgstr ""
+"Произошла неожиданная ошибка. Перейдите в отладчик, чтобы получить "
+"подробности"
 
 msgid "An unexpected error occurred. Please contact your administrator."
 msgstr ""
+"Обнаружена непредвиденная ошибка. Пожалуйста свяжитесь с Вашим "
+"администратором."
 
 msgid "An unexpected error occurred. Please contact your reseller."
 msgstr ""
+"Произошла непредвиденная ошибка. Пожалуйста свяжитесь с Вашим реселлером."
 
 #, php-format
 msgid "An unexpected error occurred: %s"
-msgstr ""
+msgstr "Произошла неожиданная ошибка: %s"
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
-msgstr ""
+msgstr "Неизвесная ошибка при загрузке файла: %s"
 
 msgid "Anti-Rootkits Logs"
-msgstr ""
+msgstr "Логи антируткита"
 
 msgid "Any"
-msgstr ""
+msgstr "Любой"
 
 msgid "Application installer"
-msgstr ""
+msgstr "Установка приложений"
 
 msgid "Apply"
-msgstr ""
+msgstr "Применить"
 
 msgid "Apply changes"
-msgstr ""
+msgstr "Применить изменения"
 
 msgid "Are you sure to install this package from the webdepot?"
-msgstr ""
+msgstr "Вы уверены, что хотите установить пакет из Web-хранилища?"
 
 msgid "Are you sure to install this package?"
-msgstr ""
+msgstr "Вы уверены, что хотите установить этот пакет?"
 
 msgid "Are you sure to remove the permissions ?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить права?"
 
 #, php-format
 msgid "Are you sure you want delete the %s SQL user?"
-msgstr ""
+msgstr "Вы уверены что хотите удалить SQL пользователя '%s'?"
 
 msgid "Are you sure you want to activate this package?"
-msgstr ""
+msgstr "Вы уверены, что хотите активировать этот пакет?"
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить порт службы %s ?"
 
 #, php-format
 msgid "Are you sure you want to delete %s?"
-msgstr ""
+msgstr "Вы уверены что хотите удалить %s?"
 
 msgid "Are you sure you want to delete all closed tickets?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить все закрытые тикеты?"
 
 msgid "Are you sure you want to delete all selected mail accounts?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить все выбранные почтовые ящики?"
 
 msgid "Are you sure you want to delete all tickets?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить все тикеты?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s FTP user?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить пользователя FTP %s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s catch all?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить переадресацию %s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
-msgstr ""
+msgstr "Вы уверены что хотите удалить %s заказ на алиас домена?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить %s алиас домена?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить меню %s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s user?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить пользователя %s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить тикет %s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s' IP address?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить IP адрес %%s?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить пользователя FTP %%s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` protected area?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить защищённую зону %%s ?"
 
 msgid "Are you sure you want to delete this DNS record?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить эту DNS запись?"
 
 msgid "Are you sure you want to delete this domain alias?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить этот алиас домена?"
 
 msgid "Are you sure you want to delete this hosting plan?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить этот хостинг-план?"
 
 msgid "Are you sure you want to delete this package?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить пакет?"
 
 msgid "Are you sure you want to delete this subdomain?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить этот поддомен?"
 
 msgid ""
 "Are you sure you want to import this package into the local software "
 "repository?"
-msgstr ""
+msgstr "Вы уверены, что хотите импортировать пакет в локальный репозиторий?"
 
 msgid "Are you sure you want to import this package into the software depot?"
-msgstr ""
+msgstr "Вы уверены, что хотите импортировать этот пакет в репозиторий?"
 
 msgid ""
 "Are you sure you want to install this package from the Web software "
 "repository?"
-msgstr ""
+msgstr "Вы уверены, что хотите установить пакет из Web-репозитория?"
 
 msgid "Are you sure you want to restore the backup?"
-msgstr ""
+msgstr "Вы уверены что хотите восстановить резервную копию?"
 
 msgid "Assign"
-msgstr ""
+msgstr "Назначить"
 
 msgid "Assign existing SQL user"
-msgstr ""
+msgstr "Назначит существующего SQL пользователя"
 
 msgid "Assign group"
-msgstr ""
+msgstr "Назначить группу"
 
 msgid "Assigned to at least one reseller"
-msgstr ""
+msgstr "Закреплено как минимум за одним реселлером"
 
 msgid "At least one intermediate certificate is invalid or missing."
-msgstr ""
+msgstr "По крайней мере один сертефикат не валидный или отсутствует."
 
 msgid "Authentication by group"
-msgstr ""
+msgstr "Аутентификация по группе"
 
 msgid "Authentication by user"
-msgstr ""
+msgstr "Аутентификация по пользователю"
 
 msgid "Authentication users"
-msgstr ""
+msgstr "Аутентификация пользователи"
 
 msgid "Authentication users/groups"
-msgstr ""
+msgstr "Аутентификация пользователи/группе"
 
 msgid "Auto"
-msgstr ""
+msgstr "Автоматически"
 
 msgid "Auto (Browser language)"
-msgstr ""
+msgstr "Автоматически (язык браузера)"
 
 msgid "Auto responder"
-msgstr ""
+msgstr "Автоответчик"
 
 msgid "Auto-responder message cannot be empty."
-msgstr ""
+msgstr "Сообщение автоответчика не может быть пусто."
 
 msgid "Auto-responder successfully scheduled for activation."
-msgstr ""
+msgstr "Автоответчик успешно помечен для активации."
 
 msgid "Auto-responder successfully scheduled for deactivation."
-msgstr ""
+msgstr "Автоответчик успешно помечен для деактивации."
 
 msgid "Auto-responder successfully scheduled for update."
-msgstr ""
+msgstr "Автоответчик успешно помечен для обновления."
 
 msgid "Available"
-msgstr ""
+msgstr "Доступно"
 
 msgid "Available software"
-msgstr ""
+msgstr "Доступное ПО"
 
 msgid "Awaiting activation"
-msgstr ""
+msgstr "Ожидает активации"
 
 msgid "Awaiting for approval"
-msgstr ""
+msgstr "В ожидании утверждения"
 
 msgid "B"
-msgstr ""
+msgstr "В"
 
 msgid "Back"
-msgstr ""
+msgstr "Назад"
 
 msgid "Backup"
-msgstr ""
+msgstr "Резервное копирование"
 
 msgid "Backup and restore settings."
-msgstr ""
+msgstr "Параметры резервного копирования."
 
 msgid "Backup has been successfully scheduled for restoration."
-msgstr ""
+msgstr "Резервная копия успешно помечена для восстановления."
 
 msgid "Bad password."
-msgstr ""
+msgstr "Неверный пароль."
 
 msgid "Bad request."
-msgstr ""
+msgstr "Неверный запрос."
 
 msgid "Behind"
-msgstr ""
+msgstr "После"
 
 msgid ""
 "Below, you can activate the external mail feature for one or many of your "
@@ -1063,654 +1114,682 @@ msgid ""
 "server to relay your mail through your own mail server, but that no DNS "
 "record is created for it."
 msgstr ""
+"Здесь Вы можете переключить один или несколько ваших доменов в режим "
+"доставки почты на другой почтовый сервер. Внимание, эта функция не изменяет "
+"записи DNS. Не забудьте изменить запись MX в настройках DNS."
 
 msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
 msgstr ""
+"Блокировка между попытками входа/ввода каптчи <small>(в секундах)</small>"
 
 msgid "Blocking time between logins and captcha attempts"
-msgstr ""
+msgstr "Время блокировки между попытками входа"
 
 msgid "Blocktime <small>(in minutes)</small>"
-msgstr ""
+msgstr "Время блокировки <small>(в минутах)</small>"
 
 msgid "Body"
-msgstr ""
+msgstr "Тело"
 
 msgid "Body is missing."
-msgstr ""
+msgstr "Тело отсутствует."
 
 msgid "Bogomips"
-msgstr ""
+msgstr "Bogomips"
 
 msgid "Both source and destination are identical."
-msgstr ""
+msgstr "Источник и место назначения идентичны."
 
 msgid "Bruteforce detection"
-msgstr ""
+msgstr "Определение атаки-перебора"
 
 msgid "Bulk Actions"
-msgstr ""
+msgstr "Основные Действия"
 
 msgid "By"
-msgstr ""
+msgstr " "
 
 msgid "CGI"
-msgstr ""
+msgstr "CGI"
 
 msgid "CPU Information"
-msgstr ""
+msgstr "Информация о процессоре"
 
 msgid "Cache"
-msgstr ""
+msgstr "Кэш"
 
 #, php-format
 msgid "Can edit the PHP %s configuration option"
-msgstr ""
+msgstr "Может изменить PHP %s запись"
 
 #, php-format
 msgid "Can use the PHP %s function"
-msgstr ""
+msgstr "Может пользовать PHP %s функцию"
 
 msgid "Cancel"
-msgstr ""
+msgstr "Отмена"
 
 msgid "Canonical name"
-msgstr ""
+msgstr "Каноническое имя"
 
 msgid "Catch all"
-msgstr ""
+msgstr "Catch all"
 
 msgid "Catch all successfully scheduled for addition."
-msgstr ""
+msgstr "Сборщик почты домена помечен для добавления."
 
 msgid "Catch all successfully scheduled for deletion."
-msgstr ""
+msgstr "Сборщик почты успешно отмечен для удаления."
 
 msgid "Catchall"
-msgstr ""
+msgstr "Перенаправление"
 
 msgid "Certificate"
-msgstr ""
+msgstr "Сертификат"
 
 msgid "Certificate data"
-msgstr ""
+msgstr "Данные сертификата"
 
 msgid "Change"
-msgstr ""
+msgstr "Изменить"
 
 msgid "Change personal data"
-msgstr ""
+msgstr "Изменить персональные данные"
 
 msgid "Change status of this item for a new attempt"
-msgstr ""
+msgstr "Изменить статус данного элемента для новой попытки"
 
 msgid "Check for update"
-msgstr ""
+msgstr "Проверка обновлений"
 
 msgid ""
 "Check the reseller uploads!<br>It is not allowed to upload this package two "
 "times.<br>Refresh your site to see the new status!"
 msgstr ""
+"Проверьте загрузки реселлера!<br>Не разрешается загружать один и тот же "
+"пакет дважды.<br>Обновите страницу, чтобы увидет новый статус!"
 
 msgid ""
 "Check your own uploads!<br>Ask the administrator if you don't find the "
 "package.<br>It is not allowed to upload this packages two times.<br>Refresh "
 "your site to see the new status!"
 msgstr ""
+"Проверьте Ваши загрузки!<br>Сообщите администратору, если Вы не можете найти"
+" пакет.<br>Не разрешается загружать один и тот же пакет дважды.<br>Обновите "
+"страницу, чтобы увидет новый статус!"
 
 msgid ""
 "Check your package. There is an error inside!<br>Refresh your site to see "
 "the new status!"
 msgstr ""
+"Проверьте Ваш пакет. Он содержит ошибку!<br>Обновите страницу, чтобы увидет "
+"новый статус!"
 
 msgid ""
 "Check your software depot uploads!<br>It is not allowed to upload this "
 "package two times.<br>Refresh your site to see the new status!"
 msgstr ""
+"Проверьте загрузки репозитория!<br>Не разрешается загружать один и тот же "
+"пакет дважды.<br>Обновите страницу, чтобы увидет новый статус!"
 
 msgid "Choose"
-msgstr ""
+msgstr "Выбрать"
 
 msgid "Choose dir"
-msgstr ""
+msgstr "Выбрать каталог"
 
 #, php-format
 msgid "Choose file (Max: %1$d MiB)"
-msgstr ""
+msgstr "Выберите файл (Max: %1$d MB)"
 
 msgid "Choose hosting plan"
-msgstr ""
+msgstr "Выбрать хостинг-план"
 
 msgid "Choose layout color"
-msgstr ""
+msgstr "Выберите цвет подложки "
 
 msgid "Choose your language"
-msgstr ""
+msgstr "Выберите Ваш язык"
 
 msgid "Circular"
-msgstr ""
+msgstr "Почтовая рассылка"
 
 msgid "Circular successfully sent."
-msgstr ""
+msgstr "Рассылка успешно отправлена."
 
 msgid "City"
-msgstr ""
+msgstr "Город / Населенный пункт"
 
 msgid "Class"
-msgstr ""
+msgstr "Класс"
 
 msgid "Clear log"
-msgstr ""
+msgstr "Очистить лог"
 
 msgid "Click here for more details"
-msgstr ""
+msgstr "Щелкните здесь, чтобы получить подробности"
 
 msgid ""
 "Click the Restore button and the system will restore the last daily backup"
 msgstr ""
+"Нажмите на кнопку Восстановить и система восстановит последнюю резервную "
+"копию"
 
 msgid "Click to activate"
-msgstr ""
+msgstr "Щелкните для активации"
 
 msgid "Click to deactivate"
-msgstr ""
+msgstr "Щелкните для деактивации"
 
 msgid "Click to edit"
-msgstr ""
+msgstr "Щелкните для изменения"
 
 msgid "Client / Databases / Add SQL Database"
-msgstr ""
+msgstr "Клиент / Базы данных / Добавить БД"
 
 msgid "Client / Databases / Overview"
-msgstr ""
+msgstr "Клиент / Базы данных / Обзор"
 
 msgid "Client / Databases / Overview / Add SQL User"
-msgstr ""
+msgstr "Клиент / Базы данных / Обзор / Добавить пользователя БД"
 
 msgid "Client / Databases / Overview / Update SQL User Password"
-msgstr ""
+msgstr "Клиент / Базы данных / Обзор / Обновить пароль пользователя БД"
 
 msgid "Client / Domain / Edit DNS resource record"
-msgstr ""
+msgstr "Клиент / Домены / Изменить запись DNS"
 
 msgid "Client / Domains"
-msgstr ""
+msgstr "Клиент / Домены"
 
 msgid "Client / Domains / Add DNS resource record"
-msgstr ""
+msgstr "Клиент / Домены / Добавить запись DNS"
 
 msgid "Client / Domains / Add Domain Alias"
-msgstr ""
+msgstr "Клиент / Домены / Добавить алиас"
 
 msgid "Client / Domains / Add Subdomain"
-msgstr ""
+msgstr "Клиент / Домены / Добавить поддомен"
 
 msgid "Client / Domains / Edit Domain"
-msgstr ""
+msgstr "Клиент / Домены / Редактрировать домен"
 
 msgid "Client / Domains / Edit Domain Alias"
-msgstr ""
+msgstr "Клиент / Домены / Редактрировать алиас"
 
 msgid "Client / Domains / Edit Subdomain"
-msgstr ""
+msgstr "Клиент / Домены / Редактрировать поддомен"
 
 msgid "Client / Domains / PHP Settings"
-msgstr ""
+msgstr "Клиент / Домены / Настройки PHP"
 
 msgid "Client / Domains / SSL Certificate"
-msgstr ""
+msgstr "Клиент / Домены / SSL сертификаты"
 
 msgid "Client / Email / Add Email Account"
-msgstr ""
+msgstr "Клиент / Управление почтой / Добавить учетную запись"
 
 msgid "Client / Email / Catchall"
-msgstr ""
+msgstr "Клиент / Управление почтой / Перенаправление"
 
 msgid "Client / Email / Catchall / Add Catchall"
-msgstr ""
+msgstr "Клиент / Управление почтой / Добавить перенаправление"
 
 msgid "Client / Email / Edit Email Account"
-msgstr ""
+msgstr "Клиент / Управление почтой / Изменить учетную запись"
 
 msgid "Client / Email / External Mail Feature"
-msgstr ""
+msgstr "Клиент / Управление почтой / Внешние почтовые сервера"
 
 msgid "Client / Email / Overview"
-msgstr ""
+msgstr "Клиент / Управление почтой / Обзор"
 
 msgid "Client / Email / Overview / Edit Auto Responder"
-msgstr ""
+msgstr "Клиент / Управление почтой / Обзор / Изменить автоответчик"
 
 msgid "Client / Email / Overview / Enable Auto Responder"
-msgstr ""
+msgstr "Клиент / Управление почтой / Обзор / Включить автоответчик"
 
 msgid "Client / FTP / Add FTP Account"
-msgstr ""
+msgstr "Клиент / FTP / Добавить пользователя FTP"
 
 msgid "Client / FTP / Overview"
-msgstr ""
+msgstr "Клиент / FTP / Обзор"
 
 msgid "Client / FTP / Overview / Edit FTP Account"
-msgstr ""
+msgstr "Клиент / FTP / Обзор / Редактировать учётную запись FTP"
 
 msgid "Client / General / Overview"
-msgstr ""
+msgstr "Клиент / Основное / Обзор"
 
 msgid "Client / Profile / Account Summary"
-msgstr ""
+msgstr "Клиент / Профиль / Учетная запись"
 
 msgid "Client / Profile / Language"
-msgstr ""
+msgstr "Клиент / Профиль / Язык"
 
 msgid "Client / Profile / Layout"
-msgstr ""
+msgstr "Клиент / Профиль / Обложка"
 
 msgid "Client / Profile / Password"
-msgstr ""
+msgstr "Клиент / Профиль / Пароль"
 
 msgid "Client / Profile / Personal Data"
-msgstr ""
+msgstr "Клиент / Профиль / Персональные данные"
 
 msgid "Client / Statistics"
-msgstr ""
+msgstr "Клиент / Статистика"
 
 msgid "Client / Support / Closed Tickets"
-msgstr ""
+msgstr "Клиент / Служба поддержки / Закрытые тикеты"
 
 msgid "Client / Support / New Ticket"
-msgstr ""
+msgstr "Клиент / Служба поддержки / Новый тикет"
 
 msgid "Client / Support / Open Tickets"
-msgstr ""
+msgstr "Клиент / Служба поддержки / Открытые тикеты"
 
 msgid "Client / Support / View Ticket"
-msgstr ""
+msgstr "Клиент / Служба поддержки / Просмотреть тикет"
 
 msgid "Client / Webtools / Custom Error Pages"
-msgstr ""
+msgstr "Клиент / Инструменты / Пользовательские страницы ошибок"
 
 msgid "Client / Webtools / Daily Backup"
-msgstr ""
+msgstr "Клиент / Инструменты / Резервное копирование"
 
 msgid "Client / Webtools / Overview"
-msgstr ""
+msgstr "Клиент / Инструменты / Обзор"
 
 msgid "Client / Webtools / Protected Areas"
-msgstr ""
+msgstr "Клиент / Инструменты / Защищенные зоны"
 
 msgid "Client / Webtools / Protected Areas / Manage Users and Groups"
 msgstr ""
+"Клиент / Инструменты / Защищенные зоны / Управления пользователями и "
+"группами"
 
 msgid ""
 "Client / Webtools / Protected Areas / Manage Users and Groups / Add Group"
 msgstr ""
+"i-MSCP - Клиент / Web-инструменты / Защищенные зоны / Управление "
+"пользователями и группами / Добавить группу"
 
 msgid ""
 "Client / Webtools / Protected Areas / Manage Users and Groups / Add User"
 msgstr ""
+"i-MSCP - Клиент / Web-инструменты / Защищенные зоны / Управление "
+"пользователями и группами /Добавить пользователя"
 
 msgid ""
 "Client / Webtools / Protected Areas / Manage Users and Groups / Edit User"
 msgstr ""
+"i-MSCP - Клиент / Web-инструменты / Защищенные зоны / Управление "
+"пользователями и группами / Изменить пользователя"
 
 msgid "Client / Webtools / Protected Areas / {TR_DYNAMIC_TITLE}"
-msgstr ""
+msgstr "Клиент / Инструменты / Защищенные зоны / "
 
 msgid "Client / Webtools / Software"
-msgstr ""
+msgstr "Клиент / Инструменты / Приложения"
 
 msgid "Client / Webtools / Software / Software Installation"
-msgstr ""
+msgstr "Клиент / Инструменты / Обзор / Приложения / Установка"
 
 msgid "Client / Webtools / Software / View"
-msgstr ""
+msgstr "Клиент / Инструменты / Приложения / Просмотр"
 
 msgid "Clock speed (MHz)"
-msgstr ""
+msgstr "Частота (MHz)"
 
 msgid "Close"
-msgstr ""
+msgstr "Закрыть"
 
 msgid "Close the ticket"
-msgstr ""
+msgstr "Закрыть тикет"
 
 msgid "Close ticket"
-msgstr ""
+msgstr "Закрыть тикет"
 
 msgid "Closed tickets"
-msgstr ""
+msgstr "Закрытые тикеты"
 
 msgid "Common name"
-msgstr ""
+msgstr "Общее имя"
 
 msgid "Company"
-msgstr ""
+msgstr "Компания"
 
 msgid "Compress HTML output"
-msgstr ""
+msgstr "Сжать вывод HTML"
 
 msgid "Configuration mode"
-msgstr ""
+msgstr "Режим конфигурации"
 
 msgid "Confirmation required"
-msgstr ""
+msgstr "требуется подтверждение"
 
 #, php-format
 msgid "Conflict with the `%s' DNS resource record."
-msgstr ""
+msgstr "Kонфликт с записью `%s'."
 
 msgid "Core data"
-msgstr ""
+msgstr "Основные данные"
 
 msgid "Cores"
-msgstr ""
+msgstr "Ядра"
 
 msgid "Could not add/update SSL certificate. An unexpected error occurred."
 msgstr ""
+"Не удалось добавить/обновить SSL сертификат. Произошла неожиданная ошибка."
 
 #, php-format
 msgid "Could not backup current `%s' plugin directory."
-msgstr ""
+msgstr "Невозможно создать резервную копию плагина `%s'"
 
 #, php-format
 msgid "Could not change the %s plugin: %s"
-msgstr ""
+msgstr "Невозможно изменить плагин %s: %s"
 
 #, php-format
 msgid "Could not connect to the `%s' database. Please check the password."
 msgstr ""
+"Не удалось подключиться с базой данных  `%s`. Пожалуйста проверьте пароль."
 
 #, php-format
 msgid "Could not create `%s` database name."
-msgstr ""
+msgstr "Невозможно создать базу данных с именем `%s`."
 
 msgid "Could not create domain alias. An unexpected error occurred."
-msgstr ""
+msgstr "Не удалось создать алиас домена. Произошла неожиданная ошибка."
 
 msgid "Could not delete SQL database. An unexpected error occurred."
-msgstr ""
+msgstr "Не удалось удалить базу данных SQL. Произошла неожиданная ошибка."
 
 msgid "Could not delete SQL user. An unexpected error occurred."
-msgstr ""
+msgstr "Не удалось удалить пользователя SQL. Произошла неожиданная ошибка."
 
 msgid "Could not delete SSL certificate. An unexpected error occurred."
-msgstr ""
+msgstr "Не удалось удалить SSL сертификат. Произошла неожиданная ошибка."
 
 #, php-format
 msgid "Could not delete the %s plugin: %s"
-msgstr ""
+msgstr "Невозможно удалить плагин %s: %s"
 
 #, php-format
 msgid "Could not disable the %s plugin: %s"
-msgstr ""
+msgstr "Невозможно отключить плагин %s: %s"
 
 #, php-format
 msgid "Could not enable the %s plugin: %s"
-msgstr ""
+msgstr "Невозможно включить плагин %s: %s"
 
 msgid "Could not find any network interface. You cannot add new IP addresses."
 msgstr ""
+"Невозможно найти сетевой интерфейс. Вы не можете добавить новый IP адрес."
 
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr ""
+"Не удалось сгенерировать SSL сертификат. Произошла неожиданная ошибка."
 
 #, php-format
 msgid "Could not install the %s plugin: %s"
-msgstr ""
+msgstr "Невозможно установить плагин %s : %s"
 
 #, php-format
 msgid "Could not protect the %s plugin: %s"
-msgstr ""
+msgstr "Невозможно защитить плагин %s: %s"
 
 #, php-format
 msgid "Could not restore %s plugin directory"
-msgstr ""
+msgstr "Невозможно восстановить резервную копию плагина %s ."
 
 msgid "Could not retrieve directories."
-msgstr ""
+msgstr "Невозможно получить список каталогов для Вашего домена."
 
 #, php-format
 msgid "Could not uninstall the %s plugin: %s"
-msgstr ""
+msgstr "Невозможно отключить плагин %s: %s"
 
 #, php-format
 msgid "Could not update the %s plugin: %s"
-msgstr ""
+msgstr "Невозможно обновить плагин %s: %s"
 
 msgid "Could not upload file."
-msgstr ""
+msgstr "Не могу загрузить файл."
 
 msgid "Could not upload file. File not found."
-msgstr ""
+msgstr "Невозможно загрузить файл. Файл не найден"
 
 #, php-format
 msgid ""
 "Could not upload the file. Max. upload filesize (%1$d MB) has been reached."
 msgstr ""
+"Невозможно загрузить файл. Максимальный размер файла (%1$d MB) превышен."
 
 #, php-format
 msgid "Could not validate DNS resource record: %s"
-msgstr ""
+msgstr "Невозможно проверить запись DNS: %s"
 
 msgid "Count default email addresses"
-msgstr ""
+msgstr "Учитывать email адреса по умолчанию"
 
 msgid "Country"
-msgstr ""
+msgstr "Страна"
 
 msgid "Create"
-msgstr ""
+msgstr "Создать"
 
 msgid "Create catch all"
-msgstr ""
+msgstr "Создать Catch all"
 
 msgid "Create default email addresses"
-msgstr ""
+msgstr "Создать email адреса по умолчанию"
 
 msgid "Created by"
-msgstr ""
+msgstr "Создал"
 
 msgid "Creation date"
-msgstr ""
+msgstr "Дата создания"
 
 msgid "Custom DNS errors"
-msgstr ""
+msgstr "Ошибки внешних DNS"
 
 msgid "Custom DNS record successfully scheduled for deletion."
-msgstr ""
+msgstr "Пользовательская DNS запись успешно помечена для удаления."
 
 msgid "Custom DNS records"
-msgstr ""
+msgstr "Пользовательские DNS"
 
 msgid "Custom error page updated."
-msgstr ""
+msgstr "Страницы ошибок обновлены."
 
 msgid "Custom error pages"
-msgstr ""
+msgstr "Персональные страницы ошибок"
 
 msgid "Custom menu name and link"
-msgstr ""
+msgstr "Название меню и ссылка"
 
 msgid "Custom menu properties"
-msgstr ""
+msgstr "Настройки персональных меню"
 
 msgid "Custom menu successfully added."
-msgstr ""
+msgstr "Пользовательское меню успешно добавлено."
 
 msgid "Custom menu successfully deleted."
-msgstr ""
+msgstr "Пользовательское меню успешно удалено."
 
 msgid "Custom menu successfully updated."
-msgstr ""
+msgstr "Пользовательское меню успешно обновлено."
 
 msgid "Custom menus"
-msgstr ""
+msgstr "Персональные меню"
 
 msgid "Customer"
-msgstr ""
+msgstr "Клиент"
 
 msgid "Customer ID"
-msgstr ""
+msgstr "ID клиента"
 
 msgid "Customer ID cannot have more than 200 characters"
-msgstr ""
+msgstr "ID клиента не может содержать более 200 символов"
 
 msgid "Customer account"
-msgstr ""
+msgstr "Учетная запись клиента"
 
 msgid "Customer account successfully scheduled for activation."
-msgstr ""
+msgstr "Клиент успешно помечен для активации."
 
 msgid "Customer account successfully scheduled for creation."
-msgstr ""
+msgstr "Клиент успешно помечен для создания."
 
 msgid "Customer account successfully scheduled for deactivation."
-msgstr ""
+msgstr "Клиент успешно помечен для деактивации."
 
 msgid "Customer account successfully scheduled for deletion."
-msgstr ""
+msgstr "Клиент успешно помечен для удаления."
 
 msgid "Customer account successfully updated."
-msgstr ""
+msgstr "Учетная запись клиента успешно обновлена."
 
 msgid "Customer assignments"
-msgstr ""
+msgstr "Назначения клиентов"
 
 msgid "Customer consumption"
-msgstr ""
+msgstr "Потребление клиента"
 
 msgid "Customer level"
-msgstr ""
+msgstr "Уровень клиента"
 
 msgid "Customer successfully scheduled for addition."
-msgstr ""
+msgstr "Клиент успешно помечен для добавления."
 
 msgid "Customer successfully scheduled for deletion."
-msgstr ""
+msgstr "Клиент успешно помечен для удаления."
 
 msgid "Customer's layout color successfully updated."
-msgstr ""
+msgstr "Цвет подложки клиента успешно обновлен."
 
 msgid "Customer(s) successfully moved."
-msgstr ""
+msgstr "Пользователь(и) успешно перемещены."
 
 msgid "Customers"
-msgstr ""
+msgstr "Клиенты"
 
 msgid "Customize error pages for your domain."
-msgstr ""
+msgstr "Выберите страницы ошибок для Вашего домена."
 
 msgid "DNS record already exist."
-msgstr ""
+msgstr "DNS запись уже существует."
 
 msgid "DNS resource record"
-msgstr ""
+msgstr "Запись DNS"
 
 msgid "DNS resource record scheduled for addition."
-msgstr ""
+msgstr "DNS запись помечена для добавления."
 
 msgid "DNS resource record scheduled for update."
-msgstr ""
+msgstr "DNS запись помечена для обновления."
 
 msgid "DNS resource records"
-msgstr ""
+msgstr "Записи ресурсов DNS"
 
 msgid "DNS zone in which you want add this DNS resource record."
-msgstr ""
+msgstr "Зона DNS, в которую вы хотите добавить запись DNS."
 
 msgid "DOWN"
-msgstr ""
+msgstr "НЕ РАБОТАЕТ"
 
 msgid "Daemon request failed."
-msgstr ""
+msgstr "Запрос демона провален."
 
 msgid "Daemon request successful."
-msgstr ""
+msgstr "Запрос демона удался."
 
 msgid "Daily backup"
-msgstr ""
+msgstr "Ежедневная резервная копия"
 
 msgid "Data"
-msgstr ""
+msgstr "Данные"
 
 msgid "Data were altered. Please try again."
-msgstr ""
+msgstr "Данные были изменены. Пожалуйста попробуйте снова."
 
 msgid "Database"
-msgstr ""
+msgstr "База данных"
 
 msgid "Database Name and Users"
-msgstr ""
+msgstr "Имя и пользователи базы данных"
 
 msgid "Database Update Revision"
-msgstr ""
+msgstr "Ревизия обновления базы данных"
 
 msgid "Database Update details"
-msgstr ""
+msgstr "Детали обновления БД"
 
 msgid "Database data"
-msgstr ""
+msgstr "База данных"
 
 msgid "Database name"
-msgstr ""
+msgstr "Имя базы данных"
 
 msgid "Database name is too long."
-msgstr ""
+msgstr "Имя базы данных слишком длинное."
 
 msgid "Database name is unavailable or unallowed."
-msgstr ""
+msgstr "Имя базы данных недопустимо или не разрешено."
 
 msgid "Database password"
-msgstr ""
+msgstr "Пароль базы данных"
 
 msgid "Database prefix"
-msgstr ""
+msgstr "Префикс базы данных"
 
 msgid "Database prefix/suffix"
-msgstr ""
+msgstr "Префикс/постфикс БД"
 
 msgid "Database required"
-msgstr ""
+msgstr "Требуется база данных"
 
 msgid "Database update"
-msgstr ""
+msgstr "Обновление базы данных"
 
 msgid "Database usage"
-msgstr ""
+msgstr "Использование БД"
 
 msgid "Database user"
-msgstr ""
+msgstr "Пользователь базы данных"
 
 msgid "Database users"
-msgstr ""
+msgstr "Пользователи базы данных"
 
 msgid "Databases"
-msgstr ""
+msgstr "Базы данных"
 
 msgid "Date"
-msgstr ""
+msgstr "Дата"
 
 msgid "Day"
-msgstr ""
+msgstr "День"
 
 msgid "Day statistics"
-msgstr ""
+msgstr "Статистика дня"
 
 msgid "Days"
-msgstr ""
+msgstr "Дни"
 
 msgid "Deactivate"
-msgstr ""
+msgstr "Деактивировать"
 
 msgid "Deactivate this plugin"
-msgstr ""
+msgstr "Деактивировать плагин"
 
 msgid "Deactivated"
-msgstr ""
+msgstr "Деактивировано"
 
 msgid "Deactivation in progress..."
-msgstr ""
+msgstr "Деактивация в процессе..."
 
 msgid ""
 "Dear {NAME},\n"
@@ -1732,6 +1811,26 @@ msgid ""
 "___________________________\n"
 "i-MSCP Mailer"
 msgstr ""
+"Уважаемый {NAME},\n"
+"\n"
+"Новая учетная запись i-MSCP была создана для Вас.\n"
+"\n"
+"Информация о Вашей учетной записи:\n"
+"\n"
+"Тип пользователя: {USERTYPE}\n"
+"Имя пользователя: {USERNAME}\n"
+"Пароль: {PASSWORD}\n"
+"\n"
+"Пожалуйста, для Вашей безопасности, измените Ваш пароль при первом входе.\n"
+"\n"
+"Вы можете войти прямо сейчас {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
+"\n"
+"Пожалуйста не отвечайте на это сообщение.\n"
+"\n"
+"Благодарим за использование сервисов i-MSCP.\n"
+"\n"
+"___________________________\n"
+"Команда i-MSCP"
 
 msgid ""
 "Dear {NAME},\n"
@@ -1747,6 +1846,18 @@ msgid ""
 "___________________________\n"
 "i-MSCP Mailer"
 msgstr ""
+"Уважаемый {NAME},\n"
+"\n"
+"Ваш реселлер загрузил новый пакет ПО.\n"
+"\n"
+"ID Реселлера: {RESELLER_ID}\n"
+"Пакет ПО: {SOFTWARE_PACKAGE}\n"
+"ID пакета: {SOFTWARE_ID}\n"
+"\n"
+"Пожалуйста не отвечайте на это сообщение.\n"
+"\n"
+"___________________________\n"
+"Команда i-MSCP"
 
 msgid ""
 "Dear {NAME},\n"
@@ -1762,6 +1873,18 @@ msgid ""
 "___________________________\n"
 "i-MSCP Mailer"
 msgstr ""
+"Уважаемый {Name},\n"
+"\n"
+"пожалуйста кликните на ниже указанную ссылку, чтоб обновить ваш пароль к i-MSCP:\n"
+"\n"
+"{LINK}\n"
+"\n"
+"Внимание: если запрос на изменение пароля был сделан не Вами, то пожалуйста игнорируйте данное сообщение.\n"
+"\n"
+"Пожалуйста не отвечайте на это сообщение.\n"
+"\n"
+"___________________________\n"
+"Команда i-MSCP"
 
 msgid ""
 "Dear {NAME},\n"
@@ -1784,6 +1907,25 @@ msgid ""
 "________________\n"
 "i-MSCP Mailer"
 msgstr ""
+"Уважаемый {NAME},\n"
+"\n"
+"это автоматическое сообщение было отправлено i-MSCP:\n"
+"\n"
+"Название сервера: {HOSTNAME}\n"
+"IP-адрес сервера: {SERVER_IP}\n"
+"IP-адрес клиента: {CLIENT_IP}\n"
+"Версия: {VERSION}\n"
+"Дата сборки: {BUILDDATE}\n"
+"Важность сообщения: {MESSAGE_SEVERITY}\n"
+"\n"
+"==========================================================================\n"
+"{MESSAGE}\n"
+"==========================================================================\n"
+"\n"
+"Пожалуйста не отвечайте на это сообщение.\n"
+"\n"
+"___________________________\n"
+"Команда i-MSCP"
 
 msgid ""
 "Dear {NAME},\n"
@@ -1803,6 +1945,22 @@ msgid ""
 "___________________________\n"
 "i-MSCP Mailer"
 msgstr ""
+"Уважаемый {NAME},\n"
+"\n"
+"На ваш вопрос техподдержки поступил ответ:\n"
+"\n"
+"==========================================================================\n"
+"Приоритет: {PRIORITY}\n"
+"\n"
+"{MESSAGE}\n"
+"==========================================================================\n"
+"\n"
+"Вы можете перейти по ссылке {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
+"\n"
+"Пожалуйста не отвечайте на это сообщение.\n"
+"\n"
+"___________________________\n"
+"Команда i-MSCP"
 
 msgid ""
 "Dear {NAME},\n"
@@ -1822,6 +1980,22 @@ msgid ""
 "___________________________\n"
 "i-MSCP Mailer"
 msgstr ""
+"Уважаемый {NAME},\n"
+"\n"
+"Поступил новый вопрос техподдержки:\n"
+"\n"
+"==========================================================================\n"
+"Приоритет: {PRIORITY}\n"
+"\n"
+"{MESSAGE}\n"
+"==========================================================================\n"
+"\n"
+"Вы можете перейти по ссылке {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
+"\n"
+"Пожалуйста не отвечайте на это сообщение.\n"
+"\n"
+"___________________________\n"
+"Команда i-MSCP"
 
 msgid ""
 "Dear {NAME},\n"
@@ -1838,6 +2012,17 @@ msgid ""
 "___________________________\n"
 "i-MSCP Mailer"
 msgstr ""
+"Уважаемый {NAME}, \n"
+"\n"
+"Ваш клиент {CUSTOMER} ожидает подтверждения для своего нового алиаса: \n"
+"\n"
+"{ALIAS} \n"
+"\n"
+"Войдя в панель управления, вы можете подтвердить его, пройдя по ссылке {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}/reseller/alias.php\n"
+"\n"
+"Благодарим за использование сервисов i-MSCP.\n"
+"___________________________ \n"
+"Команда i-MSCP"
 
 msgid ""
 "Dear {NAME},\n"
@@ -1853,6 +2038,20 @@ msgid ""
 "___________________________\n"
 "i-MSCP Mailer"
 msgstr ""
+"Уважаемый {NAME},\n"
+"\n"
+"Ваш пароль был успешно обновлен.\n"
+"\n"
+"Ваш новый пароль: {PASSWORD}\n"
+"\n"
+"Вы можете войти прямо сейчас {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}{BASE_SERVER_VHOST_PORT}\n"
+"\n"
+"Пожалуйста не отвечайте на это сообщение.\n"
+"\n"
+"Благодарим за использование сервисов i-MSCP.\n"
+"\n"
+"___________________________\n"
+"Команда i-MSCP"
 
 msgid ""
 "Dear {NAME},\n"
@@ -1873,6 +2072,23 @@ msgid ""
 "___________________________\n"
 "i-MSCP Mailer"
 msgstr ""
+"Уважаемый {NAME},\n"
+"\n"
+"Ваше ПО было удалено.\n"
+"\n"
+"Пакет ПО: {SOFTWARE_PACKAGE}\n"
+"ID ПО: {SOFTWARE_ID}\n"
+"\n"
+"Сообщение от администратора:\n"
+"\n"
+"==========================================================================\n"
+"{ADMIN_MESSAGE}\n"
+"==========================================================================\n"
+"\n"
+"Пожалуйста не отвечайте на это сообщение.\n"
+"\n"
+"___________________________\n"
+"Команда i-MSCP"
 
 msgid ""
 "Dear {NAME},\n"
@@ -1887,1970 +2103,2021 @@ msgid ""
 "___________________________\n"
 "i-MSCP Mailer."
 msgstr ""
+"Уважаемый {NAME},\n"
+"\n"
+"Ваше ПО было успешно активировано.\n"
+"\n"
+"Пакет ПО: {SOFTWARE_PACKAGE}\n"
+"ID ПО: {SOFTWARE_ID}\n"
+"\n"
+"Пожалуйста не отвечайте на это сообщение.\n"
+"\n"
+"___________________________\n"
+"Команда i-MSCP"
 
 msgid "Debugger"
-msgstr ""
+msgstr "Отладчик"
 
 msgid "Default"
-msgstr ""
+msgstr "Стандарт"
 
 msgid "Default language"
-msgstr ""
+msgstr "Язык по умолчанию"
 
 msgid "Default language successfully updated."
-msgstr ""
+msgstr "Язык по умолчанию успешно обновлен."
 
 msgid ""
 "Defines whether or not customers can add/change SSL certificates for their "
 "domains."
 msgstr ""
+"Задает смогут или нет клиенты добавлять/изменять SSL сертификаты для их "
+"доменов."
 
 msgid "Delete"
-msgstr ""
+msgstr "Удалить"
 
 msgid "Delete CatchAll"
-msgstr ""
+msgstr "Удалить Catch all"
 
 msgid "Delete all tickets"
-msgstr ""
+msgstr "Удалить все тикеты"
 
 msgid "Delete from log:"
-msgstr ""
+msgstr "Удалить из лога:"
 
 msgid "Delete order"
-msgstr ""
+msgstr "Удалить заказ"
 
 msgid "Delete reseller software"
-msgstr ""
+msgstr "Удалить ПО реселлера"
 
 msgid "Delete selected mail accounts"
-msgstr ""
+msgstr "Удалить выбранные почтовые ящики"
 
 msgid "Delete this plugin"
-msgstr ""
+msgstr "Удалить этот плагин"
 
 msgid "Delete ticket"
-msgstr ""
+msgstr "Удалить тикет"
 
 msgid "Deletion in progress"
-msgstr ""
+msgstr "Удаление в процессе"
 
 msgid "Deletion in progress..."
-msgstr ""
+msgstr "Удаление в процессе..."
 
 msgid "Depot import"
-msgstr ""
+msgstr "Импорт репозитория"
 
 msgid "Description"
-msgstr ""
+msgstr "Описание"
 
 msgid "Description cannot be empty."
-msgstr ""
+msgstr "Описание не может быть пусто."
 
 msgid "Details"
-msgstr ""
+msgstr "Детали"
 
 #, php-format
 msgid "Directory %s doesn't exists."
-msgstr ""
+msgstr "Каталог %s не существует."
 
 #, php-format
 msgid "Directory '%s' doesn't exists."
-msgstr ""
+msgstr "Домашний каталог '%s' не существует"
 
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
-msgstr ""
+msgstr "Домашний каталог %s не разрешен или неверен."
 
 msgid "Disable"
-msgstr ""
+msgstr "Отключить"
 
 msgid "Disabled"
-msgstr ""
+msgstr "Отключено"
 
 msgid "Disabled functions"
-msgstr ""
+msgstr "Отключенные функции"
 
 msgid "Disconnect"
-msgstr ""
+msgstr "Отключиться"
 
 msgid "Disk"
-msgstr ""
+msgstr "Диск"
 
 msgid "Disk space"
-msgstr ""
+msgstr "Дисковое пространство"
 
 msgid "Disk space limit [MiB]"
-msgstr ""
+msgstr "Дисковое пространство [Мб]"
 
 msgid "Disk usage"
-msgstr ""
+msgstr "Использование диска"
 
 msgid "Disk usage detail"
-msgstr ""
+msgstr "Детали использования диска"
 
 msgid "Display errors"
-msgstr ""
+msgstr "Отображать ошибки"
 
 msgid "Document root"
-msgstr ""
+msgstr "Корневая директория для документов"
 
 msgid "Domain"
-msgstr ""
+msgstr "Домен"
 
 #, php-format
 msgid "Domain %s cannot be forwarded on itself."
-msgstr ""
+msgstr "Домен %s не может быть перенаправлен на самого себя."
 
 #, php-format
 msgid "Domain %s is unavailable."
-msgstr ""
+msgstr "Домен %s недоступен."
 
 msgid "Domain IP"
-msgstr ""
+msgstr "IP домена"
 
 msgid "Domain Limit"
-msgstr ""
+msgstr "Лимит доменов"
 
 msgid "Domain Name"
-msgstr ""
+msgstr "Доменное имя"
 
 msgid "Domain account"
-msgstr ""
+msgstr "Учётная запись домена"
 
 msgid "Domain account expired."
-msgstr ""
+msgstr "Учетная запись домена истекла."
 
 msgid "Domain accounts"
-msgstr ""
+msgstr "Учётные записи домена"
 
 msgid "Domain alias"
-msgstr ""
+msgstr "Алиасы доменов"
 
 #, php-format
 msgid "Domain alias %s cannot be forwarded on itself."
-msgstr ""
+msgstr "Алиас домена %s не может быть перенаправлен на самого себя."
 
 msgid "Domain alias errors"
-msgstr ""
+msgstr "Ошибки алиасов доменов"
 
 msgid "Domain alias limit"
-msgstr ""
+msgstr "Лимит на алиасы домена"
 
 msgid "Domain alias name"
-msgstr ""
+msgstr "Имя адиаса домена"
 
 msgid "Domain alias successfully created."
-msgstr ""
+msgstr "Алиас домена успешно добавлен."
 
 msgid "Domain alias successfully ordered."
-msgstr ""
+msgstr "Алиас домена успешно заказан."
 
 msgid "Domain alias successfully scheduled for addition."
-msgstr ""
+msgstr "Алиас домена помечен для добавления."
 
 msgid "Domain alias successfully scheduled for deletion."
-msgstr ""
+msgstr "Алиас домена успешно помечен для удаления."
 
 msgid "Domain alias successfully scheduled for update."
-msgstr ""
+msgstr "Алиас домена успешно помечен для обновления."
 
 msgid "Domain aliases"
-msgstr ""
+msgstr "Алиасы домена"
 
 msgid "Domain and SQL databases"
-msgstr ""
+msgstr "Домен и базы данных SQL"
 
 msgid "Domain data"
-msgstr ""
+msgstr "данные домена"
 
 msgid "Domain data were altered. Please try again."
-msgstr ""
+msgstr "Данные домена уже были изменены. Пожалуйста попробуйте снова."
 
 msgid "Domain details"
-msgstr ""
+msgstr "Информация о домене"
 
 msgid "Domain errors"
-msgstr ""
+msgstr "Ошибки доменов"
 
 msgid "Domain expiration date"
-msgstr ""
+msgstr "Дата истечения домена"
 
 msgid "Domain expiration date must be filled."
-msgstr ""
+msgstr "Должна быть заполнена дата истечения домена."
 
 msgid "Domain for which PHP Editor must act."
-msgstr ""
+msgstr "Домен, для которого вы включаете редактор PHP"
 
 msgid "Domain limit"
-msgstr ""
+msgstr "Лимит доменов"
 
 msgid "Domain mail"
-msgstr ""
+msgstr "Почта домена"
 
 msgid "Domain name"
-msgstr ""
+msgstr "Имя домена"
 
 msgid "Domain name (ASCII form) cannot be greater than 255 characters."
-msgstr ""
+msgstr "Доменное имя (в его ASCII форме) не может быть длиннее 255 знаков."
 
 msgid "Domain name cannot be empty."
-msgstr ""
+msgstr "Доменное имя не может пустовать."
 
 msgid "Domain name cannot start nor end with dot."
-msgstr ""
+msgstr "Доменное имя не может начинаться и заканчиваться точкой."
 
 #, php-format
 msgid "Domain name contains an invalid character: %s"
-msgstr ""
+msgstr "Доменное имя содержит неверный символ: %s"
 
 #, php-format
 msgid "Domain name label '%s' contain an invalid character: %s"
-msgstr ""
+msgstr "Ярлык доменного имени '%s' содержит неверный символ: %s"
 
 msgid "Domain name labels cannot be greater than 63 characters."
-msgstr ""
+msgstr "Ярлыки доменного имени не могут быть длиннее 63 знаков."
 
 msgid "Domain name labels cannot start nor end with hyphen."
-msgstr ""
+msgstr "Доменное имя не может начинаться и заканчиваться дефисом."
 
 msgid "Domain new expiration date"
-msgstr ""
+msgstr "Новая дата истечения домена."
 
 msgid "Domain overview"
-msgstr ""
+msgstr "Посмотр домена"
 
 msgid "Domain scheduled for update."
-msgstr ""
+msgstr "Домен помечен для обновления."
 
 msgid "Domain statistics"
-msgstr ""
+msgstr "Статистика домена"
 
 msgid "Domain status is not ok."
-msgstr ""
+msgstr "Статус домена не в порядке."
 
 msgid "Domain successfully scheduled for update."
-msgstr ""
+msgstr "Домен успешно помечен для обновления."
 
 msgid "Domain successfully updated."
-msgstr ""
+msgstr "Домен успешно обновлен."
 
 msgid "Domain type"
-msgstr ""
+msgstr "Тип домена"
 
 msgid "Domains"
-msgstr ""
+msgstr "Домены"
 
 msgid "Domains per page"
-msgstr ""
+msgstr "Доменов на странице"
 
 msgid "Done"
-msgstr ""
+msgstr "Готово"
 
 msgid "Download"
-msgstr ""
+msgstr "Скачать"
 
 msgid "Download TAR"
-msgstr ""
+msgstr "Скачать TAR"
 
 msgid "Download ZIP"
-msgstr ""
+msgstr "Скачать ZIP"
 
 msgid "Download links"
-msgstr ""
+msgstr "Ссылки на скачивание"
 
 msgid "Download the archives stored in this directory"
-msgstr ""
+msgstr "Скачать файлы находящиеся в этом каталоге"
 
 msgid "EB"
-msgstr ""
+msgstr "ЭБ"
 
 msgid "Edit"
-msgstr ""
+msgstr "Изменить"
 
 msgid "Edit DNS resource record"
-msgstr ""
+msgstr "Изменить запись DNS"
 
 msgid "Edit FTP account"
-msgstr ""
+msgstr "Изменить учетную запись FTP"
 
 msgid "Edit SSL certificate"
-msgstr ""
+msgstr "Изменить SSL сертификат"
 
 msgid "Edit admin"
-msgstr ""
+msgstr "Изменить администратора"
 
 msgid "Edit auto responder"
-msgstr ""
+msgstr "Изменить автоответчик"
 
 msgid "Edit custom error page"
-msgstr ""
+msgstr "Изменить пользовательскую страницу ошибок"
 
 msgid "Edit custom menu"
-msgstr ""
+msgstr "Изменить пользовательское меню"
 
 msgid "Edit customer"
-msgstr ""
+msgstr "Изменить клиента"
 
 msgid "Edit domain"
-msgstr ""
+msgstr "Редактировать домен"
 
 msgid "Edit domain alias"
-msgstr ""
+msgstr "Редактировать алиас Домена"
 
 msgid "Edit error page"
-msgstr ""
+msgstr "Редактировать страницу ошибок"
 
 msgid "Edit hosting plan"
-msgstr ""
+msgstr "Редактировать хостинг-план"
 
 msgid "Edit htaccess user"
-msgstr ""
+msgstr "Изменить пользователя htaccess"
 
 msgid "Edit mail account"
-msgstr ""
+msgstr "Изменить учетную запись почты"
 
 msgid "Edit mail quota"
-msgstr ""
+msgstr "Редактировать почтовую квоту"
 
 msgid "Edit protected area"
-msgstr ""
+msgstr "Изменить защищенную зону"
 
 msgid "Edit reseller"
-msgstr ""
+msgstr "Редактировать реселлера"
 
 msgid "Edit subdomain"
-msgstr ""
+msgstr "Изменить поддомен"
 
 msgid "Edit user"
-msgstr ""
+msgstr "Редактировать пользователя"
 
 msgid "EiB"
-msgstr ""
+msgstr "Эб"
 
 msgid "Email"
-msgstr ""
+msgstr "E-Mail"
 
 msgid "Email account already exists."
-msgstr ""
+msgstr "Почтовый ящик уже существует."
 
 msgid "Email account data"
-msgstr ""
+msgstr "Данные почтового ящика"
 
 msgid "Email account errors"
-msgstr ""
+msgstr "Ошибки почтовых ящиков"
 
 msgid "Email account limit"
-msgstr ""
+msgstr "Ограничение учетных записей почты."
 
 msgid "Email account list"
-msgstr ""
+msgstr "Список почтовых ящиков"
 
 msgid "Email account successfully scheduled for addition."
-msgstr ""
+msgstr "Почтовый ящик успешно помечен для добавления."
 
 msgid "Email account successfully scheduled for update."
-msgstr ""
+msgstr "Почтовый ящик успешно помечен для обновления."
 
 msgid "Email accounts"
-msgstr ""
+msgstr "Почтовые ящики"
 
 msgid "Email accounts are hard suspended"
-msgstr ""
+msgstr "Учетные записи почты приостановлены"
 
 msgid "Email address"
-msgstr ""
+msgstr "Email адрес"
 
 msgid "Email forward"
-msgstr ""
+msgstr "Перенаправление почты"
 
 msgid "Email quota"
-msgstr ""
+msgstr "Почтовая квота"
 
 msgid "Email quota [MiB]"
-msgstr ""
+msgstr "Почтовая квота [Мб]"
 
 #, php-format
 msgid "Email quota cannot be bigger than %s"
-msgstr ""
+msgstr "Значение почтовой квоты не может быть более %s."
 
 msgid "Email quota cannot be bigger than disk space limit."
-msgstr ""
+msgstr "Значение почтовой квоты не может быть больше дискового пространства."
 
 #, php-format
 msgid ""
 "Email quota cannot be lower than %d. Each mailbox should have a least 1 MiB "
 "quota."
 msgstr ""
+"Почтовая квота не может быть меньше чем %d. Каждый почтовый ящик должен "
+"иметь по крайней мере 1Мб"
 
 #, php-format
 msgid "Email quota cannot be unlimited. Max value is %d MiB."
 msgstr ""
+"Значение почтовой квоты не может быть не ограничено. Максимальное значение "
+"%d МБ"
 
 msgid "Email settings"
-msgstr ""
+msgstr "Настройка почты"
 
 msgid "Email setup"
-msgstr ""
+msgstr "Настройка почты"
 
 msgid "Email successfully updated."
-msgstr ""
+msgstr "Почтовый ящик успешно обновлен."
 
 msgid "Empty data or wrong field."
-msgstr ""
+msgstr "Пустые данные или неверное поле"
 
 msgid "Enable"
-msgstr ""
+msgstr "Включить"
 
 msgid "Enable SSL"
-msgstr ""
+msgstr "Включить SSL"
 
 msgid "Enable auto responder"
-msgstr ""
+msgstr "Включить автоответчик"
 
 msgid "Enabled"
-msgstr ""
+msgstr "Включено"
 
 #, php-format
 msgid "Enabled for: %s"
-msgstr ""
+msgstr "Включено для: %s"
 
 msgid "Error"
-msgstr ""
+msgstr "Ошибка"
 
 msgid "Error details"
-msgstr ""
+msgstr "Данные об ошибке"
 
 msgid "Error pages"
-msgstr ""
+msgstr "Страницы ошибок"
 
 msgid "Error reporting"
-msgstr ""
+msgstr "Отчет об ошибке"
 
 msgid "Error: Remote File not found!"
-msgstr ""
+msgstr "Ошибка: Удаленный файл не найден!"
 
 msgid "Errors"
-msgstr ""
+msgstr "Ошибки"
 
 msgid "Excl. default mails"
-msgstr ""
+msgstr "Кроме ящиков по умолчанию"
 
 msgid "Execute tasks"
-msgstr ""
+msgstr "Выполнить задачи"
 
 msgid "Expire date"
-msgstr ""
+msgstr "Дата истечения"
 
 msgid "Ext. mail server"
-msgstr ""
+msgstr "Внешние почтовые сервера"
 
 msgid "External mail server"
-msgstr ""
+msgstr "Внешний почтовый сервер"
 
 msgid "External mail server feature scheduled for activation."
-msgstr ""
+msgstr "Внешний почтовый сервер успешно помечен для активации."
 
 msgid "External mail server feature scheduled for deactivation."
-msgstr ""
+msgstr "Внешний почтовый сервер успешно помечен для деактивации."
 
 msgid "External mail servers"
-msgstr ""
+msgstr "Внешние почтовые сервера"
 
 msgid "FTP account"
-msgstr ""
+msgstr "Учётная запись FTP"
 
 msgid "FTP account already exists."
-msgstr ""
+msgstr "Учетная запись FTP уже существует."
 
 msgid "FTP account limit"
-msgstr ""
+msgstr "Ограничения учетной записи FTP"
 
 msgid "FTP account limit reached."
-msgstr ""
+msgstr "Достигнут лимит учётных записей FTP."
 
 msgid "FTP account successfully added."
-msgstr ""
+msgstr "Учетная запись FTP успешно добавлена."
 
 msgid "FTP account successfully deleted."
-msgstr ""
+msgstr "Учетная запись FTP успешно удалена."
 
 msgid "FTP account successfully updated."
-msgstr ""
+msgstr "Учетная запись FTP успешно обновлена."
 
 msgid "FTP accounts"
-msgstr ""
+msgstr "Учётные записи FTP"
 
 msgid "FTP home directory"
-msgstr ""
+msgstr "Домашний каталог"
 
 msgid "FTP home directory cannot be empty."
-msgstr ""
+msgstr "Путь к домашнему каталогу пользователя FTP не может быть пуст."
 
 msgid "FTP traffic"
-msgstr ""
+msgstr "FTP трафик"
 
 msgid "FTP user errors"
-msgstr ""
+msgstr "Ошибки пользователя FTP"
 
 msgid "Failed to write file to disk."
-msgstr ""
+msgstr "Не удалось записать файл на диск."
 
 msgid "Failure in the package. Deleting!"
-msgstr ""
+msgstr "Ошибка пакета. Удаление!"
 
 msgid "Fax"
-msgstr ""
+msgstr "Факс"
 
 msgid "Feature"
-msgstr ""
+msgstr "Свойства"
 
 msgid "Features"
-msgstr ""
+msgstr "Возможности"
 
 msgid "Female"
-msgstr ""
+msgstr "Женский"
 
 #, php-format
 msgid "File %s doesn't exist or cannot be reached!"
-msgstr ""
+msgstr "Файл %s не существует или недоступен!"
 
 #, php-format
 msgid "File %s doesn't look like a migration file."
-msgstr ""
+msgstr "Файл %s не соответствует файлу миграции."
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
-msgstr ""
+msgstr "Файл не существует. %1$s.tar.gz"
 
 msgid "File exceeds the size limit."
-msgstr ""
+msgstr "Размер файла превышает лимит."
 
 msgid "File has been successfully uploaded."
-msgstr ""
+msgstr "Файл был успешно загружен."
 
 msgid "File is not readable."
-msgstr ""
+msgstr "Нечитаемый файл."
 
 msgid "File needs to be a 'tar.gz' archive."
-msgstr ""
+msgstr "Файл должен быть 'tar.gz' архивом."
 
 msgid "File successfully uploaded."
-msgstr ""
+msgstr "Файл успешно загружен."
 
 msgid "File usage"
-msgstr ""
+msgstr "Использование файлов"
 
 msgid "FileManager"
-msgstr ""
+msgstr "Файловый менеджер"
 
 msgid "Filemanager"
-msgstr ""
+msgstr "Менеджер файлов"
 
 msgid "Filesystem system Info"
-msgstr ""
+msgstr "Системная информация - Файловая система"
 
 msgid "Fill out a message text."
-msgstr ""
+msgstr "Заполните текст сообщения. "
 
 msgid "First name"
-msgstr ""
+msgstr "Имя"
 
 msgid "First name cannot have more than 200 characters."
-msgstr ""
+msgstr "Имя не может содержать более 200 символов"
 
 msgid "Forbidden"
-msgstr ""
+msgstr "Доступ запрещен"
 
 msgid "Force retry"
-msgstr ""
+msgstr "Заставить повторить"
 
 msgid "Forward"
-msgstr ""
+msgstr "Перенаправление"
 
 msgid "Forward URL"
-msgstr ""
+msgstr "URL перенаправления"
 
 #, php-format
 msgid "Forward URL %s is not valid."
-msgstr ""
+msgstr "URL перенаправления %s неверный."
 
 msgid "Forward list is empty."
-msgstr ""
+msgstr "Лист пересылки пуст"
 
 msgid "Forward mail"
-msgstr ""
+msgstr "Перенаправлять почту"
 
 msgid "Forward to"
-msgstr ""
+msgstr "Перенаправить к"
 
 msgid "Forward to URL"
-msgstr ""
+msgstr "Перенаправлять на URL"
 
 msgid "Forward type"
-msgstr ""
+msgstr "Вид перенаправления"
 
 msgid "Free"
-msgstr ""
+msgstr "Свободно"
 
 msgid "From"
-msgstr ""
+msgstr "От"
 
 msgid "From reseller"
-msgstr ""
+msgstr "От реселлера"
 
 msgid "Ftp"
-msgstr ""
+msgstr "FTP"
 
 msgid "Ftp account"
-msgstr ""
+msgstr "Учетная запись FTP"
 
 msgid "Ftp account data"
-msgstr ""
+msgstr "Данные учётной записи FTP"
 
 msgid "Ftp accounts"
-msgstr ""
+msgstr "Учетные записи FTP"
 
 msgid "Ftp directories"
-msgstr ""
+msgstr "Ftp каталоги"
 
 msgid "GB"
-msgstr ""
+msgstr "Гб"
 
 msgid "Gender"
-msgstr ""
+msgstr "Пол"
 
 msgid "General"
-msgstr ""
+msgstr "Основное"
 
 msgid "General information"
-msgstr ""
+msgstr "Общая информация"
 
 msgid "General settings"
-msgstr ""
+msgstr "Общие настройки"
 
 msgid "Generate"
-msgstr ""
+msgstr "Генерировать"
 
 msgid "Generate a self-signed certificate"
-msgstr ""
+msgstr "Создать самоподписанный сертификат"
 
 msgid "Get a new security code"
-msgstr ""
+msgstr "Получить новый код безопасности"
 
 msgid "GiB"
-msgstr ""
+msgstr "Гб"
 
 msgid "Group"
-msgstr ""
+msgstr "Группа"
 
 msgid "Group members"
-msgstr ""
+msgstr "Члены группы"
 
 msgid "Group name"
-msgstr ""
+msgstr "Имя группы"
 
 msgid "Groups"
-msgstr ""
+msgstr "Группы"
 
 msgid "HSTS (HTTP Strict Transport Security)"
-msgstr ""
+msgstr "HSTS (HTTP Strict Transport Security)"
 
 msgid "HSTS includeSubDomains directive"
-msgstr ""
+msgstr "HSTS директивы includeSubDomains"
 
 msgid "HSTS max-age directive value"
-msgstr ""
+msgstr "HSTS значение директивы max-age"
 
 msgid "HTTP traffic"
-msgstr ""
+msgstr "HTTP трафик"
 
 msgid "Hide aliases"
-msgstr ""
+msgstr "Скрыть алиасы"
 
 msgid "High"
-msgstr ""
+msgstr "Высокий"
 
 msgid "Home directory"
-msgstr ""
+msgstr "Домашний каталог"
 
 msgid "Homepage"
-msgstr ""
+msgstr "Домашняя страница"
 
 msgid "Host"
-msgstr ""
+msgstr "Хост"
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
 msgstr ""
+"Хост, с которого каждому пользователю SQL позволено входить на SQL сервер"
 
 msgid "Hosting plan"
-msgstr ""
+msgstr "Хостинг-план"
 
 msgid "Hosting plan availability"
-msgstr ""
+msgstr "Доступность хостинг-планов"
 
 msgid "Hosting plan limits exceed reseller limits."
-msgstr ""
+msgstr "Хостинг-план превышает ограничения реселлера."
 
 msgid "Hosting plan limits exceed your limits."
-msgstr ""
+msgstr "Хостинг-план превышает Ваши ограничения."
 
 msgid "Hosting plan successfully created."
-msgstr ""
+msgstr "Хостинг-план успешно создан."
 
 msgid "Hosting plan successfully deleted."
-msgstr ""
+msgstr "Хостинг-план успешно удален."
 
 msgid "Hosting plan successfully updated."
-msgstr ""
+msgstr "Хостинг-план успешно обновлен."
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "Хостинг-планы"
 
 msgid "Hour"
-msgstr ""
+msgstr "Час"
 
 msgid "Hours"
-msgstr ""
+msgstr "Часов"
 
 msgid "Htaccess errors"
-msgstr ""
+msgstr "Ошибки Htaccess"
 
 msgid "Htaccess group"
-msgstr ""
+msgstr "Группа Htaccess"
 
 msgid "Htaccess group successfully scheduled for addition."
-msgstr ""
+msgstr "Группа Htaccess успешно помечена для добавления."
 
 msgid "Htaccess group successfully scheduled for deletion."
-msgstr ""
+msgstr "Группа Htaccess успешно помечена для удаления."
 
 msgid "Htaccess user"
-msgstr ""
+msgstr "Пользователь Htaccess"
 
 #, php-format
 msgid "Htaccess user successfully assigned to the %s htaccess group"
-msgstr ""
+msgstr "Пользователь Htaccess успешно перемещен в группу %s"
 
 #, php-format
 msgid "Htaccess user successfully deleted from the %s htaccess group "
-msgstr ""
+msgstr "Пользователь Htaccess успешно удален из группы %s"
 
 msgid "Htaccess user successfully scheduled for addition."
-msgstr ""
+msgstr "Пользователь Htaccess успешно помечен для добавления."
 
 msgid "Http traffic"
-msgstr ""
+msgstr "HTTP трафик"
 
 msgid "IP Address"
-msgstr ""
+msgstr "IP адрес"
 
 msgid "IP address"
-msgstr ""
+msgstr "IP адрес"
 
 msgid "IP address already under the control of i-MSCP."
-msgstr ""
+msgstr "IP адрес уже под контролем i-MSCP."
 
 msgid "IP address successfully scheduled for addition."
-msgstr ""
+msgstr "IP адрес успешно помечен для добавления."
 
 msgid "IP address successfully scheduled for deletion."
-msgstr ""
+msgstr "IP адрес успешно помечен для удаления."
 
 msgid "IP address successfully scheduled for modification."
-msgstr ""
+msgstr "IP адрес успешно помечен для модификации."
 
 msgid "IP addresses under control of i-MSCP"
-msgstr ""
+msgstr "IP адреса под контролем i-MSCP."
 
 msgid "IP assignments"
-msgstr ""
+msgstr "Назначение IP"
 
 msgid "IP errors"
-msgstr ""
+msgstr "Ошибки IP"
 
 msgid "IP management"
-msgstr ""
+msgstr "Управление IP"
 
 msgid "IP netmask"
-msgstr ""
+msgstr "Сетевая маска"
 
 msgid "IP usage"
-msgstr ""
+msgstr "Использование IP"
 
 msgid "IPv6 address"
-msgstr ""
+msgstr "IPv6 адрес"
 
 msgid "Id"
-msgstr ""
+msgstr "ID"
 
 msgid "If set to `yes`, Web folders will be protected against deletion."
 msgstr ""
+"Если да, Web-каталоги по инициативе i-MSCP будут защищены от удаления "
+"использованием неизменного флага (Расширенные атрибуты)."
 
 msgid ""
 "If set to `yes`, the reseller can allows his customers to edit this PHP "
 "configuration option."
-msgstr ""
+msgstr "Если да, то реселлер сможет позволить пользователю изменить эту опцию"
 
 msgid ""
 "If set to `yes`, the reseller can enable/disable the PHP mail function for "
 "his customers, else, the PHP mail function is disabled."
 msgstr ""
+"Если да, то реселлер может включать и выключать PHP mail() функцию. Иначе "
+"PHP mail() выключено."
 
 msgid ""
 "If the name field is filled with the @ sign or left blank, it will be "
 "automatically substituted by $ORIGIN value."
 msgstr ""
+"Если в поле имени Вы укажите @ или оставите его пустым, оно будет "
+"автоматически заменено на $ORIGIN."
 
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr ""
+"Если Вы хотите ограничить реселлера, Вы сначала должны ограничить его "
+"клиентов."
 
 msgid "Images have to be smaller than 500 x 90 pixels."
-msgstr ""
+msgstr "Изображения должны быть меньше, чем 500 x 90 пикселей."
 
 msgid "Import"
-msgstr ""
+msgstr "Импорт"
 
 msgid "Import in local repository"
-msgstr ""
+msgstr "Импортировать"
 
 msgid "Import new language file"
-msgstr ""
+msgstr "Импортировать новый языковой файл"
 
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
 "from today."
 msgstr ""
+"Поскольку дата истечения доменов 'N/A', дата истечения будет выставлена с "
+"сегодняшнего дня."
 
 msgid "In front"
-msgstr ""
+msgstr "Спереди"
 
 msgid "In maintenance mode, only administrators can login."
-msgstr ""
+msgstr "В режим техобслуживания, только администратор сможет войти."
 
 msgid "Incl. default mails"
-msgstr ""
+msgstr "Включая ящики по умолчанию"
 
 msgid "Incorrect Email quota"
-msgstr ""
+msgstr "Неверное значение почтовой квоты."
 
 msgid "Incorrect Email quota."
-msgstr ""
+msgstr "Неверное значение почтовой квоты."
 
 msgid "Incorrect FTP account limit."
-msgstr ""
+msgstr "Неверное ограничение учетных записей FTP."
 
 msgid "Incorrect SQL database limit."
-msgstr ""
+msgstr "Неверное ограничение баз данных SQL."
 
 msgid "Incorrect SQL user limit."
-msgstr ""
+msgstr "Неверное ограничение пользователей SQL."
 
 msgid "Incorrect alias limit."
-msgstr ""
+msgstr "Неверный лимит алиасов."
 
 msgid "Incorrect disk space limit."
-msgstr ""
+msgstr "Неверное ограничение дискового пространства."
 
 msgid "Incorrect domain alias limit."
-msgstr ""
+msgstr "Неверное ограничение алиасов."
 
 msgid "Incorrect email account limit."
-msgstr ""
+msgstr "Неверное ограничение учетных записей почты."
 
 msgid "Incorrect email length or syntax."
-msgstr ""
+msgstr "Неверная длина или синтаксис почтового ящика."
 
 msgid "Incorrect email quota."
-msgstr ""
+msgstr "Неверное значение почтовой квоты."
 
 #, php-format
 msgid "Incorrect limit for %s."
-msgstr ""
+msgstr "Неверное ограничение для %s."
 
 msgid "Incorrect monthly traffic limit."
-msgstr ""
+msgstr "Неверный порог трафика"
 
 msgid "Incorrect post code length or syntax!"
-msgstr ""
+msgstr "Некорректная длина почтового кода или синтаксис!"
 
 msgid "Incorrect subdomain limit."
-msgstr ""
+msgstr "Неверный лимит поддоменов."
 
 msgid "Incorrect syntax for email address."
-msgstr ""
+msgstr "Неверный синтаксис email адреса"
 
 msgid "Incorrect username length or syntax."
-msgstr ""
+msgstr "Неверная длина имени пользователя или синтаксис."
 
 msgid "Install"
-msgstr ""
+msgstr "Установить"
 
 msgid "Install in progress"
-msgstr ""
+msgstr "Происходит установка"
 
 msgid "Install this plugin"
-msgstr ""
+msgstr "Установить этот плагин"
 
 msgid "Install various Web applications with a few clicks."
-msgstr ""
+msgstr "Установите Ваши Web-приложения в несколько кликов."
 
 msgid "Installation details"
-msgstr ""
+msgstr "Детали установки"
 
 msgid "Installation in progress..."
-msgstr ""
+msgstr "Установка в процессе..."
 
 msgid "Installation path"
-msgstr ""
+msgstr "Путь установки"
 
 msgid "Installed Package which was deleted by your reseller."
-msgstr ""
+msgstr "Установленный пакет, который был удален Вашим реселлером."
 
 msgid "Installed in reseller repository"
-msgstr ""
+msgstr "Установлено в репозитроии реселлера"
 
 msgid "Installed in software repository"
-msgstr ""
+msgstr "Установлено в репозитроии ПО"
 
 msgid "Installed on"
-msgstr ""
+msgstr "Установлен на"
 
 msgid "Installing your uploaded package. Please refresh this page."
-msgstr ""
+msgstr "Установка загруженного пакета. Пожалуйста, обновите страницу."
 
 msgid "Instructions to download today's backup"
-msgstr ""
+msgstr "Инструкции для загрузки сегодняшней резервной копии"
 
 msgid "Intermediate certificate(s)"
-msgstr ""
+msgstr "Промежуточные сертификаты"
 
 msgid "Internal Server Error"
-msgstr ""
+msgstr "Внутренняя ошибка сервера"
 
 msgid "Internationalization"
-msgstr ""
+msgstr "Языки"
 
 msgid "Invalid FTP username."
-msgstr ""
+msgstr "Неверное имя пользователя"
 
 #, php-format
 msgid "Invalid SQL user host: %s"
-msgstr ""
+msgstr "Неверный хост SQL: %s"
 
 msgid ""
 "Invalid SQL user. SQL user must exists and belong to the provided database."
 msgstr ""
+"Недопустимый пользователь SQL. Пользователь SQL должен существовать и "
+"принадлежать к предоставленной базе данных."
 
 msgid "Invalid SSL certificate"
-msgstr ""
+msgstr "Неверный сертификат SSL"
 
 msgid "Invalid SSL certificate."
-msgstr ""
+msgstr "Негодный SSL сертификат."
 
 msgid "Invalid URL."
-msgstr ""
+msgstr "Неверный URL"
 
 #, php-format
 msgid "Invalid `%s` field."
-msgstr ""
+msgstr "Поле `%s` недействительно."
 
 msgid "Invalid domain name."
-msgstr ""
+msgstr "Неправильное имя домена."
 
 msgid "Invalid email address."
-msgstr ""
+msgstr "Неверный Email адрес"
 
 msgid "Invalid email username."
-msgstr ""
+msgstr "Неверное имя пользователя почтового ящика"
 
 msgid "Invalid group name!"
-msgstr ""
+msgstr "Неправильное имя группы!"
 
 msgid "Invalid menu order."
-msgstr ""
+msgstr "Неверный заказ меню."
 
 msgid "Invalid name."
-msgstr ""
+msgstr "Неверное имя."
 
 msgid "Invalid payload received from GitHub"
-msgstr ""
+msgstr "Неверный запрос получен из GitHub"
 
 #, php-format
 msgid "Invalid plugin directory: %s"
-msgstr ""
+msgstr "Каталог плагина не верный: %s"
 
 msgid "Invalid private key or passphrase."
-msgstr ""
+msgstr "Неверный приватный ключ или пароль."
 
 msgid "Invalid target."
-msgstr ""
+msgstr "Неверная цель"
 
 msgid "Invalid type given. String expected"
-msgstr ""
+msgstr "Дан неверный тип. Ожидался строковый параметр"
 
 msgid "Invalid username."
-msgstr ""
+msgstr "Неверное имя пользователя"
 
 msgid "Kernel Version"
-msgstr ""
+msgstr "Версия ядра"
 
 msgid "Kill session"
-msgstr ""
+msgstr "Завершить сессию"
 
 msgid "Label"
-msgstr ""
+msgstr "Метка"
 
 msgid "Language"
-msgstr ""
+msgstr "Язык"
 
 msgid "Language file"
-msgstr ""
+msgstr "Файл перевода"
 
 msgid "Language file successfully installed."
-msgstr ""
+msgstr "Языковой файл успешно установлен"
 
 msgid "Language successfully updated."
-msgstr ""
+msgstr "Язык успешно обновлен."
 
 msgid "Languages"
-msgstr ""
+msgstr "Языки"
 
 msgid "Languages index was successfully re-built."
-msgstr ""
+msgstr "Языковые индексы были успешно перестроены."
 
 msgid "Last Web software repository update"
-msgstr ""
+msgstr "Последнее обновление Web-репозитория"
 
 msgid "Last access"
-msgstr ""
+msgstr "Последний доступ"
 
 msgid "Last name"
-msgstr ""
+msgstr "Фамилия"
 
 msgid "Last name cannot have more than 200 characters."
-msgstr ""
+msgstr "Фамилия не может содержать более 200 символов"
 
 msgid "Last reply date"
-msgstr ""
+msgstr "Дата последнего ответа"
 
 msgid "Last translator"
-msgstr ""
+msgstr "Последний переводчик"
 
 msgid "Layout"
-msgstr ""
+msgstr "Макет"
 
 msgid "Layout color"
-msgstr ""
+msgstr "Цвет подложки"
 
 msgid "Layout color successfully updated."
-msgstr ""
+msgstr "Обновление цвета подложки успешно обновлено."
 
 msgid "Level"
-msgstr ""
+msgstr "Уровень"
 
 msgid "Limit"
-msgstr ""
+msgstr "Лимит"
 
 msgid "Limit value"
-msgstr ""
+msgstr "Значение ограничения"
 
 msgid "Limits"
-msgstr ""
+msgstr "Ограничения"
 
 msgid "Link"
-msgstr ""
+msgstr "Ссылка"
 
 msgid "Link to authors homepage"
-msgstr ""
+msgstr "Ссылка на страницу авторов"
 
 msgid "Load (1 Min, 5 Min, 15 Min)"
-msgstr ""
+msgstr "Загрузка (1 Min, 5 Min, 15 Min)"
 
 msgid "Loading data..."
-msgstr ""
+msgstr "Загрузка данных..."
 
 msgid "Log entries successfully deleted."
-msgstr ""
+msgstr "Записи лога успешно удалены."
 
 msgid "Login"
-msgstr ""
+msgstr "Войти"
 
 msgid "Login password"
-msgstr ""
+msgstr "Пароль"
 
 msgid "Login username"
-msgstr ""
+msgstr "Имя пользователя"
 
 msgid "Login with your FTP account"
-msgstr ""
+msgstr "Войти под вашей учётной записью FTP"
 
 msgid "Logo file"
-msgstr ""
+msgstr "Файл логотипа"
 
 msgid "Logo successfully removed."
-msgstr ""
+msgstr "Логотип успешно удален."
 
 msgid "Logo successfully updated."
-msgstr ""
+msgstr "Логотип успешно обновлен."
 
 msgid "Logout"
-msgstr ""
+msgstr "Выйти"
 
 msgid "Lost password"
-msgstr ""
+msgstr "Восстановление пароля"
 
 msgid "Lost password email"
-msgstr ""
+msgstr "Письмо восстановления пароля"
 
 msgid "Lost password email templates were updated."
-msgstr ""
+msgstr "Шаблон письма восстановления пароля изменён!"
 
 msgid "Lost password link"
-msgstr ""
+msgstr "Ссылка восстановления пароля"
 
 msgid "Lostpw link"
-msgstr ""
+msgstr "Ссылка восстановления пароля"
 
 msgid "Low"
-msgstr ""
+msgstr "Низкий"
 
 msgid "MB"
-msgstr ""
+msgstr "МБ"
 
 msgid "Mail"
-msgstr ""
+msgstr "Почта"
 
 msgid "Mail Log Level"
-msgstr ""
+msgstr "Уровень логирования почты"
 
 #, php-format
 msgid "Mail account %s successfully scheduled for deletion."
-msgstr ""
+msgstr "Почтовый ящик %s успешно помечен для удаления."
 
 msgid "Mail account type"
-msgstr ""
+msgstr "Тип почтового ящика"
 
 msgid "Mail accounts list is empty."
-msgstr ""
+msgstr "Список почтовых ящиков пуст."
 
 msgid "Mail feature is disabled."
-msgstr ""
+msgstr "Почта отключена"
 
 msgid "Mail usage"
-msgstr ""
+msgstr "Использование почты"
 
 msgid "Main menu labels visibility successfully updated."
-msgstr ""
+msgstr "Отображение ярлыков меню успешно обновлено. "
 
 msgid "Maintenance message"
-msgstr ""
+msgstr "Сообщение отладки"
 
 msgid "Maintenance mode"
-msgstr ""
+msgstr "Режим техобслуживания"
 
 msgid ""
 "Maintenance mode is activated. In this mode, only administrators can login."
 msgstr ""
+"Включен режим техобслуживания. В этом режиме могут входить только "
+"администраторы."
 
 msgid "Maintenance settings"
-msgstr ""
+msgstr "Настройки техобслуживания"
 
 msgid "Male"
-msgstr ""
+msgstr "Мужской"
 
 msgid "Malformed resolver SQL query"
-msgstr ""
+msgstr "Искаженный запрос SQL"
 
 msgid "Manage SQL"
-msgstr ""
+msgstr "Управление SQL"
 
 msgid "Manage SSL certificate"
-msgstr ""
+msgstr "Управление сертификат SSL"
 
 msgid "Manage htaccess users and groups"
-msgstr ""
+msgstr "Управление htaccess пользователями и группами"
 
 msgid "Manage users"
-msgstr ""
+msgstr "Управление пользователями"
 
 msgid "Manage users and groups"
-msgstr ""
+msgstr "Управление пользователями и группами"
 
 msgid "Manage your protected areas, users and groups."
-msgstr ""
+msgstr "Управление защищенными зонами, пользователями и группами"
 
 msgid "Manual"
-msgstr ""
+msgstr "Вручную"
 
 msgid "Mark"
-msgstr ""
+msgstr "Метка"
 
 msgid "Max number of login attempts"
-msgstr ""
+msgstr "Максимальное количество попыток входа"
 
 msgid "Max traffic"
-msgstr ""
+msgstr "Максимальный трафик"
 
 #, php-format
 msgid "Max. remote filesize (%s) has been reached. Your remote file is %s"
 msgstr ""
+"Максимальный размер удаленного файла (%s) был достигнут. Ваш файл имеет "
+"размер %s"
 
 #, php-format
 msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
 msgstr ""
+"Достигнут максимальный размер файла (%s). Загружаемый файл имеет размер %s"
 
 msgid "Maximum number of captcha validation attempts"
-msgstr ""
+msgstr "Максимум попыток подтверждения CAPTCHA"
 
 msgid ""
 "Maximum number of validation attempts before waiting restriction intervenes"
-msgstr ""
+msgstr "Максимальное количество попыток входа перед блокировкой"
 
 msgid "Medium"
-msgstr ""
+msgstr "Средний"
 
 msgid "Member of group"
-msgstr ""
+msgstr "Член группы"
 
 msgid "Memory information"
-msgstr ""
+msgstr "Информация о памяти"
 
 msgid "Message"
-msgstr ""
+msgstr "Сообщение"
 
 msgid "Message template"
-msgstr ""
+msgstr "Шаблон сообщения"
 
 msgid "Message template info"
-msgstr ""
+msgstr "Информация о шаблоне"
 
 msgid "Message to reseller before deleting the software"
-msgstr ""
+msgstr "Сообщите реселлеру перед удалением этого ПО"
 
 msgid "MiB"
-msgstr ""
+msgstr "МБ"
 
 #, php-format
 msgid "Migration file %s is not readable."
-msgstr ""
+msgstr "Файл миграции %s нечитаем."
 
 msgid "Minute"
-msgstr ""
+msgstr "Минута"
 
 msgid "Minutes"
-msgstr ""
+msgstr "Минут"
 
 msgid "Missing domain"
-msgstr ""
+msgstr "Отсутствующий домен"
 
 msgid "Model"
-msgstr ""
+msgstr "Модель"
 
 msgid "Modification in progress..."
-msgstr ""
+msgstr "Процесс модификации..."
 
 msgid "Month"
-msgstr ""
+msgstr "Месяц"
 
 msgid "Monthly traffic limit [MiB]"
-msgstr ""
+msgstr "Месячный порог трафика [Мб]"
 
 msgid "Monthly traffic limit must be a number."
-msgstr ""
+msgstr "Месячный порог трафика должен быть числом."
 
 msgid "Monthly traffic warning cannot be bigger than monthly traffic limit."
 msgstr ""
+"Предопреждение о пороге трафика не может быть больше ежемесячного порога "
+"трафика."
 
 msgid "Monthly traffic warning must be a number."
-msgstr ""
+msgstr "Предупреждение о трафике должно быть числом."
 
 msgid "More Details"
-msgstr ""
+msgstr "Больше данных"
 
 msgid "Mount"
-msgstr ""
+msgstr "Точка монтирования"
 
 msgid "Mount point"
-msgstr ""
+msgstr "Точка монтирования"
 
 msgid "Move"
-msgstr ""
+msgstr "Переместить"
 
 msgid "Moving aborted."
-msgstr ""
+msgstr "Перемещение отменено."
 
 msgid "N/A"
-msgstr ""
+msgstr "Недоступно"
 
 msgid "NS DNS resource records are only allowed for subzone delegation."
-msgstr ""
+msgstr "Записи NS допускаются только для делегирования зоны поддоменов."
 
 msgid "Name"
-msgstr ""
+msgstr "Имя"
 
 msgid "Name cannot be empty."
-msgstr ""
+msgstr "Имя не может пустовать"
 
 msgid "Network interface (NIC)"
-msgstr ""
+msgstr "Сетевой интерфейс (NIC)"
 
 msgid "Never"
-msgstr ""
+msgstr "Никогда"
 
 msgid "New SQL user data"
-msgstr ""
+msgstr "Новые данные пользователя SQL"
 
 msgid "New alias order for {CUSTOMER}"
-msgstr ""
+msgstr "Новый заказ алиаса для {CUSTOMER}"
 
 msgid "New ticket"
-msgstr ""
+msgstr "Новый тикет"
 
 msgid "Next"
-msgstr ""
+msgstr "Далее"
 
 msgid "Next step"
-msgstr ""
+msgstr "Следующий шаг"
 
 msgid "No"
-msgstr ""
+msgstr "Нет"
 
 msgid "No IP address found."
-msgstr ""
+msgstr "Не найдено IP адресов."
 
 msgid "No administrator accounts found."
-msgstr ""
+msgstr "Не найдено учетных записей администраторов."
 
 msgid "No anti-rootkits logs"
-msgstr ""
+msgstr "Логи руткитов отсутствуют"
 
 msgid "No available"
-msgstr ""
+msgstr "Недоступно"
 
 msgid "No custom menu found."
-msgstr ""
+msgstr "Не найдены пользовательские меню."
 
 msgid "No customer accounts found."
-msgstr ""
+msgstr "Не найдено учетных записей клиентов."
 
 msgid "No database update available."
-msgstr ""
+msgstr "Нет обновлений базы данных."
 
 msgid "No domain available for new software instance."
-msgstr ""
+msgstr "Нет домена для нового экземпляра программного обеспечения."
 
 msgid "No error found"
-msgstr ""
+msgstr "Ошибок не найдено"
 
 msgid "No file was uploaded."
-msgstr ""
+msgstr "Файл не был загружен."
 
 msgid "No group found."
-msgstr ""
+msgstr "Не найдено групп."
 
 msgid "No hosting plan available."
-msgstr ""
+msgstr "Нет доступных хостинг-планов."
 
 msgid "No records found matching the search criteria."
-msgstr ""
+msgstr "Не найдено записей, удовлетворяющих критерию."
 
 msgid "No reseller accounts found."
-msgstr ""
+msgstr "Не найдено учетных записей реселлеров"
 
 msgid "No reseller available to add the permissions."
-msgstr ""
+msgstr "Нет доступного реселлера для добавления прав"
 
 msgid "No reseller with activated software installer found!"
-msgstr ""
+msgstr "Не найдено реселлеров с активированным установщиком ПО"
 
 msgid "No reseller with permissions for this software found."
-msgstr ""
+msgstr "Не найденог реселлеров с правами на это ПО"
 
 msgid "No resellers found."
-msgstr ""
+msgstr "Не найдено реселлеров."
 
 msgid "No software available"
-msgstr ""
+msgstr "Нет доступоного ПО"
 
 msgid "No software in Web repository found!"
-msgstr ""
+msgstr "Не найдено ПО в Web-репозитории!"
 
 msgid "No software in software depot available!"
-msgstr ""
+msgstr "В репозитории нет доступного ПО !"
 
 msgid "No software is waiting for activation"
-msgstr ""
+msgstr "Нет приложений ожидающих активации"
 
 msgid "No statistics found for the given period. Try another period."
 msgstr ""
+"Не найдено статистики за запрашиваемый период, попробуйте другой период."
 
 msgid "No unassigned users were found in the database."
-msgstr ""
+msgstr "В базе данных не найдено неназначенных пользователей."
 
 msgid "No update available"
-msgstr ""
+msgstr "Обновлений нет"
 
 msgid "No used yet"
-msgstr ""
+msgstr "Ещё не используется"
 
 msgid "No user found."
-msgstr ""
+msgstr "Не найдено пользователей"
 
 msgid "No users found for this reseller."
-msgstr ""
+msgstr "Не найдены клиентов этого реселлера."
 
 msgid "No."
-msgstr ""
+msgstr "№"
 
 msgid "None"
-msgstr ""
+msgstr "Пусто"
 
 msgid "Normal"
-msgstr ""
+msgstr "Обычный"
 
 msgid "Normal + Forward"
-msgstr ""
+msgstr "Обычный + перенаправление"
 
 msgid "Normal connection"
-msgstr ""
+msgstr "Нешифрованное соединение"
 
 msgid "Normal users"
-msgstr ""
+msgstr "Пользователи"
 
 msgid "Not Found"
-msgstr ""
+msgstr "Не найдено"
 
 msgid "Not Set"
-msgstr ""
+msgstr "Не задано"
 
 msgid "Not found."
-msgstr ""
+msgstr "Не найдено"
 
 msgid "Not provided"
-msgstr ""
+msgstr "Не предусмотрено"
 
 msgid "Not used"
-msgstr ""
+msgstr "Не используется"
 
 msgid ""
 "Note that in manual mode, the NIC and the subnet mask are only indicative."
 msgstr ""
+"Заметьте, что в ручном режиме NIC и маска подсети сообщается для сведения и "
+"изменению не подлежит. "
 
 msgid "Nothing found - sorry"
-msgstr ""
+msgstr "Ничего не найдено"
 
 msgid "Nothing has been changed."
-msgstr ""
+msgstr "Ничего не было изменено"
 
 msgid "Nothing has been deleted."
-msgstr ""
+msgstr "Ничего не было удалено"
 
 msgid "Notices, Warnings and Errors"
-msgstr ""
+msgstr "Уведомления, предупреждения и ошибки"
 
 msgid "OK"
-msgstr ""
+msgstr "Ок"
 
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 msgid "One or more database updates are now available. See the details below."
 msgstr ""
+"Одно или более обновление базы данных было найдено. Смотрите детали ниже."
 
 msgid "Only 'tar.gz' archives are accepted."
-msgstr ""
+msgstr "Поддерживаются только 'tar.gz' архивы."
 
 msgid "Only administrators can login when maintenance mode is activated."
 msgstr ""
+"Только администраторы могут входить при включенном режиме техобслуживания."
 
 msgid "Only exec"
-msgstr ""
+msgstr "Только запустить"
 
 msgid "Only gettext Machine Object files (MO files) are accepted."
-msgstr ""
+msgstr "Допустимы только файлы gettext Machine Object files (MO files)."
 
 msgid "Only numbers in range from 0 to 65535 are allowed."
-msgstr ""
+msgstr "Разрешены только числа от 0 до 65535"
 
 msgid "Only positive numbers are allowed."
-msgstr ""
+msgstr "Разрешены только положительные числа"
 
 msgid "Only tar.gz and tar.bz2 archives are supported."
-msgstr ""
+msgstr "Поддерживаются только архивы tar.gz и tar.bz2"
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
-msgstr ""
+msgstr "Поддерживаются только tar.gz, tar.bz2 и zip архивы."
 
 msgid "Open ticket"
-msgstr ""
+msgstr "Открыть тикет"
 
 msgid "Open tickets"
-msgstr ""
+msgstr "Открытые тикеты"
 
 #, php-format
 msgid "Operation cancelled: %s"
-msgstr ""
+msgstr "Операция отменена: %s"
 
 msgid "Optional"
-msgstr ""
+msgstr "Опционально"
 
 msgid "Order"
-msgstr ""
+msgstr "Заказ"
 
 msgid "Order successfully deleted."
-msgstr ""
+msgstr "Заказ успешно удален."
 
 msgid "Order successfully processed."
-msgstr ""
+msgstr "Заказ успешно обновлен."
 
 msgid "Other in"
-msgstr ""
+msgstr "Другое вх"
 
 msgid "Other out"
-msgstr ""
+msgstr "Другое исх"
 
 msgid "Other settings"
-msgstr ""
+msgstr "Другие настройки"
 
 msgid "Overview"
-msgstr ""
+msgstr "Обзор"
 
 msgid "Owner"
-msgstr ""
+msgstr "Владелец"
 
 msgid "PB"
-msgstr ""
+msgstr "ПБ"
 
 msgid "PHP"
-msgstr ""
+msgstr "PHP"
 
 #, php-format
 msgid "PHP %s configuration option"
-msgstr ""
+msgstr "Опция конфигурации PHP %s"
 
 msgid "PHP Configuration options"
-msgstr ""
+msgstr "Опции конфигурации PHP"
 
 msgid "PHP Editor"
-msgstr ""
+msgstr "Редактор PHP"
 
 msgid "PHP GD extension not loaded."
-msgstr ""
+msgstr "PHP GD расширение не загружено."
 
 msgid "PHP Permissions"
-msgstr ""
+msgstr "Разрешения PHP"
 
 msgid "PHP Settings"
-msgstr ""
+msgstr "Настройки PHP"
 
 msgid "PHP configuration scheduled for update."
-msgstr ""
+msgstr "Конфигурация PHP отмечена для обновления."
 
 msgid "PHP directives values"
-msgstr ""
+msgstr "Значения директив PHP"
 
 msgid "PHP exec() function"
-msgstr ""
+msgstr "PHP exec() function"
 
 msgid "PHP settings"
-msgstr ""
+msgstr "Настройки PHP"
 
 msgid "POP3/IMAP"
-msgstr ""
+msgstr "POP3/IMAP"
 
 msgid "POP3/IMAP in"
-msgstr ""
+msgstr "POP3/IMAP вх"
 
 msgid "POP3/IMAP out"
-msgstr ""
+msgstr "POP3/IMAP исх"
 
 msgid "POP3/IMAP traffic"
-msgstr ""
+msgstr "POP3/IMAP трафик"
 
 msgid "Package actions"
-msgstr ""
+msgstr "Действие"
 
 msgid "Package already exists in the reseller depot!"
-msgstr ""
+msgstr "Пакет уже существует в реселлерском репозитории!"
 
 msgid "Package already exists in the software depot!"
-msgstr ""
+msgstr "Пакет уже существует в репозитории!"
 
 msgid "Package already exists in the software repository!"
-msgstr ""
+msgstr "Пакет уже существует в репозитории ПО!"
 
 msgid "Package already exists in your software repository!"
-msgstr ""
+msgstr "Пакет уже существует в Вашем репозитории ПО!"
 
 msgid "Package install type"
-msgstr ""
+msgstr "Тип установки"
 
 msgid "Package installed successfully!"
-msgstr ""
+msgstr "Пакет успешно установлен!"
 
 msgid "Package installed successfully... Awaiting release from admin!"
-msgstr ""
+msgstr "Пакет успешно установлен... Ожидание подтверждения администратором!"
 
 msgid "Package language"
-msgstr ""
+msgstr "Язык пакета"
 
 msgid "Package name"
-msgstr ""
+msgstr "Имя пакета"
 
 msgid "Package title"
-msgstr ""
+msgstr "Название пакета"
 
 msgid "Package type"
-msgstr ""
+msgstr "Тип пакета"
 
 msgid "Package vendor HP"
-msgstr ""
+msgstr "Разработчик"
 
 msgid "Package version"
-msgstr ""
+msgstr "Версия пакета"
 
 msgid "Panel default language"
-msgstr ""
+msgstr "Выбор языка панели по умолчанию"
 
 msgid "Parent directory"
-msgstr ""
+msgstr "Родительский каталог"
 
 msgid "Partition"
-msgstr ""
+msgstr "Раздел"
 
 msgid "Password"
-msgstr ""
+msgstr "Пароль"
 
 msgid "Password cannot be empty."
-msgstr ""
+msgstr "Поле пароля пусто."
 
 msgid "Password cannot be longer than 30 characters."
-msgstr ""
+msgstr "Пароль не может быть длиннее 30 символов."
 
 msgid "Password confirmation"
-msgstr ""
+msgstr "Подтверждение пароля"
 
 msgid "Password contains unallowed characters."
-msgstr ""
+msgstr "Пароль содержит запрещенные символы."
 
 msgid "Password data"
-msgstr ""
+msgstr "Данные пароля"
 
 msgid "Password email"
-msgstr ""
+msgstr "Пароль почтового ящика"
 
 msgid "Password is missing."
-msgstr ""
+msgstr "Пароль отсутствует."
 
 #, php-format
 msgid "Password is shorter than %s characters."
-msgstr ""
+msgstr "Пароль короче чем %s знаков."
 
 msgid "Password minimum length"
-msgstr ""
+msgstr "Минимальная длина пароля"
 
 #, php-format
 msgid ""
 "Password must be at least %s characters long and contain letters and numbers"
 " to be valid."
-msgstr ""
+msgstr "Пароль должен быть не короче %s символов и содержать буквы и цифры."
 
 msgid "Password settings"
-msgstr ""
+msgstr "Настройки пароля"
 
 msgid "Password successfully updated."
-msgstr ""
+msgstr "Пароль успешно обновлен."
 
 msgid "Passwords do not match"
-msgstr ""
+msgstr "Пароли не совпадают."
 
 msgid "Passwords do not match."
-msgstr ""
+msgstr "Пароли не совпадают."
 
 msgid "Path"
-msgstr ""
+msgstr "Путь"
 
 msgid "Pending tasks"
-msgstr ""
+msgstr "Ожидается выполнение"
 
 msgid "Percent"
-msgstr ""
+msgstr "Процент"
 
 msgid "Permissions"
-msgstr ""
+msgstr "Разрешения"
 
 msgid "Personal data"
-msgstr ""
+msgstr "Персональные данные"
 
 msgid "Personal data successfully updated."
-msgstr ""
+msgstr "Персональные данные успешно обновлены."
 
 msgid "Personalise template"
-msgstr ""
+msgstr "Персонализировать шаблон"
 
 msgid "Phone"
-msgstr ""
+msgstr "Телефон"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PhpMyAdmin"
 
 msgid "PiB"
-msgstr ""
+msgstr "Пб"
 
 msgid "Please activate your new i-MSCP password"
-msgstr ""
+msgstr "Пожалуйста, активируйте ваш новый I-MSCP пароль"
 
 msgid "Please choose at least one htaccess user."
-msgstr ""
+msgstr "Пожалуйста, укажите хотябы одного пользователя. "
 
 msgid "Please choose at least one htaccess user/group."
-msgstr ""
+msgstr "Пожалуйста, выберите htaccess пользователя или группу."
 
 msgid "Please confirm the password."
-msgstr ""
+msgstr "Пожалуйста, подтвердите пароль."
 
 msgid ""
 "Please contact the administrator!<br>Ask him for the permissions to use this"
 " package.<br>It is not allowed to upload this packet two times.<br>Refresh "
 "your site to see the new status!"
 msgstr ""
+"Пожалуйста, свяжитесь с администратором!<br>Обратитесь к нему за "
+"разрешениями на пакет.<br>Не разрешается загружать один и тот же пакет "
+"дважды.<br>Обновите страницу, чтобы увидеть новый статус!"
 
 msgid "Please enter a name for the protected area."
-msgstr ""
+msgstr "Пожалуйста, введите имя для защищенной зоны."
 
 msgid "Please enter a password."
-msgstr ""
+msgstr "Пожалуйста, введите пароль."
 
 msgid "Please enter an SQL user host."
-msgstr ""
+msgstr "Пожалуйста, выберите корректный хост для базы данных"
 
 msgid "Please enter an username."
-msgstr ""
+msgstr "Пожалуйста, введите имя пользователя."
 
 msgid "Please enter protected area path."
-msgstr ""
+msgstr "Пожалуйста, укажите путь для защищенной зоны"
 
 msgid "Please enter your auto-responder message below"
-msgstr ""
+msgstr "Пожалуйста, введите сообщение для автоответчика ниже"
 
 msgid "Please fill up both data fields for password."
-msgstr ""
+msgstr "Пожалуйста, заполните оба поля для пароля."
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
-msgstr ""
+msgstr "Пожалуйста, выберите другой каталог. %s (%s) уже установлен туда."
 
 msgid "Please select at least one user."
-msgstr ""
+msgstr "Пожалуйста, укажите хотябы одного пользователя. "
 
 msgid ""
 "Please set now the username and password for the later login in the "
 "software. (Required fiels)"
 msgstr ""
+"Пожалуйста, введите логин и пароль для последующего входа в приложение. "
+"(Необходимые поля)"
 
 msgid "Please specify a message content."
-msgstr ""
+msgstr "Пожалуйста, напишите содержимое сообщения. "
 
 msgid "Please specify a message subject."
-msgstr ""
+msgstr "Пожалуйста, укажите тему сообщения. "
 
 msgid "Please type database name."
-msgstr ""
+msgstr "Пожалуйста, укажите название базы данных. "
 
 msgid "Please type your message."
-msgstr ""
+msgstr "Пожалуйста, напишите Ваше сообщение. "
 
 msgid "Plugin"
-msgstr ""
+msgstr "Плагин"
 
 #, php-format
 msgid "Plugin %s activated."
-msgstr ""
+msgstr "Плагин %s активирован."
 
 #, php-format
 msgid "Plugin %s cannot be activated."
-msgstr ""
+msgstr "Плагин %s не может быть активирован."
 
 #, php-format
 msgid "Plugin %s cannot be deactivated."
-msgstr ""
+msgstr "Плагин %s не может быть деактивирован."
 
 #, php-format
 msgid "Plugin %s cannot be deleted."
-msgstr ""
+msgstr "Плагин %s не может быть удален."
 
 #, php-format
 msgid "Plugin %s cannot be installed."
-msgstr ""
+msgstr "Плагин %s не может быть инсталлирован."
 
 #, php-format
 msgid "Plugin %s cannot be protected."
-msgstr ""
+msgstr "Плагин %s не может быть защищен."
 
 #, php-format
 msgid "Plugin %s cannot be reconfigured."
-msgstr ""
+msgstr "Плагин %s не может быть перенастроен."
 
 #, php-format
 msgid "Plugin %s cannot be uninstalled."
-msgstr ""
+msgstr "Плагин %s не может быть деинсталлирован."
 
 #, php-format
 msgid "Plugin %s cannot be updated."
-msgstr ""
+msgstr "Плагин %s не может быть обновлен."
 
 #, php-format
 msgid "Plugin %s deactivated."
-msgstr ""
+msgstr "Плагин %s деактивирован."
 
 #, php-format
 msgid "Plugin %s deleted."
-msgstr ""
+msgstr "Плагин %s удален."
 
 #, php-format
 msgid "Plugin %s installed."
-msgstr ""
+msgstr "Плагин  %s установлен."
 
 #, php-format
 msgid "Plugin %s is protected."
-msgstr ""
+msgstr "Плагин %s защищен"
 
 #, php-format
 msgid "Plugin %s protected."
-msgstr ""
+msgstr "Плагин %s защищен"
 
 #, php-format
 msgid "Plugin %s reconfigured."
-msgstr ""
+msgstr "Плагин %s перенастроен."
 
 #, php-format
 msgid "Plugin %s scheduled for activation."
-msgstr ""
+msgstr "Плагин %s помечен для активации."
 
 #, php-format
 msgid "Plugin %s scheduled for change."
-msgstr ""
+msgstr "Плагин %s помечен для изменения."
 
 #, php-format
 msgid "Plugin %s scheduled for deactivation."
-msgstr ""
+msgstr "Плагин %s помечен для деактивации."
 
 #, php-format
 msgid "Plugin %s scheduled for installation."
-msgstr ""
+msgstr "Плагин %s помечен для установки."
 
 #, php-format
 msgid "Plugin %s scheduled for uninstallation."
-msgstr ""
+msgstr "Плагин %s помечен для удаления."
 
 #, php-format
 msgid "Plugin %s scheduled for update."
-msgstr ""
+msgstr "Плагин %s помечен для обновления."
 
 #, php-format
 msgid "Plugin %s uninstalled."
-msgstr ""
+msgstr "Плагин %s удален."
 
 #, php-format
 msgid "Plugin %s updated."
-msgstr ""
+msgstr "Плагин %s обновлен."
 
 #, php-format
 msgid "Plugin Manager: Could not change the %s plugin: %s"
-msgstr ""
+msgstr "Менеджер плагинов: Невозможно изменить плагин %s: %s"
 
 #, php-format
 msgid ""
 "Plugin Manager: Could not delete %s plugin files. You should run the set-"
 "gui-permissions.pl script and try again."
 msgstr ""
+"Менеджер плагинов: Невозможно удалить файлы плагина %s. Требуется запустить "
+"скрипт set-gui-permissions.pl и попробовать снова."
 
 #, php-format
 msgid "Plugin Manager: Could not load plugin %s"
-msgstr ""
+msgstr "Менеджер плагинов: Невозможно загрузить плагин %s"
 
 #, php-format
 msgid ""
 "Plugin Manager: Could not uninstall the %s plugin. Plugin has been locked by"
 " another plugin."
 msgstr ""
+"Менеджер плагинов: Невозможно удалить плагин %s. Плагин заблокирован другим "
+"плагином."
 
 #, php-format
 msgid "Plugin Manager: Could not update the %s plugin: %s"
-msgstr ""
+msgstr "Менеджер плагинов: Невозможно обновить плагин %s: %s"
 
 #, php-format
 msgid "Plugin Manager: Could not write the %s file for protected plugins."
-msgstr ""
+msgstr "Менеджер плагинов не может записать файл %s для защищенных плагинов."
 
 #, php-format
 msgid "Plugin Manager: Directory %s doesn't exist or is not writable"
-msgstr ""
+msgstr "Каталог плагина %s не существует или недоступен!"
 
 #, php-format
 msgid "Plugin Manager: Downgrade of %s plugin is not allowed."
-msgstr ""
+msgstr "Менеджер плагинов: Откат плагина %s не разрешен."
 
 #, php-format
 msgid "Plugin Manager: Plugin %s is not loaded"
-msgstr ""
+msgstr "Менеджер плагинов: Плагин %s не загружен"
 
 #, php-format
 msgid "Plugin Manager: Unknown plugin %s"
-msgstr ""
+msgstr "Менеджер плагинов: Неизвестный плагин %s"
 
 #, php-format
 msgid "Plugin activation has failed: %s"
-msgstr ""
+msgstr "Активация плагина не удалась: %s"
 
 msgid "Plugin archive"
-msgstr ""
+msgstr "Архив с плагином"
 
 msgid "Plugin archive exceeds the maximum upload size"
-msgstr ""
+msgstr "Архив плагина плагина превышает допустимый размер для загрузки"
 
 #, php-format
 msgid "Plugin change has failed: %s"
-msgstr ""
+msgstr "Изменение плагина не удалось: %s"
 
 #, php-format
 msgid "Plugin deactivation has failed: %s"
-msgstr ""
+msgstr "Деактивация плагина не удалась: %s"
 
 #, php-format
 msgid "Plugin deletion has failed: %s"
-msgstr ""
+msgstr "Удаление плагина не удалось: %s"
 
 msgid "Plugin errors"
-msgstr ""
+msgstr "Ошибки плагинов"
 
 msgid "Plugin has been successfully uploaded."
-msgstr ""
+msgstr "Плагин был успешно загружен."
 
 #, php-format
 msgid "Plugin installation has failed: %s"
-msgstr ""
+msgstr "Установка плагина не удалось: %s"
 
 msgid "Plugin item errors"
-msgstr ""
+msgstr "Ошибки плагинов"
 
 msgid "Plugin list is empty."
-msgstr ""
+msgstr "Список плагинов пуст."
 
 msgid "Plugin management"
-msgstr ""
+msgstr "Управление плагинами"
 
 #, php-format
 msgid "Plugin uninstallation has failed: %s"
-msgstr ""
+msgstr "Деинсталляция плагина не удалось: %s"
 
 #, php-format
 msgid "Plugin update has failed: %s"
-msgstr ""
+msgstr "Обновление плагина не удалось: %s"
 
 msgid "Plugins Upload"
-msgstr ""
+msgstr "Загрузка плагинов"
 
 #, php-format
 msgid ""
@@ -3859,974 +4126,1012 @@ msgid ""
 "thousands of developers all over the world. You can find new plugins to "
 "install by browsing the %s."
 msgstr ""
+"Плагины подключаются в i-MSCP для расширения её функциональности. Плагины "
+"разрабатываются независимо от ядра i-MSCP тысячами разработчиков по всему "
+"миру. Вы можете найти новые плагины для установки, просматривая %s"
 
 #, php-format
 msgid ""
 "Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
 " %s plugin(s) reconfigured, and %s plugin(s) deleted."
 msgstr ""
+"Список плагинов обновлен: %s новый(ых) плагин(ов) найден(о), %s плагин(ов) "
+"обновлен(о), %s плагин(ов) перенастроен(о), и %s плагин(ов) удален(о)."
 
 msgid "Port"
-msgstr ""
+msgstr "Порт"
 
 msgid "Preserve Host"
-msgstr ""
+msgstr "Хранимый хост"
 
 msgid "Prevent external login for admins"
-msgstr ""
+msgstr "Запрет внешних логинов для администраторов"
 
 msgid "Prevent external login for clients"
-msgstr ""
+msgstr "Запрет внешних логинов для клиентов"
 
 msgid "Prevent external login for resellers"
-msgstr ""
+msgstr "Запрет внешних логинов для реселлеров"
 
 msgid "Previous"
-msgstr ""
+msgstr "Назад"
 
 msgid ""
 "Prior to removing this administrator, please move his resellers to another "
 "administrator."
 msgstr ""
+"Прежде тем, как удалить этого администратора, пожалуйста переведите его "
+"реселлеров другому администратору."
 
 msgid "Priority"
-msgstr ""
+msgstr "Приоритет"
 
 msgid "Private key"
-msgstr ""
+msgstr "Приватный ключ"
 
 msgid "Private key passphrase if any"
-msgstr ""
+msgstr "Пароль приватного ключа, если необходимо"
 
 msgid "Process update"
-msgstr ""
+msgstr "Процесс обновления"
 
 msgid "Processing..."
-msgstr ""
+msgstr "Выполнение..."
 
 msgid "Processor data"
-msgstr ""
+msgstr "Данные процессора"
 
 msgid "Profile"
-msgstr ""
+msgstr "Профиль"
 
 msgid "Properties"
-msgstr ""
+msgstr "Свойства"
 
 #, php-format
 msgid "Properties for reseller with ID %d were not found in database."
-msgstr ""
+msgstr "Свойства для реселлера ID %d не были найдены в базе данных."
 
 msgid "Protect"
-msgstr ""
+msgstr "Защитить"
 
 msgid "Protect this plugin"
-msgstr ""
+msgstr "Защитить этот плагин"
 
 msgid "Protected"
-msgstr ""
+msgstr "Защищено"
 
 msgid "Protected area data"
-msgstr ""
+msgstr "Данные защищенной зоны"
 
 msgid "Protected area name"
-msgstr ""
+msgstr "Название защищенной зоны"
 
 msgid "Protected area path"
-msgstr ""
+msgstr "Путь защищенной зоны"
 
 msgid "Protected area successfully scheduled for addition."
-msgstr ""
+msgstr "Защищенная зона успешно помечена для добавления."
 
 msgid "Protected area successfully scheduled for deletion."
-msgstr ""
+msgstr "Защищенная зона успешно помечена для удаления."
 
 msgid "Protected area successfully scheduled for update."
-msgstr ""
+msgstr "Защищенная зона успешно помечена для обновления."
 
 msgid "Protected areas"
-msgstr ""
+msgstr "Защищенные зоны"
 
 msgid "Protocol"
-msgstr ""
+msgstr "Протокол"
 
 msgid "Quota assignment"
-msgstr ""
+msgstr "Назначение квоты"
 
 msgid "Quota in MiB (0 for unlimited)"
-msgstr ""
+msgstr "Квота в MB (0 неограниченно)"
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
-msgstr ""
+msgstr "Квота в MB (Максимум: %s)"
 
 msgid "RAM"
-msgstr ""
+msgstr "Память RAM"
 
 msgid "Read ticket"
-msgstr ""
+msgstr "Читать тикет"
 
 msgid "Rebuild languages index"
-msgstr ""
+msgstr "Перестроить языковой индекс"
 
 msgid "Reconfiguration in progress..."
-msgstr ""
+msgstr "Происходит настройка..."
 
 msgid "Record data"
-msgstr ""
+msgstr "Данные записи"
 
 msgid "Redirect"
-msgstr ""
+msgstr "Редирект"
 
 msgid "Redistribute unused quota across existing mailboxes"
-msgstr ""
+msgstr "Распределить неиспользуемое пространство между существующими ящиками"
 
 msgid "Registration date"
-msgstr ""
+msgstr "Дата регистрации"
 
 msgid "Relative weight"
-msgstr ""
+msgstr "Относительный вес"
 
 msgid "Release date"
-msgstr ""
+msgstr "Дата выпуска"
 
 msgid "Release description"
-msgstr ""
+msgstr "Описание выпуска"
 
 msgid "Release version"
-msgstr ""
+msgstr "Версия выпуска"
 
 msgid "Remote Web software repository"
-msgstr ""
+msgstr "Внешний Web-репозиторий"
 
 msgid "Remote file not found."
-msgstr ""
+msgstr "Удаленный файл не найден."
 
 msgid "Remove"
-msgstr ""
+msgstr "Удалить"
 
 msgid "Remove IP"
-msgstr ""
+msgstr "Удалить IP"
 
 msgid "Remove permissions"
-msgstr ""
+msgstr "Удалить права"
 
 msgid "Reopen"
-msgstr ""
+msgstr "Возобновить"
 
 msgid "Reopen ticket"
-msgstr ""
+msgstr "Возобновить тикет"
 
 msgid "Repeat password"
-msgstr ""
+msgstr "Повторите пароль"
 
 msgid "Reply"
-msgstr ""
+msgstr "Ответ"
 
 msgid "Request Timeout: The server took too long to send the data."
-msgstr ""
+msgstr "Задержка зарпоса: Сервер ожидает слишком долго."
 
 msgid "Requires Database?"
-msgstr ""
+msgstr "Требуется база данных?"
 
 msgid "Reseller"
-msgstr ""
+msgstr "Реселлер"
 
 msgid "Reseller / Customers / Add Customer"
-msgstr ""
+msgstr "Реселлер / Клиенты / Добавить клиента"
 
 msgid "Reseller / Customers / Add Customer - Next Step"
-msgstr ""
+msgstr "Реселлер / Клиенты / Добавить клиента - Следующий шаг"
 
 msgid "Reseller / Customers / Circular"
-msgstr ""
+msgstr "Реселлер / Клиенты / Почтовая рассылка"
 
 msgid "Reseller / Customers / Domain Aliases"
-msgstr ""
+msgstr "Реселлер / Клиенты / Алиасы домена"
 
 msgid "Reseller / Customers / Lost Password Email"
-msgstr ""
+msgstr "Реселлер / Клиенты / Письмо восстановления пароля"
 
 msgid "Reseller / Customers / Overview"
-msgstr ""
+msgstr "Реселлер / Клиенты / Обзор"
 
 msgid "Reseller / Customers / Overview / Domain Details"
-msgstr ""
+msgstr "Реселлер / Клиенты / Обзор / Детали домена"
 
 msgid "Reseller / Customers / Overview / Edit Customer"
-msgstr ""
+msgstr "Реселлер / Клиенты / Обзор / Редактировать клиента"
 
 msgid "Reseller / Customers / Overview / Edit Domain"
-msgstr ""
+msgstr "Реселлер / Клиенты / Обзор / Редактировать домен"
 
 msgid "Reseller / Customers / Welcome Email"
-msgstr ""
+msgstr "Реселлер / Клиенты / Приветственное письмо"
 
 msgid "Reseller / Domains / Add Domain Alias"
-msgstr ""
+msgstr "Реселлер / Домены / Добавить алиас"
 
 msgid "Reseller / Domains / Edit Domain Alias"
-msgstr ""
+msgstr "Реселлер / Домены / Изменить алиас"
 
 msgid "Reseller / General / Overview"
-msgstr ""
+msgstr "Реселлер / Основное / Обзор"
 
 msgid "Reseller / General / Software Upload"
-msgstr ""
+msgstr "Реселлер / Основное / Загрузка ПО"
 
 msgid "Reseller / Hosting Plans / Add Hosting Plan"
-msgstr ""
+msgstr "Реселлер / Хостинг-планы / Добавить хостинг-план"
 
 msgid "Reseller / Hosting Plans / Overview"
-msgstr ""
+msgstr "Реселлер / Хостинг-планы / Обзор"
 
 msgid "Reseller / Profile / Account Summary"
-msgstr ""
+msgstr "Реселлер / Профиль / Учетная запись"
 
 msgid "Reseller / Profile / Language"
-msgstr ""
+msgstr "Реселлер / Профиль / Язык"
 
 msgid "Reseller / Profile / Layout"
-msgstr ""
+msgstr "Реселлер / Профиль / Обложка"
 
 msgid "Reseller / Profile / Password"
-msgstr ""
+msgstr "Реселлер / Профиль / Пароль"
 
 msgid "Reseller / Profile / Personal Data"
-msgstr ""
+msgstr "Реселлер / Профиль / Персональные данные"
 
 msgid "Reseller / Statistics / IP Usage"
-msgstr ""
+msgstr "Реселлер / Статистика / Использование IP"
 
 msgid "Reseller / Statistics / Overview"
-msgstr ""
+msgstr "Реселлер / Статистика / Обзор"
 
 msgid "Reseller / Statistics / Overview / {USERNAME} USER Statistics"
-msgstr ""
+msgstr "Реселлер / Статистика / Общее / Статистика пользователя {USERNAME}"
 
 msgid "Reseller / Support / Closed Tickets"
-msgstr ""
+msgstr "Реселлер / Служба поддержки / Закрытые тикеты"
 
 msgid "Reseller / Support / New Ticket"
-msgstr ""
+msgstr "Реселлер / Служба поддержки / Новый тикет"
 
 msgid "Reseller / Support / Open Tickets"
-msgstr ""
+msgstr "Реселлер / Служба поддержки / Открытые тикеты"
 
 msgid "Reseller / Support / View Ticket"
-msgstr ""
+msgstr "Реселлер / Служба поддержки / Просмотреть тикет"
 
 msgid "Reseller /Hosting Plans / Edit Hosting Plan"
 msgstr ""
+"i-MSCP - Реселлер / Управление хостинг-планами / Редактировать хостинг-план"
 
 msgid "Reseller Name"
-msgstr ""
+msgstr "Имя Реселлера"
 
 msgid "Reseller account successfully created."
-msgstr ""
+msgstr "Учетная запись реселлера успешно создана"
 
 msgid "Reseller account successfully updated."
-msgstr ""
+msgstr "Учетная запись реселлера успешно обновлена."
 
 msgid "Reseller and customer"
-msgstr ""
+msgstr "Реселлер и клиент"
 
 msgid "Reseller and customer levels"
-msgstr ""
+msgstr "Реселлерский и клиентский уровень"
 
 msgid "Reseller assignment"
-msgstr ""
+msgstr "Назначение реселлера"
 
 msgid "Reseller assignments"
-msgstr ""
+msgstr "Назначение реселлера"
 
 msgid "Reseller consumption"
-msgstr ""
+msgstr "Затраты Реселлера"
 
 msgid "Reseller data"
-msgstr ""
+msgstr "Данные реселлера"
 
 msgid "Reseller level"
-msgstr ""
+msgstr "Уровень реселлера"
 
 msgid "Reseller list"
-msgstr ""
+msgstr "Список реселлеров"
 
 msgid "Reseller list is empty."
-msgstr ""
+msgstr "Список реселлеров пуст."
 
 msgid "Reseller name"
-msgstr ""
+msgstr "Имя реселлера"
 
 msgid "Reseller software list"
-msgstr ""
+msgstr "Список ПО реселлеров."
 
 msgid "Reseller statistics"
-msgstr ""
+msgstr "Статистика реселлера"
 
 msgid "Reseller successfully added."
-msgstr ""
+msgstr "Реселлер успешно добавлен."
 
 msgid "Reseller total"
-msgstr ""
+msgstr "Всего реселлеров"
 
 msgid "Reseller users"
-msgstr ""
+msgstr "Реселлеры"
 
 msgid "Reseller with permissions total"
-msgstr ""
+msgstr "Всего реселлеров с правами"
 
 msgid "Reseller's layout color successfully updated."
-msgstr ""
+msgstr "Цвет подложки реселлера успешно обновлен. "
 
 msgid "Reseller/IP usage statistics"
-msgstr ""
+msgstr "Реселлер / Статистика использования IP"
 
 msgid "Resellers"
-msgstr ""
+msgstr "Реселлеры"
 
 msgid "Resellers and customers"
-msgstr ""
+msgstr "Реселлеры и клиенты"
 
 msgid "Reset"
-msgstr ""
+msgstr "Сбросить"
 
 msgid "Restore"
-msgstr ""
+msgstr "Восстановить"
 
 msgid "Restore backup"
-msgstr ""
+msgstr "Восстановить резервную копию"
 
 msgid "Revision date"
-msgstr ""
+msgstr "Дата ревизии"
 
 msgid "Rights"
-msgstr ""
+msgstr "Права"
 
 msgid "Rights successfully added."
-msgstr ""
+msgstr "Права успешно добавлены"
 
 msgid "Rights successfully removed."
-msgstr ""
+msgstr "Права успешно удалены"
 
 msgid "SMTP in"
-msgstr ""
+msgstr "SMTP вх"
 
 msgid "SMTP out"
-msgstr ""
+msgstr "SMTP исх"
 
 msgid "SMTP traffic"
-msgstr ""
+msgstr "SMTP трафик"
 
 msgid "SQL"
-msgstr ""
+msgstr "SQL"
 
 msgid "SQL database"
-msgstr ""
+msgstr "База данных SQL"
 
 msgid "SQL database limit"
-msgstr ""
+msgstr "Баз данных SQL"
 
 msgid "SQL database limit is disabled but SQL user limit is not."
-msgstr ""
+msgstr "SQL базы данных отключены, однако пользователи - нет."
 
 msgid "SQL database limit is disabled."
-msgstr ""
+msgstr "Лимит баз данных SQL отключен."
 
 msgid "SQL database limit is not <i>disabled</i>."
-msgstr ""
+msgstr "Базы данных SQL не <i>отключены</i>."
 
 msgid "SQL database limit reached."
-msgstr ""
+msgstr "Лимит баз данных SQL достигнут."
 
 msgid "SQL database successfully created."
-msgstr ""
+msgstr "База данных успешно добавлена."
 
 msgid "SQL database successfully deleted."
-msgstr ""
+msgstr "База данных успешно удалена."
 
 msgid "SQL databases"
-msgstr ""
+msgstr "Базы данных SQL"
 
 msgid "SQL databases only"
-msgstr ""
+msgstr "Только базы данных SQL"
 
 msgid "SQL user"
-msgstr ""
+msgstr "Пользователь SQL"
 
 msgid "SQL user host"
-msgstr ""
+msgstr "Хост пользователя SQL"
 
 msgid "SQL user limit"
-msgstr ""
+msgstr "Лимит пользователей SQL"
 
 msgid "SQL user limit is <i>disabled</i>."
-msgstr ""
+msgstr "Лимит пользователей SQL <i>отключен</i>."
 
 msgid "SQL user limit is disabled but SQL database limit is not."
-msgstr ""
+msgstr "Лимит пользователей SQL отключен, однако лимит баз данных - нет"
 
 msgid "SQL user limit is disabled."
-msgstr ""
+msgstr "Лимит пользователей SQL отключен."
 
 msgid "SQL user name"
-msgstr ""
+msgstr "Имя пользователя SQL"
 
 msgid "SQL user password successfully updated."
-msgstr ""
+msgstr "Пароль пользователя SQL успешно обновлен."
 
 msgid "SQL user prefix/suffix"
-msgstr ""
+msgstr "Префикс/суффикс пользователя SQL"
 
 msgid "SQL user successfully added."
-msgstr ""
+msgstr "Пользователь SQL успешно добавлен."
 
 msgid "SQL user successfully deleted."
-msgstr ""
+msgstr "Пользователь SQL успешно удален."
 
 msgid "SQL username is too long."
-msgstr ""
+msgstr "Имя пользователя SQL слишком длинное."
 
 msgid "SQL users"
-msgstr ""
+msgstr "Пользователи SQL"
 
 msgid "SSL certificate successfully scheduled for addition."
-msgstr ""
+msgstr "SSL cертификат успешно отмечен для добавления."
 
 msgid "SSL certificate successfully scheduled for deletion."
-msgstr ""
+msgstr "SSL cертификат успешно отмечен для удаления."
 
 msgid "SSL certificate successfully scheduled for update."
-msgstr ""
+msgstr "SSL cертификат успешно отмечен для обновления."
 
 msgid "SSL feature is not available. You can only view your certificate."
-msgstr ""
+msgstr "Функция SSL недоступна. Вы можете только просмотреть Ваш сертификат."
 
 msgid "SSL status"
-msgstr ""
+msgstr "статус SSL"
 
 msgid "Save"
-msgstr ""
+msgstr "Сохранить"
 
 msgid "Search"
-msgstr ""
+msgstr "Найти"
 
 msgid "Sec."
-msgstr ""
+msgstr "Сек."
 
 msgid "Secure connection"
-msgstr ""
+msgstr "Шифрованное соединение"
 
 msgid "Security code"
-msgstr ""
+msgstr "Код безопасности"
 
 msgid "Security code has expired"
-msgstr ""
+msgstr "Срок кода безопасности истек"
 
 msgid "Select group"
-msgstr ""
+msgstr "Выберите группу"
 
 msgid "Select your own document root"
-msgstr ""
+msgstr "Выберите корневую директорию для документов."
 
 msgid "Send"
-msgstr ""
+msgstr "Отправит"
 
 msgid "Send circular"
-msgstr ""
+msgstr "Отправить рассылку"
 
 msgid "Send message"
-msgstr ""
+msgstr "Отправить сообщение"
 
 msgid "Send message to"
-msgstr ""
+msgstr "Кому отправить"
 
 msgid "Send new login data"
-msgstr ""
+msgstr "Отправить новую информацию для входа"
 
 msgid "Send reply"
-msgstr ""
+msgstr "Отправить ответ"
 
 msgid "Send to"
-msgstr ""
+msgstr "Отправить"
 
 msgid "Sender email"
-msgstr ""
+msgstr "Адрес отправителя"
 
 msgid "Sender email is missing."
-msgstr ""
+msgstr "Имя отправителя отсутствует."
 
 msgid "Sender name"
-msgstr ""
+msgstr "Имя отправителя"
 
 msgid "Sender name is missing."
-msgstr ""
+msgstr "Имя отправителя отсутствует."
 
 msgid "Separate multiple email addresses by comma or a line-break."
 msgstr ""
+"Разделяйте множество почтовых адресов пробелами, запятыми или прочерками."
 
 msgid "Separate multiple email addresses with a line-break."
 msgstr ""
+"При вводе нескольких email адресов, каждый адрес должен располагаться на "
+"отдельной строке"
 
 msgid "Server ports"
-msgstr ""
+msgstr "Порты сервера"
 
 msgid "Server statistics"
-msgstr ""
+msgstr "Статистика сервера"
 
 msgid "Server status"
-msgstr ""
+msgstr "Статус сервера"
 
 msgid "Server traffic"
-msgstr ""
+msgstr "Трафик сервера"
 
 msgid "Server traffic settings"
-msgstr ""
+msgstr "Настройки трафика сервера"
 
 msgid "Server traffic settings successfully updated."
-msgstr ""
+msgstr "Настройки трафика сервера успешно обновлены."
 
 msgid "Service Name"
-msgstr ""
+msgstr "Имя службы"
 
 msgid "Service Unavailable"
-msgstr ""
+msgstr "Служба недоступна"
 
 msgid "Service name"
-msgstr ""
+msgstr "Служба"
 
 msgid "Service name already exists."
-msgstr ""
+msgstr "Имя службы уже существует."
 
 msgid "Service port successfully added"
-msgstr ""
+msgstr "Порт служб был успешно добавлен"
 
 msgid "Service port successfully removed."
-msgstr ""
+msgstr "Порт служб был успешно удален"
 
 msgid "Service ports"
-msgstr ""
+msgstr "Порты служб"
 
 msgid "Service protocol"
-msgstr ""
+msgstr "Протокол службы"
 
 msgid "Services status"
-msgstr ""
+msgstr "Статус служб"
 
 msgid "Sessions"
-msgstr ""
+msgstr "Сессия"
 
 msgid "Settings"
-msgstr ""
+msgstr "Настройки"
 
 msgid "Settings saved."
-msgstr ""
+msgstr "Настройки сохранены"
 
 msgid "Shared mount point"
-msgstr ""
+msgstr "Распределенная точка монтирования"
 
 msgid "Show"
-msgstr ""
+msgstr "Показать"
 
 #, php-format
 msgid "Show %s records per page"
-msgstr ""
+msgstr "Показывать %s записей на странице"
 
 msgid "Show HTML output compression size comment"
-msgstr ""
+msgstr "Показать комментарий размера сжатия вывода HTML"
 
 msgid "Show SSL certificate"
-msgstr ""
+msgstr "Показать SSL сертификат"
 
 msgid "Show detailed statistics for this reseller"
-msgstr ""
+msgstr "Показать детальную статистику для этого реселлера"
 
 msgid "Show detailed statistics for this user"
-msgstr ""
+msgstr "Показать детальную статистику для этого реселлера"
 
 msgid "Show in"
-msgstr ""
+msgstr "Показать в"
 
 msgid "Show labels for main menu links"
-msgstr ""
+msgstr "Использовать ярлыки для ссылок главного меню"
 
 #, php-format
 msgid "Showing %s to %s of %s records"
-msgstr ""
+msgstr "Показано с %s по %s из %s записей"
 
 msgid "Showing 0 to 0 of 0 records"
-msgstr ""
+msgstr "Показано с 0 по 0 из 0 записей"
 
 msgid "Size"
-msgstr ""
+msgstr "Размер"
 
 msgid "Software"
-msgstr ""
+msgstr "Програмное обеспечение"
 
 msgid "Software Description"
-msgstr ""
+msgstr "Описание пакета"
 
 msgid "Software available"
-msgstr ""
+msgstr "Програмное обеспечение доступно"
 
 msgid "Software deleted."
-msgstr ""
+msgstr "Програмное обеспечение удалено"
 
 msgid "Software depot upload"
-msgstr ""
+msgstr "Репозиторий ПО загрузка"
 
 msgid "Software details"
-msgstr ""
+msgstr "Програмное обеспечение - детали"
 
 msgid "Software has been deleted."
-msgstr ""
+msgstr "Программное обеспечение было удалено."
 
 msgid "Software has been successfully imported."
-msgstr ""
+msgstr "Программное обеспечение было успешно импортировано."
 
 msgid "Software in repository"
-msgstr ""
+msgstr "Програмное обеспечение в репозитории"
 
 msgid "Software installation"
-msgstr ""
+msgstr "Установка програмного обеспечения"
 
 msgid "Software installer"
-msgstr ""
+msgstr "Установщик програмного обеспечения"
 
 msgid "Software installer options"
-msgstr ""
+msgstr "Настройки установщика програмного обеспечения"
 
 msgid "Software installer options successfully updated."
-msgstr ""
+msgstr "Настройки установщика програмного обеспечения успешно обновлены."
 
 msgid "Software instance has been scheduled for installation"
-msgstr ""
+msgstr "ПО не было помечено для установки."
 
 msgid "Software management"
-msgstr ""
+msgstr "Управление ПО"
 
 msgid "Software name"
-msgstr ""
+msgstr "Название ПО"
 
 msgid "Software not found!"
-msgstr ""
+msgstr "Пакет не найден!"
 
 msgid "Software options"
-msgstr ""
+msgstr "Настройки ПО"
 
 msgid "Software permissions"
-msgstr ""
+msgstr "Разрешения программного обеспечения"
 
 msgid "Software repository"
-msgstr ""
+msgstr "Репозиторий программного обеспечения"
 
 msgid "Software status"
-msgstr ""
+msgstr "Статус ПО"
 
 msgid "Software successfully scheduled for deletion."
-msgstr ""
+msgstr "ПО успешно помечено для удаления."
 
 msgid "Software total"
-msgstr ""
+msgstr "Всего программного обеспечения"
 
 msgid "Software upload"
-msgstr ""
+msgstr "Загрузка ПО"
 
 msgid "Software was activated."
-msgstr ""
+msgstr "Программное обеспечение было активировано"
 
 msgid "Software was deleted."
-msgstr ""
+msgstr "Программное обеспечение было удалено"
 
 msgid "Software-Synonym"
-msgstr ""
+msgstr "Название ПО"
 
 msgid "Software-Version"
-msgstr ""
+msgstr "Версия ПО"
 
 msgid "Softwaredepot"
-msgstr ""
+msgstr "Репозиторий ПО"
 
 msgid "Start installation"
-msgstr ""
+msgstr "Добавить в репозиторий"
 
 msgid "State"
-msgstr ""
+msgstr "Штат"
 
 msgid "State/Province"
-msgstr ""
+msgstr "Область / Район"
 
 msgid "Statistics"
-msgstr ""
+msgstr "Статистика"
 
 msgid "Stats"
-msgstr ""
+msgstr "Статистика"
 
 msgid "Status"
-msgstr ""
+msgstr "Статус"
 
 msgid "Street 1"
-msgstr ""
+msgstr "Основной адрес"
 
 msgid "Street 2"
-msgstr ""
+msgstr "Дополнительный адрес"
 
 msgid "Strong passwords"
-msgstr ""
+msgstr "Использовать сильные пароли"
 
 msgid "Subdomain"
-msgstr ""
+msgstr "Поддомен"
 
 #, php-format
 msgid "Subdomain %s already exist."
-msgstr ""
+msgstr "Поддомен %s уже существует."
 
 #, php-format
 msgid "Subdomain %s cannot be forwarded on itself."
-msgstr ""
+msgstr "Поддомен %s не может быть перенаправлен на самого себя."
 
 #, php-format
 msgid "Subdomain %s is unavailable."
-msgstr ""
+msgstr "Поддомен %s недоступен."
 
 msgid "Subdomain alias"
-msgstr ""
+msgstr "Алиас поддомена"
 
 msgid "Subdomain alias errors"
-msgstr ""
+msgstr "Ошибки алиаса поддомена"
 
 msgid "Subdomain alias scheduled for deletion."
-msgstr ""
+msgstr "Алиас поддомена помечен для удаления."
 
 msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Please remove "
 "them first."
 msgstr ""
+"Алиас поддомена, который Вы пытаетесь удалить имеет учетные записи FTP. "
+"Сначала удалите их."
 
 msgid "Subdomain errors"
-msgstr ""
+msgstr "Ошибки поддоменов"
 
 msgid "Subdomain forward"
-msgstr ""
+msgstr "Перенаправление поддомена"
 
 msgid "Subdomain limit"
-msgstr ""
+msgstr "Лимит поддоменов"
 
 msgid "Subdomain mail"
-msgstr ""
+msgstr "Поддомен почты"
 
 msgid "Subdomain name"
-msgstr ""
+msgstr "Имя поддомена"
 
 msgid "Subdomain name is not valid."
-msgstr ""
+msgstr "Имя поддомена неверно"
 
 msgid "Subdomain scheduled for deletion."
-msgstr ""
+msgstr "Поддомен помечен для удаления."
 
 msgid "Subdomain successfully scheduled for addition."
-msgstr ""
+msgstr "Поддомен успешно помечен для добавления."
 
 msgid "Subdomain successfully scheduled for update"
-msgstr ""
+msgstr "Поддомен успешно помечен для обновления."
 
 msgid ""
 "Subdomain you are trying to remove has Ftp accounts. Remove them first."
 msgstr ""
+"Поддомен, который Вы пытаетесь удалить имеет учетные записи FTP. Сначала "
+"удалите их."
 
 msgid ""
 "Subdomain you are trying to remove has email accounts. Please remove them "
 "first."
 msgstr ""
+"Поддомен, который вы пытаетесь удалить, содержит учетные записи почты. "
+"Сначала удалите их."
 
 msgid ""
 "Subdomain you are trying to remove has email accounts. Remove them first."
 msgstr ""
+"Поддомен, который вы пытаетесь удалить, содержит учетные записи почты. "
+"Сначала удалите их."
 
 msgid "Subdomains"
-msgstr ""
+msgstr "Поддомены"
 
 msgid "Subject"
-msgstr ""
+msgstr "Тема"
 
 msgid "Subject is missing."
-msgstr ""
+msgstr "Тема сообщения отсутствует."
 
 msgid "Submit changes"
-msgstr ""
+msgstr "Применить изменения"
 
 msgid "Support"
-msgstr ""
+msgstr "Служба поддержки"
 
 msgid "Support system"
-msgstr ""
+msgstr "Служба поддержки"
 
 msgid "Suspended"
-msgstr ""
+msgstr "Приостановлен"
 
 msgid "Swap"
-msgstr ""
+msgstr "Раздел подкачки"
 
 msgid "Switch"
-msgstr ""
+msgstr "Перейти"
 
 msgid "Switch to the backups directory"
-msgstr ""
+msgstr "Перейти в каталог backups/"
 
 msgid "Switch to user interface"
-msgstr ""
+msgstr "Перейти в интерфейс пользователя"
 
 msgid "Syntax error found in mail forward list."
-msgstr ""
+msgstr "Была найдена ошибка синтаксиса в списке перенаправления."
 
 msgid "System"
-msgstr ""
+msgstr "Система"
 
 msgid "System data"
-msgstr ""
+msgstr "Системные данные"
 
 msgid "System error - custom error page was not updated."
-msgstr ""
+msgstr "Системная ошибка - пользовательская  страница ошибки не обновлена."
 
 msgid "System information"
-msgstr ""
+msgstr "Системная информация"
 
 msgid "System tools"
-msgstr ""
+msgstr "Системные инструменты"
 
 msgid "System under maintenance"
-msgstr ""
+msgstr "Система на отладке"
 
 msgid "TB"
-msgstr ""
+msgstr "ТБ"
 
 msgid "TTL"
-msgstr ""
+msgstr "TTL"
 
 msgid "Target"
-msgstr ""
+msgstr "Цель"
 
 msgid "Target domain"
-msgstr ""
+msgstr "Целевой домен"
 
 msgid "Target port"
-msgstr ""
+msgstr "Порт назначения"
 
 msgid "Target port must be a number."
-msgstr ""
+msgstr "Порт должен быть числом."
 
 msgid "Temporary folder not found."
-msgstr ""
+msgstr "Временная папка не найдена."
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be greater than %d, your calculated "
 "limit."
 msgstr ""
+"Лимит %s для этого клиента не может быть выше чем  <strong>%d</strong>, Ваш "
+"расчетный лимит."
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be lower than %d, the total of %s "
 "already used by him."
 msgstr ""
+"Лимит %s для этого клиента не может быть ниже чем  <strong>%d</strong>, %s "
+"из которых он уже использует."
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be set to 'disabled' because he has "
 "already %d %s."
 msgstr ""
+"Лимит %s для этого клиента не может быть отключен, потому что у него уже "
+"<strong>%d</strong> %s."
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be unlimited because your are limited "
 "for this service."
 msgstr ""
+"Лимит %s для этого клиента не может быть неограниченнным, потому что "
+"существует ограничение для Вас."
 
 #, php-format
 msgid "The %s plugin version %s is not compatible with your i-MSCP version."
-msgstr ""
+msgstr "Ваша версия i-MSCP несовместима с %s плагином версии %s."
 
 #, php-format
 msgid "The %s translation file has been ignored: Translation table is empty."
-msgstr ""
+msgstr "Язык %s перевода был проигнорирован: Таблица перевода пуста."
 
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
-msgstr ""
+msgstr "SQL пользователь `%s' недоступен или не разрешен."
 
 #, php-format
 msgid ""
 "The directory %s doesn't exists. Please create that directory using your "
 "file manager."
 msgstr ""
+"Каталог %s не существует. Пожалуйста создайте его, используя Ваш файловый "
+"менеджер."
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
 "properties will result by a complete or partial reactivation of it."
 msgstr ""
+"Сейчас домен деактивирован. Изменение свойств домена приведет к его "
+"частичной или полной реактивации."
 
 msgid ""
 "The domain or at least one of its entities has a different status than 'ok'."
-msgstr ""
+msgstr "Домен, или как минимум одно его записей не имеет статуса 'ok'."
 
 msgid "The domain you are trying to edit doesn't exist."
-msgstr ""
+msgstr "Домен, который Вы пытаетесь отредактировать, не существует."
 
 msgid "The menu you are trying to edit doesn't exist."
-msgstr ""
+msgstr "Меню, которое Вы пытаетесь отредактировать, не существует."
 
 msgid "The new document root must pre-exists inside the /htdocs directory."
-msgstr ""
+msgstr "Новая корневая директория должна уже существовать в каталоге /htdocs"
 
 msgid "The package is corrupt. Please correct it."
-msgstr ""
+msgstr "Пакет поврежден. Пожалуйста, исправьте его."
 
 msgid ""
 "The package will be installed automatically to your system after "
 "upload.<br>Refresh your site to see the new status!"
 msgstr ""
+"Пакет будет автоматически установлен в вашу систему после "
+"загрузки.<br>Обновите страницу, чтобы увидеть новый статус!"
 
 msgid "The password field is empty."
-msgstr ""
+msgstr "Поле пароля пусто."
 
 msgid "The private key doesn't belong to the provided SSL certificate."
-msgstr ""
+msgstr "Приватный ключ не принадлежит предоставленному сертификату."
 
 #, php-format
 msgid "The remote filesize (%s) is lower than 1 byte. Please check the URL."
 msgstr ""
+"Размер удаленного файла (%s) меньше 1 байта. Пожалуйста, проверьте URL."
 
 msgid ""
 "The reseller you want to remove has one or more customers accounts. Please "
 "remove them first."
 msgstr ""
+"Реселлер, которго вы хотите удалить, имеет одного или более клиентов.<br /> "
+"Сначала удалите их."
 
 msgid "The uploaded file was only partially uploaded."
-msgstr ""
+msgstr "Загружаемый файл был загружен частично."
 
 #, php-format
 msgid "The username %s is not available."
-msgstr ""
+msgstr "Имя пользователя %s недоступно."
 
 msgid "The username field is empty."
-msgstr ""
+msgstr "Поле имя пользователя пусто."
 
 msgid "The value has been found in the stack"
-msgstr ""
+msgstr "Значение было найдено в стеке"
 
 msgid "The value has not been found in the stack"
-msgstr ""
+msgstr "Значение не было найдено в стеке"
 
 msgid "The values must not be equal"
-msgstr ""
+msgstr "Значения не должны быть равны"
 
 msgid ""
 "There is an Error inside your package. Please check it!<br>Refresh your site"
 " to see the new status!"
 msgstr ""
+"Ошибка Вашего пакета. Пожалуйста, проверьте его!<br>Обновите Ваш сайт, чтобы"
+" увидеть новый статус!"
 
 msgid "There is no pending task. Operation canceled."
-msgstr ""
+msgstr "Задач в ожидании нет. Операця аннулирована."
 
 #, php-format
 msgid ""
@@ -4834,6 +5139,8 @@ msgid ""
 "this package!<br>Please delete the files and database for this package "
 "manually!"
 msgstr ""
+"Пакет (%s, V%s) был удален вашим реселлером. Вы можете только удалить этот "
+"пакет!<br>Пожалуйста, удалите файлы и базы данных этого пакета вручную!"
 
 #, php-format
 msgid ""
@@ -4841,15 +5148,19 @@ msgid ""
 " All users linked to this database will also be deleted if not linked to "
 "another database. Are you sure you want to delete the '%s' database?"
 msgstr ""
+"Эта база данных будет удалена навсегда. Процесс не может быть отменен. Все "
+"пользователи, прикрепленные к базе данных также будут удалены, если они не "
+"прикреплены к другим базам данных. Вы уверены что хотите удалить базу данных"
+" '%s' ?"
 
 msgid "This htaccess group already exists."
-msgstr ""
+msgstr "Группа htaccess уже существует."
 
 msgid "This htaccess user already exist."
-msgstr ""
+msgstr "Пользователь htaccess уже существует."
 
 msgid "This interface allow to add or remove IP addresses."
-msgstr ""
+msgstr "В этой маске Вы можете добавлять или удалять IP адреса."
 
 #, php-format
 msgid ""
@@ -4857,577 +5168,595 @@ msgid ""
 "SQL server. Enter the %s wildcard character to allow this SQL user to "
 "connect from any host."
 msgstr ""
+"Это хост, с которого данный пользователь SQL lДолжен иметь доступ на "
+"подключение. Введите спецсимвол %s для того, чтобы данный пользователь мог "
+"подключиться с любого хоста."
 
 msgid "This package already exists in the administrator software repository."
-msgstr ""
+msgstr "Этот пакет уже существует в репозитории администратора."
 
 #, php-format
 msgid "This package already exists in the depot of the reseller \"%1$s\"!"
-msgstr ""
+msgstr "Пакет уже существует в репозитории реселлера  \"%1$s\"! "
 
 msgid "This package already exists in the software depot!"
-msgstr ""
+msgstr "Пакет уже существует в репозитории!"
 
 msgid "This package already exists in your software repository."
-msgstr ""
+msgstr "Этот пакет уже существует в Вашем репозитории."
 
 msgid "This package is installed on following domain(s):"
-msgstr ""
+msgstr "Пакет установлен для следующих доменов:"
 
 msgid "This package is not installed"
-msgstr ""
+msgstr "Пакет не установлен"
 
 msgid "This package is not installed yet"
-msgstr ""
+msgstr "Этот пакет еще не установлен"
 
 msgid "This software is installed on following domain(s):"
-msgstr ""
+msgstr "Это ПО установлено на следующих доменах:"
 
 msgid "This user has domain record. First remove the domain from the system."
 msgstr ""
+"Этот пользователь имеет учетную запись домена. Сначала удалите домен из "
+"системы."
 
 msgid "This user name already exist."
-msgstr ""
+msgstr "Имя пользователя уже существует."
 
 msgid "TiB"
-msgstr ""
+msgstr "Тб"
 
 msgid "Ticket information"
-msgstr ""
+msgstr "Информация о тикете"
 
 msgid "Ticket successfully closed."
-msgstr ""
+msgstr "Тикет успешно закрыт."
 
 msgid "Ticket successfully deleted."
-msgstr ""
+msgstr "Тикет успешно удален."
 
 msgid "Ticket successfully reopened."
-msgstr ""
+msgstr "Тикет успешно открыт снова."
 
 #, php-format
 msgid "Ticket with Id '%d' was not found."
-msgstr ""
+msgstr "Тикет с Id '%d' не был найден."
 
 msgid "To Admin"
-msgstr ""
+msgstr "К администратору"
 
 msgid "To reseller"
-msgstr ""
+msgstr "К реселлеру"
 
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
-msgstr ""
+msgstr "Чтобы снять защиту с этого плагина, Вы должны отредактировать файл %s"
 
 msgid "Total"
-msgstr ""
+msgstr "Всего"
 
 msgid "Total Domains"
-msgstr ""
+msgstr "Всего доменов"
 
 msgid "Total Software"
-msgstr ""
+msgstr "Всего ПО"
 
 msgid "Total Web software repositories"
-msgstr ""
+msgstr "Всего Web-репозиториев"
 
 msgid "Total installations"
-msgstr ""
+msgstr "Всего установок"
 
 #, php-format
 msgid "Total mails: %s / %s %s"
-msgstr ""
+msgstr "Всего почты %s / %s %s"
 
 msgid "Total packages in Web software repository"
-msgstr ""
+msgstr "Всего пакетов в Web-репозитории"
 
 msgid "Total reseller"
-msgstr ""
+msgstr "Всего реселлеров"
 
 msgid "Total software"
-msgstr ""
+msgstr "Всего ПО"
 
 msgid "Traffic"
-msgstr ""
+msgstr "Трафик"
 
 msgid "Traffic statistics"
-msgstr ""
+msgstr "Статистика трафика"
 
 msgid "Traffic usage"
-msgstr ""
+msgstr "Использование трафика"
 
 msgid "Translated strings"
-msgstr ""
+msgstr "Переведенные строки"
 
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 msgid "UP"
-msgstr ""
+msgstr "РАБОТАЕТ"
 
 msgid "URL forwarding"
-msgstr ""
+msgstr "Перенаправление URL"
 
 msgid "URL port"
-msgstr ""
+msgstr "Порт URL"
 
 msgid "URL protocol"
-msgstr ""
+msgstr "Протокол ссылки"
 
 msgid "URL to this admin panel"
-msgstr ""
+msgstr "Ссылка на панель управления"
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
-msgstr ""
+msgstr "Невосможно закрыть тикет с ID '%s'."
 
 #, php-format
 msgid "Unable to create '%s' directory for language file."
-msgstr ""
+msgstr "Невозможно создать каталог '%s' для языкового файла."
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
-msgstr ""
+msgstr "Невозможно создать каталог 'LC_MESSAGES' для языкового файла."
 
 msgid "Unable to delete i-MSCP info file."
-msgstr ""
+msgstr "Невозможно удалить файл информации i-MSCP."
 
 msgid "Unable to get the IP address list. Please fix this problem."
-msgstr ""
+msgstr "Невозможно создать список IP адресов. Пожалуйста, исправьте проблему."
 
 msgid "Unable to get update info from Github"
-msgstr ""
+msgstr "Невозможно получить информацию об обновлении из Github"
 
 msgid "Unable to load i-MSCP info file."
-msgstr ""
+msgstr "Невозможно загрузить файл информации i-MSCP."
 
 msgid "Unable to move file."
-msgstr ""
+msgstr "Не удалось переместить файл."
 
 msgid "Unable to read Web software repository index file."
-msgstr ""
+msgstr "Невозможно прочесть индексный файл Web-репозитория"
 
 #, php-format
 msgid "Unable to read the %s file."
-msgstr ""
+msgstr "Невозможно прочесть файл %s."
 
 #, php-format
 msgid "Unable to read the plugin %s file. Please check file permissions"
 msgstr ""
+"Невозможно прочесть файл плагина %s. Пожалуйста, проверьте права доступа."
 
 msgid "Unable to read xml file for web software."
-msgstr ""
+msgstr "Невозможно прочесть xml файл Web-репозитория"
 
 #, php-format
 msgid "Unable to reopen ticket with Id '%s'."
-msgstr ""
+msgstr "Не удается открыть тикет с Id '%s'."
 
 msgid ""
 "Unable to schedule deletion of the customer account. A message has been sent"
 " to the administrator."
 msgstr ""
+"Не удается удалить учетную запись клиента. Сообщение было отправлено "
+"администратору."
 
 msgid ""
 "Unable to schedule deletion of the customer account. Please consult admin "
 "logs or your mail for more information."
 msgstr ""
+"Не удается удалить учетную запись клиента. Пожалуйста, просмотрите журнал "
+"администратора или почту для получения дополнительной информации."
 
 msgid "Unable to set sslallowselfsigned option"
-msgstr ""
+msgstr "Невозможно включить опцию sslallowselfsigned"
 
 msgid "Unable to set sslverifypeer option"
-msgstr ""
+msgstr "Невозможно включить опцию sslverifypeer"
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr ""
+"Невозможно загрузить файл. Максимальный размер файла (%1$d MB) достигнут?"
 
 msgid "Unallowed port in forward URL. Only ports above 1024 are allowed."
 msgstr ""
+"Неразрешенный порт перенаправления URL. Разрешены только порты больше 1024."
 
 msgid "Unauthorized"
-msgstr ""
+msgstr "Неавторизовано"
 
 msgid "Unavailable"
-msgstr ""
+msgstr "Недоступно"
 
 msgid "Unexpected error"
-msgstr ""
+msgstr "Произошла неожиданная ошибка: %s"
 
 msgid "Uninstall"
-msgstr ""
+msgstr "Удалить"
 
 msgid "Uninstall this plugin"
-msgstr ""
+msgstr "Удалить плагин"
 
 msgid "Uninstallation in progress..."
-msgstr ""
+msgstr "Удаление в процессе..."
 
 msgid "Uninstalled"
-msgstr ""
+msgstr "Удалено"
 
 msgid "Unknown"
-msgstr ""
+msgstr "Неизвестно"
 
 msgid "Unknown Error"
-msgstr ""
+msgstr "Неизвестная ошибка"
 
 #, php-format
 msgid "Unknown `%s' database. Database must exists."
-msgstr ""
+msgstr "Неизвестная база данных `%s'. База данных должна существовать."
 
 msgid "Unknown action requested."
-msgstr ""
+msgstr "Запрошено неизвестное действие."
 
 #, php-format
 msgid "Unknown action: %s"
-msgstr ""
+msgstr "Неизвестное действие: %s"
 
 #, php-format
 msgid "Unknown bruteforce detection type: %s"
-msgstr ""
+msgstr "Неизвесный тип обнаружения атаки перебором: %s"
 
 msgid "Unknown language name."
-msgstr ""
+msgstr "Неизвестное имя языкового файла."
 
 msgid "Unknown layout color."
-msgstr ""
+msgstr "Неизвестный цвед подложки."
 
 msgid "Unknown reason."
-msgstr ""
+msgstr "Неизвестная причина."
 
 #, php-format
 msgid "Unknown service name '%s'."
-msgstr ""
+msgstr "Неизвестное имя службы  '%s'."
 
 msgid "Unknown status"
-msgstr ""
+msgstr "Неизвестный статус"
 
 msgid "Unknown type."
-msgstr ""
+msgstr "Неизвестный тип."
 
 msgid "Unknown username."
-msgstr ""
+msgstr "Неизвестное имя пользователя."
 
 msgid "Unlimited"
-msgstr ""
+msgstr "Не ограничено"
 
 msgid "Update"
-msgstr ""
+msgstr "Изменить"
 
 msgid "Update Plugins"
-msgstr ""
+msgstr "Обновить плагины"
 
 msgid "Update SQL user password"
-msgstr ""
+msgstr "Обновить пароль SQL"
 
 msgid "Update data"
-msgstr ""
+msgstr "Изменить данные"
 
 msgid "Update from Web software repository"
-msgstr ""
+msgstr "Обновить из Web-репозитория"
 
 msgid "Update from web depot"
-msgstr ""
+msgstr "Обновить из Web-репозитория"
 
 msgid "Update in progress..."
-msgstr ""
+msgstr "Производится обновление..."
 
 msgid "Update info"
-msgstr ""
+msgstr "Информация обновления"
 
 msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
 "fields."
 msgstr ""
+"Обновление индекса Web-репозитория было отменено. Необходимые поля "
+"отсутствуют или пусты."
 
 msgid "Update password"
-msgstr ""
+msgstr "Обновить пароль"
 
 msgid "Updates"
-msgstr ""
+msgstr "Обновления"
 
 msgid "Upload"
-msgstr ""
+msgstr "Загрузить"
 
 msgid "Upload logo"
-msgstr ""
+msgstr "Загрузить логотип"
 
 msgid "Upload now"
-msgstr ""
+msgstr "Загрузить сейчас"
 
 msgid "Uptime"
-msgstr ""
+msgstr "Время работы"
 
 msgid "Usage of dot in domain name labels is prohibited."
-msgstr ""
+msgstr "Использование точек в ярлыках домена запрещено"
 
 msgid "Usage status"
-msgstr ""
+msgstr "Статус использования"
 
 msgid "Use normal connection (No SSL)"
-msgstr ""
+msgstr "Использовать нешифрованное соедиенние (SSL)"
 
 msgid "Use secure connection (SSL)"
-msgstr ""
+msgstr "Использовать шифрованное соедиенние (SSL)"
 
 msgid "Used"
-msgstr ""
+msgstr "Использовано"
 
 msgid "Used database"
-msgstr ""
+msgstr "Используемая БД"
 
 msgid "User"
-msgstr ""
+msgstr "Пользователь"
 
 msgid "User (first and last) name"
-msgstr ""
+msgstr "Фамилия и Имя пользователя"
 
 msgid "User assignment"
-msgstr ""
+msgstr "Назначение пользователя"
 
 msgid "User data successfully updated"
-msgstr ""
+msgstr "Персональные данные успешно обновлены."
 
 msgid "User data successfully updated."
-msgstr ""
+msgstr "Персональные данные успешно обновлены."
 
 msgid "User data were not updated."
-msgstr ""
+msgstr "Данные пользователя не были обновлены."
 
 msgid "User data were successfully updated."
-msgstr ""
+msgstr "Данные были успешно обновлены."
 
 msgid ""
 "User do not exist or you do not have permission to access this interface"
 msgstr ""
+"Пользователь не существует, или у Вас нет прав для доступа к этому "
+"интерфейсу"
 
 msgid "User errors"
-msgstr ""
+msgstr "Ошибки пользователя"
 
 msgid "User has not been deleted."
-msgstr ""
+msgstr "Пользователь не был удален."
 
 msgid "User login (system) name"
-msgstr ""
+msgstr "Логин пользователя"
 
 msgid "User password"
-msgstr ""
+msgstr "Пароль пользователя"
 
 msgid "User real (first and last) name"
-msgstr ""
+msgstr "Настоящие Фамилия и Имя пользователя"
 
 msgid "User scheduled for deletion."
-msgstr ""
+msgstr "Пользователь помечен для удаления."
 
 msgid "User session successfully destroyed."
-msgstr ""
+msgstr "Сессия пользователя успешно уничтожена."
 
 msgid "User statistics"
-msgstr ""
+msgstr "Статистика пользователя"
 
 msgid "User successfully disconnected."
-msgstr ""
+msgstr "Пользователь успешно отсоединен."
 
 msgid "User type"
-msgstr ""
+msgstr "Тип пользователя"
 
 msgid "User type (admin, reseller, user)"
-msgstr ""
+msgstr "Тип пользователя (администратор, реселлер, клиент)"
 
 msgid "Username"
-msgstr ""
+msgstr "Имя пользователя"
 
 msgid "Username and password for application login"
-msgstr ""
+msgstr "Имя пользователя и пароль для входа в приложение"
 
 msgid "Users"
-msgstr ""
+msgstr "Пользователи"
 
 #, php-format
 msgid "Value for the PHP %%s directive must be in range %%d to %%d."
-msgstr ""
+msgstr "Значение PHP <strong>%%s</strong> должно быть между %%d и %%d."
 
 msgid "Values"
-msgstr ""
+msgstr "Значения"
 
 msgid "Vendor hompage"
-msgstr ""
+msgstr "Перейти на сайт"
 
 msgid "Version"
-msgstr ""
+msgstr "Версия"
 
 msgid "Very high"
-msgstr ""
+msgstr "Очень высокий"
 
 msgid "View"
-msgstr ""
+msgstr "Просмотр"
 
 msgid "View SSL certificate"
-msgstr ""
+msgstr "Просмотреть SSL сертификат"
 
 msgid "View aliases"
-msgstr ""
+msgstr "Показать алиасы"
 
 msgid "View ticket"
-msgstr ""
+msgstr "Просмотр тикета"
 
 msgid "Visit plugin site"
-msgstr ""
+msgstr "Посетить сайт плагина"
 
 msgid "Warning traffic"
-msgstr ""
+msgstr "Предупреждать при трафике"
 
 msgid "Warning!"
-msgstr ""
+msgstr "Внимание!"
 
 msgid "Warnings and Errors"
-msgstr ""
+msgstr "Предупреждения и ошибки"
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
 msgstr ""
+"Мы приносим наши извинения, но система находится в техобслуживании.\n"
+"Пожалуйста, попробуйте позже."
 
 msgid "Web Statistics"
-msgstr ""
+msgstr "Web-статистика"
 
 msgid "Web files only"
-msgstr ""
+msgstr "Только Web-файлы"
 
 msgid "Web folder protection"
-msgstr ""
+msgstr "Защита Web-каталога"
 
 msgid "Web in"
-msgstr ""
+msgstr "WEB вх"
 
 msgid "Web out"
-msgstr ""
+msgstr "WEB исх"
 
 msgid "Web software depot packages total"
-msgstr ""
+msgstr "Всего пакетов в Web-репозитории"
 
 msgid "Web software repository"
-msgstr ""
+msgstr "Web-репозиторий"
 
 msgid "Web software repository index been successfully updated."
-msgstr ""
+msgstr "Индекс Web-репозитория был успешно обновлен."
 
 msgid "Web software repository index is already up to date."
-msgstr ""
+msgstr "Индекс Web-репозитория имеет последнюю версию."
 
 msgid "Web statistics"
-msgstr ""
+msgstr "Web-статистика"
 
 msgid "Web traffic"
-msgstr ""
+msgstr "WEB трафик"
 
 msgid "Webmail"
-msgstr ""
+msgstr "Почтовый веб-интерфейс"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Web-инструменты"
 
 msgid "Welcome email"
-msgstr ""
+msgstr "Приветственное письмо"
 
 msgid "Welcome email template has been updated."
-msgstr ""
+msgstr "Шаблон приветственного письма изменён!"
 
 msgid "Welcome {USERNAME} to i-MSCP"
-msgstr ""
+msgstr "{USERNAME}, добро пожаловать в i-MSCP"
 
 msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
-msgstr ""
+msgstr "Если да, то функция PHP exec() может использоваться в ваших скриптах."
 
 msgid "When set to `Auto', the IP address is automatically configured."
-msgstr ""
+msgstr "В автоматическом режиме IP адрес будет настроен автоматически."
 
 msgid "When set to `Manual', the configuration is left to the administrator."
-msgstr ""
+msgstr "В ручном режиме администратор может настроить IP адрес сам."
 
 msgid "Wrong mail syntax in forward list."
-msgstr ""
+msgstr "Неверный почтовый синтаксис списка перенаправления."
 
 msgid "Wrong or unallowed IP address."
-msgstr ""
+msgstr "Неверный или неразрешенный IP адрес."
 
 msgid "Wrong or unallowed IP netmask."
-msgstr ""
+msgstr "Неверная или неразрешенная сетевая маска."
 
 msgid "Wrong request."
-msgstr ""
+msgstr "Неверный запрос."
 
 msgid "Wrong reseller id."
-msgstr ""
+msgstr "Неверный ID реселлера"
 
 msgid "Wrong security code"
-msgstr ""
+msgstr "Неверный код безопасности"
 
 msgid "Wrong software id."
-msgstr ""
+msgstr "Неверный ID программного обеспечения."
 
 msgid "Wrong syntax for new expire date."
-msgstr ""
+msgstr "Неверный синтаксис новой даты истечения."
 
 #, php-format
 msgid "Wrong syntax for the %s limit."
-msgstr ""
+msgstr "Неверный синтаксис лимита %s ."
 
 msgid "Wrong syntax for the mail quota value."
-msgstr ""
+msgstr "Неверный синтаксис значения почтовой квоты."
 
 msgid "Wrong user level provided."
-msgstr ""
+msgstr "Неверный уровень пользователя."
 
 msgid "Wrong username."
-msgstr ""
+msgstr "Неверное имя пользователя"
 
 msgid "XML file URL for the Web software repository"
-msgstr ""
+msgstr "Адрес XML файла для Web-репозитория"
 
 msgid "YB"
-msgstr ""
+msgstr "ЙБ"
 
 msgid "Year"
-msgstr ""
+msgstr "Год"
 
 msgid "Yes"
-msgstr ""
+msgstr "Да"
 
 msgid "YiB"
-msgstr ""
+msgstr "Йб"
 
 msgid "You are exceeding the monthly server traffic limit."
-msgstr ""
+msgstr "Вы превышаете месячный порог трафика сервера."
 
 msgid "You are exceeding you domain alias limit."
-msgstr ""
+msgstr "Вы превышаете ограничение алиасов домена."
 
 msgid "You are exceeding your FTP account limit."
-msgstr ""
+msgstr "Вы превысили лимит FTP-аккаунтов."
 
 msgid "You are exceeding your SQL database limit."
-msgstr ""
+msgstr "Вы превысили лимит базы данных SQL."
 
 msgid "You are exceeding your SQL user limit."
-msgstr ""
+msgstr "Вы превышаете ограничение пользователей баз данных."
 
 msgid "You are exceeding your disk space limit."
-msgstr ""
+msgstr "Вы исчерпали выделенное Вам место на жестком диске."
 
 msgid "You are exceeding your email account limit."
-msgstr ""
+msgstr "Вы превысили лимит почтовых ящиков."
 
 msgid "You are exceeding your monthly traffic limit."
-msgstr ""
+msgstr "Вы превышаете Ваш месячный порог трафика."
 
 msgid "You are exceeding your subdomain limit."
-msgstr ""
+msgstr "Вы превысили лимит субдоменов."
 
 msgid "You are not allowed to act on your own session."
-msgstr ""
+msgstr "Вам не разрешено действовать в собственной сессии."
 
 msgid "You can only upload images."
-msgstr ""
+msgstr "Вы можете загружать только изображения."
 
 msgid ""
 "You can set an alternative document root. This is mostly needed when using a"
@@ -5435,526 +5764,575 @@ msgid ""
 "inside the default  `/htdocs' document root. Be aware that the directory for"
 " the new document root must pre-exist."
 msgstr ""
+"Вы можете указать альтернативную корневую директорию. В основном это "
+"требуется некоторым PHP фреймворкам, например Symfony. Новая корневая "
+"директория будет находиться в каталоге /htdocs. Учтите что, каталог, который"
+" Вы хотите использовать в качестве корневой директории, должен быть создан "
+"заранее."
 
 msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
 msgstr ""
+"Вы не можете добавить новый почтовый ящик. Вы уже исчерпали всё доступное "
+"для ящиков пространство. Пожалуйста, пересмотрите Вашу политику "
+"использования почтовых ящиков."
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr ""
+"Вы не можете удалить реселлера, имеющего клиентов. Пожалуйста, сначала "
+"удалите их."
 
 msgid "You cannot delete the default administrator."
-msgstr ""
+msgstr "Вы не можете удалить стандартного администратора."
 
 msgid "You cannot delete the last active IP address."
-msgstr ""
+msgstr "Вы не можете удалить последний активный IP адрес."
 
 #, php-format
 msgid "You cannot forward %s on itself."
-msgstr ""
+msgstr "Вы не можете перенаправить %s на самого себя."
 
 #, php-format
 msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service."
 msgstr ""
+"Вы не можете переместить <b>%1$s</b> для целевого реселлера,<br>у которого "
+"есть ограничения на службу <b>%2$s</b>."
 
 msgid "You cannot remove an IP that is assigned to a reseller."
-msgstr ""
+msgstr "IP адрес, который вы пытаетесь удалить, назначен реселлеру."
 
 msgid "You cannot set expire date in past."
-msgstr ""
+msgstr "Дата истечения не может быть в прошлом."
 
 msgid "You cannot unassign an IP address already in use."
-msgstr ""
+msgstr "Вы не можете открепить IP адрес, который уже используется."
 
 msgid "You cannot update a protected plugin."
-msgstr ""
+msgstr "Вы не можете обновлять защищенные плагины."
 
 msgid "You do not have DNS resource records."
-msgstr ""
+msgstr "У Вас нет записей ресурсов DNS."
 
 msgid "You do not have FTP accounts."
-msgstr ""
+msgstr "У Вас нет пользователей FTP."
 
 msgid "You do not have any software uploaded yet"
-msgstr ""
+msgstr "У вас еще нет загруженного программного обеспечения"
 
 msgid "You do not have databases."
-msgstr ""
+msgstr "У Вас нет баз данных."
 
 msgid "You do not have domain aliases."
-msgstr ""
+msgstr "У Вас нет алиасов домена."
 
 msgid "You do not have permission to install software yet"
-msgstr ""
+msgstr "У Вас ещё нет доступа к установке ПО."
 
 msgid "You do not have permissions to upload software"
-msgstr ""
+msgstr "У Вас нет прав для загрузки ПО"
 
 msgid "You do not have protected areas."
-msgstr ""
+msgstr "У Вас нет защищенных зон."
 
 msgid "You do not have subdomains."
-msgstr ""
+msgstr "У Вас нет поддоменов."
 
 msgid ""
 "You have a FTP account limit. You cannot add a user with unlimited FTP "
 "accounts."
 msgstr ""
+"У вас есть лимит учетных записей FTP!<br />Вы не можете добавлять "
+"пользователей с неограниченным числом учетных записей FTP."
 
 msgid ""
 "You have a SQL database limit. You cannot add a user with unlimited SQL "
 "databases."
 msgstr ""
+"У вас есть лимит баз данных.<br />Вы не можете добавлять пользователей с "
+"неограниченным числом баз данных."
 
 msgid ""
 "You have a SQL user limit. You cannot add a user with unlimited SQL users."
 msgstr ""
+"У вас есть лимит пользователей БД.<br />Вы не можете добавлять пользователей"
+" с неограниченным числом пользователей БД."
 
 msgid ""
 "You have a disk space limit. You cannot add a user with unlimited disk "
 "space."
 msgstr ""
+"У вас ограничено дисковое пространство.<br />Вы не можете добавлять "
+"пользователей с неограниченным дисковым пространством."
 
 msgid ""
 "You have a domain alias limit. You cannot add a user with unlimited domain "
 "aliases."
 msgstr ""
+"У вас ограничены алиасы доменов.<br />Вы не можете добавлять пользователей с"
+" неограниченными алиасами доменов."
 
 msgid ""
 "You have a mail account limit. You cannot add a user with unlimited email "
 "accounts."
 msgstr ""
+"У вас есть лимит почтовых ящиков.<br />Вы не можете добавлять пользователей "
+"с неограниченным числом почтовых ящиков."
 
 msgid ""
 "You have a monthly traffic limit. You cannot add a user with unlimited "
 "monthly traffic."
 msgstr ""
+"У вас есть порог трафика.<br />Вы не можете добавлять пользователей с "
+"неограниченным порогом трафика."
 
 #, php-format
 msgid "You have a new answer to your support ticket."
 msgid_plural "You have %d new answers to your support tickets."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Вы получили новый ответ на вопрос к техподдержке."
+msgstr[1] "Вы получили %d новых ответов на вопрос к техподдержке."
+msgstr[2] "Вы получили %d новых ответов на вопрос к техподдержке."
+msgstr[3] "Вы получили %d новых ответов на вопрос к техподдержке."
 
 #, php-format
 msgid "You have a new domain alias order."
 msgid_plural "You have %d new domain alias orders"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "У вас новый заказ доменного алиаса."
+msgstr[1] "У вас %d новых заказов доменных алиасов."
+msgstr[2] "У вас %d новых заказов доменных алиасов."
+msgstr[3] "У вас %d новых заказов доменных алиасов."
 
 #, php-format
 msgid "You have a new support ticket."
 msgid_plural "You have %d new support tickets."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Вы получили новый вопрос техподдержки."
+msgstr[1] "Вы получили %d новых вопросов техподдержки."
+msgstr[2] "Вы получили %d новых вопросов техподдержки."
+msgstr[3] "Вы получили %d новых вопросов техподдержки."
 
 msgid ""
 "You have a subdomain limit. You cannot add a user with unlimited subdomains."
 msgstr ""
+"У вас есть лимит поддоменов.<br />Вы не можете добавлять пользователей с "
+"неограниченным числом поддоменов."
 
 #, php-format
 msgid "You have been blocked for %s minutes."
-msgstr ""
+msgstr "Вы были заблокированы на %s минут."
 
 msgid "You have been successfully logged out."
-msgstr ""
+msgstr "Вы успешно вышли из системы."
 
 msgid ""
 "You have disabled SQL databases for this user. You cannot have SQL users "
 "here."
 msgstr ""
+"Вы отключили базы данных SQL для этого пользователя.<br />Вы не можете иметь"
+" SQL пользователей."
 
 msgid "You have no closed tickets."
-msgstr ""
+msgstr "У вас нет закрытых тикетов."
 
 msgid "You have no groups."
-msgstr ""
+msgstr "У вас нет групп."
 
 msgid "You have no open tickets."
-msgstr ""
+msgstr "У вас нет открытых тикетов."
 
 msgid "You have not service ports defined."
-msgstr ""
+msgstr "У Вас нет заданных портов служб."
 
 msgid ""
 "You have reached the maximum number of domain aliases allowed by your "
 "subscription."
 msgstr ""
+"Вы достигли максимального числа алиасов домена, доступного Вашей подписке. "
 
 msgid ""
 "You have reached the maximum number of email accounts allowed by your "
 "subscription."
 msgstr ""
+"Вы достигли максимального числа почтовых ящиков, доступного Вашей подписке. "
 
 msgid ""
 "You have reached the maximum number of subdomains allowed by your "
 "subscription."
 msgstr ""
+"Вы достигли максимального числа алиасов домена, доступного Вашей подписке. "
 
 msgid "You have reached your domain limit. You cannot add more domains."
 msgstr ""
+"Вы достигли Вашего лимита доменов.<br />Вы не можете добавить больше "
+"доменов."
 
 msgid "You have to choose between file-upload and wget-function."
-msgstr ""
+msgstr "Вы должны выбрать между загрузкой файлов и функцией wget."
 
 msgid "You must assign at least one IP to this reseller."
-msgstr ""
+msgstr "Вы должны закрепить за реселлером как минимум один IP адрес."
 
 msgid "You must choose between local and remote upload."
-msgstr ""
+msgstr "Вы должны выбрать между локальной и удаленной загрузкой."
 
 msgid "You must confirm your password."
-msgstr ""
+msgstr "Вы должны подтвердить Ваш пароль."
 
 msgid "You must enter a domain alias name."
-msgstr ""
+msgstr "Вы должны ввести имя алиаса домена"
 
 msgid "You must enter a subdomain name."
-msgstr ""
+msgstr "Вы должны ввести имя поддомена"
 
 msgid "You must first create a user."
-msgstr ""
+msgstr "Сначала вы должны создать пользователя."
 
 msgid "You must first generate a password by clicking on the generate button."
-msgstr ""
+msgstr "Сначала вы должны сгенерировать пароль, используя кнопку генерации"
 
 msgid "You must provide a password."
-msgstr ""
+msgstr "Вы должны указать пароль."
 
 msgid "You must select a file to upload."
-msgstr ""
+msgstr "Вы должны выбрать файл для загрузки"
 
 msgid "You must select a file to upload/download."
-msgstr ""
+msgstr "Вы должны Выбрать файл для загрузки/скачивания"
 
 msgid "You must select a least one mail account to delete"
-msgstr ""
+msgstr "Вы должны выбрать как минимум один почтовый ящик для удаления."
 
 msgid "You must select a least one mail account to delete."
-msgstr ""
+msgstr "Вы должны выбрать как минимум один почтовый ящик для удаления."
 
 msgid "You must select at least one plugin."
-msgstr ""
+msgstr "Вы должны выбрать по крайней мере один плагин."
 
 msgid "You must specify a message."
-msgstr ""
+msgstr "Вы должны написать сообщение."
 
 msgid "You must specify a subject."
-msgstr ""
+msgstr "Вы должны указать тему."
 
 #, php-format
 msgid "You must wait %s minutes before the next attempt."
-msgstr ""
+msgstr "Вы должны подождать %s минут перед следующей попыткой."
 
 msgid ""
 "You should enable this directive only if all subdomains of this domain are "
 "served through SSL. Note that even if you add this directive, this will not "
 "automatically activate the HSTS feature for the subdomains of this domain."
 msgstr ""
+"Вы должны включать эту директиву только если поддомены данного домена "
+"обслуживаются с использованием SSL. Учтите, что включение директивы не "
+"включит функцию HSTS для поддоменов данного домена."
 
 msgid "Your account has expired."
-msgstr ""
+msgstr "Ваша учетная запись истекла."
 
 msgid "Your account has expired. Please renew your subscription."
-msgstr ""
+msgstr "Ваша учетная запись истекла. Пожалуйста обновите подписку."
 
 msgid ""
 "Your account is currently under maintenance or disabled. Please, contact "
 "your reseller."
 msgstr ""
+"Ваша учетная запись находится на техобслуживании или отключена, пожалуйста, "
+"свяжитесь с Вашим реселлером."
 
 msgid "Your consumption"
-msgstr ""
+msgstr "Ваши затраты"
 
 msgid ""
 "Your i-MSCP version is not compatible with this plugin. Try with a newer "
 "version."
 msgstr ""
+"Ваша версия i-MSCP несовместима с этим плагином. Попробуйте установить новую"
+" версию."
 
 msgid "Your message"
-msgstr ""
+msgstr "Ваше сообщение"
 
 msgid "Your message has been successfully sent."
-msgstr ""
+msgstr "Ваше сообщение было успешно отправлено."
 
 msgid "Your new i-MSCP login"
-msgstr ""
+msgstr "Новый I-MSCP логин"
 
 msgid "Your new password"
-msgstr ""
+msgstr "Ваш новый пароль"
 
 msgid "Your package is corrupt. Please correct it!"
-msgstr ""
+msgstr "Ваш пакет поврежден. Пожалуйста, исправьте его!"
 
 msgid ""
 "Your password has been successfully scheduled for renewal. Check your "
 "emails."
 msgstr ""
+"Ваш пароль был успешно настроен для обновления. Пожалуйста проверьте ваш "
+"почтовый ящик."
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
 msgstr ""
+"Размер удаленного файла (%s) меньше 1 байта. Пожалуйста, проверьте Ваш URL."
 
 msgid ""
 "Your request for password renewal cannot be honored. Please retry in few "
 "minutes."
 msgstr ""
+"Ваш запрос на обновление пароля не может быть выполнен. Повторите попытку "
+"через несколько минут."
 
 msgid ""
 "Your request for password renewal has been registered. You will receive an "
 "email with instructions to complete the process."
 msgstr ""
+"Ваш запрос нового пароля был зарегистрирован. Вы получите письмо с "
+"инструкциями по завершению процесса смены пароля."
 
 msgid "Your request for password renewal is either invalid or has expired."
-msgstr ""
+msgstr "Ваш запрос нового пароля не действителен или его срок истек."
 
 msgid "Your software package has been activated"
-msgstr ""
+msgstr "Программное обеспечение было активировано."
 
 msgid "Your software package has been deleted"
-msgstr ""
+msgstr "Программное обеспечение было удалено."
 
 msgid "ZB"
-msgstr ""
+msgstr "ЗБ"
 
 msgid "ZiB"
-msgstr ""
+msgstr "Зб"
 
 msgid "Zip"
-msgstr ""
+msgstr "Индекс"
 
 msgid "Zip code"
-msgstr ""
+msgstr "Индекс / ZIP-code"
 
 msgid "Zip/Postal code"
-msgstr ""
+msgstr "Почтовый индекс"
 
 msgid "Zone"
-msgstr ""
+msgstr "Зона DNS"
 
 msgid "[New]"
-msgstr ""
+msgstr "[New]"
 
 msgid "[Re]"
-msgstr ""
+msgstr "[Re]"
 
 msgid "_: Localised language"
-msgstr ""
+msgstr "Русский язык - Russian"
 
 #, php-format
 msgid "`%s` field cannot be empty."
-msgstr ""
+msgstr "Поле `%s` не может пустовать."
 
 msgid "activated"
-msgstr ""
+msgstr "активировано"
 
 msgid "activated (Softwaredepot)"
-msgstr ""
+msgstr "активирован (Репозиторий)"
 
 msgid "addition"
-msgstr ""
+msgstr "добавить"
 
 msgid "administrator"
-msgstr ""
+msgstr "Администратор"
 
 msgid "and"
-msgstr ""
+msgstr "и"
 
 msgid "day"
-msgstr ""
+msgstr "день"
 
 msgid "days"
-msgstr ""
+msgstr "дней"
 
 msgid "deleting"
-msgstr ""
+msgstr "Удаление"
 
 msgid "disabled"
-msgstr ""
+msgstr "отключено"
 
 msgid "disk space"
-msgstr ""
+msgstr "дисковое пространство"
 
 msgid "domain"
-msgstr ""
+msgstr "домен"
 
 msgid "domain alias"
-msgstr ""
+msgstr "алиас домена"
 
 msgid "domain aliases"
-msgstr ""
+msgstr "алиасы домена"
 
 msgid "domain data"
-msgstr ""
+msgstr "данные домена"
 
 msgid "domains"
-msgstr ""
+msgstr "домены"
 
 msgid "email account"
-msgstr ""
+msgstr "почтовый ящик"
 
 msgid "email accounts"
-msgstr ""
+msgstr "почтовые ящики"
 
 msgid "enabled"
-msgstr ""
+msgstr "Включено"
 
 msgid "everything"
-msgstr ""
+msgstr "все"
 
 msgid "from other browser"
-msgstr ""
+msgstr "из другого браузера"
 
 msgid "i-MSCP - Application Management (Permissions)"
-msgstr ""
+msgstr "i-MSCP - Управление приложениями (Разрешения)"
 
 msgid "i-MSCP - Client/Create CatchAll Mail Account"
-msgstr ""
+msgstr "i-MSCP - Клиент / Создать перенапраленный почтовый ящик"
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
-msgstr ""
+msgstr "i-MSCP - Multi Server Control Panel / Вход"
 
 msgid "i-MSCP - Multi Server Control Panel / Lost Password"
-msgstr ""
+msgstr "i-MSCP - Multi Server Control Panel / Утерян пароль"
 
 msgid "i-MSCP - Multi Server Control Panel / Maintenance"
-msgstr ""
+msgstr "i-MSCP - Multi Server Control Panel / Отладка"
 
 msgid "i-MSCP - Software Installer / Management"
-msgstr ""
+msgstr "i-MSCP - Установщик ПО / Управление"
 
 msgid "i-MSCP - Software Management"
-msgstr ""
+msgstr "i-MSCP - Управление ПО"
 
 msgid "i-MSCP - Software Management (Permissions)"
-msgstr ""
+msgstr "i-MSCP - Управление ПО (доступ)"
 
 msgid "i-MSCP - Sofware Management"
-msgstr ""
+msgstr "i-MSCP - Управление ПО"
 
 msgid "i-MSCP / Software Installer / Management"
-msgstr ""
+msgstr "i-MSCP / Установщик программного обеспечения / Управление"
 
 msgid "i-MSCP Software installer / Web software repository"
-msgstr ""
+msgstr "i-MSCP - Установка ПО / Web-репозиторий"
 
 msgid "i-MSCP Web software repository"
-msgstr ""
+msgstr "i-MSCP - Web-репозиторий"
 
 msgid "i-MSCP plugin store"
-msgstr ""
+msgstr "магазин плагинов i-MSCP "
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "Обновления i-MSCP"
 
 msgid "i-MSCP version update checking is disabled"
-msgstr ""
+msgstr "Проверка обновлений отключена!"
 
 msgid "installed"
-msgstr ""
+msgstr "установлено"
 
 msgid "installing"
-msgstr ""
+msgstr "установка"
 
 msgid "internet Multi Server Control Panel"
-msgstr ""
+msgstr "Internet Multi Server Control Panel"
 
 msgid "kB"
-msgstr ""
+msgstr "КБ"
 
 msgid "kiB"
-msgstr ""
+msgstr "Кб"
 
 msgid "mail"
-msgstr ""
+msgstr "почта"
 
 msgid "mail accounts"
-msgstr ""
+msgstr "почтовых ящиков"
 
 msgid "missing alias"
-msgstr ""
+msgstr "отсутствующий алиас"
 
 msgid "missing domain"
-msgstr ""
+msgstr "отсутствующий домен"
 
 msgid "n\\a"
-msgstr ""
+msgstr "нет"
 
 msgid "no"
-msgstr ""
+msgstr "нет"
 
 msgid "not available"
-msgstr ""
+msgstr "недоступно"
 
 msgid "not required"
-msgstr ""
+msgstr "не требуется"
 
 msgid "older than 1 month"
-msgstr ""
+msgstr "старше месяца"
 
 msgid "older than 12 months"
-msgstr ""
+msgstr "старше года"
 
 msgid "older than 2 weeks"
-msgstr ""
+msgstr "старше двух недель"
 
 msgid "older than 3 months"
-msgstr ""
+msgstr "старше трёх месяцев"
 
 msgid "older than 6 months"
-msgstr ""
+msgstr "старше шести месяцев"
 
 #, php-format
 msgid "or remote file (Max: %s)"
-msgstr ""
+msgstr "или адрес загрузки (Максимум: %s)"
 
 msgid "orphan entry"
-msgstr ""
+msgstr "одинарный вход"
 
 msgid "required"
-msgstr ""
+msgstr "требуется"
 
 msgid "subdomain"
-msgstr ""
+msgstr "поддомен"
 
 msgid "subdomains"
-msgstr ""
+msgstr "поддомены"
 
 msgid "tcp"
-msgstr ""
+msgstr "tcp"
 
 msgid "traffic"
-msgstr ""
+msgstr "трафик"
 
 msgid "udp"
-msgstr ""
+msgstr "udp"
 
 msgid "unlimited"
-msgstr ""
+msgstr "не ограничено"
 
 msgid "update"
-msgstr ""
+msgstr "обновить"
 
 msgid "view aliases"
-msgstr ""
+msgstr "показать алиасы"
 
 msgid "waiting for activation"
-msgstr ""
+msgstr "ожидание активации"
 
 msgid "yes"
-msgstr ""
+msgstr "да"
 
 msgid "{USERNAME} user statistics"
-msgstr ""
+msgstr "Статистика пользователя {USERNAME} "
 
 msgid "© 2010-2017 i-MSCP Team<br>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2017 i-MSCP Team<br>Все права защищены"

@@ -8,8 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-03-25 03:04+0100\n"
+"POT-Creation-Date: 2017-03-26 14:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Henrich Brunner <brunno.eu@gmail.com>, 2017\n"
 "Language-Team: Slovak (Slovakia) (https://www.transifex.com/i-mscp/teams/576/sk_SK/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,13 +19,13 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 msgid " Admin / Support / Open Tickets"
-msgstr ""
+msgstr "Admin / Podpora / Otvorené tikety "
 
 msgid " Client / Webtools / Custom Error Pages / Edit Custom Error Page"
 msgstr ""
 
 msgid " Wrong IP address."
-msgstr ""
+msgstr "Nesprávna IP adresa. "
 
 msgid ""
 "$ORIGIN is automatically appended to unqualified names, hosts and canonical "
@@ -41,75 +42,75 @@ msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d"
-msgstr ""
+msgstr "%1$d / %2$d"
 
 #, php-format
 msgid "%1$d / %2$d of %3$d"
-msgstr ""
+msgstr "%1$d / %2$d of %3$d"
 
 #, php-format
 msgid "%1$d / %2$d of %3$d</b>"
-msgstr ""
+msgstr "%1$d / %2$d of %3$d</b>"
 
 #, php-format
 msgid "%1$d / %2$d of unlimited"
-msgstr ""
+msgstr "%1$d / %2$d z neobmedzených"
 
 #, php-format
 msgid "%1$d of %2$d"
-msgstr ""
+msgstr "%1$d z %2$d"
 
 #, php-format
 msgid "%1$d%% [%2$s of %3$s]"
-msgstr ""
+msgstr "%1$d%% [%2$s z %3$s]"
 
 #, php-format
 msgid "%1$d%% [%2$s of unlimited]"
-msgstr ""
+msgstr "%1$d%% [%2$s z nebmedzených]"
 
 #, php-format
 msgid "%1$s (%2$s)"
-msgstr ""
+msgstr "%1$s (%2$s)"
 
 #, php-format
 msgid "%1$s - (Softwaredepot)"
-msgstr ""
+msgstr "%1$s - (Softwaredepot)"
 
 #, php-format
 msgid "%1$s - (Version: %2$s, Language: %3$s)"
-msgstr ""
+msgstr "%1$s - (Verzia: %2$s, Jazyk: %3$s)"
 
 #, php-format
 msgid "%1$s / %2$s"
-msgstr ""
+msgstr "%1$s / %2$s"
 
 #, php-format
 msgid "%1$s / %2$s of %3$s"
-msgstr ""
+msgstr "%1$s / %2$s z %3$s"
 
 #, php-format
 msgid "%1$s / %2$s of unlimited"
-msgstr ""
+msgstr "%1$s / %2$s z neobmedzených "
 
 #, php-format
 msgid "%1$s of %2$s"
-msgstr ""
+msgstr "%1$s z %2$s"
 
 #, php-format
 msgid "%1$s of <b>unlimited</b>"
-msgstr ""
+msgstr "%1$s z <b>neobmedzených</b>"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
-msgstr ""
+msgstr "%1$s teraz ste prihlásený ako %2$s"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
-msgstr ""
+msgstr "%1$s%% [%2$s z %3$s]"
 
 #, php-format
 msgid "%1$s%% [%2$s of unlimited]"
-msgstr ""
+msgstr "%1$s%% [%2$s z nebmedzených]"
 
 #, php-format
 msgid "%1$ss - Software"
@@ -117,39 +118,39 @@ msgstr ""
 
 #, php-format
 msgid "%d %s remaining until account expiration"
-msgstr ""
+msgstr "%d %s zostáva pokiaľ konto expiruje "
 
 #, php-format
 msgid "%d / unlimited"
-msgstr ""
+msgstr "%d / neobmedzených "
 
 #, php-format
 msgid "%d Service(s) port successfully updateds"
-msgstr ""
+msgstr "%d Port služby/služieb bol(i) úspešne aktualizovaný(é) "
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been created."
-msgstr ""
+msgstr "%d konfiguračné parametre boli vytvorené."
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been updated."
-msgstr ""
+msgstr "%d konfiguračné parametre boli aktualizované."
 
 #, php-format
 msgid "%d of %s"
-msgstr ""
+msgstr "%d z %s"
 
 #, php-format
 msgid "%d strings translated"
-msgstr ""
+msgstr "%d reťazcov preložených"
 
 #, php-format
 msgid "%s / unlimited"
-msgstr ""
+msgstr "%s / neobmedzené "
 
 #, php-format
 msgid "%s account successfully deleted."
-msgstr ""
+msgstr "%s konto bolo úspešne vymazané. "
 
 #, php-format
 msgid "%s doens't look like an i-MSCP plugin archive."
@@ -157,31 +158,31 @@ msgstr ""
 
 #, php-format
 msgid "%s doesn't exist or is empty."
-msgstr ""
+msgstr "%s neexistuje alebo je prázdny. "
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
-msgstr ""
+msgstr "%s nie je regulerny i-MSCP jazykový súbor. "
 
 #, php-format
 msgid "%s is not allowed as subdomain label."
-msgstr ""
+msgstr "%s nie je povolené ako pomenovanie subdomeny. "
 
 #, php-format
 msgid "%s of %s"
-msgstr ""
+msgstr "%s z %s"
 
 #, php-format
 msgid "%s of unlimited"
-msgstr ""
+msgstr "%s z neobmedzené "
 
 #, php-format
 msgid "%s page"
-msgstr ""
+msgstr "%s strana"
 
 #, php-format
 msgid "%s record"
-msgstr ""
+msgstr "%s záznam"
 
 #, php-format
 msgid "%s total available"
@@ -196,16 +197,19 @@ msgid ""
 "%s: The clients consumption (%s) for this reseller is greater than the new "
 "limit."
 msgstr ""
+"%s: Úžitok  zákazníkov (%s)  pre tohoto predajcu je väčší ako novy limit. "
 
 #, php-format
 msgid ""
 "%s: The total of items (%s) already assigned by the reseller is greater than"
 " the new limit."
 msgstr ""
+"%s: Celkový počet položiek (%s) už pridelených predajcom je väčší ako nový "
+"limit. "
 
 #, php-format
 msgid "%s: This reseller has customer(s) with unlimited items."
-msgstr ""
+msgstr "%s: Predajca má zákazníkov s neobmedzenými položkami. "
 
 #, php-format
 msgid ""
@@ -382,7 +386,7 @@ msgid "(filtered from %s total records)"
 msgstr ""
 
 msgid "(usually named"
-msgstr ""
+msgstr "(zvyčajne pomenované ako"
 
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
@@ -428,25 +432,25 @@ msgid "Access your mail through the web interface."
 msgstr ""
 
 msgid "Account data"
-msgstr ""
+msgstr "Údaje účtu"
 
 msgid "Account limits"
-msgstr ""
+msgstr "Limity účtu"
 
 msgid "Account name"
-msgstr ""
+msgstr "Názov konta"
 
 msgid "Account overview"
-msgstr ""
+msgstr "Prehľad účtu"
 
 msgid "Account summary"
-msgstr ""
+msgstr "Prehľad účtu"
 
 msgid "Account type"
-msgstr ""
+msgstr "Typ účtu"
 
 msgid "Action"
-msgstr ""
+msgstr "Akcia"
 
 msgid "Action has been stopped."
 msgstr ""
@@ -455,16 +459,16 @@ msgid "Action has failed."
 msgstr ""
 
 msgid "Actions"
-msgstr ""
+msgstr "Akcie"
 
 msgid "Activate"
-msgstr ""
+msgstr "Aktívny"
 
 msgid "Activate this plugin"
 msgstr ""
 
 msgid "Activated"
-msgstr ""
+msgstr "Activované"
 
 msgid "Activated software"
 msgstr ""
@@ -479,37 +483,37 @@ msgid "Activation link expire time <small>(In minutes)</small>"
 msgstr ""
 
 msgid "Add"
-msgstr ""
+msgstr "Pridať"
 
 msgid "Add DNS resource record"
 msgstr ""
 
 msgid "Add FTP account"
-msgstr ""
+msgstr "Pridať FTP konto"
 
 msgid "Add Htaccess group"
-msgstr ""
+msgstr "Pridať skupinu Htaccess"
 
 msgid "Add Htaccess user"
-msgstr ""
+msgstr "Pridať užívateľa Htaccess"
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "Pridať SQL databázu"
 
 msgid "Add SQL user"
-msgstr ""
+msgstr "Pridať SQL konto"
 
 msgid "Add SSL certificate"
-msgstr ""
+msgstr "Pridať SSl certifikát"
 
 msgid "Add admin"
-msgstr ""
+msgstr "Pridať administrátora"
 
 msgid "Add catchall"
-msgstr ""
+msgstr "Pridať \"Zachytiť všetko\""
 
 msgid "Add custom menu"
-msgstr ""
+msgstr "Pridať vlastné menu"
 
 msgid "Add customer"
 msgstr ""
@@ -518,28 +522,28 @@ msgid "Add customer - Next step"
 msgstr ""
 
 msgid "Add domain alias"
-msgstr ""
+msgstr "Pridať alias domény"
 
 msgid "Add email account"
-msgstr ""
+msgstr "Pridať emailové konto"
 
 msgid "Add group"
-msgstr ""
+msgstr "Pridať skupinu"
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "Pridať hostingový plán"
 
 msgid "Add new IP address"
 msgstr ""
 
 msgid "Add new protected area"
-msgstr ""
+msgstr "Pridať nové chránené územia"
 
 msgid "Add new service port"
-msgstr ""
+msgstr "Pridať nový užívateľský hostingový plán"
 
 msgid "Add permissions"
-msgstr ""
+msgstr "Pridať práva"
 
 msgid "Add permissions for reseller to software:"
 msgstr ""
@@ -548,49 +552,49 @@ msgid "Add protected area"
 msgstr ""
 
 msgid "Add reseller"
-msgstr ""
+msgstr "Pridať predajcu"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "Pridať sub-doménu"
 
 msgid "Add user"
-msgstr ""
+msgstr "Pridať uživateľa"
 
 msgid "Added by"
-msgstr ""
+msgstr "Pridal"
 
 msgid "Addition in progress..."
 msgstr ""
 
 msgid "Additional data"
-msgstr ""
+msgstr "Doplňujúce údaje"
 
 msgid "Admin"
-msgstr ""
+msgstr "Pre administrátora"
 
 msgid "Admin / General / Admin Log"
-msgstr ""
+msgstr "Admin / Všeobecné / Admin záznamy"
 
 msgid "Admin / General / Overview"
-msgstr ""
+msgstr "Admin / Všeobecné / Prehľad"
 
 msgid "Admin / General / Services Status"
-msgstr ""
+msgstr "Admin / Všeobecné / Prehľad služieb"
 
 msgid "Admin / Profile / Account Summary"
-msgstr ""
+msgstr "Admin / Profil / Prehľad účtu"
 
 msgid "Admin / Profile / Language"
-msgstr ""
+msgstr "Admin / Profil / Jazyk"
 
 msgid "Admin / Profile / Layout"
-msgstr ""
+msgstr "Admin / Profil / Rozmiestnenie"
 
 msgid "Admin / Profile / Password"
-msgstr ""
+msgstr "Admin / Profil / Heslo"
 
 msgid "Admin / Profile / Personal Data"
-msgstr ""
+msgstr "Admin / Profil / Osobné údaje"
 
 msgid "Admin / Settings"
 msgstr ""
@@ -649,10 +653,10 @@ msgid "Admin / Statistics / Server Statistics / Day Statistics"
 msgstr ""
 
 msgid "Admin / Support / Closed Tickets"
-msgstr ""
+msgstr "Admin / Podpora / Uzavreté tikety"
 
 msgid "Admin / Support / View Ticket"
-msgstr ""
+msgstr "Admin / Podpora / Zobraziť tiket"
 
 msgid "Admin / System Tools / Anti-Rootkits Logs"
 msgstr ""
@@ -706,19 +710,19 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr ""
+msgstr "Admin log"
 
 msgid "Admin not available"
 msgstr ""
 
 msgid "Admin users"
-msgstr ""
+msgstr "Admin užívatelia"
 
 msgid "Admin/IP usage statistics"
-msgstr ""
+msgstr "Admin/IP štatistika využitia"
 
 msgid "Administrator"
-msgstr ""
+msgstr "Administrátor"
 
 msgid "Administrator and Reseller levels"
 msgstr ""
@@ -733,13 +737,13 @@ msgid "Administrator and reseller"
 msgstr ""
 
 msgid "Administrator level"
-msgstr ""
+msgstr "Úroveň administrátora"
 
 msgid "Administrator login"
-msgstr ""
+msgstr "Prihlásennie administrátora"
 
 msgid "Administrators"
-msgstr ""
+msgstr "Administrátori"
 
 msgid "Administrators and customers"
 msgstr ""
@@ -765,10 +769,10 @@ msgid "Alias subdomain mail"
 msgstr ""
 
 msgid "Aliases"
-msgstr ""
+msgstr "Aliasy"
 
 msgid "All"
-msgstr ""
+msgstr "Všetko"
 
 msgid "All closed tickets were successfully deleted."
 msgstr ""
@@ -783,13 +787,13 @@ msgid "All errors, except E_NOTICES, E_STRICT AND E_DEPRECATED (Default)"
 msgstr ""
 
 msgid "All fields are required."
-msgstr ""
+msgstr "Sú požadované všetky políčka."
 
 msgid "All fields are valid."
 msgstr ""
 
 msgid "All in"
-msgstr ""
+msgstr "Všetky prichádzajúce"
 
 msgid "All levels"
 msgstr ""
@@ -798,16 +802,16 @@ msgid "All open tickets were successfully deleted."
 msgstr ""
 
 msgid "All out"
-msgstr ""
+msgstr "Všetky odchádzajúce"
 
 msgid "All reseller"
 msgstr ""
 
 msgid "All traffic"
-msgstr ""
+msgstr "Všetky prenesené dáta"
 
 msgid "All users"
-msgstr ""
+msgstr "Všetkým užívateľom"
 
 msgid "Allow URL fopen"
 msgstr ""
@@ -819,13 +823,13 @@ msgid "Allows to share the mount point of another domain."
 msgstr ""
 
 msgid "Already in use"
-msgstr ""
+msgstr "OK"
 
 msgid "Alternate URL to reach your website."
 msgstr ""
 
 msgid "Alternative URL to reach your website"
-msgstr ""
+msgstr "Alternatívna URL pre prístup k Vašej stránke"
 
 msgid "An email addresse is not valid in mail forward list."
 msgstr ""
@@ -864,10 +868,10 @@ msgid "Application installer"
 msgstr ""
 
 msgid "Apply"
-msgstr ""
+msgstr "OK"
 
 msgid "Apply changes"
-msgstr ""
+msgstr "Vykonať zmeny"
 
 msgid "Are you sure to install this package from the webdepot?"
 msgstr ""
@@ -883,15 +887,15 @@ msgid "Are you sure you want delete the %s SQL user?"
 msgstr ""
 
 msgid "Are you sure you want to activate this package?"
-msgstr ""
+msgstr "Ste si istý, že chcete aktivovať tento balík?"
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
-msgstr ""
+msgstr "Ste si istý, že chcete zmazať %s port služby ?"
 
 #, php-format
 msgid "Are you sure you want to delete %s?"
-msgstr ""
+msgstr "Ste si istý, že chcete zmazať %s?"
 
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr ""
@@ -904,11 +908,11 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s FTP user?"
-msgstr ""
+msgstr "Ste si istý že chcete zmazať %s FTP užívateľa?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s catch all?"
-msgstr ""
+msgstr "Ste si istý, že chcete zmazať zachytenie všetkého pre %s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
@@ -971,10 +975,10 @@ msgid ""
 msgstr ""
 
 msgid "Are you sure you want to restore the backup?"
-msgstr ""
+msgstr "Ste si istý, že chcete zmazať tento účet?"
 
 msgid "Assign"
-msgstr ""
+msgstr "Priradiť"
 
 msgid "Assign existing SQL user"
 msgstr ""
@@ -1037,10 +1041,10 @@ msgid "B"
 msgstr ""
 
 msgid "Back"
-msgstr ""
+msgstr "Späť"
 
 msgid "Backup"
-msgstr ""
+msgstr "Záloha"
 
 msgid "Backup and restore settings."
 msgstr ""
@@ -1049,7 +1053,7 @@ msgid "Backup has been successfully scheduled for restoration."
 msgstr ""
 
 msgid "Bad password."
-msgstr ""
+msgstr "Nesprávne heslo."
 
 msgid "Bad request."
 msgstr ""
@@ -1087,7 +1091,7 @@ msgid "Both source and destination are identical."
 msgstr ""
 
 msgid "Bruteforce detection"
-msgstr ""
+msgstr "Bruteforce detekcia"
 
 msgid "Bulk Actions"
 msgstr ""
@@ -1113,22 +1117,22 @@ msgid "Can use the PHP %s function"
 msgstr ""
 
 msgid "Cancel"
-msgstr ""
+msgstr "Zrušiť"
 
 msgid "Canonical name"
-msgstr ""
+msgstr "Kanonické meno"
 
 msgid "Catch all"
-msgstr ""
+msgstr "\"Zachytiť všetko\""
 
 msgid "Catch all successfully scheduled for addition."
-msgstr ""
+msgstr "\"Zachytiť všetko\" úspešne naplánované na pridanie."
 
 msgid "Catch all successfully scheduled for deletion."
-msgstr ""
+msgstr "\"Zachytiť všetko\" úspešne naplánované na zmazanie."
 
 msgid "Catchall"
-msgstr ""
+msgstr "Zachytiť všetko"
 
 msgid "Certificate"
 msgstr ""
@@ -1137,16 +1141,16 @@ msgid "Certificate data"
 msgstr ""
 
 msgid "Change"
-msgstr ""
+msgstr "Zmeniť"
 
 msgid "Change personal data"
-msgstr ""
+msgstr "Zmeniť osobné údaje"
 
 msgid "Change status of this item for a new attempt"
 msgstr ""
 
 msgid "Check for update"
-msgstr ""
+msgstr "Užívateľ aktualizovaný"
 
 msgid ""
 "Check the reseller uploads!<br>It is not allowed to upload this package two "
@@ -1170,17 +1174,17 @@ msgid ""
 msgstr ""
 
 msgid "Choose"
-msgstr ""
+msgstr "Vyberať"
 
 msgid "Choose dir"
-msgstr ""
+msgstr "Voľba adresára"
 
 #, php-format
 msgid "Choose file (Max: %1$d MiB)"
 msgstr ""
 
 msgid "Choose hosting plan"
-msgstr ""
+msgstr "Vyberte hostingový plán"
 
 msgid "Choose layout color"
 msgstr ""
@@ -1189,19 +1193,19 @@ msgid "Choose your language"
 msgstr ""
 
 msgid "Circular"
-msgstr ""
+msgstr "Obežník"
 
 msgid "Circular successfully sent."
 msgstr ""
 
 msgid "City"
-msgstr ""
+msgstr "Mesto"
 
 msgid "Class"
-msgstr ""
+msgstr "Aliasy"
 
 msgid "Clear log"
-msgstr ""
+msgstr "Vymazať Log"
 
 msgid "Click here for more details"
 msgstr ""
@@ -1209,6 +1213,7 @@ msgstr ""
 msgid ""
 "Click the Restore button and the system will restore the last daily backup"
 msgstr ""
+"Kliknutím na tlačidlo obnovenia zálohy, obnovíte poslednú dennú zálohu"
 
 msgid "Click to activate"
 msgstr ""
@@ -1295,37 +1300,37 @@ msgid "Client / FTP / Overview / Edit FTP Account"
 msgstr ""
 
 msgid "Client / General / Overview"
-msgstr ""
+msgstr "Klient / Všeobecné / Prehľad"
 
 msgid "Client / Profile / Account Summary"
-msgstr ""
+msgstr "Klient / Profil / Prehľad účtu"
 
 msgid "Client / Profile / Language"
-msgstr ""
+msgstr "Klient / Profil / Jazyk"
 
 msgid "Client / Profile / Layout"
-msgstr ""
+msgstr "Klient / Profil / Rozmiestnenie"
 
 msgid "Client / Profile / Password"
-msgstr ""
+msgstr "Klient / Profil / Heslo"
 
 msgid "Client / Profile / Personal Data"
-msgstr ""
+msgstr "Klient / Profil / Osobné údaje"
 
 msgid "Client / Statistics"
 msgstr ""
 
 msgid "Client / Support / Closed Tickets"
-msgstr ""
+msgstr "Klient / Podpora / Uzavreté tikety"
 
 msgid "Client / Support / New Ticket"
-msgstr ""
+msgstr "Klient / Podpora / Nový tiket"
 
 msgid "Client / Support / Open Tickets"
-msgstr ""
+msgstr "Klient / Podpora / Otvorené tikety"
 
 msgid "Client / Support / View Ticket"
-msgstr ""
+msgstr "Klient / Podpora / Zobraziť tiket"
 
 msgid "Client / Webtools / Custom Error Pages"
 msgstr ""
@@ -1370,7 +1375,7 @@ msgid "Clock speed (MHz)"
 msgstr ""
 
 msgid "Close"
-msgstr ""
+msgstr "OK"
 
 msgid "Close the ticket"
 msgstr ""
@@ -1379,16 +1384,16 @@ msgid "Close ticket"
 msgstr ""
 
 msgid "Closed tickets"
-msgstr ""
+msgstr "Zatvorené tikety"
 
 msgid "Common name"
 msgstr ""
 
 msgid "Company"
-msgstr ""
+msgstr "Spoločnosť"
 
 msgid "Compress HTML output"
-msgstr ""
+msgstr "Kompresia HTML výstupu"
 
 msgid "Configuration mode"
 msgstr ""
@@ -1401,7 +1406,7 @@ msgid "Conflict with the `%s' DNS resource record."
 msgstr ""
 
 msgid "Core data"
-msgstr ""
+msgstr "Základné dáta"
 
 msgid "Cores"
 msgstr ""
@@ -1497,22 +1502,22 @@ msgid "Count default email addresses"
 msgstr ""
 
 msgid "Country"
-msgstr ""
+msgstr "Krajina"
 
 msgid "Create"
-msgstr ""
+msgstr "OK"
 
 msgid "Create catch all"
-msgstr ""
+msgstr "Vytvoriť \"zachytiť všetko\""
 
 msgid "Create default email addresses"
 msgstr ""
 
 msgid "Created by"
-msgstr ""
+msgstr "Vytvorené"
 
 msgid "Creation date"
-msgstr ""
+msgstr "Dátum vytvorenia"
 
 msgid "Custom DNS errors"
 msgstr ""
@@ -1527,7 +1532,7 @@ msgid "Custom error page updated."
 msgstr ""
 
 msgid "Custom error pages"
-msgstr ""
+msgstr "Užívateľské chybové stránky"
 
 msgid "Custom menu name and link"
 msgstr ""
@@ -1545,13 +1550,13 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr ""
+msgstr "Vlastné menu"
 
 msgid "Customer"
-msgstr ""
+msgstr "Zákazník"
 
 msgid "Customer ID"
-msgstr ""
+msgstr "ID zákazníka"
 
 msgid "Customer ID cannot have more than 200 characters"
 msgstr ""
@@ -1572,7 +1577,7 @@ msgid "Customer account successfully scheduled for deletion."
 msgstr ""
 
 msgid "Customer account successfully updated."
-msgstr ""
+msgstr "Zákazníkové konto bolo úspešne pridané."
 
 msgid "Customer assignments"
 msgstr ""
@@ -1596,7 +1601,7 @@ msgid "Customer(s) successfully moved."
 msgstr ""
 
 msgid "Customers"
-msgstr ""
+msgstr "Zákazníci"
 
 msgid "Customize error pages for your domain."
 msgstr ""
@@ -1620,7 +1625,7 @@ msgid "DNS zone in which you want add this DNS resource record."
 msgstr ""
 
 msgid "DOWN"
-msgstr ""
+msgstr "DOLE"
 
 msgid "Daemon request failed."
 msgstr ""
@@ -1629,7 +1634,7 @@ msgid "Daemon request successful."
 msgstr ""
 
 msgid "Daily backup"
-msgstr ""
+msgstr "Denná záloha"
 
 msgid "Data"
 msgstr ""
@@ -1638,25 +1643,25 @@ msgid "Data were altered. Please try again."
 msgstr ""
 
 msgid "Database"
-msgstr ""
+msgstr "Databáza"
 
 msgid "Database Name and Users"
-msgstr ""
+msgstr "Mená databáz a užívateľov"
 
 msgid "Database Update Revision"
-msgstr ""
+msgstr "Revízia aktualizácie databáze"
 
 msgid "Database Update details"
-msgstr ""
+msgstr "Detaily aktualizácie databáze"
 
 msgid "Database data"
 msgstr ""
 
 msgid "Database name"
-msgstr ""
+msgstr "Meno databázi"
 
 msgid "Database name is too long."
-msgstr ""
+msgstr "Meno databáze je dlhé."
 
 msgid "Database name is unavailable or unallowed."
 msgstr ""
@@ -1665,40 +1670,40 @@ msgid "Database password"
 msgstr ""
 
 msgid "Database prefix"
-msgstr ""
+msgstr "Prefix databáze"
 
 msgid "Database prefix/suffix"
-msgstr ""
+msgstr "Databáza prefix/suffix"
 
 msgid "Database required"
-msgstr ""
+msgstr "Potrebná databáza"
 
 msgid "Database update"
-msgstr ""
+msgstr "Aktualizácie databáze"
 
 msgid "Database usage"
-msgstr ""
+msgstr "Použitie databáze"
 
 msgid "Database user"
 msgstr ""
 
 msgid "Database users"
-msgstr ""
+msgstr "Užívateľia databázy"
 
 msgid "Databases"
-msgstr ""
+msgstr "Databáze"
 
 msgid "Date"
-msgstr ""
+msgstr "Dátum"
 
 msgid "Day"
-msgstr ""
+msgstr "Deň"
 
 msgid "Day statistics"
 msgstr ""
 
 msgid "Days"
-msgstr ""
+msgstr "Dni"
 
 msgid "Deactivate"
 msgstr ""
@@ -1895,7 +1900,7 @@ msgid "Default"
 msgstr ""
 
 msgid "Default language"
-msgstr ""
+msgstr "Východzí jazyk"
 
 msgid "Default language successfully updated."
 msgstr ""
@@ -1906,22 +1911,22 @@ msgid ""
 msgstr ""
 
 msgid "Delete"
-msgstr ""
+msgstr "Zmazať"
 
 msgid "Delete CatchAll"
-msgstr ""
+msgstr "Vymazať \"zachytiť všetko\""
 
 msgid "Delete all tickets"
 msgstr ""
 
 msgid "Delete from log:"
-msgstr ""
+msgstr "Vymazať z logu:"
 
 msgid "Delete order"
-msgstr ""
+msgstr "Zḿazať objednávku"
 
 msgid "Delete reseller software"
-msgstr ""
+msgstr "Vymazať software predajcu"
 
 msgid "Delete selected mail accounts"
 msgstr ""
@@ -1942,13 +1947,13 @@ msgid "Depot import"
 msgstr ""
 
 msgid "Description"
-msgstr ""
+msgstr "Popis"
 
 msgid "Description cannot be empty."
 msgstr ""
 
 msgid "Details"
-msgstr ""
+msgstr "Detaily"
 
 #, php-format
 msgid "Directory %s doesn't exists."
@@ -1963,10 +1968,10 @@ msgid "Directory '%s' is not allowed or invalid."
 msgstr ""
 
 msgid "Disable"
-msgstr ""
+msgstr "Vypnúť"
 
 msgid "Disabled"
-msgstr ""
+msgstr "Zakázané"
 
 msgid "Disabled functions"
 msgstr ""
@@ -1975,7 +1980,7 @@ msgid "Disconnect"
 msgstr ""
 
 msgid "Disk"
-msgstr ""
+msgstr "Diskový priestor"
 
 msgid "Disk space"
 msgstr ""
@@ -1984,10 +1989,10 @@ msgid "Disk space limit [MiB]"
 msgstr ""
 
 msgid "Disk usage"
-msgstr ""
+msgstr "Využitie diskového priestoru"
 
 msgid "Disk usage detail"
-msgstr ""
+msgstr "Detaili využitia diskového priestoru"
 
 msgid "Display errors"
 msgstr ""
@@ -1996,7 +2001,7 @@ msgid "Document root"
 msgstr ""
 
 msgid "Domain"
-msgstr ""
+msgstr "Doména"
 
 #, php-format
 msgid "Domain %s cannot be forwarded on itself."
@@ -2007,16 +2012,16 @@ msgid "Domain %s is unavailable."
 msgstr ""
 
 msgid "Domain IP"
-msgstr ""
+msgstr "IP adresa domény"
 
 msgid "Domain Limit"
 msgstr ""
 
 msgid "Domain Name"
-msgstr ""
+msgstr "Meno domény"
 
 msgid "Domain account"
-msgstr ""
+msgstr "Doménový účet"
 
 msgid "Domain account expired."
 msgstr ""
@@ -2025,14 +2030,14 @@ msgid "Domain accounts"
 msgstr ""
 
 msgid "Domain alias"
-msgstr ""
+msgstr "Alias domény"
 
 #, php-format
 msgid "Domain alias %s cannot be forwarded on itself."
 msgstr ""
 
 msgid "Domain alias errors"
-msgstr ""
+msgstr "Chyby pre doménové aliasy"
 
 msgid "Domain alias limit"
 msgstr ""
@@ -2050,13 +2055,13 @@ msgid "Domain alias successfully scheduled for addition."
 msgstr ""
 
 msgid "Domain alias successfully scheduled for deletion."
-msgstr ""
+msgstr "Alias domény bol naplánovaný na pridanie."
 
 msgid "Domain alias successfully scheduled for update."
 msgstr ""
 
 msgid "Domain aliases"
-msgstr ""
+msgstr "Aliasy domén"
 
 msgid "Domain and SQL databases"
 msgstr ""
@@ -2068,28 +2073,28 @@ msgid "Domain data were altered. Please try again."
 msgstr ""
 
 msgid "Domain details"
-msgstr ""
+msgstr "Detaily domény"
 
 msgid "Domain errors"
-msgstr ""
+msgstr "Chyby pre doménu"
 
 msgid "Domain expiration date"
 msgstr ""
 
 msgid "Domain expiration date must be filled."
-msgstr ""
+msgstr "Je potrebné uviesť expiráciu domény."
 
 msgid "Domain for which PHP Editor must act."
 msgstr ""
 
 msgid "Domain limit"
-msgstr ""
+msgstr "Limit domén"
 
 msgid "Domain mail"
-msgstr ""
+msgstr "Doménový mail"
 
 msgid "Domain name"
-msgstr ""
+msgstr "Meno domény"
 
 msgid "Domain name (ASCII form) cannot be greater than 255 characters."
 msgstr ""
@@ -2118,37 +2123,37 @@ msgid "Domain new expiration date"
 msgstr ""
 
 msgid "Domain overview"
-msgstr ""
+msgstr "Prehľad domény"
 
 msgid "Domain scheduled for update."
 msgstr ""
 
 msgid "Domain statistics"
-msgstr ""
+msgstr "Štatistiky domény"
 
 msgid "Domain status is not ok."
-msgstr ""
+msgstr "Status domény nie je ok."
 
 msgid "Domain successfully scheduled for update."
 msgstr ""
 
 msgid "Domain successfully updated."
-msgstr ""
+msgstr "Doména bola úspešne aktualizovaná."
 
 msgid "Domain type"
-msgstr ""
+msgstr "Typ domény"
 
 msgid "Domains"
-msgstr ""
+msgstr "Domény"
 
 msgid "Domains per page"
-msgstr ""
+msgstr "Domén na stránku"
 
 msgid "Done"
-msgstr ""
+msgstr "Hotovo"
 
 msgid "Download"
-msgstr ""
+msgstr "Stiahnuť"
 
 msgid "Download TAR"
 msgstr ""
@@ -2166,7 +2171,7 @@ msgid "EB"
 msgstr ""
 
 msgid "Edit"
-msgstr ""
+msgstr "Upraviť"
 
 msgid "Edit DNS resource record"
 msgstr ""
@@ -2193,16 +2198,16 @@ msgid "Edit customer"
 msgstr ""
 
 msgid "Edit domain"
-msgstr ""
+msgstr "Upraviť doménu"
 
 msgid "Edit domain alias"
-msgstr ""
+msgstr "Zmeniť alias domény"
 
 msgid "Edit error page"
-msgstr ""
+msgstr "Upraviť chybovú stránku"
 
 msgid "Edit hosting plan"
-msgstr ""
+msgstr "Editovať hostingový plán"
 
 msgid "Edit htaccess user"
 msgstr ""
@@ -2217,22 +2222,22 @@ msgid "Edit protected area"
 msgstr ""
 
 msgid "Edit reseller"
-msgstr ""
+msgstr "Upraviť predajcu"
 
 msgid "Edit subdomain"
-msgstr ""
+msgstr "Upraviť doménu"
 
 msgid "Edit user"
-msgstr ""
+msgstr "Upraviť užívateľa"
 
 msgid "EiB"
 msgstr ""
 
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 msgid "Email account already exists."
-msgstr ""
+msgstr "Emailový účet už existuje."
 
 msgid "Email account data"
 msgstr ""
@@ -2253,19 +2258,19 @@ msgid "Email account successfully scheduled for update."
 msgstr ""
 
 msgid "Email accounts"
-msgstr ""
+msgstr "Emailové účty"
 
 msgid "Email accounts are hard suspended"
 msgstr ""
 
 msgid "Email address"
-msgstr ""
+msgstr "Emailová adresa"
 
 msgid "Email forward"
-msgstr ""
+msgstr "Emailové presmerovanie"
 
 msgid "Email quota"
-msgstr ""
+msgstr "Emailová kvôta"
 
 msgid "Email quota [MiB]"
 msgstr ""
@@ -2288,10 +2293,10 @@ msgid "Email quota cannot be unlimited. Max value is %d MiB."
 msgstr ""
 
 msgid "Email settings"
-msgstr ""
+msgstr "Nastavenie emailu"
 
 msgid "Email setup"
-msgstr ""
+msgstr "Nastavenie E-mailu"
 
 msgid "Email successfully updated."
 msgstr ""
@@ -2300,7 +2305,7 @@ msgid "Empty data or wrong field."
 msgstr ""
 
 msgid "Enable"
-msgstr ""
+msgstr "Zapnúť"
 
 msgid "Enable SSL"
 msgstr ""
@@ -2309,29 +2314,29 @@ msgid "Enable auto responder"
 msgstr ""
 
 msgid "Enabled"
-msgstr ""
+msgstr "Povolené"
 
 #, php-format
 msgid "Enabled for: %s"
 msgstr ""
 
 msgid "Error"
-msgstr ""
+msgstr "Chyba"
 
 msgid "Error details"
 msgstr ""
 
 msgid "Error pages"
-msgstr ""
+msgstr "Chybové stránky"
 
 msgid "Error reporting"
 msgstr ""
 
 msgid "Error: Remote File not found!"
-msgstr ""
+msgstr "Chyba: Vzdialený súbor sa nenašiel!"
 
 msgid "Errors"
-msgstr ""
+msgstr "Chyba"
 
 msgid "Excl. default mails"
 msgstr ""
@@ -2340,13 +2345,13 @@ msgid "Execute tasks"
 msgstr ""
 
 msgid "Expire date"
-msgstr ""
+msgstr "Dátum expirácie"
 
 msgid "Ext. mail server"
-msgstr ""
+msgstr "Ext. mail server"
 
 msgid "External mail server"
-msgstr ""
+msgstr "Externý mail server"
 
 msgid "External mail server feature scheduled for activation."
 msgstr ""
@@ -2355,31 +2360,31 @@ msgid "External mail server feature scheduled for deactivation."
 msgstr ""
 
 msgid "External mail servers"
-msgstr ""
+msgstr "Externé mailové servere"
 
 msgid "FTP account"
-msgstr ""
+msgstr "FTP konto"
 
 msgid "FTP account already exists."
-msgstr ""
+msgstr "FTP konto už existuje"
 
 msgid "FTP account limit"
-msgstr ""
+msgstr "FTP limit konta"
 
 msgid "FTP account limit reached."
-msgstr ""
+msgstr "FTP limit konta bol dosiahnutý."
 
 msgid "FTP account successfully added."
-msgstr ""
+msgstr "FTP konto bolo úspešne pridané."
 
 msgid "FTP account successfully deleted."
-msgstr ""
+msgstr "FTP konto bolo úspešne vymazané."
 
 msgid "FTP account successfully updated."
-msgstr ""
+msgstr "FTP konto bolo úspešne aktualizované."
 
 msgid "FTP accounts"
-msgstr ""
+msgstr "FTP kontá"
 
 msgid "FTP home directory"
 msgstr ""
@@ -2388,7 +2393,7 @@ msgid "FTP home directory cannot be empty."
 msgstr ""
 
 msgid "FTP traffic"
-msgstr ""
+msgstr "Prenesené dáta cez FTP"
 
 msgid "FTP user errors"
 msgstr ""
@@ -2400,16 +2405,16 @@ msgid "Failure in the package. Deleting!"
 msgstr ""
 
 msgid "Fax"
-msgstr ""
+msgstr "Fax"
 
 msgid "Feature"
-msgstr ""
+msgstr "Funkcie"
 
 msgid "Features"
 msgstr ""
 
 msgid "Female"
-msgstr ""
+msgstr "Žena"
 
 #, php-format
 msgid "File %s doesn't exist or cannot be reached!"
@@ -2421,7 +2426,7 @@ msgstr ""
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
-msgstr ""
+msgstr "Súbor %1$s.tar.gz neexistuje."
 
 msgid "File exceeds the size limit."
 msgstr ""
@@ -2430,7 +2435,7 @@ msgid "File has been successfully uploaded."
 msgstr ""
 
 msgid "File is not readable."
-msgstr ""
+msgstr "Subor sa nedá čitať."
 
 msgid "File needs to be a 'tar.gz' archive."
 msgstr ""
@@ -2442,19 +2447,19 @@ msgid "File usage"
 msgstr ""
 
 msgid "FileManager"
-msgstr ""
+msgstr "Správca súborov"
 
 msgid "Filemanager"
-msgstr ""
+msgstr "Filemanager"
 
 msgid "Filesystem system Info"
-msgstr ""
+msgstr "Informácie o súborových systémoch"
 
 msgid "Fill out a message text."
 msgstr ""
 
 msgid "First name"
-msgstr ""
+msgstr "Krstné meno"
 
 msgid "First name cannot have more than 200 characters."
 msgstr ""
@@ -2466,7 +2471,7 @@ msgid "Force retry"
 msgstr ""
 
 msgid "Forward"
-msgstr ""
+msgstr "Presmerovanie"
 
 msgid "Forward URL"
 msgstr ""
@@ -2479,37 +2484,37 @@ msgid "Forward list is empty."
 msgstr ""
 
 msgid "Forward mail"
-msgstr ""
+msgstr "Presmerovný e-mail"
 
 msgid "Forward to"
-msgstr ""
+msgstr "Presmerovať do"
 
 msgid "Forward to URL"
-msgstr ""
+msgstr "Presmerovať na URL"
 
 msgid "Forward type"
 msgstr ""
 
 msgid "Free"
-msgstr ""
+msgstr "Voľné"
 
 msgid "From"
-msgstr ""
+msgstr "Od"
 
 msgid "From reseller"
-msgstr ""
+msgstr "Od predajcu"
 
 msgid "Ftp"
-msgstr ""
+msgstr "FTP"
 
 msgid "Ftp account"
-msgstr ""
+msgstr "FTP konto"
 
 msgid "Ftp account data"
-msgstr ""
+msgstr "FTP konto údaje"
 
 msgid "Ftp accounts"
-msgstr ""
+msgstr "FTP účty"
 
 msgid "Ftp directories"
 msgstr ""
@@ -2518,16 +2523,16 @@ msgid "GB"
 msgstr ""
 
 msgid "Gender"
-msgstr ""
+msgstr "Pohlavie"
 
 msgid "General"
-msgstr ""
+msgstr "Všeobecné"
 
 msgid "General information"
-msgstr ""
+msgstr "Všeobecné informácie"
 
 msgid "General settings"
-msgstr ""
+msgstr "Všeobecné nastavenia"
 
 msgid "Generate"
 msgstr ""
@@ -2542,16 +2547,16 @@ msgid "GiB"
 msgstr ""
 
 msgid "Group"
-msgstr ""
+msgstr "Skupina"
 
 msgid "Group members"
-msgstr ""
+msgstr "Členovia skupiny"
 
 msgid "Group name"
-msgstr ""
+msgstr "Názov skupiny"
 
 msgid "Groups"
-msgstr ""
+msgstr "Skupiny"
 
 msgid "HSTS (HTTP Strict Transport Security)"
 msgstr ""
@@ -2569,22 +2574,22 @@ msgid "Hide aliases"
 msgstr ""
 
 msgid "High"
-msgstr ""
+msgstr "Veľa"
 
 msgid "Home directory"
 msgstr ""
 
 msgid "Homepage"
-msgstr ""
+msgstr "Domáca stránka"
 
 msgid "Host"
-msgstr ""
+msgstr "Host"
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
 msgstr ""
 
 msgid "Hosting plan"
-msgstr ""
+msgstr "Hostingový plán"
 
 msgid "Hosting plan availability"
 msgstr ""
@@ -2605,13 +2610,13 @@ msgid "Hosting plan successfully updated."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "Hostingový plán"
 
 msgid "Hour"
-msgstr ""
+msgstr "Hodina"
 
 msgid "Hours"
-msgstr ""
+msgstr "Hodiny"
 
 msgid "Htaccess errors"
 msgstr ""
@@ -2646,7 +2651,7 @@ msgid "IP Address"
 msgstr ""
 
 msgid "IP address"
-msgstr ""
+msgstr "Zadajte adresu"
 
 msgid "IP address already under the control of i-MSCP."
 msgstr ""
@@ -2676,10 +2681,10 @@ msgid "IP netmask"
 msgstr ""
 
 msgid "IP usage"
-msgstr ""
+msgstr "Využitie IP"
 
 msgid "IPv6 address"
-msgstr ""
+msgstr "IPv6 adresy"
 
 msgid "Id"
 msgstr ""
@@ -2759,14 +2764,14 @@ msgid "Incorrect email account limit."
 msgstr ""
 
 msgid "Incorrect email length or syntax."
-msgstr ""
+msgstr "Nesprávana dlška, alebo syntax emailu."
 
 msgid "Incorrect email quota."
 msgstr ""
 
 #, php-format
 msgid "Incorrect limit for %s."
-msgstr ""
+msgstr "Nesprávny limit pre %s."
 
 msgid "Incorrect monthly traffic limit."
 msgstr ""
@@ -2781,10 +2786,10 @@ msgid "Incorrect syntax for email address."
 msgstr ""
 
 msgid "Incorrect username length or syntax."
-msgstr ""
+msgstr "Nesprávna syntax, alebo dĺžka uživateľského mena."
 
 msgid "Install"
-msgstr ""
+msgstr "Nainštalovať"
 
 msgid "Install in progress"
 msgstr ""
@@ -2814,13 +2819,13 @@ msgid "Installed in software repository"
 msgstr ""
 
 msgid "Installed on"
-msgstr ""
+msgstr "Inštalované"
 
 msgid "Installing your uploaded package. Please refresh this page."
 msgstr ""
 
 msgid "Instructions to download today's backup"
-msgstr ""
+msgstr "Inštrukcie na stiahnutie dnešnej zálohy"
 
 msgid "Intermediate certificate(s)"
 msgstr ""
@@ -2829,7 +2834,7 @@ msgid "Internal Server Error"
 msgstr ""
 
 msgid "Internationalization"
-msgstr ""
+msgstr "Preklady"
 
 msgid "Invalid FTP username."
 msgstr ""
@@ -2865,7 +2870,7 @@ msgid "Invalid email username."
 msgstr ""
 
 msgid "Invalid group name!"
-msgstr ""
+msgstr "Zlé časové obdobie!"
 
 msgid "Invalid menu order."
 msgstr ""
@@ -2893,19 +2898,19 @@ msgid "Invalid username."
 msgstr ""
 
 msgid "Kernel Version"
-msgstr ""
+msgstr "Verzia jadra"
 
 msgid "Kill session"
-msgstr ""
+msgstr "Zrušiť sedenie"
 
 msgid "Label"
-msgstr ""
+msgstr "Popis"
 
 msgid "Language"
-msgstr ""
+msgstr "Jazyky"
 
 msgid "Language file"
-msgstr ""
+msgstr "Súbor s prekladom"
 
 msgid "Language file successfully installed."
 msgstr ""
@@ -2914,7 +2919,7 @@ msgid "Language successfully updated."
 msgstr ""
 
 msgid "Languages"
-msgstr ""
+msgstr "Jazyky"
 
 msgid "Languages index was successfully re-built."
 msgstr ""
@@ -2923,10 +2928,10 @@ msgid "Last Web software repository update"
 msgstr ""
 
 msgid "Last access"
-msgstr ""
+msgstr "Posledný prístup"
 
 msgid "Last name"
-msgstr ""
+msgstr "Priezvisko"
 
 msgid "Last name cannot have more than 200 characters."
 msgstr ""
@@ -2938,7 +2943,7 @@ msgid "Last translator"
 msgstr ""
 
 msgid "Layout"
-msgstr ""
+msgstr "Rozmiestnenie"
 
 msgid "Layout color"
 msgstr ""
@@ -2947,10 +2952,10 @@ msgid "Layout color successfully updated."
 msgstr ""
 
 msgid "Level"
-msgstr ""
+msgstr "Úroveň"
 
 msgid "Limit"
-msgstr ""
+msgstr "Limit"
 
 msgid "Limit value"
 msgstr ""
@@ -2965,7 +2970,7 @@ msgid "Link to authors homepage"
 msgstr ""
 
 msgid "Load (1 Min, 5 Min, 15 Min)"
-msgstr ""
+msgstr "Načítanie (1 Min, 5 Min, 15 Min)"
 
 msgid "Loading data..."
 msgstr ""
@@ -2974,7 +2979,7 @@ msgid "Log entries successfully deleted."
 msgstr ""
 
 msgid "Login"
-msgstr ""
+msgstr "Prihlásenie"
 
 msgid "Login password"
 msgstr ""
@@ -2983,22 +2988,22 @@ msgid "Login username"
 msgstr ""
 
 msgid "Login with your FTP account"
-msgstr ""
+msgstr "Prihláste sa cez FTP konto"
 
 msgid "Logo file"
-msgstr ""
+msgstr "Súbor s logom"
 
 msgid "Logo successfully removed."
-msgstr ""
+msgstr "Logo bolo úspešne vymazané."
 
 msgid "Logo successfully updated."
-msgstr ""
+msgstr "Logo bolo úspešne aktualizované."
 
 msgid "Logout"
-msgstr ""
+msgstr "Odhlásiť sa"
 
 msgid "Lost password"
-msgstr ""
+msgstr "Zabudnuté heslo"
 
 msgid "Lost password email"
 msgstr ""
@@ -3007,19 +3012,19 @@ msgid "Lost password email templates were updated."
 msgstr ""
 
 msgid "Lost password link"
-msgstr ""
+msgstr "Zabudnuté heslo"
 
 msgid "Lostpw link"
-msgstr ""
+msgstr "Stratené heslo link"
 
 msgid "Low"
-msgstr ""
+msgstr "Málo"
 
 msgid "MB"
 msgstr ""
 
 msgid "Mail"
-msgstr ""
+msgstr "E-mail"
 
 msgid "Mail Log Level"
 msgstr ""
@@ -3029,16 +3034,16 @@ msgid "Mail account %s successfully scheduled for deletion."
 msgstr ""
 
 msgid "Mail account type"
-msgstr ""
+msgstr "E-mail typ účtu"
 
 msgid "Mail accounts list is empty."
-msgstr ""
+msgstr "Zoznam e-mailov je prázdny."
 
 msgid "Mail feature is disabled."
-msgstr ""
+msgstr "E-maily sú zakázane"
 
 msgid "Mail usage"
-msgstr ""
+msgstr "E-mail vužitie"
 
 msgid "Main menu labels visibility successfully updated."
 msgstr ""
@@ -3047,7 +3052,7 @@ msgid "Maintenance message"
 msgstr ""
 
 msgid "Maintenance mode"
-msgstr ""
+msgstr "Spravovať objednávky"
 
 msgid ""
 "Maintenance mode is activated. In this mode, only administrators can login."
@@ -3057,13 +3062,13 @@ msgid "Maintenance settings"
 msgstr ""
 
 msgid "Male"
-msgstr ""
+msgstr "Muž"
 
 msgid "Malformed resolver SQL query"
 msgstr ""
 
 msgid "Manage SQL"
-msgstr ""
+msgstr "Spravovať SQL"
 
 msgid "Manage SSL certificate"
 msgstr ""
@@ -3072,10 +3077,10 @@ msgid "Manage htaccess users and groups"
 msgstr ""
 
 msgid "Manage users"
-msgstr ""
+msgstr "Spravovať užívateľov"
 
 msgid "Manage users and groups"
-msgstr ""
+msgstr "Spravovať užívateľov a skupiny"
 
 msgid "Manage your protected areas, users and groups."
 msgstr ""
@@ -3084,10 +3089,10 @@ msgid "Manual"
 msgstr ""
 
 msgid "Mark"
-msgstr ""
+msgstr "Značka"
 
 msgid "Max number of login attempts"
-msgstr ""
+msgstr "Počet pokusov prihlásenia"
 
 msgid "Max traffic"
 msgstr ""
@@ -3108,7 +3113,7 @@ msgid ""
 msgstr ""
 
 msgid "Medium"
-msgstr ""
+msgstr "Stredne"
 
 msgid "Member of group"
 msgstr ""
@@ -3117,13 +3122,13 @@ msgid "Memory information"
 msgstr ""
 
 msgid "Message"
-msgstr ""
+msgstr "Správa"
 
 msgid "Message template"
-msgstr ""
+msgstr "Šablóna správy"
 
 msgid "Message template info"
-msgstr ""
+msgstr "Šablóna správy - Informácie"
 
 msgid "Message to reseller before deleting the software"
 msgstr ""
@@ -3136,13 +3141,13 @@ msgid "Migration file %s is not readable."
 msgstr ""
 
 msgid "Minute"
-msgstr ""
+msgstr "Minúta"
 
 msgid "Minutes"
-msgstr ""
+msgstr "Minúty"
 
 msgid "Missing domain"
-msgstr ""
+msgstr "Chýbajúca doména"
 
 msgid "Model"
 msgstr ""
@@ -3151,7 +3156,7 @@ msgid "Modification in progress..."
 msgstr ""
 
 msgid "Month"
-msgstr ""
+msgstr "Mesiac"
 
 msgid "Monthly traffic limit [MiB]"
 msgstr ""
@@ -3169,25 +3174,25 @@ msgid "More Details"
 msgstr ""
 
 msgid "Mount"
-msgstr ""
+msgstr "Pripojené"
 
 msgid "Mount point"
-msgstr ""
+msgstr "Bod propojenia"
 
 msgid "Move"
-msgstr ""
+msgstr "Presunúť"
 
 msgid "Moving aborted."
 msgstr ""
 
 msgid "N/A"
-msgstr ""
+msgstr "Nedostupné"
 
 msgid "NS DNS resource records are only allowed for subzone delegation."
 msgstr ""
 
 msgid "Name"
-msgstr ""
+msgstr "Meno"
 
 msgid "Name cannot be empty."
 msgstr ""
@@ -3205,22 +3210,22 @@ msgid "New alias order for {CUSTOMER}"
 msgstr ""
 
 msgid "New ticket"
-msgstr ""
+msgstr "Nový tiket"
 
 msgid "Next"
-msgstr ""
+msgstr "Ďalej"
 
 msgid "Next step"
-msgstr ""
+msgstr "Ďalší krok"
 
 msgid "No"
-msgstr ""
+msgstr "Nie"
 
 msgid "No IP address found."
 msgstr ""
 
 msgid "No administrator accounts found."
-msgstr ""
+msgstr "Nenašli sa žiadne admin konta."
 
 msgid "No anti-rootkits logs"
 msgstr ""
@@ -3232,7 +3237,7 @@ msgid "No custom menu found."
 msgstr ""
 
 msgid "No customer accounts found."
-msgstr ""
+msgstr "Nenašli sa žiadne konta predajcov."
 
 msgid "No database update available."
 msgstr ""
@@ -3256,7 +3261,7 @@ msgid "No records found matching the search criteria."
 msgstr ""
 
 msgid "No reseller accounts found."
-msgstr ""
+msgstr "Nenašli sa žiadne konta predajcov."
 
 msgid "No reseller available to add the permissions."
 msgstr ""
@@ -3301,10 +3306,10 @@ msgid "No users found for this reseller."
 msgstr ""
 
 msgid "No."
-msgstr ""
+msgstr "Por."
 
 msgid "None"
-msgstr ""
+msgstr "Žiadny"
 
 msgid "Normal"
 msgstr ""
@@ -3316,13 +3321,13 @@ msgid "Normal connection"
 msgstr ""
 
 msgid "Normal users"
-msgstr ""
+msgstr "Normálny užívatelia"
 
 msgid "Not Found"
 msgstr ""
 
 msgid "Not Set"
-msgstr ""
+msgstr "Nenastavené"
 
 msgid "Not found."
 msgstr ""
@@ -3347,13 +3352,13 @@ msgid "Nothing has been deleted."
 msgstr ""
 
 msgid "Notices, Warnings and Errors"
-msgstr ""
+msgstr "Oznámenia, upozornenia a chyby"
 
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 msgid "Ok"
-msgstr ""
+msgstr "V poriadku"
 
 msgid "One or more database updates are now available. See the details below."
 msgstr ""
@@ -3374,7 +3379,7 @@ msgid "Only numbers in range from 0 to 65535 are allowed."
 msgstr ""
 
 msgid "Only positive numbers are allowed."
-msgstr ""
+msgstr "Iba kladné čísla sú povolené."
 
 msgid "Only tar.gz and tar.bz2 archives are supported."
 msgstr ""
@@ -3386,7 +3391,7 @@ msgid "Open ticket"
 msgstr ""
 
 msgid "Open tickets"
-msgstr ""
+msgstr "Otvorené tikety"
 
 #, php-format
 msgid "Operation cancelled: %s"
@@ -3396,7 +3401,7 @@ msgid "Optional"
 msgstr ""
 
 msgid "Order"
-msgstr ""
+msgstr "Objednávka"
 
 msgid "Order successfully deleted."
 msgstr ""
@@ -3405,25 +3410,25 @@ msgid "Order successfully processed."
 msgstr ""
 
 msgid "Other in"
-msgstr ""
+msgstr "Ostatné odchádzajúce"
 
 msgid "Other out"
-msgstr ""
+msgstr "Ostatné prichádzajúce"
 
 msgid "Other settings"
-msgstr ""
+msgstr "Ostatné nastavenia"
 
 msgid "Overview"
-msgstr ""
+msgstr "Prehľad"
 
 msgid "Owner"
-msgstr ""
+msgstr "Vlastník"
 
 msgid "PB"
 msgstr ""
 
 msgid "PHP"
-msgstr ""
+msgstr "PHP"
 
 #, php-format
 msgid "PHP %s configuration option"
@@ -3460,16 +3465,16 @@ msgid "POP3/IMAP"
 msgstr ""
 
 msgid "POP3/IMAP in"
-msgstr ""
+msgstr "POP3/IMAP prichádzajúce"
 
 msgid "POP3/IMAP out"
-msgstr ""
+msgstr "POP3/IMAP odchádzajúce"
 
 msgid "POP3/IMAP traffic"
-msgstr ""
+msgstr "Prenesené dáta cez POP3/IMAP"
 
 msgid "Package actions"
-msgstr ""
+msgstr "Akcie balíka"
 
 msgid "Package already exists in the reseller depot!"
 msgstr ""
@@ -3484,7 +3489,7 @@ msgid "Package already exists in your software repository!"
 msgstr ""
 
 msgid "Package install type"
-msgstr ""
+msgstr "Typ inštalácie balíka"
 
 msgid "Package installed successfully!"
 msgstr ""
@@ -3493,34 +3498,34 @@ msgid "Package installed successfully... Awaiting release from admin!"
 msgstr ""
 
 msgid "Package language"
-msgstr ""
+msgstr "Jazyk balíka"
 
 msgid "Package name"
 msgstr ""
 
 msgid "Package title"
-msgstr ""
+msgstr "Názov balíka"
 
 msgid "Package type"
-msgstr ""
+msgstr "Typ balíka"
 
 msgid "Package vendor HP"
 msgstr ""
 
 msgid "Package version"
-msgstr ""
+msgstr "Verzia balíka"
 
 msgid "Panel default language"
-msgstr ""
+msgstr "Vyberte predvolený jazyk"
 
 msgid "Parent directory"
 msgstr ""
 
 msgid "Partition"
-msgstr ""
+msgstr "Partícia"
 
 msgid "Password"
-msgstr ""
+msgstr "Heslo"
 
 msgid "Password cannot be empty."
 msgstr ""
@@ -3529,23 +3534,23 @@ msgid "Password cannot be longer than 30 characters."
 msgstr ""
 
 msgid "Password confirmation"
-msgstr ""
+msgstr "Zopakujte heslo"
 
 msgid "Password contains unallowed characters."
-msgstr ""
+msgstr "Heslo obsahuje nepovolené znaky."
 
 msgid "Password data"
-msgstr ""
+msgstr "Heslo"
 
 msgid "Password email"
 msgstr ""
 
 msgid "Password is missing."
-msgstr ""
+msgstr "Chýba heslo."
 
 #, php-format
 msgid "Password is shorter than %s characters."
-msgstr ""
+msgstr "Heslo je kratšie ako %s znakov."
 
 msgid "Password minimum length"
 msgstr ""
@@ -3557,49 +3562,49 @@ msgid ""
 msgstr ""
 
 msgid "Password settings"
-msgstr ""
+msgstr "Nastavenie hesla"
 
 msgid "Password successfully updated."
-msgstr ""
+msgstr "Heslo bolo úspešne obnovené."
 
 msgid "Passwords do not match"
-msgstr ""
+msgstr "Hesla sa nezhodujú"
 
 msgid "Passwords do not match."
-msgstr ""
+msgstr "Hesla sa nezhodujú."
 
 msgid "Path"
-msgstr ""
+msgstr "Cesta"
 
 msgid "Pending tasks"
 msgstr ""
 
 msgid "Percent"
-msgstr ""
+msgstr "Percent"
 
 msgid "Permissions"
 msgstr ""
 
 msgid "Personal data"
-msgstr ""
+msgstr "Osobné údaje"
 
 msgid "Personal data successfully updated."
-msgstr ""
+msgstr "Osobné údaje boli úspešne aktualizovné."
 
 msgid "Personalise template"
-msgstr ""
+msgstr "Prispôsobiť šablónu"
 
 msgid "Phone"
-msgstr ""
+msgstr "Telefón"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr ""
 
 msgid "Please activate your new i-MSCP password"
-msgstr ""
+msgstr "Prosím aktivujte si Vaše nové i-MSCP heslo"
 
 msgid "Please choose at least one htaccess user."
 msgstr ""
@@ -3620,13 +3625,13 @@ msgid "Please enter a name for the protected area."
 msgstr ""
 
 msgid "Please enter a password."
-msgstr ""
+msgstr "Prosím zadajte heslo."
 
 msgid "Please enter an SQL user host."
-msgstr ""
+msgstr "Prosím zadajte SQL user host."
 
 msgid "Please enter an username."
-msgstr ""
+msgstr "Prosím zadajte uživatelské meno."
 
 msgid "Please enter protected area path."
 msgstr ""
@@ -3635,7 +3640,7 @@ msgid "Please enter your auto-responder message below"
 msgstr ""
 
 msgid "Please fill up both data fields for password."
-msgstr ""
+msgstr "Prosím vyplnte obe polia hesiel."
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
@@ -3656,7 +3661,7 @@ msgid "Please specify a message subject."
 msgstr ""
 
 msgid "Please type database name."
-msgstr ""
+msgstr "Prosím napíšte meno databáze."
 
 msgid "Please type your message."
 msgstr ""
@@ -3867,22 +3872,22 @@ msgid ""
 msgstr ""
 
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 msgid "Preserve Host"
 msgstr ""
 
 msgid "Prevent external login for admins"
-msgstr ""
+msgstr "Prosím vyplňte Vaše prihlasovacie údaje"
 
 msgid "Prevent external login for clients"
-msgstr ""
+msgstr "Zabráň vonkajšiemu prihláseniu pre zákazníkov"
 
 msgid "Prevent external login for resellers"
-msgstr ""
+msgstr "Zabráň vonkajšiemu prihláseniu pre obchodníkov"
 
 msgid "Previous"
-msgstr ""
+msgstr "Späť"
 
 msgid ""
 "Prior to removing this administrator, please move his resellers to another "
@@ -3890,7 +3895,7 @@ msgid ""
 msgstr ""
 
 msgid "Priority"
-msgstr ""
+msgstr "Priorita"
 
 msgid "Private key"
 msgstr ""
@@ -3908,10 +3913,10 @@ msgid "Processor data"
 msgstr ""
 
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 msgid "Properties"
-msgstr ""
+msgstr "Vlastnosti"
 
 #, php-format
 msgid "Properties for reseller with ID %d were not found in database."
@@ -3945,10 +3950,10 @@ msgid "Protected area successfully scheduled for update."
 msgstr ""
 
 msgid "Protected areas"
-msgstr ""
+msgstr "Chránené oblasti"
 
 msgid "Protocol"
-msgstr ""
+msgstr "Protokol"
 
 msgid "Quota assignment"
 msgstr ""
@@ -3961,7 +3966,7 @@ msgid "Quota in MiB (Max: %s)"
 msgstr ""
 
 msgid "RAM"
-msgstr ""
+msgstr "RAM"
 
 msgid "Read ticket"
 msgstr ""
@@ -3973,7 +3978,7 @@ msgid "Reconfiguration in progress..."
 msgstr ""
 
 msgid "Record data"
-msgstr ""
+msgstr "Základné data"
 
 msgid "Redirect"
 msgstr ""
@@ -3988,13 +3993,13 @@ msgid "Relative weight"
 msgstr ""
 
 msgid "Release date"
-msgstr ""
+msgstr "Dátum vydania"
 
 msgid "Release description"
-msgstr ""
+msgstr "Popis vydania"
 
 msgid "Release version"
-msgstr ""
+msgstr "Verzia vydania"
 
 msgid "Remote Web software repository"
 msgstr ""
@@ -4003,13 +4008,13 @@ msgid "Remote file not found."
 msgstr ""
 
 msgid "Remove"
-msgstr ""
+msgstr "Odobrať"
 
 msgid "Remove IP"
-msgstr ""
+msgstr "Odobrať IP"
 
 msgid "Remove permissions"
-msgstr ""
+msgstr "Odobrať opravnenia"
 
 msgid "Reopen"
 msgstr ""
@@ -4018,7 +4023,7 @@ msgid "Reopen ticket"
 msgstr ""
 
 msgid "Repeat password"
-msgstr ""
+msgstr "Zopakovať heslo"
 
 msgid "Reply"
 msgstr ""
@@ -4030,7 +4035,7 @@ msgid "Requires Database?"
 msgstr ""
 
 msgid "Reseller"
-msgstr ""
+msgstr "Predajca"
 
 msgid "Reseller / Customers / Add Customer"
 msgstr ""
@@ -4069,10 +4074,10 @@ msgid "Reseller / Domains / Edit Domain Alias"
 msgstr ""
 
 msgid "Reseller / General / Overview"
-msgstr ""
+msgstr "Predajca / Všeobecné / Prehľad"
 
 msgid "Reseller / General / Software Upload"
-msgstr ""
+msgstr "Predajca / Všeobecné / Softvér upload"
 
 msgid "Reseller / Hosting Plans / Add Hosting Plan"
 msgstr ""
@@ -4081,19 +4086,19 @@ msgid "Reseller / Hosting Plans / Overview"
 msgstr ""
 
 msgid "Reseller / Profile / Account Summary"
-msgstr ""
+msgstr "Predajca / Profil / Prehľad účtu"
 
 msgid "Reseller / Profile / Language"
-msgstr ""
+msgstr "Predajca / Profil / Jazyk"
 
 msgid "Reseller / Profile / Layout"
-msgstr ""
+msgstr "Predajca / Profil / Rozmiestnenie"
 
 msgid "Reseller / Profile / Password"
-msgstr ""
+msgstr "Predajca / Profil / Heslo"
 
 msgid "Reseller / Profile / Personal Data"
-msgstr ""
+msgstr "Predajca / Profil / Osobné údaje"
 
 msgid "Reseller / Statistics / IP Usage"
 msgstr ""
@@ -4120,7 +4125,7 @@ msgid "Reseller /Hosting Plans / Edit Hosting Plan"
 msgstr ""
 
 msgid "Reseller Name"
-msgstr ""
+msgstr "Meno predajcu"
 
 msgid "Reseller account successfully created."
 msgstr ""
@@ -4135,7 +4140,7 @@ msgid "Reseller and customer levels"
 msgstr ""
 
 msgid "Reseller assignment"
-msgstr ""
+msgstr "Priradenie predajcu"
 
 msgid "Reseller assignments"
 msgstr ""
@@ -4144,58 +4149,58 @@ msgid "Reseller consumption"
 msgstr ""
 
 msgid "Reseller data"
-msgstr ""
+msgstr "Predajcové údaje"
 
 msgid "Reseller level"
-msgstr ""
+msgstr "Úroveň predajcu"
 
 msgid "Reseller list"
-msgstr ""
+msgstr "Zoznam predajcov"
 
 msgid "Reseller list is empty."
-msgstr ""
+msgstr "Zoznam predajcov je prázdny."
 
 msgid "Reseller name"
-msgstr ""
+msgstr "Meno predajcu"
 
 msgid "Reseller software list"
-msgstr ""
+msgstr "Predajcov zoznam softwaru"
 
 msgid "Reseller statistics"
 msgstr ""
 
 msgid "Reseller successfully added."
-msgstr ""
+msgstr "Predajca úspešne pridaný."
 
 msgid "Reseller total"
-msgstr ""
+msgstr "Predajca celkom"
 
 msgid "Reseller users"
-msgstr ""
+msgstr "Užívatelia predajcu"
 
 msgid "Reseller with permissions total"
-msgstr ""
+msgstr "Predajca s opravneniami celkom"
 
 msgid "Reseller's layout color successfully updated."
 msgstr ""
 
 msgid "Reseller/IP usage statistics"
-msgstr ""
+msgstr "Predajca/IP štatistika využitia"
 
 msgid "Resellers"
-msgstr ""
+msgstr "Predajci"
 
 msgid "Resellers and customers"
 msgstr ""
 
 msgid "Reset"
-msgstr ""
+msgstr "Reset"
 
 msgid "Restore"
-msgstr ""
+msgstr "Obnoviť"
 
 msgid "Restore backup"
-msgstr ""
+msgstr "Obnoviť zálohu"
 
 msgid "Revision date"
 msgstr ""
@@ -4210,22 +4215,22 @@ msgid "Rights successfully removed."
 msgstr ""
 
 msgid "SMTP in"
-msgstr ""
+msgstr "SMTP"
 
 msgid "SMTP out"
-msgstr ""
+msgstr "SMTP"
 
 msgid "SMTP traffic"
-msgstr ""
+msgstr "Prenesené dáta cez STMP"
 
 msgid "SQL"
-msgstr ""
+msgstr "SQL"
 
 msgid "SQL database"
-msgstr ""
+msgstr "SQL databáza"
 
 msgid "SQL database limit"
-msgstr ""
+msgstr "SQL limit databáz"
 
 msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr ""
@@ -4246,16 +4251,16 @@ msgid "SQL database successfully deleted."
 msgstr ""
 
 msgid "SQL databases"
-msgstr ""
+msgstr "SQL databázy"
 
 msgid "SQL databases only"
 msgstr ""
 
 msgid "SQL user"
-msgstr ""
+msgstr "SQL užívateľ"
 
 msgid "SQL user host"
-msgstr ""
+msgstr "SQL užívateľ"
 
 msgid "SQL user limit"
 msgstr ""
@@ -4270,7 +4275,7 @@ msgid "SQL user limit is disabled."
 msgstr ""
 
 msgid "SQL user name"
-msgstr ""
+msgstr "SQL užívateľské meno"
 
 msgid "SQL user password successfully updated."
 msgstr ""
@@ -4288,7 +4293,7 @@ msgid "SQL username is too long."
 msgstr ""
 
 msgid "SQL users"
-msgstr ""
+msgstr "SQL užívatelia"
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr ""
@@ -4300,16 +4305,16 @@ msgid "SSL certificate successfully scheduled for update."
 msgstr ""
 
 msgid "SSL feature is not available. You can only view your certificate."
-msgstr ""
+msgstr "SSL možnosť nieje dostupná. Môžete sa iba pozrieť na certifikát."
 
 msgid "SSL status"
 msgstr ""
 
 msgid "Save"
-msgstr ""
+msgstr "Uložiť"
 
 msgid "Search"
-msgstr ""
+msgstr "Vyhľadať"
 
 msgid "Sec."
 msgstr ""
@@ -4318,46 +4323,46 @@ msgid "Secure connection"
 msgstr ""
 
 msgid "Security code"
-msgstr ""
+msgstr "Kontrolný kód"
 
 msgid "Security code has expired"
 msgstr ""
 
 msgid "Select group"
-msgstr ""
+msgstr "Vybrať skupinu"
 
 msgid "Select your own document root"
 msgstr ""
 
 msgid "Send"
-msgstr ""
+msgstr "Poslať"
 
 msgid "Send circular"
 msgstr ""
 
 msgid "Send message"
-msgstr ""
+msgstr "Poslať správu"
 
 msgid "Send message to"
-msgstr ""
+msgstr "Poslať správu "
 
 msgid "Send new login data"
-msgstr ""
+msgstr "Pošli nové prihlasovacie údaje"
 
 msgid "Send reply"
-msgstr ""
+msgstr "Odoslať odpoveď"
 
 msgid "Send to"
 msgstr ""
 
 msgid "Sender email"
-msgstr ""
+msgstr "Odosielateľov e-mail"
 
 msgid "Sender email is missing."
 msgstr ""
 
 msgid "Sender name"
-msgstr ""
+msgstr "Odosielateľove meno"
 
 msgid "Sender name is missing."
 msgstr ""
@@ -4366,34 +4371,34 @@ msgid "Separate multiple email addresses by comma or a line-break."
 msgstr ""
 
 msgid "Separate multiple email addresses with a line-break."
-msgstr ""
+msgstr "Oddelte viac e-mailových adries novým riadkom."
 
 msgid "Server ports"
-msgstr ""
+msgstr "Porty servra"
 
 msgid "Server statistics"
-msgstr ""
+msgstr "Štatistiky servra"
 
 msgid "Server status"
-msgstr ""
+msgstr "Stav servra"
 
 msgid "Server traffic"
-msgstr ""
+msgstr "Prenesené dáta servra"
 
 msgid "Server traffic settings"
-msgstr ""
+msgstr "Nastavenia prenesených dát servra"
 
 msgid "Server traffic settings successfully updated."
 msgstr ""
 
 msgid "Service Name"
-msgstr ""
+msgstr "Meno služby"
 
 msgid "Service Unavailable"
 msgstr ""
 
 msgid "Service name"
-msgstr ""
+msgstr "Servisný mód"
 
 msgid "Service name already exists."
 msgstr ""
@@ -4408,16 +4413,16 @@ msgid "Service ports"
 msgstr ""
 
 msgid "Service protocol"
-msgstr ""
+msgstr "Porty servra"
 
 msgid "Services status"
-msgstr ""
+msgstr "Stav služby"
 
 msgid "Sessions"
 msgstr ""
 
 msgid "Settings"
-msgstr ""
+msgstr "Nastavenia"
 
 msgid "Settings saved."
 msgstr ""
@@ -4426,17 +4431,17 @@ msgid "Shared mount point"
 msgstr ""
 
 msgid "Show"
-msgstr ""
+msgstr "Zobraz"
 
 #, php-format
 msgid "Show %s records per page"
-msgstr ""
+msgstr "Zobraziť %s záznamov na stranu."
 
 msgid "Show HTML output compression size comment"
-msgstr ""
+msgstr "Zobraziť veľkosť kompresie výstupu HTML"
 
 msgid "Show SSL certificate"
-msgstr ""
+msgstr "Zobraziť SSL certfikát"
 
 msgid "Show detailed statistics for this reseller"
 msgstr ""
@@ -4445,23 +4450,23 @@ msgid "Show detailed statistics for this user"
 msgstr ""
 
 msgid "Show in"
-msgstr ""
+msgstr "Ukázať v"
 
 msgid "Show labels for main menu links"
 msgstr ""
 
 #, php-format
 msgid "Showing %s to %s of %s records"
-msgstr ""
+msgstr "Zobrazujú sa %s do %s z %s záznamov"
 
 msgid "Showing 0 to 0 of 0 records"
-msgstr ""
+msgstr "Zobrazujú sa 0 do 0 z 0 záznamov"
 
 msgid "Size"
-msgstr ""
+msgstr "Veľkosť"
 
 msgid "Software"
-msgstr ""
+msgstr "Software"
 
 msgid "Software Description"
 msgstr ""
@@ -4488,7 +4493,7 @@ msgid "Software in repository"
 msgstr ""
 
 msgid "Software installation"
-msgstr ""
+msgstr "Inštalácia softwaru"
 
 msgid "Software installer"
 msgstr ""
@@ -4515,7 +4520,7 @@ msgid "Software options"
 msgstr ""
 
 msgid "Software permissions"
-msgstr ""
+msgstr "Softwarové opravnenia"
 
 msgid "Software repository"
 msgstr ""
@@ -4527,16 +4532,16 @@ msgid "Software successfully scheduled for deletion."
 msgstr ""
 
 msgid "Software total"
-msgstr ""
+msgstr "Softwaru celkom"
 
 msgid "Software upload"
 msgstr ""
 
 msgid "Software was activated."
-msgstr ""
+msgstr "Software bol aktivovaný."
 
 msgid "Software was deleted."
-msgstr ""
+msgstr "Software bol zmazaný."
 
 msgid "Software-Synonym"
 msgstr ""
@@ -4554,28 +4559,28 @@ msgid "State"
 msgstr ""
 
 msgid "State/Province"
-msgstr ""
+msgstr "Štát/provincia"
 
 msgid "Statistics"
-msgstr ""
+msgstr "Štatistiky"
 
 msgid "Stats"
-msgstr ""
+msgstr "Štatistiky"
 
 msgid "Status"
-msgstr ""
+msgstr "Stav"
 
 msgid "Street 1"
-msgstr ""
+msgstr "Ulica 1"
 
 msgid "Street 2"
-msgstr ""
+msgstr "Ulica 2"
 
 msgid "Strong passwords"
 msgstr ""
 
 msgid "Subdomain"
-msgstr ""
+msgstr "Sub-doména"
 
 #, php-format
 msgid "Subdomain %s already exist."
@@ -4590,7 +4595,7 @@ msgid "Subdomain %s is unavailable."
 msgstr ""
 
 msgid "Subdomain alias"
-msgstr ""
+msgstr "Sub-doménové e-maily"
 
 msgid "Subdomain alias errors"
 msgstr ""
@@ -4604,7 +4609,7 @@ msgid ""
 msgstr ""
 
 msgid "Subdomain errors"
-msgstr ""
+msgstr "Chyby pre sub-domény"
 
 msgid "Subdomain forward"
 msgstr ""
@@ -4616,7 +4621,7 @@ msgid "Subdomain mail"
 msgstr ""
 
 msgid "Subdomain name"
-msgstr ""
+msgstr "Meno sub-domény"
 
 msgid "Subdomain name is not valid."
 msgstr ""
@@ -4644,43 +4649,43 @@ msgid ""
 msgstr ""
 
 msgid "Subdomains"
-msgstr ""
+msgstr "Sub-domény"
 
 msgid "Subject"
-msgstr ""
+msgstr "Predmet"
 
 msgid "Subject is missing."
 msgstr ""
 
 msgid "Submit changes"
-msgstr ""
+msgstr "Odoslať zmeny"
 
 msgid "Support"
-msgstr ""
+msgstr "Podpora"
 
 msgid "Support system"
-msgstr ""
+msgstr "Podporný systém"
 
 msgid "Suspended"
-msgstr ""
+msgstr "Uspať"
 
 msgid "Swap"
-msgstr ""
+msgstr "Swap"
 
 msgid "Switch"
-msgstr ""
+msgstr "Prepnúť"
 
 msgid "Switch to the backups directory"
 msgstr ""
 
 msgid "Switch to user interface"
-msgstr ""
+msgstr "Zmeniť užívateľské rozhranie"
 
 msgid "Syntax error found in mail forward list."
 msgstr ""
 
 msgid "System"
-msgstr ""
+msgstr "Systémové informácie"
 
 msgid "System data"
 msgstr ""
@@ -4692,7 +4697,7 @@ msgid "System information"
 msgstr ""
 
 msgid "System tools"
-msgstr ""
+msgstr "Systémové nástroje"
 
 msgid "System under maintenance"
 msgstr ""
@@ -4701,7 +4706,7 @@ msgid "TB"
 msgstr ""
 
 msgid "TTL"
-msgstr ""
+msgstr "TTL"
 
 msgid "Target"
 msgstr ""
@@ -4710,7 +4715,7 @@ msgid "Target domain"
 msgstr ""
 
 msgid "Target port"
-msgstr ""
+msgstr "Porty servra"
 
 msgid "Target port must be a number."
 msgstr ""
@@ -4787,7 +4792,7 @@ msgid ""
 msgstr ""
 
 msgid "The password field is empty."
-msgstr ""
+msgstr "Pole pre heslo je prázdne."
 
 msgid "The private key doesn't belong to the provided SSL certificate."
 msgstr ""
@@ -4809,7 +4814,7 @@ msgid "The username %s is not available."
 msgstr ""
 
 msgid "The username field is empty."
-msgstr ""
+msgstr "Pole užívateľa je prázdne."
 
 msgid "The value has been found in the stack"
 msgstr ""
@@ -4843,10 +4848,10 @@ msgid ""
 msgstr ""
 
 msgid "This htaccess group already exists."
-msgstr ""
+msgstr "Táto htaccess skupina už existuje."
 
 msgid "This htaccess user already exist."
-msgstr ""
+msgstr "Tento htaccess užívateľ už existuje."
 
 msgid "This interface allow to add or remove IP addresses."
 msgstr ""
@@ -4887,7 +4892,7 @@ msgid "This user has domain record. First remove the domain from the system."
 msgstr ""
 
 msgid "This user name already exist."
-msgstr ""
+msgstr "Meno použivateľa už existuje."
 
 msgid "TiB"
 msgstr ""
@@ -4909,29 +4914,29 @@ msgid "Ticket with Id '%d' was not found."
 msgstr ""
 
 msgid "To Admin"
-msgstr ""
+msgstr "Pre administrátora"
 
 msgid "To reseller"
-msgstr ""
+msgstr "Pre predajcu"
 
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr ""
 
 msgid "Total"
-msgstr ""
+msgstr "Spolu"
 
 msgid "Total Domains"
-msgstr ""
+msgstr "Domény"
 
 msgid "Total Software"
-msgstr ""
+msgstr "Softwaru celkom"
 
 msgid "Total Web software repositories"
 msgstr ""
 
 msgid "Total installations"
-msgstr ""
+msgstr "Celkom inštalácií"
 
 #, php-format
 msgid "Total mails: %s / %s %s"
@@ -4944,37 +4949,37 @@ msgid "Total reseller"
 msgstr ""
 
 msgid "Total software"
-msgstr ""
+msgstr "Softwaru celkom"
 
 msgid "Traffic"
-msgstr ""
+msgstr "Prenesené dáta"
 
 msgid "Traffic statistics"
 msgstr ""
 
 msgid "Traffic usage"
-msgstr ""
+msgstr "Prenesené dáta"
 
 msgid "Translated strings"
 msgstr ""
 
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 msgid "UP"
-msgstr ""
+msgstr "HORE"
 
 msgid "URL forwarding"
-msgstr ""
+msgstr "URL presmerovanie"
 
 msgid "URL port"
 msgstr ""
 
 msgid "URL protocol"
-msgstr ""
+msgstr "URL Protokol"
 
 msgid "URL to this admin panel"
-msgstr ""
+msgstr "URL do tohto admin panela"
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
@@ -5044,10 +5049,10 @@ msgid "Unallowed port in forward URL. Only ports above 1024 are allowed."
 msgstr ""
 
 msgid "Unauthorized"
-msgstr ""
+msgstr "Neoprávnené"
 
 msgid "Unavailable"
-msgstr ""
+msgstr "Nedostupné"
 
 msgid "Unexpected error"
 msgstr ""
@@ -5065,10 +5070,10 @@ msgid "Uninstalled"
 msgstr ""
 
 msgid "Unknown"
-msgstr ""
+msgstr "Neuvedené"
 
 msgid "Unknown Error"
-msgstr ""
+msgstr "Neznáma chyba"
 
 #, php-format
 msgid "Unknown `%s' database. Database must exists."
@@ -5079,7 +5084,7 @@ msgstr ""
 
 #, php-format
 msgid "Unknown action: %s"
-msgstr ""
+msgstr "Neznáma akcia: %s"
 
 #, php-format
 msgid "Unknown bruteforce detection type: %s"
@@ -5092,14 +5097,14 @@ msgid "Unknown layout color."
 msgstr ""
 
 msgid "Unknown reason."
-msgstr ""
+msgstr "Neznámy dôvod."
 
 #, php-format
 msgid "Unknown service name '%s'."
 msgstr ""
 
 msgid "Unknown status"
-msgstr ""
+msgstr "Neznámy status"
 
 msgid "Unknown type."
 msgstr ""
@@ -5108,10 +5113,10 @@ msgid "Unknown username."
 msgstr ""
 
 msgid "Unlimited"
-msgstr ""
+msgstr "Neobmedzené"
 
 msgid "Update"
-msgstr ""
+msgstr "Aktualizovať"
 
 msgid "Update Plugins"
 msgstr ""
@@ -5120,7 +5125,7 @@ msgid "Update SQL user password"
 msgstr ""
 
 msgid "Update data"
-msgstr ""
+msgstr "Aktualizovať údaje"
 
 msgid "Update from Web software repository"
 msgstr ""
@@ -5132,7 +5137,7 @@ msgid "Update in progress..."
 msgstr ""
 
 msgid "Update info"
-msgstr ""
+msgstr "Aktualizovať info"
 
 msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
@@ -5140,19 +5145,19 @@ msgid ""
 msgstr ""
 
 msgid "Update password"
-msgstr ""
+msgstr "Aktualizovať heslo"
 
 msgid "Updates"
 msgstr ""
 
 msgid "Upload"
-msgstr ""
+msgstr "Nahrať"
 
 msgid "Upload logo"
-msgstr ""
+msgstr "Nahrať logo"
 
 msgid "Upload now"
-msgstr ""
+msgstr "Nahrať"
 
 msgid "Uptime"
 msgstr ""
@@ -5170,19 +5175,19 @@ msgid "Use secure connection (SSL)"
 msgstr ""
 
 msgid "Used"
-msgstr ""
+msgstr "Použité"
 
 msgid "Used database"
 msgstr ""
 
 msgid "User"
-msgstr ""
+msgstr "Užívateľ"
 
 msgid "User (first and last) name"
-msgstr ""
+msgstr "Užívateľské meno (krstné aj priezvisko)"
 
 msgid "User assignment"
-msgstr ""
+msgstr "Priradenie užívateľov"
 
 msgid "User data successfully updated"
 msgstr ""
@@ -5191,7 +5196,7 @@ msgid "User data successfully updated."
 msgstr ""
 
 msgid "User data were not updated."
-msgstr ""
+msgstr "Užívateľové údaje neboli aktualizované."
 
 msgid "User data were successfully updated."
 msgstr ""
@@ -5207,16 +5212,16 @@ msgid "User has not been deleted."
 msgstr ""
 
 msgid "User login (system) name"
-msgstr ""
+msgstr "Užívateľské meno (systémové)"
 
 msgid "User password"
-msgstr ""
+msgstr "Heslo užívateľa"
 
 msgid "User real (first and last) name"
-msgstr ""
+msgstr "Skutočné meno (krstné, priezvisko) užívateľa"
 
 msgid "User scheduled for deletion."
-msgstr ""
+msgstr "Užívateľ bol naplánovaný na vymazanie."
 
 msgid "User session successfully destroyed."
 msgstr ""
@@ -5228,47 +5233,47 @@ msgid "User successfully disconnected."
 msgstr ""
 
 msgid "User type"
-msgstr ""
+msgstr "Typ užívateľa"
 
 msgid "User type (admin, reseller, user)"
-msgstr ""
+msgstr "Hodnosť užívateľa (administrátor, obchodník, užívateľ)"
 
 msgid "Username"
-msgstr ""
+msgstr "Užívateľské meno"
 
 msgid "Username and password for application login"
-msgstr ""
+msgstr "Užívateľské meno a heslo pre prihlásenie do aplikácie"
 
 msgid "Users"
-msgstr ""
+msgstr "Užívatelia"
 
 #, php-format
 msgid "Value for the PHP %%s directive must be in range %%d to %%d."
 msgstr ""
 
 msgid "Values"
-msgstr ""
+msgstr "Hodnoty"
 
 msgid "Vendor hompage"
-msgstr ""
+msgstr "Stránka výrobcu"
 
 msgid "Version"
-msgstr ""
+msgstr "Verzia"
 
 msgid "Very high"
-msgstr ""
+msgstr "Veľmi veľa"
 
 msgid "View"
-msgstr ""
+msgstr "Zobraziť"
 
 msgid "View SSL certificate"
 msgstr ""
 
 msgid "View aliases"
-msgstr ""
+msgstr "Zobraziť aliasy"
 
 msgid "View ticket"
-msgstr ""
+msgstr "Zobraziť tiket"
 
 msgid "Visit plugin site"
 msgstr ""
@@ -5280,27 +5285,27 @@ msgid "Warning!"
 msgstr ""
 
 msgid "Warnings and Errors"
-msgstr ""
+msgstr "Upozornenia a chyby"
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
-msgstr ""
+msgstr "Ľutujeme, ale práve prebieha údržba systému. Prosím vráťte sa neskôr."
 
 msgid "Web Statistics"
-msgstr ""
+msgstr "Webové štatistiky"
 
 msgid "Web files only"
-msgstr ""
+msgstr "Webové súbory iba"
 
 msgid "Web folder protection"
-msgstr ""
+msgstr "Ochrana webového adresára"
 
 msgid "Web in"
-msgstr ""
+msgstr "Web prichádzajúce"
 
 msgid "Web out"
-msgstr ""
+msgstr "Web odchádzajúca"
 
 msgid "Web software depot packages total"
 msgstr ""
@@ -5315,25 +5320,25 @@ msgid "Web software repository index is already up to date."
 msgstr ""
 
 msgid "Web statistics"
-msgstr ""
+msgstr "Štatistikywebu"
 
 msgid "Web traffic"
-msgstr ""
+msgstr "Prenesené dáta cez web"
 
 msgid "Webmail"
-msgstr ""
+msgstr "Webmail"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Web nástroje"
 
 msgid "Welcome email"
-msgstr ""
+msgstr "Uvítací email"
 
 msgid "Welcome email template has been updated."
 msgstr ""
 
 msgid "Welcome {USERNAME} to i-MSCP"
-msgstr ""
+msgstr "Vitajte {USERNAME} v i-MSCP"
 
 msgid "When set to 'yes', your PHP scripts can call the PHP exec() function."
 msgstr ""
@@ -5345,7 +5350,7 @@ msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr ""
 
 msgid "Wrong mail syntax in forward list."
-msgstr ""
+msgstr "Nesprávna mailová adresa v zozname presmerovaní."
 
 msgid "Wrong or unallowed IP address."
 msgstr ""
@@ -5354,16 +5359,16 @@ msgid "Wrong or unallowed IP netmask."
 msgstr ""
 
 msgid "Wrong request."
-msgstr ""
+msgstr "Nesprávna požiadavka. "
 
 msgid "Wrong reseller id."
-msgstr ""
+msgstr "Nesprávne ID predajcu."
 
 msgid "Wrong security code"
-msgstr ""
+msgstr "Nespávný bespečnostný kód"
 
 msgid "Wrong software id."
-msgstr ""
+msgstr "Nesprávne ID softwaru."
 
 msgid "Wrong syntax for new expire date."
 msgstr ""
@@ -5379,7 +5384,7 @@ msgid "Wrong user level provided."
 msgstr ""
 
 msgid "Wrong username."
-msgstr ""
+msgstr "Nesprávne užívateľské meno."
 
 msgid "XML file URL for the Web software repository"
 msgstr ""
@@ -5388,46 +5393,46 @@ msgid "YB"
 msgstr ""
 
 msgid "Year"
-msgstr ""
+msgstr "Rok"
 
 msgid "Yes"
-msgstr ""
+msgstr "Áno"
 
 msgid "YiB"
 msgstr ""
 
 msgid "You are exceeding the monthly server traffic limit."
-msgstr ""
+msgstr "Dosiahli ste limit mesačného server trafiku."
 
 msgid "You are exceeding you domain alias limit."
-msgstr ""
+msgstr "Dosiahli ste limit počtu doménových aliasov."
 
 msgid "You are exceeding your FTP account limit."
-msgstr ""
+msgstr "Dosiahli ste limit počtu FTP kont."
 
 msgid "You are exceeding your SQL database limit."
-msgstr ""
+msgstr "Dosiahli ste limit počtu SQL databáz."
 
 msgid "You are exceeding your SQL user limit."
-msgstr ""
+msgstr "Dosiahli ste limit počtu SQL kont."
 
 msgid "You are exceeding your disk space limit."
-msgstr ""
+msgstr "Dosiahli ste limit diskového priestoru."
 
 msgid "You are exceeding your email account limit."
-msgstr ""
+msgstr "Dosiahli ste limit počtu emailových kont."
 
 msgid "You are exceeding your monthly traffic limit."
-msgstr ""
+msgstr "Dosiahli ste limit mesačného trafiku."
 
 msgid "You are exceeding your subdomain limit."
-msgstr ""
+msgstr "Dosiahli ste limit počtu subdomén."
 
 msgid "You are not allowed to act on your own session."
 msgstr ""
 
 msgid "You can only upload images."
-msgstr ""
+msgstr "Môžete nahrať iba obrázky."
 
 msgid ""
 "You can set an alternative document root. This is mostly needed when using a"
@@ -5452,7 +5457,7 @@ msgstr ""
 
 #, php-format
 msgid "You cannot forward %s on itself."
-msgstr ""
+msgstr "Nemôžete presmerovať %s samého na seba."
 
 #, php-format
 msgid ""
@@ -5476,16 +5481,16 @@ msgid "You do not have DNS resource records."
 msgstr ""
 
 msgid "You do not have FTP accounts."
-msgstr ""
+msgstr "Nemáte žiadne FTP účty."
 
 msgid "You do not have any software uploaded yet"
 msgstr ""
 
 msgid "You do not have databases."
-msgstr ""
+msgstr "Nemáte žiadne databázy."
 
 msgid "You do not have domain aliases."
-msgstr ""
+msgstr "Nemáte žiadne aliasy domény."
 
 msgid "You do not have permission to install software yet"
 msgstr ""
@@ -5494,10 +5499,10 @@ msgid "You do not have permissions to upload software"
 msgstr ""
 
 msgid "You do not have protected areas."
-msgstr ""
+msgstr "Nemáte žiadne chránené oblasti."
 
 msgid "You do not have subdomains."
-msgstr ""
+msgstr "Nemáte žiadne subdomény."
 
 msgid ""
 "You have a FTP account limit. You cannot add a user with unlimited FTP "
@@ -5563,7 +5568,7 @@ msgid "You have been blocked for %s minutes."
 msgstr ""
 
 msgid "You have been successfully logged out."
-msgstr ""
+msgstr "Úspešne ste sa odhlásili."
 
 msgid ""
 "You have disabled SQL databases for this user. You cannot have SQL users "
@@ -5571,13 +5576,13 @@ msgid ""
 msgstr ""
 
 msgid "You have no closed tickets."
-msgstr ""
+msgstr "Nemáte žiadne uzavreté tikety."
 
 msgid "You have no groups."
-msgstr ""
+msgstr "Nemáte žiadne skupiny."
 
 msgid "You have no open tickets."
-msgstr ""
+msgstr "Nemáte žiadne otvorené tikety."
 
 msgid "You have not service ports defined."
 msgstr ""
@@ -5601,22 +5606,22 @@ msgid "You have reached your domain limit. You cannot add more domains."
 msgstr ""
 
 msgid "You have to choose between file-upload and wget-function."
-msgstr ""
+msgstr "Musite si vybrat medzi file-upload a wget-function."
 
 msgid "You must assign at least one IP to this reseller."
 msgstr ""
 
 msgid "You must choose between local and remote upload."
-msgstr ""
+msgstr "Vyberte si medzi lokálnym, alebo vzdialeným uploadom."
 
 msgid "You must confirm your password."
-msgstr ""
+msgstr "Je potrebne zopakovať heslo."
 
 msgid "You must enter a domain alias name."
-msgstr ""
+msgstr "Musíte zadať doménový alias."
 
 msgid "You must enter a subdomain name."
-msgstr ""
+msgstr "Je potrebné uviesť názov subdomény."
 
 msgid "You must first create a user."
 msgstr ""
@@ -5625,28 +5630,28 @@ msgid "You must first generate a password by clicking on the generate button."
 msgstr ""
 
 msgid "You must provide a password."
-msgstr ""
+msgstr "Je potrebné si zvoliť heslo."
 
 msgid "You must select a file to upload."
-msgstr ""
+msgstr "Musíte zvoliť súbor pre upload."
 
 msgid "You must select a file to upload/download."
-msgstr ""
+msgstr "Musite vybrať súbor na upload."
 
 msgid "You must select a least one mail account to delete"
 msgstr ""
 
 msgid "You must select a least one mail account to delete."
-msgstr ""
+msgstr "Musíte zvoliť aspoň jedno konto na vymazanie."
 
 msgid "You must select at least one plugin."
 msgstr ""
 
 msgid "You must specify a message."
-msgstr ""
+msgstr "Napíšte odkaz."
 
 msgid "You must specify a subject."
-msgstr ""
+msgstr "Zadajte predmet."
 
 #, php-format
 msgid "You must wait %s minutes before the next attempt."
@@ -5659,7 +5664,7 @@ msgid ""
 msgstr ""
 
 msgid "Your account has expired."
-msgstr ""
+msgstr "Vaše konto expirovalo."
 
 msgid "Your account has expired. Please renew your subscription."
 msgstr ""
@@ -5670,7 +5675,7 @@ msgid ""
 msgstr ""
 
 msgid "Your consumption"
-msgstr ""
+msgstr "Vaša spotreba"
 
 msgid ""
 "Your i-MSCP version is not compatible with this plugin. Try with a newer "
@@ -5678,19 +5683,19 @@ msgid ""
 msgstr ""
 
 msgid "Your message"
-msgstr ""
+msgstr "Vaša správa"
 
 msgid "Your message has been successfully sent."
-msgstr ""
+msgstr "Váš odkaz bol úspešne odoslaný."
 
 msgid "Your new i-MSCP login"
-msgstr ""
+msgstr "Váše nové i-MSCP prihlásenie"
 
 msgid "Your new password"
 msgstr ""
 
 msgid "Your package is corrupt. Please correct it!"
-msgstr ""
+msgstr "Váš balíček je poškodený. Prosím opravte ho!"
 
 msgid ""
 "Your password has been successfully scheduled for renewal. Check your "
@@ -5721,41 +5726,41 @@ msgid "Your software package has been deleted"
 msgstr ""
 
 msgid "ZB"
-msgstr ""
+msgstr "ZB"
 
 msgid "ZiB"
-msgstr ""
+msgstr "ZiB"
 
 msgid "Zip"
-msgstr ""
+msgstr "Zip"
 
 msgid "Zip code"
-msgstr ""
+msgstr "PSČ"
 
 msgid "Zip/Postal code"
-msgstr ""
+msgstr "PSČ"
 
 msgid "Zone"
 msgstr ""
 
 msgid "[New]"
-msgstr ""
+msgstr "[Nové]"
 
 msgid "[Re]"
-msgstr ""
+msgstr "[Re]"
 
 msgid "_: Localised language"
-msgstr ""
+msgstr "slovenčina - Slovak"
 
 #, php-format
 msgid "`%s` field cannot be empty."
 msgstr ""
 
 msgid "activated"
-msgstr ""
+msgstr "aktivované"
 
 msgid "activated (Softwaredepot)"
-msgstr ""
+msgstr "aktivované (Softwaredepot)"
 
 msgid "addition"
 msgstr ""
@@ -5764,58 +5769,58 @@ msgid "administrator"
 msgstr ""
 
 msgid "and"
-msgstr ""
+msgstr "a"
 
 msgid "day"
-msgstr ""
+msgstr "deň"
 
 msgid "days"
-msgstr ""
+msgstr "dní"
 
 msgid "deleting"
-msgstr ""
+msgstr "mažem"
 
 msgid "disabled"
-msgstr ""
+msgstr "zakázané"
 
 msgid "disk space"
-msgstr ""
+msgstr "diskový priestor"
 
 msgid "domain"
-msgstr ""
+msgstr "doména"
 
 msgid "domain alias"
-msgstr ""
+msgstr "doménový alias"
 
 msgid "domain aliases"
-msgstr ""
+msgstr "doménové aliasy"
 
 msgid "domain data"
 msgstr ""
 
 msgid "domains"
-msgstr ""
+msgstr "Domény"
 
 msgid "email account"
-msgstr ""
+msgstr "email konto"
 
 msgid "email accounts"
-msgstr ""
+msgstr "email konta"
 
 msgid "enabled"
-msgstr ""
+msgstr "povolené"
 
 msgid "everything"
-msgstr ""
+msgstr "všetko"
 
 msgid "from other browser"
 msgstr ""
 
 msgid "i-MSCP - Application Management (Permissions)"
-msgstr ""
+msgstr "i-MSCP - Manažment applikácií (Oprávnenia)"
 
 msgid "i-MSCP - Client/Create CatchAll Mail Account"
-msgstr ""
+msgstr "i-MSCP - Client/Vytvoriť \"Zachytiť všetko\" konto"
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
 msgstr ""
@@ -5851,104 +5856,104 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "i-MSCP aktualizácie"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""
 
 msgid "installed"
-msgstr ""
+msgstr "inštalované"
 
 msgid "installing"
-msgstr ""
+msgstr "inštalujem"
 
 msgid "internet Multi Server Control Panel"
-msgstr ""
+msgstr "internet Multi Server Control Panel"
 
 msgid "kB"
-msgstr ""
+msgstr "kB"
 
 msgid "kiB"
-msgstr ""
+msgstr "kiB"
 
 msgid "mail"
-msgstr ""
+msgstr "mail"
 
 msgid "mail accounts"
 msgstr ""
 
 msgid "missing alias"
-msgstr ""
+msgstr "Alias domény"
 
 msgid "missing domain"
-msgstr ""
+msgstr "Hlavná doména"
 
 msgid "n\\a"
-msgstr ""
+msgstr "Nedostupné"
 
 msgid "no"
-msgstr ""
+msgstr "nie"
 
 msgid "not available"
-msgstr ""
+msgstr "nedostupné"
 
 msgid "not required"
-msgstr ""
+msgstr "nepovinné"
 
 msgid "older than 1 month"
-msgstr ""
+msgstr "staršie ako 1 mesiac"
 
 msgid "older than 12 months"
-msgstr ""
+msgstr "staršie ako 12 mesiacov"
 
 msgid "older than 2 weeks"
-msgstr ""
+msgstr "staršie ako 2 týždne"
 
 msgid "older than 3 months"
-msgstr ""
+msgstr "staršie ako 3 mesiace"
 
 msgid "older than 6 months"
-msgstr ""
+msgstr "staršie ako 6 mesiacov"
 
 #, php-format
 msgid "or remote file (Max: %s)"
-msgstr ""
+msgstr "alebo vzdialený súbor (Max: %s)"
 
 msgid "orphan entry"
-msgstr ""
+msgstr "unikátny vstup"
 
 msgid "required"
-msgstr ""
+msgstr "povinné"
 
 msgid "subdomain"
-msgstr ""
+msgstr "Sub-doména"
 
 msgid "subdomains"
-msgstr ""
+msgstr "subomény"
 
 msgid "tcp"
-msgstr ""
+msgstr "tcp"
 
 msgid "traffic"
-msgstr ""
+msgstr "trafik"
 
 msgid "udp"
-msgstr ""
+msgstr "udp"
 
 msgid "unlimited"
-msgstr ""
+msgstr "Bez obmedzení"
 
 msgid "update"
 msgstr ""
 
 msgid "view aliases"
-msgstr ""
+msgstr "zozbraziť aliasy"
 
 msgid "waiting for activation"
-msgstr ""
+msgstr "očakávaná aktivácia"
 
 msgid "yes"
-msgstr ""
+msgstr "áno"
 
 msgid "{USERNAME} user statistics"
 msgstr ""

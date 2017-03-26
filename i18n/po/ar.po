@@ -8,8 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-03-25 03:04+0100\n"
+"POT-Creation-Date: 2017-03-26 14:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: hossam bahaa <hossambahaa2@ymail.com>, 2017\n"
 "Language-Team: Arabic (https://www.transifex.com/i-mscp/teams/576/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -65,7 +66,7 @@ msgstr ""
 
 #, php-format
 msgid "%1$d%% [%2$s of unlimited]"
-msgstr ""
+msgstr "%1$d%% [%2$s من غير محدود]"
 
 #, php-format
 msgid "%1$s (%2$s)"
@@ -101,7 +102,7 @@ msgstr ""
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
-msgstr ""
+msgstr "%1$s أنت مسجل الدخول الان بواسطة %2$s"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -434,7 +435,7 @@ msgid "Account limits"
 msgstr ""
 
 msgid "Account name"
-msgstr ""
+msgstr "إسم الحساب"
 
 msgid "Account overview"
 msgstr ""
@@ -479,7 +480,7 @@ msgid "Activation link expire time <small>(In minutes)</small>"
 msgstr ""
 
 msgid "Add"
-msgstr ""
+msgstr "أضف"
 
 msgid "Add DNS resource record"
 msgstr ""
@@ -494,7 +495,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "أضف قاعدة بيانات SQL"
 
 msgid "Add SQL user"
 msgstr ""
@@ -503,7 +504,7 @@ msgid "Add SSL certificate"
 msgstr ""
 
 msgid "Add admin"
-msgstr ""
+msgstr "اضافة مدير"
 
 msgid "Add catchall"
 msgstr ""
@@ -527,7 +528,7 @@ msgid "Add group"
 msgstr ""
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "أضف خطة إستضافة"
 
 msgid "Add new IP address"
 msgstr ""
@@ -548,13 +549,13 @@ msgid "Add protected area"
 msgstr ""
 
 msgid "Add reseller"
-msgstr ""
+msgstr "اضافة ريسيلر"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "اضافة نطاق فرعى"
 
 msgid "Add user"
-msgstr ""
+msgstr "اضافة اسم مستخدم"
 
 msgid "Added by"
 msgstr ""
@@ -563,10 +564,10 @@ msgid "Addition in progress..."
 msgstr ""
 
 msgid "Additional data"
-msgstr ""
+msgstr "معلومات اضافية"
 
 msgid "Admin"
-msgstr ""
+msgstr "المدير"
 
 msgid "Admin / General / Admin Log"
 msgstr ""
@@ -706,19 +707,19 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr ""
+msgstr "سجل المدير"
 
 msgid "Admin not available"
 msgstr ""
 
 msgid "Admin users"
-msgstr ""
+msgstr "المستخدمين المدراء"
 
 msgid "Admin/IP usage statistics"
 msgstr ""
 
 msgid "Administrator"
-msgstr ""
+msgstr "المدير"
 
 msgid "Administrator and Reseller levels"
 msgstr ""
@@ -733,13 +734,13 @@ msgid "Administrator and reseller"
 msgstr ""
 
 msgid "Administrator level"
-msgstr ""
+msgstr "مستوى المدير"
 
 msgid "Administrator login"
 msgstr ""
 
 msgid "Administrators"
-msgstr ""
+msgstr "المدراء"
 
 msgid "Administrators and customers"
 msgstr ""
@@ -768,7 +769,7 @@ msgid "Aliases"
 msgstr ""
 
 msgid "All"
-msgstr ""
+msgstr "الكل"
 
 msgid "All closed tickets were successfully deleted."
 msgstr ""
@@ -783,7 +784,7 @@ msgid "All errors, except E_NOTICES, E_STRICT AND E_DEPRECATED (Default)"
 msgstr ""
 
 msgid "All fields are required."
-msgstr ""
+msgstr "جميع الحقول مطلوبة"
 
 msgid "All fields are valid."
 msgstr ""
@@ -891,7 +892,7 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete %s?"
-msgstr ""
+msgstr "هل أنت متأكد من أنك تريد حذف %s؟"
 
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr ""
@@ -971,7 +972,7 @@ msgid ""
 msgstr ""
 
 msgid "Are you sure you want to restore the backup?"
-msgstr ""
+msgstr "هل أنت متأكد أنك تود الإسترجاع من النسخة الإحتياطية؟"
 
 msgid "Assign"
 msgstr ""
@@ -1037,10 +1038,10 @@ msgid "B"
 msgstr ""
 
 msgid "Back"
-msgstr ""
+msgstr "رجوع"
 
 msgid "Backup"
-msgstr ""
+msgstr "نسخة احتياطية"
 
 msgid "Backup and restore settings."
 msgstr ""
@@ -1113,7 +1114,7 @@ msgid "Can use the PHP %s function"
 msgstr ""
 
 msgid "Cancel"
-msgstr ""
+msgstr "إلغ"
 
 msgid "Canonical name"
 msgstr ""
@@ -1140,7 +1141,7 @@ msgid "Change"
 msgstr ""
 
 msgid "Change personal data"
-msgstr ""
+msgstr "تغيير البيانات الشخصية"
 
 msgid "Change status of this item for a new attempt"
 msgstr ""
@@ -1180,7 +1181,7 @@ msgid "Choose file (Max: %1$d MiB)"
 msgstr ""
 
 msgid "Choose hosting plan"
-msgstr ""
+msgstr "إختر خطة الإستضافة"
 
 msgid "Choose layout color"
 msgstr ""
@@ -1195,7 +1196,7 @@ msgid "Circular successfully sent."
 msgstr ""
 
 msgid "City"
-msgstr ""
+msgstr "المدينة"
 
 msgid "Class"
 msgstr ""
@@ -1385,7 +1386,7 @@ msgid "Common name"
 msgstr ""
 
 msgid "Company"
-msgstr ""
+msgstr "الشركة"
 
 msgid "Compress HTML output"
 msgstr ""
@@ -1497,7 +1498,7 @@ msgid "Count default email addresses"
 msgstr ""
 
 msgid "Country"
-msgstr ""
+msgstr "الدولة"
 
 msgid "Create"
 msgstr ""
@@ -1509,10 +1510,10 @@ msgid "Create default email addresses"
 msgstr ""
 
 msgid "Created by"
-msgstr ""
+msgstr "انشئت بواسطة"
 
 msgid "Creation date"
-msgstr ""
+msgstr "تاريخ الإنشاء"
 
 msgid "Custom DNS errors"
 msgstr ""
@@ -1545,13 +1546,13 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr ""
+msgstr "قوائم مخصصة"
 
 msgid "Customer"
 msgstr ""
 
 msgid "Customer ID"
-msgstr ""
+msgstr "معرف العميل"
 
 msgid "Customer ID cannot have more than 200 characters"
 msgstr ""
@@ -1629,7 +1630,7 @@ msgid "Daemon request successful."
 msgstr ""
 
 msgid "Daily backup"
-msgstr ""
+msgstr "النسخ الإحتياطي اليومي"
 
 msgid "Data"
 msgstr ""
@@ -1692,13 +1693,13 @@ msgid "Date"
 msgstr ""
 
 msgid "Day"
-msgstr ""
+msgstr "يوم"
 
 msgid "Day statistics"
 msgstr ""
 
 msgid "Days"
-msgstr ""
+msgstr "أيام"
 
 msgid "Deactivate"
 msgstr ""
@@ -1906,7 +1907,7 @@ msgid ""
 msgstr ""
 
 msgid "Delete"
-msgstr ""
+msgstr "حذف"
 
 msgid "Delete CatchAll"
 msgstr ""
@@ -1963,7 +1964,7 @@ msgid "Directory '%s' is not allowed or invalid."
 msgstr ""
 
 msgid "Disable"
-msgstr ""
+msgstr "تعطيل"
 
 msgid "Disabled"
 msgstr ""
@@ -1996,7 +1997,7 @@ msgid "Document root"
 msgstr ""
 
 msgid "Domain"
-msgstr ""
+msgstr "نطاق"
 
 #, php-format
 msgid "Domain %s cannot be forwarded on itself."
@@ -2007,13 +2008,13 @@ msgid "Domain %s is unavailable."
 msgstr ""
 
 msgid "Domain IP"
-msgstr ""
+msgstr "أى بى النطاق"
 
 msgid "Domain Limit"
 msgstr ""
 
 msgid "Domain Name"
-msgstr ""
+msgstr "إسم النطاق"
 
 msgid "Domain account"
 msgstr ""
@@ -2025,7 +2026,7 @@ msgid "Domain accounts"
 msgstr ""
 
 msgid "Domain alias"
-msgstr ""
+msgstr "نطاق مستعار"
 
 #, php-format
 msgid "Domain alias %s cannot be forwarded on itself."
@@ -2056,7 +2057,7 @@ msgid "Domain alias successfully scheduled for update."
 msgstr ""
 
 msgid "Domain aliases"
-msgstr ""
+msgstr "النطاقات المستعارة"
 
 msgid "Domain and SQL databases"
 msgstr ""
@@ -2068,7 +2069,7 @@ msgid "Domain data were altered. Please try again."
 msgstr ""
 
 msgid "Domain details"
-msgstr ""
+msgstr "معلومات النطاق"
 
 msgid "Domain errors"
 msgstr ""
@@ -2089,7 +2090,7 @@ msgid "Domain mail"
 msgstr ""
 
 msgid "Domain name"
-msgstr ""
+msgstr "إسم النطاق"
 
 msgid "Domain name (ASCII form) cannot be greater than 255 characters."
 msgstr ""
@@ -2124,7 +2125,7 @@ msgid "Domain scheduled for update."
 msgstr ""
 
 msgid "Domain statistics"
-msgstr ""
+msgstr "إحصائيات النطاق"
 
 msgid "Domain status is not ok."
 msgstr ""
@@ -2139,10 +2140,10 @@ msgid "Domain type"
 msgstr ""
 
 msgid "Domains"
-msgstr ""
+msgstr "النطاقات"
 
 msgid "Domains per page"
-msgstr ""
+msgstr "نطاقات في كل صفحة"
 
 msgid "Done"
 msgstr ""
@@ -2166,7 +2167,7 @@ msgid "EB"
 msgstr ""
 
 msgid "Edit"
-msgstr ""
+msgstr "تعديل"
 
 msgid "Edit DNS resource record"
 msgstr ""
@@ -2193,16 +2194,16 @@ msgid "Edit customer"
 msgstr ""
 
 msgid "Edit domain"
-msgstr ""
+msgstr "تعديل النطاق"
 
 msgid "Edit domain alias"
 msgstr ""
 
 msgid "Edit error page"
-msgstr ""
+msgstr "عدّل صفحة الخطأ"
 
 msgid "Edit hosting plan"
-msgstr ""
+msgstr "تعديل خطة الاستضافة"
 
 msgid "Edit htaccess user"
 msgstr ""
@@ -2223,13 +2224,13 @@ msgid "Edit subdomain"
 msgstr ""
 
 msgid "Edit user"
-msgstr ""
+msgstr "تعديل أسم المستخدم"
 
 msgid "EiB"
 msgstr ""
 
 msgid "Email"
-msgstr ""
+msgstr "البريد الالكترونى"
 
 msgid "Email account already exists."
 msgstr ""
@@ -2253,7 +2254,7 @@ msgid "Email account successfully scheduled for update."
 msgstr ""
 
 msgid "Email accounts"
-msgstr ""
+msgstr "حسابات البريد"
 
 msgid "Email accounts are hard suspended"
 msgstr ""
@@ -2291,7 +2292,7 @@ msgid "Email settings"
 msgstr ""
 
 msgid "Email setup"
-msgstr ""
+msgstr "إعداد البريد الإلكتروني"
 
 msgid "Email successfully updated."
 msgstr ""
@@ -2300,7 +2301,7 @@ msgid "Empty data or wrong field."
 msgstr ""
 
 msgid "Enable"
-msgstr ""
+msgstr "تفعيل"
 
 msgid "Enable SSL"
 msgstr ""
@@ -2309,20 +2310,20 @@ msgid "Enable auto responder"
 msgstr ""
 
 msgid "Enabled"
-msgstr ""
+msgstr "مفعّل"
 
 #, php-format
 msgid "Enabled for: %s"
 msgstr ""
 
 msgid "Error"
-msgstr ""
+msgstr "خطأ"
 
 msgid "Error details"
 msgstr ""
 
 msgid "Error pages"
-msgstr ""
+msgstr "صفحات الخطأ"
 
 msgid "Error reporting"
 msgstr ""
@@ -2340,7 +2341,7 @@ msgid "Execute tasks"
 msgstr ""
 
 msgid "Expire date"
-msgstr ""
+msgstr "تاريخ الانتهاء"
 
 msgid "Ext. mail server"
 msgstr ""
@@ -2379,7 +2380,7 @@ msgid "FTP account successfully updated."
 msgstr ""
 
 msgid "FTP accounts"
-msgstr ""
+msgstr "حسابات الاف تى بى"
 
 msgid "FTP home directory"
 msgstr ""
@@ -2400,7 +2401,7 @@ msgid "Failure in the package. Deleting!"
 msgstr ""
 
 msgid "Fax"
-msgstr ""
+msgstr "الفاكس"
 
 msgid "Feature"
 msgstr ""
@@ -2409,7 +2410,7 @@ msgid "Features"
 msgstr ""
 
 msgid "Female"
-msgstr ""
+msgstr "انثى"
 
 #, php-format
 msgid "File %s doesn't exist or cannot be reached!"
@@ -2442,10 +2443,10 @@ msgid "File usage"
 msgstr ""
 
 msgid "FileManager"
-msgstr ""
+msgstr "مدير الملفات"
 
 msgid "Filemanager"
-msgstr ""
+msgstr "مدير الملفات"
 
 msgid "Filesystem system Info"
 msgstr ""
@@ -2454,7 +2455,7 @@ msgid "Fill out a message text."
 msgstr ""
 
 msgid "First name"
-msgstr ""
+msgstr "الإسم الأول"
 
 msgid "First name cannot have more than 200 characters."
 msgstr ""
@@ -2494,10 +2495,10 @@ msgid "Free"
 msgstr ""
 
 msgid "From"
-msgstr ""
+msgstr "من"
 
 msgid "From reseller"
-msgstr ""
+msgstr "من الريسيلر"
 
 msgid "Ftp"
 msgstr ""
@@ -2509,7 +2510,7 @@ msgid "Ftp account data"
 msgstr ""
 
 msgid "Ftp accounts"
-msgstr ""
+msgstr "حسابات الاف تى بى"
 
 msgid "Ftp directories"
 msgstr ""
@@ -2518,16 +2519,16 @@ msgid "GB"
 msgstr ""
 
 msgid "Gender"
-msgstr ""
+msgstr "الجنس"
 
 msgid "General"
 msgstr ""
 
 msgid "General information"
-msgstr ""
+msgstr "المعلومات العامة"
 
 msgid "General settings"
-msgstr ""
+msgstr "إعدادات عامة"
 
 msgid "Generate"
 msgstr ""
@@ -2605,13 +2606,13 @@ msgid "Hosting plan successfully updated."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "خطط الاستضافة"
 
 msgid "Hour"
-msgstr ""
+msgstr "ساعة"
 
 msgid "Hours"
-msgstr ""
+msgstr "ساعات"
 
 msgid "Htaccess errors"
 msgstr ""
@@ -2646,7 +2647,7 @@ msgid "IP Address"
 msgstr ""
 
 msgid "IP address"
-msgstr ""
+msgstr "عنوان IP"
 
 msgid "IP address already under the control of i-MSCP."
 msgstr ""
@@ -2676,7 +2677,7 @@ msgid "IP netmask"
 msgstr ""
 
 msgid "IP usage"
-msgstr ""
+msgstr "استخدام الأى بى"
 
 msgid "IPv6 address"
 msgstr ""
@@ -2784,7 +2785,7 @@ msgid "Incorrect username length or syntax."
 msgstr ""
 
 msgid "Install"
-msgstr ""
+msgstr "تثبيت"
 
 msgid "Install in progress"
 msgstr ""
@@ -2829,7 +2830,7 @@ msgid "Internal Server Error"
 msgstr ""
 
 msgid "Internationalization"
-msgstr ""
+msgstr "تدويل"
 
 msgid "Invalid FTP username."
 msgstr ""
@@ -2902,10 +2903,10 @@ msgid "Label"
 msgstr ""
 
 msgid "Language"
-msgstr ""
+msgstr "اللغة"
 
 msgid "Language file"
-msgstr ""
+msgstr "ملف اللغة"
 
 msgid "Language file successfully installed."
 msgstr ""
@@ -2923,10 +2924,10 @@ msgid "Last Web software repository update"
 msgstr ""
 
 msgid "Last access"
-msgstr ""
+msgstr "آخر دخول"
 
 msgid "Last name"
-msgstr ""
+msgstr "إسم العائلة"
 
 msgid "Last name cannot have more than 200 characters."
 msgstr ""
@@ -2938,7 +2939,7 @@ msgid "Last translator"
 msgstr ""
 
 msgid "Layout"
-msgstr ""
+msgstr "تصميم"
 
 msgid "Layout color"
 msgstr ""
@@ -2947,10 +2948,10 @@ msgid "Layout color successfully updated."
 msgstr ""
 
 msgid "Level"
-msgstr ""
+msgstr "مستوى"
 
 msgid "Limit"
-msgstr ""
+msgstr "محدود"
 
 msgid "Limit value"
 msgstr ""
@@ -2974,7 +2975,7 @@ msgid "Log entries successfully deleted."
 msgstr ""
 
 msgid "Login"
-msgstr ""
+msgstr "دخول"
 
 msgid "Login password"
 msgstr ""
@@ -2995,10 +2996,10 @@ msgid "Logo successfully updated."
 msgstr ""
 
 msgid "Logout"
-msgstr ""
+msgstr "تسجيل الخروج"
 
 msgid "Lost password"
-msgstr ""
+msgstr "فقدت كلمة المرور"
 
 msgid "Lost password email"
 msgstr ""
@@ -3019,7 +3020,7 @@ msgid "MB"
 msgstr ""
 
 msgid "Mail"
-msgstr ""
+msgstr "e-mail"
 
 msgid "Mail Log Level"
 msgstr ""
@@ -3047,7 +3048,7 @@ msgid "Maintenance message"
 msgstr ""
 
 msgid "Maintenance mode"
-msgstr ""
+msgstr "وضع الصيانة"
 
 msgid ""
 "Maintenance mode is activated. In this mode, only administrators can login."
@@ -3057,13 +3058,13 @@ msgid "Maintenance settings"
 msgstr ""
 
 msgid "Male"
-msgstr ""
+msgstr "ذكر"
 
 msgid "Malformed resolver SQL query"
 msgstr ""
 
 msgid "Manage SQL"
-msgstr ""
+msgstr "ادارة قواعد بيانات SQL"
 
 msgid "Manage SSL certificate"
 msgstr ""
@@ -3072,19 +3073,19 @@ msgid "Manage htaccess users and groups"
 msgstr ""
 
 msgid "Manage users"
-msgstr ""
+msgstr "إدارة المستخدمين"
 
 msgid "Manage users and groups"
-msgstr ""
+msgstr "ادارة المستخدمين و المجموعات"
 
 msgid "Manage your protected areas, users and groups."
-msgstr ""
+msgstr "ادارة المناطق المحمية, الاعضاء و المجموعات"
 
 msgid "Manual"
 msgstr ""
 
 msgid "Mark"
-msgstr ""
+msgstr "علالمة"
 
 msgid "Max number of login attempts"
 msgstr ""
@@ -3114,7 +3115,7 @@ msgid "Member of group"
 msgstr ""
 
 msgid "Memory information"
-msgstr ""
+msgstr "معلومات الذاكرة"
 
 msgid "Message"
 msgstr ""
@@ -3136,10 +3137,10 @@ msgid "Migration file %s is not readable."
 msgstr ""
 
 msgid "Minute"
-msgstr ""
+msgstr "دقيقة"
 
 msgid "Minutes"
-msgstr ""
+msgstr "دقائق"
 
 msgid "Missing domain"
 msgstr ""
@@ -3151,7 +3152,7 @@ msgid "Modification in progress..."
 msgstr ""
 
 msgid "Month"
-msgstr ""
+msgstr "شهر"
 
 msgid "Monthly traffic limit [MiB]"
 msgstr ""
@@ -3175,7 +3176,7 @@ msgid "Mount point"
 msgstr ""
 
 msgid "Move"
-msgstr ""
+msgstr "نقل"
 
 msgid "Moving aborted."
 msgstr ""
@@ -3205,16 +3206,16 @@ msgid "New alias order for {CUSTOMER}"
 msgstr ""
 
 msgid "New ticket"
-msgstr ""
+msgstr "تذكرة جديدة"
 
 msgid "Next"
 msgstr ""
 
 msgid "Next step"
-msgstr ""
+msgstr "الخطوة التالية"
 
 msgid "No"
-msgstr ""
+msgstr "لا"
 
 msgid "No IP address found."
 msgstr ""
@@ -3316,7 +3317,7 @@ msgid "Normal connection"
 msgstr ""
 
 msgid "Normal users"
-msgstr ""
+msgstr "المستخدمين العاديين"
 
 msgid "Not Found"
 msgstr ""
@@ -3411,19 +3412,19 @@ msgid "Other out"
 msgstr ""
 
 msgid "Other settings"
-msgstr ""
+msgstr "إعدادات اخرى"
 
 msgid "Overview"
-msgstr ""
+msgstr "نظرة عامة"
 
 msgid "Owner"
-msgstr ""
+msgstr "المالك"
 
 msgid "PB"
 msgstr ""
 
 msgid "PHP"
-msgstr ""
+msgstr "بى اتش بى"
 
 #, php-format
 msgid "PHP %s configuration option"
@@ -3511,7 +3512,7 @@ msgid "Package version"
 msgstr ""
 
 msgid "Panel default language"
-msgstr ""
+msgstr "اللغة الرئيسية للوحة"
 
 msgid "Parent directory"
 msgstr ""
@@ -3520,7 +3521,7 @@ msgid "Partition"
 msgstr ""
 
 msgid "Password"
-msgstr ""
+msgstr "كلمة المرور"
 
 msgid "Password cannot be empty."
 msgstr ""
@@ -3557,7 +3558,7 @@ msgid ""
 msgstr ""
 
 msgid "Password settings"
-msgstr ""
+msgstr "إعدادات كلمة المرور"
 
 msgid "Password successfully updated."
 msgstr ""
@@ -3575,13 +3576,13 @@ msgid "Pending tasks"
 msgstr ""
 
 msgid "Percent"
-msgstr ""
+msgstr "النسبة"
 
 msgid "Permissions"
 msgstr ""
 
 msgid "Personal data"
-msgstr ""
+msgstr "البيانات الشخصية"
 
 msgid "Personal data successfully updated."
 msgstr ""
@@ -3590,10 +3591,10 @@ msgid "Personalise template"
 msgstr ""
 
 msgid "Phone"
-msgstr ""
+msgstr "رقم هاتف"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "ادارة قواعد البيانات"
 
 msgid "PiB"
 msgstr ""
@@ -3890,7 +3891,7 @@ msgid ""
 msgstr ""
 
 msgid "Priority"
-msgstr ""
+msgstr "أولوية"
 
 msgid "Private key"
 msgstr ""
@@ -3911,7 +3912,7 @@ msgid "Profile"
 msgstr ""
 
 msgid "Properties"
-msgstr ""
+msgstr "الخصائص"
 
 #, php-format
 msgid "Properties for reseller with ID %d were not found in database."
@@ -3945,7 +3946,7 @@ msgid "Protected area successfully scheduled for update."
 msgstr ""
 
 msgid "Protected areas"
-msgstr ""
+msgstr "المناطق المحمية"
 
 msgid "Protocol"
 msgstr ""
@@ -3954,7 +3955,7 @@ msgid "Quota assignment"
 msgstr ""
 
 msgid "Quota in MiB (0 for unlimited)"
-msgstr ""
+msgstr "المساحة بالميجا (من 0 الى غير محدودة)"
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
@@ -4006,7 +4007,7 @@ msgid "Remove"
 msgstr ""
 
 msgid "Remove IP"
-msgstr ""
+msgstr "ازالة أى بى"
 
 msgid "Remove permissions"
 msgstr ""
@@ -4018,7 +4019,7 @@ msgid "Reopen ticket"
 msgstr ""
 
 msgid "Repeat password"
-msgstr ""
+msgstr "اعادة كتابة كلمة السر"
 
 msgid "Reply"
 msgstr ""
@@ -4120,7 +4121,7 @@ msgid "Reseller /Hosting Plans / Edit Hosting Plan"
 msgstr ""
 
 msgid "Reseller Name"
-msgstr ""
+msgstr "إسم الريسيلر"
 
 msgid "Reseller account successfully created."
 msgstr ""
@@ -4135,7 +4136,7 @@ msgid "Reseller and customer levels"
 msgstr ""
 
 msgid "Reseller assignment"
-msgstr ""
+msgstr "احالة ريسيلر"
 
 msgid "Reseller assignments"
 msgstr ""
@@ -4147,7 +4148,7 @@ msgid "Reseller data"
 msgstr ""
 
 msgid "Reseller level"
-msgstr ""
+msgstr "مستوى الريسيلر"
 
 msgid "Reseller list"
 msgstr ""
@@ -4156,7 +4157,7 @@ msgid "Reseller list is empty."
 msgstr ""
 
 msgid "Reseller name"
-msgstr ""
+msgstr "إسم الريسيلر"
 
 msgid "Reseller software list"
 msgstr ""
@@ -4171,7 +4172,7 @@ msgid "Reseller total"
 msgstr ""
 
 msgid "Reseller users"
-msgstr ""
+msgstr "مستخدمين الريسيلر"
 
 msgid "Reseller with permissions total"
 msgstr ""
@@ -4183,7 +4184,7 @@ msgid "Reseller/IP usage statistics"
 msgstr ""
 
 msgid "Resellers"
-msgstr ""
+msgstr "الريسيلرات"
 
 msgid "Resellers and customers"
 msgstr ""
@@ -4192,10 +4193,10 @@ msgid "Reset"
 msgstr ""
 
 msgid "Restore"
-msgstr ""
+msgstr "إسترجاع"
 
 msgid "Restore backup"
-msgstr ""
+msgstr "إسترجاع نسخة إحتياطية"
 
 msgid "Revision date"
 msgstr ""
@@ -4219,7 +4220,7 @@ msgid "SMTP traffic"
 msgstr ""
 
 msgid "SQL"
-msgstr ""
+msgstr "SQL"
 
 msgid "SQL database"
 msgstr ""
@@ -4246,7 +4247,7 @@ msgid "SQL database successfully deleted."
 msgstr ""
 
 msgid "SQL databases"
-msgstr ""
+msgstr "قواعد البيانات SQL"
 
 msgid "SQL databases only"
 msgstr ""
@@ -4288,7 +4289,7 @@ msgid "SQL username is too long."
 msgstr ""
 
 msgid "SQL users"
-msgstr ""
+msgstr "اسم مستخدم قواعد البيانات"
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr ""
@@ -4306,10 +4307,10 @@ msgid "SSL status"
 msgstr ""
 
 msgid "Save"
-msgstr ""
+msgstr "حفظ"
 
 msgid "Search"
-msgstr ""
+msgstr "البحث"
 
 msgid "Sec."
 msgstr ""
@@ -4318,7 +4319,7 @@ msgid "Secure connection"
 msgstr ""
 
 msgid "Security code"
-msgstr ""
+msgstr "كود الأمان"
 
 msgid "Security code has expired"
 msgstr ""
@@ -4336,16 +4337,16 @@ msgid "Send circular"
 msgstr ""
 
 msgid "Send message"
-msgstr ""
+msgstr "ارسال رسالة"
 
 msgid "Send message to"
-msgstr ""
+msgstr "أرسل رسالة إلى"
 
 msgid "Send new login data"
-msgstr ""
+msgstr "ارسال معلومات دخول جديدة"
 
 msgid "Send reply"
-msgstr ""
+msgstr "أرسل ردا"
 
 msgid "Send to"
 msgstr ""
@@ -4369,19 +4370,19 @@ msgid "Separate multiple email addresses with a line-break."
 msgstr ""
 
 msgid "Server ports"
-msgstr ""
+msgstr "بورتات الخادم"
 
 msgid "Server statistics"
-msgstr ""
+msgstr "إحصائيات الخادم"
 
 msgid "Server status"
-msgstr ""
+msgstr "حالة الخادم"
 
 msgid "Server traffic"
-msgstr ""
+msgstr "إحصائيات السيرفر"
 
 msgid "Server traffic settings"
-msgstr ""
+msgstr "ضبط احصائيات السيرفر"
 
 msgid "Server traffic settings successfully updated."
 msgstr ""
@@ -4411,13 +4412,13 @@ msgid "Service protocol"
 msgstr ""
 
 msgid "Services status"
-msgstr ""
+msgstr "حالة الخدمات"
 
 msgid "Sessions"
 msgstr ""
 
 msgid "Settings"
-msgstr ""
+msgstr "إعدادات"
 
 msgid "Settings saved."
 msgstr ""
@@ -4426,7 +4427,7 @@ msgid "Shared mount point"
 msgstr ""
 
 msgid "Show"
-msgstr ""
+msgstr "أظهر"
 
 #, php-format
 msgid "Show %s records per page"
@@ -4458,7 +4459,7 @@ msgid "Showing 0 to 0 of 0 records"
 msgstr ""
 
 msgid "Size"
-msgstr ""
+msgstr "حجم"
 
 msgid "Software"
 msgstr ""
@@ -4554,16 +4555,16 @@ msgid "State"
 msgstr ""
 
 msgid "State/Province"
-msgstr ""
+msgstr "الولاية"
 
 msgid "Statistics"
-msgstr ""
+msgstr "إحصائيات"
 
 msgid "Stats"
-msgstr ""
+msgstr "إحصائيات"
 
 msgid "Status"
-msgstr ""
+msgstr "الحالة"
 
 msgid "Street 1"
 msgstr ""
@@ -4575,7 +4576,7 @@ msgid "Strong passwords"
 msgstr ""
 
 msgid "Subdomain"
-msgstr ""
+msgstr "نطاقات فرعية"
 
 #, php-format
 msgid "Subdomain %s already exist."
@@ -4644,7 +4645,7 @@ msgid ""
 msgstr ""
 
 msgid "Subdomains"
-msgstr ""
+msgstr "النطاقات الفرعية"
 
 msgid "Subject"
 msgstr ""
@@ -4653,34 +4654,34 @@ msgid "Subject is missing."
 msgstr ""
 
 msgid "Submit changes"
-msgstr ""
+msgstr "حفظ التغييرات"
 
 msgid "Support"
 msgstr ""
 
 msgid "Support system"
-msgstr ""
+msgstr "نظام الدعم الفني"
 
 msgid "Suspended"
-msgstr ""
+msgstr "معلق"
 
 msgid "Swap"
-msgstr ""
+msgstr "ذاكرة تبديلية"
 
 msgid "Switch"
-msgstr ""
+msgstr "التبديل"
 
 msgid "Switch to the backups directory"
 msgstr ""
 
 msgid "Switch to user interface"
-msgstr ""
+msgstr "التبديل إلى واجهة المستخدم"
 
 msgid "Syntax error found in mail forward list."
 msgstr ""
 
 msgid "System"
-msgstr ""
+msgstr "النظام"
 
 msgid "System data"
 msgstr ""
@@ -4692,7 +4693,7 @@ msgid "System information"
 msgstr ""
 
 msgid "System tools"
-msgstr ""
+msgstr "أدوات النظام"
 
 msgid "System under maintenance"
 msgstr ""
@@ -4887,7 +4888,7 @@ msgid "This user has domain record. First remove the domain from the system."
 msgstr ""
 
 msgid "This user name already exist."
-msgstr ""
+msgstr "اسم المستخدم هذا موجود مسبقا."
 
 msgid "TiB"
 msgstr ""
@@ -4909,10 +4910,10 @@ msgid "Ticket with Id '%d' was not found."
 msgstr ""
 
 msgid "To Admin"
-msgstr ""
+msgstr "الى المدير"
 
 msgid "To reseller"
-msgstr ""
+msgstr "الى الريسيلر"
 
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
@@ -5065,10 +5066,10 @@ msgid "Uninstalled"
 msgstr ""
 
 msgid "Unknown"
-msgstr ""
+msgstr "غير معروف"
 
 msgid "Unknown Error"
-msgstr ""
+msgstr "خطأ غير معروف"
 
 #, php-format
 msgid "Unknown `%s' database. Database must exists."
@@ -5111,7 +5112,7 @@ msgid "Unlimited"
 msgstr ""
 
 msgid "Update"
-msgstr ""
+msgstr "تحديث"
 
 msgid "Update Plugins"
 msgstr ""
@@ -5120,7 +5121,7 @@ msgid "Update SQL user password"
 msgstr ""
 
 msgid "Update data"
-msgstr ""
+msgstr "تحديث البيانات"
 
 msgid "Update from Web software repository"
 msgstr ""
@@ -5170,19 +5171,19 @@ msgid "Use secure connection (SSL)"
 msgstr ""
 
 msgid "Used"
-msgstr ""
+msgstr "مستخدم"
 
 msgid "Used database"
 msgstr ""
 
 msgid "User"
-msgstr ""
+msgstr "اسم المستخدم"
 
 msgid "User (first and last) name"
 msgstr ""
 
 msgid "User assignment"
-msgstr ""
+msgstr "احالة عضو"
 
 msgid "User data successfully updated"
 msgstr ""
@@ -5213,7 +5214,7 @@ msgid "User password"
 msgstr ""
 
 msgid "User real (first and last) name"
-msgstr ""
+msgstr "الإسم الحقيقي للمستخدم(الإسم الأول وإسم العائلة)"
 
 msgid "User scheduled for deletion."
 msgstr ""
@@ -5228,26 +5229,26 @@ msgid "User successfully disconnected."
 msgstr ""
 
 msgid "User type"
-msgstr ""
+msgstr "نوع المستخدم"
 
 msgid "User type (admin, reseller, user)"
-msgstr ""
+msgstr "نوع المستخدم (admin,reseller,مستخدم)"
 
 msgid "Username"
-msgstr ""
+msgstr "إسم المستخدم"
 
 msgid "Username and password for application login"
 msgstr ""
 
 msgid "Users"
-msgstr ""
+msgstr "المستخدمين"
 
 #, php-format
 msgid "Value for the PHP %%s directive must be in range %%d to %%d."
 msgstr ""
 
 msgid "Values"
-msgstr ""
+msgstr "القيم"
 
 msgid "Vendor hompage"
 msgstr ""
@@ -5259,7 +5260,7 @@ msgid "Very high"
 msgstr ""
 
 msgid "View"
-msgstr ""
+msgstr "عرض"
 
 msgid "View SSL certificate"
 msgstr ""
@@ -5315,16 +5316,16 @@ msgid "Web software repository index is already up to date."
 msgstr ""
 
 msgid "Web statistics"
-msgstr ""
+msgstr "إحصائيات الويب"
 
 msgid "Web traffic"
 msgstr ""
 
 msgid "Webmail"
-msgstr ""
+msgstr "البريد الالكتروني"
 
 msgid "Webtools"
-msgstr ""
+msgstr "أدوات الويب"
 
 msgid "Welcome email"
 msgstr ""
@@ -5388,10 +5389,10 @@ msgid "YB"
 msgstr ""
 
 msgid "Year"
-msgstr ""
+msgstr "سنة"
 
 msgid "Yes"
-msgstr ""
+msgstr "نعم"
 
 msgid "YiB"
 msgstr ""
@@ -5476,7 +5477,7 @@ msgid "You do not have DNS resource records."
 msgstr ""
 
 msgid "You do not have FTP accounts."
-msgstr ""
+msgstr "أنت لا تملك أى حسابات أف تى بى"
 
 msgid "You do not have any software uploaded yet"
 msgstr ""
@@ -5739,10 +5740,10 @@ msgid "Zip"
 msgstr ""
 
 msgid "Zip code"
-msgstr ""
+msgstr "الكود البريدى"
 
 msgid "Zip/Postal code"
-msgstr ""
+msgstr "الكود البريدى"
 
 msgid "Zone"
 msgstr ""
@@ -5754,7 +5755,7 @@ msgid "[Re]"
 msgstr ""
 
 msgid "_: Localised language"
-msgstr ""
+msgstr "العربية - Arabic"
 
 #, php-format
 msgid "`%s` field cannot be empty."
@@ -5791,7 +5792,7 @@ msgid "disk space"
 msgstr ""
 
 msgid "domain"
-msgstr ""
+msgstr "نطاق"
 
 msgid "domain alias"
 msgstr ""
@@ -5803,19 +5804,19 @@ msgid "domain data"
 msgstr ""
 
 msgid "domains"
-msgstr ""
+msgstr "النطاقات"
 
 msgid "email account"
 msgstr ""
 
 msgid "email accounts"
-msgstr ""
+msgstr "حسابات البريد"
 
 msgid "enabled"
 msgstr ""
 
 msgid "everything"
-msgstr ""
+msgstr "كل شئ"
 
 msgid "from other browser"
 msgstr ""
@@ -5860,7 +5861,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "تحديثات i-MSCP"
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""
@@ -5872,7 +5873,7 @@ msgid "installing"
 msgstr ""
 
 msgid "internet Multi Server Control Panel"
-msgstr ""
+msgstr "لوحة تحكم سيرفرات الويب المتعددة"
 
 msgid "kB"
 msgstr ""
@@ -5905,19 +5906,19 @@ msgid "not required"
 msgstr ""
 
 msgid "older than 1 month"
-msgstr ""
+msgstr "أقدم من شهر"
 
 msgid "older than 12 months"
-msgstr ""
+msgstr "أقدم من 12 شهر"
 
 msgid "older than 2 weeks"
-msgstr ""
+msgstr "اقدم من أسبوعين"
 
 msgid "older than 3 months"
-msgstr ""
+msgstr "أقدم من 3 أشهر"
 
 msgid "older than 6 months"
-msgstr ""
+msgstr "أقدم من 6 أشهر"
 
 #, php-format
 msgid "or remote file (Max: %s)"
@@ -5930,10 +5931,10 @@ msgid "required"
 msgstr ""
 
 msgid "subdomain"
-msgstr ""
+msgstr "نطاقات فرعية"
 
 msgid "subdomains"
-msgstr ""
+msgstr "النطاقات الفرعية"
 
 msgid "tcp"
 msgstr ""
@@ -5945,19 +5946,19 @@ msgid "udp"
 msgstr ""
 
 msgid "unlimited"
-msgstr ""
+msgstr "غير محدود"
 
 msgid "update"
 msgstr ""
 
 msgid "view aliases"
-msgstr ""
+msgstr "عرض النطاقات المستعارة"
 
 msgid "waiting for activation"
 msgstr ""
 
 msgid "yes"
-msgstr ""
+msgstr "نعم"
 
 msgid "{USERNAME} user statistics"
 msgstr ""
