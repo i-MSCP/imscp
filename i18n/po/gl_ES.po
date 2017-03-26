@@ -1,16 +1,16 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR i-MSCP Team - All rights reserved
 # This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
-# Translators:
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: i-MSCP\n"
+"Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-01-07 03:24+0100\n"
-"PO-Revision-Date: 2016-12-31 11:13+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
-"Language-Team: Galician (Spain) (http://www.transifex.com/i-mscp/i-MSCP/language/gl_ES/)\n"
+"POT-Creation-Date: 2017-03-25 03:04+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Language-Team: Galician (Spain) (https://www.transifex.com/i-mscp/teams/576/gl_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -61,11 +61,11 @@ msgstr ""
 
 #, php-format
 msgid "%1$d%% [%2$s of %3$s]"
-msgstr "%1$d%% [%2$s de %3$s]"
+msgstr ""
 
 #, php-format
 msgid "%1$d%% [%2$s of unlimited]"
-msgstr "%1$d%% [%2$s de ilimitado]"
+msgstr ""
 
 #, php-format
 msgid "%1$s (%2$s)"
@@ -101,18 +101,18 @@ msgstr ""
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
-msgstr "%1$s agora iniciaches sesión como %2$s"
+msgstr ""
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
-msgstr "%1$s%% [%2$s de %3$s]"
+msgstr ""
 
 #, php-format
 msgid "%1$s%% [%2$s of unlimited]"
-msgstr "%1$s%% [%2$s de ilimitado]"
+msgstr ""
 
 #, php-format
-msgid "%1$s`s - Software"
+msgid "%1$ss - Software"
 msgstr ""
 
 #, php-format
@@ -141,10 +141,6 @@ msgstr ""
 
 #, php-format
 msgid "%d strings translated"
-msgstr ""
-
-#, php-format
-msgid "%s / %s of %s"
 msgstr ""
 
 #, php-format
@@ -185,7 +181,11 @@ msgstr ""
 
 #, php-format
 msgid "%s record"
-msgstr "información %s"
+msgstr ""
+
+#, php-format
+msgid "%s total available"
+msgstr ""
 
 #, php-format
 msgid "%s webmail"
@@ -382,7 +382,7 @@ msgid "(filtered from %s total records)"
 msgstr ""
 
 msgid "(usually named"
-msgstr "(normalmente chamado"
+msgstr ""
 
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
@@ -434,7 +434,7 @@ msgid "Account limits"
 msgstr ""
 
 msgid "Account name"
-msgstr "Nome de conta"
+msgstr ""
 
 msgid "Account overview"
 msgstr ""
@@ -446,7 +446,7 @@ msgid "Account type"
 msgstr ""
 
 msgid "Action"
-msgstr "Acción"
+msgstr ""
 
 msgid "Action has been stopped."
 msgstr ""
@@ -455,10 +455,10 @@ msgid "Action has failed."
 msgstr ""
 
 msgid "Actions"
-msgstr "Accións"
+msgstr ""
 
 msgid "Activate"
-msgstr "Activar"
+msgstr ""
 
 msgid "Activate this plugin"
 msgstr ""
@@ -479,7 +479,7 @@ msgid "Activation link expire time <small>(In minutes)</small>"
 msgstr ""
 
 msgid "Add"
-msgstr "Engadir"
+msgstr ""
 
 msgid "Add DNS resource record"
 msgstr ""
@@ -494,16 +494,16 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr "Engadir banco de datos SQL"
+msgstr ""
 
 msgid "Add SQL user"
-msgstr "Engadir usuario SQL"
+msgstr ""
 
 msgid "Add SSL certificate"
 msgstr ""
 
 msgid "Add admin"
-msgstr "Engadir administrador"
+msgstr ""
 
 msgid "Add catchall"
 msgstr ""
@@ -518,25 +518,22 @@ msgid "Add customer - Next step"
 msgstr ""
 
 msgid "Add domain alias"
-msgstr "Engadir alias de dominio"
+msgstr ""
 
 msgid "Add email account"
 msgstr ""
 
 msgid "Add group"
-msgstr "Engadir grupo"
+msgstr ""
 
 msgid "Add hosting plan"
-msgstr "Engadir plano de hospedaxe"
+msgstr ""
 
 msgid "Add new IP address"
 msgstr ""
 
-msgid "Add new database"
-msgstr ""
-
 msgid "Add new protected area"
-msgstr "Engadir nova área protexida"
+msgstr ""
 
 msgid "Add new service port"
 msgstr ""
@@ -551,13 +548,13 @@ msgid "Add protected area"
 msgstr ""
 
 msgid "Add reseller"
-msgstr "Engadir revendedor"
+msgstr ""
 
 msgid "Add subdomain"
-msgstr "Engadir subdominio"
+msgstr ""
 
 msgid "Add user"
-msgstr "Engadir usuario"
+msgstr ""
 
 msgid "Added by"
 msgstr ""
@@ -566,10 +563,10 @@ msgid "Addition in progress..."
 msgstr ""
 
 msgid "Additional data"
-msgstr "Datos adicionais"
+msgstr ""
 
 msgid "Admin"
-msgstr "Admin"
+msgstr ""
 
 msgid "Admin / General / Admin Log"
 msgstr ""
@@ -709,19 +706,19 @@ msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr "Rexistro (log) de administración"
+msgstr ""
 
 msgid "Admin not available"
 msgstr ""
 
 msgid "Admin users"
-msgstr "Usuarios administradores"
+msgstr ""
 
 msgid "Admin/IP usage statistics"
 msgstr ""
 
 msgid "Administrator"
-msgstr "Administrador"
+msgstr ""
 
 msgid "Administrator and Reseller levels"
 msgstr ""
@@ -736,13 +733,13 @@ msgid "Administrator and reseller"
 msgstr ""
 
 msgid "Administrator level"
-msgstr "Nivel de administrador"
+msgstr ""
 
 msgid "Administrator login"
-msgstr "Inicio de sesión de administrador"
+msgstr ""
 
 msgid "Administrators"
-msgstr "Administradores"
+msgstr ""
 
 msgid "Administrators and customers"
 msgstr ""
@@ -768,10 +765,10 @@ msgid "Alias subdomain mail"
 msgstr ""
 
 msgid "Aliases"
-msgstr "Alias"
+msgstr ""
 
 msgid "All"
-msgstr "Todo"
+msgstr ""
 
 msgid "All closed tickets were successfully deleted."
 msgstr ""
@@ -792,7 +789,7 @@ msgid "All fields are valid."
 msgstr ""
 
 msgid "All in"
-msgstr "Todas as entradas"
+msgstr ""
 
 msgid "All levels"
 msgstr ""
@@ -801,16 +798,16 @@ msgid "All open tickets were successfully deleted."
 msgstr ""
 
 msgid "All out"
-msgstr "Todas as saídas"
+msgstr ""
 
 msgid "All reseller"
 msgstr ""
 
 msgid "All traffic"
-msgstr "Todo o tráfico"
+msgstr ""
 
 msgid "All users"
-msgstr "Todos os usuarios"
+msgstr ""
 
 msgid "Allow URL fopen"
 msgstr ""
@@ -822,7 +819,7 @@ msgid "Allows to share the mount point of another domain."
 msgstr ""
 
 msgid "Already in use"
-msgstr "Correcto"
+msgstr ""
 
 msgid "Alternate URL to reach your website."
 msgstr ""
@@ -831,9 +828,6 @@ msgid "Alternative URL to reach your website"
 msgstr ""
 
 msgid "An email addresse is not valid in mail forward list."
-msgstr ""
-
-msgid "An error occurred during authentication."
 msgstr ""
 
 msgid "An unexpected error occurred"
@@ -870,10 +864,10 @@ msgid "Application installer"
 msgstr ""
 
 msgid "Apply"
-msgstr "Correcto"
+msgstr ""
 
 msgid "Apply changes"
-msgstr "Aplicar trocos"
+msgstr ""
 
 msgid "Are you sure to install this package from the webdepot?"
 msgstr ""
@@ -897,12 +891,12 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete %s?"
-msgstr "Estás certo de querer eliminar %s?"
+msgstr ""
 
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr ""
 
-msgid "Are you sure you want to delete all selected items?"
+msgid "Are you sure you want to delete all selected mail accounts?"
 msgstr ""
 
 msgid "Are you sure you want to delete all tickets?"
@@ -926,6 +920,10 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the %s user?"
 msgstr ""
 
 #, php-format
@@ -973,10 +971,10 @@ msgid ""
 msgstr ""
 
 msgid "Are you sure you want to restore the backup?"
-msgstr "Estás certo de querer restaurar a copia de seguridade?"
+msgstr ""
 
 msgid "Assign"
-msgstr "Asignar"
+msgstr ""
 
 msgid "Assign existing SQL user"
 msgstr ""
@@ -985,9 +983,6 @@ msgid "Assign group"
 msgstr ""
 
 msgid "Assigned to at least one reseller"
-msgstr ""
-
-msgid "At first you must create a database which have at least one SQL user."
 msgstr ""
 
 msgid "At least one intermediate certificate is invalid or missing."
@@ -1042,10 +1037,10 @@ msgid "B"
 msgstr ""
 
 msgid "Back"
-msgstr "Atrás"
+msgstr ""
 
 msgid "Backup"
-msgstr "Copia de respaldo"
+msgstr ""
 
 msgid "Backup and restore settings."
 msgstr ""
@@ -1092,7 +1087,7 @@ msgid "Both source and destination are identical."
 msgstr ""
 
 msgid "Bruteforce detection"
-msgstr "Detección de forza bruta"
+msgstr ""
 
 msgid "Bulk Actions"
 msgstr ""
@@ -1118,13 +1113,13 @@ msgid "Can use the PHP %s function"
 msgstr ""
 
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr ""
 
 msgid "Canonical name"
-msgstr "Nome canónico"
+msgstr ""
 
 msgid "Catch all"
-msgstr "Recolle-todo"
+msgstr ""
 
 msgid "Catch all successfully scheduled for addition."
 msgstr ""
@@ -1142,16 +1137,16 @@ msgid "Certificate data"
 msgstr ""
 
 msgid "Change"
-msgstr "Mudar"
+msgstr ""
 
 msgid "Change personal data"
-msgstr "Mudar datos persoais"
+msgstr ""
 
 msgid "Change status of this item for a new attempt"
 msgstr ""
 
 msgid "Check for update"
-msgstr "Comprobar se hai actualizacións"
+msgstr ""
 
 msgid ""
 "Check the reseller uploads!<br>It is not allowed to upload this package two "
@@ -1175,17 +1170,17 @@ msgid ""
 msgstr ""
 
 msgid "Choose"
-msgstr "Escoller"
+msgstr ""
 
 msgid "Choose dir"
-msgstr "Escoller directorio"
+msgstr ""
 
 #, php-format
 msgid "Choose file (Max: %1$d MiB)"
 msgstr ""
 
 msgid "Choose hosting plan"
-msgstr "Escoller plano de hospedaxe"
+msgstr ""
 
 msgid "Choose layout color"
 msgstr ""
@@ -1194,26 +1189,26 @@ msgid "Choose your language"
 msgstr ""
 
 msgid "Circular"
-msgstr "Circular"
+msgstr ""
 
 msgid "Circular successfully sent."
 msgstr ""
 
 msgid "City"
-msgstr "Cidade"
+msgstr ""
 
 msgid "Class"
-msgstr "Clase"
+msgstr ""
 
 msgid "Clear log"
-msgstr "Limpar rexistro (log)"
+msgstr ""
 
 msgid "Click here for more details"
 msgstr ""
 
 msgid ""
 "Click the Restore button and the system will restore the last daily backup"
-msgstr "Preme no botón Restaurar e o sistema restaurará a última copia de seguridade diaria"
+msgstr ""
 
 msgid "Click to activate"
 msgstr ""
@@ -1375,7 +1370,7 @@ msgid "Clock speed (MHz)"
 msgstr ""
 
 msgid "Close"
-msgstr "Correcto"
+msgstr ""
 
 msgid "Close the ticket"
 msgstr ""
@@ -1384,13 +1379,13 @@ msgid "Close ticket"
 msgstr ""
 
 msgid "Closed tickets"
-msgstr "Solicitudes pechadas"
+msgstr ""
 
 msgid "Common name"
 msgstr ""
 
 msgid "Company"
-msgstr "Empresa"
+msgstr ""
 
 msgid "Compress HTML output"
 msgstr ""
@@ -1398,12 +1393,15 @@ msgstr ""
 msgid "Configuration mode"
 msgstr ""
 
+msgid "Confirmation required"
+msgstr ""
+
 #, php-format
 msgid "Conflict with the `%s' DNS resource record."
 msgstr ""
 
 msgid "Core data"
-msgstr "Datos básicos"
+msgstr ""
 
 msgid "Cores"
 msgstr ""
@@ -1417,6 +1415,10 @@ msgstr ""
 
 #, php-format
 msgid "Could not change the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Could not connect to the `%s' database. Please check the password."
 msgstr ""
 
 #, php-format
@@ -1495,22 +1497,22 @@ msgid "Count default email addresses"
 msgstr ""
 
 msgid "Country"
-msgstr "País"
+msgstr ""
 
 msgid "Create"
-msgstr "Correcto"
+msgstr ""
 
 msgid "Create catch all"
-msgstr "Crear recolle-todo"
+msgstr ""
 
 msgid "Create default email addresses"
 msgstr ""
 
 msgid "Created by"
-msgstr "Creado por"
+msgstr ""
 
 msgid "Creation date"
-msgstr "Data de creación"
+msgstr ""
 
 msgid "Custom DNS errors"
 msgstr ""
@@ -1525,7 +1527,7 @@ msgid "Custom error page updated."
 msgstr ""
 
 msgid "Custom error pages"
-msgstr "Páxinas de erro á medida"
+msgstr ""
 
 msgid "Custom menu name and link"
 msgstr ""
@@ -1543,13 +1545,13 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr "Menús personalizados"
+msgstr ""
 
 msgid "Customer"
 msgstr ""
 
 msgid "Customer ID"
-msgstr "ID de cliente"
+msgstr ""
 
 msgid "Customer ID cannot have more than 200 characters"
 msgstr ""
@@ -1618,7 +1620,7 @@ msgid "DNS zone in which you want add this DNS resource record."
 msgstr ""
 
 msgid "DOWN"
-msgstr "PARADO"
+msgstr ""
 
 msgid "Daemon request failed."
 msgstr ""
@@ -1627,7 +1629,7 @@ msgid "Daemon request successful."
 msgstr ""
 
 msgid "Daily backup"
-msgstr "Copia de seguridade diaria"
+msgstr ""
 
 msgid "Data"
 msgstr ""
@@ -1639,7 +1641,7 @@ msgid "Database"
 msgstr ""
 
 msgid "Database Name and Users"
-msgstr "Nome de Banco de Datos e Usuarios"
+msgstr ""
 
 msgid "Database Update Revision"
 msgstr ""
@@ -1647,13 +1649,19 @@ msgstr ""
 msgid "Database Update details"
 msgstr ""
 
+msgid "Database data"
+msgstr ""
+
 msgid "Database name"
-msgstr "Nome do banco de datos"
+msgstr ""
 
 msgid "Database name is too long."
 msgstr ""
 
 msgid "Database name is unavailable or unallowed."
+msgstr ""
+
+msgid "Database password"
 msgstr ""
 
 msgid "Database prefix"
@@ -1671,17 +1679,20 @@ msgstr ""
 msgid "Database usage"
 msgstr ""
 
+msgid "Database user"
+msgstr ""
+
 msgid "Database users"
-msgstr "Usuarios de banco de datos"
+msgstr ""
 
 msgid "Databases"
 msgstr ""
 
 msgid "Date"
-msgstr "Data"
+msgstr ""
 
 msgid "Day"
-msgstr "Día"
+msgstr ""
 
 msgid "Day statistics"
 msgstr ""
@@ -1895,24 +1906,24 @@ msgid ""
 msgstr ""
 
 msgid "Delete"
-msgstr "Eliminar"
+msgstr ""
 
 msgid "Delete CatchAll"
-msgstr "Eliminar recolle-todo"
+msgstr ""
 
 msgid "Delete all tickets"
 msgstr ""
 
 msgid "Delete from log:"
-msgstr "Eliminar do rexistro (log):"
+msgstr ""
 
 msgid "Delete order"
-msgstr "Eliminar pedido"
+msgstr ""
 
 msgid "Delete reseller software"
 msgstr ""
 
-msgid "Delete selected items"
+msgid "Delete selected mail accounts"
 msgstr ""
 
 msgid "Delete this plugin"
@@ -1931,13 +1942,13 @@ msgid "Depot import"
 msgstr ""
 
 msgid "Description"
-msgstr "Descrición"
+msgstr ""
 
 msgid "Description cannot be empty."
 msgstr ""
 
 msgid "Details"
-msgstr "Pormenores"
+msgstr ""
 
 #, php-format
 msgid "Directory %s doesn't exists."
@@ -1952,10 +1963,10 @@ msgid "Directory '%s' is not allowed or invalid."
 msgstr ""
 
 msgid "Disable"
-msgstr "Desactivar"
+msgstr ""
 
 msgid "Disabled"
-msgstr "Desactivado"
+msgstr ""
 
 msgid "Disabled functions"
 msgstr ""
@@ -1964,7 +1975,7 @@ msgid "Disconnect"
 msgstr ""
 
 msgid "Disk"
-msgstr "Disco"
+msgstr ""
 
 msgid "Disk space"
 msgstr ""
@@ -1973,7 +1984,7 @@ msgid "Disk space limit [MiB]"
 msgstr ""
 
 msgid "Disk usage"
-msgstr "Emprego de disco"
+msgstr ""
 
 msgid "Disk usage detail"
 msgstr ""
@@ -1985,7 +1996,7 @@ msgid "Document root"
 msgstr ""
 
 msgid "Domain"
-msgstr "Dominio"
+msgstr ""
 
 #, php-format
 msgid "Domain %s cannot be forwarded on itself."
@@ -1996,7 +2007,7 @@ msgid "Domain %s is unavailable."
 msgstr ""
 
 msgid "Domain IP"
-msgstr "IP do dominio"
+msgstr ""
 
 msgid "Domain Limit"
 msgstr ""
@@ -2005,7 +2016,7 @@ msgid "Domain Name"
 msgstr ""
 
 msgid "Domain account"
-msgstr "Conta do dominio"
+msgstr ""
 
 msgid "Domain account expired."
 msgstr ""
@@ -2014,14 +2025,14 @@ msgid "Domain accounts"
 msgstr ""
 
 msgid "Domain alias"
-msgstr "Alias de dominio"
+msgstr ""
 
 #, php-format
 msgid "Domain alias %s cannot be forwarded on itself."
 msgstr ""
 
 msgid "Domain alias errors"
-msgstr "Erros de alias de dominio"
+msgstr ""
 
 msgid "Domain alias limit"
 msgstr ""
@@ -2045,7 +2056,7 @@ msgid "Domain alias successfully scheduled for update."
 msgstr ""
 
 msgid "Domain aliases"
-msgstr "Alias de dominios"
+msgstr ""
 
 msgid "Domain and SQL databases"
 msgstr ""
@@ -2057,10 +2068,10 @@ msgid "Domain data were altered. Please try again."
 msgstr ""
 
 msgid "Domain details"
-msgstr "Pormenores do dominio"
+msgstr ""
 
 msgid "Domain errors"
-msgstr "Erros de dominio"
+msgstr ""
 
 msgid "Domain expiration date"
 msgstr ""
@@ -2078,7 +2089,7 @@ msgid "Domain mail"
 msgstr ""
 
 msgid "Domain name"
-msgstr "Nome do dominio"
+msgstr ""
 
 msgid "Domain name (ASCII form) cannot be greater than 255 characters."
 msgstr ""
@@ -2113,7 +2124,7 @@ msgid "Domain scheduled for update."
 msgstr ""
 
 msgid "Domain statistics"
-msgstr "Estatísticas do dominio"
+msgstr ""
 
 msgid "Domain status is not ok."
 msgstr ""
@@ -2128,13 +2139,13 @@ msgid "Domain type"
 msgstr ""
 
 msgid "Domains"
-msgstr "Dominios"
+msgstr ""
 
 msgid "Domains per page"
-msgstr "Dominios por páxina"
+msgstr ""
 
 msgid "Done"
-msgstr "Feito"
+msgstr ""
 
 msgid "Download"
 msgstr ""
@@ -2155,7 +2166,7 @@ msgid "EB"
 msgstr ""
 
 msgid "Edit"
-msgstr "Modificar"
+msgstr ""
 
 msgid "Edit DNS resource record"
 msgstr ""
@@ -2182,16 +2193,16 @@ msgid "Edit customer"
 msgstr ""
 
 msgid "Edit domain"
-msgstr "Editar dominio"
+msgstr ""
 
 msgid "Edit domain alias"
-msgstr "Editar alias de dominio"
+msgstr ""
 
 msgid "Edit error page"
-msgstr "Editar páxina de erro"
+msgstr ""
 
 msgid "Edit hosting plan"
-msgstr "Editar plano de hospedaxe"
+msgstr ""
 
 msgid "Edit htaccess user"
 msgstr ""
@@ -2206,19 +2217,19 @@ msgid "Edit protected area"
 msgstr ""
 
 msgid "Edit reseller"
-msgstr "Editar revendedor"
+msgstr ""
 
 msgid "Edit subdomain"
 msgstr ""
 
 msgid "Edit user"
-msgstr "Editar usuario"
+msgstr ""
 
 msgid "EiB"
 msgstr ""
 
 msgid "Email"
-msgstr "Correo-e"
+msgstr ""
 
 msgid "Email account already exists."
 msgstr ""
@@ -2276,14 +2287,11 @@ msgstr ""
 msgid "Email quota cannot be unlimited. Max value is %d MiB."
 msgstr ""
 
-msgid "Email quota must be a number."
-msgstr ""
-
 msgid "Email settings"
 msgstr ""
 
 msgid "Email setup"
-msgstr "Configuración de correo-e"
+msgstr ""
 
 msgid "Email successfully updated."
 msgstr ""
@@ -2292,7 +2300,7 @@ msgid "Empty data or wrong field."
 msgstr ""
 
 msgid "Enable"
-msgstr "Activar"
+msgstr ""
 
 msgid "Enable SSL"
 msgstr ""
@@ -2301,20 +2309,20 @@ msgid "Enable auto responder"
 msgstr ""
 
 msgid "Enabled"
-msgstr "Activado"
+msgstr ""
 
 #, php-format
 msgid "Enabled for: %s"
 msgstr ""
 
 msgid "Error"
-msgstr "Erro"
+msgstr ""
 
 msgid "Error details"
 msgstr ""
 
 msgid "Error pages"
-msgstr "Páxinas de erro"
+msgstr ""
 
 msgid "Error reporting"
 msgstr ""
@@ -2323,7 +2331,7 @@ msgid "Error: Remote File not found!"
 msgstr ""
 
 msgid "Errors"
-msgstr "Erros"
+msgstr ""
 
 msgid "Excl. default mails"
 msgstr ""
@@ -2332,7 +2340,7 @@ msgid "Execute tasks"
 msgstr ""
 
 msgid "Expire date"
-msgstr "Data de caducidade"
+msgstr ""
 
 msgid "Ext. mail server"
 msgstr ""
@@ -2350,7 +2358,7 @@ msgid "External mail servers"
 msgstr ""
 
 msgid "FTP account"
-msgstr "Conta FTP"
+msgstr ""
 
 msgid "FTP account already exists."
 msgstr ""
@@ -2371,7 +2379,7 @@ msgid "FTP account successfully updated."
 msgstr ""
 
 msgid "FTP accounts"
-msgstr "Contas de FTP"
+msgstr ""
 
 msgid "FTP home directory"
 msgstr ""
@@ -2380,7 +2388,7 @@ msgid "FTP home directory cannot be empty."
 msgstr ""
 
 msgid "FTP traffic"
-msgstr "Tráfico FTP"
+msgstr ""
 
 msgid "FTP user errors"
 msgstr ""
@@ -2392,16 +2400,16 @@ msgid "Failure in the package. Deleting!"
 msgstr ""
 
 msgid "Fax"
-msgstr "Fax"
+msgstr ""
 
 msgid "Feature"
-msgstr "Característica"
+msgstr ""
 
 msgid "Features"
 msgstr ""
 
 msgid "Female"
-msgstr "Muller"
+msgstr ""
 
 #, php-format
 msgid "File %s doesn't exist or cannot be reached!"
@@ -2437,16 +2445,16 @@ msgid "FileManager"
 msgstr ""
 
 msgid "Filemanager"
-msgstr "Filemanager (xestor de arquivos)"
+msgstr ""
 
 msgid "Filesystem system Info"
-msgstr "Información do sistema de arquivos"
+msgstr ""
 
 msgid "Fill out a message text."
 msgstr ""
 
 msgid "First name"
-msgstr "Nome"
+msgstr ""
 
 msgid "First name cannot have more than 200 characters."
 msgstr ""
@@ -2458,7 +2466,7 @@ msgid "Force retry"
 msgstr ""
 
 msgid "Forward"
-msgstr "Reenvío"
+msgstr ""
 
 msgid "Forward URL"
 msgstr ""
@@ -2471,25 +2479,25 @@ msgid "Forward list is empty."
 msgstr ""
 
 msgid "Forward mail"
-msgstr "Correo redirixido"
+msgstr ""
 
 msgid "Forward to"
-msgstr "Reenviar a"
+msgstr ""
 
 msgid "Forward to URL"
-msgstr "Reenviar ao URL"
+msgstr ""
 
 msgid "Forward type"
 msgstr ""
 
 msgid "Free"
-msgstr "Ceibe"
+msgstr ""
 
 msgid "From"
-msgstr "De"
+msgstr ""
 
 msgid "From reseller"
-msgstr "Do revendedor"
+msgstr ""
 
 msgid "Ftp"
 msgstr ""
@@ -2510,16 +2518,16 @@ msgid "GB"
 msgstr ""
 
 msgid "Gender"
-msgstr "Sexo"
+msgstr ""
 
 msgid "General"
 msgstr ""
 
 msgid "General information"
-msgstr "Información xeral"
+msgstr ""
 
 msgid "General settings"
-msgstr "Configuración xeral"
+msgstr ""
 
 msgid "Generate"
 msgstr ""
@@ -2534,16 +2542,16 @@ msgid "GiB"
 msgstr ""
 
 msgid "Group"
-msgstr "Grupo"
+msgstr ""
 
 msgid "Group members"
-msgstr "Membros do grupo"
+msgstr ""
 
 msgid "Group name"
-msgstr "Nome do grupo"
+msgstr ""
 
 msgid "Groups"
-msgstr "Grupos"
+msgstr ""
 
 msgid "HSTS (HTTP Strict Transport Security)"
 msgstr ""
@@ -2561,7 +2569,7 @@ msgid "Hide aliases"
 msgstr ""
 
 msgid "High"
-msgstr "Alta"
+msgstr ""
 
 msgid "Home directory"
 msgstr ""
@@ -2570,13 +2578,13 @@ msgid "Homepage"
 msgstr ""
 
 msgid "Host"
-msgstr "Host"
+msgstr ""
 
 msgid "Host from which SQL user is allowed to connect to SQL server"
 msgstr ""
 
 msgid "Hosting plan"
-msgstr "Plano de hospedaxe"
+msgstr ""
 
 msgid "Hosting plan availability"
 msgstr ""
@@ -2597,10 +2605,10 @@ msgid "Hosting plan successfully updated."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr "Planos de hospedaxe"
+msgstr ""
 
 msgid "Hour"
-msgstr "Hora"
+msgstr ""
 
 msgid "Hours"
 msgstr ""
@@ -2638,7 +2646,7 @@ msgid "IP Address"
 msgstr ""
 
 msgid "IP address"
-msgstr "Enderezo IP"
+msgstr ""
 
 msgid "IP address already under the control of i-MSCP."
 msgstr ""
@@ -2671,7 +2679,7 @@ msgid "IP usage"
 msgstr ""
 
 msgid "IPv6 address"
-msgstr "Enderezo IPv6"
+msgstr ""
 
 msgid "Id"
 msgstr ""
@@ -2775,11 +2783,8 @@ msgstr ""
 msgid "Incorrect username length or syntax."
 msgstr ""
 
-msgid "Info Unavailable"
-msgstr ""
-
 msgid "Install"
-msgstr "Instalar"
+msgstr ""
 
 msgid "Install in progress"
 msgstr ""
@@ -2815,7 +2820,7 @@ msgid "Installing your uploaded package. Please refresh this page."
 msgstr ""
 
 msgid "Instructions to download today's backup"
-msgstr "Instrucións para descargar a copia de seguridade de hoxe"
+msgstr ""
 
 msgid "Intermediate certificate(s)"
 msgstr ""
@@ -2831,6 +2836,10 @@ msgstr ""
 
 #, php-format
 msgid "Invalid SQL user host: %s"
+msgstr ""
+
+msgid ""
+"Invalid SQL user. SQL user must exists and belong to the provided database."
 msgstr ""
 
 msgid "Invalid SSL certificate"
@@ -2856,7 +2865,7 @@ msgid "Invalid email username."
 msgstr ""
 
 msgid "Invalid group name!"
-msgstr "Nome de grupo incorrecto!"
+msgstr ""
 
 msgid "Invalid menu order."
 msgstr ""
@@ -2887,16 +2896,16 @@ msgid "Kernel Version"
 msgstr ""
 
 msgid "Kill session"
-msgstr "Forzar remate de sesión"
+msgstr ""
 
 msgid "Label"
-msgstr "Etiqueta"
+msgstr ""
 
 msgid "Language"
-msgstr "Idioma"
+msgstr ""
 
 msgid "Language file"
-msgstr "Arquivo de idioma"
+msgstr ""
 
 msgid "Language file successfully installed."
 msgstr ""
@@ -2914,10 +2923,10 @@ msgid "Last Web software repository update"
 msgstr ""
 
 msgid "Last access"
-msgstr "Último acceso"
+msgstr ""
 
 msgid "Last name"
-msgstr "Apelido"
+msgstr ""
 
 msgid "Last name cannot have more than 200 characters."
 msgstr ""
@@ -2925,8 +2934,11 @@ msgstr ""
 msgid "Last reply date"
 msgstr ""
 
+msgid "Last translator"
+msgstr ""
+
 msgid "Layout"
-msgstr "Deseño"
+msgstr ""
 
 msgid "Layout color"
 msgstr ""
@@ -2935,10 +2947,10 @@ msgid "Layout color successfully updated."
 msgstr ""
 
 msgid "Level"
-msgstr "Nivel"
+msgstr ""
 
 msgid "Limit"
-msgstr "Límite"
+msgstr ""
 
 msgid "Limit value"
 msgstr ""
@@ -2962,12 +2974,6 @@ msgid "Log entries successfully deleted."
 msgstr ""
 
 msgid "Login"
-msgstr "Iniciar sesión"
-
-msgid "Login As"
-msgstr ""
-
-msgid "Login into phpMyAdmin"
 msgstr ""
 
 msgid "Login password"
@@ -2977,10 +2983,10 @@ msgid "Login username"
 msgstr ""
 
 msgid "Login with your FTP account"
-msgstr "Iniciar sesión coa túa conta de FTP"
+msgstr ""
 
 msgid "Logo file"
-msgstr "Arquivo de logo"
+msgstr ""
 
 msgid "Logo successfully removed."
 msgstr ""
@@ -2989,10 +2995,10 @@ msgid "Logo successfully updated."
 msgstr ""
 
 msgid "Logout"
-msgstr "Rematar sesión"
+msgstr ""
 
 msgid "Lost password"
-msgstr "Contrasinal esquecido"
+msgstr ""
 
 msgid "Lost password email"
 msgstr ""
@@ -3001,19 +3007,19 @@ msgid "Lost password email templates were updated."
 msgstr ""
 
 msgid "Lost password link"
-msgstr "Ligazón ao contrasinal esquecido"
+msgstr ""
 
 msgid "Lostpw link"
-msgstr "Ligazón de contrasinal esquecido"
+msgstr ""
 
 msgid "Low"
-msgstr "Baixa"
+msgstr ""
 
 msgid "MB"
 msgstr ""
 
 msgid "Mail"
-msgstr "Correo"
+msgstr ""
 
 msgid "Mail Log Level"
 msgstr ""
@@ -3041,7 +3047,7 @@ msgid "Maintenance message"
 msgstr ""
 
 msgid "Maintenance mode"
-msgstr "Modo de mantemento"
+msgstr ""
 
 msgid ""
 "Maintenance mode is activated. In this mode, only administrators can login."
@@ -3051,13 +3057,13 @@ msgid "Maintenance settings"
 msgstr ""
 
 msgid "Male"
-msgstr "Home"
+msgstr ""
 
 msgid "Malformed resolver SQL query"
 msgstr ""
 
 msgid "Manage SQL"
-msgstr "Xestionar SQL"
+msgstr ""
 
 msgid "Manage SSL certificate"
 msgstr ""
@@ -3066,10 +3072,10 @@ msgid "Manage htaccess users and groups"
 msgstr ""
 
 msgid "Manage users"
-msgstr "Administrar usuarios"
+msgstr ""
 
 msgid "Manage users and groups"
-msgstr "Xestionar usuarios e grupos"
+msgstr ""
 
 msgid "Manage your protected areas, users and groups."
 msgstr ""
@@ -3078,10 +3084,10 @@ msgid "Manual"
 msgstr ""
 
 msgid "Mark"
-msgstr "Marcar"
+msgstr ""
 
 msgid "Max number of login attempts"
-msgstr "Número máximo de tentativas de inicio de sesión"
+msgstr ""
 
 msgid "Max traffic"
 msgstr ""
@@ -3102,7 +3108,7 @@ msgid ""
 msgstr ""
 
 msgid "Medium"
-msgstr "Medio"
+msgstr ""
 
 msgid "Member of group"
 msgstr ""
@@ -3111,13 +3117,13 @@ msgid "Memory information"
 msgstr ""
 
 msgid "Message"
-msgstr "Mensaxe"
+msgstr ""
 
 msgid "Message template"
-msgstr "Sobreplanta de mensaxe"
+msgstr ""
 
 msgid "Message template info"
-msgstr "Información de sobreplanta de mensaxe"
+msgstr ""
 
 msgid "Message to reseller before deleting the software"
 msgstr ""
@@ -3145,7 +3151,7 @@ msgid "Modification in progress..."
 msgstr ""
 
 msgid "Month"
-msgstr "Mes"
+msgstr ""
 
 msgid "Monthly traffic limit [MiB]"
 msgstr ""
@@ -3163,25 +3169,25 @@ msgid "More Details"
 msgstr ""
 
 msgid "Mount"
-msgstr "Montaxe"
+msgstr ""
 
 msgid "Mount point"
-msgstr "Punto de montaxe"
+msgstr ""
 
 msgid "Move"
-msgstr "Mover"
+msgstr ""
 
 msgid "Moving aborted."
 msgstr ""
 
 msgid "N/A"
-msgstr "N/D"
+msgstr ""
 
 msgid "NS DNS resource records are only allowed for subzone delegation."
 msgstr ""
 
 msgid "Name"
-msgstr "Nome"
+msgstr ""
 
 msgid "Name cannot be empty."
 msgstr ""
@@ -3199,16 +3205,16 @@ msgid "New alias order for {CUSTOMER}"
 msgstr ""
 
 msgid "New ticket"
-msgstr "Nova solicitude"
+msgstr ""
 
 msgid "Next"
 msgstr ""
 
 msgid "Next step"
-msgstr "Seguinte chanzo"
+msgstr ""
 
 msgid "No"
-msgstr "Non"
+msgstr ""
 
 msgid "No IP address found."
 msgstr ""
@@ -3244,9 +3250,6 @@ msgid "No group found."
 msgstr ""
 
 msgid "No hosting plan available."
-msgstr ""
-
-msgid "No languages found."
 msgstr ""
 
 msgid "No records found matching the search criteria."
@@ -3298,10 +3301,10 @@ msgid "No users found for this reseller."
 msgstr ""
 
 msgid "No."
-msgstr "Non."
+msgstr ""
 
 msgid "None"
-msgstr "Ningún"
+msgstr ""
 
 msgid "Normal"
 msgstr ""
@@ -3313,7 +3316,7 @@ msgid "Normal connection"
 msgstr ""
 
 msgid "Normal users"
-msgstr "Usuarios normais"
+msgstr ""
 
 msgid "Not Found"
 msgstr ""
@@ -3344,13 +3347,13 @@ msgid "Nothing has been deleted."
 msgstr ""
 
 msgid "Notices, Warnings and Errors"
-msgstr "Anuncios, Avisos e Erros"
+msgstr ""
 
 msgid "OK"
-msgstr "Correcto"
+msgstr ""
 
 msgid "Ok"
-msgstr "Correcto"
+msgstr ""
 
 msgid "One or more database updates are now available. See the details below."
 msgstr ""
@@ -3383,7 +3386,7 @@ msgid "Open ticket"
 msgstr ""
 
 msgid "Open tickets"
-msgstr "Solicitudes abertas"
+msgstr ""
 
 #, php-format
 msgid "Operation cancelled: %s"
@@ -3393,7 +3396,7 @@ msgid "Optional"
 msgstr ""
 
 msgid "Order"
-msgstr "Orde"
+msgstr ""
 
 msgid "Order successfully deleted."
 msgstr ""
@@ -3402,25 +3405,25 @@ msgid "Order successfully processed."
 msgstr ""
 
 msgid "Other in"
-msgstr "Outras entradas"
+msgstr ""
 
 msgid "Other out"
-msgstr "Outras saídas"
+msgstr ""
 
 msgid "Other settings"
-msgstr "Outros axustes"
+msgstr ""
 
 msgid "Overview"
-msgstr "Resumo"
+msgstr ""
 
 msgid "Owner"
-msgstr "Propietario"
+msgstr ""
 
 msgid "PB"
 msgstr ""
 
 msgid "PHP"
-msgstr "PHP"
+msgstr ""
 
 #, php-format
 msgid "PHP %s configuration option"
@@ -3457,16 +3460,16 @@ msgid "POP3/IMAP"
 msgstr ""
 
 msgid "POP3/IMAP in"
-msgstr "POP3/IMAP de entrada"
+msgstr ""
 
 msgid "POP3/IMAP out"
-msgstr "POP3/IMAP de saída"
+msgstr ""
 
 msgid "POP3/IMAP traffic"
-msgstr "Tráficos POP3/IMAP"
+msgstr ""
 
 msgid "Package actions"
-msgstr "Accións"
+msgstr ""
 
 msgid "Package already exists in the reseller depot!"
 msgstr ""
@@ -3508,16 +3511,16 @@ msgid "Package version"
 msgstr ""
 
 msgid "Panel default language"
-msgstr "Idioma predeterminado do panel"
+msgstr ""
 
 msgid "Parent directory"
 msgstr ""
 
 msgid "Partition"
-msgstr "Partición"
+msgstr ""
 
 msgid "Password"
-msgstr "Contrasinal"
+msgstr ""
 
 msgid "Password cannot be empty."
 msgstr ""
@@ -3532,7 +3535,7 @@ msgid "Password contains unallowed characters."
 msgstr ""
 
 msgid "Password data"
-msgstr "Datos de contrasinal"
+msgstr ""
 
 msgid "Password email"
 msgstr ""
@@ -3554,7 +3557,7 @@ msgid ""
 msgstr ""
 
 msgid "Password settings"
-msgstr "Configuración de contrasinal"
+msgstr ""
 
 msgid "Password successfully updated."
 msgstr ""
@@ -3566,31 +3569,31 @@ msgid "Passwords do not match."
 msgstr ""
 
 msgid "Path"
-msgstr "Ruta"
+msgstr ""
 
 msgid "Pending tasks"
 msgstr ""
 
 msgid "Percent"
-msgstr "Porcentaxe"
+msgstr ""
 
 msgid "Permissions"
 msgstr ""
 
 msgid "Personal data"
-msgstr "Datos persoais"
+msgstr ""
 
 msgid "Personal data successfully updated."
 msgstr ""
 
 msgid "Personalise template"
-msgstr "Personalizar sobreplanta"
+msgstr ""
 
 msgid "Phone"
-msgstr "Teléfono"
+msgstr ""
 
 msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
+msgstr ""
 
 msgid "PiB"
 msgstr ""
@@ -3864,19 +3867,19 @@ msgid ""
 msgstr ""
 
 msgid "Port"
-msgstr "Porto"
+msgstr ""
 
 msgid "Preserve Host"
 msgstr ""
 
 msgid "Prevent external login for admins"
-msgstr "Previr inicios de sesión externos para administradores"
+msgstr ""
 
 msgid "Prevent external login for clients"
-msgstr "Previr inicio de sesión externa para os clientes"
+msgstr ""
 
 msgid "Prevent external login for resellers"
-msgstr "Previr inicio de sesión externa para os revendedores"
+msgstr ""
 
 msgid "Previous"
 msgstr ""
@@ -3887,7 +3890,7 @@ msgid ""
 msgstr ""
 
 msgid "Priority"
-msgstr "Prioridade"
+msgstr ""
 
 msgid "Private key"
 msgstr ""
@@ -3942,12 +3945,12 @@ msgid "Protected area successfully scheduled for update."
 msgstr ""
 
 msgid "Protected areas"
-msgstr "Áreas protexidas"
+msgstr ""
 
 msgid "Protocol"
-msgstr "Protocolo"
+msgstr ""
 
-msgid "Quota"
+msgid "Quota assignment"
 msgstr ""
 
 msgid "Quota in MiB (0 for unlimited)"
@@ -3958,7 +3961,7 @@ msgid "Quota in MiB (Max: %s)"
 msgstr ""
 
 msgid "RAM"
-msgstr "RAM"
+msgstr ""
 
 msgid "Read ticket"
 msgstr ""
@@ -3970,7 +3973,7 @@ msgid "Reconfiguration in progress..."
 msgstr ""
 
 msgid "Record data"
-msgstr "Datos de información"
+msgstr ""
 
 msgid "Redirect"
 msgstr ""
@@ -4000,10 +4003,10 @@ msgid "Remote file not found."
 msgstr ""
 
 msgid "Remove"
-msgstr "Eliminar"
+msgstr ""
 
 msgid "Remove IP"
-msgstr "Eliminar IP"
+msgstr ""
 
 msgid "Remove permissions"
 msgstr ""
@@ -4015,7 +4018,7 @@ msgid "Reopen ticket"
 msgstr ""
 
 msgid "Repeat password"
-msgstr "Repite o contrasinal"
+msgstr ""
 
 msgid "Reply"
 msgstr ""
@@ -4027,7 +4030,7 @@ msgid "Requires Database?"
 msgstr ""
 
 msgid "Reseller"
-msgstr "Revendedor"
+msgstr ""
 
 msgid "Reseller / Customers / Add Customer"
 msgstr ""
@@ -4132,7 +4135,7 @@ msgid "Reseller and customer levels"
 msgstr ""
 
 msgid "Reseller assignment"
-msgstr "Asignación de revendedor"
+msgstr ""
 
 msgid "Reseller assignments"
 msgstr ""
@@ -4144,7 +4147,7 @@ msgid "Reseller data"
 msgstr ""
 
 msgid "Reseller level"
-msgstr "Nivel de revendedor"
+msgstr ""
 
 msgid "Reseller list"
 msgstr ""
@@ -4153,7 +4156,7 @@ msgid "Reseller list is empty."
 msgstr ""
 
 msgid "Reseller name"
-msgstr "Nome do revendedor"
+msgstr ""
 
 msgid "Reseller software list"
 msgstr ""
@@ -4168,7 +4171,7 @@ msgid "Reseller total"
 msgstr ""
 
 msgid "Reseller users"
-msgstr "Usuarios do revendedor"
+msgstr ""
 
 msgid "Reseller with permissions total"
 msgstr ""
@@ -4180,19 +4183,19 @@ msgid "Reseller/IP usage statistics"
 msgstr ""
 
 msgid "Resellers"
-msgstr "Revendedores"
+msgstr ""
 
 msgid "Resellers and customers"
 msgstr ""
 
 msgid "Reset"
-msgstr "Restaurar"
+msgstr ""
 
 msgid "Restore"
-msgstr "Restaurar"
+msgstr ""
 
 msgid "Restore backup"
-msgstr "Restaurar copia de seguridade"
+msgstr ""
 
 msgid "Revision date"
 msgstr ""
@@ -4207,16 +4210,16 @@ msgid "Rights successfully removed."
 msgstr ""
 
 msgid "SMTP in"
-msgstr "SMTP de entrada"
+msgstr ""
 
 msgid "SMTP out"
-msgstr "SMTP de saída"
+msgstr ""
 
 msgid "SMTP traffic"
-msgstr "Tráfico SMTP"
+msgstr ""
 
 msgid "SQL"
-msgstr "SQL"
+msgstr ""
 
 msgid "SQL database"
 msgstr ""
@@ -4243,16 +4246,12 @@ msgid "SQL database successfully deleted."
 msgstr ""
 
 msgid "SQL databases"
-msgstr "Bancos de datos SQL"
+msgstr ""
 
 msgid "SQL databases only"
 msgstr ""
 
 msgid "SQL user"
-msgstr ""
-
-#, php-format
-msgid "SQL user %s already exits."
 msgstr ""
 
 msgid "SQL user host"
@@ -4271,7 +4270,7 @@ msgid "SQL user limit is disabled."
 msgstr ""
 
 msgid "SQL user name"
-msgstr "Nome de usuario SQL"
+msgstr ""
 
 msgid "SQL user password successfully updated."
 msgstr ""
@@ -4285,8 +4284,11 @@ msgstr ""
 msgid "SQL user successfully deleted."
 msgstr ""
 
+msgid "SQL username is too long."
+msgstr ""
+
 msgid "SQL users"
-msgstr "Usuarios SQL"
+msgstr ""
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr ""
@@ -4304,10 +4306,10 @@ msgid "SSL status"
 msgstr ""
 
 msgid "Save"
-msgstr "Gardar"
+msgstr ""
 
 msgid "Search"
-msgstr "Procurar"
+msgstr ""
 
 msgid "Sec."
 msgstr ""
@@ -4316,7 +4318,7 @@ msgid "Secure connection"
 msgstr ""
 
 msgid "Security code"
-msgstr "Código de seguridade"
+msgstr ""
 
 msgid "Security code has expired"
 msgstr ""
@@ -4334,16 +4336,16 @@ msgid "Send circular"
 msgstr ""
 
 msgid "Send message"
-msgstr "Enviar mensaxe"
+msgstr ""
 
 msgid "Send message to"
-msgstr "Enviar mensaxe a"
+msgstr ""
 
 msgid "Send new login data"
-msgstr "Enviar novos datos de inicio de sesión"
+msgstr ""
 
 msgid "Send reply"
-msgstr "Enviar resposta"
+msgstr ""
 
 msgid "Send to"
 msgstr ""
@@ -4364,22 +4366,22 @@ msgid "Separate multiple email addresses by comma or a line-break."
 msgstr ""
 
 msgid "Separate multiple email addresses with a line-break."
-msgstr "Separa enderezos de correo-e múltiples poñendo cada un nunha liña distinta."
+msgstr ""
 
 msgid "Server ports"
-msgstr "Portos do servidor"
+msgstr ""
 
 msgid "Server statistics"
-msgstr "Estatísticas do servidor"
+msgstr ""
 
 msgid "Server status"
-msgstr "Estado do servidor"
+msgstr ""
 
 msgid "Server traffic"
-msgstr "Tráfico do servidor"
+msgstr ""
 
 msgid "Server traffic settings"
-msgstr "Configuración do tráfico do servidor"
+msgstr ""
 
 msgid "Server traffic settings successfully updated."
 msgstr ""
@@ -4391,7 +4393,7 @@ msgid "Service Unavailable"
 msgstr ""
 
 msgid "Service name"
-msgstr "Nome do servizo"
+msgstr ""
 
 msgid "Service name already exists."
 msgstr ""
@@ -4406,16 +4408,16 @@ msgid "Service ports"
 msgstr ""
 
 msgid "Service protocol"
-msgstr "Protocolo do servizo"
+msgstr ""
 
 msgid "Services status"
-msgstr "Estado do servidor"
+msgstr ""
 
 msgid "Sessions"
 msgstr ""
 
 msgid "Settings"
-msgstr "Configuración"
+msgstr ""
 
 msgid "Settings saved."
 msgstr ""
@@ -4424,7 +4426,7 @@ msgid "Shared mount point"
 msgstr ""
 
 msgid "Show"
-msgstr "Amosar"
+msgstr ""
 
 #, php-format
 msgid "Show %s records per page"
@@ -4443,7 +4445,7 @@ msgid "Show detailed statistics for this user"
 msgstr ""
 
 msgid "Show in"
-msgstr "Amosar en"
+msgstr ""
 
 msgid "Show labels for main menu links"
 msgstr ""
@@ -4456,7 +4458,7 @@ msgid "Showing 0 to 0 of 0 records"
 msgstr ""
 
 msgid "Size"
-msgstr "Tamaño"
+msgstr ""
 
 msgid "Software"
 msgstr ""
@@ -4552,28 +4554,28 @@ msgid "State"
 msgstr ""
 
 msgid "State/Province"
-msgstr "Estado/Provincia"
+msgstr ""
 
 msgid "Statistics"
-msgstr "Estatísticas"
+msgstr ""
 
 msgid "Stats"
-msgstr "Estatísticas"
+msgstr ""
 
 msgid "Status"
-msgstr "Estado"
+msgstr ""
 
 msgid "Street 1"
-msgstr "Rúa 1"
+msgstr ""
 
 msgid "Street 2"
-msgstr "Rúa 2"
+msgstr ""
 
 msgid "Strong passwords"
 msgstr ""
 
 msgid "Subdomain"
-msgstr "Subdominio"
+msgstr ""
 
 #, php-format
 msgid "Subdomain %s already exist."
@@ -4588,7 +4590,7 @@ msgid "Subdomain %s is unavailable."
 msgstr ""
 
 msgid "Subdomain alias"
-msgstr "Alias de subdominio"
+msgstr ""
 
 msgid "Subdomain alias errors"
 msgstr ""
@@ -4602,7 +4604,7 @@ msgid ""
 msgstr ""
 
 msgid "Subdomain errors"
-msgstr "Erros de subdominio"
+msgstr ""
 
 msgid "Subdomain forward"
 msgstr ""
@@ -4614,7 +4616,7 @@ msgid "Subdomain mail"
 msgstr ""
 
 msgid "Subdomain name"
-msgstr "Nome do subdominio"
+msgstr ""
 
 msgid "Subdomain name is not valid."
 msgstr ""
@@ -4642,43 +4644,43 @@ msgid ""
 msgstr ""
 
 msgid "Subdomains"
-msgstr "Subdominios"
+msgstr ""
 
 msgid "Subject"
-msgstr "Asunto"
+msgstr ""
 
 msgid "Subject is missing."
 msgstr ""
 
 msgid "Submit changes"
-msgstr "Enviar trocos"
+msgstr ""
 
 msgid "Support"
 msgstr ""
 
 msgid "Support system"
-msgstr "Sistema de Atención"
+msgstr ""
 
 msgid "Suspended"
-msgstr "Suspendido"
+msgstr ""
 
 msgid "Swap"
-msgstr "Intercambio"
+msgstr ""
 
 msgid "Switch"
-msgstr "Mudar"
+msgstr ""
 
 msgid "Switch to the backups directory"
 msgstr ""
 
 msgid "Switch to user interface"
-msgstr "Mudar á interface de usuario"
+msgstr ""
 
 msgid "Syntax error found in mail forward list."
 msgstr ""
 
 msgid "System"
-msgstr "Sistema"
+msgstr ""
 
 msgid "System data"
 msgstr ""
@@ -4690,7 +4692,7 @@ msgid "System information"
 msgstr ""
 
 msgid "System tools"
-msgstr "Ferramentas do sistema"
+msgstr ""
 
 msgid "System under maintenance"
 msgstr ""
@@ -4699,7 +4701,7 @@ msgid "TB"
 msgstr ""
 
 msgid "TTL"
-msgstr "TTL"
+msgstr ""
 
 msgid "Target"
 msgstr ""
@@ -4708,7 +4710,7 @@ msgid "Target domain"
 msgstr ""
 
 msgid "Target port"
-msgstr "Porto de destino"
+msgstr ""
 
 msgid "Target port must be a number."
 msgstr ""
@@ -4746,6 +4748,10 @@ msgstr ""
 
 #, php-format
 msgid "The %s translation file has been ignored: Translation table is empty."
+msgstr ""
+
+#, php-format
+msgid "The `%s' SQL user is not available or not permitted."
 msgstr ""
 
 #, php-format
@@ -4903,17 +4909,17 @@ msgid "Ticket with Id '%d' was not found."
 msgstr ""
 
 msgid "To Admin"
-msgstr "Para o Administrador"
+msgstr ""
 
 msgid "To reseller"
-msgstr "Ao revendedor"
+msgstr ""
 
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr ""
 
 msgid "Total"
-msgstr "Total"
+msgstr ""
 
 msgid "Total Domains"
 msgstr ""
@@ -4941,22 +4947,22 @@ msgid "Total software"
 msgstr ""
 
 msgid "Traffic"
-msgstr "Tráfico"
+msgstr ""
 
 msgid "Traffic statistics"
 msgstr ""
 
 msgid "Traffic usage"
-msgstr "Emprego de tráfico"
+msgstr ""
 
 msgid "Translated strings"
 msgstr ""
 
 msgid "Type"
-msgstr "Tipo"
+msgstr ""
 
 msgid "UP"
-msgstr "FUNCIONANDO"
+msgstr ""
 
 msgid "URL forwarding"
 msgstr ""
@@ -4965,17 +4971,13 @@ msgid "URL port"
 msgstr ""
 
 msgid "URL protocol"
-msgstr "Protocolo URL"
+msgstr ""
 
 msgid "URL to this admin panel"
-msgstr "URL deica este panel de administración"
+msgstr ""
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
-msgstr ""
-
-msgid ""
-"Unable to connect to the selected database using the selected SQL user."
 msgstr ""
 
 #, php-format
@@ -5063,15 +5065,13 @@ msgid "Uninstalled"
 msgstr ""
 
 msgid "Unknown"
-msgstr "Descoñecido"
-
-msgid "Unknown Error"
-msgstr "Erro descoñecido"
-
-msgid "Unknown FTP user."
 msgstr ""
 
-msgid "Unknown SQL user"
+msgid "Unknown Error"
+msgstr ""
+
+#, php-format
+msgid "Unknown `%s' database. Database must exists."
 msgstr ""
 
 msgid "Unknown action requested."
@@ -5111,7 +5111,7 @@ msgid "Unlimited"
 msgstr ""
 
 msgid "Update"
-msgstr "Actualizar"
+msgstr ""
 
 msgid "Update Plugins"
 msgstr ""
@@ -5120,7 +5120,7 @@ msgid "Update SQL user password"
 msgstr ""
 
 msgid "Update data"
-msgstr "Actualizar datos"
+msgstr ""
 
 msgid "Update from Web software repository"
 msgstr ""
@@ -5146,10 +5146,10 @@ msgid "Updates"
 msgstr ""
 
 msgid "Upload"
-msgstr "Subir"
+msgstr ""
 
 msgid "Upload logo"
-msgstr "Subir logo"
+msgstr ""
 
 msgid "Upload now"
 msgstr ""
@@ -5170,19 +5170,19 @@ msgid "Use secure connection (SSL)"
 msgstr ""
 
 msgid "Used"
-msgstr "Empregado"
+msgstr ""
 
 msgid "Used database"
 msgstr ""
 
 msgid "User"
-msgstr "Usuario"
+msgstr ""
 
 msgid "User (first and last) name"
-msgstr "Nome (e apelido) de usuario"
+msgstr ""
 
 msgid "User assignment"
-msgstr "Asignación de usuarios"
+msgstr ""
 
 msgid "User data successfully updated"
 msgstr ""
@@ -5207,13 +5207,13 @@ msgid "User has not been deleted."
 msgstr ""
 
 msgid "User login (system) name"
-msgstr "Nome de usuario para inicio de sesión (sistema)"
+msgstr ""
 
 msgid "User password"
-msgstr "Contrasinal de usuario"
+msgstr ""
 
 msgid "User real (first and last) name"
-msgstr "Nome real do usuario (nome e apelido)"
+msgstr ""
 
 msgid "User scheduled for deletion."
 msgstr ""
@@ -5228,22 +5228,19 @@ msgid "User successfully disconnected."
 msgstr ""
 
 msgid "User type"
-msgstr "Tipo de usuario"
+msgstr ""
 
 msgid "User type (admin, reseller, user)"
-msgstr "Tipo de usuario (administrador, revendedor, usuario)"
+msgstr ""
 
 msgid "Username"
-msgstr "Nome de usuario"
+msgstr ""
 
 msgid "Username and password for application login"
 msgstr ""
 
-msgid "Username is too long."
-msgstr ""
-
 msgid "Users"
-msgstr "Usuarios"
+msgstr ""
 
 #, php-format
 msgid "Value for the PHP %%s directive must be in range %%d to %%d."
@@ -5259,16 +5256,16 @@ msgid "Version"
 msgstr ""
 
 msgid "Very high"
-msgstr "Moi alto"
+msgstr ""
 
 msgid "View"
-msgstr "Ver"
+msgstr ""
 
 msgid "View SSL certificate"
 msgstr ""
 
 msgid "View aliases"
-msgstr "Ver alias"
+msgstr ""
 
 msgid "View ticket"
 msgstr ""
@@ -5279,8 +5276,11 @@ msgstr ""
 msgid "Warning traffic"
 msgstr ""
 
+msgid "Warning!"
+msgstr ""
+
 msgid "Warnings and Errors"
-msgstr "Avisos e Erros"
+msgstr ""
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -5297,10 +5297,10 @@ msgid "Web folder protection"
 msgstr ""
 
 msgid "Web in"
-msgstr "Entrada web"
+msgstr ""
 
 msgid "Web out"
-msgstr "Saída web"
+msgstr ""
 
 msgid "Web software depot packages total"
 msgstr ""
@@ -5315,16 +5315,16 @@ msgid "Web software repository index is already up to date."
 msgstr ""
 
 msgid "Web statistics"
-msgstr "Estatísticas web"
+msgstr ""
 
 msgid "Web traffic"
-msgstr "Tráfico web"
+msgstr ""
 
 msgid "Webmail"
-msgstr "Correo-web"
+msgstr ""
 
 msgid "Webtools"
-msgstr "Ferramentas Web"
+msgstr ""
 
 msgid "Welcome email"
 msgstr ""
@@ -5388,10 +5388,10 @@ msgid "YB"
 msgstr ""
 
 msgid "Year"
-msgstr "Ano"
+msgstr ""
 
 msgid "Yes"
-msgstr "Si"
+msgstr ""
 
 msgid "YiB"
 msgstr ""
@@ -5630,7 +5630,7 @@ msgstr ""
 msgid "You must select a file to upload/download."
 msgstr ""
 
-msgid "You must select a least one item to delete"
+msgid "You must select a least one mail account to delete"
 msgstr ""
 
 msgid "You must select a least one mail account to delete."
@@ -5647,9 +5647,6 @@ msgstr ""
 
 #, php-format
 msgid "You must wait %s minutes before the next attempt."
-msgstr ""
-
-msgid "You need a Database for this software"
 msgstr ""
 
 msgid ""
@@ -5678,7 +5675,7 @@ msgid ""
 msgstr ""
 
 msgid "Your message"
-msgstr "A túa mensaxe"
+msgstr ""
 
 msgid "Your message has been successfully sent."
 msgstr ""
@@ -5692,11 +5689,18 @@ msgstr ""
 msgid "Your package is corrupt. Please correct it!"
 msgstr ""
 
-msgid "Your password has been successfully renewed. Check your emails."
+msgid ""
+"Your password has been successfully scheduled for renewal. Check your "
+"emails."
 msgstr ""
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
+msgstr ""
+
+msgid ""
+"Your request for password renewal cannot be honored. Please retry in few "
+"minutes."
 msgstr ""
 
 msgid ""
@@ -5726,7 +5730,7 @@ msgid "Zip code"
 msgstr ""
 
 msgid "Zip/Postal code"
-msgstr "Código Postal"
+msgstr ""
 
 msgid "Zone"
 msgstr ""
@@ -5738,7 +5742,7 @@ msgid "[Re]"
 msgstr ""
 
 msgid "_: Localised language"
-msgstr "Galego - Galician"
+msgstr ""
 
 #, php-format
 msgid "`%s` field cannot be empty."
@@ -5775,7 +5779,7 @@ msgid "disk space"
 msgstr ""
 
 msgid "domain"
-msgstr "Dominio"
+msgstr ""
 
 msgid "domain alias"
 msgstr ""
@@ -5787,7 +5791,7 @@ msgid "domain data"
 msgstr ""
 
 msgid "domains"
-msgstr "Dominios"
+msgstr ""
 
 msgid "email account"
 msgstr ""
@@ -5799,7 +5803,7 @@ msgid "enabled"
 msgstr ""
 
 msgid "everything"
-msgstr "todo"
+msgstr ""
 
 msgid "from other browser"
 msgstr ""
@@ -5808,7 +5812,7 @@ msgid "i-MSCP - Application Management (Permissions)"
 msgstr ""
 
 msgid "i-MSCP - Client/Create CatchAll Mail Account"
-msgstr "i-MSCP - Cliente/Crear Conta de Correo Recolle-todo"
+msgstr ""
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
 msgstr ""
@@ -5844,7 +5848,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr "Actualizacións do i-MSCP"
+msgstr ""
 
 msgid "i-MSCP version update checking is disabled"
 msgstr ""
@@ -5877,10 +5881,10 @@ msgid "missing domain"
 msgstr ""
 
 msgid "n\\a"
-msgstr "N/D"
+msgstr ""
 
 msgid "no"
-msgstr "non"
+msgstr ""
 
 msgid "not available"
 msgstr ""
@@ -5889,19 +5893,19 @@ msgid "not required"
 msgstr ""
 
 msgid "older than 1 month"
-msgstr "máis vello dun mes"
+msgstr ""
 
 msgid "older than 12 months"
-msgstr "máis vello de 12 meses"
+msgstr ""
 
 msgid "older than 2 weeks"
-msgstr "máis vello de 2 semanas"
+msgstr ""
 
 msgid "older than 3 months"
-msgstr "máis vello de 3 meses"
+msgstr ""
 
 msgid "older than 6 months"
-msgstr "máis vello de 6 meses"
+msgstr ""
 
 #, php-format
 msgid "or remote file (Max: %s)"
@@ -5910,41 +5914,38 @@ msgstr ""
 msgid "orphan entry"
 msgstr ""
 
-msgid "phpMyAdmin"
-msgstr "phpMyAdmin"
-
 msgid "required"
 msgstr ""
 
 msgid "subdomain"
-msgstr "Subdominio"
+msgstr ""
 
 msgid "subdomains"
-msgstr "Subdominios"
+msgstr ""
 
 msgid "tcp"
-msgstr "tcp"
+msgstr ""
 
 msgid "traffic"
-msgstr "Tráfico"
+msgstr ""
 
 msgid "udp"
-msgstr "udp"
+msgstr ""
 
 msgid "unlimited"
-msgstr "sen límite"
+msgstr ""
 
 msgid "update"
 msgstr ""
 
 msgid "view aliases"
-msgstr "ver alias"
+msgstr ""
 
 msgid "waiting for activation"
 msgstr ""
 
 msgid "yes"
-msgstr "si"
+msgstr ""
 
 msgid "{USERNAME} user statistics"
 msgstr ""
