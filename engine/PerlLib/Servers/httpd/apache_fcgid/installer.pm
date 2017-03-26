@@ -380,7 +380,7 @@ sub _buildFastCgiConfFiles
         'php5filter', 'php5.6', 'php7.0', 'php7.1', 'proxy_fcgi', 'proxy_handler', 'mpm_itk', 'mpm_event',
         'mpm_prefork', 'mpm_worker'
     );
-    $rs ||= $self->{'httpd'}->enableModules( 'actions', 'authz_groupfile', 'fcgid_imscp', 'mpm_worker', 'version' );
+    $rs ||= $self->{'httpd'}->enableModules( 'actions', 'authz_groupfile', 'fcgid_imscp', 'mpm_event', 'version' );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildFastCgiConfFiles' );
 }
 

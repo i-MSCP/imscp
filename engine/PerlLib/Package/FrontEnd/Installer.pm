@@ -43,6 +43,7 @@ use iMSCP::SystemUser;
 use iMSCP::TemplateParser;
 use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
 use Package::FrontEnd;
+use Servers::httpd;
 use Servers::named;
 use version;
 use parent 'Common::SingletonClass';
@@ -541,6 +542,7 @@ sub _init
     my $self = shift;
 
     $self->{'frontend'} = Package::FrontEnd->getInstance();
+    $self->{'httpd'} = Servers::httpd->factory();
     $self->{'eventManager'} = $self->{'frontend'}->{'eventManager'};
     $self->{'cfgDir'} = $self->{'frontend'}->{'cfgDir'};
     $self->{'config'} = $self->{'frontend'}->{'config'};
@@ -836,10 +838,11 @@ sub _makeDirs
 
     # Force re-creation of cache directory tree (needed to prevent any permissions problem from an old installation)
     # See #IP-1530
+    eval {
     iMSCP::Dir->new( dirname => $nginxTmpDir )->remove();
 
     for (
-        [ $nginxTmpDir, $rootUName, $rootUName, 0755 ],
+        [ $nginxTmpDir, $rootUName, $rootGName, 0755 ],
         [ $self->{'config'}->{'HTTPD_CONF_DIR'}, $rootUName, $rootGName, 0755 ],
         [ $self->{'config'}->{'HTTPD_LOG_DIR'}, $rootUName, $rootGName, 0755 ],
         [ $self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}, $rootUName, $rootGName, 0755 ],
@@ -852,9 +855,13 @@ sub _makeDirs
     local $@;
     eval {
         if (iMSCP::Service->getInstance->isSystemd()) {
-            $rs = execute( 'systemd-tmpfiles --create', \my $stdout, \my $stderr );
-            debug($stdout) if $stdout;
-            die($stderr || 'Unknown error') if $rs;
+            iMSCP::Dir->new(dirname => '/run/imscp')->make(
+                {
+                    user  => $self->{'httpd'}->getRunningUser(),
+                    group => $self->{'httpd'}->getRunningGroup(),
+                    mode  => 0755
+                }
+            );
         }
     };
     if ($@) {

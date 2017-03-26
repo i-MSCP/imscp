@@ -4,6 +4,15 @@
 Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
+DISTRIBUTION
+    Fixed: Couldn't install unauthenticated distribution packages - Wrong attribute name in packages file
+
+PACKAGES
+    Fixed: Couldn't create /run/imscp service directory in some environment - systemd-tmpfiles command fails (FrontEnd)
+
+SERVERS
+    Changed: Usage of mpm_event in place of mpm_worker (Apache_fcgid httpd server impl.)
+
 ------------------------------------------------------------------------------------------------------------------------
 1.4.0
 ------------------------------------------------------------------------------------------------------------------------
