@@ -838,7 +838,6 @@ sub _makeDirs
 
     # Force re-creation of cache directory tree (needed to prevent any permissions problem from an old installation)
     # See #IP-1530
-    eval {
     iMSCP::Dir->new( dirname => $nginxTmpDir )->remove();
 
     for (
@@ -846,7 +845,7 @@ sub _makeDirs
         [ $self->{'config'}->{'HTTPD_CONF_DIR'}, $rootUName, $rootGName, 0755 ],
         [ $self->{'config'}->{'HTTPD_LOG_DIR'}, $rootUName, $rootGName, 0755 ],
         [ $self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}, $rootUName, $rootGName, 0755 ],
-        [ $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}, $rootUName, $rootGName, 0755 ],
+        [ $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}, $rootUName, $rootGName, 0755 ]
     ) {
         $rs = iMSCP::Dir->new( dirname => $_->[0] )->make( { user => $_->[1], group => $_->[2], mode => $_->[3] } );
         return $rs if $rs;
