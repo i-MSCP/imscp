@@ -246,7 +246,7 @@
         </mariadb_10.1>
         <percona_5.5
                 repository="http://repo.percona.com/apt trusty main"
-                repository_key_id="CD2EFD2A"
+                repository_key_id="8507EFA5"
                 repository_key_srv="keys.gnupg.net"
                 pinning_package="*"
                 pinning_pin="origin repo.percona.com"
@@ -255,14 +255,14 @@
         >
             <package>libmysqlclient18</package>
             <package>libperconaserverclient18</package>
-            <package>percona-server-client-5.5</package>
             <package>mysql-common=5.5*</package>
+            <package>percona-server-client-5.5</package>
             <package>percona-server-common-5.5</package>
             <package>percona-server-server-5.5</package>
         </percona_5.5>
         <percona_5.6
                 repository="http://repo.percona.com/apt trusty main"
-                repository_key_id="CD2EFD2A"
+                repository_key_id="8507EFA5"
                 repository_key_srv="keys.gnupg.net"
                 pinning_package="*"
                 pinning_pin="origin repo.percona.com"
@@ -278,7 +278,7 @@
         </percona_5.6>
         <percona_5.7
                 repository="http://repo.percona.com/apt trusty main"
-                repository_key_id="CD2EFD2A"
+                repository_key_id="8507EFA5"
                 repository_key_srv="keys.gnupg.net"
                 pinning_package="*"
                 pinning_pin="origin repo.percona.com"
