@@ -7,6 +7,9 @@ Git 1.4.x
 DISTRIBUTION
     Fixed: Couldn't install unauthenticated distribution packages - Wrong attribute name in packages file
 
+INSTALLER
+    Fixed: Don't allows switching to other SGBD vendor (most of the time, there are pre-required manual tasks to be done)
+
 PACKAGES
     Fixed: Couldn't create /run/imscp service directory in some environments - systemd-tmpfiles command fails (FrontEnd)
 

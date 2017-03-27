@@ -166,7 +166,7 @@
                 pinning_package="libmysqlclient18 mysql-common mysql-client-5.5 mysql-server-5.5"
                 pinning_pin="release o=Ubuntu,n=trusty"
                 pinning_pin_priority="1001"
-                allow_switch="mysql_5.6,mysql_5.7,mariadb_5.5,mariadb_10.0,mariadb_10.1,percona_5.5,percona_5.6,percona_5.7,remote_server"
+                allow_switch="mysql_5.6,mysql_5.7,remote_server"
         >
             <package>libmysqlclient18</package>
             <package>mysql-client-5.5</package>
@@ -177,7 +177,7 @@
                 pinning_package="libmysqlclient18 mysql-common mysql-client-5.6 mysql-server-5.6"
                 pinning_pin="release o=Ubuntu,n=trusty"
                 pinning_pin_priority="1001"
-                allow_switch="mysql_5.7,percona_5.6,percona_5.7,remote_server"
+                allow_switch="mysql_5.7,remote_server"
         >
             <package>libmysqlclient18</package>
             <package>mysql-client-5.6</package>
@@ -203,7 +203,7 @@
                 pinning_package="libmysqlclient18 mariadb-client-5.5 mariadb-common mariadb-server-5.5 mysql-common"
                 pinning_pin="release o=Ubuntu,n=trusty"
                 pinning_pin_priority="1001"
-                allow_switch="mysql_5.5,mysql_5.6,mysql_5.7,mariadb_10.0,mariadb_10.1,percona_5.5,percona_5.6,percona_5.7,remote_server"
+                allow_switch="mariadb_10.0,mariadb_10.1,remote_server"
         >
             <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>
@@ -251,7 +251,7 @@
                 pinning_package="*"
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
-                allow_switch="mysql_5.5,mysql_5.6,mysql_5.7,mariadb_5.5,mariadb_10.0,mariadb_10.1,percona_5.6,percona_5.7,remote_server"
+                allow_switch="percona_5.6,percona_5.7,remote_server"
         >
             <package>libmysqlclient18</package>
             <package>libperconaserverclient18</package>
@@ -267,7 +267,7 @@
                 pinning_package="*"
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
-                allow_switch="mysql_5.7,percona_5.7,remote_server"
+                allow_switch="percona_5.7,remote_server"
         >
             <package>libmysqlclient18</package>
             <package>libperconaserverclient18.1</package>
