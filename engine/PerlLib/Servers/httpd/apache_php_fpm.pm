@@ -356,8 +356,6 @@ sub disableDmn
     } else {
         $data->{'VHOST_TYPE'} = 'domain_disabled';
     }
-
-   # print "NUXWIN $data->{'VHOST_TYPE'} $data->{'DOMAIN_NAME'}\n";
     
     $rs = $self->buildConfFile(
         "$self->{'apacheTplDir'}/domain_disabled.tpl",
@@ -366,7 +364,7 @@ sub disableDmn
             destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}.conf"
         }
     );
-    exit;
+
     $rs ||= $self->enableSites( "$data->{'DOMAIN_NAME'}.conf" );
     return $rs if $rs;
 
