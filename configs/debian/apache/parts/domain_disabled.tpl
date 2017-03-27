@@ -3,10 +3,11 @@
     ServerName {DOMAIN_NAME}
     ServerAlias www.{DOMAIN_NAME} {ALIAS}.{BASE_SERVER_VHOST}
 
-    DocumentRoot {USER_WEB_DIR}/domain_disabled_pages
-
     LogLevel error
     ErrorLog {HTTPD_LOG_DIR}/{DOMAIN_NAME}/error.log
+
+    # SECTION domain BEGIN.
+    DocumentRoot {USER_WEB_DIR}/domain_disabled_pages
 
     # SECTION ssl BEGIN.
     SSLEngine On
@@ -24,9 +25,10 @@
         Require all granted
     </Directory>
 
-    # SECTION forward BEGIN.
-    RedirectMatch {FORWARD_TYPE} ^/((?!(?:\.well-known|errors)/).*) {FORWARD}$1
-    # SECTION forward END.
-
     RedirectMatch 303 ^/(?!(?:images/.+|index\.html|$)) {HTTP_URI_SCHEME}www.{DOMAIN_NAME}/
+    # SECTION domain END.
+
+    # SECTION forward BEGIN.
+    RedirectMatch {FORWARD_TYPE} ^/((?!\.well-known/).*) {FORWARD}$1
+    # SECTION forward END.
 </VirtualHost>
