@@ -4,6 +4,9 @@
 Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
+DATABASE
+    Fixed: Delete invalid default email accounts
+
 DISTRIBUTION
     Fixed: Couldn't install unauthenticated distribution packages - Wrong attribute name in packages file
 

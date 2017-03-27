@@ -56,7 +56,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 250;
+    protected $lastUpdate = 251;
 
     /**
      * Singleton - Make new unavailable
@@ -1777,5 +1777,19 @@ class iMSCP_Update_Database extends iMSCP_Update
         return $this->changeColumn(
             'server_ips', 'ip_number', 'ip_number VARCHAR(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL'
         );
+    }
+
+    /**
+     * Delete invalid default email accounts
+     *
+     * @return string
+     */
+    protected function r251()
+    {
+        return "
+            DELETE FROM mail_users
+            WHERE mail_acc RLIKE '^abuse|hostmaster|postmaster|webmaster\\$'
+            AND mail_forward IS NULL
+        ";
     }
 }
