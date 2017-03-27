@@ -499,9 +499,6 @@ sub openErrorLog
 
 sub dumpTracker
 {
-    use Data::Dumper;
-    logs('notice', Dumper(\%tracker));
-
     unless(keys(%tracker) > 0) {
         alarm($DBI_DUMP);
         return;
