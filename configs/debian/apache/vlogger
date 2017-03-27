@@ -42,9 +42,11 @@
 #         - Usage of cached MySQL connection (Performance improvement)
 #         - Usage of cached prepared statement (Performance improvement)
 #         - CS fixes
+# 1.11 Version by i-MSCP Team (bugfix release):
+#         - vlogger process not terminated (unpredictable context), leading to high CPU load
 $ENV{'PATH'} = '/bin:/usr/bin:/usr/local/bin';
 
-my $VERSION = '1.10';
+my $VERSION = '1.11';
 
 =head1 NAME
 
@@ -154,7 +156,6 @@ vlogger will continue to do its main job.
 use strict;
 no strict 'refs';
 use warnings;
-use POSIX ':signal_h';
 use sigtrap qw/ handler shutdown HUP USR1 TERM INT PIPE /;
 use Date::Format;
 use Getopt::Std;
@@ -275,22 +276,19 @@ if ($OPTS{'d'}) {
                     delete $OPTS{'d'};
                 } else {
                     # test DB connection
-                    eval { DBI->connect_cached($DBI_DSN, $DBI_USER, $DBI_PASS, { PrintError => 0, RaiseError => 1 }); };
+                    my $dbh = eval { DBI->connect($DBI_DSN, $DBI_USER, $DBI_PASS, { PrintError => 0, RaiseError => 1 }); };
                     unless($@) {
                         # SIGALRM dumps the tracker hash
-                        my $sigset = POSIX::SigSet->new(SIGALRM);
-                        my $sigaction = POSIX::SigAction->new(\&dumpTracker, $sigset);
-                        $sigaction->safe(1);
-                        if(POSIX::sigaction(SIGALRM, $sigaction) == -1) {
-                            logs('alert', sprintf('could not install signal handler: %s', $!));
-                            exit;
-                        }
-                        alarm($DBI_DUMP);
+                        $SIG{ALRM} = \&dumpTracker;
+                        alarm $DBI_DUMP;
                         logs('notice', sprintf('DBI usage tracker dump interval set to %d seconds', $DBI_DUMP));
+                        $dbh->disconnect()
                     } else {
                         logs('alert', sprintf('could not connect to SQL server: %s', $@));
                         delete $OPTS{'d'};
                     }
+
+                    undef $dbh;
                 }
             } else {
                 logs('alert', sprintf('could not open %s file: %s', $OPTS{'d'}, $!));
@@ -501,6 +499,9 @@ sub openErrorLog
 
 sub dumpTracker
 {
+    use Data::Dumper;
+    logs('notice', Dumper(\%tracker));
+
     unless(keys(%tracker) > 0) {
         alarm($DBI_DUMP);
         return;
@@ -508,8 +509,8 @@ sub dumpTracker
 
     eval {
         my $date = time2str('%Y%m%d', time());
-        my $dbh = DBI->connect_cached($DBI_DSN, $DBI_USER, $DBI_PASS, { PrintError => 0, RaiseError => 1 });
-        my $sth = $dbh->prepare_cached(
+        my $dbh = DBI->connect($DBI_DSN, $DBI_USER, $DBI_PASS, { PrintError => 0, RaiseError => 1 });
+        my $sth = $dbh->prepare(
             'INSERT INTO httpd_vlogger (vhost, ldate, bytes) VALUE (?, ?, ?) ON DUPLICATE KEY UPDATE bytes = bytes + ?'
         );
 
@@ -518,6 +519,7 @@ sub dumpTracker
             $sth->execute($vhost, $date, $bytes, $bytes);
         }
         
+        $dbh->disconnect();
         %tracker = ();
     };
 
@@ -545,14 +547,7 @@ sub shutdown
 {
     logs('notice', sprintf('caught %s, shutting down', shift));
     closeFiles();
-
-    if($OPTS{'d'}) {
-        dumpTracker();
-        my $dbh = eval { DBI->connect_cached($DBI_DSN, $DBI_USER, $DBI_PASS, { PrintError => 0, RaiseError => 1 }); };
-        $dbh->disconnect() unless $@;
-        undef $dbh;
-    }
-
+    dumpTracker() if($OPTS{'d'});
     exit;
 }
 

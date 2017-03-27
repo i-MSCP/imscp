@@ -15,6 +15,7 @@ SERVERS
     Fixed: Couldn't dump database with Percona server 5.7.x - MySQL 5.6.x compatibility mode must be enabled
     Fixed: Usage of new syntax for piped logs (Apache2)
     Fixed: Vhost files for disabled domains badly generated when SSL is enabled (Httpd server impl.)
+    Fixed: vlogger process not terminated (unpredictable context), leading to high CPU load (Httpd server impl.)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.0
