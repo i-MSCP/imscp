@@ -8,10 +8,12 @@ DISTRIBUTION
     Fixed: Couldn't install unauthenticated distribution packages - Wrong attribute name in packages file
 
 PACKAGES
-    Fixed: Couldn't create /run/imscp service directory in some environment - systemd-tmpfiles command fails (FrontEnd)
+    Fixed: Couldn't create /run/imscp service directory in some environments - systemd-tmpfiles command fails (FrontEnd)
 
 SERVERS
-    Changed: Usage of mpm_event in place of mpm_worker (Apache_fcgid httpd server impl.)
+    Changed: Usage of `mpm_event' in place of `mpm_worker' (Apache_fcgid httpd server impl.)
+    Fixed: Usage of new syntax for piped logs (Apache2)
+    Fixed: Vhost files for disabled domains badly generated when SSL is enabled (Httpd server impl.)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.0

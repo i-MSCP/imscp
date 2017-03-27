@@ -872,11 +872,11 @@ sub buildConf
 
     $data ||= { };
 
-    if (grep($_ eq $filename, ( 'domain.tpl', 'domain_disabled_tpl'))) {
-        if (grep($_ eq $data->{'VHOST_TYPE'}, ('domain', 'domain_disabled'))) {
+    if (grep($_ eq $filename, ( 'domain.tpl', 'domain_disabled.tpl'))) {
+        if (grep($_ eq $data->{'VHOST_TYPE'}, ( 'domain', 'domain_disabled' ))) {
             # Remove ssl and forward sections
-            $cfgTpl = replaceBloc("# SECTION forward BEGIN.\n", "# SECTION forward END.\n", '', $cfgTpl);
             $cfgTpl = replaceBloc("# SECTION ssl BEGIN.\n", "# SECTION ssl END.\n", '', $cfgTpl);
+            $cfgTpl = replaceBloc("# SECTION forward BEGIN.\n", "# SECTION forward END.\n", '', $cfgTpl);
         } elsif (grep($_ eq $data->{'VHOST_TYPE'}, ('domain_fwd', 'domain_disabled_fwd'))) {
             # Remove ssl and domain sections
             $cfgTpl = replaceBloc("# SECTION ssl BEGIN.\n", "# SECTION ssl END.\n", '', $cfgTpl);
