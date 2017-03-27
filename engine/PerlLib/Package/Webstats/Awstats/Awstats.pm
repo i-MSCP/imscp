@@ -289,7 +289,7 @@ sub _addAwstatsSection
 {
     my ($self, $cfgTpl, $tplName, $data) = @_;
 
-    return 0 unless $tplName eq 'domain.tpl';
+    return 0 if $tplName ne 'domain.tpl' || $data->{'FORWARD'} ne 'no';
 
     ${$cfgTpl} = replaceBloc(
         "# SECTION addons BEGIN.\n",

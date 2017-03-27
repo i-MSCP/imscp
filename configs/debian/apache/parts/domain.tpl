@@ -120,7 +120,7 @@
     </Directory>
 
     # SECTION standard_redirect BEGIN.
-    RedirectMatch {FORWARD_TYPE} ^/((?!(?:awstatsicons|errors|stats|\.well-known)/).*) {FORWARD}$1
+    RedirectMatch {FORWARD_TYPE} ^/((?!(?:errors|\.well-known)/).*) {FORWARD}$1
     # SECTION standard_redirect END.
     # SECTION proxy_redirect BEGIN.
     # SECTION ssl_proxy BEGIN.
@@ -129,7 +129,7 @@
     RequestHeader set X-Forwarded-Proto "http"
     RequestHeader set X-Forwarded-Port 80
     ProxyPreserveHost {FORWARD_PRESERVE_HOST}
-    ProxyPassMatch ^/((?!(?:awstatsicons|errors|stats|\.well-known)/).*) {FORWARD}$1 retry=30 timeout=7200
+    ProxyPassMatch ^/((?!(?:errors|\.well-known)/).*) {FORWARD}$1 retry=30 timeout=7200
     ProxyPassReverse / {FORWARD}
     # SECTION proxy_redirect END.
     # SECTION forward END.

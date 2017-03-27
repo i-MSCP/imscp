@@ -11,6 +11,7 @@ INSTALLER
     Fixed: Don't allows switching to other SGBD vendor (most of the time, there are pre-required manual tasks to be done)
 
 PACKAGES
+    Fixed: AWStats interface must not be reacheable for redirected or proxied sites (revert)
     Fixed: Couldn't create /run/imscp service directory in some environments - systemd-tmpfiles command fails (FrontEnd)
 
 SERVERS
