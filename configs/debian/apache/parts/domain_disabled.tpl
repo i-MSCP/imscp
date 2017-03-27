@@ -6,7 +6,7 @@
     LogLevel error
     ErrorLog {HTTPD_LOG_DIR}/{DOMAIN_NAME}/error.log
 
-    # SECTION domain BEGIN.
+    # SECTION dmn BEGIN.
     DocumentRoot {USER_WEB_DIR}/domain_disabled_pages
 
     # SECTION ssl BEGIN.
@@ -26,9 +26,9 @@
     </Directory>
 
     RedirectMatch 303 ^/(?!(?:images/.+|index\.html|$)) {HTTP_URI_SCHEME}www.{DOMAIN_NAME}/
-    # SECTION domain END.
+    # SECTION dmn END.
 
-    # SECTION forward BEGIN.
+    # SECTION fwd BEGIN.
     RedirectMatch {FORWARD_TYPE} ^/((?!\.well-known/).*) {FORWARD}$1
-    # SECTION forward END.
+    # SECTION fwd END.
 </VirtualHost>

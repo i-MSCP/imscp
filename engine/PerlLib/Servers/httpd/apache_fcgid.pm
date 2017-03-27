@@ -876,7 +876,7 @@ sub buildConf
         if (grep( $_ eq $data->{'VHOST_TYPE'}, ( 'domain', 'domain_disabled' ) )) {
             # Remove ssl and forward sections
             $cfgTpl = replaceBloc("# SECTION ssl BEGIN.\n", "# SECTION ssl END.\n", '', $cfgTpl);
-            $cfgTpl = replaceBloc("# SECTION forward BEGIN.\n", "# SECTION forward END.\n", '', $cfgTpl);
+            $cfgTpl = replaceBloc("# SECTION fwd BEGIN.\n", "# SECTION fwd END.\n", '', $cfgTpl);
         } elsif (grep( $_ eq $data->{'VHOST_TYPE'}, ( 'domain_fwd', 'domain_ssl_fwd', 'domain_disabled_fwd' ) )) {
             # Remove ssl if needed
             unless ($data->{'VHOST_TYPE'} eq 'domain_ssl_fwd') {
@@ -884,10 +884,10 @@ sub buildConf
             }
 
             # Remove domain section
-            $cfgTpl = replaceBloc("# SECTION domain BEGIN.\n", "# SECTION domain END.\n", '', $cfgTpl);
+            $cfgTpl = replaceBloc("# SECTION dmn BEGIN.\n", "# SECTION dmn END.\n", '', $cfgTpl);
         } elsif (grep( $_ eq $data->{'VHOST_TYPE'}, ( 'domain_ssl', 'domain_disabled_ssl' ) )) {
             # Remove forward section
-            $cfgTpl = replaceBloc("# SECTION forward BEGIN.\n", "# SECTION forward END.\n", '', $cfgTpl);
+            $cfgTpl = replaceBloc("# SECTION fwd BEGIN.\n", "# SECTION fwd END.\n", '', $cfgTpl);
         }
     }
 
@@ -1920,35 +1920,32 @@ sub _cleanTemplate
         return 0;
     }
 
-    if ($name eq 'domain.tpl' && $data->{'VHOST_TYPE'} !~ /fwd/) {
-        unless ($data->{'CGI_SUPPORT'} eq 'yes') {
-            ${$tpl} = replaceBloc( "# SECTION cgi_support BEGIN.\n", "# SECTION cgi_support END.\n", '', ${$tpl} );
-        }
+    if ($name eq 'domain.tpl') {
+        if ($data->{'VHOST_TYPE'} !~ /fwd/) {
+            unless ($data->{'CGI_SUPPORT'} eq 'yes') {
+                ${$tpl} = replaceBloc( "# SECTION cgi BEGIN.\n", "# SECTION cgi END.\n", '', ${$tpl} );
+            }
 
-        if ($data->{'PHP_SUPPORT'} eq 'yes') {
-            ${$tpl} = replaceBloc( "# SECTION php_disabled BEGIN.\n", "# SECTION php_disabled END.\n", '', ${$tpl} );
-        } else {
-            ${$tpl} = replaceBloc( "# SECTION php_enabled BEGIN.\n", "# SECTION php_enabled END.\n", '', ${$tpl} );
-        }
+            if ($data->{'PHP_SUPPORT'} eq 'yes') {
+                ${$tpl} = replaceBloc( "# SECTION php_off BEGIN.\n", "# SECTION php_off END.\n", '', ${$tpl} );
+            } else {
+                ${$tpl} = replaceBloc( "# SECTION php_on BEGIN.\n", "# SECTION php_on END.\n", '', ${$tpl} );
+            }
 
-        ${$tpl} = replaceBloc( "# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', ${$tpl} );
-        ${$tpl} = replaceBloc("# SECTION php_fpm BEGIN.\n", "# SECTION php_fpm END.\n", '', ${$tpl});
-    } elsif ($name eq 'domain.tpl') {
-        if ($data->{'FORWARD'} ne 'no') {
+            ${$tpl} = replaceBloc( "# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', ${$tpl} );
+            ${$tpl} = replaceBloc( "# SECTION php_fpm BEGIN.\n", "# SECTION php_fpm END.\n", '', ${$tpl} );
+        } elsif ($data->{'FORWARD'} ne 'no') {
             if ($data->{'FORWARD_TYPE'} eq 'proxy' && (!$data->{'HSTS_SUPPORT'} || $data->{'VHOST_TYPE'} =~ /ssl/)) {
-                ${$tpl} = replaceBloc(
-                    "# SECTION standard_redirect BEGIN.\n", "# SECTION standard_redirect END.\n", '', ${$tpl}
-                );
+                ${$tpl} = replaceBloc( "# SECTION std_fwd BEGIN.\n", "# SECTION std_fwd END.\n", '', ${$tpl} );
+
                 if (index($data->{'FORWARD'}, 'https') != 0) {
-                    ${$tpl} = replaceBloc("# SECTION ssl_proxy BEGIN.\n", "# SECTION ssl_proxy END.\n", '', ${$tpl});
+                    ${$tpl} = replaceBloc( "# SECTION ssl_proxy BEGIN.\n", "# SECTION ssl_proxy END.\n", '', ${$tpl} );
                 }
             } else {
-                ${$tpl} = replaceBloc(
-                    "# SECTION proxy_redirect BEGIN.\n", "# SECTION proxy_redirect END.\n", '', ${$tpl}
-                );
+                ${$tpl} = replaceBloc( "# SECTION proxy_fwd BEGIN.\n", "# SECTION proxy_fwd END.\n", '', ${$tpl} );
             }
         } else {
-            ${$tpl} = replaceBloc("# SECTION proxy_redirect BEGIN.\n", "# SECTION proxy_redirect END.\n", '', ${$tpl});
+            ${$tpl} = replaceBloc( "# SECTION proxy_fwd BEGIN.\n", "# SECTION proxy_fwd END.\n", '', ${$tpl} );
         }
     }
 

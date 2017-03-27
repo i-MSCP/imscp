@@ -19,7 +19,7 @@
     Header always set Strict-Transport-Security "max-age={HSTS_MAX_AGE}{HSTS_INCLUDE_SUBDOMAINS}"
     # SECTION ssl END.
 
-    # SECTION domain BEGIN.
+    # SECTION dmn BEGIN.
     # SECTION itk BEGIN.
     AssignUserID {USER} {GROUP}
     # SECTION itk END.
@@ -28,7 +28,7 @@
     SuexecUserGroup {USER} {GROUP}
     # SECTION suexec END.
 
-    # SECTION php_enabled BEGIN.
+    # SECTION php_on BEGIN.
     DirectoryIndex index.php
 
     # SECTION php_fpm BEGIN.
@@ -45,7 +45,7 @@
     </Proxy>
     # SECTION mod_proxy_fcgi END.
     # SECTION php_fpm END.
-    # SECTION php_enabled END.
+    # SECTION php_on END.
 
     <Directory {HOME_DIR}>
         Options +SymLinksIfOwnerMatch
@@ -53,11 +53,11 @@
     </Directory>
 
     <Directory {DOCUMENT_ROOT}>
-        # SECTION php_disabled BEGIN.
+        # SECTION php_off BEGIN.
         AllowOverride AuthConfig Indexes Limit Options=Indexes \
             Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule
-        # SECTION php_disabled END.
-        # SECTION php_enabled BEGIN.
+        # SECTION php_off END.
+        # SECTION php_on BEGIN.
         AllowOverride All
         # SECTION fcgid BEGIN.
         Options +ExecCGI
@@ -86,10 +86,10 @@
         </If>
         # SECTION mod_proxy_fcgi END.
         # SECTION php_fpm END.
-        # SECTION php_enabled END.
+        # SECTION php_on END.
     </Directory>
 
-    # SECTION cgi_support BEGIN.
+    # SECTION cgi BEGIN.
     Alias /cgi-bin/ {WEB_DIR}/cgi-bin/
     <Directory {WEB_DIR}/cgi-bin>
         AllowOverride AuthConfig Indexes Limit Options=Indexes
@@ -97,9 +97,9 @@
         Options +ExecCGI -MultiViews
         AddHandler cgi-script .cgi .pl .py .rb
     </Directory>
-    # SECTION cgi_support END.
+    # SECTION cgi END.
 
-    # SECTION php_disabled BEGIN.
+    # SECTION php_off BEGIN.
     # SECTION itk BEGIN.
     php_admin_flag engine off
     # SECTION itk END.
@@ -109,20 +109,20 @@
     # SECTION php_fpm BEGIN.
     RemoveHandler .php .php3 .php4 .php5 .php7 .pht .phtml
     # SECTION php_fpm END.
-    # SECTION php_disabled END.
-    # SECTION domain END.
+    # SECTION php_off END.
+    # SECTION dmn END.
 
-    # SECTION forward BEGIN.
+    # SECTION fwd BEGIN.
     <Directory {DOCUMENT_ROOT}>
         AllowOverride AuthConfig Indexes Limit Options=Indexes \
             Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule
         Require all granted
     </Directory>
 
-    # SECTION standard_redirect BEGIN.
+    # SECTION std_fwd BEGIN.
     RedirectMatch {FORWARD_TYPE} ^/((?!(?:errors|\.well-known)/).*) {FORWARD}$1
-    # SECTION standard_redirect END.
-    # SECTION proxy_redirect BEGIN.
+    # SECTION std_fwd END.
+    # SECTION proxy_fwd BEGIN.
     # SECTION ssl_proxy BEGIN.
     SSLProxyEngine on
     # SECTION ssl_proxy END.
@@ -131,8 +131,8 @@
     ProxyPreserveHost {FORWARD_PRESERVE_HOST}
     ProxyPassMatch ^/((?!(?:errors|\.well-known)/).*) {FORWARD}$1 retry=30 timeout=7200
     ProxyPassReverse / {FORWARD}
-    # SECTION proxy_redirect END.
-    # SECTION forward END.
+    # SECTION proxy_fwd END.
+    # SECTION fwd END.
 
     # SECTION addons BEGIN.
     # SECTION addons END.
