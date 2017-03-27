@@ -234,6 +234,13 @@ EOF
         $cfgTpl .= "innodb_use_native_aio = $innoDbUseNativeAIO\n";
     }
 
+    # Fix For: The 'INFORMATION_SCHEMA.SESSION_VARIABLES' feature is disabled; see the documentation for
+    # 'show_compatibility_56' (3167) - Occurs when executing mysqldump with Percona server 5.7.x
+    if ($main::imscpConfig{'SQL_SERVER'} =~ /^percona/
+        && version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.7.6' )) {
+        $cfgTpl .= "show_compatibility_56 = 1\n";
+    }
+
     # For backward compatibility - We will review this in later version
     # TODO Handle mariadb case when ready. See https://mariadb.atlassian.net/browse/MDEV-7597
     if (version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.7.4' )

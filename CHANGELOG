@@ -12,6 +12,7 @@ PACKAGES
 
 SERVERS
     Changed: Usage of `mpm_event' in place of `mpm_worker' (Apache_fcgid httpd server impl.)
+    Fixed: Couldn't dump database with Percona server 5.7.x - MySQL 5.6.x compatibility mode must be enabled
     Fixed: Usage of new syntax for piped logs (Apache2)
     Fixed: Vhost files for disabled domains badly generated when SSL is enabled (Httpd server impl.)
 
