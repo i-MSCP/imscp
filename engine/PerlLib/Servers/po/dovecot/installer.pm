@@ -498,8 +498,8 @@ sub _buildConf
                 $cfgTpl .= "\nssl = $ssl\n";
 
                 if ($ssl eq 'yes') {
-                    $cfgTpl .= "ssl_protocols = !SSLv2 !SSLv3\n";
                     $cfgTpl .= <<"EOF";
+ssl_protocols = !SSLv2 !SSLv3
 ssl_cert = <$main::imscpConfig{'CONF_DIR'}/imscp_services.pem
 ssl_key = <$main::imscpConfig{'CONF_DIR'}/imscp_services.pem
 EOF
