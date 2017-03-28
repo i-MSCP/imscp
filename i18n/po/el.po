@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-03-26 14:36+0200\n"
+"POT-Creation-Date: 2017-03-28 00:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Asterios Dimitriou <steve@pci.gr>, 2017\n"
 "Language-Team: Greek (https://www.transifex.com/i-mscp/teams/576/el/)\n"
@@ -577,117 +577,120 @@ msgid "Additional data"
 msgstr "Επιπλέον δεδομένα"
 
 msgid "Admin"
-msgstr "Διαχείριση"
+msgstr "Διαχειριστής"
 
 msgid "Admin / General / Admin Log"
-msgstr "Διαχείριση / Γενικά / Αρχείο καταγραφής διαχειριστή"
+msgstr "Διαχειριστής / Γενικά / Αρχείο καταγραφής διαχειριστή"
 
 msgid "Admin / General / Overview"
-msgstr "Διαχείριση / Γενικά / Επισκόπηση"
+msgstr "Διαχειριστής / Γενικά / Επισκόπηση"
 
 msgid "Admin / General / Services Status"
-msgstr "Διαχείριση / Γενικά / Κατάσταση Υπηρεσιών"
+msgstr "Διαχειριστής / Γενικά / Κατάσταση Υπηρεσιών"
 
 msgid "Admin / Profile / Account Summary"
-msgstr "Διαχείριση / Προφίλ / Σύνοψη Λογαριασμού"
+msgstr "Διαχειριστής / Προφίλ / Σύνοψη Λογαριασμού"
 
 msgid "Admin / Profile / Language"
-msgstr "Διαχείριση / Προφίλ / Γλώσσα"
+msgstr "Διαχειριστής / Προφίλ / Γλώσσα"
 
 msgid "Admin / Profile / Layout"
-msgstr "Διαχείριση / Προφίλ / Διάταξη"
+msgstr "Διαχειριστής / Προφίλ / Διάταξη"
 
 msgid "Admin / Profile / Password"
-msgstr "Διαχείριση / Προφίλ / Κωδικός"
+msgstr "Διαχειριστής / Προφίλ / Κωδικός"
 
 msgid "Admin / Profile / Personal Data"
-msgstr "Διαχείριση / Προφίλ / Προσωπικά Δεδομένα"
+msgstr "Διαχειριστής / Προφίλ / Προσωπικά Δεδομένα"
 
 msgid "Admin / Settings"
-msgstr "Διαχείριση / Ρυθμίσεις"
+msgstr "Διαχειριστής / Ρυθμίσεις"
 
 msgid "Admin / Settings / IP Management"
-msgstr ""
+msgstr "Διαχειριστής / Ρυθμίσεις / Διαχείριση IP διευθύνσεων"
 
 msgid "Admin / Settings / Languages"
-msgstr "Διαχείριση / Ρυθμίσεις / Γλώσσες"
+msgstr "Διαχειριστής / Ρυθμίσεις / Γλώσσες"
 
 msgid "Admin / Settings / Lost Password Email"
-msgstr "Διαχείριση / Ρυθμίσεις / Email Χαμένου Κωδικού"
+msgstr "Διαχειριστής / Ρυθμίσεις / Email Χαμένου Κωδικού"
 
 msgid "Admin / Settings / Plugin Management"
-msgstr "Διαχείριση / Ρυθμίσεις / Διαχείριση Προσθέτων"
+msgstr "Διαχειριστής / Ρυθμίσεις / Διαχείριση Προσθέτων"
 
 msgid "Admin / Settings / Server Traffic"
-msgstr "Διαχείριση / Ρυθμίσεις / Κίνηση Διακομιστή"
+msgstr "Διαχειριστής / Ρυθμίσεις / Κίνηση Διακομιστή"
 
 msgid "Admin / Settings / Service Ports"
-msgstr "Διαχείριση / Ρυθμίσεις / Πόρτες Υπηρεσιών"
+msgstr "Διαχειριστής / Ρυθμίσεις / Πόρτες Υπηρεσιών"
 
 msgid "Admin / Settings / Software Management"
-msgstr "Διαχείριση / Ρυθμίσεις / Διαχείριση Λογισμικού"
+msgstr "Διαχειριστής / Ρυθμίσεις / Διαχείριση Λογισμικού"
 
 msgid "Admin / Settings / Software Options"
-msgstr "Διαχείριση / Ρυθμίσεις / Επιλογές Λογισμικού"
+msgstr "Διαχειριστής / Ρυθμίσεις / Επιλογές Λογισμικού"
 
 msgid "Admin / Settings / Welcome Email"
-msgstr "Διαχείριση / Ρυθμίσεις / Email Καλωσορίσματος"
+msgstr "Διαχειριστής / Ρυθμίσεις / Email Καλωσορίσματος"
 
 msgid "Admin / Settings / {TR_DYNAMIC_TITLE}"
-msgstr "Διαχείριση / Ρυθμίσεις / {TR_DYNAMIC_TITLE}"
+msgstr "Διαχειριστής / Ρυθμίσεις / {TR_DYNAMIC_TITLE}"
 
 msgid "Admin / Software Management / Reseller Software"
-msgstr "Διαχείριση / Διαχείριση Λογισμικού / Λογισμικό Μεταπωλητή"
+msgstr "Διαχειριστής / Διαχείριση Λογισμικού / Λογισμικό Μεταπωλητή"
 
 msgid "Admin / Statistics / IP Usage"
-msgstr ""
+msgstr "Διαχειριστής / Στατιστικά / Χρήση IP διευθύνσεων"
 
 msgid "Admin / Statistics / Reseller Statistics"
-msgstr ""
+msgstr "Διαχειριστής / Στατιστικά / Στατιστικά Μεταπωλητή"
 
 msgid "Admin / Statistics / Reseller Statistics / User Statistics"
-msgstr ""
+msgstr "Διαχειριστής / Στατιστικά / Στατιστικά Μεταπωλητή / Στατιστικά Χρήστη"
 
 msgid ""
 "Admin / Statistics / Reseller Statistics / User Statistics / {USERNAME} user"
 " statistics"
 msgstr ""
+"Διαχειριστής / Στατιστικά / Στατιστικά Μεταπωλητή / Στατιστικά Χρήστη / "
+"Στατιστικά του χρήστη {USERNAME} "
 
 msgid "Admin / Statistics / Server Statistics"
-msgstr ""
+msgstr "Διαχειριστής / Στατιστικά / Στατιστικά Διακομιστή"
 
 msgid "Admin / Statistics / Server Statistics / Day Statistics"
 msgstr ""
+"Διαχειριστής / Στατιστικά / Στατιστικά Διακομιστή / Ημερήσια Στατιστικά"
 
 msgid "Admin / Support / Closed Tickets"
-msgstr ""
+msgstr "Διαχειριστής / Υποστήριξη / Κλειστά Σημειώματα"
 
 msgid "Admin / Support / View Ticket"
-msgstr ""
+msgstr "Διαχειριστής / Υποστήριξη / Εμφάνιση Σημειώματος"
 
 msgid "Admin / System Tools / Anti-Rootkits Logs"
-msgstr "Διαχείριση / Εργαλεία Συστήματος / Anti-Rootkit Αρχεία Καταγραφών"
+msgstr "Διαχειριστής / Εργαλεία Συστήματος / Anti-Rootkit Αρχεία Καταγραφών"
 
 msgid "Admin / System Tools / Database Update"
-msgstr "Διαχείριση / Εργαλεία Συστήματος / Ενημέρωση Βάσης Δεδομένων"
+msgstr "Διαχειριστής / Εργαλεία Συστήματος / Ενημέρωση Βάσης Δεδομένων"
 
 msgid "Admin / System Tools / Debugger"
-msgstr "Διαχείριση / Εργαλεία Συστήματος / Αποσφαλματωτής"
+msgstr "Διαχειριστής / Εργαλεία Συστήματος / Αποσφαλματωτής"
 
 msgid "Admin / System Tools / Maintenance Settings"
-msgstr "Διαχείριση / Εργαλεία Συστήματος / Ρυθμίσεις Συντήρησης"
+msgstr "Διαχειριστής / Εργαλεία Συστήματος / Ρυθμίσεις Συντήρησης"
 
 msgid "Admin / System Tools / System Information"
-msgstr "Διαχείριση / Εργαλεία Συστήματος / Πληροφορίες Συστήματος"
+msgstr "Διαχειριστής / Εργαλεία Συστήματος / Πληροφορίες Συστήματος"
 
 msgid "Admin / System Tools / i-MSCP Updates"
-msgstr "Διαχείριση / Εργαλεία Συστήματος / Ενημέρωσεις του i-MSCP"
+msgstr "Διαχειριστής / Εργαλεία Συστήματος / Ενημέρωσεις του i-MSCP"
 
 msgid "Admin / Users / Add Admin"
-msgstr "Διαχείριση / Χρήστες / Προσθήκη Διαχειριστή"
+msgstr "Διαχειριστής / Χρήστες / Προσθήκη Διαχειριστή"
 
 msgid "Admin / Users / Add Reseller"
-msgstr "Διαχείριση / Χρήστες / Προσθήκη Μεταπωλητή"
+msgstr "Διαχειριστής / Χρήστες / Προσθήκη Μεταπωλητή"
 
 msgid "Admin / Users / Circular"
 msgstr ""
@@ -696,22 +699,22 @@ msgid "Admin / Users / Customers Assignment"
 msgstr ""
 
 msgid "Admin / Users / Edit Reseller"
-msgstr "Διαχείριση / Χρήστες / Επεξεργασία Μεταπωλητή"
+msgstr "Διαχειριστής / Χρήστες / Επεξεργασία Μεταπωλητή"
 
 msgid "Admin / Users / Overview"
-msgstr "Διαχείριση / Χρήστες / Επισκόπηση"
+msgstr "Διαχειριστής / Χρήστες / Επισκόπηση"
 
 msgid "Admin / Users / Overview / Domain Details"
-msgstr "Διαχείριση / Χρήστες / Επισκόπηση / Λεπτομέρειες Domain"
+msgstr "Διαχειριστής / Χρήστες / Επισκόπηση / Λεπτομέρειες Domain"
 
 msgid "Admin / Users / Overview / Edit Admin"
-msgstr "Διαχείριση / Χρήστες / Επισκόπηση / Επεξεργασία Domain"
+msgstr "Διαχειριστής / Χρήστες / Επισκόπηση / Επεξεργασία Domain"
 
 msgid "Admin / Users / Resellers Assignment"
 msgstr ""
 
 msgid "Admin / Users / Sessions"
-msgstr ""
+msgstr "Διαχειριστής / Χρήστες / Συνεδρίες"
 
 msgid "Admin account successfully created."
 msgstr ""
@@ -5373,7 +5376,7 @@ msgid "Web traffic"
 msgstr ""
 
 msgid "Webmail"
-msgstr ""
+msgstr "%s webmail"
 
 msgid "Webtools"
 msgstr ""
@@ -6005,4 +6008,4 @@ msgid "{USERNAME} user statistics"
 msgstr "{USERNAME} στατιστικά χρήστη"
 
 msgid "© 2010-2017 i-MSCP Team<br>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2017 Η Ομάδα του i-MSCP<br>Με την επιφύλαξη παντός δικαιώματος"
