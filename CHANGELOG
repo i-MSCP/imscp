@@ -13,6 +13,9 @@ DISTRIBUTION
 INSTALLER
     Fixed: Don't allows switching to other SGBD vendor (most of the time, there are pre-required manual tasks to be done)
 
+LISTENERS
+    Updated: All Dovecot listener files according latest changes
+
 PACKAGES
     Fixed: AWStats interface must not be reachable for redirected or proxied sites (revert)
     Fixed: Couldn't create /run/imscp service directory in some environments - systemd-tmpfiles command fails (FrontEnd)
@@ -24,6 +27,8 @@ SERVERS
     Fixed: Vhost files for disabled domains are badly generated when SSL is enabled (Httpd server impl.)
     Fixed: Vhost files for forwarded SSL domains are badly generated (Httpd server impl.)
     Fixed: vlogger process not terminated (unpredictable context), leading to high CPU load (Httpd server impl.)
+    Fixed: Wrong dovecot configuration used due to wrong conditional test (Dovecot PO server impl.)
+    Removed: Configuration file for Dovecot older than version 2.1 (no longer needed)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.0

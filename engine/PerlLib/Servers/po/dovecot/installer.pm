@@ -457,25 +457,20 @@ sub _buildConf
         iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-dict-sql.conf" )->delFile();
     }
 
-    my $isDovecot21 = version->parse( $self->{'version'} ) >= version->parse( '2.1.0' );
-
     my %cfgFiles = (
-        (($isDovecot21) ? 'dovecot.conf.2.0' : 'dovecot.conf.2.1') =>
-        [
+        'dovecot.conf'     => [
             "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot.conf", # Destpath
             $main::imscpConfig{'ROOT_USER'}, # Owner
             $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # Group
             0640 # Permissions
         ],
-        'dovecot-sql.conf'                                                                                           =>
-        [
+        'dovecot-sql.conf' => [
             "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf", # Destpath
             $main::imscpConfig{'ROOT_USER'}, # owner
             $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # Group
             0640 # Permissions
         ],
-        'quota-warning'                                                                                              =>
-        [
+        'quota-warning'    => [
             "$main::imscpConfig{'ENGINE_ROOT_DIR'}/quota/imscp-dovecot-quota.sh", # Destpath
             $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'}, # Owner
             $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # Group
@@ -503,7 +498,7 @@ sub _buildConf
                 $cfgTpl .= "\nssl = $ssl\n";
 
                 if ($ssl eq 'yes') {
-                    $cfgTpl .= "ssl_protocols = !SSLv2 !SSLv3\n" if $isDovecot21;
+                    $cfgTpl .= "ssl_protocols = !SSLv2 !SSLv3\n";
                     $cfgTpl .= <<"EOF";
 ssl_cert = <$main::imscpConfig{'CONF_DIR'}/imscp_services.pem
 ssl_key = <$main::imscpConfig{'CONF_DIR'}/imscp_services.pem

@@ -45,7 +45,7 @@ iMSCP::EventManager->getInstance()->register(
     sub {
         my ($cfgTpl, $tplName) = @_;
 
-        return 0 unless index( $tplName, 'dovecot.conf' ) != -1;
+        return 0 unless $tplName eq 'dovecot.conf';
 
         my $cfgSnippet = <<EOF;
 

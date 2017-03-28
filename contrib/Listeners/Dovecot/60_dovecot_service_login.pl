@@ -1,4 +1,5 @@
 # i-MSCP Listener::Dovecot::Service::Login listener file
+# Copyright (C) 2017 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2016-2017 Sven Jantzen <info@svenjantzen.de>
 #
 # This library is free software; you can redistribute it and/or
@@ -22,12 +23,7 @@
 
 package Listener::Dovecot::Service::Login;
 
-use strict;
-use warnings;
-use iMSCP::Debug;
 use iMSCP::EventManager;
-use iMSCP::Execute;
-use version;
 
 #
 ## Configuration parameters
@@ -66,16 +62,9 @@ iMSCP::EventManager->getInstance()->register(
     sub {
         my ($cfgTpl, $tplName) = @_;
 
-        return 0 unless index( $tplName, 'dovecot.conf' ) != -1;
+        return 0 unless $tplName eq 'dovecot.conf';
 
-        execute( "dovecot --version", \ my $stdout, \ my $stderr );
-
-        if (version->parse( "$stdout" ) < version->parse( '2.1.0' )) {
-            warning( "The 60_dovecot_service_login.pl Listener file requires Dovecot version 2.1.x or newer. Your version is: $stdout" );
-            return 0;
-        }
-
-        $$cfgTpl .= <<EOF;
+        ${$cfgTpl} .= <<"EOF";
 
 # Begin Listener::Dovecot::Service::Login
 service imap-login {

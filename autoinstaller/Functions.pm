@@ -798,6 +798,8 @@ sub _cleanup
         "$main::imscpConfig{'CONF_DIR'}/vsftpd/imscp_allow_writeable_root.patch",
         "$main::imscpConfig{'CONF_DIR'}/vsftpd/imscp_pthread_cancel.patch",
         "$main::imscpConfig{'CONF_DIR'}/apache/parts/php5.itk.ini",
+        "$main::imscpConfig{'CONF_DIR'}/dovecot/dovecot.conf.2.0",
+        "$main::imscpConfig{'CONF_DIR'}/dovecot/dovecot.conf.2.1",
         '/etc/default/imscp_panel',
         "$main::imscpConfig{'CONF_DIR'}/frontend/php-fcgi-starter",
         "$main::imscpConfig{'CONF_DIR'}/listeners.d/README",
