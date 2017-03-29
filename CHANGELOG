@@ -13,6 +13,7 @@ SERVICE
 
 SERVERS
     Fixed: FastCgiExternalServer: redefinition of previously defined class (apache_php_fpm httpd server impl.)
+    Fixed: Modules::Plugin::_call: Can't locate object method "getInstance" via package "Servers::mta::postfix" (po servers impl.)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.1

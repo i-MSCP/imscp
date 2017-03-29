@@ -182,14 +182,13 @@ sub uninstall
 
 sub postaddMail
 {
-    my (undef, $data) = @_;
+    my ($self, $data) = @_;
 
     return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
 
-    my $mta = Servers::mta->factory();
-    my $mailDir = "$mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
-    my $mailUidName = $mta->{'config'}->{'MTA_MAILBOX_UID_NAME'};
-    my $mailGidName = $mta->{'config'}->{'MTA_MAILBOX_GID_NAME'};
+    my $mailDir = "$self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
+    my $mailUidName = $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'};
+    my $mailGidName = $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
     for my $mailbox('.Drafts', '.Junk', '.Sent', '.Trash') {
         my $rs = iMSCP::Dir->new( dirname => "$mailDir/$mailbox" )->make(
@@ -490,7 +489,7 @@ sub _init
 
     $self->{'restart'} = 0;
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'mta'} = Servers::mta::postfix->getInstance();
+    $self->{'mta'} = Servers::mta->factory();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
