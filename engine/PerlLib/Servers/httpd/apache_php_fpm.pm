@@ -1530,7 +1530,7 @@ sub _addCfg
             {
                 CERTIFICATE   => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem",
                 DOMAIN_IPS    => join(' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]").':443' } @domainIPs),
-                FASTCGI_CLASS => $data->{'DOMAIN_NAME'}.'-ssl',
+                FASTCGI_CLASS => $data->{'DOMAIN_NAME'}.'-ssl'
             }
         );
 
