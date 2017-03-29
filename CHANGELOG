@@ -4,6 +4,13 @@
 Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
+CRONJOBS
+    Changed: Niceness from 0 to 10 for the mscp-srv-traff and imscp-vrl-traff i-MSCP core cron tasks
+    Changed: Niceness from 15 to 10 for i-MSCP core cron tasks
+
+SERVICE
+    Changed: Niceness from 0 to 10 for imscp_daemon and imscp_panel services 
+
 ------------------------------------------------------------------------------------------------------------------------
 1.4.1
 ------------------------------------------------------------------------------------------------------------------------

@@ -161,8 +161,8 @@ sub _addCronTask
             DWEEK   => '',
             USER    => $main::imscpConfig{'ROOT_USER'},
             COMMAND =>
-            'nice -n 15 ionice -c2 -n5 perl '
-                ."$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl "
+            'nice -n 10 ionice -c2 -n5 '
+                ."perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl "
                 ."> /dev/null 2>&1"
         }
     );

@@ -108,7 +108,7 @@ sub _addCronTask
             MONTH   => '',
             DWEEK   => '',
             USER    => $main::imscpConfig{'ROOT_USER'},
-            COMMAND => "nice -n 15 ionice -c2 -n5 bash chkrootkit -e > $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1"
+            COMMAND => "nice -n 10 ionice -c2 -n5 bash chkrootkit -e > $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1"
         }
     );
 }

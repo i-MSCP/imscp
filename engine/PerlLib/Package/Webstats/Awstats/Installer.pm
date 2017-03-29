@@ -196,8 +196,8 @@ sub _addAwstatsCronTask
             MONTH   => '*',
             DWEEK   => '*',
             USER    => $main::imscpConfig{'ROOT_USER'},
-            COMMAND => 'nice -n 15 ionice -c2 -n5 perl '.
-                "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_updateall.pl now ".
+            COMMAND => 'nice -n 10 ionice -c2 -n5 '.
+                "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_updateall.pl now ".
                 "-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl > /dev/null 2>&1"
         }
     );
