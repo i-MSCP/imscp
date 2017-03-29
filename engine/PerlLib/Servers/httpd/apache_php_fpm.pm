@@ -1485,6 +1485,7 @@ sub _addCfg
             FASTCGI_LISTEN_ENDPOINT => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
                 ? "/run/php/php$phpVersion-fpm-$confLevel.sock"
                 : '127.0.0.1:'.($self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'} + $data->{'PHP_FPM_LISTEN_PORT'}),
+            FASTCGI_CLASS           => $data->{'DOMAIN_NAME'},
             # proxy_fcgi module case (Apache2 >= 2.4.10)
             PROXY_FCGI_PATH         => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
                 ? "unix:/run/php/php$phpVersion-fpm-$confLevel.sock|"
@@ -1527,8 +1528,9 @@ sub _addCfg
     if ($data->{'SSL_SUPPORT'}) {
         $self->setData(
             {
-                CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem",
-                DOMAIN_IPS  => join(' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]").':443' } @domainIPs)
+                CERTIFICATE   => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem",
+                DOMAIN_IPS    => join(' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]").':443' } @domainIPs),
+                FASTCGI_CLASS => $data->{'DOMAIN_NAME'}.'-ssl',
             }
         );
 

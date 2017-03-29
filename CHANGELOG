@@ -11,6 +11,9 @@ CRONJOBS
 SERVICE
     Changed: Niceness from 0 to 10 for imscp_daemon and imscp_panel services 
 
+SERVERS
+    Fixed: FastCgiExternalServer: redefinition of previously defined class (apache_php_fpm httpd server impl.)
+
 ------------------------------------------------------------------------------------------------------------------------
 1.4.1
 ------------------------------------------------------------------------------------------------------------------------

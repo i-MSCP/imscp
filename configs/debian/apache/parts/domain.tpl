@@ -33,8 +33,8 @@
 
     # SECTION php_fpm BEGIN.
     # SECTION mod_fastcgi BEGIN.
-    Alias /php-fcgi /var/lib/apache2/fastcgi/php-fcgi-{DOMAIN_NAME}
-    FastCGIExternalServer /var/lib/apache2/fastcgi/php-fcgi-{DOMAIN_NAME} \
+    Alias /php-fcgi /var/lib/apache2/fastcgi/php-fcgi-{FASTCGI_CLASS}
+    FastCGIExternalServer /var/lib/apache2/fastcgi/php-fcgi-{FASTCGI_CLASS} \
         -{FASTCGI_LISTEN_MODE} {FASTCGI_LISTEN_ENDPOINT} \
         -idle-timeout 900 \
         -pass-header Authorization
