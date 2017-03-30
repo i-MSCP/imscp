@@ -19,9 +19,9 @@
 #
 ## Provides transparent access to i-MSCP tools (pma, webmail...) through customer domains. For instance:
 #
-#  http://customer.tld/webmail will be redirected to https://customer.tld/webmail if ssl is enabled for customer domain
-#  http://customer.tld/webmail will proxy to i-MSCP webmail transparently if ssl is not enabled for customer domain
-#  https://customer.tld/webmail will proxy to i-MSCP webmail transparently
+#  http://customer.tld/webmail/ will be redirected to https://customer.tld/webmail/ if ssl is enabled for customer domain
+#  http://customer.tld/webmail/ will proxy to i-MSCP webmail transparently if ssl is not enabled for customer domain
+#  https://customer.tld/webmail/ will proxy to i-MSCP webmail transparently
 #
 
 package Listener::Apache2::Tools::Proxy;
