@@ -76,7 +76,9 @@ EOF
                     {
                         HTTP_URI_SCHEME => ($main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes') ? 'https://' : 'http://',
                         HTTP_HOST       => $main::imscpConfig{'BASE_SERVER_VHOST'},
-                        HTTP_PORT       => $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'}
+                        HTTP_PORT       => ($main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes')
+                            ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'}
+                            : $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
                     },
                     $cfgProxy
                 )
