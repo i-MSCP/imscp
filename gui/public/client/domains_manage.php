@@ -77,6 +77,7 @@ function generateDomainsList($tpl)
             $tpl->assign(array(
                 'DOMAIN_NAME' => tohtml($domainName),
                 'ALTERNATE_URL' => tohtml($alternateUrlHost, 'htmlAttr'),
+                'TR_ALT_URL' => tohtml(tr('Alt. URL')),
                 'ALTERNATE_URL_TOOLTIP' => tohtml(tr('Alternate URL to reach your website.'), 'htmlAttr'),
                 'DOMAIN_STATUS_RELOAD_FALSE' => ''
             ));
@@ -408,6 +409,7 @@ function generateSubdomainsList($tpl)
                 'SUB_NAME' => tohtml($subName),
                 'SUB_ALIAS_NAME' => tohtml($domainName),
                 'ALTERNATE_URL' => tohtml($alternateUrlHost, 'htmlAttr'),
+                'TR_ALT_URL' => tohtml(tr('Alt. URL')),
                 'ALTERNATE_URL_TOOLTIP' => tohtml(tr('Alternate URL to reach your website.'), 'htmlAttr'),
                 'SUB_STATUS_RELOAD_FALSE' => ''
             ));
@@ -466,6 +468,7 @@ function generateSubdomainsList($tpl)
                 'SUB_NAME' => tohtml($name),
                 'SUB_ALIAS_NAME' => tohtml($alsName),
                 'ALTERNATE_URL' => tohtml($alternateUrlHost, 'htmlAttr'),
+                'TR_ALT_URL' => tohtml(tr('Alt. URL')),
                 'ALTERNATE_URL_TOOLTIP' => tohtml(tr('Alternate URL to reach your website.'), 'htmlAttr'),
                 'SUB_STATUS_RELOAD_FALSE' => ''
             ));

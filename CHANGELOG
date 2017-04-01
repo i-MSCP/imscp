@@ -8,6 +8,9 @@ CRONJOBS
     Changed: Niceness from 0 to 10 for the imscp-srv-traff and imscp-vrl-traff i-MSCP core cron tasks
     Changed: Niceness from 15 to 10 for i-MSCP core cron tasks
 
+FRONTEND
+    Review: Moved links for alternative URLs on the line of the main URLs for a cleaner overview (Client interface)
+
 LISTENERS
     Fixed: Missing test for SSL in the 30_apache2_tools_proxy.pl listener file
 

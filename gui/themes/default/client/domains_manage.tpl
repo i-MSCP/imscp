@@ -46,8 +46,8 @@
     <tr>
         <!-- BDP: domain_status_reload_true -->
         <td>
-            <div><a href="http://{DOMAIN_NAME}/" class="icon i_domain_icon" target="_blank" title="{DOMAIN_NAME}">{DOMAIN_NAME}</a></div>
-            <div><a href="http://{ALTERNATE_URL}" class="icon i_domain_icon" target="_blank" title="{ALTERNATE_URL_TOOLTIP}">{ALTERNATE_URL}</a></div>
+            <a href="http://{DOMAIN_NAME}/" class="icon i_domain_icon" target="_blank" title="{DOMAIN_NAME}">{DOMAIN_NAME}</a>
+            <a href="http://{ALTERNATE_URL}" target="_blank" title="{ALTERNATE_URL_TOOLTIP}"><small><strong>[{TR_ALT_URL}]</strong></small></a>
         </td>
         <!-- EDP: domain_status_reload_true -->
         <!-- BDP: domain_status_reload_false -->
@@ -93,8 +93,8 @@
     <tr>
         <!-- BDP: als_status_reload_true -->
         <td>
-            <div><a href="http://{ALS_NAME}/" class="icon i_domain_icon" target="_blank" title="{ALS_NAME}">{ALS_NAME}</a></div>
-            <div><a href="http://{ALTERNATE_URL}" class="icon i_domain_icon" target="_blank" title="{ALTERNATE_URL_TOOLTIP}">{ALTERNATE_URL}</a></div>
+            <a href="http://{ALS_NAME}/" class="icon i_domain_icon" target="_blank" title="{ALS_NAME}">{ALS_NAME}</a>
+            <a href="http://{ALTERNATE_URL}" target="_blank" title="{ALTERNATE_URL_TOOLTIP}"><small><strong>[{TR_ALT_URL}]</strong></small></a>
         </td>
         <!-- EDP: als_status_reload_true -->
         <!-- BDP: als_status_reload_false -->
@@ -142,8 +142,8 @@
     <tr>
         <!-- BDP: sub_status_reload_true -->
         <td>
-            <div><a href="http://{SUB_NAME}.{SUB_ALIAS_NAME}/" class="icon i_domain_icon" target="_blank" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</a></div>
-            <div><a href="http://{ALTERNATE_URL}" class="icon i_domain_icon" target="_blank" title="{ALTERNATE_URL_TOOLTIP}">{ALTERNATE_URL}</a></div>
+            <a href="http://{SUB_NAME}.{SUB_ALIAS_NAME}/" class="icon i_domain_icon" target="_blank" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</a>
+            <a href="http://{ALTERNATE_URL}" target="_blank" title="{ALTERNATE_URL_TOOLTIP}"><small><strong>[{TR_ALT_URL}]</strong></small></a></div>
         </td>
         <!-- EDP: sub_status_reload_true -->
         <!-- BDP: sub_status_reload_false -->
