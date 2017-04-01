@@ -333,7 +333,7 @@ sub _exec
 
     my $ret = execute( [ @command ], \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    debug( $stderr ) unless $ret;
+    debug( $stderr ) unless $ret || !$stderr;
     error( $stderr ) if $ret && $stderr;
     $ret;
 }
