@@ -1,28 +1,47 @@
 
 <script>
     $(function () {
-        $("#normal, #forward, #normal_forward").on('change', function () {
-            if ($(this).val() == '1') {
-                if ($(this).is(':checked')) {
-                    $("#tr_password, #tr_password_rep, #tr_quota").show();
-                    $("#tr_forward_list").hide();
-                } else {
-                    $("#tr_password, #tr_password_rep, #tr_quota").hide();
-                }
-            } else if ($(this).val() == '2') {
-                if ($(this).is(":checked")) {
-                    $("#tr_forward_list").show();
-                    $("#tr_password, #tr_password_rep, #tr_quota").hide();
-                } else {
-                    $("#tr_forward_list").hide();
-                }
-            } else {
-                if ($(this).is(':checked')) {
-                    $("#tr_password, #tr_password_rep, #tr_quota").show();
-                    $("#tr_forward_list").show();
-                }
+        function fixQuotaField() {
+            // Make sure that hidden quota field will pass browser validations on submit
+            var $quotaInput = $("#quota");
+            var quotaInputValue = parseInt($quotaInput.val());
+            var quotaInputMinValue = parseInt($quotaInput.attr('min'));
+            var quotaInputMaxValue = parseInt($quotaInput.attr('max'));
+
+            if (isNaN(quotaInputValue)
+                || quotaInputValue < quotaInputMinValue
+                || quotaInputValue > quotaInputMaxValue
+            ) {
+                $quotaInput.val(quotaInputMinValue);
             }
-        }).trigger('change');
+        }
+
+        if(imscp_i18n.core.mail_add_forward_only) {
+            $("#forward").prop('checked', true).closest('tr').hide();
+            $("#tr_forward_list").show();
+            $("#tr_password, #tr_password_rep, #tr_quota").hide();
+            fixQuotaField();
+        } else {
+            $("input[name='account_type']").on('change', function () {
+                    if ($(this).val() == '1') { // Normal email account
+                        $("#tr_password, #tr_password_rep, #tr_quota").show();
+                        $("#tr_forward_list").hide();
+                        fixQuotaField();
+                        return;
+                    }
+
+                    if ($(this).val() == '2') { // Forward email account
+                        $("#tr_forward_list").show();
+                        $("#tr_password, #tr_password_rep, #tr_quota").hide();
+                        return;
+                    }
+
+                    // Normal + Forward email account
+                    $("#tr_password, #tr_password_rep, #tr_quota").show();
+                    $("#tr_forward_list").show();
+                }
+            ).parent().find(':checked').trigger('change'); // Initialize form
+        }
     });
 </script>
 <form name="client_mail_edit" action="mail_edit.php?id={MAIL_ID}" method="post">

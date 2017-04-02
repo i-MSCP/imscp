@@ -168,7 +168,7 @@ function client_addMailAccount()
 
             if ($mailQuotaSumBytes >= $mainDmnProps['mail_quota']) {
                 set_page_message(tr('You cannot add new email account. You have already assigned all your email quota to other mailboxes. Please first, review your quota assignments.'), 'warning');
-                redirectTo('mail_accounts.php');
+                return false;
             }
 
             $mailQuotaLimitBytes = floor($mainDmnProps['mail_quota'] - $mailQuotaSumBytes);
@@ -287,28 +287,35 @@ function client_generatePage($tpl)
 
     $mailQuotaSumBytes = $stmt->fetchRow(PDO::FETCH_COLUMN);
 
-    if ($mainDmnProps['mail_quota'] != '0' && $mailQuotaSumBytes >= $mainDmnProps['mail_quota']) {
-        set_page_message(tr('You cannot add new email account. You have already assigned all your email quota to other mailboxes. Please first, review your quota assignments.'), 'warning');
-        redirectTo('mail_accounts.php');
-    }
-
     if ($mainDmnProps['mail_quota'] == 0) {
         $tpl->assign(array(
             'TR_QUOTA'  => tohtml(tr('Quota in MiB (0 for unlimited)')),
-            'MIN_QUOTA' => 1,
+            'MIN_QUOTA' => 0,
             'MAX_QUOTA' => tohtml(floor(PHP_INT_MAX / 1048576), 'htmlAttr'),
-            'QUOTA'     => isset($_POST['quota']) ? tohtml($_POST['quota'], 'htmlAttr') : 10
+            'QUOTA'     => isset($_POST['quota']) ? tohtml(intval($_POST['quota']), 'htmlAttr') : 0
         ));
+        $forwardOnlyEmailAccount = false;
     } else {
-        $mailQuotaLimitBytes = $mainDmnProps['mail_quota'] - $mailQuotaSumBytes;
+        if($mainDmnProps['mail_quota'] > $mailQuotaSumBytes) {
+            $mailQuotaLimitBytes = $mainDmnProps['mail_quota'] - $mailQuotaSumBytes;
+            $forwardOnlyEmailAccount = false;
+        } else {
+            set_page_message(tr('You cannot add normal email account because you have already assigned all your email quota to other mailboxes. If you want to add a new normal email account, you must first lower the quota assigned to one of your other mailboxes.'), 'static_info');
+            set_page_message(tr('For the time being, you can only add forwarded email account.'), 'static_info');
+            # Only for sanity; Attempting to create account involving quota
+            # will fail because quota is already full assigned (expected)
+            $mailQuotaLimitBytes = 1048576; # 1 Mio
+            $forwardOnlyEmailAccount = true;
+        }
+
         $mailQuotaLimitMiB = floor($mailQuotaLimitBytes / 1048576);
         $tpl->assign(array(
             'TR_QUOTA'  => tohtml(tr('Quota in MiB (Max: %s)', bytesHuman($mailQuotaLimitBytes, NULL, 0))),
             'MIN_QUOTA' => 1,
             'MAX_QUOTA' => tohtml($mailQuotaLimitMiB, 'htmlAttr'),
             'QUOTA'     => isset($_POST['quota'])
-                ? tohtml($_POST['quota'], 'htmlAttr')
-                : tohtml(($mailQuotaLimitMiB >= 10) ? 10 : $mailQuotaLimitMiB, 'htmlAttr')
+                ? tohtml(intval($_POST['quota']), 'htmlAttr')
+                : tohtml(min(10, $mailQuotaLimitMiB), 'htmlAttr')
         ));
     }
 
@@ -332,6 +339,14 @@ function client_generatePage($tpl)
         ));
         $tpl->parse('DOMAIN_NAME_ITEM', '.domain_name_item');
     }
+
+    iMSCP_Events_Aggregator::getInstance()->registerListener(
+        'onGetJsTranslations',
+        function ($event) use ($forwardOnlyEmailAccount) {
+            /** @var $event iMSCP_Events_Description */
+            $event->getParam('translations')->core['mail_add_forward_only'] = $forwardOnlyEmailAccount;
+        }
+    );    
 }
 
 /***********************************************************************************************************************

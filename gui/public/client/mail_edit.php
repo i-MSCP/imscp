@@ -231,21 +231,32 @@ function client_generatePage($tpl)
     if ($mainDmnProps['mail_quota'] == 0) {
         $tpl->assign(array(
             'TR_QUOTA'  => tohtml(tr('Quota in MiB (0 for unlimited)')),
-            'MIN_QUOTA' => 1,
+            'MIN_QUOTA' => 0,
             'MAX_QUOTA' => tohtml(floor(PHP_INT_MAX / 1048576), 'htmlAttr'),
             'QUOTA'     => isset($_POST['quota'])
-                ? tohtml($_POST['quota'], 'htmlAttr')
+                ? tohtml(intval($_POST['quota']), 'htmlAttr')
                 : tohtml(floor($mailData['quota'] / 1048576), 'htmlAttr')
         ));
+        $forwardOnlyEmailAccount = false;
     } else {
         $mailQuotaLimitBytes = ($mainDmnProps['mail_quota'] + $mailData['quota']) - $mailQuotaSumBytes;
-        $mailQuotaLimitMiB = floor($mailQuotaLimitBytes  / 1048576);
+        if($mailQuotaLimitBytes < 1) {
+            set_page_message(tr('You cannot change this account to normal email account because you have already assigned all your email quota to other mailboxes. If you want to change this account to normal email account, you must first lower the quota assigned to one of your other mailboxes.'), 'static_info');
+            set_page_message(tr('For the time being, you can only edit your forwarded email account.'), 'static_info');
+            $mailQuotaLimitBytes = 1048576; // Only for sanity. Customer won't be able to switch to normal email account
+            $mailQuotaLimitMiB = 1;
+            $forwardOnlyEmailAccount = true;
+        } else {
+            $forwardOnlyEmailAccount = false;
+            $mailQuotaLimitMiB = floor($mailQuotaLimitBytes / 1048576);
+        }
+
         $tpl->assign(array(
             'TR_QUOTA'  => tohtml(tr('Quota in MiB (Max: %s)', bytesHuman($mailQuotaLimitBytes, NULL, 0))),
             'MIN_QUOTA' => 1,
             'MAX_QUOTA' => tohtml($mailQuotaLimitMiB, 'htmlAttr'),
             'QUOTA'     => isset($_POST['quota'])
-                ? tohtml($_POST['quota'], 'htmlAttr')
+                ? tohtml(intval($_POST['quota']), 'htmlAttr')
                 : tohtml(floor($mailData['quota'] / 1048576), 'htmlAttr')
         ));
     }
@@ -279,6 +290,14 @@ function client_generatePage($tpl)
         'DOMAIN_NAME_UNICODE'  => tohtml(decode_idna($domainName)),
         'DOMAIN_NAME_SELECTED' => ' selected'
     ));
+
+    iMSCP_Events_Aggregator::getInstance()->registerListener(
+        'onGetJsTranslations',
+        function ($event) use ($forwardOnlyEmailAccount) {
+            /** @var $event iMSCP_Events_Description */
+            $event->getParam('translations')->core['mail_add_forward_only'] = $forwardOnlyEmailAccount;
+        }
+    );
 }
 
 /***********************************************************************************************************************
