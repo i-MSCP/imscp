@@ -9,7 +9,7 @@ CRONJOBS
     Changed: Niceness from 15 to 10 for i-MSCP core cron tasks
 
 FRONTEND
-    Fixed: Couldn't create email account with unlimited quota, event if email quota for customer is unlimlited
+    Fixed: Couldn't create email account with unlimited quota, even if email quota for customer is unlimited
     Fixed: Couldn't create forward email account if hidden quota field from normal email account is not valid
     Review: Moved links for alternative URLs on the line of the main URLs for a cleaner overview (Client interface)
 
@@ -24,7 +24,7 @@ SERVERS
     Fixed: Modules::Plugin::_call: Can't locate object method "getInstance" via package "Servers::mta::postfix" (po servers impl.)
 
 YOUTRACK:
-    #IP-1670 Customer must be still able to create forward email account, even when email quota is full assigend
+    #IP-1670 Customer must be still able to create forward email account, even when email quota is full assigned
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.1
