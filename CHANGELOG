@@ -16,7 +16,7 @@ FRONTEND
 LISTENERS
     Fixed: Missing test for SSL in the 30_apache2_tools_proxy.pl listener file
 
-SERVICE
+SERVICES
     Changed: Niceness from 0 to 10 for imscp_daemon and imscp_panel services 
 
 SERVERS
