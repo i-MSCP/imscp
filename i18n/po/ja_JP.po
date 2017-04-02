@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-03-28 00:36+0000\n"
+"POT-Creation-Date: 2017-04-02 06:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Japanese (Japan) (https://www.transifex.com/i-mscp/teams/576/ja_JP/)\n"
@@ -114,7 +114,7 @@ msgstr "%1$s%% [%2$s of 無制限]"
 
 #, php-format
 msgid "%1$ss - Software"
-msgstr ""
+msgstr "%1$ss - ソフトウェア"
 
 #, php-format
 msgid "%d %s remaining until account expiration"
@@ -186,7 +186,7 @@ msgstr "%s レコード"
 
 #, php-format
 msgid "%s total available"
-msgstr ""
+msgstr "利用可能な合計 %s "
 
 #, php-format
 msgid "%s webmail"
@@ -828,6 +828,9 @@ msgstr "別のドメインのマウントポイントを共有することがで
 msgid "Already in use"
 msgstr "既に使用されています"
 
+msgid "Alt. URL"
+msgstr ""
+
 msgid "Alternate URL to reach your website."
 msgstr "代替URLはあなたのウェブサイトに到達します。"
 
@@ -904,7 +907,7 @@ msgid "Are you sure you want to delete all closed tickets?"
 msgstr "全ての解決したチケットを削除してもよろしいですか？"
 
 msgid "Are you sure you want to delete all selected mail accounts?"
-msgstr ""
+msgstr "選択した全てのメールアカウントを削除してもよろしいですか？"
 
 msgid "Are you sure you want to delete all tickets?"
 msgstr "全てのチケットを削除してもよろしいですか？"
@@ -931,7 +934,7 @@ msgstr "%s のメニューを削除してもよろしいですか？"
 
 #, php-format
 msgid "Are you sure you want to delete the %s user?"
-msgstr ""
+msgstr "%s ユーザーを削除してもよろしいですか？"
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1405,7 +1408,7 @@ msgid "Configuration mode"
 msgstr "設定モード"
 
 msgid "Confirmation required"
-msgstr ""
+msgstr "ご確認ください"
 
 #, php-format
 msgid "Conflict with the `%s' DNS resource record."
@@ -1430,7 +1433,7 @@ msgstr "%sのプラグインを変更できませんでした: %s"
 
 #, php-format
 msgid "Could not connect to the `%s' database. Please check the password."
-msgstr ""
+msgstr "`%s' データベースに接続できませんでした。 パスワードを確認してください。"
 
 #, php-format
 msgid "Could not create `%s` database name."
@@ -1661,7 +1664,7 @@ msgid "Database Update details"
 msgstr "データベース更新の詳細"
 
 msgid "Database data"
-msgstr ""
+msgstr "データベースのデータ"
 
 msgid "Database name"
 msgstr "データベース名"
@@ -1673,7 +1676,7 @@ msgid "Database name is unavailable or unallowed."
 msgstr "データベース名は使用できないか、または許可されていません。"
 
 msgid "Database password"
-msgstr ""
+msgstr "データベースのパスワード"
 
 msgid "Database prefix"
 msgstr "データベースプレフィックス"
@@ -1691,7 +1694,7 @@ msgid "Database usage"
 msgstr "データベースを使用"
 
 msgid "Database user"
-msgstr ""
+msgstr "データベースのユーザー"
 
 msgid "Database users"
 msgstr "データベースユーザー"
@@ -2081,7 +2084,7 @@ msgid "Delete reseller software"
 msgstr "リセラーソフトウェア削除"
 
 msgid "Delete selected mail accounts"
-msgstr ""
+msgstr "選択したメールアカウントを削除します"
 
 msgid "Delete this plugin"
 msgstr "プラグインを削除"
@@ -2616,6 +2619,12 @@ msgstr "名字"
 msgid "First name cannot have more than 200 characters."
 msgstr "名は、200文字以内です。"
 
+msgid "For the time being, you can only add forwarded email account."
+msgstr ""
+
+msgid "For the time being, you can only edit your forwarded email account."
+msgstr ""
+
 msgid "Forbidden"
 msgstr "禁止"
 
@@ -2998,7 +3007,7 @@ msgstr "無効なSQLユーザホスト： %s"
 
 msgid ""
 "Invalid SQL user. SQL user must exists and belong to the provided database."
-msgstr ""
+msgstr "無効なSQLユーザーです。SQLユーザーが存在し、提供されたデータベースに属している必要があります。"
 
 msgid "Invalid SSL certificate"
 msgstr "無効なSSL証明書"
@@ -4117,7 +4126,7 @@ msgid "Protocol"
 msgstr "プロトコル"
 
 msgid "Quota assignment"
-msgstr ""
+msgstr "容量割り当て"
 
 msgid "Quota in MiB (0 for unlimited)"
 msgstr "容量MiB(無制限の場合は0)"
@@ -4451,7 +4460,7 @@ msgid "SQL user successfully deleted."
 msgstr "SQLユーザーを削除しました。"
 
 msgid "SQL username is too long."
-msgstr ""
+msgstr "SQLユーザー名が長すぎます。"
 
 msgid "SQL users"
 msgstr "SQLユーザー"
@@ -4918,7 +4927,7 @@ msgstr " %sの翻訳ファイルは無視されました：変換テーブルは
 
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
-msgstr ""
+msgstr "`%s' SQLユーザーは利用できないか、または許可されていません。"
 
 #, php-format
 msgid ""
@@ -5245,7 +5254,7 @@ msgstr "不明なエラー"
 
 #, php-format
 msgid "Unknown `%s' database. Database must exists."
-msgstr ""
+msgstr "不明な  `%s'データベースです。データベースが存在する必要があります。"
 
 msgid "Unknown action requested."
 msgstr "不明のアクションが要求された。"
@@ -5450,7 +5459,7 @@ msgid "Warning traffic"
 msgstr "警告トラフィック"
 
 msgid "Warning!"
-msgstr ""
+msgstr "警告！"
 
 msgid "Warnings and Errors"
 msgstr "警告とエラー"
@@ -5620,6 +5629,20 @@ msgid ""
 msgstr ""
 "新しいEメールアカウントを追加することはできません。既に他のメールボックスに全てのEメールの容量を割り当てている。まず、あなたの容量の割り当てを確認してください。"
 
+msgid ""
+"You cannot add normal email account because you have already assigned all "
+"your email quota to other mailboxes. If you want to add a new normal email "
+"account, you must first lower the quota assigned to one of your other "
+"mailboxes."
+msgstr ""
+
+msgid ""
+"You cannot change this account to normal email account because you have "
+"already assigned all your email quota to other mailboxes. If you want to "
+"change this account to normal email account, you must first lower the quota "
+"assigned to one of your other mailboxes."
+msgstr ""
+
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "顧客アカウントを持っているリセラーは削除できません。"
 
@@ -5715,17 +5738,17 @@ msgstr "毎月のトラフィックの制限があります。無制限の月次
 #, php-format
 msgid "You have a new answer to your support ticket."
 msgid_plural "You have %d new answers to your support tickets."
-msgstr[0] ""
+msgstr[0] "サポートチケットには %d の新しい回答があります。"
 
 #, php-format
 msgid "You have a new domain alias order."
 msgid_plural "You have %d new domain alias orders"
-msgstr[0] ""
+msgstr[0] "新しいドメインエイリアス注文が %d あります"
 
 #, php-format
 msgid "You have a new support ticket."
 msgid_plural "You have %d new support tickets."
-msgstr[0] ""
+msgstr[0] "あなたは、%d サポートチケットを持っています。"
 
 msgid ""
 "You have a subdomain limit. You cannot add a user with unlimited subdomains."
@@ -5807,7 +5830,7 @@ msgid "You must select a file to upload/download."
 msgstr "アップロード/ダウンロードするファイルを選択する必要があります。"
 
 msgid "You must select a least one mail account to delete"
-msgstr ""
+msgstr "削除するメールアカウントを少なくとも1つ選択する必要があります"
 
 msgid "You must select a least one mail account to delete."
 msgstr "削除するには、少なくとも1つのメールアカウントを選択する必要があります。"
@@ -5869,7 +5892,7 @@ msgstr "パッケージが破損しています。修正してください！"
 msgid ""
 "Your password has been successfully scheduled for renewal. Check your "
 "emails."
-msgstr ""
+msgstr "パスワードの更新が予定されました。Eメールを確認してください。"
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
@@ -5878,7 +5901,7 @@ msgstr "リモート・ファイル・サイズ(%s)は、1バイト未満です�
 msgid ""
 "Your request for password renewal cannot be honored. Please retry in few "
 "minutes."
-msgstr ""
+msgstr "パスワード更新要求を優先することはできません。数分後に再実行してください。"
 
 msgid ""
 "Your request for password renewal has been registered. You will receive an "

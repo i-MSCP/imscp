@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-03-28 00:36+0000\n"
+"POT-Creation-Date: 2017-04-02 06:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Dutch (Netherlands) (https://www.transifex.com/i-mscp/teams/576/nl_NL/)\n"
@@ -892,6 +892,9 @@ msgstr "Zorgt er voor dat u het koppelpunt kunt delen met een ander domein."
 
 msgid "Already in use"
 msgstr "Reeds in gebruik"
+
+msgid "Alt. URL"
+msgstr ""
 
 msgid "Alternate URL to reach your website."
 msgstr "Alternatieve URL om uw website te bereiken"
@@ -2712,6 +2715,12 @@ msgstr "Voornaam"
 
 msgid "First name cannot have more than 200 characters."
 msgstr "Eerste naam mag niet meer dan 200 karakters bevatten."
+
+msgid "For the time being, you can only add forwarded email account."
+msgstr ""
+
+msgid "For the time being, you can only edit your forwarded email account."
+msgstr ""
 
 msgid "Forbidden"
 msgstr "Verboden"
@@ -5824,6 +5833,20 @@ msgid ""
 msgstr ""
 "U kunt geen nieuwe e-mailaccounts meer maken. U heeft al uw e-mailquota al "
 "aan andere mailaccounts toegewezen. Controleert u deze eerst."
+
+msgid ""
+"You cannot add normal email account because you have already assigned all "
+"your email quota to other mailboxes. If you want to add a new normal email "
+"account, you must first lower the quota assigned to one of your other "
+"mailboxes."
+msgstr ""
+
+msgid ""
+"You cannot change this account to normal email account because you have "
+"already assigned all your email quota to other mailboxes. If you want to "
+"change this account to normal email account, you must first lower the quota "
+"assigned to one of your other mailboxes."
+msgstr ""
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "U kunt een wederverkoper die klantenaccounts heeft niet verwijderen."

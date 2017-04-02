@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-03-28 00:36+0000\n"
+"POT-Creation-Date: 2017-04-02 06:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jefferson Santana Siqueira <linuxpowerbr@gmail.com>, 2017\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/i-mscp/teams/576/pt_BR/)\n"
@@ -878,6 +878,9 @@ msgstr "Permite compartilhar o ponto de montagem de outro domínio ."
 
 msgid "Already in use"
 msgstr "Em uso"
+
+msgid "Alt. URL"
+msgstr ""
 
 msgid "Alternate URL to reach your website."
 msgstr ""
@@ -2544,6 +2547,12 @@ msgstr "Primeiro nome"
 
 msgid "First name cannot have more than 200 characters."
 msgstr "Nome não pode ter mais de 200 caracteres."
+
+msgid "For the time being, you can only add forwarded email account."
+msgstr ""
+
+msgid "For the time being, you can only edit your forwarded email account."
+msgstr ""
 
 msgid "Forbidden"
 msgstr "Proibido"
@@ -5597,6 +5606,20 @@ msgstr ""
 "Você não pode adicionar uma nova conta de e-mail. Você já excedeu a sua cota"
 " de e-mail. Por favor, em primeiro lugar, reveja as suas atribuições de "
 "cotas."
+
+msgid ""
+"You cannot add normal email account because you have already assigned all "
+"your email quota to other mailboxes. If you want to add a new normal email "
+"account, you must first lower the quota assigned to one of your other "
+"mailboxes."
+msgstr ""
+
+msgid ""
+"You cannot change this account to normal email account because you have "
+"already assigned all your email quota to other mailboxes. If you want to "
+"change this account to normal email account, you must first lower the quota "
+"assigned to one of your other mailboxes."
+msgstr ""
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "Você não pode excluir um revendedor que tem contas de clientes."

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-03-28 00:36+0000\n"
+"POT-Creation-Date: 2017-04-02 06:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/i-mscp/teams/576/zh_TW/)\n"
@@ -821,6 +821,9 @@ msgstr "允許分享掛載點到其他網域上。"
 
 msgid "Already in use"
 msgstr "已經被使用"
+
+msgid "Alt. URL"
+msgstr ""
 
 msgid "Alternate URL to reach your website."
 msgstr "您的臨時網址"
@@ -2606,6 +2609,12 @@ msgstr "名"
 
 msgid "First name cannot have more than 200 characters."
 msgstr "名字不可以超過200個字元。"
+
+msgid "For the time being, you can only add forwarded email account."
+msgstr ""
+
+msgid "For the time being, you can only edit your forwarded email account."
+msgstr ""
 
 msgid "Forbidden"
 msgstr "禁止"
@@ -5596,6 +5605,20 @@ msgid ""
 "You cannot add new email account. You have already assigned all your email "
 "quota to other mailboxes. Please first, review your quota assignments."
 msgstr "您不可以新增電子郵件帳號。您已經分配您的郵件配額到其他信箱中。請先檢視您的配額分配。"
+
+msgid ""
+"You cannot add normal email account because you have already assigned all "
+"your email quota to other mailboxes. If you want to add a new normal email "
+"account, you must first lower the quota assigned to one of your other "
+"mailboxes."
+msgstr ""
+
+msgid ""
+"You cannot change this account to normal email account because you have "
+"already assigned all your email quota to other mailboxes. If you want to "
+"change this account to normal email account, you must first lower the quota "
+"assigned to one of your other mailboxes."
+msgstr ""
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "您不能刪除已經有任何客戶帳號的代理商。"
