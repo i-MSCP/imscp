@@ -83,7 +83,7 @@ sub _init
 
     $self->{'toInstall'} = [ ];
     $self->{'pkgDir'} = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages";
-    $self->{'suCmdPattern'} = "su - $main::imscpConfig{'IMSCP_USER'} -s /bin/sh -c %s";
+    $self->{'suCmdPattern'} = "su -l $main::imscpConfig{'IMSCP_USER'} -s /bin/sh -c %s";
     $self->{'phpCmd'} = 'php -d date.timezone=UTC -d allow_url_fopen=1 -d suhosin.executor.include.whitelist=phar';
 
     iMSCP::EventManager->getInstance()->register(
@@ -163,7 +163,7 @@ sub _getComposer
         $rs = executeNoWait(
             sprintf(
                 $self->{'suCmdPattern'},
-                escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} self-update" )
+                escapeShell( "$self->{'phpCmd'} composer.phar self-update --clean-backups --no-ansi -n -d=$self->{'pkgDir'}" )
             ),
             (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
                 ? undef : sub { step( undef, "$msgHeader".(shift).$msgFooter, 3, 1 ); }
@@ -200,7 +200,7 @@ sub _checkRequirements
         my $rs = executeNoWait(
             sprintf(
                 $self->{'suCmdPattern'},
-                escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} show $package $version" )
+                escapeShell( "$self->{'phpCmd'} composer.phar show --no-ansi -n -d=$self->{'pkgDir'} $package $version" )
             ),
             (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
                 ? undef : sub { step( undef, $msg, 3, 2 ); }
@@ -238,7 +238,7 @@ sub _installPackages
     $rs = executeNoWait(
         sprintf(
             $self->{'suCmdPattern'},
-            escapeShell( "$self->{'phpCmd'} composer.phar --no-ansi -n -d=$self->{'pkgDir'} update" )
+            escapeShell( "$self->{'phpCmd'} composer.phar update --no-ansi -n -d=$self->{'pkgDir'}" )
         ),
         sub { },
         (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
