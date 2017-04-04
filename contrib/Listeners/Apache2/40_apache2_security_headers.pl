@@ -44,6 +44,7 @@ iMSCP::EventManager->getInstance()->register(
                 ).process({ PREFIX => ($data->{'VHOST_TYPE'} eq 'domain') ? 'http' : 'https' }, <<"EOF")
     <IfModule mod_headers.c>
         Header always set Content-Security-Policy "default-src {PREFIX}: data: 'unsafe-inline' 'unsafe-eval'"
+        Header always set Referrer-Policy "strict-origin-when-cross-origin"
         Header always set X-Content-Type-Options "nosniff"
         Header always set X-Frame-Options "SAMEORIGIN"
         Header always set X-XSS-Protection "1; mode=block"
