@@ -37,7 +37,10 @@ BEGIN {
         fatal( @_, (caller( 1 ))[3] || 'main' ) if defined $^S && !$^S
     };
     $SIG{'__WARN__'} = sub {
+        warning( @_, (caller( 1 ))[1] || 'main' );
+        warning( @_, (caller( 1 ))[2] || 'main' );
         warning( @_, (caller( 1 ))[3] || 'main' );
+        warning( @_, (caller( 1 ))[4] || 'main' );
     };
 }
 

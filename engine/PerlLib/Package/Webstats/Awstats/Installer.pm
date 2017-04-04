@@ -45,7 +45,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item install()
+=item install( )
 
  Process install tasks
 
@@ -57,10 +57,10 @@ sub install
 {
     my $self = shift;
 
-    my $rs = $self->_disableDefaultConfig();
-    $rs ||= $self->_createCacheDir();
-    $rs ||= $self->_setupApache2();
-    $rs ||= $self->_addAwstatsCronTask();
+    my $rs = $self->_disableDefaultConfig( );
+    $rs ||= $self->_createCacheDir( );
+    $rs ||= $self->_setupApache2( );
+    $rs ||= $self->_addAwstatsCronTask( );
 }
 
 =back
@@ -69,7 +69,7 @@ sub install
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -81,11 +81,11 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'httpd'} = Servers::httpd->factory();
+    $self->{'httpd'} = Servers::httpd->factory( );
     $self;
 }
 
-=item _createCacheDir()
+=item _createCacheDir( )
 
  Create cache directory
 
@@ -100,13 +100,13 @@ sub _createCacheDir
     iMSCP::Dir->new( dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'} )->make(
         {
             user  => $main::imscpConfig{'ROOT_USER'},
-            group => $self->{'httpd'}->getRunningGroup(),
+            group => $self->{'httpd'}->getRunningGroup( ),
             mode  => 02750
         }
     );
 }
 
-=item _setupApache2()
+=item _setupApache2( )
 
  Setup Apache2 for AWStats
 
@@ -122,8 +122,8 @@ sub _setupApache2
 
     my $file = iMSCP::File->new( filename => "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats" );
     my $rs ||= $file->set(''); # Make sure to start with an empty file on update/reconfiguration
-    $rs = $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'httpd'}->getRunningGroup() );
+    $rs = $file->save( );
+    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'httpd'}->getRunningGroup( ) );
     $rs ||= $file->mode( 0640 );
     return $rs if $rs;
 
@@ -150,7 +150,7 @@ sub _setupApache2
     $rs ||= $self->{'httpd'}->enableSites( '01_awstats.conf' );
 }
 
-=item _disableDefaultConfig()
+=item _disableDefaultConfig( )
 
  Disable default configuration
 
@@ -169,7 +169,7 @@ sub _disableDefaultConfig
         return $rs if $rs;
     }
 
-    my $cronDir = Servers::cron->factory()->{'config'}->{'CRON_D_DIR'};
+    my $cronDir = Servers::cron->factory( )->{'config'}->{'CRON_D_DIR'};
     if (-f "$cronDir/awstats") {
         $rs = iMSCP::File->new( filename => "$cronDir/awstats" )->moveFile( "$cronDir/awstats.disable" );
     }
@@ -177,7 +177,7 @@ sub _disableDefaultConfig
     $rs;
 }
 
-=item _addAwstatsCronTask()
+=item _addAwstatsCronTask( )
 
  Add AWStats cron task for dynamic mode
 
@@ -187,7 +187,7 @@ sub _disableDefaultConfig
 
 sub _addAwstatsCronTask
 {
-    Servers::cron->factory()->addTask(
+    Servers::cron->factory( )->addTask(
         {
             TASKID  => 'Package::Webstats::Awstats',
             MINUTE  => '15',

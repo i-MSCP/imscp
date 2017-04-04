@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::Webmail::Roundcube::Roundcube - i-MSCP Roundcube package
+ Package::Webmail::Roundcube::Roundcube - i-MSCP Roundcube package
 
 =cut
 
@@ -48,7 +48,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item showDialog(\%dialog)
+=item showDialog( \%dialog )
 
  Show dialog
 
@@ -61,10 +61,10 @@ sub showDialog
 {
     my (undef, $dialog) = @_;
 
-    Package::Webmail::Roundcube::Installer->getInstance()->showDialog( $dialog );
+    Package::Webmail::Roundcube::Installer->getInstance( )->showDialog( $dialog );
 }
 
-=item preinstall()
+=item preinstall( )
 
  Process preinstall tasks
 
@@ -74,10 +74,10 @@ sub showDialog
 
 sub preinstall
 {
-    Package::Webmail::Roundcube::Installer->getInstance()->preinstall();
+    Package::Webmail::Roundcube::Installer->getInstance( )->preinstall( );
 }
 
-=item install()
+=item install( )
 
  Process install tasks
 
@@ -87,10 +87,10 @@ sub preinstall
 
 sub install
 {
-    Package::Webmail::Roundcube::Installer->getInstance()->install();
+    Package::Webmail::Roundcube::Installer->getInstance( )->install( );
 }
 
-=item uninstall()
+=item uninstall( )
 
  Process uninstall tasks
 
@@ -100,10 +100,10 @@ sub install
 
 sub uninstall
 {
-    Package::Webmail::Roundcube::Uninstaller->getInstance()->uninstall();
+    Package::Webmail::Roundcube::Uninstaller->getInstance( )->uninstall( );
 }
 
-=item setGuiPermissions()
+=item setGuiPermissions( )
 
  Set gui permissions
 
@@ -141,7 +141,7 @@ sub setGuiPermissions
     );
 }
 
-=item deleteMail(\%data)
+=item deleteMail( \%data )
 
  Process deleteMail tasks
 
@@ -156,11 +156,11 @@ sub deleteMail
 
     return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
 
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->factory( );
     my $oldDatabase = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'}.'_roundcube' );
-    my $rdata = $db->doQuery( 'dummy', 'DELETE FROM `users` WHERE `username` = ?', $data->{'MAIL_ADDR'} );
+    my $rdata = $db->doQuery( 'd', 'DELETE FROM `users` WHERE `username` = ?', $data->{'MAIL_ADDR'} );
     unless (ref $rdata eq 'HASH') {
-        error( sprintf( "Could not remove mail user '%s' from roundcube database: %s", $data->{'MAIL_ADDR'}, $rdata ) );
+        error( sprintf( "Couldn't remove mail user '%s' from roundcube database: %s", $data->{'MAIL_ADDR'}, $rdata ) );
         return 1;
     }
     $db->useDatabase( $oldDatabase );
@@ -173,7 +173,7 @@ sub deleteMail
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 

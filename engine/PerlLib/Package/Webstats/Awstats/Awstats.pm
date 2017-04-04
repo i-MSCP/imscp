@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::Webstats::Awstats::Awstats - i-MSCP AWStats package
+ Package::Webstats::Awstats::Awstats - i-MSCP AWStats package
 
 =cut
 
@@ -204,7 +204,7 @@ sub deleteDmn
     my @awstatsCacheFiles = iMSCP::Dir->new(
         dirname  => $awstatsCacheDir,
         fileType => '^(?:awstats[0-9]+|dnscachelastupdate)'.quotemeta( ".$data->{'DOMAIN_NAME'}.txt" )
-    )->getFiles();
+    )->getFiles( );
 
     return 0 unless @awstatsCacheFiles;
 
@@ -342,7 +342,7 @@ sub _addAwstatsConfig
     my $awstatsPackageRootDir = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats";
     my $tplFileContent = iMSCP::File->new( filename => "$awstatsPackageRootDir/Config/awstats.imscp_tpl.conf" )->get( );
     unless (defined $tplFileContent) {
-        error( sprintf( 'Could not read read %s file', $tplFileContent->{'filename'} ) );
+        error( sprintf( "Couldn't read read %s file", $tplFileContent->{'filename'} ) );
         return 1;
     }
 
@@ -353,7 +353,7 @@ sub _addAwstatsConfig
         error( $qrs );
         return 1;
     } elsif (!%{$qrs}) {
-        error( sprintf( 'Could not retrieve data from admin whith ID %d', $data->{'DOMAIN_ADMIN_ID'} ) );
+        error( sprintf( "Couldn't retrieve data from admin whith ID %d", $data->{'DOMAIN_ADMIN_ID'} ) );
         return 1;
     }
 

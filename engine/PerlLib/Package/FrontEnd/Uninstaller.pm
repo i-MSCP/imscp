@@ -93,29 +93,23 @@ sub _init
 sub _deconfigurePHP
 {
     local $@;
-    eval { iMSCP::Service->getInstance()->remove( 'imscp_panel' ); };
+    eval { iMSCP::Service->getInstance( )->remove( 'imscp_panel' ); };
     if ($@) {
         error( $@ );
         return 1;
     }
 
-    if (-f '/etc/default/imscp_panel') {
-        my $rs = iMSCP::File->new( filename => '/etc/default/imscp_panel' )->delFile( );
-        return $rs if $rs;
-    }
-
-    if (-f '/etc/logrotate.d/imscp_panel') {
-        my $rs = iMSCP::File->new( filename => '/etc/logrotate.d/imscp_panel' )->delFile( );
-        return $rs if $rs;
-    }
-
-    if (-f '/usr/local/sbin/imscp_panel') {
-        my $rs = iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile( );
+    for('/etc/default/imscp_panel', '/etc/tmpfiles.d/imscp_panel.conf', '/etc/logrotate.d/imscp_panel',
+        '/usr/local/sbin/imscp_panel', '/var/log/imscp_panel.log'
+    ) {
+        next unless -f;
+        my $rs = iMSCP::File->new( filename => $_ )->delFile( );
         return $rs if $rs;
     }
 
     my $rs = iMSCP::Dir->new( dirname => '/usr/local/lib/imscp_panel' )->remove( );
     $rs ||= iMSCP::Dir->new( dirname => '/usr/local/etc/imscp_panel' )->remove( );
+    $rs ||= iMSCP::Dir->new( dirname => '/var/run/imscp' )->remove( );
 }
 
 =item _deconfigureHTTPD( )
@@ -146,7 +140,7 @@ sub _deconfigureHTTPD
     if (-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf") {
         my $rs = iMSCP::File->new(
             filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf"
-        )->delFile();
+        )->delFile( );
         return $rs if $rs;
     }
 

@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::FileManager::Pydio::Pydio - i-MSCP Pydio package
+ Package::FileManager::Pydio::Pydio - i-MSCP Pydio package
 
 =cut
 
@@ -42,7 +42,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item preinstall()
+=item preinstall( )
 
  Process preinstall tasks
 
@@ -52,10 +52,10 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-    Package::FileManager::Pydio::Installer->getInstance()->preinstall();
+    Package::FileManager::Pydio::Installer->getInstance( )->preinstall( );
 }
 
-=item install()
+=item install( )
 
  Process install tasks
 
@@ -65,10 +65,10 @@ sub preinstall
 
 sub install
 {
-    Package::FileManager::Pydio::Installer->getInstance()->install();
+    Package::FileManager::Pydio::Installer->getInstance( )->install( );
 }
 
-=item uninstall()
+=item uninstall( )
 
  Process uninstall tasks
 
@@ -78,10 +78,10 @@ sub install
 
 sub uninstall
 {
-    Package::FileManager::Pydio::Uninstaller->getInstance()->uninstall();
+    Package::FileManager::Pydio::Uninstaller->getInstance( )->uninstall( );
 }
 
-=item setGuiPermissions()
+=item setGuiPermissions( )
 
  Set file permissions
 

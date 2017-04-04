@@ -474,7 +474,7 @@ sub _process
         debug( sprintf( 'Processing %s tasks for: %s (ID %s)', $module, $name, $id ) );
         newDebug( $module.(($perItemLogFile) ? "_${name}" : '').'.log' );
 
-        if ($self->{'mode'} eq 'setup') {
+        if (grep( $self->{'mode'} eq $_, ( 'setup', 'uninstall' ) )) {
             $rs = step(
                 sub { $module->new()->process( $id ) },
                 sprintf( 'Processing %s tasks for: %s (ID %s)', $module, $name, $id ), $nSteps, ++$nStep

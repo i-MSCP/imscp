@@ -7,6 +7,13 @@ Git 1.4.x
 BACKEND
     Fixed: Couldn't umount mounts that are marked as deleted due to wrong regexp in iMSCP::Mount library
 
+UNINSTALLER
+    Fixed: Ask administrator to uninstall plugins prior running i-MSCP uninstaller
+    Fixed: General uninstallation failure due to wrong SQL query in imscp-uninstall script
+
+PACKAGES
+    Fixed: Package uninstallers must be idempotent
+
 ------------------------------------------------------------------------------------------------------------------------
 1.4.2
 ------------------------------------------------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::FileManager::Pydio::Installer - i-MSCP Pydio package installer
+ Package::FileManager::Pydio::Installer - i-MSCP Pydio package installer
 
 =cut
 
@@ -43,7 +43,7 @@ our $VERSION = '0.2.0.*@dev';
 
 =over 4
 
-=item preinstall()
+=item preinstall( )
 
  Process preinstall tasks
 
@@ -55,11 +55,11 @@ sub preinstall
 {
     my $self = shift;
 
-    my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/ajaxplorer', $VERSION );
+    my $rs = iMSCP::Composer->getInstance( )->registerPackage( 'imscp/ajaxplorer', $VERSION );
     $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 
-=item install()
+=item install( )
 
  Process install tasks
 
@@ -71,8 +71,8 @@ sub install
 {
     my $self = shift;
 
-    my $rs = $self->_installFiles();
-    $rs ||= $self->_buildHttpdConfig();
+    my $rs = $self->_installFiles( );
+    $rs ||= $self->_buildHttpdConfig( );
 }
 
 =back
@@ -81,7 +81,7 @@ sub install
 
 =over 4
 
-=item afterFrontEndBuildConfFile(\$tplContent, $filename)
+=item afterFrontEndBuildConfFile( \$tplContent, $filename )
 
  Include httpd configuration into frontEnd vhost files
 
@@ -97,18 +97,18 @@ sub afterFrontEndBuildConfFile
 
     return 0 unless $tplName =~ /^00_master(?:_ssl)?\.conf$/;
 
-    $$tplContent = replaceBloc(
+    ${$tplContent} = replaceBloc(
         "# SECTION custom BEGIN.\n",
         "# SECTION custom END.\n",
         "    # SECTION custom BEGIN.\n".
             getBloc(
                 "# SECTION custom BEGIN.\n",
                 "# SECTION custom END.\n",
-                $$tplContent
+                ${$tplContent}
             ).
             "    include imscp_pydio.conf;\n".
             "    # SECTION custom END.\n",
-        $$tplContent
+        ${$tplContent}
     );
     0;
 }
@@ -119,7 +119,7 @@ sub afterFrontEndBuildConfFile
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -131,11 +131,11 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self;
 }
 
-=item _installFiles()
+=item _installFiles( )
 
  Install files in production directory
 
@@ -147,18 +147,18 @@ sub _installFiles
 {
     my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/ajaxplorer";
     unless (-d $packageDir) {
-        error( 'Could not find the imscp/ajaxplorer (Pydio) package into the packages cache directory' );
+        error( "Couldn't find the imscp/ajaxplorer (Pydio) package into the packages cache directory" );
         return 1;
     }
 
-    my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
+    my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove( );
     $rs ||= iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" );
     $rs ||= iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy(
         "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp"
     );
 }
 
-=item _buildHttpdConfig()
+=item _buildHttpdConfig( )
 
  Build Httpd configuration
 
@@ -168,7 +168,7 @@ sub _installFiles
 
 sub _buildHttpdConfig
 {
-    my $frontEnd = Package::FrontEnd->getInstance();
+    my $frontEnd = Package::FrontEnd->getInstance( );
     $frontEnd->buildConfFile(
         "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/ajaxplorer/iMSCP/config/nginx/imscp_pydio.conf",
         {

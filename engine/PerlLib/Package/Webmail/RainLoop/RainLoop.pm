@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::Webmail::RainLoop::RainLoop - i-MSCP RainLoop package
+ Package::Webmail::RainLoop::RainLoop - i-MSCP RainLoop package
 
 =cut
 
@@ -47,7 +47,7 @@ my $dbInitialized = undef;
 
 =over 4
 
-=item showDialog(\%dialog)
+=item showDialog( \%dialog )
 
  Show dialog
 
@@ -60,10 +60,10 @@ sub showDialog
 {
     my (undef, $dialog) = @_;
 
-    Package::Webmail::RainLoop::Installer->getInstance()->showDialog( $dialog );
+    Package::Webmail::RainLoop::Installer->getInstance( )->showDialog( $dialog );
 }
 
-=item preinstall()
+=item preinstall( )
 
  Process preinstall tasks
 
@@ -73,7 +73,7 @@ sub showDialog
 
 sub preinstall
 {
-    Package::Webmail::RainLoop::Installer->getInstance()->preinstall();
+    Package::Webmail::RainLoop::Installer->getInstance( )->preinstall( );
 }
 
 =item install()
@@ -152,7 +152,7 @@ sub deleteMail
 
     return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
 
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->factory( );
 
     unless ($dbInitialized) {
         my $quotedRainLoopDbName = $db->quoteIdentifier( $main::imscpConfig{'DATABASE_NAME'}.'_rainloop' );
@@ -177,7 +177,7 @@ sub deleteMail
         );
         unless (ref $rs eq 'HASH') {
             error(
-                sprintf( "Could not remove mail user '%s' from rainloop database: %s", $data->{'MAIL_ADDR'}, $rs )
+                sprintf( "Couldn't remove mail user '%s' from rainloop database: %s", $data->{'MAIL_ADDR'}, $rs )
             );
             return 1;
         }
@@ -192,12 +192,12 @@ sub deleteMail
     (my $storagePath = substr( $email, 0, 2 )) =~ s/\@$//;
 
     for my $storageType('cfg', 'data', 'files') {
-        my $rs = iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath/$email" )->remove();
+        my $rs = iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath/$email" )->remove( );
         return $rs if $rs;
         next unless -d "$storageDir/$storageType/$storagePath";
         my $dir = iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath" );
-        next unless $dir->isEmpty();
-        $rs = $dir->remove();
+        next unless $dir->isEmpty( );
+        $rs = $dir->remove( );
         return $rs if $rs;
     }
 
@@ -210,7 +210,7 @@ sub deleteMail
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 

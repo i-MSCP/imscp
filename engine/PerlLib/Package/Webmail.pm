@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::Webmail - i-MSCP Webmail package
+ Package::Webmail - i-MSCP Webmail package
 
 =cut
 
@@ -39,7 +39,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners(\%eventManager)
+=item registerSetupListeners( \%eventManager )
 
  Register setup event listeners
 
@@ -59,8 +59,8 @@ sub registerSetupListeners
             0;
         }
     );
-    $rs ||= $eventManager->register( 'afterFrontEndPreInstall', sub { $self->preinstallListener(); } );
-    $rs ||= $eventManager->register( 'afterFrontEndInstall', sub { $self->installListener(); } );
+    $rs ||= $eventManager->register( 'afterFrontEndPreInstall', sub { $self->preinstallListener( ); } );
+    $rs ||= $eventManager->register( 'afterFrontEndInstall', sub { $self->installListener( ); } );
 }
 
 =item showDialog(\%dialog)
@@ -77,7 +77,7 @@ sub showDialog
     my ($self, $dialog) = @_;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', main::setupGetQuestion( 'WEBMAIL_PACKAGES' ) } = ();
+    @{selectedPackages}{ split ',', main::setupGetQuestion( 'WEBMAIL_PACKAGES' ) } = ( );
 
     my $rs = 0;
     if ($main::reconfigure =~ /^(?:webmails|all|forced)$/ || !%selectedPackages
@@ -101,7 +101,7 @@ EOF
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
         unless ($@) {
-            $package = $package->getInstance();
+            $package = $package->getInstance( );
             next unless $package->can( 'showDialog' );
             debug( sprintf( 'Executing showDialog action on %s', ref $package ) );
             $rs = $package->showDialog( $dialog );
@@ -115,7 +115,7 @@ EOF
     0;
 }
 
-=item preinstallListener()
+=item preinstallListener( )
 
  Process preinstall tasks
 
@@ -138,10 +138,10 @@ sub preinstallListener
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
         unless ($@) {
-            $package = $package->getInstance();
+            $package = $package->getInstance( );
             next unless $package->can( 'uninstall' );
             debug( sprintf( 'Executing uninstall action on %s', ref $package ) );
-            my $rs = $package->uninstall();
+            my $rs = $package->uninstall( );
             return $rs if $rs;
         } else {
             error( $@ );
@@ -160,10 +160,10 @@ sub preinstallListener
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
         unless ($@) {
-            $package = $package->getInstance();
+            $package = $package->getInstance( );
             next unless $package->can( 'preinstall' );
             debug( sprintf( 'Executing preinstall action on %s', ref $package ) );
-            my $rs = $package->preinstall();
+            my $rs = $package->preinstall( );
             return $rs if $rs;
         } else {
             error( $@ );
@@ -179,7 +179,7 @@ sub preinstallListener
     0;
 }
 
-=item installListener()
+=item installListener( )
 
  Process install tasks
 
@@ -199,10 +199,10 @@ sub installListener
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
         unless ($@) {
-            $package = $package->getInstance();
+            $package = $package->getInstance( );
             next unless $package->can( 'install' );
             debug( sprintf( 'Executing install action on %s', ref $package ) );
-            my $rs = $package->install();
+            my $rs = $package->install( );
             return $rs if $rs;
         } else {
             error( $@ );
@@ -230,10 +230,10 @@ sub uninstall
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
         unless ($@) {
-            $package = $package->getInstance();
+            $package = $package->getInstance( );
             next unless $package->can( 'uninstall' );
             debug( sprintf( 'Executing uninstall action on %s', ref $package ) );
-            my $rs = $package->uninstall();
+            my $rs = $package->uninstall( );
             return $rs if $rs;
         } else {
             error( $@ );
@@ -244,7 +244,7 @@ sub uninstall
     0;
 }
 
-=item setGuiPermissionsListener()
+=item setGuiPermissionsListener( )
 
  Set gui permissions listener
 
@@ -267,10 +267,10 @@ sub setGuiPermissionsListener
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
         unless ($@) {
-            $package = $package->getInstance();
+            $package = $package->getInstance( );
             next unless $package->can( 'setGuiPermissions' );
             debug( sprintf( 'Executing setGuiPermissions action on %s', ref $package ) );
-            $rs = $package->setGuiPermissions();
+            $rs = $package->setGuiPermissions( );
             return $rs if $rs;
         } else {
             error( $@ );
@@ -302,7 +302,7 @@ sub deleteMail
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
         unless ($@) {
-            $package = $package->getInstance();
+            $package = $package->getInstance( );
             next unless $package->can( 'deleteMail' );
             debug( sprintf( 'Executing deleteMail action on %s', ref $package ) );
             my $rs = $package->deleteMail($data);
@@ -322,7 +322,7 @@ sub deleteMail
 
 =over 4
 
-=item init()
+=item init( )
 
  Initialize insance
 
@@ -334,10 +334,10 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     # Find list of available Webmail packages
     @{$self->{'PACKAGES'}}{
-        iMSCP::Dir->new( dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webmail" )->getDirs()
+        iMSCP::Dir->new( dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webmail" )->getDirs( )
     } = ();
     $self->{'eventManager'}->register(
         'afterFrontendSetGuiPermissions', sub { $self->setGuiPermissionsListener( @_ ); }

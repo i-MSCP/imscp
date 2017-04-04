@@ -306,7 +306,7 @@ EOF
                     $openSSL->{'private_key_passphrase'} = $passphrase;
 
                     $msg = '';
-                    if ($openSSL->validatePrivateKey()) {
+                    if ($openSSL->validatePrivateKey( )) {
                         getMessageByType( 'error', { amount => 1, remove => 1 } );
                         $msg = "\n\\Z1Invalid private key or passphrase.\\Zn\n\nPlease try again.";
                     }
@@ -706,7 +706,7 @@ sub _setHttpdVersion( )
     return $rs if $rs;
 
     if ($stderr !~ m%nginx/([\d.]+)%) {
-        error( 'Could not find nginx Nginx from `nginx -v` command output.' );
+        error( "Couldn't find nginx Nginx from `nginx -v` command output." );
         return 1;
     }
 
@@ -750,7 +750,7 @@ sub _addMasterWebUser
     }
 
     if (!%{$rdata}) {
-        error( 'Could not find admin user in database' );
+        error( "Couldn't find admin user in database" );
         return 1;
     }
 
@@ -985,7 +985,7 @@ sub _buildHttpdConfig
         $rs = execute( 'grep processor /proc/cpuinfo | wc -l', \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         debug( $stderr ) if $stderr;
-        debug( 'Could not detect number of CPU cores. nginx worker_processes value set to 2' ) if $rs;
+        debug( "Couldn't detect number of CPU cores. nginx worker_processes value set to 2" ) if $rs;
 
         unless ($rs) {
             chomp( $stdout );
@@ -1113,7 +1113,7 @@ sub _buildHttpdConfig
     } elsif (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf") {
         $rs = iMSCP::File->new(
             filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf"
-        )->delFile();
+        )->delFile( );
         return $rs if $rs;
     }
 
@@ -1141,7 +1141,7 @@ sub _addDnsZone
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedAddMasterZone' );
-    $rs ||= Servers::named->factory()->addDmn(
+    $rs ||= Servers::named->factory( )->addDmn(
         {
             BASE_SERVER_VHOST     => main::setupGetQuestion( 'BASE_SERVER_VHOST' ),
             BASE_SERVER_IP        => main::setupGetQuestion( 'BASE_SERVER_IP' ),

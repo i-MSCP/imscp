@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2017.01.09
+# Last update: 2017.04.04
 
 %main::questions = (
     #
@@ -191,7 +191,7 @@
     #
 
     # PHP version to use
-    # Please consult the ../autoinstaller/Packages/<distro>-<codename>.xml file for available options.
+    # Popssible values: php5.6, php7.0, php7.1
     PHP_SERVER                          => 'php5.6',
 
     # PHP configuration level

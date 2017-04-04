@@ -90,9 +90,9 @@ sub _restoreDefaultConf
     my $self = shift;
 
     for ($self->{'config'}->{'FTPD_CONF_FILE'}, $self->{'config'}->{'FTPD_PAM_CONF_FILE'}) {
-        my $basename = basename( $_ );
-        next unless -f "$self->{'bkpDir'}/$basename.system";
-        my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$basename.system" )->copyFile( $conffile );
+        my $conffile = basename( $_ );
+        next unless -f "$self->{'bkpDir'}/$conffile.system";
+        my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$conffile.system" )->copyFile( $conffile );
         return $rs if $rs;
     }
 

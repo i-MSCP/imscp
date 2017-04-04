@@ -44,7 +44,7 @@ $ENV{'LC_ALL'} = 'C.UTF-8';
 $ENV{'LANG'} = 'C.UTF-8';
 
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
-$ENV{'HOME'} = (getpwuid $>)[7] or die( 'Could not find running user homedir' );
+$ENV{'HOME'} = (getpwuid $>)[7] or die( "Couldn't find running user homedir" );
 
 =head1 DESCRIPTION
 
@@ -54,7 +54,7 @@ $ENV{'HOME'} = (getpwuid $>)[7] or die( 'Could not find running user homedir' );
 
 =over 4
 
-=item boot()
+=item boot( )
 
  Boot i-MSCP
 
@@ -71,11 +71,11 @@ sub boot
     my $mode = $options->{'mode'} || 'backend';
     debug( sprintf( 'Booting %s....', $mode ) );
 
-    $self->lock() unless $options->{'nolock'};
+    $self->lock( ) unless $options->{'nolock'};
     $self->loadMainConfig( $options );
 
-    # Set timezone unless we are in setup mode (needed to show current local timezone in setup dialog)
-    unless ($mode eq 'setup') {
+    # Set timezone unless we are in setup or uninstall modes (needed to show current local timezone in setup dialog)
+    unless (grep($mode eq $_, ( 'setup', 'uninstall' ) ) ) {
         $ENV{'TZ'} = $main::imscpConfig{'TIMEZONE'} || 'UTC';
         tzset;
     }
@@ -85,13 +85,13 @@ sub boot
     unless ($options->{'norequirements'}) {
         require iMSCP::Requirements;
         my $test = ($mode eq 'setup') ? 'all' : 'user';
-        iMSCP::Requirements->new()->$test();
+        iMSCP::Requirements->new( )->$test( );
     }
 
-    $self->_genKeys() unless $options->{'nokeys'};
-    $self->_setDbSettings() unless $options->{'nodatabase'};
+    $self->_genKeys( ) unless $options->{'nokeys'};
+    $self->_setDbSettings( ) unless $options->{'nodatabase'};
 
-    iMSCP::EventManager->getInstance()->trigger( 'onBoot', $mode ) == 0 or die(
+    iMSCP::EventManager->getInstance( )->trigger( 'onBoot', $mode ) == 0 or die(
         getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
     );
     $self;
@@ -140,9 +140,9 @@ sub lock
     return 1 if exists $self->{'locks'}->{$lockFile};
 
     debug( sprintf( 'Acquire exclusive lock on %s', $lockFile ) );
-    open $self->{'locks'}->{$lockFile}, '>', $lockFile or die( sprintf( 'Could not open %s file', $lockFile ) );
+    open $self->{'locks'}->{$lockFile}, '>', $lockFile or die( sprintf( "Couldn't open %s file", $lockFile ) );
     my $rs = flock( $self->{'locks'}->{$lockFile}, $nowait ? LOCK_EX | LOCK_NB : LOCK_EX );
-    $rs || $nowait or die( sprintf( 'Could not acquire exclusive lock on %s', $lockFile ) );
+    $rs || $nowait or die( sprintf( "Couldn't acquire exclusive lock on %s", $lockFile ) );
     $rs;
 }
 
@@ -162,7 +162,7 @@ sub unlock
 
     debug( sprintf( 'Releasing exclusive lock on %s', $lockFile ) );
     flock( $self->{'locks'}->{$lockFile}, LOCK_UN ) or die(
-        sprintf( 'Could not release exclusive lock on %s', $lockFile )
+        sprintf( "Couldn't release exclusive lock on %s", $lockFile )
     );
     close $self->{'locks'}->{$lockFile};
     delete $self->{'locks'}->{$lockFile};
@@ -176,7 +176,7 @@ sub unlock
 
 =over 4
 
-=item _genKeys()
+=item _genKeys( )
 
  Generates encryption key and vector
 
@@ -205,7 +205,7 @@ sub _genKeys
         local $UMASK = 027; # imscp-db-keys file must not be created world-readable
 
         open my $fh, '>', "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys" or die(
-            sprintf('Could not open %s file for writing: %s', "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys", $!)
+            sprintf("Couldn't open %s file for writing: %s", "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys", $!)
         );
 
         print {$fh} Data::Dumper->Dump(
@@ -224,7 +224,7 @@ sub _genKeys
     undef;
 }
 
-=item _setDbSettings()
+=item _setDbSettings( )
 
  Set database connection settings
 
@@ -237,7 +237,7 @@ sub _setDbSettings
     require iMSCP::Database;
     require iMSCP::Crypt;
 
-    my $database = iMSCP::Database->factory();
+    my $database = iMSCP::Database->factory( );
     $database->set( 'DATABASE_HOST', $main::imscpConfig{'DATABASE_HOST'} );
     $database->set( 'DATABASE_PORT', $main::imscpConfig{'DATABASE_PORT'} );
     $database->set( 'DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'} );
@@ -256,7 +256,7 @@ sub _setDbSettings
 =cut
 
 END {
-    my $self = __PACKAGE__->getInstance();
+    my $self = __PACKAGE__->getInstance( );
     $self->unlock( $_ ) for keys %{$self->{'locks'}};
 }
 

@@ -87,7 +87,7 @@ sub restoreConfFile
     my $filename = basename( $self->{'config'}->{'FTPD_CONF_FILE'} );
     return 0 unless -f "$self->{bkpDir}/$filename.system";
     iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
-        "$self->{bkpDir}/$filename.system"
+        $self->{'config'}->{'FTPD_CONF_FILE'}
     );
 }
 

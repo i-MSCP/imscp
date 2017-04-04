@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::AntiRootkits::Chkrootkit::Chkrootkit - i-MSCP Chkrootkit package
+ Package::AntiRootkits::Chkrootkit::Chkrootkit - i-MSCP Chkrootkit package
 
 =cut
 
@@ -40,7 +40,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item preinstall()
+=item preinstall( )
 
  Process preinstall tasks
 
@@ -50,10 +50,10 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-    Package::AntiRootkits::Chkrootkit::Installer->getInstance()->preinstall();
+    Package::AntiRootkits::Chkrootkit::Installer->getInstance( )->preinstall( );
 }
 
-=item install()
+=item install( )
 
  Process install tasks
 
@@ -63,10 +63,10 @@ sub preinstall
 
 sub install
 {
-    Package::AntiRootkits::Chkrootkit::Installer->getInstance()->install();
+    Package::AntiRootkits::Chkrootkit::Installer->getInstance( )->install( );
 }
 
-=item uninstall()
+=item uninstall( )
 
  Process uninstall tasks
 
@@ -76,10 +76,10 @@ sub install
 
 sub uninstall
 {
-    Package::AntiRootkits::Chkrootkit::Uninstaller->getInstance()->uninstall();
+    Package::AntiRootkits::Chkrootkit::Uninstaller->getInstance( )->uninstall( );
 }
 
-=item setEnginePermissions()
+=item setEnginePermissions( )
 
  Set engine permissions
 
@@ -99,7 +99,7 @@ sub setEnginePermissions
     );
 }
 
-=item getDistroPackages()
+=item getDistroPackages( )
 
  Get list of Debian packages
 

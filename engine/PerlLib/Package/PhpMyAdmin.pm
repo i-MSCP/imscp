@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::PhpMyAdmin - i-MSCP PhpMyAdmin package
+ Package::PhpMyAdmin - i-MSCP PhpMyAdmin package
 
 =cut
 
@@ -65,7 +65,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners(\%eventManager)
+=item registerSetupListeners( \%eventManager )
 
  Register setup event listeners
 
@@ -78,10 +78,10 @@ sub registerSetupListeners
 {
     my (undef, $eventManager) = @_;
 
-    Package::PhpMyAdmin::Installer->getInstance()->registerSetupListeners( $eventManager );
+    Package::PhpMyAdmin::Installer->getInstance( )->registerSetupListeners( $eventManager );
 }
 
-=item uninstall()
+=item uninstall( )
 
  Process uninstall tasks
 
@@ -91,10 +91,10 @@ sub registerSetupListeners
 
 sub uninstall
 {
-    Package::PhpMyAdmin::Uninstaller->getInstance()->uninstall();
+    Package::PhpMyAdmin::Uninstaller->getInstance( )->uninstall( );
 }
 
-=item setGuiPermissionsListener()
+=item setGuiPermissionsListener( )
 
  Set gui permissions event listener
 
@@ -132,7 +132,7 @@ sub setGuiPermissionsListener
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -144,12 +144,18 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/pma";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.data", readonly => 1;
-    $self->{'eventManager'}->register('afterFrontendSetGuiPermissions', sub { $self->setGuiPermissionsListener(); });
+    $self->{'eventManager'}->register( 'afterFrontendSetGuiPermissions', sub { $self->setGuiPermissionsListener( ); } );
+
+    if (-f "$self->{'cfgDir'}/phpmyadmin.data") {
+        tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.data", readonly => 1;
+    } else {
+        $self->{'config'} = { };
+    }
+
     $self;
 }
 

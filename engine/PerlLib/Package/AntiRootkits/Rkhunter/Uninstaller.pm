@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::AntiRootkits::Rkhunter::Uninstaller - i-MSCP Rkhunter Anti-Rootkits package uninstaller
+ Package::AntiRootkits::Rkhunter::Uninstaller - i-MSCP Rkhunter Anti-Rootkits package uninstaller
 
 =cut
 
@@ -36,7 +36,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item uninstall()
+=item uninstall( )
 
  Process uninstall tasks
 
@@ -46,7 +46,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-    $_[0]->_restoreDebianConfig();
+    $_[0]->_restoreDebianConfig( );
 }
 
 =back
@@ -55,7 +55,7 @@ sub uninstall
 
 =over 4
 
-=item _restoreDebianConfig()
+=item _restoreDebianConfig( )
 
  Restore default configuration
 
@@ -67,16 +67,16 @@ sub _restoreDebianConfig
 {
     if (-f '/etc/default/rkhunter') {
         my $file = iMSCP::File->new( filename => '/etc/default/rkhunter' );
-        my $fileContent = $file->get();
+        my $fileContent = $file->get( );
         unless (defined $fileContent) {
-            error( 'Could not read /etc/default/rkhunter file' );
+            error( "Couldn't read /etc/default/rkhunter file" );
             return 1;
         }
 
         $fileContent =~ s/CRON_DAILY_RUN=".*"/CRON_DAILY_RUN=""/i;
         $fileContent =~ s/CRON_DB_UPDATE=".*"/CRON_DB_UPDATE=""/i;
         my $rs = $file->set( $fileContent );
-        $rs ||= $file->save();
+        $rs ||= $file->save( );
         return $rs if $rs;
     }
 

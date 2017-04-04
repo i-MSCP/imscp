@@ -62,7 +62,7 @@ sub _removeSqlUser
             $sqlServer->dropUser( $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'}, $_ );
         }
 
-        if ($self->{'config'}->{'SALS_DATABASE_USER'}) {
+        if (exists $self->{'config'}->{'SALS_DATABASE_USER'}) {
             $sqlServer->dropUser( $self->{'config'}->{'SALS_DATABASE_USER'}, $_ );
         }
     }

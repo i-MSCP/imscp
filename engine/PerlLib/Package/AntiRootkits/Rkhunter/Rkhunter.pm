@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::AntiRootkits::Rkhunter::Rkhunter - i-MSCP Rkhunter package
+ Package::AntiRootkits::Rkhunter::Rkhunter - i-MSCP Rkhunter package
 
 =cut
 
@@ -37,7 +37,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item preinstall()
+=item preinstall( )
 
  Process preinstall tasks
 
@@ -47,10 +47,10 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-    Package::AntiRootkits::Rkhunter::Installer->getInstance()->preinstall();
+    Package::AntiRootkits::Rkhunter::Installer->getInstance( )->preinstall( );
 }
 
-=item install()
+=item install( )
 
  Process install tasks
 
@@ -60,10 +60,10 @@ sub preinstall
 
 sub install
 {
-    Package::AntiRootkits::Rkhunter::Installer->getInstance()->install();
+    Package::AntiRootkits::Rkhunter::Installer->getInstance( )->install( );
 }
 
-=item uninstall()
+=item uninstall( )
 
  Process uninstall tasks
 
@@ -73,10 +73,10 @@ sub install
 
 sub uninstall
 {
-    Package::AntiRootkits::Rkhunter::Uninstaller->getInstance()->uninstall();
+    Package::AntiRootkits::Rkhunter::Uninstaller->getInstance( )->uninstall( );
 }
 
-=item setEnginePermissions()
+=item setEnginePermissions( )
 
  Set files permissions.
 
@@ -107,7 +107,7 @@ sub setEnginePermissions
     );
 }
 
-=item getDistroPackages()
+=item getDistroPackages( )
 
  Get list of Debian packages
 

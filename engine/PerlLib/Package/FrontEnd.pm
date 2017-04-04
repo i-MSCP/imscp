@@ -144,7 +144,7 @@ sub dpkgPostInvokeTasks
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndDpkgPostInvokeTasks' );
-    $rs ||= Package::FrontEnd::Installer->getInstance( )->dpkgPostInvokeTasks();
+    $rs ||= Package::FrontEnd::Installer->getInstance( )->dpkgPostInvokeTasks( );
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndDpkgPostInvokeTasks' );
 }
 
@@ -384,11 +384,15 @@ sub enableSites
             return 1;
         }
 
+        my $siteName = basename( $site, '.conf' );
+
+        next if -l "$self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}/$siteName";
+
         unless (symlink(
             "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site",
-            "$self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}/".basename( $site, '.conf' )
+            "$self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}/$siteName"
         )) {
-            error( sprintf( 'Could not enable `%s` site: %s', $site, $! ) );
+            error( sprintf( "Couldn't enable `%s` site: %s", $site, $! ) );
             return 1;
         }
     }
@@ -770,7 +774,7 @@ sub _init
     $self->{'restart'} = 0;
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/frontend";
     tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.data", readonly => 1;
-    $self->{'phpConfig'} = Servers::httpd->factory()->{'phpConfig'};
+    $self->{'phpConfig'} = Servers::httpd->factory( )->{'phpConfig'};
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self;
 }
@@ -809,15 +813,21 @@ sub _buildConf
 
 END
     {
-        return if $? || (defined $main::execmode && $main::execmode eq 'setup');
+        return if $?;
+
+        if (defined $main::execmode) {
+            return if $main::execmode eq 'setup';
+            $? = Package::FrontEnd->getInstance( )->restartNginx( ) if $main::execmode eq 'uninstaller';
+            return;
+        }
 
         my $self = Package::FrontEnd->getInstance( );
         if ($self->{'start'}) {
-            $? = $self->start();
+            $? = $self->start( );
         } elsif ($self->{'restart'}) {
-            $? = $self->restart();
+            $? = $self->restart( );
         } elsif ($self->{'reload'}) {
-            $? = $self->reload();
+            $? = $self->reload( );
         }
     }
 

@@ -163,7 +163,10 @@ sub _getComposer
         $rs = executeNoWait(
             sprintf(
                 $self->{'suCmdPattern'},
-                escapeShell( "$self->{'phpCmd'} composer.phar self-update --clean-backups --no-ansi -n -d=$self->{'pkgDir'}" )
+                escapeShell(
+                    "$self->{'phpCmd'} $main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar self-update --clean-backups ".
+                        "--no-ansi -n -d=$self->{'pkgDir'}"
+                )
             ),
             (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
                 ? undef : sub { step( undef, "$msgHeader".(shift).$msgFooter, 3, 1 ); }
@@ -200,7 +203,10 @@ sub _checkRequirements
         my $rs = executeNoWait(
             sprintf(
                 $self->{'suCmdPattern'},
-                escapeShell( "$self->{'phpCmd'} composer.phar show --no-ansi -n -d=$self->{'pkgDir'} $package $version" )
+                escapeShell(
+                    "$self->{'phpCmd'} $main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar show --no-ansi -n "
+                        ."-d=$self->{'pkgDir'} $package $version"
+                )
             ),
             (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
                 ? undef : sub { step( undef, $msg, 3, 2 ); }
@@ -238,7 +244,10 @@ sub _installPackages
     $rs = executeNoWait(
         sprintf(
             $self->{'suCmdPattern'},
-            escapeShell( "$self->{'phpCmd'} composer.phar update --no-ansi -n -d=$self->{'pkgDir'}" )
+            escapeShell(
+                "$self->{'phpCmd'} $main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar update --no-ansi -n "
+                    ."-d=$self->{'pkgDir'}"
+            )
         ),
         sub { },
         (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose

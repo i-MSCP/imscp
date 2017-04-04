@@ -21,7 +21,7 @@ use strict;
 use warnings;
 use iMSCP::Execute;
 use iMSCP::File;
-use Servers::mta::postfix;
+use Servers::mta;
 use Servers::po::dovecot;
 use Servers::sqld;
 use parent 'Common::SingletonClass';
@@ -39,7 +39,7 @@ sub _init
     my $self = shift;
 
     $self->{'po'} = Servers::po::dovecot->getInstance();
-    $self->{'mta'} = Servers::mta::postfix->getInstance();
+    $self->{'mta'} = Servers::mta->factory();
     $self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
@@ -60,7 +60,7 @@ sub _restoreConfFile
     }
 
     my $file = iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf" );
-    my $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'mta'}->{'MTA_MAILBOX_GID_NAME'} );
+    my $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'} );
     $rs ||= $file->mode( 0644 );
 }
 

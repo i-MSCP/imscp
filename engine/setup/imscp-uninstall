@@ -33,32 +33,31 @@ use strict;
 use warnings;
 use FindBin;
 use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
-use iMSCP::Debug;
-use iMSCP::Getopt;
+use File::Basename;
 use iMSCP::Bootstrapper;
+use iMSCP::Database;
+use iMSCP::DbTasksProcessor;
+use iMSCP::Debug;
 use iMSCP::Dialog;
 use iMSCP::Dir;
-use iMSCP::File;
-use iMSCP::Stepper;
-use iMSCP::Database;
-use iMSCP::SystemUser;
 use iMSCP::Execute;
-use iMSCP::Servers;
+use iMSCP::File;
+use iMSCP::Getopt;
 use iMSCP::Packages;
+use iMSCP::Servers;
 use iMSCP::Service;
-use Servers::sqld;
-use File::Basename;
+use iMSCP::Stepper;
+use iMSCP::SystemUser;
+
 use POSIX qw(locale_h);
+use Servers::sqld;
 use locale;
 
 setlocale(LC_ALL, 'C.UTF-8');
 $ENV{'LANG'} = 'C.UTF-8';
 
 # Set backend mode
-{
-    no warnings qw/once/;
-    $main::execmode = 'uninstall';
-}
+$main::execmode = 'uninstall' unless defined $main::execmode;;
 
 newDebug('imscp-uninstall.log');
 
@@ -72,6 +71,16 @@ sub startUp
 sub process
 {
     _userDialog();
+
+    my $database = iMSCP::Database->factory();
+    my $rdata = $database->doQuery('1', "SELECT 1 FROM plugin WHERE plugin_status <> 'uninstalled'");
+    unless(ref $rdata eq 'HASH') {
+        error($rdata);
+        return 1;
+    } elsif(%{$rdata}) {
+        error('You must first uninstall all i-MSCP plugins through the control panel interface.');
+        return 1;
+    }
 
     my @steps = (
         [ \&_removeCustomers, 'Removing i-MSCP customers' ],
@@ -106,7 +115,7 @@ sub shutDown
 
 iMSCP has been successfully uninstalled.
 
-You can find uninstallation logs at /tmp/imscp-uninstall.log
+You can find uninstallation logs at /var/log/imscp/imscp-uninstall.log
 EOF
 
     0;
@@ -123,13 +132,7 @@ Welcome to the \\Z4i-MSCP $main::imscpConfig{'Version'}\\Zn uninstaller dialog.
 
 This program will uninstall i-MSCP from your server.
 
-\\Z1WARNING\\Zn
-
-All i-MSCP data will be removed.
-
-\\Z4NOTE\\Zn
-
-During the uninstallation process some or all services might require to be shutdown or restarted.
+\\Z1WARNING:\\Zn All i-MSCP data will be removed.
 
 Do you want to continue?
 EOF
@@ -137,8 +140,10 @@ EOF
 
 sub _removeCustomers
 {
+    my $database = iMSCP::Database->factory();
+
     my $tables = {
-        admin => [ 'admin_status', "AND `admin_type` = 'user'" ],
+        admin => [ 'admin_status', "WHERE `admin_type` = 'user'" ],
         domain => 'domain_status',
         domain_aliasses => 'alias_status',
         subdomain => 'subdomain_status',
@@ -149,11 +154,9 @@ sub _removeCustomers
         htaccess_users => 'status',
         ssl_certs => 'status'
     };
-
-    my $database = iMSCP::Database->factory();
     my $aditionalCondition;
 
-    while (my ($table, $field) = each %$tables) {
+    while (my ($table, $field) = each %{$tables}) {
         if(ref $field eq 'ARRAY') {
             $aditionalCondition = $field->[1];
             $field = $field->[0];
@@ -161,22 +164,25 @@ sub _removeCustomers
             $aditionalCondition = ''
         }
 
-        my $rdata = $database->doQuery('dummy', "UPDATE `$table` SET `$field` = 'todelete' $aditionalCondition");
+        my $rdata = $database->doQuery('u', "UPDATE `$table` SET `$field` = 'todelete' $aditionalCondition");
         unless(ref $rdata eq 'HASH') {
             error($rdata);
             return 1;
         }
     }
 
-    iMSCP::Bootstrapper->getInstance()->unlock();
 
-    my $rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \my $stdout, \my $stderr);
-    debug($stdout) if $stdout;
-    error( $stderr || 'Unknown error' ) if $rs;
-    return $rs if $rs;
+    my $rs = 0;
+    startDetail();
+    local $@;
+    eval { iMSCP::DbTasksProcessor->getInstance( mode => 'uninstall' )->process(); };
+    if($@) {
+        error($@);
+        $rs = 1;
+    }
+    endDetail();
 
-    iMSCP::Bootstrapper->getInstance()->lock();
-    0;
+    $rs;
 }
 
 sub _uninstallPackages
@@ -192,7 +198,7 @@ sub _uninstallPackages
         my $instance = $package->getInstance();
         if(my $subref = $instance->can('uninstall')) {
              $rs = step(
-                 sub { $subref->($instance) }, sprintf('Running %s uninstall tasks...', $package), $nbSteps, $step
+                 sub { $subref->($instance) }, sprintf('Executing %s uninstall tasks...', $package), $nbSteps, $step
              );
              last if $rs;
         }
@@ -216,7 +222,7 @@ sub _uninstallServers
         my $instance = $server->factory();
         if(my $subref = $instance->can('uninstall')) {
             $rs = step(
-                sub { $subref->($instance) }, sprintf('Running %s uninstall tasks...', $server), $nbSteps, $step
+                sub { $subref->($instance) }, sprintf('Executing %s uninstall tasks...', $server), $nbSteps, $step
             );
             last if $rs;
         }

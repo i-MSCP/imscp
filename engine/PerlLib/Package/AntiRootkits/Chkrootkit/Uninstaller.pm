@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::AntiRootkits::Chkrootkit::Uninstaller - i-MSCP Chkrootkit package uninstaller
+ Package::AntiRootkits::Chkrootkit::Uninstaller - i-MSCP Chkrootkit package uninstaller
 
 =cut
 
@@ -36,7 +36,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item uninstall()
+=item uninstall( )
 
  Process uninstall tasks
 
@@ -46,7 +46,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-    $_[0]->_restoreDebianConfig();
+    $_[0]->_restoreDebianConfig( );
 }
 
 =back
@@ -55,7 +55,7 @@ sub uninstall
 
 =over 4
 
-=item _restoreDebianConfig()
+=item _restoreDebianConfig( )
 
  Restore default configuration
 

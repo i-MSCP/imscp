@@ -61,7 +61,7 @@ sub get
 
     my $fh;
     unless (open($fh, '<', $self->{'filename'})) {
-        error( sprintf( "Could not open `%s' file for reading: %s", $self->{'filename'}, $! ) );
+        error( sprintf( "Couldn't open `%s' file for reading: %s", $self->{'filename'}, $! ) );
         return undef;
     }
 
@@ -107,7 +107,7 @@ sub save
 
     my $fh;
     unless (open($fh, '>', $self->{'filename'})) {
-        error( sprintf( "Could not open `%s' file for writing: %s", $self->{'filename'}, $! ) );
+        error( sprintf( "Couldn't open `%s' file for writing: %s", $self->{'filename'}, $! ) );
         return 1;
     }
 
@@ -135,7 +135,7 @@ sub delFile
     }
 
     unless (unlink( $self->{'filename'} )) {
-        error( sprintf( "Could not delete `%s' file: %s", $self->{'filename'}, $! ) );
+        error( sprintf( "Couldn't delete `%s' file: %s", $self->{'filename'}, $! ) );
         return 1;
     }
 
@@ -165,7 +165,7 @@ sub mode
     return if -l $self->{'filename'};
 
     unless (chmod( $mode, $self->{'filename'} )) {
-        error( sprintf( "Could not change `%s' file permissions: %s", $self->{'filename'}, $! ) );
+        error( sprintf( "Couldn't change `%s' file permissions: %s", $self->{'filename'}, $! ) );
         return 1;
     }
 
@@ -197,7 +197,7 @@ sub owner
     my $gid = (($group =~ /^\d+$/) ? $group : getgrnam( $group )) // - 1;
 
     unless (lchown( $uid, $gid, $self->{'filename'} )) {
-        error( sprintf( "Could not change `%s' file ownership: %s", $self->{'filename'}, $! ) );
+        error( sprintf( "Couldn't change `%s' file ownership: %s", $self->{'filename'}, $! ) );
         return 1;
     }
 
@@ -230,7 +230,7 @@ sub copyFile
     }
 
     unless (copy( $self->{'filename'}, $dest )) {
-        error( sprintf( "Could not copy `%s' file to `%s': %s", $self->{'filename'}, $dest, $! ) );
+        error( sprintf( "Couldn't copy `%s' file to `%s': %s", $self->{'filename'}, $dest, $! ) );
         return 1;
     }
 
@@ -241,14 +241,14 @@ sub copyFile
     my ($mode, $uid, $gid) = (lstat( $self->{'filename'} ))[2, 4, 5];
 
     unless (lchown( $uid, $gid, $dest )) {
-        error( sprintf( "Could not change `%s' file ownership: %s", $dest, $! ) );
+        error( sprintf( "Couldn't change `%s' file ownership: %s", $dest, $! ) );
         return 1;
     }
 
     return if -l $dest; # We do not call chmod on symkink targets
 
     unless (chmod( $mode & 07777, $dest )) {
-        error( sprintf( "Could not change `%s' file permissions: %s", $dest, $! ) );
+        error( sprintf( "Couldn't change `%s' file permissions: %s", $dest, $! ) );
         return 1;
     }
 
@@ -274,7 +274,7 @@ sub moveFile
     }
 
     unless (mv( $self->{'filename'}, $dest )) {
-        error( sprintf( "Could not move `%s' file to `%s': %s", $self->{'filename'}, $dest, $! ) );
+        error( sprintf( "Couldn't move `%s' file to `%s': %s", $self->{'filename'}, $dest, $! ) );
         return 1;
     }
 

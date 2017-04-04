@@ -47,7 +47,7 @@ sub uninstall
     my $rs = $self->_restoreConfFile();
     $rs ||= $self->_buildAliasses();
     $rs ||= $self->_removeUsers();
-    $rs ||= $self->_removeDirs();
+    $rs ||= $self->_removeDirsAndFiles();
 }
 
 sub _removeDirsAndFiles

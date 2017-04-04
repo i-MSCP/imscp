@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::AntiRootkits::Chkrootkit::Installer - i-MSCP Chkrootkit package installer
+ Package::AntiRootkits::Chkrootkit::Installer - i-MSCP Chkrootkit package installer
 
 =cut
 
@@ -39,7 +39,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item preinstall()
+=item preinstall( )
 
  Process preinstall tasks
 
@@ -49,10 +49,10 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-    $_[0]->_disableDebianConfig();
+    $_[0]->_disableDebianConfig( );
 }
 
-=item install()
+=item install( )
 
  Process install tasks
 
@@ -64,8 +64,8 @@ sub install
 {
     my $self = shift;
 
-    my $rs = $self->_addCronTask();
-    $rs ||= $self->_scheduleCheck();
+    my $rs = $self->_addCronTask( );
+    $rs ||= $self->_scheduleCheck( );
 }
 
 =back
@@ -74,7 +74,7 @@ sub install
 
 =over 4
 
-=item _disableDebianConfig()
+=item _disableDebianConfig( )
 
  Disable default configuration as provided by the chkrootkit Debian package
 
@@ -89,7 +89,7 @@ sub _disableDebianConfig
     iMSCP::File->new( filename => '/etc/cron.daily/chkrootkit' )->moveFile( '/etc/cron.daily/chkrootkit.disabled' );
 }
 
-=item _addCronTask()
+=item _addCronTask( )
 
  Add cron task
 
@@ -99,7 +99,7 @@ sub _disableDebianConfig
 
 sub _addCronTask
 {
-    Servers::cron->factory()->addTask(
+    Servers::cron->factory( )->addTask(
         {
             TASKID  => 'Package::AntiRootkits::Chkrootkit',
             MINUTE  => '@weekly',
@@ -113,7 +113,7 @@ sub _addCronTask
     );
 }
 
-=item _scheduleCheck()
+=item _scheduleCheck( )
 
  Schedule check if log file doesn't exist or is empty
 
@@ -128,7 +128,7 @@ sub _scheduleCheck
     # Create an emtpy file to avoid planning multiple check if installer is run many time
     my $file = iMSCP::File->new( filename => $main::imscpConfig{'CHKROOTKIT_LOG'} );
     my $rs = $file->set( 'Check scheduled...' );
-    $rs ||= $file->save();
+    $rs ||= $file->save( );
     return $rs if $rs;
 
     $rs = execute(

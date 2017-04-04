@@ -8,7 +8,7 @@
 # Particularly needed on heavy systems where a process can still be running when another is spawned
 # In case the lock cannot be acquired , just exit.
 use Fcntl ":flock";
-open(my $lockFile, '>', '/tmp/awstats_updateall.pl.lock') or die(sprintf('Could not open lock file: %s', $!));
+open(my $lockFile, '>', '/tmp/awstats_updateall.pl.lock') or die(sprintf("Couldn't open lock file: %s", $!));
 exit unless flock($lockFile, LOCK_EX | LOCK_NB);
 
 #------------------------------------------------------------------------------

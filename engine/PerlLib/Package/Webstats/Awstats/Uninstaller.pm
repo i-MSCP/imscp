@@ -41,7 +41,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item uninstall()
+=item uninstall( )
 
  Process AWStats package uninstall tasks
 
@@ -53,9 +53,9 @@ sub uninstall
 {
     my $self = shift;
 
-    my $rs = $self->_deleteFiles();
-    $rs ||= $self->_removeVhost();
-    $rs ||= $self->_restoreDebianConfig();
+    my $rs = $self->_deleteFiles( );
+    $rs ||= $self->_removeVhost( );
+    $rs ||= $self->_restoreDebianConfig( );
 }
 
 =back
@@ -64,7 +64,7 @@ sub uninstall
 
 =over 4
 
-=item _deleteFiles()
+=item _deleteFiles( )
 
  Delete files
 
@@ -74,14 +74,14 @@ sub uninstall
 
 sub _deleteFiles
 {
-    my $httpd = Servers::httpd->factory();
+    my $httpd = Servers::httpd->factory( );
 
     if(-f "$httpd->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats") {
-        my $rs = iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats")->delFile();
+        my $rs = iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats")->delFile( );
         return $rs if $rs;
     }
 
-    my $rs = iMSCP::Dir->new( dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'})->remove();
+    my $rs = iMSCP::Dir->new( dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'})->remove( );
     return $rs if $rs;
 
     return 0 unless -d $main::imscpConfig{'AWSTATS_CONFIG_DIR'};
@@ -91,7 +91,7 @@ sub _deleteFiles
     $rs;
 }
 
-=item _removeVhost()
+=item _removeVhost( )
 
  Remove global vhost file
 
@@ -101,17 +101,17 @@ sub _deleteFiles
 
 sub _removeVhost
 {
-    my $httpd = Servers::httpd->factory();
+    my $httpd = Servers::httpd->factory( );
 
     return 0 unless -f "$httpd->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/01_awstats.conf";
 
     my $rs = $httpd->disableSites( '01_awstats.conf' );
     $rs ||= iMSCP::File->new(
         filename => "$httpd->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/01_awstats.conf"
-    )->delFile();
+    )->delFile( );
 }
 
-=item _restoreDebianConfig()
+=item _restoreDebianConfig( )
 
  Restore default configuration
 
@@ -130,7 +130,7 @@ sub _restoreDebianConfig
         return $rs if $rs;
     }
 
-    my $cronDir = Servers::cron->factory()->{'config'}->{'CRON_D_DIR'};
+    my $cronDir = Servers::cron->factory( )->{'config'}->{'CRON_D_DIR'};
     return 0 unless -f "$cronDir/awstats.disable";
     iMSCP::File->new( filename => "$cronDir/awstats.disable" )->moveFile( "$cronDir/awstats" );
 }

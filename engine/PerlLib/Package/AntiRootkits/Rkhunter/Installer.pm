@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::AntiRootkits::Rkhunter::Installer - i-MSCP Rkhunter package installer
+ Package::AntiRootkits::Rkhunter::Installer - i-MSCP Rkhunter package installer
 
 =cut
 
@@ -40,7 +40,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item preinstall()
+=item preinstall( )
 
  Process preinstall tasks
 
@@ -50,10 +50,10 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-    $_[0]->_disableDebianConfig();
+    $_[0]->_disableDebianConfig( );
 }
 
-=item install()
+=item install( )
 
  Process install tasks
 
@@ -65,8 +65,8 @@ sub install
 {
     my $self = shift;
 
-    my $rs = $self->_addCronTask();
-    $rs ||= $self->_scheduleCheck();
+    my $rs = $self->_addCronTask( );
+    $rs ||= $self->_scheduleCheck( );
 }
 
 =back
@@ -75,7 +75,7 @@ sub install
 
 =over 4
 
-=item _disableDebianConfig()
+=item _disableDebianConfig( )
 
  Disable default configuration
 
@@ -87,9 +87,9 @@ sub _disableDebianConfig
 {
     if (-f '/etc/default/rkhunter') {
         my $file = iMSCP::File->new( filename => '/etc/default/rkhunter' );
-        my $fileContent = $file->get();
+        my $fileContent = $file->get( );
         unless (defined $fileContent) {
-            error( sprintf( 'Could not read %s file', $file->{'filename'} ) );
+            error( sprintf( "Couldn't read %s file", $file->{'filename'} ) );
             return 1;
         }
 
@@ -97,7 +97,7 @@ sub _disableDebianConfig
         $fileContent =~ s/CRON_DB_UPDATE=".*"/CRON_DB_UPDATE="false"/i;
 
         my $rs = $file->set( $fileContent );
-        $rs ||= $file->save();
+        $rs ||= $file->save( );
         return $rs if $rs;
     }
 
@@ -125,7 +125,7 @@ sub _disableDebianConfig
     0;
 }
 
-=item _addCronTask()
+=item _addCronTask( )
 
  Add cron task
 
@@ -139,19 +139,19 @@ sub _addCronTask
         filename => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl"
     );
 
-    my $fileContent = $file->get();
+    my $fileContent = $file->get( );
     unless (defined $fileContent) {
-        error( sprintf( 'Could not read %s file', $$file->{'filename'} ) );
+        error( sprintf( "Couldn't read %s file", ${$file}->{'filename'} ) );
         return 1;
     }
 
     $fileContent = process( { IMSCP_PERLLIB_PATH => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib" }, $fileContent );
 
     my $rs = $file->set( $fileContent );
-    $rs ||= $file->save();
+    $rs ||= $file->save( );
     $rs ||= $file->mode( 0700 );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= Servers::cron->factory()->addTask(
+    $rs ||= Servers::cron->factory( )->addTask(
         {
             TASKID  => 'Package::AntiRootkits::Rkhunter',
             MINUTE  => '@weekly',
@@ -168,7 +168,7 @@ sub _addCronTask
     );
 }
 
-=item _scheduleCheck()
+=item _scheduleCheck( )
 
  Schedule check if log file doesn't exist or is empty
 
@@ -183,7 +183,7 @@ sub _scheduleCheck
     # Create an empty file to avoid planning multiple check if installer is run many time
     my $file = iMSCP::File->new( filename => $main::imscpConfig{'RKHUNTER_LOG'} );
     my $rs = $file->set( 'Check scheduled...' );
-    $rs ||= $file->save();
+    $rs ||= $file->save( );
     return $rs if $rs;
 
     $rs = execute(

@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::FileManager::MonstaFTP::Installer - i-MSCP MonstaFTP package installer
+ Package::FileManager::MonstaFTP::Installer - i-MSCP MonstaFTP package installer
 
 =cut
 
@@ -45,7 +45,7 @@ our $VERSION = '2.1.x';
 
 =over 4
 
-=item preinstall()
+=item preinstall( )
 
  Process preinstall tasks
 
@@ -57,11 +57,11 @@ sub preinstall
 {
     my $self = shift;
 
-    my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/monsta-ftp', $VERSION );
+    my $rs = iMSCP::Composer->getInstance( )->registerPackage( 'imscp/monsta-ftp', $VERSION );
     $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 
-=item install()
+=item install( )
 
  Process install tasks
 
@@ -73,9 +73,9 @@ sub install
 {
     my $self = shift;
 
-    my $rs = $self->_installFiles();
-    $rs ||= $self->_buildHttpdConfig();
-    $rs ||= $self->_buildConfig();
+    my $rs = $self->_installFiles( );
+    $rs ||= $self->_buildHttpdConfig( );
+    $rs ||= $self->_buildConfig( );
 }
 
 =back
@@ -84,7 +84,7 @@ sub install
 
 =over 4
 
-=item afterFrontEndBuildConfFile(\$tplContent, $filename)
+=item afterFrontEndBuildConfFile( \$tplContent, $filename )
 
  Include httpd configuration into frontEnd vhost files
 
@@ -100,18 +100,18 @@ sub afterFrontEndBuildConfFile
 
     return 0 unless $tplName =~ /^00_master(?:_ssl)?.conf$/;
 
-    $$tplContent = replaceBloc(
+    ${$tplContent} = replaceBloc(
         "# SECTION custom BEGIN.\n",
         "# SECTION custom END.\n",
         "    # SECTION custom BEGIN.\n".
             getBloc(
                 "# SECTION custom BEGIN.\n",
                 "# SECTION custom END.\n",
-                $$tplContent
+                ${$tplContent}
             ).
             "    include imscp_monstaftp.conf;\n".
             "    # SECTION custom END.\n",
-        $$tplContent
+        ${$tplContent}
     );
     0;
 }
@@ -122,7 +122,7 @@ sub afterFrontEndBuildConfFile
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -134,11 +134,11 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self;
 }
 
-=item _installFiles()
+=item _installFiles( )
 
  Install MonstaFTP files in production directory
 
@@ -151,18 +151,18 @@ sub _installFiles
     my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/monsta-ftp";
 
     unless (-d $packageDir) {
-        error( 'Could not find the imscp/monsta-ftp package into the packages cache directory' );
+        error( "Couldn't find the imscp/monsta-ftp package into the packages cache directory" );
         return 1;
     }
 
-    my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
+    my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove( );
     $rs ||= iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" );
     $rs ||= iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy(
         "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp"
     );
 }
 
-=item _buildHttpdConfig()
+=item _buildHttpdConfig( )
 
  Build Httpd configuration
 
@@ -172,7 +172,7 @@ sub _installFiles
 
 sub _buildHttpdConfig
 {
-    my $frontEnd = Package::FrontEnd->getInstance();
+    my $frontEnd = Package::FrontEnd->getInstance( );
     $frontEnd->buildConfFile(
         "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/monsta-ftp/iMSCP/nginx/imscp_monstaftp.conf",
         {
@@ -184,7 +184,7 @@ sub _buildHttpdConfig
     );
 }
 
-=item _buildConfig()
+=item _buildConfig( )
 
  Build configuration file
 
@@ -211,9 +211,9 @@ sub _buildConfig
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
-        $cfgTpl = iMSCP::File->new( filename => $conffile )->get();
+        $cfgTpl = iMSCP::File->new( filename => $conffile )->get( );
         unless (defined $cfgTpl) {
-            error( sprintf( 'Could not read %s file', $conffile ) );
+            error( sprintf( "Couldn't read %s file", $conffile ) );
             return 1;
         }
     }
@@ -222,7 +222,7 @@ sub _buildConfig
 
     my $file = iMSCP::File->new( filename => $conffile );
     $rs = $file->set( $cfgTpl );
-    $rs ||= $file->save();
+    $rs ||= $file->save( );
     $rs ||= $file->mode( 0440 );
     $rs ||= $file->owner( $panelUName, $panelGName );
     return $rs if $rs;
@@ -256,8 +256,8 @@ sub _buildConfig
     return $rs if $rs;
 
     $file = iMSCP::File->new( filename => $conffile );
-    $rs = $file->set( $cfgTpl || JSON->new()->utf8( 1 )->pretty( 1 )->encode( $data ) );
-    $rs ||= $file->save();
+    $rs = $file->set( $cfgTpl || JSON->new( )->utf8( 1 )->pretty( 1 )->encode( $data ) );
+    $rs ||= $file->save( );
     $rs ||= $file->mode( 0440 );
     $rs ||= $file->owner( $panelUName, $panelGName );
 }
