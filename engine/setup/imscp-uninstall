@@ -48,7 +48,7 @@ use iMSCP::Servers;
 use iMSCP::Service;
 use iMSCP::Stepper;
 use iMSCP::SystemUser;
-
+use Servers::sqld;
 use POSIX qw(locale_h);
 use Servers::sqld;
 use locale;
@@ -272,7 +272,6 @@ sub _removeSysctlFile
     iMSCP::File->new( filename => '/etc/sysctl.d/imscp.conf' )->delFile();
 }
 
-# FIXME: localhost is not always the correct value
 sub _removeSqlData
 {
     my $sqlServer = Servers::sqld->factory();
@@ -296,7 +295,7 @@ sub _removeSqlData
         error($rdata);
         return 1;
     }
-    $database->doQuery('delete', "DROP DATABASE IF EXISTS `$rdata->{$_}->{'sqld_name'}`") for keys %{$rdata};
+    $database->doQuery('d', "DROP DATABASE IF EXISTS `$rdata->{$_}->{'sqld_name'}`") for keys %{$rdata};
 
     # Remove i-MSCP sql database
     $database->doQuery('delete', "DROP DATABASE IF EXISTS `$main::imscpConfig{'DATABASE_NAME'}`");
@@ -304,6 +303,9 @@ sub _removeSqlData
         error($rdata);
         return 1;
     }
+
+    # Drop i-MSCP master SQL user
+    $sqlServer->dropUser( $main::imscpConfig{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'} );
 
     0;
 }
