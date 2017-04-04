@@ -48,7 +48,11 @@ sub _init
 
 sub _removeVloggerSqlUser
 {
-    Servers::sqld->factory()->dropUser( 'vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'} );
+    if ($main::imscpConfig{'DATABASE_USER_HOST'} eq 'localhost') {
+        Servers::sqld->factory()->dropUser( 'vlogger_user', '127.0.0.1' );
+    } else {
+        Servers::sqld->factory()->dropUser( 'vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'} );
+    }
 }
 
 sub _removeDirs
