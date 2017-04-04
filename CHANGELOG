@@ -7,6 +7,9 @@ Git 1.4.x
 BACKEND
     Fixed: Couldn't umount mounts that are marked as deleted due to wrong regexp in iMSCP::Mount library
 
+LISTENERS
+    Updated: Add Referrer-Policy header to 40_apache2_security_headers.pl listener file
+
 UNINSTALLER
     Fixed: Ask administrator to uninstall plugins prior running i-MSCP uninstaller
     Fixed: General uninstallation failure due to wrong SQL query in imscp-uninstall script
