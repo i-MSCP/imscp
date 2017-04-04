@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-02 06:18+0000\n"
+"POT-Creation-Date: 2017-04-04 04:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Torsten Widmann <info@goover.de>, 2017\n"
 "Language-Team: English (United Kingdom) (https://www.transifex.com/i-mscp/teams/576/en_GB/)\n"
@@ -116,7 +116,7 @@ msgstr "%1$s%% [%2$s of unlimited]"
 
 #, php-format
 msgid "%1$ss - Software"
-msgstr ""
+msgstr "%1$ss - Software"
 
 #, php-format
 msgid "%d %s remaining until account expiration"
@@ -188,7 +188,7 @@ msgstr "%s record"
 
 #, php-format
 msgid "%s total available"
-msgstr ""
+msgstr "%s total available"
 
 #, php-format
 msgid "%s webmail"
@@ -875,7 +875,7 @@ msgid "Already in use"
 msgstr "Already in use"
 
 msgid "Alt. URL"
-msgstr ""
+msgstr "Alt. URL"
 
 msgid "Alternate URL to reach your website."
 msgstr "Alternate URL to reach your website."
@@ -954,7 +954,7 @@ msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Are you sure you want to delete all closed tickets?"
 
 msgid "Are you sure you want to delete all selected mail accounts?"
-msgstr ""
+msgstr "Are you sure you want to delete all selected mail accounts?"
 
 msgid "Are you sure you want to delete all tickets?"
 msgstr "Are you sure you want to delete all tickets?"
@@ -981,7 +981,7 @@ msgstr "Are you sure you want to delete the %s menu?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s user?"
-msgstr ""
+msgstr "Are you sure you want to delete the %s user?"
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1473,7 +1473,7 @@ msgid "Configuration mode"
 msgstr "Configuration mode"
 
 msgid "Confirmation required"
-msgstr ""
+msgstr "Confirmation required"
 
 #, php-format
 msgid "Conflict with the `%s' DNS resource record."
@@ -1498,7 +1498,7 @@ msgstr "Could not change the %s plugin: %s"
 
 #, php-format
 msgid "Could not connect to the `%s' database. Please check the password."
-msgstr ""
+msgstr "Could not connect to the `%s' database. Please check the password."
 
 #, php-format
 msgid "Could not create `%s` database name."
@@ -1731,7 +1731,7 @@ msgid "Database Update details"
 msgstr "Database Update details"
 
 msgid "Database data"
-msgstr ""
+msgstr "Database data"
 
 msgid "Database name"
 msgstr "Database name"
@@ -1743,7 +1743,7 @@ msgid "Database name is unavailable or unallowed."
 msgstr "Database name is unavailable or unallowed."
 
 msgid "Database password"
-msgstr ""
+msgstr "Database password"
 
 msgid "Database prefix"
 msgstr "Database prefix"
@@ -1761,7 +1761,7 @@ msgid "Database usage"
 msgstr "Database usage"
 
 msgid "Database user"
-msgstr ""
+msgstr "Database user"
 
 msgid "Database users"
 msgstr "Database users"
@@ -2153,7 +2153,7 @@ msgid "Delete reseller software"
 msgstr "Delete reseller software"
 
 msgid "Delete selected mail accounts"
-msgstr ""
+msgstr "Delete selected mail accounts"
 
 msgid "Delete this plugin"
 msgstr "Delete this plugin"
@@ -2691,10 +2691,10 @@ msgid "First name cannot have more than 200 characters."
 msgstr "First name cannot have more than 200 characters."
 
 msgid "For the time being, you can only add forwarded email account."
-msgstr ""
+msgstr "For the time being, you can only add forwarded email account."
 
 msgid "For the time being, you can only edit your forwarded email account."
-msgstr ""
+msgstr "For the time being, you can only edit your forwarded email account."
 
 msgid "Forbidden"
 msgstr "Forbidden"
@@ -3087,6 +3087,7 @@ msgstr "Invalid SQL user host: %s"
 msgid ""
 "Invalid SQL user. SQL user must exists and belong to the provided database."
 msgstr ""
+"Invalid SQL user. SQL user must exists and belong to the provided database."
 
 msgid "Invalid SSL certificate"
 msgstr "Invalid SSL certificate"
@@ -4220,7 +4221,7 @@ msgid "Protocol"
 msgstr "Protocol"
 
 msgid "Quota assignment"
-msgstr ""
+msgstr "Quota assignment"
 
 msgid "Quota in MiB (0 for unlimited)"
 msgstr "Quota in MiB (0 for unlimited)"
@@ -4554,7 +4555,7 @@ msgid "SQL user successfully deleted."
 msgstr "SQL user successfully deleted."
 
 msgid "SQL username is too long."
-msgstr ""
+msgstr "SQL username is too long."
 
 msgid "SQL users"
 msgstr "SQL users"
@@ -5035,7 +5036,7 @@ msgstr "The %s translation file has been ignored: Translation table is empty."
 
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
-msgstr ""
+msgstr "The `%s' SQL user is not available or not permitted."
 
 #, php-format
 msgid ""
@@ -5379,7 +5380,7 @@ msgstr "Unknown Error"
 
 #, php-format
 msgid "Unknown `%s' database. Database must exists."
-msgstr ""
+msgstr "Unknown `%s' database. Database must exists."
 
 msgid "Unknown action requested."
 msgstr "Unknown action requested."
@@ -5587,7 +5588,7 @@ msgid "Warning traffic"
 msgstr "Warning traffic"
 
 msgid "Warning!"
-msgstr ""
+msgstr "Warning!javascript:;"
 
 msgid "Warnings and Errors"
 msgstr "Warnings and Errors"
@@ -5765,6 +5766,10 @@ msgid ""
 "account, you must first lower the quota assigned to one of your other "
 "mailboxes."
 msgstr ""
+"You cannot add normal email account because you have already assigned all "
+"your email quota to other mailboxes. If you want to add a new normal email "
+"account, you must first lower the quota assigned to one of your other "
+"mailboxes."
 
 msgid ""
 "You cannot change this account to normal email account because you have "
@@ -5772,6 +5777,10 @@ msgid ""
 "change this account to normal email account, you must first lower the quota "
 "assigned to one of your other mailboxes."
 msgstr ""
+"You cannot change this account to normal email account because you have "
+"already assigned all your email quota to other mailboxes. If you want to "
+"change this account to normal email account, you must first lower the quota "
+"assigned to one of your other mailboxes."
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "You cannot delete a reseller that has customer accounts."
@@ -5883,20 +5892,20 @@ msgstr ""
 #, php-format
 msgid "You have a new answer to your support ticket."
 msgid_plural "You have %d new answers to your support tickets."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "You have a new answer to your support ticket."
+msgstr[1] "You have %d new answers to your support tickets."
 
 #, php-format
 msgid "You have a new domain alias order."
 msgid_plural "You have %d new domain alias orders"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "You have a new domain alias order."
+msgstr[1] "You have %d new domain alias orders"
 
 #, php-format
 msgid "You have a new support ticket."
 msgid_plural "You have %d new support tickets."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "You have a new support ticket."
+msgstr[1] "You have %d new support tickets."
 
 msgid ""
 "You have a subdomain limit. You cannot add a user with unlimited subdomains."
@@ -5987,7 +5996,7 @@ msgid "You must select a file to upload/download."
 msgstr "You must select a file to upload/download."
 
 msgid "You must select a least one mail account to delete"
-msgstr ""
+msgstr "You must select a least one mail account to delete"
 
 msgid "You must select a least one mail account to delete."
 msgstr "You must select a least one mail account to delete."
@@ -6056,6 +6065,8 @@ msgid ""
 "Your password has been successfully scheduled for renewal. Check your "
 "emails."
 msgstr ""
+"Your password has been successfully scheduled for renewal. Check your "
+"emails."
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
@@ -6066,6 +6077,8 @@ msgid ""
 "Your request for password renewal cannot be honored. Please retry in few "
 "minutes."
 msgstr ""
+"Your request for password renewal cannot be honored. Please retry in few "
+"minutes."
 
 msgid ""
 "Your request for password renewal has been registered. You will receive an "

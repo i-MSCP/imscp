@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-02 06:18+0000\n"
+"POT-Creation-Date: 2017-04-04 04:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Stefano <stefano@cortile.it>, 2017\n"
+"Last-Translator: Umberto Bubaweb <demoweb@live.it>, 2017\n"
 "Language-Team: Italian (Italy) (https://www.transifex.com/i-mscp/teams/576/it_IT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -480,7 +480,7 @@ msgid "A new software package has been uploaded"
 msgstr "È stato caricato un nuovo pacchetto software"
 
 msgid "A task is in progress for this htuser."
-msgstr ""
+msgstr "C'è un processo in corso per questo utente ht "
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Accedi alle statistiche del tuo dominio attraverso l'interfaccia web."
@@ -977,7 +977,7 @@ msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Sicuro di voler eliminare tutti i ticket chiusi?"
 
 msgid "Are you sure you want to delete all selected mail accounts?"
-msgstr ""
+msgstr "Sei sicuro di voler cancellare tutte le mail selezionate?"
 
 msgid "Are you sure you want to delete all tickets?"
 msgstr "Sicuro di voler eliminare tutti i ticket?"
@@ -1501,7 +1501,7 @@ msgid "Configuration mode"
 msgstr "Modo di configurazione"
 
 msgid "Confirmation required"
-msgstr ""
+msgstr "Conferma richiesta"
 
 #, php-format
 msgid "Conflict with the `%s' DNS resource record."
@@ -2198,7 +2198,7 @@ msgid "Delete reseller software"
 msgstr "Elimina software rivenditore"
 
 msgid "Delete selected mail accounts"
-msgstr ""
+msgstr "Cancellare le mail selezionate"
 
 msgid "Delete this plugin"
 msgstr "Elimina questo plugin"
@@ -2998,6 +2998,8 @@ msgid ""
 "If the name field is filled with the @ sign or left blank, it will be "
 "automatically substituted by $ORIGIN value."
 msgstr ""
+"Se nel nome del campo è inserito il simbolo @ oppure se non inserite nulla, "
+"sarà automaticamente sostiutito con il valore $ORIGIN "
 
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr ""
@@ -4637,7 +4639,7 @@ msgid "SQL user successfully deleted."
 msgstr "Utente SQL eliminato con successo."
 
 msgid "SQL username is too long."
-msgstr ""
+msgstr "La username del utente SQL è troppo lunga"
 
 msgid "SQL users"
 msgstr "Utenti SQL"
@@ -5696,7 +5698,7 @@ msgid "Warning traffic"
 msgstr "Traffico Web"
 
 msgid "Warning!"
-msgstr ""
+msgstr "Attenzione!"
 
 msgid "Warnings and Errors"
 msgstr "Warnings e Errori"
@@ -6023,7 +6025,7 @@ msgstr ""
 
 #, php-format
 msgid "You have been blocked for %s minutes."
-msgstr ""
+msgstr "Sei stato bloccato per %s minuti."
 
 msgid "You have been successfully logged out."
 msgstr "Sei stato disconnesso."
@@ -6051,6 +6053,8 @@ msgid ""
 "You have reached the maximum number of domain aliases allowed by your "
 "subscription."
 msgstr ""
+"Hai raggiunto il numero massimo di alias di dominio consentiti dal tuo "
+"abbonamento."
 
 msgid ""
 "You have reached the maximum number of email accounts allowed by your "
@@ -6104,7 +6108,7 @@ msgid "You must select a file to upload/download."
 msgstr "Devi selezionare un file per l'upload/download."
 
 msgid "You must select a least one mail account to delete"
-msgstr ""
+msgstr "È necessario selezionare almeno una casella di posta da eliminare."
 
 msgid "You must select a least one mail account to delete."
 msgstr "È necessario selezionare un almeno una casella di posta da eliminare."
@@ -6120,7 +6124,7 @@ msgstr "Devi specificare un oggetto."
 
 #, php-format
 msgid "You must wait %s minutes before the next attempt."
-msgstr ""
+msgstr "Devi attendere %s minuti prima del prossimo tentativo"
 
 msgid ""
 "You should enable this directive only if all subdomains of this domain are "
@@ -6174,6 +6178,8 @@ msgid ""
 "Your password has been successfully scheduled for renewal. Check your "
 "emails."
 msgstr ""
+"La tua password è stata impostata correttamente per il rinnovo. Controlla la"
+" tua mail."
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
@@ -6185,6 +6191,8 @@ msgid ""
 "Your request for password renewal cannot be honored. Please retry in few "
 "minutes."
 msgstr ""
+"La richiesta di rinnovo della tua password non è valida o scaduta. Riprova "
+"fra alcuni minuti."
 
 msgid ""
 "Your request for password renewal has been registered. You will receive an "
@@ -6437,4 +6445,4 @@ msgid "{USERNAME} user statistics"
 msgstr "{USERNAME} statistiche utente"
 
 msgid "© 2010-2017 i-MSCP Team<br>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2017 i-MSCP Team<br>Tutti i Diritti Riservati"
