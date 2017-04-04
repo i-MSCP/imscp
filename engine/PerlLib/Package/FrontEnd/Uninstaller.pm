@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::FrontEnd::Uninstaller - i-MSCP FrontEnd package Uninstaller
+ Package::FrontEnd::Uninstaller - i-MSCP FrontEnd package Uninstaller
 
 =cut
 
@@ -42,7 +42,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item uninstall()
+=item uninstall( )
 
  Process uninstall tasks
 
@@ -54,9 +54,9 @@ sub uninstall
 {
     my $self = shift;
 
-    my $rs = $self->_deconfigurePHP();
-    $rs ||= $self->_deconfigureHTTPD();
-    $rs ||= $self->_deleteMasterWebUser();
+    my $rs = $self->_deconfigurePHP( );
+    $rs ||= $self->_deconfigureHTTPD( );
+    $rs ||= $self->_deleteMasterWebUser( );
 }
 
 =back
@@ -65,7 +65,7 @@ sub uninstall
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -77,12 +77,12 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'frontend'} = Package::FrontEnd->getInstance();
+    $self->{'frontend'} = Package::FrontEnd->getInstance( );
     $self->{'config'} = $self->{'frontend'}->{'config'};
     $self;
 }
 
-=item _deconfigurePHP()
+=item _deconfigurePHP( )
 
  Deconfigure PHP (imscp_panel service)
 
@@ -100,25 +100,25 @@ sub _deconfigurePHP
     }
 
     if (-f '/etc/default/imscp_panel') {
-        my $rs = iMSCP::File->new( filename => '/etc/default/imscp_panel' )->delFile();
+        my $rs = iMSCP::File->new( filename => '/etc/default/imscp_panel' )->delFile( );
         return $rs if $rs;
     }
 
     if (-f '/etc/logrotate.d/imscp_panel') {
-        my $rs = iMSCP::File->new( filename => '/etc/logrotate.d/imscp_panel' )->delFile();
+        my $rs = iMSCP::File->new( filename => '/etc/logrotate.d/imscp_panel' )->delFile( );
         return $rs if $rs;
     }
 
     if (-f '/usr/local/sbin/imscp_panel') {
-        my $rs = iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
+        my $rs = iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile( );
         return $rs if $rs;
     }
 
-    my $rs = iMSCP::Dir->new( dirname => '/usr/local/lib/imscp_panel' )->remove();
-    $rs ||= iMSCP::Dir->new( dirname => '/usr/local/etc/imscp_panel' )->remove();
+    my $rs = iMSCP::Dir->new( dirname => '/usr/local/lib/imscp_panel' )->remove( );
+    $rs ||= iMSCP::Dir->new( dirname => '/usr/local/etc/imscp_panel' )->remove( );
 }
 
-=item _deconfigureHTTPD()
+=item _deconfigureHTTPD( )
 
  Deconfigure HTTPD (nginx)
 
@@ -134,12 +134,12 @@ sub _deconfigureHTTPD
         my $rs = $self->{'frontend'}->disableSites( $_ );
         return $rs if $rs;
         next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
-        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_" )->delFile();
+        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_" )->delFile( );
         return $rs if $rs;
     }
 
     if (-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf") {
-        my $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf" )->delFile();
+        my $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf" )->delFile( );
         return $rs if $rs;
     }
 
@@ -167,7 +167,7 @@ sub _deconfigureHTTPD
     0;
 }
 
-=item _deleteMasterWebUser()
+=item _deleteMasterWebUser( )
 
  Delete i-MSCP master Web user
 
@@ -180,7 +180,7 @@ sub _deleteMasterWebUser
     my $rs = iMSCP::SystemUser->new( force => 'yes' )->delSystemUser(
         $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'}
     );
-    $rs ||= iMSCP::SystemGroup->getInstance()->delSystemGroup(
+    $rs ||= iMSCP::SystemGroup->getInstance( )->delSystemGroup(
         $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'}
     );
 }

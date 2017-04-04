@@ -1,6 +1,6 @@
 =head1 NAME
 
-Package::FrontEnd::Installer - i-MSCP FrontEnd package installer
+ Package::FrontEnd::Installer - i-MSCP FrontEnd package installer
 
 =cut
 
@@ -56,7 +56,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners(\%eventManager)
+=item registerSetupListeners( \%eventManager )
 
  Register setup event listeners
 
@@ -83,7 +83,7 @@ sub registerSetupListeners
     );
 }
 
-=item askMasterAdminCredentials(\%dialog)
+=item askMasterAdminCredentials( \%dialog )
 
  Ask for master administrator credentials
 
@@ -98,7 +98,7 @@ sub askMasterAdminCredentials
 
     my ($username, $password) = ('', '');
 
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->factory( );
     local $@;
     eval { $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) ); };
     $db = undef if $@;
@@ -127,7 +127,7 @@ sub askMasterAdminCredentials
     main::setupSetQuestion( 'ADMIN_OLD_LOGIN_NAME', $username );
 
     if ($main::reconfigure =~ /^(?:admin|admin_credentials|all|forced)$/
-        || !isValidUsername($username)
+        || !isValidUsername( $username )
         || $password eq ''
     ) {
         $password = '';
@@ -139,7 +139,7 @@ sub askMasterAdminCredentials
 Please enter a username for the master administrator:$msg
 EOF
             $msg = '';
-            if (!isValidUsername($username)) {
+            if (!isValidUsername( $username )) {
                 $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             } elsif ($db) {
                 my $rdata = $db->doQuery(
@@ -160,7 +160,7 @@ EOF
 
 Please enter a password for the master administrator:$msg
 EOF
-            $msg = (isValidPassword($password)) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
+            $msg = isValidPassword( $password ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
         } while $rs < 30 && $msg;
         return $rs if $rs >= 30;
     } else {
@@ -172,7 +172,7 @@ EOF
     0;
 }
 
-=item askMasterAdminEmail(\%dialog)
+=item askMasterAdminEmail( \%dialog )
 
  Ask for master administrator email address
 
@@ -188,7 +188,7 @@ sub askMasterAdminEmail
     my $email = main::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' );
 
     if ($main::reconfigure =~ /^(?:admin|admin_email|all|forced)$/
-        || !isValidEmail($email)
+        || !isValidEmail( $email )
     ) {
         my ($rs, $msg) = (0, '');
         do {
@@ -196,7 +196,7 @@ sub askMasterAdminEmail
 
 Please enter an email address for the master administrator:$msg
 EOF
-            $msg = (isValidEmail($email)) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
+            $msg = isValidEmail( $email ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
         } while $rs < 30 && $msg;
         return $rs if $rs >= 30;
     }
@@ -205,7 +205,7 @@ EOF
     0;
 }
 
-=item askDomain(\%dialog)
+=item askDomain( \%dialog )
 
  Show for frontEnd domain name
 
@@ -235,7 +235,7 @@ sub askDomain
 
 Please enter a domain name for the control panel:$msg
 EOF
-            $msg = (isValidDomain($domainName)) ? '' :  $iMSCP::Dialog::InputValidation::lastValidationError;
+            $msg = isValidDomain( $domainName ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
         } while $rs < 30 && $msg;
         return $rs if $rs >= 30;
     }
@@ -244,7 +244,7 @@ EOF
     0;
 }
 
-=item askSsl(\%dialog)
+=item askSsl( \%dialog )
 
  Ask for frontEnd SSL certificate
 
@@ -266,7 +266,7 @@ sub askSsl
     my $certificatePath = main::setupGetQuestion( 'PANEL_SSL_CERTIFICATE_PATH', '/root' );
     my $caBundlePath = main::setupGetQuestion( 'PANEL_SSL_CA_BUNDLE_PATH', '/root' );
     my $baseServerVhostPrefix = main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX', 'http://' );
-    my $openSSL = iMSCP::OpenSSL->new();
+    my $openSSL = iMSCP::OpenSSL->new( );
 
     if ($main::reconfigure =~ /^(?:panel|panel_ssl|ssl|all|forced)$/
         || $sslEnabled !~ /^(?:yes|no)$/
@@ -334,7 +334,7 @@ Please select your SSL certificate in next dialog.
 EOF
                 $rs = 1;
                 do {
-                    $dialog->msgbox(<<"EOF") unless $rs;
+                    $dialog->msgbox( <<"EOF" ) unless $rs;
                     
 \\Z1Invalid SSL certificate.\\Zn
 
@@ -347,7 +347,7 @@ EOF
 
                     getMessageByType( 'error', { amount => 1, remove => 1 } );
                     $openSSL->{'certificate_container_path'} = $certificatePath;
-                } while $rs < 30 && $openSSL->validateCertificate();
+                } while $rs < 30 && $openSSL->validateCertificate( );
                 return $rs if $rs >= 30;
             } else {
                 $selfSignedCertificate = 'yes';
@@ -369,7 +369,7 @@ EOF
         $openSSL->{'ca_bundle_container_path'} = "$main::imscpConfig{'CONF_DIR'}/$domainName.pem";
         $openSSL->{'certificate_container_path'} = "$main::imscpConfig{'CONF_DIR'}/$domainName.pem";
 
-        if ($openSSL->validateCertificateChain()) {
+        if ($openSSL->validateCertificateChain( )) {
             getMessageByType( 'error', { amount => 1, remove => 1 } );
             $dialog->msgbox( <<"EOF" );
 
@@ -393,7 +393,7 @@ EOF
     0;
 }
 
-=item askHttpPorts(\%dialog)
+=item askHttpPorts( \%dialog )
 
  Ask for frontEnd http ports
 
@@ -422,9 +422,9 @@ sub askHttpPorts
 Please enter the http port for the control panel:$msg
 EOF
             $msg = '';
-            if (!isNumber($httpPort)
-                || !isNumberInRange($httpPort, 1025, 65535)
-                || !isStringNotInList($httpPort, $httpsPort)
+            if (!isNumber( $httpPort )
+                || !isNumberInRange( $httpPort, 1025, 65535 )
+                || !isStringNotInList( $httpPort, $httpsPort )
             ) {
                 $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             }
@@ -436,9 +436,9 @@ EOF
 
     if ($ssl eq 'yes') {
         if ($main::reconfigure =~ /^(?:panel|panel_ports|all|forced)$/
-            || !isNumber($httpsPort)
-            || !isNumberInRange($httpsPort, 1025, 65535)
-            || !isStringNotInList($httpsPort, $httpPort)
+            || !isNumber( $httpsPort )
+            || !isNumberInRange( $httpsPort, 1025, 65535 )
+            || !isStringNotInList( $httpsPort, $httpPort )
         ) {
             do {
                 ($rs, $httpsPort) = $dialog->inputbox( <<"EOF", $httpsPort ? $httpsPort : 8443 );
@@ -446,9 +446,9 @@ EOF
 Please enter the https port for the control panel:$msg
 EOF
                 $msg = '';
-                if (!isNumber($httpsPort)
-                    || !isNumberInRange($httpsPort, 1025, 65535)
-                    || !isStringNotInList($httpsPort, $httpPort)
+                if (!isNumber( $httpsPort )
+                    || !isNumberInRange( $httpsPort, 1025, 65535 )
+                    || !isStringNotInList( $httpsPort, $httpPort )
                 ) {
                     $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
                 }
@@ -463,7 +463,7 @@ EOF
     0;
 }
 
-=item install()
+=item install( )
 
  Process install tasks
 
@@ -475,20 +475,20 @@ sub install
 {
     my $self = shift;
 
-    my $rs = $self->_setupMasterAdmin();
-    $rs ||= $self->_setupSsl();
-    $rs ||= $self->_setHttpdVersion();
-    $rs ||= $self->_addMasterWebUser();
-    $rs ||= $self->_makeDirs();
-    $rs ||= $self->_copyPhpBinary();
-    $rs ||= $self->_buildPhpConfig();
-    $rs ||= $self->_buildHttpdConfig();
-    $rs ||= $self->_deleteDnsZone();
-    $rs ||= $self->_addDnsZone();
-    $rs ||= $self->_saveConfig();
+    my $rs = $self->_setupMasterAdmin( );
+    $rs ||= $self->_setupSsl( );
+    $rs ||= $self->_setHttpdVersion( );
+    $rs ||= $self->_addMasterWebUser( );
+    $rs ||= $self->_makeDirs( );
+    $rs ||= $self->_copyPhpBinary( );
+    $rs ||= $self->_buildPhpConfig( );
+    $rs ||= $self->_buildHttpdConfig( );
+    $rs ||= $self->_deleteDnsZone( );
+    $rs ||= $self->_addDnsZone( );
+    $rs ||= $self->_saveConfig( );
 }
 
-=item dpkgPostInvokeTasks()
+=item dpkgPostInvokeTasks( )
 
  Process dpkg post-invoke tasks
 
@@ -506,8 +506,8 @@ sub dpkgPostInvokeTasks
         && ($self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} eq '' || !-f $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'})
     ) {
         # Cover case where administrator removed the package
-        my $rs = $self->{'frontend'}->stop();
-        $rs ||= iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
+        my $rs = $self->{'frontend'}->stop( );
+        $rs ||= iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile( );
         return $rs;
     }
 
@@ -515,12 +515,12 @@ sub dpkgPostInvokeTasks
         my $v1 = $self->getFullPhpVersionFor( $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} );
         my $v2 = $self->getFullPhpVersionFor( '/usr/local/sbin/imscp_panel' );
         return 0 unless defined $v1 && defined $v2 && $v1 ne $v2; # Don't act when not necessary
-        debug(sprintf("Updating imscp_panel service PHP binary from version `%s' to version `%s'", $v2, $v1));
+        debug( sprintf( "Updating imscp_panel service PHP binary from version `%s' to version `%s'", $v2, $v1 ) );
     }
 
-    my $rs = $self->_copyPhpBinary();
+    my $rs = $self->_copyPhpBinary( );
     return $rs if $rs || !-f '/usr/local/etc/imscp_panel/php-fpm.conf';
-    $self->{'frontend'}->restart();
+    $self->{'frontend'}->restart( );
 }
 
 =back
@@ -529,7 +529,7 @@ sub dpkgPostInvokeTasks
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -541,8 +541,8 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'frontend'} = Package::FrontEnd->getInstance();
-    $self->{'httpd'} = Servers::httpd->factory();
+    $self->{'frontend'} = Package::FrontEnd->getInstance( );
+    $self->{'httpd'} = Servers::httpd->factory( );
     $self->{'eventManager'} = $self->{'frontend'}->{'eventManager'};
     $self->{'cfgDir'} = $self->{'frontend'}->{'cfgDir'};
     $self->{'config'} = $self->{'frontend'}->{'config'};
@@ -550,7 +550,7 @@ sub _init
 
     # Be sure to work with newest conffile
     # Cover case where the conffile has been loaded prior installation of new files (even if discouraged)
-    untie(%{$self->{'config'}});
+    untie( %{$self->{'config'}} );
     tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.data";
 
     if (-f "$self->{'cfgDir'}/frontend.old.data") {
@@ -564,7 +564,7 @@ sub _init
     $self;
 }
 
-=item _setupMasterAdmin()
+=item _setupMasterAdmin( )
 
  Setup master administrator
 
@@ -583,7 +583,7 @@ sub _setupMasterAdmin
 
     $password = apr1MD5( $password );
 
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->factory( );
     $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) );
 
     my $rs = $db->doQuery(
@@ -634,7 +634,7 @@ sub _setupMasterAdmin
     0
 }
 
-=item _setupSsl()
+=item _setupSsl( )
 
  Setup SSL
 
@@ -653,13 +653,13 @@ sub _setupSsl
     if ($oldCertificate ne '' && $oldCertificate ne "$domainName.pem"
         && -f "$main::imscpConfig{'CONF_DIR'}/$oldCertificate"
     ) {
-        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/$oldCertificate" )->delFile();
+        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/$oldCertificate" )->delFile( );
         return $rs if $rs;
     }
 
     if ($sslEnabled eq 'no' || main::setupGetQuestion( 'PANEL_SSL_SETUP', 'yes' ) eq 'no') {
         if ($sslEnabled eq 'no' && -f "$main::imscpConfig{'CONF_DIR'}/$domainName.pem") {
-            my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/$domainName.pem" )->delFile();
+            my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/$domainName.pem" )->delFile( );
             return $rs if $rs;
         }
 
@@ -668,8 +668,8 @@ sub _setupSsl
 
     if (main::setupGetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE' ) eq 'yes') {
         return iMSCP::OpenSSL->new(
-            'certificate_chains_storage_dir' => $main::imscpConfig{'CONF_DIR'},
-            'certificate_chain_name'         => $domainName
+            certificate_chains_storage_dir => $main::imscpConfig{'CONF_DIR'},
+            certificate_chain_name         => $domainName
         )->createSelfSignedCertificate(
             {
                 common_name => $domainName,
@@ -679,16 +679,16 @@ sub _setupSsl
     }
 
     iMSCP::OpenSSL->new(
-        'certificate_chains_storage_dir' => $main::imscpConfig{'CONF_DIR'},
-        'certificate_chain_name'         => $domainName,
-        'private_key_container_path'     => main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH' ),
-        'private_key_passphrase'         => main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PASSPHRASE' ),
-        'certificate_container_path'     => main::setupGetQuestion( 'PANEL_SSL_CERTIFICATE_PATH' ),
-        'ca_bundle_container_path'       => main::setupGetQuestion( 'PANEL_SSL_CA_BUNDLE_PATH' )
-    )->createCertificateChain();
+        certificate_chains_storage_dir => $main::imscpConfig{'CONF_DIR'},
+        certificate_chain_name         => $domainName,
+        private_key_container_path     => main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH' ),
+        private_key_passphrase         => main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PASSPHRASE' ),
+        certificate_container_path     => main::setupGetQuestion( 'PANEL_SSL_CERTIFICATE_PATH' ),
+        ca_bundle_container_path       => main::setupGetQuestion( 'PANEL_SSL_CA_BUNDLE_PATH' )
+    )->createCertificateChain( );
 }
 
-=item _setHttpdVersion()
+=item _setHttpdVersion( )
 
  Set httpd version
 
@@ -696,7 +696,7 @@ sub _setupSsl
 
 =cut
 
-sub _setHttpdVersion()
+sub _setHttpdVersion( )
 {
     my $self = shift;
 
@@ -715,7 +715,7 @@ sub _setHttpdVersion()
     0;
 }
 
-=item _addMasterWebUser()
+=item _addMasterWebUser( )
 
  Add master Web user
 
@@ -732,7 +732,7 @@ sub _addMasterWebUser
 
     my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->factory( );
     $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) );
 
     my $rdata = $db->doQuery(
@@ -762,11 +762,11 @@ sub _addMasterWebUser
     if (!$oldUserName || $userUid == 0) {
         # Creating i-MSCP Master Web user
         $rs = iMSCP::SystemUser->new(
-            'username'       => $userName,
-            'comment'        => 'i-MSCP Master Web User',
-            'home'           => $main::imscpConfig{'GUI_ROOT_DIR'},
-            'skipCreateHome' => 1
-        )->addSystemUser();
+            username       => $userName,
+            comment        => 'i-MSCP Master Web User',
+            home           => $main::imscpConfig{'GUI_ROOT_DIR'},
+            skipCreateHome => 1
+        )->addSystemUser( );
         return $rs if $rs;
 
         $userUid = getpwnam( $userName );
@@ -813,7 +813,7 @@ sub _addMasterWebUser
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdAddUser' );
 }
 
-=item _makeDirs()
+=item _makeDirs( )
 
  Create directories
 
@@ -838,7 +838,7 @@ sub _makeDirs
 
     # Force re-creation of cache directory tree (needed to prevent any permissions problem from an old installation)
     # See #IP-1530
-    iMSCP::Dir->new( dirname => $nginxTmpDir )->remove();
+    iMSCP::Dir->new( dirname => $nginxTmpDir )->remove( );
 
     for (
         [ $nginxTmpDir, $rootUName, $rootGName, 0755 ],
@@ -853,11 +853,11 @@ sub _makeDirs
 
     local $@;
     eval {
-        if (iMSCP::Service->getInstance->isSystemd()) {
+        if (iMSCP::Service->getInstance->isSystemd( )) {
             iMSCP::Dir->new(dirname => '/run/imscp')->make(
                 {
-                    user  => $self->{'httpd'}->getRunningUser(),
-                    group => $self->{'httpd'}->getRunningGroup(),
+                    user  => $self->{'httpd'}->getRunningUser( ),
+                    group => $self->{'httpd'}->getRunningGroup( ),
                     mode  => 0755
                 }
             );
@@ -871,7 +871,7 @@ sub _makeDirs
     $self->{'eventManager'}->trigger( 'afterFrontEndMakeDirs' );
 }
 
-=item _copyPhpBinary()
+=item _copyPhpBinary( )
 
  Copy system PHP-FPM binary for imscp_panel service
 
@@ -892,7 +892,7 @@ sub _copyPhpBinary
     }
 
     if (-f '/usr/local/sbin/imscp_panel') {
-        $rs ||= iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
+        $rs ||= iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile( );
     }
 
     $rs ||= iMSCP::File->new( filename => $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} )->copyFile(
@@ -901,7 +901,7 @@ sub _copyPhpBinary
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndCopyPhpBinary' );
 }
 
-=item _buildPhpConfig()
+=item _buildPhpConfig( )
 
  Build PHP configuration
 
@@ -964,7 +964,7 @@ sub _buildPhpConfig
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndBuildPhpConfig' );
 }
 
-=item _buildHttpdConfig()
+=item _buildHttpdConfig( )
 
  Build httpd configuration
 
@@ -984,7 +984,7 @@ sub _buildHttpdConfig
     if ($nbCPUcores eq 'auto') {
         $rs = execute( 'grep processor /proc/cpuinfo | wc -l', \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
-        debug($stderr) if $stderr;
+        debug( $stderr ) if $stderr;
         debug( 'Could not detect number of CPU cores. nginx worker_processes value set to 2' ) if $rs;
 
         unless ($rs) {
@@ -1128,7 +1128,7 @@ sub _buildHttpdConfig
     $self->{'eventManager'}->trigger( 'afterFrontEndBuildHttpdVhosts' );
 }
 
-=item _addDnsZone()
+=item _addDnsZone( )
 
  Add DNS zone
 
@@ -1154,7 +1154,7 @@ sub _addDnsZone
     $rs ||= $self->{'eventManager'}->trigger( 'afterNamedAddMasterZone' );
 }
 
-=item _deleteDnsZone()
+=item _deleteDnsZone( )
 
  Delete previous DNS zone if needed (i.e. case where BASER_SERVER_VHOST has been modified)
 
@@ -1170,11 +1170,11 @@ sub _deleteDnsZone
         $main::imscpOldConfig{'BASE_SERVER_VHOST'} ne main::setupGetQuestion( 'BASE_SERVER_VHOST' );
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedDeleteMasterZone' );
-    $rs ||= Servers::named->factory()->deleteDmn( { DOMAIN_NAME => $main::imscpOldConfig{'BASE_SERVER_VHOST'} } );
+    $rs ||= Servers::named->factory( )->deleteDmn( { DOMAIN_NAME => $main::imscpOldConfig{'BASE_SERVER_VHOST'} } );
     $rs ||= $self->{'eventManager'}->trigger( 'afterNamedDeleteMasterZone' );
 }
 
-=item _saveConfig()
+=item _saveConfig( )
 
  Save configuration
 
@@ -1186,14 +1186,13 @@ sub _saveConfig
 {
     my $self = shift;
 
-    (tied %{$self->{'config'}})->flush();
-
+    (tied %{$self->{'config'}})->flush( );
     iMSCP::File->new( filename => "$self->{'cfgDir'}/frontend.data" )->copyFile(
         "$self->{'cfgDir'}/frontend.old.data"
     );
 }
 
-=item getFullPhpVersionFor($binaryPath)
+=item getFullPhpVersionFor( $binaryPath )
 
  Get full PHP version for the given PHP binary
 
@@ -1207,7 +1206,7 @@ sub getFullPhpVersionFor
     my (undef, $binaryPath) = @_;
 
     my $rs = execute([ $binaryPath, '-nv' ], \my $stdout, \my $stderr );
-    error($stderr || 'Unknown error') if $rs;
+    error( $stderr || 'Unknown error' ) if $rs;
     return undef unless $stdout;
     $stdout =~ /PHP\s+([^\s]+)/;
     $1;
@@ -1217,7 +1216,7 @@ sub getFullPhpVersionFor
 
 =head1 AUTHOR
 
-Laurent Declercq <l.declercq@nuxwin.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 
