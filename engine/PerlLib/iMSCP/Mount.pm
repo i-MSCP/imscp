@@ -137,7 +137,7 @@ my $MOUNTS = lazy
         my $entries;
         while(my $entry = <$fh>) {
             my $fsFile = (split /\s+/, $entry)[1];
-            $entries->{$fsFile =~ s/\s+\(deleted\)$//r}++;
+            $entries->{$fsFile =~ s/\\040\(deleted\)$//r}++;
         }
         close( $fh );
         $entries;

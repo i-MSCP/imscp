@@ -4,6 +4,9 @@
 Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
+BACKEND
+    Fixed: Couldn't umount mounts that are marked as deleted due to wrong regexp in iMSCP::Mount library
+
 ------------------------------------------------------------------------------------------------------------------------
 1.4.2
 ------------------------------------------------------------------------------------------------------------------------
@@ -30,7 +33,7 @@ SERVERS
     Fixed: FastCgiExternalServer: redefinition of previously defined class (apache_php_fpm httpd server impl.)
     Fixed: Modules::Plugin::_call: Can't locate object method "getInstance" via package "Servers::mta::postfix" (po servers impl.)
 
-YOUTRACK:
+YOUTRACK
     #IP-1670 Customer must be still able to create forward email account, even when email quota is full assigned
 
 ------------------------------------------------------------------------------------------------------------------------
