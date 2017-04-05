@@ -257,12 +257,12 @@ sub uninstallPackages
         my @pkgs = ();
         for my $pkg(@{$packagesToUninstall}) {
             (my $pkgReg = $pkg) =~ s/\*/.*/;
-            push @pkgs, $pkg if grep { $_ =~ $pkgReg } @apkgs;
+            push @pkgs, $pkg if grep { $_ =~ /^$pkgReg/ } @apkgs;
         }
         @{$packagesToUninstall} = @pkgs;
         undef @apkgs;
         undef @pkgs;
-
+        
         if (@{$packagesToUninstall}) {
             # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
             execute( "apt-mark unhold @{$packagesToUninstall}", \ $stdout, \ $stderr );
