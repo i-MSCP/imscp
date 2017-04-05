@@ -17,6 +17,9 @@ INSTALLER
     Fixed: composer.phar archive is not updated due to wrong working directory
     Fixed: Configures getaddrinfo(3) to prefer IPv4 during setup and update phases
 
+SCRIPTS
+    Fixed: All in/out traffic not computed (imscp-srv-traff)
+
 UNINSTALLER
     Fixed: Ask administrator to uninstall plugins prior running i-MSCP uninstaller
     Fixed: General uninstallation failure due to wrong SQL query in imscp-uninstall script

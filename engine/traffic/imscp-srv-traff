@@ -120,7 +120,7 @@ sub _parseTrafficData
             ${$po} += $bytes if $port =~ /^(?:110|995|143|993)$/;
             ${$http} += $bytes if $port =~ /^(?:80|443|$frontEndHttpPort|$frontEndHttpsPort)$/;
         } else {
-            ${$all} = $bytes;
+            ${$all} += $bytes;
         }
     }
 }
