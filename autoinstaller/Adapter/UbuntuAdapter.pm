@@ -31,7 +31,7 @@ use parent 'autoinstaller::Adapter::DebianAdapter';
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -43,7 +43,7 @@ sub _init
 {
     my $self = shift;
 
-    $self->SUPER::_init();
+    $self->SUPER::_init( );
     $self->{'repositorySections'} = [ 'main', 'universe', 'multiverse' ];
     $self;
 }

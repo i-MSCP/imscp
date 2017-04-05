@@ -46,7 +46,7 @@ use parent 'autoinstaller::Adapter::AbstractAdapter';
 
 =over 4
 
-=item installPreRequiredPackages()
+=item installPreRequiredPackages( )
 
  Install pre-required packages
 
@@ -60,8 +60,8 @@ sub installPreRequiredPackages
 
     print STDOUT output( 'Satisfying prerequisites Please wait...', 'info' );
 
-    my $rs = $self->_updateAptSourceList();
-    $rs ||= $self->_updatePackagesIndex();
+    my $rs = $self->_updateAptSourceList( );
+    $rs ||= $self->_updatePackagesIndex( );
 
     $rs ||= $self->{'eventManager'}->trigger( 'beforeInstallPreRequiredPackages', $self->{'preRequiredPackages'} );
     return $rs if $rs;
@@ -79,7 +79,7 @@ sub installPreRequiredPackages
             ." --no-install-recommends install @{$self->{'preRequiredPackages'}}",
             iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef, \ my $stderr
     );
-    error( sprintf( 'Could not install pre-required packages: %s', $stderr || 'Unknown error' ) ) if $rs;
+    error( sprintf( "Couldn't install pre-required packages: %s", $stderr || 'Unknown error' ) ) if $rs;
 
     $rs ||= $self->{'eventManager'}->trigger( 'afterInstallPreRequiredPackages' );
 }
@@ -100,17 +100,17 @@ sub preBuild
     return 0 if $main::skippackages;
 
     unshift @{$steps}, (
-            [ sub { $self->_buildPackageList() }, 'Building list of packages to install/uninstall' ],
-            [ sub { $self->_prefillDebconfDatabase() }, 'Pre-fill Debconf database' ],
-            [ sub { $self->_processAptRepositories() }, 'Processing APT repositories if any' ],
-            [ sub { $self->_processAptPreferences() }, 'Processing APT preferences if any' ],
-            [ sub { $self->_updatePackagesIndex() }, 'Updating packages index' ]
+            [ sub { $self->_buildPackageList( ) }, 'Building list of packages to install/uninstall' ],
+            [ sub { $self->_prefillDebconfDatabase( ) }, 'Pre-fill Debconf database' ],
+            [ sub { $self->_processAptRepositories( ) }, 'Processing APT repositories if any' ],
+            [ sub { $self->_processAptPreferences( ) }, 'Processing APT preferences if any' ],
+            [ sub { $self->_updatePackagesIndex( ) }, 'Updating packages index' ]
         );
 
     0
 }
 
-=item installPackages()
+=item installPackages( )
 
  Install Debian packages
 
@@ -129,7 +129,7 @@ sub installPackages
     );
     return $rs if $rs;
 
-    iMSCP::Dialog->getInstance->endGauge();
+    iMSCP::Dialog->getInstance->endGauge( );
 
     for my $packages($self->{'packagesToInstall'}, $self->{'packagesToInstallDelayed'}) {
         next unless @{$packages};
@@ -153,20 +153,20 @@ sub installPackages
 
         my $stdout;
         $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef, \ my $stderr );
-        error( sprintf( 'Could not install packages: %s', $stderr || 'Unknown error' ) ) if $rs;
+        error( sprintf( "Couldn't install packages: %s", $stderr || 'Unknown error' ) ) if $rs;
         return $rs if $rs;
     }
 
-    my $oldDir = cwd();
+    my $oldDir = cwd( );
     unless (chdir "$FindBin::Bin/autoinstaller/postinstall") {
-        error( sprintf( 'Could not change current directory to: %s', "$FindBin::Bin/autoinstaller/postinstall", $! ) );
+        error( sprintf( "Couldn't change current directory to: %s", "$FindBin::Bin/autoinstaller/postinstall", $! ) );
         return 1;
     }
 
     my $nbTasks = scalar @{$self->{'packagesPostInstallTasks'}};
     my $cTask = 1;
 
-    startDetail();
+    startDetail( );
 
     for my $task(@{$self->{'packagesPostInstallTasks'}}) {
         $rs ||= step(
@@ -186,11 +186,11 @@ sub installPackages
         $cTask++;
     }
 
-    endDetail();
+    endDetail( );
     return $rs if $rs;
 
     unless (chdir $oldDir) {
-        error( sprintf( 'Could not change current directory to: %s', $oldDir, $! ) );
+        error( sprintf( "Couldn't change current directory to: %s", $oldDir, $! ) );
         return 1;
     }
 
@@ -247,9 +247,21 @@ sub uninstallPackages
         error( $stderr ) if $rs && $stderr;
         return $rs if $rs;
 
-        # Filter list of packages that are not not available
-        execute( "dpkg-query -W -f='\${Package}\\n' @{$packagesToUninstall} 2>/dev/null", \ $stdout );
-        @{$packagesToUninstall} = split /\n/, $stdout;
+        # Get list of available packages
+        $rs = execute( [ 'apt-cache', '--generate', 'pkgnames' ], \$stdout, \$stderr );
+        error( $stderr || "Couldn't not generate list of available packages" ) if $rs > 2;
+        my @apkgs = split /\n/, $stdout;
+        undef $stdout;
+
+        # Filter packages that are not available.
+        my @pkgs = ();
+        for my $pkg(@{$packagesToUninstall}) {
+            (my $pkgReg = $pkg) =~ s/\*/.*/;
+            push @pkgs, $pkg if grep { $_ =~ $pkgReg } @apkgs;
+        }
+        @{$packagesToUninstall} = @pkgs;
+        undef @apkgs;
+        undef @pkgs;
 
         if (@{$packagesToUninstall}) {
             # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
@@ -257,12 +269,12 @@ sub uninstallPackages
             debug( $stdout ) if $stdout;
             debug( $stderr ) if $stderr;
 
-            iMSCP::Dialog->getInstance->endGauge();
+            iMSCP::Dialog->getInstance->endGauge( );
 
             my $cmd = !iMSCP::Getopt->noprompt ? 'debconf-apt-progress --logstderr -- ' : '';
             $cmd .= "apt-get -y --auto-remove --purge --no-install-recommends remove @{$packagesToUninstall}";
             $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef, \ $stderr );
-            error( sprintf( 'Could not uninstall packages: %s', $stderr || 'Unknown error' ) ) if $rs;
+            error( sprintf( "Couldn't uninstall packages: %s", $stderr || 'Unknown error' ) ) if $rs;
             return $rs if $rs;
         }
     }
@@ -276,7 +288,7 @@ sub uninstallPackages
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -288,7 +300,7 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'repositorySections'} = [ 'main', 'contrib', 'non-free' ];
     $self->{'preRequiredPackages'} = [
         'binutils', 'debconf-utils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl', 'lsb-release',
@@ -309,7 +321,61 @@ sub _init
     $ENV{'DEBIAN_FRONTEND'} = 'noninteractive' if iMSCP::Getopt->noprompt;
     $ENV{'DEBFULLNAME'} = 'i-MSCP Installer';
     $ENV{'DEBEMAIL'} = 'team@i-mscp.net';
+    $self->_setupGetaddrinfoPrecedence( );
     $self;
+}
+
+=item _setupGetaddrinfoPrecedence( )
+
+ Setup getaddrinfo(3) precedence (IPv4) for the setup time being
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _setupGetaddrinfoPrecedence
+{
+    my $self = shift;
+
+    my $file = iMSCP::File->new( filename => '/etc/gai.conf' );
+    my $fileContent = '';
+
+    if (-f '/etc/gai.conf') {
+        $fileContent = $file->get( );
+        unless (defined $fileContent) {
+            error( sprintf( "Couldn't read %s file ", $file->{'filename'} ) );
+            return 1;
+        }
+
+        # Prefer IPv4
+        return 0 if $fileContent =~ m%^precedence\s+::ffff:0:0/96\s+100\n%m;
+    }
+
+    $fileContent .= "precedence ::ffff:0:0/96  100\n";
+
+    $self->{'eventManager'}->register(
+        'postInstall',
+        sub {
+            $file = iMSCP::File->new( filename => '/etc/gai.conf' );
+            $fileContent = $file->get( );
+            unless (defined $fileContent) {
+                error( sprintf( "Couldn't read %s file ", $file->{'filename'} ) );
+                return 1;
+            }
+
+            $fileContent =~ s%^precedence\s+::ffff:0:0/96\s+100\n%%gm;
+            $fileContent =~ s/^reload yes\n//gm;
+
+            my $rs = $file->set( $fileContent );
+            $rs ||= $file->save( );
+            $rs ||= $file->mode( 0644 );
+        }
+    );
+
+    my $rs ||= $file->set( $fileContent );
+    $rs = $file->save( );
+    $rs ||= $file->mode(0644);
+    return $rs if $rs;
 }
 
 =item _setupInitScriptPolicyLayer($action)
@@ -350,19 +416,19 @@ if [ "$action" = "start" ] || [ "$action" = "restart" ]; then
 fi
 EOF
 
-        $rs ||= $file->save();
+        $rs ||= $file->save( );
         $rs ||= $file->mode( 0755 );
         return $rs;
     }
 
     if ($action eq 'disable' && -f '/usr/sbin/policy-rc.d') {
-        return iMSCP::File->new( filename => '/usr/sbin/policy-rc.d' )->delFile();
+        return iMSCP::File->new( filename => '/usr/sbin/policy-rc.d' )->delFile( );
     }
 
     0;
 }
 
-=item _buildPackageList()
+=item _buildPackageList( )
 
  Build lists of Debian packages to uninstall and install
 
@@ -378,7 +444,7 @@ sub _buildPackageList
     return $rs if $rs;
 
     unless (defined $packageFilePath) {
-        my $lsbRelease = iMSCP::LsbRelease->getInstance();
+        my $lsbRelease = iMSCP::LsbRelease->getInstance( );
         my $distroID = $lsbRelease->getId( 'short' );
         my $distroCodename = $lsbRelease->getCodename( 'short' );
         $packageFilePath = "$FindBin::Bin/autoinstaller/Packages/".lc($distroID).'-'.lc($distroCodename).'.xml';
@@ -394,21 +460,26 @@ sub _buildPackageList
         return 1;
     }
 
-    my $dialog = iMSCP::Dialog->getInstance();
+    my $dialog = iMSCP::Dialog->getInstance( );
     $dialog->set( 'no-cancel', '' );
 
     while(my ($section, $data) = each( %{$pkgData} )) {
+        my $spl = 0;
+
         # Simple list of packages to install
         if ($data->{'package'}) {
-            for(@{$data->{'package'}}) {
-                push @{$self->{'packagesToInstall'}}, ref $_ eq 'HASH' ? $_->{'content'} : $_;
-            }
-            next;
+            push @{$self->{'packagesToInstall'}}, (ref $_ eq 'HASH' ? $_->{'content'} : $_) for @{$data->{'package'}};
+            $spl = 1;
         }
         if ($data->{'package_delayed'}) {
             push @{$self->{'packagesToInstallDelayed'}}, @{$data->{'package_delayed'}};
-            next;
+            $spl = 1;
         }
+        if ($data->{'package_conflict'}) {
+            push @{$self->{'packagesToPreUninstall'}}, @{$data->{'package_conflict'}};
+            $spl = 1;
+        }
+        next if $spl eq 1;
 
         # Alternative list of package to install
         my $dAlt = delete $data->{'default'};
@@ -518,7 +589,7 @@ EOF
     0;
 }
 
-=item _updateAptSourceList()
+=item _updateAptSourceList( )
 
  Add required sections to repositories that support them
 
@@ -533,7 +604,7 @@ sub _updateAptSourceList
     my $self = shift;
 
     my $file = iMSCP::File->new( filename => '/etc/apt/sources.list' );
-    my $fileContent = $file->get();
+    my $fileContent = $file->get( );
     my $fsec = 0;
 
     for my $sec(@{$self->{'repositorySections'}}) {
@@ -577,16 +648,16 @@ sub _updateAptSourceList
         }
 
         unless ($fsec) {
-            error( sprintf( 'Could not find repository supporting %s section', $sec ) );
+            error( sprintf( "Couldn't find repository supporting %s section", $sec ) );
             return 1;
         }
     }
 
     $file->set( $fileContent );
-    $file->save();
+    $file->save( );
 }
 
-=item _processAptRepositories()
+=item _processAptRepositories( )
 
  Process APT repositories
 
@@ -604,9 +675,9 @@ sub _processAptRepositories
     my $rs = $file->copyFile( '/etc/apt/sources.list.bkp' );
     return $rs if $rs;
 
-    my $fileContent = $file->get();
+    my $fileContent = $file->get( );
     unless (defined $fileContent) {
-        error( 'Could not read /etc/apt/sources.list file' );
+        error( "Couldn't not read /etc/apt/sources.list file" );
         return 1;
     }
 
@@ -650,10 +721,10 @@ EOF
 
     # Save new sources.list file
     $rs = $file->set( $fileContent );
-    $rs ||= $file->save();
+    $rs ||= $file->save( );
 }
 
-=item _processAptPreferences()
+=item _processAptPreferences( )
 
  Process apt preferences
 
@@ -686,19 +757,19 @@ EOF
     if ($fileContent) {
         $fileContent =~ s/^\n//;
         my $rs = $file->set( $fileContent );
-        $rs ||= $file->save();
+        $rs ||= $file->save( );
         $rs ||= $file->mode( 0644 );
         return $rs;
     }
 
     if (-f '/etc/apt/preferences.d/imscp') {
-        return $file->delFile();
+        return $file->delFile( );
     }
 
     0;
 }
 
-=item _updatePackagesIndex()
+=item _updatePackagesIndex( )
 
  Update Debian packages index
 
@@ -710,7 +781,7 @@ sub _updatePackagesIndex
 {
     my $cmd = 'apt-get';
     unless (iMSCP::Getopt->noprompt) {
-        iMSCP::Dialog->getInstance->endGauge() if iMSCP::ProgramFinder::find( 'dialog' );
+        iMSCP::Dialog->getInstance->endGauge( ) if iMSCP::ProgramFinder::find( 'dialog' );
         $cmd = "debconf-apt-progress --logstderr -- $cmd";
     }
 
@@ -718,12 +789,12 @@ sub _updatePackagesIndex
     my $rs = execute(
         "$cmd -y update", iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef, \ my $stderr
     );
-    error( sprintf( 'Could not update package index from remote repository: %s', $stderr || 'Unknown error' ) ) if $rs;
+    error( sprintf( "Couldn't update package index from remote repository: %s", $stderr || 'Unknown error' ) ) if $rs;
     debug( $stderr );
     $rs
 }
 
-=item _prefillDebconfDatabase()
+=item _prefillDebconfDatabase( )
 
  Pre-fill debconf database
 
@@ -837,18 +908,18 @@ $sqlServerQuestionOwner $sqlServerQuestionPrefix/root_password_again password $m
 EOF
     }
 
-    my $debconfSelectionsFile = File::Temp->new();
+    my $debconfSelectionsFile = File::Temp->new( );
     print $debconfSelectionsFile $selectionsFileContent;
-    $debconfSelectionsFile->flush();
+    $debconfSelectionsFile->flush( );
 
     my $rs = execute( "debconf-set-selections $debconfSelectionsFile", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr ) if $rs && $stderr;
-    error( 'Could not pre-fill Debconf database' ) if $rs && !$stderr;
+    error( "Couldn't pre-fill Debconf database" ) if $rs && !$stderr;
     $rs;
 }
 
-=item _rebuildAndInstallPackage( $pkg, $pkgSrc, $patchesDir [, $patchesToDiscard = [], [ $patchFormat = 'quilt' ]] )
+=item _rebuildAndInstallPackage( $pkg, $pkgSrc, $patchesDir [, $patchesToDiscard = [] [,  $patchFormat = 'quilt' ]] )
 
  Rebuild the given Debian package using patches from given directory and install the resulting local Debian package
 
@@ -883,26 +954,26 @@ sub _rebuildAndInstallPackage
         return 1;
     }
 
-    my $lsbRelease = iMSCP::LsbRelease->getInstance();
+    my $lsbRelease = iMSCP::LsbRelease->getInstance( );
     $patchesDir = "$FindBin::Bin/configs/".lc( $lsbRelease->getId( 1 ) )."/$patchesDir";
     unless (-d $patchesDir) {
         error( sprintf( '%s is not a valid patches directory', $patchesDir ) );
         return 1;
     }
 
-    my $oldDir = cwd();
+    my $oldDir = cwd( );
     my $srcDir = File::Temp->newdir( CLEANUP => 1 );
 
     # Fix `W: Download is performed unsandboxed as root as file...' warning with newest APT versions
     if ((undef, undef, my $uid) = getpwnam('_apt')) {
-        if (!chown $uid, -1, $srcDir) {
-            error( sprintf( 'Could not change ownership for the %s directory: %s', $srcDir, $! ) );
+        if (!chown $uid, - 1, $srcDir) {
+            error( sprintf( "Couldn't change ownership for the %s directory: %s", $srcDir, $! ) );
             return 1;
         }
     }
 
     unless (chdir $srcDir) {
-        error( sprintf( 'Could not change current directory to: %s', $srcDir, $! ) );
+        error( sprintf( "Couldn't change current directory to: %s", $srcDir, $! ) );
         return 1;
     }
 
@@ -910,7 +981,7 @@ sub _rebuildAndInstallPackage
     my $rs = iMSCP::File->new( filename => File::HomeDir->my_home.'/.pbuilderrc' )->save();
     return $rs if $rs;
 
-    startDetail();
+    startDetail( );
 
     my ($stdout, $stderr) = ('', '');
 
@@ -939,7 +1010,7 @@ sub _rebuildAndInstallPackage
                     ),
                     sub { $stderr .= shift; }
                 );
-                error(sprintf( 'Could not create/update pbuilder environment: %s', $stderr || 'Unknown error' )) if $rs;
+                error(sprintf( "Couldn't create/update pbuilder environment: %s", $stderr || 'Unknown error' )) if $rs;
                 return $rs if $rs;
             }
             0;
@@ -949,7 +1020,7 @@ sub _rebuildAndInstallPackage
     $rs ||= step(
         sub {
             my $msgHeader = sprintf( "Downloading %s %s source package\n\n - ", $pkgSrc, $lsbRelease->getId( 1 ) );
-            my $msgFooter = "\nPlease be patient. This may take few seconds...";
+            my $msgFooter = "\nDepending on your system this may take few seconds...";
 
             $rs = executeNoWait(
                 [ 'apt-get', '-y', 'source', $pkgSrc ],
@@ -960,7 +1031,7 @@ sub _rebuildAndInstallPackage
                 ),
                 sub { $stderr .= shift }
             );
-            error( sprintf( 'Could not download %s Debian source package: %s', $pkgSrc,
+            error( sprintf( "Couldn't download %s Debian source package: %s", $pkgSrc,
                 $stderr || 'Unknown error' ) ) if $rs;
             $rs;
         },
@@ -970,20 +1041,20 @@ sub _rebuildAndInstallPackage
         sub {
             my ($pkgSrcDir) = <$pkgSrc-*>;
             unless (chdir $pkgSrcDir) {
-                error( sprintf( 'Could not change current directory to %s: %s', $pkgSrcDir, $! ) );
+                error( sprintf( "Couldn't change current directory to %s: %s", $pkgSrcDir, $! ) );
                 return 1;
             }
 
             my $serieFile = iMSCP::File->new(
                 filename => "debian/patches/".($patchFormat eq 'quilt' ? 'series' : '00list')
             );
-            my $serieFileContent = $serieFile->get();
+            my $serieFileContent = $serieFile->get( );
             unless (defined $serieFileContent) {
-                error( sprintf( 'Could not read %s', $serieFile->{'filename'} ) );
+                error( sprintf( "Couldn't read %s", $serieFile->{'filename'} ) );
                 return 1;
             }
 
-            for my $patch(sort { $a cmp $b } iMSCP::Dir->new( dirname => $patchesDir )->getFiles()) {
+            for my $patch(sort { $a cmp $b } iMSCP::Dir->new( dirname => $patchesDir )->getFiles( )) {
                 next if grep($_ eq $patch, @{$patchesToDiscard});
                 $serieFileContent .= "$patch\n";
                 $rs = iMSCP::File->new( filename => "$patchesDir/$patch" )->copyFile( "debian/patches/$patch" );
@@ -991,7 +1062,7 @@ sub _rebuildAndInstallPackage
             }
 
             $rs = $serieFile->set( $serieFileContent );
-            $rs ||= $serieFile->save();
+            $rs ||= $serieFile->save( );
             return $rs if $rs;
 
             $rs = execute(
@@ -1000,7 +1071,7 @@ sub _rebuildAndInstallPackage
                 \$stderr
             );
             debug($stdout) if $stdout;
-            error( sprintf( "Could not add `imscp' local suffix: %s", $stderr || 'Unknown error' ) ) if $rs;
+            error( sprintf( "Couldn't add `imscp' local suffix: %s", $stderr || 'Unknown error' ) ) if $rs;
             return $rs if $rs;
         },
         sprintf( 'Patching %s %s source package...', $pkgSrc, $lsbRelease->getId( 1 ) ), 5, 3
@@ -1024,7 +1095,7 @@ sub _rebuildAndInstallPackage
                 ),
                 sub { $stderr .= shift }
             );
-            error(sprintf('Could not build local %s %s package: %s', $pkg, $lsbRelease->getId( 1 ),
+            error(sprintf("Couldn't build local %s %s package: %s", $pkg, $lsbRelease->getId( 1 ),
                 $stderr || 'Unknown error')) if $rs;
             $rs;
         },
@@ -1033,7 +1104,7 @@ sub _rebuildAndInstallPackage
     $rs ||= step(
         sub {
             unless (chdir '..') {
-                error( sprintf( 'Could not change directory: %s', $! ) );
+                error( sprintf( "Couldn't change directory: %s", $! ) );
                 return 1;
             }
 
@@ -1051,7 +1122,7 @@ sub _rebuildAndInstallPackage
                 ),
                 sub { $stderr .= shift }
             );
-            error(sprintf('Could not install local %s %s package: %s', $pkg, $lsbRelease->getId( 1 ),
+            error(sprintf("Couldn't install local %s %s package: %s", $pkg, $lsbRelease->getId( 1 ),
                 $stderr || 'Unknown error')) if $rs;
             return $rs if $rs;
 
@@ -1063,10 +1134,10 @@ sub _rebuildAndInstallPackage
         },
         sprintf( 'Installing local %s %s package', $pkg, $lsbRelease->getId( 1 ) ), 5, 5
     );
-    endDetail();
+    endDetail( );
 
     unless (chdir $oldDir) {
-        error( sprintf( 'Could not change current directory to %s: %s', $oldDir, $! ) );
+        error( sprintf( "Couldn't change current directory to %s: %s", $oldDir, $! ) );
         return 1;
     }
 

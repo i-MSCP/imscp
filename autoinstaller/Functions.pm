@@ -785,6 +785,7 @@ sub _cleanup
         "$main::imscpConfig{'CONF_DIR'}/postfix/parts",
         "$main::imscpConfig{'CONF_DIR'}/postfix/working",
         "$main::imscpConfig{'CONF_DIR'}/skel/domain/domain_disable_page",
+        "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/.composer",
         "$main::imscpConfig{'LOG_DIR'}/imscp-arpl-msgr"
     ) {
         my $rs ||= iMSCP::Dir->new( dirname => $_ )->remove();
@@ -803,12 +804,14 @@ sub _cleanup
         '/etc/default/imscp_panel',
         "$main::imscpConfig{'CONF_DIR'}/frontend/php-fcgi-starter",
         "$main::imscpConfig{'CONF_DIR'}/listeners.d/README",
+        "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/composer.phar",
         '/usr/sbin/maillogconvert.pl',
         # Due to a mistake in previous i-MSCP versions (Upstart conffile copied into systemd confdir)
         "/etc/systemd/system/php5-fpm.override",
         "/etc/init/php5-fpm.override", # Removed in 1.4.x
         "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf",
-        "/usr/local/lib/imscp_panel/imscp_panel_checkconf" # Removed in 1.4.x
+        "/usr/local/lib/imscp_panel/imscp_panel_checkconf" # Removed in 1.4.x,
+        
     ) {
         next unless -f;
         my $rs = iMSCP::File->new( filename => $_ )->delFile();

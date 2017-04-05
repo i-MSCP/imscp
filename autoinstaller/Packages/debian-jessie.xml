@@ -344,5 +344,6 @@
         <package>ssh</package>
         <package>sudo</package>
         <package>tar</package>
+        <package_conflict>sendmail*</package_conflict>
     </other>
 </packages>

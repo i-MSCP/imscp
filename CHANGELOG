@@ -4,11 +4,18 @@
 Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
-BACKEND
+BACKEND 
     Fixed: Couldn't umount mounts that are marked as deleted due to wrong regexp in iMSCP::Mount library
+
+DISTRIBUTION
+    Fixed: Make sure that sendmail* packages are pre-uninstalled
 
 LISTENERS
     Updated: Add Referrer-Policy header to 40_apache2_security_headers.pl listener file
+
+INSTALLER
+    Fixed: composer.phar archive is not updated due to wrong working directory
+    Fixed: Configures getaddrinfo(3) to prefer IPv4 during setup and update phases
 
 UNINSTALLER
     Fixed: Ask administrator to uninstall plugins prior running i-MSCP uninstaller

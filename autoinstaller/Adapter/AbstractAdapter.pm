@@ -1,6 +1,6 @@
 =head1 NAME
 
-autoinstaller::Adapter::AbstractAdapter - Abstract class for autoinstaller distro adapters
+ autoinstaller::Adapter::AbstractAdapter - Abstract class for autoinstaller distro adapters
 
 =cut
 
@@ -36,7 +36,7 @@ use parent 'Common::Object';
 
 =over 4
 
-=item installPreRequiredPackages()
+=item installPreRequiredPackages( )
 
  Install pre-required packages
 
@@ -49,7 +49,7 @@ sub installPreRequiredPackages
     0;
 }
 
-=item preBuild(\@steps)
+=item preBuild( \@steps )
 
  Process preBuild tasks
 
@@ -63,7 +63,7 @@ sub preBuild
     0;
 }
 
-=item installPackages()
+=item installPackages( )
 
  Install distribution packages
 
@@ -76,7 +76,7 @@ sub installPackages
     0;
 }
 
-=item uninstallPackages()
+=item uninstallPackages( )
 
  Uninstall distribution packages no longer needed
 
@@ -89,7 +89,7 @@ sub uninstallPackages
     0;
 }
 
-=item postBuild()
+=item postBuild( )
 
  Process postBuild tasks
 
@@ -102,7 +102,7 @@ sub postBuild
     0;
 }
 
-=item preInstall(\@steps)
+=item preInstall( \@steps )
 
  Process preInstall tasks
 
@@ -116,7 +116,7 @@ sub preInstall
     0;
 }
 
-=item postInstall()
+=item postInstall( )
 
  Process postInstall tasks
 
