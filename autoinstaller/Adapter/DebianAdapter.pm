@@ -364,7 +364,6 @@ sub _setupGetaddrinfoPrecedence
             }
 
             $fileContent =~ s%^precedence\s+::ffff:0:0/96\s+100\n%%gm;
-            $fileContent =~ s/^reload yes\n//gm;
 
             my $rs = $file->set( $fileContent );
             $rs ||= $file->save( );
