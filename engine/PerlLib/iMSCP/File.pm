@@ -71,6 +71,27 @@ sub get
     $self->{'fileContent'}
 }
 
+=item
+
+ Get file content as scalar reference
+
+ Return scalarref Reference to scalar containing file content
+
+=cut
+
+sub getAsRef
+{
+    my $self = shift;
+
+    return \$self->{'fileContent'} if defined $self->{'fileContent'};
+
+    $self->{'fileContent'} = $self->get();
+
+    return undef unless defined $self->{'fileContent'};
+    
+    \$self->{'fileContent'};
+}
+
 =item set( $content )
 
  Set file content

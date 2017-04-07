@@ -29,6 +29,7 @@ use Errno qw / EINVAL /;
 use File::Spec;
 use File::stat ();
 use iMSCP::Debug;
+use iMSCP::File;
 use iMSCP::Syscall;
 use Scalar::Defer;
 use Sort::Naturally;
@@ -142,6 +143,8 @@ my $MOUNTS = lazy
         close( $fh );
         $entries;
     };
+
+my $iMSCP_MOUNTS_FH;
 
 =head1 DESCRIPTION
 
@@ -378,13 +381,18 @@ sub addMountEntry($)
     my $rs = removeMountEntry($entry); # Avoid duplicate entries
     return $rs if $rs;
 
-    my $fh;
-    unless (open $fh, '>>', "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf") {
-        error( sprintf( "Could not open `%s' file: %s", "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf", $! ) );
-    }
+    my $fileContent = $iMSCP_MOUNTS_FH->getAsRef();
+    $$fileContent .= "$entry\n";
+    #$iMSCP_MOUNTS_FH->set($iMSCP_MOUNTS_FH->get() . "$entry\n");
+    $iMSCP_MOUNTS_FH->save();
+    
+    #my $fh;
+    #unless (open $fh, '>>', "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf") {
+    #    error( sprintf( "Could not open `%s' file: %s", "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf", $! ) );
+    #}
 
-    print {$fh} "$entry\n";
-    close $fh;
+    #print {$fh} "$entry\n";
+    #close $fh;
     0;
 }
 
@@ -406,21 +414,35 @@ sub removeMountEntry($)
         return 1;
     }
 
-    my $file = "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf";
-    $entry = quotemeta( $entry ) unless ref $entry eq 'Regexp';
-    eval {
-        local ($@, $_, $SIG{'__WARN__'}, $^I, @ARGV) = (undef, undef, sub { die shift }, '', $file);
-        while(<>) {
-            s/^$entry\n//;
-            print;
-        }
-    };
-    if ($@) {
-        error( sprintf( "Could not remove entry matching with `%s' in `%s' file: %s", $entry, $file, $! ) );
+    unless($iMSCP_MOUNTS_FH) {
+        $iMSCP_MOUNTS_FH = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf" );
+    }
+
+    my $fileContent = $iMSCP_MOUNTS_FH->getAsRef();
+    unless(defined $fileContent) {
+        error( sprintf( "Couldn't read %s file", $iMSCP_MOUNTS_FH->{'filename'} ) );
         return 1;
     }
 
-    0;
+    $entry = quotemeta( $entry ) unless ref $entry eq 'Regexp';
+    $$fileContent =~ s/^$entry\n//gm;
+    $iMSCP_MOUNTS_FH->save();
+    
+    #my $file = "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf";
+    #$entry = quotemeta( $entry ) unless ref $entry eq 'Regexp';
+    #eval {
+    #    local ($@, $_, $SIG{'__WARN__'}, $^I, @ARGV) = (undef, undef, sub { die shift }, '', $file);
+    #    while(<>) {
+    #        s/^$entry\n//;
+    #        print;
+    #    }
+    #};
+    #if ($@) {
+    #    error( sprintf( "Could not remove entry matching with `%s' in `%s' file: %s", $entry, $file, $! ) );
+    #    return 1;
+    #}
+
+    #0;
 }
 
 =back

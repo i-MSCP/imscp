@@ -4,8 +4,10 @@
 Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
-BACKEND 
+BACKEND
+    Added: getAsRef() method - Method allowing to get scalar ref to file content (iMSCP::File)
     Fixed: Couldn't umount mounts that are marked as deleted due to wrong regexp in iMSCP::Mount library
+    Review: Mitigate IO operations by reading full file in memory and by reusing same file object (iMSCP::Mount)
 
 DISTRIBUTION
     Fixed: Make sure that sendmail* packages are pre-uninstalled
