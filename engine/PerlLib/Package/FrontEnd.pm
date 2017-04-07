@@ -350,7 +350,7 @@ sub setGuiPermissions
         }
     );
     $rs ||= setRights(
-        "$guiRootDir/plugins",
+        $main::imscpConfig{'PLUGINS_DIR'},
         {
             user      => $panelUName,
             group     => $panelGName,

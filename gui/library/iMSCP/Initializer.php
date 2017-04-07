@@ -556,7 +556,7 @@ class iMSCP_Initializer
     protected function initializePlugins()
     {
         /** @var iMSCP_Plugin_Manager $pluginManager */
-        $pluginManager = iMSCP_Registry::set('pluginManager', new iMSCP_Plugin_Manager(GUI_ROOT_DIR . '/plugins'));
+        $pluginManager = iMSCP_Registry::set('pluginManager', new iMSCP_Plugin_Manager($this->config['PLUGINS_DIR']));
 
         foreach ($pluginManager->pluginGetList() as $pluginName) {
             if (!$pluginManager->pluginHasError($pluginName)) {

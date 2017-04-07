@@ -348,7 +348,7 @@ sub _call
     my ($self, $method, $fromVersion, $toVersion) = @_;
 
     my $pluginName = $self->{'plugin_name'};
-    my $backendPluginFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/plugins/$pluginName/backend/$pluginName.pm";
+    my $backendPluginFile = "$main::imscpConfig{'PLUGINS_DIR'}/$pluginName/backend/$pluginName.pm";
 
     local $@;
     eval { require $backendPluginFile; };

@@ -1050,7 +1050,8 @@ sub _buildHttpdConfig
         BASE_SERVER_VHOST_HTTP_PORT  => main::setupGetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT' ),
         BASE_SERVER_VHOST_HTTPS_PORT => $httpsPort,
         WEB_DIR                      => $main::imscpConfig{'GUI_ROOT_DIR'},
-        CONF_DIR                     => $main::imscpConfig{'CONF_DIR'}
+        CONF_DIR                     => $main::imscpConfig{'CONF_DIR'},
+        PLUGINS_DIR                  => $main::imscpConfig{'PLUGINS_DIR'}
     };
 
     $rs = $self->{'eventManager'}->register(
