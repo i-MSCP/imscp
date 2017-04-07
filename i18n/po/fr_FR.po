@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-04 04:03+0000\n"
+"POT-Creation-Date: 2017-04-07 14:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: krok <krok@totalynet.fr>, 2017\n"
 "Language-Team: French (France) (https://www.transifex.com/i-mscp/teams/576/fr_FR/)\n"
@@ -149,6 +149,10 @@ msgid "%d strings translated"
 msgstr "%d chaines traduites"
 
 #, php-format
+msgid "%s / %s of %s total available"
+msgstr ""
+
+#, php-format
 msgid "%s / unlimited"
 msgstr "%s / illimité"
 
@@ -187,10 +191,6 @@ msgstr "%s page"
 #, php-format
 msgid "%s record"
 msgstr "%s enregistrement"
-
-#, php-format
-msgid "%s total available"
-msgstr "%s total disponible"
 
 #, php-format
 msgid "%s webmail"
@@ -4319,15 +4319,15 @@ msgstr "Zones protégées"
 msgid "Protocol"
 msgstr "Protocole"
 
-msgid "Quota assignment"
-msgstr "Affectation des quotas"
-
 msgid "Quota in MiB (0 for unlimited)"
 msgstr "Quota en MiB (0 pour illimité)"
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
 msgstr "Quota en MiB (Max : %s)"
+
+msgid "Quota info"
+msgstr ""
 
 msgid "RAM"
 msgstr "Mémoire vive (<i>RAM</i>)"
@@ -5888,14 +5888,6 @@ msgstr ""
 "racine des documents par défaut qui est le répertoire `/htdocs'. Soyez "
 "conscient que le répertoire pour la nouvelle racine des documents doit pré-"
 "exister."
-
-msgid ""
-"You cannot add new email account. You have already assigned all your email "
-"quota to other mailboxes. Please first, review your quota assignments."
-msgstr ""
-"Vous ne pouvez pas ajouter de nouveau compte de messageries. Vous avez déjà "
-"assigné tous vos quotas de mails aux autres comptes de messageries. Veuillez"
-" d'abord revoir l'assignement de vos quotas de mails."
 
 msgid ""
 "You cannot add normal email account because you have already assigned all "

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-04 04:03+0000\n"
+"POT-Creation-Date: 2017-04-07 14:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thom Heemstra <thom@heemstra.xyz>, 2017\n"
 "Language-Team: Swedish (Sweden) (https://www.transifex.com/i-mscp/teams/576/sv_SE/)\n"
@@ -147,6 +147,10 @@ msgid "%d strings translated"
 msgstr "%d strängar översatt"
 
 #, php-format
+msgid "%s / %s of %s total available"
+msgstr ""
+
+#, php-format
 msgid "%s / unlimited"
 msgstr "%s / obegränsad"
 
@@ -185,10 +189,6 @@ msgstr "%s sida"
 #, php-format
 msgid "%s record"
 msgstr "%s post"
-
-#, php-format
-msgid "%s total available"
-msgstr ""
 
 #, php-format
 msgid "%s webmail"
@@ -4236,15 +4236,15 @@ msgstr "Skyddade områden"
 msgid "Protocol"
 msgstr "Protokoll"
 
-msgid "Quota assignment"
-msgstr ""
-
 msgid "Quota in MiB (0 for unlimited)"
 msgstr "Kvoten i MiB (0 för unlimited)"
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
 msgstr "Kvoten i MiB (Max: %s)"
+
+msgid "Quota info"
+msgstr ""
 
 msgid "RAM"
 msgstr "RAM"
@@ -5767,13 +5767,6 @@ msgstr ""
 "användning av en PHP-ramverk som Symfony. Observera att det nya dokumentet "
 "roten kommer att leva inuti default `/htdocs' dokument rot. Var medveten om "
 "att katalogen för det nya dokumentet roten måste i förväg existera."
-
-msgid ""
-"You cannot add new email account. You have already assigned all your email "
-"quota to other mailboxes. Please first, review your quota assignments."
-msgstr ""
-"Du kan inte lägga till nya e-postkonto. Du har redan tilldelats hela din "
-"e-kvoter till andra brevlådor. Vänligen först, granska dina kvot."
 
 msgid ""
 "You cannot add normal email account because you have already assigned all "

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-04 04:03+0000\n"
+"POT-Creation-Date: 2017-04-07 14:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Japanese (Japan) (https://www.transifex.com/i-mscp/teams/576/ja_JP/)\n"
@@ -145,6 +145,10 @@ msgid "%d strings translated"
 msgstr "%d の文字列を翻訳"
 
 #, php-format
+msgid "%s / %s of %s total available"
+msgstr ""
+
+#, php-format
 msgid "%s / unlimited"
 msgstr "%s / 無制限"
 
@@ -183,10 +187,6 @@ msgstr "%s ページ"
 #, php-format
 msgid "%s record"
 msgstr "%s レコード"
-
-#, php-format
-msgid "%s total available"
-msgstr "利用可能な合計 %s "
 
 #, php-format
 msgid "%s webmail"
@@ -4125,15 +4125,15 @@ msgstr "アクセス制限領域"
 msgid "Protocol"
 msgstr "プロトコル"
 
-msgid "Quota assignment"
-msgstr "容量割り当て"
-
 msgid "Quota in MiB (0 for unlimited)"
 msgstr "容量MiB(無制限の場合は0)"
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
 msgstr "容量MiB(最大：%s)"
+
+msgid "Quota info"
+msgstr ""
 
 msgid "RAM"
 msgstr "メモリ"
@@ -5622,12 +5622,6 @@ msgstr ""
 "代替ドキュメントルートを設定することができます。symfonyのようなほとんどのPHPフレームワークを使用する場合は必要とされています。新しいドキュメントルートがデフォルトの"
 " `/ "
 "htdocsの'ドキュメントルートの内側に居ることに注意してください。新しいドキュメントルートのディレクトリは事前に存在しなければならないことに注意してください。"
-
-msgid ""
-"You cannot add new email account. You have already assigned all your email "
-"quota to other mailboxes. Please first, review your quota assignments."
-msgstr ""
-"新しいEメールアカウントを追加することはできません。既に他のメールボックスに全てのEメールの容量を割り当てている。まず、あなたの容量の割り当てを確認してください。"
 
 msgid ""
 "You cannot add normal email account because you have already assigned all "
