@@ -15,12 +15,15 @@ DISTRIBUTION
 FRONTEND
     Readded: Mailboxes quota information (info are retrieved by parsing maildirsize file)
 
-LISTENERS
-    Updated: Add Referrer-Policy header to 40_apache2_security_headers.pl listener file
-
 INSTALLER
     Fixed: composer.phar archive is not updated due to wrong working directory
     Fixed: Configures getaddrinfo(3) to prefer IPv4 during setup and update phases
+
+LISTENERS
+    Updated: Add Referrer-Policy header to 40_apache2_security_headers.pl listener file
+
+PACKAGES
+    Fixed: Package uninstallers must be idempotent
 
 SCRIPTS
     Fixed: All in/out traffic not computed (imscp-srv-traff)
@@ -28,10 +31,7 @@ SCRIPTS
 UNINSTALLER
     Fixed: Ask administrator to uninstall plugins prior running i-MSCP uninstaller
     Fixed: General uninstallation failure due to wrong SQL query in imscp-uninstall script
-
-PACKAGES
-    Fixed: Package uninstallers must be idempotent
-
+    
 YOUTRACK
     IP-1707 Getting Error when trying to change e-mail forwarder du to wrong quota value
 
@@ -54,12 +54,12 @@ FRONTEND
 LISTENERS
     Fixed: Missing test for SSL in the 30_apache2_tools_proxy.pl listener file
 
-SERVICES
-    Changed: Niceness from 0 to 10 for imscp_daemon and imscp_panel services 
-
 SERVERS
     Fixed: FastCgiExternalServer: redefinition of previously defined class (apache_php_fpm httpd server impl.)
     Fixed: Modules::Plugin::_call: Can't locate object method "getInstance" via package "Servers::mta::postfix" (po servers impl.)
+
+SERVICES
+    Changed: Niceness from 0 to 10 for imscp_daemon and imscp_panel services 
 
 YOUTRACK
     IP-1670 Customer must be still able to create forward email account, even when email quota is full assigned
