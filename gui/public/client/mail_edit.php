@@ -71,7 +71,7 @@ function client_editMailAccount()
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
     $password = $forwardList = '_no_';
     $mailType = '';
-    $mailQuota = NULL;
+    $mailQuotaLimitBytes = NULL;
 
     if (!preg_match('/^(.*?)_(?:mail|forward)/', $mailData['mail_type'], $match)) {
         throw new iMSCP_Exception('Could not determine mail type');
@@ -118,24 +118,36 @@ function client_editMailAccount()
 
         // Check for quota
 
-        $mailQuota = intval($_POST['quota']) * 1048576; // MiB to Bytes
+        $customerEmailQuotaLimitBytes = (int)$mainDmnProps['mail_quota'];
+        $mailQuotaLimitBytes = intval($_POST['quota']) * 1048576; // MiB to Bytes
 
-        if ($mainDmnProps['mail_quota'] != 0) {
-            if ($mailQuota == 0) {
+        if ($customerEmailQuotaLimitBytes > 0) {
+            if ($mailQuotaLimitBytes < 1) {
                 set_page_message(tr('Incorrect Email quota.'), 'error');
                 return false;
             }
 
             $stmt = exec_query(
-                'SELECT IFNULL(SUM(quota), 0) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
-                $mainDmnProps['domain_id']
+                '
+                  SELECT IFNULL(SUM(quota), 0) AS quota
+                  FROM mail_users
+                  WHERE mail_id <> ?
+                  AND domain_id = ?
+                  AND quota IS NOT NULL
+                ',
+                array($mailData['mail_id'], $mainDmnProps['domain_id'])
             );
 
-            $mailQuotaSumBytes = $stmt->fetchRow(PDO::FETCH_COLUMN);
+            $customerMailboxesQuotaSumBytes = (int)$stmt->fetchRow(PDO::FETCH_COLUMN);
 
-            $mailQuotaLimitBytes = floor(($mainDmnProps['mail_quota'] + $mailData['quota']) - $mailQuotaSumBytes);
-            if ($mailQuota > $mailQuotaLimitBytes) {
-                set_page_message(tr('Email quota cannot be bigger than %s', bytesHuman($mailQuotaLimitBytes, null, 0)), 'error');
+            if ($customerMailboxesQuotaSumBytes >= $customerEmailQuotaLimitBytes) {
+                showBadRequestErrorPage(); # Customer should never goes here excepted if it try to bypass js code
+            }
+
+            if ($mailQuotaLimitBytes > floor($customerEmailQuotaLimitBytes - $customerMailboxesQuotaSumBytes)) {
+                set_page_message(
+                    tr('Email quota cannot be bigger than %s', bytesHuman($mailQuotaLimitBytes, NULL, 0)), 'error'
+                );
                 return false;
             }
         }
@@ -197,7 +209,7 @@ function client_editMailAccount()
     ));
     exec_query(
         'UPDATE mail_users SET mail_pass = ?, mail_forward = ?, mail_type = ?, status = ?, quota = ? WHERE mail_id = ?',
-        array($password, $forwardList, $mailType, 'tochange', $mailQuota, $mailData['mail_id'])
+        array($password, $forwardList, $mailType, 'tochange', $mailQuotaLimitBytes, $mailData['mail_id'])
     );
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditMail, array(
@@ -222,42 +234,50 @@ function client_generatePage($tpl)
     list($username, $domainName) = explode('@', $mailData['mail_addr']);
 
     $stmt = exec_query(
-        'SELECT IFNULL(SUM(quota), 0) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
-        $mainDmnProps['domain_id']
+        '
+          SELECT IFNULL(SUM(quota), 0) AS quota
+          FROM mail_users
+          WHERE mail_id <> ?
+          AND domain_id = ?
+          AND quota IS NOT NULL
+        ',
+        array($mailId, $mainDmnProps['domain_id'])
     );
 
-    $mailQuotaSumBytes = $stmt->fetchRow(PDO::FETCH_COLUMN);
+    $customerMailboxesQuotaSumBytes = (int)$stmt->fetchRow(PDO::FETCH_COLUMN);
+    $customerEmailQuotaLimitBytes = (int)$mainDmnProps['mail_quota'];
 
-    if ($mainDmnProps['mail_quota'] == 0) {
+    if ($customerEmailQuotaLimitBytes < 1) {
         $tpl->assign(array(
             'TR_QUOTA'  => tohtml(tr('Quota in MiB (0 for unlimited)')),
             'MIN_QUOTA' => 0,
             'MAX_QUOTA' => tohtml(floor(PHP_INT_MAX / 1048576), 'htmlAttr'),
             'QUOTA'     => isset($_POST['quota'])
-                ? tohtml(intval($_POST['quota']), 'htmlAttr')
-                : tohtml(floor($mailData['quota'] / 1048576), 'htmlAttr')
+                ? tohtml(intval($_POST['quota']), 'htmlAttr') : tohtml(floor($mailData['quota'] / 1048576), 'htmlAttr')
         ));
-        $forwardOnlyEmailAccount = false;
+        $mailTypeForwardOnly = false;
     } else {
-        $mailQuotaLimitBytes = ($mainDmnProps['mail_quota'] + $mailData['quota']) - $mailQuotaSumBytes;
-        if($mailQuotaLimitBytes < 1) {
+        if ($customerEmailQuotaLimitBytes > $customerMailboxesQuotaSumBytes) {
+            $mailQuotaLimitBytes = floor($customerEmailQuotaLimitBytes - $customerMailboxesQuotaSumBytes);
+            $mailMaxQuotaLimitMib = floor($mailQuotaLimitBytes / 1048576);
+            $mailQuotaLimitMiB = ($mailData['quota'] > 0 && $mailData['quota'] < $mailQuotaLimitBytes)
+                ? floor($mailData['quota'] / 1048576) : min(10, $mailMaxQuotaLimitMib);
+            $mailTypeForwardOnly = false;
+        } else {
             set_page_message(tr('You cannot change this account to normal email account because you have already assigned all your email quota to other mailboxes. If you want to change this account to normal email account, you must first lower the quota assigned to one of your other mailboxes.'), 'static_info');
             set_page_message(tr('For the time being, you can only edit your forwarded email account.'), 'static_info');
             $mailQuotaLimitBytes = 1048576; // Only for sanity. Customer won't be able to switch to normal email account
+            $mailMaxQuotaLimitMib = 1;
             $mailQuotaLimitMiB = 1;
-            $forwardOnlyEmailAccount = true;
-        } else {
-            $forwardOnlyEmailAccount = false;
-            $mailQuotaLimitMiB = floor($mailQuotaLimitBytes / 1048576);
+            $mailTypeForwardOnly = true;
         }
 
         $tpl->assign(array(
             'TR_QUOTA'  => tohtml(tr('Quota in MiB (Max: %s)', bytesHuman($mailQuotaLimitBytes, NULL, 0))),
             'MIN_QUOTA' => 1,
-            'MAX_QUOTA' => tohtml($mailQuotaLimitMiB, 'htmlAttr'),
+            'MAX_QUOTA' => tohtml($mailMaxQuotaLimitMib, 'htmlAttr'),
             'QUOTA'     => isset($_POST['quota'])
-                ? tohtml(intval($_POST['quota']), 'htmlAttr')
-                : tohtml(floor($mailData['quota'] / 1048576), 'htmlAttr')
+                ? tohtml(intval($_POST['quota']), 'htmlAttr') : tohtml($mailQuotaLimitMiB, 'htmlAttr')
         ));
     }
 
@@ -285,17 +305,23 @@ function client_generatePage($tpl)
         'NORMAL_FORWARD_CHECKED' => ($mailType == '3') ? ' checked' : '',
         'PASSWORD'               => isset($_POST['password']) ? tohtml($_POST['password']) : '',
         'PASSWORD_REP'           => isset($_POST['password_rep']) ? tohtml($_POST['password_rep']) : '',
-        'FORWARD_LIST'           => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : ($mailData['mail_forward'] != '_no_' ? tohtml($mailData['mail_forward']) : ''),
-        'DOMAIN_NAME'          => tohtml($domainName),
-        'DOMAIN_NAME_UNICODE'  => tohtml(decode_idna($domainName)),
-        'DOMAIN_NAME_SELECTED' => ' selected'
+        'FORWARD_LIST'           => isset($_POST['forward_list'])
+            ? tohtml($_POST['forward_list'])
+            : (
+            $mailData['mail_forward'] != '_no_'
+                ? tohtml($mailData['mail_forward'])
+                : ''
+            ),
+        'DOMAIN_NAME'            => tohtml($domainName),
+        'DOMAIN_NAME_UNICODE'    => tohtml(decode_idna($domainName)),
+        'DOMAIN_NAME_SELECTED'   => ' selected'
     ));
 
     iMSCP_Events_Aggregator::getInstance()->registerListener(
         'onGetJsTranslations',
-        function ($event) use ($forwardOnlyEmailAccount) {
+        function ($event) use ($mailTypeForwardOnly) {
             /** @var $event iMSCP_Events_Description */
-            $event->getParam('translations')->core['mail_add_forward_only'] = $forwardOnlyEmailAccount;
+            $event->getParam('translations')->core['mail_add_forward_only'] = $mailTypeForwardOnly;
         }
     );
 }

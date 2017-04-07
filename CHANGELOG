@@ -27,6 +27,9 @@ UNINSTALLER
 PACKAGES
     Fixed: Package uninstallers must be idempotent
 
+YOUTRACK
+    IP-1707 Getting Error when trying to change e-mail forwarder du to wrong quota value
+
 ------------------------------------------------------------------------------------------------------------------------
 1.4.2
 ------------------------------------------------------------------------------------------------------------------------
@@ -54,7 +57,7 @@ SERVERS
     Fixed: Modules::Plugin::_call: Can't locate object method "getInstance" via package "Servers::mta::postfix" (po servers impl.)
 
 YOUTRACK
-    #IP-1670 Customer must be still able to create forward email account, even when email quota is full assigned
+    IP-1670 Customer must be still able to create forward email account, even when email quota is full assigned
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.1
@@ -237,13 +240,13 @@ SERVICES
     Removed: imscp_panel_checkconf as FPM often ends with zend_mm_heap corrupted, preventing service to be (re)started
 
 YOUTRACK
-    #IP-0826 Any password should be encrypted
-    #IP-1383 Security - Remove auto-login feature to remove plaintext passwords
-    #IP-1686 Fields beginning or ending with braced tags are corrupted by the clean_input function.
-    #IP-1688 /etc/postfix/domains.db entry not added if mail value was changed from -1 (disabled) to enabled (0 or a value)
-    #IP-1689 Password reset conflict with PanelRedirect
-    #IP-1694 Administrator: Order / Filter by Reseller
-    #IP-1700 The /etc/mtab file get overwritten by the /etc/init.d/vzquota sysvinit script (Strato vServer) on reboot
+    IP-0826 Any password should be encrypted
+    IP-1383 Security - Remove auto-login feature to remove plaintext passwords
+    IP-1686 Fields beginning or ending with braced tags are corrupted by the clean_input function.
+    IP-1688 /etc/postfix/domains.db entry not added if mail value was changed from -1 (disabled) to enabled (0 or a value)
+    IP-1689 Password reset conflict with PanelRedirect
+    IP-1694 Administrator: Order / Filter by Reseller
+    IP-1700 The /etc/mtab file get overwritten by the /etc/init.d/vzquota sysvinit script (Strato vServer) on reboot
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series

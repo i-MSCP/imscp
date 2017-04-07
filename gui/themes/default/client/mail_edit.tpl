@@ -42,6 +42,8 @@
                 }
             ).parent().find(':checked').trigger('change'); // Initialize form
         }
+
+        fixQuotaField(); // Make sure that quota field value is correct on initialization
     });
 </script>
 <form name="client_mail_edit" action="mail_edit.php?id={MAIL_ID}" method="post">
