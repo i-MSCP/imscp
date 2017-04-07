@@ -563,7 +563,7 @@ function parseMaildirsize($maildirsizeFilePath)
         }
 
         # Parse byte count and file count
-        if (preg_match('/^\s*(\d+)\s+(\d+)\s*$/', $line, $m)) {
+        if (preg_match('/^\s*(-?\d+)\s+(-?\d+)\s*$/', $line, $m)) {
             $maildirsize['BYTE_COUNT'] += $m[1];
             $maildirsize['FILE_COUNT'] += $m[2];
         }

@@ -173,7 +173,7 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
                     ($dmnProps['mail_quota'] > 0) ? bytesHuman($dmnProps['mail_quota'], NULL, 0) : tr('Unlimited') 
                 );
             } else {
-                $mailQuotaInfo = tr('Unknown');
+                $mailQuotaInfo = tr('Unavailable');
             }
         } else {
             $mailQuotaInfo = tr('N/A');
