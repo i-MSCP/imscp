@@ -522,34 +522,53 @@ function send_alias_order_email($aliasName)
 }
 
 /**
- * Get mailbox quota info from the given maildirsize file
+ * Parse data from the given maildirsize file
  *
+ * @see http://www.courier-mta.org/imap/README.maildirquota.html
  * @param string $maildirsizeFilePath
- * @return array|bool Array containing IMAP quota info on success, FALSE on failure
+ * @return array|bool Array containing maildirsize data, FALSE on failure
  */
-function getMailboxQuotaInfo($maildirsizeFilePath)
+function parseMaildirsize($maildirsizeFilePath)
 {
-    if (!@is_readable($maildirsizeFilePath)) {
-        return false;
-    }
-
     $fh = @fopen($maildirsizeFilePath, 'r');
     if (!$fh) {
         return false;
     }
 
-    $info = array(
-        'MAILBOX_QUOTA' => $quota = substr(rtrim(fgets($fh)), 0, -1),
-        'MAILBOX_SIZE'  => 0,
-        'MAILBOX_MSGS'  => 0
+    $maildirsize = array(
+        'QUOTA_BYTES'    => 0,
+        'QUOTA_MESSAGES' => 0,
+        'BYTE_COUNT'     => 0,
+        'FILE_COUNT'     => 0
     );
 
+    $firstLine = 1;
+
     while (($line = fgets($fh)) !== false) {
-        list($msgsize, $msgcount) = preg_split('/\s+/', $line);
-        $info['MAILBOX_SIZE'] += $msgsize;
-        $info['MAILBOX_MSGS'] += $msgcount;
+        if ($firstLine) { # Parse quota definition
+            list($quotaBytes, $quotaMessages) = explode(',', $line);
+
+            if (($quotaBytes) && preg_match('/(\d+)S/i', $quotaBytes, $m)) {
+                $maildirsize['QUOTA_BYTES'] = $m[1];
+            } else {
+                break; # No Quota byte info, skipping full parsing
+            }
+
+            if ($quotaMessages && preg_match('/(\d+)C/i', $quotaMessages, $m)) {
+                $maildirsize['QUOTA_MESSAGES'] = $m[1];
+            }
+
+            $firstLine = 0;
+            continue;
+        }
+
+        # Parse byte count and file count
+        if (preg_match('/^\s*(\d+)\s+(\d+)\s*$/', $line, $m)) {
+            $maildirsize['BYTE_COUNT'] += $m[1];
+            $maildirsize['FILE_COUNT'] += $m[2];
+        }
     }
 
     fclose($fh);
-    return $info;
+    return $maildirsize;
 }

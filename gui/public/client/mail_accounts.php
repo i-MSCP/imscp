@@ -161,15 +161,15 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
 
         if((strpos($row['mail_type'], '_mail') !== false)) {
             list($user, $domain) = explode('@', $row['mail_addr']);
-            $info = getMailboxQuotaInfo(utils_normalizePath(
+            $info = parseMaildirsize(utils_normalizePath(
                 $postfixConfig['MTA_VIRTUAL_MAIL_DIR'] . "/$domain/$user/maildirsize"
             ));
 
             if($info !== FALSE) {
                 $mailQuotaInfo = tr(
                     '%s / %s of %s total available',
-                    bytesHuman($info['MAILBOX_SIZE'], NULL, 0),
-                    bytesHuman($info['MAILBOX_QUOTA'], NULL, 0),
+                    bytesHuman($info['BYTE_COUNT'], NULL, 0),
+                    bytesHuman($info['QUOTA_BYTES'], NULL, 0),
                     ($dmnProps['mail_quota'] > 0) ? bytesHuman($dmnProps['mail_quota'], NULL, 0) : tr('Unlimited') 
                 );
             } else {
