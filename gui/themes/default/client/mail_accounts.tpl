@@ -64,7 +64,7 @@
         <tr>
             <th>{TR_MAIL}</th>
             <th>{TR_TYPE}</th>
-            <th>{TR_QUOTA_ASSIGNMENT}</th>
+            <th>{TR_QUOTA_INFO}</th>
             <th>{TR_STATUS}</th>
             <th>{TR_ACTIONS}</th>
             <th style="width:21px"><label><input type="checkbox"/></label></th>
@@ -92,7 +92,7 @@
                 <!-- EDP: auto_respond_item -->
             </td>
             <td>{MAIL_TYPE}</td>
-            <td>{MAIL_QUOTA_ASSIGMENT}</td>
+            <td>{MAIL_QUOTA_INFO}</td>
             <td>{MAIL_STATUS}</td>
             <td>
                 <a href="{MAIL_EDIT_SCRIPT}" title="{MAIL_EDIT}" class="icon i_edit">{MAIL_EDIT}</a>

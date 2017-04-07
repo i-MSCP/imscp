@@ -520,3 +520,36 @@ function send_alias_order_email($aliasName)
 
     return true;
 }
+
+/**
+ * Get mailbox quota info from the given maildirsize file
+ *
+ * @param string $maildirsizeFilePath
+ * @return array|bool Array containing IMAP quota info on success, FALSE on failure
+ */
+function getMailboxQuotaInfo($maildirsizeFilePath)
+{
+    if (!@is_readable($maildirsizeFilePath)) {
+        return false;
+    }
+
+    $fh = @fopen($maildirsizeFilePath, 'r');
+    if (!$fh) {
+        return false;
+    }
+
+    $info = array(
+        'MAILBOX_QUOTA' => $quota = substr(rtrim(fgets($fh)), 0, -1),
+        'MAILBOX_SIZE'  => 0,
+        'MAILBOX_MSGS'  => 0
+    );
+
+    while (($line = fgets($fh)) !== false) {
+        list($msgsize, $msgcount) = preg_split('/\s+/', $line);
+        $info['MAILBOX_SIZE'] += $msgsize;
+        $info['MAILBOX_MSGS'] += $msgcount;
+    }
+
+    fclose($fh);
+    return $info;
+}

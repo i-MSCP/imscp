@@ -12,6 +12,9 @@ BACKEND
 DISTRIBUTION
     Fixed: Make sure that sendmail* packages are pre-uninstalled
 
+FRONTEND
+    Readded: Mailboxes quota information (info are retrieved by parsing maildirsize file)
+
 LISTENERS
     Updated: Add Referrer-Policy header to 40_apache2_security_headers.pl listener file
 

@@ -135,6 +135,10 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
 
 
     $dmnProps = get_domain_default_props($_SESSION['user_id']);
+    
+    $postfixConfig = new iMSCP_Config_Handler_File(
+        utils_normalizePath(iMSCP_Registry::get('config')->CONF_DIR . '/postfix/postfix.data')
+    );
 
     while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
         list($mailDelete, $mailDeleteScript, $mailEdit, $mailEditScript) = _client_generateUserMailAction(
@@ -155,23 +159,37 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
             $mailType .= '<br>';
         }
 
+        if((strpos($row['mail_type'], '_mail') !== false)) {
+            list($user, $domain) = explode('@', $row['mail_addr']);
+            $info = getMailboxQuotaInfo(utils_normalizePath(
+                $postfixConfig['MTA_VIRTUAL_MAIL_DIR'] . "/$domain/$user/maildirsize"
+            ));
+
+            if($info !== FALSE) {
+                $mailQuotaInfo = tr(
+                    '%s / %s of %s total available',
+                    bytesHuman($info['MAILBOX_SIZE'], NULL, 0),
+                    bytesHuman($info['MAILBOX_QUOTA'], NULL, 0),
+                    ($dmnProps['mail_quota'] > 0) ? bytesHuman($dmnProps['mail_quota'], NULL, 0) : tr('Unlimited') 
+                );
+            } else {
+                $mailQuotaInfo = tr('Unknown');
+            }
+        } else {
+            $mailQuotaInfo = tr('N/A');
+        }
+
         $tpl->assign(array(
-            'MAIL_ADDR'            => tohtml(decode_idna($mailAddr)),
-            'MAIL_TYPE'            => $mailType,
-            'MAIL_QUOTA_ASSIGMENT' => (is_null($row['quota']))
-                ? tr('N/A')
-                : tohtml(tr('%s of %s',
-                    bytesHuman($row['quota'], NULL, 0),
-                    ($dmnProps['mail_quota'] == 0)
-                        ? tr('Unlimited') : tr('%s total available', bytesHuman($dmnProps['mail_quota'], NULL, 0))
-                )),
-            'MAIL_STATUS'          => translate_dmn_status($row['status']),
-            'MAIL_DELETE'          => $mailDelete,
-            'MAIL_DELETE_SCRIPT'   => $mailDeleteScript,
-            'MAIL_EDIT'            => $mailEdit,
-            'MAIL_EDIT_SCRIPT'     => $mailEditScript,
-            'DEL_ITEM'             => $row['mail_id'],
-            'DISABLED_DEL_ITEM'    => ($row['status'] != 'ok') ? ' disabled' : ''
+            'MAIL_ADDR'          => tohtml(decode_idna($mailAddr)),
+            'MAIL_TYPE'          => $mailType,
+            'MAIL_QUOTA_INFO'    => tohtml($mailQuotaInfo),
+            'MAIL_STATUS'        => translate_dmn_status($row['status']),
+            'MAIL_DELETE'        => $mailDelete,
+            'MAIL_DELETE_SCRIPT' => $mailDeleteScript,
+            'MAIL_EDIT'          => $mailEdit,
+            'MAIL_EDIT_SCRIPT'   => $mailEditScript,
+            'DEL_ITEM'           => $row['mail_id'],
+            'DISABLED_DEL_ITEM'  => ($row['status'] != 'ok') ? ' disabled' : ''
         ));
 
         _client_generateUserMailAutoRespond($tpl, $row['mail_id'], $row['status'], $row['mail_auto_respond']);
@@ -251,7 +269,7 @@ $tpl->assign(array(
     'TR_PAGE_TITLE'                        => tr('Client / Email / Overview'),
     'TR_MAIL'                              => tr('Mail'),
     'TR_TYPE'                              => tr('Type'),
-    'TR_QUOTA_ASSIGNMENT'                  => tr('Quota assignment'),
+    'TR_QUOTA_INFO'                        => tr('Quota info'),
     'TR_STATUS'                            => tr('Status'),
     'TR_ACTIONS'                           => tr('Actions'),
     'TR_AUTORESPOND'                       => tr('Auto responder'),

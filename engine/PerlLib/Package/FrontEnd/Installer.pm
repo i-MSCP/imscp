@@ -45,6 +45,7 @@ use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
 use Package::FrontEnd;
 use Servers::httpd;
 use Servers::named;
+use Servers::mta;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -809,6 +810,9 @@ sub _addMasterWebUser
     }
 
     $rs = iMSCP::SystemUser->new( username => $userName )->addToGroup( $main::imscpConfig{'IMSCP_GROUP'} );
+    $rs = iMSCP::SystemUser->new( username => $userName )->addToGroup(
+        Servers::mta->factory()->{'config'}->{'MTA_MAILBOX_GID_NAME'}
+    );
     $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'HTTPD_USER'} )->addToGroup( $groupName );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdAddUser' );
 }
@@ -932,12 +936,13 @@ sub _buildPhpConfig
             FRONTEND_GROUP            => $group,
             FRONTEND_USER             => $user,
             HOME_DIR                  => $main::imscpConfig{'GUI_ROOT_DIR'},
+            MTA_VIRTUAL_MAIL_DIR      => Servers::mta->factory()->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
             PEAR_DIR                  => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
             OTHER_ROOTKIT_LOG         => $main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne ''
                 ? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : '',
             RKHUNTER_LOG              => $main::imscpConfig{'RKHUNTER_LOG'},
             TIMEZONE                  => main::setupGetQuestion( 'TIMEZONE' ),
-            WEB_DIR                   => $main::imscpConfig{'GUI_ROOT_DIR'},
+            WEB_DIR                   => $main::imscpConfig{'GUI_ROOT_DIR'}
         },
         {
             destination => "/usr/local/etc/imscp_panel/php-fpm.conf",
