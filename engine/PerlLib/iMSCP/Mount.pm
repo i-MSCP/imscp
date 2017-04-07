@@ -144,6 +144,7 @@ my $MOUNTS = lazy
         $entries;
     };
 
+# FH object to i-MSCP mounts.conf file
 my $iMSCP_MOUNTS_FH;
 
 =head1 DESCRIPTION
@@ -378,71 +379,47 @@ sub addMountEntry($)
         return 1;
     }
 
-    my $rs = removeMountEntry($entry); # Avoid duplicate entries
+    my $rs = removeMountEntry($entry, 0); # Avoid duplicate entries
     return $rs if $rs;
 
     my $fileContent = $iMSCP_MOUNTS_FH->getAsRef();
-    $$fileContent .= "$entry\n";
-    #$iMSCP_MOUNTS_FH->set($iMSCP_MOUNTS_FH->get() . "$entry\n");
+    ${$fileContent} .= "$entry\n";
     $iMSCP_MOUNTS_FH->save();
-    
-    #my $fh;
-    #unless (open $fh, '>>', "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf") {
-    #    error( sprintf( "Could not open `%s' file: %s", "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf", $! ) );
-    #}
-
-    #print {$fh} "$entry\n";
-    #close $fh;
-    0;
 }
 
-=item removeMountEntry($entry)
+=item removeMountEntry($entry [, $saveFile = true ])
 
  Remove the given mount entry from the i-MSCP fstab-like file
 
  Param string|regexp $entry String or regexp representing Fstab-like entry to remove
+ Param boolean $saveFile Flag indicating whether or not file must be saved
  Return int 0 on success, other on failure
 
 =cut
 
-sub removeMountEntry($)
+sub removeMountEntry($;$)
 {
-    my $entry = shift;
+    my ($entry, $saveFile) = @_;
+    $saveFile //= 1;
 
     unless (defined $entry) {
         error( '$entry parameter is not defined' );
         return 1;
     }
 
-    unless($iMSCP_MOUNTS_FH) {
+    unless ($iMSCP_MOUNTS_FH) {
         $iMSCP_MOUNTS_FH = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf" );
     }
 
     my $fileContent = $iMSCP_MOUNTS_FH->getAsRef();
-    unless(defined $fileContent) {
+    unless (defined $fileContent) {
         error( sprintf( "Couldn't read %s file", $iMSCP_MOUNTS_FH->{'filename'} ) );
         return 1;
     }
 
     $entry = quotemeta( $entry ) unless ref $entry eq 'Regexp';
-    $$fileContent =~ s/^$entry\n//gm;
-    $iMSCP_MOUNTS_FH->save();
-    
-    #my $file = "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf";
-    #$entry = quotemeta( $entry ) unless ref $entry eq 'Regexp';
-    #eval {
-    #    local ($@, $_, $SIG{'__WARN__'}, $^I, @ARGV) = (undef, undef, sub { die shift }, '', $file);
-    #    while(<>) {
-    #        s/^$entry\n//;
-    #        print;
-    #    }
-    #};
-    #if ($@) {
-    #    error( sprintf( "Could not remove entry matching with `%s' in `%s' file: %s", $entry, $file, $! ) );
-    #    return 1;
-    #}
-
-    #0;
+    ${$fileContent} =~ s/^$entry\n//gm;
+    $saveFile ? $iMSCP_MOUNTS_FH->save() : 0;
 }
 
 =back
