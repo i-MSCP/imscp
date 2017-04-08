@@ -540,6 +540,8 @@ function parseMaildirsize($maildirsizeFilePath, $refreshData = FALSE)
         return $_SESSION['maildirsize'][$maildirsizeFilePath];
     }
 
+    unset($_SESSION['maildirsize'][$maildirsizeFilePath]);
+
     $fh = @fopen($maildirsizeFilePath, 'r');
     if (!$fh) {
         return false;
@@ -552,36 +554,37 @@ function parseMaildirsize($maildirsizeFilePath, $refreshData = FALSE)
         'FILE_COUNT'     => 0
     );
 
-    # Parse quota definition
-    if (($line = fgets($fh)) !== false) {
-        list($quotaBytes, $quotaMessages) = explode(',', $line);
+    // Parse quota definition
 
-        if (!$quotaBytes || !preg_match('/(\d+)S/i', $quotaBytes, $m)) {
-            fclose($fh);
-            return false;
-        }
-
-        $_SESSION['maildirsize'][$maildirsizeFilePath]['QUOTA_BYTES'] = $m[1];
-
-        if ($quotaMessages && preg_match('/(\d+)C/i', $quotaMessages, $m)) {
-            $_SESSION['maildirsize'][$maildirsizeFilePath]['QUOTA_MESSAGES'] = $m[1];
-        }
-    } else {
+    if (($line = fgets($fh)) === false) {
         fclose($fh);
         return false;
     }
 
-    # Parse byte count and file count
+    list($quotaBytes, $quotaMessages) = explode(',', $line);
+
+    if (!$quotaBytes || !preg_match('/(\d+)S/i', $quotaBytes, $m)) {
+        // No quota definition. Skip processing...
+        fclose($fh);
+        return false;
+    }
+
+    $_SESSION['maildirsize'][$maildirsizeFilePath]['QUOTA_BYTES'] = $m[1];
+
+    if ($quotaMessages && preg_match('/(\d+)C/i', $quotaMessages, $m)) {
+        $_SESSION['maildirsize'][$maildirsizeFilePath]['QUOTA_MESSAGES'] = $m[1];
+    }
+
+    // Parse byte and file counts
+
     while (($line = fgets($fh)) !== false) {
-        if (!preg_match('/^\s*(-?\d+)\s+(-?\d+)\s*$/', $line, $m)) {
-            continue;
+        if (preg_match('/^\s*(-?\d+)\s+(-?\d+)\s*$/', $line, $m)) {
+            $_SESSION['maildirsize'][$maildirsizeFilePath]['BYTE_COUNT'] += $m[1];
+            $_SESSION['maildirsize'][$maildirsizeFilePath]['FILE_COUNT'] += $m[2];
         }
-        $_SESSION['maildirsize'][$maildirsizeFilePath]['BYTE_COUNT'] += $m[1];
-        $_SESSION['maildirsize'][$maildirsizeFilePath]['FILE_COUNT'] += $m[2];
     }
 
     fclose($fh);
-
     $_SESSION['maildirsize'][$maildirsizeFilePath]['TIMESTAMP'] = time();
     return $_SESSION['maildirsize'];
 }
