@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-07 14:43+0000\n"
+"POT-Creation-Date: 2017-04-08 16:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Japanese (Japan) (https://www.transifex.com/i-mscp/teams/576/ja_JP/)\n"
@@ -143,10 +143,6 @@ msgstr "%d の %s"
 #, php-format
 msgid "%d strings translated"
 msgstr "%d の文字列を翻訳"
-
-#, php-format
-msgid "%s / %s of %s total available"
-msgstr ""
 
 #, php-format
 msgid "%s / unlimited"
@@ -997,6 +993,9 @@ msgstr "少なくとも一つの代理店に割り当て"
 
 msgid "At least one intermediate certificate is invalid or missing."
 msgstr "少なくとも一つの中間証明書が無効か、または存在しません。"
+
+msgid "At least one of your mailbox is over quota."
+msgstr ""
 
 msgid "Authentication by group"
 msgstr "グループによる認証"
@@ -2631,6 +2630,11 @@ msgstr "禁止"
 msgid "Force retry"
 msgstr "強制的に再試行"
 
+msgid ""
+"Force synching of mailboxes quota info. Quota info are automatically synced "
+"every 5 minutes."
+msgstr ""
+
 msgid "Forward"
 msgstr "フォワード"
 
@@ -3206,6 +3210,9 @@ msgstr "メール機能が無効"
 
 msgid "Mail usage"
 msgstr "メールの使用"
+
+msgid "Mailboxes quota info were synced."
+msgstr ""
 
 msgid "Main menu labels visibility successfully updated."
 msgstr "メインメニューのラベルの可視性は、更新されました"
@@ -4850,6 +4857,9 @@ msgstr "バックアップディレクトリに切り替え"
 
 msgid "Switch to user interface"
 msgstr "ユーザーインターフェースを変更"
+
+msgid "Sync quota info"
+msgstr ""
 
 msgid "Syntax error found in mail forward list."
 msgstr "メール転送リストで見つかった構文エラー。"

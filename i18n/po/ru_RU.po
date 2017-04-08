@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-07 14:43+0000\n"
+"POT-Creation-Date: 2017-04-08 16:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Lukasz Nowak <theqkash@theqkash.pl>, 2017\n"
 "Language-Team: Russian (Russia) (https://www.transifex.com/i-mscp/teams/576/ru_RU/)\n"
@@ -147,10 +147,6 @@ msgstr "%d из %s"
 #, php-format
 msgid "%d strings translated"
 msgstr "Переведено %d строк "
-
-#, php-format
-msgid "%s / %s of %s total available"
-msgstr ""
 
 #, php-format
 msgid "%s / unlimited"
@@ -1041,6 +1037,9 @@ msgstr "Закреплено как минимум за одним реселл�
 
 msgid "At least one intermediate certificate is invalid or missing."
 msgstr "По крайней мере один сертефикат не валидный или отсутствует."
+
+msgid "At least one of your mailbox is over quota."
+msgstr ""
 
 msgid "Authentication by group"
 msgstr "Аутентификация по группе"
@@ -2711,6 +2710,11 @@ msgstr "Доступ запрещен"
 msgid "Force retry"
 msgstr "Заставить повторить"
 
+msgid ""
+"Force synching of mailboxes quota info. Quota info are automatically synced "
+"every 5 minutes."
+msgstr ""
+
 msgid "Forward"
 msgstr "Перенаправление"
 
@@ -3298,6 +3302,9 @@ msgstr "Почта отключена"
 
 msgid "Mail usage"
 msgstr "Использование почты"
+
+msgid "Mailboxes quota info were synced."
+msgstr ""
 
 msgid "Main menu labels visibility successfully updated."
 msgstr "Отображение ярлыков меню успешно обновлено. "
@@ -4245,7 +4252,7 @@ msgid "Quota in MiB (Max: %s)"
 msgstr "Квота в MB (Максимум: %s)"
 
 msgid "Quota info"
-msgstr ""
+msgstr "Информация о квоте"
 
 msgid "RAM"
 msgstr "Память RAM"
@@ -4974,6 +4981,9 @@ msgstr "Перейти в каталог backups/"
 
 msgid "Switch to user interface"
 msgstr "Перейти в интерфейс пользователя"
+
+msgid "Sync quota info"
+msgstr ""
 
 msgid "Syntax error found in mail forward list."
 msgstr "Была найдена ошибка синтаксиса в списке перенаправления."

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-07 14:43+0000\n"
+"POT-Creation-Date: 2017-04-08 16:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Tim Rühenbeck <revision.od@gmail.com>, 2017\n"
 "Language-Team: German (Germany) (https://www.transifex.com/i-mscp/teams/576/de_DE/)\n"
@@ -146,10 +146,6 @@ msgstr "%d von %s"
 #, php-format
 msgid "%d strings translated"
 msgstr "%d Strings übersetzt"
-
-#, php-format
-msgid "%s / %s of %s total available"
-msgstr ""
 
 #, php-format
 msgid "%s / unlimited"
@@ -1080,6 +1076,9 @@ msgstr "Mindestens einem Reseller zugeordnet"
 
 msgid "At least one intermediate certificate is invalid or missing."
 msgstr "Mindestens ein \"Intermediate\"-Zertifikat ist falsch oder fehlt."
+
+msgid "At least one of your mailbox is over quota."
+msgstr ""
 
 msgid "Authentication by group"
 msgstr "Authentifizierung durch Gruppe"
@@ -2760,6 +2759,11 @@ msgstr "Verboten"
 msgid "Force retry"
 msgstr "Wiederholung erzwingen"
 
+msgid ""
+"Force synching of mailboxes quota info. Quota info are automatically synced "
+"every 5 minutes."
+msgstr ""
+
 msgid "Forward"
 msgstr "Weiterleitung"
 
@@ -3350,6 +3354,9 @@ msgstr "Das Merkmal E-Mail ist deaktiviert."
 
 msgid "Mail usage"
 msgstr "E-Mail-Nutzung"
+
+msgid "Mailboxes quota info were synced."
+msgstr ""
 
 msgid "Main menu labels visibility successfully updated."
 msgstr "Sichtbarkeit der Menübeschriftung erfolgreich geändert."
@@ -5043,6 +5050,9 @@ msgstr "Wechseln Sie in das Verzeichnis \"backups/\""
 
 msgid "Switch to user interface"
 msgstr "Zum Benutzer wechseln"
+
+msgid "Sync quota info"
+msgstr ""
 
 msgid "Syntax error found in mail forward list."
 msgstr "Es wurde ein Fehler in der Weiterleitungsliste gefunden."

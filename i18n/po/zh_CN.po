@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-07 14:43+0000\n"
+"POT-Creation-Date: 2017-04-08 16:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>, 2017\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/i-mscp/teams/576/zh_CN/)\n"
@@ -142,10 +142,6 @@ msgstr ""
 
 #, php-format
 msgid "%d strings translated"
-msgstr ""
-
-#, php-format
-msgid "%s / %s of %s total available"
 msgstr ""
 
 #, php-format
@@ -990,6 +986,9 @@ msgid "Assigned to at least one reseller"
 msgstr ""
 
 msgid "At least one intermediate certificate is invalid or missing."
+msgstr ""
+
+msgid "At least one of your mailbox is over quota."
 msgstr ""
 
 msgid "Authentication by group"
@@ -2475,6 +2474,11 @@ msgstr ""
 msgid "Force retry"
 msgstr ""
 
+msgid ""
+"Force synching of mailboxes quota info. Quota info are automatically synced "
+"every 5 minutes."
+msgstr ""
+
 msgid "Forward"
 msgstr "转向"
 
@@ -3048,6 +3052,9 @@ msgid "Mail feature is disabled."
 msgstr ""
 
 msgid "Mail usage"
+msgstr ""
+
+msgid "Mailboxes quota info were synced."
 msgstr ""
 
 msgid "Main menu labels visibility successfully updated."
@@ -4685,6 +4692,9 @@ msgstr ""
 
 msgid "Switch to user interface"
 msgstr "切换用户界面"
+
+msgid "Sync quota info"
+msgstr ""
 
 msgid "Syntax error found in mail forward list."
 msgstr ""
