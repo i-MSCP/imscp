@@ -586,5 +586,5 @@ function parseMaildirsize($maildirsizeFilePath, $refreshData = FALSE)
 
     fclose($fh);
     $_SESSION['maildirsize'][$maildirsizeFilePath]['TIMESTAMP'] = time();
-    return $_SESSION['maildirsize'];
+    return $_SESSION['maildirsize'][$maildirsizeFilePath];
 }

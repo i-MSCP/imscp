@@ -165,18 +165,16 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
             );
 
             if ($maildirsize !== FALSE) {
-                $quotaPercent = ($maildirsize['QUOTA_BYTES'] > 0)
-                    ? ceil(100 * $maildirsize['BYTE_COUNT'] / $maildirsize['QUOTA_BYTES']) : 0;
+                if ($maildirsize['QUOTA_BYTES'] > 0) {
+                    $quotaPercent = ($maildirsize['QUOTA_BYTES'] > 0)
+                        ? ceil(100 * $maildirsize['BYTE_COUNT'] / $maildirsize['QUOTA_BYTES']) : 0;
 
-                if ($quotaPercent) {
                     if ($quotaPercent >= 100) {
                         $overQuota = true;
                     }
 
                     $mailQuotaInfo = sprintf(
-                        ($quotaPercent >= 95)
-                            ? '<span style="color:red">%s / %s (%s%%)</span>'
-                            : '%s / %s (%s%%)',
+                        ($quotaPercent >= 95) ? '<span style="color:red">%s / %s (%s%%)</span>' : '%s / %s (%s%%)',
                         bytesHuman($maildirsize['BYTE_COUNT'], NULL, 1),
                         bytesHuman($maildirsize['QUOTA_BYTES'], NULL, 1),
                         $quotaPercent
