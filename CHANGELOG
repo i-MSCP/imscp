@@ -13,7 +13,10 @@ DISTRIBUTION
     Fixed: Make sure that sendmail* packages are pre-uninstalled
 
 FRONTEND
-    Readded: Mailboxes quota information (info are retrieved by parsing maildirsize file)
+    Added: Button allowing customers to force syncing of mailboxes quota info (Client interface)
+    Added: Percent value for mailboxes quota (Client interface)
+    Enhancement: Display a static warning to customer when at least one of his mailboxes is over quota (Client interface)
+    Readded: Mailboxes quota information (Client interface)
 
 INSTALLER
     Fixed: composer.phar archive is not updated due to wrong working directory

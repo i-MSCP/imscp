@@ -212,6 +212,13 @@ function client_editMailAccount()
         array($password, $forwardList, $mailType, 'tochange', $mailQuotaLimitBytes, $mailData['mail_id'])
     );
 
+    # Force synching of quota info on next load (or remove cached data in case of normal account changed to forward account)
+    $postfixConfig = new iMSCP_Config_Handler_File(
+        utils_normalizePath(iMSCP_Registry::get('config')->CONF_DIR . '/postfix/postfix.data')
+    );
+    list($user, $domain) = explode('@', $mailAddr);
+    unset($_SESSION['maildirsize'][utils_normalizePath($postfixConfig['MTA_VIRTUAL_MAIL_DIR'] . "/$domain/$user/maildirsize")]);
+
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditMail, array(
         'mailId' => $mailData['mail_id']
     ));

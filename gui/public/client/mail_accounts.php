@@ -105,24 +105,20 @@ function _client_generateUserMailAutoRespond($tpl, $mailId, $mailStatus, $mailAu
 /**
  * Generate Mail accounts list
  *
- * @param iMSCP_pTemplate $tpl reference to the template object
+ * @param iMSCP_pTemplate $tpl Template engine
  * @param int $mainDmnId Customer main domain unique identifier
- * @return int number of subdomain mails addresses
+ * @return int number of mail accounts
  */
 function _client_generateMailAccountsList($tpl, $mainDmnId)
 {
     $stmt = exec_query(
         "
-        SELECT mail_id, CONCAT(LEFT(mail_forward, 30), IF(LENGTH(mail_forward) > 30, '...', '')) AS mail_forward,
-          mail_type, status, mail_auto_respond, quota, mail_addr
-        FROM
-          mail_users
-        WHERE
-          domain_id = ?
-        AND
-          mail_type NOT LIKE '%catchall%'
-        ORDER BY
-          mail_addr ASC, mail_type DESC
+          SELECT mail_id, CONCAT(LEFT(mail_forward, 30), IF(LENGTH(mail_forward) > 30, '...', '')) AS mail_forward,
+            mail_type, status, mail_auto_respond, quota, mail_addr
+          FROM mail_users
+          WHERE domain_id = ?
+          AND mail_type NOT LIKE '%catchall%'
+          ORDER BY mail_addr ASC, mail_type DESC
         ",
         $mainDmnId
     );
@@ -133,12 +129,13 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
         return 0;
     }
 
-
-    $dmnProps = get_domain_default_props($_SESSION['user_id']);
-    
     $postfixConfig = new iMSCP_Config_Handler_File(
         utils_normalizePath(iMSCP_Registry::get('config')->CONF_DIR . '/postfix/postfix.data')
     );
+
+    $syncQuotaInfo = isset($_GET['sync_quota_info']);
+    $hasMailboxes = false;
+    $overQuota = false;
 
     while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
         list($mailDelete, $mailDeleteScript, $mailEdit, $mailEditScript) = _client_generateUserMailAction(
@@ -159,30 +156,51 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
             $mailType .= '<br>';
         }
 
-        if((strpos($row['mail_type'], '_mail') !== false)) {
+        if ($row['status'] == 'ok' && strpos($row['mail_type'], '_mail') !== false) {
+            $hasMailboxes = true;
             list($user, $domain) = explode('@', $row['mail_addr']);
-            $info = parseMaildirsize(utils_normalizePath(
-                $postfixConfig['MTA_VIRTUAL_MAIL_DIR'] . "/$domain/$user/maildirsize"
-            ));
+            $maildirsize = parseMaildirsize(
+                utils_normalizePath($postfixConfig['MTA_VIRTUAL_MAIL_DIR'] . "/$domain/$user/maildirsize"),
+                $syncQuotaInfo
+            );
 
-            if($info !== FALSE) {
-                $mailQuotaInfo = tr(
-                    '%s / %s of %s total available',
-                    bytesHuman($info['BYTE_COUNT'], NULL, 0),
-                    bytesHuman($info['QUOTA_BYTES'], NULL, 0),
-                    ($dmnProps['mail_quota'] > 0) ? bytesHuman($dmnProps['mail_quota'], NULL, 0) : tr('Unlimited') 
-                );
+            if ($maildirsize !== FALSE) {
+                $quotaPercent = ($maildirsize['QUOTA_BYTES'] > 0)
+                    ? ceil(100 * $maildirsize['BYTE_COUNT'] / $maildirsize['QUOTA_BYTES']) : 0;
+
+                if ($quotaPercent) {
+                    if ($quotaPercent >= 100) {
+                        $overQuota = true;
+                    }
+
+                    $mailQuotaInfo = sprintf(
+                        ($quotaPercent >= 95)
+                            ? '<span style="color:red">%s / %s (%s%%)</span>'
+                            : '%s / %s (%s%%)',
+                        bytesHuman($maildirsize['BYTE_COUNT'], NULL, 1),
+                        bytesHuman($maildirsize['QUOTA_BYTES'], NULL, 1),
+                        $quotaPercent
+                    );
+                } else {
+                    $mailQuotaInfo = sprintf(
+                        '%s / %s (%s%%)',
+                        bytesHuman($maildirsize['BYTE_COUNT'], NULL, 1),
+                        ($maildirsize['QUOTA_BYTES'] > 1)
+                            ? bytesHuman($maildirsize['QUOTA_BYTES'], NULL, 1) : tr('Unlimited'),
+                        0
+                    );
+                }
             } else {
                 $mailQuotaInfo = tr('Unavailable');
             }
         } else {
-            $mailQuotaInfo = tr('N/A');
+            $mailQuotaInfo = tr('Unavailable');
         }
 
         $tpl->assign(array(
             'MAIL_ADDR'          => tohtml(decode_idna($mailAddr)),
             'MAIL_TYPE'          => $mailType,
-            'MAIL_QUOTA_INFO'    => tohtml($mailQuotaInfo),
+            'MAIL_QUOTA_INFO'    => $mailQuotaInfo,
             'MAIL_STATUS'        => translate_dmn_status($row['status']),
             'MAIL_DELETE'        => $mailDelete,
             'MAIL_DELETE_SCRIPT' => $mailDeleteScript,
@@ -194,6 +212,19 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
 
         _client_generateUserMailAutoRespond($tpl, $row['mail_id'], $row['status'], $row['mail_auto_respond']);
         $tpl->parse('MAIL_ITEM', '.mail_item');
+    }
+
+    if ($syncQuotaInfo) {
+        set_page_message(tr('Mailboxes quota info were synced.'), 'success');
+        redirectTo('mail_accounts.php');
+    }
+
+    if (!$hasMailboxes) {
+        $tpl->assign('SYNC_QUOTA_INFO_LINK', '');
+    }
+
+    if ($overQuota) {
+        set_page_message(tr('At least one of your mailbox is over quota.'), 'static_warning');
     }
 
     return $rowCount;
@@ -263,7 +294,8 @@ $tpl->define_dynamic(array(
     'mail_items'             => 'mail_feature',
     'mail_item'              => 'mail_items',
     'auto_respond_item'      => 'mail_item',
-    'auto_respond_edit_link' => 'auto_respond_item'
+    'auto_respond_edit_link' => 'auto_respond_item',
+    'sync_quota_info_link'   => 'mail_items'
 ));
 $tpl->assign(array(
     'TR_PAGE_TITLE'                        => tr('Client / Email / Overview'),
@@ -277,7 +309,9 @@ $tpl->assign(array(
     'TR_MESSAGE_DELETE'                    => tojs(tr('Are you sure you want to delete %s?', '%s')),
     'TR_MESSAGE_DELETE_SELECTED_ITEMS'     => tojs(tr('Are you sure you want to delete all selected mail accounts?')),
     'TR_DELETE_SELECTED_ITEMS'             => tr('Delete selected mail accounts'),
-    'TR_MESSAGE_DELETE_SELECTED_ITEMS_ERR' => tojs(tr('You must select a least one mail account to delete'))
+    'TR_MESSAGE_DELETE_SELECTED_ITEMS_ERR' => tojs(tr('You must select a least one mail account to delete')),
+    'TR_SYNC_QUOTA_INFO'                   => tr('Sync quota info'),
+    'TR_SYNC_QUOTA_TOOLTIP'                => tohtml(tr('Force synching of mailboxes quota info. Quota info are automatically synced every 5 minutes.'), 'htmlAttr')
 ));
 
 iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {

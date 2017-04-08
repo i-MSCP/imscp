@@ -524,18 +524,28 @@ function send_alias_order_email($aliasName)
 /**
  * Parse data from the given maildirsize file
  *
+ * Because processing several maildirsize files can be time consuming, the data are stored in session for next 5 minutes.
+ * It is possible to force update by changing the $refreshData flag valye to TRUE
+ *
  * @see http://www.courier-mta.org/imap/README.maildirquota.html
  * @param string $maildirsizeFilePath
+ * @param bool $refreshData Flag indicating if data must be refreshed
  * @return array|bool Array containing maildirsize data, FALSE on failure
  */
-function parseMaildirsize($maildirsizeFilePath)
+function parseMaildirsize($maildirsizeFilePath, $refreshData = FALSE)
 {
+    if (!$refreshData && !empty($_SESSION['maildirsize'][$maildirsizeFilePath])
+        && $_SESSION['maildirsize']['TIMESTAMP'] < (time() + 300)
+    ) {
+        return $_SESSION['maildirsize'][$maildirsizeFilePath];
+    }
+
     $fh = @fopen($maildirsizeFilePath, 'r');
     if (!$fh) {
         return false;
     }
 
-    $maildirsize = array(
+    $_SESSION['maildirsize'][$maildirsizeFilePath] = array(
         'QUOTA_BYTES'    => 0,
         'QUOTA_MESSAGES' => 0,
         'BYTE_COUNT'     => 0,
@@ -549,13 +559,13 @@ function parseMaildirsize($maildirsizeFilePath)
             list($quotaBytes, $quotaMessages) = explode(',', $line);
 
             if (($quotaBytes) && preg_match('/(\d+)S/i', $quotaBytes, $m)) {
-                $maildirsize['QUOTA_BYTES'] = $m[1];
+                $_SESSION['maildirsize'][$maildirsizeFilePath]['QUOTA_BYTES'] = $m[1];
             } else {
-                break; # No Quota byte info, skipping full parsing
+                break; # No quota data, skipping...
             }
 
             if ($quotaMessages && preg_match('/(\d+)C/i', $quotaMessages, $m)) {
-                $maildirsize['QUOTA_MESSAGES'] = $m[1];
+                $_SESSION['maildirsize'][$maildirsizeFilePath]['QUOTA_MESSAGES'] = $m[1];
             }
 
             $firstLine = 0;
@@ -564,11 +574,13 @@ function parseMaildirsize($maildirsizeFilePath)
 
         # Parse byte count and file count
         if (preg_match('/^\s*(-?\d+)\s+(-?\d+)\s*$/', $line, $m)) {
-            $maildirsize['BYTE_COUNT'] += $m[1];
-            $maildirsize['FILE_COUNT'] += $m[2];
+            $_SESSION['maildirsize'][$maildirsizeFilePath]['BYTE_COUNT'] += $m[1];
+            $_SESSION['maildirsize'][$maildirsizeFilePath]['FILE_COUNT'] += $m[2];
         }
     }
 
     fclose($fh);
-    return $maildirsize;
+
+    $_SESSION['maildirsize'][$maildirsizeFilePath]['TIMESTAMP'] = time();
+    return $_SESSION['maildirsize'];
 }

@@ -102,10 +102,19 @@
         </tr>
         <!-- EDP: mail_item -->
         </tbody>
+        <tbody>
+        <tr>
+            <td colspan="6">
+                <div class="buttons">
+                    <!-- BDP: sync_quota_info_link -->
+                    <a href="/client/mail_accounts.php?sync_quota_info=1" title="{TR_SYNC_QUOTA_TOOLTIP}" class="link_as_button">{TR_SYNC_QUOTA_INFO}</a>
+                    <!-- EDP: sync_quota_info_link -->
+                    <input type="submit" name="Submit" value="{TR_DELETE_SELECTED_ITEMS}">
+                </div>
+            </td>
+        </tr>
+        </tbody>
     </table>
-    <div class="buttons">
-        <input type="submit" name="Submit" value="{TR_DELETE_SELECTED_ITEMS}">
-    </div>
 </form>
 <!-- EDP: mail_items -->
 <!-- EDP: mail_feature -->

@@ -28,7 +28,9 @@
  */
 function client_deleteMailAccount($mailId, $domainId)
 {
-    $stmt = exec_query('SELECT mail_addr FROM mail_users WHERE mail_id = ? AND domain_id = ?', array(
+    static $postfixConfig = NULL;
+
+    $stmt = exec_query('SELECT mail_addr, mail_type FROM mail_users WHERE mail_id = ? AND domain_id = ?', array(
         $mailId, $domainId
     ));
 
@@ -37,11 +39,22 @@ function client_deleteMailAccount($mailId, $domainId)
     }
 
     $row = $stmt->fetchRow();
-    $mailAddr = $row['mail_addr'];
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteMail, array('mailId' => $mailId));
     exec_query('UPDATE mail_users SET status = ? WHERE mail_id = ?', array('todelete', $mailId));
-    
+
+    if (strpos($row['mail_type'], '_mail') !== false) {
+        # Remove cached quota info if any
+        if (NULL === $postfixConfig) {
+            $postfixConfig = new iMSCP_Config_Handler_File(
+                utils_normalizePath(iMSCP_Registry::get('config')->CONF_DIR . '/postfix/postfix.data')
+            );
+        }
+
+        list($user, $domain) = explode('@', $row['mail_addr']);
+        unset($_SESSION['maildirsize'][utils_normalizePath($postfixConfig['MTA_VIRTUAL_MAIL_DIR'] . "/$domain/$user/maildirsize")]);
+    }
+
     # Update or delete forward accounts and/or catch-alls that list mail_addr of the account that is being deleted
     #  Forward accounts:
     #   A forward account which only forward on the mail_addr of the account that is being deleted will be also deleted,
@@ -55,8 +68,8 @@ function client_deleteMailAccount($mailId, $domainId)
             WHERE mail_addr <> :mail_addr AND (mail_acc RLIKE :rlike OR mail_forward RLIKE :rlike) 
         ',
         array(
-            'mail_addr' => $mailAddr,
-            'rlike' => '(,|^)' . $mailAddr . '(,|$)'
+            'mail_addr' => $row['mail_addr'],
+            'rlike'     => '(,|^)' . $row['mail_addr'] . '(,|$)'
         )
     );
     if ($stmt->rowCount()) {
@@ -64,12 +77,12 @@ function client_deleteMailAccount($mailId, $domainId)
             if ($row['mail_forward'] == '_no_') {
                 # Catchall
                 $row['mail_acc'] = implode(',', preg_grep(
-                    '/^' . quotemeta($mailAddr) . '$/', explode(',', $row['mail_acc']), PREG_GREP_INVERT
+                    '/^' . quotemeta($row['mail_addr']) . '$/', explode(',', $row['mail_acc']), PREG_GREP_INVERT
                 ));
             } else {
                 # Forward account
                 $row['mail_forward'] = implode(',', preg_grep(
-                    '/^' . quotemeta($mailAddr) . '$/', explode(',', $row['mail_forward']), PREG_GREP_INVERT
+                    '/^' . quotemeta($row['mail_addr']) . '$/', explode(',', $row['mail_forward']), PREG_GREP_INVERT
                 ));
             }
 
@@ -85,7 +98,7 @@ function client_deleteMailAccount($mailId, $domainId)
 
     delete_autoreplies_log_entries();
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMail, array('mailId' => $mailId));
-    set_page_message(tr('Mail account %s successfully scheduled for deletion.', decode_idna($mailAddr)), 'success');
+    set_page_message(tr('Mail account %s successfully scheduled for deletion.', decode_idna($row['mail_addr'])), 'success');
 }
 
 /***********************************************************************************************************************
