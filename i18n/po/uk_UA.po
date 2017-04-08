@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-08 16:01+0000\n"
+"POT-Creation-Date: 2017-04-08 16:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Aleksandr Sidenko <fox4ua@ya.ru>, 2017\n"
 "Language-Team: Ukrainian (Ukraine) (https://www.transifex.com/i-mscp/teams/576/uk_UA/)\n"
@@ -1036,7 +1036,7 @@ msgstr "Закреплено как минимум за одним реселл�
 msgid "At least one intermediate certificate is invalid or missing."
 msgstr "По крайней мере один сертефикат не валидный или отсутствует."
 
-msgid "At least one of your mailbox is over quota."
+msgid "At least one of your mailboxes is over quota."
 msgstr ""
 
 msgid "Authentication by group"
