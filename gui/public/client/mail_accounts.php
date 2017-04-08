@@ -224,7 +224,7 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
     }
 
     if ($overQuota) {
-        set_page_message(tr('At least one of your mailbox is over quota.'), 'static_warning');
+        set_page_message(tr('At least one of your mailboxes is over quota.'), 'static_warning');
     }
 
     return $rowCount;
