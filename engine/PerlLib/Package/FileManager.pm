@@ -124,7 +124,9 @@ sub preinstallListener
 {
     my $self = shift;
 
-    my $oldPackage = $main::imscpOldConfig{'FILEMANAGER_PACKAGE'} || '';
+    my $oldPackage = exists $main::imscpOldConfig{'FILEMANAGER_ADDON'}
+        ? $main::imscpOldConfig{'FILEMANAGER_ADDON'} # backward compatibility with 1.1.x Serie (upgrade process)
+        : $main::imscpOldConfig{'FILEMANAGER_PACKAGE'};
 
     # Ensure backward compatibility (See #IP-1249)
     if ($oldPackage eq 'AjaXplorer') {

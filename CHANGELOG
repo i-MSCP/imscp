@@ -26,6 +26,7 @@ LISTENERS
     Updated: Add Referrer-Policy header to 40_apache2_security_headers.pl listener file
 
 PACKAGES
+    Fixed: `Accessing a non-existing parameter: FILEMANAGER_PACKAGE` error when upgrading from 1.1.x Serie (Filemanager)
     Fixed: Package uninstallers must be idempotent
 
 SCRIPTS
