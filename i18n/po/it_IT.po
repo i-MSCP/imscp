@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-04 04:03+0000\n"
+"POT-Creation-Date: 2017-04-07 14:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Umberto Bubaweb <demoweb@live.it>, 2017\n"
 "Language-Team: Italian (Italy) (https://www.transifex.com/i-mscp/teams/576/it_IT/)\n"
@@ -147,6 +147,10 @@ msgid "%d strings translated"
 msgstr "%d stringhe tradotte"
 
 #, php-format
+msgid "%s / %s of %s total available"
+msgstr ""
+
+#, php-format
 msgid "%s / unlimited"
 msgstr "%s / illimitato"
 
@@ -185,10 +189,6 @@ msgstr "%s pagina"
 #, php-format
 msgid "%s record"
 msgstr "%s record"
-
-#, php-format
-msgid "%s total available"
-msgstr ""
 
 #, php-format
 msgid "%s webmail"
@@ -4298,15 +4298,15 @@ msgstr "Aree protette"
 msgid "Protocol"
 msgstr "Protocollo"
 
-msgid "Quota assignment"
-msgstr ""
-
 msgid "Quota in MiB (0 for unlimited)"
 msgstr "Quota in MiB (0 per illimitato)"
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
 msgstr "Quota in MiB (Massimo: %s)"
+
+msgid "Quota info"
+msgstr ""
 
 msgid "RAM"
 msgstr "RAM"
@@ -5868,14 +5868,6 @@ msgstr ""
 "framework PHP come ad esempio Symfony. Nota che la nuova document root sarà "
 "all'interno della directory `/htdocs' standard. Attenzione, la nuova "
 "directory per la nuova document root dovrà essere creata preventivamente."
-
-msgid ""
-"You cannot add new email account. You have already assigned all your email "
-"quota to other mailboxes. Please first, review your quota assignments."
-msgstr ""
-"Non puoi aggiungere un altro account email. Hai già assegnato tutti lo "
-"spazio disponibile ad altri account email. Per procedere oltre, devi "
-"rivedere le tue precedenti assegnazioni di quote."
 
 msgid ""
 "You cannot add normal email account because you have already assigned all "

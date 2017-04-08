@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-04 04:03+0000\n"
+"POT-Creation-Date: 2017-04-07 14:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Alex_Joe <voxar@voxar.pl>, 2017\n"
 "Language-Team: Polish (Poland) (https://www.transifex.com/i-mscp/teams/576/pl_PL/)\n"
@@ -148,6 +148,10 @@ msgid "%d strings translated"
 msgstr "%d fraz przetłumaczonych"
 
 #, php-format
+msgid "%s / %s of %s total available"
+msgstr ""
+
+#, php-format
 msgid "%s / unlimited"
 msgstr "%s / nieograniczone"
 
@@ -186,10 +190,6 @@ msgstr "%s strona"
 #, php-format
 msgid "%s record"
 msgstr "rekord %s"
-
-#, php-format
-msgid "%s total available"
-msgstr ""
 
 #, php-format
 msgid "%s webmail"
@@ -4239,15 +4239,15 @@ msgstr "Obszary chronione"
 msgid "Protocol"
 msgstr "Protokół"
 
-msgid "Quota assignment"
-msgstr ""
-
 msgid "Quota in MiB (0 for unlimited)"
 msgstr "Quota w MiB (0 dla nieograniczonej)"
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
 msgstr "Quota w MiB (Maks.: %s)"
+
+msgid "Quota info"
+msgstr ""
 
 msgid "RAM"
 msgstr "RAM"
@@ -5779,14 +5779,6 @@ msgstr ""
 " frameworków typu Symfony. Pamiętaj, że nowy folder główny musi zawierać się"
 " wewnątrz domyślnego folderu '/htdocs'. Zwróć uwagę, że musi już istnieć "
 "zanim wskażesz go w tym miejscu."
-
-msgid ""
-"You cannot add new email account. You have already assigned all your email "
-"quota to other mailboxes. Please first, review your quota assignments."
-msgstr ""
-"Nie możesz dodać nowego konta pocztowego. Posiadasz już przypisaną całą "
-"swóją quotę do innych skrzynek pocztowych. Sprawdź w pierwszej kolejności "
-"wykorzystanie quoty."
 
 msgid ""
 "You cannot add normal email account because you have already assigned all "

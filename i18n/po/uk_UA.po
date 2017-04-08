@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-04 04:03+0000\n"
+"POT-Creation-Date: 2017-04-07 14:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Aleksandr Sidenko <fox4ua@ya.ru>, 2017\n"
 "Language-Team: Ukrainian (Ukraine) (https://www.transifex.com/i-mscp/teams/576/uk_UA/)\n"
@@ -147,6 +147,10 @@ msgid "%d strings translated"
 msgstr "Переведено %d строк "
 
 #, php-format
+msgid "%s / %s of %s total available"
+msgstr ""
+
+#, php-format
 msgid "%s / unlimited"
 msgstr "%s / не ограничено"
 
@@ -185,10 +189,6 @@ msgstr "%s страница"
 #, php-format
 msgid "%s record"
 msgstr "%s запис"
-
-#, php-format
-msgid "%s total available"
-msgstr ""
 
 #, php-format
 msgid "%s webmail"
@@ -4225,15 +4225,15 @@ msgstr "Захищені зони"
 msgid "Protocol"
 msgstr "Протокол"
 
-msgid "Quota assignment"
-msgstr ""
-
 msgid "Quota in MiB (0 for unlimited)"
 msgstr "Квота в MB (0 неограниченно)"
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
 msgstr "Квота в MB (Максимум: %s)"
+
+msgid "Quota info"
+msgstr ""
 
 msgid "RAM"
 msgstr "ОЗУ"
@@ -5765,14 +5765,6 @@ msgid ""
 "inside the default  `/htdocs' document root. Be aware that the directory for"
 " the new document root must pre-exist."
 msgstr ""
-
-msgid ""
-"You cannot add new email account. You have already assigned all your email "
-"quota to other mailboxes. Please first, review your quota assignments."
-msgstr ""
-"Вы не можете добавить новый почтовый ящик. Вы уже исчерпали всё доступное "
-"для ящиков пространство. Пожалуйста, пересмотрите Вашу политику "
-"использования почтовых ящиков."
 
 msgid ""
 "You cannot add normal email account because you have already assigned all "

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-04 04:03+0000\n"
+"POT-Creation-Date: 2017-04-07 14:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: needforszpit <needforszpit@gmail.com>, 2017\n"
 "Language-Team: Hungarian (Hungary) (https://www.transifex.com/i-mscp/teams/576/hu_HU/)\n"
@@ -149,6 +149,10 @@ msgid "%d strings translated"
 msgstr "%d karaktersorozat lefordítva"
 
 #, php-format
+msgid "%s / %s of %s total available"
+msgstr ""
+
+#, php-format
 msgid "%s / unlimited"
 msgstr "%s / korlátlan"
 
@@ -187,10 +191,6 @@ msgstr "%s"
 #, php-format
 msgid "%s record"
 msgstr "%s rekord"
-
-#, php-format
-msgid "%s total available"
-msgstr "%s elérhető összesen"
 
 #, php-format
 msgid "%s webmail"
@@ -4253,15 +4253,15 @@ msgstr "Védett területek"
 msgid "Protocol"
 msgstr "Protokoll"
 
-msgid "Quota assignment"
-msgstr ""
-
 msgid "Quota in MiB (0 for unlimited)"
 msgstr "Kvóta MB-ban (0 - korlátlan)"
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
 msgstr "Kvóta MB-ban (Max: %s)"
+
+msgid "Quota info"
+msgstr ""
 
 msgid "RAM"
 msgstr "Memória"
@@ -5789,13 +5789,6 @@ msgid ""
 "inside the default  `/htdocs' document root. Be aware that the directory for"
 " the new document root must pre-exist."
 msgstr ""
-
-msgid ""
-"You cannot add new email account. You have already assigned all your email "
-"quota to other mailboxes. Please first, review your quota assignments."
-msgstr ""
-"Nem adhatsz hozzá új postafiókot, mivel elérted a postafiók korlátod. "
-"Kérjük, először nézd meg a korlátod."
 
 msgid ""
 "You cannot add normal email account because you have already assigned all "

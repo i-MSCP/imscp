@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-04 04:03+0000\n"
+"POT-Creation-Date: 2017-04-07 14:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Dutch (Netherlands) (https://www.transifex.com/i-mscp/teams/576/nl_NL/)\n"
@@ -147,6 +147,10 @@ msgid "%d strings translated"
 msgstr "%d tekenreeksen vertaald"
 
 #, php-format
+msgid "%s / %s of %s total available"
+msgstr ""
+
+#, php-format
 msgid "%s / unlimited"
 msgstr "%s / ongelimiteerd"
 
@@ -185,10 +189,6 @@ msgstr "%s pagina"
 #, php-format
 msgid "%s record"
 msgstr "%s record"
-
-#, php-format
-msgid "%s total available"
-msgstr "%s totaal beschikbaar"
 
 #, php-format
 msgid "%s webmail"
@@ -4270,15 +4270,15 @@ msgstr "Beveiligde mappen"
 msgid "Protocol"
 msgstr "Protocol"
 
-msgid "Quota assignment"
-msgstr "Toegewezen quota"
-
 msgid "Quota in MiB (0 for unlimited)"
 msgstr "Quota in MB (vul 0 in voor ongelimiteerd)"
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
 msgstr "Quota in MB (Max: %s)"
+
+msgid "Quota info"
+msgstr ""
 
 msgid "RAM"
 msgstr "RAM"
@@ -5826,13 +5826,6 @@ msgstr ""
 "U kunt een alternatieve startmap laden. Dit kan nodig zijn als u een PHP-"
 "framework gebruik, bijvoorbeeld Symfony. Let wel: deze map zal in de htdocs-"
 "map te vinden zijn en moet reeds bestaan."
-
-msgid ""
-"You cannot add new email account. You have already assigned all your email "
-"quota to other mailboxes. Please first, review your quota assignments."
-msgstr ""
-"U kunt geen nieuwe e-mailaccounts meer maken. U heeft al uw e-mailquota al "
-"aan andere mailaccounts toegewezen. Controleert u deze eerst."
 
 msgid ""
 "You cannot add normal email account because you have already assigned all "

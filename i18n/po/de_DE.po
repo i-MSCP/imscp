@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-04 04:03+0000\n"
+"POT-Creation-Date: 2017-04-07 14:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Tim Rühenbeck <revision.od@gmail.com>, 2017\n"
 "Language-Team: German (Germany) (https://www.transifex.com/i-mscp/teams/576/de_DE/)\n"
@@ -148,6 +148,10 @@ msgid "%d strings translated"
 msgstr "%d Strings übersetzt"
 
 #, php-format
+msgid "%s / %s of %s total available"
+msgstr ""
+
+#, php-format
 msgid "%s / unlimited"
 msgstr "%s / unbegrenzt"
 
@@ -186,10 +190,6 @@ msgstr "%s Seite"
 #, php-format
 msgid "%s record"
 msgstr "%s Eintrag"
-
-#, php-format
-msgid "%s total available"
-msgstr "%s insgesamt verfügbar"
 
 #, php-format
 msgid "%s webmail"
@@ -4302,15 +4302,15 @@ msgstr "Verzeichnisschutz"
 msgid "Protocol"
 msgstr "Protokoll"
 
-msgid "Quota assignment"
-msgstr "Quota zuordnen"
-
 msgid "Quota in MiB (0 for unlimited)"
 msgstr "Quota in MiB (0 für unbegrenzt)"
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
 msgstr "Quota in MiB (Max: %s)"
+
+msgid "Quota info"
+msgstr ""
 
 msgid "RAM"
 msgstr "RAM"
@@ -5869,14 +5869,6 @@ msgstr ""
 "Document-Root innerhalb des Standard `/htdocs' Document-Root ist. Beachten "
 "Sie, dass das Verzeichnis für das neue Document-Root bereits vorhanden sein "
 "muss."
-
-msgid ""
-"You cannot add new email account. You have already assigned all your email "
-"quota to other mailboxes. Please first, review your quota assignments."
-msgstr ""
-"Sie können kein E-Mail Konto hinzufügen. Sie haben bereits Ihr gesamtes E"
-"-Mail-Kontigent für andere Mailboxen verbraucht. Bitte beachten Sie zuvor "
-"Ihr zugewiesenes Kontigent."
 
 msgid ""
 "You cannot add normal email account because you have already assigned all "

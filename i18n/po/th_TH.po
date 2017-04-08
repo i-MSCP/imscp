@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-04 04:03+0000\n"
+"POT-Creation-Date: 2017-04-07 14:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>, 2017\n"
 "Language-Team: Thai (Thailand) (https://www.transifex.com/i-mscp/teams/576/th_TH/)\n"
@@ -145,6 +145,10 @@ msgid "%d strings translated"
 msgstr ""
 
 #, php-format
+msgid "%s / %s of %s total available"
+msgstr ""
+
+#, php-format
 msgid "%s / unlimited"
 msgstr ""
 
@@ -182,10 +186,6 @@ msgstr ""
 
 #, php-format
 msgid "%s record"
-msgstr ""
-
-#, php-format
-msgid "%s total available"
 msgstr ""
 
 #, php-format
@@ -3960,14 +3960,14 @@ msgstr ""
 msgid "Protocol"
 msgstr ""
 
-msgid "Quota assignment"
-msgstr ""
-
 msgid "Quota in MiB (0 for unlimited)"
 msgstr ""
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
+msgstr ""
+
+msgid "Quota info"
 msgstr ""
 
 msgid "RAM"
@@ -5444,11 +5444,6 @@ msgid ""
 " PHP framework such as Symfony. Note that the new document root will live "
 "inside the default  `/htdocs' document root. Be aware that the directory for"
 " the new document root must pre-exist."
-msgstr ""
-
-msgid ""
-"You cannot add new email account. You have already assigned all your email "
-"quota to other mailboxes. Please first, review your quota assignments."
 msgstr ""
 
 msgid ""
