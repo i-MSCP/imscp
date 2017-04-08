@@ -43,7 +43,7 @@
 <!-- BDP: groups_message_block -->
 <div class="static_info">{GROUPS_MESSAGE}</div>
 <!-- EDP: groups_message_block -->
-<!-- BDP: groups_block -->
+<!-- BDP: group_blocks -->
 <table class="firstColFixed">
     <thead>
     <tr>
@@ -57,18 +57,14 @@
     <!-- BDP: group_block -->
     <tr>
         <td>{GNAME}</td>
-        <td>
-            <!-- BDP: group_members -->
-            {MEMBER}
-            <!-- EDP: group_members -->
-        </td>
+        <td>{MEMBER}</td>
         <td>{GSTATUS}</td>
         <td><a href="#" class="icon i_delete" onclick="{GROUP_DELETE_SCRIPT}">{GROUP_DELETE}</a></td>
     </tr>
     <!-- EDP: group_block -->
     </tbody>
 </table>
-<!-- EDP: groups_block -->
+<!-- EDP: group_blocks -->
 <div class="buttons">
     <a class="link_as_button" href="protected_group_add.php">{TR_ADD_GROUP}</a>
     <a class="link_as_button" href="protected_areas.php">{TR_CANCEL}</a>

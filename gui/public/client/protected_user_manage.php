@@ -112,7 +112,7 @@ function client_generateGroupsList($tpl)
     if (!$stmt->rowCount()) {
         $tpl->assign(array(
             'GROUPS_MESSAGE' => tr('No group found.'),
-            'GROUPS_BLOCK'   => ''
+            'GROUP_BLOCKS'   => ''
         ));
         return;
     }
@@ -131,17 +131,15 @@ function client_generateGroupsList($tpl)
         ));
 
         if (empty($row['members'])) {
-            $tpl->assign('GROUP_MEMBERS', '');
+            $tpl->assign('MEMBER', '');
         } else {
-            $stmt = execute_query(
+            $stmt2 = execute_query(
                 'SELECT uname FROM htaccess_users WHERE id IN(' . implode(', ', array_map('quoteValue', explode(',', $row['members']))) .')'
             );
-            $tpl->assign('MEMBER', tohtml(implode(', ', $stmt->fetchAll(PDO::FETCH_COLUMN))));
-            $tpl->parse('GROUP_MEMBERS', '.group_members');
+            $tpl->assign('MEMBER', tohtml(implode(', ', $stmt2->fetchAll(PDO::FETCH_COLUMN))));
         }
 
         $tpl->parse('GROUP_BLOCK', '.group_block');
-        $tpl->assign('GROUP_MEMBERS', '');
     }
 }
 
@@ -164,9 +162,8 @@ $tpl->define_dynamic(array(
     'users_block'          => 'page',
     'user_block'           => 'users_block',
     'groups_message_block' => 'page',
-    'groups_block'         => 'page',
-    'group_block'          => 'groups_block',
-    'group_members'        => 'group_block'
+    'group_blocks'         => 'page',
+    'group_block'          => 'group_blocks'
 ));
 $tpl->assign(array(
     'TR_PAGE_TITLE'     => tr('Client / Webtools / Protected Areas / Manage Users and Groups'),

@@ -37,6 +37,7 @@ UNINSTALLER
     
 YOUTRACK
     IP-1707 Getting Error when trying to change e-mail forwarder du to wrong quota value
+    IP-1709 Protected area users/groups management - Groups list is truncated to first group
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.2
