@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by internet Multi Server Control Panel
+# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -30,19 +30,17 @@ sub uninstall
 {
     my $self = shift;
 
-    my $rs = $self->_restoreConfFile();
-    $rs ||= $self->_dropSqlUser();
+    my $rs = $self->_restoreConfFile( );
+    $rs ||= $self->_dropSqlUser( );
 }
 
 sub _init
 {
     my $self = shift;
 
-    $self->{'po'} = Servers::po::dovecot->getInstance();
-    $self->{'mta'} = Servers::mta->factory();
-    $self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
-    $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-    $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+    $self->{'po'} = Servers::po::dovecot->getInstance( );
+    $self->{'mta'} = Servers::mta->factory( );
+    $self->{'bkpDir'} = "$self->{'po'}->{'cfgDir'}/backup";
     $self->{'config'} = $self->{'po'}->{'config'};
     $self;
 }
@@ -51,25 +49,35 @@ sub _restoreConfFile
 {
     my $self = shift;
 
+    return 0 unless -d $self->{'config'}->{'DOVECOT_CONF_DIR'};
+
     for ('dovecot.conf', 'dovecot-sql.conf') {
-        next unless -f "$self->{bkpDir}/$_.system";
-        my $rs = iMSCP::File->new( filename => "$self->{bkpDir}/$_.system" )->copyFile(
+        next unless -f "$self->{'bkpDir'}/$_.system";
+
+        my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$_.system" )->copyFile(
             "$self->{'config'}->{'DOVECOT_CONF_DIR'}/$_"
         );
         return $rs if $rs;
     }
 
-    my $file = iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf" );
-    my $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'} );
-    $rs ||= $file->mode( 0644 );
+    if (-f "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf") {
+        my $file = iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf" );
+        my $rs ||= $file->owner(
+            $main::imscpConfig{'ROOT_USER'}, $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}
+        );
+        $rs ||= $file->mode( 0644 );
+    }
+
+    0;
 }
 
 sub _dropSqlUser
 {
     my $self = shift;
 
-    my $sqlServer = Servers::sqld->factory();
     return 0 unless $self->{'config'}->{'DATABASE_USER'};
+
+    my $sqlServer = Servers::sqld->factory( );
 
     for ('localhost', '%', $main::imscpConfig{'DATABASE_USER_HOST'}) {
         $sqlServer->dropUser( $self->{'config'}->{'DATABASE_USER'}, $_ );

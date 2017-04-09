@@ -62,7 +62,7 @@ sub factory
         fatal( $@ ) if $@;
 
         my $rs = $package->getInstance( )->uninstall( );
-        fatal( sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'NAMED_SERVER'} ) ) if $rs;
+        fatal( sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'PO_SERVER'} ) ) if $rs;
     }
 
     my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::po::$sName";

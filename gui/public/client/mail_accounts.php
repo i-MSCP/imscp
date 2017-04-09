@@ -159,40 +159,29 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
         if ($row['status'] == 'ok' && strpos($row['mail_type'], '_mail') !== false) {
             $hasMailboxes = true;
             list($user, $domain) = explode('@', $row['mail_addr']);
-            $maildirsize = parseMaildirsize(
+            $maildirsize = ($row['quota']) ? parseMaildirsize(
                 utils_normalizePath($postfixConfig['MTA_VIRTUAL_MAIL_DIR'] . "/$domain/$user/maildirsize"),
                 $syncQuotaInfo
-            );
+            ) : false;
 
-            if ($maildirsize !== FALSE) {
-                if ($maildirsize['QUOTA_BYTES'] > 0) {
-                    $quotaPercent = ($maildirsize['QUOTA_BYTES'] > 0)
-                        ? ceil(100 * $maildirsize['BYTE_COUNT'] / $maildirsize['QUOTA_BYTES']) : 0;
+            if ($maildirsize !== false) {
+                $quotaPercent = min(100, round(($maildirsize['BYTE_COUNT'] / max(1, $maildirsize['QUOTA_BYTES'])) * 100));
 
-                    if ($quotaPercent >= 100) {
-                        $overQuota = true;
-                    }
-
-                    $mailQuotaInfo = sprintf(
-                        ($quotaPercent >= 95) ? '<span style="color:red">%s / %s (%s%%)</span>' : '%s / %s (%s%%)',
-                        bytesHuman($maildirsize['BYTE_COUNT'], NULL, 1),
-                        bytesHuman($maildirsize['QUOTA_BYTES'], NULL, 1),
-                        $quotaPercent
-                    );
-                } else {
-                    $mailQuotaInfo = sprintf(
-                        '%s / %s (%s%%)',
-                        bytesHuman($maildirsize['BYTE_COUNT'], NULL, 1),
-                        ($maildirsize['QUOTA_BYTES'] > 1)
-                            ? bytesHuman($maildirsize['QUOTA_BYTES'], NULL, 1) : tr('Unlimited'),
-                        0
-                    );
+                if ($quotaPercent >= 100) {
+                    $overQuota = true;
                 }
+
+                $mailQuotaInfo = sprintf(
+                    ($quotaPercent >= 95) ? '<span style="color:red">%s / %s (%.0f%%)</span>' : '%s / %s (%.0f%%)',
+                    bytesHuman($maildirsize['BYTE_COUNT'], NULL, 1),
+                    bytesHuman($maildirsize['QUOTA_BYTES'], NULL, 1),
+                    $quotaPercent
+                );
             } else {
-                $mailQuotaInfo = tr('Unavailable');
+                $mailQuotaInfo = ($row['quota']) ? tr('n/a') : tr('Unlimited');
             }
         } else {
-            $mailQuotaInfo = tr('Unavailable');
+            $mailQuotaInfo = tr('n/a');
         }
 
         $tpl->assign(array(

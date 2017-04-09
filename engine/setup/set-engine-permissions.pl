@@ -19,7 +19,7 @@
 
 =head1 NAME
 
-set-engine-permissions Set i-MSCP engine permission
+ set-engine-permissions Set i-MSCP engine permission
 
 =head1 SYNOPSIS
 
@@ -53,7 +53,7 @@ Set i-MSCP engine permissions.
 
 OPTIONS:
  -s,    --setup           Setup mode.
- -d,    --debug         Enable debug mode.
+ -d,    --debug           Enable debug mode.
  -v,    --verbose         Enable verbose mode.
  -x,    --fix-permissions Fix permissions recursively.},
     'setup|s'           => sub { $main::execmode = 'setup'; },
@@ -131,7 +131,7 @@ exit $rs;
 
 =head1 AUTHOR
 
-Laurent Declercq <l.declercq@nuxwin.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 

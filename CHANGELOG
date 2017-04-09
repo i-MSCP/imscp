@@ -32,6 +32,10 @@ PACKAGES
 SCRIPTS
     Fixed: All in/out traffic not computed (imscp-srv-traff)
 
+SERVERS
+    Fixed: Authdaemond socket directory still mounted when switching from Courier to Dovecot (PO server implementation)
+    Fixed: When switching to another PO server implementation, uninstallation of old PO server must be triggered
+
 UNINSTALLER
     Fixed: Ask administrator to uninstall plugins prior running i-MSCP uninstaller
     Fixed: General uninstallation failure due to wrong SQL query in imscp-uninstall script

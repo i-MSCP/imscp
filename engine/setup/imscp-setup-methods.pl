@@ -1187,14 +1187,12 @@ sub setupSetPermissions
     my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupSetPermissions');
     return $rs if $rs;
 
-    (tied %main::imscpConfig)->{'temporary'} = 1;
-    $main::imscpConfig{'DEBUG'} = iMSCP::Getopt->debug;
-
     for my $script ('set-engine-permissions.pl', 'set-gui-permissions.pl') {
         startDetail();
 
         my @options = (
             '--setup',
+            iMSCP::Getopt->debug ? '--debug' : '',
             $script eq 'set-engine-permissions.pl' && iMSCP::Getopt->fixPermissions ? '--fix-permissions' : ''
         );
 

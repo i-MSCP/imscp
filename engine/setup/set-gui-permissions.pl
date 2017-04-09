@@ -19,7 +19,7 @@
 
 =head1 NAME
 
-set-engine-permissions Set i-MSCP GUI permission
+ set-engine-permissions Set i-MSCP GUI permission
 
 =head1 SYNOPSIS
 
@@ -100,7 +100,7 @@ exit $rs;
 
 =head1 AUTHOR
 
-Laurent Declercq <l.declercq@nuxwin.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 
