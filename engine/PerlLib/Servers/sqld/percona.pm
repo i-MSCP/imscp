@@ -37,7 +37,7 @@ use parent 'Servers::sqld::mysql';
 
 =over 4
 
-=item preinstall()
+=item preinstall( )
 
  Process preinstall tasks
 
@@ -50,11 +50,11 @@ sub preinstall
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'percona' );
-    $rs ||= Servers::sqld::percona::installer->getInstance()->preinstall();
+    $rs ||= Servers::sqld::percona::installer->getInstance( )->preinstall( );
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPreinstall', 'percona' )
 }
 
-=item postinstall()
+=item postinstall( )
 
  Process postinstall tasks
 
@@ -69,7 +69,7 @@ sub postinstall
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'percona' );
 
     local $@;
-    eval { iMSCP::Service->getInstance()->enable( 'mysql' ); };
+    eval { iMSCP::Service->getInstance( )->enable( 'mysql' ); };
     if ($@) {
         error( $@ );
         return 1;
@@ -77,7 +77,7 @@ sub postinstall
 
     $rs = $self->{'eventManager'}->register(
         'beforeSetupRestartServices', sub {
-            push @{$_[0]}, [ sub { $self->restart(); }, 'Percona' ];
+            push @{$_[0]}, [ sub { $self->restart( ); }, 'Percona' ];
             0;
         }
     );
@@ -85,7 +85,7 @@ sub postinstall
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'percona' );
 }
 
-=item uninstall()
+=item uninstall( )
 
  Process uninstall tasks
 
@@ -98,7 +98,7 @@ sub uninstall
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'percona' );
-    $rs ||= Servers::sqld::percona::uninstaller->getInstance()->uninstall();
+    $rs ||= Servers::sqld::percona::uninstaller->getInstance( )->uninstall( );
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldUninstall', 'percona' );
 }
 

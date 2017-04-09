@@ -129,16 +129,16 @@ sub quotaFiles
                             'nice', '-n', '15', 'ionice', '-c2', '-n5', 'du', '--exclude=backups/*', '--exclude=logs/*',
                             '-s', '-B1', $dir
                         ],
-                        \my $stdout,
-                        \my $stderr
+                        \ my $stdout,
+                        \ my $stderr
                     );
                     error( $stderr || 'Unknown error' ) if $rs;
                     $webDiskUsage = $1 if $stdout && $stdout =~ /^(\d+)/;
                 } else {
                     $rs = execute(
                         [ 'nice', '-n', '15', 'ionice', '-c2', '-n5', 'du', '-s', '-B1', $dir ],
-                        \my $stdout,
-                        \my $stderr
+                        \ my $stdout,
+                        \ my $stderr
                     );
                     error( $stderr || 'Unknown error' ) if $rs;
                     $mailDiskUsage += $1 if $stdout && $stdout =~ /^(\d+)/;

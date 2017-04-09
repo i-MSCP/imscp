@@ -375,7 +375,7 @@ sub _switchTasks
     );
     return $rs if $rs;
 
-    $rs = execute( "rm -f $self->{'wrkDir'}/*.db", \my $stdout, \my $stderr );
+    $rs = execute( "rm -f $self->{'wrkDir'}/*.db", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;

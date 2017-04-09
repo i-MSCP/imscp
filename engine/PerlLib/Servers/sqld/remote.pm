@@ -39,7 +39,7 @@ use parent 'Servers::sqld::mysql';
 
 =over 4
 
-=item preinstall()
+=item preinstall( )
 
  Process preinstall tasks
 
@@ -52,11 +52,11 @@ sub preinstall
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'remote' );
-    $rs ||= Servers::sqld::remote::installer->getInstance()->preinstall();
+    $rs ||= Servers::sqld::remote::installer->getInstance( )->preinstall( );
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPreinstall', 'remote' )
 }
 
-=item postinstall()
+=item postinstall( )
 
  Process postinstall tasks
 
@@ -72,7 +72,7 @@ sub postinstall
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'remote' );
 }
 
-=item uninstall()
+=item uninstall( )
 
  Process uninstall tasks
 
@@ -85,11 +85,11 @@ sub uninstall
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'remote' );
-    $rs ||= Servers::sqld::remote::uninstaller->getInstance()->uninstall();
+    $rs ||= Servers::sqld::remote::uninstaller->getInstance( )->uninstall( );
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldUninstall', 'remote' );
 }
 
-=item restart()
+=item restart( )
 
  Restart server
 
@@ -102,7 +102,7 @@ sub restart
     0;
 }
 
-=item setEnginePermissions()
+=item setEnginePermissions( )
 
  Set engine permissions
 
@@ -134,7 +134,7 @@ sub setEnginePermissions
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldSetEnginePermissions' );
 }
 
-=item createUser($user, $host, $password)
+=item createUser( $user, $host, $password )
 
  Create the given SQL user
 
@@ -153,15 +153,15 @@ sub createUser
     defined $host or die( '$host parameter is not defined' );
     defined $password or die( '$password parameter is not defined' );
 
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->factory( );
     my $qrs = $db->doQuery(
         'c', 'CREATE USER ?@? IDENTIFIED BY ?'.(
-                $self->getType() ne 'mariadb' && version->parse( $self->getVersion() ) >= version->parse( '5.7.6' )
+                $self->getType( ) ne 'mariadb' && version->parse( $self->getVersion( ) ) >= version->parse( '5.7.6' )
             ? ' PASSWORD EXPIRE NEVER' : ''
         ),
         $user, $host, $password
     );
-    ref $qrs eq 'HASH' or die( sprintf( 'Could not create the %s@%s SQL user: %s', $user, $host, $qrs ) );
+    ref $qrs eq 'HASH' or die( sprintf( "Couldn't create the %s\@%s SQL user: %s", $user, $host, $qrs ) );
     0;
 }
 

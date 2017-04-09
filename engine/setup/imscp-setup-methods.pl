@@ -234,7 +234,7 @@ sub setupAskServerHostname
     if($main::reconfigure =~ /^(?:system_hostname|hostnames|all|forced)$/
         || !isValidHostname($hostname)
     ) {
-        chomp($hostname) unless($hostname || execute('hostname -f', \$hostname, \my $stderr));
+        chomp($hostname) unless($hostname || execute('hostname -f', \ $hostname, \ my $stderr));
         $hostname = idn_to_unicode($hostname, 'utf-8');
 
         my ($rs, $msg) = (0, '');
@@ -910,7 +910,7 @@ EOF
     $rs ||= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
     return $rs if $rs;
 
-    $rs = execute('hostname -F /etc/hostname', \my $stdout, \my $stderr);
+    $rs = execute('hostname -F /etc/hostname', \ my $stdout, \ my $stderr);
     debug($stdout) if $stdout;
     debug($stderr) if !$rs && $stderr;
     error($stderr) if $rs && $stderr;
@@ -1078,8 +1078,8 @@ sub setupDatabase
     my $rs = iMSCP::EventManager->getInstance()->trigger('beforeSetupUpdateDatabase');
     $rs ||= execute(
         "php -d date.timezone=UTC $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php",
-        \my $stdout,
-        \my $stderr
+        \ my $stdout,
+        \ my $stderr
     );
     debug($stdout) if $stdout;
     error($stderr || 'Unknown error') if $rs;

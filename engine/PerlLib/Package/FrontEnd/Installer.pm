@@ -1211,7 +1211,7 @@ sub getFullPhpVersionFor
 {
     my (undef, $binaryPath) = @_;
 
-    my $rs = execute([ $binaryPath, '-nv' ], \my $stdout, \my $stderr );
+    my $rs = execute([ $binaryPath, '-nv' ], \ my $stdout, \ my $stderr );
     error( $stderr || 'Unknown error' ) if $rs;
     return undef unless $stdout;
     $stdout =~ /PHP\s+([^\s]+)/;

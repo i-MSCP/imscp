@@ -72,7 +72,7 @@ sub _removeUsers
 
 sub _buildAliasses
 {
-    my $rs = execute( 'newaliases', \my $stdout, \my $stderr );
+    my $rs = execute( 'newaliases', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     error( "Error while executing newaliases command" ) if !$stderr && $rs;

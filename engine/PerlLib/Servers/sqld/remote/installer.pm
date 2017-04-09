@@ -45,7 +45,7 @@ use parent 'Servers::sqld::mysql::installer';
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -57,8 +57,8 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'sqld'} = Servers::sqld::remote->getInstance();
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
+    $self->{'sqld'} = Servers::sqld::remote->getInstance( );
     $self->{'cfgDir'} = $self->{'sqld'}->{'cfgDir'};
     $self->{'config'} = $self->{'sqld'}->{'config'};
 
@@ -79,7 +79,7 @@ sub _init
     $self;
 }
 
-=item _buildConf()
+=item _buildConf( )
 
  Build configuration file
 
@@ -110,7 +110,7 @@ sub _buildConf
 
     # Create the /etc/mysql/my.cnf file if missing
     unless (-f "$confDir/my.cnf") {
-        $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'my.cnf', \my $cfgTpl, { } );
+        $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'my.cnf', \ my $cfgTpl, { } );
         return $rs if $rs;
 
         unless (defined $cfgTpl) {
@@ -121,25 +121,26 @@ sub _buildConf
 
         my $file = iMSCP::File->new( filename => "$confDir/my.cnf" );
         $rs = $file->set( $cfgTpl );
-        $rs ||= $file->save();
+        $rs ||= $file->save( );
         $rs ||= $file->owner( $rootUName, $rootGName );
         $rs ||= $file->mode( 0644 );
         return $rs if $rs;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'imscp.cnf', \my $cfgTpl, { } );
+    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'imscp.cnf', \ my $cfgTpl, { } );
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
-        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp.cnf" )->get();
+        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp.cnf" )->get( );
         unless (defined $cfgTpl) {
-            error( sprintf( 'Could not read %s', "$self->{'cfgDir'}/imscp.cnf" ) );
+            error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/imscp.cnf" ) );
             return 1;
         }
     }
 
     (my $user = main::setupGetQuestion( 'DATABASE_USER' ) ) =~ s/"/\\"/g;
-    (my $pwd = decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv, main::setupGetQuestion( 'DATABASE_PASSWORD' ) ) ) =~ s/"/\\"/g;
+    (my $pwd = decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv,
+        main::setupGetQuestion( 'DATABASE_PASSWORD' ) ) ) =~ s/"/\\"/g;
 
     $cfgTpl = process(
         {
@@ -155,13 +156,13 @@ sub _buildConf
 
     my $file = iMSCP::File->new( filename => "$confDir/conf.d/imscp.cnf" );
     $rs ||= $file->set( $cfgTpl );
-    $rs ||= $file->save();
+    $rs ||= $file->save( );
     $rs ||= $file->owner( $rootUName, $rootGName ); # The `mysql' group is only created by mysql-server package
     $rs ||= $file->mode( 0640 );
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldBuildConf' );
 }
 
-=item _updateServerConfig()
+=item _updateServerConfig( )
 
  Update server configuration
 
@@ -176,7 +177,7 @@ sub _updateServerConfig
 {
     my $self = shift;
 
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->factory( );
 
     # Set SQL mode (BC reasons)
     my $qrs = $db->doQuery( 's', "SET GLOBAL sql_mode = 'NO_AUTO_CREATE_USER'" );

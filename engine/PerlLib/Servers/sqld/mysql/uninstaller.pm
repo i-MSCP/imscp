@@ -37,7 +37,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item uninstall()
+=item uninstall( )
 
  Process uninstall tasks
 
@@ -49,7 +49,7 @@ sub uninstall
 {
     my $self = shift;
 
-    $self->_removeConfig();
+    $self->_removeConfig( );
 }
 
 =back
@@ -58,7 +58,7 @@ sub uninstall
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -70,11 +70,11 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'sqld'} = Servers::sqld::mysql->getInstance();
+    $self->{'sqld'} = Servers::sqld::mysql->getInstance( );
     $self;
 }
 
-=item _removeConfig()
+=item _removeConfig( )
 
  Remove imscp configuration file
 
@@ -89,7 +89,7 @@ sub _removeConfig
     my $filepath = "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf";
 
     if (-f $filepath) {
-        return iMSCP::File->new( filename => $filepath )->delFile();
+        return iMSCP::File->new( filename => $filepath )->delFile( );
     }
 
     0;

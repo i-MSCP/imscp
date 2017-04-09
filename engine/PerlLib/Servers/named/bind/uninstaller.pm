@@ -123,7 +123,7 @@ sub _deleteDbFiles
 {
     my $self = shift;
 
-    my $rs = execute( "rm -f $self->{'config'}->{'BIND_DB_DIR'}/*.db", \my $stdout, \my $stderr );
+    my $rs = execute( "rm -f $self->{'config'}->{'BIND_DB_DIR'}/*.db", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;

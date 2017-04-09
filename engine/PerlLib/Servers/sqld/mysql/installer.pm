@@ -48,7 +48,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item preinstall()
+=item preinstall( )
 
  Process preinstall tasks
 
@@ -60,10 +60,10 @@ sub preinstall
 {
     my $self = shift;
 
-    my $rs = $self->_setTypeAndVersion();
-    $rs ||= $self->_buildConf();
-    $rs ||= $self->_updateServerConfig();
-    $rs ||= $self->_saveConf();
+    my $rs = $self->_setTypeAndVersion( );
+    $rs ||= $self->_buildConf( );
+    $rs ||= $self->_updateServerConfig( );
+    $rs ||= $self->_saveConf( );
 }
 
 =back
@@ -72,7 +72,7 @@ sub preinstall
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -84,8 +84,8 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'sqld'} = Servers::sqld::mysql->getInstance();
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
+    $self->{'sqld'} = Servers::sqld::mysql->getInstance( );
     $self->{'cfgDir'} = $self->{'sqld'}->{'cfgDir'};
     $self->{'config'} = $self->{'sqld'}->{'config'};
 
@@ -106,7 +106,7 @@ sub _init
     $self;
 }
 
-=item _setTypeAndVersion()
+=item _setTypeAndVersion( )
 
  Set SQL server type and version
 
@@ -118,7 +118,7 @@ sub _setTypeAndVersion
 {
     my $self = shift;
 
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->factory( );
     $db->set( 'FETCH_MODE', 'arrayref' );
 
     my $rdata = $db->doQuery( undef, 'SELECT @@version, @@version_comment' );
@@ -128,7 +128,7 @@ sub _setTypeAndVersion
     }
 
     if (!@{$rdata}) {
-        error( 'Could not find SQL server type and version' );
+        error( "Couldn't find SQL server type and version" );
         return 1;
     }
 
@@ -141,7 +141,7 @@ sub _setTypeAndVersion
 
     my ($version) = ${$rdata}[0]->[0] =~ /^([0-9]+(?:\.[0-9]+){1,2})/;
     unless (defined $version) {
-        error( 'Could not find SQL server version' );
+        error( "Couldn't find SQL server version" );
         return 1;
     }
 
@@ -152,7 +152,7 @@ sub _setTypeAndVersion
     0;
 }
 
-=item _buildConf()
+=item _buildConf( )
 
  Build configuration file
 
@@ -184,7 +184,7 @@ sub _buildConf
 
     # Create the /etc/mysql/my.cnf file if missing
     unless (-f "$confDir/my.cnf") {
-        $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'my.cnf', \my $cfgTpl, { } );
+        $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'my.cnf', \ my $cfgTpl, { } );
         return $rs if $rs;
 
         unless (defined $cfgTpl) {
@@ -195,19 +195,19 @@ sub _buildConf
 
         my $file = iMSCP::File->new( filename => "$confDir/my.cnf" );
         $rs = $file->set( $cfgTpl );
-        $rs ||= $file->save();
+        $rs ||= $file->save( );
         $rs ||= $file->owner( $rootUName, $rootGName );
         $rs ||= $file->mode( 0644 );
         return $rs if $rs;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'imscp.cnf', \my $cfgTpl, { } );
+    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'imscp.cnf', \ my $cfgTpl, { } );
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
-        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp.cnf" )->get();
+        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp.cnf" )->get( );
         unless (defined $cfgTpl) {
-            error( sprintf( 'Could not read %s', "$self->{'cfgDir'}/imscp.cnf" ) );
+            error( sprintf( "Couldn't read %s", "$self->{'cfgDir'}/imscp.cnf" ) );
             return 1;
         }
     }
@@ -220,7 +220,8 @@ max_connections = 500
 EOF
 
     (my $user = main::setupGetQuestion( 'DATABASE_USER' ) ) =~ s/"/\\"/g;
-    (my $pwd = decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv, main::setupGetQuestion( 'DATABASE_PASSWORD' ) ) ) =~ s/"/\\"/g;
+    (my $pwd = decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv,
+        main::setupGetQuestion( 'DATABASE_PASSWORD' ) ) ) =~ s/"/\\"/g;
     my $variables = {
         DATABASE_HOST     => main::setupGetQuestion( 'DATABASE_HOST' ),
         DATABASE_PORT     => main::setupGetQuestion( 'DATABASE_PORT' ),
@@ -230,7 +231,7 @@ EOF
     };
 
     if (version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.5.0' )) {
-        my $innoDbUseNativeAIO = $self->_isMysqldInsideCt() ? '0' : '1';
+        my $innoDbUseNativeAIO = $self->_isMysqldInsideCt( ) ? '0' : '1';
         $cfgTpl .= "innodb_use_native_aio = $innoDbUseNativeAIO\n";
     }
 
@@ -256,7 +257,7 @@ EOF
 
     my $file = iMSCP::File->new( filename => "$confDir/conf.d/imscp.cnf" );
     $rs ||= $file->set( $cfgTpl );
-    $rs ||= $file->save();
+    $rs ||= $file->save( );
     $rs ||= $file->owner( $rootUName, $mysqlGName );
     $rs ||= $file->mode( 0640 );
     return $rs if $rs;
@@ -264,7 +265,7 @@ EOF
     $self->{'eventManager'}->trigger( 'afterSqldBuildConf' );
 }
 
-=item _updateServerConfig()
+=item _updateServerConfig( )
 
  Update server configuration
 
@@ -281,7 +282,7 @@ sub _updateServerConfig
 
     if (iMSCP::ProgramFinder::find( 'dpkg' ) && iMSCP::ProgramFinder::find( 'mysql_upgrade' )) {
         my $rs = execute(
-            "dpkg -l mysql-community* percona-server-* | cut -d' ' -f1 | grep -q 'ii'", \my $stdout, \my $stderr
+            "dpkg -l mysql-community* percona-server-* | cut -d' ' -f1 | grep -q 'ii'", \ my $stdout, \ my $stderr
         );
         debug($stdout) if $stdout;
         debug($stderr) if $stderr;
@@ -291,14 +292,14 @@ sub _updateServerConfig
         unless ($rs) {
             # Filter all "duplicate column", "duplicate key" and "unknown column"
             # errors as the command is designed to be idempotent.
-            $rs = execute("mysql_upgrade  2>&1 | egrep -v '^(1|\@had|ERROR (1054|1060|1061))'", \$stdout);
-            error(sprintf('Could not upgrade SQL server system tables: %s', $stdout)) if $rs;
+            $rs = execute( "mysql_upgrade  2>&1 | egrep -v '^(1|\@had|ERROR (1054|1060|1061))'", \$stdout );
+            error( sprintf( "Couldn't upgrade SQL server system tables: %s", $stdout ) ) if $rs;
             return $rs if $rs;
             debug( $stdout ) if $stdout;
         }
     }
 
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->factory( );
 
     # Set SQL mode (BC reasons)
     my $qrs = $db->doQuery( 's', "SET GLOBAL sql_mode = 'NO_AUTO_CREATE_USER'" );
@@ -332,7 +333,7 @@ sub _updateServerConfig
     0;
 }
 
-=item _saveConf()
+=item _saveConf( )
 
  Save configuration file
 
@@ -344,11 +345,11 @@ sub _saveConf
 {
     my $self = shift;
 
-    (tied %{$self->{'config'}})->flush();
+    (tied %{$self->{'config'}})->flush( );
     iMSCP::File->new( filename => "$self->{'cfgDir'}/mysql.data" )->copyFile( "$self->{'cfgDir'}/mysql.old.data" );
 }
 
-=item _isMysqldInsideCt()
+=item _isMysqldInsideCt( )
 
  Does the Mysql server is run inside an unprivileged VE (OpenVZ container)
 
@@ -360,7 +361,7 @@ sub _isMysqldInsideCt
 {
     return 0 unless -f '/proc/user_beancounters';
 
-    my $rs = execute( 'cat /proc/1/status | grep --color=never envID', \my $stdout, \my $stderr );
+    my $rs = execute( 'cat /proc/1/status | grep --color=never envID', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     debug( $stderr ) if $rs && $stderr;
     return $rs if $rs;

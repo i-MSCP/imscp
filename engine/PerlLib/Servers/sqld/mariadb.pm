@@ -38,7 +38,7 @@ use parent 'Servers::sqld::mysql';
 
 =over 4
 
-=item preinstall()
+=item preinstall( )
 
  Process preinstall tasks
 
@@ -51,11 +51,11 @@ sub preinstall
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'mariadb' );
-    $rs ||= Servers::sqld::mariadb::installer->getInstance()->preinstall();
+    $rs ||= Servers::sqld::mariadb::installer->getInstance( )->preinstall( );
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPreinstall', 'mariadb' )
 }
 
-=item postinstall()
+=item postinstall( )
 
  Process postinstall tasks
 
@@ -70,7 +70,7 @@ sub postinstall
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'mariadb' );
 
     local $@;
-    eval { iMSCP::Service->getInstance()->enable( 'mysql' ); };
+    eval { iMSCP::Service->getInstance( )->enable( 'mysql' ); };
     if ($@) {
         error( $@ );
         return 1;
@@ -78,7 +78,7 @@ sub postinstall
 
     $rs = $self->{'eventManager'}->register(
         'beforeSetupRestartServices', sub {
-            push @{$_[0]}, [ sub { $self->restart(); }, 'MariaDB' ];
+            push @{$_[0]}, [ sub { $self->restart( ); }, 'MariaDB' ];
             0;
         }
     );
@@ -86,7 +86,7 @@ sub postinstall
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'mariadb' );
 }
 
-=item uninstall()
+=item uninstall( )
 
  Process uninstall tasks
 
@@ -99,11 +99,11 @@ sub uninstall
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'mariadb' );
-    $rs ||= Servers::sqld::mariadb::uninstaller->getInstance()->uninstall();
+    $rs ||= Servers::sqld::mariadb::uninstaller->getInstance( )->uninstall( );
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldUninstall', 'mariadb' );
 }
 
-=item createUser($user, $host, $password)
+=item createUser( $user, $host, $password )
 
  Create the given SQL user
 
@@ -122,9 +122,9 @@ sub createUser
     defined $host or die( '$host parameter is not defined' );
     defined $user or die( '$password parameter is not defined' );
 
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->factory( );
     my $qrs = $db->doQuery( 'c', 'CREATE USER ?@? IDENTIFIED BY ?', $user, $host, $password );
-    ref $qrs eq 'HASH' or die( sprintf( 'Could not create the %s@%s SQL user: %s', $user, $host, $qrs ) );
+    ref $qrs eq 'HASH' or die( sprintf( "Couldn't create the %s\@%s SQL user: %s", $user, $host, $qrs ) );
     0;
 }
 

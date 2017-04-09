@@ -38,7 +38,7 @@ use parent 'Servers::sqld::mysql::installer';
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -50,8 +50,8 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'sqld'} = Servers::sqld::mariadb->getInstance();
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
+    $self->{'sqld'} = Servers::sqld::mariadb->getInstance( );
     $self->{'cfgDir'} = $self->{'sqld'}->{'cfgDir'};
     $self->{'config'} = $self->{'sqld'}->{'config'};
 

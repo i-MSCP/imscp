@@ -61,7 +61,7 @@ sub addSystemGroup
     $systemgroup = $systemgroup ? '-r' : '';
 
     my @cmd = ('groupadd', $^O !~ /bsd$/ ? $systemgroup : '', escapeShell( $groupname ));
-    my $rs = execute( "@cmd", \my $stdout, \my $stderr );
+    my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     $rs;
@@ -87,7 +87,7 @@ sub delSystemGroup
 
     return unless getgrnam( $groupname );
 
-    my $rs = execute( 'groupdel '.escapeShell( $groupname ), \my $stdout, \my $stderr );
+    my $rs = execute( 'groupdel '.escapeShell( $groupname ), \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     $rs;

@@ -201,7 +201,7 @@ sub _buildConfig
         MD5_SALT_STRING => randomStr( 16, iMSCP::Crypt::ALNUM )
     };
 
-    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'net2ftp', 'settings.inc.php', \my $cfgTpl, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'net2ftp', 'settings.inc.php', \ my $cfgTpl, $data );
     return $rs if $rs;
 
     unless (defined $cfgTpl) {

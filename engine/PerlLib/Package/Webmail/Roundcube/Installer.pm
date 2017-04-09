@@ -487,7 +487,8 @@ sub _updateDatabase
 
     my $rs = execute(
         "php $roundcubeDir/bin/updatedb.sh --version=$fromVersion --dir=$roundcubeDir/SQL --package=roundcube",
-        \my $stdout, \my $stderr
+        \ my $stdout,
+        \ my $stderr
     );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;

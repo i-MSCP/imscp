@@ -44,7 +44,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item preinstall()
+=item preinstall( )
 
  Process preinstall tasks
 
@@ -57,11 +57,11 @@ sub preinstall
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall' );
-    $rs ||= Servers::sqld::mysql::installer->getInstance()->preinstall();
+    $rs ||= Servers::sqld::mysql::installer->getInstance( )->preinstall( );
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPreinstall' );
 }
 
-=item postinstall()
+=item postinstall( )
 
  Process postinstall tasks
 
@@ -77,7 +77,7 @@ sub postinstall
     return $rs if $rs;
 
     local $@;
-    eval { iMSCP::Service->getInstance()->enable( 'mysql' ); };
+    eval { iMSCP::Service->getInstance( )->enable( 'mysql' ); };
     if ($@) {
         error( $@ );
         return 1;
@@ -85,14 +85,14 @@ sub postinstall
 
     $rs = $self->{'eventManager'}->register(
         'beforeSetupRestartServices', sub {
-            push @{$_[0]}, [ sub { $self->restart(); }, 'MySQL' ];
+            push @{$_[0]}, [ sub { $self->restart( ); }, 'MySQL' ];
             0;
         }
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'mysql' );
 }
 
-=item uninstall()
+=item uninstall( )
 
  Process uninstall tasks
 
@@ -105,12 +105,13 @@ sub uninstall
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'mysql' );
-    $rs ||= Servers::sqld::mysql::uninstaller->getInstance()->uninstall();
-    $rs ||= $self->restart();
+    $rs ||= Servers::sqld::mysql::uninstaller->getInstance( )->uninstall( );
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldUninstall', 'mysql' );
+    $rs ||= $self->restart( ) unless $rs;
+    $rs;
 }
 
-=item setEnginePermissions()
+=item setEnginePermissions( )
 
  Set engine permissions
 
@@ -142,7 +143,7 @@ sub setEnginePermissions
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldSetEnginePermissions' );
 }
 
-=item restart()
+=item restart( )
 
  Restart server
 
@@ -158,7 +159,7 @@ sub restart
     return $rs if $rs;
 
     local $@;
-    eval { iMSCP::Service->getInstance()->restart( 'mysql' ); };
+    eval { iMSCP::Service->getInstance( )->restart( 'mysql' ); };
     if ($@) {
         error( $@ );
         return 1;
@@ -167,7 +168,7 @@ sub restart
     $self->{'eventManager'}->trigger( 'afterSqldRestart' );
 }
 
-=item createUser($user, $host, $password)
+=item createUser( $user, $host, $password )
 
  Create the given SQL user
 
@@ -186,18 +187,18 @@ sub createUser
     defined $host or die( '$host parameter is not defined' );
     defined $password or die( '$password parameter is not defined' );
 
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->factory( );
     my $qrs = $db->doQuery(
         'c', 'CREATE USER ?@? IDENTIFIED BY ?'.(
-                version->parse( $self->getVersion() ) >= version->parse( '5.7.6' ) ? ' PASSWORD EXPIRE NEVER' : ''
+                version->parse( $self->getVersion( ) ) >= version->parse( '5.7.6' ) ? ' PASSWORD EXPIRE NEVER' : ''
         ),
         $user, $host, $password
     );
-    ref $qrs eq 'HASH' or die( sprintf( 'Could not create the %s@%s SQL user: %s', $user, $host, $qrs ) );
+    ref $qrs eq 'HASH' or die( sprintf( "Couldn't create the %s\@%s SQL user: %s", $user, $host, $qrs ) );
     0;
 }
 
-=item dropUser($user, $host)
+=item dropUser( $user, $host )
 
  Drop the given SQL user if exists
 
@@ -216,18 +217,18 @@ sub dropUser
 
     return 0 if $user eq 'root'; # Prevent SQL root user deletion
 
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->factory( );
     my $qrs = $db->doQuery( 1, 'SELECT 1 FROM mysql.user WHERE user = ? AND host = ?', $user, $host );
     ref $qrs eq 'HASH' or die( $qrs );
 
     return 0 unless %{$qrs};
 
     $qrs = $db->doQuery( 'd', 'DROP USER ?@?', $user, $host );
-    ref $qrs eq 'HASH' or die( sprintf( 'Could not drop the %s@%s SQL user: %s', $user, $host, $qrs ) );
+    ref $qrs eq 'HASH' or die( sprintf( "Couldn't drop the %s\@%s SQL user: %s", $user, $host, $qrs ) );
     0;
 }
 
-=item getType()
+=item getType( )
 
  Get SQL server type
 
@@ -242,7 +243,7 @@ sub getType
     $self->{'config'}->{'SQLD_TYPE'};
 }
 
-=item getVersion()
+=item getVersion( )
 
  Get SQL server version
 
@@ -263,7 +264,7 @@ sub getVersion
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -275,7 +276,7 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/mysql";
     tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/mysql.data", readonly => 1;
     $self;

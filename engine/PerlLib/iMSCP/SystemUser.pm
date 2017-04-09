@@ -187,7 +187,7 @@ sub addToGroup
         my $newGroups = join( ',', keys %{$self->{'userGroups'}} );
         $newGroups = ($newGroups ne '') ? "$newGroups,$groupname" : $groupname;
         my @cmd = ('usermod', escapeShell( $username ), '-G', escapeShell( $newGroups ));
-        my $rs = execute( "@cmd", \my $stdout, \my $stderr );
+        my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr || 'Unknown error' ) if $rs;
         return $rs;
@@ -248,7 +248,7 @@ sub removeFromGroup
     }
 
     my @cmd = ('gpasswd', '-d', escapeShell( $username ), escapeShell( $groupname ));
-    my $rs = execute( "@cmd", \my $stdout, \my $stderr );
+    my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs && $rs != 3;
     return $rs if $rs && $rs != 3;

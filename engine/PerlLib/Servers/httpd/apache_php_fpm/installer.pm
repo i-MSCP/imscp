@@ -243,7 +243,7 @@ sub _guessPhpVariables
         sprintf( "Couldn't guess value for the `%s' PHP configuration parameter.", 'PHP_VERSION' )
     );
 
-    my $rs = execute( "php -d date.timezone=utc -i | grep '(php.ini) Path'", \my $stdout, \my $stderr );
+    my $rs = execute( "php -d date.timezone=utc -i | grep '(php.ini) Path'", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     die( $stderr || 'Unknown error' ) if $rs;
 

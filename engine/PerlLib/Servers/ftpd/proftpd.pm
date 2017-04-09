@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by internet Multi Server Control Panel
+# Copyright (C) 2015-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -118,7 +118,8 @@ sub postinstall
     }
 
     $self->{'eventManager'}->register(
-        'beforeSetupRestartServices', sub {
+        'beforeSetupRestartServices',
+        sub {
             push @{$_[0]}, [ sub { $self->start( ); }, 'ProFTPD' ];
             0;
         }
@@ -141,8 +142,17 @@ sub uninstall
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdUninstall', 'proftpd' );
     $rs ||= Servers::ftpd::proftpd::uninstaller->getInstance( )->uninstall( );
-    $self->{'restart'} = 1 unless $rs;
     $rs ||= $self->{'eventManager'}->trigger( 'afterFtpdUninstall', 'proftpd' );
+
+    unless ($rs || !iMSCP::Service->getInstance( )->hasService( $self->{'config'}->{'FTPD_SNAME'} )) {
+        $self->{'restart'} = 1;
+    } else {
+        $self->{'start'} = 1;
+        $self->{'restart'} = 1;
+        $self->{'reload'} = 1;
+    }
+
+    $rs;
 }
 
 =item setEnginePermissions( )
@@ -391,10 +401,10 @@ sub getTraffic
         );
 
         # Reset traffic data source file
-        truncate( $trafficDataSrc, 0 ) or die( sprintf( 'Could not truncate %s file: %s', $trafficDataSrc, $! ) );
+        truncate( $trafficDataSrc, 0 ) or die( sprintf( "Couldn't truncate %s file: %s", $trafficDataSrc, $! ) );
 
         # Extract traffic data from snapshot and add them in traffic database
-        open my $fh, '<', $tmpFile or die( sprintf( 'Could not open file: %s', $! ) );
+        open my $fh, '<', $tmpFile or die( sprintf( "Couldn't open file: %s", $! ) );
         while(<$fh>) {
             $trafficDb{$2} += $1 if /^(?:[^\s]+\s){7}(\d+)\s(?:[^\s]+\s){5}[^\s]+\@([^\s]+)/gm;
         }

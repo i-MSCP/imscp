@@ -36,7 +36,7 @@ use parent 'Servers::sqld::mysql::uninstaller';
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -48,7 +48,7 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'sqld'} = Servers::sqld::percona->getInstance();
+    $self->{'sqld'} = Servers::sqld::percona->getInstance( );
     $self;
 }
 

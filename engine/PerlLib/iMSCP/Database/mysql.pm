@@ -298,8 +298,8 @@ sub dumpdb
             'mysqldump', '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords', '--compress',
             '--quote-names', '-r', $filename, '-B', $dbName
         ],
-        \my $stdout,
-        \my $stderr
+        \ my $stdout,
+        \ my $stderr
     );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;

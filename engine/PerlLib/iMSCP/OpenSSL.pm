@@ -128,7 +128,7 @@ sub validateCertificate
         '-purpose', 'sslserver', $self->{'certificate_container_path'}
     ];
 
-    my $rs = execute( $cmd, \my $stdout, \my $stderr );
+    my $rs = execute( $cmd, \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error(sprintf(
         "SSL certificate is not valid: %s",

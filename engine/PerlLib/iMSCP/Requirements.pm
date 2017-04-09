@@ -270,7 +270,7 @@ sub _programVersions
 {
     my ($self, $versionCommand, $versionRegexp, $minversion, $maxVersion) = @_;
 
-    execute( $versionCommand, \my $stdout, \my $stderr );
+    execute( $versionCommand, \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     debug( $stderr ) if $stderr;
 

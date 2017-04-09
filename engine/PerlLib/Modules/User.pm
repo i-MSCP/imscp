@@ -160,7 +160,7 @@ sub add
                 '-s', escapeShell( $shell ), #  New Shell
                 escapeShell( $self->{'admin_sys_name'} ) # Old username
             );
-            $rs = execute( "@cmd", \my $stdout, \my $stderr );
+            $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs && $rs != 12;
             return $rs if $rs && $rs != 12;
