@@ -49,9 +49,13 @@ iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTIONS]...", basename($0
 Script that processes i-MSCP backend requests.
 
 OPTIONS:
+ -d,    --debug         Enable debug mode.
  -v,    --verbose       Enable verbose mode.},
- 'verbose|v' => sub { setVerbose(@_); }
+ 'debug|d'   => \&iMSCP::Getopt::debug,
+ 'verbose|v' => \&iMSCP::Getopt::verbose
 );
+
+setVerbose(iMSCP::Getopt->verbose);
 
 iMSCP::Bootstrapper->getInstance()->boot(
     {

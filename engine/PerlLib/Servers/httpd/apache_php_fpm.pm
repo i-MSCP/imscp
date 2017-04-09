@@ -25,10 +25,10 @@ package Servers::httpd::apache_php_fpm;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ :nostat Servers::httpd::apache_php_fpm::installer Servers::httpd::apache_php_fpm::uninstaller /;
+use autouse 'Date::Format' => qw/ time2str /;
+use Class::Autouse qw/ :nostat File::Temp Servers::httpd::apache_php_fpm::installer Servers::httpd::apache_php_fpm::uninstaller /;
 use File::Basename;
 use File::Spec;
-use File::Temp;
 use iMSCP::Config;
 use iMSCP::Database;
 use iMSCP::Debug;
@@ -1019,10 +1019,7 @@ sub getTraffic
     # Load traffic database
     tie my %trafficDb, 'iMSCP::Config', fileName => $trafficDbPath, nodie => 1;
 
-    require Date::Format;
-    Date::Format->import( );
     my $ldate = time2str( '%Y%m%d', $timestamp );
-
     my $db = iMSCP::Database->factory( );
     my $dbh = $db->startTransaction( );
 

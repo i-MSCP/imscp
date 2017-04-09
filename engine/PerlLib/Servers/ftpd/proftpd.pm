@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2015-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,9 +25,8 @@ package Servers::ftpd::proftpd;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ :nostat Servers::ftpd::proftpd::installer Servers::ftpd::proftpd::uninstaller /;
+use Class::Autouse qw/ :nostat File::Temp Servers::ftpd::proftpd::installer Servers::ftpd::proftpd::uninstaller /;
 use File::Basename;
-use File::Temp;
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::EventManager;
@@ -147,9 +146,9 @@ sub uninstall
     unless ($rs || !iMSCP::Service->getInstance( )->hasService( $self->{'config'}->{'FTPD_SNAME'} )) {
         $self->{'restart'} = 1;
     } else {
-        $self->{'start'} = 1;
-        $self->{'restart'} = 1;
-        $self->{'reload'} = 1;
+        $self->{'start'} = 0;
+        $self->{'restart'} = 0;
+        $self->{'reload'} = 0;
     }
 
     $rs;

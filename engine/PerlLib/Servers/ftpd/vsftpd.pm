@@ -25,6 +25,7 @@ package Servers::ftpd::vsftpd;
 
 use strict;
 use warnings;
+use Class::Autouse qw/ :nostat File::Temp Servers::ftpd::vsftpd::installer Servers::ftpd::vsftpd::uninstaller /;
 use File::Basename;
 use iMSCP::Config;
 use iMSCP::Debug;
@@ -33,7 +34,6 @@ use iMSCP::File;
 use iMSCP::Rights;
 use iMSCP::Service;
 use iMSCP::TemplateParser;
-use Class::Autouse qw/ :nostat Servers::ftpd::vsftpd::installer Servers::ftpd::vsftpd::uninstaller /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -144,9 +144,9 @@ sub uninstall
     unless ($rs || !iMSCP::Service->getInstance( )->hasService( $self->{'config'}->{'FTPD_SNAME'} )) {
         $self->{'restart'} = 1;
     } else {
-        $self->{'start'} = 1;
-        $self->{'restart'} = 1;
-        $self->{'reload'} = 1;
+        $self->{'start'} = 0;
+        $self->{'restart'} = 0;
+        $self->{'reload'} = 0;
     }
 
     $rs ||= $self->{'eventManager'}->trigger( 'afterFtpdUninstall', 'vsftpd' );
@@ -390,8 +390,6 @@ sub getTraffic
 
     if (-f -s $trafficDataSrc) {
         # Process only if the file exists and is not empty
-        require File::Temp;
-
         # Create snapshot of traffic data source file
         my $tmpFile = File::Temp->new( UNLINK => 1 );
         iMSCP::File->new(
