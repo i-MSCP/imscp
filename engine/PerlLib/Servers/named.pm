@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::named - i-MSCP Named Server implementation
+ Servers::named - i-MSCP named server implementation
 
 =cut
 
@@ -25,9 +25,10 @@ package Servers::named;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ fatal /;
 
-our $instance;
+# named server instance
+my $instance;
 
 =head1 DESCRIPTION
 
@@ -37,45 +38,43 @@ our $instance;
 
 =over 4
 
-=item factory()
+=item factory( )
 
  Create and return named server instance
 
  Also trigger uninstallation of old named server when needed.
 
- Return Named server instance
+ Return named server instance
 
 =cut
 
 sub factory
 {
-    return $instance if defined $instance;
+    return $instance if $instance;
 
     my $sName = $main::imscpConfig{'NAMED_SERVER'} || 'external_server';
 
-    if (defined $main::execmode && $main::execmode eq 'setup') {
-        if ($sName eq 'external_server'
-            && $main::imscpOldConfig{'NAMED_SERVER'} ne ''
-            && $main::imscpOldConfig{'NAMED_SERVER'} ne $sName
-        ) {
-            my $package = "Servers::named::$main::imscpOldConfig{'NAMED_SERVER'}";
-            eval "require $package";
-            fatal( $@ ) if $@;
+    if (%main::imscpOldConfig
+        && $sName eq 'external_server'
+        && $main::imscpOldConfig{'NAMED_SERVER'} ne $sName
+    ) {
+        my $package = "Servers::named::$main::imscpOldConfig{'NAMED_SERVER'}";
+        eval "require $package";
+        fatal( $@ ) if $@;
 
-            my $rs = $package->getInstance()->uninstall();
-            fatal( sprintf( "Could not uninstall the `%s' server", $main::imscpOldConfig{'NAMED_SERVER'} ) ) if $rs;
-        }
+        my $rs = $package->getInstance( )->uninstall( );
+        fatal( sprintf( "Could not uninstall the `%s' server", $main::imscpOldConfig{'NAMED_SERVER'} ) ) if $rs;
     }
 
     my $package = ($sName eq 'external_server') ? 'Servers::noserver' : "Servers::named::$sName";
     eval "require $package";
     fatal( $@ ) if $@;
-    $instance = $package->getInstance();
+    $instance = $package->getInstance( );
 }
 
-=item can($method)
+=item can( $method )
 
- Checks if the named server class provide the given method
+ Checks if the named server package provides the given method
 
  Param string $method Method name
  Return subref|undef
@@ -85,17 +84,18 @@ sub factory
 sub can
 {
     my ($self, $method) = @_;
-    $self->factory()->can( $method );
+
+    $self->factory( )->can( $method );
 }
 
 END
     {
-        return if $? || (defined $main::execmode && $main::execmode eq 'setup');
+        return if $? || !$instance || ($main::execmode && $main::execmode eq 'setup');
 
-        if ($Servers::named::instance->{'restart'}) {
-            $? = $Servers::named::instance->restart();
-        } elsif ($Servers::named::instance->{'reload'}) {
-            $? = $Servers::named::instance->reload();
+        if ($instance->{'restart'}) {
+            $? = $instance->restart( );
+        } elsif ($instance->{'reload'}) {
+            $? = $instance->reload( );
         }
     }
 

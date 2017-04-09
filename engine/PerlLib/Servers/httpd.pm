@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::httpd - i-MSCP Httpd Server implementation
+ Servers::httpd - i-MSCP httpd server implementation
 
 =cut
 
@@ -25,9 +25,10 @@ package Servers::httpd;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ fatal /;
 
-our $instance;
+# httpd server instance
+my $instance;
 
 =head1 DESCRIPTION
 
@@ -37,28 +38,28 @@ our $instance;
 
 =over 4
 
-=item factory()
+=item factory( )
 
  Create and return httpd server instance
 
- Return Httpd server instance
+ Return httpd server instance
 
 =cut
 
 sub factory
 {
-    return $instance if defined $instance;
+    return $instance if $instance;
 
     my $sName = $main::imscpConfig{'HTTPD_SERVER'} || 'no';
     my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::httpd::$sName";
     eval "require $package";
     fatal( $@ ) if $@;
-    $instance = $package->getInstance();
+    $instance = $package->getInstance( );
 }
 
-=item can($method)
+=item can( $method )
 
- Checks if the httpd server class provide the given method
+ Checks if the httpd server package provides the given method
 
  Param string $method Method name
  Return subref|undef
@@ -68,17 +69,18 @@ sub factory
 sub can
 {
     my ($self, $method) = @_;
-    $self->factory()->can( $method );
+
+    $self->factory( )->can( $method );
 }
 
 END
     {
-        return if $? || (defined $main::execmode && $main::execmode eq 'setup');
+        return if $? || !$instance || ($main::execmode && $main::execmode eq 'setup');
 
-        if ($Servers::httpd::instance->{'start'}) {
-            $? = $Servers::httpd::instance->start();
-        } elsif ($Servers::httpd::instance->{'restart'}) {
-            $? = $Servers::httpd::instance->restart();
+        if ($instance->{'start'}) {
+            $? = $instance->start( );
+        } elsif ($instance->{'restart'}) {
+            $? = $instance->restart( );
         }
     }
 

@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::ftpd - i-MSCP Ftpd Server implementation
+ Servers::ftpd - i-MSCP ftpd Server implementation
 
 =cut
 
@@ -25,9 +25,10 @@ package Servers::ftpd;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ fatal /;
 
-our $instance;
+# ftpd server instance
+my $instance;
 
 =head1 DESCRIPTION
 
@@ -37,11 +38,11 @@ our $instance;
 
 =over 4
 
-=item factory()
+=item factory( )
 
  Create and return ftpd server instance
 
- Return Ftpd server instance
+ Return ftpd server instance
 
 =cut
 
@@ -53,12 +54,14 @@ sub factory
     my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::ftpd::$sName";
     eval "require $package";
     fatal( $@ ) if $@;
-    $instance = $package->getInstance();
+    $instance = $package->getInstance( );
+    $instance->{'restart'} = 1;
+    $instance;
 }
 
-=item can($method)
+=item can( $method )
 
- Checks if the ftpd server class provide the given method
+ Checks if the ftpd server package provides the given method
 
  Param string $method Method name
  Return subref|undef
@@ -68,19 +71,20 @@ sub factory
 sub can
 {
     my ($self, $method) = @_;
-    $self->factory()->can( $method );
+
+    $self->factory( )->can( $method );
 }
 
 END
     {
-        return if $? || (defined $main::execmode && $main::execmode eq 'setup');
+        return if $? || !$instance || ($main::execmode && $main::execmode eq 'setup');
 
-        if ($Servers::ftpd::instance->{'start'}) {
-            $? = $Servers::ftpd::instance->start();
-        } elsif ($Servers::ftpd::instance->{'restart'}) {
-            $? = $Servers::ftpd::instance->restart();
-        } elsif ($Servers::ftpd::instance->{'reload'}) {
-            $? = $Servers::ftpd::instance->reload();
+        if ($instance->{'start'}) {
+            $? = $instance->start( );
+        } elsif ($instance->{'restart'}) {
+            $? = $instance->restart( );
+        } elsif ($instance->{'reload'}) {
+            $? = $instance->reload( );
         }
     }
 

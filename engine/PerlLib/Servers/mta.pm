@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::mta - i-MSCP MTA Server implementation
+ Servers::mta - i-MSCP mta server implementation
 
 =cut
 
@@ -25,9 +25,10 @@ package Servers::mta;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ fatal /;
 
-our $instance;
+# mta server instance
+my $instance;
 
 =head1 DESCRIPTION
 
@@ -37,28 +38,28 @@ our $instance;
 
 =over 4
 
-=item factory()
+=item factory( )
 
  Create and return mta server instance
 
- Return MTA server instance
+ Return mta server instance
 
 =cut
 
 sub factory
 {
-    return $instance if defined $instance;
+    return $instance if $instance;
 
     my $sName ||= $main::imscpConfig{'MTA_SERVER'} || 'no';
     my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::mta::$sName";
     eval "require $package";
     fatal( $@ ) if $@;
-    $instance = $package->getInstance();
+    $instance = $package->getInstance( );
 }
 
-=item can($method)
+=item can( $method )
 
- Checks if the mta server class provide the given method
+ Checks if the mta server package provides the given method
 
  Param string $method Method name
  Return subref|undef
@@ -68,17 +69,18 @@ sub factory
 sub can
 {
     my ($self, $method) = @_;
-    $self->factory()->can( $method );
+
+    $self->factory( )->can( $method );
 }
 
 END
     {
-        return if $? || (defined $main::execmode && $main::execmode eq 'setup');
+        return if $? || !$instance || ($main::execmode && $main::execmode eq 'setup');
 
-        if ($Servers::mta::instance->{'restart'}) {
-            $? = $Servers::mta::instance->restart();
-        } elsif ($Servers::mta::instance->{'reload'}) {
-            $? = $Servers::mta::instance->reload();
+        if ($instance->{'restart'}) {
+            $? = $instance->restart( );
+        } elsif ($instance->{'reload'}) {
+            $? = $instance->reload( );
         }
     }
 

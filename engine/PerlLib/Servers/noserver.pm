@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::noserver - i-MSCP No Server implementation
+ Servers::noserver - i-MSCP noserver server implementation
 
 =cut
 
@@ -27,7 +27,8 @@ use strict;
 use warnings;
 use parent 'Common::SingletonClass';
 
-our $instance;
+# noserver server instance
+my $instance;
 
 =head1 DESCRIPTION
 
@@ -37,26 +38,26 @@ our $instance;
 
 =over 4
 
-=item factory()
+=item factory( )
 
  Create and return noserver server instance
 
- Return Servers::noserver
+ Return self
 
 =cut
 
 sub factory
 {
-    return $instance if defined $instance;
+    return $instance if $instance;
 
-    $instance = __PACKAGE__->getInstance();
+    $instance = __PACKAGE__->getInstance( );
     $instance->{'start'} = 0;
     $instance->{'restart'} = 0;
     $instance->{'reload'} = 0;
     $instance;
 }
 
-=item can($method)
+=item can( $method )
 
  Checks if the server class provide the given method
 
@@ -70,7 +71,7 @@ sub can
     undef;
 }
 
-=item AUTOLOAD()
+=item AUTOLOAD( )
 
  Catch any call to unexistent method
 

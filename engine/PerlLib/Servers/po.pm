@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::po - i-MSCP PO Server implementation
+ Servers::po - i-MSCP po server implementation
 
 =cut
 
@@ -27,7 +27,8 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 
-our $instance;
+# po server instance
+my $instance;
 
 =head1 DESCRIPTION
 
@@ -37,29 +38,42 @@ our $instance;
 
 =over 4
 
-=item factory()
+=item factory( )
 
  Create and return po server instance
 
- Param string $sName OPTIONAL Name of PO server implementation to instantiate
- Return PO server instance
+ Also trigger uninstallation of old po server when needed.
+
+ Return po server instance
 
 =cut
 
 sub factory
 {
-    return $instance if defined $instance;
+    return $instance if $instance;
 
     my $sName = $main::imscpConfig{'PO_SERVER'} || 'no';
+    
+    if (%main::imscpOldConfig
+        && $main::imscpOldConfig{'PO_SERVER'} ne $sName
+    ) {
+        my $package = "Servers::po::$main::imscpOldConfig{'PO_SERVER'}";
+        eval "require $package";
+        fatal( $@ ) if $@;
+
+        my $rs = $package->getInstance( )->uninstall( );
+        fatal( sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'NAMED_SERVER'} ) ) if $rs;
+    }
+
     my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::po::$sName";
     eval "require $package";
     fatal( $@ ) if $@;
-    $instance = $package->getInstance();
+    $instance = $package->getInstance( );
 }
 
-=item can($method)
+=item can( $method )
 
- Checks if the po server class provide the given method
+ Checks if the po server package provides the given method
 
  Param string $method Method name
  Return subref|undef
@@ -69,13 +83,15 @@ sub factory
 sub can
 {
     my ($self, $method) = @_;
-    $self->factory()->can( $method );
+
+    $self->factory( )->can( $method );
 }
 
 END
     {
-        return if $? || (defined $main::execmode && $main::execmode eq 'setup');
-        $? = $Servers::po::instance->restart() if $Servers::po::instance->{'restart'};
+        return if $? || !$instance || ($main::execmode && $main::execmode eq 'setup');
+
+        $? = $instance->restart( ) if $instance->{'restart'};
     }
 
 =back

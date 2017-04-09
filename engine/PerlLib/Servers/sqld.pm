@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::sqld - i-MSCP Sqld Server implementation
+ Servers::sqld - i-MSCP sqld server implementation
 
 =cut
 
@@ -25,9 +25,10 @@ package Servers::sqld;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ fatal /;
 
-our $instance;
+# sqld server instance
+my $instance;
 
 =head1 DESCRIPTION
 
@@ -37,29 +38,29 @@ our $instance;
 
 =over 4
 
-=item factory()
+=item factory( )
 
  Create and return sqld server instance
 
- Return Sqld server instance
+ Return sqld server instance
 
 =cut
 
 sub factory
 {
-    return $instance if defined $instance;
+    return $instance if $instance;
 
     (my $sName = $main::imscpConfig{'SQL_SERVER'}) =~ s/_\d+\.\d+$//;
     $sName = 'remote' if $sName eq 'remote_server';
     my $package = "Servers::sqld::$sName";
     eval "require $package";
     fatal( $@ ) if $@;
-    $instance = $package->getInstance();
+    $instance = $package->getInstance( );
 }
 
-=item can($method)
+=item can( $method )
 
- Checks if the sqld server class provide the given method
+ Checks if the sqld server package provides the given method
 
  Param string $method Method name
  Return subref|undef
@@ -69,7 +70,8 @@ sub factory
 sub can
 {
     my ($self, $method) = @_;
-    $self->factory()->can( $method );
+
+    $self->factory( )->can( $method );
 }
 
 =back

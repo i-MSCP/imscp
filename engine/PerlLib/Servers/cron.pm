@@ -1,6 +1,6 @@
 =head1 NAME
 
-Servers::cron - i-MSCP Cron server implementation
+ Servers::cron - i-MSCP cron server implementation
 
 =cut
 
@@ -25,9 +25,10 @@ package Servers::cron;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ fatal /;
 
-our $instance;
+# cron server instance
+my $instance;
 
 =head1 DESCRIPTION
 
@@ -37,7 +38,7 @@ our $instance;
 
 =over 4
 
-=item factory()
+=item factory( )
 
  Create and return cron server instance
 
@@ -47,17 +48,17 @@ our $instance;
 
 sub factory
 {
-    return $instance if defined $instance;
+    return $instance if $instance;
 
     my $package = 'Servers::cron::cron';
     eval "require $package";
     fatal( $@ ) if $@;
-    $instance = $package->getInstance();
+    $instance = $package->getInstance( );
 }
 
-=item can($method)
+=item can( $method )
 
- Checks if the cron server class provide the given method
+ Checks if the cron server package provides the given method
 
  Param string $method Method name
  Return subref|undef
@@ -67,7 +68,8 @@ sub factory
 sub can
 {
     my ($self, $method) = @_;
-    $self->factory()->can( $method );
+
+    $self->factory( )->can( $method );
 }
 
 =back
