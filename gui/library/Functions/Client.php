@@ -534,8 +534,6 @@ function send_alias_order_email($aliasName)
  */
 function parseMaildirsize($maildirsizeFilePath, $refreshData = FALSE)
 {
-    unset($_SESSION['maildirsize']);
-
     if (!$refreshData && !empty($_SESSION['maildirsize'][$maildirsizeFilePath])
         && $_SESSION['maildirsize']['TIMESTAMP'] < (time() + 300)
     ) {
