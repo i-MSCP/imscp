@@ -201,7 +201,7 @@ function client_addSqlUser($customerId, $dbId)
             return;
         }
 
-        if (client_isSqlUser($user, $host) || $user == 'root' || $user == 'debian-sys-maint') {
+        if (client_isSqlUser($user, $host) || in_array($user, array('debian-sys-maint', 'mysql.user', 'root'))) {
             set_page_message(tr("The `%s' SQL user is not available or not permitted.", $user . '@' . decode_idna($host)), 'error');
             return;
         }

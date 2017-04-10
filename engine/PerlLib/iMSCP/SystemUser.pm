@@ -37,7 +37,7 @@ use parent 'Common::Object';
 
 =over 4
 
-=item addSystemUser([ $username = $self->{'username'} ])
+=item addSystemUser( [ $username = $self->{'username'} ] )
 
  Add UNIX user
 
@@ -108,7 +108,7 @@ sub addSystemUser
     0;
 }
 
-=item delSystemUser([ $username = $self->{'username'} ])
+=item delSystemUser( [ $username = $self->{'username'} ] )
 
  Delete UNIX user
 
@@ -146,7 +146,7 @@ sub delSystemUser
     0;
 }
 
-=item addToGroup([ $groupname =  $self->{'groupname'} [, $username = $self->{'username'} ] ])
+=item addToGroup( [ $groupname =  $self->{'groupname'} [, $username = $self->{'username'} ] ] )
 
  Add given UNIX user to the given UNIX group
 
@@ -202,7 +202,7 @@ sub addToGroup
     0;
 }
 
-=item addToGroup([ $groupname = $self->{'groupname'} [, $username = $self->{'username'} ] ])
+=item addToGroup( [ $groupname = $self->{'groupname'} [, $username = $self->{'username'} ] ] )
 
  Remove given UNIX user from the given UNIX group
 

@@ -1,11 +1,11 @@
 =head1 NAME
 
- Servers::ftpd::proftpd::uninstaller - i-MSCP Proftpd Server implementation
+ Servers::ftpd::proftpd::uninstaller - i-MSCP ProFTPD server uninstaller
 
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by internet Multi Server Control Panel
+# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,6 +26,8 @@ package Servers::ftpd::proftpd::uninstaller;
 use strict;
 use warnings;
 use File::Basename;
+use iMSCP::Config;
+use iMSCP::EventManager;
 use iMSCP::File;
 use Servers::ftpd::proftpd;
 use Servers::sqld;
@@ -33,13 +35,13 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Uninstaller for the i-MSCP Poftpd Server implementation.
+ i-MSCP ProFTPD server uninstaller.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item uninstall()
+=item uninstall( )
 
  Process uninstall tasks
 
@@ -51,44 +53,15 @@ sub uninstall
 {
     my $self = shift;
 
-    my $rs = $self->restoreConfFile();
-    $rs ||= $self->removeDB();
-}
+    my $rs = $self->_removeConfig( );
+    return $rs if $rs;
 
-=item removeDB()
+    if ($main::execmode && $main::execmode eq 'setup') {
+        # In setup context, deletion of SQL user must be delayed, else we won't be able to connect to SQL server
+        return iMSCP::EventManager->getInstance()->register( 'afterSqldPreinstall', sub { $self->_dropSqlUser(); } );
+    }
 
- Remove Database data
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub removeDB
-{
-    my $self = shift;
-
-    Servers::sqld->factory()->dropUser(
-        $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'}
-    );
-}
-
-=item restoreConfFile()
-
- Restore system configuration file
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub restoreConfFile
-{
-    my $self = shift;
-
-    my $filename = basename( $self->{'config'}->{'FTPD_CONF_FILE'} );
-    return 0 unless -f "$self->{bkpDir}/$filename.system";
-    iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
-        $self->{'config'}->{'FTPD_CONF_FILE'}
-    );
+    $self->_dropSqlUser( );
 }
 
 =back
@@ -97,7 +70,7 @@ sub restoreConfFile
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -109,12 +82,80 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'ftpd'} = Servers::ftpd::proftpd->getInstance();
+    $self->{'ftpd'} = Servers::ftpd::proftpd->getInstance( );
     $self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'config'} = $self->{'ftpd'}->{'config'};
+
+    (tied %{$self->{'config'}})->{'temporary'} = 1;
+
+    my $oldConf = "$self->{'cfgDir'}/proftpd.old.data";
+    if (-f $oldConf) {
+        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
+        while(my ($key, $value) = each(%oldConfig)) {
+            next unless exists $self->{'config'}->{$key};
+            $self->{'config'}->{$key} = $value;
+        }
+    }
+
+    (tied %{$self->{'config'}})->{'temporary'} = 0;
+
     $self;
+}
+
+=item _removeConfig( )
+
+ Remove configuration
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _removeConfig
+{
+    my $self = shift;
+
+    my $filename = basename( $self->{'config'}->{'FTPD_CONF_FILE'} );
+
+    if (-f "$self->{'bkpDir'}/$filename.system") {
+        my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
+            $self->{'config'}->{'FTPD_CONF_FILE'}
+        );
+        return $rs if $rs;
+    }
+
+    if (-f "$self->{'cfgDir'}/proftpd.old.data") {
+        my $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.old.data" )->delFile( );
+        return $rs if $rs;
+    }
+}
+
+=item _dropSqlUser( )
+
+ Drop SQL user
+
+ Return int 0 on success, 1 on failure
+
+=cut
+
+sub _dropSqlUser
+{
+    my $self = shift;
+
+    # In setup context, take value from old conffile, else take value from current conffile
+    my $dbUserHost = ($main::execmode && $main::execmode eq 'setup')
+        ? $main::imscpOldConfig{'DATABASE_USER_HOST'} : $main::imscpConfig{'DATABASE_USER_HOST'};
+
+    return 0 unless $self->{'config'}->{'DATABASE_USER'} && $dbUserHost;
+
+    eval { Servers::sqld->factory( )->dropUser( $self->{'config'}->{'DATABASE_USER'}, $dbUserHost ); };
+    if ($@) {
+        error($@);
+        return 1;
+    }
+
+    0;
 }
 
 =back

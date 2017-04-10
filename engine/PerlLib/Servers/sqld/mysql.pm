@@ -215,7 +215,7 @@ sub dropUser
     defined $user or die( '$user parameter not defined' );
     defined $host or die( '$host parameter not defined' );
 
-    return 0 if $user eq 'root'; # Prevent SQL root user deletion
+    return 0 if $user =~ /^(?:debian-sys-maint|mysql\.sys|root)$/; # Prevent deletion of system SQL users
 
     my $db = iMSCP::Database->factory( );
     my $qrs = $db->doQuery( 1, 'SELECT 1 FROM mysql.user WHERE user = ? AND host = ?', $user, $host );

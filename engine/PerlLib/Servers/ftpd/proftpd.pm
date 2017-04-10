@@ -444,6 +444,7 @@ sub _init
 
     $self->{'start'} = 0;
     $self->{'restart'} = 0;
+    $self->{'reload'} = 0;
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/proftpd";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";

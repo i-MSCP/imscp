@@ -374,7 +374,7 @@ sub _setupSqlUser
 
     my $db = iMSCP::Database->factory( );
 
-    # Give needed privileges to this SQL user
+    # Give required privileges to this SQL user
 
     my $rs = $db->doQuery( 'g', 'GRANT USAGE ON mysql.* TO ?@?', $dbUser, $dbUserHost );
     unless (ref $rs eq 'HASH') {

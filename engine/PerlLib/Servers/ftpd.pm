@@ -42,6 +42,8 @@ my $instance;
 
  Create and return ftpd server instance
 
+ Also trigger uninstallation of old ftpd server when required.
+
  Return ftpd server instance
 
 =cut
@@ -50,13 +52,21 @@ sub factory
 {
     return $instance if defined $instance;
 
-    my $sName = $main::imscpConfig{'FTPD_SERVER'} || 'no';
+    my $sName = $main::imscpConfig{'FTPD_SERVER'};
+
+    if (%main::imscpOldConfig && $main::imscpOldConfig{'FTPD_SERVER'} ne $sName) {
+        my $package = "Servers::ftpd::$main::imscpOldConfig{'FTPD_SERVER'}";
+        eval "require $package";
+        fatal( $@ ) if $@;
+
+        my $rs = $package->getInstance( )->uninstall( );
+        fatal( sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'FTPD_SERVER'} ) ) if $rs;
+    }
+
     my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::ftpd::$sName";
     eval "require $package";
     fatal( $@ ) if $@;
     $instance = $package->getInstance( );
-    $instance->{'restart'} = 1;
-    $instance;
 }
 
 =item can( $method )

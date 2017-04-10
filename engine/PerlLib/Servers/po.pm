@@ -42,7 +42,7 @@ my $instance;
 
  Create and return po server instance
 
- Also trigger uninstallation of old po server when needed.
+ Also trigger uninstallation of old po server when required.
 
  Return po server instance
 
@@ -52,11 +52,9 @@ sub factory
 {
     return $instance if $instance;
 
-    my $sName = $main::imscpConfig{'PO_SERVER'} || 'no';
+    my $sName = $main::imscpConfig{'PO_SERVER'};
     
-    if (%main::imscpOldConfig
-        && $main::imscpOldConfig{'PO_SERVER'} ne $sName
-    ) {
+    if (%main::imscpOldConfig && $main::imscpOldConfig{'PO_SERVER'} ne $sName) {
         my $package = "Servers::po::$main::imscpOldConfig{'PO_SERVER'}";
         eval "require $package";
         fatal( $@ ) if $@;

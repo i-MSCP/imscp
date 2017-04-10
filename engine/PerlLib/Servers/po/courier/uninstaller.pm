@@ -1,3 +1,9 @@
+=head1 NAME
+
+ Servers::po::dovecot::uninstaller - i-MSCP Courier server uninstaller
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
@@ -19,68 +25,113 @@ package Servers::po::courier::uninstaller;
 
 use strict;
 use warnings;
+use iMSCP::Config;
 use iMSCP::Debug;
+use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Mount qw/ removeMountEntry umount /;
+use iMSCP::SystemUser;
 use iMSCP::TemplateParser;
 use Servers::mta;
 use Servers::po::courier;
 use Servers::sqld;
 use parent 'Common::SingletonClass';
 
-sub _init
-{
-    my $self = shift;
+=head1 DESCRIPTION
 
-    $self->{'config'} = Servers::po::courier->getInstance( )->{'config'};
-    $self->{'mta'} = Servers::mta->factory( );
-    $self;
-}
+ i-MSCP Courier server uninstaller.
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item uninstall( )
+
+ Process uninstall tasks
+
+ Return int 0 on success, die on failure
+
+=cut
 
 sub uninstall
 {
     my $self = shift;
 
-    my $rs = $self->_umountAuthdaemonSocketDir( );
-    $rs ||= $self->_removeSqlUser( );
-    $rs ||= $self->_removeConfig( );
+    my $rs = $self->_removeConfig( );
+    return $rs if $rs;
+
+    if ($main::execmode && $main::execmode eq 'setup') {
+        # In setup context, deletion of SQL user must be delayed, else we won't be able to connect to SQL server
+        return iMSCP::EventManager->getInstance()->register( 'afterSqldPreinstall', sub { $self->_dropSqlUser(); } );
+    }
+
+    $self->_dropSqlUser( );
 }
 
-sub _umountAuthdaemonSocketDir
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init( )
+
+ Initialize instance
+
+ Return Servers::po::courier::uninstaller
+
+=cut
+
+sub _init
 {
     my $self = shift;
+
+    $self->{'po'} = Servers::po::courier->getInstance( );
+    $self->{'mta'} = Servers::mta->factory( );
+    $self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
+    $self->{'config'} = $self->{'po'}->{'config'};
+
+    (tied %{$self->{'config'}})->{'temporary'} = 1;
+
+    my $oldConf = "$self->{'cfgDir'}/courier.old.data";
+    if (-f $oldConf) {
+        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
+        while(my ($key, $value) = each(%oldConfig)) {
+            next unless exists $self->{'config'}->{$key};
+            $self->{'config'}->{$key} = $value;
+        }
+    }
+
+    (tied %{$self->{'config'}})->{'temporary'} = 0;
+
+    $self;
+}
+
+=item _removeConfig( )
+
+ Remove configuration
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _removeConfig
+{
+    my $self = shift;
+
+    # Umount authdaemond socket directory from Postfix chroot
 
     my $fsFile = File::Spec->canonpath( "$self->{'mta'}->{'config'}->{'POSTFIX_QUEUE_DIR'}/private/authdaemon" );
     my $rs = removeMountEntry( qr%.*?[ \t]+\Q$fsFile\E(?:/|[ \t]+)[^\n]+% );
     $rs ||= umount( $fsFile );
     $rs ||= iMSCP::Dir->new( dirname => $fsFile )->remove( );
-}
 
-sub _removeSqlUser
-{
-    my $self = shift;
+    # Remove postfix user from authdaemon group
 
-    my $sqlServer = Servers::sqld->factory( );
-
-    for ($main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1',
-        '%') {
-        next unless $_;
-
-        if ($self->{'config'}->{'AUTHDAEMON_DATABASE_USER'}) {
-            $sqlServer->dropUser( $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'}, $_ );
-        }
-
-        if (exists $self->{'config'}->{'SALS_DATABASE_USER'}) {
-            $sqlServer->dropUser( $self->{'config'}->{'SALS_DATABASE_USER'}, $_ );
-        }
-    }
-
-    0;
-}
-
-sub _removeConfig
-{
-    my $self = shift;
+    $rs ||= iMSCP::SystemUser->new( )->removeFromGroup(
+        $self->{'config'}->{'AUTHDAEMON_GROUP'}, $self->{'mta'}->{'config'}->{'POSTFIX_USER'}
+    );
+    return $rs if $rs;
 
     if (-f "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd") {
         my $file = iMSCP::File->new( filename => "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd" );
@@ -97,7 +148,7 @@ sub _removeConfig
             $fileContent
         );
 
-        my $rs = $file->set( $fileContent );
+        $rs = $file->set( $fileContent );
         $rs ||= $file->save( );
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
         $rs ||= $file->mode( 0644 );
@@ -105,22 +156,62 @@ sub _removeConfig
     }
 
     if (-f "$self->{'config'}->{'SASL_CONF_DIR'}/smtpd.conf") {
-        my $rs = iMSCP::File->new( filename => "$self->{'config'}->{'SASL_CONF_DIR'}/smtpd.conf" )->delFile( );
+        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'SASL_CONF_DIR'}/smtpd.conf" )->delFile( );
         return $rs if $rs;
     }
 
     if (-f '/etc/tmpfiles.d/courier-authdaemon.conf') {
-        my $rs = iMSCP::File->new( filename => '/etc/tmpfiles.d/courier-authdaemon.conf' )->delFile( );
+        $rs = iMSCP::File->new( filename => '/etc/tmpfiles.d/courier-authdaemon.conf' )->delFile( );
         return $rs if $rs;
     }
 
     if (-f $self->{'config'}->{'QUOTA_WARN_MSG_PATH'}) {
-        my $rs = iMSCP::File->new( filename => $self->{'config'}->{'QUOTA_WARN_MSG_PATH'} )->delFile( );
+        $rs = iMSCP::File->new( filename => $self->{'config'}->{'QUOTA_WARN_MSG_PATH'} )->delFile( );
+        return $rs if $rs;
+    }
+
+    if (-f "$self->{'cfgDir'}/courier.old.data") {
+        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/courier.old.data" )->delFile( );
         return $rs if $rs;
     }
 
     0;
 }
+
+=item _dropSqlUser( )
+
+ Drop SQL user
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _dropSqlUser
+{
+    my $self = shift;
+
+    # In setup context, take value from old conffile, else take value from current conffile
+    my $dbUserHost = ($main::execmode && $main::execmode eq 'setup')
+        ? $main::imscpOldConfig{'DATABASE_USER_HOST'} : $main::imscpConfig{'DATABASE_USER_HOST'};
+
+    return 0 unless $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} && $dbUserHost;
+
+    eval { Servers::sqld->factory( )->dropUser( $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'}, $dbUserHost ); };
+    if ($@) {
+        error($@);
+        return 1;
+    }
+
+    0;
+}
+
+=back
+
+=head1 AUTHOR
+
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;
 __END__

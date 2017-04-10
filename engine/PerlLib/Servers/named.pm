@@ -42,7 +42,7 @@ my $instance;
 
  Create and return named server instance
 
- Also trigger uninstallation of old named server when needed.
+ Also trigger uninstallation of old named server when required.
 
  Return named server instance
 
@@ -52,13 +52,11 @@ sub factory
 {
     return $instance if $instance;
 
-    my $sName = $main::imscpConfig{'NAMED_SERVER'} || 'external_server';
+    my $sName = $main::imscpConfig{'NAMED_SERVER'};
 
-    if (%main::imscpOldConfig
-        && $sName eq 'external_server'
-        && $main::imscpOldConfig{'NAMED_SERVER'} ne $sName
-    ) {
-        my $package = "Servers::named::$main::imscpOldConfig{'NAMED_SERVER'}";
+    if (%main::imscpOldConfig && $main::imscpOldConfig{'NAMED_SERVER'} ne $sName) {
+        my $package = ($main::imscpOldConfig{'NAMED_SERVER'} eq 'external_server')
+            ? 'Servers::noserver' : "Servers::named::$main::imscpOldConfig{'NAMED_SERVER'}";
         eval "require $package";
         fatal( $@ ) if $@;
 

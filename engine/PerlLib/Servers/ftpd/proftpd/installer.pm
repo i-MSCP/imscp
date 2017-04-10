@@ -42,8 +42,8 @@ use Servers::sqld;
 use version;
 use parent 'Common::SingletonClass';
 
-%main::sqlUsers = () unless %main::sqlUsers;
-@main::createdSqlUsers = () unless @main::createdSqlUsers;
+%main::sqlUsers = ( ) unless %main::sqlUsers;
+@main::createdSqlUsers = ( ) unless @main::createdSqlUsers;
 
 =head1 DESCRIPTION
 
@@ -53,7 +53,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners(\%eventManager)
+=item registerSetupListeners( \%eventManager )
 
  Register setup event listeners
 
@@ -75,7 +75,7 @@ sub registerSetupListeners
     );
 }
 
-=item sqlUserDialog(\%dialog)
+=item sqlUserDialog( \%dialog )
 
  Ask for ProFTPD SQL user
 
@@ -93,9 +93,9 @@ sub sqlUserDialog
     my $dbPass = main::setupGetQuestion( 'FTPD_SQL_PASSWORD', $self->{'config'}->{'DATABASE_PASSWORD'} );
 
     if ($main::reconfigure =~ /^(?:ftpd|servers|all|forced)$/
-        || !isValidUsername($dbUser)
-        || !isStringNotInList($dbUser, 'root', 'debian-sys-maint', $masterSqlUser)
-        || !isValidPassword($dbPass)
+        || !isValidUsername( $dbUser )
+        || !isStringNotInList( $dbUser, 'root', 'debian-sys-maint', $masterSqlUser )
+        || !isValidPassword( $dbPass )
     ) {
         my ($rs, $msg) = (0, '');
 
@@ -105,7 +105,7 @@ sub sqlUserDialog
 Please enter a username for the ProFTPD SQL user:$msg
 EOF
             $msg = '';
-            if (!isValidUsername($dbUser)
+            if (!isValidUsername( $dbUser )
                 || !isStringNotInList($dbUser, 'root', 'debian-sys-maint', $masterSqlUser)
             ) {
                 $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
@@ -113,13 +113,13 @@ EOF
         } while $rs < 30 && $msg;
         return $rs if $rs >= 30;
 
-        if (isStringNotInList($dbUser, keys %main::sqlUsers)) {
+        if (isStringNotInList( $dbUser, keys %main::sqlUsers )) {
             do {
-                ($rs, $dbPass) = $dialog->inputbox( <<"EOF", $dbPass || randomStr(16, iMSCP::Crypt::ALNUM) );
+                ($rs, $dbPass) = $dialog->inputbox( <<"EOF", $dbPass || randomStr( 16, iMSCP::Crypt::ALNUM ) );
 
 Please enter a password for the ProFTPD SQL user:$msg
 EOF
-                $msg = (isValidPassword($dbPass)) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
+                $msg = isValidPassword( $dbPass ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
             } while $rs < 30 && $msg;
             return $rs if $rs >= 30;
         } else {
@@ -133,7 +133,7 @@ EOF
     0;
 }
 
-=item passivePortRangeDialog(\%dialog)
+=item passivePortRangeDialog( \%dialog )
 
  Ask for ProtFTPD port range to use for passive data transfers
 
@@ -150,9 +150,9 @@ sub passivePortRangeDialog
         || $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'};
     my ($startOfRange, $endOfRange);
 
-    if (!isValidNumberRange($passivePortRange, \$startOfRange, \$endOfRange)
-        || !isNumberInRange($startOfRange, 32768, 60999)
-        || !isNumberInRange($endOfRange, $startOfRange, 60999)
+    if (!isValidNumberRange( $passivePortRange, \$startOfRange, \$endOfRange )
+        || !isNumberInRange( $startOfRange, 32768, 60999 )
+        || !isNumberInRange( $endOfRange, $startOfRange, 60999 )
         || $main::reconfigure =~ /^(?:ftpd|servers|all|forced)$/
     ) {
         $passivePortRange = '32768 60999' unless $startOfRange && $endOfRange;
@@ -168,9 +168,9 @@ Please choose the passive port range for ProFTPD.
 Note that if you're behind a NAT, you must forward those ports to this server.$msg
 EOF
             $msg = '';
-            if (!isValidNumberRange($passivePortRange, \$startOfRange, \$endOfRange)
-                || !isNumberInRange($startOfRange, 32768, 60999)
-                || !isNumberInRange($endOfRange, $startOfRange, 60999)
+            if (!isValidNumberRange( $passivePortRange, \$startOfRange, \$endOfRange )
+                || !isNumberInRange( $startOfRange, 32768, 60999 )
+                || !isNumberInRange( $endOfRange, $startOfRange, 60999 )
             ) {
                 $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             }
@@ -184,7 +184,7 @@ EOF
     0;
 }
 
-=item install()
+=item install( )
 
  Process install tasks
 
@@ -197,11 +197,11 @@ sub install
     my $self = shift;
 
     my $rs = $self->_bkpConfFile( $self->{'config'}->{'FTPD_CONF_FILE'} );
-    $rs ||= $self->_setVersion();
-    $rs ||= $self->_setupDatabase();
-    $rs ||= $self->_buildConfigFile();
-    $rs ||= $self->_saveConf();
-    $rs ||= $self->_oldEngineCompatibility();
+    $rs ||= $self->_setVersion( );
+    $rs ||= $self->_setupDatabase( );
+    $rs ||= $self->_buildConfigFile( );
+    $rs ||= $self->_saveConf( );
+    $rs ||= $self->_oldEngineCompatibility( );
 }
 
 =back
@@ -210,7 +210,7 @@ sub install
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -222,8 +222,8 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'ftpd'} = Servers::ftpd::proftpd->getInstance();
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
+    $self->{'ftpd'} = Servers::ftpd::proftpd->getInstance( );
     $self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
@@ -236,7 +236,7 @@ sub _init
 
     my $oldConf = "$self->{'cfgDir'}/proftpd.old.data";
 
-    if(defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
+    if (defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
         while(my ($key, $value) = each(%oldConfig)) {
             next unless exists $self->{'config'}->{$key};
@@ -247,7 +247,7 @@ sub _init
     $self;
 }
 
-=item _bkpConfFile()
+=item _bkpConfFile( )
 
  Backup file
 
@@ -296,7 +296,7 @@ sub _setVersion
     return $rs if $rs;
 
     if ($stdout !~ m%([\d.]+)%) {
-        error( 'Could not find ProFTPD version from `proftpd -v` command output.' );
+        error( "Couldn't find ProFTPD version from `proftpd -v` command output." );
         return 1;
     }
 
@@ -305,7 +305,7 @@ sub _setVersion
     0;
 }
 
-=item _setupDatabase()
+=item _setupDatabase( )
 
  Setup database
 
@@ -317,7 +317,7 @@ sub _setupDatabase
 {
     my $self = shift;
 
-    my $sqlServer = Servers::sqld->factory();
+    my $sqlServer = Servers::sqld->factory( );
     my $dbName = main::setupGetQuestion( 'DATABASE_NAME' );
     my $dbUser = main::setupGetQuestion( 'FTPD_SQL_USER' );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
@@ -329,7 +329,7 @@ sub _setupDatabase
     return $rs if $rs;
 
     for my $sqlUser ($dbOldUser, $dbUser) {
-        next if !$sqlUser || grep($_ eq "$sqlUser\@$dbUserHost", @main::createdSqlUsers);
+        next if !$sqlUser || grep( $_ eq "$sqlUser\@$dbUserHost", @main::createdSqlUsers );
 
         for my $host($dbUserHost, $oldDbUserHost) {
             next unless $host;
@@ -337,16 +337,16 @@ sub _setupDatabase
         }
     }
 
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->factory( );
 
     # Create SQL user if not already created by another server/package installer
-    unless (grep($_ eq "$dbUser\@$dbUserHost", @main::createdSqlUsers)) {
+    unless (grep( $_ eq "$dbUser\@$dbUserHost", @main::createdSqlUsers )) {
         debug( sprintf( 'Creating %s@%s SQL user', $dbUser, $dbUserHost ) );
         $sqlServer->createUser( $dbUser, $dbUserHost, $dbPass );
         push @main::createdSqlUsers, "$dbUser\@$dbUserHost";
     }
 
-    # Give needed privileges to this SQL user
+    # Give required privileges to this SQL user
 
     # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
     my $quotedDbName = $db->quoteIdentifier( $dbName );
@@ -355,7 +355,7 @@ sub _setupDatabase
 
         $rs = $db->doQuery( 'g', "GRANT SELECT ON $quotedDbName.$quotedTableName TO ?\@?", $dbUser, $dbUserHost );
         unless (ref $rs eq 'HASH') {
-            error( sprintf( 'Could not add SQL privileges: %s', $rs ) );
+            error( sprintf( "Couldn't add SQL privileges: %s", $rs ) );
             return 1;
         }
     }
@@ -366,7 +366,7 @@ sub _setupDatabase
             'g', "GRANT SELECT, INSERT, UPDATE ON $quotedDbName.$quotedTableName TO ?\@?", $dbUser, $dbUserHost
         );
         unless (ref $rs eq 'HASH') {
-            error( sprintf( 'Could not add SQL privileges: %s', $rs ) );
+            error( sprintf( "Couldn't add SQL privileges: %s", $rs ) );
             return 1;
         }
     }
@@ -376,7 +376,7 @@ sub _setupDatabase
     $self->{'eventManager'}->trigger( 'afterFtpSetupDb', $dbUser, $dbPass );
 }
 
-=item _buildConfigFile()
+=item _buildConfigFile( )
 
  Build configuration file
 
@@ -405,7 +405,8 @@ sub _buildConfigFile
         FTPD_PASSIVE_PORT_RANGE => $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'},
         CONF_DIR                => $main::imscpConfig{'CONF_DIR'},
         CERTIFICATE             => 'imscp_services',
-        TLSOPTIONS              =>  version->parse( "$self->{'config'}->{'PROFTPD_VERSION'}" ) >= version->parse( '1.3.3' )
+        TLSOPTIONS              =>
+            version->parse( "$self->{'config'}->{'PROFTPD_VERSION'}" ) >= version->parse( '1.3.3' )
             ? 'NoCertRequest NoSessionReuseRequired' : 'NoCertRequest',
         MAX_INSTANCES           => $self->{'config'}->{'MAX_INSTANCES'},
         MAX_CLIENT_PER_HOST     => $self->{'config'}->{'MAX_CLIENT_PER_HOST'}
@@ -415,9 +416,9 @@ sub _buildConfigFile
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
-        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.conf" )->get();
+        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.conf" )->get( );
         unless (defined $cfgTpl) {
-            error( sprintf( 'Could not read to read the %s file', "$self->{'cfgDir'}/proftpd.conf" ) );
+            error( sprintf( "Couldn't read to read the %s file", "$self->{'cfgDir'}/proftpd.conf" ) );
             return 1;
         }
     }
@@ -472,7 +473,7 @@ EOF
 
     my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/proftpd.conf" );
     $rs = $file->set( $cfgTpl );
-    $rs ||= $file->save();
+    $rs ||= $file->save( );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( $self->{'config'}->{'FTPD_CONF_FILE'} );
@@ -480,21 +481,21 @@ EOF
 
     if (-f "$self->{'config'}->{'FTPD_CONF_DIR'}/modules.conf") {
         $file = iMSCP::File->new( filename => "$self->{'config'}->{'FTPD_CONF_DIR'}/modules.conf" );
-        $cfgTpl = $file->get();
+        $cfgTpl = $file->get( );
         unless (defined $cfgTpl) {
-            error( sprintf( 'Could not read %s file', "$self->{'config'}->{'FTPD_CONF_DIR'}/modules.conf" ) );
+            error( sprintf( "Couldn't read %s file", "$self->{'config'}->{'FTPD_CONF_DIR'}/modules.conf" ) );
             return 1;
         }
 
         $cfgTpl =~ s/^(LoadModule\s+mod_tls_memcache.c)/#$1/m;
         $rs = $file->set( $cfgTpl );
-        $rs ||= $file->save();
+        $rs ||= $file->save( );
     }
 
     $rs;
 }
 
-=item _saveConf()
+=item _saveConf( )
 
  Save configuration file
 
@@ -506,11 +507,11 @@ sub _saveConf
 {
     my $self = shift;
 
-    (tied %{$self->{'config'}})->flush();
+    (tied %{$self->{'config'}})->flush( );
     iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.data" )->copyFile( "$self->{'cfgDir'}/proftpd.old.data" );
 }
 
-=item _oldEngineCompatibility()
+=item _oldEngineCompatibility( )
 
  Remove old files
 
@@ -522,8 +523,8 @@ sub _oldEngineCompatibility
 {
     my $self = shift;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedOldEngineCompatibility' );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterNameddOldEngineCompatibility' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdOldEngineCompatibility' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterFtpdOldEngineCompatibility' );
 }
 
 =back

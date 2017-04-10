@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright 2010-2017 by internet Multi Server Control Panel
+# Copyright 2010-2017 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -46,10 +46,10 @@ sub all
 {
     my $self = shift;
 
-    $self->user();
-    $self->_checkPrograms();
-    $self->_checkPerlModules();
-    $self->_checkPhpModules();
+    $self->user( );
+    $self->_checkPrograms( );
+    $self->_checkPerlModules( );
+    $self->_checkPhpModules( );
     undef;
 }
 
@@ -67,7 +67,7 @@ sub user
     undef;
 }
 
-=item checkVersion($version, $minVersion [, $maxVersion ])
+=item checkVersion( $version, $minVersion [, $maxVersion ] )
 
  Checks for version
 
@@ -104,7 +104,7 @@ sub checkVersion
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -117,47 +117,47 @@ sub _init
     my $self = shift;
 
     $self->{'programs'} = {
-        'PHP'  => {
-            'version_command' => 'php -d date.timezone=UTC -v',
-            'version_regexp'  => qr/PHP\s([\d.]+)/,
-            'min_version'     => '5.3.2'
+        PHP  => {
+            version_command => 'php -d date.timezone=UTC --version 2> /dev/null',
+            version_regexp  => qr/PHP\s+([\d.]+)/,
+            min_version     => '5.6.0',
+            max_version     => '7.1.999', # Arbitrary minor version is intentional. We only want reject PHP >= 7.2
+            modules         => [
+                'ctype', 'curl', 'date', 'dom', 'fileinfo', 'filter', 'ftp', 'gd', 'gettext', 'hash', 'iconv', 'imap',
+                'intl', 'json', 'libxml', 'mbstring', 'mcrypt', 'mysqli', 'openssl', 'pcntl', 'pcre', 'PDO',
+                'pdo_mysql', 'Phar', 'posix', 'pspell', 'Reflection', 'session', 'SimpleXML', 'sockets', 'SPL', 'xml',
+                'xmlreader', 'xmlwriter', 'zip', 'zlib'
+            ]
         },
-        'Perl' => {
-            'version_command' => 'perl -v',
-            'version_regexp'  => qr/v([\d.]+)/,
-            'min_version'     => '5.14.2',
-            'max_version'     => '5.999' # Arbitrary minor version is intentional. We only want reject Perl >= 6
+        Perl => {
+            version_command => 'perl -V:version 2> /dev/null',
+            version_regexp  => qr/version='([\d.]+)'/,
+            min_version     => '5.18.2',
+            max_version     => '5.999', # Arbitrary minor version is intentional. We only want reject Perl >= 6
+            module          => {
+                'Bit::Vector'            => undef,
+                'Crypt::Blowfish'        => undef,
+                'Crypt::CBC'             => undef,
+                DBI                      => undef,
+                'DBD::mysql'             => undef,
+                DateTime                 => undef,
+                'Data::Validate::Domain' => undef,
+                'Email::Valid'           => undef,
+                'File::Basename'         => undef,
+                'File::Path'             => undef,
+                'MIME::Base64'           => undef,
+                'MIME::Entity'           => undef,
+                'Net::LibIDN'            => undef,
+                'XML::Simple'            => undef
+            }
         }
     };
-    $self->{'perl_modules'} = {
-        'Bit::Vector'            => undef,
-        'Crypt::Blowfish'        => undef,
-        'Crypt::CBC'             => undef,
-        'DBI'                    => undef,
-        'DBD::mysql'             => undef,
-        'DateTime'               => undef,
-        'Data::Validate::Domain' => undef,
-        'Email::Valid'           => undef,
-        'File::Basename'         => undef,
-        'File::Path'             => undef,
-        'MIME::Base64'           => undef,
-        'MIME::Entity'           => undef,
-        'Net::LibIDN'            => undef,
-        'XML::Simple'            => undef
-    };
-    $self->{'php_modules'} = [
-        qw/
-            ctype curl date dom fileinfo filter ftp gd gettext hash iconv imap intl json libxml mbstring mcrypt mysqli
-            openssl pcntl pcre PDO pdo_mysql Phar posix pspell Reflection session SimpleXML sockets SPL xml xmlreader
-            xmlwriter zip zlib
-        /
-    ];
     $self;
 }
 
-=item _checkPrograms()
+=item _checkPrograms( )
 
- Checks for program requirements
+ Checks program requirements
 
  Return undef on success, die on failure
 
@@ -167,33 +167,31 @@ sub _checkPrograms
 {
     my $self = shift;
 
-    for my $programName (keys %{$self->{'programs'}}) {
-        my $lcProgram = lc( $programName );
-
-        iMSCP::ProgramFinder::find( $lcProgram ) or die(
-            sprintf( "Could not find the `%s' command in search path", $programName )
+    for (keys %{$self->{'programs'}}) {
+        iMSCP::ProgramFinder::find( lc $_ ) or die(
+            sprintf( "Couldn't find the `%s' command in search path", $_ )
         );
 
-        next unless $self->{'programs'}->{$programName}->{'version_command'};
+        next unless $self->{'programs'}->{$_}->{'version_command'};
 
         eval {
             $self->_programVersions(
-                $self->{'programs'}->{$programName}->{'version_command'},
-                $self->{'programs'}->{$programName}->{'version_regexp'},
-                $self->{'programs'}->{$programName}->{'min_version'},
-                $self->{'programs'}->{$programName}->{'max_version'}
+                $self->{'programs'}->{$_}->{'version_command'},
+                $self->{'programs'}->{$_}->{'version_regexp'},
+                $self->{'programs'}->{$_}->{'min_version'},
+                $self->{'programs'}->{$_}->{'max_version'}
             );
         };
 
-        die( sprintf( "%s: %s\n", $programName, $@ ) ) if $@;
+        die( sprintf( "%s: %s\n", $_, $@ ) ) if $@;
     }
 
     undef;
 }
 
-=item _checkPerlModules()
+=item _checkPerlModules( )
 
- Checks for Perl modules requirements
+ Checks Perl modules requirements
 
  Return undef on success, die on failure
 
@@ -203,27 +201,23 @@ sub _checkPerlModules
 {
     my $self = shift;
 
-    my @missingModules = ();
-    while ( my ($moduleName, $moduleVersion) = each %{$self->{'perl_modules'}}) {
+    my @missingModules = ( );
+    while ( my ($moduleName, $moduleVersion) = each %{$self->{'Perl'}->{'modules'}}) {
         push( @missingModules, $moduleName ) unless check_install( module => $moduleName, version => $moduleVersion );
     }
 
     return undef unless @missingModules;
 
-    if (@missingModules > 1) {
-        die(
-            sprintf( "The following Perl modules are not installed: %s\n", join ', ', @missingModules )
-        );
-    } else {
-        die( sprintf( "The `%s' Perl module is not installed\n", pop @missingModules ) );
-    }
+    @missingModules < 2 or die(
+        sprintf( "The following Perl modules are not installed: %s\n", join ', ', @missingModules )
+    );
 
-    undef;
+    die( sprintf( "The `%s' Perl module is not installed\n", pop @missingModules ) );
 }
 
-=item _checkPhpModules()
+=item _checkPhpModules( )
 
- Checks for PHP modules requirements
+ Checks PHP modules requirements
 
  Return undef on success, die on failure
 
@@ -233,30 +227,28 @@ sub _checkPhpModules
 {
     my $self = shift;
 
-    open my $fh, '-|', 'php', '-d', 'date.timezone=UTC', '-m' or die( sprintf( 'Could not pipe to php', $! ) );
+    open my $fh, '-|', 'php', '-d', 'date.timezone=UTC', '-m' or die(
+        sprintf( "Couldn't pipe to php: %s", $! )
+    );
     chomp( my @modules = <$fh> );
 
-    my @missingModules = ();
-    for my $module(@{$self->{'php_modules'}}) {
+    my @missingModules = ( );
+    for my $module(@{$self->{'PHP'}->{'modules'}}) {
         push @missingModules, $module unless grep(lc($_) eq lc($module), @modules);
     }
 
     return undef unless @missingModules;
 
-    if (@missingModules > 1) {
-        die(
-            sprintf( "The following PHP modules are not installed or not enabled: %s\n", join ', ', @missingModules )
-        );
-    } else {
-        die( sprintf( "The `%s' PHP module is not installed or not enabled.\n", pop @missingModules ) );
-    }
+    @missingModules < 2 or die(
+        sprintf( "The following PHP modules are not installed or not enabled: %s\n", join ', ', @missingModules )
+    );
 
-    undef;
+    die( sprintf( "The `%s' PHP module is not installed or not enabled.\n", pop @missingModules ) );
 }
 
-=item _programVersions($versionCommand, $versionRegexp, $minVersion [, $maxVersion ])
+=item _programVersions( $versionCommand, $versionRegexp, $minVersion [, $maxVersion ] )
 
- Check for program version
+ Check program version
 
  Param string $versionCommand Command to execute to find program version
  Param regexp $versionRegexp Regexp to find version in command version output string
@@ -270,15 +262,13 @@ sub _programVersions
 {
     my ($self, $versionCommand, $versionRegexp, $minversion, $maxVersion) = @_;
 
-    execute( $versionCommand, \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
-    debug( $stderr ) if $stderr;
+    execute( $versionCommand, \ my $stdout );
 
-    die( "Could not find version. No output\n" ) unless $stdout;
+    die( "Couldn't find version. No output\n" ) unless $stdout;
 
     if ($versionRegexp) {
         if ($stdout !~ /$versionRegexp/m) {
-            die( sprintf( "Could not find version. Output was: %s\n", $stdout ) );
+            die( sprintf( "Couldn't find version. Output was: %s\n", $stdout ) );
         }
 
         $stdout = $1;

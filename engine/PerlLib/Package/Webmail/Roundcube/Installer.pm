@@ -392,7 +392,7 @@ sub _setupDatabase
         push @main::createdSqlUsers, "$dbUser\@$dbUserHost";
     }
 
-    # Give needed privileges to this SQL user
+    # Give required privileges to this SQL user
 
     $quotedDbName =~ s/([%_])/\\$1/g;
     $rs = $db->doQuery( 'g', "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?\@?", $dbUser, $dbUserHost );

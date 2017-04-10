@@ -208,11 +208,9 @@ sub _guessPhpVariables
     );
 
     my $rs = execute( "php -d date.timezone=utc -i | grep '(php.ini) Path'", \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
     die( $stderr || 'Unknown error' ) if $rs;
-
-    chomp( $stdout );
-    my ($phpConfDir) = $stdout =~ /\s([^\s]+)$/;
+    
+    my ($phpConfDir) = $stdout =~ /([^\s]+)$/;
     defined $phpConfDir or die( "Couldn't guess PHP configuration directory path." );
     my $phpConfBaseDir = dirname($phpConfDir);
 

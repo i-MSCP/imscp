@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by internet Multi Server Control Panel
+# Copyright (C) 2010-2017 by Laurente Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,10 +25,12 @@ package Servers::named::bind::uninstaller;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
 use File::Basename;
-use iMSCP::File;
+use iMSCP::Config;
+use iMSCP::Debug;
+use iMSCP::Dir;
 use iMSCP::Execute;
+use iMSCP::File;
 use Servers::named::bind;
 use parent 'Common::SingletonClass';
 
@@ -40,7 +42,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item uninstall()
+=item uninstall( )
 
  Process uninstall tasks
 
@@ -52,8 +54,7 @@ sub uninstall
 {
     my $self = shift;
 
-    my $rs = $self->_restoreConfFiles();
-    $rs ||= $self->_deleteDbFiles();
+    $self->_removeConfig( );
 }
 
 =back
@@ -62,7 +63,7 @@ sub uninstall
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -74,33 +75,50 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'named'} = Servers::named::bind->getInstance();
+    $self->{'named'} = Servers::named::bind->getInstance( );
     $self->{'cfgDir'} = $self->{'named'}->{'cfgDir'};
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
     $self->{'config'} = $self->{'named'}->{'config'};
+
+    (tied %{$self->{'config'}})->{'temporary'} = 1;
+
+    my $oldConf = "$self->{'cfgDir'}/bind.old.data";
+    if (-f $oldConf) {
+        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
+        while(my ($key, $value) = each(%oldConfig)) {
+            next unless exists $self->{'config'}->{$key};
+            $self->{'config'}->{$key} = $value;
+        }
+    }
+
+    (tied %{$self->{'config'}})->{'temporary'} = 0;
+
     $self;
 }
 
-=item _restoreConfFiles()
+=item _removeConfig( )
 
- Restore system configuration files
+ Remove configuration
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _restoreConfFiles
+sub _removeConfig
 {
     my $self = shift;
 
-    return 0 unless -d $self->{'config'}->{'BIND_CONF_DIR'};
-
     for ('BIND_CONF_DEFAULT_FILE', 'BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
-        next unless defined $self->{'config'}->{$_};
+        next unless exists $self->{'config'}->{$_};
+
+        my $dirname = dirname( $self->{'config'}->{$_} );
+        next unless -d $dirname;
+
         my $filename = basename( $self->{'config'}->{$_} );
         next unless -f "$self->{'bkpDir'}/$filename.system";
+
         my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
             $self->{'config'}->{$_}
         );
@@ -108,31 +126,31 @@ sub _restoreConfFiles
         return $rs if $rs;
     }
 
+    if (-d $self->{'config'}->{'BIND_DB_DIR'}) {
+        my $rs = execute( "rm -f $self->{'config'}->{'BIND_DB_DIR'}/*.db", \ my $stdout, \ my $stderr );
+        debug( $stdout ) if $stdout;
+        error( $stderr || 'Unknown error' ) if $rs;
+        return $rs if $rs;
+
+        eval { iMSCP::Dir->new( dirname => "$self->{'config'}->{'BIND_DB_DIR'}/slave" )->remove( ); };
+        if ($@) {
+            error($@);
+            return 1;
+        }
+    }
+
+    if (-d $self->{'wrkDir'}) {
+        my $rs = execute( "rm -f $self->{'wrkDir'}/*", \$stdout, \$stderr );
+        debug( $stdout ) if $stdout;
+        error( $stderr || 'Unknown error' ) if $rs;
+    }
+
+    if (-f "$self->{'cfgDir'}/bind.old.data") {
+        my $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/bind.old.data" )->delFile( );
+        return $rs if $rs;
+    }
+
     0;
-}
-
-=item _deleteDbFiles()
-
- Delete i-MSCP db files
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _deleteDbFiles
-{
-    my $self = shift;
-
-    my $rs = execute( "rm -f $self->{'config'}->{'BIND_DB_DIR'}/*.db", \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr || 'Unknown error' ) if $rs;
-    return $rs if $rs;
-
-    $rs = execute( "rm -f $self->{'wrkDir'}/*", \$stdout, \$stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr || 'Unknown error' ) if $rs;
-
-    $rs ||= iMSCP::Dir->new( dirname => "$self->{'config'}->{'BIND_DB_DIR'}/slave" )->remove();
 }
 
 =back

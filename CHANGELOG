@@ -14,9 +14,9 @@ DISTRIBUTION
 
 FRONTEND
     Added: Button allowing customers to force syncing of mailboxes quota info (Client interface)
-    Added: Percent value for mailboxes quota (Client interface)
+    Added: Percent value for mailboxes quota usage (Client interface)
     Enhancement: Display a static warning to customer when at least one of his mailboxes is over quota (Client interface)
-    Readded: Mailboxes quota information (Client interface)
+    Readded: Mailboxes quota usage information (Client interface)
 
 INSTALLER
     Fixed: composer.phar archive is not updated due to wrong working directory
@@ -33,7 +33,12 @@ SCRIPTS
     Fixed: All in/out traffic not computed (imscp-srv-traff)
 
 SERVERS
-    Fixed: Authdaemond socket directory still mounted when switching from Courier to Dovecot (PO server implementation)
+    Fixed: Authdaemond socket directory is still mounted in Postfix chroot after switching to Dovecot (Courier)
+    Fixed: Disable control engine by default (ProFTPD)
+    Fixed: Postfix user is still part of authdaemon group after switching to Dovecot (Courier)
+    Fixed: Run ProFTPD server under `proftpd' user instead of `nobody' user (ProFTPD)
+    Fixed: SQL user not removed after uninstallation (PO and FTPD server impl.)
+    Fixed: When switching to another FTPD server implementation, uninstallation of old FTP server must be triggered
     Fixed: When switching to another PO server implementation, uninstallation of old PO server must be triggered
 
 UNINSTALLER
@@ -41,7 +46,7 @@ UNINSTALLER
     Fixed: General uninstallation failure due to wrong SQL query in imscp-uninstall script
     
 YOUTRACK
-    IP-1707 Getting Error when trying to change e-mail forwarder du to wrong quota value
+    IP-1707 Getting Error when trying to change e-mail forwarder due to wrong quota value
     IP-1709 Protected area users/groups management - Groups list is truncated to first group
 
 ------------------------------------------------------------------------------------------------------------------------

@@ -1,11 +1,11 @@
 =head1 NAME
 
- iMSCP::Config - i-MSCP configuration files handler
+ iMSCP::Config - i-MSCP configuration file handler
 
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by internet Multi Server Control Panel
+# Copyright (C) 2010-2017 by Laurente Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@ package iMSCP::Config;
 
 use strict;
 use warnings;
-use 5.012;
+use 5.014;
 use iMSCP::Debug;
 use Fcntl 'O_RDWR', 'O_CREAT', 'O_RDONLY';
 use Tie::File;
@@ -39,7 +39,7 @@ use parent 'Common::Object';
 
 =over 4
 
-=item flush()
+=item flush( )
 
  Write data immediately in file
  Return int 0;
@@ -53,7 +53,7 @@ sub flush
     return 0 if $self->{'readonly'}
         || !($self->{'tieFileObject'}->{'defer'} || $self->{'tieFileObject'}->{'autodeferring'});
 
-    $self->{'tieFileObject'}->flush();
+    $self->{'tieFileObject'}->flush( );
 }
 
 =back
@@ -62,13 +62,13 @@ sub flush
 
 =over 4
 
-=item TIEHASH()
+=item TIEHASH( )
 
  Constructor. Called by the tie function
 
- Required arguments for tie()
+ Required arguments for tie( )
   - fileName: Configuration file path
- Optional arguments for tie()
+ Optional arguments for tie( )
   - nocreate: Do not create file if it doesn't already exist, die instead
   - nodie: Do not die when accessing to an non-existent configuration parameter
   - readonly: Sets a read-only access on the configuration file
@@ -81,12 +81,12 @@ sub TIEHASH
     (shift)->new( @_ );
 }
 
-=item FETCH($param)
+=item FETCH( $param )
 
  Return value of the given configuration parameter
 
  Param string param Configuration parameter name
- Return scalar|undef Configuration parameter value if defined or undef 'nodie' attribute is set
+ Return scalar|undef Configuration parameter value if defined, empty value if 'nodie' attribute is set or die
 
 =cut
 
@@ -94,17 +94,20 @@ sub FETCH
 {
     my ($self, $param) = @_;
 
-    return $self->{'configValues'}->{$param} if exists $self->{'configValues'}->{$param};
-    return if $self->{'nodie'};
-    die(sprintf(
-        'Accessing a non-existing parameter: %s in %s file from: %s (line %s)',
-        $param,
-        $self->{'fileName'},
-        (caller)[1, 2]
-    ));
+    $self->{'configValues'}->{$param} // ($self->{'nodie'}
+        ? ''
+        : die(
+            sprintf(
+                'Accessing a non-existing parameter: %s in %s file from: %s (line %s)',
+                $param,
+                $self->{'fileName'},
+                (caller)[1, 2]
+            )
+        )
+    );
 }
 
-=item STORE($param, $value)
+=item STORE( $param, $value )
 
  Store the given configuration parameter
 
@@ -131,7 +134,7 @@ sub STORE
     $value;
 }
 
-=item FIRSTKEY()
+=item FIRSTKEY( )
 
  Return the first configuration parameter
 
@@ -147,7 +150,7 @@ sub FIRSTKEY
     $self->NEXTKEY;
 }
 
-=item NEXTKEY()
+=item NEXTKEY( )
 
  Return the next configuration parameters
 
@@ -160,7 +163,7 @@ sub NEXTKEY
     shift @{$_[0]->{'_list'}};
 }
 
-=item EXISTS($param)
+=item EXISTS( $param )
 
  Verify that the given configuration parameter exists
 
@@ -176,7 +179,7 @@ sub EXISTS
     exists $self->{'configValues'}->{$param};
 }
 
-=item CLEAR()
+=item CLEAR( )
 
  Clear all configuration parameters
 
@@ -186,13 +189,13 @@ sub CLEAR
 {
     my $self = shift;
 
-    @{$self->{'tiefile'}} = ();
+    @{$self->{'tiefile'}} = ( );
     $self->{'configValues'} = { };
     $self->{'lineMap'} = { };
     $self;
 }
 
-=item DESTROY()
+=item DESTROY( )
 
  Destroy
 
@@ -206,7 +209,7 @@ sub DESTROY
     untie(@{$self->{'tiefile'}});
 }
 
-=item _init()
+=item _init( )
 
  Initialization
 
@@ -220,16 +223,16 @@ sub _init
 
     defined $self->{'fileName'} or die( 'fileName attribut is not defined' );
 
-    @{$self->{'tiefile'}} = ();
+    @{$self->{'tiefile'}} = ( );
     $self->{'tieFileObject'} = undef;
     $self->{'configValues'} = { };
     $self->{'lineMap'} = { };
     $self->{'confFileName'} = $self->{'fileName'};
-    $self->_loadConfig();
+    $self->_loadConfig( );
     $self;
 }
 
-=item _loadConfig()
+=item _loadConfig( )
 
  Load i-MSCP configuration file
 
@@ -268,7 +271,7 @@ sub _loadConfig
     undef;
 }
 
-=item _replaceConfig($param, $value)
+=item _replaceConfig( $param, $value )
 
  Replace the given configuration parameter value
 
@@ -287,7 +290,7 @@ sub _replaceConfig
     $self->{'configValues'}->{$param} = $value;
 }
 
-=item _insertConfig($param, $value)
+=item _insertConfig( $param, $value )
 
  Insert the given configuration parameter
 

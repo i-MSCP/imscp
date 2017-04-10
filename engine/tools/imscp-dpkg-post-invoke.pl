@@ -45,7 +45,7 @@ $ENV{'LANG'} = 'C.UTF-8';
 
 newDebug('imscp-dpkg-post-invoke.log');
 
-iMSCP::Getopt->parseNoDefault(sprintf('Usage: perl %s [OPTION]...', basename($0)) . qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 ) ) . qq {
 
 Process dpkg post invoke tasks
 
@@ -58,9 +58,9 @@ OPTIONS:
 
 setVerbose(iMSCP::Getopt->verbose);
 
-my $bootstrapper = iMSCP::Bootstrapper->getInstance();
+my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
 exit unless $bootstrapper->lock('/tmp/imscp-dpkg-post-invoke.lock', 'nowait');
-$bootstrapper->getInstance()->boot(
+$bootstrapper->getInstance( )->boot(
     {
         mode            => 'backend',
         nolock          => 1,
@@ -70,23 +70,23 @@ $bootstrapper->getInstance()->boot(
 );
 
 my $rs = 0;
-my @items = ();
+my @items = ( );
 
-for my $server(iMSCP::Servers->getInstance()->getListWithFullNames()) {
+for my $server(iMSCP::Servers->getInstance( )->getListWithFullNames()) {
     eval "require $server";
-    $server = $server->factory();
+    $server = $server->factory( );
     push @items, $server if $server->can( 'dpkgPostInvokeTasks' );
 }
 
-for my $package(iMSCP::Packages->getInstance()->getListWithFullNames()) {
+for my $package(iMSCP::Packages->getInstance( )->getListWithFullNames()) {
     eval "require $package";
-    $package = $package->getInstance();
+    $package = $package->getInstance( );
     push @items, $package if $package->can( 'dpkgPostInvokeTasks' );
 }
 
 for(@items) {
     debug( sprintf( 'Processing %s dpkg post-invoke tasks', ref ) );
-    $rs |= $_->dpkgPostInvokeTasks();
+    $rs |= $_->dpkgPostInvokeTasks( );
 }
 
 $bootstrapper->unlock('/tmp/imscp-dpkg-post-invoke.lock');
@@ -94,6 +94,6 @@ exit $rs;
 
 =head1 AUTHOR
 
-Laurent Declercq <l.declercq@nuxwin.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
