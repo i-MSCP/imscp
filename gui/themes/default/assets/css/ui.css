@@ -295,7 +295,7 @@ a {
     height: 24px;
     line-height: 24px;
     padding-left: 197px;
-    z-index: 2;
+    /*z-index: 2;*/
 }
 
 /** Section */
@@ -304,7 +304,7 @@ a {
     left: 0.5em;
     top: 0;
     height: 30px;
-    z-index: 1000;
+    /*z-index: 1000;*/
 }
 
 .location-area h1 {

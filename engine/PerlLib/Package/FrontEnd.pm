@@ -590,7 +590,7 @@ sub restartNginx
     return $rs if $rs;
 
     local $@;
-    eval { MSCP::Service->getInstance( )->restart( $self->{'config'}->{'HTTPD_SNAME'} ); };
+    eval { iMSCP::Service->getInstance( )->restart( $self->{'config'}->{'HTTPD_SNAME'} ); };
     if ($@) {
         error( $@ );
         return 1;

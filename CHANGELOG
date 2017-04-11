@@ -15,6 +15,7 @@ DISTRIBUTION
 FRONTEND
     Added: Button allowing customers to force syncing of mailboxes quota info (Client interface)
     Added: Percent value for mailboxes quota usage (Client interface)
+    Fixed: datepicker is positioned below the location bar
     Enhancement: Display a static warning to customer when at least one of his mailboxes is over quota (Client interface)
     Readded: Mailboxes quota usage information (Client interface)
 
@@ -27,6 +28,7 @@ LISTENERS
 
 PACKAGES
     Fixed: `Accessing a non-existing parameter: FILEMANAGER_PACKAGE` error when upgrading from 1.1.x Serie (Filemanager)
+    Fixed: Can't locate object method "getInstance" via package "MSCP::Service" (FrontEnd)
     Fixed: Package uninstallers must be idempotent
 
 SCRIPTS
@@ -35,7 +37,7 @@ SCRIPTS
 SERVERS
     Fixed: Authdaemond socket directory is still mounted in Postfix chroot after switching to Dovecot (Courier)
     Fixed: Disable control engine by default (ProFTPD)
-    Fixed: Postfix user is still part of authdaemon group after switching to Dovecot (Courier)
+    Fixed: `postfix' user is still part of authdaemon group after switching to Dovecot (Courier)
     Fixed: Run ProFTPD server under `proftpd' user instead of `nobody' user (ProFTPD)
     Fixed: SQL user not removed after uninstallation (PO and FTPD server impl.)
     Fixed: When switching to another FTPD server implementation, uninstallation of old FTP server must be triggered
