@@ -352,11 +352,11 @@ sub disableDmn
     $self->setData(
         {
             BASE_SERVER_VHOST => $data->{'BASE_SERVER_VHOST'},
-            HTTPD_LOG_DIR     => $self->{'config'}->{'HTTPD_LOG_DIR'},
-            HTTP_URI_SCHEME   => 'http://',
             DOMAIN_IPS        => join(
                 ' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]").':80' } @domainIPs
             ),
+            HTTP_URI_SCHEME   => 'http://',
+            HTTPD_LOG_DIR     => $self->{'config'}->{'HTTPD_LOG_DIR'},
             USER_WEB_DIR      => $main::imscpConfig{'USER_WEB_DIR'}
         }
     );
@@ -1495,19 +1495,19 @@ sub _addCfg
     $self->setData(
         {
             BASE_SERVER_VHOST       => $data->{'BASE_SERVER_VHOST'},
-            HTTPD_LOG_DIR           => $self->{'config'}->{'HTTPD_LOG_DIR'},
-            HTTPD_CUSTOM_SITES_DIR  => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
             DOMAIN_IPS              => join(
                 ' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]").':80' } @domainIPs
             ),
-            PHP_VERSION             => $phpVersion,
-            POOL_NAME               => $confLevel,
             # fastcgi module case (Apache2 < 2.4.10)
+            FASTCGI_CLASS           => $data->{'DOMAIN_NAME'},
             FASTCGI_LISTEN_MODE     => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds' ? 'socket' : 'host',
             FASTCGI_LISTEN_ENDPOINT => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
                 ? "/run/php/php$phpVersion-fpm-$confLevel.sock"
                 : '127.0.0.1:'.($self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'} + $data->{'PHP_FPM_LISTEN_PORT'}),
-            FASTCGI_CLASS           => $data->{'DOMAIN_NAME'},
+            HTTPD_CUSTOM_SITES_DIR  => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
+            HTTPD_LOG_DIR           => $self->{'config'}->{'HTTPD_LOG_DIR'},
+            PHP_VERSION             => $phpVersion,
+            POOL_NAME               => $confLevel,
             # proxy_fcgi module case (Apache2 >= 2.4.10)
             PROXY_FCGI_PATH         => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
                 ? "unix:/run/php/php$phpVersion-fpm-$confLevel.sock|"
@@ -1908,21 +1908,21 @@ sub _buildPHPConfig
     if ($data->{'FORWARD'} eq 'no' && $data->{'PHP_SUPPORT'} eq 'yes') {
         $self->setData(
             {
-                PHP_VERSION                  => $phpVersion,
-                POOL_NAME                    => $poolName,
-                TMPDIR                       => $data->{'HOME_DIR'}.'/phptmp',
                 EMAIL_DOMAIN                 => $emailDomain,
-                PHP_FPM_LISTEN_ENDPOINT      => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
+                PHP_FPM_LISTEN_ENDPOINT      => ($self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds')
                     ? "/run/php/php$phpVersion-fpm-$poolName.sock"
                     : '127.0.0.1:'.($self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'} + $data->{'PHP_FPM_LISTEN_PORT'})
                 ,
-                PHP_FPM_PROCESS_MANAGER_MODE => $self->{'phpConfig'}->{'PHP_FPM_PROCESS_MANAGER_MODE'} || 'ondemand',
                 PHP_FPM_MAX_CHILDREN         => $self->{'phpConfig'}->{'PHP_FPM_MAX_CHILDREN'} || 6,
-                PHP_FPM_START_SERVERS        => $self->{'phpConfig'}->{'PHP_FPM_START_SERVERS'} || 1,
-                PHP_FPM_MIN_SPARE_SERVERS    => $self->{'phpConfig'}->{'PHP_FPM_MIN_SPARE_SERVERS'} || 1,
+                PHP_FPM_MAX_REQUESTS         => $self->{'phpConfig'}->{'PHP_FPM_MAX_REQUESTS'} || 1000,
                 PHP_FPM_MAX_SPARE_SERVERS    => $self->{'phpConfig'}->{'PHP_FPM_MAX_SPARE_SERVERS'} || 2,
+                PHP_FPM_MIN_SPARE_SERVERS    => $self->{'phpConfig'}->{'PHP_FPM_MIN_SPARE_SERVERS'} || 1,
                 PHP_FPM_PROCESS_IDLE_TIMEOUT => $self->{'phpConfig'}->{'PHP_FPM_PROCESS_IDLE_TIMEOUT'} || '60s',
-                PHP_FPM_MAX_REQUESTS         => $self->{'phpConfig'}->{'PHP_FPM_MAX_REQUESTS'} || 1000
+                PHP_FPM_PROCESS_MANAGER_MODE => $self->{'phpConfig'}->{'PHP_FPM_PROCESS_MANAGER_MODE'} || 'ondemand',
+                PHP_FPM_START_SERVERS        => $self->{'phpConfig'}->{'PHP_FPM_START_SERVERS'} || 1,
+                PHP_VERSION                  => $phpVersion,
+                POOL_NAME                    => $poolName,
+                TMPDIR                       => $data->{'HOME_DIR'}.'/phptmp'
             }
         );
 

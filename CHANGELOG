@@ -4,10 +4,16 @@
 Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
+CONFIG
+    Added: `class', `default' and `description' attributes in distribution packages files for service alternatives
+    Added: /etc/apt/apt/conf.d/01norecommend to avoid installation of recommended or suggested distribution packages
+    Added: `*._PACKAGE' variables in master conffile. Variables holding i-MSCP server class names
+
 BACKEND
     Added: getAsRef() method - Method allowing to get scalar ref to file content (iMSCP::File)
-    Fixed: Couldn't umount mounts that are marked as deleted due to wrong regexp in iMSCP::Mount library
-    Review: Mitigate IO operations by reading full file in memory and by reusing same file object (iMSCP::Mount)
+    Added: Servers::php class (doesn't do anything yet - currently a child of Servers::noserver)
+    Fixed: Couldn't umount mounts that are in deleted state due to wrong regexp in iMSCP::Mount library
+    Review: Mitigate IO operations by reading full fstab-like file in memory and by reusing same file object (iMSCP::Mount)
 
 DISTRIBUTION
     Fixed: Make sure that sendmail* packages are pre-uninstalled
@@ -22,6 +28,7 @@ FRONTEND
 INSTALLER
     Fixed: composer.phar archive is not updated due to wrong working directory
     Fixed: Configures getaddrinfo(3) to prefer IPv4 during setup and update phases
+    Fixed: Determines debconf question owners/names for SQL server by parsing debconf-get-selections output
 
 LISTENERS
     Updated: Add Referrer-Policy header to 40_apache2_security_headers.pl listener file

@@ -109,7 +109,7 @@ class VirtualFileSystem
         if (Registry::get('config')->SERVICES_SSL_ENABLED == 'yes') {
             $this->stream = @ftp_ssl_connect('127.0.0.1', 21, 30);
             if ($this->stream === false) {
-                $this->writeLog('Could not connect to FTP server through SSL.', E_USER_NOTICE);
+                $this->writeLog("Couldn't connect to FTP server using SSL.", E_USER_NOTICE);
             }
         }
 
@@ -119,15 +119,15 @@ class VirtualFileSystem
         }
 
         if (!$this->stream || !@ftp_login($this->stream, $this->user, $this->passwd)) {
-            $this->writeLog('Could not connect to FTP server.');
+            $this->writeLog("Couldn't connect to FTP server.");
             $this->close();
             return false;
         }
 
         // Try to enable passive mode, excepted if the FTP daemon is vsftpd
         // vsftpd doesn't allows to operate on a per IP basis (IP masquerading)
-        if (Registry::get('config')->FTPD_SERVER != 'vsftpd' && !@ftp_pasv($this->stream, true)) {
-            $this->writeLog('Could not enable passive mode.', E_USER_NOTICE);
+        if (Registry::get('config')->FTPD_PACKAGE != 'Servers::ftpd::vsftpd' && !@ftp_pasv($this->stream, true)) {
+            $this->writeLog("Couldn't enable passive mode.", E_USER_NOTICE);
         }
 
         return true;
@@ -142,7 +142,7 @@ class VirtualFileSystem
     {
         if ($this->stream) {
             if (!@ftp_close($this->stream)) {
-                $this->writeLog('Could not close connection.', E_USER_WARNING);
+                $this->writeLog("Couldn't close connection.", E_USER_WARNING);
             }
 
             $this->stream = NULL;
@@ -264,23 +264,23 @@ class VirtualFileSystem
 
         $tmpFile = @tempnam(Registry::get('config')->GUI_ROOT_DIR . '/data/tmp', 'vfs_');
         if ($tmpFile === false) {
-            $this->writeLog('Could not create temporary file.');
+            $this->writeLog("Couldn't create temporary file.");
             return false;
         }
 
         $ret = true;
         if (@ftp_get($this->stream, $tmpFile, $file, $transferMode) === false) {
-            $this->writeLog('Could not get file content.');
+            $this->writeLog("Couldn't get file content.");
             $ret = false;
         }
 
         if ($ret && @file_get_contents($tmpFile) === false) {
-            $this->writeLog('Could not get file content.');
+            $this->writeLog("Couldn't get file content.");
             $ret = false;
         }
 
         if (file_exists($tmpFile) && !@unlink($tmpFile)) {
-            $this->writeLog('Could not remove temporary file.');
+            $this->writeLog("Couldn't remove temporary file.");
         }
 
         return $ret;
@@ -313,23 +313,23 @@ class VirtualFileSystem
 
         $tmpFile = @tempnam(Registry::get('config')->GUI_ROOT_DIR . '/data/tmp', 'vfs_');
         if ($tmpFile === false) {
-            $this->writeLog('Could not create temporary file.', E_USER_ERROR);
+            $this->writeLog("Couldn't create temporary file.", E_USER_ERROR);
             return false;
         }
 
         $ret = true;
         if (@file_put_contents($tmpFile, $content) === false) {
-            $this->writeLog('Could not write file content.', E_USER_ERROR);
+            $this->writeLog("Couldn't write file content.", E_USER_ERROR);
             $ret = false;
         }
 
         if ($ret && !@ftp_put($this->stream, $file, $tmpFile, $transferMode)) {
-            $this->writeLog('Could not upload file', E_USER_ERROR);
+            $this->writeLog("Couldn't not upload file", E_USER_ERROR);
             $ret = false;
         }
 
         if (file_exists($tmpFile) && !@unlink($tmpFile)) {
-            $this->writeLog('Could not remove temporary file.');
+            $this->writeLog("Couldn't remove temporary file.");
         }
 
         return $ret;
@@ -370,7 +370,7 @@ class VirtualFileSystem
                 return false;
             }
 
-            $this->writeLog(sprintf('Could not create FTP user: %s', $e->getMessage()));
+            $this->writeLog(sprintf("Couldn't create FTP user: %s", $e->getMessage()));
             return false;
         }
 

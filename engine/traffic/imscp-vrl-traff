@@ -1,4 +1,15 @@
 #!/usr/bin/perl
+
+=head1 NAME
+
+ imscp-srv-traff - Collects i-MSCP customers' traffic data (Httpd, Ftpd, Mta, Po).
+
+=head1 SYNOPSIS
+
+ imscp-srv-traff [options]...
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
@@ -16,16 +27,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-=head1 NAME
-
-imscp-srv-traff - Collects i-MSCP customers' traffic data (Httpd, Ftpd, Mta, Po).
-
-=head1 SYNOPSIS
-
- imscp-srv-traff [options]...
-
-=cut
-
 use strict;
 use warnings;
 use FindBin;
@@ -41,25 +42,25 @@ use File::Basename;
 use POSIX qw(locale_h);
 use locale;
 
-setlocale(LC_ALL, 'C.UTF-8');
+setlocale( LC_ALL, 'C.UTF-8' );
 $ENV{'LANG'} = 'C.UTF-8';
 
 sub run
 {
-    my $rs = iMSCP::EventManager->getInstance()->trigger('beforeVrlTraffic');
+    my $rs = iMSCP::EventManager->getInstance( )->trigger( 'beforeVrlTraffic' );
     return $rs if $rs;
 
-    my $timestamp = time();
+    my $timestamp = time( );
     my $halfTimestamp = $timestamp - ($timestamp % 1800);
     my %trafficDb;
 
     # Collects traffic data
-    for my $server(iMSCP::Servers->getInstance()->getListWithFullNames()) {
+    for my $server(iMSCP::Servers->getInstance( )->getListWithFullNames( )) {
         eval "require $server";
-        if (my $subref = $server->can('getTraffic')) {
+        if (my $subref = $server->can( 'getTraffic' )) {
             eval {
-                debug("Executing ${server}::getTraffic()");
-                $trafficDb{$server} = $subref->($server->factory());
+                debug( "Executing ${server}::getTraffic()" );
+                $trafficDb{$server} = $subref->( $server->factory( ) );
             };
             if ($@) {
                 error($@);
@@ -71,7 +72,7 @@ sub run
 
     # Updating traffic data in i-MSCP database
     unless($rs) {
-        my $dbh = iMSCP::Database->factory()->getRawDb();
+        my $dbh = iMSCP::Database->factory( )->getRawDb( );
 
         # Get domains list (dmn|sub|als|alssub)
         my $sth = $dbh->prepare(
@@ -87,12 +88,12 @@ sub run
                 INNER JOIN domain_aliasses USING (alias_id)
             "
         );
-        unless($sth && $sth->execute()) {
-            error(sprintf("Couldn't prepare or execute SQL statement: %s", $dbh->errstr));
+        unless($sth && $sth->execute( )) {
+            error( sprintf( "Couldn't prepare or execute SQL statement: %s", $dbh->errstr ) );
             $rs = 1;
         }
 
-        while (my $domainRow = $sth->fetchrow_hashref()) {
+        while (my $domainRow = $sth->fetchrow_hashref( )) {
             my $domainName = $domainRow->{'domain_name'};
             my $upperDomainId = $domainRow->{'upper_domain_id'};
 
@@ -137,23 +138,23 @@ sub run
         }
     }
 
-    $rs ||= iMSCP::EventManager->getInstance()->trigger('afterVrlTraffic');
+    $rs ||= iMSCP::EventManager->getInstance( )->trigger( 'afterVrlTraffic' );
 
     if($rs) {
         my @warningMessages = getMessageByType('warn');
-        iMSCP::Mail->new()->warnMsg("@warningMessages") if @warningMessages;
+        iMSCP::Mail->new( )->warnMsg( "@warningMessages" ) if @warningMessages;
 
         my @errorMessages = getMessageByType('error');
-        iMSCP::Mail->new()->errmsg("@errorMessages") if @errorMessages;
+        iMSCP::Mail->new( )->errmsg( "@errorMessages" ) if @errorMessages;
     }
 
     $rs;
 }
 
-newDebug('imscp-vrl-traff.log');
+newDebug( 'imscp-vrl-traff.log' );
 
 # Parse command line options
-iMSCP::Getopt->parseNoDefault(sprintf('Usage: perl %s [OPTION]...', basename($0)) . qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 ) ) . qq {
 
 Script that collects i-MSCP customers' traffic data (Httpd, Ftpd, Mta, Po).
 
@@ -164,10 +165,10 @@ OPTIONS:
  'verbose|v' => \&iMSCP::Getopt::verbose
 );
 
-setVerbose(iMSCP::Getopt->verbose);
+setVerbose( iMSCP::Getopt->verbose );
 
-my $bootstrapper = iMSCP::Bootstrapper->getInstance();
-exit unless $bootstrapper->lock('/tmp/imscp-vrl-traff.lock', 'nowait');
+my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
+exit unless $bootstrapper->lock( '/tmp/imscp-vrl-traff.lock', 'nowait' );
 $bootstrapper->boot(
     {
         mode            => 'backend',
@@ -177,12 +178,12 @@ $bootstrapper->boot(
     }
 );
 
-my $rs = run();
-$bootstrapper->unlock('/tmp/imscp-vrl-traff.lock');
+my $rs = run( );
+$bootstrapper->unlock( '/tmp/imscp-vrl-traff.lock' );
 exit $rs;
 
 =head1 AUTHOR
 
-Laurent Declercq <l.declercq@nuxwin.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

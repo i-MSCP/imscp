@@ -346,7 +346,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
             ? iMSCP_Registry::get('errFieldsStack') : array();
     });
 
-    if ($cfg['HTTPD_SERVER'] != 'apache_itk') {
+    if ($cfg['HTTPD_PACKAGE'] != 'Servers::httpd::apache_itk') {
         $tpl->assign(array(
             'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s configuration option', '<b>disable_functions</b>'),
             'PHP_INI_AL_DISABLE_FUNCTIONS_YES' => $data['php_ini_al_disable_functions'] == 'yes' ? ' checked' : '',

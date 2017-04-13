@@ -1,5 +1,15 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ imscp-mountall - Mount or umount filesystems by reading entries from i-MSCP fstab-like file
+
+=head1 SYNOPSIS
+
+ imscp-mountall [options]... start|stop
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
@@ -17,29 +27,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-=head1 NAME
-
-imscp-mountall - Mount or umount filesystems by reading entries from i-MSCP fstab-like file
-
-=head1 SYNOPSIS
-
- imscp-mountall [options]... start|stop
-
-=cut
-
 use strict;
 use warnings;
+use File::Basename;
 use FindBin;
 use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 use iMSCP::Bootstrapper;
 use iMSCP::Debug;
 use iMSCP::Getopt;
 use iMSCP::Mount qw/ mount umount isMountpoint /;
-use File::Basename;
-use POSIX qw(locale_h);
+use POSIX qw/ locale_h /;
 use locale;
 
-setlocale(LC_ALL, 'C.UTF-8');
+setlocale( LC_ALL, 'C.UTF-8' );
 $ENV{'LANG'} = 'C.UTF-8';
 
 sub process
@@ -50,7 +50,7 @@ sub process
     my $fstab = "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf";
     return $rs unless -f $fstab;
     
-    open my $fh, '<', $fstab or die( sprintf( 'Could not open %s: %s', $fstab, $! ) );
+    open my $fh, '<', $fstab or die( sprintf( "Couldn't open %s: %s", $fstab, $! ) );
     my @fstabEntries = <$fh>;
 
     for($action eq 'start' ? @fstabEntries : reverse @fstabEntries) {
@@ -60,9 +60,9 @@ sub process
         @{$entryFields}{ qw/ fs_spec fs_file fs_vfstype fs_mntops / } = split;
         
         if($action eq 'start') {
-            $rs = mount($entryFields) unless isMountpoint($entryFields->{'fs_file'});
+            $rs = mount( $entryFields ) unless isMountpoint( $entryFields->{'fs_file'} );
         } else {
-            $rs = umount($entryFields->{'fs_file'});
+            $rs = umount( $entryFields->{'fs_file'} );
         }
 
         last if $rs;
@@ -71,11 +71,11 @@ sub process
     $rs;
 }
 
-newDebug('imscp_mountall.log');
+newDebug( 'imscp_mountall.log' );
 
-iMSCP::Getopt->parseNoDefault(sprintf('Usage: perl %s [OPTION]... start|stop', basename($0)) . qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]... start|stop', basename( $0 ) ) . qq {
 
-Mount or umount filesystems by reading entries i-MSCP fstab-like file.
+Mount or umount filesystems by reading entries from i-MSCP fstab-like file.
 
 OPTIONS:
  -d,    --debug         Enable debug mode.
@@ -84,9 +84,9 @@ OPTIONS:
  'verbose|v' => \&iMSCP::Getopt::verbose
 );
 
-setVerbose(iMSCP::Getopt->verbose);
+setVerbose( iMSCP::Getopt->verbose );
 
-iMSCP::Bootstrapper->getInstance()->boot(
+iMSCP::Bootstrapper->getInstance( )->boot(
     {
         mode            => 'backend',
         norequirements  => 1,
@@ -98,11 +98,11 @@ iMSCP::Bootstrapper->getInstance()->boot(
 );
 
 my $action = shift;
-defined $action && $action =~ /^(?:start|stop)$/ or iMSCP::Getopt->showUsage();
-exit process($action);
+defined $action && $action =~ /^(?:start|stop)$/ or iMSCP::Getopt->showUsage( );
+exit process( $action );
 
 =head1 AUTHOR
 
-Laurent Declercq <l.declercq@nuxwin.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

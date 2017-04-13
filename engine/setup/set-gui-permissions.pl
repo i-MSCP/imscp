@@ -59,9 +59,9 @@ OPTIONS
     'verbose|v' => \&iMSCP::Getopt::verbose
 );
 
-setVerbose(iMSCP::Getopt->verbose);
+setVerbose( iMSCP::Getopt->verbose );
 
-iMSCP::Bootstrapper->getInstance()->boot(
+iMSCP::Bootstrapper->getInstance( )->boot(
     {
         mode            => $main::execmode,
         norequirements  => 1,
@@ -73,17 +73,17 @@ iMSCP::Bootstrapper->getInstance()->boot(
 );
 
 my $rs = 0;
-my @items = ();
+my @items = ( );
 
-for my $server(iMSCP::Servers->getInstance()->getListWithFullNames()) {
+for my $server(iMSCP::Servers->getInstance( )->getListWithFullNames( )) {
     eval "require $server";
-    $server = $server->factory();
+    $server = $server->factory( );
     push @items, $server if $server->can( 'setGuiPermissions' );
 }
 
-for my $package (iMSCP::Packages->getInstance()->getListWithFullNames()) {
+for my $package (iMSCP::Packages->getInstance( )->getListWithFullNames( )) {
     eval "require $package";
-    $package = $package->getInstance();
+    $package = $package->getInstance( );
     push @items, $package if $package->can( 'setGuiPermissions' );
 }
 
@@ -92,7 +92,7 @@ my $count = 1;
 for(@items) {
     debug( sprintf( 'Setting %s frontEnd permissions', ref ) );
     printf( "Setting %s frontEnd permissions\t%s\t%s\n", ref, $totalItems, $count ) if $main::execmode eq 'setup';
-    $rs |= $_->setGuiPermissions();
+    $rs |= $_->setGuiPermissions( );
     $count++;
 }
 

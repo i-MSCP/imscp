@@ -320,8 +320,13 @@ EOF
 sub askSqlRootUser
 {
     my ($dialog) = @_;
-    my $hostname = setupGetQuestion('DATABASE_HOST', $main::imscpConfig{'SQL_SERVER'} eq 'remote_server' ? '' : 'localhost');
-    if($main::imscpConfig{'SQL_SERVER'} eq 'remote_server' && grep { $hostname eq $_ } ('localhost', '127.0.0.1', '::1')) {
+    my $hostname = setupGetQuestion(
+        'DATABASE_HOST',
+        ($main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::remote') ? '' : 'localhost'
+    );
+    if($main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::remote'
+        && grep { $hostname eq $_ } ('localhost', '127.0.0.1', '::1')
+    ) {
         $hostname = '';
     }
     my $port = setupGetQuestion('DATABASE_PORT', 3306);
@@ -484,7 +489,7 @@ sub setupAskSqlUserHost
 {
     my $dialog = shift;
 
-    if($main::imscpConfig{'SQL_SERVER'} ne 'remote_server') {
+    if($main::imscpConfig{'SQL_PACKAGE'} ne 'Servers::sqld::remote') {
         setupSetQuestion('DATABASE_USER_HOST', 'localhost');
         return 0;
     }
@@ -976,9 +981,9 @@ sub setupMasterSqlUser
 {
     my $user = setupGetQuestion( 'DATABASE_USER' );
     my $userHost = setupGetQuestion( 'DATABASE_USER_HOST' );
-    my $oldUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'} || '';
+    my $oldUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'};
     my $pwd = decryptRijndaelCBC($main::imscpDBKey, $main::imscpDBiv, setupGetQuestion( 'DATABASE_PASSWORD' ));
-    my $oldUser = $main::imscpOldConfig{'DATABASE_USER'} || '';
+    my $oldUser = $main::imscpOldConfig{'DATABASE_USER'};
 
     my $sqlServer = Servers::sqld->factory();
 
@@ -996,7 +1001,7 @@ sub setupMasterSqlUser
 
     # Grant all privileges to that user (including GRANT otpion)
     my $qrs = iMSCP::Database->factory()->doQuery(
-        'g', "GRANT ALL PRIVILEGES ON *.* TO ?\@? WITH GRANT OPTION", $user, $userHost
+        'g', 'GRANT ALL PRIVILEGES ON *.* TO ?@? WITH GRANT OPTION', $user, $userHost
     );
     unless (ref $qrs eq 'HASH') {
         error( sprintf( 'Could not grant privileges to master i-MSCP SQL user: %s', $qrs ) );
@@ -1163,7 +1168,7 @@ sub setupSecureSqlInstallation
     }
 
     # Disallow remote root login
-    if($main::imscpConfig{'SQL_SERVER'} ne 'remote_server') {
+    if($main::imscpConfig{'SQL_PACKAGE'} ne 'Servers::sqld::remote') {
         $qrs = $db->doQuery(
             'd', "DELETE FROM user WHERE User = 'root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
         );

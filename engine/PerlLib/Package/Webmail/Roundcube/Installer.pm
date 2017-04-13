@@ -339,7 +339,7 @@ sub _setupDatabase
     my $roundcubeDbName = $imscpDbName.'_roundcube';
     my $dbUser = main::setupGetQuestion( 'ROUNDCUBE_SQL_USER' );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
-    my $oldDbUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'} || '';
+    my $oldDbUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'};
     my $dbPass = main::setupGetQuestion( 'ROUNDCUBE_SQL_PASSWORD' );
     my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
     my $db = iMSCP::Database->factory( );

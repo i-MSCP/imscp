@@ -322,7 +322,7 @@ sub _setupDatabase
     my $rainLoopDbName = $imscpDbName.'_rainloop';
     my $dbUser = main::setupGetQuestion( 'RAINLOOP_SQL_USER' );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
-    my $oldDbUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'} || '';
+    my $oldDbUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'};
     my $dbPass = main::setupGetQuestion( 'RAINLOOP_SQL_PASSWORD' );
     my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 

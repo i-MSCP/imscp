@@ -50,8 +50,7 @@ sub factory
 {
     return $instance if $instance;
 
-    my $sName ||= $main::imscpConfig{'MTA_SERVER'};
-    my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::mta::$sName";
+    my $package ||= $main::imscpConfig{'MTA_PACKAGE'} || 'Servers::noserver';
     eval "require $package";
     fatal( $@ ) if $@;
     $instance = $package->getInstance( );

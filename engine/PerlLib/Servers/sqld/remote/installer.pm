@@ -187,7 +187,7 @@ sub _updateServerConfig
     }
 
     # Disable unwanted plugins (bc reasons)
-    if (($main::imscpConfig{'SQL_SERVER'} =~ /^mariadb/
+    if (($main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::mariadb'
         && version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '10.0' ))
         || (version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.6.6' ))
     ) {

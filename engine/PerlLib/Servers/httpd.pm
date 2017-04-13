@@ -50,8 +50,7 @@ sub factory
 {
     return $instance if $instance;
 
-    my $sName = $main::imscpConfig{'HTTPD_SERVER'};
-    my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::httpd::$sName";
+    my $package = $main::imscpConfig{'HTTPD_PACKAGE'} || 'Servers::noserver';
     eval "require $package";
     fatal( $@ ) if $@;
     $instance = $package->getInstance( );

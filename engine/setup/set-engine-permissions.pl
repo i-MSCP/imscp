@@ -1,5 +1,15 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ set-engine-permissions Set i-MSCP engine permission
+
+=head1 SYNOPSIS
+
+ set-engine-permissions [options]...
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
@@ -16,16 +26,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
-=head1 NAME
-
- set-engine-permissions Set i-MSCP engine permission
-
-=head1 SYNOPSIS
-
- set-engine-permissions [options]...
-
-=cut
 
 use strict;
 use warnings;
@@ -62,9 +62,9 @@ OPTIONS:
     'fix-permissions|x' => \&iMSCP::Getopt::fixPermissions
 );
 
-setVerbose(iMSCP::Getopt->verbose);
+setVerbose( iMSCP::Getopt->verbose );
 
-iMSCP::Bootstrapper->getInstance()->boot(
+iMSCP::Bootstrapper->getInstance( )->boot(
     {
         mode            => $main::execmode,
         norequirements  => 1,
@@ -76,17 +76,17 @@ iMSCP::Bootstrapper->getInstance()->boot(
 );
 
 my $rs = 0;
-my @items = ();
+my @items = ( );
 
-for my $server(iMSCP::Servers->getInstance()->getListWithFullNames()) {
+for my $server(iMSCP::Servers->getInstance( )->getListWithFullNames( )) {
     eval "require $server";
-    $server = $server->factory();
+    $server = $server->factory( );
     push @items, $server if $server->can( 'setEnginePermissions' );
 }
 
-for my $package(iMSCP::Packages->getInstance()->getListWithFullNames()) {
+for my $package(iMSCP::Packages->getInstance( )->getListWithFullNames( )) {
     eval "require $package";
-    $package = $package->getInstance();
+    $package = $package->getInstance( );
     push @items, $package if $package->can( 'setEnginePermissions' );
 }
 
@@ -104,26 +104,60 @@ my $rootDir = $main::imscpConfig{'ROOT_DIR'};
 
 # e.g: /etc/imscp
 $rs = setRights(
-    $confDir, { user => $rootUName, group => $imscpGName, dirmode => '0750', filemode => '0640', recursive => 1 }
+    $confDir,
+    {
+        user      => $rootUName,
+        group     => $imscpGName,
+        dirmode   => '0750',
+        filemode  => '0640',
+        recursive => 1
+    }
 );
 # e.g: /var/www/imscp
-$rs |= setRights( $rootDir, { user => $rootUName, group => $rootGName, mode => '0755' } );
-
+$rs |= setRights(
+    $rootDir,
+    {
+        user  => $rootUName,
+        group => $rootGName,
+        mode  => '0755'
+    }
+);
 # e.g: /var/www/imscp/engine
-$rs |= setRights( "$rootDir/engine", { user => $rootUName, group => $imscpGName, mode => '0750', recursive => 1 } );
-
+$rs |= setRights(
+    "$rootDir/engine",
+    {
+        user      => $rootUName,
+        group     => $imscpGName,
+        mode      => '0750',
+        recursive => 1
+    }
+);
 # e.g: /var/www/virtual
-$rs |= setRights( $main::imscpConfig{'USER_WEB_DIR'}, { user => $rootUName, group => $rootGName, mode => '0755' } );
-
+$rs |= setRights(
+    $main::imscpConfig{'USER_WEB_DIR'},
+    {
+        user  => $rootUName,
+        group => $rootGName,
+        mode  => '0755'
+    }
+);
 # e.g: /var/log/imscp
-$rs |= setRights( $main::imscpConfig{'LOG_DIR'}, { user => $rootUName, group => $imscpGName, mode => '0750' } );
+$rs |= setRights(
+    $main::imscpConfig{'LOG_DIR'},
+    {
+        user  => $rootUName,
+        group => $imscpGName,
+        mode  =>
+        '0750'
+    }
+);
 
 $count++;
 
 for(@items) {
     debug( sprintf( 'Setting %s engine permissions', ref ) );
     printf( "Setting %s engine permissions\t%s\t%s\n", ref, $totalItems, $count ) if $main::execmode eq 'setup';
-    $rs |= $_->setEnginePermissions();
+    $rs |= $_->setEnginePermissions( );
     $count++;
 }
 

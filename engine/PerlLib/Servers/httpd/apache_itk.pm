@@ -348,11 +348,11 @@ sub disableDmn
     $self->setData(
         {
             BASE_SERVER_VHOST => $data->{'BASE_SERVER_VHOST'},
-            HTTPD_LOG_DIR     => $self->{'config'}->{'HTTPD_LOG_DIR'},
-            HTTP_URI_SCHEME   => 'http://',
             DOMAIN_IPS        => join(
                 ' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]").':80' } @domainIPs
             ),
+            HTTP_URI_SCHEME   => 'http://',
+            HTTPD_LOG_DIR     => $self->{'config'}->{'HTTPD_LOG_DIR'},
             USER_WEB_DIR      => $main::imscpConfig{'USER_WEB_DIR'}
         }
     );
@@ -1477,11 +1477,11 @@ sub _addCfg
     $self->setData(
         {
             BASE_SERVER_VHOST      => $data->{'BASE_SERVER_VHOST'},
-            HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
-            HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
             DOMAIN_IPS             => join(
                 ' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]").':80' } @domainIPs
-            )
+            ),
+            HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
+            HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'}
         }
     );
 
@@ -1610,7 +1610,13 @@ sub _addFiles
     return $rs if $rs;
 
     for ($self->_dmnFolders( $data )) {
-        $rs = iMSCP::Dir->new( dirname => $_->[0] )->make( { user => $_->[1], group => $_->[2], mode => $_->[3] } );
+        $rs = iMSCP::Dir->new( dirname => $_->[0] )->make(
+            {
+                user  => $_->[1],
+                group => $_->[2],
+                mode  => $_->[3]
+            }
+        );
         return $rs if $rs;
     }
 
@@ -1727,7 +1733,14 @@ sub _addFiles
 
     # Fix user/group and mode for root Web folder
     # root Web folder vuxxx:vuxxx 0750 (no recursive)
-    $rs = setRights( $data->{'WEB_DIR'}, { user => $data->{'USER'}, group => $data->{'GROUP'}, mode => '0750' } );
+    $rs = setRights(
+        $data->{'WEB_DIR'},
+        {
+            user  => $data->{'USER'},
+            group => $data->{'GROUP'},
+            mode  => '0750'
+        }
+    );
     return $rs if $rs;
 
     # Get list of directories/files (firt depth only)
@@ -1747,7 +1760,11 @@ sub _addFiles
         next if $file =~ /^(?:\.htgroup|\.htpasswd|logs)$/ || !-e "$data->{'WEB_DIR'}/$file";
         $rs = setRights(
             "$data->{'WEB_DIR'}/$file",
-            { user => $data->{'USER'}, group => $data->{'GROUP'}, recursive => $fixPermissions }
+            {
+                user      => $data->{'USER'},
+                group     => $data->{'GROUP'},
+                recursive => $fixPermissions
+            }
         );
         return $rs if $rs;
     }

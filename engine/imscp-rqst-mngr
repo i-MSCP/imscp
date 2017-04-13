@@ -1,5 +1,15 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ imscp-rqst-mngr - Process i-MSCP backend requests
+
+=head1 SYNOPSIS
+
+ imscp-rqst-mngr [options]...
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
@@ -17,16 +27,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-=head1 NAME
-
-imscp-rqst-mngr - Process i-MSCP backend requests
-
-=head1 SYNOPSIS
-
- imscp-rqst-mngr [options]...
-
-=cut
-
 use strict;
 use warnings;
 use FindBin;
@@ -36,15 +36,15 @@ use iMSCP::Bootstrapper;
 use iMSCP::DbTasksProcessor;
 use iMSCP::Debug;
 use iMSCP::Getopt;
-use POSIX qw(locale_h);
+use POSIX qw/ locale_h /;
 use locale;
 
-setlocale(LC_ALL, 'C.UTF-8');
+setlocale( LC_ALL, 'C.UTF-8' );
 $ENV{'LANG'} = 'C.UTF-8';
 
-newDebug('imscp-rqst-mngr.log');
+newDebug( 'imscp-rqst-mngr.log' );
 
-iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTIONS]...", basename($0)) . qq {
+iMSCP::Getopt->parseNoDefault( sprintf( "Usage: perl %s [OPTIONS]...", basename( $0 ) ). qq {
 
 Script that processes i-MSCP backend requests.
 
@@ -55,20 +55,20 @@ OPTIONS:
  'verbose|v' => \&iMSCP::Getopt::verbose
 );
 
-setVerbose(iMSCP::Getopt->verbose);
+setVerbose( iMSCP::Getopt->verbose );
 
-iMSCP::Bootstrapper->getInstance()->boot(
+iMSCP::Bootstrapper->getInstance( )->boot(
     {
         mode            => 'backend',
         norequirements  => 1,
         config_readonly => 1
     }
 );
-iMSCP::DbTasksProcessor->getInstance( mode => 'backend' )->process();
+iMSCP::DbTasksProcessor->getInstance( mode => 'backend' )->process( );
 
 =head1 AUTHOR
 
-Laurent Declercq <l.declercq@nuxwin.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 

@@ -52,18 +52,20 @@ sub factory
 {
     return $instance if $instance;
 
-    my $sName = $main::imscpConfig{'PO_SERVER'};
-    
-    if (%main::imscpOldConfig && $main::imscpOldConfig{'PO_SERVER'} ne $sName) {
-        my $package = "Servers::po::$main::imscpOldConfig{'PO_SERVER'}";
-        eval "require $package";
+    my $package = $main::imscpConfig{'PO_PACKAGE'} || 'Servers::noserver';
+
+    if (%main::imscpOldConfig
+        && exists $main::imscpOldConfig{'PO_PACKAGE'}
+        && $main::imscpOldConfig{'PO_PACKAGE'} ne ''
+        && $main::imscpOldConfig{'PO_PACKAGE'} ne $package
+    ) {
+        eval "require $main::imscpOldConfig{'PO_PACKAGE'}";
         fatal( $@ ) if $@;
 
-        my $rs = $package->getInstance( )->uninstall( );
-        fatal( sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'PO_SERVER'} ) ) if $rs;
+        my $rs = $main::imscpOldConfig{'PO_PACKAGE'}->getInstance( )->uninstall( );
+        fatal( sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'PO_PACKAGE'} ) ) if $rs;
     }
 
-    my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::po::$sName";
     eval "require $package";
     fatal( $@ ) if $@;
     $instance = $package->getInstance( );

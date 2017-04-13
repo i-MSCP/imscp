@@ -54,7 +54,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners(\%eventManager)
+=item registerSetupListeners( \%eventManager )
 
  Register setup event listeners
 
@@ -76,7 +76,7 @@ sub registerSetupListeners
     );
 }
 
-=item showPhpConfigLevelDialog(\%dialog)
+=item showPhpConfigLevelDialog( \%dialog )
 
  Ask for PHP configuration level to use
 
@@ -100,8 +100,8 @@ sub showPhpConfigLevelDialog
 
 Please choose the PHP configuration level you want use. Available levels are:
 
-\\Z4Per user:\\Zn One pool configuration file per user
 \\Z4Per domain:\\Zn One pool configuration file per domain (including subdomains)
+\\Z4Per user:\\Zn One pool configuration file per user
 \\Z4Per site:\\Zn One pool configuration per domain
 EOF
         return $rs if $rs >= 30;
@@ -111,7 +111,7 @@ EOF
     0;
 }
 
-=item showListenModeDialog()
+=item showListenModeDialog( )
 
  Ask for FPM listen mode
 
@@ -128,14 +128,15 @@ sub showListenModeDialog
     my $listenMode = main::setupGetQuestion( 'PHP_FPM_LISTEN_MODE', $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} );
 
     if ($main::reconfigure =~ /^(?:httpd|php|servers|all|forced)$/ || $listenMode !~ /^(?:uds|tcp)$/) {
-        ($rs, $listenMode) = $dialog->radiolist( <<"EOF", [ 'uds', 'tcp' ], $listenMode =~ /^(?:tcp|uds)$/ ? $listenMode : 'uds' );
+        ($rs, $listenMode) = $dialog->radiolist(
+            <<"EOF", [ 'uds', 'tcp' ], $listenMode =~ /^(?:tcp|uds)$/ ? $listenMode : 'uds' );
 
 \\Z4\\Zb\\ZuPHP-FPM - FastCGI address type\\Zn
 
 Please, choose the FastCGI address type that you want use. Available types are:
 
-\\Z4uds:\\Zn Unix domain socket (e.g. /run/php/php<version>-fpm-domain.tld.sock)
 \\Z4tcp:\\Zn TCP/IP (e.g. 127.0.0.1:9000)
+\\Z4uds:\\Zn Unix domain socket (e.g. /run/php/php<version>-fpm-domain.tld.sock)
 
 Be aware that for high traffic sites, TCP/IP can require a tweaking of your kernel parameters (sysctl).
 EOF
@@ -145,7 +146,7 @@ EOF
     $rs;
 }
 
-=item install()
+=item install( )
 
  Process install tasks
 
@@ -157,16 +158,16 @@ sub install
 {
     my $self = shift;
 
-    my $rs = $self->_setApacheVersion();
-    $rs ||= $self->_makeDirs();
+    my $rs = $self->_setApacheVersion( );
+    $rs ||= $self->_makeDirs( );
     $rs ||= $self->_copyDomainDisablePages;
-    $rs ||= $self->_buildFastCgiConfFiles();
-    $rs ||= $self->_buildPhpConfFiles();
-    $rs ||= $self->_buildApacheConfFiles();
-    $rs ||= $self->_installLogrotate();
-    $rs ||= $self->_setupVlogger();
-    $rs ||= $self->_saveConf();
-    $rs ||= $self->_cleanup();
+    $rs ||= $self->_buildFastCgiConfFiles( );
+    $rs ||= $self->_buildPhpConfFiles( );
+    $rs ||= $self->_buildApacheConfFiles( );
+    $rs ||= $self->_installLogrotate( );
+    $rs ||= $self->_setupVlogger( );
+    $rs ||= $self->_saveConf( );
+    $rs ||= $self->_cleanup( );
 }
 
 =back
@@ -175,7 +176,7 @@ sub install
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -187,8 +188,8 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'httpd'} = Servers::httpd::apache_php_fpm->getInstance();
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
+    $self->{'httpd'} = Servers::httpd::apache_php_fpm->getInstance( );
     $self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
     $self->{'config'} = $self->{'httpd'}->{'config'};
 
@@ -215,67 +216,54 @@ sub _init
     tie %{$self->{'phpConfig'}}, 'iMSCP::Config', fileName => "$self->{'phpCfgDir'}/php.data";
 
     $oldConf = "$self->{'phpCfgDir'}/php.old.data";
-    if(-f $oldConf) {
+    if (-f $oldConf) {
         tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
-        while(my($key, $value) = each(%oldConfig)) {
+        while(my ($key, $value) = each(%oldConfig)) {
             next unless exists $self->{'phpConfig'}->{$key};
             $self->{'phpConfig'}->{$key} = $value;
         }
     }
 
-    $self->_guessPhpVariables();
+    $self->_guessSystemPhpVariables( );
     $self;
 }
 
-=item _guessPhpVariables
+=item _guessSystemPhpVariables
 
- Guess PHP Variables
+ Guess system PHP Variables
 
  Return int 0 on success, die on failure
 
 =cut
 
-sub _guessPhpVariables
+sub _guessSystemPhpVariables
 {
     my $self = shift;
 
-    my ($phpVersion) = $main::imscpConfig{'PHP_SERVER'} =~ /([\d.]+)$/ or die(
-        sprintf( "Couldn't guess value for the `%s' PHP configuration parameter.", 'PHP_VERSION' )
+    my ($phpVersion) = `php -nv 2> /dev/null` =~ /^PHP\s+(\d+.\d+)/ or die( "Couldn't guess system PHP version" );
+
+    $self->{'phpConfig'}->{'PHP_VERSION'} = $phpVersion;
+
+    my ($phpConfDir) = `php -ni 2> /dev/null | grep '(php.ini) Path'` =~ /([^\s]+)$/ or die(
+        "Couldn't guess system PHP configuration directory path"
     );
 
-    my $rs = execute( "php -d date.timezone=utc -i | grep '(php.ini) Path'", \ my $stdout, \ my $stderr );
-    die( $stderr || 'Unknown error' ) if $rs;
-    
-    my ($phpConfDir) = $stdout =~ /([^\s]+)$/;
-    defined $phpConfDir or die( "Couldn't guess PHP configuration directory path." );
-    my $phpConfBaseDir = dirname($phpConfDir);
+    my $phpConfBaseDir = dirname( $phpConfDir );
+    $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = $phpConfBaseDir;
+    $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = "$phpConfBaseDir/fpm/pool.d";
 
-    if ($phpConfBaseDir =~ m%php/\Q$phpVersion\E$%) {
-        $self->{'phpConfig'}->{'PHP_VERSION'} = $phpVersion;
-        $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = $phpConfBaseDir;
-        $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = "$phpConfBaseDir/fpm/pool.d";
-        $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php$phpVersion" ) || '';
-        $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-cgi$phpVersion" ) || '';
-        $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-fpm$phpVersion" ) || '';
-    } else {
-        $self->{'phpConfig'}->{'PHP_VERSION'} = 5;
-        $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = $phpConfBaseDir;
-        $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = "$phpConfBaseDir/fpm/pool.d";
-        $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5' ) || '';
-        $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5-cgi' ) || '';
-        $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find( 'php5-fpm' ) || '';
+    unless (-d $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}) {
+        $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = '';
+        die( sprintf( "Couldn't guess `%s' PHP configuration parameter value: directory doesn't exists.", $_ ) );
     }
 
-    for(qw/ PHP_CONF_DIR_PATH PHP_FPM_POOL_DIR_PATH /) {
-        unless (-d $self->{'phpConfig'}->{$_}) {
-            $self->{'phpConfig'}->{$_} = '';
-            die(sprintf("Couldn't guess value for the `%s' PHP configuration parameter: directory doesn't exists.", $_));
-        }
-    }
+    $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php$phpVersion" );
+    $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-cgi$phpVersion" );
+    $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-fpm$phpVersion" );
 
     for(qw/ PHP_CLI_BIN_PATH PHP_FCGI_BIN_PATH PHP_FPM_BIN_PATH /) {
-        next unless $self->{'phpConfig'}->{$_} eq '';
-        die( sprintf( "Couldn' guess value for the `%s' PHP configuration parameter.", $_ ) );
+        next if $self->{'phpConfig'}->{$_};
+        die( sprintf( "Couldn't guess `%s' PHP configuration parameter value.", $_ ) );
     }
 
     0;
@@ -299,7 +287,7 @@ sub _setApacheVersion
     return $rs if $rs;
 
     if ($stdout !~ m%Apache/([\d.]+)%) {
-        error( 'Could not find Apache version from `apache2ctl -v` command output.' );
+        error( "Couldn't guess Apache version." );
         return 1;
     }
 
@@ -308,7 +296,7 @@ sub _setApacheVersion
     0;
 }
 
-=item _makeDirs()
+=item _makeDirs( )
 
  Create directories
 
@@ -322,7 +310,11 @@ sub _makeDirs
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdMakeDirs' );
     $rs ||= iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_LOG_DIR'} )->make(
-        { user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ADM_GROUP'}, mode => 0750 }
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ADM_GROUP'},
+            mode  => 0750
+        }
     );
     return $rs if $rs;
 
@@ -331,7 +323,7 @@ sub _makeDirs
     $self->{'eventManager'}->trigger( 'afterHttpdMakeDirs' );
 }
 
-=item _copyDomainDisablePages()
+=item _copyDomainDisablePages( )
 
  Copy pages for disabled domains
 
@@ -346,7 +338,7 @@ sub _copyDomainDisablePages
     );
 }
 
-=item _buildFastCgiConfFiles()
+=item _buildFastCgiConfFiles( )
 
  Build FastCGI configuration files
 
@@ -370,12 +362,16 @@ sub _buildFastCgiConfFiles
     $rs ||= $self->{'httpd'}->buildConfFile(
         "$self->{'phpCfgDir'}/fpm/apache_fastcgi_module.conf",
         { },
-        { destination => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/php_fpm_imscp.conf" }
+        {
+            destination => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/php_fpm_imscp.conf"
+        }
     );
     $rs ||= $self->{'httpd'}->buildConfFile(
         "$self->{'phpCfgDir'}/fpm/apache_fastcgi_module.load",
         { },
-        { destination => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/php_fpm_imscp.load" }
+        {
+            destination => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/php_fpm_imscp.load"
+        }
     );
     return $rs if $rs;
 
@@ -397,7 +393,7 @@ sub _buildFastCgiConfFiles
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildFastCgiConfFiles' );
 }
 
-=item _buildPhpConfFiles()
+=item _buildPhpConfFiles( )
 
  Build PHP configuration files
 
@@ -435,17 +431,23 @@ sub _buildPhpConfFiles
     $rs = $self->{'httpd'}->buildConfFile(
         "$self->{'phpCfgDir'}/fpm/php.ini",
         { },
-        { destination => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/php.ini" }
+        {
+            destination => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/php.ini"
+        }
     );
     $rs ||= $self->{'httpd'}->buildConfFile(
         "$self->{'phpCfgDir'}/fpm/php-fpm.conf",
         { },
-        { destination => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/php-fpm.conf" }
+        {
+            destination => "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/php-fpm.conf"
+        }
     );
     $rs ||= $self->{'httpd'}->buildConfFile(
         "$self->{'phpCfgDir'}/fpm/pool.conf.default",
         { },
-        { destination => "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/www.conf" }
+        {
+            destination => "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/www.conf"
+        }
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildPhpConfFiles' );
 }
@@ -470,9 +472,9 @@ sub _buildApacheConfFiles
         return $rs if $rs;
 
         unless (defined $cfgTpl) {
-            $cfgTpl = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf" )->get();
+            $cfgTpl = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf" )->get( );
             unless (defined $cfgTpl) {
-                error( sprintf( 'Could not read %s file', "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf" ) );
+                error( sprintf( "Couldn't read %s file", "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf" ) );
                 return 1;
             }
         }
@@ -488,7 +490,7 @@ sub _buildApacheConfFiles
         my $file = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf" );
         $rs = $file->set( $cfgTpl );
         $rs ||= $file->mode( 0644 );
-        $rs ||= $file->save();
+        $rs ||= $file->save( );
         return $rs if $rs;
     }
 
@@ -498,7 +500,9 @@ sub _buildApacheConfFiles
 
     # Remove default access log file provided by Debian package
     if (-f "$self->{'config'}->{'HTTPD_LOG_DIR'}/other_vhosts_access.log") {
-        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_LOG_DIR'}/other_vhosts_access.log" )->delFile();
+        $rs = iMSCP::File->new(
+            filename => "$self->{'config'}->{'HTTPD_LOG_DIR'}/other_vhosts_access.log"
+        )->delFile( );
         return $rs if $rs;
     }
 
@@ -531,7 +535,7 @@ sub _buildApacheConfFiles
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildApacheConfFiles' );
 }
 
-=item _installLogrotate()
+=item _installLogrotate( )
 
  Install logrotate files
 
@@ -557,7 +561,9 @@ sub _installLogrotate
     $rs ||= $self->{'httpd'}->buildConfFile(
         'logrotate.conf',
         { },
-        { destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2" }
+        {
+            destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2"
+        }
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdInstallLogrotate', 'apache2' );
 
@@ -566,7 +572,9 @@ sub _installLogrotate
         $rs ||= $self->{'httpd'}->buildConfFile(
             "$self->{'phpCfgDir'}/fpm/logrotate.tpl",
             { },
-            { destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm" }
+            {
+                destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm"
+            }
         );
         $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdInstallLogrotate', 'php5-fpm' );
     }
@@ -574,7 +582,7 @@ sub _installLogrotate
     $rs;
 }
 
-=item _setupVlogger()
+=item _setupVlogger( )
 
  Setup vlogger
 
@@ -586,7 +594,7 @@ sub _setupVlogger
 {
     my $self = shift;
 
-    my $sqld = Servers::sqld->factory();
+    my $sqld = Servers::sqld->factory( );
     my $host = main::setupGetQuestion( 'DATABASE_HOST' );
     $host = $host eq 'localhost' ? '127.0.0.1' : $host;
     my $port = main::setupGetQuestion( 'DATABASE_PORT' );
@@ -594,10 +602,10 @@ sub _setupVlogger
     my $user = 'vlogger_user';
     my $userHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
     $userHost = '127.0.0.1' if $userHost eq 'localhost';
-    my $oldUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'} || '';
+    my $oldUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'};
     my $pass = randomStr(16, iMSCP::Crypt::ALNUM);
 
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->factory( );
     my $rs = main::setupImportSqlSchema( $db, "$self->{'apacheCfgDir'}/vlogger.sql" );
     return $rs if $rs;
 
@@ -612,7 +620,7 @@ sub _setupVlogger
     my $qDbName = $db->quoteIdentifier( $dbName );
     $rs = $db->doQuery( 'g', "GRANT SELECT, INSERT, UPDATE ON $qDbName.httpd_vlogger TO ?\@?", $user, $userHost );
     unless (ref $rs eq 'HASH') {
-        error( sprintf( 'Could not add SQL privileges: %s', $rs ) );
+        error( sprintf( "Couldn't add SQL privileges: %s", $rs ) );
         return 1;
     }
 
@@ -628,12 +636,16 @@ sub _setupVlogger
 
     $self->{'httpd'}->buildConfFile(
         "$self->{'apacheCfgDir'}/vlogger.conf.tpl",
-        { SKIP_TEMPLATE_CLEANER => 1 },
-        { destination => "$self->{'apacheCfgDir'}/vlogger.conf" }
+        {
+            SKIP_TEMPLATE_CLEANER => 1
+        },
+        {
+            destination => "$self->{'apacheCfgDir'}/vlogger.conf"
+        }
     );
 }
 
-=item _saveConf()
+=item _saveConf( )
 
  Save configuration file
 
@@ -645,12 +657,12 @@ sub _saveConf
 {
     my $self = shift;
 
-    (tied %{$self->{'config'}})->flush();
-    (tied %{$self->{'phpConfig'}})->flush();
+    (tied %{$self->{'config'}})->flush( );
+    (tied %{$self->{'phpConfig'}})->flush( );
 
     my %filesToDir = (
-        'apache' => $self->{'apacheCfgDir'},
-        'php'    => $self->{'phpCfgDir'}
+        apache => $self->{'apacheCfgDir'},
+        php    => $self->{'phpCfgDir'}
     );
 
     for (keys %filesToDir) {
@@ -661,7 +673,7 @@ sub _saveConf
     0;
 }
 
-=item _cleanup()
+=item _cleanup( )
 
  Process cleanup tasks
 
@@ -678,19 +690,19 @@ sub _cleanup
 
     for ('imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf') {
         next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
-        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_" )->delFile();
+        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_" )->delFile( );
         return $rs if $rs;
     }
 
     for ('/var/log/apache2/backup', '/var/log/apache2/users', '/var/www/scoreboards') {
-        $rs = iMSCP::Dir->new( dirname => $_ )->remove();
+        $rs = iMSCP::Dir->new( dirname => $_ )->remove( );
         return $rs if $rs;
     }
 
     if (-f "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/master.conf") {
         $rs = iMSCP::File->new(
             filename => "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/master.conf"
-        )->delFile();
+        )->delFile( );
         return $rs if $rs;
     }
 
@@ -704,20 +716,23 @@ sub _cleanup
     #
 
     if (-f '/etc/logrotate.d/php5-fpm') {
-        $rs = iMSCP::File->new( filename => '/etc/logrotate.d/php5-fpm' )->delFile();
+        $rs = iMSCP::File->new( filename => '/etc/logrotate.d/php5-fpm' )->delFile( );
         return $rs if $rs;
     }
 
-    $rs = iMSCP::Dir->new( dirname => '/etc/php5' )->remove();
+    $rs = iMSCP::Dir->new( dirname => '/etc/php5' )->remove( );
     return $rs if $rs;
 
-    for(grep !/^$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}$/, glob dirname($self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}).'/*') {
-        $rs = iMSCP::Dir->new( dirname => $_ )->remove();
+    for(
+        grep !/^$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}$/,
+            glob dirname($self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}).'/*'
+    ) {
+        $rs = iMSCP::Dir->new( dirname => $_ )->remove( );
         return $rs if $rs;
     }
 
     # CGI
-    $rs = iMSCP::Dir->new( dirname => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'} )->remove();
+    $rs = iMSCP::Dir->new( dirname => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'} )->remove( );
     return $rs if $rs;
 }
 

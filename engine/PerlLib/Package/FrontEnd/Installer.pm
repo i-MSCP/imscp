@@ -43,7 +43,6 @@ use iMSCP::SystemUser;
 use iMSCP::TemplateParser;
 use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
 use Package::FrontEnd;
-use Servers::httpd;
 use Servers::named;
 use Servers::mta;
 use version;
@@ -157,7 +156,7 @@ EOF
         return $rs if $rs >= 30;
 
         do {
-            ($rs, $password) = $dialog->inputbox( <<"EOF", randomStr(16, iMSCP::Crypt::ALNUM) );
+            ($rs, $password) = $dialog->inputbox( <<"EOF", randomStr( 16, iMSCP::Crypt::ALNUM ) );
 
 Please enter a password for the master administrator:$msg
 EOF
@@ -308,7 +307,13 @@ EOF
 
                     $msg = '';
                     if ($openSSL->validatePrivateKey( )) {
-                        getMessageByType( 'error', { amount => 1, remove => 1 } );
+                        getMessageByType(
+                            'error',
+                            {
+                                amount => 1,
+                                remove => 1
+                            }
+                        );
                         $msg = "\n\\Z1Invalid private key or passphrase.\\Zn\n\nPlease try again.";
                     }
                 } while $rs < 30 && $msg;
@@ -346,7 +351,13 @@ EOF
                     } while $rs < 30 && !($certificatePath && -f $certificatePath);
                     return $rs if $rs >= 30;
 
-                    getMessageByType( 'error', { amount => 1, remove => 1 } );
+                    getMessageByType(
+                        'error',
+                        {
+                            amount => 1,
+                            remove => 1
+                        }
+                    );
                     $openSSL->{'certificate_container_path'} = $certificatePath;
                 } while $rs < 30 && $openSSL->validateCertificate( );
                 return $rs if $rs >= 30;
@@ -371,7 +382,13 @@ EOF
         $openSSL->{'certificate_container_path'} = "$main::imscpConfig{'CONF_DIR'}/$domainName.pem";
 
         if ($openSSL->validateCertificateChain( )) {
-            getMessageByType( 'error', { amount => 1, remove => 1 } );
+            getMessageByType(
+                'error',
+                {
+                    amount => 1,
+                    remove => 1
+                }
+            );
             $dialog->msgbox( <<"EOF" );
 
 Your SSL certificate for the control panel is missing or invalid.
@@ -413,9 +430,9 @@ sub askHttpPorts
     my ($rs, $msg) = (0, '');
 
     if ($main::reconfigure =~ /^(?:panel|panel_ports|all|forced)$/
-        || !isNumber($httpPort)
-        || !isNumberInRange($httpPort, 1025, 65535)
-        || !isStringNotInList($httpPort, $httpsPort)
+        || !isNumber( $httpPort )
+        || !isNumberInRange( $httpPort, 1025, 65535 )
+        || !isStringNotInList( $httpPort, $httpsPort )
     ) {
         do {
             ($rs, $httpPort) = $dialog->inputbox( <<"EOF", $httpPort ? $httpPort : 8880 );
@@ -493,7 +510,7 @@ sub install
 
  Process dpkg post-invoke tasks
 
- See See #IP-1641 for further details.
+ See #IP-1641 for further details.
 
  Return int 0 on success, other on failure
 
@@ -521,7 +538,8 @@ sub dpkgPostInvokeTasks
 
     my $rs = $self->_copyPhpBinary( );
     return $rs if $rs || !-f '/usr/local/etc/imscp_panel/php-fpm.conf';
-    $self->{'frontend'}->restart( );
+    $self->{'frontend'}->{'restart'} = 1;
+    0;
 }
 
 =back
@@ -543,7 +561,6 @@ sub _init
     my $self = shift;
 
     $self->{'frontend'} = Package::FrontEnd->getInstance( );
-    $self->{'httpd'} = Servers::httpd->factory( );
     $self->{'eventManager'} = $self->{'frontend'}->{'eventManager'};
     $self->{'cfgDir'} = $self->{'frontend'}->{'cfgDir'};
     $self->{'config'} = $self->{'frontend'}->{'config'};
@@ -646,8 +663,7 @@ sub _setupMasterAdmin
 sub _setupSsl
 {
     my $sslEnabled = main::setupGetQuestion( 'PANEL_SSL_ENABLED' );
-    my $oldCertificate = $main::imscpOldConfig{'BASE_SERVER_VHOST'}
-        ? "$main::imscpOldConfig{'BASE_SERVER_VHOST'}.pem" : '';
+    my $oldCertificate = $main::imscpOldConfig{'BASE_SERVER_VHOST'};
     my $domainName = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
 
     # Remove old certificate if any (handle case where panel hostname has been changed)
@@ -707,7 +723,7 @@ sub _setHttpdVersion( )
     return $rs if $rs;
 
     if ($stderr !~ m%nginx/([\d.]+)%) {
-        error( "Couldn't find nginx Nginx from `nginx -v` command output." );
+        error( "Couldn't guess Nginx version" );
         return 1;
     }
 
@@ -751,7 +767,7 @@ sub _addMasterWebUser
     }
 
     if (!%{$rdata}) {
-        error( "Couldn't find admin user in database" );
+        error( "Couldn't find master administrator user in database" );
         return 1;
     }
 
@@ -797,7 +813,7 @@ sub _addMasterWebUser
 
     # Update admin.admin_sys_name, admin.admin_sys_uid, admin.admin_sys_gname and admin.admin_sys_gid columns
     $rdata = $db->doQuery(
-        'dummy',
+        'u',
         '
             UPDATE admin SET admin_sys_name = ?, admin_sys_uid = ?, admin_sys_gname = ?, admin_sys_gid = ?
             WHERE admin_type = ?
@@ -844,24 +860,29 @@ sub _makeDirs
     # See #IP-1530
     iMSCP::Dir->new( dirname => $nginxTmpDir )->remove( );
 
-    for (
-        [ $nginxTmpDir, $rootUName, $rootGName, 0755 ],
+    for ([ $nginxTmpDir, $rootUName, $rootGName, 0755 ],
         [ $self->{'config'}->{'HTTPD_CONF_DIR'}, $rootUName, $rootGName, 0755 ],
         [ $self->{'config'}->{'HTTPD_LOG_DIR'}, $rootUName, $rootGName, 0755 ],
         [ $self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}, $rootUName, $rootGName, 0755 ],
         [ $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}, $rootUName, $rootGName, 0755 ]
     ) {
-        $rs = iMSCP::Dir->new( dirname => $_->[0] )->make( { user => $_->[1], group => $_->[2], mode => $_->[3] } );
+        $rs = iMSCP::Dir->new( dirname => $_->[0] )->make(
+            {
+                user  => $_->[1],
+                group => $_->[2],
+                mode  => $_->[3]
+            }
+        );
         return $rs if $rs;
     }
 
     local $@;
     eval {
         if (iMSCP::Service->getInstance->isSystemd( )) {
-            iMSCP::Dir->new(dirname => '/run/imscp')->make(
+            iMSCP::Dir->new( dirname => '/run/imscp')->make(
                 {
-                    user  => $self->{'httpd'}->getRunningUser( ),
-                    group => $self->{'httpd'}->getRunningGroup( ),
+                    user  => $self->{'config'}->{'HTTPD_USER'},
+                    group => $self->{'config'}->{'HTTPD_GROUP'},
                     mode  => 0755
                 }
             );
@@ -990,7 +1011,7 @@ sub _buildHttpdConfig
         $rs = execute( 'grep processor /proc/cpuinfo | wc -l', \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         debug( $stderr ) if $stderr;
-        debug( "Couldn't detect number of CPU cores. nginx worker_processes value set to 2" ) if $rs;
+        debug( "Couldn't guess number of CPU cores. Nginx worker_processes value set to 2" ) if $rs;
 
         unless ($rs) {
             chomp( $stdout );
@@ -1050,8 +1071,7 @@ sub _buildHttpdConfig
     my $tplVars = {
         BASE_SERVER_VHOST            => main::setupGetQuestion( 'BASE_SERVER_VHOST' ),
         BASE_SERVER_IP               => ($baseServerIpVersion eq 'ipv4')
-            ? main::setupGetQuestion( 'BASE_SERVER_IP' )
-            : '['.main::setupGetQuestion( 'BASE_SERVER_IP' ).']',
+            ? main::setupGetQuestion( 'BASE_SERVER_IP' ) : '['.main::setupGetQuestion( 'BASE_SERVER_IP' ).']',
         BASE_SERVER_VHOST_HTTP_PORT  => main::setupGetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT' ),
         BASE_SERVER_VHOST_HTTPS_PORT => $httpsPort,
         WEB_DIR                      => $main::imscpConfig{'GUI_ROOT_DIR'},

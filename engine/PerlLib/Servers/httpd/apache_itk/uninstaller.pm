@@ -29,16 +29,16 @@ sub uninstall
 {
     my $self = shift;
 
-    my $rs = $self->_removeVloggerSqlUser();
-    $rs ||= $self->_removeDirs();
-    $rs ||= $self->_vHostConf();
+    my $rs = $self->_removeVloggerSqlUser( );
+    $rs ||= $self->_removeDirs( );
+    $rs ||= $self->_vHostConf( );
 }
 
 sub _init
 {
     my $self = shift;
 
-    $self->{'httpd'} = Servers::httpd::apache_itk->getInstance();
+    $self->{'httpd'} = Servers::httpd::apache_itk->getInstance( );
     $self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
     $self->{'config'} = $self->{'httpd'}->{'config'};
     $self->{'phpConfig'} = $self->{'httpd'}->{'phpConfig'};
@@ -48,17 +48,17 @@ sub _init
 sub _removeVloggerSqlUser
 {
     if ($main::imscpConfig{'DATABASE_USER_HOST'} eq 'localhost') {
-        Servers::sqld->factory()->dropUser( 'vlogger_user', '127.0.0.1' );
-    } else {
-        Servers::sqld->factory()->dropUser( 'vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'} );
+        return Servers::sqld->factory( )->dropUser( 'vlogger_user', '127.0.0.1' );
     }
+
+    Servers::sqld->factory( )->dropUser( 'vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'} );
 }
 
 sub _removeDirs
 {
     my $self = shift;
 
-    iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove();
+    iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove( );
 }
 
 sub _vHostConf
@@ -69,7 +69,7 @@ sub _vHostConf
         my $rs = $self->{'httpd'}->disableSites( '00_nameserver.conf' );
         $rs ||= iMSCP::File->new(
             filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf"
-        )->delFile();
+        )->delFile( );
         return $rs if $rs;
     }
 
@@ -78,7 +78,7 @@ sub _vHostConf
 
     if (-f "$confDir/00_imscp.conf") {
         my $rs = $self->{'httpd'}->disableConfs( '00_imscp.conf' );
-        $rs ||= iMSCP::File->new( filename => "$confDir/00_imscp.conf" )->delFile();
+        $rs ||= iMSCP::File->new( filename => "$confDir/00_imscp.conf" )->delFile( );
         return $rs if $rs;
     }
 

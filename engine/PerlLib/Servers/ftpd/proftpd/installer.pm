@@ -321,7 +321,7 @@ sub _setupDatabase
     my $dbName = main::setupGetQuestion( 'DATABASE_NAME' );
     my $dbUser = main::setupGetQuestion( 'FTPD_SQL_USER' );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
-    my $oldDbUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'} || '';
+    my $oldDbUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'};
     my $dbPass = main::setupGetQuestion( 'FTPD_SQL_PASSWORD' );
     my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 

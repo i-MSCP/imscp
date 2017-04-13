@@ -299,7 +299,7 @@ sub _setupAuthdaemonSqlUser
     my $dbName = main::setupGetQuestion( 'DATABASE_NAME' );
     my $dbUser = main::setupGetQuestion( 'AUTHDAEMON_SQL_USER' );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
-    my $oldDbUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'} || '';
+    my $oldDbUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'};
     my $dbPass = main::setupGetQuestion( 'AUTHDAEMON_SQL_PASSWORD' );
     my $dbOldUser = $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'};
 
@@ -656,7 +656,7 @@ sub _migrateFromDovecot
 {
     my $self = shift;
 
-    return 0 if $main::imscpConfig{'PO_SERVER'} eq $main::imscpOldConfig{'PO_SERVER'};
+    return 0 unless $main::imscpOldConfig{'PO_SERVER'} eq 'dovecot';
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoMigrateFromDovecot' );
     return $rs if $rs;
@@ -675,6 +675,7 @@ sub _migrateFromDovecot
     unless ($rs) {
         $self->{'po'}->{'forceMailboxesQuotaRecalc'} = 1;
         $main::imscpOldConfig{'PO_SERVER'} = 'courier';
+        $main::imscpOldConfig{'PO_PACKAGE'} = 'Servers::po::courier';
     }
 
     $rs ||= $self->{'eventManager'}->trigger( 'afterPoMigrateFromDovecot' );

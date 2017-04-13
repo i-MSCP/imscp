@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::po::dovecot::uninstaller - i-MSCP Courier server uninstaller
+ Servers::po::courier::uninstaller - i-MSCP Courier server uninstaller
 
 =cut
 
@@ -57,15 +57,19 @@ sub uninstall
 {
     my $self = shift;
 
-    my $rs = $self->_removeConfig( );
-    return $rs if $rs;
-
-    if ($main::execmode && $main::execmode eq 'setup') {
-        # In setup context, deletion of SQL user must be delayed, else we won't be able to connect to SQL server
-        return iMSCP::EventManager->getInstance()->register( 'afterSqldPreinstall', sub { $self->_dropSqlUser(); } );
+    # In setup context, processing must be delayed, else we won't be able to connect to SQL server
+    if ($main::execmode eq 'setup') {
+        return iMSCP::EventManager->getInstance()->register(
+            'afterSqldPreinstall',
+            sub {
+                my $rs ||= $self->_dropSqlUser();
+                $rs ||= $self->_removeConfig( );
+            }
+        );
     }
 
-    $self->_dropSqlUser( );
+    my $rs = $self->_dropSqlUser( );
+    $rs ||= $self->_removeConfig( );
 }
 
 =back
@@ -107,6 +111,33 @@ sub _init
     $self;
 }
 
+=item _dropSqlUser( )
+
+ Drop SQL user
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _dropSqlUser
+{
+    my $self = shift;
+
+    # In setup context, take value from old conffile, else take value from current conffile
+    my $dbUserHost = ($main::execmode eq 'setup')
+        ? $main::imscpOldConfig{'DATABASE_USER_HOST'} : $main::imscpConfig{'DATABASE_USER_HOST'};
+
+    return 0 unless $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} && $dbUserHost;
+
+    eval { Servers::sqld->factory( )->dropUser( $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'}, $dbUserHost ); };
+    if ($@) {
+        error($@);
+        return 1;
+    }
+
+    0;
+}
+
 =item _removeConfig( )
 
  Remove configuration
@@ -133,6 +164,8 @@ sub _removeConfig
     );
     return $rs if $rs;
 
+    # Remove i-MSCP configuration stanza from courier imap daemon configuration file
+
     if (-f "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd") {
         my $file = iMSCP::File->new( filename => "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd" );
         my $fileContent = $file->get( );
@@ -155,51 +188,32 @@ sub _removeConfig
         return $rs if $rs;
     }
 
+    # Remove SALS configuration file
+
     if (-f "$self->{'config'}->{'SASL_CONF_DIR'}/smtpd.conf") {
         $rs = iMSCP::File->new( filename => "$self->{'config'}->{'SASL_CONF_DIR'}/smtpd.conf" )->delFile( );
         return $rs if $rs;
     }
+
+    # Remove systemd-tmpfiles
 
     if (-f '/etc/tmpfiles.d/courier-authdaemon.conf') {
         $rs = iMSCP::File->new( filename => '/etc/tmpfiles.d/courier-authdaemon.conf' )->delFile( );
         return $rs if $rs;
     }
 
+    # Remove quota warning script
+
     if (-f $self->{'config'}->{'QUOTA_WARN_MSG_PATH'}) {
         $rs = iMSCP::File->new( filename => $self->{'config'}->{'QUOTA_WARN_MSG_PATH'} )->delFile( );
         return $rs if $rs;
     }
 
+    # Remove old data file
+
     if (-f "$self->{'cfgDir'}/courier.old.data") {
         $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/courier.old.data" )->delFile( );
         return $rs if $rs;
-    }
-
-    0;
-}
-
-=item _dropSqlUser( )
-
- Drop SQL user
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _dropSqlUser
-{
-    my $self = shift;
-
-    # In setup context, take value from old conffile, else take value from current conffile
-    my $dbUserHost = ($main::execmode && $main::execmode eq 'setup')
-        ? $main::imscpOldConfig{'DATABASE_USER_HOST'} : $main::imscpConfig{'DATABASE_USER_HOST'};
-
-    return 0 unless $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} && $dbUserHost;
-
-    eval { Servers::sqld->factory( )->dropUser( $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'}, $dbUserHost ); };
-    if ($@) {
-        error($@);
-        return 1;
     }
 
     0;

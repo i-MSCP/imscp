@@ -74,16 +74,13 @@ sub loadConfig
     tie %main::imscpConfig, 'iMSCP::Config', fileName => $newConffile, readonly => 1, temporary => 1;
 
     # Load old configuration
-    if (-f "$main::imscpConfig{'CONF_DIR'}/imscpOld.conf") {
-        # imscpOld.conf file only exists on error
+    if (-f "$main::imscpConfig{'CONF_DIR'}/imscpOld.conf") { # Recovering following an installation or upgrade failure
         tie %main::imscpOldConfig,
-            'iMSCP::Config', fileName => "$main::imscpConfig{'CONF_DIR'}/imscpOld.conf", readonly => 1;
-    } elsif (-f "$main::imscpConfig{'CONF_DIR'}/imscp.conf") {
-        # On update there is one old imscp.conf file
+            'iMSCP::Config', fileName => "$main::imscpConfig{'CONF_DIR'}/imscpOld.conf", readonly => 1, temporary => 1;
+    } elsif (-f "$main::imscpConfig{'CONF_DIR'}/imscp.conf") { # Upgrade case
         tie %main::imscpOldConfig,
-            'iMSCP::Config', fileName => "$main::imscpConfig{'CONF_DIR'}/imscp.conf", readonly => 1;
-    } else {
-        # On fresh installation there is not old conffile
+            'iMSCP::Config', fileName => "$main::imscpConfig{'CONF_DIR'}/imscp.conf", readonly => 1, temporary => 1;
+    } else { # Frech installation case
         %main::imscpOldConfig = %main::imscpConfig;
     }
 
@@ -94,6 +91,11 @@ sub loadConfig
             next unless exists $main::imscpConfig{$key};
             next if $key =~ /^(?:BuildDate|Version|CodeName|THEME_ASSETS_VERSION)$/;
             $main::imscpConfig{$key} = $value;
+        }
+
+        # Make sure that all configuration parameter exists
+        while(my ($param, $value) = each(%main::imscpConfig)) {
+            $main::imscpOldConfig{$param} = $value unless exists $main::imscpOldConfig{$param};
         }
     }
 
@@ -117,10 +119,10 @@ sub loadConfig
 sub build
 {
     newDebug( 'imscp-build.log' );
-    
-    if (!iMSCP::Getopt->preseed && (!$main::imscpConfig{'HTTPD_SERVER'} || !$main::imscpConfig{'PO_SERVER'} ||
-        !$main::imscpConfig{'MTA_SERVER'} || !$main::imscpConfig{'FTPD_SERVER'} || !$main::imscpConfig{'NAMED_SERVER'}
-        || !$main::imscpConfig{'SQL_SERVER'} || !$main::imscpConfig{'PHP_SERVER'})
+
+    if (!iMSCP::Getopt->preseed && !($main::imscpConfig{'FRONTEND_SERVER'} && $main::imscpConfig{'FTPD_SERVER'}
+        && $main::imscpConfig{'HTTPD_SERVER'} && $main::imscpConfig{'NAMED_SERVER'} && $main::imscpConfig{'MTA_SERVER'}
+        && $main::imscpConfig{'PHP_SERVER'} && $main::imscpConfig{'PO_SERVER'} && $main::imscpConfig{'SQL_SERVER'})
     ) {
         iMSCP::Getopt->noprompt( 0 );
         $main::skippackages = 0;
@@ -504,9 +506,10 @@ See https://wiki.i-mscp.net/doku.php?id=start:installer#installer_modes for a fu
  
 EOF
 
+    return 50 if $rs;
+
     $main::buildonly = $mode eq 'manual' ? 1 : 0;
     $dialog->set( 'cancel-label', 'Back' );
-    return 50 if $rs;
     0;
 }
 

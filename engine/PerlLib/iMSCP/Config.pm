@@ -122,16 +122,11 @@ sub STORE
     my ($self, $param, $value) = @_;
 
     !$self->{'readonly'} || $self->{'temporary'} or die(
-        sprintf("Could not change value for the `%s' parameter: config object is readonly", $param )
+        sprintf("Couldn't store value for the `%s' parameter: config object is readonly", $param )
     );
-
-    unless (exists $self->{'configValues'}->{$param}) {
-        $self->_insertConfig( $param, $value );
-    } else {
-        $self->_replaceConfig( $param, $value );
-    }
-
-    $value;
+    
+    return $self->_insertConfig( $param, $value ) unless exists $self->{'configValues'}->{$param};
+    $self->_replaceConfig( $param, $value );
 }
 
 =item FIRSTKEY( )
@@ -257,7 +252,7 @@ sub _loadConfig
     debug( sprintf( 'Tying %s file in %s mode', $self->{'confFileName'}, $self->{'readonly'} ? 'readonly' : 'writing' ) );
 
     $self->{'tieFileObject'} = tie @{$self->{'tiefile'}}, 'Tie::File', $self->{'confFileName'}, mode => $mode;
-    $self->{'tieFileObject'} or die( sprintf( 'Could not tie %s file: %s', $self->{'confFileName'}, $! ) );
+    $self->{'tieFileObject'} or die( sprintf( "Couldn't tie %s file: %s", $self->{'confFileName'}, $! ) );
 
     # Enable deffered writing if we are in writing mode
     $self->{'tieFileObject'}->defer unless $self->{'readonly'};
@@ -269,25 +264,6 @@ sub _loadConfig
     }
 
     undef;
-}
-
-=item _replaceConfig( $param, $value )
-
- Replace the given configuration parameter value
-
- Param string param Configuration parameter name
- Param string $value Configuration parameter value
- Return string Configuration parameter value
-
-=cut
-
-sub _replaceConfig
-{
-    my ($self, $param, $value) = @_;
-
-    $value //= '';
-    @{$self->{'tiefile'}}[$self->{'lineMap'}->{$param}] = "$param = $value" unless $self->{'temporary'};
-    $self->{'configValues'}->{$param} = $value;
 }
 
 =item _insertConfig( $param, $value )
@@ -310,6 +286,25 @@ sub _insertConfig
         $self->{'lineMap'}->{$param} = $#{$self->{'tiefile'}};
     }
 
+    $self->{'configValues'}->{$param} = $value;
+}
+
+=item _replaceConfig( $param, $value )
+
+ Replace the given configuration parameter value
+
+ Param string param Configuration parameter name
+ Param string $value Configuration parameter value
+ Return string Configuration parameter value
+
+=cut
+
+sub _replaceConfig
+{
+    my ($self, $param, $value) = @_;
+
+    $value //= '';
+    @{$self->{'tiefile'}}[$self->{'lineMap'}->{$param}] = "$param = $value" unless $self->{'temporary'};
     $self->{'configValues'}->{$param} = $value;
 }
 

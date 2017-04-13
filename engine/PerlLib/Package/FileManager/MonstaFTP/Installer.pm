@@ -245,7 +245,8 @@ sub _buildConfig
                 # Enable passive mode excepted if the FTP daemon is vsftpd
                 # vsftpd doesn't allows to operate on a per IP basic (IP masquerading)
                 passive          => ($main::imscpConfig{'FTPD_SERVER'} eq 'vsftpd') ? JSON::false : JSON::true,
-                ssl              => main::setupGetQuestion( 'SERVICES_SSL_ENABLED' ) eq 'yes' ? JSON::true : JSON::false,
+                ssl              => main::setupGetQuestion( 'SERVICES_SSL_ENABLED' ) eq 'yes'
+                    ? JSON::true : JSON::false,
                 initialDirectory => '/' # Home directory as set for the FTP user
             }
         }

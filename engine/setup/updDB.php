@@ -28,7 +28,7 @@ try {
 
     $dbUpdater = DbUpdater::getInstance();
 
-    if($dbUpdater->getLastAppliedUpdate() > $dbUpdater->getLastUpdate()) {
+    if ($dbUpdater->getLastAppliedUpdate() > $dbUpdater->getLastUpdate()) {
         throw new iMSCP_Exception('An i-MSCP downgrade attempt has been detected. Downgrade is not supported.');
     }
 

@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::sqld - i-MSCP sqld server implementation
+ Servers::noserver - i-MSCP PHP server implementation
 
 =cut
 
@@ -21,58 +21,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package Servers::sqld;
+package Servers::php;
 
-use strict;
-use warnings;
-use iMSCP::Debug qw/ fatal /;
-
-# sqld server instance
-my $instance;
+use parent 'Servers::noserver';
 
 =head1 DESCRIPTION
 
- i-MSCP sqld server implementation.
-
-=head1 PUBLIC METHODS
-
-=over 4
-
-=item factory( )
-
- Create and return sqld server instance
-
- Return sqld server instance
-
-=cut
-
-sub factory
-{
-    return $instance if $instance;
-
-    my $package = $main::imscpConfig{'SQL_PACKAGE'} || 'Servers::noserver';
-    eval "require $package";
-    fatal( $@ ) if $@;
-    $instance = $package->getInstance( );
-}
-
-=item can( $method )
-
- Checks if the sqld server package provides the given method
-
- Param string $method Method name
- Return subref|undef
-
-=cut
-
-sub can
-{
-    my ($self, $method) = @_;
-
-    $self->factory( )->can( $method );
-}
-
-=back
+ i-MSCP PHP server implementation.
+ 
+ This class does nothing yet.
 
 =head1 AUTHOR
 

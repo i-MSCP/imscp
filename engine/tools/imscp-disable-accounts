@@ -1,5 +1,15 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ imscp-disable-accounts - Deactivates expired client accounts
+
+=head1 SYNOPSIS
+
+ imscp-disable-accounts [options]...
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
@@ -17,16 +27,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-=head1 NAME
-
-imscp-disable-accounts - Deactivates expired client accounts
-
-=head1 SYNOPSIS
-
- imscp-disable-accounts [options]...
-
-=cut
-
 use strict;
 use warnings;
 use FindBin;
@@ -39,12 +39,12 @@ use File::Basename;
 use POSIX qw(locale_h);
 use locale;
 
-setlocale(LC_ALL, 'C.UTF-8');
+setlocale( LC_ALL, 'C.UTF-8' );
 $ENV{'LANG'} = 'C.UTF-8';
 
 sub run
 {
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->factory( );
     my $qrs = $db->doQuery('name', "SELECT * FROM config WHERE name = 'HARD_MAIL_SUSPENSION'");
     unless(ref $qrs eq 'HASH') {
         error($qrs);
@@ -92,7 +92,7 @@ sub run
         if($@) {
             $dbi->rollback();
             $db->endTransaction();
-            error("Could not deactivate client account with ID $qrs->{$domainId}->{'domain_admin_id'}: $@");
+            error( "Couldn't deactivate client account with ID $qrs->{$domainId}->{'domain_admin_id'}: $@" );
             $rs = 1;
         }
 
@@ -101,7 +101,7 @@ sub run
 
     # Run request manager to process all scheduled tasks
     unless($rs) {
-        $rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \ my $stdout, \ my $stderr);
+        $rs = execute( "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \ my $stdout, \ my $stderr );
         debug $stdout if $stdout;
         error( $stderr || 'Unknown error' ) if $rs;
     }
@@ -109,9 +109,9 @@ sub run
     $rs;
 }
 
-newDebug('imscp-disable-accounts.log');
+newDebug( 'imscp-disable-accounts.log' );
 
-iMSCP::Getopt->parseNoDefault(sprintf('Usage: perl %s [OPTION]...', basename($0)) . qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 ) ) . qq {
 
 Script that deactivates expired client accounts
 
@@ -122,11 +122,11 @@ OPTIONS:
  'verbose|v' => \&iMSCP::Getopt::verbose
 );
 
-setVerbose(iMSCP::Getopt->verbose);
+setVerbose( iMSCP::Getopt->verbose );
 
-my $bootstrapper = iMSCP::Bootstrapper->getInstance();
-exit unless $bootstrapper->lock('/tmp/imscp-disable-accounts.lock', 'nowait');
-$bootstrapper->getInstance()->boot(
+my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
+exit unless $bootstrapper->lock( '/tmp/imscp-disable-accounts.lock', 'nowait' );
+$bootstrapper->getInstance( )->boot(
     {
         mode            => 'backend',
         nolock          => 1,
@@ -135,12 +135,12 @@ $bootstrapper->getInstance()->boot(
     }
 );
 
-my $rs = run();
-$bootstrapper->unlock('/tmp/imscp-disable-accounts.lock');
+my $rs = run( );
+$bootstrapper->unlock( '/tmp/imscp-disable-accounts.lock' );
 exit $rs;
 
 =head1 AUTHOR
 
-Laurent Declercq <l.declercq@nuxwin.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

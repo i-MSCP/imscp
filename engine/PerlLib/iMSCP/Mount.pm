@@ -144,8 +144,8 @@ my $MOUNTS = lazy
         $entries;
     };
 
-# FH object to i-MSCP mounts.conf file
-my $iMSCP_MOUNTS_FH;
+# FH object to i-MSCP fstab-like file
+my $iMSCP_FSTAB_FH;
 
 =head1 DESCRIPTION
 
@@ -382,9 +382,9 @@ sub addMountEntry($)
     my $rs = removeMountEntry($entry, 0); # Avoid duplicate entries
     return $rs if $rs;
 
-    my $fileContent = $iMSCP_MOUNTS_FH->getAsRef();
+    my $fileContent = $iMSCP_FSTAB_FH->getAsRef();
     ${$fileContent} .= "$entry\n";
-    $iMSCP_MOUNTS_FH->save();
+    $iMSCP_FSTAB_FH->save();
 }
 
 =item removeMountEntry($entry [, $saveFile = true ])
@@ -407,19 +407,19 @@ sub removeMountEntry($;$)
         return 1;
     }
 
-    unless ($iMSCP_MOUNTS_FH) {
-        $iMSCP_MOUNTS_FH = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf" );
+    unless ($iMSCP_FSTAB_FH) {
+        $iMSCP_FSTAB_FH = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf" );
     }
 
-    my $fileContent = $iMSCP_MOUNTS_FH->getAsRef();
+    my $fileContent = $iMSCP_FSTAB_FH->getAsRef();
     unless (defined $fileContent) {
-        error( sprintf( "Couldn't read %s file", $iMSCP_MOUNTS_FH->{'filename'} ) );
+        error( sprintf( "Couldn't read %s file", $iMSCP_FSTAB_FH->{'filename'} ) );
         return 1;
     }
 
     $entry = quotemeta( $entry ) unless ref $entry eq 'Regexp';
     ${$fileContent} =~ s/^$entry\n//gm;
-    $saveFile ? $iMSCP_MOUNTS_FH->save() : 0;
+    $saveFile ? $iMSCP_FSTAB_FH->save() : 0;
 }
 
 =back

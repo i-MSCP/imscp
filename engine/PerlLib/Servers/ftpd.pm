@@ -52,18 +52,20 @@ sub factory
 {
     return $instance if defined $instance;
 
-    my $sName = $main::imscpConfig{'FTPD_SERVER'};
+    my $package = $main::imscpConfig{'FTPD_PACKAGE'} || 'Servers::noserver';
 
-    if (%main::imscpOldConfig && $main::imscpOldConfig{'FTPD_SERVER'} ne $sName) {
-        my $package = "Servers::ftpd::$main::imscpOldConfig{'FTPD_SERVER'}";
-        eval "require $package";
+    if (%main::imscpOldConfig
+        && exists $main::imscpOldConfig{'FTPD_PACKAGE'}
+        && $main::imscpOldConfig{'FTPD_PACKAGE'} ne ''
+        && $main::imscpOldConfig{'FTPD_PACKAGE'} ne $package
+    ) {
+        eval "require $main::imscpOldConfig{'FTPD_PACKAGE'}";
         fatal( $@ ) if $@;
 
-        my $rs = $package->getInstance( )->uninstall( );
-        fatal( sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'FTPD_SERVER'} ) ) if $rs;
+        my $rs = $main::imscpOldConfig{'FTPD_PACKAGE'}->getInstance( )->uninstall( );
+        fatal( sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'FTPD_PACKAGE'} ) ) if $rs;
     }
 
-    my $package = ($sName eq 'no') ? 'Servers::noserver' : "Servers::ftpd::$sName";
     eval "require $package";
     fatal( $@ ) if $@;
     $instance = $package->getInstance( );

@@ -1,27 +1,44 @@
 <packages>
-    <frontend default="nginx">
-        <nginx repository_conflict="http://nginx.org/packages/debian">
+    <frontend>
+        <nginx
+                default="1"
+                description="Nginx server"
+                class="Package::FrontEnd"
+                repository_conflict="http://nginx.org/packages/debian">
             <package>nginx-light</package>
             <package_conflict>nginx</package_conflict>
         </nginx>
     </frontend>
-    <httpd default="apache_php_fpm">
-        <apache_fcgid>
+    <httpd>
+        <apache_fcgid
+                description="Apache2 (MPM Event) server and PHP as CGI"
+                class="Servers::httpd::apache_fcgid"
+        >
             <package>apache2</package>
             <package>apache2-suexec-custom</package>
             <package>libapache2-mod-fcgid</package>
         </apache_fcgid>
-        <apache_itk>
+        <apache_itk
+                description="Apache2 (MPM ITK) server and PHP Apache2 module"
+                class="Servers::httpd::apache_itk"
+        >
             <package>apache2</package>
             <package_delayed>libapache2-mpm-itk</package_delayed>
         </apache_itk>
-        <apache_php_fpm>
+        <apache_php_fpm
+                default="1"
+                description="Apache2 (MPM Event) server and PHP-FPM"
+                class="Servers::httpd::apache_php_fpm"
+        >
             <package post_install_task="sh apache2_postinst.sh">apache2</package>
             <package>apache2-suexec-custom</package>
         </apache_php_fpm>
     </httpd>
-    <php default="php7.1">
+    <php>
         <php5.6
+                default="1"
+                description="PHP 5.6"
+                class="Servers::php"
                 repository_conflict="http://packages.dotdeb.org"
                 repository="https://packages.sury.org/php/ stretch main"
                 repository_key_uri="https://packages.sury.org/php/apt.gpg"
@@ -33,7 +50,10 @@
             <package>php5.6-cgi</package>
             <package post_install_task="update-alternatives --set php /usr/bin/php5.6">php5.6-cli</package>
             <package>php5.6-fpm</package>
-            <package post_install_task="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php5.6-common</package>
+            <package
+                    post_install_task="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets; update-alternatives --set phar /usr/bin/phar5.6; update-alternatives --set phar.phar /usr/bin/phar.phar5.6">
+                php5.6-common
+            </package>
             <package post_install_task="phpenmod curl">php5.6-curl</package>
             <package post_install_task="phpenmod gd">php5.6-gd</package>
             <package post_install_task="phpenmod imap">php5.6-imap</package>
@@ -52,6 +72,8 @@
             <package_conflict>libapache2-mod-php5</package_conflict>
         </php5.6>
         <php7.0
+                description="PHP 7.0"
+                class="Servers::php"
                 repository_conflict="http://packages.dotdeb.org"
                 repository="https://packages.sury.org/php/ stretch main"
                 repository_key_uri="https://packages.sury.org/php/apt.gpg"
@@ -63,7 +85,10 @@
             <package>php7.0-cgi</package>
             <package post_install_task="update-alternatives --set php /usr/bin/php7.0">php7.0-cli</package>
             <package>php7.0-fpm</package>
-            <package post_install_task="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php7.0-common</package>
+            <package
+                    post_install_task="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets; update-alternatives --set phar /usr/bin/phar7.0; update-alternatives --set phar.phar /usr/bin/phar.phar7.0">
+                php7.0-common
+            </package>
             <package post_install_task="phpenmod curl">php7.0-curl</package>
             <package post_install_task="phpenmod gd">php7.0-gd</package>
             <package post_install_task="phpenmod imap">php7.0-imap</package>
@@ -82,6 +107,8 @@
             <package_conflict>libapache2-mod-php5</package_conflict>
         </php7.0>
         <php7.1
+                description="PHP 7.1"
+                class="Servers::php"
                 repository_conflict="http://packages.dotdeb.org"
                 repository="https://packages.sury.org/php/ stretch main"
                 repository_key_uri="https://packages.sury.org/php/apt.gpg"
@@ -93,7 +120,10 @@
             <package post_install_task="update-alternatives --set php /usr/bin/php7.1">php7.1-cli</package>
             <package>php7.1-cgi</package>
             <package>php7.1-fpm</package>
-            <package post_install_task="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php7.1-common</package>
+            <package
+                    post_install_task="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets; update-alternatives --set phar /usr/bin/phar7.1; update-alternatives --set phar.phar /usr/bin/phar.phar7.1">
+                php7.1-common
+            </package>
             <package post_install_task="phpenmod curl">php7.1-curl</package>
             <package post_install_task="phpenmod gd">php7.1-gd</package>
             <package post_install_task="phpenmod imap">php7.1-imap</package>
@@ -112,41 +142,64 @@
             <package_conflict>libapache2-mod-php5</package_conflict>
         </php7.1>
     </php>
-    <po default="dovecot">
-        <dovecot>
+    <po>
+        <dovecot
+                default="1"
+                description="Dovecot IMAP/POP server"
+                class="Servers::po::dovecot"
+        >
             <package>dovecot-core</package>
             <package>dovecot-imapd</package>
             <package>dovecot-pop3d</package>
             <package>dovecot-mysql</package>
         </dovecot>
     </po>
-    <mta default="postfix">
-        <postfix>
+    <mta>
+        <postfix
+                default="1"
+                description="Postfix server"
+                class="Servers::mta::postfix"
+        >
             <package>postfix</package>
             <package_conflict>procmail</package_conflict>
         </postfix>
     </mta>
-    <ftpd default="proftpd">
-        <proftpd>
+    <ftpd>
+        <proftpd
+                default="1"
+                description="ProFTPD server"
+                class="Servers::ftpd::proftpd"
+        >
             <package>proftpd-basic</package>
             <package>proftpd-mod-mysql</package>
             <package_conflict>vsftpd</package_conflict>
         </proftpd>
-        <vsftpd>
+        <vsftpd
+                description="VsFTPD server"
+                class="Servers::ftpd::vsftpd"
+        >
             <package>libpam-mysql</package>
             <package>vsftpd</package>
             <package_conflict>proftpd-basic</package_conflict>
         </vsftpd>
     </ftpd>
-    <named default="bind">
+    <named>
         <bind>
             <package>resolvconf</package>
             <package>bind9</package>
         </bind>
-        <external_server/>
+        <external_server
+                description="No local DNS server"
+                class="Servers::noserver"
+        >
+            <package>resolvconf</package>
+        </external_server>
     </named>
-    <sql default="mariadb_10.1">
+    <sql>
         <mariadb_10.1
+                default="1"
+                description="MariaDB 10.1 server"
+                class="Servers::sqld::mariadb"
                 pinning_package="libmariadbclient18 mariadb-client-10.1 mariadb-common mariadb-server-core-10.1 mysql-common"
                 pinning_pin="release o=Debian,n=stretch"
                 pinning_pin_priority="1001"
@@ -159,6 +212,8 @@
             <package>mysql-common</package>
         </mariadb_10.1>
         <remote_server
+                description="Remote MySQL server"
+                class="Servers::sqld::remote"
                 pinning_package="libmariadbclient18 mariadb-client-10.1 mariadb-common mysql-common"
                 pinning_pin="release o=Debian,n=stretch"
                 pinning_pin_priority="1001"

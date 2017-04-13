@@ -27,9 +27,9 @@ use strict;
 use warnings;
 use Carp;
 use Crypt::CBC;
-use Crypt::Eksblowfish::Bcrypt ();
-use Digest::SHA ();
-use Digest::MD5 ();
+use Crypt::Eksblowfish::Bcrypt ( );
+use Digest::SHA ( );
+use Digest::MD5 ( );
 use MIME::Base64;
 use parent 'Exporter';
 
@@ -39,7 +39,7 @@ use constant BASE64 => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123
 
 our @EXPORT_OK = qw/
     randomStr md5 sha256 sha512 bcrypt apr1MD5 htpasswd verify hashEqual encryptBlowfishCBC decryptBlowfishCBC
-    encryptRijndaelCBC decryptRijndaelCBC
+        encryptRijndaelCBC decryptRijndaelCBC
     /;
 
 =head1 DESCRIPTION
@@ -50,7 +50,7 @@ our @EXPORT_OK = qw/
 
 =over 4
 
-=item randomStr($length [, $charList = BASE64 ])
+=item randomStr( $length [, $charList = BASE64 ] )
 
  Generates a secure random string
 
@@ -60,7 +60,7 @@ our @EXPORT_OK = qw/
 
 =cut
 
-sub randomStr($;$)
+sub randomStr( $;$ )
 {
     my ($length, $charList) = (shift, shift // BASE64);
 
@@ -85,7 +85,7 @@ sub randomStr($;$)
     $str;
 }
 
-=item md5($password [, $salt = randomStr ])
+=item md5( $password [, $salt = randomStr ] )
 
  Create a hash of the given password using the MD5 algorithm
 
@@ -96,7 +96,7 @@ sub randomStr($;$)
 
 =cut
 
-sub md5($;$)
+sub md5( $;$ )
 {
     my ($password, $salt) = @_;
 
@@ -109,7 +109,7 @@ sub md5($;$)
     crypt( $password, '$1$'.$salt );
 }
 
-=item sha256($password [, $rounds = 5000 [, $salt = randomStr ] ])
+=item sha256( $password [, $rounds = 5000 [, $salt = randomStr ] ] )
 
  Create a hash of the given password using the SHA-256 algorithm
 
@@ -120,7 +120,7 @@ sub md5($;$)
 
 =cut
 
-sub sha256($;$$)
+sub sha256( $;$$ )
 {
     my ($password, $rounds, $salt) = @_;
 
@@ -139,7 +139,7 @@ sub sha256($;$$)
     crypt( $password, '$5$rounds='.$rounds.'$'.$salt );
 }
 
-=item sha512($password [, $rounds = 5000 [, $salt = randomStr ] ])
+=item sha512( $password [, $rounds = 5000 [, $salt = randomStr ] ] )
 
  Create a hash of the given password using the SHA-512 algorithm
 
@@ -199,7 +199,7 @@ sub bcrypt($;$$)
     Crypt::Eksblowfish::Bcrypt::bcrypt( $password, '$2a$'.$cost.'$'.Crypt::Eksblowfish::Bcrypt::en_base64( $salt ) );
 }
 
-=item apr1MD5($password [, $salt = randomStr(8, ALPHA64) ])
+=item apr1MD5( $password [, $salt = randomStr(8, ALPHA64) ] )
 
  APR1 MD5 algorithm (see http://svn.apache.org/viewvc/apr/apr/trunk/crypto/apr_md5.c?view=markup)
 
@@ -209,7 +209,7 @@ sub bcrypt($;$$)
 
 =cut
 
-sub apr1MD5($;$)
+sub apr1MD5( $;$ )
 {
     my ($password, $salt) = @_;
 
@@ -256,7 +256,7 @@ sub apr1MD5($;$)
     '$apr1$'.$salt.'$'._toAlphabet64( chr( 0 ).chr( 0 ).$bin[11].$tmp );
 }
 
-=item htpasswd($password [, $cost = 10 [, $salt = randomStr [, $format = 'md5' ] ] ])
+=item htpasswd( $password [, $cost = 10 [, $salt = randomStr [, $format = 'md5' ] ] ] )
 
  Create an htpasswd password hash of the given password using the given algorithm
 
@@ -270,7 +270,7 @@ sub apr1MD5($;$)
 
 =cut
 
-sub htpasswd($;$$)
+sub htpasswd( $;$$ )
 {
     my ($password, $cost, $salt, $format) = @_;
     $format //= 'md5';
@@ -304,7 +304,7 @@ sub htpasswd($;$$)
     );
 }
 
-=item verify($password, $hash)
+=item verify( $password, $hash )
 
  Verify the given password against the given hash
 
@@ -314,7 +314,7 @@ sub htpasswd($;$$)
 
 =cut
 
-sub verify($$)
+sub verify( $$ )
 {
     my ($password, $hash) = @_;
 
@@ -336,7 +336,7 @@ sub verify($$)
     hashEqual( $hash, crypt( $password, $hash ) );
 }
 
-=item hashEqual($knownString, $userString)
+=item hashEqual( $knownString, $userString )
 
  Timing attack safe string comparison
 
@@ -346,7 +346,7 @@ sub verify($$)
 
 =cut
 
-sub hashEqual($$)
+sub hashEqual( $$ )
 {
     my ($knownString, $userString) = @_;
 
@@ -367,7 +367,7 @@ sub hashEqual($$)
     $result == 0;
 }
 
-=item encryptBlowfishCBC($key, $iv, $data)
+=item encryptBlowfishCBC( $key, $iv, $data )
 
  Encrypt the given data using the Blowfish algorithm (Cipher) in CBC mode
 
@@ -378,12 +378,12 @@ sub hashEqual($$)
 
 =cut
 
-sub encryptBlowfishCBC($$$)
+sub encryptBlowfishCBC( $$$ )
 {
     _encryptCBC( 'Crypt::Blowfish', @_ );
 }
 
-=item decryptBlowfishCBC($key, $iv, $data)
+=item decryptBlowfishCBC( $key, $iv, $data )
 
  Decrypt the given data using the Blowfish algorithm (Cipher) in CBC mode
 
@@ -396,12 +396,12 @@ sub encryptBlowfishCBC($$$)
 
 =cut
 
-sub decryptBlowfishCBC($$$)
+sub decryptBlowfishCBC( $$$ )
 {
     _decryptCBC( 'Crypt::Blowfish', @_ );
 }
 
-=item encryptRijndaelCBC($key, $iv, $data)
+=item encryptRijndaelCBC( $key, $iv, $data )
 
  Encrypt the given data using the AES (Rijndael) algorithm (Cipher) in CBC mode
 
@@ -414,12 +414,12 @@ sub decryptBlowfishCBC($$$)
 
 =cut
 
-sub encryptRijndaelCBC($$$)
+sub encryptRijndaelCBC( $$$ )
 {
     _encryptCBC( 'Crypt::Rijndael', @_ );
 }
 
-=item decryptRijndaelCBC($key, $iv, $data)
+=item decryptRijndaelCBC( $key, $iv, $data )
 
  Decrypt the given data using the AES (Rijndael) algorithm (Cipher) in CBC mode
 
@@ -432,7 +432,7 @@ sub encryptRijndaelCBC($$$)
 
 =cut
 
-sub decryptRijndaelCBC($$$)
+sub decryptRijndaelCBC( $$$ )
 {
     _decryptCBC( 'Crypt::Rijndael', @_ );
 }
@@ -443,7 +443,7 @@ sub decryptRijndaelCBC($$$)
 
 =over 4
 
-=item _encryptCBC($algorithm, $key, $iv, $data)
+=item _encryptCBC( $algorithm, $key, $iv, $data )
 
  Encrypt the given data using the given algorithm (Cipher) in CBC mode
 
@@ -457,7 +457,7 @@ sub decryptRijndaelCBC($$$)
 
 =cut
 
-sub _encryptCBC($$$$)
+sub _encryptCBC( $$$$ )
 {
     my ($algorithm, $key, $iv, $data) = @_;
 
@@ -476,7 +476,7 @@ sub _encryptCBC($$$$)
     );
 }
 
-=item _decryptCBC($algorithm, $key, $iv, $data)
+=item _decryptCBC( $algorithm, $key, $iv, $data )
 
  Decrypt the given data using the given algorithm (Cipher) in CBC mode
 
@@ -490,7 +490,7 @@ sub _encryptCBC($$$$)
 
 =cut
 
-sub _decryptCBC($$$$)
+sub _decryptCBC( $$$$ )
 {
     my ($algorithm, $key, $iv, $data) = @_;
 
@@ -508,7 +508,7 @@ sub _decryptCBC($$$$)
     );
 }
 
-=item _toAlphabet64($string)
+=item _toAlphabet64( $string )
 
  Convert a binary string using the "./0-9A-Za-z" alphabet
 
@@ -517,7 +517,7 @@ sub _decryptCBC($$$$)
 
 =cut
 
-sub _toAlphabet64($)
+sub _toAlphabet64( $ )
 {
     my $string = shift;
 

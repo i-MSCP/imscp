@@ -29,11 +29,11 @@ use Class::Autouse qw/ :nostat Package::FrontEnd::Installer Package::FrontEnd::U
 use File::Basename;
 use iMSCP::Config;
 use iMSCP::Debug;
-use iMSCP::Execute;
 use iMSCP::EventManager;
-use iMSCP::TemplateParser;
+use iMSCP::Execute;
 use iMSCP::Rights;
 use iMSCP::Service;
+use iMSCP::TemplateParser;
 use Servers::httpd;
 use parent 'Common::SingletonClass';
 
@@ -45,7 +45,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners(\%eventManager)
+=item registerSetupListeners( \%eventManager )
 
  Register setup event listeners
 
@@ -124,7 +124,7 @@ sub postinstall
     $rs = $self->{'eventManager'}->register(
         'beforeSetupRestartServices',
         sub {
-            push @{$_[0]}, [ sub { $self->start( ); }, 'Frontend (Nginx/PHP)' ];
+            push @{$_[0]}, [ sub { $self->start( ); }, 'i-MSCP FrontEnd services' ];
             0;
         }
     );
@@ -178,18 +178,12 @@ sub setEnginePermissions
     my $self = shift;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndSetEnginePermissions' );
-    return $rs if $rs;
 
-    my $rootUName = $main::imscpConfig{'ROOT_USER'};
-    my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-    my $httpdUser = $self->{'config'}->{'HTTPD_USER'};
-    my $httpdGroup = $self->{'config'}->{'HTTPD_GROUP'};
-
-    $rs = setRights(
+    $rs ||= setRights(
         $self->{'config'}->{'HTTPD_CONF_DIR'},
         {
-            user      => $rootUName,
-            group     => $rootGName,
+            user      => $main::imscpConfig{'ROOT_USER'},
+            group     => $main::imscpConfig{'ROOT_GROUP'},
             dirmode   => '0755',
             filemode  => '0644',
             recursive => 1
@@ -198,8 +192,8 @@ sub setEnginePermissions
     $rs ||= setRights(
         $self->{'config'}->{'HTTPD_LOG_DIR'},
         {
-            user      => $rootUName,
-            group     => $rootGName,
+            user      => $main::imscpConfig{'ROOT_USER'},
+            group     => $main::imscpConfig{'ROOT_GROUP'},
             dirmode   => '0755',
             filemode  => '0640',
             recursive => 1
@@ -212,8 +206,8 @@ sub setEnginePermissions
         $rs = setRights(
             $self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'},
             {
-                user  => $rootUName,
-                group => $rootGName
+                user  => $main::imscpConfig{'ROOT_USER'},
+                group => $main::imscpConfig{'ROOT_GROUP'}
             }
         );
 
@@ -223,8 +217,8 @@ sub setEnginePermissions
             $rs = setRights(
                 "$self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'}/$tmp",
                 {
-                    user      => $httpdUser,
-                    group     => $httpdGroup,
+                    user      => $self->{'config'}->{'HTTPD_USER'},
+                    group     => $self->{'config'}->{'HTTPD_GROUP'},
                     dirnmode  => '0700',
                     filemode  => '0640',
                     recursive => 1
@@ -233,8 +227,8 @@ sub setEnginePermissions
             $rs ||= setRights(
                 "$self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'}/$tmp",
                 {
-                    user  => $httpdUser,
-                    group => $rootGName,
+                    user  => $self->{'config'}->{'HTTPD_USER'},
+                    group => $main::imscpConfig{'ROOT_GROUP'},
                     mode  => '0700'
                 }
             );
@@ -248,10 +242,11 @@ sub setEnginePermissions
     $rs = setRights(
         $self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'},
         {
-            user  => $rootUName,
-            group => $rootGName
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'}
         }
     );
+    return $rs if $rs;
 
     for my $tmp('client_temp', 'fastcgi_temp', 'proxy_temp', 'scgi_temp', 'uwsgi_temp') {
         next unless -d "$self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'}/$tmp";
@@ -259,8 +254,8 @@ sub setEnginePermissions
         $rs = setRights(
             "$self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'}/$tmp",
             {
-                user      => $httpdUser,
-                group     => $httpdGroup,
+                user      => $self->{'config'}->{'HTTPD_USER'},
+                group     => $self->{'config'}->{'HTTPD_GROUP'},
                 dirnmode  => '0700',
                 filemode  => '0640',
                 recursive => 1
@@ -269,8 +264,8 @@ sub setEnginePermissions
         $rs ||= setRights(
             "$self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'}/$tmp",
             {
-                user  => $httpdUser,
-                group => $rootGName,
+                user  => $self->{'config'}->{'HTTPD_USER'},
+                group => $main::imscpConfig{'ROOT_GROUP'},
                 mode  => '0700'
             }
         );
@@ -297,10 +292,9 @@ sub setGuiPermissions
 
     my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
     my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-    my $guiRootDir = $main::imscpConfig{'GUI_ROOT_DIR'};
 
     $rs = setRights(
-        $guiRootDir,
+        $main::imscpConfig{'GUI_ROOT_DIR'},
         {
             user      => $panelUName,
             group     => $panelGName,
@@ -310,7 +304,7 @@ sub setGuiPermissions
         }
     );
     $rs ||= setRights(
-        "$guiRootDir/themes",
+        "$main::imscpConfig{'GUI_ROOT_DIR'}/themes",
         {
             user      => $panelUName,
             group     => $panelGName,
@@ -320,7 +314,7 @@ sub setGuiPermissions
         }
     );
     $rs ||= setRights(
-        "$guiRootDir/data",
+        "$main::imscpConfig{'GUI_ROOT_DIR'}/data",
         {
             user      => $panelUName,
             group     => $panelGName,
@@ -330,7 +324,7 @@ sub setGuiPermissions
         }
     );
     $rs ||= setRights(
-        "$guiRootDir/data/persistent",
+        "$main::imscpConfig{'GUI_ROOT_DIR'}/data/persistent",
         {
             user      => $panelUName,
             group     => $panelGName,
@@ -340,7 +334,7 @@ sub setGuiPermissions
         }
     );
     $rs ||= setRights(
-        "$guiRootDir/i18n",
+        "$main::imscpConfig{'GUI_ROOT_DIR'}/i18n",
         {
             user      => $panelUName,
             group     => $panelGName,
@@ -779,7 +773,7 @@ sub _init
     $self;
 }
 
-=item _buildConf( $cfgTpl, $filename [, \%tplVars ])
+=item _buildConf( $cfgTpl, $filename [, \%tplVars ] )
 
  Build the given configuration template
 
@@ -803,9 +797,7 @@ sub _buildConf
 
 =item END
 
- Code triggered at the very end of script execution
-
- - Start, restart or reload frontEnd (Nginx, PHP-FPM instance) if needed
+ Start, restart or reload frontEnd services: nginx or/and imscp_panel when required
 
  Return int Exit code
 

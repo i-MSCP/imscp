@@ -68,21 +68,15 @@ sub registerSetupListeners
 {
     my ($self, $eventManager) = @_;
 
-    if (defined $main::imscpConfig{'MTA_SERVER'} && lc( $main::imscpConfig{'MTA_SERVER'} ) eq 'postfix') {
-        my $rs = $eventManager->register(
-            'beforeSetupDialog',
-            sub {
-                push @{$_[0]}, sub { $self->showDialog( @_ ) };
-                0;
-            }
-        );
-        $rs ||= $eventManager->register( 'beforeMtaBuildMainCfFile', sub { $self->configurePostfix( @_ ); } );
-        $rs ||= $eventManager->register( 'beforeMtaBuildMasterCfFile', sub { $self->configurePostfix( @_ ); } );
-    } else {
-        main::setupSetQuestion('PO_SERVER', 'no');
-        warning( 'i-MSCP Dovecot PO server require the Postfix MTA. Installation skipped...' );
-        0;
-    }
+    my $rs = $eventManager->register(
+        'beforeSetupDialog',
+        sub {
+            push @{$_[0]}, sub { $self->showDialog( @_ ) };
+            0;
+        }
+    );
+    $rs ||= $eventManager->register( 'beforeMtaBuildMainCfFile', sub { $self->configurePostfix( @_ ); } );
+    $rs ||= $eventManager->register( 'beforeMtaBuildMasterCfFile', sub { $self->configurePostfix( @_ ); } );
 }
 
 =item showDialog( \%dialog )
@@ -368,7 +362,7 @@ sub _setupSqlUser
     my $dbName = main::setupGetQuestion( 'DATABASE_NAME' );
     my $dbUser = main::setupGetQuestion( 'DOVECOT_SQL_USER' );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
-    my $oldDbUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'} || '';
+    my $oldDbUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'};
     my $dbPass = main::setupGetQuestion( 'DOVECOT_SQL_PASSWORD' );
     my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
@@ -553,7 +547,7 @@ sub _migrateFromCourier
 {
     my $self = shift;
 
-    return 0 if $main::imscpConfig{'PO_SERVER'} eq $main::imscpOldConfig{'PO_SERVER'};
+    return 0 unless $main::imscpOldConfig{'PO_SERVER'} eq 'courier';
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoMigrateFromCourier' );
     return $rs if $rs;
@@ -573,6 +567,7 @@ sub _migrateFromCourier
     unless ($rs) {
         $self->{'po'}->{'forceMailboxesQuotaRecalc'} = 1;
         $main::imscpOldConfig{'PO_SERVER'} = 'dovecot';
+        $main::imscpOldConfig{'PO_PACKAGE'} = 'Servers::po::dovecot';
     }
 
     $rs ||= $self->{'eventManager'}->trigger( 'afterPoMigrateFromCourier' );

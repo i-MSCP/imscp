@@ -53,15 +53,19 @@ sub uninstall
 {
     my $self = shift;
 
-    my $rs = $self->_removeConfig( );
-    return $rs if $rs;
-
-    if ($main::execmode && $main::execmode eq 'setup') {
-        # In setup context, deletion of SQL user must be delayed, else we won't be able to connect to SQL server
-        return iMSCP::EventManager->getInstance()->register( 'afterSqldPreinstall', sub { $self->_dropSqlUser(); } );
+    # In setup context, processing must be delayed, else we won't be able to connect to SQL server
+    if ($main::execmode eq 'setup') {
+        return iMSCP::EventManager->getInstance()->register(
+            'afterSqldPreinstall',
+            sub {
+                my $rs ||= $self->_dropSqlUser();
+                $rs ||= $self->_removeConfig( );
+            }
+        );
     }
 
-    $self->_dropSqlUser( );
+    my $rs = $self->_dropSqlUser( );
+    $rs ||= $self->_removeConfig( );
 }
 
 =back
@@ -104,6 +108,33 @@ sub _init
     $self;
 }
 
+=item _dropSqlUser( )
+
+ Drop SQL user
+
+ Return int 0 on success, 1 on failure
+
+=cut
+
+sub _dropSqlUser
+{
+    my $self = shift;
+
+    # In setup context, take value from old conffile, else take value from current conffile
+    my $dbUserHost = ($main::execmode eq 'setup')
+        ? $main::imscpOldConfig{'DATABASE_USER_HOST'} : $main::imscpConfig{'DATABASE_USER_HOST'};
+
+    return 0 unless $self->{'config'}->{'DATABASE_USER'} && $dbUserHost;
+
+    eval { Servers::sqld->factory( )->dropUser( $self->{'config'}->{'DATABASE_USER'}, $dbUserHost ); };
+    if ($@) {
+        error($@);
+        return 1;
+    }
+
+    0;
+}
+
 =item _removeConfig( )
 
  Remove configuration
@@ -140,31 +171,11 @@ sub _removeConfig
         $rs ||= $file->mode( 0644 );
     }
 
-    0;
-}
+    # Remove old data file
 
-=item _dropSqlUser( )
-
- Drop SQL user
-
- Return int 0 on success, 1 on failure
-
-=cut
-
-sub _dropSqlUser
-{
-    my $self = shift;
-
-    # In setup context, take value from old conffile, else take value from current conffile
-    my $dbUserHost = ($main::execmode && $main::execmode eq 'setup')
-        ? $main::imscpOldConfig{'DATABASE_USER_HOST'} : $main::imscpConfig{'DATABASE_USER_HOST'};
-
-    return 0 unless $self->{'config'}->{'DATABASE_USER'} && $dbUserHost;
-
-    eval { Servers::sqld->factory( )->dropUser( $self->{'config'}->{'DATABASE_USER'}, $dbUserHost ); };
-    if ($@) {
-        error($@);
-        return 1;
+    if (-f "$self->{'cfgDir'}/courier.old.data") {
+        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/dovecot.old.data" )->delFile( );
+        return $rs if $rs;
     }
 
     0;

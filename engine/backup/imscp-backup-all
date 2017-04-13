@@ -1,5 +1,15 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ imscp-backup-all backup i-MSCP customer's data.
+
+=head1 SYNOPSIS
+
+ imscp-backup-all [options]...
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2017 by internet Multi Server Control Panel
 #
@@ -17,16 +27,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-=head1 NAME
-
-imscp-backup-all backup i-MSCP customer's data.
-
-=head1 SYNOPSIS
-
- imscp-backup-all [options]...
-
-=cut
-
 use strict;
 use warnings;
 use FindBin;
@@ -35,16 +35,16 @@ use iMSCP::Debug;
 use iMSCP::Bootstrapper;
 use iMSCP::Execute;
 use iMSCP::Dir;
-use iMSCP::Ext2Attributes qw/isImmutable setImmutable clearImmutable/;
+use iMSCP::Ext2Attributes qw/ isImmutable setImmutable clearImmutable /;
 use iMSCP::Getopt;
 use iMSCP::Mail;
 use Servers::mta;
 use File::Basename;
-use POSIX qw/strftime/;
-use POSIX qw(locale_h);
+use POSIX qw/ strftime /;
+use POSIX qw/ locale_h /;
 use locale;
 
-setlocale(LC_ALL, 'C.UTF-8');
+setlocale( LC_ALL, 'C.UTF-8' );
 $ENV{'LANG'} = 'C.UTF-8';
 
 sub run
@@ -52,12 +52,30 @@ sub run
     return 0 unless $main::imscpConfig{'BACKUP_DOMAINS'} eq 'yes';
 
     my $command = {
-        bzip2 => { extension => 'bz2', command => 'bzip2' },
-        pbzip2 => { extension => 'bz2', command => 'pbzip2' },
-        gzip => { extension => 'gz', command => 'gzip' },
-        pigz => { extension => 'gz', command => 'pigz' },
-        lzma => { extension => 'lzma', command => 'lzma' },
-        xz => { extension => 'xz', command => 'xz' }
+        bzip2  => {
+            extension => 'bz2',
+            command   => 'bzip2'
+        },
+        pbzip2 => {
+            extension => 'bz2',
+            command => 'pbzip2'
+        },
+        gzip   => {
+            extension => 'gz',
+            command   => 'gzip'
+        },
+        pigz   => {
+            extension => 'gz',
+            command   => 'pigz'
+        },
+        lzma   => {
+            extension => 'lzma',
+            command   => 'lzma'
+        },
+        xz     => {
+            extension => 'xz',
+            command   => 'xz'
+        }
     };
 
     my $algo = lc($main::imscpConfig{'BACKUP_COMPRESS_ALGORITHM'});
@@ -65,14 +83,14 @@ sub run
     $level = 1 unless $level =~ /^[1-9]$/;
 
     unless(exists $command->{$algo} || $algo eq 'no') {
-        error(sprintf('Backup algorithm is not supported: %s', $algo));
+        error( sprintf( 'Backup algorithm is not supported: %s', $algo ) );
         return 1;
     }
 
     my ($ret, $rs, $stdout, $stderr) = (0, 0);
-    my $db = iMSCP::Database->factory();
-    my $mta = Servers::mta->factory();
-    my $canDumpDatabases = $db->can('dumpdb');
+    my $db = iMSCP::Database->factory( );
+    my $mta = Servers::mta->factory( );
+    my $canDumpDatabases = $db->can( 'dumpdb' );
 
     my $domainData = $db->doQuery(
         'domain_id',
@@ -106,13 +124,17 @@ sub run
                     my $isProtectedHomedir = 0;
 
                     # Unprotect parent directory if needed
-                    if(isImmutable($homeDir)) {
+                    if(isImmutable( $homeDir )) {
                         $isProtectedHomedir = 1;
-                        clearImmutable($homeDir);
+                        clearImmutable( $homeDir );
                     }
 
                     my $rs = iMSCP::Dir->new( dirname => $bkpDir )->make(
-                        { user => $userName, group => $groupName, mode => 0750 }
+                        {
+                            user  => $userName,
+                            group => $groupName,
+                            mode  => 0750
+                        }
                     );
 
                     setImmutable($homeDir) if $isProtectedHomedir;
@@ -124,7 +146,7 @@ sub run
                 }
 
                 # Remove any previous backup file
-                my $rs = execute("rm -fR $bkpDir/*", \$stdout, \$stderr);
+                my $rs = execute( "rm -fR $bkpDir/*", \$stdout, \$stderr );
                 debug($stdout) if $stdout;
                 error( $stderr || 'Unknown error' ) if $rs;
 
@@ -145,36 +167,36 @@ sub run
                             : "| $command->{$algo}->{'command'} -$level > $bkpDir/$mainDomainName-backup-$date.tar$ext"
                     );
 
-                    $rs = execute("@cmd", \$stdout, \$stderr);
-                    debug($stdout) if $stdout;
+                    $rs = execute( "@cmd", \$stdout, \$stderr );
+                    debug( $stdout ) if $stdout;
 
                     # Tar exit with status 1 only if some files were changed while being read. We want ignore this.
                     if($rs > 1) {
-                        error($stderr || 'Unknown error') if $stderr;
+                        error( $stderr || 'Unknown error' ) if $stderr;
                         $ret |= $rs;
                     }
 
                     my $file = iMSCP::File->new( filename => "$bkpDir/$mainDomainName-backup-$date.tar$ext" );
-                    $rs = $file->mode(0644);
+                    $rs = $file->mode( 0644 );
                     $ret ||= $rs;
 
-                    $rs = $file->owner($userName, $groupName);
+                    $rs = $file->owner( $userName, $groupName );
                     $ret ||= $rs;
                 }
 
                 # Backup all customer databases
-                if ($canDumpDatabases && grep($_ eq 'sql', @allowbackup)) {
+                if ($canDumpDatabases && grep( $_ eq 'sql', @allowbackup )) {
                     my $dbData = $db->doQuery(
                         'sqld_name', 'SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?', $mainDomainId
                     );
                     unless (ref $dbData eq 'HASH') {
-                        error($dbData);
+                        error( $dbData );
                         $ret ||= 1;
                         next;
                     }
 
                     for my $dbName(keys %{$dbData}) {
-                        $rs = $db->dumpdb($dbName, "$bkpDir/$dbName.sql");
+                        $rs = $db->dumpdb( $dbName, "$bkpDir/$dbName.sql" );
                         if($rs) {
                             $ret ||= $rs;
                             next;
@@ -182,17 +204,18 @@ sub run
 
                         my $file = iMSCP::File->new( filename => "$bkpDir/$dbName.sql" );
 
-                        $rs = $file->mode(0644);
+                        $rs = $file->mode( 0644 );
                         $ret ||= $rs;
-                        $rs = $file->owner($userName, $groupName);
+                        $rs = $file->owner( $userName, $groupName );
                         $ret ||= $rs;
 
                         if($algo ne 'no') {
                             my @cmd = (
-                                $command->{$algo}->{'command'}, "-$level", '--force', escapeShell("$bkpDir/$dbName.sql")
+                                $command->{$algo}->{'command'}, "-$level", '--force',
+                                escapeShell( "$bkpDir/$dbName.sql" )
                             );
-                            $rs = execute("@cmd", \$stdout, \$stderr);
-                            debug($stdout) if $stdout;
+                            $rs = execute( "@cmd", \$stdout, \$stderr );
+                            debug( $stdout ) if $stdout;
                             error( $stderr || 'Unknown error' ) if $rs;
                             $ret ||= $rs;
                         }
@@ -224,7 +247,7 @@ sub run
                         $mainDomainId, $mainDomainId, $mainDomainId, $mainDomainId
                     );
                     unless (ref $mailData eq 'HASH') {
-                        error($mailData);
+                        error( $mailData );
                         $ret ||= 1;
                         next;
                     }
@@ -240,20 +263,20 @@ sub run
                                     : "| $command->{$algo}->{'command'} -$level > $bkpDir/mail-$mailDir-backup-$date.tar$ext"
                             );
 
-                            $rs = execute("@cmd", \$stdout, \$stderr);
-                            debug($stdout) if $stdout;
+                            $rs = execute( "@cmd", \$stdout, \$stderr );
+                            debug( $stdout ) if $stdout;
 
                             # Tar exit with status 1 only if some files were changed while being read. We want ignore this.
                             if($rs > 1) {
-                                error($stderr || 'Unknown error');
+                                error( $stderr || 'Unknown error' );
                                 $ret |= $rs;
                             }
 
                             my $file = iMSCP::File->new( filename => "$bkpDir/mail-$mailDir-backup-$date.tar$ext" );
-                            $rs = $file->mode(0644);
+                            $rs = $file->mode( 0644 );
                             $ret ||= $rs;
 
-                            $rs = $file->owner($userName, $groupName);
+                            $rs = $file->owner( $userName, $groupName );
                             $ret ||= $rs;
                         }
                     }
@@ -263,20 +286,20 @@ sub run
     }
 
     if($ret) {
-        my @warningMessages = getMessageByType('warn');
-        iMSCP::Mail->new()->warnMsg("@warningMessages") if @warningMessages;
+        my @warningMessages = getMessageByType( 'warn' );
+        iMSCP::Mail->new( )->warnMsg( "@warningMessages" ) if @warningMessages;
 
-        my @errorMessages = getMessageByType('error');
-        iMSCP::Mail->new()->errmsg("@errorMessages") if @errorMessages;
+        my @errorMessages = getMessageByType( 'error' );
+        iMSCP::Mail->new( )->errmsg( "@errorMessages" ) if @errorMessages;
     }
 
     $ret;
 }
 
-newDebug('imscp-backup-all.log');
+newDebug( 'imscp-backup-all.log' );
 
 # Parse command line options
-iMSCP::Getopt->parseNoDefault(sprintf("Usage: perl %s [OPTION]...", basename($0)) . qq {
+iMSCP::Getopt->parseNoDefault( sprintf( "Usage: perl %s [OPTION]...", basename( $0 ) ) . qq {
 
 Script which backup i-MSCP customer's data.
 
@@ -286,10 +309,10 @@ OPTIONS:
  'verbose|v' => \&iMSCP::Getopt::verbose
 );
 
-setVerbose(iMSCP::Getopt->verbose);
+setVerbose( iMSCP::Getopt->verbose );
 
-my $bootstrapper = iMSCP::Bootstrapper->getInstance();
-exit unless $bootstrapper->lock('/tmp/imscp-backup-all.lock', 'nowait');
+my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
+exit unless $bootstrapper->lock( '/tmp/imscp-backup-all.lock', 'nowait' );
 $bootstrapper->boot(
     {
         norequirements  => 1,
@@ -299,11 +322,11 @@ $bootstrapper->boot(
 );
 
 my $rs = run();
-$bootstrapper->unlock('/tmp/imscp-backup-all.lock');
+$bootstrapper->unlock( '/tmp/imscp-backup-all.lock' );
 exit $rs;
 
 =head1 AUTHOR
 
-i-MSCP Team <team@i-mscp.net>
+ i-MSCP Team <team@i-mscp.net>
 
 =cut

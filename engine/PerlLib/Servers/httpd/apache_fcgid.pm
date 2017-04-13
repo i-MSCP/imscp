@@ -356,11 +356,11 @@ sub disableDmn
     $self->setData(
         {
             BASE_SERVER_VHOST => $data->{'BASE_SERVER_VHOST'},
-            HTTPD_LOG_DIR     => $self->{'config'}->{'HTTPD_LOG_DIR'},
-            HTTP_URI_SCHEME   => 'http://',
             DOMAIN_IPS        => join(
                 ' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]").':80' } @domainIPs
             ),
+            HTTP_URI_SCHEME   => 'http://',
+            HTTPD_LOG_DIR     => $self->{'config'}->{'HTTPD_LOG_DIR'},
             USER_WEB_DIR      => $main::imscpConfig{'USER_WEB_DIR'}
         }
     );
@@ -1488,13 +1488,15 @@ sub _addCfg
     $self->setData(
         {
             BASE_SERVER_VHOST      => $data->{'BASE_SERVER_VHOST'},
-            HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
-            PHP_FCGI_STARTER_DIR   => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'},
-            HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
             DOMAIN_IPS             => join(
                 ' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]").':80' } @domainIPs
             ),
-            FCGID_NAME             => $confLevel
+            FCGID_NAME             => $confLevel,
+            HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
+            HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
+            PHP_FCGI_STARTER_DIR   => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}
+
+
         }
     );
 
@@ -1906,13 +1908,13 @@ sub _buildPHPConfig
 
         $self->setData(
             {
+                EMAIL_DOMAIN          => $emailDomain,
                 FCGID_NAME            => $fcgidName,
                 PHP_VERSION           => $phpVersion,
-                PHP_FCGI_MAX_REQUESTS => $self->{'phpConfig'}->{'PHP_FCGI_MAX_REQUESTS'},
-                PHP_FCGI_CHILDREN     => $self->{'phpConfig'}->{'PHP_FCGI_CHILDREN'},
                 PHP_FCGI_BIN_PATH     => $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'},
-                TMPDIR                => $data->{'HOME_DIR'}.'/phptmp',
-                EMAIL_DOMAIN          => $emailDomain
+                PHP_FCGI_CHILDREN     => $self->{'phpConfig'}->{'PHP_FCGI_CHILDREN'},
+                PHP_FCGI_MAX_REQUESTS => $self->{'phpConfig'}->{'PHP_FCGI_MAX_REQUESTS'},
+                TMPDIR                => $data->{'HOME_DIR'}.'/phptmp'
             }
         );
 

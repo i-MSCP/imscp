@@ -452,7 +452,11 @@ sub _buildPackageList
     eval "use XML::Simple; 1" or die( $@ );
     my $xml = XML::Simple->new( NoEscape => 1 );
     my $pkgData = eval {
-        $xml->XMLin($packageFilePath, ForceArray => [ 'package', 'package_delayed', 'package_conflict' ] );
+        $xml->XMLin(
+            $packageFilePath,
+            ForceArray     => [ 'package', 'package_delayed', 'package_conflict' ],
+            NormaliseSpace => 2
+        );
     };
     if ($@) {
         error( $@ );
@@ -463,52 +467,75 @@ sub _buildPackageList
     $dialog->set( 'no-cancel', '' );
 
     while(my ($section, $data) = each( %{$pkgData} )) {
+        # Simple list of packages
+
         my $spl = 0;
 
-        # Simple list of packages to install
         if ($data->{'package'}) {
             push @{$self->{'packagesToInstall'}}, (ref $_ eq 'HASH' ? $_->{'content'} : $_) for @{$data->{'package'}};
             $spl = 1;
         }
+
         if ($data->{'package_delayed'}) {
             push @{$self->{'packagesToInstallDelayed'}}, @{$data->{'package_delayed'}};
             $spl = 1;
         }
+
         if ($data->{'package_conflict'}) {
             push @{$self->{'packagesToPreUninstall'}}, @{$data->{'package_conflict'}};
             $spl = 1;
         }
+
         next if $spl eq 1;
 
-        # Alternative list of package to install
-        my $dAlt = delete $data->{'default'};
+        # List of alternatives
+
+        # Whether user must be asked for alternative or not
+        my $needDialog = 0;
+
+        # Retrieve selected alternative if any
         my $sAlt = $main::questions{ uc( $section ).'_SERVER' } || $main::imscpConfig{ uc( $section ).'_SERVER' };
-        my $forceDialog = $sAlt eq '';
-        $sAlt = $dAlt if $forceDialog;
 
-        my @alts = keys %{$data};
-        if (!$forceDialog && !grep($_ eq $sAlt, @alts)) {
-            # Handle wrong or deprecated entry case
-            $sAlt = $dAlt;
-            $forceDialog = 1;
+        # Resets alternative if no longer available
+        $sAlt = '' if $sAlt ne '' && !grep($_ eq $sAlt, keys %{$data});
+
+        # Map of alternative descriptions to aternative names
+        my %altDescs;
+        for(keys %{$data}) {
+            $altDescs{$data->{$_}->{'description'} // $_} = $_;
+
+            # If there is no alternative set yet, set selected alternative 
+            # to default alternative and force dialog to make user able change it
+            if ($sAlt eq '' && $data->{$_}->{'default'}) {
+                $sAlt = $_;
+                $needDialog = 1;
+            }
         }
 
-        if (!$forceDialog && $data->{$sAlt}->{'allow_switch'}) {
-            # Filter unallowed alternatives
-            @alts = (split( ',', $data->{$sAlt}->{'allow_switch'} ), $sAlt);
+        # Filter unallowed alternatives
+        unless ($needDialog || !$data->{$sAlt}->{'allow_switch'}) {
+            my @allowedAlts = (split( ',', $data->{$sAlt}->{'allow_switch'} ), $sAlt);
+            while(my ($altDesc, $altName) = each(%altDescs)) {
+                delete $altDescs{$altDesc} unless grep( $altName eq $_, @allowedAlts );
+            }
         }
 
-        # Ask user for alternative list of packages to install if any
-        if (@alts > 1 && ($forceDialog || grep($_ eq $main::reconfigure, ( $section, 'servers', 'all' )))) {
-            (my $ret, $sAlt) = $dialog->radiolist( <<"EOF", [ sort @alts ], $sAlt );
+        # If there is more than one alternative available and if dialog is forced,
+        # or if user explicitely asked for reconfiguration of that alternative,
+        # show dialog for alternative selection
+        if (keys %altDescs > 1 && ($needDialog || grep( $_ eq $main::reconfigure, ( $section, 'servers', 'all' ) ))) {
+            (my $ret, $sAlt) = $dialog->radiolist(
+                <<"EOF", [ keys %altDescs ], $data->{$sAlt}->{'description'} // $sAlt);
 
-Please choose the $section implementation you want use:
+Please make your choise for the $section service:
 EOF
             return $ret if $ret; # Handle ESC case
+
+            # Set real alternative name
+            $sAlt = $altDescs{$sAlt};
         }
 
         while(my ($alt, $altData) = each( %{$data} )) {
-            # We cannot use filtered @alts variable
             next if $alt eq $sAlt;
 
             # APT repository to remove
@@ -580,8 +607,11 @@ EOF
         push @{$self->{'packagesToInstallDelayed'}}, @{$data->{$sAlt}->{'package_delayed'}}
             if $data->{$sAlt}->{'package_delayed'};
 
-        # Set server implementation to use
+        # Set alternative name
         $main::imscpConfig{uc( $section ).'_SERVER'} = $sAlt;
+
+        # Set package name
+        $main::imscpConfig{uc( $section ).'_PACKAGE'} = $data->{$sAlt}->{'class'} // $sAlt;
     }
 
     $dialog->set( 'no-cancel', '' );
@@ -805,45 +835,6 @@ sub _prefillDebconfDatabase
 {
     my $self = shift;
 
-    if ($main::imscpConfig{'DATABASE_PASSWORD'} && -d $main::imscpConfig{'DATABASE_DIR'}) {
-        # Only show critical questions
-        $ENV{'DEBIAN_PRIORITY'} = 'critical';
-
-        # Allow switching to other vendor (e.g: MariaDB 10.0 to MySQL >= 5.6)
-        unlink glob "$main::imscpConfig{'DATABASE_DIR'}/debian-*.flag";
-
-        # Don't show SQL root password dialog from package maintainer script
-        # when switching to another vendor or a newest version
-        # <DATABASE_DIR>/debian-5.0.flag is the file checked by maintainer script (even for newest versions...)
-        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'DATABASE_DIR'}/debian-5.0.flag" )->save();
-        return $rs if $rs;
-    }
-
-    my $poServer = $main::imscpConfig{'PO_SERVER'};
-
-    my ($sqlServer, $sqlServerVersion) = ('remote_server', undef);
-    my ($sqlServerQuestionOwner, $sqlServerQuestionPrefix);
-
-    if ($main::imscpConfig{'SQL_SERVER'} ne 'remote_server') {
-        ($sqlServer, $sqlServerVersion) = $main::imscpConfig{'SQL_SERVER'} =~ /^(mysql|mariadb|percona)_(\d+\.\d+)$/;
-
-        if ($sqlServer eq 'mysql') {
-            if (grep($_ eq 'mysql-community-server', @{$self->{'packagesToInstall'}})) {
-                $sqlServerQuestionOwner = 'mysql-community-server';
-                $sqlServerQuestionPrefix = 'mysql-community-server';
-            } else {
-                $sqlServerQuestionOwner = 'mysql-server-'.$sqlServerVersion;
-                $sqlServerQuestionPrefix = 'mysql-server';
-            }
-        } elsif ($sqlServer eq 'mariadb') {
-            $sqlServerQuestionOwner = 'mariadb-server-'.$sqlServerVersion;
-            $sqlServerQuestionPrefix = 'mysql-server';
-        } else {
-            $sqlServerQuestionOwner = 'percona-server-server-'.$sqlServerVersion;
-            $sqlServerQuestionPrefix = 'percona-server-server';
-        }
-    }
-
     # Most values below are not really important because i-MSCP will override them after package installation
     my $mailname = `hostname --fqdn 2>/dev/null` || 'localdomain';
     chomp $mailname;
@@ -852,69 +843,87 @@ sub _prefillDebconfDatabase
     chomp $domain;
 
     # From postfix package postfix.config script
-    my $destinations;
-    if ($mailname eq $hostname) {
-        $destinations = join ', ', ($mailname, 'localhost.'.$domain, ', localhost');
-    } else {
-        $destinations = join ', ', ($mailname, $hostname, 'localhost.'.$domain.', localhost');
-    }
+    my $destinations = ($mailname eq $hostname)
+        ? join ', ', ($mailname, 'localhost.'.$domain, ', localhost')
+        : join ', ', ($mailname, $hostname, 'localhost.'.$domain.', localhost');
 
-    my $selectionsFileContent = <<"EOF";
+    my $fileContent = <<"EOF";
 postfix postfix/main_mailer_type select Internet Site
 postfix postfix/mailname string $mailname
 postfix postfix/destinations string $destinations
 proftpd-basic shared/proftpd/inetd_or_standalone select standalone
 EOF
 
-    if ($poServer eq 'courier') {
-        $selectionsFileContent .= <<"EOF";
+    if ($main::imscpConfig{'PO_PACKAGE'} eq 'Servers::po::courier') {
+        $fileContent .= <<"EOF";
 courier-base courier-base/webadmin-configmode boolean false
 courier-ssl courier-ssl/certnotice note
 EOF
-    } elsif ($poServer eq 'dovecot') {
-        $selectionsFileContent .= <<"EOF";
+    } elsif ($main::imscpConfig{'PO_PACKAGE'} eq 'Servers::po::dovecot') {
+        $fileContent .= <<"EOF";
 dovecot-core dovecot-core/create-ssl-cert boolean true
 dovecot-core dovecot-core/ssl-cert-name string localhost
 EOF
     }
 
     # Set default answer to yes for purge of sasldb2 database
-    $selectionsFileContent .= <<"EOF";
+    $fileContent .= <<"EOF";
 sasl2-bin cyrus-sasl2/purge-sasldb2 boolean true
 EOF
 
-    # We do not want ask user for <DATABASE_DIR> removal (we want avoid mistakes as much as possible)
-    if ($sqlServer eq 'mariadb') {
-        # There is a bug in mariadb-server-* packages (wrong version used for question prefix)
-        $selectionsFileContent .= <<"EOF";
-$sqlServerQuestionOwner $sqlServerQuestionPrefix-5.1/postrm_remove_databases boolean false
-$sqlServerQuestionOwner $sqlServerQuestionPrefix-5.1/really_downgrade boolean true
-EOF
-    } elsif (grep($_ eq 'mysql-community-server', @{$self->{'packagesToInstall'}})) {
-        $selectionsFileContent .= <<"EOF";
-$sqlServerQuestionOwner $sqlServerQuestionOwner/remove-data-dir boolean false
-EOF
-    } elsif ($sqlServer ne 'remote_server') {
-        $selectionsFileContent .= <<"EOF";
-$sqlServerQuestionOwner $sqlServerQuestionOwner/postrm_remove_databases boolean false
-EOF
-    }
+    my ($sqlServer) = $main::imscpConfig{'SQL_PACKAGE'} =~ /Servers::sqld::(mysql|mariadb|percona|remote)/ or die(
+        sprintf( 'Unkwown SGBD server implementation: %s', $main::imscpConfig{'SQL_PACKAGE'} )
+    );
 
-    if ($sqlServer ne 'remote_server' && iMSCP::Getopt->preseed && $sqlServerQuestionOwner) {
-        $selectionsFileContent .= <<"EOF";
-$sqlServerQuestionOwner $sqlServerQuestionPrefix/root_password password $main::questions{'SQL_ROOT_PASSWORD'}
-$sqlServerQuestionOwner $sqlServerQuestionPrefix/root_password_again password $main::questions{'SQL_ROOT_PASSWORD'}
-EOF
+    unless ($sqlServer eq 'remote') {
+        if ($main::imscpConfig{'DATABASE_PASSWORD'} ne '' && -d $main::imscpConfig{'DATABASE_DIR'}) {
+            # Only show critical questions
+            $ENV{'DEBIAN_PRIORITY'} = 'critical';
+
+            # Allow switching to other vendor (e.g: MariaDB 10.0 to MySQL >= 5.6)
+            unlink glob "$main::imscpConfig{'DATABASE_DIR'}/debian-*.flag";
+
+            # Don't show SQL root password dialog from package maintainer script
+            # when switching to another vendor or a newest version
+            # <DATABASE_DIR>/debian-5.0.flag is the file checked by maintainer script (even for newest versions...)
+            my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'DATABASE_DIR'}/debian-5.0.flag" )->save( );
+            return $rs if $rs;
+        }
+
+        my $sPattern;
+        if ($sqlServer eq 'mysql' && grep($_ eq 'mysql-community-server', @{$self->{'packagesToInstall'}})) {
+            $sPattern = ' mysql-community-server';
+        } elsif ($sqlServer eq 'mysql') {
+            $sPattern = 'mysql-server';
+        } elsif ($sqlServer eq 'mariadb') {
+            $sPattern = 'mysql-server';
+        } else {
+            $sPattern = 'percona-server-server';
+        }
+
+        # We do not want ask user for <DATABASE_DIR> removal (we want avoid mistakes as much as possible)
+        my ($qOwner, $qName) = `debconf-get-selections | grep $sPattern` =~
+            /^([^\s]+)\s+([^\/]+\/(?:remove-data-dir|postrm_remove_databases))/gm;
+        $fileContent .= "$qOwner $qName boolean false\n" if $qOwner && $qName;
+
+        # Preset root SQL password using value from preseed file
+        if (iMSCP::Getopt->preseed) {
+            ($qOwner, $qName) = `debconf-get-selections | grep $sPattern` =~
+                /^([^\s]+)\s+([^\/]+\/(?:root_password|root-pass))/gm;
+            $fileContent .= "$qOwner $qName password $main::questions{'SQL_ROOT_PASSWORD'}\n" if $qOwner && $qName;
+            ($qOwner, $qName) = `debconf-get-selections | grep $sPattern`
+                =~ /^([^\s]+)\s+([^\/]+\/(?:root_password_again|re-root-pass))/gm;
+            $fileContent .= "$qOwner $qName password $main::questions{'SQL_ROOT_PASSWORD'}\n" if $qOwner && $qName;
+        }
     }
 
     my $debconfSelectionsFile = File::Temp->new( );
-    print $debconfSelectionsFile $selectionsFileContent;
+    print $debconfSelectionsFile $fileContent;
     $debconfSelectionsFile->flush( );
 
-    my $rs = execute( "debconf-set-selections $debconfSelectionsFile", \ my $stdout, \ my $stderr );
+    my $rs = execute( [ 'debconf-set-selections', $debconfSelectionsFile ], \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr ) if $rs && $stderr;
-    error( "Couldn't pre-fill Debconf database" ) if $rs && !$stderr;
+    error( $stderr || "Couldn't pre-fill Debconf database" ) if $rs;
     $rs;
 }
 

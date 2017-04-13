@@ -118,7 +118,7 @@ sub _init
 
     $self->{'programs'} = {
         PHP  => {
-            version_command => 'php -d date.timezone=UTC --version 2> /dev/null',
+            version_command => 'php -nv 2> /dev/null',
             version_regexp  => qr/PHP\s+([\d.]+)/,
             min_version     => '5.6.0',
             max_version     => '7.1.999', # Arbitrary minor version is intentional. We only want reject PHP >= 7.2
