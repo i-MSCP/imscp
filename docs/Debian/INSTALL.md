@@ -77,14 +77,14 @@ Note that these operations must be done on the host, not in the container.
 
 #### Supported Debian versions
 
-Any released version >= 7.x (Debian 8.x recommended)
+Any released version >= 8.x (Debian Jessie)
 
 ### 2) i-MSCP Installation
 
 #### 1. Make sure that your system is up-to-date
 
     # apt-get update
-    # apt-get dist-upgrade
+    # apt-get --no-install-recommends dist-upgrade
 
 #### 2. Install the pre-required packages
 
@@ -106,9 +106,16 @@ Any released version >= 7.x (Debian 8.x recommended)
 
 ### 3) i-MSCP Upgrade
 
-#### 1. Make sure to have a backup of your current data
+#### 1. Make sure to read the errata file
 
-Before any upgrade attempt it is highly recommended to perform a backup of the following directories
+Before upgrading your must read the errata file which describ information about changes made in new i-MSCP versions,
+and any pre-task that must be done by the administrator before upgrading.
+
+The errata file for this i-MSCP version is located at: https://github.com/i-MSCP/imscp/blob/<version>/docs/1.4.x_errata.md
+
+#### 2. Make sure to make a backup of your data
+
+Before any upgrade attempt it is highly recommended to perform a backup of the following directories:
 
     /var/www/virtual
     /var/mail/virtual
@@ -116,18 +123,18 @@ Before any upgrade attempt it is highly recommended to perform a backup of the f
 Those directories hold the data of your customers and it is really important to backup them for an easy recovering in
 case something goes wrong during upgrade.
 
-#### 2. Make sure that your system is up-to-date
+#### 3. Make sure that your system is up-to-date
 
     # apt-get update
-    # apt-get dist-upgrade
+    # apt-get --no-install-recommends dist-upgrade
 
-#### 3. Download and untar the distribution files
+#### 4. Download and untar the distribution files
 
     # cd /usr/local/src
     # wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
     # tar -xzf <version>.tar.gz
 
-#### 4. Change to the newly created directory
+#### 5. Change to the newly created directory
 
     # cd imscp-<version>
 
