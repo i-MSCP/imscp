@@ -24,7 +24,8 @@ DISTRIBUTION
 FRONTEND
     Added: Button allowing customers to force syncing of mailboxes quota info (Client interface)
     Added: Percent value for mailboxes quota usage (Client interface)
-    Fixed: datepicker is positioned below the location bar
+    Fixed: Datepicker is positioned below the location bar
+    Fixed: Disabled htaccess, htgroup and htusers items wrongly reported as error in debugger interface (admin interface)
     Enhancement: Display a static warning to customer when at least one of his mailboxes is over quota (Client interface)
     Readded: Mailboxes quota usage information (Client interface)
 

@@ -165,7 +165,7 @@
     <tr>
         <td>
             <p>
-                <span class="bold">{HTACCESS_NAME}</span>
+                <span class="bold">{HTACCESS_NAME} ({HTACCESS_TYPE})</span>
                 <span style="float: right"><a href="imscp_debugger.php?action=change&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link_as_button">{TR_CHANGE_STATUS}</a></span>
             </p>
             <span style="color:red;font-weight:bold;">{HTACCESS_ERROR}</span></td>
