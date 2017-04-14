@@ -8,7 +8,8 @@ CONFIG
     Added: `class', `default' and `description' attributes in distribution packages files for service alternatives
     Added: /etc/apt/apt/conf.d/01norecommend to avoid installation of recommended or suggested distribution packages
     Added: `*._PACKAGE' variables in master conffile. Variables holding i-MSCP server class names
-    Removed: FastCGI section in Apache2 domain.tpl vhost template
+    Removed: FastCGI section in Apache2 domain.tpl vhost template (mod_proxy_fcgi is available for all distributions)
+    Removed: SSLCertificateChainFile Apache2 directive in domain.tpl vhost template file (no longer needed since Apache 2.4.8)
 
 BACKEND
     Added: getAsRef() method - Method allowing to get scalar ref to file content (iMSCP::File)
