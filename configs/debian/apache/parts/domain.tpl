@@ -14,7 +14,6 @@
     # SECTION ssl BEGIN.
     SSLEngine On
     SSLCertificateFile      {CERTIFICATE}
-    SSLCertificateChainFile {CERTIFICATE}
 
     Header always set Strict-Transport-Security "max-age={HSTS_MAX_AGE}{HSTS_INCLUDE_SUBDOMAINS}"
     # SECTION ssl END.
@@ -32,18 +31,9 @@
     DirectoryIndex index.php
 
     # SECTION php_fpm BEGIN.
-    # SECTION mod_fastcgi BEGIN.
-    Alias /php-fcgi /var/lib/apache2/fastcgi/php-fcgi-{FASTCGI_CLASS}
-    FastCGIExternalServer /var/lib/apache2/fastcgi/php-fcgi-{FASTCGI_CLASS} \
-        -{FASTCGI_LISTEN_MODE} {FASTCGI_LISTEN_ENDPOINT} \
-        -idle-timeout 900 \
-        -pass-header Authorization
-    # SECTION mod_fastcgi END.
-    # SECTION mod_proxy_fcgi BEGIN.
     <Proxy "{PROXY_FCGI_PATH}{PROXY_FCGI_URL}" retry=0>
         ProxySet connectiontimeout=5 timeout=7200
     </Proxy>
-    # SECTION mod_proxy_fcgi END.
     # SECTION php_fpm END.
     # SECTION php_on END.
 
@@ -79,12 +69,10 @@
         php_admin_flag allow_url_fopen {ALLOW_URL_FOPEN}
         # SECTION itk END.
         # SECTION php_fpm BEGIN.
-        # SECTION mod_proxy_fcgi BEGIN.
         <If "%{REQUEST_FILENAME} =~ /\.ph(?:p[3457]?|t|tml)$/ && -f %{REQUEST_FILENAME}">
             SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1
             SetHandler proxy:{PROXY_FCGI_URL}
         </If>
-        # SECTION mod_proxy_fcgi END.
         # SECTION php_fpm END.
         # SECTION php_on END.
     </Directory>

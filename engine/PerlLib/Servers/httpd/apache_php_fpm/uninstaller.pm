@@ -125,17 +125,8 @@ sub _restoreApacheConfig
 {
     my $self = shift;
 
-    my $rs = $self->{'httpd'}->disableModules( 'php_fpm_imscp' );
-    return $rs if $rs;
-
-    for ('php_fpm_imscp.conf', 'php_fpm_imscp.load') {
-        next unless -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_";
-        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_" )->delFile( );
-        return $rs if $rs;
-    }
-
     if (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf") {
-        $rs = $self->{'httpd'}->disableSites( '00_nameserver.conf' );
+        my $rs = $self->{'httpd'}->disableSites( '00_nameserver.conf' );
         $rs ||= iMSCP::File->new(
             filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf"
         )->delFile( );
@@ -146,12 +137,12 @@ sub _restoreApacheConfig
         ? "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available" : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d";
 
     if (-f "$confDir/00_imscp.conf") {
-        $rs = $self->{'httpd'}->disableConfs( '00_imscp.conf' );
+        my $rs = $self->{'httpd'}->disableConfs( '00_imscp.conf' );
         $rs ||= iMSCP::File->new( filename => "$confDir/00_imscp.conf" )->delFile( );
         return $rs if $rs;
     }
 
-    $rs = iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove( );
+    my $rs = iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove( );
     return $rs if $rs;
 
     for ('000-default', 'default') {

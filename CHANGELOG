@@ -8,6 +8,7 @@ CONFIG
     Added: `class', `default' and `description' attributes in distribution packages files for service alternatives
     Added: /etc/apt/apt/conf.d/01norecommend to avoid installation of recommended or suggested distribution packages
     Added: `*._PACKAGE' variables in master conffile. Variables holding i-MSCP server class names
+    Removed: FastCGI section in Apache2 domain.tpl vhost template
 
 BACKEND
     Added: getAsRef() method - Method allowing to get scalar ref to file content (iMSCP::File)
@@ -16,6 +17,7 @@ BACKEND
     Review: Mitigate IO operations by reading full fstab-like file in memory and by reusing same file object (iMSCP::Mount)
 
 DISTRIBUTION
+    Fixed: Install Apache2 (2.4.10) from backports repository (Ubuntu Trusty)
     Fixed: Make sure that sendmail* packages are pre-uninstalled
 
 FRONTEND
@@ -48,7 +50,7 @@ SERVERS
     Fixed: Run ProFTPD server under `proftpd' user instead of `nobody' user (ProFTPD)
     Fixed: SQL user not removed after uninstallation (PO and FTPD server impl.)
     Fixed: When switching to another FTPD server implementation, uninstallation of old FTP server must be triggered
-    Fixed: When switching to another PO server implementation, uninstallation of old PO server must be triggered
+    Fixed: When switching to another PO server implementation, uninstallation of old PO server must be triggered 
 
 UNINSTALLER
     Fixed: Ask administrator to uninstall plugins prior running i-MSCP uninstaller

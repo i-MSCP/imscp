@@ -466,7 +466,9 @@ sub _buildPackageList
     my $dialog = iMSCP::Dialog->getInstance( );
     $dialog->set( 'no-cancel', '' );
 
-    while(my ($section, $data) = each( %{$pkgData} )) {
+    for my $section (sort keys %{$pkgData}) {
+        my $data = $pkgData->{$section};
+
         # Simple list of packages
 
         my $spl = 0;
@@ -502,7 +504,7 @@ sub _buildPackageList
         # Map of alternative descriptions to aternative names
         my %altDescs;
         for(keys %{$data}) {
-            $altDescs{$data->{$_}->{'description'} // $_} = $_;
+            $altDescs{$data->{$_}->{'description'} || $_} = $_;
 
             # If there is no alternative set yet, set selected alternative 
             # to default alternative and force dialog to make user able change it
@@ -525,7 +527,7 @@ sub _buildPackageList
         # show dialog for alternative selection
         if (keys %altDescs > 1 && ($needDialog || grep( $_ eq $main::reconfigure, ( $section, 'servers', 'all' ) ))) {
             (my $ret, $sAlt) = $dialog->radiolist(
-                <<"EOF", [ keys %altDescs ], $data->{$sAlt}->{'description'} // $sAlt);
+                <<"EOF", [ keys %altDescs ], $data->{$sAlt}->{'description'} || $sAlt);
 
 Please make your choise for the $section service:
 EOF
@@ -611,7 +613,7 @@ EOF
         $main::imscpConfig{uc( $section ).'_SERVER'} = $sAlt;
 
         # Set package name
-        $main::imscpConfig{uc( $section ).'_PACKAGE'} = $data->{$sAlt}->{'class'} // $sAlt;
+        $main::imscpConfig{uc( $section ).'_PACKAGE'} = $data->{$sAlt}->{'class'} || $sAlt;
     }
 
     $dialog->set( 'no-cancel', '' );

@@ -369,9 +369,8 @@ sub _buildFastCgiConfFiles
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
     $rs = $self->{'httpd'}->disableModules(
-        'actions', 'fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php_fpm_imscp', 'php5', 'php5_cgi',
-        'php5filter', 'php5.6', 'php7.0', 'php7.1', 'proxy_fcgi', 'proxy_handler', 'mpm_itk', 'mpm_event',
-        'mpm_prefork', 'mpm_worker'
+        'actions', 'fastcgi', 'fcgid', 'fcgid_imscp', 'php5', 'php5_cgi', 'php5filter', 'php5.6', 'php7.0', 'php7.1',
+        'proxy_fcgi', 'proxy_handler', 'mpm_itk', 'mpm_event', 'mpm_prefork', 'mpm_worker'
     );
     $rs ||= $self->{'httpd'}->enableModules( 'actions', 'authz_groupfile', 'fcgid_imscp', 'mpm_event', 'version' );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildFastCgiConfFiles' );
@@ -596,12 +595,20 @@ sub _cleanup
 {
     my $self = shift;
 
-    my $rs ||= $self->{'httpd'}->disableSites( 'imscp.conf', '00_modcband.conf', '00_master.conf',
-        '00_master_ssl.conf' );
+    my $rs = $self->{'httpd'}->disableSites( 'imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf' );
 
     for ('imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf') {
         next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
         $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_" )->delFile( );
+        return $rs if $rs;
+    }
+
+    $rs = $self->{'httpd'}->disableModules( 'php_fpm_imscp', 'fastcgi_imscp' );
+    return $rs if $rs;
+
+    for('fastcgi_imscp.conf', 'fastcgi_imscp.load', 'php_fpm_imscp.conf', 'php_fpm_imscp.load') {
+        next unless -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_";
+        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_" )->delFile( );
         return $rs if $rs;
     }
 

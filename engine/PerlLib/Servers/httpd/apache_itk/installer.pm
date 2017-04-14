@@ -348,9 +348,8 @@ sub _buildPhpConfFiles
         }
     );
     $rs = $self->{'httpd'}->disableModules(
-        'actions', 'fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php_fpm_imscp', 'suexec', 'php5', 'php5_cgi',
-        'php5filter', 'php5.6', 'php7.0', 'php7.1', 'proxy_fcgi', 'proxy_handler', 'mpm_itk', 'mpm_event',
-        'mpm_prefork', 'mpm_worker'
+        'actions', 'fastcgi', 'fcgid', 'fcgid_imscp', 'suexec', 'php5', 'php5_cgi', 'php5filter', 'php5.6', 'php7.0',
+        'php7.1', 'proxy_fcgi', 'proxy_handler', 'mpm_itk', 'mpm_event', 'mpm_prefork', 'mpm_worker'
     );
     $rs ||= $self->{'httpd'}->enableModules(
         'authz_groupfile', "php$self->{'phpConfig'}->{'PHP_VERSION'}", 'mpm_itk', 'version'
@@ -581,6 +580,24 @@ sub _cleanup
     for ('imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf') {
         next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
         $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_" )->delFile( );
+        return $rs if $rs;
+    }
+
+    $rs = $self->{'httpd'}->disableModules( 'php_fpm_imscp', 'fastcgi_imscp' );
+    return $rs if $rs;
+
+    for('fastcgi_imscp.conf', 'fastcgi_imscp.load', 'php_fpm_imscp.conf', 'php_fpm_imscp.load') {
+        next unless -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_";
+        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_" )->delFile( );
+        return $rs if $rs;
+    }
+
+    if (-d $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}) {
+        $rs = execute(
+            "rm -f $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}/*/php5-fastcgi-starter", \ my $stdout, \ my $stderr
+        );
+        debug($stdout) if $stdout;
+        error($stderr || 'Unknown error') if $rs;
         return $rs if $rs;
     }
 

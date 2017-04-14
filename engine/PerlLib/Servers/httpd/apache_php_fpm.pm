@@ -1498,17 +1498,10 @@ sub _addCfg
             DOMAIN_IPS              => join(
                 ' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]").':80' } @domainIPs
             ),
-            # fastcgi module case (Apache2 < 2.4.10)
-            FASTCGI_CLASS           => $data->{'DOMAIN_NAME'},
-            FASTCGI_LISTEN_MODE     => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds' ? 'socket' : 'host',
-            FASTCGI_LISTEN_ENDPOINT => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
-                ? "/run/php/php$phpVersion-fpm-$confLevel.sock"
-                : '127.0.0.1:'.($self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'} + $data->{'PHP_FPM_LISTEN_PORT'}),
             HTTPD_CUSTOM_SITES_DIR  => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
             HTTPD_LOG_DIR           => $self->{'config'}->{'HTTPD_LOG_DIR'},
             PHP_VERSION             => $phpVersion,
             POOL_NAME               => $confLevel,
-            # proxy_fcgi module case (Apache2 >= 2.4.10)
             PROXY_FCGI_PATH         => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
                 ? "unix:/run/php/php$phpVersion-fpm-$confLevel.sock|"
                 : '',
@@ -1962,7 +1955,7 @@ sub _buildPHPConfig
 
 sub _cleanTemplate
 {
-    my ($self, $tpl, $name, $data) = @_;
+    my (undef, $tpl, $name, $data) = @_;
 
     if ($data->{'SKIP_TEMPLATE_CLEANER'}) {
         delete $data->{'SKIP_TEMPLATE_CLEANER'};
@@ -1978,16 +1971,6 @@ sub _cleanTemplate
 
             if ($data->{'PHP_SUPPORT'} eq 'yes') {
                 ${$tpl} = replaceBloc("# SECTION php_off BEGIN.\n", "# SECTION php_off END.\n", '', ${$tpl});
-
-                if (version->parse("$self->{'config'}->{'HTTPD_VERSION'}" ) >= version->parse( '2.4.10' )) {
-                    ${$tpl} = replaceBloc(
-                        "# SECTION mod_fastcgi BEGIN.\n", "# SECTION mod_fastcgi END.\n", '', ${$tpl}
-                    );
-                } else {
-                    ${$tpl} = replaceBloc(
-                        "# SECTION mod_proxy_fcgi BEGIN.\n", "# SECTION mod_proxy_fcgi END.\n", '', ${$tpl}
-                    );
-                }
             } else {
                 ${$tpl} = replaceBloc("# SECTION php_on BEGIN.\n", "# SECTION php_on END.\n", '', ${$tpl});
             }

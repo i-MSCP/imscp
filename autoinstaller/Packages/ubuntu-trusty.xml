@@ -13,32 +13,43 @@
         <apache_fcgid
                 description="Apache2 (MPM Event) server and PHP as CGI"
                 class="Servers::httpd::apache_fcgid"
+                repository="http://mirrors.kernel.org/ubuntu/ trusty-backports main"
+                pinning_package="*"
+                pinning_pin="release v=14.04,o=Ubuntu,a=trusty-backports,n=trusty,l=Ubuntu,c=main"
+                pinning_pin_priority="1001"
         >
-            <package>apache2</package>
+            <package post_install_task="sh apache2_postinst.sh">apache2</package>
             <package>apache2-suexec-custom</package>
             <package>libapache2-mod-fcgid</package>
         </apache_fcgid>
         <apache_itk
-                description="Apache2 (MPM ITK) server and PHP Apache2 module"
+                description="Apache2 (MPM ITK) server and PHP as Apache2 module"
                 class="Servers::httpd::apache_itk"
+                repository="http://mirrors.kernel.org/ubuntu/ trusty-backports main"
+                pinning_package="*"
+                pinning_pin="release v=14.04,o=Ubuntu,a=trusty-backports,n=trusty,l=Ubuntu,c=main"
+                pinning_pin_priority="1001"
         >
-            <package>apache2</package>
+            <package post_install_task="sh apache2_postinst.sh">apache2</package>
             <package_delayed>libapache2-mpm-itk</package_delayed>
         </apache_itk>
         <apache_php_fpm
                 default="1"
-                description="Apache2 (MPM Event) server and PHP-FPM"
+                description="Apache2 (MPM Event) server and PHP-FPM (recommended)"
                 class="Servers::httpd::apache_php_fpm"
+                repository="http://mirrors.kernel.org/ubuntu/ trusty-backports main"
+                pinning_package="*"
+                pinning_pin="release v=14.04,o=Ubuntu,a=trusty-backports,n=trusty,l=Ubuntu,c=main"
+                pinning_pin_priority="1001"
         >
-            <package>apache2</package>
+            <package post_install_task="sh apache2_postinst.sh">apache2</package>
             <package>apache2-suexec-custom</package>
-            <package>libapache2-mod-fastcgi</package>
         </apache_php_fpm>
     </httpd>
     <php>
         <php5.6
                 default="1"
-                description="PHP 5.6"
+                description="PHP 5.6 (recommended)"
                 class="Servers::php"
                 repository_conflict="http://packages.dotdeb.org"
                 repository="http://ppa.launchpad.net/ondrej/php/ubuntu trusty main"
@@ -164,7 +175,7 @@
         </courier>
         <dovecot
                 default="1"
-                description="Dovecot IMAP/POP server"
+                description="Dovecot IMAP/POP server (recommended)"
                 class="Servers::po::dovecot"
         >
             <package>dovecot-core</package>
@@ -186,7 +197,7 @@
     <ftpd>
         <proftpd
                 default="1"
-                description="ProFTPD server"
+                description="ProFTPD server (recommended)"
                 class="Servers::ftpd::proftpd"
         >
             <package>proftpd-basic</package>
@@ -206,12 +217,12 @@
             <package_conflict>proftpd-basic</package_conflict>
         </vsftpd>
     </ftpd>
-    <named
-            default="1"
-            description="Bind9 server"
-            class="Servers::named::bind"
-    >
-        <bind>
+    <named>
+        <bind
+                default="1"
+                description="Bind9 server"
+                class="Servers::named::bind"
+        >
             <package>resolvconf</package>
             <package>bind9</package>
         </bind>
@@ -373,7 +384,7 @@
             <package>percona-server-server-5.7</package>
         </percona_5.7>
         <remote_server
-                description="Remote MySQL server"
+                description="Remote SQL server"
                 class="Servers::sqld::remote"
                 pinning_package="libmysqlclient18 mysql-common mysql-server-5.5"
                 pinning_pin="release o=Ubuntu,n=trusty"

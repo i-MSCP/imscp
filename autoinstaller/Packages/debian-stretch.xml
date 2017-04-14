@@ -14,7 +14,7 @@
                 description="Apache2 (MPM Event) server and PHP as CGI"
                 class="Servers::httpd::apache_fcgid"
         >
-            <package>apache2</package>
+            <package post_install_task="sh apache2_postinst.sh">apache2</package>
             <package>apache2-suexec-custom</package>
             <package>libapache2-mod-fcgid</package>
         </apache_fcgid>
@@ -22,12 +22,12 @@
                 description="Apache2 (MPM ITK) server and PHP Apache2 module"
                 class="Servers::httpd::apache_itk"
         >
-            <package>apache2</package>
+            <package post_install_task="sh apache2_postinst.sh">apache2</package>
             <package_delayed>libapache2-mpm-itk</package_delayed>
         </apache_itk>
         <apache_php_fpm
                 default="1"
-                description="Apache2 (MPM Event) server and PHP-FPM"
+                description="Apache2 (MPM Event) server and PHP-FPM (recommended)"
                 class="Servers::httpd::apache_php_fpm"
         >
             <package post_install_task="sh apache2_postinst.sh">apache2</package>
@@ -37,7 +37,7 @@
     <php>
         <php5.6
                 default="1"
-                description="PHP 5.6"
+                description="PHP 5.6 (recommended)"
                 class="Servers::php"
                 repository_conflict="http://packages.dotdeb.org"
                 repository="https://packages.sury.org/php/ stretch main"
@@ -145,7 +145,7 @@
     <po>
         <dovecot
                 default="1"
-                description="Dovecot IMAP/POP server"
+                description="Dovecot IMAP/POP server (recommended)"
                 class="Servers::po::dovecot"
         >
             <package>dovecot-core</package>
@@ -167,7 +167,7 @@
     <ftpd>
         <proftpd
                 default="1"
-                description="ProFTPD server"
+                description="ProFTPD server (recommended)"
                 class="Servers::ftpd::proftpd"
         >
             <package>proftpd-basic</package>
@@ -184,7 +184,11 @@
         </vsftpd>
     </ftpd>
     <named>
-        <bind>
+        <bind
+                default="1"
+                description="Bind9 server"
+                class="Servers::named::bind"
+        >
             <package>resolvconf</package>
             <package>bind9</package>
         </bind>
@@ -212,7 +216,7 @@
             <package>mysql-common</package>
         </mariadb_10.1>
         <remote_server
-                description="Remote MySQL server"
+                description="Remote SQL server"
                 class="Servers::sqld::remote"
                 pinning_package="libmariadbclient18 mariadb-client-10.1 mariadb-common mysql-common"
                 pinning_pin="release o=Debian,n=stretch"
