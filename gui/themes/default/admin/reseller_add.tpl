@@ -12,7 +12,7 @@
         });
     });
 </script>
-<form method="post" action="reseller_add.php">
+<form method="post" action="reseller_add.php" autocomplete="off">
     <table class="firstColFixed">
         <thead>
         <tr>
@@ -26,11 +26,11 @@
         </tr>
         <tr>
             <td><label for="password">{TR_PASSWORD}</label></td>
-            <td><input type="password" name="password" id="password" value="" autocomplete="off"></td>
+            <td><input type="password" name="password" id="password" value="" autocomplete="new-password"></td>
         </tr>
         <tr>
             <td><label for="cpassword">{TR_PASSWORD_CONFIRMATION}</label></td>
-            <td><input type="password" name="password_confirmation" id="cpassword" class="pwd_generator pwd_prefill" value="" autocomplete="off"></td>
+            <td><input type="password" name="password_confirmation" id="cpassword" class="pwd_generator pwd_prefill" value="" autocomplete="new-password"></td>
         </tr>
         <tr>
             <td><label for="email">{TR_EMAIL}</label></td>

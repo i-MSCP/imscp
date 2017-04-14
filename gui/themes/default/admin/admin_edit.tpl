@@ -1,5 +1,5 @@
 
-<form name="editCustomerFrm" method="post" action="admin_edit.php?edit_id={EDIT_ID}">
+<form name="editCustomerFrm" method="post" action="admin_edit.php?edit_id={EDIT_ID}" autocomplete="off">
     <table class="firstColFixed">
         <thead>
         <tr>
@@ -13,12 +13,12 @@
         </tr>
         <tr>
             <td><label for="password">{TR_PASSWORD}</label></td>
-            <td><input type="password" name="password" id="password" class="pwd_generator" value="" autocomplete="off">
+            <td><input type="password" name="password" id="password" class="pwd_generator" value="" autocomplete="new-password">
             </td>
         </tr>
         <tr>
             <td><label for="cpassword">{TR_PASSWORD_REPEAT}</label></td>
-            <td><input type="password" name="password_confirmation" id="cpassword" value="" autocomplete="off"></td>
+            <td><input type="password" name="password_confirmation" id="cpassword" value="" autocomplete="new-password"></td>
         </tr>
         <tr>
             <td><label for="email">{TR_EMAIL}</label></td>

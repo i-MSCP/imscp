@@ -1,5 +1,5 @@
 
-<form name="editHtaccessUserFrm" method="post" action="protected_user_edit.php">
+<form name="editHtaccessUserFrm" method="post" action="protected_user_edit.php" autocomplete="off">
     <table>
         <thead>
         <tr>
@@ -13,12 +13,12 @@
         </tr>
         <tr>
             <td><label for="password">{TR_PASSWORD}</label></td>
-            <td><input type="password" id="password" name="pass" value="" class="pwd_generator" autocomplete="off">
+            <td><input type="password" id="password" name="pass" value="" class="pwd_generator" autocomplete="new-password">
             </td>
         </tr>
         <tr>
             <td><label for="cpassword">{TR_PASSWORD_REPEAT}</label></td>
-            <td><input type="password" id="cpassword" name="pass_rep" value="" autocomplete="off"></td>
+            <td><input type="password" id="cpassword" name="pass_rep" value="" autocomplete="new-password"></td>
         </tr>
         </tbody>
     </table>

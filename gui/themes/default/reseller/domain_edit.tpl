@@ -44,7 +44,7 @@
         });
     });
 </script>
-<form method="post" action="domain_edit.php?edit_id={EDIT_ID}" autocomplete="off">
+<form method="post" action="domain_edit.php?edit_id={EDIT_ID}">
     <table class="firstColFixed">
         <thead>
         <tr>

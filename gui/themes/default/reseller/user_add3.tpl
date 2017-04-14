@@ -1,5 +1,5 @@
 
-<form name="addCustomerFrm3" method="post" action="user_add3.php">
+<form name="addCustomerFrm3" method="post" action="user_add3.php" autocomplete="off">
     <table class="firstColFixed">
         <thead>
         <tr>
@@ -13,11 +13,11 @@
         </tr>
         <tr>
             <td><label for="password">{TR_PASSWORD}</label></td>
-            <td><input type="password" name="userpassword" id="password" value="" class="pwd_generator pwd_prefill" autocomplete="off"></td>
+            <td><input type="password" name="userpassword" id="password" value="" class="pwd_generator pwd_prefill" autocomplete="new-password"></td>
         </tr>
         <tr>
             <td><label for="cpassword">{TR_REP_PASSWORD}</label></td>
-            <td><input type="password" name="userpassword_repeat" id="cpassword" value="{VL_USR_PASS}" autocomplete="off"></td>
+            <td><input type="password" name="userpassword_repeat" id="cpassword" value="{VL_USR_PASS}" autocomplete="new-password"></td>
         </tr>
         <tr>
             <td><label for="domain_ip">{TR_DOMAIN_IP}</label></td>

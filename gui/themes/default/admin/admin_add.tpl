@@ -1,5 +1,5 @@
 
-<form name="admin_add_user" method="post" action="admin_add.php">
+<form name="admin_add_user" method="post" action="admin_add.php" autocomplete="off">
     <!-- BDP: props_list -->
     <table class="firstColFixed">
         <thead>
@@ -14,11 +14,11 @@
         </tr>
         <tr>
             <td><label for="password">{TR_PASSWORD}</label></td>
-            <td><input type="password" name="password" id="password" class="pwd_generator pwd_prefill" value="" autocomplete="off"></td>
+            <td><input type="password" name="password" id="password" class="pwd_generator pwd_prefill" value="" autocomplete="new-password"></td>
         </tr>
         <tr>
             <td><label for="cpassword">{TR_PASSWORD_REPEAT}</label></td>
-            <td><input type="password" name="password_confirmation" id="cpassword" value="" autocomplete="off"></td>
+            <td><input type="password" name="password_confirmation" id="cpassword" value="" autocomplete="new-password"></td>
         </tr>
         <tr>
             <td><label for="email">{TR_EMAIL}</label></td>

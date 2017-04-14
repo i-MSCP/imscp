@@ -167,7 +167,7 @@
         <tr>
             <td><label for="ip_number">{TR_IP} / {TR_IP_NETMASK}</label></td>
             <td>
-                <input name="ip_number" id="ip_number" type="text" value="{VALUE_IP}" style="min-width:300px" maxlength="45" autocomplete="off">
+                <input name="ip_number" id="ip_number" type="text" value="{VALUE_IP}" style="min-width:300px" maxlength="45">
                 <strong>/</strong>
                 <label><input name="ip_netmask" id="ip_netmask" type="number" value="{VALUE_IP_NETMASK}" style="min-width:40px" min="1" max="32"></label>
             </td>

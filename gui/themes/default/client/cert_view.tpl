@@ -26,7 +26,7 @@
         });
     });
 </script>
-<form name="ssl_cert_frm" method="post" action="cert_view.php?domain_id={DOMAIN_ID}&domain_type={DOMAIN_TYPE}">
+<form name="ssl_cert_frm" method="post" action="cert_view.php?domain_id={DOMAIN_ID}&domain_type={DOMAIN_TYPE}" autocomplete="off">
     <table class="firstColFixed">
         <thead>
         <tr>
@@ -94,7 +94,7 @@
         <!-- BDP: ssl_certificate_pk_pwd -->
         <tr class="input_fields">
             <td><label for="passphrase">{TR_PASSWORD}</label></td>
-            <td><input id="passphrase" type="password" name="passphrase" value="" autocomplete="off"></td>
+            <td><input id="passphrase" type="password" name="passphrase" value="" autocomplete="new-password"></td>
         </tr>
         <!-- EDP: ssl_certificate_pk_pwd -->
         <!-- BDP: ssl_certificate_certchain -->

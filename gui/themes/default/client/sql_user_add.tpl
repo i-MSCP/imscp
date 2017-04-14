@@ -31,7 +31,7 @@
 <!-- EDP: show_sqluser_list -->
 
 <!-- BDP: create_sqluser -->
-<form name="sql_add_user_frm2" method="post" action="sql_user_add.php">
+<form name="sql_add_user_frm2" method="post" action="sql_user_add.php" autocomplete="off">
     <table class="firstColFixed">
         <thead>
         <tr>
@@ -76,11 +76,11 @@
         </tr>
         <tr>
             <td><label for="password">{TR_PASS}</label></td>
-            <td><input id="password" type="password" name="pass" value="" class="pwd_generator pwd_prefill" autocomplete="off"></td>
+            <td><input id="password" type="password" name="pass" value="" class="pwd_generator pwd_prefill" autocomplete="new-password"></td>
         </tr>
         <tr>
             <td><label for="cpassword">{TR_PASS_REP}</label></td>
-            <td><input id="cpassword" type="password" name="pass_rep" value="" autocomplete="off"></td>
+            <td><input id="cpassword" type="password" name="pass_rep" value="" autocomplete="new-password"></td>
         </tr>
         </tbody>
     </table>

@@ -87,7 +87,7 @@
         </tr>
         <tr>
             <td><label for="database_pwd">{TR_DATABASE_PWD}</label></td>
-            <td><input type="password" id="database_pwd" name="database_pwd"></td>
+            <td><input type="password" id="database_pwd" name="database_pwd" autocomplete="new-password"></td>
         </tr>
         </tbody>
     </table>

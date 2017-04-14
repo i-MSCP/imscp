@@ -13,12 +13,12 @@
         <tr>
             <td><label for="password">{TR_PASSWORD}</label></td>
             <td>
-                <input type="password" name="userpassword" id="password" value="" class="pwd_generator" autocomplete="off">
+                <input type="password" name="userpassword" id="password" value="" class="pwd_generator" autocomplete="new-password">
             </td>
         </tr>
         <tr>
             <td><label for="cpassword">{TR_REP_PASSWORD}</label></td>
-            <td><input type="password" name="userpassword_repeat" id="cpassword" value="" autocomplete="off"></td>
+            <td><input type="password" name="userpassword_repeat" id="cpassword" value="" autocomplete="new-password"></td>
         </tr>
         <tr>
             <td><label for="useremail">{TR_USREMAIL}</label></td>

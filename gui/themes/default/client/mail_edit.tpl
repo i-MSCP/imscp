@@ -46,7 +46,7 @@
         fixQuotaField(); // Make sure that quota field value is correct on initialization
     });
 </script>
-<form name="client_mail_edit" action="mail_edit.php?id={MAIL_ID}" method="post">
+<form name="client_mail_edit" action="mail_edit.php?id={MAIL_ID}" method="post" autocomplete="off">
     <table class="firstColFixed">
         <thead>
         <tr>
@@ -81,11 +81,11 @@
         </tr>
         <tr id="tr_password">
             <td><label for="password">{TR_PASSWORD}</label></td>
-            <td><input id="password" type="password" name="password" value="" class="pwd_generator" autocomplete="off"></td>
+            <td><input id="password" type="password" name="password" value="" class="pwd_generator" autocomplete="new-password"></td>
         </tr>
         <tr id="tr_password_rep">
             <td><label for="cpassword">{TR_PASSWORD_REPEAT}</label></td>
-            <td><input id="cpassword" type="password" name="password_rep" value="" autocomplete="off"></td>
+            <td><input id="cpassword" type="password" name="password_rep" value="" autocomplete="new-password"></td>
         </tr>
         <tr id="tr_quota">
             <td><label for="quota">{TR_QUOTA}</label></td>

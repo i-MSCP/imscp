@@ -62,6 +62,7 @@ UNINSTALLER
 YOUTRACK
     IP-1707 Getting Error when trying to change e-mail forwarder due to wrong quota value
     IP-1709 Protected area users/groups management - Groups list is truncated to first group
+    IP-1710 Password field of client prepopulated when called from reseller
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.2

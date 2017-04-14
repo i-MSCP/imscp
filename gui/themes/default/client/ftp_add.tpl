@@ -17,7 +17,7 @@
         });
     });
 </script>
-<form name="add_ftp_account_frm" method="post" action="ftp_add.php">
+<form name="add_ftp_account_frm" method="post" action="ftp_add.php" autocomplete="off">
     <table>
         <thead>
         <tr>
@@ -50,11 +50,11 @@
         </tr>
         <tr>
             <td><label for="password">{TR_PASSWORD}</label></td>
-            <td><input type="password" id="password" name="password" value="" class="pwd_generator pwd_prefill" autocomplete="off"></td>
+            <td><input type="password" id="password" name="password" value="" class="pwd_generator pwd_prefill" autocomplete="new-password"></td>
         </tr>
         <tr>
             <td><label for="cpassword">{TR_PASSWORD_REPEAT}</label></td>
-            <td><input type="password" id="cpassword" name="password_repeat" value="" autocomplete="off"></td>
+            <td><input type="password" id="cpassword" name="password_repeat" value="" autocomplete="new-password"></td>
         </tr>
         <tr>
             <td><label for="ftp_directory">{TR_HOME_DIR}</label></td>

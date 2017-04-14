@@ -1,5 +1,5 @@
 
-<form name="sql_change_password_frm" method="post" action="sql_change_password.php?id={ID}">
+<form name="sql_change_password_frm" method="post" action="sql_change_password.php?id={ID}" autocomplete="off">
     <table class="firstColFixed">
         <tr>
             <td><label for="user">{TR_DB_USER}</label></td>
@@ -7,12 +7,12 @@
         </tr>
         <tr>
             <td><label for="password">{TR_PASSWORD}</label></td>
-            <td><input id="password" type="password" name="password" value="" class="pwd_generator" autocomplete="off">
+            <td><input id="password" type="password" name="password" value="" class="pwd_generator" autocomplete="new-password">
             </td>
         </tr>
         <tr>
             <td><label for="cpassword">{TR_PASSWORD_CONFIRMATION}</label></td>
-            <td><input id="cpassword" type="password" name="password_confirmation" value="" autocomplete="off"></td>
+            <td><input id="cpassword" type="password" name="password_confirmation" value="" autocomplete="new-password"></td>
         </tr>
     </table>
     <div class="buttons">
