@@ -12,7 +12,7 @@ CONFIG
     Removed: SSLCertificateChainFile Apache2 directive in domain.tpl vhost template file (no longer needed since Apache 2.4.8)
 
 BACKEND
-    Added: getAsRef() method - Method allowing to get scalar ref to file content (iMSCP::File)
+    Added: getAsRef() method - Method allowing to get scalar reference to file content (iMSCP::File)
     Added: Servers::php class (doesn't do anything yet - currently a child of Servers::noserver)
     Fixed: Couldn't umount mounts that are in deleted state due to wrong regexp in iMSCP::Mount library
     Review: Mitigate IO operations by reading full fstab-like file in memory and by reusing same file object (iMSCP::Mount)
