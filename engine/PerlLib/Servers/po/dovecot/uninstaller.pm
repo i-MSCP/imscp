@@ -174,7 +174,7 @@ sub _removeConfig
     # Remove old data file
 
     if (-f "$self->{'cfgDir'}/courier.old.data") {
-        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/dovecot.old.data" )->delFile( );
+        my $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/dovecot.old.data" )->delFile( );
         return $rs if $rs;
     }
 
