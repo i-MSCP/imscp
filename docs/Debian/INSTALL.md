@@ -138,6 +138,6 @@ case something goes wrong during upgrade.
 
     # cd imscp-<version>
 
-#### 5. Update i-MSCP by running its installer
+#### 6. Update i-MSCP by running its installer
 
     # perl imscp-autoinstall -d

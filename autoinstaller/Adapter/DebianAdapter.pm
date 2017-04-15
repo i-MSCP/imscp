@@ -881,7 +881,7 @@ EOF
     }
 
     # Pre-fill question for sasl2-bin package if required
-    if (`echo get cyrus-sasl2/purge-sasldb2 | debconf-communicate sas2-bin 2>/dev/null` =~ /^0/) {
+    if (`echo get cyrus-sasl2/purge-sasldb2 | debconf-communicate sasl2-bin 2>/dev/null` =~ /^0/) {
         $fileContent .= <<'EOF'
 sasl2-bin cyrus-sasl2/purge-sasldb2 boolean true
 EOF

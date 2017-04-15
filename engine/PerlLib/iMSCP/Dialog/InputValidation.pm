@@ -32,11 +32,8 @@ use iMSCP::Net;
 use Net::LibIDN qw/ idn_to_ascii /;
 use parent 'Exporter';
 
-our @EXPORT = qw/
-    isValidUsername isValidPassword isValidEmail isValidHostname isValidDomain
-    isValidIpAddr isValidTimezone isValidDbName isNumber isNumberInRange
-    isStringNotInList isValidNumberRange isNotEmpty
-/;
+our @EXPORT = qw/isValidUsername isValidPassword isValidEmail isValidHostname isValidDomain isValidIpAddr
+    isValidTimezone isValidDbName isNumber isNumberInRange isStringNotInList isValidNumberRange isNotEmpty/;
 
 our $lastValidationError = '';
 
@@ -48,7 +45,7 @@ our $lastValidationError = '';
 
 =over 4
 
-=item isValidUsername($username)
+=item isValidUsername( $username )
 
  Is the given username valid?
 
@@ -57,7 +54,7 @@ our $lastValidationError = '';
 
 =cut
 
-sub isValidUsername($)
+sub isValidUsername( $ )
 {
     my $username = shift;
     my $length = length $username;
@@ -79,7 +76,7 @@ EOF
     0;
 }
 
-=item isValidPassword($password)
+=item isValidPassword( $password )
 
  Is the given password valid?
  
@@ -88,7 +85,7 @@ EOF
 
 =cut
 
-sub isValidPassword($)
+sub isValidPassword( $ )
 {
     my $password = shift;
     my $length = length $password;
@@ -110,7 +107,7 @@ EOF
     0;
 }
 
-=item isValidEmail($email)
+=item isValidEmail( $email )
 
  Is the given email valid?
 
@@ -119,7 +116,7 @@ EOF
 
 =cut
 
-sub isValidEmail($)
+sub isValidEmail( $ )
 {
     my $email = shift;
 
@@ -136,7 +133,7 @@ EOF
     0;
 }
 
-=item isValidHostname($hostname)
+=item isValidHostname( $hostname )
 
  Is the given hostname valid?
  
@@ -145,7 +142,7 @@ EOF
 
 =cut
 
-sub isValidHostname($)
+sub isValidHostname( $ )
 {
     my $hostname = shift;
 
@@ -166,7 +163,7 @@ EOF
     0;
 }
 
-=item isValidDomain($domainName)
+=item isValidDomain( $domainName )
 
  Is the given domain name valid?
 
@@ -175,13 +172,15 @@ EOF
 
 =cut
 
-sub isValidDomain($)
+sub isValidDomain( $ )
 {
     my $domainName = shift;
 
     return 1 if $domainName !~ /\.$/ && is_domain(
         idn_to_ascii($domainName, 'utf-8'),
-        { domain_disable_tld_validation => 1 }
+        {
+            domain_disable_tld_validation => 1
+        }
     );
 
     $lastValidationError = <<"EOF";
@@ -197,7 +196,7 @@ EOF
     0;
 }
 
-=item isValidIpAddr($ipAddr [, $typeReg = ANY ])
+=item isValidIpAddr( $ipAddr [, $typeReg = ANY ] )
 
  Is the given IP address valid?
 
@@ -207,11 +206,11 @@ EOF
 
 =cut
 
-sub isValidIpAddr($;$)
+sub isValidIpAddr( $;$ )
 {
     my ($ipAddr, $typeReg) = @_;
 
-    my $net = iMSCP::Net->getInstance();
+    my $net = iMSCP::Net->getInstance( );
     return 1 if $net->isValidAddr($ipAddr)
         && (!defined $typeReg || $net->getAddrType($ipAddr) =~ /^$typeReg$/);
 
@@ -226,7 +225,7 @@ EOF
     0;
 }
 
-=item isValidDbName($dbName)
+=item isValidDbName( $dbName )
 
  Is the given database name valid?
 
@@ -257,7 +256,7 @@ EOF
     0;
 }
 
-=item isValidTimezone($timezone)
+=item isValidTimezone( $timezone )
 
  Is the given timzone name valid?
 
@@ -270,7 +269,7 @@ sub isValidTimezone
 {
     my $timezone = shift;
 
-    return 1 if DateTime::TimeZone->is_valid_name($timezone);
+    return 1 if DateTime::TimeZone->is_valid_name( $timezone );
 
     $lastValidationError = <<"EOF";
 
@@ -285,7 +284,7 @@ EOF
     0;
 }
 
-=item isNumber($number)
+=item isNumber( $number )
 
  Is the given number valid?
 
@@ -311,7 +310,7 @@ EOF
     0;
 }
 
-=item isValidNumberRange($numberRange, \$n1, \$n2 )
+=item isValidNumberRange( $numberRange, \$n1, \$n2 )
 
  Is the given number range a valid number range?
 
@@ -322,7 +321,7 @@ EOF
 
 =cut
 
-sub isValidNumberRange($$$)
+sub isValidNumberRange( $$$ )
 {
     my ($numberRange, $n1, $n2) = @_;
 
@@ -342,7 +341,7 @@ EOF
     0;
 }
 
-=item isNumberInRange($number, $start, $end)
+=item isNumberInRange( $number, $start, $end )
 
  Is the given number in the given range?
 
@@ -353,7 +352,7 @@ EOF
 
 =cut
 
-sub isNumberInRange($$$)
+sub isNumberInRange( $$$ )
 {
     my ($number, $start, $end) = @_;
 
@@ -373,7 +372,7 @@ EOF
     0;
 }
 
-=item isStringNotInList($string, @stringList)
+=item isStringNotInList( $string, @stringList )
 
  Is the given string not in the given string list?
 
@@ -385,7 +384,7 @@ EOF
 
 =cut
 
-sub isStringNotInList($@)
+sub isStringNotInList( $@ )
 {
     my ($string, @stringList) = @_;
 
@@ -405,7 +404,7 @@ EOF
     0;
 }
 
-=item isNotEmpty($string)
+=item isNotEmpty( $string )
 
  Is the given string not an empty string?
 
@@ -414,7 +413,7 @@ EOF
 
 =cut
 
-sub isNotEmpty($)
+sub isNotEmpty( $ )
 {
     my $string = shift;
 
@@ -435,7 +434,7 @@ EOF
 
 =head1 AUTHOR
 
-Laurent Declercq <l.declercq@nuxwin.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 
