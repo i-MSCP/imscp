@@ -34,7 +34,7 @@ use warnings;
 
 =over 4
 
-=item getInstance([%args])
+=item getInstance( [ %args ] )
 
  Implement singleton design pattern. Return instance of this class
 
@@ -53,13 +53,13 @@ sub getInstance
 
     unless (defined $$instance) {
         $$instance = bless { @_ && ref $_[0] eq 'HASH' ? %{$_[0]} : @_ }, $self;
-        $$instance->_init();
+        $$instance->_init( );
     }
 
     $$instance;
 }
 
-=item hasInstance()
+=item hasInstance( )
 
  Whether an instance already exists
 
@@ -82,9 +82,9 @@ sub hasInstance
 
 =over 4
 
-=item _init()
+=item _init( )
 
- Called by getInstance(). Initialize instance
+ Called by getInstance( ). Initialize instance
 
  Return Common::SingletonClass
 

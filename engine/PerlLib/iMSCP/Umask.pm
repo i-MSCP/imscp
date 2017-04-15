@@ -4,7 +4,7 @@ use 5.010001;
 use strict;
 use warnings;
 
-use POSIX qw();
+use POSIX qw( );
 use Exporter qw(import);
 
 our @EXPORT = qw($UMASK);
@@ -20,7 +20,7 @@ tie $UMASK, 'iMSCP::Umask::SCALAR' or die "Can't tie \$UMASK";
     }
 
     sub FETCH {
-        umask();
+        umask( );
     }
 
     sub STORE {

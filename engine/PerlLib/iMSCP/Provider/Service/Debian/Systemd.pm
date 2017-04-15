@@ -60,7 +60,7 @@ my $SYSTEMCTL_COMPAT_MODE = lazy
 
 =over 4
 
-=item isEnabled($unit)
+=item isEnabled( $unit )
 
  Is the given service/socket unit enabled?
 
@@ -81,7 +81,7 @@ sub isEnabled
     $self->iMSCP::Provider::Service::Debian::Sysvinit::isEnabled( $unit );
 }
 
-=item enable($unit)
+=item enable( $unit )
 
  Enable the given service/socket unit
 
@@ -124,7 +124,7 @@ sub enable
     $self->SUPER::enable( $realUnit );
 }
 
-=item disable($unit)
+=item disable( $unit )
 
  Disable the given service/socket unit
 
@@ -167,7 +167,7 @@ sub disable
     $self->SUPER::disable( $realUnit );
 }
 
-=item remove($unit)
+=item remove( $unit )
 
  Remove the given service/socket unit
 
@@ -195,7 +195,7 @@ sub remove
     1;
 }
 
-=item hasService($unit)
+=item hasService( $unit )
 
  Does the given service/socket unit exists?
 

@@ -44,7 +44,7 @@ my $showUsage;
 
 =over 4
 
-=item parse($usage, @options)
+=item parse( $usage, @options )
 
  Parses command line options in @ARGV with GetOptions from Getopt::Long
 
@@ -100,7 +100,7 @@ EOF
     Getopt::Long::GetOptions(
         'clean-package-cache|c', sub { $options->{'cleanPackageCache'} = 1 },
         'debug|d', sub { $options->{'debug'} = 1 },
-        'help|?|h', sub { $class->showUsage() },
+        'help|?|h', sub { $class->showUsage( ) },
         'fix-permissions|x', sub { $options->{'fixPermissions'} = 1 },
         'listener|l=s', sub { $class->listener( $_[1] ) },
         'noprompt|n', sub { $options->{'noprompt'} = 1 },
@@ -114,7 +114,7 @@ EOF
     undef;
 }
 
-=item parseNoDefault($usage, @options)
+=item parseNoDefault( $usage, @options )
 
  Parses command line options in @ARGV with GetOptions from Getopt::Long. Default options are excluded
 
@@ -153,11 +153,11 @@ EOF
 
     require Getopt::Long;
     Getopt::Long::Configure( 'bundling' );
-    Getopt::Long::GetOptions( 'help|?|h', sub { $class->showUsage() }, @options ) or $class->showUsage( 1 );
+    Getopt::Long::GetOptions( 'help|?|h', sub { $class->showUsage( ) }, @options ) or $class->showUsage( 1 );
     undef;
 }
 
-=item showUsage($exitCode)
+=item showUsage( $exitCode )
 
  Show usage
 
@@ -171,7 +171,7 @@ sub showUsage
     my (undef, $exitCode) = @_;
 
     $exitCode //= 1;
-    ref $showUsage eq 'CODE' or die( 'ShowUsage() is not defined.' );
+    ref $showUsage eq 'CODE' or die( 'ShowUsage( ) is not defined.' );
     $showUsage->( $exitCode );
 }
 
@@ -182,7 +182,7 @@ our @reconfigurationItems = sort(
     'antirootkits'
 );
 
-=item reconfigure([ $item = 'none' ])
+=item reconfigure( [ $item = 'none' ] )
 
  Reconfiguration item
 
@@ -207,7 +207,7 @@ Available items are:
 
 EOF
         $optionHelp .= ' '.(join '|', @reconfigurationItems);
-        die();
+        die( );
     } elsif ($item eq '') {
         $item = 'all';
     }
@@ -218,7 +218,7 @@ EOF
     $options->{'reconfigure'} = $item;
 }
 
-=item preseed([ $file = undef ])
+=item preseed( [ $file = undef ] )
 
  Accessor/Mutator for the preseed command line option
 
@@ -237,7 +237,7 @@ sub preseed
     $options->{'preseed'} = $file;
 }
 
-=item listener([$file = undef])
+=item listener( [ $file = undef ] )
 
  Accessor/Mutator for the listener command line option
 

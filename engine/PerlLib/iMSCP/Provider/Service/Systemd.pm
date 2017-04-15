@@ -55,7 +55,7 @@ my @UNITFILEPATHS = (
 
 =over 4
 
-=item isEnabled($unit)
+=item isEnabled( $unit )
 
  Is the given service/socket unit enabled?
 
@@ -73,7 +73,7 @@ sub isEnabled
     $self->_exec( $COMMANDS{'systemctl'}, '--system', '--quiet', 'is-enabled', $unit ) == 0;
 }
 
-=item enable($unit)
+=item enable( $unit )
 
  Enable the given service or socket unit
 
@@ -91,7 +91,7 @@ sub enable
     $self->_exec( $COMMANDS{'systemctl'}, '--system', '--force', '--quiet', 'enable', $unit ) == 0;
 }
 
-=item disable($unit)
+=item disable( $unit )
 
  Disable the given service/socket unit
 
@@ -109,7 +109,7 @@ sub disable
     $self->_exec( $COMMANDS{'systemctl'}, '--system', '--quiet', 'disable', $unit ) == 0;
 }
 
-=item remove($unit)
+=item remove( $unit )
 
  Remove the given service or socket unit
 
@@ -129,13 +129,13 @@ sub remove
     local $@;
     my $unitFilePath = eval { $self->getUnitFilePath( $unit ); };
     if (defined $unitFilePath) {
-        return 0 if iMSCP::File->new( filename => $unitFilePath )->delFile();
+        return 0 if iMSCP::File->new( filename => $unitFilePath )->delFile( );
     }
 
     $self->_exec( $COMMANDS{'systemctl'}, '--system', 'daemon-reload' ) == 0;
 }
 
-=item start($unit)
+=item start( $unit )
 
  Start the given service/socket unit
 
@@ -153,7 +153,7 @@ sub start
     $self->_exec( $COMMANDS{'systemctl'}, '--system', 'start', $unit ) == 0;
 }
 
-=item stop($unit)
+=item stop( $unit )
 
  Stop the given service/socket unit
 
@@ -172,7 +172,7 @@ sub stop
     $self->_exec( $COMMANDS{'systemctl'}, '--system', 'stop', $unit ) == 0;
 }
 
-=item restart($unit)
+=item restart( $unit )
 
  Restart the given service/socket unit
 
@@ -191,7 +191,7 @@ sub restart
     $self->_exec( $COMMANDS{'systemctl'}, '--system', 'start', $unit ) == 0;
 }
 
-=item reload($service)
+=item reload( $service )
 
  Reload the given service unit
 
@@ -212,7 +212,7 @@ sub reload
     $self->start( $unit );
 }
 
-=item isRunning($unit)
+=item isRunning( $unit )
 
  Is the given service/scoket is running (active)?
 
@@ -230,7 +230,7 @@ sub isRunning
     $self->_exec( $COMMANDS{'systemctl'}, '--system', 'is-active', $unit ) == 0;
 }
 
-=item getUnitFilePath($unit)
+=item getUnitFilePath( $unit )
 
  Get full path of the given unit
 
@@ -254,7 +254,7 @@ sub getUnitFilePath
 
 =over 4
 
-=item _isSystemd($unit)
+=item _isSystemd( $unit )
 
  Is the given service managed by a native systemd service unit file?
 
@@ -272,7 +272,7 @@ sub _isSystemd
     eval { $self->_searchUnitFile( $unit ); };
 }
 
-=item _searchUnitFile($unit)
+=item _searchUnitFile( $unit )
 
  Search the given unit configuration file in all available paths
 

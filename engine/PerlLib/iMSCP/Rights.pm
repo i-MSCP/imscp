@@ -70,8 +70,8 @@ sub setRights
             die( '`mode` option is not allowed when using dirmode/filemode options' );
         }
 
-        my $uid = $options->{'user'} ? getpwnam( $options->{'user'} ) : -1;
-        my $gid = $options->{'group'} ? getgrnam( $options->{'group'} ) : -1;
+        my $uid = $options->{'user'} ? getpwnam( $options->{'user'} ) : - 1;
+        my $gid = $options->{'group'} ? getgrnam( $options->{'group'} ) : - 1;
         defined $uid or die( sprintf( 'user option refers to inexistent user: %s', $options->{'user'} ) );
         defined $gid or die( sprintf( 'group option refers to inexistent group: %s', $options->{'group'} ) );
 
@@ -91,11 +91,11 @@ sub setRights
                         return if -l $_; # We do not call chmod on symkink targets
 
                         if ($mode) {
-                            chmod $mode, $_ or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
+                            chmod $mode, $_ or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ) );
                         } elsif ($dirmode && -d _) {
-                            chmod $dirmode, $_ or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
+                            chmod $dirmode, $_ or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ) );
                         } elsif ($filemode) {
-                            chmod $filemode, $_ or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
+                            chmod $filemode, $_ or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ) );
                         }
                     },
                     no_chdir => 1
@@ -107,16 +107,16 @@ sub setRights
         }
 
         if ($options->{'user'} || $options->{'group'}) {
-            lchown $uid, $gid, $target or die( sprintf( 'Could not set user/group on %s: %s', $target, $! ) );
+            lchown $uid, $gid, $target or die( sprintf( "Couldn't set user/group on %s: %s", $target, $! ) );
         }
 
         unless (-l $target) { # We do not call chmod on symkink targets
             if ($mode) {
-                chmod $mode, $target or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
+                chmod $mode, $target or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ) );
             } elsif ($dirmode && -d _) {
-                chmod $dirmode, $target or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
+                chmod $dirmode, $target or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ) );
             } elsif ($filemode) {
-                chmod $filemode, $target or die( sprintf( 'Could not set mode on %s: %s', $_, $! ) );
+                chmod $filemode, $target or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ) );
             }
         }
     };
@@ -133,7 +133,7 @@ sub setRights
 
 =head1 AUTHOR
 
-Laurent Declercq <l.declercq@nuxwin.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 

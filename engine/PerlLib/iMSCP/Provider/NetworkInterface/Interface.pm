@@ -49,7 +49,7 @@ sub addNetworkCard
     confess 'not implemented';
 }
 
-=item removeNetworkCard(\%data)
+=item removeNetworkCard( \%data )
 
  Remove a network card
 
@@ -63,7 +63,7 @@ sub removeNetworkCard
     confess 'not implemented';
 }
 
-=item addIpAddr(\%data)
+=item addIpAddr( \%data )
 
  Add an IP address
 
@@ -83,7 +83,7 @@ sub addIpAddr
     confess 'not implemented';
 }
 
-=item removeIpAddr(\%data)
+=item removeIpAddr( \%data )
 
  Remove an IP address
 

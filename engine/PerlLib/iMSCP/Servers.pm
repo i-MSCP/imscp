@@ -36,7 +36,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item getList()
+=item getList( )
 
  Get server list
 
@@ -49,7 +49,7 @@ sub getList
     @{$_[0]->{'servers'}};
 }
 
-=item getListWithFullNames()
+=item getListWithFullNames( )
 
  Get server list with full names
 
@@ -68,7 +68,7 @@ sub getListWithFullNames
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -91,7 +91,7 @@ sub _init
 
 =head1 AUTHOR
 
-Laurent Declercq <l.declercq@nuxwin.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 

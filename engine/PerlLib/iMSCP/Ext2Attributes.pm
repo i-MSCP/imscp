@@ -52,13 +52,13 @@ my $isSupported = undef;
 
 BEGIN
     {
-        my $bitness = Bit::Vector->Long_Bits();
+        my $bitness = Bit::Vector->Long_Bits( );
         my $module = "iMSCP::Ext2Attributes::Ext2Fs$bitness";
 
         local $@;
 
         if (eval "require $module") {
-            $module->import();
+            $module->import( );
         } else {
             $isSupported = 0;
             no strict 'refs';
@@ -98,26 +98,26 @@ my %constants = (
 
 =over 4
 
-=item setSecureDeletion($name, [$recursive])
+=item setSecureDeletion( $name [, $recursive ] )
 
  This function takes a filename and attempts to set its secure deletion flag.
  If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item clearSecureDeletion($name, [$recursive])
+=item clearSecureDeletion( $name [, $recursive ] )
 
  This function takes a filename and removes the secure deletion flag if it is present.
  If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item isSecureDeletion($name)
+=item isSecureDeletion( $name )
 
 This function takes a filename and returns true if the secure deletion flag is set and false if it isn't.
 
-=item setUndelete($name, [$recursive])
+=item setUndelete( $name [, $recursive ] )
 
  This function takes a filename and attempts to set its undelete flag.
  If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item clearUndelete($name, [$recursive])
+=item clearUndelete( $name [, $recursive ] )
 
  This function takes a filename and removes the undelete flag if it is present.
  If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
@@ -126,40 +126,40 @@ This function takes a filename and returns true if the secure deletion flag is s
 
 This function takes a filename and returns true if the undelete flag is set and false if it isn't.
 
-=item setCompress($name, [$recursive])
+=item setCompress( $name [, $recursive ] )
 
  This function takes a filename and attempts to set its compress flag.
  If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item clearCompress($name, [$recursive])
+=item clearCompress( $name [, $recursive ] )
 
  This function takes a filename and removes the compress flag if it is present.
  If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item isCompress($name)
+=item isCompress( $name )
 
 This function takes a filename and returns true if the compress flag is set and false if it isn't.
 
-=item setSynchronousUpdate($name, [$recursive])
+=item setSynchronousUpdate( $name [, $recursive ] )
 
  This function takes a filename and attempts to set its synchronous updates flag.
  If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item clearSynchronousUpdate($name, [$recursive])
+=item clearSynchronousUpdate( $name [, $recursive ] )
 
  This function takes a filename and removes the synchronous updates flag if it is present.
  If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item isSynchronousUpdate($name)
+=item isSynchronousUpdate( $name )
 
 This function takes a filename and returns true if the synchronous updates flag is set and false if it isn't.
 
-=item setImmutable($name, [$recursive])
+=item setImmutable( $name [, $recursive ] )
 
  This function takes a filename and attempts to set its immutable flag.
  If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item clearImmutable($name, [$recursive])
+=item clearImmutable( $name [, $recursive ] )
 
  This function takes a filename and removes the immutable flag if it is present.
  If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
@@ -168,30 +168,30 @@ This function takes a filename and returns true if the synchronous updates flag 
 
 This function takes a filename and returns true if the immutable flag is set and false if it isn't.
 
-=item setAppendOnly($name, [$recursive])
+=item setAppendOnly( $name [, $recursive ] )
 
  This function takes a filename and attempts to set its appendable flag.
  If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item clearAppendOnly($name, [$recursive])
+=item clearAppendOnly( $name [, $recursive ] )
 
  This function takes a filename and removes the appendable flag if it is present.
  If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item isAppendOnly($name)
+=item isAppendOnly( $name )
 
  This function takes a filename and returns true if the append only flag is set and false if it isn't.
 
-=item setNoAtime($name)
+=item setNoAtime( $name )
 
  This function takes a filename and attempts to set its noatime flag.
  If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
 
-=item isNoAtime($name)
+=item isNoAtime( $name )
 
  This function takes a filename and returns true if the noatime flag is set and false if it isn't.
 
-=item clearNoAtime($name, [$recursive])
+=item clearNoAtime( $name [, $recursive ] )
 
  This function takes a filename and removes the only noatime flag if it is present.
  If a second arguement is passed with true value, and $name is a directory, this function will operate recursively.
@@ -202,7 +202,7 @@ for my $fname (keys %constants) {
     my $set = sub {
         my ($name, $recursive) = @_;
 
-        return 0 unless _isSupported();
+        return 0 unless _isSupported( );
 
         if ($recursive) {
             debug( sprintf( 'Adding %s flag on %s recursively', $fname, $name ) );
@@ -234,7 +234,7 @@ for my $fname (keys %constants) {
     my $clear = sub {
         my ($name, $recursive) = @_;
 
-        return 0 unless _isSupported();
+        return 0 unless _isSupported( );
 
         if ($recursive) {
             debug( sprintf( 'Removing %s flag on %s recursively', $fname, $name ) );
@@ -265,7 +265,7 @@ for my $fname (keys %constants) {
     my $is = sub {
         my $name = $_[0];
 
-        return 0 unless _isSupported();
+        return 0 unless _isSupported( );
 
         my $flags;
         if (_getAttributes( $name, \$flags ) == -1) {
@@ -281,7 +281,7 @@ for my $fname (keys %constants) {
     *{__PACKAGE__.'::is'.$fname } = $is;
 }
 
-=item _getAttributes($name, \$flags)
+=item _getAttributes( $name, \$flags )
 
  Get file attributes
 
@@ -307,7 +307,7 @@ sub _getAttributes
     $r;
 }
 
-=item _setAttributes($name, $flags)
+=item _setAttributes( $name, $flags )
 
  Set file attributes
 
@@ -332,7 +332,7 @@ sub _setAttributes
     $r;
 }
 
-=item _isSupported()
+=item _isSupported( )
 
 =cut
 

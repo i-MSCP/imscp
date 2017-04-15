@@ -41,7 +41,7 @@ use parent 'Common::Object';
 
 =over 4
 
-=item validatePrivateKey()
+=item validatePrivateKey( )
 
  Validate private key
 
@@ -69,12 +69,12 @@ sub validatePrivateKey
         $passphraseFile = File::Temp->new( UNLINK => 1 );
         # Write SSL private key passphrase into temporary file, which is only readable by root
         print $passphraseFile $self->{'private_key_passphrase'};
-        $passphraseFile->flush();
+        $passphraseFile->flush( );
     }
 
     my $cmd = [
         'openssl', 'pkey', '-in', $self->{'private_key_container_path'}, '-noout',
-        (($passphraseFile) ? ('-passin', "file:$passphraseFile") : ())
+        (($passphraseFile) ? ('-passin', "file:$passphraseFile") : ( ))
     ];
 
     my $rs = execute( $cmd, \ my $stdout, \ my $stderr );
@@ -89,7 +89,7 @@ sub validatePrivateKey
     $rs;
 }
 
-=item validateCertificate()
+=item validateCertificate( )
 
  Validate certificate
 
@@ -124,7 +124,7 @@ sub validateCertificate
     }
 
     my $cmd = [
-        'openssl', 'verify', (($caBundle) ? ('-CAfile', $self->{'ca_bundle_container_path'}) : ()),
+        'openssl', 'verify', (($caBundle) ? ('-CAfile', $self->{'ca_bundle_container_path'}) : ( )),
         '-purpose', 'sslserver', $self->{'certificate_container_path'}
     ];
 
@@ -137,7 +137,7 @@ sub validateCertificate
     $rs;
 }
 
-=item validateCertificateChain()
+=item validateCertificateChain( )
 
  Validate certificate chain
 
@@ -149,11 +149,11 @@ sub validateCertificateChain
 {
     my $self = shift;
 
-    my $rs = $self->validatePrivateKey();
-    $rs ||= $self->validateCertificate();
+    my $rs = $self->validatePrivateKey( );
+    $rs ||= $self->validateCertificate( );
 }
 
-=item importPrivateKey()
+=item importPrivateKey( )
 
  Import private key in certificate chain container
 
@@ -171,22 +171,22 @@ sub importPrivateKey
         $passphraseFile = File::Temp->new( UNLINK => 1 );
         # Write SSL private key passphrase into temporary file, which is only readable by root
         print $passphraseFile $self->{'private_key_passphrase'};
-        $passphraseFile->flush();
+        $passphraseFile->flush( );
     }
 
     my $cmd = [
         'openssl', 'pkey', '-in', $self->{'private_key_container_path'},
         '-out', "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem",
-        (($passphraseFile) ? ('-passin', "file:$passphraseFile") : ())
+        (($passphraseFile) ? ('-passin', "file:$passphraseFile") : ( ))
     ];
 
     my $rs = execute( $cmd, \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( sprintf( 'Could not import SSL private key: %s', $stderr || 'unknown error' ) ) if $rs;
+    error( sprintf( "Couldn't import SSL private key: %s", $stderr || 'unknown error' ) ) if $rs;
     $rs;
 }
 
-=item importCertificate()
+=item importCertificate( )
 
  Import certificate in certificate chain container
 
@@ -199,16 +199,16 @@ sub importCertificate
     my $self = shift;
 
     my $file = iMSCP::File->new( filename => $self->{'certificate_container_path'} );
-    my $certificate = $file->get();
+    my $certificate = $file->get( );
     unless (defined $certificate) {
-        error( sprintf( 'Could not read %s file', $self->{'certificate_container_path'} ) );
+        error( sprintf( "Couldn't read %s file", $self->{'certificate_container_path'} ) );
         return 1;
     }
 
     $certificate =~ s/^(?:\015?\012)+|(?:\015?\012)+$//g;
 
     my $rs = $file->set( "$certificate\n" );
-    $rs ||= $file->save();
+    $rs ||= $file->save( );
     return $rs if $rs;
 
     my @cmd = (
@@ -218,11 +218,11 @@ sub importCertificate
 
     $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( sprintf( 'Could not import SSL certificate: %s', $stderr || 'unknown error' ) ) if $rs;
+    error( sprintf( "Couldn't import SSL certificate: %s", $stderr || 'unknown error' ) ) if $rs;
     $rs;
 }
 
-=item importCaBundle()
+=item importCaBundle( )
 
  Import the CA Bundle in certificate chain container if any
 
@@ -237,16 +237,16 @@ sub importCaBundle
     return 0 unless $self->{'ca_bundle_container_path'} ne '';
 
     my $file = iMSCP::File->new( filename => $self->{'ca_bundle_container_path'} );
-    my $caBundle = $file->get();
+    my $caBundle = $file->get( );
     unless (defined $caBundle) {
-        error( sprintf( 'Could not read %s file', $self->{'ca_bundle_container_path'} ) );
+        error( sprintf( "Couldn't read %s file", $self->{'ca_bundle_container_path'} ) );
         return 1;
     }
 
     $caBundle =~ s/^(?:\015?\012)+|(?:\015?\012)+$//g;
 
     my $rs = $file->set( "$caBundle\n" );
-    $rs ||= $file->save();
+    $rs ||= $file->save( );
     return $rs if $rs;
 
     my @cmd = (
@@ -256,11 +256,11 @@ sub importCaBundle
 
     $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( sprintf( 'Could not import SSL CA Bundle: %s', $stderr || 'unknown error' ) ) if $rs;
+    error( sprintf( "Couldn't import SSL CA Bundle: %s", $stderr || 'unknown error' ) ) if $rs;
     $rs;
 }
 
-=item createSelfSignedCertificate(\%data)
+=item createSelfSignedCertificate( \%data )
 
  Generate a self-signed SSL certificate
 
@@ -282,7 +282,7 @@ sub createSelfSignedCertificate
     my $commonName = $data->{'wildcard'} ? '*.'.$data->{'common_name'} : $data->{'common_name'};
 
     # Load openssl configuration template file for self-signed SSL certificates
-    my $openSSLConffileTplContent = iMSCP::File->new( filename => $openSSLConffileTpl )->get();
+    my $openSSLConffileTplContent = iMSCP::File->new( filename => $openSSLConffileTpl )->get( );
     unless (defined $openSSLConffileTplContent) {
         error( sprintf( 'Could not load %s openssl configuration template file', $openSSLConffileTpl ) );
         return 1;
@@ -291,17 +291,16 @@ sub createSelfSignedCertificate
     my $openSSLConffile = File::Temp->new( UNLINK => 1 );
     # Write openssl configuration file into temporary file
     print $openSSLConffile process(
-            {
-                COMMON_NAME   => $commonName,
-                EMAIL_ADDRESS => $data->{'email'},
-                ALT_NAMES     => $data->{'wildcard'}
-                    ? "DNS.1 = $commonName\n"
-                    : "DNS.1 = $commonName\nDNS.2 = www.$commonName\n"
-            },
-            $openSSLConffileTplContent
-        );
+        {
+            COMMON_NAME   => $commonName,
+            EMAIL_ADDRESS => $data->{'email'},
+            ALT_NAMES     => $data->{'wildcard'}
+                ? "DNS.1 = $commonName\n" : "DNS.1 = $commonName\nDNS.2 = www.$commonName\n"
+        },
+        $openSSLConffileTplContent
+    );
 
-    $openSSLConffile->flush();
+    $openSSLConffile->flush( );
 
     my $cmd = [
         'openssl', 'req', '-x509', '-nodes', '-days', '365', '-config', $openSSLConffile, '-newkey', 'rsa',
@@ -311,11 +310,11 @@ sub createSelfSignedCertificate
 
     my $rs = execute( $cmd, \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( sprintf( 'Could not to generate self-signed certificate: %s', $stderr || 'unknown error' ) ) if $rs;
+    error( sprintf( "Couldn't generate self-signed certificate: %s", $stderr || 'unknown error' ) ) if $rs;
     $rs
 }
 
-=item createCertificateChain()
+=item createCertificateChain( )
 
  Create certificate chain (import private key, certificate and CA Bundle)
 
@@ -327,9 +326,9 @@ sub createCertificateChain
 {
     my $self = shift;
 
-    my $rs = $self->importPrivateKey();
-    $rs ||= $self->importCertificate();
-    $rs ||= $self->importCaBundle();
+    my $rs = $self->importPrivateKey( );
+    $rs ||= $self->importCertificate( );
+    $rs ||= $self->importCaBundle( );
 }
 
 =item getCertificateExpiryTime( [ certificatePath = $self->{'certificate_container_path'} ] )
@@ -357,7 +356,7 @@ sub getCertificateExpiryTime
     debug( $stdout ) if $stdout;
 
     unless ($rs == 0 && $stdout =~ /^notAfter=(.*)/i) {
-        error( sprintf( 'Could not get SSL certificate expiry time: %s', $stderr || 'unknown error' ) );
+        error( sprintf( "Couldn't get SSL certificate expiry time: %s", $stderr || 'unknown error' ) );
         return undef;
     }
 
@@ -370,7 +369,7 @@ sub getCertificateExpiryTime
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 

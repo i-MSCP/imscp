@@ -37,7 +37,7 @@ use Scalar::Defer;
 my $SYSVINITSCRIPTPATHS = lazy
     {
         # Fixme: iMSCP::LsbRelease is Linux specific. We must rewrite it to support all platforms below.
-        my $id = iMSCP::LsbRelease->getInstance()->getId( 'short' );
+        my $id = iMSCP::LsbRelease->getInstance( )->getId( 'short' );
         if ($id =~ /^(?:FreeBSD|DragonFly)$/) {
             [ '/etc/rc.d', '/usr/local/etc/rc.d' ];
         } elsif ($id eq 'HP-UX') {
@@ -57,7 +57,7 @@ my $SYSVINITSCRIPTPATHS = lazy
 
 =over 4
 
-=item getInstance()
+=item getInstance( )
 
  Get instance
 
@@ -75,7 +75,7 @@ sub getInstance
     ${$instance};
 }
 
-=item isEnabled($service)
+=item isEnabled( $service )
 
  Is the given service enabled?
 
@@ -89,7 +89,7 @@ sub isEnabled
     confess 'not implemented';
 }
 
-=item enable($service)
+=item enable( $service )
 
  Enable the given service
 
@@ -103,7 +103,7 @@ sub enable
     confess 'not implemented';
 }
 
-=item disable($service)
+=item disable( $service )
 
  Disable the given service
 
@@ -117,7 +117,7 @@ sub disable
     confess 'not implemented';
 }
 
-=item remove($service)
+=item remove( $service )
 
  Remove the given service
 
@@ -135,13 +135,13 @@ sub remove
     local $@;
     my $initScriptPath = eval { $self->getInitScriptPath( $service ); };
     if (defined $initScriptPath) {
-        return 0 if iMSCP::File->new( filename => $initScriptPath )->delFile();
+        return 0 if iMSCP::File->new( filename => $initScriptPath )->delFile( );
     }
 
     1;
 }
 
-=item start($service)
+=item start( $service )
 
  Start the given service
 
@@ -159,7 +159,7 @@ sub start
     $self->_exec( $self->getInitScriptPath( $service ), 'start' ) == 0;
 }
 
-=item stop($service)
+=item stop( $service )
 
  Stop the given service
 
@@ -177,7 +177,7 @@ sub stop
     $self->_exec( $self->getInitScriptPath( $service ), 'stop' ) == 0;
 }
 
-=item restart($service)
+=item restart( $service )
 
  Restart the given service
 
@@ -195,7 +195,7 @@ sub restart
     $self->_exec( $self->getInitScriptPath( $service ), 'start' ) == 0;
 }
 
-=item reload($service)
+=item reload( $service )
 
  Reload the given service
 
@@ -213,7 +213,7 @@ sub reload
     $self->_exec( $self->getInitScriptPath( $service ), 'start' ) == 0;
 }
 
-=item isRunning($service)
+=item isRunning( $service )
 
  Does the given service is running?
 
@@ -237,7 +237,7 @@ sub isRunning
     $self->_exec( $self->getInitScriptPath( $service ), 'status' ) == 0;
 }
 
-=item getInitScriptPath($service)
+=item getInitScriptPath( $service )
 
  Get full path of init script which belongs to the given service
 
@@ -254,9 +254,9 @@ sub getInitScriptPath
     $self->_searchInitScript( $service );
 }
 
-=item setPidPattern($pattern)
+=item setPidPattern( $pattern )
 
- Set PID pattern for next _getPid() invocation
+ Set PID pattern for next _getPid( ) invocation
 
  Param string $pattern Process PID pattern
  Return int 0
@@ -278,7 +278,7 @@ sub setPidPattern
 
 =over 4
 
-=item _isSysvinit($service)
+=item _isSysvinit( $service )
 
  Does the given service is managed by a sysvinit script?
 
@@ -295,7 +295,7 @@ sub _isSysvinit
     eval { $self->_searchInitScript( $service ); };
 }
 
-=item searchInitScript($service)
+=item searchInitScript( $service )
 
  Search the init script which belongs to the given service in all available paths
 
@@ -319,7 +319,7 @@ sub _searchInitScript
     die( sprintf( "Could not find sysvinit script for the `%s' service", $service ) );
 }
 
-=item _exec($command)
+=item _exec( $command )
 
  Execute the given command
 
@@ -338,7 +338,7 @@ sub _exec
     $ret;
 }
 
-=item _getPs()
+=item _getPs( )
 
  Get proper 'ps' invocation for the platform
 
@@ -349,7 +349,7 @@ sub _exec
 sub _getPs
 {
     # Fixme: iMSCP::LsbRelease is Linux specific. We must rewrite it to support all platforms below.
-    my $id = iMSCP::LsbRelease->getInstance()->getId( 'short' );
+    my $id = iMSCP::LsbRelease->getInstance( )->getId( 'short' );
     if ($id eq 'OpenWrt') {
         'ps www';
     } elsif ($id =~ /^(?:FreeBSD|NetBSD|OpenBSD|Darwin|DragonFly)$/) {
@@ -359,7 +359,7 @@ sub _getPs
     }
 }
 
-=item _getPid($pattern)
+=item _getPid( $pattern )
 
  Get the process ID for a running process
 
@@ -374,7 +374,7 @@ sub _getPid
 
     defined $pattern or die( '$pattern parameter is not defined' );
 
-    my $ps = $self->_getPs();
+    my $ps = $self->_getPs( );
     open my $fh, '-|', $ps or die( sprintf( 'Could not pipe to %s: %s', $ps, $! ) );
 
     my $regex = qr/$pattern/;

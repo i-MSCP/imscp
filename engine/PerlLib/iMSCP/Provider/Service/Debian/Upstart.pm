@@ -40,7 +40,7 @@ use parent qw/ iMSCP::Provider::Service::Upstart iMSCP::Provider::Service::Debia
 
 =over 4
 
-=item isEnabled($job)
+=item isEnabled( $job )
 
  Is the given job enabled?
 
@@ -57,7 +57,7 @@ sub isEnabled
     $self->iMSCP::Provider::Service::Debian::Sysvinit::isEnabled( $job );
 }
 
-=item enable($job)
+=item enable( $job )
 
  Enable the given job
 
@@ -88,7 +88,7 @@ sub enable
     1;
 }
 
-=item disable($job)
+=item disable( $job )
 
  Disable the given job
 
@@ -115,7 +115,7 @@ sub disable
     1;
 }
 
-=item remove($job)
+=item remove( $job )
 
  Remove the given job
 
@@ -139,7 +139,7 @@ sub remove
     1;
 }
 
-=item hasService($job)
+=item hasService( $job )
 
  Does the given job exists?
 

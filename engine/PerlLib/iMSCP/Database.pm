@@ -25,7 +25,6 @@ package iMSCP::Database;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
 
 my %adapterInstances;
 
@@ -39,7 +38,7 @@ my %adapterInstances;
 
 =over 4
 
-=item factory($adapterName)
+=item factory( $adapterName )
 
  Create and return a database adapter instance. Instance is created once
 
@@ -55,8 +54,8 @@ sub factory
     return $adapterInstances{$adapterName} if $adapterInstances{$adapterName};
 
     my $adapter = "iMSCP::Database::${adapterName}";
-    eval "require $adapter" or die( sprintf( 'Could not to load `%s` database adapter: %s', $adapter, $@ ) );
-    $adapterInstances{$adapterName} = $adapter->getInstance();
+    eval "require $adapter" or die( sprintf( "Couldn't load `%s` database adapter: %s", $adapter, $@ ) );
+    $adapterInstances{$adapterName} = $adapter->getInstance( );
 }
 
 =back

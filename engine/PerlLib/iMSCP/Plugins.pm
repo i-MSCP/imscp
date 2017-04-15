@@ -35,7 +35,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item getList()
+=item getList( )
 
  Get plugin paths list
 
@@ -54,7 +54,7 @@ sub getList
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -74,7 +74,7 @@ sub _init
 
 =head1 AUTHOR
 
-Laurent Declercq <l.declercq@nuxwin.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 

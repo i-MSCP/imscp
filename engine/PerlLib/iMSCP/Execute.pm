@@ -49,7 +49,7 @@ our @EXPORT = qw/ execute executeNoWait escapeShell getExitCode /;
 
 =over 4
 
-=item execute($command [, \$stdout = undef [, \$stderr = undef]])
+=item execute( $command [, \$stdout = undef [, \$stderr = undef ] ] )
 
  Execute the given command
 
@@ -60,7 +60,7 @@ our @EXPORT = qw/ execute executeNoWait escapeShell getExitCode /;
 
 =cut
 
-sub execute($;$$)
+sub execute( $;$$ )
 {
     my ($command, $stdout, $stderr) = @_;
 
@@ -90,14 +90,14 @@ sub execute($;$$)
         chomp( $stderr );
     } else {
         system( $multitArgs ? @{$command} : $command ) != - 1 or die(
-            sprintf( 'Could not execute command: %s', $! )
+            sprintf( "Couldn't execute command: %s", $! )
         );
     }
 
-    getExitCode();
+    getExitCode( );
 }
 
-=item executeNoWait($command [, $subSTDOUT = CODE [, $subSTDERR = CODE ]])
+=item executeNoWait( $command [, $subSTDOUT = CODE [, $subSTDERR = CODE ] ] )
 
  Execute the given command without wait, processing command STDOUT|STDERR line by line
 
@@ -108,7 +108,7 @@ sub execute($;$$)
 
 =cut
 
-sub executeNoWait($;$$)
+sub executeNoWait( $;$$ )
 {
     my ($command, $subSTDOUT, $subSTDERR) = @_;
 
@@ -151,10 +151,10 @@ sub executeNoWait($;$$)
     }
 
     waitpid( $pid, 0 );
-    getExitCode();
+    getExitCode( );
 }
 
-=item escapeShell($string)
+=item escapeShell( $string )
 
  Escape the given string
 
@@ -163,7 +163,7 @@ sub executeNoWait($;$$)
 
 =cut
 
-sub escapeShell($)
+sub escapeShell( $ )
 {
     my $string = shift;
 
@@ -172,7 +172,7 @@ sub escapeShell($)
     "'$string'";
 }
 
-=item getExitCode([ $ret = $? ])
+=item getExitCode( [ $ret = $? ] )
 
  Return human exit code
 
@@ -181,12 +181,12 @@ sub escapeShell($)
 
 =cut
 
-sub getExitCode(;$)
+sub getExitCode( ;$ )
 {
     my $ret = shift // $?;
 
     if ($ret == - 1) {
-        debug('Could not execute command');
+        debug( "Couldn't execute command" );
         return 1;
     }
 

@@ -39,7 +39,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item getAddresses()
+=item getAddresses( )
 
  Get addresses list
 
@@ -53,7 +53,7 @@ sub getAddresses
     wantarray ? keys %{$self->{'addresses'}} : join ' ', keys %{$self->{'addresses'}};
 }
 
-=item addAddr($addr, $cidr, $dev [, $label ])
+=item addAddr( $addr, $cidr, $dev [, $label ] )
 
  Add the given IP to the given network device
 
@@ -68,7 +68,7 @@ sub getAddresses
 sub addAddr
 {
     my ($self, $addr, $cidr, $dev, $label) = @_;
-    
+
     $self->isValidAddr( $addr ) or croak( sprintf( 'Invalid IP address: %s', $addr ) );
     $self->isValidNetmask( $addr, $cidr ) or croak( sprintf( 'Invalid CIDR (subnet mask): %s', $cidr ) );
     $self->isKnownDevice( $dev ) or croak( sprintf( 'Unknown network device: %s', $dev ) );
@@ -76,10 +76,11 @@ sub addAddr
     return 0 if $self->isKnownAddr( $addr );
 
     my ($stdout, $stderr);
-    my @cmd = ('ip', (($self->getAddrVersion($addr) eq 'ipv4') ? '-4' : '-6'), 'addr', 'add', "$addr/$cidr", 'dev', $dev);
+    my @cmd = ('ip', (($self->getAddrVersion($addr) eq 'ipv4') ? '-4' : '-6'), 'addr', 'add', "$addr/$cidr", 'dev',
+        $dev);
     push @cmd, 'label', $label if $label;
     execute( [ @cmd ], \$stdout, \$stderr ) == 0 or croak(
-        sprintf('Could not add the %s IP address: %s', $addr, $dev, $stderr || 'Unknown error')
+        sprintf("Couldn't add the %s IP address: %s", $addr, $dev, $stderr || 'Unknown error')
     );
     $self->{'addresses'}->{$addr} = {
         addr_label    => $label,
@@ -90,7 +91,7 @@ sub addAddr
     0;
 }
 
-=item delAddr($addr)
+=item delAddr( $addr )
 
  Delete the given IP
 
@@ -111,13 +112,13 @@ sub delAddr
     my $cidr = $self->{'addresses'}->{$addr}->{'prefix_length'};
     my ($stdout, $stderr);
     execute( [ 'ip', 'addr', 'del', "$addr/$cidr", 'dev', $dev ], \$stdout, \$stderr ) == 0 or croak(
-        sprintf('Could not delete the %s IP address: %s', $addr, $stderr || 'Unknown error')
+        sprintf( "Couldn't delete the %s IP address: %s", $addr, $stderr || 'Unknown error' )
     );
     delete $self->{'addresses'}->{$addr};
     0;
 }
 
-=item getAddrVersion($addr)
+=item getAddrVersion( $addr )
 
  Get version of the given IP (ipv4|ipv6)
 
@@ -131,11 +132,11 @@ sub getAddrVersion
     my ($self, $addr) = @_;
 
     $self->isValidAddr( $addr ) or croak( sprintf( 'Invalid IP address: %s', $addr ) );
-    my $version = ip_get_version( $addr ) or croak( sprint( 'Could not guess version of the %s IP address', $addr ) );
+    my $version = ip_get_version( $addr ) or croak( sprint( "Couldn't guess version of the %s IP address", $addr ) );
     $version == 4 ? 'ipv4' : 'ipv6';
 }
 
-=item getAddrType($addr)
+=item getAddrType( $addr )
 
  Get type of the given IP (PUBLIC, PRIVATE, RESERVED...)
 
@@ -150,11 +151,11 @@ sub getAddrType
 
     my $version = $self->getAddrVersion( $addr ) eq 'ipv4' ? 4 : 6;
     ip_iptype( ip_iptobin( ip_expand_address( $addr, $version ), $version ), $version ) or croak(
-        sprintf( 'Could not guess type of the %s IP address', $addr)
+        sprintf( "Couldn't guess type of the %s IP address", $addr)
     );
 }
 
-=item getAddrDevice($addr)
+=item getAddrDevice( $addr )
 
  Return the network device name to which the given IP belong to
 
@@ -171,7 +172,7 @@ sub getAddrDevice
     $self->{'addresses'}->{$addr}->{'device'};
 }
 
-=item getAddrLabel($addr)
+=item getAddrLabel( $addr )
 
  Return the addr label
 
@@ -188,7 +189,7 @@ sub getAddrLabel
     $self->{'addresses'}->{$addr}->{'device_label'};
 }
 
-=item getAddrNetmask($addr)
+=item getAddrNetmask( $addr )
 
  Return the addr netmask
 
@@ -205,7 +206,7 @@ sub getAddrNetmask
     $self->{'addresses'}->{$self->normalizeAddr( $addr )}->{'prefix_length'};
 }
 
-=item isKnownAddr($addr)
+=item isKnownAddr( $addr )
 
  Is the given IP address known?
 
@@ -221,7 +222,7 @@ sub isKnownAddr
     exists $self->{'addresses'}->{$self->normalizeAddr( $addr )};
 }
 
-=item isValidAddr($addr)
+=item isValidAddr( $addr )
 
  Is the given IP address valid?
 
@@ -237,7 +238,7 @@ sub isValidAddr
     is_ipv4( $addr ) || is_ipv6( $addr );
 }
 
-=item isRoutableAddr($addr)
+=item isRoutableAddr( $addr )
 
  Is the given IP address routable?
 
@@ -280,7 +281,7 @@ sub isValidNetmask
     1;
 }
 
-=item normalizeAddr($addr)
+=item normalizeAddr( $addr )
 
  Normalize the given IP
 
@@ -295,10 +296,10 @@ sub normalizeAddr
 
     $self->isValidAddr( $addr ) or croak( sprintf( 'Invalid IP address: %s', $addr ) );
     return $addr unless $self->getAddrVersion( $addr ) eq 'ipv6';
-    ip_compress_address( $addr, 6 ) or croak( sprintf( 'Could not normalize the %s IP address', $addr ) );
+    ip_compress_address( $addr, 6 ) or croak( sprintf( "Couldn't normalize the %s IP address", $addr ) );
 }
 
-=item expandAddr($addr)
+=item expandAddr( $addr )
 
  Expand the given IP
 
@@ -313,10 +314,10 @@ sub expandAddr
 
     $self->isValidAddr( $addr ) or croak( sprintf( 'Invalid IP address: %s', $addr ) );
     return $addr unless $self->getAddrVersion( $addr ) eq 'ipv6';
-    ip_expand_address( $addr, 6 ) or croak( sprintf( 'Could not expand the %s IP address', $addr ) );
+    ip_expand_address( $addr, 6 ) or croak( sprintf( "Couldn't expand the %s IP address", $addr ) );
 }
 
-=item getDevices()
+=item getDevices( )
 
  Get network devices list
 
@@ -331,7 +332,7 @@ sub getDevices
     wantarray ? keys %{$self->{'devices'}} : join ' ', keys %{$self->{'devices'}};
 }
 
-=item isKnownDevice($dev)
+=item isKnownDevice( $dev )
 
  Is the given network device known?
 
@@ -347,7 +348,7 @@ sub isKnownDevice
     exists( $self->{'devices'}->{$dev} );
 }
 
-=item upDevice($dev)
+=item upDevice( $dev )
 
  Bring the given network device up
 
@@ -363,12 +364,12 @@ sub upDevice
     $self->isKnownDevice( $dev ) or croak( sprintf( 'Unknown network device: %s', $dev ) );
     my ($stdout, $stderr);
     execute( "ip link set dev $dev up", \$stdout, \$stderr ) == 0 or die(
-        sprintf( 'Could not bring the %s network device up: %s', $dev, $stderr || 'Unknown error' )
+        sprintf( "Couldn't bring the %s network device up: %s", $dev, $stderr || 'Unknown error' )
     );
     0;
 }
 
-=item downDevice($dev)
+=item downDevice( $dev )
 
  Bring the given network device down
 
@@ -384,12 +385,12 @@ sub downDevice
     $self->isKnownDevice( $dev ) or croak( sprintf( 'Unknown network device: %s', $dev ) );
     my ($stdout, $stderr);
     execute( "ip link set dev $dev down", \$stdout, \$stderr ) == 0 or die(
-        sprintf( 'Could not bring the %s network device down: %s', $dev, $stderr || 'Unknown error' )
+        sprintf( "Couldn't bring the %s network device down: %s", $dev, $stderr || 'Unknown error' )
     );
     0;
 }
 
-=item isDeviceUp($dev)
+=item isDeviceUp( $dev )
 
  Is the given network device up?
 
@@ -405,7 +406,7 @@ sub isDeviceUp
     $self->{'devices'}->{$dev}->{'flags'} =~ /^(?:.*,)?UP(?:,.*)?$/ ? 1 : 0;
 }
 
-=item isDeviceDown($dev)
+=item isDeviceDown( $dev )
 
  Is the given device down?
 
@@ -421,7 +422,7 @@ sub isDeviceDown
     $self->{'devices'}->{$dev}->{'flags'} =~ /^(?:.*,)?UP(?:,.*)?$/ ? 0 : 1;
 }
 
-=item resetInstance
+=item resetInstance( )
 
  Reset instance
 
@@ -433,7 +434,7 @@ sub resetInstance
 {
     my $self = shift;
 
-    $self->_init();
+    $self->_init( );
     0;
 }
 
@@ -443,7 +444,7 @@ sub resetInstance
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -455,12 +456,12 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'devices'} = $self->_extractDevices();
-    $self->{'addresses'} = $self->_extractAddresses();
+    $self->{'devices'} = $self->_extractDevices( );
+    $self->{'addresses'} = $self->_extractAddresses( );
     $self;
 }
 
-=item _extractDevices()
+=item _extractDevices( )
 
  Extract network devices data
 
@@ -472,14 +473,14 @@ sub _extractDevices
 {
     my ($stdout, $stderr);
     execute( [ 'ip', '-o', 'link', 'show' ], \$stdout, \$stderr ) == 0 or die(
-        sprintf( 'Could not extract network devices data: %s', $stderr || 'Unknown error' )
+        sprintf( "Couldn't extract network devices data: %s", $stderr || 'Unknown error' )
     );
     my $devices = { };
     $devices->{$1}->{'flags'} = $2 while $stdout =~ /^[^\s]+:\s+(.*?)(?:\@[^\s]+)?:\s+<(.*)>/gm;
     $devices;
 }
 
-=item _extractAddresses()
+=item _extractAddresses( )
 
  Extract addresses data
 
@@ -493,7 +494,7 @@ sub _extractAddresses
 
     my ($stdout, $stderr);
     execute( [ 'ip', '-o', 'addr', 'show' ], \$stdout, \$stderr ) == 0 or die(
-        sprintf( 'Could not extract network devices data: %s', $stderr || 'Unknown error' )
+        sprintf( "Couldn't extract network devices data: %s", $stderr || 'Unknown error' )
     );
 
     my $addresses = { };
@@ -502,9 +503,7 @@ sub _extractAddresses
         version       => $2 eq 'inet' ? 'ipv4' : 'ipv6',
         prefix_length => $4,
         addr_label    => $5 // $1
-    } while (
-        $stdout =~ /^[^\s]+:\s+([^\s]+)\s+([^\s]+)\s+(?:([^\s]+)(?:\s+peer\s+[^\s]+)?\/([\d]+))\s+(?:.*?(\1(?::\d+)?)\\)?/gm
-    );
+    } while $stdout =~ /^[^\s]+:\s+([^\s]+)\s+([^\s]+)\s+(?:([^\s]+)(?:\s+peer\s+[^\s]+)?\/([\d]+))\s+(?:.*?(\1(?::\d+)?)\\)?/gm;
     $addresses;
 }
 

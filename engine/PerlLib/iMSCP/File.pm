@@ -85,7 +85,7 @@ sub getAsRef
 
     return \$self->{'fileContent'} if defined $self->{'fileContent'};
 
-    $self->{'fileContent'} = $self->get();
+    $self->{'fileContent'} = $self->get( );
 
     return undef unless defined $self->{'fileContent'};
     
@@ -308,7 +308,7 @@ sub moveFile
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize iMSCP::File object
 

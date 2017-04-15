@@ -114,7 +114,7 @@ sub store
 {
     my $self = shift;
 
-    my %hash = ();
+    my %hash = ( );
     my $tmpl = {
         'when'    => {
             'default'     => scalar localtime,
@@ -189,7 +189,7 @@ sub retrieve
 {
     my $self = shift;
 
-    my %hash = ();
+    my %hash = ( );
     my $tmpl = {
         'tag'     => {
             'default' => qr/.*/
@@ -219,7 +219,7 @@ sub retrieve
         warn( sprintf( 'Could not parse input: %s', Params::Check->last_error ) ), return
     );
 
-    my @list = ();
+    my @list = ( );
     for(@{$self->{'stack'}}) {
         if ($_->{'tag'} =~ /$args->{'tag'}/ && $_->{'message'} =~ /$args->{'message'}/) {
             push @list, $_;

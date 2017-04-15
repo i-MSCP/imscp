@@ -81,7 +81,7 @@ sub addIpAddr
 
     $data->{'ip_netmask'} ||= ($addrVersion eq 'ipv4') ? 24 : 64;
 
-    $self->_updateInterfacesFile( 'add', $data ) == 0 or die('Could not update interfaces file');
+    $self->_updateInterfacesFile( 'add', $data ) == 0 or die( "Couldn't  update interfaces file" );
 
     return 0 unless $data->{'ip_config_mode'} eq 'auto';
 
@@ -155,7 +155,7 @@ sub removeIpAddr
         $self->{'net'}->delAddr( $data->{'ip_address'} );
     }
 
-    $self->_updateInterfacesFile( 'remove', $data ) == 0 or die('Could not update interfaces file');
+    $self->_updateInterfacesFile( 'remove', $data ) == 0 or die( "Couldn't update interfaces file" );
     $self;
 }
 
@@ -176,7 +176,7 @@ sub _init
     my $self = shift;
 
     $self->{'net'} = iMSCP::Net->getInstance( );
-    $self->SUPER::_init();
+    $self->SUPER::_init( );
 }
 
 =item _updateInterfacesFile( $action, \%data )

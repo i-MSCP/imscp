@@ -33,9 +33,9 @@ use parent 'Exporter';
 
 our @EXPORT = qw/ startDetail endDetail step /;
 
-my @all = ();
+my @all = ( );
 my $last = '';
-my $dialog = lazy { iMSCP::Dialog->getInstance(); };
+my $dialog = lazy { iMSCP::Dialog->getInstance( ); };
 my $step = lazy { iMSCP::Getopt->noprompt ? \&_callback : \&_step; };
 
 =head1 DESCRIPTION
@@ -46,7 +46,7 @@ my $step = lazy { iMSCP::Getopt->noprompt ? \&_callback : \&_step; };
 
 =over 4
 
-=item startDetail()
+=item startDetail( )
 
  Start new steps group details
 
@@ -61,7 +61,7 @@ sub startDetail
     0;
 }
 
-=item endDetail()
+=item endDetail( )
 
  End step group details
 
@@ -76,7 +76,7 @@ sub endDetail
     0;
 }
 
-=item step($callback, $text, $nSteps, $nStep)
+=item step( $callback, $text, $nSteps, $nStep )
 
  Process a step
 
@@ -99,7 +99,7 @@ sub step
 
 =over 4
 
-=item _callback()
+=item _callback( )
 
  Execute the given callback
 
@@ -115,7 +115,7 @@ sub _callback
     my $rs = 0;
     if (defined $callback) {
         local $@;
-        $rs = eval { $callback->() };
+        $rs = eval { $callback->( ) };
         if ($@) {
             error( $@ );
             $rs = 1;
@@ -127,7 +127,7 @@ sub _callback
 
 =item _dialogstep
  
- See step()
+ See step( )
  
 =cut
 
@@ -148,11 +148,11 @@ sub _step
     return $rs unless $rs && $rs != 50;
 
     # Make error message free of any ANSI color and end of line codes
-    (my $errorMessage = getLastError()) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
+    (my $errorMessage = getLastError( )) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
     $errorMessage = 'An unexpected error occurred...' unless $errorMessage;
     $errorMessage =~ s/\n+$//;
 
-    $dialog->endGauge();
+    $dialog->endGauge( );
     $dialog->msgbox( <<"EOF" );
 \\Z1[ERROR]\\Zn
 

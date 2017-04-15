@@ -39,7 +39,7 @@ our @EXPORT = qw/ process getBloc replaceBloc /;
 
 =over 4
 
-=item process(\%data, $template)
+=item process( \%data, $template )
 
  Replace placeholders in the given template
 
@@ -49,7 +49,7 @@ our @EXPORT = qw/ process getBloc replaceBloc /;
 
 =cut
 
-sub process($$)
+sub process( $$ )
 {
     my ($data, $template) = @_;
 
@@ -63,7 +63,7 @@ sub process($$)
     $template;
 }
 
-=item getBloc($beginTag, $endingTag, $template [, $includeTags = false ])
+=item getBloc( $beginTag, $endingTag, $template [, $includeTags = false ] )
 
  Get the first block matching the given begin and ending tags within the given template
 
@@ -75,7 +75,7 @@ sub process($$)
 
 =cut
 
-sub getBloc($$$;$)
+sub getBloc( $$$;$ )
 {
     my ($beginTag, $endingTag, $template, $includeTags) = @_;
 
@@ -87,7 +87,7 @@ sub getBloc($$$;$)
     ) ? $1 : '';
 }
 
-=item replaceBloc($beginTag, $endingTag, $repl, $template [, $preserveTags = false ])
+=item replaceBloc( $beginTag, $endingTag, $repl, $template [, $preserveTags = false ] )
 
  Replace all blocs matching the given begin and ending tags within the given template
 
@@ -100,7 +100,7 @@ sub getBloc($$$;$)
 
 =cut
 
-sub replaceBloc($$$$;$)
+sub replaceBloc( $$$$;$ )
 {
     my ($beginTag, $endingTag, $repl, $template, $preserveTags) = @_;
 

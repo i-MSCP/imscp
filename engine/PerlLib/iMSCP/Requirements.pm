@@ -34,7 +34,7 @@ use parent 'Common::Object';
 
 =over 4
 
-=item all
+=item all( )
 
  Process check for all requirements
 
@@ -53,7 +53,7 @@ sub all
     undef;
 }
 
-=item user
+=item user( )
 
  Check user under which the script is running
 

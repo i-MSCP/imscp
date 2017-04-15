@@ -55,7 +55,7 @@ my $SYSVRC_COMPAT_MODE = lazy
 
 =over 4
 
-=item isEnabled($service)
+=item isEnabled( $service )
 
  Is the given service enabled?
 
@@ -90,7 +90,7 @@ sub isEnabled
     0;
 }
 
-=item enable($service)
+=item enable( $service )
 
  Enable the given service
 
@@ -114,7 +114,7 @@ sub enable
     #    && $self->_exec( $COMMANDS{'update-rc.d'}, $service, 'enable' ) == 0;
 }
 
-=item disable($service)
+=item disable( $service )
 
  Disable the given service
 
@@ -139,7 +139,7 @@ sub disable
     $self->_exec( $COMMANDS{'update-rc.d'}, $service, 'disable' ) == 0;
 }
 
-=item remove($service)
+=item remove( $service )
 
  Remove the given service
 
@@ -157,7 +157,7 @@ sub remove
         && $self->SUPER::remove( $service );
 }
 
-=item hasService($service)
+=item hasService( $service )
 
  Does the given service exists?
 

@@ -34,7 +34,7 @@ use warnings;
 
 =over 4
 
-=item new([%args])
+=item new( [ %args ] )
 
  Constructor
 
@@ -49,7 +49,7 @@ sub new
 
     my $self = { @_ && ref $_[0] eq 'HASH' ? %{$_[0]} : @_ };
     bless $self, $class;
-    $self->_init();
+    $self->_init( );
 }
 
 =back
@@ -58,7 +58,7 @@ sub new
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 

@@ -314,7 +314,7 @@ sub rcopy
         }
 
         iMSCP::File->new( filename => $src )->copyFile( $dst, $options ) == 0 or die(
-            sprintf( "Could not copy `%s' file to `%s': %s", $src, $dst, getLastError() )
+            sprintf( "Could not copy `%s' file to `%s': %s", $src, $dst, getLastError( ) )
         );
     }
 
@@ -351,7 +351,7 @@ sub moveDir
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize iMSCP::Dir object
 
@@ -371,7 +371,7 @@ sub _init
 
 =head1 AUTHOR
 
-Laurent Declercq <l.declercq@nuxwin.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 

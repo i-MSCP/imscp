@@ -46,8 +46,11 @@ fieldhash my %EVENTS;
 
  Register the given listener for the given event(s)
 
+ TODO: Implement listener priority using a priority queue.
+ See (http://search.cpan.org/~penma/Hash-PriorityQueue-0.01/lib/Hash/PriorityQueue.pm)
+
  Param string $events Event(s) that the listener listen to
- Param list $callables Callable that represents event listener
+ Param list $callable Event listener
  Return int 0 on success, 1 on failure
 
 =cut
@@ -142,7 +145,7 @@ sub trigger
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -168,7 +171,7 @@ sub _init
 
 =head1 AUTHOR
 
-Laurent Declercq <l.declercq@nuxwin.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 

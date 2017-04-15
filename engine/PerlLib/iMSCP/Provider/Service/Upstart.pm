@@ -64,7 +64,7 @@ my @JOBFILEPATHS = ( '/etc/init' );
 
 =over 4
 
-=item isEnabled($job)
+=item isEnabled( $job )
 
  Is the given job enabled?
 
@@ -78,18 +78,18 @@ sub isEnabled
 
     defined $job or die( 'parameter $job is not defined' );
 
-    if ($self->_versionIsPre067()) {
+    if ($self->_versionIsPre067( )) {
         return $self->_isEnabledPre067( $self->_readJobFile( $job ) );
     }
 
-    if ($self->_versionIsPre090()) {
+    if ($self->_versionIsPre090( )) {
         return $self->_isEnabledPre090( $self->_readJobFile( $job ) );
     }
 
     $self->_isEnabledPost090( $self->_readJobFile( $job ), $self->_readJobOverrideFile( $job ) );
 }
 
-=item enable($job)
+=item enable( $job )
 
  Enable the given job
 
@@ -104,14 +104,14 @@ sub enable
 
     defined $job or die( 'parameter $job is not defined' );
 
-    if ($self->_versionIsPre090()) {
+    if ($self->_versionIsPre090( )) {
         return $self->_enablePre090( $job, $self->_readJobFile( $job ) );
     }
 
     $self->_enablePost090( $job, $self->_readJobFile( $job ), $self->_readJobOverrideFile( $job ) );
 }
 
-=item disable($job)
+=item disable( $job )
 
  Disable the given job
 
@@ -126,18 +126,18 @@ sub disable
 
     defined $job or die( 'parameter $job is not defined' );
 
-    if ($self->_versionIsPre067()) {
+    if ($self->_versionIsPre067( )) {
         return $self->_disablePre067( $job, $self->_readJobFile( $job ) );
     }
 
-    if ($self->_versionIsPre090()) {
+    if ($self->_versionIsPre090( )) {
         return $self->_disablePre090( $job, $self->_readJobFile( $job ) );
     }
 
     $self->_disablePost090( $job, $self->_readJobOverrideFile( $job ) );
 }
 
-=item remove($job)
+=item remove( $job )
 
  Remove the given job
 
@@ -158,14 +158,14 @@ sub remove
     for (qw/ conf override /) {
         my $jobFilePath = eval { $self->getJobFilePath( $job, $_ ); };
         if (defined $jobFilePath) {
-            return 0 if iMSCP::File->new( filename => $jobFilePath )->delFile();
+            return 0 if iMSCP::File->new( filename => $jobFilePath )->delFile( );
         }
     }
 
     1;
 }
 
-=item start($service)
+=item start( $service )
 
  Start the given job
 
@@ -191,7 +191,7 @@ sub start
     $self->SUPER::start( $job );
 }
 
-=item stop($job)
+=item stop( $job )
 
  Stop the given job
 
@@ -217,7 +217,7 @@ sub stop
     $self->SUPER::stop( $job );
 }
 
-=item restart($job)
+=item restart( $job )
 
  Restart the given job
 
@@ -243,7 +243,7 @@ sub restart
     $self->SUPER::restart( $job );
 }
 
-=item reload($service)
+=item reload( $service )
 
  Reload the given job
 
@@ -270,7 +270,7 @@ sub reload
 
 }
 
-=item isRunning($service)
+=item isRunning( $service )
 
  Is the given job is running?
 
@@ -293,7 +293,7 @@ sub isRunning
     $self->SUPER::isRunning( $job );
 }
 
-=item getJobFilePath($job [, $jobFileType = 'conf' ])
+=item getJobFilePath( $job [, $jobFileType = 'conf' ] )
 
  Get full path of the job configuration file or job override file which belongs to the given job
 
@@ -318,7 +318,7 @@ sub getJobFilePath
 
 =over 4
 
-=item _getVersion()
+=item _getVersion( )
 
  Get upstart version
 
@@ -332,7 +332,7 @@ sub _getVersion
     $UPSTART_VERSION;
 }
 
-=item _isUpstart($service)
+=item _isUpstart( $service )
 
  Is the given job an upstart job?
 
@@ -349,7 +349,7 @@ sub _isUpstart
     eval { $self->_searchJobFile( $job ); };
 }
 
-=item _versionIsPre067()
+=item _versionIsPre067( )
 
  Is upstart version pre 0.6.7?
 
@@ -361,10 +361,10 @@ sub _versionIsPre067
 {
     my $self = shift;
 
-    version->parse( $self->_getVersion() ) < version->parse( '0.6.7' );
+    version->parse( $self->_getVersion( ) ) < version->parse( '0.6.7' );
 }
 
-=item _versionIsPre090()
+=item _versionIsPre090( )
 
  Is upstart version pre 0.9.0?
 
@@ -376,10 +376,10 @@ sub _versionIsPre090
 {
     my $self = shift;
 
-    version->parse( $self->_getVersion() ) < version->parse( '0.9.0' );
+    version->parse( $self->_getVersion( ) ) < version->parse( '0.9.0' );
 }
 
-=item _versionIsPost090()
+=item _versionIsPost090( )
 
  Is upstart version post 0.9.0?
 
@@ -391,10 +391,10 @@ sub _versionIsPost090
 {
     my $self = shift;
 
-    version->parse( $self->_getVersion() ) >= version->parse( '0.9.0' );
+    version->parse( $self->_getVersion( ) ) >= version->parse( '0.9.0' );
 }
 
-=item _isEnabledPre067($jobFileContent)
+=item _isEnabledPre067( $jobFileContent )
 
  Is the given job enabled for upstart versions < 0.6.7?
 
@@ -411,7 +411,7 @@ sub _isEnabledPre067
     $jobFileContent =~ /$START_ON/;
 }
 
-=item _isEnabledPre090($jobFileContent)
+=item _isEnabledPre090( $jobFileContent )
 
  Is the given job enabled for upstart versions < 0.9.0?
 
@@ -441,7 +441,7 @@ sub _isEnabledPre090
     $enabled;
 }
 
-=item _isEnabledPost090($jobFileContent, $jobOverrideFileContent)
+=item _isEnabledPost090( $jobFileContent, $jobOverrideFileContent )
 
  Is the given job enabled for upstart versions >= 0.9.0?
 
@@ -474,7 +474,7 @@ sub _isEnabledPost090
     $enabled;
 }
 
-=item _enablePre090($job, $jobFileContent)
+=item _enablePre090( $job, $jobFileContent )
 
  Enable the given job for upstart versions < 0.9.0
 
@@ -501,7 +501,7 @@ sub _enablePre090
     return $self->_writeFile( $job, $jobFileContent );
 }
 
-=item _enablePost090($job, $jobFileContent, $jobOverrideFileContent)
+=item _enablePost090( $job, $jobFileContent, $jobOverrideFileContent )
 
  Enable the given job for upstart versions >= 0.9.0
 
@@ -531,7 +531,7 @@ sub _enablePost090
     $self->_writeFile( $job.'.override', $jobOverrideFileContent );
 }
 
-=item _disablePre067($service, $jobFileContent)
+=item _disablePre067( $service, $jobFileContent )
 
  Disable the given job for upstart versions < 0.6.7
 
@@ -549,7 +549,7 @@ sub _disablePre067
     $self->_writeFile( $job.'.conf', $jobFileContent );
 }
 
-=item _disablePre090($service, $jobFileContent)
+=item _disablePre090( $service, $jobFileContent )
 
  Disable the given job for upstart versions < 0.9.0
 
@@ -566,7 +566,7 @@ sub _disablePre090
     $self->_writeFile( $job.'.conf', $self->_ensureDisabledWithManualStanza( $jobFileContent ) );
 }
 
-=item _disablePost090($service, $jobOverrideFileContent)
+=item _disablePost090( $service, $jobOverrideFileContent )
 
  Disable the given job for upstart versions >= 0.9.0
 
@@ -583,7 +583,7 @@ sub _disablePost090
     $self->_writeFile( $job.'.override', $self->_ensureDisabledWithManualStanza( $jobOverrideFileContent ) );
 }
 
-=item _uncomment($line)
+=item _uncomment( $line )
 
  Uncomment the given line
 
@@ -597,7 +597,7 @@ sub _uncomment
     $_[1] =~ s/^(\s*)#+/$1/r;
 }
 
-=item _removeTrailingCommentsFromCommentedLine($line)
+=item _removeTrailingCommentsFromCommentedLine( $line )
 
  Remove any trailing comments from the given commented line
 
@@ -611,7 +611,7 @@ sub _removeTrailingCommentsFromCommentedLine
     $_[1] =~ s/^(\s*#+\s*[^#]*).*/$1/r;
 }
 
-=item _removeTrailingComments($line)
+=item _removeTrailingComments( $line )
 
  Remove any trailing comments from the given line
 
@@ -625,7 +625,7 @@ sub _removeTrailingComments
     $_[1] =~ s/^(\s*[^#]*).*/$1/r;
 }
 
-=item _countUnbalancedRoundBrackets($line)
+=item _countUnbalancedRoundBrackets( $line )
 
  Count number of unbalanced round brackets in the given line
 
@@ -639,7 +639,7 @@ sub _countUnbalancedRoundBrackets
     ( $_[1] =~ tr/(// ) - ( $_[1] =~ tr/)// );
 }
 
-=item _removeManualStanzaFrom($string)
+=item _removeManualStanzaFrom( $string )
 
  Remove any upstart `manual' stanza from the given $string
 
@@ -653,7 +653,7 @@ sub _removeManualStanzaFrom
     $_[1] =~ s/$MANUAL//gr;
 }
 
-=item _commentStartOnStanza($text)
+=item _commentStartOnStanza( $text )
 
  Comment any upstart `start on' stanza in the given text
 
@@ -682,7 +682,7 @@ sub _commentStartOnStanza
         } split /^/, $text;
 }
 
-=item _uncommentStartOnStanzaIn($text)
+=item _uncommentStartOnStanzaIn( $text )
 
  Uncomment any upstart `start on' stanza in the given text
 
@@ -712,7 +712,7 @@ sub _uncommentStartOnStanzaIn
         } split /^/, $text;
 }
 
-=item _extractStartOnStanzaFrom($string)
+=item _extractStartOnStanzaFrom( $string )
 
  Extract the upstart `start on' stanza from the given string if any
 
@@ -735,7 +735,7 @@ sub _extractStartOnStanzaFrom
         } split /^/, $string;
 }
 
-=item _addDefaultStartOnStanzaTo($string)
+=item _addDefaultStartOnStanzaTo( $string )
 
  Add default upstart `start on' stanza to the given string
 
@@ -751,7 +751,7 @@ sub _addDefaultStartOnStanzaTo
     $string."\nstart on runlevel [2345]\n";
 }
 
-=item _ensureDisabledWithManualStanza($string)
+=item _ensureDisabledWithManualStanza( $string )
 
  Ensure that the given string contains the upstart `manual' stanza
 
@@ -767,7 +767,7 @@ sub _ensureDisabledWithManualStanza
     $self->_removeManualStanzaFrom( $string )."manual\n";
 }
 
-=item _searchJobFile($job, $jobFileType)
+=item _searchJobFile( $job, $jobFileType )
 
  Search the job configuration file or job override file which belongs to the given job in all available paths
 
@@ -791,7 +791,7 @@ sub _searchJobFile
     die( sprintf( "Could not find the upstart `%s' job file", $jobFile ) );
 }
 
-=item _readJobFile($job)
+=item _readJobFile( $job )
 
  Read the job file which belongs to the given job
 
@@ -805,10 +805,10 @@ sub _readJobFile
     my ($self, $job) = @_;
 
     my $filepath = $self->getJobFilePath( $job );
-    iMSCP::File->new( filename => $filepath )->get() or die( sprintf( "Could not read `%s' file", $filepath ) );
+    iMSCP::File->new( filename => $filepath )->get( ) or die( sprintf( "Could not read `%s' file", $filepath ) );
 }
 
-=item _readJobOverrideFile($job)
+=item _readJobOverrideFile( $job )
 
  Read the job override file which belongs to the given job
 
@@ -824,7 +824,7 @@ sub _readJobOverrideFile
     local $@;
     my $filepath = eval { $self->getJobFilePath( $job, 'override' ) };
     if (defined $filepath) {
-        my $fileContent = iMSCP::File->new( filename => $filepath )->get();
+        my $fileContent = iMSCP::File->new( filename => $filepath )->get( );
         defined $fileContent or die( sprintf( "Could not read `%s' file", $filepath ) );
         return $fileContent;
     }
@@ -832,7 +832,7 @@ sub _readJobOverrideFile
     '';
 }
 
-=item _writeFile($filename, $fileContent)
+=item _writeFile( $filename, $fileContent )
 
  Write the given job file (job configuration file or job override file)
 
@@ -851,11 +851,11 @@ sub _writeFile
     my $file = iMSCP::File->new( filename => $filepath );
 
     if ($fileContent ne '') {
-        $file->set( $fileContent ) == 0 && $file->save() == 0 && $file->mode( 0644 ) == 0 or die(
+        $file->set( $fileContent ) == 0 && $file->save( ) == 0 && $file->mode( 0644 ) == 0 or die(
             sprintf( "Could not write `%s' file", $filepath )
         );
     } elsif ($filepath =~ /\.override$/ && -f $filepath) {
-        $file->delFile() == 0 or die( sprintf( "Could not unlink `%s' file", $filepath ) );
+        $file->delFile( ) == 0 or die( sprintf( "Could not unlink `%s' file", $filepath ) );
     } else {
         1;
     }

@@ -42,7 +42,7 @@ $Module::Load::Conditional::FIND_VERSION = 0;
 
 =over 4
 
-=item addIpAddr(\%data)
+=item addIpAddr( \%data )
 
  See iMSCP::Provider::NetworkInterface::Interface
 
@@ -52,12 +52,12 @@ sub addIpAddr
 {
     my ($self, $data) = @_;
     $self->{'eventManager'}->trigger( 'beforeAddIpAddr', $data );
-    $self->getProvider()->addIpAddr( $data );
+    $self->getProvider( )->addIpAddr( $data );
     $self->{'eventManager'}->trigger( 'afterAddIpAddr', $data );
     $self;
 }
 
-=item removeIpAddr(\%data)
+=item removeIpAddr( \%data )
 
  See iMSCP::Provider::NetworkInterface::Interface
 
@@ -67,12 +67,12 @@ sub removeIpAddr
 {
     my ($self, $data) = @_;
     $self->{'eventManager'}->trigger( 'beforeRemoveIpAddr', $data );
-    $self->getProvider()->removeIpAddr( $data );
+    $self->getProvider( )->removeIpAddr( $data );
     $self->{'eventManager'}->trigger( 'afterRemoveIpAddr', $data );
     $self;
 }
 
-=item getProvider
+=item getProvider( )
 
  Get network interface provider
 
@@ -90,10 +90,10 @@ sub getProvider
     can_load( modules => { $provider => undef } ) or die(
         sprintf( "Could not load `%s' network interface provider: %s", $provider, $Module::Load::Conditional::ERROR )
     );
-    $self->setProvider( $provider->new() );
+    $self->setProvider( $provider->new( ) );
 }
 
-=item setProvider($provider)
+=item setProvider( $provider )
 
  Set network interface provider
 
@@ -118,7 +118,7 @@ sub setProvider
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -129,7 +129,7 @@ sub setProvider
 sub _init
 {
     my $self = shift;
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self;
 }
 

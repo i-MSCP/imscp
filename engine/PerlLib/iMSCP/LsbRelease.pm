@@ -124,7 +124,7 @@ sub getDescription
     sprintf( "Description:\t%s", $self->{'lsbInfo'}->{'DESCRIPTION'} || 'n/a' );
 }
 
-=item getRelease( [ $short = false [, forceNumeric = false ] ])
+=item getRelease( [ $short = false [, forceNumeric = false ] ] )
 
  Get release
 

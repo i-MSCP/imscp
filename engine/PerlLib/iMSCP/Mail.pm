@@ -113,9 +113,9 @@ sub _sendMail
 {
     my (undef, $subject, $message, $severity) = @_;
 
-    my $sendmail = iMSCP::ProgramFinder::find( 'sendmail' ) or die( 'Could not find sendmail executable' );
+    my $sendmail = iMSCP::ProgramFinder::find( 'sendmail' ) or die( "Couldn't find sendmail executable" );
     my $host = $main::imscpConfig{'BASE_SERVER_VHOST'};
-    my $out = MIME::Entity->new()->build(
+    my $out = MIME::Entity->new( )->build(
         From       => "i-MSCP ($host) <noreply\@$host>",
         To         => $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'},
         Subject    => $subject,
@@ -146,7 +146,7 @@ EOF
 
     my $fh;
     unless (open $fh, '|-', $sendmail, '-t', '-oi', '-f', "noreply\@$host") {
-        error( sprintf( 'Could not send mail: %s', $! ) );
+        error( sprintf( "Couldn't send mail: %s", $! ) );
         return 1;
     }
     $out->print( $fh );

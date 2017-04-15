@@ -27,7 +27,7 @@ use strict;
 use warnings;
 use Errno qw / EINVAL /;
 use File::Spec;
-use File::stat ();
+use File::stat ( );
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Syscall;
@@ -159,7 +159,7 @@ my $iMSCP_FSTAB_FH;
 
 =over 4
 
-=item getMounts()
+=item getMounts( )
 
 =cut
 
@@ -168,7 +168,7 @@ sub getMounts
     return nsort keys %{$MOUNTS};
 }
 
-=item mount(\%fields)
+=item mount( \%fields )
 
  Create a new mount, or remount an existing mount, or/and change the propagation type of an existing mount
 
@@ -181,7 +181,7 @@ sub getMounts
 
 =cut
 
-sub mount($)
+sub mount( $ )
 {
     my $fields = shift;
     $fields = { } unless defined $fields && ref $fields eq 'HASH';
@@ -237,7 +237,7 @@ sub mount($)
     0;
 }
 
-=item umount($fsFile [, $recursive = TRUE ])
+=item umount( $fsFile [, $recursive = TRUE ] )
 
  Umount the given file system
 
@@ -249,7 +249,7 @@ sub mount($)
 
 =cut
 
-sub umount($;$)
+sub umount( $;$ )
 {
     my ($fsFile, $recursive) = @_;
 
@@ -293,7 +293,7 @@ sub umount($;$)
     0;
 }
 
-=item setPropagationFlag($fsFile [, $flag = 'private' ])
+=item setPropagationFlag( $fsFile [, $flag = 'private' ] )
 
  Change the propagation type of an existing mount
 
@@ -323,7 +323,7 @@ sub setPropagationFlag($;$)
     }
 
     my $src = 'none';
-    unless (syscall(&iMSCP::Syscall::SYS_mount, $src, $fsFile, 0, $pflag, 0 ) == 0) {
+    unless (syscall( &iMSCP::Syscall::SYS_mount, $src, $fsFile, 0, $pflag, 0 ) == 0) {
         error( sprintf( 'Error while changing propagation flag on %s: %s', $fsFile, $! || 'Unknown error' ) );
         return 1;
     }
@@ -331,7 +331,7 @@ sub setPropagationFlag($;$)
     0;
 }
 
-=item isMountpoint($path)
+=item isMountpoint( $path )
 
  Is the given path a mountpoint or bind mount?
  
@@ -356,12 +356,12 @@ sub isMountpoint($)
     return 1 if $MOUNTS->{$path};
     return 0 unless -d $path;
 
-    my $st = File::stat::populate(CORE::stat( _ ));
-    my $st2 = File::stat::stat("$path/..");
+    my $st = File::stat::populate( CORE::stat( _ ) );
+    my $st2 = File::stat::stat( "$path/.." );
     ($st->dev != $st2->dev) || ($st->dev == $st2->dev && $st->ino == $st2->ino);
 }
 
-=item addMountEntry($entry)
+=item addMountEntry( $entry )
 
  Add the given mount entry in the i-MSCP fstab-like file
 
@@ -370,7 +370,7 @@ sub isMountpoint($)
 
 =cut
 
-sub addMountEntry($)
+sub addMountEntry( $ )
 {
     my $entry = shift;
 
@@ -382,12 +382,12 @@ sub addMountEntry($)
     my $rs = removeMountEntry($entry, 0); # Avoid duplicate entries
     return $rs if $rs;
 
-    my $fileContent = $iMSCP_FSTAB_FH->getAsRef();
+    my $fileContent = $iMSCP_FSTAB_FH->getAsRef( );
     ${$fileContent} .= "$entry\n";
-    $iMSCP_FSTAB_FH->save();
+    $iMSCP_FSTAB_FH->save( );
 }
 
-=item removeMountEntry($entry [, $saveFile = true ])
+=item removeMountEntry( $entry [, $saveFile = true ] )
 
  Remove the given mount entry from the i-MSCP fstab-like file
 
@@ -397,7 +397,7 @@ sub addMountEntry($)
 
 =cut
 
-sub removeMountEntry($;$)
+sub removeMountEntry( $;$ )
 {
     my ($entry, $saveFile) = @_;
     $saveFile //= 1;
@@ -411,7 +411,7 @@ sub removeMountEntry($;$)
         $iMSCP_FSTAB_FH = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf" );
     }
 
-    my $fileContent = $iMSCP_FSTAB_FH->getAsRef();
+    my $fileContent = $iMSCP_FSTAB_FH->getAsRef( );
     unless (defined $fileContent) {
         error( sprintf( "Couldn't read %s file", $iMSCP_FSTAB_FH->{'filename'} ) );
         return 1;
@@ -419,7 +419,7 @@ sub removeMountEntry($;$)
 
     $entry = quotemeta( $entry ) unless ref $entry eq 'Regexp';
     ${$fileContent} =~ s/^$entry\n//gm;
-    $saveFile ? $iMSCP_FSTAB_FH->save() : 0;
+    $saveFile ? $iMSCP_FSTAB_FH->save( ) : 0;
 }
 
 =back
@@ -428,7 +428,7 @@ sub removeMountEntry($;$)
 
 =over 4
 
-=item _parseOptions($options)
+=item _parseOptions( $options )
 
  Parse mountflags, propagation flags and data
 
@@ -437,7 +437,7 @@ sub removeMountEntry($;$)
 
 =cut
 
-sub _parseOptions($)
+sub _parseOptions( $ )
 {
     my $options = shift;
 

@@ -35,7 +35,7 @@ use File::Spec;
 
 =over 4
 
-=item find($program)
+=item find( $program )
 
  Find full program path in $PATH
 
@@ -48,7 +48,7 @@ sub find
 {
     my $program = $_[0];
 
-    for (File::Spec->path()) {
+    for (File::Spec->path( )) {
         my $file = File::Spec->catfile( $_, $program );
         return $file if -x $file;
     }
