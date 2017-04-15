@@ -146,7 +146,9 @@ sub passivePortRangeDialog
 {
     my ($self, $dialog) = @_;
 
-    my $passivePortRange = main::setupGetQuestion( 'FTPD_PASSIVE_PORT_RANGE' ) || $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'};
+    my $passivePortRange = main::setupGetQuestion(
+        'FTPD_PASSIVE_PORT_RANGE', $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'}
+    );
     my ($startOfRange, $endOfRange);
 
     if (!isValidNumberRange( $passivePortRange, \$startOfRange, \$endOfRange )

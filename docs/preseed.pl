@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2017.04.04
+# Last update: 2017.04.15
 
 %main::questions = (
     #
@@ -20,15 +20,15 @@
     # Possible values: An already configured IPv4 or IPv6
     BASE_SERVER_IP                      => '',
 
-    # WAN IP
-    # Only relevant if your server primary IP is in private range (e.g. when your server is behind a NAT).
-    # You can force usage of a private IP by putting the BASE_SERVER_IP IP value
+    # WAN IP (only relevant if your primary IP is in private range)
+    # You can force usage of a private IP by putting BASE_SERVER_IP IP value instead of a public IP
+    # You can also leave this field empty for automatic detection of your public IP using ipinfo.io Web service.
     # Possible values: Ipv4 or IPv6
     BASE_SERVER_PUBLIC_IP               => '',
 
     # Timezone
-    # Possible values: A valid timezone (see http://php.net/manual/en/timezones.php)
-    TIMEZONE                            => 'UTC',
+    # Possible values: A valid timezone such as Europe/Paris (see http://php.net/manual/en/timezones.php)
+    TIMEZONE                            => '',
 
     #
     ## Backup configuration parameters
@@ -68,14 +68,14 @@
     DATABASE_PORT                       => '3306',
 
     # SQL root user
-    # Note: This user is only used while installation/reconfiguration
+    # Note: This user is only used while i-MSCP installation/reconfiguration
     SQL_ROOT_USER                       => 'root',
     SQL_ROOT_PASSWORD                   => '',
 
     # i-MSCP Master SQL user
-    # Note that this SQL user must have full privileges on the SQL server. It is used to to connect to the i-MSCP
-    # database and also to create/delete SQL users for your customers
-    # Be aware that it is not allowed to use SQL root user, nor debian-sys-maint user
+    # This SQL user must have full privileges on the SQL server. It is used to to connect to the i-MSCP database and
+    # also to create/delete SQL users for your customers. Be aware that it is not allowed to use SQL root user, nor
+    # debian-sys-maint or mysql.user user.
     # Only ASCII alphabet characters and numbers are allowed in password.
     DATABASE_USER                       => 'imscp_user',
     DATABASE_PASSWORD                   => '',
@@ -93,9 +93,9 @@
     ## Control panel configuration parameters
     #
 
-    # Control panel domain
-    # This is the domain name from which the control panel will be reachable
-    # Possible values: A fully qualified domain name
+    # Control panel hostname
+    # This is the hostname from which the control panel will be reachable
+    # Possible values: A fully qualified hostname name
     BASE_SERVER_VHOST                   => '',
 
     # Control panel http port
@@ -115,24 +115,19 @@
     # Possible values: yes, no
     PANEL_SSL_SELFSIGNED_CERTIFICATE    => 'yes',
 
-    # SSL private key path
-    # Only relevant if you don't use a self-signed certificate
+    # SSL private key path (only relevant if you don't use a self-signed certificate)
     PANEL_SSL_PRIVATE_KEY_PATH          => '',
 
-    # SSL private key passphrase
-    # Only relevant if your SSL private key is encrypted
+    # SSL private key passphrase (only relevant if your SSL private key is encrypted)
     PANEL_SSL_PRIVATE_KEY_PASSPHRASE    => '',
 
-    # SSL CA Bundle path
-    # Only relevant if you don't use a self-signed certificate
+    # SSL CA Bundle path (only relevant if you don't use a self-signed certificate)
     PANEL_SSL_CA_BUNDLE_PATH            => '',
 
-    # SSL certificate path
-    # Only relevant if you don't use a self-signed certificate
+    # SSL certificate path (only relevant if you don't use a self-signed certificate)
     PANEL_SSL_CERTIFICATE_PATH          => '',
 
-    # Control panel default access mode
-    # Only relevant if SSL is enabled
+    # Control panel default access mode (only relevant if SSL is enabled)
     # Possible values: http://, https://
     BASE_SERVER_VHOST_PREFIX            => 'http://',
 
@@ -173,8 +168,7 @@
     # Possible values: yes, no
     BIND_IPV6                           => 'no',
 
-    # Local DNS resolver
-    # Only relevant with 'bind' server implementation
+    # Local DNS resolver (only relevant with 'bind' server implementation)
     # Possible values: yes, no
     LOCAL_DNS_RESOLVER                  => 'yes',
 
@@ -309,14 +303,12 @@
     # Possible values: 'No' or a list of packages, each comma separated
     WEBMAIL_PACKAGES                    => 'RainLoop,Roundcube',
 
-    # SQL user for Roundcube package
-    # Only relevant if you use the Roundcube webmail package
+    # SQL user for Roundcube package (only relevant if you use the Roundcube webmail package)
     # Only ASCII alphabet characters and numbers are allowed in password.
     ROUNDCUBE_SQL_USER                  => 'roundcube_user',
     ROUNDCUBE_SQL_PASSWORD              => '',
 
-    # SQL user for Rainloop package
-    # Only relevant if you use the Rainloop webmail package
+    # SQL user for Rainloop package (only relevant if you use the Rainloop webmail package)
     # Only ASCII alphabet characters and numbers are allowed in password.
     RAINLOOP_SQL_USER                   => 'rainloop_user',
     RAINLOOP_SQL_PASSWORD               => '',

@@ -264,10 +264,11 @@ sub setupAskServerPrimaryIP
 
     my $lanIP = setupGetQuestion( 'BASE_SERVER_IP' );
     my $wanIP = setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
+    chomp( $wanIP = get( 'https://ipinfo.io/ip' ) || '' ) if iMSCP::Getopt->preseed && !$wanIP;
 
     if($main::reconfigure =~ /^(?:primary_ip|all|forced)$/
         || !grep($_ eq $lanIP, @ipList)
-        || ($wanIP ne $lanIP && (!isValidIpAddr( $wanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ )))
+        || ($wanIP ne $lanIP && !isValidIpAddr( $wanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ))
     ) {
         my ($rs, $msg) = (0, '');
 
@@ -281,10 +282,7 @@ EOF
 
         # IP inside private IP range?
         if(!isValidIpAddr( $lanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ )) {
-            unless($wanIP) { # Try to guess WAN ip using ipinfo.io Web service
-                $wanIP = get( 'https://ipinfo.io/ip' ) || '';
-                chomp($wanIP);
-            }
+            chomp( $wanIP = get( 'https://ipinfo.io/ip' ) || '' ) unless $wanIP;
 
             do {
                 ($rs, $wanIP) = $dialog->inputbox( <<"EOF", $wanIP );
@@ -1444,11 +1442,11 @@ sub setupGetQuestion
     my ($qname, $default) = @_;
     $default //= '';
 
-    return exists $main::questions{$qname} ? $main::questions{$qname} : (
-        exists $main::imscpConfig{$qname} && $main::imscpConfig{$qname} ne ''
-        ? $main::imscpConfig{$qname}
-        : $default
-    );
+    return (exists $main::questions{$qname} && $main::questions{$qname} ne '')
+        ? $main::questions{$qname} : (
+            (exists $main::imscpConfig{$qname} && $main::imscpConfig{$qname} ne '')
+                ? $main::imscpConfig{$qname} : $default
+        );
 }
 
 sub setupSetQuestion
