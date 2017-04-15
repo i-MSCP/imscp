@@ -837,87 +837,107 @@ sub _prefillDebconfDatabase
 {
     my $self = shift;
 
-    # Most values below are not really important because i-MSCP will override them after package installation
-    my $mailname = `hostname --fqdn 2>/dev/null` || 'localdomain';
-    chomp $mailname;
-    my $hostname = ($mailname ne 'localdomain') ? $mailname : 'localhost';
-    my $domain = `hostname --domain 2>/dev/null` || 'localdomain';
-    chomp $domain;
+    my $fileContent = '';
 
-    # From postfix package postfix.config script
-    my $destinations = ($mailname eq $hostname)
-        ? join ', ', ($mailname, 'localhost.'.$domain, ', localhost')
-        : join ', ', ($mailname, $hostname, 'localhost.'.$domain.', localhost');
+    # Pre-fill questions for Postfix SMTP server if required
+    if ($main::imscpConfig{'MTA_PACKAGE'} eq 'Servers::mta::postfix') {
+        my $mailname = `hostname --fqdn 2>/dev/null` || 'localdomain';
+        chomp $mailname;
+        my $hostname = ($mailname ne 'localdomain') ? $mailname : 'localhost';
+        my $domain = `hostname --domain 2>/dev/null` || 'localdomain';
+        chomp $domain;
 
-    my $fileContent = <<"EOF";
+        # From postfix package postfix.config script
+        my $destinations = ($mailname eq $hostname)
+            ? join ', ', ($mailname, 'localhost.'.$domain, ', localhost')
+            : join ', ', ($mailname, $hostname, 'localhost.'.$domain.', localhost');
+
+        $fileContent .= <<"EOF";
 postfix postfix/main_mailer_type select Internet Site
 postfix postfix/mailname string $mailname
 postfix postfix/destinations string $destinations
-proftpd-basic shared/proftpd/inetd_or_standalone select standalone
 EOF
+    }
 
+    # Pre-fill question for Proftpd FTP server if required
+    if ($main::imscpConfig{'FTPD_PACKAGE'} eq 'Servers::ftpd::proftpd') {
+        $fileContent .= "proftpd-basic shared/proftpd/inetd_or_standalone select standalone\n";
+    }
+
+    # Pre-fill questions for Courier IMAP/POP server if required
     if ($main::imscpConfig{'PO_PACKAGE'} eq 'Servers::po::courier') {
         $fileContent .= <<"EOF";
 courier-base courier-base/webadmin-configmode boolean false
 courier-ssl courier-ssl/certnotice note
 EOF
-    } elsif ($main::imscpConfig{'PO_PACKAGE'} eq 'Servers::po::dovecot') {
+    }
+
+    # Pre-fill questions for Dovecot IMAP/POP server if required
+    if ($main::imscpConfig{'PO_PACKAGE'} eq 'Servers::po::dovecot') {
         $fileContent .= <<"EOF";
 dovecot-core dovecot-core/create-ssl-cert boolean true
 dovecot-core dovecot-core/ssl-cert-name string localhost
 EOF
     }
 
-    # Set default answer to yes for purge of sasldb2 database
-    $fileContent .= <<"EOF";
-sasl2-bin cyrus-sasl2/purge-sasldb2 boolean true
+    # Pre-fill question for sasl2-bin package if required
+    if (`echo get cyrus-sasl2/purge-sasldb2 | debconf-communicate sas2-bin 2>/dev/null` =~ /^0/) {
+        $fileContent .= <<"EOF"
+        sasl2- bin cyrus- sasl2 / purge- sasldb2 boolean true
 EOF
+    }
 
-    my ($sqlServer) = $main::imscpConfig{'SQL_PACKAGE'} =~ /Servers::sqld::(mysql|mariadb|percona|remote)/ or die(
-        sprintf( 'Unkwown SGBD server implementation: %s', $main::imscpConfig{'SQL_PACKAGE'} )
-    );
+    # Pre-fill questions for SQL server (MySQL, MariaDB or Percona) if required
+    if (my ($sqlServer) = $main::imscpConfig{'SQL_PACKAGE'} =~ /^Servers::sqld::(mysql|mariadb|percona)/) {
+        #        if ($main::imscpConfig{'DATABASE_PASSWORD'} ne '' && -d $main::imscpConfig{'DATABASE_DIR'}) {
+        #            # Only show critical questions
+        #            $ENV{'DEBIAN_PRIORITY'} = 'critical';
+        #
+        #            # Allow switching to other vendor (e.g: MariaDB 10.0 to MySQL >= 5.6)
+        #            unlink glob "$main::imscpConfig{'DATABASE_DIR'}/debian-*.flag";
+        #
+        #            # Don't show SQL root password dialog from package maintainer script
+        #            # when switching to another vendor or a newest version
+        #            # <DATABASE_DIR>/debian-5.0.flag is the file checked by maintainer script (even for newest versions...)
+        #            my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'DATABASE_DIR'}/debian-5.0.flag" )->save( );
+        #            return $rs if $rs;
+        #        }
 
-    unless ($sqlServer eq 'remote') {
-        if ($main::imscpConfig{'DATABASE_PASSWORD'} ne '' && -d $main::imscpConfig{'DATABASE_DIR'}) {
-            # Only show critical questions
-            $ENV{'DEBIAN_PRIORITY'} = 'critical';
-
-            # Allow switching to other vendor (e.g: MariaDB 10.0 to MySQL >= 5.6)
-            unlink glob "$main::imscpConfig{'DATABASE_DIR'}/debian-*.flag";
-
-            # Don't show SQL root password dialog from package maintainer script
-            # when switching to another vendor or a newest version
-            # <DATABASE_DIR>/debian-5.0.flag is the file checked by maintainer script (even for newest versions...)
-            my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'DATABASE_DIR'}/debian-5.0.flag" )->save( );
-            return $rs if $rs;
-        }
-
-        my $sPattern;
-        if ($sqlServer eq 'mysql' && grep($_ eq 'mysql-community-server', @{$self->{'packagesToInstall'}})) {
-            $sPattern = ' mysql-community-server';
-        } elsif ($sqlServer eq 'mysql') {
-            $sPattern = 'mysql-server';
+        my $gPattern;
+        if ($sqlServer eq 'mysql') {
+            $gPattern = grep($_ eq 'mysql-community-server', @{$self->{'packagesToInstall'}})
+                ? ' mysql-community-server' : 'mysql-server';
         } elsif ($sqlServer eq 'mariadb') {
-            $sPattern = 'mysql-server';
+            $gPattern = 'mysql-server';
         } else {
-            $sPattern = 'percona-server-server';
+            $gPattern = 'percona-server-server';
         }
 
         # We do not want ask user for <DATABASE_DIR> removal (we want avoid mistakes as much as possible)
-        my ($qOwner, $qName) = `debconf-get-selections | grep $sPattern` =~
+        my ($qOwner, $qName) = `debconf-get-selections 2>/dev/null | grep $gPattern` =~
             /^([^\s]+)\s+([^\/]+\/(?:remove-data-dir|postrm_remove_databases))/gm;
-        $fileContent .= "$qOwner $qName boolean false\n" if $qOwner && $qName;
 
-        # Preset root SQL password using value from preseed file
+        $fileContent .= <<"EOF" if $qOwner && $qName;
+$qOwner $qName boolean false
+EOF
+        # Preset root SQL password using value from preseed file if required
         if (iMSCP::Getopt->preseed) {
-            ($qOwner, $qName) = `debconf-get-selections | grep $sPattern` =~
+            ($qOwner, $qName) = `debconf-get-selections 2>/dev/null | grep $gPattern` =~
                 /^([^\s]+)\s+([^\/]+\/(?:root_password|root-pass))/gm;
-            $fileContent .= "$qOwner $qName password $main::questions{'SQL_ROOT_PASSWORD'}\n" if $qOwner && $qName;
-            ($qOwner, $qName) = `debconf-get-selections | grep $sPattern`
+
+            $fileContent .= <<"EOF" if $qOwner && $qName;
+$qOwner $qName password $main::questions{'SQL_ROOT_PASSWORD'}
+EOF
+            ($qOwner, $qName) = `debconf-get-selections 2>/dev/null | grep $gPattern`
                 =~ /^([^\s]+)\s+([^\/]+\/(?:root_password_again|re-root-pass))/gm;
-            $fileContent .= "$qOwner $qName password $main::questions{'SQL_ROOT_PASSWORD'}\n" if $qOwner && $qName;
+
+            $fileContent .= <<"EOF" if $qOwner && $qName;
+$qOwner $qName password $main::questions{'SQL_ROOT_PASSWORD'}
+EOF
         }
     }
+
+    return 0 if $fileContent eq '';
 
     my $debconfSelectionsFile = File::Temp->new( );
     print $debconfSelectionsFile $fileContent;
