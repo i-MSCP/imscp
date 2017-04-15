@@ -841,11 +841,9 @@ sub _prefillDebconfDatabase
 
     # Pre-fill questions for Postfix SMTP server if required
     if ($main::imscpConfig{'MTA_PACKAGE'} eq 'Servers::mta::postfix') {
-        my $mailname = `hostname --fqdn 2>/dev/null` || 'localdomain';
-        chomp $mailname;
+        chomp(my $mailname = `hostname --fqdn 2>/dev/null` || 'localdomain');
         my $hostname = ($mailname ne 'localdomain') ? $mailname : 'localhost';
-        my $domain = `hostname --domain 2>/dev/null` || 'localdomain';
-        chomp $domain;
+        chomp(my $domain = `hostname --domain 2>/dev/null` || 'localdomain');
 
         # From postfix package postfix.config script
         my $destinations = ($mailname eq $hostname)
@@ -861,12 +859,14 @@ EOF
 
     # Pre-fill question for Proftpd FTP server if required
     if ($main::imscpConfig{'FTPD_PACKAGE'} eq 'Servers::ftpd::proftpd') {
-        $fileContent .= "proftpd-basic shared/proftpd/inetd_or_standalone select standalone\n";
+        $fileContent .= <<'EOF';
+proftpd-basic shared/proftpd/inetd_or_standalone select standalone
+EOF
     }
 
     # Pre-fill questions for Courier IMAP/POP server if required
     if ($main::imscpConfig{'PO_PACKAGE'} eq 'Servers::po::courier') {
-        $fileContent .= <<"EOF";
+        $fileContent .= <<'EOF';
 courier-base courier-base/webadmin-configmode boolean false
 courier-ssl courier-ssl/certnotice note
 EOF
@@ -874,7 +874,7 @@ EOF
 
     # Pre-fill questions for Dovecot IMAP/POP server if required
     if ($main::imscpConfig{'PO_PACKAGE'} eq 'Servers::po::dovecot') {
-        $fileContent .= <<"EOF";
+        $fileContent .= <<'EOF';
 dovecot-core dovecot-core/create-ssl-cert boolean true
 dovecot-core dovecot-core/ssl-cert-name string localhost
 EOF
@@ -882,8 +882,8 @@ EOF
 
     # Pre-fill question for sasl2-bin package if required
     if (`echo get cyrus-sasl2/purge-sasldb2 | debconf-communicate sas2-bin 2>/dev/null` =~ /^0/) {
-        $fileContent .= <<"EOF"
-        sasl2- bin cyrus- sasl2 / purge- sasldb2 boolean true
+        $fileContent .= <<'EOF'
+sasl2- bin cyrus- sasl2 / purge- sasldb2 boolean true
 EOF
     }
 
