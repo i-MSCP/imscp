@@ -1449,10 +1449,8 @@ sub setupGetQuestion
         return exists $main::questions{$qname} && $main::questions{$qname} ne '' ? $main::questions{$qname} : $default;
     }
 
-    return exists $main::questions{$qname} ? $main::questions{$qname} : (
-        exists $main::imscpConfig{$qname} && $main::imscpConfig{$qname} ne ''
-        ? $main::imscpConfig{$qname}
-        : $default
+    exists $main::questions{$qname} ? $main::questions{$qname} : (
+        exists $main::imscpConfig{$qname} && $main::imscpConfig{$qname} ne '' ? $main::imscpConfig{$qname} : $default
     );
 }
 
