@@ -30,6 +30,7 @@
     # Timezone
     # Possible values: A valid timezone such as Europe/Paris
     # (see http://php.net/manual/en/timezones.php)
+    # Leave this parameter empty for automatic timezone detection.
     TIMEZONE                            => '',
 
     #
