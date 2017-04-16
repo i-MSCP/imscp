@@ -25,6 +25,7 @@ use autouse 'iMSCP::Stepper' => qw/ startDetail endDetail step /;
 use Class::Autouse qw/ :nostat File::HomeDir /;
 use Cwd;
 use Fcntl qw/ :flock /;
+use File::Temp;
 use FindBin;
 use iMSCP::Debug;
 use iMSCP::Dialog;
@@ -34,7 +35,6 @@ use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::LsbRelease;
 use iMSCP::ProgramFinder;
-use File::Temp;
 use version;
 use parent 'autoinstaller::Adapter::AbstractAdapter';
 
@@ -162,28 +162,32 @@ sub installPackages
         error( sprintf( "Couldn't change current directory to: %s", "$FindBin::Bin/autoinstaller/postinstall", $! ) );
         return 1;
     }
-
-    my $nbTasks = scalar @{$self->{'packagesPostInstallTasks'}};
-    my $cTask = 1;
+    
+    my $nPackages = scalar keys %{$self->{'packagesPostInstallTasks'}};
+    my $cPackage = 1;
 
     startDetail( );
 
-    for my $task(@{$self->{'packagesPostInstallTasks'}}) {
+    for my $package(sort keys %{$self->{'packagesPostInstallTasks'}}) {
         $rs ||= step(
             sub {
                 my $stdout;
                 $rs = execute(
-                    $task, (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout), \ my $stderr
+                    $self->{'packagesPostInstallTasks'}->{$package},
+                    (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout), \ my $stderr
                 );
                 error(
-                    $stderr || sprintf("Unknown error while executing the `%s' package postinstall task", $task)
+                    $stderr
+                        || sprintf( "Unknown error while executing postinstall tasks for the `%s' package", $package )
                 ) if $rs;
                 $rs;
             },
-            sprintf( "Executing `%s' package postinstall task...", $task, ), $nbTasks, $cTask
+            sprintf( "Executing postinstall tasks for the `%s' package... Please be patient.", $package ),
+            $nPackages,
+            $cPackage
         );
         last if $rs;
-        $cTask++;
+        $cPackage++;
     }
 
     endDetail( );
@@ -315,7 +319,7 @@ sub _init
     $self->{'packagesToPreUninstall'} = [ ];
     $self->{'packagesToUninstall'} = [ ];
     $self->{'packagesToRebuild'} = { };
-    $self->{'packagesPostInstallTasks'} = [ ];
+    $self->{'packagesPostInstallTasks'} = { };
     $self->{'need_pbuilder_update'} = 1;
     delete $ENV{'DEBCONF_FORCE_DIALOG'};
     $ENV{'DEBIAN_FRONTEND'} = 'noninteractive' if iMSCP::Getopt->noprompt;
@@ -598,7 +602,9 @@ EOF
                         push @{$self->{'packagesToInstall'}}, $_->{'content'};
                     }
 
-                    push @{$self->{'packagesPostInstallTasks'}}, $_->{'post_install_task'} if $_->{'post_install_task'};
+                    if ($_->{'post_install_tasks'}) {
+                        $self->{'packagesPostInstallTasks'}->{$_->{'content'}} = $_->{'post_install_tasks'}
+                    }
                 } else {
                     push @{$self->{'packagesToInstall'}}, $_;
                 }
@@ -888,52 +894,66 @@ EOF
     }
 
     # Pre-fill questions for SQL server (MySQL, MariaDB or Percona) if required
-    if (my ($sqlServer) = $main::imscpConfig{'SQL_PACKAGE'} =~ /^Servers::sqld::(mysql|mariadb|percona)/) {
-        #        if ($main::imscpConfig{'DATABASE_PASSWORD'} ne '' && -d $main::imscpConfig{'DATABASE_DIR'}) {
-        #            # Only show critical questions
-        #            $ENV{'DEBIAN_PRIORITY'} = 'critical';
-        #
-        #            # Allow switching to other vendor (e.g: MariaDB 10.0 to MySQL >= 5.6)
-        #            unlink glob "$main::imscpConfig{'DATABASE_DIR'}/debian-*.flag";
-        #
-        #            # Don't show SQL root password dialog from package maintainer script
-        #            # when switching to another vendor or a newest version
-        #            # <DATABASE_DIR>/debian-5.0.flag is the file checked by maintainer script (even for newest versions...)
-        #            my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'DATABASE_DIR'}/debian-5.0.flag" )->save( );
-        #            return $rs if $rs;
-        #        }
+    if (my ($sqlServerVendor, $sqlServerVersion) = $main::imscpConfig{'SQL_SERVER'} =~ /^(mysql|mariadb|percona)_(\d+\.\d+)/) {
+        if ($main::imscpConfig{'DATABASE_PASSWORD'} ne '' && -d $main::imscpConfig{'DATABASE_DIR'}) {
+            # Only show critical questions
+            $ENV{'DEBIAN_PRIORITY'} = 'critical';
 
-        my $gPattern;
-        if ($sqlServer eq 'mysql') {
-            $gPattern = grep($_ eq 'mysql-community-server', @{$self->{'packagesToInstall'}})
-                ? ' mysql-community-server' : 'mysql-server';
-        } elsif ($sqlServer eq 'mariadb') {
-            $gPattern = 'mysql-server';
+            # Allow switching to other vendor (e.g: MariaDB 10.0 to MySQL >= 5.6)
+            # unlink glob "$main::imscpConfig{'DATABASE_DIR'}/debian-*.flag";
+
+            # Don't show SQL root password dialog from package maintainer script
+            # when switching to another vendor or a newest version
+            # <DATABASE_DIR>/debian-5.0.flag is the file checked by maintainer script
+            my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'DATABASE_DIR'}/debian-5.0.flag" )->save( );
+            return $rs if $rs;
+        }
+
+        my ($qOwner, $qNamePrefix);
+        if ($sqlServerVendor eq 'mysql') {
+            if (grep($_ eq 'mysql-community-server', @{$self->{'packagesToInstall'}})) {
+                $qOwner = 'mysql-community-server';
+                $qNamePrefix = 'mysql-community-server';
+            } else {
+                $qOwner = 'mysql-server-'.$sqlServerVersion;
+                $qNamePrefix = 'mysql-server';
+            }
+        } elsif ($sqlServerVendor eq 'mariadb') {
+            $qOwner = 'mariadb-server-'.$sqlServerVersion;
+            $qNamePrefix = 'mysql-server';
         } else {
-            $gPattern = 'percona-server-server';
+            $qOwner = 'percona-server-server-'.$sqlServerVersion;
+            $qNamePrefix = 'percona-server-server';
         }
 
         # We do not want ask user for <DATABASE_DIR> removal (we want avoid mistakes as much as possible)
-        my ($qOwner, $qName) = `debconf-get-selections 2>/dev/null | grep $gPattern` =~
-            /^([^\s]+)\s+([^\/]+\/(?:remove-data-dir|postrm_remove_databases))/gm;
-
-        $fileContent .= <<"EOF" if $qOwner && $qName;
-$qOwner $qName boolean false
+        $fileContent .= <<"EOF" if $qOwner && $qNamePrefix;
+$qOwner $qNamePrefix/remove-data-dir boolean false
+$qOwner $qNamePrefix/postrm_remove_databases boolean false
 EOF
         # Preset root SQL password using value from preseed file if required
         if (iMSCP::Getopt->preseed) {
-            ($qOwner, $qName) = `debconf-get-selections 2>/dev/null | grep $gPattern` =~
-                /^([^\s]+)\s+([^\/]+\/(?:root_password|root-pass))/gm;
-
-            $fileContent .= <<"EOF" if $qOwner && $qName;
-$qOwner $qName password $main::questions{'SQL_ROOT_PASSWORD'}
+            $fileContent .= <<"EOF" if $qOwner && $qNamePrefix;
+$qOwner $qNamePrefix/root_password password $main::questions{'SQL_ROOT_PASSWORD'}
+$qOwner $qNamePrefix/root-pass password $main::questions{'SQL_ROOT_PASSWORD'}
+$qOwner $qNamePrefix/root_password_again password $main::questions{'SQL_ROOT_PASSWORD'}
+$qOwner $qNamePrefix/re-root-pass password $main::questions{'SQL_ROOT_PASSWORD'}
 EOF
-            ($qOwner, $qName) = `debconf-get-selections 2>/dev/null | grep $gPattern`
-                =~ /^([^\s]+)\s+([^\/]+\/(?:root_password_again|re-root-pass))/gm;
+            # Register an event to empty the password fields in Debconf database after package installation
+            $self->{'eventManager'}->register(
+                'postBuild', sub {
+                    for('root_password', 'root-pass', 'root_password_again', 're-root-pass') {
+                        my $rs = execute(
+                            "echo SET $qNamePrefix/$_ | debconf-communicate $qOwner", \my $stdout, my $stderr
+                        );
+                        debug( $stdout ) if $stdout;
+                        error( $stderr || 'Unknown error' ) if $rs;
+                        return $rs if $rs;
+                    }
 
-            $fileContent .= <<"EOF" if $qOwner && $qName;
-$qOwner $qName password $main::questions{'SQL_ROOT_PASSWORD'}
-EOF
+                    0;
+                }
+            );
         }
     }
 

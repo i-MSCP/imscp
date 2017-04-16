@@ -264,7 +264,10 @@ sub setupAskServerPrimaryIP
 
     my $lanIP = setupGetQuestion( 'BASE_SERVER_IP' );
     my $wanIP = setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
-    chomp( $wanIP = get( 'https://ipinfo.io/ip' ) || '' ) if iMSCP::Getopt->preseed && !$wanIP;
+    
+    if(iMSCP::Getopt->preseed && !$wanIP && !isValidIpAddr( $lanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ )) {
+        chomp( $wanIP = get( 'https://ipinfo.io/ip' ) || '' );
+    }
 
     if($main::reconfigure =~ /^(?:primary_ip|all|forced)$/
         || !grep($_ eq $lanIP, @ipList)
@@ -1442,11 +1445,11 @@ sub setupGetQuestion
     my ($qname, $default) = @_;
     $default //= '';
 
-    return (exists $main::questions{$qname} && $main::questions{$qname} ne '')
-        ? $main::questions{$qname} : (
-            (exists $main::imscpConfig{$qname} && $main::imscpConfig{$qname} ne '')
-                ? $main::imscpConfig{$qname} : $default
-        );
+    if(iMSCP::Getopt->preseed) {
+        return exists $main::questions{$qname} && $main::questions{$qname} ne '' ? $main::questions{$qname} : $default;
+    }
+
+    exists $main::imscpConfig{$qname} && $main::imscpConfig{$qname} ne '' ? $main::imscpConfig{$qname} : $default;
 }
 
 sub setupSetQuestion

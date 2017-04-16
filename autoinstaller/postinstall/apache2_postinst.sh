@@ -42,7 +42,7 @@ if [ -f /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST ] \
 fi
 
 # Don't process if the module has been already patched or if apache2 version is
-# lt 2.4.10 or ge 2.4.24
+# lt 2.4.7 or ge 2.4.24
 if [ -f /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST ] \
    || dpkg --compare-versions "$APACHE_VERSION" lt "2.4.7" \
    || dpkg --compare-versions "$APACHE_VERSION" ge "2.4.24"; then
