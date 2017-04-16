@@ -887,7 +887,7 @@ EOF
     }
 
     # Pre-fill question for sasl2-bin package if required
-    if (`echo get cyrus-sasl2/purge-sasldb2 | debconf-communicate sasl2-bin 2>/dev/null` =~ /^0/) {
+    if (`echo GET cyrus-sasl2/purge-sasldb2 | debconf-communicate sasl2-bin 2>/dev/null` =~ /^0/) {
         $fileContent .= <<'EOF'
 sasl2-bin cyrus-sasl2/purge-sasldb2 boolean true
 EOF
@@ -927,24 +927,27 @@ EOF
         }
 
         # We do not want ask user for <DATABASE_DIR> removal (we want avoid mistakes as much as possible)
-        $fileContent .= <<"EOF" if $qOwner && $qNamePrefix;
+        $fileContent .= <<"EOF";
 $qOwner $qNamePrefix/remove-data-dir boolean false
 $qOwner $qNamePrefix/postrm_remove_databases boolean false
 EOF
         # Preset root SQL password using value from preseed file if required
         if (iMSCP::Getopt->preseed) {
-            $fileContent .= <<"EOF" if $qOwner && $qNamePrefix;
+            exit 5 unless exists $main::questions{'SQL_ROOT_PASSWORD'} & $main::questions{'SQL_ROOT_PASSWORD'} ne '';
+
+            $fileContent .= <<"EOF";
 $qOwner $qNamePrefix/root_password password $main::questions{'SQL_ROOT_PASSWORD'}
 $qOwner $qNamePrefix/root-pass password $main::questions{'SQL_ROOT_PASSWORD'}
 $qOwner $qNamePrefix/root_password_again password $main::questions{'SQL_ROOT_PASSWORD'}
 $qOwner $qNamePrefix/re-root-pass password $main::questions{'SQL_ROOT_PASSWORD'}
 EOF
-            # Register an event to empty the password fields in Debconf database after package installation
+            # Register an event listener to empty the password fields in Debconf database after package installation
             $self->{'eventManager'}->register(
-                'postBuild', sub {
+                'postBuild',
+                sub {
                     for('root_password', 'root-pass', 'root_password_again', 're-root-pass') {
                         my $rs = execute(
-                            "echo SET $qNamePrefix/$_ | debconf-communicate $qOwner", \my $stdout, my $stderr
+                            "echo SET $qNamePrefix/$_ | debconf-communicate $qOwner", \ my $stdout, \ my $stderr
                         );
                         debug( $stdout ) if $stdout;
                         error( $stderr || 'Unknown error' ) if $rs;

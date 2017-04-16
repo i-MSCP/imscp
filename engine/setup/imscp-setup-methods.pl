@@ -753,7 +753,7 @@ EOF
 
 Your SSL certificate for the FTP and MAIL services is missing or invalid.
 EOF
-            setupSetQuestion( 'SERVICES_SSL_ENABLED', '' );
+            setupSetQuestion( 'SERVICES_SSL_ENABLED', '');
             goto &{setupAskServicesSsl};
         }
 
@@ -1449,7 +1449,11 @@ sub setupGetQuestion
         return exists $main::questions{$qname} && $main::questions{$qname} ne '' ? $main::questions{$qname} : $default;
     }
 
-    exists $main::imscpConfig{$qname} && $main::imscpConfig{$qname} ne '' ? $main::imscpConfig{$qname} : $default;
+    return exists $main::questions{$qname} ? $main::questions{$qname} : (
+        exists $main::imscpConfig{$qname} && $main::imscpConfig{$qname} ne ''
+        ? $main::imscpConfig{$qname}
+        : $default
+    );
 }
 
 sub setupSetQuestion
