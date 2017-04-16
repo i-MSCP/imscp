@@ -36,6 +36,7 @@ use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
+use iMSCP::Getopt;
 use iMSCP::TemplateParser;
 use Package::FrontEnd;
 use Package::PhpMyAdmin;
@@ -94,7 +95,10 @@ sub showDialog
 
     my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER' );
     my $dbUser = main::setupGetQuestion( 'PHPMYADMIN_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || 'pma_user' );
-    my $dbPass = main::setupGetQuestion( 'PHPMYADMIN_SQL_PASSWORD', $self->{'config'}->{'DATABASE_PASSWORD'} );
+    my $dbPass = main::setupGetQuestion(
+        'PHPMYADMIN_SQL_PASSWORD',
+        ((iMSCP::Getopt->preseed) ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'})
+    );
 
     if ($main::reconfigure =~ /^(?:sqlmanager|all|forced)$/
         || !isValidUsername( $dbUser )

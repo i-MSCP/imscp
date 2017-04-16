@@ -94,7 +94,10 @@ sub showDialog
 
     my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER' );
     my $dbUser = main::setupGetQuestion( 'DOVECOT_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || 'dovecot_user' );
-    my $dbPass = main::setupGetQuestion( 'DOVECOT_SQL_PASSWORD', $self->{'config'}->{'DATABASE_PASSWORD'} );
+    my $dbPass = main::setupGetQuestion(
+        'DOVECOT_SQL_PASSWORD',
+        ((iMSCP::Getopt->preseed) ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'})
+    );
 
     if ($main::reconfigure =~ /^(?:po|servers|all|forced)$/
         || !isValidUsername( $dbUser )

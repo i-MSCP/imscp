@@ -1,11 +1,11 @@
 #!/usr/bin/perl
 
-# i-MSCP preseed.pl template file for installer preseeding (unattended installation) - Default for Debian Jessie
+# i-MSCP preseed.pl template file for installer preseeding feature
 #
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2017.04.15
+# Last update: 2017.04.16
 
 %main::questions = (
     #
@@ -21,13 +21,15 @@
     BASE_SERVER_IP                      => '',
 
     # WAN IP (only relevant if your primary IP is in private range)
-    # You can force usage of a private IP by putting BASE_SERVER_IP IP value instead of a public IP
-    # You can also leave this field empty for automatic detection of your public IP using ipinfo.io Web service.
+    # You can force usage of a private IP by putting BASE_SERVER_IP IP value
+    # instead of a public IP. You can also leave this parameter empty for
+    # automatic detection of your public IP using ipinfo.io Web service.
     # Possible values: Ipv4 or IPv6
     BASE_SERVER_PUBLIC_IP               => '',
 
     # Timezone
-    # Possible values: A valid timezone such as Europe/Paris (see http://php.net/manual/en/timezones.php)
+    # Possible values: A valid timezone such as Europe/Paris
+    # (see http://php.net/manual/en/timezones.php)
     TIMEZONE                            => '',
 
     #
@@ -48,7 +50,8 @@
     #
 
     # SQL server implementation
-    # Please consult the ../autoinstaller/Packages/<distro>-<codename>.xml file for available options.
+    # Please consult the ../autoinstaller/Packages/<distro>-<codename>.xml file
+    # for available options.
     SQL_SERVER                          => 'mysql_5.5',
 
     # Database name
@@ -63,25 +66,29 @@
     DATABASE_HOST                       => 'localhost',
 
     # Database port
-    # Note that this port is used only for connections through TCP
+    # Note that this port is used only for connections through TCP.
     # Possible values: A valid port
     DATABASE_PORT                       => '3306',
 
-    # SQL root user
-    # Note: This user is only used while i-MSCP installation/reconfiguration
+    # SQL root user (mandatory)
+    # This SQL user must have full privileges on the SQL server.
+    # Note that this user used only while i-MSCP installation/reconfiguration.
     SQL_ROOT_USER                       => 'root',
     SQL_ROOT_PASSWORD                   => '',
 
     # i-MSCP Master SQL user
-    # This SQL user must have full privileges on the SQL server. It is used to to connect to the i-MSCP database and
-    # also to create/delete SQL users for your customers. Be aware that it is not allowed to use SQL root user, nor
-    # debian-sys-maint or mysql.user user.
-    # Only ASCII alphabet characters and numbers are allowed in password.
+    # That is the primary SQL user for i-MSCP. It is used to connect to database
+    # and create/delete SQL users for your customers.
+    # Note that the root, debian-sys-maint and mysql.user SQL users are not
+    # allowed.
     DATABASE_USER                       => 'imscp_user',
+    # Only ASCII alphabet characters and numbers are allowed in password.
+    # Leave this parameter empty for automatic password generation.
     DATABASE_PASSWORD                   => '',
 
     # Database user host for SQL user created by i-MSCP
-    # That is the host from which SQL users created by i-MSCP are allowed to connect to the SQL server
+    # That is the host from which SQL users created by i-MSCP are allowed to
+    # connect to the SQL server.
     # Possible values: A valid hostname or IP address
     DATABASE_USER_HOST                  => 'localhost',
 
@@ -102,8 +109,8 @@
     # Possible values: A port in range 1025-65535
     BASE_SERVER_VHOST_HTTP_PORT         => '8880',
 
-    # Control panel https port
-    # Only relevant if SSL is enabled for the control panel (see below)
+    # Control panel https port (only relevant if SSL is enabled for the control
+    # panel (see below))
     # Possible values: A port in range 1025-65535
     BASE_SERVER_VHOST_HTTPS_PORT        => '8443',
 
@@ -115,16 +122,16 @@
     # Possible values: yes, no
     PANEL_SSL_SELFSIGNED_CERTIFICATE    => 'yes',
 
-    # SSL private key path (only relevant if you don't use a self-signed certificate)
+    # SSL private key path (only relevant for trusted SSL certificate)
     PANEL_SSL_PRIVATE_KEY_PATH          => '',
 
-    # SSL private key passphrase (only relevant if your SSL private key is encrypted)
+    # SSL private key passphrase (only if the private key is encrypted)
     PANEL_SSL_PRIVATE_KEY_PASSPHRASE    => '',
 
-    # SSL CA Bundle path (only relevant if you don't use a self-signed certificate)
+    # SSL CA Bundle path(only relevant for trusted SSL certificate)
     PANEL_SSL_CA_BUNDLE_PATH            => '',
 
-    # SSL certificate path (only relevant if you don't use a self-signed certificate)
+    # SSL certificate path (only relevant for trusted SSL certificate)
     PANEL_SSL_CERTIFICATE_PATH          => '',
 
     # Control panel default access mode (only relevant if SSL is enabled)
@@ -133,6 +140,7 @@
 
     # Master administrator login
     ADMIN_LOGIN_NAME                    => 'admin',
+    # Only ASCII alphabet characters and numbers are allowed in password.
     ADMIN_PASSWORD                      => '',
 
     # Master administrator email address
@@ -208,6 +216,8 @@
     # FTP SQL user
     # Only ASCII alphabet characters and numbers are allowed in password.
     FTPD_SQL_USER                       => 'vftp_user',
+    # Only ASCII alphabet characters and numbers are allowed in password.
+    # Leave this parameter empty for automatic password generation.
     FTPD_SQL_PASSWORD                   => '',
 
     # Passive port range
@@ -234,18 +244,16 @@
     # Authdaemon SQL user
     # Only ASCII alphabet characters and numbers are allowed in password.
     AUTHDAEMON_SQL_USER                 => 'authdaemon_user',
-    AUTHDAEMON_SQL_PASSWORD             => '',
-
-    # SASL SQL user
-    # Only relevant with 'courier' server implementation
     # Only ASCII alphabet characters and numbers are allowed in password.
-    SASL_SQL_USER                       => 'sasl_user',
-    SASL_SQL_PASSWORD                   => '',
+    # Leave this parameter empty for automatic password generation.
+    AUTHDAEMON_SQL_PASSWORD             => '',
 
     # Dovecot SQL user
     # Only relevant with 'dovecot' server implementation
     # Only ASCII alphabet characters and numbers are allowed in password.
     DOVECOT_SQL_USER                    => 'dovecot_user',
+    # Only ASCII alphabet characters and numbers are allowed in password.
+    # Leave this parameter empty for automatic password generation.
     DOVECOT_SQL_PASSWORD                => '',
 
     #
@@ -261,23 +269,19 @@
     # Possible values: yes, no
     SERVICES_SSL_SELFSIGNED_CERTIFICATE => 'yes',
 
-    # SSL private key path
-    # Only relevant if you don't use a self-signed SSL certificate
+    # SSL private key path (only relevant for trusted SSL certificate)
     # Possible values: Path to SSL private key
     SERVICES_SSL_PRIVATE_KEY_PATH       => '',
 
-    # SSL private key passphrase
-    # Only relevant if your SSL private key is encrypted
+    # SSL private key passphrase (only if the private key is encrypted)
     # Possible values: SSL private key passphrase
     SERVICES_SSL_PRIVATE_KEY_PASSPHRASE => '',
 
-    # SSL CA Bundle path
-    # Only relevant if you don't use a self-signed certificate
+    # SSL CA Bundle path (only relevant for trusted SSL certificate)
     # Possible values: Path to the SSL CA Bundle
     SERVICES_SSL_CA_BUNDLE_PATH         => '',
 
-    # SSL certificate path
-    # Only relevant if you don't use a self-signed certificate
+    # SSL certificate path (only relevant for trusted SSL certificate)
     # Possible values: Path to SSL certificate
     SERVICES_SSL_CERTIFICATE_PATH       => '',
 
@@ -286,7 +290,6 @@
     #
 
     # Webstats package
-    # Enable or disable webstats package
     # Possible values: Awstats, No
     WEBSTATS_PACKAGES                   => 'Awstats',
 
@@ -295,22 +298,25 @@
     FILEMANAGER_PACKAGE                 => 'MonstaFTP',
 
     # SQL user for PhpMyAdmin
-    # Only ASCII alphabet characters and numbers are allowed in password.
     PHPMYADMIN_SQL_USER                 => 'pma_user',
+    # Only ASCII alphabet characters and numbers are allowed in password.
+    # Leave this parameter empty for automatic password generation.
     PHPMYADMIN_SQL_PASSWORD             => '',
 
     # Webmmail packages
     # Possible values: 'No' or a list of packages, each comma separated
     WEBMAIL_PACKAGES                    => 'RainLoop,Roundcube',
 
-    # SQL user for Roundcube package (only relevant if you use the Roundcube webmail package)
-    # Only ASCII alphabet characters and numbers are allowed in password.
+    # SQL user for Roundcube package (only if you use Roundcube)
     ROUNDCUBE_SQL_USER                  => 'roundcube_user',
+    # Only ASCII alphabet characters and numbers are allowed in password.
+    # Leave this parameter empty for automatic password generation.
     ROUNDCUBE_SQL_PASSWORD              => '',
 
-    # SQL user for Rainloop package (only relevant if you use the Rainloop webmail package)
-    # Only ASCII alphabet characters and numbers are allowed in password.
+    # SQL user for Rainloop package (only relevant if you use Rainloop)
     RAINLOOP_SQL_USER                   => 'rainloop_user',
+    # Only ASCII alphabet characters and numbers are allowed in password.
+    # Leave this parameter empty for automatic password generation.
     RAINLOOP_SQL_PASSWORD               => '',
 
     # Anti-rootkits packages

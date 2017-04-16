@@ -430,7 +430,9 @@ sub askMasterSqlUser
     my $port = setupGetQuestion( 'DATABASE_PORT' );
     my $user = setupGetQuestion( 'DATABASE_USER', 'imscp_user' );
     $user = 'imscp_user' if lc( $user ) eq 'root'; # Handle upgrade case
-    my $pwd = setupGetQuestion( 'DATABASE_PASSWORD' );
+    my $pwd = setupGetQuestion(
+        'DATABASE_PASSWORD', (iMSCP::Getopt->preseed) ? randomStr( 16, iMSCP::Crypt::ALNUM ) : ''
+    );
     $pwd = decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv, $pwd ) unless $pwd eq '' || iMSCP::Getopt->preseed;
     my $rs = 0;
 
@@ -606,7 +608,9 @@ EOF
 sub setupAskTimezone
 {
     my $dialog = shift;
-    my $timezone = setupGetQuestion( 'TIMEZONE' );
+    my $timezone = setupGetQuestion(
+        'TIMEZONE', (iMSCP::Getopt->preseed) ? DateTime::TimeZone->new( name => 'local' )->name( ) : '' 
+    );
 
     if($main::reconfigure =~ /^(?:timezone|all|forced)$/
         || !isValidTimezone( $timezone )

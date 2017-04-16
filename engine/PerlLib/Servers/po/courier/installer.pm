@@ -99,7 +99,12 @@ sub authdaemonSqlUserDialog
     my $dbUser = main::setupGetQuestion(
         'AUTHDAEMON_SQL_USER', $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} || 'authdaemon_user'
     );
-    my $dbPass = main::setupGetQuestion('AUTHDAEMON_SQL_PASSWORD', $self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'});
+    my $dbPass = main::setupGetQuestion(
+        'AUTHDAEMON_SQL_PASSWORD',
+        ((iMSCP::Getopt->preseed)
+            ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'}
+        )
+    );
 
     if ($main::reconfigure =~ /^(?:po|servers|all|forced)$/
         || !isValidUsername( $dbUser )

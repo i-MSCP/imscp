@@ -30,10 +30,14 @@ FRONTEND
     Readded: Mailboxes quota usage information (Client interface)
 
 INSTALLER
-    Readded: Courier alternative for IMAP/POP servers (Debian Stretch)
+    Fixed: Allow for automatic generation of the passwords (whenever possible) in preseeding mode
+    Fixed: Allow for automatic detection of the server public IP address in preseeding mode
+    Fixed: Allow for automatic detection of the timezone in preseeding mode
     Fixed: composer.phar archive is not updated due to wrong working directory
     Fixed: Configures getaddrinfo(3) to prefer IPv4 during setup and update phases
     Fixed: Determines debconf question owners/names for SQL server by parsing debconf-get-selections output
+    Fixed: Enforce usage of values from preseed.pl file in preseeding mode, even on reconfiguration
+    Readded: Courier alternative for IMAP/POP servers (Debian Stretch
 
 LISTENERS
     Updated: Add Referrer-Policy header to 40_apache2_security_headers.pl listener file

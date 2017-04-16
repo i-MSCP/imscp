@@ -35,6 +35,7 @@ use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
+use iMSCP::Getopt;
 use iMSCP::TemplateParser;
 use iMSCP::Umask;
 use Servers::ftpd::proftpd;
@@ -90,7 +91,10 @@ sub sqlUserDialog
 
     my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER' );
     my $dbUser = main::setupGetQuestion( 'FTPD_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || 'vftp_user' );
-    my $dbPass = main::setupGetQuestion( 'FTPD_SQL_PASSWORD', $self->{'config'}->{'DATABASE_PASSWORD'} );
+    my $dbPass = main::setupGetQuestion(
+        'FTPD_SQL_PASSWORD',
+        ((iMSCP::Getopt->preseed) ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'})
+    );
 
     if ($main::reconfigure =~ /^(?:ftpd|servers|all|forced)$/
         || !isValidUsername( $dbUser )
