@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-08 16:05+0000\n"
+"POT-Creation-Date: 2017-04-17 11:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: ugur tezer <utezer@hotmail.com>, 2017\n"
 "Language-Team: Turkish (Turkey) (https://www.transifex.com/i-mscp/teams/576/tr_TR/)\n"
@@ -2658,9 +2658,6 @@ msgstr "Saat"
 msgid "Hours"
 msgstr "Saat"
 
-msgid "Htaccess errors"
-msgstr ""
-
 msgid "Htaccess group"
 msgstr "Htaccess grubu"
 
@@ -2683,6 +2680,9 @@ msgstr ""
 
 msgid "Htaccess user successfully scheduled for addition."
 msgstr "Htaccess kullanıcısı eklenmek için işleme alındı."
+
+msgid "Htaccess, htgroups and htpasswd errors"
+msgstr ""
 
 msgid "Http traffic"
 msgstr "Web Trafiği"
@@ -3188,9 +3188,6 @@ msgstr "Dakika"
 
 msgid "Minutes"
 msgstr "Dakika"
-
-msgid "Missing domain"
-msgstr "Domain bulunamadı"
 
 msgid "Model"
 msgstr ""
@@ -5945,6 +5942,9 @@ msgstr "eksik alias"
 
 msgid "missing domain"
 msgstr "eksik domain"
+
+msgid "n/a"
+msgstr ""
 
 msgid "n\\a"
 msgstr "devre dışı"

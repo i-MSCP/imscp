@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-08 16:05+0000\n"
+"POT-Creation-Date: 2017-04-17 11:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Dutch (Netherlands) (https://www.transifex.com/i-mscp/teams/576/nl_NL/)\n"
@@ -1067,7 +1067,7 @@ msgid "At least one intermediate certificate is invalid or missing."
 msgstr "Minimaal 1 intermediate-certificaat mist of is niet geldig."
 
 msgid "At least one of your mailboxes is over quota."
-msgstr ""
+msgstr "Er is minimaal één mailbox over het quota."
 
 msgid "Authentication by group"
 msgstr "Authenticatie per groep"
@@ -2731,6 +2731,8 @@ msgid ""
 "Force synching of mailboxes quota info. Quota info are automatically synced "
 "every 5 minutes."
 msgstr ""
+"Forceer de controle van de quota's. Normaal gesproken wordt deze informatie "
+"elke 5 minuten ververst."
 
 msgid "Forward"
 msgstr "Doorsturen"
@@ -2882,9 +2884,6 @@ msgstr "Uur"
 msgid "Hours"
 msgstr "Uren"
 
-msgid "Htaccess errors"
-msgstr "Htaccess-fouten"
-
 msgid "Htaccess group"
 msgstr "Htaccess-groep"
 
@@ -2907,6 +2906,9 @@ msgstr "Htaccess-gebruiker succesvol verwijderd uit de htaccess groep: %s"
 
 msgid "Htaccess user successfully scheduled for addition."
 msgstr "De htaccess-gebruiker wordt toegevoegd."
+
+msgid "Htaccess, htgroups and htpasswd errors"
+msgstr ""
 
 msgid "Http traffic"
 msgstr "HTTP-verkeer"
@@ -3324,7 +3326,7 @@ msgid "Mail usage"
 msgstr "Mailverbruik"
 
 msgid "Mailboxes quota info were synced."
-msgstr ""
+msgstr "Quota zijn ververst."
 
 msgid "Main menu labels visibility successfully updated."
 msgstr "Hoofdmenu-labels zichtbaarheid succesvol bijgewerkt."
@@ -3430,9 +3432,6 @@ msgstr "Minuut"
 
 msgid "Minutes"
 msgstr "Minuten"
-
-msgid "Missing domain"
-msgstr "Ontbrekend domein"
 
 msgid "Model"
 msgstr "Model"
@@ -5016,7 +5015,7 @@ msgid "Switch to user interface"
 msgstr "Verander van gebruiker"
 
 msgid "Sync quota info"
-msgstr ""
+msgstr "Synchroniseer quota-informatie"
 
 msgid "Syntax error found in mail forward list."
 msgstr "Syntaxis-fout gevonden in de doorstuurlijst."
@@ -6337,6 +6336,9 @@ msgstr "ontbrekende alias"
 
 msgid "missing domain"
 msgstr "ontbrekend domein"
+
+msgid "n/a"
+msgstr ""
 
 msgid "n\\a"
 msgstr "N/B"

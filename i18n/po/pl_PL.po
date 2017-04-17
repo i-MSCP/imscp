@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-08 16:05+0000\n"
+"POT-Creation-Date: 2017-04-17 11:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Alex_Joe <voxar@voxar.pl>, 2017\n"
 "Language-Team: Polish (Poland) (https://www.transifex.com/i-mscp/teams/576/pl_PL/)\n"
@@ -2864,9 +2864,6 @@ msgstr "Godzina"
 msgid "Hours"
 msgstr "Godziny"
 
-msgid "Htaccess errors"
-msgstr "Błędy htaccess"
-
 msgid "Htaccess group"
 msgstr "Grupa htaccess"
 
@@ -2889,6 +2886,9 @@ msgstr "Użytkownik htaccess pomyślnie usunięty z grupy %s."
 
 msgid "Htaccess user successfully scheduled for addition."
 msgstr "Użytkownik htaccess pomyślnie zaplanowany do dodania."
+
+msgid "Htaccess, htgroups and htpasswd errors"
+msgstr ""
 
 msgid "Http traffic"
 msgstr "Transfer HTTP"
@@ -3409,9 +3409,6 @@ msgstr "Minuta"
 
 msgid "Minutes"
 msgstr "Minuty"
-
-msgid "Missing domain"
-msgstr "Brakuje domeny"
 
 msgid "Model"
 msgstr "Model"
@@ -6281,6 +6278,9 @@ msgstr "brakuje aliasu"
 
 msgid "missing domain"
 msgstr "brakuje domeny"
+
+msgid "n/a"
+msgstr ""
 
 msgid "n\\a"
 msgstr "N/D"

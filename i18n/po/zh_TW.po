@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-08 16:05+0000\n"
+"POT-Creation-Date: 2017-04-17 11:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/i-mscp/teams/576/zh_TW/)\n"
@@ -2774,9 +2774,6 @@ msgstr "小時"
 msgid "Hours"
 msgstr "小時"
 
-msgid "Htaccess errors"
-msgstr "Htaccess 錯誤"
-
 msgid "Htaccess group"
 msgstr "Htaccess 群組"
 
@@ -2799,6 +2796,9 @@ msgstr "Htaccess 使用者已經成功從 %s htaccess 群組中刪除"
 
 msgid "Htaccess user successfully scheduled for addition."
 msgstr "新增 htaccess 使用者的排程已成功"
+
+msgid "Htaccess, htgroups and htpasswd errors"
+msgstr ""
 
 msgid "Http traffic"
 msgstr "HTTP 流量"
@@ -3304,9 +3304,6 @@ msgstr "分"
 
 msgid "Minutes"
 msgstr "分"
-
-msgid "Missing domain"
-msgstr "遺失網域"
 
 msgid "Model"
 msgstr "型號"
@@ -6062,6 +6059,9 @@ msgstr "遺失別名"
 
 msgid "missing domain"
 msgstr "遺失網域"
+
+msgid "n/a"
+msgstr ""
 
 msgid "n\\a"
 msgstr "空"

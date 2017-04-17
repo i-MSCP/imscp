@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-08 16:05+0000\n"
+"POT-Creation-Date: 2017-04-17 11:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Torsten Widmann <info@goover.de>, 2017\n"
 "Language-Team: English (United Kingdom) (https://www.transifex.com/i-mscp/teams/576/en_GB/)\n"
@@ -1046,7 +1046,7 @@ msgid "At least one intermediate certificate is invalid or missing."
 msgstr "At least one intermediate certificate is invalid or missing."
 
 msgid "At least one of your mailboxes is over quota."
-msgstr ""
+msgstr "At least one of your mailboxes is over quota."
 
 msgid "Authentication by group"
 msgstr "Authentication by group"
@@ -2705,6 +2705,8 @@ msgid ""
 "Force synching of mailboxes quota info. Quota info are automatically synced "
 "every 5 minutes."
 msgstr ""
+"Force synching of mailboxes quota info. Quota info are automatically synced "
+"every 5 minutes."
 
 msgid "Forward"
 msgstr "Forward"
@@ -2854,9 +2856,6 @@ msgstr "Hour"
 msgid "Hours"
 msgstr "Hours"
 
-msgid "Htaccess errors"
-msgstr "Htaccess errors"
-
 msgid "Htaccess group"
 msgstr "Htaccess group"
 
@@ -2879,6 +2878,9 @@ msgstr "Htaccess user successfully deleted from the %s htaccess group "
 
 msgid "Htaccess user successfully scheduled for addition."
 msgstr "Htaccess user successfully scheduled for addition."
+
+msgid "Htaccess, htgroups and htpasswd errors"
+msgstr ""
 
 msgid "Http traffic"
 msgstr "Http traffic"
@@ -3292,7 +3294,7 @@ msgid "Mail usage"
 msgstr "Mail usage"
 
 msgid "Mailboxes quota info were synced."
-msgstr ""
+msgstr "Mailboxes quota info were synced."
 
 msgid "Main menu labels visibility successfully updated."
 msgstr "Main menu labels visibility successfully updated."
@@ -3396,9 +3398,6 @@ msgstr "Minute"
 
 msgid "Minutes"
 msgstr "Minutes"
-
-msgid "Missing domain"
-msgstr "Missing domain"
 
 msgid "Model"
 msgstr "Model"
@@ -4960,7 +4959,7 @@ msgid "Switch to user interface"
 msgstr "Switch to user interface"
 
 msgid "Sync quota info"
-msgstr ""
+msgstr "Sync quota info"
 
 msgid "Syntax error found in mail forward list."
 msgstr "Syntax error found in mail forward list."
@@ -6261,6 +6260,9 @@ msgstr "missing alias"
 
 msgid "missing domain"
 msgstr "missing domain"
+
+msgid "n/a"
+msgstr ""
 
 msgid "n\\a"
 msgstr "N/A"

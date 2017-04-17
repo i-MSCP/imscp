@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-08 16:05+0000\n"
+"POT-Creation-Date: 2017-04-17 11:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jari <info@jkwebdesign.fi>, 2017\n"
 "Language-Team: Finnish (Finland) (https://www.transifex.com/i-mscp/teams/576/fi_FI/)\n"
@@ -2647,9 +2647,6 @@ msgstr "Tunti"
 msgid "Hours"
 msgstr "Tuntia"
 
-msgid "Htaccess errors"
-msgstr "htaccess -virheet"
-
 msgid "Htaccess group"
 msgstr "htaccess -ryhmä"
 
@@ -2672,6 +2669,9 @@ msgstr "htaccess -käyttäjä poistettu onnistuneesti htaccess -ryhmään %s"
 
 msgid "Htaccess user successfully scheduled for addition."
 msgstr "htaccess -käyttäjä ajastettu lisättäväksi onnistuneesti."
+
+msgid "Htaccess, htgroups and htpasswd errors"
+msgstr ""
 
 msgid "Http traffic"
 msgstr "http-liikenne"
@@ -3189,9 +3189,6 @@ msgstr "Minuttia"
 
 msgid "Minutes"
 msgstr "Minuttia"
-
-msgid "Missing domain"
-msgstr "Puuttuva domain"
 
 msgid "Model"
 msgstr "Malli"
@@ -6007,6 +6004,9 @@ msgstr "puuttuva alias"
 
 msgid "missing domain"
 msgstr "puuttuva domain"
+
+msgid "n/a"
+msgstr ""
 
 msgid "n\\a"
 msgstr "N/A"

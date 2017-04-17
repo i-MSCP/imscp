@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-08 16:05+0000\n"
+"POT-Creation-Date: 2017-04-17 11:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Jefferson Santana Siqueira <linuxpowerbr@gmail.com>, 2017\n"
+"Last-Translator: Alan Lira <atglira@gmail.com>, 2017\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/i-mscp/teams/576/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,14 +32,16 @@ msgid ""
 "$ORIGIN is automatically appended to unqualified names, hosts and canonical "
 "names"
 msgstr ""
+"$ORIGIN é adicionada automaticamente para nomes não qualificados, hosts e "
+"nomes canônicos"
 
 #, php-format
 msgid "$ORIGIN value is currently set to: %s"
-msgstr ""
+msgstr "$ORIGIN esta configurado atualmente para: %s"
 
 #, php-format
 msgid "%%s must be lower than %%s."
-msgstr ""
+msgstr "%%s deve ser menor que %%s."
 
 #, php-format
 msgid "%1$d / %2$d"
@@ -115,7 +117,7 @@ msgstr "%1$s%% [%2$s de ilimitado]"
 
 #, php-format
 msgid "%1$ss - Software"
-msgstr ""
+msgstr "%1$ss - Software"
 
 #, php-format
 msgid "%d %s remaining until account expiration"
@@ -155,7 +157,7 @@ msgstr "A conta %s foi excluída com sucesso."
 
 #, php-format
 msgid "%s doens't look like an i-MSCP plugin archive."
-msgstr ""
+msgstr "%s não aparenta ser um i-MSCP plugin archive."
 
 #, php-format
 msgid "%s doesn't exist or is empty."
@@ -213,6 +215,7 @@ msgstr "%s: Este revendedor tem cliente(s) com itens ilimitados."
 msgid ""
 "%s: You cannot disable a service already consumed by reseller's customers."
 msgstr ""
+"%s: Você não pode desabilitar o serviço de um cliente de outro revendedor."
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
@@ -437,19 +440,23 @@ msgstr "(geralmente chamado"
 
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
-msgstr ""
+msgstr "<b>%1$s</b> possui direitos ilimitados para o serviço <b>%2$s</b><br>"
 
 #, php-format
 msgid ""
 "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
 "reseller.<br>"
 msgstr ""
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
+"reseller.<br>"
 
 #, php-format
 msgid ""
 "<b>%s</b> has IP address that cannot be managed from the destination "
 "reseller!<br>This user cannot be moved!"
 msgstr ""
+"<b>%s</b> possui um endereço IP que não pode ser gerenciado por este "
+"revendedor!<br>Esse usuário não pode ser movido!"
 
 msgid "A PHP extension stopped the file upload."
 msgstr "A extensão do PHP parou o upload do arquivo."
@@ -464,10 +471,10 @@ msgid "A new i-MSCP version is available"
 msgstr "Uma nova versão do i-MSCP está disponível!"
 
 msgid "A new software package has been uploaded"
-msgstr ""
+msgstr "Um novo pacote de software foi submetido"
 
 msgid "A task is in progress for this htuser."
-msgstr ""
+msgstr "Uma atividade esta em progresso para o htuser"
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Acesse suas estatísticas de domínio através da interface web."
@@ -805,6 +812,8 @@ msgid ""
 "After your upload the package it will be installed on your "
 "systems.<br>Refresh your site to see the new status!"
 msgstr ""
+"Após enviar o pacote ele será instalado no sistema.<br>Atualize seu site "
+"para ver o novo status!"
 
 msgid "Alias forward"
 msgstr "Alias encaminhamento"
@@ -828,19 +837,19 @@ msgid "All closed tickets were successfully deleted."
 msgstr "Todos os chamados fechados foram excluídos com sucesso"
 
 msgid "All errors (Development)"
-msgstr ""
+msgstr "Todos os erros (Desenvolvimento)"
 
 msgid "All errors, except E_DEPRECATED and E_STRICT (Production)"
-msgstr ""
+msgstr "Todos os erros, exceto E_DEPRECATED e E_STRICT (Produção)"
 
 msgid "All errors, except E_NOTICES, E_STRICT AND E_DEPRECATED (Default)"
-msgstr ""
+msgstr "Todos os erros, exceto E_NOTICES, E_STRICT e E_DEPRECATED (Padrão)"
 
 msgid "All fields are required."
 msgstr "Todos os campos são obrigatórios."
 
 msgid "All fields are valid."
-msgstr ""
+msgstr "Todos os campos são válidos."
 
 msgid "All in"
 msgstr "Todo tráfego de entrada"
@@ -868,6 +877,8 @@ msgstr "Permitir URL fopen"
 
 msgid "Allows to forward any request made to this domain to a specific URL."
 msgstr ""
+"Permite redirecionar qualquer solicitação feita à esse domínio para outra "
+"URL."
 
 msgid "Allows to share the mount point of another domain."
 msgstr "Permite compartilhar o ponto de montagem de outro domínio ."
@@ -876,10 +887,10 @@ msgid "Already in use"
 msgstr "Em uso"
 
 msgid "Alt. URL"
-msgstr ""
+msgstr "Alt. URL"
 
 msgid "Alternate URL to reach your website."
-msgstr ""
+msgstr "URL alternativo para acessar seu website."
 
 msgid "Alternative URL to reach your website"
 msgstr "URL alternativa para chegar ao seu site"
@@ -960,6 +971,7 @@ msgstr "Tem certeza que deseja excluir todos os chamados fechados?"
 
 msgid "Are you sure you want to delete all selected mail accounts?"
 msgstr ""
+"Você tem certeza que deseja deletar todas as contas de e-mail selecionadas?"
 
 msgid "Are you sure you want to delete all tickets?"
 msgstr "Tem certeza que você deseja excluir todos os chamados?"
@@ -986,7 +998,7 @@ msgstr "Tem certeza que você deseja apagar o menu %s?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s user?"
-msgstr ""
+msgstr "Você tem certeza que deseja deletar o usuário %s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -994,30 +1006,30 @@ msgstr "Tem certeza que você deseja excluir o chamado '%s' ?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s' IP address?"
-msgstr ""
+msgstr "Você tem certeza que deseja deletar o endereço IP `%%s' ?"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` FTP user?"
-msgstr ""
+msgstr "`%%s'"
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` protected area?"
-msgstr ""
+msgstr "Você tem certeza que deseja deletar a área protegida `%%s` ?"
 
 msgid "Are you sure you want to delete this DNS record?"
-msgstr ""
+msgstr "Você tem certeza que deseja deletar este registro DNS?"
 
 msgid "Are you sure you want to delete this domain alias?"
-msgstr ""
+msgstr "Você tem certeza que deseja deletar este alias de domínio?"
 
 msgid "Are you sure you want to delete this hosting plan?"
-msgstr ""
+msgstr "Você tem certeza que deseja deletar este plano de hospedagem?"
 
 msgid "Are you sure you want to delete this package?"
 msgstr "Tem certeza que deseja excluir este pacote?"
 
 msgid "Are you sure you want to delete this subdomain?"
-msgstr ""
+msgstr "Você tem certeza que deseja deletar este subdomínio?"
 
 msgid ""
 "Are you sure you want to import this package into the local software "
@@ -1051,13 +1063,13 @@ msgid "Assign group"
 msgstr "Atribuir grupo"
 
 msgid "Assigned to at least one reseller"
-msgstr ""
+msgstr "Atribuído a pelo menos um revendedor"
 
 msgid "At least one intermediate certificate is invalid or missing."
 msgstr "Pelo menos um certificado intermediário é inválido ou está faltando."
 
 msgid "At least one of your mailboxes is over quota."
-msgstr ""
+msgstr "Ao menos uma de suas caixas de e-mail estão acima da capacidade."
 
 msgid "Authentication by group"
 msgstr "Autenticação por grupo"
@@ -1066,10 +1078,10 @@ msgid "Authentication by user"
 msgstr "Autenticação por usuário"
 
 msgid "Authentication users"
-msgstr ""
+msgstr "Autenticação de usuários"
 
 msgid "Authentication users/groups"
-msgstr ""
+msgstr "Autenticação de usuários/grupos"
 
 msgid "Auto"
 msgstr "Auto"
@@ -1134,6 +1146,10 @@ msgid ""
 "server to relay your mail through your own mail server, but that no DNS "
 "record is created for it."
 msgstr ""
+"Abaixo, você pode ativar e funcionalidade de e-mail externo para um ou mais "
+"domínios. Observe que ativando a funcionalidade de e-mail externo configura "
+"o seu servidor para retransmitir seu e-mail através do seu próprio servidor "
+"de e-mail, mas nenhum registro no DNS é criado."
 
 msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
@@ -1178,7 +1194,7 @@ msgstr "Cache"
 
 #, php-format
 msgid "Can edit the PHP %s configuration option"
-msgstr ""
+msgstr "Pode editar as opções de configuração do PHP %s "
 
 #, php-format
 msgid "Can use the PHP %s function"
@@ -2712,9 +2728,6 @@ msgstr "Hora"
 msgid "Hours"
 msgstr "Horas"
 
-msgid "Htaccess errors"
-msgstr "Htaccess errors"
-
 msgid "Htaccess group"
 msgstr "Grupo htaccess"
 
@@ -2737,6 +2750,9 @@ msgstr "Htaccess usuário excluído com sucesso do grupo %s htaccess"
 
 msgid "Htaccess user successfully scheduled for addition."
 msgstr "Usuário htaccess agendado para inclusão com sucesso."
+
+msgid "Htaccess, htgroups and htpasswd errors"
+msgstr ""
 
 msgid "Http traffic"
 msgstr "Tráfico HTTP"
@@ -3249,9 +3265,6 @@ msgstr "Minuto"
 
 msgid "Minutes"
 msgstr "Minutos"
-
-msgid "Missing domain"
-msgstr "Domínio faltando"
 
 msgid "Model"
 msgstr "Modelo"
@@ -6067,6 +6080,9 @@ msgstr "alias faltando"
 
 msgid "missing domain"
 msgstr "domínio faltando"
+
+msgid "n/a"
+msgstr ""
 
 msgid "n\\a"
 msgstr "n\\a"

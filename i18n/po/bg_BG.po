@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-08 16:05+0000\n"
+"POT-Creation-Date: 2017-04-17 11:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Al Indjov <al@indjov.info>, 2017\n"
 "Language-Team: Bulgarian (Bulgaria) (https://www.transifex.com/i-mscp/teams/576/bg_BG/)\n"
@@ -2666,9 +2666,6 @@ msgstr "Час"
 msgid "Hours"
 msgstr "Часове"
 
-msgid "Htaccess errors"
-msgstr "грешки Htaccess"
-
 msgid "Htaccess group"
 msgstr "Група Htaccess"
 
@@ -2690,6 +2687,9 @@ msgid "Htaccess user successfully deleted from the %s htaccess group "
 msgstr ""
 
 msgid "Htaccess user successfully scheduled for addition."
+msgstr ""
+
+msgid "Htaccess, htgroups and htpasswd errors"
 msgstr ""
 
 msgid "Http traffic"
@@ -3198,9 +3198,6 @@ msgstr "Минута"
 
 msgid "Minutes"
 msgstr "Минути"
-
-msgid "Missing domain"
-msgstr "Липсва Домейн"
 
 msgid "Model"
 msgstr "Модел"
@@ -5955,6 +5952,9 @@ msgstr "Липсва псевдоним"
 
 msgid "missing domain"
 msgstr "Липсва Домейн"
+
+msgid "n/a"
+msgstr ""
 
 msgid "n\\a"
 msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-08 16:05+0000\n"
+"POT-Creation-Date: 2017-04-17 11:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Japanese (Japan) (https://www.transifex.com/i-mscp/teams/576/ja_JP/)\n"
@@ -2783,9 +2783,6 @@ msgstr "時間"
 msgid "Hours"
 msgstr "時"
 
-msgid "Htaccess errors"
-msgstr "Htaccessエラー"
-
 msgid "Htaccess group"
 msgstr "Htaccess グループ"
 
@@ -2808,6 +2805,9 @@ msgstr "htaccessユーザーが %s htaccessグループから削除しました"
 
 msgid "Htaccess user successfully scheduled for addition."
 msgstr "Htaccessユーザーの追加が予定されました。"
+
+msgid "Htaccess, htgroups and htpasswd errors"
+msgstr ""
 
 msgid "Http traffic"
 msgstr "Http トラフィック"
@@ -3314,9 +3314,6 @@ msgstr "分"
 
 msgid "Minutes"
 msgstr "分"
-
-msgid "Missing domain"
-msgstr "ドメインが見つからない"
 
 msgid "Model"
 msgstr "モデル"
@@ -6083,6 +6080,9 @@ msgstr "エイリアスが見つからない"
 
 msgid "missing domain"
 msgstr "ドメインが見つからない"
+
+msgid "n/a"
+msgstr ""
 
 msgid "n\\a"
 msgstr "n\\a"

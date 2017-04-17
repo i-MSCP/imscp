@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.3.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-08 16:05+0000\n"
+"POT-Creation-Date: 2017-04-17 11:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>, 2017\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/i-mscp/teams/576/zh_CN/)\n"
@@ -2627,9 +2627,6 @@ msgstr "小时"
 msgid "Hours"
 msgstr ""
 
-msgid "Htaccess errors"
-msgstr ""
-
 msgid "Htaccess group"
 msgstr ""
 
@@ -2651,6 +2648,9 @@ msgid "Htaccess user successfully deleted from the %s htaccess group "
 msgstr ""
 
 msgid "Htaccess user successfully scheduled for addition."
+msgstr ""
+
+msgid "Htaccess, htgroups and htpasswd errors"
 msgstr ""
 
 msgid "Http traffic"
@@ -3156,9 +3156,6 @@ msgid "Minute"
 msgstr ""
 
 msgid "Minutes"
-msgstr ""
-
-msgid "Missing domain"
 msgstr ""
 
 msgid "Model"
@@ -5904,6 +5901,9 @@ msgid "missing alias"
 msgstr ""
 
 msgid "missing domain"
+msgstr ""
+
+msgid "n/a"
 msgstr ""
 
 msgid "n\\a"
