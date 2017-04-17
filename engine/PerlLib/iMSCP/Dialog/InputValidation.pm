@@ -448,12 +448,18 @@ sub isAvailableSqlUser ( $ )
     my $username = shift;
 
     my $db = iMSCP::Database->factory( );
-    my $oldDatabase = $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME') );
+
+    local $@;
+    my $oldDatabase = eval { $ db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME') ); };
+    if ($@) {
+        return 1 if $@ =~ /unknown database/i; # On fresh installation, there is no database yet
+        die($@);
+    }
 
     my $qrs = $db->doQuery( 1, 'SELECT 1 FROM sql_user WHERE sqlu_name = ? LIMIT 1', $username );
     ref $qrs eq 'HASH' or die( $qrs );
 
-    $db->useDatabase( $oldDatabase );
+    $db->useDatabase( $oldDatabase ) if $oldDatabase;
 
     return 1 unless %{$qrs};
 
