@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2017.04.16
+# Last update: 2017.04.17
 
 %main::questions = (
     #
@@ -80,18 +80,18 @@
     # i-MSCP Master SQL user
     # That is the primary SQL user for i-MSCP. It is used to connect to database
     # and create/delete SQL users for your customers.
-    # Note that the root, debian-sys-maint and mysql.user SQL users are not
-    # allowed.
+    # Note that the debian-sys-maint, imscp_srv_user, mysql.user, root and
+    # vlogger_user SQL users are not allowed.
     DATABASE_USER                       => 'imscp_user',
     # Only ASCII alphabet characters and numbers are allowed in password.
     # Leave this parameter empty for automatic password generation.
     DATABASE_PASSWORD                   => '',
 
-    # Database user host for SQL user created by i-MSCP
+    # Database user host (only relevant for remote SQL server)
     # That is the host from which SQL users created by i-MSCP are allowed to
     # connect to the SQL server.
     # Possible values: A valid hostname or IP address
-    DATABASE_USER_HOST                  => 'localhost',
+    DATABASE_USER_HOST                  => '',
 
     # Enable or disable prefix/suffix for customer SQL database names
     # Possible values: behind, infront, none
@@ -216,7 +216,7 @@
 
     # FTP SQL user
     # Only ASCII alphabet characters and numbers are allowed in password.
-    FTPD_SQL_USER                       => 'vftp_user',
+    FTPD_SQL_USER                       => 'imscp_srv_user',
     # Only ASCII alphabet characters and numbers are allowed in password.
     # Leave this parameter empty for automatic password generation.
     FTPD_SQL_PASSWORD                   => '',
@@ -244,7 +244,7 @@
 
     # Authdaemon SQL user
     # Only ASCII alphabet characters and numbers are allowed in password.
-    AUTHDAEMON_SQL_USER                 => 'authdaemon_user',
+    AUTHDAEMON_SQL_USER                 => 'imscp_srv_user',
     # Only ASCII alphabet characters and numbers are allowed in password.
     # Leave this parameter empty for automatic password generation.
     AUTHDAEMON_SQL_PASSWORD             => '',
@@ -252,7 +252,7 @@
     # Dovecot SQL user
     # Only relevant with 'dovecot' server implementation
     # Only ASCII alphabet characters and numbers are allowed in password.
-    DOVECOT_SQL_USER                    => 'dovecot_user',
+    DOVECOT_SQL_USER                    => 'imscp_srv_user',
     # Only ASCII alphabet characters and numbers are allowed in password.
     # Leave this parameter empty for automatic password generation.
     DOVECOT_SQL_PASSWORD                => '',
@@ -299,7 +299,7 @@
     FILEMANAGER_PACKAGE                 => 'MonstaFTP',
 
     # SQL user for PhpMyAdmin
-    PHPMYADMIN_SQL_USER                 => 'pma_user',
+    PHPMYADMIN_SQL_USER                 => 'imscp_srv_user',
     # Only ASCII alphabet characters and numbers are allowed in password.
     # Leave this parameter empty for automatic password generation.
     PHPMYADMIN_SQL_PASSWORD             => '',
@@ -309,13 +309,13 @@
     WEBMAIL_PACKAGES                    => 'RainLoop,Roundcube',
 
     # SQL user for Roundcube package (only if you use Roundcube)
-    ROUNDCUBE_SQL_USER                  => 'roundcube_user',
+    ROUNDCUBE_SQL_USER                  => 'imscp_srv_user',
     # Only ASCII alphabet characters and numbers are allowed in password.
     # Leave this parameter empty for automatic password generation.
     ROUNDCUBE_SQL_PASSWORD              => '',
 
     # SQL user for Rainloop package (only relevant if you use Rainloop)
-    RAINLOOP_SQL_USER                   => 'rainloop_user',
+    RAINLOOP_SQL_USER                   => 'imscp_srv_user',
     # Only ASCII alphabet characters and numbers are allowed in password.
     # Leave this parameter empty for automatic password generation.
     RAINLOOP_SQL_PASSWORD               => '',

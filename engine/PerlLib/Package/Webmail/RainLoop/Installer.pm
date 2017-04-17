@@ -45,7 +45,6 @@ use parent 'Common::SingletonClass';
 our $VERSION = '0.1.0.*@dev';
 
 %main::sqlUsers = () unless %main::sqlUsers;
-@main::createdSqlUsers = () unless @main::createdSqlUsers;
 
 =head1 DESCRIPTION
 
@@ -71,7 +70,10 @@ sub showDialog
     my ($self, $dialog) = @_;
 
     my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER' );
-    my $dbUser = main::setupGetQuestion('RAINLOOP_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || 'rainloop_user');
+    my $dbUser = main::setupGetQuestion(
+        'RAINLOOP_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || 'imscp_srv_user'
+    );
+    my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
     my $dbPass = main::setupGetQuestion(
         'RAINLOOP_SQL_PASSWORD',
         ((iMSCP::Getopt->preseed) ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'})
@@ -79,8 +81,9 @@ sub showDialog
 
     if ($main::reconfigure =~ /^(?:webmails|all|forced)$/
         || !isValidUsername( $dbUser )
-        || !isStringNotInList($dbUser, 'root', 'debian-sys-maint', $masterSqlUser)
+        || !isStringNotInList( $dbUser, 'root', 'debian-sys-maint', $masterSqlUser, 'vlogger_user' )
         || !isValidPassword( $dbPass )
+        || !isAvailableSqlUser( $dbUser )
     ) {
         my ($rs, $msg) = (0, '');
 
@@ -91,14 +94,15 @@ Please enter a username for the RainLoop SQL user:$msg
 EOF
             $msg = '';
             if (!isValidUsername( $dbUser )
-                || !isStringNotInList( $dbUser, 'root', 'debian-sys-maint', $masterSqlUser )
+                || !isStringNotInList( $dbUser, 'root', 'debian-sys-maint', $masterSqlUser, 'vlogger_user' )
+                || !isAvailableSqlUser( $dbUser )
             ) {
                 $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             }
         } while $rs < 30 && $msg;
         return $rs if $rs >= 30;
 
-        if (isStringNotInList( $dbUser, keys %main::sqlUsers )) {
+        unless (defined $main::sqlUsers{$dbUser.'@'.$dbUserHost}) {
             do {
                 ($rs, $dbPass) = $dialog->inputbox( <<"EOF", $dbPass || randomStr( 16, iMSCP::Crypt::ALNUM ) );
 
@@ -107,14 +111,19 @@ EOF
                 $msg = isValidPassword( $dbPass ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
             } while $rs < 30 && $msg;
             return $rs if $rs >= 30;
+
+            $main::sqlUsers{$dbUser.'@'.$dbUserHost} = $dbPass;
         } else {
-            $dbPass = $main::sqlUsers{$dbUser};
+            $dbPass = $main::sqlUsers{$dbUser.'@'.$dbUserHost};
         }
+    } elsif (defined $main::sqlUsers{$dbUser.'@'.$dbUserHost}) {
+        $dbPass = $main::sqlUsers{$dbUser.'@'.$dbUserHost};
+    } else {
+        $main::sqlUsers{$dbUser.'@'.$dbUserHost} = $dbPass;
     }
 
     main::setupSetQuestion( 'RAINLOOP_SQL_USER', $dbUser );
     main::setupSetQuestion( 'RAINLOOP_SQL_PASSWORD', $dbPass );
-    $main::sqlUsers{$dbUser} = $dbPass;
     0;
 }
 
@@ -340,19 +349,23 @@ sub _setupDatabase
         return 1;
     }
 
+    # Drop old SQL user if required
     for my $sqlUser ($dbOldUser, $dbUser) {
-        next if !$sqlUser || grep($_ eq "$sqlUser\@$dbUserHost", @main::createdSqlUsers);
+        next unless $sqlUser;
+
         for my $host($dbUserHost, $oldDbUserHost) {
-            next unless $host;
+            next if !$host
+                || (exists $main::sqlUsers{$sqlUser.'@'.$host} && !defined $main::sqlUsers{$sqlUser.'@'.$host});
+
             $sqlServer->dropUser( $sqlUser, $host );
         }
     }
 
-    # Create SQL user if not already created by another server/package installer
-    unless (grep($_ eq "$dbUser\@$dbUserHost", @main::createdSqlUsers)) {
+    # Create SQL user if required
+    if (defined $main::sqlUsers{$dbUser.'@'.$dbUserHost}) {
         debug( sprintf( 'Creating %s@%s SQL user', $dbUser, $dbUserHost ) );
         $sqlServer->createUser( $dbUser, $dbUserHost, $dbPass );
-        push @main::createdSqlUsers, "$dbUser\@$dbUserHost";
+        $main::sqlUsers{$dbUser.'@'.$dbUserHost} = undef;
     }
 
     # Give required privileges to this SQL user

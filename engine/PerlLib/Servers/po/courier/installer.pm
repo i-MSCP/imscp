@@ -48,7 +48,6 @@ use Servers::sqld;
 use parent 'Common::SingletonClass';
 
 %main::sqlUsers = ( ) unless %main::sqlUsers;
-@main::createdSqlUsers = ( ) unless @main::createdSqlUsers;
 
 =head1 DESCRIPTION
 
@@ -97,8 +96,9 @@ sub authdaemonSqlUserDialog
 
     my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER' );
     my $dbUser = main::setupGetQuestion(
-        'AUTHDAEMON_SQL_USER', $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} || 'authdaemon_user'
+        'AUTHDAEMON_SQL_USER', $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} || 'imscp_srv_user'
     );
+    my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
     my $dbPass = main::setupGetQuestion(
         'AUTHDAEMON_SQL_PASSWORD',
         ((iMSCP::Getopt->preseed)
@@ -108,8 +108,9 @@ sub authdaemonSqlUserDialog
 
     if ($main::reconfigure =~ /^(?:po|servers|all|forced)$/
         || !isValidUsername( $dbUser )
-        || !isStringNotInList( $dbUser, 'root', 'debian-sys-maint', $masterSqlUser )
+        || !isStringNotInList( $dbUser, 'root', 'debian-sys-maint', $masterSqlUser, 'vlogger_user' )
         || !isValidPassword( $dbPass )
+        || !isAvailableSqlUser( $dbUser )
     ) {
         my ($rs, $msg) = (0, '');
 
@@ -120,14 +121,15 @@ Please enter an username for the Courier Authdaemon SQL user:$msg
 EOF
             $msg = '';
             if (!isValidUsername( $dbUser )
-                || !isStringNotInList( $dbUser, 'root', 'debian-sys-maint', $masterSqlUser )
+                || !isStringNotInList( $dbUser, 'root', 'debian-sys-maint', $masterSqlUser, 'vlogger_user' )
+                || !isAvailableSqlUser( $dbUser )
             ) {
                 $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             }
         } while $rs < 30 && $msg;
         return $rs if $rs >= 30;
 
-        if (isStringNotInList( $dbUser, keys %main::sqlUsers )) {
+        unless (defined $main::sqlUsers{$dbUser.'@'.$dbUserHost}) {
             do {
                 ($rs, $dbPass) = $dialog->inputbox( <<"EOF", $dbPass || randomStr( 16, iMSCP::Crypt::ALNUM ) );
 
@@ -136,14 +138,19 @@ EOF
                 $msg = isValidPassword( $dbPass ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
             } while $rs < 30 && $msg;
             return $rs if $rs >= 30;
+
+            $main::sqlUsers{$dbUser.'@'.$dbUserHost} = $dbPass;
         } else {
-            $dbPass = $main::sqlUsers{$dbUser};
+            $dbPass = $main::sqlUsers{$dbUser.'@'.$dbUserHost};
         }
+    } elsif (defined $main::sqlUsers{$dbUser.'@'.$dbUserHost}) {
+        $dbPass = $main::sqlUsers{$dbUser.'@'.$dbUserHost};
+    } else {
+        $main::sqlUsers{$dbUser.'@'.$dbUserHost} = $dbPass;
     }
 
     main::setupSetQuestion( 'AUTHDAEMON_SQL_USER', $dbUser );
     main::setupSetQuestion( 'AUTHDAEMON_SQL_PASSWORD', $dbPass );
-    $main::sqlUsers{$dbUser} = $dbPass;
     0;
 }
 
@@ -313,22 +320,25 @@ sub _setupAuthdaemonSqlUser
     );
     return $rs if $rs;
 
+    # Drop old SQL user if required
     for my $sqlUser ($dbOldUser, $dbUser) {
-        next if !$sqlUser || grep($_ eq "$sqlUser\@$dbUserHost", @main::createdSqlUsers);
+        next unless $sqlUser;
 
         for my $host($dbUserHost, $oldDbUserHost) {
-            next unless $host;
+            next if !$host
+                || (exists $main::sqlUsers{$sqlUser.'@'.$host} && !defined $main::sqlUsers{$sqlUser.'@'.$host});
+
             $sqlServer->dropUser( $sqlUser, $host );
         }
     }
 
     my $db = iMSCP::Database->factory( );
 
-    # Create SQL user if not already created by another server/package installer
-    unless (grep($_ eq "$dbUser\@$dbUserHost", @main::createdSqlUsers)) {
+    # Create SQL user if required
+    if (defined $main::sqlUsers{$dbUser.'@'.$dbUserHost}) {
         debug( sprintf( 'Creating %s@%s SQL user', $dbUser, $dbUserHost ) );
         $sqlServer->createUser( $dbUser, $dbUserHost, $dbPass );
-        push @main::createdSqlUsers, "$dbUser\@$dbUserHost";
+        $main::sqlUsers{$dbUser.'@'.$dbUserHost} = undef;
     }
 
     # Give required privileges to this SQL user

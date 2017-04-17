@@ -40,9 +40,6 @@ use Servers::mta::postfix;
 use version;
 use parent 'Common::SingletonClass';
 
-%main::sqlUsers = () unless %main::sqlUsers;
-@main::createdSqlUsers = () unless @main::createdSqlUsers;
-
 =head1 DESCRIPTION
 
  i-MSCP Postfix MTA server installer implementation.

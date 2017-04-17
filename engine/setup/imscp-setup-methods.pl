@@ -443,7 +443,7 @@ sub askMasterSqlUser
         || !isNotEmpty( $hostname )
         || !isNotEmpty( $port )
         || !isNotEmpty( $user )
-        || !isStringNotInList( $user, 'debian-sys-maint', 'root', 'mysql.user' )
+        || !isStringNotInList( $user, 'debian-sys-maint', 'imscp_srv_user', 'mysql.user', 'root', 'vlogger_user' )
         || !isNotEmpty( $pwd )
         || (!iMSCP::Getopt->preseed && tryDbConnect( $hostname, $port, $user, $pwd ))
     ) {
@@ -458,7 +458,7 @@ Please enter a username for the master i-MSCP SQL user:$msg
 EOF
             $msg = '';
             if(!isValidUsername( $user )
-                || !isStringNotInList( $user, 'debian-sys-maint', 'root', 'mysql.user' )
+                || !isStringNotInList( $user, 'debian-sys-maint', 'imscp_srv_user', 'mysql.user', 'root', 'vlogger_user' )
             ) {
                 $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             }

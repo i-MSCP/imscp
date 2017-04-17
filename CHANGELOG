@@ -30,6 +30,8 @@ FRONTEND
     Readded: Mailboxes quota usage information (Client interface)
 
 INSTALLER
+    Changed: Default SQL user for servers/packages now set to `imscp_srv_user'
+    Fixed: `Access denied...' SQL error when reusing same SQL user for all i-MSCP servers/packages
     Fixed: Allow for automatic generation of the passwords (whenever possible) in preseeding mode
     Fixed: Allow for automatic detection of the server public IP address in preseeding mode
     Fixed: Allow for automatic detection of the timezone in preseeding mode
@@ -37,7 +39,8 @@ INSTALLER
     Fixed: Configures getaddrinfo(3) to prefer IPv4 during setup and update phases
     Fixed: Determines debconf question owners/names for SQL server by parsing debconf-get-selections output
     Fixed: Enforce usage of values from preseed.pl file in preseeding mode, even on reconfiguration
-    Readded: Courier alternative for IMAP/POP servers (Debian Stretch
+    Fixed: Make sure that SQL users set for i-MSCP servers/packages are not already used by customers
+    Readded: Courier alternative for IMAP/POP servers (Debian Stretch)
 
 LISTENERS
     Updated: Add Referrer-Policy header to 40_apache2_security_headers.pl listener file

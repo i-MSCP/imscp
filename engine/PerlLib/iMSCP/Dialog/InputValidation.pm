@@ -28,12 +28,14 @@ use warnings;
 use Data::Validate::Domain qw/ is_domain is_hostname /;
 use DateTime::TimeZone;
 use Email::Valid;
+use iMSCP::Database;
 use iMSCP::Net;
 use Net::LibIDN qw/ idn_to_ascii /;
 use parent 'Exporter';
 
 our @EXPORT = qw/isValidUsername isValidPassword isValidEmail isValidHostname isValidDomain isValidIpAddr
-    isValidTimezone isValidDbName isNumber isNumberInRange isStringNotInList isValidNumberRange isNotEmpty/;
+    isValidTimezone isValidDbName isNumber isNumberInRange isStringNotInList isValidNumberRange isNotEmpty
+    isAvailableSqlUser/;
 
 our $lastValidationError = '';
 
@@ -408,7 +410,7 @@ EOF
 
  Is the given string not an empty string?
 
- Param string string String
+ Param string $string String
  Return bool TRUE if the given string is not empty, FALSE otherwise
 
 =cut
@@ -423,6 +425,44 @@ sub isNotEmpty( $ )
 
 
 \\Z1Entry cannot be empty.\\Zn
+
+Please try again:
+EOF
+
+    0;
+}
+
+=item isAvailableSqlUser( $username )
+
+ Is the given SQL user available?
+
+ This routine make sure that the given SQL user is not already used by a customer.
+
+ Param string $username SQL username
+ Return bool TRUE if the given SQL user is available, FALSE otherwise
+
+=cut
+
+sub isAvailableSqlUser ( $ )
+{
+    my $username = shift;
+
+    my $db = iMSCP::Database->factory( );
+    my $oldDatabase = $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME') );
+
+    my $qrs = $db->doQuery( 1, 'SELECT 1 FROM sql_user WHERE sqlu_name = ? LIMIT 1', $username );
+    ref $qrs eq 'HASH' or die( $qrs );
+
+    $db->useDatabase( $oldDatabase );
+
+    return 1 unless %{$qrs};
+
+    $lastValidationError = <<"EOF";
+
+
+\\Z1Invalid SQL username.\\Zn
+
+ - The given SQL user is already used by one of your customers.
 
 Please try again:
 EOF
