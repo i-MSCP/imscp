@@ -1,8 +1,11 @@
 ﻿i-MSCP ChangeLog
 
 ------------------------------------------------------------------------------------------------------------------------
-Git 1.4.x
+1.4.3
 ------------------------------------------------------------------------------------------------------------------------
+
+2017-04-17: Laurent Declercq
+    RELEASE i-MSCP 1.4.3
 
 CONFIG
     Added: `class', `default' and `description' attributes in distribution packages files for service alternatives
