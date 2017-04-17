@@ -1,6 +1,6 @@
 ## i-MSCP installation on Ubuntu
 
-### 1) Requirements
+### Requirements
 
 - 1 GHz or faster 32 bits (x86) or 64 bits (x64) processor
 - 1 Gio memory (minimum) - For heavily loaded servers or high flow is recommended at least 8 Gio
@@ -79,16 +79,15 @@ Note that these operations must be done on the host, not in the container.
 
 Any LTS version >= 14.04 (Ubuntu 16.04 recommended)
 
-### 2) i-MSCP Installation
+### i-MSCP Installation
 
-#### 1. Make sure that your system is up-to-date
+#### 1. Make sure that your distribution is up-to-date
 
-    # apt-get update
-    # apt-get --no-install-recommends dist-upgrade
+    # apt-get update && apt-get --assume-yes --auto-remove --no-install-recommends dist-upgrade
 
 #### 2. Install the pre-required packages
 
-    # apt-get --no-install-recommends install ca-certificates perl wget whiptail
+    # apt-get --assume-yes --auto-remove --no-install-recommends install ca-certificates perl wget whiptail
 
 #### 3. Download and untar the distribution files
 
@@ -104,7 +103,7 @@ Any LTS version >= 14.04 (Ubuntu 16.04 recommended)
 
     # perl imscp-autoinstall -d
 
-### 3) i-MSCP Upgrade
+### i-MSCP Upgrade
 
 #### 1. Make sure to read the errata file
 
@@ -123,10 +122,9 @@ Before any upgrade attempt it is highly recommended to perform a backup of the f
 Those directories hold the data of your customers and it is really important to backup them for an easy recovering in
 case something goes wrong during upgrade.
 
-#### 3. Make sure that your system is up-to-date
+#### 3. Make sure that your distribution is up-to-date
 
-    # apt-get update
-    # apt-get dist-upgrade
+    # apt-get update && apt-get --assume-yes --auto-remove --no-install-recommends dist-upgrade
 
 #### 4. Download and untar the distribution files
 
