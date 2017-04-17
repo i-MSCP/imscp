@@ -92,12 +92,12 @@ Any LTS version >= 14.04 (Ubuntu 16.04 recommended)
 #### 3. Download and untar the distribution files
 
     # cd /usr/local/src
-    # wget https://github.com/i-MSCP/imscp/archive/1.4.3.tar.gz
-    # tar -xzf 1.4.3.tar.gz
+    # wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
+    # tar -xzf <version>.tar.gz
 
 #### 4. Change to the newly created directory
 
-    # cd imscp-1.4.3
+    # cd imscp-<version>
 
 #### 5. Install i-MSCP by running its installer
 
@@ -110,7 +110,7 @@ Any LTS version >= 14.04 (Ubuntu 16.04 recommended)
 Before upgrading your must read the errata file which describ information about changes made in new i-MSCP versions,
 and any pre-task that must be done by the administrator before upgrading.
 
-The errata file for this i-MSCP version is located at: https://github.com/i-MSCP/imscp/blob/1.4.3/docs/1.4.x_errata.md
+The errata file for this i-MSCP version is located at: https://github.com/i-MSCP/imscp/blob/<version>/docs/1.4.x_errata.md
 
 #### 2. Make sure to make a backup of your data
 
@@ -129,12 +129,12 @@ case something goes wrong during upgrade.
 #### 4. Download and untar the distribution files
 
     # cd /usr/local/src
-    # wget https://github.com/i-MSCP/imscp/archive/1.4.3.tar.gz
-    # tar -xzf 1.4.3.tar.gz
+    # wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
+    # tar -xzf <version>.tar.gz
 
 #### 5. Change to the newly created directory
 
-    # cd imscp-1.4.3
+    # cd imscp-<version>
 
 #### 6. Update i-MSCP by running its installer
 
