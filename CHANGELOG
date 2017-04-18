@@ -7,6 +7,9 @@ Git 1.4.x
 BACKEND
     Fixed: Can't use an undefined value as a HASH reference; DBI::selectrow_hashref() return undef on empty results
 
+SERVERS
+    Fixed: Error: quota: Unknown namespace: Trash (Dovecot/IMAP)
+
 ------------------------------------------------------------------------------------------------------------------------
 1.4.3
 ------------------------------------------------------------------------------------------------------------------------
