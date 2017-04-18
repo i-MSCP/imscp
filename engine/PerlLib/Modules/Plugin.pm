@@ -72,7 +72,7 @@ sub process
     eval { $self->{$_} = decode_json( $self->{$_} ) for qw/ info config config_prev /; };
     unless ($@) {
         my $method;
-        if($self->{'plugin_status'} eq 'enabled') {
+        if ($self->{'plugin_status'} eq 'enabled') {
             $self->{'action'} = 'run';
             $method = '_run'
         } elsif ($self->{'plugin_status'} =~ /^to(install|change|update|uninstall|enable|disable)$/) {
@@ -150,7 +150,9 @@ sub _loadData
     if ($self->{'dbh'}->errstr) {
         error( $self->{'dbh'}->errstr );
         return 1;
-    } elsif (!%{$row}) {
+    }
+
+    unless ($row) {
         error( sprintf( 'Data for plugin with ID %s were not found in database', $pluginId ) );
         return 1
     }

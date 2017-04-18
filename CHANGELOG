@@ -4,6 +4,9 @@
 Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
+BACKEND
+    Fixed: Can't use an undefined value as a HASH reference; DBI::selectrow_hashref() return undef on empty results
+
 ------------------------------------------------------------------------------------------------------------------------
 1.4.3
 ------------------------------------------------------------------------------------------------------------------------
@@ -24,7 +27,7 @@ BACKEND
     Fixed: Couldn't umount mounts that are in deleted state due to wrong regexp in iMSCP::Mount library
     Review: Mitigate IO operations by reading full fstab-like file in memory and by reusing same file object (iMSCP::Mount)
 
-DISTRIBUTION
+DISTRIBUTIONS
     Fixed: Install Apache2 (2.4.10) from backports repository (Ubuntu Trusty Thar)
     Fixed: Make sure that sendmail* packages are pre-uninstalled
 
@@ -46,6 +49,8 @@ INSTALLER
     Fixed: Configures getaddrinfo(3) to prefer IPv4 during setup and update phases
     Fixed: Enforce usage of values from preseed.pl file in preseeding mode, even on reconfiguration
     Fixed: Make sure that SQL users set for i-MSCP servers/packages are not already used by customers
+    Fixed: When switching to another FTPD server implementation, uninstallation of old FTP server must be triggered
+    Fixed: When switching to another PO server implementation, uninstallation of old PO server must be triggered 
     Readded: Courier alternative for IMAP/POP servers (Debian Stretch)
 
 LISTENERS
@@ -60,16 +65,14 @@ SCRIPTS
     Fixed: All in/out traffic not computed (imscp-srv-traff)
 
 SERVERS
-    Fixed: Authdaemond socket directory is still mounted in Postfix chroot after switching to Dovecot (Courier)
     Fixed: Disable control engine by default (ProFTPD)
     Fixed: `postfix' user is still part of authdaemon group after switching to Dovecot (Courier)
     Fixed: Run ProFTPD server under `proftpd' user instead of `nobody' user (ProFTPD)
     Fixed: SQL user not removed after uninstallation (PO and FTPD server impl.)
-    Fixed: When switching to another FTPD server implementation, uninstallation of old FTP server must be triggered
-    Fixed: When switching to another PO server implementation, uninstallation of old PO server must be triggered 
 
 UNINSTALLER
     Fixed: Ask administrator to uninstall plugins prior running i-MSCP uninstaller
+    Fixed: Authdaemond socket directory is still mounted in Postfix chroot after switching to Dovecot (Courier)
     Fixed: General uninstallation failure due to wrong SQL query in imscp-uninstall script
     
 YOUTRACK
