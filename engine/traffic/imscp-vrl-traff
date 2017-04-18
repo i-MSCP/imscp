@@ -54,7 +54,7 @@ sub run
     my $halfTimestamp = $timestamp - ($timestamp % 1800);
     my %trafficDb;
 
-    # Collects traffic data
+    # Collects traffic data from each server implementing the getTraffic() method
     for my $server(iMSCP::Servers->getInstance( )->getListWithFullNames( )) {
         eval "require $server";
         if (my $subref = $server->can( 'getTraffic' )) {
@@ -97,16 +97,10 @@ sub run
             my $domainName = $domainRow->{'domain_name'};
             my $upperDomainId = $domainRow->{'upper_domain_id'};
 
-            next unless
-                $trafficDb{'Servers::httpd'}->{$domainName}
+            next unless $trafficDb{'Servers::httpd'}->{$domainName}
                 || $trafficDb{'Servers::ftpd'}->{$domainName}
                 || $trafficDb{'Servers::mta'}->{$domainName}
                 || $trafficDb{'Servers::po'}->{$domainName};
-
-            my $httpdTraffic = $trafficDb{'Servers::httpd'}->{$domainName} || 0;
-            my $ftpdTraffic = $trafficDb{'Servers::ftpd'}->{$domainName} || 0;
-            my $mtaTraffic = $trafficDb{'Servers::mta'}->{$domainName} || 0;
-            my $poTraffic = $trafficDb{'Servers::po'}->{$domainName} || 0;
 
             $dbh->do(
                 '
@@ -119,12 +113,19 @@ sub run
                         dtraff_ftp = dtraff_ftp + ?,
                         dtraff_mail = dtraff_mail + ?,
                         dtraff_pop = dtraff_pop + ?
-                    ',
-                    undef,
-                    $upperDomainId, $halfTimestamp, $httpdTraffic, $ftpdTraffic, $mtaTraffic, $poTraffic,
-                    $httpdTraffic, $ftpdTraffic, $mtaTraffic, $poTraffic
-                );
-
+                ',
+                undef,
+                $upperDomainId,
+                $halfTimestamp,
+                $trafficDb{'Servers::httpd'}->{$domainName} || 0,
+                $trafficDb{'Servers::ftpd'}->{$domainName} || 0,
+                $trafficDb{'Servers::mta'}->{$domainName} || 0,
+                $trafficDb{'Servers::po'}->{$domainName} || 0,
+                $trafficDb{'Servers::httpd'}->{$domainName} || 0,
+                $trafficDb{'Servers::ftpd'}->{$domainName} || 0,
+                $trafficDb{'Servers::mta'}->{$domainName} || 0,
+                $trafficDb{'Servers::po'}->{$domainName} || 0
+            );
 
             if($dbh->err) {
                 error($dbh->errstr);

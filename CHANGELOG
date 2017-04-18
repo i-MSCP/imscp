@@ -7,6 +7,9 @@ Git 1.4.x
 BACKEND
     Fixed: Can't use an undefined value as a HASH reference; DBI::selectrow_hashref() return undef on empty results
 
+CRON
+    Fixed: Cron tasks for traffic accounting are never executed due to wrong command in /etc/cron.d/imscp cron file
+
 SERVERS
     Fixed: Error: quota: Unknown namespace: Trash (Dovecot/IMAP)
 
