@@ -19,7 +19,7 @@ use strict;no strict "refs";
 # Defines
 #-------------------------------------------------------
 use vars qw/ $REVISION $VERSION /;
-$REVISION='$Revision: 5292 $'; $REVISION =~ /\s(.*)\s/; $REVISION=$1;
+$REVISION = '20140126';
 $VERSION="1.2 (build $REVISION)";
 
 use vars qw/
@@ -56,7 +56,7 @@ $MailType='';				# Mail server family (postfix, sendmail, qmail)
 #-------------------------------------------------------
 
 sub error {
-	print "Error: $_[0].\n";
+	print STDERR "Error: $_[0].\n";
     exit 1;
 }
 
@@ -274,7 +274,7 @@ while (<>) {
 		    #    or 'reject: RCPT from unknown[62.205.124.145]: 450 Client host rejected: cannot find your hostname, [62.205.124.145]; from=<sender@msn.com> to=<usery@yahoo.com> proto=ESMTP helo=<xxx.com>'
 			#    or 'reject: RCPT from unknown[80.245.33.2]: 450 <usery@yahoo.com>: User unknown in local recipient table;'
 			if ($code =~ /\s+(\d\d\d)\s+/) { $mail{$mailid}{'code'}=$1; }
-			else { $mail{$mailid}{'code'}=999; }	# Unkown error
+			else { $mail{$mailid}{'code'}=999; }	# Unknown error
 			if (! $mail{$mailid}{'relay_s'} && $code =~ /from\s+([^\s]+)\s+/) {
 				$mail{$mailid}{'relay_s'}=&trim($1);
 			}
@@ -303,7 +303,7 @@ while (<>) {
 		my ($mon,$day,$time,$id,$to,$relay_r)=m/(\w+)\s+(\d+)\s+(\d+:\d+:\d+)\s+[\w\-\.\@]+\s+(?:postfix\/(?:local|lmtp|smtpd|smtp|virtual|pipe))\[\d+\]:\s+(.*?):\s+to=([^\s,]*)[\s,]+relay=([^\s,]*)/;
 		$mailid=($id eq 'reject'?'999':$id);	# id not provided in log, we take '999'
 		if ($mailid) {
-			$mail{$mailid}{'code'}=999;	# Unkown error (bounced)
+			$mail{$mailid}{'code'}=999;	# Unknown error (bounced)
 			$mail{$mailid}{'to'}=&trim($to);
 			$mail{$mailid}{'relay_r'}=&trim($relay_r);
 			$mail{$mailid}{'year'}=$year; ### <CJK>###
@@ -339,7 +339,7 @@ while (<>) {
 			$mail{$mailid}{'relay_s'}=$relay_s;
 			# $code='reject=550 5.7.1 <amber3624@netzero.net>... Relaying denied'
 			if ($code =~ /=(\d\d\d)\s+/) { $mail{$mailid}{'code'}=$1; }
-			else { $mail{$mailid}{'code'}=999; }	# Unkown error
+			else { $mail{$mailid}{'code'}=999; }	# Unknown error
 			$mail{$mailid}{'year'}=$year; ### <CJK>###
 			$mail{$mailid}{'mon'}=$mon;
 			$mail{$mailid}{'day'}=$day;
@@ -572,7 +572,7 @@ while (<>) {
 	#
 	# Matched MDaemon log file record
 	#
-	elsif (/^\"(\d\d\d\d)-(\d\d)-(\d\d) (\d\d:\d\d:\d\d)\",\"[^\"]*\",(\w+),\d+,\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"[^\"]*\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",([\.\d]+),(\d+),(\d+)/) {
+    elsif (/^\"(\d\d\d\d)-(\d\d)-(\d\d) (\d\d:\d\d:\d\d)\",\"[^\"]*\",(\w+),\d+,\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"[^\"]*\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",(-?[\.\d]+),(\d+),(\d+)/) {
 		# Example: "2003-11-06 00:00:42","2003-11-06 00:00:45",SMTPI,9443,"dillon_fm@aaaaa.net","cpeltier@domain.com","","","10.0.0.16","","",0,4563,1
 		$MailType||='mdaemon';
 		my ($id)=($numrecord);
