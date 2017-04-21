@@ -42,8 +42,8 @@ my @EXECS;
 
 sub start
 {
-    my $panelHttpPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'};
-    my $panelHttpsPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
+    my $panelHttpPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'} || undef;
+    my $panelHttpsPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'} || undef;
 
     for my $exec( @EXECS ) {
         defined $exec or next;
@@ -188,7 +188,7 @@ iMSCP::Bootstrapper->getInstance( )->boot(
 );
 
 my %dispatch = (
-   'start' => sub { stop || start },
+   'start' => sub { stop() || start() },
    'stop' => \&stop
 );
 

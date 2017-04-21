@@ -232,9 +232,9 @@ sub owner
  Symlinks are not dereferenced. 
  Permissions are not set on symlink targets.
 
- Param string $dest Destination path
+ Param string|filehandle $dest Destination file path or filehandle representing destination file
  Param hash $options Options
-    preserve (yes|no): preserve permissions and ownership (default yes)
+    - preserve (yes|no): preserve permissions and ownership (default yes)
  Return int 0 on success, 1 on failure
 
 =cut
