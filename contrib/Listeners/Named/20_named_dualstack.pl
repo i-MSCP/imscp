@@ -72,6 +72,7 @@ iMSCP::EventManager->getInstance( )->register(
         return 0 unless @ipList;
 
         my @formattedEntries = ( );
+
         for my $ip(@ipList) {
             for my $name('@', 'ftp', 'mail', 'imap', 'pop', 'pop3', 'relay', 'smtp') {
                 push @formattedEntries, $net->getAddrVersion( $ip ) eq 'ipv6'
@@ -115,7 +116,6 @@ iMSCP::EventManager->getInstance( )->register(
         return 0 unless @ipList;
 
         my @formattedEntries = ( );
-        push @formattedEntries, '; dualstack DNS entries BEGIN';
 
         for my $ip(@ipList) {
             for my $name('@', 'ftp', 'mail', 'imap', 'pop', 'pop3', 'relay', 'smtp') {
@@ -123,8 +123,6 @@ iMSCP::EventManager->getInstance( )->register(
                         ? "$name\tIN\tAAAA\t$ip\n" : "$name\tIN\tA\t$ip\n";
             }
         }
-
-        push @formattedEntries, '; dualstack DNS entries END';
 
         ${$wrkDbFileContent} = replaceBloc(
             "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
