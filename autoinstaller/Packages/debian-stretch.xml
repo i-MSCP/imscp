@@ -150,7 +150,7 @@
     </php>
     <po>
         <courier
-                description="Courier IMAP/POP3 server"
+                description="Courier IMAP/POP3 servers"
                 class="Servers::po::courier"
         >
             <package>courier-authlib-mysql</package>
@@ -166,7 +166,7 @@
         </courier>
         <dovecot
                 default="1"
-                description="Dovecot IMAP/POP3 server (recommended)"
+                description="Dovecot IMAP/POP3 servers (recommended)"
                 class="Servers::po::dovecot"
         >
             <package>dovecot-core</package>

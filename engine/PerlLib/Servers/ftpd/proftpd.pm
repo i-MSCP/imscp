@@ -372,56 +372,46 @@ sub reload
     $self->{'eventManager'}->trigger( 'afterFtpdReload' );
 }
 
-=item getTraffic( )
+=item getTraffic( $trafficDb )
 
  Get ProFTPD traffic data
 
- Return hash Traffic database or die on failure
+ Param hashref \%trafficDb Traffic database
+ Die on failure
 
 =cut
 
 sub getTraffic
 {
-    my $self = shift;
+    my ($self, $trafficDb) = @_;
 
-    my $trafficDbPath = "$main::imscpConfig{'IMSCP_HOMEDIR'}/ftp_traffic.db";
+    my $logFile = $self->{'config'}->{'FTPD_TRAFF_LOG_PATH'};
 
-    # Load traffic database (create it if needed)
-    tie my %trafficDb, 'iMSCP::Config', fileName => $trafficDbPath, nodie => 1;
-
-    # Traffic data source file
-    my $trafficDataSrc = $self->{'config'}->{'FTPD_TRAFF_LOG_PATH'};
-
-    if (-f -s $trafficDataSrc) {
-        # Create snapshot of traffic data source file
-        my $tmpFile = File::Temp->new( UNLINK => 1 );
-        iMSCP::File->new( filename => $trafficDataSrc )->copyFile( $tmpFile ) == 0 or die(
-            iMSCP::Debug::getLastError( )
-        );
-
-        # Reset traffic data source file
-        truncate( $trafficDataSrc, 0 ) or die( sprintf( "Couldn't truncate %s file: %s", $trafficDataSrc, $! ) );
-
-        # Extract traffic data from snapshot and add them in traffic database
-        open my $fh, '<', $tmpFile or die( sprintf( "Couldn't open file: %s", $! ) );
-        while(<$fh>) {
-            $trafficDb{$2} += $1 if /^(?:[^\s]+\s){7}(\d+)\s(?:[^\s]+\s){5}[^\s]+\@([^\s]+)/gm;
-        }
-        close( $fh );
-    } else {
-        debug( sprintf( 'No traffic data found in %s - Skipping', $trafficDataSrc ) );
+    # The log file exists and is not empty
+    unless (-f -s $logFile) {
+        debug( sprintf( 'No new FTP logs found in %s file for processing', $logFile ) );
+        return;
     }
 
-    # Schedule deletion of full traffic database. This is only done on success. On failure, the traffic database is kept
-    # in place for later processing. In such case, data already processed are zeroed by the traffic processor script.
-    $self->{'eventManager'}->register(
-        'afterVrlTraffic',
-        sub {
-            -f $trafficDbPath ? iMSCP::File->new( filename => $trafficDbPath )->delFile( ) : 0;
-        }
+    debug( sprintf( 'Processing FTP logs from the %s file', $logFile ) );
+
+    # Create snapshot of traffic data source file
+    my $snapshotFH = File::Temp->new( UNLINK => 1 );
+    iMSCP::File->new( filename => $logFile )->copyFile( $snapshotFH ) == 0 or die(
+        getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
     );
 
-    \%trafficDb;
+    # Reset log file
+    truncate( $logFile, 0 ) or die( sprintf( "Couldn't truncate %s file: %s", $logFile, $! ) );
+
+    while(<$snapshotFH>) {
+        # Extract FTP traffic data
+        next unless /^(?:[^\s]+\s){7}(?<bytes>\d+)\s(?:[^\s]+\s){5}[^\s]+\@(?<domain>[^\s]+)/o
+            && exists $trafficDb->{$+{'domain'}};
+        $trafficDb->{$+{'domain'}} += $+{'bytes'};
+    }
+
+    $snapshotFH->close();
 }
 
 =back

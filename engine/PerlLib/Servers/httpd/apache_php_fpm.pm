@@ -1001,60 +1001,46 @@ sub flushData
     0;
 }
 
-=item getTraffic( $timestamp )
+=item getTraffic( $trafficDb )
 
  Get httpd traffic data
 
- Return hash Traffic data or die on failure
+ Param hashref \%trafficDb Traffic database
+ Die on failure
 
 =cut
 
 sub getTraffic
 {
-    my $self = shift;
+    my $trafficDb = $_[1];
 
-    my $timestamp = time( );
-    my $trafficDbPath = "$main::imscpConfig{'IMSCP_HOMEDIR'}/http_traffic.db";
-
-    # Load traffic database
-    tie my %trafficDb, 'iMSCP::Config', fileName => $trafficDbPath, nodie => 1;
-
-    my $ldate = time2str( '%Y%m%d', $timestamp );
+    my $ldate = time2str( '%Y%m%d', time( ) );
     my $db = iMSCP::Database->factory( );
     my $dbh = $db->startTransaction( );
 
+    debug( sprintf( 'Collecting HTTP traffic data' ) );
+
     eval {
-        # Collect traffic data
         my $sth = $dbh->prepare( 'SELECT vhost, bytes FROM httpd_vlogger WHERE ldate <= ? FOR UPDATE' );
         $sth->execute( $ldate );
 
         while (my $row = $sth->fetchrow_hashref( )) {
-            $trafficDb{$row->{'vhost'}} += $row->{'bytes'};
+            next unless exists $trafficDb->{$row->{'vhost'}};
+            $trafficDb->{$row->{'vhost'}} += $row->{'bytes'};
         }
 
-        # Delete traffic data source
         $dbh->do( 'DELETE FROM httpd_vlogger WHERE ldate <= ?', undef, $ldate );
         $dbh->commit( );
     };
 
     if ($@) {
         $dbh->rollback( );
-        %trafficDb = ( );
+        %{$trafficDb} = ( );
         $db->endTransaction( );
         die( sprintf( "Couldn't collect traffic data: %s", $@ ) );
     }
 
     $db->endTransaction( );
-
-    # Schedule deletion of full traffic database. This is only done on success. On failure, the traffic database is kept
-    # in place for later processing. In such case, data already processed are zeroed by the traffic processor script.
-    $self->{'eventManager'}->register(
-        'afterVrlTraffic',
-        sub {
-            -f $trafficDbPath ? iMSCP::File->new( filename => $trafficDbPath )->delFile( ) : 0;
-        }
-    );
-    \%trafficDb;
 }
 
 =item getRunningUser( )

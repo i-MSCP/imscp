@@ -10,11 +10,19 @@ BACKEND
 CRON
     Fixed: Cron tasks for traffic accounting are never executed due to wrong command in /etc/cron.d/imscp cron file
 
+SCRIPTS
+    Rewritten: imscp-vrl-traff traffic accounting script
+
 SERVERS
+    Added: Custom IMAP/POP3 log format for traffic accounting (Dovecot)
+    Added in/out bytes variables in POP3 logs for better traffic accounting (Dovecot)
+    Fixed: Argument "" isn't numeric in addition (+)... in getTraffic() method of all servers implementing it
     Fixed: Error: quota: Unknown namespace: Trash (Dovecot/IMAP)
+    Fixed: Wrong POP3 traffic accounting (Dovecot)
+    Rewritten: getTraffic() routine for all servers that implement it
 
 VENDOR
-    Updated: maillogconvert.pl script to version 1.2 (revision 20140126) 
+    Updated: maillogconvert.pl script to version 1.2 (revision 20140126)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.3

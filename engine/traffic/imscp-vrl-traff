@@ -2,7 +2,7 @@
 
 =head1 NAME
 
- imscp-srv-traff - Collects i-MSCP customers' traffic data (Httpd, Ftpd, Mta, Po).
+ imscp-srv-traff - Collects i-MSCP customers' traffic data (http, ftp, imap/pop3, smtp).
 
 =head1 SYNOPSIS
 
@@ -29,18 +29,21 @@
 
 use strict;
 use warnings;
+use File::Basename;
 use FindBin;
 use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Bootstrapper;
-use iMSCP::Servers;
-use iMSCP::Database;
+use iMSCP::Config;
 use iMSCP::EventManager;
 use iMSCP::Getopt;
-use iMSCP::Mail;
-use File::Basename;
-use POSIX qw(locale_h);
 use locale;
+use POSIX qw/ locale_h /;
+use Servers::httpd;
+use Servers::ftpd;
+use Servers::mta;
+use Servers::po;
 
 setlocale( LC_ALL, 'C.UTF-8' );
 $ENV{'LANG'} = 'C.UTF-8';
@@ -50,57 +53,59 @@ sub run
     my $rs = iMSCP::EventManager->getInstance( )->trigger( 'beforeVrlTraffic' );
     return $rs if $rs;
 
+    my $dbh = iMSCP::Database->factory( )->getRawDb( );
+
+    # Get list of domains for which traffic must be collected
+    my $sth = $dbh->prepare(
+        "
+           SELECT domain_id AS upper_domain_id, domain_name FROM domain
+           UNION ALL
+           SELECT domain_id AS upper_domain_id, alias_name FROM domain_aliasses
+           UNION ALL
+           SELECT domain_id AS upper_domain_id, CONCAT(subdomain_name, '.', domain_name) FROM subdomain
+           INNER JOIN domain USING (domain_id)
+           UNION ALL
+           SELECT domain_id AS upper_domain_id, CONCAT(subdomain_alias_name, '.', alias_name) FROM subdomain_alias
+           INNER JOIN domain_aliasses USING (alias_id)
+       "
+    );
+    unless($sth && $sth->execute( )) {
+        error( sprintf( "Couldn't prepare or execute SQL statement: %s", $dbh->errstr ) );
+        $rs = 1;
+    }
+    my $domains = $sth->fetchall_hashref( 'domain_name' );
+    return 0 unless %{$domains};
+
+    my %domains = map { $_ => 0 } keys %{$domains};
     my $timestamp = time( );
     my $halfTimestamp = $timestamp - ($timestamp % 1800);
     my %trafficDb;
 
     # Collects traffic data from each server implementing the getTraffic() method
-    for my $server(iMSCP::Servers->getInstance( )->getListWithFullNames( )) {
-        eval "require $server";
-        if (my $subref = $server->can( 'getTraffic' )) {
-            eval {
-                debug( "Executing ${server}::getTraffic()" );
-                $trafficDb{$server} = $subref->( $server->factory( ) );
-            };
-            if ($@) {
-                error($@);
-                $rs = 1;
-                last;
-            }
+    for my $server('Servers::httpd', 'Servers::ftpd', 'Servers::mta', 'Servers::po') {
+        next unless $server->can( 'getTraffic' ) ;
+        eval {
+            # Initialize intermediate traffic database
+            tie %{$trafficDb{$server}},
+                'iMSCP::Config', fileName => "$main::imscpConfig{'IMSCP_HOMEDIR'}/$server-vrl-traff.db", nodie => 1;
+            %{$trafficDb{$server}} = (%domains, %{$trafficDb{$server}});
+
+            # Collect traffic
+            $server->factory( )->getTraffic( $trafficDb{$server} );
+        };
+        if ($@) {
+            error($@);
+            $rs = 1;
+            last;
         }
     }
 
-    # Updating traffic data in i-MSCP database
+    # Updates traffic data in i-MSCP database
     unless($rs) {
-        my $dbh = iMSCP::Database->factory( )->getRawDb( );
-
-        # Get domains list (dmn|sub|als|alssub)
-        my $sth = $dbh->prepare(
-            "
-                SELECT domain_id AS upper_domain_id, domain_name FROM domain
-                UNION
-                SELECT domain_id AS upper_domain_id, alias_name FROM domain_aliasses
-                UNION
-                SELECT domain_id AS upper_domain_id, CONCAT(subdomain_name, '.', domain_name) FROM subdomain
-                INNER JOIN domain USING (domain_id)
-                UNION
-                SELECT domain_id AS upper_domain_id, CONCAT(subdomain_alias_name, '.', alias_name) FROM subdomain_alias
-                INNER JOIN domain_aliasses USING (alias_id)
-            "
-        );
-        unless($sth && $sth->execute( )) {
-            error( sprintf( "Couldn't prepare or execute SQL statement: %s", $dbh->errstr ) );
-            $rs = 1;
-        }
-
-        while (my $domainRow = $sth->fetchrow_hashref( )) {
-            my $domainName = $domainRow->{'domain_name'};
-            my $upperDomainId = $domainRow->{'upper_domain_id'};
-
-            next unless $trafficDb{'Servers::httpd'}->{$domainName}
-                || $trafficDb{'Servers::ftpd'}->{$domainName}
-                || $trafficDb{'Servers::mta'}->{$domainName}
-                || $trafficDb{'Servers::po'}->{$domainName};
+        while (my ($domainName, $domainData) = each(%{$domains})) {
+            # Don't process domain for which there are no traffic data
+            next unless $trafficDb{'Servers::httpd'}->{$domainName} || $trafficDb{'Servers::ftpd'}->{$domainName}
+                || $trafficDb{'Servers::mta'}->{$domainName} || $trafficDb{'Servers::po'}->{$domainName};
 
             $dbh->do(
                 '
@@ -109,24 +114,15 @@ sub run
                     ) VALUES (
                         ?, ?, ?, ?, ?, ?
                     ) ON DUPLICATE KEY UPDATE
-                        dtraff_web = dtraff_web + ?,
-                        dtraff_ftp = dtraff_ftp + ?,
-                        dtraff_mail = dtraff_mail + ?,
+                        dtraff_web = dtraff_web + ?, dtraff_ftp = dtraff_ftp + ?, dtraff_mail = dtraff_mail + ?,
                         dtraff_pop = dtraff_pop + ?
                 ',
-                undef,
-                $upperDomainId,
-                $halfTimestamp,
-                $trafficDb{'Servers::httpd'}->{$domainName} || 0,
-                $trafficDb{'Servers::ftpd'}->{$domainName} || 0,
-                $trafficDb{'Servers::mta'}->{$domainName} || 0,
-                $trafficDb{'Servers::po'}->{$domainName} || 0,
-                $trafficDb{'Servers::httpd'}->{$domainName} || 0,
-                $trafficDb{'Servers::ftpd'}->{$domainName} || 0,
-                $trafficDb{'Servers::mta'}->{$domainName} || 0,
-                $trafficDb{'Servers::po'}->{$domainName} || 0
+                undef, $domainData->{'upper_domain_id'}, $halfTimestamp, $trafficDb{'Servers::httpd'}->{$domainName},
+                $trafficDb{'Servers::ftpd'}->{$domainName}, $trafficDb{'Servers::mta'}->{$domainName},
+                $trafficDb{'Servers::po'}->{$domainName}, $trafficDb{'Servers::httpd'}->{$domainName},
+                $trafficDb{'Servers::ftpd'}->{$domainName}, $trafficDb{'Servers::mta'}->{$domainName},
+                $trafficDb{'Servers::po'}->{$domainName}
             );
-
             if($dbh->err) {
                 error($dbh->errstr);
                 $rs = 1;
@@ -137,16 +133,17 @@ sub run
                 $trafficDb{'Servers::po'}->{$domainName} = 0;
             }
         }
-    }
 
-    $rs ||= iMSCP::EventManager->getInstance( )->trigger( 'afterVrlTraffic' );
+        unless($rs) {
+            for my $server('Servers::httpd', 'Servers::ftpd', 'Servers::mta', 'Servers::po') {
+                untie(%{$trafficDb{$server}});
+                $rs |= iMSCP::File->new(
+                    filename => "$main::imscpConfig{'IMSCP_HOMEDIR'}/$server-vrl-traff.db"
+                )->delFile( );
+            }
 
-    if($rs) {
-        my @warningMessages = getMessageByType('warn');
-        iMSCP::Mail->new( )->warnMsg( "@warningMessages" ) if @warningMessages;
-
-        my @errorMessages = getMessageByType('error');
-        iMSCP::Mail->new( )->errmsg( "@errorMessages" ) if @errorMessages;
+            $rs |= iMSCP::EventManager->getInstance( )->trigger( 'afterVrlTraffic' );
+        }
     }
 
     $rs;
@@ -154,10 +151,9 @@ sub run
 
 newDebug( 'imscp-vrl-traff.log' );
 
-# Parse command line options
 iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 ) ) . qq {
 
-Script that collects i-MSCP customers' traffic data (Httpd, Ftpd, Mta, Po).
+Script that collects i-MSCP customers' traffic data (http, ftp, imap/pop3, smtp).
 
 OPTIONS:
  -d,    --debug         Enable debug mode.
@@ -188,3 +184,6 @@ exit $rs;
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
+
+1;
+__END__

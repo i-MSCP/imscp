@@ -421,123 +421,96 @@ sub restart
     $self->{'eventManager'}->trigger( 'afterPoRestart' );
 }
 
-=item getTraffic( )
+=item getTraffic( $trafficDb [, $trafficDataSrc, $indexDb ] )
 
- Get IMAP/POP traffic data
+ Get IMAP/POP3 traffic data
 
- Return hash Traffic data or die on failure
+ Param hashref \%trafficDb Traffic database
+ Param string $logFile Path to SMTP log file from which traffic data must be extracted (only when self-called)
+ Param hashref $trafficIndexDb Traffic index database (only when self-called)
+ Return void, die on failure
 
 =cut
 
 sub getTraffic
 {
-    my ($self, $trafficDataSrc, $trafficDb) = @_;
+    my ($self, $trafficDb, $logFile, $trafficIndexDb) = @_;
 
-    my $trafficDir = $main::imscpConfig{'IMSCP_HOMEDIR'};
-    my $trafficDbPath = "$trafficDir/po_traffic.db";
-    my $selfCall = 1;
-    my %trafficDb;
+    $logFile ||= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
 
-    # Load traffic database
-    unless (ref $trafficDb eq 'HASH') {
-        tie %trafficDb, 'iMSCP::Config', fileName => $trafficDbPath, nodie => 1;
-        $selfCall = 0;
-    } else {
-        %trafficDb = %{$trafficDb};
-    }
+    # The log file exists and is not empty
+    if (-f -s $logFile) {
+        # We use an index database file to keep trace of the last processed log
+        $trafficIndexDb or tie %{$trafficIndexDb},
+            'iMSCP::Config', fileName => "$main::imscpConfig{'IMSCP_HOMEDIR'}/traffic_index.db", nodie => 1;
 
-    # Data source file
-    $trafficDataSrc ||= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
+        my ($idx, $idxContent) = ($trafficIndexDb->{'po_lineNo'} || 0, $trafficIndexDb->{'po_lineContent'});
 
-    if (-f -s $trafficDataSrc) {
-        # We are using a small file to memorize the number of the last line that has been read and his content
-        tie my %indexDb, 'iMSCP::Config', fileName => "$trafficDir/traffic_index.db", nodie => 1;
-
-        my $lastParsedLineNo = $indexDb{'po_lineNo'} || 0;
-        my $lastParsedLineContent = $indexDb{'po_lineContent'} || '';
-
-        # Create a snapshot of log file to process
-        my $tmpFile = File::Temp->new( UNLINK => 1 );
-        iMSCP::File->new( filename => $trafficDataSrc )->copyFile( $tmpFile, { preserve => 'no' } ) == 0 or die(
-            iMSCP::Debug::getLastError( )
+        # Create a snapshot of current log file state
+        my $snapshotFH = File::Temp->new( UNLINK => 1 );
+        iMSCP::File->new( filename => $logFile )->copyFile( $snapshotFH, { preserve => 'no' } ) == 0 or die(
+            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
-        tie my @content, 'Tie::File', $tmpFile or die( sprintf( "Couldn't tie %s file", $tmpFile ) );
+        # Tie the snapshot for easy handling
+        tie my @snapshot, 'Tie::File', $snapshotFH or die( sprintf( "Couldn't tie %s file", $snapshotFH ) );
 
-        unless ($selfCall) {
-            # Save last processed line number and line content
-            $indexDb{'po_lineNo'} = $#content;
-            $indexDb{'po_lineContent'} = $content[$#content];
+        # We keep trace of the index for the live log file only
+        unless ($logFile =~ /\.1$/) {
+            $trafficIndexDb->{'po_lineNo'} = $#snapshot;
+            $trafficIndexDb->{'po_lineContent'} = $snapshot[$#snapshot];
         }
 
-        if ($content[$lastParsedLineNo] && $content[$lastParsedLineNo] eq $lastParsedLineContent) {
-            # Skip lines which were already processed
-            (tied @content)->defer;
-            @content = @content[$lastParsedLineNo + 1 .. $#content];
-            (tied @content)->flush;
-        } elsif (!$selfCall) {
-            debug( sprintf( 'Log rotation has been detected. Processing %s first...', $trafficDataSrc.'.1' ) );
-            %trafficDb = %{$self->getTraffic( $trafficDataSrc.'.1', \%trafficDb )};
-            $lastParsedLineNo = 0;
-        }
+        debug( sprintf( 'Processing IMAP/POP3 logs from the %s file', $logFile ) );
 
-        debug( sprintf( 'Processing lines from %s, starting at line %d', $trafficDataSrc, $lastParsedLineNo ) );
+        # We have already seen the log file in the past. We must skip logs that were already processed
+        if ($snapshot[$idx] && $snapshot[$idx] eq $idxContent) {
+            debug( sprintf( 'Skipping logs that were already processed (lines %d to %d)', 1, ++$idx ) );
+            splice(@snapshot, 0, $idx);
+            my $logsFound = @snapshot > 0;
+            untie(@snapshot);
 
-        if (@content) {
-            untie @content;
-
-            # Read and parse IMAP/POP traffic source file (line by line)
-            open my $fh, '<', $tmpFile or die( sprintf( "Couldn't open file: %s", $! ) );
-            while(<$fh>) {
-                # Extract traffic data (IMAP)
-                #
-                # Important consideration for both IMAP and POP traffic accounting with courier
-                #
-                # Courier distinguishes header, body, received and sent bytes fields. Clearly, header and body fields can be zero
-                # while there is still some traffic. But more importantly, body gives only the bytes of messages sent.
-                #
-                # Here, we want count all traffic so we take sum of the received and sent bytes only.
-                #
-                # IMAP traffic line sample
-                # Oct 15 12:56:42 imscp imapd: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.2], headers=0, body=0, rcvd=172, sent=310, time=205
-                if (/^.*(?:imapd|imapd\-ssl).*user=[^\@]*\@([^,]*),\sip=\[([^\]]+)\],\sheaders=\d+,\sbody=\d+,\srcvd=(\d+),\ssent=(\d+),.*$/gim
-                    && $2 !~ /^(?:localhost|127.0.0.1|::1|::ffff:127.0.0.1)$/
-                ) {
-                    $trafficDb{$1} += $3 + $4;
-                    next;
-                }
-
-                # Extract traffic data (POP3)
-                #
-                # POP traffic line sample
-                #
-                # Oct 15 14:54:06 imscp pop3d: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.2], port=[41477], top=0, retr=0, rcvd=32, sent=147, time=0, stls=1
-                # Oct 15 14:51:12 imscp pop3d-ssl: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.2], port=[41254], top=0, retr=496, rcvd=32, sent=672, time=0, stls=1
-                #
-                # Note: courierpop3login is for Debian. pop3d for Fedora.
-                $trafficDb{$1} += $3 + $4 if /^.*(?:courierpop3login|pop3d|pop3d-ssl).*user=[^\@]*\@([^,]*),\sip=\[([^\]]+)\].*\stop=\d+,\sretr=\d+,\srcvd=(\d+),\ssent=(\d+),.*$/gim
-                    && $2 !~ /^(?:localhost|127.0.0.1|::1|::ffff:127.0.0.1)$/;
+            unless ($logsFound) {
+                debug( sprintf( 'No new IMAP/POP3 logs found in %s file for processing', $logFile ) );
+                $snapshotFH->close();
+                return;
             }
-            close( $fh );
+        } elsif ($logFile !~ /\.1$/) {
+            debug( 'Log rotation has been detected. Processing last rotated log file first' );
+            untie(@snapshot);
+            $self->getTraffic(  $trafficDb, $logFile.'.1', $trafficIndexDb );
         } else {
-            debug( sprintf( 'No traffic data found in %s - Skipping', $trafficDataSrc ) );
-            untie @content;
+            untie(@snapshot);
         }
-    } elsif (!$selfCall) {
-        debug( sprintf( 'Log rotation has been detected. Processing %s...', "$trafficDataSrc.1" ) );
-        %trafficDb = %{$self->getTraffic( "$trafficDataSrc.1", \%trafficDb )};
+
+        while(<$snapshotFH>) {
+            # Extract IMAP/POP3 traffic data
+            #
+            # Log line examples
+            # Apr 21 15:14:44 www pop3d: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.1], port=[36852], top=0, retr=0, rcvd=6, sent=30, time=0, stls=1
+            # Apr 21 15:14:55 www imapd: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.1], headers=0, body=0, rcvd=635, sent=1872, time=4477, starttls=1
+            # Apr 21 15:23:12 www pop3d-ssl: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.1], port=[59556], top=0, retr=0, rcvd=12, sent=39, time=0, stls=1
+            # Apr 21 15:24:36 www imapd-ssl: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.1], headers=0, body=0, rcvd=50, sent=374, time=10, starttls=1
+            next unless /(?:imapd|pop3d(:?-ssl)):.*user=[^\@]+\@(?<domain>[^,]+).*rcvd=(?<rcvd>\d+).*sent=(?<sent>\d+)/o
+                && exists $trafficDb->{$+{'domain'}};
+
+            $trafficDb->{$+{'domain'}} += ($+{'rcvd'} + $+{'sent'});
+        }
+
+        $snapshotFH->close();
     }
 
-    # Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
-    # in place for later processing. In such case, data already processed are zeroed by the traffic processor script.
-    $self->{'eventManager'}->register(
-        'afterVrlTraffic',
-        sub {
-            -f $trafficDbPath ? iMSCP::File->new( filename => $trafficDbPath )->delFile( ) : 0;
-        }
-    ) unless $selfCall;
+    # The log file is empty. We need to check the last rotated log file
+    # to extract traffic from possible unprocessed logs
+    elsif ($logFile !~ /\.1$/ && -f -s $logFile.'.1') {
+        debug( 'The %s log file is empty. Processing last rotated log file', $logFile );
+        $self->getTraffic(  $trafficDb, $logFile.'.1', $trafficIndexDb );
+    }
 
-    \%trafficDb;
+    # There are no new logs found for processing
+    else {
+        debug( sprintf( 'No new IMAP/POP3 logs found in %s file for processing', $logFile ) );
+    }
 }
 
 =back
