@@ -996,7 +996,7 @@ sub flushData
     0;
 }
 
-=item getTraffic( $trafficDb, $timestamp )
+=item getTraffic( $trafficDb )
 
  Get httpd traffic data
 
