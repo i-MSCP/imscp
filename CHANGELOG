@@ -10,6 +10,9 @@ BACKEND
 CRON
     Fixed: Cron tasks for traffic accounting are never executed due to wrong command in /etc/cron.d/imscp cron file
 
+LISTENERS
+    Added: Missing mail, imap, pop, pop3, relay and smtp records entries for subdomains (20_named_dualstack.pl listener)
+
 SCRIPTS
     Rewritten: imscp-vrl-traff traffic accounting script
 
