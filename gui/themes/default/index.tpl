@@ -1,6 +1,6 @@
 
 <div id="login">
-    <form name="login" action="index.php" method="post" autocomplete="off">
+    <form name="login" action="index.php" method="post">
         <table>
             <tr>
                 <td class="left"><label for="uname">{TR_USERNAME}</label></td>
@@ -8,7 +8,7 @@
             </tr>
             <tr>
                 <td class="left"><label for="password">{TR_PASSWORD}</label></td>
-                <td class="right"><input type="password" name="upass" id="password" value="" autocomplete="new-password"></td>
+                <td class="right"><input type="password" name="upass" id="password" value=""></td>
             </tr>
             <tr>
                 <td colspan="2" class="right">
