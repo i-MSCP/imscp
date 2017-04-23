@@ -16,12 +16,15 @@ FRONTEND
 LISTENERS
     Added: Missing mail, imap, pop, pop3, relay and smtp records entries for subdomains (20_named_dualstack.pl listener)
 
+INSTALLER
+    Fixed: Usage of ZG-POLICY-RC.D(8) to provide local policy-rc.d and avoid violation of Debian policy (Debian/Ubuntu)
+
 SCRIPTS
     Rewritten: imscp-vrl-traff traffic accounting script
 
 SERVERS
-    Added: Custom IMAP/POP3 log format for traffic accounting (Dovecot)
-    Added in/out bytes variables in POP3 logs for better traffic accounting (Dovecot)
+    Added: IMAP/POP3 log format (Dovecot)
+    Added: In/Out bytes variables in POP3 logs for better traffic accounting (Dovecot)
     Fixed: Argument "" isn't numeric in addition (+)... in getTraffic() method of all servers implementing it
     Fixed: Error: quota: Unknown namespace: Trash (Dovecot/IMAP)
     Fixed: Wrong POP3 traffic accounting (Dovecot)

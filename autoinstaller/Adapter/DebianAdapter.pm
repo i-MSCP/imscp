@@ -122,8 +122,41 @@ sub installPackages
 {
     my $self = shift;
 
-    my $rs = $self->_setupInitScriptPolicyLayer( 'enable' );
-    $rs ||= $self->uninstallPackages( $self->{'packagesToPreUninstall'} );
+    # See https://people.debian.org/~hmh/invokerc.d-policyrc.d-specification.txt
+    my $policyrcd = File::Temp->new( UNLINK => 1 );
+
+    # Prevents invoke-rc.d (which is invoked by package maintainer scripts) to start some services
+    #
+    # - Apache2: Prevent "bind() to 0.0.0.0:80 failed (98: Address already in use" failure
+    # - Nginx:   Prevent "bind() to 0.0.0.0:80 failed (98: Address already in use" failure
+    # - Nginx:   Prevent start failure when IPv6 stack is not enabled
+    # - Dovecot: Prevent start failure when IPv6 stack is not enabled
+    # - bind9:   Prevent failure when resolvconf is not configured yet
+    print {$policyrcd} <<'EOF';
+#!/bin/sh
+
+initscript=$1
+action=$2
+
+if [ "$action" = "start" ] || [ "$action" = "restart" ]; then
+    for i in apache2 bind9 dovecot nginx; do
+        if [ "$initscript" = "$i" ]; then
+            exit 101;
+        fi
+    done
+fi
+EOF
+
+    $policyrcd->flush( );
+    $policyrcd->close( );
+    chmod(0750, $policyrcd->filename( )) or die(
+        sprintf( "Couldn't change permissions on %s: %s", $policyrcd->filename( ), $! )
+    );
+
+    # See ZG-POLICY-RC.D(8)
+    $ENV{'POLICYRCD'} = $policyrcd->filename( );
+
+    my $rs = $self->uninstallPackages( $self->{'packagesToPreUninstall'} );
     $rs ||= $self->{'eventManager'}->trigger(
         'beforeInstallPackages', $self->{'packagesToInstall'}, $self->{'packagesToInstallDelayed'}
     );
@@ -206,8 +239,7 @@ sub installPackages
         return $rs if $rs;
     }
 
-    $rs ||= $self->_setupInitScriptPolicyLayer( 'disable' );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterInstallPackages' );
+    $self->{'eventManager'}->trigger( 'afterInstallPackages' );
 }
 
 =item uninstallPackages( [ \@packagesToUninstall = $self->{'packagesToUninstall'} ] )
@@ -309,7 +341,7 @@ sub _init
     $self->{'preRequiredPackages'} = [
         'binutils', 'debconf-utils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl', 'lsb-release',
         'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'wget',
-        'liblchown-perl', 'apt-transport-https'
+        'liblchown-perl', 'apt-transport-https', 'policyrcd-script-zg2'
     ];
     $self->{'aptRepositoriesToRemove'} = [ ];
     $self->{'aptRepositoriesToAdd'} = [ ];
@@ -379,56 +411,6 @@ sub _setupGetaddrinfoPrecedence
     $rs = $file->save( );
     $rs ||= $file->mode(0644);
     return $rs if $rs;
-}
-
-=item _setupInitScriptPolicyLayer($action)
-
- Enable or disable initscript policy layer
-
- See https://people.debian.org/~hmh/invokerc.d-policyrc.d-specification.txt
- See man invoke-rc.d
-
- Param string $action Action ( enable|disable )
- Return int 0 on success, other on failure
-
-=cut
-
-sub _setupInitScriptPolicyLayer
-{
-    my (undef, $action) = @_;
-
-    if ($action eq 'enable') {
-        # Prevents invoke-rc.d (which is invoked by package maintainer scripts) to start some services
-        # Apache2: Prevent "bind() to 0.0.0.0:80 failed (98: Address already in use" failure
-        # Nginx:   Prevent "bind() to 0.0.0.0:80 failed (98: Address already in use" failure
-        # Nginx:   Prevent start failure when IPv6 stack is not enabled
-        # Dovecot: Prevent start failure when IPv6 stack is not enabled
-        # bind9:   Prevent failure when resolvconf is not configured yet
-        my $file = iMSCP::File->new( filename => '/usr/sbin/policy-rc.d' );
-        my $rs = $file->set( <<'EOF' );
-#/bin/sh
-initscript=$1
-action=$2
-
-if [ "$action" = "start" ] || [ "$action" = "restart" ]; then
-    for i in apache2 bind9 dovecot nginx; do
-        if [ "$initscript" = "$i" ]; then
-            exit 101;
-        fi
-    done
-fi
-EOF
-
-        $rs ||= $file->save( );
-        $rs ||= $file->mode( 0755 );
-        return $rs;
-    }
-
-    if ($action eq 'disable' && -f '/usr/sbin/policy-rc.d') {
-        return iMSCP::File->new( filename => '/usr/sbin/policy-rc.d' )->delFile( );
-    }
-
-    0;
 }
 
 =item _buildPackageList( )
