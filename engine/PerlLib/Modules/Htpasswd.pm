@@ -37,7 +37,7 @@ use parent 'Modules::Abstract';
 
 =over 4
 
-=item getType()
+=item getType( )
 
  Get module type
 
@@ -50,7 +50,7 @@ sub getType
     'Htpasswd';
 }
 
-=item process($htuserId)
+=item process( $htuserId )
 
  Process module
 
@@ -68,7 +68,7 @@ sub process
 
     my @sql;
     if ($self->{'status'} =~ /^to(?:add|change|enable)$/) {
-        $rs = $self->add();
+        $rs = $self->add( );
         @sql = (
             'UPDATE htaccess_users SET status = ? WHERE id = ?',
             ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $htuserId
@@ -76,7 +76,7 @@ sub process
     } elsif ($self->{'status'} eq 'todisable') {
         @sql = ('UPDATE htaccess_users SET status = ? WHERE id = ?', 'disabled', $htuserId);
     } elsif ($self->{'status'} eq 'todelete') {
-        $rs = $self->delete();
+        $rs = $self->delete( );
         if ($rs) {
             @sql = (
                 'UPDATE htaccess_users SET status = ? WHERE id = ?',
@@ -88,7 +88,7 @@ sub process
         }
     }
 
-    my $rdata = iMSCP::Database->factory()->doQuery( 'dummy', @sql );
+    my $rdata = iMSCP::Database->factory( )->doQuery( 'dummy', @sql );
     unless (ref $rdata eq 'HASH') {
         error( $rdata );
         return 1;
@@ -103,7 +103,7 @@ sub process
 
 =over 4
 
-=item _loadData($htuserId)
+=item _loadData( $htuserId )
 
  Load data
 
@@ -116,7 +116,7 @@ sub _loadData
 {
     my ($self, $htuserId) = @_;
 
-    my $rdata = iMSCP::Database->factory()->doQuery(
+    my $rdata = iMSCP::Database->factory( )->doQuery(
         'id',
         '
             SELECT t1.uname, t1.upass, t1.status, t1.id, t2.domain_name, t2.domain_admin_id, t2.web_folder_protection
@@ -135,7 +135,7 @@ sub _loadData
     }
     unless (exists $rdata->{$htuserId}->{'domain_name'}) {
         require Data::Dumper;
-        Data::Dumper->import();
+        Data::Dumper->import( );
 
         local $Data::Dumper::Terse = 1;
         error( 'Orphan entry: '.Dumper( $rdata->{$htuserId} ) );
@@ -144,8 +144,8 @@ sub _loadData
             'UPDATE htaccess_users SET status = ? WHERE id = ?', 'Orphan entry: '.Dumper( $rdata->{$htuserId} ),
             $htuserId
         );
-        my $qrs = iMSCP::Database->factory()->doQuery( 'u', @sql );
-        unless(ref $qrs eq 'HASH') {
+        my $qrs = iMSCP::Database->factory( )->doQuery( 'u', @sql );
+        unless (ref $qrs eq 'HASH') {
             error($qrs);
         }
 
@@ -156,7 +156,7 @@ sub _loadData
     0;
 }
 
-=item _getData($action)
+=item _getData( $action )
 
  Data provider method for servers and packages
 

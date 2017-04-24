@@ -43,7 +43,7 @@ use parent 'Modules::Abstract';
 
 =over 4
 
-=item getType()
+=item getType( )
 
  Get module type
 
@@ -56,7 +56,7 @@ sub getType
     'Dmn';
 }
 
-=item process($aliasId)
+=item process( $aliasId )
 
  Process module
 
@@ -74,13 +74,13 @@ sub process
 
     my @sql;
     if ($self->{'alias_status'} =~ /^to(?:add|change|enable)$/) {
-        $rs = $self->add();
+        $rs = $self->add( );
         @sql = (
             "UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?",
             ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $aliasId
         );
     } elsif ($self->{'alias_status'} eq 'todelete') {
-        $rs = $self->delete();
+        $rs = $self->delete( );
         if ($rs) {
             @sql = (
                 "UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?",
@@ -90,20 +90,20 @@ sub process
             @sql = ("DELETE FROM domain_aliasses WHERE alias_id = ?", $aliasId);
         }
     } elsif ($self->{'alias_status'} eq 'todisable') {
-        $rs = $self->disable();
+        $rs = $self->disable( );
         @sql = (
             "UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?",
             ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'), $aliasId
         );
     } elsif ($self->{'alias_status'} eq 'torestore') {
-        $rs = $self->restore();
+        $rs = $self->restore( );
         @sql = (
             "UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?",
             ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $aliasId
         );
     }
 
-    my $rdata = iMSCP::Database->factory()->doQuery( 'dummy', @sql );
+    my $rdata = iMSCP::Database->factory( )->doQuery( 'dummy', @sql );
     unless (ref $rdata eq 'HASH') {
         error( $rdata );
         return 1;
@@ -112,7 +112,7 @@ sub process
     $rs;
 }
 
-=item add()
+=item add( )
 
  Add domain alias
 
@@ -125,7 +125,7 @@ sub add
     my $self = shift;
 
     if ($self->{'alias_status'} eq 'tochange') {
-        my $db = iMSCP::Database->factory();
+        my $db = iMSCP::Database->factory( );
 
         # Sets the status of any subdomain that belongs to this domain alias to 'tochange'.
         # FIXME: This reflect a bad implementation in the way that entities are managed. This will be solved
@@ -157,10 +157,10 @@ sub add
         }
     }
 
-    $self->SUPER::add();
+    $self->SUPER::add( );
 }
 
-=item disable()
+=item disable( )
 
  Disable domain alias
 
@@ -173,7 +173,7 @@ sub disable
     my $self = shift;
 
     # Sets the status of any subdomain that belongs to this domain alias to 'todisable'.
-    my $rs = iMSCP::Database->factory()->doQuery(
+    my $rs = iMSCP::Database->factory( )->doQuery(
         'u',
         "
             UPDATE subdomain_alias SET subdomain_alias_status = 'todisable'
@@ -186,7 +186,7 @@ sub disable
         return 1;
     }
 
-    $self->SUPER::disable();
+    $self->SUPER::disable( );
 }
 
 =back
@@ -195,7 +195,7 @@ sub disable
 
 =over 4
 
-=item _loadData($aliasId)
+=item _loadData( $aliasId )
 
  Load data
 
@@ -208,7 +208,7 @@ sub _loadData
 {
     my ($self, $aliasId) = @_;
 
-    my $rdata = iMSCP::Database->factory()->doQuery(
+    my $rdata = iMSCP::Database->factory( )->doQuery(
         'alias_id',
         "
             SELECT t1.*,
@@ -242,7 +242,7 @@ sub _loadData
     0;
 }
 
-=item _getData($action)
+=item _getData( $action )
 
  Data provider method for servers and packages
 
@@ -256,22 +256,21 @@ sub _getData
     my ($self, $action) = @_;
 
     $self->{'_data'} = do {
-        my $httpd = Servers::httpd->factory();
-        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
-            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+        my $httpd = Servers::httpd->factory( );
+        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}
+            .($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
         my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}" );
         my $webDir = File::Spec->canonpath( "$homeDir/$self->{'alias_mount'}" );
         my $documentRoot = File::Spec->canonpath( "$webDir/$self->{'alias_document_root'}" );
         my $confLevel = $httpd->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} eq 'per_user' ? 'dmn' : 'als';
         my $phpiniMatchId = $confLevel eq 'dmn' ? $self->{'domain_id'} : $self->{'alias_id'};
-        my $phpini = iMSCP::Database->factory()->doQuery(
+        my $phpini = iMSCP::Database->factory( )->doQuery(
             'domain_id', 'SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = ?', $phpiniMatchId, $confLevel
         );
         ref $phpini eq 'HASH' or die( $phpini );
 
-        my $haveCert = (
-            defined $self->{'certificate'}
-                && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'alias_name'}.pem"
+        my $haveCert = (defined $self->{'certificate'}
+            && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'alias_name'}.pem"
         );
         my $allowHSTS = ($haveCert && $self->{'allow_hsts'} eq 'on');
         my $hstsMaxAge = ($allowHSTS) ? $self->{'hsts_max_age'} : 0;
@@ -295,7 +294,7 @@ sub _getData
             WEB_DIR                 => $webDir,
             MOUNT_POINT             => $self->{'alias_mount'},
             DOCUMENT_ROOT           => $documentRoot,
-            SHARED_MOUNT_POINT      => $self->_sharedMountPoint(),
+            SHARED_MOUNT_POINT      => $self->_sharedMountPoint( ),
             PEAR_DIR                => $httpd->{'phpConfig'}->{'PHP_PEAR_DIR'},
             TIMEZONE                => $main::imscpConfig{'TIMEZONE'},
             USER                    => $userName,
@@ -312,25 +311,29 @@ sub _getData
             FORWARD                 => $self->{'url_forward'} || 'no',
             FORWARD_TYPE            => $self->{'type_forward'} || '',
             FORWARD_PRESERVE_HOST   => $self->{'host_forward'} || 'Off',
-            DISABLE_FUNCTIONS       => $phpini->{$phpiniMatchId}->{'disable_functions'} // 'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
+            DISABLE_FUNCTIONS       => $phpini->{$phpiniMatchId}->{'disable_functions'}
+                // 'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
             MAX_EXECUTION_TIME      => $phpini->{$phpiniMatchId}->{'max_execution_time'} // 30,
             MAX_INPUT_TIME          => $phpini->{$phpiniMatchId}->{'max_input_time'} // 60,
             MEMORY_LIMIT            => $phpini->{$phpiniMatchId}->{'memory_limit'} // 128,
-            ERROR_REPORTING         => $phpini->{$phpiniMatchId}->{'error_reporting'} || 'E_ALL & ~E_DEPRECATED & ~E_STRICT',
+            ERROR_REPORTING         => $phpini->{$phpiniMatchId}->{'error_reporting'}
+                || 'E_ALL & ~E_DEPRECATED & ~E_STRICT',
             DISPLAY_ERRORS          => $phpini->{$phpiniMatchId}->{'display_errors'} || 'off',
             POST_MAX_SIZE           => $phpini->{$phpiniMatchId}->{'post_max_size'} // 8,
             UPLOAD_MAX_FILESIZE     => $phpini->{$phpiniMatchId}->{'upload_max_filesize'} // 2,
             ALLOW_URL_FOPEN         => $phpini->{$phpiniMatchId}->{'allow_url_fopen'} || 'off',
             PHP_FPM_LISTEN_PORT     => ($phpini->{$phpiniMatchId}->{'id'} // 0) - 1,
             EXTERNAL_MAIL           => $self->{'external_mail'},
-            MAIL_ENABLED            => ($self->{'external_mail'} eq 'off' && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0))
+            MAIL_ENABLED            => ($self->{'external_mail'} eq 'off'
+                && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
+            )
         }
     } unless %{$self->{'_data'}};
 
     $self->{'_data'};
 }
 
-=item _sharedMountPoint()
+=item _sharedMountPoint( )
 
  Does this domain alias share mount point with another domain?
 
@@ -343,7 +346,7 @@ sub _sharedMountPoint
     my $self = shift;
 
     my $regexp = "^$self->{'alias_mount'}(/.*|\$)";
-    my $db = iMSCP::Database->factory()->getRawDb();
+    my $db = iMSCP::Database->factory( )->getRawDb( );
     my ($nbSharedMountPoints) = $db->selectrow_array(
         "
             SELECT COUNT(mount_point) AS nb_mount_points FROM (

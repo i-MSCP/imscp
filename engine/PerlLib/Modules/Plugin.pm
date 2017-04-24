@@ -82,9 +82,9 @@ sub process
             error( sprintf( 'Unknown plugin status: %s', $self->{'plugin_status'} ) );
             return 1;
         }
-        $rs = $self->$method();
+        $rs = $self->$method( );
     } else {
-        error( sprintf( 'Could not decode plugin JSON object: %s', $@ ) );
+        error( sprintf( "Couldn't decode plugin JSON object: %s", $@ ) );
         $rs = 1;
     }
 
@@ -109,7 +109,7 @@ sub process
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -121,12 +121,12 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'dbh'} = iMSCP::Database->factory()->getRawDb();
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
+    $self->{'dbh'} = iMSCP::Database->factory( )->getRawDb( );
     $self;
 }
 
-=item _loadData($pluginId)
+=item _loadData( $pluginId )
 
  Load plugin data
 
@@ -161,7 +161,7 @@ sub _loadData
     0;
 }
 
-=item _install()
+=item _install( )
 
  Install the plugin
 
@@ -176,10 +176,10 @@ sub _install
     my $rs = $self->{'eventManager'}->trigger( 'onBeforeInstallPlugin', $self->{'plugin_name'} );
     $rs ||= $self->_call( 'install' );
     $rs ||= $self->{'eventManager'}->trigger( 'onAfterInstallPlugin', $self->{'plugin_name'} );
-    $rs ||= $self->_enable();
+    $rs ||= $self->_enable( );
 }
 
-=item _uninstall()
+=item _uninstall( )
 
  Uninstall the plugin
 
@@ -196,7 +196,7 @@ sub _uninstall
     $rs ||= $self->{'eventManager'}->trigger( 'onAfterUninstallPlugin', $self->{'plugin_name'} );
 }
 
-=item _enable()
+=item _enable( )
 
  Enable the plugin
 
@@ -213,7 +213,7 @@ sub _enable
     $rs ||= $self->{'eventManager'}->trigger( 'onAfterEnablePlugin', $self->{'plugin_name'} );
 }
 
-=item _disable()
+=item _disable( )
 
  Disable the plugin
 
@@ -230,7 +230,7 @@ sub _disable
     $rs ||= $self->{'eventManager'}->trigger( 'onAfterDisablePlugin', $self->{'plugin_name'} );
 }
 
-=item _change()
+=item _change( )
 
  Change the plugin
 
@@ -242,7 +242,7 @@ sub _change
 {
     my $self = shift;
 
-    my $rs = $self->_disable();
+    my $rs = $self->_disable( );
     $rs ||= $self->{'eventManager'}->trigger( 'onBeforeChangePlugin', $self->{'plugin_name'} );
     $rs ||= $self->_call( 'change' );
     $rs ||= $self->{'eventManager'}->trigger( 'onAfterChangePlugin', $self->{'plugin_name'} );
@@ -261,10 +261,10 @@ sub _change
         }
     }
 
-    $self->_enable();
+    $self->_enable( );
 }
 
-=item _update()
+=item _update( )
 
  Update the plugin
 
@@ -276,7 +276,7 @@ sub _update
 {
     my $self = shift;
 
-    my $rs = $self->_disable();
+    my $rs = $self->_disable( );
     $rs ||= $self->{'eventManager'}->trigger( 'onBeforeUpdatePlugin', $self->{'plugin_name'} );
     $rs ||= $self->_call( 'update', $self->{'info'}->{'version'}, $self->{'info'}->{'__nversion__'} );
     return $rs if $rs;
@@ -314,10 +314,10 @@ sub _update
         return $rs if $rs;
     }
 
-    $self->_enable();
+    $self->_enable( );
 }
 
-=item _run()
+=item _run( )
 
  Run plugin item tasks
 
@@ -334,7 +334,7 @@ sub _run
     $rs ||= $self->{'eventManager'}->trigger( 'onAfterRunPlugin', $self->{'plugin_name'} );
 }
 
-=item _call($method [, $fromVersion = undef [, $toVersion = undef ]])
+=item _call( $method [, $fromVersion = undef [, $toVersion = undef ]] )
 
  Call the given plugin method
 
@@ -386,14 +386,14 @@ sub _call
     }
 
     if ($plugin) {
-        debug( sprintf( "Executing %s() action on %s", $method, ref $plugin ) );
+        debug( sprintf( "Executing %s( ) action on %s", $method, ref $plugin ) );
         my $rs = eval { $plugin->$method( $fromVersion, $toVersion ); };
         if ($@) {
             error( $@ );
             $rs ||= 1;
         }
 
-        # Return value from the run() action is ignored by default because it's the responsability of the plugins to set
+        # Return value from the run( ) action is ignored by default because it's the responsability of the plugins to set
         # error status for their items. In case a plugin doesn't manage any item, it can force return value by defining
         # the FORCE_RETVAL attribute and set it value to 'yes'
         if ($method ne 'run' || (defined $plugin->{'FORCE_RETVAL'} && $plugin->{'FORCE_RETVAL'} eq 'yes')) {

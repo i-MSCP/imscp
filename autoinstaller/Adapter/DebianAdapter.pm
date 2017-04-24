@@ -132,7 +132,7 @@ sub installPackages
     # - Nginx:   Prevent start failure when IPv6 stack is not enabled
     # - Dovecot: Prevent start failure when IPv6 stack is not enabled
     # - bind9:   Prevent failure when resolvconf is not configured yet
-    print {$policyrcd} <<'EOF';
+    print $policyrcd <<'EOF';
 #!/bin/sh
 
 initscript=$1
@@ -947,8 +947,9 @@ EOF
     my $debconfSelectionsFile = File::Temp->new( );
     print $debconfSelectionsFile $fileContent;
     $debconfSelectionsFile->flush( );
+    $debconfSelectionsFile->close( );
 
-    my $rs = execute( [ 'debconf-set-selections', $debconfSelectionsFile ], \ my $stdout, \ my $stderr );
+    my $rs = execute( [ 'debconf-set-selections', $debconfSelectionsFile->filename( ) ], \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || "Couldn't pre-fill Debconf database" ) if $rs;
     $rs;

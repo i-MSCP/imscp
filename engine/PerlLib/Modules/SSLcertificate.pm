@@ -40,7 +40,7 @@ use parent 'Modules::Abstract';
 
 =over 4
 
-=item getType()
+=item getType( )
 
  Get module type
 
@@ -53,7 +53,7 @@ sub getType
     'SSLcertificate';
 }
 
-=item process($certificateId)
+=item process( $certificateId )
 
  Process module
 
@@ -71,14 +71,17 @@ sub process
 
     my @sql;
     if ($self->{'status'} =~ /^to(?:add|change)$/) {
-        $rs = $self->add();
+        $rs = $self->add( );
         @sql = (
             'UPDATE ssl_certs SET status = ? WHERE cert_id = ?',
-            ($rs ? (getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error') =~ s/iMSCP::OpenSSL::validateCertificate:\s+//r : 'ok'),
+            ($rs
+                ? (getMessageByType('error', { amount => 1, remove => 1 } ) || 'Unknown error') =~ s/iMSCP::OpenSSL::validateCertificate:\s+//r
+                : 'ok'
+            ),
             $certificateId
         );
     } elsif ($self->{'status'} eq 'todelete') {
-        $rs = $self->delete();
+        $rs = $self->delete( );
         if ($rs) {
             @sql = (
                 'UPDATE ssl_certs SET status = ? WHERE cert_id = ?',
@@ -90,7 +93,7 @@ sub process
         }
     }
 
-    my $rdata = iMSCP::Database->factory()->doQuery( 'dummy', @sql );
+    my $rdata = iMSCP::Database->factory( )->doQuery( 'dummy', @sql );
     unless (ref $rdata eq 'HASH') {
         error( $rdata );
         return 1;
@@ -99,10 +102,10 @@ sub process
     # (since 1.2.16 - See #IP-1500)
     # On toadd and to change actions, return 0 to avoid any failure on update when a customer's SSL certificate is
     # expired or invalid. It is the customer responsability to update the certificate throught his interface
-    ($self->{'status'} =~ /^to(?:add|change)$/) ? 0: $rs;
+    ($self->{'status'} =~ /^to(?:add|change)$/) ? 0 : $rs;
 }
 
-=item add()
+=item add( )
 
  Add SSL certifcate
 
@@ -115,43 +118,46 @@ sub add
     my $self = shift;
 
     # Remove previous SSL certificate if any
-    my $rs = $self->delete();
+    my $rs = $self->delete( );
     return $rs if $rs;
 
     # Private key
     my $privateKeyContainer = File::Temp->new( UNLINK => 1 );
     print $privateKeyContainer $self->{'private_key'};
-    $privateKeyContainer->flush();
+    $privateKeyContainer->flush( );
+    $privateKeyContainer->close( );
 
     # Certificate
     my $certificateContainer = File::Temp->new( UNLINK => 1 );
     print $certificateContainer $self->{'certificate'};
-    $certificateContainer->flush();
+    $certificateContainer->flush( );
+    $certificateContainer->close( );
 
     # CA Bundle (intermediate certificate(s))
     my $caBundleContainer;
     if ($self->{'ca_bundle'}) {
         $caBundleContainer = File::Temp->new( UNLINK => 1 );
         print $caBundleContainer $self->{'ca_bundle'};
-        $caBundleContainer->flush();
+        $caBundleContainer->flush( );
+        $caBundleContainer->close( );
     }
 
     # Create OpenSSL object
     my $openSSL = iMSCP::OpenSSL->new(
         certificate_chains_storage_dir => $self->{'certsDir'},
         certificate_chain_name         => $self->{'domain_name'},
-        private_key_container_path     => $privateKeyContainer,
-        certificate_container_path     => $certificateContainer,
-        ca_bundle_container_path       => defined $caBundleContainer ? $caBundleContainer : ''
+        private_key_container_path     => $privateKeyContainer->filename( ),
+        certificate_container_path     => $certificateContainer->filename( ),
+        ca_bundle_container_path       => $caBundleContainer ? $caBundleContainer->filename( ) : '' 
     );
 
     # Check certificate chain
-    $rs = $openSSL->validateCertificateChain();
+    $rs = $openSSL->validateCertificateChain( );
     # Create certificate chain (private key, certificate and CA bundle)
-    $rs ||= $openSSL->createCertificateChain();
+    $rs ||= $openSSL->createCertificateChain( );
 }
 
-=item delete()
+=item delete( )
 
  Delete SSL certificate
 
@@ -164,10 +170,10 @@ sub delete
     my $self = shift;
 
     return 0 unless -f "$self->{'certsDir'}/$self->{'domain_name'}.pem";
-    iMSCP::File->new( filename => "$self->{'certsDir'}/$self->{'domain_name'}.pem" )->delFile();
+    iMSCP::File->new( filename => "$self->{'certsDir'}/$self->{'domain_name'}.pem" )->delFile( );
 }
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -184,11 +190,11 @@ sub _init
     my $rs = iMSCP::Dir->new( dirname => $self->{'certsDir'} )->make(
         { mode => 0750, user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'} }
     );
-    fatal( sprintf( 'Could not create %s SSL certificate directory', $self->{'certsDir'} ) ) if $rs;
-    $self->SUPER::_init();
+    fatal( sprintf( "Couldn't create %s SSL certificate directory", $self->{'certsDir'} ) ) if $rs;
+    $self->SUPER::_init( );
 }
 
-=item _loadData($certificateId)
+=item _loadData( $certificateId )
 
  Load data
 
@@ -201,7 +207,7 @@ sub _loadData
 {
     my ($self, $certificateId) = @_;
 
-    my $certData = iMSCP::Database->factory()->doQuery(
+    my $certData = iMSCP::Database->factory( )->doQuery(
         'cert_id', 'SELECT * FROM ssl_certs WHERE cert_id = ?', $certificateId
     );
     unless (ref $certData eq 'HASH') {
@@ -233,14 +239,14 @@ sub _loadData
         ";
     }
 
-    my $rdata = iMSCP::Database->factory()->doQuery( 'domain_id', $sql, $self->{'domain_id'} );
+    my $rdata = iMSCP::Database->factory( )->doQuery( 'domain_id', $sql, $self->{'domain_id'} );
     unless (ref $rdata eq 'HASH') {
         error( $rdata );
         return 1;
     }
     unless (exists $rdata->{$self->{'domain_id'}}) {
         error( sprintf( 'SSL certificate with ID %s has not been found or is in an inconsistent state',
-                $certificateId ) );
+            $certificateId ) );
         return 1;
     }
 

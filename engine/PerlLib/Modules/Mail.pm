@@ -37,7 +37,7 @@ use parent 'Modules::Abstract';
 
 =over 4
 
-=item getType()
+=item getType( )
 
  Get module type
 
@@ -50,7 +50,7 @@ sub getType
     'Mail';
 }
 
-=item process($mailId)
+=item process( $mailId )
 
  Process module
 
@@ -68,13 +68,13 @@ sub process
 
     my @sql;
     if ($self->{'status'} =~ /^to(?:add|change|enable)$/) {
-        $rs = $self->add();
+        $rs = $self->add( );
         @sql = (
             'UPDATE mail_users SET status = ? WHERE mail_id = ?',
             ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $mailId
         );
     } elsif ($self->{'status'} eq 'todelete') {
-        $rs = $self->delete();
+        $rs = $self->delete( );
         if ($rs) {
             @sql = (
                 'UPDATE mail_users SET status = ? WHERE mail_id = ?',
@@ -85,7 +85,7 @@ sub process
             @sql = ('DELETE FROM mail_users WHERE mail_id = ?', $self->{'mail_id'});
         }
     } elsif ($self->{'status'} eq 'todisable') {
-        $rs = $self->disable();
+        $rs = $self->disable( );
         @sql = (
             'UPDATE mail_users SET status = ? WHERE mail_id = ?',
             ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'),
@@ -93,7 +93,7 @@ sub process
         );
     }
 
-    my $rdata = iMSCP::Database->factory()->doQuery( 'dummy', @sql );
+    my $rdata = iMSCP::Database->factory( )->doQuery( 'dummy', @sql );
     unless (ref $rdata eq 'HASH') {
         error( $rdata );
         return 1;
@@ -108,7 +108,7 @@ sub process
 
 =over 4
 
-=item _loadData($mailId)
+=item _loadData( $mailId )
 
  Load data
 
@@ -121,7 +121,7 @@ sub _loadData
 {
     my ($self, $mailId) = @_;
 
-    my $rdata = iMSCP::Database->factory()->doQuery(
+    my $rdata = iMSCP::Database->factory( )->doQuery(
         'mail_id',
         '
             SELECT mail_id, mail_acc, mail_pass, mail_forward, mail_type, mail_auto_respond, status, quota, mail_addr
@@ -142,7 +142,7 @@ sub _loadData
     0;
 }
 
-=item _getData($action)
+=item _getData( $action )
 
  Data provider method for servers and packages
 
@@ -170,7 +170,7 @@ sub _getData
             MAIL_HAS_AUTO_RESPONDER => $self->{'mail_auto_respond'},
             MAIL_STATUS             => $self->{'status'},
             MAIL_ADDR               => $self->{'mail_addr'},
-            MAIL_CATCHALL           => (index( $self->{'mail_type'}, '_catchall' ) != -1) ? $self->{'mail_acc'} : ''
+            MAIL_CATCHALL           => (index( $self->{'mail_type'}, '_catchall' ) != - 1) ? $self->{'mail_acc'} : ''
         }
     } unless %{$self->{'_data'}};
 

@@ -36,7 +36,7 @@ use parent 'Modules::Abstract';
 
 =over 4
 
-=item getType()
+=item getType( )
 
  Get module type
 
@@ -49,7 +49,7 @@ sub getType
     'FtpUser';
 }
 
-=item process($userId)
+=item process( $userId )
 
  Process module
 
@@ -67,19 +67,19 @@ sub process
 
     my @sql;
     if ($self->{'status'} =~ /^to(?:add|change|enable)$/) {
-        $rs = $self->add();
+        $rs = $self->add( );
         @sql = (
             'UPDATE ftp_users SET status = ? WHERE userid = ?',
             ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $userId
         );
     } elsif ($self->{'status'} eq 'todisable') {
-        $rs = $self->disable();
+        $rs = $self->disable( );
         @sql = (
             'UPDATE ftp_users SET status = ? WHERE userid = ?',
             ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'), $userId
         );
     } elsif ($self->{'status'} eq 'todelete') {
-        $rs = $self->delete();
+        $rs = $self->delete( );
         if ($rs) {
             @sql = (
                 'UPDATE ftp_users SET status = ? WHERE userid = ?', getLastError( 'error' ) || 'Unknown error', $userId
@@ -89,7 +89,7 @@ sub process
         }
     }
 
-    my $ret = iMSCP::Database->factory()->doQuery( 'dummy', @sql );
+    my $ret = iMSCP::Database->factory( )->doQuery( 'dummy', @sql );
     unless (ref $ret eq 'HASH') {
         error( $ret );
         return 1;
@@ -104,7 +104,7 @@ sub process
 
 =over 4
 
-=item _loadData($userId)
+=item _loadData( $userId )
 
  Load data
 
@@ -117,7 +117,7 @@ sub _loadData
 {
     my ($self, $userId) = @_;
 
-    my $row = iMSCP::Database->factory()->doQuery( 'userid', 'SELECT * FROM ftp_users WHERE userid = ?', $userId );
+    my $row = iMSCP::Database->factory( )->doQuery( 'userid', 'SELECT * FROM ftp_users WHERE userid = ?', $userId );
     unless (ref $row eq 'HASH') {
         error( $row );
         return 1;
@@ -131,7 +131,7 @@ sub _loadData
     0;
 }
 
-=item _getData($action)
+=item _getData( $action )
 
  Data provider method for servers and packages
 

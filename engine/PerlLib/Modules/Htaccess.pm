@@ -39,7 +39,7 @@ use parent 'Modules::Abstract';
 
 =over 4
 
-=item getType()
+=item getType( )
 
  Get module type
 
@@ -52,7 +52,7 @@ sub getType
     'Htaccess';
 }
 
-=item process($htaccessId)
+=item process( $htaccessId )
 
  Process module
 
@@ -70,7 +70,7 @@ sub process
 
     my @sql;
     if ($self->{'status'} =~ /^to(?:add|change|enable)$/) {
-        $rs = $self->add();
+        $rs = $self->add( );
         @sql = (
             'UPDATE htaccess SET status = ? WHERE id = ?',
             ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'),
@@ -79,7 +79,7 @@ sub process
     } elsif ($self->{'status'} eq 'todisable') {
         @sql = ('UPDATE htaccess SET status = ? WHERE id = ?', 'disabled', $htaccessId);
     } elsif ($self->{'status'} eq 'todelete') {
-        $rs = $self->delete();
+        $rs = $self->delete( );
         if ($rs) {
             @sql = (
                 'UPDATE htaccess SET status = ? WHERE id = ?', getLastError( 'error' ) || 'Unknown error', $htaccessId
@@ -89,7 +89,7 @@ sub process
         }
     }
 
-    my $rdata = iMSCP::Database->factory()->doQuery( 'dummy', @sql );
+    my $rdata = iMSCP::Database->factory( )->doQuery( 'dummy', @sql );
     unless (ref $rdata eq 'HASH') {
         error( $rdata );
         return 1;
@@ -104,7 +104,7 @@ sub process
 
 =over 4
 
-=item _loadData($htaccessId)
+=item _loadData( $htaccessId )
 
  Load data
 
@@ -117,7 +117,7 @@ sub _loadData
 {
     my ($self, $htaccessId) = @_;
 
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->factory( );
     $db->doQuery( 'dummy', 'SET SESSION group_concat_max_len = 8192' );
 
     my $rdata = $db->doQuery(
@@ -156,7 +156,7 @@ sub _loadData
     }
     unless (exists $rdata->{$htaccessId}->{'domain_name'}) {
         require Data::Dumper;
-        Data::Dumper->import();
+        Data::Dumper->import( );
         local $Data::Dumper::Terse = 1;
         error( "Orphan entry: ".Dumper( $rdata->{$htaccessId} ) );
 
@@ -164,7 +164,7 @@ sub _loadData
             'UPDATE htaccess SET status = ? WHERE id = ?', 'Orphan entry: '.Dumper( $rdata->{$htaccessId} ), $htaccessId
         );
         my $qrs = $db->doQuery( 'u', @sql );
-        unless(ref $qrs eq 'HASH') {
+        unless (ref $qrs eq 'HASH') {
             error($qrs);
         }
 
@@ -175,7 +175,7 @@ sub _loadData
     0;
 }
 
-=item _getData($action)
+=item _getData( $action )
 
  Data provider method for servers and packages
 

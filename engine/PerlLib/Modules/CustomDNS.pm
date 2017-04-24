@@ -37,7 +37,7 @@ use parent 'Modules::Abstract';
 
 =over 4
 
-=item getType()
+=item getType( )
 
  Get module type
 
@@ -50,7 +50,7 @@ sub getType
     'CustomDNS';
 }
 
-=item process($domainId)
+=item process( $domainId )
 
  Process module
 
@@ -78,7 +78,7 @@ sub process
     my $rs = $self->_loadData( $domainType, $domainId );
     return $rs if $rs;
 
-    $rs = $self->add();
+    $rs = $self->add( );
 
     if ($rs) {
         my $qrs = $self->{'db'}->doQuery(
@@ -91,9 +91,9 @@ sub process
             return 1;
         }
     } else {
-        my $dbh = $self->{'db'}->getRawDb();
+        my $dbh = $self->{'db'}->getRawDb( );
 
-        $self->{'db'}->startTransaction();
+        $self->{'db'}->startTransaction( );
 
         eval {
             $dbh->do(
@@ -106,16 +106,16 @@ sub process
                 "
             );
             $dbh->do( "DELETE FROM domain_dns WHERE $condition AND domain_dns_status = 'todelete'" );
-            $dbh->commit();
+            $dbh->commit( );
         };
         if ($@) {
-            $dbh->rollback();
-            $self->{'db'}->endTransaction();
+            $dbh->rollback( );
+            $self->{'db'}->endTransaction( );
             error( $@ );
             return 1;
         }
 
-        $self->{'db'}->endTransaction();
+        $self->{'db'}->endTransaction( );
     }
 
     0;
@@ -127,7 +127,7 @@ sub process
 
 =over 4
 
-=item init()
+=item init( )
 
  Initialize instance
 
@@ -139,13 +139,13 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'db'} = iMSCP::Database->factory();
+    $self->{'db'} = iMSCP::Database->factory( );
     $self->{'domain_name'} = undef;
     $self->{'dns_records'} = [ ];
-    $self->SUPER::_init();
+    $self->SUPER::_init( );
 }
 
-=item _loadData($domainType, $domainId)
+=item _loadData( $domainType, $domainId )
 
  Load data
 
@@ -197,7 +197,7 @@ sub _loadData
         next if $record->[4] =~ /^to(?:disable|delete)$/;
 
         if (($record->[2] eq 'TXT' || $record->[2] eq 'SPF') && length($record->[3]) > 257) {
-            my ($data, @chuncks) = ($record->[3] =~ s/^"|"$//gr, ());
+            my ($data, @chuncks) = ($record->[3] =~ s/^"|"$//gr, ( ));
             for (my $i = 0, my $length = length $data; $i < $length; $i += 255) {
                 push(@chuncks, substr($data, $i, 255));
             }
@@ -211,7 +211,7 @@ sub _loadData
     0;
 }
 
-=item _getData($action)
+=item _getData( $action )
 
  Data provider method for servers and packages
 

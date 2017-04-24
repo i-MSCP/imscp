@@ -39,7 +39,7 @@ use parent 'Modules::Abstract';
 
 =over 4
 
-=item getType()
+=item getType( )
 
  Get module type
 
@@ -52,7 +52,7 @@ sub getType
     'Ips';
 }
 
-=item process()
+=item process( )
 
  Process module
 
@@ -64,11 +64,11 @@ sub process
 {
     my $self = shift;
 
-    my $rs = $self->_loadData();
-    $rs ||= $self->add();
+    my $rs = $self->_loadData( );
+    $rs ||= $self->add( );
 }
 
-=item add()
+=item add( )
 
  Add IP addresses
 
@@ -85,17 +85,17 @@ sub add
         SSL_IPS => $self->{'ssl_ipaddrs'}
     };
 
-    my $em = iMSCP::EventManager->getInstance();
+    my $em = iMSCP::EventManager->getInstance( );
     my $rs = $em->trigger( 'beforeAddIps', $ips );
-    $rs ||= $self->SUPER::add();
+    $rs ||= $self->SUPER::add( );
     $rs ||= $em->trigger( 'afterAddIps', $ips );
 }
 
-=item delete()
+=item delete( )
 
  Delete IP addresses
 
- Note: At this moment, we simply call the add() method again, assuming that any previously added IP will be first removed.
+ Note: At this moment, we simply call the add( ) method again, assuming that any previously added IP will be first removed.
 
  Return int 0 on success, other on failure
 
@@ -103,7 +103,7 @@ sub add
 
 sub delete
 {
-    $_[0]->add();
+    $_[0]->add( );
 }
 
 =back
@@ -112,7 +112,7 @@ sub delete
 
 =over 4
 
-=item _loadData()
+=item _loadData( )
 
  Load data
 
@@ -124,8 +124,8 @@ sub _loadData
 {
     my $self = shift;
 
-    my $net = iMSCP::Net->getInstance();
-    my $db = iMSCP::Database->factory();
+    my $net = iMSCP::Net->getInstance( );
+    my $db = iMSCP::Database->factory( );
 
     my $rdata = $db->doQuery(
         'ip_number',
@@ -182,7 +182,7 @@ sub _loadData
     0;
 }
 
-=item _getData($action)
+=item _getData( $action )
 
  Data provider method for servers and packages
 

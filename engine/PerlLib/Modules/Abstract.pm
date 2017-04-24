@@ -49,7 +49,7 @@ use parent 'Common::Object';
 
 sub getType
 {
-    fatal( ref( $_[0] ).' module must implements the getType() method' );
+    fatal( ref( $_[0] ).' module must implements the getType( ) method' );
 }
 
 =item process( )
@@ -62,10 +62,10 @@ sub getType
 
 sub process
 {
-    fatal( ref( $_[0] ).' module must implements the process() method' );
+    fatal( ref( $_[0] ).' module must implements the process( ) method' );
 }
 
-=item add()
+=item add( )
 
  Execute the `add' action on servers, packages
 
@@ -143,7 +143,7 @@ sub _init
 {
     my $self = shift;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'_data'} = { };
     $self;
 }
@@ -163,10 +163,10 @@ sub _execAction
     my ($self, $action, $pkgType) = @_;
 
     if ($pkgType eq 'server') {
-        for my $server (iMSCP::Servers->getInstance()->getListWithFullNames()) {
+        for my $server (iMSCP::Servers->getInstance( )->getListWithFullNames( )) {
             eval "require $server";
 
-            my $instance = $server->factory();
+            my $instance = $server->factory( );
             if (my $subref = $instance->can( $action )) {
                 debug( "Executing `$action' action on $server" );
                 my $rs = $subref->( $instance, $self->_getData( $action ) );
@@ -177,9 +177,9 @@ sub _execAction
         return 0;
     }
 
-    for my $package (iMSCP::Packages->getInstance()->getListWithFullNames()) {
+    for my $package (iMSCP::Packages->getInstance( )->getListWithFullNames( )) {
         eval "require $package";
-        my $instance = $package->getInstance();
+        my $instance = $package->getInstance( );
         if (my $subref = $instance->can( $action )) {
             debug( "Executing `$action' action on $package" );
             my $rs = $subref->( $instance, $self->_getData( $action ) );
@@ -203,7 +203,7 @@ sub _execAllActions
 {
     my ($self, $action) = @_;
 
-    my $moduleType = $self->getType();
+    my $moduleType = $self->getType( );
 
     if ($action =~ /^(?:add|restore)$/) {
         for('pre', '', 'post') {

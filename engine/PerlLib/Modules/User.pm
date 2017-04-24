@@ -44,7 +44,7 @@ use parent 'Modules::Abstract';
 
 =over 4
 
-=item getType()
+=item getType( )
 
  Get module type
 
@@ -57,7 +57,7 @@ sub getType
     'User';
 }
 
-=item process($userId)
+=item process( $userId )
 
  Process module
 
@@ -75,14 +75,14 @@ sub process
 
     my @sql;
     if ($self->{'admin_status'} =~ /^to(?:add|change(?:pwd)?)$/) {
-        $rs = $self->add();
+        $rs = $self->add( );
         @sql = (
             'UPDATE admin SET admin_status = ? WHERE admin_id = ?',
             ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'),
             $userId
         );
     } elsif ($self->{'admin_status'} eq 'todelete') {
-        $rs = $self->delete();
+        $rs = $self->delete( );
         if ($rs) {
             @sql = (
                 'UPDATE admin SET admin_status = ? WHERE admin_id = ?',
@@ -95,7 +95,7 @@ sub process
     }
 
     if (@sql) {
-        my $rdata = iMSCP::Database->factory()->doQuery( 'dummy', @sql );
+        my $rdata = iMSCP::Database->factory( )->doQuery( 'dummy', @sql );
         unless (ref $rdata eq 'HASH') {
             error( $rdata );
             return 1;
@@ -105,7 +105,7 @@ sub process
     $rs;
 }
 
-=item add()
+=item add( )
 
  Add user
 
@@ -193,7 +193,7 @@ sub add
         ',
             $userName, $userUid, $groupName, $userGid, $self->{'admin_id'}
         );
-        my $rdata = iMSCP::Database->factory()->doQuery( 'dummy', @sql );
+        my $rdata = iMSCP::Database->factory( )->doQuery( 'dummy', @sql );
         unless (ref $rdata eq 'HASH') {
             error( $rdata );
             return 1;
@@ -209,11 +209,11 @@ sub add
         );
     }
 
-    # Run the preaddUser(), addUser() and postaddUser() methods on servers/packages that implement them
-    $self->SUPER::add();
+    # Run the preaddUser( ), addUser( ) and postaddUser( ) methods on servers/packages that implement them
+    $self->SUPER::add( );
 }
 
-=item delete()
+=item delete( )
 
  Delete user
 
@@ -229,11 +229,11 @@ sub delete
         ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 
     my $rs = $self->{'eventManager'}->trigger( 'onBeforeDeleteImscpUnixUser', $userName );
-    # Run the predeleteUser(), deleteUser() and postdeleteUser() methods on servers/packages that implement them
-    $rs ||= $self->SUPER::delete();
-    $rs ||= iMSCP::SystemUser->new( 'force' => 'yes' )->delSystemUser( $userName );
+    # Run the predeleteUser( ), deleteUser( ) and postdeleteUser( ) methods on servers/packages that implement them
+    $rs ||= $self->SUPER::delete( );
+    $rs ||= iMSCP::SystemUser->new( force => 'yes' )->delSystemUser( $userName );
     # Only needed to cover the case where the admin added other users to the unix group
-    $rs ||= iMSCP::SystemGroup->getInstance()->delSystemGroup( $groupName );
+    $rs ||= iMSCP::SystemGroup->getInstance( )->delSystemGroup( $groupName );
     $rs ||= $self->{'eventManager'}->trigger( 'onAfterDeleteImscpUnixUser', $userName );
 }
 
@@ -243,7 +243,7 @@ sub delete
 
 =over 4
 
-=item _loadData($userId)
+=item _loadData( $userId )
 
  Load data
 
@@ -256,7 +256,7 @@ sub _loadData
 {
     my ($self, $userId) = @_;
 
-    my $rdata = iMSCP::Database->factory()->doQuery(
+    my $rdata = iMSCP::Database->factory( )->doQuery(
         'admin_id',
         '
             SELECT admin_id, admin_name, admin_pass, admin_sys_name, admin_sys_uid, admin_sys_gname, admin_sys_gid,
@@ -278,7 +278,7 @@ sub _loadData
     0;
 }
 
-=item _getData($action)
+=item _getData( $action )
 
  Data provider method for servers and packages
 

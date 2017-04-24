@@ -27,7 +27,6 @@ use strict;
 use warnings;
 use Cwd;
 use File::Basename;
-use File::Temp;
 use iMSCP::Config;
 use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;

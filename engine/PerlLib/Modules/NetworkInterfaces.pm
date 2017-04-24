@@ -39,7 +39,7 @@ use parent 'Common::Object';
 
 =over 4
 
-=item process()
+=item process( )
 
  Process module
 
@@ -49,14 +49,14 @@ use parent 'Common::Object';
 
 sub process
 {
-    my $provider = iMSCP::Provider::NetworkInterface->getInstance();
-    my $dbh = iMSCP::Database->factory()->getRawDb();
+    my $provider = iMSCP::Provider::NetworkInterface->getInstance( );
+    my $dbh = iMSCP::Database->factory( )->getRawDb( );
 
     my $sth = $dbh->prepare( 'SELECT * FROM server_ips WHERE ip_status <> ?' );
-    $sth or die( sprintf( 'Could not prepare SQL statement: %s', $dbh->errstr ) );
-    $sth->execute( 'ok' ) or die( sprintf( 'Could not execute prepared statement: %s', $dbh->errstr ) );
+    $sth or die( sprintf( "Couldn't prepare SQL statement: %s", $dbh->errstr ) );
+    $sth->execute( 'ok' ) or die( sprintf( "Couldn't execute prepared statement: %s", $dbh->errstr ) );
 
-    while (my $row = $sth->fetchrow_hashref()) {
+    while (my $row = $sth->fetchrow_hashref( )) {
         my ($sth2, @params);
         local $@;
         eval {
@@ -78,21 +78,21 @@ sub process
                 @params = ($row->{'ip_id'});
             }
 
-            $sth2 or die( sprintf( 'Could not prepare SQL statement: %s', $dbh->errstr ) );
-            $sth2->execute( @params ) or die( sprintf( 'Could not execute prepared statement: %s', $dbh->errstr ) );
+            $sth2 or die( sprintf( "Couldn't prepare SQL statement: %s", $dbh->errstr ) );
+            $sth2->execute( @params ) or die( sprintf( "Couldn't execute prepared statement: %s", $dbh->errstr ) );
         };
         if ($@) {
             my $error = $@;
             $sth2 = $dbh->prepare( 'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?' );
             $sth2->execute( $error || 'Unknown error', $row->{'ip_id'} ) or die(
-                sprintf( 'Could not execute prepared statement: %s', $dbh->errstr )
+                sprintf( "Couldn't execute prepared statement: %s", $dbh->errstr )
             );
             die( $@ );
         }
     }
 
     # Make sure that iMSCP::Net library is aware of latest changes
-    iMSCP::Net->getInstance()->resetInstance();
+    iMSCP::Net->getInstance( )->resetInstance( );
 }
 
 =back

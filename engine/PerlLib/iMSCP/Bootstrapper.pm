@@ -35,7 +35,7 @@ use locale;
 use POSIX qw / tzset locale_h /;
 use parent 'Common::SingletonClass';
 
-$SIG{INT} = 'IGNORE';
+$SIG{'INT'} = 'IGNORE';
 
 umask 022;
 
@@ -54,10 +54,11 @@ $ENV{'HOME'} = (getpwuid $>)[7] or die( "Couldn't find running user homedir" );
 
 =over 4
 
-=item boot( )
+=item boot( \%$options )
 
  Boot i-MSCP
 
+ Param hashref \%options Bootstrap options
  Return iMSCP::Bootstrapper
 
 =cut
@@ -75,7 +76,7 @@ sub boot
     $self->loadMainConfig( $options );
 
     # Set timezone unless we are in setup or uninstall modes (needed to show current local timezone in setup dialog)
-    unless (grep($mode eq $_, ( 'setup', 'uninstall' ) ) ) {
+    unless (grep($mode eq $_, ( 'setup', 'uninstall' ) )) {
         $ENV{'TZ'} = $main::imscpConfig{'TIMEZONE'} || 'UTC';
         tzset;
     }
@@ -97,7 +98,7 @@ sub boot
     $self;
 }
 
-=item loadMainConfig(\%options)
+=item loadMainConfig( \%options )
 
  Load main configuration file using given options
 
@@ -116,17 +117,17 @@ sub loadMainConfig
         %main::imscpConfig,
         'iMSCP::Config',
         fileName  => ($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/').'imscp/imscp.conf',
-        nodie    => $options->{'nodie'} // 0,
+        nodie     => $options->{'nodie'} // 0,
         nocreate  => $options->{'nocreate'} // 1,
         readonly  => $options->{'config_readonly'} // 0,
         temporary => $options->{'config_temporary'} // 0;
 }
 
-=item lock([ $lockFile [, $nowait ] ])
+=item lock([ $lockFile [, $nowait = FALSE ] ])
 
  Acquire an exclusive lock on the given file (default to /tmp/imscp.lock)
 
- Param bool $nowait Whether or not wait for lock
+ Param bool $nowait OPTIONAL Whether or not wait for lock (Default: FALSE)
  Return int 1 if lock has been acquired, 0 if lock file has not been acquired (nowait case), die on failure
 
 =cut
@@ -141,15 +142,16 @@ sub lock
 
     debug( sprintf( 'Acquire exclusive lock on %s', $lockFile ) );
     open $self->{'locks'}->{$lockFile}, '>', $lockFile or die( sprintf( "Couldn't open %s file", $lockFile ) );
-    my $rs = flock( $self->{'locks'}->{$lockFile}, $nowait ? LOCK_EX | LOCK_NB : LOCK_EX );
-    $rs || $nowait or die( sprintf( "Couldn't acquire exclusive lock on %s", $lockFile ) );
-    $rs;
+    (flock( $self->{'locks'}->{$lockFile}, $nowait ? LOCK_EX | LOCK_NB : LOCK_EX ) || $nowait) or die(
+        sprintf( "Couldn't acquire exclusive lock on %s", $lockFile )
+    );
 }
 
-=item unlock([$lockFile])
+=item unlock( [ $lockFile = '/tmp/imscp.lock' ])
 
  Unlock the given file (default to /tmp/imscp.lock)
 
+ Param string $lockFile OPTIONAL Lock file path (default: /tmp/imscp.lock)
  Return iMSCP::Bootstrapper
 
 =cut

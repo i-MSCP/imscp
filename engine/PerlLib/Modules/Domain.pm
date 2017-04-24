@@ -49,7 +49,7 @@ use parent 'Modules::Abstract';
 
 =over 4
 
-=item getType()
+=item getType( )
 
  Get module type
 
@@ -62,7 +62,7 @@ sub getType
     'Dmn';
 }
 
-=item process($domainId)
+=item process( $domainId )
 
  Process module
 
@@ -80,13 +80,13 @@ sub process
 
     my @sql;
     if ($self->{'domain_status'} =~ /^to(?:add|change|enable)$/) {
-        $rs = $self->add();
+        $rs = $self->add( );
         @sql = (
             'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
             ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $domainId
         );
     } elsif ($self->{'domain_status'} eq 'todelete') {
-        $rs = $self->delete();
+        $rs = $self->delete( );
         if ($rs) {
             @sql = (
                 'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
@@ -96,20 +96,20 @@ sub process
             @sql = ('DELETE FROM domain WHERE domain_id = ?', $domainId);
         }
     } elsif ($self->{'domain_status'} eq 'todisable') {
-        $rs = $self->disable();
+        $rs = $self->disable( );
         @sql = (
             'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
             ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'), $domainId
         );
     } elsif ($self->{'domain_status'} eq 'torestore') {
-        $rs = $self->restore();
+        $rs = $self->restore( );
         @sql = (
             'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
             ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $domainId
         );
     }
 
-    my $rdata = iMSCP::Database->factory()->doQuery( 'dummy', @sql );
+    my $rdata = iMSCP::Database->factory( )->doQuery( 'dummy', @sql );
     unless (ref $rdata eq 'HASH') {
         error( $rdata );
         return 1;
@@ -118,7 +118,7 @@ sub process
     $rs;
 }
 
-=item add()
+=item add( )
 
  Add domain
 
@@ -131,7 +131,7 @@ sub add
     my $self = shift;
 
     if ($self->{'domain_status'} eq 'tochange') {
-        my $db = iMSCP::Database->factory();
+        my $db = iMSCP::Database->factory( );
 
         # Sets the status of any subdomain that belongs to this domain to 'tochange'.
         # FIXME: This reflect a bad implementation in the way that entities are managed. This will be solved
@@ -160,10 +160,10 @@ sub add
         }
     }
 
-    $self->SUPER::add();
+    $self->SUPER::add( );
 }
 
-=item disable()
+=item disable( )
 
  Disable domain
 
@@ -176,7 +176,7 @@ sub disable
     my $self = shift;
 
     # Sets the status of any subdomain that belongs to this domain to 'todisable'.
-    my $rs = iMSCP::Database->factory()->doQuery(
+    my $rs = iMSCP::Database->factory( )->doQuery(
         'u',
         "UPDATE subdomain SET subdomain_status = 'todisable' WHERE domain_id = ? AND subdomain_status <> 'todelete'",
         $self->{'domain_id'}
@@ -186,10 +186,10 @@ sub disable
         return 1;
     }
 
-    $self->SUPER::disable();
+    $self->SUPER::disable( );
 }
 
-=item restore()
+=item restore( )
 
  Restore domain
 
@@ -201,11 +201,11 @@ sub restore
 {
     my $self = shift;
 
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->factory( );
     my $dmnDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
     my $bkpDir = "$dmnDir/backups";
 
-    for my $bkpFile(iMSCP::Dir->new( dirname => $bkpDir )->getFiles()) {
+    for my $bkpFile(iMSCP::Dir->new( dirname => $bkpDir )->getFiles( )) {
         unless (-l "$bkpDir/$bkpFile") { # Don't follow symlink (See #990)
             if ($bkpFile =~ /^.+?\.sql(?:\.bz2|gz|lzma|xz)?$/) {
                 eval { $self->_restoreDatabase( File::Spec->catfile( $bkpDir, $bkpFile ) ); };
@@ -222,7 +222,7 @@ sub restore
                 # - Update status of sub, als and alssub, entities linked to the parent domain to 'torestore'
                 # - Un-protect user home dir (clear immutable flag recursively)
                 # - restore the files
-                # - Run the restore() parent method
+                # - Run the restore( ) parent method
                 #
                 # The first and last tasks allow the i-MSCP Httpd server implementations to set correct permissions and
                 # set immutable flag on folders if needed for each entity
@@ -284,7 +284,7 @@ sub restore
                 debug( $stdout ) if $stdout;
                 error( $stderr || 'Unknown error' ) if $rs;
 
-                $rs ||= $self->SUPER::restore();
+                $rs ||= $self->SUPER::restore( );
                 return $rs if $rs;
             }
         }
@@ -299,7 +299,7 @@ sub restore
 
 =over 4
 
-=item _loadData($domainId)
+=item _loadData( $domainId )
 
  Load data
 
@@ -312,7 +312,7 @@ sub _loadData
 {
     my ($self, $domainId) = @_;
 
-    my $rdata = iMSCP::Database->factory()->doQuery(
+    my $rdata = iMSCP::Database->factory( )->doQuery(
         'domain_id',
         "
             SELECT t1.*,
@@ -342,7 +342,7 @@ sub _loadData
     0;
 }
 
-=item _getData($action)
+=item _getData( $action )
 
  Data provider method for servers and packages
 
@@ -356,19 +356,18 @@ sub _getData
     my ($self, $action) = @_;
 
     $self->{'_data'} = do {
-        my $httpd = Servers::httpd->factory();
+        my $httpd = Servers::httpd->factory( );
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}
             .($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
         my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
         my $documentRoot = File::Spec->canonpath( "$homeDir/$self->{'document_root'}" );
-        my $phpini = iMSCP::Database->factory()->doQuery(
+        my $phpini = iMSCP::Database->factory( )->doQuery(
             'domain_id', "SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = 'dmn'", $self->{'domain_id'}
         );
         ref $phpini eq 'HASH' or die( $phpini );
 
-        my $haveCert = (
-            defined $self->{'certificate'}
-                && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'domain_name'}.pem"
+        my $haveCert = (defined $self->{'certificate'}
+            && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'domain_name'}.pem"
         );
         my $allowHSTS = ($haveCert && $self->{'allow_hsts'} eq 'on');
         my $hstsMaxAge = ($allowHSTS) ? $self->{'hsts_max_age'} : 0;
@@ -445,8 +444,8 @@ sub _restoreDatabase
     my ($self, $dbDumpFilePath) = @_;
 
     my ($dbName, undef, $archFormat) = fileparse( $dbDumpFilePath, qr/\.(?:bz2|gz|lzma|xz)/ );
-    my $db = iMSCP::Database->factory();
-    
+    my $db = iMSCP::Database->factory( );
+
     my $qrs = $db->doQuery(
         1, 'SELECT 1 FROM sql_database WHERE domain_id = ? AND sqld_name = ? LIMIT 1', $self->{'domain_id'}, $dbName
     );
@@ -479,7 +478,7 @@ sub _restoreDatabase
     my $dbUserHost = $main::imscpConfig{'DATABASE_USER_HOST'};
     my $dbUserPwd = iMSCP::Crypt::randomStr( 16 );
 
-    Servers::sqld->factory()->createUser( $dbUser, $dbUserHost, $dbUserPwd );
+    Servers::sqld->factory( )->createUser( $dbUser, $dbUserHost, $dbUserPwd );
 
     (my $quotedDbName = $db->quoteIdentifier( $dbName )) =~ s/([%_])/\\$1/g;
     $qrs = $db->doQuery( 'g', "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?\@?", $dbUser, $dbUserHost );
@@ -493,22 +492,23 @@ port     = $main::imscpConfig{'DATABASE_PORT'}
 user     = $dbUser
 password = $dbUserPwd
 EOF
-    $sqlExtraFile->flush();
+    $sqlExtraFile->flush( );
+    $sqlExtraFile->close( );
 
     my @cmd = (
         'nice', '-n', '15', 'ionice', '-c2', '-n5', $cmd, escapeShell( $dbDumpFilePath ), '|', 'mysql',
-        '--defaults-extra-file='.escapeShell( $sqlExtraFile ), escapeShell( $dbName )
+        '--defaults-extra-file='.escapeShell( $sqlExtraFile->filename( ) ), escapeShell( $dbName )
     );
 
     my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
 
     if ($rs) {
-        Servers::sqld->factory()->dropUser( $dbUser, $dbUserHost );
-        die( error( sprintf( 'Could not restore SQL database: %s', $stderr || 'Unknown error' ) ) );
+        Servers::sqld->factory( )->dropUser( $dbUser, $dbUserHost );
+        die( error( sprintf( "Couldn't restore SQL database: %s", $stderr || 'Unknown error' ) ) );
     }
 
-    Servers::sqld->factory()->dropUser( $dbUser, $dbUserHost );
+    Servers::sqld->factory( )->dropUser( $dbUser, $dbUserHost );
 }
 
 =back
