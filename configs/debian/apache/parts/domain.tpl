@@ -4,8 +4,10 @@
     ServerAlias www.{DOMAIN_NAME} {ALIAS}.{BASE_SERVER_VHOST}
 
     DocumentRoot {DOCUMENT_ROOT}
-    DirectoryIndex index.html index.xhtml index.htm
 
+    # Reset list of resources to look for when the client requests a directory
+    DirectoryIndex disabled
+    
     LogLevel error
     ErrorLog {HTTPD_LOG_DIR}/{DOMAIN_NAME}/error.log
 
@@ -28,8 +30,6 @@
     # SECTION suexec END.
 
     # SECTION php_on BEGIN.
-    DirectoryIndex index.php
-
     # SECTION php_fpm BEGIN.
     <Proxy "{PROXY_FCGI_PATH}{PROXY_FCGI_URL}" retry=0>
         ProxySet connectiontimeout=5 timeout=7200
@@ -37,17 +37,10 @@
     # SECTION php_fpm END.
     # SECTION php_on END.
 
-    <Directory {HOME_DIR}>
-        Options +SymLinksIfOwnerMatch
-        Require all granted
-    </Directory>
-
     <Directory {DOCUMENT_ROOT}>
-        # SECTION php_off BEGIN.
-        AllowOverride AuthConfig Indexes Limit Options=Indexes \
-            Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule
-        # SECTION php_off END.
+        Options FollowSymLinks
         # SECTION php_on BEGIN.
+        DirectoryIndex index.php
         AllowOverride All
         # SECTION fcgid BEGIN.
         Options +ExecCGI
@@ -59,7 +52,6 @@
         php_admin_value session.save_path "{TMPDIR}"
         php_admin_value soap.wsdl_cache_dir "{TMPDIR}"
         php_admin_value sendmail_path "/usr/sbin/sendmail -t -i -f webmaster@{EMAIL_DOMAIN}"
-        # Custom values
         php_admin_value max_execution_time {MAX_EXECUTION_TIME}
         php_admin_value max_input_time {MAX_INPUT_TIME}
         php_admin_value memory_limit "{MEMORY_LIMIT}M"
@@ -75,15 +67,23 @@
         </If>
         # SECTION php_fpm END.
         # SECTION php_on END.
+        # SECTION php_off BEGIN.
+        AllowOverride AuthConfig Indexes Limit Options=Indexes,MultiViews \
+            Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule Nonfatal=Override
+        # SECTION php_off END.
+        DirectoryIndex index.html index.xhtml index.htm
+        Require all granted
     </Directory>
 
     # SECTION cgi BEGIN.
     Alias /cgi-bin/ {WEB_DIR}/cgi-bin/
     <Directory {WEB_DIR}/cgi-bin>
-        AllowOverride AuthConfig Indexes Limit Options=Indexes
+        AllowOverride AuthConfig Indexes Limit Options=Indexes,MultiViews \
+            Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule Nonfatal=Override
         DirectoryIndex index.cgi index.pl index.py index.rb
-        Options +ExecCGI -MultiViews
+        Options FollowSymLinks ExecCGI
         AddHandler cgi-script .cgi .pl .py .rb
+        Require all granted
     </Directory>
     # SECTION cgi END.
 
@@ -102,8 +102,9 @@
 
     # SECTION fwd BEGIN.
     <Directory {DOCUMENT_ROOT}>
-        AllowOverride AuthConfig Indexes Limit Options=Indexes \
-            Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule
+        Options FollowSymLinks
+        AllowOverride AuthConfig Indexes Limit Options=Indexes,MultiViews \
+            Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule Nonfatal=Override
         Require all granted
     </Directory>
 

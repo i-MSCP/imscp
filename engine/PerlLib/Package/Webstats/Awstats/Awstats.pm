@@ -319,6 +319,7 @@ sub _getApacheConfSnippet
 {
     <<'EOF';
     <Location /stats>
+        ProxyErrorOverride On
         ProxyPreserveHost Off
         ProxyPass http://127.0.0.1:8889/stats/{DOMAIN_NAME} retry=1 acquire=3000 timeout=600 Keepalive=On
         ProxyPassReverse http://127.0.0.1:8889/stats/{DOMAIN_NAME}

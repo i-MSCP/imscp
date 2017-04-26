@@ -20,8 +20,8 @@
     DirectoryIndex index.html
 
     <Directory {USER_WEB_DIR}/domain_disabled_pages>
-        Options None
         AllowOverride None
+        Options FollowSymLinks 
         Require all granted
     </Directory>
 
