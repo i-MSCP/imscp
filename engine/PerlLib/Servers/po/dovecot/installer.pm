@@ -235,9 +235,8 @@ sub configurePostfix
 
     if ($fileName eq 'master.cf') {
         my $configSnippet = <<'EOF';
-
 dovecot   unix  -       n       n       -       -       pipe
-  flags=DRhu user={MTA_MAILBOX_UID_NAME}:{MTA_MAILBOX_GID_NAME} argv={DOVECOT_DELIVER_PATH} -f ${sender} -d ${user}@${nexthop} -m INBOX.${extension}
+ flags=DRhu user={MTA_MAILBOX_UID_NAME}:{MTA_MAILBOX_GID_NAME} argv={DOVECOT_DELIVER_PATH} -f ${sender} -d ${user}@${nexthop} -m INBOX.${extension}
 EOF
         ${$fileContent} .= process(
             {

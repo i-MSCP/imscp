@@ -182,7 +182,7 @@ sub install
 
 =item configurePostfix( \$fileContent, $fileName )
 
- Injects configuration for both, maildrop LDA and Cyrus SASL in Postfix configuration files.
+ Injects configuration for both, maildrop MDA and Cyrus SASL in Postfix configuration files.
 
  Listener that listen on the following events:
   - beforeMtaBuildMainCfFile
@@ -244,7 +244,6 @@ sub configurePostfix
                 MTA_MAILBOX_GID_NAME => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}
             },
             <<'EOF'
-
 maildrop  unix  -       n       n       -       -       pipe
  flags=DRhu user={MTA_MAILBOX_UID_NAME}:{MTA_MAILBOX_GID_NAME} argv=maildrop -w 90 -d ${user}@${nexthop} ${extension} ${recipient} ${user} ${nexthop} ${sender}
 EOF
