@@ -30,7 +30,16 @@ iMSCP::EventManager->getInstance()->register(
     sub {
         my $content = shift;
 
-        $$content =~ s/^#(\s+-o\s+smtpd_tls_security_level=encrypt)/$1/m;
+        # Redefine submission service
+        # According MASTER(5)), when multiple lines specify the same service
+        # name and type, only the last one is remembered.
+        $$content .= <<'EOF';
+# Redefines submission service to enforce TLS
+submission inet n       -       y       -       -       smtpd
+ -o smtpd_tls_security_level=encrypt
+ -o smtpd_sasl_auth_enable=yes
+ -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+EOF
         0;
     }
 );

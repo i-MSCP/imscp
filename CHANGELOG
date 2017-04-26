@@ -15,6 +15,7 @@ FRONTEND
 
 LISTENERS
     Added: Missing mail, imap, pop, pop3, relay and smtp records entries for subdomains (20_named_dualstack.pl listener)
+    Updated: 70_postfix_submission_tls.pl file
 
 INSTALLER
     Fixed: Usage of ZG-POLICY-RC.D(8) to provide local policy-rc.d and avoid violation of Debian policy (Debian/Ubuntu)
