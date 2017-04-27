@@ -407,7 +407,7 @@ sub _buildConf
         unless (defined $tplContent) {
             $tplContent = iMSCP::File->new( filename => $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} )->get();
             unless (defined $tplContent) {
-                error( sprintf( 'Could not read %s file', $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} ) );
+                error( sprintf( "Couldn't read %s file", $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} ) );
                 return 1;
             }
         }
@@ -454,7 +454,7 @@ sub _buildConf
         unless (defined $tplContent) {
             $tplContent = iMSCP::File->new( filename => "$self->{'cfgDir'}/$tplName" )->get();
             unless (defined $tplContent) {
-                error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/$tplName" ) );
+                error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/$tplName" ) );
                 return 1;
             }
         }
@@ -465,7 +465,7 @@ sub _buildConf
 
         my $namedVersion = $self->_getVersion();
         unless (defined $namedVersion) {
-            error( 'Could not retrieve named (Bind9) version' );
+            error( "Couldn't retrieve named (Bind9) version" );
             return 1;
         }
 
@@ -494,7 +494,7 @@ sub _buildConf
         unless (defined $tplContent) {
             $tplContent = iMSCP::File->new( filename => "$self->{'cfgDir'}/$tplName" )->get();
             unless (defined $tplContent) {
-                error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/$tplName" ) );
+                error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/$tplName" ) );
                 return 1;
             }
         }
@@ -524,7 +524,7 @@ sub _buildConf
         unless (defined $tplContent) {
             $tplContent = iMSCP::File->new( filename => "$self->{'cfgDir'}/$tplName" )->get();
             unless (defined $tplContent) {
-                error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/$tplName" ) );
+                error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/$tplName" ) );
                 return 1;
             }
         }

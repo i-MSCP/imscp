@@ -156,21 +156,21 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, 
                 throw new iMSCP_Exception('A PDO instance is requested for ' . __CLASS__);
             }
 
-            $this->_db = $params['db'];
+            $this->_db = (string)$params['db'];
 
             // Overrides the database table name for configuration parameters
             if (isset($params['table_name'])) {
-                $this->_tableName = $params['table_name'];
+                $this->_tableName = (string)$params['table_name'];
             }
 
             // Override the column name for configuration parameters keys
             if (isset($params['keys_column'])) {
-                $this->_keysColumn = $params['keys_column'];
+                $this->_keysColumn = (string)$params['keys_column'];
             }
 
             // Set the column name for configuration parameters values
             if (isset($params['values_column'])) {
-                $this->_valuesColumn = $params['values_column'];
+                $this->_valuesColumn = (string)$params['values_column'];
             }
 
         } elseif (!$params instanceof PDO) {
@@ -444,7 +444,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, 
                 $this->_parameters[$row[$keyColumn]] = $row[$valueColumn];
             }
         } else {
-            throw new iMSCP_Exception('Could not get configuration parameters from database.');
+            throw new iMSCP_Exception("Couldn't get configuration parameters from database.");
         }
     }
 

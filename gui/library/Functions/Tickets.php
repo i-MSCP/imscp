@@ -666,7 +666,7 @@ i-MSCP Mailer');
     ));
 
     if (!$ret) {
-        write_log(sprintf('Could not send ticket notification to %s', $toData['admin_name']), E_USER_ERROR);
+        write_log(sprintf("Couldn't send ticket notification to %s", $toData['admin_name']), E_USER_ERROR);
         return false;
     }
 

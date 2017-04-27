@@ -84,7 +84,7 @@ sub install
     unless (defined $cfgTpl) {
         $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp" )->get();
         unless (defined $cfgTpl) {
-            error( sprintf( 'Could not read %s', "$self->{'cfgDir'}/imscp" ) );
+            error( sprintf( "Couldn't read %s", "$self->{'cfgDir'}/imscp" ) );
             return 1;
         }
     }
@@ -184,7 +184,7 @@ sub addTask
 
     $filepath ||= "$self->{'config'}->{'CRON_D_DIR'}/imscp";
     unless (-f $filepath) {
-        error( sprintf( 'Could not add cron task: File %s not found.', $filepath ) );
+        error( sprintf( "Couldn't add cron task: File %s not found.", $filepath ) );
         return 1;
     }
 
@@ -204,7 +204,7 @@ sub addTask
     my $filename = fileparse( $filepath );
     my $wrkFileContent = iMSCP::File->new( filename => $filepath )->get();
     unless (defined $wrkFileContent) {
-        error( sprintf( 'Could not read %s file', $filepath ) );
+        error( sprintf( "Couldn't read %s file", $filepath ) );
         return 1;
     }
 
@@ -257,14 +257,14 @@ sub deleteTask
 
     $filepath ||= "$self->{'config'}->{'CRON_D_DIR'}/imscp";
     unless (-f $filepath) {
-        error( sprintf( 'Could not remove cron task: File %s not found.', $filepath ) );
+        error( sprintf( "Couldn't remove cron task: File %s not found.", $filepath ) );
         return 1;
     }
 
     my $filename = fileparse( $filepath );
     my $wrkFileContent = iMSCP::File->new( filename => $filepath )->get;
     unless (defined $wrkFileContent) {
-        error( sprintf( 'Could not read %s file', $filepath ) );
+        error( sprintf( "Couldn't read %s file", $filepath ) );
         return 1;
     }
 

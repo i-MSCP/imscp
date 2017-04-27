@@ -237,7 +237,7 @@ class Net
     {
         exec('/bin/ip -o link show', $output, $ret);
         if ($ret > 0) {
-            throw new \RuntimeException('Could not extract network device.');
+            throw new \RuntimeException("Couldn't extract network device.");
         }
 
         foreach ($output as $line) {
@@ -272,7 +272,7 @@ class Net
     {
         exec('/bin/ip -o addr show', $output, $ret);
         if ($ret > 0) {
-            throw new \RuntimeException('Could not extract IP addresses.');
+            throw new \RuntimeException("Couldn't extract IP addresses.");
         }
 
         foreach ($output as $line) {

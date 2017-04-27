@@ -33,12 +33,12 @@ int backend_command(int sockfd, char *buffer)
 
     switch(fork()) {
         case -1:
-            say("could not fork(): %s", strerror(errno));
+            say("couldn't fork(): %s", strerror(errno));
         break;
         case 0: /* child */
             close(sockfd);
             if(execl(backendscriptpath, backendscriptname, (char *)NULL) == -1) {
-                say("could not execute backend command: %s", strerror(errno));
+                say("couldn't execute backend command: %s", strerror(errno));
                 exit(EXIT_FAILURE);
             }
             break;

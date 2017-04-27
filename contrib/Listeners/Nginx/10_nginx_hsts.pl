@@ -38,7 +38,7 @@ EOF
         my $file = iMSCP::File->new( filename => '/etc/nginx/sites-available/00_master_ssl.conf' );
         my $fileContent = $file->get();
         unless (defined $fileContent) {
-            error( sprintf( 'Could not read %s file', '/etc/nginx/sites-available/00_master_ssl.conf' ) );
+            error( sprintf( "Couldn't read %s file", '/etc/nginx/sites-available/00_master_ssl.conf' ) );
             return 1;
         }
 

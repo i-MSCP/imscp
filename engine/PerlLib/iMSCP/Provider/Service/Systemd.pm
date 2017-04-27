@@ -214,7 +214,7 @@ sub reload
 
 =item isRunning( $unit )
 
- Is the given service/scoket is running (active)?
+ Is the given service/socket is running (active)?
 
  Param string $unit Unit name
  Return bool TRUE if the given service is running, FALSE otherwise
@@ -290,7 +290,7 @@ sub _searchUnitFile
         return $filepath if -f $filepath;
     }
 
-    die( sprintf( "Could not find systemd `%s' unit configuration file", $unit ) );
+    die( sprintf( "Couldn't find systemd `%s' unit configuration file", $unit ) );
 }
 
 =back

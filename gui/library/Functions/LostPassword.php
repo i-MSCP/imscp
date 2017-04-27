@@ -208,7 +208,7 @@ function sendPasswordRequestValidation($adminName)
     ));
 
     if (!$ret) {
-        write_log(sprintf('Could not send new password request validation to %s', $adminName), E_USER_ERROR);
+        write_log(sprintf("Couldn't send new password request validation to %s", $adminName), E_USER_ERROR);
         set_page_message(tr('An unexpected error occurred. Please contact your administrator.'));
         return false;
     }
@@ -273,7 +273,7 @@ function sendPassword($uniqueKey)
     ));
 
     if (!$ret) {
-        write_log(sprintf('Could not send new passsword to %s', $row['admin_name']), E_USER_ERROR);
+        write_log(sprintf("Couldn't send new passsword to %s", $row['admin_name']), E_USER_ERROR);
         set_page_message(tr('An unexpected error occurred. Please contact your administrator.'));
         return false;
     }

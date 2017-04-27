@@ -402,7 +402,7 @@ sub _buildMasterCfFile
     unless (defined $cfgTpl) {
         $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/master.cf" )->get();
         unless (defined $cfgTpl) {
-            error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/master.cf" ) );
+            error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/master.cf" ) );
             return 1;
         }
     }
@@ -463,7 +463,7 @@ sub _buildMainCfFile
     unless (defined $cfgTpl) {
         $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/main.cf" )->get();
         unless (defined $cfgTpl) {
-            error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/main.cf" ) );
+            error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/main.cf" ) );
             return 1;
         }
     }

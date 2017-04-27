@@ -63,7 +63,7 @@ if ($db_pass_key eq '{KEY}' || $db_pass_iv eq '{IV}') {
 $main::db_pass_key = $db_pass_key;
 $main::db_pass_iv = $db_pass_iv;
 
-die( 'FATAL: Could not to load database parameters' ) if setup_db_vars();
+die( "FATAL: Couldn't load database parameters" ) if setup_db_vars();
 
 # Lock file system variables
 $main::lock_file = '/tmp/imscp.lock';

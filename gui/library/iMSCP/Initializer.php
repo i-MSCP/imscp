@@ -278,7 +278,7 @@ class iMSCP_Initializer
             );
         } catch (PDOException $e) {
             throw new iMSCP_Exception_Database(
-                sprintf('Could not establish connection to the database: %s', $e->getMessage()), NULL, $e->getCode(), $e
+                sprintf("Couldn't establish connection to the database: %s", $e->getMessage()), NULL, $e->getCode(), $e
             );
         }
 
@@ -561,7 +561,7 @@ class iMSCP_Initializer
         foreach ($pluginManager->pluginGetList() as $pluginName) {
             if (!$pluginManager->pluginHasError($pluginName)) {
                 if (!$pluginManager->pluginLoad($pluginName)) {
-                    throw new iMSCP_Exception(sprintf('Could not load plugin: %s', $pluginName));
+                    throw new iMSCP_Exception(sprintf("Couldn't load plugin: %s", $pluginName));
                 }
             }
         }

@@ -213,7 +213,7 @@ if ($> == 0) {
         $( = $guid;
 
         if ($) != $guid and $) != ($guid - 2**32)) {
-            logs('fatal', sprintf('could not setgid to gid %s', $guid));
+            logs('fatal', sprintf("couldn't setgid to gid %s", $guid));
             exit 1;
         }
     }
@@ -222,7 +222,7 @@ if ($> == 0) {
         my $uuid = getpwnam($OPTS{'u'});
 
         unless (defined $uuid && $uuid != 0) {
-            logs('fatal', 'could not run as root or nonexistant user');
+            logs('fatal', "couldn't run as root or nonexistant user");
             exit 1;
         }
 
@@ -230,7 +230,7 @@ if ($> == 0) {
         $< = $uuid;
 
         if ($> != $uuid and $> != ($uuid - 2**32)) {
-            logs('fatal', sprintf('could not setuid to uid %s', $uuid));
+            logs('fatal', sprintf("couldn't setuid to uid %s", $uuid));
             exit 1;
         }
     }
@@ -284,14 +284,14 @@ if ($OPTS{'d'}) {
                         logs('notice', sprintf('DBI usage tracker dump interval set to %d seconds', $DBI_DUMP));
                         $dbh->disconnect()
                     } else {
-                        logs('alert', sprintf('could not connect to SQL server: %s', $@));
+                        logs('alert', sprintf("couldn't connect to SQL server: %s", $@));
                         delete $OPTS{'d'};
                     }
 
                     undef $dbh;
                 }
             } else {
-                logs('alert', sprintf('could not open %s file: %s', $OPTS{'d'}, $!));
+                logs('alert', sprintf("couldn't open %s file: %s", $OPTS{'d'}, $!));
                 delete $OPTS{'d'};
             }
         } else {
@@ -299,7 +299,7 @@ if ($OPTS{'d'}) {
             delete $OPTS{'d'};
         }
     } else {
-        logs('alert', sprintf('could not load DBI module: %s', $@));
+        logs('alert', sprintf("couldn't load DBI module: %s", $@));
         delete $OPTS{'d'};
     }
 
@@ -401,7 +401,7 @@ if ($OPTS{'e'}) {
             print ELOG $logLine;
         }
     } else {
-        logs('alert', sprintf('could not open %s/%s file', $LOGDIR, time2str($TEMPLATE, $initLogTime)));
+        logs('alert', sprintf("couldn't open %s/%s file", $LOGDIR, time2str($TEMPLATE, $initLogTime)));
     }
 } else {
     $0 = 'vlogger (access log)';
@@ -453,7 +453,7 @@ if ($OPTS{'e'}) {
                     chdir('..');
                 }
             } else {
-                logs('alert', sprintf('could not open %s/%s/%s file', $LOGDIR, $vhost, time2str($TEMPLATE, $logTime)));
+                logs('alert', sprintf("couldn't open %s/%s/%s file", $LOGDIR, $vhost, time2str($TEMPLATE, $logTime)));
             }
         }
 
@@ -484,7 +484,7 @@ sub openErrorLog
     my $logTime = shift;
 
     unless(open ELOG, '>>', time2str($TEMPLATE, $logTime)) {
-        logs('alert', sprintf('could not open %s/%s file', $LOGDIR, time2str($TEMPLATE, $logTime)));
+        logs('alert', sprintf("couldn't open %s/%s file", $LOGDIR, time2str($TEMPLATE, $logTime)));
         return;
     }
 

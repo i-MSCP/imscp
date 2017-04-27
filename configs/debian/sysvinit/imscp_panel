@@ -49,7 +49,7 @@ do_start()
 	# Return
 	#   0 if daemon has been started
 	#   1 if daemon was already running
-	#   2 if daemon could not be started
+	#   2 if daemon couldn't be started
 	start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON --test > /dev/null \
 		|| return 1
 	start-stop-daemon --nicelevel 10 --start --quiet --pidfile $PIDFILE --exec $DAEMON -- \
@@ -68,7 +68,7 @@ do_stop()
 	# Return
 	#   0 if daemon has been stopped
 	#   1 if daemon was already stopped
-	#   2 if daemon could not be stopped
+	#   2 if daemon couldn't be stopped
 	#   other if a failure occurred
 	start-stop-daemon --stop --quiet --retry=QUIT/$TIMEOUT/TERM/5/KILL/5 --pidfile $PIDFILE --name $NAME
 	RETVAL="$?"

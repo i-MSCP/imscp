@@ -191,7 +191,7 @@ sub getRawDb
     return $self->{'connection'} if $self->{'connection'};
 
     my $rs = $self->connect();
-    !$rs or die( sprintf( 'Could not connect to SQL server: %s', $rs ) );
+    !$rs or die( sprintf( "Couldn't connect to SQL server: %s", $rs ) );
     $self->{'connection'};
 }
 

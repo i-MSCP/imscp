@@ -54,7 +54,7 @@ iMSCP::EventManager->getInstance()->register(
         my $file = iMSCP::File->new( filename => $hostsFilePath );
         my $fileContent = $file->get();
         unless (defined $fileContent) {
-            error( sprintf( 'Could not read %s file', $hostsFilePath ) );
+            error( sprintf( "Couldn't read %s file", $hostsFilePath ) );
             return 1;
         }
 

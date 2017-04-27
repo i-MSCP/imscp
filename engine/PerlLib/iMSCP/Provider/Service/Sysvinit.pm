@@ -316,7 +316,7 @@ sub _searchInitScript
         return $initScriptPath if -f $initScriptPath;
     }
 
-    die( sprintf( "Could not find sysvinit script for the `%s' service", $service ) );
+    die( sprintf( "Couldn't find sysvinit script for the `%s' service", $service ) );
 }
 
 =item _exec( $command )
@@ -375,7 +375,7 @@ sub _getPid
     defined $pattern or die( '$pattern parameter is not defined' );
 
     my $ps = $self->_getPs( );
-    open my $fh, '-|', $ps or die( sprintf( 'Could not pipe to %s: %s', $ps, $! ) );
+    open my $fh, '-|', $ps or die( sprintf( "Couldn't pipe to %s: %s", $ps, $! ) );
 
     my $regex = qr/$pattern/;
     while(<$fh>) {

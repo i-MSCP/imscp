@@ -517,7 +517,7 @@ function layout_deleteUserLogo($logoFilePath = NULL, $onlyFile = false)
     $logoFilePath = $cfg['GUI_ROOT_DIR'] . '/data/persistent/ispLogos/' . basename($logoFilePath);
 
     if (file_exists($logoFilePath) && !@unlink($logoFilePath)) {
-        write_log(sprintf('Could not remove %s file.', $logoFilePath), E_USER_WARNING);
+        write_log(sprintf("Couldn't remove %s file.", $logoFilePath), E_USER_WARNING);
         return false;
     }
 
@@ -598,7 +598,7 @@ function layout_createNavigationFile($filePath, $locale, $userLevel)
     $translationsCacheDir = CACHE_PATH . '/translations/navigation';
 
     if (!is_dir($translationsCacheDir) && !@mkdir($translationsCacheDir)) {
-        throw new iMSCP_Exception('Could not create cache directory for navigation translations');
+        throw new iMSCP_Exception("Couldn't create cache directory for navigation translations");
     }
 
     $config = new Zend_Config(include($filePath));

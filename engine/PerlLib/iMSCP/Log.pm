@@ -64,7 +64,7 @@ sub new
     };
 
     my $args = check( $tmpl, \%hash ) or die(
-        sprintf( 'Could not create a new iMSCP::Log object: %s1', Params::Check->last_error )
+        sprintf( "Couldn't create a new iMSCP::Log object: %s1", Params::Check->last_error )
     );
 
     bless $args, $class
@@ -135,7 +135,7 @@ sub store
     }
 
     my $args = check( $tmpl, \%hash ) or (
-        warn( sprintf( 'Could not store error: %s', Params::Check->last_error ) ),
+        warn( sprintf( "Couldn't store error: %s", Params::Check->last_error ) ),
         return
     );
 
@@ -216,7 +216,7 @@ sub retrieve
     }
 
     my $args = check( $tmpl, \%hash ) or (
-        warn( sprintf( 'Could not parse input: %s', Params::Check->last_error ) ), return
+        warn( sprintf( "Couldn't parse input: %s", Params::Check->last_error ) ), return
     );
 
     my @list = ( );

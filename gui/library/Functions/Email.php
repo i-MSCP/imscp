@@ -41,7 +41,7 @@ function get_email_tpl_data($userId, $tplName)
     );
 
     if (!$stmt->rowCount()) {
-        throw new iMSCP_Exception('Could not find user data');
+        throw new iMSCP_Exception("Couldn't find user data");
     }
     $row = $stmt->fetchRow();
 

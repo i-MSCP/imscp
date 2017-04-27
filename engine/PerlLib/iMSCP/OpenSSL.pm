@@ -284,7 +284,7 @@ sub createSelfSignedCertificate
     # Load openssl configuration template file for self-signed SSL certificates
     my $openSSLConffileTplContent = iMSCP::File->new( filename => $openSSLConffileTpl )->get( );
     unless (defined $openSSLConffileTplContent) {
-        error( sprintf( 'Could not load %s openssl configuration template file', $openSSLConffileTpl ) );
+        error( sprintf( "Couldn't load %s openssl configuration template file", $openSSLConffileTpl ) );
         return 1;
     }
 

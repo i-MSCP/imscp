@@ -320,10 +320,10 @@ sub process
     # Process IP addresses tasks
     if ($ipsModule) {
         newDebug( 'Ips_module.log' );
-        eval { require Modules::Ips } or die( sprintf( 'Could not load Module::Ips module: %s', $@ ) );
+        eval { require Modules::Ips } or die( sprintf( "Couldn't load Module::Ips module: %s", $@ ) );
         Modules::Ips->new()->process() == 0 or die(
             sprintf(
-                'Could not process IP addresses',
+                "Couldn't process IP addresses",
                 getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
             )
         );
@@ -464,7 +464,7 @@ sub _process
         return 0;
     }
 
-    eval "require $module" or die( sprintf( 'Could not load %s: %s', $module, $@ ) );
+    eval "require $module" or die( sprintf( "Couldn't load %s: %s", $module, $@ ) );
 
     my ($nStep, $nSteps) = (0, scalar @{$rows});
 

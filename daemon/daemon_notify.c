@@ -13,7 +13,7 @@ void notify(int status)
     }
 
     if(write(notify_pipe[1], &writeval, sizeof(writeval)) == -1) {
-        say("could not send notification through pipe: %s", strerror(errno));
+        say("couldn't send notification through pipe: %s", strerror(errno));
     }
 
     close(notify_pipe[1]);

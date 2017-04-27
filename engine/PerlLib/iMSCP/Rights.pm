@@ -85,7 +85,7 @@ sub setRights
                 {
                     wanted   => sub {
                         if ($options->{'user'} || $options->{'group'}) {
-                            lchown $uid, $gid, $_ or die( sprintf( 'Could not set user/group on %s: %s', $_, $! ) );
+                            lchown $uid, $gid, $_ or die( sprintf( "Couldn't set user/group on %s: %s", $_, $! ) );
                         }
 
                         return if -l $_; # We do not call chmod on symkink targets

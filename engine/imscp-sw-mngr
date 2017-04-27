@@ -277,7 +277,7 @@ sub _sw_add_data
 
 	# Change directory to software temporary directory
 	unless(chdir($sw_tmp_path)) {
-		push_el(\@main::el, '_sw_add_data()', sprintf('[ERROR] Could not change dir to %s', $sw_tmp_path));
+		push_el(\@main::el, '_sw_add_data()', sprintf("[ERROR] Couldn't change dir to %s", $sw_tmp_path));
 		return 1;
 	}
 
@@ -385,7 +385,7 @@ sub _sw_del_data
 	return $rs if $rs;
 
 	unless(chdir($sw_tmp_path)) {
-		push_el(\@main::el, '_sw_add_data()', sprintf('[ERROR] Could not change dir to %s', $sw_tmp_path));
+		push_el(\@main::el, '_sw_add_data()', sprintf("[ERROR] Couldn't change dir to %s", $sw_tmp_path));
 		return 1;
 	}
 

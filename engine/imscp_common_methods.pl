@@ -162,7 +162,7 @@ sub doSQL
 
         unless (defined $main::db) {
             push_el(
-                \@main::el, 'doSQL()', "[ERROR] Could not connect to SQL server with current DSN: @main::db_connect"
+                \@main::el, 'doSQL()', "[ERROR] Couldn't connect to SQL server with current DSN: @main::db_connect"
             );
             return (-1, '');
         }
@@ -207,7 +207,7 @@ sub get_file
 
     my $fh;
     unless (open( $fh, '<', $fname )) {
-        push_el( \@main::el, 'get_file()', "[ERROR] Could not open `$fname' for reading: $!" );
+        push_el( \@main::el, 'get_file()', "[ERROR] Couldn't open `$fname' for reading: $!" );
         return 1;
     }
 
@@ -243,7 +243,7 @@ sub del_file
 
     my $res = unlink( $fname );
     if ($res != 1) {
-        push_el( \@main::el, 'del_file()', "[ERROR] Could not unlink '$fname' !" );
+        push_el( \@main::el, 'del_file()', "[ERROR] Couldn't unlink '$fname' !" );
         return -1;
     }
 

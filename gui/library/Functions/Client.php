@@ -480,7 +480,7 @@ function getDomainMountpoint($domainId, $domainType, $ownerId)
 
     $stmt = exec_query($query, array($domainId, $ownerId));
     if (!$stmt->rowCount()) {
-        throw new iMSCP_Exception('Could not find domain data');
+        throw new iMSCP_Exception("Couldn't find domain data");
     }
 
     return $stmt->fetchRow(PDO::FETCH_NUM);
@@ -514,7 +514,7 @@ function send_alias_order_email($aliasName)
     ));
 
     if (!$ret) {
-        write_log(sprintf('Could not send alias order to %s', $row['admin_name']), E_USER_ERROR);
+        write_log(sprintf("Couldn't send alias order to %s", $row['admin_name']), E_USER_ERROR);
         return false;
     }
 

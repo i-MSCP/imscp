@@ -183,7 +183,7 @@ sub build
     find(
         sub {
             return unless $_ eq '.gitkeep';
-            unlink or fatal( sprintf( 'Could not remove %s file: %s', $File::Find::name, $! ) );
+            unlink or fatal( sprintf( "Couldn't remove %s file: %s", $File::Find::name, $! ) );
         },
         $main::{'INST_PREF'}
     );
@@ -589,7 +589,7 @@ sub _buildConfigFiles
     my $confDir = -d $distroConfigDir ? $distroConfigDir : $defaultConfigDir;
 
     unless (chdir( $confDir )) {
-        error( sprintf( 'Could not change directory to %s: %s', $confDir, $! ) );
+        error( sprintf( "Couldn't change directory to %s: %s", $confDir, $! ) );
         return 1;
     }
 
@@ -608,7 +608,7 @@ sub _buildConfigFiles
         $confDir = -d "$distroConfigDir/$_" ? "$distroConfigDir/$_" : "$defaultConfigDir/$_";
 
         unless (chdir( $confDir )) {
-            error( sprintf( 'Could not change directory to %s: %s', $confDir, $! ) );
+            error( sprintf( "Couldn't change directory to %s: %s", $confDir, $! ) );
             return 1;
         }
 
@@ -635,7 +635,7 @@ sub _buildConfigFiles
 sub _buildEngineFiles
 {
     unless (chdir "$FindBin::Bin/engine") {
-        error( sprintf( 'Could not change dir to %s', "$FindBin::Bin/engine" ) );
+        error( sprintf( "Couldn't change dir to %s", "$FindBin::Bin/engine" ) );
         return 1;
     }
 
@@ -648,7 +648,7 @@ sub _buildEngineFiles
     for (@configDirs) {
         next unless -f "$FindBin::Bin/engine/$_/install.xml";
         unless (chdir "$FindBin::Bin/engine/$_") {
-            error( sprintf( 'Could not change dir to %s', "$FindBin::Bin/engine/$_" ) );
+            error( sprintf( "Couldn't change dir to %s", "$FindBin::Bin/engine/$_" ) );
             return 1;
         }
 
@@ -683,7 +683,7 @@ sub _buildFrontendFiles
 sub _compileDaemon
 {
     unless (chdir "$FindBin::Bin/daemon") {
-        error( sprintf( 'Could not change dir to %s', "$FindBin::Bin/daemon" ) );
+        error( sprintf( "Couldn't change dir to %s", "$FindBin::Bin/daemon" ) );
         return 1;
     }
 
@@ -843,7 +843,7 @@ sub _processXmlFile
     }
 
     eval "use XML::Simple; 1";
-    fatal( 'Could not load the XML::Simple perl module' ) if $@;
+    fatal( "Couldn't load the XML::Simple perl module" ) if $@;
     my $xml = XML::Simple->new( ForceArray => 1, ForceContent => 1 );
     my $data = eval { $xml->XMLin( $file, VarAttr => 'export' ) };
     if ($@) {
@@ -916,7 +916,7 @@ sub _expandVars
         } elsif (defined $main::imscpConfig{$var}) {
             $string =~ s/\$\{$var\}/$main::imscpConfig{$var}/g;
         } else {
-            fatal( "Could not expand variable \${$var}. Variable not found." );
+            fatal( "Couldn't expand variable \${$var}. Variable not found." );
         }
     }
 
@@ -1116,7 +1116,7 @@ sub _getDistroAdapter
         $autoinstallerAdapterInstance = $adapterClass->new()
     };
 
-    fatal( sprintf( 'Could not instantiate %s autoinstaller adapter: %s', $distribution, $@ ) ) if $@;
+    fatal( sprintf( "Couldn't instantiate %s autoinstaller adapter: %s", $distribution, $@ ) ) if $@;
     $autoinstallerAdapterInstance;
 }
 

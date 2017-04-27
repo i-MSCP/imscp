@@ -75,7 +75,7 @@ void daemon_init(void)
     /* continue as a child */
 
     if(setsid() == -1) {
-        perror("Could not setsid()");
+        perror("Couldn't setsid()");
         notify(-1);
     }
 
@@ -99,13 +99,13 @@ void daemon_init(void)
 
     /* set new file permissions */
     if(umask(0) == -1) {
-        perror("Could not umask()");
+        perror("Couldn't umask()");
         notify(-1);
     }
 
     /* change working directory to root directory */
     if(chdir("/") == -1) {
-        perror("Could not chdir()");
+        perror("Couldn't chdir()");
         notify(-1);
     }
 

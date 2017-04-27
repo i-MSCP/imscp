@@ -88,7 +88,7 @@ sub getProvider
 
     my $provider = 'iMSCP::Provider::NetworkInterface::'.iMSCP::LsbRelease->getInstance->getId( 'short' );
     can_load( modules => { $provider => undef } ) or die(
-        sprintf( "Could not load `%s' network interface provider: %s", $provider, $Module::Load::Conditional::ERROR )
+        sprintf( "Couldn't load `%s' network interface provider: %s", $provider, $Module::Load::Conditional::ERROR )
     );
     $self->setProvider( $provider->new( ) );
 }

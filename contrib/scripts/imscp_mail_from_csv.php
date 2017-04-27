@@ -175,7 +175,7 @@ while (($csvEntry = fgetcsv($handle, 1024, $csvDelimiter)) !== false) {
             if ($e->getCode() == 23000) {
                 printf("WARN: `%s` already exists in database. Skipping...\n", $mailAddr);
             } else {
-                fwrite(STDERR, sprintf("ERROR: Could not insert `%s in database: %s\n", $mailAddr, $e->getMessage()));
+                fwrite(STDERR, sprintf("ERROR: Couldn't insert `%s in database: %s\n", $mailAddr, $e->getMessage()));
             }
         }
     } catch (iMSCP_Exception $e) {
@@ -184,7 +184,7 @@ while (($csvEntry = fgetcsv($handle, 1024, $csvDelimiter)) !== false) {
 }
 
 if (!send_request()) {
-    fwrite(STDERR, "ERROR: Could not send request to i-MSCP daemon.\n");
+    fwrite(STDERR, "ERROR: Couldn't send request to i-MSCP daemon.\n");
     exit(1);
 }
 

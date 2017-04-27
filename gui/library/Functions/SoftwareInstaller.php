@@ -147,7 +147,7 @@ i-MSCP Mailer.'),
     ));
 
     if (!$ret) {
-        write_log(sprintf('Could not send software activation notification to %s', $resellerData['admin_name']), E_USER_ERROR);
+        write_log(sprintf("Couldn'tsend software activation notification to %s", $resellerData['admin_name']), E_USER_ERROR);
         return false;
     }
 
@@ -199,7 +199,7 @@ i-MSCP Mailer'),
     ));
 
     if (!$ret) {
-        write_log(sprintf('Could not send software activation notification to %s', $resellerData['admin_name']), E_USER_ERROR);
+        write_log(sprintf("Couldn't send software activation notification to %s", $resellerData['admin_name']), E_USER_ERROR);
         return false;
     }
 
@@ -766,7 +766,7 @@ i-MSCP Mailer'),
     ));
 
     if (!$ret) {
-        write_log(sprintf('Could not send software upload notification to %s', $adminData['admin_name']), E_USER_ERROR);
+        write_log(sprintf("Couldn't send software upload notification to %s", $adminData['admin_name']), E_USER_ERROR);
         return false;
     }
 

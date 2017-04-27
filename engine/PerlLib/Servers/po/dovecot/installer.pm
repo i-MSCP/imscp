@@ -291,7 +291,7 @@ sub _init
         }
     }
 
-    $self->_getVersion( ) and fatal( 'Could not get Dovecot version' );
+    $self->_getVersion( ) and fatal( "Couldn't get Dovecot version" );
     $self;
 }
 
@@ -405,7 +405,7 @@ sub _setupSqlUser
     my $quotedDbName = $db->quoteIdentifier( $dbName );
     $rs = $db->doQuery( 'g', "GRANT SELECT ON $quotedDbName.mail_users TO ?\@?", $dbUser, $dbUserHost );
     unless (ref $rs eq 'HASH') {
-        error( sprintf( 'Could not add SQL privilege: %s', $rs ) );
+        error( sprintf( "Couldn't add SQL privilege: %s", $rs ) );
         return 1;
     }
 
@@ -491,7 +491,7 @@ sub _buildConf
             unless (defined $cfgTpl) {
                 $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/$conffile" )->get( );
                 unless (defined $cfgTpl) {
-                    error( sprintf( 'Could not read %s file', "$self->{'cfgDir'}/$conffile" ) );
+                    error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/$conffile" ) );
                     return 1;
                 }
             }

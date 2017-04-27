@@ -428,7 +428,7 @@ sub _isEnabledPre090
     # we check to see if an uncommented `start on' or `manual'
     # stanza is the last one in the file. The last one in the
     # file wins.
-    open my $fh, '<', \$jobFileContent or die ( sprintf( 'Could not open in-memory file: %s', $! ) );
+    open my $fh, '<', \$jobFileContent or die ( sprintf( "Couldn't open in-memory file: %s", $! ) );
     my $enabled = 0;
     while(<$fh>) {
         if (/$START_ON/) {
@@ -461,7 +461,7 @@ sub _isEnabledPost090
     # override files. The last one in the file wins.
     my $enabled = 0;
     for (\$jobFileContent, \$jobOverrideFileContent) {
-        open my $fh, '<', $_ or die ( sprintf( 'Could not open in-memory file: %s', $! ) );
+        open my $fh, '<', $_ or die ( sprintf( "Couldn't open in-memory file: %s", $! ) );
         while(<$fh>) {
             if (/$START_ON/) {
                 $enabled = 1;
@@ -788,7 +788,7 @@ sub _searchJobFile
         return $filepath if -f $filepath;
     }
 
-    die( sprintf( "Could not find the upstart `%s' job file", $jobFile ) );
+    die( sprintf( "Couldn't find the upstart `%s' job file", $jobFile ) );
 }
 
 =item _readJobFile( $job )
@@ -805,7 +805,7 @@ sub _readJobFile
     my ($self, $job) = @_;
 
     my $filepath = $self->getJobFilePath( $job );
-    iMSCP::File->new( filename => $filepath )->get( ) or die( sprintf( "Could not read `%s' file", $filepath ) );
+    iMSCP::File->new( filename => $filepath )->get( ) or die( sprintf( "Couldn't read `%s' file", $filepath ) );
 }
 
 =item _readJobOverrideFile( $job )
@@ -825,7 +825,7 @@ sub _readJobOverrideFile
     my $filepath = eval { $self->getJobFilePath( $job, 'override' ) };
     if (defined $filepath) {
         my $fileContent = iMSCP::File->new( filename => $filepath )->get( );
-        defined $fileContent or die( sprintf( "Could not read `%s' file", $filepath ) );
+        defined $fileContent or die( sprintf( "Couldn't read `%s' file", $filepath ) );
         return $fileContent;
     }
 
@@ -852,10 +852,10 @@ sub _writeFile
 
     if ($fileContent ne '') {
         $file->set( $fileContent ) == 0 && $file->save( ) == 0 && $file->mode( 0644 ) == 0 or die(
-            sprintf( "Could not write `%s' file", $filepath )
+            sprintf( "Couldn't write `%s' file", $filepath )
         );
     } elsif ($filepath =~ /\.override$/ && -f $filepath) {
-        $file->delFile( ) == 0 or die( sprintf( "Could not unlink `%s' file", $filepath ) );
+        $file->delFile( ) == 0 or die( sprintf( "Couldn't unlink `%s' file", $filepath ) );
     } else {
         1;
     }

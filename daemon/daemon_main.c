@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 
     /* setup pipe for notification */
     if(pipe(notify_pipe) == -1) {
-        perror("Could not create pipe for notification");
+        perror("Couldn't create pipe for notification");
         exit(EXIT_FAILURE);
     }
 

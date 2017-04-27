@@ -196,7 +196,7 @@ function get_user_domain_id($customeId)
 
     $stmt = exec_query('SELECT domain_id FROM domain WHERE domain_admin_id = ?', $customeId);
     if (!$stmt->rowCount()) {
-        throw new iMSCP_Exception(sprintf('Could not find domain ID of user with ID %s', $customeId));
+        throw new iMSCP_Exception(sprintf("Couldn't find domain ID of user with ID %s", $customeId));
     }
 
     $row = $stmt->fetchRow();
@@ -395,7 +395,7 @@ function change_domain_status($customerId, $action)
     );
 
     if (!$stmt->rowCount()) {
-        throw new iMSCP_Exception(sprintf("Could not find domain for user with ID %s", $customerId));
+        throw new iMSCP_Exception(sprintf("Couldn't find domain for user with ID %s", $customerId));
     }
 
     $row = $stmt->fetchRow();
@@ -1883,7 +1883,7 @@ function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $uln
     ));
 
     if (!$ret) {
-        write_log(sprintf('Lost Password: Could not send welcome email to %s', $uname), E_USER_ERROR);
+        write_log(sprintf("Lost Password: Couldn't send welcome email to %s", $uname), E_USER_ERROR);
         return false;
     }
 
