@@ -24,6 +24,7 @@ package Listener::Postfix::Submission::TLS;
 use strict;
 use warnings;
 use iMSCP::EventManager;
+use Servers::mta;
 
 iMSCP::EventManager->getInstance()->register(
     'afterMtaBuildMasterCfFile',
@@ -40,7 +41,21 @@ submission inet n       -       y       -       -       smtpd
  -o smtpd_sasl_auth_enable=yes
  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
 EOF
-        0;
+        # smtpd_tls_security_level=encrypt means mandatory.
+        # Make sure to disable vulnerable SSL protocol
+        iMSCP::EventManager->getInstance()->register(
+            'afterMtaBuildConf',
+            sub {
+                Servers::mta->factory()->postconf(
+                    (
+                        smtpd_tls_mandatory_protocols => {
+                            action => 'replace',
+                            values => [ '!SSLv2', '!SSLv3' ]
+                        }
+                    )
+                );
+            }
+        );
     }
 );
 
