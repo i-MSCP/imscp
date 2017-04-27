@@ -488,43 +488,93 @@ sub _buildMainCfFile
         sub {
             my %params = (
                 # smtpd TLS parameters (opportunistic)
-                smtpd_tls_security_level         => { action => 'replace', values => [ 'may' ] },
-                smtpd_tls_ciphers                => { action => 'replace', values => [ 'high' ] },
-                smtpd_tls_exclude_ciphers        => { action => 'replace', values => [ 'aNULL', 'MD5' ] },
-                smtpd_tls_protocols              => { action => 'replace', values => [ '!SSLv2', '!SSLv3' ] },
-                smtpd_tls_loglevel               => { action => 'replace', values => [ '0' ] },
+                smtpd_tls_security_level         => {
+                    action => 'replace',
+                    values => [ 'may' ]
+                },
+                smtpd_tls_ciphers                => {
+                    action => 'replace',
+                    values => [ 'high' ]
+                },
+                smtpd_tls_exclude_ciphers        => {
+                    action => 'replace',
+                    values => [ 'aNULL', 'MD5' ]
+                },
+                smtpd_tls_protocols              => {
+                    action => 'replace',
+                    values => [ '!SSLv2', '!SSLv3' ]
+                },
+                smtpd_tls_loglevel               => {
+                    action => 'replace',
+                    values => [ '0' ]
+                },
                 smtpd_tls_cert_file              => {
-                    action => 'replace', values => [ "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem" ]
+                    action => 'replace',
+                    values => [ "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem" ]
                 },
                 smtpd_tls_key_file               => {
-                    action => 'replace', values => [ "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem" ]
+                    action => 'replace',
+                    values => [ "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem" ]
                 },
-                smtpd_tls_auth_only              => { action => 'replace', values => [ 'no' ] },
-                smtpd_tls_received_header        => { action => 'replace', values => [ 'yes' ] },
+                smtpd_tls_auth_only              => {
+                    action => 'replace',
+                    values => [ 'no' ]
+                },
+                smtpd_tls_received_header        => {
+                    action => 'replace',
+                    values => [ 'yes' ]
+                },
                 smtpd_tls_session_cache_database => {
-                    action => 'replace', values => [ 'btree:/var/lib/postfix/smtpd_scache' ]
+                    action => 'replace',
+                    values => [ 'btree:/var/lib/postfix/smtpd_scache' ]
                 },
-                smtpd_tls_session_cache_timeout  => { action => 'replace', values => [ '3600s' ] },
+                smtpd_tls_session_cache_timeout  => {
+                    action => 'replace',
+                    values => [ '3600s' ]
+                },
                 # smtp TLS parameters (opportunistic)
-                smtp_tls_security_level          => { action => 'replace', values => [ 'may' ] },
-                smtp_tls_ciphers                 => { action => 'replace', values => [ 'high' ] },
-                smtp_tls_exclude_ciphers         => { action => 'replace', values => [ 'aNULL', 'MD5' ] },
-                smtp_tls_protocols               => { action => 'replace', values => [ '!SSLv2', '!SSLv3' ] },
-                smtp_tls_loglevel                => { action => 'replace', values => [ '0' ] },
+                smtp_tls_security_level          => {
+                    action => 'replace',
+                    values => [ 'may' ]
+                },
+                smtp_tls_ciphers                 => {
+                    action => 'replace',
+                    values => [ 'high' ]
+                },
+                smtp_tls_exclude_ciphers         => {
+                    action => 'replace',
+                    values => [ 'aNULL', 'MD5' ]
+                },
+                smtp_tls_protocols               => {
+                    action => 'replace',
+                    values => [ '!SSLv2', '!SSLv3' ]
+                },
+                smtp_tls_loglevel                => {
+                    action => 'replace',
+                    values => [ '0' ] },
                 smtp_tls_CAfile                  => {
-                    action => 'replace', values => [ '/etc/ssl/certs/ca-certificates.crt' ]
+                    action => 'replace',
+                    values => [ '/etc/ssl/certs/ca-certificates.crt' ]
                 },
                 smtp_tls_session_cache_database  => {
-                    action => 'replace', values => [ 'btree:/var/lib/postfix/smtp_scache' ]
+                    action => 'replace',
+                    values => [ 'btree:/var/lib/postfix/smtp_scache' ]
                 }
             );
 
             if (version->parse( $self->{'config'}->{'POSTFIX_VERSION'} ) >= version->parse( '2.10.0' )) {
-                $params{'smtpd_relay_restrictions'} = { action => 'replace', values => [ '' ], empty => 1 };
+                $params{'smtpd_relay_restrictions'} = {
+                    action => 'replace',
+                    values => [ '' ],
+                    empty  => 1
+                };
             }
 
             if (version->parse( $self->{'config'}->{'POSTFIX_VERSION'} ) >= version->parse( '3.0.0' )) {
-                $params{'compatibility_level'} = { action => 'replace', values => [ '2' ] };
+                $params{'compatibility_level'} = {
+                    action => 'replace',
+                    values => [ '2' ]
+                };
             }
 
             $self->{'mta'}->postconf( %params );

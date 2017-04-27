@@ -42,7 +42,7 @@ submission inet n       -       y       -       -       smtpd
  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
 EOF
         # smtpd_tls_security_level=encrypt means mandatory.
-        # Make sure to disable vulnerable SSL protocol
+        # Make sure to disable vulnerable SSL versions
         iMSCP::EventManager->getInstance()->register(
             'afterMtaBuildConf',
             sub {

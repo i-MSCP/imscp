@@ -27,12 +27,10 @@ use warnings;
 use iMSCP::Net;
 use iMSCP::EventManager;
 
-my $eventManager = iMSCP::EventManager->getInstance();
-
 # Listener that is responsible to replace following default DNS records:
 # - @   IN {IP_TYPE} {DOMAIN_IP}
 # - www IN CNAME     @
-$eventManager->register(
+iMSCP::EventManager->getInstance()->register(
     'beforeNamedAddCustomDNS',
     sub {
         my ($wrkDbFileContent, $data) = @_;
@@ -67,7 +65,7 @@ $eventManager->register(
 # Listener that is responsible to re-add the default DNS records when needed.
 # i-MSCP Bind9 server impl. will not do it unless the domain is being fully
 # reconfigured
-$eventManager->register(
+iMSCP::EventManager->getInstance()->register(
     'afterNamedAddCustomDNS',
     sub {
         my ($wrkDbFileContent, $data) = @_;

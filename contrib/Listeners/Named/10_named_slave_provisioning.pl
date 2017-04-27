@@ -88,10 +88,8 @@ sub createHtpasswdFile
 ## Event listeners
 #
 
-my $eventManager = iMSCP::EventManager->getInstance();
-
 # Listener that is responsible to add authentication configuration
-$eventManager->register(
+iMSCP::EventManager->getInstance()->register(
     'afterFrontEndBuildConfFile',
     sub {
         my ($tplContent, $tplName) = @_;
@@ -130,7 +128,7 @@ EOF
 ) if $authUsername;
 
 # Listener that is responsible to create provisioning script
-$eventManager->register( 'afterFrontEndInstall', sub {
+iMSCP::EventManager->getInstance()->register( 'afterFrontEndInstall', sub {
         my $fileContent = <<'EOF';
 <?php
 require '../../library/imscp-lib.php';

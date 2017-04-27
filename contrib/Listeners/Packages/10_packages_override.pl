@@ -30,12 +30,14 @@ my $DISTRO_PACKAGES_FILE = '/path/to/your/own/package/file';
 
 # Please don't edit anything below this line
 
-iMSCP::EventManager->getInstance()->register('onBuildPackageList', sub {
-    my $pkgFile = shift;
-    $$pkgFile = $DISTRO_PACKAGES_FILE;
-    0;
-});
-
+iMSCP::EventManager->getInstance()->register(
+    'onBuildPackageList',
+    sub {
+        my $pkgFile = shift;
+        $$pkgFile = $DISTRO_PACKAGES_FILE;
+        0;
+    }
+);
 
 1;
 __END__

@@ -53,8 +53,7 @@ my @masterCfParameters = (
 ## Please, don't edit anything below this line unless you known what you're doing
 #
 
-my $em = iMSCP::EventManager->getInstance();
-$em->register(
+iMSCP::EventManager->getInstance()->register(
     'afterMtaBuildConf',
     sub {
         my %params = ();
@@ -73,7 +72,7 @@ $em->register(
         0;
     }
 );
-$em->register(
+iMSCP::EventManager->getInstance()->register(
     'afterMtaBuildMasterCfFile',
     sub {
         my $cfgTpl = shift;

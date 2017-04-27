@@ -45,6 +45,7 @@ iMSCP::EventManager->getInstance()->register(
         $rs ||= $file->save();
     }
 );
+
 iMSCP::EventManager->getInstance()->register(
     'beforeUpdateRoundCubeMailHostEntries',
     sub {

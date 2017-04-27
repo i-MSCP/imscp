@@ -41,15 +41,14 @@ my $saslPasswdMapsPath = '/etc/postfix/relay_passwd';
 ## Please, don't edit anything below this line unless you known what you're doing
 #
 
-my $em = iMSCP::EventManager->getInstance();
-$em->register(
+iMSCP::EventManager->getInstance() > register(
     'beforeInstallPackages',
     sub {
         push @{$_[0]}, 'libsasl2-modules';
         0;
     }
 );
-$em->register(
+iMSCP::EventManager->getInstance()->register(
     'afterMtaBuildConf',
     sub {
         my $mta = Servers::mta->factory();
@@ -57,12 +56,27 @@ $em->register(
         $rs ||= $mta->postconf(
             (
                 # Relay parameter
-                relayhost                  => { action => 'replace', values => [ "$relayhost:$relayport" ] },
+                relayhost                  => {
+                    action => 'replace',
+                    values => [ "$relayhost:$relayport" ]
+                },
                 # smtp SASL parameters
-                smtp_sasl_type             => { action => 'replace', values => [ 'cyrus' ] },
-                smtp_sasl_auth_enable      => { action => 'replace', values => [ 'yes' ] },
-                smtp_sasl_password_maps    => { action => 'add', values => [ "hash:$saslPasswdMapsPath" ] },
-                smtp_sasl_security_options => { action => 'replace', values => [ 'noanonymous' ] }
+                smtp_sasl_type             => {
+                    action => 'replace',
+                    values => [ 'cyrus' ]
+                },
+                smtp_sasl_auth_enable      => {
+                    action => 'replace',
+                    values => [ 'yes' ]
+                },
+                smtp_sasl_password_maps    => {
+                    action => 'add',
+                    values => [ "hash:$saslPasswdMapsPath" ]
+                },
+                smtp_sasl_security_options => {
+                    action => 'replace',
+                    values => [ 'noanonymous' ]
+                }
             )
         );
     }

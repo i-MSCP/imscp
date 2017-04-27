@@ -201,16 +201,43 @@ sub configurePostfix
                 $self->{'mta'}->postconf(
                     (
                         # Dovecot LDA parameters
-                        virtual_transport                     => { action => 'replace', values => [ 'dovecot' ] },
-                        dovecot_destination_concurrency_limit => { action => 'replace', values => [ '2' ] },
-                        dovecot_destination_recipient_limit   => { action => 'replace', values => [ '1' ] },
+                        virtual_transport                     => {
+                            action => 'replace',
+                            values => [ 'dovecot' ]
+                        },
+                        dovecot_destination_concurrency_limit => {
+                            action => 'replace',
+                            values => [ '2' ]
+                        },
+                        dovecot_destination_recipient_limit   => {
+                            action => 'replace',
+                            values => [ '1' ]
+                        },
                         # Dovecot SASL parameters
-                        smtpd_sasl_type                       => { action => 'replace', values => [ 'dovecot' ] },
-                        smtpd_sasl_path                       => { action => 'replace', values => [ 'private/auth' ] },
-                        smtpd_sasl_auth_enable                => { action => 'replace', values => [ 'yes' ] },
-                        smtpd_sasl_security_options           => { action => 'replace', values => [ 'noanonymous' ] },
-                        smtpd_sasl_authenticated_header       => { action => 'replace', values => [ 'yes' ] },
-                        broken_sasl_auth_clients              => { action => 'replace', values => [ 'yes' ] },
+                        smtpd_sasl_type                       => {
+                            action => 'replace',
+                            values => [ 'dovecot' ]
+                        },
+                        smtpd_sasl_path                       => {
+                            action => 'replace',
+                            values => [ 'private/auth' ]
+                        },
+                        smtpd_sasl_auth_enable                => {
+                            action => 'replace',
+                            values => [ 'yes' ]
+                        },
+                        smtpd_sasl_security_options           => {
+                            action => 'replace',
+                            values => [ 'noanonymous' ]
+                        },
+                        smtpd_sasl_authenticated_header       => {
+                            action => 'replace',
+                            values => [ 'yes' ]
+                        },
+                        broken_sasl_auth_clients              => {
+                            action => 'replace',
+                            values => [ 'yes' ]
+                        },
                         # SMTP restrictions
                         smtpd_helo_restrictions               => {
                             action => 'add',
