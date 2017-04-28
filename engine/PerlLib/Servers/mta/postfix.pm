@@ -557,7 +557,7 @@ sub addMail
                     .join ',', (
                         # We add the recipient itself in case of a mixed account (normal + forward).
                         # we want keep local copy of inbound mails
-                        ($isMailAccount ? "$data->{'MAIL_ADDR'}" : ()),
+                        ($isMailAccount ? $data->{'MAIL_ADDR'} : ()),
                         # Add forward addresses in case of forward account
                         ($isForwardAccount ? $data->{'MAIL_FORWARD'} : ()),
                         # Add autoresponder entry if it is enabled for this account
