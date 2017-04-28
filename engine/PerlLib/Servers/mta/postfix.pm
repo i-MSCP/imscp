@@ -564,6 +564,7 @@ sub addMail
                         ($data->{'MAIL_HAS_AUTO_RESPONDER'} ? $responderEntry : ())
                     )
             );
+            return $rs if $rs;
         }
 
         if ($data->{'MAIL_HAS_AUTO_RESPONDER'}) {
