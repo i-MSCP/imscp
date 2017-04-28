@@ -524,6 +524,7 @@ sub addMail
         my $isForwardAccount = index( $data->{'MAIL_TYPE'}, '_forward' ) != - 1;
 
         if ($isMailAccount) {
+            # Create mailbox
             for ('cur', 'new', 'tmp') {
                 $rs = iMSCP::Dir->new(
                     dirname =>
@@ -539,44 +540,34 @@ sub addMail
                 return $rs if $rs;
             }
 
+            # Add virtual mailbox map entry
             $rs = $self->addMapEntry(
                 $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'},
                 "$data->{'MAIL_ADDR'}\t$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}/"
             );
             return $rs if $rs;
-
-            if (!$isForwardAccount) {
-                # Postfix lookup in `virtual_alias_maps' first. Thus, if there is a catchall defined for the domain, any
-                # mail for the mail account will be catched by the catchall. To prevent this behavior, we must also add an
-                # entry in the virtual alias map.
-                $rs = $self->addMapEntry(
-                    $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'},
-                    $data->{'MAIL_ADDR'} # Recipient
-                        ."\t"
-                        .$data->{'MAIL_ADDR'} # alias
-                        # Add autoresponder if autoresponder is enabled for this account
-                        .($data->{'MAIL_HAS_AUTO_RESPONDER'} ? ",$responderEntry" : '')
-                );
-                return $rs if $rs;
-            }
         }
 
-        if ($isForwardAccount) {
+        if ($isForwardAccount || $data->{'MAIL_HAS_AUTO_RESPONDER'}) {
+            # Add virtual alias map entry
             $rs = $self->addMapEntry(
                 $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'},
                 $data->{'MAIL_ADDR'} # Recipient
-                    ."\t"
-                    # Add recipient itself in case of mailbox + forward account
-                    .($isMailAccount ? "$data->{'MAIL_ADDR'}," : '')
-                    # Add list of mail addresses to which mail must be forwarded
-                    .$data->{'MAIL_FORWARD'}
-                    # Add autoresponder if autoresponder is enabled for this account
-                    .($data->{'MAIL_HAS_AUTO_RESPONDER'} ? ",$responderEntry" : '')
+                    ."\t" # Separator
+                    .join ',', (
+                        # We add the recipient itself in case of a mixed account (normal + forward).
+                        # we want keep local copy of inbound mails
+                        ($isMailAccount ? "$data->{'MAIL_ADDR'}" : ()),
+                        # Add forward addresses in case of forward account
+                        ($isForwardAccount ? $data->{'MAIL_FORWARD'} : ()),
+                        # Add autoresponder entry if it is enabled for this account
+                        ($data->{'MAIL_HAS_AUTO_RESPONDER'} ? $responderEntry : ())
+                    )
             );
-            return $rs if $rs;
         }
 
         if ($data->{'MAIL_HAS_AUTO_RESPONDER'}) {
+            # Add transport map entry
             $rs = $self->addMapEntry( $self->{'config'}->{'MTA_TRANSPORT_HASH'}, "$responderEntry\timscp-arpl:" );
             return $rs if $rs;
         }
