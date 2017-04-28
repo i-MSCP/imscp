@@ -238,7 +238,7 @@ class iMSCP_Plugin_Manager
 
         $className = "iMSCP_Plugin_$pluginName";
         if (!class_exists($className, true)) {
-            write_log(sprintf('Plugin Manager: Could not to load %s plugin - Class %s not found.', $pluginName, $className), E_USER_ERROR);
+            write_log(sprintf("Plugin Manager: Couldn't to load %s plugin - Class %s not found.", $pluginName, $className), E_USER_ERROR);
             return false;
         }
 
@@ -1050,7 +1050,7 @@ class iMSCP_Plugin_Manager
                 $pluginDir = $this->pluginsDirectory . '/' . $pluginName;
 
                 if (is_dir($pluginDir) && !utils_removeDir($pluginDir)) {
-                    write_log(sprintf('Plugin Manager: Could not delete %s plugin files', $pluginName), E_USER_WARNING);
+                    write_log(sprintf("Plugin Manager: Couldn't delete %s plugin files", $pluginName), E_USER_WARNING);
                     set_page_message(tr('Plugin Manager: Could not delete %s plugin files. You should run the set-gui-permissions.pl script and try again.', $pluginName), 'warning');
                 }
 
@@ -1074,7 +1074,7 @@ class iMSCP_Plugin_Manager
     }
 
     /**
-     * Doesq the given plugin is protected?
+     * Does the given plugin is protected?
      *
      * @throws iMSCP_Plugin_Exception in case the given plugin is not known
      * @param string $pluginName Plugin name
@@ -1387,7 +1387,7 @@ class iMSCP_Plugin_Manager
             @unlink($file);
 
             if (@file_put_contents($file, "$content\n", LOCK_EX) === false) {
-                write_log(sprintf('Plugin Manager: Could not write the %s file for protected plugins.', $file));
+                write_log(sprintf("Plugin Manager: Couldn't write the %s file for protected plugins.", $file));
                 set_page_message(tr('Plugin Manager: Could not write the %s file for protected plugins.', $file), 'error');
                 return false;
             }
@@ -1398,7 +1398,7 @@ class iMSCP_Plugin_Manager
         if (@is_writable($file)) {
             iMSCP_Utility_OpcodeCache::clearAllActive($file); // Be sure to load newest version on next call
             if (!@unlink($file)) {
-                write_log(sprintf('Plugin Manager: Could not remove the %s file', $file), E_USER_WARNING);
+                write_log(sprintf("Plugin Manager: Couldn't remove the %s file", $file), E_USER_WARNING);
                 return false;
             }
         }
