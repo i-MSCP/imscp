@@ -21,6 +21,9 @@ INSTALLER
     Fixed: Don't check for source archive when binary archive has not been found for a specific section (APT repositories)
     Fixed: Usage of ZG-POLICY-RC.D(8) to provide local policy-rc.d and avoid violation of Debian policy (Debian/Ubuntu)
 
+PLUGINS
+    Fixed: Avoid to instantiate plugins twice when an action involve a sub-action (Backend Modules::Plugin)
+
 SCRIPTS
     Rewritten: imscp-vrl-traff traffic accounting script
 
