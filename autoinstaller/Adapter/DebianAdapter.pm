@@ -58,7 +58,7 @@ sub installPreRequiredPackages
 {
     my $self = shift;
 
-    print STDOUT output( 'Satisfying prerequisites Please wait...', 'info' );
+    print STDOUT output( 'Satisfying prerequisites... Please wait.', 'info' );
 
     my $rs = $self->_updateAptSourceList( );
     $rs ||= $self->_updatePackagesIndex( );
@@ -239,6 +239,7 @@ EOF
         return $rs if $rs;
     }
 
+    delete $ENV{'POLICYRCD'};
     $self->{'eventManager'}->trigger( 'afterInstallPackages' );
 }
 
@@ -613,6 +614,7 @@ EOF
  Add required sections to repositories that support them
 
  Note: Also enable source repositories for the sections when available.
+ TODO: Implement better check by parsing apt-cache policy output
 
  Return int 0 on success, other on failure
 
@@ -624,50 +626,54 @@ sub _updateAptSourceList
 
     my $file = iMSCP::File->new( filename => '/etc/apt/sources.list' );
     my $fileContent = $file->get( );
-    my $fsec = 0;
 
-    for my $sec(@{$self->{'repositorySections'}}) {
-        my @seen = ();
+    for my $section(@{$self->{'repositorySections'}}) {
+        my @seenRepositories = ();
+        my $foundSection = 0;
 
-        while($fileContent =~ /^deb\s+(?<uri>(?:https?|ftp)[^\s]+)\s+(?<distrib>[^\s]+)\s+(?<components>.+)$/gm) {
+        while($fileContent =~ /^deb\s+(?<uri>(?:https?|ftp)[^\s]+)\s+(?<dist>[^\s]+)\s+(?<components>.+)$/gm) {
             my $rf = $&;
             my %rc = %+;
-            next if grep($_ eq "$rc{'uri'} $rc{'distrib'}", @seen);
+            next if grep($_ eq "$rc{'uri'} $rc{'dist'}", @seenRepositories);
+            push @seenRepositories, "$rc{'uri'} $rc{'dist'}";
 
-            if ($fileContent !~ /^deb\s+$rc{'uri'}\s+\b$rc{'distrib'}\b\s+.*\b$sec\b/m) {
-                my $rs = execute( "wget --spider $rc{'uri'}/dists/$rc{'distrib'}/$sec/", \ my $stdout, \ my $stderr );
-                debug($stdout) if $stdout;
-                debug( $stderr || 'Unknown error' ) if $rs;
-                unless ($rs) {
-                    $fsec = 1;
-                    $fileContent =~ s/^($rf)$/$1 $sec/m;
-                    $rf .= " $sec";
-                }
-            } else {
-                $fsec = 1;
-            }
-
-            if ($fsec && $fileContent !~ /^deb-src\s+$rc{'uri'}\s+\b$rc{'distrib'}\b\s+.*\b$sec\b/m) {
+            if ($fileContent !~ /^deb\s+$rc{'uri'}\s+$rc{'dist'}\s+.*\b$section\b/m) {
                 my $rs = execute(
-                    "wget --spider $rc{'uri'}/dists/$rc{'distrib'}/$sec/source/", \ my $stdout, \ my $stderr
+                    "wget --spider $rc{'uri'}/dists/$rc{'dist'}/$section/" =~ s{([^:])//}{$1/}gr,
+                    \ my $stdout,
+                    \ my $stderr
                 );
                 debug( $stdout ) if $stdout;
-                debug( $stderr || 'Unknown error' ) if $rs;
+                debug( $stderr || 'Unknown error' ) if $rs && $rs != 8;
+                next if $rs; # Don't check for source archive when binary archive has not been found
+                $foundSection = 1;
+                $fileContent =~ s/^($rf)$/$1 $section/m;
+                $rf .= " $section";
+            } else {
+                $foundSection = 1;
+            }
+
+            if ($foundSection && $fileContent !~ /^deb-src\s+$rc{'uri'}\s+$rc{'dist'}\s+.*\b$section\b/m) {
+                my $rs = execute(
+                    "wget --spider $rc{'uri'}/dists/$rc{'dist'}/$section/source/" =~ s{([^:])//}{$1/}gr,
+                    \ my $stdout,
+                    \ my $stderr
+                );
+                debug( $stdout ) if $stdout;
+                debug( $stderr || 'Unknown error' ) if $rs && $rs != 8;
 
                 unless ($rs) {
-                    if ($fileContent !~ /^deb-src\s+$rc{'uri'}\s+$rc{'distrib'}\s.*/m) {
-                        $fileContent =~ s/^($rf)/$1\ndeb-src $rc{'uri'} $rc{'distrib'} $sec/m;
+                    if ($fileContent !~ /^deb-src\s+$rc{'uri'}\s+$rc{'dist'}\s.*/m) {
+                        $fileContent =~ s/^($rf)/$1\ndeb-src $rc{'uri'} $rc{'dist'} $section/m;
                     } else {
-                        $fileContent =~ s/^($&)$/$1 $sec/m;
+                        $fileContent =~ s/^($&)$/$1 $section/m;
                     }
                 }
             }
-
-            push @seen, "$rc{'uri'} $rc{'distrib'}";
         }
 
-        unless ($fsec) {
-            error( sprintf( "Couldn't find repository supporting %s section", $sec ) );
+        unless ($foundSection) {
+            error( sprintf( "Couldn't find any repository supporting %s section", $section ) );
             return 1;
         }
     }

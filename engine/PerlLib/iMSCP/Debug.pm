@@ -260,7 +260,7 @@ sub getLastError
     scalar getMessageByType( 'error' );
 }
 
-=item getMessageByType( $type = 'error' [, \%options ] )
+=item getMessageByType( $type [, \%options ] )
 
  Get message by type from current logger, according given options
 

@@ -18,6 +18,7 @@ LISTENERS
     Updated: 70_postfix_submission_tls.pl file (fully redefine submission service and disable SSLv3)
 
 INSTALLER
+    Fixed: Don't check for source archive when binary archive has not been found for a specific section (APT repositories)
     Fixed: Usage of ZG-POLICY-RC.D(8) to provide local policy-rc.d and avoid violation of Debian policy (Debian/Ubuntu)
 
 SCRIPTS
