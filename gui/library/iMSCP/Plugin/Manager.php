@@ -26,7 +26,7 @@ class iMSCP_Plugin_Manager
     /**
      * @const string Plugin API version
      */
-    const PLUGIN_API_VERSION = '1.4.0';
+    const PLUGIN_API_VERSION = '1.4.1';
 
     /**
      * @const int Action success

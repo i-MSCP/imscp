@@ -64,6 +64,10 @@ my %PLUGIN_NEXT_STATE_MAP = (
 
  Load plugin data and execute action according its state
 
+ Note: Plugin errors, outside those raised by this module are no longer
+ returned to the caller. Only the plugin status is updated with the error
+ message (since v1.4.4).
+
  Param int Plugin unique identifier
  Return int 0 on success, other on failure
 
@@ -430,14 +434,10 @@ sub _executePluginAction
         return 1;
     }
 
-    # Return value from the run( ) action is ignored by default because it's the responsability of the plugins to set
-    # error status for their items. In case a plugin doesn't manage any item, it can force return value by defining
-    # the FORCE_RETVAL attribute and set it value to 'yes'
-    if ($action ne 'run' || $self->{'pluginInstance'}->{'FORCE_RETVAL'}) {
-        return $rs;
-    }
-
-    0;
+    # Return value from the run() action is ignored by default because it's the responsability of the plugins to set
+    # error status for their items. However a plugin can force return value by setting the FORCE_RETVAL attribute to
+    # a TRUE
+    ($action ne 'run' || $self->{'pluginInstance'}->{'FORCE_RETVAL'}) ? $rs : 0
 }
 
 =back
