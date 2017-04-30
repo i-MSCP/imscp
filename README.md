@@ -1,20 +1,21 @@
 ## i-MSCP - internet Multi Server Control Panel
 
-i-MSCP - internet Multi Server Control Panel is an open-source software which allows to manage shared hosting environments on Linux servers.
+i-MSCP (internet Multi Server Control Panel) is a software (OSS) easing shared hosting environments management on Linux
+servers. It comes with a large choice of modules for various services such as Apache2, ProFTPd, Dovecot, Courier, Bind9,
+and can be easily extended through plugins, or listener files using its events-based API.
 
-i-MSCP aims to provide an easy-to-use Web interface for end-users, and to manage servers without any manual intervention on the filesystem.
-
-i-MSCP was designed for professional Hosting Service Providers (HSPs), Internet Service Providers (ISPs) and IT professionals.
+i-MSCP was designed for professional Hosting Service Providers (HSPs), Internet Service Providers (ISPs) and IT
+professionals.
 
 ### Official Site & Documentation
 
-* [i-MSCP (Internet Multi Server Control Panel) Site](https://i-mscp.net/)
+* [i-MSCP Site](https://i-mscp.net/)
 * [i-MSCP Forums](https://i-mscp.net/index.php/BoardList/)
 * [i-MSCP Documentation](https://wiki.i-mscp.net/doku.php)
 
 ### Installation
 
-See the **INSTALL** file of distribution you are using inside the docs directory.
+See the **INSTALL** file for your distribution in the `docs` directory.
 
 * For Debian: **./docs/Debian/INSTALL.md**
 * For Ubuntu: **./docs/Ubuntu/INSTALL.md**
@@ -24,20 +25,6 @@ See the **INSTALL** file of distribution you are using inside the docs directory
 Unless otherwise stated all code is licensed under GPL 2.0 and has the following copyright:
 
 ```
-© Copyright 2010-2017 i-MSCP Team. All rights reserved.
+    Copyright 2010-2017, Laurent Declercq (i-MSCP)
+    All rights reserved
 ```
-
-Please have a look at these Licenses. They are shipped with this release in the next files:
-
-* **./docs/LICENCE-MPL1.1**
-* **./docs/LICENSE-GPL2**
-* **./docs/LICENSE-LGPL2.1**
-
-### Credits
-
-i-MSCP is a project of i-MSCP | internet Multi Server Control Panel. i-MSCP and the i-MSCP logo are trademarks of the
-i-MSCP | internet Multi Server Control Panel project team.
-
-Please visit our [site](site under http://i-mscp.net "i-MSCP Site") for further information on i-MSCP.
-
-We hope you enjoy using i-MSCP. If you like it, help us, to make it better. We would be glad on any help provided.
