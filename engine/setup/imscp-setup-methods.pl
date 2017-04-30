@@ -1340,14 +1340,13 @@ sub setupRegisterPluginListeners
 
     my $eventManager = iMSCP::EventManager->getInstance( );
 
-    for my $pluginPath(iMSCP::Plugins->getInstance( )->getList( )) {
-        my $pluginName = basename( $pluginPath, '.pm' );
+    my $plugins = iMSCP::Plugins->getInstance( );
+    for my $pluginName($plugins->getList( )) {
         next unless grep( $_ eq $pluginName, @{$pluginNames} );
-        eval { require $pluginPath; };
-        my $plugin = 'Plugin::' . $pluginName;
 
-        if(my $subref = $plugin->can( 'registerSetupListeners') ) {
-            $rs = $subref->( $plugin, $eventManager );
+        my $pluginClass = $plugins->getClass( $pluginName );
+        if(my $subref = $pluginClass->can( 'registerSetupListeners') ) {
+            $rs = $subref->( $pluginClass, $eventManager );
             return $rs if $rs;
         }
     }

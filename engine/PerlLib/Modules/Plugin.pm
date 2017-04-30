@@ -29,6 +29,7 @@ use autouse 'Hash::Merge' => qw/ merge /;
 use iMSCP::Debug;
 use iMSCP::Database;
 use iMSCP::EventManager;
+use iMSCP::Plugins;
 use JSON;
 use version;
 use parent 'Common::Object';
@@ -402,10 +403,7 @@ sub _executePluginAction
         $self->{'pluginInstance'} = eval {
             # Turn any warning from plugin into exception
             local $SIG{'__WARN__'} = sub { die shift };
-            unshift(@INC, "$main::imscpConfig{'PLUGINS_DIR'}/$self->{'pluginData'}->{'plugin_name'}/backend");
-            require "$self->{'pluginData'}->{'plugin_name'}.pm";
-
-            my $pluginClass = "Plugin::$self->{'pluginData'}->{'plugin_name'}";
+            my $pluginClass = iMSCP::Plugins->getInstance( )->getClass( $self->{'pluginData'}->{'plugin_name'} );
             return undef unless $pluginClass->can( $action ); # Do not instantiate plugin when not necessary
             ($pluginClass->can( 'getInstance' ) || $pluginClass->can( 'new' ) || die( 'Bad plugin class') )->(
                 $pluginClass,
@@ -427,11 +425,11 @@ sub _executePluginAction
         return 0 unless $self->{'pluginInstance'};
     }
 
-    my $sub = $self->{'pluginInstance'}->can( $action );
-    return 0 unless $sub;
+    my $subref = $self->{'pluginInstance'}->can( $action );
+    return 0 unless $subref;
 
     debug( sprintf( "Executing %s( ) action on %s", $action, ref $self->{'pluginInstance'} ) );
-    my $rs = eval { $sub->($self->{'pluginInstance'}, $fromVersion, $toVersion ); };
+    my $rs = eval { $subref->($self->{'pluginInstance'}, $fromVersion, $toVersion ); };
     if ($@) {
         error( $@ );
         return 1;
