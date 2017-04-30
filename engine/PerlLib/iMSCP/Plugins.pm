@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Plugins - Package which allow to retrieve list of i-MSCP plugins by paths
+ iMSCP::Plugins - Package that allows to get list of available plugins and their class namaes
 
 =cut
 
@@ -30,7 +30,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Package which allow to retrieve list of i-MSCP plugins by paths
+ Package that allows to get list of available plugins and their class namaes
 
 =head1 PUBLIC METHODS
 
@@ -38,7 +38,7 @@ use parent 'Common::SingletonClass';
 
 =item getList( )
 
- Get plugin paths list
+ Get list of available plugins
 
  Return server list
 
@@ -51,7 +51,7 @@ sub getList
 
 =item getClass( $pluginName )
 
- Get plugin class
+ Get class name of the given plugin
  
  This will also load the plugin class if not already done.
 
