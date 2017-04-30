@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Plugins - Package that allows to get list of available plugins and their class namaes
+ iMSCP::Plugins - Package that allows to get list of available plugins and their class names
 
 =cut
 
@@ -30,7 +30,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Package that allows to get list of available plugins and their class namaes
+ Package that allows to get list of available plugins and their class names
 
 =head1 PUBLIC METHODS
 
