@@ -22,9 +22,9 @@ INSTALLER
     Fixed: Usage of ZG-POLICY-RC.D(8) to provide local policy-rc.d and avoid violation of Debian policy (Debian/Ubuntu)
 
 PLUGINS
-    Added: iMSCP::Plugins::getClass() method for easy plugin loading and class retrieval
-    Changed: Plugin errors, outside those raised by the Modules::Plugins, are no longer returned to the caller (Backend)
-    Fixed: Avoid to instantiate plugins twice when an action involve a sub-action (Backend Modules::Plugin)
+    Added: iMSCP::Plugins::getClass() method for easy plugin loading and class retrieval (backend)
+    Changed: Plugin errors, outside those raised by the Modules::Plugins, are no longer returned to the caller (backend)
+    Fixed: Avoid to instantiate plugins twice when an action involve a sub-action (backend Modules::Plugin)
     Updated: API version to 1.4.1
 
 SCRIPTS

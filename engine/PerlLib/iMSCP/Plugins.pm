@@ -53,7 +53,7 @@ sub getList
 
  Get plugin class
  
- Note, this will also load the plugin if not already done.
+ This will also load the plugin class if not already done.
 
  Param string $pluginName Plugin name
  Return string Plugin name or die if the plugin is not available
