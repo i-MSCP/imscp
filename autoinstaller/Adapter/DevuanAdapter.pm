@@ -1,11 +1,11 @@
 =head1 NAME
 
- autoinstaller::Adapter::UbuntuAdapter - Devuan autoinstaller adapter
+ autoinstaller::Adapter::DevuanAdapter - Devuan autoinstaller adapter
 
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright 2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,12 +26,6 @@ use parent 'autoinstaller::Adapter::DebianAdapter';
 =head1 DESCRIPTION
 
  i-MSCP autoinstaller adapter implementation for Devuan.
-
-=head1 PRIVATE METHODS
-
-=over 4
-
-=back
 
 =head1 Author
 
