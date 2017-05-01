@@ -10,6 +10,9 @@ BACKEND
 CRON
     Fixed: Cron tasks for traffic accounting are never executed due to wrong command in /etc/cron.d/imscp cron file
 
+DISTRIBUTION
+    Added: Support for Devuan jessie (1.0) - See https://devuan.org/
+
 FRONTEND
     Fixed: Allow auto-completion for login form (regression fix)
 
@@ -39,6 +42,9 @@ SERVERS
     Fixed: Unwanted directory listings (Apache2 - Regression fix)
     Fixed: Wrong POP3 traffic accounting (Dovecot)
     Rewritten: getTraffic() routine for all servers that implement it
+
+SYSTEM
+    Fixed: Set swapiness to lower value (10) than default (60) for better memory management
 
 VENDOR
     Updated: maillogconvert.pl script to version 1.2 (revision 20140126)

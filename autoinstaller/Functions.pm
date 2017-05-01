@@ -428,7 +428,7 @@ sub _confirmDistro
     my $distroCodename = ucfirst($lsbRelease->getCodename( 'short' ));
     my $distroRelease = $lsbRelease->getRelease( 'short' );
 
-    if ($distroID ne 'n/a' && $distroCodename ne 'n/a' && $distroID =~ /^(?:debian|ubuntu)$/i ) {
+    if ($distroID ne 'n/a' && $distroCodename ne 'n/a' && $distroID =~ /^(?:de(?:bi|vu)an|ubuntu)$/i ) {
         unless (-f "$FindBin::Bin/autoinstaller/Packages/".lc($distroID).'-'.lc($distroCodename).'.xml') {
             $dialog->msgbox( <<"EOF" );
 

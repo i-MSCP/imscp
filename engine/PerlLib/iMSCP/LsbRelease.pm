@@ -32,7 +32,7 @@ use Symbol;
 # XXX: Update as needed
 # This should really be included in apt-cache policy output... it is already
 # in the Release file...
-my %RELEASE_CODENAME_LOOKUP = (
+my %DEBIAN_RELEASE_CODENAME_LOOKUP = (
     '1.1' => 'buzz',
     '1.2' => 'rex',
     '1.3' => 'bo',
@@ -49,11 +49,19 @@ my %RELEASE_CODENAME_LOOKUP = (
     '9'   => 'stretch',
     '10'  => 'buster'
 );
+my %DEVUAN_RELEASE_CODENAME_LOOKUP = (
+    '1.0' => 'jessie',
+    '2.0' => 'ascii',
+);
+
+my $RELEASE_CODENAME_LOOKUP = -f '/etc/devuan_version'
+    ? \%DEVUAN_RELEASE_CODENAME_LOOKUP
+    : \%DEBIAN_RELEASE_CODENAME_LOOKUP;
 
 my @RELEASES_ORDER = (
     (
         map { $_->[1] } sort { $a->[0] <=> $b->[0] } (
-            map { [ $_, $RELEASE_CODENAME_LOOKUP{$_} ] } keys %RELEASE_CODENAME_LOOKUP
+            map { [ $_, $RELEASE_CODENAME_LOOKUP->{$_} ] } keys %{$RELEASE_CODENAME_LOOKUP}
         )
     ),
     'stable', 'testing', 'unstable', 'sid'
@@ -141,7 +149,7 @@ sub getRelease
     my $release = $self->{'lsbInfo'}->{'RELEASE'} || 'n/a';
     if ($forceNumeric && $release =~ /[^\d.]/) {
         my $codename = $self->getCodename(1);
-        my @match = grep { $RELEASE_CODENAME_LOOKUP{$_} eq $codename} keys %RELEASE_CODENAME_LOOKUP;
+        my @match = grep { $RELEASE_CODENAME_LOOKUP->{$_} eq $codename} keys %{$RELEASE_CODENAME_LOOKUP};
         $release = sprintf('%.1f', $match[0]) if @match;
     }
 
@@ -243,7 +251,7 @@ sub _lookupCodename
     return $unknown unless $release =~ /(\d+)\.(\d+)(r(\d+))?/;
 
     my $shortRelease = (int( $1 ) < 7) ? sprintf '%s.%s', $1, $2 : sprintf '%s', $1;
-    $RELEASE_CODENAME_LOOKUP{$shortRelease} || $unknown;
+    $RELEASE_CODENAME_LOOKUP->{$shortRelease} || $unknown;
 }
 
 =item _parsePolicyLine( $data )
@@ -442,7 +450,8 @@ sub _guessDebianRelease
 
     $distInfo{'DESCRIPTION'} = sprintf( '%s %s', $distInfo{'ID'}, $distInfo{'OS'} );
 
-    my $etcDebianVersion = $ENV{'LSB_ETC_DEBIAN_VERSION'} || '/etc/debian_version';
+    my $etcDebianVersion = $ENV{'LSB_ETC_DEBIAN_VERSION'}
+        || ((-f '/etc/devuan_version') ? '/etc/devuan_version' : '/etc/debian_version');
 
     if (-f $etcDebianVersion) {
         my $release = 'unknown';
@@ -480,7 +489,9 @@ sub _guessDebianRelease
     # has an entry in his /etc/apt/sources.list but has not actually
     # upgraded the system.
     unless (exists $distInfo{'CODENAME'}) {
-        my %rInfo = $self->_guessReleaseFromApt( );
+        my %rInfo = ($distInfo{'ID'} eq 'Devuan')
+            ? $self->_guessReleaseFromApt('Devuan', 'main', 'experimental', 'Devuan', { })
+            : $self->_guessReleaseFromApt();
 
         if (%rInfo) {
             my $release = $rInfo{'version'} || '';
