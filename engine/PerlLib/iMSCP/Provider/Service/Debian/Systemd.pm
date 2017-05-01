@@ -195,20 +195,21 @@ sub remove
     1;
 }
 
-=item hasService( $unit )
+=item hasService( $service )
 
- Does the given service/socket unit exists?
+ Does the given service exists?
 
+ Param string $service Service name
  Return bool TRUE if the given service exits, FALSE otherwise
 
 =cut
 
 sub hasService
 {
-    my ($self, $unit) = @_;
+    my ($self, $service) = @_;
 
-    defined $unit or die( 'parameter $unit is not defined' );
-    $self->_isSystemd( $unit ) || $self->_isSysvinit( $unit );
+    defined $unit or die( 'parameter $service is not defined' );
+    $self->_isSystemd( $service ) || $self->iMSCP::Provider::Service::Debian::Sysvinit::hasService( $service );
 }
 
 =back

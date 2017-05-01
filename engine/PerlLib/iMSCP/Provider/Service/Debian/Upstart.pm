@@ -139,20 +139,21 @@ sub remove
     1;
 }
 
-=item hasService( $job )
+=item hasService( $service )
 
- Does the given job exists?
+ Does the given service exists?
 
- Return bool TRUE if the given job exits, FALSE otherwise
+ Param string $service Service name
+ Return bool TRUE if the given service exits, FALSE otherwise
 
 =cut
 
 sub hasService
 {
-    my ($self, $job) = @_;
+    my ($self, $service) = @_;
 
-    defined $job or die( 'parameter $job is not defined' );
-    $self->_isUpstart( $job ) || $self->_isSysvinit( $job );
+    defined $service or die( 'parameter service is not defined' );
+    $self->_isUpstart( $service ) || self->iMSCP::Provider::Service::Debian::hasService( $service );
 }
 
 =back

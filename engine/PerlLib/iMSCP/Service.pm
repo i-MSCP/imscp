@@ -347,7 +347,7 @@ sub getProvider
 
     $providerName = ucfirst( lc( $providerName // $init ) );
     my $id = iMSCP::LsbRelease->getInstance->getId( 'short' );
-    $id = 'Debian' if $id eq 'Ubuntu';
+    $id = 'Debian' if grep( lc $_ eq lc $id, 'Devuan', 'Ubuntu' );
     my $provider = "iMSCP::Provider::Service::${id}::${providerName}";
     unless (check_install( module => $provider )) {
         $provider = "iMSCP::Provider::Service::${providerName}"; # Fallback to the base provider

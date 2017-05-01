@@ -237,6 +237,23 @@ sub isRunning
     $self->_exec( $self->getInitScriptPath( $service ), 'status' ) == 0;
 }
 
+=item hasService( $service )
+
+ Does the given service exists?
+
+ Param string $service Service name
+ Return bool TRUE if the given service exits, FALSE otherwise
+
+=cut
+
+sub hasService
+{
+    my ($self, $service) = @_;
+
+    defined $service or die( 'parameter $service is not defined' );
+    $self->_isSysvinit( $service );
+}
+
 =item getInitScriptPath( $service )
 
  Get full path of init script which belongs to the given service
@@ -397,3 +414,5 @@ sub _getPid
 
 1;
 __END__
+
+hasService

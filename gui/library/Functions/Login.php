@@ -90,7 +90,7 @@ function login_credentials(iMSCP_Authentication_AuthEvent $authEvent)
 
     $identity = $stmt->fetchRow(PDO::FETCH_OBJ);
 
-    if (!\iMSCP\Crypt::hashEqual(md5($password), $identity->admin_pass) && !\iMSCP\Crypt::verify($password, $identity->admin_pass)) {
+    if (!\iMSCP\Crypt::hashEqual($identity->admin_pass, md5($password)) && !\iMSCP\Crypt::verify($password, $identity->admin_pass)) {
         $authEvent->setAuthenticationResult(new iMSCP_Authentication_Result(
             iMSCP_Authentication_Result::FAILURE_CREDENTIAL_INVALID, NULL, tr('Bad password.')
         ));
