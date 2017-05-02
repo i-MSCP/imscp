@@ -283,7 +283,7 @@ sub isRunning
 {
     my ($self, $service) = @_;
 
-    defined $service or die( 'parameter service is not defined' );
+    defined $service or die( 'parameter $service is not defined' );
 
     if ($self->_isUpstart( $service )) {
         execute( "$COMMANDS{'status'} $service 2>/dev/null", \ my $stdout );

@@ -208,7 +208,7 @@ sub hasService
 {
     my ($self, $service) = @_;
 
-    defined $unit or die( 'parameter $service is not defined' );
+    defined $service or die( 'parameter $service is not defined' );
     $self->_isSystemd( $service ) || $self->iMSCP::Provider::Service::Debian::Sysvinit::hasService( $service );
 }
 

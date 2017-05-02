@@ -225,7 +225,7 @@ sub isRunning
 {
     my ($self, $service) = @_;
 
-    defined $unit or die( 'parameter $service is not defined' );
+    defined $service or die( 'parameter $service is not defined' );
     $service .= '.service' unless $service =~ /\.(?:service|socket)$/;
     $self->_exec( $COMMANDS{'systemctl'}, '--system', 'is-active', $service ) == 0;
 }
