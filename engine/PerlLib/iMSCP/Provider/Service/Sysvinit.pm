@@ -215,7 +215,7 @@ sub reload
 
 =item isRunning( $service )
 
- Does the given service is running?
+ Is the given service running?
 
  Param string $service Service name
  Return bool TRUE if the given service is running, FALSE otherwise
@@ -228,13 +228,13 @@ sub isRunning
 
     defined $service or die( 'parameter $service is not defined' );
 
-    if (defined $self->{'_pid_pattern'}) {
-        my $ret = $self->_getPid( $self->{'_pid_pattern'} );
-        $self->{'_pid_pattern'} = undef;
-        return $ret;
+    unless(defined $self->{'_pid_pattern'}) {
+        return $self->_exec( $self->getInitScriptPath( $service ), 'status' ) == 0;
     }
 
-    $self->_exec( $self->getInitScriptPath( $service ), 'status' ) == 0;
+    my $ret = $self->_getPid( $self->{'_pid_pattern'} );
+    $self->{'_pid_pattern'} = undef;
+    $ret;
 }
 
 =item hasService( $service )
@@ -275,7 +275,7 @@ sub getInitScriptPath
 
  Set PID pattern for next _getPid( ) invocation
 
- Param string $pattern Process PID pattern
+ Param string|Regexp $pattern Process PID pattern
  Return int 0
 
 =cut
@@ -285,7 +285,7 @@ sub setPidPattern
     my ($self, $pattern) = @_;
 
     defined $pattern or die( '$pattern parameter is not defined' );
-    $self->{'_pid_pattern'} = $pattern;
+    $self->{'_pid_pattern'} = (ref $pattern eq 'Regexp') ? $pattern : qr/$pattern/;
     0;
 }
 
@@ -380,7 +380,7 @@ sub _getPs
 
  Get the process ID for a running process
 
- Param string $pattern
+ Param Regexp $pattern PID pattern
  Return int|undef Process ID or undef if not found
 
 =cut
@@ -394,9 +394,8 @@ sub _getPid
     my $ps = $self->_getPs( );
     open my $fh, '-|', $ps or die( sprintf( "Couldn't pipe to %s: %s", $ps, $! ) );
 
-    my $regex = qr/$pattern/;
     while(<$fh>) {
-        next unless /$regex/;
+        next unless /$pattern/;
         debug( sprintf( 'Process matched line: %s', $_ ) );
         return (split /\s+/, s/^\s+//r)[1];
     }
@@ -414,5 +413,3 @@ sub _getPid
 
 1;
 __END__
-
-hasService

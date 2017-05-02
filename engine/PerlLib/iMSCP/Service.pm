@@ -25,12 +25,12 @@ package iMSCP::Service;
 
 use strict;
 use warnings;
-use iMSCP::Debug qw/debug getMessageByType/;
+use iMSCP::Debug qw/ debug getMessageByType /;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::LsbRelease;
 use iMSCP::ProgramFinder;
-use Module::Load::Conditional qw/check_install can_load/;
+use Module::Load::Conditional qw/ check_install can_load /;
 use Scalar::Defer;
 use parent 'Common::SingletonClass';
 
@@ -261,7 +261,7 @@ sub reload
 
 =item isRunning( $service )
 
- Get status of the given service
+ Is the given service running?
 
  Param string $service Service name
  Return bool TRUE if the given service is running, FALSE otherwise

@@ -212,22 +212,22 @@ sub reload
     $self->start( $unit );
 }
 
-=item isRunning( $unit )
+=item isRunning( $service )
 
- Is the given service/socket is running (active)?
+ Is the given service running?
 
- Param string $unit Unit name
+ Param string $service Service name
  Return bool TRUE if the given service is running, FALSE otherwise
 
 =cut
 
 sub isRunning
 {
-    my ($self, $unit) = @_;
+    my ($self, $service) = @_;
 
-    defined $unit or die( 'parameter $unit is not defined' );
-    $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
-    $self->_exec( $COMMANDS{'systemctl'}, '--system', 'is-active', $unit ) == 0;
+    defined $unit or die( 'parameter $service is not defined' );
+    $service .= '.service' unless $service =~ /\.(?:service|socket)$/;
+    $self->_exec( $COMMANDS{'systemctl'}, '--system', 'is-active', $service ) == 0;
 }
 
 =item getUnitFilePath( $unit )

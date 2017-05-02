@@ -272,25 +272,25 @@ sub reload
 
 =item isRunning( $service )
 
- Is the given job is running?
+ Is the given service is running?
 
- Param string $job Job name
- Return bool TRUE if the given job is running, FALSE on failure
+ Param string $service Service name
+ Return bool TRUE if the given service is running, FALSE on failure
 
 =cut
 
 sub isRunning
 {
-    my ($self, $job) = @_;
+    my ($self, $service) = @_;
 
-    defined $job or die( 'parameter $job is not defined' );
+    defined $service or die( 'parameter service is not defined' );
 
-    if ($self->_isUpstart( $job )) {
-        execute( "$COMMANDS{'status'} $job 2>/dev/null", \ my $stdout );
+    if ($self->_isUpstart( $service )) {
+        execute( "$COMMANDS{'status'} $service 2>/dev/null", \ my $stdout );
         return $stdout =~ /start/;
     }
 
-    $self->SUPER::isRunning( $job );
+    $self->SUPER::isRunning( $service );
 }
 
 =item getJobFilePath( $job [, $jobFileType = 'conf' ] )
