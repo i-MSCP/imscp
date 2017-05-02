@@ -57,10 +57,7 @@ my @UNITFILEPATHS = (
 
 =item isEnabled( $unit )
 
- Is the given service/socket unit enabled?
-
- Param string $unit Unit name
- Return bool TRUE if the given unit is enabled, FALSE otherwise
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -75,10 +72,7 @@ sub isEnabled
 
 =item enable( $unit )
 
- Enable the given service or socket unit
-
- Param string $unit Unit name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -93,10 +87,7 @@ sub enable
 
 =item disable( $unit )
 
- Disable the given service/socket unit
-
- Param string $unit Unit name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -111,10 +102,7 @@ sub disable
 
 =item remove( $unit )
 
- Remove the given service or socket unit
-
- Param string $unit Unit name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -137,10 +125,7 @@ sub remove
 
 =item start( $unit )
 
- Start the given service/socket unit
-
- Param string $unit Unit name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -155,10 +140,7 @@ sub start
 
 =item stop( $unit )
 
- Stop the given service/socket unit
-
- Param string $unit Unit name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -174,10 +156,7 @@ sub stop
 
 =item restart( $unit )
 
- Restart the given service/socket unit
-
- Param string $unit Unit name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -193,12 +172,7 @@ sub restart
 
 =item reload( $service )
 
- Reload the given service unit
-
- Note: Not applicable to socket units
-
- Param string $unit Unit name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -214,10 +188,7 @@ sub reload
 
 =item isRunning( $service )
 
- Is the given service running?
-
- Param string $service Service name
- Return bool TRUE if the given service is running, FALSE otherwise
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -232,10 +203,7 @@ sub isRunning
 
 =item hasService( $service )
 
- Does the given service exists?
-
- Param string $service Service name
- Return bool TRUE if the given service exits, FALSE otherwise
+ See iMSCP::Provider::Service::Interface
 
 =cut
 

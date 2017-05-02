@@ -29,7 +29,6 @@ use parent 'iMSCP::Provider::Service::Sysvinit';
 
 # Commands used in that package
 my %COMMANDS = (
-    dpkg          => '/usr/bin/dpkg',
     'invoke-rc.d' => '/usr/sbin/invoke-rc.d',
     'update-rc.d' => '/usr/sbin/update-rc.d'
 );
@@ -47,10 +46,7 @@ my %COMMANDS = (
 
 =item isEnabled( $service )
 
- Is the given service enabled?
-
- Param string $service Service name
- Return bool TRUE if the given service is enabled, FALSE otherwise
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -82,10 +78,7 @@ sub isEnabled
 
 =item enable( $service )
 
- Enable the given service
-
- Param string $service Service name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -101,10 +94,7 @@ sub enable
 
 =item disable( $service )
 
- Disable the given service
-
- Param string $service Service name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -119,10 +109,7 @@ sub disable
 
 =item remove( $service )
 
- Remove the given service
-
- Param string $service Service name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 

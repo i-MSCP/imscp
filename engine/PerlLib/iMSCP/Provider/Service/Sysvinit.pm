@@ -41,12 +41,48 @@ use parent qw/ Common::SingletonClass iMSCP::Provider::Service::Interface /;
 
 =over 4
 
+=item isEnabled( $service )
+
+ See iMSCP::Provider::Service::Interface
+ 
+ Note: NOOP for base provider
+
+=cut
+
+sub isEnabled
+{
+    shift;
+}
+
+=item enable( $service )
+
+ See iMSCP::Provider::Service::Interface
+ 
+ Note: NOOP for base provider
+
+=cut
+
+sub enable
+{
+    shift;
+}
+
+=item disable( $service )
+
+ See iMSCP::Provider::Service::Interface
+
+ Note: NOOP for base provider
+ 
+=cut
+
+sub disable
+{
+    shift;
+}
+
 =item remove( $service )
 
- Remove the given service
-
- Param string $service Service name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -67,10 +103,7 @@ sub remove
 
 =item start( $service )
 
- Start the given service
-
- Param string $service Service name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -85,10 +118,7 @@ sub start
 
 =item stop( $service )
 
- Stop the given service
-
- Param string $service Service name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -103,10 +133,7 @@ sub stop
 
 =item restart( $service )
 
- Restart the given service
-
- Param string $service Service name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -121,10 +148,7 @@ sub restart
 
 =item reload( $service )
 
- Reload the given service
-
- Param string $service Service name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -139,10 +163,7 @@ sub reload
 
 =item isRunning( $service )
 
- Is the given service running?
-
- Param string $service Service name
- Return bool TRUE if the given service is running, FALSE otherwise
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -163,10 +184,7 @@ sub isRunning
 
 =item hasService( $service )
 
- Does the given service exists?
-
- Param string $service Service name
- Return bool TRUE if the given service exits, FALSE otherwise
+ See iMSCP::Provider::Service::Interface
 
 =cut
 

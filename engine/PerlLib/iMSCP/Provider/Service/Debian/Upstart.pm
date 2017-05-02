@@ -42,9 +42,7 @@ use parent qw/ iMSCP::Provider::Service::Upstart iMSCP::Provider::Service::Debia
 
 =item isEnabled( $job )
 
- Is the given job enabled?
-
- Return bool TRUE if the given service is enabled, FALSE otherwise
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -59,10 +57,7 @@ sub isEnabled
 
 =item enable( $job )
 
- Enable the given job
-
- Param string $job Job name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -90,10 +85,7 @@ sub enable
 
 =item disable( $job )
 
- Disable the given job
-
- Param string $job Job name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -117,10 +109,7 @@ sub disable
 
 =item remove( $job )
 
- Remove the given job
-
- Param string $job Job name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -141,10 +130,7 @@ sub remove
 
 =item hasService( $service )
 
- Does the given service exists?
-
- Param string $service Service name
- Return bool TRUE if the given service exits, FALSE otherwise
+ See iMSCP::Provider::Service::Interface
 
 =cut
 

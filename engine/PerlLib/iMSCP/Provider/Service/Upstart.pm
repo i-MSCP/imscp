@@ -66,9 +66,7 @@ my @JOBFILEPATHS = ( '/etc/init' );
 
 =item isEnabled( $job )
 
- Is the given job enabled?
-
- Return bool TRUE if the given job is enabled, FALSE otherwise
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -91,10 +89,7 @@ sub isEnabled
 
 =item enable( $job )
 
- Enable the given job
-
- Param string $job Job name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -113,10 +108,7 @@ sub enable
 
 =item disable( $job )
 
- Disable the given job
-
- Param string $job Job name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -139,10 +131,7 @@ sub disable
 
 =item remove( $job )
 
- Remove the given job
-
- Param string $job job name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -167,10 +156,7 @@ sub remove
 
 =item start( $service )
 
- Start the given job
-
- Param string $job Job name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -193,10 +179,7 @@ sub start
 
 =item stop( $job )
 
- Stop the given job
-
- Param string $job Job name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -219,10 +202,7 @@ sub stop
 
 =item restart( $job )
 
- Restart the given job
-
- Param string $job Job name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -245,10 +225,7 @@ sub restart
 
 =item reload( $service )
 
- Reload the given job
-
- Param string $job Job name
- Return bool TRUE on success, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -272,10 +249,7 @@ sub reload
 
 =item isRunning( $service )
 
- Is the given job running?
-
- Param string $service Service name
- Return bool TRUE if the given service is running, FALSE on failure
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
@@ -295,10 +269,7 @@ sub isRunning
 
 =item hasService( $service )
 
- Does the given service exists?
-
- Param string $service Service name
- Return bool TRUE if the given service exits, FALSE otherwise
+ See iMSCP::Provider::Service::Interface
 
 =cut
 
