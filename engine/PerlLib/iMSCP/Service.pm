@@ -31,18 +31,10 @@ use iMSCP::Execute;
 use iMSCP::LsbRelease;
 use iMSCP::ProgramFinder;
 use Module::Load::Conditional qw/ check_install can_load /;
-use Scalar::Defer;
-use parent 'Common::SingletonClass';
+use parent qw/ Common::SingletonClass iMSCP::Provider::Service::Interface /;
 
 $Module::Load::Conditional::FIND_VERSION = 0;
 $Module::Load::Conditional::VERBOSE = 0;
-
-my $init = lazy
-    {
-        my $init = _detectInit( );
-        debug( sprintf( '%s init system has been detected', ucfirst($init) ) );
-        $init;
-    };
 
 =head1 DESCRIPTION
 
@@ -136,10 +128,10 @@ sub remove
         $self->{'eventManager'}->trigger( 'onBeforeRemoveService', $service ) == 0 or die( $self->_getLastError( ) );
         $self->{'provider'}->remove( $service ) or die( $self->_getLastError( ) );
 
-        unless ($init eq 'sysvinit') {
-            my $provider = $self->getProvider( ($init eq 'upstart') ? 'systemd' : 'upstart' );
+        unless ($self->{'init'} eq 'sysvinit') {
+            my $provider = $self->getProvider( ($self->{'init'} eq 'upstart') ? 'systemd' : 'upstart' );
 
-            if ($init eq 'upstart') {
+            if ($self->{'init'} eq 'upstart') {
                 for(qw / service socket /) {
                     my $unitFilePath = eval { $provider->getUnitFilePath( "$service.$_" ); };
                     if (defined $unitFilePath) {
@@ -159,7 +151,7 @@ sub remove
 
         $self->{'eventManager'}->trigger( 'onAfterRemoveService', $service ) == 0 or die( $self->_getLastError( ) );
     };
-    !$@ or die( sprintf( "Couldn't remove the `%s' service: %s", $service, $@ ) );
+    $@ or die( sprintf( "Couldn't remove the `%s' service: %s", $service, $@ ) );
     1;
 }
 
@@ -303,7 +295,7 @@ sub hasService
 
 sub isSysvinit
 {
-    $init eq 'sysvinit';
+    $_[0]->{'init'} eq 'sysvinit';
 }
 
 =item isUpstart( )
@@ -316,7 +308,7 @@ sub isSysvinit
 
 sub isUpstart
 {
-    $init eq 'upstart';
+    $_[0]->{'init'} eq 'upstart';
 }
 
 =item isSystemd( )
@@ -329,10 +321,10 @@ sub isUpstart
 
 sub isSystemd
 {
-    $init eq 'systemd';
+    $_[0]->{'init'} eq 'systemd';
 }
 
-=item getProvider( [ $providerName = $init ] )
+=item getProvider( [ $providerName = $self->{'init'} ] )
 
  Get service provider instance
 
@@ -343,9 +335,9 @@ sub isSystemd
 
 sub getProvider
 {
-    my (undef, $providerName) = @_;
+    my ($self, $providerName) = @_;
 
-    $providerName = ucfirst( lc( $providerName // $init ) );
+    $providerName = ucfirst( lc( $providerName // $self->{'init'} ) );
     my $id = iMSCP::LsbRelease->getInstance->getId( 'short' );
     $id = 'Debian' if grep( lc $_ eq lc $id, 'Devuan', 'Ubuntu' );
     my $provider = "iMSCP::Provider::Service::${id}::${providerName}";
@@ -377,7 +369,8 @@ sub _init
     my $self = shift;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
-    $self->{'provider'} = $self->getProvider( $init );
+    $self->{'init'} = _detectInit( );
+    $self->{'provider'} = $self->getProvider( $self->{'init'} );
     $self;
 }
 
@@ -392,13 +385,18 @@ sub _init
 sub _detectInit
 {
     if (-d '/run/systemd/system') {
+        debug( 'Systemd init system has been detected' );
         return 'systemd';
     }
 
-    if (iMSCP::ProgramFinder::find( 'initctl' ) && execute( 'initctl version 2>/dev/null | grep -q upstart' ) == 0) {
+    if (iMSCP::ProgramFinder::find( 'initctl' )
+        && execute( 'initctl version 2>/dev/null | grep -q upstart' ) == 0
+    ) {
+        debug( 'upstart init system has been detected' );
         return 'upstart';
     }
 
+    debug( 'upstart init system has been detected' );
     'sysvinit'
 }
 

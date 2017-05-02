@@ -152,8 +152,9 @@ sub hasService
 {
     my ($self, $service) = @_;
 
-    defined $service or die( 'parameter service is not defined' );
-    $self->_isUpstart( $service ) || self->iMSCP::Provider::Service::Debian::hasService( $service );
+    defined $service or die( 'parameter $service is not defined' );
+
+    $self->SUPER::hasService( $service ) || $self->iMSCP::Provider::Service::Debian::hasService( $service );
 }
 
 =back

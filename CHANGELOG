@@ -6,12 +6,17 @@ Git 1.4.x
 
 BACKEND
     Fixed: Can't use an undefined value as a HASH reference; DBI::selectrow_hashref() return undef on empty results
+    Removed: Support for systemd older than 204-3 (iMSCP::Provider::Service::Debian::Systemd)
+    Removed: Support for sysv-rc older than 2.88 (iMSCP::Provider::Service::Debian::Sysvinit)
+
+CONFIG
+    Added: 'CMD_SYSCTL` and 'SYSCTL_CONF_DIR` parameters for sysctl(8)
 
 CRON
     Fixed: Cron tasks for traffic accounting are never executed due to wrong command in /etc/cron.d/imscp cron file
 
 DISTRIBUTION
-    Added: Support for Devuan jessie (1.0) - See https://devuan.org/
+    Added: Support for Devuan jessie (1.0 RC) - See https://devuan.org/
 
 FRONTEND
     Fixed: Allow auto-completion for login form (regression fix)
@@ -21,6 +26,7 @@ LISTENERS
     Updated: 70_postfix_submission_tls.pl file (fully redefine submission service and disable SSLv3)
 
 INSTALLER
+    Added: Routine to setup kernel
     Fixed: Don't check for source archive when binary archive has not been found for a specific section (APT repositories)
     Fixed: Usage of ZG-POLICY-RC.D(8) to provide local policy-rc.d and avoid violation of Debian policy (Debian/Ubuntu)
 

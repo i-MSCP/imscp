@@ -186,6 +186,7 @@ sub setupTasks
 
     my @steps = (
         [ \&setupSaveConfig,              'Saving configuration' ],
+        [ \&setupKernel,                  'Setup kernel' ],
         [ \&setupCreateMasterUser,        'Creating system master user' ],
         [ \&setupServerHostname,          'Setting up server hostname' ],
         [ \&setupServiceSsl,              'Configuring SSL for i-MSCP services' ],
@@ -858,6 +859,26 @@ sub setupSaveConfig
     );
 
     iMSCP::EventManager->getInstance( )->trigger( 'afterSetupSaveConfig' );
+}
+
+sub setupKernel
+{
+    my $rs = iMSCP::EventManager->getInstance( )->trigger( 'beforeSetupKernel' );
+    return $rs if $rs;
+
+    if(-f "$main::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf") {
+        # Don't catch any error here to avoid permission denied error on some
+        # vps due to restrictions set by provider
+        $rs = execute(
+            "$main::imscpConfig{'CMD_SYSCTL'} -p $main::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf",
+            \ my $stdout,
+            \ my $stderr
+        );
+        debug( $stdout ) if $stdout;
+        debug( $stderr ) if $stderr;
+    }
+
+    iMSCP::EventManager->getInstance( )->trigger( 'afterSetupKernel' );
 }
 
 sub setupCreateMasterUser

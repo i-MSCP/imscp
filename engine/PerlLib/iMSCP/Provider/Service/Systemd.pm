@@ -230,6 +230,23 @@ sub isRunning
     $self->_exec( $COMMANDS{'systemctl'}, '--system', 'is-active', $service ) == 0;
 }
 
+=item hasService( $service )
+
+ Does the given service exists?
+
+ Param string $service Service name
+ Return bool TRUE if the given service exits, FALSE otherwise
+
+=cut
+
+sub hasService
+{
+    my ($self, $service) = @_;
+
+    defined $service or die( 'parameter $service is not defined' );
+    $self->_isSystemd( $service );
+}
+
 =item getUnitFilePath( $unit )
 
  Get full path of the given unit
@@ -256,7 +273,7 @@ sub getUnitFilePath
 
 =item _isSystemd( $unit )
 
- Is the given service managed by a native systemd service unit file?
+ Is the given service managed by a native systemd service or socket unit file?
 
  Param string $unit Unit name
  Return bool TRUE if the given service is managed by a systemd service unit file, FALSE otherwise

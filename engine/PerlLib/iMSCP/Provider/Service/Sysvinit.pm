@@ -31,23 +31,7 @@ use iMSCP::Debug qw/ debug error /;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::LsbRelease;
-use Scalar::Defer;
-
-# Paths in which sysvinit script must be searched
-my $SYSVINITSCRIPTPATHS = lazy
-    {
-        # Fixme: iMSCP::LsbRelease is Linux specific. We must rewrite it to support all platforms below.
-        my $id = iMSCP::LsbRelease->getInstance( )->getId( 'short' );
-        if ($id =~ /^(?:FreeBSD|DragonFly)$/) {
-            [ '/etc/rc.d', '/usr/local/etc/rc.d' ];
-        } elsif ($id eq 'HP-UX') {
-            [ '/sbin/init.d' ];
-        } elsif ($id eq 'Archlinux') {
-            [ '/etc/rc.d' ];
-        } else {
-            [ '/etc/init.d' ];
-        }
-    };
+use parent qw/ Common::SingletonClass iMSCP::Provider::Service::Interface /;
 
 =head1 DESCRIPTION
 
@@ -56,66 +40,6 @@ my $SYSVINITSCRIPTPATHS = lazy
 =head1 PUBLIC METHODS
 
 =over 4
-
-=item getInstance( )
-
- Get instance
-
- Return iMSCP::Provider::Service::Sysvinit
-
-=cut
-
-sub getInstance
-{
-    my $self = shift;
-
-    no strict 'refs';
-    my $instance = \${"${self}::_instance"};
-    ${$instance} = bless ( { }, $self ) unless defined ${$instance};
-    ${$instance};
-}
-
-=item isEnabled( $service )
-
- Is the given service enabled?
-
- Param string $service Service name
- Return bool TRUE
-
-=cut
-
-sub isEnabled
-{
-    confess 'not implemented';
-}
-
-=item enable( $service )
-
- Enable the given service
-
- Param string $service Service name
- Return bool TRUE if the given service is enabled, FALSE otherwise
-
-=cut
-
-sub enable
-{
-    confess 'not implemented';
-}
-
-=item disable( $service )
-
- Disable the given service
-
- Param string $service Service name
- Return bool TRUE on success, FALSE on failure
-
-=cut
-
-sub disable
-{
-    confess 'not implemented';
-}
 
 =item remove( $service )
 
@@ -295,6 +219,32 @@ sub setPidPattern
 
 =over 4
 
+=item _init( )
+
+ Initialize instance
+
+ Return iMSCP::Provider::Service::Sysvinit
+=cut
+
+sub _init
+{
+    my $self = shift;
+
+    my $distID = iMSCP::LsbRelease->getInstance( )->getId( 'short' );
+
+    if ($distID =~ /^(?:FreeBSD|DragonFly)$/) {
+        $self->{'sysvinitscriptpaths'} = [ '/etc/rc.d', '/usr/local/etc/rc.d' ];
+    } elsif ($distID eq 'HP-UX') {
+        $self->{'sysvinitscriptpaths'} = [ '/sbin/init.d' ];
+    } elsif ($distID eq 'Archlinux') {
+        $self->{'sysvinitscriptpaths'} = [ '/etc/rc.d' ];
+    } else {
+        $self->{'sysvinitscriptpaths'} = [ '/etc/init.d' ];
+    }
+
+    $self;
+}
+
 =item _isSysvinit( $service )
 
  Does the given service is managed by a sysvinit script?
@@ -323,9 +273,9 @@ sub _isSysvinit
 
 sub _searchInitScript
 {
-    my (undef, $service) = @_;
+    my ($self, $service) = @_;
 
-    for (@{$SYSVINITSCRIPTPATHS}) {
+    for (@{$self->{'sysvinitscriptpaths'}}) {
         my $initScriptPath = File::Spec->join( $_, $service );
         return $initScriptPath if -f $initScriptPath;
 

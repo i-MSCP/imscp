@@ -25,8 +25,6 @@ package iMSCP::Provider::Service::Debian::Sysvinit;
 
 use strict;
 use warnings;
-use iMSCP::File;
-use Scalar::Defer;
 use parent 'iMSCP::Provider::Service::Sysvinit';
 
 # Commands used in that package
@@ -35,14 +33,6 @@ my %COMMANDS = (
     'invoke-rc.d' => '/usr/sbin/invoke-rc.d',
     'update-rc.d' => '/usr/sbin/update-rc.d'
 );
-
-# Enable compatibility mode if sysv-rc package version is lower than version 2.88
-my $SYSVRC_COMPAT_MODE = lazy
-    {
-        __PACKAGE__->_exec(
-            "$COMMANDS{'dpkg'} --compare-versions \$(dpkg-query -W -f '\${Version}' sysv-rc) lt 2.88"
-        ) == 0;
-    };
 
 =head1 DESCRIPTION
 
@@ -105,13 +95,8 @@ sub enable
 
     defined $service or die( 'parameter $service is not defined' );
 
-    #if ($SYSVRC_COMPAT_MODE) {
     return $self->_exec( $COMMANDS{'update-rc.d'}, '-f', $service, 'remove' ) == 0
         && $self->_exec( $COMMANDS{'update-rc.d'}, $service, 'defaults' ) == 0;
-    #}
-
-    #$self->_exec( $COMMANDS{'update-rc.d'}, $service, 'defaults' ) == 0
-    #    && $self->_exec( $COMMANDS{'update-rc.d'}, $service, 'enable' ) == 0;
 }
 
 =item disable( $service )
@@ -129,13 +114,6 @@ sub disable
 
     defined $service or die( 'parameter $service is not defined' );
 
-    if ($SYSVRC_COMPAT_MODE) {
-        return $self->_exec( $COMMANDS{'update-rc.d'}, '-f', $service, 'remove' ) == 0
-            && $self->_exec( $COMMANDS{'update-rc.d'}, $service, 'stop', '00', '1', '2', '3', '4', '5', '6', '.' ) == 0;
-    }
-
-    #$self->_exec( $COMMANDS{'update-rc.d'}, $service, 'defaults' ) == 0
-    #&& $self->_exec( $COMMANDS{'update-rc.d'}, $service, 'disable' ) == 0;
     $self->_exec( $COMMANDS{'update-rc.d'}, $service, 'disable' ) == 0;
 }
 

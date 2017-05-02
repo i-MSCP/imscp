@@ -25,9 +25,7 @@ package iMSCP::Provider::Service::Debian::Systemd;
 
 use strict;
 use warnings;
-use iMSCP::File;
 use File::Basename;
-use Scalar::Defer;
 use parent qw/ iMSCP::Provider::Service::Systemd iMSCP::Provider::Service::Debian::Sysvinit /;
 
 # Commands used in that package
@@ -35,14 +33,6 @@ my %COMMANDS = (
     dpkg      => '/usr/bin/dpkg',
     systemctl => '/bin/systemctl'
 );
-
-# Enable compatibility mode if systemd version is lower than version 204-3
-my $SYSTEMCTL_COMPAT_MODE = lazy
-    {
-        __PACKAGE__->_exec(
-            "$COMMANDS{'dpkg'} --compare-versions \$(dpkg-query -W -f='\${Version}' systemd) lt 204-3"
-        ) == 0;
-    };
 
 =head1 DESCRIPTION
 
@@ -102,24 +92,6 @@ sub enable
         $realUnit = basename( readlink( $unitFilePath ), '.service', '.socket' ) if -l $unitFilePath;
     }
 
-    if ($SYSTEMCTL_COMPAT_MODE) {
-        if ($self->_isSystemd( $realUnit )) {
-            return 0 unless $self->SUPER::enable( $realUnit );
-        }
-
-        # Backward compatibility operations
-        # We must manually enable the underlying sysvinit script if any. This is needed because `systemctl' as provided
-        # in systemd packages older than version 204-3, doesn't make call of `the update-rc-d <service> enable'. Thus,
-        # the sysvinit script is not enabled. We must also make call of `systemctl daemon-reload' to make systemd aware
-        # of changes.
-        if ($self->_isSysvinit( $unit )) {
-            return $self->iMSCP::Provider::Service::Debian::Sysvinit::enable( $unit )
-                && $self->_exec( $COMMANDS{'systemctl'}, '--system', 'daemon-reload' ) == 0
-        }
-
-        return 1;
-    }
-
     # Note: Will automatically call update-rc.d in case of a sysvinit script
     $self->SUPER::enable( $realUnit );
 }
@@ -143,24 +115,6 @@ sub disable
     if ($self->_isSystemd( $unit )) {
         my $unitFilePath = $self->getUnitFilePath( $unit );
         $realUnit = basename( readlink( $unitFilePath ), '.service', '.socket' ) if -l $unitFilePath;
-    }
-
-    if ($SYSTEMCTL_COMPAT_MODE) {
-        if ($self->_isSystemd( $realUnit )) {
-            return 0 unless $self->SUPER::disable( $realUnit );
-        }
-
-        # Backward compatibility operations
-        # We must manually disable the underlying sysvinit script if any. This is needed because `systemctl' as provided
-        # in systemd packages older than version 204-3, doesn't make call of `the update-rc-d <service> disable'. Thus,
-        # the sysvinit script is not disabled. We must also make call of `systemctl daemon-reload' to make systemd aware
-        # of changes.
-        if ($self->_isSysvinit( $unit )) {
-            return $self->iMSCP::Provider::Service::Debian::Sysvinit::disable( $unit )
-                && $self->_exec( $COMMANDS{'systemctl'}, '--system', 'daemon-reload' ) == 0;
-        }
-
-        return 1;
     }
 
     # Note: Will automatically call update-rc.d in case of a sysvinit script
@@ -209,7 +163,10 @@ sub hasService
     my ($self, $service) = @_;
 
     defined $service or die( 'parameter $service is not defined' );
-    $self->_isSystemd( $service ) || $self->iMSCP::Provider::Service::Debian::Sysvinit::hasService( $service );
+
+    return 1 if $self->SUPER::hasService( $service );
+    return 0 if $service =~ /\.socket$/;
+    $self->iMSCP::Provider::Service::Debian::Sysvinit::hasService( $service );
 }
 
 =back
