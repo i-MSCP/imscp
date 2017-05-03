@@ -215,7 +215,7 @@ sub getDistroInformation
 {
     my $self = shift;
 
-    # Try to retrieve information from /etc/lsb-release or /etc/os-release first
+    # Try to retrieve information from /etc/lsb-release first
     my %lsbInfo = $self->_getLsbInformation( );
 
     for ('ID', 'RELEASE', 'CODENAME', 'DESCRIPTION') {
@@ -291,8 +291,7 @@ sub _releaseIndex
 
     if ($suite) {
         return grep($_ eq $suite, @RELEASES_ORDER)
-            ? int( @RELEASES_ORDER - (grep { $RELEASES_ORDER[$_] eq $suite } 0 .. $#RELEASES_ORDER)[0] )
-            : $suite;
+            ? int( @RELEASES_ORDER - (grep { $RELEASES_ORDER[$_] eq $suite } 0 .. $#RELEASES_ORDER)[0] ) : $suite;
     }
 
     0;
