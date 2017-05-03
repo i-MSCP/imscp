@@ -30,7 +30,7 @@ use iMSCP::File;
 use parent 'iMSCP::Provider::Service::Sysvinit';
 
 # Commands used in that package
-my %COMMANDS = (
+our %COMMANDS = (
     systemctl => '/bin/systemctl'
 );
 

@@ -28,7 +28,7 @@ use warnings;
 use parent 'iMSCP::Provider::Service::Sysvinit';
 
 # Commands used in that package
-my %COMMANDS = (
+our %COMMANDS = (
     'invoke-rc.d' => '/usr/sbin/invoke-rc.d',
     'update-rc.d' => '/usr/sbin/update-rc.d'
 );

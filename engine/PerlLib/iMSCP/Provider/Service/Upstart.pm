@@ -32,17 +32,8 @@ use iMSCP::File;
 use version;
 use parent 'iMSCP::Provider::Service::Sysvinit';
 
-# Operate against system upstart, not session (see See IP-1514)
-delete $ENV{'UPSTART_SESSION'};
-
-# Private variables
-my $UPSTART_VERSION;
-my $START_ON = qr/^\s*start\s+on/;
-my $COMMENTED_START_ON = qr/^\s*#+\s*start\s+on/;
-my $MANUAL = qr/^\s*manual\s*/m;
-
 # Commands used in that package
-my %COMMANDS = (
+our %COMMANDS = (
     start   => '/sbin/start',
     stop    => '/sbin/stop',
     restart => '/sbin/restart',
@@ -51,8 +42,17 @@ my %COMMANDS = (
     initctl => '/sbin/initctl'
 );
 
+# Private variables
+my $UPSTART_VERSION;
+my $START_ON = qr/^\s*start\s+on/;
+my $COMMENTED_START_ON = qr/^\s*#+\s*start\s+on/;
+my $MANUAL = qr/^\s*manual\s*/m;
+
 # Paths where job files must be searched
 my @JOBFILEPATHS = ( '/etc/init' );
+
+# Operate against system upstart, not session (see See IP-1514)
+delete $ENV{'UPSTART_SESSION'};
 
 =head1 DESCRIPTION
 
