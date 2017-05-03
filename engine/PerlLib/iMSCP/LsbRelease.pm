@@ -189,7 +189,7 @@ sub getAll
         "%s\n%s\n%s\n%s",
         $self->getId( $short ),
         $self->getDescription( $short ),
-        $self->getRelease( $short, 1 ),
+        $self->getRelease( $short ),
         $self->getCodename( $short )
     );
 }
