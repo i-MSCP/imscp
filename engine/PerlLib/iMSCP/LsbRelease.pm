@@ -29,42 +29,39 @@ use IPC::Open3;
 use POSIX;
 use Symbol;
 
+my $IS_DEVUAN = -f '/etc/devuan_version';
+
 # XXX: Update as needed
 # This should really be included in apt-cache policy output... it is already
 # in the Release file...
-my %DEBIAN_RELEASE_CODENAME_LOOKUP = (
-    '1.1' => 'buzz',
-    '1.2' => 'rex',
-    '1.3' => 'bo',
-    '2.0' => 'hamm',
-    '2.1' => 'slink',
-    '2.2' => 'potato',
-    '3.0' => 'woody',
-    '3.1' => 'sarge',
-    '4.0' => 'etch',
-    '5.0' => 'lenny',
-    '6.0' => 'squeeze',
-    '7'   => 'wheezy',
-    '8'   => 'jessie',
-    '9'   => 'stretch',
-    '10'  => 'buster'
-);
-my %DEVUAN_RELEASE_CODENAME_LOOKUP = (
-    '1.0' => 'jessie',
-    '2.0' => 'ascii',
-);
+my %RELEASE_CODENAME_LOOKUP = (!$IS_DEVUAN)
+      ? (
+        '1.1' => 'buzz',
+        '1.2' => 'rex',
+        '1.3' => 'bo',
+        '2.0' => 'hamm',
+        '2.1' => 'slink',
+        '2.2' => 'potato',
+        '3.0' => 'woody',
+        '3.1' => 'sarge',
+        '4.0' => 'etch',
+        '5.0' => 'lenny',
+        '6.0' => 'squeeze',
+        '7'   => 'wheezy',
+        '8'   => 'jessie',
+        '9'   => 'stretch',
+        '10'  => 'buster',
+        '11'  => 'bullseye'
+    ) : (
+        '1' => 'jessie',
+        '2' => 'ascii'
+    );
 
-my $RELEASE_CODENAME_LOOKUP = -f '/etc/devuan_version'
-    ? \%DEVUAN_RELEASE_CODENAME_LOOKUP
-    : \%DEBIAN_RELEASE_CODENAME_LOOKUP;
+my $TESTING_CODENAME = 'unknown.new.testing';
 
 my @RELEASES_ORDER = (
-    (
-        map { $_->[1] } sort { $a->[0] <=> $b->[0] } (
-            map { [ $_, $RELEASE_CODENAME_LOOKUP->{$_} ] } keys %{$RELEASE_CODENAME_LOOKUP}
-        )
-    ),
-    'stable', 'testing', 'unstable', 'sid'
+    (map { $RELEASE_CODENAME_LOOKUP{$_} } sort keys %RELEASE_CODENAME_LOOKUP),
+    'stable', 'testing', 'unstable', (($IS_DEVUAN) ? 'ceres' : 'sid')
 );
 
 =head1 DESCRIPTION
@@ -147,10 +144,11 @@ sub getRelease
     my ($self, $short, $forceNumeric) = @_;
 
     my $release = $self->{'lsbInfo'}->{'RELEASE'} || 'n/a';
+
     if ($forceNumeric && $release =~ /[^\d.]/) {
         my $codename = $self->getCodename(1);
-        my @match = grep { $RELEASE_CODENAME_LOOKUP->{$_} eq $codename} keys %{$RELEASE_CODENAME_LOOKUP};
-        $release = sprintf('%.1f', $match[0]) if @match;
+        my %lookup = reverse(%RELEASE_CODENAME_LOOKUP);
+        $release = sprintf('%.1f', $lookup{$codename}) if exists $lookup{$codename};
     }
 
     return $release if $short;
@@ -191,7 +189,7 @@ sub getAll
         "%s\n%s\n%s\n%s",
         $self->getId( $short ),
         $self->getDescription( $short ),
-        $self->getRelease( $short ),
+        $self->getRelease( $short, 1 ),
         $self->getCodename( $short )
     );
 }
@@ -203,10 +201,10 @@ sub getAll
     Data are returned in hash such as:
 
     (
-        'ID' => 'Debian',
-        'RELEASE' => '6.0.6',
-        'DESCRIPTION' => 'Debian GNU/Linux 6.0.6 (squeeze)',
-        'CODENAME' => 'squeeze'
+        'ID'          => 'Debian',
+        'RELEASE'     => '8.7',
+        'DESCRIPTION' => 'Debian GNU/Linux 8.7 (jessie)',
+        'CODENAME'    => 'jessie'
     )
 
  Return hash Hash containing distribution information
@@ -217,14 +215,14 @@ sub getDistroInformation
 {
     my $self = shift;
 
-    # Try to retrieve information from /etc/lsb-release first
+    # Try to retrieve information from /etc/lsb-release or /etc/os-release first
     my %lsbInfo = $self->_getLsbInformation( );
+
     for ('ID', 'RELEASE', 'CODENAME', 'DESCRIPTION') {
-        unless (exists $lsbInfo{$_}) {
-            my %distInfo = $self->_guessDebianRelease( );
-            %lsbInfo = (%distInfo, %lsbInfo);
-            last;
-        }
+        next if exists $lsbInfo{$_};
+        my %distInfo = $self->_guessDebianRelease( );
+        %lsbInfo = (%distInfo, %lsbInfo);
+        last;
     }
 
     %lsbInfo;
@@ -250,8 +248,8 @@ sub _lookupCodename
 
     return $unknown unless $release =~ /(\d+)\.(\d+)(r(\d+))?/;
 
-    my $shortRelease = (int( $1 ) < 7) ? sprintf '%s.%s', $1, $2 : sprintf '%s', $1;
-    $RELEASE_CODENAME_LOOKUP->{$shortRelease} || $unknown;
+    my $shortRelease = (!$IS_DEVUAN && int( $1 ) < 7) ? sprintf '%s.%s', $1, $2 : sprintf '%s', $1;
+    $RELEASE_CODENAME_LOOKUP{$shortRelease} || $unknown;
 }
 
 =item _parsePolicyLine( $data )
@@ -292,14 +290,12 @@ sub _releaseIndex
     my $suite = $_[1]->{'suite'} || undef;
 
     if ($suite) {
-        if (grep($_ eq $suite, @RELEASES_ORDER)) {
-            int( @RELEASES_ORDER - (grep { $RELEASES_ORDER[$_] eq $suite } 0 .. $#RELEASES_ORDER)[0] );
-        } else {
-            $suite;
-        }
-    } else {
-        0;
+        return grep($_ eq $suite, @RELEASES_ORDER)
+            ? int( @RELEASES_ORDER - (grep { $RELEASES_ORDER[$_] eq $suite } 0 .. $#RELEASES_ORDER)[0] )
+            : $suite;
     }
+
+    0;
 }
 
 =item _parseAptPolicy( )
@@ -406,13 +402,11 @@ sub _guessReleaseFromApt
 
 =cut
 
-my $TESTING_CODENAME = 'unknown.new.testing';
-
 sub _guessDebianRelease
 {
     my $self = $_[0];
 
-    my %distInfo = ( ID => 'Debian' );
+    my %distInfo = ( ID => ($IS_DEVUAN) ? 'Devuan' : 'Debian' );
 
     # Use /etc/dpkg/origins/default to fetch the distribution name
     my $etcDpkgOriginsDefauft = $ENV{'LSB_ETC_DPKG_ORIGINS_DEFAULT'} || '/etc/dpkg/origins/default';
@@ -432,7 +426,7 @@ sub _guessDebianRelease
 
             close $fh;
         } else {
-            warn( "Unable to open $etcDpkgOriginsDefauft: $!" );
+            warn( sprintf("Couldn't open %s: %s", $etcDpkgOriginsDefauft, $! ) );
         }
     }
 
@@ -451,7 +445,7 @@ sub _guessDebianRelease
     $distInfo{'DESCRIPTION'} = sprintf( '%s %s', $distInfo{'ID'}, $distInfo{'OS'} );
 
     my $etcDebianVersion = $ENV{'LSB_ETC_DEBIAN_VERSION'}
-        || ((-f '/etc/devuan_version') ? '/etc/devuan_version' : '/etc/debian_version');
+        || (($IS_DEVUAN) ? '/etc/devuan_version' : '/etc/debian_version');
 
     if (-f $etcDebianVersion) {
         my $release = 'unknown';
@@ -469,10 +463,10 @@ sub _guessDebianRelease
         }
 
         if ($release !~ /^[a-z]/) {
-            # /etc/debian_version should be numeric
+            # /etc/debian_version or /etc/devuan_version should be numeric
             $distInfo{'CODENAME'} = $self->_lookupCodename( $release, 'n/a' );
             $distInfo{'RELEASE'} = $release;
-        } elsif ($release =~ m%(.*)/sid$%) {
+        } elsif ($release =~ m%(.*)/(?:sid|ceres)$%) {
             $TESTING_CODENAME = $1 if lc( $1 ) ne 'testing';
             $distInfo{'RELEASE'} = 'testing/unstable';
         } else {
@@ -490,14 +484,20 @@ sub _guessDebianRelease
     # upgraded the system.
     unless (exists $distInfo{'CODENAME'}) {
         my %rInfo = ($distInfo{'ID'} eq 'Devuan')
-            ? $self->_guessReleaseFromApt('Devuan', 'main', 'experimental', 'Devuan', { })
+            ? $self->_guessReleaseFromApt(
+                'Devuan', 'main', 'experimental', 'Devuan', { 'Devuan Ports' => 'packages.devuan.org' }
+            )
             : $self->_guessReleaseFromApt();
 
         if (%rInfo) {
             my $release = $rInfo{'version'} || '';
 
             # Special case Debian-Ports as their Release file has 'version': '1.0'
-            if ($release eq '1.0' && $rInfo{'origin'} eq 'Debian Ports' && $rInfo{'label'} == 'ftp.debian-ports.org') {
+            if (!$IS_DEVUAN &&
+                $release eq '1.0'
+                && $rInfo{'origin'} eq 'Debian Ports'
+                && $rInfo{'label'} == 'ftp.debian-ports.org'
+            ) {
                 $release = undef;
                 $rInfo{'suite'} = 'unstable';
             }
@@ -511,7 +511,7 @@ sub _guessDebianRelease
                     # Would be nice if I didn't have to hardcode this.
                     $distInfo{'CODENAME'} = $TESTING_CODENAME;
                 } else {
-                    $distInfo{'CODENAME'} = 'sid';
+                    $distInfo{'CODENAME'} = ($IS_DEVUAN) ? 'ceres' : 'sid';
                 }
             }
 
