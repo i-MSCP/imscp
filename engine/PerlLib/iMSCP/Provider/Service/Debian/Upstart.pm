@@ -140,7 +140,7 @@ sub hasService
 
     defined $service or die( 'parameter $service is not defined' );
 
-    $self->SUPER::hasService( $service ) || $self->iMSCP::Provider::Service::Debian::hasService( $service );
+    $self->SUPER::hasService( $service ) || $self->iMSCP::Provider::Service::Debian::Sysvinit::hasService( $service );
 }
 
 =back
