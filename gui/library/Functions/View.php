@@ -791,8 +791,8 @@ function get_admin_manage_users($tpl)
 function gen_admin_domain_search_options($tpl, $searchFor, $searchCommon, $searchStatus)
 {
     $htmlSelected = ' selected';
-    $domainSelected = $customerIdSelected = $lastnameSelected = $companySelected = $citySelected = $stateSelected =
-    $countrySelected = $allSelected = $okSelected = $suspendedSelected = $resellerNameSelected = '';
+    $domainSelected = $customerIdSelected = $firstnameSelected = $lastnameSelected = $companySelected = $citySelected =
+    $stateSelected = $countrySelected = $allSelected = $okSelected = $suspendedSelected = $resellerNameSelected = '';
 
     if ($searchFor == 'n/a' && $searchCommon == 'n/a' && $searchStatus == 'n/a') {
         // we have no search and let's generate search fields empty
