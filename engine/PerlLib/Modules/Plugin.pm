@@ -34,16 +34,6 @@ use JSON;
 use version;
 use parent 'Common::Object';
 
-my %PLUGIN_NEXT_STATE_MAP = (
-    enabled     => 'enabled',
-    toinstall   => 'enabled',
-    toenable    => 'enabled',
-    toupdate    => 'enabled',
-    tochange    => 'enabled',
-    todisable   => 'disabled',
-    touninstall => 'uninstalled'
-);
-
 =head1 DESCRIPTION
 
  This module provides the backend side of the i-MSCP plugin manager. It is
@@ -107,13 +97,23 @@ sub process
     );
 
     eval {
+        my %plugin_next_state_map = (
+            enabled     => 'enabled',
+            toinstall   => 'enabled',
+            toenable    => 'enabled',
+            toupdate    => 'enabled',
+            tochange    => 'enabled',
+            todisable   => 'disabled',
+            touninstall => ($self->{'pluginData'}->{'info'}->{'__installable__'}) ? 'uninstalled' : 'disabled'
+        );
+
         local $self->{'dbh'}->{'RaiseError'} = 1;
         $self->{'dbh'}->do(
             "UPDATE plugin SET ".($rs ? 'plugin_error' : 'plugin_status')." = ? WHERE plugin_id = ?",
             undef,
             ($rs
                 ? getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-                : $PLUGIN_NEXT_STATE_MAP{$self->{'pluginData'}->{'plugin_status'}}
+                : $plugin_next_state_map{$self->{'pluginData'}->{'plugin_status'}}
             ),
             $pluginId
         );

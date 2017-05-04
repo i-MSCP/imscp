@@ -56,7 +56,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 251;
+    protected $lastUpdate = 252;
 
     /**
      * Singleton - Make new unavailable
@@ -1721,7 +1721,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * Drop ftp_users.rawpasswd column
      *
-     * @return null|string
+     * @return null|string SQL statement to be executed or NULL
      */
     protected function r246()
     {
@@ -1731,7 +1731,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * Drop sql_user.sqlu_pass column
      *
-     * @return null|string
+     * @return null|string SQL statement to be executed or NULL
      */
     protected function r247()
     {
@@ -1741,7 +1741,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * Update mail_users.mail_pass columns length
      *
-     * @return null|string
+     * @return null|string SQL statement to be executed or NULL
      */
     protected function r248()
     {
@@ -1770,7 +1770,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * Change server_ips.ip_number column length
      *
-     * @return null|string
+     * @return null|string SQL statement to be executed or NULL
      */
     protected function r250()
     {
@@ -1782,7 +1782,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * Delete invalid default email accounts
      *
-     * @return string
+     * @return string SQL statement to be executed
      */
     protected function r251()
     {
@@ -1791,5 +1791,15 @@ class iMSCP_Update_Database extends iMSCP_Update
             WHERE mail_acc RLIKE '^abuse|hostmaster|postmaster|webmaster\\$'
             AND mail_forward IS NULL
         ";
+    }
+
+    /**
+     * Fix value for the plugin.plugin_lockers field
+     *
+     * @return string SQL statement to be executed
+     */
+    protected function r252()
+    {
+        return "UPDATE plugin SET plugin_lockers = '{}' WHERE plugin_lockers = 'null'";
     }
 }

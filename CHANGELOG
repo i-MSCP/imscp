@@ -35,6 +35,8 @@ PLUGINS
     Added: iMSCP::Plugins::getClass() method for easy plugin loading and class retrieval (backend)
     Changed: Plugin errors, outside those raised by the Modules::Plugins, are no longer returned to the caller (backend)
     Fixed: Avoid to instantiate plugins twice when an action involve a sub-action (backend Modules::Plugin)
+    Fixed: Wrong default value for the `plugin_lockers' database field
+    Fixed: Wrong status set for un-installable plugins after their uninstallation (`uninstalled' while `disabled' is expected)
     Updated: API version to 1.4.1
 
 SCRIPTS

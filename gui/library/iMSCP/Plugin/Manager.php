@@ -696,7 +696,9 @@ class iMSCP_Plugin_Manager
                     if ($this->pluginHasBackend($pluginName)) {
                         $this->backendRequest = true;
                     } else {
-                        $this->pluginSetStatus($pluginName, 'uninstalled');
+                        $this->pluginSetStatus(
+                            $pluginName, $this->pluginIsInstallable($pluginName) ? 'uninstalled' : 'disabled'
+                        );
                     }
 
                     return self::ACTION_SUCCESS;
@@ -1249,7 +1251,7 @@ class iMSCP_Plugin_Manager
                 $status = $info['__installable__'] ? 'uninstalled' : 'disabled';
                 $returnInfo['new']++;
                 $needDataUpdate = true;
-                $lockers = new \iMSCP\Json\LazyDecoder(array());
+                $lockers = new \iMSCP\Json\LazyDecoder('{}');
             } else {
                 $status = $this->pluginGetStatus($pluginName);
                 $needUpdate = version_compare($info['version'], $info['__nversion__'], '<');
