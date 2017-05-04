@@ -1022,12 +1022,6 @@ function gen_manage_domain_search_options($tpl, $searchFor, $searchCommon, $sear
         $tpl->assign('SEARCH_FOR', tohtml($searchFor));
     }
 
-    if ($searchFor === 'n/a' || $searchFor === '') {
-        $tpl->assign('SEARCH_FOR', '');
-    } else {
-        $tpl->assign('SEARCH_FOR', tohtml($searchFor));
-    }
-
     $tpl->assign(array(
         'M_DOMAIN_NAME'          => tr('Domain name'),
         'M_CUSTOMER_ID'          => tr('Customer ID'),
