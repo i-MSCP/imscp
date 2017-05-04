@@ -16,10 +16,11 @@ CRON
     Fixed: Cron tasks for traffic accounting are never executed due to wrong command in /etc/cron.d/imscp cron file
 
 DISTRIBUTION
-    Added: Support for Devuan jessie (1.0 RC) - See https://devuan.org/
+    Added: Support for Devuan jessie 1.0 RC - See https://devuan.org/
 
 FRONTEND
     Fixed: Allow auto-completion for login form (regression fix)
+    Fixed: Integrity constraint violation: 1052 Column 'fname' in where clause is ambiguous when searching user by name
     Fixed: Non well formed numeric value encountered in utils_getPhpValueInBytes() function
 
 LISTENERS

@@ -231,8 +231,10 @@ function gen_admin_domain_query(
             $condition = "WHERE t1.domain_name LIKE $searchFor ESCAPE '!'";
         } elseif ($searchCommon == 'customer_id') {
             $condition = "WHERE t2.customer_id LIKE $searchFor ESCAPE '!'";
+        } elseif ($searchCommon == 'fname') {
+            $condition = "WHERE t2.fname LIKE $searchFor ESCAPE '='";
         } elseif ($searchCommon == 'lname') {
-            $condition = "WHERE (t2.lname LIKE $searchFor ESCAPE '=' OR fname LIKE $searchFor ESCAPE '!')";
+            $condition = "WHERE t2.lname LIKE $searchFor ESCAPE '='";
         } elseif ($searchCommon == 'firm') {
             $condition = "WHERE t2.firm LIKE $searchFor ESCAPE '!'";
         } elseif ($searchCommon == 'city') {

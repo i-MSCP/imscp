@@ -12,6 +12,7 @@
                 <select name="search_common">
                     <option value="domain_name"{M_DOMAIN_NAME_SELECTED}>{M_DOMAIN_NAME}</option>
                     <option value="customer_id"{M_CUSTOMER_ID_SELECTED}>{M_CUSTOMER_ID}</option>
+                    <option value="fname"{M_FIRST_NAME_SELECTED}>{M_FIRST_NAME}</option>
                     <option value="lname"{M_LAST_NAME_SELECTED}>{M_LAST_NAME}</option>
                     <option value="firm"{M_COMPANY_SELECTED}>{M_COMPANY}</option>
                     <option value="city"{M_CITY_SELECTED}>{M_CITY}</option>
@@ -25,9 +26,9 @@
                     <option value="disabled"{M_SUSPENDED_SELECTED}>{M_SUSPENDED}</option>
                 </select>
             </label>
-            <input name="Submit" type="submit" value="{TR_SEARCH}"/>
-            <input type="hidden" name="uaction" value="go_search"/>
-            <input type="hidden" name="details" value=""/>
+            <input name="Submit" type="submit" value="{TR_SEARCH}">
+            <input type="hidden" name="uaction" value="go_search">
+            <input type="hidden" name="details" value="">
         </div>
         <div style="display:inline;float:right;vertical-align: middle;line-height: 40px">
             <a class="icon i_show_alias" href="#" onclick="return sbmt_details(document.forms[0],'{SHOW_DETAILS}');">

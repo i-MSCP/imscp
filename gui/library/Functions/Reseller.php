@@ -296,9 +296,10 @@ function gen_manage_domain_query(
 			$addQuery = "WHERE admin_name RLIKE '" . addslashes($searchFor) . "' %s";
 		} elseif ($searchCommon == 'customer_id') {
 			$addQuery = "WHERE customer_id RLIKE '" . addslashes($searchFor) . "' %s";
+		} elseif ($searchCommon == 'fname') {
+			$addQuery =  "WHERE fname RLIKE '" . addslashes($searchFor) . "' %s";
 		} elseif ($searchCommon == 'lname') {
-			$addQuery = "WHERE (lname RLIKE '" . addslashes($searchFor) .
-				"' OR fname RLIKE '" . addslashes($searchFor) . "') %s";
+			$addQuery =  "WHERE lname RLIKE '" . addslashes($searchFor) . "' %s";
 		} elseif ($searchCommon == 'firm') {
 			$addQuery = "WHERE firm RLIKE '" . addslashes($searchFor) . "' %s";
 		} elseif ($searchCommon == 'city') {

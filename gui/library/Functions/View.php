@@ -804,6 +804,8 @@ function gen_admin_domain_search_options($tpl, $searchFor, $searchCommon, $searc
         $domainSelected = $htmlSelected;
     } elseif ($searchCommon == 'customer_id') {
         $customerIdSelected = $htmlSelected;
+    } elseif ($searchCommon == 'fname') {
+        $firstnameSelected = $htmlSelected;
     } elseif ($searchCommon == 'lname') {
         $lastnameSelected = $htmlSelected;
     } elseif ($searchCommon === 'firm') {
@@ -835,6 +837,7 @@ function gen_admin_domain_search_options($tpl, $searchFor, $searchCommon, $searc
     $tpl->assign(array(
         'M_DOMAIN_NAME'            => tr('Domain name'),
         'M_CUSTOMER_ID'            => tr('Customer ID'),
+        'M_FIRST_NAME'             => tr('First name'),
         'M_LAST_NAME'              => tr('Last name'),
         'M_COMPANY'                => tr('Company'),
         'M_CITY'                   => tr('City'),
@@ -847,6 +850,7 @@ function gen_admin_domain_search_options($tpl, $searchFor, $searchCommon, $searc
         'M_RESELLER_NAME'          => tr('Reseller name'),
         'M_DOMAIN_NAME_SELECTED'   => $domainSelected,
         'M_CUSTOMER_ID_SELECTED'   => $customerIdSelected,
+        'M_FIRST_NAME_SELECTED'    => $firstnameSelected,
         'M_LAST_NAME_SELECTED'     => $lastnameSelected,
         'M_COMPANY_SELECTED'       => $companySelected,
         'M_CITY_SELECTED'          => $citySelected,
@@ -900,13 +904,13 @@ function reseller_generate_ip_list($tpl, $resellerId, $domainIp)
  */
 function gen_manage_domain_search_options($tpl, $searchFor, $searchCommon, $searchStatus)
 {
-
     $htmlSelected = ' selected';
 
     if ($searchFor === 'n/a' && $searchCommon === 'n/a' && $searchStatus === 'n/a') {
         // we have no search and let's generate search fields empty
         $domainSelected = $htmlSelected;
         $customerIdSelected = '';
+        $firstnameSelected = '';
         $lastnameSelected = '';
         $companySelected = '';
         $citySelected = '';
@@ -920,6 +924,7 @@ function gen_manage_domain_search_options($tpl, $searchFor, $searchCommon, $sear
         if ($searchCommon === 'domain_name') {
             $domainSelected = $htmlSelected;
             $customerIdSelected = '';
+            $firstnameSelected = '';
             $lastnameSelected = '';
             $companySelected = '';
             $citySelected = '';
@@ -928,6 +933,16 @@ function gen_manage_domain_search_options($tpl, $searchFor, $searchCommon, $sear
         } elseif ($searchCommon === 'customer_id') {
             $domainSelected = '';
             $customerIdSelected = $htmlSelected;
+            $firstnameSelected = '';
+            $lastnameSelected = '';
+            $companySelected = '';
+            $citySelected = '';
+            $stateSelected = '';
+            $countrySelected = '';
+        } elseif ($searchCommon === 'fname') {
+            $domainSelected = '';
+            $customerIdSelected = '';
+            $firstnameSelected = $htmlSelected;
             $lastnameSelected = '';
             $companySelected = '';
             $citySelected = '';
@@ -936,6 +951,7 @@ function gen_manage_domain_search_options($tpl, $searchFor, $searchCommon, $sear
         } elseif ($searchCommon === 'lname') {
             $domainSelected = '';
             $customerIdSelected = '';
+            $firstnameSelected = '';
             $lastnameSelected = $htmlSelected;
             $companySelected = '';
             $citySelected = '';
@@ -944,6 +960,7 @@ function gen_manage_domain_search_options($tpl, $searchFor, $searchCommon, $sear
         } elseif ($searchCommon === 'firm') {
             $domainSelected = '';
             $customerIdSelected = '';
+            $firstnameSelected = '';
             $lastnameSelected = '';
             $companySelected = $htmlSelected;
             $citySelected = '';
@@ -952,6 +969,7 @@ function gen_manage_domain_search_options($tpl, $searchFor, $searchCommon, $sear
         } elseif ($searchCommon === 'city') {
             $domainSelected = '';
             $customerIdSelected = '';
+            $firstnameSelected = '';
             $lastnameSelected = '';
             $companySelected = '';
             $citySelected = $htmlSelected;
@@ -960,6 +978,7 @@ function gen_manage_domain_search_options($tpl, $searchFor, $searchCommon, $sear
         } elseif ($searchCommon === 'state') {
             $domainSelected = '';
             $customerIdSelected = '';
+            $firstnameSelected = '';
             $lastnameSelected = '';
             $companySelected = '';
             $citySelected = '';
@@ -968,6 +987,7 @@ function gen_manage_domain_search_options($tpl, $searchFor, $searchCommon, $sear
         } elseif ($searchCommon === 'country') {
             $domainSelected = '';
             $customerIdSelected = '';
+            $firstnameSelected = '';
             $lastnameSelected = '';
             $companySelected = '';
             $citySelected = '';
@@ -1002,9 +1022,16 @@ function gen_manage_domain_search_options($tpl, $searchFor, $searchCommon, $sear
         $tpl->assign('SEARCH_FOR', tohtml($searchFor));
     }
 
+    if ($searchFor === 'n/a' || $searchFor === '') {
+        $tpl->assign('SEARCH_FOR', '');
+    } else {
+        $tpl->assign('SEARCH_FOR', tohtml($searchFor));
+    }
+
     $tpl->assign(array(
         'M_DOMAIN_NAME'          => tr('Domain name'),
         'M_CUSTOMER_ID'          => tr('Customer ID'),
+        'M_FIRST_NAME'           => tr('First name'),
         'M_LAST_NAME'            => tr('Last name'),
         'M_COMPANY'              => tr('Company'),
         'M_CITY'                 => tr('City'),
@@ -1016,6 +1043,7 @@ function gen_manage_domain_search_options($tpl, $searchFor, $searchCommon, $sear
         'M_ERROR'                => tr('Error'),
         'M_DOMAIN_NAME_SELECTED' => $domainSelected,
         'M_CUSTOMER_ID_SELECTED' => $customerIdSelected,
+        'M_FIRST_NAME_SELECTED'  => $firstnameSelected,
         'M_LAST_NAME_SELECTED'   => $lastnameSelected,
         'M_COMPANY_SELECTED'     => $companySelected,
         'M_CITY_SELECTED'        => $citySelected,
