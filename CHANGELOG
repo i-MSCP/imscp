@@ -20,6 +20,7 @@ DISTRIBUTION
 
 FRONTEND
     Fixed: Allow auto-completion for login form (regression fix)
+    Fixed: Non well formed numeric value encountered in utils_getPhpValueInBytes() function
 
 LISTENERS
     Added: Missing mail, imap, pop, pop3, relay and smtp records entries for subdomains (20_named_dualstack.pl listener)

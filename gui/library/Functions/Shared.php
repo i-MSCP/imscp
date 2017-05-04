@@ -1277,20 +1277,28 @@ function utils_getMaxFileUpload()
  */
 function utils_getPhpValueInBytes($value)
 {
-    $val = trim($value);
-    $last = strtolower($val[strlen($value) - 1]);
+    $value = trim($value);
 
-    switch ($last) {
-        case 'g':
-            $val *= 1024;
-        case 'm':
-            $val *= 1024;
-        case 'k':
-            $val *= 1024;
-            break;
+    if (ctype_digit($value)) {
+        return $value;
     }
 
-    return $val;
+    $unit = strtolower($value[strlen($value) - 1]);
+    $value = substr($value, 0, -1);
+
+    if ($unit == 'g') {
+        return ($value * 1024);
+    }
+
+    if ($unit == 'm') {
+        return ($value * 1024 * 1024);
+    }
+
+    if ($unit == 'k') {
+        return ($value * 1024 * 1024 * 1024);
+    }
+
+    return $value;
 }
 
 /**
