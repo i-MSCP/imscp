@@ -135,8 +135,9 @@ sub remove
                 for(qw / service socket /) {
                     my $unitFilePath = eval { $provider->getUnitFilePath( "$service.$_" ); };
                     if (defined $unitFilePath) {
-                        iMSCP::File->new( filename =>
-                            $unitFilePath )->delFile( ) == 0 or die( $self->_getLastError( ) );
+                        iMSCP::File->new(filename => $unitFilePath )->delFile( ) == 0 or die(
+                            $self->_getLastError( )
+                        );
                     }
                 }
             } else {
@@ -151,7 +152,7 @@ sub remove
 
         $self->{'eventManager'}->trigger( 'onAfterRemoveService', $service ) == 0 or die( $self->_getLastError( ) );
     };
-    $@ or die( sprintf( "Couldn't remove the `%s' service: %s", $service, $@ ) );
+    !$@ or die( sprintf( "Couldn't remove the `%s' service: %s", $service, $@ ) );
     1;
 }
 
