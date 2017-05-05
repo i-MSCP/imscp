@@ -34,6 +34,7 @@ INSTALLER
 
 PACKAGES
     Updated: PhpMyAdmin package installer for use of PhpMyAdmin 4.7.0
+    Updated: RainLoop package installer for us of RainLoop 1.11.0.203
 
 PLUGINS
     Added: iMSCP::Plugins::getClass() method for easy plugin loading and class retrieval (backend)

@@ -42,7 +42,7 @@ use Package::FrontEnd;
 use Servers::sqld;
 use parent 'Common::SingletonClass';
 
-our $VERSION = '0.1.0.*@dev';
+our $VERSION = '0.2.0.*@dev';
 
 %main::sqlUsers = () unless %main::sqlUsers;
 
@@ -161,6 +161,7 @@ sub install
     $rs ||= $self->_buildConfig( );
     $rs ||= $self->_buildHttpdConfig( );
     $rs ||= $self->_setVersion( );
+    $rs ||= $self->_removeOldVersionFiles( );
     $rs ||= $self->_saveConfig( );
 }
 
@@ -240,53 +241,42 @@ sub _installFiles
 {
     my $self = shift;
 
-    my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/rainloop";
+    my $srcDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/rainloop";
 
-    unless (-d $packageDir) {
+    unless (-d $srcDir) {
         error( "Couldn't find the imscp/rainloop package in the packages cache directory" );
         return 1;
     }
 
-    my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop";
-
     local $@;
-    my $rs = eval {
-        # Install new files
-        iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( "${destDir}-new" );
+    eval {
+        my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop";
 
-        # Copy new i-MSCP files
-        iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy( "${destDir}-new" );
-
-        if (-d $destDir) {
-            my $dataSrcDir = "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_";
-
-            # Copy files from previous installation
-            if (-d "$dataSrcDir/storage") {
-                iMSCP::Dir->new( dirname => "$dataSrcDir/storage" )->rcopy( "${destDir}-new/storage" );
-            }
-
-            # Remove files from previous installation
-            iMSCP::Dir->new( dirname => $destDir )->remove( );
-
-            # Remove file which are no longer needed
-            for ('application.ini', 'plugin-imscp-change-password.ini') {
-                next unless -f;
-                my $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/$_")->delFile( );
-                return $rs if $rs;
-            }
+        # Remove unwanted file to avoid hash naming convention for data directory
+        if (-f "$destDir/data/DATA.php") {
+            iMSCP::File->new( filename => "$destDir/data/DATA.php" )->delFile( ) == 0 or die(
+                getMessageByType( 'error', { amount => 1, remove => 1 } )
+            );
         }
 
-        # Replace old files by new files
-        iMSCP::Dir->new( dirname => "${destDir}-new" )->moveDir( $destDir );
+        # Handle upgrade from old rainloop data structure
+        if (-d "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1") {
+            iMSCP::Dir->new( dirname => "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1" )->moveDir(
+                "$destDir/data/_data_"
+            );
+        }
 
-        # Copy configuration files
-        iMSCP::Dir->new( dirname => "$packageDir/iMSCP/config" )->rcopy( $self->{'cfgDir'} );
+        # Install new files
+        iMSCP::Dir->new( dirname => "$srcDir/src" )->rcopy( $destDir );
+        iMSCP::Dir->new( dirname => "$srcDir/iMSCP/src" )->rcopy( $destDir );
+        iMSCP::Dir->new( dirname => "$srcDir/iMSCP/config" )->rcopy( $self->{'cfgDir'} );
     };
     if ($@) {
         error( $@ );
         return 1;
     }
-    $rs;
+
+    0;
 }
 
 =item _mergeConfig( )
@@ -404,7 +394,7 @@ sub _buildConfig
 {
     my $self = shift;
 
-    my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_/configs";
+    my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop/data/_data_/_default_/configs";
     my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
     for my $confFile('application.ini', 'plugin-imscp-change-password.ini') {
@@ -465,6 +455,35 @@ sub _setVersion
     $json = decode_json( $json );
     debug( sprintf( 'Set new rainloop version to %s', $json->{'version'} ) );
     $self->{'config'}->{'RAINLOOP_VERSION'} = $json->{'version'};
+    0;
+}
+
+=item _setVersion( )
+
+ Remove old version files if any
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _removeOldVersionFiles
+{
+    my $self = shift;
+
+    local $@;
+    eval {
+        my $versionsDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop/rainloop/v";
+
+        for my $versionDir(iMSCP::Dir->new( dirname => $versionsDir )->getDirs( )) {
+            next if $versionDir eq $self->{'config'}->{'RAINLOOP_VERSION'};
+            iMSCP::Dir->new( dirname => "$versionsDir/$versionDir" )->remove( );
+        }
+    };
+    if ($@) {
+        error( $@ );
+        return 1;
+    }
+
     0;
 }
 

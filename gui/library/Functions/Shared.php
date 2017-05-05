@@ -1283,7 +1283,7 @@ function utils_getPhpValueInBytes($value)
         return $value;
     }
 
-    $unit = strtolower($value[strlen($value) - 1]);
+    $unit = strtolower($value[strlen($value) -1]);
     $value = substr($value, 0, -1);
 
     if ($unit == 'g') {

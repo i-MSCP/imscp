@@ -185,18 +185,19 @@ sub deleteMail
         $db->useDatabase( $oldDatabase );
     }
 
-    my $storageDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop"
-        .'/data/_data_11c052c218cd2a2febbfb268624efdc1/_default_/storage';
-
+    my $storageDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop/data/_data_/_default_/storage";
     (my $email = $data->{'MAIL_ADDR'}) =~ s/[^a-z0-9\-\.@]+/_/;
     (my $storagePath = substr( $email, 0, 2 )) =~ s/\@$//;
 
-    for my $storageType('cfg', 'data', 'files') {
+    for my $storageType(qw/ cfg data files /) {
         my $rs = iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath/$email" )->remove( );
         return $rs if $rs;
+
         next unless -d "$storageDir/$storageType/$storagePath";
+
         my $dir = iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath" );
         next unless $dir->isEmpty( );
+
         $rs = $dir->remove( );
         return $rs if $rs;
     }
