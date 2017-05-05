@@ -33,6 +33,7 @@ INSTALLER
     Fixed: Usage of ZG-POLICY-RC.D(8) to provide local policy-rc.d and avoid violation of Debian policy (Debian/Ubuntu)
 
 PACKAGES
+    Fixed: RainLoop entries are not removed from database when a mail account is deleted (RainLoop)
     Updated: PhpMyAdmin package installer for use of PhpMyAdmin 4.7.0
     Updated: RainLoop package installer for us of RainLoop 1.11.0.203
 

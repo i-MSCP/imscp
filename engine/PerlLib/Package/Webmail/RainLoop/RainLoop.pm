@@ -170,8 +170,11 @@ sub deleteMail
         my $rs = $db->doQuery(
             'd',
             '
-                DELETE u, c, p FROM rainloop_users u JOIN rainloop_ab_contacts c USING(id_user)
-                JOIN rainloop_ab_properties p USING(id_user) WHERE rl_email = ?
+                DELETE u, c, p
+                FROM rainloop_users u
+                LEFT JOIN rainloop_ab_contacts c USING(id_user)
+                LEFT JOIN rainloop_ab_properties p USING(id_user)
+                WHERE rl_email = ?
             ',
             $data->{'MAIL_ADDR'}
         );
