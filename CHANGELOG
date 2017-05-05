@@ -32,6 +32,9 @@ INSTALLER
     Fixed: Don't check for source archive when binary archive has not been found for a specific section (APT repositories)
     Fixed: Usage of ZG-POLICY-RC.D(8) to provide local policy-rc.d and avoid violation of Debian policy (Debian/Ubuntu)
 
+PACKAGES
+    Updated: PhpMyAdmin package installer for use of PhpMyAdmin 4.7.0
+
 PLUGINS
     Added: iMSCP::Plugins::getClass() method for easy plugin loading and class retrieval (backend)
     Changed: Plugin errors, outside those raised by the Modules::Plugins, are no longer returned to the caller (backend)

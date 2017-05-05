@@ -162,10 +162,7 @@ sub preinstall
 {
     my $self = shift;
 
-    my $version = version->parse( $self->_getPhpVersion( ) ) >= version->parse( '5.5.0' )
-        ? '0.4.6.*@dev' : '0.4.0.*@dev';
-
-    my $rs = iMSCP::Composer->getInstance( )->registerPackage( 'imscp/phpmyadmin', $version );
+    my $rs = iMSCP::Composer->getInstance( )->registerPackage( 'imscp/phpmyadmin', '0.4.7.*@dev' );
     $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 
@@ -271,27 +268,6 @@ sub _init
     }
 
     $self;
-}
-
-=item _getPhpVersion( )
-
- Get PHP version
-
- Return int PHP version on success, die on failure
-
-=cut
-
-sub _getPhpVersion
-{
-    my $rs = execute( 'php -d date.timezone=UTC -v', \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr || 'Unknown error' ) if $rs;
-    return $rs if $rs;
-
-    $stdout =~ /PHP\s+([\d.]+)/ or die(
-        sprintf( "Couldn't find PHP version from `php -v` command output: %s", $stdout )
-    );
-    $1;
 }
 
 =item _backupConfigFile( )
@@ -472,62 +448,40 @@ sub _setupDatabase
     my $phpmyadminDbName = main::setupGetQuestion( 'DATABASE_NAME' ).'_pma';
 
     my $db = iMSCP::Database->factory( );
-
     my $quotedDbName = $db->quoteIdentifier( $phpmyadminDbName );
-    my $rs = $db->doQuery( '1', 'SHOW DATABASES LIKE ?', $phpmyadminDbName );
+    
+    # Drop previous database
+    # FIXME: Find a better way to handle upgrade
+
+    my $rs = $db->doQuery( 'd', sprintf( 'DROP DATABASE IF EXISTS %s', $quotedDbName ) );
     unless (ref $rs eq 'HASH') {
         error( $rs );
         return 1;
     }
 
-    if (%{$rs}) {
-        $rs = $db->doQuery( '1', "SHOW TABLES FROM $quotedDbName" );
-        unless (ref $rs eq 'HASH') {
-            error( $rs );
-            return 1;
-        }
+    # Create database
+
+    my $schemaFilePath = "$phpmyadminDir/sql/create_tables.sql";
+    
+    my $file = iMSCP::File->new( filename => $schemaFilePath );
+    my $fileContent = $file->get( );
+    unless(defined $fileContent) {
+        error( sprintf( "Couldn't read the %s file", $schemaFilePath ) );
+        return;
     }
 
-    unless (%{$rs}) {
-        $rs = $db->doQuery(
-            'c', "CREATE DATABASE IF NOT EXISTS $quotedDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
-        );
-        unless (ref $rs eq 'HASH') {
-            error( sprintf( "Couldn't create the PhpMyAdmin '%s' SQL database: %s", $phpmyadminDbName, $rs ) );
-            return 1;
-        }
-    }
+    $fileContent =~ s/^(-- Database :) `phpmyadmin`/$1 `$phpmyadminDbName`/im;
+    $fileContent =~ s/^(CREATE DATABASE IF NOT EXISTS) `phpmyadmin`/$1 `$phpmyadminDbName`/im;
+    $fileContent =~ s/^(USE) phpmyadmin;/$1 `$phpmyadminDbName`;/im;
 
-    my $oldDatabase = $db->useDatabase( $phpmyadminDbName );
+    $rs = $file->set( $fileContent );
+    $rs ||= $file->save( );
+    return $rs if $rs;
 
-    # In any case (new install / upgrade) we execute queries from the create_tables.sql file. On upgrade, this will
-    # create the missing tables
-
-    my $schemaFile = "$phpmyadminDir/sql/create_tables.sql";
-    $schemaFile = "$phpmyadminDir/examples/create_tables.sql" unless -f $schemaFile;
-
-    $schemaFile = iMSCP::File->new( filename => $schemaFile )->get( );
-    unless (defined $schemaFile) {
-        error( sprintf( "Couldn't read %s", $schemaFile->{'filename'} ) );
-        return 1;
-    }
-
-    $schemaFile =~ s/^(--[^\n]{0,})?\n//gm;
-
-    for my $sqlStmt(split /;\n/, $schemaFile) {
-        # The PhpMyAdmin script contains the creation of the database as well
-        # We ignore this part as the database has already been created
-        if ($sqlStmt !~ /^CREATE DATABASE/ and $sqlStmt !~ /^USE/) {
-            $rs = $db->doQuery( 'c', $sqlStmt );
-            unless (ref $rs eq 'HASH') {
-                error( sprintf( "Couldn't execute SQL query: %s", $rs ) );
-                return 1;
-            }
-        }
-    }
-
-    $db->useDatabase( $oldDatabase );
-    0;
+    $rs = execute( "cat $schemaFilePath | mysql", \ my $stdout, \ my $stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr || 'Unknown error' ) if $rs;
+    $rs;
 }
 
 =item _buildHttpdConfig( )
