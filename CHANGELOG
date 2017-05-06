@@ -24,8 +24,11 @@ FRONTEND
     Fixed: Non well formed numeric value encountered in utils_getPhpValueInBytes() function
 
 LISTENERS
-    Added: Missing mail, imap, pop, pop3, relay and smtp records entries for subdomains (20_named_dualstack.pl listener)
-    Updated: 70_postfix_submission_tls.pl file (fully redefine submission service and disable SSLv3)
+    Added: 10_proftpd_auth_unix.pl listener file: Enable unix authentication
+    Added: 10_proftpd_serverident.pl file: Set custom server identification message (replace 10_proftpd_tuning.pl)
+    Added: 10_proftpd_tls.pl file: Enforce TLS (replace 10_proftpd_tuning.pl)
+    Fixed: 20_named_dualstack.pl listener file: Missing DNS records for subdomains
+    Updated: 70_postfix_submission_tls.pl file: Fully redefines submission service and disable SSLv3
 
 INSTALLER
     Added: Routine to setup kernel

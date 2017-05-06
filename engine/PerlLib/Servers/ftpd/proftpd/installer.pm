@@ -40,7 +40,6 @@ use iMSCP::TemplateParser;
 use iMSCP::Umask;
 use Servers::ftpd::proftpd;
 use Servers::sqld;
-use version;
 use parent 'Common::SingletonClass';
 
 %main::sqlUsers = ( ) unless %main::sqlUsers;
@@ -403,7 +402,7 @@ sub _buildConfigFile
 {
     my $self = shift;
 
-    # Escape any double-quotes and backslash in password (see #IP-1330)
+    # Escape any double-quotes and backslash (see #IP-1330)
     (my $dbUser = $self->{'config'}->{'DATABASE_USER'}) =~ s%("|\\)%\\$1%g;
     (my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'}) =~ s%("|\\)%\\$1%g;
 
@@ -413,16 +412,15 @@ sub _buildConfigFile
         DATABASE_NAME           => main::setupGetQuestion( 'DATABASE_NAME' ),
         DATABASE_HOST           => main::setupGetQuestion( 'DATABASE_HOST' ),
         DATABASE_PORT           => main::setupGetQuestion( 'DATABASE_PORT' ),
-        DATABASE_USER           => '"'.$dbUser.'"',
-        DATABASE_PASS           => '"'.$dbPass.'"',
+        DATABASE_USER           => qq/"$dbUser"/,
+        DATABASE_PASS           => qq/"$dbPass"/,
         FTPD_MIN_UID            => $self->{'config'}->{'MIN_UID'},
         FTPD_MIN_GID            => $self->{'config'}->{'MIN_GID'},
         FTPD_PASSIVE_PORT_RANGE => $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'},
         CONF_DIR                => $main::imscpConfig{'CONF_DIR'},
         CERTIFICATE             => 'imscp_services',
-        TLSOPTIONS              =>
-            version->parse( "$self->{'config'}->{'PROFTPD_VERSION'}" ) >= version->parse( '1.3.3' )
-            ? 'NoCertRequest NoSessionReuseRequired' : 'NoCertRequest',
+        SERVER_IDENT_MESSAGE    => '"['.main::setupGetQuestion( 'SERVER_HOSTNAME' ).'] i-MSCP FTP server."', 
+        TLSOPTIONS              => 'NoCertRequest NoSessionReuseRequired',
         MAX_INSTANCES           => $self->{'config'}->{'MAX_INSTANCES'},
         MAX_CLIENT_PER_HOST     => $self->{'config'}->{'MAX_CLIENT_PER_HOST'}
     };

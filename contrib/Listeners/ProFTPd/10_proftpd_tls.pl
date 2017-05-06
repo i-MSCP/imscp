@@ -1,4 +1,5 @@
-# i-MSCP Listener::ProFTP::Tuning listener file
+# i-MSCP Listener::ProFTPd::TLS listener file
+# Copyright (C) 2017 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2015-2017 Rene Schuster <mail@reneschuster.de>
 #
 # This library is free software; you can redistribute it and/or
@@ -16,10 +17,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 #
-## Removes the ServerIdent information, and enforces TLS connection
+## Enforce TLS
+## See http://www.proftpd.org/docs/directives/linked/config_ref_TLSRequired.html
 #
 
-package Listener::ProFTP::Tuning;
+package Listener::ProFTPd::TLS;
 
 use strict;
 use warnings;
@@ -31,16 +33,7 @@ iMSCP::EventManager->getInstance()->register(
         my ($tplContent, $tplName) = @_;
 
         return 0 unless $tplName eq 'proftpd.conf';
-
-        # Disable the message displayed on connect
-        unless ($$tplContent =~ /^ServerIdent/m) {
-            $$tplContent =~ s/^(ServerType.*)/$1\nServerIdent                off/m;
-        } else {
-            $$tplContent =~ s/^ServerIdent.*/ServerIdent                off/m;
-        }
-
-        # Enforce TLS connection
-        $$tplContent =~ s/^(\s+TLSRequired.*)off$/$1on/m;
+        ${$tplContent} =~ s/(TLSRequired\s+)off/${1}on/im;
         0;
     }
 );
