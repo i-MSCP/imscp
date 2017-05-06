@@ -30,7 +30,6 @@ package Listener::Backup::Storage::Outsourcing;
 
 use strict;
 use warnings;
-use File::Basename;
 use iMSCP::EventManager;
 use iMSCP::Ext2Attributes qw/ setImmutable clearImmutable /;
 use iMSCP::Dir;
@@ -133,7 +132,7 @@ iMSCP::EventManager->getInstance( )->register(
             return 1;
         }
 
-        # Outsource default backup directory by mounting new backup directory on top of if
+        # Outsource default backup directory by mounting new backup directory on top of it
         my $rs ||= addMountEntry("$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'} $data->{'WEB_DIR'}/backups none bind" );
         $rs ||= mount(
             {
