@@ -24,6 +24,7 @@ FRONTEND
     Fixed: Non well formed numeric value encountered in utils_getPhpValueInBytes() function
 
 LISTENERS
+    Added: 10_backup_storage_outsourcing.pl: Allows storage of customers's backup directories elsewhere on the file system
     Added: 10_proftpd_auth_unix.pl listener file: Enable unix authentication
     Added: 10_proftpd_serverident.pl file: Set custom server identification message (replace 10_proftpd_tuning.pl)
     Added: 10_proftpd_tls.pl file: Enforce TLS (replace 10_proftpd_tuning.pl)

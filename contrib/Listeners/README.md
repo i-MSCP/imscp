@@ -27,6 +27,12 @@ Allows to redirect/proxy i-MSCP tools (pma,webmail...) in customers Apache2 vhos
 
 Allows to add Apache2 security headers - https://securityheaders.io
 
+## Backup listener files
+
+### 10_backup_storage_outsourcing.pl
+
+Allows storage of customers's backup directories elsewhere on the file system.
+
 ## Dovecot listener files
 
 ### 10_dovecot_compress.pl
