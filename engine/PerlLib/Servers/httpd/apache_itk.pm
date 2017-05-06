@@ -835,35 +835,6 @@ sub deleteHtaccess
     $rs;
 }
 
-=item addIps( \%data )
-
- Process addIps tasks
-
- Param hash \%data IPs data as provided by the Modules::Ips module
- Return int 0 on success, other on failure
-
-=cut
-
-sub addIps
-{
-    my ($self, $data) = @_;
-
-    my $file = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf" );
-    my $fileContent = $file->get( );
-    unless (defined $fileContent) {
-        error( sprintf( "Couldn't read %s file", $file->{'filename'} ) );
-        return 1;
-    }
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdAddIps', \$fileContent, $data );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdAddIps', \$fileContent, $data );
-    $rs ||= $file->set( $fileContent );
-    $rs ||= $file->save( );
-    $rs ||= $self->enableSites( '00_nameserver.conf' );
-    $self->{'restart'} = 1 unless $rs;
-    $rs;
-}
-
 =item buildConf( $cfgTpl, $filename [, \%data ] )
 
  Build the given configuration template
