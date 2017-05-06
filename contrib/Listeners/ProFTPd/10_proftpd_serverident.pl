@@ -33,7 +33,7 @@ use iMSCP::TemplateParser;
 #
 
 # Server identification message to display when a client connect
-my $SERVER_IDENT_MESSAGE = 'i-MSCP Bbox FTP server.';
+my $SERVER_IDENT_MESSAGE = 'i-MSCP FTP server.';
 
 #
 ## Please, don't edit anything below this line

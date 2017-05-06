@@ -200,9 +200,19 @@ Enforces TLS connection on Postfix submission.
 
 ## Proftpd listener files
 
-### 10_proftpd_tuning.pl
+### 10_proftpd_auth_unix.pl
 
-Removes the ServerIdent information, and enforces TLS connections for non-local networks.
+Enable unix authentication.
+
+### 10_proftpd_serverident.pl
+
+Set custom server identification message.
+
+Listener file compatible with i-MSCP >= 1.4.4
+
+### 10_proftpd_tls.pl
+
+Enforce TLS.
 
 ## Roundcube Webmail listener files
 
