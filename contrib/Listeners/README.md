@@ -31,7 +31,7 @@ Allows to add Apache2 security headers - https://securityheaders.io
 
 ### 10_backup_storage_outsourcing.pl
 
-Allows storage of customers's backup directories elsewhere on the file system.
+Allows storage of customer backup directories elsewhere on the file system.
 
 ## Dovecot listener files
 

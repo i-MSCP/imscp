@@ -17,15 +17,22 @@
 
 package Listener::Backup::Storage::Outsourcing;
 
-# Stores customers's backup directories elsewhere on local file system
+# Stores customer backup directories elsewhere on local file system
 # /!\ This listener file is still in experimental state /!\
+#
+# Howto setup and activate
+# 1. Upload that listener file into the /etc/imscp/listeners.d directory
+# 2. Edit the /etc/imscp/listeners.d/10_backup_storage_outsourcing.pl file
+#    and set the $STORAGE_ROOT_PATH variable below according your needs
+# 3. Trigger an i-MSCP reconfiguration:
+#       perl /var/www/imscp/engine/setup/imscp-reconfigure -danv
+
 
 use strict;
 use warnings;
 use File::Basename;
 use iMSCP::EventManager;
 use iMSCP::Ext2Attributes qw/ setImmutable clearImmutable /;
-use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::Mount qw/ addMountEntry removeMountEntry isMountpoint mount umount /;
 
@@ -33,15 +40,15 @@ use iMSCP::Mount qw/ addMountEntry removeMountEntry isMountpoint mount umount /;
 ## Configuration parameters
 #
 
-# Storage root path for outsourced customers's backup directories
-# For instance /srv/imscp/backups means that customers's
-# backup directories will be stored into /srv/imscp/backups:
+# Storage root path for outsourced customer backup directories
+# For instance /srv/imscp/backups means that customer backup
+# directories will be stored into /srv/imscp/backups:
 # - /srv/imscp/backups/<customer1>
 # - /srv/imscp/backups/<customer2>
 # - ...
 #
-# Warning: Be sure to have enough space on the specified location.
-my $STORAGE_ROOT_PATH = "/srv/imscp/backups";
+# Warning: Be sure to have enough space in the specified location.
+my $STORAGE_ROOT_PATH = '/srv/imscp/backups';
 
 #
 ## Please, don't edit anything below this line
@@ -53,7 +60,7 @@ iMSCP::EventManager->getInstance( )->register(
         local $@;
         eval {
             # Make sure that the root path for outsourced backup directories
-            # exists and is set with expected ownership and permissions
+            # exists and that it is set with expected ownership and permissions
             iMSCP::Dir->new( dirname => $STORAGE_ROOT_PATH )->make(
                 {
                     user  => $main::imscpConfig{'ROOT_USER'},
@@ -74,7 +81,8 @@ iMSCP::EventManager->getInstance( )->register(
         return 0 unless $data->{'DOMAIN_TYPE'} eq 'dmn'
             && -d "$data->{'WEB_DIR'}/backups";
 
-        # When file get copied by i-MSCP server package, we must first umount the outsourced backup directory
+        # When files are being copied by i-MSCP httpd server, we must first
+        # umount the outsourced backup directory
         umount( "$data->{'WEB_DIR'}/backups" );
     }
 );
@@ -88,7 +96,7 @@ iMSCP::EventManager->getInstance( )->register(
 
         local $@;
         eval {
-            # Create new customer's backup directory elsewhere on the file system
+            # Create new customer backup directory elsewhere on the file system
             iMSCP::Dir->new( dirname => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" )->make(
                 {
                     user  => $data->{'USER'},
@@ -97,7 +105,8 @@ iMSCP::EventManager->getInstance( )->register(
                 }
             );
 
-            # If needed, moves data from existents backup directory into the new backup directory
+            # If needed, moves data from existents backup directory into the
+            # new backup directory
             my $backupDirHandle = iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/backups" );
             unless ($backupDirHandle->isEmpty( )) {
                 $backupDirHandle->rcopy(
@@ -119,14 +128,13 @@ iMSCP::EventManager->getInstance( )->register(
                 );
                 setImmutable( $data->{'WEB_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
             }
-            undef $backupDirHandle;
         };
         if ($@) {
             return 1;
         }
 
-        # Outsource default backup direcetory by mounting new backup directory on top
-        my $rs ||= addMountEntry( "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'} $data->{'WEB_DIR'}/backups none bind" );
+        # Outsource default backup directory by mounting new backup directory on top of if
+        my $rs ||= addMountEntry("$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'} $data->{'WEB_DIR'}/backups none bind" );
         $rs ||= mount(
             {
                 fs_spec    => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}",
