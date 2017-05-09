@@ -1703,10 +1703,10 @@ sub _addFiles
         return $rs if $rs;
     }
 
-    # Fix permissions
+    # Set ownership and permissions
 
-    # Fix user/group and mode for root Web folder
-    # root Web folder vuxxx:vuxxx 0750 (no recursive)
+    # Set ownership and permissions for Web folder root
+    # Web folder root vuxxx:vuxxx 0750 (no recursive)
     $rs = setRights(
         $data->{'WEB_DIR'},
         {
@@ -1717,10 +1717,10 @@ sub _addFiles
     );
     return $rs if $rs;
 
-    # Get list of directories/files (firt depth only)
+    # Get list of files inside Web folder root
     my @files = iMSCP::Dir->new( dirname => $skelDir )->getAll( );
 
-    # Fix user/group for first Web folder depth, e.g:
+    # Set ownership for first Web folder depth, e.g:
     # 00_private           vuxxx:vuxxx (recursive with --fix-permissions)
     # backups              vuxxx:vuxxx (recursive with --fix-permissions)
     # cgi-bin              vuxxx:vuxxx (recursive with --fix-permissions)
@@ -1730,8 +1730,9 @@ sub _addFiles
     # .htpasswd            skipped
     # logs                 skipped
     # phptmp               vuxxx:vuxxx (recursive with --fix-permissions)
-    for my $file(@files) {
-        next if $file =~ /^(?:\.htgroup|\.htpasswd|logs)$/ || !-e "$data->{'WEB_DIR'}/$file";
+    for my $file(grep( !/^(?:\.(?:htgroup|htpasswd)|logs)$/, @files )) {
+        next unless -e "$data->{'WEB_DIR'}/$file";
+
         $rs = setRights(
             "$data->{'WEB_DIR'}/$file",
             {
@@ -1743,33 +1744,10 @@ sub _addFiles
         return $rs if $rs;
     }
 
-    # Fix dirmode/filemode for first Web folder depth, e.g:
-    # 00_private           0750 (no recursive)
-    # backups              0750 (recursive with --fix-permissions)
-    # cgi-bin              0750 (no recursive)
-    # error                0750 (recursive with --fix-permissions)
-    # htdocs               0750 (no recursive)
-    # .htgroup             0640
-    # .htpasswd            0640
-    # logs                 skipped
-    # phptmp               0750 (recursive with --fix-permissions)
-    for my $file (@files) {
-        next if $file eq 'logs' || !-e "$data->{'WEB_DIR'}/$file";
-        $rs = setRights(
-            "$data->{'WEB_DIR'}/$file",
-            {
-                dirmode   => '0750',
-                filemode  => '0640',
-                recursive => $file =~ /^(?:00_private|cgi-bin|htdocs)$/ ? 0 : $fixPermissions
-            }
-        );
-        return $rs if $rs;
-    }
-
-    # Fix user/group for .htgroup and .htpasswd files
+    # Set ownership for .htgroup and .htpasswd files
     # .htgroup             root:www-data
     # .htpasswd            root:www-data
-    for my $file('.htgroup', '.htpasswd') {
+    for my $file(qw/ .htgroup .htpasswd /) {
         next unless -e "$data->{'WEB_DIR'}/$file";
         $rs = setRights(
             "$data->{'WEB_DIR'}/$file",
@@ -1782,15 +1760,43 @@ sub _addFiles
         return $rs if $rs;
     }
 
-    if ($data->{'DOMAIN_TYPE'} eq 'dmn' && -d "$data->{'WEB_DIR'}/logs") {
-        # Fix user/group and mode for logs directory
+    if ($data->{'DOMAIN_TYPE'} eq 'dmn') {
+        # Set ownership and permissions for backups and logs directories
+        # backups root:vuxxx 0750 (recursive with --fix-permissions)
         # logs root:vuxxx 0750 (no recursive)
+        for my $dir(qw/ backups logs /) {
+            next unless -d "$data->{'WEB_DIR'}/$dir";
+
+            $rs = setRights(
+                "$data->{'WEB_DIR'}/$dir",
+                {
+                    user  => $main::imscpConfig{'ROOT_USER'},
+                    group => $data->{'GROUP'},
+                }
+            );
+            return $rs if $rs;
+        }
+    }
+
+    # Set permissions for first Web folder depth, e.g:
+    # 00_private           0750 (no recursive)
+    # backups              0750 (recursive with --fix-permissions)
+    # cgi-bin              0750 (no recursive)
+    # error                0750 (recursive with --fix-permissions)
+    # htdocs               0750 (no recursive)
+    # .htgroup             0640
+    # .htpasswd            0640
+    # logs                 0750 (no recursive)
+    # phptmp               0750 (recursive with --fix-permissions)
+    for my $file (@files) {
+        next unless -e "$data->{'WEB_DIR'}/$file";
+
         $rs = setRights(
-            "$data->{'WEB_DIR'}/logs",
+            "$data->{'WEB_DIR'}/$file",
             {
-                user  => $main::imscpConfig{'ROOT_USER'},
-                group => $data->{'GROUP'},
-                mode  => '0750'
+                dirmode   => '0750',
+                filemode  => '0640',
+                recursive => $file =~ /^(?:00_private|cgi-bin|logs|htdocs)$/ ? 0 : $fixPermissions
             }
         );
         return $rs if $rs;
@@ -1799,7 +1805,9 @@ sub _addFiles
     if ($data->{'WEB_FOLDER_PROTECTION'} eq 'yes') {
         my $dir = $data->{'WEB_DIR'};
         my $userWebDir = File::Spec->canonpath( $main::imscpConfig{'USER_WEB_DIR'} );
-        do { setImmutable( $dir ); } while ($dir = dirname( $dir )) ne $userWebDir;
+        do {
+            setImmutable( $dir );
+        } while ($dir = dirname( $dir )) ne $userWebDir;
     }
 
     $rs = $self->mountLogsFolder( $data ) if $self->{'config'}->{'MOUNT_CUSTOMER_LOGS'} eq 'yes';
