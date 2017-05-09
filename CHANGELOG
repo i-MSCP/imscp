@@ -5,6 +5,7 @@ Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
+    Added: Event listener priority queue; Allow to set priority for event listeners
     Fixed: Can't use an undefined value as a HASH reference; DBI::selectrow_hashref() return undef on empty results
     Removed: Modules::Ips module
     Removed: Support for systemd older than 204-3 (iMSCP::Provider::Service::Debian::Systemd)
@@ -37,6 +38,7 @@ INSTALLER
     Added: Routine to setup kernel
     Fixed: Don't check for source archive when binary archive has not been found for a specific section (APT repositories)
     Fixed: Usage of ZG-POLICY-RC.D(8) to provide local policy-rc.d and avoid violation of Debian policy (Debian/Ubuntu)
+    Removed: beforeInstallPreRequiredPackages event (Event cannot be triggered before installation of pre-required packages)
 
 PACKAGES
     Fixed: RainLoop entries are not removed from database when a mail account is deleted (RainLoop)

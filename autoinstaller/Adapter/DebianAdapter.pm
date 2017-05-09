@@ -63,9 +63,6 @@ sub installPreRequiredPackages
     my $rs = $self->_updateAptSourceList( );
     $rs ||= $self->_updatePackagesIndex( );
 
-    $rs ||= $self->{'eventManager'}->trigger( 'beforeInstallPreRequiredPackages', $self->{'preRequiredPackages'} );
-    return $rs if $rs;
-
     my $cmd = 'apt-get';
     die( 'apt-get command not found' ) unless iMSCP::ProgramFinder::find( $cmd );
 
@@ -342,7 +339,7 @@ sub _init
     $self->{'preRequiredPackages'} = [
         'binutils', 'debconf-utils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl', 'lsb-release',
         'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'wget',
-        'liblchown-perl', 'apt-transport-https', 'policyrcd-script-zg2'
+        'liblchown-perl', 'apt-transport-https', 'policyrcd-script-zg2', 'libclone-perl'
     ];
     $self->{'aptRepositoriesToRemove'} = [ ];
     $self->{'aptRepositoriesToAdd'} = [ ];

@@ -25,8 +25,10 @@ package iMSCP::EventManager;
 
 use strict;
 use warnings;
+use Class::Autouse qw/ :nostat Clone /;
 use Hash::Util::FieldHash 'fieldhash';
 use iMSCP::Debug;
+use iMSCP::EventManager::ListenerPriorityQueue;
 use parent 'Common::SingletonClass';
 
 fieldhash my %EVENTS;
@@ -36,76 +38,11 @@ fieldhash my %EVENTS;
  The i-MSCP event manager is the central point of the event system.
 
  Event listeners are registered on the event manager and events are triggered through the event manager. Event
- listeners are references to subroutines that listen to particular event.
+ listeners are references to subroutines that listen to particular event(s).
 
 =head1 PUBLIC METHODS
 
 =over 4
-
-=item register( $events, $callable )
-
- Register the given listener for the given event(s)
-
- TODO: Implement listener priority using a priority queue.
- See (http://search.cpan.org/~penma/Hash-PriorityQueue-0.01/lib/Hash/PriorityQueue.pm)
-
- Param string $events Event(s) that the listener listen to
- Param list $callable Event listener
- Return int 0 on success, 1 on failure
-
-=cut
-
-sub register
-{
-    my ($self, $events, $callable) = @_;
-
-    unless (defined $events) {
-        error( '$event parameter is not defined' );
-        return 1;
-    }
-    unless ($callable) {
-        error( '$callable parameter is not defined' );
-        return 1;
-    }
-
-    if (ref $events eq 'ARRAY') {
-        for(@{$events}) {
-            my $ret = $self->register( $_, $callable );
-            return $ret if $ret;
-        }
-    } else {
-        unless (ref $callable eq 'CODE') {
-            error( sprintf( 'Invalid listener provided for the %s event', $events ) );
-            return 1;
-        }
-
-        push @{ $EVENTS{$self}->{$events} }, $callable;
-    }
-
-    0;
-}
-
-=item unregister( $event )
-
- Unregister all listeners for the given event
-
- Param string $event Event name
- Return int 0 on success, 1 on failure
-
-=cut
-
-sub unregister
-{
-    my ($self, $event) = @_;
-
-    unless (defined $event) {
-        error( '$event parameter is not defined' );
-        return 1;
-    }
-
-    delete $EVENTS{$self}->{$event};
-    0;
-}
 
 =item trigger( $event [, @params ] )
 
@@ -126,17 +63,110 @@ sub trigger
         return 1;
     }
 
-    return 0 unless exists $EVENTS{$self}->{$event};
-
+    return 0 unless $EVENTS{$self}->{$event};
     debug( sprintf( 'Triggering %s event', $event ) );
 
-    my $rs = 0;
-    for my $listener(@{$EVENTS{$self}->{$event}}) {
-        $rs = $listener->( @params );
+    # The priority queue acts as a heap, which implies that as items are popped
+    # they are also removed. Thus we clone it for purposes of iteration.
+    my $listenerPriorityQueue = Clone::clone( $EVENTS{$self}->{$event} );
+    while(my $listener = $listenerPriorityQueue->pop( )) {
+        my $rs = $listener->( @params );
         return $rs if $rs;
     }
 
-    $rs;
+    0;
+}
+
+=item register( $events, $listener, priority )
+
+ Register the given listener for the given event(s)
+
+ Param string|arrayref $events Event(s) that the listener listen to
+ Param subref listener Listener
+ Param int $priority Listener priority (Highest values have highest priority)
+ Return int 0 on success, 1 on failure
+
+=cut
+
+sub register
+{
+    my ($self, $events, $listener, $priority) = @_;
+
+    local $@;
+    eval {
+        defined $events or die '$event parameter is not defined';
+
+        if (ref $events eq 'ARRAY') {
+            $self->register( $_, $listener, $priority ) for @{$events};
+            return 0;
+        }
+
+        unless ($EVENTS{$self}->{$events}) {
+            $EVENTS{$self}->{$events} = iMSCP::EventManager::ListenerPriorityQueue->new( );
+        }
+
+        $EVENTS{$self}->{$events}->addListener( $listener, $priority );
+    };
+    if ($@) {
+        error($@);
+        return 1;
+    }
+
+    0;
+}
+
+=item unregister( $listener [, $eventName = undef ] )
+
+ Unregister the given listener from all or the given event
+
+ Param subref $listener Listener
+ Param string $eventName Event name
+ Return int 0 on success, 1 on failure
+
+=cut
+
+sub unregister
+{
+    my ($self, $listener, $eventName) = @_;
+
+    local $@;
+    eval {
+        defined $listener or die '$listener parameter is not defined';
+
+        if (defined $eventName) {
+            $EVENTS{$self}->{$eventName}->removeListener( $listener ) if $EVENTS{$self}->{$eventName};
+        } else {
+            $_->removeListener( $listener ) for values %{$EVENTS{$self}};
+        }
+    };
+    if ($@) {
+        error($@);
+        return 1;
+    }
+
+    0;
+}
+
+=item clearListeners( $eventName )
+
+ Clear all listeners for the given event
+
+ Param string $event Event name
+ Return int 0 on success, 1 on failure
+
+=cut
+
+sub clearListeners
+{
+    my ($self, $eventName) = @_;
+
+    unless (defined $eventName) {
+        error( '$eventName parameter is not defined' );
+        return 1;
+    }
+
+    delete $EVENTS{$self}->{$eventName};
+    0;
 }
 
 =back
