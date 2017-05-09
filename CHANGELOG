@@ -5,7 +5,7 @@ Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-    Added: Event listener priority queue; Allow to set priority for event listeners
+    Added: Event listener priority queue; Allows to set priority for event listeners
     Fixed: Can't use an undefined value as a HASH reference; DBI::selectrow_hashref() return undef on empty results
     Removed: Modules::Ips module
     Removed: Support for systemd older than 204-3 (iMSCP::Provider::Service::Debian::Systemd)
@@ -21,7 +21,7 @@ DISTRIBUTION
     Added: Support for Devuan jessie 1.0 RC - See https://devuan.org/
 
 FRONTEND
-    Fixed: Allow auto-completion for login form (regression fix)
+    Fixed: Allows auto-completion for login form (regression fix)
     Fixed: Integrity constraint violation: 1052 Column 'fname' in where clause is ambiguous when searching user by name
     Fixed: Non well formed numeric value encountered in utils_getPhpValueInBytes() function
 
@@ -31,12 +31,12 @@ LISTENERS
     Added: 10_proftpd_serverident.pl file: Set custom server identification message (replace 10_proftpd_tuning.pl)
     Added: 10_proftpd_tls.pl file: Enforce TLS (replace 10_proftpd_tuning.pl)
     Fixed: 20_named_dualstack.pl listener file: Missing DNS records for subdomains
-    Fixed: Listeners that listen on the `afterMtaBuildConf' must be registered with low priority
+    Fixed: Listeners that listen on the `afterMtaBuildConf' event must be registered with low priority
     Updated: 70_postfix_submission_tls.pl file: Fully redefines submission service and disable SSLv3
 
 INSTALLER
-    Added: 0.0.0.0 IP address as possible choice for primary IP addresse. Fixes networking issues on Scaleway servers.
-    Added: Routine to setup kernel
+    Added: `0.0.0.0' IP address as possible choice for primary IP address. Fixes networking issues on Scaleway servers
+    Added: Routine to setup kernel (loading of kernel parameters from imscp.conf sysctl configuration file)
     Fixed: Don't check for source archive when binary archive has not been found for a specific section (APT repositories)
     Fixed: Usage of ZG-POLICY-RC.D(8) to provide local policy-rc.d and avoid violation of Debian policy (Debian/Ubuntu)
     Removed: `beforeInstallPreRequiredPackages' event (Event cannot be triggered before installation of pre-required packages)
@@ -44,7 +44,7 @@ INSTALLER
 PACKAGES
     Fixed: RainLoop entries are not removed from database when a mail account is deleted (RainLoop)
     Updated: PhpMyAdmin package installer for use of PhpMyAdmin 4.7.0
-    Updated: RainLoop package installer for us of RainLoop 1.11.0.203
+    Updated: RainLoop package installer for use of RainLoop 1.11.0.203
 
 PLUGINS
     Added: iMSCP::Plugins::getClass() method for easy plugin loading and class retrieval (backend)
