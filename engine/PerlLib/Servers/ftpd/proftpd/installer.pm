@@ -464,7 +464,10 @@ EOF
     my $baseServerPublicIp = main::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
 
     if ($baseServerIp ne $baseServerPublicIp) {
-        my @virtualHostIps = ( '127.0.0.1', (main::setupGetQuestion( 'IPV6_SUPPORT' ) ? '::1' : ()), $baseServerIp );
+        my @virtualHostIps = grep(
+            $_ ne '0.0.0.0',
+            ( '127.0.0.1', (main::setupGetQuestion( 'IPV6_SUPPORT' ) ? '::1' : ()), $baseServerIp)
+        );
         $cfgTpl .= <<"EOF";
 
 # Server behind NAT - Advertise public IP address
