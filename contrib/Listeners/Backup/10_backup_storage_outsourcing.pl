@@ -18,22 +18,19 @@
 package Listener::Backup::Storage::Outsourcing;
 
 # Stores customer backup directories elsewhere on local file system
-# /!\ This listener file is still in experimental state /!\
 #
 # Howto setup and activate
 # 1. Upload that listener file into the /etc/imscp/listeners.d directory
 # 2. Edit the /etc/imscp/listeners.d/10_backup_storage_outsourcing.pl file
 #    and set the $STORAGE_ROOT_PATH variable below according your needs
-# 3. Trigger an i-MSCP reconfiguration:
-#       perl /var/www/imscp/engine/setup/imscp-reconfigure -danv
-
+# 3. Trigger an i-MSCP reconfiguration: perl /var/www/imscp/engine/setup/imscp-reconfigure -danv
 
 use strict;
 use warnings;
 use iMSCP::EventManager;
 use iMSCP::Ext2Attributes qw/ setImmutable clearImmutable /;
 use iMSCP::Dir;
-use iMSCP::Mount qw/ addMountEntry removeMountEntry isMountpoint mount umount /;
+use iMSCP::Mount qw/ addMountEntry removeMountEntry mount umount /;
 
 #
 ## Configuration parameters
@@ -95,10 +92,11 @@ iMSCP::EventManager->getInstance( )->register(
 
         local $@;
         eval {
-            # Create new customer backup directory elsewhere on the file system
+            # Creates new customer backup directory elsewhere on the file system
+            # Sets directory ownership and permissions if it already exists
             iMSCP::Dir->new( dirname => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" )->make(
                 {
-                    user  => $data->{'USER'},
+                    user  => $main::imscpConfig{'ROOT_GROUP'},
                     group => $data->{'GROUP'},
                     mode  => 0750
                 }
@@ -116,11 +114,11 @@ iMSCP::EventManager->getInstance( )->register(
                 );
 
                 # Empty default backup directory by re-creating it from scratch
-                clearImmutable(  $data->{'WEB_DIR'} );
+                clearImmutable( $data->{'WEB_DIR'} );
                 $backupDirHandle->remove( );
                 $backupDirHandle->make(
                     {
-                        user  => $data->{'USER'},
+                        user  => $main::imscpConfig{'ROOT_GROUP'},
                         group => $data->{'GROUP'},
                         mode  => 0750
                     }
@@ -133,7 +131,9 @@ iMSCP::EventManager->getInstance( )->register(
         }
 
         # Outsource default backup directory by mounting new backup directory on top of it
-        my $rs ||= addMountEntry("$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'} $data->{'WEB_DIR'}/backups none bind" );
+        my $rs ||= addMountEntry(
+            "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'} $data->{'WEB_DIR'}/backups none bind,slave"
+        );
         $rs ||= mount(
             {
                 fs_spec    => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}",

@@ -196,18 +196,18 @@ sub _buildConfig
 {
     my $self = shift;
 
-    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-    my $cfgTpl;
+    my $panelUName = my $panelGName =
+        $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
     # config.php file
 
     my $conffile = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/settings/config.php";
     my $data = {
-        TIMEZONE => main::setupGetQuestion('TIMEZONE', 'UTC'),
+        TIMEZONE => main::setupGetQuestion( 'TIMEZONE', 'UTC' ),
         TMP_PATH => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp"
     };
 
-    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'monstaftp', 'config.php', \ $cfgTpl, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'monstaftp', 'config.php', \ my $cfgTpl, $data );
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
@@ -252,7 +252,7 @@ sub _buildConfig
         }
     };
 
-    $cfgTpl = undef;
+    undef $cfgTpl;
     $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'monstaftp', 'settings.json', \ $cfgTpl, $data );
     return $rs if $rs;
 
