@@ -6,7 +6,6 @@ POSTFIX_CONF_FILE = /etc/postfix/main.cf
 POSTFIX_MASTER_CONF_FILE = /etc/postfix/master.cf
 POSTFIX_SENDMAIL_PATH = /usr/sbin/sendmail
 POSTFIX_QUEUE_DIR = /var/spool/postfix
-
 MTA_VIRTUAL_CONF_DIR = /etc/postfix/imscp
 MTA_SNAME = postfix
 MTA_LOCAL_MAIL_DIR = /var/mail
@@ -19,17 +18,4 @@ MTA_TRANSPORT_HASH = /etc/postfix/imscp/transport
 MTA_RELAY_HASH = /etc/postfix/imscp/relay_domains
 MTA_MAILBOX_UID_NAME = vmail
 MTA_MAILBOX_GID_NAME = mail
-
-# This is the IPv4 addresses used as IP source for outbound mails
-# It is important that a reverse DNS lookup result matches with
-# the server hostname
-# (Not implemented yet)
-#SMTP_BIND_ADDRESS =
-
-# This is the IPv6 addresses used as IP source for outbound mail.
-# It is important that a reverse DNS lookup result matches with
-# the server hostname
-# (Not implemented yet)
-#SMTP_BIND_ADDRESS6 =
-
 MAIL_LOG_CONVERT_PATH = /usr/local/sbin/maillogconvert.pl

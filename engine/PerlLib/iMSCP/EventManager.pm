@@ -44,11 +44,11 @@ fieldhash my %EVENTS;
 
 =over 4
 
-=item trigger( $event [, @params ] )
+=item trigger( $eventName [, @params ] )
 
  Trigger the given event
 
- Param string $event Event name
+ Param string $eventName Event name
  Param mixed @params OPTIONAL parameters passed-in to the listeners
  Return int 0 on success, other on failure
 
@@ -56,19 +56,19 @@ fieldhash my %EVENTS;
 
 sub trigger
 {
-    my ($self, $event, @params) = @_;
+    my ($self, $eventName, @params) = @_;
 
-    unless (defined $event) {
-        error( '$event parameter is not defined' );
+    unless (defined $eventName) {
+        error( '$eventName parameter is not defined' );
         return 1;
     }
 
-    return 0 unless $EVENTS{$self}->{$event};
-    debug( sprintf( 'Triggering %s event', $event ) );
+    return 0 unless $EVENTS{$self}->{$eventName};
+    debug( sprintf( 'Triggering %s event', $eventName ) );
 
     # The priority queue acts as a heap, which implies that as items are popped
     # they are also removed. Thus we clone it for purposes of iteration.
-    my $listenerPriorityQueue = Clone::clone( $EVENTS{$self}->{$event} );
+    my $listenerPriorityQueue = Clone::clone( $EVENTS{$self}->{$eventName} );
     while(my $listener = $listenerPriorityQueue->pop( )) {
         my $rs = $listener->( @params );
         return $rs if $rs;
@@ -77,35 +77,35 @@ sub trigger
     0;
 }
 
-=item register( $events, $listener, priority )
+=item register( $eventNames, $listener, priority )
 
  Register the given listener for the given event(s)
 
- Param string|arrayref $events Event(s) that the listener listen to
+ Param string|arrayref $eventNames Event(s) that the listener listen to
  Param subref listener Listener
- Param int $priority Listener priority (Highest values have highest priority)
+ Param int $priority OPTIONAL Listener priority (Highest values have highest priority)
  Return int 0 on success, 1 on failure
 
 =cut
 
 sub register
 {
-    my ($self, $events, $listener, $priority) = @_;
+    my ($self, $eventNames, $listener, $priority) = @_;
 
     local $@;
     eval {
-        defined $events or die '$event parameter is not defined';
+        defined $eventNames or die '$eventNames parameter is not defined';
 
-        if (ref $events eq 'ARRAY') {
-            $self->register( $_, $listener, $priority ) for @{$events};
+        if (ref $eventNames eq 'ARRAY') {
+            $self->register( $_, $listener, $priority ) for @{$eventNames};
             return 0;
         }
 
-        unless ($EVENTS{$self}->{$events}) {
-            $EVENTS{$self}->{$events} = iMSCP::EventManager::ListenerPriorityQueue->new( );
+        unless ($EVENTS{$self}->{$eventNames}) {
+            $EVENTS{$self}->{$eventNames} = iMSCP::EventManager::ListenerPriorityQueue->new( );
         }
 
-        $EVENTS{$self}->{$events}->addListener( $listener, $priority );
+        $EVENTS{$self}->{$eventNames}->addListener( $listener, $priority );
     };
     if ($@) {
         error($@);
