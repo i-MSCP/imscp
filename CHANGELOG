@@ -39,6 +39,7 @@ INSTALLER
     Added: Routine to setup kernel (loading of kernel parameters from imscp.conf sysctl configuration file)
     Fixed: Don't check for source archive when binary archive has not been found for a specific section (APT repositories)
     Fixed: Usage of ZG-POLICY-RC.D(8) to provide local policy-rc.d and avoid violation of Debian policy (Debian/Ubuntu)
+    Fixed: SQL server must be restarted prior cron, ftp, http, mail and panel services
     Removed: `beforeInstallPreRequiredPackages' event (Event cannot be triggered before installation of pre-required packages)
 
 PACKAGES

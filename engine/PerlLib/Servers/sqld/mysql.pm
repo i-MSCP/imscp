@@ -84,10 +84,12 @@ sub postinstall
     }
 
     $rs = $self->{'eventManager'}->register(
-        'beforeSetupRestartServices', sub {
+        'beforeSetupRestartServices',
+        sub {
             push @{$_[0]}, [ sub { $self->restart( ); }, 'MySQL' ];
             0;
-        }
+        },
+        99
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'mysql' );
 }
