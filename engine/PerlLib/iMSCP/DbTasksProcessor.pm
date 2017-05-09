@@ -75,7 +75,7 @@ sub process
         "
             SELECT 'any' AS id, 'network interfaces' AS name
             FROM server_ips
-            WHERE ip_status <> 'ok'
+            WHERE ip_status IN( 'toadd', 'tochange', 'todelete' )
             LIMIT 1
         "
     );
@@ -104,7 +104,7 @@ sub process
 
     # Process toadd|tochange|torestore|toenable|todisable domain tasks
     # For each entitty, process only if the parent entity is in a consistent state
-    my $ipsModule = $self->_process(
+    $self->_process(
         'Modules::Domain',
         "
             SELECT domain_id AS id, domain_name AS name
@@ -118,7 +118,7 @@ sub process
 
     # Process toadd|tochange|torestore|toenable|todisable subdomains tasks
     # For each entitty, process only if the parent entity is in a consistent state
-    $ipsModule += $self->_process(
+    $self->_process(
         'Modules::Subdomain',
         "
             SELECT subdomain_id AS id, CONCAT(subdomain_name, '.', domain_name) AS name
@@ -131,7 +131,7 @@ sub process
 
     # Process toadd|tochange|torestore|toenable|todisable domain aliases tasks
     # (for each entitty, process only if the parent entity is in a consistent state)
-    $ipsModule += $self->_process(
+    $self->_process(
         'Modules::Alias',
         "
            SELECT alias_id AS id, alias_name AS name
@@ -145,7 +145,7 @@ sub process
 
     # Process toadd|tochange|torestore|toenable|todisable subdomains of domain aliases tasks
     # For each entitty, process only if the parent entity is in a consistent state
-    $ipsModule += $self->_process(
+    $self->_process(
         'Modules::SubAlias',
         "
             SELECT subdomain_alias_id AS id, CONCAT(subdomain_alias_name, '.', alias_name) AS name
@@ -253,7 +253,7 @@ sub process
     );
 
     # Process todelete subdomain aliases tasks
-    $ipsModule += $self->_process(
+    $self->_process(
         'Modules::SubAlias',
         "
             SELECT subdomain_alias_id AS id, concat(subdomain_alias_name, '.', alias_name) AS name
@@ -265,7 +265,7 @@ sub process
 
     # Process todelete domain aliases tasks
     # For each entity, process only if the entity do not have any direct children
-    $ipsModule += $self->_process(
+    $self->_process(
         'Modules::Alias',
         "
             SELECT alias_id AS id, alias_name AS name
@@ -278,7 +278,7 @@ sub process
     );
 
     # Process todelete subdomains tasks
-    $ipsModule += $self->_process(
+    $self->_process(
         'Modules::Subdomain',
         "
             SELECT subdomain_id AS id, CONCAT(subdomain_name, '.', domain_name) AS name
@@ -290,7 +290,7 @@ sub process
 
     # Process todelete domains tasks
     # For each entity, process only if the entity do not have any direct children
-    $ipsModule += $self->_process(
+    $self->_process(
         'Modules::Domain',
         "
             SELECT domain_id AS id, domain_name AS name
@@ -316,19 +316,6 @@ sub process
             ORDER BY admin_id ASC
         "
     );
-
-    # Process IP addresses tasks
-    if ($ipsModule) {
-        newDebug( 'Ips_module.log' );
-        eval { require Modules::Ips } or die( sprintf( "Couldn't load Module::Ips module: %s", $@ ) );
-        Modules::Ips->new()->process() == 0 or die(
-            sprintf(
-                "Couldn't process IP addresses",
-                getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-            )
-        );
-        endDebug();
-    }
 
     # Process software package tasks
     my $rdata = iMSCP::Database->factory()->doQuery(

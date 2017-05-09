@@ -439,8 +439,8 @@ sub _buildMainCfFile
     my $hostname = main::setupGetQuestion( 'SERVER_HOSTNAME' );
     my $data = {
         MTA_INET_PROTOCOLS       => $baseServerIpType,
-        MTA_SMTP_BIND_ADDRESS    => $baseServerIpType eq 'ipv4' ? $baseServerIp : '',
-        MTA_SMTP_BIND_ADDRESS6   => $baseServerIpType eq 'ipv6' ? $baseServerIp : '',
+        MTA_SMTP_BIND_ADDRESS    => ($baseServerIpType eq 'ipv4' && $baseServerIp ne '0.0.0.0') ? $baseServerIp : '',
+        MTA_SMTP_BIND_ADDRESS6   => ($baseServerIpType eq 'ipv6') ? $baseServerIp : '',
         MTA_HOSTNAME             => $hostname,
         MTA_LOCAL_DOMAIN         => "$hostname.local",
         MTA_VERSION              => $main::imscpConfig{'Version'},

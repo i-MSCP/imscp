@@ -145,10 +145,11 @@ function generateIpsList($tpl)
                 && $baseServerIp != $ipAddr
                 && $row['ip_config_mode'] != 'manual'
             ) ? true : false,
-            'NETWORK_CARD' => $row['ip_card'] === NULL ? '' : tohtml($row['ip_card']),
+            'NETWORK_CARD' => ($row['ip_card'] === NULL)
+                ? '' : (($row['ip_card'] !== 'any') ? tohtml($row['ip_card']) : tohtml(tr('Any')))
         ));
 
-        if ($row['ip_status'] === 'ok') {
+        if ($row['ip_status'] === 'ok' && $row['ip_card'] !== 'any') {
             $tpl->assign(array(
                 'IP_ID'            => $row['ip_id'],
                 'IP_CONFIG_AUTO'   => $row['ip_config_mode'] != 'manual' ? ' checked' : '',

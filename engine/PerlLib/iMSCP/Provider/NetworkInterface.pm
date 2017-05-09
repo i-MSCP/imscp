@@ -52,7 +52,7 @@ sub addIpAddr
 {
     my ($self, $data) = @_;
     $self->{'eventManager'}->trigger( 'beforeAddIpAddr', $data );
-    $self->getProvider( )->addIpAddr( $data );
+    $self->getProvider( )->addIpAddr( $data ) unless $data->{'ip_card'} eq 'any' || $data->{'ip_address'} eq '0.0.0.0';
     $self->{'eventManager'}->trigger( 'afterAddIpAddr', $data );
     $self;
 }
@@ -67,7 +67,7 @@ sub removeIpAddr
 {
     my ($self, $data) = @_;
     $self->{'eventManager'}->trigger( 'beforeRemoveIpAddr', $data );
-    $self->getProvider( )->removeIpAddr( $data );
+    $self->getProvider( )->removeIpAddr( $data ) unless $data->{'ip_card'} eq 'any' || $data->{'ip_address'} eq '0.0.0.0';
     $self->{'eventManager'}->trigger( 'afterRemoveIpAddr', $data );
     $self;
 }

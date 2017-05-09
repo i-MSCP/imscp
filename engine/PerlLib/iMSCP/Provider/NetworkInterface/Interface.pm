@@ -35,7 +35,7 @@ use Carp;
 
 =over 4
 
-=item addNetworkCard(\%data)
+=item addNetworkCard( \%data )
 
  Add a network card
 
@@ -72,7 +72,6 @@ sub removeNetworkCard
    ip_card        : Network card to which the IP address must be added
    ip_address     : Either an IPv4 or IPv6 address
    ip_netmask     : OPTIONAL Netmask (default: 32 for IPv4, 128 for IPv6)
-   ip_broadcast   : OPTIONAL Broadcast (default: auto)
    ip_config_mode : IP configuration mode (auto|manual)
  Return iMSCP::Provider::NetworkInterface::Interface, croak or die on failure
 

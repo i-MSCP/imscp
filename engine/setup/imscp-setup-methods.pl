@@ -255,9 +255,10 @@ EOF
 sub setupAskServerPrimaryIP
 {
     my $dialog = shift;
-    my @ipList = sort grep {
-        isValidIpAddr( $_, qr/(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)/ )
-    } iMSCP::Net->getInstance( )->getAddresses( );
+    my @ipList = sort grep(
+        isValidIpAddr( $_, qr/(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)/ ),
+        iMSCP::Net->getInstance( )->getAddresses( )
+    ), '0.0.0.0';
     unless(@ipList) {
         error( "Couldn't get list of server IP addresses. At least one IP address must be configured." );
         return 1;
@@ -266,12 +267,15 @@ sub setupAskServerPrimaryIP
     my $lanIP = setupGetQuestion( 'BASE_SERVER_IP' );
     my $wanIP = setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
     
-    if(iMSCP::Getopt->preseed && !$wanIP && !isValidIpAddr( $lanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ )) {
+    if(iMSCP::Getopt->preseed
+        && !$wanIP
+        && (!isValidIpAddr( $lanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ))
+    ) {
         chomp( $wanIP = get( 'https://ipinfo.io/ip' ) || '' );
     }
 
     if($main::reconfigure =~ /^(?:primary_ip|all|forced)$/
-        || !grep($_ eq $lanIP, @ipList)
+        || !grep( $_ eq $lanIP, @ipList )
         || ($wanIP ne $lanIP && !isValidIpAddr( $wanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ))
     ) {
         my ($rs, $msg) = (0, '');
@@ -280,6 +284,8 @@ sub setupAskServerPrimaryIP
             ($rs, $lanIP) = $dialog->radiolist( <<"EOF", [ @ipList ], grep( $_ eq $lanIP, @ipList ) ? $lanIP : $ipList[0] );
 
 Please select your primary server IP address:
+
+The \\Zb`0.0.0.0'\\Zn IP address is more suitable for cloud computing services such as Scaleway.
 EOF
         } while $rs < 30 && !isValidIpAddr( $lanIP );
         return $rs if $rs >= 30;
@@ -303,6 +309,16 @@ EOF
                     $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
                 } elsif(!$wanIP) {
                     $wanIP = $lanIP;
+                }
+                
+                if($wanIP eq '0.0.0.0') {
+                    $msg = <<"EOF";
+
+
+\\Z1Invalid or unauthorized IP address.\\Zn
+
+Please try again:
+EOF
                 }
             } while $rs < 30 && $msg;
             return $rs if $rs >= 30;
@@ -1063,8 +1079,7 @@ sub setupPrimaryIP
         return 1;
     }
 
-    my $net = iMSCP::Net->getInstance( );
-    my $netCard = $net->getAddrDevice( $primaryIP );
+    my $netCard = ($primaryIP eq '0.0.0.0') ? 'any' : iMSCP::Net->getInstance( )->getAddrDevice( $primaryIP );
     unless(defined $netCard) {
         error( sprintf( "Couldn't find network interface name for the `%s' IP address", $primaryIP ) );
         return 1;
