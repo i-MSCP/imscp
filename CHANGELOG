@@ -31,6 +31,7 @@ LISTENERS
     Added: 10_proftpd_serverident.pl file: Set custom server identification message (replace 10_proftpd_tuning.pl)
     Added: 10_proftpd_tls.pl file: Enforce TLS (replace 10_proftpd_tuning.pl)
     Fixed: 20_named_dualstack.pl listener file: Missing DNS records for subdomains
+    Fixed: Listeners that listen on the `afterMtaBuildConf' must be registered with low priority
     Updated: 70_postfix_submission_tls.pl file: Fully redefines submission service and disable SSLv3
 
 INSTALLER
@@ -38,7 +39,7 @@ INSTALLER
     Added: Routine to setup kernel
     Fixed: Don't check for source archive when binary archive has not been found for a specific section (APT repositories)
     Fixed: Usage of ZG-POLICY-RC.D(8) to provide local policy-rc.d and avoid violation of Debian policy (Debian/Ubuntu)
-    Removed: beforeInstallPreRequiredPackages event (Event cannot be triggered before installation of pre-required packages)
+    Removed: `beforeInstallPreRequiredPackages' event (Event cannot be triggered before installation of pre-required packages)
 
 PACKAGES
     Fixed: RainLoop entries are not removed from database when a mail account is deleted (RainLoop)
@@ -59,8 +60,8 @@ SCRIPTS
 SERVERS
     Added: IMAP/POP3 log format (Dovecot)
     Added: In/Out bytes variables in POP3 logs for better traffic accounting (Dovecot)
-    Fixed: A customer must not able to write in their backup directory
     Fixed: Argument "" isn't numeric in addition (+)... in getTraffic() method of all servers implementing it
+    Fixed: Customers must not able to write in backup directories
     Fixed: Error: quota: Unknown namespace: Trash (Dovecot/IMAP)
     Fixed: Unless virtual alias map entry for normal mail only accounts (Postfix)
     Fixed: Unwanted directory listings (Apache2 - Regression fix)

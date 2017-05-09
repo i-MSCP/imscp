@@ -49,7 +49,8 @@ iMSCP::EventManager->getInstance()->register(
                 }
             )
         );
-    }
+    },
+    -99
 );
 
 1;

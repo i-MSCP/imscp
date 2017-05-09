@@ -48,6 +48,7 @@ iMSCP::EventManager->getInstance() > register(
         0;
     }
 );
+
 iMSCP::EventManager->getInstance()->register(
     'afterMtaBuildConf',
     sub {
@@ -79,7 +80,8 @@ iMSCP::EventManager->getInstance()->register(
                 }
             )
         );
-    }
+    },
+    -99
 );
 
 1;

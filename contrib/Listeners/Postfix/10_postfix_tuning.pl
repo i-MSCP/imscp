@@ -70,8 +70,10 @@ iMSCP::EventManager->getInstance()->register(
         }
 
         0;
-    }
+    },
+    -99
 );
+
 iMSCP::EventManager->getInstance()->register(
     'afterMtaBuildMasterCfFile',
     sub {

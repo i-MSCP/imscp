@@ -34,29 +34,32 @@ iMSCP::EventManager->getInstance()->register(
         # Redefine submission service
         # According MASTER(5)), when multiple lines specify the same service
         # name and type, only the last one is remembered.
-        $$content .= <<'EOF';
+        ${$content} .= <<'EOF';
 # Redefines submission service to enforce TLS
 submission inet n       -       y       -       -       smtpd
  -o smtpd_tls_security_level=encrypt
  -o smtpd_sasl_auth_enable=yes
  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
 EOF
+        0;
+    }
+);
+
+iMSCP::EventManager->getInstance()->register(
+    'afterMtaBuildConf',
+    sub {
         # smtpd_tls_security_level=encrypt means mandatory.
         # Make sure to disable vulnerable SSL versions
-        iMSCP::EventManager->getInstance()->register(
-            'afterMtaBuildConf',
-            sub {
-                Servers::mta->factory()->postconf(
-                    (
-                        smtpd_tls_mandatory_protocols => {
-                            action => 'replace',
-                            values => [ '!SSLv2', '!SSLv3' ]
-                        }
-                    )
-                );
-            }
+        Servers::mta->factory()->postconf(
+            (
+                smtpd_tls_mandatory_protocols => {
+                    action => 'replace',
+                    values => [ '!SSLv2', '!SSLv3' ]
+                }
+            )
         );
-    }
+    },
+    - 99
 );
 
 1;
