@@ -70,8 +70,8 @@ sub setRights
             die( '`mode` option is not allowed when using dirmode/filemode options' );
         }
 
-        my $uid = $options->{'user'} ? getpwnam( $options->{'user'} ) : - 1;
-        my $gid = $options->{'group'} ? getgrnam( $options->{'group'} ) : - 1;
+        my $uid = $options->{'user'} ? getpwnam( $options->{'user'} ) : -1;
+        my $gid = $options->{'group'} ? getgrnam( $options->{'group'} ) : -1;
         defined $uid or die( sprintf( 'user option refers to inexistent user: %s', $options->{'user'} ) );
         defined $gid or die( sprintf( 'group option refers to inexistent group: %s', $options->{'group'} ) );
 

@@ -133,9 +133,9 @@ sub _setTypeAndVersion
     }
 
     my $type = 'mysql';
-    if (index( lc( ${$rdata}[0]->[0] ), 'mariadb' ) != - 1) {
+    if (index( lc( ${$rdata}[0]->[0] ), 'mariadb' ) != -1) {
         $type = 'mariadb';
-    } elsif (index( lc( ${$rdata}[0]->[1] ), 'percona' ) != - 1) {
+    } elsif (index( lc( ${$rdata}[0]->[1] ), 'percona' ) != -1) {
         $type = 'percona';
     }
 

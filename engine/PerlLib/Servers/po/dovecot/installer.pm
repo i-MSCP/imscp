@@ -523,7 +523,7 @@ sub _buildConf
                 }
             }
 
-            if (index( $conffile, 'dovecot.conf' ) != - 1) {
+            if (index( $conffile, 'dovecot.conf' ) != -1) {
                 my $ssl = main::setupGetQuestion( 'SERVICES_SSL_ENABLED' );
                 $cfgTpl .= "\nssl = $ssl\n";
 

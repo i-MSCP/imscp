@@ -520,8 +520,8 @@ sub addMail
         $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_TRANSPORT_HASH'}, qr/\Q$responderEntry\E\s+[^\n]*/ );
         return $rs if $rs;
 
-        my $isMailAccount = index( $data->{'MAIL_TYPE'}, '_mail' ) != - 1;
-        my $isForwardAccount = index( $data->{'MAIL_TYPE'}, '_forward' ) != - 1;
+        my $isMailAccount = index( $data->{'MAIL_TYPE'}, '_mail' ) != -1;
+        my $isForwardAccount = index( $data->{'MAIL_TYPE'}, '_forward' ) != -1;
 
         if ($isMailAccount) {
             # Create mailbox

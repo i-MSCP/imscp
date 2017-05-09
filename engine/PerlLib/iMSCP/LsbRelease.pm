@@ -547,12 +547,12 @@ sub _getLsbInformation
             while (my $line = <$fh>) {
                 $line =~ s/^\s+|\s+$//g; # Remove trailing and leading whitespaces
 
-                next unless $line && index( $line, '=' ) != - 1; # Skip invalid lines
+                next unless $line && index( $line, '=' ) != -1; # Skip invalid lines
 
                 my ($var, $arg) = split '=', $line, 2;
                 if (index( $var, 'DISTRIB_' ) == 0) {
                     $var = substr( $var, 8 );
-                    $arg = substr( $arg, 1, - 1 ) if $arg =~ /^".*?"$/;
+                    $arg = substr( $arg, 1, -1 ) if $arg =~ /^".*?"$/;
                     $distInfo{$var} = $arg if $arg; # Ignore empty arguments
                 }
             }

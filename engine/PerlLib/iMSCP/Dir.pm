@@ -175,8 +175,8 @@ sub owner
     defined $group or die( '$group parameter is not defined.' );
     defined $dirname or die( '$dirname parameter is not defined.' );
 
-    my $uid = $owner =~ /^\d+$/ ? $owner : getpwnam( $owner ) // - 1;
-    my $gid = $group =~ /^\d+$/ ? $group : getgrnam( $group ) // - 1;
+    my $uid = $owner =~ /^\d+$/ ? $owner : getpwnam( $owner ) // -1;
+    my $gid = $group =~ /^\d+$/ ? $group : getgrnam( $group ) // -1;
 
     chown $uid, $gid, $dirname or die( sprintf( "Couldn't change `%s' directory ownership: %s", $dirname, $! ) );
     0;
@@ -218,7 +218,7 @@ sub make
 
         for my $dir(@createdDirs) {
             if (defined $options->{'user'} || defined $options->{'group'}) {
-                $self->owner( $options->{'user'} // - 1, $options->{'group'} // - 1, $dir );
+                $self->owner( $options->{'user'} // -1, $options->{'group'} // -1, $dir );
             }
 
             $self->mode( $options->{'mode'}, $dir ) if defined $options->{'mode'};
@@ -230,7 +230,7 @@ sub make
     return 0 if defined $options->{'fixpermissions'} && !$options->{'fixpermissions'};
 
     if (defined $options->{'user'} || defined $options->{'group'}) {
-        $self->owner( $options->{'user'} // - 1, $options->{'group'} // - 1, $self->{'dirname'} );
+        $self->owner( $options->{'user'} // -1, $options->{'group'} // -1, $self->{'dirname'} );
     }
 
     $self->mode( $options->{'mode'} ) if defined $options->{'mode'};

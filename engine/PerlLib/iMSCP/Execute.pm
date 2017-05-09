@@ -89,7 +89,7 @@ sub execute( $;$$ )
         ${$stderr} = capture_stderr { system( $multitArgs ? @{$command} : $command ); };
         chomp( $stderr );
     } else {
-        system( $multitArgs ? @{$command} : $command ) != - 1 or die(
+        system( $multitArgs ? @{$command} : $command ) != -1 or die(
             sprintf( "Couldn't execute command: %s", $! )
         );
     }
@@ -185,7 +185,7 @@ sub getExitCode( ;$ )
 {
     my $ret = shift // $?;
 
-    if ($ret == - 1) {
+    if ($ret == -1) {
         debug( "Couldn't execute command" );
         return 1;
     }
