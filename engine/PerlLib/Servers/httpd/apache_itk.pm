@@ -1705,7 +1705,7 @@ sub _addFiles
 
     # Set ownership for first Web folder depth, e.g:
     # 00_private vuxxx:vuxxx (recursive with --fix-permissions)
-    # backups    skipped
+    # backups    vuxxx:vuxxx (recursive with --fix-permissions)
     # cgi-bin    vuxxx:vuxxx (recursive with --fix-permissions)
     # error      vuxxx:vuxxx (recursive with --fix-permissions)
     # htdocs     vuxxx:vuxxx (recursive with --fix-permissions)
@@ -1713,7 +1713,7 @@ sub _addFiles
     # .htpasswd  skipped
     # logs       skipped
     # phptmp     vuxxx:vuxxx (recursive with --fix-permissions)
-    for my $file(grep( !/^(?:\.(?:htgroup|htpasswd)|backups|logs)$/, @files )) {
+    for my $file(grep( !/^(?:\.(?:htgroup|htpasswd)|logs)$/, @files )) {
         next unless -e "$data->{'WEB_DIR'}/$file";
 
         $rs = setRights(
@@ -1743,18 +1743,14 @@ sub _addFiles
             return $rs if $rs;
         }
 
-        # Set ownership for backups and logs directories
-        # backups root:vuxxx (recursive with --fix-permissions)
-        # logs    root:vuxxx (no recursive)
-        for my $dir(qw/ backups logs /) {
-            next unless -d "$data->{'WEB_DIR'}/$dir";
-
+        # Set ownership for logs directory
+        # logs root:vuxxx (no recursive)
+        if (-d "$data->{'WEB_DIR'}/logs") {
             $rs = setRights(
-                "$data->{'WEB_DIR'}/$dir",
+                "$data->{'WEB_DIR'}/logs",
                 {
-                    user      => $main::imscpConfig{'ROOT_USER'},
-                    group     => $data->{'GROUP'},
-                    recursive => ($dir eq 'backups') ? $fixPermissions : 0
+                    user  => $main::imscpConfig{'ROOT_USER'},
+                    group => $data->{'GROUP'}
                 }
             );
             return $rs if $rs;

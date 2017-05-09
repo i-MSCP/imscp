@@ -63,7 +63,6 @@ SERVERS
     Added: IMAP/POP3 log format (Dovecot)
     Added: In/Out bytes variables in POP3 logs for better traffic accounting (Dovecot)
     Fixed: Argument "" isn't numeric in addition (+)... in getTraffic() method of all servers implementing it
-    Fixed: Customers must not able to write in backup directories
     Fixed: Error: quota: Unknown namespace: Trash (Dovecot/IMAP)
     Fixed: Unless virtual alias map entry for normal mail only accounts (Postfix)
     Fixed: Unwanted directory listings (Apache2 - Regression fix)

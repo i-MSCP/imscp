@@ -96,7 +96,7 @@ iMSCP::EventManager->getInstance( )->register(
             # Sets directory ownership and permissions if it already exists
             iMSCP::Dir->new( dirname => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" )->make(
                 {
-                    user  => $main::imscpConfig{'ROOT_GROUP'},
+                    user  => $data->{'USER'},
                     group => $data->{'GROUP'},
                     mode  => 0750
                 }
@@ -118,7 +118,7 @@ iMSCP::EventManager->getInstance( )->register(
                 $backupDirHandle->remove( );
                 $backupDirHandle->make(
                     {
-                        user  => $main::imscpConfig{'ROOT_GROUP'},
+                        user  => $data->{'USER'},
                         group => $data->{'GROUP'},
                         mode  => 0750
                     }
