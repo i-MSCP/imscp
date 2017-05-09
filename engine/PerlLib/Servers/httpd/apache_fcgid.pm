@@ -1721,16 +1721,16 @@ sub _addFiles
     my @files = iMSCP::Dir->new( dirname => $skelDir )->getAll( );
 
     # Set ownership for first Web folder depth, e.g:
-    # 00_private           vuxxx:vuxxx (recursive with --fix-permissions)
-    # backups              vuxxx:vuxxx (recursive with --fix-permissions)
-    # cgi-bin              vuxxx:vuxxx (recursive with --fix-permissions)
-    # error                vuxxx:vuxxx (recursive with --fix-permissions)
-    # htdocs               vuxxx:vuxxx (recursive with --fix-permissions)
-    # .htgroup             skipped
-    # .htpasswd            skipped
-    # logs                 skipped
-    # phptmp               vuxxx:vuxxx (recursive with --fix-permissions)
-    for my $file(grep( !/^(?:\.(?:htgroup|htpasswd)|logs)$/, @files )) {
+    # 00_private vuxxx:vuxxx (recursive with --fix-permissions)
+    # backups    skipped
+    # cgi-bin    vuxxx:vuxxx (recursive with --fix-permissions)
+    # error      vuxxx:vuxxx (recursive with --fix-permissions)
+    # htdocs     vuxxx:vuxxx (recursive with --fix-permissions)
+    # .htgroup   skipped
+    # .htpasswd  skipped
+    # logs       skipped
+    # phptmp     vuxxx:vuxxx (recursive with --fix-permissions)
+    for my $file(grep( !/^(?:\.(?:htgroup|htpasswd)|backups|logs)$/, @files )) {
         next unless -e "$data->{'WEB_DIR'}/$file";
 
         $rs = setRights(
@@ -1744,34 +1744,34 @@ sub _addFiles
         return $rs if $rs;
     }
 
-    # Set ownership for .htgroup and .htpasswd files
-    # .htgroup             root:www-data
-    # .htpasswd            root:www-data
-    for my $file(qw/ .htgroup .htpasswd /) {
-        next unless -e "$data->{'WEB_DIR'}/$file";
-        $rs = setRights(
-            "$data->{'WEB_DIR'}/$file",
-            {
-                user      => $main::imscpConfig{'ROOT_USER'},
-                group     => $self->{'config'}->{'HTTPD_GROUP'},
-                recursive => 1
-            }
-        );
-        return $rs if $rs;
-    }
-
     if ($data->{'DOMAIN_TYPE'} eq 'dmn') {
-        # Set ownership and permissions for backups and logs directories
-        # backups root:vuxxx 0750 (recursive with --fix-permissions)
-        # logs root:vuxxx 0750 (no recursive)
+        # Set ownership for .htgroup and .htpasswd files
+        # .htgroup  root:www-data
+        # .htpasswd root:www-data
+        for my $file(qw/ .htgroup .htpasswd /) {
+            next unless -e "$data->{'WEB_DIR'}/$file";
+            $rs = setRights(
+                "$data->{'WEB_DIR'}/$file",
+                {
+                    user  => $main::imscpConfig{'ROOT_USER'},
+                    group => $self->{'config'}->{'HTTPD_GROUP'}
+                }
+            );
+            return $rs if $rs;
+        }
+
+        # Set ownership for backups and logs directories
+        # backups root:vuxxx (recursive with --fix-permissions)
+        # logs    root:vuxxx (no recursive)
         for my $dir(qw/ backups logs /) {
             next unless -d "$data->{'WEB_DIR'}/$dir";
 
             $rs = setRights(
                 "$data->{'WEB_DIR'}/$dir",
                 {
-                    user  => $main::imscpConfig{'ROOT_USER'},
-                    group => $data->{'GROUP'},
+                    user      => $main::imscpConfig{'ROOT_USER'},
+                    group     => $data->{'GROUP'},
+                    recursive => ($dir eq 'backups') ? $fixPermissions : 0
                 }
             );
             return $rs if $rs;
@@ -1779,15 +1779,15 @@ sub _addFiles
     }
 
     # Set permissions for first Web folder depth, e.g:
-    # 00_private           0750 (no recursive)
-    # backups              0750 (recursive with --fix-permissions)
-    # cgi-bin              0750 (no recursive)
-    # error                0750 (recursive with --fix-permissions)
-    # htdocs               0750 (no recursive)
-    # .htgroup             0640
-    # .htpasswd            0640
-    # logs                 0750 (no recursive)
-    # phptmp               0750 (recursive with --fix-permissions)
+    # 00_private 0750 (no recursive)
+    # backups    0750 (recursive with --fix-permissions)
+    # cgi-bin    0750 (no recursive)
+    # error      0750 (recursive with --fix-permissions)
+    # htdocs     0750 (no recursive)
+    # .htgroup   0640
+    # .htpasswd  0640
+    # logs       0750 (no recursive)
+    # phptmp     0750 (recursive with --fix-permissions)
     for my $file (@files) {
         next unless -e "$data->{'WEB_DIR'}/$file";
 

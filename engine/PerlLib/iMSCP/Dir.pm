@@ -190,6 +190,7 @@ sub owner
     mode:  Directory mode
     user:  Directory owner
     group: Directory group
+    fixpermissions: If defined, ownership and permissions are set only if set with TRUE value
  Return int 0 on success, die on failure
 
 =cut
@@ -226,7 +227,7 @@ sub make
         return 0;
     }
 
-    return 0 unless $options->{'fixpermissions'};
+    return 0 if defined $options->{'fixpermissions'} && !$options->{'fixpermissions'};
 
     if (defined $options->{'user'} || defined $options->{'group'}) {
         $self->owner( $options->{'user'} // - 1, $options->{'group'} // - 1, $self->{'dirname'} );
