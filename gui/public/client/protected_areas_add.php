@@ -140,26 +140,21 @@ function handleProtectedArea()
         $userIdList = 0;
     }
 
-    if (isset($_REQUEST['id']) && $_REQUEST['id'] > 0) {
-        $stmt = exec_query(
-            '
-              UPDATE htaccess
-              SET user_id = ?, group_id = ?, auth_name = ?, path = ?, status = ?
-              WHERE id = ?
-              AND dmn_id = ?
-            ',
-            array(
-                $userIdList, $groupIdList, $protectedAreaName, $protectedAreaPath, 'tochange', $_REQUEST['id'],
-                $mainDmnProps['domain_id']
-            )
-        );
-        if (!$stmt->rowCount()) {
-            showBadRequestErrorPage();
+    $db = iMSCP_Database::getInstance();
+
+    try {
+        $db->beginTransaction();
+
+        if (isset($_REQUEST['id']) && $_REQUEST['id'] > 0) {
+            $stmt = exec_query('UPDATE htaccess SET status = ? WHERE id = ? AND dmn_id = ?', array(
+                'todelete', $_REQUEST['id'], $mainDmnProps['domain_id']
+            ));
+
+            if (!$stmt->rowCount()) {
+                showBadRequestErrorPage();
+            }
         }
 
-        send_request();
-        set_page_message(tr('Protected area successfully scheduled for update.'), 'success');
-    } else {
         exec_query(
             '
                 INSERT INTO htaccess (
@@ -173,7 +168,18 @@ function handleProtectedArea()
                 'toadd'
             )
         );
-        send_request();
+
+        $db->commit();
+    } catch (iMSCP_Exception_Database $e) {
+        $db->rollBack();
+        throw $e;
+    }
+
+    send_request();
+
+    if (isset($_REQUEST['id']) && $_REQUEST['id'] > 0) {
+        set_page_message(tr('Protected area successfully scheduled for update.'), 'success');
+    } else {
         set_page_message(tr('Protected area successfully scheduled for addition.'), 'success');
     }
 
