@@ -139,7 +139,7 @@ function generateIpsList($tpl)
         }
 
         $tpl->assign(array(
-            'IP'           => $row['ip_number'],
+            'IP'           => tohtml(($row['ip_number'] == '0.0.0.0') ? tr('Any') : $row['ip_number']),
             'IP_NETMASK'   => $net->getIpPrefixLength($net->compress($row['ip_number'])) ?: $row['ip_netmask'] ?: tr('N/A'),
             'IP_EDITABLE'  => ($row['ip_status'] == 'ok'
                 && $baseServerIp != $ipAddr
@@ -149,7 +149,7 @@ function generateIpsList($tpl)
                 ? '' : (($row['ip_card'] !== 'any') ? tohtml($row['ip_card']) : tohtml(tr('Any')))
         ));
 
-        if ($row['ip_status'] === 'ok' && $row['ip_card'] !== 'any') {
+        if ($row['ip_status'] == 'ok' && $row['ip_card'] != 'any' && $row['ip_number'] !== '0.0.0.0') {
             $tpl->assign(array(
                 'IP_ID'            => $row['ip_id'],
                 'IP_CONFIG_AUTO'   => $row['ip_config_mode'] != 'manual' ? ' checked' : '',

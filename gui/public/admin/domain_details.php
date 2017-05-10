@@ -107,7 +107,7 @@ function admin_generatePage($tpl, $domainId)
     $tpl->assign(array(
         'DOMAIN_ID' => $domainId,
         'VL_DOMAIN_NAME' => tohtml(decode_idna($domainData['domain_name'])),
-        'VL_DOMAIN_IP' => tohtml($domainIpAddr),
+        'VL_DOMAIN_IP' => tohtml(($domainIpAddr == '0.0.0.0') ? tr('Any') : $domainIpAddr),
         'VL_STATUS' => $domainStatus,
         'VL_PHP_SUPP' => translate_limit_value($domainData['domain_php']),
         'VL_PHP_EDITOR_SUPP' => translate_limit_value($domainData['phpini_perm_system']),

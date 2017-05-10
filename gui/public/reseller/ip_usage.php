@@ -72,7 +72,7 @@ function listIPDomains($tpl)
 
 		$tpl->assign(
 			array(
-				'IP' => tohtml($ip['ip_number']),
+				'IP' => tohtml(($ip['ip_number'] == '0.0.0.0') ? tr('Any') : $ip['ip_number']),
 				'RECORD_COUNT' => tr('Total Domains') . ': ' . ($domainsCount)
 			)
 		);

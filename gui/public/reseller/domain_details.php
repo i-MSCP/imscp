@@ -77,7 +77,6 @@ function reseller_generatePage($tpl, $domainId)
         $row = $stmt->fetchRow();
         $domainIpAddr = $row['ip_number'];
     } else {
-
         $domainIpAddr = tr('Not found.');
     }
 
@@ -89,7 +88,7 @@ function reseller_generatePage($tpl, $domainId)
     ) {
         $domainStatus = '<span style="color:green">' . tohtml(translate_dmn_status($domainData['domain_status'])) . '</span>';
     } else {
-        $domainStatus = '<b><font size="3" color="red">' . $domainData['domain_status'] . "</font></b>";
+        $domainStatus = '<span style="font-weight:bold;color:red">' . $domainData['domain_status'] . "</span>";
     }
 
     // Get total monthly traffic usage in bytes
@@ -113,7 +112,7 @@ function reseller_generatePage($tpl, $domainId)
     $tpl->assign(array(
         'DOMAIN_ID' => $domainId,
         'VL_DOMAIN_NAME' => tohtml(decode_idna($domainData['domain_name'])),
-        'VL_DOMAIN_IP' => tohtml($domainIpAddr),
+        'VL_DOMAIN_IP' => tohtml(($domainIpAddr == '0.0.0.0') ? tr('Any') : $domainIpAddr),
         'VL_STATUS' => $domainStatus,
         'VL_PHP_SUPP' => ($domainData['domain_php'] == 'yes') ? $trEnabled : $trDisabled,
         'VL_PHP_EDITOR_SUPP' => ($domainData['phpini_perm_system'] == 'yes') ? $trEnabled : $trDisabled,

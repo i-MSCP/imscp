@@ -258,13 +258,14 @@ sub setupAskServerPrimaryIP
     my @ipList = sort grep(
         isValidIpAddr( $_, qr/(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)/ ),
         iMSCP::Net->getInstance( )->getAddresses( )
-    ), '0.0.0.0';
+    ), 'None';
     unless(@ipList) {
         error( "Couldn't get list of server IP addresses. At least one IP address must be configured." );
         return 1;
     }
 
     my $lanIP = setupGetQuestion( 'BASE_SERVER_IP' );
+    $lanIP = 'None' if $lanIP eq '0.0.0.0';
     my $wanIP = setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
     
     if(iMSCP::Getopt->preseed
@@ -285,8 +286,10 @@ sub setupAskServerPrimaryIP
 
 Please select your primary server IP address:
 
-The \\Zb`0.0.0.0'\\Zn IP address is more suitable for cloud computing services such as Scaleway.
+The \\Zb`None'\\Zn option means that i-MSCP will configure the services to listen on all interfaces.
+Note that this options is more suitable for cloud computing services such as Scaleway.
 EOF
+            $lanIP = '0.0.0.0' if $lanIP && $lanIP eq 'None';
         } while $rs < 30 && !isValidIpAddr( $lanIP );
         return $rs if $rs >= 30;
 
@@ -297,7 +300,7 @@ EOF
             do {
                 ($rs, $wanIP) = $dialog->inputbox( <<"EOF", $wanIP );
 
-The IP address that you selected is inside private IP range.
+The IP address that you have selected is in private IP range.
 
 Please enter your public IP address (WAN IP), or leave blank to force usage of the private IP address:$msg
 EOF
@@ -325,6 +328,8 @@ EOF
         } else {
             $wanIP = $lanIP
         }
+    } elsif($lanIP eq 'None') {
+        $lanIP = '0.0.0.0';
     }
 
     setupSetQuestion( 'BASE_SERVER_IP', $lanIP );

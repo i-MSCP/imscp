@@ -378,29 +378,6 @@ function getCustomMenus($userLevel)
 // Admin
 
 /**
- * Returns admin Ip list.
- *
- * @param  iMSCP_pTemplate $tpl Template engine
- * @return void
- */
-function admin_generate_ip_list($tpl)
-{
-    global $domainIp;
-
-    $stmt = execute_query('SELECT * FROM server_ips');
-    while ($row = $stmt->fetchRow()) {
-        $ipId = $row['ip_id'];
-        $selected = ($domainIp === $ipId) ? ' selected' : '';
-        $tpl->assign(array(
-            'IP_NUM'      => $row['ip_number'],
-            'IP_VALUE'    => $ipId,
-            'IP_SELECTED' => $selected
-        ));
-        $tpl->parse('IP_ENTRY', '.ip_entry');
-    }
-}
-
-/**
  * Helper function to generate admin list template part
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
@@ -884,7 +861,7 @@ function reseller_generate_ip_list($tpl, $resellerId, $domainIp)
     while ($row = $stmt->fetchRow()) {
         if (in_array($row['ip_id'], $resellerIps)) {
             $tpl->assign(array(
-                'IP_NUM'      => $row['ip_number'],
+                'IP_NUM'      => tohtml(($row['ip_number'] == '0.0.0.0') ? tr('Any') : $row['ip_number'], 'htmlAttr'),
                 'IP_VALUE'    => $row['ip_id'],
                 'IP_SELECTED' => $domainIp === $row['ip_id'] ? ' selected' : ''
             ));

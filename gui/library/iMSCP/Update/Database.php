@@ -1661,7 +1661,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                 $netmask = '32';
             }
 
-            exec_query("UPDATE server_ips SET ip_netmask = ? WHERE ip_id = ?", array($netmask, $row['ip_id']));
+            exec_query('UPDATE server_ips SET ip_netmask = ? WHERE ip_id = ?', array($netmask, $row['ip_id']));
         }
 
         return null;

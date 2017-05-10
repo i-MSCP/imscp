@@ -149,11 +149,12 @@ function _admin_generateIpListForm($tpl, &$data)
         $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
     });
 
+    $checkFirst = sizeof($data['server_ips']) == 1;
     foreach ($data['server_ips'] as $ipData) {
         $tpl->assign(array(
             'IP_ID' => tohtml($ipData['ip_id']),
-            'IP_NUMBER' => tohtml($ipData['ip_number']),
-            'IP_ASSIGNED' => in_array($ipData['ip_id'], $data['reseller_ips']) ? ' checked' : ''
+            'IP_NUMBER' => tohtml(($ipData['ip_number'] == '0.0.0.0') ? tr('Any') : $ipData['ip_number']),
+            'IP_ASSIGNED' => ($checkFirst || in_array($ipData['ip_id'], $data['reseller_ips'])) ? ' checked' : ''
         ));
 
         $tpl->parse('IP_BLOCK', '.ip_block');

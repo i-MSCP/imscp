@@ -342,14 +342,14 @@ sub disableDmn
     $rs = $self->{'eventManager'}->trigger( 'onAddHttpdVhostIps', $data, \@domainIPs );
     return $rs if $rs;
 
-    # Remove duplicate IP if any
-    @domainIPs = uniq( map { $net->normalizeAddr( $_ ) } @domainIPs );
+    # Remove duplicate IP if any and map the INADDR_ANY IP to *
+    @domainIPs = uniq( map { $net->normalizeAddr( $_ ) =~ s/^\Q0.0.0.0\E$/*/r } @domainIPs );
 
     $self->setData(
         {
             BASE_SERVER_VHOST => $data->{'BASE_SERVER_VHOST'},
             DOMAIN_IPS        => join(
-                ' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]").':80' } @domainIPs
+                ' ', map { (($_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4') ? $_ : "[$_]").':80' } @domainIPs
             ),
             HTTP_URI_SCHEME   => 'http://',
             HTTPD_LOG_DIR     => $self->{'config'}->{'HTTPD_LOG_DIR'},
@@ -388,7 +388,7 @@ sub disableDmn
             {
                 CERTIFICATE     => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem",
                 DOMAIN_IPS      => join(
-                    ' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]").':443' } @domainIPs
+                    ' ', map { (($_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4') ? $_ : "[$_]").':443' } @domainIPs
                 ),
                 HTTP_URI_SCHEME => 'https://'
             }
@@ -1428,14 +1428,14 @@ sub _addCfg
     $rs = $self->{'eventManager'}->trigger( 'onAddHttpdVhostIps', $data, \@domainIPs );
     return $rs if $rs;
 
-    # Remove duplicate IP if any
-    @domainIPs = uniq( map { $net->normalizeAddr( $_ ) } @domainIPs );
+    # Remove duplicate IP if any and map the INADDR_ANY IP to *
+    @domainIPs = uniq( map { $net->normalizeAddr( $_ ) =~ s/^\Q0.0.0.0\E$/*/r } @domainIPs );
 
     $self->setData(
         {
             BASE_SERVER_VHOST      => $data->{'BASE_SERVER_VHOST'},
             DOMAIN_IPS             => join(
-                ' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]").':80' } @domainIPs
+                ' ', map { (($_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4') ? $_ : "[$_]").':443' } @domainIPs
             ),
             HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
             HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'}
@@ -1474,7 +1474,9 @@ sub _addCfg
         $self->setData(
             {
                 CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem",
-                DOMAIN_IPS  => join(' ', map { ($net->getAddrVersion( $_ ) eq 'ipv4' ? $_ : "[$_]").':443' } @domainIPs)
+                DOMAIN_IPS  => join(
+                    ' ', map { (($_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4') ? $_ : "[$_]").':443' } @domainIPs
+                )
             }
         );
 

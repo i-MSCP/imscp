@@ -235,7 +235,7 @@ function _admin_generateIpListForm($tpl, &$data)
         $isUsedIp = in_array($ipData['ip_id'], $data['used_ips']);
         $tpl->assign(array(
             'IP_ID' => tohtml($ipData['ip_id']),
-            'IP_NUMBER' => tohtml($ipData['ip_number']),
+            'IP_NUMBER' => tohtml(($ipData['ip_number'] == '0.0.0.0') ? tr('Any') : $ipData['ip_number']),
             'IP_ASSIGNED' => $resellerHasIp ? ' checked' : '',
             'IP_STATUS' => $isUsedIp ? $assignedTranslation : $unusedTranslation,
             'IP_READONLY' => $isUsedIp ? ' title="' . tohtml(tr('You cannot unassign an IP address already in use.'), 'htmlAttr') . '" readonly' : ''
