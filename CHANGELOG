@@ -36,7 +36,7 @@ LISTENERS
     Updated: 70_postfix_submission_tls.pl file: Fully redefines submission service and disable SSLv3
 
 INSTALLER
-    Added: `0.0.0.0' IP address as possible choice for primary IP address. Fixes networking issues on Scaleway servers
+    Added: `None' option as possible choice for primary IP address. Fixes networking issues on Scaleway servers
     Added: Routine to setup kernel (loading of kernel parameters from imscp.conf sysctl configuration file)
     Fixed: Don't check for source archive when binary archive has not been found for a specific section (APT repositories)
     Fixed: Usage of ZG-POLICY-RC.D(8) to provide local policy-rc.d and avoid violation of Debian policy (Debian/Ubuntu)
