@@ -609,8 +609,8 @@ sub addHtpasswd
     $rs = $self->{'eventManager'}->trigger( 'afterHttpdAddHtpasswd', \$fileContent, $data );
     $rs ||= $file->set( $fileContent );
     $rs ||= $file->save( );
-    $rs ||= $file->mode( 0640 );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $data->{'GROUP'} );
+    $rs ||= $file->mode( 0640 );
     return $rs if $rs;
 
     setImmutable( $data->{'WEB_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
@@ -647,8 +647,8 @@ sub deleteHtpasswd
     $rs = $self->{'eventManager'}->trigger( 'afterHttpdDelHtpasswd', \$fileContent, $data );
     $rs ||= $file->set( $fileContent );
     $rs ||= $file->save( );
-    $rs ||= $file->mode( 0640 );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $data->{'GROUP'} );
+    $rs ||= $file->mode( 0640 );
     return $rs if $rs;
 
     setImmutable( $data->{'WEB_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
@@ -686,8 +686,8 @@ sub addHtgroup
     $rs = $self->{'eventManager'}->trigger( 'afterHttpdAddHtgroup', \$fileContent, $data );
     $rs ||= $file->set( $fileContent );
     $rs ||= $file->save( );
-    $rs ||= $file->mode( 0640 );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $data->{'GROUP'} );
+    $rs ||= $file->mode( 0640 );
     return $rs if $rs;
 
     setImmutable( $data->{'WEB_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
@@ -724,8 +724,8 @@ sub deleteHtgroup
     $rs = $file->set( $fileContent );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdDelHtgroup', \$fileContent, $data );
     $rs ||= $file->save( );
-    $rs ||= $file->mode( 0640 );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $data->{'GROUP'} );
+    $rs ||= $file->mode( 0640 );
     return $rs if $rs;
 
     setImmutable( $data->{'WEB_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
@@ -779,8 +779,8 @@ sub addHtaccess
     $rs = $self->{'eventManager'}->trigger( 'afterHttpdAddHtaccess', \$fileContent, $data );
     $rs ||= $file->set( $fileContent );
     $rs ||= $file->save( );
-    $rs ||= $file->mode( 0640 );
     $rs ||= $file->owner( $data->{'USER'}, $data->{'GROUP'} );
+    $rs ||= $file->mode( 0640 );
     setImmutable( $data->{'AUTH_PATH'} ) if $isImmutable;
     $rs;
 }
@@ -825,8 +825,8 @@ sub deleteHtaccess
     if ($fileContent ne '') {
         $rs = $file->set( $fileContent );
         $rs ||= $file->save( );
-        $rs ||= $file->mode( 0640 );
         $rs ||= $file->owner( $data->{'USER'}, $data->{'GROUP'} );
+        $rs ||= $file->mode( 0640 );
     } elsif (-f $filePath) {
         $rs = $file->delFile( );
     }
