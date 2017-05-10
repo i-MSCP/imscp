@@ -1435,7 +1435,7 @@ sub _addCfg
         {
             BASE_SERVER_VHOST      => $data->{'BASE_SERVER_VHOST'},
             DOMAIN_IPS             => join(
-                ' ', map { (($_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4') ? $_ : "[$_]").':443' } @domainIPs
+                ' ', map { (($_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4') ? $_ : "[$_]").':80' } @domainIPs
             ),
             HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
             HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'}

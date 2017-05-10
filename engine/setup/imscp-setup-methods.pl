@@ -284,7 +284,7 @@ sub setupAskServerPrimaryIP
         do {
             ($rs, $lanIP) = $dialog->radiolist( <<"EOF", [ @ipList ], grep( $_ eq $lanIP, @ipList ) ? $lanIP : $ipList[0] );
 
-Please select your primary server IP address:
+Please select your server primary IP address:
 
 The \\Zb`None'\\Zn option means that i-MSCP will configure the services to listen on all interfaces.
 Note that this options is more suitable for cloud computing services such as Scaleway.
