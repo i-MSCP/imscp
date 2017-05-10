@@ -608,7 +608,7 @@ sub _buildAuthdaemonrcFile
     $rs = $self->{'eventManager'}->trigger( 'beforePoBuildAuthdaemonrcFile', \ $cfgTpl, 'authdaemonrc' );
     return $rs if $rs;
 
-    $cfgTpl =~ s/authmodulelist=".*"/authmodulelist="authmysql authpam"/;
+    $cfgTpl =~ s/authmodulelist=".*"/authmodulelist="authmysql"/;
 
     $rs = $self->{'eventManager'}->trigger( 'afterPoBuildAuthdaemonrcFile', \ $cfgTpl, 'authdaemonrc' );
     return $rs if $rs;
