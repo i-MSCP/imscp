@@ -112,7 +112,9 @@ sub postinstall
     return $rs if $rs;
 
     local $@;
-    eval { iMSCP::Service->getInstance( )->enable( $self->{'config'}->{'NAMED_SNAME'} ); };
+    eval {
+        iMSCP::Service->getInstance( )->enable( $self->{'config'}->{'NAMED_SNAME'} );
+    };
     if ($@) {
         error( $@ );
         return 1;
@@ -123,7 +125,8 @@ sub postinstall
         sub {
             push @{$_[0]}, [ sub { $self->restart( ); }, 'Bind9' ];
             0;
-        }
+        },
+        98
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterNamedPostInstall' );
 }
@@ -222,7 +225,8 @@ sub postaddDmn
                     NAME  => $data->{'ALIAS'},
                     CLASS => 'IN',
                     TYPE  => (iMSCP::Net->getInstance( )->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4')
-                        ? 'A' : 'AAAA',
+                        ? 'A'
+                        : 'AAAA',
                     DATA  => $data->{'BASE_SERVER_PUBLIC_IP'}
                 }
             }
@@ -238,8 +242,9 @@ sub postaddDmn
 
  Process disableDmn tasks
 
- When a domain is being disabled, we must ensure that the DNS data are still present for it (eg: when doing a full
- upgrade or reconfiguration). This explain here why we are executing the addDmn( ) action.
+ When a domain is being disabled, we must ensure that the DNS data are still
+ present for it (eg: when doing a full upgrade or reconfiguration). This
+ explain here why we are executing the addDmn( ) action.
 
  Param hash \%data Domain data
  Return int 0 on success, other on failure
@@ -296,10 +301,9 @@ sub deleteDmn
         for("$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}.db",
             "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db"
         ) {
-            if (-f) {
-                $rs = iMSCP::File->new( filename => $_ )->delFile( );
-                return $rs if $rs;
-            }
+            next unless -f;
+            $rs = iMSCP::File->new( filename => $_ )->delFile( );
+            return $rs if $rs;
         }
     }
 
@@ -382,7 +386,7 @@ sub addSub
         }
     }
 
-    $rs = $self->_updateSOAserialNumber($data->{'PARENT_DOMAIN_NAME'}, \$wrkDbFileContent, \$wrkDbFileContent );
+    $rs = $self->_updateSOAserialNumber( $data->{'PARENT_DOMAIN_NAME'}, \$wrkDbFileContent, \$wrkDbFileContent );
     $rs ||= $self->{'eventManager'}->trigger( 'beforeNamedAddSub', \$wrkDbFileContent, \$subEntry, $data );
     return $rs if $rs;
 
@@ -395,7 +399,8 @@ sub addSub
             process(
                 {
                     BASE_SERVER_IP_TYPE => ($net->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4')
-                        ? 'A' : 'AAAA',
+                        ? 'A'
+                        : 'AAAA',
                     BASE_SERVER_IP      => $data->{'BASE_SERVER_PUBLIC_IP'},
                     DOMAIN_NAME         => $data->{'PARENT_DOMAIN_NAME'}
                 },
@@ -407,7 +412,9 @@ sub addSub
         $subEntry = replaceBloc( "; sub MAIL entry BEGIN\n", "; sub MAIL entry ENDING\n", '', $subEntry );
     }
 
-    my $domainIP = $net->isRoutableAddr( $data->{'DOMAIN_IP'} ) ? $data->{'DOMAIN_IP'} : $data->{'BASE_SERVER_PUBLIC_IP'};
+    my $domainIP = $net->isRoutableAddr( $data->{'DOMAIN_IP'} )
+        ? $data->{'DOMAIN_IP'}
+        : $data->{'BASE_SERVER_PUBLIC_IP'};
 
     $subEntry = process(
         {
@@ -438,9 +445,9 @@ sub addSub
     return $rs if $rs;
 
     $rs = execute(
-        'named-compilezone -i none -s relative'.
-            " -o - $data->{'PARENT_DOMAIN_NAME'} $wrkDbFile->{'filename'}".
-            " > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db",
+        'named-compilezone -i none -s relative'
+            ." -o - $data->{'PARENT_DOMAIN_NAME'} $wrkDbFile->{'filename'}"
+            ." > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db",
         \ my $stdout,
         \ my $stderr
     );
@@ -451,8 +458,8 @@ sub addSub
     my $prodFile = iMSCP::File->new(
         filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db"
     );
-    $rs ||= $prodFile->mode( 0640 );
     $rs = $prodFile->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
+    $rs ||= $prodFile->mode( 0640 );
 }
 
 =item postaddSub( \%data )
@@ -484,7 +491,8 @@ sub postaddSub
                     NAME  => $data->{'ALIAS'},
                     CLASS => 'IN',
                     TYPE  => (iMSCP::Net->getInstance( )->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4')
-                        ? 'A' : 'AAAA',
+                        ? 'A'
+                        : 'AAAA',
                     DATA  => $data->{'BASE_SERVER_PUBLIC_IP'}
                 }
             }
@@ -582,9 +590,9 @@ sub deleteSub
     return $rs if $rs;
 
     $rs = execute(
-        'named-compilezone -i none -s relative'.
-            " -o - $data->{'PARENT_DOMAIN_NAME'} $wrkDbFile->{'filename'}".
-            " > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db",
+        'named-compilezone -i none -s relative'
+            ." -o - $data->{'PARENT_DOMAIN_NAME'} $wrkDbFile->{'filename'}"
+            ." > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db",
         \ my $stdout,
         \ my $stderr
     );
@@ -595,8 +603,8 @@ sub deleteSub
     my $prodFile = iMSCP::File->new(
         filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db"
     );
-    $rs = $prodFile->mode( 0640 );
-    $rs ||= $prodFile->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
+    $rs = $prodFile->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
+    $rs ||= $prodFile->mode( 0640 );
 }
 
 =item postdeleteSub( \%data )
@@ -684,7 +692,7 @@ sub addCustomDNS
         my $isOrigin = $line =~ /^\$ORIGIN\s+([^\s;]+).*\n$/;
         $origin = $1 if $isOrigin; # Update $ORIGIN if needed
 
-        unless ($isOrigin || index($line, '$') == 0 || index($line, ';') == 0) {
+        unless ($isOrigin || index( $line, '$' ) == 0 || index( $line, ';' ) == 0) {
             # Process $ORIGIN substitutions
             $line =~ s/\@/$origin/g;
             $line =~ s/^(\S+?[^\s.])\s+/$1.$origin\t/;
@@ -710,9 +718,9 @@ sub addCustomDNS
     return $rs if $rs;
 
     $rs = execute(
-        'named-compilezone -i full -s relative'.
-            " -o - $data->{'DOMAIN_NAME'} $wrkDbFile->{'filename'}".
-            " > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db",
+        'named-compilezone -i full -s relative'
+            ." -o - $data->{'DOMAIN_NAME'} $wrkDbFile->{'filename'}"
+            ." > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db",
         \ my $stdout,
         \ my $stderr
     );
@@ -721,11 +729,10 @@ sub addCustomDNS
     return $rs if $rs;
 
     my $prodFile = iMSCP::File->new( filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db" );
-    $rs = $prodFile->mode( 0640 );
-    $rs ||= $prodFile->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
-    return $rs if $rs;
-    $self->{'reload'} = 1;
-    0;
+    $rs = $prodFile->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
+    $rs ||= $prodFile->mode( 0640 );
+    $self->{'reload'} = 1 unless $rs;
+    $rs;
 }
 
 =item restart( )
@@ -944,8 +951,8 @@ sub _deleteDmnConfig
     $rs = $self->{'eventManager'}->trigger( 'afterNamedDelDmnConfig', \$cfgWrkFileContent, $data );
     $rs ||= $cfgFile->set( $cfgWrkFileContent );
     $rs ||= $cfgFile->save( );
-    $rs ||= $cfgFile->mode( 0644 );
     $rs ||= $cfgFile->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
+    $rs ||= $cfgFile->mode( 0644 );
     $rs ||= $cfgFile->copyFile( "$cfgFileDir$cfgFileName" );
 }
 
@@ -992,16 +999,18 @@ sub _addDmnDb
     return $rs if $rs;
 
     my $nsRecordB = getBloc( "; dmn NS RECORD entry BEGIN\n", "; dmn NS RECORD entry ENDING\n", $tplDbFileC );
-    my $glueRecordB = getBloc( "; dmn NS GLUE RECORD entry BEGIN\n", "; dmn NS GLUE RECORD entry ENDING\n",
-        $tplDbFileC );
+    my $glueRecordB = getBloc(
+        "; dmn NS GLUE RECORD entry BEGIN\n", "; dmn NS GLUE RECORD entry ENDING\n", $tplDbFileC
+    );
 
     my $net = iMSCP::Net->getInstance( );
-    my $domainIP = $net->isRoutableAddr( $data->{'DOMAIN_IP'} ) ? $data->{'DOMAIN_IP'} : $data->{'BASE_SERVER_PUBLIC_IP'};
+    my $domainIP = $net->isRoutableAddr( $data->{'DOMAIN_IP'} )
+        ? $data->{'DOMAIN_IP'} : $data->{'BASE_SERVER_PUBLIC_IP'};
 
     unless ($nsRecordB eq '' && $glueRecordB eq '') {
         my @nsIPs = (
             $domainIP,
-            ($self->{'config'}->{'SECONDARY_DNS'} eq 'no' ? ( ) : split ';', $self->{'config'}->{'SECONDARY_DNS'})
+            (($self->{'config'}->{'SECONDARY_DNS'} eq 'no') ? ( ) : split ';', $self->{'config'}->{'SECONDARY_DNS'})
         );
 
         my ($nsRecords, $glueRecords) = ('', '');
@@ -1045,7 +1054,8 @@ sub _addDmnDb
         $dmnMailEntry = process(
             {
                 BASE_SERVER_IP_TYPE => ($net->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4')
-                    ? 'A' : 'AAAA',
+                    ? 'A'
+                    : 'AAAA',
                 BASE_SERVER_IP      => $data->{'BASE_SERVER_PUBLIC_IP'}
             },
             getBloc( "; dmn MAIL entry BEGIN\n", "; dmn MAIL entry ENDING\n", $tplDbFileC )
@@ -1060,17 +1070,17 @@ sub _addDmnDb
                 "; ctm als entries BEGIN\n",
                 "; ctm als entries ENDING\n",
                 "; ctm als entries BEGIN\n".
-                    getBloc( "; ctm als entries BEGIN\n", "; ctm als entries ENDING\n", $wrkDbFileContent ).
-                    process(
-                        {
-                            NAME  => $data->{'CTM_ALS_ENTRY_ADD'}->{'NAME'},
-                            CLASS => $data->{'CTM_ALS_ENTRY_ADD'}->{'CLASS'},
-                            TYPE  => $data->{'CTM_ALS_ENTRY_ADD'}->{'TYPE'},
-                            DATA  => $data->{'CTM_ALS_ENTRY_ADD'}->{'DATA'}
-                        },
-                        "{NAME}\t{CLASS}\t{TYPE}\t{DATA}\n"
-                    ).
-                    "; ctm als entries ENDING\n",
+                    getBloc( "; ctm als entries BEGIN\n", "; ctm als entries ENDING\n", $wrkDbFileContent )
+                    .process(
+                    {
+                        NAME  => $data->{'CTM_ALS_ENTRY_ADD'}->{'NAME'},
+                        CLASS => $data->{'CTM_ALS_ENTRY_ADD'}->{'CLASS'},
+                        TYPE  => $data->{'CTM_ALS_ENTRY_ADD'}->{'TYPE'},
+                        DATA  => $data->{'CTM_ALS_ENTRY_ADD'}->{'DATA'}
+                    },
+                    "{NAME}\t{CLASS}\t{TYPE}\t{DATA}\n"
+                )
+                    ."; ctm als entries ENDING\n",
                 $tplDbFileC
             );
         } else {
@@ -1102,9 +1112,9 @@ sub _addDmnDb
     return $rs if $rs;
 
     $rs = execute(
-        'named-compilezone -i none -s relative'.
-            " -o - $data->{'DOMAIN_NAME'} $wrkDbFile->{'filename'}".
-            " > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db",
+        'named-compilezone -i none -s relative'
+            ." -o - $data->{'DOMAIN_NAME'} $wrkDbFile->{'filename'}"
+            ." > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db",
         \ my $stdout,
         \ my $stderr
     );
@@ -1113,8 +1123,8 @@ sub _addDmnDb
     return $rs if $rs;
 
     my $prodFile = iMSCP::File->new( filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db" );
-    $rs = $prodFile->mode( 0640 );
-    $rs ||= $prodFile->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
+    $rs = $prodFile->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
+    $rs ||= $prodFile->mode( 0640 );
 }
 
 =item _updateSOAserialNumber( $zone, \$zoneContent, \$oldZoneContent )
@@ -1148,11 +1158,16 @@ sub _updateSOAserialNumber
     if (${$oldZoneContent} =~ /^\s+(?:(?<date>\d{8})(?<nn>\d{2})|(?<variable>\{TIMESTAMP\}))\s*;[^\n]*\n/m) {
         my %rc = %+;
         my ($d, $m, $y) = (gmtime( ))[3 .. 5];
-        my $nowDate = sprintf("%d%02d%02d", $y + 1900, $m + 1, $d);
+        my $nowDate = sprintf( "%d%02d%02d", $y + 1900, $m + 1, $d );
 
         if ($rc{'variable'}) {
             $self->{'serials'}->{$zone} = $nowDate.'00';
-            ${$zoneContent} = process( { TIMESTAMP => $self->{'serials'}->{$zone} }, ${$zoneContent} );
+            ${$zoneContent} = process(
+                {
+                    TIMESTAMP => $self->{'serials'}->{$zone}
+                },
+                ${$zoneContent}
+            );
             return 0;
         }
 

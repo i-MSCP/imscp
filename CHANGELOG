@@ -15,6 +15,9 @@ BACKEND
 CONFIG
     Added: 'CMD_SYSCTL` and 'SYSCTL_CONF_DIR` parameters for sysctl(8)
 
+DATABASE
+    Updated: domain_dns.domain_dns_status column length (VARCHAR toTEXT)
+
 CRON
     Fixed: Cron tasks for traffic accounting are never executed due to wrong command in /etc/cron.d/imscp cron file
 
@@ -26,9 +29,11 @@ FRONTEND
     Fixed: Allow lower value than `post_max_size' for `memory_limit' (PHP Editor)
     Fixed: Integrity constraint violation: 1052 Column 'fname' in where clause is ambiguous when searching user by name
     Fixed: Non well formed numeric value encountered in utils_getPhpValueInBytes() function
+    Removed: Check for CNAME conflict (Custom DNS records)
 
 LISTENERS
     Added: 10_backup_storage_outsourcing.pl: Allows storage of customer backup directories elsewhere on the file system
+    Fixed: 10_named_override_default_rr.pl: Cannot override default www CNAME record
     Added: 10_proftpd_auth_unix.pl listener file: Enable unix authentication
     Added: 10_proftpd_serverident.pl file: Set custom server identification message (replace 10_proftpd_tuning.pl)
     Added: 10_proftpd_tls.pl file: Enforce TLS (replace 10_proftpd_tuning.pl)

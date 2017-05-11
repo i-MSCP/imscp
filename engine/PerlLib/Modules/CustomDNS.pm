@@ -226,10 +226,11 @@ sub _getData
 
     $self->{'_data'} = do {
         {
-            ACTION      => $action,
-            DOMAIN_NAME => $self->{'domain_name'},
-            DOMAIN_IP   => $self->{'domain_ip'},
-            DNS_RECORDS => [ @{$self->{'dns_records'}} ]
+            ACTION                => $action,
+            BASE_SERVER_PUBLIC_IP => $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'},
+            DOMAIN_NAME           => $self->{'domain_name'},
+            DOMAIN_IP             => $self->{'domain_ip'},
+            DNS_RECORDS           => [ @{$self->{'dns_records'}} ]
         }
     } unless %{$self->{'_data'}};
 

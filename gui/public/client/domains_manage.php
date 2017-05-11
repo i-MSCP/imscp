@@ -588,6 +588,7 @@ function generateCustomDnsRecordsList($tpl)
                 $ttl = $matches['ttl'] . ' ' . tr('Sec.');
             }
 
+            $status = translate_dmn_status($row['domain_dns_status'], true);
             $row['domain_text'] = decode_idna(stripcslashes(trim($row['domain_text'], '"')));
             $tpl->assign(array(
                 'DNS_DOMAIN' => tohtml(decode_idna($row['zone_name'])),
@@ -595,9 +596,10 @@ function generateCustomDnsRecordsList($tpl)
                 'DNS_TTL' => tohtml($ttl),
                 'DNS_CLASS' => tohtml($row['domain_class']),
                 'DNS_TYPE' => tohtml($row['domain_type']),
-                'LONG_DNS_DATA' => tohtml($row['domain_text']),
-                'SHORT_DNS_DATA' => strlen($row['domain_text']) > 25 ? substr($row['domain_text'], 0, 17) . '...' : $row['domain_text'],
-                'DNS_STATUS' => tohtml(translate_dmn_status($row['domain_dns_status'], true)),
+                'LONG_DNS_DATA' => tohtml($row['domain_text'], 'htmlAttr'),
+                'SHORT_DNS_DATA' => strlen($row['domain_text']) > 15 ? substr($row['domain_text'], 0, 15) . ' ...' : $row['domain_text'],
+                'LONG_DNS_STATUS' => tohtml(nl2br($status), 'htmlAttr'),
+                'SHORT_DNS_STATUS' => strlen($status) > 15 ? substr($status, 0, 15) . ' ...' : $status,
                 'DNS_ACTION_SCRIPT_EDIT' => $actionScriptEdit,
                 'DNS_ACTION_EDIT' => $actionEdit
             ));

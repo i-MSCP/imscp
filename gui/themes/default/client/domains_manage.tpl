@@ -1,4 +1,3 @@
-
 <script>
     function action_delete(link, recordType) {
         if(link.href == '#') return false;
@@ -143,7 +142,7 @@
         <!-- BDP: sub_status_reload_true -->
         <td>
             <a href="http://{SUB_NAME}.{SUB_ALIAS_NAME}/" class="icon i_domain_icon" target="_blank" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</a>
-            <a href="http://{ALTERNATE_URL}" target="_blank" title="{ALTERNATE_URL_TOOLTIP}"><small><strong>[{TR_ALT_URL}]</strong></small></a></div>
+            <a href="http://{ALTERNATE_URL}" target="_blank" title="{ALTERNATE_URL_TOOLTIP}"><small><strong>[{TR_ALT_URL}]</strong></small></a>
         </td>
         <!-- EDP: sub_status_reload_true -->
         <!-- BDP: sub_status_reload_false -->
@@ -193,7 +192,7 @@
         <td>{DNS_CLASS}</td>
         <td>{DNS_TYPE}</td>
         <td><span class="tips" title="{LONG_DNS_DATA}">{SHORT_DNS_DATA}</span></td>
-        <td>{DNS_STATUS}</td>
+        <td><span class="tips" title="{LONG_DNS_STATUS}">{SHORT_DNS_STATUS}</span></td>
         <td>
             <!-- BDP: dns_edit_link -->
             <a class="icon i_edit" href="{DNS_ACTION_SCRIPT_EDIT}" title="{DNS_ACTION_EDIT}">{DNS_ACTION_EDIT}</a>

@@ -56,7 +56,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 252;
+    protected $lastUpdate = 253;
 
     /**
      * Singleton - Make new unavailable
@@ -1801,5 +1801,19 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected function r252()
     {
         return "UPDATE plugin SET plugin_lockers = '{}' WHERE plugin_lockers = 'null'";
+    }
+
+    /**
+     * Change domain_dns.domain_dns_status column length
+     *
+     * @return null|string SQL statement to be executed or NULL
+     */
+    protected function r253()
+    {
+        return $this->changeColumn(
+            'domain_dns',
+            'domain_dns_status',
+            "domain_dns_status TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL"
+        );
     }
 }

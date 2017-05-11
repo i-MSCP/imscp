@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '252');
+  ('DATABASE_REVISION', '253');
 
 -- --------------------------------------------------------
 
@@ -187,7 +187,7 @@ CREATE TABLE IF NOT EXISTS `domain_dns` (
   `domain_type` enum('A','AAAA','CERT','CNAME','DNAME','GPOS','KEY','KX','MX','NAPTR','NSAP','NS','NXT','PTR','PX','SIG','SRV','TXT','SPF') collate utf8_unicode_ci NOT NULL DEFAULT 'A',
   `domain_text` text collate utf8_unicode_ci NOT NULL,
   `owned_by` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT 'custom_dns_feature',
-  `domain_dns_status` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT 'ok',
+  `domain_dns_status` text collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`domain_dns_id`),
   UNIQUE KEY `domain_id` (`domain_id`,`alias_id`,`domain_dns`(255),`domain_class`,`domain_type`,`domain_text`(255))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

@@ -37,24 +37,33 @@ iMSCP::EventManager->getInstance()->register(
 
         return 0 unless @{$data->{'DNS_RECORDS'}};
 
+        my $domainIP = iMSCP::Net->getInstance( )->isRoutableAddr( $data->{'DOMAIN_IP'} )
+            ? $data->{'DOMAIN_IP'} : $data->{'BASE_SERVER_PUBLIC_IP'};
+
         for(@{$data->{'DNS_RECORDS'}}) {
             my ($name, $class, $type, $rdata) = @{$_};
             if ($name =~ /^\Q$data->{'DOMAIN_NAME'}.\E(?:\s+\d+)?/
                 && $class eq 'IN'
                 && ($type eq 'A' || $type eq 'AAAA')
-                && $rdata ne $data->{'DOMAIN_IP'}
+                && $rdata ne $domainIP
             ) {
                 # Remove default A or AAAA record for $data->{'DOMAIN_NAME'}
-                $$wrkDbFileContent =~ s/
-                    ^(?:\@|\Q$data->{'DOMAIN_NAME'}.\E)(?:\s+\d+)?\s+IN\s+$type\s+\Q$data->{'DOMAIN_IP'}\E\n
+                ${$wrkDbFileContent} =~ s/
+                    ^(?:\@|\Q$data->{'DOMAIN_NAME'}.\E)(?:\s+\d+)?\s+IN\s+$type\s+\Q$domainIP\E\n
                     //gmx;
-            } elsif ($name =~ /^www\Q.$data->{'DOMAIN_NAME'}.\E(?:\s+\d+)?/
+
+                next;
+            };
+
+            if ($name =~ /^www\Q.$data->{'DOMAIN_NAME'}.\E(?:\s+\d+)?/
                 && $class eq 'IN'
                 && $type eq 'CNAME'
                 && $rdata ne $data->{'DOMAIN_NAME'}
             ) {
                 # Delete default www CNAME record for $data->{'DOMAIN_NAME'}
-                $$wrkDbFileContent =~ s/^www\s+IN\s+CNAME\s+(?:\@|\Q$data->{'DOMAIN_NAME'}.\E)\n//gm;
+                ${$wrkDbFileContent} =~ s/
+                    ^www(?:\Q.$data->{'DOMAIN_NAME'}.\E)?\s+IN\s+CNAME\s+(?:\@|\Q$data->{'DOMAIN_NAME'}.\E)\n
+                    //gmx;
             }
         }
 
@@ -71,16 +80,18 @@ iMSCP::EventManager->getInstance()->register(
         my ($wrkDbFileContent, $data) = @_;
 
         my $net = iMSCP::Net->getInstance();
-        my $rrType = $net->getAddrVersion( $data->{'DOMAIN_IP'} ) eq 'ipv4' ? 'A' : 'AAAA';
+        my $domainIP = $net->isRoutableAddr( $data->{'DOMAIN_IP'} )
+            ? $data->{'DOMAIN_IP'} : $data->{'BASE_SERVER_PUBLIC_IP'};
+        my $rrType = $net->getAddrVersion( $domainIP ) eq 'ipv4' ? 'A' : 'AAAA';
 
         # Re-add default A or AAAA record for $data->{'DOMAIN_NAME'}
-        if ($$wrkDbFileContent !~ /^\Q$data->{'DOMAIN_NAME'}.\E(?:\s+\d+)?\s+IN\s+$rrType\s+/m) {
-            $$wrkDbFileContent .= "$data->{'DOMAIN_NAME'}.\t\tIN\t$rrType\t$data->{'DOMAIN_IP'}\n";
+        if (${$wrkDbFileContent} !~ /^\Q$data->{'DOMAIN_NAME'}.\E(?:\s+\d+)?\s+IN\s+$rrType\s+/m) {
+            ${$wrkDbFileContent} .= "$data->{'DOMAIN_NAME'}.\t\tIN\t$rrType\t$domainIP\n";
         }
 
         # Re-add default www CNAME record for $data->{'DOMAIN_NAME'}
-        if ($$wrkDbFileContent !~ /^www\Q.$data->{'DOMAIN_NAME'}.\E(?:\s+\d+)?\s+IN\s+CNAME\s+/m) {
-            $$wrkDbFileContent .= "www.$data->{'DOMAIN_NAME'}.\t\tIN\tCNAME\t$data->{'DOMAIN_NAME'}.\n";
+        if (${$wrkDbFileContent} !~ /^www\Q.$data->{'DOMAIN_NAME'}.\E(?:\s+\d+)?\s+IN\s+CNAME\s+/m) {
+            ${$wrkDbFileContent} .= "www.$data->{'DOMAIN_NAME'}.\t\tIN\tCNAME\t$data->{'DOMAIN_NAME'}.\n";
         }
 
         0;

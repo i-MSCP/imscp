@@ -632,13 +632,15 @@ function client_saveDnsRecord($dnsRecordId)
     }
 
     // Check for conflict with existent CNAME
-    if (hasConflict($dnsRecordName, $dnsRecordType, ($dnsRecordId > 0) ? false : true, $errorString)) {
-        set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
-    }
+    // Check removed because it prevent user to override default CNAME record
+    // See 10_named_override_default_rr.pl listener file
+    //if (hasConflict($dnsRecordName, $dnsRecordType, ($dnsRecordId > 0) ? false : true, $errorString)) {
+    //    set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
+    //}
 
-    if (Zend_Session::namespaceIsset('pageMessages')) {
-        return false;
-    }
+    //if (Zend_Session::namespaceIsset('pageMessages')) {
+    //    return false;
+    //}
 
     $dnsRecordName .= '.'; // Add trailing dot
     $dnsRecordName .= "\t$ttl"; // Add TTL
