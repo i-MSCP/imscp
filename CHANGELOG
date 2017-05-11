@@ -23,6 +23,7 @@ DISTRIBUTION
 
 FRONTEND
     Fixed: Allows auto-completion for login form (regression fix)
+    Fixed: Allow lower value than `post_max_size' for `memory_limit' (PHP Editor)
     Fixed: Integrity constraint violation: 1052 Column 'fname' in where clause is ambiguous when searching user by name
     Fixed: Non well formed numeric value encountered in utils_getPhpValueInBytes() function
 

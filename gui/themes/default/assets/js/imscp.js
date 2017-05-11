@@ -349,9 +349,10 @@
                         $(this).addClass("ui-state-error");
                         _updateMesssages(id, sprintf(imscp_i18n.core.out_of_range_value_error, '<strong>' + id + '</strong>', 1, maxLimit));
                     } else if (id == 'post_max_size' && parseInt($("#memory_limit").val()) <= curLimit) {
-                        $(this).addClass("ui-state-error");
-                        _updateMesssages(id, sprintf(imscp_i18n.core.lower_value_expected_error, '<strong>' + id + '</strong>', '<strong>memory_limit</strong>'));
-                    } else if (id == 'upload_max_filesize' && parseInt($("#post_max_size").val()) <= curLimit) {
+                    //    $(this).addClass("ui-state-error");
+                    //    _updateMesssages(id, sprintf(imscp_i18n.core.lower_value_expected_error, '<strong>' + id + '</strong>', '<strong>memory_limit</strong>'));
+                    //} else if (id == 'upload_max_filesize' && parseInt($("#post_max_size").val()) <= curLimit) {
+                    } else if (id == 'upload_max_filesize' && parseInt($("#post_max_size").val()) < curLimit) {
                         $(this).addClass("ui-state-error");
                         _updateMesssages(id, sprintf(imscp_i18n.core.lower_value_expected_error, '<strong>' + id + '</strong>', '<strong>post_max_size</strong>'));
                     } else {

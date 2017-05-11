@@ -153,7 +153,7 @@ function generatePage($tpl)
         $translations['core']['close'] = tr('Close');
         $translations['core']['fields_ok'] = tr('All fields are valid.');
         $translations['core']['out_of_range_value_error'] = tr('Value for the PHP %%s directive must be in range %%d to %%d.');
-        $translations['core']['lower_value_expected_error'] = tr('%%s must be lower than %%s.');
+        $translations['core']['lower_value_expected_error'] = tr('%%s cannot be greater than %%s.');
         $translations['core']['error_field_stack'] = iMSCP_Registry::isRegistered('errFieldsStack') ? iMSCP_Registry::get('errFieldsStack') : array();
     });
 
