@@ -696,8 +696,6 @@ class iMSCP_PHPini
                     && $value <= $this->domainIni['phpiniPostMaxSize']
                     && $value >= 1
                     && $value <= 10000;
-            case 'phpiniOpenBaseDir':
-                return is_string($value);
             default:
                 throw new iMSCP_Exception(sprintf('Unknown `%s` configuration option.', $varname));
         }
