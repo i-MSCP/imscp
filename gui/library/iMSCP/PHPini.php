@@ -682,14 +682,14 @@ class iMSCP_PHPini
                     && $value >= 1
                     && $value <= 10000;
             case 'phpiniPostMaxSize':
-                // According PHP doc, post_max_size value must be lower than memory_limit value
+                // According PHP doc, post_max_size value *should* be lower than memory_limit value
                 // Limit released since i-MSCP 1.4.4
                 return is_number($value)
                     //&& $value < $this->domainIni['phpiniMemoryLimit']
                     && $value >= 1
                     && $value <= 10000;
             case 'phpiniUploadMaxFileSize':
-                // According PHP doc, max_upload_filesize value must be lower than post_max_size value
+                // According PHP doc, max_upload_filesize value *must* be lower than post_max_size value
                 // Equality accepted since i-MSCP 1.4.4
                 return is_number($value)
                     //&& $value < $this->domainIni['phpiniPostMaxSize']
