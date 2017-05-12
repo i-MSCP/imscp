@@ -85,6 +85,7 @@ VENDOR
 
 YOUTRACK
     IP-1715 Changing directory in protected area results in obsolete .htaccess file in old directory
+    IP-1716 PHP editor - Caret is jumping to the end of the input field each time validation is triggered
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.3

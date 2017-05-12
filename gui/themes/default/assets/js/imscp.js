@@ -275,6 +275,7 @@
                 });
             },
             close: function() {
+                $('input').blur();
                 $(window).off("resize scroll");
             }
         });
@@ -337,32 +338,27 @@
         var timerId;
         var $iniFields = $("#php_ini_values").find("input");
 
-        $iniFields.on('keyup mouseup paste copy cut', function () {
+        $iniFields.on('keyup click', function () {
             clearTimeout(timerId);
             timerId = setTimeout(function () {
                 $iniFields.each(function () { // We revalidate all fields because some are dependent of others
                     var id = $(this).attr("id");
-                    var curLimit = parseInt($(this).val());
-                    var maxLimit = parseInt($(this).attr('max'));
+                    var curLimit = parseInt($(this).val() || 0);
+                    var maxLimit = parseInt($(this).attr("max"));
 
                     if (curLimit < 1 || curLimit > maxLimit) {
                         $(this).addClass("ui-state-error");
                         _updateMesssages(id, sprintf(imscp_i18n.core.out_of_range_value_error, '<strong>' + id + '</strong>', 1, maxLimit));
-                    } else if (id == 'post_max_size' && parseInt($("#memory_limit").val()) <= curLimit) {
-                    //    $(this).addClass("ui-state-error");
-                    //    _updateMesssages(id, sprintf(imscp_i18n.core.lower_value_expected_error, '<strong>' + id + '</strong>', '<strong>memory_limit</strong>'));
-                    //} else if (id == 'upload_max_filesize' && parseInt($("#post_max_size").val()) <= curLimit) {
                     } else if (id == 'upload_max_filesize' && parseInt($("#post_max_size").val()) < curLimit) {
                         $(this).addClass("ui-state-error");
                         _updateMesssages(id, sprintf(imscp_i18n.core.lower_value_expected_error, '<strong>' + id + '</strong>', '<strong>post_max_size</strong>'));
                     } else {
                         $(this).removeClass("ui-state-error");
                         _updateMesssages(id);
-                        $(this).val(curLimit);
                     }
                 });
             }, 200);
-        }).trigger('keyup'); // We trigger the keyup event on page load to catch any inconsistency with ini values
+        }).first().trigger('keyup'); // We trigger the keyup event on page load to catch any inconsistency with ini values
     })
 })(jQuery);
 
