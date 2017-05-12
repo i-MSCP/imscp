@@ -137,7 +137,8 @@ sub postinstall
         sub {
             push @{$_[0]}, [ sub { $self->start( ); }, 'Httpd (Apache2/php-fpm)' ];
             0;
-        }
+        },
+        3
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdPostInstall', 'apache_php_fpm' );
 }

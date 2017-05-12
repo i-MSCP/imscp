@@ -82,7 +82,7 @@ sub postinstall
             push @{$_[0]}, [ sub { $self->restart( ); }, 'MariaDB' ];
             0;
         },
-        99
+        7
     );
 
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'mariadb' );

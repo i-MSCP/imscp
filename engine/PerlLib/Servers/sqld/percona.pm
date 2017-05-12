@@ -81,7 +81,7 @@ sub postinstall
             push @{$_[0]}, [ sub { $self->restart( ); }, 'Percona' ];
             0;
         },
-        99
+        7
     );
 
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'percona' );

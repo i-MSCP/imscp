@@ -133,7 +133,8 @@ sub postinstall
         sub {
             push @{$_[0]}, [ sub { $self->start( ); }, 'Httpd (Apache2/ITK)' ];
             0;
-        }
+        },
+        3
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdPostInstall', 'apache_itk' );
 }

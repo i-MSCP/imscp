@@ -121,7 +121,8 @@ sub postinstall
         sub {
             push @{$_[0]}, [ sub { $self->start( ); }, 'ProFTPD' ];
             0;
-        }
+        },
+        4
     );
 
     $self->{'eventManager'}->trigger( 'afterFtpdPostInstall', 'proftpd' );

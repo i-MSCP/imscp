@@ -126,7 +126,8 @@ sub postinstall
         sub {
             push @{$_[0]}, [ sub { $self->start( ); }, 'i-MSCP FrontEnd services' ];
             0;
-        }
+        },
+        2
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndPostInstall' );
 }

@@ -126,7 +126,7 @@ sub postinstall
             push @{$_[0]}, [ sub { $self->restart( ); }, 'Bind9' ];
             0;
         },
-        98
+        100
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterNamedPostInstall' );
 }

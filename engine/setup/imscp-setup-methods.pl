@@ -233,14 +233,14 @@ sub setupAskServerHostname
     if($main::reconfigure =~ /^(?:system_hostname|hostnames|all|forced)$/
         || !isValidHostname( $hostname )
     ) {
-        chomp( $hostname ) unless($hostname || execute( 'hostname -f', \ $hostname, \ my $stderr ));
+        chomp( $hostname = $hostname || `hostname --fqdn 2>/dev/null` || '');
         $hostname = idn_to_unicode( $hostname, 'utf-8' );
 
         my ($rs, $msg) = (0, '');
         do {
             ($rs, $hostname) = $dialog->inputbox( <<"EOF", $hostname );
 
-Please enter your server hostname:$msg
+Please enter your server fully qualified hostname:$msg
 EOF
             $msg = isValidHostname( $hostname ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
         } while($rs < 30 && $msg);
@@ -551,7 +551,6 @@ sub setupAskImscpDbName
 {
     my $dialog = shift;
     my $dbName = setupGetQuestion( 'DATABASE_NAME', 'imscp' );
-    my ($rs, $msg) = (0, '');
 
     if($main::reconfigure =~ /^(?:sql|servers|all|forced)$/
         || (!setupIsImscpDb( $dbName ) && !iMSCP::Getopt->preseed)
@@ -942,7 +941,6 @@ sub setupServerHostname
     $rs = $file->copyFile( '/etc/hosts.bkp' ) unless -f '/etc/hosts.bkp';
     return $rs if $rs;
 
-    my $net = iMSCP::Net->getInstance( );
     my $content = <<"EOF";
 127.0.0.1   $hostnameLocal   localhost
 $lanIP  $hostname   $host
@@ -1241,6 +1239,7 @@ sub setupSecureSqlInstallation
         return 1;
     }
 
+    $db->useDatabase( $oldDatabase );
     iMSCP::EventManager->getInstance( )->trigger( 'afterSetupSecureSqlInstallation' );
 }
 
@@ -1450,18 +1449,28 @@ sub setupServersAndPackages
 sub setupRestartServices
 {
     my @services = ( );
+    my $eventManager = iMSCP::EventManager->getInstance( );
 
-    my $rs = iMSCP::EventManager->getInstance( )->trigger( 'beforeSetupRestartServices', \@services );
-    return $rs if $rs;
-
-    my $serviceMngr = iMSCP::Service->getInstance( );
-    unshift @services, (
-        [ sub { $serviceMngr->restart( 'imscp_traffic' ); 0; }, 'i-MSCP Traffic Logger' ],
-        [ sub { $serviceMngr->start( 'imscp_daemon' ); 0; }, 'i-MSCP Daemon' ]
+    my $rs = $eventManager->register(
+        'beforeSetupRestartServices',
+        sub {
+            push @{$_[0]}, [ sub { iMSCP::Service->getInstance( )->restart( 'imscp_traffic' ); 0; }, 'i-MSCP Traffic Logger' ];
+            0;
+        },
+        99
     );
-
+    $rs ||= $eventManager->register(
+        'beforeSetupRestartServices',
+        sub {
+            push @{$_[0]}, [ sub { iMSCP::Service->getInstance( )->start( 'imscp_daemon' ); 0; }, 'i-MSCP Daemon' ];
+            0;
+        },
+        99
+    );
+    $rs ||= $eventManager->trigger( 'beforeSetupRestartServices', \@services );
+    return $rs if $rs;
+    
     startDetail( );
-
     my $nbSteps = @services;
     my $step = 1;
     for (@services) {
@@ -1469,9 +1478,9 @@ sub setupRestartServices
         return $rs if $rs;
         $step++;
     }
-
     endDetail( );
-    iMSCP::EventManager->getInstance( )->trigger( 'afterSetupRestartServices' );
+
+    $eventManager->trigger( 'afterSetupRestartServices' );
 }
 
 sub setupRemoveOldConfig

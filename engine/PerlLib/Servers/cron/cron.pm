@@ -149,7 +149,8 @@ sub postinstall
                     'Cron'
                 ];
             0;
-        }
+        },
+        1
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterCronPostInstall', 'cron' );
 }

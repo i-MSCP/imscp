@@ -25,18 +25,13 @@ package iMSCP::Execute;
 
 use strict;
 use warnings;
-use Cwd qw/ realpath /;
+use Capture::Tiny qw/ capture capture_stdout capture_stderr /;
 use Errno ;
 use File::Basename qw/ dirname /;
 use iMSCP::Debug qw/ debug error /;
 use IO::Select;
 use IPC::Open3;
 use Symbol 'gensym';
-
-my $vendorLibDir;
-BEGIN { $vendorLibDir = realpath( dirname( __FILE__ ).'/../../PerlVendor' ); }
-use lib $vendorLibDir;
-use Capture::Tiny ':all';
 use parent 'Exporter';
 
 our @EXPORT = qw/ execute executeNoWait escapeShell getExitCode /;

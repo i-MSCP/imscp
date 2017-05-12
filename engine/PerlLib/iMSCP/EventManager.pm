@@ -25,7 +25,7 @@ package iMSCP::EventManager;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ :nostat Clone /;
+use autouse 'Clone' => qw/ clone /;
 use Hash::Util::FieldHash 'fieldhash';
 use iMSCP::Debug;
 use iMSCP::EventManager::ListenerPriorityQueue;
@@ -68,7 +68,7 @@ sub trigger
 
     # The priority queue acts as a heap, which implies that as items are popped
     # they are also removed. Thus we clone it for purposes of iteration.
-    my $listenerPriorityQueue = Clone::clone( $EVENTS{$self}->{$eventName} );
+    my $listenerPriorityQueue = clone( $EVENTS{$self}->{$eventName} );
     while(my $listener = $listenerPriorityQueue->pop( )) {
         my $rs = $listener->( @params );
         return $rs if $rs;

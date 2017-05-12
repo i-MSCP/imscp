@@ -31,7 +31,7 @@ use strict;
 use warnings;
 use File::Basename;
 use FindBin;
-use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Bootstrapper;

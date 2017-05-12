@@ -122,7 +122,8 @@ sub postinstall
                     'Postfix'
                 ];
             0;
-        }
+        },
+        6
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaPostinstall', 'postfix' );
 }
@@ -684,7 +685,9 @@ sub getTraffic
         );
 
         # Tie the snapshot for easy handling
-        tie my @snapshot, 'Tie::File', $snapshotFH or die( sprintf( "Couldn't tie %s file", $snapshotFH ) );
+        tie my @snapshot, 'Tie::File', $snapshotFH, memory => 10_485_760 or die(
+            sprintf( "Couldn't tie %s file", $snapshotFH )
+        );
 
         # We keep trace of the index for the live log file only
         unless ($logFile =~ /\.1$/) {
@@ -697,8 +700,8 @@ sub getTraffic
         # We have already seen the log file in the past. We must skip logs that were already processed
         if ($snapshot[$idx] && $snapshot[$idx] eq $idxContent) {
             debug( sprintf( 'Skipping logs that were already processed (lines %d to %d)', 1, ++$idx ) );
-            splice(@snapshot, 0, $idx);
-            my $logsFound = @snapshot > 0;
+
+            my $logsFound = (@snapshot = @snapshot[$idx .. $#snapshot]) > 0;
             untie(@snapshot);
             $snapshotFH->close();
 

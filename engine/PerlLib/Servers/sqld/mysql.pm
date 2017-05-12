@@ -89,7 +89,7 @@ sub postinstall
             push @{$_[0]}, [ sub { $self->restart( ); }, 'MySQL' ];
             0;
         },
-        99
+        7
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'mysql' );
 }
