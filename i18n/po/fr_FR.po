@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: i-MSCP 1.3.x\n"
+"Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-17 11:40+0000\n"
+"POT-Creation-Date: 2017-05-12 22:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: krok <krok@totalynet.fr>, 2017\n"
 "Language-Team: French (France) (https://www.transifex.com/i-mscp/teams/576/fr_FR/)\n"
@@ -41,8 +41,8 @@ msgid "$ORIGIN value is currently set to: %s"
 msgstr "La valeur pour $ORIGIN est actuellement: %s"
 
 #, php-format
-msgid "%%s must be lower than %%s."
-msgstr "%%s doit être inférieur à %%s."
+msgid "%%s cannot be greater than %%s."
+msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d"
@@ -2947,7 +2947,7 @@ msgid "Htaccess user successfully scheduled for addition."
 msgstr "L'utilisateur htaccess va être ajouté."
 
 msgid "Htaccess, htgroups and htpasswd errors"
-msgstr ""
+msgstr "Erreurs htaccess, htgroups et htpasswd"
 
 msgid "Http traffic"
 msgstr "Trafic HTTP"
@@ -3305,7 +3305,7 @@ msgid "Login username"
 msgstr "Identifiant"
 
 msgid "Login with your FTP account"
-msgstr "Se connecter avec votre compte FTP"
+msgstr "Connectez-vous avec votre compte FTP"
 
 msgid "Logo file"
 msgstr "Fichier logo"
@@ -5064,7 +5064,7 @@ msgid "Switch"
 msgstr "Incarner"
 
 msgid "Switch to the backups directory"
-msgstr "Aller dans le répertoire des sauvegardes"
+msgstr "Allez dans le répertoire /backups"
 
 msgid "Switch to user interface"
 msgstr "Basculer sur l'interface utilisateur"
@@ -6405,7 +6405,7 @@ msgid "missing domain"
 msgstr "domaine absent"
 
 msgid "n/a"
-msgstr ""
+msgstr "nd"
 
 msgid "n\\a"
 msgstr "Non disponible"

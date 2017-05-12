@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: i-MSCP 1.3.x\n"
+"Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-17 11:40+0000\n"
+"POT-Creation-Date: 2017-05-12 22:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Lukasz Nowak <theqkash@theqkash.pl>, 2017\n"
 "Language-Team: Russian (Russia) (https://www.transifex.com/i-mscp/teams/576/ru_RU/)\n"
@@ -41,8 +41,8 @@ msgid "$ORIGIN value is currently set to: %s"
 msgstr "Значение $ORIGIN на данный момент: %s"
 
 #, php-format
-msgid "%%s must be lower than %%s."
-msgstr "%%s должно быть ниже, чем %%s."
+msgid "%%s cannot be greater than %%s."
+msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d"
@@ -1039,7 +1039,7 @@ msgid "At least one intermediate certificate is invalid or missing."
 msgstr "По крайней мере один сертефикат не валидный или отсутствует."
 
 msgid "At least one of your mailboxes is over quota."
-msgstr ""
+msgstr "По крайней мере, один из ваших почтовых ящиков превышает квоту."
 
 msgid "Authentication by group"
 msgstr "Аутентификация по группе"
@@ -2714,6 +2714,8 @@ msgid ""
 "Force synching of mailboxes quota info. Quota info are automatically synced "
 "every 5 minutes."
 msgstr ""
+"Принудительнo синхронизировать данные квоты почтовых ящиков. Квоты "
+"автоматически синхронизируется каждые 5 минут."
 
 msgid "Forward"
 msgstr "Перенаправление"
@@ -2888,7 +2890,7 @@ msgid "Htaccess user successfully scheduled for addition."
 msgstr "Пользователь Htaccess успешно помечен для добавления."
 
 msgid "Htaccess, htgroups and htpasswd errors"
-msgstr ""
+msgstr "Ошибки htaccess, htgroups и htpasswd"
 
 msgid "Http traffic"
 msgstr "HTTP трафик"
@@ -3304,7 +3306,7 @@ msgid "Mail usage"
 msgstr "Использование почты"
 
 msgid "Mailboxes quota info were synced."
-msgstr ""
+msgstr "Данные квоты были синхронизированы."
 
 msgid "Main menu labels visibility successfully updated."
 msgstr "Отображение ярлыков меню успешно обновлено. "
@@ -4980,7 +4982,7 @@ msgid "Switch to user interface"
 msgstr "Перейти в интерфейс пользователя"
 
 msgid "Sync quota info"
-msgstr ""
+msgstr "Синхронизация квоты"
 
 msgid "Syntax error found in mail forward list."
 msgstr "Была найдена ошибка синтаксиса в списке перенаправления."
@@ -6297,7 +6299,7 @@ msgid "missing domain"
 msgstr "отсутствующий домен"
 
 msgid "n/a"
-msgstr ""
+msgstr "n/a"
 
 msgid "n\\a"
 msgstr "нет"
