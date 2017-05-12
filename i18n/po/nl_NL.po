@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: i-MSCP 1.3.x\n"
+"Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-04-17 11:40+0000\n"
+"POT-Creation-Date: 2017-05-12 22:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Dutch (Netherlands) (https://www.transifex.com/i-mscp/teams/576/nl_NL/)\n"
@@ -39,8 +39,8 @@ msgid "$ORIGIN value is currently set to: %s"
 msgstr "$ORIGIN is momenteel ingesteld op: %s"
 
 #, php-format
-msgid "%%s must be lower than %%s."
-msgstr "%%s dient lager te zijn dan %%s."
+msgid "%%s cannot be greater than %%s."
+msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d"
@@ -2908,7 +2908,7 @@ msgid "Htaccess user successfully scheduled for addition."
 msgstr "De htaccess-gebruiker wordt toegevoegd."
 
 msgid "Htaccess, htgroups and htpasswd errors"
-msgstr ""
+msgstr "Htaccess-, htgroups- en htpasswd-fouten"
 
 msgid "Http traffic"
 msgstr "HTTP-verkeer"
@@ -6338,7 +6338,7 @@ msgid "missing domain"
 msgstr "ontbrekend domein"
 
 msgid "n/a"
-msgstr ""
+msgstr "n/b"
 
 msgid "n\\a"
 msgstr "N/B"
