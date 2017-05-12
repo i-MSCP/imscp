@@ -22,7 +22,6 @@
 package Listener::Apache2::DualStack;
 
 use iMSCP::EventManager;
-use List::MoreUtils qw/ uniq /;
 
 #
 ## Configuration variables
