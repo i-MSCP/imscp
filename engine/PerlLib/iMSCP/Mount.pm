@@ -35,7 +35,7 @@ use Scalar::Defer;
 use Sort::Naturally;
 use parent 'Exporter';
 
-our @EXPORT_OK = qw/ mount umount setPropagationFlag isMountpoint isBindMount addMountEntry removeMountEntry getMounts /;
+our @EXPORT_OK = qw/ addMountEntry getMounts isMountpoint mount setPropagationFlag removeMountEntry umount /;
 
 # These are the fs-independent mount-flags (see sys/mount.h)
 # See http://man7.org/linux/man-pages/man2/mount.2.html for a description of these flags
@@ -199,7 +199,7 @@ sub mount( $ )
 
     debug("$fsSpec $fsFile $fsVfstype $fields->{'fs_mntops'}");
 
-    my ($mflags, $pflags, $data) = _parseOptions($fields->{'fs_mntops'});
+    my ($mflags, $pflags, $data) = _parseOptions( $fields->{'fs_mntops'} );
     $mflags |= MS_MGC_VAL unless $mflags & MS_MGC_MSK;
 
     my @mountArgv;
@@ -218,7 +218,7 @@ sub mount( $ )
     }
 
     # Create a new mount or remount an existing mount
-    else {
+    elsif($fsSpec ne 'none') {
         push @mountArgv, [ $fsSpec, $fsFile, $fsVfstype, $mflags, $data ];
     }
 
@@ -227,8 +227,8 @@ sub mount( $ )
 
     # Process the mount(2) calls
     for(@mountArgv) {
-        unless (syscall(&iMSCP::Syscall::SYS_mount, @{$_} ) == 0) {
-            error( sprintf( 'Error while executing mount(%s): %s', join(', ', @{$_}), $! || 'Unknown error' ) );
+        unless (syscall( &iMSCP::Syscall::SYS_mount, @{$_} ) == 0) {
+            error( sprintf( 'Error while executing mount(%s): %s', join( ', ', @{$_} ), $! || 'Unknown error' ) );
             return 1;
         }
     }
@@ -268,7 +268,7 @@ sub umount( $;$ )
 
         do {
             debug($fsFile);
-            unless (syscall(&iMSCP::Syscall::SYS_umount2, $fsFile, MNT_DETACH) == 0 || $!{'EINVAL'}) {
+            unless (syscall( &iMSCP::Syscall::SYS_umount2, $fsFile, MNT_DETACH ) == 0 || $!{'EINVAL'}) {
                 error( sprintf( "Error while executing umount(%s): %s", $fsFile, $! || 'Unknown error' ) );
                 return 1;
             }
@@ -282,7 +282,7 @@ sub umount( $;$ )
         next unless /^\Q$fsFile\E(\/|$)/;
         do {
             debug($_);
-            unless (syscall(&iMSCP::Syscall::SYS_umount2, $_, MNT_DETACH) == 0 || $!{'EINVAL'}) {
+            unless (syscall( &iMSCP::Syscall::SYS_umount2, $_, MNT_DETACH ) == 0 || $!{'EINVAL'}) {
                 error( sprintf( "Error while executing umount(%s): %s", $_, $! || 'Unknown error' ) );
                 return 1;
             }
@@ -314,11 +314,11 @@ sub setPropagationFlag($;$)
 
     $fsFile = File::Spec->canonpath( $fsFile );
 
-    debug("$fsFile $pflag");
+    debug( "$fsFile $pflag" );
 
-    (undef, $pflag) = _parseOptions($pflag);
+    (undef, $pflag) = _parseOptions( $pflag );
     unless ($pflag) {
-        error('Invalid propagation flags');
+        error( 'Invalid propagation flags' );
         return 1;
     }
 
@@ -379,7 +379,7 @@ sub addMountEntry( $ )
         return 1;
     }
 
-    my $rs = removeMountEntry($entry, 0); # Avoid duplicate entries
+    my $rs = removeMountEntry( $entry, 0 ); # Avoid duplicate entries
     return $rs if $rs;
 
     my $fileContent = $iMSCP_FSTAB_FH->getAsRef( );

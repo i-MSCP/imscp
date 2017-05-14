@@ -1,7 +1,7 @@
 #!/bin/sh
 ### BEGIN INIT INFO
 # Provides:          imscp_mountall
-# Required-Start:    $all
+# Required-Start:    $remote_fs
 # Required-Stop:
 # Should-Start:
 # Should-Stop:

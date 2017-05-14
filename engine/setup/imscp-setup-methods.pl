@@ -189,8 +189,8 @@ sub setupTasks
         [ \&setupKernel,                  'Setup kernel' ],
         [ \&setupCreateMasterUser,        'Creating system master user' ],
         [ \&setupServerHostname,          'Setting up server hostname' ],
-        [ \&setupServiceSsl,              'Configuring SSL for i-MSCP services' ],
-        [ \&setupServices,                'Enabling i-MSCP services' ],
+        [ \&setupServiceSsl,              'Configuring SSL for services' ],
+        [ \&setupCoreServices,            'Setup core services' ],
         [ \&setupRegisterDelayedTasks,    'Registering delayed tasks' ],
         [ \&setupRegisterPluginListeners, 'Registering plugin setup listeners' ],
         [ \&setupServersAndPackages,      'Processing servers/packages' ],
@@ -1014,13 +1014,10 @@ sub setupServiceSsl
     )->createCertificateChain( );
 }
 
-sub setupServices
+sub setupCoreServices
 {
     my $serviceMngr = iMSCP::Service->getInstance( );
     $serviceMngr->enable( $_ ) for 'imscp_daemon', 'imscp_traffic', 'imscp_mountall';
-    
-    # Make sure that the imscp_mountall service is started
-    $serviceMngr->start( 'imscp_mountall' );
     0;
 }
 
@@ -1451,7 +1448,18 @@ sub setupRestartServices
     my @services = ( );
     my $eventManager = iMSCP::EventManager->getInstance( );
 
+    # This is a bit annoying but we have not choice.
+    # Not doing this would prevent propagation of upstream changes (eg: static mount entries)
     my $rs = $eventManager->register(
+        'beforeSetupRestartServices',
+        sub {
+            push @{$_[0]}, [ sub { iMSCP::Service->getInstance( )->restart( 'imscp_mountall' ); 0; }, 'i-MSCP mounts' ];
+            0;
+        },
+        999
+    );
+
+    $rs ||= $eventManager->register(
         'beforeSetupRestartServices',
         sub {
             push @{$_[0]}, [ sub { iMSCP::Service->getInstance( )->restart( 'imscp_traffic' ); 0; }, 'i-MSCP Traffic Logger' ];

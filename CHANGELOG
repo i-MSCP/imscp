@@ -14,6 +14,7 @@ BACKEND
 
 CONFIG
     Added: 'CMD_SYSCTL` and 'SYSCTL_CONF_DIR` parameters for sysctl(8)
+    Fixed: Make sure that the root directory is marked as shared in regards to mount propagation (at least for i-MSCP mounts)
 
 DATABASE
     Updated: domain_dns.domain_dns_status column length (VARCHAR toTEXT)

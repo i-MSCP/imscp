@@ -58,13 +58,7 @@ sub process
         chomp;
         my $entryFields;
         @{$entryFields}{ qw/ fs_spec fs_file fs_vfstype fs_mntops / } = split;
-        
-        if($action eq 'start') {
-            $rs = mount( $entryFields ) unless isMountpoint( $entryFields->{'fs_file'} );
-        } else {
-            $rs = umount( $entryFields->{'fs_file'} );
-        }
-
+        $rs = ($action eq 'start') ? mount( $entryFields ) : umount( $entryFields->{'fs_file'} );
         last if $rs;
     }
 

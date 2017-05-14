@@ -3,7 +3,7 @@
 [Unit]
 Description=Mounts i-MSCP filesystems
 Before=umount.target
-After=rc-local.service
+After=local-fs.target
 Wants=local-fs.target
 ConditionPathExists=/etc/imscp/mounts/mounts.conf
 
