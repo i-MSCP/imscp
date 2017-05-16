@@ -53,7 +53,7 @@ use parent 'Common::SingletonClass';
 
 sub process
 {
-    my $self = shift;
+    my ($self) = @_;
 
     # Process plugins tasks
     # Must always be processed first to allow the plugins registering their listeners on the event manager
@@ -318,7 +318,7 @@ sub process
     );
 
     # Process software package tasks
-    my $rdata = iMSCP::Database->factory()->doQuery(
+    my $rdata = iMSCP::Database->factory( )->doQuery(
         'software_id',
         "
             SELECT domain_id, alias_id, subdomain_id, subdomain_alias_id, software_id, path, software_prefix,
@@ -358,11 +358,11 @@ sub process
             debug( $stdout ) if $stdout;
         }
 
-        endDebug();
+        endDebug( );
     }
 
     # Process software tasks
-    $rdata = iMSCP::Database->factory()->doQuery(
+    $rdata = iMSCP::Database->factory( )->doQuery(
         'software_id',
         "
             SELECT software_id, reseller_id, software_archive, software_status, software_depot
@@ -397,7 +397,7 @@ sub process
             debug( $stdout ) if $stdout;
         }
 
-        endDebug();
+        endDebug( );
     }
 }
 
@@ -417,10 +417,10 @@ sub process
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     defined $self->{'mode'} or die( 'mode attribute is not defined' );
-    $self->{'db'} = iMSCP::Database->factory();
+    $self->{'db'} = iMSCP::Database->factory( );
     $self;
 }
 
@@ -441,10 +441,10 @@ sub _process
 
     debug( sprintf( 'Processing %s tasks...', $module ) );
 
-    my $dbh = $self->{'db'}->getRawDb();
+    my $dbh = $self->{'db'}->getRawDb( );
     my $rows = $dbh->selectall_arrayref( $sql, { Slice => { } } );
 
-    defined $rows && !$dbh->err() or die( $dbh->errstr() );
+    defined $rows && !$dbh->err( ) or die( $dbh->errstr( ) );
 
     unless (@{$rows}) {
         debug( sprintf( 'No task to process for %s', $module ) );
@@ -454,6 +454,7 @@ sub _process
     eval "require $module" or die( sprintf( "Couldn't load %s: %s", $module, $@ ) );
 
     my ($nStep, $nSteps) = (0, scalar @{$rows});
+    my $needStepper = grep( $self->{'mode'} eq $_, ( 'setup', 'uninstall' ) );
 
     for my $row(@{$rows}) {
         my ($id, $name, $rs) = ($row->{'id'}, encode_utf8( $row->{'name'} ));
@@ -461,17 +462,17 @@ sub _process
         debug( sprintf( 'Processing %s tasks for: %s (ID %s)', $module, $name, $id ) );
         newDebug( $module.(($perItemLogFile) ? "_${name}" : '').'.log' );
 
-        if (grep( $self->{'mode'} eq $_, ( 'setup', 'uninstall' ) )) {
+        if ($needStepper) {
             $rs = step(
-                sub { $module->new()->process( $id ) },
+                sub { $module->new( )->process( $id ) },
                 sprintf( 'Processing %s tasks for: %s (ID %s)', $module, $name, $id ), $nSteps, ++$nStep
             );
         } else {
-            $rs = $module->new()->process( $id );
+            $rs = $module->new( )->process( $id );
         }
 
         $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error');
-        endDebug();
+        endDebug( );
     }
 
     1;

@@ -55,7 +55,7 @@ use parent 'Common::SingletonClass';
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_disableDefaultConfig( );
     $rs ||= $self->_createCacheDir( );
@@ -79,7 +79,7 @@ sub install
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'httpd'} = Servers::httpd->factory( );
     $self;
@@ -95,7 +95,7 @@ sub _init
 
 sub _createCacheDir
 {
-    my $self = shift;
+    my ($self) = @_;
 
     iMSCP::Dir->new( dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'} )->make(
         {
@@ -116,7 +116,7 @@ sub _createCacheDir
 
 sub _setupApache2
 {
-    my $self = shift;
+    my ($self) = @_;
 
     # Create Basic authentication file
 

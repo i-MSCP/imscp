@@ -51,7 +51,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     # In setup context, processing must be delayed, else we won't be able to connect to SQL server
     if ($main::execmode eq 'setup') {
@@ -84,7 +84,7 @@ sub uninstall
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'ftpd'} = Servers::ftpd::proftpd->getInstance( );
     $self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
@@ -118,7 +118,7 @@ sub _init
 
 sub _dropSqlUser
 {
-    my $self = shift;
+    my ($self) = @_;
 
     # In setup context, take value from old conffile, else take value from current conffile
     my $dbUserHost = ($main::execmode eq 'setup')
@@ -145,7 +145,7 @@ sub _dropSqlUser
 
 sub _removeConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     # Setup context means switching to another FTP server. In such case, we simply delete the files
     if ($main::execmode eq 'setup') {

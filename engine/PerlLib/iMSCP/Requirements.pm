@@ -44,7 +44,7 @@ use parent 'Common::Object';
 
 sub all
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->user( );
     $self->_checkPrograms( );
@@ -114,7 +114,7 @@ sub checkVersion
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'programs'} = {
         PHP  => {
@@ -165,7 +165,7 @@ sub _init
 
 sub _checkPrograms
 {
-    my $self = shift;
+    my ($self) = @_;
 
     for (keys %{$self->{'programs'}}) {
         iMSCP::ProgramFinder::find( lc $_ ) or die(
@@ -199,7 +199,7 @@ sub _checkPrograms
 
 sub _checkPerlModules
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my @missingModules = ( );
     while ( my ($moduleName, $moduleVersion) = each %{$self->{'Perl'}->{'modules'}}) {
@@ -225,7 +225,7 @@ sub _checkPerlModules
 
 sub _checkPhpModules
 {
-    my $self = shift;
+    my ($self) = @_;
 
     open my $fh, '-|', 'php', '-d', 'date.timezone=UTC', '-m' or die(
         sprintf( "Couldn't pipe to php: %s", $! )

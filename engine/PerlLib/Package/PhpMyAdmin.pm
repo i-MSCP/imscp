@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Package::PhpMyAdmin::Installer Package::PhpMyAdmin::Uninstaller /;
 use iMSCP::Config;
+use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Rights;
 use parent 'Common::SingletonClass';
@@ -94,36 +95,41 @@ sub uninstall
     Package::PhpMyAdmin::Uninstaller->getInstance( )->uninstall( );
 }
 
-=item setGuiPermissionsListener( )
+=item setGuiPermissions( )
 
- Set gui permissions event listener
+ Set gui permissions
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub setGuiPermissionsListener
+sub setGuiPermissions
 {
-    my $self = shift;
+    my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePhpMyAdminSetGuiPermissions' );
-    return $rs if $rs;
+    $self->{'eventManager'}->register(
+        'afterSetGuiPermissions',
+        sub {
+            my $rs = $self->{'eventManager'}->trigger( 'beforePhpMyAdminSetGuiPermissions' );
+            return $rs if $rs || !-d "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
 
-    return 0 unless -d "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
+            debug( "Setting permissions (event listener)" );
+            my $panelUName = my $panelGName =
+                $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-
-    $rs ||= setRights(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma",
-        {
-            user      => $panelUName,
-            group     => $panelGName,
-            dirmode   => '0550',
-            filemode  => '0440',
-            recursive => 1
+            $rs ||= setRights(
+                "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma",
+                {
+                    user      => $panelUName,
+                    group     => $panelGName,
+                    dirmode   => '0550',
+                    filemode  => '0440',
+                    recursive => 1
+                }
+            );
+            $rs ||= $self->{'eventManager'}->trigger( 'afterPhpMyAdminSetGuiPermissions' );
         }
     );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpMyAdminSetGuiPermissions' );
 }
 
 =back
@@ -142,13 +148,12 @@ sub setGuiPermissionsListener
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/pma";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-    $self->{'eventManager'}->register( 'afterFrontendSetGuiPermissions', sub { $self->setGuiPermissionsListener( ); } );
 
     if (-f "$self->{'cfgDir'}/phpmyadmin.data") {
         tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.data", readonly => 1;

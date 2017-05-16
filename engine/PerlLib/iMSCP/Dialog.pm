@@ -280,7 +280,7 @@ sub infobox
 
 sub startGauge
 {
-    my $self = shift;
+    my ($self) = @_;
 
     return 0 if iMSCP::Getopt->noprompt || $self->{'gauge'};
 
@@ -309,7 +309,7 @@ sub startGauge
 
 sub setGauge
 {
-    my $self = shift;
+    my ($self) = @_;
 
     return 0 if iMSCP::Getopt->noprompt || !$self->{'gauge'};
 
@@ -327,7 +327,7 @@ sub setGauge
 
 sub endGauge
 {
-    my $self = shift;
+    my ($self) = @_;
 
     return 0 if iMSCP::Getopt->noprompt || !$self->{'gauge'};
 
@@ -467,7 +467,7 @@ sub _init
 
 sub _resize
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $lines;
     if (exists $ENV{'LINES'}) {

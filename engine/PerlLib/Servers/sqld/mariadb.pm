@@ -48,7 +48,7 @@ use parent 'Servers::sqld::mysql';
 
 sub preinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'mariadb' );
     $rs ||= Servers::sqld::mariadb::installer->getInstance( )->preinstall( );
@@ -65,7 +65,7 @@ sub preinstall
 
 sub postinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'mariadb' );
 
@@ -98,7 +98,7 @@ sub postinstall
 
 sub uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'mariadb' );
     $rs ||= Servers::sqld::mariadb::uninstaller->getInstance( )->uninstall( );

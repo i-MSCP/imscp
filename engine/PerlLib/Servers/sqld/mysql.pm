@@ -54,7 +54,7 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall' );
     $rs ||= Servers::sqld::mysql::installer->getInstance( )->preinstall( );
@@ -71,7 +71,7 @@ sub preinstall
 
 sub postinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'mysql' );
     return $rs if $rs;
@@ -104,7 +104,7 @@ sub postinstall
 
 sub uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'mysql' );
     $rs ||= Servers::sqld::mysql::uninstaller->getInstance( )->uninstall( );
@@ -123,7 +123,7 @@ sub uninstall
 
 sub setEnginePermissions
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldSetEnginePermissions' );
     $rs ||= setRights(
@@ -155,7 +155,7 @@ sub setEnginePermissions
 
 sub restart
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldRestart' );
     return $rs if $rs;
@@ -240,7 +240,7 @@ sub dropUser
 
 sub getType
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'config'}->{'SQLD_TYPE'};
 }
@@ -255,7 +255,7 @@ sub getType
 
 sub getVersion
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'config'}->{'SQLD_VERSION'};
 }
@@ -276,7 +276,7 @@ sub getVersion
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/mysql";

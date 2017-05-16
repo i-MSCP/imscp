@@ -82,7 +82,7 @@ sub registerSetupListeners
 
 sub preinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdPreInstall', 'apache_php_fpm' );
     $rs ||= $self->stop( );
@@ -99,7 +99,7 @@ sub preinstall
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdInstall', 'apache_php_fpm' );
     $rs ||= Servers::httpd::apache_php_fpm::installer->getInstance( )->install( );
@@ -116,7 +116,7 @@ sub install
 
 sub postinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdPostInstall', 'apache_php_fpm' );
     return $rs if $rs;
@@ -153,7 +153,7 @@ sub postinstall
 
 sub uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdUninstall', 'apache_php_fpm' );
     $rs ||= Servers::httpd::apache_php_fpm::uninstaller->getInstance( )->uninstall( );
@@ -179,7 +179,7 @@ sub uninstall
 
 sub setEnginePermissions
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdSetEnginePermissions' );
     $rs ||= setRights(
@@ -967,7 +967,7 @@ sub setData
 
 sub flushData
 {
-    my $self = shift;
+    my ($self) = @_;
 
     delete $self->{'data'};
     0;
@@ -1025,7 +1025,7 @@ sub getTraffic
 
 sub getRunningUser
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'config'}->{'HTTPD_USER'};
 }
@@ -1040,7 +1040,7 @@ sub getRunningUser
 
 sub getRunningGroup
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'config'}->{'HTTPD_GROUP'};
 }
@@ -1231,7 +1231,7 @@ sub disableConfs
 
 sub start
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdStart' );
     return $rs if $rs;
@@ -1260,7 +1260,7 @@ sub start
 
 sub stop
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdStop' );
     return $rs if $rs;
@@ -1289,7 +1289,7 @@ sub stop
 
 sub forceRestart
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'forceRestart'} = 1;
     0;
@@ -1305,7 +1305,7 @@ sub forceRestart
 
 sub restart
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdRestart' );
     return $rs if $rs;
@@ -1398,7 +1398,7 @@ sub umountLogsFolder
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'start'} = 0;
     $self->{'restart'} = 0;

@@ -60,12 +60,13 @@ setVerbose(iMSCP::Getopt->verbose);
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
 exit unless $bootstrapper->lock( '/tmp/imscp-dpkg-post-invoke.lock', 'nowait' );
+
 $bootstrapper->getInstance( )->boot(
     {
+        config_readonly => 1,
         mode            => 'backend',
         nolock          => 1,
-        norequirements  => 1,
-        config_readonly => 1
+        norequirements  => 1
     }
 );
 
@@ -74,23 +75,30 @@ my @items = ( );
 
 for my $server(iMSCP::Servers->getInstance( )->getListWithFullNames( )) {
     eval "require $server";
+    fatal( $@ ) if $@;
+
+    next unless $server->can( 'dpkgPostInvokeTasks' );
     $server = $server->factory( );
-    push @items, $server if $server->can( 'dpkgPostInvokeTasks' );
+    push @items, $server;
 }
 
 for my $package(iMSCP::Packages->getInstance( )->getListWithFullNames()) {
     eval "require $package";
+    fatal( $@ ) if $@;
+
+    next unless $package->can( 'dpkgPostInvokeTasks' );
     $package = $package->getInstance( );
-    push @items, $package if $package->can( 'dpkgPostInvokeTasks' );
+    push @items, $package;
 }
 
 for(@items) {
-    debug( sprintf( 'Processing %s dpkg post-invoke tasks', ref ) );
+    debug( sprintf( 'Executing %s dpkg post-invoke tasks', ref ) );
     $rs |= $_->dpkgPostInvokeTasks( );
 }
 
-$bootstrapper->unlock( '/tmp/imscp-dpkg-post-invoke.lock' );
 exit $rs;
+
+END { $bootstrapper->unlock( '/tmp/imscp-dpkg-post-invoke.lock' ); }
 
 =head1 AUTHOR
 

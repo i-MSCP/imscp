@@ -51,7 +51,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_deleteFiles( );
     $rs ||= $self->_removeVhost( );

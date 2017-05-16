@@ -53,7 +53,7 @@ our $VERSION = '0.2.0.*@dev';
 
 sub preinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = iMSCP::Composer->getInstance( )->registerPackage( 'imscp/ajaxplorer', $VERSION );
     $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
@@ -69,7 +69,7 @@ sub preinstall
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_installFiles( );
     $rs ||= $self->_buildHttpdConfig( );
@@ -129,7 +129,7 @@ sub afterFrontEndBuildConfFile
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self;

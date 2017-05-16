@@ -136,7 +136,7 @@ sub count
 
 sub pop
 {
-    my $self = shift;
+    my ($self) = @_;
 
     return undef unless defined $self->{'highest_priority'};
     my $listener = shift(@{$self->{'queue'}->{$self->{'highest_priority'}}});

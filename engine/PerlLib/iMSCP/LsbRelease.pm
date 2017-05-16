@@ -82,7 +82,7 @@ my @RELEASES_ORDER = (
 
 sub getInstance
 {
-    my $self = shift;
+    my ($self) = @_;
     return $self if ref $self;
 
     no strict 'refs';
@@ -213,7 +213,7 @@ sub getAll
 
 sub getDistroInformation
 {
-    my $self = shift;
+    my ($self) = @_;
 
     # Try to retrieve information from /etc/lsb-release first
     my %lsbInfo = $self->_getLsbInformation( );

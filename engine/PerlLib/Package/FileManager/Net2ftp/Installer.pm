@@ -55,7 +55,7 @@ our $VERSION = '0.1.1.*@dev';
 
 sub preinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = iMSCP::Composer->getInstance( )->registerPackage( 'imscp/net2ftp', $VERSION );
     $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
@@ -71,7 +71,7 @@ sub preinstall
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_installFiles ( );
     $rs ||= $self->_buildHttpdConfig( );
@@ -132,7 +132,7 @@ sub afterFrontEndBuildConfFile
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self;
@@ -191,7 +191,7 @@ sub _buildHttpdConfig
 
 sub _buildConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
     my $conffile = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/settings.inc.php";

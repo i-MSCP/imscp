@@ -362,7 +362,7 @@ sub moveDir
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'dirname'} //= undef;
     $self;

@@ -34,6 +34,7 @@ use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 use File::Basename;
 use iMSCP::Bootstrapper;
 use iMSCP::Debug;
+use iMSCP::EventManager;
 use iMSCP::Getopt;
 use iMSCP::Servers;
 use iMSCP::Packages;
@@ -61,7 +62,10 @@ OPTIONS
 
 setVerbose( iMSCP::Getopt->verbose );
 
-iMSCP::Bootstrapper->getInstance( )->boot(
+my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
+exit unless $bootstrapper->lock( '/tmp/imscp-set-engine-permissions.lock', 'nowait' );
+
+$bootstrapper->boot(
     {
         mode            => $main::execmode,
         norequirements  => 1,
@@ -77,24 +81,32 @@ my @items = ( );
 
 for my $server(iMSCP::Servers->getInstance( )->getListWithFullNames( )) {
     eval "require $server";
-    $server = $server->factory( );
-    push @items, $server if $server->can( 'setGuiPermissions' );
+    fatal( $@ ) if $@;
+
+    (my $subref = $server->can( 'setGuiPermissions' )) or next;
+    push @items, [ $server, sub { $subref->( $server->factory( ) ); } ];
 }
 
 for my $package (iMSCP::Packages->getInstance( )->getListWithFullNames( )) {
     eval "require $package";
-    $package = $package->getInstance( );
-    push @items, $package if $package->can( 'setGuiPermissions' );
+    fatal( $@ ) if $@;
+
+    (my $subref = $package->can( 'setGuiPermissions' )) or next;
+    push @items, [ $package, sub { $subref->( $package->getInstance( ) ); } ];
 }
+
+iMSCP::EventManager->getInstance( )->trigger( 'beforeSetGuiPermissions' );
 
 my $totalItems = scalar @items;
 my $count = 1;
 for(@items) {
-    debug( sprintf( 'Setting %s frontEnd permissions', ref ) );
-    printf( "Setting %s frontEnd permissions\t%s\t%s\n", ref, $totalItems, $count ) if $main::execmode eq 'setup';
-    $rs |= $_->setGuiPermissions( );
+    debug( sprintf( 'Setting %s frontEnd permissions', $_->[0] ) );
+    printf( "Setting %s frontEnd permissions\t%s\t%s\n", $_->[0], $totalItems, $count ) if $main::execmode eq 'setup';
+    $rs |= $_->[1]->();
     $count++;
 }
+
+iMSCP::EventManager->getInstance( )->trigger( 'afterSetGuiPermissions' );
 
 exit $rs;
 

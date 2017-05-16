@@ -115,7 +115,7 @@ sub process
 
 sub add
 {
-    my $self = shift;
+    my ($self) = @_;
 
     if ($self->{'admin_status'} ne 'tochangepwd') {
         my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
@@ -223,7 +223,7 @@ sub add
 
 sub delete
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
         ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});

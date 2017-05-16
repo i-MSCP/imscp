@@ -82,7 +82,7 @@ sub removeIpAddr
 
 sub getProvider
 {
-    my $self = shift;
+    my ($self) = @_;
 
     return $self->{'_provider'} if $self->{'_provider'};
 
@@ -128,7 +128,7 @@ sub setProvider
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self;
 }

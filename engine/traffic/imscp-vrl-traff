@@ -175,9 +175,9 @@ $bootstrapper->boot(
     }
 );
 
-my $rs = run( );
-$bootstrapper->unlock( '/tmp/imscp-vrl-traff.lock' );
-exit $rs;
+exit run( );
+
+END { $bootstrapper->unlock( '/tmp/imscp-vrl-traff.lock' ); }
 
 =head1 AUTHOR
 

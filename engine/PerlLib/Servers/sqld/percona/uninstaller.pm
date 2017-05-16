@@ -46,7 +46,7 @@ use parent 'Servers::sqld::mysql::uninstaller';
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'sqld'} = Servers::sqld::percona->getInstance( );
     $self;

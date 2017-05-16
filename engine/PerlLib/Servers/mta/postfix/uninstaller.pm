@@ -30,7 +30,7 @@ use parent 'Common::SingletonClass';
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'mta'} = Servers::mta::postfix->getInstance();
     $self->{'cfgDir'} = $self->{'mta'}->{'cfgDir'};
@@ -42,7 +42,7 @@ sub _init
 
 sub uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_restoreConfFile();
     $rs ||= $self->_buildAliasses();
@@ -52,7 +52,7 @@ sub uninstall
 
 sub _removeDirsAndFiles
 {
-    my $self = shift;
+    my ($self) = @_;
 
     for ($self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}) {
         my $rs = iMSCP::Dir->new( dirname => $_ )->remove();
@@ -65,7 +65,7 @@ sub _removeDirsAndFiles
 
 sub _removeUsers
 {
-    my $self = shift;
+    my ($self) = @_;
 
     iMSCP::SystemUser->new( force => 'yes' )->delSystemUser( $self->{'config'}->{'MTA_MAILBOX_UID_NAME'} );
 }
@@ -81,7 +81,7 @@ sub _buildAliasses
 
 sub _restoreConfFile
 {
-    my $self = shift;
+    my ($self) = @_;
 
     for ($self->{'config'}->{'POSTFIX_CONF_FILE'}, $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}) {
         my $filename = basename( $_ );

@@ -52,7 +52,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     return 0 unless %{$self->{'config'}};
 
@@ -78,7 +78,7 @@ sub uninstall
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'phpmyadmin'} = Package::PhpMyAdmin->getInstance( );
     $self->{'frontend'} = Package::FrontEnd->getInstance( );
@@ -100,7 +100,7 @@ sub _init
 
 sub _removeSqlUser
 {
-    my $self = shift;
+    my ($self) = @_;
 
     return 0 unless $self->{'config'}->{'DATABASE_USER'} && $main::imscpConfig{'DATABASE_USER_HOST'};
     Servers::sqld->factory( )->dropUser(
@@ -118,7 +118,7 @@ sub _removeSqlUser
 
 sub _removeSqlDatabase
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $dbName = $self->{'db'}->quoteIdentifier( $main::imscpConfig{'DATABASE_NAME'}.'_pma' );
     $self->{'db'}->doQuery( 'd', "DROP DATABASE IF EXISTS $dbName" );
@@ -135,7 +135,7 @@ sub _removeSqlDatabase
 
 sub _unregisterConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     for ('00_master.conf', '00_master_ssl.conf') {
         next unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
@@ -166,7 +166,7 @@ sub _unregisterConfig
 
 sub _removeFiles
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma" )->remove( );
     $rs ||= iMSCP::Dir->new( dirname => $self->{'cfgDir'} )->remove( );

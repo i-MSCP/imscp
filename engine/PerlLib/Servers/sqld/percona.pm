@@ -47,7 +47,7 @@ use parent 'Servers::sqld::mysql';
 
 sub preinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'percona' );
     $rs ||= Servers::sqld::percona::installer->getInstance( )->preinstall( );
@@ -64,7 +64,7 @@ sub preinstall
 
 sub postinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'percona' );
 
@@ -97,7 +97,7 @@ sub postinstall
 
 sub uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'percona' );
     $rs ||= Servers::sqld::percona::uninstaller->getInstance( )->uninstall( );

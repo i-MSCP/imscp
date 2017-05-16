@@ -55,7 +55,7 @@ use parent 'Servers::sqld::mysql::installer';
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'sqld'} = Servers::sqld::remote->getInstance( );
@@ -89,7 +89,7 @@ sub _init
 
 sub _buildConf
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldBuildConf' );
     return $rs if $rs;
@@ -175,7 +175,7 @@ sub _buildConf
 
 sub _updateServerConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $db = iMSCP::Database->factory( );
 

@@ -29,7 +29,6 @@ use iMSCP::Debug;
 use DBI;
 use iMSCP::Execute;
 use POSIX ':signal_h';
-use Servers::sqld;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -71,7 +70,7 @@ sub set
 
 sub connect
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $dsn = "dbi:mysql:database=$self->{'db'}->{'DATABASE_NAME'}".
         ($self->{'db'}->{'DATABASE_HOST'} ? ';host='.$self->{'db'}->{'DATABASE_HOST'} : '').
@@ -152,7 +151,7 @@ sub useDatabase
 
 sub startTransaction
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rawDb = $self->getRawDb();
     $rawDb->{'AutoCommit'} = 0;
@@ -168,7 +167,7 @@ sub startTransaction
 
 sub endTransaction
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rawDb = $self->getRawDb();
 
@@ -186,7 +185,7 @@ sub endTransaction
 
 sub getRawDb
 {
-    my $self = shift;
+    my ($self) = @_;
 
     return $self->{'connection'} if $self->{'connection'};
 
@@ -239,7 +238,7 @@ sub doQuery
 
 sub getDBTables
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'sth'} = $self->getRawDb()->prepare(
         'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ?', $self->{'db'}->{'DATABASE_NAME'}
@@ -353,9 +352,7 @@ sub quote
 
 sub _init
 {
-    my $self = shift;
-
-    $self->{'sqld_config'} = Servers::sqld->factory()->{'config'};
+    my ($self) = @_;
 
     $self->{'db'}->{'DATABASE_NAME'} = '';
     $self->{'db'}->{'DATABASE_HOST'} = '';

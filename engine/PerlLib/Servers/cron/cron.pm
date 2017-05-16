@@ -43,7 +43,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item preinstall()
+=item preinstall( )
 
  Process preinstall tasks
 
@@ -53,11 +53,11 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeCronPreinstall', 'cron' );
     local $@;
-    eval { iMSCP::Service->getInstance()->stop('cron'); };
+    eval { iMSCP::Service->getInstance( )->stop('cron'); };
     if($@) {
         error($@);
         return 1;
@@ -65,7 +65,7 @@ sub preinstall
     $rs ||= $self->{'eventManager'}->trigger( 'afterCronPreinstall', 'cron' );
 }
 
-=item install()
+=item install( )
 
  Process install tasks
 
@@ -75,14 +75,14 @@ sub preinstall
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeCronInstall', 'cron' );
     $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'cron', 'imscp', \ my $cfgTpl, { } );
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
-        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp" )->get();
+        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp" )->get( );
         unless (defined $cfgTpl) {
             error( sprintf( "Couldn't read %s", "$self->{'cfgDir'}/imscp" ) );
             return 1;
@@ -106,14 +106,14 @@ sub install
 
     my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp" );
     $rs = $file->set( $cfgTpl );
-    $rs ||= $file->save();
+    $rs ||= $file->save( );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
     $rs ||= $file->copyFile( "$self->{'config'}->{'CRON_D_DIR'}/imscp" );
     $rs ||= $self->{'eventManager'}->trigger( 'afterCronInstall', 'cron' );
 }
 
-=item postinstall()
+=item postinstall( )
 
  Process postinstall tasks
 
@@ -123,12 +123,12 @@ sub install
 
 sub postinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeCronPostInstall', 'cron' );
     return $rs if $rs;
 
-    my $srvMngr = iMSCP::Service->getInstance();
+    my $srvMngr = iMSCP::Service->getInstance( );
 
     local $@;
     eval { $srvMngr->enable( $self->{'config'}->{'CRON_SNAME'} ); };
@@ -203,7 +203,7 @@ sub addTask
     }
 
     my $filename = fileparse( $filepath );
-    my $wrkFileContent = iMSCP::File->new( filename => $filepath )->get();
+    my $wrkFileContent = iMSCP::File->new( filename => $filepath )->get( );
     unless (defined $wrkFileContent) {
         error( sprintf( "Couldn't read %s file", $filepath ) );
         return 1;
@@ -229,7 +229,7 @@ EOF
 
     my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
     $rs = $file->set( $wrkFileContent );
-    $rs ||= $file->save();
+    $rs ||= $file->save( );
     $rs ||= $file->mode( 0640 );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->copyFile( $filepath );
@@ -281,13 +281,13 @@ sub deleteTask
 
     my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
     $rs ||= $file->set( $wrkFileContent );
-    $rs ||= $file->save();
+    $rs ||= $file->save( );
     $rs ||= $file->mode( 0640 );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->copyFile( $filepath );
 }
 
-=item setEnginePermissions()
+=item setEnginePermissions( )
 
  Set engine permissions
 
@@ -297,7 +297,7 @@ sub deleteTask
 
 sub setEnginePermissions
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeCronSetEnginePermissions' );
 
@@ -320,7 +320,7 @@ sub setEnginePermissions
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -330,9 +330,9 @@ sub setEnginePermissions
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'eventManager'}->trigger( 'beforeCronInit', $self, 'cron' ) and fatal( 'cron - beforeCronInit has failed' );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/cron.d";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -342,7 +342,7 @@ sub _init
     $self;
 }
 
-=item _validateCronTask()
+=item _validateCronTask( )
 
  Validate cron task attributes
 
@@ -366,7 +366,7 @@ sub _validateCronTask
     undef;
 }
 
-=item _validateAttribute()
+=item _validateAttribute( )
 
  Validate the given cron task attribute value
 
@@ -388,7 +388,7 @@ sub _validateAttribute
     my $step = '[1-9]?[0-9]';
     my $months = 'jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec';
     my $days = 'mon|tue|wed|thu|fri|sat|sun';
-    my @namesArr = ();
+    my @namesArr = ( );
     my $pattern;
 
     if ($name eq 'minute') {

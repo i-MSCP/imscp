@@ -48,8 +48,8 @@ use parent 'Common::Object';
 
 sub addSystemUser
 {
-    my $self = shift;
-    my $username = shift || $self->{'username'};
+    my ($self, $username) = @_;
+    $username //= $self->{'username'};
 
     unless (defined $username) {
         error( '$username parameter is not defined' );
@@ -119,8 +119,8 @@ sub addSystemUser
 
 sub delSystemUser
 {
-    my $self = shift;
-    my $username = shift || $self->{'username'};
+    my ($self, $username) = @_;
+    $username //= $self->{'username'};
 
     unless (defined $username) {
         error( '$username parameter is not defined' );
@@ -158,9 +158,9 @@ sub delSystemUser
 
 sub addToGroup
 {
-    my $self = shift;
-    my $groupname = shift || $self->{'groupname'};
-    my $username = shift || $self->{'username'};
+    my ($self, $groupname, $username) = @_;
+    $groupname //= $self->{'groupname'};
+    $username //= $self->{'username'};
 
     unless (defined $groupname) {
         error( '$groupname parameter is not defined' );
@@ -214,9 +214,9 @@ sub addToGroup
 
 sub removeFromGroup
 {
-    my $self = shift;
-    my $groupname = shift || $self->{'groupname'};
-    my $username = shift || $self->{'username'};
+    my ($self, $groupname, $username) = @_;
+    $groupname //= $self->{'groupname'};
+    $username //= $self->{'username'};
 
     unless (defined $groupname) {
         error( '$groupname parameter is not defined' );
@@ -267,8 +267,8 @@ sub removeFromGroup
 
 sub getUserGroups
 {
-    my $self = shift;
-    my $username = shift || $self->{'username'};
+    my ($self, $username) = @_;
+    $username //= $self->{'username'};
 
     unless (defined $username) {
         error( '$username parameter is not defined' );

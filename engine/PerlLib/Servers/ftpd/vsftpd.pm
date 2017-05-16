@@ -70,7 +70,7 @@ sub registerSetupListeners
 
 sub preinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdPreinstall' );
     $rs ||= $self->stop( );
@@ -87,7 +87,7 @@ sub preinstall
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdInstall', 'vsftpd' );
     $rs ||= Servers::ftpd::vsftpd::installer->getInstance( )->install( );
@@ -104,7 +104,7 @@ sub install
 
 sub postinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdPostInstall', 'vsftpd' );
 
@@ -137,7 +137,7 @@ sub postinstall
 
 sub uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdUninstall', 'vsftpd' );
     $rs ||= Servers::ftpd::vsftpd::uninstaller->getInstance( )->uninstall( );
@@ -163,7 +163,7 @@ sub uninstall
 
 sub setEnginePermissions
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdSetEnginePermissions' );
     $rs ||= setRights(
@@ -279,7 +279,7 @@ sub deleteFtpUser
 
 sub start
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdStart' );
     return $rs if $rs;
@@ -304,7 +304,7 @@ sub start
 
 sub stop
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdStop' );
     return $rs if $rs;
@@ -329,7 +329,7 @@ sub stop
 
 sub restart
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdRestart' );
     return $rs if $rs;
@@ -354,7 +354,7 @@ sub restart
 
 sub reload
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdReload' );
     return $rs if $rs;
@@ -426,7 +426,7 @@ sub getTraffic
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'start'} = 0;

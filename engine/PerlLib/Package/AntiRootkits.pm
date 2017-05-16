@@ -44,7 +44,7 @@ use parent 'Common::SingletonClass';
 
 =over
 
-=item registerSetupListeners(\%eventManager)
+=item registerSetupListeners( \%eventManager )
 
  Register setup event listeners
 
@@ -80,7 +80,7 @@ sub showDialog
     my ($self, $dialog) = @_;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', main::setupGetQuestion( 'ANTI_ROOTKITS_PACKAGES' ) } = ();
+    @{selectedPackages}{ split ',', main::setupGetQuestion( 'ANTI_ROOTKITS_PACKAGES' ) } = ( );
 
     my $rs = 0;
     if ($main::reconfigure =~ /^(?:antirootkits|all|forced)$/ || !%selectedPackages
@@ -91,8 +91,8 @@ sub showDialog
 
 Please select the Anti-Rootkits packages you want to install:
 EOF
-        %selectedPackages = ();
-        @{selectedPackages}{@{$packages}} = ();
+        %selectedPackages = ( );
+        @{selectedPackages}{@{$packages}} = ( );
     }
 
     return $rs unless $rs < 30;
@@ -103,16 +103,16 @@ EOF
         next unless exists $selectedPackages{$_};
         my $package = "Package::AntiRootkits::${_}::${_}";
         eval "require $package";
-        unless ($@) {
-            $package = $package->getInstance( );
-            next unless $package->can( 'showDialog' );
-            debug( sprintf( 'Executing showDialog action on %s', ref $package ) );
-            $rs = $package->showDialog( $dialog );
-            return $rs if $rs;
-        } else {
+
+        if ($@) {
             error( $@ );
             return 1;
         }
+
+        (my $subref = $package->can( 'showDialog' )) or next;
+        debug( sprintf( 'Executing showDialog action on %s', $package ) );
+        $rs = $subref->( $package->getInstance( ) );
+        return $rs if $rs;
     }
 
     0;
@@ -130,32 +130,31 @@ EOF
 
 sub preinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', main::setupGetQuestion( 'ANTI_ROOTKITS_PACKAGES' ) } = ();
+    @{selectedPackages}{ split ',', main::setupGetQuestion( 'ANTI_ROOTKITS_PACKAGES' ) } = ( );
 
-    my @distroPackages = ();
+    my @distroPackages = ( );
     for(keys %{$self->{'PACKAGES'}}) {
         next if exists $selectedPackages{$_};
         my $package = "Package::AntiRootkits::${_}::${_}";
         eval "require $package";
-        unless ($@) {
-            $package = $package->getInstance( );
 
-            if ($package->can( 'uninstall' )) {
-                debug( sprintf( 'Executing uninstall action on %s', ref $package ) );
-                my $rs = $package->uninstall( );
-                return $rs if $rs;
-            }
-
-            next unless $package->can( 'getDistroPackages' );
-            debug( sprintf( 'Executing getDistroPackages action on %s', ref $package ) );
-            push @distroPackages, $package->getDistroPackages( );
-        } else {
+        if ($@) {
             error( $@ );
             return 1;
         }
+
+        if (my $subref = $package->can( 'uninstall' )) {
+            debug( sprintf( 'Executing uninstall action on %s', $package ) );
+            my $rs = $subref->( $package->getInstance( ) );
+            return $rs if $rs;
+        }
+
+        (my $subref = $package->can( 'getDistroPackages' )) or next;
+        debug( sprintf( 'Executing getDistroPackages action on %s', $package ) );
+        push @distroPackages, $subref->( $package->getInstance( ) );
     }
 
     if (defined $main::skippackages && !$main::skippackages && @distroPackages) {
@@ -163,27 +162,26 @@ sub preinstall
         return $rs if $rs;
     }
 
-    @distroPackages = ();
+    @distroPackages = ( );
     for (keys %{$self->{'PACKAGES'}}) {
         next unless exists $selectedPackages{$_};
         my $package = "Package::AntiRootkits::${_}::${_}";
         eval "require $package";
-        unless ($@) {
-            $package = $package->getInstance( );
 
-            if ($package->can( 'preinstall' )) {
-                debug( sprintf( 'Executing preinstall action on %s', ref $package ) );
-                my $rs = $package->preinstall( );
-                return $rs if $rs;
-            }
-
-            next unless $package->can( 'getDistroPackages' );
-            debug( sprintf( 'Executing getDistroPackages action on %s', ref $package ) );
-            push @distroPackages, $package->getDistroPackages( );
-        } else {
+        if ($@) {
             error( $@ );
             return 1;
         }
+
+        if (my $subref = $package->can( 'preinstall' )) {
+            debug( sprintf( 'Executing preinstall action on %s', $package ) );
+            my $rs = $subref->( $package->getInstance( ) );
+            return $rs if $rs;
+        }
+
+        (my $subref = $package->can( 'getDistroPackages' )) or next;
+        debug( sprintf( 'Executing getDistroPackages action on %s', $package ) );
+        push @distroPackages, $subref->( $package->getInstance( ) );
     }
 
     if (defined $main::skippackages && !$main::skippackages && @distroPackages) {
@@ -204,25 +202,25 @@ sub preinstall
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', main::setupGetQuestion( 'ANTI_ROOTKITS_PACKAGES' ) } = ();
+    @{selectedPackages}{ split ',', main::setupGetQuestion( 'ANTI_ROOTKITS_PACKAGES' ) } = ( );
 
     for (keys %{$self->{'PACKAGES'}}) {
         next unless exists $selectedPackages{$_} && $_ ne 'No';
         my $package = "Package::AntiRootkits::${_}::${_}";
         eval "require $package";
-        unless ($@) {
-            $package = $package->getInstance( );
-            next unless $package->can( 'install' );
-            debug( sprintf( 'Executing install action on %s', ref $package ) );
-            my $rs = $package->install( );
-            return $rs if $rs;
-        } else {
+
+        if ($@) {
             error( $@ );
             return 1;
         }
+
+        (my $subref = $package->can( 'install' )) or next;
+        debug( sprintf( 'Executing install action on %s', $package ) );
+        my $rs = $subref->( $package->getInstance( ) );
+        return $rs if $rs;
     }
 
     0;
@@ -238,28 +236,27 @@ sub install
 
 sub uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
-    my @distroPackages = ();
+    my @distroPackages = ( );
     for (keys %{$self->{'PACKAGES'}}) {
         my $package = "Package::AntiRootkits::${_}::${_}";
         eval "require $package";
-        unless ($@) {
-            $package = $package->getInstance( );
 
-            if ($package->can( 'uninstall' )) {
-                debug( sprintf( 'Executing uninstall action on %s', ref $package ) );
-                my $rs = $package->uninstall( );
-                return $rs if $rs;
-            }
-
-            next unless $package->can( 'getDistroPackages' );
-            debug( sprintf( 'Executing getDistroPackages action on %s', ref $package ) );
-            push @distroPackages, $package->getDistroPackages( );
-        } else {
+        if ($@) {
             error( $@ );
             return 1;
         }
+
+        if (my $subref = $package->can( 'uninstall' )) {
+            debug( sprintf( 'Executing uninstall action on %s', $package ) );
+            my $rs = $subref->( $package->getInstance( ) );
+            return $rs if $rs;
+        }
+
+        (my $subref = $package->can( 'getDistroPackages' )) or next;
+        debug( sprintf( 'Executing getDistroPackages action on %s', $package ) );
+        push @distroPackages, $subref->( $package->getInstance( ) );
     }
 
     $self->_removePackages( @distroPackages );
@@ -275,31 +272,31 @@ sub uninstall
 
 sub setEnginePermissions
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeAntiRootkisSetGuiPermissions' );
     return $rs if $rs;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', $main::imscpConfig{'ANTI_ROOTKITS_PACKAGES'} } = ();
+    @{selectedPackages}{ split ',', $main::imscpConfig{'ANTI_ROOTKITS_PACKAGES'} } = ( );
 
     for (keys %{$self->{'PACKAGES'}}) {
         next unless exists $selectedPackages{$_};
         my $package = "Package::AntiRootkits::${_}::${_}";
         eval "require $package";
-        unless ($@) {
-            $package = $package->getInstance( );
-            next unless $package->can( 'setEnginePermissions' );
-            debug( sprintf( 'Executing setEnginePermissions action on %s', ref $package ) );
-            $rs = $package->setEnginePermissions( );
-            return $rs if $rs;
-        } else {
+
+        if ($@) {
             error( $@ );
             return 1;
         }
+
+        (my $subref = $package->can( 'setEnginePermissions' )) or next;
+        debug( sprintf( 'Executing setEnginePermissions action on %s', $package ) );
+        $rs = $subref->( $package->getInstance( ) );
+        return $rs if $rs;
     }
 
-    $self->{'eventManager'}->trigger( 'beforeAntiRootkisSetGuiPermissions' );
+    $self->{'eventManager'}->trigger( 'afterAntiRootkisSetGuiPermissions' );
 }
 
 =back
@@ -318,13 +315,13 @@ sub setEnginePermissions
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
-    # Find list of available AntiRootkits packages
+
     @{$self->{'PACKAGES'}}{
         iMSCP::Dir->new( dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits" )->getDirs( )
-    } = ();
+    } = ( );
     $self;
 }
 

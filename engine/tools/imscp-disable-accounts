@@ -31,12 +31,13 @@ use strict;
 use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Bootstrapper;
-use iMSCP::Execute;
+use iMSCP::DbTasksProcessor;
 use iMSCP::Getopt;
 use File::Basename;
-use POSIX qw(locale_h);
+use POSIX qw /locale_h /;
 use locale;
 
 setlocale( LC_ALL, 'C.UTF-8' );
@@ -63,6 +64,8 @@ sub run
         error($qrs);
         return 1;
     }
+
+    #return 0 unless %{$qrs};
 
     my $rs = 0;
     for my $domainId(keys %{$qrs}) {
@@ -99,11 +102,13 @@ sub run
         $db->endTransaction();
     }
 
-    # Run request manager to process all scheduled tasks
     unless($rs) {
-        $rs = execute( "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \ my $stdout, \ my $stderr );
-        debug $stdout if $stdout;
-        error( $stderr || 'Unknown error' ) if $rs;
+        # Process all scheduled tasks
+        eval { iMSCP::DbTasksProcessor->getInstance( mode => 'backend' )->process( ); };
+        if ($@) {
+            error( $@ );
+            $rs = 1;
+        }
     }
 
     $rs;
@@ -126,18 +131,18 @@ setVerbose( iMSCP::Getopt->verbose );
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
 exit unless $bootstrapper->lock( '/tmp/imscp-disable-accounts.lock', 'nowait' );
+
 $bootstrapper->getInstance( )->boot(
     {
+        config_readonly => 1,
         mode            => 'backend',
-        nolock          => 1,
-        norequirements  => 1,
-        config_readonly => 1
+        norequirements  => 1
     }
 );
 
-my $rs = run( );
-$bootstrapper->unlock( '/tmp/imscp-disable-accounts.lock' );
-exit $rs;
+exit run( );
+
+END { $bootstrapper->unlock( '/tmp/imscp-disable-accounts.lock' ); }
 
 =head1 AUTHOR
 

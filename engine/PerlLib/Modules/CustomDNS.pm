@@ -137,7 +137,7 @@ sub process
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'db'} = iMSCP::Database->factory( );
     $self->{'domain_name'} = undef;

@@ -6,5 +6,6 @@ nbproject
 .project
 .vagrant
 .settings
-Vagrantfile
+/Vagrantfile
 .DS_Store
+_Deparsed_XSubs.pm

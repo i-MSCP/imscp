@@ -62,7 +62,7 @@ sub preinstall
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_addCronTask( );
     $rs ||= $self->_scheduleCheck( );

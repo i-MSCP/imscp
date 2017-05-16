@@ -88,8 +88,8 @@ sub showDialog
 
 Please select the webmail packages you want to install
 EOF
-        %selectedPackages = ();
-        @{selectedPackages}{@{$packages}} = ();
+        %selectedPackages = ( );
+        @{selectedPackages}{@{$packages}} = ( );
     }
 
     return $rs unless $rs < 30;
@@ -100,16 +100,16 @@ EOF
         next unless exists $selectedPackages{$_};
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
-        unless ($@) {
-            $package = $package->getInstance( );
-            next unless $package->can( 'showDialog' );
-            debug( sprintf( 'Executing showDialog action on %s', ref $package ) );
-            $rs = $package->showDialog( $dialog );
-            return $rs if $rs;
-        } else {
+
+        if ($@) {
             error( $@ );
             return 1;
         }
+
+        return 0 unless my $subref = $package->can( 'showDialog' );
+        debug( sprintf( 'Executing showDialog action on %s', $package ) );
+        $rs = $subref->( $package->getInstance( ) );
+        return $rs if $rs;
     }
 
     0;
@@ -119,7 +119,7 @@ EOF
 
  Process preinstall tasks
 
- /!\ This method also trigger uninstallation of unselected webmail packages.
+ /!\ This method also triggers uninstallation of unselected webmail packages.
 
  Return int 0 on success, other on failure
 
@@ -127,26 +127,31 @@ EOF
 
 sub preinstallListener
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', main::setupGetQuestion( 'WEBMAIL_PACKAGES' ) } = ();
+    @{selectedPackages}{ split ',', main::setupGetQuestion( 'WEBMAIL_PACKAGES' ) } = ( );
 
-    my @distroPackages = ();
+    my @distroPackages = ( );
     for(keys %{$self->{'PACKAGES'}}) {
         next if exists $selectedPackages{$_};
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
-        unless ($@) {
-            $package = $package->getInstance( );
-            next unless $package->can( 'uninstall' );
-            debug( sprintf( 'Executing uninstall action on %s', ref $package ) );
-            my $rs = $package->uninstall( );
-            return $rs if $rs;
-        } else {
+
+        if ($@) {
             error( $@ );
             return 1;
         }
+
+        if (my $subref = $package->can( 'uninstall' )) {
+            debug( sprintf( 'Executing uninstall action on %s', $package ) );
+            my $rs = $subref->( $package->getInstance( ) );
+            return $rs if $rs;
+        }
+
+        (my $subref = $package->can( 'getDistroPackages' )) or next;
+        debug( sprintf( 'Executing getDistroPackages action on %s', $package ) );
+        push @distroPackages, $subref->( $package->getInstance( ) );
     }
 
     if (defined $main::skippackages && !$main::skippackages && @distroPackages) {
@@ -154,21 +159,26 @@ sub preinstallListener
         return $rs if $rs;
     }
 
-    @distroPackages = ();
+    @distroPackages = ( );
     for (keys %{$self->{'PACKAGES'}}) {
         next unless exists $selectedPackages{$_};
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
-        unless ($@) {
-            $package = $package->getInstance( );
-            next unless $package->can( 'preinstall' );
-            debug( sprintf( 'Executing preinstall action on %s', ref $package ) );
-            my $rs = $package->preinstall( );
-            return $rs if $rs;
-        } else {
+
+        if ($@) {
             error( $@ );
             return 1;
         }
+
+        if (my $subref = $package->can( 'preinstall' )) {
+            debug( sprintf( 'Executing preinstall action on %s', $package ) );
+            my $rs = $subref->( $package->getInstance( ) );
+            return $rs if $rs;
+        }
+
+        (my $subref = $package->can( 'getDistroPackages' )) or next;
+        debug( sprintf( 'Executing getDistroPackages action on %s', $package ) );
+        push @distroPackages, $subref->( $package->getInstance( ) );
     }
 
     if (defined $main::skippackages && !$main::skippackages && @distroPackages) {
@@ -189,25 +199,25 @@ sub preinstallListener
 
 sub installListener
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', main::setupGetQuestion( 'WEBMAIL_PACKAGES' ) } = ();
+    @{selectedPackages}{ split ',', main::setupGetQuestion( 'WEBMAIL_PACKAGES' ) } = ( );
 
     for (keys %{$self->{'PACKAGES'}}) {
         next unless exists $selectedPackages{$_} && $_ ne 'No';
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
-        unless ($@) {
-            $package = $package->getInstance( );
-            next unless $package->can( 'install' );
-            debug( sprintf( 'Executing install action on %s', ref $package ) );
-            my $rs = $package->install( );
-            return $rs if $rs;
-        } else {
+
+        if ($@) {
             error( $@ );
             return 1;
         }
+
+        (my $subref = $package->can( 'install' )) or next;
+        debug( sprintf( 'Executing install action on %s', $package ) );
+        my $rs = $subref->( $package->getInstance( ) );
+        return $rs if $rs;
     }
 
     0;
@@ -224,64 +234,75 @@ sub installListener
 
 sub uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
+    my @distroPackages = ( );
     for (keys %{$self->{'PACKAGES'}}) {
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
-        unless ($@) {
-            $package = $package->getInstance( );
-            next unless $package->can( 'uninstall' );
-            debug( sprintf( 'Executing uninstall action on %s', ref $package ) );
-            my $rs = $package->uninstall( );
-            return $rs if $rs;
-        } else {
+
+        if ($@) {
             error( $@ );
             return 1;
         }
+
+        if (my $subref = $package->can( 'uninstall' )) {
+            debug( sprintf( 'Executing uninstall action on %s', $package ) );
+            my $rs = $subref->( $package->getInstance( ) );
+            return $rs if $rs;
+        }
+
+        (my $subref = $package->can( 'getDistroPackages' )) or next;
+        debug( sprintf( 'Executing getDistroPackages action on %s', $package ) );
+        push @distroPackages, $subref->( $package->getInstance( ) );
     }
 
-    0;
+    $self->_removePackages( @distroPackages );
 }
 
-=item setGuiPermissionsListener( )
+=item setGuiPermissions( )
 
- Set gui permissions listener
+ Set gui permissions
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub setGuiPermissionsListener
+sub setGuiPermissions
 {
-    my $self = shift;
+    my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeWebmailSetGuiPermissions' );
-    return $rs if $rs;
-
-    my %selectedPackages;
-    @{selectedPackages}{ split ',', $main::imscpConfig{'WEBMAIL_PACKAGES'} } = ();
-
-    for (keys %{$self->{'PACKAGES'}}) {
-        next unless exists $selectedPackages{$_};
-        my $package = "Package::Webmail::${_}::${_}";
-        eval "require $package";
-        unless ($@) {
-            $package = $package->getInstance( );
-            next unless $package->can( 'setGuiPermissions' );
-            debug( sprintf( 'Executing setGuiPermissions action on %s', ref $package ) );
-            $rs = $package->setGuiPermissions( );
+    $self->{'eventManager'}->register(
+        'afterSetGuiPermissions',
+        sub {
+            my $rs = $self->{'eventManager'}->trigger( 'beforeWebmailSetGuiPermissions' );
             return $rs if $rs;
-        } else {
-            error( $@ );
-            return 1;
-        }
-    }
 
-    $self->{'eventManager'}->trigger( 'afterWebmailSetGuiPermissions' );
+            my %selectedPackages;
+            @{selectedPackages}{ split ',', $main::imscpConfig{'WEBMAIL_PACKAGES'} } = ( );
+
+            for (keys %{$self->{'PACKAGES'}}) {
+                next unless exists $selectedPackages{$_};
+                my $package = "Package::Webmail::${_}::${_}";
+                eval "require $package";
+
+                if ($@) {
+                    error( $@ );
+                    return 1;
+                }
+
+                (my $subref = $package->can( 'setGuiPermissions' )) or next;
+                debug( sprintf( 'Executing setGuiPermissions action on %s', $package ) );
+                $rs = $subref->( $package->getInstance( ) );
+                return $rs if $rs;
+            }
+
+            $self->{'eventManager'}->trigger( 'afterWebmailSetGuiPermissions' );
+        }
+    );
 }
 
-=item deleteMail(\%data)
+=item deleteMail( \%data )
 
  Process deleteMail tasks
 
@@ -295,22 +316,22 @@ sub deleteMail
     my ($self, $data) = @_;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', $main::imscpConfig{'WEBMAIL_PACKAGES'} } = ();
+    @{selectedPackages}{ split ',', $main::imscpConfig{'WEBMAIL_PACKAGES'} } = ( );
 
     for (keys %{$self->{'PACKAGES'}}) {
         next unless exists $selectedPackages{$_};
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
-        unless ($@) {
-            $package = $package->getInstance( );
-            next unless $package->can( 'deleteMail' );
-            debug( sprintf( 'Executing deleteMail action on %s', ref $package ) );
-            my $rs = $package->deleteMail($data);
-            return $rs if $rs;
-        } else {
+
+        if ($@) {
             error( $@ );
             return 1;
         }
+
+        (my $subref = $package->can( 'deleteMail' )) or next;
+        debug( sprintf( 'Executing deleteMail action on %s', $package ) );
+        my $rs = $subref->( $package->getInstance( ), $data );
+        return $rs if $rs;
     }
 
     0;
@@ -332,17 +353,76 @@ sub deleteMail
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
-    # Find list of available Webmail packages
     @{$self->{'PACKAGES'}}{
         iMSCP::Dir->new( dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webmail" )->getDirs( )
-    } = ();
-    $self->{'eventManager'}->register(
-        'afterFrontendSetGuiPermissions', sub { $self->setGuiPermissionsListener( @_ ); }
-    );
+    } = ( );
     $self;
+}
+
+=item _installPackages( @packages )
+
+ Install distribution packages
+
+ Param list @packages List of packages to install
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _installPackages
+{
+    my (undef, @packages) = @_;
+
+    my $cmd = '';
+    unless (iMSCP::Getopt->noprompt) {
+        iMSCP::Dialog->getInstance->endGauge( );
+        $cmd = 'debconf-apt-progress --logstderr --';
+    }
+
+    $cmd = "UCF_FORCE_CONFFMISS=1 $cmd"; # Force installation of missing conffiles which are managed by UCF
+    if ($main::forcereinstall) {
+        $cmd .= " apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss'".
+            " --reinstall --auto-remove --purge --no-install-recommends install @packages";
+    } else {
+        $cmd .= " apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss'".
+            " --auto-remove --purge --no-install-recommends install @packages";
+    }
+
+    my $stdout;
+    my $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef, \ my $stderr );
+    error( sprintf( "Couldn't install packages: %s", $stderr || 'Unknown error' ) ) if $rs;
+    $rs;
+}
+
+=item _removePackages( @packages )
+
+ Remove distribution packages
+
+ Param list @packages Packages to remove
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _removePackages
+{
+    my (undef, @packages) = @_;
+
+    # Do not try to uninstall packages that are not available
+    my $rs = execute( "dpkg-query -W -f='\${Package}\\n' @packages 2>/dev/null", \ my $stdout );
+    @packages = split /\n/, $stdout;
+    return 0 unless @packages;
+
+    my $cmd = "apt-get -y --auto-remove --purge --no-install-recommends remove @packages";
+    unless (iMSCP::Getopt->noprompt) {
+        iMSCP::Dialog->getInstance->endGauge( );
+        $cmd = "debconf-apt-progress --logstderr -- $cmd";
+    }
+
+    $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef, \ my $stderr );
+    error( sprintf( "Couldn't remove packages: %s", $stderr || 'Unknown error' ) ) if $rs;
+    $rs;
 }
 
 =back

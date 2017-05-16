@@ -58,7 +58,7 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_addUsersAndGroups();
     $rs ||= $self->_makeDirs();
@@ -74,7 +74,7 @@ sub preinstall
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->setVersion();
     $rs ||= $self->_createPostfixMaps();
@@ -100,7 +100,7 @@ sub install
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'mta'} = Servers::mta::postfix->getInstance();
@@ -134,7 +134,7 @@ sub _init
 
 sub _addUsersAndGroups
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my @groups = (
         [
@@ -206,7 +206,7 @@ sub _addUsersAndGroups
 
 sub _makeDirs
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my @directories = (
         [
@@ -254,7 +254,7 @@ sub _makeDirs
 
 sub _buildConf
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaBuildConf' );
     $rs ||= $self->_buildMasterCfFile();
@@ -272,7 +272,7 @@ sub _buildConf
 
 sub setVersion
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = execute( [ 'postconf', '-d', '-h', 'mail_version' ], \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
@@ -299,7 +299,7 @@ sub setVersion
 
 sub _createPostfixMaps
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my @lookupTables = (
         $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'},
@@ -328,7 +328,7 @@ sub _createPostfixMaps
 
 sub _buildAliasesDb
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaBuildAliasesDb' );
     $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'postfix', 'aliases', \ my $cfgTpl, { } );
@@ -372,7 +372,7 @@ sub _buildAliasesDb
 
 sub _saveConf
 {
-    my $self = shift;
+    my ($self) = @_;
 
     (tied %{$self->{'config'}})->flush();
     iMSCP::File->new( filename => "$self->{'cfgDir'}/postfix.data" )->copyFile( "$self->{'cfgDir'}/postfix.old.data" );
@@ -388,7 +388,7 @@ sub _saveConf
 
 sub _buildMasterCfFile
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $data = {
         MTA_MAILBOX_UID_NAME => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
@@ -430,7 +430,7 @@ sub _buildMasterCfFile
 
 sub _buildMainCfFile
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $baseServerIp = main::setupGetQuestion( 'BASE_SERVER_IP' );
     my $baseServerIpType = iMSCP::Net->getInstance->getAddrVersion( $baseServerIp );
@@ -592,7 +592,7 @@ sub _buildMainCfFile
 
 sub _oldEngineCompatibility
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaOldEngineCompatibility' );
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtadOldEngineCompatibility' );

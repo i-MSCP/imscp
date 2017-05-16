@@ -45,14 +45,14 @@ use warnings;
 
 sub getInstance
 {
-    my $self = shift;
+    my ($self, @attrs) = @_;
     return $self if ref $self;
 
     no strict 'refs';
     my $instance = \${"${self}::_instance"};
 
     unless (defined $$instance) {
-        $$instance = bless { @_ && ref $_[0] eq 'HASH' ? %{$_[0]} : @_ }, $self;
+        $$instance = bless { @attrs && ref $attrs[0] eq 'HASH' ? %{$attrs[0]} : @attrs }, $self;
         $$instance->_init( );
     }
 

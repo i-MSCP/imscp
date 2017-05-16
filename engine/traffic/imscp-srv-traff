@@ -155,9 +155,11 @@ $bootstrapper->boot(
     iMSCP::ProgramFinder::find( 'iptables' ),
     $main::imscpConfig{'IPV6_SUPPORT'} ? iMSCP::ProgramFinder::find( 'ip6tables' ) : undef
 );
-my $rs = run();
-$bootstrapper->unlock( '/tmp/imscp-srv-traff.lock' );
-exit $rs;
+
+exit run();
+
+END { $bootstrapper->unlock( '/tmp/imscp-srv-traff.lock' ); }
+
 
 =head1 AUTHOR
 

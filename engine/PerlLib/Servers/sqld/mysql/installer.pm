@@ -58,7 +58,7 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_setTypeAndVersion( );
     $rs ||= $self->_buildConf( );
@@ -82,7 +82,7 @@ sub preinstall
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'sqld'} = Servers::sqld::mysql->getInstance( );
@@ -116,7 +116,7 @@ sub _init
 
 sub _setTypeAndVersion
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $db = iMSCP::Database->factory( );
     $db->set( 'FETCH_MODE', 'arrayref' );
@@ -162,7 +162,7 @@ sub _setTypeAndVersion
 
 sub _buildConf
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldBuildConf' );
     return $rs if $rs;
@@ -278,7 +278,7 @@ EOF
 
 sub _updateServerConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     if (iMSCP::ProgramFinder::find( 'dpkg' ) && iMSCP::ProgramFinder::find( 'mysql_upgrade' )) {
         my $rs = execute(
@@ -343,7 +343,7 @@ sub _updateServerConfig
 
 sub _saveConf
 {
-    my $self = shift;
+    my ($self) = @_;
 
     (tied %{$self->{'config'}})->flush( );
     iMSCP::File->new( filename => "$self->{'cfgDir'}/mysql.data" )->copyFile( "$self->{'cfgDir'}/mysql.old.data" );

@@ -367,7 +367,7 @@ sub getProvider
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'init'} = _detectInit( );

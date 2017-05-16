@@ -47,7 +47,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->_removeConfig( );
 }
@@ -68,7 +68,7 @@ sub uninstall
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'sqld'} = Servers::sqld::mysql->getInstance( );
     $self;
@@ -84,7 +84,7 @@ sub _init
 
 sub _removeConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $filepath = "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf";
 

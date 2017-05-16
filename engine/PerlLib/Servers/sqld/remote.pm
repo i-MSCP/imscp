@@ -49,7 +49,7 @@ use parent 'Servers::sqld::mysql';
 
 sub preinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'remote' );
     $rs ||= Servers::sqld::remote::installer->getInstance( )->preinstall( );
@@ -66,7 +66,7 @@ sub preinstall
 
 sub postinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'remote' );
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'remote' );
@@ -82,7 +82,7 @@ sub postinstall
 
 sub uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'remote' );
     $rs ||= Servers::sqld::remote::uninstaller->getInstance( )->uninstall( );
@@ -112,7 +112,7 @@ sub restart
 
 sub setEnginePermissions
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldSetEnginePermissions' );
     $rs ||= setRights(

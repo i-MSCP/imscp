@@ -52,6 +52,7 @@ INSTALLER
     Removed: `beforeInstallPreRequiredPackages' event (Event cannot be triggered before installation of pre-required packages)
 
 PACKAGES
+    Fixed: Don't instantiate packages when not really needed
     Fixed: RainLoop entries are not removed from database when a mail account is deleted (RainLoop)
     Updated: PhpMyAdmin package installer for use of PhpMyAdmin 4.7.0
     Updated: RainLoop package installer for use of RainLoop 1.11.0.203
@@ -71,6 +72,7 @@ SERVERS
     Added: IMAP/POP3 log format (Dovecot)
     Added: In/Out bytes variables in POP3 logs for better traffic accounting (Dovecot)
     Fixed: Argument "" isn't numeric in addition (+)... in getTraffic() method of all servers implementing it
+    Fixed: Don't instantiate servers when not really needed
     Fixed: Error: quota: Unknown namespace: Trash (Dovecot/IMAP)
     Fixed: Unless virtual alias map entry for normal mail only accounts (Postfix)
     Fixed: Unwanted directory listings (Apache2 - Regression fix)

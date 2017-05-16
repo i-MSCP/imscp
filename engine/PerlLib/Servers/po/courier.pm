@@ -76,7 +76,7 @@ sub registerSetupListeners
 
 sub preinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoPreinstall', 'courier' );
     $rs ||= $self->stop( );
@@ -93,7 +93,7 @@ sub preinstall
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoInstall', 'courier' );
     $rs ||= Servers::po::courier::installer->getInstance( )->install( );
@@ -110,7 +110,7 @@ sub install
 
 sub postinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoPostinstall', 'courier' );
     return $rs if $rs;
@@ -160,7 +160,7 @@ sub postinstall
 
 sub uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoUninstall', 'courier' );
     $rs ||= Servers::po::courier::uninstaller->getInstance( )->uninstall( );
@@ -185,7 +185,7 @@ sub uninstall
 
 sub setEnginePermissions
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoSetEnginePermissions' );
     return $rs if $rs;
@@ -332,7 +332,7 @@ sub postaddMail
 
 sub start
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoStart' );
     return $rs if $rs;
@@ -369,7 +369,7 @@ sub start
 
 sub stop
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoStop' );
     return $rs if $rs;
@@ -399,7 +399,7 @@ sub stop
 
 sub restart
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoRestart' );
     return $rs if $rs;
@@ -532,7 +532,7 @@ sub getTraffic
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'restart'} = 0;
     $self->{'forceMailboxesQuotaRecalc'} = 0;

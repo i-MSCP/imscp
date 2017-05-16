@@ -27,7 +27,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_removeVloggerSqlUser( );
     $rs ||= $self->_removeDirs( );
@@ -37,7 +37,7 @@ sub uninstall
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'httpd'} = Servers::httpd::apache_fcgid->getInstance( );
     $self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
@@ -57,7 +57,7 @@ sub _removeVloggerSqlUser
 
 sub _removeDirs
 {
-    my $self = shift;
+    my ($self) = @_;
 
     for ($self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}, $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}) {
         my $rs = iMSCP::Dir->new( dirname => $_ )->remove( );
@@ -69,7 +69,7 @@ sub _removeDirs
 
 sub _fastcgiConf
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'httpd'}->disableModules( 'fcgid_imscp' );
     return $rs if $rs;
@@ -85,7 +85,7 @@ sub _fastcgiConf
 
 sub _vHostConf
 {
-    my $self = shift;
+    my ($self) = @_;
 
     if (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf") {
         my $rs = $self->{'httpd'}->disableSites( '00_nameserver.conf' );

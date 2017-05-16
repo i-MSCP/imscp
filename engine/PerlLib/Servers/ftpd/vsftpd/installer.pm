@@ -206,7 +206,7 @@ EOF
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_setVersion( );
     $rs ||= $self->_setupDatabase( );
@@ -230,7 +230,7 @@ sub install
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'ftpd'} = Servers::ftpd::vsftpd->getInstance( );
     $self->{'eventManager'} = $self->{'ftpd'}->{'eventManager'};
@@ -266,7 +266,7 @@ sub _init
 
 sub _setVersion
 {
-    my $self = shift;
+    my ($self) = @_;
 
     # Version is print through STDIN (see: strace vsftpd -v)
     my $rs = execute( 'vsftpd -v 0>&1', \ my $stdout, \ my $stderr );
@@ -294,7 +294,7 @@ sub _setVersion
 
 sub _setupDatabase
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $sqlServer = Servers::sqld->factory( );
     my $dbName = main::setupGetQuestion( 'DATABASE_NAME' );
@@ -353,7 +353,7 @@ sub _setupDatabase
 
 sub _buildConfigFile
 {
-    my $self = shift;
+    my ($self) = @_;
 
     # Make sure to start with clean user configuration directory
     unlink glob "$self->{'config'}->{'FTPD_USER_CONF_DIR'}/*";
@@ -484,7 +484,7 @@ EOF
 
 sub _saveConf
 {
-    my $self = shift;
+    my ($self) = @_;
 
     (tied %{$self->{'config'}})->flush( );
     iMSCP::File->new( filename => "$self->{'cfgDir'}/vsftpd.data" )->copyFile( "$self->{'cfgDir'}/vsftpd.old.data" );

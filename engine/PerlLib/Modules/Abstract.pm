@@ -141,7 +141,7 @@ sub disable
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'_data'} = { };
@@ -154,7 +154,7 @@ sub _init
 
  Param string $action Action to execute on servers, packages (<pre|post><action><moduleType>)
  Param string $pkgType Package type (server|package)
- Return int 0 on success, other or die on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -166,12 +166,15 @@ sub _execAction
         for my $server (iMSCP::Servers->getInstance( )->getListWithFullNames( )) {
             eval "require $server";
 
-            my $instance = $server->factory( );
-            if (my $subref = $instance->can( $action )) {
-                debug( "Executing `$action' action on $server" );
-                my $rs = $subref->( $instance, $self->_getData( $action ) );
-                return $rs if $rs;
+            if ($@) {
+                error( $@ );
+                return 1;
             }
+
+            (my $subref = $server->can( $action )) or next;
+            debug( sprintf("Executing `%s' action on %s", $action, $server ) );
+            my $rs = $subref->( $server->factory( ), $self->_getData( $action ) );
+            return $rs if $rs;
         }
 
         return 0;
@@ -179,12 +182,16 @@ sub _execAction
 
     for my $package (iMSCP::Packages->getInstance( )->getListWithFullNames( )) {
         eval "require $package";
-        my $instance = $package->getInstance( );
-        if (my $subref = $instance->can( $action )) {
-            debug( "Executing `$action' action on $package" );
-            my $rs = $subref->( $instance, $self->_getData( $action ) );
-            return $rs if $rs;
+
+        if ($@) {
+            error( $@ );
+            return 1;
         }
+
+        (my $subref = $package->can( $action )) or next;
+        debug( sprintf("Executing `%s' action on %s", $action, $package ) );
+        my $rs = $subref->( $package->getInstance( ), $self->_getData( $action ) );
+        return $rs if $rs;
     }
 
     0;

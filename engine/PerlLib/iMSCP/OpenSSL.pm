@@ -51,7 +51,7 @@ use parent 'Common::Object';
 
 sub validatePrivateKey
 {
-    my $self = shift;
+    my ($self) = @_;
 
     unless ($self->{'private_key_container_path'}) {
         error( 'Path to SSL private key is not set' );
@@ -101,7 +101,7 @@ sub validatePrivateKey
 
 sub validateCertificate
 {
-    my $self = shift;
+    my ($self) = @_;
 
     unless ($self->{'certificate_container_path'}) {
         error( 'Path to SSL certificate is not set' );
@@ -147,7 +147,7 @@ sub validateCertificate
 
 sub validateCertificateChain
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->validatePrivateKey( );
     $rs ||= $self->validateCertificate( );
@@ -163,7 +163,7 @@ sub validateCertificateChain
 
 sub importPrivateKey
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $passphraseFile;
     if ($self->{'private_key_passphrase'}) {
@@ -196,7 +196,7 @@ sub importPrivateKey
 
 sub importCertificate
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $file = iMSCP::File->new( filename => $self->{'certificate_container_path'} );
     my $certificate = $file->get( );
@@ -232,7 +232,7 @@ sub importCertificate
 
 sub importCaBundle
 {
-    my $self = shift;
+    my ($self) = @_;
 
     return 0 unless $self->{'ca_bundle_container_path'};
 
@@ -325,7 +325,7 @@ sub createSelfSignedCertificate
 
 sub createCertificateChain
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->importPrivateKey( );
     $rs ||= $self->importCertificate( );
@@ -380,7 +380,7 @@ sub getCertificateExpiryTime
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     # Full path to the certificate chains storage directory
     $self->{'certificate_chains_storage_dir'} = '' unless $self->{'certificate_chains_storage_dir'};

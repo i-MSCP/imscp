@@ -91,7 +91,7 @@ sub getClass
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $_ = basename( $_, '.pm' ) for @{$self->{'availables_plugins'}} = glob(
         "$main::imscpConfig{'PLUGINS_DIR'}/*/backend/*.pm"

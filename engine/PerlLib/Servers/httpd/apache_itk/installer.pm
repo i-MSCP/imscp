@@ -120,7 +120,7 @@ EOF
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_setApacheVersion( );
     $rs ||= $self->_makeDirs( );
@@ -149,7 +149,7 @@ sub install
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'httpd'} = Servers::httpd::apache_itk->getInstance( );
@@ -201,7 +201,7 @@ sub _init
 
 sub _guessSystemPhpVariables
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my ($phpVersion) = `php -nv 2> /dev/null` =~ /^PHP\s+(\d+.\d+)/ or die( "Couldn't guess system PHP version" );
 
@@ -242,7 +242,7 @@ sub _guessSystemPhpVariables
 
 sub _setApacheVersion
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = execute( 'apache2ctl -v', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
@@ -269,7 +269,7 @@ sub _setApacheVersion
 
 sub _makeDirs
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdMakeDirs' );
     return $rs if $rs;
@@ -326,7 +326,7 @@ sub _copyDomainDisablePages
 
 sub _buildPhpConfFiles
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdBuildPhpConfFiles' );
     return $rs if $rs;
@@ -367,7 +367,7 @@ sub _buildPhpConfFiles
 
 sub _buildApacheConfFiles
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdBuildApacheConfFiles' );
     return $rs if $rs;
@@ -448,7 +448,7 @@ sub _buildApacheConfFiles
 
 sub _installLogrotate
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdInstallLogrotate', 'apache2' );
 
@@ -481,7 +481,7 @@ sub _installLogrotate
 
 sub _setupVlogger
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $sqld = Servers::sqld->factory( );
     my $host = main::setupGetQuestion( 'DATABASE_HOST' );
@@ -544,7 +544,7 @@ sub _setupVlogger
 
 sub _saveConf
 {
-    my $self = shift;
+    my ($self) = @_;
 
     (tied %{$self->{'config'}})->flush( );
     (tied %{$self->{'phpConfig'}})->flush( );
@@ -572,7 +572,7 @@ sub _saveConf
 
 sub _cleanup
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'httpd'}->disableSites( 'imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf' );
     return $rs if $rs;

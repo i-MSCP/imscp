@@ -157,7 +157,7 @@ EOF
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     for ('dovecot.conf', 'dovecot-sql.conf') {
         my $rs = $self->_bkpConfFile( $_ );
@@ -294,7 +294,7 @@ EOF
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'po'} = Servers::po::dovecot->getInstance( );
@@ -332,7 +332,7 @@ sub _init
 
 sub _getVersion
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoGetVersion' );
     return $rs if $rs;
@@ -392,7 +392,7 @@ sub _bkpConfFile
 
 sub _setupSqlUser
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $sqlServer = Servers::sqld->factory( );
     my $dbName = main::setupGetQuestion( 'DATABASE_NAME' );
@@ -451,7 +451,7 @@ sub _setupSqlUser
 
 sub _buildConf
 {
-    my $self = shift;
+    my ($self) = @_;
 
     (my $dbName = main::setupGetQuestion( 'DATABASE_NAME' )) =~ s%('|"|\\)%\\$1%g;
     (my $dbUser = $self->{'config'}->{'DATABASE_USER'}) =~ s%('|"|\\)%\\$1%g;
@@ -568,7 +568,7 @@ EOF
 
 sub _saveConf
 {
-    my $self = shift;
+    my ($self) = @_;
 
     (tied %{$self->{'config'}})->flush( );
     iMSCP::File->new( filename => "$self->{'cfgDir'}/dovecot.data" )->copyFile( "$self->{'cfgDir'}/dovecot.old.data" );
@@ -584,7 +584,7 @@ sub _saveConf
 
 sub _migrateFromCourier
 {
-    my $self = shift;
+    my ($self) = @_;
 
     return 0 unless $main::imscpOldConfig{'PO_SERVER'} eq 'courier';
 

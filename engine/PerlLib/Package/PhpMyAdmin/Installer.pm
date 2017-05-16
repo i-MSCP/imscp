@@ -160,7 +160,7 @@ EOF
 
 sub preinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = iMSCP::Composer->getInstance( )->registerPackage( 'imscp/phpmyadmin', '0.4.7.*@dev' );
     $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
@@ -176,7 +176,7 @@ sub preinstall
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_backupConfigFile(
         "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'PHPMYADMIN_CONF_DIR'}/config.inc.php"
@@ -245,7 +245,7 @@ sub afterFrontEndBuildConfFile
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'phpmyadmin'} = Package::PhpMyAdmin->getInstance( );
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
@@ -317,7 +317,7 @@ sub _installFiles
 
 sub _saveConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     (tied %{$self->{'config'}})->flush( );
 
@@ -336,7 +336,7 @@ sub _saveConfig
 
 sub _setupSqlUser
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $sqlServer = Servers::sqld->factory( );
     my $phpmyadminDbName = main::setupGetQuestion( 'DATABASE_NAME' ).'_pma';
@@ -516,7 +516,7 @@ sub _buildHttpdConfig
 
 sub _setVersion
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $json = iMSCP::File->new( filename => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma/composer.json" )->get( );
     unless (defined $json) {
@@ -554,7 +554,7 @@ sub _generateBlowfishSecret
 
 sub _buildConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
     my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'PHPMYADMIN_CONF_DIR'}";

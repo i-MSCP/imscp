@@ -39,6 +39,9 @@ use iMSCP::Service;
 use Tie::File;
 use parent 'Common::SingletonClass';
 
+# Selfref for use in END block
+my $instance;
+
 =head1 DESCRIPTION
 
  i-MSCP Postfix server implementation.
@@ -57,7 +60,7 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaPreInstall', 'postfix' );
     $rs ||= $self->stop( );
@@ -75,7 +78,7 @@ sub preinstall
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaInstall', 'postfix' );
     $rs ||= Servers::mta::postfix::installer->getInstance( )->install( );
@@ -92,7 +95,7 @@ sub install
 
 sub postinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaPostinstall', 'postfix' );
     return $rs if $rs;
@@ -138,7 +141,7 @@ sub postinstall
 
 sub uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaUninstall', 'postfix' );
     $rs ||= Servers::mta::postfix::uninstaller->getInstance( )->uninstall( );
@@ -164,7 +167,7 @@ sub uninstall
 
 sub setEnginePermissions
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaSetEnginePermissions' );
     return $rs if $rs;
@@ -257,7 +260,7 @@ sub setEnginePermissions
 
 sub start
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaStart' );
     return $rs if $rs;
@@ -282,7 +285,7 @@ sub start
 
 sub stop
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaStop' );
     return $rs if $rs;
@@ -307,7 +310,7 @@ sub stop
 
 sub restart
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaRestart' );
     return $rs if $rs;
@@ -332,7 +335,7 @@ sub restart
 
 sub reload
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaReload' );
     return $rs if $rs;
@@ -1008,7 +1011,9 @@ sub postconf
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
+
+    $instance = $self; # Self ref for use in END block
 
     $self->{'restart'} = 0;
     $self->{'reload'} = 0;
@@ -1056,20 +1061,19 @@ EOF
 
 =item END
 
- Save all Postfix maps
+ Regenerate Postfix maps
 
 =cut
 
 END
     {
-        return if defined $main::execmode && $main::execmode eq 'setup';
+        return if $? || !$instance || ($main::execmode && $main::execmode eq 'setup');
 
-        my $self = __PACKAGE__->getInstance( );
         my $ret = 0;
 
-        while(my ($mapPath, $mapFileObject) = each(%{$self->{'_maps'}})) {
+        while(my ($mapPath, $mapFileObject) = each(%{$instance->{'_maps'}})) {
             my $rs = $mapFileObject->mode( 0640 );
-            $rs ||= $self->postmap( $mapPath );
+            $rs ||= $instance->postmap( $mapPath );
             $ret ||= $rs;
         }
 

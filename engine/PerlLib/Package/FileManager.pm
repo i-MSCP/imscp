@@ -95,26 +95,22 @@ EOF
 
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
-    unless ($@) {
-        $package = $package->getInstance( );
-        if ($package->can( 'showDialog' )) {
-            debug( sprintf( 'Executing showDialog action on %s', ref $package ) );
-            $rs = $package->showDialog( $dialog );
-            return $rs if $rs;
-        }
-    } else {
+
+    if ($@) {
         error( $@ );
         return 1;
     }
 
-    $rs;
+    return 0 unless my $subref = $package->can( 'showDialog' );
+    debug( sprintf( 'Executing showDialog action on %s', $package ) );
+    $subref->( $package->getInstance( ) );
 }
 
 =item preinstallListener( )
 
  Process preinstall tasks
 
- /!\ This method also trigger uninstallation of previous filemanager if needed.
+ /!\ This method also triggers uninstallation of previous filemanager if needed.
 
  Return int 0 on success, other on failure
 
@@ -122,7 +118,7 @@ EOF
 
 sub preinstallListener
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $oldPackage = exists $main::imscpOldConfig{'FILEMANAGER_ADDON'}
         ? $main::imscpOldConfig{'FILEMANAGER_ADDON'} # backward compatibility with 1.1.x Serie (upgrade process)
@@ -141,18 +137,15 @@ sub preinstallListener
 
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
-    unless ($@) {
-        $package = $package->getInstance( );
-        next unless $package->can( 'preinstall' );
-        debug( sprintf( 'Executing preinstall action on %s', ref $package ) );
-        my $rs = $package->preinstall( );
-        return $rs if $rs;
-    } else {
+
+    if ($@) {
         error( $@ );
         return 1;
     }
 
-    0;
+    return 0 unless my $subref = $package->can( 'preinstall' );
+    debug( sprintf( 'Executing preinstall action on %s', $package ) );
+    $subref->( $package->getInstance( ) );
 }
 
 =item installListener( )
@@ -168,18 +161,15 @@ sub installListener
     my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
-    unless ($@) {
-        $package = $package->getInstance( );
-        next unless $package->can( 'install' );
-        debug( sprintf( 'Executing install action on %s', ref $package ) );
-        my $rs = $package->install( );
-        return $rs if $rs;
-    } else {
+
+    if ($@) {
         error( $@ );
         return 1;
     }
 
-    0;
+    return 0 unless my $subref = $package->can( 'install' );
+    debug( sprintf( 'Executing install action on %s', $package ) );
+    $subref->( $package->getInstance( ) );
 }
 
 =item uninstall( [ $package ])
@@ -196,62 +186,58 @@ sub uninstall
     my (undef, $package) = @_;
 
     $package ||= $main::imscpConfig{'FILEMANAGER_PACKAGE'};
-
     return 0 unless $package;
 
     # Ensure backward compatibility (See #IP-1249)
     $package = 'Pydio' if $package eq 'AjaXplorer';
-
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
-    unless ($@) {
-        $package = $package->getInstance( );
-        next unless $package->can( 'uninstall' );
-        debug( sprintf( 'Executing uninstall action on %s', ref $package ) );
-        my $rs = $package->uninstall( );
-        return $rs if $rs;
-    } else {
+
+    if ($@) {
         error( $@ );
         return 1;
     }
 
-    0;
+    return 0 unless my $subref = $package->can( 'uninstall' );
+    debug( sprintf( 'Executing uninstall action on %s', $package ) );
+    $subref->( $package->getInstance( ) );
 }
 
-=item setGuiPermissionsListener( )
+=item setGuiPermissions( )
 
- Set gui permissions listener
+ Set gui permissions
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub setGuiPermissionsListener
+sub setGuiPermissions
 {
-    my $self = shift;
+    my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFileManagerSetGuiPermissions' );
-    return $rs if $rs;
+    $self->{'eventManager'}->register(
+        'afterSetGuiPermissions',
+        sub {
+            my $rs = $self->{'eventManager'}->trigger( 'beforeFileManagerSetGuiPermissions' );
+            return $rs if $rs;
 
-    my $package = $main::imscpConfig{'FILEMANAGER_PACKAGE'};
+            my $package = $main::imscpConfig{'FILEMANAGER_PACKAGE'};
+            return 0 unless exists $self->{'PACKAGES'}->{$package};
 
-    return 0 unless exists $self->{'PACKAGES'}->{$package};
+            $package = "Package::FileManager::${package}::${package}";
+            eval "require $package";
 
-    $package = "Package::FileManager::${package}::${package}";
-    eval "require $package";
+            if ($@) {
+                error( $@ );
+                return 1;
+            }
 
-    unless ($@) {
-        $package = $package->getInstance( );
-        next unless $package->can( 'setGuiPermissions' );
-        debug( sprintf( 'Executing setGuiPermissions action on %s', ref $package ) );
-        $rs = $package->setGuiPermissions( );
-        return $rs if $rs;
-    } else {
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterFileManagerSetGuiPermissions' );
+            (my $subref = $package->can( 'setGuiPermissions' )) or next;
+            debug( sprintf( 'Executing setGuiPermissions action on %s', $package ) );
+            $rs = $subref->( $package->getInstance( ) );
+            $rs ||= $self->{'eventManager'}->trigger( 'afterFileManagerSetGuiPermissions' );
+        }
+    );
 }
 
 =back
@@ -270,19 +256,18 @@ sub setGuiPermissionsListener
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
-    # Find list of available FileManager packages
     @{$self->{'PACKAGES'}}{
         iMSCP::Dir->new( dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager" )->getDirs( )
-    } = ();
+    } = ( );
+
     # Quick fix for disabling Pydio package if PHP >= 7 is detected
     if (defined $main::execmode && $main::execmode eq 'setup') {
-        delete $self->{'PACKAGES'}->{'Pydio'}
-            if version->parse($self->_getPhpVersion( ) ) >= version->parse( '7.0.0' );
+        delete $self->{'PACKAGES'}->{'Pydio'} if version->parse( $self->_getPhpVersion( ) ) >= version->parse( '7.0.0' );
     }
-    $self->{'eventManager'}->register('afterFrontendSetGuiPermissions', sub { $self->setGuiPermissionsListener( ); });
+
     $self;
 }
 
@@ -296,13 +281,13 @@ sub _init
 
 sub _getPhpVersion
 {
-    my $rs = execute( 'php -d date.timezone=UTC -v', \ my $stdout, \ my $stderr );
+    my $rs = execute( 'php -nv', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
     $stdout =~ /PHP\s+([\d.]+)/ or die(
-        sprintf( "Couldn't find PHP version from `php -v` command output: %s", $stdout )
+        sprintf( "Couldn't find PHP version from `php -nv` command output: %s", $stdout )
     );
     $1;
 }

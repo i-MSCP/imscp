@@ -134,9 +134,9 @@ sub loadMainConfig
 
 sub lock
 {
-    my $self = shift;
-    my $lockFile = shift || '/tmp/imscp.lock';
-    my $nowait = shift || 0;
+    my ($self, $lockFile, $nowait) = @_;
+    $lockFile //= '/tmp/imscp.lock';
+    $nowait ||= 0;
 
     return 1 if exists $self->{'locks'}->{$lockFile};
 

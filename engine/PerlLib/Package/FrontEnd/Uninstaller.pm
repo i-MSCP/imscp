@@ -52,7 +52,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_deconfigurePHP( );
     $rs ||= $self->_deconfigureHTTPD( );
@@ -75,7 +75,7 @@ sub uninstall
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'frontend'} = Package::FrontEnd->getInstance( );
     $self->{'config'} = $self->{'frontend'}->{'config'};
@@ -122,7 +122,7 @@ sub _deconfigurePHP
 
 sub _deconfigureHTTPD
 {
-    my $self = shift;
+    my ($self) = @_;
 
     for ('00_master_ssl.conf', '00_master.conf') {
         my $rs = $self->{'frontend'}->disableSites( $_ );

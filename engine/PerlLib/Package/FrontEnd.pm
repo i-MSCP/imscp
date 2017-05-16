@@ -34,7 +34,6 @@ use iMSCP::Execute;
 use iMSCP::Rights;
 use iMSCP::Service;
 use iMSCP::TemplateParser;
-use Servers::httpd;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -71,7 +70,7 @@ sub registerSetupListeners
 
 sub preinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndPreInstall' );
     $rs ||= $self->stop( );
@@ -88,7 +87,7 @@ sub preinstall
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndInstall' );
     $rs ||= Package::FrontEnd::Installer->getInstance( )->install( );
@@ -105,7 +104,7 @@ sub install
 
 sub postinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndPostInstall' );
     return $rs if $rs;
@@ -142,7 +141,7 @@ sub postinstall
 
 sub dpkgPostInvokeTasks
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndDpkgPostInvokeTasks' );
     $rs ||= Package::FrontEnd::Installer->getInstance( )->dpkgPostInvokeTasks( );
@@ -159,7 +158,7 @@ sub dpkgPostInvokeTasks
 
 sub uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndUninstall' );
     $rs ||= Package::FrontEnd::Uninstaller->getInstance( )->uninstall( );
@@ -176,7 +175,7 @@ sub uninstall
 
 sub setEnginePermissions
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndSetEnginePermissions' );
 
@@ -286,7 +285,7 @@ sub setEnginePermissions
 
 sub setGuiPermissions
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontendSetGuiPermissions' );
     return $rs if $rs;
@@ -432,7 +431,7 @@ sub disableSites
 
 sub start
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndStart' );
     $rs ||= $self->startPhpFpm( );
@@ -450,7 +449,7 @@ sub start
 
 sub stop
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndStop' );
     $rs ||= $self->stopPhpFpm( );
@@ -468,7 +467,7 @@ sub stop
 
 sub reload
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndReload' );
     $rs ||= $self->reloadPhpFpm( );
@@ -486,7 +485,7 @@ sub reload
 
 sub restart
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndRestart' );
     $rs ||= $self->restartPhpFpm( );
@@ -504,7 +503,7 @@ sub restart
 
 sub startNginx
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndStartNginx' );
     return $rs if $rs;
@@ -529,7 +528,7 @@ sub startNginx
 
 sub stopNginx
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndStopNginx' );
     return $rs if $rs;
@@ -554,7 +553,7 @@ sub stopNginx
 
 sub reloadNginx
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndReloadNginx' );
     return $rs if $rs;
@@ -579,7 +578,7 @@ sub reloadNginx
 
 sub restartNginx
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndRestartNginx' );
     return $rs if $rs;
@@ -604,7 +603,7 @@ sub restartNginx
 
 sub startPhpFpm
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndStartPhpFpm' );
     return $rs if $rs;
@@ -629,7 +628,7 @@ sub startPhpFpm
 
 sub stopPhpFpm
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndStopPhpFpm' );
     return $rs if $rs;
@@ -654,7 +653,7 @@ sub stopPhpFpm
 
 sub reloadPhpFpm
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndReloadPhpFpm' );
     return $rs if $rs;
@@ -679,7 +678,7 @@ sub reloadPhpFpm
 
 sub restartPhpFpm
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndRestartPhpFpm' );
     return $rs if $rs;
@@ -762,14 +761,13 @@ sub buildConfFile
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'start'} = 0;
     $self->{'reload'} = 0;
     $self->{'restart'} = 0;
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/frontend";
     tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.data", readonly => 1;
-    $self->{'phpConfig'} = Servers::httpd->factory( )->{'phpConfig'};
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self;
 }

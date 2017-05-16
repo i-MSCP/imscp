@@ -283,7 +283,7 @@ sub _getData
 
 sub _sharedMountPoint
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $regexp = "^$self->{'subdomain_alias_mount'}(/.*|\$)";
     my $db = iMSCP::Database->factory( )->getRawDb( );

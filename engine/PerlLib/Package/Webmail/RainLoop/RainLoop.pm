@@ -224,7 +224,7 @@ sub deleteMail
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/rainloop";
 

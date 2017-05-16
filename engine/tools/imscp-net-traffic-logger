@@ -171,9 +171,15 @@ OPTIONS:
  'verbose|v'            => \&iMSCP::Getopt::verbose
 );
 
+my $action = shift;
+$action && $action =~ /^(?:start|stop)$/ or iMSCP::Getopt->showUsage( );
+
 setVerbose( iMSCP::Getopt->verbose );
 
-iMSCP::Bootstrapper->getInstance( )->boot(
+my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
+exit unless $bootstrapper->lock( '/tmp/imscp-net-traffic-logger.lock', 'nowait' );
+
+$bootstrapper->boot(
     {
         config_readonly => 1,
         nodatabase      => 1,
@@ -192,9 +198,9 @@ my %dispatch = (
    'stop' => \&stop
 );
 
-my $action = shift;
-$action && $action =~ /^(?:start|stop)$/ or iMSCP::Getopt->showUsage( );
 exit $dispatch{ $action }->( );
+
+END { $bootstrapper->unlock( '/tmp/imscp-net-traffic-logger.lock' ); }
 
 =head1 AUTHOR
 

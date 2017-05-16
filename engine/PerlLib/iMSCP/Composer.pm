@@ -79,7 +79,7 @@ sub registerPackage
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'packages'} = [ ];
     $self->{'packages_dir'} = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages";
@@ -143,7 +143,7 @@ sub _init
 
 sub _getComposer
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $msgHeader = "Installing/Updating composer.phar from http://getcomposer.org\n\n";
     my $msgFooter = "\nDepending on your connection, this may take few seconds...";
@@ -190,7 +190,7 @@ sub _getComposer
 
 sub _checkRequirements
 {
-    my $self = shift;
+    my ($self) = @_;
 
     return 0 unless -d $self->{'packages_dir'};
 
@@ -233,7 +233,7 @@ sub _checkRequirements
 
 sub _installPackages
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_buildComposerFile( );
     return $rs if $rs;
@@ -270,7 +270,7 @@ sub _installPackages
 
 sub _buildComposerFile
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $tpl = <<'TPL';
 {
@@ -304,7 +304,7 @@ TPL
 
 sub _cleanPackageCache
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'IMSCP_HOMEDIR'}/.cache" )->remove( );
     $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'IMSCP_HOMEDIR'}/.composer" )->remove( );

@@ -205,7 +205,7 @@ EOF
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_bkpConfFile( $self->{'config'}->{'FTPD_CONF_FILE'} );
     $rs ||= $self->_setVersion( );
@@ -231,7 +231,7 @@ sub install
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'ftpd'} = Servers::ftpd::proftpd->getInstance( );
@@ -299,7 +299,7 @@ sub _bkpConfFile
 
 sub _setVersion
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = execute( 'proftpd -v', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
@@ -326,7 +326,7 @@ sub _setVersion
 
 sub _setupDatabase
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $sqlServer = Servers::sqld->factory( );
     my $dbName = main::setupGetQuestion( 'DATABASE_NAME' );
@@ -400,7 +400,7 @@ sub _setupDatabase
 
 sub _buildConfigFile
 {
-    my $self = shift;
+    my ($self) = @_;
 
     # Escape any double-quotes and backslash (see #IP-1330)
     (my $dbUser = $self->{'config'}->{'DATABASE_USER'}) =~ s%("|\\)%\\$1%g;
@@ -521,7 +521,7 @@ EOF
 
 sub _saveConf
 {
-    my $self = shift;
+    my ($self) = @_;
 
     (tied %{$self->{'config'}})->flush( );
     iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.data" )->copyFile( "$self->{'cfgDir'}/proftpd.old.data" );
@@ -537,7 +537,7 @@ sub _saveConf
 
 sub _oldEngineCompatibility
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdOldEngineCompatibility' );
     $rs ||= $self->{'eventManager'}->trigger( 'afterFtpdOldEngineCompatibility' );

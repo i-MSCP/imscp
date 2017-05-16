@@ -189,7 +189,7 @@ sub clearListeners
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $EVENTS{$self} = { };
 

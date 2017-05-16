@@ -73,7 +73,7 @@ sub registerSetupListeners
 
 sub preinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPreInstall', 'bind' );
     $rs ||= $self->{'eventManager'}->trigger( 'afterNamedPreInstall', 'bind' );
@@ -89,7 +89,7 @@ sub preinstall
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedInstall', 'bind' );
     $rs ||= Servers::named::bind::installer->getInstance( )->install( );
@@ -106,7 +106,7 @@ sub install
 
 sub postinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostInstall' );
     return $rs if $rs;
@@ -141,7 +141,7 @@ sub postinstall
 
 sub uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedUninstall', 'bind' );
     $rs ||= Servers::named::bind::uninstaller->getInstance( )->uninstall( );
@@ -165,7 +165,7 @@ sub uninstall
 
 sub setEnginePermissions
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedSetEnginePermissions' );
     $rs ||= $self->{'eventManager'}->trigger( 'afterNamedSetEnginePermissions' );
@@ -745,7 +745,7 @@ sub addCustomDNS
 
 sub restart
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedRestart' );
     return $rs if $rs;
@@ -770,7 +770,7 @@ sub restart
 
 sub reload
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedReload' );
     return $rs if $rs;
@@ -801,7 +801,7 @@ sub reload
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'restart'} = 0;
     $self->{'reload'} = 0;

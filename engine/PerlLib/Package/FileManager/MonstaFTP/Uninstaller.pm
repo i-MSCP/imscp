@@ -49,7 +49,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_unregisterConfig( );
     $rs ||= $self->_removeFiles( );
@@ -71,7 +71,7 @@ sub uninstall
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'frontend'} = Package::FrontEnd->getInstance( );
     $self;
@@ -87,7 +87,7 @@ sub _init
 
 sub _unregisterConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     for ('00_master.conf', '00_master_ssl.conf') {
         next unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
@@ -118,7 +118,7 @@ sub _unregisterConfig
 
 sub _removeFiles
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove( );
     return $rs if $rs || !-f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_monstaftp.conf";

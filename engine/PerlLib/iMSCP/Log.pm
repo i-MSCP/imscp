@@ -135,7 +135,7 @@ sub store
     }
 
     my $args = check( $tmpl, \%hash ) or (
-        warn( sprintf( "Couldn't store error: %s", Params::Check->last_error ) ),
+        warn( sprintf( "Couldn't store message: %s", Params::Check->last_error ) ),
         return
     );
 

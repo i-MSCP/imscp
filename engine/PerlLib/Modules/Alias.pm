@@ -122,7 +122,7 @@ sub process
 
 sub add
 {
-    my $self = shift;
+    my ($self) = @_;
 
     if ($self->{'alias_status'} eq 'tochange') {
         my $db = iMSCP::Database->factory( );
@@ -170,7 +170,7 @@ sub add
 
 sub disable
 {
-    my $self = shift;
+    my ($self) = @_;
 
     # Sets the status of any subdomain that belongs to this domain alias to 'todisable'.
     my $rs = iMSCP::Database->factory( )->doQuery(
@@ -343,7 +343,7 @@ sub _getData
 
 sub _sharedMountPoint
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $regexp = "^$self->{'alias_mount'}(/.*|\$)";
     my $db = iMSCP::Database->factory( )->getRawDb( );

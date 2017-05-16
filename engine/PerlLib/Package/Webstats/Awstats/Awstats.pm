@@ -90,7 +90,7 @@ sub uninstall
 
 sub setEnginePermissions
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = setRights(
         "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_updateall.pl",
@@ -265,7 +265,7 @@ sub deleteSub
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'httpd'} = Servers::httpd->factory( );
     iMSCP::EventManager->getInstance( )->register( 'afterHttpdBuildConf', sub { $self->_addAwstatsSection( @_ ); } );

@@ -262,7 +262,7 @@ EOF
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     for my $conffile('BIND_CONF_DEFAULT_FILE', 'BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
         if ($self->{'config'}->{$conffile} ne '') {
@@ -293,7 +293,7 @@ sub install
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'named'} = Servers::named::bind->getInstance();
@@ -360,7 +360,7 @@ sub _bkpConfFile
 
 sub _switchTasks
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $slaveDbDir = iMSCP::Dir->new( dirname => "$self->{'config'}->{'BIND_DB_DIR'}/slave" );
 
@@ -396,7 +396,7 @@ sub _switchTasks
 
 sub _buildConf
 {
-    my $self = shift;
+    my ($self) = @_;
 
     # default conffile (Debian/Ubuntu specific)
     if ($self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} && -f $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}) {
@@ -554,7 +554,7 @@ sub _buildConf
 
 sub _saveConf
 {
-    my $self = shift;
+    my ($self) = @_;
 
     (tied %{$self->{'config'}})->flush();
     iMSCP::File->new( filename => "$self->{'cfgDir'}/bind.data" )->copyFile( "$self->{'cfgDir'}/bind.old.data" );
@@ -593,7 +593,7 @@ sub _checkIps
 
 sub _getVersion
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = execute( "$self->{'config'}->{'NAMED_BNAME'} -v", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
@@ -616,7 +616,7 @@ sub _getVersion
 
 sub _oldEngineCompatibility
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedOldEngineCompatibility' );
     return $rs if $rs;

@@ -78,7 +78,7 @@ sub getListWithFullNames
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $_ = basename( $_, '.pm' ) for @{$self->{'servers'}} = grep { $_ !~ /\/noserver.pm$/ } glob(
         "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers/*.pm"

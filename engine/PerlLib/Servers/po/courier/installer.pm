@@ -164,7 +164,7 @@ EOF
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_setupAuthdaemonSqlUser( );
     $rs ||= $self->_buildConf( );
@@ -296,7 +296,7 @@ EOF
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'po'} = Servers::po::courier->getInstance( );
@@ -331,7 +331,7 @@ sub _init
 
 sub _setupAuthdaemonSqlUser
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $sqlServer = Servers::sqld->factory( );
     my $dbName = main::setupGetQuestion( 'DATABASE_NAME' );
@@ -392,7 +392,7 @@ sub _setupAuthdaemonSqlUser
 
 sub _buildConf
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_buildDHparametersFile( );
     $rs ||= $self->_buildAuthdaemonrcFile( );
@@ -499,7 +499,7 @@ EOF
 
 sub _setupCyrusSASL
 {
-    my $self = shift;
+    my ($self) = @_;
 
     # Add postfix user in authdaemon group
 
@@ -550,7 +550,7 @@ sub _setupCyrusSASL
 
 sub _buildDHparametersFile
 {
-    my $self = shift;
+    my ($self) = @_;
 
     return 0 unless iMSCP::ProgramFinder::find( 'mkdhparams' );
 
@@ -592,7 +592,7 @@ sub _buildDHparametersFile
 
 sub _buildAuthdaemonrcFile
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'courier', 'authdaemonrc', \ my $cfgTpl, { } );
     return $rs if $rs;
@@ -630,7 +630,7 @@ sub _buildAuthdaemonrcFile
 
 sub _buildSslConfFiles
 {
-    my $self = shift;
+    my ($self) = @_;
 
     return 0 unless main::setupGetQuestion( 'SERVICES_SSL_ENABLED' ) eq 'yes';
 
@@ -679,7 +679,7 @@ sub _buildSslConfFiles
 
 sub _saveConf
 {
-    my $self = shift;
+    my ($self) = @_;
 
     (tied %{$self->{'config'}})->flush( );
     iMSCP::File->new( filename => "$self->{'cfgDir'}/courier.data" )->copyFile( "$self->{'cfgDir'}/courier.old.data" );
@@ -695,7 +695,7 @@ sub _saveConf
 
 sub _migrateFromDovecot
 {
-    my $self = shift;
+    my ($self) = @_;
 
     return 0 unless $main::imscpOldConfig{'PO_SERVER'} eq 'dovecot';
 
@@ -732,7 +732,7 @@ sub _migrateFromDovecot
 
 sub _oldEngineCompatibility
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoOldEngineCompatibility' );
     return $rs if $rs;

@@ -50,7 +50,7 @@ use parent 'Common::Object';
 
 sub get
 {
-    my $self = shift;
+    my ($self) = @_;
 
     return $self->{'fileContent'} if defined $self->{'fileContent'};
 
@@ -81,7 +81,7 @@ sub get
 
 sub getAsRef
 {
-    my $self = shift;
+    my ($self) = @_;
 
     return \$self->{'fileContent'} if defined $self->{'fileContent'};
 
@@ -119,7 +119,7 @@ sub set
 
 sub save
 {
-    my $self = shift;
+    my ($self) = @_;
 
     unless (defined $self->{'filename'}) {
         error( "Attribut `filename' is not set." );
@@ -148,7 +148,7 @@ sub save
 
 sub delFile
 {
-    my $self = shift;
+    my ($self) = @_;
 
     unless (defined $self->{'filename'}) {
         error( "Attribut `filename' is not set." );
@@ -318,7 +318,7 @@ sub moveFile
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'filename'} //= undef;
     $self;

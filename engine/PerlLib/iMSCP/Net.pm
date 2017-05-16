@@ -49,7 +49,7 @@ use parent 'Common::SingletonClass';
 
 sub getAddresses
 {
-    my $self = shift;
+    my ($self) = @_;
     wantarray ? keys %{$self->{'addresses'}} : join ' ', keys %{$self->{'addresses'}};
 }
 
@@ -327,7 +327,7 @@ sub expandAddr
 
 sub getDevices
 {
-    my $self = shift;
+    my ($self) = @_;
 
     wantarray ? keys %{$self->{'devices'}} : join ' ', keys %{$self->{'devices'}};
 }
@@ -432,7 +432,7 @@ sub isDeviceDown
 
 sub resetInstance
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->_init( );
     0;
@@ -454,7 +454,7 @@ sub resetInstance
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'devices'} = $self->_extractDevices( );
     $self->{'addresses'} = $self->_extractAddresses( );
@@ -490,7 +490,7 @@ sub _extractDevices
 
 sub _extractAddresses
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my ($stdout, $stderr);
     execute( [ 'ip', '-o', 'addr', 'show' ], \$stdout, \$stderr ) == 0 or die(

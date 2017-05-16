@@ -137,7 +137,7 @@ EOF
 
 sub preinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = iMSCP::Composer->getInstance( )->registerPackage( 'imscp/roundcube', '1.2.x' );
     $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
@@ -153,7 +153,7 @@ sub preinstall
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_backupConfigFile( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php" );
     $rs ||= $self->_installFiles( );
@@ -220,7 +220,7 @@ sub afterFrontEndBuildConfFile
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'roundcube'} = Package::Webmail::Roundcube::Roundcube->getInstance( );
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
@@ -242,7 +242,7 @@ sub _init
 
 sub _getPhpVersion
 {
-    my $rs = execute( 'php -d date.timezone=UTC -v', \ my $stdout, \ my $stderr );
+    my $rs = execute( 'php -nv', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
@@ -281,7 +281,7 @@ sub _backupConfigFile
 
 sub _installFiles
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/roundcube";
 
@@ -315,7 +315,7 @@ sub _installFiles
 
 sub _mergeConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     if (%{$self->{'config'}}) {
         my %oldConfig = %{$self->{'config'}};
@@ -344,7 +344,7 @@ sub _mergeConfig
 
 sub _setupDatabase
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $sqlServer = Servers::sqld->factory( );
     my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
@@ -444,7 +444,7 @@ sub _setupDatabase
 
 sub _buildRoundcubeConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $panelUName =
         my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
@@ -496,7 +496,7 @@ sub _buildRoundcubeConfig
 
 sub _updateDatabase
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
     my $roundcubeDbName = main::setupGetQuestion( 'DATABASE_NAME' ).'_roundcube';
@@ -542,7 +542,7 @@ sub _updateDatabase
 
 sub _setVersion
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $repoDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/roundcube";
     my $json = iMSCP::File->new( filename => "$repoDir/composer.json" )->get( );
@@ -565,7 +565,7 @@ sub _setVersion
 
 sub _buildHttpdConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     if (-f "$self->{'wrkDir'}/imscp_roundcube.conf") {
         my $rs = iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp_roundcube.conf" )->copyFile(
@@ -599,7 +599,7 @@ sub _buildHttpdConfig
 
 sub _saveConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     (tied %{$self->{'config'}})->flush( );
 

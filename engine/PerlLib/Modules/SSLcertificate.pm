@@ -115,7 +115,7 @@ sub process
 
 sub add
 {
-    my $self = shift;
+    my ($self) = @_;
 
     # Remove previous SSL certificate if any
     my $rs = $self->delete( );
@@ -167,7 +167,7 @@ sub add
 
 sub delete
 {
-    my $self = shift;
+    my ($self) = @_;
 
     return 0 unless -f "$self->{'certsDir'}/$self->{'domain_name'}.pem";
     iMSCP::File->new( filename => "$self->{'certsDir'}/$self->{'domain_name'}.pem" )->delFile( );
@@ -183,7 +183,7 @@ sub delete
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'certsDir'} = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs";
 

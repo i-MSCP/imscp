@@ -45,6 +45,7 @@ use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
 use Package::FrontEnd;
 use Servers::named;
 use Servers::mta;
+use Servers::httpd;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -491,7 +492,7 @@ EOF
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_setupMasterAdmin( );
     $rs ||= $self->_setupSsl( );
@@ -518,7 +519,9 @@ sub install
 
 sub dpkgPostInvokeTasks
 {
-    my $self = shift;
+    my ($self) = @_;
+
+    $self->{'frontend'}->restartPhpFpm();
 
     if (-f '/usr/local/sbin/imscp_panel'
         && ($self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} eq '' || !-f $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'})
@@ -538,8 +541,8 @@ sub dpkgPostInvokeTasks
 
     my $rs = $self->_copyPhpBinary( );
     return $rs if $rs || !-f '/usr/local/etc/imscp_panel/php-fpm.conf';
-    $self->{'frontend'}->{'restart'} = 1;
-    0;
+
+    $self->{'frontend'}->restartPhpFpm();
 }
 
 =back
@@ -558,13 +561,13 @@ sub dpkgPostInvokeTasks
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'frontend'} = Package::FrontEnd->getInstance( );
     $self->{'eventManager'} = $self->{'frontend'}->{'eventManager'};
     $self->{'cfgDir'} = $self->{'frontend'}->{'cfgDir'};
     $self->{'config'} = $self->{'frontend'}->{'config'};
-    $self->{'phpConfig'} = $self->{'frontend'}->{'phpConfig'};
+    $self->{'phpConfig'} = Servers::httpd->factory( )->{'phpConfig'};
 
     # Be sure to work with newest conffile
     # Cover case where the conffile has been loaded prior installation of new files (even if discouraged)
@@ -715,7 +718,7 @@ sub _setupSsl
 
 sub _setHttpdVersion( )
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = execute( 'nginx -v', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
@@ -742,7 +745,7 @@ sub _setHttpdVersion( )
 
 sub _addMasterWebUser
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndAddUser' );
     return $rs if $rs;
@@ -843,7 +846,7 @@ sub _addMasterWebUser
 
 sub _makeDirs
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndMakeDirs' );
     return $rs if $rs;
@@ -906,7 +909,7 @@ sub _makeDirs
 
 sub _copyPhpBinary
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndCopyPhpBinary' );
     return $rs if $rs;
@@ -936,7 +939,7 @@ sub _copyPhpBinary
 
 sub _buildPhpConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndBuildPhpConfig' );
     return $rs if $rs;
@@ -1000,7 +1003,7 @@ sub _buildPhpConfig
 
 sub _buildHttpdConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndBuildHttpdConfig' );
     return $rs if $rs;
@@ -1165,7 +1168,7 @@ sub _buildHttpdConfig
 
 sub _addDnsZone
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedAddMasterZone' );
     $rs ||= Servers::named->factory( )->addDmn(
@@ -1191,7 +1194,7 @@ sub _addDnsZone
 
 sub _deleteDnsZone
 {
-    my $self = shift;
+    my ($self) = @_;
 
     return 0 unless $main::imscpOldConfig{'BASE_SERVER_VHOST'} &&
         $main::imscpOldConfig{'BASE_SERVER_VHOST'} ne main::setupGetQuestion( 'BASE_SERVER_VHOST' );
@@ -1211,7 +1214,7 @@ sub _deleteDnsZone
 
 sub _saveConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     (tied %{$self->{'config'}})->flush( );
     iMSCP::File->new( filename => "$self->{'cfgDir'}/frontend.data" )->copyFile(

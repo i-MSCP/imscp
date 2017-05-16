@@ -67,9 +67,12 @@ sub factory
 
 sub can
 {
-    my ($self, $method) = @_;
+    my (undef, $method) = @_;
 
-    $self->factory( )->can( $method );
+    my $package = 'Servers::cron::cron';
+    eval "require $package";
+    fatal( $@ ) if $@;
+    $package->can( $method );
 }
 
 =back

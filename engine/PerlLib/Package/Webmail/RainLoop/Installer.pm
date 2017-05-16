@@ -137,7 +137,7 @@ EOF
 
 sub preinstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = iMSCP::Composer->getInstance( )->registerPackage( 'imscp/rainloop', $VERSION );
     $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
@@ -153,7 +153,7 @@ sub preinstall
 
 sub install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_installFiles( );
     $rs ||= $self->_mergeConfig( );
@@ -219,7 +219,7 @@ sub afterFrontEndBuildConfFile
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'rainloop'} = Package::Webmail::RainLoop::RainLoop->getInstance( );
     $self->{'frontend'} = Package::FrontEnd->getInstance( );
@@ -239,7 +239,7 @@ sub _init
 
 sub _installFiles
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $srcDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/rainloop";
 
@@ -289,7 +289,7 @@ sub _installFiles
 
 sub _mergeConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     if (%{$self->{'config'}}) {
         my %oldConfig = %{$self->{'config'}};
@@ -318,7 +318,7 @@ sub _mergeConfig
 
 sub _setupDatabase
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $sqlServer = Servers::sqld->factory( );
     my $imscpDbName = main::setupGetQuestion( 'DATABASE_NAME' );
@@ -392,10 +392,11 @@ sub _setupDatabase
 
 sub _buildConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop/data/_data_/_default_/configs";
-    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $panelUName = my $panelGName =
+        $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
     for my $confFile('application.ini', 'plugin-imscp-change-password.ini') {
         my $data = {
@@ -443,7 +444,7 @@ sub _buildConfig
 
 sub _setVersion
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/rainloop";
     my $json = iMSCP::File->new( filename => "$packageDir/composer.json" )->get( );
@@ -468,7 +469,7 @@ sub _setVersion
 
 sub _removeOldVersionFiles
 {
-    my $self = shift;
+    my ($self) = @_;
 
     local $@;
     eval {
@@ -495,7 +496,7 @@ sub _removeOldVersionFiles
 
 sub _buildHttpdConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'frontend'}->buildConfFile(
         "$self->{'cfgDir'}/nginx/imscp_rainloop.conf",
@@ -518,7 +519,7 @@ sub _buildHttpdConfig
 
 sub _saveConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     (tied %{$self->{'config'}})->flush( );
 

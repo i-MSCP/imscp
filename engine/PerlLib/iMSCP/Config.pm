@@ -48,7 +48,7 @@ use parent 'Common::Object';
 
 sub flush
 {
-    my $self = shift;
+    my ($self) = @_;
 
     return 0 if $self->{'readonly'}
         || !($self->{'tieFileObject'}->{'defer'} || $self->{'tieFileObject'}->{'autodeferring'});
@@ -139,7 +139,7 @@ sub STORE
 
 sub FIRSTKEY
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'_list'} = [ sort keys %{$self->{'configValues'}} ];
     $self->NEXTKEY;
@@ -182,7 +182,7 @@ sub EXISTS
 
 sub CLEAR
 {
-    my $self = shift;
+    my ($self) = @_;
 
     @{$self->{'tiefile'}} = ( );
     $self->{'configValues'} = { };
@@ -198,7 +198,7 @@ sub CLEAR
 
 sub DESTROY
 {
-    my $self = shift;
+    my ($self) = @_;
 
     undef $self->{'tieFileObject'};
     untie(@{$self->{'tiefile'}});
@@ -214,7 +214,7 @@ sub DESTROY
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     defined $self->{'fileName'} or die( 'fileName attribut is not defined' );
 
@@ -237,7 +237,7 @@ sub _init
 
 sub _loadConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $mode;
 

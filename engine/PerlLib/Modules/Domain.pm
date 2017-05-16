@@ -128,7 +128,7 @@ sub process
 
 sub add
 {
-    my $self = shift;
+    my ($self) = @_;
 
     if ($self->{'domain_status'} eq 'tochange') {
         my $db = iMSCP::Database->factory( );
@@ -173,7 +173,7 @@ sub add
 
 sub disable
 {
-    my $self = shift;
+    my ($self) = @_;
 
     # Sets the status of any subdomain that belongs to this domain to 'todisable'.
     my $rs = iMSCP::Database->factory( )->doQuery(
@@ -199,7 +199,7 @@ sub disable
 
 sub restore
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $db = iMSCP::Database->factory( );
     my $dmnDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";

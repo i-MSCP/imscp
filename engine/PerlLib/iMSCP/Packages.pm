@@ -78,7 +78,7 @@ sub getListWithFullNames
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $_ = basename( $_, '.pm' ) for @{$self->{'packages'}} = glob (
         "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/*.pm"

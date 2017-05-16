@@ -173,7 +173,7 @@ sub removeIpAddr
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'net'} = iMSCP::Net->getInstance( );
     $self->SUPER::_init( );

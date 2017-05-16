@@ -142,7 +142,7 @@ sub process
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'dbh'} = iMSCP::Database->factory( )->getRawDb( );
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
@@ -201,7 +201,7 @@ sub _loadData
 
 sub _install
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'onBeforeInstallPlugin', $self->{'pluginData'}->{'plugin_name'} );
     $rs ||= $self->_executePluginAction( 'install' );
@@ -219,7 +219,7 @@ sub _install
 
 sub _uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'onBeforeUninstallPlugin', $self->{'pluginData'}->{'plugin_name'} );
     $rs ||= $self->_executePluginAction( 'uninstall' );
@@ -236,7 +236,7 @@ sub _uninstall
 
 sub _enable
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'onBeforeEnablePlugin', $self->{'pluginData'}->{'plugin_name'} );
     $rs ||= $self->_executePluginAction( 'enable' );
@@ -253,7 +253,7 @@ sub _enable
 
 sub _disable
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'onBeforeDisablePlugin', $self->{'pluginData'}->{'plugin_name'} );
     $rs ||= $self->_executePluginAction( 'disable' );
@@ -270,7 +270,7 @@ sub _disable
 
 sub _change
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_disable( );
     $rs ||= $self->{'eventManager'}->trigger( 'onBeforeChangePlugin', $self->{'pluginData'}->{'plugin_name'} );
@@ -310,7 +310,7 @@ sub _change
 
 sub _update
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->_disable( );
     $rs ||= $self->{'eventManager'}->trigger( 'onBeforeUpdatePlugin', $self->{'pluginData'}->{'plugin_name'} );
@@ -377,7 +377,7 @@ sub _update
 
 sub _run
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'onBeforeRunPlugin', $self->{'pluginData'}->{'plugin_name'} );
     $rs ||= $self->_executePluginAction( 'run' );

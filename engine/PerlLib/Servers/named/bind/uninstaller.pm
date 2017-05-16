@@ -52,7 +52,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->_removeConfig( );
 }
@@ -73,7 +73,7 @@ sub uninstall
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'named'} = Servers::named::bind->getInstance( );
     $self->{'cfgDir'} = $self->{'named'}->{'cfgDir'};
@@ -108,7 +108,7 @@ sub _init
 
 sub _removeConfig
 {
-    my $self = shift;
+    my ($self) = @_;
 
     for ('BIND_CONF_DEFAULT_FILE', 'BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
         next unless exists $self->{'config'}->{$_};

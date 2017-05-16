@@ -246,7 +246,7 @@ sub setPidPattern
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $distID = iMSCP::LsbRelease->getInstance( )->getId( 'short' );
 

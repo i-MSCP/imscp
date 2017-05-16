@@ -62,6 +62,7 @@ setVerbose( iMSCP::Getopt->verbose );
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
 exit unless $bootstrapper->lock( '/tmp/imscp-dsk-quota.lock', 'nowait' );
+
 $bootstrapper->boot(
     {
         mode            => 'backend',
@@ -271,8 +272,9 @@ if($rs) {
     iMSCP::Mail->new()->errmsg( "@errorMessages" ) if @errorMessages;
 }
 
-$bootstrapper->unlock( '/tmp/imscp-dsk-quota.lock' );
 exit $rs;
+
+END { $bootstrapper->unlock( '/tmp/imscp-dsk-quota.lock' ); }
 
 =head1 AUTHOR
 

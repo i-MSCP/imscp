@@ -95,15 +95,14 @@ sub process
         [ \&_removeFiles, 'Removing i-MSCP files' ],
     );
 
-    my $step = 1;
+    my ($step, $rs) = (1, 0);
     for (@steps) {
-        my $rs = step( @{$_}, scalar @steps, $step );
-        return $rs if $rs;
+        $rs = step( @{$_}, scalar @steps, $step );
+        last if $rs;
         $step++;
     }
 
-    iMSCP::Dialog->getInstance( )->endGauge( );
-    0;
+    $rs ||= iMSCP::Dialog->getInstance( )->endGauge( );
 }
 
 sub shutDown
@@ -195,14 +194,20 @@ sub _uninstallPackages
 
     for my $package (@packages) {
         eval "require $package";
-        my $instance = $package->getInstance( );
-        if(my $subref = $instance->can( 'uninstall' )) {
-             $rs = step(
-                 sub { $subref->($instance) }, sprintf( 'Executing %s uninstall tasks...', $package ), $nbSteps, $step
-             );
-             last if $rs;
+
+        if ($@) {
+            error( $@ );
+            last;
         }
-        $step++;
+
+        (my $subref = $package->can( 'uninstall' )) or $step++ && next;
+        $rs = step(
+            sub {
+                $subref->( $package->getInstance( ) )
+            },
+            sprintf( 'Executing %s uninstall tasks...', $package ), $nbSteps, $step
+        );
+        last if $rs;
     }
 
     endDetail() ;
@@ -219,13 +224,20 @@ sub _uninstallServers
 
     for my $server(@servers) {
         eval "require $server";
-        my $instance = $server->factory( );
-        if(my $subref = $instance->can( 'uninstall' )) {
-            $rs = step(
-                sub { $subref->($instance) }, sprintf( 'Executing %s uninstall tasks...', $server ), $nbSteps, $step
-            );
-            last if $rs;
+
+        if ($@) {
+            error( $@ );
+            last;
         }
+
+        (my $subref = $server->can( 'uninstall' )) or $step++ && next;;
+        $rs = step(
+            sub {
+                $subref->( $server->factory( ) )
+            },
+            sprintf( 'Executing %s uninstall tasks...', $server ), $nbSteps, $step
+        );
+        last if $rs;
         $step++;
     }
 
