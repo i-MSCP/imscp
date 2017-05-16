@@ -393,11 +393,11 @@ sub _detectInit
     if (iMSCP::ProgramFinder::find( 'initctl' )
         && execute( 'initctl version 2>/dev/null | grep -q upstart' ) == 0
     ) {
-        debug( 'upstart init system has been detected' );
+        debug( 'Upstart init system has been detected' );
         return 'upstart';
     }
 
-    debug( 'upstart init system has been detected' );
+    debug( 'SysVinit init system has been detected' );
     'sysvinit'
 }
 
