@@ -93,9 +93,7 @@ sub removeListener
     ref $listener eq 'CODE' or die 'Invalid $listener provided';
     my $oldPriority = $self->{'priorities'}->{$listener};
     return 0 unless defined $oldPriority;
-    $self->{'queue'}->{$oldPriority} = [
-        grep { $_ ne $listener } @{$self->{'queue'}->{$oldPriority}}
-    ];
+    $self->{'queue'}->{$oldPriority} = [ grep { $_ ne $listener } @{$self->{'queue'}->{$oldPriority}} ];
     delete $self->{'priorities'}->{$listener};
     return 1 if @{$self->{'queue'}->{$oldPriority}};
     delete($self->{'queue'}->{$oldPriority});

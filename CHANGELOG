@@ -6,6 +6,7 @@ Git 1.4.x
 
 BACKEND
     Added: Event listener priority queue; Allows to set priority for event listeners
+    Enhancement: Objects can now be registered as listener (EventManager)
     Fixed: Can't use an undefined value as a HASH reference; DBI::selectrow_hashref() return undef on empty results
     Fixed: Ownership and permissions not set (iMSCP::Dir::make)
     Removed: Modules::Ips module

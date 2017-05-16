@@ -29,6 +29,7 @@ use autouse 'Clone' => qw/ clone /;
 use Hash::Util::FieldHash 'fieldhash';
 use iMSCP::Debug;
 use iMSCP::EventManager::ListenerPriorityQueue;
+use Scalar::Util qw / blessed /;
 use parent 'Common::SingletonClass';
 
 fieldhash my %EVENTS;
@@ -82,7 +83,7 @@ sub trigger
  Register the given listener for the given event(s)
 
  Param string|arrayref $eventNames Event(s) that the listener listen to
- Param subref listener Listener
+ Param subref|object $listener A subroutine reference or object implementing $eventNames method
  Param int $priority OPTIONAL Listener priority (Highest values have highest priority)
  Return int 0 on success, 1 on failure
 
@@ -105,7 +106,10 @@ sub register
             $EVENTS{$self}->{$eventNames} = iMSCP::EventManager::ListenerPriorityQueue->new( );
         }
 
-        $EVENTS{$self}->{$eventNames}->addListener( $listener, $priority );
+        $EVENTS{$self}->{$eventNames}->addListener(
+            ((blessed $listener) ? sub { $listener->$eventNames( @_ ) } : $listener),
+            $priority
+        );
     };
     if ($@) {
         error($@);
