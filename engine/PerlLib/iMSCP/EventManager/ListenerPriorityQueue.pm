@@ -23,7 +23,10 @@
 
 package iMSCP::EventManager::ListenerPriorityQueue;
 
-use List::Util;
+use strict;
+use warnings;
+use List::Util qw/ max /;
+use Scalar::Util qw / looks_like_number /;
 
 =head1 DESCRIPTION
 
@@ -46,8 +49,9 @@ sub new
     bless {
             queue            => { },
             priorities       => { },
-            highest_priority => 1
-        }, $_[0];
+            highest_priority => undef
+        },
+        $_[0];
 }
 
 =item addListener( $listener [, $priority = 1 ] )
@@ -65,15 +69,17 @@ sub new
 sub addListener
 {
     my ($self, $listener, $priority) = @_;
-    $priority //= 1;
-    $priority = int $priority;
 
     defined $listener or die '$listener parameter is not defined';
-    ref $listener eq 'CODE' or die 'Invalid $listener provided';
+    $priority //= 1;
+    looks_like_number $priority && ($priority > - 1001 && $priority < 1001) or die(
+        'Invalid $priority. Expects an integer in range [-1000 .. 1000]'
+    );
+    ref $listener eq 'CODE' or die 'Invalid $listener. Expects CODE reference';
     $self->removeListener($listener) if $self->{'priorities'}->{$listener};
     $self->{'priorities'}->{$listener} = $priority;
     push(@{$self->{'queue'}->{$priority}}, $listener);
-    $self->{'highest_priority'} = $priority if $priority > $self->{'highest_priority'};
+    $self->{'highest_priority'} = max( $priority, $self->{'highest_priority'} // $priority );
     $self;
 }
 
@@ -90,7 +96,7 @@ sub removeListener
     my ($self, $listener) = @_;
 
     defined $listener or die '$listener parameter is not defined';
-    ref $listener eq 'CODE' or die 'Invalid $listener provided';
+    ref $listener eq 'CODE' or die 'Invalid $listener. Expects CODE reference';
     my $oldPriority = $self->{'priorities'}->{$listener};
     return 0 unless defined $oldPriority;
     $self->{'queue'}->{$oldPriority} = [ grep { $_ ne $listener } @{$self->{'queue'}->{$oldPriority}} ];
@@ -98,7 +104,7 @@ sub removeListener
     return 1 if @{$self->{'queue'}->{$oldPriority}};
     delete($self->{'queue'}->{$oldPriority});
     return 1 unless $self->{'highest_priority'} == $self->{'highest_priority'};
-    $self->{'highest_priority'} = List::Util::max keys(%{$self->{'queue'}});
+    $self->{'highest_priority'} = max( keys(%{$self->{'queue'}}) );
     1;
 }
 
@@ -143,7 +149,7 @@ sub pop
 
     if (!@{$self->{'queue'}->{$self->{'highest_priority'}}}) {
         delete $self->{'queue'}->{$self->{'highest_priority'}};
-        $self->{'highest_priority'} = List::Util::max keys(%{$self->{'queue'}});
+        $self->{'highest_priority'} = max( keys(%{$self->{'queue'}}) );
     }
 
     delete $self->{'priorities'}->{$listener};
