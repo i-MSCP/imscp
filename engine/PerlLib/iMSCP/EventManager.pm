@@ -25,14 +25,11 @@ package iMSCP::EventManager;
 
 use strict;
 use warnings;
-use autouse 'Clone' => qw/ clone /;
-use Hash::Util::FieldHash 'fieldhash';
+use autouse Clone => qw/ clone /;
 use iMSCP::Debug;
 use iMSCP::EventManager::ListenerPriorityQueue;
 use Scalar::Util qw / blessed /;
 use parent 'Common::SingletonClass';
-
-fieldhash my %EVENTS;
 
 =head1 DESCRIPTION
 
@@ -64,12 +61,12 @@ sub trigger
         return 1;
     }
 
-    return 0 unless $EVENTS{$self}->{$eventName};
+    return 0 unless $self->{'events'}->{$eventName};
     debug( sprintf( 'Triggering %s event', $eventName ) );
 
     # The priority queue acts as a heap, which implies that as items are popped
     # they are also removed. Thus we clone it for purposes of iteration.
-    my $listenerPriorityQueue = clone( $EVENTS{$self}->{$eventName} );
+    my $listenerPriorityQueue = clone( $self->{'events'}->{$eventName} );
     while(my $listener = $listenerPriorityQueue->pop( )) {
         my $rs = $listener->( @params );
         return $rs if $rs;
@@ -78,7 +75,7 @@ sub trigger
     0;
 }
 
-=item register( $eventNames, $listener, priority )
+=item register( $eventNames, $listener [, priority = 1 ] )
 
  Register the given listener for the given event(s)
 
@@ -102,11 +99,11 @@ sub register
             return 0;
         }
 
-        unless ($EVENTS{$self}->{$eventNames}) {
-            $EVENTS{$self}->{$eventNames} = iMSCP::EventManager::ListenerPriorityQueue->new( );
+        unless ($self->{'events'}->{$eventNames}) {
+            $self->{'events'}->{$eventNames} = iMSCP::EventManager::ListenerPriorityQueue->new( );
         }
 
-        $EVENTS{$self}->{$eventNames}->addListener(
+        $self->{'events'}->{$eventNames}->addListener(
             ((blessed $listener) ? sub { $listener->$eventNames( @_ ) } : $listener),
             $priority
         );
@@ -138,9 +135,9 @@ sub unregister
         defined $listener or die '$listener parameter is not defined';
 
         if (defined $eventName) {
-            $EVENTS{$self}->{$eventName}->removeListener( $listener ) if $EVENTS{$self}->{$eventName};
+            $self->{'events'}->{$eventName}->removeListener( $listener ) if $self->{'events'}->{$eventName};
         } else {
-            $_->removeListener( $listener ) for values %{$EVENTS{$self}};
+            $_->removeListener( $listener ) for values %{$self->{'events'}};
         }
     };
     if ($@) {
@@ -169,7 +166,7 @@ sub clearListeners
         return 1;
     }
 
-    delete $EVENTS{$self}->{$eventName};
+    delete $self->{'events'}->{$eventName};
     0;
 }
 
@@ -191,7 +188,7 @@ sub _init
 {
     my ($self) = @_;
 
-    $EVENTS{$self} = { };
+    $self->{'events'} = { };
 
     for (glob "$main::imscpConfig{'CONF_DIR'}/listeners.d/*.pl") {
         debug( sprintf( 'Loading %s listener file', $_ ) );
