@@ -25,7 +25,7 @@ package iMSCP::Execute;
 
 use strict;
 use warnings;
-use Capture::Tiny qw/ capture capture_stdout capture_stderr /;
+use autouse 'Capture::Tiny' => qw/ capture capture_stdout capture_stderr /;
 use Errno ;
 use File::Basename qw/ dirname /;
 use iMSCP::Debug qw/ debug error /;
@@ -75,13 +75,13 @@ sub execute( $;$$ )
     debug( $multitArgs ? "@{$command}" : $command );
 
     if ($stdout && $stderr) {
-        (${$stdout}, ${$stderr}) = capture { system( $multitArgs ? @{$command} : $command); };
+        (${$stdout}, ${$stderr}) = capture sub { system( $multitArgs ? @{$command} : $command); };
         chomp( ${$stdout}, ${$stderr} );
     } elsif ($stdout) {
-        ${$stdout} = capture_stdout { system( $multitArgs ? @{$command} : $command ); };
+        ${$stdout} = capture_stdout sub  { system( $multitArgs ? @{$command} : $command ); };
         chomp( ${$stdout} );
     } elsif ($stderr) {
-        ${$stderr} = capture_stderr { system( $multitArgs ? @{$command} : $command ); };
+        ${$stderr} = capture_stderr sub  { system( $multitArgs ? @{$command} : $command ); };
         chomp( $stderr );
     } else {
         system( $multitArgs ? @{$command} : $command ) != -1 or die(
