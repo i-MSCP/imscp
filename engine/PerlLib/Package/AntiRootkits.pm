@@ -226,6 +226,40 @@ sub install
     0;
 }
 
+=item postinstall( )
+
+ Process post install tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub postinstall
+{
+    my ($self) = @_;
+
+    my %selectedPackages;
+    @{selectedPackages}{ split ',', main::setupGetQuestion( 'ANTI_ROOTKITS_PACKAGES' ) } = ( );
+
+    for (keys %{$self->{'PACKAGES'}}) {
+        next unless exists $selectedPackages{$_} && $_ ne 'No';
+        my $package = "Package::AntiRootkits::${_}::${_}";
+        eval "require $package";
+
+        if ($@) {
+            error( $@ );
+            return 1;
+        }
+
+        (my $subref = $package->can( 'postinstall' )) or next;
+        debug( sprintf( 'Executing postinstall action on %s', $package ) );
+        my $rs = $subref->( $package->getInstance( ) );
+        return $rs if $rs;
+    }
+
+    0;
+}
+
 =item uninstall( )
 
  Process uninstall tasks

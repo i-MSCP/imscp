@@ -67,6 +67,19 @@ sub install
     Package::Webstats::Awstats::Installer->getInstance( )->install( );
 }
 
+=item postinstall( )
+
+ Process post install tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub postinstall
+{
+    Package::Webstats::Awstats::Installer->getInstance( )->postinstall( );
+}
+
 =item uninstall( )
 
  Process uninstall tasks

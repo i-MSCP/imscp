@@ -52,15 +52,15 @@ sub preinstall
     $_[0]->_disableDebianConfig( );
 }
 
-=item install( )
+=item postinstall( )
 
- Process install tasks
+ Process post install tasks
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub install
+sub postinstall
 {
     my ($self) = @_;
 

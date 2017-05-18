@@ -53,17 +53,17 @@ sub preinstall
     Package::AntiRootkits::Chkrootkit::Installer->getInstance( )->preinstall( );
 }
 
-=item install( )
+=item postinstall( )
 
- Process install tasks
+ Process post install tasks
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub install
+sub postinstall
 {
-    Package::AntiRootkits::Chkrootkit::Installer->getInstance( )->install( );
+    Package::AntiRootkits::Chkrootkit::Installer->getInstance( )->postinstall( );
 }
 
 =item uninstall( )

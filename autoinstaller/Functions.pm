@@ -765,28 +765,36 @@ sub _savePersistentData
 
 sub _cleanup
 {
-    for("$main::imscpConfig{'CACHE_DATA_DIR'}/addons",
-        "$main::imscpConfig{'CONF_DIR'}/apache/backup",
-        "$main::imscpConfig{'CONF_DIR'}/apache/skel/alias/phptmp",
-        "$main::imscpConfig{'CONF_DIR'}/apache/skel/subdomain/phptmp",
-        "$main::imscpConfig{'CONF_DIR'}/apache/working",
-        "$main::imscpConfig{'CONF_DIR'}/fcgi",
-        "$main::imscpConfig{'CONF_DIR'}/hooks.d",
-        "$main::imscpConfig{'CONF_DIR'}/init.d",
-        "$main::imscpConfig{'CONF_DIR'}/nginx",
-        "$main::imscpConfig{'CONF_DIR'}/php-fpm",
-        "$main::imscpConfig{'CONF_DIR'}/courier/backup",
-        "$main::imscpConfig{'CONF_DIR'}/courier/working",
-        "$main::imscpConfig{'CONF_DIR'}/postfix/backup",
-        "$main::imscpConfig{'CONF_DIR'}/postfix/imscp",
-        "$main::imscpConfig{'CONF_DIR'}/postfix/parts",
-        "$main::imscpConfig{'CONF_DIR'}/postfix/working",
-        "$main::imscpConfig{'CONF_DIR'}/skel/domain/domain_disable_page",
-        "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/.composer",
-        "$main::imscpConfig{'LOG_DIR'}/imscp-arpl-msgr"
-    ) {
-        my $rs ||= iMSCP::Dir->new( dirname => $_ )->remove();
-        return $rs if $rs;
+    local $@;
+    eval {
+        for("$main::imscpConfig{'CACHE_DATA_DIR'}/addons",
+            "$main::imscpConfig{'CONF_DIR'}/apache/backup",
+            "$main::imscpConfig{'CONF_DIR'}/apache/skel/alias/phptmp",
+            "$main::imscpConfig{'CONF_DIR'}/apache/skel/subdomain/phptmp",
+            "$main::imscpConfig{'CONF_DIR'}/apache/working",
+            "$main::imscpConfig{'CONF_DIR'}/fcgi",
+            "$main::imscpConfig{'CONF_DIR'}/hooks.d",
+            "$main::imscpConfig{'CONF_DIR'}/init.d",
+            "$main::imscpConfig{'CONF_DIR'}/nginx",
+            "$main::imscpConfig{'CONF_DIR'}/php-fpm",
+            "$main::imscpConfig{'CONF_DIR'}/cron.d/backup",
+            "$main::imscpConfig{'CONF_DIR'}/cron.d/working",
+            "$main::imscpConfig{'CONF_DIR'}/courier/backup",
+            "$main::imscpConfig{'CONF_DIR'}/courier/working",
+            "$main::imscpConfig{'CONF_DIR'}/postfix/backup",
+            "$main::imscpConfig{'CONF_DIR'}/postfix/imscp",
+            "$main::imscpConfig{'CONF_DIR'}/postfix/parts",
+            "$main::imscpConfig{'CONF_DIR'}/postfix/working",
+            "$main::imscpConfig{'CONF_DIR'}/skel/domain/domain_disable_page",
+            "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/.composer",
+            "$main::imscpConfig{'LOG_DIR'}/imscp-arpl-msgr"
+        ) {
+            iMSCP::Dir->new( dirname => $_ )->remove();
+        }
+    };
+    if($@) {
+        error( $@ );
+        return 1;
     }
 
     for("$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_disabled_ssl.tpl",

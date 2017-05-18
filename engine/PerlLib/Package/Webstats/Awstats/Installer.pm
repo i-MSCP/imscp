@@ -60,7 +60,21 @@ sub install
     my $rs = $self->_disableDefaultConfig( );
     $rs ||= $self->_createCacheDir( );
     $rs ||= $self->_setupApache2( );
-    $rs ||= $self->_addAwstatsCronTask( );
+}
+
+=item postinstall( )
+
+ Process post install tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub postinstall
+{
+    my ($self) = @_;
+
+    $self->_addAwstatsCronTask( );
 }
 
 =back

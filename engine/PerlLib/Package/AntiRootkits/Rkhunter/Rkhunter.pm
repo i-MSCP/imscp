@@ -50,17 +50,17 @@ sub preinstall
     Package::AntiRootkits::Rkhunter::Installer->getInstance( )->preinstall( );
 }
 
-=item install( )
+=item postinstall( )
 
- Process install tasks
+ Process post install tasks
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub install
+sub postinstall
 {
-    Package::AntiRootkits::Rkhunter::Installer->getInstance( )->install( );
+    Package::AntiRootkits::Rkhunter::Installer->getInstance( )->postinstall( );
 }
 
 =item uninstall( )

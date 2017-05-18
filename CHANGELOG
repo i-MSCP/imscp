@@ -52,6 +52,7 @@ INSTALLER
     Removed: `beforeInstallPreRequiredPackages' event (Event cannot be triggered before installation of pre-required packages)
 
 PACKAGES
+    Fixed: Cron tasks are added too early (AWStats, Chkrootkit, Rkhunter)
     Fixed: Don't instantiate packages when not really needed
     Fixed: RainLoop entries are not removed from database when a mail account is deleted (RainLoop)
     Updated: PhpMyAdmin package installer for use of PhpMyAdmin 4.7.0
@@ -77,7 +78,8 @@ SERVERS
     Fixed: Unless virtual alias map entry for normal mail only accounts (Postfix)
     Fixed: Unwanted directory listings (Apache2 - Regression fix)
     Fixed: Wrong POP3 traffic accounting (Dovecot)
-    Removed: beforeHttpdAddIps and afterHttpdAddIps events (Httpd server impl.)
+    Removed: Backup and working directories (Cron)
+    Removed: `beforeHttpdAddIps' and `afterHttpdAddIps' events (Httpd server impl.)
     Removed: Useless addIps() routine; The `NameVirtualHost' directive is no longer needed with Apache 2.4 (Httpd server impl.)
     Rewritten: getTraffic() routine for all servers that implement it
 
