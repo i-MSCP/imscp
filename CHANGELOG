@@ -20,7 +20,7 @@ CONFIG
     Fixed: Make sure that the root directory is marked as shared in regards to mount propagation (at least for i-MSCP mounts)
 
 DATABASE
-    Updated: domain_dns.domain_dns_status column length (VARCHAR toTEXT)
+    Updated: domain_dns.domain_dns_status column length (VARCHAR to TEXT)
 
 CRON
     Fixed: Cron tasks for traffic accounting are never executed due to wrong command in /etc/cron.d/imscp cron file
