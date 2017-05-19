@@ -25,8 +25,8 @@ package Modules::ServerIP;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
 use iMSCP::Database;
+use iMSCP::Debug;
 use iMSCP::Net;
 use iMSCP::Provider::NetworkInterface;
 use parent 'Modules::Abstract';
@@ -56,7 +56,7 @@ sub getType
 
  Process module
 
- Param string ipId Server IP unique identifier
+ Param string $ipId Server IP unique identifier
  Return int 0 on success, other on failure
 
 =cut
@@ -78,7 +78,8 @@ sub process
     } elsif ($self->{'ip_status'} eq 'todelete') {
         if ($self->delete( )) {
             @sql = (
-                'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', getLastError( 'error' ) || 'Unknown error', $ipId
+                'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?',
+                getLastError( 'error' ) || 'Unknown error', $ipId
             );
         } else {
             @sql = ('DELETE FROM server_ips WHERE ip_id = ?', $ipId);
@@ -128,7 +129,7 @@ sub add
         error( $@ );
         return 1;
     }
-    
+
     $self->SUPER::add( );
 }
 
@@ -166,6 +167,12 @@ sub delete
 
     $self->SUPER::delete( );
 }
+
+=back
+
+=head1 PRIVATES METHODS
+
+=over 4
 
 =item _loadData( $ipId )
 
