@@ -25,8 +25,9 @@ DATABASE
 CRON
     Fixed: Cron tasks for traffic accounting are never executed due to wrong command in /etc/cron.d/imscp cron file
 
-DISTRIBUTION
+DISTRIBUTIONS
     Added: Support for Devuan jessie 1.0 RC2 - See https://devuan.org/
+    Fixed: invoke-rc.d: action rotate is unknown, but proceeding anyway. (See Debian bug report #728682)
 
 FRONTEND
     Fixed: Allows auto-completion for login form (regression fix)
