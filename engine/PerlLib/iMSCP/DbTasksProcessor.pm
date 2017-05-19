@@ -69,14 +69,13 @@ sub process
         'per_item_log_file'
     );
 
-    # Process network interface tasks
+    # Process server IP addresses
     $self->_process(
-        'Modules::NetworkInterfaces',
+        'Modules::ServerIP',
         "
-            SELECT 'any' AS id, 'network interfaces' AS name
+            SELECT ip_id AS id, ip_number AS name
             FROM server_ips
             WHERE ip_status IN( 'toadd', 'tochange', 'todelete' )
-            LIMIT 1
         "
     );
 

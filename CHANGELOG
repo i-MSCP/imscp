@@ -5,11 +5,12 @@ Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-    Added: Event listener priority queue; Allows to set priority for event listeners
+    Added: Event listener priority queue; Allows to set priority for event listeners in range [-1000 .. 1000]
+    Added: Modules::ServerIP module (replace both Modules::Ips and Modules::NetworkInterfaces modules)
     Enhancement: Objects can now be registered as listener (EventManager)
     Fixed: Can't use an undefined value as a HASH reference; DBI::selectrow_hashref() return undef on empty results
     Fixed: Ownership and permissions not set (iMSCP::Dir::make)
-    Removed: Modules::Ips module
+    Removed: Modules::Ips module and Modules::NetworkInterfaces
     Removed: Support for systemd older than 204-3 (iMSCP::Provider::Service::Debian::Systemd)
     Removed: Support for sysv-rc older than 2.88 (iMSCP::Provider::Service::Debian::Sysvinit)
 
@@ -24,7 +25,7 @@ CRON
     Fixed: Cron tasks for traffic accounting are never executed due to wrong command in /etc/cron.d/imscp cron file
 
 DISTRIBUTION
-    Added: Support for Devuan jessie 1.0 RC - See https://devuan.org/
+    Added: Support for Devuan jessie 1.0 RC2 - See https://devuan.org/
 
 FRONTEND
     Fixed: Allows auto-completion for login form (regression fix)

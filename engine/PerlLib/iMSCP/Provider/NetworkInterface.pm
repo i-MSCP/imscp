@@ -25,7 +25,6 @@ package iMSCP::Provider::NetworkInterface;
 
 use strict;
 use warnings;
-use Carp;
 use iMSCP::EventManager;
 use iMSCP::LsbRelease;
 use Module::Load::Conditional qw/ check_install can_load /;
@@ -98,14 +97,14 @@ sub getProvider
  Set network interface provider
 
  Param iMSCP::Provider::NetworkInterface::Interface $provider
- Return iMSCP::Provider::NetworkInterface, croak on failure
+ Return iMSCP::Provider::NetworkInterface, die on failure
 
 =cut
 
 sub setProvider
 {
     my ($self, $provider) = @_;
-    blessed( $provider ) && $provider->isa( 'iMSCP::Provider::NetworkInterface::Interface' ) or croak(
+    blessed( $provider ) && $provider->isa( 'iMSCP::Provider::NetworkInterface::Interface' ) or die(
         '$provider parameter is either not defined or not an iMSCP::Provider::NetworkInterface::Interface object'
     );
     $self->{'_provider'} = $provider;

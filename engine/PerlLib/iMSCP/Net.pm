@@ -26,7 +26,6 @@ package iMSCP::Net;
 use strict;
 use warnings;
 use autouse 'Data::Validate::IP' => qw/ is_ipv4 is_ipv6 /;
-use Carp;
 use iMSCP::Execute;
 use Net::IP qw/ :PROC /;
 use parent 'Common::SingletonClass';
@@ -61,7 +60,7 @@ sub getAddresses
  Param string $cidr CIDR (subnet mask)
  Param string $dev Network device name
  Param string $label OPTIONAL address label string (preserve compatibility with Linux-2.0 net aliases)
- Return int 0 on success, croak on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -69,9 +68,9 @@ sub addAddr
 {
     my ($self, $addr, $cidr, $dev, $label) = @_;
 
-    $self->isValidAddr( $addr ) or croak( sprintf( 'Invalid IP address: %s', $addr ) );
-    $self->isValidNetmask( $addr, $cidr ) or croak( sprintf( 'Invalid CIDR (subnet mask): %s', $cidr ) );
-    $self->isKnownDevice( $dev ) or croak( sprintf( 'Unknown network device: %s', $dev ) );
+    $self->isValidAddr( $addr ) or die( sprintf( 'Invalid IP address: %s', $addr ) );
+    $self->isValidNetmask( $addr, $cidr ) or die( sprintf( 'Invalid CIDR (subnet mask): %s', $cidr ) );
+    $self->isKnownDevice( $dev ) or die( sprintf( 'Unknown network device: %s', $dev ) );
 
     return 0 if $self->isKnownAddr( $addr );
 
@@ -79,7 +78,7 @@ sub addAddr
     my @cmd = ('ip', (($self->getAddrVersion($addr) eq 'ipv4') ? '-4' : '-6'), 'addr', 'add', "$addr/$cidr", 'dev',
         $dev);
     push @cmd, 'label', $label if $label;
-    execute( [ @cmd ], \$stdout, \$stderr ) == 0 or croak(
+    execute( [ @cmd ], \$stdout, \$stderr ) == 0 or die(
         sprintf("Couldn't add the %s IP address: %s", $addr, $dev, $stderr || 'Unknown error')
     );
     $self->{'addresses'}->{$addr} = {
@@ -96,7 +95,7 @@ sub addAddr
  Delete the given IP
 
  Param string $addr IP address
- Return int 0 on success, croak on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -111,7 +110,7 @@ sub delAddr
     my $dev = $self->{'addresses'}->{$addr}->{'device'};
     my $cidr = $self->{'addresses'}->{$addr}->{'prefix_length'};
     my ($stdout, $stderr);
-    execute( [ 'ip', 'addr', 'del', "$addr/$cidr", 'dev', $dev ], \$stdout, \$stderr ) == 0 or croak(
+    execute( [ 'ip', 'addr', 'del', "$addr/$cidr", 'dev', $dev ], \$stdout, \$stderr ) == 0 or die(
         sprintf( "Couldn't delete the %s IP address: %s", $addr, $stderr || 'Unknown error' )
     );
     delete $self->{'addresses'}->{$addr};
@@ -123,7 +122,7 @@ sub delAddr
  Get version of the given IP (ipv4|ipv6)
 
  Param string $addr IP address
- Return string IP version, croak in case the given IP is invalid
+ Return string IP version, die in case the given IP is invalid
 
 =cut
 
@@ -131,8 +130,8 @@ sub getAddrVersion
 {
     my ($self, $addr) = @_;
 
-    $self->isValidAddr( $addr ) or croak( sprintf( 'Invalid IP address: %s', $addr ) );
-    my $version = ip_get_version( $addr ) or croak( sprint( "Couldn't guess version of the %s IP address", $addr ) );
+    $self->isValidAddr( $addr ) or die( sprintf( 'Invalid IP address: %s', $addr ) );
+    my $version = ip_get_version( $addr ) or die( sprint( "Couldn't guess version of the %s IP address", $addr ) );
     $version == 4 ? 'ipv4' : 'ipv6';
 }
 
@@ -141,7 +140,7 @@ sub getAddrVersion
  Get type of the given IP (PUBLIC, PRIVATE, RESERVED...)
 
  Param string $addr IP address
- Return string IP type, croak in case the given IP is invalid
+ Return string IP type, die in case the given IP is invalid
 
 =cut
 
@@ -150,7 +149,7 @@ sub getAddrType
     my ($self, $addr) = @_;
 
     my $version = $self->getAddrVersion( $addr ) eq 'ipv4' ? 4 : 6;
-    ip_iptype( ip_iptobin( ip_expand_address( $addr, $version ), $version ), $version ) or croak(
+    ip_iptype( ip_iptobin( ip_expand_address( $addr, $version ), $version ), $version ) or die(
         sprintf( "Couldn't guess type of the %s IP address", $addr)
     );
 }
@@ -160,7 +159,7 @@ sub getAddrType
  Return the network device name to which the given IP belong to
 
  Param string $addr IP address
- Return string Network device name, croak if the given IP is either invalid or not known by this module
+ Return string Network device name, die if the given IP is either invalid or not known by this module
 
 =cut
 
@@ -168,7 +167,7 @@ sub getAddrDevice
 {
     my ($self, $addr) = @_;
 
-    $self->isKnownAddr( $addr ) or croak( sprintf( 'Unknown IP address: %s', $addr ) );
+    $self->isKnownAddr( $addr ) or die( sprintf( 'Unknown IP address: %s', $addr ) );
     $self->{'addresses'}->{$addr}->{'device'};
 }
 
@@ -177,7 +176,7 @@ sub getAddrDevice
  Return the addr label
 
  Param string $addr IP address
- Return string Addr label, croak if the given IP is either invalid or not known by this module
+ Return string Addr label, die if the given IP is either invalid or not known by this module
 
 =cut
 
@@ -185,7 +184,7 @@ sub getAddrLabel
 {
     my ($self, $addr) = @_;
 
-    $self->isKnownAddr( $addr ) or croak( sprintf( 'Unknown IP address: %s', $addr ) );
+    $self->isKnownAddr( $addr ) or die( sprintf( 'Unknown IP address: %s', $addr ) );
     $self->{'addresses'}->{$addr}->{'device_label'};
 }
 
@@ -194,7 +193,7 @@ sub getAddrLabel
  Return the addr netmask
 
  Param string $addr IP address
- Return string Addr netmask, croak if the given IP is either invalid or not known by this module
+ Return string Addr netmask, die if the given IP is either invalid or not known by this module
 
 =cut
 
@@ -202,7 +201,7 @@ sub getAddrNetmask
 {
     my ($self, $addr) = @_;
 
-    $self->isKnownAddr( $addr ) or croak( sprintf( 'Unknown IP address: %s', $addr ) );
+    $self->isKnownAddr( $addr ) or die( sprintf( 'Unknown IP address: %s', $addr ) );
     $self->{'addresses'}->{$self->normalizeAddr( $addr )}->{'prefix_length'};
 }
 
@@ -286,7 +285,7 @@ sub isValidNetmask
  Normalize the given IP
 
  Param string $addr IP address
- Return string Normalized IP on success, croak on failure
+ Return string Normalized IP on success, die on failure
 
 =cut
 
@@ -294,9 +293,9 @@ sub normalizeAddr
 {
     my ($self, $addr) = @_;
 
-    $self->isValidAddr( $addr ) or croak( sprintf( 'Invalid IP address: %s', $addr ) );
+    $self->isValidAddr( $addr ) or die( sprintf( 'Invalid IP address: %s', $addr ) );
     return $addr unless $self->getAddrVersion( $addr ) eq 'ipv6';
-    ip_compress_address( $addr, 6 ) or croak( sprintf( "Couldn't normalize the %s IP address", $addr ) );
+    ip_compress_address( $addr, 6 ) or die( sprintf( "Couldn't normalize the %s IP address", $addr ) );
 }
 
 =item expandAddr( $addr )
@@ -304,7 +303,7 @@ sub normalizeAddr
  Expand the given IP
 
  Param string $addr IP address
- Return string Expanded IP on success, croak on failure
+ Return string Expanded IP on success, die on failure
 
 =cut
 
@@ -312,9 +311,9 @@ sub expandAddr
 {
     my ($self, $addr) = @_;
 
-    $self->isValidAddr( $addr ) or croak( sprintf( 'Invalid IP address: %s', $addr ) );
+    $self->isValidAddr( $addr ) or die( sprintf( 'Invalid IP address: %s', $addr ) );
     return $addr unless $self->getAddrVersion( $addr ) eq 'ipv6';
-    ip_expand_address( $addr, 6 ) or croak( sprintf( "Couldn't expand the %s IP address", $addr ) );
+    ip_expand_address( $addr, 6 ) or die( sprintf( "Couldn't expand the %s IP address", $addr ) );
 }
 
 =item getDevices( )
@@ -353,7 +352,7 @@ sub isKnownDevice
  Bring the given network device up
 
  Param string $dev Network device name
- Return int 0 on success, croak on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -361,7 +360,7 @@ sub upDevice
 {
     my ($self, $dev) = @_;
 
-    $self->isKnownDevice( $dev ) or croak( sprintf( 'Unknown network device: %s', $dev ) );
+    $self->isKnownDevice( $dev ) or die( sprintf( 'Unknown network device: %s', $dev ) );
     my ($stdout, $stderr);
     execute( "ip link set dev $dev up", \$stdout, \$stderr ) == 0 or die(
         sprintf( "Couldn't bring the %s network device up: %s", $dev, $stderr || 'Unknown error' )
@@ -374,7 +373,7 @@ sub upDevice
  Bring the given network device down
 
  Param string $dev Network device name
- Return int 0 on success, die/croak on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -382,7 +381,7 @@ sub downDevice
 {
     my ($self, $dev) = @_;
 
-    $self->isKnownDevice( $dev ) or croak( sprintf( 'Unknown network device: %s', $dev ) );
+    $self->isKnownDevice( $dev ) or die( sprintf( 'Unknown network device: %s', $dev ) );
     my ($stdout, $stderr);
     execute( "ip link set dev $dev down", \$stdout, \$stderr ) == 0 or die(
         sprintf( "Couldn't bring the %s network device down: %s", $dev, $stderr || 'Unknown error' )

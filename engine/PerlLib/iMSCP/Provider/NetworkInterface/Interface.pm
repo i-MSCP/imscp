@@ -40,7 +40,7 @@ use Carp;
  Add a network card
 
  Param hash \%data Network card data
- Return iMSCP::Provider::NetworkInterface::Interface, croak or die on failure
+ Return iMSCP::Provider::NetworkInterface::Interface, die on failure
 
 =cut
 
@@ -54,7 +54,7 @@ sub addNetworkCard
  Remove a network card
 
  Param hash \%data Network card data
- Return iMSCP::Provider::NetworkInterface::Interface, croak or die on failure
+ Return iMSCP::Provider::NetworkInterface::Interface, die on failure
 
 =cut
 
@@ -73,7 +73,7 @@ sub removeNetworkCard
    ip_address     : Either an IPv4 or IPv6 address
    ip_netmask     : OPTIONAL Netmask (default: 32 for IPv4, 128 for IPv6)
    ip_config_mode : IP configuration mode (auto|manual)
- Return iMSCP::Provider::NetworkInterface::Interface, croak or die on failure
+ Return iMSCP::Provider::NetworkInterface::Interface,  die on failure
 
 =cut
 
@@ -92,7 +92,7 @@ sub addIpAddr
    ip_address     : Either an IPv4 or IPv6 address
    ip_netmask     : OPTIONAL Netmask (default: 32 for IPv4, 128 for IPv6)
    ip_config_mode : IP configuration mode (auto|manual)
- Return iMSCP::Provider::NetworkInterface::Interface, croak or die on failure
+ Return iMSCP::Provider::NetworkInterface::Interface, die on failure
 
 =cut
 

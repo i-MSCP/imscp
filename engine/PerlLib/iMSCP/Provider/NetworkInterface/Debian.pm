@@ -64,16 +64,16 @@ sub addIpAddr
     $data = { } unless defined $data && ref $data eq 'HASH';
 
     for(qw/ ip_id ip_card ip_address ip_config_mode /) {
-        defined $data->{$_} or croak( sprintf( "The `%s' parameter is not defined", $_ ) );
+        defined $data->{$_} or die( sprintf( "The `%s' parameter is not defined", $_ ) );
     }
 
-    $data->{'ip_id'} =~ /^\d+$/ or croak( 'ip_id parameter must be an integer' );
+    $data->{'ip_id'} =~ /^\d+$/ or die( 'ip_id parameter must be an integer' );
     $data->{'ip_id'} += 1000;
 
-    $self->{'net'}->isKnownDevice( $data->{'ip_card'} ) or croak(
+    $self->{'net'}->isKnownDevice( $data->{'ip_card'} ) or die(
         sprintf( "The '%s` network interface is unknown", $data->{'ip_card'} )
     );
-    $self->{'net'}->isValidAddr( $data->{'ip_address'} ) or croak(
+    $self->{'net'}->isValidAddr( $data->{'ip_address'} ) or die(
         sprintf( "The `%s' IP address is not valid", $data->{'ip_address'} )
     );
 
@@ -125,10 +125,10 @@ sub removeIpAddr
     $data = { } unless defined $data && ref $data eq 'HASH';
 
     for(qw/ ip_id ip_card ip_address ip_config_mode /) {
-        defined $data->{$_} or croak( sprintf( "The `%s' parameter is not defined", $_ ) );
+        defined $data->{$_} or die( sprintf( "The `%s' parameter is not defined", $_ ) );
     }
 
-    $data->{'ip_id'} =~ /^\d+$/ or croak( 'ip_id parameter must be an integer' );
+    $data->{'ip_id'} =~ /^\d+$/ or die( 'ip_id parameter must be an integer' );
     $data->{'ip_id'} += 1000;
 
     if ($data->{'ip_config_mode'} eq 'auto'
