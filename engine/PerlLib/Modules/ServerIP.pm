@@ -110,11 +110,9 @@ sub add
 {
     my ($self) = @_;
 
-    my $nicProvider = iMSCP::Provider::NetworkInterface->getInstance( );
-
     local $@;
     eval {
-        $nicProvider->addIpAddr(
+        iMSCP::Provider::NetworkInterface->getInstance( )->addIpAddr(
             {
                 ip_id          => $self->{'ip_id'},
                 ip_card        => $self->{'ip_card'},
@@ -123,6 +121,8 @@ sub add
                 ip_config_mode => $self->{'ip_config_mode'}
             }
         );
+
+        # Make sure that change are propagated to iMSCP::Net
         iMSCP::Net->getInstance( )->resetInstance( );
     };
     if ($@) {
@@ -145,11 +145,9 @@ sub delete
 {
     my ($self) = @_;
 
-    my $nicProvider = iMSCP::Provider::NetworkInterface->getInstance( );
-
     local $@;
     eval {
-        $nicProvider->removeIpAddr(
+        iMSCP::Provider::NetworkInterface->getInstance( )->removeIpAddr(
             {
                 ip_id          => $self->{'ip_id'},
                 ip_card        => $self->{'ip_card'},
@@ -158,6 +156,8 @@ sub delete
                 ip_config_mode => $self->{'ip_config_mode'}
             }
         );
+
+        # Make sure that change are propagated to iMSCP::Net
         iMSCP::Net->getInstance( )->resetInstance( );
     };
     if ($@) {

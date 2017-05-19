@@ -36,9 +36,11 @@ use iMSCP::Execute;
 use iMSCP::OpenSSL;
 use iMSCP::Rights;
 use Modules::User;
+use iMSCP::Net;
 use Net::LibIDN qw/ idn_to_unicode /;
 use Servers::httpd;
 use Servers::sqld;
+
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -383,7 +385,8 @@ sub _getData
             DOMAIN_ADMIN_ID         => $self->{'domain_admin_id'},
             DOMAIN_NAME             => $self->{'domain_name'},
             DOMAIN_NAME_UNICODE     => idn_to_unicode( $self->{'domain_name'}, 'utf-8' ),
-            DOMAIN_IP               => $self->{'ip_number'},
+            DOMAIN_IP               => iMSCP::Net->getInstance( )->isKnownAddr( $self->{'ip_number'} )
+                ? $self->{'ip_number'} : $main::imscpConfig{'BASE_SERVER_IP'},
             DOMAIN_TYPE             => 'dmn',
             PARENT_DOMAIN_NAME      => $self->{'domain_name'},
             ROOT_DOMAIN_NAME        => $self->{'domain_name'},

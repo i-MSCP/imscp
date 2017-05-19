@@ -30,6 +30,7 @@ use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::Execute;
+use iMSCP::Net;
 use iMSCP::OpenSSL;
 use Net::LibIDN qw/idn_to_unicode/;
 use Servers::httpd;
@@ -286,7 +287,8 @@ sub _getData
             DOMAIN_ADMIN_ID         => $self->{'domain_admin_id'},
             DOMAIN_NAME             => $self->{'alias_name'},
             DOMAIN_NAME_UNICODE     => idn_to_unicode( $self->{'alias_name'}, 'utf-8' ),
-            DOMAIN_IP               => $self->{'ip_number'},
+            DOMAIN_IP               => iMSCP::Net->getInstance( )->isKnownAddr( $self->{'ip_number'} )
+                ? $self->{'ip_number'} : $main::imscpConfig{'BASE_SERVER_IP'},
             DOMAIN_TYPE             => 'als',
             PARENT_DOMAIN_NAME      => $self->{'alias_name'},
             ROOT_DOMAIN_NAME        => $self->{'user_home'},

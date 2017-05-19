@@ -9,6 +9,7 @@ BACKEND
     Added: Modules::ServerIP module (replace both Modules::Ips and Modules::NetworkInterfaces modules)
     Enhancement: Objects can now be registered as listener (EventManager)
     Fixed: Can't use an undefined value as a HASH reference; DBI::selectrow_hashref() return undef on empty results
+    Fixed: Fallback to server primary IP if domain IP is not known (domain and alias modules)
     Fixed: Ownership and permissions not set (iMSCP::Dir::make)
     Removed: Modules::Ips module and Modules::NetworkInterfaces
     Removed: Support for systemd older than 204-3 (iMSCP::Provider::Service::Debian::Systemd)
