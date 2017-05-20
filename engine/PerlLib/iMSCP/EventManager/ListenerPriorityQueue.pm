@@ -46,12 +46,14 @@ use Scalar::Util qw / looks_like_number /;
 
 sub new
 {
+    my ($class) = @_;
+
     bless {
             queue            => { },
             priorities       => { },
             highest_priority => undef
         },
-        $_[0];
+        $class;
 }
 
 =item addListener( $listener [, $priority = 1 ] )
@@ -72,14 +74,14 @@ sub addListener
 
     defined $listener or die '$listener parameter is not defined';
     $priority //= 1;
-    looks_like_number $priority && ($priority > - 1001 && $priority < 1001) or die(
+    looks_like_number $priority && ($priority > -1001 && $priority < 1001) or die(
         'Invalid $priority. Expects an integer in range [-1000 .. 1000]'
     );
     ref $listener eq 'CODE' or die 'Invalid $listener. Expects CODE reference';
-    $self->removeListener($listener) if $self->{'priorities'}->{$listener};
+    $self->removeListener( $listener ) if $self->{'priorities'}->{$listener};
     $self->{'priorities'}->{$listener} = $priority;
-    push(@{$self->{'queue'}->{$priority}}, $listener);
-    $self->{'highest_priority'} = max( $priority, $self->{'highest_priority'} // $priority );
+    push @{$self->{'queue'}->{$priority}}, $listener;
+    $self->{'highest_priority'} = max $priority, $self->{'highest_priority'} // $priority;
     $self;
 }
 
@@ -102,9 +104,9 @@ sub removeListener
     $self->{'queue'}->{$oldPriority} = [ grep { $_ ne $listener } @{$self->{'queue'}->{$oldPriority}} ];
     delete $self->{'priorities'}->{$listener};
     return 1 if @{$self->{'queue'}->{$oldPriority}};
-    delete($self->{'queue'}->{$oldPriority});
+    delete $self->{'queue'}->{$oldPriority};
     return 1 unless $self->{'highest_priority'} == $self->{'highest_priority'};
-    $self->{'highest_priority'} = max( keys(%{$self->{'queue'}}) );
+    $self->{'highest_priority'} = max keys(%{$self->{'queue'}});
     1;
 }
 
@@ -145,11 +147,11 @@ sub pop
     my ($self) = @_;
 
     return undef unless defined $self->{'highest_priority'};
-    my $listener = shift(@{$self->{'queue'}->{$self->{'highest_priority'}}});
+    my $listener = shift @{$self->{'queue'}->{$self->{'highest_priority'}}};
 
-    if (!@{$self->{'queue'}->{$self->{'highest_priority'}}}) {
+    unless (@{$self->{'queue'}->{$self->{'highest_priority'}}}) {
         delete $self->{'queue'}->{$self->{'highest_priority'}};
-        $self->{'highest_priority'} = max( keys(%{$self->{'queue'}}) );
+        $self->{'highest_priority'} = max keys(%{$self->{'queue'}});
     }
 
     delete $self->{'priorities'}->{$listener};
