@@ -29,7 +29,6 @@ use File::Basename;
 use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Dir;
-use iMSCP::Execute;
 use iMSCP::File;
 use Servers::named::bind;
 use parent 'Common::SingletonClass';
@@ -126,23 +125,15 @@ sub _removeConfig
         return $rs if $rs;
     }
 
-    if (-d $self->{'config'}->{'BIND_DB_DIR'}) {
-        my $rs = execute( "rm -f $self->{'config'}->{'BIND_DB_DIR'}/*.db", \ my $stdout, \ my $stderr );
-        debug( $stdout ) if $stdout;
-        error( $stderr || 'Unknown error' ) if $rs;
-        return $rs if $rs;
-
-        eval { iMSCP::Dir->new( dirname => "$self->{'config'}->{'BIND_DB_DIR'}/slave" )->remove( ); };
-        if ($@) {
-            error($@);
-            return 1;
-        }
-    }
-
-    if (-d $self->{'wrkDir'}) {
-        my $rs = execute( "rm -f $self->{'wrkDir'}/*", \$stdout, \$stderr );
-        debug( $stdout ) if $stdout;
-        error( $stderr || 'Unknown error' ) if $rs;
+    local $@;
+    eval {
+        iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_MASTER_DIR'} )->remove( );
+        iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_SLAVE_DIR'} )->remove( );
+        iMSCP::Dir->new( dirname => $self->{'wrkDir'} )->clear( );
+    };
+    if ($@) {
+        error( $@ );
+        return 1;
     }
 
     if (-f "$self->{'cfgDir'}/bind.old.data") {

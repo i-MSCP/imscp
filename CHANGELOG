@@ -6,6 +6,7 @@ Git 1.4.x
 
 BACKEND
     Added: Event listener priority queue; Allows to set priority for event listeners in range [-1000 .. 1000]
+    Added: iMSCP::Dir::clear() method - Allows to clear full or specific content of a directory
     Added: Modules::ServerIP module (replace both Modules::Ips and Modules::NetworkInterfaces modules)
     Enhancement: Objects can now be registered as listener (EventManager)
     Fixed: Can't use an undefined value as a HASH reference; DBI::selectrow_hashref() return undef on empty results
@@ -16,6 +17,9 @@ BACKEND
     Removed: Support for sysv-rc older than 2.88 (iMSCP::Provider::Service::Debian::Sysvinit)
 
 CONFIG
+    Added: `BIND_DB_FORMAT' configuration parameter (Bind9)
+    Added: `BIND_DB_MASTER_DIR' configuration parameter (Bind9)
+    Added: `BIND_DB_SLAVE_DIR' configuration parameter (Bind9)
     Added: 'CMD_SYSCTL` and 'SYSCTL_CONF_DIR` parameters for sysctl(8)
     Fixed: Make sure that the root directory is marked as shared in regards to mount propagation (at least for i-MSCP mounts)
 
@@ -75,6 +79,10 @@ SCRIPTS
 SERVERS
     Added: IMAP/POP3 log format (Dovecot)
     Added: In/Out bytes variables in POP3 logs for better traffic accounting (Dovecot)
+    Changed: Directory for master zone files moved from /var/cache/bind to /var/cache/bind/imscp/master
+    Changed: Directory for slave zone files moved from /var/cache/bind/slave to /var/cache/bind/imscp/slave
+    Changed: Make use of relative paths for zone files instead of absolute paths (Bind9)
+    Changed: Zone files are now dumped in raw format for better performance (Bind9)
     Fixed: Argument "" isn't numeric in addition (+)... in getTraffic() method of all servers implementing it
     Fixed: Don't instantiate servers when not really needed
     Fixed: Error: quota: Unknown namespace: Trash (Dovecot/IMAP)

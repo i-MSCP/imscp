@@ -6,10 +6,14 @@ BIND_CONF_DEFAULT_FILE = /etc/default/bind9
 BIND_CONF_FILE = /etc/bind/named.conf
 BIND_LOCAL_CONF_FILE = /etc/bind/named.conf.local
 BIND_OPTIONS_CONF_FILE = /etc/bind/named.conf.options
-BIND_DB_DIR = /var/cache/bind
-
+BIND_DB_MASTER_DIR = /var/cache/bind/imscp/master
+BIND_DB_SLAVE_DIR = /var/cache/bind/imscp/slave
 NAMED_SNAME = bind9
 NAMED_BNAME = named
+
+# Format for compiled zone files
+# Possible value: raw, text
+BIND_DB_FORMAT = raw
 
 # Mode in which the server should acts (master|slave)
 BIND_MODE =

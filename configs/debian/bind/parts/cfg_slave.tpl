@@ -1,5 +1,6 @@
 zone "{DOMAIN_NAME}" {
   type slave;
-  file "{DB_DIR}/slave/{DOMAIN_NAME}.db";
+  masterfile-format {BIND_DB_FORMAT};
+  file "imscp/slave/{DOMAIN_NAME}.db";
   masters { {PRIMARY_DNS} };
 };

@@ -299,7 +299,7 @@ sub deleteDmn
 
     if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
         for("$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}.db",
-            "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db"
+            "$self->{'config'}->{'BIND_DB_MASTER_DIR'}/$data->{'DOMAIN_NAME'}.db"
         ) {
             next unless -f;
             $rs = iMSCP::File->new( filename => $_ )->delFile( );
@@ -442,24 +442,7 @@ sub addSub
     $rs = $self->{'eventManager'}->trigger( 'afterNamedAddSub', \$wrkDbFileContent, $data );
     $rs ||= $wrkDbFile->set( $wrkDbFileContent );
     $rs ||= $wrkDbFile->save( );
-    return $rs if $rs;
-
-    $rs = execute(
-        'named-compilezone -i none -s relative'
-            ." -o - $data->{'PARENT_DOMAIN_NAME'} $wrkDbFile->{'filename'}"
-            ." > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db",
-        \ my $stdout,
-        \ my $stderr
-    );
-    debug( $stdout ) if $stdout;
-    error( sprintf( "Couldn't dump %s zone: %s", $data->{'PARENT_DOMAIN_NAME'}, $stderr || 'Unknown error' ) ) if $rs;
-    return $rs if $rs;
-
-    my $prodFile = iMSCP::File->new(
-        filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db"
-    );
-    $rs = $prodFile->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
-    $rs ||= $prodFile->mode( 0640 );
+    $rs ||= $self->_compileZone( $data->{'PARENT_DOMAIN_NAME'}, $wrkDbFile->{'filename'} );
 }
 
 =item postaddSub( \%data )
@@ -587,24 +570,7 @@ sub deleteSub
     $rs = $self->{'eventManager'}->trigger( 'afterNamedDelSub', \$wrkDbFileContent, $data );
     $rs ||= $wrkDbFile->set( $wrkDbFileContent );
     $rs ||= $wrkDbFile->save( );
-    return $rs if $rs;
-
-    $rs = execute(
-        'named-compilezone -i none -s relative'
-            ." -o - $data->{'PARENT_DOMAIN_NAME'} $wrkDbFile->{'filename'}"
-            ." > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db",
-        \ my $stdout,
-        \ my $stderr
-    );
-    debug( $stdout ) if $stdout;
-    error( sprintf( "Couldn't dump %s zone: %s", $data->{'PARENT_DOMAIN_NAME'}, $stderr || 'Unknown error' ) ) if $rs;
-    return $rs if $rs;
-
-    my $prodFile = iMSCP::File->new(
-        filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db"
-    );
-    $rs = $prodFile->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
-    $rs ||= $prodFile->mode( 0640 );
+    $rs ||= $self->_compileZone( $data->{'PARENT_DOMAIN_NAME'}, $wrkDbFile->{'filename'} );
 }
 
 =item postdeleteSub( \%data )
@@ -715,22 +681,7 @@ sub addCustomDNS
     $rs = $self->{'eventManager'}->trigger( 'afterNamedAddCustomDNS', \$newWrkDbFileContent, $data );
     $rs ||= $wrkDbFile->set( $newWrkDbFileContent );
     $rs ||= $wrkDbFile->save( );
-    return $rs if $rs;
-
-    $rs = execute(
-        'named-compilezone -i full -s relative'
-            ." -o - $data->{'DOMAIN_NAME'} $wrkDbFile->{'filename'}"
-            ." > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db",
-        \ my $stdout,
-        \ my $stderr
-    );
-    debug( $stdout ) if $stdout;
-    error( sprintf( "Couldn't dump %s zone: %s", $data->{'DOMAIN_NAME'}, $stderr || 'Unknown error' ) ) if $rs;
-    return $rs if $rs;
-
-    my $prodFile = iMSCP::File->new( filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db" );
-    $rs = $prodFile->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
-    $rs ||= $prodFile->mode( 0640 );
+    $rs ||= $self->_compileZone( $data->{'DOMAIN_NAME'}, $wrkDbFile->{'filename'} );
     $self->{'reload'} = 1 unless $rs;
     $rs;
 }
@@ -869,8 +820,8 @@ sub _addDmnConfig
     return $rs if $rs;
 
     my $tags = {
-        DB_DIR      => $self->{'config'}->{'BIND_DB_DIR'},
-        DOMAIN_NAME => $data->{'DOMAIN_NAME'}
+        BIND_DB_FORMAT => $self->{'config'}->{'BIND_DB_FORMAT'},
+        DOMAIN_NAME    => $data->{'DOMAIN_NAME'}
     };
 
     if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
@@ -1069,17 +1020,17 @@ sub _addDmnDb
             $tplDbFileC = replaceBloc(
                 "; ctm als entries BEGIN\n",
                 "; ctm als entries ENDING\n",
-                "; ctm als entries BEGIN\n".
-                    getBloc( "; ctm als entries BEGIN\n", "; ctm als entries ENDING\n", $wrkDbFileContent )
+                "; ctm als entries BEGIN\n"
+                    .getBloc( "; ctm als entries BEGIN\n", "; ctm als entries ENDING\n", $wrkDbFileContent )
                     .process(
-                    {
-                        NAME  => $data->{'CTM_ALS_ENTRY_ADD'}->{'NAME'},
-                        CLASS => $data->{'CTM_ALS_ENTRY_ADD'}->{'CLASS'},
-                        TYPE  => $data->{'CTM_ALS_ENTRY_ADD'}->{'TYPE'},
-                        DATA  => $data->{'CTM_ALS_ENTRY_ADD'}->{'DATA'}
-                    },
-                    "{NAME}\t{CLASS}\t{TYPE}\t{DATA}\n"
-                )
+                        {
+                            NAME  => $data->{'CTM_ALS_ENTRY_ADD'}->{'NAME'},
+                            CLASS => $data->{'CTM_ALS_ENTRY_ADD'}->{'CLASS'},
+                            TYPE  => $data->{'CTM_ALS_ENTRY_ADD'}->{'TYPE'},
+                            DATA  => $data->{'CTM_ALS_ENTRY_ADD'}->{'DATA'}
+                        },
+                        "{NAME}\t{CLASS}\t{TYPE}\t{DATA}\n"
+                    )
                     ."; ctm als entries ENDING\n",
                 $tplDbFileC
             );
@@ -1109,22 +1060,7 @@ sub _addDmnDb
     $rs = $self->{'eventManager'}->trigger( 'afterNamedAddDmnDb', \$tplDbFileC, $data );
     $rs ||= $wrkDbFile->set( $tplDbFileC );
     $rs ||= $wrkDbFile->save( );
-    return $rs if $rs;
-
-    $rs = execute(
-        'named-compilezone -i none -s relative'
-            ." -o - $data->{'DOMAIN_NAME'} $wrkDbFile->{'filename'}"
-            ." > $self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db",
-        \ my $stdout,
-        \ my $stderr
-    );
-    debug( $stdout ) if $stdout;
-    error( sprintf( "Couldn't dump %s zone: %s", $data->{'DOMAIN_NAME'}, $stderr || 'Unknown error' ) ) if $rs;
-    return $rs if $rs;
-
-    my $prodFile = iMSCP::File->new( filename => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db" );
-    $rs = $prodFile->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
-    $rs ||= $prodFile->mode( 0640 );
+    $rs ||= $self->_compileZone( $data->{'DOMAIN_NAME'}, $wrkDbFile->{'filename'} );
 }
 
 =item _updateSOAserialNumber( $zone, \$zoneContent, \$oldZoneContent )
@@ -1158,7 +1094,7 @@ sub _updateSOAserialNumber
     if (${$oldZoneContent} =~ /^\s+(?:(?<date>\d{8})(?<nn>\d{2})|(?<variable>\{TIMESTAMP\}))\s*;[^\n]*\n/m) {
         my %rc = %+;
         my ($d, $m, $y) = (gmtime( ))[3 .. 5];
-        my $nowDate = sprintf( "%d%02d%02d", $y + 1900, $m + 1, $d );
+        my $nowDate = sprintf( "%d%02d%02d", $y+1900, $m+1, $d );
 
         if ($rc{'variable'}) {
             $self->{'serials'}->{$zone} = $nowDate.'00';
@@ -1192,6 +1128,39 @@ sub _updateSOAserialNumber
 
     error( sprintf( "Couldn't not update SOA serial number for the %s DNS zone: Serial number not found.", $zone ) );
     1;
+}
+
+=item _compileZone( $zonename, $filename )
+
+ Compiles the given zone
+ 
+ Param string $zonename Zone name
+ Param string $filename Path to zone filename (zone in text format)
+ Return int 0 on success, other on error
+ 
+=cut
+
+sub _compileZone
+{
+    my ($self, $zonename, $filename) = @_;
+    
+    my $rs = execute(
+        [
+            'named-compilezone',
+            '-i', 'full',
+            '-f', 'text',
+            '-F', $self->{'config'}->{'BIND_DB_FORMAT'},
+            '-s', 'relative',
+            '-o', "$self->{'config'}->{'BIND_DB_MASTER_DIR'}/$zonename.db",
+            $zonename,
+            $filename
+        ],
+        \ my $stdout,
+        \ my $stderr
+    );
+    debug( $stdout ) if $stdout;
+    error( sprintf( "Couldn't compile the %s zone: %s", $zonename, $stderr || 'Unknown error' ) ) if $rs;
+    $rs;
 }
 
 =back

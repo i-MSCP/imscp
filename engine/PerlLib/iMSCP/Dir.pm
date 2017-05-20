@@ -134,6 +134,52 @@ sub isEmpty
     1;
 }
 
+=item clear( [ $dirname = $self->{'dirname'} [, ] ] )
+
+ Clear a full directory content or the files inside the directory that match the given regexp
+
+ Return int 0 on success or die on failure
+
+=cut
+
+sub clear
+{
+    my ($self, $dirname, $regexp ) = @_;
+    $dirname //= $self->{'dirname'};
+
+    defined $dirname or die( '$dirname parameter is not defined.' );
+    !defined $regexp || ref $regexp eq 'Regexp' or die( 'Invalid $regexp parameter. Expects a Regexp ');
+
+    -d $dirname or die( '$dirname is not a directory' );
+
+    if ($regexp) {
+        opendir my $dh, $dirname or die( sprintf( "Couldn't open `%s' directory: %s", $dirname, $! ) );
+
+        while(my $file = readdir( $dh )) {
+            next if $file =~ /^\.{1,2}\z/s || $file !~ /$regexp/;
+
+            if (-d $file) {
+                $self->remove( $file );
+                next;
+            }
+
+            unlink $dirname.'/'.$file or die( sprintf( "Couldn't remove file: %s", $! ) );
+        }
+
+        closedir( $dh );
+        return 0;
+    }
+
+    $self->{'dirname'} = $dirname;
+
+    my $opts = { };
+    @{$opts}{ qw / mode user group /} = (stat( $dirname ))[2, 4, 5];
+    $opts->{'mode'} &= 07777;
+
+    $self->remove( $dirname );
+    $self->make( $opts );
+}
+
 =item mode( $mode [, $dirname ] )
 
  Set directory mode
