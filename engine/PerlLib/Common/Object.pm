@@ -34,22 +34,22 @@ use warnings;
 
 =over 4
 
-=item new( [ %args ] )
+=item new( [ %attrs ] )
 
  Constructor
 
- Param hash|hash_ref OPTIONAL hash representing class attributes
+ Param hash|hashref OPTIONAL hash representing class attributes
  Return Common::Object
 
 =cut
 
 sub new
 {
-    my $class = shift;
+    my ($class, @attrs) = @_;
 
-    my $self = { @_ && ref $_[0] eq 'HASH' ? %{$_[0]} : @_ };
-    bless $self, $class;
+    my $self = bless { @attrs && ref $attrs[0] eq 'HASH' ? %{$attrs[0]} : @attrs }, $class;
     $self->_init( );
+    $self;
 }
 
 =back
@@ -68,7 +68,9 @@ sub new
 
 sub _init
 {
-    $_[0];
+    my ($self) = @_;
+
+    $self;
 }
 
 =back

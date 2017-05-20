@@ -34,46 +34,30 @@ use warnings;
 
 =over 4
 
-=item getInstance( [ %args ] )
+=item getInstance( [ %attrs ] )
 
  Implement singleton design pattern. Return instance of this class
 
- Param hash|hash_ref OPTIONAL hash representing class attributes
+ Param hash|hashref OPTIONAL hash representing class attributes
  Return Common::SingletonClass
 
 =cut
 
 sub getInstance
 {
-    my ($self, @attrs) = @_;
-    return $self if ref $self;
+    my ($class, @attrs) = @_;
+
+    return $class if ref $class;
 
     no strict 'refs';
-    my $instance = \${"${self}::_instance"};
+    my $instance = \${"${class}::_instance"};
 
-    unless (defined $$instance) {
-        $$instance = bless { @attrs && ref $attrs[0] eq 'HASH' ? %{$attrs[0]} : @attrs }, $self;
-        $$instance->_init( );
+    unless (defined ${$instance}) {
+        ${$instance} = bless { @attrs && ref $attrs[0] eq 'HASH' ? %{$attrs[0]} : @attrs }, $class;
+        ${$instance}->_init( );
     }
 
-    $$instance;
-}
-
-=item hasInstance( )
-
- Whether an instance already exists
-
- Return Common::SingletonClass
-
-=cut
-
-sub hasInstance
-{
-    my $self = $_[0];
-
-    $self = ref $self || $self;
-    no strict 'refs';
-    ${"${self}::_instance"};
+    ${$instance};
 }
 
 =back
@@ -92,7 +76,9 @@ sub hasInstance
 
 sub _init
 {
-    $_[0];
+    my ($self) = @_;
+    
+    $self;
 }
 
 =back
