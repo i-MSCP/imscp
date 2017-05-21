@@ -450,7 +450,7 @@ sub isAvailableSqlUser ( $ )
     my $db = iMSCP::Database->factory( );
 
     local $@;
-    my $oldDatabase = eval { $ db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME') ); };
+    my $oldDatabase = eval { $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME') ); };
     if ($@) {
         return 1 if $@ =~ /unknown database/i; # On fresh installation, there is no database yet
         die($@);

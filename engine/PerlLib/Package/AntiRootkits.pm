@@ -111,7 +111,7 @@ EOF
 
         (my $subref = $package->can( 'showDialog' )) or next;
         debug( sprintf( 'Executing showDialog action on %s', $package ) );
-        $rs = $subref->( $package->getInstance( ) );
+        $rs = $subref->( $package->getInstance( ), $dialog );
         return $rs if $rs;
     }
 

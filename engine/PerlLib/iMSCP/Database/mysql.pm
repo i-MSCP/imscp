@@ -41,7 +41,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item ($prop, $value)
+=item ( $prop, $value )
 
  Set properties
 
@@ -60,7 +60,7 @@ sub set
     $self->{'db'}->{$prop} = $value;
 }
 
-=item connect()
+=item connect( )
 
  Connect to the MySQL server
 
@@ -81,12 +81,12 @@ sub connect
         || $self->{'_currentUser'} ne $self->{'db'}->{'DATABASE_USER'}
         || $self->{'_currentPassword'} ne $self->{'db'}->{'DATABASE_PASSWORD'}
     ) {
-        $self->{'connection'}->disconnect() if $self->{'connection'};
+        $self->{'connection'}->disconnect( ) if $self->{'connection'};
 
         # Set connection timeout to 5 seconds
         my $mask = POSIX::SigSet->new( SIGALRM );
         my $action = POSIX::SigAction->new( sub { die "SQL database connection timeout\n" }, $mask );
-        my $oldaction = POSIX::SigAction->new();
+        my $oldaction = POSIX::SigAction->new( );
         sigaction( SIGALRM, $action, $oldaction );
 
         local $@;
@@ -113,7 +113,7 @@ sub connect
     0;
 }
 
-=item useDatabase($database)
+=item useDatabase( $database )
 
  Change database for the current connection
 
@@ -129,10 +129,10 @@ sub useDatabase
     defined $database && $database ne '' or die( '$database parameter is not defined or invalid' );
 
     my $oldDatabase = $self->{'db'}->{'DATABASE_NAME'};
-    my $dbh = $self->getRawDb();
-    unless($dbh->ping()) {
-        $self->connect();
-        $dbh = $self->getRawDb();
+    my $dbh = $self->getRawDb( );
+    unless($dbh->ping( )) {
+        $self->connect( );
+        $dbh = $self->getRawDb( );
     }
     $dbh->{'RaiseError'} = 1;
     local $@;
@@ -143,7 +143,7 @@ sub useDatabase
     $oldDatabase;
 }
 
-=item startTransaction()
+=item startTransaction( )
 
  Start a database transaction
 
@@ -153,13 +153,13 @@ sub startTransaction
 {
     my ($self) = @_;
 
-    my $rawDb = $self->getRawDb();
+    my $rawDb = $self->getRawDb( );
     $rawDb->{'AutoCommit'} = 0;
     $rawDb->{'RaiseError'} = 1;
     $rawDb;
 }
 
-=item endTransaction()
+=item endTransaction( )
 
  End a database transaction
 
@@ -169,7 +169,7 @@ sub endTransaction
 {
     my ($self) = @_;
 
-    my $rawDb = $self->getRawDb();
+    my $rawDb = $self->getRawDb( );
 
     $rawDb->{'AutoCommit'} = 1;
     $rawDb->{'RaiseError'} = 0;
@@ -177,7 +177,7 @@ sub endTransaction
     $self->{'connection'};
 }
 
-=item getRawDb()
+=item getRawDb( )
 
  Get raw DBI instance
 
@@ -189,7 +189,7 @@ sub getRawDb
 
     return $self->{'connection'} if $self->{'connection'};
 
-    my $rs = $self->connect();
+    my $rs = $self->connect( );
     !$rs or die( sprintf( "Couldn't connect to SQL server: %s", $rs ) );
     $self->{'connection'};
 }
@@ -216,7 +216,7 @@ sub doQuery
 
     $query or return 'No query provided';
 
-    $self->{'sth'} = $self->getRawDb()->prepare( $query ) or return "Error while preparing statement: $DBI::errstr";
+    $self->{'sth'} = $self->getRawDb( )->prepare( $query ) or return "Error while preparing statement: $DBI::errstr";
     $self->{'sth'}->execute( @bindValues ) or return "Error while executing statement: $DBI::errstr";
 
     if ($fetchMode eq 'hashref') {
@@ -228,7 +228,7 @@ sub doQuery
     }
 }
 
-=item getDBTables()
+=item getDBTables( )
 
  Return list of table for the current selected database
 
@@ -240,11 +240,11 @@ sub getDBTables
 {
     my ($self) = @_;
 
-    $self->{'sth'} = $self->getRawDb()->prepare(
+    $self->{'sth'} = $self->getRawDb( )->prepare(
         'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ?', $self->{'db'}->{'DATABASE_NAME'}
     );
 
-    return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute();
+    return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute( );
 
     my $href = $self->{'sth'}->fetchall_hashref( 'TABLE_NAME' );
     my @tables = keys %{$href};
@@ -263,13 +263,13 @@ sub getTableColumns
 {
     my ($self, $tableName) = @_;
 
-    $self->{'sth'} = $self->getRawDb()->prepare(
+    $self->{'sth'} = $self->getRawDb( )->prepare(
         'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?',
         $self->{'db'}->{'DATABASE_NAME'},
         $tableName
     );
 
-    return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute();
+    return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute( );
 
     my $href = $self->{'sth'}->fetchall_hashref( 'COLUMN_NAME' );
     my @columns = keys %{$href};
@@ -318,7 +318,7 @@ sub quoteIdentifier
     my ($self, $identifier) = @_;
 
     $identifier = join( ', ', $identifier ) if ref $identifier eq 'ARRAY';
-    $self->getRawDb()->quote_identifier( $identifier );
+    $self->getRawDb( )->quote_identifier( $identifier );
 }
 
 =item quote($string)
@@ -333,7 +333,7 @@ sub quote
 {
     my ($self, $string) = @_;
 
-    $self->getRawDb()->quote( $string );
+    $self->getRawDb( )->quote( $string );
 }
 
 =back
@@ -342,7 +342,7 @@ sub quote
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 

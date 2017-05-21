@@ -242,7 +242,7 @@
     <sql>
         <mysql_5.5
                 default="1"
-                description="MySQL 5.5 server"
+                description="MySQL 5.5 server (recommended)"
                 class="Servers::sqld::mysql"
                 pinning_package="libmysqlclient18 mysql-common mysql-client-5.5 mysql-server-5.5"
                 pinning_pin="release o=Ubuntu,n=trusty"

@@ -297,7 +297,7 @@ sub setupAskServerPrimaryIP
 
 Please select your server primary IP address:
 
-The \\Zb`None'\\Zn option means that i-MSCP will configure the services to listen on all interfaces.
+The \\Zb`None'\\Zn option means that i-MSCP will configures the services to listen on all interfaces.
 Note that this options is more suitable for cloud computing services such as Scaleway.
 EOF
             $lanIP = '0.0.0.0' if $lanIP && $lanIP eq 'None';
@@ -1250,7 +1250,7 @@ sub setupSecureSqlInstallation
         return 1;
     }
 
-    $db->useDatabase( $oldDatabase );
+    $db->useDatabase( $oldDatabase ) if $oldDatabase;
     iMSCP::EventManager->getInstance( )->trigger( 'afterSetupSecureSqlInstallation' );
 }
 

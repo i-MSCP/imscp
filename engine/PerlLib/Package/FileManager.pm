@@ -103,7 +103,7 @@ EOF
 
     return 0 unless my $subref = $package->can( 'showDialog' );
     debug( sprintf( 'Executing showDialog action on %s', $package ) );
-    $subref->( $package->getInstance( ) );
+    $subref->( $package->getInstance( ), $dialog );
 }
 
 =item preinstallListener( )
