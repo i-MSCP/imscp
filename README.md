@@ -13,13 +13,11 @@ professionals.
 * [i-MSCP Forums](https://i-mscp.net/index.php/BoardList/)
 * [i-MSCP Documentation](https://wiki.i-mscp.net/doku.php)
 
-### Installation
+### Installation instructions
 
-See the **INSTALL** file for your distribution in the `docs` directory.
-
-* For Debian: [Debian](./docs/Debian/INSTALL.md)
-* For Devuan: [Devuan](./docs/Devuan/INSTALL.md)
-* For Ubuntu: [ubuntu](./docs/Ubuntu/INSTALL.md)
+* [Debian](./docs/Debian/INSTALL.md)
+* [Devuan](./docs/Devuan/INSTALL.md)
+* [Ubuntu](./docs/Ubuntu/INSTALL.md)
 
 ### License
 
