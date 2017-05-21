@@ -12,7 +12,7 @@ NAMED_SNAME = bind9
 NAMED_BNAME = named
 
 # Format for compiled zone files
-# Possible values: text, raw (default) or raw=N where N can be 0 or 1
+# Possible values: text, raw or raw=N where N can be 0 or 1
 # See NAMED-CHECKZONE(8)
 BIND_DB_FORMAT = raw=0
 
