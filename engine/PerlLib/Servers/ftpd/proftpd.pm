@@ -433,8 +433,6 @@ sub _init
 {
     my ($self) = @_;
 
-    debug("Nuxwin: new proftpd server instance being created");
-    
     $self->{'start'} = 0;
     $self->{'restart'} = 0;
     $self->{'reload'} = 0;
