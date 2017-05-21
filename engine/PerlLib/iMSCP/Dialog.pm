@@ -73,10 +73,10 @@ sub resetLabels
 
 sub fselect
 {
-    my $self = $_[0];
+    my ($self, $file) = @_;
 
     $self->{'lines'} = $self->{'lines'} - 8;
-    my ($ret, $output) = $self->_execute( $_[1], undef, 'fselect' );
+    my ($ret, $output) = $self->_execute( $file, undef, 'fselect' );
     $self->{'lines'} = $self->{'lines'} + 8;
     wantarray ? ($ret, $output) : $output;
 }
@@ -140,7 +140,9 @@ sub checkbox
 
 sub tailbox
 {
-    ($_[0]->_execute( $_[1], undef, 'tailbox' ))[0];
+    my ($self, $file) = @_;
+
+    ($self->_execute( $file, undef, 'tailbox' ))[0];
 }
 
 =item editbox( $file )
@@ -154,23 +156,26 @@ sub tailbox
 
 sub editbox
 {
-    $_[0]->_execute( $_[1], undef, 'editbox' );
+    my ($self, $file) = @_;
+
+    $self->_execute( $file, undef, 'editbox' );
 }
 
-=item dselect( $dir )
+=item dselect( $directory )
 
  Show directory select dialog box
 
+ Param string $directory
  Return string|array Dialog output or array containing both dialog exit code and dialog output
 
 =cut
 
 sub dselect
 {
-    my $self = $_[0];
+    my ($self, $directory) = @_;
 
     $self->{'lines'} = $self->{'lines'} - 8;
-    my ($ret, $output) = $self->_execute( $_[1], undef, 'dselect' );
+    my ($ret, $output) = $self->_execute( $directory, undef, 'dselect' );
     $self->{'lines'} = $self->{'lines'} + 8;
     wantarray ? ($ret, $output) : $output;
 }
@@ -186,7 +191,9 @@ sub dselect
 
 sub msgbox
 {
-    ($_[0]->_textbox( $_[1], 'msgbox' ))[0];
+    my ($self, $text) = @_;
+
+    ($self->_textbox( $text, 'msgbox' ))[0];
 }
 
 =item yesno( $text [, $defaultno ] )
@@ -223,7 +230,7 @@ sub inputbox
 {
     my ($self, $text, $init) = @_;
 
-    $init ||= '';
+    $init //= '';
     $self->_textbox( $text, 'inputbox', escapeShell( $init ) );
 }
 
@@ -241,7 +248,7 @@ sub passwordbox
 {
     my ($self, $text, $init) = @_;
 
-    $init ||= '';
+    $init //= '';
     $self->{'_opts'}->{'insecure'} = '';
     $self->_textbox( $text, 'passwordbox', escapeShell( $init ) );
 }
@@ -257,12 +264,12 @@ sub passwordbox
 
 sub infobox
 {
-    my $self = $_[0];
+    my ($self, $text) = @_;
 
     my $clear = $self->{'_opts'}->{'clear'};
     $self->{'_opts'}->{'clear'} = undef;
 
-    my ($ret) = $self->_textbox( $_[1], 'infobox' );
+    my ($ret) = $self->_textbox( $text, 'infobox' );
 
     $self->{'_opts'}->{'clear'} = $clear;
     $ret;
@@ -280,16 +287,18 @@ sub infobox
 
 sub startGauge
 {
-    my ($self) = @_;
+    my ($self, $text, $percent) = @_;
 
     return 0 if iMSCP::Getopt->noprompt || $self->{'gauge'};
 
     defined $_[0] or die( '$text parameter is undefined' );
 
-    open $self->{'gauge'}, '|-', $self->{'bin'}, $self->_buildCommonCommandOptions( 'noEscape' ), '--gauge', shift,
-        ($self->{'autosize'} ? 0 : $self->{'lines'}), ($self->{'autosize'} ? 0 : $self->{'columns'}), shift || 0 or die(
-        "Couldn't start gauge"
-    );
+    open $self->{'gauge'}, '|-',
+        $self->{'bin'}, $self->_buildCommonCommandOptions( 'noEscape' ),
+        '--gauge', $text,
+        (($self->{'autosize'}) ? 0 : $self->{'lines'}),
+        (($self->{'autosize'}) ? 0 : $self->{'columns'}),
+        $percent // 0 or die( "Couldn't start gauge" );
 
     $self->{'gauge'}->autoflush( 1 );
     debugRegisterCallBack( sub { $self->endGauge( ); } );
@@ -297,7 +306,7 @@ sub startGauge
     0;
 }
 
-=item setGauge( $value, $text )
+=item setGauge( $percent, $text )
 
  Set new percentage and optionaly new text to show
 
@@ -309,11 +318,11 @@ sub startGauge
 
 sub setGauge
 {
-    my ($self) = @_;
+    my ($self, $percent, $text) = @_;
 
     return 0 if iMSCP::Getopt->noprompt || !$self->{'gauge'};
 
-    print {$self->{'gauge'}} sprintf( "XXX\n%d\n%s\nXXX\n", @_ );
+    print {$self->{'gauge'}} sprintf( "XXX\n%d\n%s\nXXX\n", $percent, $text );
     0
 }
 
@@ -346,9 +355,11 @@ sub endGauge
 
 sub hasGauge
 {
+    my ($self) = @_;
+
     return 0 if iMSCP::Getopt->noprompt;
 
-    $_[0]->{'gauge'} ? 1 : 0;
+    ($self->{'gauge'}) ? 1 : 0;
 }
 
 =item set( $option, $value )
@@ -388,7 +399,7 @@ sub set
 
 sub _init
 {
-    my $self = $_[0];
+    my ($self) = @_;
 
     # These environment variable screws up at least whiptail with the
     # way we call it. Posix does not allow safe arg passing like
@@ -565,7 +576,7 @@ sub _buildCommonCommandOptions
 
 sub _restoreDefaults
 {
-    my $self = $_[0];
+    my ($self) = @_;
 
     for my $prop (keys %{$self->{'_opts'}}) {
         $self->{'_opts'}->{$prop} = undef unless $prop =~ /^(?:title|backtitle|colors)$/;
@@ -574,7 +585,7 @@ sub _restoreDefaults
     $self;
 }
 
-=item _execute( $text, $init, $type [, $background ] )
+=item _execute( $text, $init, $type )
 
  Wrap execution of dialog commands (except gauge dialog commands)
 
@@ -608,8 +619,8 @@ sub _execute
     $text = escapeShell( $text );
     $init = $init ? $init : '';
 
-    my $height = $self->{'autosize'} ? 0 : $self->{'lines'};
-    my $width = $self->{'autosize'} ? 0 : $self->{'columns'};
+    my $height = ($self->{'autosize'}) ? 0 : $self->{'lines'};
+    my $width = ($self->{'autosize'}) ? 0 : $self->{'columns'};
 
     my $ret = execute( "$self->{'bin'} $command --$type $text $height $width $init", undef, \ my $output );
 
@@ -644,7 +655,7 @@ sub _textbox
 {
     my ($self, $text, $type, $init) = @_;
 
-    $init ||= 0;
+    $init //= 0;
     my $autosize = $self->{'autosize'};
     $self->{'autosize'} = undef;
     my ($ret, $output) = $self->_execute( $text, $init, $type );
