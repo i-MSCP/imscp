@@ -445,7 +445,6 @@ sub _init
         'iMSCP::Config',
         fileName => "$self->{'cfgDir'}/proftpd.data",
         readonly => !(defined $main::execmode && $main::execmode eq 'setup'),
-        funk => 1;
     $self;
 }
 
