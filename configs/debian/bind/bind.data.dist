@@ -12,8 +12,9 @@ NAMED_SNAME = bind9
 NAMED_BNAME = named
 
 # Format for compiled zone files
-# Possible value: raw, text
-BIND_DB_FORMAT = raw
+# Possible values: text, raw (default) or raw=N where N can be 0 or 1
+# See NAMED-CHECKZONE(8)
+BIND_DB_FORMAT = raw=0
 
 # Mode in which the server should acts (master|slave)
 BIND_MODE =

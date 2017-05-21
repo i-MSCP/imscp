@@ -54,21 +54,6 @@ sub _init
     $self->{'sqld'} = Servers::sqld::mariadb->getInstance( );
     $self->{'cfgDir'} = $self->{'sqld'}->{'cfgDir'};
     $self->{'config'} = $self->{'sqld'}->{'config'};
-
-    # Be sure to work with newest conffile
-    # Cover case where the conffile has been loaded prior installation of new files (even if discouraged)
-    untie(%{$self->{'config'}});
-    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/mysql.data";
-
-    my $oldConf = "$self->{'cfgDir'}/mysql.old.data";
-    if (-f $oldConf) {
-        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
-        while(my ($key, $value) = each(%oldConfig)) {
-            next unless exists $self->{'config'}->{$key};
-            $self->{'config'}->{$key} = $value;
-        }
-    }
-
     $self;
 }
 

@@ -136,11 +136,6 @@ sub _removeConfig
         return 1;
     }
 
-    if (-f "$self->{'cfgDir'}/bind.old.data") {
-        my $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/bind.old.data" )->delFile( );
-        return $rs if $rs;
-    }
-
     0;
 }
 

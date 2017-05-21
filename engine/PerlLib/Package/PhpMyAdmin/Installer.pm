@@ -188,7 +188,10 @@ sub install
     $rs ||= $self->_buildConfig( );
     $rs ||= $self->_buildHttpdConfig( );
     $rs ||= $self->_setVersion( );
-    $rs ||= $self->_saveConfig( );
+    $rs ||= $self->_cleanup( );
+
+    (tied %{$self->{'config'}})->flush( ) unless $rs;
+    $rs;
 }
 
 =back
@@ -253,20 +256,6 @@ sub _init
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'config'} = $self->{'phpmyadmin'}->{'config'};
-
-    # Be sure to work with newest conffile
-    # Cover case where the conffile has been loaded prior installation of new files (even if discouraged)
-    untie( %{$self->{'config'}} );
-    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.data";
-
-    if (-f "$self->{'cfgDir'}/phpmyadmin.old.data") {
-        tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.old.data", readonly => 1;
-        while(my ($key, $value) = each(%oldConfig)) {
-            next unless exists $self->{'config'}->{$key};
-            $self->{'config'}->{$key} = $value;
-        }
-    }
-
     $self;
 }
 
@@ -305,25 +294,6 @@ sub _installFiles
 
     my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma" )->remove( );
     $rs ||= iMSCP::Dir->new( dirname => "$packageDir" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma" );
-}
-
-=item _saveConfig( )
-
- Save configuration
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _saveConfig
-{
-    my ($self) = @_;
-
-    (tied %{$self->{'config'}})->flush( );
-
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/phpmyadmin.data" )->copyFile(
-        "$self->{'cfgDir'}/phpmyadmin.old.data"
-    );
 }
 
 =item _setupSqlUser( )
@@ -596,6 +566,29 @@ sub _buildConfig
     $rs ||= $file->mode( 0640 );
     $rs ||= $file->owner( $panelUName, $panelGName );
     $rs ||= $file->copyFile( "$confDir/config.inc.php" );
+}
+
+=item _cleanup( )
+
+ Process cleanup tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _cleanup
+{
+    my ($self) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpMyAdminCleanup' );
+    return $rs if $rs;
+
+    if (-f "$self->{'cfgDir'}/phpmyadmin.old.data") {
+        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/phpmyadmin.old.data" )->delFile( );
+        return $rs if $rs;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterPhpMyAdminCleanup' );
 }
 
 =back

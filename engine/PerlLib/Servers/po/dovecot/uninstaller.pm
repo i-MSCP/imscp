@@ -91,20 +91,6 @@ sub _init
     $self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'config'} = $self->{'po'}->{'config'};
-
-    (tied %{$self->{'config'}})->{'temporary'} = 1;
-
-    my $oldConf = "$self->{'cfgDir'}/dovecot.old.data";
-    if (-f $oldConf) {
-        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
-        while(my ($key, $value) = each(%oldConfig)) {
-            next unless exists $self->{'config'}->{$key};
-            $self->{'config'}->{$key} = $value;
-        }
-    }
-
-    (tied %{$self->{'config'}})->{'temporary'} = 0;
-
     $self;
 }
 
@@ -147,11 +133,6 @@ sub _removeConfig
 {
     my ($self) = @_;
 
-    if (-f "$self->{'cfgDir'}/dovecot.old.data") {
-        my $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/dovecot.old.data" )->delFile( );
-        return $rs if $rs;
-    }
-
     return 0 unless -d $self->{'config'}->{'DOVECOT_CONF_DIR'};
 
     for ('dovecot.conf', 'dovecot-sql.conf') {
@@ -169,13 +150,6 @@ sub _removeConfig
             $main::imscpConfig{'ROOT_USER'}, $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}
         );
         $rs ||= $file->mode( 0644 );
-    }
-
-    # Remove old data file
-
-    if (-f "$self->{'cfgDir'}/courier.old.data") {
-        my $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/dovecot.old.data" )->delFile( );
-        return $rs if $rs;
     }
 
     0;

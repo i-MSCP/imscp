@@ -540,8 +540,45 @@ sub _init
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'mta'} = Servers::mta->factory( );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
-    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/courier.data", readonly => 1;
+    $self->_mergeConfig( ) if -f "$self->{'cfgDir'}/courier.data.dist";
+    tie %{$self->{'config'}},
+        'iMSCP::Config',
+        fileName => "$self->{'cfgDir'}/courier.data",
+        readonly => !(defined $main::execmode && $main::execmode eq 'setup');
     $self;
+}
+
+=item _mergeConfig
+
+ Merge distribution configuration with production configuration
+
+ Die on failure
+
+=cut
+
+sub _mergeConfig
+{
+    my ($self) = @_;
+
+    # Merge old configuration if any
+    if (-f "$self->{'cfgDir'}/courier.data") {
+        tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/courier.data.dist";
+        tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/courier.data", readonly => 1;
+
+        while(my ($key, $value) = each(%oldConfig)) {
+            next unless exists $newConfig{$key};
+            $newConfig{$key} = $value;
+        }
+
+        untie(%newConfig);
+        untie(%oldConfig);
+    }
+
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/courier.data.dist" )->moveFile(
+        "$self->{'cfgDir'}/courier.data"
+    ) == 0 or die(
+        getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+    );
 }
 
 =back

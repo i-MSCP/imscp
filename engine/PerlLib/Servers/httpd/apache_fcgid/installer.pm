@@ -131,8 +131,12 @@ sub install
     $rs ||= $self->_buildApacheConfFiles( );
     $rs ||= $self->_installLogrotate( );
     $rs ||= $self->_setupVlogger( );
-    $rs ||= $self->_saveConf( );
     $rs ||= $self->_cleanup( );
+
+    (tied %{$self->{'config'}})->flush( ) unless $rs;
+    (tied %{$self->{'phpConfig'}})->flush( ) unless $rs;
+
+    $rs;
 }
 
 =back
@@ -157,38 +161,8 @@ sub _init
     $self->{'httpd'} = Servers::httpd::apache_fcgid->getInstance( );
     $self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
     $self->{'config'} = $self->{'httpd'}->{'config'};
-
-    # Be sure to work with newest conffile
-    # Cover case where the conffile has been loaded prior installation of new files (even if discouraged)
-    untie(%{$self->{'config'}});
-    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'apacheCfgDir'}/apache.data";
-
-    my $oldConf = "$self->{'apacheCfgDir'}/apache.old.data";
-    if (-f $oldConf) {
-        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
-        while(my ($key, $value) = each(%oldConfig)) {
-            next unless exists $self->{'config'}->{$key};
-            $self->{'config'}->{$key} = $value;
-        }
-    }
-
     $self->{'phpCfgDir'} = $self->{'httpd'}->{'phpCfgDir'};
     $self->{'phpConfig'} = $self->{'httpd'}->{'phpConfig'};
-
-    # Be sure to work with newest conffile
-    # Cover case where the conffile has been loaded prior installation of new files (even if discouraged)
-    untie(%{$self->{'phpConfig'}});
-    tie %{$self->{'phpConfig'}}, 'iMSCP::Config', fileName => "$self->{'phpCfgDir'}/php.data";
-
-    $oldConf = "$self->{'phpCfgDir'}/php.old.data";
-    if (-f $oldConf) {
-        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
-        while(my ($key, $value) = each(%oldConfig)) {
-            next unless exists $self->{'phpConfig'}->{$key};
-            $self->{'phpConfig'}->{$key} = $value;
-        }
-    }
-
     $self->_guessSystemPhpVariables( );
     $self;
 }
@@ -555,34 +529,6 @@ sub _setupVlogger
     );
 }
 
-=item _saveConf( )
-
- Save configuration file
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _saveConf
-{
-    my ($self) = @_;
-
-    (tied %{$self->{'config'}})->flush( );
-    (tied %{$self->{'phpConfig'}})->flush( );
-
-    my %filesToDir = (
-        apache => $self->{'apacheCfgDir'},
-        php    => $self->{'phpCfgDir'}
-    );
-
-    for (keys %filesToDir) {
-        my $rs = iMSCP::File->new( filename => "$filesToDir{$_}/$_.data" )->copyFile( "$filesToDir{$_}/$_.old.data" );
-        return $rs if $rs;
-    }
-
-    0;
-}
-
 =item _cleanup( )
 
  Process cleanup tasks
@@ -595,7 +541,19 @@ sub _cleanup
 {
     my ($self) = @_;
 
-    my $rs = $self->{'httpd'}->disableSites( 'imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdCleanup' );
+    $rs ||= $self->{'httpd'}->disableSites( 'imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf' );
+    return $rs if $rs;
+
+    if (-f "$self->{'apacheCfgDir'}/apache.old.data") {
+        $rs = iMSCP::File->new( filename => "$self->{'apacheCfgDir'}/apache.old.data" )->delFile( );
+        return $rs if $rs;
+    }
+
+    if (-f "$self->{'phpCfgDir'}/php.old.data") {
+        $rs = iMSCP::File->new( filename => "$self->{'phpCfgDir'}/php.old.data" )->delFile( );
+        return $rs if $rs;
+    }
 
     for ('imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf') {
         next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
@@ -644,8 +602,7 @@ sub _cleanup
     $rs = iMSCP::Dir->new( dirname => '/etc/php5' )->remove( );
     return $rs if $rs;
 
-    for(grep
-        !/^$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}$/,
+    for(grep!/^$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}$/,
         glob dirname($self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}).'/*'
     ) {
         $rs = iMSCP::Dir->new( dirname => $_ )->remove( );
@@ -665,7 +622,7 @@ sub _cleanup
         return 1;
     }
 
-    0;
+    $self->{'eventManager'}->trigger( 'afterHttpdCleanup' );
 }
 
 =back

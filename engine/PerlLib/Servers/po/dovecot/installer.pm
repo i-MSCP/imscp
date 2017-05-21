@@ -166,8 +166,11 @@ sub install
 
     my $rs = $self->_setupSqlUser( );
     $rs = $self->_buildConf( );
-    $rs ||= $self->_saveConf( );
     $rs ||= $self->_migrateFromCourier( );
+    $rs ||= $self->_oldEngineCompatibility( );
+
+    (tied %{$self->{'config'}})->flush( ) unless $rs;
+    $rs;
 }
 
 =back
@@ -303,21 +306,6 @@ sub _init
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'config'} = $self->{'po'}->{'config'};
-
-    # Be sure to work with newest conffile
-    # Cover case where the conffile has been loaded prior installation of new files (even if discouraged)
-    untie(%{$self->{'config'}});
-    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/dovecot.data";
-
-    my $oldConf = "$self->{'cfgDir'}/dovecot.old.data";
-    if (-f $oldConf) {
-        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
-        while(my ($key, $value) = each(%oldConfig)) {
-            next unless exists $self->{'config'}->{$key};
-            $self->{'config'}->{$key} = $value;
-        }
-    }
-
     $self->_getVersion( ) and fatal( "Couldn't get Dovecot version" );
     $self;
 }
@@ -558,22 +546,6 @@ EOF
     0;
 }
 
-=item _saveConf( )
-
- Save configuration file
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _saveConf
-{
-    my ($self) = @_;
-
-    (tied %{$self->{'config'}})->flush( );
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/dovecot.data" )->copyFile( "$self->{'cfgDir'}/dovecot.old.data" );
-}
-
 =item _migrateFromCourier( )
 
  Migrate mailboxes from Courier
@@ -610,6 +582,29 @@ sub _migrateFromCourier
     }
 
     $rs ||= $self->{'eventManager'}->trigger( 'afterPoMigrateFromCourier' );
+}
+
+=item _oldEngineCompatibility( )
+
+ Remove old files
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _oldEngineCompatibility
+{
+    my ($self) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePoOldEngineCompatibility' );
+    return $rs if $rs;
+
+    if(-f "$self->{'cfgDir'}/dovecot.old.data") {
+        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/dovecot.old.data" )->delFile( );
+        return $rs if $rs;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterPodOldEngineCompatibility' );
 }
 
 =back

@@ -163,7 +163,10 @@ sub install
     $rs ||= $self->_updateDatabase( ) unless $self->{'newInstall'};
     $rs ||= $self->_buildHttpdConfig( );
     $rs ||= $self->_setVersion( );
-    $rs ||= $self->_saveConfig( );
+    $rs ||= $self->_cleanup( );
+
+    (tied %{$self->{'config'}})->flush( ) unless $rs;
+    $rs;
 }
 
 =back
@@ -589,23 +592,27 @@ sub _buildHttpdConfig
     );
 }
 
-=item _saveConfig( )
+=item _cleanup( )
 
- Save configuration
+ Process cleanup tasks
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _saveConfig
+sub _cleanup
 {
     my ($self) = @_;
 
-    (tied %{$self->{'config'}})->flush( );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeRoundcubeCleanup' );
+    return $rs if $rs;
 
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/roundcube.data" )->copyFile(
-        "$self->{'cfgDir'}/roundcube.old.data"
-    );
+    if (-f "$self->{'cfgDir'}/roundcube.old.data") {
+        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/roundcube.old.data" )->delFile( );
+        return $rs if $rs;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterRoundcubeCleanup' );
 }
 
 =back

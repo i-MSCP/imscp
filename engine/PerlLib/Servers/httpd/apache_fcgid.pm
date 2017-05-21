@@ -1401,11 +1401,56 @@ sub _init
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'apacheCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
     $self->{'apacheTplDir'} = "$self->{'apacheCfgDir'}/parts";
-    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'apacheCfgDir'}/apache.data", readonly => 1;
+
+    $self->_mergeConfig( $self->{'apacheCfgDir'}, 'apache.data' ) if -f "$self->{'apacheCfgDir'}/apache.data.dist";
+    tie %{$self->{'config'}},
+        'iMSCP::Config',
+        fileName => "$self->{'apacheCfgDir'}/apache.data",
+        readonly => !(defined $main::execmode && $main::execmode eq 'setup');
+
     $self->{'phpCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/php";
-    tie %{$self->{'phpConfig'}}, 'iMSCP::Config', fileName => "$self->{'phpCfgDir'}/php.data", readonly => 1;
+
+    $self->_mergeConfig( $self->{'phpCfgDir'}, 'php.data' ) if -f "$self->{'phpCfgDir'}/php.data.dist";
+    tie %{$self->{'phpConfig'}},
+        'iMSCP::Config',
+        fileName => "$self->{'phpCfgDir'}/php.data",
+        readonly => !(defined $main::execmode && $main::execmode eq 'setup');
+
     $self->{'eventManager'}->register( 'afterHttpdBuildConfFile', sub { $self->_cleanTemplate( @_ )} );
     $self;
+}
+
+=item _mergeConfig( $confDir, $confName )
+
+ Merge distribution configuration with production configuration
+
+ Param string $confDir Configuration directory
+ Param string $confName Configuration filename
+ Die on failure
+
+=cut
+
+sub _mergeConfig
+{
+    my (undef, $confDir, $confName) = @_;
+
+    # Merge old configuration if any
+    if (-f "$confDir/$confName") {
+        tie my %newConfig, 'iMSCP::Config', fileName => "$confDir/$confName.dist";
+        tie my %oldConfig, 'iMSCP::Config', fileName => "$confDir/$confName", readonly => 1;
+
+        while(my ($key, $value) = each(%oldConfig)) {
+            next unless exists $newConfig{$key};
+            $newConfig{$key} = $value;
+        }
+
+        untie(%newConfig);
+        untie(%oldConfig);
+    }
+
+    iMSCP::File->new( filename => "$confDir/$confName.dist" )->moveFile( "$confDir/$confName" ) == 0 or die(
+        getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+    );
 }
 
 =item _addCfg( \%data )

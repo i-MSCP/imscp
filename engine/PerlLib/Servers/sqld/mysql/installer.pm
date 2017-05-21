@@ -63,7 +63,7 @@ sub preinstall
     my $rs = $self->_setTypeAndVersion( );
     $rs ||= $self->_buildConf( );
     $rs ||= $self->_updateServerConfig( );
-    $rs ||= $self->_saveConf( );
+    $rs ||= $self->_oldEngineCompatibility( );
 }
 
 =back
@@ -88,21 +88,6 @@ sub _init
     $self->{'sqld'} = Servers::sqld::mysql->getInstance( );
     $self->{'cfgDir'} = $self->{'sqld'}->{'cfgDir'};
     $self->{'config'} = $self->{'sqld'}->{'config'};
-
-    # Be sure to work with newest conffile
-    # Cover case where the conffile has been loaded prior installation of new files (even if discouraged)
-    untie(%{$self->{'config'}});
-    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/mysql.data";
-
-    my $oldConf = "$self->{'cfgDir'}/mysql.old.data";
-    if (-f $oldConf) {
-        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
-        while(my ($key, $value) = each(%oldConfig)) {
-            next unless exists $self->{'config'}->{$key};
-            $self->{'config'}->{$key} = $value;
-        }
-    }
-
     $self;
 }
 
@@ -333,22 +318,6 @@ sub _updateServerConfig
     0;
 }
 
-=item _saveConf( )
-
- Save configuration file
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _saveConf
-{
-    my ($self) = @_;
-
-    (tied %{$self->{'config'}})->flush( );
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/mysql.data" )->copyFile( "$self->{'cfgDir'}/mysql.old.data" );
-}
-
 =item _isMysqldInsideCt( )
 
  Does the Mysql server is run inside an unprivileged VE (OpenVZ container)
@@ -371,6 +340,29 @@ sub _isMysqldInsideCt
     }
 
     0;
+}
+
+=item _oldEngineCompatibility( )
+
+ Remove old files
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _oldEngineCompatibility
+{
+    my ($self) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldOldEngineCompatibility' );
+    return $rs if $rs;
+
+    if(-f "$self->{'cfgDir'}/mysql.old.data") {
+        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/mysql.old.data" )->delFile( );
+        return $rs if $rs;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterSqldOldEngineCompatibility' );
 }
 
 =back

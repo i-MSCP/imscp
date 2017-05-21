@@ -211,8 +211,11 @@ sub install
     $rs ||= $self->_setVersion( );
     $rs ||= $self->_setupDatabase( );
     $rs ||= $self->_buildConfigFile( );
-    $rs ||= $self->_saveConf( );
     $rs ||= $self->_oldEngineCompatibility( );
+
+    (tied %{$self->{'config'}})->flush( ) unless $rs;
+
+    $rs;
 }
 
 =back
@@ -239,22 +242,6 @@ sub _init
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'config'} = $self->{'ftpd'}->{'config'};
-
-    # Be sure to work with newest conffile
-    # Cover case where the conffile has been loaded prior installation of new files (even if discouraged)
-    untie(%{$self->{'config'}});
-    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/proftpd.data";
-
-    my $oldConf = "$self->{'cfgDir'}/proftpd.old.data";
-
-    if (defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
-        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
-        while(my ($key, $value) = each(%oldConfig)) {
-            next unless exists $self->{'config'}->{$key};
-            $self->{'config'}->{$key} = $value;
-        }
-    }
-
     $self;
 }
 
@@ -511,22 +498,6 @@ EOF
     $rs;
 }
 
-=item _saveConf( )
-
- Save configuration file
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _saveConf
-{
-    my ($self) = @_;
-
-    (tied %{$self->{'config'}})->flush( );
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.data" )->copyFile( "$self->{'cfgDir'}/proftpd.old.data" );
-}
-
 =item _oldEngineCompatibility( )
 
  Remove old files
@@ -540,7 +511,14 @@ sub _oldEngineCompatibility
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdOldEngineCompatibility' );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterFtpdOldEngineCompatibility' );
+    return $rs if $rs;
+
+    if(-f "$self->{'cfgDir'}/proftpd.old.data") {
+        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.old.data" )->delFile( );
+        return $rs if $rs;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterFtpdOldEngineCompatibility' );
 }
 
 =back

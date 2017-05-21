@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<install>
-    <folders>${SYSTEM_CONF}/cron.d</folders>
-    <copy_config>${SYSTEM_CONF}/cron.d/imscp</copy_config>
-    <copy_config mode="0640">${SYSTEM_CONF}/cron.d/cron.data</copy_config>
-</install>

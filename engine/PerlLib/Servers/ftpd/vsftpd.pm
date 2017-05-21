@@ -434,8 +434,45 @@ sub _init
     $self->{'reload'} = 0;
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/vsftpd";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/vsftpd.data", readonly => 1;
+    $self->_mergeConfig( ) if -f "$self->{'cfgDir'}/vsftpd.data.dist";
+    tie %{$self->{'config'}},
+        'iMSCP::Config',
+        fileName => "$self->{'cfgDir'}/vsftpd.data",
+        readonly => !(defined $main::execmode && $main::execmode eq 'setup');
     $self;
+}
+
+=item _mergeConfig
+
+ Merge distribution configuration with production configuration
+
+ Die on failure
+
+=cut
+
+sub _mergeConfig
+{
+    my ($self) = @_;
+
+    # Merge old configuration if any
+    if (-f "$self->{'cfgDir'}/vsftpd.data") {
+        tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/vsftpd.data.dist";
+        tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/vsftpd.data", readonly => 1;
+
+        while(my ($key, $value) = each(%oldConfig)) {
+            next unless exists $newConfig{$key};
+            $newConfig{$key} = $value;
+        }
+
+        untie(%newConfig);
+        untie(%oldConfig);
+    }
+
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/vsftpd.data.dist" )->moveFile(
+        "$self->{'cfgDir'}/vsftpd.data"
+    ) == 0 or die(
+        getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+    );
 }
 
 =item _createFtpUserConffile( \%data )

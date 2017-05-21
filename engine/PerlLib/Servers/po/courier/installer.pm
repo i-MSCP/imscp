@@ -169,9 +169,11 @@ sub install
     my $rs = $self->_setupAuthdaemonSqlUser( );
     $rs ||= $self->_buildConf( );
     $rs ||= $self->_setupCyrusSASL( );
-    $rs ||= $self->_saveConf( );
     $rs ||= $self->_migrateFromDovecot( );
     $rs ||= $self->_oldEngineCompatibility( );
+
+    (tied %{$self->{'config'}})->flush( ) unless $rs;
+    $rs;
 }
 
 =back
@@ -303,21 +305,6 @@ sub _init
     $self->{'mta'} = Servers::mta::postfix->getInstance( );
     $self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
     $self->{'config'} = $self->{'po'}->{'config'};
-
-    # Be sure to work with newest conffile
-    # Cover case where the conffile has been loaded prior installation of new files (even if discouraged)
-    untie(%{$self->{'config'}});
-    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/courier.data";
-
-    my $oldConf = "$self->{'cfgDir'}/courier.old.data";
-    if (-f $oldConf) {
-        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
-        while(my ($key, $value) = each(%oldConfig)) {
-            next unless exists $self->{'config'}->{$key};
-            $self->{'config'}->{$key} = $value;
-        }
-    }
-
     $self;
 }
 
@@ -669,22 +656,6 @@ sub _buildSslConfFiles
     0;
 }
 
-=item _saveConf( )
-
- Save configuration file
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _saveConf
-{
-    my ($self) = @_;
-
-    (tied %{$self->{'config'}})->flush( );
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/courier.data" )->copyFile( "$self->{'cfgDir'}/courier.old.data" );
-}
-
 =item _migrateFromDovecot( )
 
  Migrate mailboxes from Dovecot
@@ -736,6 +707,11 @@ sub _oldEngineCompatibility
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoOldEngineCompatibility' );
     return $rs if $rs;
+
+    if(-f "$self->{'cfgDir'}/courier.old.data") {
+        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/courier.old.data" )->delFile( );
+        return $rs if $rs;
+    }
 
     if (-f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb") {
         my $file = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb" );

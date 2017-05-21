@@ -48,7 +48,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item preinstall()
+=item preinstall( )
 
  Process preinstall tasks
 
@@ -60,11 +60,11 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->_addUsersAndGroups();
-    $rs ||= $self->_makeDirs();
+    my $rs = $self->_addUsersAndGroups( );
+    $rs ||= $self->_makeDirs( );
 }
 
-=item install()
+=item install( )
 
  Process install tasks
 
@@ -76,12 +76,14 @@ sub install
 {
     my ($self) = @_;
 
-    my $rs = $self->setVersion();
-    $rs ||= $self->_createPostfixMaps();
-    $rs ||= $self->_buildConf();
-    $rs ||= $self->_buildAliasesDb();
-    $rs ||= $self->_saveConf();
-    $rs ||= $self->_oldEngineCompatibility();
+    my $rs = $self->setVersion( );
+    $rs ||= $self->_createPostfixMaps( );
+    $rs ||= $self->_buildConf( );
+    $rs ||= $self->_buildAliasesDb( );
+    $rs ||= $self->_oldEngineCompatibility( );
+
+    (tied %{$self->{'config'}})->flush( ) unless $rs;
+    $rs;
 }
 
 =back
@@ -90,7 +92,7 @@ sub install
 
 =over 4
 
-=item _init()
+=item _init( )
 
  Initialize instance
 
@@ -102,29 +104,14 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'mta'} = Servers::mta::postfix->getInstance();
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
+    $self->{'mta'} = Servers::mta::postfix->getInstance( );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
     $self->{'config'} = $self->{'mta'}->{'config'};
-
-    # Be sure to work with newest conffile
-    # Cover case where the conffile has been loaded prior installation of new files (even if discouraged)
-    untie(%{$self->{'config'}});
-    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/postfix.data";
-
-    my $oldConf = "$self->{'cfgDir'}/postfix.old.data";
-    if(-f $oldConf) {
-        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
-        while(my($key, $value) = each(%oldConfig)) {
-            next unless exists $self->{'config'}->{$key};
-            $self->{'config'}->{$key} = $value;
-        }
-    }
-
     $self;
 }
 
-=item _addUsersAndGroups()
+=item _addUsersAndGroups( )
 
  Add users and groups
 
@@ -153,12 +140,12 @@ sub _addUsersAndGroups
         ]
     );
 
-    my @userToGroups = ();
+    my @userToGroups = ( );
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddUsersAndGroups', \ @groups, \ @users, \ @userToGroups );
     return $rs if $rs;
 
     # Create groups
-    my $systemGroup = iMSCP::SystemGroup->getInstance();
+    my $systemGroup = iMSCP::SystemGroup->getInstance( );
     for my $group(@groups) {
         $rs = $systemGroup->addSystemGroup( $group->[0], ($group->[1] eq 'yes') ? 1 : 0 );
         return $rs if $rs;
@@ -166,7 +153,7 @@ sub _addUsersAndGroups
 
     # Create users
     for my $user(@users) {
-        my $systemUser = iMSCP::SystemUser->new();
+        my $systemUser = iMSCP::SystemUser->new( );
         $systemUser->{'group'} = $user->[1];
         $systemUser->{'comment'} = $user->[2];
         $systemUser->{'home'} = $user->[3];
@@ -185,7 +172,7 @@ sub _addUsersAndGroups
 
     # User to groups
     for my $entry(@userToGroups) {
-        my $systemUser = iMSCP::SystemUser->new();
+        my $systemUser = iMSCP::SystemUser->new( );
         my $user = $entry->[0];
         for my $group(@{$entry->[1]}) {
             $rs = $systemUser->addToGroup( $group, $user );
@@ -196,7 +183,7 @@ sub _addUsersAndGroups
     $self->{'eventManager'}->trigger( 'afterMtaAddUsersAndGroups' );
 }
 
-=item _makeDirs()
+=item _makeDirs( )
 
  Create directories
 
@@ -226,7 +213,7 @@ sub _makeDirs
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaMakeDirs', \ @directories );
 
     # Make sure to start with clean directory
-    $rs ||= iMSCP::Dir->new(dirname => $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'})->remove();
+    $rs ||= iMSCP::Dir->new(dirname => $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'})->remove( );
     return $rs if $rs;
 
     for my $dir(@directories) {
@@ -244,7 +231,7 @@ sub _makeDirs
     $self->{'eventManager'}->trigger( 'afterMtaMakeDirs' );
 }
 
-=item _buildConf()
+=item _buildConf( )
 
  Build configuration file
 
@@ -257,12 +244,12 @@ sub _buildConf
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaBuildConf' );
-    $rs ||= $self->_buildMasterCfFile();
-    $rs ||= $self->_buildMainCfFile();
+    $rs ||= $self->_buildMasterCfFile( );
+    $rs ||= $self->_buildMainCfFile( );
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaBuildConf' );
 }
 
-=item setVersion()
+=item setVersion( )
 
  Set Postfix version
 
@@ -289,7 +276,7 @@ sub setVersion
     0;
 }
 
-=item _createPostfixMaps()
+=item _createPostfixMaps( )
 
  Ceate postfix maps
 
@@ -318,7 +305,7 @@ sub _createPostfixMaps
     $self->{'eventManager'}->trigger( 'afterCreatePostfixMaps', \ @lookupTables );
 }
 
-=item _buildAliasesDb()
+=item _buildAliasesDb( )
 
  Build aliases database
 
@@ -335,7 +322,7 @@ sub _buildAliasesDb
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
-        $cfgTpl = iMSCP::File->new( filename => $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'} )->get();
+        $cfgTpl = iMSCP::File->new( filename => $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'} )->get( );
         $cfgTpl = '' unless defined $cfgTpl;
     }
 
@@ -351,7 +338,7 @@ sub _buildAliasesDb
 
     my $file = iMSCP::File->new( filename => $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'} );
     $rs = $file->set( $cfgTpl );
-    $rs ||= $file->save();
+    $rs ||= $file->save( );
     return $rs if $rs;
 
     $rs = execute( 'newaliases', \ my $stdout, \ my $stderr );
@@ -362,23 +349,7 @@ sub _buildAliasesDb
     $self->{'eventManager'}->trigger( 'afterMtaBuildAliasesDb' );
 }
 
-=item _saveConf()
-
- Save configuration file
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _saveConf
-{
-    my ($self) = @_;
-
-    (tied %{$self->{'config'}})->flush();
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/postfix.data" )->copyFile( "$self->{'cfgDir'}/postfix.old.data" );
-}
-
-=item _buildMasterCfFile()
+=item _buildMasterCfFile( )
 
  Build master.cf file
 
@@ -400,7 +371,7 @@ sub _buildMasterCfFile
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
-        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/master.cf" )->get();
+        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/master.cf" )->get( );
         unless (defined $cfgTpl) {
             error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/master.cf" ) );
             return 1;
@@ -417,10 +388,10 @@ sub _buildMasterCfFile
 
     my $file = iMSCP::File->new( filename => $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'} );
     $rs ||= $file->set( $cfgTpl );
-    $rs ||= $file->save();
+    $rs ||= $file->save( );
 }
 
-=item _buildMainCfFile()
+=item _buildMainCfFile( )
 
  Build main.cf file
 
@@ -461,7 +432,7 @@ sub _buildMainCfFile
     return $rs if $rs;
 
     unless (defined $cfgTpl) {
-        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/main.cf" )->get();
+        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/main.cf" )->get( );
         unless (defined $cfgTpl) {
             error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/main.cf" ) );
             return 1;
@@ -477,7 +448,7 @@ sub _buildMainCfFile
 
     my $file = iMSCP::File->new( filename => $self->{'config'}->{'POSTFIX_CONF_FILE'} );
     $rs ||= $file->set( $cfgTpl );
-    $rs ||= $file->save();
+    $rs ||= $file->save( );
     return $rs if $rs;
 
     # Add TLS parameters if required
@@ -582,7 +553,7 @@ sub _buildMainCfFile
     );
 }
 
-=item _oldEngineCompatibility()
+=item _oldEngineCompatibility( )
 
  Remove old files
 
@@ -595,7 +566,14 @@ sub _oldEngineCompatibility
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaOldEngineCompatibility' );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterMtadOldEngineCompatibility' );
+    return $rs if $rs;
+
+    if (-f "$self->{'cfgDir'}/postfix.old.data") {
+        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/postfix.old.data" )->delFile( );
+        return $rs if $rs;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterMtadOldEngineCompatibility' );
 }
 
 =back

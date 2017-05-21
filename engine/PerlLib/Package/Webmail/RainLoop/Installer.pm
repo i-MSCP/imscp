@@ -162,7 +162,10 @@ sub install
     $rs ||= $self->_buildHttpdConfig( );
     $rs ||= $self->_setVersion( );
     $rs ||= $self->_removeOldVersionFiles( );
-    $rs ||= $self->_saveConfig( );
+    $rs ||= $self->_cleanup( );
+
+    (tied %{$self->{'config'}})->flush( ) unless $rs;
+    $rs;
 }
 
 =back
@@ -509,23 +512,27 @@ sub _buildHttpdConfig
     );
 }
 
-=item _saveConfig( )
+=item _cleanup( )
 
- Save configuration
+ Process cleanup tasks
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _saveConfig
+sub _cleanup
 {
     my ($self) = @_;
 
-    (tied %{$self->{'config'}})->flush( );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeRainloopCleanup' );
+    return $rs if $rs;
 
-    iMSCP::File->new(
-        filename => "$self->{'cfgDir'}/rainloop.data" )->copyFile( "$self->{'cfgDir'}/rainloop.old.data"
-    );
+    if (-f "$self->{'cfgDir'}/rainloop.old.data") {
+        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/rainloop.old.data" )->delFile( );
+        return $rs if $rs;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterRainloopCleanup' );
 }
 
 =back

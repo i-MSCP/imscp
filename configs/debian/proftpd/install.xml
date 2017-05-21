@@ -5,6 +5,6 @@
     <folders>${SYSTEM_CONF}/proftpd/backup</folders>
     <folders>${SYSTEM_CONF}/proftpd/working</folders>
     <copy_config>${SYSTEM_CONF}/proftpd/proftpd.conf</copy_config>
-    <copy_config mode="0640">${SYSTEM_CONF}/proftpd/proftpd.data</copy_config>
+    <copy_config mode="0640">${SYSTEM_CONF}/proftpd/proftpd.data.dist</copy_config>
     <copy_config if="'${FTPD_PACKAGE}' eq 'Servers::ftpd::proftpd'" mode="0644" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/logrotate.d/proftpd-basic</copy_config>
 </install>

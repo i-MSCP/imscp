@@ -504,7 +504,10 @@ sub install
     $rs ||= $self->_buildHttpdConfig( );
     $rs ||= $self->_deleteDnsZone( );
     $rs ||= $self->_addDnsZone( );
-    $rs ||= $self->_saveConfig( );
+    $rs ||= $self->_cleanup( );
+
+    (tied %{$self->{'config'}})->flush( ) unless $rs;
+    $rs;
 }
 
 =item dpkgPostInvokeTasks( )
@@ -564,24 +567,10 @@ sub _init
     my ($self) = @_;
 
     $self->{'frontend'} = Package::FrontEnd->getInstance( );
+    $self->{'phpConfig'} = Servers::httpd->factory( )->{'phpConfig'};
     $self->{'eventManager'} = $self->{'frontend'}->{'eventManager'};
     $self->{'cfgDir'} = $self->{'frontend'}->{'cfgDir'};
     $self->{'config'} = $self->{'frontend'}->{'config'};
-    $self->{'phpConfig'} = Servers::httpd->factory( )->{'phpConfig'};
-
-    # Be sure to work with newest conffile
-    # Cover case where the conffile has been loaded prior installation of new files (even if discouraged)
-    untie( %{$self->{'config'}} );
-    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.data";
-
-    if (-f "$self->{'cfgDir'}/frontend.old.data") {
-        tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.old.data", readonly => 1;
-        while(my ($key, $value) = each(%oldConfig)) {
-            next unless exists $self->{'config'}->{$key};
-            $self->{'config'}->{$key} = $value;
-        }
-    }
-
     $self;
 }
 
@@ -1204,24 +1193,6 @@ sub _deleteDnsZone
     $rs ||= $self->{'eventManager'}->trigger( 'afterNamedDeleteMasterZone' );
 }
 
-=item _saveConfig( )
-
- Save configuration
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _saveConfig
-{
-    my ($self) = @_;
-
-    (tied %{$self->{'config'}})->flush( );
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/frontend.data" )->copyFile(
-        "$self->{'cfgDir'}/frontend.old.data"
-    );
-}
-
 =item getFullPhpVersionFor( $binaryPath )
 
  Get full PHP version for the given PHP binary
@@ -1240,6 +1211,29 @@ sub getFullPhpVersionFor
     return undef unless $stdout;
     $stdout =~ /PHP\s+([^\s]+)/;
     $1;
+}
+
+=item _cleanup( )
+
+ Process cleanup tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _cleanup
+{
+    my ($self) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndCleanup' );
+    return $rs if $rs;
+
+    if (-f "$self->{'cfgDir'}/frontend.old.data") {
+        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/frontend.old.data" )->delFile( );
+        return $rs if $rs;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterFrontEndCleanup' );
 }
 
 =back

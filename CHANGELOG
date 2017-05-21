@@ -22,6 +22,7 @@ CONFIG
     Added: `BIND_DB_SLAVE_DIR' configuration parameter (Bind9)
     Added: 'CMD_SYSCTL` and 'SYSCTL_CONF_DIR` parameters for sysctl(8)
     Fixed: Make sure that the root directory is marked as shared in regards to mount propagation (at least for i-MSCP mounts)
+    Removed: *.old.data configuration files (servers and packages)
 
 DATABASE
     Updated: domain_dns.domain_dns_status column length (VARCHAR to TEXT)

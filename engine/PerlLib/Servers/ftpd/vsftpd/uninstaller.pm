@@ -90,20 +90,6 @@ sub _init
     $self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'config'} = $self->{'ftpd'}->{'config'};
-
-    (tied %{$self->{'config'}})->{'temporary'} = 1;
-
-    my $oldConf = "$self->{'cfgDir'}/vsftpd.old.data";
-    if (-f $oldConf) {
-        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
-        while(my ($key, $value) = each(%oldConfig)) {
-            next unless exists $self->{'config'}->{$key};
-            $self->{'config'}->{$key} = $value;
-        }
-    }
-
-    (tied %{$self->{'config'}})->{'temporary'} = 0;
-
     $self;
 }
 

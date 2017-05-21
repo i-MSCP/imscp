@@ -4,5 +4,5 @@
     <copy_config>${SYSTEM_CONF}/php/apache</copy_config>
     <copy_config>${SYSTEM_CONF}/php/fcgi</copy_config>
     <copy_config>${SYSTEM_CONF}/php/fpm</copy_config>
-    <copy_config mode="0640">${SYSTEM_CONF}/php/php.data</copy_config>
+    <copy_config mode="0640">${SYSTEM_CONF}/php/php.data.dist</copy_config>
 </install>

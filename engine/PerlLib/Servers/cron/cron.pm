@@ -109,6 +109,10 @@ sub install
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0640 );
     $rs ||= $self->{'eventManager'}->trigger( 'afterCronInstall', 'cron' );
+
+    (tied %{$self->{'config'}})->flush( ) unless $rs;
+
+    $rs;
 }
 
 =item postinstall( )
@@ -335,9 +339,46 @@ sub _init
     my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
-    $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/cron.d";
-    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/cron.data", readonly => 1;
+    $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/cron";
+    $self->_mergeConfig( ) if -f "$self->{'cfgDir'}/cron.data.dist";
+    tie %{$self->{'config'}},
+        'iMSCP::Config',
+        fileName => "$self->{'cfgDir'}/cron.data",
+        readonly => !(defined $main::execmode && $main::execmode eq 'setup');
     $self;
+}
+
+=item _mergeConfig
+
+ Merge distribution configuration with production configuration
+
+ Die on failure
+
+=cut
+
+sub _mergeConfig
+{
+    my ($self) = @_;
+
+    # Merge old configuration if any
+    if (-f "$self->{'cfgDir'}/cron.data") {
+        tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/cron.data.dist";
+        tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/cron.data", readonly => 1;
+
+        while(my ($key, $value) = each(%oldConfig)) {
+            next unless exists $newConfig{$key};
+            $newConfig{$key} = $value;
+        }
+
+        untie(%newConfig);
+        untie(%oldConfig);
+    }
+
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/cron.data.dist" )->moveFile(
+        "$self->{'cfgDir'}/cron.data"
+    ) == 0 or die(
+        getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+    );
 }
 
 =item _validateCronTask( )

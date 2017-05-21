@@ -762,8 +762,45 @@ sub _init
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'tplDir'} = "$self->{'cfgDir'}/parts";
-    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/bind.data", readonly => 1;
+    $self->_mergeConfig( ) if -f "$self->{'cfgDir'}/bind.data.dist";
+    tie %{$self->{'config'}},
+        'iMSCP::Config',
+        fileName => "$self->{'cfgDir'}/bind.data",
+        readonly => !(defined $main::execmode && $main::execmode eq 'setup');
     $self;
+}
+
+=item _mergeConfig
+
+ Merge distribution configuration with production configuration
+
+ Die on failure
+
+=cut
+
+sub _mergeConfig
+{
+    my ($self) = @_;
+
+    # Merge old configuration if any
+    if (-f "$self->{'cfgDir'}/bind.data") {
+        tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/bind.data.dist";
+        tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/bind.data", readonly => 1;
+
+        while(my ($key, $value) = each(%oldConfig)) {
+            next unless exists $newConfig{$key};
+            $newConfig{$key} = $value;
+        }
+
+        untie(%newConfig);
+        untie(%oldConfig);
+    }
+
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/bind.data.dist" )->moveFile(
+        "$self->{'cfgDir'}/bind.data"
+    ) == 0 or die(
+        getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+    );
 }
 
 =item _addDmnConfig( \%data )
@@ -820,7 +857,7 @@ sub _addDmnConfig
     return $rs if $rs;
 
     my $tags = {
-        BIND_DB_FORMAT => $self->{'config'}->{'BIND_DB_FORMAT'},
+        BIND_DB_FORMAT => $self->{'config'}->{'BIND_DB_FORMAT'} =~ s/=\d//r,
         DOMAIN_NAME    => $data->{'DOMAIN_NAME'}
     };
 

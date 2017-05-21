@@ -273,8 +273,10 @@ sub install
 
     my $rs = $self->_makeDirs( );
     $rs ||= $self->_buildConf( );
-    $rs ||= $self->_saveConf( );
     $rs ||= $self->_oldEngineCompatibility( );
+
+    (tied %{$self->{'config'}})->flush( ) unless $rs;
+    $rs;
 }
 
 =back
@@ -301,21 +303,6 @@ sub _init
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'config'} = $self->{'named'}->{'config'};
-
-    # Be sure to work with newest conffile
-    # Cover case where the conffile has been loaded prior installation of new files (even if discouraged)
-    untie(%{$self->{'config'}});
-    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/bind.data";
-
-    my $oldConf = "$self->{'cfgDir'}/bind.old.data";
-    if(-f $oldConf) {
-        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
-        while(my($key, $value) = each(%oldConfig)) {
-            next unless exists $self->{'config'}->{$key};
-            $self->{'config'}->{$key} = $value;
-        }
-    }
-
     $self;
 }
 
@@ -564,22 +551,6 @@ sub _buildConf
     0;
 }
 
-=item _saveConf( )
-
- Save configuration file
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _saveConf
-{
-    my ($self) = @_;
-
-    (tied %{$self->{'config'}})->flush( );
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/bind.data" )->copyFile( "$self->{'cfgDir'}/bind.old.data" );
-}
-
 =item _checkIps(@ips)
 
  Check IP addresses
@@ -640,6 +611,11 @@ sub _oldEngineCompatibility
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedOldEngineCompatibility' );
     return $rs if $rs;
+
+    if(-f "$self->{'cfgDir'}/bind.old.data") {
+        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/bind.old.data" )->delFile( );
+        return $rs if $rs;
+    }
 
     if (iMSCP::ProgramFinder::find( 'resolvconf' )) {
         $rs = execute( "resolvconf -d lo.imscp", \ my $stdout, \ my $stderr );

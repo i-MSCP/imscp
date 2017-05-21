@@ -766,10 +766,47 @@ sub _init
     $self->{'start'} = 0;
     $self->{'reload'} = 0;
     $self->{'restart'} = 0;
-    $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/frontend";
-    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.data", readonly => 1;
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
+    $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/frontend";
+    $self->_mergeConfig( ) if -f "$self->{'cfgDir'}/frontend.data.dist";
+    tie %{$self->{'config'}},
+        'iMSCP::Config',
+        fileName => "$self->{'cfgDir'}/frontend.data",
+        readonly => !(defined $main::execmode && $main::execmode eq 'setup');
     $self;
+}
+
+=item _mergeConfig
+
+ Merge distribution configuration with production configuration
+
+ Die on failure
+
+=cut
+
+sub _mergeConfig
+{
+    my ($self) = @_;
+
+    # Merge old configuration if any
+    if (-f "$self->{'cfgDir'}/frontend.data") {
+        tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.data.dist";
+        tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.data", readonly => 1;
+
+        while(my ($key, $value) = each(%oldConfig)) {
+            next unless exists $newConfig{$key};
+            $newConfig{$key} = $value;
+        }
+
+        untie(%newConfig);
+        untie(%oldConfig);
+    }
+
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/frontend.data.dist" )->moveFile(
+        "$self->{'cfgDir'}/frontend.data"
+    ) == 0 or die(
+        getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+    );
 }
 
 =item _buildConf( $cfgTpl, $filename [, \%tplVars ] )

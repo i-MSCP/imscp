@@ -211,7 +211,11 @@ sub install
     my $rs = $self->_setVersion( );
     $rs ||= $self->_setupDatabase( );
     $rs ||= $self->_buildConfigFile( );
-    $rs ||= $self->_saveConf( );
+    $rs ||= $self->_oldEngineCompatibility( );
+
+    (tied %{$self->{'config'}})->flush( ) unless $rs;
+
+    $rs;
 }
 
 =back
@@ -237,22 +241,6 @@ sub _init
     $self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'config'} = $self->{'ftpd'}->{'config'};
-
-    # Be sure to work with newest conffile
-    # Cover case where the conffile has been loaded prior installation of new files (even if discouraged)
-    untie(%{$self->{'config'}});
-    tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/vsftpd.data";
-
-    my $oldConf = "$self->{'cfgDir'}/vsftpd.old.data";
-
-    if (defined $main::execmode && $main::execmode eq 'setup' && -f $oldConf) {
-        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
-        while(my ($key, $value) = each(%oldConfig)) {
-            next unless exists $self->{'config'}->{$key};
-            $self->{'config'}->{$key} = $value;
-        }
-    }
-
     $self;
 }
 
@@ -474,22 +462,6 @@ EOF
     $rs ||= $file->mode( 0640 );
 }
 
-=item _saveConf( )
-
- Save configuration file
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _saveConf
-{
-    my ($self) = @_;
-
-    (tied %{$self->{'config'}})->flush( );
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/vsftpd.data" )->copyFile( "$self->{'cfgDir'}/vsftpd.old.data" );
-}
-
 =item _bkpConfFile( )
 
  Backup file
@@ -543,6 +515,29 @@ sub _isVsFTPdInsideCt
     }
 
     0;
+}
+
+=item _oldEngineCompatibility( )
+
+ Remove old files
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _oldEngineCompatibility
+{
+    my ($self) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdOldEngineCompatibility' );
+    return $rs if $rs;
+
+    if(-f "$self->{'cfgDir'}/vsftpd.old.data") {
+        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/vsftpd.old.data" )->delFile( );
+        return $rs if $rs;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterFtpdOldEngineCompatibility' );
 }
 
 =back
