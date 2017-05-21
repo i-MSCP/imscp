@@ -17,9 +17,9 @@ professionals.
 
 See the **INSTALL** file for your distribution in the `docs` directory.
 
-* For Debian: **./docs/Debian/INSTALL.md**
-* For Devuan: **./docs/Devuan/INSTALL.md**
-* For Ubuntu: **./docs/Ubuntu/INSTALL.md**
+* For Debian: [Debian](./docs/Debian/INSTALL.md)
+* For Devuan: [Devuan](./docs/Devuan/INSTALL.md)
+* For Ubuntu: [ubuntu](./docs/Ubuntu/INSTALL.md)
 
 ### License
 
