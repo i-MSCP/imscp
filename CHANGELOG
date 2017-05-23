@@ -76,8 +76,8 @@ PLUGINS
     Updated: API version to 1.4.1
 
 SCRIPTS
-    Rewritten: imscp-vrl-traff traffic accounting script
     Fixed: Don't automatically mount file systems that have the `noauto' option (imscp-mountall)
+    Rewritten: imscp-vrl-traff traffic accounting script
 
 SERVERS
     Added: IMAP/POP3 log format (Dovecot)
