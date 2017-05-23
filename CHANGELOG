@@ -77,6 +77,7 @@ PLUGINS
 
 SCRIPTS
     Rewritten: imscp-vrl-traff traffic accounting script
+    Fixed: Don't automatically mount file systems that have the `noauto' option (imscp-mountall)
 
 SERVERS
     Added: IMAP/POP3 log format (Dovecot)
