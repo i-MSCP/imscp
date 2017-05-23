@@ -71,6 +71,7 @@ sub process
     my $rs = $self->_loadData( $pluginId );
     return $rs if $rs;
 
+    local $@;
     eval {
         $self->{'pluginData'}->{$_} = decode_json( $self->{'pluginData'}->{$_} ) for qw/ info config config_prev /;
     };
@@ -165,6 +166,7 @@ sub _loadData
 {
     my ($self, $pluginId) = @_;
 
+    local $@;
     my $pluginData = eval {
         local $self->{'dbh'}->{'RaiseError'} = 1;
         $self->{'dbh'}->selectrow_hashref(
@@ -282,6 +284,7 @@ sub _change
         $self->{'pluginData'}->{'config_prev'} = $self->{'pluginData'}->{'config'};
         $self->{'pluginData'}->{'info'}->{'__need_change__'} = JSON::false;
 
+        local $@;
         eval {
             local $self->{'dbh'}->{'RaiseError'} = 1;
             $self->{'dbh'}->do(
@@ -321,6 +324,7 @@ sub _update
 
     $self->{'pluginData'}->{'info'}->{'version'} = $self->{'pluginData'}->{'info'}->{'__nversion__'};
 
+    local $@;
     eval {
         local $self->{'dbh'}->{'RaiseError'} = 1;
         $self->{'dbh'}->do(
@@ -398,6 +402,8 @@ sub _run
 sub _executePluginAction
 {
     my ($self, $action, $fromVersion, $toVersion) = @_;
+
+    local $@;
 
     unless ($self->{'pluginInstance'}) {
         $self->{'pluginInstance'} = eval {

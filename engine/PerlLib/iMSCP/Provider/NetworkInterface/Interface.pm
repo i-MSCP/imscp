@@ -23,8 +23,6 @@
 
 package iMSCP::Provider::NetworkInterface::Interface;
 
-use strict;
-use warnings;
 use Carp;
 
 =head1 DESCRIPTION
@@ -73,7 +71,7 @@ sub removeNetworkCard
    ip_address     : Either an IPv4 or IPv6 address
    ip_netmask     : OPTIONAL Netmask (default: 32 for IPv4, 128 for IPv6)
    ip_config_mode : IP configuration mode (auto|manual)
- Return iMSCP::Provider::NetworkInterface::Interface,  die on failure
+ Return iMSCP::Provider::NetworkInterface::Interface, die on failure
 
 =cut
 

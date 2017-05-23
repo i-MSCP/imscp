@@ -26,7 +26,7 @@ package iMSCP::Net;
 use strict;
 use warnings;
 use autouse 'Data::Validate::IP' => qw/ is_ipv4 is_ipv6 /;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ execute /;
 use Net::IP qw/ :PROC /;
 use parent 'Common::SingletonClass';
 
@@ -425,7 +425,7 @@ sub isDeviceDown
 
  Reset instance
 
- Return int 0 on success, die on failure
+ Return iMSCP::Net, die on failure
 
 =cut
 
@@ -434,7 +434,6 @@ sub resetInstance
     my ($self) = @_;
 
     $self->_init( );
-    0;
 }
 
 =back
@@ -455,16 +454,15 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'devices'} = $self->_extractDevices( );
-    $self->{'addresses'} = $self->_extractAddresses( );
+    @{$self}{qw/ devices addresses /} = ($self->_extractDevices( ), $self->_extractAddresses( ));
     $self;
 }
 
 =item _extractDevices( )
 
- Extract network devices data
+ Extract network devices
 
- Return hash A hash describing each device found, die on failure
+ Return hashref Reference to a hash containing device data, die on failure
 
 =cut
 
@@ -472,7 +470,7 @@ sub _extractDevices
 {
     my ($stdout, $stderr);
     execute( [ 'ip', '-o', 'link', 'show' ], \$stdout, \$stderr ) == 0 or die(
-        sprintf( "Couldn't extract network devices data: %s", $stderr || 'Unknown error' )
+        sprintf( "Couldn't extract network devices: %s", $stderr || 'Unknown error' )
     );
     my $devices = { };
     $devices->{$1}->{'flags'} = $2 while $stdout =~ /^[^\s]+:\s+(.*?)(?:\@[^\s]+)?:\s+<(.*)>/gm;
@@ -481,9 +479,9 @@ sub _extractDevices
 
 =item _extractAddresses( )
 
- Extract addresses data
+ Extract addresses
 
- Return hash A hash describing each IP found, die on failure
+ Return hashref Reference to a hash containing IP addresses data, die on failure
 
 =cut
 
@@ -493,7 +491,7 @@ sub _extractAddresses
 
     my ($stdout, $stderr);
     execute( [ 'ip', '-o', 'addr', 'show' ], \$stdout, \$stderr ) == 0 or die(
-        sprintf( "Couldn't extract network devices data: %s", $stderr || 'Unknown error' )
+        sprintf( "Couldn't extract network addresses: %s", $stderr || 'Unknown error' )
     );
 
     my $addresses = { };
@@ -502,7 +500,9 @@ sub _extractAddresses
         version       => $2 eq 'inet' ? 'ipv4' : 'ipv6',
         prefix_length => $4,
         addr_label    => $5 // $1
-    } while $stdout =~ /^[^\s]+:\s+([^\s]+)\s+([^\s]+)\s+(?:([^\s]+)(?:\s+peer\s+[^\s]+)?\/([\d]+))\s+(?:.*?(\1(?::\d+)?)\\)?/gm;
+    } while $stdout =~ /
+        ^[^\s]+:\s+([^\s]+)\s+([^\s]+)\s+(?:([^\s]+)(?:\s+peer\s+[^\s]+)?\/([\d]+))\s+(?:.*?(\1(?::\d+)?)\\)?
+        /gmx;
     $addresses;
 }
 

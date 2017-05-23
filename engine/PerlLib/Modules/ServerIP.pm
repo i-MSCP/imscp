@@ -26,7 +26,7 @@ package Modules::ServerIP;
 use strict;
 use warnings;
 use iMSCP::Database;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ error getLastError getMessageByType /;
 use iMSCP::Net;
 use iMSCP::Provider::NetworkInterface;
 use parent 'Modules::Abstract';
@@ -65,33 +65,35 @@ sub process
 {
     my ($self, $ipId) = @_;
 
-    my $rs = $self->_loadData( $ipId );
-    return $rs if $rs;
+    local $@;
+    eval {
+        $self->{'_data'} = $self->_loadData( $ipId );
 
-    my @sql;
-    if ($self->{'ip_status'} =~ /^to(?:add|change)$/) {
-        @sql = (
-            'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?',
-            ($self->add( ) ? getLastError( 'error' ) || 'Unknown error' : 'ok'),
-            $ipId
-        );
-    } elsif ($self->{'ip_status'} eq 'todelete') {
-        if ($self->delete( )) {
+        my @sql;
+        if ($self->{'_data'}->{'ip_status'} =~ /^to(?:add|change)$/) {
             @sql = (
                 'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?',
-                getLastError( 'error' ) || 'Unknown error', $ipId
+                ($self->add( ) ? getLastError( 'error' ) || 'Unknown error' : 'ok'),
+                $ipId
             );
+        } elsif ($self->{'ip_status'} eq 'todelete') {
+            if ($self->delete( )) {
+                @sql = (
+                    'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?',
+                    getLastError( 'error' ) || 'Unknown error', $ipId
+                );
+            } else {
+                @sql = ('DELETE FROM server_ips WHERE ip_id = ?', $ipId);
+            }
         } else {
-            @sql = ('DELETE FROM server_ips WHERE ip_id = ?', $ipId);
+            die( sprintf( 'Unknown action requested for server IP with ID %s', $ipId ) );
         }
-    } else {
-        error( sprintf( 'Unknown action requested for server IP with ID %s', $ipId ) );
-        return 1;
-    }
 
-    my $qrs = iMSCP::Database->factory( )->doQuery( 'dummy', @sql );
-    unless (ref $qrs eq 'HASH') {
-        error( $qrs );
+        my $qrs = iMSCP::Database->factory( )->doQuery( 'dummy', @sql );
+        ref $qrs eq 'HASH' or die( $qrs );
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 
@@ -109,27 +111,25 @@ sub process
 sub add
 {
     my ($self) = @_;
-
-    local $@;
-    eval {
-        iMSCP::Provider::NetworkInterface->getInstance( )->addIpAddr(
-            {
-                ip_id          => $self->{'ip_id'},
-                ip_card        => $self->{'ip_card'},
-                ip_address     => $self->{'ip_number'},
-                ip_netmask     => $self->{'ip_netmask'},
-                ip_config_mode => $self->{'ip_config_mode'}
-            }
-        );
-
-        # Make sure that change are propagated to iMSCP::Net
-        iMSCP::Net->getInstance( )->resetInstance( );
-    };
-    if ($@) {
-        error( $@ );
-        return 1;
+    
+    unless ($self->{'_data'}->{'ip_card'} eq 'any' || $self->{'_data'}->{'ip_address'} eq '0.0.0.0') {
+        local $@;
+        eval {
+            $self->{'eventManager'}->trigger( 'beforeAddIpAddr', $self->{'_data'} ) == 0 or die(
+                getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+            );
+            iMSCP::Provider::NetworkInterface->getInstance( )->addIpAddr( $self->{'_data'} );
+            $self->{'eventManager'}->trigger( 'afterAddIpAddr', $self->{'_data'} ) == 0 or die(
+                getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+            );
+            
+            iMSCP::Net->getInstance( )->resetInstance( );
+        };
+        if ($@) {
+            error( $@ );
+            return 1;
+        }
     }
-
     $self->SUPER::add( );
 }
 
@@ -145,24 +145,22 @@ sub delete
 {
     my ($self) = @_;
 
-    local $@;
-    eval {
-        iMSCP::Provider::NetworkInterface->getInstance( )->removeIpAddr(
-            {
-                ip_id          => $self->{'ip_id'},
-                ip_card        => $self->{'ip_card'},
-                ip_address     => $self->{'ip_number'},
-                ip_netmask     => $self->{'ip_netmask'},
-                ip_config_mode => $self->{'ip_config_mode'}
-            }
-        );
-
-        # Make sure that change are propagated to iMSCP::Net
-        iMSCP::Net->getInstance( )->resetInstance( );
-    };
-    if ($@) {
-        error( $@ );
-        return 1;
+    unless ($self->{'_data'}->{'ip_card'} eq 'any' || $self->{'_data'}->{'ip_address'} eq '0.0.0.0') {
+        local $@;
+        eval {
+            $self->{'eventManager'}->trigger( 'beforeRemoveIpAddr', $self->{'_data'} ) == 0 or die(
+                getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+            );
+            iMSCP::Provider::NetworkInterface->getInstance( )->removeIpAddr( $self->{'_data'} );
+            $self->{'eventManager'}->trigger( 'afterRemoveIpAddr', $self->{'_data'} ) == 0 or die(
+                getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+            );
+            iMSCP::Net->getInstance( )->resetInstance( );
+        };
+        if ($@) {
+            error( $@ );
+            return 1;
+        }
     }
 
     $self->SUPER::delete( );
@@ -179,27 +177,26 @@ sub delete
  Load data
 
  Param int $ipId Server IP unique identifier
- Return int 0 on success, other on failure
+ Return data on success, die on failure
 
 =cut
 
 sub _loadData
 {
-    my ($self, $ipId) = @_;
+    my (undef, $ipId) = @_;
 
-    my $rdata = iMSCP::Database->factory( )->doQuery( 'ip_id', 'SELECT * FROM server_ips WHERE ip_id = ?', $ipId );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
-        return 1;
-    }
-    unless ($rdata->{$ipId}) {
-        error( sprintf( 'Server IP with ID %s has not been found in database', $ipId ) );
-        return 1;
-    }
+    my $qrs = iMSCP::Database->factory( )->doQuery(
+        'ip_id',
+        '
+            SELECT ip_id, ip_card, ip_number AS ip_address, ip_netmask, ip_config_mode, ip_status
+            FROM server_ips
+            WHERE ip_id = ?
+        ',
+        $ipId
+    );
 
-    %{$self} = (%{$self}, %{$rdata->{$ipId}});
-
-    0;
+    ref $qrs eq 'HASH' or die( $qrs );
+    $qrs->{$ipId} or die( sprintf( 'Server IP with ID %s has not been found in database', $ipId ) );
 }
 
 =item _getData( $action )
@@ -215,17 +212,7 @@ sub _getData
 {
     my ($self, $action) = @_;
 
-    $self->{'_data'} = do {
-        {
-            ACTION                => $action,
-            SERVER_IP_ID          => $self->{'ip_id'},
-            SERVER_IP_CARD        => $self->{'ip_card'},
-            SERVER_IP_ADDRESS     => $self->{'ip_number'},
-            SERVER_IP_NETMASK     => $self->{'ip_netmask'},
-            SERVER_IP_CONFIG_MODE => $self->{'ip_config_mode'}
-        }
-    } unless %{$self->{'_data'}};
-
+    $self->{'_data'}->{'action'} = $action;
     $self->{'_data'};
 }
 

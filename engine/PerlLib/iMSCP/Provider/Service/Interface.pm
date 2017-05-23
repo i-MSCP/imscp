@@ -23,8 +23,6 @@
 
 package iMSCP::Provider::Service::Interface;
 
-use strict;
-use warnings;
 use Carp;
 
 =head1 DESCRIPTION

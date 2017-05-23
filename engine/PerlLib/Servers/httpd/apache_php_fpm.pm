@@ -992,6 +992,7 @@ sub getTraffic
 
     debug( sprintf( 'Collecting HTTP traffic data' ) );
 
+    local $@;
     eval {
         my $sth = $dbh->prepare( 'SELECT vhost, bytes FROM httpd_vlogger WHERE ldate <= ? FOR UPDATE' );
         $sth->execute( $ldate );

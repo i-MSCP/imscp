@@ -210,6 +210,7 @@ sub restore
     for my $bkpFile(iMSCP::Dir->new( dirname => $bkpDir )->getFiles( )) {
         unless (-l "$bkpDir/$bkpFile") { # Don't follow symlink (See #990)
             if ($bkpFile =~ /^.+?\.sql(?:\.bz2|gz|lzma|xz)?$/) {
+                local $@;
                 eval { $self->_restoreDatabase( File::Spec->catfile( $bkpDir, $bkpFile ) ); };
                 if ($@) {
                     error($@);

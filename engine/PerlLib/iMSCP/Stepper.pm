@@ -110,16 +110,15 @@ sub step
 
 sub _callback
 {
-    my $callback = shift;
+    my ($callback) = @_;
 
-    my $rs = 0;
-    if (defined $callback) {
-        local $@;
-        $rs = eval { $callback->( ) };
-        if ($@) {
-            error( $@ );
-            $rs = 1;
-        }
+    return 0 unless defined $callback;
+
+    local $@;
+    my $rs = eval { $callback->( ) };
+    if ($@) {
+        error( $@ );
+        $rs = 1;
     }
 
     $rs;

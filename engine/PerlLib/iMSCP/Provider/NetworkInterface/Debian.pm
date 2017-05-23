@@ -25,11 +25,10 @@ package iMSCP::Provider::NetworkInterface::Debian;
 
 use strict;
 use warnings;
-use Carp;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::Net;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ process replaceBloc /;
 use parent qw/ Common::Object iMSCP::Provider::NetworkInterface::Interface /;
 
 # Commands used in that package
@@ -61,7 +60,7 @@ sub addIpAddr
 {
     my ($self, $data) = @_;
 
-    $data = { } unless defined $data && ref $data eq 'HASH';
+    defined $data && ref $data eq 'HASH' or die( '$data parameter is not defined or not a hashref' );
 
     for(qw/ ip_id ip_card ip_address ip_config_mode /) {
         defined $data->{$_} or die( sprintf( "The `%s' parameter is not defined", $_ ) );
@@ -81,7 +80,7 @@ sub addIpAddr
 
     $data->{'ip_netmask'} ||= ($addrVersion eq 'ipv4') ? 24 : 64;
 
-    $self->_updateInterfacesFile( 'add', $data ) == 0 or die( "Couldn't  update interfaces file" );
+    $self->_updateInterfacesFile( 'add', $data ) == 0 or die( "Couldn't update interfaces file" );
 
     return 0 unless $data->{'ip_config_mode'} eq 'auto';
 
@@ -122,7 +121,7 @@ sub removeIpAddr
 {
     my ($self, $data) = @_;
 
-    $data = { } unless defined $data && ref $data eq 'HASH';
+    defined $data && ref $data eq 'HASH' or die( '$data parameter is not defined or not a hashref' );
 
     for(qw/ ip_id ip_card ip_address ip_config_mode /) {
         defined $data->{$_} or die( sprintf( "The `%s' parameter is not defined", $_ ) );
@@ -176,7 +175,7 @@ sub _init
     my ($self) = @_;
 
     $self->{'net'} = iMSCP::Net->getInstance( );
-    $self->SUPER::_init( );
+    $self;
 }
 
 =item _updateInterfacesFile( $action, \%data )
@@ -202,7 +201,7 @@ sub _updateInterfacesFile
     my $eAddr = $self->{'net'}->expandAddr( $data->{'ip_address'} );
 
     my $fileContent = $file->get( );
-    $fileContent = iMSCP::TemplateParser::replaceBloc(
+    $fileContent = replaceBloc(
         qr/\n?# i-MSCP \[(?:.*\Q:$data->{'ip_id'}\E|\Q$cAddr\E)\] entry BEGIN\n/,
         qr/# i-MSCP \[(?:.*\Q:$data->{'ip_id'}\E|\Q$cAddr\E)\] entry ENDING\n/,
         '',
@@ -215,7 +214,7 @@ sub _updateInterfacesFile
     ) {
         my $iface = $data->{'ip_card'}.(($addrVersion eq 'ipv4') ? ':'.$data->{'ip_id'} : '');
 
-        $fileContent .= iMSCP::TemplateParser::process(
+        $fileContent .= process(
             {
                 ip_id       => $data->{'ip_id'},
                 # For IPv6 addr, we do not create aliased interface because that is not suppported everywhere.

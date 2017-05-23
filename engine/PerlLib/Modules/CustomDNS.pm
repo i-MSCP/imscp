@@ -95,6 +95,7 @@ sub process
 
         $self->{'db'}->startTransaction( );
 
+        local $@;
         eval {
             $dbh->do(
                 "

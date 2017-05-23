@@ -196,6 +196,7 @@ sub addTask
     $data->{'DWEEK'} //= '*';
     $data->{'USER'} //= $main::imscpConfig{'ROOT_USER'};
 
+    local $@;
     eval { $self->_validateCronTask( $data ); };
     if ($@) {
         error( sprintf( 'Invalid cron tasks: %s', $@ ) );

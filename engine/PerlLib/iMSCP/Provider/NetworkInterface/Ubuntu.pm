@@ -23,8 +23,6 @@
 
 package iMSCP::Provider::NetworkInterface::Ubuntu;
 
-use strict;
-use warnings;
 use parent 'iMSCP::Provider::NetworkInterface::Debian';
 
 =head1 DESCRIPTION
