@@ -8,8 +8,8 @@
 - Internet access (at least 100 Mbits/s recommended)
 - A Linux kernel >= 2.6.26
 - A file system supporting extended attributes such as ext2, ext3, ext4 and reiserfs*
-- Appropriate privileges to create devices (Linux: the CAP_CAP_MKNOD capability)
-- Appropriate privileges to mount, unmount and remount filesystems (Linux: the CAP_SYS_ADMIN capability)
+- Appropriate privileges to create devices (CAP_MKNOD capability)
+- Appropriate privileges to mount, unmount and remount filesystems (CAP_SYS_ADMIN capability)
 
 #### Reiserfs users
 
@@ -60,7 +60,7 @@ Note that these operations must be done on the host, not in the container.
 
 **See also:**
 
-- https://i-mscp.net/index.php/Thread/14039-i-MSCP-inside-a-LXC-container-Managed-by-Proxmox-4-2
+- https://i-mscp.net/index.php/Thread/14039-i-MSCP-inside-a-LXC-container-Managed-by-Proxmox-4-x
 - https://linuxcontainers.org/fr/lxc/manpages/man5/lxc.container.conf.5.html
 - https://help.ubuntu.com/lts/serverguide/lxc.html#lxc-apparmor
 - http://wiki.apparmor.net/index.php/AppArmor_Core_Policy_Reference#Mount_rules_.28AppArmor_2.8_and_later.29
