@@ -51,9 +51,8 @@ sub run
     return $rs unless -f $fstab;
 
     open my $fh, '<', $fstab or die( sprintf( "Couldn't open %s: %s", $fstab, $! ) );
-    my @fstabEntries = <$fh>;
 
-    for(@fstabEntries) {
+    while(<$fh>) {
         next if /^(?:#|$)/; # Ignore comment and empty lines
         chomp;
         my $fields;

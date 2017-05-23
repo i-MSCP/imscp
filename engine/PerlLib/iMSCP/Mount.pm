@@ -32,7 +32,6 @@ use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Syscall;
 use Scalar::Defer;
-use Sort::Naturally;
 use parent 'Exporter';
 
 our @EXPORT_OK = qw/ addMountEntry getMounts isMountpoint mount setPropagationFlag removeMountEntry umount /;
@@ -165,7 +164,7 @@ my $iMSCP_FSTAB_FH;
 
 sub getMounts
 {
-    return nsort keys %{$MOUNTS};
+    reverse sort keys %{$MOUNTS};
 }
 
 =item mount( \%fields )
@@ -218,7 +217,7 @@ sub mount( $ )
     }
 
     # Create a new mount or remount an existing mount
-    elsif($fsSpec ne 'none') {
+    elsif ($fsSpec ne 'none') {
         push @mountArgv, [ $fsSpec, $fsFile, $fsVfstype, $mflags, $data ];
     }
 
@@ -268,7 +267,7 @@ sub umount( $;$ )
 
         do {
             debug($fsFile);
-            unless (syscall( &iMSCP::Syscall::SYS_umount2, $fsFile, MNT_DETACH ) == 0 || $!{'EINVAL'}) {
+            unless (syscall( &iMSCP::Syscall::SYS_umount2, $fsFile, MNT_DETACH ) == 0 || $!{'EINVAL'} || $!{'ENOENT'}) {
                 error( sprintf( "Error while executing umount(%s): %s", $fsFile, $! || 'Unknown error' ) );
                 return 1;
             }
@@ -278,11 +277,12 @@ sub umount( $;$ )
         return 0;
     }
 
-    for(reverse nsort keys %{$MOUNTS}) {
+    for(reverse sort keys %{$MOUNTS}) {
         next unless /^\Q$fsFile\E(\/|$)/;
+
         do {
             debug($_);
-            unless (syscall( &iMSCP::Syscall::SYS_umount2, $_, MNT_DETACH ) == 0 || $!{'EINVAL'}) {
+            unless (syscall( &iMSCP::Syscall::SYS_umount2, $_, MNT_DETACH ) == 0 || $!{'EINVAL'} || $!{'ENOENT'}) {
                 error( sprintf( "Error while executing umount(%s): %s", $_, $! || 'Unknown error' ) );
                 return 1;
             }
