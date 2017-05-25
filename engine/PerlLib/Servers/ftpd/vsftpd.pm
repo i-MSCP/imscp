@@ -399,7 +399,7 @@ sub getTraffic
     );
 
     # Reset log file
-    truncate( $logFile, 0 ) or die( sprintf( "Couldn't truncate %s file: %s", $trafficDataSrc, $! ) );
+    truncate( $logFile, 0 ) or die( sprintf( "Couldn't truncate %s file: %s", $logFile, $! ) );
 
     while(<$snapshotFH>) {
         next unless /^(?:[^\s]+\s){7}(?<bytes>\d+)\s(?:[^\s]+\s){5}[^\s]+\@([^\s]+)/o
