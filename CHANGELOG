@@ -106,6 +106,7 @@ VENDOR
     Updated: maillogconvert.pl script to version 1.2 (revision 20140126)
 
 YOUTRACK
+    IP-1698 Restoring a backup causes domain status "unexpected error"
     IP-1715 Changing directory in protected area results in obsolete .htaccess file in old directory
     IP-1716 PHP editor - Caret is jumping to the end of the input field each time validation is triggered
 

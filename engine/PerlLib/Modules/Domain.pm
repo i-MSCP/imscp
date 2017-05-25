@@ -277,14 +277,12 @@ sub restore
 
                     $dbi->commit( );
                 };
-                if ($@) {
-                    $dbi->rollback( );
-                    $db->endTransaction( );
-                    die( $@ );
-                }
 
+                $dbi->rollback( ) if $@;
                 $db->endTransaction( );
             }
+            
+            last if $@;
         }
     };
     if ($@) {
@@ -451,6 +449,8 @@ sub _restoreDatabase
     my ($self, $dbDumpFilePath) = @_;
 
     my ($dbName, undef, $archFormat) = fileparse( $dbDumpFilePath, qr/\.(?:bz2|gz|lzma|xz)/ );
+    $dbName = fileparse($dbName, qr/\.sql/ );
+
     my $db = iMSCP::Database->factory( );
 
     my $qrs = $db->doQuery(
