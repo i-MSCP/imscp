@@ -265,11 +265,13 @@ sub backupMaildirs
 
  Backup customer data
 
+ Return void
+
 =cut
 
 sub run
 {
-    return 0 unless $main::imscpConfig{'BACKUP_DOMAINS'} eq 'yes';
+    return unless $main::imscpConfig{'BACKUP_DOMAINS'} eq 'yes';
 
     my $cmpAlgo = lc( $main::imscpConfig{'BACKUP_COMPRESS_ALGORITHM'} );
     $cmpAlgo = 'no' unless $cmpAlgo eq 'no' || exists $command->{$cmpAlgo};
@@ -292,61 +294,59 @@ sub run
 
     unless (ref $qrs eq 'HASH') {
         error( $qrs );
-    } else {
-        while(my ($domainId, $domainData) = each( %{$qrs} )) {
-            next unless $domainData->{'allowbackup'} && $domainData->{'allowbackup'} =~ /\b(?:dmn|sql|mail)\b/;
-            my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$domainData->{'domain_name'}";
-
-            next unless -d $homeDir;
-
-            my $bkpDir = "$homeDir/backups";
-            my $user = $domainData->{'admin_sys_name'};
-            my $group = $domainData->{'admin_sys_gname'};
-
-            local $@;
-            eval {
-                unless (-d $bkpDir) {
-                    my $isProtectedHomedir = 0;
-
-                    if (isImmutable( $homeDir )) {
-                        $isProtectedHomedir = 1;
-                        clearImmutable( $homeDir );
-                    }
-
-                    iMSCP::Dir->new( dirname => $bkpDir )->make(
-                        {
-                            user  => $user,
-                            group => $group,
-                            mode  => 0750
-                        }
-                    );
-
-                    setImmutable( $homeDir ) if $isProtectedHomedir;
-                } else {
-                    iMSCP::Dir->new( dirname => $bkpDir )->clear( undef, qr/.*/ );
-                }
-            };
-            if ($@) {
-                error( $@ );
-                next;
-            }
-
-            if ($domainData->{'allowbackup'} =~ /\bdmn\b/) {
-                backupHomedir( $homeDir, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group )
-            }
-
-            if ($domainData->{'allowbackup'} =~ /\bsql\b/) {
-                backupDatabases( $domainId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group );
-            }
-
-            if ($domainData->{'allowbackup'} =~ /\bmail\b/) {
-                backupMaildirs( $domainId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group );
-            }
-        }
+        return;
     }
 
-    my @errors = getMessageByType( 'error', { remove => 0 } );
-    iMSCP::Mail->new( )->errmsg( "@errors" ) if @errors;
+    while(my ($domainId, $domainData) = each( %{$qrs} )) {
+        next unless $domainData->{'allowbackup'} && $domainData->{'allowbackup'} =~ /\b(?:dmn|sql|mail)\b/;
+        my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$domainData->{'domain_name'}";
+
+        next unless -d $homeDir;
+
+        my $bkpDir = "$homeDir/backups";
+        my $user = $domainData->{'admin_sys_name'};
+        my $group = $domainData->{'admin_sys_gname'};
+
+        local $@;
+        eval {
+            unless (-d $bkpDir) {
+                my $isProtectedHomedir = 0;
+
+                if (isImmutable( $homeDir )) {
+                    $isProtectedHomedir = 1;
+                    clearImmutable( $homeDir );
+                }
+
+                iMSCP::Dir->new( dirname => $bkpDir )->make(
+                    {
+                        user  => $user,
+                        group => $group,
+                        mode  => 0750
+                    }
+                );
+
+                setImmutable( $homeDir ) if $isProtectedHomedir;
+            } else {
+                iMSCP::Dir->new( dirname => $bkpDir )->clear( undef, qr/.*/ );
+            }
+        };
+        if ($@) {
+            error( $@ );
+            next;
+        }
+
+        if ($domainData->{'allowbackup'} =~ /\bdmn\b/) {
+            backupHomedir( $homeDir, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group )
+        }
+
+        if ($domainData->{'allowbackup'} =~ /\bsql\b/) {
+            backupDatabases( $domainId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group );
+        }
+
+        if ($domainData->{'allowbackup'} =~ /\bmail\b/) {
+            backupMaildirs( $domainId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group );
+        }
+    }
 }
 
 newDebug( 'imscp-backup-all.log' );
@@ -376,6 +376,9 @@ $bootstrapper->boot(
 
 run( );
 
+my @errors = getMessageByType( 'error' );
+iMSCP::Mail->new( )->errmsg( "@errors" ) if @errors;
+
 END { $bootstrapper->unlock( '/tmp/imscp-backup-all.lock' ); }
 
 =back
@@ -385,3 +388,6 @@ END { $bootstrapper->unlock( '/tmp/imscp-backup-all.lock' ); }
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
+
+1;
+__END__

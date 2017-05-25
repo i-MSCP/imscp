@@ -78,6 +78,7 @@ PLUGINS
 SCRIPTS
     Fixed: Don't automatically mount file systems that have the `noauto' option (imscp-mountall)
     Rewritten: imscp-backup-all backup script
+    Rewritten: imscp-dsk-quota quota script
     Rewritten: imscp-vrl-traff traffic accounting script
 
 SERVERS

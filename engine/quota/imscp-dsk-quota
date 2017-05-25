@@ -11,7 +11,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by internet Multi Server Control Panel
+# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -29,24 +29,244 @@
 
 use strict;
 use warnings;
+use File::Basename;
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
-use iMSCP::Debug;
 use iMSCP::Bootstrapper;
-use iMSCP::Execute;
-use iMSCP::Mail;
+use iMSCP::Debug qw/ debug error getMessageByType newDebug setVerbose /;
+use iMSCP::Execute qw / execute /;
 use iMSCP::Getopt;
+use iMSCP::Mail;
 use Servers::mta;
-use File::Basename;
-use POSIX qw(locale_h);
+use POSIX qw/ locale_h /;
 use locale;
 
 setlocale( LC_ALL, 'C.UTF-8' );
 $ENV{'LANG'} = 'C.UTF-8';
 
+=head1 DESCRIPTION
+
+ Computes customer's quota.
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item quotaFiles( )
+
+ Computes customer's mail and web quota
+
+ Return void
+
+=cut
+
+sub quotaFiles
+{
+    my $db = iMSCP::Database->factory( );
+
+    my $data = $db->doQuery(
+        'domain_id',
+        "SELECT domain_id, domain_name FROM domain WHERE domain_status NOT IN ('disabled', 'todelete')"
+    );
+    unless (ref $data eq 'HASH') {
+        error( $data );
+        return 1;
+    }
+
+    my $virtualMailDir = Servers::mta->factory( )->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
+
+    while(my ($domainId, $domainData) = each( %{$data} )) {
+        my $totalDiskUsage = my $webDiskUsage = my $mailDiskUsage = 0;
+        my @items = (
+            { webdir => "$main::imscpConfig{'USER_WEB_DIR'}/$domainData->{'domain_name'}" },
+            { maildir => "$virtualMailDir/$domainData->{'domain_name'}" }
+        );
+
+        # Get list of all child domains (sub|als|alssub)
+        my $childDomains = $db->doQuery(
+            'domain_name',
+            "
+                SELECT alias_name AS domain_name
+                FROM domain_aliasses
+                WHERE domain_id = ?
+                AND alias_status <> 'todelete'
+
+                UNION ALL
+
+                SELECT CONCAT(subdomain_name, '.', domain_name) AS domain_name
+                FROM subdomain
+                INNER JOIN domain USING(domain_id)
+                WHERE domain_id = ?
+                AND subdomain_status <> 'todelete'
+
+                UNION ALL
+
+                SELECT CONCAT(subdomain_alias_name, '.',  alias_name) AS domain_name
+                FROM subdomain_alias
+                INNER JOIN domain_aliasses USING(alias_id)
+                WHERE domain_id = ?
+                AND subdomain_alias_status <> 'todelete'
+            ",
+            $domainId,
+            $domainId,
+            $domainId
+        );
+        unless (ref $childDomains eq 'HASH') {
+            error( $childDomains );
+        } elsif (%{$childDomains}) {
+            push @items, { maildir => "$virtualMailDir/$_" } for keys %{$childDomains};
+        }
+
+        for(@items) {
+            my ($dirType, $dir) = %{$_};
+            next unless -d $dir;
+
+            if ($dirType eq 'webdir') {
+                my $rs = execute(
+                    [ 'du', '--exclude=backups/*', '--exclude=logs/*', '-s', '-B1', $dir ], \ my $stdout, \ my $stderr
+                );
+                error( $stderr || 'Unknown error' ) if $rs;
+                $webDiskUsage = $1 if $stdout && $stdout =~ /^(\d+)/;
+            } else {
+                my $rs = execute( [ 'du', '-s', '-B1', $dir ], \ my $stdout, \ my $stderr );
+                error( $stderr || 'Unknown error' ) if $rs;
+                $mailDiskUsage += $1 if $stdout && $stdout =~ /^(\d+)/;
+            }
+        }
+
+        $totalDiskUsage = $webDiskUsage+$mailDiskUsage;
+
+        my $dbi = $db->startTransaction( );
+
+        eval {
+            $dbi->do(
+                '
+                    UPDATE domain
+                    SET domain_disk_usage = ?, domain_disk_file = ?, domain_disk_mail = ?
+                    WHERE domain_id = ?
+                ',
+                undef,
+                $totalDiskUsage,
+                $webDiskUsage,
+                $mailDiskUsage,
+                $domainId
+            );
+
+            $dbi->do(
+                'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?',
+                undef,
+                $totalDiskUsage,
+                $domainData->{'domain_name'}
+            );
+            
+            $dbi->commit( );
+        };
+        if ($@) {
+            error( $@ );
+            $dbi->rollback( );
+        }
+
+        $db->endTransaction( );
+    }
+}
+
+=item quotaSql( )
+
+ Computes customer's SQL quota
+
+ Return void
+
+=cut
+
+sub quotaSql
+{
+    my $db = iMSCP::Database->factory( );
+
+    my $databases = $db->doQuery( 'Database', 'SHOW DATABASES' );
+    unless (ref $databases eq 'HASH') {
+        error( $databases );
+        return 1;
+    }
+
+    my $data = $db->doQuery(
+        'domain_id',
+        "
+            SELECT domain_id, domain_name, domain_disk_usage
+            FROM domain
+            WHERE domain_status NOT IN ('disabled', 'todelete')
+        "
+    );
+    unless (ref $data eq 'HASH') {
+        error( $data );
+        return 1;
+    }
+
+    return 0 unless %{$data};
+
+    while(my ($domainId, $domainData) = each( %{$data} )) {
+        my $size = my $sqlSize = 0;
+
+        my $customerDatabases = $db->doQuery(
+            'sqld_name', 'SELECT sqld_name FROM sql_database WHERE domain_id = ?', $domainId
+        );
+        unless (ref $customerDatabases eq 'HASH') {
+            error( $customerDatabases );
+            next;
+        }
+
+        for my $sqlDbName (keys %{$customerDatabases}) {
+            next unless grep($_ eq $sqlDbName, keys %{$databases});
+
+            my $quotedDbName = $db->quoteIdentifier( $sqlDbName );
+            my $sqlDbTables = $db->doQuery('1', "SHOW TABLE STATUS FROM $quotedDbName");
+            unless (ref $sqlDbTables eq 'HASH') {
+                error( $sqlDbTables );
+                next;
+            }
+
+            next unless %{$sqlDbTables};
+
+            for my $sqlDbTable(keys %{$sqlDbTables}) {
+                $size += (($sqlDbTables->{$sqlDbTable}->{'Data_length'})
+                    ? $sqlDbTables->{$sqlDbTable}->{'Data_length'} : 0
+                )+(($sqlDbTables->{$sqlDbTable}->{'Index_length'})
+                    ? $sqlDbTables->{$sqlDbTable}->{'Index_length'} : 0);
+            }
+        }
+
+        $sqlSize += $size;
+        $size += $domainData->{'domain_disk_usage'};
+
+        my $dbi = $db->startTransaction( );
+
+        eval {
+            $dbi->do(
+                'UPDATE domain SET domain_disk_usage = ?, domain_disk_sql = ? WHERE domain_id = ?',
+                undef,
+                $size,
+                $sqlSize,
+                $domainId
+            );
+
+            $dbi->do(
+                'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?',
+                undef,
+                $size,
+                $domainData->{'domain_name'}
+            );
+            $dbi->commit( );
+        };
+        if ($@) {
+            error( $@ );
+            $dbi->rollback( );
+        }
+
+        $db->endTransaction( );
+    }
+}
+
 newDebug( 'imscp-dsk-quota.log' );
 
-# Parse command line options
 iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 ) ).qq {
 
 Script which computes customer's quota.
@@ -72,221 +292,21 @@ $bootstrapper->boot(
     }
 );
 
-sub quotaFiles
-{
-    my $rs = 0;
-    my $db = iMSCP::Database->factory( );
-    my $mainDomains = $db->doQuery(
-        'domain_id', "SELECT domain_id, domain_name FROM domain WHERE domain_status = 'ok'"
-    );
+quotaFiles( );
+quotaSql( );
 
-    unless (ref $mainDomains eq 'HASH') {
-        error( $mainDomains );
-        return 1;
-    }
-    my $mta = Servers::mta->factory( );
-    my $virtualMailDir = $mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
-
-    for (keys %{$mainDomains}) {
-        my $domainId = $_;
-        my $domainName = $mainDomains->{$domainId}->{'domain_name'};
-        my $totalDiskUsage = my $webDiskUsage = my $mailDiskUsage = 0;
-
-        my @items = (
-            {
-                webdir => "$main::imscpConfig{'USER_WEB_DIR'}/$domainName"
-            },
-            {
-                maildir => "$virtualMailDir/$domainName"
-            }
-        );
-
-        # Getting list of all child domains (sub|als|alssub)
-        my $childDomains = $db->doQuery(
-            'domain_name',
-            "
-                SELECT alias_name AS domain_name FROM domain_aliasses WHERE domain_id = ? AND alias_status = 'ok'
-                UNION
-                SELECT CONCAT(subdomain_name, '.', domain_name) AS domain_name FROM subdomain
-                INNER JOIN domain USING(domain_id)
-                WHERE domain_id = ? AND subdomain_status = 'ok'
-                UNION
-                SELECT CONCAT(subdomain_alias_name, '.',  alias_name) AS domain_name FROM subdomain_alias
-                INNER JOIN domain_aliasses USING(alias_id)
-                WHERE domain_id = ?
-                AND subdomain_alias_status = 'ok'
-            ",
-            $domainId, $domainId, $domainId
-        );
-        unless (ref $childDomains eq 'HASH') {
-            error( $childDomains );
-            $rs = 1;
-        } elsif (%{$childDomains}) {
-            for (keys %{$childDomains}) {
-                push @items, { maildir => "$virtualMailDir/$_" };
-            }
-        }
-
-        for(@items) {
-            my ($dirType, $dir) = %{$_};
-            next unless -d $dir;
-            if ($dirType eq 'webdir') {
-                $rs = execute(
-                    [
-                        'nice', '-n', '15', 'ionice', '-c2', '-n5', 'du', '--exclude=backups/*', '--exclude=logs/*',
-                        '-s', '-B1', $dir
-                    ],
-                    \ my $stdout,
-                    \ my $stderr
-                );
-                error( $stderr || 'Unknown error' ) if $rs;
-                $webDiskUsage = $1 if $stdout && $stdout =~ /^(\d+)/;
-            } else {
-                $rs = execute(
-                    [ 'nice', '-n', '15', 'ionice', '-c2', '-n5', 'du', '-s', '-B1', $dir ],
-                    \ my $stdout,
-                    \ my $stderr
-                );
-                error( $stderr || 'Unknown error' ) if $rs;
-                $mailDiskUsage += $1 if $stdout && $stdout =~ /^(\d+)/;
-            }
-
-            return $rs if $rs;
-        }
-
-        $totalDiskUsage = $webDiskUsage+$mailDiskUsage;
-
-        if ($totalDiskUsage > 0) {
-            my $sql = '
-
-                ';
-            my $rdata = $db->doQuery(
-                'update',
-                '
-                    UPDATE domain SET domain_disk_usage = ?, domain_disk_file = ?, domain_disk_mail = ?
-                    WHERE domain_id = ?
-                ',
-                $totalDiskUsage,
-                $webDiskUsage,
-                $mailDiskUsage,
-                $domainId
-            );
-            unless (ref $rdata eq 'HASH') {
-                error($rdata);
-                $rs = 1;
-            }
-
-            $rdata = $db->doQuery(
-                'u', 'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?', $totalDiskUsage, $domainName
-            );
-            unless (ref $rdata eq 'HASH') {
-                error($rdata);
-                $rs = 1;
-            }
-        }
-    }
-
-    $rs;
-}
-
-sub quotaSql
-{
-    my $rs = 0;
-    my $db = iMSCP::Database->factory( );
-
-    my $databases = $db->doQuery( 'Database', 'SHOW DATABASES' );
-    unless (ref $databases eq 'HASH') {
-        error( $databases );
-        return 1;
-    }
-
-    my $rdata = $db->doQuery(
-        'domain_id', 'SELECT domain_id, domain_name, domain_disk_usage FROM domain WHERE domain_status = ?', 'ok'
-    );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
-        $rs = 1;
-    } elsif (%{$rdata}) {
-        for my $domainId (keys %{$rdata}) {
-            my $domainName = $rdata->{$domainId}->{'domain_name'};
-            my $diskUsage = $rdata->{$domainId}->{'domain_disk_usage'};
-            my $size = my $sqlSize = 0;
-
-            my $customerDatabases = $db->doQuery(
-                'sqld_name', 'SELECT sqld_name FROM sql_database WHERE domain_id = ?', $domainId
-            );
-
-            unless (ref $customerDatabases eq 'HASH') {
-                error( $customerDatabases );
-                $rs = 1;
-            }
-
-            for my $sqlDbName (keys %{$customerDatabases}) {
-                if (grep($_ eq $sqlDbName, keys %{$databases})) {
-                    # Does the database exists?
-                    my $quotedDbName = $db->quoteIdentifier( $sqlDbName );
-
-                    my $sqlDbTables = $db->doQuery('1', "SHOW TABLE STATUS FROM $quotedDbName");
-                    unless (ref $sqlDbTables eq 'HASH') {
-                        error( $sqlDbTables );
-                        $rs = 1;
-                    } elsif (%{$sqlDbTables}) {
-                        for my $sqlDbTable(keys %{$sqlDbTables}) {
-                            $size += (($sqlDbTables->{$sqlDbTable}->{'Data_length'})
-                                ? $sqlDbTables->{$sqlDbTable}->{'Data_length'} : 0
-                            )+(($sqlDbTables->{$sqlDbTable}->{'Index_length'})
-                                ? $sqlDbTables->{$sqlDbTable}->{'Index_length'} : 0);
-                        }
-                    }
-                } else {
-                    warning( "Database '$sqlDbName' exists only in table 'sql_database'" );
-                }
-            }
-
-            if ($size > 0) {
-                $sqlSize += $size;
-                $size += $diskUsage;
-
-                my $quota = $db->doQuery(
-                    'u ', 'UPDATE domain SET domain_disk_usage = ?, domain_disk_sql = ? WHERE domain_id = ?',
-                    $size, $sqlSize, $domainId
-                );
-                unless (ref $quota eq 'HASH') {
-                    error($quota);
-                    $rs = 1;
-                }
-
-                $quota = $db->doQuery(
-                    'u', 'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?', $size, $domainName
-                );
-                unless (ref $quota eq 'HASH') {
-                    error($quota);
-                    $rs = 1;
-                }
-            }
-        }
-    }
-
-    $rs;
-}
-
-my $rs = quotaFiles( );
-$rs |= quotaSql( );
-
-if ($rs) {
-    my @warningMessages = getMessageByType( 'warn' );
-    iMSCP::Mail->new()->warnMsg( "@warningMessages" ) if @warningMessages;
-
-    my @errorMessages = getMessageByType( 'error' );
-    iMSCP::Mail->new()->errmsg( "@errorMessages" ) if @errorMessages;
-}
-
-exit $rs;
+my @errors = getMessageByType( 'error' );
+iMSCP::Mail->new()->errmsg( "@errors" ) if @errors;
 
 END { $bootstrapper->unlock( '/tmp/imscp-dsk-quota.lock' ); }
 
+=back
+
 =head1 AUTHOR
 
- i-MSCP Team <team@i-mscp.net>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
+
+1;
+__END__
