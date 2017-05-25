@@ -77,7 +77,7 @@ Note that these operations must be done on the host, not in the container.
 
 #### Supported Devuan versions
 
-Any released version >= 1.0 RC (Devuan Jessie)
+Any released version >= 1.0 (Devuan Jessie)
 
 ### i-MSCP Installation
 
