@@ -138,6 +138,7 @@ sub quotaFiles
 
         my $dbi = $db->startTransaction( );
 
+        local $@;
         eval {
             $dbi->do(
                 '
@@ -239,6 +240,7 @@ sub quotaSql
 
         my $dbi = $db->startTransaction( );
 
+        local $@;
         eval {
             $dbi->do(
                 'UPDATE domain SET domain_disk_usage = ?, domain_disk_sql = ? WHERE domain_id = ?',
