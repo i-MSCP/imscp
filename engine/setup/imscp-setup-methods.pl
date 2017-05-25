@@ -298,7 +298,7 @@ sub setupAskServerPrimaryIP
 Please select your server primary IP address:
 
 The \\Zb`None'\\Zn option means that i-MSCP will configures the services to listen on all interfaces.
-Note that this options is more suitable for cloud computing services such as Scaleway.
+Note that this options is more suitable for Cloud computing services such as Scaleway and Amazon EC2.
 EOF
             $lanIP = '0.0.0.0' if $lanIP && $lanIP eq 'None';
         } while $rs < 30 && !isValidIpAddr( $lanIP );

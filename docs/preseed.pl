@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2017.05.10
+# Last update: 2017.05.25
 
 %main::questions = (
     #
@@ -18,8 +18,8 @@
 
     # Server primary IP
     # Possible values: An already configured IPv4, IPv6 or `None'
-    # The `None' option is more suitable for cloud computing services such as Scaleway. Selecting the `None' option
-    # means that i-MSCP will configures the services to listen on all interfaces.
+    # The `None' option is more suitable for Cloud computing services such as Scaleway and Amazon EC2.
+    # Selecting the `None' option means that i-MSCP will configures the services to listen on all interfaces.
     BASE_SERVER_IP                      => '',
 
     # WAN IP (only relevant if your primary IP is in private range)
