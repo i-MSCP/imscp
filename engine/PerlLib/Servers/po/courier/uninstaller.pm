@@ -94,20 +94,6 @@ sub _init
     $self->{'mta'} = Servers::mta->factory( );
     $self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
     $self->{'config'} = $self->{'po'}->{'config'};
-
-    (tied %{$self->{'config'}})->{'temporary'} = 1;
-
-    my $oldConf = "$self->{'cfgDir'}/courier.old.data";
-    if (-f $oldConf) {
-        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
-        while(my ($key, $value) = each(%oldConfig)) {
-            next unless exists $self->{'config'}->{$key};
-            $self->{'config'}->{$key} = $value;
-        }
-    }
-
-    (tied %{$self->{'config'}})->{'temporary'} = 0;
-
     $self;
 }
 

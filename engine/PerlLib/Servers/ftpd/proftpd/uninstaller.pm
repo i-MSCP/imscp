@@ -158,11 +158,6 @@ sub _removeConfig
         }
     }
 
-    if (-f "$self->{'cfgDir'}/proftpd.old.data") {
-        my $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.old.data" )->delFile( );
-        return $rs if $rs;
-    }
-
     0;
 }
 

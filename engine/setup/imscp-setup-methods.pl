@@ -1283,7 +1283,7 @@ sub setupSetPermissions
 
         endDetail( );
 
-        if($rs) {
+        if ($rs) {
             error( sprintf( 'Error while setting permissions: %s', $stderr || 'Unknown error' ) );
             last;
         }
@@ -1413,7 +1413,7 @@ sub setupServersAndPackages
     my $eventManager = iMSCP::EventManager->getInstance( );
     my @servers = iMSCP::Servers->getInstance( )->getListWithFullNames( );
     my @packages = iMSCP::Packages->getInstance( )->getListWithFullNames( );
-    my $nSteps = @servers + @packages;
+    my $nSteps = @servers+@packages;
     my $rs = 0;
 
     for my $task(qw/ PreInstall Install PostInstall /) {

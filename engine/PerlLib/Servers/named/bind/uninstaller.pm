@@ -80,20 +80,6 @@ sub _init
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
     $self->{'config'} = $self->{'named'}->{'config'};
-
-    (tied %{$self->{'config'}})->{'temporary'} = 1;
-
-    my $oldConf = "$self->{'cfgDir'}/bind.old.data";
-    if (-f $oldConf) {
-        tie my %oldConfig, 'iMSCP::Config', fileName => $oldConf, readonly => 1;
-        while(my ($key, $value) = each(%oldConfig)) {
-            next unless exists $self->{'config'}->{$key};
-            $self->{'config'}->{$key} = $value;
-        }
-    }
-
-    (tied %{$self->{'config'}})->{'temporary'} = 0;
-
     $self;
 }
 

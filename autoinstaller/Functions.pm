@@ -150,11 +150,11 @@ sub build
     $rs = _askInstallerMode( $dialog ) unless iMSCP::Getopt->noprompt || $main::buildonly || $main::reconfigure ne 'none';
 
     my @steps = (
-        [ \&_checkRequirements,      'Checking for requirements' ],
+        [ \&_checkRequirements, 'Checking for requirements' ],
         [ \&_buildDistributionFiles, 'Building distribution files' ],
-        [ \&_compileDaemon,          'Compiling daemon' ],
-        [ \&_savePersistentData,     'Saving persistent data' ],
-        [ \&_cleanup,                'Processing cleanup tasks' ]
+        [ \&_compileDaemon, 'Compiling daemon' ],
+        [ \&_savePersistentData, 'Saving persistent data' ],
+        [ \&_cleanup, 'Processing cleanup tasks' ]
     );
 
     unshift @steps, [ \&_installDistroPackages, 'Installing distribution packages' ] unless $main::skippackages;
@@ -192,7 +192,7 @@ sub build
     return $rs if $rs;
 
     my %confmap = (
-        imscp => \ %main::imscpConfig,
+        imscp    => \ %main::imscpConfig,
         imscpOld => \ %main::imscpOldConfig
     );
 
@@ -202,7 +202,7 @@ sub build
         @config{ keys %{$config} } = values %{$config};
         untie %config;
     }
-    undef %confmap;
+    undef % confmap;
 
     endDebug();
 }
@@ -256,14 +256,14 @@ EOF
     undef @runningJobs;
 
     my @steps = (
-        [ \&main::setupInstallFiles,      'Installing distribution files' ],
+        [ \&main::setupInstallFiles, 'Installing distribution files' ],
         [ \&main::setupSystemDirectories, 'Setting up system directories' ],
-        [ \&main::setupBoot,              'Bootstrapping installer' ],
-        [ \&main::setServerCapabilities,  'Setting up server capabilities' ],
+        [ \&main::setupBoot, 'Bootstrapping installer' ],
+        [ \&main::setServerCapabilities, 'Setting up server capabilities' ],
         [ \&main::setupRegisterListeners, 'Registering servers/packages event listeners' ],
-        [ \&main::setupDialog,            'Processing setup dialog' ],
-        [ \&main::setupTasks,             'Processing setup tasks' ],
-        [ \&main::setupDeleteBuildDir,    'Deleting build directory' ]
+        [ \&main::setupDialog, 'Processing setup dialog' ],
+        [ \&main::setupTasks, 'Processing setup tasks' ],
+        [ \&main::setupDeleteBuildDir, 'Deleting build directory' ]
     );
 
     my $rs = $eventManager->trigger( 'preInstall', \@steps );
@@ -428,7 +428,7 @@ sub _confirmDistro
     my $distroCodename = ucfirst($lsbRelease->getCodename( 'short' ));
     my $distroRelease = $lsbRelease->getRelease( 'short' );
 
-    if ($distroID ne 'n/a' && $distroCodename ne 'n/a' && $distroID =~ /^(?:de(?:bi|vu)an|ubuntu)$/i ) {
+    if ($distroID ne 'n/a' && $distroCodename ne 'n/a' && $distroID =~ /^(?:de(?:bi|vu)an|ubuntu)$/i) {
         unless (-f "$FindBin::Bin/autoinstaller/Packages/".lc($distroID).'-'.lc($distroCodename).'.xml') {
             $dialog->msgbox( <<"EOF" );
 
@@ -745,7 +745,7 @@ sub _savePersistentData
     ) if -d $main::imscpConfig{'PLUGINS_DIR'};
 
     # Quick fix for #IP-1340 (Removes old filemanager directory which is no longer used)
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager" )->remove(); 
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager" )->remove();
 
     # Save tools
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools" )->rcopy(
@@ -791,7 +791,7 @@ sub _cleanup
             iMSCP::Dir->new( dirname => $_ )->remove();
         }
     };
-    if($@) {
+    if ($@) {
         error( $@ );
         return 1;
     }
@@ -815,7 +815,7 @@ sub _cleanup
         "/etc/init/php5-fpm.override", # Removed in 1.4.x
         "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf",
         "/usr/local/lib/imscp_panel/imscp_panel_checkconf" # Removed in 1.4.x,
-        
+
     ) {
         next unless -f;
         my $rs = iMSCP::File->new( filename => $_ )->delFile();
@@ -968,7 +968,7 @@ sub _copyConfig
     my $data = shift;
 
     if (defined $data->{'if'}) {
-        unless (eval _expandVars( $data->{if} )) {
+        unless (eval _expandVars( $data->{'if'} )) {
             unless ($data->{'kept'}) {
                 (my $syspath = $data->{'content'}) =~ s/^$main::{'INST_PREF'}//;
                 if ($syspath ne '/' && -f $syspath) {

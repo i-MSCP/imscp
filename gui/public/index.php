@@ -53,14 +53,14 @@ redirectToUiLevel();
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
-    'layout' => 'shared/layouts/simple.tpl',
-    'page_message' => 'layout',
+    'layout'         => 'shared/layouts/simple.tpl',
+    'page_message'   => 'layout',
     'lostpwd_button' => 'page'
 ));
 
 $tpl->assign(array(
-    'productLongName' => tr('internet Multi Server Control Panel'),
-    'productLink' => 'https://www.i-mscp.net',
+    'productLongName'  => tr('internet Multi Server Control Panel'),
+    'productLink'      => 'https://www.i-mscp.net',
     'productCopyright' => tr('© 2010-2017 i-MSCP Team<br>All Rights Reserved')
 ));
 
@@ -69,28 +69,28 @@ $cfg = iMSCP_Registry::get('config');
 if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
     $tpl->define_dynamic('page', 'message.tpl');
     $tpl->assign(array(
-        'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Maintenance'),
-        'HEADER_BLOCK' => '',
-        'BOX_MESSAGE_TITLE' => tr('System under maintenance'),
-        'BOX_MESSAGE' => (isset($cfg['MAINTENANCEMODE_MESSAGE']))
+        'TR_PAGE_TITLE'           => tr('i-MSCP - Multi Server Control Panel / Maintenance'),
+        'HEADER_BLOCK'            => '',
+        'BOX_MESSAGE_TITLE'       => tr('System under maintenance'),
+        'BOX_MESSAGE'             => (isset($cfg['MAINTENANCEMODE_MESSAGE']))
             ? preg_replace('/\s\s+/', '', nl2br(tohtml($cfg['MAINTENANCEMODE_MESSAGE'])))
             : tr("We are sorry, but the system is currently under maintenance.\nPlease try again later."),
-        'TR_BACK' => tr('Administrator login'),
+        'TR_BACK'                 => tr('Administrator login'),
         'BACK_BUTTON_DESTINATION' => '/index.php?admin=1'
     ));
 } else {
     $tpl->define_dynamic(array(
-        'page' => 'index.tpl',
+        'page'                  => 'index.tpl',
         'lost_password_support' => 'page',
-        'ssl_support' => 'page'
+        'ssl_support'           => 'page'
     ));
 
     $tpl->assign(array(
         'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Login'),
-        'TR_LOGIN' => tr('Login'),
-        'TR_USERNAME' => tr('Username'),
-        'UNAME' => isset($_POST['uname']) ? tohtml($_POST['uname'], 'htmlAttr') : '',
-        'TR_PASSWORD' => tr('Password')
+        'TR_LOGIN'      => tr('Login'),
+        'TR_USERNAME'   => tr('Username'),
+        'UNAME'         => isset($_POST['uname']) ? tohtml($_POST['uname'], 'htmlAttr') : '',
+        'TR_PASSWORD'   => tr('Password')
     ));
 
     if ($cfg['PANEL_SSL_ENABLED'] == 'yes' && $cfg['BASE_SERVER_VHOST_PREFIX'] != 'https://') {
@@ -104,9 +104,9 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
         );
 
         $tpl->assign(array(
-            'SSL_LINK' => tohtml(implode('', $uri), 'htmlAttr'),
-            'SSL_IMAGE_CLASS' => ($isSecure) ? 'i_unlock' : 'i_lock',
-            'TR_SSL' => ($isSecure) ? tr('Normal connection') : tr('Secure connection'),
+            'SSL_LINK'           => tohtml(implode('', $uri), 'htmlAttr'),
+            'SSL_IMAGE_CLASS'    => ($isSecure) ? 'i_unlock' : 'i_lock',
+            'TR_SSL'             => ($isSecure) ? tr('Normal connection') : tr('Secure connection'),
             'TR_SSL_DESCRIPTION' => ($isSecure)
                 ? tohtml(tr('Use normal connection (No SSL)'), 'htmlAttr')
                 : tohtml(tr('Use secure connection (SSL)'), 'htmlAttr')

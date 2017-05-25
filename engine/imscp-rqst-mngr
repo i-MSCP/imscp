@@ -44,15 +44,15 @@ $ENV{'LANG'} = 'C.UTF-8';
 
 newDebug( 'imscp-rqst-mngr.log' );
 
-iMSCP::Getopt->parseNoDefault( sprintf( "Usage: perl %s [OPTIONS]...", basename( $0 ) ). qq {
+iMSCP::Getopt->parseNoDefault( sprintf( "Usage: perl %s [OPTIONS]...", basename( $0 ) ).qq {
 
 Script that processes i-MSCP backend requests.
 
 OPTIONS:
  -d,    --debug         Enable debug mode.
  -v,    --verbose       Enable verbose mode.},
- 'debug|d'   => \&iMSCP::Getopt::debug,
- 'verbose|v' => \&iMSCP::Getopt::verbose
+    'debug|d'   => \&iMSCP::Getopt::debug,
+    'verbose|v' => \&iMSCP::Getopt::verbose
 );
 
 setVerbose( iMSCP::Getopt->verbose );

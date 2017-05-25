@@ -44,7 +44,7 @@ $Text::Wrap::break = qr/[\s\n\|]/;
 
 =over 4
 
-=item errmsg($message)
+=item errmsg( $message )
 
  Send an error message to system administrator
 
@@ -68,7 +68,7 @@ EOF
     0;
 }
 
-=item warnMsg($message)
+=item warnMsg( $message )
 
  Send a warning message to system administrator
 

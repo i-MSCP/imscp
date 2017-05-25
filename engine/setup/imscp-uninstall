@@ -74,10 +74,10 @@ sub process
 
     my $database = iMSCP::Database->factory( );
     my $rdata = $database->doQuery( '1', "SELECT 1 FROM plugin WHERE plugin_status <> 'uninstalled'" );
-    unless(ref $rdata eq 'HASH') {
+    unless (ref $rdata eq 'HASH') {
         error( $rdata );
         return 1;
-    } elsif(%{$rdata}) {
+    } elsif (%{$rdata}) {
         error( 'You must first uninstall all i-MSCP plugins through the control panel interface.' );
         return 1;
     }
@@ -156,7 +156,7 @@ sub _removeCustomers
     my $aditionalCondition;
 
     while (my ($table, $field) = each %{$tables}) {
-        if(ref $field eq 'ARRAY') {
+        if (ref $field eq 'ARRAY') {
             $aditionalCondition = $field->[1];
             $field = $field->[0];
         } else {
@@ -164,18 +164,17 @@ sub _removeCustomers
         }
 
         my $rdata = $database->doQuery( 'u', "UPDATE `$table` SET `$field` = 'todelete' $aditionalCondition" );
-        unless(ref $rdata eq 'HASH') {
+        unless (ref $rdata eq 'HASH') {
             error($rdata);
             return 1;
         }
     }
 
-
     my $rs = 0;
     startDetail( );
     local $@;
     eval { iMSCP::DbTasksProcessor->getInstance( mode => 'uninstall' )->process( ); };
-    if($@) {
+    if ($@) {
         error( $@ );
         $rs = 1;
     }
@@ -210,7 +209,7 @@ sub _uninstallPackages
         last if $rs;
     }
 
-    endDetail() ;
+    endDetail();
     $rs;
 }
 
@@ -253,12 +252,12 @@ sub _uninstallServices
     for my $service('bind9', 'bind9-resolvconf') {
         $serviceMngr->disable( $service ) if $serviceMngr->isSystemd( );
 
-        if(-f "/etc/systemd/system/$service.service") {
+        if (-f "/etc/systemd/system/$service.service") {
             my $rs = iMSCP::File->new( filename => "/etc/systemd/system/$service.service" )->delFile( );
             return $rs if $rs;
         }
 
-        if("/lib/systemd/system/$service.service") {
+        if ("/lib/systemd/system/$service.service") {
             $serviceMngr->enable( $service ) if $serviceMngr->isSystemd( );
         }
     }
@@ -292,7 +291,7 @@ sub _removeSqlData
     # Remove customer's sql users
 
     my $rdata = $database->doQuery( 'sqlu_name', 'SELECT DISTINCT sqlu_name, sqlu_host FROM sql_user' );
-    unless(ref $rdata eq 'HASH') {
+    unless (ref $rdata eq 'HASH') {
         error( $rdata );
         return 1;
     }
@@ -303,7 +302,7 @@ sub _removeSqlData
 
     # Remove customer's sql databases
     $rdata = $database->doQuery( 'sqld_name', 'SELECT sqld_name FROM sql_database' );
-    unless(ref $rdata eq 'HASH') {
+    unless (ref $rdata eq 'HASH') {
         error( $rdata );
         return 1;
     }
@@ -311,7 +310,7 @@ sub _removeSqlData
 
     # Remove i-MSCP sql database
     $database->doQuery( 'delete', "DROP DATABASE IF EXISTS `$main::imscpConfig{'DATABASE_NAME'}`" );
-    unless(ref $rdata eq 'HASH') {
+    unless (ref $rdata eq 'HASH') {
         error( $rdata );
         return 1;
     }

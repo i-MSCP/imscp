@@ -77,9 +77,9 @@ iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]... start|stop',
 Mount or umount filesystems by reading entries from i-MSCP fstab-like file.
 
 Note that this script doesn't check for already mounted filesystems.
-Thus, if you run this script twice with the same actione, there will be duplicate mounts.
+If you run this script twice with the same action, there will be duplicate mounts.
 
-Anyway, this script should not be run manually. It is best run it through the imscp_mountall service.
+Anyway, this script shouldn't be run manually. It is best run through the imscp_mountall service.
 
 OPTIONS:
  -d,    --debug         Enable debug mode.
@@ -102,6 +102,7 @@ $bootstrapper->boot(
         mode            => 'backend',
         nodatabase      => 1,
         nokeys          => 1,
+        nolock          => 1,
         norequirements  => 1
     }
 );

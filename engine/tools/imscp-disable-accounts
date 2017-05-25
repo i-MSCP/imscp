@@ -47,7 +47,7 @@ sub run
 {
     my $db = iMSCP::Database->factory( );
     my $qrs = $db->doQuery('name', "SELECT * FROM config WHERE name = 'HARD_MAIL_SUSPENSION'");
-    unless(ref $qrs eq 'HASH') {
+    unless (ref $qrs eq 'HASH') {
         error($qrs);
         return 1;
     }
@@ -60,12 +60,12 @@ sub run
             WHERE domain_expires <> '0' AND domain_expires < UNIX_TIMESTAMP() AND domain_status <> 'disabled'
         "
     );
-    unless(ref $qrs eq 'HASH') {
+    unless (ref $qrs eq 'HASH') {
         error($qrs);
         return 1;
     }
 
-    #return 0 unless %{$qrs};
+    return 0 unless %{$qrs};
 
     my $rs = 0;
     for my $domainId(keys %{$qrs}) {
@@ -73,9 +73,10 @@ sub run
 
         eval {
             if ($hardMailSuspension) { # SMTP/IMAP/POP disabled
-                $dbi->do('UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ?', undef, 'todisable', 'no', $domainId);
+                $dbi->do('UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ?', undef, 'todisable', 'no'
+                    , $domainId);
             } else { # IMAP/POP disabled
-                $dbi->do('UPDATE mail_users SET po_active = ? WHERE domain_id = ?', undef,  'no', $domainId);
+                $dbi->do('UPDATE mail_users SET po_active = ? WHERE domain_id = ?', undef, 'no', $domainId);
             }
 
             $dbi->do('UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef, 'todisable', $domainId);
@@ -92,7 +93,7 @@ sub run
             $dbi->commit();
         };
 
-        if($@) {
+        if ($@) {
             $dbi->rollback();
             $db->endTransaction();
             error( "Couldn't deactivate client account with ID $qrs->{$domainId}->{'domain_admin_id'}: $@" );
@@ -102,7 +103,7 @@ sub run
         $db->endTransaction();
     }
 
-    unless($rs) {
+    unless ($rs) {
         # Process all scheduled tasks
         eval { iMSCP::DbTasksProcessor->getInstance( mode => 'backend' )->process( ); };
         if ($@) {
@@ -116,15 +117,15 @@ sub run
 
 newDebug( 'imscp-disable-accounts.log' );
 
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 ) ) . qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 ) ).qq {
 
 Script that deactivates expired client accounts
 
 OPTIONS:
  -d,    --debug         Enable debug mode.
  -v,    --verbose       Enable verbose mode.},
- 'debug|d'   => \&iMSCP::Getopt::debug,
- 'verbose|v' => \&iMSCP::Getopt::verbose
+    'debug|d'   => \&iMSCP::Getopt::debug,
+    'verbose|v' => \&iMSCP::Getopt::verbose
 );
 
 setVerbose( iMSCP::Getopt->verbose );

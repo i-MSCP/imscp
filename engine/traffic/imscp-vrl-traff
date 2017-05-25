@@ -32,10 +32,10 @@ use warnings;
 use File::Basename;
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
-use iMSCP::Database;
-use iMSCP::Debug;
 use iMSCP::Bootstrapper;
 use iMSCP::Config;
+use iMSCP::Database;
+use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Getopt;
 use locale;
@@ -58,32 +58,46 @@ sub run
     # Get list of domains for which traffic must be collected
     my $sth = $dbh->prepare(
         "
-           SELECT domain_id AS upper_domain_id, domain_name FROM domain
+           SELECT domain_id AS upper_domain_id, domain_name
+           FROM domain
+           WHERE domain_status <> 'todelete'
+
            UNION ALL
-           SELECT domain_id AS upper_domain_id, alias_name FROM domain_aliasses
+
+           SELECT domain_id AS upper_domain_id, alias_name
+           FROM domain_aliasses
+           WHERE alias_status <> 'todelete'
+
            UNION ALL
-           SELECT domain_id AS upper_domain_id, CONCAT(subdomain_name, '.', domain_name) FROM subdomain
+
+           SELECT domain_id AS upper_domain_id, CONCAT(subdomain_name, '.', domain_name)
+           FROM subdomain
            INNER JOIN domain USING (domain_id)
+           WHERE subdomain_status <> 'todelete'
+
            UNION ALL
-           SELECT domain_id AS upper_domain_id, CONCAT(subdomain_alias_name, '.', alias_name) FROM subdomain_alias
+
+           SELECT domain_id AS upper_domain_id, CONCAT(subdomain_alias_name, '.', alias_name)
+           FROM subdomain_alias
            INNER JOIN domain_aliasses USING (alias_id)
+           WHERE subdomain_alias_status <> 'todelete'
        "
     );
-    unless($sth && $sth->execute( )) {
+    unless ($sth && $sth->execute( )) {
         error( sprintf( "Couldn't prepare or execute SQL statement: %s", $dbh->errstr ) );
-        $rs = 1;
+        return 1;
     }
     my $domains = $sth->fetchall_hashref( 'domain_name' );
     return 0 unless %{$domains};
 
     my %domains = map { $_ => 0 } keys %{$domains};
     my $timestamp = time( );
-    my $halfTimestamp = $timestamp - ($timestamp % 1800);
+    my $halfTimestamp = $timestamp-($timestamp % 1800);
     my %trafficDb;
 
     # Collects traffic data from each server implementing the getTraffic() method
     for my $server('Servers::httpd', 'Servers::ftpd', 'Servers::mta', 'Servers::po') {
-        next unless $server->can( 'getTraffic' ) ;
+        next unless $server->can( 'getTraffic' );
         eval {
             # Initialize intermediate traffic database
             tie %{$trafficDb{$server}},
@@ -101,7 +115,7 @@ sub run
     }
 
     # Updates traffic data in i-MSCP database
-    unless($rs) {
+    unless ($rs) {
         while (my ($domainName, $domainData) = each(%{$domains})) {
             # Don't process domain for which there are no traffic data
             next unless $trafficDb{'Servers::httpd'}->{$domainName} || $trafficDb{'Servers::ftpd'}->{$domainName}
@@ -117,13 +131,14 @@ sub run
                         dtraff_web = dtraff_web + ?, dtraff_ftp = dtraff_ftp + ?, dtraff_mail = dtraff_mail + ?,
                         dtraff_pop = dtraff_pop + ?
                 ',
-                undef, $domainData->{'upper_domain_id'}, $halfTimestamp, $trafficDb{'Servers::httpd'}->{$domainName},
+                undef, $domainData->{'upper_domain_id'}, $halfTimestamp, $trafficDb{'Servers::httpd'}->{$domainName}
+                ,
                 $trafficDb{'Servers::ftpd'}->{$domainName}, $trafficDb{'Servers::mta'}->{$domainName},
                 $trafficDb{'Servers::po'}->{$domainName}, $trafficDb{'Servers::httpd'}->{$domainName},
                 $trafficDb{'Servers::ftpd'}->{$domainName}, $trafficDb{'Servers::mta'}->{$domainName},
                 $trafficDb{'Servers::po'}->{$domainName}
             );
-            if($dbh->err) {
+            if ($dbh->err) {
                 error($dbh->errstr);
                 $rs = 1;
             } else {
@@ -134,7 +149,7 @@ sub run
             }
         }
 
-        unless($rs) {
+        unless ($rs) {
             for my $server('Servers::httpd', 'Servers::ftpd', 'Servers::mta', 'Servers::po') {
                 untie(%{$trafficDb{$server}});
                 $rs |= iMSCP::File->new(
@@ -151,15 +166,15 @@ sub run
 
 newDebug( 'imscp-vrl-traff.log' );
 
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 ) ) . qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 ) ).qq {
 
 Script that collects i-MSCP customers' traffic data (http, ftp, imap/pop3, smtp).
 
 OPTIONS:
  -d,    --debug         Enable debug mode.
  -v,    --verbose       Enable verbose mode.},
- 'debug|d'   => \&iMSCP::Getopt::debug,
- 'verbose|v' => \&iMSCP::Getopt::verbose
+    'debug|d'   => \&iMSCP::Getopt::debug,
+    'verbose|v' => \&iMSCP::Getopt::verbose
 );
 
 setVerbose( iMSCP::Getopt->verbose );
@@ -168,10 +183,10 @@ my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
 exit unless $bootstrapper->lock( '/tmp/imscp-vrl-traff.lock', 'nowait' );
 $bootstrapper->boot(
     {
+        config_readonly => 1,
         mode            => 'backend',
-        norequirements  => 1,
         nolock          => 1,
-        config_readonly => 1
+        norequirements  => 1
     }
 );
 

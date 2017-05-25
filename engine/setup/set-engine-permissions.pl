@@ -97,7 +97,7 @@ for my $package(iMSCP::Packages->getInstance( )->getListWithFullNames( )) {
     push @items, [ $package, sub { $subref->( $package->getInstance( ) ); } ];
 }
 
-my $totalItems = scalar @items + 1;
+my $totalItems = scalar @items+1;
 my $count = 1;
 
 debug( 'Setting base (engine) permissions' );

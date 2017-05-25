@@ -45,15 +45,15 @@ $ENV{'LANG'} = 'C.UTF-8';
 
 newDebug( 'imscp-dpkg-post-invoke.log' );
 
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 ) ) . qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 ) ).qq {
 
 Process dpkg post invoke tasks
 
 OPTIONS:
  -d,    --debug         Enable debug mode.
  -v,    --verbose       Enable verbose mode.},
- 'debug|d'   => \&iMSCP::Getopt::debug,
- 'verbose|v' => \&iMSCP::Getopt::verbose
+    'debug|d'   => \&iMSCP::Getopt::debug,
+    'verbose|v' => \&iMSCP::Getopt::verbose
 );
 
 setVerbose(iMSCP::Getopt->verbose);

@@ -43,7 +43,7 @@ if ($responses->isStopped()) {
     showNotFoundErrorPage();
 }
 
-$pluginActionScriptPath = null;
+$pluginActionScriptPath = NULL;
 foreach ($plugins as $plugin) {
     if ($pluginActionScriptPath = $plugin->route($urlComponents)) {
         break;
@@ -62,7 +62,7 @@ foreach ($plugins as $plugin) {
     }
 }
 
-if (null === $pluginActionScriptPath) {
+if (NULL === $pluginActionScriptPath) {
     showNotFoundErrorPage();
 }
 
@@ -70,7 +70,7 @@ $eventsManager->dispatch(iMSCP_Events::onAfterPluginsRoute, array(
     'pluginManager' => $pluginManager, 'scriptPath' => $pluginActionScriptPath
 ));
 
-if(!is_file($pluginActionScriptPath)) {
+if (!is_file($pluginActionScriptPath)) {
     showNotFoundErrorPage();
 }
 

@@ -60,13 +60,11 @@ eval {
     undef $mimeEntity;
 
     # Return early if needed
-    return if(
-        ($mimeHeaders->get( 'x-spam-flag' ) && $mimeHeaders->get( 'x-spam-flag' ) =~ /yes/i)
-        || ($mimeHeaders->get( 'x-mailer' ) && $mimeHeaders->get( 'x-mailer' ) =~ /Auto-Reply/i)
-        || ($mimeHeaders->get( 'auto-submitted' ) && $mimeHeaders->get('auto-submitted') =~ /auto-replied/i)
-        || ($mimeHeaders->get( 'sender') && $mimeHeaders->get('sender') =~ /autoresponder/i)
-        || $mimeHeaders->get( 'x-autoresponse-from' )
-    );
+    return if ($mimeHeaders->get( 'x-spam-flag' ) && $mimeHeaders->get( 'x-spam-flag' ) =~ /yes/i)
+            || ($mimeHeaders->get( 'x-mailer' ) && $mimeHeaders->get( 'x-mailer' ) =~ /Auto-Reply/i)
+            || ($mimeHeaders->get( 'auto-submitted' ) && $mimeHeaders->get('auto-submitted') =~ /auto-replied/i)
+            || ($mimeHeaders->get( 'sender') && $mimeHeaders->get('sender') =~ /autoresponder/i)
+            || $mimeHeaders->get( 'x-autoresponse-from' );
 
     # Get recipient address
     my ($to) = Mail::Address->parse($mimeHeaders->get( 'from' )) or die( "Couldn't parse `From' MIME header");
