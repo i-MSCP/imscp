@@ -262,7 +262,7 @@
                 description="MariaDB 10.1 server"
                 class="Servers::sqld::mariadb"
                 repository="http://mirror.netcologne.de/mariadb/repo/10.1/ubuntu xenial main"
-                repository_key_id="1BB943DB"
+                repository_key_id="C74CD1D8"
                 repository_key_srv="keyserver.ubuntu.com"
                 pinning_package="*"
                 pinning_pin="origin mirror.netcologne.de"
