@@ -288,7 +288,7 @@ sub _init
     $self;
 }
 
-=item _mergeConfig
+=item _mergeConfig( )
 
  Merge distribution configuration with production configuration
 

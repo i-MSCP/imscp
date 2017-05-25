@@ -190,7 +190,7 @@ sub disable
 
 =item restore( )
 
- Restore domain
+ Restore backup
 
  Return int 0 on success, other on failure
 
@@ -201,8 +201,8 @@ sub restore
     my ($self) = @_;
 
     my $db = iMSCP::Database->factory( );
-    my $dmnDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
-    my $bkpDir = "$dmnDir/backups";
+    my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
+    my $bkpDir = "$homeDir/backups";
 
     local $@;
     eval {
@@ -237,13 +237,13 @@ sub restore
                     $archFormat = 'gzip';
                 }
 
-                clearImmutable( $dmnDir, 1 ); # Un-protect folders recursively
+                clearImmutable( $homeDir, 1 ); # Un-protect homedir recursively
 
                 my $cmd;
                 if ($archFormat ne '') {
-                    $cmd = [ 'tar', '-x', '-p', "--$archFormat", '-C', $dmnDir, '-f', "$bkpDir/$_" ];
+                    $cmd = [ 'tar', '-x', '-p', "--$archFormat", '-C', $homeDir, '-f', "$bkpDir/$_" ];
                 } else {
-                    $cmd = [ 'tar', '-x', '-p', '-C', $dmnDir, '-f', "$bkpDir/$_" ];
+                    $cmd = [ 'tar', '-x', '-p', '-C', $homeDir, '-f', "$bkpDir/$_" ];
                 }
 
                 my $rs = execute( $cmd, \ my $stdout, \ my $stderr );
