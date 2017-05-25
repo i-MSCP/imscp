@@ -102,7 +102,7 @@ sub process
 
 =item add( )
 
- Add a server IP
+ Add (or update) a server IP
 
  Return int 0 on success, other on failure
 
@@ -130,6 +130,7 @@ sub add
             return 1;
         }
     }
+
     $self->SUPER::add( );
 }
 

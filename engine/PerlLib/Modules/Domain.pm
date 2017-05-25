@@ -34,9 +34,6 @@ use iMSCP::Dir;
 use iMSCP::Ext2Attributes qw/ clearImmutable /;
 use iMSCP::Execute;
 use iMSCP::OpenSSL;
-use iMSCP::Rights;
-use Modules::User;
-use iMSCP::Net;
 use Net::LibIDN qw/ idn_to_unicode /;
 use Servers::httpd;
 use Servers::sqld;
@@ -207,30 +204,32 @@ sub restore
     my $dmnDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
     my $bkpDir = "$dmnDir/backups";
 
-    for my $bkpFile(iMSCP::Dir->new( dirname => $bkpDir )->getFiles( )) {
-        unless (-l "$bkpDir/$bkpFile") { # Don't follow symlink (See #990)
-            if ($bkpFile =~ /^.+?\.sql(?:\.bz2|gz|lzma|xz)?$/) {
-                local $@;
-                eval { $self->_restoreDatabase( File::Spec->catfile( $bkpDir, $bkpFile ) ); };
-                if ($@) {
-                    error($@);
-                    return 1;
-                }
-            } elsif ($bkpFile =~ /^(?!mail-).+?\.tar(?:\.(bz2|gz|lzma|xz))?$/) {
-                # Restore domain files
+    local $@;
+    eval {
+        for (iMSCP::Dir->new( dirname => $bkpDir )->getFiles( )) {
+            next if -l "$bkpDir/$_"; # Don't follow symlinks (See #990)
+
+            if (/^.+?\.sql(?:\.bz2|gz|lzma|xz)?$/) {
+                $self->_restoreDatabase( File::Spec->catfile( $bkpDir, $_ ) );
+                next;
+            }
+
+            if (/^web-backup-.+?\.tar(?:\.(bz2|gz|lzma|xz))?$/) {
+                # Restore web backup
                 my $archFormat = $1 || '';
+
                 # Since we are now using immutable bit to protect some folders, we must in order do the following
                 # to restore a backup archive:
                 #
+                # - Un-protect user homedir (clear immutable flag recursively)
+                # - Restore web files
                 # - Update status of sub, als and alssub, entities linked to the parent domain to 'torestore'
-                # - Un-protect user home dir (clear immutable flag recursively)
-                # - restore the files
                 # - Run the restore( ) parent method
                 #
-                # The first and last tasks allow the i-MSCP Httpd server implementations to set correct permissions and
+                # The third and last tasks allow the i-MSCP Httpd server implementations to set correct permissions and
                 # set immutable flag on folders if needed for each entity
                 #
-                # Note: This is a bunch of works but this will be fixed when the backup feature will be rewritten
+                # Note: This is a lot of works but this will be fixed when the backup feature will be rewritten
 
                 if ($archFormat eq 'bz2') {
                     $archFormat = 'bzip2';
@@ -238,62 +237,62 @@ sub restore
                     $archFormat = 'gzip';
                 }
 
-                # Update status of any sub to 'torestore'
-                my $rdata = $db->doQuery(
-                    'u', 'UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', 'torestore',
-                    $self->{'domain_id'}
-                );
-                unless (ref $rdata eq 'HASH') {
-                    error( $rdata );
-                    return 1;
-                }
-
-                # Update status of any als to 'torestore'
-                $rdata = $db->doQuery(
-                    'u', 'UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', 'torestore',
-                    $self->{'domain_id'}
-                );
-                unless (ref $rdata eq 'HASH') {
-                    error( $rdata );
-                    return 1;
-                }
-
-                # Update status of any alssub to 'torestore'
-                $rdata = $db->doQuery(
-                    'u',
-                    "
-                        UPDATE subdomain_alias SET subdomain_alias_status = 'torestore'
-                        WHERE alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
-                    ",
-                    $self->{'domain_id'}
-                );
-                unless (ref $rdata eq 'HASH') {
-                    error( $rdata );
-                    return 1;
-                }
-
                 clearImmutable( $dmnDir, 1 ); # Un-protect folders recursively
 
                 my $cmd;
                 if ($archFormat ne '') {
-                    $cmd = "nice -n 12 ionice -c2 -n5 tar -x -p --$archFormat -C ".escapeShell( $dmnDir ).' -f '
-                        .escapeShell( "$bkpDir/$bkpFile" );
+                    $cmd = [ 'tar', '-x', '-p', "--$archFormat", '-C', $dmnDir, '-f', "$bkpDir/$_" ];
                 } else {
-                    $cmd = 'nice -n 12 ionice -c2 -n5 tar -x -p -C '.escapeShell( $dmnDir ).' -f '
-                        .escapeShell( "$bkpDir/$bkpFile" );
+                    $cmd = [ 'tar', '-x', '-p', '-C', $dmnDir, '-f', "$bkpDir/$_" ];
                 }
 
                 my $rs = execute( $cmd, \ my $stdout, \ my $stderr );
                 debug( $stdout ) if $stdout;
-                error( $stderr || 'Unknown error' ) if $rs;
+                $rs == 0 or die( $stderr || 'Unknown error' );
 
-                $rs ||= $self->SUPER::restore( );
-                return $rs if $rs;
+                my $dbi = $db->startTransaction( );
+
+                eval {
+                    $dbi->do(
+                        'UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?',
+                        undef,
+                        'torestore',
+                        $self->{'domain_id'}
+                    );
+                    $dbi->do(
+                        'UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?',
+                        undef,
+                        'torestore',
+                        $self->{'domain_id'}
+                    );
+                    $dbi->do(
+                        "
+                            UPDATE subdomain_alias
+                            SET subdomain_alias_status = 'torestore'
+                            WHERE alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
+                        ",
+                        undef,
+                        $self->{'domain_id'}
+                    );
+
+                    $dbi->commit( );
+                };
+                if ($@) {
+                    $dbi->rollback( );
+                    $db->endTransaction( );
+                    die( $@ );
+                }
+
+                $db->endTransaction( );
             }
         }
+    };
+    if ($@) {
+        error( $@ );
+        return 1;
     }
 
-    0;
+    $self->SUPER::restore( );
 }
 
 =back
@@ -318,18 +317,24 @@ sub _loadData
     my $rdata = iMSCP::Database->factory( )->doQuery(
         'domain_id',
         "
-            SELECT t1.*,
-                t2.ip_number,
+            SELECT t1.domain_id, t1.domain_admin_id, t1.domain_mailacc_limit, t1.domain_name, t1.domain_status,
+                t1.domain_php, t1.domain_cgi, t1.external_mail, t1.web_folder_protection, t1.document_root,
+                t1.url_forward, t1.type_forward, t1.host_forward,
+                IFNULL(t2.ip_number, ?) AS ip_number,
                 t3.private_key, t3.certificate, t3.ca_bundle, t3.allow_hsts, t3.hsts_max_age, t3.hsts_include_subdomains,
                 t4.mail_on_domain
             FROM domain AS t1
-            INNER JOIN server_ips AS t2 ON (t2.ip_id = t1.domain_ip_id)
+            LEFT JOIN server_ips AS t2 ON (t2.ip_id = t1.domain_ip_id)
             LEFT JOIN ssl_certs AS t3 ON(t3.domain_id = t1.domain_id AND t3.domain_type = 'dmn' AND t3.status = 'ok')
             LEFT JOIN (
-                SELECT domain_id, COUNT(domain_id) AS mail_on_domain FROM mail_users WHERE mail_type LIKE 'normal\\_%' GROUP BY domain_id
+                SELECT domain_id, COUNT(domain_id) AS mail_on_domain
+                FROM mail_users
+                WHERE mail_type LIKE 'normal\\_%'
+                GROUP BY domain_id
             ) AS t4 ON(t4.domain_id = t1.domain_id)
             WHERE t1.domain_id = ?
         ",
+        '0.0.0.0',
         $domainId
     );
     unless (ref $rdata eq 'HASH') {
@@ -337,7 +342,7 @@ sub _loadData
         return 1;
     }
     unless ($rdata->{$domainId}) {
-        error( sprintf( 'Domain with ID %s has not been found or is in an inconsistent state', $domainId ) );
+        error( sprintf( 'Domain with ID %s has not been found in database', $domainId ) );
         return 1;
     }
 
@@ -361,7 +366,7 @@ sub _getData
     $self->{'_data'} = do {
         my $httpd = Servers::httpd->factory( );
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}
-            .($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+            .($main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'});
         my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
         my $documentRoot = File::Spec->canonpath( "$homeDir/$self->{'document_root'}" );
         my $phpini = iMSCP::Database->factory( )->doQuery(
@@ -386,8 +391,7 @@ sub _getData
             DOMAIN_ADMIN_ID         => $self->{'domain_admin_id'},
             DOMAIN_NAME             => $self->{'domain_name'},
             DOMAIN_NAME_UNICODE     => idn_to_unicode( $self->{'domain_name'}, 'utf-8' ),
-            DOMAIN_IP               => iMSCP::Net->getInstance( )->isKnownAddr( $self->{'ip_number'} )
-                ? $self->{'ip_number'} : $main::imscpConfig{'BASE_SERVER_IP'},
+            DOMAIN_IP               => $self->{'ip_number'},
             DOMAIN_TYPE             => 'dmn',
             PARENT_DOMAIN_NAME      => $self->{'domain_name'},
             ROOT_DOMAIN_NAME        => $self->{'domain_name'},
@@ -407,7 +411,6 @@ sub _getData
             HSTS_SUPPORT            => $allowHSTS,
             HSTS_MAX_AGE            => $hstsMaxAge,
             HSTS_INCLUDE_SUBDOMAINS => $hstsIncludeSubDomains,
-            BWLIMIT                 => $self->{'domain_traffic_limit'},
             ALIAS                   => $userName,
             FORWARD                 => $self->{'url_forward'} || 'no',
             FORWARD_TYPE            => $self->{'type_forward'} || '',
@@ -423,7 +426,7 @@ sub _getData
             POST_MAX_SIZE           => $phpini->{$self->{'domain_id'}}->{'post_max_size'} // 8,
             UPLOAD_MAX_FILESIZE     => $phpini->{$self->{'domain_id'}}->{'upload_max_filesize'} // 2,
             ALLOW_URL_FOPEN         => $phpini->{$self->{'domain_id'}}->{'allow_url_fopen'} || 'off',
-            PHP_FPM_LISTEN_PORT     => ($phpini->{$self->{'domain_id'}}->{'id'} // 0) - 1,
+            PHP_FPM_LISTEN_PORT     => ($phpini->{$self->{'domain_id'}}->{'id'} // 0)-1,
             EXTERNAL_MAIL           => $self->{'external_mail'},
             MAIL_ENABLED            => ($self->{'external_mail'} eq 'off'
                 && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
@@ -439,7 +442,7 @@ sub _getData
  Restore a database from the given database dump file
  
  Param string $dbDumpFilePath Path to database dump file
- Return 0 on success, die on failure
+ die on failure
 
 =cut
 
@@ -451,13 +454,16 @@ sub _restoreDatabase
     my $db = iMSCP::Database->factory( );
 
     my $qrs = $db->doQuery(
-        1, 'SELECT 1 FROM sql_database WHERE domain_id = ? AND sqld_name = ? LIMIT 1', $self->{'domain_id'}, $dbName
+        1,
+        'SELECT 1 FROM sql_database WHERE domain_id = ? AND sqld_name = ? LIMIT 1',
+        $self->{'domain_id'},
+        $dbName
     );
     ref $qrs eq 'HASH' or die( $qrs );
 
     unless (%{$qrs}) {
         debug(sprintf( "Orphaned `%s' database. skipping...", $dbName ));
-        return 0;
+        return;
     }
 
     my $cmd;
@@ -500,7 +506,7 @@ EOF
     $sqlExtraFile->close( );
 
     my @cmd = (
-        'nice', '-n', '15', 'ionice', '-c2', '-n5', $cmd, escapeShell( $dbDumpFilePath ), '|', 'mysql',
+        $cmd, escapeShell( $dbDumpFilePath ), '|', 'mysql',
         '--defaults-extra-file='.escapeShell( $sqlExtraFile->filename( ) ), escapeShell( $dbName )
     );
 

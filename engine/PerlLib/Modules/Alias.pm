@@ -30,7 +30,6 @@ use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::Execute;
-use iMSCP::Net;
 use iMSCP::OpenSSL;
 use Net::LibIDN qw/idn_to_unicode/;
 use Servers::httpd;
@@ -134,8 +133,10 @@ sub add
         my $rs = $db->doQuery(
             'u',
             "
-                UPDATE subdomain_alias SET subdomain_alias_status = 'tochange'
-                WHERE alias_id = ? AND subdomain_alias_status <> 'todelete'
+                UPDATE subdomain_alias
+                SET subdomain_alias_status = 'tochange'
+                WHERE alias_id = ?
+                AND subdomain_alias_status <> 'todelete'
             ",
             $self->{'alias_id'}
         );
@@ -147,8 +148,10 @@ sub add
         $rs = $db->doQuery(
             'u',
             "
-                UPDATE domain_dns SET domain_dns_status = 'tochange'
-                WHERE alias_id = ? AND domain_dns_status NOT IN ('todelete', 'todisable', 'disabled')
+                UPDATE domain_dns
+                SET domain_dns_status = 'tochange'
+                WHERE alias_id = ?
+                AND domain_dns_status NOT IN ('todelete', 'todisable', 'disabled')
             ",
             $self->{'alias_id'}
         );
@@ -213,20 +216,24 @@ sub _loadData
         'alias_id',
         "
             SELECT t1.*,
-                t2.domain_name AS user_home, t2.domain_admin_id, t2.domain_php, t2.domain_cgi, t2.domain_traffic_limit,
-                t2.domain_mailacc_limit, t2.domain_dns, t2.web_folder_protection,
-                t3.ip_number,
+                t2.domain_name AS user_home, t2.domain_admin_id, t2.domain_mailacc_limit, t2.domain_php, t2.domain_cgi,
+                t2.web_folder_protection,
+                IFNULL(t3.ip_number, ?) AS ip_number,
                 t4.private_key, t4.certificate, t4.ca_bundle, t4.allow_hsts, t4.hsts_max_age, t4.hsts_include_subdomains,
                 t5.mail_on_domain
             FROM domain_aliasses AS t1
             INNER JOIN domain AS t2 ON (t2.domain_id = t1.domain_id)
-            INNER JOIN server_ips AS t3 ON (t3.ip_id = t1.alias_ip_id)
+            LEFT JOIN server_ips AS t3 ON (t3.ip_id = t1.alias_ip_id)
             LEFT JOIN ssl_certs AS t4 ON(t4.domain_id = t1.alias_id AND t4.domain_type = 'als' AND t4.status = 'ok')
             LEFT JOIN(
-                SELECT sub_id, COUNT(sub_id) AS mail_on_domain FROM mail_users WHERE mail_type LIKE 'alias\\_%' GROUP BY sub_id
+                SELECT sub_id, COUNT(sub_id) AS mail_on_domain
+                FROM mail_users
+                WHERE mail_type LIKE 'alias\\_%'
+                GROUP BY sub_id
             ) AS t5 ON (t5.sub_id = t1.alias_id)
             WHERE t1.alias_id = ?
         ",
+        '0.0.0.0',
         $aliasId
     );
     unless (ref $rdata eq 'HASH') {
@@ -259,7 +266,7 @@ sub _getData
     $self->{'_data'} = do {
         my $httpd = Servers::httpd->factory( );
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}
-            .($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+            .($main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'});
         my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}" );
         my $webDir = File::Spec->canonpath( "$homeDir/$self->{'alias_mount'}" );
         my $documentRoot = File::Spec->canonpath( "$webDir/$self->{'alias_document_root'}" );
@@ -287,8 +294,7 @@ sub _getData
             DOMAIN_ADMIN_ID         => $self->{'domain_admin_id'},
             DOMAIN_NAME             => $self->{'alias_name'},
             DOMAIN_NAME_UNICODE     => idn_to_unicode( $self->{'alias_name'}, 'utf-8' ),
-            DOMAIN_IP               => iMSCP::Net->getInstance( )->isKnownAddr( $self->{'ip_number'} )
-                ? $self->{'ip_number'} : $main::imscpConfig{'BASE_SERVER_IP'},
+            DOMAIN_IP               => $self->{'ip_number'},
             DOMAIN_TYPE             => 'als',
             PARENT_DOMAIN_NAME      => $self->{'alias_name'},
             ROOT_DOMAIN_NAME        => $self->{'user_home'},
@@ -308,7 +314,6 @@ sub _getData
             HSTS_SUPPORT            => $allowHSTS,
             HSTS_MAX_AGE            => $hstsMaxAge,
             HSTS_INCLUDE_SUBDOMAINS => $hstsIncludeSubDomains,
-            BWLIMIT                 => $self->{'domain_traffic_limit'},
             ALIAS                   => $userName.'als'.$self->{'alias_id'},
             FORWARD                 => $self->{'url_forward'} || 'no',
             FORWARD_TYPE            => $self->{'type_forward'} || '',
@@ -324,7 +329,7 @@ sub _getData
             POST_MAX_SIZE           => $phpini->{$phpiniMatchId}->{'post_max_size'} // 8,
             UPLOAD_MAX_FILESIZE     => $phpini->{$phpiniMatchId}->{'upload_max_filesize'} // 2,
             ALLOW_URL_FOPEN         => $phpini->{$phpiniMatchId}->{'allow_url_fopen'} || 'off',
-            PHP_FPM_LISTEN_PORT     => ($phpini->{$phpiniMatchId}->{'id'} // 0) - 1,
+            PHP_FPM_LISTEN_PORT     => ($phpini->{$phpiniMatchId}->{'id'} // 0)-1,
             EXTERNAL_MAIL           => $self->{'external_mail'},
             MAIL_ENABLED            => ($self->{'external_mail'} eq 'off'
                 && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
@@ -354,10 +359,10 @@ sub _sharedMountPoint
             SELECT COUNT(mount_point) AS nb_mount_points FROM (
                 SELECT alias_mount AS mount_point FROM domain_aliasses
                 WHERE alias_id <> ? AND domain_id = ? AND alias_status NOT IN ('todelete', 'ordered') AND alias_mount RLIKE ?
-                UNION
+                UNION ALL
                 SELECT subdomain_mount AS mount_point FROM subdomain
                 WHERE domain_id = ? AND subdomain_status != 'todelete' AND subdomain_mount RLIKE ?
-                UNION
+                UNION ALL
                 SELECT subdomain_alias_mount AS mount_point FROM subdomain_alias
                 WHERE subdomain_alias_status != 'todelete' AND alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
                 AND subdomain_alias_mount RLIKE ?
