@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-05-12 22:58+0000\n"
+"POT-Creation-Date: 2017-05-26 05:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/i-mscp/teams/576/zh_TW/)\n"
@@ -38,7 +38,7 @@ msgstr "$ORIGIN 的值目前設定為: %s"
 
 #, php-format
 msgid "%%s cannot be greater than %%s."
-msgstr ""
+msgstr "%%s 不能大於 %%s."
 
 #, php-format
 msgid "%1$d / %2$d"

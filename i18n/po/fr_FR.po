@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-05-12 22:58+0000\n"
+"POT-Creation-Date: 2017-05-26 05:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: krok <krok@totalynet.fr>, 2017\n"
 "Language-Team: French (France) (https://www.transifex.com/i-mscp/teams/576/fr_FR/)\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 msgid " Admin / Support / Open Tickets"
-msgstr "Admininistrateur / Support / Tickets ouverts"
+msgstr "Admininistrateur / Support / Tickets ouvertsr"
 
 msgid " Client / Webtools / Custom Error Pages / Edit Custom Error Page"
 msgstr ""
@@ -43,6 +43,8 @@ msgstr "La valeur pour $ORIGIN est actuellement: %s"
 #, php-format
 msgid "%%s cannot be greater than %%s."
 msgstr ""
+"La valeur de la directive %%s ne peut pas être supérieure à la valeur de la "
+"directive %%s."
 
 #, php-format
 msgid "%1$d / %2$d"
@@ -629,13 +631,13 @@ msgid "Admin"
 msgstr "Administrateur"
 
 msgid "Admin / General / Admin Log"
-msgstr "Administrateur / Général / Journal de l'administrateur"
+msgstr "Administrateur / Général / Journal des événements"
 
 msgid "Admin / General / Overview"
 msgstr "Admininistrateur / Général / Vue générale"
 
 msgid "Admin / General / Services Status"
-msgstr "Administrateur / Général / Statut des services"
+msgstr "Administrateur / Général / État des services"
 
 msgid "Admin / Profile / Account Summary"
 msgstr "Administrateur / Profil / Résumé du compte"
@@ -772,7 +774,7 @@ msgid "Admin account successfully created."
 msgstr "Le compte administrateur a été créé."
 
 msgid "Admin log"
-msgstr "Journal de l'administrateur"
+msgstr "Journal des événements"
 
 msgid "Admin not available"
 msgstr "Administration non disponible"
@@ -2255,7 +2257,7 @@ msgid "Disabled functions"
 msgstr "Fonctions désactivées"
 
 msgid "Disconnect"
-msgstr "Déconnecter"
+msgstr "Se déconnecter"
 
 msgid "Disk"
 msgstr "Espace de stockage"
@@ -3113,7 +3115,7 @@ msgid "Install this plugin"
 msgstr "Installer cette extension"
 
 msgid "Install various Web applications with a few clicks."
-msgstr "Installation de  logiciel diverses en quelques cliques de souris."
+msgstr "Installation de  logiciels diverses en quelques cliques de souris."
 
 msgid "Installation details"
 msgstr "Détails de l'installation"
@@ -3218,7 +3220,7 @@ msgid "Kernel Version"
 msgstr "Version du noyau"
 
 msgid "Kill session"
-msgstr "Tuer la session"
+msgstr "Mettre fin à la session"
 
 msgid "Label"
 msgstr "Label"
@@ -3565,7 +3567,7 @@ msgid "No custom menu found."
 msgstr "Aucun menu personalisé trouvé."
 
 msgid "No customer accounts found."
-msgstr "Aucun comptes clients trouvés."
+msgstr "Aucun compte client n'a encore été créé."
 
 msgid "No database update available."
 msgstr "Aucun mise à jour pour la base de données disponible."
@@ -3589,7 +3591,7 @@ msgid "No records found matching the search criteria."
 msgstr "Aucun enregistrement trouvé pour ces critères de recherche."
 
 msgid "No reseller accounts found."
-msgstr "Aucun comptes revendeurs ont été trouvés."
+msgstr "Aucun compte revendeur n'a encore été créé."
 
 msgid "No reseller available to add the permissions."
 msgstr "Aucun revendeur disponible pour ajouter des permissions."
@@ -3872,7 +3874,7 @@ msgid "Password cannot be longer than 30 characters."
 msgstr "Le mot de passe ne peut pas être plus long que 30 caractères."
 
 msgid "Password confirmation"
-msgstr "Confirmation du mot de pass"
+msgstr "Confirmation du mot de passe"
 
 msgid "Password contains unallowed characters."
 msgstr "Le mot de passe contient des caractères non autorisés."
@@ -4795,7 +4797,7 @@ msgid "Service protocol"
 msgstr "Protocole du service"
 
 msgid "Services status"
-msgstr "Statut des services"
+msgstr "État des services"
 
 msgid "Sessions"
 msgstr "Sessions"
@@ -4873,13 +4875,13 @@ msgid "Software in repository"
 msgstr "Logiciel dans le dépôt"
 
 msgid "Software installation"
-msgstr "Installation de logiciel"
+msgstr "Installation de logiciels"
 
 msgid "Software installer"
-msgstr "Installation de logiciel"
+msgstr "Installation de logiciels"
 
 msgid "Software installer options"
-msgstr "Options d'installation de logiciel"
+msgstr "Options d'installation de logiciels"
 
 msgid "Software installer options successfully updated."
 msgstr "Les  options d'installation des logiciel ont été mises à jour."
@@ -4939,7 +4941,7 @@ msgid "State"
 msgstr "État"
 
 msgid "State/Province"
-msgstr "Région/Département"
+msgstr "Région / Département"
 
 msgid "Statistics"
 msgstr "Statistiques"
@@ -5394,7 +5396,7 @@ msgid "Type"
 msgstr "Type"
 
 msgid "UP"
-msgstr "En fonction"
+msgstr "En cours de fonctionnement"
 
 msgid "URL forwarding"
 msgstr "Transfert URL"
@@ -6348,7 +6350,7 @@ msgid "i-MSCP - Multi Server Control Panel / Maintenance"
 msgstr "i-MSCP Panneau de contrôle internet multi-serveurs / Maintenance"
 
 msgid "i-MSCP - Software Installer / Management"
-msgstr "i-MSCP - Installation de logiciel / Gestion"
+msgstr "i-MSCP - Installation de logiciels / Gestion"
 
 msgid "i-MSCP - Software Management"
 msgstr "i-MSCP - Gestion des logiciels"
@@ -6360,7 +6362,7 @@ msgid "i-MSCP - Sofware Management"
 msgstr "i-MSCP - Gestion de logiciels"
 
 msgid "i-MSCP / Software Installer / Management"
-msgstr "i-MSCP / Installation de logiciel / Gestion"
+msgstr "i-MSCP / Installation de logiciels / Gestion"
 
 msgid "i-MSCP Software installer / Web software repository"
 msgstr "i-MSCP Installateur de logiciel / Dépôt de logiciels Web"
