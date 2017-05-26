@@ -92,6 +92,7 @@ SERVERS
     Fixed: Argument "" isn't numeric in addition (+)... in getTraffic() method of all servers implementing it
     Fixed: Don't instantiate servers when not really needed
     Fixed: Error: quota: Unknown namespace: Trash (Dovecot/IMAP)
+    Fixed: Make use of pristine suexec for better performance (Apache2)
     Fixed: Unless virtual alias map entry for normal mail only accounts (Postfix)
     Fixed: Unwanted directory listings (Apache2 - Regression fix)
     Fixed: Wrong POP3 traffic accounting (Dovecot)
@@ -110,6 +111,7 @@ YOUTRACK
     IP-1698 Restoring a backup causes domain status "unexpected error"
     IP-1715 Changing directory in protected area results in obsolete .htaccess file in old directory
     IP-1716 PHP editor - Caret is jumping to the end of the input field each time validation is triggered
+    IP-1717 Wrong GPG key for MariaDB repository (Ubuntu 16.04)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.3

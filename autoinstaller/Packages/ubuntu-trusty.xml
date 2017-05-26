@@ -21,7 +21,7 @@
             <package>apache2</package>
             <package post_install_tasks="sh apache2_postinst.sh">apache2-bin</package>
             <package>apache2-data</package>
-            <package>apache2-suexec-custom</package>
+            <package post_install_tasks="update-alternatives --set suexec /usr/lib/apache2/suexec-pristine">apache2-suexec-pristine</package>
             <package>libapache2-mod-fcgid</package>
         </apache_fcgid>
         <apache_itk
@@ -49,7 +49,7 @@
             <package>apache2</package>
             <package post_install_tasks="sh apache2_postinst.sh">apache2-bin</package>
             <package>apache2-data</package>
-            <package>apache2-suexec-custom</package>
+            <package post_install_tasks="update-alternatives --set suexec /usr/lib/apache2/suexec-pristine">apache2-suexec-pristine</package>
         </apache_php_fpm>
     </httpd>
     <php>
