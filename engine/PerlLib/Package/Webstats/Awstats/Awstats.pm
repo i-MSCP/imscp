@@ -393,8 +393,8 @@ sub _addAwstatsConfig
     );
     my $rs = $file->set( $tplFileContent );
     $rs ||= $file->save( );
-    $rs ||= $file->mode( 0644 );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+    $rs ||= $file->mode( 0644 );
 }
 
 =back

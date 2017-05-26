@@ -241,8 +241,8 @@ sub postaddMail
 
     my $rs = $subscriptionsFile->set( (join "\n", @subscribedFolders)."\n" );
     $rs ||= $subscriptionsFile->save( );
-    $rs ||= $subscriptionsFile->mode( 0640 );
     $rs ||= $subscriptionsFile->owner( $mailUidName, $mailGidName );
+    $rs ||= $subscriptionsFile->mode( 0640 );
     return $rs if $rs;
 
     if ($data->{'MAIL_QUOTA'}) {

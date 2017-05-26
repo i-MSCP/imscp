@@ -892,8 +892,8 @@ sub _addDmnConfig
     $rs = $self->{'eventManager'}->trigger( 'afterNamedAddDmnConfig', \$cfgWrkFileContent, $data );
     $rs ||= $cfgFile->set( $cfgWrkFileContent );
     $rs ||= $cfgFile->save( );
-    $rs ||= $cfgFile->mode( 0644 );
     $rs ||= $cfgFile->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
+    $rs ||= $cfgFile->mode( 0644 );
     $rs ||= $cfgFile->copyFile( "$cfgFileDir$cfgFileName" );
 }
 

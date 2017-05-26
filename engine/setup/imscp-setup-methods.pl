@@ -969,22 +969,22 @@ ff02::3 ip6-allhosts
 EOF
     $rs = $file->set( $content );
     $rs ||= $file->save( );
-    $rs ||= $file->mode( 0644 );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+    $rs ||= $file->mode( 0644 );
     return $rs if $rs;
 
     $file = iMSCP::File->new( filename => '/etc/hostname' );
     $rs = $file->set( $host );
     $rs ||= $file->save( );
-    $rs ||= $file->mode( 0644 );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+    $rs ||= $file->mode( 0644 );
     return $rs if $rs;
 
     $file = iMSCP::File->new( filename => '/etc/mailname' );
     $rs = $file->set( $hostname );
     $rs ||= $file->save( );
-    $rs ||= $file->mode( 0644 );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+    $rs ||= $file->mode( 0644 );
     return $rs if $rs;
 
     $rs = execute( 'hostname -F /etc/hostname', \ my $stdout, \ my $stderr );

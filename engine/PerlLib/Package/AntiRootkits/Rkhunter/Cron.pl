@@ -52,6 +52,6 @@ debug( $stderr ) if $stderr;
 exit 0 unless -f $logFile;
 
 my $file = iMSCP::File->new( filename => $logFile );
-my $rs = $file->mode( 0640 );
-$rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'IMSCP_GROUP'} );
+my $rs|= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'IMSCP_GROUP'} );
+$rs ||= $file->mode( 0640 );
 exit $rs;

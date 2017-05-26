@@ -223,8 +223,8 @@ sub _buildConfig
     my $file = iMSCP::File->new( filename => $conffile );
     $rs = $file->set( $cfgTpl );
     $rs ||= $file->save( );
-    $rs ||= $file->mode( 0440 );
     $rs ||= $file->owner( $panelUName, $panelGName );
+    $rs ||= $file->mode( 0440 );
     return $rs if $rs;
 
     $conffile = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/settings/settings.json";
@@ -259,8 +259,8 @@ sub _buildConfig
     $file = iMSCP::File->new( filename => $conffile );
     $rs = $file->set( $cfgTpl || JSON->new( )->utf8( 1 )->pretty( 1 )->encode( $data ) );
     $rs ||= $file->save( );
-    $rs ||= $file->mode( 0440 );
     $rs ||= $file->owner( $panelUName, $panelGName );
+    $rs ||= $file->mode( 0440 );
 }
 
 =back

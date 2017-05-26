@@ -563,8 +563,8 @@ sub _buildConfig
     my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/config.inc.php" );
     $rs = $file->set( $cfgTpl );
     $rs ||= $file->save( );
-    $rs ||= $file->mode( 0640 );
     $rs ||= $file->owner( $panelUName, $panelGName );
+    $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( "$confDir/config.inc.php" );
 }
 

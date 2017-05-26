@@ -436,8 +436,8 @@ sub _buildApacheConfFiles
 
         my $file = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf" );
         $rs = $file->set( $cfgTpl );
-        $rs ||= $file->mode( 0644 );
         $rs ||= $file->save( );
+        $rs ||= $file->mode( 0644 );
         return $rs if $rs;
     }
 
