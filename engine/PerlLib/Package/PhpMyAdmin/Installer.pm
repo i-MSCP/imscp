@@ -432,20 +432,19 @@ sub _setupDatabase
     # Create database
 
     my $schemaFilePath = "$phpmyadminDir/sql/create_tables.sql";
-    
+
     my $file = iMSCP::File->new( filename => $schemaFilePath );
-    my $fileContent = $file->get( );
-    unless(defined $fileContent) {
+    my $fileContentRef = $file->getAsRef( );
+    unless (defined $fileContentRef) {
         error( sprintf( "Couldn't read the %s file", $schemaFilePath ) );
         return;
     }
 
-    $fileContent =~ s/^(-- Database :) `phpmyadmin`/$1 `$phpmyadminDbName`/im;
-    $fileContent =~ s/^(CREATE DATABASE IF NOT EXISTS) `phpmyadmin`/$1 `$phpmyadminDbName`/im;
-    $fileContent =~ s/^(USE) phpmyadmin;/$1 `$phpmyadminDbName`;/im;
+    ${$fileContentRef} =~ s/^(-- Database :) `phpmyadmin`/$1 `$phpmyadminDbName`/im;
+    ${$fileContentRef} =~ s/^(CREATE DATABASE IF NOT EXISTS) `phpmyadmin`/$1 `$phpmyadminDbName`/im;
+    ${$fileContentRef} =~ s/^(USE) phpmyadmin;/$1 `$phpmyadminDbName`;/im;
 
-    $rs = $file->set( $fileContent );
-    $rs ||= $file->save( );
+    $rs = $file->save( );
     return $rs if $rs;
 
     $rs = execute( "cat $schemaFilePath | mysql", \ my $stdout, \ my $stderr );

@@ -87,17 +87,16 @@ sub _disableDebianConfig
 {
     if (-f '/etc/default/rkhunter') {
         my $file = iMSCP::File->new( filename => '/etc/default/rkhunter' );
-        my $fileContent = $file->get( );
-        unless (defined $fileContent) {
+        my $fileContentRef = $file->getAsRef( );
+        unless (defined $fileContentRef) {
             error( sprintf( "Couldn't read %s file", $file->{'filename'} ) );
             return 1;
         }
 
-        $fileContent =~ s/CRON_DAILY_RUN=".*"/CRON_DAILY_RUN="false"/i;
-        $fileContent =~ s/CRON_DB_UPDATE=".*"/CRON_DB_UPDATE="false"/i;
+        ${$fileContentRef} =~ s/CRON_DAILY_RUN=".*"/CRON_DAILY_RUN="false"/i;
+        ${$fileContentRef} =~ s/CRON_DB_UPDATE=".*"/CRON_DB_UPDATE="false"/i;
 
-        my $rs = $file->set( $fileContent );
-        $rs ||= $file->save( );
+        my $rs = $file->save( );
         return $rs if $rs;
     }
 

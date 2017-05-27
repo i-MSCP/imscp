@@ -199,16 +199,16 @@ sub importCertificate
     my ($self) = @_;
 
     my $file = iMSCP::File->new( filename => $self->{'certificate_container_path'} );
-    my $certificate = $file->get( );
-    unless (defined $certificate) {
+    my $certificateRef = $file->getAsRef( );
+    unless (defined $certificateRef) {
         error( sprintf( "Couldn't read %s file", $self->{'certificate_container_path'} ) );
         return 1;
     }
 
-    $certificate =~ s/^(?:\015?\012)+|(?:\015?\012)+$//g;
+    ${$certificateRef} =~ s/^(?:\015?\012)+|(?:\015?\012)+$//g;
+    ${$certificateRef} .= "\n";
 
-    my $rs = $file->set( "$certificate\n" );
-    $rs ||= $file->save( );
+    my $rs = $file->save( );
     return $rs if $rs;
 
     my @cmd = (
@@ -237,16 +237,16 @@ sub importCaBundle
     return 0 unless $self->{'ca_bundle_container_path'};
 
     my $file = iMSCP::File->new( filename => $self->{'ca_bundle_container_path'} );
-    my $caBundle = $file->get( );
-    unless (defined $caBundle) {
+    my $caBundleRef = $file->getAsRef( );
+    unless (defined $caBundleRef) {
         error( sprintf( "Couldn't read %s file", $self->{'ca_bundle_container_path'} ) );
         return 1;
     }
 
-    $caBundle =~ s/^(?:\015?\012)+|(?:\015?\012)+$//g;
+    ${$caBundleRef} =~ s/^(?:\015?\012)+|(?:\015?\012)+$//g;
+    ${$caBundleRef} .= "\n";
 
-    my $rs = $file->set( "$caBundle\n" );
-    $rs ||= $file->save( );
+    my $rs = $file->save( );
     return $rs if $rs;
 
     my @cmd = (

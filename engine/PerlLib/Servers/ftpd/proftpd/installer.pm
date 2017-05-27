@@ -484,14 +484,14 @@ EOF
 
     if (-f "$self->{'config'}->{'FTPD_CONF_DIR'}/modules.conf") {
         $file = iMSCP::File->new( filename => "$self->{'config'}->{'FTPD_CONF_DIR'}/modules.conf" );
-        $cfgTpl = $file->get( );
-        unless (defined $cfgTpl) {
+        my $cfgTplRef = $file->getAsRef( );
+        unless (defined $cfgTplRef) {
             error( sprintf( "Couldn't read %s file", "$self->{'config'}->{'FTPD_CONF_DIR'}/modules.conf" ) );
             return 1;
         }
 
-        $cfgTpl =~ s/^(LoadModule\s+mod_tls_memcache.c)/#$1/m;
-        $rs = $file->set( $cfgTpl );
+        ${$cfgTplRef} =~ s/^(LoadModule\s+mod_tls_memcache.c)/#$1/m;
+
         $rs ||= $file->save( );
     }
 

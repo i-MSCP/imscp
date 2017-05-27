@@ -780,8 +780,8 @@ sub addMapEntry
 
     return 0 unless defined $entry;
 
-    my $mapFileContent = $file->get( );
-    unless (defined $mapFileContent) {
+    my $mapFileContentRef = $file->getAsRef( );
+    unless (defined $mapFileContentRef) {
         error( sprintf( "Couldn't read %s file", $file->{'filename'} ) );
         return 1;
     }
@@ -789,10 +789,9 @@ sub addMapEntry
     my $rs = $self->{'eventManager'}->trigger( 'beforeAddPostfixMapEntry', $mapPath, $entry );
     return $rs if $rs;
 
-    $mapFileContent =~ s/^\Q$entry\E\n//gim;
-    $mapFileContent .= "$entry\n";
+    ${$mapFileContentRef} =~ s/^\Q$entry\E\n//gim;
+    ${$mapFileContentRef} .= "$entry\n";
 
-    $rs = $file->set( $mapFileContent );
     $rs ||= $file->save( );
     $rs ||= $self->{'eventManager'}->trigger( 'afterAddPostfixMapEntry', $mapPath, $entry );
 }
@@ -818,8 +817,8 @@ sub deleteMapEntry
         return 1;
     }
 
-    my $mapFileContent = $file->get( );
-    unless (defined $mapFileContent) {
+    my $mapFileContentRef = $file->getAsRef( );
+    unless (defined $mapFileContentRef) {
         error( sprintf( "Couldn't read %s file", $file->{'filename'} ) );
         return 1;
     }
@@ -827,9 +826,8 @@ sub deleteMapEntry
     my $rs = $self->{'eventManager'}->trigger( 'beforeDeletePostfixMapEntry', $mapPath, $entry );
     return $rs if $rs;
 
-    $mapFileContent =~ s/^$entry\n//gim;
+    ${$mapFileContentRef} =~ s/^$entry\n//gim;
 
-    $rs = $file->set( $mapFileContent );
     $rs ||= $file->save( );
     $rs ||= $self->{'eventManager'}->trigger( 'afterDeletePostfixMapEntry', $mapPath, $entry );
 }
@@ -975,15 +973,15 @@ sub postconf
     # postconf -X command that allows to remove parameter is not available prior Postfix 2.10. Thus, we must
     # edit the file manually.
     my $file = iMSCP::File->new( filename => "$self->{'config'}->{'POSTFIX_CONF_DIR'}/main.cf" );
-    my $fileContent = $file->get( );
-    unless (defined $fileContent) {
+    my $fileContentRef = $file->getAsRef( );
+    unless (defined $fileContentRef) {
         error( sprintf( "Couldn't read %s file", $file->{'filename'} ) );
         return 1;
     }
 
-    $fileContent =~ s/^\Q$_\E\s*=[^\n]+\n//gim for @paramsToRemove;
-    $rs = $file->set( $fileContent );
-    $rs ||= $file->save;
+    ${$fileContentRef} =~ s/^\Q$_\E\s*=[^\n]+\n//gim for @paramsToRemove;
+
+    $rs ||= $file->save( );
 
     # Avoid POSTCONF(1) being slow by waiting 2 seconds before next processing
     # See https://groups.google.com/forum/#!topic/list.postfix.users/MkhEqTR6yRM

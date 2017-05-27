@@ -93,15 +93,15 @@ sub _unregisterConfig
     for ('00_master.conf', '00_master_ssl.conf') {
         next unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
         my $file = iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_" );
-        my $fileContent = $file->get( );
-        unless (defined $fileContent) {
+        my $fileContentRef = $file->getAsRef( );
+        unless (defined $fileContentRef) {
             error( sprintf( "Couldn't read %s file", $file->{'filename'} ) );
             return 1;
         }
 
-        $fileContent =~ s/[\t ]*include imscp_pydio.conf;\n//;
-        my $rs = $file->set( $fileContent );
-        $rs ||= $file->save( );
+        ${$fileContentRef} =~ s/[\t ]*include imscp_pydio.conf;\n//;
+
+        my $rs = $file->save( );
         return $rs if $rs;
     }
 
