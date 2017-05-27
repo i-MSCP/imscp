@@ -298,7 +298,7 @@ sub _createPostfixMaps
     return $rs if $rs;
 
     for (@lookupTables) {
-        $rs = $self->{'mta'}->addMapEntry($_);
+        $rs = $self->{'mta'}->addMapEntry( $_ );
         return $rs if $rs;
     }
 

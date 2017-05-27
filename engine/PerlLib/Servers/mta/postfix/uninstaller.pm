@@ -32,7 +32,7 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'mta'} = Servers::mta::postfix->getInstance();
+    $self->{'mta'} = Servers::mta::postfix->getInstance( );
     $self->{'cfgDir'} = $self->{'mta'}->{'cfgDir'};
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
@@ -44,10 +44,10 @@ sub uninstall
 {
     my ($self) = @_;
 
-    my $rs = $self->_restoreConfFile();
-    $rs ||= $self->_buildAliasses();
-    $rs ||= $self->_removeUsers();
-    $rs ||= $self->_removeDirsAndFiles();
+    my $rs = $self->_restoreConfFile( );
+    $rs ||= $self->_buildAliasses( );
+    $rs ||= $self->_removeUsers( );
+    $rs ||= $self->_removeDirsAndFiles( );
 }
 
 sub _removeDirsAndFiles
@@ -55,12 +55,12 @@ sub _removeDirsAndFiles
     my ($self) = @_;
 
     for ($self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}) {
-        my $rs = iMSCP::Dir->new( dirname => $_ )->remove();
+        my $rs = iMSCP::Dir->new( dirname => $_ )->remove( );
         return $rs if $rs;
     }
 
     return 0 unless -f $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'};
-    iMSCP::File->new( filename => $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'} )->delFile();
+    iMSCP::File->new( filename => $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'} )->delFile( );
 }
 
 sub _removeUsers

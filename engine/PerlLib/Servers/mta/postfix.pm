@@ -114,7 +114,7 @@ sub postinstall
                 [
                     sub {
                         $rs = 0;
-                        while(my ($mapPath, $mapFileObject) = each(%{$self->{'_maps'}})) {
+                        while(my ($mapPath, $mapFileObject) = each( %{$self->{'_maps'}} )) {
                             $rs ||= $mapFileObject->mode( 0640 );
                             $rs ||= $self->postmap( $mapPath );
                             last if $rs;
@@ -529,7 +529,7 @@ sub addMail
 
         if ($isMailAccount) {
             # Create mailbox
-            for ('cur', 'new', 'tmp') {
+            for (qw/ cur new tmp /) {
                 $rs = iMSCP::Dir->new(
                     dirname =>
                     "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}/$_"
@@ -561,11 +561,11 @@ sub addMail
                     .join ',', (
                         # We add the recipient itself in case of a mixed account (normal + forward).
                         # we want keep local copy of inbound mails
-                        ($isMailAccount ? $data->{'MAIL_ADDR'} : ()),
+                        ($isMailAccount ? $data->{'MAIL_ADDR'} : ( )),
                         # Add forward addresses in case of forward account
-                        ($isForwardAccount ? $data->{'MAIL_FORWARD'} : ()),
+                        ($isForwardAccount ? $data->{'MAIL_FORWARD'} : ( )),
                         # Add autoresponder entry if it is enabled for this account
-                        ($data->{'MAIL_HAS_AUTO_RESPONDER'} ? $responderEntry : ())
+                        ($data->{'MAIL_HAS_AUTO_RESPONDER'} ? $responderEntry : ( ))
                     )
             );
             return $rs if $rs;
@@ -705,8 +705,8 @@ sub getTraffic
             debug( sprintf( 'Skipping logs that were already processed (lines %d to %d)', 1, ++$idx ) );
 
             my $logsFound = (@snapshot = @snapshot[$idx .. $#snapshot]) > 0;
-            untie(@snapshot);
-            $snapshotFH->close();
+            untie( @snapshot );
+            $snapshotFH->close( );
 
             unless ($logsFound) {
                 debug( sprintf( 'No new SMTP logs found in %s file for processing', $logFile ) );
@@ -714,12 +714,12 @@ sub getTraffic
             }
         } elsif ($logFile !~ /\.1$/) {
             debug( 'Log rotation has been detected. Processing last rotated log file first' );
-            untie(@snapshot);
-            $snapshotFH->close();
+            untie( @snapshot );
+            $snapshotFH->close( );
             $self->getTraffic(  $trafficDb, $logFile.'.1', $trafficIndexDb );
         } else {
-            untie(@snapshot);
-            $snapshotFH->close();
+            untie( @snapshot );
+            $snapshotFH->close( );
         }
 
         # Extract and standardize SMTP logs using maillogconvert.pl script
@@ -757,9 +757,9 @@ sub getTraffic
 
 =item addMapEntry( $mapPath [, $entry ] )
 
- Create the given Postfix map or add the given entry into the given Postfix map
+ Add the given entry into the given Postfix map
 
- Note: without any $entry passed-in, the map will be simply created or updated.
+ Note: Without any $entry passed-in, the map will be simply created.
 
  Param string $mapPath Map file path
  Param string $entry OPTIONAL Map entry to add if any
@@ -774,17 +774,17 @@ sub addMapEntry
     local $@;
     my $file = eval { $self->_getMapFileObject( $mapPath ); };
     if ($@) {
-        error($@);
-        return 1;
-    }
-
-    my $mapFileContent = $file->get( );
-    unless (defined $mapFileContent) {
-        error(sprintf("Couldn't read %s file", $file->{'filename'}));
+        error( $@ );
         return 1;
     }
 
     return 0 unless defined $entry;
+
+    my $mapFileContent = $file->get( );
+    unless (defined $mapFileContent) {
+        error( sprintf( "Couldn't read %s file", $file->{'filename'} ) );
+        return 1;
+    }
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeAddPostfixMapEntry', $mapPath, $entry );
     return $rs if $rs;
@@ -814,13 +814,13 @@ sub deleteMapEntry
     local $@;
     my $file = eval { $self->_getMapFileObject( $mapPath ); };
     if ($@) {
-        error($@);
+        error( $@ );
         return 1;
     }
 
     my $mapFileContent = $file->get( );
     unless (defined $mapFileContent) {
-        error(sprintf("Couldn't read %s file", $file->{'filename'}));
+        error( sprintf( "Couldn't read %s file", $file->{'filename'} ) );
         return 1;
     }
 
@@ -850,7 +850,7 @@ sub postmap
     $mapType ||= 'hash';
 
     my $rs = execute( "postmap $mapType:$mapPath", \ my $stdout, \ my $stderr );
-    debug($stdout) if $stdout;
+    debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     $rs;
 }
@@ -896,7 +896,7 @@ sub postconf
 
     # Avoid POSTCONF(1) being slow by waiting 2 seconds before next processing
     # See https://groups.google.com/forum/#!topic/list.postfix.users/MkhEqTR6yRM
-    my $rs = 1 unless utime $time, $time - 2, $self->{'config'}->{'POSTFIX_CONF_FILE'};
+    my $rs = 1 unless utime $time, $time-2, $self->{'config'}->{'POSTFIX_CONF_FILE'};
     error(sprintf( "Couldn't touch %s file: %s", $self->{'config'}->{'POSTFIX_CONF_FILE'} ) ) if $rs;
     return $rs if $rs;
 
@@ -908,7 +908,7 @@ sub postconf
             sub {
                 return unless (my $pName, my $pValue) = (shift) =~ /^([^=]+)\s+=\s*(.*)/;
 
-                my ($forceEmpty, @values, @replace) = (0, split(/,\s*/, $pValue), ());
+                my ($forceEmpty, @values, @replace) = (0, split( /,\s*/, $pValue ), ( ));
 
                 for my $value(@{$params{$pName}->{'values'}}) {
                     $forceEmpty = 1 if $params{$pName}->{'empty'};
@@ -918,7 +918,7 @@ sub postconf
 
                         if (defined $params{$pName}->{'before'} || defined $params{$pName}->{'after'}) {
                             my $regexp = $params{$pName}->{'before'} || $params{$pName}->{'after'};
-                            my ($index) = grep { $values[$_] =~ /^$regexp$/ } (0 .. (@values - 1));
+                            my ($index) = grep { $values[$_] =~ /^$regexp$/ } (0 .. (@values-1));
                             next unless defined $index;
 
                             splice( @values, (defined $params{$pName}->{'before'} ? $index : ++$index), 0, $value );
@@ -966,8 +966,8 @@ sub postconf
         # Avoid POSTCONF(1) being slow by waiting 2 seconds before next processing
         # See https://groups.google.com/forum/#!topic/list.postfix.users/MkhEqTR6yRM
         $time = time( );
-        $rs = 1 unless utime $time, $time - 2, $self->{'config'}->{'POSTFIX_CONF_FILE'};
-        error(sprintf( "Couldn't touch %s file: %s", $self->{'config'}->{'POSTFIX_CONF_FILE'} ) ) if $rs;
+        $rs = 1 unless utime $time, $time-2, $self->{'config'}->{'POSTFIX_CONF_FILE'};
+        error( sprintf( "Couldn't touch %s file: %s", $self->{'config'}->{'POSTFIX_CONF_FILE'} ) ) if $rs;
     }
 
     return $rs if $rs || !@paramsToRemove;
@@ -988,8 +988,8 @@ sub postconf
     # Avoid POSTCONF(1) being slow by waiting 2 seconds before next processing
     # See https://groups.google.com/forum/#!topic/list.postfix.users/MkhEqTR6yRM
     $time = time( );
-    $rs = 1 unless utime $time, $time - 2, $self->{'config'}->{'POSTFIX_CONF_FILE'};
-    error(sprintf( "Couldn't touch %s file: %s", $self->{'config'}->{'POSTFIX_CONF_FILE'} ) ) if $rs;
+    $rs = 1 unless utime $time, $time-2, $self->{'config'}->{'POSTFIX_CONF_FILE'};
+    error( sprintf( "Couldn't touch %s file: %s", $self->{'config'}->{'POSTFIX_CONF_FILE'} ) ) if $rs;
 
     $self->{'reload'} = 1 unless $rs;
     $rs;
@@ -1046,13 +1046,13 @@ sub _mergeConfig
         tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/postfix.data.dist";
         tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/postfix.data", readonly => 1;
 
-        while(my ($key, $value) = each(%oldConfig)) {
+        while(my ($key, $value) = each( %oldConfig )) {
             next unless exists $newConfig{$key};
             $newConfig{$key} = $value;
         }
 
-        untie(%newConfig);
-        untie(%oldConfig);
+        untie (%newConfig );
+        untie( %oldConfig );
     }
 
     iMSCP::File->new( filename => "$self->{'cfgDir'}/postfix.data.dist" )->moveFile(
@@ -1080,10 +1080,11 @@ sub _getMapFileObject
     $self->{'_maps'}->{$mapPath} = iMSCP::File->new( filename => $mapPath );
 
     unless (-f $mapPath) {
-        my $basename = basename($mapPath);
+        my $basename = basename( $mapPath );
         $self->{'_maps'}->{$mapPath}->set( <<"EOF"
-# Postfix $basename - auto-generated by i-MSCP
+# Postfix $basename map - auto-generated by i-MSCP
 #     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN
+
 EOF
         );
 
@@ -1108,7 +1109,7 @@ END
 
         my $ret = 0;
 
-        while(my ($mapPath, $mapFileObject) = each(%{$instance->{'_maps'}})) {
+        while(my ($mapPath, $mapFileObject) = each( %{$instance->{'_maps'}} )) {
             my $rs = $mapFileObject->mode( 0640 );
             $rs ||= $instance->postmap( $mapPath );
             $ret ||= $rs;
