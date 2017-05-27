@@ -90,6 +90,9 @@ sub getBloc( $$$;$ )
 =item replaceBloc( $beginTag, $endingTag, $repl, $template [, $preserveTags = false ] )
 
  Replace all blocs matching the given begin and ending tags within the given template
+ 
+ Note that when passing Regexp for begin or ending tags and that you want preserve tags,
+ you're responsible for adding capturing parentheses.
 
  Param string|Regexp $beginTag Bloc begin tag
  Param string|Regexp $endingTag Bloc ending tag
@@ -104,11 +107,15 @@ sub replaceBloc( $$$$;$ )
 {
     my ($beginTag, $endingTag, $repl, $template, $preserveTags) = @_;
 
+    if($preserveTags) {
+        $beginTag = "(\Q$beginTag\E)" unless ref $beginTag eq 'Regexp';
+        $endingTag = "(\Q$endingTag\E)" unless ref $endingTag eq 'Regexp';
+        return $template =~ s/[\t ]*$beginTag.*?[\t ]*$endingTag/$repl$1$2/grs;
+    }
+
     $beginTag = "\Q$beginTag\E" unless ref $beginTag eq 'Regexp';
     $endingTag = "\Q$endingTag\E" unless ref $endingTag eq 'Regexp';
-    $preserveTags
-        ? $template =~ s/[\t ]*($beginTag).*?[\t ]*($endingTag)/$repl$1$2/grs
-        : $template =~ s/[\t ]*($beginTag).*?[\t ]*($endingTag)/$repl/grs;
+    $template =~ s/[\t ]*$beginTag.*?[\t ]*$endingTag/$repl/grs;
 }
 
 =back

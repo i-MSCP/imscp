@@ -343,7 +343,7 @@
             timerId = setTimeout(function () {
                 $iniFields.each(function () { // We revalidate all fields because some are dependent of others
                     var id = $(this).attr("id");
-                    var curLimit = parseInt($(this).val() || 0);
+                    var curLimit = parseInt($(this).val() || 0);
                     var maxLimit = parseInt($(this).attr("max"));
 
                     if (curLimit < 1 || curLimit > maxLimit) {

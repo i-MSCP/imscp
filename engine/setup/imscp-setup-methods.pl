@@ -902,7 +902,7 @@ sub setupKernel
 
     if (-f "$main::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf") {
         # Don't catch any error here to avoid permission denied error on some
-        # vps due to restrictions set by provider
+        # vps due to restrictions set by provider
         $rs = execute(
             "$main::imscpConfig{'CMD_SYSCTL'} -p $main::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf",
             \ my $stdout,
