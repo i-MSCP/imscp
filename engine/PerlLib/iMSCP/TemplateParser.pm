@@ -44,7 +44,7 @@ our @EXPORT = qw/ process getBloc replaceBloc /;
  Replace placeholders in the given template
 
  Param hash \%data A hash of data where the keys are the pseudo-variable names and the values, the replacement values
- Param string|scalar ref $template The template content to be parsed
+ Param string ref $template The template content to be parsed
  Return string Parsed template content
 
 =cut
