@@ -1822,7 +1822,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      * 
      * SERVER_HOSTNAME is a Postfix canonical domain (local domain) which
      * cannot be listed in both `mydestination' and `virtual_mailbox_domains'
-     * Postfix parameters. This necessarely means that Postfix canonical
+     * Postfix parameters. This necessarily means that Postfix canonical
      * domains cannot have virtual mailboxes, hence their deletion.
      * 
      * See http://www.postfix.org/VIRTUAL_README.html#canonical

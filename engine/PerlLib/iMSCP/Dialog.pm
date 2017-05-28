@@ -629,7 +629,7 @@ sub _execute
 
     # The exit status returned when pressing the "No" button matches the exit status returned for the "Cancel" button.
     # Internally, no distinction is made... Therefore, for the "yesno" dialog box, we map exit status 30 to 1
-    # and we make the backup feature available through the ESC keystroke. This necessarely mean that user cannot abort
+    # and we make the backup feature available through the ESC keystroke. This necessarily means that user cannot abort
     # through a "yesno" dialog box
     if ($ret == 50 && $type eq 'yesno') {
         $ret = 30;

@@ -91,7 +91,7 @@ function client_editMailAccount()
         # SERVER_HOSTNAME is a canonical domain (local domain) which cannot be
         # listed in both `mydestination' and `virtual_mailbox_domains' Postfix
         # parameters. See http://www.postfix.org/VIRTUAL_README.html#canonical
-        # This necessarely means that Postfix canonical domains cannot have
+        # This necessarily means that Postfix canonical domains cannot have
         # virtual mailboxes, hence their prohibition.
         set_page_message(tr('You cannot create new mailboxes for that domain. Only forwarded mail accounts are allowed.'), 'warning');
         return false;
