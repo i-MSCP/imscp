@@ -57,7 +57,6 @@
             <td>{TR_MAIL_ACCOUNT_TYPE}</td>
             <td>
                 <div class="radio">
-                    
                     <input type="radio" name="account_type" id="normal" value="1"{NORMAL_CHECKED}>
                     <label for="normal">{TR_NORMAL_MAIL}</label>
                     <input type="radio" name="account_type" id="forward" value="2"{FORWARD_CHECKED}>

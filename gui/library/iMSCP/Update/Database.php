@@ -1852,7 +1852,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                     )
                 );
             } else {
-                # Schedule deleation of the mail account as virtual mailboxes
+                # Schedule deletion of the mail account as virtual mailboxes
                 # are prohibited for Postfix canonical domains.
                 exec_query("UPDATE mail_user SET status = 'todelete' WHERE mail_id = ?", $row['mail_id']);
             }

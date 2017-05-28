@@ -246,7 +246,6 @@ function client_addMailAccount()
         }
     }
 
-
     try {
         /** @var $db iMSCP_Database */
         $db = iMSCP_Registry::get('db');
