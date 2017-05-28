@@ -124,6 +124,16 @@ function client_addMailAccount()
         showBadRequestErrorPage();
     }
 
+    if (iMSCP_Registry::get('config')->{'SERVER_HOSTNAME'} == $domainName && $mailTypeNormal) {
+        # SERVER_HOSTNAME is a canonical domain (local domain) which cannot be
+        # listed in both `mydestination' and `virtual_mailbox_domains' Postfix
+        # parameters. See http://www.postfix.org/VIRTUAL_README.html#canonical
+        # This necessarely means that Postfix canonical domains cannot have
+        # virtual mailboxes, hence their prohibition.
+        set_page_message(tr('You cannot create new mailboxes for that domain. Only forwarded mail accounts are allowed.'), 'warning');
+        return false;
+    }
+
     $mailAddr = $username . '@' . $domainName;
 
     if ($mailTypeNormal) {
@@ -236,6 +246,7 @@ function client_addMailAccount()
         }
     }
 
+
     try {
         /** @var $db iMSCP_Database */
         $db = iMSCP_Registry::get('db');
@@ -247,14 +258,15 @@ function client_addMailAccount()
         exec_query(
             '
               INSERT INTO mail_users (
-                mail_acc, mail_pass, mail_forward, domain_id, mail_type, sub_id, status, mail_auto_respond,
+                mail_acc, mail_pass, mail_forward, domain_id, mail_type, sub_id, status, po_active, mail_auto_respond,
                 mail_auto_respond_text, quota, mail_addr
               ) VALUES(
-                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
               )
             ',
-            array($username, $password, $forwardList, $mainDmnProps['domain_id'], $mailType, $subId, 'toadd', '0', NULL,
-                $mailQuotaLimitBytes, $mailAddr
+            array(
+                $username, $password, $forwardList, $mainDmnProps['domain_id'], $mailType, $subId, 'toadd',
+                $mailTypeNormal ? 'yes' : 'no', '0', NULL, $mailQuotaLimitBytes, $mailAddr
             )
         );
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddMail, array(
@@ -315,7 +327,7 @@ function client_generatePage($tpl)
             $mailQuotaLimitMiB = 1;
             $mailTypeForwardOnly = true;
         }
-        
+
         $tpl->assign(array(
             'TR_QUOTA'  => tohtml(tr('Quota in MiB (Max: %s)', bytesHuman($mailQuotaLimitBytes, NULL, 0))),
             'MIN_QUOTA' => 1,

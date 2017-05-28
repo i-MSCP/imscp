@@ -56,7 +56,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 253;
+    protected $lastUpdate = 255;
 
     /**
      * Singleton - Make new unavailable
@@ -1815,5 +1815,59 @@ class iMSCP_Update_Database extends iMSCP_Update
             'domain_dns_status',
             "domain_dns_status TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL"
         );
+    }
+
+    /**
+     * Remove any virtual mailbox that was added for Postfix canonical domain (SERVER_HOSTNAME)
+     * 
+     * SERVER_HOSTNAME is a Postfix canonical domain (local domain) which
+     * cannot be listed in both `mydestination' and `virtual_mailbox_domains'
+     * Postfix parameters. This necessarely means that Postfix canonical
+     * domains cannot have virtual mailboxes, hence their deletion.
+     * 
+     * See http://www.postfix.org/VIRTUAL_README.html#canonical
+     * 
+     * @return null
+     */
+    protected function r254()
+    {
+        $stmt = exec_query(
+            "
+                SELECT mail_id, mail_type, mail_addr
+                FROM mail_users
+                WHERE mail_type LIKE '%_mail%'
+                AND SUBSTRING(mail_addr, LOCATE('@', mail_addr)+1) = ?
+            ",
+            iMSCP_Registry::get('config')->{'SERVER_HOSTNAME'}
+        );
+
+        while ($row = $stmt->fetchRow()) {
+            if (strpos($row['mail_type'], '_forward') !== FALSE) {
+                # Turn normal+forward account into forward only account
+                exec_query(
+                    "UPDATE mail_users SET mail_pass = '_no_', mail_type = ?, quota = NULL WHERE mail_id = ?",
+                    array(
+                        preg_replace('/,?\b\.*_mail\b,?/', '', $row['mail_type']),
+                        $row['mail_id']
+                    )
+                );
+            } else {
+                # Schedule deleation of the mail account as virtual mailboxes
+                # are prohibited for Postfix canonical domains.
+                exec_query("UPDATE mail_user SET status = 'todelete' WHERE mail_id = ?", $row['mail_id']);
+            }
+        }
+
+        return NULL;
+    }
+
+    /**
+     * Fixed: mail_users.po_active column of forward only and catchall accounts must be set to 'no'
+     *
+     * @return string SQL statement to be executed
+     */
+    protected function r255()
+    {
+        return "UPDATE mail_users SET po_active = 'no' WHERE mail_type NOT LIKE '%_mail%'";
     }
 }

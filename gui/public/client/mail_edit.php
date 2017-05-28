@@ -85,6 +85,18 @@ function client_editMailAccount()
         showBadRequestErrorPage();
     }
 
+    if (iMSCP_Registry::get('config')->{'SERVER_HOSTNAME'} == explode('@', $mailData['mail_addr'])[1]
+        && $mailTypeNormal
+    ) {
+        # SERVER_HOSTNAME is a canonical domain (local domain) which cannot be
+        # listed in both `mydestination' and `virtual_mailbox_domains' Postfix
+        # parameters. See http://www.postfix.org/VIRTUAL_README.html#canonical
+        # This necessarely means that Postfix canonical domains cannot have
+        # virtual mailboxes, hence their prohibition.
+        set_page_message(tr('You cannot create new mailboxes for that domain. Only forwarded mail accounts are allowed.'), 'warning');
+        return false;
+    }
+
     $mailAddr = $mailData['mail_addr'];
 
     if ($mailTypeNormal) {
@@ -208,8 +220,15 @@ function client_editMailAccount()
         'mailId' => $mailData['mail_id']
     ));
     exec_query(
-        'UPDATE mail_users SET mail_pass = ?, mail_forward = ?, mail_type = ?, status = ?, quota = ? WHERE mail_id = ?',
-        array($password, $forwardList, $mailType, 'tochange', $mailQuotaLimitBytes, $mailData['mail_id'])
+        '
+                UPDATE mail_users
+                SET mail_pass = ?, mail_forward = ?, mail_type = ?, status = ?, po_active = ?, quota = ?
+                WHERE mail_id = ?
+            ',
+        array(
+            $password, $forwardList, $mailType, 'tochange', $mailTypeNormal ? 'yes' : 'no', $mailQuotaLimitBytes,
+            $mailData['mail_id']
+        )
     );
 
     # Force synching of quota info on next load (or remove cached data in case of normal account changed to forward account)

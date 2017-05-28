@@ -72,6 +72,7 @@ function client_deleteMailAccount($mailId, $domainId)
             'rlike'     => '(,|^)' . $row['mail_addr'] . '(,|$)'
         )
     );
+
     if ($stmt->rowCount()) {
         while ($row = $stmt->fetchRow()) {
             if ($row['mail_forward'] == '_no_') {

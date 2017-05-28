@@ -40,7 +40,9 @@ DISTRIBUTIONS
 FRONTEND
     Fixed: Allows auto-completion for login form (regression fix)
     Fixed: Allow lower value than `post_max_size' for `memory_limit' (PHP Editor)
+    Fixed: Creation of mailboxes for Postfix canonical domains through the control panel must be prohibited
     Fixed: Integrity constraint violation: 1052 Column 'fname' in where clause is ambiguous when searching user by name
+    Fixed: mail_users.po_active database column must be set to 'no' for forward only and catch-all accounts
     Fixed: Non well formed numeric value encountered in utils_getPhpValueInBytes() function
     Removed: Check for CNAME conflict (Custom DNS records)
 
@@ -96,6 +98,7 @@ SERVERS
     Fixed: Make use of pristine suexec for better performance (Apache2)
     Fixed: Unless virtual alias map entry for normal mail only accounts (Postfix)
     Fixed: Unwanted directory listings (Apache2 - Regression fix)
+    Fixed: warning: do not list domain xxxxxx in BOTH `mydestination' and `virtual_mailbox_domains' (Postfix)
     Fixed: Wrong POP3 traffic accounting (Dovecot)
     Removed: Backup and working directories (Cron)
     Removed: `beforeHttpdAddIps' and `afterHttpdAddIps' events (Httpd server impl.)

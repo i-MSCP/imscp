@@ -363,6 +363,9 @@ sub addDmn
 {
     my ($self, $data) = @_;
 
+    # Do not list `SERVER_HOSTNAME' in BOTH `mydestination' and `virtual_mailbox_domains'
+    return 0 if $data->{'DOMAIN_NAME'} eq $main::imscpConfig{'SERVER_HOSTNAME'};
+
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddDmn', $data );
     $rs ||= $self->deleteMapEntry(
         $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/
@@ -391,6 +394,8 @@ sub disableDmn
 {
     my ($self, $data) = @_;
 
+    return 0 if $data->{'DOMAIN_NAME'} eq $main::imscpConfig{'SERVER_HOSTNAME'};
+
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDisableDmn', $data );
     $rs ||= $self->deleteMapEntry(
         $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/
@@ -411,6 +416,8 @@ sub disableDmn
 sub deleteDmn
 {
     my ($self, $data) = @_;
+
+    return 0 if $data->{'DOMAIN_NAME'} eq $main::imscpConfig{'SERVER_HOSTNAME'};
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDelDmn', $data );
     $rs ||= $self->deleteMapEntry(
@@ -434,6 +441,9 @@ sub deleteDmn
 sub addSub
 {
     my ($self, $data) = @_;
+
+    # Do not list `SERVER_HOSTNAME' in BOTH `mydestination' and `virtual_mailbox_domains'
+    return 0 if $data->{'DOMAIN_NAME'} eq $main::imscpConfig{'SERVER_HOSTNAME'};
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddSub', $data );
     $rs ||= $self->deleteMapEntry(
@@ -460,6 +470,8 @@ sub disableSub
 {
     my ($self, $data) = @_;
 
+    return 0 if $data->{'DOMAIN_NAME'} eq $main::imscpConfig{'SERVER_HOSTNAME'};
+
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDisableSub', $data );
     $rs ||= $self->deleteMapEntry(
         $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/
@@ -479,6 +491,8 @@ sub disableSub
 sub deleteSub
 {
     my ($self, $data) = @_;
+
+    return 0 if $data->{'DOMAIN_NAME'} eq $main::imscpConfig{'SERVER_HOSTNAME'};
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDelSub', $data );
     $rs ||= $self->deleteMapEntry(
@@ -512,6 +526,12 @@ sub addMail
         );
         return $rs if $rs;
     } else {
+        my $isMailAccount = index( $data->{'MAIL_TYPE'}, '_mail' ) != -1
+            && $data->{'DOMAIN_NAME'} ne $main::imscpConfig{'SERVER_HOSTNAME'};
+        my $isForwardAccount = index( $data->{'MAIL_TYPE'}, '_forward' ) != -1;
+
+        return 0 unless $isMailAccount || $isForwardAccount;
+
         $rs = $self->deleteMapEntry(
             $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+[^\n]*/
         );
@@ -523,9 +543,6 @@ sub addMail
         my $responderEntry = "$data->{'MAIL_ACC'}\@imscp-arpl.$data->{'DOMAIN_NAME'}";
         $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_TRANSPORT_HASH'}, qr/\Q$responderEntry\E\s+[^\n]*/ );
         return $rs if $rs;
-
-        my $isMailAccount = index( $data->{'MAIL_TYPE'}, '_mail' ) != -1;
-        my $isForwardAccount = index( $data->{'MAIL_TYPE'}, '_forward' ) != -1;
 
         if ($isMailAccount) {
             # Create mailbox
@@ -552,27 +569,31 @@ sub addMail
             return $rs if $rs;
         }
 
-        if ($isForwardAccount || $data->{'MAIL_HAS_AUTO_RESPONDER'}) {
-            # Add virtual alias map entry
-            $rs = $self->addMapEntry(
-                $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'},
-                $data->{'MAIL_ADDR'} # Recipient
-                    ."\t" # Separator
-                    .join ',', (
-                        # We add the recipient itself in case of a mixed account (normal + forward).
-                        # we want keep local copy of inbound mails
-                        ($isMailAccount ? $data->{'MAIL_ADDR'} : ( )),
-                        # Add forward addresses in case of forward account
-                        ($isForwardAccount ? $data->{'MAIL_FORWARD'} : ( )),
-                        # Add autoresponder entry if it is enabled for this account
-                        ($data->{'MAIL_HAS_AUTO_RESPONDER'} ? $responderEntry : ( ))
-                    )
-            );
-            return $rs if $rs;
-        }
+        # Add virtual alias map entry
+        $rs = $self->addMapEntry(
+            $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'},
+            $data->{'MAIL_ADDR'} # Recipient
+                ."\t" # Separator
+                .join ',', (
+                    # Mail account only case:
+                    #  Postfix lookup in `virtual_alias_maps' first. Thus, if there
+                    #  is a catchall defined for the domain, any mail for the mail
+                    #  account will be catched by the catchall. To prevent this
+                    #  behavior, we must also add an entry in the virtual alias map.
+                    #
+                    # Forward + mail account case:
+                    #  we want keep local copy of inbound mails
+                    ($isMailAccount ? $data->{'MAIL_ADDR'} : ( )),
+                    # Add forward addresses in case of forward account
+                    ($isForwardAccount ? $data->{'MAIL_FORWARD'} : ( )),
+                    # Add autoresponder entry if it is enabled for this account
+                    ($data->{'MAIL_HAS_AUTO_RESPONDER'} ? $responderEntry : ( ))
+                )
+        );
+        return $rs if $rs;
 
         if ($data->{'MAIL_HAS_AUTO_RESPONDER'}) {
-            # Add transport map entry
+            # Add transport map entry for autoresponder
             $rs = $self->addMapEntry( $self->{'config'}->{'MTA_TRANSPORT_HASH'}, "$responderEntry\timscp-arpl:" );
             return $rs if $rs;
         }

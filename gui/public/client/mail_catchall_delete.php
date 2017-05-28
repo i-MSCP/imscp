@@ -61,7 +61,6 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMail
 ));
 
 send_request();
-
 write_log($_SESSION['user_logged'] . ': deletes email catch all!', E_USER_NOTICE);
 set_page_message(tr('Catch all successfully scheduled for deletion.'), 'success');
 redirectTo('mail_catchall.php');

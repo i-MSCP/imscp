@@ -408,7 +408,7 @@ function change_domain_status($customerId, $action)
 
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeChangeDomainStatus, array(
             'customerId' => $customerId,
-            'action' => $action
+            'action'     => $action
         ));
 
         if ($action == 'deactivate') {
@@ -420,12 +420,22 @@ function change_domain_status($customerId, $action)
                 exec_query('UPDATE mail_users SET po_active = ? WHERE domain_id = ?', array('no', $domainId));
             }
         } else {
-            exec_query('UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ? AND status = ?', array(
-                'toenable', 'yes', $domainId, 'disabled'
-            ));
-            exec_query('UPDATE mail_users SET po_active = ? WHERE domain_id = ? AND status <> ?', array(
-                'yes', $domainId, 'disabled'
-            ));
+            exec_query(
+                "
+                        UPDATE mail_users
+                        SET status = ?, po_active = IF(mail_type LIKE '%_mail%', 'yes', po_active)
+                        WHERE domain_id = ? AND status = ?
+                    ",
+                array('toenable', $domainId, 'disabled')
+            );
+            exec_query(
+                "
+                    UPDATE mail_users
+                    SET po_active = IF(mail_type LIKE '%_mail%', 'yes', po_active)
+                    WHERE domain_id = ?
+                    AND status <> ?",
+                array($domainId, 'disabled')
+            );
         }
 
         # TODO implements customer deactivation
@@ -448,7 +458,7 @@ function change_domain_status($customerId, $action)
 
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterChangeDomainStatus, array(
             'customerId' => $customerId,
-            'action' => $action
+            'action'     => $action
         ));
 
         $db->commit();
@@ -1109,7 +1119,7 @@ function redirectTo($location)
  *
  * @param  $array
  * @param bool $asPath
- * @return string
+ * @return array|string
  */
 function array_decode_idna($array, $asPath = false)
 {
@@ -1129,7 +1139,7 @@ function array_decode_idna($array, $asPath = false)
  *
  * @param array $array Indexed array that containt
  * @param bool $asPath
- * @return string
+ * @return array|string
  */
 function array_encode_idna($array, $asPath = false)
 {

@@ -511,10 +511,10 @@ function client_mail_add_default_accounts($dmnId, $userEmail, $dmnName, $dmnType
 		$stmt = $db->getRawInstance()->prepare(
 			'
 				INSERT INTO mail_users (
-					mail_acc, mail_pass, mail_forward, domain_id, mail_type, sub_id, status, mail_auto_respond, quota,
-					mail_addr
+					mail_acc, mail_pass, mail_forward, domain_id, mail_type, sub_id, status, po_active,
+					mail_auto_respond, quota, mail_addr
 				) VALUES (
-					?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+					?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 				)
 			'
 		);
@@ -528,7 +528,9 @@ function client_mail_add_default_accounts($dmnId, $userEmail, $dmnName, $dmnType
 			) as $email => $forwardTo
 		) {
 			if($forwardTo !== null) {
-				$stmt->execute(array($email, '_no_', $forwardTo, $dmnId, $forwardType, $subId, 'toadd', 0, null, $email . '@' . $dmnName));
+				$stmt->execute(
+					array($email, '_no_', $forwardTo, $dmnId, $forwardType, $subId, 'toadd', 'no', 0, null, $email . '@' . $dmnName)
+				);
 			}
 		}
 
