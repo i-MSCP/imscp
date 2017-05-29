@@ -8,11 +8,11 @@ BACKEND
     Added: Event listener priority queue; Allows to set priority for event listeners in range [-1000 .. 1000]
     Added: iMSCP::Dir::clear() method - Allows to clear full or specific content of a directory
     Added: Modules::ServerIP module (replace both Modules::Ips and Modules::NetworkInterfaces modules)
-    Enhancement: Objects can now be registered as listener (EventManager)
+    Enhancement: Objects can now be registered as event listener (iMSCP::EventManager)
     Fixed: Can't use an undefined value as a HASH reference; DBI::selectrow_hashref() return undef on empty results
-    Fixed: Fallback to server primary IP if domain IP is not known (domain and alias modules)
+    Fixed: Fallback to INADDR_ANY address IP if a domain IP is not found in database
     Fixed: Ownership and permissions not set (iMSCP::Dir::make)
-    Removed: Modules::Ips module and Modules::NetworkInterfaces
+    Removed: Modules::Ips and Modules::NetworkInterfaces modules
     Removed: Support for systemd older than 204-3 (iMSCP::Provider::Service::Debian::Systemd)
     Removed: Support for sysv-rc older than 2.88 (iMSCP::Provider::Service::Debian::Sysvinit)
 
@@ -22,9 +22,9 @@ CONFIG
     Added: `BIND_DB_SLAVE_DIR' configuration parameter (Bind9)
     Added: 'CMD_SYSCTL` and 'SYSCTL_CONF_DIR` parameters for sysctl(8)
     Fixed: Make sure that the root directory is marked as shared in regards to mount propagation (at least for i-MSCP mounts)
-    Fixed: Prevent upgrade of Percona server while processing disttribution upgrade (all distribution; APT pinning)
-    Removed: *.old.data configuration files (servers and packages)
-    Removed: `BIND_DB_DIR' configuration parameter
+    Fixed: Prevent upgrade of Percona server while processing disttribution upgrade (all distributions; APT pinning)
+    Removed: *.old.data configuration files (servers/packages)
+    Removed: `BIND_DB_DIR' configuration parameter (replaced by BIND_DB_MASTER_DIR' and `BIND_DB_SLAVE_DIR' configuration parameters)
 
 DATABASE
     Updated: domain_dns.domain_dns_status column length (VARCHAR to TEXT)
@@ -38,10 +38,10 @@ DISTRIBUTIONS
     Fixed: Wrong GPG key for MariaDB repository (Ubuntu 16.04)
 
 FRONTEND
-    Fixed: Allows auto-completion for login form (regression fix)
+    Fixed: Allow auto-completion for login form (regression fix)
     Fixed: Allow lower value than `post_max_size' for `memory_limit' (PHP Editor)
     Fixed: Creation of mailboxes for Postfix canonical domains through the control panel must be prohibited
-    Fixed: Integrity constraint violation: 1052 Column 'fname' in where clause is ambiguous when searching user by name
+    Fixed: Integrity constraint violation: 1052 Column 'fname' in WHERE clause is ambiguous when searching user by name
     Fixed: mail_users.po_active database column must be set to 'no' for forward only and catch-all accounts
     Fixed: Non well formed numeric value encountered in utils_getPhpValueInBytes() function
     Removed: Check for CNAME conflict (Custom DNS records)
@@ -53,7 +53,7 @@ LISTENERS
     Added: 10_proftpd_tls.pl file: Enforce TLS (replace 10_proftpd_tuning.pl)
     Fixed: 10_named_override_default_rr.pl: Cannot override default www CNAME record
     Fixed: 20_named_dualstack.pl listener file: Missing DNS records for subdomains
-    Fixed: Listeners that listen on the `afterMtaBuildConf' event must be registered with low priority
+    Fixed: Listeners from listener files that listen on the `afterMtaBuildConf' event must be registered with low priority
     Updated: 70_postfix_submission_tls.pl file: Fully redefines submission service and disable SSLv3
 
 INSTALLER
@@ -86,20 +86,19 @@ SCRIPTS
     Rewritten: imscp-vrl-traff traffic accounting script
 
 SERVERS
-    Added: IMAP/POP3 log format (Dovecot)
+    Added: Explicite IMAP/POP3 log format (Dovecot)
     Added: In/Out bytes variables in POP3 logs for better traffic accounting (Dovecot)
-    Changed: Directory for master zone files moved from /var/cache/bind to /var/cache/bind/imscp/master
-    Changed: Directory for slave zone files moved from /var/cache/bind/slave to /var/cache/bind/imscp/slave
+    Changed: Directory for master zone files moved from /var/cache/bind to /var/cache/bind/imscp/master (Bind9)
+    Changed: Directory for slave zone files moved from /var/cache/bind/slave to /var/cache/bind/imscp/slave (Bind9)
     Changed: Make use of relative paths for zone files instead of absolute paths in named.conf.local file (Bind9)
     Changed: Zone files are now dumped in binary format for rapid loading by named (Bind9)
     Fixed: Argument "" isn't numeric in addition (+)... in getTraffic() method of all servers implementing it
-    Fixed: Don't instantiate servers when not really needed
-    Fixed: Don't POSTMAP(1) when not really necessary (Postfix)
+    Fixed: Don't instantiate servers when that is not necessary
+    Fixed: Don't POSTMAP(1) when not necessary (Postfix)
     Fixed: Error: quota: Unknown namespace: Trash (Dovecot/IMAP)
-    Fixed: Make use of pristine suexec for better performance (Apache2)
     Fixed: Maildir not removed when turning normal mail account into forward only mail account (Postfix)
-    Fixed: Skip write operation in Server::Postfix::deleteMapEntry() when not necessary (Postfix)
-    Fixed: Unless virtual alias map entry for normal mail only accounts (Postfix)
+    Fixed: Make use of pristine suexec for better performances (Apache2/Suexec)
+    Fixed: Skip write operation in Servers::Postfix::deleteMapEntry() when not necessary (Postfix)
     Fixed: Unwanted directory listings (Apache2 - Regression fix)
     Fixed: warning: do not list domain xxxxxx in BOTH `mydestination' and `virtual_mailbox_domains' (Postfix)
     Fixed: Wrong POP3 traffic accounting (Dovecot)
