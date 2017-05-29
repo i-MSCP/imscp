@@ -174,6 +174,7 @@ sub _addUsersAndGroups
     for my $entry(@userToGroups) {
         my $systemUser = iMSCP::SystemUser->new( );
         my $user = $entry->[0];
+
         for my $group(@{$entry->[1]}) {
             $rs = $systemUser->addToGroup( $group, $user );
             return $rs if $rs;
@@ -267,12 +268,7 @@ sub setVersion
     return $rs if $rs;
 
     chomp( $stdout );
-    unless ($stdout =~ /^(\d+\.\d+\.\d+)$/) {
-        error( 'Unexpected value returned by POSTCONF(1) command.' );
-        return 1;
-    }
-
-    $self->{'config'}->{'POSTFIX_VERSION'} = $1;
+    $self->{'config'}->{'POSTFIX_VERSION'} = $stdout;
     0;
 }
 
@@ -344,9 +340,8 @@ sub _buildAliasesDb
     $rs = execute( 'newaliases', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
-    return $rs if $rs;
 
-    $self->{'eventManager'}->trigger( 'afterMtaBuildAliasesDb' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterMtaBuildAliasesDb' );
 }
 
 =item _buildMasterCfFile( )
@@ -445,6 +440,7 @@ sub _buildMainCfFile
     $cfgTpl = process( $data, $cfgTpl );
 
     $rs = $self->{'eventManager'}->trigger( 'afterMtaBuildMainCfFile', \ $cfgTpl, 'main.cf' );
+    return $rs if $rs;
 
     my $file = iMSCP::File->new( filename => $self->{'config'}->{'POSTFIX_CONF_FILE'} );
     $rs ||= $file->set( $cfgTpl );

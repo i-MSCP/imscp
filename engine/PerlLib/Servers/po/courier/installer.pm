@@ -708,7 +708,7 @@ sub _oldEngineCompatibility
     my $rs = $self->{'eventManager'}->trigger( 'beforePoOldEngineCompatibility' );
     return $rs if $rs;
 
-    if(-f "$self->{'cfgDir'}/courier.old.data") {
+    if (-f "$self->{'cfgDir'}/courier.old.data") {
         $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/courier.old.data" )->delFile( );
         return $rs if $rs;
     }

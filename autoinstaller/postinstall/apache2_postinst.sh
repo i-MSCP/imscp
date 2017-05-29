@@ -26,7 +26,8 @@ APACHE_VERSION=`dpkg-query --show --showformat '${Version}' apache2`
 
 service apache2 stop
 
-# Remove patch if version ge 2.4.24
+# Remove patch if
+# - Apache2 version is ge 2.4.24
 if [ -f /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST ] \
     && dpkg --compare-versions "$APACHE_VERSION" ge "2.4.24" ; then
     rm -f rm /usr/lib/apache2/modules/mod_proxy_fcgi.so
@@ -34,19 +35,13 @@ if [ -f /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST ] \
     exit;
 fi
 
-# Don't process if the module has been already patched or if apache2 version is
-# lt 2.4.7
-if [ -f /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST ] \
-   || dpkg --compare-versions "$APACHE_VERSION" lt "2.4.7" ; then
-    exit;
-fi
-
-# Don't process if the module has been already patched or if apache2 version is
-# lt 2.4.7 or ge 2.4.24
+# Don't process if
+# - The module has been already patched
+# - Apache2 version is  lt 2.4.7 or ge 2.4.24
 if [ -f /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST ] \
    || dpkg --compare-versions "$APACHE_VERSION" lt "2.4.7" \
-   || dpkg --compare-versions "$APACHE_VERSION" ge "2.4.24"; then
-   exit;
+   || dpkg --compare-versions "$APACHE_VERSION" ge "2.4.24" ; then
+    exit;
 fi
 
 rm -fR /tmp/imscp_apache2_src*

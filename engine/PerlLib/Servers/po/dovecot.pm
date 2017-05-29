@@ -194,7 +194,7 @@ sub postaddMail
 {
     my ($self, $data) = @_;
 
-    return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
+    return 0 unless index( $data->{'MAIL_TYPE'}, '_mail' ) != -1;
 
     my $mailDir = "$self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
     my $mailUidName = $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'};
@@ -440,7 +440,7 @@ sub getTraffic
 
             unless ($logsFound) {
                 debug( sprintf( 'No new IMAP/POP3 logs found in %s file for processing', $logFile ) );
-                $snapshotFH->close();
+                $snapshotFH->close( );
                 return;
             }
         } elsif ($logFile !~ /\.1$/) {
@@ -460,10 +460,10 @@ sub getTraffic
             next unless /(?:imap|pop3)\([^\@]+\@(?<domain>[^\)]+)\):.*in=(?<in>\d+).*out=(?<out>\d+)$/o
                 && exists $trafficDb->{$+{'domain'}};
 
-            $trafficDb->{$+{'domain'}} += ($+{'in'} + $+{'out'});
+            $trafficDb->{$+{'domain'}} += ($+{'in'}+$+{'out'});
         }
 
-        $snapshotFH->close();
+        $snapshotFH->close( );
     }
 
     # The log file is empty. We need to check the last rotated log file

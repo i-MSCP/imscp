@@ -1833,7 +1833,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     {
         $stmt = exec_query(
             "
-                SELECT mail_id, mail_type, mail_addr
+                SELECT mail_id, mail_type
                 FROM mail_users
                 WHERE mail_type LIKE '%_mail%'
                 AND SUBSTRING(mail_addr, LOCATE('@', mail_addr)+1) = ?

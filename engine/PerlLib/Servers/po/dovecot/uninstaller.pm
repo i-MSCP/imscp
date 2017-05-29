@@ -55,10 +55,10 @@ sub uninstall
 
     # In setup context, processing must be delayed, else we won't be able to connect to SQL server
     if ($main::execmode eq 'setup') {
-        return iMSCP::EventManager->getInstance()->register(
+        return iMSCP::EventManager->getInstance( )->register(
             'afterSqldPreinstall',
             sub {
-                my $rs ||= $self->_dropSqlUser();
+                my $rs ||= $self->_dropSqlUser( );
                 $rs ||= $self->_removeConfig( );
             }
         );

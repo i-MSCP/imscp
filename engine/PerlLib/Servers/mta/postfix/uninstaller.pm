@@ -85,6 +85,7 @@ sub _restoreConfFile
 
     for ($self->{'config'}->{'POSTFIX_CONF_FILE'}, $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}) {
         my $filename = basename( $_ );
+
         if (-f "$self->{'bkpDir'}/$filename.system") {
             my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile( $_ );
             return $rs if $rs;

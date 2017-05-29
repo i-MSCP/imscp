@@ -96,6 +96,7 @@ SERVERS
     Fixed: Don't instantiate servers when not really needed
     Fixed: Error: quota: Unknown namespace: Trash (Dovecot/IMAP)
     Fixed: Make use of pristine suexec for better performance (Apache2)
+    Fixed: Maildir not removed when turning normal mail account into forward only mail account (Postfix)
     Fixed: Unless virtual alias map entry for normal mail only accounts (Postfix)
     Fixed: Unwanted directory listings (Apache2 - Regression fix)
     Fixed: warning: do not list domain xxxxxx in BOTH `mydestination' and `virtual_mailbox_domains' (Postfix)
