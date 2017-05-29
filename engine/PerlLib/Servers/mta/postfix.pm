@@ -119,7 +119,7 @@ sub postinstall
                                 last if $rs;
                             }
 
-                            $self->postmap( $_ );
+                            $rs = $self->postmap( $_ );
                             last if $rs;
                         }
 
@@ -1164,16 +1164,16 @@ END
     {
         return if $? || !$instance || ($main::execmode && $main::execmode eq 'setup');
 
-        my $ret = 0;
+        my ($ret, $rs) = (0, 0);
 
         for(keys %{$instance->{'_postmap'}}) {
             if ($instance->{'_maps'}->{$_}) {
-                my $rs = $instance->{'_maps'}->{$_}->mode( 0640 );
+                $rs = $instance->{'_maps'}->{$_}->mode( 0640 );
                 $ret ||= $rs;
                 next if $rs;
             }
 
-            my $rs = $instance->postmap( $_ );
+            $rs = $instance->postmap( $_ );
             $ret ||= $rs;
         }
 
