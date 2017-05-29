@@ -172,18 +172,12 @@ sub setEnginePermissions
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaSetEnginePermissions' );
     return $rs if $rs;
 
-    my $rootUName = $main::imscpConfig{'ROOT_USER'};
-    my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-    my $imscpGName = $main::imscpConfig{'IMSCP_GROUP'};
-    my $mtaUName = $self->{'config'}->{'MTA_MAILBOX_UID_NAME'};
-    my $mtaGName = $self->{'config'}->{'MTA_MAILBOX_GID_NAME'};
-
     # eg. /etc/postfix/main.cf
     $rs = setRights(
         $self->{'config'}->{'POSTFIX_CONF_FILE'},
         {
-            user  => $rootUName,
-            group => $rootGName,
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
             mode  => '0644'
         }
     );
@@ -191,8 +185,8 @@ sub setEnginePermissions
     $rs ||= setRights(
         $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'},
         {
-            user  => $rootUName,
-            group => $rootGName,
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
             mode  => '0644'
         }
     );
@@ -200,8 +194,8 @@ sub setEnginePermissions
     $rs ||= setRights(
         $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'},
         {
-            user  => $rootUName,
-            group => $rootGName,
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
             mode  => '0644'
         }
     );
@@ -209,8 +203,8 @@ sub setEnginePermissions
     $rs ||= setRights(
         $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'},
         {
-            user      => $rootUName,
-            group     => $rootGName,
+            user      => $main::imscpConfig{'ROOT_USER'},
+            group     => $main::imscpConfig{'ROOT_GROUP'},
             dirmode   => '0750',
             filemode  => '0640',
             recursive => 1
@@ -220,8 +214,8 @@ sub setEnginePermissions
     $rs ||= setRights(
         "$main::imscpConfig{'ENGINE_ROOT_DIR'}/messenger",
         {
-            user      => $rootUName,
-            group     => $imscpGName,
+            user      => $main::imscpConfig{'ROOT_USER'},
+            group     => $main::imscpConfig{'IMSCP_GROUP'},
             dirmode   => '0750',
             filemode  => '0750',
             recursive => 1
@@ -231,8 +225,8 @@ sub setEnginePermissions
     $rs ||= setRights(
         $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
         {
-            user      => $mtaUName,
-            group     => $mtaGName,
+            user      => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+            group     => $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
             dirmode   => '0750',
             filemode  => '0640',
             recursive => iMSCP::Getopt->fixPermissions
@@ -242,8 +236,8 @@ sub setEnginePermissions
     $rs ||= setRights(
         $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'},
         {
-            user  => $rootUName,
-            group => $rootGName,
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
             mode  => '0750'
         }
     );
@@ -417,16 +411,23 @@ sub deleteDmn
 {
     my ($self, $data) = @_;
 
-    return 0 if $data->{'DOMAIN_NAME'} eq $main::imscpConfig{'SERVER_HOSTNAME'};
-
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDelDmn', $data );
     $rs ||= $self->deleteMapEntry(
         $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/
     );
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
-    $rs ||= iMSCP::Dir->new( dirname =>
-        "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}" )->remove( );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterMtaDelDmn', $data );
+    return $rs if $rs;
+
+    local $@;
+    eval {
+        iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}" )->remove( );
+    };
+    if ($@) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterMtaDelDmn', $data );
 }
 
 =item addSub( \%data )
@@ -492,16 +493,22 @@ sub deleteSub
 {
     my ($self, $data) = @_;
 
-    return 0 if $data->{'DOMAIN_NAME'} eq $main::imscpConfig{'SERVER_HOSTNAME'};
-
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDelSub', $data );
     $rs ||= $self->deleteMapEntry(
         $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/
     );
-    $rs ||= iMSCP::Dir->new(
-        dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}"
-    )->remove( );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterMtaDelSub', $data );
+    return $rs if $rs;
+
+    local $@;
+    eval {
+        iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}" )->remove( );
+    };
+    if ($@) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterMtaDelSub', $data );
 }
 
 =item addMail( \%data )
@@ -546,19 +553,25 @@ sub addMail
 
         if ($isMailAccount) {
             # Create mailbox
-            for (qw/ cur new tmp /) {
-                $rs = iMSCP::Dir->new(
-                    dirname =>
-                    "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}/$_"
-                )->make(
-                    {
-                        user           => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-                        group          => $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
-                        mode           => 0750,
-                        fixpermissions => iMSCP::Getopt->fixPermissions
-                    }
-                );
-                return $rs if $rs;
+            local $@;
+            eval {
+                for (qw/ cur new tmp /) {
+                    iMSCP::Dir->new(
+                        dirname =>
+                        "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}/$_"
+                    )->make(
+                        {
+                            user           => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+                            group          => $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+                            mode           => 0750,
+                            fixpermissions => iMSCP::Getopt->fixPermissions
+                        }
+                    );
+                }
+            };
+            if ($@) {
+                error( $@ );
+                return 1;
             }
 
             # Add virtual mailbox map entry
@@ -567,6 +580,17 @@ sub addMail
                 "$data->{'MAIL_ADDR'}\t$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}/"
             );
             return $rs if $rs;
+        } else {
+            local $@;
+            eval {
+                iMSCP::Dir->new(
+                    dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}"
+                )->remove( );
+            };
+            if ($@) {
+                error( $@ );
+                return 1;
+            }
         }
 
         # Add virtual alias map entry
@@ -669,9 +693,18 @@ sub deleteMail
 
         my $responderEntry = "$data->{'MAIL_ACC'}\@imscp-arpl.$data->{'DOMAIN_NAME'}";
         $rs = $self->deleteMapEntry( $self->{'config'}->{'MTA_TRANSPORT_HASH'}, qr/\Q$responderEntry\E\s+[^\n]*/ );
-        $rs ||= iMSCP::Dir->new(
-            dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}"
-        )->remove( );
+        return $rs if $rs;
+
+        local $@;
+        eval {
+            iMSCP::Dir->new(
+                dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}"
+            )->remove( );
+        };
+        if ($@) {
+            error( $@ );
+            return 1;
+        }
     }
 
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaDelMail', $data );
