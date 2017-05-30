@@ -98,6 +98,7 @@ SERVERS
     Fixed: Error: quota: Unknown namespace: Trash (Dovecot/IMAP)
     Fixed: Maildir not removed when turning normal mail account into forward only mail account (Postfix)
     Fixed: Make use of pristine suexec for better performances (Apache2/Suexec)
+    Fixed: Recipient address rejected: User unknown in local recipient table (Postfix)
     Fixed: Skip write operation in Servers::Postfix::deleteMapEntry() when not necessary (Postfix)
     Fixed: Unwanted directory listings (Apache2 - Regression fix)
     Fixed: warning: do not list domain xxxxxx in BOTH `mydestination' and `virtual_mailbox_domains' (Postfix)
