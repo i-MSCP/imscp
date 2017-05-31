@@ -11,6 +11,8 @@ BACKEND
     Enhancement: Objects can now be registered as event listener (iMSCP::EventManager)
     Fixed: Can't use an undefined value as a HASH reference; DBI::selectrow_hashref() return undef on empty results
     Fixed: Fallback to INADDR_ANY address IP if a domain IP is not found in database
+    Fixed: Make use of Full Stop unicode character to encode dots in database names (iMSCP::Database::mysql::dumpdb)
+    Fixed: Make use of SOLIDUS unicode character to encode slashes in database names (iMSCP::Database::mysql::dumpdb)
     Fixed: Ownership and permissions not set (iMSCP::Dir::make)
     Removed: Modules::Ips and Modules::NetworkInterfaces modules
     Removed: Support for systemd older than 204-3 (iMSCP::Provider::Service::Debian::Systemd)
@@ -119,6 +121,7 @@ YOUTRACK
     IP-1715 Changing directory in protected area results in obsolete .htaccess file in old directory
     IP-1716 PHP editor - Caret is jumping to the end of the input field each time validation is triggered
     IP-1717 Wrong GPG key for MariaDB repository (Ubuntu 16.04)
+    IP-1721 Couldn't backup databases named with slashes
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.3

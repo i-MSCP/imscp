@@ -130,15 +130,16 @@ sub useDatabase
 
     my $oldDatabase = $self->{'db'}->{'DATABASE_NAME'};
     my $dbh = $self->getRawDb( );
-    unless($dbh->ping( )) {
+    unless ($dbh->ping( )) {
         $self->connect( );
         $dbh = $self->getRawDb( );
     }
-    $dbh->{'RaiseError'} = 1;
-    local $@;
-    eval { $dbh->do( 'use '.$self->quoteIdentifier( $database ) ); };
-    $dbh->{'RaiseError'} = 0;
-    die( $@ ) if $@;
+
+    {
+        local $dbh->{'RaiseError'} = 1;
+        $dbh->do( 'USE '.$self->quoteIdentifier( $database ) );
+    }
+
     $self->{'db'}->{'DATABASE_NAME'} = $database;
     $oldDatabase;
 }
@@ -194,7 +195,7 @@ sub getRawDb
     $self->{'connection'};
 }
 
-=item doQuery($key, $query, [ @bindValues = undef ])
+=item doQuery( $key, $query [, @bindValues = undef ] )
 
  Execute the given SQL statement
 
@@ -276,33 +277,39 @@ sub getTableColumns
     \@columns;
 }
 
-=item dumpdb($dbName, $filename)
+=item dumpdb( $dbName, $dbDumpTargetDir )
 
- Dump the given database in the given filename
+ Dump the given database
 
- Param string Database name
- Param string Path of filename where the database should be dumped
- Return int 0 on success 1 on failure
+ Param string $dbName Database name
+ Param string $dbDumpTargetDir Database dump target directory
+ Return void, die on failure
 
 =cut
 
 sub dumpdb
 {
-    my (undef, $dbName, $filename) = @_;
+    my (undef, $dbName, $dbDumpTargetDir) = @_;
 
-    debug(sprintf('Dump `%s` database into %s', $dbName, $filename) );
+    # Encode slashes as SOLIDUS unicode character
+    (my $encodedDbName = $dbName) =~ s/\//\@002f/g;
+    # Encode dot as Full stop unicode character
+    $encodedDbName =~ s/\./\@002e/g;
 
-    my $rs = execute(
+    debug(sprintf('Dump `%s` database into %s', $dbName, $dbDumpTargetDir.'/'.$encodedDbName.'.sql') );
+
+    my $stderr;
+    execute(
         [
             'mysqldump', '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords', '--compress',
-            '--quote-names', '-r', $filename, '-B', $dbName
+            '--quote-names', '-r', "$dbDumpTargetDir/$encodedDbName.sql", '-B', $dbName
         ],
-        \ my $stdout,
-        \ my $stderr
+        undef,
+        \ $stderr
+    ) == 0 or die(
+        sprintf( "Couldn't dump the `%s` database: %s", $dbName, $stderr || 'Unknown error' )
     );
-    debug( $stdout ) if $stdout;
-    error( $stderr || 'Unknown error' ) if $rs;
-    $rs;
+
 }
 
 =item quoteIdentifier($identifier)
@@ -360,12 +367,12 @@ sub _init
     $self->{'db'}->{'DATABASE_USER'} = '';
     $self->{'db'}->{'DATABASE_PASSWORD'} = '';
     $self->{'db'}->{'DATABASE_SETTINGS'} = {
-        'AutoCommit'           => 1,
-        'PrintError'           => 0,
-        'RaiseError'           => 1,
-        'mysql_auto_reconnect' => 1,
-        'mysql_enable_utf8'    => 1,
-        'AutoInactiveDestroy'  => 1
+        AutoCommit           => 1,
+        PrintError           => 0,
+        RaiseError           => 1,
+        mysql_auto_reconnect => 1,
+        mysql_enable_utf8    => 1,
+        AutoInactiveDestroy  => 1
     };
 
     # Default fetch mode

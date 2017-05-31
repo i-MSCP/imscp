@@ -206,83 +206,96 @@ sub restore
 
     local $@;
     eval {
+        # Restore know databases only
+        my $qrs = $db->doQuery(
+            'sqld_name', 'SELECT sqld_name FROM sql_database WHERE domain_id = ?', $self->{'domain_id'}
+        );
+        ref $qrs eq 'HASH' or die( $qrs );
+
+        for my $dbName(keys %{$qrs}) {
+            # Encode slashes as SOLIDUS unicode character
+            (my $encodedDbName = $dbName) =~ s/\//\@002f/g;
+            # Encode dots as Full stop unicode character
+            $encodedDbName =~ s/\./\@002e/g;
+
+            for('.sql', '.sql.bz2', '.sql.gz', '.sql.lzma', '.sql.xz') {
+                my $dbDumpFilePath = File::Spec->catfile( $bkpDir, $encodedDbName.$_ );
+                next unless -f $dbDumpFilePath;
+                $self->_restoreDatabase( $dbName, $dbDumpFilePath );
+            }
+        }
+
+        # Restore first Web backup found
         for (iMSCP::Dir->new( dirname => $bkpDir )->getFiles( )) {
-            next if -l "$bkpDir/$_"; # Don't follow symlinks (See #990)
+            next if -l "$bkpDir/$_"; # Don't follow symlinks (See #IP-990)
+            next unless /^web-backup-.+?\.tar(?:\.(bz2|gz|lzma|xz))?$/;
 
-            if (/^.+?\.sql(?:\.bz2|gz|lzma|xz)?$/) {
-                $self->_restoreDatabase( File::Spec->catfile( $bkpDir, $_ ) );
-                next;
+            my $archFormat = $1 || '';
+
+            # Since we are now using immutable bit to protect some folders, we must in order do the following
+            # to restore a backup archive:
+            #
+            # - Un-protect user homedir (clear immutable flag recursively)
+            # - Restore web files
+            # - Update status of sub, als and alssub, entities linked to the parent domain to 'torestore'
+            # - Run the restore( ) parent method
+            #
+            # The third and last tasks allow the i-MSCP Httpd server implementations to set correct permissions and
+            # set immutable flag on folders if needed for each entity
+            #
+            # Note: This is a lot of works but this will be fixed when the backup feature will be rewritten
+
+            if ($archFormat eq 'bz2') {
+                $archFormat = 'bzip2';
+            } elsif ($archFormat eq 'gz') {
+                $archFormat = 'gzip';
             }
 
-            if (/^web-backup-.+?\.tar(?:\.(bz2|gz|lzma|xz))?$/) {
-                # Restore web backup
-                my $archFormat = $1 || '';
+            clearImmutable( $homeDir, 1 ); # Un-protect homedir recursively
 
-                # Since we are now using immutable bit to protect some folders, we must in order do the following
-                # to restore a backup archive:
-                #
-                # - Un-protect user homedir (clear immutable flag recursively)
-                # - Restore web files
-                # - Update status of sub, als and alssub, entities linked to the parent domain to 'torestore'
-                # - Run the restore( ) parent method
-                #
-                # The third and last tasks allow the i-MSCP Httpd server implementations to set correct permissions and
-                # set immutable flag on folders if needed for each entity
-                #
-                # Note: This is a lot of works but this will be fixed when the backup feature will be rewritten
-
-                if ($archFormat eq 'bz2') {
-                    $archFormat = 'bzip2';
-                } elsif ($archFormat eq 'gz') {
-                    $archFormat = 'gzip';
-                }
-
-                clearImmutable( $homeDir, 1 ); # Un-protect homedir recursively
-
-                my $cmd;
-                if ($archFormat ne '') {
-                    $cmd = [ 'tar', '-x', '-p', "--$archFormat", '-C', $homeDir, '-f', "$bkpDir/$_" ];
-                } else {
-                    $cmd = [ 'tar', '-x', '-p', '-C', $homeDir, '-f', "$bkpDir/$_" ];
-                }
-
-                my $rs = execute( $cmd, \ my $stdout, \ my $stderr );
-                debug( $stdout ) if $stdout;
-                $rs == 0 or die( $stderr || 'Unknown error' );
-
-                my $dbi = $db->startTransaction( );
-
-                eval {
-                    $dbi->do(
-                        'UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?',
-                        undef,
-                        'torestore',
-                        $self->{'domain_id'}
-                    );
-                    $dbi->do(
-                        'UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?',
-                        undef,
-                        'torestore',
-                        $self->{'domain_id'}
-                    );
-                    $dbi->do(
-                        "
-                            UPDATE subdomain_alias
-                            SET subdomain_alias_status = 'torestore'
-                            WHERE alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
-                        ",
-                        undef,
-                        $self->{'domain_id'}
-                    );
-
-                    $dbi->commit( );
-                };
-
-                $dbi->rollback( ) if $@;
-                $db->endTransaction( );
+            my $cmd;
+            if ($archFormat ne '') {
+                $cmd = [ 'tar', '-x', '-p', "--$archFormat", '-C', $homeDir, '-f', "$bkpDir/$_" ];
+            } else {
+                $cmd = [ 'tar', '-x', '-p', '-C', $homeDir, '-f', "$bkpDir/$_" ];
             }
-            
-            last if $@;
+
+            my $rs = execute( $cmd, \ my $stdout, \ my $stderr );
+            debug( $stdout ) if $stdout;
+            $rs == 0 or die( $stderr || 'Unknown error' );
+
+            my $dbi = $db->startTransaction( );
+
+            eval {
+                $dbi->do(
+                    'UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?',
+                    undef,
+                    'torestore',
+                    $self->{'domain_id'}
+                );
+                $dbi->do(
+                    'UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?',
+                    undef,
+                    'torestore',
+                    $self->{'domain_id'}
+                );
+                $dbi->do(
+                    "
+                        UPDATE subdomain_alias
+                        SET subdomain_alias_status = 'torestore'
+                        WHERE alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
+                    ",
+                    undef,
+                    $self->{'domain_id'}
+                );
+
+                $dbi->commit( );
+            };
+
+            $dbi->rollback( ) if $@;
+            $db->endTransaction( );
+
+            last;
         }
     };
     if ($@) {
@@ -435,10 +448,11 @@ sub _getData
     $self->{'_data'};
 }
 
-=item _restoreDatabase( $dbDumpFilePath )
+=item _restoreDatabase( $dbName, $dbDumpFilePath )
 
  Restore a database from the given database dump file
  
+ Param string $dbName Database name
  Param string $dbDumpFilePath Path to database dump file
  die on failure
 
@@ -446,25 +460,9 @@ sub _getData
 
 sub _restoreDatabase
 {
-    my ($self, $dbDumpFilePath) = @_;
+    my (undef, $dbName, $dbDumpFilePath) = @_;
 
-    my ($dbName, undef, $archFormat) = fileparse( $dbDumpFilePath, qr/\.(?:bz2|gz|lzma|xz)/ );
-    $dbName = fileparse($dbName, qr/\.sql/ );
-
-    my $db = iMSCP::Database->factory( );
-
-    my $qrs = $db->doQuery(
-        1,
-        'SELECT 1 FROM sql_database WHERE domain_id = ? AND sqld_name = ? LIMIT 1',
-        $self->{'domain_id'},
-        $dbName
-    );
-    ref $qrs eq 'HASH' or die( $qrs );
-
-    unless (%{$qrs}) {
-        debug(sprintf( "Orphaned `%s' database. skipping...", $dbName ));
-        return;
-    }
+    my (undef, undef, $archFormat) = fileparse( $dbDumpFilePath, qr/\.(?:bz2|gz|lzma|xz)/ );
 
     my $cmd;
     if (defined $archFormat) {
@@ -490,8 +488,9 @@ sub _restoreDatabase
 
     Servers::sqld->factory( )->createUser( $dbUser, $dbUserHost, $dbUserPwd );
 
+    my $db = iMSCP::Database->factory( );
     (my $quotedDbName = $db->quoteIdentifier( $dbName )) =~ s/([%_])/\\$1/g;
-    $qrs = $db->doQuery( 'g', "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?\@?", $dbUser, $dbUserHost );
+    my $qrs = $db->doQuery( 'g', "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?\@?", $dbUser, $dbUserHost );
     ref $qrs eq 'HASH' or die( $qrs );
 
     my $sqlExtraFile = File::Temp->new( UNLINK => 1, SUFFIX => '.cnf' );

@@ -30,6 +30,7 @@
 use strict;
 use warnings;
 use File::Basename;
+use File::Spec;
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 use iMSCP::Bootstrapper;
@@ -41,11 +42,6 @@ use iMSCP::Getopt;
 use iMSCP::Mail;
 use Servers::mta;
 use POSIX qw/ strftime /;
-use POSIX qw/ locale_h /;
-use locale;
-
-setlocale( LC_ALL, 'C.UTF-8' );
-$ENV{'LANG'} = 'C.UTF-8';
 
 my $command = {
     bzip2  => {
@@ -113,6 +109,7 @@ sub backupHomedir
 
     my $rs = execute( "@cmd", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
+    debug( $stdout ) if $stdout;
 
     # tar exit with status 1 only if some files were changed while being read. We want ignore this.
     if ($rs > 1) {
@@ -122,7 +119,7 @@ sub backupHomedir
 
     my $file = iMSCP::File->new( filename => "$bkpDir/$bkpArchName" );
     $rs ||= $file->owner( $user, $group );
-    $rs ||= $file->mode( 0644 );
+    $rs ||= $file->mode( 0640 );
 }
 
 =item backupDatabases( $mainDomainId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group )
@@ -153,22 +150,31 @@ sub backupDatabases
         return 1;
     }
 
-    for (keys %{$data}) {
-        next if $db->dumpdb( $_, "$bkpDir/$_.sql" );
+    for my $dbName(keys %{$data}) {
+        local $@;
+        eval { $db->dumpdb( $dbName, $bkpDir ); };
+        next if $@;
 
-        my $file = iMSCP::File->new( filename => "$bkpDir/$_.sql" );
+        # Encode slashes as SOLIDUS unicode character
+        (my $encodedDbName = $dbName) =~ s/\//\@002f/g;
+        # Encode dots as Full stop unicode character
+        $encodedDbName =~ s/\./\@002e/g;
+
+        my $dbDumpFilePath = File::Spec->catfile( $bkpDir, $encodedDbName.'.sql' );
+
+        my $file = iMSCP::File->new( filename => $dbDumpFilePath );
         my $rs = $file->owner( $user, $group );
-        $rs ||= $file->mode( 0644 );
+        $rs ||= $file->mode( 0640 );
 
         next if $rs || $cmpAlgo eq 'no';
 
         $rs = execute(
-            [ $command->{$cmpAlgo}->{'command'}, "-$cmpLevel", '--force', "$bkpDir/$_.sql" ],
+            [ $command->{$cmpAlgo}->{'command'}, "-$cmpLevel", '--force', $dbDumpFilePath ],
             \ my $stdout,
             \ my $stderr
         );
         debug( $stdout ) if $stdout;
-        error( $stderr || 'Unknown error' ) if $rs;
+        error( sprintf( "Couldn't compress %s database dump: %s", $dbName, $stderr || 'Unknown error' ) ) if $rs;
     }
 }
 
@@ -257,7 +263,7 @@ sub backupMaildirs
 
         my $file = iMSCP::File->new( filename => "$bkpDir/$bkpArchName" );
         $rs ||= $file->owner( $user, $group );
-        $rs = $file->mode( 0644 );
+        $rs = $file->mode( 0640 );
     }
 }
 
