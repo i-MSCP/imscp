@@ -41,7 +41,7 @@ my $saslPasswdMapsPath = '/etc/postfix/relay_passwd';
 ## Please, don't edit anything below this line unless you known what you're doing
 #
 
-iMSCP::EventManager->getInstance() > register(
+iMSCP::EventManager->getInstance()->register(
     'beforeInstallPackages',
     sub {
         push @{$_[0]}, 'libsasl2-modules';
