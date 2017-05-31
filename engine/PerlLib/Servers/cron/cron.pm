@@ -215,7 +215,7 @@ sub addTask
 
         # Remove entry with same ID if any
         $fileContent = replaceBloc(
-            qr/\n?\Q# imscp [$data->{'TASKID'}] entry BEGIN\E\n/,
+            qr/(:?^\n)?\Q# imscp [$data->{'TASKID'}] entry BEGIN\E\n/m,
             qr/\Q# imscp [$data->{'TASKID'}] entry ENDING\E\n/,
             '',
             $fileContent
@@ -280,7 +280,7 @@ sub deleteTask
     return $rs if $rs;
 
     $fileContent = replaceBloc(
-        qr/\n?\Q# imscp [$data->{'TASKID'}] entry BEGIN\E\n/,
+        qr/(:?^\n)?\Q# imscp [$data->{'TASKID'}] entry BEGIN\E\n/m,
         qr/\Q# imscp [$data->{'TASKID'}] entry ENDING\E\n/,
         '',
         $fileContent
