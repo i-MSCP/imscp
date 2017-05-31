@@ -5,7 +5,7 @@
                 description="Nginx server"
                 class="Package::FrontEnd"
         >
-            <package>nginx-light</package>
+            <package>nginx-full</package>
             <package_conflict>nginx</package_conflict>
         </nginx>
     </frontend>

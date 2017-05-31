@@ -6,7 +6,7 @@
                 class="Package::FrontEnd"
                 repository_conflict="http://nginx.org/packages/ubuntu"
         >
-            <package>nginx-light</package>
+            <package>nginx-full</package>
             <package_conflict>nginx</package_conflict>
         </nginx>
     </frontend>

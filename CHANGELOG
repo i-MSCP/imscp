@@ -37,6 +37,7 @@ CRON
 
 DISTRIBUTIONS
     Added: Support for Devuan jessie 1.0 - See https://devuan.org/
+    Changed: Install nginx-full package instead of nginx-light package (Nginx)
     Fixed: invoke-rc.d: action rotate is unknown, but proceeding anyway. (See Debian bug report #728682)
     Fixed: Wrong GPG key for MariaDB repository (Ubuntu 16.04)
 
