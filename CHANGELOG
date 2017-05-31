@@ -42,6 +42,7 @@ DISTRIBUTIONS
     Fixed: Wrong GPG key for MariaDB repository (Ubuntu 16.04)
 
 FRONTEND
+    Added: 502 (Bad Gateway) error page
     Fixed: Allow auto-completion for login form (regression fix)
     Fixed: Allow lower value than `post_max_size' for `memory_limit' (PHP Editor)
     Fixed: Creation of mailboxes for Postfix canonical domains through the control panel must be prohibited
