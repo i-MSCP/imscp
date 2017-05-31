@@ -24,11 +24,6 @@
 class iMSCP_Plugin_Manager
 {
     /**
-     * @const string Plugin API version
-     */
-    const PLUGIN_API_VERSION = '1.4.1';
-
-    /**
      * @const int Action success
      */
     const ACTION_SUCCESS = 1;
@@ -173,7 +168,7 @@ class iMSCP_Plugin_Manager
      */
     public function pluginGetApiVersion()
     {
-        return self::PLUGIN_API_VERSION;
+        return iMSCP_Registry::get('config')->{'PluginApi'};
     }
 
     /**
