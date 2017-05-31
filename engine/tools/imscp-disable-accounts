@@ -37,11 +37,6 @@ use iMSCP::Bootstrapper;
 use iMSCP::DbTasksProcessor;
 use iMSCP::Getopt;
 use File::Basename;
-use POSIX qw /locale_h /;
-use locale;
-
-setlocale( LC_ALL, 'C.UTF-8' );
-$ENV{'LANG'} = 'C.UTF-8';
 
 sub run
 {

@@ -37,11 +37,6 @@ use iMSCP::Dialog;
 use iMSCP::EventManager;
 use iMSCP::Getopt;
 use Net::LibIDN qw/ idn_to_unicode /;
-use POSIX qw/ locale_h /;
-use locale;
-
-setlocale( LC_ALL, 'C.UTF-8' );
-$ENV{'LANG'} = 'C.UTF-8';
 
 # Needed to make any sub-process aware of i-MSCP setup process
 $ENV{'IMSCP_SETUP'} = 1;

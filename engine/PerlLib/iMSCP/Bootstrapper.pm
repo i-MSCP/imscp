@@ -31,17 +31,12 @@ use iMSCP::EventManager;
 use iMSCP::Getopt;
 use iMSCP::Umask;
 use IO::Handle;
-use locale;
-use POSIX qw / tzset locale_h /;
+use POSIX qw / tzset /;
 use parent 'Common::SingletonClass';
 
 $SIG{'INT'} = 'IGNORE';
 
 umask 022;
-
-setlocale( LC_ALL, 'C.UTF-8' );
-$ENV{'LC_ALL'} = 'C.UTF-8';
-$ENV{'LANG'} = 'C.UTF-8';
 
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 $ENV{'HOME'} = (getpwuid $>)[7] or die( "Couldn't find running user homedir" );

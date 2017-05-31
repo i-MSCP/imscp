@@ -38,11 +38,6 @@ use iMSCP::Execute qw / execute /;
 use iMSCP::Getopt;
 use iMSCP::Mail;
 use Servers::mta;
-use POSIX qw/ locale_h /;
-use locale;
-
-setlocale( LC_ALL, 'C.UTF-8' );
-$ENV{'LANG'} = 'C.UTF-8';
 
 =head1 DESCRIPTION
 

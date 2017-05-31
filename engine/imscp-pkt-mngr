@@ -28,11 +28,6 @@ use XML::Parser;
 use warnings;
 use JSON;
 use MIME::Base64 qw/ decode_base64 /;
-use POSIX qw(locale_h);
-use locale;
-
-setlocale(LC_ALL, 'C.UTF-8');
-$ENV{'LANG'} = 'C.UTF-8';
 
 defined $ARGV[0] or die('Expects a base64 encoded string containg JSON data as first argument');
 

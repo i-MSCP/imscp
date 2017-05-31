@@ -43,11 +43,7 @@ use iMSCP::Dialog;
 use iMSCP::Getopt;
 use File::Basename;
 use autoinstaller::Functions qw/ loadConfig build install /;
-use POSIX qw/ locale_h /;
-use locale;
 
-setlocale( LC_ALL, 'C.UTF-8' );
-$ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
 # Needed to make any sub-process aware of i-MSCP setup process

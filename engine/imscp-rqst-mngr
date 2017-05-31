@@ -36,11 +36,6 @@ use iMSCP::Bootstrapper;
 use iMSCP::DbTasksProcessor;
 use iMSCP::Debug;
 use iMSCP::Getopt;
-use POSIX qw/ locale_h /;
-use locale;
-
-setlocale( LC_ALL, 'C.UTF-8' );
-$ENV{'LANG'} = 'C.UTF-8';
 
 newDebug( 'imscp-rqst-mngr.log' );
 

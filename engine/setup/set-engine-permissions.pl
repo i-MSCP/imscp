@@ -38,11 +38,6 @@ use iMSCP::Getopt;
 use iMSCP::Rights;
 use iMSCP::Servers;
 use iMSCP::Packages;
-use POSIX qw(locale_h);
-use locale;
-
-setlocale( LC_ALL, 'C.UTF-8' );
-$ENV{'LANG'} = 'C.UTF-8';
 
 newDebug( 'imscp-set-engine-permissions.log' );
 

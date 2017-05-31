@@ -49,12 +49,7 @@ use iMSCP::Service;
 use iMSCP::Stepper;
 use iMSCP::SystemUser;
 use Servers::sqld;
-use POSIX qw/ locale_h /;
 use Servers::sqld;
-use locale;
-
-setlocale( LC_ALL, 'C.UTF-8' );
-$ENV{'LANG'} = 'C.UTF-8';
 
 # Set backend mode
 $main::execmode = 'uninstall' unless defined $main::execmode;;
