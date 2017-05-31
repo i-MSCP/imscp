@@ -181,13 +181,13 @@ sub _scheduleCheck
 
     # Create an empty file to avoid planning multiple check if installer is run many time
     my $file = iMSCP::File->new( filename => $main::imscpConfig{'RKHUNTER_LOG'} );
-    my $rs = $file->set( 'Check scheduled...' );
+    my $rs = $file->set( "Check scheduled...\n" );
     $rs ||= $file->save( );
     return $rs if $rs;
 
     $rs = execute(
         "echo 'perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl > /dev/null 2>&1' "
-            ."| batch",
+            ."| at now + 10 minutes",
         \ my $stdout,
         \ my $stderr
     );

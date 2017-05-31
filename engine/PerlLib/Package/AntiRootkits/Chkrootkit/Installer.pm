@@ -127,12 +127,14 @@ sub _scheduleCheck
 
     # Create an emtpy file to avoid planning multiple check if installer is run many time
     my $file = iMSCP::File->new( filename => $main::imscpConfig{'CHKROOTKIT_LOG'} );
-    my $rs = $file->set( 'Check scheduled...' );
+    my $rs = $file->set( "Check scheduled...\n" );
     $rs ||= $file->save( );
     return $rs if $rs;
 
     $rs = execute(
-        "echo 'bash chkrootkit -e > $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1' | batch", \ my $stdout, \ my $stderr
+        "echo 'bash chkrootkit -e > $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1' | at now + 10 minutes",
+        \ my $stdout,
+        \ my $stderr
     );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;

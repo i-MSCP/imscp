@@ -129,12 +129,12 @@ sub _backupDatabase
         return 1;
     }
 
-    my $date = strftime "%Y.%m.%d-%H-%M", localtime;
-
     # Encode slashes as SOLIDUS unicode character
-    (my $encodedDbName = $main::imscpConfig{'DATABASE_NAME'}) =~ s/\//\@002f/g;
     # Encode dots as Full stop unicode character
-    $encodedDbName =~ s/\./\@002e/g;
+    my %rpl = ( '/', '@002f', '.', '@002e' );
+    (my $encodedDbName = $dbName) =~ s%([./])%$rpl{$1}%ge;
+
+    my $date = strftime "%Y.%m.%d-%H-%M", localtime;
 
     my $rs = iMSCP::File->new(
         filename => $main::imscpConfig{'BACKUP_FILE_DIR'}.'/'.$encodedDbName.'.sql'

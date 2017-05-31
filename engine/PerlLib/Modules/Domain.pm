@@ -214,9 +214,9 @@ sub restore
 
         for my $dbName(keys %{$qrs}) {
             # Encode slashes as SOLIDUS unicode character
-            (my $encodedDbName = $dbName) =~ s/\//\@002f/g;
             # Encode dots as Full stop unicode character
-            $encodedDbName =~ s/\./\@002e/g;
+            my %rpl = ( '/', '@002f', '.', '@002e' );
+            (my $encodedDbName = $dbName) =~ s%([./])%$rpl{$1}%ge;
 
             for('.sql', '.sql.bz2', '.sql.gz', '.sql.lzma', '.sql.xz') {
                 my $dbDumpFilePath = File::Spec->catfile( $bkpDir, $encodedDbName.$_ );

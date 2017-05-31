@@ -156,9 +156,9 @@ sub backupDatabases
         next if $@;
 
         # Encode slashes as SOLIDUS unicode character
-        (my $encodedDbName = $dbName) =~ s/\//\@002f/g;
         # Encode dots as Full stop unicode character
-        $encodedDbName =~ s/\./\@002e/g;
+        my %rpl = ( '/', '@002f', '.', '@002e' );
+        (my $encodedDbName = $dbName) =~ s%([./])%$rpl{$1}%ge;
 
         my $dbDumpFilePath = File::Spec->catfile( $bkpDir, $encodedDbName.'.sql' );
 
