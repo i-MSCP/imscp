@@ -1089,7 +1089,8 @@ sub _buildHttpdConfig
                 ${$cfgTpl} = replaceBloc(
                     '# SECTION IPv6 BEGIN.',
                     '# SECTION IPv6 END.',
-                    '', ${$cfgTpl}
+                    '',
+                    ${$cfgTpl}
                 );
             }
 

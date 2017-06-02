@@ -1,4 +1,3 @@
-
 location = /ftp {
     return 301 /ftp/;
 }
