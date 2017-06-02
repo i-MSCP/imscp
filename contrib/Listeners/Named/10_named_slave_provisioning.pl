@@ -94,10 +94,10 @@ iMSCP::EventManager->getInstance()->register(
     sub {
         my ($tplContent, $tplName) = @_;
 
-        return 0 unless $tplName eq '00_master.conf' || $tplName eq '00_master_ssl.conf';
+        return 0 unless $tplName eq '00_master.nginx';
 
-        my $locationSnippet = <<EOF;
-    location /provisioning {
+        my $locationSnippet = <<"EOF";
+    location ^~ /provisioning/ {
         root /var/www/imscp/gui/public;
 
         location ~ \\.php\$ {

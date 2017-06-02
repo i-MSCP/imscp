@@ -98,7 +98,7 @@ sub afterFrontEndBuildConfFile
 {
     my ($tplContent, $tplName) = @_;
 
-    return 0 unless $tplName =~ /^00_master(?:_ssl)?\.conf$/;
+    return 0 unless $tplName eq '00_master.nginx';
 
     ${$tplContent} = replaceBloc(
         "# SECTION custom BEGIN.\n",
@@ -171,7 +171,7 @@ sub _buildHttpdConfig
 {
     my $frontEnd = Package::FrontEnd->getInstance( );
     $frontEnd->buildConfFile(
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager/Net2ftp/config/nginx/imscp_net2ftp.conf",
+        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager/Net2ftp/config/nginx/imscp_net2ftp.nginx",
         {
             GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'}
         },

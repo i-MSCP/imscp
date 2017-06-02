@@ -1,4 +1,9 @@
-location /ftp {
+
+location = /ftp {
+    return 301 /ftp/;
+}
+
+location ^~ /ftp/ {
     root {GUI_PUBLIC_DIR}/tools;
 
     location ~ \.php$ {

@@ -47,8 +47,7 @@
     <!-- BDP: webstats_feature -->
     <tr>
         <td>
-            <a href="{WEBSTATS_PATH}" target="_blank" class="icon_big icon_center i_awstatsicon"
-               title="{TR_WEBSTATS}"></a>
+            <a href="{WEBSTATS_PATH}" target="_blank" class="icon_big icon_center i_awstatsicon" title="{TR_WEBSTATS}"></a>
         </td>
         <td>{TR_WEBSTATS_TXT}</td>
     </tr>

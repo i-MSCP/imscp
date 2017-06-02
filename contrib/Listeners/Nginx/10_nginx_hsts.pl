@@ -24,28 +24,36 @@ package Listener::Nginx::HSTS;
 use strict;
 use warnings;
 use iMSCP::EventManager;
+use iMSCP::TemplateParser qw/ getBloc replaceBloc /;
 
 iMSCP::EventManager->getInstance()->register(
-    'afterFrontEndBuildHttpdVhosts',
+    'afterFrontEndBuildConfFile',
     sub {
-        my $cfgSnippet = <<EOF;
+        my ($tplContent, $tplName) = @_;
 
-    # BEGIN Listener::Nginx::HSTS
-    add_header Strict-Transport-Security max-age=31536000;
-    # END Listener::Nginx::HSTS
+        return 0 unless $tplName eq '00_master.nginx'
+            && $main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes';
+
+        ${$tplContent} = replaceBloc(
+            "# SECTION SSL BEGIN.\n",
+            "# SECTION SSL ENDING.\n",
+            "    # SECTION SSL BEGIN.\n".
+                getBloc(
+                    "# SECTION SSL BEGIN.\n",
+                    "# SECTION SSL ENDING.\n",
+                    ${$tplContent}
+                ).
+                <<'EOF'
+    if ($https = 'on') {
+        add_header Strict-Transport-Security "max-age=31536000";
+    }
 EOF
+                .
+                "    # SECTION SSL ENDING.\n",
+            ${$tplContent}
+        );
 
-        my $file = iMSCP::File->new( filename => '/etc/nginx/sites-available/00_master_ssl.conf' );
-        my $fileContent = $file->get();
-        unless (defined $fileContent) {
-            error( sprintf( "Couldn't read %s file", '/etc/nginx/sites-available/00_master_ssl.conf' ) );
-            return 1;
-        }
-
-        $fileContent =~ s/(ssl_prefer_server_ciphers.*\n)/$1\n$cfgSnippet/g;
-
-        my $rs = $file->set( $fileContent );
-        $rs ||= $file->save();
+        0;
     }
 );
 

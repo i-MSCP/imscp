@@ -26,8 +26,10 @@ CONFIG
     Added: `PluginApi' configuration parameter (master)
     Fixed: Make sure that the root directory is marked as shared in regards to mount propagation (at least for i-MSCP mounts)
     Fixed: Prevent upgrade of Percona server while processing disttribution upgrade (all distributions; APT pinning)
+    Merged: Nginx site configuration files (FrontEnd)
     Removed: *.old.data configuration files (servers/packages)
     Removed: `BIND_DB_DIR' configuration parameter (replaced by `BIND_DB_MASTER_DIR' and `BIND_DB_SLAVE_DIR' configuration parameters)
+    Renamed: All Nginx configuration template files (changed extension from .conf to .nginx for IDE syntax highlighting) (FrontEnd)
 
 DATABASE
     Updated: domain_dns.domain_dns_status column length (VARCHAR to TEXT)
@@ -49,6 +51,8 @@ FRONTEND
     Fixed: Integrity constraint violation: 1052 Column 'fname' in WHERE clause is ambiguous when searching user by name
     Fixed: mail_users.po_active database column must be set to 'no' for forward only and catch-all accounts
     Fixed: Non well formed numeric value encountered in utils_getPhpValueInBytes() function
+    Fixed: Many location blocks match unwanted resources (eg: /pma will also matches with /pmailman and that is unwanted) (Nginx)
+    Fixed: Stop matching process as soon as possible (Nginx)
     Removed: Check for CNAME conflict (Custom DNS records)
 
 LISTENERS
@@ -59,6 +63,8 @@ LISTENERS
     Fixed: 10_named_override_default_rr.pl: Cannot override default www CNAME record
     Fixed: 20_named_dualstack.pl listener file: Missing DNS records for subdomains
     Fixed: Listeners from listener files that listen on the `afterMtaBuildConf' event must be registered with low priority
+    Updated: 10_nginx_hsts.pl listener file: Nginx configuration template filenames were updated +++
+    Updated: 10_named_slave_provisioning.pl listener file: Nginx configuration template filenames were renamed +++
     Updated: 70_postfix_submission_tls.pl file: Fully redefines submission service and disable SSLv3
 
 INSTALLER

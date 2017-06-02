@@ -124,33 +124,33 @@ sub _deconfigureHTTPD
 {
     my ($self) = @_;
 
-    for ('00_master_ssl.conf', '00_master.conf') {
-        my $rs = $self->{'frontend'}->disableSites( $_ );
-        return $rs if $rs;
-        next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
-        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_" )->delFile( );
+    my $rs = $self->{'frontend'}->disableSites( '00_master.conf' );
+    return $rs if $rs;
+
+    if (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf") {
+        $rs = iMSCP::File->new(
+            filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf"
+        )->delFile( );
         return $rs if $rs;
     }
 
     if (-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf") {
-        my $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf" )->delFile( );
+        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf" )->delFile( );
         return $rs if $rs;
     }
 
     if (-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf") {
-        my $rs = iMSCP::File->new(
-            filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf"
-        )->delFile( );
+        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf" )->delFile( );
         return $rs if $rs;
     }
 
     if (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/default") {
         # Nginx as provided by Debian
-        my $rs = $self->{'frontend'}->enableSites( 'default' );
+        $rs = $self->{'frontend'}->enableSites( 'default' );
         return $rs if $rs;
     } elsif ("$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf.disabled") {
         # Nginx package as provided by Nginx
-        my $rs = iMSCP::File->new(
+        $rs = iMSCP::File->new(
             filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf.disabled"
         )->moveFile(
             "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf"

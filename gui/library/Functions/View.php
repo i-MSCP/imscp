@@ -173,7 +173,7 @@ function generateNavigation($tpl)
     // Dynamic links (only at customer level)
     if ($_SESSION['user_type'] == 'user') {
         $domainProperties = get_domain_default_props($_SESSION['user_id']);
-        $tpl->assign('WEBSTATS_PATH', 'http://' . decode_idna($domainProperties['domain_name']) . '/stats');
+        $tpl->assign('WEBSTATS_PATH', 'http://' . decode_idna($domainProperties['domain_name']) . '/stats/');
 
         if (customerHasFeature('mail')) {
             $webmails = getWebmailList();
@@ -185,7 +185,7 @@ function generateNavigation($tpl)
                 foreach ($webmails as $webmail) {
                     $page = array(
                         'label'  => tr('%s webmail', $webmail),
-                        'uri'    => '/' . (($webmail == 'Roundcube') ? 'webmail' : strtolower($webmail)),
+                        'uri'    => '/' . (($webmail == 'Roundcube') ? 'webmail' : strtolower($webmail)) . '/',
                         'target' => '_blank',
                     );
 

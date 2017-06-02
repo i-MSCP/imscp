@@ -89,20 +89,21 @@ sub _unregisterConfig
 {
     my ($self) = @_;
 
-    for ('00_master.conf', '00_master_ssl.conf') {
-        next unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
-        my $file = iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_" );
-        my $fileContentRef = $file->getAsRef( );
-        unless (defined $fileContentRef) {
-            error( sprintf( "Couldn't read %s file", $file->{'filename'} ) );
-            return 1;
-        }
+    return 0 unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf";
 
-        ${$fileContentRef} =~ s/[\t ]*include imscp_monstaftp.conf;\n//;
-
-        my $rs = $file->save( );
-        return $rs if $rs;
+    my $file = iMSCP::File->new(
+        filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf"
+    );
+    my $fileContentRef = $file->getAsRef( );
+    unless (defined $fileContentRef) {
+        error( sprintf( "Couldn't read %s file", $file->{'filename'} ) );
+        return 1;
     }
+
+    ${$fileContentRef} =~ s/[\t ]*include imscp_monstaftp.conf;\n//;
+
+    my $rs = $file->save( );
+    return $rs if $rs;
 
     $self->{'frontend'}->{'reload'} = 1;
     0;

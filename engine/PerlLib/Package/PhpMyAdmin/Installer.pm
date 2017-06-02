@@ -214,7 +214,7 @@ sub afterFrontEndBuildConfFile
 {
     my ($tplContent, $tplName) = @_;
 
-    return 0 unless $tplName =~ /^00_master(?:_ssl)?\.conf$/;
+    return 0 unless $tplName eq '00_master.nginx';
 
     ${$tplContent} = replaceBloc(
         "# SECTION custom BEGIN.\n",
@@ -465,7 +465,7 @@ sub _buildHttpdConfig
 {
     my $frontEnd = Package::FrontEnd->getInstance( );
     $frontEnd->buildConfFile(
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/PhpMyAdmin/config/nginx/imscp_pma.conf",
+        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/PhpMyAdmin/config/nginx/imscp_pma.nginx",
         {
             GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'}
         },

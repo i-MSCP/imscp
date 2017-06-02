@@ -189,7 +189,7 @@ sub afterFrontEndBuildConfFile
 {
     my ($tplContent, $tplName) = @_;
 
-    return 0 unless $tplName =~ /^00_master(?:_ssl)?\.conf$/;
+    return 0 unless $tplName eq '00_master.nginx';
 
     $$tplContent = replaceBloc(
         "# SECTION custom BEGIN.\n",
