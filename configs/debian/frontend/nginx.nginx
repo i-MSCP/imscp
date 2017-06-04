@@ -3,6 +3,11 @@
 user {HTTPD_USER};
 pid {HTTPD_PID_FILE};
 
+# Loading of dynanmic modules
+# Only relevant for Nginx >= 1.9.11
+# This do not harm for older versions
+include /etc/nginx/modules-enabled/*.conf;
+
 worker_processes {HTTPD_WORKER_PROCESSES};
 worker_rlimit_nofile {HTTPD_RLIMIT_NOFILE};
 

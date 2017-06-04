@@ -997,29 +997,12 @@ sub _buildHttpdConfig
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndBuildHttpdConfig' );
     return $rs if $rs;
 
-    my $nbCPUcores = $self->{'config'}->{'HTTPD_WORKER_PROCESSES'};
-
-    if ($nbCPUcores eq 'auto') {
-        $rs = execute( 'grep processor /proc/cpuinfo | wc -l', \ my $stdout, \ my $stderr );
-        debug( $stdout ) if $stdout;
-        debug( $stderr ) if $stderr;
-        debug( "Couldn't guess number of CPU cores. Nginx worker_processes value set to 2" ) if $rs;
-
-        unless ($rs) {
-            chomp( $stdout );
-            $nbCPUcores = $stdout;
-            $nbCPUcores = 4 if $nbCPUcores > 4; # Limit number of workers
-        } else {
-            $nbCPUcores = 2;
-        }
-    }
-
     # Build main nginx configuration file
     $rs = $self->{'frontend'}->buildConfFile(
         "$self->{'cfgDir'}/nginx.nginx",
         {
             HTTPD_USER               => $self->{'config'}->{'HTTPD_USER'},
-            HTTPD_WORKER_PROCESSES   => $nbCPUcores,
+            HTTPD_WORKER_PROCESSES   => $self->{'config'}->{'HTTPD_WORKER_PROCESSES'},
             HTTPD_WORKER_CONNECTIONS => $self->{'config'}->{'HTTPD_WORKER_CONNECTIONS'},
             HTTPD_RLIMIT_NOFILE      => $self->{'config'}->{'HTTPD_RLIMIT_NOFILE'},
             HTTPD_LOG_DIR            => $self->{'config'}->{'HTTPD_LOG_DIR'},
