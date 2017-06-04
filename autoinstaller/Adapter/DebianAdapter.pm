@@ -283,7 +283,7 @@ sub uninstallPackages
 
         # Get list of available packages
         $rs = execute( [ 'apt-cache', '--generate', 'pkgnames' ], \$stdout, \$stderr );
-        error( $stderr || "Couldn't not generate list of available packages" ) if $rs > 2;
+        error( $stderr || "Couldn't generate list of available packages" ) if $rs > 2;
         my @apkgs = split /\n/, $stdout;
         undef $stdout;
 
@@ -699,7 +699,7 @@ sub _processAptRepositories
 
     my $fileContent = $file->get( );
     unless (defined $fileContent) {
-        error( "Couldn't not read /etc/apt/sources.list file" );
+        error( "Couldn't read /etc/apt/sources.list file" );
         return 1;
     }
 

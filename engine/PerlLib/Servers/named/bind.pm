@@ -1163,7 +1163,7 @@ sub _updateSOAserialNumber
         }
     }
 
-    error( sprintf( "Couldn't not update SOA serial number for the %s DNS zone: Serial number not found.", $zone ) );
+    error( sprintf( "Couldn't update SOA serial number for the %s DNS zone: Serial number not found.", $zone ) );
     1;
 }
 

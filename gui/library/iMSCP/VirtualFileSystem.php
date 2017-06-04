@@ -324,7 +324,7 @@ class VirtualFileSystem
         }
 
         if ($ret && !@ftp_put($this->stream, $file, $tmpFile, $transferMode)) {
-            $this->writeLog("Couldn't not upload file", E_USER_ERROR);
+            $this->writeLog("Couldn't upload file", E_USER_ERROR);
             $ret = false;
         }
 

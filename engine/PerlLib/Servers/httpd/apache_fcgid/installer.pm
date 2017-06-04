@@ -331,7 +331,7 @@ sub _buildFastCgiConfFiles
 
     my $cfgTpl = $file->get( );
     unless (defined $cfgTpl) {
-        error( sprintf( "Couldn't not read %s file", $file->{'filename'} ) );
+        error( sprintf( "Couldn't read %s file", $file->{'filename'} ) );
         return 1;
     }
 

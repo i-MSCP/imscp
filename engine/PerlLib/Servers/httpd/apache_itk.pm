@@ -1005,7 +1005,7 @@ sub getTraffic
         $dbh->rollback( );
         %{$trafficDb} = ( );
         $db->endTransaction( );
-        die( sprintf( "Couldn't not collect traffic data: %s", $@ ) );
+        die( sprintf( "Couldn't collect traffic data: %s", $@ ) );
     }
 
     $db->endTransaction( );

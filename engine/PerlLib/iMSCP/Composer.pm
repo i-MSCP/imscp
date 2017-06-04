@@ -93,7 +93,11 @@ sub _init
 
             my $rs = $self->_cleanPackageCache( ) if iMSCP::Getopt->cleanPackageCache;
             $rs ||= iMSCP::Dir->new( dirname => $self->{'packages_dir'} )->make(
-                { user => $main::imscpConfig{'IMSCP_USER'}, group => $main::imscpConfig{'IMSCP_GROUP'}, mode => 0755 }
+                {
+                    user => $main::imscpConfig{'IMSCP_USER'},
+                    group => $main::imscpConfig{'IMSCP_GROUP'},
+                    mode => 0755
+                }
             );
 
             startDetail;

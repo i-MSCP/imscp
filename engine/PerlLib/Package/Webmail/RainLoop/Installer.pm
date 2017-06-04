@@ -338,7 +338,7 @@ sub _setupDatabase
     my $rs = $db->doQuery( 'c',
         "CREATE DATABASE IF NOT EXISTS $quotedDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci" );
     unless (ref $rs eq 'HASH') {
-        error( sprintf( "Couldn't not create SQL database: %s", $rs ) );
+        error( sprintf( "Couldn't create SQL database: %s", $rs ) );
         return 1;
     }
 

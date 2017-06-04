@@ -353,7 +353,7 @@ sub _buildApacheConfFiles
         unless (defined $cfgTpl) {
             $cfgTpl = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf" )->get( );
             unless (defined $cfgTpl) {
-                error( sprintf( "Couldn't not read %s file", "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf" ) );
+                error( sprintf( "Couldn't read %s file", "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf" ) );
                 return 1;
             }
         }
