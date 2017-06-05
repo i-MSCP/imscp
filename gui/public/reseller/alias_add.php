@@ -299,7 +299,9 @@ function addDomainAlias()
             $uri->setHost(encode_idna(mb_strtolower($uri->getHost()))); // Normalize URI host
             $uri->setPath(rtrim(utils_normalizePath($uri->getPath()), '/') . '/'); // Normalize URI path
 
-            if ($uri->getHost() == $domainAliasNameAscii && $uri->getPath() == '/') {
+            if ($uri->getHost() == $domainAliasNameAscii
+                && ($uri->getPath() == '/' && in_array($uri->getPort(), array('', 80, 443)))
+            ) {
                 throw new iMSCP_Exception(
                     tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
                     tr('Domain alias %s cannot be forwarded on itself.', "<strong>$domainAliasName</strong>")

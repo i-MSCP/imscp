@@ -230,7 +230,9 @@ function client_editSubdomain()
             $uri->setHost(encode_idna(mb_strtolower($uri->getHost()))); // Normalize URI host
             $uri->setPath(rtrim(utils_normalizePath($uri->getPath()), '/') . '/'); // Normalize URI path
 
-            if ($uri->getHost() == $subdomainData['subdomain_name'] && $uri->getPath() == '/') {
+            if ($uri->getHost() == $subdomainData['subdomain_name']
+                && ($uri->getPath() == '/' && in_array($uri->getPort(), array('', 80, 443)))
+            ) {
                 throw new iMSCP_Exception(
                     tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
                     tr(

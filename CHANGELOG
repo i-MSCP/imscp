@@ -48,6 +48,7 @@ FRONTEND
     Added: Include directive for loading of dynamic modules (Nginx)
     Fixed: Allow auto-completion for login form (regression fix)
     Fixed: Allow lower value than `post_max_size' for `memory_limit' (PHP Editor)
+    Fixed: Couldn't redirect full domains, subdomains to non-standard port
     Fixed: Creation of mailboxes for Postfix canonical domains through the control panel must be prohibited
     Fixed: Integrity constraint violation: 1052 Column 'fname' in WHERE clause is ambiguous when searching user by name
     Fixed: mail_users.po_active database column must be set to 'no' for forward only and catch-all accounts

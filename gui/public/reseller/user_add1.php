@@ -94,7 +94,9 @@ function reseller_checkData()
             $uri->setHost(encode_idna(mb_strtolower($uri->getHost()))); // Normalize URI host
             $uri->setPath(rtrim(utils_normalizePath($uri->getPath()), '/') . '/'); // Normalize URI path
 
-            if ($uri->getHost() == $asciiDmnName && $uri->getPath() == '/') {
+            if ($uri->getHost() == $asciiDmnName
+                && ($uri->getPath() == '/' && in_array($uri->getPort(), array('', 80, 443)))
+            ) {
                 throw new iMSCP_Exception(
                     tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
                     tr('Domain %s cannot be forwarded on itself.', "<strong>$dmnName</strong>")
