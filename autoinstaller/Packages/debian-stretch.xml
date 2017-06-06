@@ -228,7 +228,7 @@
                 pinning_package="libmariadbclient18 mariadb-client-10.1 mariadb-common mariadb-server-core-10.1 mysql-common"
                 pinning_pin="release o=Debian,n=stretch"
                 pinning_pin_priority="1001"
-                allow_switch="remote_server"
+                allow_switch="mariadb_10.2,remote_server"
         >
             <package>libmariadbclient18</package>
             <package>mariadb-client-10.1</package>
@@ -236,6 +236,24 @@
             <package>mariadb-server-10.1</package>
             <package>mysql-common</package>
         </mariadb_10.1>
+        <mariadb_10.2
+                description="MariaDB 10.2 server"
+                class="Servers::sqld::mariadb"
+                repository="http://mirror.netcologne.de/mariadb/repo/10.2/debian stretch main"
+                repository_key_id="C74CD1D8"
+                repository_key_srv="keyserver.ubuntu.com"
+                pinning_package="*"
+                pinning_pin="origin mirror.netcologne.de"
+                pinning_pin_priority="1001"
+                allow_switch="remote_server"
+        >
+            <package>libmariadbclient18</package>
+            <package>libmysqlclient18</package>
+            <package>mariadb-client-10.2</package>
+            <package>mariadb-common</package>
+            <package>mariadb-server-10.2</package>
+            <package>mysql-common</package>
+        </mariadb_10.2>
         <remote_server
                 description="Remote SQL server"
                 class="Servers::sqld::remote"
