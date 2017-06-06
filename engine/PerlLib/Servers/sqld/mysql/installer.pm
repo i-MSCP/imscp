@@ -277,7 +277,7 @@ sub _updateServerConfig
         unless ($rs) {
             # Filter all "duplicate column", "duplicate key" and "unknown column"
             # errors as the command is designed to be idempotent.
-            $rs = execute( "mysql_upgrade  2>&1 | egrep -v '^(1|\@had|ERROR (1054|1060|1061))'", \$stdout );
+            $rs = execute( "mysql_upgrade 2>&1 | egrep -v '^(1|\@had|ERROR (1054|1060|1061))'", \$stdout );
             error( sprintf( "Couldn't upgrade SQL server system tables: %s", $stdout ) ) if $rs;
             return $rs if $rs;
             debug( $stdout ) if $stdout;

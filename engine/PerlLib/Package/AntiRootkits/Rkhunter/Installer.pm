@@ -134,23 +134,7 @@ sub _disableDebianConfig
 
 sub _addCronTask
 {
-    my $file = iMSCP::File->new(
-        filename => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl"
-    );
-
-    my $fileContent = $file->get( );
-    unless (defined $fileContent) {
-        error( sprintf( "Couldn't read %s file", ${$file}->{'filename'} ) );
-        return 1;
-    }
-
-    $fileContent = process( { IMSCP_PERLLIB_PATH => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib" }, $fileContent );
-
-    my $rs = $file->set( $fileContent );
-    $rs ||= $file->save( );
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0700 );
-    $rs ||= Servers::cron->factory( )->addTask(
+    Servers::cron->factory( )->addTask(
         {
             TASKID  => 'Package::AntiRootkits::Rkhunter',
             MINUTE  => '@weekly',
