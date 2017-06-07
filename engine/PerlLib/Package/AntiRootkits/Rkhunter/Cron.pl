@@ -19,9 +19,8 @@
 
 use strict;
 use warnings;
-use Cwd qw/ abs_path /;
 use FindBin;
-use lib abs_path("$FindBin::Bin/../../../../PerlLib"), abs_path("$FindBin::Bin/../../../../PerlVendor");
+use lib "$FindBin::Bin/../../../../PerlLib", "$FindBin::Bin/../../../../PerlVendor";
 use iMSCP::Debug;
 use iMSCP::Bootstrapper;
 use iMSCP::Execute;
