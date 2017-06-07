@@ -24,6 +24,7 @@ CONFIG
     Added: `BIND_DB_SLAVE_DIR' configuration parameter (Bind9)
     Added: 'CMD_SYSCTL` and 'SYSCTL_CONF_DIR` parameters for sysctl(8) (master)
     Added: `PluginApi' configuration parameter (master)
+    Fixed: Debian httpredir.debian.org service is discontinued (See https://wiki.debian.org/DebianGeoMirror)
     Fixed: Make sure that the root directory is marked as shared in regards to mount propagation (at least for i-MSCP mounts)
     Fixed: Prevent upgrade of Percona server while processing disttribution upgrade (all distributions; APT pinning)
     Merged: Nginx site configuration files (FrontEnd)

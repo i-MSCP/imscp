@@ -5,7 +5,7 @@ APTCONFDIR=$(pwd)/.imscp
 CODENAME=$(lsb_release -cs)
 DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--variant=buildd" "--keyring=/usr/share/keyrings/debian-archive-keyring.gpg")
 DEBBUILDOPTS=-b
-MIRRORSITE=http://httpredir.debian.org/debian/
+MIRRORSITE=http://deb.debian.org/debian/
 HOOKDIR=""
 
 mkdir -p $APTCONFDIR
