@@ -308,7 +308,7 @@
                 pinning_package="*"
                 pinning_pin="origin mirror2.hs-esslingen.de"
                 pinning_pin_priority="1001"
-                allow_switch="mariadb_10.1,remote_server"
+                allow_switch="mariadb_10.1,mariadb_10.2,remote_server"
         >
             <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>

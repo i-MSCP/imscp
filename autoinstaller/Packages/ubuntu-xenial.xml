@@ -250,7 +250,7 @@
                 pinning_package="libmysqlclient20 mariadb-client-10.0 mariadb-common mariadb-server-10.0 mysql-common"
                 pinning_pin="release o=Ubuntu,n=xenial"
                 pinning_pin_priority="1001"
-                allow_switch="mariadb_10.1,remote_server"
+                allow_switch="mariadb_10.1,mariadb_10.2,remote_server"
         >
             <package>libmysqlclient20</package>
             <package>mariadb-client-10.0</package>
@@ -269,6 +269,8 @@
                 pinning_pin_priority="1001"
                 allow_switch="mariadb_10.2,remote_server"
         >
+            <package>libmariadbclient18</package>
+            <package>libmysqlclient18</package>
             <package>libmysqlclient20</package>
             <package>mariadb-client-10.1</package>
             <package>mariadb-common</package>
@@ -288,6 +290,7 @@
         >
             <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>
+            <package>libmysqlclient20</package>
             <package>mariadb-client-10.2</package>
             <package>mariadb-common</package>
             <package>mariadb-server-10.2</package>

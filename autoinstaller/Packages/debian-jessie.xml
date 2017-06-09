@@ -276,7 +276,7 @@
                 pinning_package="libmysqlclient18 mariadb-client-10.0 mariadb-common mariadb-server-10.0 mysql-common"
                 pinning_pin="release o=Debian,n=jessie"
                 pinning_pin_priority="1001"
-                allow_switch="mariadb_10.1,remote_server"
+                allow_switch="mariadb_10.1,mariadb_10.2,remote_server"
         >
             <package>libmysqlclient18</package>
             <package>mariadb-client-10.0</package>
