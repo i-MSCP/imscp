@@ -30,14 +30,14 @@ UUID=74699091-3ab8-43f2-bdd5-d1d898ab50fd /     reiserfs notail,attrs    0    1
 
 Once you did that, you can remount your device. For instance:
 
-```
-# mount -o remount /dev/disk/by-uuid/74699091-3ab8-43f2-bdd5-d1d898ab50fd
+```bash
+mount -o remount /dev/disk/by-uuid/74699091-3ab8-43f2-bdd5-d1d898ab50fd
 ```
 
 *Note:* If needed, you can find the uuid of your device, with the following command:
 
-```
-# blkid <device>
+```bash
+blkid <device>
 ```
 
 where `<device>` must be replaced by your device path such as `/dev/sda1`
@@ -83,25 +83,35 @@ Any released version >= 1.0 (Devuan Jessie)
 
 #### 1. Make sure that your distribution is up-to-date
 
-    # apt-get update && apt-get --assume-yes --auto-remove --no-install-recommends dist-upgrade
+```bash
+apt-get update && apt-get --assume-yes --auto-remove --no-install-recommends dist-upgrade
+```
 
 #### 2. Install the pre-required packages
 
-    # apt-get --assume-yes --auto-remove --no-install-recommends install ca-certificates perl wget whiptail
+```bash
+apt-get --assume-yes --auto-remove --no-install-recommends install ca-certificates perl wget whiptail
+```
 
 #### 3. Download and untar the distribution files
 
-    # cd /usr/local/src
-    # wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
-    # tar -xzf <version>.tar.gz
+```bash
+cd /usr/local/src
+wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
+tar -xzf <version>.tar.gz
+```
 
 #### 4. Change to the newly created directory
 
-    # cd imscp-<version>
+```bash
+cd imscp-<version>
+```
 
 #### 5. Install i-MSCP by running its installer
 
-    # perl imscp-autoinstall -d
+```bash
+perl imscp-autoinstall -d
+```
 
 ### i-MSCP Upgrade
 
@@ -116,26 +126,36 @@ The errata file for this i-MSCP version is located at: https://github.com/i-MSCP
 
 Before any upgrade attempt it is highly recommended to perform a backup of the following directories:
 
-    /var/www/virtual
-    /var/mail/virtual
+```
+/var/www/virtual
+/var/mail/virtual
+```
 
 Those directories hold the data of your customers and it is really important to backup them for an easy recovering in
 case something goes wrong during upgrade.
 
 #### 3. Make sure that your distribution is up-to-date
 
-    # apt-get update && apt-get --assume-yes --auto-remove --no-install-recommend dist-upgrade
+```bash
+apt-get update && apt-get --assume-yes --auto-remove --no-install-recommend dist-upgrade
+```
 
 #### 4. Download and untar the distribution files
 
-    # cd /usr/local/src
-    # wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
-    # tar -xzf <version>.tar.gz
+```bash
+cd /usr/local/src
+wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
+tar -xzf <version>.tar.gz
+```
 
 #### 5. Change to the newly created directory
 
-    # cd imscp-<version>
+```bash
+cd imscp-<version>
+```
 
 #### 6. Update i-MSCP by running its installer
 
-    # perl imscp-autoinstall -d
+```bash
+perl imscp-autoinstall -d
+```
