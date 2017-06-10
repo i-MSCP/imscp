@@ -4,9 +4,16 @@
 Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
+CONFIG
+    Reverted: Merging of Nginx site configuration files (FrontEnd)
+
 DISTRIBUTIONS
     Fixed: libmysqlclient20 package must be installed in any case (Ubuntu 16.04)
     Fixed: Missing switch for MariaDB server in distribution packages files
+
+LISTENERS
+    Fixed: 10_nginx_hsts.pl listener file: nginx: [emerg] "add_header" directive is not allowed
+    Updated: 10_named_slave_provisioning.pl listener file: Add configuration in SSL server too
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.4

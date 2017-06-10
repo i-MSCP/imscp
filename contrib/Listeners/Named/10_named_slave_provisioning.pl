@@ -94,7 +94,7 @@ iMSCP::EventManager->getInstance()->register(
     sub {
         my ($tplContent, $tplName) = @_;
 
-        return 0 unless $tplName eq '00_master.nginx';
+        return 0 unless grep($_ eq $tplName, '00_master.nginx', '00_master_ssl.nginx');
 
         my $locationSnippet = <<"EOF";
     location ^~ /provisioning/ {

@@ -31,25 +31,23 @@ iMSCP::EventManager->getInstance()->register(
     sub {
         my ($tplContent, $tplName) = @_;
 
-        return 0 unless $tplName eq '00_master.nginx'
+        return 0 unless $tplName eq '00_master_ssl.nginx'
             && $main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes';
 
         ${$tplContent} = replaceBloc(
-            "# SECTION SSL BEGIN.\n",
-            "# SECTION SSL ENDING.\n",
-            "    # SECTION SSL BEGIN.\n".
+            "# SECTION custom BEGIN.\n",
+            "# SECTION custom END.\n",
+            "    # SECTION custom BEGIN.\n".
                 getBloc(
-                    "# SECTION SSL BEGIN.\n",
-                    "# SECTION SSL ENDING.\n",
+                    "# SECTION custom BEGIN.\n",
+                    "# SECTION custom END.\n",
                     ${$tplContent}
                 ).
                 <<'EOF'
-    if ($https = 'on') {
-        add_header Strict-Transport-Security "max-age=31536000";
-    }
+    add_header Strict-Transport-Security "max-age=31536000";
 EOF
                 .
-                "    # SECTION SSL ENDING.\n",
+                "    # SECTION custom END.\n",
             ${$tplContent}
         );
 

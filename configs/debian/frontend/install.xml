@@ -9,6 +9,7 @@
     <folders mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${LOCAL_CONF}/imscp_panel</folders>
     <folders>${SYSTEM_CONF}/frontend</folders>
     <copy_config>${SYSTEM_CONF}/frontend/00_master.nginx</copy_config>
+    <copy_config>${SYSTEM_CONF}/frontend/00_master_ssl.nginx</copy_config>
     <copy_config mode="0640">${SYSTEM_CONF}/frontend/frontend.data.dist</copy_config>
     <copy_config mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${LOCAL_USR_LIB}/imscp_panel/imscp_panel_reopenlogs</copy_config>
     <copy_config>${SYSTEM_CONF}/frontend/imscp_fastcgi.nginx</copy_config>

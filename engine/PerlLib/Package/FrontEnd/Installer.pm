@@ -1046,7 +1046,7 @@ sub _buildHttpdConfig
     $rs ||= $self->{'eventManager'}->trigger( 'beforeFrontEndBuildHttpdVhosts' );
     return $rs if $rs;
 
-    # Build frontEnd site file
+    # Build frontEnd site files
     my $baseServerIpVersion = iMSCP::Net->getInstance( )->getAddrVersion( main::setupGetQuestion( 'BASE_SERVER_IP' ) );
     my $httpsPort = main::setupGetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT' );
     my $tplVars = {
@@ -1066,7 +1066,7 @@ sub _buildHttpdConfig
         sub {
             my ($cfgTpl, $tplName) = @_;
 
-            return 0 unless $tplName eq '00_master.nginx';
+            return 0 unless grep($_ eq $tplName, '00_master.nginx', '00_master_ssl.nginx');
 
             if ($baseServerIpVersion eq 'ipv6' || !main::setupGetQuestion( 'IPV6_SUPPORT' )) {
                 ${$cfgTpl} = replaceBloc(
@@ -1077,28 +1077,24 @@ sub _buildHttpdConfig
                 );
             }
 
-            if (main::setupGetQuestion( 'PANEL_SSL_ENABLED' ) ne 'yes') {
-                ${$cfgTpl} = replaceBloc( "# SECTION SSL BEGIN.\n", "# SECTION SSL ENDING.\n", '', ${$cfgTpl} );
-            } elsif (main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) eq 'https://') {
-                ${$cfgTpl} = replaceBloc(
-                    "# SECTION SSL BEGIN.\n",
-                    "# SECTION SSL ENDING.\n",
-                    "    # SECTION SSL BEGIN.\n".
-                        getBloc(
-                            "# SECTION SSL BEGIN.\n",
-                            "# SECTION SSL ENDING.\n",
-                            ${$cfgTpl}
-                        ).
-                        <<'EOF'
+            return 0 unless $tplName eq '00_master.nginx'
+                && main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) eq 'https://';
 
-    if ($https = '') {
-        return 302 https://{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}$request_uri;
-    }
+            ${$cfgTpl} = replaceBloc(
+                "# SECTION custom BEGIN.\n",
+                "# SECTION custom END.\n",
+                "    # SECTION custom BEGIN.\n".
+                    getBloc(
+                        "# SECTION custom BEGIN.\n",
+                        "# SECTION custom END.\n",
+                        ${$cfgTpl}
+                    ).
+                    <<'EOF'
+    return 302 https://{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}$request_uri;
 EOF
-                        ."    # SECTION SSL ENDING.\n",
-                    ${$cfgTpl}
-                );
-            }
+                    ."    # SECTION custom END.\n",
+                ${$cfgTpl}
+            );
 
             0;
         }
@@ -1116,6 +1112,31 @@ EOF
     );
     $rs ||= $self->{'frontend'}->enableSites( '00_master.conf' );
     return $rs if $rs;
+
+    if (main::setupGetQuestion( 'PANEL_SSL_ENABLED' ) eq 'yes') {
+        $rs ||= $self->{'frontend'}->buildConfFile(
+            '00_master_ssl.nginx',
+            $tplVars,
+            {
+                destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf",
+                user        => $main::imscpConfig{'ROOT_USER'},
+                group       => $main::imscpConfig{'ROOT_GROUP'},
+                mode        => 0644
+            }
+        );
+        $rs ||= $self->{'frontend'}->enableSites( '00_master_ssl.conf' );
+        return $rs if $rs;
+    } else {
+        $rs ||= $self->{'frontend'}->disableSites( '00_master_ssl.conf' );
+        return $rs if $rs;
+
+        if (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf") {
+            $rs = iMSCP::File->new(
+                filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf"
+            )->delFile( );
+            return $rs if $rs;
+        }
+    }
 
     if (-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf") {
         # Nginx package as provided by Nginx Team
@@ -1211,16 +1232,6 @@ sub _cleanup
 
     if (-f "$self->{'cfgDir'}/frontend.old.data") {
         $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/frontend.old.data" )->delFile( );
-        return $rs if $rs;
-    }
-
-    $rs = $self->{'frontend'}->disableSites( '00_master_ssl.conf' );
-    return $rs if $rs;
-
-    if (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf") {
-        $rs = iMSCP::File->new(
-            filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf"
-        )->delFile( );
         return $rs if $rs;
     }
 
