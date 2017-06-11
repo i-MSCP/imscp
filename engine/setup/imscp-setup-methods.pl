@@ -24,10 +24,9 @@ use iMSCP::Database;
 use iMSCP::DbTasksProcessor;
 use iMSCP::Debug;
 use iMSCP::Dialog;
-use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ executeNoWait /;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Packages;
@@ -138,7 +137,6 @@ sub setupTasks
 
     my @steps = (
         [ \&setupSaveConfig, 'Saving configuration' ],
-        [ \&setupKernel, 'Setup kernel' ],
         [ \&setupCreateMasterUser, 'Creating system master user' ],
         [ \&setupCoreServices, 'Setup core services' ],
         [ \&setupRegisterPluginListeners, 'Registering plugin setup listeners' ],
@@ -200,26 +198,6 @@ sub setupSaveConfig
     );
 
     iMSCP::EventManager->getInstance( )->trigger( 'afterSetupSaveConfig' );
-}
-
-sub setupKernel
-{
-    my $rs = iMSCP::EventManager->getInstance( )->trigger( 'beforeSetupKernel' );
-    return $rs if $rs;
-
-    if (-f "$main::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf") {
-        # Don't catch any error here to avoid permission denied error on some
-        # vps due to restrictions set by provider
-        $rs = execute(
-            "$main::imscpConfig{'CMD_SYSCTL'} -p $main::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf",
-            \ my $stdout,
-            \ my $stderr
-        );
-        debug( $stdout ) if $stdout;
-        debug( $stderr ) if $stderr;
-    }
-
-    iMSCP::EventManager->getInstance( )->trigger( 'afterSetupKernel' );
 }
 
 sub setupCreateMasterUser
@@ -575,10 +553,6 @@ sub setupRemoveOldConfig
     untie %main::imscpOldConfig;
     iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscpOld.conf" )->delFile( );
 }
-
-#
-## Low level subroutines
-#
 
 sub setupGetQuestion
 {

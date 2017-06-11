@@ -253,6 +253,24 @@ EOF
 sub preinstall
 {
     main::setupSetQuestion( 'IPV6_SUPPORT', -f '/proc/net/if_inet6' ? 1 : 0 );
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeSetupKernel' );
+    return $rs if $rs;
+
+    if (-f "$main::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf") {
+        # Don't catch any error here to avoid permission denied error on some
+        # vps due to restrictions set by provider
+        $rs = execute(
+            "$main::imscpConfig{'CMD_SYSCTL'} -p $main::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf",
+            \ my $stdout,
+            \ my $stderr
+        );
+        debug( $stdout ) if $stdout;
+        debug( $stderr ) if $stderr;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterSetupKernel' );
+    
     0;
 }
 
