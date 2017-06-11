@@ -132,7 +132,7 @@ sub _backupDatabase
     # Encode slashes as SOLIDUS unicode character
     # Encode dots as Full stop unicode character
     my %rpl = ( '/', '@002f', '.', '@002e' );
-    (my $encodedDbName = $dbName) =~ s%([./])%$rpl{$1}%ge;
+    (my $encodedDbName = $main::imscpConfig{'DATABASE_NAME'}) =~ s%([./])%$rpl{$1}%ge;
 
     my $date = strftime "%Y.%m.%d-%H-%M", localtime;
 

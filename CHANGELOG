@@ -18,6 +18,9 @@ LISTENERS
     Fixed: 10_nginx_hsts.pl listener file: nginx: [emerg] "add_header" directive is not allowed (Regression fix)
     Updated: 10_named_slave_provisioning.pl listener file: Add configuration in SSL server too
 
+SCRIPTS
+    Fixed: imscp-backup-imscp backup script: Global symbol "$dbName" requires explicit package name
+
 ------------------------------------------------------------------------------------------------------------------------
 1.4.4
 ------------------------------------------------------------------------------------------------------------------------
