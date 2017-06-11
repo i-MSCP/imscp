@@ -5,7 +5,7 @@ Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-    Review: Prioritize servers and packages to avoid overuse of events in installers
+    Review: Prioritize servers and packages to avoid overuse of events
 
 CONFIG
     Reverted: Merging of Nginx site configuration files (Regression fix)
@@ -15,6 +15,7 @@ DISTRIBUTIONS
     Fixed: Missing switch for MariaDB 10.2 server in distribution packages files
 
 FRONTEND
+    Fixed: Re-added client IP address in event logs
     Fixed: Cannot create catch-all email account (Forward mail) due to erroneous SQL query (Regression fix)
 
 INSTALLER
@@ -35,6 +36,9 @@ SCRIPTS
 
 SERVERS
     Added: System local server implementation (Servers::server::local)
+    
+YOUTRACK
+    IP-1722 Missing IP addresses in event logs
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.4

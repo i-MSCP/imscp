@@ -1814,7 +1814,7 @@ function write_log($msg, $logLevel = E_USER_WARNING)
         return;
     }
 
-    $msg = replace_html($msg);
+    $msg = '[' . getIpAddr() . '] ' . replace_html($msg);
     exec_query('INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)', $msg);
 
     $cfg = iMSCP_Registry::get('config');
@@ -2975,5 +2975,5 @@ function getIpAddr()
         }
     }
 
-    return $ipAddr ? $ipAddr : $_SERVER['REMOTE_ADDR'];
+    return $ipAddr ? $ipAddr : (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : tr('Unknown'));
 }
