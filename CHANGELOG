@@ -11,11 +11,11 @@ CONFIG
     Reverted: Merging of Nginx site configuration files (Regression fix)
 
 DISTRIBUTIONS
-    Fixed: libmysqlclient20 package must be installed in any case (Ubuntu 16.04)
+    Fixed: libmysqlclient20 package must be installed in any case (Ubuntu 16.04; Regression fix)
     Fixed: Missing switch for MariaDB 10.2 server in distribution packages files
 
-FRONTEND:
-    Fixed: Cannot create catch-all email account (Forward mail) due to wrong SQL query
+FRONTEND
+    Fixed: Cannot create catch-all email account (Forward mail) due to erroneous SQL query (Regression fix)
 
 INSTALLER
     Added: `local_server` configuration parameter; Allows reconfiguration of system hostname, primary IP and timezone
