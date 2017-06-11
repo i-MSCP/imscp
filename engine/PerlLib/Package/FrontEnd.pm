@@ -425,9 +425,10 @@ sub disableSites
     return $rs if $rs;
 
     for my $site(@sites) {
-        my $siteName = basename( $site, '.conf' );
-        next unless -l "$self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}/$siteName";
-        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}/$siteName" )->delFile( );
+        my $link = $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}.'/'.basename( $site, '.conf' );
+        next unless -l $link;
+
+        $rs = iMSCP::File->new( filename => $link )->delFile( );
         return $rs if $rs;
 
         $self->{'reload'} = 1;
