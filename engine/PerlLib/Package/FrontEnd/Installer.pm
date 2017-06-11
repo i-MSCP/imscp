@@ -1100,7 +1100,6 @@ EOF
             0;
         }
     );
-
     $rs ||= $self->{'frontend'}->buildConfFile(
         '00_master.nginx',
         $tplVars,
