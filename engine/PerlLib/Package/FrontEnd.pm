@@ -165,6 +165,19 @@ sub uninstall
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndUninstall' );
 }
 
+=item getPriority( )
+
+ Get package priority
+
+ Return int Server priority
+
+=cut
+
+sub getPriority
+{
+    100;
+}
+
 =item setEnginePermissions( )
 
  Set engine permissions

@@ -68,15 +68,13 @@ sub registerSetupListeners
 {
     my ($self, $eventManager) = @_;
 
-    my $rs = $eventManager->register(
+    $eventManager->register(
         'beforeSetupDialog',
         sub {
             push @{$_[0]}, sub { $self->showDialog( @_ ) };
             0;
         }
     );
-    $rs ||= $eventManager->register( 'afterFrontEndPreInstall', sub { $self->preinstall( ); } );
-    $rs ||= $eventManager->register( 'afterFrontEndInstall', sub { $self->install( ); } );
 }
 
 =item showDialog( \%dialog )
@@ -419,7 +417,7 @@ sub _setupDatabase
 
     my $db = iMSCP::Database->factory( );
     my $quotedDbName = $db->quoteIdentifier( $phpmyadminDbName );
-    
+
     # Drop previous database
     # FIXME: Find a better way to handle upgrade
 

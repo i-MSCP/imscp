@@ -69,7 +69,7 @@ sub debug {
 my $helpfound = 0;
 my $nowfound = 0;
 my %confexcluded = ();
-for (0 .. @ARGV - 1) {
+for (0 .. @ARGV-1) {
     if ($ARGV[$_] =~ /^-*h/i) {
         $helpfound = 1;
         last;

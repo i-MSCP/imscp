@@ -83,7 +83,7 @@ sub _init
     $self->{'rainloop'} = Package::Webmail::RainLoop::RainLoop->getInstance( );
     $self->{'frontend'} = Package::FrontEnd->getInstance( );
     $self->{'db'} = iMSCP::Database->factory( );
-    $self->{'config'} = $self->{'rainloop'}->{'config'}; 
+    $self->{'config'} = $self->{'rainloop'}->{'config'};
     $self;
 }
 
@@ -177,7 +177,7 @@ sub _removeFiles
     $rs ||= iMSCP::Dir->new( dirname => $self->{'rainloop'}->{'cfgDir'} )->remove( );
     return $rs if $rs || !-f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf";
     iMSCP::File->new(
-            filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf"
+        filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf"
     )->delFile( );
 }
 

@@ -186,20 +186,10 @@ sub _uninstallPackages
     my $nbSteps = scalar @packages;
     my ($step, $rs) = (1, 0);
 
-    for my $package (@packages) {
-        eval "require $package";
-
-        if ($@) {
-            error( $@ );
-            last;
-        }
-
-        (my $subref = $package->can( 'uninstall' )) or $step++ && next;
+    for (@packages) {
+        (my $subref = $_->can( 'uninstall' )) or $step++ && next;
         $rs = step(
-            sub {
-                $subref->( $package->getInstance( ) )
-            },
-            sprintf( 'Executing %s uninstall tasks...', $package ), $nbSteps, $step
+            sub { $subref->( $_->getInstance( ) ) }, sprintf( 'Executing %s uninstall tasks...', $_ ), $nbSteps, $step
         );
         last if $rs;
     }
@@ -216,20 +206,10 @@ sub _uninstallServers
     my $nbSteps = scalar @servers;
     my ($step, $rs) = (1, 0);
 
-    for my $server(@servers) {
-        eval "require $server";
-
-        if ($@) {
-            error( $@ );
-            last;
-        }
-
-        (my $subref = $server->can( 'uninstall' )) or $step++ && next;;
+    for (@servers) {
+        (my $subref = $_->can( 'uninstall' )) or $step++ && next;;
         $rs = step(
-            sub {
-                $subref->( $server->factory( ) )
-            },
-            sprintf( 'Executing %s uninstall tasks...', $server ), $nbSteps, $step
+            sub { $subref->( $_->factory( ) ) }, sprintf( 'Executing %s uninstall tasks...', $_ ), $nbSteps, $step
         );
         last if $rs;
         $step++;

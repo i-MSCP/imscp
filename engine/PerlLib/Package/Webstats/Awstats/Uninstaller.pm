@@ -76,7 +76,7 @@ sub _deleteFiles
 {
     my $httpd = Servers::httpd->factory( );
 
-    if(-f "$httpd->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats") {
+    if (-f "$httpd->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats") {
         my $rs = iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats")->delFile( );
         return $rs if $rs;
     }

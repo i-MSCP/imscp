@@ -54,15 +54,13 @@ sub registerSetupListeners
 {
     my ($self, $eventManager) = @_;
 
-    my $rs = $eventManager->register(
+    $eventManager->register(
         'beforeSetupDialog',
         sub {
             push @{$_[0]}, sub { $self->showDialog( @_ ) };
             0;
         }
     );
-    $rs ||= $eventManager->register( 'afterFrontEndPreInstall', sub { $self->preinstallListener( ); } );
-    $rs ||= $eventManager->register( 'afterFrontEndInstall', sub { $self->installListener( ); } );
 }
 
 =item showDialog( \%dialog )
@@ -95,7 +93,6 @@ EOF
 
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
-
     if ($@) {
         error( $@ );
         return 1;
@@ -106,17 +103,17 @@ EOF
     $subref->( $package->getInstance( ), $dialog );
 }
 
-=item preinstallListener( )
+=item preinstall( )
 
  Process preinstall tasks
 
- /!\ This method also triggers uninstallation of previous filemanager if needed.
+ /!\ This method also trigger uninstallation of unselected file manager packages.
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub preinstallListener
+sub preinstall
 {
     my ($self) = @_;
 
@@ -137,7 +134,6 @@ sub preinstallListener
 
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
-
     if ($@) {
         error( $@ );
         return 1;
@@ -148,7 +144,7 @@ sub preinstallListener
     $subref->( $package->getInstance( ) );
 }
 
-=item installListener( )
+=item install( )
 
  Process install tasks
 
@@ -156,12 +152,11 @@ sub preinstallListener
 
 =cut
 
-sub installListener
+sub install
 {
     my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
-
     if ($@) {
         error( $@ );
         return 1;
@@ -192,7 +187,6 @@ sub uninstall
     $package = 'Pydio' if $package eq 'AjaXplorer';
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
-
     if ($@) {
         error( $@ );
         return 1;
@@ -201,6 +195,19 @@ sub uninstall
     return 0 unless my $subref = $package->can( 'uninstall' );
     debug( sprintf( 'Executing uninstall action on %s', $package ) );
     $subref->( $package->getInstance( ) );
+}
+
+=item getPriority( )
+
+ Get package priority
+
+ Return int Server priority
+
+=cut
+
+sub getPriority
+{
+    0;
 }
 
 =item setGuiPermissions( )
@@ -215,29 +222,24 @@ sub setGuiPermissions
 {
     my ($self) = @_;
 
-    $self->{'eventManager'}->register(
-        'afterSetGuiPermissions',
-        sub {
-            my $rs = $self->{'eventManager'}->trigger( 'beforeFileManagerSetGuiPermissions' );
-            return $rs if $rs;
+    my $rs = $self->{'eventManager'}->trigger( 'beforeFileManagerSetGuiPermissions' );
+    return $rs if $rs;
 
-            my $package = $main::imscpConfig{'FILEMANAGER_PACKAGE'};
-            return 0 unless exists $self->{'PACKAGES'}->{$package};
+    my $package = $main::imscpConfig{'FILEMANAGER_PACKAGE'};
+    return 0 unless exists $self->{'PACKAGES'}->{$package};
 
-            $package = "Package::FileManager::${package}::${package}";
-            eval "require $package";
+    $package = "Package::FileManager::${package}::${package}";
+    eval "require $package";
+    if ($@) {
+        error( $@ );
+        return 1;
+    }
 
-            if ($@) {
-                error( $@ );
-                return 1;
-            }
+    return 0 unless my $subref = $package->can( 'setGuiPermissions' );
 
-            (my $subref = $package->can( 'setGuiPermissions' )) or next;
-            debug( sprintf( 'Executing setGuiPermissions action on %s', $package ) );
-            $rs = $subref->( $package->getInstance( ) );
-            $rs ||= $self->{'eventManager'}->trigger( 'afterFileManagerSetGuiPermissions' );
-        }
-    );
+    debug( sprintf( 'Executing setGuiPermissions action on %s', $package ) );
+    $rs = $subref->( $package->getInstance( ) );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterFileManagerSetGuiPermissions' );
 }
 
 =back

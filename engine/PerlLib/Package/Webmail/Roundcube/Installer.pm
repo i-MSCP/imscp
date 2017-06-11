@@ -191,19 +191,20 @@ sub afterFrontEndBuildConfFile
 
     return 0 unless grep($_ eq $tplName, '00_master.nginx', '00_master_ssl.nginx');
 
-    $$tplContent = replaceBloc(
+    ${$tplContent} = replaceBloc(
         "# SECTION custom BEGIN.\n",
         "# SECTION custom END.\n",
         "    # SECTION custom BEGIN.\n".
             getBloc(
                 "# SECTION custom BEGIN.\n",
                 "# SECTION custom END.\n",
-                $$tplContent
+                ${$tplContent}
             ).
             "    include imscp_roundcube.conf;\n".
             "    # SECTION custom END.\n",
-        $$tplContent
+        ${$tplContent}
     );
+
     0;
 }
 

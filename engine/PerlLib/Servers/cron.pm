@@ -75,6 +75,19 @@ sub can
     $package->can( $method );
 }
 
+=item getPriority( )
+
+ Get server priority
+
+ Return int Server priority
+
+=cut
+
+sub getPriority
+{
+    10;
+}
+
 =back
 
 =head1 AUTHOR

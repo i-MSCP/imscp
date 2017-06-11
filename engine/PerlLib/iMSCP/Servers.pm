@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Servers - Package which allow to retrieve i-MSCP server list
+ iMSCP::Servers - Package that allows to load and get list of available i-MSCP servers
 
 =cut
 
@@ -30,7 +30,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Package which allow servers list retrieval.
+ Package that allows to load and get list of available i-MSCP servers
 
 =head1 PUBLIC METHODS
 
@@ -38,7 +38,7 @@ use parent 'Common::SingletonClass';
 
 =item getList( )
 
- Get server list
+ Get server list, sorted in descending order of priority
 
  Return server list
 
@@ -51,7 +51,7 @@ sub getList
 
 =item getListWithFullNames( )
 
- Get server list with full names
+ Get server list with full names, sorted in descending order of priority
 
  Return server list
 
@@ -80,10 +80,23 @@ sub _init
 {
     my ($self) = @_;
 
-    $_ = basename( $_, '.pm' ) for @{$self->{'servers'}} = grep { $_ !~ /\/noserver.pm$/ } glob(
+    $_ = basename( $_, '.pm' ) for @{$self->{'servers'}} = grep { $_ !~ /noserver.pm$/ } glob(
         "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers/*.pm"
     );
-    @{$self->{'servers_full_names'}} = map { 'Servers::'.$_ } @{$self->{'servers'}};
+
+    # Load all server classes
+    for (@{$self->{'servers'}}) {
+        my $server = "Servers::${_}";
+        eval "require $server" or die( sprintf( "Couldn't load %s server class: %s", $server, $! ));
+    }
+
+    # Sort servers in descending order of priority
+    @{$self->{'servers'}} = sort {
+        "Servers::${b}"->getPriority( ) <=> "Servers::${a}"->getPriority( )
+    } @{$self->{'servers'}};
+
+    @{$self->{'servers_full_names'}} = map { "Servers::${_}" } @{$self->{'servers'}};
+
     $self;
 }
 

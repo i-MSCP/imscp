@@ -55,7 +55,7 @@ sub uninstall
     my ($self) = @_;
 
     return 0 unless %{$self->{'config'}};
-    
+
     my $rs = $self->_removeSqlUser( );
     $rs ||= $self->_removeSqlDatabase( );
     $rs ||= $self->_unregisterConfig( );

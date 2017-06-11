@@ -52,15 +52,13 @@ sub registerSetupListeners
 {
     my ($self, $eventManager) = @_;
 
-    my $rs = $eventManager->register(
+    $eventManager->register(
         'beforeSetupDialog',
         sub {
             push @{$_[0]}, sub { $self->showDialog( @_ ) };
             0;
         }
     );
-    $rs ||= $eventManager->register( 'afterFrontEndPreInstall', sub { $self->preinstallListener( ); } );
-    $rs ||= $eventManager->register( 'afterFrontEndInstall', sub { $self->installListener( ); } );
 }
 
 =item showDialog(\%dialog)
@@ -100,7 +98,6 @@ EOF
         next unless exists $selectedPackages{$_};
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
-
         if ($@) {
             error( $@ );
             return 1;
@@ -115,7 +112,7 @@ EOF
     0;
 }
 
-=item preinstallListener( )
+=item preinstall( )
 
  Process preinstall tasks
 
@@ -125,7 +122,7 @@ EOF
 
 =cut
 
-sub preinstallListener
+sub preinstall
 {
     my ($self) = @_;
 
@@ -137,7 +134,6 @@ sub preinstallListener
         next if exists $selectedPackages{$_};
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
-
         if ($@) {
             error( $@ );
             return 1;
@@ -164,7 +160,6 @@ sub preinstallListener
         next unless exists $selectedPackages{$_};
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
-
         if ($@) {
             error( $@ );
             return 1;
@@ -189,7 +184,7 @@ sub preinstallListener
     0;
 }
 
-=item installListener( )
+=item install( )
 
  Process install tasks
 
@@ -197,7 +192,7 @@ sub preinstallListener
 
 =cut
 
-sub installListener
+sub install
 {
     my ($self) = @_;
 
@@ -208,7 +203,6 @@ sub installListener
         next unless exists $selectedPackages{$_} && $_ ne 'No';
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
-
         if ($@) {
             error( $@ );
             return 1;
@@ -240,7 +234,6 @@ sub uninstall
     for (keys %{$self->{'PACKAGES'}}) {
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
-
         if ($@) {
             error( $@ );
             return 1;
@@ -260,6 +253,19 @@ sub uninstall
     $self->_removePackages( @distroPackages );
 }
 
+=item getPriority( )
+
+ Get package priority
+
+ Return int Server priority
+
+=cut
+
+sub getPriority
+{
+    0;
+}
+
 =item setGuiPermissions( )
 
  Set gui permissions
@@ -272,34 +278,29 @@ sub setGuiPermissions
 {
     my ($self) = @_;
 
-    $self->{'eventManager'}->register(
-        'afterSetGuiPermissions',
-        sub {
-            my $rs = $self->{'eventManager'}->trigger( 'beforeWebmailSetGuiPermissions' );
-            return $rs if $rs;
+    my $rs = $self->{'eventManager'}->trigger( 'beforeWebmailSetGuiPermissions' );
+    return $rs if $rs;
 
-            my %selectedPackages;
-            @{selectedPackages}{ split ',', $main::imscpConfig{'WEBMAIL_PACKAGES'} } = ( );
+    my %selectedPackages;
+    @{selectedPackages}{ split ',', $main::imscpConfig{'WEBMAIL_PACKAGES'} } = ( );
 
-            for (keys %{$self->{'PACKAGES'}}) {
-                next unless exists $selectedPackages{$_};
-                my $package = "Package::Webmail::${_}::${_}";
-                eval "require $package";
-
-                if ($@) {
-                    error( $@ );
-                    return 1;
-                }
-
-                (my $subref = $package->can( 'setGuiPermissions' )) or next;
-                debug( sprintf( 'Executing setGuiPermissions action on %s', $package ) );
-                $rs = $subref->( $package->getInstance( ) );
-                return $rs if $rs;
-            }
-
-            $self->{'eventManager'}->trigger( 'afterWebmailSetGuiPermissions' );
+    for (keys %{$self->{'PACKAGES'}}) {
+        next unless exists $selectedPackages{$_};
+        my $package = "Package::Webmail::${_}::${_}";
+        eval "require $package";
+        if ($@) {
+            error( $@ );
+            return 1;
         }
-    );
+
+        (my $subref = $package->can( 'setGuiPermissions' )) or next;
+        debug( sprintf( 'Executing setGuiPermissions action on %s', $package ) );
+        $rs = $subref->( $package->getInstance( ) );
+        return $rs if $rs;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterWebmailSetGuiPermissions' );
+
 }
 
 =item deleteMail( \%data )
@@ -322,7 +323,6 @@ sub deleteMail
         next unless exists $selectedPackages{$_};
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
-
         if ($@) {
             error( $@ );
             return 1;

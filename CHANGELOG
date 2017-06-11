@@ -4,6 +4,9 @@
 Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
+BACKEND
+    Review: Prioritize servers and packages to avoid overuse of events in installers
+
 CONFIG
     Reverted: Merging of Nginx site configuration files (Regression fix)
 
@@ -19,7 +22,7 @@ LISTENERS
     Updated: 10_named_slave_provisioning.pl listener file: Add configuration in SSL server too
 
 SCRIPTS
-    Fixed: imscp-backup-imscp backup script: Global symbol "$dbName" requires explicit package name
+    Fixed: imscp-backup-imscp backup script: Global symbol "$dbName" requires explicit package name (Regression fix)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.4

@@ -105,7 +105,6 @@ EOF
         next unless exists $selectedPackages{$_};
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-
         if ($@) {
             error( $@ );
             return 1;
@@ -142,7 +141,6 @@ sub preinstall
         next if exists $selectedPackages{$_};
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-
         if ($@) {
             error( $@ );
             return 1;
@@ -169,7 +167,6 @@ sub preinstall
         next unless exists $selectedPackages{$_};
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-
         if ($@) {
             error( $@ );
             return 1;
@@ -213,7 +210,6 @@ sub install
         next unless exists $selectedPackages{$_} && $_ ne 'No';
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-
         if ($@) {
             error( $@ );
             return 1;
@@ -247,7 +243,6 @@ sub postinstall
         next unless exists $selectedPackages{$_} && $_ ne 'No';
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-
         if ($@) {
             error( $@ );
             return 1;
@@ -278,7 +273,6 @@ sub uninstall
     for (keys %{$self->{'PACKAGES'}}) {
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-
         if ($@) {
             error( $@ );
             return 1;
@@ -296,6 +290,19 @@ sub uninstall
     }
 
     $self->_removePackages( @distroPackages );
+}
+
+=item getPriority( )
+
+ Get package priority
+
+ Return int Server priority
+
+=cut
+
+sub getPriority
+{
+    0;
 }
 
 =item setEnginePermissions( )
@@ -317,7 +324,6 @@ sub setEnginePermissions
         next unless exists $selectedPackages{$_};
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-
         if ($@) {
             error( $@ );
             return 1;
@@ -352,7 +358,6 @@ sub addUser
         next unless exists $selectedPackages{$_};
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-
         if ($@) {
             error( $@ );
             return 1;
@@ -387,7 +392,6 @@ sub preaddDmn
         next unless exists $selectedPackages{$_};
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-
         if ($@) {
             error( $@ );
             return 1;
@@ -422,7 +426,6 @@ sub addDmn
         next unless exists $selectedPackages{$_};
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-
         if ($@) {
             error( $@ );
             return 1;
@@ -457,7 +460,6 @@ sub deleteDmn
         next unless exists $selectedPackages{$_};
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-
         if ($@) {
             error( $@ );
             return 1;

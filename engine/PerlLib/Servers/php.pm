@@ -31,6 +31,25 @@ use parent 'Servers::noserver';
  
  This class does nothing yet.
 
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item getPriority( )
+
+ Get server priority
+
+ Return int Server priority
+
+=cut
+
+sub getPriority
+{
+    60;
+}
+
+=back
+
 =head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>

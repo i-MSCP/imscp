@@ -75,17 +75,11 @@ my $rs = 0;
 my @items = ( );
 
 for my $server(iMSCP::Servers->getInstance( )->getListWithFullNames( )) {
-    eval "require $server";
-    fatal( $@ ) if $@;
-
     (my $subref = $server->can( 'setGuiPermissions' )) or next;
     push @items, [ $server, sub { $subref->( $server->factory( ) ); } ];
 }
 
-for my $package (iMSCP::Packages->getInstance( )->getListWithFullNames( )) {
-    eval "require $package";
-    fatal( $@ ) if $@;
-
+for my $package(iMSCP::Packages->getInstance( )->getListWithFullNames( )) {
     (my $subref = $package->can( 'setGuiPermissions' )) or next;
     push @items, [ $package, sub { $subref->( $package->getInstance( ) ); } ];
 }

@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Packages - Package which allow to retrieve i-MSCP package list
+ iMSCP::Packages - Package that allows to load and get list of available i-MSCP packages
 
 =cut
 
@@ -30,7 +30,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Package which allow to retrieve i-MSCP package list
+ Package that allows to load and get list of available i-MSCP packages
 
 =head1 PUBLIC METHODS
 
@@ -40,7 +40,7 @@ use parent 'Common::SingletonClass';
 
  Get package list
 
- Return package list
+ Return package list, sorted in descending order of priority
 
 =cut
 
@@ -51,7 +51,7 @@ sub getList
 
 =item getListWithFullNames( )
 
- Get package list with full names
+ Get package list with full names, sorted in descending order of priority
 
  Return package list
 
@@ -83,7 +83,20 @@ sub _init
     $_ = basename( $_, '.pm' ) for @{$self->{'packages'}} = glob (
         "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/*.pm"
     );
-    @{$self->{'packages_full_names'}} = map { 'Package::'.$_ } @{$self->{'packages'}};
+
+    # Load all package classes
+    for (@{$self->{'packages'}}) {
+        my $package = "Package::${_}";
+        eval "require $package" or die( sprintf( "Couldn't load %s package class: %s", $package, $! ));
+    }
+
+    # Sort packages in descending order of priority
+    @{$self->{'packages'}} = sort {
+        "Package::${b}"->getPriority( ) <=> "Package::${a}"->getPriority( )
+    } @{$self->{'packages'}};
+
+    @{$self->{'packages_full_names'}} = map { "Package::${_}" } @{$self->{'packages'}};
+
     $self;
 }
 

@@ -235,16 +235,16 @@ sub setEnginePermissions
     $self->{'eventManager'}->trigger( 'afterPoSetEnginePermissions' );
 }
 
-=item postaddMail( \%data )
+=item addMail( \%data )
 
- Process postaddMail tasks
+ Process addMail tasks
 
  Param hash \%data Mail data
  Return int 0 on success, other on failure
 
 =cut
 
-sub postaddMail
+sub addMail
 {
     my ($self, $data) = @_;
 
@@ -314,7 +314,11 @@ sub postaddMail
             $rs = $file->mode( 0640 );
             return $rs if $rs;
         }
-    } elsif (-f "$mailDir/maildirsize") {
+
+        return 0;
+    }
+
+    if (-f "$mailDir/maildirsize") {
         $rs = iMSCP::File->new( filename => "$mailDir/maildirsize" )->delFile( );
         return $rs if $rs;
     }

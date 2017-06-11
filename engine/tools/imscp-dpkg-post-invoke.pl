@@ -68,22 +68,14 @@ $bootstrapper->getInstance( )->boot(
 my $rs = 0;
 my @items = ( );
 
-for my $server(iMSCP::Servers->getInstance( )->getListWithFullNames( )) {
-    eval "require $server";
-    fatal( $@ ) if $@;
-
-    next unless $server->can( 'dpkgPostInvokeTasks' );
-    $server = $server->factory( );
-    push @items, $server;
+for (iMSCP::Servers->getInstance( )->getListWithFullNames( )) {
+    next unless $_->can( 'dpkgPostInvokeTasks' );
+    push @items, $_->factory( );
 }
 
-for my $package(iMSCP::Packages->getInstance( )->getListWithFullNames()) {
-    eval "require $package";
-    fatal( $@ ) if $@;
-
-    next unless $package->can( 'dpkgPostInvokeTasks' );
-    $package = $package->getInstance( );
-    push @items, $package;
+for (iMSCP::Packages->getInstance( )->getListWithFullNames( )) {
+    next unless $_->can( 'dpkgPostInvokeTasks' );
+    push @items, $_->getInstance( );
 }
 
 for(@items) {

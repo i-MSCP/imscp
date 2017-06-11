@@ -75,6 +75,19 @@ sub can
     $package->can( $method );
 }
 
+=item getPriority( )
+
+ Get server priority
+
+ Return int Server priority
+
+=cut
+
+sub getPriority
+{
+    70;
+}
+
 END
     {
         return if $? || !$instance || ($main::execmode && $main::execmode eq 'setup');

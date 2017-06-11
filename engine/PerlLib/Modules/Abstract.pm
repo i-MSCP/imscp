@@ -163,34 +163,20 @@ sub _execAction
     my ($self, $action, $pkgType) = @_;
 
     if ($pkgType eq 'server') {
-        for my $server (iMSCP::Servers->getInstance( )->getListWithFullNames( )) {
-            eval "require $server";
-
-            if ($@) {
-                error( $@ );
-                return 1;
-            }
-
-            (my $subref = $server->can( $action )) or next;
-            debug( sprintf("Executing `%s' action on %s", $action, $server ) );
-            my $rs = $subref->( $server->factory( ), $self->_getData( $action ) );
+        for  (iMSCP::Servers->getInstance( )->getListWithFullNames( )) {
+            (my $subref = $_->can( $action )) or next;
+            debug( sprintf("Executing `%s' action on %s", $action, $_ ) );
+            my $rs = $subref->( $_->factory( ), $self->_getData( $action ) );
             return $rs if $rs;
         }
 
         return 0;
     }
 
-    for my $package (iMSCP::Packages->getInstance( )->getListWithFullNames( )) {
-        eval "require $package";
-
-        if ($@) {
-            error( $@ );
-            return 1;
-        }
-
-        (my $subref = $package->can( $action )) or next;
-        debug( sprintf("Executing `%s' action on %s", $action, $package ) );
-        my $rs = $subref->( $package->getInstance( ), $self->_getData( $action ) );
+    for (iMSCP::Packages->getInstance( )->getListWithFullNames( )) {
+        (my $subref = $_->can( $action )) or next;
+        debug( sprintf("Executing `%s' action on %s", $action, $_ ) );
+        my $rs = $subref->( $_->getInstance( ), $self->_getData( $action ) );
         return $rs if $rs;
     }
 

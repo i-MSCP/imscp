@@ -111,29 +111,15 @@ sub setupRegisterListeners
 {
     my $eventManager = iMSCP::EventManager->getInstance( );
 
-    for my $server(iMSCP::Servers->getInstance( )->getListWithFullNames( )) {
-        eval "require $server";
-
-        if ($@) {
-            error( $@ );
-            return 1;
-        }
-
-        (my $subref = $server->can( 'registerSetupListeners' )) or next;
-        my $rs = $subref->( $server->factory( ), $eventManager );
+    for (iMSCP::Servers->getInstance( )->getListWithFullNames( )) {
+        (my $subref = $_->can( 'registerSetupListeners' )) or next;
+        my $rs = $subref->( $_->factory( ), $eventManager );
         return $rs if $rs;
     }
 
-    for my $package(iMSCP::Packages->getInstance( )->getListWithFullNames( )) {
-        eval "require $package";
-
-        if ($@) {
-            error( $@ );
-            return 1;
-        }
-
-        (my $subref = $package->can( 'registerSetupListeners' )) or next;
-        my $rs = $subref->( $package->getInstance( ), $eventManager );
+    for (iMSCP::Packages->getInstance( )->getListWithFullNames( )) {
+        (my $subref = $_->can( 'registerSetupListeners' )) or next;
+        my $rs = $subref->( $_->getInstance( ), $eventManager );
         return $rs if $rs;
     }
 
@@ -150,14 +136,22 @@ sub setupDialog
 
     unshift(@{$dialogStack},
         (
+            # system server
             \&setupAskServerHostname,
             \&setupAskServerPrimaryIP,
+
+            # Sql server
             \&askMasterSqlUser,
             \&setupAskSqlUserHost,
             \&setupAskImscpDbName,
             \&setupAskDbPrefixSuffix,
+
+            # Package
             \&setupAskTimezone,
+
             \&setupAskServicesSsl,
+
+            # Package backup
             \&setupAskImscpBackup,
             \&setupAskDomainBackup
         )
@@ -1425,20 +1419,10 @@ sub setupServersAndPackages
         startDetail( );
         my $nStep = 1;
 
-        for my $server(@servers) {
-            eval "require $server";
-
-            if ($@) {
-                error( $@ );
-                last;
-            }
-
-            (my $subref = $server->can( $lcTask )) or $nStep++ && next;
+        for (@servers) {
+            (my $subref = $_->can( $lcTask )) or $nStep++ && next;
             $rs = step(
-                sub {
-                    $subref->( $server->factory( ) )
-                },
-                sprintf( "Executing %s %s tasks...", $server, $lcTask), $nSteps, $nStep
+                sub { $subref->( $_->factory( ) ) }, sprintf( "Executing %s %s tasks...", $_, $lcTask), $nSteps, $nStep
             );
             last if $rs;
             $nStep++;
@@ -1449,20 +1433,11 @@ sub setupServersAndPackages
             $rs ||= $eventManager->trigger( 'beforeSetup'.$task.'Packages' );
 
             unless ($rs) {
-                for my $package(@packages) {
-                    eval "require $package";
-
-                    if ($@) {
-                        error( $@ );
-                        last;
-                    }
-
-                    (my $subref = $package->can( $lcTask )) or $nStep++ && next;
+                for (@packages) {
+                    (my $subref = $_->can( $lcTask )) or $nStep++ && next;
                     $rs = step(
-                        sub {
-                            $subref->( $package->getInstance( ) )
-                        },
-                        sprintf( "Executing %s %s tasks...", $package, $lcTask), $nSteps, $nStep
+                        sub { $subref->( $_->getInstance( ) ) },
+                        sprintf( "Executing %s %s tasks...", $_, $lcTask), $nSteps, $nStep
                     );
                     last if $rs;
                     $nStep++;
@@ -1488,10 +1463,14 @@ sub setupRestartServices
     my $rs = $eventManager->register(
         'beforeSetupRestartServices',
         sub {
-            push @{$_[0]}, [ sub {
+            push @{$_[0]},
+                [
+                    sub {
                         iMSCP::Service->getInstance( )->restart( 'imscp_mountall' );
                         0;
-                    }, 'i-MSCP mounts' ];
+                    },
+                    'i-MSCP mounts'
+                ];
             0;
         },
         999
@@ -1500,10 +1479,14 @@ sub setupRestartServices
     $rs ||= $eventManager->register(
         'beforeSetupRestartServices',
         sub {
-            push @{$_[0]}, [ sub {
+            push @{$_[0]},
+                [
+                    sub {
                         iMSCP::Service->getInstance( )->restart( 'imscp_traffic' );
                         0;
-                    }, 'i-MSCP Traffic Logger' ];
+                    },
+                    'i-MSCP Traffic Logger'
+                ];
             0;
         },
         99
@@ -1511,10 +1494,14 @@ sub setupRestartServices
     $rs ||= $eventManager->register(
         'beforeSetupRestartServices',
         sub {
-            push @{$_[0]}, [ sub {
+            push @{$_[0]},
+                [
+                    sub {
                         iMSCP::Service->getInstance( )->start( 'imscp_daemon' );
                         0;
-                    }, 'i-MSCP Daemon' ];
+                    },
+                    'i-MSCP Daemon'
+                ];
             0;
         },
         99

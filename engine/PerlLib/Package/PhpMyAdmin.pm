@@ -82,6 +82,32 @@ sub registerSetupListeners
     Package::PhpMyAdmin::Installer->getInstance( )->registerSetupListeners( $eventManager );
 }
 
+=item preinstall( )
+
+ Process preinstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preinstall
+{
+    Package::PhpMyAdmin::Installer->getInstance( )->preinstall( );
+}
+
+=item install( )
+
+ Process install tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub install
+{
+    Package::PhpMyAdmin::Installer->getInstance( )->install( );
+}
+
 =item uninstall( )
 
  Process uninstall tasks
@@ -93,6 +119,19 @@ sub registerSetupListeners
 sub uninstall
 {
     Package::PhpMyAdmin::Uninstaller->getInstance( )->uninstall( );
+}
+
+=item getPriority( )
+
+ Get package priority
+
+ Return int Server priority
+
+=cut
+
+sub getPriority
+{
+    0;
 }
 
 =item setGuiPermissions( )
@@ -107,29 +146,24 @@ sub setGuiPermissions
 {
     my ($self) = @_;
 
-    $self->{'eventManager'}->register(
-        'afterSetGuiPermissions',
-        sub {
-            my $rs = $self->{'eventManager'}->trigger( 'beforePhpMyAdminSetGuiPermissions' );
-            return $rs if $rs || !-d "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpMyAdminSetGuiPermissions' );
+    return $rs if $rs || !-d "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
 
-            debug( "Setting permissions (event listener)" );
-            my $panelUName = my $panelGName =
-                $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    debug( "Setting permissions (event listener)" );
+    my $panelUName = my $panelGName =
+        $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-            $rs ||= setRights(
-                "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma",
-                {
-                    user      => $panelUName,
-                    group     => $panelGName,
-                    dirmode   => '0550',
-                    filemode  => '0440',
-                    recursive => 1
-                }
-            );
-            $rs ||= $self->{'eventManager'}->trigger( 'afterPhpMyAdminSetGuiPermissions' );
+    $rs ||= setRights(
+        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma",
+        {
+            user      => $panelUName,
+            group     => $panelGName,
+            dirmode   => '0550',
+            filemode  => '0440',
+            recursive => 1
         }
     );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpMyAdminSetGuiPermissions' );
 }
 
 =back

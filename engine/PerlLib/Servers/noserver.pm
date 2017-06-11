@@ -69,6 +69,19 @@ sub can
     undef;
 }
 
+=item getPriority( )
+
+ Get server priority
+
+ Return int Server priority
+
+=cut
+
+sub getPriority
+{
+    0;
+}
+
 =item AUTOLOAD( )
 
  Catch any call to unexistent method
