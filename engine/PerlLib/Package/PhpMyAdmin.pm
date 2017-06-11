@@ -125,7 +125,7 @@ sub uninstall
 
  Get package priority
 
- Return int Server priority
+ Return int package priority
 
 =cut
 
