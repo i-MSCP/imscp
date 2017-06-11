@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::system::local - i-MSCP local server implementation
+ Servers::server::local - i-MSCP local server implementation
 
 =cut
 
@@ -21,11 +21,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package Servers::system::local;
+package Servers::server::local;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ :nostat Servers::system::local::installer /;
+use Class::Autouse qw/ :nostat Servers::server::local::installer /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -49,7 +49,24 @@ sub registerSetupListeners
 {
     my (undef, $eventManager) = @_;
 
-    Servers::system::local::installer->getInstance( )->registerSetupListeners( $eventManager );
+    Servers::server::local::installer->getInstance( )->registerSetupListeners( $eventManager );
+}
+
+=item preinstall( )
+
+ Process preinstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preinstall
+{
+    my ($self) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeServerPreInstall', 'local' );
+    $rs ||= Servers::server::local::installer->getInstance( )->preinstall( );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterServerPreInstall', 'local' );
 }
 
 =item install( )
@@ -64,9 +81,9 @@ sub install
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSystemInstall', 'local' );
-    $rs ||= Servers::system::local::installer->getInstance( )->install( );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSystemInstall', 'local' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeServerInstall', 'local' );
+    $rs ||= Servers::server::local::installer->getInstance( )->install( );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterServerInstall', 'local' );
 }
 
 =back
@@ -79,7 +96,7 @@ sub install
 
  Initialize instance
 
- Return Servers::system::local::installer
+ Return Servers::server::local::installer
 
 =cut
 

@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::ftpd - i-MSCP system server implementation
+ Servers::server - i-MSCP local server implementation
 
 =cut
 
@@ -21,7 +21,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package Servers::system;
+package Servers::server;
 
 use strict;
 use warnings;
@@ -32,7 +32,7 @@ my $instance;
 
 =head1 DESCRIPTION
 
- i-MSCP system server implementation.
+ i-MSCP local server implementation.
 
 =head1 PUBLIC METHODS
 
@@ -42,7 +42,7 @@ my $instance;
 
  Create and return system server instance
 
- Return ftpd server instance
+ Return local server instance
 
 =cut
 
@@ -50,7 +50,7 @@ sub factory
 {
     return $instance if defined $instance;
 
-    my $package = "Servers::system::local";
+    my $package = "Servers::server::local";
 
     eval "require $package";
     fatal( $@ ) if $@;
@@ -70,7 +70,7 @@ sub can
 {
     my (undef, $method) = @_;
 
-    my $package = "Servers::system::local";
+    my $package = "Servers::server::local";
     eval "require $package";
     fatal( $@ ) if $@;
     $package->can( $method );

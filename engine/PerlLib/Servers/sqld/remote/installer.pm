@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::sqld::remote::installer - i-MSCP Remote MySQL server installer implementation
+ Servers::sqld::remote::installer - i-MSCP Remote SQL server installer implementation
 
 =cut
 
@@ -39,7 +39,7 @@ use parent 'Servers::sqld::mysql::installer';
 
 =head1 DESCRIPTION
 
- i-MSCP Remote MySQL server installer implementation.
+ i-MSCP Remote SQL server installer implementation.
 
 =head1 PRIVATE METHODS
 

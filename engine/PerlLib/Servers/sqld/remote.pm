@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::sqld::remote - i-MSCP Remote MySQL server implementation
+ Servers::sqld::remote - i-MSCP Remote SQL server implementation
 
 =cut
 
@@ -33,7 +33,7 @@ use parent 'Servers::sqld::mysql';
 
 =head1 DESCRIPTION
 
- i-MSCP Remote MySQL server implementation.
+ i-MSCP Remote SQL server implementation.
 
 =head1 PUBLIC METHODS
 

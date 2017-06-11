@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::system::local::installer - i-MSCP local server implementation
+ Servers::server::local::installer - i-MSCP local server implementation
 
 =cut
 
@@ -21,7 +21,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package Servers::system::local::installer;
+package Servers::server::local::installer;
 
 use strict;
 use warnings;
@@ -88,7 +88,7 @@ sub hostnameDialog
 
     my $hostname = main::setupGetQuestion( 'SERVER_HOSTNAME' );
 
-    if ($main::reconfigure =~ /^(?:system_server|system_hostname|hostnames|all|forced)$/
+    if ($main::reconfigure =~ /^(?:local_server|system_hostname|hostnames|all|forced)$/
         || !isValidHostname( $hostname )
     ) {
         chomp( $hostname = $hostname || `hostname --fqdn 2>/dev/null` || '');
@@ -144,7 +144,7 @@ sub primaryIpDialog
         chomp( $wanIP = get( 'https://ipinfo.io/ip' ) || '' );
     }
 
-    if ($main::reconfigure =~ /^(?:system_server|primary_ip|all|forced)$/
+    if ($main::reconfigure =~ /^(?:local_server|primary_ip|all|forced)$/
         || !grep( $_ eq $lanIP, @ipList )
         || ($wanIP ne $lanIP && !isValidIpAddr( $wanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ))
     ) {
@@ -223,7 +223,7 @@ sub timezoneDialog
         'TIMEZONE', (iMSCP::Getopt->preseed) ? DateTime::TimeZone->new( name => 'local' )->name( ) : ''
     );
 
-    if ($main::reconfigure =~ /^(?:system_server|timezone|all|forced)$/
+    if ($main::reconfigure =~ /^(?:local_server|timezone|all|forced)$/
         || !isValidTimezone( $timezone )
     ) {
         my ($rs, $msg) = (0, '');
@@ -242,6 +242,20 @@ EOF
     0;
 }
 
+=item preinstall( )
+
+ Process preinstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preinstall
+{
+    main::setupSetQuestion( 'IPV6_SUPPORT', -f '/proc/net/if_inet6' ? 1 : 0 );
+    0;
+}
+
 =item install( )
 
  Process install tasks
@@ -254,8 +268,10 @@ sub install
 {
     my ($self) = @_;
 
+    main::setupSetQuestion( 'IPV6_SUPPORT', -f '/proc/net/if_inet6' ? 1 : 0 );
+
     my $rs = $self->_setupHostname( );
-    $rs ||= $self->_setuprimaryIP( );
+    $rs ||= $self->_setupPrimaryIP( );
 }
 
 =back
@@ -268,7 +284,7 @@ sub install
 
  Initialize instance
 
- Return Servers::system::local::installer
+ Return Servers::server::local::installer
 
 =cut
 
@@ -352,7 +368,7 @@ EOF
 
 =cut
 
-sub _setuprimaryIP
+sub _setupPrimaryIP
 {
     my ($self) = @_;
 

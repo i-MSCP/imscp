@@ -44,6 +44,22 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
+=item registerSetupListeners( \%eventManager )
+
+ Register setup event listeners
+
+ Param iMSCP::EventManager \%eventManager
+ Return int 0 on success, other on failure
+
+=cut
+
+sub registerSetupListeners
+{
+    my (undef, $eventManager) = @_;
+
+    Servers::sqld::mysql::installer->getInstance( )->registerSetupListeners( $eventManager );
+}
+
 =item preinstall( )
 
  Process preinstall tasks
@@ -56,9 +72,9 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'mysql' );
     $rs ||= Servers::sqld::mysql::installer->getInstance( )->preinstall( );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPreinstall' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPreinstall', 'mysql' );
 }
 
 =item postinstall( )

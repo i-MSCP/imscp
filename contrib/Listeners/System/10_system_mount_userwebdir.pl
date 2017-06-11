@@ -40,7 +40,7 @@ my $USER_WEB_DIR = '/home/virtual';
 #
 
 iMSCP::EventManager->getInstance()->register(
-    'beforeSetupSystemDirectories',
+    'afterSetupInstallFiles',
     sub {
         my $rs = umount($main::imscpConfig{'USER_WEB_DIR'});
         $rs ||= mount(

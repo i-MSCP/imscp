@@ -15,8 +15,9 @@ DISTRIBUTIONS
     Fixed: Missing switch for MariaDB 10.2 server in distribution packages files
 
 INSTALLER
-    Added: `system_server` configuration parameter; Allow reconfiguration of system hostname, primary IP and timezone
+    Added: `local_server` configuration parameter; Allows reconfiguration of system hostname, primary IP and timezone
     Fixed: Couldn't get APT key from keys.gnupg.net keys server due to DNS failure
+    Moved: SQL server related routines into SQL server installer
 
 LISTENERS
     Fixed: 10_nginx_hsts.pl listener file: nginx: [emerg] "add_header" directive is not allowed (Regression fix)
@@ -29,7 +30,7 @@ SCRIPTS
     Fixed: imscp-backup-imscp backup script: Global symbol "$dbName" requires explicit package name (Regression fix)
 
 SERVERS
-    Added: System local server implementation (Servers::system::local)
+    Added: System local server implementation (Servers::server::local)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.4
