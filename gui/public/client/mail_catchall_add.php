@@ -212,7 +212,7 @@ function client_addCatchall($itemId)
                             mail_acc, mail_pass, mail_forward, domain_id, mail_type, sub_id, status, po_active,
                             mail_auto_respond, quota, mail_addr
                         ) VALUES (
-                            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                         )
                     ',
                     array(
