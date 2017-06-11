@@ -258,9 +258,7 @@ EOF
 
     my @steps = (
         [ \&main::setupInstallFiles, 'Installing distribution files' ],
-        [ \&main::setupSystemDirectories, 'Setting up system directories' ],
         [ \&main::setupBoot, 'Bootstrapping installer' ],
-        [ \&main::setServerCapabilities, 'Setting up server capabilities' ],
         [ \&main::setupRegisterListeners, 'Registering servers/packages event listeners' ],
         [ \&main::setupDialog, 'Processing setup dialog' ],
         [ \&main::setupTasks, 'Processing setup tasks' ],

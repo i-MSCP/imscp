@@ -106,14 +106,6 @@ sub setupDialog
     my $rs = iMSCP::EventManager->getInstance( )->trigger( 'beforeSetupDialog', $dialogStack );
     return $rs if $rs;
 
-    unshift(@{$dialogStack},
-        (
-            # TODO: Move into frontEnd package installer
-            \&setupAskImscpBackup,
-            \&setupAskDomainBackup
-        )
-    );
-
     # Implements a simple state machine (backup capability)
     # Any dialog subroutine *should* allow user to step back by returning 30 when 'back' button is pushed
     # In case of yesno dialog box, there is no back button. Instead, user can back up using the ESC keystroke
@@ -175,59 +167,6 @@ sub setupDeleteBuildDir
     my $rs = iMSCP::EventManager->getInstance( )->trigger( 'beforeSetupDeleteBuildDir', $main::{'INST_PREF'} );
     $rs ||= iMSCP::Dir->new( dirname => $main::{'INST_PREF'} )->remove( );
     $rs ||= iMSCP::EventManager->getInstance( )->trigger( 'afterSetupDeleteBuildDir', $main::{'INST_PREF'} );
-}
-
-# Ask for i-MSCP backup feature
-sub setupAskImscpBackup
-{
-    my $dialog = shift;
-    my $backupImscp = setupGetQuestion( 'BACKUP_IMSCP' );
-
-    if ($main::reconfigure =~ /^(?:backup|all|forced)$/
-        || $backupImscp !~ /^(?:yes|no)$/
-    ) {
-        (my $rs, $backupImscp) = $dialog->radiolist( <<"EOF", [ 'yes', 'no' ], $backupImscp ne 'no' ? 'yes' : 'no' );
-
-\\Z4\\Zb\\Zui-MSCP Backup Feature\\Zn
-
-Do you want to activate the backup feature for i-MSCP?
-
-The backup feature for i-MSCP allows the daily save of all i-MSCP configuration files and its database. It's greatly recommended to activate this feature.
-EOF
-        return $rs if $rs >= 30;
-    }
-
-    setupSetQuestion( 'BACKUP_IMSCP', $backupImscp );
-    0;
-}
-
-# Ask for customer backup feature
-sub setupAskDomainBackup
-{
-    my $dialog = shift;
-    my $backupDomains = setupGetQuestion( 'BACKUP_DOMAINS' );
-
-    if ($main::reconfigure =~ /^(?:backup|all|forced)$/
-        || $backupDomains !~ /^(?:yes|no)$/
-    ) {
-        (my $rs, $backupDomains) = $dialog->radiolist( <<"EOF", [ 'yes', 'no' ], $backupDomains ne 'no' ? 'yes' : 'no' );
-
-\\Z4\\Zb\\ZuDomains Backup Feature\\Zn
-
-Do you want to activate the backup feature for customers?
-
-This feature allows resellers to enable backup for their customers such as:
-
- - Full (domains and SQL databases)
- - Domains only (Web files)
- - SQL databases only
- - None (no backup)
-EOF
-        return $rs if $rs >= 30;
-    }
-
-    setupSetQuestion( 'BACKUP_DOMAINS', $backupDomains );
-    0;
 }
 
 #

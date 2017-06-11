@@ -24,6 +24,7 @@ LISTENERS
     Updated: 10_named_slave_provisioning.pl listener file: Add configuration in SSL server too
 
 PACKAGES
+    Added: Package for backup feature (Package::Backup)
     Added: Package for services SSL (Package::ServicesSSL)
 
 SCRIPTS
