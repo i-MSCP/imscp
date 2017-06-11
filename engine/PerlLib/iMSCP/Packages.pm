@@ -87,7 +87,7 @@ sub _init
     # Load all package classes
     for (@{$self->{'packages'}}) {
         my $package = "Package::${_}";
-        eval "require $package" or die( sprintf( "Couldn't load %s package class: %s", $package, $! ));
+        eval "require $package" or die( sprintf( "Couldn't load %s package class: %s", $package, $@ ));
     }
 
     # Sort packages in descending order of priority

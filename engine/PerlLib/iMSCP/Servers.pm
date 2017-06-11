@@ -87,7 +87,7 @@ sub _init
     # Load all server classes
     for (@{$self->{'servers'}}) {
         my $server = "Servers::${_}";
-        eval "require $server" or die( sprintf( "Couldn't load %s server class: %s", $server, $! ));
+        eval "require $server" or die( sprintf( "Couldn't load %s server class: %s", $server, $@ ));
     }
 
     # Sort servers in descending order of priority

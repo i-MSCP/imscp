@@ -273,7 +273,7 @@ sub askSsl
         || $sslEnabled !~ /^(?:yes|no)$/
         || ($sslEnabled eq 'yes' && $main::reconfigure =~ /^(?:panel_hostname|hostnames)$/)
     ) {
-        my $rs = $dialog->yesno( <<"EOF", $sslEnabled eq 'no' ? 1 : 0 );
+        my $rs = $dialog->yesno( <<'EOF', $sslEnabled eq 'no' ? 1 : 0 );
 
 Do you want to enable SSL for the control panel?
 EOF
@@ -287,7 +287,7 @@ EOF
                 my $msg = '';
 
                 do {
-                    $dialog->msgbox( <<"EOF" );
+                    $dialog->msgbox( <<'EOF' );
 
 $msg
 Please select your private key in next dialog.
@@ -297,7 +297,7 @@ EOF
                     } while $rs < 30 && !($privateKeyPath && -f $privateKeyPath);
                     return $rs if $rs >= 30;
 
-                    ($rs, $passphrase) = $dialog->passwordbox( <<"EOF", $passphrase );
+                    ($rs, $passphrase) = $dialog->passwordbox( <<'EOF', $passphrase );
 
 Please enter the passphrase for your private key if any:
 EOF
@@ -320,7 +320,7 @@ EOF
                 } while $rs < 30 && $msg;
                 return $rs if $rs >= 30;
 
-                $rs = $dialog->yesno( <<"EOF" );
+                $rs = $dialog->yesno( <<'EOF' );
 
 Do you have a SSL CA Bundle?
 EOF
@@ -335,7 +335,7 @@ EOF
                     $openSSL->{'ca_bundle_container_path'} = '';
                 }
 
-                $dialog->msgbox( <<"EOF" );
+                $dialog->msgbox( <<'EOF' );
 
 Please select your SSL certificate in next dialog.
 EOF
@@ -368,7 +368,7 @@ EOF
 
             if ($sslEnabled eq 'yes') {
                 ($rs, $baseServerVhostPrefix) = $dialog->radiolist(
-                    <<"EOF", [ 'https', 'http' ], $baseServerVhostPrefix eq 'https://' ? 'https' : 'http' );
+                    <<'EOF', [ 'https', 'http' ], $baseServerVhostPrefix eq 'https://' ? 'https' : 'http' );
 
 Please choose the default HTTP access mode for the control panel:
 EOF
@@ -390,7 +390,7 @@ EOF
                     remove => 1
                 }
             );
-            $dialog->msgbox( <<"EOF" );
+            $dialog->msgbox( <<'EOF' );
 
 Your SSL certificate for the control panel is missing or invalid.
 EOF
