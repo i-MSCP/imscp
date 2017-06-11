@@ -1061,7 +1061,8 @@ sub _buildHttpdConfig
         PLUGINS_DIR                  => $main::imscpConfig{'PLUGINS_DIR'}
     };
 
-    $rs = $self->{'eventManager'}->register(
+    $rs = $self->{'frontend'}->disableSites( 'default', '00_master.conf', '00_master_ssl.conf' );
+    $rs ||= $self->{'eventManager'}->register(
         'beforeFrontEndBuildConf',
         sub {
             my ($cfgTpl, $tplName) = @_;
@@ -1099,7 +1100,7 @@ EOF
             0;
         }
     );
-    $rs ||= $self->{'frontend'}->disableSites( 'default' );
+
     $rs ||= $self->{'frontend'}->buildConfFile(
         '00_master.nginx',
         $tplVars,
@@ -1126,16 +1127,11 @@ EOF
         );
         $rs ||= $self->{'frontend'}->enableSites( '00_master_ssl.conf' );
         return $rs if $rs;
-    } else {
-        $rs ||= $self->{'frontend'}->disableSites( '00_master_ssl.conf' );
+    } elsif (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf") {
+        $rs = iMSCP::File->new(
+            filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf"
+        )->delFile( );
         return $rs if $rs;
-
-        if (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf") {
-            $rs = iMSCP::File->new(
-                filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf"
-            )->delFile( );
-            return $rs if $rs;
-        }
     }
 
     if (-f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf") {

@@ -30,6 +30,7 @@ LISTENERS
 PACKAGES
     Added: Package for backup feature (Package::Backup)
     Added: Package for services SSL (Package::ServicesSSL)
+    Fixed: Create relative links instead of absolute links for Nginx site configuration files (Package::FrontEnd)
 
 SCRIPTS
     Fixed: imscp-backup-imscp backup script: Global symbol "$dbName" requires explicit package name (Regression fix)

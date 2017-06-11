@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Package::FrontEnd::Installer Package::FrontEnd::Uninstaller /;
 use File::Basename;
+use File::Spec;
 use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::EventManager;
@@ -386,22 +387,22 @@ sub enableSites
     return $rs if $rs;
 
     for my $site(@sites) {
-        unless (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site") {
+        my $target = "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site";
+        my $link = $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}.'/'.basename( $site, '.conf' );
+
+        unless (-f $target) {
             error( sprintf( "Site `%s` doesn't exist", $site ) );
             return 1;
         }
 
-        my $siteName = basename( $site, '.conf' );
+        next if -l $link;
 
-        next if -l "$self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}/$siteName";
-
-        unless (symlink(
-            "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site",
-            "$self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}/$siteName"
-        )) {
+        unless (symlink( File::Spec->abs2rel( $target, $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'} ), $link )) {
             error( sprintf( "Couldn't enable `%s` site: %s", $site, $! ) );
             return 1;
         }
+
+        $self->{'reload'} = 1;
     }
 
     $self->{'eventManager'}->trigger( 'afterEnableFrontEndSites', @sites );
@@ -428,7 +429,8 @@ sub disableSites
         next unless -l "$self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}/$siteName";
         $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}/$siteName" )->delFile( );
         return $rs if $rs;
-        $self->{'restart'} = 1;
+
+        $self->{'reload'} = 1;
     }
 
     $self->{'eventManager'}->trigger( 'afterDisableFrontEndSites', @sites );
