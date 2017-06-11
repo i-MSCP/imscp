@@ -44,7 +44,6 @@ use iMSCP::Service;
 use iMSCP::Stepper;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
-use LWP::Simple;
 use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
 use Servers::sqld;
 
@@ -136,22 +135,16 @@ sub setupDialog
 
     unshift(@{$dialogStack},
         (
-            # system server
-            \&setupAskServerHostname,
-            \&setupAskServerPrimaryIP,
-
-            # Sql server
+            # TODO: move into Sql server installer.
             \&askMasterSqlUser,
             \&setupAskSqlUserHost,
             \&setupAskImscpDbName,
             \&setupAskDbPrefixSuffix,
 
-            # Package
-            \&setupAskTimezone,
-
+            # TODO: create dedicated package
             \&setupAskServicesSsl,
 
-            # Package backup
+            # TODO: Move into frontEnd package installer
             \&setupAskImscpBackup,
             \&setupAskDomainBackup
         )
@@ -192,7 +185,6 @@ sub setupTasks
         [ \&setupSaveConfig, 'Saving configuration' ],
         [ \&setupKernel, 'Setup kernel' ],
         [ \&setupCreateMasterUser, 'Creating system master user' ],
-        [ \&setupServerHostname, 'Setting up server hostname' ],
         [ \&setupServiceSsl, 'Configuring SSL for services' ],
         [ \&setupCoreServices, 'Setup core services' ],
         [ \&setupRegisterDelayedTasks, 'Registering delayed tasks' ],
@@ -222,124 +214,6 @@ sub setupDeleteBuildDir
     my $rs = iMSCP::EventManager->getInstance( )->trigger( 'beforeSetupDeleteBuildDir', $main::{'INST_PREF'} );
     $rs ||= iMSCP::Dir->new( dirname => $main::{'INST_PREF'} )->remove( );
     $rs ||= iMSCP::EventManager->getInstance( )->trigger( 'afterSetupDeleteBuildDir', $main::{'INST_PREF'} );
-}
-
-#
-## Dialog subroutines
-#
-
-# Ask for server hostname
-sub setupAskServerHostname
-{
-    my $dialog = shift;
-    my $hostname = setupGetQuestion( 'SERVER_HOSTNAME' );
-
-    if ($main::reconfigure =~ /^(?:system_hostname|hostnames|all|forced)$/
-        || !isValidHostname( $hostname )
-    ) {
-        chomp( $hostname = $hostname || `hostname --fqdn 2>/dev/null` || '');
-        $hostname = idn_to_unicode( $hostname, 'utf-8' );
-
-        my ($rs, $msg) = (0, '');
-        do {
-            ($rs, $hostname) = $dialog->inputbox( <<"EOF", $hostname );
-
-Please enter your server fully qualified hostname:$msg
-EOF
-            $msg = isValidHostname( $hostname ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
-    }
-
-    setupSetQuestion( 'SERVER_HOSTNAME', idn_to_ascii( $hostname, 'utf-8' ) );
-    0;
-}
-
-# Ask for server's primary IP
-sub setupAskServerPrimaryIP
-{
-    my $dialog = shift;
-    my @ipList = sort grep(
-            isValidIpAddr( $_, qr/(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)/ ),
-            iMSCP::Net->getInstance( )->getAddresses( )
-        ), 'None';
-    unless (@ipList) {
-        error( "Couldn't get list of server IP addresses. At least one IP address must be configured." );
-        return 1;
-    }
-
-    my $lanIP = setupGetQuestion( 'BASE_SERVER_IP' );
-    $lanIP = 'None' if $lanIP eq '0.0.0.0';
-    my $wanIP = setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
-
-    if (iMSCP::Getopt->preseed
-        && !$wanIP
-        && (!isValidIpAddr( $lanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ))
-    ) {
-        chomp( $wanIP = get( 'https://ipinfo.io/ip' ) || '' );
-    }
-
-    if ($main::reconfigure =~ /^(?:primary_ip|all|forced)$/
-        || !grep( $_ eq $lanIP, @ipList )
-        || ($wanIP ne $lanIP && !isValidIpAddr( $wanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ))
-    ) {
-        my ($rs, $msg) = (0, '');
-
-        do {
-            ($rs, $lanIP) = $dialog->radiolist(
-                <<"EOF", [ @ipList ], grep( $_ eq $lanIP, @ipList ) ? $lanIP : $ipList[0] );
-
-Please select your server primary IP address:
-
-The \\Zb`None'\\Zn option means that i-MSCP will configures the services to listen on all interfaces.
-Note that this options is more suitable for Cloud computing services such as Scaleway and Amazon EC2.
-EOF
-            $lanIP = '0.0.0.0' if $lanIP && $lanIP eq 'None';
-        } while $rs < 30 && !isValidIpAddr( $lanIP );
-        return $rs if $rs >= 30;
-
-        # IP inside private IP range?
-        if (!isValidIpAddr( $lanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ )) {
-            chomp( $wanIP = get( 'https://ipinfo.io/ip' ) || '' ) unless $wanIP;
-
-            do {
-                ($rs, $wanIP) = $dialog->inputbox( <<"EOF", $wanIP );
-
-The IP address that you have selected is in private IP range.
-
-Please enter your public IP address (WAN IP), or leave blank to force usage of the private IP address:$msg
-EOF
-                $msg = '';
-                if ($wanIP
-                    && $wanIP ne $lanIP
-                    && !isValidIpAddr( $wanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ )
-                ) {
-                    $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
-                } elsif (!$wanIP) {
-                    $wanIP = $lanIP;
-                }
-
-                if ($wanIP eq '0.0.0.0') {
-                    $msg = <<"EOF";
-
-
-\\Z1Invalid or unauthorized IP address.\\Zn
-
-Please try again:
-EOF
-                }
-            } while $rs < 30 && $msg;
-            return $rs if $rs >= 30;
-        } else {
-            $wanIP = $lanIP
-        }
-    } elsif ($lanIP eq 'None') {
-        $lanIP = '0.0.0.0';
-    }
-
-    setupSetQuestion( 'BASE_SERVER_IP', $lanIP );
-    setupSetQuestion( 'BASE_SERVER_PUBLIC_IP', $wanIP );
-    0;
 }
 
 sub askSqlRootUser
@@ -632,33 +506,6 @@ EOF
     0;
 }
 
-# Ask for timezone
-sub setupAskTimezone
-{
-    my $dialog = shift;
-    my $timezone = setupGetQuestion(
-        'TIMEZONE', (iMSCP::Getopt->preseed) ? DateTime::TimeZone->new( name => 'local' )->name( ) : ''
-    );
-
-    if ($main::reconfigure =~ /^(?:timezone|all|forced)$/
-        || !isValidTimezone( $timezone )
-    ) {
-        my ($rs, $msg) = (0, '');
-        do {
-            ($rs, $timezone) = $dialog->inputbox(
-                <<"EOF", $timezone || DateTime::TimeZone->new( name => 'local' )->name( ) );
-
-Please enter your timezone:$msg
-EOF
-            $msg = isValidTimezone( $timezone ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
-    }
-
-    setupSetQuestion( 'TIMEZONE', $timezone );
-    0;
-}
-
 # Ask for services SSL
 sub setupAskServicesSsl
 {
@@ -933,60 +780,6 @@ sub setupCreateMasterUser
     $rs ||= iMSCP::EventManager->getInstance( )->trigger( 'afterSetupCreateMasterUser' );
 }
 
-sub setupServerHostname
-{
-    my $hostname = setupGetQuestion( 'SERVER_HOSTNAME' );
-    my $lanIP = setupGetQuestion( 'BASE_SERVER_IP' );
-
-    my $rs = iMSCP::EventManager->getInstance( )->trigger( 'beforeSetupServerHostname', \$hostname, \$lanIP );
-    return $rs if $rs;
-
-    my @labels = split /\./, $hostname;
-    my $host = shift @labels;
-    my $hostnameLocal = "$hostname.local";
-
-    my $file = iMSCP::File->new( filename => '/etc/hosts' );
-    $rs = $file->copyFile( '/etc/hosts.bkp' ) unless -f '/etc/hosts.bkp';
-    return $rs if $rs;
-
-    my $content = <<"EOF";
-127.0.0.1   $hostnameLocal   localhost
-$lanIP  $hostname   $host
-
-# The following lines are desirable for IPv6 capable hosts
-::1 localhost  ip6-localhost   ip6-loopback
-fe00::0 ip6-localnet
-ff00::0 ip6-mcastprefix
-ff02::1 ip6-allnodes
-ff02::2 ip6-allrouters
-ff02::3 ip6-allhosts
-EOF
-    $rs = $file->set( $content );
-    $rs ||= $file->save( );
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0644 );
-    return $rs if $rs;
-
-    $file = iMSCP::File->new( filename => '/etc/hostname' );
-    $rs = $file->set( $host );
-    $rs ||= $file->save( );
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0644 );
-    return $rs if $rs;
-
-    $file = iMSCP::File->new( filename => '/etc/mailname' );
-    $rs = $file->set( $hostname );
-    $rs ||= $file->save( );
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( 0644 );
-    return $rs if $rs;
-
-    $rs = execute( 'hostname -F /etc/hostname', \ my $stdout, \ my $stderr );
-    debug( $stdout) if $stdout;
-    error( $stderr || "Couldn't set server hostname" ) if $rs;
-    $rs ||= iMSCP::EventManager->getInstance( )->trigger( 'afterSetupServerHostname' );
-}
-
 sub setupServiceSsl
 {
     my $sslEnabled = setupGetQuestion( 'SERVICES_SSL_ENABLED' );
@@ -1035,7 +828,7 @@ sub setupRegisterDelayedTasks
     $eventManager->register( 'afterSqldPreinstall', \&setupMasterSqlUser );
     $eventManager->register( 'afterSqldPreinstall', \&setupSecureSqlInstallation );
     $eventManager->register( 'afterSqldPreinstall', \&setupDatabase );
-    $eventManager->register( 'afterSqldPreinstall', \&setupPrimaryIP );
+    #$eventManager->register( 'afterSqldPreinstall', \&setupPrimaryIP );
 }
 
 sub setupMasterSqlUser

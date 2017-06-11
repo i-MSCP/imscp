@@ -15,6 +15,7 @@ DISTRIBUTIONS
     Fixed: Missing switch for MariaDB 10.2 server in distribution packages files
 
 INSTALLER
+    Added: `system_server` configuration parameter; Allow reconfiguration of system hostname, primary IP and timezone
     Fixed: Couldn't get APT key from keys.gnupg.net keys server due to DNS failure
 
 LISTENERS
@@ -23,6 +24,9 @@ LISTENERS
 
 SCRIPTS
     Fixed: imscp-backup-imscp backup script: Global symbol "$dbName" requires explicit package name (Regression fix)
+
+SERVERS
+    Added: System local server implementation (Servers::system::local)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.4
