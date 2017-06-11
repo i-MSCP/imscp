@@ -5,14 +5,17 @@ Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
 CONFIG
-    Reverted: Merging of Nginx site configuration files (FrontEnd)
+    Reverted: Merging of Nginx site configuration files (Regression fix)
 
 DISTRIBUTIONS
     Fixed: libmysqlclient20 package must be installed in any case (Ubuntu 16.04)
-    Fixed: Missing switch for MariaDB server in distribution packages files
+    Fixed: Missing switch for MariaDB 10.2 server in distribution packages files
+
+INSTALLER
+    Fixed: Couldn't get APT key from keys.gnupg.net keys server due to DNS failure
 
 LISTENERS
-    Fixed: 10_nginx_hsts.pl listener file: nginx: [emerg] "add_header" directive is not allowed
+    Fixed: 10_nginx_hsts.pl listener file: nginx: [emerg] "add_header" directive is not allowed (Regression fix)
     Updated: 10_named_slave_provisioning.pl listener file: Add configuration in SSL server too
 
 ------------------------------------------------------------------------------------------------------------------------
