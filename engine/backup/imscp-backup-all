@@ -78,27 +78,28 @@ my $command = {
 
 =over 4
 
-=item backupHomedir( $homeDir, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group )
+=item backupHomedir( $mainDmnName, $homeDir, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group )
 
  Backup a customer home directory
 
- Param string $homeDir Home directory path
- Param string $bkpDir Backup directory path
+ Param string $mainDmnName Customer main domain name
+ Param string $homeDir Customer home directory path
+ Param string $bkpDir Customer backup directory path
  Param string $cmpAlgo Compression algorithm
  Param string $cmpLevel Compression level
  Param string $bkpExt Backup archive extension
- Param string $user Customer unix user
- Param string $group Customer unix group
+ Param string $user Customer Web unix user
+ Param string $group Customer Web unix group
  Return void
 
 =cut
 
 sub backupHomedir
 {
-    my ($homeDir, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group) = @_;
+    my ($mainDmnName, $homeDir, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group) = @_;
 
     my $bkpDate = strftime "%Y.%m.%d-%H-%M", localtime;
-    my $bkpArchName = "web-backup-$bkpDate.tar$bkpExt";
+    my $bkpArchName = "web-backup-$mainDmnName-$bkpDate.tar$bkpExt";
 
     my @cmd = (
         "tar -c -C $homeDir --exclude=logs --exclude=phptmp --exclude=backups .",
@@ -122,28 +123,28 @@ sub backupHomedir
     $rs ||= $file->mode( 0640 );
 }
 
-=item backupDatabases( $mainDomainId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group )
+=item backupDatabases( $mainDmnId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group )
 
  Backup customer databases
 
- Param string $mainDomainId Customer main domain ID
- Param string $bkpDir Backup directory path
+ Param string $mainDmnId Customer main domain identifier
+ Param string $bkpDir Customer backup directory path
  Param string $cmpAlgo Compression algorithm
  Param string $cmpLevel Compression level
  Param string $bkpExt Backup archive extension
- Param string $user Customer unix user
- Param string $group Customer unix group
+ Param string $user Customer Web unix user
+ Param string $group Customer Web unix group
  Return void
 
 =cut
 
 sub backupDatabases
 {
-    my ($mainDomainId, $bkpDir, $cmpAlgo, $cmpLevel, $user, $group) = @_;
+    my ($mainDmnId, $bkpDir, $cmpAlgo, $cmpLevel, $user, $group) = @_;
 
     my $db = iMSCP::Database->factory( );
     my $data = $db->doQuery(
-        'sqld_name', 'SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?', $mainDomainId
+        'sqld_name', 'SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?', $mainDmnId
     );
     unless (ref $data eq 'HASH') {
         error( $data );
@@ -169,33 +170,31 @@ sub backupDatabases
         next if $rs || $cmpAlgo eq 'no';
 
         $rs = execute(
-            [ $command->{$cmpAlgo}->{'command'}, "-$cmpLevel", '--force', $dbDumpFilePath ],
-            \ my $stdout,
-            \ my $stderr
+            [ $command->{$cmpAlgo}->{'command'}, "-$cmpLevel", '--force', $dbDumpFilePath ], \ my $stdout, \ my $stderr
         );
         debug( $stdout ) if $stdout;
         error( sprintf( "Couldn't compress %s database dump: %s", $dbName, $stderr || 'Unknown error' ) ) if $rs;
     }
 }
 
-=item backupMaildirs( $domainId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group )
+=item backupMaildirs( $dmnId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group )
 
  Backup customer' mail directories
 
- Param string $domainId Customer main domain ID
- Param string $bkpDir Backup directory path
+ Param string $dmnId Customer main domain ID
+ Param string $bkpDir Customer backup directory path
  Param string $cmpAlgo Compression algorithm
  Param string $cmpLevel Compression level
  Param string $bkpExt Backup archive extension
- Param string $user Customer unix user
- Param string $group Customer unix group
+ Param string $user Customer Web unix user
+ Param string $group Customer Web unix group
  Return void
 
 =cut
 
 sub backupMaildirs
 {
-    my ($domainId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group) = @_;
+    my ($dmnId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group) = @_;
 
     my $qrs = iMSCP::Database->factory( )->doQuery(
         'domain_name',
@@ -228,38 +227,32 @@ sub backupMaildirs
             WHERE domain_id = ?
             AND subdomain_alias_status <> 'todelete'
         ",
-        $domainId,
-        $domainId,
-        $domainId,
-        $domainId
+        $dmnId, $dmnId, $dmnId, $dmnId
     );
     unless (ref $qrs eq 'HASH') {
         error( $qrs );
         next;
     }
 
-    my $bkpDate = strftime "%Y.%m.%d-%H-%M", localtime( );
-    my $bkpArchName = "mail-backup-$bkpDate.tar$bkpExt";
     my $virtualMailDir = Servers::mta->factory( )->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
 
     for (keys %{$qrs}) {
         my $mailDirPath = "$virtualMailDir/$_";
         next unless -d $mailDirPath;
 
+        my $bkpDate = strftime "%Y.%m.%d-%H-%M", localtime( );
+        my $bkpArchName = "mail-backup-$_-$bkpDate.tar$bkpExt";
+
         my @cmd = (
             "tar -c -C $mailDirPath .",
             ($cmpAlgo eq 'no'
-                ? "-f $bkpDir/$bkpArchName"
-                : "| $command->{$cmpAlgo}->{'command'} -$cmpLevel > $bkpDir/$bkpArchName"
+                ? "-f $bkpDir/$bkpArchName" : "| $command->{$cmpAlgo}->{'command'} -$cmpLevel > $bkpDir/$bkpArchName"
             )
         );
 
         my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
-
-        if ($rs > 1) {
-            error( $stderr || 'Unknown error' );
-        }
+        error( $stderr || 'Unknown error' ) if $rs > 1;
 
         my $file = iMSCP::File->new( filename => "$bkpDir/$bkpArchName" );
         $rs ||= $file->owner( $user, $group );
@@ -303,15 +296,15 @@ sub run
         return;
     }
 
-    while(my ($domainId, $domainData) = each( %{$qrs} )) {
-        next unless $domainData->{'allowbackup'} && $domainData->{'allowbackup'} =~ /\b(?:dmn|sql|mail)\b/;
-        my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$domainData->{'domain_name'}";
+    while(my ($dmnId, $dmnData) = each( %{$qrs} )) {
+        next unless $dmnData->{'allowbackup'} && $dmnData->{'allowbackup'} =~ /\b(?:dmn|sql|mail)\b/;
+        my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$dmnData->{'domain_name'}";
 
         next unless -d $homeDir;
 
         my $bkpDir = "$homeDir/backups";
-        my $user = $domainData->{'admin_sys_name'};
-        my $group = $domainData->{'admin_sys_gname'};
+        my $user = $dmnData->{'admin_sys_name'};
+        my $group = $dmnData->{'admin_sys_gname'};
 
         local $@;
         eval {
@@ -341,16 +334,16 @@ sub run
             next;
         }
 
-        if ($domainData->{'allowbackup'} =~ /\bdmn\b/) {
-            backupHomedir( $homeDir, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group )
+        if ($dmnData->{'allowbackup'} =~ /\bdmn\b/) {
+            backupHomedir( $dmnData->{'domain_name'}, $homeDir, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group )
         }
 
-        if ($domainData->{'allowbackup'} =~ /\bsql\b/) {
-            backupDatabases( $domainId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group );
+        if ($dmnData->{'allowbackup'} =~ /\bsql\b/) {
+            backupDatabases( $dmnId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group );
         }
 
-        if ($domainData->{'allowbackup'} =~ /\bmail\b/) {
-            backupMaildirs( $domainId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group );
+        if ($dmnData->{'allowbackup'} =~ /\bmail\b/) {
+            backupMaildirs( $dmnId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group );
         }
     }
 }
@@ -385,7 +378,9 @@ run( );
 my @errors = getMessageByType( 'error' );
 iMSCP::Mail->new( )->errmsg( "@errors" ) if @errors;
 
-END { $bootstrapper->unlock( '/tmp/imscp-backup-all.lock' ); }
+END {
+    $bootstrapper->unlock( '/tmp/imscp-backup-all.lock' );
+}
 
 =back
 

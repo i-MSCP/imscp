@@ -5,13 +5,14 @@ Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-    Added: iMSCP::Cwd class Allows to restrict scope of chdir() to enclosing block
+    Added: iMSCP::Cwd package - Allows to restrict scope of chdir() to enclosing block
     Review: Prioritize servers and packages to avoid overuse of events
 
 CONFIG
     Reverted: Merging of Nginx site configuration files (Regression fix)
 
 DISTRIBUTIONS
+    Fixed: Erroneous MariaDB repository (Ubuntu 14.04, 16.04)
     Fixed: libmysqlclient20 package must be installed in any case (Ubuntu 16.04; Regression fix)
     Fixed: Missing switch for MariaDB 10.2 server in distribution packages files
 
@@ -35,6 +36,7 @@ PACKAGES
     Fixed: Create relative links instead of absolute links for Nginx site configuration files (Package::FrontEnd)
 
 SCRIPTS
+    Fixed: imscp-backup-all backup script: Missing domain name in web backup archive names
     Fixed: imscp-backup-imscp backup script: Global symbol "$dbName" requires explicit package name (Regression fix)
 
 SERVERS

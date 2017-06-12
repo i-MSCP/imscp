@@ -68,15 +68,15 @@ $cfg = iMSCP_Registry::get('config');
 $algo = strtolower($cfg['BACKUP_COMPRESS_ALGORITHM']);
 
 if ($algo == 'no') {
-    $name = '.*-backup-%Y.%m.%d-%H-%M.tar';
+    $name = 'web-backup-.*-%Y.%m.%d-%H-%M.tar';
 } elseif ($algo == 'gzip' || $algo == 'pigz') {
-    $name = '.*-backup-%Y.%m.%d-%H-%M.tar.gz';
+    $name = 'web-backup-.*-%Y.%m.%d-%H-%M.tar.gz';
 } elseif ($algo == 'bzip2' || $algo == 'pbzip2') {
-    $name = '.*-backup-%Y.%m.%d-%H-%M.tar.bz2';
+    $name = 'web-backup-.*-%Y.%m.%d-%H-%M.tar.bz2';
 } elseif ($algo == 'lzma') {
-    $name = '.*-backup-%Y.%m.%d-%H-%M.tar.lzma';
+    $name = 'web-backup-.*-%Y.%m.%d-%H-%M.tar.lzma';
 } elseif ($algo == 'xz') {
-    $name = '.*-backup-%Y.%m.%d-%H-%M.tar.xz';
+    $name = 'web-backup-.*-%Y.%m.%d-%H-%M.tar.xz';
 } else {
     $name = NULL;
 }
