@@ -23,10 +23,10 @@ use strict;
 use warnings;
 use autouse 'iMSCP::Stepper' => qw/ startDetail endDetail step /;
 use Class::Autouse qw/ :nostat File::HomeDir /;
-use Cwd;
 use Fcntl qw/ :flock /;
 use File::Temp;
 use FindBin;
+use iMSCP::Cwd;
 use iMSCP::Debug;
 use iMSCP::Dialog;
 use iMSCP::EventManager;
@@ -96,7 +96,8 @@ sub preBuild
 
     return 0 if $main::skippackages;
 
-    unshift @{$steps}, (
+    unshift @{$steps},
+        (
             [ sub { $self->_buildPackageList( ) }, 'Building list of packages to install/uninstall' ],
             [ sub { $self->_prefillDebconfDatabase( ) }, 'Pre-fill Debconf database' ],
             [ sub { $self->_processAptRepositories( ) }, 'Processing APT repositories if any' ],
@@ -161,6 +162,40 @@ EOF
 
     iMSCP::Dialog->getInstance->endGauge( );
 
+    my $nPackages = scalar keys %{$self->{'packagesPreInstallTasks'}};
+    my $cPackage = 1;
+
+    startDetail( );
+
+    {
+        local $CWD = "$FindBin::Bin/autoinstaller/preinstall";
+
+        for my $package(sort keys %{$self->{'packagesPreInstallTasks'}}) {
+            $rs ||= step(
+                sub {
+                    my $stdout;
+                    $rs = execute(
+                        $self->{'packagesPreInstallTasks'}->{$package},
+                        (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout), \ my $stderr
+                    );
+                    error(
+                        $stderr || sprintf( "Unknown error while executing preinstall tasks for the `%s' package",
+                            $package )
+                    ) if $rs;
+                    $rs;
+                },
+                sprintf( "Executing preinstall tasks for the `%s' package... Please be patient.", $package ),
+                $nPackages,
+                $cPackage
+            );
+            last if $rs;
+            $cPackage++;
+        }
+    }
+
+    endDetail( );
+    return $rs if $rs;
+
     for my $packages($self->{'packagesToInstall'}, $self->{'packagesToInstallDelayed'}) {
         next unless @{$packages};
 
@@ -187,46 +222,40 @@ EOF
         return $rs if $rs;
     }
 
-    my $oldDir = cwd( );
-    unless (chdir "$FindBin::Bin/autoinstaller/postinstall") {
-        error( sprintf( "Couldn't change current directory to: %s", "$FindBin::Bin/autoinstaller/postinstall", $! ) );
-        return 1;
-    }
-    
-    my $nPackages = scalar keys %{$self->{'packagesPostInstallTasks'}};
-    my $cPackage = 1;
+    $nPackages = scalar keys %{$self->{'packagesPostInstallTasks'}};
+    $cPackage = 1;
 
     startDetail( );
 
-    for my $package(sort keys %{$self->{'packagesPostInstallTasks'}}) {
-        $rs ||= step(
-            sub {
-                my $stdout;
-                $rs = execute(
-                    $self->{'packagesPostInstallTasks'}->{$package},
-                    (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout), \ my $stderr
-                );
-                error(
-                    $stderr
-                        || sprintf( "Unknown error while executing postinstall tasks for the `%s' package", $package )
-                ) if $rs;
-                $rs;
-            },
-            sprintf( "Executing postinstall tasks for the `%s' package... Please be patient.", $package ),
-            $nPackages,
-            $cPackage
-        );
-        last if $rs;
-        $cPackage++;
+    {
+        local $CWD = "$FindBin::Bin/autoinstaller/postinstall";
+
+        for my $package(sort keys %{$self->{'packagesPostInstallTasks'}}) {
+            $rs ||= step(
+                sub {
+                    my $stdout;
+                    $rs = execute(
+                        $self->{'packagesPostInstallTasks'}->{$package},
+                        (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout), \ my $stderr
+                    );
+                    error(
+                        $stderr
+                            || sprintf( "Unknown error while executing postinstall tasks for the `%s' package",
+                            $package )
+                    ) if $rs;
+                    $rs;
+                },
+                sprintf( "Executing postinstall tasks for the `%s' package... Please be patient.", $package ),
+                $nPackages,
+                $cPackage
+            );
+            last if $rs;
+            $cPackage++;
+        }
     }
 
     endDetail( );
     return $rs if $rs;
-
-    unless (chdir $oldDir) {
-        error( sprintf( "Couldn't change current directory to: %s", $oldDir, $! ) );
-        return 1;
-    }
 
     while(my ($package, $metadata) = each( %{$self->{'packagesToRebuild'}} )) {
         $rs = $self->_rebuildAndInstallPackage(
@@ -296,7 +325,7 @@ sub uninstallPackages
         @{$packagesToUninstall} = @pkgs;
         undef @apkgs;
         undef @pkgs;
-        
+
         if (@{$packagesToUninstall}) {
             # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
             execute( "apt-mark unhold @{$packagesToUninstall}", \ $stdout, \ $stderr );
@@ -349,6 +378,7 @@ sub _init
     $self->{'packagesToPreUninstall'} = [ ];
     $self->{'packagesToUninstall'} = [ ];
     $self->{'packagesToRebuild'} = { };
+    $self->{'packagesPreInstallTasks'} = { };
     $self->{'packagesPostInstallTasks'} = { };
     $self->{'need_pbuilder_update'} = 1;
     delete $ENV{'DEBCONF_FORCE_DIALOG'};
@@ -580,6 +610,10 @@ EOF
                         };
                     } else {
                         push @{$self->{'packagesToInstall'}}, $_->{'content'};
+                    }
+
+                    if ($_->{'pre_install_tasks'}) {
+                        $self->{'packagesPreInstallTasks'}->{$_->{'content'}} = $_->{'pre_install_tasks'}
                     }
 
                     if ($_->{'post_install_tasks'}) {
@@ -1000,7 +1034,6 @@ sub _rebuildAndInstallPackage
         return 1;
     }
 
-    my $oldDir = cwd( );
     my $srcDir = File::Temp->newdir( CLEANUP => 1 );
 
     # Fix `W: Download is performed unsandboxed as root as file...' warning with newest APT versions
@@ -1011,10 +1044,7 @@ sub _rebuildAndInstallPackage
         }
     }
 
-    unless (chdir $srcDir) {
-        error( sprintf( "Couldn't change current directory to: %s", $srcDir, $! ) );
-        return 1;
-    }
+    local $CWD = $srcDir;
 
     # Avoid pbuilder warning due to missing $HOME/.pbuilderrc file
     my $rs = iMSCP::File->new( filename => File::HomeDir->my_home.'/.pbuilderrc' )->save();
@@ -1079,10 +1109,7 @@ sub _rebuildAndInstallPackage
     $rs ||= step(
         sub {
             my ($pkgSrcDir) = <$pkgSrc-*>;
-            unless (chdir $pkgSrcDir) {
-                error( sprintf( "Couldn't change current directory to %s: %s", $pkgSrcDir, $! ) );
-                return 1;
-            }
+            local $CWD = $pkgSrcDir;
 
             my $serieFile = iMSCP::File->new(
                 filename => "debian/patches/".($patchFormat eq 'quilt' ? 'series' : '00list')
@@ -1142,10 +1169,7 @@ sub _rebuildAndInstallPackage
     );
     $rs ||= step(
         sub {
-            unless (chdir '..') {
-                error( sprintf( "Couldn't change directory: %s", $! ) );
-                return 1;
-            }
+            local $CWD = '..';
 
             # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
             execute( [ 'apt-mark', 'unhold', $pkg ], \$stdout, \$stderr );
@@ -1174,11 +1198,6 @@ sub _rebuildAndInstallPackage
         sprintf( 'Installing local %s %s package', $pkg, $lsbRelease->getId( 1 ) ), 5, 5
     );
     endDetail( );
-
-    unless (chdir $oldDir) {
-        error( sprintf( "Couldn't change current directory to %s: %s", $oldDir, $! ) );
-        return 1;
-    }
 
     $rs;
 }

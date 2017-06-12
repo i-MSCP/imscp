@@ -26,11 +26,11 @@ package autoinstaller::Functions;
 use strict;
 use warnings;
 use autouse 'iMSCP::Stepper' => qw/ step /;
-use Cwd;
 use File::Basename;
 use File::Find;
 use iMSCP::Bootstrapper;
 use iMSCP::Config;
+use iMSCP::Cwd;
 use iMSCP::Debug;
 use iMSCP::Dialog;
 use iMSCP::Dir;
@@ -574,36 +574,20 @@ sub _buildLayout
 
 sub _buildConfigFiles
 {
-    # Possible config directory paths
     my $distroConfigDir = "$FindBin::Bin/configs/".lc( iMSCP::LsbRelease->getInstance( )->getId( 'short' ) );
     my $defaultConfigDir = "$FindBin::Bin/configs/debian";
-
-    # Determine config directory to use
     my $confDir = -d $distroConfigDir ? $distroConfigDir : $defaultConfigDir;
 
-    unless (chdir( $confDir )) {
-        error( sprintf( "Couldn't change directory to %s: %s", $confDir, $! ) );
-        return 1;
-    }
-
-    # Determine install.xml file to process
+    local $CWD = $confDir;
     my $file = -f "$distroConfigDir/install.xml" ? "$distroConfigDir/install.xml" : "$defaultConfigDir/install.xml";
-
     my $rs = _processXmlFile( $file );
     return $rs if $rs;
 
-    # Get list of sub config dir from default config directory (debian)
-    my $dirDH = iMSCP::Dir->new( dirname => $defaultConfigDir );
-    my @configDirs = $dirDH->getDirs( );
-
-    for (@configDirs) {
+    for (iMSCP::Dir->new( dirname => $defaultConfigDir )->getDirs( )) {
         # Override sub config dir path if it is available in selected distro, else set it to default path
         $confDir = -d "$distroConfigDir/$_" ? "$distroConfigDir/$_" : "$defaultConfigDir/$_";
 
-        unless (chdir( $confDir )) {
-            error( sprintf( "Couldn't change directory to %s: %s", $confDir, $! ) );
-            return 1;
-        }
+        local $CWD = $confDir;
 
         $file = -f "$distroConfigDir/$_/install.xml"
             ? "$distroConfigDir/$_/install.xml" : "$defaultConfigDir/$_/install.xml";
@@ -627,24 +611,13 @@ sub _buildConfigFiles
 
 sub _buildEngineFiles
 {
-    unless (chdir "$FindBin::Bin/engine") {
-        error( sprintf( "Couldn't change dir to %s", "$FindBin::Bin/engine" ) );
-        return 1;
-    }
-
+    local $CWD = "$FindBin::Bin/engine";
     my $rs = _processXmlFile( "$FindBin::Bin/engine/install.xml" );
     return $rs if $rs;
 
-    my $dir = iMSCP::Dir->new( dirname => "$FindBin::Bin/engine" );
-    my @configDirs = $dir->getDirs( );
-
-    for (@configDirs) {
+    for (iMSCP::Dir->new( dirname => "$FindBin::Bin/engine" )->getDirs( )) {
         next unless -f "$FindBin::Bin/engine/$_/install.xml";
-        unless (chdir "$FindBin::Bin/engine/$_") {
-            error( sprintf( "Couldn't change dir to %s", "$FindBin::Bin/engine/$_" ) );
-            return 1;
-        }
-
+        local $CWD = "$FindBin::Bin/engine/$_";
         $rs = _processXmlFile( "$FindBin::Bin/engine/$_/install.xml" );
         return $rs if $rs;
     }
@@ -675,10 +648,7 @@ sub _buildFrontendFiles
 
 sub _compileDaemon
 {
-    unless (chdir "$FindBin::Bin/daemon") {
-        error( sprintf( "Couldn't change dir to %s", "$FindBin::Bin/daemon" ) );
-        return 1;
-    }
+    local $CWD = "$FindBin::Bin/daemon";
 
     my $rs = execute( 'make clean imscp_daemon', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
@@ -990,8 +960,7 @@ sub _copyConfig
 
     my ($name, $path) = fileparse( $data->{'content'} );
     my $distribution = lc( iMSCP::LsbRelease->getInstance( )->getId( 'short' ) );
-    my $alternativeFolder = getcwd( );
-    $alternativeFolder =~ s/$distribution/debian/;
+    (my $alternativeFolder = $CWD) =~ s/$distribution/debian/;
     my $source = -f $name ? $name : "$alternativeFolder/$name";
 
     if (-d $source) {

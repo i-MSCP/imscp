@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Umask - Allows to restrict scope of umask() calls to enclosing block
+ iMSCP::Cwd - Allows to restrict scope of chdir() calls to enclosing block
 
 =cut
 
@@ -17,29 +17,31 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
-package iMSCP::Umask;
+package iMSCP::Cwd;
 
 use Exporter qw/ import /;
 
-our @EXPORT = qw/ $UMASK /;
-our $UMASK;
+our @EXPORT = qw/ $CWD /;
+our $CWD;
 
-tie $UMASK, 'iMSCP::Umask::SCALAR' or die "Can't tie \$UMASK";
+tie $CWD, 'iMSCP::Cwd::SCALAR' or die "Can't tie \$CWD";
 
 {
-    package iMSCP::Umask::SCALAR;
+    package iMSCP::Cwd::SCALAR;
+
+    use Cwd;
 
     sub TIESCALAR {
         bless [ ], $_[0];
     }
 
     sub FETCH {
-        umask( );
+        getcwd( );
     }
 
     sub STORE {
         return unless defined $_[1];
-        umask( $_[1] );
+        chdir( $_[1] ) or die( sprintf( "Couldn't change directory to %s: %s:", $_[1], $! ) );
     }
 }
 

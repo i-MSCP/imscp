@@ -5,6 +5,7 @@ Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
+    Added: iMSCP::Cwd class Allows to restrict scope of chdir() to enclosing block
     Review: Prioritize servers and packages to avoid overuse of events
 
 CONFIG
@@ -15,12 +16,13 @@ DISTRIBUTIONS
     Fixed: Missing switch for MariaDB 10.2 server in distribution packages files
 
 FRONTEND
-    Fixed: Re-added client IP address in event logs
     Fixed: Cannot create catch-all email account (Forward mail) due to erroneous SQL query (Regression fix)
 
 INSTALLER
+    Added: Support for package preinstall tasks
     Added: `local_server` configuration parameter; Allows reconfiguration of system hostname, primary IP and timezone
     Fixed: Couldn't get APT key from keys.gnupg.net keys server due to DNS failure
+    Fixed: Possible missing /etc/mysql/mariadb.conf.d directory when upgrading MariaDB server
     Moved: SQL server related routines into SQL server installer
 
 LISTENERS
