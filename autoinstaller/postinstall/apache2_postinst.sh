@@ -14,6 +14,7 @@
 
 set -e
 
+# Fix for https://bz.apache.org/bugzilla/show_bug.cgi?id=55329
 # Fix for https://bz.apache.org/bugzilla/show_bug.cgi?id=55415
 # diff -Naur mod_proxy_fcgi.c imscp_mod_proxy_fcgi.c
 #
@@ -26,20 +27,14 @@ APACHE_VERSION=`dpkg-query --show --showformat '${Version}' apache2`
 
 service apache2 stop
 
-# Remove patch if
-# - Apache2 version is ge 2.4.24
-if [ -f /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST ] \
-    && dpkg --compare-versions "$APACHE_VERSION" ge "2.4.24" ; then
+# Remove divert if any
+if [ -f /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST ] ; then
     rm -f rm /usr/lib/apache2/modules/mod_proxy_fcgi.so
     dpkg-divert --rename --remove /usr/lib/apache2/modules/mod_proxy_fcgi.so
-    exit;
 fi
 
-# Don't process if
-# - The module has been already patched
-# - Apache2 version is  lt 2.4.7 or ge 2.4.24
+# Don't process if Apache2 version is ge 2.4.24
 if [ -f /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST ] \
-   || dpkg --compare-versions "$APACHE_VERSION" lt "2.4.7" \
    || dpkg --compare-versions "$APACHE_VERSION" ge "2.4.24" ; then
     exit;
 fi
@@ -54,9 +49,10 @@ if id "_apt" >/dev/null 2>&1; then
 fi
 
 cd ${SRC_DIR}
-apt-get -y install apache2-dev dpkg-dev patch
 apt-get -y source apache2
 cd apache2*/modules/proxy
+
+# Patch for https://bz.apache.org/bugzilla/show_bug.cgi?id=55415
 patch -p0 <<EOF
 --- mod_proxy_fcgi.c	2016-10-09 01:05:17.000000000 +0200
 +++ imscp_mod_proxy_fcgi.c	2016-10-09 01:20:38.711978843 +0200
@@ -71,8 +67,113 @@ patch -p0 <<EOF
                                   * set script_error_status to discard
                                   * everything after the headers
 EOF
+
+if dpkg --compare-versions "$APACHE_VERSION" lt "2.4.11" ; then
+    # Patch for https://bz.apache.org/bugzilla/show_bug.cgi?id=55329
+    patch -p0 <<EOF
+--- mod_proxy_fcgi.c	2017-06-13 10:24:54.008100497 +0200
++++ imscp_mod_proxy_fcgi.c	2017-06-13 10:44:36.222194904 +0200
+@@ -20,6 +20,10 @@
+ 
+ module AP_MODULE_DECLARE_DATA proxy_fcgi_module;
+ 
++typedef struct {
++    int need_dirwalk;
++} fcgi_req_config_t;
++
+ /*
+  * Canonicalise http-like URLs.
+  * scheme is the scheme for the URL
+@@ -29,8 +33,11 @@
+ static int proxy_fcgi_canon(request_rec *r, char *url)
+ {
+     char *host, sport[7];
+-    const char *err, *path;
++    const char *err;
++    char *path;
+     apr_port_t port, def_port;
++    fcgi_req_config_t *rconf = NULL;
++    const char *pathinfo_type = NULL;
+ 
+     if (strncasecmp(url, "fcgi:", 5) == 0) {
+         url += 5;
+@@ -76,11 +83,51 @@
+     ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, r, APLOGNO(01060)
+                   "set r->filename to %s", r->filename);
+ 
+-    if (apr_table_get(r->subprocess_env, "proxy-fcgi-pathinfo")) {
+-        r->path_info = apr_pstrcat(r->pool, "/", path, NULL);
++    rconf = ap_get_module_config(r->request_config, &proxy_fcgi_module);
++    if (rconf == NULL) {
++        rconf = apr_pcalloc(r->pool, sizeof(fcgi_req_config_t));
++        ap_set_module_config(r->request_config, &proxy_fcgi_module, rconf);
++    }
+ 
+-        ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, r, APLOGNO(01061)
+-                      "set r->path_info to %s", r->path_info);
++    if (NULL != (pathinfo_type = apr_table_get(r->subprocess_env, "proxy-fcgi-pathinfo"))) {
++        /* It has to be on disk for this to work */
++        if (!strcasecmp(pathinfo_type, "full")) {
++            rconf->need_dirwalk = 1;
++            ap_unescape_url_keep2f(path, 0);
++        }
++        else if (!strcasecmp(pathinfo_type, "first-dot")) {
++            char *split = ap_strchr(path, '.');
++            if (split) {
++                char *slash = ap_strchr(split, '/');
++                if (slash) {
++                    r->path_info = apr_pstrdup(r->pool, slash);
++                    ap_unescape_url_keep2f(r->path_info, 0);
++                    *slash = '\0'; /* truncate path */
++                }
++            }
++        }
++        else if (!strcasecmp(pathinfo_type, "last-dot")) {
++            char *split = ap_strrchr(path, '.');
++            if (split) {
++                char *slash = ap_strchr(split, '/');
++                if (slash) {
++                    r->path_info = apr_pstrdup(r->pool, slash);
++                    ap_unescape_url_keep2f(r->path_info, 0);
++                    *slash = '\0'; /* truncate path */
++                }
++            }
++        }
++        else {
++            /* before proxy-fcgi-pathinfo had multi-values. This requires the
++             * the FCGI server to fixup PATH_INFO because it's the entire path
++             */
++            r->path_info = apr_pstrcat(r->pool, "/", path, NULL);
++            if (!strcasecmp(pathinfo_type, "unescape")) {
++                ap_unescape_url_keep2f(r->path_info, 0);
++            }
++            ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, r, APLOGNO(01061)
++                    "set r->path_info to %s", r->path_info);
++        }
+     }
+ 
+     return OK;
+@@ -205,6 +252,14 @@
+     apr_size_t avail_len, len, required_len;
+     int next_elem, starting_elem;
+ 
++    fcgi_req_config_t *rconf = ap_get_module_config(r->request_config, &proxy_fcgi_module);
++
++    if (rconf) {
++       if (rconf->need_dirwalk) {
++          ap_directory_walk(r);
++       }
++    }
++
+     ap_add_common_vars(r);
+     ap_add_cgi_vars(r);
+ 
+
+EOF
+fi
+
 apxs -c mod_proxy_fcgi.c
 dpkg-divert --divert /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST --rename /usr/lib/apache2/modules/mod_proxy_fcgi.so
 apxs -i mod_proxy_fcgi.la
-cd /
+cd /tmp
 rm -fR ${SRC_DIR}

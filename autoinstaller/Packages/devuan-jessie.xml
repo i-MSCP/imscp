@@ -17,6 +17,7 @@
             <package>apache2</package>
             <package post_install_tasks="sh apache2_postinst.sh">apache2-bin</package>
             <package>apache2-data</package>
+            <package>apache2-dev</package>
             <package post_install_tasks="update-alternatives --set suexec /usr/lib/apache2/suexec-pristine">apache2-suexec-pristine</package>
             <package>libapache2-mod-fcgid</package>
         </apache_fcgid>
@@ -27,6 +28,7 @@
             <package>apache2</package>
             <package post_install_tasks="sh apache2_postinst.sh">apache2-bin</package>
             <package>apache2-data</package>
+            <package>apache2-dev</package>
             <package_delayed>libapache2-mpm-itk</package_delayed>
         </apache_itk>
         <apache_php_fpm
@@ -37,6 +39,7 @@
             <package>apache2</package>
             <package post_install_tasks="sh apache2_postinst.sh">apache2-bin</package>
             <package>apache2-data</package>
+            <package>apache2-dev</package>
             <package post_install_tasks="update-alternatives --set suexec /usr/lib/apache2/suexec-pristine">apache2-suexec-pristine</package>
         </apache_php_fpm>
     </httpd>
@@ -425,6 +428,7 @@
         <package>curl</package>
         <package>devscripts</package>
         <package>dnsutils</package>
+        <package>dpkg-dev</package>
         <package>findutils</package>
         <package>gcc</package>
         <package>git</package>
@@ -439,6 +443,7 @@
         <package>make</package>
         <package>mawk</package>
         <package>openssl</package>
+        <package>patch</package>
         <package>pbuilder</package>
         <package>pbzip2</package>
         <package>pigz</package>
