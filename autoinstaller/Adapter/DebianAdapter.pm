@@ -1034,17 +1034,18 @@ sub _rebuildAndInstallPackage
         return 1;
     }
 
-    my $srcDir = File::Temp->newdir( CLEANUP => 1 );
+    my $srcDownloadDir = File::Temp->newdir( CLEANUP => 1 );
 
     # Fix `W: Download is performed unsandboxed as root as file...' warning with newest APT versions
     if ((undef, undef, my $uid) = getpwnam('_apt')) {
-        if (!chown $uid, -1, $srcDir) {
-            error( sprintf( "Couldn't change ownership for the %s directory: %s", $srcDir, $! ) );
+        if (!chown $uid, -1, $srcDownloadDir) {
+            error( sprintf( "Couldn't change ownership for the %s directory: %s", $srcDownloadDir, $! ) );
             return 1;
         }
     }
 
-    local $CWD = $srcDir;
+    # chdir() into download directory
+    local $CWD = $srcDownloadDir;
 
     # Avoid pbuilder warning due to missing $HOME/.pbuilderrc file
     my $rs = iMSCP::File->new( filename => File::HomeDir->my_home.'/.pbuilderrc' )->save();
@@ -1052,16 +1053,15 @@ sub _rebuildAndInstallPackage
 
     startDetail( );
 
-    my ($stdout, $stderr) = ('', '');
-
     $rs = step(
         sub {
             if ($self->{'need_pbuilder_update'}) {
                 $self->{'need_pbuilder_update'} = 0;
 
                 my $msgHeader = "Creating/Updating pbuilder environment\n\n - ";
-                my $msgFooter = "\n\nPlease be patient. This may take few seconds...";
+                my $msgFooter = "\n\nPlease be patient. This may take few minutes...";
 
+                my $stderr = '';
                 my $cmd = [
                     'pbuilder',
                     ( -f '/var/cache/pbuilder/base.tgz' ? ('--update', '--autocleanaptcache') : '--create'),
@@ -1091,12 +1091,11 @@ sub _rebuildAndInstallPackage
             my $msgHeader = sprintf( "Downloading %s %s source package\n\n - ", $pkgSrc, $lsbRelease->getId( 1 ) );
             my $msgFooter = "\nDepending on your system this may take few seconds...";
 
+            my $stderr = '';
             $rs = executeNoWait(
                 [ 'apt-get', '-y', 'source', $pkgSrc ],
                 (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                    ? undef : sub {
-                        step( undef, $msgHeader.((shift) =~ s/^\s*//r).$msgFooter, 5, 2);
-                    }
+                    ? undef : sub { step( undef, $msgHeader.((shift) =~ s/^\s*//r).$msgFooter, 5, 2); }
                 ),
                 sub { $stderr .= shift }
             );
@@ -1106,77 +1105,82 @@ sub _rebuildAndInstallPackage
         },
         sprintf( 'Downloading %s %s source package', $pkgSrc, $lsbRelease->getId( 1 ) ), 5, 2
     );
-    $rs ||= step(
-        sub {
-            my ($pkgSrcDir) = <$pkgSrc-*>;
-            local $CWD = $pkgSrcDir;
 
-            my $serieFile = iMSCP::File->new(
-                filename => "debian/patches/".($patchFormat eq 'quilt' ? 'series' : '00list')
-            );
-            my $serieFileContent = $serieFile->get( );
-            unless (defined $serieFileContent) {
-                error( sprintf( "Couldn't read %s", $serieFile->{'filename'} ) );
-                return 1;
-            }
+    {
+        # chdir() into package source directory
+        local $CWD = (<$pkgSrc-*>)[0];
 
-            for my $patch(sort { $a cmp $b } iMSCP::Dir->new( dirname => $patchesDir )->getFiles( )) {
-                next if grep($_ eq $patch, @{$patchesToDiscard});
-                $serieFileContent .= "$patch\n";
-                $rs = iMSCP::File->new( filename => "$patchesDir/$patch" )->copyFile( "debian/patches/$patch" );
+        $rs ||= step(
+            sub {
+                my $serieFile = iMSCP::File->new(
+                    filename => "debian/patches/".($patchFormat eq 'quilt' ? 'series' : '00list')
+                );
+                my $serieFileContent = $serieFile->get( );
+                unless (defined $serieFileContent) {
+                    error( sprintf( "Couldn't read %s", $serieFile->{'filename'} ) );
+                    return 1;
+                }
+
+                for my $patch(sort { $a cmp $b } iMSCP::Dir->new( dirname => $patchesDir )->getFiles( )) {
+                    next if grep($_ eq $patch, @{$patchesToDiscard});
+                    $serieFileContent .= "$patch\n";
+                    $rs = iMSCP::File->new( filename => "$patchesDir/$patch" )->copyFile( "debian/patches/$patch" );
+                    return $rs if $rs;
+                }
+
+                $rs = $serieFile->set( $serieFileContent );
+                $rs ||= $serieFile->save( );
                 return $rs if $rs;
-            }
 
-            $rs = $serieFile->set( $serieFileContent );
-            $rs ||= $serieFile->save( );
-            return $rs if $rs;
+                my $stderr;
+                $rs = execute(
+                    [ 'dch', '--local', '~i-mscp-', 'Patched by i-MSCP installer for compatibility.' ],
+                    (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \my $stdout),
+                    \$stderr
+                );
+                debug($stdout) if $stdout;
+                error( sprintf( "Couldn't add `imscp' local suffix: %s", $stderr || 'Unknown error' ) ) if $rs;
+                return $rs if $rs;
+            },
+            sprintf( 'Patching %s %s source package...', $pkgSrc, $lsbRelease->getId( 1 ) ), 5, 3
+        );
+        $rs ||= step(
+            sub {
+                my $msgHeader = sprintf( "Building new %s %s package\n\n - ", $pkg, $lsbRelease->getId( 1 ) );
+                my $msgFooter = "\n\nPlease be patient. This may take few seconds...";
+                my $stderr;
 
-            $rs = execute(
-                [ 'dch', '--local', '~i-mscp-', 'Patched by i-MSCP installer for compatibility.' ],
-                (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \$stdout),
-                \$stderr
-            );
-            debug($stdout) if $stdout;
-            error( sprintf( "Couldn't add `imscp' local suffix: %s", $stderr || 'Unknown error' ) ) if $rs;
-            return $rs if $rs;
-        },
-        sprintf( 'Patching %s %s source package...', $pkgSrc, $lsbRelease->getId( 1 ) ), 5, 3
-    );
+                $rs = executeNoWait(
+                    [
+                        'pdebuild',
+                        '--use-pdebuild-internal',
+                        '--configfile', "$FindBin::Bin/configs/".lc( $lsbRelease->getId( 1 ) ).'/pbuilder/pbuilderrc'
+                    ],
+                    (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
+                        ? undef : sub {
+                            return unless (shift) =~ /^i:\s*(.*)/i;
+                            step( undef, $msgHeader.ucfirst($1).$msgFooter, 5, 4);
+                        }
+                    ),
+                    sub { $stderr .= shift }
+                );
+                error(sprintf("Couldn't build local %s %s package: %s", $pkg, $lsbRelease->getId( 1 ),
+                    $stderr || 'Unknown error')) if $rs;
+                $rs;
+            },
+            sprintf( 'Building local %s %s package', $pkg, $lsbRelease->getId( 1 ) ), 5, 4
+        );
+    }
+
     $rs ||= step(
         sub {
-            my $msgHeader = sprintf( "Building new %s %s package\n\n - ", $pkg, $lsbRelease->getId( 1 ) );
-            my $msgFooter = "\n\nPlease be patient. This may take few seconds...";
-
-            $rs = executeNoWait(
-                [
-                    'pdebuild',
-                    '--use-pdebuild-internal',
-                    '--configfile', "$FindBin::Bin/configs/".lc( $lsbRelease->getId( 1 ) ).'/pbuilder/pbuilderrc'
-                ],
-                (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                    ? undef : sub {
-                        return unless (shift) =~ /^i:\s*(.*)/i;
-                        step( undef, $msgHeader.ucfirst($1).$msgFooter, 5, 4);
-                    }
-                ),
-                sub { $stderr .= shift }
-            );
-            error(sprintf("Couldn't build local %s %s package: %s", $pkg, $lsbRelease->getId( 1 ),
-                $stderr || 'Unknown error')) if $rs;
-            $rs;
-        },
-        sprintf( 'Building local %s %s package', $pkg, $lsbRelease->getId( 1 ) ), 5, 4
-    );
-    $rs ||= step(
-        sub {
-            local $CWD = '..';
-
             # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
-            execute( [ 'apt-mark', 'unhold', $pkg ], \$stdout, \$stderr );
+            execute( [ 'apt-mark', 'unhold', $pkg ], \my $stdout, \my $stderr );
             debug( $stdout ) if $stdout;
             debug( $stderr ) if $stderr;
 
             my $msgHeader = sprintf( "Installing local %s %s package\n\n", $pkg, $lsbRelease->getId( 1 ) );
+            $stderr = '';
 
             $rs = executeNoWait(
                 "dpkg --force-confnew -i /var/cache/pbuilder/result/${pkg}_*.deb",
