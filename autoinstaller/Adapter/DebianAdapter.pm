@@ -147,7 +147,7 @@ EOF
 
     $policyrcd->flush( );
     $policyrcd->close( );
-    chmod(0750, $policyrcd->filename( )) or die(
+    chmod( 0750, $policyrcd->filename( ) ) or die(
         sprintf( "Couldn't change permissions on %s: %s", $policyrcd->filename( ), $! )
     );
 
@@ -159,8 +159,6 @@ EOF
         'beforeInstallPackages', $self->{'packagesToInstall'}, $self->{'packagesToInstallDelayed'}
     );
     return $rs if $rs;
-
-    iMSCP::Dialog->getInstance->endGauge( );
 
     my $nPackages = scalar keys %{$self->{'packagesPreInstallTasks'}};
     my $cPackage = 1;
@@ -195,7 +193,7 @@ EOF
 
     endDetail( );
     return $rs if $rs;
-
+    
     for my $packages($self->{'packagesToInstall'}, $self->{'packagesToInstallDelayed'}) {
         next unless @{$packages};
 
@@ -332,7 +330,7 @@ sub uninstallPackages
             debug( $stdout ) if $stdout;
             debug( $stderr ) if $stderr;
 
-            iMSCP::Dialog->getInstance->endGauge( );
+            iMSCP::Dialog->getInstance( )->endGauge( );
 
             my $cmd = !iMSCP::Getopt->noprompt ? 'debconf-apt-progress --logstderr -- ' : '';
             $cmd .= "apt-get -y --auto-remove --purge --no-install-recommends remove @{$packagesToUninstall}";
@@ -837,7 +835,7 @@ sub _updatePackagesIndex
 {
     my $cmd = 'apt-get';
     unless (iMSCP::Getopt->noprompt) {
-        iMSCP::Dialog->getInstance->endGauge( ) if iMSCP::ProgramFinder::find( 'dialog' );
+        iMSCP::Dialog->getInstance( )->endGauge( ) if iMSCP::ProgramFinder::find( 'dialog' );
         $cmd = "debconf-apt-progress --logstderr -- $cmd";
     }
 

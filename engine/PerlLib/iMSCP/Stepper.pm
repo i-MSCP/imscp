@@ -57,6 +57,7 @@ my $step = lazy { iMSCP::Getopt->noprompt ? \&_callback : \&_step; };
 sub startDetail
 {
     return 0 if iMSCP::Getopt->noprompt;
+    $dialog->endGauge( );
     push @all, $last;
     0;
 }
