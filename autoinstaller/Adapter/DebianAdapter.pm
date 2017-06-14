@@ -193,7 +193,7 @@ EOF
 
     endDetail( );
     return $rs if $rs;
-    
+
     for my $packages($self->{'packagesToInstall'}, $self->{'packagesToInstallDelayed'}) {
         next unless @{$packages};
 
