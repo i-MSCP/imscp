@@ -34,8 +34,7 @@ if [ -f /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST ] ; then
 fi
 
 # Don't process if Apache2 version is ge 2.4.24
-if [ -f /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST ] \
-   || dpkg --compare-versions "$APACHE_VERSION" ge "2.4.24" ; then
+if dpkg --compare-versions "$APACHE_VERSION" ge "2.4.24" ; then
     exit;
 fi
 
