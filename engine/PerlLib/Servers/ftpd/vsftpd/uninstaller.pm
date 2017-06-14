@@ -154,7 +154,9 @@ sub _removeConfig
         my $filename = basename( $_ );
 
         if (-d $dirname && -f "$self->{'bkpDir'}/$filename.system") {
-            my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile( $conffile );
+            my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
+                $self->{'config'}->{'FTPD_CONF_FILE'}
+            );
             return $rs if $rs;
         }
     }

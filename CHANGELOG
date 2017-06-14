@@ -6,6 +6,7 @@ Git 1.4.x
 
 SERVERS
     Fixed: Possible "File not found" error with Seafile (Apache < 2.4.11 with mod_proxy_fcgi)
+    Fixed: Usage of undefined $conffile variable in vsftpd server uninstaller (vsftpd)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.5
