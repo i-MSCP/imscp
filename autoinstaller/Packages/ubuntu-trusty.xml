@@ -11,7 +11,7 @@
     </frontend>
     <httpd>
         <apache_fcgid
-                description="Apache2 (MPM Event) server and PHP as CGI"
+                description="Apache2 (MPM Event) server and PHP with CGI/FastCGI SAPI"
                 class="Servers::httpd::apache_fcgid"
                 repository="http://mirrors.kernel.org/ubuntu/ trusty-backports main"
                 pinning_package="apache2 apache2-bin apache2-data apache2-dev"
@@ -26,7 +26,7 @@
             <package>libapache2-mod-fcgid</package>
         </apache_fcgid>
         <apache_itk
-                description="Apache2 (MPM ITK) server and PHP as Apache2 module"
+                description="Apache2 (MPM ITK) server and PHP with Apache2 SAPI"
                 class="Servers::httpd::apache_itk"
                 repository="http://mirrors.kernel.org/ubuntu/ trusty-backports main"
                 pinning_package="apache2 apache2 apache2-bin apache2-data apache2-dev"
@@ -41,7 +41,7 @@
         </apache_itk>
         <apache_php_fpm
                 default="1"
-                description="Apache2 (MPM Event) server and PHP-FPM (recommended)"
+                description="Apache2 (MPM Event) server and PHP with FPM/FastCGI SAPI"
                 class="Servers::httpd::apache_php_fpm"
                 repository="http://mirrors.kernel.org/ubuntu/ trusty-backports main"
                 pinning_package="apache2 apache2 apache2-bin apache2-data apache2-dev"
@@ -58,7 +58,7 @@
     <php>
         <php5.6
                 default="1"
-                description="PHP 5.6 (recommended)"
+                description="PHP 5.6"
                 class="Servers::php"
                 repository_conflict="http://packages.dotdeb.org"
                 repository="http://ppa.launchpad.net/ondrej/php/ubuntu trusty main"
@@ -184,7 +184,7 @@
         </courier>
         <dovecot
                 default="1"
-                description="Dovecot IMAP/POP3 servers (recommended)"
+                description="Dovecot IMAP/POP3 servers"
                 class="Servers::po::dovecot"
         >
             <package>dovecot-core</package>
@@ -206,7 +206,7 @@
     <ftpd>
         <proftpd
                 default="1"
-                description="ProFTPD server (recommended)"
+                description="ProFTPD server"
                 class="Servers::ftpd::proftpd"
         >
             <package>proftpd-basic</package>
@@ -245,7 +245,7 @@
     <sql>
         <mysql_5.5
                 default="1"
-                description="MySQL 5.5 server (recommended)"
+                description="MySQL 5.5 server"
                 class="Servers::sqld::mysql"
                 pinning_package="libmysqlclient18 mysql-common mysql-client-5.5 mysql-server-5.5"
                 pinning_pin="release o=Ubuntu,n=trusty"
