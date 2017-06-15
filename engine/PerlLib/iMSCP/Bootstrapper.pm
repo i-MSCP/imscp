@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by internet Multi Server Control Panel
+# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@ package iMSCP::Bootstrapper;
 
 use strict;
 use warnings;
+use File::Spec;
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Getopt;
@@ -122,7 +123,7 @@ sub loadMainConfig
  Acquire an exclusive lock on the given file (default to /tmp/imscp.lock)
 
  Param bool $nowait OPTIONAL Whether or not to wait for lock (Default: FALSE)
- Return int 1 if lock has been acquired, 0 if lock file has not been acquired (nowait case)
+ Return int 1 if lock has been acquired, 0 if lock has not been acquired (nowait case)
  die on failure
 
 =cut
@@ -130,11 +131,9 @@ sub loadMainConfig
 sub lock
 {
     my ($self, $lockFile, $nowait) = @_;
-    $lockFile ||= '/var/lock/imscp.lock';
+    $lockFile = File::Spec->canonpath( $lockFile ||= '/var/lock/imscp.lock' );
 
     return 1 if exists $self->{'locks'}->{$lockFile};
-
-    debug( sprintf( 'Acquire exclusive lock on %s', $lockFile ) );
 
     my $lock = iMSCP::LockFile->new( path => $lockFile, non_blocking => $nowait );
     my $ret = $lock->acquire( );
@@ -142,7 +141,7 @@ sub lock
     $ret;
 }
 
-=item unlock( [ $lockFile = '/var/lock/imscp.lock' ])
+=item unlock( [ $lockFile = '/var/lock/imscp.lock' ] )
 
  Unlock the given file (default to /tmp/imscp.lock)
 
@@ -154,13 +153,12 @@ sub lock
 sub unlock
 {
     my ($self, $lockFile) = @_;
-    $lockFile ||= '/var/lock/imscp.lock';
+    $lockFile = File::Spec->canonpath( $lockFile ||= '/var/lock/imscp.lock' );
 
     return $self unless exists $self->{'locks'}->{$lockFile};
 
-    debug( sprintf( 'Releasing exclusive lock on %s', $lockFile ) );
-
     $self->{'locks'}->{$lockFile}->release( );
+    delete $self->{'locks'}->{$lockFile};
     $self;
 }
 

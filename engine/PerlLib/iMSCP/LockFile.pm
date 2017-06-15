@@ -40,11 +40,11 @@ use parent 'Common::Object';
 
 =over 4
 
-=item acquire(  )
+=item acquire( )
 
  Acquire the lock file
 
- Return int 1 if lock has been acquired, 0 if lock file has not been acquired (non blocking)
+ Return int 1 if lock file has been acquired, 0 if lock file  has not been acquired (non blocking)
  Die on failure
 
 =cut
@@ -52,6 +52,8 @@ use parent 'Common::Object';
 sub acquire
 {
     my ($self) = @_;
+
+    debug( sprintf( 'Acquire exclusive lock on %s', $self->{'path'} ) );
 
     while(!$self->{'_fd'}) {
         open my $fd, '>', $self->{'path'} or die( sprintf( "Couldn't open %s file", $self->{'path'} ) );
@@ -81,6 +83,8 @@ sub acquire
 sub release
 {
     my ($self) = @_;
+
+    debug( sprintf( 'Releasing exclusive lock on %s', $self->{'path'} ) );
 
     # It is important the lock file is removed before it's released, otherwise:
     #
@@ -121,10 +125,10 @@ sub _init
 
 =item _tryLock( $fd )
 
- Try to acquire the lock file with blocking or not.
+ Try to acquire the lock file
 
  Param int $fd file descriptor of the opened file to lock
- Return int 1 if lock has been acquired, 0 if lock file has not been acquired (non blocking)
+ Return int 1 if lock file has been acquired, 0 if lock file has not been acquired (non blocking)
  Die on failure
 
 =cut
