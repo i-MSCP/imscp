@@ -44,7 +44,7 @@ use parent 'Common::Object';
 
  Acquire the lock file
 
- Return int 1 if lock file has been acquired, 0 if lock file  has not been acquired (non blocking)
+ Return int 1 if lock file has been acquired, 0 if lock file has not been acquired (non blocking)
  Die on failure
 
 =cut
@@ -154,6 +154,7 @@ sub _tryLock
 
  Param int $fd file descriptor of the opened file to lock
  Return TRUE if the lock was successfully acquired, FALSE otherwise
+ Die on failure
 
 =cut
 
