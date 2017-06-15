@@ -68,7 +68,7 @@ sub boot
 
     $self->lock( ) unless $options->{'nolock'};
     $self->loadMainConfig( $options );
-    sleep 5;
+
     # Set timezone unless we are in setup or uninstall modes (needed to show current local timezone in setup dialog)
     unless (grep($mode eq $_, ( 'setup', 'uninstall' ) )) {
         $ENV{'TZ'} = $main::imscpConfig{'TIMEZONE'} || 'UTC';
