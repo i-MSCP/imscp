@@ -120,10 +120,10 @@ sub loadMainConfig
 
 =item lock( [ $lockFile = '/var/lock/imscp.lock [, $nowait = FALSE ] ] )
 
- Acquire an exclusive lock on the given file (default to /tmp/imscp.lock)
+ Lock a file
 
  Param bool $nowait OPTIONAL Whether or not to wait for lock (Default: FALSE)
- Return int 1 if lock has been acquired, 0 if lock has not been acquired (nowait case)
+ Return int 1 if lock file has been acquired, 0 if lock file has not been acquired (nowait case)
  die on failure
 
 =cut
@@ -143,9 +143,9 @@ sub lock
 
 =item unlock( [ $lockFile = '/var/lock/imscp.lock' ] )
 
- Unlock the given file (default to /tmp/imscp.lock)
+ Unlock file
 
- Param string $lockFile OPTIONAL Lock file path (default: /tmp/imscp.lock)
+ Param string $lockFile OPTIONAL Lock file path
  Return iMSCP::Bootstrapper
 
 =cut

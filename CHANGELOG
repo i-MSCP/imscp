@@ -16,7 +16,7 @@ INSTALLER
     Fixed: dialog gauges overlapping
 
 YOUTRACK
-    IP-1723 Race condition in i-MSCP' file locking strategie leading to concurrent processes when that is not expected
+    IP-1723 Race condition in i-MSCP' file locking strategy leading to concurrent processes when that is not expected
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.5

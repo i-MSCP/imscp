@@ -34,7 +34,7 @@ use parent 'Common::Object';
 
  Implements file locks for locking files in UNIX.
 
- File locking strategie upon based on https://github.com/certbot/certbot/blob/master/certbot/lock.py
+ File locking strategy upon based on https://github.com/certbot/certbot/blob/master/certbot/lock.py
 
 =head1 PUBLIC METHODS
 
@@ -53,7 +53,7 @@ sub acquire
 {
     my ($self) = @_;
 
-    debug( sprintf( 'Acquire exclusive lock on %s', $self->{'path'} ) );
+    debug( sprintf( 'Acquiring exclusive lock on %s', $self->{'path'} ) );
 
     while(!$self->{'_fd'}) {
         open my $fd, '>', $self->{'path'} or die( sprintf( "Couldn't open %s file", $self->{'path'} ) );
@@ -137,7 +137,7 @@ sub _tryLock
 {
     my ($self, $fd) = @_;
 
-    return 1 if flock( $fd, $self->{'non_blocking'} ? LOCK_EX | LOCK_NB : LOCK_EX );
+    return 1 if flock( $fd, LOCK_EX | ($self->{'non_blocking'} ? LOCK_NB : 0 ) );
 
     $!{'EWOULDBLOCK'} or die( sprintf( "Couldn't acquire exclusive lock on %s: %s", $self->{'path'}, $! ) );
     debug( sprintf( "A lock on %s is held by another process.", $self->{'path'} ));
