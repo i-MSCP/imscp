@@ -25,12 +25,11 @@ package iMSCP::Bootstrapper;
 
 use strict;
 use warnings;
-use Fcntl qw/ :flock /;
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Getopt;
+use iMSCP::LockFile;
 use iMSCP::Umask;
-use IO::Handle;
 use POSIX qw / tzset /;
 use parent 'Common::SingletonClass';
 
@@ -69,7 +68,7 @@ sub boot
 
     $self->lock( ) unless $options->{'nolock'};
     $self->loadMainConfig( $options );
-
+    sleep 5;
     # Set timezone unless we are in setup or uninstall modes (needed to show current local timezone in setup dialog)
     unless (grep($mode eq $_, ( 'setup', 'uninstall' ) )) {
         $ENV{'TZ'} = $main::imscpConfig{'TIMEZONE'} || 'UTC';
@@ -118,31 +117,32 @@ sub loadMainConfig
         temporary => $options->{'config_temporary'} // 0;
 }
 
-=item lock([ $lockFile [, $nowait = FALSE ] ])
+=item lock( [ $lockFile = '/var/lock/imscp.lock [, $nowait = FALSE ] ] )
 
  Acquire an exclusive lock on the given file (default to /tmp/imscp.lock)
 
- Param bool $nowait OPTIONAL Whether or not wait for lock (Default: FALSE)
- Return int 1 if lock has been acquired, 0 if lock file has not been acquired (nowait case), die on failure
+ Param bool $nowait OPTIONAL Whether or not to wait for lock (Default: FALSE)
+ Return int 1 if lock has been acquired, 0 if lock file has not been acquired (nowait case)
+ die on failure
 
 =cut
 
 sub lock
 {
     my ($self, $lockFile, $nowait) = @_;
-    $lockFile //= '/tmp/imscp.lock';
-    $nowait ||= 0;
+    $lockFile ||= '/var/lock/imscp.lock';
 
     return 1 if exists $self->{'locks'}->{$lockFile};
 
     debug( sprintf( 'Acquire exclusive lock on %s', $lockFile ) );
-    open $self->{'locks'}->{$lockFile}, '>', $lockFile or die( sprintf( "Couldn't open %s file", $lockFile ) );
-    (flock( $self->{'locks'}->{$lockFile}, $nowait ? LOCK_EX | LOCK_NB : LOCK_EX ) || $nowait) or die(
-        sprintf( "Couldn't acquire exclusive lock on %s", $lockFile )
-    );
+
+    my $lock = iMSCP::LockFile->new( path => $lockFile, non_blocking => $nowait );
+    my $ret = $lock->acquire( );
+    $self->{'locks'}->{$lockFile} = $lock if $ret;
+    $ret;
 }
 
-=item unlock( [ $lockFile = '/tmp/imscp.lock' ])
+=item unlock( [ $lockFile = '/var/lock/imscp.lock' ])
 
  Unlock the given file (default to /tmp/imscp.lock)
 
@@ -153,17 +153,14 @@ sub lock
 
 sub unlock
 {
-    my ($self, $lockFile) = (shift, shift || '/tmp/imscp.lock');
+    my ($self, $lockFile) = @_;
+    $lockFile ||= '/var/lock/imscp.lock';
 
     return $self unless exists $self->{'locks'}->{$lockFile};
 
     debug( sprintf( 'Releasing exclusive lock on %s', $lockFile ) );
-    flock( $self->{'locks'}->{$lockFile}, LOCK_UN ) or die(
-        sprintf( "Couldn't release exclusive lock on %s", $lockFile )
-    );
-    close $self->{'locks'}->{$lockFile};
-    delete $self->{'locks'}->{$lockFile};
-    unlink $lockFile;
+
+    $self->{'locks'}->{$lockFile}->release( );
     $self;
 }
 
@@ -248,7 +245,7 @@ sub _setDbSettings
 
 =item END
 
- Process ending tasks (Release of lock files)
+ Process ending tasks (Release lock on files)
 
 =cut
 

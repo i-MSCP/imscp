@@ -23,7 +23,7 @@ use iMSCP::Debug;
 use iMSCP::Mount qw/ umount /;
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
-exit unless $bootstrapper->lock( '/tmp/imscp-mountall.lock', 'nowait' );
+exit unless $bootstrapper->lock( '/var/lock/imscp-mountall.lock', 'nowait' );
 
 $bootstrapper->boot(
     {
@@ -40,7 +40,7 @@ setVerbose(1);
 
 umount($main::imscpConfig{'USER_WEB_DIR'});
 
-END { $bootstrapper->unlock( '/tmp/imscp-mountall.lock' ); }
+END { $bootstrapper->unlock( '/var/lock/imscp-mountall.lock' ); }
 
 1;
 __END__

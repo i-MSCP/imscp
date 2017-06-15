@@ -238,7 +238,7 @@ sub install
     for ('imscp-backup-all', 'imscp-backup-imscp', 'imscp-dsk-quota', 'imscp-srv-traff', 'imscp-vrl-traff',
         'awstats_updateall.pl', 'imscp-disable-accounts', 'imscp'
     ) {
-        next if $bootstrapper->lock( "/tmp/$_.lock", 'nowait' );
+        next if $bootstrapper->lock( "/var/lock/$_.lock", 'nowait' );
         push @runningJobs, $_,
     }
 

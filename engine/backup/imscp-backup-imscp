@@ -211,7 +211,7 @@ OPTIONS:
 setVerbose( iMSCP::Getopt->verbose );
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
-exit unless $bootstrapper->lock( '/tmp/imscp-backup-imscp.lock', 'nowait' );
+exit unless $bootstrapper->lock( '/var/lock/imscp-backup-imscp.lock', 'nowait' );
 
 $bootstrapper->boot(
     {
@@ -223,7 +223,7 @@ $bootstrapper->boot(
 
 exit run( );
 
-END { $bootstrapper->unlock( '/tmp/imscp-backup-imscp.lock' ); }
+END { $bootstrapper->unlock( '/var/lock/imscp-backup-imscp.lock' ); }
 
 =head1 AUTHOR
 

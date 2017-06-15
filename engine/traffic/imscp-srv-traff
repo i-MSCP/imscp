@@ -142,7 +142,7 @@ OPTIONS:
 setVerbose( iMSCP::Getopt->verbose );
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
-exit unless $bootstrapper->lock( '/tmp/imscp-srv-traff.lock', 'nowait' );
+exit unless $bootstrapper->lock( '/var/lock/imscp-srv-traff.lock', 'nowait' );
 
 $bootstrapper->boot(
     {
@@ -160,7 +160,7 @@ $bootstrapper->boot(
 
 exit run();
 
-END { $bootstrapper->unlock( '/tmp/imscp-srv-traff.lock' ); }
+END { $bootstrapper->unlock( '/var/lock/imscp-srv-traff.lock' ); }
 
 
 =head1 AUTHOR

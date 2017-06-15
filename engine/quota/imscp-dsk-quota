@@ -278,7 +278,7 @@ OPTIONS:
 setVerbose( iMSCP::Getopt->verbose );
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
-exit unless $bootstrapper->lock( '/tmp/imscp-dsk-quota.lock', 'nowait' );
+exit unless $bootstrapper->lock( '/var/lock/imscp-dsk-quota.lock', 'nowait' );
 
 $bootstrapper->boot(
     {
@@ -295,7 +295,7 @@ quotaSql( );
 my @errors = getMessageByType( 'error' );
 iMSCP::Mail->new()->errmsg( "@errors" ) if @errors;
 
-END { $bootstrapper->unlock( '/tmp/imscp-dsk-quota.lock' ); }
+END { $bootstrapper->unlock( '/var/lock/imscp-dsk-quota.lock' ); }
 
 =back
 

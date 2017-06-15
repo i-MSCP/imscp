@@ -54,7 +54,7 @@ OPTIONS:
 setVerbose(iMSCP::Getopt->verbose);
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
-exit unless $bootstrapper->lock( '/tmp/imscp-dpkg-post-invoke.lock', 'nowait' );
+exit unless $bootstrapper->lock( '/var/lock/imscp-dpkg-post-invoke.lock', 'nowait' );
 
 $bootstrapper->getInstance( )->boot(
     {
@@ -85,7 +85,7 @@ for(@items) {
 
 exit $rs;
 
-END { $bootstrapper->unlock( '/tmp/imscp-dpkg-post-invoke.lock' ); }
+END { $bootstrapper->unlock( '/var/lock/imscp-dpkg-post-invoke.lock' ); }
 
 =head1 AUTHOR
 

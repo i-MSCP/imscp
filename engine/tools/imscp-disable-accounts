@@ -126,7 +126,7 @@ OPTIONS:
 setVerbose( iMSCP::Getopt->verbose );
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
-exit unless $bootstrapper->lock( '/tmp/imscp-disable-accounts.lock', 'nowait' );
+exit unless $bootstrapper->lock( '/var/lock/imscp-disable-accounts.lock', 'nowait' );
 
 $bootstrapper->getInstance( )->boot(
     {
@@ -138,7 +138,7 @@ $bootstrapper->getInstance( )->boot(
 
 exit run( );
 
-END { $bootstrapper->unlock( '/tmp/imscp-disable-accounts.lock' ); }
+END { $bootstrapper->unlock( '/var/lock/imscp-disable-accounts.lock' ); }
 
 =head1 AUTHOR
 

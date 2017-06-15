@@ -177,7 +177,7 @@ $action && $action =~ /^(?:start|stop)$/ or iMSCP::Getopt->showUsage( );
 setVerbose( iMSCP::Getopt->verbose );
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
-exit unless $bootstrapper->lock( '/tmp/imscp-net-traffic-logger.lock', 'nowait' );
+exit unless $bootstrapper->lock( '/var/lock/imscp-net-traffic-logger.lock', 'nowait' );
 
 $bootstrapper->boot(
     {
@@ -200,7 +200,7 @@ my %dispatch = (
 
 exit $dispatch{ $action }->( );
 
-END { $bootstrapper->unlock( '/tmp/imscp-net-traffic-logger.lock' ); }
+END { $bootstrapper->unlock( '/var/lock/imscp-net-traffic-logger.lock' ); }
 
 =head1 AUTHOR
 

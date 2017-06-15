@@ -363,7 +363,7 @@ OPTIONS:
 setVerbose( iMSCP::Getopt->verbose );
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
-exit unless $bootstrapper->lock( '/tmp/imscp-backup-all.lock', 'nowait' );
+exit unless $bootstrapper->lock( '/var/lock/imscp-backup-all.lock', 'nowait' );
 
 $bootstrapper->boot(
     {
@@ -379,7 +379,7 @@ my @errors = getMessageByType( 'error' );
 iMSCP::Mail->new( )->errmsg( "@errors" ) if @errors;
 
 END {
-    $bootstrapper->unlock( '/tmp/imscp-backup-all.lock' );
+    $bootstrapper->unlock( '/var/lock/imscp-backup-all.lock' );
 }
 
 =back

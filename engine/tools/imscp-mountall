@@ -89,7 +89,7 @@ defined $action && $action =~ /^(?:start|stop)$/ or iMSCP::Getopt->showUsage( );
 setVerbose( iMSCP::Getopt->verbose );
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
-exit unless $bootstrapper->lock( '/tmp/imscp-mountall.lock', 'nowait' );
+exit unless $bootstrapper->lock( '/var/lock/imscp-mountall.lock', 'nowait' );
 
 $bootstrapper->boot(
     {
@@ -104,7 +104,7 @@ $bootstrapper->boot(
 
 exit run( $action );
 
-END { $bootstrapper->unlock( '/tmp/imscp-mountall.lock' ); }
+END { $bootstrapper->unlock( '/var/lock/imscp-mountall.lock' ); }
 
 =head1 AUTHOR
 
