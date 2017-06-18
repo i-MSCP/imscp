@@ -84,7 +84,8 @@ Any released version >= 1.0 (Devuan Jessie)
 #### 1. Make sure that your distribution is up-to-date
 
 ```bash
-apt-get update && apt-get --assume-yes --auto-remove --no-install-recommends dist-upgrade
+apt-get update
+apt-get --assume-yes --auto-remove --no-install-recommends dist-upgrade
 ```
 
 #### 2. Install the pre-required packages
@@ -137,7 +138,8 @@ case something goes wrong during upgrade.
 #### 3. Make sure that your distribution is up-to-date
 
 ```bash
-apt-get update && apt-get --assume-yes --auto-remove --no-install-recommend dist-upgrade
+apt-get update
+apt-get --assume-yes --auto-remove --no-install-recommends dist-upgrade
 ```
 
 #### 4. Download and untar the distribution files
