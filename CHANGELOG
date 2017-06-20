@@ -4,6 +4,9 @@
 Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
+BACKEND
+    Fixed: Don't load File::Temp module through Class::Autouse module as this can lead to compile time errors
+
 DISTRIBUTIONS
     Fixed: libmysqlcient18 package not available for MySQL 5.7 server community (Debian 9/Stretch)
 

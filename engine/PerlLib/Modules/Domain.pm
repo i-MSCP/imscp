@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use File::Basename;
 use File::Spec;
+use File::Temp;
 use iMSCP::Crypt;
 use iMSCP::Database;
 use iMSCP::Debug;

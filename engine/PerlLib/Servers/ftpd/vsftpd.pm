@@ -25,8 +25,9 @@ package Servers::ftpd::vsftpd;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ :nostat File::Temp Servers::ftpd::vsftpd::installer Servers::ftpd::vsftpd::uninstaller /;
+use Class::Autouse qw/ :nostat Servers::ftpd::vsftpd::installer Servers::ftpd::vsftpd::uninstaller /;
 use File::Basename;
+use File::Temp;
 use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::EventManager;

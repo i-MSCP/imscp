@@ -25,8 +25,8 @@ package Servers::po::courier;
 
 use strict;
 use warnings;
-use File::Temp;
 use Class::Autouse qw/ :nostat Servers::po::courier::installer Servers::po::courier::uninstaller /;
+use File::Temp;
 use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Dir;

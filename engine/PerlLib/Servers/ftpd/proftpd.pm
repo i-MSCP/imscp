@@ -25,8 +25,9 @@ package Servers::ftpd::proftpd;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ :nostat File::Temp Servers::ftpd::proftpd::installer Servers::ftpd::proftpd::uninstaller /;
+use Class::Autouse qw/ :nostat Servers::ftpd::proftpd::installer Servers::ftpd::proftpd::uninstaller /;
 use File::Basename;
+use File::Temp;
 use iMSCP::Debug;
 use iMSCP::Config;
 use iMSCP::EventManager;
