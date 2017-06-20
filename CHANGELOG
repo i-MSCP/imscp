@@ -13,6 +13,9 @@ DISTRIBUTIONS
 FRONTEND
     Fixed: Invalid parameter number: number of bound variables does not match number of tokens (Software Installer)
 
+INSTALLER:
+    Fixed: apache2_postinst.sh: Raised error if there is a version mismatch between installed Apache2 package and source package
+
 ------------------------------------------------------------------------------------------------------------------------
 1.4.6
 ------------------------------------------------------------------------------------------------------------------------

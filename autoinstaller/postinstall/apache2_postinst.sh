@@ -23,7 +23,7 @@ set -e
 #  rm /usr/lib/apache2/modules/mod_proxy_fcgi.so
 #  dpkg-divert --rename --remove /usr/lib/apache2/modules/mod_proxy_fcgi.so
 
-APACHE_VERSION=`dpkg-query --show --showformat '${Version}' apache2`
+APACHE_INSTALLED_VERSION=$(dpkg-query --show --showformat '${Version}' apache2)
 
 service apache2 stop
 
@@ -34,7 +34,7 @@ if [ -f /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST ] ; then
 fi
 
 # Don't process if Apache2 version is ge 2.4.24
-if dpkg --compare-versions "$APACHE_VERSION" ge "2.4.24" ; then
+if dpkg --compare-versions "$APACHE_INSTALLED_VERSION" ge "2.4.24" ; then
     exit;
 fi
 
@@ -48,7 +48,22 @@ if id "_apt" >/dev/null 2>&1; then
 fi
 
 cd ${SRC_DIR}
-apt-get -y source apache2
+
+apt-src remove apache2
+apt-src install apache2
+
+APACHE_SOURCE_VERSION=$(apt-src version apache2)
+
+# We must check for version mismatch between installed apache2 package and
+# source package
+if dpkg --compare-versions "$APACHE_SOURCE_VERSION" ne "$APACHE_INSTALLED_VERSION" ; then
+    echo "There is a version mismatch between installed apache2 package and"
+    echo "apache2 source package. Please check your APT sources.list."
+    echo ""
+    echo "Both deb and deb-src repositories must provide the same version."
+    exit 1;
+fi
+
 cd apache2*/modules/proxy
 
 # Patch for https://bz.apache.org/bugzilla/show_bug.cgi?id=55415
@@ -67,7 +82,7 @@ patch -p0 <<EOF
                                   * everything after the headers
 EOF
 
-if dpkg --compare-versions "$APACHE_VERSION" lt "2.4.11" ; then
+if dpkg --compare-versions "$APACHE_INSTALLED_VERSION" lt "2.4.11" ; then
     # Patch for https://bz.apache.org/bugzilla/show_bug.cgi?id=55329
     patch -p0 <<EOF
 --- mod_proxy_fcgi.c	2017-06-13 10:24:54.008100497 +0200
@@ -175,4 +190,5 @@ apxs -c mod_proxy_fcgi.c
 dpkg-divert --divert /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST --rename /usr/lib/apache2/modules/mod_proxy_fcgi.so
 apxs -i mod_proxy_fcgi.la
 cd /tmp
+apt-src remove apache2
 rm -fR ${SRC_DIR}

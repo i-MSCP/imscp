@@ -419,6 +419,7 @@
         <package>libxml-simple-perl</package>
     </perl>
     <other>
+        <package>apt-src</package>
         <package>at</package>
         <package>bash</package>
         <package>bash-completion</package>
