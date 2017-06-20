@@ -302,7 +302,7 @@ if (!empty($_POST)) {
             $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
             # Check that SQL user belongs to the given database
-            $stmt = exec_query('SELECT COUNT(sqlu_id) FROM sql_user WHERE sqld_id = ? AND sqlu_name', array(
+            $stmt = exec_query('SELECT COUNT(sqlu_id) FROM sql_user WHERE sqld_id = ? AND sqlu_name = ?', array(
                 $row['sqld_id'], $appSqlUser
             ));
             if (!$stmt->fetchRow(PDO::FETCH_COLUMN)) {

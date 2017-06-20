@@ -10,6 +10,9 @@ BACKEND
 DISTRIBUTIONS
     Fixed: libmysqlcient18 package not available for MySQL 5.7 server community (Debian 9/Stretch)
 
+FRONTEND
+    Fixed: Invalid parameter number: number of bound variables does not match number of tokens (Software Installer)
+
 ------------------------------------------------------------------------------------------------------------------------
 1.4.6
 ------------------------------------------------------------------------------------------------------------------------
