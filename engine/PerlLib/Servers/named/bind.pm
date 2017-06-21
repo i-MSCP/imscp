@@ -112,9 +112,7 @@ sub postinstall
     return $rs if $rs;
 
     local $@;
-    eval {
-        iMSCP::Service->getInstance( )->enable( $self->{'config'}->{'NAMED_SNAME'} );
-    };
+    eval { iMSCP::Service->getInstance( )->enable( $self->{'config'}->{'NAMED_SNAME'} ); };
     if ($@) {
         error( $@ );
         return 1;
@@ -212,7 +210,7 @@ sub postaddDmn
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostAddDmn', $data );
     return $rs if $rs;
 
-    if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
+    if ($self->{'config'}->{'BIND_MODE'} eq 'master' && defined $data->{'ALIAS'}) {
         # Add DNS record for alternative URL in BASE_SERVER_VHOST zone file
         $rs = $self->addSub(
             {
@@ -286,6 +284,9 @@ sub deleteDmn
 {
     my ($self, $data) = @_;
 
+    return 0 if $data->{'PARENT_DOMAIN_NAME'} eq $main::imscpConfig{'BASE_SERVER_VHOST'}
+        && !$data->{'FORCE_DELETION'};
+
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedDelDmn', $data );
     $rs ||= $self->_deleteDmnConfig( $data );
     return $rs if $rs;
@@ -316,10 +317,13 @@ sub postdeleteDmn
 {
     my ($self, $data) = @_;
 
+    return 0 if $data->{'PARENT_DOMAIN_NAME'} eq $main::imscpConfig{'BASE_SERVER_VHOST'}
+        && !$data->{'FORCE_DELETION'};
+
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostDelDmn', $data );
     return $rs if $rs;
 
-    if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
+    if ($self->{'config'}->{'BIND_MODE'} eq 'master' && defined $data->{'ALIAS'}) {
         # Delete DNS record for alternative URL from BASE_SERVER_VHOST zone file
         $rs = $self->deleteSub(
             {
@@ -404,8 +408,7 @@ sub addSub
     }
 
     my $domainIP = $net->isRoutableAddr( $data->{'DOMAIN_IP'} )
-        ? $data->{'DOMAIN_IP'}
-        : $data->{'BASE_SERVER_PUBLIC_IP'};
+        ? $data->{'DOMAIN_IP'} : $data->{'BASE_SERVER_PUBLIC_IP'};
 
     $subEntry = process(
         {
@@ -452,7 +455,7 @@ sub postaddSub
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostAddSub', $data );
     return $rs if $rs;
 
-    if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
+    if ($self->{'config'}->{'BIND_MODE'} eq 'master' && defined $data->{'ALIAS'}) {
         # Add DNS record for alternative URL in BASE_SERVER_VHOST zone file
         $rs = $self->addSub(
             {
@@ -573,7 +576,7 @@ sub postdeleteSub
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostDelSub', $data );
     return $rs if $rs;
 
-    if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
+    if ($self->{'config'}->{'BIND_MODE'} eq 'master' && defined $data->{'ALIAS'}) {
         # Delete DNS record for alternative URL from BASE_SERVER_VHOST zone file
         $rs = $self->deleteSub(
             {
@@ -987,9 +990,7 @@ sub _addDmnDb
             for my $ipAddr(@nsIPs) {
                 next unless $net->getAddrVersion( $ipAddr ) eq $ipAddrType;
                 $nsRecords .= process(
-                    {
-                        NS_NAME => 'ns'.$nsNumber
-                    },
+                    { NS_NAME => 'ns'.$nsNumber },
                     $nsRecordB
                 ) if $nsRecordB ne '';
 
@@ -1020,8 +1021,7 @@ sub _addDmnDb
         $dmnMailEntry = process(
             {
                 BASE_SERVER_IP_TYPE => ($net->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4')
-                    ? 'A'
-                    : 'AAAA',
+                    ? 'A' : 'AAAA',
                 BASE_SERVER_IP      => $data->{'BASE_SERVER_PUBLIC_IP'}
             },
             getBloc( "; dmn MAIL entry BEGIN\n", "; dmn MAIL entry ENDING\n", $tplDbFileC )
@@ -1080,9 +1080,7 @@ sub _updateSOAserialNumber
         if ($rc{'variable'}) {
             $self->{'serials'}->{$zone} = $nowDate.'00';
             ${$zoneContent} = process(
-                {
-                    TIMESTAMP => $self->{'serials'}->{$zone}
-                },
+                { TIMESTAMP => $self->{'serials'}->{$zone} },
                 ${$zoneContent}
             );
             return 0;

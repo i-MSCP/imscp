@@ -1186,7 +1186,12 @@ sub _deleteDnsZone
         $main::imscpOldConfig{'BASE_SERVER_VHOST'} ne main::setupGetQuestion( 'BASE_SERVER_VHOST' );
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedDeleteMasterZone' );
-    $rs ||= Servers::named->factory( )->deleteDmn( { DOMAIN_NAME => $main::imscpOldConfig{'BASE_SERVER_VHOST'} } );
+    $rs ||= Servers::named->factory( )->deleteDmn(
+        {
+            DOMAIN_NAME    => $main::imscpOldConfig{'BASE_SERVER_VHOST'},
+            FORCE_DELETION => 1
+        }
+    );
     $rs ||= $self->{'eventManager'}->trigger( 'afterNamedDeleteMasterZone' );
 }
 
