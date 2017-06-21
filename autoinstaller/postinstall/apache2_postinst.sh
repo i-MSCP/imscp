@@ -49,18 +49,18 @@ fi
 
 cd ${SRC_DIR}
 
-apt-src remove apache2
-apt-src install apache2
+apt-src --quiet remove apache2
+apt-src --quiet install apache2
 
 APACHE_SOURCE_VERSION=$(apt-src version apache2)
 
 # We must check for version mismatch between installed apache2 package and
 # source package
 if dpkg --compare-versions "$APACHE_SOURCE_VERSION" ne "$APACHE_INSTALLED_VERSION" ; then
-    echo "There is a version mismatch between installed apache2 package and"
-    echo "apache2 source package. Please check your APT sources.list."
-    echo ""
-    echo "Both deb and deb-src repositories must provide the same version."
+    echo "There is a version mismatch between installed apache2 package and" 1>&2
+    echo "apache2 source package. Please check your APT sources.list." 1>&2
+    echo "" 1>&2
+    echo "Both deb and deb-src repositories must provide the same version." 1>&2
     exit 1;
 fi
 
@@ -190,5 +190,5 @@ apxs -c mod_proxy_fcgi.c
 dpkg-divert --divert /usr/lib/apache2/modules/mod_proxy_fcgi.so-DIST --rename /usr/lib/apache2/modules/mod_proxy_fcgi.so
 apxs -i mod_proxy_fcgi.la
 cd /tmp
-apt-src remove apache2
+apt-src --quiet remove apache2
 rm -fR ${SRC_DIR}
