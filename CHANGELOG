@@ -16,6 +16,7 @@ DISTRIBUTIONS
 FRONTEND
     Fixed: Invalid parameter number: number of bound variables does not match number of tokens (Software Installer)
     Fixed: Couldn't add BASE_SERVER_VHOST as customer domain
+    Fixed: Trailing slash added twice in URI path when creating subdomain with redirect feature enabled
 
 SERVER
     Changed: DNS records for alternative URLs are now added as subdomain DNS record without www and ftp records (Bind9)
