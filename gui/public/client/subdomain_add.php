@@ -275,16 +275,13 @@ function addSubdomain()
 
         try {
             try {
-                $uri = iMSCP_Uri_Redirect::fromString($forwardUrl . '///');
+                $uri = iMSCP_Uri_Redirect::fromString($forwardUrl);
             } catch (Zend_Uri_Exception $e) {
                 throw new iMSCP_Exception(tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>"));
             }
 
             $uri->setHost(encode_idna(mb_strtolower($uri->getHost()))); // Normalize URI host
             $uri->setPath(rtrim(utils_normalizePath($uri->getPath()), '/') . '/'); // Normalize URI path
-
-            echo "<pre>";
-            print $uri->getUri();
 
             if ($uri->getHost() == $subdomainNameAscii
                 && ($uri->getPath() == '/' && in_array($uri->getPort(), array('', 80, 443)))
@@ -303,9 +300,6 @@ function addSubdomain()
             }
 
             $forwardUrl = $uri->getUri();
-            echo "<pre>";
-            print $forwardUrl;
-            exit;
         } catch (Exception $e) {
             set_page_message($e->getMessage(), 'error');
             return false;
