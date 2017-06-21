@@ -58,7 +58,7 @@ function reseller_checkData()
 
     $asciiDmnName = encode_idna($dmnName);
 
-    if (imscp_domain_exists($asciiDmnName, $_SESSION['user_id']) || $asciiDmnName == $cfg['BASE_SERVER_VHOST']) {
+    if (imscp_domain_exists($asciiDmnName, $_SESSION['user_id'])) {
         set_page_message(tr('Domain %s is unavailable.', "<strong>$dmnName</strong>"), 'error');
         return;
     }

@@ -4,6 +4,9 @@
 Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
+CONFIG
+    Updated: DNS template files (Bind9)
+
 BACKEND
     Fixed: Don't load File::Temp module through Class::Autouse module as this can lead to compile time errors
 
@@ -12,6 +15,10 @@ DISTRIBUTIONS
 
 FRONTEND
     Fixed: Invalid parameter number: number of bound variables does not match number of tokens (Software Installer)
+    Fixed: Couldn't add BASE_SERVER_VHOST as customer domain
+
+SERVER
+    Changed: DNS records for alternative URLs are now added as subdomain DNS record without www and ftp records (Bind9)
 
 INSTALLER:
     Fixed: apache2_postinst.sh: Raised error if there is a version mismatch between installed package and source package

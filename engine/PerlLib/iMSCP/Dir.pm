@@ -27,7 +27,6 @@ use strict;
 use warnings;
 use File::Copy qw/ mv /;
 use File::Path qw/ mkpath remove_tree /;
-use File::Spec;
 use iMSCP::Debug qw / getLastError /;
 use iMSCP::File;
 use parent 'Common::Object';
@@ -57,8 +56,9 @@ sub getFiles
     defined $dirname or die( '$dirname parameter is not defined.' );
 
     opendir my $dh, $dirname or die( sprintf( "Couldn't open `%s' directory: %s", $dirname, $! ) );
-    my @files = grep { !/^\.{1,2}\z/s && -f "$dirname/$_" } readdir( $dh ) ;
-    @files = $self->{'fileType'} ? grep(/$self->{'fileType'}$/, @files) : @files;
+    my $dotReg = qr/^\.{1,2}\z/s;
+    my @files = grep { !/$dotReg/ && -f "$dirname/$_" } readdir( $dh );
+    @files = $self->{'fileType'} ? grep( /$self->{'fileType'}$/, @files ) : @files;
     closedir( $dh );
     @files;
 }
@@ -123,9 +123,11 @@ sub isEmpty
 
     defined $dirname or die( '$dirname parameter is not defined.' );
 
+    my $dotReg = qr/^\.{1,2}\z/s;
+
     opendir my $dh, $dirname or die( sprintf( "Couldn't open `%s' directory: %s", $dirname, $! ) );
     while(my $entry = readdir $dh) {
-        next if $entry =~ /^\.{1,2}\z/s;
+        next if $entry =~ /$dotReg/;
         closedir $dh;
         return 0;
     }
@@ -134,10 +136,11 @@ sub isEmpty
     1;
 }
 
-=item clear( [ $dirname = $self->{'dirname'} [, ] ] )
+=item clear( [ $dirname = $self->{'dirname'} [, $regexp = undef ] ] )
 
- Clear a full directory content or the files inside the directory that match the given regexp
+ Clear a full directory content or the files/diretories inside the directory that match the given regexp
 
+ Param Regexp $regexp OPTIOANL regexp for directory content matching
  Return int 0 on success or die on failure
 
 =cut
@@ -155,15 +158,18 @@ sub clear
     if ($regexp) {
         opendir my $dh, $dirname or die( sprintf( "Couldn't open `%s' directory: %s", $dirname, $! ) );
 
-        while(my $file = readdir( $dh )) {
-            next if $file =~ /^\.{1,2}\z/s || $file !~ /$regexp/;
+        my $dotReg = qr/^\.{1,2}\z/s;
 
-            if (-d $file) {
-                $self->remove( $file );
+        while(my $file = readdir( $dh )) {
+            next if $file =~ /$dotReg/ || $file !~ /$regexp/;
+            my $filePath = $dirname.'/'.$file;
+
+            if (-d $filePath) {
+                $self->remove( $filePath );
                 next;
             }
 
-            unlink $dirname.'/'.$file or die( sprintf( "Couldn't remove file: %s", $! ) );
+            unlink $filePath or die( sprintf( "Couldn't remove the %s file: %s", $filePath, $! ) );
         }
 
         closedir( $dh );
@@ -311,7 +317,7 @@ sub remove
             $errorStr .= ($file eq '') ? "general error: $message\n" : "problem unlinking $file: $message\n";
         }
 
-        die( sprintf( "Couldn't remove `%s' directory: %s", $dirname, $errorStr ) );
+        die( sprintf( "Couldn't remove the `%s' directory: %s", $dirname, $errorStr ) );
     }
 
     0;
@@ -349,11 +355,13 @@ sub rcopy
 
     opendir my $dh, $self->{'dirname'} or die( sprintf( "Couldn't open `%s' directory: %s", $self->{'dirname'}, $! ) );
 
-    while(my $entry = readdir $dh) {
-        next if $entry =~ /^\.{1,2}\z/s;
+    my $dotReg = qr/^\.{1,2}\z/s;
 
-        my $src = File::Spec->catfile( $self->{'dirname'}, $entry);
-        my $dst = File::Spec->catfile( $destDir, $entry );
+    while(my $entry = readdir $dh) {
+        next if $entry =~ /$dotReg/;
+
+        my $src = $self->{'dirname'}.'/'.$entry;
+        my $dst = $destDir.'/'.$entry;
 
         if (-d $src) {
             iMSCP::Dir->new( dirname => $src )->rcopy( $dst, $options );

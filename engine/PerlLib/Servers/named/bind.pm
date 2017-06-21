@@ -213,22 +213,15 @@ sub postaddDmn
     return $rs if $rs;
 
     if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
-        $rs = $self->addDmn(
+        # Add DNS record for alternative URL in BASE_SERVER_VHOST zone file
+        $rs = $self->addSub(
             {
-                BASE_SERVER_VHOST     => $data->{'BASE_SERVER_VHOST'},
-                BASE_SERVER_IP        => $data->{'BASE_SERVER_IP'},
-                BASE_SERVER_PUBLIC_IP => $data->{'BASE_SERVER_PUBLIC_IP'},
-                DOMAIN_NAME           => $data->{'BASE_SERVER_VHOST'},
+                PARENT_DOMAIN_NAME    => $main::imscpConfig{'BASE_SERVER_VHOST'},
+                DOMAIN_NAME           => $data->{'ALIAS'}.'.'.$main::imscpConfig{'BASE_SERVER_VHOST'},
+                MAIL_ENABLED          => 0,
                 DOMAIN_IP             => $data->{'BASE_SERVER_PUBLIC_IP'},
-                MAIL_ENABLED          => 1,
-                CTM_ALS_ENTRY_ADD     => {
-                    NAME  => $data->{'ALIAS'},
-                    CLASS => 'IN',
-                    TYPE  => (iMSCP::Net->getInstance( )->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4')
-                        ? 'A'
-                        : 'AAAA',
-                    DATA  => $data->{'BASE_SERVER_PUBLIC_IP'}
-                }
+                BASE_SERVER_PUBLIC_IP => $data->{'BASE_SERVER_PUBLIC_IP'},
+                OPTIONAL_ENTRIES      => 0
             }
         );
         return $rs if $rs;
@@ -327,17 +320,11 @@ sub postdeleteDmn
     return $rs if $rs;
 
     if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
-        $rs = $self->addDmn(
+        # Delete DNS record for alternative URL from BASE_SERVER_VHOST zone file
+        $rs = $self->deleteSub(
             {
-                BASE_SERVER_VHOST     => $data->{'BASE_SERVER_VHOST'},
-                BASE_SERVER_IP        => $data->{'BASE_SERVER_IP'},
-                BASE_SERVER_PUBLIC_IP => $data->{'BASE_SERVER_PUBLIC_IP'},
-                DOMAIN_NAME           => $data->{'BASE_SERVER_VHOST'},
-                DOMAIN_IP             => $data->{'BASE_SERVER_PUBLIC_IP'},
-                MAIL_ENABLED          => 1,
-                CTM_ALS_ENTRY_DEL     => {
-                    NAME => $data->{'ALIAS'}
-                }
+                PARENT_DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
+                DOMAIN_NAME        => $data->{'ALIAS'}.'.'.$main::imscpConfig{'BASE_SERVER_VHOST'}
             }
         );
         return $rs if $rs;
@@ -412,6 +399,10 @@ sub addSub
         $subEntry = replaceBloc( "; sub MAIL entry BEGIN\n", "; sub MAIL entry ENDING\n", '', $subEntry );
     }
 
+    if (defined $data->{'OPTIONAL_ENTRIES'} && !$data->{'OPTIONAL_ENTRIES'}) {
+        $subEntry = replaceBloc( "; sub OPTIONAL entries BEGIN\n", "; sub OPTIONAL entries ENDING\n", '', $subEntry );
+    }
+
     my $domainIP = $net->isRoutableAddr( $data->{'DOMAIN_IP'} )
         ? $data->{'DOMAIN_IP'}
         : $data->{'BASE_SERVER_PUBLIC_IP'};
@@ -462,22 +453,15 @@ sub postaddSub
     return $rs if $rs;
 
     if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
-        $rs = $self->addDmn(
+        # Add DNS record for alternative URL in BASE_SERVER_VHOST zone file
+        $rs = $self->addSub(
             {
-                BASE_SERVER_VHOST     => $data->{'BASE_SERVER_VHOST'},
-                BASE_SERVER_IP        => $data->{'BASE_SERVER_IP'},
-                BASE_SERVER_PUBLIC_IP => $data->{'BASE_SERVER_PUBLIC_IP'},
-                DOMAIN_NAME           => $data->{'BASE_SERVER_VHOST'},
+                PARENT_DOMAIN_NAME    => $main::imscpConfig{'BASE_SERVER_VHOST'},
+                DOMAIN_NAME           => $data->{'ALIAS'}.'.'.$main::imscpConfig{'BASE_SERVER_VHOST'},
+                MAIL_ENABLED          => 0,
                 DOMAIN_IP             => $data->{'BASE_SERVER_PUBLIC_IP'},
-                MAIL_ENABLED          => 1,
-                CTM_ALS_ENTRY_ADD     => {
-                    NAME  => $data->{'ALIAS'},
-                    CLASS => 'IN',
-                    TYPE  => (iMSCP::Net->getInstance( )->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4')
-                        ? 'A'
-                        : 'AAAA',
-                    DATA  => $data->{'BASE_SERVER_PUBLIC_IP'}
-                }
+                BASE_SERVER_PUBLIC_IP => $data->{'BASE_SERVER_PUBLIC_IP'},
+                OPTIONAL_ENTRIES      => 0
             }
         );
         return $rs if $rs;
@@ -590,17 +574,11 @@ sub postdeleteSub
     return $rs if $rs;
 
     if ($self->{'config'}->{'BIND_MODE'} eq 'master') {
-        $rs = $self->addDmn(
+        # Delete DNS record for alternative URL from BASE_SERVER_VHOST zone file
+        $rs = $self->deleteSub(
             {
-                BASE_SERVER_VHOST     => $data->{'BASE_SERVER_VHOST'},
-                BASE_SERVER_IP        => $data->{'BASE_SERVER_IP'},
-                BASE_SERVER_PUBLIC_IP => $data->{'BASE_SERVER_PUBLIC_IP'},
-                DOMAIN_NAME           => $data->{'BASE_SERVER_VHOST'},
-                DOMAIN_IP             => $data->{'BASE_SERVER_PUBLIC_IP'},
-                MAIL_ENABLED          => 1,
-                CTM_ALS_ENTRY_DEL     => {
-                    NAME => $data->{'ALIAS'}
-                }
+                PARENT_DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
+                DOMAIN_NAME        => $data->{'ALIAS'}.'.'.$main::imscpConfig{'BASE_SERVER_VHOST'}
             }
         );
         return $rs if $rs;
@@ -1049,42 +1027,8 @@ sub _addDmnDb
             getBloc( "; dmn MAIL entry BEGIN\n", "; dmn MAIL entry ENDING\n", $tplDbFileC )
         )
     }
+
     $tplDbFileC = replaceBloc( "; dmn MAIL entry BEGIN\n", "; dmn MAIL entry ENDING\n", $dmnMailEntry, $tplDbFileC );
-
-    if ($data->{'DOMAIN_NAME'} eq $data->{'BASE_SERVER_VHOST'} && defined $wrkDbFileContent) {
-        if (exists $data->{'CTM_ALS_ENTRY_ADD'}) {
-            $wrkDbFileContent =~ s/^$data->{'CTM_ALS_ENTRY_ADD'}->{'NAME'}\s+[^\n]*\n//m;
-            $tplDbFileC = replaceBloc(
-                "; ctm als entries BEGIN\n",
-                "; ctm als entries ENDING\n",
-                "; ctm als entries BEGIN\n"
-                    .getBloc( "; ctm als entries BEGIN\n", "; ctm als entries ENDING\n", $wrkDbFileContent )
-                    .process(
-                        {
-                            NAME  => $data->{'CTM_ALS_ENTRY_ADD'}->{'NAME'},
-                            CLASS => $data->{'CTM_ALS_ENTRY_ADD'}->{'CLASS'},
-                            TYPE  => $data->{'CTM_ALS_ENTRY_ADD'}->{'TYPE'},
-                            DATA  => $data->{'CTM_ALS_ENTRY_ADD'}->{'DATA'}
-                        },
-                        "{NAME}\t{CLASS}\t{TYPE}\t{DATA}\n"
-                    )
-                    ."; ctm als entries ENDING\n",
-                $tplDbFileC
-            );
-        } else {
-            $tplDbFileC = replaceBloc(
-                "; ctm als entries BEGIN\n",
-                "; ctm als entries ENDING\n",
-                getBloc( "; ctm als entries BEGIN\n", "; ctm als entries ENDING\n", $wrkDbFileContent, 1 ),
-                $tplDbFileC
-            );
-
-            if (exists $data->{'CTM_ALS_ENTRY_DEL'}) {
-                $tplDbFileC =~ s/^$data->{'CTM_ALS_ENTRY_DEL'}->{'NAME'}\s+[^\n]*\n//m;
-            }
-        }
-    }
-
     $tplDbFileC = process(
         {
             DOMAIN_NAME => $data->{'DOMAIN_NAME'},
@@ -1180,7 +1124,7 @@ sub _updateSOAserialNumber
 sub _compileZone
 {
     my ($self, $zonename, $filename) = @_;
-    
+
     my $rs = execute(
         [
             'named-compilezone',

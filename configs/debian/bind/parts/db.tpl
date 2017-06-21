@@ -31,5 +31,3 @@ smtp	IN	{BASE_SERVER_IP_TYPE}	{BASE_SERVER_IP}
 $ORIGIN {DOMAIN_NAME}.
 ; custom DNS entries BEGIN
 ; custom DNS entries ENDING
-; ctm als entries BEGIN
-; ctm als entries ENDING
