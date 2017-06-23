@@ -18,8 +18,9 @@ FRONTEND
     Fixed: Couldn't add BASE_SERVER_VHOST as customer domain
     Fixed: Trailing slash added twice in URI path when creating subdomain with redirect feature enabled
 
-SERVER
+SERVERS
     Changed: DNS records for alternative URLs are now added as subdomain DNS record without www and ftp records (Bind9)
+    Fixed: Couldn't switch from external to local DNS server (Servers::named)
 
 INSTALLER:
     Fixed: apache2_postinst.sh: Raised error if there is a version mismatch between installed package and source package
