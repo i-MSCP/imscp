@@ -530,6 +530,8 @@ abstract class iMSCP_Plugin
             $migrationFiles = array_reverse($migrationFiles);
         }
 
+        $pdo = iMSCP_Database::getRawInstance();
+
         try {
             foreach ($migrationFiles as $migrationFile) {
                 if (!@is_readable($migrationFile)) {
@@ -545,7 +547,9 @@ abstract class iMSCP_Plugin
                 ) {
                     $migrationFilesContent = include($migrationFile);
                     if (isset($migrationFilesContent[$migrationMode])) {
-                        execute_query($migrationFilesContent[$migrationMode]);
+                        $stmt = $pdo->prepare($migrationFilesContent[$migrationMode]);
+                        $stmt->execute();
+                        while ($stmt->nextRowset()) {/* https://bugs.php.net/bug.php?id=61613 */};
                     }
 
                     $dbSchemaVersion = $version[1];
@@ -554,7 +558,7 @@ abstract class iMSCP_Plugin
 
             $pluginInfo['db_schema_version'] = ($migrationMode == 'up') ? $dbSchemaVersion : '000';
             $pluginManager->pluginUpdateInfo($pluginName, $pluginInfo->toArray());
-        } catch (iMSCP_Exception $e) {
+        } catch (Exception $e) {
             $pluginInfo['db_schema_version'] = $dbSchemaVersion;
             $pluginManager->pluginUpdateInfo($pluginName, $pluginInfo->toArray());
             throw new iMSCP_Plugin_Exception($e->getMessage(), $e->getCode(), $e);
