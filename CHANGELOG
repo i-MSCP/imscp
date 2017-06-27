@@ -20,6 +20,7 @@ FRONTEND
 
 SERVERS
     Changed: DNS records for alternative URLs are now added as subdomain DNS record without www and ftp records (Bind9)
+    Fixed: Calling createUser()/dropUser() with `RaiseError' flag set to 1 lead to error (SQL server impl.)
     Fixed: Couldn't switch from external to local DNS server (Servers::named)
 
 INSTALLER:

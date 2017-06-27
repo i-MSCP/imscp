@@ -205,14 +205,16 @@ sub createUser
     defined $host or die( '$host parameter is not defined' );
     defined $password or die( '$password parameter is not defined' );
 
-    my $db = iMSCP::Database->factory( );
-    my $qrs = $db->doQuery(
-        'c', 'CREATE USER ?@? IDENTIFIED BY ?'.(
-                version->parse( $self->getVersion( ) ) >= version->parse( '5.7.6' ) ? ' PASSWORD EXPIRE NEVER' : ''
-        ),
-        $user, $host, $password
-    );
-    ref $qrs eq 'HASH' or die( sprintf( "Couldn't create the %s\@%s SQL user: %s", $user, $host, $qrs ) );
+    eval {
+        my $dbi = iMSCP::Database->factory( )->getRawDb( );
+        local $dbi->{'RaiseError'} = 1;
+        $dbi->do(
+            'CREATE USER ?@? IDENTIFIED BY ?'
+                .(version->parse( $self->getVersion( ) ) >= version->parse( '5.7.6' ) ? ' PASSWORD EXPIRE NEVER' : ''),
+            undef, $user, $host, $password
+        );
+    };
+    !$@ or die( sprintf( "Couldn't create the %s\@%s SQL user: %s", $user, $host, $@ ) );
     0;
 }
 
@@ -235,14 +237,14 @@ sub dropUser
 
     return 0 if $user =~ /^(?:debian-sys-maint|mysql\.sys|root)$/; # Prevent deletion of system SQL users
 
-    my $db = iMSCP::Database->factory( );
-    my $qrs = $db->doQuery( 1, 'SELECT 1 FROM mysql.user WHERE user = ? AND host = ?', $user, $host );
-    ref $qrs eq 'HASH' or die( $qrs );
-
-    return 0 unless %{$qrs};
-
-    $qrs = $db->doQuery( 'd', 'DROP USER ?@?', $user, $host );
-    ref $qrs eq 'HASH' or die( sprintf( "Couldn't drop the %s\@%s SQL user: %s", $user, $host, $qrs ) );
+    my $dbh = iMSCP::Database->factory( );
+    my $dbi = $dbh->getRawDb( );
+    eval {
+        local $dbi->{'RaiseError'} = 1;
+        return unless %{$dbh->doQuery( 1, 'SELECT 1 FROM mysql.user WHERE user = ? AND host = ?', $user, $host )};
+        $dbi->do('DROP USER ?@?', undef, $user, $host );
+    };
+    !$@ or die( sprintf( "Couldn't drop the %s\@%s SQL user: %s", $user, $host, $@ ) );
     0;
 }
 

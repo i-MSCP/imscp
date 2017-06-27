@@ -153,15 +153,19 @@ sub createUser
     defined $host or die( '$host parameter is not defined' );
     defined $password or die( '$password parameter is not defined' );
 
-    my $db = iMSCP::Database->factory( );
-    my $qrs = $db->doQuery(
-        'c', 'CREATE USER ?@? IDENTIFIED BY ?'.(
-                $self->getType( ) ne 'mariadb' && version->parse( $self->getVersion( ) ) >= version->parse( '5.7.6' )
-            ? ' PASSWORD EXPIRE NEVER' : ''
-        ),
-        $user, $host, $password
-    );
-    ref $qrs eq 'HASH' or die( sprintf( "Couldn't create the %s\@%s SQL user: %s", $user, $host, $qrs ) );
+    eval {
+        my $dbi = iMSCP::Database->factory( )->getRawDb( );
+        local $dbi->{'RaiseError'} = 1;
+        $dbi->do(
+            'CREATE USER ?@? IDENTIFIED BY ?'
+                .(($self->getType( ) ne 'mariadb'
+                    && version->parse( $self->getVersion( ) ) >= version->parse( '5.7.6' ))
+                ? ' PASSWORD EXPIRE NEVER' : ''
+            ),
+            undef, $user, $host, $password
+        );
+    };
+    !$@ or die( sprintf( "Couldn't create the %s\@%s SQL user: %s", $user, $host, $@ ) );
     0;
 }
 
