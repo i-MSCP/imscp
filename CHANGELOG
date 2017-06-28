@@ -6,7 +6,6 @@ Git 1.4.x
 
 CONFIG
     Enhancement: Alternative URLs for client domains can now be disabled - see the errata file for further details
-    Fixed: Make sure that LOGROTATE(8) configuration file are copied with expected ownership and permissions
     Updated: DNS template files (Bind9)
 
 BACKEND
@@ -32,8 +31,9 @@ SERVERS
 PLUGINS
     Fixed: PDO exception not throw when executing multiple statements (Database migrations - https://bugs.php.net/bug.php?id=61613)
 
-INSTALLER:
+INSTALLER
     Fixed: apache2_postinst.sh: Raised error if there is a version mismatch between installed package and source package
+    Fixed: Make sure that LOGROTATE(8) configuration files are copied with expected ownership and permissions
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.6
