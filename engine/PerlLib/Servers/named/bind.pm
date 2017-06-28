@@ -182,6 +182,10 @@ sub addDmn
 {
     my ($self, $data) = @_;
 
+    # Never process the same zone twice
+    # Occurs only in few contexts (eg. when using BASE_SERVER_VHOST as customer domain)
+    return 0 if $self->{'seen_zones'}->{$data->{'DOMAIN_NAME'}};
+
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedAddDmn', $data );
     $rs ||= $self->_addDmnConfig( $data );
     return $rs if $rs;
@@ -191,6 +195,7 @@ sub addDmn
         return $rs if $rs;
     }
 
+    $self->{'seen_zones'}->{$data->{'DOMAIN_NAME'}} = 1;
     $self->{'eventManager'}->trigger( 'afterNamedAddDmn', $data );
 }
 
@@ -738,6 +743,7 @@ sub _init
     $self->{'restart'} = 0;
     $self->{'reload'} = 0;
     $self->{'serials'} = { };
+    $self->{'seen_zones'} = { };
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -938,18 +944,12 @@ sub _addDmnDb
 {
     my ($self, $data) = @_;
 
-    my $wrkDbFile = "$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}.db";
-    my $wrkDbFileContent;
+    my $wrkDbFile = iMSCP::File->new( filename => "$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}.db" );
+    my $wrkDbFileContent = -f "$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}.db" ? $wrkDbFile->get( ) : '';
 
-    if (-f $wrkDbFile) {
-        $wrkDbFile = iMSCP::File->new( filename => $wrkDbFile );
-        $wrkDbFileContent = $wrkDbFile->get( );
-        unless (defined $wrkDbFileContent) {
-            error( sprintf( "Couldn't read %s file", $wrkDbFile->{'filename'} ) );
-            return 1;
-        }
-    } else {
-        $wrkDbFile = iMSCP::File->new( filename => $wrkDbFile );
+    unless (defined $wrkDbFileContent) {
+        error( sprintf( "Couldn't read %s file", $wrkDbFile->{'filename'} ) );
+        return 1;
     }
 
     my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind', 'db.tpl', \ my $tplDbFileC, $data );
