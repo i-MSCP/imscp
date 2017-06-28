@@ -8,7 +8,9 @@ CONFIG
     Updated: DNS template files (Bind9)
 
 BACKEND
+    Fixed: Avoid triggering change of all subdomains that belong to a parent domain that is being changed (historical issue)
     Fixed: Don't load File::Temp module through Class::Autouse module as this can lead to compile time errors
+    Removed: Unix user prefix from alternative URLs
 
 DISTRIBUTIONS
     Fixed: libmysqlcient18 package not available for MySQL 5.7 server community (Debian 9/Stretch)
@@ -17,6 +19,7 @@ FRONTEND
     Fixed: Invalid parameter number: number of bound variables does not match number of tokens (Software Installer)
     Fixed: Couldn't add BASE_SERVER_VHOST as customer domain
     Fixed: Trailing slash added twice in URI path when creating subdomain with redirect feature enabled
+    Removed: Unix user prefix from alternative URLs
 
 SERVERS
     Changed: DNS records for alternative URLs are now added as subdomain DNS record without www and ftp records (Bind9)

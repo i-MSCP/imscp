@@ -112,58 +112,6 @@ sub process
     $rs;
 }
 
-=item add( )
-
- Add domain alias
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub add
-{
-    my ($self) = @_;
-
-    if ($self->{'alias_status'} eq 'tochange') {
-        my $db = iMSCP::Database->factory( );
-
-        # Sets the status of any subdomain that belongs to this domain alias to 'tochange'.
-        # FIXME: This reflect a bad implementation in the way that entities are managed. This will be solved
-        # in version 2.0.0.
-        my $rs = $db->doQuery(
-            'u',
-            "
-                UPDATE subdomain_alias
-                SET subdomain_alias_status = 'tochange'
-                WHERE alias_id = ?
-                AND subdomain_alias_status <> 'todelete'
-            ",
-            $self->{'alias_id'}
-        );
-        unless (ref $rs eq 'HASH') {
-            error( $rs );
-            return 1;
-        }
-
-        $rs = $db->doQuery(
-            'u',
-            "
-                UPDATE domain_dns
-                SET domain_dns_status = 'tochange'
-                WHERE alias_id = ?
-                AND domain_dns_status NOT IN ('todelete', 'todisable', 'disabled')
-            ",
-            $self->{'alias_id'}
-        );
-        unless (ref $rs eq 'HASH') {
-            error( $rs );
-            return 1;
-        }
-    }
-
-    $self->SUPER::add( );
-}
-
 =item disable( )
 
  Disable domain alias
@@ -314,7 +262,7 @@ sub _getData
             HSTS_SUPPORT            => $allowHSTS,
             HSTS_MAX_AGE            => $hstsMaxAge,
             HSTS_INCLUDE_SUBDOMAINS => $hstsIncludeSubDomains,
-            ALIAS                   => $userName.'als'.$self->{'alias_id'},
+            ALIAS                   => 'als'.$self->{'alias_id'},
             FORWARD                 => $self->{'url_forward'} || 'no',
             FORWARD_TYPE            => $self->{'type_forward'} || '',
             FORWARD_PRESERVE_HOST   => $self->{'host_forward'} || 'Off',

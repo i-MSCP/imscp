@@ -118,51 +118,6 @@ sub process
     $rs;
 }
 
-=item add( )
-
- Add domain
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub add
-{
-    my ($self) = @_;
-
-    if ($self->{'domain_status'} eq 'tochange') {
-        my $db = iMSCP::Database->factory( );
-
-        # Sets the status of any subdomain that belongs to this domain to 'tochange'.
-        # FIXME: This reflect a bad implementation in the way that entities are managed. This will be solved
-        # in version 2.0.0.
-        my $rs = $db->doQuery(
-            'u',
-            "UPDATE subdomain SET subdomain_status = 'tochange' WHERE domain_id = ? AND subdomain_status <> 'todelete'",
-            $self->{'domain_id'}
-        );
-        unless (ref $rs eq 'HASH') {
-            error( $rs );
-            return 1;
-        }
-
-        $rs = $db->doQuery(
-            'u',
-            "
-                UPDATE domain_dns SET domain_dns_status = 'tochange'
-                WHERE domain_id = ? AND alias_id = 0 AND domain_dns_status NOT IN('todelete', 'todisable', 'disabled')
-            ",
-            $self->{'domain_id'}
-        );
-        unless (ref $rs eq 'HASH') {
-            error( $rs );
-            return 1;
-        }
-    }
-
-    $self->SUPER::add( );
-}
-
 =item disable( )
 
  Disable domain
@@ -423,7 +378,7 @@ sub _getData
             HSTS_SUPPORT            => $allowHSTS,
             HSTS_MAX_AGE            => $hstsMaxAge,
             HSTS_INCLUDE_SUBDOMAINS => $hstsIncludeSubDomains,
-            ALIAS                   => $userName,
+            ALIAS                   => 'dmn'.$self->{'domain_id'},
             FORWARD                 => $self->{'url_forward'} || 'no',
             FORWARD_TYPE            => $self->{'type_forward'} || '',
             FORWARD_PRESERVE_HOST   => $self->{'host_forward'} || 'Off',

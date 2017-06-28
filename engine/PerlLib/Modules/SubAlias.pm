@@ -253,7 +253,7 @@ sub _getData
             HSTS_SUPPORT            => $allowHSTS,
             HSTS_MAX_AGE            => $hstsMaxAge,
             HSTS_INCLUDE_SUBDOMAINS => $hstsIncludeSubDomains,
-            ALIAS                   => $userName.'alssub'.$self->{'subdomain_alias_id'},
+            ALIAS                   => 'alssub'.$self->{'subdomain_alias_id'},
             FORWARD                 => $self->{'subdomain_alias_url_forward'} || 'no',
             FORWARD_TYPE            => $self->{'subdomain_alias_type_forward'} || '',
             FORWARD_PRESERVE_HOST   => $self->{'subdomain_alias_host_forward'} || 'Off',

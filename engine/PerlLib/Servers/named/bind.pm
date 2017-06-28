@@ -1038,6 +1038,22 @@ sub _addDmnDb
         $tplDbFileC
     );
 
+    unless (defined $main::execmode && $main::execmode eq 'setup') {
+        # Re-add subdomain entries if any
+        if (my $entries = getBloc("; sub entries BEGIN\n", "; sub entries ENDING\n", $wrkDbFileContent, 'with_tags')) {
+            $tplDbFileC = replaceBloc( "; sub entries BEGIN\n", "; sub entries ENDING\n", $entries, $tplDbFileC );
+        }
+
+        # Re-add custom DNS entries if any
+        if (my $entries = getBloc(
+            "; custom DNS entries BEGIN\n", "; custom DNS entries ENDING\n", $wrkDbFileContent, 'with_tags'
+        )) {
+            $tplDbFileC = replaceBloc(
+                "; custom DNS entries BEGIN\n", "; custom DNS entries ENDING\n", $entries, $tplDbFileC
+            );
+        }
+    }
+
     $rs = $self->{'eventManager'}->trigger( 'afterNamedAddDmnDb', \$tplDbFileC, $data );
     $rs ||= $wrkDbFile->set( $tplDbFileC );
     $rs ||= $wrkDbFile->save( );

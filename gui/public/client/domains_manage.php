@@ -71,7 +71,7 @@ function generateDomainsList($tpl)
         list($redirectUrl, $editLink, $edit) = generateDomainRedirectAndEditLink($row['domain_id'], $row['domain_status'], $row['url_forward']);
         $domainName = decode_idna($row['domain_name']);
         $redirectUrl = decode_idna($redirectUrl);
-        $alternateUrlHost = $cfg['SYSTEM_USER_PREFIX'] . ($cfg['SYSTEM_USER_MIN_UID'] + $_SESSION['user_id']) . '.' . decode_idna($cfg['BASE_SERVER_VHOST']);
+        $alternateUrlHost = 'dmn' . $row['domain_id'] . '.' . decode_idna($cfg['BASE_SERVER_VHOST']);
         
         if ($row['domain_status'] == 'ok') {
             $tpl->assign(array(
@@ -219,7 +219,7 @@ function generateDomainAliasesList($tpl)
         );
         $alsName = decode_idna($row['alias_name']);
         $redirectUrl = decode_idna($redirectUrl);
-        $alternateUrlHost = $cfg['SYSTEM_USER_PREFIX'] . ($cfg['SYSTEM_USER_MIN_UID'] + $_SESSION['user_id']) . "als" . $row['alias_id'] . '.' . decode_idna($cfg['BASE_SERVER_VHOST']);
+        $alternateUrlHost = 'als' . $row['alias_id'] . '.' . decode_idna($cfg['BASE_SERVER_VHOST']);
 
         if ($isStatusOk) {
             $tpl->assign(array(
@@ -401,8 +401,7 @@ function generateSubdomainsList($tpl)
         $domainName = decode_idna($row['domain_name']);
         $subName = decode_idna($row['subdomain_name']);
         $redirectUrl = decode_idna($redirectUrl);
-        $alternateUrlHost = $cfg['SYSTEM_USER_PREFIX'] . ($cfg['SYSTEM_USER_MIN_UID'] + $_SESSION['user_id']) . 'sub'
-            . $row['subdomain_id'] . '.' . decode_idna($cfg['BASE_SERVER_VHOST']);
+        $alternateUrlHost = 'sub'.$row['subdomain_id'] . '.' . decode_idna($cfg['BASE_SERVER_VHOST']);
 
         if ($isStatusOk) {
             $tpl->assign(array(
@@ -460,8 +459,7 @@ function generateSubdomainsList($tpl)
         $alsName = decode_idna($row['alias_name']);
         $name = decode_idna($row['subdomain_alias_name']);
         $redirectUrl = decode_idna($redirectUrl);
-        $alternateUrlHost = $cfg['SYSTEM_USER_PREFIX'] . ($cfg['SYSTEM_USER_MIN_UID'] + $_SESSION['user_id']) . 'alssub'
-            . $row['subdomain_alias_id'] . '.' . decode_idna($cfg['BASE_SERVER_VHOST']);
+        $alternateUrlHost = 'alssub' . $row['subdomain_alias_id'] . '.' . decode_idna($cfg['BASE_SERVER_VHOST']);
 
         if ($isStatusOk) {
             $tpl->assign(array(
