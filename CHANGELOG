@@ -24,7 +24,7 @@ SERVERS
     Fixed: Couldn't switch from external to local DNS server (Servers::named)
 
 PLUGINS
-    Fixed: PDO exception not throw when executing multiple statements (Database migration - https://bugs.php.net/bug.php?id=61613)
+    Fixed: PDO exception not throw when executing multiple statements (Database migrations - https://bugs.php.net/bug.php?id=61613)
 
 INSTALLER:
     Fixed: apache2_postinst.sh: Raised error if there is a version mismatch between installed package and source package
