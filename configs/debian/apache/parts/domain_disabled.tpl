@@ -1,7 +1,7 @@
 <VirtualHost {DOMAIN_IPS}>
     ServerAdmin webmaster@{DOMAIN_NAME}
     ServerName {DOMAIN_NAME}
-    ServerAlias ServerAlias {SERVER_ALIASES}
+    ServerAlias {SERVER_ALIASES}
 
     LogLevel error
     ErrorLog {HTTPD_LOG_DIR}/{DOMAIN_NAME}/error.log
