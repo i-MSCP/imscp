@@ -254,8 +254,8 @@ sub _removeCrontabFile
 
 sub _removeLogrotateFile
 {
-    return 0 unless -f '/etc/logrotate.d/imscp';
-    iMSCP::File->new( filename => '/etc/logrotate.d/imscp' )->delFile( );
+    return 0 unless -f "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/imscp";
+    iMSCP::File->new( filename => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/imscp" )->delFile( );
 }
 
 sub _removeSysctlFile

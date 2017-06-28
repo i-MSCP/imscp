@@ -94,9 +94,9 @@ sub _restoreDebianConfig
         return $rs if $rs;
     }
 
-    if (-f '/etc/logrotate.d/rkhunter.disabled') {
-        my $rs = iMSCP::File->new( filename => '/etc/logrotate.d/rkhunter.disabled' )->moveFile(
-            '/etc/logrotate.d/rkhunter'
+    if (-f "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/rkhunter.disabled") {
+        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/rkhunter.disabled" )->moveFile(
+            "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/rkhunter"
         );
         return $rs if $rs;
     }

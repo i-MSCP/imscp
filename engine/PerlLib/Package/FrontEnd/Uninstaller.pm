@@ -99,8 +99,8 @@ sub _deconfigurePHP
         return 1;
     }
 
-    for('/etc/default/imscp_panel', '/etc/tmpfiles.d/imscp_panel.conf', '/etc/logrotate.d/imscp_panel',
-        '/usr/local/sbin/imscp_panel', '/var/log/imscp_panel.log'
+    for('/etc/default/imscp_panel', '/etc/tmpfiles.d/imscp_panel.conf',
+        "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/imscp_panel", '/usr/local/sbin/imscp_panel', '/var/log/imscp_panel.log'
     ) {
         next unless -f;
         my $rs = iMSCP::File->new( filename => $_ )->delFile( );

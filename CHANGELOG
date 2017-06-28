@@ -6,6 +6,7 @@ Git 1.4.x
 
 CONFIG
     Enhancement: Alternative URLs for client domains can now be disabled - see the errata file for further details
+    Fixed: Make sure that LOGROTATE(8) configuration file are copied with expected ownership and permissions
     Updated: DNS template files (Bind9)
 
 BACKEND

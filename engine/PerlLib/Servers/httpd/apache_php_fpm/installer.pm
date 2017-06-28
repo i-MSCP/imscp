@@ -663,8 +663,8 @@ sub _cleanup
     ## Cleanup and disable unused PHP versions/SAPIs
     #
 
-    if (-f '/etc/logrotate.d/php5-fpm') {
-        $rs = iMSCP::File->new( filename => '/etc/logrotate.d/php5-fpm' )->delFile( );
+    if (-f "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm") {
+        $rs = iMSCP::File->new( filename => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm" )->delFile( );
         return $rs if $rs;
     }
 
