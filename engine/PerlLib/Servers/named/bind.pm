@@ -957,9 +957,9 @@ sub _addDmnDb
     my ($self, $data) = @_;
 
     my $wrkDbFile = iMSCP::File->new( filename => "$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}.db" );
-    my $wrkDbFileContent = -f "$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}.db" ? $wrkDbFile->get( ) : '';
+    my $wrkDbFileContent;
 
-    unless (defined $wrkDbFileContent) {
+    if (-f $wrkDbFile->{'filename'} && !defined ($wrkDbFileContent = $wrkDbFile->get( ))) {
         error( sprintf( "Couldn't read %s file", $wrkDbFile->{'filename'} ) );
         return 1;
     }
@@ -1051,19 +1051,21 @@ sub _addDmnDb
     );
 
     unless (defined $main::execmode && $main::execmode eq 'setup') {
-        # Re-add subdomain entries if any
-        if (my $entries = getBloc("; sub entries BEGIN\n", "; sub entries ENDING\n", $wrkDbFileContent, 'with_tags')) {
-            $tplDbFileC = replaceBloc( "; sub entries BEGIN\n", "; sub entries ENDING\n", $entries, $tplDbFileC );
-        }
+        # Re-add subdomain entries
+        $tplDbFileC = replaceBloc(
+            "; sub entries BEGIN\n",
+            "; sub entries ENDING\n",
+            getBloc( "; sub entries BEGIN\n", "; sub entries ENDING\n", $wrkDbFileContent, 'with_tags' ),
+            $tplDbFileC
+        );
 
-        # Re-add custom DNS entries if any
-        if (my $entries = getBloc(
-            "; custom DNS entries BEGIN\n", "; custom DNS entries ENDING\n", $wrkDbFileContent, 'with_tags'
-        )) {
-            $tplDbFileC = replaceBloc(
-                "; custom DNS entries BEGIN\n", "; custom DNS entries ENDING\n", $entries, $tplDbFileC
-            );
-        }
+        # Re-add custom DNS entries
+        $tplDbFileC = replaceBloc(
+            "; custom DNS entries BEGIN\n",
+            "; custom DNS entries ENDING\n",
+            getBloc( "; custom DNS entries BEGIN\n", "; custom DNS entries ENDING\n", $wrkDbFileContent, 'with_tags' ),
+            $tplDbFileC
+        );
     }
 
     $rs = $self->{'eventManager'}->trigger( 'afterNamedAddDmnDb', \$tplDbFileC, $data );
@@ -1072,25 +1074,25 @@ sub _addDmnDb
     $rs ||= $self->_compileZone( $data->{'DOMAIN_NAME'}, $wrkDbFile->{'filename'} );
 }
 
-=item _updateSOAserialNumber( $zone, \$zoneContent, \$oldZoneContent )
+=item _updateSOAserialNumber( $zone, \$zoneFileContent, \$oldZoneFileContent )
 
  Update SOA serial number for the given zone
  
  Note: Format follows RFC1912 section 2.2 recommendations.
 
  Param string zone Zone name
- Param scalarref $zoneContent Zone content
- Param scalarref $oldZoneContent Old zone content
+ Param scalarref $zoneFileContent Zone file content
+ Param scalarref $oldZoneFileContent Old zone file content
  Return int 0 on success, other on failure
 
 =cut
 
 sub _updateSOAserialNumber
 {
-    my ($self, $zone, $zoneContent, $oldZoneContent) = @_;
+    my ($self, $zone, $zoneFileContent, $oldZoneFileContent) = @_;
 
     if (exists $self->{'serials'}->{$zone}) {
-        unless (${$zoneContent} =~ s/^(\s+)(?:\d{10}|\{TIMESTAMP\})(\s*;[^\n]*\n)/$1$self->{'serials'}->{$zone}$2/m) {
+        unless (${$zoneFileContent} =~ s/^(\s+)(?:\d{10}|\{TIMESTAMP\})(\s*;[^\n]*\n)/$1$self->{'serials'}->{$zone}$2/m) {
             error( sprintf( "Couldn't update SOA serial number for the %s DNS zone", $zone ) );
             return 1;
         }
@@ -1098,19 +1100,16 @@ sub _updateSOAserialNumber
         return 0;
     }
 
-    $oldZoneContent = $zoneContent unless defined ${$oldZoneContent};
+    $oldZoneFileContent = $zoneFileContent unless defined ${$oldZoneFileContent};
 
-    if (${$oldZoneContent} =~ /^\s+(?:(?<date>\d{8})(?<nn>\d{2})|(?<variable>\{TIMESTAMP\}))\s*;[^\n]*\n/m) {
+    if (${$oldZoneFileContent} =~ /^\s+(?:(?<date>\d{8})(?<nn>\d{2})|(?<variable>\{TIMESTAMP\}))\s*;[^\n]*\n/m) {
         my %rc = %+;
         my ($d, $m, $y) = (gmtime( ))[3 .. 5];
         my $nowDate = sprintf( "%d%02d%02d", $y+1900, $m+1, $d );
 
         if ($rc{'variable'}) {
             $self->{'serials'}->{$zone} = $nowDate.'00';
-            ${$zoneContent} = process(
-                { TIMESTAMP => $self->{'serials'}->{$zone} },
-                ${$zoneContent}
-            );
+            ${$zoneFileContent} = process({ TIMESTAMP => $self->{'serials'}->{$zone} }, ${$zoneFileContent} );
             return 0;
         }
 
@@ -1128,7 +1127,7 @@ sub _updateSOAserialNumber
 
         $self->{'serials'}->{$zone} = $rc{'date'}.$rc{'nn'};
 
-        if (${$zoneContent} =~ s/^(\s+)(?:\d{10}|\{TIMESTAMP\})(\s*;[^\n]*\n)/$1$self->{'serials'}->{$zone}$2/m) {
+        if (${$zoneFileContent} =~ s/^(\s+)(?:\d{10}|\{TIMESTAMP\})(\s*;[^\n]*\n)/$1$self->{'serials'}->{$zone}$2/m) {
             return 0;
         }
     }
