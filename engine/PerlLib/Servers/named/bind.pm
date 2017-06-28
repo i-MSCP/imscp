@@ -215,7 +215,10 @@ sub postaddDmn
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostAddDmn', $data );
     return $rs if $rs;
 
-    if ($self->{'config'}->{'BIND_MODE'} eq 'master' && defined $data->{'ALIAS'}) {
+    if ($main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'}
+        && $self->{'config'}->{'BIND_MODE'} eq 'master'
+        && defined $data->{'ALIAS'}
+    ) {
         # Add DNS record for alternative URL in BASE_SERVER_VHOST zone file
         $rs = $self->addSub(
             {
@@ -328,7 +331,10 @@ sub postdeleteDmn
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostDelDmn', $data );
     return $rs if $rs;
 
-    if ($self->{'config'}->{'BIND_MODE'} eq 'master' && defined $data->{'ALIAS'}) {
+    if ($main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'}
+        && $self->{'config'}->{'BIND_MODE'} eq 'master'
+        && defined $data->{'ALIAS'}
+    ) {
         # Delete DNS record for alternative URL from BASE_SERVER_VHOST zone file
         $rs = $self->deleteSub(
             {
@@ -460,7 +466,10 @@ sub postaddSub
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostAddSub', $data );
     return $rs if $rs;
 
-    if ($self->{'config'}->{'BIND_MODE'} eq 'master' && defined $data->{'ALIAS'}) {
+    if ($main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'}
+        && $self->{'config'}->{'BIND_MODE'} eq 'master'
+        && defined $data->{'ALIAS'}
+    ) {
         # Add DNS record for alternative URL in BASE_SERVER_VHOST zone file
         $rs = $self->addSub(
             {
@@ -581,7 +590,10 @@ sub postdeleteSub
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostDelSub', $data );
     return $rs if $rs;
 
-    if ($self->{'config'}->{'BIND_MODE'} eq 'master' && defined $data->{'ALIAS'}) {
+    if ($main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'}
+        && $self->{'config'}->{'BIND_MODE'} eq 'master'
+        && defined $data->{'ALIAS'}
+    ) {
         # Delete DNS record for alternative URL from BASE_SERVER_VHOST zone file
         $rs = $self->deleteSub(
             {

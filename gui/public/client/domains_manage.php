@@ -71,44 +71,52 @@ function generateDomainsList($tpl)
         list($redirectUrl, $editLink, $edit) = generateDomainRedirectAndEditLink($row['domain_id'], $row['domain_status'], $row['url_forward']);
         $domainName = decode_idna($row['domain_name']);
         $redirectUrl = decode_idna($redirectUrl);
-        $alternateUrlHost = 'dmn' . $row['domain_id'] . '.' . decode_idna($cfg['BASE_SERVER_VHOST']);
-        
+
         if ($row['domain_status'] == 'ok') {
+            if ($cfg['CLIENT_DOMAIN_ALT_URLS']) {
+                $alternateUrlHost = 'dmn' . $row['domain_id'] . '.' . decode_idna($cfg['BASE_SERVER_VHOST']);
+                $tpl->assign(array(
+                    'ALTERNATE_URL'         => tohtml($alternateUrlHost, 'htmlAttr'),
+                    'TR_ALT_URL'            => tohtml(tr('Alt. URL')),
+                    'ALTERNATE_URL_TOOLTIP' => tohtml(tr('Alternate URL to reach your website.'), 'htmlAttr'),
+                ));
+                $tpl->parse('DMN_ALT_URL', 'dmn_alt_url');
+            } else {
+                $tpl->assign('DMN_ALT_URL', '');
+            }
+
             $tpl->assign(array(
-                'DOMAIN_NAME' => tohtml($domainName),
-                'ALTERNATE_URL' => tohtml($alternateUrlHost, 'htmlAttr'),
-                'TR_ALT_URL' => tohtml(tr('Alt. URL')),
-                'ALTERNATE_URL_TOOLTIP' => tohtml(tr('Alternate URL to reach your website.'), 'htmlAttr'),
+                'DOMAIN_NAME'                => tohtml($domainName),
                 'DOMAIN_STATUS_RELOAD_FALSE' => ''
             ));
             $tpl->parse('DOMAIN_STATUS_RELOAD_TRUE', 'domain_status_reload_true');
         } else {
             $tpl->assign(array(
-                'DOMAIN_NAME' => tohtml($domainName),
+                'DOMAIN_NAME'               => tohtml($domainName),
                 'DOMAIN_STATUS_RELOAD_TRUE' => ''
             ));
             $tpl->parse('DOMAIN_STATUS_RELOAD_FALSE', 'domain_status_reload_false');
         }
 
         $tpl->assign(array(
-            'DOMAIN_NAME' => tohtml($domainName),
-            'DOMAIN_MOUNT_POINT' => tohtml(($row['url_forward'] == 'no') ? '/' : tr('N/A')),
+            'DOMAIN_NAME'          => tohtml($domainName),
+            'DOMAIN_MOUNT_POINT'   => tohtml(($row['url_forward'] == 'no') ? '/' : tr('N/A')),
             'DOMAIN_DOCUMENT_ROOT' => tohtml(
                 ($row['url_forward'] == 'no') ? utils_normalizePath($row['document_root']) : tr('N/A')
             ),
-            'DOMAIN_STATUS' => translate_dmn_status($row['domain_status']),
-            'DOMAIN_SSL_STATUS' => is_null($row['ssl_status'])
+            'DOMAIN_STATUS'        => translate_dmn_status($row['domain_status']),
+            'DOMAIN_SSL_STATUS'    => is_null($row['ssl_status'])
                 ? tr('Disabled')
                 : (
                 in_array($row['ssl_status'], array('toadd', 'tochange', 'todelete', 'ok'))
                     ? translate_dmn_status($row['ssl_status'])
                     : '<span style="color: red;font-weight: bold">' . tr('Invalid SSL certificate') . "</span>"
                 ),
-            'DOMAIN_REDIRECT' => tohtml($redirectUrl),
-            'DOMAIN_EDIT_LINK' => $editLink,
-            'DOMAIN_EDIT' => $edit,
-            'CERT_SCRIPT' => tohtml('cert_view.php?domain_id=' . $row['domain_id'] . '&domain_type=dmn', 'htmlAttr'),
-            'VIEW_CERT' => customerHasFeature('ssl') ? tr('Manage SSL certificate') : tr('View SSL certificate'),
+            'DOMAIN_REDIRECT'      => tohtml($redirectUrl),
+            'DOMAIN_EDIT_LINK'     => $editLink,
+            'DOMAIN_EDIT'          => $edit,
+            'CERT_SCRIPT'          => tohtml('cert_view.php?domain_id=' . $row['domain_id'] . '&domain_type=dmn', 'htmlAttr'),
+            'VIEW_CERT'            => customerHasFeature('ssl') ? tr('Manage SSL certificate') : tr('View SSL certificate'),
         ));
         $tpl->parse('DOMAIN_ITEM', '.domain_item');
     }
@@ -204,7 +212,7 @@ function generateDomainAliasesList($tpl)
 
     if (!$stmt->rowCount()) {
         $tpl->assign(array(
-            'ALS_MSG' => tr('You do not have domain aliases.'),
+            'ALS_MSG'  => tr('You do not have domain aliases.'),
             'ALS_LIST' => ''
         ));
         return;
@@ -219,46 +227,55 @@ function generateDomainAliasesList($tpl)
         );
         $alsName = decode_idna($row['alias_name']);
         $redirectUrl = decode_idna($redirectUrl);
-        $alternateUrlHost = 'als' . $row['alias_id'] . '.' . decode_idna($cfg['BASE_SERVER_VHOST']);
 
         if ($isStatusOk) {
+            if ($cfg['CLIENT_DOMAIN_ALT_URLS']) {
+                $alternateUrlHost = 'als' . $row['alias_id'] . '.' . decode_idna($cfg['BASE_SERVER_VHOST']);
+                $tpl->assign(array(
+                    'ALTERNATE_URL'         => tohtml($alternateUrlHost, 'htmlAttr'),
+                    'TR_ALT_URL'            => tohtml(tr('Alt. URL')),
+                    'ALTERNATE_URL_TOOLTIP' => tohtml(tr('Alternate URL to reach your website.'), 'htmlAttr'),
+                ));
+                $tpl->parse('ALS_ALT_URL', 'als_alt_url');
+            } else {
+                $tpl->assign('ALS_ALT_URL', '');
+            }
+
             $tpl->assign(array(
-                'ALS_NAME' => tohtml($alsName),
-                'ALTERNATE_URL' => tohtml($alternateUrlHost, 'htmlAttr'),
-                'ALTERNATE_URL_TOOLTIP' => tohtml(tr('Alternate URL to reach your website.'), 'htmlAttr'),
+                'ALS_NAME'                => tohtml($alsName),
                 'ALS_STATUS_RELOAD_FALSE' => ''
             ));
             $tpl->parse('ALS_STATUS_RELOAD_TRUE', 'als_status_reload_true');
         } else {
             $tpl->assign(array(
-                'ALS_NAME' => tohtml($alsName),
+                'ALS_NAME'               => tohtml($alsName),
                 'ALS_STATUS_RELOAD_TRUE' => ''
             ));
             $tpl->parse('ALS_STATUS_RELOAD_FALSE', 'als_status_reload_false');
         }
 
         $tpl->assign(array(
-            'ALS_NAME' => tohtml($alsName),
-            'ALS_MOUNT_POINT' => tohtml(
+            'ALS_NAME'          => tohtml($alsName),
+            'ALS_MOUNT_POINT'   => tohtml(
                 ($row['url_forward'] == 'no') ? utils_normalizePath($row['alias_mount']) : tr('N/A')
             ),
             'ALS_DOCUMENT_ROOT' => tohtml(
                 ($row['url_forward'] == 'no') ? utils_normalizePath($row['alias_document_root']) : tr('N/A')
             ),
-            'ALS_STATUS' => translate_dmn_status($row['alias_status']),
-            'ALS_SSL_STATUS' => is_null($row['ssl_status'])
+            'ALS_STATUS'        => translate_dmn_status($row['alias_status']),
+            'ALS_SSL_STATUS'    => is_null($row['ssl_status'])
                 ? tr('Disabled')
                 : (
                 in_array($row['ssl_status'], array('toadd', 'tochange', 'todelete', 'ok'))
                     ? translate_dmn_status($row['ssl_status'])
                     : '<span style="color: red;font-weight: bold">' . tr('Invalid SSL certificate') . "</span>"
                 ),
-            'ALS_REDIRECT' => tohtml($redirectUrl),
-            'ALS_EDIT_LINK' => $editLink,
-            'ALS_EDIT' => $edit,
-            'ALS_ACTION' => $action,
-            'CERT_SCRIPT' => $certScript,
-            'VIEW_CERT' => $certText,
+            'ALS_REDIRECT'      => tohtml($redirectUrl),
+            'ALS_EDIT_LINK'     => $editLink,
+            'ALS_EDIT'          => $edit,
+            'ALS_ACTION'        => $action,
+            'CERT_SCRIPT'       => $certScript,
+            'VIEW_CERT'         => $certText,
             'ALS_ACTION_SCRIPT' => $actionScript
         ));
         $tpl->parse('ALS_ITEM', '.als_item');
@@ -384,7 +401,7 @@ function generateSubdomainsList($tpl)
 
     if (!$stmt1->rowCount() && !$stmt2->rowCount()) {
         $tpl->assign(array(
-            'SUB_MSG' => tr('You do not have subdomains.'),
+            'SUB_MSG'  => tr('You do not have subdomains.'),
             'SUB_LIST' => ''
         ));
         return;
@@ -401,49 +418,57 @@ function generateSubdomainsList($tpl)
         $domainName = decode_idna($row['domain_name']);
         $subName = decode_idna($row['subdomain_name']);
         $redirectUrl = decode_idna($redirectUrl);
-        $alternateUrlHost = 'sub'.$row['subdomain_id'] . '.' . decode_idna($cfg['BASE_SERVER_VHOST']);
 
         if ($isStatusOk) {
+            if ($cfg['CLIENT_DOMAIN_ALT_URLS']) {
+                $alternateUrlHost = 'sub' . $row['subdomain_id'] . '.' . decode_idna($cfg['BASE_SERVER_VHOST']);
+                $tpl->assign(array(
+                    'ALTERNATE_URL'         => tohtml($alternateUrlHost, 'htmlAttr'),
+                    'TR_ALT_URL'            => tohtml(tr('Alt. URL')),
+                    'ALTERNATE_URL_TOOLTIP' => tohtml(tr('Alternate URL to reach your website.'), 'htmlAttr'),
+                ));
+                $tpl->parse('SUB_ALT_URL', 'sub_alt_url');
+            } else {
+                $tpl->assign('SUB_ALT_URL', '');
+            }
+
             $tpl->assign(array(
-                'SUB_NAME' => tohtml($subName),
-                'SUB_ALIAS_NAME' => tohtml($domainName),
-                'ALTERNATE_URL' => tohtml($alternateUrlHost, 'htmlAttr'),
-                'TR_ALT_URL' => tohtml(tr('Alt. URL')),
-                'ALTERNATE_URL_TOOLTIP' => tohtml(tr('Alternate URL to reach your website.'), 'htmlAttr'),
+                'SUB_NAME'                => tohtml($subName),
+                'SUB_ALIAS_NAME'          => tohtml($domainName),
                 'SUB_STATUS_RELOAD_FALSE' => ''
             ));
             $tpl->parse('SUB_STATUS_RELOAD_TRUE', 'sub_status_reload_true');
         } else {
             $tpl->assign(array(
-                'SUB_NAME' => tohtml($subName),
-                'SUB_ALIAS_NAME' => tohtml($domainName),
+                'SUB_NAME'               => tohtml($subName),
+                'SUB_ALIAS_NAME'         => tohtml($domainName),
                 'SUB_STATUS_RELOAD_TRUE' => ''
             ));
             $tpl->parse('SUB_STATUS_RELOAD_FALSE', 'sub_status_reload_false');
         }
 
         $tpl->assign(array(
-            'SUB_MOUNT_POINT' => tohtml(
+            'SUB_MOUNT_POINT'   => tohtml(
                 ($row['subdomain_url_forward'] == 'no') ? utils_normalizePath($row['subdomain_mount']) : tr('N/A')
             ),
             'SUB_DOCUMENT_ROOT' => tohtml(
                 ($row['subdomain_url_forward'] == 'no')
                     ? utils_normalizePath($row['subdomain_document_root']) : tr('N/A')
             ),
-            'SUB_REDIRECT' => $redirectUrl,
-            'SUB_STATUS' => translate_dmn_status($row['subdomain_status']),
-            'SUB_SSL_STATUS' => is_null($row['ssl_status'])
+            'SUB_REDIRECT'      => $redirectUrl,
+            'SUB_STATUS'        => translate_dmn_status($row['subdomain_status']),
+            'SUB_SSL_STATUS'    => is_null($row['ssl_status'])
                 ? tr('Disabled')
                 : (
                 in_array($row['ssl_status'], array('toadd', 'tochange', 'todelete', 'ok'))
                     ? translate_dmn_status($row['ssl_status'])
                     : '<span style="color: red;font-weight: bold">' . tr('Invalid SSL certificate') . "</span>"
                 ),
-            'SUB_EDIT_LINK' => $editLink,
-            'SUB_EDIT' => $edit,
-            'CERT_SCRIPT' => $certScript,
-            'VIEW_CERT' => $certText,
-            'SUB_ACTION' => $action,
+            'SUB_EDIT_LINK'     => $editLink,
+            'SUB_EDIT'          => $edit,
+            'CERT_SCRIPT'       => $certScript,
+            'VIEW_CERT'         => $certText,
+            'SUB_ACTION'        => $action,
             'SUB_ACTION_SCRIPT' => $actionScript
         ));
         $tpl->parse('SUB_ITEM', '.sub_item');
@@ -459,30 +484,38 @@ function generateSubdomainsList($tpl)
         $alsName = decode_idna($row['alias_name']);
         $name = decode_idna($row['subdomain_alias_name']);
         $redirectUrl = decode_idna($redirectUrl);
-        $alternateUrlHost = 'alssub' . $row['subdomain_alias_id'] . '.' . decode_idna($cfg['BASE_SERVER_VHOST']);
 
         if ($isStatusOk) {
+            if ($cfg['CLIENT_DOMAIN_ALT_URLS']) {
+                $alternateUrlHost = 'alssub' . $row['subdomain_alias_id'] . '.' . decode_idna($cfg['BASE_SERVER_VHOST']);
+                $tpl->assign(array(
+                    'ALTERNATE_URL'         => tohtml($alternateUrlHost, 'htmlAttr'),
+                    'TR_ALT_URL'            => tohtml(tr('Alt. URL')),
+                    'ALTERNATE_URL_TOOLTIP' => tohtml(tr('Alternate URL to reach your website.'), 'htmlAttr'),
+                ));
+                $tpl->parse('SUB_ALT_URL', 'sub_alt_url');
+            } else {
+                $tpl->assign('SUB_ALT_URL', '');
+            }
+
             $tpl->assign(array(
-                'SUB_NAME' => tohtml($name),
-                'SUB_ALIAS_NAME' => tohtml($alsName),
-                'ALTERNATE_URL' => tohtml($alternateUrlHost, 'htmlAttr'),
-                'TR_ALT_URL' => tohtml(tr('Alt. URL')),
-                'ALTERNATE_URL_TOOLTIP' => tohtml(tr('Alternate URL to reach your website.'), 'htmlAttr'),
+                'SUB_NAME'                => tohtml($name),
+                'SUB_ALIAS_NAME'          => tohtml($alsName),
                 'SUB_STATUS_RELOAD_FALSE' => ''
             ));
             $tpl->parse('SUB_STATUS_RELOAD_TRUE', 'sub_status_reload_true');
         } else {
             $tpl->assign(array(
-                'SUB_NAME' => tohtml($name),
-                'SUB_ALIAS_NAME' => tohtml($alsName),
+                'SUB_NAME'               => tohtml($name),
+                'SUB_ALIAS_NAME'         => tohtml($alsName),
                 'SUB_STATUS_RELOAD_TRUE' => ''
             ));
             $tpl->parse('SUB_STATUS_RELOAD_FALSE', 'sub_status_reload_false');
         }
 
         $tpl->assign(array(
-            'SUB_NAME' => tohtml($name),
-            'SUB_MOUNT_POINT' => tohtml(
+            'SUB_NAME'          => tohtml($name),
+            'SUB_MOUNT_POINT'   => tohtml(
                 ($row['subdomain_alias_url_forward'] == 'no')
                     ? utils_normalizePath($row['subdomain_alias_mount']) : tr('N/A')
             ),
@@ -490,23 +523,22 @@ function generateSubdomainsList($tpl)
                 ($row['subdomain_alias_url_forward'] == 'no')
                     ? utils_normalizePath($row['subdomain_alias_document_root']) : tr('N/A')
             ),
-            'SUB_REDIRECT' => $redirectUrl,
-            'SUB_STATUS' => translate_dmn_status($row['subdomain_alias_status']),
-            'SUB_SSL_STATUS' => is_null($row['ssl_status'])
+            'SUB_REDIRECT'      => $redirectUrl,
+            'SUB_STATUS'        => translate_dmn_status($row['subdomain_alias_status']),
+            'SUB_SSL_STATUS'    => is_null($row['ssl_status'])
                 ? tr('Disabled')
                 : (
                 in_array($row['ssl_status'], array('toadd', 'tochange', 'todelete', 'ok'))
                     ? translate_dmn_status($row['ssl_status'])
                     : '<span style="color: red;font-weight: bold">' . tr('Invalid SSL certificate') . "</span>"
                 ),
-            'SUB_EDIT_LINK' => $editLink,
-            'SUB_EDIT' => $edit,
-            'CERT_SCRIPT' => $certScript,
-            'VIEW_CERT' => $certText,
-            'SUB_ACTION' => $action,
+            'SUB_EDIT_LINK'     => $editLink,
+            'SUB_EDIT'          => $edit,
+            'CERT_SCRIPT'       => $certScript,
+            'VIEW_CERT'         => $certText,
+            'SUB_ACTION'        => $action,
             'SUB_ACTION_SCRIPT' => $actionScript
         ));
-
         $tpl->parse('SUB_ITEM', '.sub_item');
     }
 
@@ -570,11 +602,13 @@ function generateCustomDnsRecordsList($tpl)
             if ($row['owned_by'] !== 'custom_dns_feature') {
                 $tpl->assign('DNS_DELETE_LINK', '');
             } else {
-                list($actionDelete, $actionScriptDelete) = generateCustomDnsRecordAction('Delete', $row['domain_dns_id'], $row['domain_dns_status']);
+                list($actionDelete, $actionScriptDelete) = generateCustomDnsRecordAction(
+                    'Delete', $row['domain_dns_id'], $row['domain_dns_status']
+                );
                 $tpl->assign(array(
                     'DNS_ACTION_SCRIPT_DELETE' => $actionScriptDelete,
-                    'DNS_ACTION_DELETE' => $actionDelete,
-                    'DNS_TYPE_RECORD' => tr("%s record", $row['domain_type'])
+                    'DNS_ACTION_DELETE'        => $actionDelete,
+                    'DNS_TYPE_RECORD'          => tr("%s record", $row['domain_type'])
                 ));
                 $tpl->parse('DNS_DELETE_LINK', '.dns_delete_link');
             }
@@ -589,19 +623,18 @@ function generateCustomDnsRecordsList($tpl)
             $status = translate_dmn_status($row['domain_dns_status'], true);
             $row['domain_text'] = decode_idna(stripcslashes(trim($row['domain_text'], '"')));
             $tpl->assign(array(
-                'DNS_DOMAIN' => tohtml(decode_idna($row['zone_name'])),
-                'DNS_NAME' => tohtml(decode_idna($dnsName)),
-                'DNS_TTL' => tohtml($ttl),
-                'DNS_CLASS' => tohtml($row['domain_class']),
-                'DNS_TYPE' => tohtml($row['domain_type']),
-                'LONG_DNS_DATA' => tohtml($row['domain_text'], 'htmlAttr'),
-                'SHORT_DNS_DATA' => strlen($row['domain_text']) > 15 ? substr($row['domain_text'], 0, 15) . ' ...' : $row['domain_text'],
-                'LONG_DNS_STATUS' => tohtml(nl2br($status), 'htmlAttr'),
-                'SHORT_DNS_STATUS' => strlen($status) > 15 ? substr($status, 0, 15) . ' ...' : $status,
+                'DNS_DOMAIN'             => tohtml(decode_idna($row['zone_name'])),
+                'DNS_NAME'               => tohtml(decode_idna($dnsName)),
+                'DNS_TTL'                => tohtml($ttl),
+                'DNS_CLASS'              => tohtml($row['domain_class']),
+                'DNS_TYPE'               => tohtml($row['domain_type']),
+                'LONG_DNS_DATA'          => tohtml($row['domain_text'], 'htmlAttr'),
+                'SHORT_DNS_DATA'         => strlen($row['domain_text']) > 15 ? substr($row['domain_text'], 0, 15) . ' ...' : $row['domain_text'],
+                'LONG_DNS_STATUS'        => tohtml(nl2br($status), 'htmlAttr'),
+                'SHORT_DNS_STATUS'       => strlen($status) > 15 ? substr($status, 0, 15) . ' ...' : $status,
                 'DNS_ACTION_SCRIPT_EDIT' => $actionScriptEdit,
-                'DNS_ACTION_EDIT' => $actionEdit
+                'DNS_ACTION_EDIT'        => $actionEdit
             ));
-
             $tpl->parse('DNS_ITEM', '.dns_item');
             $tpl->assign('DNS_DELETE_LINK', '');
         }
@@ -611,7 +644,7 @@ function generateCustomDnsRecordsList($tpl)
     } else {
         if (customerHasFeature('custom_dns_records')) {
             $tpl->assign(array(
-                'DNS_MSG' => tr('You do not have DNS resource records.'),
+                'DNS_MSG'  => tr('You do not have DNS resource records.'),
                 'DNS_LIST' => ''
             ));
         } else {
@@ -631,55 +664,57 @@ check_login('user');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'client/domains_manage.tpl',
-    'page_message' => 'layout',
-    'domain_list' => 'page',
-    'domain_item' => 'domain_list',
-    'domain_status_reload_true' => 'domain_item',
+    'layout'                     => 'shared/layouts/ui.tpl',
+    'page'                       => 'client/domains_manage.tpl',
+    'page_message'               => 'layout',
+    'domain_list'                => 'page',
+    'domain_item'                => 'domain_list',
+    'domain_status_reload_true'  => 'domain_item',
+    'dmn_alt_url'                => 'domain_status_reload_true',
     'domain_status_reload_false' => 'domain_item',
-    'domain_aliases_block' => 'page',
-    'als_message' => 'domain_aliases_block',
-    'als_list' => 'domain_aliases_block',
-    'als_item' => 'als_list',
-    'als_status_reload_true' => 'als_item',
-    'als_status_reload_false' => 'als_item',
-    'subdomains_block' => 'page',
-    'sub_message' => 'subdomains_block',
-    'sub_list' => 'subdomains_block',
-    'sub_item' => 'sub_list',
-    'sub_status_reload_true' => 'sub_item',
-    'sub_status_reload_false' => 'sub_item',
-    'custom_dns_records_block' => 'page',
-    'dns_message' => 'custom_dns_records_block',
-    'dns_list' => 'custom_dns_records_block',
-    'dns_item' => 'dns_list',
-    'dns_edit_link' => 'dns_item',
-    'dns_delete_link' => 'dns_item'
+    'domain_aliases_block'       => 'page',
+    'als_message'                => 'domain_aliases_block',
+    'als_list'                   => 'domain_aliases_block',
+    'als_item'                   => 'als_list',
+    'als_status_reload_true'     => 'als_item',
+    'als_alt_url'                => 'als_status_reload_true',
+    'als_status_reload_false'    => 'als_item',
+    'subdomains_block'           => 'page',
+    'sub_message'                => 'subdomains_block',
+    'sub_list'                   => 'subdomains_block',
+    'sub_item'                   => 'sub_list',
+    'sub_status_reload_true'     => 'sub_item',
+    'sub_alt_url'                => 'sub_status_reload_true',
+    'sub_status_reload_false'    => 'sub_item',
+    'custom_dns_records_block'   => 'page',
+    'dns_message'                => 'custom_dns_records_block',
+    'dns_list'                   => 'custom_dns_records_block',
+    'dns_item'                   => 'dns_list',
+    'dns_edit_link'              => 'dns_item',
+    'dns_delete_link'            => 'dns_item'
 ));
-
 $tpl->assign(array(
-    'TR_PAGE_TITLE' => tr('Client / Domains'),
-    'TR_DOMAINS' => tr('Domains'),
-    'TR_ZONE' => tr('Zone'),
-    'TR_TTL' => tr('TTL'),
+    'TR_PAGE_TITLE'     => tr('Client / Domains'),
+    'TR_DOMAINS'        => tr('Domains'),
+    'TR_ZONE'           => tr('Zone'),
+    'TR_TTL'            => tr('TTL'),
     'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
-    'TR_SUBDOMAINS' => tr('Subdomains'),
-    'TR_NAME' => tr('Name'),
-    'TR_MOUNT_POINT' => tr('Mount point'),
-    'TR_DOCUMENT_ROOT' => tr('Document root'),
-    'TR_REDIRECT' => tr('Redirect'),
-    'TR_STATUS' => tr('Status'),
-    'TR_SSL_STATUS' => tr('SSL status'),
-    'TR_ACTIONS' => tr('Actions'),
-    'TR_DNS' => tr('DNS resource records'),
-    'TR_DNS_NAME' => tr('Name'),
-    'TR_DNS_CLASS' => tr('Class'),
-    'TR_DNS_TYPE' => tr('Type'),
-    'TR_DNS_STATUS' => tr('Status'),
-    'TR_DNS_ACTION' => tr('Actions'),
-    'TR_DNS_DATA' => tr('Record data'),
-    'TR_DOMAIN_NAME' => tr('Domain')
+    'TR_SUBDOMAINS'     => tr('Subdomains'),
+    'TR_NAME'           => tr('Name'),
+    'TR_MOUNT_POINT'    => tr('Mount point'),
+    'TR_DOCUMENT_ROOT'  => tr('Document root'),
+    'TR_REDIRECT'       => tr('Redirect'),
+    'TR_STATUS'         => tr('Status'),
+    'TR_SSL_STATUS'     => tr('SSL status'),
+    'TR_ACTIONS'        => tr('Actions'),
+    'TR_DNS'            => tr('DNS resource records'),
+    'TR_DNS_NAME'       => tr('Name'),
+    'TR_DNS_CLASS'      => tr('Class'),
+    'TR_DNS_TYPE'       => tr('Type'),
+    'TR_DNS_STATUS'     => tr('Status'),
+    'TR_DNS_ACTION'     => tr('Actions'),
+    'TR_DNS_DATA'       => tr('Record data'),
+    'TR_DOMAIN_NAME'    => tr('Domain')
 ));
 
 iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
@@ -701,5 +736,3 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 $tpl->prnt();
-
-unsetMessages();

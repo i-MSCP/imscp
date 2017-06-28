@@ -46,7 +46,9 @@
         <!-- BDP: domain_status_reload_true -->
         <td>
             <a href="http://{DOMAIN_NAME}/" class="icon i_domain_icon" target="_blank" title="{DOMAIN_NAME}">{DOMAIN_NAME}</a>
+            <!-- BDP: dmn_alt_url -->
             <a href="http://{ALTERNATE_URL}" target="_blank" title="{ALTERNATE_URL_TOOLTIP}"><small><strong>[{TR_ALT_URL}]</strong></small></a>
+            <!-- EDP: dmn_alt_url -->
         </td>
         <!-- EDP: domain_status_reload_true -->
         <!-- BDP: domain_status_reload_false -->
@@ -93,7 +95,9 @@
         <!-- BDP: als_status_reload_true -->
         <td>
             <a href="http://{ALS_NAME}/" class="icon i_domain_icon" target="_blank" title="{ALS_NAME}">{ALS_NAME}</a>
+            <!-- BDP: als_alt_url -->
             <a href="http://{ALTERNATE_URL}" target="_blank" title="{ALTERNATE_URL_TOOLTIP}"><small><strong>[{TR_ALT_URL}]</strong></small></a>
+            <!-- EDP: als_alt_url -->
         </td>
         <!-- EDP: als_status_reload_true -->
         <!-- BDP: als_status_reload_false -->
@@ -142,7 +146,9 @@
         <!-- BDP: sub_status_reload_true -->
         <td>
             <a href="http://{SUB_NAME}.{SUB_ALIAS_NAME}/" class="icon i_domain_icon" target="_blank" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</a>
+            <!-- BDP: sub_alt_url -->
             <a href="http://{ALTERNATE_URL}" target="_blank" title="{ALTERNATE_URL_TOOLTIP}"><small><strong>[{TR_ALT_URL}]</strong></small></a>
+            <!-- EDP: sub_alt_url -->
         </td>
         <!-- EDP: sub_status_reload_true -->
         <!-- BDP: sub_status_reload_false -->

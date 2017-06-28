@@ -343,8 +343,11 @@ sub disableDmn
     $self->setData( $data );
 
     my $net = iMSCP::Net->getInstance( );
+    my @domainIPs = (
+        $data->{'DOMAIN_IP'},
+        ($main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} ? $data->{'BASE_SERVER_IP'} : ())
+    );
 
-    my @domainIPs = ($data->{'BASE_SERVER_IP'}, $data->{'DOMAIN_IP'});
     $rs = $self->{'eventManager'}->trigger( 'onAddHttpdVhostIps', $data, \@domainIPs );
     return $rs if $rs;
 
@@ -353,13 +356,15 @@ sub disableDmn
 
     $self->setData(
         {
-            BASE_SERVER_VHOST => $data->{'BASE_SERVER_VHOST'},
-            DOMAIN_IPS        => join(
+            DOMAIN_IPS      => join(
                 ' ', map { (($_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4') ? $_ : "[$_]").':80' } @domainIPs
             ),
-            HTTP_URI_SCHEME   => 'http://',
-            HTTPD_LOG_DIR     => $self->{'config'}->{'HTTPD_LOG_DIR'},
-            USER_WEB_DIR      => $main::imscpConfig{'USER_WEB_DIR'}
+            HTTP_URI_SCHEME => 'http://',
+            HTTPD_LOG_DIR   => $self->{'config'}->{'HTTPD_LOG_DIR'},
+            USER_WEB_DIR    => $main::imscpConfig{'USER_WEB_DIR'},
+            SERVER_ALIASES  => "www.$data->{'DOMAIN_NAME'}".($main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'}
+                ? " $data->{'ALIAS'}.$main::imscpConfig{'BASE_SERVER_VHOST'}'" : ''
+            )
         }
     );
 
@@ -1489,8 +1494,11 @@ sub _addCfg
 
     my $net = iMSCP::Net->getInstance( );
     my $phpVersion = $self->{'phpConfig'}->{'PHP_VERSION'};
+    my @domainIPs = (
+        $data->{'DOMAIN_IP'},
+        ($main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} ? $data->{'BASE_SERVER_IP'} : ())
+    );
 
-    my @domainIPs = ($data->{'BASE_SERVER_IP'}, $data->{'DOMAIN_IP'});
     $rs = $self->{'eventManager'}->trigger( 'onAddHttpdVhostIps', $data, \@domainIPs );
     return $rs if $rs;
 
@@ -1499,20 +1507,22 @@ sub _addCfg
 
     $self->setData(
         {
-            BASE_SERVER_VHOST       => $data->{'BASE_SERVER_VHOST'},
-            DOMAIN_IPS              => join(
+            DOMAIN_IPS             => join(
                 ' ', map { (($_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4') ? $_ : "[$_]").':80' } @domainIPs
             ),
-            HTTPD_CUSTOM_SITES_DIR  => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
-            HTTPD_LOG_DIR           => $self->{'config'}->{'HTTPD_LOG_DIR'},
-            PHP_VERSION             => $phpVersion,
-            POOL_NAME               => $confLevel,
-            PROXY_FCGI_PATH         => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
+            HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
+            HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
+            PHP_VERSION            => $phpVersion,
+            POOL_NAME              => $confLevel,
+            PROXY_FCGI_PATH        => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
                 ? "unix:/run/php/php$phpVersion-fpm-$confLevel.sock|"
                 : '',
-            PROXY_FCGI_URL          => 'fcgi://'.($self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
+            PROXY_FCGI_URL         => 'fcgi://'.($self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
                 ? $confLevel
-                : '127.0.0.1:'.($self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'} + $data->{'PHP_FPM_LISTEN_PORT'})
+                : '127.0.0.1:'.($self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'}+$data->{'PHP_FPM_LISTEN_PORT'})
+            ),
+            SERVER_ALIASES         => "www.$data->{'DOMAIN_NAME'}".($main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'}
+                ? " $data->{'ALIAS'}.$main::imscpConfig{'BASE_SERVER_VHOST'}" : ''
             )
         }
     );

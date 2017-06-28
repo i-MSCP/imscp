@@ -5,6 +5,7 @@ Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
 CONFIG
+    Enhancement: Alternative URLs for client domains can now be disabled - see the errata file for further details
     Updated: DNS template files (Bind9)
 
 BACKEND
