@@ -364,9 +364,9 @@ sub _init
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'repositorySections'} = [ 'main', 'contrib', 'non-free' ];
     $self->{'preRequiredPackages'} = [
-        'binutils', 'debconf-utils', 'dialog', 'libbit-vector-perl', 'libclass-insideout-perl', 'lsb-release',
-        'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'wget',
-        'liblchown-perl', 'apt-transport-https', 'policyrcd-script-zg2', 'libclone-perl'
+        'binutils', 'debconf-utils', 'dialog', 'dirmngr', 'libbit-vector-perl', 'libclass-insideout-perl',
+        'lsb-release', 'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl',
+        'wget', 'liblchown-perl', 'apt-transport-https', 'policyrcd-script-zg2', 'libclone-perl'
     ];
     $self->{'aptRepositoriesToRemove'} = [ ];
     $self->{'aptRepositoriesToAdd'} = [ ];
@@ -766,8 +766,9 @@ EOF
         }
 
         if (@cmd) {
-            $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
-            debug( $stdout ) if $stdout;
+            # Don't attempt to parse STDOUT to avoid following warning from apt-key:
+            #  Warning: apt-key output should not be parsed (stdout is not a terminal)
+            $rs = execute( "@cmd", undef, \ my $stderr );
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
         }

@@ -14,6 +14,7 @@ BACKEND
     Removed: Unix user prefix from alternative URLs
 
 DISTRIBUTIONS
+    Added: dirmngr package in list of pre-required packages as it is needed by gnupg2 for network access
     Fixed: libmysqlcient18 package not available for MySQL 5.7 server community (Debian 9/Stretch)
 
 FRONTEND
@@ -33,6 +34,8 @@ PLUGINS
 
 INSTALLER
     Fixed: apache2_postinst.sh: Raised error if there is a version mismatch between installed package and source package
+    Fixed: apt-key output should not be parsed (stdout is not a terminal)
+    Fixed: gpg: failed to start the dirmngr '/usr/bin/dirmngr': No such file or directory
     Fixed: Make sure that LOGROTATE(8) configuration files are copied with expected ownership and permissions
 
 ------------------------------------------------------------------------------------------------------------------------
