@@ -352,15 +352,15 @@ sub _makeDirs
     my @directories = (
         [
             $self->{'config'}->{'BIND_DB_MASTER_DIR'},
-            $main::imscpConfig{'ROOT_USER'},
+            $self->{'config'}->{'BIND_USER'},
             $self->{'config'}->{'BIND_GROUP'},
-            0770
+            02750
         ],
         [
             $self->{'config'}->{'BIND_DB_SLAVE_DIR'},
-            $main::imscpConfig{'ROOT_USER'},
+            $self->{'config'}->{'BIND_USER'},
             $self->{'config'}->{'BIND_GROUP'},
-            0770
+            02750
         ]
     );
 
@@ -382,7 +382,7 @@ sub _makeDirs
         iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_MASTER_DIR'} )->clear( );
 
         if ($self->{'config'}->{'BIND_MODE'} ne 'slave') {
-            return iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_SLAVE_DIR'} )->clear( );
+            iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_SLAVE_DIR'} )->clear( );
         }
     };
     if($@) {
@@ -487,7 +487,7 @@ sub _buildConf
         $rs = $file->set( $tplContent );
         $rs ||= $file->save( );
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-        $rs ||= $file->mode( 0644 );
+        $rs ||= $file->mode( 0640 );
         $rs ||= $file->copyFile( $self->{'config'}->{'BIND_OPTIONS_CONF_FILE'} );
         return $rs if $rs;
     }
@@ -517,7 +517,7 @@ sub _buildConf
         $rs = $file->set( $tplContent );
         $rs ||= $file->save( );
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-        $rs ||= $file->mode( 0644 );
+        $rs ||= $file->mode( 0640 );
         $rs ||= $file->copyFile( $self->{'config'}->{'BIND_CONF_FILE'} );
         return $rs if $rs;
     }
@@ -543,7 +543,7 @@ sub _buildConf
         $rs = $file->set( $tplContent );
         $rs ||= $file->save( );
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-        $rs ||= $file->mode( 0644 );
+        $rs ||= $file->mode( 0640 );
         $rs ||= $file->copyFile( $self->{'config'}->{'BIND_LOCAL_CONF_FILE'} );
         return $rs if $rs;
     }

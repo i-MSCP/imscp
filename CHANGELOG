@@ -5,6 +5,7 @@ Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
 CONFIG
+    Added: `BIND_DB_ROOT_DIR' configuration parameter (Bind9)
     Enhancement: Alternative URLs for client domains can now be disabled - see the errata file for further details
     Updated: Zone template files (Bind9)
     Updated: Vhost template files (Apache2)
@@ -28,7 +29,8 @@ SERVERS
     Changed: DNS records for alternative URLs are now added as subdomain DNS record without www and ftp records (Bind9)
     Fixed: Calling createUser()/dropUser() with `RaiseError' flag set to 1 raise an error (SQL server impl.)
     Fixed: Couldn't switch from external to local DNS server 
-    Fixed: Never process the same zone twice for SOA addition (Servers::named)
+    Fixed: Never process the same zone twice for SOA addition (Servers::named::bind)
+    Review: Engine permissions (Servers::named::bind)
 
 PLUGINS
     Fixed: PDO exception not throw when executing multiple statements (Database migrations - https://bugs.php.net/bug.php?id=61613)

@@ -6,6 +6,7 @@ BIND_CONF_DEFAULT_FILE = /etc/default/bind9
 BIND_CONF_FILE = /etc/bind/named.conf
 BIND_LOCAL_CONF_FILE = /etc/bind/named.conf.local
 BIND_OPTIONS_CONF_FILE = /etc/bind/named.conf.options
+BIND_DB_ROOT_DIR = /var/cache/bind
 BIND_DB_MASTER_DIR = /var/cache/bind/imscp/master
 BIND_DB_SLAVE_DIR = /var/cache/bind/imscp/slave
 NAMED_SNAME = bind9

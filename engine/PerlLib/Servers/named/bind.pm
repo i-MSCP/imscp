@@ -37,6 +37,7 @@ use iMSCP::TemplateParser;
 use iMSCP::Net;
 use iMSCP::Rights;
 use iMSCP::Service;
+use iMSCP::Umask;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -166,6 +167,26 @@ sub setEnginePermissions
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedSetEnginePermissions' );
+    $rs ||= setRights(
+        $self->{'config'}->{'BIND_CONF_DIR'},
+        {
+            user      => $main::imscpConfig{'ROOT_USER'},
+            group     => $self->{'config'}->{'BIND_GROUP'},
+            dirmode   => '2750',
+            filemode  => '0640',
+            recursive => 1
+        }
+    );
+    $rs ||= setRights(
+        $self->{'config'}->{'BIND_DB_ROOT_DIR'},
+        {
+            user      => $self->{'config'}->{'BIND_USER'},
+            group     => $self->{'config'}->{'BIND_GROUP'},
+            dirmode   => '2750',
+            filemode  => '0640',
+            recursive => 1
+        }
+    );
     $rs ||= $self->{'eventManager'}->trigger( 'afterNamedSetEnginePermissions' );
 }
 
@@ -219,7 +240,6 @@ sub postaddDmn
         && $self->{'config'}->{'BIND_MODE'} eq 'master'
         && defined $data->{'ALIAS'}
     ) {
-        # Add DNS record for alternative URL in BASE_SERVER_VHOST zone file
         $rs = $self->addSub(
             {
                 PARENT_DOMAIN_NAME    => $main::imscpConfig{'BASE_SERVER_VHOST'},
@@ -335,7 +355,6 @@ sub postdeleteDmn
         && $self->{'config'}->{'BIND_MODE'} eq 'master'
         && defined $data->{'ALIAS'}
     ) {
-        # Delete DNS record for alternative URL from BASE_SERVER_VHOST zone file
         $rs = $self->deleteSub(
             {
                 PARENT_DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
@@ -388,7 +407,10 @@ sub addSub
         }
     }
 
-    $rs = $self->_updateSOAserialNumber( $data->{'PARENT_DOMAIN_NAME'}, \$wrkDbFileContent, \$wrkDbFileContent );
+    unless ($self->{'serials'}->{$data->{'PARENT_DOMAIN_NAME'}}) {
+        $rs = $self->_updateSOAserialNumber( $data->{'PARENT_DOMAIN_NAME'}, \$wrkDbFileContent, \$wrkDbFileContent );
+    }
+
     $rs ||= $self->{'eventManager'}->trigger( 'beforeNamedAddSub', \$wrkDbFileContent, \$subEntry, $data );
     return $rs if $rs;
 
@@ -430,12 +452,15 @@ sub addSub
         $subEntry
     );
 
+    # Remove previous entry if any
     $wrkDbFileContent = replaceBloc(
         "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
         "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
         '',
         $wrkDbFileContent
     );
+
+    # Add new entry
     $wrkDbFileContent = replaceBloc(
         "; sub [{SUBDOMAIN_NAME}] entry BEGIN\n",
         "; sub [{SUBDOMAIN_NAME}] entry ENDING\n",
@@ -470,7 +495,6 @@ sub postaddSub
         && $self->{'config'}->{'BIND_MODE'} eq 'master'
         && defined $data->{'ALIAS'}
     ) {
-        # Add DNS record for alternative URL in BASE_SERVER_VHOST zone file
         $rs = $self->addSub(
             {
                 PARENT_DOMAIN_NAME    => $main::imscpConfig{'BASE_SERVER_VHOST'},
@@ -557,8 +581,12 @@ sub deleteSub
         return 1;
     }
 
-    my $rs = $self->_updateSOAserialNumber( $data->{'PARENT_DOMAIN_NAME'}, \$wrkDbFileContent, \$wrkDbFileContent );
-    $rs ||= $self->{'eventManager'}->trigger( 'beforeNamedDelSub', \$wrkDbFileContent, $data );
+    unless ($self->{'serials'}->{$data->{'PARENT_DOMAIN_NAME'}}) {
+        my $rs = $self->_updateSOAserialNumber( $data->{'PARENT_DOMAIN_NAME'}, \$wrkDbFileContent, \$wrkDbFileContent );
+        return $rs if $rs;
+    }
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedDelSub', \$wrkDbFileContent, $data );
     return $rs if $rs;
 
     $wrkDbFileContent = replaceBloc(
@@ -594,7 +622,6 @@ sub postdeleteSub
         && $self->{'config'}->{'BIND_MODE'} eq 'master'
         && defined $data->{'ALIAS'}
     ) {
-        # Delete DNS record for alternative URL from BASE_SERVER_VHOST zone file
         $rs = $self->deleteSub(
             {
                 PARENT_DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
@@ -636,14 +663,16 @@ sub addCustomDNS
         return 1;
     }
 
-    my $rs = $self->_updateSOAserialNumber( $data->{'DOMAIN_NAME'}, \$wrkDbFileContent, \$wrkDbFileContent );
-    $rs ||= $self->{'eventManager'}->trigger( 'beforeNamedAddCustomDNS', \$wrkDbFileContent, $data );
+    unless ($self->{'serials'}->{$data->{'DOMAIN_NAME'}}) {
+        my $rs = $self->_updateSOAserialNumber( $data->{'DOMAIN_NAME'}, \$wrkDbFileContent, \$wrkDbFileContent );
+        return $rs if $rs;
+    }
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedAddCustomDNS', \$wrkDbFileContent, $data );
     return $rs if $rs;
 
     my @customDNS = ( );
-    for (@{$data->{'DNS_RECORDS'}}) {
-        push @customDNS, join "\t", @{$_};
-    }
+    push @customDNS, join "\t", @{$_} for @{$data->{'DNS_RECORDS'}};
 
     my $fh;
     unless (open( $fh, '<', \$wrkDbFileContent )) {
@@ -892,7 +921,7 @@ sub _addDmnConfig
     $rs ||= $cfgFile->set( $cfgWrkFileContent );
     $rs ||= $cfgFile->save( );
     $rs ||= $cfgFile->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
-    $rs ||= $cfgFile->mode( 0644 );
+    $rs ||= $cfgFile->mode( 0640 );
     $rs ||= $cfgFile->copyFile( "$cfgFileDir$cfgFileName" );
 }
 
@@ -939,7 +968,7 @@ sub _deleteDmnConfig
     $rs ||= $cfgFile->set( $cfgWrkFileContent );
     $rs ||= $cfgFile->save( );
     $rs ||= $cfgFile->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
-    $rs ||= $cfgFile->mode( 0644 );
+    $rs ||= $cfgFile->mode( 0640 );
     $rs ||= $cfgFile->copyFile( "$cfgFileDir$cfgFileName" );
 }
 
@@ -1050,7 +1079,7 @@ sub _addDmnDb
         $tplDbFileC
     );
 
-    unless (defined $main::execmode && $main::execmode eq 'setup') {
+    unless (!defined $wrkDbFileContent || defined $main::execmode && $main::execmode eq 'setup') {
         # Re-add subdomain entries
         $tplDbFileC = replaceBloc(
             "; sub entries BEGIN\n",
@@ -1078,11 +1107,11 @@ sub _addDmnDb
 
  Update SOA serial number for the given zone
  
- Note: Format follows RFC1912 section 2.2 recommendations.
+ Note: Format follows RFC 1912 section 2.2 recommendations.
 
  Param string zone Zone name
- Param scalarref $zoneFileContent Zone file content
- Param scalarref $oldZoneFileContent Old zone file content
+ Param scalarref \$zoneFileContent Zone file content
+ Param scalarref \$oldZoneFileContent Old zone file content
  Return int 0 on success, other on failure
 
 =cut
@@ -1091,49 +1120,38 @@ sub _updateSOAserialNumber
 {
     my ($self, $zone, $zoneFileContent, $oldZoneFileContent) = @_;
 
-    if (exists $self->{'serials'}->{$zone}) {
-        unless (${$zoneFileContent} =~ s/^(\s+)(?:\d{10}|\{TIMESTAMP\})(\s*;[^\n]*\n)/$1$self->{'serials'}->{$zone}$2/m) {
-            error( sprintf( "Couldn't update SOA serial number for the %s DNS zone", $zone ) );
-            return 1;
-        }
+    $oldZoneFileContent = $zoneFileContent unless defined ${$oldZoneFileContent};
 
+    if (${$oldZoneFileContent} !~ /^\s+(?:(?<date>\d{8})(?<nn>\d{2})|(?<placeholder>\{TIMESTAMP\}))\s*;[^\n]*\n/m) {
+        error( sprintf( "Couldn't update SOA serial number for the %s DNS zone", $zone ) );
+        return 1;
+    }
+
+    my %rc = %+;
+    my ($d, $m, $y) = (gmtime( ))[3 .. 5];
+    my $nowDate = sprintf( "%d%02d%02d", $y+1900, $m+1, $d );
+
+    if (exists $+{'placeholder'}) {
+        $self->{'serials'}->{$zone} = $nowDate.'00';
+        ${$zoneFileContent} = process( { TIMESTAMP => $self->{'serials'}->{$zone} }, ${$zoneFileContent} );
         return 0;
     }
 
-    $oldZoneFileContent = $zoneFileContent unless defined ${$oldZoneFileContent};
+    if ($rc{'date'} >= $nowDate) {
+        $rc{'nn'}++;
 
-    if (${$oldZoneFileContent} =~ /^\s+(?:(?<date>\d{8})(?<nn>\d{2})|(?<variable>\{TIMESTAMP\}))\s*;[^\n]*\n/m) {
-        my %rc = %+;
-        my ($d, $m, $y) = (gmtime( ))[3 .. 5];
-        my $nowDate = sprintf( "%d%02d%02d", $y+1900, $m+1, $d );
-
-        if ($rc{'variable'}) {
-            $self->{'serials'}->{$zone} = $nowDate.'00';
-            ${$zoneFileContent} = process({ TIMESTAMP => $self->{'serials'}->{$zone} }, ${$zoneFileContent} );
-            return 0;
-        }
-
-        if ($rc{'date'} >= $nowDate) {
-            $rc{'nn'}++;
-
-            if ($rc{'nn'} >= 99) {
-                $rc{'nn'} = '00';
-                $rc{'date'}++;
-            }
-        } else {
-            $rc{'date'} = $nowDate;
+        if ($rc{'nn'} >= 99) {
+            $rc{'date'}++;
             $rc{'nn'} = '00';
         }
-
-        $self->{'serials'}->{$zone} = $rc{'date'}.$rc{'nn'};
-
-        if (${$zoneFileContent} =~ s/^(\s+)(?:\d{10}|\{TIMESTAMP\})(\s*;[^\n]*\n)/$1$self->{'serials'}->{$zone}$2/m) {
-            return 0;
-        }
+    } else {
+        $rc{'date'} = $nowDate;
+        $rc{'nn'} = '00';
     }
 
-    error( sprintf( "Couldn't update SOA serial number for the %s DNS zone: Serial number not found.", $zone ) );
-    1;
+    $self->{'serials'}->{$zone} = $rc{'date'}.$rc{'nn'};
+    ${$zoneFileContent} =~ s/^(\s+)(?:\d{10}|\{TIMESTAMP\})(\s*;[^\n]*\n)/$1$self->{'serials'}->{$zone}$2/m;
+    0;
 }
 
 =item _compileZone( $zonename, $filename )
@@ -1150,6 +1168,7 @@ sub _compileZone
 {
     my ($self, $zonename, $filename) = @_;
 
+    local $UMASK = 027;
     my $rs = execute(
         [
             'named-compilezone',
