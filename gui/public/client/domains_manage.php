@@ -301,7 +301,7 @@ function generateSubdomainAction($id, $subdomainType, $status)
         return array(tr('N/A'), '#', false, tr('N/A'), '#');
     }
 
-    if($subdomainType == 'dmn') {
+    if ($subdomainType == 'dmn') {
         return array(
             tr('Delete'),
             tohtml("subdomain_delete.php?id=$id", 'htmlAttr'),
