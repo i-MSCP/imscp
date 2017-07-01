@@ -769,7 +769,7 @@ EOF
             return $rs if $rs;
         } elsif ($repository->{'repository_key_uri'}) {
             # Add the repository key by fetching it first from the given URI
-            my $keyFile = File::Temp->new( UNLINK => 0 );
+            my $keyFile = File::Temp->new( UNLINK => 1 );
             $rs = execute(
                 [
                     'wget', '--prefer-family=IPv4', '--timeout=5', '--no-cache', '--no-dns-cache', '-O', $keyFile,
