@@ -36,6 +36,7 @@ PLUGINS
     Fixed: PDO exception not throw when executing multiple statements (Database migrations - https://bugs.php.net/bug.php?id=61613)
 
 INSTALLER
+    Fixed: Avoid piping WGET(1) output to APT-KEY(8); Make use of temporary file to store APT key for better error handling
     Fixed: apache2_postinst.sh: Raised error if there is a version mismatch between installed package and source package
     Fixed: apt-key output should not be parsed (stdout is not a terminal)
     Fixed: gpg: failed to start the dirmngr '/usr/bin/dirmngr': No such file or directory

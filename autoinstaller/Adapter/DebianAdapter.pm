@@ -427,16 +427,15 @@ sub _setupGetaddrinfoPrecedence
 
             $fileContent =~ s%^precedence\s+::ffff:0:0/96\s+100\n%%gm;
 
-            my $rs = $file->set( $fileContent );
-            $rs ||= $file->save( );
+            $file->set( $fileContent );
+            my $rs = $file->save( );
             $rs ||= $file->mode( 0644 );
         }
     );
 
-    my $rs ||= $file->set( $fileContent );
-    $rs = $file->save( );
-    $rs ||= $file->mode(0644);
-    return $rs if $rs;
+    $file->set( $fileContent );
+    my $rs = $file->save( );
+    $rs ||= $file->mode( 0644 );
 }
 
 =item _buildPackageList( )
@@ -751,32 +750,44 @@ deb $repository->{'repository'}
 deb-src $repository->{'repository'}
 EOF
 
-        my @cmd = ();
-        if ($repository->{'repository_key_srv'}
-            && $repository->{'repository_key_id'}
-        ) { # Add the repository key from the given key server
-            @cmd = (
-                'apt-key adv --recv-keys --keyserver', escapeShell( $repository->{'repository_key_srv'} ),
-                escapeShell( $repository->{'repository_key_id'} )
-            );
-        } elsif ($repository->{'repository_key_uri'}) { # Add the repository key by fetching it from the given URI
-            @cmd = (
-                'wget --prefer-family=IPv4 -qO-', escapeShell( $repository->{'repository_key_uri'} ), '| apt-key add -'
-            );
-        }
+        # Hide "apt-key output should not be parsed (stdout is not a terminal)" warning that
+        # is raised in newest apt-key versions. Our usage of apt-key is not dangerous (not parsing)
+        local $ENV{'APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE'} = 1;
 
-        if (@cmd) {
-            # Don't attempt to parse STDOUT to avoid following warning from apt-key:
-            #  Warning: apt-key output should not be parsed (stdout is not a terminal)
-            $rs = execute( "@cmd", undef, \ my $stderr );
+        if ($repository->{'repository_key_srv'} && $repository->{'repository_key_id'}) {
+            # Add the repository key from the given key server
+            $rs = execute(
+                [
+                    'apt-key', 'adv', '--recv-keys', '--keyserver', $repository->{'repository_key_srv'},
+                    $repository->{'repository_key_id'}
+                ],
+                \ my $stdout,
+                \ my $stderr
+            );
+            debug( $stdout ) if $stdout;
+            error( $stderr || 'Unknown error' ) if $rs;
+            return $rs if $rs;
+        } elsif ($repository->{'repository_key_uri'}) {
+            # Add the repository key by fetching it first from the given URI
+            my $keyFile = File::Temp->new( UNLINK => 0 );
+            $rs = execute(
+                [
+                    'wget', '--prefer-family=IPv4', '--timeout=5', '--no-cache', '--no-dns-cache', '-O', $keyFile,
+                    $repository->{'repository_key_uri'}
+                ],
+                \ my $stdout,
+                \ my $stderr
+            );
+            $rs ||= execute([ 'apt-key', 'add', $keyFile ], \ $stdout, \ $stderr );
+            debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
         }
     }
 
     # Save new sources.list file
-    $rs = $file->set( $fileContent );
-    $rs ||= $file->save( );
+    $file->set( $fileContent );
+    $file->save( );
 }
 
 =item _processAptPreferences( )
@@ -811,8 +822,8 @@ EOF
 
     if ($fileContent) {
         $fileContent =~ s/^\n//;
-        my $rs = $file->set( $fileContent );
-        $rs ||= $file->save( );
+        $file->set( $fileContent );
+        my $rs = $file->save( );
         $rs ||= $file->mode( 0644 );
         return $rs;
     }
