@@ -233,7 +233,7 @@ class iMSCP_Plugin_Manager
 
         $className = "iMSCP_Plugin_$pluginName";
         if (!class_exists($className, true)) {
-            write_log(sprintf("Plugin Manager: Couldn't to load %s plugin - Class %s not found.", $pluginName, $className), E_USER_ERROR);
+            write_log(sprintf("Plugin Manager: Couldn't load %s plugin - Class %s not found.", $pluginName, $className), E_USER_ERROR);
             return false;
         }
 
