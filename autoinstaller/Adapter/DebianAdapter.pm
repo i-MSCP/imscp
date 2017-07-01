@@ -152,7 +152,7 @@ EOF
     );
 
     # See ZG-POLICY-RC.D(8)
-    $ENV{'POLICYRCD'} = $policyrcd->filename( );
+    local $ENV{'POLICYRCD'} = $policyrcd->filename( );
 
     my $rs = $self->uninstallPackages( $self->{'packagesToPreUninstall'} );
     $rs ||= $self->{'eventManager'}->trigger(
@@ -263,7 +263,6 @@ EOF
         return $rs if $rs;
     }
 
-    delete $ENV{'POLICYRCD'};
     $self->{'eventManager'}->trigger( 'afterInstallPackages' );
 }
 
