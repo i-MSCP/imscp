@@ -778,7 +778,11 @@ EOF
                 \ my $stdout,
                 \ my $stderr
             );
-            $rs ||= execute([ 'apt-key', 'add', $keyFile ], \ $stdout, \ $stderr );
+            debug( $stdout ) if $stdout;
+            error( $stderr || 'Unknown error' ) if $rs;
+            return $rs if $rs;
+
+            $rs ||= execute( [ 'apt-key', 'add', $keyFile ], \ $stdout, \ $stderr );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
