@@ -60,8 +60,7 @@ $bootstrapper->getInstance( )->boot(
     {
         config_readonly => 1,
         mode            => 'backend',
-        nolock          => 1,
-        norequirements  => 1
+        nolock          => 1
     }
 );
 

@@ -97,8 +97,7 @@ $bootstrapper->boot(
         mode            => 'backend',
         nodatabase      => 1,
         nokeys          => 1,
-        nolock          => 1,
-        norequirements  => 1
+        nolock          => 1
     }
 );
 

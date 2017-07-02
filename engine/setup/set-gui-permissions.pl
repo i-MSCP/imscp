@@ -63,7 +63,6 @@ exit unless $bootstrapper->lock( '/var/lock/imscp-set-engine-permissions.lock', 
 $bootstrapper->boot(
     {
         mode            => $main::execmode,
-        norequirements  => 1,
         nolock          => 1,
         nodatabase      => 1,
         nokeys          => 1,

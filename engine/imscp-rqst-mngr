@@ -55,7 +55,6 @@ setVerbose( iMSCP::Getopt->verbose );
 iMSCP::Bootstrapper->getInstance( )->boot(
     {
         mode            => 'backend',
-        norequirements  => 1,
         config_readonly => 1
     }
 );

@@ -283,7 +283,6 @@ exit unless $bootstrapper->lock( '/var/lock/imscp-dsk-quota.lock', 'nowait' );
 $bootstrapper->boot(
     {
         mode            => 'backend',
-        norequirements  => 1,
         nolock          => 1,
         config_readonly => 1
     }

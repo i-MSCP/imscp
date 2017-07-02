@@ -32,7 +32,6 @@ newDebug( 'imscp-rkhunter-package.log' );
 iMSCP::Bootstrapper->getInstance( )->boot(
     {
         nolock          => 1,
-        norequirements  => 1,
         nokeys          => 1,
         nodatabase      => 1,
         config_readonly => 1

@@ -28,7 +28,6 @@ exit unless $bootstrapper->lock( '/var/lock/imscp-mountall.lock', 'nowait' );
 $bootstrapper->boot(
     {
         mode            => 'backend',
-        norequirements  => 1,
         nokeys          => 1,
         nodatabase      => 1,
         config_readonly => 1

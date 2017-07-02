@@ -215,8 +215,7 @@ exit unless $bootstrapper->lock( '/var/lock/imscp-backup-imscp.lock', 'nowait' )
 $bootstrapper->boot(
     {
         config_readonly => 1,
-        nolock          => 1,
-        norequirements  => 1
+        nolock          => 1
     }
 );
 

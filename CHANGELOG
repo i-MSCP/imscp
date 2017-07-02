@@ -25,6 +25,9 @@ FRONTEND
     Fixed: Trailing slash added twice in URI path when creating subdomain with redirect feature enabled
     Removed: Unix user prefix from alternative URLs
 
+SCRIPTS
+    Fixed: Make sure that scripts are run by root user when needed
+
 SERVERS
     Changed: DNS records for alternative URLs are now added as subdomain DNS record without www and ftp records (Bind9)
     Fixed: Calling createUser()/dropUser() with `RaiseError' flag set to 1 raise an error (SQL server impl.)

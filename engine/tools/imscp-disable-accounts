@@ -131,8 +131,7 @@ exit unless $bootstrapper->lock( '/var/lock/imscp-disable-accounts.lock', 'nowai
 $bootstrapper->getInstance( )->boot(
     {
         config_readonly => 1,
-        mode            => 'backend',
-        norequirements  => 1
+        mode            => 'backend'
     }
 );
 
