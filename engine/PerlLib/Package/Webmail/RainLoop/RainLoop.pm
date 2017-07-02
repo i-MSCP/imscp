@@ -193,16 +193,11 @@ sub deleteMail
     (my $storagePath = substr( $email, 0, 2 )) =~ s/\@$//;
 
     for my $storageType(qw/ cfg data files /) {
-        my $rs = iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath/$email" )->remove( );
-        return $rs if $rs;
-
+        iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath/$email" )->remove( );
         next unless -d "$storageDir/$storageType/$storagePath";
-
         my $dir = iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath" );
         next unless $dir->isEmpty( );
-
-        $rs = $dir->remove( );
-        return $rs if $rs;
+        $dir->remove( );
     }
 
     0;

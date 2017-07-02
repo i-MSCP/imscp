@@ -107,9 +107,10 @@ sub _deconfigurePHP
         return $rs if $rs;
     }
 
-    my $rs = iMSCP::Dir->new( dirname => '/usr/local/lib/imscp_panel' )->remove( );
-    $rs ||= iMSCP::Dir->new( dirname => '/usr/local/etc/imscp_panel' )->remove( );
-    $rs ||= iMSCP::Dir->new( dirname => '/var/run/imscp' )->remove( );
+    iMSCP::Dir->new( dirname => '/usr/local/lib/imscp_panel' )->remove( );
+    iMSCP::Dir->new( dirname => '/usr/local/etc/imscp_panel' )->remove( );
+    iMSCP::Dir->new( dirname => '/var/run/imscp' )->remove( );
+    0;
 }
 
 =item _deconfigureHTTPD( )

@@ -173,9 +173,11 @@ sub _removeFiles
 {
     my ($self) = @_;
 
-    my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop" )->remove( );
-    $rs ||= iMSCP::Dir->new( dirname => $self->{'rainloop'}->{'cfgDir'} )->remove( );
-    return $rs if $rs || !-f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf";
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop" )->remove( );
+    iMSCP::Dir->new( dirname => $self->{'rainloop'}->{'cfgDir'} )->remove( );
+
+    return 0 unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf";
+
     iMSCP::File->new(
         filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf"
     )->delFile( );

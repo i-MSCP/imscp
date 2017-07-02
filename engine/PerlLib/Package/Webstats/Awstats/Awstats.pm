@@ -187,8 +187,11 @@ sub addDmn
 
     my $rs = $self->_addAwstatsConfig( $data );
     $rs ||= clearImmutable( $data->{'HOME_DIR'} );
-    $rs ||= iMSCP::Dir->new( dirname => "$data->{'HOME_DIR'}/statistics" )->remove( ); # Transitional
-    $rs ||= setImmutable( $data->{'HOME_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
+    return $rs if $rs;
+
+    iMSCP::Dir->new( dirname => "$data->{'HOME_DIR'}/statistics" )->remove( );
+    setImmutable( $data->{'HOME_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
+    0;
 }
 
 =item deleteDmn( \%data )
@@ -390,8 +393,8 @@ sub _addAwstatsConfig
     my $file = iMSCP::File->new(
         filename => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DOMAIN_NAME'}.conf"
     );
-    my $rs = $file->set( $tplFileContent );
-    $rs ||= $file->save( );
+    $file->set( $tplFileContent );
+    my $rs = $file->save( );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
 }

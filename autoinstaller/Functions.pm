@@ -636,6 +636,7 @@ sub _buildEngineFiles
 sub _buildFrontendFiles
 {
     iMSCP::Dir->new( dirname => "$FindBin::Bin/gui" )->rcopy( "$main::{'SYSTEM_ROOT'}/gui" );
+    0;
 }
 
 =item _compileDaemon( )
@@ -653,8 +654,10 @@ sub _compileDaemon
     my $rs = execute( 'make clean imscp_daemon', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
-    $rs ||= iMSCP::Dir->new( dirname => "$main::{'SYSTEM_ROOT'}/daemon" )->make( );
-    $rs ||= iMSCP::File->new( filename => 'imscp_daemon' )->copyFile( "$main::{'SYSTEM_ROOT'}/daemon" );
+    return $rs if $rs;
+
+    iMSCP::Dir->new( dirname => "$main::{'SYSTEM_ROOT'}/daemon" )->make( );
+    iMSCP::File->new( filename => 'imscp_daemon' )->copyFile( "$main::{'SYSTEM_ROOT'}/daemon" );
 }
 
 =item _savePersistentData( )
@@ -734,35 +737,28 @@ sub _savePersistentData
 
 sub _cleanup
 {
-    local $@;
-    eval {
-        for("$main::imscpConfig{'CACHE_DATA_DIR'}/addons",
-            "$main::imscpConfig{'CONF_DIR'}/apache/backup",
-            "$main::imscpConfig{'CONF_DIR'}/apache/skel/alias/phptmp",
-            "$main::imscpConfig{'CONF_DIR'}/apache/skel/subdomain/phptmp",
-            "$main::imscpConfig{'CONF_DIR'}/apache/working",
-            "$main::imscpConfig{'CONF_DIR'}/cron.d",
-            "$main::imscpConfig{'CONF_DIR'}/fcgi",
-            "$main::imscpConfig{'CONF_DIR'}/hooks.d",
-            "$main::imscpConfig{'CONF_DIR'}/init.d",
-            "$main::imscpConfig{'CONF_DIR'}/nginx",
-            "$main::imscpConfig{'CONF_DIR'}/php-fpm",
-            "$main::imscpConfig{'CONF_DIR'}/courier/backup",
-            "$main::imscpConfig{'CONF_DIR'}/courier/working",
-            "$main::imscpConfig{'CONF_DIR'}/postfix/backup",
-            "$main::imscpConfig{'CONF_DIR'}/postfix/imscp",
-            "$main::imscpConfig{'CONF_DIR'}/postfix/parts",
-            "$main::imscpConfig{'CONF_DIR'}/postfix/working",
-            "$main::imscpConfig{'CONF_DIR'}/skel/domain/domain_disable_page",
-            "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/.composer",
-            "$main::imscpConfig{'LOG_DIR'}/imscp-arpl-msgr"
-        ) {
-            iMSCP::Dir->new( dirname => $_ )->remove( );
-        }
-    };
-    if ($@) {
-        error( $@ );
-        return 1;
+    for("$main::imscpConfig{'CACHE_DATA_DIR'}/addons",
+        "$main::imscpConfig{'CONF_DIR'}/apache/backup",
+        "$main::imscpConfig{'CONF_DIR'}/apache/skel/alias/phptmp",
+        "$main::imscpConfig{'CONF_DIR'}/apache/skel/subdomain/phptmp",
+        "$main::imscpConfig{'CONF_DIR'}/apache/working",
+        "$main::imscpConfig{'CONF_DIR'}/cron.d",
+        "$main::imscpConfig{'CONF_DIR'}/fcgi",
+        "$main::imscpConfig{'CONF_DIR'}/hooks.d",
+        "$main::imscpConfig{'CONF_DIR'}/init.d",
+        "$main::imscpConfig{'CONF_DIR'}/nginx",
+        "$main::imscpConfig{'CONF_DIR'}/php-fpm",
+        "$main::imscpConfig{'CONF_DIR'}/courier/backup",
+        "$main::imscpConfig{'CONF_DIR'}/courier/working",
+        "$main::imscpConfig{'CONF_DIR'}/postfix/backup",
+        "$main::imscpConfig{'CONF_DIR'}/postfix/imscp",
+        "$main::imscpConfig{'CONF_DIR'}/postfix/parts",
+        "$main::imscpConfig{'CONF_DIR'}/postfix/working",
+        "$main::imscpConfig{'CONF_DIR'}/skel/domain/domain_disable_page",
+        "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/.composer",
+        "$main::imscpConfig{'LOG_DIR'}/imscp-arpl-msgr"
+    ) {
+        iMSCP::Dir->new( dirname => $_ )->remove( );
     }
 
     for("$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_disabled_ssl.tpl",
@@ -918,8 +914,7 @@ sub _processFolder
 
     # Needed to be sure to not keep any file from a previous build that has failed
     if (defined $main::{'INST_PREF'} && $main::{'INST_PREF'} eq $data->{'content'}) {
-        my $rs = $dir->remove( );
-        return $rs if $rs;
+        $dir->remove( );
     }
 
     $dir->make(

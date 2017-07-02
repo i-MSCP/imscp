@@ -91,23 +91,27 @@ sub _init
         'afterSetupPreInstallPackages',
         sub {
 
-            my $rs = $self->_cleanPackageCache( ) if iMSCP::Getopt->cleanPackageCache;
-            $rs ||= iMSCP::Dir->new( dirname => $self->{'packages_dir'} )->make(
+            if(iMSCP::Getopt->cleanPackageCache) {
+                my $rs = $self->_cleanPackageCache( );
+                return $rs if $rs;
+            }
+
+            iMSCP::Dir->new( dirname => $self->{'packages_dir'} )->make(
                 {
-                    user => $main::imscpConfig{'IMSCP_USER'},
+                    user  => $main::imscpConfig{'IMSCP_USER'},
                     group => $main::imscpConfig{'IMSCP_GROUP'},
-                    mode => 0755
+                    mode  => 0755
                 }
             );
 
             startDetail;
 
-            $rs ||= step(
+            my $rs = step(
                 sub {
                     unless (iMSCP::Getopt->skipPackageUpdate
                         && -x "$main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar"
                     ) {
-                        $rs = $self->_getComposer( );
+                        my $rs = $self->_getComposer( );
                         return $rs if $rs;
                     }
                     0;
@@ -130,7 +134,7 @@ sub _init
             );
 
             endDetail;
-            return $rs;
+            $rs;
         }
     );
 
@@ -294,8 +298,8 @@ sub _buildComposerFile
 TPL
 
     my $file = iMSCP::File->new( filename => "$self->{'packages_dir'}/composer.json" );
-    my $rs ||= $file->set( process( { PACKAGES => join ",\n", @{$self->{'packages'}} }, $tpl ) );
-    $rs ||= $file->save( );
+    $file->set( process( { PACKAGES => join ",\n", @{$self->{'packages'}} }, $tpl ) );
+    $file->save( );
 }
 
 =item _cleanPackageCache( )
@@ -310,9 +314,10 @@ sub _cleanPackageCache
 {
     my ($self) = @_;
 
-    my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'IMSCP_HOMEDIR'}/.cache" )->remove( );
-    $rs ||= iMSCP::Dir->new( dirname => "$main::imscpConfig{'IMSCP_HOMEDIR'}/.composer" )->remove( );
-    $rs ||= iMSCP::Dir->new( dirname => $self->{'packages_dir'} )->remove( );
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'IMSCP_HOMEDIR'}/.cache" )->remove( );
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'IMSCP_HOMEDIR'}/.composer" )->remove( );
+    iMSCP::Dir->new( dirname => $self->{'packages_dir'} )->remove( );
+    0;
 }
 
 =back

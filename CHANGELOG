@@ -7,8 +7,8 @@ Git 1.4.x
 CONFIG
     Added: `BIND_DB_ROOT_DIR' configuration parameter (Bind9)
     Enhancement: Alternative URLs for client domains can now be disabled - see the errata file for further details
-    Updated: Zone template files (Bind9)
     Updated: Vhost template files (Apache2)
+    Updated: Zone template files (Bind9)
 
 BACKEND
     Fixed: Avoid triggering change of all subdomains that belong to a parent domain that is being changed (historical issue)
@@ -16,12 +16,12 @@ BACKEND
     Removed: Unix user prefix from alternative URLs
 
 DISTRIBUTIONS
-    Added: dirmngr package in list of pre-required packages as it is needed by gnupg2 for network access
+    Added: dirmngr package in list of pre-required packages as it is needed by gnupg2 for network access (Debian 9/Stretch)
     Fixed: libmysqlcient18 package not available for MySQL 5.7 server community (Debian 9/Stretch)
 
 FRONTEND
-    Fixed: Invalid parameter number: number of bound variables does not match number of tokens (Software Installer)
     Fixed: Couldn't add BASE_SERVER_VHOST as customer domain
+    Fixed: Invalid parameter number: number of bound variables does not match number of tokens (Software Installer)
     Fixed: Trailing slash added twice in URI path when creating subdomain with redirect feature enabled
     Removed: Unix user prefix from alternative URLs
 
@@ -33,7 +33,7 @@ SERVERS
     Review: Engine permissions (Servers::named::bind)
 
 PLUGINS
-    Fixed: PDO exception not throw when executing multiple statements (Database migrations - https://bugs.php.net/bug.php?id=61613)
+    Fixed: Exception not throw when executing multiple SQL statements in single query (Database migrations - PHP: #61613)
 
 INSTALLER
     Fixed: Avoid piping WGET(1) output to APT-KEY(8); Make use of temporary file to store APT key for better error handling

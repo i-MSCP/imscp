@@ -31,6 +31,7 @@ use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Execute;
+use iMSCP::File;
 use iMSCP::Rights;
 use iMSCP::Service;
 use version;

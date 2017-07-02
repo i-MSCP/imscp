@@ -111,17 +111,9 @@ sub _removeConfig
         return $rs if $rs;
     }
 
-    local $@;
-    eval {
-        iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_MASTER_DIR'} )->remove( );
-        iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_SLAVE_DIR'} )->remove( );
-        iMSCP::Dir->new( dirname => $self->{'wrkDir'} )->clear( );
-    };
-    if ($@) {
-        error( $@ );
-        return 1;
-    }
-
+    iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_MASTER_DIR'} )->remove( );
+    iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_SLAVE_DIR'} )->remove( );
+    iMSCP::Dir->new( dirname => $self->{'wrkDir'} )->clear( );
     0;
 }
 

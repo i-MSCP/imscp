@@ -437,8 +437,9 @@ sub _buildConf
             return $rs if $rs;
 
             my $file = iMSCP::File->new( filename => $cfgFiles{$conffile}->[0] );
-            $rs = $file->set( $cfgTpl );
-            $rs ||= $file->save( );
+            $file->set( $cfgTpl );
+
+            $rs = $file->save( );
             $rs ||= $file->owner( $cfgFiles{$conffile}->[1], $cfgFiles{$conffile}->[2] );
             $rs ||= $file->mode( $cfgFiles{$conffile}->[3] );
             return $rs if $rs;
@@ -466,8 +467,9 @@ sub _buildConf
 . $self->{'cfgDir'}/imapd.local
 # Servers::po::courier::installer - ENDING
 EOF
-        $rs = $file->set( $fileContent );
-        $rs ||= $file->save( );
+        $file->set( $fileContent );
+
+        $rs = $file->save( );
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
         $rs ||= $file->mode( 0644 );
         return $rs if $rs;
@@ -500,8 +502,8 @@ sub _setupCyrusSASL
     my $fsSpec = File::Spec->canonpath( $self->{'config'}->{'AUTHLIB_SOCKET_DIR'} );
     my $fsFile = File::Spec->canonpath( "$self->{'mta'}->{'config'}->{'POSTFIX_QUEUE_DIR'}/private/authdaemon" );
     my $fields = { fs_spec => $fsSpec, fs_file => $fsFile, fs_vfstype => 'none', fs_mntops => 'bind,slave' };
-    $rs = iMSCP::Dir->new( dirname => $fsFile )->make( );
-    $rs ||= addMountEntry( "$fields->{'fs_spec'} $fields->{'fs_file'} $fields->{'fs_vfstype'} $fields->{'fs_mntops'}" );
+    iMSCP::Dir->new( dirname => $fsFile )->make( );
+    $rs = addMountEntry( "$fields->{'fs_spec'} $fields->{'fs_file'} $fields->{'fs_vfstype'} $fields->{'fs_mntops'}" );
     $rs ||= mount( $fields ) unless isMountpoint( $fields->{'fs_file'} );
 
     # Build SASL smtpd.conf configuration file
@@ -520,8 +522,9 @@ sub _setupCyrusSASL
     local $UMASK = 027; # smtpd.conf file must not be created/copied world-readable
 
     my $file = iMSCP::File->new( filename => "$self->{'config'}->{'SASL_CONF_DIR'}/smtpd.conf" );
-    $rs = $file->set( $cfgTpl );
-    $rs ||= $file->save( );
+    $file->set( $cfgTpl );
+
+    $rs = $file->save( );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0640 );
 }
@@ -601,8 +604,9 @@ sub _buildAuthdaemonrcFile
     return $rs if $rs;
 
     my $file = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/authdaemonrc" );
-    $rs = $file->set( $cfgTpl );
-    $rs ||= $file->save( );
+    $file->set( $cfgTpl );
+
+    $rs = $file->save( );
     $rs ||= $file->owner( $self->{'config'}->{'AUTHDAEMON_USER'}, $self->{'config'}->{'AUTHDAEMON_GROUP'} );
     $rs ||= $file->mode( 0660 );
 }
@@ -646,8 +650,9 @@ sub _buildSslConfFiles
         return $rs if $rs;
 
         my $file = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$conffile" );
-        $rs = $file->set( $cfgTpl );
-        $rs ||= $file->save( );
+        $file->set( $cfgTpl );
+
+        $rs = $file->save( );
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
         $rs ||= $file->mode( 0644 );
         return $rs if $rs;
@@ -715,8 +720,9 @@ sub _oldEngineCompatibility
 
     if (-f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb") {
         my $file = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb" );
-        $rs = $file->set( '' );
-        $rs ||= $file->save( );
+        $file->set( '' );
+
+        $rs = $file->save( );
         $rs ||= $file->mode( 0600 );
         return $rs if $rs;
 

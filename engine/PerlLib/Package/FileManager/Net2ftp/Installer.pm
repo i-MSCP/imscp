@@ -155,8 +155,9 @@ sub _installFiles
         return 1;
     }
 
-    my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove( );
-    $rs ||= iMSCP::Dir->new( dirname => "$packageDir" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" );
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove( );
+    iMSCP::Dir->new( dirname => "$packageDir" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" );
+    0;
 }
 
 =item _buildHttpdConfig( )
@@ -215,8 +216,8 @@ sub _buildConfig
     $cfgTpl = process( $data, $cfgTpl );
 
     my $file = iMSCP::File->new( filename => $conffile );
-    $rs = $file->set( $cfgTpl );
-    $rs ||= $file->save( );
+    $file->set( $cfgTpl );
+    $rs = $file->save( );
     $rs ||= $file->owner( $panelUName, $panelGName );
     $rs ||= $file->mode( 0640 );
 }

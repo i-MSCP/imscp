@@ -58,8 +58,8 @@ iMSCP::EventManager->getInstance()->register(
             return 1;
         }
 
-        my $rs = $file->set( $fileContent.( join "\n", @hostsFileEntries )."\n" );
-        $rs ||= $file->save();
+        $file->set( $fileContent.( join "\n", @hostsFileEntries )."\n" );
+        $file->save();
     }
 );
 

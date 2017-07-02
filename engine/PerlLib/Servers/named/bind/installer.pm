@@ -367,27 +367,20 @@ sub _makeDirs
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedMakeDirs', \@directories );
     return $rs if $rs;
 
-    local $@;
-    eval {
-        for my $directory(@directories) {
-            iMSCP::Dir->new( dirname => $directory->[0] )->make(
-                {
-                    user  => $directory->[1],
-                    group => $directory->[2],
-                    mode  => $directory->[3]
-                }
-            );
-        }
+    for my $directory(@directories) {
+        iMSCP::Dir->new( dirname => $directory->[0] )->make(
+            {
+                user  => $directory->[1],
+                group => $directory->[2],
+                mode  => $directory->[3]
+            }
+        );
+    }
 
-        iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_MASTER_DIR'} )->clear( );
+    iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_MASTER_DIR'} )->clear( );
 
-        if ($self->{'config'}->{'BIND_MODE'} ne 'slave') {
-            iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_SLAVE_DIR'} )->clear( );
-        }
-    };
-    if($@) {
-        error( $@ );
-        return 1;
+    if ($self->{'config'}->{'BIND_MODE'} ne 'slave') {
+        iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_SLAVE_DIR'} )->clear( );
     }
 
     $self->{'eventManager'}->trigger( 'afterNamedMakeDirs', \@directories );
@@ -444,8 +437,9 @@ sub _buildConf
         return $rs if $rs;
 
         my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$tplName" );
-        $rs = $file->set( $tplContent );
-        $rs ||= $file->save( );
+        $file->set( $tplContent );
+
+        $rs = $file->save( );
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
         $rs ||= $file->mode( 0644 );
         $rs ||= $file->copyFile( $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} );
@@ -484,8 +478,9 @@ sub _buildConf
         return $rs if $rs;
 
         my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$tplName" );
-        $rs = $file->set( $tplContent );
-        $rs ||= $file->save( );
+        $file->set( $tplContent );
+
+        $rs = $file->save( );
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
         $rs ||= $file->mode( 0640 );
         $rs ||= $file->copyFile( $self->{'config'}->{'BIND_OPTIONS_CONF_FILE'} );
@@ -514,8 +509,9 @@ sub _buildConf
         return $rs if $rs;
 
         my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$tplName" );
-        $rs = $file->set( $tplContent );
-        $rs ||= $file->save( );
+        $file->set( $tplContent );
+
+        $rs = $file->save( );
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
         $rs ||= $file->mode( 0640 );
         $rs ||= $file->copyFile( $self->{'config'}->{'BIND_CONF_FILE'} );
@@ -540,8 +536,9 @@ sub _buildConf
         return $rs if $rs;
 
         my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$tplName" );
-        $rs = $file->set( $tplContent );
-        $rs ||= $file->save( );
+        $file->set( $tplContent );
+
+        $rs = $file->save( );
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
         $rs ||= $file->mode( 0640 );
         $rs ||= $file->copyFile( $self->{'config'}->{'BIND_LOCAL_CONF_FILE'} );
@@ -623,15 +620,8 @@ sub _oldEngineCompatibility
         error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
     }
-    
-    local $@;
-    eval {
-        iMSCP::Dir->new( dirname => dirname( $self->{'config'}->{'BIND_DB_MASTER_DIR'}) )->clear( undef, qr/\.db$/ )
-    };
-    if( $@ ) {
-        error( $@ );
-        return 1;
-    }
+
+    iMSCP::Dir->new( dirname => dirname( $self->{'config'}->{'BIND_DB_MASTER_DIR'}) )->clear( undef, qr/\.db$/ );
 
     $self->{'eventManager'}->trigger( 'afterNameddOldEngineCompatibility' );
 }

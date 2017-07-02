@@ -60,8 +60,7 @@ sub _removeDirs
     my ($self) = @_;
 
     for ($self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}, $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}) {
-        my $rs = iMSCP::Dir->new( dirname => $_ )->remove( );
-        return $rs if $rs;
+        iMSCP::Dir->new( dirname => $_ )->remove( );
     }
 
     0;

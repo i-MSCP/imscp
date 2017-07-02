@@ -237,8 +237,8 @@ STANZA
         $fileContent =~ s/^(# i-MSCP \[$cAddr\] entry BEGIN\n)/${1}auto $iface\n/m if $addrVersion eq 'ipv4';
     }
 
-    $rs = $file->set( $fileContent );
-    $rs ||= $file->save( );
+    $file->set( $fileContent );
+    $file->save( );
 }
 
 =item _isDefinedInterface( $interface )

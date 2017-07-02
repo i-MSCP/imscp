@@ -47,12 +47,11 @@ sub setupInstallFiles
 
     # Process cleanup to avoid any security risks and conflicts
     for(qw/ daemon engine gui /) {
-        $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/$_" )->remove( );
-        return $rs if $rs;
+        iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/$_" )->remove( );
     }
 
-    $rs = iMSCP::Dir->new( dirname => $main::{'INST_PREF'} )->rcopy( '/' );
-    $rs ||= iMSCP::EventManager->getInstance( )->trigger( 'afterSetupInstallFiles', $main::{'INST_PREF'} );
+    iMSCP::Dir->new( dirname => $main::{'INST_PREF'} )->rcopy( '/' );
+    iMSCP::EventManager->getInstance( )->trigger( 'afterSetupInstallFiles', $main::{'INST_PREF'} );
 }
 
 sub setupBoot
@@ -163,8 +162,10 @@ sub setupTasks
 sub setupDeleteBuildDir
 {
     my $rs = iMSCP::EventManager->getInstance( )->trigger( 'beforeSetupDeleteBuildDir', $main::{'INST_PREF'} );
-    $rs ||= iMSCP::Dir->new( dirname => $main::{'INST_PREF'} )->remove( );
-    $rs ||= iMSCP::EventManager->getInstance( )->trigger( 'afterSetupDeleteBuildDir', $main::{'INST_PREF'} );
+    return $rs if $rs;
+
+    iMSCP::Dir->new( dirname => $main::{'INST_PREF'} )->remove( );
+    iMSCP::EventManager->getInstance( )->trigger( 'afterSetupDeleteBuildDir', $main::{'INST_PREF'} );
 }
 
 #
@@ -211,9 +212,10 @@ sub setupCreateMasterUser
         comment  => 'i-MSCP master user',
         home     => $main::imscpConfig{'IMSCP_HOMEDIR'}
     )->addSystemUser( );
+    return $rs if $rs;
 
     # Ensure that correct permissions are set on i-MSCP master user homedir (handle upgrade case)
-    $rs ||= iMSCP::Dir->new( dirname => $main::imscpConfig{'IMSCP_HOMEDIR'} )->make(
+    iMSCP::Dir->new( dirname => $main::imscpConfig{'IMSCP_HOMEDIR'} )->make(
         {
             user           => $main::imscpConfig{'IMSCP_USER'},
             group          => $main::imscpConfig{'IMSCP_GROUP'},
@@ -221,7 +223,7 @@ sub setupCreateMasterUser
             fixpermissions => 1 # We fix permissions in any case
         }
     );
-    $rs ||= iMSCP::EventManager->getInstance( )->trigger( 'afterSetupCreateMasterUser' );
+    iMSCP::EventManager->getInstance( )->trigger( 'afterSetupCreateMasterUser' );
 }
 
 sub setupCoreServices
@@ -378,7 +380,7 @@ sub setupDbTasks
 
     startDetail( );
     local $@;
-    eval { iMSCP::DbTasksProcessor->getInstance( mode => 'setup' )->process( ); };
+    eval { iMSCP::DbTasksProcessor->getInstance( mode => 'setup' )->processDbTasks( ); };
     if ($@) {
         error( $@ );
         $rs = 1;

@@ -59,6 +59,7 @@ sub _removeDirs
     my ($self) = @_;
 
     iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove( );
+    0;
 }
 
 sub _vHostConf

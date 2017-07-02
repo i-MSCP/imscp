@@ -104,8 +104,8 @@ sub install
     );
 
     my $file = iMSCP::File->new( filename => "$self->{'config'}->{'CRON_D_DIR'}/imscp" );
-    $rs = $file->set( $cfgTpl );
-    $rs ||= $file->save( );
+    $file->set( $cfgTpl );
+    $rs = $file->save( );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0640 );
     $rs ||= $self->{'eventManager'}->trigger( 'afterCronInstall', 'cron' );
@@ -241,8 +241,10 @@ $data->{'MINUTE'} $data->{'HOUR'} $data->{'DAY'} $data->{'MONTH'} $data->{'DWEEK
 EOF
 
     $rs = $self->{'eventManager'}->trigger( 'afterCronAddTask', \$fileContent, $data );
-    $rs ||= $file->set( $fileContent );
-    $rs ||= $file->save( );
+    return $rs if $rs;
+
+    $file->set( $fileContent );
+    $file->save( );
 }
 
 =item deleteTask( \%data [, $filepath = "$self->{'config'}->{'CRON_D_DIR'}/imscp" ] )
@@ -286,9 +288,11 @@ sub deleteTask
         $fileContent
     );
 
-    $rs ||= $self->{'eventManager'}->trigger( 'afterCronDelTask', \$fileContent, $data );
-    $rs ||= $file->set( $fileContent );
-    $rs ||= $file->save( );
+    $rs = $self->{'eventManager'}->trigger( 'afterCronDelTask', \$fileContent, $data );
+    return $rs if $rs;
+
+    $file->set( $fileContent );
+    $file->save( );
 }
 
 =item setEnginePermissions( )

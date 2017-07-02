@@ -255,7 +255,7 @@ sub addMail
     my $mailGidName = $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
     for my $mailbox('.Drafts', '.Junk', '.Sent', '.Trash') {
-        my $rs = iMSCP::Dir->new( dirname => "$mailDir/$mailbox" )->make(
+        iMSCP::Dir->new( dirname => "$mailDir/$mailbox" )->make(
             {
                 user           => $mailUidName,
                 group          => $mailGidName,
@@ -263,10 +263,9 @@ sub addMail
                 fixpermissions => iMSCP::Getopt->fixPermissions
             }
         );
-        return $rs if $rs;
 
         for ('cur', 'new', 'tmp') {
-            $rs = iMSCP::Dir->new( dirname => "$mailDir/$mailbox/$_" )->make(
+            iMSCP::Dir->new( dirname => "$mailDir/$mailbox/$_" )->make(
                 {
                     user           => $mailUidName,
                     group          => $mailGidName,
@@ -274,7 +273,6 @@ sub addMail
                     fixpermissions => iMSCP::Getopt->fixPermissions
                 }
             );
-            return $rs if $rs;
         }
     }
 

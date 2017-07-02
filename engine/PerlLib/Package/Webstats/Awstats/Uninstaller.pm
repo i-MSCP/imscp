@@ -81,11 +81,11 @@ sub _deleteFiles
         return $rs if $rs;
     }
 
-    my $rs = iMSCP::Dir->new( dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'})->remove( );
-    return $rs if $rs;
+    iMSCP::Dir->new( dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'})->remove( );
 
     return 0 unless -d $main::imscpConfig{'AWSTATS_CONFIG_DIR'};
-    $rs = execute( "rm -f $main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.*.conf", \ my $stdout, \ my $stderr );
+
+    my $rs = execute( "rm -f $main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.*.conf", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     $rs;

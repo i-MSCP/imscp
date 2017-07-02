@@ -26,6 +26,7 @@ package Package::Webmail;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use iMSCP::Dir;
 use iMSCP::EventManager;
 use parent 'Common::SingletonClass';
 

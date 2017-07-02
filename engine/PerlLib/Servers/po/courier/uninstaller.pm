@@ -142,11 +142,13 @@ sub _removeConfig
     my $fsFile = File::Spec->canonpath( "$self->{'mta'}->{'config'}->{'POSTFIX_QUEUE_DIR'}/private/authdaemon" );
     my $rs = removeMountEntry( qr%.*?[ \t]+\Q$fsFile\E(?:/|[ \t]+)[^\n]+% );
     $rs ||= umount( $fsFile );
-    $rs ||= iMSCP::Dir->new( dirname => $fsFile )->remove( );
+    return $rs if $rs;
+
+    iMSCP::Dir->new( dirname => $fsFile )->remove( );
 
     # Remove postfix user from authdaemon group
 
-    $rs ||= iMSCP::SystemUser->new( )->removeFromGroup(
+    $rs = iMSCP::SystemUser->new( )->removeFromGroup(
         $self->{'config'}->{'AUTHDAEMON_GROUP'}, $self->{'mta'}->{'config'}->{'POSTFIX_USER'}
     );
     return $rs if $rs;
@@ -168,8 +170,9 @@ sub _removeConfig
             $fileContent
         );
 
-        $rs = $file->set( $fileContent );
-        $rs ||= $file->save( );
+        $file->set( $fileContent );
+
+        $rs = $file->save( );
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
         $rs ||= $file->mode( 0644 );
         return $rs if $rs;

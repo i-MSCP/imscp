@@ -151,11 +151,10 @@ sub _installFiles
         return 1;
     }
 
-    my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove( );
-    $rs ||= iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" );
-    $rs ||= iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp"
-    );
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove( );
+    iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" );
+    iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" );
+    0;
 }
 
 =item _buildHttpdConfig( )

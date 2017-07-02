@@ -844,9 +844,7 @@ sub _makeDirs
     my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
 
     my $nginxTmpDir = $self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'};
-    unless (-d $nginxTmpDir) {
-        $nginxTmpDir = $self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'};
-    }
+    $nginxTmpDir = $self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'} unless -d $nginxTmpDir;
 
     # Force re-creation of cache directory tree (needed to prevent any permissions problem from an old installation)
     # See #IP-1530
@@ -858,31 +856,23 @@ sub _makeDirs
         [ $self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}, $rootUName, $rootGName, 0755 ],
         [ $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}, $rootUName, $rootGName, 0755 ]
     ) {
-        $rs = iMSCP::Dir->new( dirname => $_->[0] )->make(
+        iMSCP::Dir->new( dirname => $_->[0] )->make(
             {
                 user  => $_->[1],
                 group => $_->[2],
                 mode  => $_->[3]
             }
         );
-        return $rs if $rs;
     }
 
-    local $@;
-    eval {
-        if (iMSCP::Service->getInstance->isSystemd( )) {
-            iMSCP::Dir->new( dirname => '/run/imscp')->make(
-                {
-                    user  => $self->{'config'}->{'HTTPD_USER'},
-                    group => $self->{'config'}->{'HTTPD_GROUP'},
-                    mode  => 0755
-                }
-            );
-        }
-    };
-    if ($@) {
-        error($@);
-        return 1;
+    if (iMSCP::Service->getInstance->isSystemd( )) {
+        iMSCP::Dir->new( dirname => '/run/imscp')->make(
+            {
+                user  => $self->{'config'}->{'HTTPD_USER'},
+                group => $self->{'config'}->{'HTTPD_GROUP'},
+                mode  => 0755
+            }
+        );
     }
 
     $self->{'eventManager'}->trigger( 'afterFrontEndMakeDirs' );

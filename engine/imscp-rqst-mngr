@@ -59,7 +59,7 @@ iMSCP::Bootstrapper->getInstance( )->boot(
         config_readonly => 1
     }
 );
-iMSCP::DbTasksProcessor->getInstance( mode => 'backend' )->process( );
+iMSCP::DbTasksProcessor->getInstance( mode => 'backend' )->processDbTasks( );
 
 =head1 AUTHOR
 

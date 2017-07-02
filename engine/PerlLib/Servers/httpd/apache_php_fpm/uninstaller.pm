@@ -111,6 +111,7 @@ sub _removeDirs
     my ($self) = @_;
 
     iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove( );
+    0;
 }
 
 =item _restoreApacheConfig( )
@@ -142,8 +143,7 @@ sub _restoreApacheConfig
         return $rs if $rs;
     }
 
-    my $rs = iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove( );
-    return $rs if $rs;
+    iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove( );
 
     for ('000-default', 'default') {
         next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";

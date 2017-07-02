@@ -28,7 +28,6 @@ use warnings;
 use File::Spec;
 use iMSCP::Database;
 use iMSCP::Debug;
-use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::OpenSSL;
 use Net::LibIDN qw/ idn_to_unicode /;

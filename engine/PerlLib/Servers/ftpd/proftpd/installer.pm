@@ -31,7 +31,6 @@ use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Dialog::InputValidation;
-use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
@@ -475,8 +474,8 @@ EOF
     local $UMASK = 027; # proftpd.conf file must not be created/copied world-readable
 
     my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/proftpd.conf" );
-    $rs = $file->set( $cfgTpl );
-    $rs ||= $file->save( );
+    $file->set( $cfgTpl );
+    $rs = $file->save( );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( $self->{'config'}->{'FTPD_CONF_FILE'} );

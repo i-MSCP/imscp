@@ -73,10 +73,9 @@ sub createHtpasswdFile
 
     require iMSCP::Crypt;
     my $file = iMSCP::File->new( filename => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning/.htpasswd" );
-    my $rs = $file->set(
-        "$authUsername:".($isAuthPasswordEncrypted ? $authPassword : iMSCP::Crypt::htpasswd( $authPassword ))
-    );
-    $rs ||= $file->save();
+    $file->set( "$authUsername:".($isAuthPasswordEncrypted ? $authPassword : iMSCP::Crypt::htpasswd( $authPassword )) );
+
+    $rs = $file->save();
     $rs ||= $file->owner(
         "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
         "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}"
@@ -192,8 +191,9 @@ EOF
         my $file = iMSCP::File->new(
             filename => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning/slave_provisioning.php"
         );
-        $rs = $file->set( $fileContent );
-        $rs ||= $file->save();
+        $file->set( $fileContent );
+
+        $rs = $file->save();
         $rs ||= $file->owner(
             "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
             "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}"

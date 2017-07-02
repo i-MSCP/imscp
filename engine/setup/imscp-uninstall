@@ -168,7 +168,7 @@ sub _removeCustomers
     my $rs = 0;
     startDetail( );
     local $@;
-    eval { iMSCP::DbTasksProcessor->getInstance( mode => 'uninstall' )->process( ); };
+    eval { iMSCP::DbTasksProcessor->getInstance( mode => 'uninstall' )->processDbTasks( ); };
     if ($@) {
         error( $@ );
         $rs = 1;
@@ -320,8 +320,7 @@ sub _removeFiles
     for ($main::imscpConfig{'CONF_DIR'}, $main::imscpConfig{'USER_WEB_DIR'}, $main::imscpConfig{'LOG_DIR'},
         $main::imscpConfig{'ROOT_DIR'}
     ) {
-        my $rs = iMSCP::Dir->new( dirname => $_ )->remove( );
-        return $rs if $rs;
+        iMSCP::Dir->new( dirname => $_ )->remove( );
     }
 
     0;

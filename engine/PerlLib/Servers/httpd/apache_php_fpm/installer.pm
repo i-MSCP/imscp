@@ -282,14 +282,15 @@ sub _makeDirs
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdMakeDirs' );
-    $rs ||= iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_LOG_DIR'} )->make(
+    return $rs if $rs;
+
+    iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_LOG_DIR'} )->make(
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ADM_GROUP'},
             mode  => 0750
         }
     );
-    return $rs if $rs;
 
     # Cleanup pools directory (prevent possible orphaned pool file when changing PHP configuration level)
     unlink grep !/www\.conf$/, glob "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/*.conf";
@@ -309,6 +310,7 @@ sub _copyDomainDisablePages
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/skel/domain_disabled_pages" )->rcopy(
         "$main::imscpConfig{'USER_WEB_DIR'}/domain_disabled_pages"
     );
+    0;
 }
 
 =item _buildFastCgiConfFiles( )
@@ -435,8 +437,9 @@ sub _buildApacheConfFiles
         return $rs if $rs;
 
         my $file = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf" );
-        $rs = $file->set( $cfgTpl );
-        $rs ||= $file->save( );
+        $file->set( $cfgTpl );
+
+        $rs = $file->save( );
         $rs ||= $file->mode( 0644 );
         return $rs if $rs;
     }
@@ -643,8 +646,7 @@ sub _cleanup
     }
 
     for ('/var/log/apache2/backup', '/var/log/apache2/users', '/var/www/scoreboards') {
-        $rs = iMSCP::Dir->new( dirname => $_ )->remove( );
-        return $rs if $rs;
+        iMSCP::Dir->new( dirname => $_ )->remove( );
     }
 
     if (-f "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/master.conf") {
@@ -668,19 +670,18 @@ sub _cleanup
         return $rs if $rs;
     }
 
-    $rs = iMSCP::Dir->new( dirname => '/etc/php5' )->remove( );
-    return $rs if $rs;
+    iMSCP::Dir->new( dirname => '/etc/php5' )->remove( );
 
     for(grep !/^$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}$/, 
         glob dirname($self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}).'/*'
     ) {
-        $rs = iMSCP::Dir->new( dirname => $_ )->remove( );
-        return $rs if $rs;
+        iMSCP::Dir->new( dirname => $_ )->remove( );
     }
 
     # CGI
-    $rs = iMSCP::Dir->new( dirname => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'} )->remove( );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdCleanup' );
+    iMSCP::Dir->new( dirname => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'} )->remove( );
+
+    $self->{'eventManager'}->trigger( 'afterHttpdCleanup' );
 }
 
 =back

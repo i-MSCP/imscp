@@ -425,14 +425,15 @@ sub _setupGetaddrinfoPrecedence
             }
 
             $fileContent =~ s%^precedence\s+::ffff:0:0/96\s+100\n%%gm;
-
             $file->set( $fileContent );
+
             my $rs = $file->save( );
             $rs ||= $file->mode( 0644 );
         }
     );
 
     $file->set( $fileContent );
+
     my $rs = $file->save( );
     $rs ||= $file->mode( 0644 );
 }
@@ -788,7 +789,6 @@ EOF
         }
     }
 
-    # Save new sources.list file
     $file->set( $fileContent );
     $file->save( );
 }
@@ -826,16 +826,13 @@ EOF
     if ($fileContent) {
         $fileContent =~ s/^\n//;
         $file->set( $fileContent );
+
         my $rs = $file->save( );
         $rs ||= $file->mode( 0644 );
         return $rs;
     }
 
-    if (-f '/etc/apt/preferences.d/imscp') {
-        return $file->delFile( );
-    }
-
-    0;
+    (-f '/etc/apt/preferences.d/imscp') ? $file->delFile( ) : 0;
 }
 
 =item _updatePackagesIndex( )

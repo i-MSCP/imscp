@@ -290,8 +290,9 @@ sub _installFiles
         return 1;
     }
 
-    my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma" )->remove( );
-    $rs ||= iMSCP::Dir->new( dirname => "$packageDir" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma" );
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma" )->remove( );
+    iMSCP::Dir->new( dirname => "$packageDir" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma" );
+    0;
 }
 
 =item _setupSqlUser( )
@@ -558,8 +559,8 @@ sub _buildConfig
     $cfgTpl = process( $data, $cfgTpl );
 
     my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/config.inc.php" );
-    $rs = $file->set( $cfgTpl );
-    $rs ||= $file->save( );
+    $file->set( $cfgTpl );
+    $rs = $file->save( );
     $rs ||= $file->owner( $panelUName, $panelGName );
     $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( "$confDir/config.inc.php" );

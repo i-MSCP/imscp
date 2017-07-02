@@ -81,17 +81,16 @@ sub run
     }
 
     # Make sure that backup directory exists
-    my $rs = iMSCP::Dir->new( dirname => $main::imscpConfig{'BACKUP_FILE_DIR'} )->make(
+    iMSCP::Dir->new( dirname => $main::imscpConfig{'BACKUP_FILE_DIR'} )->make(
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ROOT_GROUP'},
             mode  => 0750
         }
     );
-    return $rs if $rs;
 
     # Backup i-MSCP database
-    $rs = _backupDatabase( );
+    my $rs = _backupDatabase( );
     return $rs if $rs;
 
     # Backup configuration files

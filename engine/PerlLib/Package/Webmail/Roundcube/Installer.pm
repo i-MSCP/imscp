@@ -295,17 +295,10 @@ sub _installFiles
     }
 
     my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
-    local $@;
-    eval {
-        iMSCP::Dir->new( dirname => $destDir )->remove( );
-        iMSCP::Dir->new( dirname => "$packageDir/iMSCP/config" )->rcopy( $self->{'cfgDir'} );
-        iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( $destDir );
-    };
-    if ($@) {
-        error($@);
-        return 1;
-    }
 
+    iMSCP::Dir->new( dirname => $destDir )->remove( );
+    iMSCP::Dir->new( dirname => "$packageDir/iMSCP/config" )->rcopy( $self->{'cfgDir'} );
+    iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( $destDir );
     0;
 }
 
@@ -483,8 +476,8 @@ sub _buildRoundcubeConfig
     $cfgTpl = process( $data, $cfgTpl );
 
     my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/config.inc.php" );
-    $rs = $file->set( $cfgTpl );
-    $rs ||= $file->save( );
+    $file->set( $cfgTpl );
+    $rs = $file->save( );
     $rs ||= $file->owner( $panelUName, $panelGName );
     $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php" );

@@ -262,14 +262,13 @@ sub _makeDirs
             0750
         ]
     ) {
-        $rs = iMSCP::Dir->new( dirname => $_->[0] )->make(
+        iMSCP::Dir->new( dirname => $_->[0] )->make(
             {
                 user  => $_->[1],
                 group => $_->[2],
                 mode  => $_->[3]
             }
-        );
-        return $rs if $rs;
+        );;
     }
 
     $self->{'eventManager'}->trigger( 'afterHttpdMakeDirs' );
@@ -367,8 +366,9 @@ sub _buildApacheConfFiles
         return $rs if $rs;
 
         my $file = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf" );
-        $rs = $file->set( $cfgTpl );
-        $rs ||= $file->save( );
+        $file->set( $cfgTpl );
+
+        $rs = $file->save( );
         $rs ||= $file->mode( 0644 );
         return $rs if $rs;
     }
@@ -559,8 +559,7 @@ sub _cleanup
     }
 
     for ('/var/log/apache2/backup', '/var/log/apache2/users', '/var/www/scoreboards') {
-        $rs = iMSCP::Dir->new( dirname => $_ )->remove( );
-        return $rs if $rs;
+        iMSCP::Dir->new( dirname => $_ )->remove( );
     }
 
     # Remove customer's logs file if any (no longer needed since we are now use bind mount)
@@ -578,19 +577,16 @@ sub _cleanup
         return $rs if $rs;
     }
 
-    $rs = iMSCP::Dir->new( dirname => '/etc/php5' )->remove( );
-    return $rs if $rs;
+    iMSCP::Dir->new( dirname => '/etc/php5' )->remove( );
 
     for(grep !/^$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}$/, 
         glob dirname($self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}).'/*'
     ) {
-        $rs = iMSCP::Dir->new( dirname => $_ )->remove( );
-        return $rs if $rs;
+        iMSCP::Dir->new( dirname => $_ )->remove( );
     }
 
     # CGI
-    $rs = iMSCP::Dir->new( dirname => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'} )->remove( );
-    return $rs if $rs;
+    iMSCP::Dir->new( dirname => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'} )->remove( );
 
     # FPM
     unlink grep !/www\.conf$/, glob "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/*.conf";

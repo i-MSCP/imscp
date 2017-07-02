@@ -330,14 +330,13 @@ sub disableDmn
 
     # Ensure that all needed directories are present
     for ($self->_dmnFolders( $data )) {
-        $rs = iMSCP::Dir->new( dirname => $_->[0] )->make(
+        iMSCP::Dir->new( dirname => $_->[0] )->make(
             {
                 user  => $_->[1],
                 group => $_->[2],
                 mode  => $_->[3]
             }
         );
-        return $rs if $rs;
     }
 
     $self->setData( $data );
@@ -439,8 +438,7 @@ sub disableDmn
     # Transitional - Remove deprecated `domain_disable_page' directory if any
     if ($data->{'DOMAIN_TYPE'} eq 'dmn' && -d $data->{'WEB_DIR'}) {
         clearImmutable( $data->{'WEB_DIR'} );
-        $rs = iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/domain_disable_page" )->remove( );
-        return $rs if $rs;
+        iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/domain_disable_page" )->remove( );
         setImmutable( $data->{'WEB_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
     }
 
@@ -484,16 +482,13 @@ sub deleteDmn
 
         clearImmutable( $parentDir );
         clearImmutable( $data->{'WEB_DIR'}, 'recursive' );
-
-        $rs = iMSCP::Dir->new( dirname => $data->{'WEB_DIR'} )->remove( );
-        return $rs if $rs;
+        iMSCP::Dir->new( dirname => $data->{'WEB_DIR'} )->remove( );
 
         if ($parentDir ne $userWebDir) {
             my $dir = iMSCP::Dir->new( dirname => $parentDir );
             if ($dir->isEmpty( )) {
                 clearImmutable( dirname( $parentDir ) );
-                $rs = $dir->remove( );
-                return $rs if $rs;
+                $dir->remove( );
             }
         }
 
@@ -504,9 +499,10 @@ sub deleteDmn
         }
     }
 
-    $rs = iMSCP::Dir->new( dirname => "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}" )->remove( );
-    $rs ||= iMSCP::Dir->new( dirname => "$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}" )->remove( );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdDelDmn', $data );
+    iMSCP::Dir->new( dirname => "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}" )->remove( );
+    iMSCP::Dir->new( dirname => "$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}" )->remove( );
+
+    $rs = $self->{'eventManager'}->trigger( 'afterHttpdDelDmn', $data );
     $self->{'restart'} = 1 unless $rs;
     $rs;
 }
@@ -619,8 +615,11 @@ sub addHtpasswd
     $fileContent .= "$data->{'HTUSER_NAME'}:$data->{'HTUSER_PASS'}\n";
 
     $rs = $self->{'eventManager'}->trigger( 'afterHttpdAddHtpasswd', \$fileContent, $data );
-    $rs ||= $file->set( $fileContent );
-    $rs ||= $file->save( );
+    return $rs if $rs;
+
+    $file->set( $fileContent );
+
+    $rs = $file->save( );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
     $rs ||= $file->mode( 0640 );
     return $rs if $rs;
@@ -657,8 +656,11 @@ sub deleteHtpasswd
     $fileContent =~ s/^$data->{'HTUSER_NAME'}:[^\n]*\n//gim;
 
     $rs = $self->{'eventManager'}->trigger( 'afterHttpdDelHtpasswd', \$fileContent, $data );
-    $rs ||= $file->set( $fileContent );
-    $rs ||= $file->save( );
+    return $rs if $rs;
+
+    $file->set( $fileContent );
+
+    $rs = $file->save( );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
     $rs ||= $file->mode( 0640 );
     return $rs if $rs;
@@ -696,8 +698,11 @@ sub addHtgroup
     $fileContent .= "$data->{'HTGROUP_NAME'}:$data->{'HTGROUP_USERS'}\n";
 
     $rs = $self->{'eventManager'}->trigger( 'afterHttpdAddHtgroup', \$fileContent, $data );
-    $rs ||= $file->set( $fileContent );
-    $rs ||= $file->save( );
+    return $rs if $rs;
+
+    $file->set( $fileContent );
+
+    $rs = $file->save( );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
     $rs ||= $file->mode( 0640 );
     return $rs if $rs;
@@ -733,9 +738,12 @@ sub deleteHtgroup
 
     $fileContent =~ s/^$data->{'HTGROUP_NAME'}:[^\n]*\n//gim;
 
-    $rs = $file->set( $fileContent );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdDelHtgroup', \$fileContent, $data );
-    $rs ||= $file->save( );
+    return $rs if $rs;
+
+    $file->set( $fileContent );
+
+    $rs = $file->save( );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
     $rs ||= $file->mode( 0640 );
     return $rs if $rs;
@@ -789,12 +797,17 @@ sub addHtaccess
     $fileContent = $bTag.$tagContent.$eTag.$fileContent;
 
     $rs = $self->{'eventManager'}->trigger( 'afterHttpdAddHtaccess', \$fileContent, $data );
-    $rs ||= $file->set( $fileContent );
-    $rs ||= $file->save( );
+    return $rs if $rs;
+
+    $file->set( $fileContent );
+
+    $rs = $file->save( );
     $rs ||= $file->owner( $data->{'USER'}, $data->{'GROUP'} );
     $rs ||= $file->mode( 0640 );
+    return $rs if $rs;
+
     setImmutable( $data->{'AUTH_PATH'} ) if $isImmutable;
-    $rs;
+    0;
 }
 
 =item deleteHtaccess( \%data )
@@ -835,16 +848,19 @@ sub deleteHtaccess
     return $rs if $rs;
 
     if ($fileContent ne '') {
-        $rs = $file->set( $fileContent );
-        $rs ||= $file->save( );
+        $file->set( $fileContent );
+
+        $rs = $file->save( );
         $rs ||= $file->owner( $data->{'USER'}, $data->{'GROUP'} );
         $rs ||= $file->mode( 0640 );
+        return $rs if $rs;
     } elsif (-f $filePath) {
         $rs = $file->delFile( );
+        return $rs if $rs;
     }
 
     setImmutable( $data->{'AUTH_PATH'} ) if $isImmutable;
-    $rs;
+    0;
 }
 
 =item buildConf( $cfgTpl, $filename [, \%data ] )
@@ -1353,8 +1369,11 @@ sub mountLogsFolder
     my $fsFile = File::Spec->canonpath( "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}" );
     my $fields = { fs_spec => $fsSpec, fs_file => $fsFile, fs_vfstype => 'none', fs_mntops => 'bind' };
     my $rs = $self->{'eventManager'}->trigger( 'beforeMountLogsFolder', $data, $fields );
-    $rs ||= iMSCP::Dir->new( dirname => $fsFile )->make( );
-    $rs ||= addMountEntry( "$fields->{'fs_spec'} $fields->{'fs_file'} $fields->{'fs_vfstype'} $fields->{'fs_mntops'}" );
+    return $rs if $rs;
+
+    iMSCP::Dir->new( dirname => $fsFile )->make( );
+
+    $rs = addMountEntry( "$fields->{'fs_spec'} $fields->{'fs_file'} $fields->{'fs_vfstype'} $fields->{'fs_mntops'}" );
     $rs ||= mount( $fields ) unless isMountpoint( $fields->{'fs_file'} );
     $rs ||= $self->{'eventManager'}->trigger( 'afterMountLogsFolder', $data, $fields );
 }
@@ -1656,14 +1675,13 @@ sub _addFiles
     return $rs if $rs;
 
     for ($self->_dmnFolders( $data )) {
-        $rs = iMSCP::Dir->new( dirname => $_->[0] )->make(
+        iMSCP::Dir->new( dirname => $_->[0] )->make(
             {
                 user  => $_->[1],
                 group => $_->[2],
                 mode  => $_->[3]
             }
         );
-        return $rs if $rs;
     }
 
     local $@;
@@ -1683,16 +1701,10 @@ sub _addFiles
 
     # Copy skeleton in tmp dir
     my $tmpDir = File::Temp->newdir( );
-    eval { iMSCP::Dir->new( dirname => $skelDir )->rcopy( $tmpDir ); };
-    if ($@) {
-        error($@);
-        return 1;
-    }
+    iMSCP::Dir->new( dirname => $skelDir )->rcopy( $tmpDir );
 
     # Build default page if needed (if htdocs doesn't exists or is empty)
-    if (!-d "$data->{'WEB_DIR'}/htdocs"
-        || iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/htdocs" )->isEmpty( )
-    ) {
+    if (!-d "$data->{'WEB_DIR'}/htdocs" || iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/htdocs" )->isEmpty( )) {
         if (-d "$tmpDir/htdocs") {
             # Test needed in case admin removed the index.html file from the skeleton
             if (-f "$tmpDir/htdocs/index.html") {
@@ -1709,16 +1721,12 @@ sub _addFiles
         # Force recursive permissions for newly created Web folders
         $fixPermissions = 1;
     } else {
-        $rs = iMSCP::Dir->new( dirname => "$tmpDir/htdocs" )->remove( );
-        return $rs if $rs;
+        iMSCP::Dir->new( dirname => "$tmpDir/htdocs" )->remove( );
     }
 
     if ($data->{'DOMAIN_TYPE'} eq 'dmn') {
-        if (-d "$data->{'WEB_DIR'}/errors"
-            && !iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/errors" )->isEmpty( )
-        ) {
-            $rs = iMSCP::Dir->new( dirname => "$tmpDir/errors" )->remove( );
-            return $rs if $rs;
+        if (-d "$data->{'WEB_DIR'}/errors" && !iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/errors" )->isEmpty( )) {
+            iMSCP::Dir->new( dirname => "$tmpDir/errors" )->remove( );
         } elsif (!-d "$tmpDir/errors") {
             error( "The `domain' Web folder skeleton must provides the `errors' directory." );
             return 1;
@@ -1728,9 +1736,10 @@ sub _addFiles
 
         if ($self->{'config'}->{'MOUNT_CUSTOMER_LOGS'} ne 'yes') {
             $rs = $self->umountLogsFolder( $data );
-            $rs ||= iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/logs" )->remove( );
-            $rs ||= iMSCP::Dir->new( dirname => "$tmpDir/logs" )->remove( );
             return $rs if $rs;
+
+            iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/logs" )->remove( );
+            iMSCP::Dir->new( dirname => "$tmpDir/logs" )->remove( );
         } elsif (!-d "$tmpDir/logs") {
             error( "Web folder skeleton must provides the `logs' directory." );
             return 1;
@@ -1742,14 +1751,13 @@ sub _addFiles
     # Fix #IP-1327 - Ensure that parent Web folder exists
     unless (-d $parentDir) {
         clearImmutable( dirname( $parentDir ) );
-        $rs = iMSCP::Dir->new( dirname => $parentDir )->make(
+        iMSCP::Dir->new( dirname => $parentDir )->make(
             {
                 user  => $data->{'USER'},
                 group => $data->{'GROUP'},
                 mode  => 0750
             }
         );
-        return $rs if $rs;
     } else {
         clearImmutable( $parentDir );
     }
@@ -1757,22 +1765,16 @@ sub _addFiles
     clearImmutable( $data->{'WEB_DIR'} ) if -d $data->{'WEB_DIR'};
 
     # Copy Web folder
-    eval { iMSCP::Dir->new( dirname => $tmpDir )->rcopy( $data->{'WEB_DIR'} ); };
-    if ($@) {
-        error($@);
-        return 1;
-    }
+    iMSCP::Dir->new( dirname => $tmpDir )->rcopy( $data->{'WEB_DIR'} );
 
     # Cleanup (Transitional)
     if ($data->{'DOMAIN_TYPE'} eq 'dmn') {
         # Remove deprecated `domain_disable_page' directory if any
-        $rs = iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/domain_disable_page" )->remove( );
-        return $rs if $rs;
+        iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/domain_disable_page" )->remove( );
     } elsif (!$data->{'SHARED_MOUNT_POINT'}) {
         # Remove deprecated phptmp directory if any
-        $rs = iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/phptmp" )->remove( );
-        $rs ||= iMSCP::Dir->new( dirname => "$tmpDir/phptmp" )->remove( );
-        return $rs if $rs;
+        iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/phptmp" )->remove( );
+        iMSCP::Dir->new( dirname => "$tmpDir/phptmp" )->remove( );
     }
 
     # Set ownership and permissions

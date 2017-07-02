@@ -839,9 +839,8 @@ sub _writeFile
     my $file = iMSCP::File->new( filename => $filepath );
 
     if ($fileContent ne '') {
-        $file->set( $fileContent ) == 0 && $file->save( ) == 0 && $file->mode( 0644 ) == 0 or die(
-            sprintf( "Couldn't write `%s' file", $filepath )
-        );
+        $file->set( $fileContent );
+        $file->save( ) == 0 && $file->mode( 0644 ) == 0 or die( sprintf( "Couldn't write `%s' file", $filepath ) );
     } elsif ($filepath =~ /\.override$/ && -f $filepath) {
         $file->delFile( ) == 0 or die( sprintf( "Couldn't unlink `%s' file", $filepath ) );
     } else {

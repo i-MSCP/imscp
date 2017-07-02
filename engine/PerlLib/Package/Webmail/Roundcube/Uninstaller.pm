@@ -176,9 +176,11 @@ sub _removeFiles
 {
     my ($self) = @_;
 
-    my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail" )->remove( );
-    $rs ||= iMSCP::Dir->new( dirname => $self->{'cfgDir'} )->remove( );
-    return $rs if $rs || !-f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf";
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail" )->remove( );
+    iMSCP::Dir->new( dirname => $self->{'cfgDir'} )->remove( );
+
+    return 0 unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf";
+
     iMSCP::File->new(
         filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf"
     )->delFile( );

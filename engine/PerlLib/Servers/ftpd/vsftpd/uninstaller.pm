@@ -161,13 +161,7 @@ sub _removeConfig
         }
     }
 
-    local $@;
-    eval { iMSCP::Dir->new( dirname => $self->{'config'}->{'FTPD_USER_CONF_DIR'} )->remove( ); };
-    if ($@) {
-        error($@);
-        return 1;
-    }
-
+    iMSCP::Dir->new( dirname => $self->{'config'}->{'FTPD_USER_CONF_DIR'} )->remove( );
     0;
 }
 

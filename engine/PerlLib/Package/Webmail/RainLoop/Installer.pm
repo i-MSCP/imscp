@@ -251,34 +251,25 @@ sub _installFiles
         return 1;
     }
 
-    local $@;
-    eval {
-        my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop";
+    my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop";
 
-        # Remove unwanted file to avoid hash naming convention for data directory
-        if (-f "$destDir/data/DATA.php") {
-            iMSCP::File->new( filename => "$destDir/data/DATA.php" )->delFile( ) == 0 or die(
-                getMessageByType( 'error', { amount => 1, remove => 1 } )
-            );
-        }
-
-        # Handle upgrade from old rainloop data structure
-        if (-d "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1") {
-            iMSCP::Dir->new( dirname => "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1" )->moveDir(
-                "$destDir/data/_data_"
-            );
-        }
-
-        # Install new files
-        iMSCP::Dir->new( dirname => "$srcDir/src" )->rcopy( $destDir );
-        iMSCP::Dir->new( dirname => "$srcDir/iMSCP/src" )->rcopy( $destDir );
-        iMSCP::Dir->new( dirname => "$srcDir/iMSCP/config" )->rcopy( $self->{'cfgDir'} );
-    };
-    if ($@) {
-        error( $@ );
-        return 1;
+    # Remove unwanted file to avoid hash naming convention for data directory
+    if (-f "$destDir/data/DATA.php") {
+        my $rs = iMSCP::File->new( filename => "$destDir/data/DATA.php" )->delFile( );
+        return $rs if $rs;
     }
 
+    # Handle upgrade from old rainloop data structure
+    if (-d "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1") {
+        iMSCP::Dir->new( dirname => "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1" )->moveDir(
+            "$destDir/data/_data_"
+        );
+    }
+
+    # Install new files
+    iMSCP::Dir->new( dirname => "$srcDir/src" )->rcopy( $destDir );
+    iMSCP::Dir->new( dirname => "$srcDir/iMSCP/src" )->rcopy( $destDir );
+    iMSCP::Dir->new( dirname => "$srcDir/iMSCP/config" )->rcopy( $self->{'cfgDir'} );
     0;
 }
 
@@ -427,8 +418,8 @@ sub _buildConfig
         $cfgTpl = process( $data, $cfgTpl );
 
         my $file = iMSCP::File->new( filename => "$confDir/$confFile" );
-        $rs = $file->set( $cfgTpl );
-        $rs ||= $file->save( );
+        $file->set( $cfgTpl );
+        $rs = $file->save( );
         $rs ||= $file->owner( $panelUName, $panelGName );
         $rs ||= $file->mode( 0640 );
         return $rs if $rs;
@@ -474,18 +465,11 @@ sub _removeOldVersionFiles
 {
     my ($self) = @_;
 
-    local $@;
-    eval {
-        my $versionsDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop/rainloop/v";
+    my $versionsDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop/rainloop/v";
 
-        for my $versionDir(iMSCP::Dir->new( dirname => $versionsDir )->getDirs( )) {
-            next if $versionDir eq $self->{'config'}->{'RAINLOOP_VERSION'};
-            iMSCP::Dir->new( dirname => "$versionsDir/$versionDir" )->remove( );
-        }
-    };
-    if ($@) {
-        error( $@ );
-        return 1;
+    for my $versionDir(iMSCP::Dir->new( dirname => $versionsDir )->getDirs( )) {
+        next if $versionDir eq $self->{'config'}->{'RAINLOOP_VERSION'};
+        iMSCP::Dir->new( dirname => "$versionsDir/$versionDir" )->remove( );
     }
 
     0;

@@ -251,8 +251,7 @@ sub _makeDirs
     return $rs if $rs;
 
     # Remove any older fcgi starter directory (prevent possible orphaned file when changing PHP configuration level)
-    $rs = iMSCP::Dir->new( dirname => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'} )->remove( );
-    return $rs if $rs;
+    iMSCP::Dir->new( dirname => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'} )->remove( );
 
     for (
         [
@@ -268,14 +267,13 @@ sub _makeDirs
             0555
         ]
     ) {
-        $rs = iMSCP::Dir->new( dirname => $_->[0] )->make(
+        iMSCP::Dir->new( dirname => $_->[0] )->make(
             {
                 user  => $_->[1],
                 group => $_->[2],
                 mode  => $_->[3]
             }
         );
-        return $rs if $rs;
     }
 
     $self->{'eventManager'}->trigger( 'afterHttpdMakeDirs' );
@@ -294,6 +292,7 @@ sub _copyDomainDisablePages
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/skel/domain_disabled_pages" )->rcopy(
         "$main::imscpConfig{'USER_WEB_DIR'}/domain_disabled_pages"
     );
+    0;
 }
 
 =item _buildFastCgiConfFiles( )
@@ -338,8 +337,9 @@ sub _buildFastCgiConfFiles
     $file = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/fcgid_imscp.load" );
     $cfgTpl = "<IfModule !mod_fcgid.c>\n".$cfgTpl."</IfModule>\n";
 
-    $rs = $file->set( $cfgTpl );
-    $rs ||= $file->save( );
+    $file->set( $cfgTpl );
+
+    $rs = $file->save( );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
     $rs = $self->{'httpd'}->disableModules(
@@ -386,8 +386,9 @@ sub _buildApacheConfFiles
         return $rs if $rs;
 
         my $file = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf" );
-        $rs = $file->set( $cfgTpl );
-        $rs ||= $file->save( );
+        $file->set( $cfgTpl );
+
+        $rs = $file->save( );
         $rs ||= $file->mode( 0644 );
         return $rs if $rs;
     }
@@ -580,8 +581,7 @@ sub _cleanup
     }
 
     for ('/var/log/apache2/backup', '/var/log/apache2/users', '/var/www/scoreboards') {
-        $rs = iMSCP::Dir->new( dirname => $_ )->remove( );
-        return $rs if $rs;
+        iMSCP::Dir->new( dirname => $_ )->remove( );
     }
 
     # Remove customer's logs file if any (no longer needed since we are now use bind mount)
@@ -599,14 +599,12 @@ sub _cleanup
         return $rs if $rs;
     }
 
-    $rs = iMSCP::Dir->new( dirname => '/etc/php5' )->remove( );
-    return $rs if $rs;
+    iMSCP::Dir->new( dirname => '/etc/php5' )->remove( );
 
     for(grep!/^$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}$/,
         glob dirname($self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}).'/*'
     ) {
-        $rs = iMSCP::Dir->new( dirname => $_ )->remove( );
-        return $rs if $rs;
+        iMSCP::Dir->new( dirname => $_ )->remove( );
     }
 
     # FPM

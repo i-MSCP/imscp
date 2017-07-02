@@ -509,8 +509,8 @@ sub _createFtpUserConffile
     return $rs if $rs;
 
     my $file = iMSCP::File->new( filename => "$self->{'config'}->{'FTPD_USER_CONF_DIR'}/$data->{'USERNAME'}" );
-    $rs = $file->set( $cfgTpl );
-    $rs ||= $file->save( );
+    $file->set( $cfgTpl );
+    $file->save( );
 }
 
 =item _deleteFtpUserConffile(\%data)

@@ -100,7 +100,7 @@ sub run
 
     unless ($rs) {
         # Process all scheduled tasks
-        eval { iMSCP::DbTasksProcessor->getInstance( mode => 'backend' )->process( ); };
+        eval { iMSCP::DbTasksProcessor->getInstance( mode => 'backend' )->processDbTasks( ); };
         if ($@) {
             error( $@ );
             $rs = 1;

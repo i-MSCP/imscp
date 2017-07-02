@@ -31,7 +31,6 @@ use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Dialog::InputValidation;
-use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
@@ -534,8 +533,9 @@ EOF
 
             my $filename = fileparse( $cfgFiles{$conffile}->[0] );
             my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
-            $rs = $file->set( $cfgTpl );
-            $rs ||= $file->save( );
+            $file->set( $cfgTpl );
+
+            $rs = $file->save( );
             $rs ||= $file->owner( $cfgFiles{$conffile}->[1], $cfgFiles{$conffile}->[2] );
             $rs ||= $file->mode( $cfgFiles{$conffile}->[3] );
             $rs ||= $file->copyFile( $cfgFiles{$conffile}->[0] );

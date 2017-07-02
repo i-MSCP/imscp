@@ -212,13 +212,13 @@ sub _makeDirs
     );
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaMakeDirs', \ @directories );
-
-    # Make sure to start with clean directory
-    $rs ||= iMSCP::Dir->new(dirname => $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'})->remove( );
     return $rs if $rs;
 
+    # Make sure to start with clean directory
+    iMSCP::Dir->new(dirname => $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'})->remove( );
+
     for my $dir(@directories) {
-        $rs = iMSCP::Dir->new( dirname => $dir->[0] )->make(
+        iMSCP::Dir->new( dirname => $dir->[0] )->make(
             {
                 user           => $dir->[1],
                 group          => $dir->[2],
@@ -226,7 +226,6 @@ sub _makeDirs
                 fixpermissions => iMSCP::Getopt->fixPermissions
             }
         );
-        return $rs if $rs;
     }
 
     $self->{'eventManager'}->trigger( 'afterMtaMakeDirs' );
@@ -333,8 +332,9 @@ sub _buildAliasesDb
     return $rs if $rs;
 
     my $file = iMSCP::File->new( filename => $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'} );
-    $rs = $file->set( $cfgTpl );
-    $rs ||= $file->save( );
+    $file->set( $cfgTpl );
+
+    $rs = $file->save( );
     return $rs if $rs;
 
     $rs = execute( 'newaliases', \ my $stdout, \ my $stderr );
@@ -382,8 +382,8 @@ sub _buildMasterCfFile
     return $rs if $rs;
 
     my $file = iMSCP::File->new( filename => $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'} );
-    $rs ||= $file->set( $cfgTpl );
-    $rs ||= $file->save( );
+    $file->set( $cfgTpl );
+    $file->save( );
 }
 
 =item _buildMainCfFile( )
@@ -443,8 +443,9 @@ sub _buildMainCfFile
     return $rs if $rs;
 
     my $file = iMSCP::File->new( filename => $self->{'config'}->{'POSTFIX_CONF_FILE'} );
-    $rs ||= $file->set( $cfgTpl );
-    $rs ||= $file->save( );
+    $file->set( $cfgTpl );
+
+    $rs = $file->save( );
     return $rs if $rs;
 
     # Add TLS parameters if required

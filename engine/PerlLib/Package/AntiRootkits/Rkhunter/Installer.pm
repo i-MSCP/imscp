@@ -165,8 +165,8 @@ sub _scheduleCheck
 
     # Create an empty file to avoid planning multiple check if installer is run many time
     my $file = iMSCP::File->new( filename => $main::imscpConfig{'RKHUNTER_LOG'} );
-    my $rs = $file->set( "Check scheduled...\n" );
-    $rs ||= $file->save( );
+    $file->set( "Check scheduled...\n" );
+    my $rs = $file->save( );
     return $rs if $rs;
 
     $rs = execute(

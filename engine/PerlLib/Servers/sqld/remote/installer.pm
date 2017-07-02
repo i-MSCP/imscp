@@ -84,14 +84,13 @@ sub _buildConf
     my $confDir = $self->{'config'}->{'SQLD_CONF_DIR'};
 
     # Make sure that the conf.d directory exists
-    $rs = iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make(
+    iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make(
         {
             user  => $rootUName,
             group => $rootGName,
             mode  => 0755
         }
     );
-    return $rs if $rs;
 
     # Create the /etc/mysql/my.cnf file if missing
     unless (-f "$confDir/my.cnf") {
@@ -105,8 +104,9 @@ sub _buildConf
         }
 
         my $file = iMSCP::File->new( filename => "$confDir/my.cnf" );
-        $rs = $file->set( $cfgTpl );
-        $rs ||= $file->save( );
+        $file->set( $cfgTpl );
+
+        $rs = $file->save( );
         $rs ||= $file->owner( $rootUName, $rootGName );
         $rs ||= $file->mode( 0644 );
         return $rs if $rs;
@@ -140,8 +140,9 @@ sub _buildConf
     local $UMASK = 027; # imscp.cnf file must not be created world-readable
 
     my $file = iMSCP::File->new( filename => "$confDir/conf.d/imscp.cnf" );
-    $rs ||= $file->set( $cfgTpl );
-    $rs ||= $file->save( );
+    $file->set( $cfgTpl );
+
+    $rs = $file->save( );
     $rs ||= $file->owner( $rootUName, $rootGName ); # The `mysql' group is only created by mysql-server package
     $rs ||= $file->mode( 0640 );
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldBuildConf' );

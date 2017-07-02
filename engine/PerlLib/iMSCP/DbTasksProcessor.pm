@@ -28,12 +28,14 @@ use warnings;
 use Encode qw / encode_utf8 /;
 use iMSCP::Database;
 use iMSCP::Debug;
-use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::Stepper;
 use JSON;
 use MIME::Base64 qw/ encode_base64 /;
 use parent 'Common::SingletonClass';
+
+# Ensure backward compatibility with plugins
+BEGIN { *process = \&processDbTasks; }
 
 =head1 DESCRIPTION
 
@@ -43,7 +45,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item process
+=item processDbTasks
 
  Process all db tasks
 
@@ -51,13 +53,13 @@ use parent 'Common::SingletonClass';
 
 =cut
 
-sub process
+sub processDbTasks
 {
     my ($self) = @_;
 
     # Process plugins tasks
     # Must always be processed first to allow the plugins registering their listeners on the event manager
-    $self->_process(
+    $self->_processModuleDbTasks(
         'Modules::Plugin',
         "
             SELECT plugin_id AS id, plugin_name AS name
@@ -70,7 +72,7 @@ sub process
     );
 
     # Process server IP addresses
-    $self->_process(
+    $self->_processModuleDbTasks(
         'Modules::ServerIP',
         "
             SELECT ip_id AS id, ip_number AS name
@@ -80,7 +82,7 @@ sub process
     );
 
     # Process SSL certificate toadd|tochange SSL certificates tasks
-    $self->_process(
+    $self->_processModuleDbTasks(
         'Modules::SSLcertificate',
         "
             SELECT cert_id AS id, domain_type AS name
@@ -90,7 +92,7 @@ sub process
     );
 
     # Process toadd|tochange users tasks
-    $self->_process(
+    $self->_processModuleDbTasks(
         'Modules::User',
         "
             SELECT admin_id AS id, admin_name AS name
@@ -103,7 +105,7 @@ sub process
 
     # Process toadd|tochange|torestore|toenable|todisable domain tasks
     # For each entitty, process only if the parent entity is in a consistent state
-    $self->_process(
+    $self->_processModuleDbTasks(
         'Modules::Domain',
         "
             SELECT domain_id AS id, domain_name AS name
@@ -117,7 +119,7 @@ sub process
 
     # Process toadd|tochange|torestore|toenable|todisable subdomains tasks
     # For each entitty, process only if the parent entity is in a consistent state
-    $self->_process(
+    $self->_processModuleDbTasks(
         'Modules::Subdomain',
         "
             SELECT subdomain_id AS id, CONCAT(subdomain_name, '.', domain_name) AS name
@@ -130,7 +132,7 @@ sub process
 
     # Process toadd|tochange|torestore|toenable|todisable domain aliases tasks
     # (for each entitty, process only if the parent entity is in a consistent state)
-    $self->_process(
+    $self->_processModuleDbTasks(
         'Modules::Alias',
         "
            SELECT alias_id AS id, alias_name AS name
@@ -144,7 +146,7 @@ sub process
 
     # Process toadd|tochange|torestore|toenable|todisable subdomains of domain aliases tasks
     # For each entitty, process only if the parent entity is in a consistent state
-    $self->_process(
+    $self->_processModuleDbTasks(
         'Modules::SubAlias',
         "
             SELECT subdomain_alias_id AS id, CONCAT(subdomain_alias_name, '.', alias_name) AS name
@@ -158,7 +160,7 @@ sub process
 
     # Process toadd|tochange|toenable||todisable|todelete custom DNS records which belong to domains
     # For each entitty, process only if the parent entity is in a consistent state
-    $self->_process(
+    $self->_processModuleDbTasks(
         'Modules::CustomDNS',
         "
             SELECT DISTINCT CONCAT('domain_', domain_id) AS id, domain_name AS name
@@ -171,7 +173,7 @@ sub process
 
     # Process toadd|tochange|toenable|todisable|todelete custom DNS records which belong to domain aliases
     # For each entitty, process only if the parent entity is in a consistent state
-    $self->_process(
+    $self->_processModuleDbTasks(
         'Modules::CustomDNS',
         "
             SELECT DISTINCT CONCAT('alias_', alias_id) AS id, alias_name AS name
@@ -185,7 +187,7 @@ sub process
 
     # Process toadd|tochange|toenable|todisable|todelete ftp users tasks
     # For each entitty, process only if the parent entity is in a consistent state
-    $self->_process(
+    $self->_processModuleDbTasks(
         'Modules::FtpUser',
         "
             SELECT userid AS id, userid AS name
@@ -198,7 +200,7 @@ sub process
 
     # Process toadd|tochange|toenable|todisable|todelete mail tasks
     # For each entitty, process only if the parent entity is in a consistent state
-    $self->_process(
+    $self->_processModuleDbTasks(
         'Modules::Mail',
         "
             SELECT mail_id AS id, mail_addr AS name
@@ -212,7 +214,7 @@ sub process
 
     # Process toadd|tochange|toenable|todisable|todelete Htusers tasks
     # For each entitty, process only if the parent entity is in a consistent state
-    $self->_process(
+    $self->_processModuleDbTasks(
         'Modules::Htpasswd',
         "
             SELECT id, uname AS name
@@ -225,7 +227,7 @@ sub process
 
     # Process toadd|tochange|toenable|todisable|todelete Htgroups tasks
     # For each entitty, process only if the parent entity is in a consistent state
-    $self->_process(
+    $self->_processModuleDbTasks(
         'Modules::Htgroup',
         "
             SELECT id, ugroup AS name
@@ -239,7 +241,7 @@ sub process
 
     # Process toadd|tochange|toenable|todisable|todelete Htaccess tasks
     # For each entitty, process only if the parent entity is in a consistent state
-    $self->_process(
+    $self->_processModuleDbTasks(
         'Modules::Htaccess',
         "
             SELECT id, auth_name AS name
@@ -252,7 +254,7 @@ sub process
     );
 
     # Process todelete subdomain aliases tasks
-    $self->_process(
+    $self->_processModuleDbTasks(
         'Modules::SubAlias',
         "
             SELECT subdomain_alias_id AS id, concat(subdomain_alias_name, '.', alias_name) AS name
@@ -264,7 +266,7 @@ sub process
 
     # Process todelete domain aliases tasks
     # For each entity, process only if the entity do not have any direct children
-    $self->_process(
+    $self->_processModuleDbTasks(
         'Modules::Alias',
         "
             SELECT alias_id AS id, alias_name AS name
@@ -277,7 +279,7 @@ sub process
     );
 
     # Process todelete subdomains tasks
-    $self->_process(
+    $self->_processModuleDbTasks(
         'Modules::Subdomain',
         "
             SELECT subdomain_id AS id, CONCAT(subdomain_name, '.', domain_name) AS name
@@ -289,7 +291,7 @@ sub process
 
     # Process todelete domains tasks
     # For each entity, process only if the entity do not have any direct children
-    $self->_process(
+    $self->_processModuleDbTasks(
         'Modules::Domain',
         "
             SELECT domain_id AS id, domain_name AS name
@@ -303,7 +305,7 @@ sub process
 
     # Process todelete users tasks
     # For each entity, process only if the entity do not have any direct children
-    $self->_process(
+    $self->_processModuleDbTasks(
         'Modules::User',
         "
             SELECT admin_id AS id, admin_name AS name
@@ -423,7 +425,7 @@ sub _init
     $self;
 }
 
-=item _process( $module, $sql [, $perItemLogFile = FALSE ] )
+=item _processModuleDbTasks( $module, $sql [, $perItemLogFile = FALSE ] )
 
  Process db tasks from the given module
 
@@ -434,47 +436,76 @@ sub _init
 
 =cut
 
-sub _process
+sub _processModuleDbTasks
 {
     my ($self, $module, $sql, $perItemLogFile) = @_;
 
-    debug( sprintf( 'Processing %s tasks...', $module ) );
+    eval {
+        debug( sprintf( 'Processing %s tasks...', $module ), (caller( 2 ))[3] );
 
-    my $dbh = $self->{'db'}->getRawDb( );
-    my $rows = $dbh->selectall_arrayref( $sql, { Slice => { } } );
+        my $dbh = $self->{'db'}->getRawDb( );
+        local $dbh->{'RaiseError'} = 1;
 
-    defined $rows && !$dbh->err( ) or die( $dbh->errstr( ) );
+        my $sth = $dbh->prepare( $sql );
+        $sth->execute( );
 
-    unless (@{$rows}) {
-        debug( sprintf( 'No task to process for %s', $module ) );
-        return 0;
-    }
+        my $countRows = $sth->rows( );
 
-    eval "require $module" or die( sprintf( "Couldn't load %s: %s", $module, $@ ) );
-
-    my ($nStep, $nSteps) = (0, scalar @{$rows});
-    my $needStepper = grep( $self->{'mode'} eq $_, ( 'setup', 'uninstall' ) );
-
-    for my $row(@{$rows}) {
-        my ($id, $name, $rs) = ($row->{'id'}, encode_utf8( $row->{'name'} ));
-
-        debug( sprintf( 'Processing %s tasks for: %s (ID %s)', $module, $name, $id ) );
-        newDebug( $module.(($perItemLogFile) ? "_${name}" : '').'.log' );
-
-        if ($needStepper) {
-            $rs = step(
-                sub { $module->new( )->process( $id ) },
-                sprintf( 'Processing %s tasks for: %s (ID %s)', $module, $name, $id ), $nSteps, ++$nStep
-            );
-        } else {
-            $rs = $module->new( )->process( $id );
+        unless ($countRows) {
+            debug( sprintf( 'No task to process for %s', $module ), (caller( 2 ))[3] );
+            return 0;
         }
 
-        $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error');
+        eval "require $module" or die;
+
+        my ($nStep, $rs) = (0, 0);
+        my $needStepper = grep( $self->{'mode'} eq $_, ( 'setup', 'uninstall' ) );
+
+        while(my $row = $sth->fetchrow_hashref( )) {
+            my $name = encode_utf8( $row->{'name'} );
+
+            debug( sprintf( 'Processing %s tasks for: %s (ID %s)', $module, $name, $row->{'id'} ), (caller( 2 ))[3] );
+            newDebug( $module.(($perItemLogFile) ? "_${name}" : '').'.log' );
+
+            if ($needStepper) {
+                $rs = step(
+                    sub { $self->_processModuleTasks( $module, $row->{'id'} ); },
+                    sprintf( 'Processing %s tasks for: %s (ID %s)', $module, $name, $row->{'id'} ),
+                    $countRows,
+                    ++$nStep
+                );
+            } else {
+                $rs = $self->_processModuleTasks( $module, $row->{'id'} );
+            }
+
+            $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
+            endDebug( );
+        }
+    };
+    if ($@) {
         endDebug( );
+        die;
     }
 
     1;
+}
+
+=item _processModuleTasks ( $module, $dbItemId )
+
+ Process module tasks for the given db item
+
+ Param string $module Module name
+ Param int $dbItemId Database item unique identifier
+ Return int 0 on success, other or die on failure
+
+=cut
+
+sub _processModuleTasks
+{
+    my ($self, $module, $dbItemId) = @_;
+
+    local $self->{'db'}->getRawDb( )->{'RaiseError'} = 0;
+    $module->new( )->process( $dbItemId );
 }
 
 =back
