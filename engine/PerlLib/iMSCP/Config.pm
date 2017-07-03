@@ -70,6 +70,7 @@ sub flush
   - fileName: Configuration file path
  Optional arguments for tie( )
   - nocreate: Do not create file if it doesn't already exist, die instead
+  - nodeferring: Writes in file immediately instead of deffering writing (Only relevant in write mode)
   - nodie: Do not die when accessing to an non-existent configuration parameter
   - readonly: Sets a read-only access on the configuration file
   - temporary: Enable temporary overriding of configuration values (changes are not persistent)
@@ -255,7 +256,7 @@ sub _loadConfig
     $self->{'tieFileObject'} or die( sprintf( "Couldn't tie %s file: %s", $self->{'confFileName'}, $! ) );
 
     # Enable deffered writing if we are in writing mode
-    $self->{'tieFileObject'}->defer unless $self->{'readonly'};
+    $self->{'tieFileObject'}->defer unless $self->{'nodeferring'} || $self->{'readonly'};
 
     while(my ($lineNo, $value) = each(@{$self->{'tiefile'}})) {
         next unless $value =~ /^([^#\s=]+)\s*=\s*(.*)$/;

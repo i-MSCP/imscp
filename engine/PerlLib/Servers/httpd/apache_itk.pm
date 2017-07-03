@@ -1418,16 +1418,18 @@ sub _init
     $self->_mergeConfig( $self->{'apacheCfgDir'}, 'apache.data' ) if -f "$self->{'apacheCfgDir'}/apache.data.dist";
     tie %{$self->{'config'}},
         'iMSCP::Config',
-        fileName => "$self->{'apacheCfgDir'}/apache.data",
-        readonly => !(defined $main::execmode && $main::execmode eq 'setup');
+        fileName    => "$self->{'apacheCfgDir'}/apache.data",
+        readonly    => !(defined $main::execmode && $main::execmode eq 'setup'),
+        nodeferring => (defined $main::execmode && $main::execmode eq 'setup');
 
     $self->{'phpCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/php";
 
     $self->_mergeConfig( $self->{'phpCfgDir'}, 'php.data' ) if -f "$self->{'phpCfgDir'}/php.data.dist";
     tie %{$self->{'phpConfig'}},
         'iMSCP::Config',
-        fileName => "$self->{'phpCfgDir'}/php.data",
-        readonly => !(defined $main::execmode && $main::execmode eq 'setup');
+        fileName    => "$self->{'phpCfgDir'}/php.data",
+        readonly    => !(defined $main::execmode && $main::execmode eq 'setup'),
+        nodeferring => (defined $main::execmode && $main::execmode eq 'setup');
 
     $self->{'eventManager'}->register( 'afterHttpdBuildConfFile', sub { $self->_cleanTemplate( @_ )} );
     $self;

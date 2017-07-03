@@ -36,6 +36,7 @@ use iMSCP::Net;
 use iMSCP::ProgramFinder;
 use iMSCP::Service;
 use iMSCP::TemplateParser;
+use iMSCP::Umask;
 use Servers::named::bind;
 use version;
 use parent 'Common::SingletonClass';
@@ -152,7 +153,7 @@ EOF
                             $msg = "\n\n\\Z1Wrong or disallowed IP address found.\\Zn\n\nPlease try again:";
                         }
                     }
-                } while ($rs < 30 && $msg);
+                } while $rs < 30 && $msg;
             } else {
                 @slaveDnsIps = ('no');
             }
@@ -177,7 +178,7 @@ EOF
                     $msg = "\n\n\\Z1Wrong or disallowed IP address found.\\Zn\n\nPlease try again:";
                 }
             }
-        } while ($rs < 30 && $msg);
+        } while $rs < 30 && $msg;
     }
 
     if ($rs < 30) {
@@ -480,8 +481,10 @@ sub _buildConf
         my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$tplName" );
         $file->set( $tplContent );
 
+        local $UMASK = 027;
+
         $rs = $file->save( );
-        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
         $rs ||= $file->mode( 0640 );
         $rs ||= $file->copyFile( $self->{'config'}->{'BIND_OPTIONS_CONF_FILE'} );
         return $rs if $rs;
@@ -511,8 +514,10 @@ sub _buildConf
         my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$tplName" );
         $file->set( $tplContent );
 
+        local $UMASK = 027;
+
         $rs = $file->save( );
-        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
         $rs ||= $file->mode( 0640 );
         $rs ||= $file->copyFile( $self->{'config'}->{'BIND_CONF_FILE'} );
         return $rs if $rs;
@@ -538,8 +543,10 @@ sub _buildConf
         my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$tplName" );
         $file->set( $tplContent );
 
+        local $UMASK = 027;
+
         $rs = $file->save( );
-        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
         $rs ||= $file->mode( 0640 );
         $rs ||= $file->copyFile( $self->{'config'}->{'BIND_LOCAL_CONF_FILE'} );
         return $rs if $rs;
@@ -609,7 +616,7 @@ sub _oldEngineCompatibility
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedOldEngineCompatibility' );
     return $rs if $rs;
 
-    if(-f "$self->{'cfgDir'}/bind.old.data") {
+    if (-f "$self->{'cfgDir'}/bind.old.data") {
         $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/bind.old.data" )->delFile( );
         return $rs if $rs;
     }

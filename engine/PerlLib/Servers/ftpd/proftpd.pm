@@ -444,8 +444,9 @@ sub _init
     $self->_mergeConfig( ) if -f "$self->{'cfgDir'}/proftpd.data.dist";
     tie %{$self->{'config'}},
         'iMSCP::Config',
-        fileName => "$self->{'cfgDir'}/proftpd.data",
-        readonly => !(defined $main::execmode && $main::execmode eq 'setup');
+        fileName    => "$self->{'cfgDir'}/proftpd.data",
+        readonly    => !(defined $main::execmode && $main::execmode eq 'setup'),
+        nodeferring => (defined $main::execmode && $main::execmode eq 'setup');
     $self;
 }
 

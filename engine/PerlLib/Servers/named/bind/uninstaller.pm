@@ -26,7 +26,6 @@ package Servers::named::bind::uninstaller;
 use strict;
 use warnings;
 use File::Basename;
-use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::File;
@@ -95,7 +94,26 @@ sub _removeConfig
 {
     my ($self) = @_;
 
-    for ('BIND_CONF_DEFAULT_FILE', 'BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
+    if (exists $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}) {
+        my $dirname = dirname( $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} );
+        if (-d $dirname) {
+            my $filename = basename( $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} );
+
+            if (-f "$self->{'bkpDir'}/$filename.system") {
+                my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
+                    $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}
+                );
+                return $rs if $rs;
+
+                my $file = iMSCP::File->new( filename => $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} );
+                $rs = $file->mode( 0640 );
+                $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
+                return $rs if $rs;
+            }
+        }
+    }
+
+    for ('BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
         next unless exists $self->{'config'}->{$_};
 
         my $dirname = dirname( $self->{'config'}->{$_} );
@@ -107,7 +125,11 @@ sub _removeConfig
         my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
             $self->{'config'}->{$_}
         );
-        $rs ||= iMSCP::File->new( filename => $self->{'config'}->{$_} )->mode( 0644 );
+        return $rs if $rs;
+
+        my $file = iMSCP::File->new( filename => $self->{'config'}->{$_} );
+        $rs = $file->mode( 0640 );
+        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
         return $rs if $rs;
     }
 

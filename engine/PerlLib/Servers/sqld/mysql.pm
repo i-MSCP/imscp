@@ -302,8 +302,9 @@ sub _init
     $self->_mergeConfig( ) if -f "$self->{'cfgDir'}/mysql.data.dist";
     tie %{$self->{'config'}},
         'iMSCP::Config',
-        fileName => "$self->{'cfgDir'}/mysql.data",
-        readonly => !(defined $main::execmode && $main::execmode eq 'setup');
+        fileName    => "$self->{'cfgDir'}/mysql.data",
+        readonly    => !(defined $main::execmode && $main::execmode eq 'setup'),
+        nodeferring => (defined $main::execmode && $main::execmode eq 'setup');
     $self;
 }
 

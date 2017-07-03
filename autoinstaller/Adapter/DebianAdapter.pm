@@ -281,7 +281,8 @@ sub uninstallPackages
 
     $packagesToUninstall ||= $self->{'packagesToUninstall'};
 
-    eval "use List::MoreUtils qw/ uniq /; 1" or die( $@ );
+    require List::MoreUtils;
+    List::MoreUtils->import( 'uniq' );
 
     @{$packagesToUninstall} = uniq( @{$packagesToUninstall} );
     s/=.*$// for @{$packagesToUninstall}; # Remove package version info (since 1.2.12)
