@@ -49,6 +49,7 @@ INSTALLER
     Fixed: gpg: failed to start the dirmngr '/usr/bin/dirmngr': No such file or directory
     Fixed: Lose of data in configuration files due to deffered writing (all servers/packages) impl.
     Fixed: Make sure that LOGROTATE(8) configuration files are copied with expected ownership and permissions
+    Fixed: Make sure that none of package being installed/updated is in `hold' state
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.6

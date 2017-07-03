@@ -194,6 +194,15 @@ EOF
     endDetail( );
     return $rs if $rs;
 
+    # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
+    execute(
+        "apt-mark unhold @{$self->{'packagesToInstall'}} @{$self->{'packagesToInstallDelayed'}}",
+        \my  $stdout,
+        \my  $stderr
+    );
+    debug( $stdout ) if $stdout;
+    debug( $stderr ) if $stderr;
+
     for my $packages($self->{'packagesToInstall'}, $self->{'packagesToInstallDelayed'}) {
         next unless @{$packages};
 
@@ -214,8 +223,7 @@ EOF
                 " install @{$packages}";
         }
 
-        my $stdout;
-        $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef, \ my $stderr );
+        $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef, \ $stderr );
         error( sprintf( "Couldn't install packages: %s", $stderr || 'Unknown error' ) ) if $rs;
         return $rs if $rs;
     }
@@ -231,10 +239,9 @@ EOF
         for my $package(sort keys %{$self->{'packagesPostInstallTasks'}}) {
             $rs ||= step(
                 sub {
-                    my $stdout;
                     $rs = execute(
                         $self->{'packagesPostInstallTasks'}->{$package},
-                        (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout), \ my $stderr
+                        (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout), \ $stderr
                     );
                     error(
                         $stderr
