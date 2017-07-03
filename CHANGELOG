@@ -5,7 +5,7 @@ Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-    Added `nodeferring' option to iMSCP::Config which allows to disable deferred writing
+    Added: `nodeferring' option to iMSCP::Config which allows to disable deferred writing
 
 CONFIG
     Added: `BIND_DB_ROOT_DIR' configuration parameter (Bind9)
