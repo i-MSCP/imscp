@@ -959,7 +959,7 @@ sub postconf
                             next;
                         }
 
-                        # If the parameter already exists, we delete it as someone could want move it (after, before option)
+                        # If the parameter already exists, we delete it as someone could want move it
                         @vls = grep( $_ ne $v, @vls );
                         my $regexp = $params{$p}->{'before'} || $params{$p}->{'after'};
                         ref $regexp eq 'Regexp' or die( 'Invalid before|after option. Expects a Regexp');
