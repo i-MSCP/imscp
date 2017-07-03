@@ -31,9 +31,11 @@ SCRIPTS
 SERVERS
     Changed: DNS records for alternative URLs are now added as subdomain DNS record without www and ftp records (Bind9)
     Fixed: Calling createUser()/dropUser() with `RaiseError' flag set to 1 raise an error (SQL server impl.)
-    Fixed: Couldn't switch from external to local DNS server 
+    Fixed: Couldn't switch from external to local DNS server
+    Fixed: Make usage of POSTCONF(1) to remove unwanted parameters (Servers::mta::postfix::postconf)
     Fixed: Never process the same zone twice for SOA addition (Servers::named::bind)
     Review: Engine permissions (Servers::named::bind)
+    
 
 PLUGINS
     Fixed: Exception not throw when executing multiple SQL statements in single query (Database migrations - PHP: #61613)
