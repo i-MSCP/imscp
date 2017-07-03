@@ -621,7 +621,7 @@ sub _oldEngineCompatibility
         return $rs if $rs;
     }
 
-    iMSCP::Dir->new( dirname => dirname( $self->{'config'}->{'BIND_DB_MASTER_DIR'}) )->clear( undef, qr/\.db$/ );
+    iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_ROOT_DIR'} )->clear( undef, qr/\.db$/ );
 
     $self->{'eventManager'}->trigger( 'afterNameddOldEngineCompatibility' );
 }
