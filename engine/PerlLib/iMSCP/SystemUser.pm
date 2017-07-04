@@ -104,7 +104,9 @@ sub addSystemUser
         # If we attempt to modify user' login or home, we must ensure
         # that there is no process running for the user
         if ($username ne $oldUsername || $home ne $userProps[7]) {
-            push @commands, [ [ '/usr/bin/pkill', '-KILL', '-u', $userProps[2] ], [ 0, 1 ] ],
+            push @commands, [ [ '/usr/bin/pkill', '-KILL', '-u', $userProps[2] ], [ 0, 1 ] ];
+            $isImmutableHome = -d $userProps[7] && isImmutable( $userProps[7] );
+            clearImmutable( $userProps[7] ) if $isImmutableHome;
         }
 
         my $usermodCmd = [
@@ -173,7 +175,9 @@ sub delSystemUser
 
     $self->{'username'} = $username;
 
-    return 0 unless getpwnam( $username );
+    return 0 unless my @userProps = getpwnam( $username );
+
+    clearImmutable( $userProps[7] ) if -d $userProps[7] && isImmutable( $userProps[7] );
 
     my @commands = (
         # Delete user' CRON(8) jobs

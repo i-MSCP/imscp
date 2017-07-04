@@ -6,8 +6,10 @@ Git 1.4.x
 
 BACKEND
     Added: `nodeferring' option to iMSCP::Config -- Allow disabling of deferred writing
-    Fixed: CRON(8), AT(1) and LPQ(1) jobs that belong to a user being deleted must be also deleted
+    Fixed: CRON(8), AT(1) and LPQ(1) jobs that belong to a user being deleted must be also deleted (iMSCP::SystemUser)
     Fixed: Don't execute system USERMOD(8) command when not necessary
+    Fixed: Make sure that immutable bit is preserved when moving user' homedir (iMSCP::SystemUser)
+    Fixed: Make sure that immutable bit is removed when removing user (iMSCP::SystemUser)
     Rewritten: iMSCP::SystemUser and iMSCP::SystemGroup libraries
     Rewritten: Module::User module
     Safety: Prevent modification/deletion of root user/group (iMSCP::SystemUser, iMSCP::SystemGroup)
