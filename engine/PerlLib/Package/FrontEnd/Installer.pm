@@ -757,13 +757,11 @@ sub _addMasterWebUser
                 AND created_by = ?
                 LIMIT 1
             ',
-            undef,
-            'admin',
-            '0'
+            undef, 'admin', '0'
         );
         %{$row} or die( "Couldn't find master administrator user in database" );
 
-        my ($oldUser, $uid, $gid) = ($row->{'admin_sys_uid'} ne '0')
+        my ($oldUser, $uid, $gid) = ($row->{'admin_sys_uid'} && $row->{'admin_sys_uid'} ne '0')
             ? (getpwuid( $row->{'admin_sys_uid'} ))[0, 2, 3] : ( );
 
         $rs = iMSCP::SystemUser->new(

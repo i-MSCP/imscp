@@ -26,7 +26,7 @@ package iMSCP::SystemUser;
 use strict;
 use warnings;
 use iMSCP::Debug qw/ debug error /;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::Ext2Attributes qw/ clearImmutable isImmutable setImmutable  /;
 use parent 'Common::Object';
 

@@ -123,7 +123,7 @@ sub add
     );
     return $rs if $rs;
 
-    my ($oldUser, $uid, $gid) = ($self->{'admin_sys_uid'} ne '0')
+    my ($oldUser, $uid, $gid) = ($self->{'admin_sys_uid'} && $self->{'admin_sys_uid'} ne '0')
         ? (getpwuid( $self->{'admin_sys_uid'} ))[0, 2, 3] : ();
 
     $rs = iMSCP::SystemUser->new(
