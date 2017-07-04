@@ -78,10 +78,10 @@ sub execute( $;$$ )
         (${$stdout}, ${$stderr}) = capture sub { system( $multitArgs ? @{$command} : $command); };
         chomp( ${$stdout}, ${$stderr} );
     } elsif ($stdout) {
-        ${$stdout} = capture_stdout sub  { system( $multitArgs ? @{$command} : $command ); };
+        ${$stdout} = capture_stdout sub { system( $multitArgs ? @{$command} : $command ); };
         chomp( ${$stdout} );
     } elsif ($stderr) {
-        ${$stderr} = capture_stderr sub  { system( $multitArgs ? @{$command} : $command ); };
+        ${$stderr} = capture_stderr sub { system( $multitArgs ? @{$command} : $command ); };
         chomp( $stderr );
     } else {
         system( $multitArgs ? @{$command} : $command ) != -1 or die(
@@ -131,7 +131,8 @@ sub executeNoWait( $;$$ )
 
             defined $ret or die( $! ); # Something is going wrong; Best is to abort early
 
-            if ($ret == 0) { # EOL
+            if ($ret == 0) {
+                # EOL
                 $sel->remove( $fh );
                 close( $fh );
                 next;
@@ -171,14 +172,15 @@ sub escapeShell( $ )
 
  Return human exit code
 
- Param int $ret Raw exit code (default to $?)
+ Param int $ret Raw exit code
  Return int exit code or die on failure
 
 =cut
 
 sub getExitCode( ;$ )
 {
-    my $ret = shift // $?;
+    my ($ret) = @_;
+    $ret //= $?;
 
     if ($ret == -1) {
         debug( "Couldn't execute command" );
@@ -190,9 +192,7 @@ sub getExitCode( ;$ )
         return $ret;
     }
 
-    $ret = $ret >> 8;
-    debug( sprintf( 'Command exited with value: %s', $ret ) ) if $ret != 0;
-    $ret;
+    $ret >> 8;
 }
 
 =back

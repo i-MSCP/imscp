@@ -182,7 +182,7 @@ sub setEnginePermissions
 
  Process addUser tasks
 
- Param hash \%data user data as provided by Modules::FtpUser module
+ Param hash \%data user data as provided by Modules::User module
  Return int 0 on success, other on failure
 
 =cut

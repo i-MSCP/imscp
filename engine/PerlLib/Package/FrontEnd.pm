@@ -34,6 +34,7 @@ use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::Rights;
 use iMSCP::Service;
+use iMSCP::SystemUser;
 use iMSCP::TemplateParser;
 use parent 'Common::SingletonClass';
 
@@ -368,6 +369,29 @@ sub setGuiPermissions
         }
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontendSetGuiPermissions' );
+}
+
+
+=item addUser( \%data )
+
+ Process addUser tasks
+
+ Param hash \%data user data as provided by Modules::FtpUser module
+ Return int 0 on success, other on failure
+
+=cut
+
+sub addUser
+{
+    my $data = $_[1];
+
+    return 0 if $data->{'STATUS'} eq 'tochangepwd';
+
+    iMSCP::SystemUser->new(
+        username => $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'}
+    )->addToGroup(
+        $data->{'GROUP'}
+    );
 }
 
 =item enableSites( @sites )

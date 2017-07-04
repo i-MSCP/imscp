@@ -1,11 +1,11 @@
 =head1 NAME
 
- iMSCP::SystemGroup - i-MSCP library that allows to add/delete UNIX groups
+ iMSCP::SystemGroup - i-MSCP library for management of UNIX groups
 
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by internet Multi Server Control Panel
+# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,24 +25,24 @@ package iMSCP::SystemGroup;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error /;
 use iMSCP::Execute;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- iMSCP::SystemGroup - i-MSCP library that allows to add/delete UNIX groups.
+ iMSCP::SystemGroup - i-MSCP library for management of UNIX groups.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item addSystemGroup($groupname [, systemgroup = undef ])
+=item addSystemGroup( $groupname [, systemgroup = FALSE ] )
 
  Add group
 
  Param string $groupname Group name
- Param int systemgroup Whether or not a system group must be created
+ Param bool systemgroup Flag indication whether or not $groupname must be created as a system group
  Return int 0 on success, other on failure
 
 =cut
@@ -52,22 +52,24 @@ sub addSystemGroup
     my (undef, $groupname, $systemgroup) = @_;
 
     unless (defined $groupname) {
-        error( '$groupname parameter is not defined' );
+        error( 'Missing $groupname parameter' );
         return 1;
     }
 
-    return 0 if getgrnam( $groupname );
+    if ($groupname eq $main::imscpConfig{'ROOT_GROUP'}) {
+        error( sprintf( '%s group is prohibited', $main::imscpConfig{'ROOT_GROUP'} ) );
+        return 1;
+    }
 
-    $systemgroup = $systemgroup ? '-r' : '';
-
-    my @cmd = ('groupadd', $^O !~ /bsd$/ ? $systemgroup : '', escapeShell( $groupname ));
-    my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
+    my $rs = execute(
+        [ '/usr/sbin/groupadd', '-f', ($systemgroup ? '-r' : ( ) ), $groupname ], \ my $stdout, \ my $stderr
+    );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     $rs;
 }
 
-=item delSystemGroup($groupname)
+=item delSystemGroup( $groupname )
 
  Delete group
 
@@ -85,12 +87,19 @@ sub delSystemGroup
         return 1;
     }
 
-    return unless getgrnam( $groupname );
+    if ($groupname eq $main::imscpConfig{'ROOT_GROUP'}) {
+        error( sprintf( '%s group deletion is prohibited', $main::imscpConfig{'ROOT_GROUP'} ) );
+        return 1;
+    }
 
-    my $rs = execute( 'groupdel '.escapeShell( $groupname ), \ my $stdout, \ my $stderr );
+    my $rs = execute( [ '/usr/sbin/groupdel', $groupname ], \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    error( $stderr || 'Unknown error' ) if $rs;
-    $rs;
+    unless (grep($_ == $rs, 0, 6)) {
+        error( $stderr || 'Unknown error' );
+        return $rs;
+    }
+
+    0;
 }
 
 =back

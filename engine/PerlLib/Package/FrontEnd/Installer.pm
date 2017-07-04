@@ -524,7 +524,7 @@ sub dpkgPostInvokeTasks
 {
     my ($self) = @_;
 
-    $self->{'frontend'}->restartPhpFpm();
+    $self->{'frontend'}->restartPhpFpm( );
 
     if (-f '/usr/local/sbin/imscp_panel'
         && ($self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} eq '' || !-f $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'})
@@ -545,7 +545,7 @@ sub dpkgPostInvokeTasks
     my $rs = $self->_copyPhpBinary( );
     return $rs if $rs || !-f '/usr/local/etc/imscp_panel/php-fpm.conf';
 
-    $self->{'frontend'}->restartPhpFpm();
+    $self->{'frontend'}->restartPhpFpm( );
 }
 
 =back
@@ -736,93 +736,68 @@ sub _addMasterWebUser
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndAddUser' );
-    return $rs if $rs;
+    local $@;
+    my $rs = eval {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndAddUser' );
+        return $rs if $rs;
 
-    my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+        my $user = my $group = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-    my $db = iMSCP::Database->factory( );
-    $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) );
+        my $db = iMSCP::Database->factory( );
+        my $dbh = $db->getRawDb( );
+        local $dbh->{'RaiseError'} = 1;
 
-    my $rdata = $db->doQuery(
-        'admin_sys_uid',
-        '
-            SELECT admin_sys_name, admin_sys_uid, admin_sys_gname FROM admin
-            WHERE admin_type = ? AND created_by = ? LIMIT 1
-        ',
-        'admin', '0'
-    );
+        $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) );
 
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
-        return 1;
-    }
+        my $row = $dbh->selectrow_hashref(
+            '
+                SELECT admin_sys_name, admin_sys_uid, admin_sys_gname
+                FROM admin
+                WHERE admin_type = ?
+                AND created_by = ?
+                LIMIT 1
+            ',
+            undef,
+            'admin',
+            '0'
+        );
+        %{$row} or die( "Couldn't find master administrator user in database" );
 
-    if (!%{$rdata}) {
-        error( "Couldn't find master administrator user in database" );
-        return 1;
-    }
+        my ($oldUser, $uid, $gid) = ($row->{'admin_sys_uid'} ne '0')
+            ? (getpwuid( $row->{'admin_sys_uid'} ))[0, 2, 3] : ( );
 
-    my $adminSysName = $rdata->{(%{$rdata})[0]}->{'admin_sys_name'};
-    my $adminSysUid = $rdata->{(%{$rdata})[0]}->{'admin_sys_uid'};
-    my $adminSysGname = $rdata->{(%{$rdata})[0]}->{'admin_sys_gname'};
-    my ($oldUserName, undef, $userUid, $userGid) = getpwuid( $adminSysUid );
-
-    if (!$oldUserName || $userUid == 0) {
-        # Creating i-MSCP Master Web user
         $rs = iMSCP::SystemUser->new(
-            username       => $userName,
-            comment        => 'i-MSCP Master Web User',
+            username       => $oldUser,
+            comment        => 'i-MSCP Control Panel Web User',
             home           => $main::imscpConfig{'GUI_ROOT_DIR'},
             skipCreateHome => 1
-        )->addSystemUser( );
+        )->addSystemUser( $user, $group );
         return $rs if $rs;
 
-        $userUid = getpwnam( $userName );
-        $userGid = getgrnam( $groupName );
-    } else {
-        my @cmd = (
-            'pkill -KILL -u', escapeShell( $oldUserName ), ';',
-            'usermod',
-            '-c', escapeShell( 'i-MSCP Master Web User' ),
-            '-d', escapeShell( $main::imscpConfig{'GUI_ROOT_DIR'} ),
-            '-l', escapeShell( $userName ),
-            '-m',
-            escapeShell( $adminSysName )
+        ($uid, $gid) = (getpwnam( $user ))[2, 3];
+
+        $dbh->do(
+            '
+                UPDATE admin
+                SET admin_sys_name = ?, admin_sys_uid = ?, admin_sys_gname = ?, admin_sys_gid = ?
+                WHERE admin_type = ?
+            ',
+            undef, $user, $uid, $group, $gid, 'admin'
         );
 
-        $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
-        debug( $stdout ) if $stdout;
-        debug( $stderr || 'Unknown error' ) if $rs;
-        return $rs if $rs;
-
-        @cmd = ('groupmod', '-n', escapeShell( $groupName ), escapeShell( $adminSysGname ));
-        debug( $stdout ) if $stdout;
-        debug( $stderr || 'Unknown error' ) if $rs;
-        $rs = execute( "@cmd", \$stdout, \$stderr );
-        return $rs if $rs;
-    }
-
-    # Update admin.admin_sys_name, admin.admin_sys_uid, admin.admin_sys_gname and admin.admin_sys_gid columns
-    $rdata = $db->doQuery(
-        'u',
-        '
-            UPDATE admin SET admin_sys_name = ?, admin_sys_uid = ?, admin_sys_gname = ?, admin_sys_gid = ?
-            WHERE admin_type = ?
-        ',
-        $userName, $userUid, $groupName, $userGid, 'admin'
-    );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
+        $rs = iMSCP::SystemUser->new( username => $user )->addToGroup( $main::imscpConfig{'IMSCP_GROUP'} );
+        $rs = iMSCP::SystemUser->new( username => $user )->addToGroup(
+            Servers::mta->factory( )->{'config'}->{'MTA_MAILBOX_GID_NAME'}
+        );
+        $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'HTTPD_USER'} )->addToGroup( $group );
+        $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndAddUser' );
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 
-    $rs = iMSCP::SystemUser->new( username => $userName )->addToGroup( $main::imscpConfig{'IMSCP_GROUP'} );
-    $rs = iMSCP::SystemUser->new( username => $userName )->addToGroup(
-        Servers::mta->factory()->{'config'}->{'MTA_MAILBOX_GID_NAME'}
-    );
-    $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'HTTPD_USER'} )->addToGroup( $groupName );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdAddUser' );
+    $rs;
 }
 
 =item _makeDirs( )
@@ -939,7 +914,7 @@ sub _buildPhpConfig
             FRONTEND_GROUP            => $group,
             FRONTEND_USER             => $user,
             HOME_DIR                  => $main::imscpConfig{'GUI_ROOT_DIR'},
-            MTA_VIRTUAL_MAIL_DIR      => Servers::mta->factory()->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
+            MTA_VIRTUAL_MAIL_DIR      => Servers::mta->factory( )->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
             PEAR_DIR                  => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
             OTHER_ROOTKIT_LOG         => $main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne ''
                 ? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : '',

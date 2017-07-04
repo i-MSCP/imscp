@@ -5,7 +5,12 @@ Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-    Added: `nodeferring' option to iMSCP::Config which allows to disable deferred writing
+    Added: `nodeferring' option to iMSCP::Config -- Allow disabling of deferred writing
+    Fixed: CRON(8), AT(1) and LPQ(1) jobs that belong to a user being deleted must be also deleted
+    Fixed: Don't execute system USERMOD(8) command when not necessary
+    Safety: Prevent modification/deletion of root user/group (iMSCP::SystemUser, iMSCP::SystemGroup)
+    Rewritten: iMSCP::SystemUser and iMSCP::SystemGroup libraries
+    Rewritten: Module::User module 
 
 CONFIG
     Added: `BIND_DB_ROOT_DIR' configuration parameter (Bind9)
