@@ -137,7 +137,7 @@
     # SSL certificate path (only relevant for trusted SSL certificate)
     PANEL_SSL_CERTIFICATE_PATH          => '',
     
-    # Alternative URls feature for client domains
+    # Alternative URLs feature for client domains
     # Possible values: 1 for enabling, 0 for disabling
     CLIENT_DOMAIN_ALT_URLS              => 1,
 
