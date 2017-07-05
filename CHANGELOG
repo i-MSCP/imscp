@@ -63,6 +63,7 @@ INSTALLER
     Fixed: Make sure that LOGROTATE(8) configuration files are copied with expected ownership and permissions
     Fixed: Make sure that none of package being installed/updated is in `hold' state
     Fixed: The `IPV6_SUPPORT' configuration parameter is never set (Servers::server::local::installer)
+    Fixed: The `IPV6_SUPPORT' configuration parameter must be set early (Servers::server::local::installer)
     Fixed: The master configuration file (imscp.conf) must stay writable during all setup process
 
 ------------------------------------------------------------------------------------------------------------------------

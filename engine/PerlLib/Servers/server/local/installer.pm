@@ -59,6 +59,9 @@ sub registerSetupListeners
 {
     my ($self, $eventManager) = @_;
 
+    # Must be done here because installers can rely on this configuration parameter
+    main::setupSetQuestion( 'IPV6_SUPPORT', -f '/proc/net/if_inet6' ? 1 : 0 );
+
     $eventManager->register(
         'beforeSetupDialog',
         sub {
@@ -253,8 +256,6 @@ EOF
 sub preinstall
 {
     my ($self) = @_;
-
-    $main::imscpConfig{'IPV6_SUPPORT'} = -f '/proc/net/if_inet6' ? 1 : 0 ;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSetupKernel' );
     return $rs if $rs;
