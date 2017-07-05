@@ -174,6 +174,22 @@ sub addUser
 
 =item addDmn( \%data )
 
+ Process preaddDmn tasks
+
+ Param hash \%data Domain data
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preaddDmn( )
+{
+    my ($self) = @_;
+
+    $self->{'eventManager'}->register( 'afterHttpdBuildConf', sub { $self->_addAwstatsSection( @_ ); } );
+}
+
+=item addDmn( \%data )
+
  Process addDmn tasks
 
  Param hash \%data Domain data
@@ -283,13 +299,11 @@ sub _init
     my ($self) = @_;
 
     $self->{'httpd'} = Servers::httpd->factory( );
-    iMSCP::EventManager->getInstance( )->register( 'afterHttpdBuildConf', sub { $self->_addAwstatsSection( @_ ); } );
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self;
 }
 
 =item _addAwstatsSection( \$cfgTpl, $filename, \%data )
-
- Add Apache configuration snippet for AWStats in the given domain vhost template file
 
  Listener responsible to build and insert Apache configuration snipped for AWStats in the given domain vhost file.
 

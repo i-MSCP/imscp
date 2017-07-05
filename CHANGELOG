@@ -35,6 +35,9 @@ FRONTEND
     Fixed: Trailing slash added twice in URI path when creating subdomain with redirect feature enabled
     Removed: Unix user prefix from alternative URLs
 
+PACKAGES
+    Fixed: Event listener responsible to add the Apache2 configuration snippet is registered too late (AWStats)
+
 SCRIPTS
     Fixed: Make sure that scripts are run by root user when needed
 
