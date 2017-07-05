@@ -54,6 +54,7 @@ PLUGINS
     Fixed: Exception not throw when executing multiple SQL statements in single query (Database migrations - PHP: #61613)
 
 INSTALLER
+    Added: Setup dialog for alternative URLs feature
     Fixed: Avoid piping WGET(1) output to APT-KEY(8); Make use of temporary file to store APT key for better error handling
     Fixed: apache2_postinst.sh: Raised error if there is a version mismatch between installed package and source package
     Fixed: apt-key output should not be parsed (stdout is not a terminal)
@@ -61,6 +62,8 @@ INSTALLER
     Fixed: Lose of data in configuration files due to deffered writing (all servers/packages) impl.
     Fixed: Make sure that LOGROTATE(8) configuration files are copied with expected ownership and permissions
     Fixed: Make sure that none of package being installed/updated is in `hold' state
+    Fixed: The `IPV6_SUPPORT' configuration parameter is never set (Servers::server::local::installer)
+    Fixed: The master configuration file (imscp.conf) must stay writable during all setup process
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.6

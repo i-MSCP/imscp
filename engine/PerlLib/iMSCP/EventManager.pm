@@ -26,7 +26,7 @@ package iMSCP::EventManager;
 use strict;
 use warnings;
 use autouse Clone => qw/ clone /;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug /;
 use iMSCP::EventManager::ListenerPriorityQueue;
 use Scalar::Util qw / blessed /;
 use parent 'Common::SingletonClass';
@@ -49,7 +49,7 @@ use parent 'Common::SingletonClass';
  Param string|arrayref $eventNames Event(s) that the listener listen to
  Param subref|object $listener A subroutine reference or object implementing $eventNames method
  Param int $priority OPTIONAL Listener priority (Highest values have highest priority)
- PARAM bool $once OPTIONAL If TRUE, $listener will be executed at most once for the given events
+ Param bool $once OPTIONAL If TRUE, $listener will be executed at most once for the given events
  Return int 0 on success, 1 on failure
 
 =cut
@@ -217,7 +217,7 @@ sub _init
     $self->{'events'} = { };
     $self->{'nonces'} = { };
 
-    for (glob "$main::imscpConfig{'CONF_DIR'}/listeners.d/*.pl") {
+    while (<$main::imscpConfig{'CONF_DIR'}/listeners.d/*.pl>) {
         debug( sprintf( 'Loading %s listener file', $_ ) );
         require $_;
     }

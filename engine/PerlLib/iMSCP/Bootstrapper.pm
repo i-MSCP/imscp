@@ -111,11 +111,12 @@ sub loadMainConfig
     tie
         %main::imscpConfig,
         'iMSCP::Config',
-        fileName  => ($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/').'imscp/imscp.conf',
-        nodie     => $options->{'nodie'} // 0,
-        nocreate  => $options->{'nocreate'} // 1,
-        readonly  => $options->{'config_readonly'} // 0,
-        temporary => $options->{'config_temporary'} // 0;
+        fileName    => ($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/').'imscp/imscp.conf',
+        nocreate    => $options->{'nocreate'} // 1,
+        nodeferring => $options->{'nodeferring'} // 0,
+        nodie       => $options->{'nodie'} // 0,
+        readonly    => $options->{'config_readonly'} // 0,
+        temporary   => $options->{'config_temporary'} // 0;
 }
 
 =item lock( [ $lockFile = '/var/lock/imscp.lock [, $nowait = FALSE ] ] )

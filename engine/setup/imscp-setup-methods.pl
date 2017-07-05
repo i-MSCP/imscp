@@ -181,6 +181,7 @@ sub setupSaveConfig
     iMSCP::Bootstrapper->getInstance( )->loadMainConfig(
         {
             nocreate        => 1,
+            nodeferring     => 1,
             config_readonly => 0
         }
     );
@@ -189,14 +190,6 @@ sub setupSaveConfig
         next unless exists $main::imscpConfig{$key};
         $main::imscpConfig{$key} = $value;
     }
-
-    # Re-open main configuration file in read only mode
-    iMSCP::Bootstrapper->getInstance( )->loadMainConfig(
-        {
-            nocreate        => 1,
-            config_readonly => 1
-        }
-    );
 
     iMSCP::EventManager->getInstance( )->trigger( 'afterSetupSaveConfig' );
 }
@@ -568,9 +561,9 @@ sub setupGetQuestion
         return exists $main::questions{$qname} && $main::questions{$qname} ne '' ? $main::questions{$qname} : $default;
     }
 
-    exists $main::questions{$qname} ? $main::questions{$qname} : (
-            exists $main::imscpConfig{$qname} && $main::imscpConfig{$qname} ne '' ? $main::imscpConfig{$qname} : $default
-    );
+    exists $main::questions{$qname}
+        ? $main::questions{$qname}
+        : (exists $main::imscpConfig{$qname} && $main::imscpConfig{$qname} ne '' ? $main::imscpConfig{$qname} : $default);
 }
 
 sub setupSetQuestion

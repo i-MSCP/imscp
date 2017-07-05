@@ -196,12 +196,12 @@ sub msgbox
     ($self->_textbox( $text, 'msgbox' ))[0];
 }
 
-=item yesno( $text [, $defaultno ] )
+=item yesno( $text [, $defaultno =  FALSE ] )
 
  Show boolean dialog box
 
  Param string $text Text to show
- Param string bool $default Make the default value of the box a 'Yes' or 'No' (Default is 'Yes')
+ Param string bool defaultno Set the default value of the box to 'No'
  Return int Dialog exit code
 
 =cut

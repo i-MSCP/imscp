@@ -77,8 +77,9 @@ sub registerSetupListeners
                 sub { $self->askMasterAdminEmail( @_ )},
                 sub { $self->askDomain( @_ ) },
                 sub { $self->askSsl( @_ ) },
-                sub { $self->askHttpPorts( @_ ) };
-            0;
+                sub { $self->askHttpPorts( @_ ) },
+                sub { $self->askAltUrlsFeature( @_ ) };
+                0;
         }
     );
 }
@@ -478,6 +479,39 @@ EOF
     }
 
     main::setupSetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT', $httpsPort );
+    0;
+}
+
+=item askAltUrlsFeature( \%dialog )
+
+ Ask for alternative URL feature
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 or 30
+
+=cut
+
+sub askAltUrlsFeature
+{
+    my (undef, $dialog) = @_;
+
+    my $altUrlsFeature = main::setupGetQuestion( 'CLIENT_DOMAIN_ALT_URLS', 1 );
+
+    if ($main::reconfigure =~ /^(?:panel|alt_urls_feature|all|forced)$/
+        || !isNumber( $altUrlsFeature )
+        || !isNumberInRange( $altUrlsFeature, 0, 1 )
+    ) {
+        $altUrlsFeature = 1 if !isNumber( $altUrlsFeature ) || !isNumberInRange( $altUrlsFeature, 0, 1 );
+        $altUrlsFeature = $dialog->yesno( <<'EOF', !$altUrlsFeature );
+
+Do you want to enable the alternative URLs feature for client domains?
+
+The alternative URLs feature allows clients accessing their Websites through alternative URLs such as http://dmn1.panel.domain.tld
+EOF
+        return $altUrlsFeature if $altUrlsFeature >= 30;
+    }
+
+    main::setupSetQuestion( 'CLIENT_DOMAIN_ALT_URLS', $altUrlsFeature ? 0 : 1 );
     0;
 }
 

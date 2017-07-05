@@ -254,7 +254,7 @@ sub preinstall
 {
     my ($self) = @_;
 
-    main::setupSetQuestion( 'IPV6_SUPPORT', -f '/proc/net/if_inet6' ? 1 : 0 );
+    $main::imscpConfig{'IPV6_SUPPORT'} = -f '/proc/net/if_inet6' ? 1 : 0 ;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSetupKernel' );
     return $rs if $rs;
