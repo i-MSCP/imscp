@@ -42,7 +42,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item register( $eventNames, $listener [, priority = 1 [, $once ] ] )
+=item register( $eventNames, $listener [, priority = 1 [, $once = FALSE ] ] )
 
  Registers an event listener for the given events
 
