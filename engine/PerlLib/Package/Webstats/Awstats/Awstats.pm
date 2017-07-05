@@ -172,7 +172,7 @@ sub addUser
     $rs;
 }
 
-=item addDmn( \%data )
+=item preaddDmn( \%data )
 
  Process preaddDmn tasks
 
@@ -185,10 +185,7 @@ sub preaddDmn( )
 {
     my ($self) = @_;
 
-    return 0 if $self->{'_afterHttpdBuildConf'};
-
-    $self->{'_afterHttpdBuildConf'} = 1;
-    $self->{'eventManager'}->register( 'afterHttpdBuildConf', sub { $self->_addAwstatsSection( @_ ); } );
+    $self->{'eventManager'}->registerOne( 'afterHttpdBuildConf', sub { $self->_addAwstatsSection( @_ ); } );
 }
 
 =item addDmn( \%data )

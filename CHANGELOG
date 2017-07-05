@@ -5,7 +5,8 @@ Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-    Added: `nodeferring' option to iMSCP::Config -- Allow disabling of deferred writing
+    Added: iMSCP::EventManager::registerOne() method -- Allows to register a listener that will be executed at most once
+    Added: `nodeferring' option to iMSCP::Config -- Allows to disable deferred writing
     Fixed: CRON(8), AT(1) and LPQ(1) jobs that belong to a user being deleted must be also deleted (iMSCP::SystemUser)
     Fixed: Don't execute system USERMOD(8) command when not necessary
     Fixed: Make sure that immutable bit is preserved when moving user' homedir (iMSCP::SystemUser)
