@@ -211,10 +211,6 @@ sub install
     $rs ||= $self->_setupDatabase( );
     $rs ||= $self->_buildConfigFile( );
     $rs ||= $self->_oldEngineCompatibility( );
-
-    (tied %{$self->{'config'}})->flush( ) unless $rs;
-
-    $rs;
 }
 
 =back

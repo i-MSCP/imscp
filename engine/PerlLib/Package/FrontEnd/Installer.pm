@@ -26,7 +26,6 @@ package Package::FrontEnd::Installer;
 use strict;
 use warnings;
 use File::Basename;
-use iMSCP::Config;
 use iMSCP::Crypt qw/ apr1MD5 randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;
@@ -505,9 +504,6 @@ sub install
     $rs ||= $self->_deleteDnsZone( );
     $rs ||= $self->_addDnsZone( );
     $rs ||= $self->_cleanup( );
-
-    (tied %{$self->{'config'}})->flush( ) unless $rs;
-    $rs;
 }
 
 =item dpkgPostInvokeTasks( )

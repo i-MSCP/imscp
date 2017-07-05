@@ -163,9 +163,6 @@ sub install
     $rs ||= $self->_setVersion( );
     $rs ||= $self->_removeOldVersionFiles( );
     $rs ||= $self->_cleanup( );
-
-    (tied %{$self->{'config'}})->flush( ) unless $rs;
-    $rs;
 }
 
 =back

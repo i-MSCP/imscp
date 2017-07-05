@@ -26,16 +26,17 @@ package Servers::mta::postfix::installer;
 use strict;
 use warnings;
 use File::Basename;
-use iMSCP::Config;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::TemplateParser;
+use iMSCP::Net;
+use iMSCP::Rights;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
+use iMSCP::TemplateParser qw/ process /;
 use Servers::mta::postfix;
 use version;
 use parent 'Common::SingletonClass';
@@ -60,7 +61,7 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->_addUsersAndGroups( );
+    my $rs = $self->_createUserAndGroup( );
     $rs ||= $self->_makeDirs( );
 }
 
@@ -81,9 +82,89 @@ sub install
     $rs ||= $self->_buildConf( );
     $rs ||= $self->_buildAliasesDb( );
     $rs ||= $self->_oldEngineCompatibility( );
+}
 
-    (tied %{$self->{'config'}})->flush( ) unless $rs;
-    $rs;
+=item setEnginePermissions( )
+
+ Set engine permissions
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setEnginePermissions
+{
+    my ($self) = @_;
+
+    # eg. /etc/postfix/main.cf
+    my $rs = setRights(
+        $self->{'config'}->{'POSTFIX_CONF_FILE'},
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
+            mode  => '0644'
+        }
+    );
+    # eg. /etc/postfix/master.cf
+    $rs ||= setRights(
+        $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'},
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
+            mode  => '0644'
+        }
+    );
+    # eg. /etc/aliases
+    $rs ||= setRights(
+        $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'},
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
+            mode  => '0644'
+        }
+    );
+    # eg. /etc/postfix/imscp
+    $rs ||= setRights(
+        $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'},
+        {
+            user      => $main::imscpConfig{'ROOT_USER'},
+            group     => $main::imscpConfig{'ROOT_GROUP'},
+            dirmode   => '0750',
+            filemode  => '0640',
+            recursive => 1
+        }
+    );
+    # eg. /var/www/imscp/engine/messenger
+    $rs ||= setRights(
+        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/messenger",
+        {
+            user      => $main::imscpConfig{'ROOT_USER'},
+            group     => $main::imscpConfig{'IMSCP_GROUP'},
+            dirmode   => '0750',
+            filemode  => '0750',
+            recursive => 1
+        }
+    );
+    # eg. /var/mail/virtual
+    $rs ||= setRights(
+        $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
+        {
+            user      => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+            group     => $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+            dirmode   => '0750',
+            filemode  => '0640',
+            recursive => iMSCP::Getopt->fixPermissions
+        }
+    );
+    # eg. /usr/sbin/maillogconvert.pl
+    $rs ||= setRights(
+        $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'},
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
+            mode  => '0750'
+        }
+    );
 }
 
 =back
@@ -111,77 +192,30 @@ sub _init
     $self;
 }
 
-=item _addUsersAndGroups( )
+=item _createUserAndGroup( )
 
- Add users and groups
+ Create vmail user and mail group
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _addUsersAndGroups
+sub _createUserAndGroup
 {
     my ($self) = @_;
 
-    my @groups = (
-        [
-            $self->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # Group name
-            'yes' # Whether it's a system group
-        ]
-    );
-    my @users = (
-        [
-            $self->{'config'}->{'MTA_MAILBOX_UID_NAME'}, # User name
-            $self->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # User primary group name
-            'vmail_user', # Comment
-            $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}, # User homedir
-            'yes', # Whether it's a system user
-            [ $main::imscpConfig{'IMSCP_GROUP'} ] # Additional user group(s)
-        ]
-    );
-
-    my @userToGroups = ( );
-    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddUsersAndGroups', \ @groups, \ @users, \ @userToGroups );
+    my $rs = iMSCP::SystemGroup->getInstance( )->addSystemGroup( $self->{'config'}->{'MTA_MAILBOX_GID_NAME'}, 1 );
     return $rs if $rs;
 
-    # Create groups
-    my $systemGroup = iMSCP::SystemGroup->getInstance( );
-    for my $group(@groups) {
-        $rs = $systemGroup->addSystemGroup( $group->[0], ($group->[1] eq 'yes') ? 1 : 0 );
-        return $rs if $rs;
-    }
-
-    # Create users
-    for my $user(@users) {
-        my $systemUser = iMSCP::SystemUser->new( );
-        $systemUser->{'group'} = $user->[1];
-        $systemUser->{'comment'} = $user->[2];
-        $systemUser->{'home'} = $user->[3];
-        $systemUser->{'system'} = 'yes' if $user->[4] eq 'yes';
-
-        $rs = $systemUser->addSystemUser( $user->[0] );
-        return $rs if $rs;
-
-        if (defined $user->[5]) {
-            for my $group(@{$user->[5]}) {
-                $rs = $systemUser->addToGroup( $group );
-                return $rs if $rs;
-            }
-        }
-    }
-
-    # User to groups
-    for my $entry(@userToGroups) {
-        my $systemUser = iMSCP::SystemUser->new( );
-        my $user = $entry->[0];
-
-        for my $group(@{$entry->[1]}) {
-            $rs = $systemUser->addToGroup( $group, $user );
-            return $rs if $rs;
-        }
-    }
-
-    $self->{'eventManager'}->trigger( 'afterMtaAddUsersAndGroups' );
+    my $systemUser = iMSCP::SystemUser->new(
+        username => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+        group    => $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+        comment  => 'vmail user',
+        home     => $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
+        system   => 1
+    );
+    $rs = $systemUser->addSystemUser( );
+    $rs ||= $systemUser->addToGroup( $main::imscpConfig{'IMSCP_GROUP'} );
 }
 
 =item _makeDirs( )

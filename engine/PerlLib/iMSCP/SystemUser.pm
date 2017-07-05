@@ -113,15 +113,15 @@ sub addSystemUser
             '/usr/sbin/usermod',
             (defined $self->{'password'} ? ('-p', $self->{'password'}) : ( )),
             (defined $self->{'comment'} && $self->{'comment'} ne $userProps[6]
-                ? ('-c', $self->{'comment'} // 'iMSCP user') : ( )
-            ),
-            (defined $self->{'group'} && $self->{'group'} ne $userProps[3] ? ('-g', $self->{'group'}) : ( )),
+                ? ('-c', $self->{'comment'} // 'iMSCP user') : ( )),
+            (defined $self->{'group'} && (($self->{'group'} =~ /^\d+$/ && int($self->{'group'}) !~ $userProps[3])
+                    || getgrnam( $self->{'group'} ) ne $userProps[3])
+                ? ('-g', $self->{'group'}) : ( )),
             (defined $self->{'home'} && $self->{'home'} ne $userProps[7]
-                ? ('-d', $self->{'home'} // "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'username'}", '-m' ) : ( ) ),
+                ? ('-d', $self->{'home'} // "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'username'}", '-m' ) : ( )),
             (defined $self->{'shell'} && $self->{'shell'} ne $userProps[8] ? ('-s', $self->{'shell'}) : ( )),
             ($username ne $oldUsername ? ('-l', $username ) : ( )),
             $oldUsername,
-
         ];
 
         push @commands, [ $usermodCmd, [ 0 ] ] if @{$usermodCmd} > 2;

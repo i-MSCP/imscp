@@ -1,3 +1,9 @@
+=head1 NAME
+
+ Servers::mta::postfix::uninstaller - i-MSCP Postfix MTA server uninstaller implementation
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2017 by internet Multi Server Control Panel
 #
@@ -19,38 +25,122 @@ package Servers::mta::postfix::uninstaller;
 
 use strict;
 use warnings;
-use File::Basename;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::SystemUser;
 use Servers::mta::postfix;
 use parent 'Common::SingletonClass';
+
+=head1 DESCRIPTION
+
+ i-MSCP Postfix MTA server uninstaller implementation.
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item uninstall( )
+
+ Process uninstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub uninstall
+{
+    my ($self) = @_;
+
+    my $rs = $self->_restoreConffiles( );
+    $rs ||= $self->_buildAliasesFile( );
+    $rs ||= $self->_removeUser( );
+    $rs ||= $self->_removeFiles( );
+}
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init( )
+
+ Initialize instance
+
+ Return Servers::mta::postfix::uninstaller
+
+=cut
 
 sub _init
 {
     my ($self) = @_;
 
     $self->{'mta'} = Servers::mta::postfix->getInstance( );
-    $self->{'cfgDir'} = $self->{'mta'}->{'cfgDir'};
-    $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-    $self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
     $self->{'config'} = $self->{'mta'}->{'config'};
     $self;
 }
 
-sub uninstall
-{
-    my ($self) = @_;
+=item _restoreConffiles( )
 
-    my $rs = $self->_restoreConfFile( );
-    $rs ||= $self->_buildAliasses( );
-    $rs ||= $self->_removeUsers( );
-    $rs ||= $self->_removeDirsAndFiles( );
+ Restore configuration files
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _restoreConffiles
+{
+    return 0 unless -d "/etc/postfix";
+
+    for ('/usr/share/postfix/main.cf.debian', '/usr/share/postfix/master.cf.dist') {
+        next unless -f;
+        my $rs = iMSCP::File->new( filename => $_ )->copyFile( "/etc/postfix/$_", { preserve => 'no' } );
+        return $rs if $rs;
+    }
+
+    0;
 }
 
-sub _removeDirsAndFiles
+=item _buildAliasesFile( )
+
+ Build /etc/aliases file
+ 
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _buildAliasesFile
+{
+    my $rs = execute( 'newaliases', \ my $stdout, \ my $stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr || 'Unknown error' ) if $rs;
+    $rs;
+}
+
+=item _removeUser( )
+
+ Remove user
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _removeUser
+{
+    iMSCP::SystemUser->new( force => 'yes' )->delSystemUser( $_[0]->{'config'}->{'MTA_MAILBOX_UID_NAME'} );
+}
+
+=item _removeFiles( )
+
+ Remove files
+
+ Return int 0 on success, other or die on failure
+
+=cut
+
+sub _removeFiles
 {
     my ($self) = @_;
 
@@ -59,40 +149,17 @@ sub _removeDirsAndFiles
     }
 
     return 0 unless -f $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'};
+
     iMSCP::File->new( filename => $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'} )->delFile( );
 }
 
-sub _removeUsers
-{
-    my ($self) = @_;
+=back
 
-    iMSCP::SystemUser->new( force => 'yes' )->delSystemUser( $self->{'config'}->{'MTA_MAILBOX_UID_NAME'} );
-}
+=head1 AUTHOR
 
-sub _buildAliasses
-{
-    my $rs = execute( 'newaliases', \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr || 'Unknown error' ) if $rs;
-    error( "Error while executing newaliases command" ) if !$stderr && $rs;
-    $rs;
-}
+ Laurent Declercq <l.declercq@nuxwin.com>
 
-sub _restoreConfFile
-{
-    my ($self) = @_;
-
-    for ($self->{'config'}->{'POSTFIX_CONF_FILE'}, $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}) {
-        my $filename = basename( $_ );
-
-        if (-f "$self->{'bkpDir'}/$filename.system") {
-            my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile( $_ );
-            return $rs if $rs;
-        }
-    }
-
-    0;
-}
+=cut
 
 1;
 __END__

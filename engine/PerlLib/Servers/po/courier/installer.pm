@@ -171,9 +171,6 @@ sub install
     $rs ||= $self->_setupCyrusSASL( );
     $rs ||= $self->_migrateFromDovecot( );
     $rs ||= $self->_oldEngineCompatibility( );
-
-    (tied %{$self->{'config'}})->flush( ) unless $rs;
-    $rs;
 }
 
 =back

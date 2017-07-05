@@ -25,7 +25,6 @@ package Servers::sqld::percona::installer;
 
 use strict;
 use warnings;
-use iMSCP::Config;
 use iMSCP::EventManager;
 use Servers::sqld::percona;
 use parent 'Servers::sqld::mysql::installer';

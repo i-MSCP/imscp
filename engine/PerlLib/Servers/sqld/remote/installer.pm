@@ -25,7 +25,6 @@ package Servers::sqld::remote::installer;
 
 use strict;
 use warnings;
-use iMSCP::Config;
 use iMSCP::Crypt qw/ decryptRijndaelCBC /;
 use iMSCP::Database;
 use iMSCP::Dir;

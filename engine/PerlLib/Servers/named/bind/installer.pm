@@ -26,7 +26,6 @@ package Servers::named::bind::installer;
 use strict;
 use warnings;
 use File::Basename;
-use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::EventManager;
@@ -275,9 +274,6 @@ sub install
     my $rs = $self->_makeDirs( );
     $rs ||= $self->_buildConf( );
     $rs ||= $self->_oldEngineCompatibility( );
-
-    (tied %{$self->{'config'}})->flush( ) unless $rs;
-    $rs;
 }
 
 =back

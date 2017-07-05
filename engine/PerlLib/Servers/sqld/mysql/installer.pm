@@ -25,7 +25,6 @@ package Servers::sqld::mysql::installer;
 
 use strict;
 use warnings;
-use iMSCP::Config;
 use iMSCP::Crypt qw/ encryptRijndaelCBC decryptRijndaelCBC randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;

@@ -27,7 +27,6 @@ use strict;
 use warnings;
 use File::Basename;
 use iMSCP::Composer;
-use iMSCP::Config;
 use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;
@@ -187,9 +186,6 @@ sub install
     $rs ||= $self->_buildHttpdConfig( );
     $rs ||= $self->_setVersion( );
     $rs ||= $self->_cleanup( );
-
-    (tied %{$self->{'config'}})->flush( ) unless $rs;
-    $rs;
 }
 
 =back

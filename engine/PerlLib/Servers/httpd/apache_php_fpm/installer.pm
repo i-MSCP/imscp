@@ -27,7 +27,6 @@ use strict;
 use warnings;
 use Cwd;
 use File::Basename;
-use iMSCP::Config;
 use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;
@@ -166,11 +165,6 @@ sub install
     $rs ||= $self->_installLogrotate( );
     $rs ||= $self->_setupVlogger( );
     $rs ||= $self->_cleanup( );
-
-    (tied %{$self->{'config'}})->flush( ) unless $rs;
-    (tied %{$self->{'phpConfig'}})->flush( ) unless $rs;
-
-    $rs;
 }
 
 =back

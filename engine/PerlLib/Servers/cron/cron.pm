@@ -109,10 +109,6 @@ sub install
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0640 );
     $rs ||= $self->{'eventManager'}->trigger( 'afterCronInstall', 'cron' );
-
-    (tied %{$self->{'config'}})->flush( ) unless $rs;
-
-    $rs;
 }
 
 =item postinstall( )
