@@ -185,6 +185,9 @@ sub preaddDmn( )
 {
     my ($self) = @_;
 
+    return 0 if $self->{'_afterHttpdBuildConf'};
+
+    $self->{'_afterHttpdBuildConf'} = 1;
     $self->{'eventManager'}->register( 'afterHttpdBuildConf', sub { $self->_addAwstatsSection( @_ ); } );
 }
 
