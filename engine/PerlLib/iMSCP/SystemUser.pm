@@ -114,7 +114,7 @@ sub addSystemUser
             (defined $self->{'password'} ? ('-p', $self->{'password'}) : ( )),
             (defined $self->{'comment'} && $self->{'comment'} ne $userProps[6]
                 ? ('-c', $self->{'comment'} // 'iMSCP user') : ( )),
-            (defined $self->{'group'} && (($self->{'group'} =~ /^\d+$/ && int($self->{'group'}) !~ $userProps[3])
+            (defined $self->{'group'} && (($self->{'group'} =~ /^(\d+)$/ && $1 != $userProps[3])
                     || getgrnam( $self->{'group'} ) ne $userProps[3])
                 ? ('-g', $self->{'group'}) : ( )),
             (defined $self->{'home'} && $self->{'home'} ne $userProps[7]
