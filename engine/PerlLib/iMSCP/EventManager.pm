@@ -100,7 +100,7 @@ sub registerOne
 {
     my ($self, $eventNames, $listener, $priority) = @_;
 
-    $self->register( $eventNames, $listener, $priority, 1);
+    $self->register( $eventNames, $listener, $priority, 1 );
 }
 
 =item unregister( $listener [, $eventName = undef ] )
