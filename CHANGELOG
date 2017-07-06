@@ -11,6 +11,7 @@ BACKEND
     Fixed: Don't execute system USERMOD(8) command when not necessary
     Fixed: Make sure that immutable bit is preserved when moving user' homedir (iMSCP::SystemUser)
     Fixed: Make sure that immutable bit is removed when removing user (iMSCP::SystemUser)
+    Fixed: Prevent releasing locks in child processes (iMSCP::LockFile)
     Rewritten: iMSCP::SystemUser and iMSCP::SystemGroup libraries
     Rewritten: Module::User module
     Safety: Prevent modification/deletion of root user/group (iMSCP::SystemUser, iMSCP::SystemGroup)

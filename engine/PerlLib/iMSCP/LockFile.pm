@@ -84,6 +84,9 @@ sub release
 {
     my ($self) = @_;
 
+    # Prevent lock from being released if the process is not the lock owner
+    return unless $self->{'_owner'} == $$;
+
     debug( sprintf( 'Releasing exclusive lock on %s', $self->{'path'} ) );
 
     # It is important the lock file is removed before it's released, otherwise:
@@ -120,6 +123,7 @@ sub _init
     $self->{'path'} ||= '/var/lock/imscp.lock';
     $self->{'non_blocking'} ||= 0;
     $self->{'_fd'} = undef;
+    $self->{'_owner'} = $$;
     $self;
 }
 
