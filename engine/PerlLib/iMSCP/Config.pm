@@ -240,22 +240,12 @@ sub _loadConfig
 {
     my ($self) = @_;
 
-    my $mode;
-
-    if ($self->{'nocreate'}) {
-        $mode = $self->{'readonly'} ? O_RDONLY : O_RDWR;
-    } elsif ($self->{'readonly'}) {
-        $mode = O_RDONLY;
-    } else {
-        $mode = O_RDWR | O_CREAT;
-    }
-
-    debug( sprintf( 'Tying %s file in %s mode', $self->{'confFileName'}, $self->{'readonly'} ? 'readonly' : 'writing' ) );
+    my $mode = $self->{'nocreate'}
+        ? ($self->{'readonly'} ? O_RDONLY : O_RDWR)
+        : ($self->{'readonly'} ? O_RDONLY : O_RDWR | O_CREAT);
 
     $self->{'tieFileObject'} = tie @{$self->{'tiefile'}}, 'Tie::File', $self->{'confFileName'}, mode => $mode;
     $self->{'tieFileObject'} or die( sprintf( "Couldn't tie %s file: %s", $self->{'confFileName'}, $! ) );
-
-    # Enable deffered writing if we are in writing mode
     $self->{'tieFileObject'}->defer unless $self->{'nodeferring'} || $self->{'readonly'};
 
     while(my ($lineNo, $value) = each(@{$self->{'tiefile'}})) {

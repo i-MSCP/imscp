@@ -287,6 +287,8 @@ sub _mergeConfig
 
         tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/rainloop.data", nodeferring => 1;
 
+        debug('Merging old configuration with new configuration...');
+
         while(my ($key, $value) = each(%oldConfig)) {
             next unless exists $self->{'config'}->{$key};
             $self->{'config'}->{$key} = $value;

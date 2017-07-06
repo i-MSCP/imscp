@@ -59,7 +59,7 @@ INSTALLER
     Fixed: apache2_postinst.sh: Raised error if there is a version mismatch between installed package and source package
     Fixed: apt-key output should not be parsed (stdout is not a terminal)
     Fixed: gpg: failed to start the dirmngr '/usr/bin/dirmngr': No such file or directory
-    Fixed: Lose of data in configuration files due to deffered writing (all servers/packages) impl.
+    Fixed: Lose of data in configuration files due to deffered writing (all servers/packages)
     Fixed: Make sure that LOGROTATE(8) configuration files are copied with expected ownership and permissions
     Fixed: Make sure that none of package being installed/updated is in `hold' state
     Fixed: The `IPV6_SUPPORT' configuration parameter is never set (Servers::server::local::installer)

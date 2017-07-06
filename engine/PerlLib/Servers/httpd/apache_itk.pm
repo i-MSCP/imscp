@@ -1449,10 +1449,11 @@ sub _mergeConfig
 {
     my (undef, $confDir, $confName) = @_;
 
-    # Merge old configuration if any
     if (-f "$confDir/$confName") {
         tie my %newConfig, 'iMSCP::Config', fileName => "$confDir/$confName.dist";
         tie my %oldConfig, 'iMSCP::Config', fileName => "$confDir/$confName", readonly => 1;
+
+        debug('Merging old configuration with new configuration...');
 
         while(my ($key, $value) = each(%oldConfig)) {
             next unless exists $newConfig{$key};
