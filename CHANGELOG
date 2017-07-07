@@ -19,6 +19,7 @@ BACKEND
 CONFIG
     Added: `BIND_DB_ROOT_DIR' configuration parameter (Bind9)
     Enhancement: Alternative URLs for client domains can now be disabled - see the errata file for further details
+    Fixed: Prefer IPv4 to prevent timeout issues (/etc/gai.conf)
     Updated: Vhost template files (Apache2)
     Updated: Zone template files (Bind9)
 

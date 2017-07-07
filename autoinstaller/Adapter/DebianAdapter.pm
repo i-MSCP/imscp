@@ -27,10 +27,10 @@ use Fcntl qw/ :flock /;
 use File::Temp;
 use FindBin;
 use iMSCP::Cwd;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error output /;
 use iMSCP::Dialog;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ execute executeNoWait /;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::LsbRelease;
@@ -56,7 +56,7 @@ use parent 'autoinstaller::Adapter::AbstractAdapter';
 
 sub installPreRequiredPackages
 {
-    my $self = shift;
+    my ($self) = @_;
 
     print STDOUT output( 'Satisfying prerequisites... Please wait.', 'info' );
 
@@ -118,7 +118,7 @@ sub preBuild
 
 sub installPackages
 {
-    my $self = shift;
+    my ($self) = @_;
 
     # See https://people.debian.org/~hmh/invokerc.d-policyrc.d-specification.txt
     my $policyrcd = File::Temp->new( UNLINK => 1 );
@@ -197,8 +197,8 @@ EOF
     # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
     execute(
         "apt-mark unhold @{$self->{'packagesToInstall'}} @{$self->{'packagesToInstallDelayed'}}",
-        \my  $stdout,
-        \my  $stderr
+        \my $stdout,
+        \my $stderr
     );
     debug( $stdout ) if $stdout;
     debug( $stderr ) if $stderr;
@@ -366,7 +366,7 @@ sub uninstallPackages
 
 sub _init
 {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
     $self->{'repositorySections'} = [ 'main', 'contrib', 'non-free' ];
@@ -404,8 +404,6 @@ sub _init
 
 sub _setupGetaddrinfoPrecedence
 {
-    my $self = shift;
-
     my $file = iMSCP::File->new( filename => '/etc/gai.conf' );
     my $fileContent = '';
 
@@ -416,34 +414,14 @@ sub _setupGetaddrinfoPrecedence
             return 1;
         }
 
-        # Prefer IPv4
         return 0 if $fileContent =~ m%^precedence\s+::ffff:0:0/96\s+100\n%m;
     }
 
+    # Prefer IPv4
     $fileContent .= "precedence ::ffff:0:0/96  100\n";
 
-    $self->{'eventManager'}->register(
-        'postInstall',
-        sub {
-            $file = iMSCP::File->new( filename => '/etc/gai.conf' );
-            $fileContent = $file->get( );
-            unless (defined $fileContent) {
-                error( sprintf( "Couldn't read %s file ", $file->{'filename'} ) );
-                return 1;
-            }
-
-            $fileContent =~ s%^precedence\s+::ffff:0:0/96\s+100\n%%gm;
-            $file->set( $fileContent );
-
-            my $rs = $file->save( );
-            $rs ||= $file->mode( 0644 );
-        }
-    );
-
     $file->set( $fileContent );
-
-    my $rs = $file->save( );
-    $rs ||= $file->mode( 0644 );
+    $file->save( );
 }
 
 =item _buildPackageList( )
@@ -456,7 +434,7 @@ sub _setupGetaddrinfoPrecedence
 
 sub _buildPackageList
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'onBuildPackageList', \ my $packageFilePath );
     return $rs if $rs;
@@ -658,7 +636,7 @@ EOF
 
 sub _updateAptSourceList
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $file = iMSCP::File->new( filename => '/etc/apt/sources.list' );
     my $fileContent = $file->get( );
@@ -728,7 +706,7 @@ sub _updateAptSourceList
 
 sub _processAptRepositories
 {
-    my $self = shift;
+    my ($self) = @_;
 
     return 0 unless @{$self->{'aptRepositoriesToRemove'}} || @{$self->{'aptRepositoriesToAdd'}};
 
@@ -811,7 +789,7 @@ EOF
 
 sub _processAptPreferences
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $fileContent = '';
 
@@ -878,7 +856,7 @@ sub _updatePackagesIndex
 
 sub _prefillDebconfDatabase
 {
-    my $self = shift;
+    my ($self) = @_;
 
     my $fileContent = '';
 
