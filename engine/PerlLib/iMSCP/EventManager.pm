@@ -60,10 +60,10 @@ sub register
 
     local $@;
     eval {
-        defined $eventNames or die '$eventNames parameter is not defined';
+        defined $eventNames or die 'Missing $eventNames parameter';
 
         if (ref $eventNames eq 'ARRAY') {
-            $self->register( $_, $listener, $priority ) for @{$eventNames};
+            $self->register( $_, $listener, $priority, $once ) for @{$eventNames};
             return 0;
         }
 
@@ -73,7 +73,7 @@ sub register
 
         $listener = sub { $listener->$eventNames( @_ ) } if blessed $listener;
         $self->{'events'}->{$eventNames}->addListener( $listener, $priority );
-        $self->{'nonces'}->{$listener} = 1 if $once;
+        $self->{'nonces'}->{$eventNames}->{$listener} = 1 if $once;
     };
     if ($@) {
         error($@);
@@ -103,12 +103,12 @@ sub registerOne
     $self->register( $eventNames, $listener, $priority, 1 );
 }
 
-=item unregister( $listener [, $eventName = undef ] )
+=item unregister( $listener [, $eventName = $self->{'events'} ] )
 
  Unregister the given listener from all or the given event
 
  Param subref $listener Listener
- Param string $eventName Event name
+ Param string OPTIONAL $eventName Event name
  Return int 0 on success, 1 on failure
 
 =cut
@@ -119,13 +119,23 @@ sub unregister
 
     local $@;
     eval {
-        defined $listener or die '$listener parameter is not defined';
+        defined $listener or die 'Missing $listener parameter';
 
         if (defined $eventName) {
+            return unless $self->{'events'}->{$eventName};
+
             $self->{'events'}->{$eventName}->removeListener( $listener ) if $self->{'events'}->{$eventName};
-        } else {
-            $_->removeListener( $listener ) for values %{$self->{'events'}};
+            delete $self->{'events'}->{$eventName} if $self->{'events'}->{$eventName}->isEmpty( );
+
+            if ($self->{'nonces'}->{$eventName}->{$listener}) {
+                delete $self->{'nonces'}->{$eventName}->{$listener};
+                delete $self->{'nonces'}->{$eventName} unless %{$self->{'nonces'}->{$eventName}};
+            }
+
+            return;
         }
+
+        $self->unregister($listener, $_) for keys %{$self->{'events'}};
     };
     if ($@) {
         error($@);
@@ -149,11 +159,12 @@ sub clearListeners
     my ($self, $eventName) = @_;
 
     unless (defined $eventName) {
-        error( '$eventName parameter is not defined' );
+        error( 'Missing $eventName parameter' );
         return 1;
     }
 
     delete $self->{'events'}->{$eventName};
+    delete $self->{'nonces'}->{$eventName};
     0;
 }
 
@@ -172,7 +183,7 @@ sub trigger
     my ($self, $eventName, @params) = @_;
 
     unless (defined $eventName) {
-        error( '$eventName parameter is not defined' );
+        error( 'Missing $eventName parameter' );
         return 1;
     }
 
@@ -182,18 +193,20 @@ sub trigger
     # The priority queue acts as a heap, which implies that as items are popped
     # they are also removed. Thus we clone it for purposes of iteration.
     my $listenerPriorityQueue = clone( $self->{'events'}->{$eventName} );
+    my $rs = 0;
     while(my $listener = $listenerPriorityQueue->pop( )) {
-        my $rs = $listener->( @params );
-        return $rs if $rs;
-
-        if ($self->{'nonces'}->{$listener}) {
+        if ($self->{'nonces'}->{$eventName}->{$listener}) {
             $self->{'events'}->{$eventName}->removeListener( $listener );
-            delete $self->{'nonces'}->{$listener};
+            delete $self->{'nonces'}->{$eventName}->{$listener};
         }
+
+        $rs = $listener->( @params );
+        last if $rs;
     }
 
     delete $self->{'events'}->{$eventName} if $self->{'events'}->{$eventName}->isEmpty( );
-    0;
+    delete $self->{'nonces'}->{$eventName} unless %{$self->{'nonces'}->{$eventName}};
+    $rs;
 }
 
 =back

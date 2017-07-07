@@ -112,13 +112,15 @@ sub removeListener
 
 =item isEmpty( )
 
+ Is the queue empty?
+
  Return bool TRUE if the queue is empty, FALSE otherwise
 
 =cut
 
 sub isEmpty
 {
-    keys %{$_[0]->{'priorities'}} == 0;
+    !%{$_[0]->{'priorities'}};
 }
 
 =item count( )
