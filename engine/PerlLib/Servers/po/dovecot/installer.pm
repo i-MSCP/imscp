@@ -162,8 +162,9 @@ sub install
         return $rs if $rs;
     }
 
-    my $rs = $self->_setupSqlUser( );
-    $rs = $self->_buildConf( );
+    my $rs = $self->_setDovecotVersion( );
+    $rs ||= $self->_setupSqlUser( );
+    $rs ||= $self->_buildConf( );
     $rs ||= $self->_migrateFromCourier( );
     $rs ||= $self->_oldEngineCompatibility( );
 }
@@ -301,38 +302,33 @@ sub _init
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'config'} = $self->{'po'}->{'config'};
-    $self->_getVersion( ) and fatal( "Couldn't get Dovecot version" );
     $self;
 }
 
-=item _getVersion( )
+=item _setDovecotVersion( )
 
- Get Dovecot version
+ Set Dovecot version
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _getVersion
+sub _setDovecotVersion
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoGetVersion' );
-    return $rs if $rs;
-
-    $rs = execute( [ 'dovecot', '--version' ], \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
+    my $rs = execute( [ 'dovecot', '--version' ], \ my $stdout, \ my $stderr );
     error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
-    ($self->{'version'}) = $stdout =~ m/^([0-9\.]+)\s*/;
-
-    unless (defined $self->{'version'}) {
-        error( "Couldn't find Dovecot version" );
+    if ($stdout !~ m/^([\d.]+)/) {
+        error( "Couldn't guess Dovecot version" );
         return 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterPoGetVersion' );
+    $self->{'config'}->{'DOVECOT_VERSION'} = $1;
+    debug( sprintf( 'Dovecot version set to: %s', $1 ) );
+    0;
 }
 
 =item _bkpConfFile( $cfgFile )
@@ -506,13 +502,19 @@ sub _buildConf
                 }
             }
 
-            if (index( $conffile, 'dovecot.conf' ) != -1) {
+            if ($conffile eq 'dovecot.conf') {
                 my $ssl = main::setupGetQuestion( 'SERVICES_SSL_ENABLED' );
                 $cfgTpl .= "\nssl = $ssl\n";
 
+                # Fixme: Find a better way to guess libssl version
                 if ($ssl eq 'yes') {
+                    unless (`ldd /usr/lib/dovecot/libdovecot-login.so | grep libssl.so` =~ /libssl.so.(\d.\d)/) {
+                        error( "Couldn't guess libssl version against which Dovecot has been built" );
+                        return 1;
+                    }
+
                     $cfgTpl .= <<"EOF";
-ssl_protocols = !SSLv2 !SSLv3
+ssl_protocols = @{[ version->parse( $1 ) >= version->parse( '1.1' ) ? '!SSLv3' : '!SSLv2 !SSLv3' ]}
 ssl_cert = <$main::imscpConfig{'CONF_DIR'}/imscp_services.pem
 ssl_key = <$main::imscpConfig{'CONF_DIR'}/imscp_services.pem
 EOF
