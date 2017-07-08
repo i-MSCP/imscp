@@ -249,12 +249,11 @@ sub _setApacheVersion
     my ($self) = @_;
 
     my $rs = execute( 'apache2ctl -v', \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
     if ($stdout !~ m%Apache/([\d.]+)%) {
-        error( "Couldn't guess Apache version." );
+        error( "Couldn't guess Apache version" );
         return 1;
     }
 

@@ -63,18 +63,22 @@ sub installPreRequiredPackages
     my $rs = $self->_updateAptSourceList( );
     $rs ||= $self->_updatePackagesIndex( );
 
-    my $cmd = 'apt-get';
-    die( 'apt-get command not found' ) unless iMSCP::ProgramFinder::find( $cmd );
-
-    if (!iMSCP::Getopt->noprompt && iMSCP::ProgramFinder::find( 'debconf-apt-progress' )) {
-        $cmd = "debconf-apt-progress --logstderr -- $cmd";
-    }
+    local $ENV{'UCF_FORCE_CONFFNEW'} = 1;
+    local $ENV{'UCF_FORCE_CONFFMISS'} = 1;
+    local $ENV{'LANG'} = 'C';
 
     my $stdout;
     $rs = execute(
-        "$cmd -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss' --auto-remove --purge"
-            ." --no-install-recommends install @{$self->{'preRequiredPackages'}}",
-            iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef, \ my $stderr
+        [
+            (!iMSCP::Getopt->noprompt && iMSCP::ProgramFinder::find( 'debconf-apt-progress' )
+                ? ('debconf-apt-progress', '--logstderr', '--') : ( )
+            ),
+            'apt-get', '--assume-yes', '--option', 'DPkg::Options::=--force-confnew',
+            '--option', 'DPkg::Options::=--force-confmiss', '--auto-remove', '--purge', '--no-install-recommends',
+            'install', @{$self->{'preRequiredPackages'}}
+        ],
+        (iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef),
+        \ my $stderr
     );
     error( sprintf( "Couldn't install pre-required packages: %s", $stderr || 'Unknown error' ) ) if $rs;
 
@@ -163,6 +167,8 @@ EOF
     my $nPackages = scalar keys %{$self->{'packagesPreInstallTasks'}};
     my $cPackage = 1;
 
+    local $ENV{'LANG'} = 'C';
+
     startDetail( );
 
     {
@@ -203,29 +209,28 @@ EOF
     debug( $stdout ) if $stdout;
     debug( $stderr ) if $stderr;
 
-    for my $packages($self->{'packagesToInstall'}, $self->{'packagesToInstallDelayed'}) {
-        next unless @{$packages};
-
-        my $cmd = 'UCF_FORCE_CONFFMISS=1'; # Force installation of missing conffiles which are managed by UCF
-        $cmd .= !iMSCP::Getopt->noprompt ? ' debconf-apt-progress --logstderr --' : '';
+    {
+        local $ENV{'UCF_FORCE_CONFFNEW'} = 1;
+        local $ENV{'UCF_FORCE_CONFFMISS'} = 1;
 
         my ($aptVersion) = `apt-get --version` =~ /^apt\s+([\d.]+)/;
-        my $forceYes = (version->parse( $aptVersion ) < version->parse( '1.1.0' ))
-            ? '--force-yes' : '--allow-downgrades';
+        my @cmd = (
+            (!iMSCP::Getopt->noprompt ? ( 'debconf-apt-progress', '--logstderr', '--' ) : ( )),
+            'apt-get', '--assume-yes', '--option', 'DPkg::Options::=--force-confnew', '--option',
+            'DPkg::Options::=--force-confmiss', '--option', 'Dpkg::Options::=--force-overwrite',
+            ($main::forcereinstall ? '--reinstall' : ( )), '--auto-remove', '--purge', '--no-install-recommends',
+            ((version->parse( $aptVersion ) < version->parse( '1.1.0' )) ? '--force-yes' : '--allow-downgrades'),
+            'install'
+        );
 
-        if ($main::forcereinstall) {
-            $cmd .= " apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss'".
-                " -o Dpkg::Options::='--force-overwrite' --reinstall --auto-remove --purge --no-install-recommends".
-                " $forceYes install @{$packages}";
-        } else {
-            $cmd .= " apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss'".
-                " -o Dpkg::Options::='--force-overwrite' --auto-remove --purge --no-install-recommends $forceYes".
-                " install @{$packages}";
+        for ($self->{'packagesToInstall'}, $self->{'packagesToInstallDelayed'}) {
+            next unless @{$_};
+            $rs = execute(
+                [ @cmd, @{$_} ], (iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef), \$stderr
+            );
+            error( sprintf( "Couldn't install packages: %s", $stderr || 'Unknown error' ) ) if $rs;
+            return $rs if $rs;
         }
-
-        $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef, \ $stderr );
-        error( sprintf( "Couldn't install packages: %s", $stderr || 'Unknown error' ) ) if $rs;
-        return $rs if $rs;
     }
 
     $nPackages = scalar keys %{$self->{'packagesPostInstallTasks'}};
@@ -288,6 +293,8 @@ sub uninstallPackages
 
     $packagesToUninstall ||= $self->{'packagesToUninstall'};
 
+    local $ENV{'LANG'} = 'C';
+
     require List::MoreUtils;
     List::MoreUtils->import( 'uniq' );
 
@@ -333,15 +340,21 @@ sub uninstallPackages
 
         if (@{$packagesToUninstall}) {
             # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
-            execute( "apt-mark unhold @{$packagesToUninstall}", \ $stdout, \ $stderr );
+            execute( [ 'apt-mark', 'unhold', @{$packagesToUninstall} ], \ $stdout, \ $stderr );
             debug( $stdout ) if $stdout;
             debug( $stderr ) if $stderr;
 
-            iMSCP::Dialog->getInstance( )->endGauge( );
+            iMSCP::Dialog->getInstance( )->endGauge( ) unless iMSCP::Getopt->noprompt;
 
-            my $cmd = !iMSCP::Getopt->noprompt ? 'debconf-apt-progress --logstderr -- ' : '';
-            $cmd .= "apt-get -y --auto-remove --purge --no-install-recommends remove @{$packagesToUninstall}";
-            $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef, \ $stderr );
+            $rs = execute(
+                [
+                    (!iMSCP::Getopt->noprompt ? ('debconf-apt-progress', '--logstderr', '--') : ( )),
+                    'apt-get', '--assume-yes', '--auto-remove', '--purge', '--no-install-recommends', 'remove',
+                    @{$packagesToUninstall}
+                ],
+                (iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef),
+                \$stderr
+            );
             error( sprintf( "Couldn't uninstall packages: %s", $stderr || 'Unknown error' ) ) if $rs;
             return $rs if $rs;
         }
@@ -638,6 +651,8 @@ sub _updateAptSourceList
 {
     my ($self) = @_;
 
+    local $ENV{'LANG'} = 'C';
+
     my $file = iMSCP::File->new( filename => '/etc/apt/sources.list' );
     my $fileContent = $file->get( );
 
@@ -653,7 +668,7 @@ sub _updateAptSourceList
 
             if ($fileContent !~ /^deb\s+$rc{'uri'}\s+$rc{'dist'}\s+.*\b$section\b/m) {
                 my $rs = execute(
-                    "wget --spider $rc{'uri'}/dists/$rc{'dist'}/$section/" =~ s{([^:])//}{$1/}gr,
+                    [ 'wget', '--spider', "$rc{'uri'}/dists/$rc{'dist'}/$section/" =~ s{([^:])//}{$1/}gr ],
                     \ my $stdout,
                     \ my $stderr
                 );
@@ -669,7 +684,7 @@ sub _updateAptSourceList
 
             if ($foundSection && $fileContent !~ /^deb-src\s+$rc{'uri'}\s+$rc{'dist'}\s+.*\b$section\b/m) {
                 my $rs = execute(
-                    "wget --spider $rc{'uri'}/dists/$rc{'dist'}/$section/source/" =~ s{([^:])//}{$1/}gr,
+                    [ 'wget', '--spider', "$rc{'uri'}/dists/$rc{'dist'}/$section/source/" =~ s{([^:])//}{$1/}gr ],
                     \ my $stdout,
                     \ my $stderr
                 );
@@ -831,15 +846,14 @@ EOF
 
 sub _updatePackagesIndex
 {
-    my $cmd = 'apt-get';
-    unless (iMSCP::Getopt->noprompt) {
-        iMSCP::Dialog->getInstance( )->endGauge( ) if iMSCP::ProgramFinder::find( 'dialog' );
-        $cmd = "debconf-apt-progress --logstderr -- $cmd";
-    }
+    iMSCP::Dialog->getInstance( )->endGauge( ) if !iMSCP::Getopt->noprompt && iMSCP::ProgramFinder::find( 'dialog' );
+
+    local $ENV{'LANG'} = 'C';
 
     my $stdout;
     my $rs = execute(
-        "$cmd -y update", iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef, \ my $stderr
+        [ (!iMSCP::Getopt->noprompt ? ('debconf-apt-progress', '--logstderr', '--') : ( )), 'apt-get', 'update' ],
+        (iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef), \ my $stderr
     );
     error( sprintf( "Couldn't update package index from remote repository: %s", $stderr || 'Unknown error' ) ) if $rs;
     debug( $stderr );
@@ -1022,6 +1036,8 @@ sub _rebuildAndInstallPackage
         error( 'Unsupported patch format.' );
         return 1;
     }
+
+    local $ENV{'LANG'} = 'C';
 
     my $lsbRelease = iMSCP::LsbRelease->getInstance( );
     $patchesDir = "$FindBin::Bin/configs/".lc( $lsbRelease->getId( 1 ) )."/$patchesDir";

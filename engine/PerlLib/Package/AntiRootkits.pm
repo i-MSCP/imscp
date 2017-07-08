@@ -379,23 +379,26 @@ sub _installPackages
 {
     my (undef, @packages) = @_;
 
-    my $cmd = '';
-    unless (iMSCP::Getopt->noprompt) {
-        iMSCP::Dialog->getInstance->endGauge( );
-        $cmd = 'debconf-apt-progress --logstderr --';
-    }
+    iMSCP::Dialog->getInstance->endGauge( ) unless iMSCP::Getopt->noprompt;
 
-    $cmd = "UCF_FORCE_CONFFMISS=1 $cmd"; # Force installation of missing conffiles which are managed by UCF
-    if ($main::forcereinstall) {
-        $cmd .= " apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss'".
-            " --reinstall --auto-remove --purge --no-install-recommends install @packages";
-    } else {
-        $cmd .= " apt-get -y -o DPkg::Options::='--force-confnew' -o DPkg::Options::='--force-confmiss'".
-            " --auto-remove --purge --no-install-recommends install @packages";
-    }
+    local $ENV{'LANG'} = 'C';
+    local $ENV{'UCF_FORCE_CONFFNEW'} = 1;
+    local $ENV{'UCF_FORCE_CONFFMISS'} = 1;
 
+    my ($aptVersion) = `apt-get --version` =~ /^apt\s+([\d.]+)/;
     my $stdout;
-    my $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef, \ my $stderr );
+    my $rs = execute(
+        [
+            (!iMSCP::Getopt->noprompt ? ( 'debconf-apt-progress', '--logstderr', '--' ) : ( )),
+            'apt-get', '--assume-yes', '--option', 'DPkg::Options::=--force-confnew', '--option',
+            'DPkg::Options::=--force-confmiss', '--option', 'Dpkg::Options::=--force-overwrite',
+            ($main::forcereinstall ? '--reinstall' : ( )), '--auto-remove', '--purge', '--no-install-recommends',
+            ((version->parse( $aptVersion ) < version->parse( '1.1.0' )) ? '--force-yes' : '--allow-downgrades'),
+            'install', @packages
+        ],
+        (iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef),
+        \ my $stderr
+    );
     error( sprintf( "Couldn't install packages: %s", $stderr || 'Unknown error' ) ) if $rs;
     $rs;
 }
@@ -413,18 +416,21 @@ sub _removePackages
 {
     my (undef, @packages) = @_;
 
-    # Do not try to uninstall packages that are not available
+    # Do not try to remove packages that are not available
     my $rs = execute( "dpkg-query -W -f='\${Package}\\n' @packages 2>/dev/null", \ my $stdout );
     @packages = split /\n/, $stdout;
     return 0 unless @packages;
 
-    my $cmd = "apt-get -y --auto-remove --purge --no-install-recommends remove @packages";
-    unless (iMSCP::Getopt->noprompt) {
-        iMSCP::Dialog->getInstance->endGauge( );
-        $cmd = "debconf-apt-progress --logstderr -- $cmd";
-    }
+    iMSCP::Dialog->getInstance( )->endGauge( ) unless iMSCP::Getopt->noprompt;
 
-    $rs = execute( $cmd, iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef, \ my $stderr );
+    $rs = execute(
+        [
+            (!iMSCP::Getopt->noprompt ? ('debconf-apt-progress', '--logstderr', '--') : ( )),
+            'apt-get', '--assume-yes', '--auto-remove', '--purge', '--no-install-recommends', 'remove', @packages
+        ],
+        (iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef),
+        \my $stderr
+    );
     error( sprintf( "Couldn't remove packages: %s", $stderr || 'Unknown error' ) ) if $rs;
     $rs;
 }
