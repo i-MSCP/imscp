@@ -25,6 +25,8 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
+use Mso\IdnaConvert\IdnaConvert;
+
 /***********************************************************************************************************************
  * Account functions
  */
@@ -1158,24 +1160,38 @@ function array_encode_idna($array, $asPath = false)
  * Convert a domain name or email to IDNA ASCII form
  *
  * @param  string String to convert
- * @return bool|string String encoded in ASCII-compatible form or FALSE on failure
+ * @return string Encoded string or original string or on failure.
  */
 function encode_idna($string)
 {
-    $idn = new idna_convert(array('idn_version' => '2008'));
-    return $idn->encode($string);
+    if (!iMSCP_Registry::isRegistered('IdnaConvert')) {
+        iMSCP_Registry::set('IdnaConvert', new IdnaConvert());
+    }
+
+    try {
+        return iMSCP_Registry::get('IdnaConvert')->encode($string);
+    } catch (Exception $e) {
+        return $string;
+    }
 }
 
 /**
  * Convert a domain name or email from IDNA ASCII to Unicode
  *
  * @param  string String to convert
- * @return bool|string Unicode string or FALSE on failure.
+ * @return string Decoded string or original string or on failure.
  */
 function decode_idna($string)
 {
-    $idn = new idna_convert(array('idn_version' => '2008'));
-    return $idn->decode($string);
+    if (!iMSCP_Registry::isRegistered('IdnaConvert')) {
+        iMSCP_Registry::set('IdnaConvert', new IdnaConvert());
+    }
+
+    try {
+        return iMSCP_Registry::get('IdnaConvert')->decode($string);
+    } catch (Exception $e) {
+        return $string;
+    }
 }
 
 /**

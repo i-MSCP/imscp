@@ -46,15 +46,16 @@ require_once LIBRARY_PATH . '/vendor/Zend/Loader/AutoloaderFactory.php';
 Zend_Loader_AutoloaderFactory::factory(array(
     'Zend_Loader_StandardAutoloader' => array(
         'autoregister_zf' => true,
-        'namespaces' => array(
-            'iMSCP' => LIBRARY_PATH . '/iMSCP'
+        'namespaces'      => array(
+            'iMSCP'           => LIBRARY_PATH . '/iMSCP',
+            'Mso\IdnaConvert' => LIBRARY_PATH . '/vendor/idna_convert/src/Mso/IdnaConvert'
         ),
-        'prefixes' => array(
+        'prefixes'        => array(
             'iMSCP_' => LIBRARY_PATH . '/iMSCP',
             'Crypt_' => LIBRARY_PATH . '/vendor/phpseclib/Crypt',
-            'File_' => LIBRARY_PATH . '/vendor/phpseclib/File',
-            'Math_' => LIBRARY_PATH . '/vendor/phpseclib/Math',
-            'Net_' => LIBRARY_PATH . '/vendor/Net'
+            'File_'  => LIBRARY_PATH . '/vendor/phpseclib/File',
+            'Math_'  => LIBRARY_PATH . '/vendor/phpseclib/Math',
+            'Net_'   => LIBRARY_PATH . '/vendor/Net'
         )
     )
 ));
@@ -77,7 +78,7 @@ require_once LIBRARY_PATH . '/Functions/Shared.php';
 require_once LIBRARY_PATH . '/Functions/SoftwareInstaller.php';
 require_once LIBRARY_PATH . '/Functions/Reseller.php';
 require_once LIBRARY_PATH . '/Functions/View.php';
-require_once LIBRARY_PATH . '/vendor/idna_convert/idna_convert.class.php';
+#require_once LIBRARY_PATH . '/vendor/idna_convert/idna_convert.class.php';
 
 /** @var $config iMSCP_Config_Handler_File */
 if (is_readable(CONFIG_CACHE_FILE_PATH)) {

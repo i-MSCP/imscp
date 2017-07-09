@@ -70,6 +70,9 @@ INSTALLER
     Fixed: The `IPV6_SUPPORT' configuration parameter must be set early (Servers::server::local::installer)
     Fixed: The master configuration file (imscp.conf) must stay writable during all setup process
 
+VENDOR
+    Updated: IDNA Convert library to version 1.1.0 (with feww modifications for PSR-0 compatibility)
+
 ------------------------------------------------------------------------------------------------------------------------
 1.4.6
 ------------------------------------------------------------------------------------------------------------------------
