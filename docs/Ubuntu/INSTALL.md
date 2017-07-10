@@ -119,7 +119,7 @@ perl imscp-autoinstall -d
 #### 1. Make sure to read the errata file
 
 Before upgrading your must read the errata file which describ information about changes made in new i-MSCP versions,
-and any pre-task that must be done by the administrator before upgrading.
+and the tasks that must be done by the administrator before upgrading.
 
 The errata file for this i-MSCP version is located at: https://github.com/i-MSCP/imscp/blob/<version>/docs/1.4.x_errata.md
 

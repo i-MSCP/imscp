@@ -1160,7 +1160,7 @@ function array_encode_idna($array, $asPath = false)
  * Convert a domain name or email to IDNA ASCII form
  *
  * @param  string String to convert
- * @return string Encoded string or original string or on failure.
+ * @return string Encoded string or original string on failure
  */
 function encode_idna($string)
 {
@@ -1179,7 +1179,7 @@ function encode_idna($string)
  * Convert a domain name or email from IDNA ASCII to Unicode
  *
  * @param  string String to convert
- * @return string Decoded string or original string or on failure.
+ * @return string Decoded string or original string on failure
  */
 function decode_idna($string)
 {
