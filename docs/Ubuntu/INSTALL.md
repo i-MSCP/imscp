@@ -98,14 +98,14 @@ apt-get --assume-yes --auto-remove --no-install-recommends install ca-certificat
 
 ```bash
 cd /usr/local/src
-wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
-tar -xzf <version>.tar.gz
+wget https://github.com/i-MSCP/imscp/archive/1.4.7.tar.gz
+tar -xzf 1.4.7.tar.gz
 ```
 
 #### 4. Change to the newly created directory
 
 ```bash
-cd imscp-<version>
+cd imscp-1.4.7
 ```
 
 #### 5. Install i-MSCP by running its installer
@@ -121,7 +121,7 @@ perl imscp-autoinstall -d
 Before upgrading your must read the errata file which describ information about changes made in new i-MSCP versions,
 and the tasks that must be done by the administrator before upgrading.
 
-The errata file for this i-MSCP version is located at: https://github.com/i-MSCP/imscp/blob/<version>/docs/1.4.x_errata.md
+The errata file for this i-MSCP version is located at: https://github.com/i-MSCP/imscp/blob/1.4.7/docs/1.4.x_errata.md
 
 #### 2. Make sure to make a backup of your data
 
@@ -146,14 +146,14 @@ apt-get --assume-yes --auto-remove --no-install-recommends dist-upgrade
 
 ```bash
 cd /usr/local/src
-wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
-tar -xzf <version>.tar.gz
+wget https://github.com/i-MSCP/imscp/archive/1.4.7.tar.gz
+tar -xzf 1.4.7.tar.gz
 ```
 
 #### 5. Change to the newly created directory
 
 ```bash
-cd imscp-<version>
+cd imscp-1.4.7
 ```
 
 #### 6. Update i-MSCP by running its installer

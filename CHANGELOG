@@ -1,8 +1,11 @@
 ﻿i-MSCP ChangeLog
 
 ------------------------------------------------------------------------------------------------------------------------
-Git 1.4.x
+1.4.7
 ------------------------------------------------------------------------------------------------------------------------
+
+2017-07-10: Laurent Declercq
+    RELEASE i-MSCP 1.4.7
 
 BACKEND
     Added: iMSCP::EventManager::registerOne() method -- Allows to register a listener that will be executed at most once
