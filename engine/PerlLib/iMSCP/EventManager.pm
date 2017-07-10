@@ -205,7 +205,7 @@ sub trigger
     }
 
     delete $self->{'events'}->{$eventName} if $self->{'events'}->{$eventName}->isEmpty( );
-    delete $self->{'nonces'}->{$eventName} unless %{$self->{'nonces'}->{$eventName}};
+    delete $self->{'nonces'}->{$eventName} if $self->{'nonces'}->{$eventName} && !%{$self->{'nonces'}->{$eventName}};
     $rs;
 }
 
