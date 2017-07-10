@@ -5,7 +5,11 @@ Git 1.4.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
+    Added: Flag allowing to ignore mount operation failures (iMSCP::Mount)
     Fixed: Can't use an undefined value as a HASH reference (iMSCP::EventManager)
+
+SERVICE
+    Fixed: MOUNT(2) operation failures are ignored (imscp_mountall)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.7

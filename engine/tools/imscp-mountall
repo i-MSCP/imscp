@@ -39,7 +39,7 @@ use iMSCP::Mount qw/ mount umount isMountpoint getMounts /;
 
 sub run
 {
-    my $action = shift;
+    my ($action) = @_;
 
     my $rs = 0;
     my $fstab = "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf";
@@ -51,11 +51,12 @@ sub run
         next if /^(?:#|$)/; # Ignore comment and empty lines
         chomp;
         my $fields;
-        @{$fields}{ qw/ fs_spec fs_file fs_vfstype fs_mntops / } = split;
+        @{$fields}{ qw/ fs_spec fs_file fs_vfstype fs_mntops ignore_failures / } = split;
 
         if ($action eq 'start') {
             next if $fields->{'fs_mntops'} =~ /\bnoauto\b/;
-            $rs = mount( $fields ) ? last : next;
+            $rs = mount( $fields );
+            $rs ? last : next;
         }
 
         $rs = umount( $fields->{'fs_file'} );
@@ -102,8 +103,6 @@ $bootstrapper->boot(
 );
 
 exit run( $action );
-
-END { $bootstrapper->unlock( '/var/lock/imscp-mountall.lock' ); }
 
 =head1 AUTHOR
 

@@ -172,17 +172,18 @@ sub getMounts
  Create a new mount, or remount an existing mount, or/and change the propagation type of an existing mount
 
  Param hashref \%fields Hash describing filesystem to mount:
-  - fs_spec:    Field describing the block special device or remote filesystem to be mounted
-  - fs_file:    Field describing the mount point for the filesystem
-  - fs_vfstype: Field describing the type of the filesystem
-  - fs_mntops:  Field describing the mount options associated with the filesystem
+  - fs_spec         : Field describing the block special device or remote filesystem to be mounted
+  - fs_file         : Field describing the mount point for the filesystem
+  - fs_vfstype      : Field describing the type of the filesystem
+  - fs_mntops       : Field describing the mount options associated with the filesystem
+  - ignore_failures : Flag allowing to ignore mount operation failures
  Return int 0 on success, other on failure
 
 =cut
 
 sub mount( $ )
 {
-    my $fields = shift;
+    my ($fields) = @_;
     $fields = { } unless defined $fields && ref $fields eq 'HASH';
 
     for(qw/ fs_spec fs_file fs_vfstype fs_mntops /) {
@@ -226,7 +227,7 @@ sub mount( $ )
 
     # Process the mount(2) calls
     for(@mountArgv) {
-        unless (syscall( &iMSCP::Syscall::SYS_mount, @{$_} ) == 0) {
+        unless (syscall( &iMSCP::Syscall::SYS_mount, @{$_} ) == 0 || $fields->{'ignore_failures'} ) {
             error( sprintf( 'Error while executing mount(%s): %s', join( ', ', @{$_} ), $! || 'Unknown error' ) );
             return 1;
         }
