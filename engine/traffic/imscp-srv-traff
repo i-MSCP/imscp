@@ -159,9 +159,6 @@ $bootstrapper->boot(
 
 exit run();
 
-END { $bootstrapper->unlock( '/var/lock/imscp-srv-traff.lock' ); }
-
-
 =head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>

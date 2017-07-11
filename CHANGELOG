@@ -8,6 +8,9 @@ BACKEND
     Added: Flag allowing to ignore mount operation failures (iMSCP::Mount)
     Fixed: Can't use an undefined value as a HASH reference (iMSCP::EventManager)
 
+SCRIPTS
+    Removed: Explicite unlocking of locked files -- Files are automatically unlocked
+
 SERVICE
     Fixed: MOUNT(2) operation failures are ignored (imscp_mountall)
 

@@ -84,8 +84,6 @@ for(@items) {
 
 exit $rs;
 
-END { $bootstrapper->unlock( '/var/lock/imscp-dpkg-post-invoke.lock' ); }
-
 =head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>

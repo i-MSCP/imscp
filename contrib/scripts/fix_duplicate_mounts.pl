@@ -39,7 +39,5 @@ setVerbose(1);
 
 umount($main::imscpConfig{'USER_WEB_DIR'});
 
-END { $bootstrapper->unlock( '/var/lock/imscp-mountall.lock' ); }
-
 1;
 __END__

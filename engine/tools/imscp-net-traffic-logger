@@ -198,8 +198,6 @@ my %dispatch = (
 
 exit $dispatch{ $action }->( );
 
-END { $bootstrapper->unlock( '/var/lock/imscp-net-traffic-logger.lock' ); }
-
 =head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>

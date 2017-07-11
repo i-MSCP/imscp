@@ -137,8 +137,6 @@ $bootstrapper->getInstance( )->boot(
 
 exit run( );
 
-END { $bootstrapper->unlock( '/var/lock/imscp-disable-accounts.lock' ); }
-
 =head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>

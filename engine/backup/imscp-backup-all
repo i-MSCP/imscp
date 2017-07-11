@@ -377,10 +377,6 @@ run( );
 my @errors = getMessageByType( 'error' );
 iMSCP::Mail->new( )->errmsg( "@errors" ) if @errors;
 
-END {
-    $bootstrapper->unlock( '/var/lock/imscp-backup-all.lock' );
-}
-
 =back
 
 =head1 AUTHOR

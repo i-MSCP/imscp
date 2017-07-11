@@ -250,7 +250,7 @@ sub _setDbSettings
 
 END {
     my $self = __PACKAGE__->getInstance( );
-    $self->unlock( $_ ) for keys %{$self->{'locks'}};
+    $self->{'locks'}->{$_}->release( ) for keys %{$self->{'locks'}};
 }
 
 =back

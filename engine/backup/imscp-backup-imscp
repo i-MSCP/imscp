@@ -221,8 +221,6 @@ $bootstrapper->boot(
 
 exit run( );
 
-END { $bootstrapper->unlock( '/var/lock/imscp-backup-imscp.lock' ); }
-
 =head1 AUTHOR
 
  i-MSCP Team <team@i-mscp.net>
