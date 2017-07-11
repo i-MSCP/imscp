@@ -116,7 +116,7 @@ function addCustomer()
         showBadRequestErrorPage();
     }
 
-    $domainIp = intval($_POST['domain_ip']);
+    $domainIp = filter_digits($_POST['domain_ip']);
     $stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', $_SESSION['user_id']);
     if (!$stmt->rowCount()) {
         throw new iMSCP_Exception(sprintf('Could not find IPs for reseller with ID %s', $_SESSION['user_id']));

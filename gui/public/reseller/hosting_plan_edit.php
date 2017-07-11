@@ -536,7 +536,7 @@ if (!isset($_GET['id'])) {
     showBadRequestErrorPage();
 }
 
-$id = intval($_GET['id']);
+$id = filter_digits($_GET['id']);
 
 if (!loadHostingPlan()) {
     showBadRequestErrorPage();

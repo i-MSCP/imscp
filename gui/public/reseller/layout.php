@@ -111,7 +111,7 @@ if (isset($_POST['uaction'])) {
 			set_page_message(tr('Unknown layout color.'), 'error');
 		}
 	} elseif($_POST['uaction'] == 'changeShowLabels') {
-        layout_setMainMenuLabelsVisibility($_SESSION['user_id'], clean_input($_POST['mainMenuShowLabels']));
+        layout_setMainMenuLabelsVisibility($_SESSION['user_id'], filter_digits($_POST['mainMenuShowLabels']));
 		set_page_message(tr('Main menu labels visibility successfully updated.'), 'success');
     } else {
 		set_page_message(tr('Unknown action: %s', tohtml($_POST['uaction'])), 'error');

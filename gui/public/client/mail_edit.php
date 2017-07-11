@@ -130,8 +130,8 @@ function client_editMailAccount()
 
         // Check for quota
 
-        $customerEmailQuotaLimitBytes = (int)$mainDmnProps['mail_quota'];
-        $mailQuotaLimitBytes = intval($_POST['quota']) * 1048576; // MiB to Bytes
+        $customerEmailQuotaLimitBytes = filter_digits($mainDmnProps['mail_quota'], 0);
+        $mailQuotaLimitBytes = filter_digits($_POST['quota']) * 1048576; // MiB to Bytes
 
         if ($customerEmailQuotaLimitBytes > 0) {
             if ($mailQuotaLimitBytes < 1) {
@@ -141,7 +141,7 @@ function client_editMailAccount()
 
             $stmt = exec_query(
                 '
-                  SELECT IFNULL(SUM(quota), 0) AS quota
+                  SELECT IFNULL(SUM(quota), 0)
                   FROM mail_users
                   WHERE mail_id <> ?
                   AND domain_id = ?
@@ -150,7 +150,7 @@ function client_editMailAccount()
                 array($mailData['mail_id'], $mainDmnProps['domain_id'])
             );
 
-            $customerMailboxesQuotaSumBytes = (int)$stmt->fetchRow(PDO::FETCH_COLUMN);
+            $customerMailboxesQuotaSumBytes = $stmt->fetchRow(PDO::FETCH_COLUMN);
 
             if ($customerMailboxesQuotaSumBytes >= $customerEmailQuotaLimitBytes) {
                 showBadRequestErrorPage(); # Customer should never goes here excepted if it try to bypass js code
@@ -261,7 +261,7 @@ function client_generatePage($tpl)
 
     $stmt = exec_query(
         '
-          SELECT IFNULL(SUM(quota), 0) AS quota
+          SELECT IFNULL(SUM(quota), 0)
           FROM mail_users
           WHERE mail_id <> ?
           AND domain_id = ?
@@ -270,16 +270,17 @@ function client_generatePage($tpl)
         array($mailId, $mainDmnProps['domain_id'])
     );
 
-    $customerMailboxesQuotaSumBytes = (int)$stmt->fetchRow(PDO::FETCH_COLUMN);
-    $customerEmailQuotaLimitBytes = (int)$mainDmnProps['mail_quota'];
+    $customerMailboxesQuotaSumBytes = $stmt->fetchRow(PDO::FETCH_COLUMN);
+    $customerEmailQuotaLimitBytes = filter_digits($mainDmnProps['mail_quota'], 0);
 
     if ($customerEmailQuotaLimitBytes < 1) {
         $tpl->assign(array(
             'TR_QUOTA'  => tohtml(tr('Quota in MiB (0 for unlimited)')),
             'MIN_QUOTA' => 0,
-            'MAX_QUOTA' => tohtml(floor(PHP_INT_MAX / 1048576), 'htmlAttr'),
+            'MAX_QUOTA' => tohtml(floor(PHP_INT_MAX), 'htmlAttr'),
             'QUOTA'     => isset($_POST['quota'])
-                ? tohtml(intval($_POST['quota']), 'htmlAttr') : tohtml(floor($mailData['quota'] / 1048576), 'htmlAttr')
+                ? tohtml(filter_digits($_POST['quota']), 'htmlAttr')
+                : tohtml(floor($mailData['quota'] / 1048576), 'htmlAttr')
         ));
         $mailTypeForwardOnly = false;
     } else {
@@ -287,7 +288,8 @@ function client_generatePage($tpl)
             $mailQuotaLimitBytes = floor($customerEmailQuotaLimitBytes - $customerMailboxesQuotaSumBytes);
             $mailMaxQuotaLimitMib = floor($mailQuotaLimitBytes / 1048576);
             $mailQuotaLimitMiB = ($mailData['quota'] > 0 && $mailData['quota'] < $mailQuotaLimitBytes)
-                ? floor($mailData['quota'] / 1048576) : min(10, $mailMaxQuotaLimitMib);
+                ? floor($mailData['quota'] / 1048576)
+                : min(10, $mailMaxQuotaLimitMib);
             $mailTypeForwardOnly = false;
         } else {
             set_page_message(tr('You cannot change this account to normal email account because you have already assigned all your email quota to other mailboxes. If you want to change this account to normal email account, you must first lower the quota assigned to one of your other mailboxes.'), 'static_info');
@@ -303,7 +305,8 @@ function client_generatePage($tpl)
             'MIN_QUOTA' => 1,
             'MAX_QUOTA' => tohtml($mailMaxQuotaLimitMib, 'htmlAttr'),
             'QUOTA'     => isset($_POST['quota'])
-                ? tohtml(intval($_POST['quota']), 'htmlAttr') : tohtml($mailQuotaLimitMiB, 'htmlAttr')
+                ? tohtml(filter_digits($_POST['quota']), 'htmlAttr')
+                : tohtml($mailQuotaLimitMiB, 'htmlAttr')
         ));
     }
 

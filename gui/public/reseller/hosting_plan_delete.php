@@ -32,7 +32,7 @@ if (!isset($_GET['id'])) {
 }
 
 $stmt = exec_query('DELETE FROM hosting_plans WHERE id = ? AND reseller_id = ?', array(
-    intval($_GET['id']), $_SESSION['user_id']
+    filter_digits($_GET['id']), $_SESSION['user_id']
 ));
 
 if ($stmt->rowCount()) {

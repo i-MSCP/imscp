@@ -177,8 +177,8 @@ function gen_admin_domain_query(
 )
 {
     $condition = '';
-    $startIndex = intval($startIndex);
-    $rowsPerPage = intval($rowsPerPage);
+    $startIndex = filter_digits($startIndex);
+    $rowsPerPage = filter_digits($rowsPerPage);
 
     if ($searchFor == 'n/a' && $searchCommon == 'n/a' && $searchStatus == 'n/a') {
         $countQuery = '

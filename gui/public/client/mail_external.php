@@ -187,7 +187,7 @@ if (!customerHasFeature('external_mail')) {
 
 if (isset($_GET['action']) && isset($_GET['domain_id']) && isset($_GET['domain_type'])) {
     $action = clean_input($_GET['action']);
-    $domainId = intval($_GET['domain_id']);
+    $domainId = filter_digits($_GET['domain_id']);
     $domainType = clean_input($_GET['domain_type']);
 
     switch ($action) {

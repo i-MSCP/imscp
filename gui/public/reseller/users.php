@@ -39,7 +39,7 @@
 function generate_users_list($tpl, $resellerId)
 {
     $cfg = iMSCP_Registry::get('config');
-    $rowsPerPage = intval($cfg['DOMAIN_ROWS_PER_PAGE']);
+    $rowsPerPage = filter_digits($cfg['DOMAIN_ROWS_PER_PAGE']);
 
     if (isset($_POST['details']) && !empty($_POST['details'])) {
         $_SESSION['details'] = $_POST['details'];
@@ -63,7 +63,7 @@ function generate_users_list($tpl, $resellerId)
         $_SESSION['search_status'] = $_POST['search_status'];
         $startIndex = 0;
     } else {
-        $startIndex = isset($_GET['psi']) ? (int)$_GET['psi'] : 0;
+        $startIndex = isset($_GET['psi']) ? filter_digits($_GET['psi']) : 0;
 
         if (isset($_SESSION['search_for']) && !isset($_GET['psi'])) {
             unset($_SESSION['search_for']);

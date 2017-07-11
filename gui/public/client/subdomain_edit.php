@@ -98,7 +98,7 @@ function client_generatePage($tpl)
         showBadRequestErrorPage();
     }
 
-    $subdomainId = intval($_GET['id']);
+    $subdomainId = filter_digits($_GET['id']);
     $subdomainType = clean_input($_GET['type']);
     $subdomainData = _client_getSubdomainData($subdomainId, $subdomainType);
     if ($subdomainData === false) {

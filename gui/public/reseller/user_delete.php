@@ -36,7 +36,7 @@ if (!isset($_GET['id'])) {
 }
 
 try {
-    $customerId = intval($_GET['id']);
+    $customerId = filter_digits($_GET['id']);
 
     if (!deleteCustomer($customerId, true)) {
         showBadRequestErrorPage();

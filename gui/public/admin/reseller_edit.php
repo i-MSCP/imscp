@@ -812,7 +812,7 @@ if (!isset($_GET['edit_id'])) {
     showBadRequestErrorPage();
 }
 
-$resellerId = intval($_GET['edit_id']);
+$resellerId = filter_digits($_GET['edit_id']);
 
 $phpini = iMSCP_PHPini::getInstance();
 $phpini->loadResellerPermissions($resellerId); // Load reseller PHP permissions

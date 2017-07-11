@@ -114,7 +114,7 @@ $eventManager->dispatch(iMSCP_Events::onAdminScriptStart);
 check_login('admin');
 
 if (isset($_GET['reseller_id'])) {
-    $resellerId = intval($_GET['reseller_id']);
+    $resellerId = filter_digits($_GET['reseller_id']);
     $_SESSION['stats_reseller_id'] = $resellerId;
 } elseif (isset($_SESSION['stats_reseller_id'])) {
     redirectTo('reseller_user_statistics.php?reseller_id=' . $_SESSION['stats_reseller_id']);

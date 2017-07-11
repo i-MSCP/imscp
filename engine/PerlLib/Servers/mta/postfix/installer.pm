@@ -557,7 +557,8 @@ sub _buildMainCfFile
                 },
                 smtp_tls_loglevel                => {
                     action => 'replace',
-                    values => [ '0' ] },
+                    values => [ '0' ]
+                },
                 smtp_tls_CAfile                  => {
                     action => 'replace',
                     values => [ '/etc/ssl/certs/ca-certificates.crt' ]

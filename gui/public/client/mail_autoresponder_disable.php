@@ -88,7 +88,7 @@ check_login('user');
 if (!customerHasFeature('mail') && !(isset($_REQUEST['mail_account_id']) && is_numeric($_REQUEST['mail_account_id']))) {
     showBadRequestErrorPage();
 }
-$mailAccountId = intval($_REQUEST['mail_account_id']);
+$mailAccountId = filter_digits($_REQUEST['mail_account_id']);
 if (checkMailAccountOwner($mailAccountId)) {
     deactivateAutoresponder($mailAccountId);
     redirectTo('mail_accounts.php');

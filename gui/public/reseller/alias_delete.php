@@ -31,7 +31,7 @@ if (!resellerHasFeature('domain_aliases') || !isset($_GET['id'])) {
     showBadRequestErrorPage();
 }
 
-$îd = intval($_GET['id']);
+$îd = filter_digits($_GET['id']);
 $stmt = exec_query(
     '
         SELECT alias_name

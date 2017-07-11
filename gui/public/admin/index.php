@@ -112,8 +112,8 @@ function admin_getAdminGeneralInfo($tpl)
 function admin_generateServerTrafficInfo($tpl)
 {
     $cfg = iMSCP_Registry::get('config');
-    $trafficLimitBytes = intval($cfg['SERVER_TRAFFIC_LIMIT']) * 1048576;
-    $trafficWarningBytes = intval($cfg['SERVER_TRAFFIC_WARN']) * 1048576;
+    $trafficLimitBytes = filter_digits($cfg['SERVER_TRAFFIC_LIMIT']) * 1048576;
+    $trafficWarningBytes = filter_digits($cfg['SERVER_TRAFFIC_WARN']) * 1048576;
 
     if (!$trafficWarningBytes) {
         $trafficWarningBytes = $trafficLimitBytes;

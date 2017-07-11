@@ -130,7 +130,7 @@ if (!isset($_REQUEST['id'])) {
     showBadRequestErrorPage();
 }
 
-$id = intval($_REQUEST['id']);
+$id = filter_digits($_REQUEST['id']);
 
 if (!check_user_sql_perms($id)) {
     showBadRequestErrorPage();

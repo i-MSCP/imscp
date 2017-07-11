@@ -85,7 +85,7 @@ function client_generateSqlUserList($tpl, $customerId, $databaseId)
     if ($stmt->rowCount()) {
         while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
             $tpl->assign(array(
-                'SQLUSER_ID' => intval($row['sqlu_id']),
+                'SQLUSER_ID' => filter_digits($row['sqlu_id']),
                 'SQLUSER_NAME' => tohtml($row['sqlu_name']),
                 'SQLUSER_HOST' => tohtml(decode_idna($row['sqlu_host'])),
             ));
@@ -207,7 +207,7 @@ function client_addSqlUser($customerId, $dbId)
         }
     } elseif (isset($_POST['sqluser_id'])) { // Using existing SQL user as specified in input data
         $needUserCreate = false;
-        $userId = intval($_POST['sqluser_id']);
+        $userId = filter_digits($_POST['sqluser_id']);
         $stmt = exec_query('SELECT sqlu_name, sqlu_host FROM sql_user WHERE sqlu_id = ?', $userId);
 
         if (!$stmt->rowCount()) {
@@ -337,7 +337,7 @@ if (!customerHasFeature('sql') || !isset($_REQUEST['id'])) {
     showBadRequestErrorPage();
 }
 
-$databaseId = intval($_REQUEST['id']);
+$databaseId = filter_digits($_REQUEST['id']);
 
 client_addSqlUser($_SESSION['user_id'], $databaseId);
 

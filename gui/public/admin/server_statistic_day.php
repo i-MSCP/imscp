@@ -127,9 +127,9 @@ $tpl->define_dynamic(array(
 ));
 
 if (isset($_GET['month']) && isset($_GET['year']) && isset($_GET['day'])) {
-	$year = intval($_GET['year']);
-	$month = intval($_GET['month']);
-	$day = intval($_GET['day']);
+	$year = filter_digits($_GET['year']);
+	$month = filter_digits($_GET['month']);
+	$day = filter_digits($_GET['day']);
 
 	$tpl->assign(array(
 		'TR_PAGE_TITLE' => tohtml(tr('Admin / Statistics / Server Statistics / Day Statistics')),

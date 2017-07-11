@@ -44,7 +44,7 @@ $cfg = iMSCP_Registry::get('config');
 if (!customerHasFeature('support')) {
     showBadRequestErrorPage();
 } elseif (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
-    closeTicket((int)$_GET['ticket_id']);
+    closeTicket(filter_digits($_GET['ticket_id']));
 }
 
 if (isset($_GET['psi'])) {

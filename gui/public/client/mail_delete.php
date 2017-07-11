@@ -130,7 +130,7 @@ try {
     $db->beginTransaction();
 
     foreach ($mailIds as $mailId) {
-        $mailId = intval($mailId);
+        $mailId = filter_digits($mailId);
         client_deleteMailAccount($mailId, $domainId);
         $nbDeletedMails++;
     }

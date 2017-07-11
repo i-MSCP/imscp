@@ -36,7 +36,7 @@ check_login('reseller');
 resellerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
 if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['del_id'])) {
-    $id = intval($_GET['del_id']);
+    $id = filter_digits($_GET['del_id']);
     $stmt = exec_query(
         '
             SELECT alias_id FROM domain_aliasses INNER JOIN domain USING(domain_id) INNER JOIN admin ON(admin_id = domain_admin_id)
@@ -70,7 +70,7 @@ if (!isset($_GET['action']) || $_GET['action'] !== 'activate' || !isset($_GET['a
     showBadRequestErrorPage();
 }
 
-$id = intval($_GET['act_id']);
+$id = filter_digits($_GET['act_id']);
 $stmt = exec_query(
     '
         SELECT alias_name, domain_id, email

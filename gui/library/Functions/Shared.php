@@ -1046,7 +1046,6 @@ function update_reseller_props($resellerId, $props)
  * Note:  For the sum calculation of current quotas, we consider that a mailbox with a value equal to 0 (unlimited) is
  * equal to the new quota limit.
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $domainId Customer main domain unique identifier
  * @param int $newQuota New quota limit in bytes
  * @return void
@@ -2433,17 +2432,19 @@ function quoteValue($value, $parameterType = PDO::PARAM_STR)
  */
 function records_count($table, $where = '', $bind = '')
 {
+    $table =quoteIdentifier($table);
+
     if ($where != '') {
         if ($bind != '') {
-            $stmt = exec_query("SELECT COUNT(*) AS `cnt` FROM `$table` WHERE $where = ?", $bind);
+            $stmt = exec_query("SELECT COUNT(*) FROM $table WHERE $where = ?", $bind);
         } else {
-            $stmt = execute_query("SELECT COUNT(*) AS `cnt` FROM $table WHERE $where");
+            $stmt = execute_query("SELECT COUNT(*) FROM $table WHERE $where");
         }
     } else {
-        $stmt = execute_query("SELECT COUNT(*) AS `cnt` FROM `$table`");
+        $stmt = execute_query("SELECT COUNT(*) FROM $table");
     }
 
-    return (int)$stmt->fields['cnt'];
+    return $stmt->fetchRow(PDO::FETCH_COLUMN);
 }
 
 /**

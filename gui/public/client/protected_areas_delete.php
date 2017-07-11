@@ -27,7 +27,7 @@ if (!customerHasFeature('protected_areas') || !isset($_GET['id'])) {
     showBadRequestErrorPage();
 }
 
-$id = intval($_GET['id']);
+$id = filter_digits($_GET['id']);
 $stmt = exec_query('UPDATE htaccess SET status = ? WHERE id = ? AND dmn_id = ? AND status = ?', array(
     'todelete', $id, get_user_domain_id($_SESSION['user_id']), 'ok'
 ));

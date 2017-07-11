@@ -268,7 +268,7 @@ function editIpAddr()
             sendJsonResponse(400, array('message' => tr('Bad request.')));
         }
 
-        $ipId = intval($_POST['ip_id']);
+        $ipId = filter_digits($_POST['ip_id']);
 
         $stmt = exec_query('SELECT * FROM server_ips WHERE ip_id = ? AND ip_status = ?', array($ipId, 'ok'));
         if (!$stmt->rowCount()) {

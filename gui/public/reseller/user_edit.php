@@ -118,7 +118,7 @@ function reseller_updateUserData($adminId)
     global $adminName, $email, $customerId, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
            $street1, $street2, $phone, $fax, $password, $passwordRepeat;
 
-    $resellerId = intval($_SESSION['user_id']);
+    $resellerId = filter_digits($_SESSION['user_id']);
 
     if ($password === '' && $passwordRepeat === '') { // Save without password
         exec_query(
@@ -192,7 +192,7 @@ if (!isset($_REQUEST['edit_id'])) {
     showBadRequestErrorPage();
 }
 
-$userId = intval($_GET['edit_id']);
+$userId = filter_digits($_GET['edit_id']);
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(

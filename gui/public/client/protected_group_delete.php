@@ -30,7 +30,7 @@ if (!customerHasFeature('protected_areas') || !isset($_GET['gname'])) {
 try {
     iMSCP_Database::getInstance()->beginTransaction();
 
-    $htgroupId = intval($_GET['gname']);
+    $htgroupId = filter_digits($_GET['gname']);
     $domainId = get_user_domain_id($_SESSION['user_id']);
 
     // Schedule deletion or update of any .htaccess files in which the htgroup was used

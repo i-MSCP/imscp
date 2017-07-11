@@ -60,7 +60,7 @@ function setFtpRootDir($tpl = NULL)
     } else {
         try {
             list($mountPoint, $documentRoot) = getDomainMountpoint(
-                intval($_POST['domain_id']), clean_input($_POST['domain_type']), $_SESSION['user_id']
+                filter_digits($_POST['domain_id']), clean_input($_POST['domain_type']), $_SESSION['user_id']
             );
 
             # Update parameters for the FTP chooser
@@ -119,7 +119,7 @@ if (!isset($_GET['id']) || !is_number($_GET['id'])) {
     showBadRequestErrorPage();
 }
 
-$softwareId = intval($_GET['id']);
+$softwareId = filter_digits($_GET['id']);
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
@@ -173,7 +173,7 @@ if (!empty($_POST)) {
         showBadRequestErrorPage();
     }
 
-    $domainId = intval($postData[0]);
+    $domainId = filter_digits($postData[0]);
     $domainType = clean_input($postData[1]);
     $domainProps = get_domain_default_props($_SESSION['user_id']);
     $aliasId = $subId = $aliasSubId = 0;

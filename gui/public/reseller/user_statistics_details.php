@@ -75,8 +75,8 @@ function generatePage($tpl, $userId)
     $adminName = decode_idna($row['admin_name']);
 
     if (isset($_POST['month']) && isset($_POST['year'])) {
-        $year = intval($_POST['year']);
-        $month = intval($_POST['month']);
+        $year = filter_digits($_POST['year']);
+        $month = filter_digits($_POST['month']);
     } else {
         $month = date('m');
         $year = date('Y');
@@ -168,7 +168,7 @@ if (!resellerHasCustomers()) {
 }
 
 if (isset($_GET['user_id'])) {
-    $userId = intval($_GET['user_id']);
+    $userId = filter_digits($_GET['user_id']);
     $_SESSION['stats_user_id'] = $userId;
 } elseif (isset($_SESSION['reseller_stats_user_id'])) {
     redirectTo('user_statistics_details.php?user_id=' . $_SESSION['reseller_stats_user_id']);

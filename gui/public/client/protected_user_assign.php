@@ -60,11 +60,11 @@ function client_generatePage($tpl)
     $domainId = get_user_domain_id($_SESSION['user_id']);
 
     if (isset($_GET['uname']) && is_number($_GET['uname'])) {
-        $htuserId = intval($_GET['uname']);
+        $htuserId = filter_digits($_GET['uname']);
         $tpl->assign('UNAME', tohtml(client_getHtaccessUsername($htuserId, $domainId)));
         $tpl->assign('UID', $htuserId);
     } elseif (isset($_POST['nadmin_name']) && is_number($_POST['nadmin_name'])) {
-        $htuserId = intval($_POST['nadmin_name']);
+        $htuserId = filter_digits($_POST['nadmin_name']);
         $tpl->assign('UNAME', tohtml(client_getHtaccessUsername($htuserId, $domainId)));
         $tpl->assign('UID', $htuserId);
     } else {
@@ -208,7 +208,7 @@ function client_removeHtaccessUserFromHtaccessGroup()
     }
 
     $domainId = get_user_domain_id($_SESSION['user_id']);
-    $htgroupId = intval($_POST['groups_in']);
+    $htgroupId = filter_digits($_POST['groups_in']);
     $htuserId = clean_input($_POST['nadmin_name']);
 
     $stmt = exec_query('SELECT ugroup, members FROM htaccess_groups WHERE id = ? AND dmn_id = ?', array(

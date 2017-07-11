@@ -71,7 +71,7 @@ function client_generatePage($tpl)
         showBadRequestErrorPage();
     }
 
-    $domainAliasId = intval($_GET['id']);
+    $domainAliasId = filter_digits($_GET['id']);
     $domainAliasData = _client_getAliasData($domainAliasId);
     if ($domainAliasData === false) {
         showBadRequestErrorPage();
@@ -160,7 +160,7 @@ function client_editDomainAlias()
         showBadRequestErrorPage();
     }
 
-    $domainAliasId = intval($_GET['id']);
+    $domainAliasId = filter_digits($_GET['id']);
     $domainAliasData = _client_getAliasData($domainAliasId);
 
     if ($domainAliasData === false) {

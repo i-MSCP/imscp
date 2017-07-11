@@ -39,7 +39,7 @@ if (!hasTicketSystem() || !isset($_GET['ticket_id'])) {
     showBadRequestErrorPage();
 }
 
-$ticketId = intval($_GET['ticket_id']);
+$ticketId = filter_digits($_GET['ticket_id']);
 $status = getTicketStatus($ticketId);
 
 if ($status == 1 || $status == 4) {

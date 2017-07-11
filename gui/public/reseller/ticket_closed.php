@@ -48,7 +48,7 @@ $userId = $_SESSION['user_id'];
 if (!hasTicketSystem($userId)) {
     redirectTo('index.php');
 } elseif(isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
-    reopenTicket((int) $_GET['ticket_id']);
+    reopenTicket(filter_digits($_GET['ticket_id']));
 }
 
 if (isset($_GET['psi'])) {

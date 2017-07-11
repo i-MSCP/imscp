@@ -34,7 +34,7 @@ function client_generatePage($tpl)
         showBadRequestErrorPage();
     }
 
-    $softwareId = intval($_GET['id']);
+    $softwareId = filter_digits($_GET['id']);
     $domainProperties = get_domain_default_props($_SESSION['user_id']);
     $stmt = exec_query('SELECT created_by FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
 

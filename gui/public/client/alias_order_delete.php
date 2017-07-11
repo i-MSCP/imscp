@@ -32,7 +32,7 @@ if (!customerHasFeature('domain_aliases') || !isset($_GET['del_id'])) {
 }
 
 $stmt = exec_query('DELETE FROM domain_aliasses WHERE alias_id = ? AND domain_id = ? AND alias_status = ?', array(
-    intval($_GET['del_id']), get_user_domain_id($_SESSION['user_id']), 'ordered'
+    filter_digits($_GET['del_id']), get_user_domain_id($_SESSION['user_id']), 'ordered'
 ));
 
 if ($stmt->rowCount()) {

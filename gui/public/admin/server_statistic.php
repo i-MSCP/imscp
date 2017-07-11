@@ -75,11 +75,11 @@ function _getServerTraffic($beginDate, $endDate)
 function generatePage($tpl)
 {
 	if (isset($_GET['month']) && isset($_GET['year'])) {
-		$year = intval($_GET['year']);
-		$month = intval($_GET['month']);
+		$year = filter_digits($_GET['year']);
+		$month = filter_digits($_GET['month']);
 	} else if (isset($_POST['month']) && isset($_POST['year'])) {
-		$year = intval($_POST['year']);
-		$month = intval($_POST['month']);
+		$year = filter_digits($_POST['year']);
+		$month = filter_digits($_POST['month']);
 	} else {
 		$month = date('m');
 		$year = date('y');

@@ -197,7 +197,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 
 			if ($connection) {
 				$appdata = get_headers($sw_wget, true);
-				$length = (isset($appdata['Content-Length'])) ? (int) $appdata['Content-Length'] : null;
+				$length = (isset($appdata['Content-Length'])) ? filter_digits($appdata['Content-Length']) : null;
 
 				($length) ? $remote_file_size = $length : $remote_file_size = 0;
 				$show_remote_file_size = bytesHuman($remote_file_size);

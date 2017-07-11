@@ -37,8 +37,8 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptS
 check_login('reseller');
 
 if (isset($_GET['domain_id'])) {
-	$domainId = intval($_GET['domain_id']);
-	$resellerId = intval($_SESSION['user_id']);
+	$domainId = filter_digits($_GET['domain_id']);
+	$resellerId = filter_digits($_SESSION['user_id']);
 
 	$stmt = exec_query(
 		'

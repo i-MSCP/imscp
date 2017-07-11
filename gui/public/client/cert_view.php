@@ -237,9 +237,13 @@ function client_addSslCert($domainId, $domainType)
 {
     $config = iMSCP_Registry::get('config');
     $domainName = _client_getDomainName($domainId, $domainType);
-    $allowHSTS = (isset($_POST['allow_hsts']) && in_array($_POST['allow_hsts'], array('on', 'off'))) ? $_POST['allow_hsts'] : 'off';
-    $hstsMaxAge = ($allowHSTS == 'on' && isset($_POST['hsts_max_age']) && $_POST['hsts_max_age'] != '' && $_POST['hsts_max_age'] >= 0) ? intval($_POST['hsts_max_age']) : '31536000';
-    $hstsIncludeSubDomains = ($allowHSTS == 'on' && isset($_POST['hsts_include_subdomains']) && in_array($_POST['hsts_include_subdomains'], array('on', 'off'))) ? $_POST['hsts_include_subdomains'] : 'off';
+    $allowHSTS = (isset($_POST['allow_hsts']) && in_array($_POST['allow_hsts'], array('on', 'off'), true))
+        ? $_POST['allow_hsts'] : 'off';
+    $hstsMaxAge = ($allowHSTS == 'on' && isset($_POST['hsts_max_age']) && is_number($_POST['hsts_max_age'])
+        &&  $_POST['hsts_max_age'] >= 0) ? filter_digits($_POST['hsts_max_age']) : '31536000';
+    $hstsIncludeSubDomains = ($allowHSTS == 'on' && isset($_POST['hsts_include_subdomains'])
+        && in_array($_POST['hsts_include_subdomains'], array('on', 'off'), true))
+        ? $_POST['hsts_include_subdomains'] : 'off';
     $selfSigned = (isset($_POST['selfsigned']) && $_POST['selfsigned'] === 'on');
 
     if ($domainName === false) {
@@ -261,7 +265,7 @@ function client_addSslCert($domainId, $domainType)
     $privateKey = clean_input($_POST['private_key']);
     $certificate = clean_input($_POST['certificate']);
     $caBundle = clean_input($_POST['ca_bundle']);
-    $certId = intval($_POST['cert_id']);
+    $certId = filter_digits($_POST['cert_id']);
 
     if (!$selfSigned) { // Validate SSL certificate (private key, SSL certificate and certificate chain)
         $privateKey = @openssl_pkey_get_private($privateKey, $passPhrase);
@@ -283,7 +287,7 @@ function client_addSslCert($domainId, $domainType)
             return;
         }
 
-        $tmpfname = @tempnam(sys_get_temp_dir(), (intval($_SESSION['user_id']) . 'ssl-ca'));
+        $tmpfname = @tempnam(sys_get_temp_dir(), $_SESSION['user_id'] . 'ssl-ca');
         if ($tmpfname === false) {
             write_log('Could not create temporary file for CA bundle.', E_USER_ERROR);
             set_page_message(tr('Could not add/update SSL certificate. An unexpected error occurred.'), 'error');
@@ -420,7 +424,7 @@ function client_deleteSslCert($domainId, $domainType)
         showBadRequestErrorPage();
     }
 
-    $certId = intval($_POST['cert_id']);
+    $certId = filter_digits($_POST['cert_id']);
     $db = iMSCP_Database::getInstance();
 
     try {
@@ -510,8 +514,10 @@ function client_generatePage($tpl, $domainId, $domainType)
         $certificate = $_POST['certificate'];
         $caBundle = $_POST['ca_bundle'];
         $allowHSTS = (isset($_POST['allow_hsts']) && $_POST['allow_hsts'] === 'on');
-        $hstsMaxAge = ($allowHSTS && isset($_POST['hsts_max_age']) && $_POST['hsts_max_age'] != '' && $_POST['hsts_max_age'] >= 0) ? intval($_POST['hsts_max_age']) : '31536000';
-        $hstsIncludeSubDomains = ($allowHSTS && isset($_POST['hsts_include_subdomains']) && $_POST['hsts_include_subdomains'] === 'on');
+        $hstsMaxAge = ($allowHSTS && isset($_POST['hsts_max_age']) && is_number($_POST['hsts_max_age'])
+            && $_POST['hsts_max_age'] >= 0) ? filter_digits($_POST['hsts_max_age']) : '31536000';
+        $hstsIncludeSubDomains = ($allowHSTS && isset($_POST['hsts_include_subdomains'])
+            && $_POST['hsts_include_subdomains'] === 'on');
     }
 
     $tpl->assign(array(
@@ -563,7 +569,7 @@ if (!isset($_GET['domain_id']) || !isset($_GET['domain_type']) ||
     showBadRequestErrorPage();
 }
 
-$domainId = intval($_GET['domain_id']);
+$domainId = filter_digits($_GET['domain_id']);
 $domainType = clean_input($_GET['domain_type']);
 
 if (customerHasFeature('ssl') && !empty($_POST)) {

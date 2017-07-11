@@ -178,7 +178,7 @@ function check_user_data()
 		return false;
 	}
 
-	$toReseller = intval($_POST['dst_reseller']);
+	$toReseller = filter_digits($_POST['dst_reseller']);
 
 	$stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', $toReseller);
 

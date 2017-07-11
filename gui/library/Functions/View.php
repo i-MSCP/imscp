@@ -114,8 +114,8 @@ function gen_def_language($tpl, $selectedLanguage)
  */
 function generateMonthsAndYearsHtmlList($tpl, $fromMonth = NULL, $fromYear = NULL, $numberYears = 3)
 {
-    $fromMonth = intval($fromMonth);
-    $fromYear = intval($fromYear);
+    $fromMonth = filter_digits($fromMonth);
+    $fromYear = filter_digits($fromYear);
 
     if (!$fromMonth || $fromMonth > 12) {
         $fromMonth = date('m');
@@ -522,7 +522,7 @@ function gen_user_list($tpl)
 {
     $cfg = iMSCP_Registry::get('config');
     $startIndex = 0;
-    $rowsPerPage = intval($cfg['DOMAIN_ROWS_PER_PAGE']);
+    $rowsPerPage = filter_digits($cfg['DOMAIN_ROWS_PER_PAGE']);
 
     if (isset($_GET['psi']) && $_GET['psi'] == 'last') {
         if (isset($_SESSION['search_page'])) {

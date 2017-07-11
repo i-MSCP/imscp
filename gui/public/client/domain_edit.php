@@ -71,7 +71,7 @@ function client_generatePage($tpl)
         showBadRequestErrorPage();
     }
 
-    $domainId = intval($_GET['id']);
+    $domainId = filter_digits($_GET['id']);
     $domainData = _client_getDomainData($domainId);
     if ($domainData === false) {
         showBadRequestErrorPage();
@@ -157,7 +157,7 @@ function client_editDomain()
         showBadRequestErrorPage();
     }
 
-    $domainId = intval($_GET['id']);
+    $domainId = filter_digits($_GET['id']);
     $domainData = _client_getDomainData($domainId);
 
     if ($domainData === false) {

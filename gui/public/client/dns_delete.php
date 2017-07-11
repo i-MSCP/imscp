@@ -31,7 +31,7 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteCus
     'id' => $dnsRecordId
 ));
 
-$dnsRecordId = intval($_GET['id']);
+$dnsRecordId = filter_digits($_GET['id']);
 $stmt = exec_query(
     "
       UPDATE domain_dns

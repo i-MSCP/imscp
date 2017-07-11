@@ -84,7 +84,7 @@ if (!customerHasFeature('custom_error_pages') || !isset($_REQUEST['eid'])) {
     showBadRequestErrorPage();
 }
 
-$eid = intval($_REQUEST['eid']);
+$eid = filter_digits($_REQUEST['eid']);
 
 if (!in_array($eid, array('401', '403', '404', '500', '503'))) {
     showBadRequestErrorPage();

@@ -433,7 +433,7 @@ function client_saveDnsRecord($dnsRecordId)
         } else {
             $stmt = exec_query(
                 'SELECT alias_id, alias_name FROM domain_aliasses WHERE alias_id = ? AND domain_id = ?',
-                array(intval($_POST['zone_id']), $mainDmnId)
+                array(filter_digits($_POST['zone_id']), $mainDmnId)
             );
 
             if (!$stmt->rowCount()) {
@@ -832,7 +832,7 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptSta
 check_login('user');
 customerHasFeature('custom_dns_records') or showBadRequestErrorPage();
 
-$dnsRecordId = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$dnsRecordId = isset($_GET['id']) ? filter_digits($_GET['id']) : 0;
 
 if (!empty($_POST)) {
     if (client_saveDnsRecord($dnsRecordId)) {

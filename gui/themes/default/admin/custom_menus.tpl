@@ -80,7 +80,7 @@
         </tr>
         <tr>
             <td><label for="menu_order">{TR_MENU_ORDER} <span class="italic">({TR_OPTIONAL})</span></label></td>
-            <td><input type="text" name="menu_order" id="menu_order" value="{MENU_ORDER}"></td>
+            <td><input type="number" name="menu_order" id="menu_order" min="0" value="{MENU_ORDER}"></td>
         </tr>
         </tbody>
     </table>
@@ -94,7 +94,7 @@
     <div class="buttons">
         <input name="editMenu" type="button" value="{TR_UPDATE}" onclick="return sbmt(document.forms[0], 'menu_update');">
         <a class="link_as_button" href="custom_menus.php">{TR_CANCEL}</a>
-        <input type="hidden" name="edit_id" value="{EDIT_ID}" /">
+        <input type="hidden" name="edit_id" value="{EDIT_ID}"">
     </div>
     <!-- EDP: edit_menu -->
     <input type="hidden" name="uaction" value="">

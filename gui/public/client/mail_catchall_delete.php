@@ -39,7 +39,7 @@ if (!isset($_GET['id'])) {
     showBadRequestErrorPage();
 }
 
-$catchallId = intval($_GET['id']);
+$catchallId = filter_digits($_GET['id']);
 
 $stmt = exec_query(
     'SELECT mail_id FROM mail_users WHERE domain_id = ? AND mail_id = ?',

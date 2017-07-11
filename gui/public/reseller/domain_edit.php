@@ -1016,7 +1016,7 @@ if (!isset($_GET['edit_id'])) {
     showBadRequestErrorPage();
 }
 
-$domainId = intval($_GET['edit_id']);
+$domainId = filter_digits($_GET['edit_id']);
 
 if (!empty($_POST) && reseller_checkAndUpdateData($domainId)) {
     redirectTo('users.php');

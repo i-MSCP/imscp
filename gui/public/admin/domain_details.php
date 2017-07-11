@@ -188,7 +188,7 @@ $tpl->assign(array(
 );
 
 generateNavigation($tpl);
-admin_generatePage($tpl, intval($_GET['domain_id']));
+admin_generatePage($tpl, filter_digits($_GET['domain_id']));
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

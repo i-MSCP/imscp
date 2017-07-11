@@ -261,7 +261,7 @@ function layout_getUserLayoutColor($userId)
 
     $allowedColors = layout_getAvailableColorSet();
     $query = 'SELECT `layout_color` FROM `user_gui_props` WHERE `user_id` = ?';
-    $stmt = exec_query($query, (int)$userId);
+    $stmt = exec_query($query, $userId);
 
     if ($stmt->rowCount()) {
         $color = $stmt->fields['layout_color'];
@@ -330,7 +330,7 @@ function layout_setUserLayoutColor($userId, $color)
     }
 
     $query = 'UPDATE `user_gui_props` SET `layout_color` = ? WHERE `user_id` = ?';
-    exec_query($query, array($color, (int)$userId));
+    exec_query($query, array($color, $userId));
 
     // Dealing with sessions across multiple browsers for same user identifier - Begin
 
@@ -633,10 +633,10 @@ function layout_isMainMenuLabelsVisible($userId)
  */
 function layout_setMainMenuLabelsVisibility($userId, $visibility)
 {
-    $visibility = (int)$visibility;
+    $visibility = ($visibility) ? 1 : 0;
 
     $query = 'UPDATE `user_gui_props` SET `show_main_menu_labels` = ? WHERE `user_id` = ?';
-    exec_query($query, array($visibility, (int)$userId));
+    exec_query($query, array($visibility, $userId));
 
     if (!isset($_SESSION['logged_from_id'])) {
         $_SESSION['show_main_menu_labels'] = $visibility;

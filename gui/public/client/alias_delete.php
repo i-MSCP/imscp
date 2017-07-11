@@ -31,10 +31,10 @@ if (!customerHasFeature('domain_aliases') || !isset($_GET['id'])) {
     showBadRequestErrorPage();
 }
 
-$id = intval($_GET['id']);
+$id = filter_digits($_GET['id']);
 $stmt = exec_query(
     'SELECT alias_name FROM domain_aliasses INNER JOIN domain USING(domain_id) WHERE alias_id = ? AND domain_admin_id = ?',
-    array($id, intval($_SESSION['user_id']))
+    array($id, $_SESSION['user_id'])
 );
 
 if ($stmt->rowCount()) {

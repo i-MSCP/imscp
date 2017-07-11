@@ -8,6 +8,11 @@ BACKEND
     Added: Flag allowing to ignore mount operation failures (iMSCP::Mount)
     Fixed: Can't use an undefined value as a HASH reference (iMSCP::EventManager)
 
+FRONTEND
+    Fixed: Cannot set value bigger than 2GB for mailbox quota due to integer type casting (i386 arch)
+    Fixed: Cannot edit mailbox quota due to integer type casting (i386 arch)
+    Fixed: Several type integer casting issues
+
 SCRIPTS
     Removed: Explicite unlocking of locked files -- Files are automatically unlocked
 
@@ -16,6 +21,9 @@ SERVICE
 
 SERVERS
     Fixed: SASL authentication failure: cannot connect to Courier authdaemond: No such file or directory (Postfix/Cyrus-SASL)
+
+VENDOR
+    Updated: Zend Framework libraries to version 1.12.20
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.7

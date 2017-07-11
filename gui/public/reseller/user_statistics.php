@@ -91,7 +91,7 @@ function _generateUserStatistics($tpl, $adminId)
  */
 function generatePage($tpl)
 {
-	$stmt = exec_query('SELECT admin_id FROM admin WHERE created_by = ?', intval($_SESSION['user_id']));
+	$stmt = exec_query('SELECT admin_id FROM admin WHERE created_by = ?', filter_digits($_SESSION['user_id']));
 
 	while($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 		_generateUserStatistics($tpl, $row['admin_id']);

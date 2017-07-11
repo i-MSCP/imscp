@@ -40,7 +40,7 @@ function reseller_getDatatable()
         && isset($_GET['iDisplayLength'])
         && $_GET['iDisplayLength'] != '-1'
     ) {
-        $limit = 'LIMIT ' . intval($_GET['iDisplayStart']) . ', ' . intval($_GET['iDisplayLength']);
+        $limit = 'LIMIT ' . filter_digits($_GET['iDisplayStart']) . ', ' . filter_digits($_GET['iDisplayLength']);
     }
 
     /* Ordering */
@@ -50,16 +50,16 @@ function reseller_getDatatable()
         $order = 'ORDER BY ';
 
         if (isset($_GET['iSortingCols'])) {
-            $iSortingCols = intval($_GET['iSortingCols']);
+            $iSortingCols = filter_digits($_GET['iSortingCols']);
 
             for ($i = 0; $i < $iSortingCols; $i++) {
                 if (isset($_GET['iSortCol_' . $i])
-                    && isset($_GET['bSortable_' . intval($_GET['iSortCol_' . $i])])
-                    && $_GET['bSortable_' . intval($_GET['iSortCol_' . $i])] == 'true'
+                    && isset($_GET['bSortable_' . filter_digits($_GET['iSortCol_' . $i])])
+                    && $_GET['bSortable_' . filter_digits($_GET['iSortCol_' . $i])] == 'true'
                     && isset($_GET['sSortDir_' . $i])
                     && in_array($_GET['sSortDir_' . $i], array('asc', 'desc'), true)
                 ) {
-                    $order .= $columnAliases[intval($_GET['iSortCol_' . $i])] . ' ' . $_GET['sSortDir_' . $i] . ', ';
+                    $order .= $columnAliases[filter_digits($_GET['iSortCol_' . $i])] . ' ' . $_GET['sSortDir_' . $i] . ', ';
                 }
             }
         }
@@ -127,7 +127,7 @@ function reseller_getDatatable()
 
     /* Output */
     $output = array(
-        'sEcho' => intval($_GET['sEcho']),
+        'sEcho' => filter_digits($_GET['sEcho']),
         'iTotalDisplayRecords' => $iTotalDisplayRecords,
         'iTotalRecords' => $iTotalRecords,
         'aaData' => array()

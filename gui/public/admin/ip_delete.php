@@ -38,7 +38,7 @@ if (!isset($_GET['ip_id'])) {
     showBadRequestErrorPage();
 }
 
-$ipId = intval($_GET['ip_id']);
+$ipId = filter_digits($_GET['ip_id']);
 
 $stmt = exec_query('SELECT ip_number FROM server_ips WHERE ip_id = ?', $ipId);
 if (!$stmt->rowCount()) {

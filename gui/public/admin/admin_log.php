@@ -139,7 +139,7 @@ function admin_getLogs()
 		$limit = '';
 
 		if(isset($_GET['iDisplayStart']) && isset($_GET['iDisplayLength']) && $_GET['iDisplayLength'] !== '-1') {
-			$limit = 'LIMIT ' . intval($_GET['iDisplayStart']) . ', ' . intval($_GET['iDisplayLength']);
+			$limit = 'LIMIT ' . filter_digits($_GET['iDisplayStart']) . ', ' . filter_digits($_GET['iDisplayLength']);
 		}
 
 		/* Ordering */
@@ -148,13 +148,13 @@ function admin_getLogs()
 		if(isset($_GET['iSortCol_0']) && isset($_GET['iSortingCols'])) {
 			$order = 'ORDER BY ';
 
-			for($i = 0; $i < intval($_GET['iSortingCols']); $i++) {
-				if($_GET['bSortable_' . intval($_GET['iSortCol_' . $i])] === 'true') {
+			for($i = 0; $i < filter_digits($_GET['iSortingCols']); $i++) {
+				if($_GET['bSortable_' . filter_digits($_GET['iSortCol_' . $i])] === 'true') {
 					$sortDir = (
 						isset($_GET['sSortDir_' . $i]) && in_array($_GET['sSortDir_' . $i], array('asc', 'desc'))
 					) ? $_GET['sSortDir_' . $i] : 'asc';
 
-					$order .= $columns[intval($_GET['iSortCol_' . $i])] . ' ' . $sortDir . ', ';
+					$order .= $columns[filter_digits($_GET['iSortCol_' . $i])] . ' ' . $sortDir . ', ';
 				}
 			}
 
@@ -211,7 +211,7 @@ function admin_getLogs()
 
 		/* Output */
 		$output = array(
-			'sEcho' => intval($_GET['sEcho']),
+			'sEcho' => filter_digits($_GET['sEcho']),
 			'iTotalRecords' => $total,
 			'iTotalDisplayRecords' => $filteredTotal,
 			'aaData' => array()

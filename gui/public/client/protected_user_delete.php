@@ -30,7 +30,7 @@ if (!customerHasFeature('protected_areas') || !isset($_GET['uname'])) {
 try {
     iMSCP_Database::getInstance()->beginTransaction();
 
-    $htuserId = intval($_GET['uname']);
+    $htuserId = filter_digits($_GET['uname']);
     $domainId = get_user_domain_id($_SESSION['user_id']);
 
     $stmt = exec_query('SELECT uname FROM htaccess_users WHERE dmn_id = ? AND id = ?', array($domainId, $htuserId));

@@ -150,7 +150,7 @@ if (!isset($_GET['edit_id'])) {
     showBadRequestErrorPage();
 }
 
-$userId = intval($_GET['edit_id']);
+$userId = filter_digits($_GET['edit_id']);
 
 if ($userId == $_SESSION['user_id']) {
     redirectTo('personal_change.php');

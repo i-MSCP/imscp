@@ -72,6 +72,38 @@ function clean_input($input)
 }
 
 /**
+ * Filter digits from the given string
+ *
+ * In case filtering lead to an empty string and if there is no default value
+ * defined a bad request error (400) will be raised.
+ * 
+ * @param string $input String to filter
+ * @param string $default Default value if $input is empty after filtering
+ * @return string containing only digits
+ * 
+ */
+function filter_digits($input, $default = null)
+{
+    static $filter = NULL;
+
+    if (NULL === $filter) {
+        $filter = new Zend_Filter_Digits();
+    }
+
+    $input = $filter->filter(clean_input($input));
+    
+    if($input === '') {
+        if(null !== $default) {
+            showBadRequestErrorPage();
+        }
+        
+        $input = $default;
+    }
+
+    return $input;
+}
+
+/**
  * Escape a string for the HTML Body context
  *
  * @throws iMSCP_Exception

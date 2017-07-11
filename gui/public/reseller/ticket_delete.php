@@ -50,7 +50,7 @@ $previousPage = 'ticket_system';
 
 if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
 
-	$ticketId = (int) $_GET['ticket_id'];
+	$ticketId = filter_digits($_GET['ticket_id']);
 
 	$query = "
 		SELECT

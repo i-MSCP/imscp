@@ -38,7 +38,7 @@
  */
 function admin_deleteUser($userId)
 {
-    $userId = (int)$userId;
+    $userId = filter_digits($userId);
     $cfg = iMSCP_Registry::get('config');
     $db = iMSCP_Database::getInstance();
     $stmt = exec_query(
@@ -218,7 +218,7 @@ if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) { # admin/reseller 
         admin_deleteUser($_GET['delete_id']);
     }
 } elseif (isset($_GET['user_id'])) {
-    $userId = intval($_GET['user_id']);
+    $userId = filter_digits($_GET['user_id']);
 
     try {
         if (!deleteCustomer($userId)) {

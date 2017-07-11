@@ -207,7 +207,7 @@ function generatePage($tpl)
 
     if (isset($_REQUEST['id']) && $_REQUEST['id'] > 0) {
         $stmt = exec_query('SELECT * FROM htaccess WHERE dmn_id = ? AND id = ?', array(
-            $mainDmnProps['domain_id'], intval($_REQUEST['id'])
+            $mainDmnProps['domain_id'], filter_digits($_REQUEST['id'])
         ));
         if (!$stmt->rowCount()) {
             showBadRequestErrorPage();

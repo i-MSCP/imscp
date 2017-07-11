@@ -62,7 +62,7 @@ $userdata = array(
 );
 
 if (isset($_POST['urgency'])) {
-	$userdata['URGENCY'] = intval($_POST['urgency']);
+	$userdata['URGENCY'] = filter_digits($_POST['urgency']);
 } else {
 	$userdata['URGENCY'] = 2;
 }

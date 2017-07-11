@@ -114,7 +114,7 @@ if (!customerHasFeature('mail') || !(isset($_REQUEST['mail_account_id']) && is_n
     showBadRequestErrorPage();
 }
 
-$mailAccountId = intval($_REQUEST['mail_account_id']);
+$mailAccountId = filter_digits($_REQUEST['mail_account_id']);
 
 if (!checkMailAccountOwner($mailAccountId)) {
     showBadRequestErrorPage();
