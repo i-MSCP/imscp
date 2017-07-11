@@ -14,6 +14,9 @@ SCRIPTS
 SERVICE
     Fixed: MOUNT(2) operation failures are ignored (imscp_mountall)
 
+SERVERS
+    Fixed: SASL authentication failure: cannot connect to Courier authdaemond: No such file or directory (Postfix/Cyrus-SASL)
+
 ------------------------------------------------------------------------------------------------------------------------
 1.4.7
 ------------------------------------------------------------------------------------------------------------------------
