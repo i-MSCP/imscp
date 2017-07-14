@@ -239,31 +239,18 @@ sub setupImportSqlSchema
         return 1;
     }
 
-    $content =~ s/^(--[^\n]{0,})?\n//gm;
-    my @queries = split /;\n/, $content;
-    my $title = "Executing ".@queries." queries:";
-
-    startDetail( );
-
-    my $step = 1;
-    for my $query(@queries) {
-        $rs = step(
-            sub {
-                my $qrs = $db->doQuery( 'dummy', $query );
-                unless (ref $qrs eq 'HASH') {
-                    error( sprintf( "Couldn't execute SQL query: %s", $qrs ) );
-                    return 1;
-                }
-                0;
-            },
-            ($queries[$step] ? "$title\n$queries[$step]" : $title, scalar @queries, $step)
-        );
-        last if $rs;
-        $step++;
+    local $@;
+    eval {
+        my $dbh = $db->getRawDb( );
+        local $dbh->{'RaiseError'} = 1;
+        $dbh->do( $_ ) for split /;\n/, $content =~ s/^(--[^\n]{0,})?\n//gmr;
+    };
+    if ($@) {
+        error( $@ );
+        return 1;
     }
 
-    endDetail( );
-    $rs ||= iMSCP::EventManager->getInstance( )->trigger( 'afterSetupImportSqlSchema' );
+    iMSCP::EventManager->getInstance( )->trigger( 'afterSetupImportSqlSchema' );
 }
 
 sub setupSetPermissions
@@ -309,78 +296,73 @@ sub setupDbTasks
     my $rs = iMSCP::EventManager->getInstance( )->trigger( 'beforeSetupDbTasks' );
     return $rs if $rs;
 
-    my $tables = {
-        ssl_certs       => 'status',
-        admin           => [ 'admin_status', "AND `admin_type` = 'user'" ],
-        domain          => 'domain_status',
-        subdomain       => 'subdomain_status',
-        domain_aliasses => 'alias_status',
-        subdomain_alias => 'subdomain_alias_status',
-        domain_dns      => 'domain_dns_status',
-        ftp_users       => 'status',
-        mail_users      => 'status',
-        htaccess        => 'status',
-        htaccess_groups => 'status',
-        htaccess_users  => 'status',
-        server_ips      => 'ip_status'
-    };
-
-    my $db = iMSCP::Database->factory( );
-    $db->useDatabase( setupGetQuestion( 'DATABASE_NAME' ) );
-
-    my $rawDb = $db->startTransaction( );
-
     eval {
-        my $aditionalCondition;
+        {
+            my $tables = {
+                ssl_certs       => 'status',
+                admin           => [ 'admin_status', "AND admin_type = 'user'" ],
+                domain          => 'domain_status',
+                subdomain       => 'subdomain_status',
+                domain_aliasses => 'alias_status',
+                subdomain_alias => 'subdomain_alias_status',
+                domain_dns      => 'domain_dns_status',
+                ftp_users       => 'status',
+                mail_users      => 'status',
+                htaccess        => 'status',
+                htaccess_groups => 'status',
+                htaccess_users  => 'status',
+                server_ips      => 'ip_status'
+            };
+            my $aditionalCondition;
 
-        while (my ($table, $field) = each %{$tables}) {
-            if (ref $field eq 'ARRAY') {
-                $aditionalCondition = $field->[1];
-                $field = $field->[0];
-            } else {
-                $aditionalCondition = ''
+            my $db = iMSCP::Database->factory( );
+            my $oldDatabase = $db->useDatabase( setupGetQuestion( 'DATABASE_NAME' ) );
+
+            my $dbh = $db->getRawDb( );
+            local $dbh->{'RaiseError'};
+
+            while (my ($table, $field) = each %{$tables}) {
+                if (ref $field eq 'ARRAY') {
+                    $aditionalCondition = $field->[1];
+                    $field = $field->[0];
+                } else {
+                    $aditionalCondition = ''
+                }
+
+                ($table, $field) = ($dbh->quote_identifier( $table ), $dbh->quote_identifier( $field ));
+                $dbh->do(
+                    "
+                        UPDATE $table
+                        SET $field = 'tochange'
+                        WHERE $field NOT IN('toadd', 'torestore', 'todisable', 'disabled', 'ordered', 'todelete')
+                        $aditionalCondition
+                    "
+                );
+                $dbh->do( "UPDATE $table SET $field = 'todisable' WHERE $field = 'disabled' $aditionalCondition" );
             }
 
-            $rawDb->do(
+            $dbh->do(
                 "
-                    UPDATE $table SET $field = 'tochange'
-                    WHERE $field NOT IN('toadd', 'torestore', 'todisable', 'disabled', 'ordered', 'todelete')
-                    $aditionalCondition
+                    UPDATE plugin
+                    SET plugin_status = 'tochange', plugin_error = NULL
+                    WHERE plugin_status IN ('tochange', 'enabled')
+                    AND plugin_backend = 'yes'
                 "
             );
 
-            $rawDb->do( "UPDATE $table SET $field = 'todisable' WHERE $field = 'disabled' $aditionalCondition" );
+            $db->useDatabase( $oldDatabase ) if $oldDatabase;
         }
 
-        $rawDb->do(
-            "
-                UPDATE plugin SET plugin_status = 'tochange', plugin_error = NULL
-                WHERE plugin_status IN ('tochange', 'enabled') AND plugin_backend = 'yes'
-            "
-        );
-
-        $rawDb->commit( );
+        startDetail( );
+        iMSCP::DbTasksProcessor->getInstance( mode => 'setup' )->processDbTasks( );
+        endDetail( );
     };
-
     if ($@) {
-        $rawDb->rollback( );
-        $db->endTransaction( );
-        error( sprintf( "Couldn't execute SQL query: %s", $@ ) );
+        error( $@ );
         return 1;
     }
 
-    $db->endTransaction( );
-
-    startDetail( );
-    local $@;
-    eval { iMSCP::DbTasksProcessor->getInstance( mode => 'setup' )->processDbTasks( ); };
-    if ($@) {
-        error( $@ );
-        $rs = 1;
-    }
-    endDetail( );
-
-    $rs ||= iMSCP::EventManager->getInstance( )->trigger( 'afterSetupDbTasks' );
+    iMSCP::EventManager->getInstance( )->trigger( 'afterSetupDbTasks' );
 }
 
 sub setupRegisterPluginListeners
@@ -388,25 +370,21 @@ sub setupRegisterPluginListeners
     my $rs = iMSCP::EventManager->getInstance( )->trigger( 'beforeSetupRegisterPluginListeners' );
     return $rs if $rs;
 
-    my $db = iMSCP::Database->factory( );
+    my $pluginNames;
 
     local $@;
     eval {
-        $db->useDatabase( setupGetQuestion( 'DATABASE_NAME' ) );
-    };
-    return 0 if $@;
-    $db = $db->getRawDb( );
-    $db->{'RaiseError'} = 1;
-
-    my $pluginNames = eval {
-        $db->selectcol_arrayref( "SELECT plugin_name FROM plugin WHERE plugin_status = 'enabled'" );
+        my $db = iMSCP::Database->factory( );
+        my $oldDatabase = $db->useDatabase( setupGetQuestion( 'DATABASE_NAME' ) );
+        my $dbh = $db->getRawDb( );
+        $dbh->{'RaiseError'} = 1;
+        $pluginNames = $dbh->selectcol_arrayref( "SELECT plugin_name FROM plugin WHERE plugin_status = 'enabled'" );
+        $db->useDatabase( $oldDatabase ) if $oldDatabase;
     };
     if ($@) {
         error( $@ );
         return 1;
     }
-
-    $db->{'RaiseError'} = 0;
 
     my $eventManager = iMSCP::EventManager->getInstance( );
 

@@ -110,7 +110,7 @@ sub processDbTasks
         "
             SELECT domain_id AS id, domain_name AS name
             FROM domain
-            INNER JOIN admin ON(admin_id = domain_admin_id)
+            JOIN admin ON(admin_id = domain_admin_id)
             WHERE domain_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
             AND admin_status IN('ok', 'disabled')
             ORDER BY domain_id ASC
@@ -123,7 +123,8 @@ sub processDbTasks
         'Modules::Subdomain',
         "
             SELECT subdomain_id AS id, CONCAT(subdomain_name, '.', domain_name) AS name
-            FROM subdomain INNER JOIN domain USING(domain_id)
+            FROM subdomain
+            JOIN domain USING(domain_id)
             WHERE subdomain_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
             AND domain_status IN('ok', 'disabled')
             ORDER BY subdomain_id ASC
@@ -137,7 +138,7 @@ sub processDbTasks
         "
            SELECT alias_id AS id, alias_name AS name
            FROM domain_aliasses
-           INNER JOIN domain USING(domain_id)
+           JOIN domain USING(domain_id)
            WHERE alias_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
            AND domain_status IN('ok', 'disabled')
            ORDER BY alias_id ASC
@@ -151,7 +152,7 @@ sub processDbTasks
         "
             SELECT subdomain_alias_id AS id, CONCAT(subdomain_alias_name, '.', alias_name) AS name
             FROM subdomain_alias
-            INNER JOIN domain_aliasses USING(alias_id)
+            JOIN domain_aliasses USING(alias_id)
             WHERE subdomain_alias_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
             AND alias_status IN('ok', 'disabled')
             ORDER BY subdomain_alias_id ASC
@@ -164,7 +165,8 @@ sub processDbTasks
         'Modules::CustomDNS',
         "
             SELECT DISTINCT CONCAT('domain_', domain_id) AS id, domain_name AS name
-            FROM domain_dns INNER JOIN domain USING(domain_id)
+            FROM domain_dns
+            JOIN domain USING(domain_id)
             WHERE domain_dns_status IN ('toadd', 'tochange', 'toenable', 'todisable', 'todelete')
             AND alias_id = '0'
             AND domain_status IN('ok', 'disabled')
@@ -178,7 +180,7 @@ sub processDbTasks
         "
             SELECT DISTINCT CONCAT('alias_', alias_id) AS id, alias_name AS name
             FROM domain_dns
-            INNER JOIN domain_aliasses USING(alias_id)
+            JOIN domain_aliasses USING(alias_id)
             WHERE domain_dns_status IN ('toadd', 'tochange', 'toenable', 'todisable', 'todelete')
             AND alias_id <> '0'
             AND alias_status IN('ok', 'disabled')
@@ -191,7 +193,8 @@ sub processDbTasks
         'Modules::FtpUser',
         "
             SELECT userid AS id, userid AS name
-            FROM ftp_users INNER JOIN domain ON(domain_admin_id = admin_id)
+            FROM ftp_users
+            JOIN domain ON(domain_admin_id = admin_id)
             WHERE status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
             AND domain_status IN('ok', 'todelete', 'disabled')
             ORDER BY userid ASC
@@ -205,7 +208,7 @@ sub processDbTasks
         "
             SELECT mail_id AS id, mail_addr AS name
             FROM mail_users
-            INNER JOIN domain USING(domain_id)
+            JOIN domain USING(domain_id)
             WHERE status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
             AND domain_status IN('ok', 'todelete', 'disabled')
             ORDER BY mail_id ASC
@@ -218,7 +221,8 @@ sub processDbTasks
         'Modules::Htpasswd',
         "
             SELECT id, uname AS name
-            FROM htaccess_users INNER JOIN domain ON(domain_id = dmn_id)
+            FROM htaccess_users
+            JOIN domain ON(domain_id = dmn_id)
             WHERE status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
             AND domain_status IN('ok', 'todelete', 'disabled')
             ORDER BY id ASC
@@ -232,7 +236,7 @@ sub processDbTasks
         "
             SELECT id, ugroup AS name
             FROM htaccess_groups
-            INNER JOIN domain ON(domain_id = dmn_id)
+            JOIN domain ON(domain_id = dmn_id)
             WHERE status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
             AND domain_status IN('ok', 'todelete', 'disabled')
             ORDER BY id ASC
@@ -246,7 +250,7 @@ sub processDbTasks
         "
             SELECT id, auth_name AS name
             FROM htaccess
-            INNER JOIN domain ON(domain_id = dmn_id)
+            JOIN domain ON(domain_id = dmn_id)
             WHERE status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
             AND domain_status IN('ok', 'todelete', 'disabled')
             ORDER BY id ASC
@@ -258,7 +262,8 @@ sub processDbTasks
         'Modules::SubAlias',
         "
             SELECT subdomain_alias_id AS id, concat(subdomain_alias_name, '.', alias_name) AS name
-            FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
+            FROM subdomain_alias
+            JOIN domain_aliasses USING(alias_id)
             WHERE subdomain_alias_status = 'todelete'
             ORDER BY subdomain_alias_id ASC
         "
@@ -283,7 +288,8 @@ sub processDbTasks
         'Modules::Subdomain',
         "
             SELECT subdomain_id AS id, CONCAT(subdomain_name, '.', domain_name) AS name
-            FROM subdomain INNER JOIN domain USING(domain_id)
+            FROM subdomain
+            JOIN domain USING(domain_id)
             WHERE subdomain_status = 'todelete'
             ORDER BY subdomain_id ASC
         "
@@ -319,21 +325,24 @@ sub processDbTasks
     );
 
     # Process software package tasks
-    my $rdata = iMSCP::Database->factory( )->doQuery(
-        'software_id',
+    local $self->{'_dbh'}->{'RaiseError'} = 1;
+
+    my $rows = $self->{'_dbh'}->selectall_hashref(
         "
             SELECT domain_id, alias_id, subdomain_id, subdomain_alias_id, software_id, path, software_prefix,
                 db, database_user, database_tmp_pwd, install_username, install_password, install_email,
-                software_status, software_depot, software_master_id FROM web_software_inst
-            WHERE software_status IN ('toadd', 'todelete') ORDER BY domain_id ASC
-        "
+                software_status, software_depot, software_master_id
+            FROM web_software_inst
+            WHERE software_status IN ('toadd', 'todelete')
+            ORDER BY domain_id ASC
+        ",
+        'software_id'
     );
-    ref $rdata eq 'HASH' or die( $rdata );
 
-    if (%{$rdata}) {
+    if (%{$rows}) {
         newDebug( 'imscp_sw_mngr_engine' );
 
-        for (values %{$rdata}) {
+        for (values %{$rows}) {
             my $pushString = encode_base64(
                 encode_json(
                     [
@@ -363,19 +372,20 @@ sub processDbTasks
     }
 
     # Process software tasks
-    $rdata = iMSCP::Database->factory( )->doQuery(
-        'software_id',
+    $rows = $self->{'_dbh'}->selectall_hashref(
         "
             SELECT software_id, reseller_id, software_archive, software_status, software_depot
-            FROM web_software WHERE software_status = 'toadd' ORDER BY reseller_id ASC
-        "
+            FROM web_software
+            WHERE software_status = 'toadd'
+            ORDER BY reseller_id ASC
+        ",
+        'software_id'
     );
-    ref $rdata eq 'HASH' or die( $rdata );
 
-    if (%{$rdata}) {
+    if (%{$rows}) {
         newDebug( 'imscp_pkt_mngr_engine.log' );
 
-        for (values %{$rdata}) {
+        for (values %{$rows}) {
             my $pushstring = encode_base64(
                 encode_json(
                     [
@@ -421,7 +431,7 @@ sub _init
     my ($self) = @_;
 
     defined $self->{'mode'} or die( 'mode attribute is not defined' );
-    $self->{'db'} = iMSCP::Database->factory( );
+    $self->{'_dbh'} = iMSCP::Database->factory( )->getRawDb( );
     $self;
 }
 
@@ -443,10 +453,9 @@ sub _processModuleDbTasks
     eval {
         debug( sprintf( 'Processing %s tasks...', $module ), (caller( 2 ))[3] );
 
-        my $dbh = $self->{'db'}->getRawDb( );
-        local $dbh->{'RaiseError'} = 1;
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
 
-        my $sth = $dbh->prepare( $sql );
+        my $sth = $self->{'_dbh'}->prepare( $sql );
         $sth->execute( );
 
         my $countRows = $sth->rows( );
@@ -504,7 +513,10 @@ sub _processModuleTasks
 {
     my ($self, $module, $dbItemId) = @_;
 
-    local $self->{'db'}->getRawDb( )->{'RaiseError'} = 0;
+    # Only for backward compatibility with 3rd-party software.
+    # Will be removed when RaiseError will be default in version 1.5.0
+    local $self->{'_dbh'}->{'RaiseError'} = 0;
+
     $module->new( )->process( $dbItemId );
 }
 

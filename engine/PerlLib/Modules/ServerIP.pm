@@ -14,19 +14,18 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 package Modules::ServerIP;
 
 use strict;
 use warnings;
-use iMSCP::Database;
-use iMSCP::Debug qw/ error getLastError getMessageByType /;
+use iMSCP::Debug qw/ error getLastError getMessageByType warning /;
 use iMSCP::Net;
 use iMSCP::Provider::NetworkInterface;
 use parent 'Modules::Abstract';
@@ -65,32 +64,68 @@ sub process
 {
     my ($self, $ipId) = @_;
 
+    my $rs = $self->_loadData( $ipId );
+    return $rs if $rs;
+
+    my @sql;
+    if ($self->{'_data'}->{'ip_status'} =~ /^to(?:add|change)$/) {
+        $rs = $self->add( );
+        @sql = ('UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', undef,
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $ipId);
+    } elsif ($self->{'_data'}->{'ip_status'} eq 'todelete') {
+        $rs = $self->delete( );
+        @sql = $rs
+            ? ('UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', undef,
+                getLastError( 'error' ) || 'Unknown error', $ipId)
+            : ('DELETE FROM server_ips WHERE ip_id = ?', undef, $ipId);
+    } else {
+        warning( sprintf( 'Unknown action (%s) for server IP with ID %s', $self->{'_data'}->{'ip_status'}, $ipId ) );
+        return 0;
+    }
+
     local $@;
     eval {
-        $self->{'_data'} = $self->_loadData( $ipId );
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        $self->{'_dbh'}->do( @sql );
+    };
+    if ($@) {
+        error( $@ );
+        return 1;
+    }
 
-        my @sql;
-        if ($self->{'_data'}->{'ip_status'} =~ /^to(?:add|change)$/) {
-            @sql = (
-                'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?',
-                ($self->add( ) ? getLastError( 'error' ) || 'Unknown error' : 'ok'),
-                $ipId
-            );
-        } elsif ($self->{'ip_status'} eq 'todelete') {
-            if ($self->delete( )) {
-                @sql = (
-                    'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?',
-                    getLastError( 'error' ) || 'Unknown error', $ipId
-                );
-            } else {
-                @sql = ('DELETE FROM server_ips WHERE ip_id = ?', $ipId);
-            }
-        } else {
-            die( sprintf( 'Unknown action requested for server IP with ID %s', $ipId ) );
+    $rs;
+}
+
+=item add( )
+
+ Add (or update) a server IP address
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub add
+{
+    my ($self) = @_;
+
+    local $@;
+    eval {
+        $self->{'eventManager'}->trigger( 'beforeAddIpAddr', $self->{'_data'} ) == 0 or die(
+            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+        );
+
+        if ($self->{'_data'}->{'ip_card'} ne 'any' && $self->{'_data'}->{'ip_address'} ne '0.0.0.0') {
+            iMSCP::Provider::NetworkInterface->getInstance( )->addIpAddr( $self->{'_data'} );
+            iMSCP::Net->getInstance( )->resetInstance( );
         }
 
-        my $qrs = iMSCP::Database->factory( )->doQuery( 'dummy', @sql );
-        ref $qrs eq 'HASH' or die( $qrs );
+        $self->SUPER::add( ) == 0 or die(
+            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+        );
+
+        $self->{'eventManager'}->trigger( 'afterAddIpAddr', $self->{'_data'} ) == 0 or die(
+            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+        );
     };
     if ($@) {
         error( $@ );
@@ -100,43 +135,9 @@ sub process
     0;
 }
 
-=item add( )
-
- Add (or update) a server IP
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub add
-{
-    my ($self) = @_;
-    
-    unless ($self->{'_data'}->{'ip_card'} eq 'any' || $self->{'_data'}->{'ip_address'} eq '0.0.0.0') {
-        local $@;
-        eval {
-            $self->{'eventManager'}->trigger( 'beforeAddIpAddr', $self->{'_data'} ) == 0 or die(
-                getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-            );
-            iMSCP::Provider::NetworkInterface->getInstance( )->addIpAddr( $self->{'_data'} );
-            $self->{'eventManager'}->trigger( 'afterAddIpAddr', $self->{'_data'} ) == 0 or die(
-                getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-            );
-            
-            iMSCP::Net->getInstance( )->resetInstance( );
-        };
-        if ($@) {
-            error( $@ );
-            return 1;
-        }
-    }
-
-    $self->SUPER::add( );
-}
-
 =item delete( )
 
- Delete a server IP
+ Delete a server IP address
 
  Return int 0 on success, other on failure
 
@@ -146,25 +147,31 @@ sub delete
 {
     my ($self) = @_;
 
-    unless ($self->{'_data'}->{'ip_card'} eq 'any' || $self->{'_data'}->{'ip_address'} eq '0.0.0.0') {
-        local $@;
-        eval {
-            $self->{'eventManager'}->trigger( 'beforeRemoveIpAddr', $self->{'_data'} ) == 0 or die(
-                getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-            );
+    local $@;
+    eval {
+        $self->{'eventManager'}->trigger( 'beforeRemoveIpAddr', $self->{'_data'} ) == 0 or die(
+            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+        );
+
+        if ($self->{'_data'}->{'ip_card'} ne 'any' && $self->{'_data'}->{'ip_address'} ne '0.0.0.0') {
             iMSCP::Provider::NetworkInterface->getInstance( )->removeIpAddr( $self->{'_data'} );
-            $self->{'eventManager'}->trigger( 'afterRemoveIpAddr', $self->{'_data'} ) == 0 or die(
-                getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-            );
             iMSCP::Net->getInstance( )->resetInstance( );
-        };
-        if ($@) {
-            error( $@ );
-            return 1;
         }
+
+        $self->SUPER::delete( ) == 0 or die(
+            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+        );
+
+        $self->{'eventManager'}->trigger( 'afterRemoveIpAddr', $self->{'_data'} ) == 0 or die(
+            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+        );
+    };
+    if ($@) {
+        error( $@ );
+        return 1;
     }
 
-    $self->SUPER::delete( );
+    0;
 }
 
 =back
@@ -184,20 +191,27 @@ sub delete
 
 sub _loadData
 {
-    my (undef, $ipId) = @_;
+    my ($self, $ipId) = @_;
 
-    my $qrs = iMSCP::Database->factory( )->doQuery(
-        'ip_id',
-        '
-            SELECT ip_id, ip_card, ip_number AS ip_address, ip_netmask, ip_config_mode, ip_status
-            FROM server_ips
-            WHERE ip_id = ?
-        ',
-        $ipId
-    );
+    local $@;
+    eval {
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        $self->{'_data'} = $self->{'_dbh'}->selectrow_hashref(
+            '
+                SELECT ip_id, ip_card, ip_number AS ip_address, ip_netmask, ip_config_mode, ip_status
+                FROM server_ips
+                WHERE ip_id = ?
+            ',
+            undef, $ipId
+        );
+        $self->{'_data'} or die( sprintf( 'Data not found for server IP address (ID %d)', $ipId ) );
+    };
+    if ($@) {
+        error( $@ );
+        return 1;
+    }
 
-    ref $qrs eq 'HASH' or die( $qrs );
-    $qrs->{$ipId} or die( sprintf( 'Server IP with ID %s has not been found in database', $ipId ) );
+    0;
 }
 
 =item _getData( $action )
@@ -205,7 +219,7 @@ sub _loadData
  Data provider method for servers and packages
 
  Param string $action Action
- Return hashref Reference to a hash containing data, die on failure
+ Return hashref Reference to a hash containing data
 
 =cut
 

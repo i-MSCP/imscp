@@ -79,7 +79,7 @@ sub registerSetupListeners
                 sub { $self->askSsl( @_ ) },
                 sub { $self->askHttpPorts( @_ ) },
                 sub { $self->askAltUrlsFeature( @_ ) };
-                0;
+            0;
         }
     );
 }
@@ -100,6 +100,7 @@ sub askMasterAdminCredentials
     my ($username, $password) = ('', '');
 
     my $db = iMSCP::Database->factory( );
+
     local $@;
     eval { $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) ); };
     $db = undef if $@;
@@ -108,20 +109,20 @@ sub askMasterAdminCredentials
         $username = main::setupGetQuestion( 'ADMIN_LOGIN_NAME' );
         $password = main::setupGetQuestion( 'ADMIN_PASSWORD' );
     } elsif ($db) {
-        my $defaultAdmin = $db->doQuery(
-            'created_by',
-            'SELECT admin_name, admin_pass, created_by FROM admin WHERE created_by = ? AND admin_type = ? LIMIT 1',
-            '0',
-            'admin'
-        );
-        unless (ref $defaultAdmin eq 'HASH') {
-            error( $defaultAdmin );
+        local $@;
+        my $row = eval {
+            my $dbh = $db->getRawDb( );
+            local $dbh->{'RaiseError'} = 1;
+            $dbh->selectrow_hashref(
+                "SELECT admin_name, admin_pass FROM admin WHERE created_by = 0 AND admin_type = 'admin'",
+            );
+        };
+        if ($@) {
+            error( $@ );
             return 1;
-        }
-
-        if (%{$defaultAdmin}) {
-            $username = $defaultAdmin->{'0'}->{'admin_name'} // '';
-            $password = $defaultAdmin->{'0'}->{'admin_pass'} // '';
+        } elsif ($row) {
+            $username = $row->{'admin_name'} // '';
+            $password = $row->{'admin_pass'} // '';
         }
     }
 
@@ -143,13 +144,18 @@ EOF
             if (!isValidUsername( $username )) {
                 $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             } elsif ($db) {
-                my $rdata = $db->doQuery(
-                    'admin_id', 'SELECT admin_id FROM admin WHERE admin_name = ? AND created_by <> 0 LIMIT 1', $username
-                );
-                unless (ref $rdata eq 'HASH') {
-                    error( $rdata );
+                local $@;
+                my $row = eval {
+                    my $dbh = $db->getRawDb( );
+                    local $dbh->{'RaiseError'} = 1;
+                    $dbh->selectrow_hashref(
+                        'SELECT 1 FROM admin WHERE admin_name = ? AND created_by <> 0', undef, $username
+                    );
+                };
+                if ($@) {
+                    error( $@ );
                     return 1;
-                } elsif (%{$rdata}) {
+                } elsif ($row) {
                     $msg = '\n\n\\Z1This username is not available.\\Zn\n\nPlease try again:'
                 }
             }
@@ -624,50 +630,46 @@ sub _setupMasterAdmin
     $password = apr1MD5( $password );
 
     my $db = iMSCP::Database->factory( );
-    $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) );
+    my $dbh = $db->getRawDb( );
 
-    my $rs = $db->doQuery(
-        'admin_name', 'SELECT admin_id, admin_name FROM admin WHERE admin_name = ? LIMIT 1', $loginOld
-    );
-    unless (ref $rs eq 'HASH') {
-        error( $rs );
-        return 1;
-    }
+    local $@;
+    eval {
+        $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) );
 
-    if (%{$rs}) {
-        $rs = $db->doQuery(
-            'u', 'UPDATE admin SET admin_name = ?, admin_pass = ?, email = ? WHERE admin_id = ?',
-            $login, $password, $email, $rs->{$loginOld}->{'admin_id'}
+        local $dbh->{'AutoCommit'} = 0;
+        local $dbh->{'RaiseError'} = 1;
+
+        my $row = $dbh->selectrow_hashref(
+            "SELECT admin_id FROM admin WHERE admin_name = ?", 'admin_name', undef, $loginOld
         );
-        unless (ref $rs eq 'HASH') {
-            error( $rs );
-            return 1;
+
+        if ($row) {
+            $dbh->do(
+                'UPDATE admin SET admin_name = ?, admin_pass = ?, email = ? WHERE admin_id = ?',
+                undef, $login, $password, $email, $row->{'admin_id'}
+            );
+        } else {
+            $dbh->do(
+                'INSERT INTO admin (admin_name, admin_pass, admin_type, email) VALUES (?, ?, ?, ?)',
+                undef, $login, $password, 'admin', $email
+            );
+            $dbh->do(
+                '
+                    INSERT IGNORE INTO user_gui_props (
+                        user_id, lang, layout, layout_color, logo, show_main_menu_labels
+                    ) VALUES (
+                        LAST_INSERT_ID(), ?, ?, ?, ?, ?
+                    )
+                ',
+                undef, 'auto', 'default', 'black', '', '0'
+            );
         }
-        return 0;
-    }
 
-    $rs = $db->doQuery(
-        'i', 'INSERT INTO admin (admin_name, admin_pass, admin_type, email) VALUES (?, ?, ?, ?)',
-        $login, $password, 'admin', $email
-    );
-    unless (ref $rs eq 'HASH') {
-        error( $rs );
-        return 1;
-    }
-
-    $rs = $db->doQuery(
-        'i',
-        '
-            INSERT IGNORE INTO user_gui_props (
-                user_id, lang, layout, layout_color, logo, show_main_menu_labels
-            ) VALUES (
-                LAST_INSERT_ID(), ?, ?, ?, ?, ?
-            )
-        ',
-        'auto', 'default', 'black', '', '0'
-    );
-    unless (ref $rs eq 'HASH') {
-        error( $rs );
+        $dbh->commit( );
+    };
+    if ($@) {
+        $dbh->rollback( );
+        error( $@ );
         return 1;
     }
 
@@ -780,16 +782,15 @@ sub _addMasterWebUser
         $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) );
 
         my $row = $dbh->selectrow_hashref(
-            '
+            "
                 SELECT admin_sys_name, admin_sys_uid, admin_sys_gname
                 FROM admin
-                WHERE admin_type = ?
-                AND created_by = ?
+                WHERE admin_type = 'admin'
+                AND created_by = 0
                 LIMIT 1
-            ',
-            undef, 'admin', '0'
+            "
         );
-        %{$row} or die( "Couldn't find master administrator user in database" );
+        $row or die( "Couldn't find master administrator user in database" );
 
         my ($oldUser, $uid, $gid) = ($row->{'admin_sys_uid'} && $row->{'admin_sys_uid'} ne '0')
             ? (getpwuid( $row->{'admin_sys_uid'} ))[0, 2, 3] : ( );
@@ -805,12 +806,12 @@ sub _addMasterWebUser
         ($uid, $gid) = (getpwnam( $user ))[2, 3];
 
         $dbh->do(
-            '
+            "
                 UPDATE admin
                 SET admin_sys_name = ?, admin_sys_uid = ?, admin_sys_gname = ?, admin_sys_gid = ?
-                WHERE admin_type = ?
-            ',
-            undef, $user, $uid, $group, $gid, 'admin'
+                WHERE admin_type = 'admin'
+            ",
+            undef, $user, $uid, $group, $gid
         );
 
         $rs = iMSCP::SystemUser->new( username => $user )->addToGroup( $main::imscpConfig{'IMSCP_GROUP'} );

@@ -154,9 +154,9 @@ sub createUser
     defined $password or die( '$password parameter is not defined' );
 
     eval {
-        my $dbi = iMSCP::Database->factory( )->getRawDb( );
-        local $dbi->{'RaiseError'} = 1;
-        $dbi->do(
+        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        local $dbh->{'RaiseError'} = 1;
+        $dbh->do(
             'CREATE USER ?@? IDENTIFIED BY ?'
                 .(($self->getType( ) ne 'mariadb'
                     && version->parse( $self->getVersion( ) ) >= version->parse( '5.7.6' ))

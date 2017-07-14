@@ -152,40 +152,36 @@ sub deleteMail
 
     return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
 
-    my $db = iMSCP::Database->factory( );
+    local $@;
+    eval {
+        my $db = iMSCP::Database->factory( );
+        my $dbh = $db->getRawDb( );
+        $dbh->{'RaiseError'} = 1;
 
-    unless ($dbInitialized) {
-        my $quotedRainLoopDbName = $db->quoteIdentifier( $main::imscpConfig{'DATABASE_NAME'}.'_rainloop' );
-        my $rs = $db->doQuery( '1', "SHOW TABLES FROM $quotedRainLoopDbName" );
-        unless (ref $rs eq 'HASH') {
-            error( $rs );
-            return 1;
+        unless ($dbInitialized) {
+            my $quotedRainLoopDbName = ${$dbh}->quote_identifier( $main::imscpConfig{'DATABASE_NAME'}.'_rainloop' );
+            my $row = $db->selectrow_hashref( "SHOW TABLES FROM $quotedRainLoopDbName" );
+            $dbInitialized = 1 if $row;
         }
 
-        $dbInitialized = 1 if %{$rs};
-    }
-
-    if ($dbInitialized) {
-        my $oldDatabase = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'}.'_rainloop' );
-        my $rs = $db->doQuery(
-            'd',
-            '
-                DELETE u, c, p
-                FROM rainloop_users u
-                LEFT JOIN rainloop_ab_contacts c USING(id_user)
-                LEFT JOIN rainloop_ab_properties p USING(id_user)
-                WHERE rl_email = ?
-            ',
-            $data->{'MAIL_ADDR'}
-        );
-        unless (ref $rs eq 'HASH') {
-            error(
-                sprintf( "Couldn't remove mail user '%s' from rainloop database: %s", $data->{'MAIL_ADDR'}, $rs )
+        if ($dbInitialized) {
+            my $oldDatabase = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'}.'_rainloop' );
+            $dbh->do(
+                '
+                    DELETE u, c, p
+                    FROM rainloop_users u
+                    LEFT JOIN rainloop_ab_contacts c USING(id_user)
+                    LEFT JOIN rainloop_ab_properties p USING(id_user)
+                    WHERE rl_email = ?
+                ',
+                undef, $data->{'MAIL_ADDR'}
             );
-            return 1;
+            $db->useDatabase( $oldDatabase ) if $oldDatabase;
         }
-
-        $db->useDatabase( $oldDatabase );
+    };
+    if ($@) {
+        error( $@ );
+        return 1;
     }
 
     my $storageDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop/data/_data_/_default_/storage";

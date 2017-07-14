@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by internet Multi Server Control Panel
+# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,8 +25,7 @@ package Modules::Htgroup;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
-use iMSCP::Database;
+use iMSCP::Debug qw/ error getLastError warning /;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -70,26 +69,30 @@ sub process
     if ($self->{'status'} =~ /^to(?:add|change|enable)$/) {
         $rs = $self->add( );
         @sql = (
-            'UPDATE htaccess_groups SET status = ? WHERE id = ?',
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $htgroupId
-        );
+            'UPDATE htaccess_groups SET status = ? WHERE id = ?', undef,
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $htgroupId);
     } elsif ($self->{'status'} eq 'todisable') {
-        @sql = ('UPDATE htaccess_groups SET status = ? WHERE id = ?', 'disabled', $htgroupId);
+        $rs = $self->disable( );
+        @sql = ('UPDATE htaccess_groups SET status = ? WHERE id = ?', undef,
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'), $htgroupId);
     } elsif ($self->{'status'} eq 'todelete') {
         $rs = $self->delete( );
-        if ($rs) {
-            @sql = (
-                'UPDATE htaccess_groups SET status = ? WHERE id = ?',
-                getLastError( 'error' ) || 'Unknown error', $htgroupId
-            );
-        } else {
-            @sql = ('DELETE FROM htaccess_groups WHERE id = ?', $htgroupId);
-        }
+        @sql = $rs
+            ? ('UPDATE htaccess_groups SET status = ? WHERE id = ?', undef,
+                getLastError( 'error' ) || 'Unknown error', $htgroupId)
+            : ('DELETE FROM htaccess_groups WHERE id = ?', undef, $htgroupId);
+    } else {
+        warning( sprintf( 'Unknown action (%s) for htgroup (ID %d)', $self->{'status'}, $htgroupId ) );
+        return 0;
     }
 
-    my $rdata = iMSCP::Database->factory( )->doQuery( 'dummy', @sql );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
+    local $@;
+    eval {
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        $self->{'_dbh'}->do( @sql );
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 
@@ -115,52 +118,40 @@ sub _loadData
 {
     my ($self, $htgroupId) = @_;
 
-    my $db = iMSCP::Database->factory( );
-    $db->doQuery( 'dummy', 'SET SESSION group_concat_max_len = 8192' );
-
-    my $rdata = $db->doQuery(
-        'id',
-        "
-            SELECT t2.id, t2.ugroup, t2.status, t2.users, t3.domain_name, t3.domain_admin_id, t3.web_folder_protection
-            FROM (SELECT * from htaccess_groups, (SELECT IFNULL(
-                (
-                    SELECT group_concat(uname SEPARATOR ' ')
-                    FROM htaccess_users
-                    WHERE id regexp (
-                        CONCAT('^(', (SELECT REPLACE((SELECT members FROM htaccess_groups WHERE id = ?), ',', '|')), ')\$')
-                    )
-                    GROUP BY dmn_id
-                ), '') AS users) AS t1
-            ) AS t2
-            INNER JOIN domain AS t3 ON (t2.dmn_id = t3.domain_id)
-            WHERE id = ?
-        ",
-        $htgroupId, $htgroupId
-    );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
-        return 1;
-    }
-    unless (exists $rdata->{$htgroupId}) {
-        error( sprintf( 'Htgroup record with ID %s has not been found in database', $htgroupId ) );
-        return 1;
-    }
-    unless (exists $rdata->{$htgroupId}->{'domain_name'}) {
-        require Data::Dumper;
-        Data::Dumper->import( );
-        local $Data::Dumper::Terse = 1;
-        error( 'Orphan entry: '.Dumper( $rdata->{$htgroupId} ) );
-
-        my @sql = (
-            'UPDATE htaccess_groups SET status = ? WHERE id = ?', 'Orphan entry: '.Dumper( $rdata->{$htgroupId} ),
-            $htgroupId
+    local $@;
+    eval {
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        my $row = $self->{'_dbh'}->selectrow_hashref(
+            "
+                SELECT t2.id, t2.ugroup, t2.status, t2.users,
+                    t3.domain_name, t3.domain_admin_id, t3.web_folder_protection
+                FROM (SELECT * from htaccess_groups, (SELECT IFNULL(
+                    (
+                        SELECT group_concat(uname SEPARATOR ' ')
+                        FROM htaccess_users
+                        WHERE id regexp (
+                            CONCAT(
+                                '^(',
+                                (SELECT REPLACE((SELECT members FROM htaccess_groups WHERE id = ?), ',', '|')),
+                                ')\$'
+                            )
+                        )
+                        GROUP BY dmn_id
+                    ), '') AS users) AS t1
+                ) AS t2
+                INNER JOIN domain AS t3 ON (t2.dmn_id = t3.domain_id)
+                WHERE id = ?
+            ",
+            undef, $htgroupId, $htgroupId
         );
-
-        $db->doQuery( 'dummy', @sql );
+        $row or die( sprintf( 'Data not found for htgroup (ID %d)', $htgroupId ) );
+        %{$self} = (%{$self}, %{$row});
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 
-    %{$self} = (%{$self}, %{$rdata->{$htgroupId}});
     0;
 }
 
@@ -179,7 +170,7 @@ sub _getData
 
     $self->{'_data'} = do {
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
-            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'});
 
         {
             ACTION                => $action,

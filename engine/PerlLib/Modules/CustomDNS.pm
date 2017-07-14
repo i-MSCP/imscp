@@ -25,8 +25,7 @@ package Modules::CustomDNS;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
-use iMSCP::Database;
+use iMSCP::Debug qw/ error getLastError /;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -73,50 +72,51 @@ sub process
         return 1;
     }
 
-    my $condition = $domainType eq 'domain' ? "domain_id = $domainId AND alias_id = 0" : "alias_id = $domainId";
+    my $condition = $domainType eq 'domain'
+        ? "domain_id = $domainId AND alias_id = 0" : "alias_id = $domainId";
 
     my $rs = $self->_loadData( $domainType, $domainId );
     return $rs if $rs;
 
-    $rs = $self->add( );
-
-    if ($rs) {
-        my $qrs = $self->{'db'}->doQuery(
-            'u',
-            "UPDATE domain_dns SET domain_dns_status = ? WHERE $condition AND domain_dns_status <> 'disabled'",
-            getLastError( 'error' ) || 'Invalid DNS resource record'
-        );
-        unless (ref $qrs eq 'HASH') {
-            error( $qrs );
-            return 1;
-        }
-    } else {
-        my $dbh = $self->{'db'}->getRawDb( );
-
-        $self->{'db'}->startTransaction( );
-
+    if ($self->add( )) {
         local $@;
         eval {
-            $dbh->do(
-                "
-                    UPDATE domain_dns SET domain_dns_status = IF(
-                        domain_dns_status = 'todisable',
-                        'disabled',
-                        IF(domain_dns_status NOT IN('todelete', 'disabled'), 'ok', domain_dns_status)
-                    ) WHERE $condition
-                "
+            local $self->{'_dbh'}->{'RaiseError'} = 1;
+            $self->{'_dbh'}->do(
+                "UPDATE domain_dns SET domain_dns_status = ? WHERE $condition AND domain_dns_status <> 'disabled'",
+                undef, (getLastError( 'error' ) || 'Invalid DNS resource record')
             );
-            $dbh->do( "DELETE FROM domain_dns WHERE $condition AND domain_dns_status = 'todelete'" );
-            $dbh->commit( );
         };
         if ($@) {
-            $dbh->rollback( );
-            $self->{'db'}->endTransaction( );
             error( $@ );
             return 1;
         }
 
-        $self->{'db'}->endTransaction( );
+        return 0;
+    }
+
+    local $@;
+    eval {
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        local $self->{'_dbh'}->{'AutoCommit'} = 1;
+
+        $self->{'_dbh'}->do(
+            "
+                UPDATE domain_dns
+                SET domain_dns_status = IF(
+                    domain_dns_status = 'todisable', 'disabled',
+                    IF(domain_dns_status NOT IN('todelete', 'disabled'), 'ok', domain_dns_status)
+                )
+                WHERE $condition
+            "
+        );
+        $dbh->do( "DELETE FROM domain_dns WHERE $condition AND domain_dns_status = 'todelete'" );
+        $dbh->commit( );
+    };
+    if ($@) {
+        $self->{'_dbh'}->rollback( );
+        error( $@ );
+        return 1;
     }
 
     0;
@@ -140,7 +140,6 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'db'} = iMSCP::Database->factory( );
     $self->{'domain_name'} = undef;
     $self->{'dns_records'} = [ ];
     $self->SUPER::_init( );
@@ -150,7 +149,7 @@ sub _init
 
  Load data
 
- Param string domainType Domain Type ( alias|domain )
+ Param string domainType Domain Type (alias|domain)
  Param int $domainId Domain unique identifier
  Return int 0 on success, other on failure
 
@@ -160,53 +159,52 @@ sub _loadData
 {
     my ($self, $domainType, $domainId) = @_;
 
-    my $condition = $domainType eq 'domain' ? "t1.domain_id = $domainId AND t1.alias_id = 0" : "t1.alias_id = $domainId";
+    eval {
+        my $condition = $domainType eq 'domain'
+            ? "t1.domain_id = $domainId AND t1.alias_id = 0" : "t1.alias_id = $domainId";
 
-    $self->{'db'}->set( 'FETCH_MODE', 'arrayref' );
-
-    my $rows = $self->{'db'}->doQuery(
-        undef,
-        "
-            SELECT t1.domain_dns, t1.domain_class, t1.domain_type, t1.domain_text, t1.domain_dns_status,
-                IFNULL(t3.alias_name, t2.domain_name) AS domain_name, t4.ip_number
-            FROM domain_dns AS t1
-            LEFT JOIN domain AS t2 USING(domain_id)
-            LEFT JOIN domain_aliasses AS t3 USING(alias_id)
-            LEFT JOIN server_ips AS t4 ON (IFNULL(t3.alias_ip_id, t2.domain_ip_id) = t4.ip_id)
-            WHERE $condition AND domain_dns_status <> 'disabled'
-        "
-    );
-
-    unless (ref $rows eq 'ARRAY') {
-        error( $rows );
-        return 1;
-    }
-    unless (@{$rows} && defined( $rows->[0]->[5] )) {
-        error(
-            sprintf( 'Custom DNS records for %s with ID %s were not found or are orphaned', $domainType, $domainId )
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        my $rows = $self->{'_dbh'}->fetchall_arrayref(
+            "
+                SELECT t1.domain_dns, t1.domain_class, t1.domain_type, t1.domain_text, t1.domain_dns_status,
+                    IFNULL(t3.alias_name, t2.domain_name) AS domain_name, t4.ip_number
+                FROM domain_dns AS t1
+                LEFT JOIN domain AS t2 USING(domain_id)
+                LEFT JOIN domain_aliasses AS t3 USING(alias_id)
+                LEFT JOIN server_ips AS t4 ON (IFNULL(t3.alias_ip_id, t2.domain_ip_id) = t4.ip_id)
+                WHERE $condition
+                AND domain_dns_status <> 'disabled'
+            "
         );
-        return 1;
-    }
 
-    $self->{'domain_name'} = $rows->[0]->[5];
-    $self->{'domain_ip'} = $rows->[0]->[6];
+        @{$rows} && defined $rows->[0]->[5] or die(
+            sprintf( 'Data not found for custom DNS records (%s/%d)', $domainType, $domainId )
+        );
 
-    # 1. Filter DNS records which must be disabled or deleted
-    # 2. For TXT/SPF records, split data field to several <character-string>s when <character-string> is longer than 255
-    #    characters. See: https://tools.ietf.org/html/rfc4408#section-3.1.3
-    for my $record(@{$rows}) {
-        next if $record->[4] =~ /^to(?:disable|delete)$/;
+        $self->{'domain_name'} = $rows->[0]->[5];
+        $self->{'domain_ip'} = $rows->[0]->[6];
 
-        if (($record->[2] eq 'TXT' || $record->[2] eq 'SPF') && length($record->[3]) > 257) {
-            my ($data, @chuncks) = ($record->[3] =~ s/^"|"$//gr, ( ));
-            for (my $i = 0, my $length = length $data; $i < $length; $i += 255) {
-                push(@chuncks, substr($data, $i, 255));
+        # 1. Filter DNS records which must be disabled or deleted
+        # 2. For TXT/SPF records, split data field to several <character-string>s when <character-string> is longer than
+        #    255 characters. See: https://tools.ietf.org/html/rfc4408#section-3.1.3
+        for (@{$rows}) {
+            next if $_->[4] =~ /^to(?:disable|delete)$/;
+
+            if (($_->[2] eq 'TXT' || $_->[2] eq 'SPF') && length($_->[3]) > 257) {
+                my ($data, @chuncks) = ($_->[3] =~ s/^"|"$//gr, ( ));
+                for (my $i = 0, my $length = length $data; $i < $length; $i += 255) {
+                    push(@chuncks, substr($data, $i, 255));
+                }
+
+                $_->[3] = join ' ', map( qq/"$_"/, @chuncks );
             }
 
-            $record->[3] = join ' ', map(qq/"$_"/, @chuncks);
+            push @{$self->{'dns_records'}}, [ (@{$record})[0 .. 3] ];
         }
-
-        push @{$self->{'dns_records'}}, [ (@{$record})[0 .. 3] ];
+    };
+    if ($@) {
+        error( $@ );
+        return 1;
     }
 
     0;

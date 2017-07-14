@@ -142,16 +142,20 @@ sub backupDatabases
 {
     my ($mainDmnId, $bkpDir, $cmpAlgo, $cmpLevel, $user, $group) = @_;
 
-    my $db = iMSCP::Database->factory( );
-    my $data = $db->doQuery(
-        'sqld_name', 'SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?', $mainDmnId
-    );
-    unless (ref $data eq 'HASH') {
-        error( $data );
-        return 1;
+    my $rows = eval {
+        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        local $dbh->{'RaiseError'} = 1;
+
+        $dbh->selectall_hashref(
+            'SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?', 'sqld_name', undef, $mainDmnId
+        );
+    };
+    if ($@) {
+        error( $@ );
+        return;
     }
 
-    for my $dbName(keys %{$data}) {
+    for my $dbName(keys %{$rows}) {
         local $@;
         eval { $db->dumpdb( $dbName, $bkpDir ); };
         next if $@;
@@ -196,47 +200,51 @@ sub backupMaildirs
 {
     my ($dmnId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group) = @_;
 
-    my $qrs = iMSCP::Database->factory( )->doQuery(
-        'domain_name',
-        "
-            SELECT domain_name
-            FROM domain
-            WHERE domain_id = ?
-            AND domain_status <> 'todelete'
+    my $rows = eval {
+        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        local $dbh->{'RaiseError'} = 1;
 
-            UNION ALL
-
-            SELECT CONCAT(subdomain_name, '.', domain_name)
-            FROM subdomain
-            INNER JOIN domain USING(domain_id)
-            WHERE domain_id = ?
-            AND subdomain_status <> 'todelete'
-
-            UNION ALL
-
-            SELECT alias_name
-            FROM domain_aliasses
-            WHERE domain_id = ?
-            AND alias_status <> 'todelete'
-
-            UNION ALL
-
-            SELECT CONCAT(subdomain_alias_name, '.', alias_name)
-            FROM subdomain_alias
-            INNER JOIN domain_aliasses USING(alias_id)
-            WHERE domain_id = ?
-            AND subdomain_alias_status <> 'todelete'
-        ",
-        $dmnId, $dmnId, $dmnId, $dmnId
-    );
-    unless (ref $qrs eq 'HASH') {
-        error( $qrs );
-        next;
+        $dbh->selectall_hashref(
+            "
+                SELECT domain_name
+                FROM domain
+                WHERE domain_id = ?
+                AND domain_status <> 'todelete'
+    
+                UNION ALL
+    
+                SELECT CONCAT(subdomain_name, '.', domain_name)
+                FROM subdomain
+                INNER JOIN domain USING(domain_id)
+                WHERE domain_id = ?
+                AND subdomain_status <> 'todelete'
+    
+                UNION ALL
+    
+                SELECT alias_name
+                FROM domain_aliasses
+                WHERE domain_id = ?
+                AND alias_status <> 'todelete'
+    
+                UNION ALL
+    
+                SELECT CONCAT(subdomain_alias_name, '.', alias_name)
+                FROM subdomain_alias
+                INNER JOIN domain_aliasses USING(alias_id)
+                WHERE domain_id = ?
+                AND subdomain_alias_status <> 'todelete'
+            ",
+            'domain_name', undef, $dmnId, $dmnId, $dmnId, $dmnId
+        );
+    };
+    if ($@) {
+        error( $@ );
+        return;
     }
 
     my $virtualMailDir = Servers::mta->factory( )->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
 
-    for (keys %{$qrs}) {
+    for (keys %{$rows}) {
         my $mailDirPath = "$virtualMailDir/$_";
         next unless -d $mailDirPath;
 
@@ -280,23 +288,27 @@ sub run
 
     my $bkpExt = ($cmpAlgo ne 'no') ? '.'.$command->{$cmpAlgo}->{'extension'} : '';
 
-    my $qrs = iMSCP::Database->factory( )->doQuery(
-        'domain_id',
-        "
-            SELECT domain_id, domain_name, domain_admin_id, allowbackup, admin_sys_name, admin_sys_gname
-            FROM domain
-            INNER JOIN admin ON (admin_id = domain_admin_id)
-            WHERE domain_status NOT IN ('disabled', 'todelete')
-            AND allowbackup <> ''
-        "
-    );
+    my $rows = eval {
+        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        local $dbh->{'RaiseError'} = 1;
 
-    unless (ref $qrs eq 'HASH') {
-        error( $qrs );
+        $dbh->selectall_hashref(
+            "
+                SELECT domain_id, domain_name, domain_admin_id, allowbackup, admin_sys_name, admin_sys_gname
+                FROM domain
+                INNER JOIN admin ON (admin_id = domain_admin_id)
+                WHERE domain_status NOT IN ('disabled', 'todelete')
+                AND allowbackup <> ''
+            ",
+            'domain_id'
+        );
+    };
+    if ($@) {
+        error( $@ );
         return;
     }
 
-    while(my ($dmnId, $dmnData) = each( %{$qrs} )) {
+    while(my ($dmnId, $dmnData) = each( %{$rows} )) {
         next unless $dmnData->{'allowbackup'} && $dmnData->{'allowbackup'} =~ /\b(?:dmn|sql|mail)\b/;
         my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$dmnData->{'domain_name'}";
 

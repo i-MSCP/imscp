@@ -34,7 +34,7 @@ use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 use iMSCP::Bootstrapper;
 use iMSCP::Debug qw/ debug error getMessageByType newDebug setVerbose /;
-use iMSCP::Execute qw / execute /;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::Getopt;
 use iMSCP::Mail;
 use Servers::mta;
@@ -57,113 +57,104 @@ use Servers::mta;
 
 sub quotaFiles
 {
-    my $db = iMSCP::Database->factory( );
+    eval {
+        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        local $dbh->{'RaiseError'} = 1;
 
-    my $data = $db->doQuery(
-        'domain_id',
-        "SELECT domain_id, domain_name FROM domain WHERE domain_status NOT IN ('disabled', 'todelete')"
-    );
-    unless (ref $data eq 'HASH') {
-        error( $data );
-        return 1;
-    }
-
-    my $virtualMailDir = Servers::mta->factory( )->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
-
-    while(my ($domainId, $domainData) = each( %{$data} )) {
-        my $totalDiskUsage = my $webDiskUsage = my $mailDiskUsage = 0;
-        my @items = (
-            { webdir => "$main::imscpConfig{'USER_WEB_DIR'}/$domainData->{'domain_name'}" },
-            { maildir => "$virtualMailDir/$domainData->{'domain_name'}" }
+        my $rows = $dbh->selectall_hashref(
+            "SELECT domain_id, domain_name FROM domain WHERE domain_status NOT IN ('disabled', 'todelete')", 'domain_id'
         );
 
-        # Get list of all child domains (sub|als|alssub)
-        my $childDomains = $db->doQuery(
-            'domain_name',
-            "
-                SELECT alias_name AS domain_name
-                FROM domain_aliasses
-                WHERE domain_id = ?
-                AND alias_status <> 'todelete'
+        my $virtualMailDir = Servers::mta->factory( )->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
 
-                UNION ALL
+        while(my ($dmnId, $dmnData) = each( %{$rows} )) {
+            my $totalDiskUsage = my $webDiskUsage = my $mailDiskUsage = 0;
+            my @items = (
+                { webdir => "$main::imscpConfig{'USER_WEB_DIR'}/$dmnData->{'domain_name'}" },
+                { maildir => "$virtualMailDir/$dmnData->{'domain_name'}" }
+            );
 
-                SELECT CONCAT(subdomain_name, '.', domain_name) AS domain_name
-                FROM subdomain
-                INNER JOIN domain USING(domain_id)
-                WHERE domain_id = ?
-                AND subdomain_status <> 'todelete'
-
-                UNION ALL
-
-                SELECT CONCAT(subdomain_alias_name, '.',  alias_name) AS domain_name
-                FROM subdomain_alias
-                INNER JOIN domain_aliasses USING(alias_id)
-                WHERE domain_id = ?
-                AND subdomain_alias_status <> 'todelete'
-            ",
-            $domainId,
-            $domainId,
-            $domainId
-        );
-        unless (ref $childDomains eq 'HASH') {
-            error( $childDomains );
-        } elsif (%{$childDomains}) {
-            push @items, { maildir => "$virtualMailDir/$_" } for keys %{$childDomains};
-        }
-
-        for(@items) {
-            my ($dirType, $dir) = %{$_};
-            next unless -d $dir;
-
-            if ($dirType eq 'webdir') {
-                my $rs = execute(
-                    [ 'du', '--exclude=backups/*', '--exclude=logs/*', '-s', '-B1', $dir ], \ my $stdout, \ my $stderr
+            # Get list of all child domains (sub|als|alssub)
+            my $rows2 = eval {
+                $db->selectall_hashref(
+                    "
+                        SELECT alias_name AS domain_name
+                        FROM domain_aliasses
+                        WHERE domain_id = ?
+                        AND alias_status <> 'todelete'
+        
+                        UNION ALL
+        
+                        SELECT CONCAT(subdomain_name, '.', domain_name) AS domain_name
+                        FROM subdomain
+                        INNER JOIN domain USING(domain_id)
+                        WHERE domain_id = ?
+                        AND subdomain_status <> 'todelete'
+        
+                        UNION ALL
+        
+                        SELECT CONCAT(subdomain_alias_name, '.',  alias_name) AS domain_name
+                        FROM subdomain_alias
+                        INNER JOIN domain_aliasses USING(alias_id)
+                        WHERE domain_id = ?
+                        AND subdomain_alias_status <> 'todelete'
+                    ",
+                    'domain_name', undef, $dmnId, $dmnId, $dmnId
                 );
-                error( $stderr || 'Unknown error' ) if $rs;
-                $webDiskUsage = $1 if $stdout && $stdout =~ /^(\d+)/;
-            } else {
-                my $rs = execute( [ 'du', '-s', '-B1', $dir ], \ my $stdout, \ my $stderr );
-                error( $stderr || 'Unknown error' ) if $rs;
-                $mailDiskUsage += $1 if $stdout && $stdout =~ /^(\d+)/;
+            };
+            if ($@) {
+                error( $@ );
+            } elsif (%{$rows2}) {
+                push @items, { maildir => "$virtualMailDir/$_" } for keys %{$rows2};
+            }
+
+            for(@items) {
+                my ($dirType, $dir) = %{$_};
+                next unless -d $dir;
+
+                if ($dirType eq 'webdir') {
+                    my $rs = execute(
+                        [ 'du', '--exclude=backups/*', '--exclude=logs/*', '-s', '-B1', $dir ], \ my $stdout,
+                        \ my $stderr
+                    );
+                    error( $stderr || 'Unknown error' ) if $rs;
+                    $webDiskUsage = $1 if $stdout && $stdout =~ /^(\d+)/;
+                } else {
+                    my $rs = execute( [ 'du', '-s', '-B1', $dir ], \ my $stdout, \ my $stderr );
+                    error( $stderr || 'Unknown error' ) if $rs;
+                    $mailDiskUsage += $1 if $stdout && $stdout =~ /^(\d+)/;
+                }
+            }
+
+            $totalDiskUsage = $webDiskUsage+$mailDiskUsage;
+
+            local $@;
+            eval {
+                local $dbh->{'AutoCommit'} = 0;
+
+                $dbh->do(
+                    '
+                        UPDATE domain
+                        SET domain_disk_usage = ?, domain_disk_file = ?, domain_disk_mail = ?
+                        WHERE domain_id = ?
+                    ',
+                    undef, $totalDiskUsage, $webDiskUsage, $mailDiskUsage, $dmnId
+                );
+
+                $dbh->do(
+                    'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?',
+                    undef, $totalDiskUsage, $dmnData->{'domain_name'}
+                );
+
+                $dbh->commit( );
+            };
+            if ($@) {
+                $dbh->rollback( );
+                error( $@ );
             }
         }
-
-        $totalDiskUsage = $webDiskUsage+$mailDiskUsage;
-
-        my $dbi = $db->startTransaction( );
-
-        local $@;
-        eval {
-            $dbi->do(
-                '
-                    UPDATE domain
-                    SET domain_disk_usage = ?, domain_disk_file = ?, domain_disk_mail = ?
-                    WHERE domain_id = ?
-                ',
-                undef,
-                $totalDiskUsage,
-                $webDiskUsage,
-                $mailDiskUsage,
-                $domainId
-            );
-
-            $dbi->do(
-                'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?',
-                undef,
-                $totalDiskUsage,
-                $domainData->{'domain_name'}
-            );
-            
-            $dbi->commit( );
-        };
-        if ($@) {
-            error( $@ );
-            $dbi->rollback( );
-        }
-
-        $db->endTransaction( );
-    }
+    };
+    error( $@ ) if $@;
 }
 
 =item quotaSql( )
@@ -176,90 +167,64 @@ sub quotaFiles
 
 sub quotaSql
 {
-    my $db = iMSCP::Database->factory( );
+    eval {
+        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        local $dbh->{'RaiseError'} = 1;
 
-    my $databases = $db->doQuery( 'Database', 'SHOW DATABASES' );
-    unless (ref $databases eq 'HASH') {
-        error( $databases );
-        return 1;
-    }
-
-    my $data = $db->doQuery(
-        'domain_id',
-        "
-            SELECT domain_id, domain_name, domain_disk_usage
-            FROM domain
-            WHERE domain_status NOT IN ('disabled', 'todelete')
-        "
-    );
-    unless (ref $data eq 'HASH') {
-        error( $data );
-        return 1;
-    }
-
-    return 0 unless %{$data};
-
-    while(my ($domainId, $domainData) = each( %{$data} )) {
-        my $size = my $sqlSize = 0;
-
-        my $customerDatabases = $db->doQuery(
-            'sqld_name', 'SELECT sqld_name FROM sql_database WHERE domain_id = ?', $domainId
+        my $rows = $dbh->selectall_hashref(
+            "
+                SELECT domain_id, domain_name, domain_disk_usage
+                FROM domain
+                WHERE domain_status NOT IN ('disabled', 'todelete')
+            ",
+            'domain_id'
         );
-        unless (ref $customerDatabases eq 'HASH') {
-            error( $customerDatabases );
-            next;
-        }
 
-        for my $sqlDbName (keys %{$customerDatabases}) {
-            next unless grep($_ eq $sqlDbName, keys %{$databases});
+        return 0 unless %{$rows};
 
-            my $quotedDbName = $db->quoteIdentifier( $sqlDbName );
-            my $sqlDbTables = $db->doQuery('1', "SHOW TABLE STATUS FROM $quotedDbName");
-            unless (ref $sqlDbTables eq 'HASH') {
-                error( $sqlDbTables );
-                next;
-            }
+        my $databases = $dbh->selectcol_arrayref( 'SHOW DATABASES' );
 
-            next unless %{$sqlDbTables};
+        while(my ($dmnId, $dmnData) = each( %{$data} )) {
+            my ($size, $sqlSize) = (0, 0);
 
-            for my $sqlDbTable(keys %{$sqlDbTables}) {
-                $size += (($sqlDbTables->{$sqlDbTable}->{'Data_length'})
-                    ? $sqlDbTables->{$sqlDbTable}->{'Data_length'} : 0
-                )+(($sqlDbTables->{$sqlDbTable}->{'Index_length'})
-                    ? $sqlDbTables->{$sqlDbTable}->{'Index_length'} : 0);
-            }
-        }
-
-        $sqlSize += $size;
-        $size += $domainData->{'domain_disk_usage'};
-
-        my $dbi = $db->startTransaction( );
-
-        local $@;
-        eval {
-            $dbi->do(
-                'UPDATE domain SET domain_disk_usage = ?, domain_disk_sql = ? WHERE domain_id = ?',
-                undef,
-                $size,
-                $sqlSize,
-                $domainId
+            my $customerDatabases = $dbh->selectall_hashref(
+                'SELECT sqld_name FROM sql_database WHERE domain_id = ?', 'sqld_name', undef, $dmnId
             );
 
-            $dbi->do(
-                'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?',
-                undef,
-                $size,
-                $domainData->{'domain_name'}
-            );
-            $dbi->commit( );
-        };
-        if ($@) {
-            error( $@ );
-            $dbi->rollback( );
-        }
+            for my $sqlDbName (keys %{$customerDatabases}) {
+                next unless grep($_ eq $sqlDbName, @{$databases});
 
-        $db->endTransaction( );
-    }
+                my $sqlDbTables = $db->selectall_hashref(
+                    "SHOW TABLE STATUS FROM ".$dbh->quote_identifier( $sqlDbName ), 1
+                );
+
+                next unless %{$sqlDbTables};
+                $size += $_->{'Data_length'}+$_->{'Index_length'} for values %{$sqlDbTables};
+            }
+
+            $sqlSize += $size;
+            $size += $dmnData->{'domain_disk_usage'};
+
+            local $@;
+            eval {
+                local $dbh->{'AutoCommit'} = 0;
+
+                $dbh->do(
+                    'UPDATE domain SET domain_disk_usage = ?, domain_disk_sql = ? WHERE domain_id = ?',
+                    undef, $size, $sqlSize, $dmnId
+                );
+                $dbh->do(
+                    'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?', undef, $size, $dmnData->{'domain_name'}
+                );
+                $dbh->commit( );
+            };
+            if ($@) {
+                $dbi->rollback( );
+                error( $@ );
+            }
+        }
+    };
+    error( $@ ) if $@;
 }
 
 newDebug( 'imscp-dsk-quota.log' );

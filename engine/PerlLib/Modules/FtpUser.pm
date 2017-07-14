@@ -25,7 +25,7 @@ package Modules::FtpUser;
 
 use strict;
 use warnings;
-use iMSCP::Database;
+use iMSCP::Debug qw/ error getLastError warning /;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -49,49 +49,49 @@ sub getType
     'FtpUser';
 }
 
-=item process( $userId )
+=item process( $ftpUserId )
 
  Process module
 
- Param int $userId Ftp user unique identifier
+ Param int ftpUserId Ftp user unique identifier
  Return int 0 on success, other on failure
 
 =cut
 
 sub process
 {
-    my ($self, $userId) = @_;
+    my ($self, $ftpUserId) = @_;
 
-    my $rs = $self->_loadData( $userId );
+    my $rs = $self->_loadData( $ftpUserId );
     return $rs if $rs;
 
     my @sql;
     if ($self->{'status'} =~ /^to(?:add|change|enable)$/) {
         $rs = $self->add( );
-        @sql = (
-            'UPDATE ftp_users SET status = ? WHERE userid = ?',
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $userId
-        );
+        @sql = ('UPDATE ftp_users SET status = ? WHERE userid = ?', undef,
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $ftpUserId);
     } elsif ($self->{'status'} eq 'todisable') {
         $rs = $self->disable( );
-        @sql = (
-            'UPDATE ftp_users SET status = ? WHERE userid = ?',
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'), $userId
-        );
+        @sql = ('UPDATE ftp_users SET status = ? WHERE userid = ?', undef,
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'), $ftpUserId);
     } elsif ($self->{'status'} eq 'todelete') {
         $rs = $self->delete( );
-        if ($rs) {
-            @sql = (
-                'UPDATE ftp_users SET status = ? WHERE userid = ?', getLastError( 'error' ) || 'Unknown error', $userId
-            );
-        } else {
-            @sql = ('DELETE FROM ftp_users WHERE userid = ?', $userId);
-        }
+        @sql = $rs
+            ? ('UPDATE ftp_users SET status = ? WHERE userid = ?', undef,
+                (getLastError( 'error' ) || 'Unknown error'), $ftpUserId)
+            : ('DELETE FROM ftp_users WHERE userid = ?', undef, $ftpUserId);
+    } else {
+        warning( sprintf( 'Unknown action (%s) for ftp user (ID %d)', $self->{'status'}, $ftpUserId ) );
+        return 0;
     }
 
-    my $ret = iMSCP::Database->factory( )->doQuery( 'dummy', @sql );
-    unless (ref $ret eq 'HASH') {
-        error( $ret );
+    local $@;
+    eval {
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        $self->{'_dbh'}->do( @sql );
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 
@@ -104,30 +104,31 @@ sub process
 
 =over 4
 
-=item _loadData( $userId )
+=item _loadData( $ftpUserId )
 
  Load data
 
- Param int $userId Ftp user unique identifier
+ Param int $ftpUserId Ftp user unique identifier
  Return int 0 on success, other on failure
 
 =cut
 
 sub _loadData
 {
-    my ($self, $userId) = @_;
+    my ($self, $ftpUserId) = @_;
 
-    my $row = iMSCP::Database->factory( )->doQuery( 'userid', 'SELECT * FROM ftp_users WHERE userid = ?', $userId );
-    unless (ref $row eq 'HASH') {
-        error( $row );
+    local $@;
+    eval {
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        my $row = $self->{'_dbh'}->selectrow_hashref( 'SELECT * FROM ftp_users WHERE userid = ?', undef, $ftpUserId );
+        $row or die( sprintf( 'Data not found for ftp user (ID %d)', $ftpUserId ) );
+        %{$self} = (%{$self}, %{$row});
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
-    unless ($row->{$userId}) {
-        error( sprintf( 'Ftp user record with ID %s has not been found in database', $userId ) );
-        return 1;
-    }
 
-    %{$self} = (%{$self}, %{$row->{$userId}});
     0;
 }
 
@@ -146,7 +147,7 @@ sub _getData
 
     $self->{'_data'} = do {
         my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.(
-            $main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'}
+            $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'}
         );
 
         {

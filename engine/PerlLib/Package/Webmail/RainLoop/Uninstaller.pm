@@ -124,8 +124,19 @@ sub _removeSqlDatabase
 {
     my ($self) = @_;
 
-    my $dbName = $self->{'db'}->quoteIdentifier( $main::imscpConfig{'DATABASE_NAME'}.'_rainloop' );
-    $self->{'db'}->doQuery( 'd', "DROP DATABASE IF EXISTS $dbName" );
+    local $@;
+    eval {
+        my $dbh = $self->{'db'}->getRawDb( );
+        $dbh->{'RaiseError'} = 1;
+        $self->{'db'}->do(
+            'DROP DATABASE IF EXISTS '
+                .$self->{'db'}->quote_identifier( $main::imscpConfig{'DATABASE_NAME'}.'_rainloop' )
+        );
+    };
+    if ($@) {
+        error( $@ );
+        return 1;
+    }
     0;
 }
 

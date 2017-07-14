@@ -120,8 +120,18 @@ sub _removeSqlDatabase
 {
     my ($self) = @_;
 
-    my $dbName = $self->{'db'}->quoteIdentifier( $main::imscpConfig{'DATABASE_NAME'}.'_pma' );
-    $self->{'db'}->doQuery( 'd', "DROP DATABASE IF EXISTS $dbName" );
+    local $@;
+    eval {
+        my $dbh = $self->{'db'}->getRawDb( );
+        local $dbh->{'RaiseError'} = 1;
+
+        $dbh->do( "DROP DATABASE IF EXISTS ".$dbh->quote_identifier( $main::imscpConfig{'DATABASE_NAME'}.'_pma' ) );
+    };
+    if ($@) {
+        error( $@ );
+        return 1;
+    }
+
     0;
 }
 

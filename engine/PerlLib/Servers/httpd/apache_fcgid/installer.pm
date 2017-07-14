@@ -472,7 +472,6 @@ sub _setupVlogger
 {
     my ($self) = @_;
 
-    my $sqld = Servers::sqld->factory( );
     my $host = main::setupGetQuestion( 'DATABASE_HOST' );
     $host = $host eq 'localhost' ? '127.0.0.1' : $host;
     my $port = main::setupGetQuestion( 'DATABASE_PORT' );
@@ -487,18 +486,26 @@ sub _setupVlogger
     my $rs = main::setupImportSqlSchema( $db, "$self->{'apacheCfgDir'}/vlogger.sql" );
     return $rs if $rs;
 
-    for ($userHost, $oldUserHost, 'localhost') {
-        next unless $_;
-        $sqld->dropUser( $user, $_ );
-    }
+    local $@;
+    eval {
+        my $sqlServer = Servers::sqld->factory( );
 
-    $sqld->createUser( $user, $userHost, $pass );
+        for ($userHost, $oldUserHost, 'localhost') {
+            next unless $_;
+            $sqlServer->dropUser( $user, $_ );
+        }
 
-    # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
-    my $qDbName = $db->quoteIdentifier( $dbName );
-    $rs = $db->doQuery( 'g', "GRANT SELECT, INSERT, UPDATE ON $qDbName.httpd_vlogger TO ?\@?", $user, $userHost );
-    unless (ref $rs eq 'HASH') {
-        error( sprintf( "Couldn't add SQL privileges: %s", $rs ) );
+        $sqlServer->createUser( $user, $userHost, $pass );
+
+        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        local $dbh->{'RaiseError'} = 1;
+
+        # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
+        my $qDbName = $dbh->quote_identifier( $dbName );
+        $dbh->do( "GRANT SELECT, INSERT, UPDATE ON $qDbName.httpd_vlogger TO ?\@?", undef, $user, $userHost );
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 

@@ -372,24 +372,30 @@ sub _addAwstatsConfig
     my $awstatsPackageRootDir = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats";
     my $tplFileContent = iMSCP::File->new( filename => "$awstatsPackageRootDir/Config/awstats.imscp_tpl.conf" )->get( );
     unless (defined $tplFileContent) {
-        error( sprintf( "Couldn't read read %s file", $tplFileContent->{'filename'} ) );
+        error( sprintf( "Couldn't read %s file", $tplFileContent->{'filename'} ) );
         return 1;
     }
 
-    my $qrs = iMSCP::Database->factory( )->doQuery(
-        'admin_id', 'SELECT admin_id, admin_name FROM admin WHERE admin_id = ?', $data->{'DOMAIN_ADMIN_ID'}
-    );
-    unless (ref $qrs eq 'HASH') {
-        error( $qrs );
+    local $@;
+    my $row = eval {
+        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        local $dbh->{'RaiseError'} = 1;
+
+        $dbh->selectrow_hashref(
+            'SELECT admin_name FROM admin WHERE admin_id = ?', undef, $data->{'DOMAIN_ADMIN_ID'}
+        );
+    };
+    if ($@) {
+        error( $@ );
         return 1;
-    } elsif (!%{$qrs}) {
+    } elsif (!$row) {
         error( sprintf( "Couldn't retrieve data from admin whith ID %d", $data->{'DOMAIN_ADMIN_ID'} ) );
         return 1;
     }
 
     my $tags = {
         ALIAS               => $data->{'ALIAS'},
-        AUTH_USER           => "$qrs->{$data->{'DOMAIN_ADMIN_ID'}}->{'admin_name'}",
+        AUTH_USER           => "$row->{'admin_name'}",
         AWSTATS_CACHE_DIR   => $main::imscpConfig{'AWSTATS_CACHE_DIR'},
         AWSTATS_ENGINE_DIR  => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
         AWSTATS_WEB_DIR     => $main::imscpConfig{'AWSTATS_WEB_DIR'},

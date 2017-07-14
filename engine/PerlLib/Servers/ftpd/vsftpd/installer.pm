@@ -280,7 +280,6 @@ sub _setupDatabase
 {
     my ($self) = @_;
 
-    my $sqlServer = Servers::sqld->factory( );
     my $dbName = main::setupGetQuestion( 'DATABASE_NAME' );
     my $dbUser = main::setupGetQuestion( 'FTPD_SQL_USER' );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
@@ -290,35 +289,38 @@ sub _setupDatabase
 
     $self->{'eventManager'}->trigger( 'beforeFtpdSetupDb', $dbUser, $dbPass );
 
-    # Drop old SQL user if required
-    for my $sqlUser ($dbOldUser, $dbUser) {
-        next unless $sqlUser;
+    local $@;
+    eval {
+        my $sqlServer = Servers::sqld->factory( );
 
-        for my $host($dbUserHost, $oldDbUserHost) {
-            next if !$host
-                || (exists $main::sqlUsers{$sqlUser.'@'.$host} && !defined $main::sqlUsers{$sqlUser.'@'.$host});
+        # Drop old SQL user if required
+        for my $sqlUser ($dbOldUser, $dbUser) {
+            next unless $sqlUser;
 
-            $sqlServer->dropUser( $sqlUser, $host );
+            for my $host($dbUserHost, $oldDbUserHost) {
+                next if !$host
+                    || exists $main::sqlUsers{$sqlUser.'@'.$host} && !defined $main::sqlUsers{$sqlUser.'@'.$host};
+                $sqlServer->dropUser( $sqlUser, $host );
+            }
         }
-    }
 
-    # Create SQL user if required
-    if (defined $main::sqlUsers{$dbUser.'@'.$dbUserHost}) {
-        debug( sprintf( 'Creating %s@%s SQL user', $dbUser, $dbUserHost ) );
-        $sqlServer->createUser( $dbUser, $dbUserHost, $dbPass );
-        $main::sqlUsers{$dbUser.'@'.$dbUserHost} = undef;
-    }
+        # Create SQL user if required
+        if (defined $main::sqlUsers{$dbUser.'@'.$dbUserHost}) {
+            debug( sprintf( 'Creating %s@%s SQL user', $dbUser, $dbUserHost ) );
+            $sqlServer->createUser( $dbUser, $dbUserHost, $dbPass );
+            $main::sqlUsers{$dbUser.'@'.$dbUserHost} = undef;
+        }
 
-    my $db = iMSCP::Database->factory( );
+        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        local $dbh->{'RaiseError'} = 1;
 
-    # Give required privileges to this SQL user
-
-    # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
-    my $quotedDbName = $db->quoteIdentifier( $dbName );
-    my $quotedTableName = $db->quoteIdentifier( 'ftp_users' );
-    my $rs = $db->doQuery( 'g', "GRANT SELECT ON $quotedDbName.$quotedTableName TO ?\@?", $dbUser, $dbUserHost );
-    unless (ref $rs eq 'HASH') {
-        error( sprintf( "Couldn't add SQL privileges: %s", $rs ) );
+        # Give required privileges to this SQL user
+        # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
+        my $quotedDbName = $dbh->quote_identifier( $dbName );
+        $db->do( "GRANT SELECT ON $quotedDbName.ftp_users TO ?\@?", undef, $dbUser, $dbUserHost );
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 
@@ -528,7 +530,7 @@ sub _oldEngineCompatibility
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdOldEngineCompatibility' );
     return $rs if $rs;
 
-    if(-f "$self->{'cfgDir'}/vsftpd.old.data") {
+    if (-f "$self->{'cfgDir'}/vsftpd.old.data") {
         $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/vsftpd.old.data" )->delFile( );
         return $rs if $rs;
     }

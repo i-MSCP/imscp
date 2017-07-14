@@ -198,25 +198,25 @@ sub addUser
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdAddUser', $data );
     return $rs if $rs;
 
-    my $db = iMSCP::Database->factory( );
+    my $dbh = iMSCP::Database->factory( )->getRawDb( );
 
-    my $rdata = $db->doQuery(
-        'u',
-        'UPDATE ftp_users SET uid = ?, gid = ? WHERE admin_id = ?',
-        $data->{'USER_SYS_UID'},
-        $data->{'USER_SYS_GID'},
-        $data->{'USER_ID'}
-    );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
-        return 1;
-    }
+    local $@;
+    eval {
+        local $dbh->{'AutoCommit'} = 0;
+        local $dbh->{'RaiseError'} = 1;
 
-    $rdata = $db->doQuery(
-        'u', 'UPDATE ftp_group SET gid = ? WHERE groupname = ?', $data->{'USER_SYS_GID'}, $data->{'USERNAME'}
-    );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
+        $dbh->do(
+            'UPDATE ftp_users SET uid = ?, gid = ? WHERE admin_id = ?',
+            undef, $data->{'USER_SYS_UID'}, $data->{'USER_SYS_GID'}, $data->{'USER_ID'}
+        );
+        $dbh->do(
+            'UPDATE ftp_group SET gid = ? WHERE groupname = ?', undef, $data->{'USER_SYS_GID'}, $data->{'USERNAME'}
+        );
+        $dbh->commit( );
+    };
+    if($@) {
+        $dbh->rollback( );
+        error( $@ );
         return 1;
     }
 

@@ -32,7 +32,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 use iMSCP::Database;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error newDebug setVerbose /;
 use iMSCP::Bootstrapper;
 use iMSCP::DbTasksProcessor;
 use iMSCP::Getopt;
@@ -40,81 +40,74 @@ use File::Basename;
 
 sub run
 {
-    my $db = iMSCP::Database->factory( );
-    my $qrs = $db->doQuery('name', "SELECT * FROM config WHERE name = 'HARD_MAIL_SUSPENSION'");
-    unless (ref $qrs eq 'HASH') {
-        error($qrs);
-        return 1;
-    }
-    my $hardMailSuspension = $qrs->{'HARD_MAIL_SUSPENSION'}->{'value'};
+    my $dbh = iMSCP::Database->factory( )->getRawDb( );
 
-    $qrs = $db->doQuery(
-        'domain_id',
-        "
-            SELECT domain_id, domain_admin_id FROM domain
-            WHERE domain_expires <> '0' AND domain_expires < UNIX_TIMESTAMP() AND domain_status <> 'disabled'
-        "
-    );
-    unless (ref $qrs eq 'HASH') {
-        error($qrs);
-        return 1;
-    }
+    local $@;
+    eval {
+        local $dbh->{'RaiseError'} = 1;
 
-    return 0 unless %{$qrs};
+        my $row = $db->selectrow_hashref( "SELECT value FROM config WHERE name = 'HARD_MAIL_SUSPENSION'" );
+        $row = { value => 0 } unless $row;
 
-    my $rs = 0;
-    for my $domainId(keys %{$qrs}) {
-        my $dbi = $db->startTransaction();
+        my $rows = $dbh->selectall_hashref(
+            "
+                SELECT domain_id, domain_admin_id
+                FROM domain
+                WHERE domain_expires <> '0'
+                AND domain_expires < UNIX_TIMESTAMP()
+                AND domain_status <> 'disabled'
+            ",
+            'domain_id'
+        );
 
-        eval {
-            if ($hardMailSuspension) { # SMTP/IMAP/POP disabled
-                $dbi->do('UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ?', undef, 'todisable', 'no'
-                    , $domainId);
-            } else { # IMAP/POP disabled
-                $dbi->do('UPDATE mail_users SET po_active = ? WHERE domain_id = ?', undef, 'no', $domainId);
+        return 0 unless %{$rows};
+
+        for (keys %{$rows}) {
+            eval {
+                local $dbh->{'AutoCommit'} = 0;
+
+                if ($row->{'value'}) { # SMTP/IMAP/POP disabled
+                    $dbh->do(
+                        'UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ?',
+                        undef, 'todisable', 'no', $_
+                    );
+                } else { # IMAP/POP disabled
+                    $dbh->do( 'UPDATE mail_users SET po_active = ? WHERE domain_id = ?', undef, 'no', $_ );
+                }
+
+                $dbh->do( 'UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef, 'todisable', $_ );
+                $dbh->do( 'UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', undef, 'todisable', $_ );
+                $dbh->do( 'UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', undef, 'todisable', $_ );
+                $dbh->do(
+                    '
+                        UPDATE subdomain_alias SET subdomain_alias_status = ?
+                        WHERE alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
+                    ',
+                    undef, 'todisable', $domainId
+                );
+                $dbh->commit( );
+            };
+            if ($@) {
+                $dbh->rollback( );
+                die;
             }
-
-            $dbi->do('UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef, 'todisable', $domainId);
-            $dbi->do('UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', undef, 'todisable', $domainId);
-            $dbi->do('UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', undef, 'todisable', $domainId);
-            $dbi->do(
-                '
-                    UPDATE subdomain_alias SET subdomain_alias_status = ?
-                    WHERE alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
-                ',
-                undef, 'todisable', $domainId
-            );
-
-            $dbi->commit();
-        };
-
-        if ($@) {
-            $dbi->rollback();
-            $db->endTransaction();
-            error( "Couldn't deactivate client account with ID $qrs->{$domainId}->{'domain_admin_id'}: $@" );
-            $rs = 1;
         }
 
-        $db->endTransaction();
+        iMSCP::DbTasksProcessor->getInstance( mode => 'backend' )->processDbTasks( );
+    };
+    if ($@) {
+        error( $@ );
+        return 1;
     }
 
-    unless ($rs) {
-        # Process all scheduled tasks
-        eval { iMSCP::DbTasksProcessor->getInstance( mode => 'backend' )->processDbTasks( ); };
-        if ($@) {
-            error( $@ );
-            $rs = 1;
-        }
-    }
-
-    $rs;
+    0;
 }
 
 newDebug( 'imscp-disable-accounts.log' );
 
 iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 ) ).qq {
 
-Script that deactivates expired client accounts
+Script that disable expired customer accounts
 
 OPTIONS:
  -d,    --debug         Enable debug mode.

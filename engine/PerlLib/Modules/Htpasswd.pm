@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by internet Multi Server Control Panel
+# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,8 +25,7 @@ package Modules::Htpasswd;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
-use iMSCP::Database;
+use iMSCP::Debug qw/ error getLastError warning /;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -69,28 +68,30 @@ sub process
     my @sql;
     if ($self->{'status'} =~ /^to(?:add|change|enable)$/) {
         $rs = $self->add( );
-        @sql = (
-            'UPDATE htaccess_users SET status = ? WHERE id = ?',
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $htuserId
-        );
+        @sql = ('UPDATE htaccess_users SET status = ? WHERE id = ?', undef,
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $htuserId);
     } elsif ($self->{'status'} eq 'todisable') {
-        @sql = ('UPDATE htaccess_users SET status = ? WHERE id = ?', 'disabled', $htuserId);
+        $rs = $self->disable( );
+        @sql = ('UPDATE htaccess_users SET status = ? WHERE id = ?', undef,
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'), $htuserId);
     } elsif ($self->{'status'} eq 'todelete') {
         $rs = $self->delete( );
-        if ($rs) {
-            @sql = (
-                'UPDATE htaccess_users SET status = ? WHERE id = ?',
-                getLastError( 'error' ) || 'Unknown error',
-                $htuserId
-            );
-        } else {
-            @sql = ('DELETE FROM htaccess_users WHERE id = ?', $htuserId);
-        }
+        @sql = $rs
+            ? ('UPDATE htaccess_users SET status = ? WHERE id = ?', undef,
+                getLastError( 'error' ) || 'Unknown error', $htuserId)
+            : ('DELETE FROM htaccess_users WHERE id = ?', undef, $htuserId);
+    } else {
+        warning( sprintf( 'Unknown action (%s) for htuser (ID %d)', $self->{'status'}, $htuserId ) );
+        return 0;
     }
 
-    my $rdata = iMSCP::Database->factory( )->doQuery( 'dummy', @sql );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
+    local $@;
+    eval {
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        $self->{'_dbh'}->do( @sql );
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 
@@ -116,43 +117,25 @@ sub _loadData
 {
     my ($self, $htuserId) = @_;
 
-    my $rdata = iMSCP::Database->factory( )->doQuery(
-        'id',
-        '
-            SELECT t1.uname, t1.upass, t1.status, t1.id, t2.domain_name, t2.domain_admin_id, t2.web_folder_protection
-            FROM htaccess_users AS t1 INNER JOIN domain AS t2 ON (t1.dmn_id = t2.domain_id)
-            WHERE t1.id = ?
-        ',
-        $htuserId
-    );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
-        return 1;
-    }
-    unless (exists $rdata->{$htuserId}) {
-        error( sprintf( 'Htuser record with ID %s has not been found in database', $htuserId ) );
-        return 1;
-    }
-    unless (exists $rdata->{$htuserId}->{'domain_name'}) {
-        require Data::Dumper;
-        Data::Dumper->import( );
-
-        local $Data::Dumper::Terse = 1;
-        error( 'Orphan entry: '.Dumper( $rdata->{$htuserId} ) );
-
-        my @sql = (
-            'UPDATE htaccess_users SET status = ? WHERE id = ?', 'Orphan entry: '.Dumper( $rdata->{$htuserId} ),
-            $htuserId
+    local $@;
+    eval {
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        my $row = $self->{'_dbh'}->selectrow_hashref(
+            '
+                SELECT t1.uname, t1.upass, t1.status, t1.id, t2.domain_name, t2.domain_admin_id, t2.web_folder_protection
+                FROM htaccess_users AS t1 INNER JOIN domain AS t2 ON (t1.dmn_id = t2.domain_id)
+                WHERE t1.id = ?
+            ',
+            undef, $htuserId
         );
-        my $qrs = iMSCP::Database->factory( )->doQuery( 'u', @sql );
-        unless (ref $qrs eq 'HASH') {
-            error($qrs);
-        }
-
+        $row or die( sprintf( 'Data not found for htuser (ID %d)', $htuserId ) );
+        %{$self} = (%{$self}, %{$row});
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 
-    %{$self} = (%{$self}, %{$rdata->{$htuserId}});
     0;
 }
 
@@ -171,7 +154,7 @@ sub _getData
 
     $self->{'_data'} = do {
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
-            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'});
 
         {
             ACTION                => $action,

@@ -156,14 +156,20 @@ sub deleteMail
 
     return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
 
-    my $db = iMSCP::Database->factory( );
-    my $oldDatabase = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'}.'_roundcube' );
-    my $rdata = $db->doQuery( 'd', 'DELETE FROM `users` WHERE `username` = ?', $data->{'MAIL_ADDR'} );
-    unless (ref $rdata eq 'HASH') {
-        error( sprintf( "Couldn't remove mail user '%s' from roundcube database: %s", $data->{'MAIL_ADDR'}, $rdata ) );
+    local $@;
+    eval {
+        my $db = iMSCP::Database->factory( );
+        my $oldDatabase = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'}.'_roundcube' );
+        my $dbh = $db->getRawDb( );
+        local $dbh->{'RaiseError'} = 1;
+        $db->do( 'DELETE FROM users WHERE username = ?', undef, $data->{'MAIL_ADDR'} );
+        $db->useDatabase( $oldDatabase ) if $oldDatabase;
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
-    $db->useDatabase( $oldDatabase );
+
     0
 }
 

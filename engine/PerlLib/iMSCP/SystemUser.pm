@@ -101,7 +101,7 @@ sub addSystemUser
             return 1;
         }
 
-        # If we attempt to modify user' login or home, we must ensure
+        # If we attempt to modify user' login or home, we must ensure
         # that there is no process running for the user
         if ($username ne $oldUsername || $home ne $userProps[7]) {
             push @commands, [ [ '/usr/bin/pkill', '-KILL', '-u', $userProps[2] ], [ 0, 1 ] ];

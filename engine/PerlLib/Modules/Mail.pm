@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by internet Multi Server Control Panel
+# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,8 +25,7 @@ package Modules::Mail;
 
 use strict;
 use warnings;
-use iMSCP::Database;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ error getLastError warning /;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -69,33 +68,31 @@ sub process
     my @sql;
     if ($self->{'status'} =~ /^to(?:add|change|enable)$/) {
         $rs = $self->add( );
-        @sql = (
-            'UPDATE mail_users SET status = ? WHERE mail_id = ?',
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $mailId
-        );
+        @sql = ('UPDATE mail_users SET status = ? WHERE mail_id = ?', undef,
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $mailId);
     } elsif ($self->{'status'} eq 'todelete') {
         $rs = $self->delete( );
-        if ($rs) {
-            @sql = (
-                'UPDATE mail_users SET status = ? WHERE mail_id = ?',
-                getLastError( 'error' ) || 'Unknown error',
-                $mailId
-            );
-        } else {
-            @sql = ('DELETE FROM mail_users WHERE mail_id = ?', $self->{'mail_id'});
-        }
+        @sql = $rs
+            ? ('UPDATE mail_users SET status = ? WHERE mail_id = ?', undef,
+                (getLastError( 'error' ) || 'Unknown error'), $mailId)
+            : ('DELETE FROM mail_users WHERE mail_id = ?', undef, $self->{'mail_id'});
+
     } elsif ($self->{'status'} eq 'todisable') {
         $rs = $self->disable( );
-        @sql = (
-            'UPDATE mail_users SET status = ? WHERE mail_id = ?',
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'),
-            $mailId
-        );
+        @sql = ('UPDATE mail_users SET status = ? WHERE mail_id = ?', undef,
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'), $mailId);
+    } else {
+        warning( sprintf( 'Unknown action (%s) for mail user (ID %d)', $self->{'status'}, $mailId ) );
+        return 0;
     }
 
-    my $rdata = iMSCP::Database->factory( )->doQuery( 'dummy', @sql );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
+    local $@;
+    eval {
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        $self->{'_dbh'}->do( @sql );
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 
@@ -121,24 +118,26 @@ sub _loadData
 {
     my ($self, $mailId) = @_;
 
-    my $rdata = iMSCP::Database->factory( )->doQuery(
-        'mail_id',
-        '
-            SELECT mail_id, mail_acc, mail_pass, mail_forward, mail_type, mail_auto_respond, status, quota, mail_addr
-            FROM mail_users WHERE mail_id = ?
-        ',
-        $mailId
-    );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
-        return 1;
-    }
-    unless (exists $rdata->{$mailId}) {
-        error( sprintf( 'Mail record with ID %s has not been found in database', $mailId ) );
+    local $@;
+    eval {
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        my $row = $self->{'_dbh'}->selectrow_hashref(
+            '
+                SELECT mail_id, mail_acc, mail_pass, mail_forward, mail_type, mail_auto_respond, status, quota,
+                    mail_addr
+                FROM mail_users
+                WHERE mail_id = ?
+            ',
+            undef, $mailId
+        );
+        $row or die( sprintf( 'Data not found for mail user (ID %d)', $mailId ) );
+        %{$self} = (%{$self}, %{$row});
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 
-    %{$self} = (%{$self}, %{$rdata->{$mailId}});
     0;
 }
 

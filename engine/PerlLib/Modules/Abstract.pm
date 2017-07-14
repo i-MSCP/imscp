@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by internet Multi Server Control Panel
+# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,7 +25,8 @@ package Modules::Abstract;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Database;
+use iMSCP::Debug qw/ debug fatal /;
 use iMSCP::EventManager;
 use iMSCP::Packages;
 use iMSCP::Servers;
@@ -144,6 +145,7 @@ sub _init
     my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
+    $self->{'_dbh'} = iMSCP::Database->factory( )->getRawDb( );
     $self->{'_data'} = { };
     $self;
 }

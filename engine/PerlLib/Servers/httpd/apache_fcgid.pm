@@ -1015,13 +1015,15 @@ sub getTraffic
 
     my $timestamp = time( );
     my $ldate = time2str( '%Y%m%d', $timestamp );
-    my $db = iMSCP::Database->factory( );
-    my $dbh = $db->startTransaction( );
+    my $dbh = iMSCP::Database->factory( )->getRawDb( );
 
     debug( sprintf( 'Collecting HTTP traffic data' ) );
 
     local $@;
     eval {
+        local $dbh->{'AutoCommit'} = 0;
+        local $dbh->{'RaiseError'} = 1;
+
         my $sth = $dbh->prepare( 'SELECT vhost, bytes FROM httpd_vlogger WHERE ldate <= ? FOR UPDATE' );
         $sth->execute( $ldate );
 
@@ -1033,15 +1035,13 @@ sub getTraffic
         $dbh->do( 'DELETE FROM httpd_vlogger WHERE ldate <= ?', undef, $ldate );
         $dbh->commit( );
     };
-
     if ($@) {
         $dbh->rollback( );
         %{$trafficDb} = ( );
-        $db->endTransaction( );
         die( sprintf( "Couldn't collect traffic data: %s", $@ ) );
     }
 
-    $db->endTransaction( );
+    0;
 }
 
 =item getRunningUser( )

@@ -58,11 +58,12 @@ our $lastValidationError = '';
 
 sub isValidUsername( $ )
 {
-    my $username = shift;
+    my ($username) = @_;
+
+    defined $username or die( 'Missing $username parameter' );
     my $length = length $username;
 
-    return 1 if $length >= 3 && $length <= 16
-        && $username =~ /^[\x30-\x39\x41-\x5a\x61-\x7a\x5f]+$/;
+    return 1 if $length >= 3 && $length <= 16 && $username =~ /^[\x30-\x39\x41-\x5a\x61-\x7a\x5f]+$/;
 
     $lastValidationError = <<"EOF";
 
@@ -89,11 +90,12 @@ EOF
 
 sub isValidPassword( $ )
 {
-    my $password = shift;
+    my ($password) = @_;
+
+    defined $password or die( 'Missing $password parameter' );
     my $length = length $password;
 
-    return 1 if $length >= 6 && $length <= 32
-        && $password =~ /^[\x30-\x39\x41-\x5a\x61-\x7a]+$/;
+    return 1 if $length >= 6 && $length <= 32 && $password =~ /^[\x30-\x39\x41-\x5a\x61-\x7a]+$/;
 
     $lastValidationError = <<"EOF";
 
@@ -120,7 +122,9 @@ EOF
 
 sub isValidEmail( $ )
 {
-    my $email = shift;
+    my ($email) = @_;
+
+    defined $email or die( 'Missing $email parameter' );
 
     return 1 if Email::Valid->address( $email );
 
@@ -146,10 +150,11 @@ EOF
 
 sub isValidHostname( $ )
 {
-    my $hostname = shift;
+    my ($hostname) = @_;
 
-    return 1 if $hostname !~ /\.$/ && ($hostname =~ tr/.//) >= 2
-        && is_hostname( idn_to_ascii( $hostname, 'utf-8' ) );
+    defined $hostname or die( 'Missing $hostname parameter' );
+
+    return 1 if $hostname !~ /\.$/ && ($hostname =~ tr/.//) >= 2 && is_hostname( idn_to_ascii( $hostname, 'utf-8' ) );
 
     $lastValidationError = <<"EOF";
 
@@ -176,7 +181,9 @@ EOF
 
 sub isValidDomain( $ )
 {
-    my $domainName = shift;
+    my ($domainName) = @_;
+
+    defined $domainName or die( 'Missing $domainName parameter' );
 
     return 1 if $domainName !~ /\.$/ && is_domain(
         idn_to_ascii($domainName, 'utf-8'),
@@ -212,9 +219,10 @@ sub isValidIpAddr( $;$ )
 {
     my ($ipAddr, $typeReg) = @_;
 
+    defined $ipAddr or die( 'Missing $ipAddr parameter' );
+
     my $net = iMSCP::Net->getInstance( );
-    return 1 if $net->isValidAddr($ipAddr)
-        && (!defined $typeReg || $net->getAddrType($ipAddr) =~ /^$typeReg$/);
+    return 1 if $net->isValidAddr($ipAddr) && (!defined $typeReg || $net->getAddrType($ipAddr) =~ /^$typeReg$/);
 
     $lastValidationError = <<"EOF";
 
@@ -238,11 +246,12 @@ EOF
 
 sub isValidDbName($)
 {
-    my $dbName = shift;
+    my ($dbName) = @_;
+
+    defined $dbName or die( 'Missing $dbName parameter' );
     my $length = length $dbName;
 
-    return 1 if $length >= 3 && $length <= 16
-        && $dbName =~ /^[\x30-\x39\x41-\x5a\x61-\x7a\x5f]+$/;
+    return 1 if $length >= 3 && $length <= 16 && $dbName =~ /^[\x30-\x39\x41-\x5a\x61-\x7a\x5f]+$/;
 
     $lastValidationError = <<"EOF";
 
@@ -269,7 +278,9 @@ EOF
 
 sub isValidTimezone
 {
-    my $timezone = shift;
+    my ($timezone) = @_;
+
+    defined $timezone or die( 'Missing $timezone parameter' );
 
     return 1 if DateTime::TimeZone->is_valid_name( $timezone );
 
@@ -297,7 +308,9 @@ EOF
 
 sub isNumber($)
 {
-    my $number = shift;
+    my ($number) = @_;
+
+    defined $number or die( 'Missing $timezone parameter' );
 
     return 1 if $number =~ /^[\x30-\x39]+$/;
 
@@ -317,8 +330,8 @@ EOF
  Is the given number range a valid number range?
 
  Param string $numberRange Number range
- Param scalar_ref \$n1 First  number in range
- Param scalar_ref \$n2 Last number in range
+ Param scalarref \$n1 First number in range
+ Param scalarref \$n2 Last number in range
  Return bool TRUE if the given number range is valid, FALSE otherwise
 
 =cut
@@ -327,8 +340,11 @@ sub isValidNumberRange( $$$ )
 {
     my ($numberRange, $n1, $n2) = @_;
 
-    return 1 if (${$n1}, ${$n2}) =
-        $numberRange =~ /^([\x30-\x39]+)\s+([\x30-\x39]+)$/;
+    defined $numberRange or die( 'Missing $numberRange parameter' );
+    defined $n1 or die( 'Missing $n1 parameter' );
+    defined $n2 or die( 'Missing $n2 parameter' );
+
+    return 1 if (${$n1}, ${$n2}) = $numberRange =~ /^([\x30-\x39]+)\s+([\x30-\x39]+)$/;
 
     $lastValidationError = <<"EOF";
 
@@ -358,8 +374,12 @@ sub isNumberInRange( $$$ )
 {
     my ($number, $start, $end) = @_;
 
+    defined $number or die( 'Missing $number parameter' );
+    defined $start or die( 'Missing $start parameter' );
+    defined $end or die( 'Missing $end parameter' );
+
     no warnings;
-    return 1 if $number >= $start && $number <= $end;
+    return 1 if defined $number && $number >= $start && $number <= $end;
 
     $lastValidationError = <<"EOF";
 
@@ -390,6 +410,8 @@ sub isStringNotInList( $@ )
 {
     my ($string, @stringList) = @_;
 
+    defined $string or die( 'Missing $string parameter' );
+
     return 1 unless grep { lc $string eq lc $_ } @stringList;
 
     my $entries = join ', ', @stringList;
@@ -417,9 +439,11 @@ EOF
 
 sub isNotEmpty( $ )
 {
-    my $string = shift;
+    my ($string) = @_;
 
-    return 1 if $string =~ /[^\s]/;
+    defined $string or die( 'Missing $string parameter' );
+
+    return 1 if !$string || $string =~ /[^\s]/;
 
     $lastValidationError = <<"EOF";
 
@@ -445,7 +469,9 @@ EOF
 
 sub isAvailableSqlUser ( $ )
 {
-    my $username = shift;
+    my ($username) = @_;
+
+    defined $username or die( 'Missing $username parameter' );
 
     my $db = iMSCP::Database->factory( );
 
@@ -453,15 +479,16 @@ sub isAvailableSqlUser ( $ )
     my $oldDatabase = eval { $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME') ); };
     if ($@) {
         return 1 if $@ =~ /unknown database/i; # On fresh installation, there is no database yet
-        die($@);
+        die;
     }
 
-    my $qrs = $db->doQuery( 1, 'SELECT 1 FROM sql_user WHERE sqlu_name = ? LIMIT 1', $username );
-    ref $qrs eq 'HASH' or die( $qrs );
+    my $dbh = $db->getRawDb( );
+    $dbh->{'RaiseError'} = 1;
+    my $row = $dbh->selectrow_hashref( 'SELECT 1 FROM sql_user WHERE sqlu_name = ? LIMIT 1', undef, $username );
 
     $db->useDatabase( $oldDatabase ) if $oldDatabase;
 
-    return 1 unless %{$qrs};
+    return 1 unless $row;
 
     $lastValidationError = <<"EOF";
 

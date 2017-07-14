@@ -313,7 +313,6 @@ sub _setupDatabase
 {
     my ($self) = @_;
 
-    my $sqlServer = Servers::sqld->factory( );
     my $imscpDbName = main::setupGetQuestion( 'DATABASE_NAME' );
     my $rainLoopDbName = $imscpDbName.'_rainloop';
     my $dbUser = main::setupGetQuestion( 'RAINLOOP_SQL_USER' );
@@ -322,51 +321,47 @@ sub _setupDatabase
     my $dbPass = main::setupGetQuestion( 'RAINLOOP_SQL_PASSWORD' );
     my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
-    my $db = iMSCP::Database->factory( );
-    my $quotedDbName = $db->quoteIdentifier( $rainLoopDbName );
+    local $@;
+    eval {
+        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        $dbh->{'RaiseError'} = 1;
 
-    my $rs = $db->doQuery( 'c',
-        "CREATE DATABASE IF NOT EXISTS $quotedDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci" );
-    unless (ref $rs eq 'HASH') {
-        error( sprintf( "Couldn't create SQL database: %s", $rs ) );
-        return 1;
-    }
+        my $quotedDbName = $dbh->quote_identifier( $rainLoopDbName );
 
-    # Drop old SQL user if required
-    for my $sqlUser ($dbOldUser, $dbUser) {
-        next unless $sqlUser;
+        $dbh->do( "CREATE DATABASE IF NOT EXISTS $quotedDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci" );
 
-        for my $host($dbUserHost, $oldDbUserHost) {
-            next if !$host
-                || (exists $main::sqlUsers{$sqlUser.'@'.$host} && !defined $main::sqlUsers{$sqlUser.'@'.$host});
+        my $sqlServer = Servers::sqld->factory( );
 
-            $sqlServer->dropUser( $sqlUser, $host );
+        # Drop old SQL user if required
+        for my $sqlUser ($dbOldUser, $dbUser) {
+            next unless $sqlUser;
+
+            for my $host($dbUserHost, $oldDbUserHost) {
+                next if !$host
+                    || exists $main::sqlUsers{$sqlUser.'@'.$host} && !defined $main::sqlUsers{$sqlUser.'@'.$host};
+                $sqlServer->dropUser( $sqlUser, $host );
+            }
         }
-    }
 
-    # Create SQL user if required
-    if (defined $main::sqlUsers{$dbUser.'@'.$dbUserHost}) {
-        debug( sprintf( 'Creating %s@%s SQL user', $dbUser, $dbUserHost ) );
-        $sqlServer->createUser( $dbUser, $dbUserHost, $dbPass );
-        $main::sqlUsers{$dbUser.'@'.$dbUserHost} = undef;
-    }
+        # Create SQL user if required
+        if (defined $main::sqlUsers{$dbUser.'@'.$dbUserHost}) {
+            debug( sprintf( 'Creating %s@%s SQL user', $dbUser, $dbUserHost ) );
+            $sqlServer->createUser( $dbUser, $dbUserHost, $dbPass );
+            $main::sqlUsers{$dbUser.'@'.$dbUserHost} = undef;
+        }
 
-    # Give required privileges to this SQL user
-    $quotedDbName =~ s/([%_])/\\$1/g;
-    $rs = $db->doQuery( 'g', "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?\@?", $dbUser, $dbUserHost );
-    unless (ref $rs eq 'HASH') {
-        error( sprintf( "Couldn't add SQL privileges: %s", $rs ) );
-        return 1;
-    }
+        $quotedDbName =~ s/([%_])/\\$1/g;
+        $dbh->do( "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?\@?", undef, $dbUser, $dbUserHost );
 
-    # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
-    $quotedDbName = $db->quoteIdentifier( $imscpDbName );
-    $rs = $db->doQuery(
-        'g', "GRANT SELECT (mail_addr, mail_pass), UPDATE (mail_pass) ON $quotedDbName.mail_users TO ?\@?",
-        $dbUser, $dbUserHost
-    );
-    unless (ref $rs eq 'HASH') {
-        error( sprintf( "Couldn't add SQL privileges: %s", $rs ) );
+        # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
+        $quotedDbName = $dbh->quote_identifier( $imscpDbName );
+        $dbh->do(
+            "GRANT SELECT (mail_addr, mail_pass), UPDATE (mail_pass) ON $quotedDbName.mail_users TO ?\@?",
+            undef, $dbUser, $dbUserHost
+        );
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 

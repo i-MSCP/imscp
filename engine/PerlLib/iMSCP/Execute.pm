@@ -26,8 +26,7 @@ package iMSCP::Execute;
 use strict;
 use warnings;
 use autouse 'Capture::Tiny' => qw/ capture capture_stdout capture_stderr /;
-use Errno ;
-use File::Basename qw/ dirname /;
+use Errno qw/ EINTR /;
 use iMSCP::Debug qw/ debug error /;
 use IO::Select;
 use IPC::Open3;
@@ -59,7 +58,7 @@ sub execute( $;$$ )
 {
     my ($command, $stdout, $stderr) = @_;
 
-    defined( $command ) or die( '$command parameter is not defined' );
+    defined( $command ) or die( 'Missing $command parameter' );
 
     if ($stdout) {
         ref $stdout eq 'SCALAR' or die( "Expects a scalar reference as second parameter for capture of STDOUT" );
@@ -71,22 +70,20 @@ sub execute( $;$$ )
         ${$stderr} = '';
     }
 
-    my $multitArgs = ref $command eq 'ARRAY';
-    debug( $multitArgs ? "@{$command}" : $command );
+    my $list = ref $command eq 'ARRAY';
+    debug( $list ? "@{$command}" : $command );
 
     if ($stdout && $stderr) {
-        (${$stdout}, ${$stderr}) = capture sub { system( $multitArgs ? @{$command} : $command); };
+        (${$stdout}, ${$stderr}) = capture sub { system( $list ? @{$command} : $command); };
         chomp( ${$stdout}, ${$stderr} );
     } elsif ($stdout) {
-        ${$stdout} = capture_stdout sub { system( $multitArgs ? @{$command} : $command ); };
+        ${$stdout} = capture_stdout sub { system( $list ? @{$command} : $command ); };
         chomp( ${$stdout} );
     } elsif ($stderr) {
-        ${$stderr} = capture_stderr sub { system( $multitArgs ? @{$command} : $command ); };
+        ${$stderr} = capture_stderr sub { system( $list ? @{$command} : $command ); };
         chomp( $stderr );
     } else {
-        system( $multitArgs ? @{$command} : $command ) != -1 or die(
-            sprintf( "Couldn't execute command: %s", $! )
-        );
+        system( $list ? @{$command} : $command ) != -1 or die( sprintf( "Couldn't execute command: %s", $! ) );
     }
 
     getExitCode( );
@@ -113,10 +110,10 @@ sub executeNoWait( $;$$ )
     $subSTDERR ||= $subSTDERR = sub { print STDERR @_ };
     ref $subSTDERR eq 'CODE' or die( 'Expects CODE as third parameter for STDERR processing' );
 
-    my $multitArgs = ref $command eq 'ARRAY';
-    debug( $multitArgs ? "@{$command}" : $command );
+    my $list = ref $command eq 'ARRAY';
+    debug( $list ? "@{$command}" : $command );
 
-    my $pid = open3( my $stdin, my $stdout, my $stderr = gensym, $multitArgs ? @{$command} : $command );
+    my $pid = open3( my $stdin, my $stdout, my $stderr = gensym, $list ? @{$command} : $command );
     close $stdin;
 
     my %buffers = ( $stdout => '', $stderr => '' );

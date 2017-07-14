@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by internet Multi Server Control Panel
+# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -14,20 +14,20 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 package iMSCP::Database::mysql;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
 use DBI;
-use iMSCP::Execute;
+use iMSCP::Debug qw/ debug /;
+use iMSCP::Execute qw / execute /;
 use POSIX ':signal_h';
 use parent 'Common::SingletonClass';
 
@@ -76,41 +76,42 @@ sub connect
         ($self->{'db'}->{'DATABASE_HOST'} ? ';host='.$self->{'db'}->{'DATABASE_HOST'} : '').
         ($self->{'db'}->{'DATABASE_PORT'} ? ';port='.$self->{'db'}->{'DATABASE_PORT'} : '');
 
-    if (!$self->{'connection'}
-        || $self->{'_dsn'} ne $dsn
-        || $self->{'_currentUser'} ne $self->{'db'}->{'DATABASE_USER'}
-        || $self->{'_currentPassword'} ne $self->{'db'}->{'DATABASE_PASSWORD'}
+    if ($self->{'connection'}
+        && $self->{'_dsn'} eq $dsn
+        && $self->{'_currentUser'} eq $self->{'db'}->{'DATABASE_USER'}
+        && $self->{'_currentPassword'} eq $self->{'db'}->{'DATABASE_PASSWORD'}
     ) {
-        $self->{'connection'}->disconnect( ) if $self->{'connection'};
+        return 0;
+    }
 
-        # Set connection timeout to 5 seconds
-        my $mask = POSIX::SigSet->new( SIGALRM );
-        my $action = POSIX::SigAction->new( sub { die "SQL database connection timeout\n" }, $mask );
-        my $oldaction = POSIX::SigAction->new( );
-        sigaction( SIGALRM, $action, $oldaction );
+    $self->{'connection'}->disconnect( ) if $self->{'connection'};
 
-        local $@;
+    # Set connection timeout to 5 seconds
+    my $mask = POSIX::SigSet->new( SIGALRM );
+    my $action = POSIX::SigAction->new( sub { die "SQL database connection timeout\n" }, $mask );
+    my $oldaction = POSIX::SigAction->new( );
+    sigaction( SIGALRM, $action, $oldaction );
+
+    eval {
         eval {
             alarm 5;
             $self->{'connection'} = DBI->connect(
                 $dsn, $self->{'db'}->{'DATABASE_USER'}, $self->{'db'}->{'DATABASE_PASSWORD'},
                 $self->{'db'}->{'DATABASE_SETTINGS'}
             );
-            alarm 0;
         };
 
         alarm 0;
-        sigaction( SIGALRM, $oldaction );
+        die if $@;
+    };
 
-        return "$@" if $@;
+    sigaction( SIGALRM, $oldaction );
+    return $@ if $@;
 
-        $self->{'_dsn'} = $dsn;
-        $self->{'_currentUser'} = $self->{'db'}->{'DATABASE_USER'};
-        $self->{'_currentPassword'} = $self->{'db'}->{'DATABASE_PASSWORD'};
-        $self->{'connection'}->{'RaiseError'} = 0;
-    }
-
-    0;
+    $self->{'_dsn'} = $dsn;
+    $self->{'_currentUser'} = $self->{'db'}->{'DATABASE_USER'};
+    $self->{'_currentPassword'} = $self->{'db'}->{'DATABASE_PASSWORD'};
+    $self->{'connection'}->{'RaiseError'} = 0;
 }
 
 =item useDatabase( $database )
@@ -129,6 +130,8 @@ sub useDatabase
     defined $database && $database ne '' or die( '$database parameter is not defined or invalid' );
 
     my $oldDatabase = $self->{'db'}->{'DATABASE_NAME'};
+    return $oldDatabase if $database eq $oldDatabase;
+
     my $dbh = $self->getRawDb( );
     unless ($dbh->ping( )) {
         $self->connect( );
@@ -146,6 +149,9 @@ sub useDatabase
 
 =item startTransaction( )
 
+ Warning: This method is deprecated as of version 1.4.8 and will be removed in
+ version 1.5.0. Don't use it in new code.
+
  Start a database transaction
 
 =cut
@@ -154,13 +160,16 @@ sub startTransaction
 {
     my ($self) = @_;
 
-    my $rawDb = $self->getRawDb( );
-    $rawDb->{'AutoCommit'} = 0;
-    $rawDb->{'RaiseError'} = 1;
-    $rawDb;
+    my $dbh = $self->getRawDb( );
+    $dbh->{'AutoCommit'} = 0;
+    $dbh->{'RaiseError'} = 1;
+    $dbh;
 }
 
 =item endTransaction( )
+
+ Warning: This method is deprecated as of version 1.4.8 and will be removed in
+ version 1.5.0. Don't use it in new code.
 
  End a database transaction
 
@@ -170,11 +179,11 @@ sub endTransaction
 {
     my ($self) = @_;
 
-    my $rawDb = $self->getRawDb( );
+    my $dbh = $self->getRawDb( );
 
-    $rawDb->{'AutoCommit'} = 1;
-    $rawDb->{'RaiseError'} = 0;
-    $rawDb->{'mysql_auto_reconnect'} = 1;
+    $dbh->{'AutoCommit'} = 1;
+    $dbh->{'RaiseError'} = 0;
+    $dbh->{'mysql_auto_reconnect'} = 1;
     $self->{'connection'};
 }
 
@@ -182,6 +191,7 @@ sub endTransaction
 
  Get raw DBI instance
 
+ Return DBI instance, die on failure
 =cut
 
 sub getRawDb
@@ -195,14 +205,17 @@ sub getRawDb
     $self->{'connection'};
 }
 
-=item doQuery( $key, $query [, @bindValues = undef ] )
+=item doQuery( $key, $query [, @bindValues = ( ) ] )
 
  Execute the given SQL statement
+
+ Warning: This method is deprecated as of version 1.4.8 and will be removed in
+ version 1.5.0. Don't use it in new code.
 
  Param int|string $key Query key
  Param string $query SQL statement to be executed
  Param array @bindValues Optionnal binds parameters
- Return Hash An anonymous hash containing data if any on success, error string on failure
+ Return hashref on success, error string on failure
 
 =cut
 
@@ -210,70 +223,73 @@ sub doQuery
 {
     my ($self, $key, $query, @bindValues) = @_;
 
-    # Must be done prior any processing to handle error case
-    # (ie, wrong sql statement and then, next query which set error status use default fetch mode)
-    my $fetchMode = $self->{'db'}->{'FETCH_MODE'};
-    $self->set( 'FETCH_MODE', 'hashref' );
+    local $@;
+    my $qrs = eval {
+        defined $query or die 'No query provided';
+        my $dbh = $self->getRawDb( );
+        local $dbh->{'RaiseError'} = 0;
+        my $sth = $dbh->prepare( $query ) or die $DBI::errstr;
+        $sth->execute( @bindValues ) or die $DBI::errstr;
+        $sth->fetchall_hashref( $key ) || { };
+    };
 
-    $query or return 'No query provided';
-
-    $self->{'sth'} = $self->getRawDb( )->prepare( $query ) or return "Error while preparing statement: $DBI::errstr";
-    $self->{'sth'}->execute( @bindValues ) or return "Error while executing statement: $DBI::errstr";
-
-    if ($fetchMode eq 'hashref') {
-        $self->{'sth'}->fetchall_hashref( $key ) || { };
-    } elsif ($fetchMode eq 'arrayref') {
-        $self->{'sth'}->fetchall_arrayref( $key ) || [ ];
-    } else {
-        sprintf( 'Unsupported fetch mode: %s', $fetchMode );
-    }
+    return "$@" if $@;
+    $qrs;
 }
 
-=item getDBTables( )
+=item getDbTables( [ $dbName ] )
 
  Return list of table for the current selected database
 
- Return array_ref on success, error string on failure
+ Param string $dbName Database name
+ Return arrayref on success, error string on failure
 
 =cut
 
-sub getDBTables
+sub getDbTables
 {
-    my ($self) = @_;
+    my ($self, $dbName) = @_;
+    $dbName //= $self->{'db'}->{'DATABASE_NAME'};
 
-    $self->{'sth'} = $self->getRawDb( )->prepare(
-        'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ?', $self->{'db'}->{'DATABASE_NAME'}
-    );
+    local $@;
+    my @tables = eval {
+        my $dbh = $self->getRawDb( );
+        local $dbh->{'RaiseError'} = 1;
+        keys %{$dbh->selectall_hashref(
+                'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ?', 'TABLE_NAME', undef, $dbName
+            )};
+    };
 
-    return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute( );
-
-    my $href = $self->{'sth'}->fetchall_hashref( 'TABLE_NAME' );
-    my @tables = keys %{$href};
+    return "$@" if $@;
     \@tables;
 }
 
-=item getTableColumns($tableName)
+=item getTableColumns( [$tableName [, dbName ] ] )
 
  Return list of columns for the given table
 
- Return array_ref on success, error string on failure
+ Param string $tableName Table name
+ Param string $dbName Database name
+ Return arrayref on success, error string on failure
 
 =cut
 
 sub getTableColumns
 {
-    my ($self, $tableName) = @_;
+    my ($self, $tableName, $dbName) = @_;
+    $dbName //= $self->{'db'}->{'DATABASE_NAME'};
 
-    $self->{'sth'} = $self->getRawDb( )->prepare(
-        'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?',
-        $self->{'db'}->{'DATABASE_NAME'},
-        $tableName
-    );
+    local $@;
+    my @columns = eval {
+        my $dbh = $self->getRawDb( );
+        local $dbh->{'RaiseError'} = 1;
+        keys %{$dbh->selectall_hashref(
+                'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?',
+                'COLUMN_NAME', undef, $dbName, $tableName
+            )};
+    };
 
-    return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute( );
-
-    my $href = $self->{'sth'}->fetchall_hashref( 'COLUMN_NAME' );
-    my @columns = keys %{$href};
+    return "$@" if $@;
     \@columns;
 }
 
@@ -296,7 +312,7 @@ sub dumpdb
     my %rpl = ( '/', '@002f', '.', '@002e' );
     (my $encodedDbName = $dbName) =~ s%([./])%$rpl{$1}%ge;
 
-    debug(sprintf('Dump `%s` database into %s', $dbName, $dbDumpTargetDir.'/'.$encodedDbName.'.sql') );
+    debug( sprintf('Dump `%s` database into %s', $dbName, $dbDumpTargetDir.'/'.$encodedDbName.'.sql') );
 
     my $stderr;
     execute(
@@ -312,10 +328,12 @@ sub dumpdb
 
 }
 
-=item quoteIdentifier($identifier)
+=item quoteIdentifier( $identifier )
 
  Quote the given identifier (database name, table name or column name)
 
+
+ Param string $identifier Identifier to be quoted
  Return string Quoted identifier
 
 =cut
@@ -324,14 +342,14 @@ sub quoteIdentifier
 {
     my ($self, $identifier) = @_;
 
-    $identifier = join( ', ', $identifier ) if ref $identifier eq 'ARRAY';
     $self->getRawDb( )->quote_identifier( $identifier );
 }
 
-=item quote($string)
+=item quote( $string )
 
  Quote the given string
 
+ Param string $string String to be quoted
  Return string Quoted string
 
 =cut
@@ -361,22 +379,27 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'db'}->{'DATABASE_NAME'} = '';
-    $self->{'db'}->{'DATABASE_HOST'} = '';
-    $self->{'db'}->{'DATABASE_PORT'} = '';
-    $self->{'db'}->{'DATABASE_USER'} = '';
-    $self->{'db'}->{'DATABASE_PASSWORD'} = '';
-    $self->{'db'}->{'DATABASE_SETTINGS'} = {
-        AutoCommit           => 1,
-        PrintError           => 0,
-        RaiseError           => 1,
-        mysql_auto_reconnect => 1,
-        mysql_enable_utf8    => 1,
-        AutoInactiveDestroy  => 1
+    $self->{'db'} = {
+        DATABASE_NAME     => '',
+        DATABASE_HOST     => '',
+        DATABASE_PORT     => '',
+        DATABASE_USER     => '',
+        DATABASE_PASSWORD => '',
+        DATABASE_SETTINGS => {
+            AutoCommit           => 1,
+            AutoInactiveDestroy  => 1,
+            Callbacks            => {
+                connected => sub {
+                    $_[0]->do( 'SET SESSION group_concat_max_len = 16384' );
+                    return;
+                }
+            },
+            mysql_auto_reconnect => 1,
+            mysql_enable_utf8    => 1,
+            PrintError           => 0,
+            RaiseError           => 1,
+        }
     };
-
-    # Default fetch mode
-    $self->{'db'}->{'FETCH_MODE'} = 'hashref';
 
     # For internal use only
     $self->{'_dsn'} = '';

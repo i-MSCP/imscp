@@ -6,12 +6,18 @@ Git 1.4.x
 
 BACKEND
     Added: Flag allowing to ignore mount operation failures (iMSCP::Mount)
+    Deprecated: iMSCP::Database::mysql::doQuery() method -- Will be removed in version 1.5.0
+    Deprecated: iMSCP::Database::mysql::endTransaction() method -- Will be removed in version 1.5.0
+    Deprecated: iMSCP::Database::mysql::startTransaction() method -- Will be removed in version 1.5.0
     Fixed: Can't use an undefined value as a HASH reference (iMSCP::EventManager)
+    Fixed: Couldn't remove IP address: Unknown action requested for server IP (Modules::ServerIP)
+    Fixed: Set the `group_concat_max_len' SESSION variable once per connect (iMSCP::Database::mysql)
+    Removed: `FETCH_MODE' option from iMSCP::Database::mysql
 
 FRONTEND
-    Fixed: Cannot set value bigger than 2GB for mailbox quota due to integer type casting (i386 arch)
     Fixed: Cannot edit mailbox quota due to integer type casting (i386 arch)
-    Fixed: Several type integer casting issues
+    Fixed: Cannot set value bigger than 2 GB for mailbox quota due to integer type casting (i386 arch)
+    Fixed: Several integer type casting issues
 
 SCRIPTS
     Removed: Explicite unlocking of locked files -- Files are automatically unlocked

@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by internet Multi Server Control Panel
+# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,10 +26,7 @@ package Modules::SubAlias;
 use strict;
 use warnings;
 use File::Spec;
-use iMSCP::Database;
-use iMSCP::Debug;
-use iMSCP::Execute;
-use iMSCP::OpenSSL;
+use iMSCP::Debug qw/ debug error getLastError warning /;
 use Net::LibIDN qw/ idn_to_unicode /;
 use Servers::httpd;
 use parent 'Modules::Abstract';
@@ -74,41 +71,36 @@ sub process
     my @sql;
     if ($self->{'subdomain_alias_status'} =~ /^to(?:add|change|enable)$/) {
         $rs = $self->add( );
-        @sql = (
-            'UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE subdomain_alias_id = ?',
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'),
-            $subAliasId
-        );
+        @sql = ('UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE subdomain_alias_id = ?', undef,
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $subAliasId);
     } elsif ($self->{'subdomain_alias_status'} eq 'todelete') {
         $rs = $self->delete( );
-        if ($rs) {
-            @sql = (
-                'UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE subdomain_alias_id = ?',
-                getLastError( 'error' ) || 'Unknown error',
-                $subAliasId
-            );
-        } else {
-            @sql = ('DELETE FROM subdomain_alias WHERE subdomain_alias_id = ?', $subAliasId);
-        }
+        @sql = $rs
+            ? ('UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE subdomain_alias_id = ?', undef,
+                (getLastError( 'error' ) || 'Unknown error'), $subAliasId)
+            : ('DELETE FROM subdomain_alias WHERE subdomain_alias_id = ?', undef, $subAliasId);
     } elsif ($self->{'subdomain_alias_status'} eq 'todisable') {
         $rs = $self->disable( );
-        @sql = (
-            'UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE subdomain_alias_id = ?',
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'),
-            $subAliasId
-        );
+        @sql = ('UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE subdomain_alias_id = ?', undef,
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'), $subAliasId);
     } elsif ($self->{'subdomain_alias_status'} eq 'torestore') {
         $rs = $self->restore( );
-        @sql = (
-            'UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE subdomain_alias_id = ?',
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'),
-            $subAliasId
+        @sql = ('UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE subdomain_alias_id = ?', undef,
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $subAliasId);
+    } else {
+        warning(
+            sprintf( 'Unknown action (%s) for subdomain alias (ID %d)', $self->{'subdomain_alias_status'}, $subAliasId )
         );
+        return 0;
     }
 
-    my $rdata = iMSCP::Database->factory( )->doQuery( 'dummy', @sql );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
+    local $@;
+    eval {
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        $self->{'_dbh'}->do( @sql );
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 
@@ -134,45 +126,45 @@ sub _loadData
 {
     my ($self, $subAliasId) = @_;
 
-    my $rdata = iMSCP::Database->factory( )->doQuery(
-        'subdomain_alias_id',
-        "
-            SELECT t1.*,
-                t2.alias_name, t2.external_mail, t3.domain_name AS user_home,
-                t3.domain_id, t3.domain_admin_id, t3.domain_mailacc_limit, t3.domain_php, t3.domain_cgi,
-                t3.web_folder_protection,
-                IFNULL(t4.ip_number, ?) AS ip_number,
-                t5.private_key, t5.certificate, t5.ca_bundle, t5.allow_hsts, t5.hsts_max_age,
-                t5.hsts_include_subdomains,
-                t6.mail_on_domain
-            FROM subdomain_alias AS t1
-            INNER JOIN domain_aliasses AS t2 USING(alias_id)
-            INNER JOIN domain AS t3 USING (domain_id)
-            LEFT JOIN server_ips AS t4 ON (t4.ip_id = t2.alias_ip_id)
-            LEFT JOIN ssl_certs AS t5 ON(
-                t5.domain_id = t1.subdomain_alias_id AND t5.domain_type = 'alssub' AND t5.status = 'ok'
-            )
-            LEFT JOIN (
-                SELECT sub_id, COUNT(sub_id) AS mail_on_domain
-                FROM mail_users
-                WHERE mail_type LIKE 'alssub\\_%'
-                GROUP BY sub_id
-            ) AS t6 ON (t6.sub_id = t1.subdomain_alias_id)
-            WHERE t1.subdomain_alias_id = ?
-        ",
-        '0.0.0.0',
-        $subAliasId
-    );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
-        return 1;
-    }
-    unless ($rdata->{$subAliasId}) {
-        error( sprintf( 'Subdomain alias with ID %s has not been found or is in an inconsistent state', $subAliasId ) );
+    local $@;
+    eval {
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        my $row = $self->{'_dbh'}->selectrow_hashref(
+            "
+                SELECT t1.*,
+                    t2.alias_name, t2.external_mail, t3.domain_name AS user_home,
+                    t3.domain_id, t3.domain_admin_id, t3.domain_mailacc_limit, t3.domain_php, t3.domain_cgi,
+                    t3.web_folder_protection,
+                    IFNULL(t4.ip_number, '0.0.0.0') AS ip_number,
+                    t5.private_key, t5.certificate, t5.ca_bundle, t5.allow_hsts, t5.hsts_max_age,
+                    t5.hsts_include_subdomains,
+                    t6.mail_on_domain
+                FROM subdomain_alias AS t1
+                JOIN domain_aliasses AS t2 USING(alias_id)
+                JOIN domain AS t3 USING (domain_id)
+                LEFT JOIN server_ips AS t4 ON (t4.ip_id = t2.alias_ip_id)
+                LEFT JOIN ssl_certs AS t5 ON(
+                    t5.domain_id = t1.subdomain_alias_id AND t5.domain_type = 'alssub' AND t5.status = 'ok'
+                )
+                LEFT JOIN (
+                    SELECT sub_id, COUNT(sub_id) AS mail_on_domain
+                    FROM mail_users
+                    WHERE mail_type LIKE 'alssub\\_%'
+                    GROUP BY sub_id
+                ) AS t6 ON (t6.sub_id = t1.subdomain_alias_id)
+                WHERE t1.subdomain_alias_id = ?
+            ",
+            undef,
+            $subAliasId
+        );
+        $row or die( sprintf( 'Data not found for subdomain alias (ID %d)', $subAliasId ) );
+        %{$self} = (%{$self}, %{$row});
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 
-    %{$self} = (%{$self}, %{$rdata->{$subAliasId}});
     0;
 }
 
@@ -206,12 +198,14 @@ sub _getData
             $confLevel = 'subals';
         }
 
-        my $phpiniMatchId = $confLevel eq 'dmn'
-            ? $self->{'domain_id'} : ($confLevel eq 'als' ? $self->{'alias_id'} : $self->{'subdomain_alias_id'});
-        my $phpini = iMSCP::Database->factory( )->doQuery(
-            'domain_id', 'SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = ?', $phpiniMatchId, $confLevel
-        );
-        ref $phpini eq 'HASH' or die( $phpini );
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        my $phpini = $self->{'_dbh'}->selectrow_hashref(
+            'SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = ?',
+            undef,
+            ($confLevel eq 'dmn'
+                ? $self->{'domain_id'} : ($confLevel eq 'als' ? $self->{'alias_id'} : $self->{'subdomain_alias_id'})),
+            $confLevel
+        ) || { };
 
         my $haveCert = (defined $self->{'certificate'}
             && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'subdomain_alias_name'}.$self->{'alias_name'}.pem"
@@ -256,18 +250,17 @@ sub _getData
             FORWARD                 => $self->{'subdomain_alias_url_forward'} || 'no',
             FORWARD_TYPE            => $self->{'subdomain_alias_type_forward'} || '',
             FORWARD_PRESERVE_HOST   => $self->{'subdomain_alias_host_forward'} || 'Off',
-            DISABLE_FUNCTIONS       => $phpini->{$phpiniMatchId}->{'disable_functions'}
+            DISABLE_FUNCTIONS       => $phpini->{'disable_functions'}
                 // 'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
-            MAX_EXECUTION_TIME      => $phpini->{$phpiniMatchId}->{'max_execution_time'} // 30,
-            MAX_INPUT_TIME          => $phpini->{$phpiniMatchId}->{'max_input_time'} // 60,
-            MEMORY_LIMIT            => $phpini->{$phpiniMatchId}->{'memory_limit'} // 128,
-            ERROR_REPORTING         => $phpini->{$phpiniMatchId}->{'error_reporting'}
-                || 'E_ALL & ~E_DEPRECATED & ~E_STRICT',
-            DISPLAY_ERRORS          => $phpini->{$phpiniMatchId}->{'display_errors'} || 'off',
-            POST_MAX_SIZE           => $phpini->{$phpiniMatchId}->{'post_max_size'} // 8,
-            UPLOAD_MAX_FILESIZE     => $phpini->{$phpiniMatchId}->{'upload_max_filesize'} // 2,
-            ALLOW_URL_FOPEN         => $phpini->{$phpiniMatchId}->{'allow_url_fopen'} || 'off',
-            PHP_FPM_LISTEN_PORT     => ($phpini->{$phpiniMatchId}->{'id'} // 0)-1,
+            MAX_EXECUTION_TIME      => $phpini->{'max_execution_time'} // 30,
+            MAX_INPUT_TIME          => $phpini->{'max_input_time'} // 60,
+            MEMORY_LIMIT            => $phpini->{'memory_limit'} // 128,
+            ERROR_REPORTING         => $phpini->{'error_reporting'} || 'E_ALL & ~E_DEPRECATED & ~E_STRICT',
+            DISPLAY_ERRORS          => $phpini->{'display_errors'} || 'off',
+            POST_MAX_SIZE           => $phpini->{'post_max_size'} // 8,
+            UPLOAD_MAX_FILESIZE     => $phpini->{'upload_max_filesize'} // 2,
+            ALLOW_URL_FOPEN         => $phpini->{'allow_url_fopen'} || 'off',
+            PHP_FPM_LISTEN_PORT     => ($phpini->{'id'} // 0)-1,
             EXTERNAL_MAIL           => $self->{'external_mail'},
             MAIL_ENABLED            => ($self->{'external_mail'} eq 'off'
                 && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
@@ -290,9 +283,10 @@ sub _sharedMountPoint
 {
     my ($self) = @_;
 
+    local $self->{'_dbh'}->{'RaiseError'} = 1;
+
     my $regexp = "^$self->{'subdomain_alias_mount'}(/.*|\$)";
-    my $db = iMSCP::Database->factory( )->getRawDb( );
-    my ($nbSharedMountPoints) = $db->selectrow_array(
+    my ($nbSharedMountPoints) = $self->{'_dbh'}->selectrow_array(
         "
             SELECT COUNT(mount_point) AS nb_mount_points FROM (
                 SELECT alias_mount AS mount_point FROM domain_aliasses
@@ -307,12 +301,10 @@ sub _sharedMountPoint
                 AND subdomain_alias_mount RLIKE ?
             ) AS tmp
         ",
-        undef,
-        $self->{'domain_id'}, $regexp, $self->{'domain_id'}, $regexp, $self->{'subdomain_alias_id'},
+        undef, $self->{'domain_id'}, $regexp, $self->{'domain_id'}, $regexp, $self->{'subdomain_alias_id'},
         $self->{'domain_id'}, $regexp
     );
 
-    die( $db->errstr ) if $db->err;
     ($nbSharedMountPoints || $self->{'subdomain_alias_mount'} eq '/');
 }
 

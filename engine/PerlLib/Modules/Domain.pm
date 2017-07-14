@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by internet Multi Server Control Panel
+# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -28,13 +28,11 @@ use warnings;
 use File::Basename;
 use File::Spec;
 use File::Temp;
-use iMSCP::Crypt;
-use iMSCP::Database;
-use iMSCP::Debug;
+use iMSCP::Crypt qw/ randomStr /;
+use iMSCP::Debug qw/ debug error getLastError warning /;
 use iMSCP::Dir;
 use iMSCP::Ext2Attributes qw/ clearImmutable /;
-use iMSCP::Execute;
-use iMSCP::OpenSSL;
+use iMSCP::Execute qw/ execute /;
 use Net::LibIDN qw/ idn_to_unicode /;
 use Servers::httpd;
 use Servers::sqld;
@@ -81,37 +79,34 @@ sub process
     my @sql;
     if ($self->{'domain_status'} =~ /^to(?:add|change|enable)$/) {
         $rs = $self->add( );
-        @sql = (
-            'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $domainId
-        );
+        @sql = ('UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef,
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $domainId);
     } elsif ($self->{'domain_status'} eq 'todelete') {
         $rs = $self->delete( );
-        if ($rs) {
-            @sql = (
-                'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
-                getLastError( 'error' ) || 'Unknown error', $domainId
-            );
-        } else {
-            @sql = ('DELETE FROM domain WHERE domain_id = ?', $domainId);
-        }
+        @sql = $rs
+            ? ('UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef,
+                getLastError( 'error' ) || 'Unknown error', $domainId)
+            : ('DELETE FROM domain WHERE domain_id = ?', undef, $domainId);
     } elsif ($self->{'domain_status'} eq 'todisable') {
         $rs = $self->disable( );
-        @sql = (
-            'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'), $domainId
-        );
+        @sql = ('UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef,
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'), $domainId);
     } elsif ($self->{'domain_status'} eq 'torestore') {
         $rs = $self->restore( );
-        @sql = (
-            'UPDATE domain SET domain_status = ? WHERE domain_id = ?',
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $domainId
-        );
+        @sql = ('UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef,
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $domainId);
+    } else {
+        warning( sprintf( 'Unknown action (%s) for domain alias (ID %d)', $self->{'domain_status'}, $domainId ) );
+        return 0;
     }
 
-    my $rdata = iMSCP::Database->factory( )->doQuery( 'dummy', @sql );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
+    local $@;
+    eval {
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        $self->{'_dbh'}->do( @sql );
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 
@@ -130,14 +125,23 @@ sub disable
 {
     my ($self) = @_;
 
-    # Sets the status of any subdomain that belongs to this domain to 'todisable'.
-    my $rs = iMSCP::Database->factory( )->doQuery(
-        'u',
-        "UPDATE subdomain SET subdomain_status = 'todisable' WHERE domain_id = ? AND subdomain_status <> 'todelete'",
-        $self->{'domain_id'}
-    );
-    unless (ref $rs eq 'HASH') {
-        error( $rs );
+    local $@;
+    eval {
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+
+        # Sets the status of any subdomain that belongs to this domain to 'todisable'.
+        $self->{'_dbh'}->do(
+            "
+                UPDATE subdomain
+                SET subdomain_status = 'todisable'
+                WHERE domain_id = ?
+                AND subdomain_status <> 'todelete'
+            ",
+            undef, $self->{'domain_id'}
+        );
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 
@@ -156,19 +160,18 @@ sub restore
 {
     my ($self) = @_;
 
-    my $db = iMSCP::Database->factory( );
     my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
     my $bkpDir = "$homeDir/backups";
 
     local $@;
     eval {
         # Restore know databases only
-        my $qrs = $db->doQuery(
-            'sqld_name', 'SELECT sqld_name FROM sql_database WHERE domain_id = ?', $self->{'domain_id'}
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        my @rows = $self->{'_dbh'}->selectall_array(
+            'SELECT sqld_name FROM sql_database WHERE domain_id = ?', undef, $self->{'domain_id'}
         );
-        ref $qrs eq 'HASH' or die( $qrs );
 
-        for my $dbName(keys %{$qrs}) {
+        for my $dbName(@rows) {
             # Encode slashes as SOLIDUS unicode character
             # Encode dots as Full stop unicode character
             my %rpl = ( '/', '@002f', '.', '@002e' );
@@ -220,37 +223,29 @@ sub restore
             debug( $stdout ) if $stdout;
             $rs == 0 or die( $stderr || 'Unknown error' );
 
-            my $dbi = $db->startTransaction( );
-
             eval {
-                $dbi->do(
-                    'UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?',
-                    undef,
-                    'torestore',
+                local $self->{'_dbh'}->{'AutoCommit'} = 1;
+
+                $self->{'_dbh'}->do(
+                    'UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', undef, 'torestore',
                     $self->{'domain_id'}
                 );
-                $dbi->do(
-                    'UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?',
-                    undef,
-                    'torestore',
+                $self->{'_dbh'}->do(
+                    'UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', undef, 'torestore',
                     $self->{'domain_id'}
                 );
-                $dbi->do(
+                $self->{'_dbh'}->do(
                     "
                         UPDATE subdomain_alias
                         SET subdomain_alias_status = 'torestore'
                         WHERE alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
                     ",
-                    undef,
-                    $self->{'domain_id'}
+                    undef, $self->{'domain_id'}
                 );
-
-                $dbi->commit( );
+                $self->{'_dbh'}->commit( );
             };
 
-            $dbi->rollback( ) if $@;
-            $db->endTransaction( );
-
+            $self->{'_dbh'}->rollback( ) if $@;
             last;
         }
     };
@@ -281,39 +276,41 @@ sub _loadData
 {
     my ($self, $domainId) = @_;
 
-    my $rdata = iMSCP::Database->factory( )->doQuery(
-        'domain_id',
-        "
-            SELECT t1.domain_id, t1.domain_admin_id, t1.domain_mailacc_limit, t1.domain_name, t1.domain_status,
-                t1.domain_php, t1.domain_cgi, t1.external_mail, t1.web_folder_protection, t1.document_root,
-                t1.url_forward, t1.type_forward, t1.host_forward,
-                IFNULL(t2.ip_number, ?) AS ip_number,
-                t3.private_key, t3.certificate, t3.ca_bundle, t3.allow_hsts, t3.hsts_max_age, t3.hsts_include_subdomains,
-                t4.mail_on_domain
-            FROM domain AS t1
-            LEFT JOIN server_ips AS t2 ON (t2.ip_id = t1.domain_ip_id)
-            LEFT JOIN ssl_certs AS t3 ON(t3.domain_id = t1.domain_id AND t3.domain_type = 'dmn' AND t3.status = 'ok')
-            LEFT JOIN (
-                SELECT domain_id, COUNT(domain_id) AS mail_on_domain
-                FROM mail_users
-                WHERE mail_type LIKE 'normal\\_%'
-                GROUP BY domain_id
-            ) AS t4 ON(t4.domain_id = t1.domain_id)
-            WHERE t1.domain_id = ?
-        ",
-        '0.0.0.0',
-        $domainId
-    );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
-        return 1;
-    }
-    unless ($rdata->{$domainId}) {
-        error( sprintf( 'Domain with ID %s has not been found in database', $domainId ) );
+    local $@;
+    eval {
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        my $row = $self->{'_dbh'}->selectrow_hashref(
+            "
+                SELECT t1.domain_id, t1.domain_admin_id, t1.domain_mailacc_limit, t1.domain_name, t1.domain_status,
+                    t1.domain_php, t1.domain_cgi, t1.external_mail, t1.web_folder_protection, t1.document_root,
+                    t1.url_forward, t1.type_forward, t1.host_forward,
+                    IFNULL(t2.ip_number, '0.0.0.0') AS ip_number,
+                    t3.private_key, t3.certificate, t3.ca_bundle, t3.allow_hsts, t3.hsts_max_age,
+                    t3.hsts_include_subdomains,
+                    t4.mail_on_domain
+                FROM domain AS t1
+                LEFT JOIN server_ips AS t2 ON (t2.ip_id = t1.domain_ip_id)
+                LEFT JOIN ssl_certs AS t3 ON(
+                    t3.domain_id = t1.domain_id AND t3.domain_type = 'dmn' AND t3.status = 'ok'
+                )
+                LEFT JOIN (
+                    SELECT domain_id, COUNT(domain_id) AS mail_on_domain
+                    FROM mail_users
+                    WHERE mail_type LIKE 'normal\\_%'
+                    GROUP BY domain_id
+                ) AS t4 ON(t4.domain_id = t1.domain_id)
+                WHERE t1.domain_id = ?
+            ",
+            undef, $domainId
+        );
+        $row or die( sprintf( 'Data not found for domain (ID %d)', $domainId ) );
+        %{$self} = (%{$self}, %{$row});
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 
-    %{$self} = (%{$self}, %{$rdata->{$domainId}});
     0;
 }
 
@@ -336,10 +333,11 @@ sub _getData
             .($main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'});
         my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
         my $documentRoot = File::Spec->canonpath( "$homeDir/$self->{'document_root'}" );
-        my $phpini = iMSCP::Database->factory( )->doQuery(
-            'domain_id', "SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = 'dmn'", $self->{'domain_id'}
-        );
-        ref $phpini eq 'HASH' or die( $phpini );
+
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        my $phpini = $self->{'_dbh'}->selectrow_hashref(
+            "SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = 'dmn'", undef, $self->{'domain_id'}
+        ) || { };
 
         my $haveCert = (defined $self->{'certificate'}
             && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'domain_name'}.pem"
@@ -384,16 +382,15 @@ sub _getData
             FORWARD_PRESERVE_HOST   => $self->{'host_forward'} || 'Off',
             DISABLE_FUNCTIONS       => $phpini->{$self->{'domain_id'}}->{'disable_functions'}
                 // 'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
-            MAX_EXECUTION_TIME      => $phpini->{$self->{'domain_id'}}->{'max_execution_time'} // 30,
-            MAX_INPUT_TIME          => $phpini->{$self->{'domain_id'}}->{'max_input_time'} // 60,
-            MEMORY_LIMIT            => $phpini->{$self->{'domain_id'}}->{'memory_limit'} // 128,
-            ERROR_REPORTING         => $phpini->{$self->{'domain_id'}}->{'error_reporting'}
-                || 'E_ALL & ~E_DEPRECATED & ~E_STRICT',
-            DISPLAY_ERRORS          => $phpini->{$self->{'domain_id'}}->{'display_errors'} || 'off',
-            POST_MAX_SIZE           => $phpini->{$self->{'domain_id'}}->{'post_max_size'} // 8,
-            UPLOAD_MAX_FILESIZE     => $phpini->{$self->{'domain_id'}}->{'upload_max_filesize'} // 2,
-            ALLOW_URL_FOPEN         => $phpini->{$self->{'domain_id'}}->{'allow_url_fopen'} || 'off',
-            PHP_FPM_LISTEN_PORT     => ($phpini->{$self->{'domain_id'}}->{'id'} // 0)-1,
+            MAX_EXECUTION_TIME      => $phpini->{'max_execution_time'} // 30,
+            MAX_INPUT_TIME          => $phpini->{'max_input_time'} // 60,
+            MEMORY_LIMIT            => $phpini->{'memory_limit'} // 128,
+            ERROR_REPORTING         => $phpini->{'error_reporting'} || 'E_ALL & ~E_DEPRECATED & ~E_STRICT',
+            DISPLAY_ERRORS          => $phpini->{'display_errors'} || 'off',
+            POST_MAX_SIZE           => $phpini->{'post_max_size'} // 8,
+            UPLOAD_MAX_FILESIZE     => $phpini->{'upload_max_filesize'} // 2,
+            ALLOW_URL_FOPEN         => $phpini->{'allow_url_fopen'} || 'off',
+            PHP_FPM_LISTEN_PORT     => ($phpini->{'id'} // 0)-1,
             EXTERNAL_MAIL           => $self->{'external_mail'},
             MAIL_ENABLED            => ($self->{'external_mail'} eq 'off'
                 && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
@@ -416,7 +413,7 @@ sub _getData
 
 sub _restoreDatabase
 {
-    my (undef, $dbName, $dbDumpFilePath) = @_;
+    my ($self, $dbName, $dbDumpFilePath) = @_;
 
     my (undef, undef, $archFormat) = fileparse( $dbDumpFilePath, qr/\.(?:bz2|gz|lzma|xz)/ );
 
@@ -444,10 +441,8 @@ sub _restoreDatabase
 
     Servers::sqld->factory( )->createUser( $dbUser, $dbUserHost, $dbUserPwd );
 
-    my $db = iMSCP::Database->factory( );
-    (my $quotedDbName = $db->quoteIdentifier( $dbName )) =~ s/([%_])/\\$1/g;
-    my $qrs = $db->doQuery( 'g', "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?\@?", $dbUser, $dbUserHost );
-    ref $qrs eq 'HASH' or die( $qrs );
+    (my $quotedDbName = $self->{'_dbh'}->quote_identifier( $dbName )) =~ s/([%_])/\\$1/g;
+    $self->{'_dbh'}->do( "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?\@?", undef, $dbUser, $dbUserHost );
 
     my $sqlExtraFile = File::Temp->new( UNLINK => 1, SUFFIX => '.cnf' );
     print $sqlExtraFile <<"EOF";

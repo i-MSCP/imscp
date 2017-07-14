@@ -207,9 +207,9 @@ sub createUser
     defined $password or die( '$password parameter is not defined' );
 
     eval {
-        my $dbi = iMSCP::Database->factory( )->getRawDb( );
-        local $dbi->{'RaiseError'} = 1;
-        $dbi->do(
+        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        local $dbh->{'RaiseError'} = 1;
+        $dbh->do(
             'CREATE USER ?@? IDENTIFIED BY ?'
                 .(version->parse( $self->getVersion( ) ) >= version->parse( '5.7.6' ) ? ' PASSWORD EXPIRE NEVER' : ''),
             undef, $user, $host, $password
@@ -238,12 +238,14 @@ sub dropUser
 
     return 0 if $user =~ /^(?:debian-sys-maint|mysql\.sys|root)$/; # Prevent deletion of system SQL users
 
-    my $dbh = iMSCP::Database->factory( );
-    my $dbi = $dbh->getRawDb( );
+    local $@;
     eval {
-        local $dbi->{'RaiseError'} = 1;
-        return unless %{$dbh->doQuery( 1, 'SELECT 1 FROM mysql.user WHERE user = ? AND host = ?', $user, $host )};
-        $dbi->do('DROP USER ?@?', undef, $user, $host );
+        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        local $dbh->{'RaiseError'} = 1;
+        return unless $dbh->selectrow_hashref(
+            'SELECT 1 FROM mysql.user WHERE user = ? AND host = ?', undef, $user, $host
+        );
+        $dbh->do('DROP USER ?@?', undef, $user, $host );
     };
     !$@ or die( sprintf( "Couldn't drop the %s\@%s SQL user: %s", $user, $host, $@ ) );
     0;

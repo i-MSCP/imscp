@@ -69,7 +69,7 @@ $self = {
 
 sub setDebug
 {
-    if (shift) {
+    if ($_[0]) {
         $self->{'debug'} = 1;
         return;
     }
@@ -82,18 +82,18 @@ sub setDebug
     undef;
 }
 
-=item setVerbose()
+=item setVerbose( $verbose )
 
  Enable or disable verbose mode
 
- Param bool $debug Enable debug mode if true, disable otherwise
+ Param bool $verbose Enable debug mode if true, disable otherwise
  Return undef
 
 =cut
 
 sub setVerbose
 {
-    $self->{'verbose'} = shift // 0;
+    $self->{'verbose'} = $_[0] // 0;
     undef;
 }
 
@@ -121,7 +121,7 @@ sub silent
 
 sub newDebug
 {
-    my $logfileId = shift;
+    my ($logfileId) = @_;
 
     fatal( "A log file unique identifier is expected" ) unless $logfileId;
 
@@ -185,8 +185,8 @@ sub endDebug
 
 sub debug
 {
-    my $message = shift;
-    my $caller = shift || (caller( 1 ))[3] || 'main';
+    my ($message, $caller) = @_;
+    $caller //= (caller( 1 ))[3] || 'main';
 
     $self->{'logger'}()->store( message => "$caller: $message", tag => 'debug' ) if $self->{'debug'};
     print STDOUT output( "$caller: $message", 'debug' ) if $self->{'verbose'};
@@ -205,8 +205,8 @@ sub debug
 
 sub warning
 {
-    my $message = shift;
-    my $caller = shift || (caller( 1 ))[3] || 'main';
+    my ($message, $caller) = @_;
+    $caller //= (caller( 1 ))[3] || 'main';
 
     $self->{'logger'}()->store( message => "$caller: $message", tag => 'warn' );
     undef;
@@ -224,8 +224,8 @@ sub warning
 
 sub error
 {
-    my $message = shift;
-    my $caller = shift || (caller( 1 ))[3] || 'main';
+    my ($message, $caller) = @_;
+    $caller //= (caller( 1 ))[3] || 'main';
 
     $self->{'logger'}()->store( message => "$caller: $message", tag => 'error' );
     undef;
@@ -243,8 +243,8 @@ sub error
 
 sub fatal
 {
-    my $message = shift;
-    my $caller = shift || (caller( 1 ))[3] || 'main';
+    my ($message, $caller) = @_;
+    $caller //= (caller( 1 ))[3] || 'main';
 
     $self->{'logger'}()->store( message => "$caller: $message", tag => 'fatal' );
     exit 255;
@@ -324,7 +324,7 @@ sub output
     $output;
 }
 
-=item debugRegisterCallBack($callback)
+=item debugRegisterCallBack( $callback )
 
  Register the given debug callback
 
@@ -335,7 +335,7 @@ sub output
 
 sub debugRegisterCallBack
 {
-    my $callback = shift;
+    my ($callback) = @_;
 
     push @{$self->{'debug_callbacks'}}, $callback;
     0;
@@ -388,7 +388,7 @@ sub _writeLogfile
 
 sub _getMessages
 {
-    my $logger = shift;
+    my ($logger) = @_;
 
     my $bf = '';
     for($logger->flush()) {
@@ -407,7 +407,7 @@ END {
     my $exitCode = $?;
 
     &{$_} for @{$self->{'debug_callbacks'}};
-    
+
     my $countLoggers = scalar @{$self->{'loggers'}};
     while($countLoggers > 0) {
         endDebug();

@@ -14,18 +14,17 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 package Modules::User;
 
 use strict;
 use warnings;
-use iMSCP::Database;
 use iMSCP::Debug qw/ error getLastError warning /;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
@@ -71,19 +70,16 @@ sub process
     my @sql;
     if ($self->{'admin_status'} =~ /^to(?:add|change(?:pwd)?)$/) {
         $rs = $self->add( );
-        @sql = (
-            'UPDATE admin SET admin_status = ? WHERE admin_id = ?',
-            undef, ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $userId
-        );
+        @sql = ('UPDATE admin SET admin_status = ? WHERE admin_id = ?', undef,
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $userId);
     } elsif ($self->{'admin_status'} eq 'todelete') {
         $rs = $self->delete( );
         @sql = $rs
-              ? (
-                'UPDATE admin SET admin_status = ? WHERE admin_id = ?',
-                undef, getLastError( 'error' ) || 'Unknown error', $userId
-            ) : ('DELETE FROM admin WHERE admin_id = ?', undef, $userId);
+            ? ('UPDATE admin SET admin_status = ? WHERE admin_id = ?', undef,
+                getLastError( 'error' ) || 'Unknown error', $userId)
+            : ('DELETE FROM admin WHERE admin_id = ?', undef, $userId);
     } else {
-        warning( sprintf( 'Unknown action: %s', $self->{'admin_status'} ) );
+        warning( sprintf( 'Unknown action (%s) for user (ID %d)', $self->{'admin_status'}, $userId ) );
         return 0;
     }
 
@@ -97,7 +93,7 @@ sub process
         return 1;
     }
 
-    0;
+    $rs;
 }
 
 =item add( )
@@ -210,10 +206,9 @@ sub _loadData
                 FROM admin
                 WHERE admin_id = ?
             ',
-            undef,
-            $userId
+            undef, $userId
         );
-        %{$row} or die( sprintf( 'User record with ID %d has not been found in database', $userId ) );
+        $row or die( sprintf( 'User (ID %d) has not been found', $userId ) );
         %{$self} = (%{$self}, %{$row});
     };
     if ($@) {
@@ -255,29 +250,6 @@ sub _getData
     } unless %{$self->{'_data'}};
 
     $self->{'_data'};
-}
-
-=back
-
-=head1 PRIVATE METHODS
-
-=over 4
-
-=item _init( )
-
- Initialize instance
-
- Return Modules::User
-
-=cut
-
-sub _init
-{
-    my ($self) = @_;
-
-    $self->SUPER::_init( );
-    $self->{'_dbh'} = iMSCP::Database->factory( )->getRawDb( );
-    $self;
 }
 
 =back

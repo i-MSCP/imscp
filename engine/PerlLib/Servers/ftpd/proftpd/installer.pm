@@ -310,7 +310,6 @@ sub _setupDatabase
 {
     my ($self) = @_;
 
-    my $sqlServer = Servers::sqld->factory( );
     my $dbName = main::setupGetQuestion( 'DATABASE_NAME' );
     my $dbUser = main::setupGetQuestion( 'FTPD_SQL_USER' );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
@@ -321,50 +320,45 @@ sub _setupDatabase
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdSetupDb', $dbUser, $dbPass );
     return $rs if $rs;
 
-    # Drop old SQL user if required
-    for my $sqlUser ($dbOldUser, $dbUser) {
-        next unless $sqlUser;
+    local $@;
+    eval {
+        my $sqlServer = Servers::sqld->factory( );
 
-        for my $host($dbUserHost, $oldDbUserHost) {
-            next if !$host
-                || (exists $main::sqlUsers{$sqlUser.'@'.$host} && !defined $main::sqlUsers{$sqlUser.'@'.$host});
+        # Drop old SQL user if required
+        for my $sqlUser ($dbOldUser, $dbUser) {
+            next unless $sqlUser;
 
-            $sqlServer->dropUser( $sqlUser, $host );
+            for my $host($dbUserHost, $oldDbUserHost) {
+                next if !$host
+                    || exists $main::sqlUsers{$sqlUser.'@'.$host} && !defined $main::sqlUsers{$sqlUser.'@'.$host};
+                $sqlServer->dropUser( $sqlUser, $host );
+            }
         }
-    }
 
-    my $db = iMSCP::Database->factory( );
-
-    # Create SQL user if required
-    if (defined $main::sqlUsers{$dbUser.'@'.$dbUserHost}) {
-        debug( sprintf( 'Creating %s@%s SQL user', $dbUser, $dbUserHost ) );
-        $sqlServer->createUser( $dbUser, $dbUserHost, $dbPass );
-        $main::sqlUsers{$dbUser.'@'.$dbUserHost} = undef;
-    }
-
-    # Give required privileges to this SQL user
-
-    # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
-    my $quotedDbName = $db->quoteIdentifier( $dbName );
-    for my $tableName('ftp_users', 'ftp_group') {
-        my $quotedTableName = $db->quoteIdentifier( $tableName );
-
-        $rs = $db->doQuery( 'g', "GRANT SELECT ON $quotedDbName.$quotedTableName TO ?\@?", $dbUser, $dbUserHost );
-        unless (ref $rs eq 'HASH') {
-            error( sprintf( "Couldn't add SQL privileges: %s", $rs ) );
-            return 1;
+        # Create SQL user if required
+        if (defined $main::sqlUsers{$dbUser.'@'.$dbUserHost}) {
+            debug( sprintf( 'Creating %s@%s SQL user', $dbUser, $dbUserHost ) );
+            $sqlServer->createUser( $dbUser, $dbUserHost, $dbPass );
+            $main::sqlUsers{$dbUser.'@'.$dbUserHost} = undef;
         }
-    }
 
-    for my $tableName('quotalimits', 'quotatallies') {
-        my $quotedTableName = $db->quoteIdentifier( $tableName );
-        $rs = $db->doQuery(
-            'g', "GRANT SELECT, INSERT, UPDATE ON $quotedDbName.$quotedTableName TO ?\@?", $dbUser, $dbUserHost
-        );
-        unless (ref $rs eq 'HASH') {
-            error( sprintf( "Couldn't add SQL privileges: %s", $rs ) );
-            return 1;
+        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        local $dbh->{'RaiseError'} = 1;
+
+        # Give required privileges to this SQL user
+        # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
+        my $quotedDbName = $dbh->quote_identifier( $dbName );
+        for ('ftp_users', 'ftp_group') {
+            $dbh->do( "GRANT SELECT ON $quotedDbName.$_ TO ?\@?", undef, $dbUser, $dbUserHost );
         }
+
+        for ('quotalimits', 'quotatallies') {
+            $dbh->do( "GRANT SELECT, INSERT, UPDATE ON $quotedDbName.$_ TO ?\@?", undef, $dbUser, $dbUserHost );
+        }
+    };
+    if ($@) {
+        error( $@ );
+        return 1;
     }
 
     $self->{'config'}->{'DATABASE_USER'} = $dbUser;
@@ -401,7 +395,7 @@ sub _buildConfigFile
         FTPD_PASSIVE_PORT_RANGE => $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'},
         CONF_DIR                => $main::imscpConfig{'CONF_DIR'},
         CERTIFICATE             => 'imscp_services',
-        SERVER_IDENT_MESSAGE    => '"['.main::setupGetQuestion( 'SERVER_HOSTNAME' ).'] i-MSCP FTP server."', 
+        SERVER_IDENT_MESSAGE    => '"['.main::setupGetQuestion( 'SERVER_HOSTNAME' ).'] i-MSCP FTP server."',
         TLSOPTIONS              => 'NoCertRequest NoSessionReuseRequired',
         MAX_INSTANCES           => $self->{'config'}->{'MAX_INSTANCES'},
         MAX_CLIENT_PER_HOST     => $self->{'config'}->{'MAX_CLIENT_PER_HOST'}
@@ -508,7 +502,7 @@ sub _oldEngineCompatibility
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdOldEngineCompatibility' );
     return $rs if $rs;
 
-    if(-f "$self->{'cfgDir'}/proftpd.old.data") {
+    if (-f "$self->{'cfgDir'}/proftpd.old.data") {
         $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.old.data" )->delFile( );
         return $rs if $rs;
     }

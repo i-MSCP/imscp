@@ -67,15 +67,21 @@ sub process
 {
     _userDialog( );
 
-    my $database = iMSCP::Database->factory( );
-    my $rdata = $database->doQuery( '1', "SELECT 1 FROM plugin WHERE plugin_status <> 'uninstalled'" );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
+    local $@;
+    my $row = eval {
+        my $dbh = iMSCP::Database->factory( )->getRawDb;
+        local $dbh->{'RaiseError'} = 1;
+        $dbh->selectrow_hasref( "SELECT 1 FROM plugin WHERE plugin_status <> 'uninstalled'", 1 );
+    };
+    if ($@) {
+        error( $@ );
         return 1;
-    } elsif (%{$rdata}) {
+    } elsif ($row) {
         error( 'You must first uninstall all i-MSCP plugins through the control panel interface.' );
         return 1;
     }
+
+    undef $row;
 
     my @steps = (
         [ \&_removeCustomers, 'Removing i-MSCP customers' ],
@@ -134,48 +140,54 @@ EOF
 
 sub _removeCustomers
 {
-    my $database = iMSCP::Database->factory( );
-
-    my $tables = {
-        admin           => [ 'admin_status', "WHERE `admin_type` = 'user'" ],
-        domain          => 'domain_status',
-        domain_aliasses => 'alias_status',
-        subdomain       => 'subdomain_status',
-        subdomain_alias => 'subdomain_alias_status',
-        mail_users      => 'status',
-        htaccess        => 'status',
-        htaccess_groups => 'status',
-        htaccess_users  => 'status',
-        ssl_certs       => 'status'
-    };
-    my $aditionalCondition;
-
-    while (my ($table, $field) = each %{$tables}) {
-        if (ref $field eq 'ARRAY') {
-            $aditionalCondition = $field->[1];
-            $field = $field->[0];
-        } else {
-            $aditionalCondition = ''
-        }
-
-        my $rdata = $database->doQuery( 'u', "UPDATE `$table` SET `$field` = 'todelete' $aditionalCondition" );
-        unless (ref $rdata eq 'HASH') {
-            error($rdata);
-            return 1;
-        }
-    }
-
-    my $rs = 0;
-    startDetail( );
     local $@;
-    eval { iMSCP::DbTasksProcessor->getInstance( mode => 'uninstall' )->processDbTasks( ); };
+    eval {
+        {
+            my $tables = {
+                admin           => [ 'admin_status', "WHERE admin_type = 'user'" ],
+                domain          => 'domain_status',
+                domain_aliasses => 'alias_status',
+                subdomain       => 'subdomain_status',
+                subdomain_alias => 'subdomain_alias_status',
+                mail_users      => 'status',
+                htaccess        => 'status',
+                htaccess_groups => 'status',
+                htaccess_users  => 'status',
+                ssl_certs       => 'status'
+            };
+            my $aditionalCondition;
+
+            my $db = iMSCP::Database->factory( );
+            my $oldDatabase = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'} );
+
+            my $dbh = $db->getRawDb( );
+            local $dbh->{'RaiseError'};
+
+            while (my ($table, $field) = each %{$tables}) {
+                if (ref $field eq 'ARRAY') {
+                    $aditionalCondition = $field->[1];
+                    $field = $field->[0];
+                } else {
+                    $aditionalCondition = ''
+                }
+
+                ($table, $field) = ($dbh->quote_identifier( $table ), $dbh->quote_identifier( $field ));
+                $dbh->do( "UPDATE $table SET $field = 'todelete' $aditionalCondition" );
+            }
+
+            $db->useDatabase( $oldDatabase ) if $oldDatabase;
+        }
+
+        startDetail( );
+        iMSCP::DbTasksProcessor->getInstance( mode => 'uninstall' )->processDbTasks( );
+        endDetail( );
+    };
     if ($@) {
         error( $@ );
-        $rs = 1;
+        return 1;
     }
-    endDetail( );
 
-    $rs;
+    0;
 }
 
 sub _uninstallPackages
@@ -266,38 +278,29 @@ sub _removeSysctlFile
 
 sub _removeSqlData
 {
-    my $sqlServer = Servers::sqld->factory( );
-    my $database = iMSCP::Database->factory( );
+    local $@;
+    eval {
+        my $sqlServer = Servers::sqld->factory( );
+        my $dbh = iMSCP::Database->factory( )->getRawDb( );
 
-    # Remove customer's sql users
+        # Remove customer's sql users
+        my $rows = $dbh->selectall_hashref( 'SELECT DISTINCT sqlu_name, sqlu_host FROM sql_user', 'sqlu_name' );
+        $sqlServer->dropUser( $rows->{$_}->{'sqlu_name'}, $rows->{$_}->{'sqlu_host'} ) for keys %{$rows};
 
-    my $rdata = $database->doQuery( 'sqlu_name', 'SELECT DISTINCT sqlu_name, sqlu_host FROM sql_user' );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
+        # Remove customer's sql databases
+        $rows = $database->selectall_hashref( 'SELECT sqld_name FROM sql_database', 'sqld_name' );
+        $dbh->do( 'DROP DATABASE IF EXISTS '.$dbh->quote_identifier( $rows->{$_}->{'sqld_name'}) ) for keys %{$rows};
+
+        # Remove i-MSCP sql database
+        $database->do( 'DROP DATABASE IF EXISTS '.$dbh->quote_identifier( $main::imscpConfig{'DATABASE_NAME'} ) );
+
+        # Drop i-MSCP master SQL user
+        $sqlServer->dropUser( $main::imscpConfig{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'} );
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
-
-    for (keys %{$rdata}) {
-        $sqlServer->dropUser( $rdata->{$_}->{'sqlu_name'}, $rdata->{$_}->{'sqlu_host'} );
-    }
-
-    # Remove customer's sql databases
-    $rdata = $database->doQuery( 'sqld_name', 'SELECT sqld_name FROM sql_database' );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
-        return 1;
-    }
-    $database->doQuery( 'd', "DROP DATABASE IF EXISTS `$rdata->{$_}->{'sqld_name'}`" ) for keys %{$rdata};
-
-    # Remove i-MSCP sql database
-    $database->doQuery( 'delete', "DROP DATABASE IF EXISTS `$main::imscpConfig{'DATABASE_NAME'}`" );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
-        return 1;
-    }
-
-    # Drop i-MSCP master SQL user
-    $sqlServer->dropUser( $main::imscpConfig{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'} );
 
     0;
 }

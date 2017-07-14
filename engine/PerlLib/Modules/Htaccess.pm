@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by internet Multi Server Control Panel
+# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,10 +25,9 @@ package Modules::Htaccess;
 
 use strict;
 use warnings;
-use Encode qw / encode_utf8 /;
+use Encode qw/ encode_utf8 /;
 use File::Spec;
-use iMSCP::Debug;
-use iMSCP::Database;
+use iMSCP::Debug qw/ error getLastError warning /;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -71,27 +70,30 @@ sub process
     my @sql;
     if ($self->{'status'} =~ /^to(?:add|change|enable)$/) {
         $rs = $self->add( );
-        @sql = (
-            'UPDATE htaccess SET status = ? WHERE id = ?',
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'),
-            $htaccessId
-        );
+        @sql = ('UPDATE htaccess SET status = ? WHERE id = ?', undef,
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $htaccessId);
     } elsif ($self->{'status'} eq 'todisable') {
-        @sql = ('UPDATE htaccess SET status = ? WHERE id = ?', 'disabled', $htaccessId);
+        $rs = $self->disable( );
+        @sql = ('UPDATE htaccess SET status = ? WHERE id = ?', undef,
+            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'), $htaccessId);
     } elsif ($self->{'status'} eq 'todelete') {
         $rs = $self->delete( );
-        if ($rs) {
-            @sql = (
-                'UPDATE htaccess SET status = ? WHERE id = ?', getLastError( 'error' ) || 'Unknown error', $htaccessId
-            );
-        } else {
-            @sql = ('DELETE FROM htaccess WHERE id = ?', $htaccessId);
-        }
+        @sql = $rs
+            ? ('UPDATE htaccess SET status = ? WHERE id = ?', undef,
+                (getLastError( 'error' ) || 'Unknown error'), $htaccessId)
+            : ('DELETE FROM htaccess WHERE id = ?', undef, $htaccessId);
+    } else {
+        warning( sprintf( 'Unknown action (%s) for htaccess (ID %d)', $self->{'status'}, $htaccessId ) );
+        return 0;
     }
 
-    my $rdata = iMSCP::Database->factory( )->doQuery( 'dummy', @sql );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
+    local $@;
+    eval {
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        $self->{'_dbh'}->do( @sql );
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 
@@ -117,61 +119,46 @@ sub _loadData
 {
     my ($self, $htaccessId) = @_;
 
-    my $db = iMSCP::Database->factory( );
-    $db->doQuery( 'dummy', 'SET SESSION group_concat_max_len = 8192' );
-
-    my $rdata = $db->doQuery(
-        'id',
-        "
-            SELECT t3.id, t3.auth_type, t3.auth_name, t3.path, t3.status, t3.users, t3.groups, t4.domain_name,
-                t4.domain_admin_id
-            FROM (SELECT * FROM htaccess, (SELECT IFNULL(
-                (
-                    SELECT group_concat(uname SEPARATOR ' ') FROM htaccess_users
-                    WHERE id regexp (
-                        CONCAT('^(', (SELECT REPLACE((SELECT user_id FROM htaccess WHERE id = ?), ',', '|')), ')\$')
-                    )
-                    GROUP BY dmn_id
-                ), '') AS users) AS t1, (SELECT IFNULL(
+    local $@;
+    eval {
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        my $row = $self->{'_dbh'}->selectrow_hashref(
+            "
+                SELECT t3.id, t3.auth_type, t3.auth_name, t3.path, t3.status, t3.users, t3.groups,
+                    t4.domain_name, t4.domain_admin_id
+                FROM (SELECT * FROM htaccess, (SELECT IFNULL(
                     (
-                        SELECT group_concat(ugroup SEPARATOR ' ') FROM htaccess_groups
+                        SELECT group_concat(uname SEPARATOR ' ') FROM htaccess_users
                         WHERE id regexp (
-                            CONCAT('^(', (SELECT REPLACE((SELECT group_id FROM htaccess WHERE id = ?), ',', '|')), ')\$')
+                            CONCAT('^(', (SELECT REPLACE((SELECT user_id FROM htaccess WHERE id = ?), ',', '|')), ')\$')
                         )
                         GROUP BY dmn_id
-                    ), '') AS groups) AS t2
-                ) AS t3
-            INNER JOIN domain AS t4 ON (t3.dmn_id = t4.domain_id)
-            WHERE t3.id = ?
-        ",
-        $htaccessId, $htaccessId, $htaccessId
-    );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
-        return 1;
-    }
-    unless (exists $rdata->{$htaccessId}) {
-        error( "Htaccess record with ID $htaccessId has not been found in database" );
-        return 1;
-    }
-    unless (exists $rdata->{$htaccessId}->{'domain_name'}) {
-        require Data::Dumper;
-        Data::Dumper->import( );
-        local $Data::Dumper::Terse = 1;
-        error( "Orphan entry: ".Dumper( $rdata->{$htaccessId} ) );
-
-        my @sql = (
-            'UPDATE htaccess SET status = ? WHERE id = ?', 'Orphan entry: '.Dumper( $rdata->{$htaccessId} ), $htaccessId
+                    ), '') AS users) AS t1, (SELECT IFNULL(
+                        (
+                            SELECT group_concat(ugroup SEPARATOR ' ') FROM htaccess_groups
+                            WHERE id regexp (
+                                CONCAT(
+                                    '^(',
+                                    (SELECT REPLACE((SELECT group_id FROM htaccess WHERE id = ?), ',', '|')),
+                                    ')\$'
+                                )
+                            )
+                            GROUP BY dmn_id
+                        ), '') AS groups) AS t2
+                    ) AS t3
+                JOIN domain AS t4 ON (t3.dmn_id = t4.domain_id)
+                WHERE t3.id = ?
+            ",
+            undef, $htaccessId, $htaccessId, $htaccessId
         );
-        my $qrs = $db->doQuery( 'u', @sql );
-        unless (ref $qrs eq 'HASH') {
-            error($qrs);
-        }
-
+        $row or die( sprintf( 'Data not found for htaccess (ID %d)', $htaccessId ) );
+        %{$self} = (%{$self}, %{$row});
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 
-    %{$self} = (%{$self}, %{$rdata->{$htaccessId}});
     0;
 }
 
@@ -190,7 +177,7 @@ sub _getData
 
     $self->{'_data'} = do {
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
-            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'});
         my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
         my $pathDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}/$self->{'path'}" );
 

@@ -14,12 +14,12 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 package Servers::sqld::remote::installer;
 
@@ -27,10 +27,11 @@ use strict;
 use warnings;
 use iMSCP::Crypt qw/ decryptRijndaelCBC /;
 use iMSCP::Database;
+use iMSCP::Debug qw/ error /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::File;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ process /;
 use iMSCP::Umask;
 use Servers::sqld::remote;
 use version;
@@ -122,9 +123,9 @@ sub _buildConf
         }
     }
 
-    (my $user = main::setupGetQuestion( 'DATABASE_USER' ) ) =~ s/"/\\"/g;
+    (my $user = main::setupGetQuestion( 'DATABASE_USER' )) =~ s/"/\\"/g;
     (my $pwd = decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv,
-        main::setupGetQuestion( 'DATABASE_PASSWORD' ) ) ) =~ s/"/\\"/g;
+        main::setupGetQuestion( 'DATABASE_PASSWORD' ) )) =~ s/"/\\"/g;
 
     $cfgTpl = process(
         {
@@ -164,33 +165,27 @@ sub _updateServerConfig
 
     my $db = iMSCP::Database->factory( );
 
-    # Set SQL mode (BC reasons)
-    my $qrs = $db->doQuery( 's', "SET GLOBAL sql_mode = 'NO_AUTO_CREATE_USER'" );
-    unless (ref $qrs eq 'HASH') {
-        error( $qrs );
-        return 1;
+    if (!($main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::mariadb'
+        && version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '10.0' ))
+        && !(version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.6.6' ))
+    ) {
+        return 0;
     }
 
-    # Disable unwanted plugins (bc reasons)
-    if (($main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::mariadb'
-        && version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '10.0' ))
-        || (version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.6.6' ))
-    ) {
-        for my $plugin(qw/ cracklib_password_check simple_password_check validate_password /) {
-            $qrs = $db->doQuery( 'name', "SELECT name FROM mysql.plugin WHERE name = '$plugin'" );
-            unless (ref $qrs eq 'HASH') {
-                error( $qrs );
-                return 1;
-            }
+    eval {
+        my $dbh = $db->getRawDb( );
+        local $dbh->{'RaiseError'};
 
-            if (%{$qrs}) {
-                $qrs = $db->doQuery( 'u', "UNINSTALL PLUGIN $plugin" );
-                unless (ref $qrs eq 'HASH') {
-                    error( $qrs );
-                    return 1;
-                }
-            }
+        # Disable unwanted plugins (bc reasons)
+        for (qw/ cracklib_password_check simple_password_check validate_password /) {
+            $dbh->do( "UNINSTALL PLUGIN $_" ) if $dbh->selectrow_hashref(
+                "SELECT name FROM mysql.plugin WHERE name = '$_'"
+            );
         }
+    };
+    if ($@) {
+        error( $@ );
+        return 1;
     }
 
     0;

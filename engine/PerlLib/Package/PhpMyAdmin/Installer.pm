@@ -303,7 +303,6 @@ sub _setupSqlUser
 {
     my ($self) = @_;
 
-    my $sqlServer = Servers::sqld->factory( );
     my $phpmyadminDbName = main::setupGetQuestion( 'DATABASE_NAME' ).'_pma';
     my $dbUser = main::setupGetQuestion( 'PHPMYADMIN_SQL_USER' );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
@@ -311,86 +310,61 @@ sub _setupSqlUser
     my $dbPass = main::setupGetQuestion( 'PHPMYADMIN_SQL_PASSWORD' );
     my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
-    # Drop old SQL user if required
-    for my $sqlUser ($dbOldUser, $dbUser) {
-        next unless $sqlUser;
+    local $@;
+    eval {
+        my $sqlServer = Servers::sqld->factory( );
 
-        for my $host($dbUserHost, $oldDbUserHost) {
-            next if !$host
-                || (exists $main::sqlUsers{$sqlUser.'@'.$host} && !defined $main::sqlUsers{$sqlUser.'@'.$host});
+        # Drop old SQL user if required
+        for my $sqlUser ($dbOldUser, $dbUser) {
+            next unless $sqlUser;
 
-            $sqlServer->dropUser( $sqlUser, $host );
-        }
-    }
-
-    # Create SQL user if required
-    if (defined $main::sqlUsers{$dbUser.'@'.$dbUserHost}) {
-        debug( sprintf( 'Creating %s@%s SQL user', $dbUser, $dbUserHost ) );
-        $sqlServer->createUser( $dbUser, $dbUserHost, $dbPass );
-        $main::sqlUsers{$dbUser.'@'.$dbUserHost} = undef;
-    }
-
-    my $db = iMSCP::Database->factory( );
-
-    # Give required privileges to this SQL user
-
-    my $rs = $db->doQuery( 'g', 'GRANT USAGE ON mysql.* TO ?@?', $dbUser, $dbUserHost );
-    unless (ref $rs eq 'HASH') {
-        error( sprintf( "Couldn't add SQL privileges: %s", $rs ) );
-        return 1;
-    }
-
-    $rs = $db->doQuery( 'g', 'GRANT SELECT ON mysql.db TO ?@?', $dbUser, $dbUserHost );
-    unless (ref $rs eq 'HASH') {
-        error( sprintf( "Couldn't add SQL privileges: %s", $rs ) );
-        return 1;
-    }
-
-    $rs = $db->doQuery(
-        'g',
-        '
-            GRANT SELECT (Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv,
-                Reload_priv, Shutdown_priv, Process_priv, File_priv, Grant_priv, References_priv, Index_priv,
-                Alter_priv, Show_db_priv, Super_priv, Create_tmp_table_priv, Lock_tables_priv, Execute_priv,
-                Repl_slave_priv, Repl_client_priv)
-            ON mysql.user
-            TO ?@?
-        ',
-        $dbUser, $dbUserHost
-    );
-    unless (ref $rs eq 'HASH') {
-        error( sprintf( "Couldn't add SQL privileges: %s", $rs ) );
-        return 1;
-    }
-
-    # Check for mysql.host table existence (as for MySQL >= 5.6.7, the mysql.host table is no longer provided)
-    $rs = $db->doQuery( '1', "SHOW tables FROM mysql LIKE 'host'" );
-    unless (ref $rs eq 'HASH') {
-        error( $rs );
-        return 1;
-    }
-
-    if (%{$rs}) {
-        $rs = $db->doQuery( 'g', 'GRANT SELECT ON mysql.user TO ?@?', $dbUser, $dbUserHost );
-        unless (ref $rs eq 'HASH') {
-            error( sprintf( "Couldn't add SQL privileges: %s", $rs ) );
-            return 1;
+            for my $host($dbUserHost, $oldDbUserHost) {
+                next if !$host
+                    || exists $main::sqlUsers{$sqlUser.'@'.$host} && !defined $main::sqlUsers{$sqlUser.'@'.$host};
+                $sqlServer->dropUser( $sqlUser, $host );
+            }
         }
 
-        $rs = $db->doQuery(
-            'g', 'GRANT SELECT (Host, Db, User, Table_name, Table_priv, Column_priv) ON mysql.tables_priv TO?@?',
-            $dbUser, $dbUserHost
+        # Create SQL user if required
+        if (defined $main::sqlUsers{$dbUser.'@'.$dbUserHost}) {
+            debug( sprintf( 'Creating %s@%s SQL user', $dbUser, $dbUserHost ) );
+            $sqlServer->createUser( $dbUser, $dbUserHost, $dbPass );
+            $main::sqlUsers{$dbUser.'@'.$dbUserHost} = undef;
+        }
+
+        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        $dbh->{'RaiseError'} = 1;
+
+        # Give required privileges to this SQL user
+
+        $dbh->do( 'GRANT USAGE ON mysql.* TO ?@?', undef, $dbUser, $dbUserHost );
+        $dbh->do( 'GRANT SELECT ON mysql.db TO ?@?', undef, $dbUser, $dbUserHost );
+        $dbh->do(
+            '
+                GRANT SELECT (Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv,
+                    Reload_priv, Shutdown_priv, Process_priv, File_priv, Grant_priv, References_priv, Index_priv,
+                    Alter_priv, Show_db_priv, Super_priv, Create_tmp_table_priv, Lock_tables_priv, Execute_priv,
+                    Repl_slave_priv, Repl_client_priv)
+                ON mysql.user
+                TO ?@?
+            ',
+            undef, $dbUser, $dbUserHost
         );
-        unless (ref $rs eq 'HASH') {
-            error( sprintf( "Couldn't add SQL privileges: %s", $rs ) );
-            return 1;
-        }
-    }
 
-    (my $quotedDbName = $db->quoteIdentifier( $phpmyadminDbName )) =~ s/([%_])/\\$1/g;
-    $rs = $db->doQuery( 'g', "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?\@?", $dbUser, $dbUserHost );
-    unless (ref $rs eq 'HASH') {
-        error( sprintf( "Couldn't add SQL privileges: %s", $rs ) );
+        # Check for mysql.host table existence (as for MySQL >= 5.6.7, the mysql.host table is no longer provided)
+        if ($dbh->selectrow_hashref( "SHOW tables FROM mysql LIKE 'host'")) {
+            $dbh->do( 'GRANT SELECT ON mysql.user TO ?@?', undef, $dbUser, $dbUserHost );
+            $dbh->do(
+                'GRANT SELECT (Host, Db, User, Table_name, Table_priv, Column_priv) ON mysql.tables_priv TO?@?',
+                undef, $dbUser, $dbUserHost
+            );
+        }
+
+        (my $quotedDbName = $dbh->quote_identifier( $phpmyadminDbName )) =~ s/([%_])/\\$1/g;
+        $dbh->do( "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?\@?", undef, $dbUser, $dbUserHost );
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 
@@ -412,15 +386,16 @@ sub _setupDatabase
     my $phpmyadminDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
     my $phpmyadminDbName = main::setupGetQuestion( 'DATABASE_NAME' ).'_pma';
 
-    my $db = iMSCP::Database->factory( );
-    my $quotedDbName = $db->quoteIdentifier( $phpmyadminDbName );
+    eval {
+        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        $dbh->{'RaiseError'} = 1;
 
-    # Drop previous database
-    # FIXME: Find a better way to handle upgrade
-
-    my $rs = $db->doQuery( 'd', sprintf( 'DROP DATABASE IF EXISTS %s', $quotedDbName ) );
-    unless (ref $rs eq 'HASH') {
-        error( $rs );
+        # Drop previous database
+        # FIXME: Find a better way to handle upgrade
+        $dbh->do( "DROP DATABASE IF EXISTS ".$dbh->quote_identifier( $phpmyadminDbName ) );
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 
@@ -439,7 +414,7 @@ sub _setupDatabase
     ${$fileContentRef} =~ s/^(CREATE DATABASE IF NOT EXISTS) `phpmyadmin`/$1 `$phpmyadminDbName`/im;
     ${$fileContentRef} =~ s/^(USE) phpmyadmin;/$1 `$phpmyadminDbName`;/im;
 
-    $rs = $file->save( );
+    my $rs = $file->save( );
     return $rs if $rs;
 
     $rs = execute( "cat $schemaFilePath | mysql", \ my $stdout, \ my $stderr );

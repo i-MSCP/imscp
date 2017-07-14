@@ -395,40 +395,32 @@ sub _setupPrimaryIP
     my ($self) = @_;
 
     my $primaryIP = main::setupGetQuestion( 'BASE_SERVER_IP' );
-
     my $rs = $self->{'eventManager'}->trigger( 'beforeSetupPrimaryIP', $primaryIP );
     return $rs if $rs;
 
-    my $db = iMSCP::Database->factory( );
-    $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) );
+    local $@;
+    eval {
+        my $netCard = ($primaryIP eq '0.0.0.0') ? 'any' : iMSCP::Net->getInstance( )->getAddrDevice( $primaryIP );
+        defined $netCard or die( sprintf( "Couldn't find network card for the `%s' IP address", $primaryIP ) );
 
-    my $qrs = $db->doQuery( 'ip_number', 'SELECT ip_number, ip_card FROM server_ips WHERE ip_number = ?', $primaryIP );
-    unless (ref $qrs eq 'HASH') {
-        error( $qrs );
-        return 1;
-    }
+        my $db = iMSCP::Database->factory( );
+        my $oldDatabase = $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) );
 
-    my $netCard = ($primaryIP eq '0.0.0.0') ? 'any' : iMSCP::Net->getInstance( )->getAddrDevice( $primaryIP );
-    unless (defined $netCard) {
-        error( sprintf( "Couldn't find network interface name for the `%s' IP address", $primaryIP ) );
-        return 1;
-    }
+        my $dbh = $db->getRawDb( );
+        local $dbh->{'RaiseError'} = 1;
 
-    unless (%{$qrs}) {
-        $qrs = $db->doQuery(
-            'i', 'INSERT INTO server_ips (ip_number, ip_card, ip_config_mode, ip_status) VALUES(?, ?, ?, ?)',
-            $primaryIP, $netCard, 'manual', 'ok'
+        $dbh->selectrow_hashref('SELECT 1 FROM server_ips WHERE ip_number = ?', undef, $primaryIP )
+            ? $dbh->do( 'UPDATE server_ips SET ip_card = ? WHERE ip_number = ?', undef, $netCard, $primaryIP ) 
+            : $dbh->do(
+            'INSERT INTO server_ips (ip_number, ip_card, ip_config_mode, ip_status) VALUES(?, ?, ?, ?)',
+            undef, $primaryIP, $netCard, 'manual', 'ok'
         );
-        unless (ref $qrs eq 'HASH') {
-            error( sprintf( "Couldn't add the `%s' IP address: %s", $primaryIP, $qrs ) );
-            return 1;
-        }
-    } else {
-        $qrs = $db->doQuery( 'u', 'UPDATE server_ips SET ip_card = ? WHERE ip_number = ?', $netCard, $primaryIP );
-        unless (ref $qrs eq 'HASH') {
-            error( sprintf( "Couldn't update `%s' IP address: %s", $primaryIP, $qrs ) );
-            return 1;
-        }
+
+        $db->useDatabase( $oldDatabase ) if $oldDatabase;
+    };
+    if ($@) {
+        error( $@ );
+        return 1;
     }
 
     $self->{'eventManager'}->trigger( 'afterSetupPrimaryIP', $primaryIP );

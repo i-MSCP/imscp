@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by internet Multi Server Control Panel
+# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@ package Modules::SSLcertificate;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ error getLastError warning /;
 use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::OpenSSL;
@@ -67,37 +67,40 @@ sub process
     my ($self, $certificateId) = @_;
 
     my $rs = $self->_loadData( $certificateId );
-    return $rs if $rs;
+    return $rs if $rs || !$self->{'domain_name'};
 
     my @sql;
     if ($self->{'status'} =~ /^to(?:add|change)$/) {
         $rs = $self->add( );
-        @sql = (
-            'UPDATE ssl_certs SET status = ? WHERE cert_id = ?',
+        @sql = ('UPDATE ssl_certs SET status = ? WHERE cert_id = ?', undef,
             ($rs
-                ? (getMessageByType('error', { amount => 1, remove => 1 } ) || 'Unknown error') =~ s/iMSCP::OpenSSL::validateCertificate:\s+//r
+                ? (getMessageByType('error', { amount => 1, remove => 1 } )
+                    || 'Unknown error') =~ s/iMSCP::OpenSSL::validateCertificate:\s+//r
                 : 'ok'
             ),
-            $certificateId
-        );
+            $certificateId);
     } elsif ($self->{'status'} eq 'todelete') {
         $rs = $self->delete( );
-        if ($rs) {
-            @sql = (
-                'UPDATE ssl_certs SET status = ? WHERE cert_id = ?',
-                getLastError( 'error' ) || 'Unknown error',
-                $certificateId
-            );
-        } else {
-            @sql = ('DELETE FROM ssl_certs WHERE cert_id = ?', $certificateId);
-        }
+        @sql = $rs
+            ? ('UPDATE ssl_certs SET status = ? WHERE cert_id = ?', undef,
+                getLastError( 'error' ) || 'Unknown error', $certificateId)
+            : ('DELETE FROM ssl_certs WHERE cert_id = ?', undef, $certificateId);
+    } else {
+        warning( sprintf( 'Unknown action (%s) for SSL certificate (ID %d)', $self->{'status'}, $certificateId ) );
+        return 0;
     }
 
-    my $rdata = iMSCP::Database->factory( )->doQuery( 'dummy', @sql );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
+    local $@;
+    eval {
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        $self->{'_dbh'}->do( @sql );
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
+
+    $rs;
 
     # (since 1.2.16 - See #IP-1500)
     # On toadd and to change actions, return 0 to avoid any failure on update when a customer's SSL certificate is
@@ -148,11 +151,12 @@ sub add
         certificate_chain_name         => $self->{'domain_name'},
         private_key_container_path     => $privateKeyContainer->filename( ),
         certificate_container_path     => $certificateContainer->filename( ),
-        ca_bundle_container_path       => $caBundleContainer ? $caBundleContainer->filename( ) : '' 
+        ca_bundle_container_path       => $caBundleContainer ? $caBundleContainer->filename( ) : ''
     );
 
     # Check certificate chain
     $rs = $openSSL->validateCertificateChain( );
+
     # Create certificate chain (private key, certificate and CA bundle)
     $rs ||= $openSSL->createCertificateChain( );
 }
@@ -188,10 +192,10 @@ sub _init
     $self->{'certsDir'} = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs";
     iMSCP::Dir->new( dirname => $self->{'certsDir'} )->make(
         {
-            
-            user => $main::imscpConfig{'ROOT_USER'},
+
+            user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ROOT_GROUP'},
-            mode => 0750
+            mode  => 0750
         }
     );
     $self->SUPER::_init( );
@@ -210,50 +214,57 @@ sub _loadData
 {
     my ($self, $certificateId) = @_;
 
-    my $certData = iMSCP::Database->factory( )->doQuery(
-        'cert_id', 'SELECT * FROM ssl_certs WHERE cert_id = ?', $certificateId
-    );
-    unless (ref $certData eq 'HASH') {
-        error( $certData );
-        return 1;
-    }
-    unless (exists $certData->{$certificateId}) {
-        error( sprintf( 'SSL certificate record with ID %s has not been found in database', $certificateId ) );
+    local $@;
+    eval {
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        my $row = $self->{'_dbh'}->selectrow_hashref(
+            'SELECT * FROM ssl_certs WHERE cert_id = ?', undef, $certificateId
+        );
+        $row or die( sprintf( 'Data not found for SSL certificate (ID %d)', $certificateId ) );
+        %{$self} = (%{$self}, %{$row});
+
+        if ($self->{'domain_type'} eq 'dmn') {
+            $row = $self->{'_dbh'}->selectrow_hashref(
+                'SELECT domain_name FROM domain WHERE domain_id = ?', undef, $self->{'domain_id'}
+            );
+        } elsif ($self->{'domain_type'} eq 'als') {
+            $row = $self->{'_dbh'}->selectrow_hashref(
+                'SELECT alias_name AS domain_name FROM domain_aliasses WHERE alias_id = ?', undef, $self->{'domain_id'}
+            );
+        } elsif ($self->{'domain_type'} eq 'sub') {
+            $row = $self->{'_dbh'}->selectrow_hashref(
+                "
+                    SELECT CONCAT(subdomain_name, '.', domain_name) AS domain_name
+                    FROM subdomain
+                    JOIN domain USING(domain_id)
+                    WHERE subdomain_id = ?
+                ",
+                undef, $self->{'domain_id'}
+            );
+        } else {
+            $row = $self->{'_dbh'}->selectrow_hashref(
+                "
+                    SELECT CONCAT(subdomain_alias_name, '.', alias_name) AS domain_name
+                    FROM subdomain_alias
+                    JOIN domain_aliasses USING(alias_id)
+                    WHERE subdomain_alias_id = ?
+                ",
+                undef, $self->{'domain_id'}
+            );
+        }
+
+        unless ($row) {
+            # Delete orphaned SSL certificate
+            $self->{'_dbh'}->do( 'DELETE FROM FROM ssl_certs WHERE cert_id = ?', undef, $certificateId );
+        } else {
+            %{$self} = (%{$self}, %{$row});
+        }
+    };
+    if ($@) {
+        error( $@ );
         return 1;
     }
 
-    %{$self} = (%{$self}, %{$certData->{$certificateId}});
-
-    my $sql;
-    if ($self->{'domain_type'} eq 'dmn') {
-        $sql = 'SELECT domain_name, domain_id FROM domain WHERE domain_id = ?';
-    } elsif ($self->{'domain_type'} eq 'als') {
-        $sql = 'SELECT alias_name AS domain_name, alias_id AS domain_id FROM domain_aliasses WHERE alias_id = ?';
-    } elsif ($self->{'domain_type'} eq 'sub') {
-        $sql = "
-            SELECT CONCAT(subdomain_name, '.', domain_name) AS domain_name, subdomain_id AS domain_id
-            FROM subdomain INNER JOIN domain USING(domain_id) WHERE subdomain_id = ?
-        ";
-    } else {
-        $sql = "
-            SELECT CONCAT(subdomain_alias_name, '.', alias_name) AS domain_name, subdomain_alias_id AS domain_id
-            FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
-            WHERE subdomain_alias_id = ?
-        ";
-    }
-
-    my $rdata = iMSCP::Database->factory( )->doQuery( 'domain_id', $sql, $self->{'domain_id'} );
-    unless (ref $rdata eq 'HASH') {
-        error( $rdata );
-        return 1;
-    }
-    unless (exists $rdata->{$self->{'domain_id'}}) {
-        error( sprintf( 'SSL certificate with ID %s has not been found or is in an inconsistent state',
-            $certificateId ) );
-        return 1;
-    }
-
-    $self->{'domain_name'} = $rdata->{$self->{'domain_id'}}->{'domain_name'};
     0;
 }
 
