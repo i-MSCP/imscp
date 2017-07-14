@@ -902,6 +902,7 @@ EOF
     # Pre-fill questions for Courier IMAP/POP server if required
     if ($main::imscpConfig{'PO_PACKAGE'} eq 'Servers::po::courier') {
         $fileContent .= <<'EOF';
+courier-base courier-base/courier-user note
 courier-base courier-base/webadmin-configmode boolean false
 courier-ssl courier-ssl/certnotice note
 EOF

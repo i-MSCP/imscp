@@ -22,6 +22,9 @@ FRONTEND
 SCRIPTS
     Removed: Explicite unlocking of locked files -- Files are automatically unlocked
 
+INSTALLER
+    Fixed: Hide notice about user/group changes (Courier)
+
 SERVICE
     Fixed: MOUNT(2) operation failures are ignored (imscp_mountall)
 
