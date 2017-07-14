@@ -513,7 +513,7 @@ sub _updateDatabase
             $dbh->commit( );
         }
 
-        $dbh->useDatabase( $oldDatabase ) if $oldDatabase;
+        $db->useDatabase( $oldDatabase ) if $oldDatabase;
     };
     if ($@) {
         $dbh->rollback( );
