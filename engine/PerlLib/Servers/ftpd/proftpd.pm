@@ -214,7 +214,7 @@ sub addUser
         );
         $dbh->commit( );
     };
-    if($@) {
+    if ($@) {
         $dbh->rollback( );
         error( $@ );
         return 1;

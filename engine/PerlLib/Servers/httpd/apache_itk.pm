@@ -1023,7 +1023,6 @@ sub getTraffic
         $dbh->do( 'DELETE FROM httpd_vlogger WHERE ldate <= ?', undef, $ldate );
         $dbh->commit( );
     };
-
     if ($@) {
         $dbh->rollback( );
         %{$trafficDb} = ( );

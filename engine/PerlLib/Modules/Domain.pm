@@ -224,7 +224,7 @@ sub restore
             $rs == 0 or die( $stderr || 'Unknown error' );
 
             eval {
-                local $self->{'_dbh'}->{'AutoCommit'} = 1;
+                local $self->{'_dbh'}->{'AutoCommit'} = 0;
 
                 $self->{'_dbh'}->do(
                     'UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', undef, 'torestore',

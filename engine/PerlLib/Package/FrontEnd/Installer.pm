@@ -634,38 +634,42 @@ sub _setupMasterAdmin
 
     local $@;
     eval {
-        $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) );
+        my $oldDatabase = $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) );
 
-        local $dbh->{'AutoCommit'} = 0;
-        local $dbh->{'RaiseError'} = 1;
+        {
+            local $dbh->{'AutoCommit'} = 0;
+            local $dbh->{'RaiseError'} = 1;
 
-        my $row = $dbh->selectrow_hashref(
-            "SELECT admin_id FROM admin WHERE admin_name = ?", 'admin_name', undef, $loginOld
-        );
+            my $row = $dbh->selectrow_hashref(
+                "SELECT admin_id FROM admin WHERE admin_name = ?", 'admin_name', undef, $loginOld
+            );
 
-        if ($row) {
-            $dbh->do(
-                'UPDATE admin SET admin_name = ?, admin_pass = ?, email = ? WHERE admin_id = ?',
-                undef, $login, $password, $email, $row->{'admin_id'}
-            );
-        } else {
-            $dbh->do(
-                'INSERT INTO admin (admin_name, admin_pass, admin_type, email) VALUES (?, ?, ?, ?)',
-                undef, $login, $password, 'admin', $email
-            );
-            $dbh->do(
-                '
-                    INSERT IGNORE INTO user_gui_props (
-                        user_id, lang, layout, layout_color, logo, show_main_menu_labels
-                    ) VALUES (
-                        LAST_INSERT_ID(), ?, ?, ?, ?, ?
-                    )
-                ',
-                undef, 'auto', 'default', 'black', '', '0'
-            );
+            if ($row) {
+                $dbh->do(
+                    'UPDATE admin SET admin_name = ?, admin_pass = ?, email = ? WHERE admin_id = ?',
+                    undef, $login, $password, $email, $row->{'admin_id'}
+                );
+            } else {
+                $dbh->do(
+                    'INSERT INTO admin (admin_name, admin_pass, admin_type, email) VALUES (?, ?, ?, ?)',
+                    undef, $login, $password, 'admin', $email
+                );
+                $dbh->do(
+                    '
+                        INSERT IGNORE INTO user_gui_props (
+                            user_id, lang, layout, layout_color, logo, show_main_menu_labels
+                        ) VALUES (
+                            LAST_INSERT_ID(), ?, ?, ?, ?, ?
+                        )
+                    ',
+                    undef, 'auto', 'default', 'black', '', '0'
+                );
+            }
+
+            $dbh->commit( );
         }
 
-        $dbh->commit( );
+        $db->useDatabase( $oldDatabase ) if $oldDatabase;
     };
     if ($@) {
         $dbh->rollback( );

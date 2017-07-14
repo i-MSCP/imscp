@@ -1029,7 +1029,6 @@ sub getTraffic
         $dbh->do( 'DELETE FROM httpd_vlogger WHERE ldate <= ?', undef, $ldate );
         $dbh->commit( );
     };
-
     if ($@) {
         $dbh->rollback( );
         %{$trafficDb} = ( );
@@ -1929,7 +1928,7 @@ sub _buildPHPConfig
                 EMAIL_DOMAIN                 => $emailDomain,
                 PHP_FPM_LISTEN_ENDPOINT      => ($self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds')
                     ? "/run/php/php$phpVersion-fpm-$poolName.sock"
-                    : '127.0.0.1:'.($self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'} + $data->{'PHP_FPM_LISTEN_PORT'})
+                    : '127.0.0.1:'.($self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'}+$data->{'PHP_FPM_LISTEN_PORT'})
                 ,
                 PHP_FPM_MAX_CHILDREN         => $self->{'phpConfig'}->{'PHP_FPM_MAX_CHILDREN'} || 6,
                 PHP_FPM_MAX_REQUESTS         => $self->{'phpConfig'}->{'PHP_FPM_MAX_REQUESTS'} || 1000,

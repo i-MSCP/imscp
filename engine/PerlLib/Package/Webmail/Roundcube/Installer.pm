@@ -491,6 +491,9 @@ sub _updateDatabase
     error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
+    my $db = iMSCP::Database->factory( );
+    my $dbh = $db->getRawDb( );
+
     local $@;
     eval {
         # Ensure tha users.mail_host entries are set with expected hostname (default to `localhost')
@@ -499,18 +502,21 @@ sub _updateDatabase
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
-        my $db = iMSCP::Database->factory( );
         my $oldDatabase = $db->useDatabase($roundcubeDbName);
 
-        my $dbh = $db->getRawDb( );
-        local $dbh->{'AutoCommit'} = 1;
-        local $dbh->{'RaiseError'} = 1;
-        
-        $dbh->do( 'UPDATE IGNORE users SET mail_host = ?', undef, $hostname );
-        $dbh->do( 'DELETE FROM users WHERE mail_host <> ?', undef, $hostname );
-        $db->useDatabase( $oldDatabase ) if $oldDatabase;
+        {
+            local $dbh->{'AutoCommit'} = 0;
+            local $dbh->{'RaiseError'} = 1;
+
+            $dbh->do( 'UPDATE IGNORE users SET mail_host = ?', undef, $hostname );
+            $dbh->do( 'DELETE FROM users WHERE mail_host <> ?', undef, $hostname );
+            $dbh->commit( );
+        }
+
+        $dbh->useDatabase( $oldDatabase ) if $oldDatabase;
     };
-    if($@) {
+    if ($@) {
+        $dbh->rollback( );
         error( $@ );
         return 1;
     }
