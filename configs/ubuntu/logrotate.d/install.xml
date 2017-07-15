@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
     <folders>${ROOT_CONF}/logrotate.d</folders>
-    <copy_config>${ROOT_CONF}/logrotate.d/imscp</copy_config>
-    <copy_config if="'${DISTRO_CODENAME}' eq 'xenial'">${ROOT_CONF}/logrotate.d/rsyslog</copy_config>
+    <copy_config user="${ROOT_USER}" group="${ROOT_GROUP}" mode="0644">${ROOT_CONF}/logrotate.d/imscp</copy_config>
+    <copy_config user="${ROOT_USER}" group="${ROOT_GROUP}" mode="0644" if="'${DISTRO_CODENAME}' eq 'xenial'" kept="1">${ROOT_CONF}/logrotate.d/rsyslog</copy_config>
 </install>
