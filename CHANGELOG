@@ -24,10 +24,11 @@ SCRIPTS
 
 INSTALLER
     Fixed: Hide notice about user/group changes (Courier)
-    Fixed: LOGROTATE(8) configuration file for RSYSLOGD(8) get removed by installer (Debian 9/Stretch; Ubuntu 16.04/Xenial)
+    Fixed: Missing LOGROTATE(8) configuration file for RSYSLOGD(8) (Debian 9/Stretch; Ubuntu 16.04/Xenial)
 
-SERVICE
+SERVICES
     Fixed: MOUNT(2) operation failures are ignored (imscp_mountall)
+    Review: Rotate log files on a daily basis instead of a weekly basis for faster processing (Mail service log files)
 
 SERVERS
     Fixed: SASL authentication failure: cannot connect to Courier authdaemond: No such file or directory (Postfix/Cyrus-SASL)
