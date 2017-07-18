@@ -77,8 +77,9 @@ check_login('reseller');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout'                 => 'shared/layouts/ui.tpl',
-    'page'                   => 'reseller/users.phtml',
+    'layout'                         => 'shared/layouts/ui.tpl',
+    'page'                           => 'reseller/users.phtml',
+    'page_message'                   => 'layout',
     'client_search_form'             => 'page',
     'client_show_domain_aliases_blk' => 'client_search_form',
     'client_message'                 => 'page',
