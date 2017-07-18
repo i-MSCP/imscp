@@ -35,6 +35,9 @@ SERVERS
 
 VENDOR
     Updated: Zend Framework libraries to version 1.12.20
+    
+YOUTRACK
+    IP-1730 Couldn't delete support tickets
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.7

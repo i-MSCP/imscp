@@ -38,7 +38,7 @@
     <tr>
         <td colspan="6">
             <div class="buttons">
-                <a class="link_as_button" href="'ticket_delete.php?delete=closed" onclick="return action_delete(this, '#__all__#')">{TR_TICKET_DELETE_ALL}</a>
+                <a class="link_as_button" href="ticket_delete.php?delete=closed" onclick="return action_delete(this, '#__all__#')">{TR_TICKET_DELETE_ALL}</a>
             </div>
         </td>
     </tr>
