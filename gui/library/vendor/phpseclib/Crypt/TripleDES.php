@@ -502,7 +502,7 @@ class Crypt_TripleDES extends Crypt_DES
      * @see Crypt_Base::setPreferredEngine()
      * @param int $engine
      * @access public
-     * @return int
+     * @return void
      */
     function setPreferredEngine($engine)
     {
@@ -512,6 +512,6 @@ class Crypt_TripleDES extends Crypt_DES
             $this->des[2]->setPreferredEngine($engine);
         }
 
-        return parent::setPreferredEngine($engine);
+        parent::setPreferredEngine($engine);
     }
 }
