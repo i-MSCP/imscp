@@ -457,7 +457,7 @@ EOF
 
     my @cmd = (
         $cmd, escapeShell( $dbDumpFilePath ), '|', 'mysql',
-        '--defaults-extra-file='.escapeShell( $sqlExtraFile->filename( ) ), escapeShell( $dbName )
+        '--defaults-extra-file='.escapeShell( $sqlExtraFile->filename ), escapeShell( $dbName )
     );
 
     my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );

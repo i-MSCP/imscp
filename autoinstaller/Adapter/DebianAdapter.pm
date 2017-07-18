@@ -151,8 +151,8 @@ EOF
 
     $policyrcd->flush( );
     $policyrcd->close( );
-    chmod( 0750, $policyrcd->filename( ) ) or die(
-        sprintf( "Couldn't change permissions on %s: %s", $policyrcd->filename( ), $! )
+    chmod( 0750, $policyrcd->filename ) or die(
+        sprintf( "Couldn't change permissions on %s: %s", $policyrcd->filename, $! )
     );
 
     # See ZG-POLICY-RC.D(8)
@@ -773,8 +773,8 @@ EOF
             my $keyFile = File::Temp->new( UNLINK => 1 );
             $rs = execute(
                 [
-                    'wget', '--prefer-family=IPv4', '--timeout=5', '--no-cache', '--no-dns-cache', '-O', $keyFile,
-                    $repository->{'repository_key_uri'}
+                    'wget', '--prefer-family=IPv4', '--timeout=5', '--no-cache', '--no-dns-cache', '-O',
+                    $keyFile->filename, $repository->{'repository_key_uri'}
                 ],
                 \ my $stdout,
                 \ my $stderr
@@ -997,7 +997,7 @@ EOF
     $debconfSelectionsFile->flush( );
     $debconfSelectionsFile->close( );
 
-    my $rs = execute( [ 'debconf-set-selections', $debconfSelectionsFile->filename( ) ], \ my $stdout, \ my $stderr );
+    my $rs = execute( [ 'debconf-set-selections', $debconfSelectionsFile->filename ], \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || "Couldn't pre-fill Debconf database" ) if $rs;
     $rs;
@@ -1051,7 +1051,7 @@ sub _rebuildAndInstallPackage
 
     # Fix `W: Download is performed unsandboxed as root as file...' warning with newest APT versions
     if ((undef, undef, my $uid) = getpwnam('_apt')) {
-        if (!chown $uid, -1, $srcDownloadDir) {
+        unless (chown $uid, -1, $srcDownloadDir) {
             error( sprintf( "Couldn't change ownership for the %s directory: %s", $srcDownloadDir, $! ) );
             return 1;
         }

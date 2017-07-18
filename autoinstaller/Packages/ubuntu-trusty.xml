@@ -463,7 +463,6 @@
         <package>devscripts</package>
         <package>dnsutils</package>
         <package>dpkg-dev</package>
-        <package>patch</package>
         <package>findutils</package>
         <package>gcc</package>
         <package>git</package>
@@ -478,6 +477,7 @@
         <package>make</package>
         <package>mawk</package>
         <package>openssl</package>
+        <package>patch</package>
         <package>pbuilder</package>
         <package>pbzip2</package>
         <package>pigz</package>

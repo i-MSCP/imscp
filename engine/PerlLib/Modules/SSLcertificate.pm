@@ -149,9 +149,9 @@ sub add
     my $openSSL = iMSCP::OpenSSL->new(
         certificate_chains_storage_dir => $self->{'certsDir'},
         certificate_chain_name         => $self->{'domain_name'},
-        private_key_container_path     => $privateKeyContainer->filename( ),
-        certificate_container_path     => $certificateContainer->filename( ),
-        ca_bundle_container_path       => $caBundleContainer ? $caBundleContainer->filename( ) : ''
+        private_key_container_path     => $privateKeyContainer->filename,
+        certificate_container_path     => $certificateContainer->filename,
+        ca_bundle_container_path       => $caBundleContainer ? $caBundleContainer->filename : ''
     );
 
     # Check certificate chain

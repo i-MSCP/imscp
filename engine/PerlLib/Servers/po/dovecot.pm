@@ -416,13 +416,13 @@ sub getTraffic
 
         # Create a snapshot of current log file state
         my $snapshotFH = File::Temp->new( UNLINK => 1 );
-        iMSCP::File->new( filename => $logFile )->copyFile( $snapshotFH, { preserve => 'no' } ) == 0 or die(
+        iMSCP::File->new( filename => $logFile )->copyFile( $snapshotFH->filename, { preserve => 'no' } ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
         # Tie the snapshot for easy handling
         tie my @snapshot, 'Tie::File', $snapshotFH, memory => 10_485_760 or die(
-            sprintf( "Couldn't tie %s file", $snapshotFH )
+            sprintf( "Couldn't tie %s file", $snapshotFH->filename )
         );
 
         # We keep trace of the index for the live log file only

@@ -399,15 +399,16 @@ sub getTraffic
 
     # Create snapshot of traffic data source file
     my $snapshotFH = File::Temp->new( UNLINK => 1 );
-    iMSCP::File->new( filename => $logFile )->copyFile( $snapshotFH ) == 0 or die(
+    iMSCP::File->new( filename => $logFile )->copyFile( $snapshotFH->filename ) == 0 or die(
         getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
     );
 
     # Reset log file
+    # FIXME: We should really avoid truncating. Instead, we should use logrotate.
     truncate( $logFile, 0 ) or die( sprintf( "Couldn't truncate %s file: %s", $logFile, $! ) );
 
+    # Extract FTP traffic data
     while(<$snapshotFH>) {
-        # Extract FTP traffic data
         next unless /^(?:[^\s]+\s){7}(?<bytes>\d+)\s(?:[^\s]+\s){5}[^\s]+\@(?<domain>[^\s]+)/o
             && exists $trafficDb->{$+{'domain'}};
         $trafficDb->{$+{'domain'}} += $+{'bytes'};

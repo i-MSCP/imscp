@@ -74,7 +74,7 @@ sub validatePrivateKey
 
     my $cmd = [
         'openssl', 'pkey', '-in', $self->{'private_key_container_path'}, '-noout',
-        (($passphraseFile) ? ('-passin', 'file:'.$passphraseFile->filename( )) : ( ))
+        (($passphraseFile) ? ('-passin', 'file:'.$passphraseFile->filename) : ( ))
     ];
 
     my $rs = execute( $cmd, \ my $stdout, \ my $stderr );
@@ -177,7 +177,7 @@ sub importPrivateKey
     my $cmd = [
         'openssl', 'pkey', '-in', $self->{'private_key_container_path'},
         '-out', "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem",
-        (($passphraseFile) ? ('-passin', 'file:'.$passphraseFile->filename( )) : ( ))
+        (($passphraseFile) ? ('-passin', 'file:'.$passphraseFile->filename) : ( ))
     ];
 
     my $rs = execute( $cmd, \ my $stdout, \ my $stderr );
@@ -304,7 +304,7 @@ sub createSelfSignedCertificate
     $openSSLConffile->close( );
 
     my $cmd = [
-        'openssl', 'req', '-x509', '-nodes', '-days', '365', '-config', $openSSLConffile->filename( ), '-newkey', 'rsa',
+        'openssl', 'req', '-x509', '-nodes', '-days', '365', '-config', $openSSLConffile->filename, '-newkey', 'rsa',
         '-keyout', "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem",
         '-out', "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem"
     ];

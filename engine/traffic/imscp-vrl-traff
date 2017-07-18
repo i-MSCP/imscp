@@ -109,54 +109,53 @@ sub run
         }
     }
 
+    return $rs if $rs;
+
     # Updates traffic data in i-MSCP database
-    unless ($rs) {
-        while (my ($domainName, $domainData) = each(%{$domains})) {
-            # Don't process domain for which there are no traffic data
-            next unless $trafficDb{'Servers::httpd'}->{$domainName} || $trafficDb{'Servers::ftpd'}->{$domainName}
-                || $trafficDb{'Servers::mta'}->{$domainName} || $trafficDb{'Servers::po'}->{$domainName};
 
-            $dbh->do(
-                '
-                    INSERT INTO domain_traffic (
-                        domain_id, dtraff_time, dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop
-                    ) VALUES (
-                        ?, ?, ?, ?, ?, ?
-                    ) ON DUPLICATE KEY UPDATE
-                        dtraff_web = dtraff_web + ?, dtraff_ftp = dtraff_ftp + ?, dtraff_mail = dtraff_mail + ?,
-                        dtraff_pop = dtraff_pop + ?
-                ',
-                undef, $domainData->{'upper_domain_id'}, $halfTimestamp, $trafficDb{'Servers::httpd'}->{$domainName}
-                ,
-                $trafficDb{'Servers::ftpd'}->{$domainName}, $trafficDb{'Servers::mta'}->{$domainName},
-                $trafficDb{'Servers::po'}->{$domainName}, $trafficDb{'Servers::httpd'}->{$domainName},
-                $trafficDb{'Servers::ftpd'}->{$domainName}, $trafficDb{'Servers::mta'}->{$domainName},
-                $trafficDb{'Servers::po'}->{$domainName}
-            );
-            if ($dbh->err) {
-                error($dbh->errstr);
-                $rs = 1;
-            } else {
-                $trafficDb{'Servers::httpd'}->{$domainName} = 0;
-                $trafficDb{'Servers::ftpd'}->{$domainName} = 0;
-                $trafficDb{'Servers::mta'}->{$domainName} = 0;
-                $trafficDb{'Servers::po'}->{$domainName} = 0;
-            }
-        }
+    while (my ($domainName, $domainData) = each(%{$domains})) {
+        # Don't process domain for which there are no traffic data
+        next unless $trafficDb{'Servers::httpd'}->{$domainName} || $trafficDb{'Servers::ftpd'}->{$domainName}
+            || $trafficDb{'Servers::mta'}->{$domainName} || $trafficDb{'Servers::po'}->{$domainName};
 
-        unless ($rs) {
-            for my $server('Servers::httpd', 'Servers::ftpd', 'Servers::mta', 'Servers::po') {
-                untie(%{$trafficDb{$server}});
-                $rs |= iMSCP::File->new(
-                    filename => "$main::imscpConfig{'IMSCP_HOMEDIR'}/$server-vrl-traff.db"
-                )->delFile( );
-            }
-
-            $rs |= iMSCP::EventManager->getInstance( )->trigger( 'afterVrlTraffic' );
+        $dbh->do(
+            '
+                INSERT INTO domain_traffic (
+                    domain_id, dtraff_time, dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop
+                ) VALUES (
+                    ?, ?, ?, ?, ?, ?
+                ) ON DUPLICATE KEY UPDATE
+                    dtraff_web = dtraff_web + ?, dtraff_ftp = dtraff_ftp + ?, dtraff_mail = dtraff_mail + ?,
+                    dtraff_pop = dtraff_pop + ?
+            ',
+            undef, $domainData->{'upper_domain_id'}, $halfTimestamp, $trafficDb{'Servers::httpd'}->{$domainName}
+            ,
+            $trafficDb{'Servers::ftpd'}->{$domainName}, $trafficDb{'Servers::mta'}->{$domainName},
+            $trafficDb{'Servers::po'}->{$domainName}, $trafficDb{'Servers::httpd'}->{$domainName},
+            $trafficDb{'Servers::ftpd'}->{$domainName}, $trafficDb{'Servers::mta'}->{$domainName},
+            $trafficDb{'Servers::po'}->{$domainName}
+        );
+        if ($dbh->err) {
+            error($dbh->errstr);
+            $rs = 1;
+        } else {
+            $trafficDb{'Servers::httpd'}->{$domainName} = 0;
+            $trafficDb{'Servers::ftpd'}->{$domainName} = 0;
+            $trafficDb{'Servers::mta'}->{$domainName} = 0;
+            $trafficDb{'Servers::po'}->{$domainName} = 0;
         }
     }
 
-    $rs;
+    return $rs if $rs;
+
+    for my $server('Servers::httpd', 'Servers::ftpd', 'Servers::mta', 'Servers::po') {
+        untie(%{$trafficDb{$server}});
+        $rs |= iMSCP::File->new(
+            filename => "$main::imscpConfig{'IMSCP_HOMEDIR'}/$server-vrl-traff.db"
+        )->delFile( );
+    }
+
+    $rs |= iMSCP::EventManager->getInstance( )->trigger( 'afterVrlTraffic' );
 }
 
 newDebug( 'imscp-vrl-traff.log' );

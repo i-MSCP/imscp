@@ -25,7 +25,7 @@ package iMSCP::File;
 
 use strict;
 use warnings;
-use autouse 'Lchown' => qw/ lchown /;
+use autouse Lchown => qw/ lchown /;
 use File::Basename qw/ basename /;
 use File::Copy qw/ copy mv /;
 use File::Spec;
@@ -88,7 +88,7 @@ sub getAsRef
     $self->{'fileContent'} = $self->get( );
 
     return undef unless defined $self->{'fileContent'};
-    
+
     \$self->{'fileContent'};
 }
 
@@ -183,7 +183,12 @@ sub mode
         return 1;
     }
 
-    return if -l $self->{'filename'};
+    unless (defined $mode) {
+        error( 'Missing $mode parameter' );
+        return 1;
+    }
+
+    return 0 if -l $self->{'filename'};
 
     unless (chmod( $mode, $self->{'filename'} )) {
         error( sprintf( "Couldn't change `%s' file permissions: %s", $self->{'filename'}, $! ) );
@@ -214,6 +219,16 @@ sub owner
         return 1;
     }
 
+    unless (defined $owner) {
+        error( 'Missing $owner parameter' );
+        return 1;
+    }
+
+    unless (defined $group) {
+        error( 'Missing $group parameter' );
+        return 1;
+    }
+
     my $uid = (($owner =~ /^\d+$/) ? $owner : getpwnam( $owner )) // -1;
     my $gid = (($group =~ /^\d+$/) ? $group : getgrnam( $group )) // -1;
 
@@ -225,14 +240,14 @@ sub owner
     0;
 }
 
-=item copyFile( $dest [, \%options = { 'preserve' => 'yes' } ] )
+=item copyFile( $destination [, \%options = { 'preserve' => 'yes' } ] )
 
  Copy file to the given destination
 
  Symlinks are not dereferenced. 
  Permissions are not set on symlink targets.
 
- Param string|filehandle $dest Destination file path or filehandle representing destination file
+ Param string $destination Destination path (either a directory or file path)
  Param hash $options Options
     - preserve (yes|no): preserve permissions and ownership (default yes)
  Return int 0 on success, 1 on failure
@@ -241,7 +256,7 @@ sub owner
 
 sub copyFile
 {
-    my ($self, $dest, $options) = @_;
+    my ($self, $destination, $options) = @_;
 
     $options = { } unless $options && ref $options eq 'HASH';
 
@@ -250,52 +265,62 @@ sub copyFile
         return 1;
     }
 
-    unless (copy( $self->{'filename'}, $dest )) {
-        error( sprintf( "Couldn't copy `%s' file to `%s': %s", $self->{'filename'}, $dest, $! ) );
+    unless (defined $destination && ref \$destination eq 'SCALAR') {
+        error( '$destination parameter is msissing or invalid.' );
+        return 1;
+    }
+
+    unless (copy( $self->{'filename'}, $destination )) {
+        error( sprintf( "Couldn't copy `%s' file to `%s': %s", $self->{'filename'}, $destination, $! ) );
         return 1;
     }
 
     return 0 if defined $options->{'preserve'} && $options->{'preserve'} eq 'no';
 
-    $dest = File::Spec->catfile( $dest, basename( $self->{'filename'} ) ) if -d $dest;
+    $destination = File::Spec->catfile( $destination, basename( $self->{'filename'} ) ) if -d $destination;
 
     my ($mode, $uid, $gid) = (lstat( $self->{'filename'} ))[2, 4, 5];
 
-    unless (lchown( $uid, $gid, $dest )) {
-        error( sprintf( "Couldn't change `%s' file ownership: %s", $dest, $! ) );
+    unless (lchown( $uid, $gid, $destination )) {
+        error( sprintf( "Couldn't change `%s' file ownership: %s", $destination, $! ) );
         return 1;
     }
 
-    return if -l $dest; # We do not call chmod on symkink targets
+    return if -l $destination; # We do not call chmod on symkink targets
 
-    unless (chmod( $mode & 07777, $dest )) {
-        error( sprintf( "Couldn't change `%s' file permissions: %s", $dest, $! ) );
+    unless (chmod( $mode & 07777, $destination )) {
+        error( sprintf( "Couldn't change `%s' file permissions: %s", $destination, $! ) );
         return 1;
     }
 
     0;
 }
 
-=item moveFile( $dest )
+=item moveFile( $$destination )
 
  Move file to the given destination
 
- Param string $dest Destination path
+ Param string $destination Destination path (either a directory or file path)
  Return int 0 on success, 1 on failure
 
 =cut
 
 sub moveFile
 {
-    my ($self, $dest) = @_;
+    my ($self, $destination) = @_;
 
     unless (defined $self->{'filename'}) {
         error( "Attribut `filename' is not set." );
         return 1;
     }
 
-    unless (mv( $self->{'filename'}, $dest )) {
-        error( sprintf( "Couldn't move `%s' file to `%s': %s", $self->{'filename'}, $dest, $! ) );
+    unless (defined $destination && ref \$destination eq 'SCALAR') {
+        error( '$destination parameter is msissing or invalid.' );
+        return 1;
+    }
+
+    unless (mv( $self->{'filename'}, $destination )) {
+        error( sprintf( "Couldn't move `%s' file to `%s': %s", $self->{'filename'}, $destination, $! ) );
         return 1;
     }
 
