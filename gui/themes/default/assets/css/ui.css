@@ -292,8 +292,8 @@ a {
 
 .location {
     position: relative;
-    height: 24px;
-    line-height: 24px;
+    height: 30px;
+    line-height: 30px;
     padding-left: 197px;
     /*z-index: 2;*/
 }
@@ -308,11 +308,11 @@ a {
 }
 
 .location-area h1 {
-    background: no-repeat center left;
+    background: no-repeat left center;
     height: 30px;
-    font-size: 1.1em;
+    font-size: 1.3em;
     font-weight: bold;
-    padding-left: 35px;
+    padding-left: 36px;
     font-variant: small-caps;
 }
 
@@ -376,7 +376,8 @@ a {
 .path {
     float: left;
     margin-left: 0.5em;
-    font-size: 0.9em;
+    font-size: 1.0em;
+    font-weight: bold;
 }
 
 .path li {
@@ -798,7 +799,7 @@ table .icon {
 
 /* Icons */
 .app_icon {
-    background-position: top left;
+    background-position: left center;
     background-repeat: no-repeat;
     padding-left: 20px;
     height: 16px;
@@ -817,13 +818,7 @@ table .icon {
     height: 16px;
     line-height: 16px;
     vertical-align: middle;
-    padding-left: 18px;
-}
-
-.paginator .icon {
-    width: 0;
-    height: 16px;
-    line-height: 32px;
+    padding-left: 20px;
 }
 
 .icon.big {
@@ -842,12 +837,16 @@ table .icon {
 }
 
 .body .icon_center {
-    display: block;
+    display: block; 
     text-align: center;
-    background-position: top center;
+    background-position: left center;
     background-repeat: no-repeat;
-    padding-top: 46px;
+    line-height: 46px;
+    width: 46px;
+    height: 46px;
+    margin: 0.5em;
     cursor: pointer;
+    *cursor: hand;
 }
 
 /* Content icons (link icons) */
@@ -1072,11 +1071,11 @@ table .icon {
 }
 
 .i_lock {
-    background-image: url('../images/login/i_lock.png');
+    background-image: url(../images/login/i_lock.png);
 }
 
 .i_unlock {
-    background-image: url('../images/login/i_unlock.png');
+    background-image: url(../images/login/i_unlock.png);
 }
 
 /* * * * * * *
@@ -1130,6 +1129,7 @@ table .icon {
 
 th.sorting, th.sorting_asc, th.sorting_desc {
     cursor: pointer;
+    *cursor: hand;
 }
 
 .dataTables_info {
@@ -1137,19 +1137,20 @@ th.sorting, th.sorting_asc, th.sorting_desc {
     float: left;
 }
 
-.dataTables_paginate {
+.dataTables_paginate, .paginator {
     float: right;
     text-align: right;
 }
 
 /* Pagination nested */
 .paginate_button.previous.disabled, .paginate_button.previous,
-.paginate_button.next.disabled, .paginate_button.next {
+.paginate_button.next.disabled, .paginate_button.next,
+.paginator .icon
+{
     float: left;
     cursor: pointer;
     *cursor: hand;
     color: transparent !important;
-
     display: inline-block;
     overflow: hidden;
     width: 0;
@@ -1164,24 +1165,23 @@ th.sorting, th.sorting_asc, th.sorting_desc {
 
 .dataTables_info,
 .dataTables_paginate {
-    margin-top: 0.5em;
-    margin-bottom: 1.5em;
+    margin-bottom: 0.5em;
 }
 
 .paginate_button.previous.disabled {
-    background: url('../images/icons/prev_gray.png') no-repeat top left;
+    background: url(../images/icons/prev_gray.png) no-repeat left center;
 }
 
 .paginate_button.previous {
-    background: url('../images/icons/prev.png') no-repeat top left;
+    background: url(../images/icons/prev.png) no-repeat left center;
 }
 
 .paginate_button.next.disabled {
-    background: url('../images/icons/next_gray.png') no-repeat top right;
+    background: url(../images/icons/next_gray.png) no-repeat left center;
 }
 
 .paginate_button.next {
-    background: url('../images/icons/next.png') no-repeat top right;
+    background: url(../images/icons/next.png) no-repeat left center;
 }
 
 /* * * * * * * * * **
@@ -1323,28 +1323,16 @@ table .graph {
 
 .tips {
     cursor: pointer;
+    *cursor: hand;
 }
 
 .icon.i_help {
     position: relative;
     width: 0;
     vertical-align: middle;
-    /*margin-left: 0.5em;*/
     overflow: hidden;
     cursor: pointer;
-}
-
-/* Pagination (for backward compatibility) - Will be removed ASAP */
-.paginator {
-    margin: 0.5em 0;
-    float: right;
-}
-
-.paginator .icon {
-    width: 0;
-    overflow: hidden;
-    height: 20px;
-    margin: 0;
+    *cursor: hand;
 }
 
 /**
@@ -1358,7 +1346,6 @@ table .graph {
     height: 4em;
     font-weight: bold;
     line-height: 1.2em;
-    /*padding: 1em 0;*/
 }
 
 .no_footer .footer {

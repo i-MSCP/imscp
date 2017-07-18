@@ -555,8 +555,7 @@ function gen_user_list($tpl)
         $tpl->assign([
             'CLIENT_DOMAIN_ALIASES_SWITCH_VALUE' => $_SESSION['client_domain_aliases_switch'],
             ($_SESSION['client_domain_aliases_switch'] == 'show')
-                ? 'CLIENT_DOMAIN_ALIASES_SHOW'
-                : 'CLIENT_DOMAIN_ALIASES_HIDE'   => ''
+                ? 'CLIENT_DOMAIN_ALIASES_SHOW' : 'CLIENT_DOMAIN_ALIASES_HIDE'   => ''
         ]);
     } else {
         $tpl->assign([
@@ -635,7 +634,7 @@ function gen_user_list($tpl)
         } else {
             $tpl->assign([
                 'CLIENT_DOMAIN_STATUS_OK' => '',
-                'CLIENT_RESTRICTED_LINKS' => '',
+                'CLIENT_RESTRICTED_LINKS' => ''
             ]);
             $tpl->parse('CLIENT_DOMAIN_STATUS_NOT_OK', 'client_domain_status_not_ok');
         }

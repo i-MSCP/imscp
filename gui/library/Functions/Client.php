@@ -71,9 +71,8 @@ function get_domain_running_mail_acc_cnt($domainId)
     $query = "
         SELECT COUNT(mail_id)
         FROM mail_users
-        WHERE
-        domain_id = ?
-        mail_type RLIKE ?
+        WHERE domain_id = ?
+        AND mail_type RLIKE ?
         AND mail_type NOT LIKE ?
     ";
 
