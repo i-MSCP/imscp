@@ -475,7 +475,7 @@ function gen_user_domain_aliases_list($tpl, $domainId)
         $tpl->assign('CLIENT_DOMAIN_ALIAS_BLK', '');
         return;
     }
-    
+
     $stmt = exec_query(
         'SELECT alias_name FROM domain_aliasses WHERE domain_id = ? ORDER BY alias_id DESC', $domainId
     );
@@ -612,21 +612,6 @@ function gen_user_list($tpl)
             $statusOk = false;
         }
 
-        if ($statusOk) {
-            $tpl->assign([
-                'CLIENT_DOMAIN_STATUS_NOT_OK' => '',
-                'CLIENT_DOMAIN_URL'           => tohtml($row['domain_name'], 'htmlAttr')
-            ]);
-            $tpl->parse('CLIENT_DOMAIN_STATUS_OK', 'client_domain_status_ok');
-            $tpl->parse('CLIENT_RESTRICTED_LINKS', 'client_restricted_links');
-        } else {
-            $tpl->assign([
-                'CLIENT_DOMAIN_STATUS_OK' => '',
-                'CLIENT_RESTRICTED_LINKS' => ''
-            ]);
-            $tpl->parse('CLIENT_DOMAIN_STATUS_NOT_OK', 'client_domain_status_not_ok');
-        }
-
         $tpl->assign([
             'CLIENT_STATUS_CLASS'      => $class,
             'TR_CLIENT_STATUS_TOOLTIP' => $statusTooltip,
@@ -639,6 +624,21 @@ function gen_user_list($tpl)
             ),
             'CLIENT_CREATED_BY'        => tohtml($row['reseller_name'])
         ]);
+
+        if ($statusOk) {
+            $tpl->assign([
+                'CLIENT_DOMAIN_STATUS_NOT_OK' => '',
+                'CLIENT_DOMAIN_URL'           => tohtml($row['domain_name'], 'htmlAttr')
+            ]);
+            $tpl->parse('CLIENT_DOMAIN_STATUS_OK', 'client_domain_status_ok');
+            $tpl->parse('CLIENT_RESTRICTED_LINKS', 'client_restricted_links');
+        } else {
+            $tpl->assign([
+                'CLIENT_DOMAIN_STATUS_OK' => '',
+                'CLIENT_RESTRICTED_LINKS' => '',
+            ]);
+            $tpl->parse('CLIENT_DOMAIN_STATUS_NOT_OK', 'client_domain_status_not_ok');
+        }
 
         gen_user_domain_aliases_list($tpl, $row['domain_id']);
         $tpl->parse('CLIENT_ITEM', '.client_item');
