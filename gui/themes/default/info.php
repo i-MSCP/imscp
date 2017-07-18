@@ -18,13 +18,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-return array(
+return [
 	'theme_name' => 'default',
 	'theme_version' => '1.0.0',
-	'theme_authors' => array(
+	'theme_authors' => [
 		'Henrik Schytte' => 'henrik@schytte.net',
 		'Marc Pujol' => 'kilburn@la3.org'
-	),
+    ],
 	'theme_licence' => 'GPLv2++',
-	'theme_color_set' => array('black', 'blue', 'green', 'red', 'yellow')
-);
+	'theme_color_set' => ['black', 'blue', 'green', 'red', 'yellow']
+];

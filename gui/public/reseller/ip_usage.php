@@ -65,16 +65,16 @@ function listIPDomains($tpl)
 				AND
 					created_by = :reseller_id
 			',
-			array('ip_id' => $ip['ip_id'], 'reseller_id' => $resellerId)
+			['ip_id' => $ip['ip_id'], 'reseller_id' => $resellerId]
 		);
 
 		$domainsCount = $stmt2->rowCount();
 
 		$tpl->assign(
-			array(
+			[
 				'IP' => tohtml(($ip['ip_number'] == '0.0.0.0') ? tr('Any') : $ip['ip_number']),
 				'RECORD_COUNT' => tr('Total Domains') . ': ' . ($domainsCount)
-			)
+            ]
 		);
 
 		if ($domainsCount) {
@@ -110,22 +110,22 @@ if (resellerHasCustomers()) {
 	/** @var $tpl iMSCP_pTemplate */
 	$tpl = new iMSCP_pTemplate();
 
-	$tpl->define_dynamic(array(
+	$tpl->define_dynamic([
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/ip_usage.tpl',
 		'page_message' => 'layout',
 		'ip_row' => 'page',
 		'domain_row' => 'ip_row'
-	));
+    ]);
 
 	$reseller_id = $_SESSION['user_id'];
 
-	$tpl->assign(array(
+	$tpl->assign([
 		'TR_PAGE_TITLE' => tr('Reseller / Statistics / IP Usage'),
 		'TR_DOMAIN_STATISTICS' => tr('Domain statistics'),
 		'TR_IP_RESELLER_USAGE_STATISTICS' => tr('Reseller/IP usage statistics'),
 		'TR_DOMAIN_NAME' => tr('Domain Name')
-	));
+    ]);
 
 	generateNavigation($tpl);
 	generatePageMessage($tpl);
@@ -133,7 +133,7 @@ if (resellerHasCustomers()) {
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 
 	$tpl->prnt();
 

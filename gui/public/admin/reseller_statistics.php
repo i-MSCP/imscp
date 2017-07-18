@@ -46,7 +46,7 @@ function _generateResellerStatistics($tpl, $resellerId, $resellerName)
 	$trafficUsagePercent = make_usage_vals($trafficUsageBytes, $trafficLimitBytes);
 	$diskspaceUsagePercent = make_usage_vals($diskspaceUsageBytes, $diskspaceLimitBytes);
 
-	$tpl->assign(array(
+	$tpl->assign([
 		'RESELLER_NAME' => tohtml($resellerName),
 		'RESELLER_ID' => tohtml($resellerId),
 		'TRAFFIC_PERCENT' => tohtml($trafficUsagePercent),
@@ -125,7 +125,7 @@ function _generateResellerStatistics($tpl, $resellerId, $resellerName)
 					? tohtml(tr('disabled'))
 					: tohtml(tr('%1$d / %2$d of unlimited', $usql_user_current, $resellerProps['current_sql_user_cnt']))
 			)
-	));
+    ]);
 }
 
 /**
@@ -157,14 +157,14 @@ check_login('admin');
 
 if (systemHasResellers()) {
 	$tpl = new iMSCP_pTemplate();
-	$tpl->define_dynamic(array(
+	$tpl->define_dynamic([
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/reseller_statistics.tpl',
 		'page_message' => 'layout',
 		'reseller_statistics_block' => 'page'
-	));
+    ]);
 
-	$tpl->assign(array(
+	$tpl->assign([
 		'TR_PAGE_TITLE' => tohtml(tr('Admin / Statistics / Reseller Statistics')),
 		'TR_RESELLER_NAME' => tohtml(tr('Reseller')),
 		'TR_TRAFFIC_USAGE' => tohtml(tr('Traffic usage')),
@@ -177,7 +177,7 @@ if (systemHasResellers()) {
 		'TR_SQL_DATABASES' => tohtml(tr('SQL databases')),
 		'TR_SQL_USERS' => tohtml(tr('SQL users')),
 		'TR_DETAILED_STATS_TOOLTIPS' => tohtml(tr('Show detailed statistics for this reseller'), 'htmlAttr')
-	));
+    ]);
 
 	$eventManager->registerListener('onGetJsTranslations', function ($e) {
 		/** @var $e \iMSCP_Events_Event */
@@ -189,7 +189,7 @@ if (systemHasResellers()) {
 	generatePageMessage($tpl);
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
-	$eventManager->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+	$eventManager->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 	$tpl->prnt();
 
 	unsetMessages();

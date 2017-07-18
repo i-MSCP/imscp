@@ -26,7 +26,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	/**
 	 * @var iMSCP_Events_Listener_PriorityQueue[] Array that contains events listeners stacks.
 	 */
-	protected $events = array();
+	protected $events = [];
 
 	/**
 	 * Return iMSCP_Events_Aggregator instance
@@ -46,7 +46,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	 * @param array|ArrayAccess $arguments Array of arguments (eg. an associative array)
 	 * @return iMSCP_Events_Listener_ResponseCollection
 	 */
-	public function dispatch($event, $arguments = array())
+	public function dispatch($event, $arguments = [])
 	{
 		$responses = new iMSCP_Events_Listener_ResponseCollection();
 
@@ -84,7 +84,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	public function registerListener($event, $listener, $priority = 1)
 	{
 		if (is_array($event)) {
-			$listeners = array();
+			$listeners = [];
 
 			foreach ($event as $name) {
 				$listeners[] = $this->registerListener($name, $listener, $priority);
@@ -97,7 +97,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 			$this->events[$event] = new iMSCP_Events_Listener_PriorityQueue();
 		}
 
-		$listener = new iMSCP_Events_Listener($listener, array('event' => $event, 'priority' => $priority));
+		$listener = new iMSCP_Events_Listener($listener, ['event' => $event, 'priority' => $priority]);
 		$this->events[$event]->addListener($listener, $priority);
 
 		return $listener;

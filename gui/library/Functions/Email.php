@@ -37,7 +37,7 @@ function get_email_tpl_data($userId, $tplName)
             SELECT admin_name, fname, lname, email, IFNULL(subject, '') AS subject, IFNULL(message, '') AS message
             FROM admin LEFT JOIN email_tpls ON(owner_id = IF(admin_type = 'admin', 0, admin_id) AND name = ?)
             WHERE admin_id = ?
-        ", array($tplName, $userId)
+        ", [$tplName, $userId]
     );
 
     if (!$stmt->rowCount()) {
@@ -73,9 +73,9 @@ function get_email_tpl_data($userId, $tplName)
  */
 function set_email_tpl_data($userId, $tplName, $data)
 {
-    $stmt = exec_query('SELECT subject, message FROM email_tpls WHERE owner_id = ? AND name = ?', array(
+    $stmt = exec_query('SELECT subject, message FROM email_tpls WHERE owner_id = ? AND name = ?', [
         $userId, $tplName
-    ));
+    ]);
 
     if ($stmt->rowCount()) {
         $query = 'UPDATE email_tpls SET subject = ?, message = ? WHERE owner_id = ? AND name = ?';
@@ -83,7 +83,7 @@ function set_email_tpl_data($userId, $tplName, $data)
         $query = 'INSERT INTO email_tpls (subject, message, owner_id, name) VALUES (?, ?, ?, ?)';
     }
 
-    exec_query($query, array($data['subject'], $data['message'], $userId, $tplName));
+    exec_query($query, [$data['subject'], $data['message'], $userId, $tplName]);
 }
 
 /**
@@ -340,15 +340,15 @@ function encode_mime_header($string, $charset = 'UTF-8')
 function send_mail($data)
 {
     $data = new ArrayObject($data);
-    $response = iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onSendMail, array(
+    $response = iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onSendMail, [
         'mail_data' => new ArrayObject($data)
-    ));
+    ]);
 
     if ($response->isStopped()) { // Allow third-party components to short-circuit this event.
         return true;
     }
 
-    foreach (array('mail_id', 'username', 'email', 'subject', 'message') as $parameter) {
+    foreach (['mail_id', 'username', 'email', 'subject', 'message'] as $parameter) {
         if (!isset($data[$parameter]) || !is_string($data[$parameter])) {
             throw new  iMSCP_Exception(sprintf("`%s' parameter is not defined or not a string", $parameter));
         }
@@ -376,13 +376,13 @@ function send_mail($data)
     $port = $scheme == 'http://' ? $cfg['BASE_SERVER_VHOST_HTTP_PORT'] : $cfg['BASE_SERVER_VHOST_HTTPS_PORT'];
 
     # Prepare default replacements
-    $replacements = array(
+    $replacements = [
         '{NAME}' => $name,
         '{USERNAME}' => $username,
         '{BASE_SERVER_VHOST_PREFIX}' => $scheme,
         '{BASE_SERVER_VHOST}' => $host,
         '{BASE_SERVER_VHOST_PORT}' => ":$port"
-    );
+    ];
 
     if (isset($data['placeholders'])) {
         # Merge user defined replacements if any (those replacements take precedence on default replacements)

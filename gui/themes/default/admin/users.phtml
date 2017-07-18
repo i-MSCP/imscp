@@ -1,0 +1,87 @@
+
+<script>
+    function action_delete(link) {
+        return jQuery.imscp.confirmOnclick(
+            link, "<?= tojs(tr('Are you sure you want to delete this user?')); ?>"
+        );
+    }
+
+    $(function() {
+        $("#administrators_table, #resellers_table").dataTable({
+            language: <?= getDataTablesPluginTranslations(); ?>,
+            displayLength: 10,
+            stateSave: true,
+            pagingType: "simple",
+            columnDefs: [{sortable: false, searchable: false, targets: [3]}]
+        });
+    });
+</script>
+
+<h3 class="user_yellow"><span><?= tohtml(tr('Administrator')); ?></span></h3>
+
+<!-- BDP: administrator_message -->
+<div class="static_info"><?= tohtml(tr('No user found.')); ?></div>
+<!-- EDP: administrator_message -->
+
+<!-- BDP: administrator_list -->
+<table class="firstColFixed" id="administrators_table">
+    <thead>
+    <tr>
+        <th><?= tohtml(tr('Username')); ?></th>
+        <th><?= tohtml(tr('Created on')); ?></th>
+        <th><?= tohtml(tr('created by')); ?></th>
+        <th><?= tohtml(tr('Actions')); ?></th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- BDP: administrator_item -->
+    <tr>
+        <td>{ADMINISTRATOR_USERNAME}</td>
+        <td>{ADMINISTRATOR_CREATED_ON}</td>
+        <td>{ADMINISTRATPR_CREATED_BY}</td>
+        <td>
+            <a href="{ADMINISTRATOR_EDIT_URL}" class="icon i_user" title="<?= tohtml(tr('Edit user'), 'htmlAttr'); ?>"><?= tohtml(tr('Edit user')); ?></a>
+            <!-- BDP: administrator_delete_link -->
+            <a href="{ADMINISTRATOR_DELETE_URL}" class="icon i_delete" onclick="return action_delete(this)" title="<?= tohtml(tr('Delete user'), 'htmlAttr'); ?>"><?= tohtml(tr('Delete user')); ?></a>
+            <!-- EDP: administrator_delete_link -->
+        </td>
+    </tr>
+    <!-- EDP: administrator_item -->
+    </tbody>
+</table>
+<!-- EDP: admin_list -->
+
+<h3 class="user_green"><span><?= tohtml(tr('Resellers')); ?></span></h3>
+
+<!-- BDP: reseller_message -->
+<div class="static_info"><?= tohtml(tr('No user found.')); ?></div>
+<!-- EDP: reseller_message -->
+
+<!-- BDP: reseller_list -->
+<table class="firstColFixed" id="resellers_table">
+    <thead>
+    <tr>
+        <th><?= tohtml(tr('Username')); ?></th>
+        <th><?= tohtml(tr('Created on')); ?></th>
+        <th><?= tohtml(tr('Created by')); ?></th>
+        <th><?= tohtml(tr('Action')); ?></th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- BDP: reseller_item -->
+    <tr>
+        <td>{RESELLER_NAME}</td>
+        <td>{RESELLER_CREATED_ON}</td>
+        <td>{RESELLER_CREATED_BY}</td>
+        <td>
+            <a class="icon i_details" href="{RESELLER_SWITCH_INTERFACE_URL}" title="<?= tohtml(tr('Switch to user interface'), 'htmlAttr'); ?>"><?= tohtml(tr('Switch')); ?></a>
+            <a href="{RESELLER_EDIT_URL}" class="icon i_user" title="<?= tohtml(tr('Edit user'), 'htmlAttr'); ?>"><?= tohtml(tr('Edit user')); ?></a>
+            <a href="{RESELLER_DELETE_URL}" class="icon i_delete" title="<?= tohtml(tr('Delete user'), 'htmlAttr'); ?>" onclick="return action_delete(this)"><?= tohtml(tr('Delete user')); ?></a>
+        </td>
+    </tr>
+    <!-- EDP: reseller_item -->
+    </tbody>
+</table>
+<!-- EDP: reseller_list -->
+
+<!-- INCLUDE "../shared/partials/client_list.phtml" -->

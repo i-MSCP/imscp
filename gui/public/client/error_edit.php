@@ -48,7 +48,7 @@ function editErrorPage($eid)
         showBadRequestErrorPage();
     }
 
-    if (in_array($eid, array(401, 403, 404, 500, 503)) && writeErrorPage($eid)) {
+    if (in_array($eid, [401, 403, 404, 500, 503]) && writeErrorPage($eid)) {
         set_page_message(tr('Custom error page updated.'), 'success');
         return true;
     }
@@ -84,9 +84,9 @@ if (!customerHasFeature('custom_error_pages') || !isset($_REQUEST['eid'])) {
     showBadRequestErrorPage();
 }
 
-$eid = filter_digits($_REQUEST['eid']);
+$eid = intval($_REQUEST['eid']);
 
-if (!in_array($eid, array('401', '403', '404', '500', '503'))) {
+if (!in_array($eid, ['401', '403', '404', '500', '503'])) {
     showBadRequestErrorPage();
 }
 
@@ -95,23 +95,23 @@ if (!empty($_POST) && editErrorPage($eid)) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'client/error_edit.tpl',
     'page_message' => 'layout'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE' => tr(' Client / Webtools / Custom Error Pages / Edit Custom Error Page'),
     'TR_ERROR_EDIT_PAGE' => tr('Edit error page'),
     'TR_SAVE' => tr('Save'),
     'TR_CANCEL' => tr('Cancel'),
     'EID' => $eid
-));
+]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 generatePage($tpl, $eid);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

@@ -39,6 +39,6 @@ class iMSCP_Events_Listener_SplPriorityQueue extends SplPriorityQueue
 	 */
 	public function insert($listener, $priority)
 	{
-		parent::insert($listener, array($priority, $this->seed--));
+		parent::insert($listener, [$priority, $this->seed--]);
 	}
 }

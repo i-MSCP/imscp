@@ -34,12 +34,12 @@ class Net
     /**
      * @var array Network device data
      */
-    protected $devices = array();
+    protected $devices = [];
 
     /**
      * @var array IP addresses data
      */
-    protected $ipAddresses = array();
+    protected $ipAddresses = [];
 
     /**
      * @var bool Whether or not NIC and IP data were loaded
@@ -202,7 +202,7 @@ class Net
             }
         }
 
-        $uipT = array();
+        $uipT = [];
         $uiparts = explode(':', $ipAddr);
 
         foreach ($uiparts as $p) {
@@ -256,9 +256,9 @@ class Net
                 $line,
                 $matches
             )) {
-                $this->devices[$matches[1]] = array(
+                $this->devices[$matches[1]] = [
                     'flags' => $matches[2]
-                );
+                ];
             }
         }
     }
@@ -302,12 +302,12 @@ class Net
                 $line,
                 $matches
             )) {
-                $this->ipAddresses[$this->compress($matches[3])] = array(
+                $this->ipAddresses[$this->compress($matches[3])] = [
                     'device'        => $matches[1],
                     'version'       => $matches[2] == 'inet' ? 'ipv4' : 'ipv6',
                     'prefix_length' => $matches[4],
                     'device_label'  => isset($matches[5]) ? $matches[5] : ''
-                );
+                ];
             }
         }
     }

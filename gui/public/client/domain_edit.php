@@ -47,7 +47,7 @@ function _client_getDomainData($domainId)
             AND domain_admin_id = ?
             AND domain_status = ?
         ',
-        array($domainId, $_SESSION['user_id'], 'ok')
+        [$domainId, $_SESSION['user_id'], 'ok']
     );
 
     if (!$stmt->rowCount()) {
@@ -71,7 +71,7 @@ function client_generatePage($tpl)
         showBadRequestErrorPage();
     }
 
-    $domainId = filter_digits($_GET['id']);
+    $domainId = intval($_GET['id']);
     $domainData = _client_getDomainData($domainId);
     if ($domainData === false) {
         showBadRequestErrorPage();
@@ -103,14 +103,14 @@ function client_generatePage($tpl)
         $urlForwarding = (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? true : false;
         $forwardUrlScheme = (isset($_POST['forward_url_scheme'])) ? $_POST['forward_url_scheme'] : 'http://';
         $forwardUrl = (isset($_POST['forward_url'])) ? $_POST['forward_url'] : '';
-        $forwardType = (isset($_POST['forward_type']) && in_array($_POST['forward_type'], array('301', '302', '303', '307', 'proxy'), true)) ? $_POST['forward_type'] : '302';
+        $forwardType = (isset($_POST['forward_type']) && in_array($_POST['forward_type'], ['301', '302', '303', '307', 'proxy'], true)) ? $_POST['forward_type'] : '302';
 
         if ($forwardType == 'proxy' && isset($_POST['forward_host'])) {
             $forwardHost = 'On';
         }
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'DOMAIN_ID'          => $domainId,
         'DOMAIN_NAME'        => tohtml($domainData['domain_name_utf8']),
         'DOCUMENT_ROOT'      => tohtml($documentRoot),
@@ -125,7 +125,7 @@ function client_generatePage($tpl)
         'FORWARD_TYPE_307'   => ($forwardType == '307') ? ' checked' : '',
         'FORWARD_TYPE_PROXY' => ($forwardType == 'proxy') ? ' checked' : '',
         'FORWARD_HOST'       => ($forwardHost == 'On') ? ' checked' : ''
-    ));
+    ]);
 
     // Cover the case where URL forwarding feature is activated and that the
     // default /htdocs directory doesn't exists yet
@@ -142,8 +142,8 @@ function client_generatePage($tpl)
     $_SESSION['ftp_chooser_domain_id'] = $domainId;
     $_SESSION['ftp_chooser_user'] = $_SESSION['user_logged'];
     $_SESSION['ftp_chooser_root_dir'] = '/htdocs';
-    $_SESSION['ftp_chooser_hidden_dirs'] = array();
-    $_SESSION['ftp_chooser_unselectable_dirs'] = array();
+    $_SESSION['ftp_chooser_hidden_dirs'] = [];
+    $_SESSION['ftp_chooser_unselectable_dirs'] = [];
 }
 
 /**
@@ -157,7 +157,7 @@ function client_editDomain()
         showBadRequestErrorPage();
     }
 
-    $domainId = filter_digits($_GET['id']);
+    $domainId = intval($_GET['id']);
     $domainData = _client_getDomainData($domainId);
 
     if ($domainData === false) {
@@ -174,7 +174,7 @@ function client_editDomain()
     if (isset($_POST['url_forwarding'])
         && $_POST['url_forwarding'] == 'yes'
         && isset($_POST['forward_type'])
-        && in_array($_POST['forward_type'], array('301', '302', '303', '307', 'proxy'), true)
+        && in_array($_POST['forward_type'], ['301', '302', '303', '307', 'proxy'], true)
     ) {
         if (!isset($_POST['forward_url_scheme']) || !isset($_POST['forward_url'])) {
             showBadRequestErrorPage();
@@ -198,7 +198,7 @@ function client_editDomain()
             $uri->setPath(rtrim(utils_normalizePath($uri->getPath()), '/') . '/'); // Normalize URI path
 
             if ($uri->getHost() == $domainData['domain_name']
-                && ($uri->getPath() == '/' && in_array($uri->getPort(), array('', 80, 443)))
+                && ($uri->getPath() == '/' && in_array($uri->getPort(), ['', 80, 443]))
             ) {
                 throw new iMSCP_Exception(
                     tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
@@ -237,14 +237,14 @@ function client_editDomain()
         $documentRoot = utils_normalizePath('/htdocs' . $documentRoot);
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditDomain, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditDomain, [
         'domainId'     => $domainId,
         'mountPoint'   => '/',
         'documentRoot' => $documentRoot,
         'forwardUrl'   => $forwardUrl,
         'forwardType'  => $forwardType,
         'forwardHost'  => $forwardHost
-    ));
+    ]);
 
     exec_query(
         '
@@ -252,17 +252,17 @@ function client_editDomain()
           SET document_root = ?, url_forward = ?, type_forward = ?, host_forward = ?, domain_status = ?
           WHERE domain_id = ?
         ',
-        array($documentRoot, $forwardUrl, $forwardType, $forwardHost, 'tochange', $domainId)
+        [$documentRoot, $forwardUrl, $forwardType, $forwardHost, 'tochange', $domainId]
     );
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditDomain, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditDomain, [
         'domainId'     => $domainId,
         'mountPoint'   => '/',
         'documentRoot' => $documentRoot,
         'forwardUrl'   => $forwardUrl,
         'forwardType'  => $forwardType,
         'forwardHost'  => $forwardHost
-    ));
+    ]);
 
     send_request();
     write_log(sprintf('%s updated properties of the %s domain', $_SESSION['user_logged'], $domainData['domain_name_utf8']), E_USER_NOTICE);
@@ -284,13 +284,13 @@ if (!empty($_POST) && client_editDomain()) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'             => 'shared/layouts/ui.tpl',
     'page'               => 'client/domain_edit.tpl',
     'page_message'       => 'layout',
     'document_root_bloc' => 'page'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'             => tr('Client / Domains / Edit Domain'),
     'TR_DOMAIN'                 => tr('Domain'),
     'TR_DOMAIN_NAME'            => tr('Domain name'),
@@ -313,7 +313,7 @@ $tpl->assign(array(
     'TR_PROXY_PRESERVE_HOST'    => tr('Preserve Host'),
     'TR_UPDATE'                 => tr('Update'),
     'TR_CANCEL'                 => tr('Cancel')
-));
+]);
 
 iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e iMSCP_Events_Event */
@@ -327,5 +327,5 @@ client_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

@@ -35,13 +35,13 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptS
 check_login('reseller');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'              => 'shared/layouts/ui.tpl',
     'page'                => 'reseller/language.tpl',
     'page_message'        => 'layout',
     'languages_available' => 'page',
     'def_language'        => 'languages_available'
-));
+]);
 
 if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
     list($resellerCurrentLanguage) = get_user_gui_props($_SESSION['user_id']);
@@ -53,8 +53,8 @@ if (!empty($_POST)) {
     $resellerNewLanguage = clean_input($_POST['def_language']);
 
     if ($resellerCurrentLanguage != $resellerNewLanguage) {
-        exec_query('UPDATE user_gui_props SET lang = ? WHERE user_id = ?', array(
-                $resellerNewLanguage, $_SESSION['user_id'])
+        exec_query('UPDATE user_gui_props SET lang = ? WHERE user_id = ?', [
+                $resellerNewLanguage, $_SESSION['user_id']]
         );
 
         if (!isset($_SESSION['logged_from_id'])) {
@@ -72,16 +72,16 @@ if (!empty($_POST)) {
 
 gen_def_language($tpl, $resellerCurrentLanguage);
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE'      => tr('Reseller / Profile / Language'),
     'TR_LANGUAGE'        => tr('Language'),
     'TR_CHOOSE_LANGUAGE' => tr('Choose your language'),
     'TR_UPDATE'          => tr('Update')
-));
+]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

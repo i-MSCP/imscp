@@ -21,30 +21,27 @@
 /**
  * Returns total number of subdomains that belong to a specific domain
  *
- * Note, this function doesn't make any differentiation between sub domains and the
+ * Note, this function doesn't make any difference between sub domains and the
  * aliasses subdomains. The result is simply the sum of both.
  *
- * @param  int $domain_id Domain unique identifier
+ * @param  int $mainDomainId Main domain identifier unique identifier
  * @return int Total number of subdomains
  */
-function get_domain_running_sub_cnt($domain_id)
+function get_domain_running_sub_cnt($mainDomainId)
 {
-    $stmt = exec_query('SELECT COUNT(*) AS cnt FROM subdomain WHERE domain_id = ?', $domain_id);
-    $row = $stmt->fetchRow();
-    $subdomainCount = $row['cnt'];
-
-    $stmt = exec_query(
-        '
-            SELECT COUNT(subdomain_alias_id) AS cnt FROM subdomain_alias
-            WHERE alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
-        ',
-        $domain_id
-    );
-
-    $row = $stmt->fetchRow();
-    $subdomainCount += $row['cnt'];
-
-    return $subdomainCount;
+    return exec_query(
+            'SELECT COUNT(subdomain_id) FROM subdomain WHERE domain_id = ?', $mainDomainId
+        )->fetchRow(
+            PDO::FETCH_COLUMN
+        ) + exec_query(
+            '
+                SELECT COUNT(subdomain_alias_id) FROM subdomain_alias
+                WHERE alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
+            ',
+            $mainDomainId
+        )->fetchRow(
+            PDO::FETCH_COLUMN
+        );
 }
 
 /**
@@ -55,12 +52,10 @@ function get_domain_running_sub_cnt($domain_id)
  */
 function get_domain_running_als_cnt($domain_id)
 {
-    $stmt = exec_query(
-        'SELECT COUNT(alias_id) AS cnt FROM domain_aliasses WHERE domain_id = ? AND alias_status != ?',
-        array($domain_id, 'ordered')
-    );
-
-    return $stmt->fields['cnt'];
+    return exec_query(
+        'SELECT COUNT(alias_id) FROM domain_aliasses WHERE domain_id = ? AND alias_status <> ?',
+        [$domain_id, 'ordered']
+    )->fetchRow(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -72,32 +67,35 @@ function get_domain_running_als_cnt($domain_id)
  */
 function get_domain_running_mail_acc_cnt($domainId)
 {
-
     $cfg = iMSCP_Registry::get('config');
-
     $query = "
-        SELECT COUNT(mail_id) AS cnt FROM mail_users WHERE mail_type RLIKE ? AND mail_type NOT LIKE ? AND domain_id = ?
+        SELECT COUNT(mail_id)
+        FROM mail_users
+        WHERE
+        domain_id = ?
+        mail_type RLIKE ?
+        AND mail_type NOT LIKE ?
     ";
 
     if ($cfg['COUNT_DEFAULT_EMAIL_ADDRESSES'] == 0) {
-        $query .= " AND mail_acc != 'abuse' AND mail_acc != 'postmaster' AND mail_acc != 'webmaster' ";
+        $query .= " AND mail_acc NOT IN('abuse', 'postmaster', 'webmaster')";
     }
 
-    $stmt = exec_query($query, array('normal_', 'normal_catchall', $domainId));
-    $dmnMailAcc = $stmt->fields['cnt'];
+    $stmt = exec_query($query, [$domainId, 'normal_', 'normal_catchall']);
+    $dmnMailAcc = $stmt->fetchRow(PDO::FETCH_COLUMN);
 
-    $stmt = exec_query($query, array('alias_', 'alias_catchall', $domainId));
-    $alsMailAcc = $stmt->fields['cnt'];
+    $stmt = exec_query($query, [$domainId, 'alias_', 'alias_catchall']);
+    $alsMailAcc = $stmt->fetchRow(PDO::FETCH_COLUMN);
 
-    $stmt = exec_query($query, array('subdom_', 'subdom_catchall', $domainId));
-    $subMailAcc = $stmt->fields['cnt'];
+    $stmt = exec_query($query, [$domainId, 'subdom_', 'subdom_catchall']);
+    $subMailAcc = $stmt->fetchRow(PDO::FETCH_COLUMN);
 
-    $stmt = exec_query($query, array('alssub_', 'alssub_catchall', $domainId));
-    $alssubMailAcc = $stmt->fields['cnt'];
+    $stmt = exec_query($query, [$domainId, 'alssub_', 'alssub_catchall']);
+    $alssubMailAcc = $stmt->fetchRow(PDO::FETCH_COLUMN);
 
-    return array(
+    return [
         $dmnMailAcc + $alsMailAcc + $subMailAcc + $alssubMailAcc, $dmnMailAcc, $alsMailAcc, $subMailAcc, $alssubMailAcc
-    );
+    ];
 }
 
 /**
@@ -108,8 +106,11 @@ function get_domain_running_mail_acc_cnt($domainId)
  */
 function get_customer_running_ftp_acc_cnt($customerId)
 {
-    $stmt = exec_query('SELECT COUNT(userid) AS cnt FROM ftp_users WHERE admin_id = ?', $customerId);
-    return $stmt->fields['cnt'];
+    return exec_query(
+        'SELECT COUNT(userid) FROM ftp_users WHERE admin_id = ?', $customerId
+    )->fetchRow(
+        PDO::FETCH_COLUMN
+    );
 }
 
 /**
@@ -120,8 +121,11 @@ function get_customer_running_ftp_acc_cnt($customerId)
  */
 function get_domain_running_sqld_acc_cnt($domainId)
 {
-    $stmt = exec_query('SELECT COUNT(*) AS cnt FROM sql_database WHERE domain_id = ?', $domainId);
-    return $stmt->fields['cnt'];
+    return exec_query(
+        'SELECT COUNT(sqld_id) FROM sql_database WHERE domain_id = ?', $domainId
+    )->fetchRow(
+        PDO::FETCH_COLUMN
+    );
 }
 
 /**
@@ -133,7 +137,7 @@ function get_domain_running_sqld_acc_cnt($domainId)
 function get_domain_running_sqlu_acc_cnt($domainId)
 {
     $stmt = exec_query(
-        'SELECT DISTINCT sqlu_name FROM sql_user INNER JOIN sql_database USING(sqld_id) WHERE domain_id = ?',
+        'SELECT DISTINCT sqlu_name FROM sql_user JOIN sql_database USING(sqld_id) WHERE domain_id = ?',
         $domainId
     );
 
@@ -148,7 +152,7 @@ function get_domain_running_sqlu_acc_cnt($domainId)
  */
 function get_domain_running_sql_acc_cnt($domainId)
 {
-    return array(get_domain_running_sqld_acc_cnt($domainId), get_domain_running_sqlu_acc_cnt($domainId));
+    return [get_domain_running_sqld_acc_cnt($domainId), get_domain_running_sqlu_acc_cnt($domainId)];
 }
 
 /**
@@ -169,7 +173,7 @@ function get_domain_running_props_cnt($domainId)
 
     $ftpAccCount = get_customer_running_ftp_acc_cnt($stmt->fields['domain_admin_id']);
     list($sqlDbCount, $sqlUserCount) = get_domain_running_sql_acc_cnt($domainId);
-    return array($subCount, $alsCount, $mailAccCount, $ftpAccCount, $sqlDbCount, $sqlUserCount);
+    return [$subCount, $alsCount, $mailAccCount, $ftpAccCount, $sqlDbCount, $sqlUserCount];
 }
 
 /**
@@ -234,7 +238,7 @@ function get_gender_by_code($code, $nullOnBad = false)
         case 'F':
             return tr('Female');
         default:
-            return !$nullOnBad ? tr('Unknown') : null;
+            return !$nullOnBad ? tr('Unknown') : NULL;
     }
 }
 
@@ -248,46 +252,50 @@ function get_gender_by_code($code, $nullOnBad = false)
  */
 function customerHasFeature($featureNames, $forceReload = false)
 {
-    static $availableFeatures = null;
+    static $availableFeatures = NULL;
     static $debug = false;
 
-    if (null === $availableFeatures || $forceReload) {
+    if (NULL === $availableFeatures || $forceReload) {
         $cfg = iMSCP_Registry::get('config');
         $debug = (bool)$cfg['DEBUG'];
         $dmnProps = get_domain_default_props($_SESSION['user_id']);
 
-        $availableFeatures = array(
+        $availableFeatures = [
             /*'domain' => ($dmnProps['domain_alias_limit'] != '-1'
                 || $dmnProps['domain_subd_limit'] != '-1'
                 || $dmnProps['domain_dns'] == 'yes'
                 || $dmnProps['phpini_perm_system'] == 'yes'
                 || $cfg['ENABLE_SSL']) ? true : false,
             */
-            'external_mail' => ($dmnProps['domain_external_mail'] == 'yes') ? true : false,
-            'php' => ($dmnProps['domain_php'] == 'yes') ? true : false,
-            'php_editor' => $dmnProps['phpini_perm_system'] == 'yes'
-            && $dmnProps['phpini_perm_allow_url_fopen'] == 'yes'
-            || $dmnProps['phpini_perm_display_errors'] == 'yes'
-            || in_array($dmnProps['phpini_perm_disable_functions'], array('yes', 'exec')) ? true : false,
-            'cgi' => $dmnProps['domain_cgi'] == 'yes' ? true : false,
-            'ftp' => $dmnProps['domain_ftpacc_limit'] != '-1' ? true : false,
-            'sql' => $dmnProps['domain_sqld_limit'] != '-1' ? true : false,
-            'mail' => $dmnProps['domain_mailacc_limit'] != '-1' ? true : false,
-            'subdomains' => $dmnProps['domain_subd_limit'] != '-1' ? true : false,
-            'domain_aliases' => $dmnProps['domain_alias_limit'] != '-1' ? true : false,
-            'custom_dns_records' => $dmnProps['domain_dns'] != 'no' && $cfg['NAMED_PACKAGE'] != 'Servers::noserver' ? true : false,
-            'webstats' => $cfg['WEBSTATS_PACKAGES'] != 'No' ? true : false,
-            'backup' => $cfg['BACKUP_DOMAINS'] != 'no' && $dmnProps['allowbackup'] != '' ? true : false,
-            'protected_areas' => true,
+            'external_mail'      => ($dmnProps['domain_external_mail'] == 'yes'),
+            'php'                => ($dmnProps['domain_php'] == 'yes'),
+            'php_editor'         => (
+                $dmnProps['phpini_perm_system'] == 'yes'
+                && $dmnProps['phpini_perm_allow_url_fopen'] == 'yes'
+                || $dmnProps['phpini_perm_display_errors'] == 'yes'
+                || in_array($dmnProps['phpini_perm_disable_functions'], ['yes', 'exec'])
+            ),
+            'cgi'                => ($dmnProps['domain_cgi'] == 'yes'),
+            'ftp'                => ($dmnProps['domain_ftpacc_limit'] != '-1'),
+            'sql'                => ($dmnProps['domain_sqld_limit'] != '-1'),
+            'mail'               => ($dmnProps['domain_mailacc_limit'] != '-1'),
+            'subdomains'         => ($dmnProps['domain_subd_limit'] != '-1'),
+            'domain_aliases'     => ($dmnProps['domain_alias_limit'] != '-1'),
+            'custom_dns_records' => ($dmnProps['domain_dns'] != 'no' && $cfg['NAMED_PACKAGE'] != 'Servers::noserver'),
+            'webstats'           => ($cfg['WEBSTATS_PACKAGES'] != 'No'),
+            'backup'             => ($cfg['BACKUP_DOMAINS'] != 'no' && $dmnProps['allowbackup'] != ''),
+            'protected_areas'    => true,
             'custom_error_pages' => true,
-            'aps' => $dmnProps['domain_software_allowed'] != 'no' && $dmnProps['domain_ftpacc_limit'] != '-1' ? true : false,
-            'ssl' => $cfg['ENABLE_SSL'] ? true : false
-        );
+            'aps'                => (
+                $dmnProps['domain_software_allowed'] != 'no' && $dmnProps['domain_ftpacc_limit'] != '-1'
+            ),
+            'ssl'                => ($cfg['ENABLE_SSL'] == 1)
+        ];
 
         if ($cfg['IMSCP_SUPPORT_SYSTEM']) {
             $stmt = exec_query('SELECT support_system FROM reseller_props WHERE reseller_id = ?', $_SESSION['user_created_by']);
             $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-            $availableFeatures['support'] = ($row['support_system'] == 'yes') ? true : false;
+            $availableFeatures['support'] = ($row['support_system'] == 'yes');
         } else {
             $availableFeatures['support'] = false;
         }
@@ -298,7 +306,9 @@ function customerHasFeature($featureNames, $forceReload = false)
         $featureName = strtolower($featureName);
 
         if ($debug && !array_key_exists($featureName, $availableFeatures)) {
-            throw new iMSCP_Exception(sprintf("Feature %s is not known by the customerHasFeature() function.", $featureName));
+            throw new iMSCP_Exception(
+                sprintf("Feature %s is not known by the customerHasFeature() function.", $featureName)
+            );
         }
 
         if (!$availableFeatures[$featureName]) {
@@ -333,7 +343,7 @@ function customerHasDomain($domainName, $customerId)
 
     // Check in domain table
     $stmt = exec_query(
-        "SELECT 'found' FROM domain WHERE domain_admin_id = ? AND domain_name = ?", array($customerId, $domainName)
+        "SELECT 'found' FROM domain WHERE domain_admin_id = ? AND domain_name = ?", [$customerId, $domainName]
     );
 
     if ($stmt->rowCount()) {
@@ -344,11 +354,11 @@ function customerHasDomain($domainName, $customerId)
     $stmt = exec_query(
         "
             SELECT 'found' FROM domain AS t1
-            INNER JOIN domain_aliasses AS t2 ON(t2.domain_id = t1.domain_id)
+            JOIN domain_aliasses AS t2 ON(t2.domain_id = t1.domain_id)
             WHERE t1.domain_admin_id = ?
             AND t2.alias_name = ?
         ",
-        array($customerId, $domainName)
+        [$customerId, $domainName]
     );
 
     if ($stmt->rowCount()) {
@@ -359,10 +369,10 @@ function customerHasDomain($domainName, $customerId)
     $stmt = exec_query(
         "
             SELECT 'found' FROM domain AS t1
-            INNER JOIN subdomain AS t2 ON (t2.domain_id = t1.domain_id)
+            JOIN subdomain AS t2 ON (t2.domain_id = t1.domain_id)
             WHERE t1.domain_admin_id = ? AND CONCAT(t2.subdomain_name, '.', t1.domain_name) = ?
         ",
-        array($customerId, $domainName)
+        [$customerId, $domainName]
     );
 
     if ($stmt->rowCount()) {
@@ -373,11 +383,11 @@ function customerHasDomain($domainName, $customerId)
     $stmt = exec_query(
         "
             SELECT 'found' FROM domain AS t1
-            INNER JOIN domain_aliasses AS t2 ON(t2.domain_id = t1.domain_id)
-            INNER JOIN subdomain_alias AS t3 ON(t3.alias_id = t2.alias_id)
+            JOIN domain_aliasses AS t2 ON(t2.domain_id = t1.domain_id)
+            JOIN subdomain_alias AS t3 ON(t3.alias_id = t2.alias_id)
             WHERE t1.domain_admin_id = ? AND CONCAT(t3.subdomain_alias_name, '.', t2.alias_name) = ?
         ",
-        array($customerId, $domainName)
+        [$customerId, $domainName]
     );
 
     if ($stmt->rowCount()) {
@@ -406,7 +416,7 @@ function delete_autoreplies_log_entries()
  */
 function getMountpoints($domainId)
 {
-    static $mountpoints = array();
+    static $mountpoints = [];
 
     if (empty($mountpoints)) {
         $stmt = exec_query(
@@ -416,9 +426,9 @@ function getMountpoints($domainId)
                 SELECT alias_mount AS mount_point FROM domain_aliasses WHERE domain_id = ?
                 UNION ALL
                 SELECT subdomain_alias_mount AS mount_point FROM subdomain_alias
-                INNER JOIN  domain_aliasses USING(alias_id) WHERE domain_id = ?
+                JOIN domain_aliasses USING(alias_id) WHERE domain_id = ?
             ',
-            array($domainId, $domainId, $domainId)
+            [$domainId, $domainId, $domainId]
         );
 
         if ($stmt->rowCount()) {
@@ -450,7 +460,7 @@ function getDomainMountpoint($domainId, $domainType, $ownerId)
             $query = '
               SELECT subdomain_mount AS mount_point, subdomain_document_root AS document_root
               FROM subdomain
-              INNER JOIN domain USING(domain_id)
+              JOIN domain USING(domain_id)
               WHERE subdomain_id = ?
               AND domain_admin_id = ?
             ';
@@ -459,7 +469,7 @@ function getDomainMountpoint($domainId, $domainType, $ownerId)
             $query = '
               SELECT alias_mount AS mount_point, alias_document_root AS document_root
               FROM domain_aliasses
-              INNER JOIN domain USING(domain_id)
+              JOIN domain USING(domain_id)
               WHERE alias_id = ?
               AND domain_admin_id = ?
             ';
@@ -468,8 +478,8 @@ function getDomainMountpoint($domainId, $domainType, $ownerId)
             $query = '
               SELECT subdomain_alias_mount AS mount_point, subdomain_alias_document_root AS document_root
               FROM subdomain_alias
-              INNER JOIN  domain_aliasses USING(alias_id)
-              INNER JOIN domain USING(domain_id)
+              JOIN domain_aliasses USING(alias_id)
+              JOIN domain USING(domain_id)
               WHERE subdomain_alias_id = ?
               AND domain_admin_id = ?
             ';
@@ -478,7 +488,7 @@ function getDomainMountpoint($domainId, $domainType, $ownerId)
             throw new iMSCP_Exception('Unknown domain type');
     }
 
-    $stmt = exec_query($query, array($domainId, $ownerId));
+    $stmt = exec_query($query, [$domainId, $ownerId]);
     if (!$stmt->rowCount()) {
         throw new iMSCP_Exception("Couldn't find domain data");
     }
@@ -499,19 +509,19 @@ function send_alias_order_email($aliasName)
     $stmt = exec_query('SELECT admin_name, fname, lname, email FROM admin WHERE admin_id = ?', $userId);
     $row = $stmt->fetchRow();
     $data = get_alias_order_email($resellerId);
-    $ret = send_mail(array(
-        'mail_id' => 'alias-order-msg',
-        'fname' => $row['fname'],
-        'lname' => $row['lname'],
-        'username' => $row['admin_name'],
-        'email' => $row['email'],
-        'subject' => $data['subject'],
-        'message' => $data['message'],
-        'placeholders' => array(
+    $ret = send_mail([
+        'mail_id'      => 'alias-order-msg',
+        'fname'        => $row['fname'],
+        'lname'        => $row['lname'],
+        'username'     => $row['admin_name'],
+        'email'        => $row['email'],
+        'subject'      => $data['subject'],
+        'message'      => $data['message'],
+        'placeholders' => [
             '{CUSTOMER}' => decode_idna($row['admin_name']),
-            '{ALIAS}' => $aliasName
-        )
-    ));
+            '{ALIAS}'    => $aliasName
+        ]
+    ]);
 
     if (!$ret) {
         write_log(sprintf("Couldn't send alias order to %s", $row['admin_name']), E_USER_ERROR);
@@ -547,13 +557,13 @@ function parseMaildirsize($maildirsizeFilePath, $refreshData = FALSE)
         return false;
     }
 
-    $maildirsize = array(
+    $maildirsize = [
         'QUOTA_BYTES'    => 0,
         'QUOTA_MESSAGES' => 0,
         'BYTE_COUNT'     => 0,
         'FILE_COUNT'     => 0,
         'TIMESTAMP'      => time()
-    );
+    ];
 
     // Parse quota definition
 

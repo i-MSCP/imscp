@@ -54,7 +54,7 @@ abstract class iMSCP_Plugin_Action extends iMSCP_Plugin
      */
     public function getRoutes()
     {
-        return array();
+        return [];
     }
 
     /**

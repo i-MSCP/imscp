@@ -31,17 +31,17 @@ class iMSCP_PHPini
     /**
      * @var array Reseller PHP permissions (including limits for configuration options)
      */
-    protected $resellerPermissions = array();
+    protected $resellerPermissions = [];
 
     /**
      * @var array Client PHP permissions
      */
-    protected $clientPermissions = array();
+    protected $clientPermissions = [];
 
     /**
      * @var array Domain configuration options
      */
-    protected $domainIni = array();
+    protected $domainIni = [];
 
     /**
      * @var bool Tells whether or not domain INI values are set with default values
@@ -153,7 +153,7 @@ class iMSCP_PHPini
                     php_ini_max_max_execution_time = ?, php_ini_max_max_input_time = ?, php_ini_max_memory_limit = ?
                 WHERE reseller_id = ?
             ',
-            array(
+            [
                 $this->resellerPermissions['phpiniSystem'],
                 $this->resellerPermissions['phpiniAllowUrlFopen'],
                 $this->resellerPermissions['phpiniDisplayErrors'],
@@ -165,7 +165,7 @@ class iMSCP_PHPini
                 $this->resellerPermissions['phpiniMaxInputTime'],
                 $this->resellerPermissions['phpiniMemoryLimit'],
                 $resellerId
-            )
+            ]
         );
     }
 
@@ -336,11 +336,11 @@ class iMSCP_PHPini
                     phpini_perm_display_errors = ?, phpini_perm_disable_functions = ?, phpini_perm_mail_function = ?
                 WHERE domain_admin_id = ?
             ',
-            array(
+            [
                 $this->clientPermissions['phpiniSystem'], $this->clientPermissions['phpiniAllowUrlFopen'],
                 $this->clientPermissions['phpiniDisplayErrors'], $this->clientPermissions['phpiniDisableFunctions'],
                 $this->clientPermissions['phpiniMailFunction'], $clientId
-            )
+            ]
         );
         return (bool)$stmt->rowCount();
     }
@@ -460,9 +460,9 @@ class iMSCP_PHPini
         }
 
         if (NULL !== $adminId && NULL !== $domainId && NULL !== $domainType) {
-            $stmt = exec_query('SELECT * FROM php_ini WHERE admin_id = ? AND domain_id = ? AND domain_type = ?', array(
+            $stmt = exec_query('SELECT * FROM php_ini WHERE admin_id = ? AND domain_id = ? AND domain_type = ?', [
                 $adminId, $domainId, $domainType
-            ));
+            ]);
 
             if ($stmt->rowCount()) {
                 $row = $stmt->fetchRow();
@@ -533,7 +533,7 @@ class iMSCP_PHPini
                     max_execution_time = :max_execution_time, max_input_time = :max_input_time,
                     memory_limit = :memory_limit
             ',
-            array(
+            [
                 'admin_id'             => $adminId,
                 'domain_id'            => $domainId,
                 'domain_type'          => $domainType,
@@ -546,7 +546,7 @@ class iMSCP_PHPini
                 'max_execution_time'   => $this->domainIni['phpiniMaxExecutionTime'],
                 'max_input_time'       => $this->domainIni['phpiniMaxInputTime'],
                 'memory_limit'         => $this->domainIni['phpiniMemoryLimit']
-            )
+            ]
         );
 
         return (bool)$stmt->rowCount();
@@ -669,10 +669,10 @@ class iMSCP_PHPini
                     || $value === '-1' // All error (development value)
                     || $value === 'E_ALL & ~E_DEPRECATED & ~E_STRICT'; // Production
             case 'phpiniDisableFunctions':
-                $allowedFunctionNames = array(
+                $allowedFunctionNames = [
                     'exec', 'mail', 'passthru', 'phpinfo', 'popen', 'proc_open', 'show_source', 'shell', 'shell_exec',
                     'symlink', 'system', ''
-                );
+                ];
 
                 return array_diff(explode(',', $value), $allowedFunctionNames) ? false : true;
             case 'phpiniMemoryLimit':
@@ -765,10 +765,10 @@ class iMSCP_PHPini
                     }
 
                     foreach (
-                        array(
+                        [
                             'phpiniMemoryLimit', 'phpiniPostMaxSize', 'phpiniUploadMaxFileSize',
                             'phpiniMaxExecutionTime', 'phpiniMaxInputTime'
-                        ) as $option
+                        ] as $option
                     ) {
                         if (NULL !== $domainIni) {
                             // Set new INI value
@@ -867,14 +867,14 @@ class iMSCP_PHPini
             $domainId = get_user_domain_id($adminId);
             exec_query(
                 "UPDATE domain SET domain_status = ? WHERE domain_id = ? AND domain_status NOT IN('disabled', 'todelete')",
-                array('tochange', $domainId)
+                ['tochange', $domainId]
             );
             exec_query(
                 "
                     UPDATE domain_aliasses SET alias_status = ?
                     WHERE domain_id = ? AND alias_status NOT IN ('disabled', 'todelete')
                 ",
-                array('tochange', $domainId)
+                ['tochange', $domainId]
             );
         } else {
             switch ($domainType) {
@@ -908,7 +908,7 @@ class iMSCP_PHPini
                     throw new iMSCP_Exception('Unknown domain type');
             }
 
-            exec_query($query, array($adminId, $domainId));
+            exec_query($query, [$adminId, $domainId]);
         }
     }
 
@@ -934,7 +934,7 @@ class iMSCP_PHPini
 
         $subdomains = exec_query(
             'SELECT subdomain_id FROM subdomain WHERE domain_id = ? AND subdomain_status <> ?',
-            array($domainId, 'todelete')
+            [$domainId, 'todelete']
         );
         while ($subdomain = $subdomains->fetchRow()) {
             $phpini->loadDomainIni($clientId, $subdomain['subdomain_id'], 'sub');
@@ -946,7 +946,7 @@ class iMSCP_PHPini
 
         $domainAliases = exec_query(
             'SELECT alias_id FROM domain_aliasses WHERE domain_id = ? AND alias_status <> ?',
-            array($domainId, 'todelete')
+            [$domainId, 'todelete']
         );
         while ($domainAlias = $domainAliases->fetchRow()) {
             $phpini->loadDomainIni($clientId, $domainAlias['alias_id'], 'als');
@@ -961,7 +961,7 @@ class iMSCP_PHPini
                 SELECT subdomain_alias_id FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
                 WHERE domain_id = ? AND subdomain_alias_status <> ?
             ',
-            array($domainId, 'todelete')
+            [$domainId, 'todelete']
         );
         while ($subdomainAlias = $subdomainAliases->fetchRow()) {
             $phpini->loadDomainIni($clientId, $subdomainAlias['subdomain_alias_id'], 'subals');

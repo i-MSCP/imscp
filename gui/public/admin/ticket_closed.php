@@ -44,7 +44,7 @@ $cfg = iMSCP_Registry::get('config');
 if (!hasTicketSystem()) {
     redirectTo('index.php');
 } elseif(isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
-    reopenTicket(filter_digits($_GET['ticket_id']));
+    reopenTicket(intval($_GET['ticket_id']));
 }
 
 if (isset($_GET['psi'])) {
@@ -55,7 +55,7 @@ if (isset($_GET['psi'])) {
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
-	array(
+	[
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/ticket_closed.tpl',
 		'page_message' => 'layout',
@@ -64,10 +64,10 @@ $tpl->define_dynamic(
 		'scroll_prev_gray' => 'page',
 		'scroll_prev' => 'page',
 		'scroll_next_gray' => 'page',
-		'scroll_next' => 'page'));
+		'scroll_next' => 'page']);
 
 $tpl->assign(
-	array(
+	[
 		'TR_PAGE_TITLE' => tr('Admin / Support / Closed Tickets'),
 		'TR_TICKET_STATUS' => tr('Status'),
 		'TR_TICKET_FROM' => tr('From'),
@@ -84,7 +84,7 @@ $tpl->assign(
 		'TR_TICKETS_DELETE_MESSAGE' => tr("Are you sure you want to delete the '%s' ticket?", '%s'),
 		'TR_TICKETS_DELETE_ALL_MESSAGE' => tr('Are you sure you want to delete all tickets?'),
 		'TR_PREVIOUS' => tr('Previous'),
-		'TR_NEXT' => tr('Next')));
+		'TR_NEXT' => tr('Next')]);
 
 generateNavigation($tpl);
 generateTicketList($tpl, $_SESSION['user_id'], $start, $cfg->DOMAIN_ROWS_PER_PAGE, 'admin', 'closed');
@@ -92,7 +92,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 
 $tpl->prnt();
 unsetMessages();

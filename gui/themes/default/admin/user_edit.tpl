@@ -1,5 +1,5 @@
 
-<form name="editCustomerFrm" method="post" action="admin_edit.php?edit_id={EDIT_ID}" autocomplete="off">
+<form name="editCustomerFrm" method="post" action="user_edit.php?edit_id={EDIT_ID}" autocomplete="off">
     <table class="firstColFixed">
         <thead>
         <tr>

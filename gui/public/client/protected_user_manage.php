@@ -32,15 +32,15 @@
 function _client_generateUserAction($status)
 {
     if ($status === 'ok') {
-        return array(
+        return [
             tr('Delete'),
             "action_delete('protected_user_delete.php?uname={USER_ID}', '{UNAME}')",
             tr('Edit'),
             "protected_user_edit.php?uname={USER_ID}"
-        );
+        ];
     }
 
-    return array(tr('N/A'), '', tr('N/A'), '#');
+    return [tr('N/A'), '', tr('N/A'), '#'];
 }
 
 /**
@@ -53,10 +53,10 @@ function _client_generateUserAction($status)
 function _client_generateHtgroupAction($status)
 {
     if ($status === 'ok') {
-        return array(tr('Delete'), "action_delete('protected_group_delete.php?gname={GROUP_ID}', '{GNAME}')");
+        return [tr('Delete'), "action_delete('protected_group_delete.php?gname={GROUP_ID}', '{GNAME}')"];
     }
 
-    return array(tr('N/A'), '');
+    return [tr('N/A'), ''];
 }
 
 /**
@@ -71,10 +71,10 @@ function client_generateUsersList($tpl)
     $stmt = exec_query('SELECT * FROM `htaccess_users` WHERE `dmn_id` = ? ORDER BY `dmn_id` DESC', $domainId);
 
     if (!$stmt->rowCount()) {
-        $tpl->assign(array(
+        $tpl->assign([
             'USERS_BLOCK'   => '',
             'USERS_MESSAGE' => tr('No user found.')
-        ));
+        ]);
         return;
     }
 
@@ -85,7 +85,7 @@ function client_generateUsersList($tpl)
             $userDeleteTranslation, $userDeleteJsScript, $userEditTranslation, $htuserEditJsScript
         ) = _client_generateUserAction($row['status']);
 
-        $tpl->assign(array(
+        $tpl->assign([
             'UNAME'              => tohtml($row['uname']),
             'USTATUS'            => translate_dmn_status($row['status']),
             'USER_ID'            => $row['id'],
@@ -93,7 +93,7 @@ function client_generateUsersList($tpl)
             'USER_DELETE_SCRIPT' => $userDeleteJsScript,
             'USER_EDIT'          => $userEditTranslation,
             'USER_EDIT_SCRIPT'   => $htuserEditJsScript
-        ));
+        ]);
         $tpl->parse('USER_BLOCK', '.user_block');
     }
 }
@@ -110,10 +110,10 @@ function client_generateGroupsList($tpl)
     $stmt = exec_query('SELECT * FROM htaccess_groups WHERE dmn_id = ? ORDER BY dmn_id DESC', $domainId);
 
     if (!$stmt->rowCount()) {
-        $tpl->assign(array(
+        $tpl->assign([
             'GROUPS_MESSAGE' => tr('No group found.'),
             'GROUP_BLOCKS'   => ''
-        ));
+        ]);
         return;
     }
 
@@ -122,13 +122,13 @@ function client_generateGroupsList($tpl)
     while ($row = $stmt->fetchRow()) {
         list($groupDeleteTranslation, $groupDeleteJsScript) = _client_generateHtgroupAction($row['status']);
 
-        $tpl->assign(array(
+        $tpl->assign([
             'GNAME'               => tohtml($row['ugroup']),
             'GSTATUS'             => translate_dmn_status($row['status']),
             'GROUP_ID'            => $row['id'],
             'GROUP_DELETE'        => $groupDeleteTranslation,
             'GROUP_DELETE_SCRIPT' => $groupDeleteJsScript
-        ));
+        ]);
 
         if (empty($row['members'])) {
             $tpl->assign('MEMBER', '');
@@ -154,7 +154,7 @@ check_login('user');
 customerHasFeature('protected_areas') or showBadRequestErrorPage();
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'               => 'shared/layouts/ui.tpl',
     'page'                 => 'client/puser_manage.tpl',
     'page_message'         => 'layout',
@@ -164,8 +164,8 @@ $tpl->define_dynamic(array(
     'groups_message_block' => 'page',
     'group_blocks'         => 'page',
     'group_block'          => 'group_blocks'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'     => tr('Client / Webtools / Protected Areas / Manage Users and Groups'),
     'TR_ACTIONS'        => tr('Actions'),
     'TR_USERS'          => tr('Users'),
@@ -180,7 +180,7 @@ $tpl->assign(array(
     'TR_PASSWORD'       => tr('Password'),
     'TR_STATUS'         => tr('Status'),
     'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s'),
-));
+]);
 
 
 generateNavigation($tpl);
@@ -189,5 +189,5 @@ client_generateGroupsList($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

@@ -47,7 +47,7 @@ function generatePage($tpl, $year, $month, $day)
 			WHERE
 				traff_time BETWEEN ? AND ?
 		',
-		array($firstHourOfDay, $lastHourOfDay)
+		[$firstHourOfDay, $lastHourOfDay]
 	);
 
 	if ($stmt->rowCount()) {
@@ -57,7 +57,7 @@ function generatePage($tpl, $year, $month, $day)
 			$otherIn = $row['all_in'] - ($row['mail_in'] + $row['pop_in'] + $row['web_in']);
 			$otherOut = $row['all_out'] - ($row['mail_out'] + $row['pop_out'] + $row['web_out']);
 
-			$tpl->assign(array(
+			$tpl->assign([
 				'HOUR' => tohtml(date('H:i', $row['period'])),
 				'WEB_IN' => tohtml(bytesHuman($row['web_in'])),
 				'WEB_OUT' => tohtml(bytesHuman($row['web_out'])),
@@ -70,7 +70,7 @@ function generatePage($tpl, $year, $month, $day)
 				'ALL_IN' => tohtml(bytesHuman($row['all_in'])),
 				'ALL_OUT' => tohtml(bytesHuman($row['all_out'])),
 				'ALL' => tohtml(bytesHuman($row['all_in'] + $row['all_out']))
-			));
+            ]);
 
 			$all[0] += $row['web_in'];
 			$all[1] += $row['web_out'];
@@ -87,7 +87,7 @@ function generatePage($tpl, $year, $month, $day)
 		$allOtherIn = $all[6] - ($all[0] + $all[2] + $all[4]);
 		$allOtherOut = $all[7] - ($all[1] + $all[3] + $all[5]);
 
-		$tpl->assign(array(
+		$tpl->assign([
 			'WEB_IN_ALL' => tohtml(bytesHuman($all[0])),
 			'WEB_OUT_ALL' => tohtml(bytesHuman($all[1])),
 			'SMTP_IN_ALL' => tohtml(bytesHuman($all[2])),
@@ -99,7 +99,7 @@ function generatePage($tpl, $year, $month, $day)
 			'ALL_IN_ALL' => tohtml(bytesHuman($all[6])),
 			'ALL_OUT_ALL' => tohtml(bytesHuman($all[7])),
 			'ALL_ALL' => tohtml(bytesHuman($all[6] + $all[7]))
-		));
+        ]);
 	} else {
 		set_page_message(tr('No statistics found for the given period. Try another period.'), 'static_info');
 		$tpl->assign('DAY_SERVER_STATISTICS_BLOCK', '');
@@ -118,20 +118,20 @@ $eventManager->dispatch(iMSCP_Events::onAdminScriptStart);
 check_login('admin');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
 	'layout' => 'shared/layouts/ui.tpl',
 	'page' => 'admin/server_statistic_day.tpl',
 	'page_message' => 'layout',
 	'day_server_statistics_block' => 'page',
 	'hour_list' => 'day_server_statistics_block'
-));
+]);
 
 if (isset($_GET['month']) && isset($_GET['year']) && isset($_GET['day'])) {
-	$year = filter_digits($_GET['year']);
-	$month = filter_digits($_GET['month']);
-	$day = filter_digits($_GET['day']);
+	$year = intval($_GET['year']);
+	$month = intval($_GET['month']);
+	$day = intval($_GET['day']);
 
-	$tpl->assign(array(
+	$tpl->assign([
 		'TR_PAGE_TITLE' => tohtml(tr('Admin / Statistics / Server Statistics / Day Statistics')),
 		'TR_MONTH' => tohtml(tr('Month')),
 		'TR_YEAR' => tohtml(tr('Year')),
@@ -151,14 +151,14 @@ if (isset($_GET['month']) && isset($_GET['year']) && isset($_GET['day'])) {
 		'MONTH' => tohtml($month),
 		'YEAR' => tohtml(date('Y', mktime(0, 0, 0, $month, $day, $year))),
 		'DAY' => tohtml($day)
-	));
+    ]);
 
 	generateNavigation($tpl);
 	generatePage($tpl, $year, $month, $day);
 	generatePageMessage($tpl);
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
-	$eventManager->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+	$eventManager->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 	$tpl->prnt();
 
 	unsetMessages();

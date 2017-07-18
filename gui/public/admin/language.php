@@ -35,22 +35,22 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStar
 check_login('admin');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'              => 'shared/layouts/ui.tpl',
     'page'                => 'admin/language.tpl',
     'page_message'        => 'layout',
     'languages_available' => 'page',
     'def_language'        => 'languages_available'
-));
+]);
 
 $adminCurrentLanguage = $_SESSION['user_def_lang'];
 
 if (!empty($_POST)) {
     $adminNewLanguage = clean_input($_POST['def_language']);
     if ($adminCurrentLanguage != $adminNewLanguage) {
-        exec_query('UPDATE user_gui_props SET lang = ? WHERE user_id = ?', array(
+        exec_query('UPDATE user_gui_props SET lang = ? WHERE user_id = ?', [
             $adminNewLanguage, $_SESSION['user_id']
-        ));
+        ]);
         $_SESSION['user_def_lang'] = $adminNewLanguage;
         set_page_message(tr('Language successfully updated.'), 'success');
     } else {
@@ -60,17 +60,17 @@ if (!empty($_POST)) {
     redirectTo('profile.php');
 }
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE'      => tr('Admin / Profile / Language'),
     'TR_LANGUAGE'        => tr('Language'),
     'TR_CHOOSE_LANGUAGE' => tr('Choose your language'),
     'TR_UPDATE'          => tr('Update')
-));
+]);
 
 generateNavigation($tpl);
 gen_def_language($tpl, $adminCurrentLanguage);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

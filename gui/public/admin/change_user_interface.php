@@ -29,4 +29,4 @@ if (!isset($_SESSION['user_id'])
     showBadRequestErrorPage();
 }
 
-change_user_interface($_SESSION['user_id'], filter_digits($_GET['to_id']));
+change_user_interface($_SESSION['user_id'], intval($_GET['to_id']));

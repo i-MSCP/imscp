@@ -38,15 +38,15 @@ function _getUserTraffic($domainId, $beginTime, $endTime)
             SUM(dtraff_mail) AS smtp_traffic, SUM(dtraff_pop) AS pop_traffic
           FROM domain_traffic WHERE domain_id = ? AND dtraff_time BETWEEN ? AND ?
         ',
-        array($domainId, $beginTime, $endTime)
+        [$domainId, $beginTime, $endTime]
     );
 
     if ($stmt->rowCount()) {
         $row = $stmt->fetchRow();
-        return array($row['web_traffic'], $row['ftp_traffic'], $row['smtp_traffic'], $row['pop_traffic']);
+        return [$row['web_traffic'], $row['ftp_traffic'], $row['smtp_traffic'], $row['pop_traffic']];
     }
 
-    return array(0, 0, 0, 0);
+    return [0, 0, 0, 0];
 }
 
 /**
@@ -60,11 +60,11 @@ function generatePage($tpl)
     $domainId = get_user_domain_id($_SESSION['user_id']);
 
     if (isset($_POST['month']) && isset($_POST['year'])) {
-        $year = filter_digits($_POST['year']);
-        $month = filter_digits($_POST['month']);
+        $year = intval($_POST['year']);
+        $month = intval($_POST['month']);
     } else if (isset($_GET['month']) && isset($_GET['year'])) {
-        $month = filter_digits($_GET['month']);
-        $year = filter_digits($_GET['year']);
+        $month = intval($_GET['month']);
+        $year = intval($_GET['year']);
     } else {
         $month = date('m');
         $year = date('Y');
@@ -86,7 +86,7 @@ function generatePage($tpl)
 
     $stmt = exec_query(
         'SELECT domain_id FROM domain_traffic WHERE domain_id = ? AND dtraff_time BETWEEN ? AND ? LIMIT 1',
-        array($domainId, getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year))
+        [$domainId, getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)]
     );
 
     if (!$stmt->rowCount()) {
@@ -108,14 +108,14 @@ function generatePage($tpl)
             $domainId, $beginTime, $endTime
         );
 
-        $tpl->assign(array(
+        $tpl->assign([
             'DATE' => tohtml(date($dateFormat, strtotime($year . '-' . $month . '-' . $fromDay))),
             'WEB_TRAFF' => tohtml(bytesHuman($webTraffic)),
             'FTP_TRAFF' => tohtml(bytesHuman($ftpTraffic)),
             'SMTP_TRAFF' => tohtml(bytesHuman($smtpTraffic)),
             'POP_TRAFF' => tohtml(bytesHuman($popTraffic)),
             'SUM_TRAFF' => tohtml(bytesHuman($webTraffic + $ftpTraffic + $smtpTraffic + $popTraffic))
-        ));
+        ]);
 
         $all[0] += $webTraffic;
         $all[1] += $ftpTraffic;
@@ -125,13 +125,13 @@ function generatePage($tpl)
         $tpl->parse('TRAFFIC_TABLE_ITEM', '.traffic_table_item');
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'WEB_ALL' => tohtml(bytesHuman($all[0])),
         'FTP_ALL' => tohtml(bytesHuman($all[1])),
         'SMTP_ALL' => tohtml(bytesHuman($all[2])),
         'POP_ALL' => tohtml(bytesHuman($all[3])),
         'SUM_ALL' => tohtml(bytesHuman(array_sum($all)))
-    ));
+    ]);
 
 }
 
@@ -147,7 +147,7 @@ $eventManager->dispatch(iMSCP_Events::onClientScriptStart);
 check_login('user');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'client/traffic_statistics.tpl',
     'page_message' => 'layout',
@@ -155,8 +155,8 @@ $tpl->define_dynamic(array(
     'year_list' => 'page',
     'statistics_block' => 'page',
     'traffic_table_item' => 'statistics_block'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE' => tr('Client / Statistics'),
     'TR_STATISTICS' => tr('Statistics'),
     'TR_MONTH' => tr('Month'),
@@ -169,14 +169,14 @@ $tpl->assign(array(
     'TR_SUM' => tr('All traffic'),
     'TR_ALL' => tr('All'),
     'TR_DATE' => tr('Date')
-));
+]);
 
 generateNavigation($tpl);
 generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-$eventManager->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+$eventManager->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

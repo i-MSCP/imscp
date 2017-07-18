@@ -51,7 +51,7 @@ function generate_reseller_users_props($resellerId)
     $rsqlUserUnlimited = $rtraffUnlimited = $rdiskUnlimited = false;
 
     if (!$stmt->rowCount()) { // Case in reseller has not customer yet
-        return array(
+        return [
             $rdmnConsumed, $rdmnAssigned, $rdmnUnlimited,
             $rsubConsumed, $rsubAssigned, $rsubUnlimited,
             $ralsConsumed, $ralsAssigned, $ralsUnlimited,
@@ -61,7 +61,7 @@ function generate_reseller_users_props($resellerId)
             $rsqlUserConsumed, $rsqlUserAssigned, $rsqlUserUnlimited,
             $rtraffConsumed, $rtraffAssigned, $rtraffUnlimited,
             $rdiskConsumed, $rdiskAssigned, $rdiskUnlimited
-        );
+        ];
     }
 
     while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
@@ -151,126 +151,13 @@ function generate_reseller_users_props($resellerId)
         }
     }
 
-    return array(
+    return [
         $rdmnConsumed, $rdmnAssigned, $rdmnUnlimited, $rsubConsumed, $rsubAssigned, $rsubUnlimited, $ralsConsumed,
         $ralsAssigned, $ralsUnlimited, $rmailConsumed, $rmailAssigned, $rmailUnlimited, $rftpConsumed, $rftpAssigned,
         $rftpUnlimited, $rsqlDbConsumed, $rsqlDbAssigned, $rsqlDbUnlimited, $rsqlUserConsumed, $rsqlUserAssigned,
         $rsqlUserUnlimited, $rtraffConsumed, $rtraffAssigned, $rtraffUnlimited, $rdiskConsumed, $rdiskAssigned,
         $rdiskUnlimited
-    );
-}
-
-/**
- * Generate query for user search form
- *
- * @param  string &$searchQuery
- * @param  string &$countQuery
- * @param  int $startIndex
- * @param  int $rowsPerPage
- * @param  string $searchFor
- * @param  string $searchCommon
- * @param  string $searchStatus
- * @return void
- */
-function gen_admin_domain_query(
-    &$searchQuery, &$countQuery, $startIndex, $rowsPerPage, $searchFor, $searchCommon, $searchStatus
-)
-{
-    $condition = '';
-    $startIndex = filter_digits($startIndex);
-    $rowsPerPage = filter_digits($rowsPerPage);
-
-    if ($searchFor == 'n/a' && $searchCommon == 'n/a' && $searchStatus == 'n/a') {
-        $countQuery = '
-          SELECT COUNT(*)
-          FROM domain AS t1
-          INNER JOIN admin AS t2 ON (t2.admin_id = t1.domain_admin_id)
-          INNER JOIN admin AS t3 ON(t3.admin_id = t2.created_by)
-        ';
-        $searchQuery = "
-            SELECT t1.*, t2.admin_id, t2.admin_status, t3.admin_name AS reseller_name
-            FROM domain AS t1
-            INNER JOIN admin AS t2 ON (t2.admin_id = t1.domain_admin_id)
-            INNER JOIN admin AS t3 ON(t3.admin_id = t2.created_by)
-            ORDER BY t1.domain_name ASC
-            LIMIT $startIndex, $rowsPerPage
-        ";
-        return;
-    }
-
-    $db = iMSCP_Database::getInstance();
-    $searchFor = str_replace(array('!', '_', '%'), array('!!', '!_', '!%'), $searchFor);
-
-    if ($searchFor == '' && $searchStatus != '') {
-        if ($searchStatus != 'all') {
-            $condition = 'WHERE t1.domain_status = ' . $db->quote($searchStatus);
-        }
-
-        $countQuery = "
-          SELECT COUNT(*)
-          FROM domain AS t1
-          INNER JOIN admin AS t2 ON (t2.admin_id = t1.domain_admin_id)
-          INNER JOIN admin AS t3 ON(t3.admin_id = t2.created_by)
-          $condition
-        ";
-        $searchQuery = "
-            SELECT t1.*, t2.admin_id, t2.admin_status, t3.admin_name AS reseller_name
-            FROM domain AS t1
-            INNER JOIN admin AS t2 ON (t2.admin_id = t1.domain_admin_id)
-            INNER JOIN admin AS t3 ON(t3.admin_id = t2.created_by)
-            $condition
-            ORDER BY t1.domain_name ASC
-            LIMIT $startIndex, $rowsPerPage
-        ";
-    } elseif ($searchFor != '') {
-        $searchFor = str_replace(array('!', '_', '%'), array('!!', '!_', '!%'), $searchFor);
-        $searchFor = ($searchCommon == 'domain_name')
-            ? $db->quote('%' . encode_idna($searchFor) . '%') : $db->quote("%$searchFor%");
-
-        if ($searchCommon == 'domain_name') {
-            $condition = "WHERE t1.domain_name LIKE $searchFor ESCAPE '!'";
-        } elseif ($searchCommon == 'customer_id') {
-            $condition = "WHERE t2.customer_id LIKE $searchFor ESCAPE '!'";
-        } elseif ($searchCommon == 'fname') {
-            $condition = "WHERE t2.fname LIKE $searchFor ESCAPE '='";
-        } elseif ($searchCommon == 'lname') {
-            $condition = "WHERE t2.lname LIKE $searchFor ESCAPE '='";
-        } elseif ($searchCommon == 'firm') {
-            $condition = "WHERE t2.firm LIKE $searchFor ESCAPE '!'";
-        } elseif ($searchCommon == 'city') {
-            $condition = "WHERE t2.city LIKE $searchFor ESCAPE '!'";
-        } elseif ($searchCommon == 'state') {
-            $condition = "WHERE t2.state LIKE $searchFor ESCAPE '!'";
-        } elseif ($searchCommon == 'country') {
-            $condition = "WHERE t2.country LIKE $searchFor ESCAPE '!'";
-        } elseif ($searchCommon == 'reseller_name') {
-            $condition = "WHERE t3.admin_name LIKE $searchFor ESCAPE '!'";
-        }
-
-        if ($condition != '') {
-            if ($searchStatus != 'all') {
-                $condition .= ' AND t1.domain_status = ' . $db->quote($searchStatus);
-            }
-
-            $countQuery = "
-                SELECT COUNT(*)
-                FROM domain AS t1
-                INNER JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
-                INNER JOIN admin AS t3 ON(t3.admin_id = t2.created_by)
-                $condition
-            ";
-
-            $searchQuery = "
-                SELECT t1.*, t2.admin_id, t2.admin_status, t3.admin_name AS reseller_name
-                FROM domain AS t1
-                INNER JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
-                INNER JOIN admin AS t3 ON(t3.admin_id = t2.created_by)
-                $condition
-                ORDER BY t1.domain_name ASC
-                LIMIT $startIndex, $rowsPerPage
-            ";
-        }
-    }
+    ];
 }
 
 /**

@@ -47,113 +47,103 @@ define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
  */
 function generate_reseller_user_props($resellerId)
 {
-	$rdmnCurrent = $rdmnMax = $rsubCurrent = $rsubMax = $ralsCurrent = $ralsMax = $rmailCurrent = $rmailMax =
-	$rftpCurrent = $rftpMax = $rsqlDbCurrent = $rsqlDbMax = $rsqlUserCurrent = $rsqlUserMax = $rtraffCurrent =
-	$rtraffMax = $rdiskCurrent = $rdiskMax = 0;
+    $rdmnCurrent = $rdmnMax = $rsubCurrent = $rsubMax = $ralsCurrent = $ralsMax = $rmailCurrent = $rmailMax =
+    $rftpCurrent = $rftpMax = $rsqlDbCurrent = $rsqlDbMax = $rsqlUserCurrent = $rsqlUserMax = $rtraffCurrent =
+    $rtraffMax = $rdiskCurrent = $rdiskMax = 0;
+    $rdmnUf = $rsubUf = $ralsUf = $rmailUf = $rftpUf = $rsqlDbUf = $rsqlUserUf = $rtraffUf = $rdiskUf = '_off_';
 
-	$rdmnUf = $rsubUf = $ralsUf = $rmailUf = $rftpUf = $rsqlDbUf = $rsqlUserUf = $rtraffUf = $rdiskUf = '_off_';
+    $stmt = exec_query(
+        'SELECT admin_id, domain_id FROM admin JOIN domain ON(domain_admin_id = admin_id) WHERE created_by = ?',
+        $resellerId
+    );
 
-	$stmt = exec_query(
-		'
-			SELECT
-				admin_id, domain_id
-			FROM
-				admin
-			INNER JOIN
-				domain ON(domain_admin_id = admin_id)
-			WHERE
-				created_by = ?
-		',
-		$resellerId
-	);
+    if (!$stmt->rowCount()) {
+        return array_fill(0, 27, 0);
+    }
 
-	if(!$stmt->rowCount()) {
-		return array_fill(0, 27, 0);
-	}
+    while ($data = $stmt->fetchRow()) {
+        $adminId = $data['admin_id'];
 
-	while($data = $stmt->fetchRow()) {
-		$adminId = $data['admin_id'];
+        list(
+            $subCurrent, $subMax, $alsCurrent, $alsMax, $mailCurrent, $mailMax, $ftpCurrent, $ftpMax, $sqlDbCurrent,
+            $sqlDbMax, $sqlUserCurrent, $sqlUserMax, $traffMax, $diskMax
+            ) = get_user_props($adminId);
 
-		list(
-			$subCurrent, $subMax, $alsCurrent, $alsMax, $mailCurrent, $mailMax, $ftpCurrent, $ftpMax, $sqlDbCurrent,
-			$sqlDbMax, $sqlUserCurrent, $sqlUserMax, $traffMax, $diskMax
-		) = get_user_props($adminId);
+        list(, , , , , , $traffCurrent, $diskCurrent) = shared_getCustomerStats($adminId);
 
-		list(, , , , , , $traffCurrent, $diskCurrent) = shared_getCustomerStats($adminId);
+        $rdmnCurrent += 1;
 
-		$rdmnCurrent += 1;
+        if ($subMax != -1) {
+            if ($subMax == 0) {
+                $rsubUf = '_on_';
+            }
 
-		if($subMax != -1) {
-			if($subMax == 0) {
-				$rsubUf = '_on_';
-			}
+            $rsubCurrent += $subCurrent;
+            $rsubMax += $subMax;
+        }
 
-			$rsubCurrent += $subCurrent;
-			$rsubMax += $subMax;
-		}
+        if ($alsMax == 0) {
+            $ralsUf = '_on_';
+        }
 
-		if($alsMax == 0) {
-			$ralsUf = '_on_';
-		}
+        $ralsCurrent += $alsCurrent;
+        $ralsMax += $alsMax;
 
-		$ralsCurrent += $alsCurrent;
-		$ralsMax += $alsMax;
+        if ($mailMax != -1) {
+            if ($mailMax == 0) {
+                $rmailUf = '_on_';
+            }
 
-		if($mailMax != -1) {
-			if($mailMax == 0) {
-				$rmailUf = '_on_';
-			}
+            $rmailCurrent += $mailCurrent;
+            $rmailMax += $mailMax;
+        }
 
-			$rmailCurrent += $mailCurrent;
-			$rmailMax += $mailMax;
-		}
+        if ($ftpMax != -1) {
+            if ($ftpMax == 0) {
+                $rftpUf = '_on_';
+            }
 
-		if($ftpMax != -1) {
-			if($ftpMax == 0) {
-				$rftpUf = '_on_';
-			}
+            $rftpCurrent += $ftpCurrent;
+            $rftpMax += $ftpMax;
+        }
 
-			$rftpCurrent += $ftpCurrent;
-			$rftpMax += $ftpMax;
-		}
+        if ($sqlDbMax != -1) {
+            if ($sqlDbMax == 0) {
+                $rsqlDbUf = '_on_';
+            }
 
-		if($sqlDbMax != -1) {
-			if($sqlDbMax == 0) {
-				$rsqlDbUf = '_on_';
-			}
+            $rsqlDbCurrent += $sqlDbCurrent;
+            $rsqlDbMax += $sqlDbMax;
+        }
 
-			$rsqlDbCurrent += $sqlDbCurrent;
-			$rsqlDbMax += $sqlDbMax;
-		}
+        if ($sqlUserMax != -1) {
+            if ($sqlUserMax == 0) {
+                $rsqlUserUf = '_on_';
+            }
 
-		if($sqlUserMax != -1) {
-			if($sqlUserMax == 0) {
-				$rsqlUserUf = '_on_';
-			}
+            $rsqlUserCurrent += $sqlUserCurrent;
+            $rsqlUserMax += $sqlUserMax;
+        }
 
-			$rsqlUserCurrent += $sqlUserCurrent;
-			$rsqlUserMax += $sqlUserMax;
-		}
+        if ($traffMax == 0) $rtraffUf = '_on_';
 
-		if($traffMax == 0) $rtraffUf = '_on_';
+        $rtraffCurrent += $traffCurrent;
+        $rtraffMax += $traffMax;
 
-		$rtraffCurrent += $traffCurrent;
-		$rtraffMax += $traffMax;
+        if ($diskMax == 0) {
+            $rdiskUf = '_on_';
+        }
 
-		if($diskMax == 0) {
-			$rdiskUf = '_on_';
-		}
+        $rdiskCurrent += $diskCurrent;
+        $rdiskMax += $diskMax;
+    }
 
-		$rdiskCurrent += $diskCurrent;
-		$rdiskMax += $diskMax;
-	}
-
-	return array(
-		$rdmnCurrent, $rdmnMax, $rdmnUf, $rsubCurrent, $rsubMax, $rsubUf, $ralsCurrent, $ralsMax, $ralsUf,
-		$rmailCurrent, $rmailMax, $rmailUf, $rftpCurrent, $rftpMax, $rftpUf, $rsqlDbCurrent, $rsqlDbMax,  $rsqlDbUf,
-		$rsqlUserCurrent, $rsqlUserMax, $rsqlUserUf, $rtraffCurrent, $rtraffMax, $rtraffUf, $rdiskCurrent, $rdiskMax,
-		$rdiskUf
-	);
+    return [
+        $rdmnCurrent, $rdmnMax, $rdmnUf, $rsubCurrent, $rsubMax, $rsubUf, $ralsCurrent, $ralsMax, $ralsUf,
+        $rmailCurrent, $rmailMax, $rmailUf, $rftpCurrent, $rftpMax, $rftpUf, $rsqlDbCurrent, $rsqlDbMax, $rsqlDbUf,
+        $rsqlUserCurrent, $rsqlUserMax, $rsqlUserUf, $rtraffCurrent, $rtraffMax, $rtraffUf, $rdiskCurrent, $rdiskMax,
+        $rdiskUf
+    ];
 }
 
 /**
@@ -164,187 +154,56 @@ function generate_reseller_user_props($resellerId)
  */
 function get_user_props($adminId)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
+    /** @var $cfg iMSCP_Config_Handler_File */
+    $cfg = iMSCP_Registry::get('config');
 
-	$stmt = exec_query('SELECT * FROM domain WHERE domain_id = ?', $adminId);
+    $stmt = exec_query('SELECT * FROM domain WHERE domain_id = ?', $adminId);
 
-	if (!$stmt->rowCount()) {
-		return array_fill(0, 14, 0);
-	}
+    if (!$stmt->rowCount()) {
+        return array_fill(0, 14, 0);
+    }
 
-	$data = $stmt->fetchRow();
-	$sub_current = get_domain_running_sub_cnt($adminId);
-	$sub_max = $data['domain_subd_limit'];
-	$als_current = records_count('domain_aliasses', 'domain_id', $adminId);
-	$als_max = $data['domain_alias_limit'];
+    $data = $stmt->fetchRow();
+    $sub_current = get_domain_running_sub_cnt($adminId);
+    $sub_max = $data['domain_subd_limit'];
+    $als_current = records_count('domain_aliasses', 'domain_id', $adminId);
+    $als_max = $data['domain_alias_limit'];
 
-	if ($cfg['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
-		// Catch all is not a mailbox and haven't to be count
-		$mail_current = records_count('mail_users',
-			'mail_type NOT RLIKE \'_catchall\' AND domain_id',
-			$adminId);
-	} else {
-		$where = "
-				mail_acc != 'abuse'
-			AND
-				mail_acc != 'postmaster'
-			AND
-				mail_acc != 'webmaster'
-			AND
-				mail_type NOT RLIKE '_catchall'
-			AND
-				domain_id
-		";
+    if ($cfg['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
+        // Catch all is not a mailbox and haven't to be count
+        $mail_current = records_count('mail_users', "mail_type NOT RLIKE '_catchall' AND domain_id", $adminId);
+    } else {
+        $where = "
+            mail_acc != 'abuse'
+            AND mail_acc != 'postmaster'
+            AND mail_acc != 'webmaster'
+            AND mail_type NOT RLIKE '_catchall'
+            AND domain_id
+        ";
 
-		$mail_current = records_count('mail_users', $where, $adminId);
-	}
+        $mail_current = records_count('mail_users', $where, $adminId);
+    }
 
-	$mail_max = $data['domain_mailacc_limit'];
+    $mail_max = $data['domain_mailacc_limit'];
+    $ftp_current = sub_records_rlike_count(
+        'domain_name', 'domain', 'domain_id', $adminId, 'userid', 'ftp_users', 'userid', '@', ''
+    );
 
-	$ftp_current = sub_records_rlike_count(
-		'domain_name', 'domain', 'domain_id', $adminId, 'userid', 'ftp_users', 'userid', '@', ''
-	);
+    $ftp_current += sub_records_rlike_count(
+        'alias_name', 'domain_aliasses', 'domain_id', $adminId, 'userid', 'ftp_users', 'userid', '@', ''
+    );
+    $ftp_max = $data['domain_ftpacc_limit'];
+    $sql_db_current = records_count('sql_database', 'domain_id', $adminId);
+    $sql_db_max = $data['domain_sqld_limit'];
+    $sql_user_current = get_domain_running_sqlu_acc_cnt($adminId);
+    $sql_user_max = $data['domain_sqlu_limit'];
+    $traff_max = $data['domain_traffic_limit'];
+    $disk_max = $data['domain_disk_limit'];
 
-	$ftp_current += sub_records_rlike_count(
-		'alias_name', 'domain_aliasses', 'domain_id', $adminId, 'userid', 'ftp_users', 'userid', '@', ''
-	);
-
-	$ftp_max = $data['domain_ftpacc_limit'];
-	$sql_db_current = records_count('sql_database', 'domain_id', $adminId);
-	$sql_db_max = $data['domain_sqld_limit'];
-	$sql_user_current = get_domain_running_sqlu_acc_cnt($adminId);
-	$sql_user_max = $data['domain_sqlu_limit'];
-	$traff_max = $data['domain_traffic_limit'];
-	$disk_max = $data['domain_disk_limit'];
-
-	return array(
-		$sub_current, $sub_max, $als_current, $als_max, $mail_current, $mail_max, $ftp_current, $ftp_max,
-		$sql_db_current, $sql_db_max, $sql_user_current, $sql_user_max, $traff_max, $disk_max
-	);
-}
-
-/**
- * Must be documented
- *
- * @param $searchQuery
- * @param $countQuery
- * @param int $resellerId Reseller unique identifier
- * @param $startIndex
- * @param $rowsPerPage
- * @param $searchFor
- * @param $searchCommon
- * @param $searchStatus
- * @return void
- */
-function gen_manage_domain_query(
-	&$searchQuery, &$countQuery, $resellerId, $startIndex, $rowsPerPage, $searchFor, $searchCommon, $searchStatus
-) {
-	if ($searchFor === 'n/a' && $searchCommon === 'n/a' && $searchStatus === 'n/a') {
-		// We have pure list query;
-		$countQuery = "
-			SELECT
-				COUNT(domain_id) AS cnt
-			FROM
-				domain
-			INNER JOIN
-				admin ON(admin_id = domain_admin_id)
-			WHERE
-				created_by = '$resellerId'
-		";
-
-		$searchQuery = "
-			SELECT
-				*
-			FROM
-				domain
-			INNER JOIN
-				admin ON(admin_id = domain_admin_id)
-			WHERE
-				created_by = '$resellerId'
-			ORDER BY
-				domain_name ASC
-			LIMIT
-				$startIndex, $rowsPerPage
-		";
-	} elseif ($searchFor == '' && $searchStatus != '') {
-		if ($searchStatus == 'all') {
-			$addQuery = "created_by = '$resellerId'";
-		} else {
-			$addQuery = "created_by = '$resellerId' AND domain_status = '$searchStatus'";
-		}
-
-		$countQuery = "SELECT COUNT(domain_id) AS cnt FROM domain WHERE $addQuery";
-
-		$searchQuery = "
-			SELECT
-				*
-			FROM
-				domain
-			INNER JOIN
-				admin ON(admin_id = domain_admin_id)
-			WHERE
-				$addQuery
-			ORDER BY
-				domain_name ASC
-			LIMIT
-				$startIndex, $rowsPerPage
-		";
-	} elseif ($searchFor != '') {
-		if ($searchCommon == 'domain_name') {
-			$searchFor = encode_idna($searchFor);
-			$addQuery = "WHERE admin_name RLIKE '" . addslashes($searchFor) . "' %s";
-		} elseif ($searchCommon == 'customer_id') {
-			$addQuery = "WHERE customer_id RLIKE '" . addslashes($searchFor) . "' %s";
-		} elseif ($searchCommon == 'fname') {
-			$addQuery =  "WHERE fname RLIKE '" . addslashes($searchFor) . "' %s";
-		} elseif ($searchCommon == 'lname') {
-			$addQuery =  "WHERE lname RLIKE '" . addslashes($searchFor) . "' %s";
-		} elseif ($searchCommon == 'firm') {
-			$addQuery = "WHERE firm RLIKE '" . addslashes($searchFor) . "' %s";
-		} elseif ($searchCommon == 'city') {
-			$addQuery = "WHERE city RLIKE '" . addslashes($searchFor) . "' %s";
-		} elseif ($searchCommon == 'state') {
-			$addQuery = "WHERE state RLIKE '" . addslashes($searchFor) . "' %s";
-		} elseif ($searchCommon == 'country') {
-			$addQuery = "WHERE country RLIKE '" . addslashes($searchFor) . "' %s";
-		}
-
-		if (isset($addQuery)) {
-			if ($searchStatus != 'all') {
-				$addQuery = sprintf(
-					$addQuery, " AND created_by = '$resellerId' AND domain_status = '$searchStatus'"
-				);
-
-				$countQuery = "
-				    SELECT
-					    COUNT(admin_id) AS cnt
-				    FROM
-					    admin AS t1, domain AS t2
-				    $addQuery
-				AND
-					t1.admin_id = t2.domain_admin_id
-			";
-			} else {
-				$addQuery = sprintf($addQuery, " AND `created_by` = '$resellerId'");
-				$countQuery = "SELECT COUNT(admin_id) AS cnt FROM admin $addQuery";
-			}
-
-			$searchQuery = "
-			    SELECT
-				    t1.admin_id, t1.admin_status, t2.*
-			    FROM
-				    admin AS t1, domain AS t2
-			    $addQuery
-			    AND
-				    t1.admin_id = t2.domain_admin_id
-			    ORDER BY
-				    t2.domain_name ASC
-			    LIMIT
-				    $startIndex, $rowsPerPage
-		    ";
-		}
-	}
+    return [
+        $sub_current, $sub_max, $als_current, $als_max, $mail_current, $mail_max, $ftp_current, $ftp_max,
+        $sql_db_current, $sql_db_max, $sql_user_current, $sql_user_max, $traff_max, $disk_max
+    ];
 }
 
 /**
@@ -357,134 +216,124 @@ function gen_manage_domain_query(
  */
 function reseller_limits_check($resellerId, $hp)
 {
-	if (is_number($hp)) {
-		if (isset($_SESSION['ch_hpprops'])) {
-			$hostingPlanProperties = $_SESSION['ch_hpprops'];
-		} else {
-			$stmt = exec_query('SELECT props FROM hosting_plans WHERE id = ?', $hp);
+    if (is_number($hp)) {
+        if (isset($_SESSION['ch_hpprops'])) {
+            $hostingPlanProperties = $_SESSION['ch_hpprops'];
+        } else {
+            $stmt = exec_query('SELECT props FROM hosting_plans WHERE id = ?', $hp);
 
-			if ($stmt->rowCount()) {
-				$data = $stmt->fetchRow();
-				$hostingPlanProperties = $data['props'];
-			} else {
-				throw new iMSCP_Exception('Hosting plan not found');
-			}
-		}
-	} else {
-		$hostingPlanProperties = $hp;
-	}
+            if ($stmt->rowCount()) {
+                $data = $stmt->fetchRow();
+                $hostingPlanProperties = $data['props'];
+            } else {
+                throw new iMSCP_Exception('Hosting plan not found');
+            }
+        }
+    } else {
+        $hostingPlanProperties = $hp;
+    }
 
-	list(
-		, , $newSubLimit, $newAlsLimit, $newMailLimit, $newFtpLimit, $newSqlDbLimit, $newSqlUserLimit, $newTrafficLimit,
-		$newDiskspaceLimit
-	) = explode(';', $hostingPlanProperties);
+    list(
+        , , $newSubLimit, $newAlsLimit, $newMailLimit, $newFtpLimit, $newSqlDbLimit, $newSqlUserLimit, $newTrafficLimit,
+        $newDiskspaceLimit
+        ) = explode(';', $hostingPlanProperties);
 
-	$stmt = exec_query('SELECT * FROM reseller_props WHERE reseller_id = ?', $resellerId);
-	$data = $stmt->fetchRow();
-	$currentDmnLimit = $data['current_dmn_cnt'];
-	$maxDmnLimit = $data['max_dmn_cnt'];
-	$currentSubLimit = $data['current_sub_cnt'];
-	$maxSubLimit = $data['max_sub_cnt'];
-	$currentAlsLimit = $data['current_als_cnt'];
-	$maxAlsLimit = $data['max_als_cnt'];
-	$currentMailLimit = $data['current_mail_cnt'];
-	$maxMailLimit = $data['max_mail_cnt'];
-	$currentFtpLimit = $data['current_ftp_cnt'];
-	$ftpMaxLimit = $data['max_ftp_cnt'];
-	$currentSqlDbLimit = $data['current_sql_db_cnt'];
-	$maxSqlDbLimit = $data['max_sql_db_cnt'];
-	$currentSqlUserLimit = $data['current_sql_user_cnt'];
-	$maxSqlUserLimit = $data['max_sql_user_cnt'];
-	$currentTrafficLimit = $data['current_traff_amnt'];
-	$maxTrafficLimit = $data['max_traff_amnt'];
-	$currentDiskspaceLimit = $data['current_disk_amnt'];
-	$maxDiskspaceLimit = $data['max_disk_amnt'];
+    $stmt = exec_query('SELECT * FROM reseller_props WHERE reseller_id = ?', $resellerId);
+    $data = $stmt->fetchRow();
+    $currentDmnLimit = $data['current_dmn_cnt'];
+    $maxDmnLimit = $data['max_dmn_cnt'];
+    $currentSubLimit = $data['current_sub_cnt'];
+    $maxSubLimit = $data['max_sub_cnt'];
+    $currentAlsLimit = $data['current_als_cnt'];
+    $maxAlsLimit = $data['max_als_cnt'];
+    $currentMailLimit = $data['current_mail_cnt'];
+    $maxMailLimit = $data['max_mail_cnt'];
+    $currentFtpLimit = $data['current_ftp_cnt'];
+    $ftpMaxLimit = $data['max_ftp_cnt'];
+    $currentSqlDbLimit = $data['current_sql_db_cnt'];
+    $maxSqlDbLimit = $data['max_sql_db_cnt'];
+    $currentSqlUserLimit = $data['current_sql_user_cnt'];
+    $maxSqlUserLimit = $data['max_sql_user_cnt'];
+    $currentTrafficLimit = $data['current_traff_amnt'];
+    $maxTrafficLimit = $data['max_traff_amnt'];
+    $currentDiskspaceLimit = $data['current_disk_amnt'];
+    $maxDiskspaceLimit = $data['max_disk_amnt'];
 
-	if ($maxDmnLimit != 0) {
-		if ($currentDmnLimit + 1 > $maxDmnLimit) {
-			set_page_message(tr('You have reached your domain limit. You cannot add more domains.'), 'error');
-		}
-	}
+    if ($maxDmnLimit != 0 && $currentDmnLimit + 1 > $maxDmnLimit) {
+        set_page_message(tr('You have reached your domain limit. You cannot add more domains.'), 'error');
+    }
 
-	if ($maxSubLimit != 0) {
-		if ($newSubLimit != -1) {
-			if ($newSubLimit == 0) {
-				set_page_message(tr('You have a subdomain limit. You cannot add a user with unlimited subdomains.'), 'error');
-			} else if ($currentSubLimit + $newSubLimit > $maxSubLimit) {
-				set_page_message(tr('You are exceeding your subdomain limit.'), 'error');
-			}
-		}
-	}
+    if ($maxSubLimit != 0 && $newSubLimit != -1) {
+        if ($newSubLimit == 0) {
+            set_page_message(tr('You have a subdomain limit. You cannot add a user with unlimited subdomains.'), 'error');
+        } else if ($currentSubLimit + $newSubLimit > $maxSubLimit) {
+            set_page_message(tr('You are exceeding your subdomain limit.'), 'error');
+        }
+    }
 
-	if ($maxAlsLimit != 0) {
-		if ($newAlsLimit != -1) {
-			if ($newAlsLimit == 0) {
-				set_page_message(tr('You have a domain alias limit. You cannot add a user with unlimited domain aliases.'), 'error');
-			} else if ($currentAlsLimit + $newAlsLimit > $maxAlsLimit) {
-				set_page_message(tr('You are exceeding you domain alias limit.'), 'error');
-			}
-		}
-	}
+    if ($maxAlsLimit != 0 && $newAlsLimit != -1) {
+        if ($newAlsLimit == 0) {
+            set_page_message(tr('You have a domain alias limit. You cannot add a user with unlimited domain aliases.'), 'error');
+        } else if ($currentAlsLimit + $newAlsLimit > $maxAlsLimit) {
+            set_page_message(tr('You are exceeding you domain alias limit.'), 'error');
+        }
+    }
 
-	if ($maxMailLimit != 0) {
-		if ($newMailLimit == 0) {
-			set_page_message(tr('You have a mail account limit. You cannot add a user with unlimited email accounts.'), 'error');
-		} else if ($currentMailLimit + $newMailLimit > $maxMailLimit) {
-			set_page_message(tr('You are exceeding your email account limit.'), 'error');
-		}
-	}
+    if ($maxMailLimit != 0) {
+        if ($newMailLimit == 0) {
+            set_page_message(tr('You have a mail account limit. You cannot add a user with unlimited email accounts.'), 'error');
+        } else if ($currentMailLimit + $newMailLimit > $maxMailLimit) {
+            set_page_message(tr('You are exceeding your email account limit.'), 'error');
+        }
+    }
 
-	if ($ftpMaxLimit != 0) {
-		if ($newFtpLimit == 0) {
-			set_page_message(tr('You have a FTP account limit. You cannot add a user with unlimited FTP accounts.'), 'error');
-		} else if ($currentFtpLimit + $newFtpLimit > $ftpMaxLimit) {
-			set_page_message(tr('You are exceeding your FTP account limit.'), 'error');
-		}
-	}
+    if ($ftpMaxLimit != 0) {
+        if ($newFtpLimit == 0) {
+            set_page_message(tr('You have a FTP account limit. You cannot add a user with unlimited FTP accounts.'), 'error');
+        } else if ($currentFtpLimit + $newFtpLimit > $ftpMaxLimit) {
+            set_page_message(tr('You are exceeding your FTP account limit.'), 'error');
+        }
+    }
 
-	if ($maxSqlDbLimit != 0) {
-		if ($newSqlDbLimit != -1) {
-			if ($newSqlDbLimit == 0) {
-				set_page_message(tr('You have a SQL database limit. You cannot add a user with unlimited SQL databases.'), 'error');
-			} else if ($currentSqlDbLimit + $newSqlDbLimit > $maxSqlDbLimit) {
-				set_page_message(tr('You are exceeding your SQL database limit.'), 'error');
-			}
-		}
-	}
+    if ($maxSqlDbLimit != 0 && $newSqlDbLimit != -1) {
+        if ($newSqlDbLimit == 0) {
+            set_page_message(tr('You have a SQL database limit. You cannot add a user with unlimited SQL databases.'), 'error');
+        } else if ($currentSqlDbLimit + $newSqlDbLimit > $maxSqlDbLimit) {
+            set_page_message(tr('You are exceeding your SQL database limit.'), 'error');
+        }
+    }
 
-	if ($maxSqlUserLimit != 0) {
-		if ($newSqlUserLimit != -1) {
-			if ($newSqlUserLimit == 0) {
-				set_page_message(tr('You have a SQL user limit. You cannot add a user with unlimited SQL users.'), 'error');
-			} else if ($newSqlDbLimit == -1) {
-				set_page_message(tr('You have disabled SQL databases for this user. You cannot have SQL users here.'), 'error');
-			} else if ($currentSqlUserLimit + $newSqlUserLimit > $maxSqlUserLimit) {
-				set_page_message(tr('You are exceeding your SQL user limit.'), 'error');
-			}
-		}
-	}
+    if ($maxSqlUserLimit != 0 && $newSqlUserLimit != -1) {
+        if ($newSqlUserLimit == 0) {
+            set_page_message(tr('You have a SQL user limit. You cannot add a user with unlimited SQL users.'), 'error');
+        } else if ($newSqlDbLimit == -1) {
+            set_page_message(tr('You have disabled SQL databases for this user. You cannot have SQL users here.'), 'error');
+        } else if ($currentSqlUserLimit + $newSqlUserLimit > $maxSqlUserLimit) {
+            set_page_message(tr('You are exceeding your SQL user limit.'), 'error');
+        }
+    }
 
-	if ($maxTrafficLimit != 0) {
-		if ($newTrafficLimit == 0) {
-			set_page_message(tr('You have a monthly traffic limit. You cannot add a user with unlimited monthly traffic.'), 'error');
-		} else if ($currentTrafficLimit + $newTrafficLimit > $maxTrafficLimit) {
-			set_page_message(tr('You are exceeding your monthly traffic limit.'), 'error');
-		}
-	}
+    if ($maxTrafficLimit != 0) {
+        if ($newTrafficLimit == 0) {
+            set_page_message(tr('You have a monthly traffic limit. You cannot add a user with unlimited monthly traffic.'), 'error');
+        } else if ($currentTrafficLimit + $newTrafficLimit > $maxTrafficLimit) {
+            set_page_message(tr('You are exceeding your monthly traffic limit.'), 'error');
+        }
+    }
 
-	if ($maxDiskspaceLimit != 0) {
-		if ($newDiskspaceLimit == 0) {
-			set_page_message(tr('You have a disk space limit. You cannot add a user with unlimited disk space.'), 'error');
-		} else if ($currentDiskspaceLimit + $newDiskspaceLimit > $maxDiskspaceLimit) {
-			set_page_message(tr('You are exceeding your disk space limit.'), 'error');
-		}
-	}
+    if ($maxDiskspaceLimit != 0) {
+        if ($newDiskspaceLimit == 0) {
+            set_page_message(tr('You have a disk space limit. You cannot add a user with unlimited disk space.'), 'error');
+        } else if ($currentDiskspaceLimit + $newDiskspaceLimit > $maxDiskspaceLimit) {
+            set_page_message(tr('You are exceeding your disk space limit.'), 'error');
+        }
+    }
 
-	if (Zend_Session::namespaceIsset('pageMessages')) {
-		return false;
-	}
+    if (Zend_Session::namespaceIsset('pageMessages')) {
+        return false;
+    }
 
-	return true;
+    return true;
 }
 
 /**
@@ -500,45 +349,47 @@ function reseller_limits_check($resellerId, $hp)
  */
 function client_mail_add_default_accounts($dmnId, $userEmail, $dmnName, $dmnType = 'domain', $subId = 0)
 {
-	$forwardType = ($dmnType == 'alias') ? 'alias_forward' : 'normal_forward';
-	$resellerEmail = $_SESSION['user_email'] ?: null;
-	$userEmail = $userEmail ?: null;
+    $forwardType = ($dmnType == 'alias') ? 'alias_forward' : 'normal_forward';
+    $resellerEmail = $_SESSION['user_email'] ?: NULL;
+    $userEmail = $userEmail ?: NULL;
 
-	$db = iMSCP_Database::getInstance();
+    $db = iMSCP_Database::getInstance();
 
-	try {
-		$db->beginTransaction();
-		$stmt = $db->getRawInstance()->prepare(
-			'
-				INSERT INTO mail_users (
-					mail_acc, mail_pass, mail_forward, domain_id, mail_type, sub_id, status, po_active,
-					mail_auto_respond, quota, mail_addr
-				) VALUES (
-					?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-				)
-			'
-		);
+    try {
+        $db->beginTransaction();
+        $stmt = $db->getRawInstance()->prepare(
+            '
+                INSERT INTO mail_users (
+                    mail_acc, mail_pass, mail_forward, domain_id, mail_type, sub_id, status, po_active,
+                    mail_auto_respond, quota, mail_addr
+                ) VALUES (
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                )
+            '
+        );
 
-		foreach(
-			array(
-				'abuse' => $resellerEmail,
-				'hostmaster' => $resellerEmail,
-				'postmaster' => $resellerEmail,
-				'webmaster' => $userEmail
-			) as $email => $forwardTo
-		) {
-			if($forwardTo !== null) {
-				$stmt->execute(
-					array($email, '_no_', $forwardTo, $dmnId, $forwardType, $subId, 'toadd', 'no', 0, null, $email . '@' . $dmnName)
-				);
-			}
-		}
+        foreach ([
+                     'abuse'      => $resellerEmail,
+                     'hostmaster' => $resellerEmail,
+                     'postmaster' => $resellerEmail,
+                     'webmaster'  => $userEmail
+                 ] as $email => $forwardTo
+        ) {
+            if ($forwardTo !== NULL) {
+                $stmt->execute(
+                    [
+                        $email, '_no_', $forwardTo, $dmnId, $forwardType, $subId, 'toadd', 'no', 0, NULL,
+                        $email . '@' . $dmnName
+                    ]
+                );
+            }
+        }
 
-		$db->commit();
-	} catch(PDOException $e) {
-		$db->rollBack();
-		throw new iMSCP_Exception_Database($e->getMessage(), $e->getCode(), null, $e);
-	}
+        $db->commit();
+    } catch (PDOException $e) {
+        $db->rollBack();
+        throw new iMSCP_Exception_Database($e->getMessage(), $e->getCode(), NULL, $e);
+    }
 }
 
 /**
@@ -549,13 +400,12 @@ function client_mail_add_default_accounts($dmnId, $userEmail, $dmnName, $dmnType
  */
 function datepicker_reseller_convert($time)
 {
-	return strtotime($time);
+    return strtotime($time);
 }
 
 /**
  * Tells whether or not the given feature is available for the reseller.
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @throws iMSCP_Exception When $featureName is not known
  * @param string $featureName Feature name
  * @param bool $forceReload If true force data to be reloaded
@@ -564,42 +414,39 @@ function datepicker_reseller_convert($time)
  */
 function resellerHasFeature($featureName, $forceReload = false)
 {
-	static $availableFeatures = null;
-	$featureName = strtolower($featureName);
+    static $availableFeatures = NULL;
+    $featureName = strtolower($featureName);
 
-	if (null == $availableFeatures || $forceReload) {
-		/** @var $cfg iMSCP_Config_Handler_File */
-		$cfg = iMSCP_Registry::get('config');
+    if (NULL == $availableFeatures || $forceReload) {
+        $cfg = iMSCP_Registry::get('config');
+        $resellerProps = imscp_getResellerProperties($_SESSION['user_id'], true);
+        $availableFeatures = [
+            'domains'            => ($resellerProps['max_dmn_cnt'] != '-1'),
+            'subdomains'         => ($resellerProps['max_sub_cnt'] != '-1'),
+            'domain_aliases'     => ($resellerProps['max_als_cnt'] != '-1'),
+            'mail'               => ($resellerProps['max_mail_cnt'] != '-1'),
+            'ftp'                => ($resellerProps['max_ftp_cnt'] != '-1'),
+            'sql'                => ($resellerProps['max_sql_db_cnt'] != '-1'), // TODO to be removed
+            'sql_db'             => ($resellerProps['max_sql_db_cnt'] != '-1'),
+            'sql_user'           => ($resellerProps['max_sql_user_cnt'] != '-1'),
+            'php'                => true,
+            'php_editor'         => ($resellerProps['php_ini_system'] == 'yes'),
+            'cgi'                => true,
+            'custom_dns_records' => ($cfg['NAMED_PACKAGE'] != 'Servers::noserver'),
+            'aps'                => ($resellerProps['software_allowed'] != 'no'), // aps feature check must be revisted
+            'external_mail'      => true,
+            'backup'             => ($cfg['BACKUP_DOMAINS'] != 'no'),
+            'support'            => ($cfg['IMSCP_SUPPORT_SYSTEM'] && $resellerProps['support_system'] == 'yes')
+        ];
+    }
 
-		$resellerProps = imscp_getResellerProperties($_SESSION['user_id'], true);
+    if (!array_key_exists($featureName, $availableFeatures)) {
+        throw new iMSCP_Exception(
+            sprintf("Feature %s is not known by the resellerHasFeature() function.", $featureName)
+        );
+    }
 
-		$availableFeatures = array(
-			'domains' => ($resellerProps['max_dmn_cnt'] != '-1') ? true : false,
-			'subdomains' => ($resellerProps['max_sub_cnt'] != '-1') ? true : false,
-			'domain_aliases' => ($resellerProps['max_als_cnt'] != '-1') ? true : false,
-			'mail' => ($resellerProps['max_mail_cnt'] != '-1') ? true : false,
-			'ftp' => ($resellerProps['max_ftp_cnt'] != '-1') ? true : false,
-			'sql' => ($resellerProps['max_sql_db_cnt'] != '-1') ? true : false, // TODO to be removed
-			'sql_db' => ($resellerProps['max_sql_db_cnt'] != '-1') ? true : false,
-			'sql_user' => ($resellerProps['max_sql_user_cnt'] != '-1') ? true : false,
-			'php' => true,
-			'php_editor' => ($resellerProps['php_ini_system'] == 'yes') ? true : false,
-			'cgi' => true,
-			'custom_dns_records' => ($cfg['NAMED_PACKAGE'] != 'Servers::noserver') ? true : false,
-			'aps' => ($resellerProps['software_allowed'] != 'no') ? true : false, // aps feature check must be revisted
-			'external_mail' => true,
-			'backup' => ($cfg['BACKUP_DOMAINS'] != 'no') ? true : false,
-			'support' => ($cfg['IMSCP_SUPPORT_SYSTEM'] && $resellerProps['support_system'] == 'yes') ? true : false
-		);
-	}
-
-	if (!array_key_exists($featureName, $availableFeatures)) {
-		throw new iMSCP_Exception(
-			sprintf("Feature %s is not known by the resellerHasFeature() function.", $featureName)
-		);
-	}
-
-	return $availableFeatures[$featureName];
+    return $availableFeatures[$featureName];
 }
 
 /**
@@ -610,18 +457,18 @@ function resellerHasFeature($featureName, $forceReload = false)
  */
 function resellerHasCustomers($minNbCustomers = 1)
 {
-	static $customerCount = null;
+    static $customerCount = NULL;
 
-	if (null === $customerCount ) {
-		$stmt = exec_query(
-			"SELECT COUNT(admin_id) FROM admin WHERE admin_type = 'user' AND created_by = ? AND admin_status <> 'todelete'",
-			$_SESSION['user_id']
-		);
+    if (NULL === $customerCount) {
+        $stmt = exec_query(
+            "SELECT COUNT(admin_id) FROM admin WHERE admin_type = 'user' AND created_by = ? AND admin_status <> 'todelete'",
+            $_SESSION['user_id']
+        );
 
-		$customerCount = $stmt->fetchRow(PDO::FETCH_COLUMN);
-	}
+        $customerCount = $stmt->fetchRow(PDO::FETCH_COLUMN);
+    }
 
-	return ($customerCount >= $minNbCustomers);
+    return ($customerCount >= $minNbCustomers);
 }
 
 /**
@@ -632,139 +479,139 @@ function resellerHasCustomers($minNbCustomers = 1)
  */
 function check_ruser_data($noPass = false)
 {
-	global $password, $passwordRepeat, $email, $customerId, $firstName, $lastName, $gender, $firm, $street1, $street2,
-		   $zip, $city, $state, $country, $phone, $fax;
+    global $password, $passwordRepeat, $email, $customerId, $firstName, $lastName, $gender, $firm, $street1, $street2,
+           $zip, $city, $state, $country, $phone, $fax;
 
-	// Get data for fields from previous page
-	if (isset($_POST['userpassword'])) {
-		$password = clean_input($_POST['userpassword']);
-	} else {
-		$password = '';
-	}
+    // Get data for fields from previous page
+    if (isset($_POST['userpassword'])) {
+        $password = clean_input($_POST['userpassword']);
+    } else {
+        $password = '';
+    }
 
-	if (isset($_POST['userpassword_repeat'])) {
-		$passwordRepeat = clean_input($_POST['userpassword_repeat']);
-	} else {
-		$passwordRepeat = '';
-	}
+    if (isset($_POST['userpassword_repeat'])) {
+        $passwordRepeat = clean_input($_POST['userpassword_repeat']);
+    } else {
+        $passwordRepeat = '';
+    }
 
-	if (isset($_POST['useremail'])) {
-		$email = clean_input($_POST['useremail']);
-	} else {
-		$email = '';
-	}
+    if (isset($_POST['useremail'])) {
+        $email = clean_input($_POST['useremail']);
+    } else {
+        $email = '';
+    }
 
-	if (isset($_POST['useruid'])) {
-		$customerId = clean_input($_POST['useruid']);
-	} else {
-		$customerId = '';
-	}
+    if (isset($_POST['useruid'])) {
+        $customerId = clean_input($_POST['useruid']);
+    } else {
+        $customerId = '';
+    }
 
-	if (isset($_POST['userfname'])) {
-		$firstName = clean_input($_POST['userfname']);
-	} else {
-		$firstName = '';
-	}
+    if (isset($_POST['userfname'])) {
+        $firstName = clean_input($_POST['userfname']);
+    } else {
+        $firstName = '';
+    }
 
-	if (isset($_POST['userlname'])) {
-		$lastName = clean_input($_POST['userlname']);
-	}  else {
-		$lastName = '';
-	}
+    if (isset($_POST['userlname'])) {
+        $lastName = clean_input($_POST['userlname']);
+    } else {
+        $lastName = '';
+    }
 
-	if (isset($_POST['gender']) && get_gender_by_code($_POST['gender'], true) !== null) {
-		$gender = $_POST['gender'];
-	} else {
-		$gender = 'U';
-	}
+    if (isset($_POST['gender']) && get_gender_by_code($_POST['gender'], true) !== NULL) {
+        $gender = $_POST['gender'];
+    } else {
+        $gender = 'U';
+    }
 
-	if (isset($_POST['userfirm'])) {
-		$firm = clean_input($_POST['userfirm']);
-	} else {
-		$firm = '';
-	}
+    if (isset($_POST['userfirm'])) {
+        $firm = clean_input($_POST['userfirm']);
+    } else {
+        $firm = '';
+    }
 
-	if (isset($_POST['userstreet1'])) {
-		$street1 = clean_input($_POST['userstreet1']);
-	} else {
-		$street1 = '';
-	}
+    if (isset($_POST['userstreet1'])) {
+        $street1 = clean_input($_POST['userstreet1']);
+    } else {
+        $street1 = '';
+    }
 
-	if (isset($_POST['userstreet2'])) {
-		$street2 = clean_input($_POST['userstreet2']);
-	} else {
-		$street2 = '';
-	}
+    if (isset($_POST['userstreet2'])) {
+        $street2 = clean_input($_POST['userstreet2']);
+    } else {
+        $street2 = '';
+    }
 
-	if (isset($_POST['userzip'])) {
-		$zip = clean_input($_POST['userzip']);
-	} else {
-		$zip = '';
-	}
+    if (isset($_POST['userzip'])) {
+        $zip = clean_input($_POST['userzip']);
+    } else {
+        $zip = '';
+    }
 
-	if (isset($_POST['usercity'])) {
-		$city = clean_input($_POST['usercity']);
-	} else {
-		$city = '';
-	}
+    if (isset($_POST['usercity'])) {
+        $city = clean_input($_POST['usercity']);
+    } else {
+        $city = '';
+    }
 
-	if (isset($_POST['userstate'])) {
-		$state = clean_input($_POST['userstate']);
-	} else {
-		$state = '';
-	}
+    if (isset($_POST['userstate'])) {
+        $state = clean_input($_POST['userstate']);
+    } else {
+        $state = '';
+    }
 
-	if (isset($_POST['usercountry'])) {
-		$country = clean_input($_POST['usercountry']);
-	} else {
-		$country = '';
-	}
+    if (isset($_POST['usercountry'])) {
+        $country = clean_input($_POST['usercountry']);
+    } else {
+        $country = '';
+    }
 
-	if (isset($_POST['userphone'])) {
-		$phone = clean_input($_POST['userphone']);
-	} else {
-		$phone = '';
-	}
+    if (isset($_POST['userphone'])) {
+        $phone = clean_input($_POST['userphone']);
+    } else {
+        $phone = '';
+    }
 
-	if (isset($_POST['userfax'])) {
-		$fax = clean_input($_POST['userfax']);
-	} else {
-		$fax = '';
-	}
+    if (isset($_POST['userfax'])) {
+        $fax = clean_input($_POST['userfax']);
+    } else {
+        $fax = '';
+    }
 
-	if (!$noPass) {
-		if ('' === $passwordRepeat || '' === $password) {
-			set_page_message(tr('Please fill up both data fields for password.'), 'error');
-		} elseif ($passwordRepeat !== $password) {
-			set_page_message(tr("Passwords do not match."), 'error');
-		} else {
-			checkPasswordSyntax($password);
-		}
-	}
+    if (!$noPass) {
+        if ('' === $passwordRepeat || '' === $password) {
+            set_page_message(tr('Please fill up both data fields for password.'), 'error');
+        } elseif ($passwordRepeat !== $password) {
+            set_page_message(tr("Passwords do not match."), 'error');
+        } else {
+            checkPasswordSyntax($password);
+        }
+    }
 
-	if (!chk_email($email)) {
-		set_page_message(tr('Incorrect email length or syntax.'), 'error');
-	}
+    if (!chk_email($email)) {
+        set_page_message(tr('Incorrect email length or syntax.'), 'error');
+    }
 
-	if($customerId != '' && strlen($customerId) > 200) {
-		set_page_message(tr('Customer ID cannot have more than 200 characters'), 'error');
-	}
+    if ($customerId != '' && strlen($customerId) > 200) {
+        set_page_message(tr('Customer ID cannot have more than 200 characters'), 'error');
+    }
 
-	if($firstName != '' && strlen($firstName) > 200) {
-		set_page_message(tr('First name cannot have more than 200 characters.'), 'error');
-	}
+    if ($firstName != '' && strlen($firstName) > 200) {
+        set_page_message(tr('First name cannot have more than 200 characters.'), 'error');
+    }
 
-	if($lastName != '' && strlen($lastName) > 200) {
-		set_page_message(tr('Last name cannot have more than 200 characters.'), 'error');
-	}
+    if ($lastName != '' && strlen($lastName) > 200) {
+        set_page_message(tr('Last name cannot have more than 200 characters.'), 'error');
+    }
 
-	if($zip != '' && (strlen($zip) > 200 || is_number(!$zip))) {
-		set_page_message(tr('Incorrect post code length or syntax!'), 'error');
-	}
+    if ($zip != '' && (strlen($zip) > 200 || is_number(!$zip))) {
+        set_page_message(tr('Incorrect post code length or syntax!'), 'error');
+    }
 
-	if (Zend_Session::namespaceIsset('pageMessages')) {
-		return false;
-	}
+    if (Zend_Session::namespaceIsset('pageMessages')) {
+        return false;
+    }
 
-	return true;
+    return true;
 }

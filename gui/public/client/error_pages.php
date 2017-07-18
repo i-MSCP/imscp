@@ -29,12 +29,12 @@ check_login('user');
 customerHasFeature('custom_error_pages') or showBadRequestErrorPage();
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'client/error_pages.tpl',
     'page_message' => 'layout'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE' => tr('Client / Webtools / Custom Error Pages'),
     'DOMAIN' => tohtml('http://www.' . $_SESSION['user_logged'], 'htmlAttr'),
     'TR_ERROR_401' => tr('Unauthorized'),
@@ -45,11 +45,11 @@ $tpl->assign(array(
     'TR_ERROR_PAGES' => tr('Custom error pages'),
     'TR_EDIT' => tr('Edit'),
     'TR_VIEW' => tr('View')
-));
+]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

@@ -94,7 +94,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 		";
 		exec_query(
 			$query,
-			array(
+			[
 				$rs->fields['software_id'], 
 				$rs->fields['reseller_id'], 
 				$rs->fields['software_name'],
@@ -108,7 +108,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 				$rs->fields['software_link'], 
 				$rs->fields['software_desc'],
 				"1", "ok", $user_id, "yes"
-			)
+            ]
 		);
         /** @var $db iMSCP_Database */
         $db = iMSCP_Registry::get('db');

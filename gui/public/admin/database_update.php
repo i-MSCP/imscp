@@ -41,10 +41,10 @@ function admin_generateDatabaseUpdateDetail($tpl)
 
 	foreach ($dbUpdatesDetail as $revision => $detail) {
 		$tpl->assign(
-			array(
+			[
 				'DB_UPDATE_REVISION' => 'r' . $revision,
 				'DB_UPDATE_DETAIL' => _admin_generateIssueTrackerLink($detail)
-			)
+            ]
 		);
 
 		$tpl->parse('DATABASE_UPDATE', '.database_update');
@@ -98,12 +98,12 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'update') {
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
-	array(
+	[
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/database_update.tpl',
 		'page_message' => 'layout',
 		'database_updates' => 'page',
-		'database_update' => 'database_updates'));
+		'database_update' => 'database_updates']);
 
 $tpl->assign('TR_PAGE_TITLE', tr('Admin / System Tools / Database Update'));
 
@@ -114,10 +114,10 @@ if ($dbUpdate->isAvailableUpdate()) {
 	admin_generateDatabaseUpdateDetail($tpl);
 
 	$tpl->assign(
-		array(
+		[
 			'TR_DATABASE_UPDATES' => tr('Database Update Revision'),
 			'TR_DATABASE_UPDATE_DETAIL' => tr('Database Update details'),
-			'TR_PROCESS_UPDATES' => tr('Process update')));
+			'TR_PROCESS_UPDATES' => tr('Process update')]);
 } else {
 	$tpl->assign('DATABASE_UPDATES', '');
 	set_page_message(tr('No database update available.'), 'static_info');
@@ -128,7 +128,7 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(
-	iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl)
+	iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]
 );
 
 $tpl->prnt();

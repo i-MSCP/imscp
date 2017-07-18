@@ -59,12 +59,12 @@ if (isset($_GET['key'])) {
 }
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'       => 'shared/layouts/simple.tpl',
     'page'         => 'lostpassword.tpl',
     'page_message' => 'layout'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'    => tr('i-MSCP - Multi Server Control Panel / Lost Password'),
     'CONTEXT_CLASS'    => '',
     'productLongName'  => tr('internet Multi Server Control Panel'),
@@ -78,7 +78,7 @@ $tpl->assign(array(
     'TR_SEND'          => tr('Send'),
     'TR_CANCEL'        => tr('Cancel'),
     'UNAME'            => isset($_POST['uname']) ? $_POST['uname'] : ''
-));
+]);
 
 if (!empty($_POST)) {
     if ($cfg['BRUTEFORCE']) {
@@ -113,5 +113,5 @@ if (!empty($_POST)) {
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventManager::getInstance()->dispatch(Events::onLostPasswordScriptEnd, array('templateEngine' => $tpl));
+EventManager::getInstance()->dispatch(Events::onLostPasswordScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

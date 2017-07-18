@@ -44,10 +44,10 @@ function admin_gen_mail_quota_limit_mgs($customerId)
     );
 
     $row = $stmt->fetchRow();
-    return array(
+    return [
         bytesHuman($row['quota']),
         $mainDmnProps['mail_quota'] == 0 ? tr('Unlimited') : bytesHuman($mainDmnProps['mail_quota'])
-    );
+    ];
 }
 
 /**
@@ -104,7 +104,7 @@ function admin_generatePage($tpl, $domainId)
     list($quota, $quotaLimit) = admin_gen_mail_quota_limit_mgs($domainData['domain_admin_id']);
 
     # Features
-    $tpl->assign(array(
+    $tpl->assign([
         'DOMAIN_ID' => $domainId,
         'VL_DOMAIN_NAME' => tohtml(decode_idna($domainData['domain_name'])),
         'VL_DOMAIN_IP' => tohtml(($domainIpAddr == '0.0.0.0') ? tr('Any') : $domainIpAddr),
@@ -136,7 +136,7 @@ function admin_generatePage($tpl, $domainId)
         'VL_SUBDOM_ACCOUNTS_LIMIT' => translate_limit_value($domainData['domain_subd_limit']),
         'VL_DOMALIAS_ACCOUNTS_USED' => get_domain_running_als_cnt($domainId),
         'VL_DOMALIAS_ACCOUNTS_LIMIT' => translate_limit_value($domainData['domain_alias_limit']),
-    ));
+    ]);
 }
 
 /***********************************************************************************************************************
@@ -149,16 +149,16 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStar
 check_login('admin');
 
 if (!isset($_GET['domain_id'])) {
-    redirectTo('manage_users.php');
+    redirectTo('users.php');
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'admin/domain_details.tpl',
     'page_messages' => 'layout',
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
         'TR_PAGE_TITLE' => tr('Admin / Users / Overview / Domain Details'),
         'TR_DOMAIN_DETAILS' => tr('Domain details'),
         'TR_DOMAIN_NAME' => tr('Domain name'),
@@ -184,15 +184,15 @@ $tpl->assign(array(
         'TR_SQL_USER_ACCOUNTS' => tr('SQL users'),
         'TR_UPDATE_DATA' => tr('Submit changes'),
         'TR_SOFTWARE_SUPP' => tr('Software installer'),
-        'TR_BACK' => tr('Back'))
+        'TR_BACK' => tr('Back')]
 );
 
 generateNavigation($tpl);
-admin_generatePage($tpl, filter_digits($_GET['domain_id']));
+admin_generatePage($tpl, intval($_GET['domain_id']));
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

@@ -98,10 +98,10 @@ function admin_generatePage($tpl, $trafficLimit, $trafficWarning)
 	}
 
 	$tpl->assign(
-		array(
+		[
 			'MAX_TRAFFIC' => tohtml($trafficLimit),
 			'TRAFFIC_WARNING' => tohtml($trafficWarning)
-		)
+        ]
 	);
 }
 
@@ -131,23 +131,23 @@ $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
-	array(
+	[
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/settings_server_traffic.tpl',
 		'page_message' => 'layout',
 		'hosting_plans' => 'page'
-	)
+    ]
 );
 
 $tpl->assign(
-	array(
+	[
 		'TR_PAGE_TITLE' => tr('Admin / Settings / Server Traffic'),
 		'TR_SET_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),
 		'TR_MAX_TRAFFIC' => tr('Max traffic'),
 		'TR_WARNING' => tr('Warning traffic'),
 		'TR_MIB' => tr('MiB'),
 		'TR_UPDATE' => tr('Update'),
-	)
+    ]
 );
 
 generateNavigation($tpl);
@@ -156,7 +156,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 
 $tpl->prnt();
 

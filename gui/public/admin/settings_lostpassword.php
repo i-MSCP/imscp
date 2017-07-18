@@ -59,12 +59,12 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'         => 'shared/layouts/ui.tpl',
     'page'           => 'admin/settings_lostpassword.tpl',
     'page_message'   => 'layout'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'               => tr('Admin / Settings / Lost Password Email'),
     'TR_LOSTPW_EMAIL'             => tr('Lost password email'),
     'TR_MESSAGE_TEMPLATE_INFO'    => tr('Message template info'),
@@ -89,12 +89,12 @@ $tpl->assign(array(
     'TR_BASE_SERVER_VHOST_PREFIX' => tr('URL protocol'),
     'TR_BASE_SERVER_VHOST'        => tr('URL to this admin panel'),
     'TR_BASE_SERVER_VHOST_PORT'   => tr('URL port')
-));
+]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 unsetMessages();

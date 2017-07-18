@@ -35,11 +35,11 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStar
 check_login('admin');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'admin/settings_welcome_mail.tpl',
     'page_message' => 'layout'
-));
+]);
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
     $data['subject'] = isset($_POST['auto_subject']) ? clean_input($_POST['auto_subject']) : '';
@@ -65,7 +65,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
 
 $data = get_welcome_email($_SESSION['user_id']);
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE'               => tr('Admin / Settings / Welcome Email'),
     'TR_EMAIL_SETUP'              => tr('Email setup'),
     'TR_MESSAGE_TEMPLATE_INFO'    => tr('Message template info'),
@@ -86,12 +86,12 @@ $tpl->assign(array(
     'MESSAGE_VALUE'               => tohtml($data['message']),
     'SENDER_EMAIL_VALUE'          => tohtml($data['sender_email']),
     'SENDER_NAME_VALUE'           => tohtml($data['sender_name'])
-));
+]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 unsetMessages();

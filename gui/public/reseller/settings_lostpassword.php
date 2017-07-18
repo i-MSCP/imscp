@@ -37,11 +37,11 @@ $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
-	array(
+	[
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/settings_lostpassword.tpl',
 		'page_message' => 'layout',
-		'custom_buttons' => 'page'));
+		'custom_buttons' => 'page']);
 
 $selected_on = '';
 $selected_off = '';
@@ -79,7 +79,7 @@ $tpl->assign('TR_PAGE_TITLE', tr('Reseller / Customers / Lost Password Email'));
 generateNavigation($tpl);
 
 $tpl->assign(
-	array(
+	[
 		'TR_MESSAGE_TEMPLATE_INFO' => tr('Message template info'),
 		'TR_MESSAGE_TEMPLATE' => tr('Message template'),
 		'SUBJECT_VALUE1' => tohtml($data_1['subject']),
@@ -103,14 +103,14 @@ $tpl->assign(
 		'TR_BASE_SERVER_VHOST' => tr('URL to this admin panel'),
 		'TR_BASE_SERVER_VHOST_PORT' => tr('URL port'),
 		'TR_CANCEL' => tr('Cancel')
-	)
+    ]
 );
 
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 
 $tpl->prnt();
 

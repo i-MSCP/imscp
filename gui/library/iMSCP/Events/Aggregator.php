@@ -31,7 +31,7 @@ class iMSCP_Events_Aggregator implements iMSCP_Events_Manager_Interface
 	/**
 	 * @var array map event to event type
 	 */
-	protected $events = array();
+	protected $events = [];
 
 	/**
 	 * @var iMSCP_Events_Manager_Interface[]
@@ -93,7 +93,7 @@ class iMSCP_Events_Aggregator implements iMSCP_Events_Manager_Interface
 	 * @param array $events
 	 * @return iMSCP_Events_Aggregator
 	 */
-	public function addEvents($type, array $events = array())
+	public function addEvents($type, array $events = [])
 	{
 		if (isset($this->events[$type])) {
 			$this->events[$type] = array_merge($this->events[$type], $events);
@@ -114,7 +114,7 @@ class iMSCP_Events_Aggregator implements iMSCP_Events_Manager_Interface
 	 * @param mixed $arguments OPTIONAL The data to pass to the event listener method.
 	 * @return iMSCP_Events_Listener_ResponseCollection
 	 */
-	public function dispatch($event, $arguments = array())
+	public function dispatch($event, $arguments = [])
 	{
 		if (($eventType = $this->getEventType($event))) {
 			return $this->eventManagers[$eventType]->dispatch($event, $arguments);
@@ -175,7 +175,7 @@ class iMSCP_Events_Aggregator implements iMSCP_Events_Manager_Interface
 		$type = (string) $type;
 
 		if (!$type) {
-			$events = array();
+			$events = [];
 
 			foreach($this->events as $type) {
 				$events = array_merge($events, $type);
@@ -185,7 +185,7 @@ class iMSCP_Events_Aggregator implements iMSCP_Events_Manager_Interface
 		} elseif(isset($this->events[$type])) {
 			return $this->events[$type];
 		} else {
-			return array();
+			return [];
 		}
 	}
 

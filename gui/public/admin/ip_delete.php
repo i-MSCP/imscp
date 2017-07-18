@@ -38,7 +38,7 @@ if (!isset($_GET['ip_id'])) {
     showBadRequestErrorPage();
 }
 
-$ipId = filter_digits($_GET['ip_id']);
+$ipId = intval($_GET['ip_id']);
 
 $stmt = exec_query('SELECT ip_number FROM server_ips WHERE ip_id = ?', $ipId);
 if (!$stmt->rowCount()) {
@@ -65,7 +65,7 @@ if ($row ['cnt'] < 2) {
 }
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onDeleteIpAddr);
-exec_query('UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', array('todelete', $ipId));
+exec_query('UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', ['todelete', $ipId]);
 send_request();
 write_log(sprintf("The `%s' IP address has been deleted by %s", $ipAddr, $_SESSION['user_logged']), E_USER_NOTICE);
 set_page_message(tr('IP address successfully scheduled for deletion.'), 'success');

@@ -47,7 +47,7 @@ check_login('user');
 customerHasFeature('aps') or showBadRequestErrorPage();
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'                  => 'shared/layouts/ui.tpl',
     'page'                    => 'client/software.tpl',
     'page_message'            => 'layout',
@@ -62,8 +62,8 @@ $tpl->define_dynamic(array(
     'del_software_support'    => 'software_list',
     'del_software_item'       => 'software_list',
     't_software_support'      => 'software_list'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'         => tr('Client / Webtools / Software'),
     'TR_SOFTWARE'           => tr('Software'),
     'TR_VERSION'            => tr('Version'),
@@ -73,7 +73,7 @@ $tpl->assign(array(
     'TR_STATUS'             => tr('Status'),
     'TR_ACTION'             => tr('Action'),
     'TR_SOFTWARE_AVAILABLE' => tr('Available software')
-));
+]);
 
 iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e \iMSCP_Events_Event */
@@ -85,7 +85,7 @@ client_generatePageLists($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

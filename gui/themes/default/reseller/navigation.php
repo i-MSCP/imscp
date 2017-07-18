@@ -17,253 +17,253 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-return array(
-    'general' => array(
+return [
+    'general' => [
         'label' => tr('General'),
         'uri' => '/reseller/index.php',
         'class' => 'general',
-        'pages' => array(
-            'overview' => array(
+        'pages' => [
+            'overview' => [
                 'label' => tr('Overview'),
                 'uri' => '/reseller/index.php',
                 'title_class' => 'general'
-            ),
-            'software_upload' => array(
+            ],
+            'software_upload' => [
                 'label' => tr('Software upload'),
                 'uri' => '/reseller/software_upload.php',
                 'title_class' => 'apps_installer',
-                'privilege_callback' => array(
+                'privilege_callback' => [
                     'name' => 'resellerHasFeature',
                     'param' => 'aps'
-                )
-            )
-        )
-    ),
-    'customers' => array(
+                ]
+            ]
+        ]
+    ],
+    'customers' => [
         'label' => tr('Customers'),
         'uri' => '/reseller/users.php',
         'class' => 'manage_users',
-        'pages' => array(
-            'overview' => array(
+        'pages' => [
+            'overview' => [
                 'label' => tr('Overview'),
                 'uri' => '/reseller/users.php',
                 'title_class' => 'users',
-                'pages' => array(
-                    'domain_detail_link' => array(
+                'pages' => [
+                    'domain_detail_link' => [
                         'label' => tr('Domain details'),
                         'uri' => '/reseller/domain_details.php',
                         'visible' => '0',
                         'title_class' => 'domains'
-                    ),
-                    'domain_edit_link' => array(
+                    ],
+                    'domain_edit_link' => [
                         'label' => tr('Edit domain'),
                         'uri' => '/reseller/domain_edit.php',
                         'visible' => '0',
                         'title_class' => 'domains'
-                    ),
-                    'customer_edit_link' => array(
+                    ],
+                    'customer_edit_link' => [
                         'label' => tr('Edit customer'),
                         'uri' => '/reseller/user_edit.php',
                         'visible' => '0',
                         'title_class' => 'user_blue'
-                    )
-                )
-            ),
-            'add_customer' => array(
+                    ]
+                ]
+            ],
+            'add_customer' => [
                 'label' => tr('Add customer'),
                 'uri' => '/reseller/user_add1.php',
                 'title_class' => 'user',
-                'pages' => array(
-                    'add_customer_p2' => array(
+                'pages' => [
+                    'add_customer_p2' => [
                         'label' => tr('Add customer - Next step'),
                         'uri' => '/reseller/user_add2.php',
                         'visible' => '0',
                         'title_class' => 'user'
-                    ),
-                    'add_customer_p3' => array(
+                    ],
+                    'add_customer_p3' => [
                         'label' => tr('Add customer - Next step'),
                         'uri' => '/reseller/user_add3.php',
                         'visible' => '0',
                         'title_class' => 'user'
-                    ),
-                    'add_customer_p4' => array(
+                    ],
+                    'add_customer_p4' => [
                         'label' => tr('Add customer - Next step'),
                         'uri' => '/reseller/user_add4.php',
                         'visible' => '0',
                         'title_class' => 'user'
-                    )
-                )
-            ),
-            'manage_aliasses' => array(
+                    ]
+                ]
+            ],
+            'manage_aliasses' => [
                 'label' => tr('Domain aliases'),
                 'uri' => '/reseller/alias.php',
                 'title_class' => 'domains',
-                'privilege_callback' => array(
-                    array(
+                'privilege_callback' => [
+                    [
                         'name' => 'resellerHasFeature',
                         'param' => 'domain_aliases'
-                    ),
-                    array(
+                    ],
+                    [
                         'name' => 'resellerHasCustomers'
-                    )
-                ),
-                'pages' => array(
-                    'add_alias' => array(
+                    ]
+                ],
+                'pages' => [
+                    'add_alias' => [
                         'label' => tr('Add domain alias'),
                         'uri' => '/reseller/alias_add.php',
                         'visible' => '0',
                         'title_class' => 'domains'
-                    ),
-                    'edit_alias' => array(
+                    ],
+                    'edit_alias' => [
                         'label' => tr('Edit domain alias'),
                         'uri' => '/reseller/alias_edit.php',
                         'visible' => '0',
                         'title_class' => 'domains'
-                    )
-                )
-            ),
-            'welcome_mail' => array(
+                    ]
+                ]
+            ],
+            'welcome_mail' => [
                 'label' => tr('Welcome email'),
                 'uri' => '/reseller/settings_welcome_mail.php',
                 'title_class' => 'email'
-            ),
-            'lostpassword_mail' => array(
+            ],
+            'lostpassword_mail' => [
                 'label' => tr('Lost password email'),
                 'uri' => '/reseller/settings_lostpassword.php',
                 'title_class' => 'email'
-            ),
-            'circular' => array(
+            ],
+            'circular' => [
                 'label' => tr('Circular'),
                 'uri' => '/reseller/circular.php',
                 'title_class' => 'email',
-                'privilege_callback' => array(
+                'privilege_callback' => [
                     'name' => 'resellerHasCustomers'
-                )
-            )
-        )
-    ),
-    'hosting_plans' => array(
+                ]
+            ]
+        ]
+    ],
+    'hosting_plans' => [
         'label' => tr('Hosting plans'),
         'uri' => '/reseller/hosting_plan.php',
         'class' => 'hosting_plans',
-        'pages' => array(
-            'overview' => array(
+        'pages' => [
+            'overview' => [
                 'label' => tr('Hosting plans'),
                 'uri' => '/reseller/hosting_plan.php',
                 'title_class' => 'hosting_plans',
-                'pages' => array(
-                    'hosting_plan_edit_link' => array(
+                'pages' => [
+                    'hosting_plan_edit_link' => [
                         'label' => tr('Edit hosting plan'),
                         'uri' => '/reseller/hosting_plan_edit.php',
                         'title_class' => 'hosting_plans',
                         'visible' => '0'
-                    )
-                )
-            ),
-            'add_hosting_plan' => array(
+                    ]
+                ]
+            ],
+            'add_hosting_plan' => [
                 'label' => tr('Add hosting plan'),
                 'uri' => '/reseller/hosting_plan_add.php',
                 'title_class' => 'hosting_plans',
                 'class' => 'hosting_plan_add'
-            )
-        )
-    ),
-    'statistics' => array(
+            ]
+        ]
+    ],
+    'statistics' => [
         'label' => tr('Statistics'),
         'uri' => '/reseller/user_statistics.php',
         'class' => 'statistics',
-        'privilege_callback' => array(
+        'privilege_callback' => [
             'name' => 'resellerHasCustomers'
-        ),
-        'pages' => array(
-            'user_statistics' => array(
+        ],
+        'pages' => [
+            'user_statistics' => [
                 'label' => tr('User statistics'),
                 'uri' => '/reseller/user_statistics.php',
                 'title_class' => 'stats',
-                'pages' => array(
-                    'user_statistics_details' => array(
+                'pages' => [
+                    'user_statistics_details' => [
                         'label' => tr('{USERNAME} user statistics'),
                         'uri' => '/reseller/user_statistics_details.php',
                         'visible' => '0',
                         'title_class' => 'stats'
-                    )
-                )
-            ),
-            'ip_usage' => array(
+                    ]
+                ]
+            ],
+            'ip_usage' => [
                 'label' => tr('IP assignments'),
                 'uri' => '/reseller/ip_usage.php',
                 'title_class' => 'stats'
-            )
-        )
-    ),
-    'supports' => array(
+            ]
+        ]
+    ],
+    'supports' => [
         'label' => tr('Support'),
         'uri' => '{SUPPORT_SYSTEM_PATH}',
         'target' => '{SUPPORT_SYSTEM_TARGET}',
         'class' => 'support',
-        'privilege_callback' => array(
-            array(
+        'privilege_callback' => [
+            [
                 'name' => 'resellerHasFeature',
                 'param' => 'support'
-            ),
-            array(
+            ],
+            [
                 'name' => 'resellerHasCustomers'
-            )
-        ),
-        'pages' => array(
-            'tickets_open' => array(
+            ]
+        ],
+        'pages' => [
+            'tickets_open' => [
                 'label' => tr('Open tickets'),
                 'uri' => '/reseller/ticket_system.php',
                 'title_class' => 'support'
-            ),
-            'tickets_closed' => array(
+            ],
+            'tickets_closed' => [
                 'label' => tr('Closed tickets'),
                 'uri' => '/reseller/ticket_closed.php',
                 'title_class' => 'support'
-            ),
-            'new_ticket' => array(
+            ],
+            'new_ticket' => [
                 'label' => tr('New ticket'),
                 'uri' => '/reseller/ticket_create.php',
                 'title_class' => 'support'
-            ),
-            'view_ticket' => array(
+            ],
+            'view_ticket' => [
                 'label' => tr('View ticket'),
                 'uri' => '/reseller/ticket_view.php',
                 'title_class' => 'support',
                 'visible' => '0'
-            )
-        )
-    ),
-    'profile' => array(
+            ]
+        ]
+    ],
+    'profile' => [
         'label' => tr('Profile'),
         'uri' => '/reseller/profile.php',
         'class' => 'profile',
-        'pages' => array(
-            'overview' => array(
+        'pages' => [
+            'overview' => [
                 'label' => tr('Account summary'),
                 'uri' => '/reseller/profile.php',
                 'title_class' => 'profile'
-            ),
-            'personal_data' => array(
+            ],
+            'personal_data' => [
                 'label' => tr('Personal data'),
                 'uri' => '/reseller/personal_change.php',
                 'title_class' => 'profile'
-            ),
-            'passsword' => array(
+            ],
+            'passsword' => [
                 'label' => tr('Password'),
                 'uri' => '/reseller/password_update.php',
                 'title_class' => 'profile'
-            ),
-            'language' => array(
+            ],
+            'language' => [
                 'label' => tr('Language'),
                 'uri' => '/reseller/language.php',
                 'title_class' => 'multilanguage'
-            ),
-            'layout' => array(
+            ],
+            'layout' => [
                 'label' => tr('Layout'),
                 'uri' => '/reseller/layout.php',
                 'title_class' => 'layout'
-            )
-        )
-    )
-);
+            ]
+        ]
+    ]
+];

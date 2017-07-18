@@ -38,7 +38,7 @@ function reseller_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToD
         return true;
     }
 
-    $ret = send_mail(array(
+    $ret = send_mail([
         'mail_id' => 'admin-circular',
         'fname' => $rcptToData['fname'],
         'lname' => $rcptToData['lname'],
@@ -48,7 +48,7 @@ function reseller_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToD
         'sender_email' => encode_idna($senderEmail),
         'subject' => $subject,
         'message' => $body
-    ));
+    ]);
 
     if (!$ret) {
         write_log(sprintf('Could not send reseller circular to %s', $rcptToData['admin_name']), E_USER_ERROR);
@@ -136,13 +136,13 @@ function reseller_sendCircular()
         return false;
     }
 
-    $responses = iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeSendCircular, array(
+    $responses = iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeSendCircular, [
         'sender_name' => $senderName,
         'sender_email' => $senderEmail,
         'rcpt_to' => 'customers',
         'subject' => $subject,
         'body' => $body
-    ));
+    ]);
 
     if ($responses->isStopped()) {
         return true;
@@ -151,13 +151,13 @@ function reseller_sendCircular()
     set_time_limit(0);
     ignore_user_abort(true);
     reseller_sendToCustomers($senderName, $senderEmail, $subject, $body);
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterSendCircular, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterSendCircular, [
         'sender_name' => $senderName,
         'sender_email' => $senderEmail,
         'rcpt_to' => 'customers',
         'subject' => $subject,
         'body' => $body
-    ));
+    ]);
     set_page_message(tr('Circular successfully sent.'), 'success');
     write_log(sprintf('A circular has been sent by a reseller: %s', $_SESSION['user_logged']), E_USER_NOTICE);
     return true;
@@ -202,12 +202,12 @@ function reseller_generatePageData($tpl)
         }
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'SENDER_NAME' => tohtml($senderName),
         'SENDER_EMAIL' => tohtml($senderEmail),
         'SUBJECT' => tohtml($subject),
         'BODY' => tohtml($body)
-    ));
+    ]);
 }
 
 /***********************************************************************************************************************
@@ -228,12 +228,12 @@ if (!empty($_POST) && reseller_sendCircular()) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'reseller/circular.tpl',
     'page_message' => 'layout'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE' => tr('Reseller / Customers / Circular'),
     'TR_CIRCULAR' => tr('Circular'),
     'TR_SEND_TO' => tr('Send to'),
@@ -243,12 +243,12 @@ $tpl->assign(array(
     'TR_SENDER_NAME' => tr('Sender name'),
     'TR_SEND_CIRCULAR' => tr('Send circular'),
     'TR_CANCEL' => tr('Cancel')
-));
+]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 reseller_generatePageData($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

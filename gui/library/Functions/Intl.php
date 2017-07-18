@@ -96,17 +96,17 @@ function ntr($singular, $plural, $number)
  */
 function replace_html($string)
 {
-    $pattern = array(
+    $pattern = [
         '#&lt;[ ]*b[ ]*&gt;#i', '#&lt;[ ]*/[ ]*b[ ]*&gt;#i',
         '#&lt;[ ]*strong[ ]*&gt;#i', '#&lt;[ ]*/[ ]*strong[ ]*&gt;#i',
         '#&lt;[ ]*em[ ]*&gt;#i', '#&lt;[ ]*/[ ]*em[ ]*&gt;#i',
         '#&lt;[ ]*i[ ]*&gt;#i', '#&lt;[ ]*/[ ]*i[ ]*&gt;#i',
         '#&lt;[ ]*small[ ]*&gt;#i', '#&lt;[ ]*/[ ]*small[ ]*&gt;#i',
-        '#&lt;[ ]*br[ ]*(/|)[ ]*&gt;#i');
+        '#&lt;[ ]*br[ ]*(/|)[ ]*&gt;#i'];
 
-    $replacement = array(
+    $replacement = [
         '<b>', '</b>', '<strong>', '</strong>', '<em>', '</em>', '<i>', '</i>', '<small>', '</small>', '<br>'
-    );
+    ];
 
     return preg_replace($pattern, $replacement, $string);
 }
@@ -142,7 +142,7 @@ function i18n_buildLanguageIndex()
         new RecursiveDirectoryIterator($cfg['GUI_ROOT_DIR'] . '/i18n/locales/', FilesystemIterator::SKIP_DOTS)
     );
 
-    $availableLanguages = array();
+    $availableLanguages = [];
 
     /** @var $item SplFileInfo */
     foreach ($iterator as $item) {
@@ -156,12 +156,12 @@ function i18n_buildLanguageIndex()
 
             if (!empty($translationTable)) {
                 $poRevisionDate = DateTime::createFromFormat('Y-m-d H:i O', $parser->getPotCreationDate());
-                $availableLanguages[$basename] = array(
+                $availableLanguages[$basename] = [
                     'locale'            => $parser->getLanguage(),
                     'revision'          => $poRevisionDate->format('Y-m-d H:i'),
                     'translatedStrings' => $parser->getNumberOfTranslatedStrings(),
                     'lastTranslator'    => $parser->getLastTranslator()
-                );
+                ];
 
                 // Getting localized language name
                 if (!isset($translationTable['_: Localised language'])) {
@@ -199,13 +199,13 @@ function i18n_getAvailableLanguages()
 
     $languages = unserialize($cfg['AVAILABLE_LANGUAGES']);
 
-    array_unshift($languages, array(
+    array_unshift($languages, [
         'locale'            => 'auto',
         'revision'          => tr('N/A'),
         'translatedStrings' => tr('N/A'),
         'lastTranslator'    => tr('N/A'),
         'language'          => tr('Auto (Browser language)')
-    ));
+    ]);
 
     return $languages;
 }
@@ -265,7 +265,7 @@ function i18n_importMachineObjectFile()
         return "$localesDirectory/$locale/LC_MESSAGES/$locale.mo";
     };
 
-    if (utils_uploadFile('languageFile', array($beforeMove)) === false) {
+    if (utils_uploadFile('languageFile', [$beforeMove]) === false) {
         return false;
     }
 
@@ -334,19 +334,19 @@ function l10n_addTranslations($dirPath, $type = 'Array', $tag = 'iMSCP', $scan =
     /** @var Zend_Translate_Adapter $primaryTranslator */
     $primaryTranslator = iMSCP_Registry::get('translator')->getAdapter();
     $locale = $primaryTranslator->getLocale();
-    $pluginTranslator = new Zend_Translate(array(
+    $pluginTranslator = new Zend_Translate([
         'adapter'        => $type,
         'content'        => $dirPath,
         'scan'           => $scan,
         'locale'         => $locale,
         'disableNotices' => true,
         'tag'            => $tag
-    ));
+    ]);
 
     if ($pluginTranslator->getAdapter()->isAvailable($locale)) {
-        $primaryTranslator->addTranslation(array(
+        $primaryTranslator->addTranslation([
             'content' => $pluginTranslator
-        ));
+        ]);
     }
 }
 
@@ -377,9 +377,9 @@ function l10n_addTranslations($dirPath, $type = 'Array', $tag = 'iMSCP', $scan =
 function i18n_getJsTranslations()
 {
     $cfg = iMSCP_Registry::get('config');
-    $translations = new ArrayObject(array(
+    $translations = new ArrayObject([
         // Core translation strings
-        'core' => array(
+        'core' => [
             'ok'                      => tr('Ok'),
             'warning'                 => tr('Warning!'),
             'yes'                     => tr('Yes'),
@@ -391,10 +391,10 @@ function i18n_getJsTranslations()
             'your_new_password'       => tr('Your new password'),
             'password_generate_alert' => tr('You must first generate a password by clicking on the generate button.'),
             'password_length'         => $cfg['PASSWD_CHARS']
-        )),
+        ]],
         ArrayObject::ARRAY_AS_PROPS
     );
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch('onGetJsTranslations', array('translations' => $translations));
+    iMSCP_Events_Aggregator::getInstance()->dispatch('onGetJsTranslations', ['translations' => $translations]);
     return json_encode($translations, JSON_FORCE_OBJECT);
 }

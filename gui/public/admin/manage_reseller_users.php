@@ -44,11 +44,11 @@ function admin_generateCustomersTable($tpl)
 
 	if (!$stmt->rowCount()) { // Should never occurs
 		set_page_message(tr('Reseller list is empty.'), 'error');
-		redirectTo('manage_users.php');
+		redirectTo('users.php');
 	}
 
 	$resellerId = $stmt->fields['admin_id'];
-	$allResellers = array();
+	$allResellers = [];
 
 	while (!$stmt->EOF) {
 		if ((isset($_POST['uaction']) && $_POST['uaction'] == 'change_src') && (isset($_POST['src_reseller']) &&
@@ -68,18 +68,18 @@ function admin_generateCustomersTable($tpl)
 		$allResellers[] = $stmt->fields['admin_id'];
 
 		$tpl->assign(
-			array(
+			[
 				'SRC_RSL_OPTION' => tohtml($stmt->fields['admin_name']),
 				'SRC_RSL_VALUE' => $stmt->fields['admin_id'],
-				'SRC_RSL_SELECTED' => $selected));
+				'SRC_RSL_SELECTED' => $selected]);
 
 		$tpl->parse('SRC_RESELLER_OPTION', '.src_reseller_option');
 
 		$tpl->assign(
-			array(
+			[
 				'DST_RSL_OPTION' => tohtml($stmt->fields['admin_name']),
 				'DST_RSL_VALUE' => $stmt->fields['admin_id'],
-				'DST_RSL_SELECTED' => ''));
+				'DST_RSL_SELECTED' => '']);
 
 		$tpl->parse('DST_RESELLER_OPTION', '.dst_reseller_option');
 		$stmt->moveNext();
@@ -93,10 +93,10 @@ function admin_generateCustomersTable($tpl)
 	}
 
 	$tpl->assign(
-		array(
+		[
 			'SRC_RSL_OPTION' => tr('N/A'),
 			'SRC_RSL_VALUE' => 0,
-			'SRC_RSL_SELECTED' => $selected));
+			'SRC_RSL_SELECTED' => $selected]);
 
 	$tpl->parse('SRC_RESELLER_OPTION', '.src_reseller_option');
 
@@ -112,14 +112,14 @@ function admin_generateCustomersTable($tpl)
 			WHERE
 				`admin_type` = ?
 			AND
-				`created_by` NOT IN (' . implode(',', array_map(array($db, 'quote'), $allResellers)) . ')
+				`created_by` NOT IN (' . implode(',', array_map([$db, 'quote'], $allResellers)) . ')
 			ORDER BY
 				`admin_name`
 		';
 		$stmt = exec_query($query, 'user');
 	} else {
 		$query = 'SELECT `admin_id`, `admin_name` FROM `admin` WHERE `admin_type` = ? AND `created_by` = ? ORDER BY `admin_name`';
-		$stmt = exec_query($query, array('user', $resellerId));
+		$stmt = exec_query($query, ['user', $resellerId]);
 	}
 
 	if (!$stmt->rowCount()) {
@@ -137,10 +137,10 @@ function admin_generateCustomersTable($tpl)
 			$humanAdminName = decode_idna($stmt->fields['admin_name']);
 
 			$tpl->assign(
-				array(
+				[
 					'CUSTOMER_ID' => $stmt->fields['admin_id'],
 					'USER_NAME' => tohtml($humanAdminName),
-					'CKB_NAME' => $adminIdVarname));
+					'CKB_NAME' => $adminIdVarname]);
 
 			$tpl->parse('RESELLER_ITEM', '.reseller_item');
 			$stmt->moveNext();
@@ -178,7 +178,7 @@ function check_user_data()
 		return false;
 	}
 
-	$toReseller = filter_digits($_POST['dst_reseller']);
+	$toReseller = intval($_POST['dst_reseller']);
 
 	$stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', $toReseller);
 
@@ -319,7 +319,7 @@ function admin_updateResellerLimits($toReseller, $fromReseller, $users, &$errors
 		update_reseller_props($toReseller, $newToResellerProperties);
 
 		for ($i = 0, $countUsersList = count($usersList) - 1; $i < $countUsersList; $i++) {
-			exec_query('UPDATE `admin` SET `created_by` = ? WHERE `admin_id` = ?', array($toReseller, $usersList[$i]));
+			exec_query('UPDATE `admin` SET `created_by` = ? WHERE `admin_id` = ?', [$toReseller, $usersList[$i]]);
 		}
 
 		$db->commit();
@@ -459,11 +459,11 @@ $cfg = iMSCP_Registry::get('config');
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'move_user' && check_user_data()) {
 	set_page_message(tr('Customer(s) successfully moved.'), 'success');
-	redirectTo('manage_users.php');
+	redirectTo('users.php');
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
 	'layout' => 'shared/layouts/ui.tpl',
 	'page' => 'admin/manage_reseller_users.tpl',
 	'page_message' => 'layout',
@@ -473,9 +473,9 @@ $tpl->define_dynamic(array(
 	'src_reseller_option' => 'src_reseller',
 	'dst_reseller' => 'page',
 	'dst_reseller_option' => 'dst_reseller'
-));
+]);
 
-$tpl->assign(array(
+$tpl->assign([
 	'TR_PAGE_TITLE' => tr('Admin / Users / Customers Assignment'),
 	'TR_USER_ASSIGNMENT' => tr('User assignment'),
 	'TR_RESELLER_USERS' => tr('Users'),
@@ -485,7 +485,7 @@ $tpl->assign(array(
 	'TR_FROM_RESELLER' => tr('From reseller'),
 	'TR_TO_RESELLER' => tr('To reseller'),
 	'TR_MOVE' => tr('Move')
-));
+]);
 
 iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
 	/** @var $e \iMSCP_Events_Event */
@@ -498,7 +498,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 
 $tpl->prnt();
 

@@ -47,7 +47,7 @@ function _reseller_getAliasData($domainAliasId)
                 AND t1.alias_status = ?
                 AND t3.created_by = ?
             ",
-            array($domainAliasId, 'ok', $_SESSION['user_id'])
+            [$domainAliasId, 'ok', $_SESSION['user_id']]
         );
 
         if (!$stmt->rowCount()) {
@@ -108,7 +108,7 @@ function reseller_generatePage($tpl)
         $forwardUrl = (isset($_POST['forward_url'])) ? $_POST['forward_url'] : '';
         $forwardType = (
             isset($_POST['forward_type'])
-            && in_array($_POST['forward_type'], array('301', '302', '303', '307', 'proxy'), true)
+            && in_array($_POST['forward_type'], ['301', '302', '303', '307', 'proxy'], true)
         ) ? $_POST['forward_type'] : '302';
 
         if ($forwardType == 'proxy' && isset($_POST['forward_host'])) {
@@ -116,7 +116,7 @@ function reseller_generatePage($tpl)
         }
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'DOMAIN_ALIAS_ID'    => $domainAliasId,
         'DOMAIN_ALIAS_NAME'  => tohtml($domainAliasData['alias_name_utf8']),
         'DOCUMENT_ROOT'      => tohtml($documentRoot),
@@ -131,7 +131,7 @@ function reseller_generatePage($tpl)
         'FORWARD_TYPE_307'   => ($forwardType == '307') ? ' checked' : '',
         'FORWARD_TYPE_PROXY' => ($forwardType == '307') ? ' checked' : '',
         'FORWARD_HOST'       => ($forwardHost == 'On') ? ' checked' : ''
-    ));
+    ]);
 
     // Cover the case where URL forwarding feature is activated and that the
     // default /htdocs directory doesn't exists yet
@@ -148,8 +148,8 @@ function reseller_generatePage($tpl)
     $_SESSION['ftp_chooser_domain_id'] = $domainAliasData['domain_id'];
     $_SESSION['ftp_chooser_user'] = $_SESSION['user_logged'];
     $_SESSION['ftp_chooser_root_dir'] = utils_normalizePath($domainAliasData['alias_mount'] . '/htdocs');
-    $_SESSION['ftp_chooser_hidden_dirs'] = array();
-    $_SESSION['ftp_chooser_unselectable_dirs'] = array();
+    $_SESSION['ftp_chooser_hidden_dirs'] = [];
+    $_SESSION['ftp_chooser_unselectable_dirs'] = [];
 }
 
 /**
@@ -179,7 +179,7 @@ function reseller_editDomainAlias()
     if (isset($_POST['url_forwarding'])
         && $_POST['url_forwarding'] == 'yes'
         && isset($_POST['forward_type'])
-        && in_array($_POST['forward_type'], array('301', '302', '303', '307', 'proxy'), true)
+        && in_array($_POST['forward_type'], ['301', '302', '303', '307', 'proxy'], true)
     ) {
         if (!isset($_POST['forward_url_scheme']) || !isset($_POST['forward_url'])) {
             showBadRequestErrorPage();
@@ -203,7 +203,7 @@ function reseller_editDomainAlias()
             $uri->setPath(rtrim(utils_normalizePath($uri->getPath()), '/') . '/'); // Normalize URI path
 
             if ($uri->getHost() == $domainAliasData['alias_name']
-                && ($uri->getPath() == '/' && in_array($uri->getPort(), array('', 80, 443)))
+                && ($uri->getPath() == '/' && in_array($uri->getPort(), ['', 80, 443]))
             ) {
                 throw new iMSCP_Exception(
                     tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
@@ -242,14 +242,14 @@ function reseller_editDomainAlias()
         $documentRoot = utils_normalizePath('/htdocs' . $documentRoot);
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditDomainAlias, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditDomainAlias, [
         'domainAliasId' => $domainAliasId,
         'mountPoint'    => $domainAliasData['alias_mount'],
         'documentRoot'  => $documentRoot,
         'forwardUrl'    => $forwardUrl,
         'forwardType'   => $forwardType,
         'forwardHost'   => $forwardHost
-    ));
+    ]);
 
     exec_query(
         '
@@ -257,17 +257,17 @@ function reseller_editDomainAlias()
           SET alias_document_root = ?, url_forward = ?, type_forward = ?, host_forward = ?, alias_status = ?
           WHERE alias_id = ?
         ',
-        array($documentRoot, $forwardUrl, $forwardType, $forwardHost, 'tochange', $domainAliasId)
+        [$documentRoot, $forwardUrl, $forwardType, $forwardHost, 'tochange', $domainAliasId]
     );
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditDomainAlias, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditDomainAlias, [
         'domainAliasId' => $domainAliasId,
         'mountPoint'    => $domainAliasData['alias_mount'],
         'documentRoot'  => $documentRoot,
         'forwardUrl'    => $forwardUrl,
         'forwardType'   => $forwardType,
         'forwardHost'   => $forwardHost
-    ));
+    ]);
 
     send_request();
     write_log(sprintf('%s updated properties of the %s domain alias', $_SESSION['user_logged'], $domainAliasData['alias_name_utf8']), E_USER_NOTICE);
@@ -291,14 +291,14 @@ if (!empty($_POST) && reseller_editDomainAlias()) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'             => 'shared/layouts/ui.tpl',
     'page'               => 'reseller/alias_edit.tpl',
     'page_message'       => 'layout',
     'document_root_bloc' => 'page'
-));
+]);
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE'             => tr('Reseller / Domains / Edit Domain Alias'),
     'TR_DOMAIN_ALIAS'           => tr('Domain alias'),
     'TR_DOMAIN_ALIAS_NAME'      => tr('Domain alias name'),
@@ -321,7 +321,7 @@ $tpl->assign(array(
     'TR_PROXY_PRESERVE_HOST'    => tr('Preserve Host'),
     'TR_UPDATE'                 => tr('Update'),
     'TR_CANCEL'                 => tr('Cancel')
-));
+]);
 
 iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e iMSCP_Events_Event */
@@ -335,5 +335,5 @@ reseller_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

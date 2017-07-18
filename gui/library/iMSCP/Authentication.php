@@ -109,7 +109,7 @@ class iMSCP_Authentication
     public function authenticate()
     {
         $em = $this->getEventManager();
-        $response = $em->dispatch(Events::onBeforeAuthentication, array('context' => $this));
+        $response = $em->dispatch(Events::onBeforeAuthentication, ['context' => $this]);
 
         if (!$response->isStopped()) {
             $authEvent = new AuthEvent();
@@ -119,7 +119,7 @@ class iMSCP_Authentication
             // plugins that were developed for versions pre1.3.9, we first try to pull the auth result from the response
             // object and if it is not defined, we pull it from the new auth event that has been introduced in version
             // 1.3.9. Plugin that make use of the new auth event must requires the i-MSCP API 1.0.7.
-            $response = $em->dispatch($authEvent, array('context' => $this));
+            $response = $em->dispatch($authEvent, ['context' => $this]);
             $authResult = $response->last() ?: $authEvent->getAuthenticationResult();
 
             // Covers case where no one of authentication handlers has set an authentication result
@@ -135,7 +135,7 @@ class iMSCP_Authentication
             $authResult = new AuthResult(AuthResult::FAILURE_UNCATEGORIZED, NULL, $response->last());
         }
 
-        $em->dispatch(Events::onAfterAuthentication, array('context' => $this, 'authResult' => $authResult));
+        $em->dispatch(Events::onAfterAuthentication, ['context' => $this, 'authResult' => $authResult]);
         return $authResult;
     }
 
@@ -150,9 +150,9 @@ class iMSCP_Authentication
             return false;
         }
 
-        $stmt = exec_query('SELECT COUNT(session_id) AS cnt FROM login WHERE session_id = ? AND ipaddr = ?', array(
+        $stmt = exec_query('SELECT COUNT(session_id) AS cnt FROM login WHERE session_id = ? AND ipaddr = ?', [
             session_id(), getipaddr()
-        ));
+        ]);
 
         return (bool)$stmt->fetchRow(PDO::FETCH_COLUMN);
     }
@@ -185,19 +185,25 @@ class iMSCP_Authentication
      * @trigger onBeforeSetIdentity
      * @trigger onAfterSetIdentify
      * @param stdClass $identity Identity data
+     * @return void
      */
     public function setIdentity($identity)
     {
-        $this->getEventManager()->dispatch(
-            Events::onBeforeSetIdentity, array('context' => $this, 'identity' => $identity)
+        $response = $this->getEventManager()->dispatch(
+            Events::onBeforeSetIdentity, ['context' => $this, 'identity' => $identity]
         );
+
+        if ($response->isStopped()) {
+            session_destroy();
+            return;
+        }
 
         session_regenerate_id();
         $lastAccess = time();
 
-        exec_query('INSERT INTO login (session_id, ipaddr, lastaccess, user_name) VALUES (?, ?, ?, ?)', array(
+        exec_query('INSERT INTO login (session_id, ipaddr, lastaccess, user_name) VALUES (?, ?, ?, ?)', [
             session_id(), getIpAddr(), $lastAccess, $identity->admin_name
-        ));
+        ]);
 
         $_SESSION['user_logged'] = $identity->admin_name;
         $_SESSION['user_type'] = $identity->admin_type;
@@ -207,7 +213,7 @@ class iMSCP_Authentication
         $_SESSION['user_login_time'] = $lastAccess;
         $_SESSION['user_identity'] = $identity;
 
-        $this->getEventManager()->dispatch(Events::onAfterSetIdentity, array('context' => $this));
+        $this->getEventManager()->dispatch(Events::onAfterSetIdentity, ['context' => $this]);
     }
 
     /**
@@ -219,13 +225,13 @@ class iMSCP_Authentication
      */
     public function unsetIdentity()
     {
-        $this->getEventManager()->dispatch(Events::onBeforeUnsetIdentity, array('context' => $this));
+        $this->getEventManager()->dispatch(Events::onBeforeUnsetIdentity, ['context' => $this]);
 
         exec_query('DELETE FROM login WHERE session_id = ?', session_id());
 
-        $preserveList = array(
+        $preserveList = [
             'user_def_lang', 'user_theme', 'user_theme_color', 'show_main_menu_labels', 'pageMessages'
-        );
+        ];
 
         foreach (array_keys($_SESSION) as $sessionVariable) {
             if (!in_array($sessionVariable, $preserveList)) {
@@ -233,6 +239,6 @@ class iMSCP_Authentication
             }
         }
 
-        $this->getEventManager()->dispatch(Events::onAfterUnsetIdentity, array('context' => $this));
+        $this->getEventManager()->dispatch(Events::onAfterUnsetIdentity, ['context' => $this]);
     }
 }

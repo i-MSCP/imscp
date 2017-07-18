@@ -40,8 +40,10 @@ function _client_UpdateExtMailServerFeature($action, $domainId, $domainType)
         case 'als';
             $query = '
                 UPDATE domain_aliasses AS t1
-                INNER JOIN domain AS t2 USING(domain_id)
-                SET t1.alias_status = ?, t1.external_mail = ? WHERE t1.alias_id = ? AND t2.domain_admin_id = ?
+                JOIN domain AS t2 USING(domain_id)
+                SET t1.alias_status = ?, t1.external_mail = ?
+                WHERE t1.alias_id = ?
+                AND t2.domain_admin_id = ?
             ';
             break;
         default:
@@ -49,9 +51,9 @@ function _client_UpdateExtMailServerFeature($action, $domainId, $domainType)
             return;
     }
 
-    $stmt = exec_query($query, array(
+    $stmt = exec_query($query, [
         'tochange', $action == 'activate' ? 'on' : 'off', $domainId, $_SESSION['user_id']
-    ));
+    ]);
     if ($stmt->rowCount()) {
         if ($action == 'activate') {
             set_page_message(tr('External mail server feature scheduled for activation.'), 'success');
@@ -81,33 +83,33 @@ function _client_generateItem($tpl, $externalMail, $domainId, $domainName, $stat
 {
     if ($status == 'ok') {
         if ($externalMail == 'off') {
-            $tpl->assign(array(
+            $tpl->assign([
                 'DOMAIN' => decode_idna($domainName),
                 'STATUS' => ($status == 'ok') ? tr('Deactivated') : translate_dmn_status($status),
                 'DOMAIN_TYPE' => $type,
                 'DOMAIN_ID' => $domainId,
                 'TR_ACTIVATE' => ($status == 'ok') ? tr('Activate') : tr('N/A'),
                 'DEACTIVATE_LINK' => ''
-            ));
+            ]);
             $tpl->parse('ACTIVATE_LINK', 'activate_link');
         } else {
-            $tpl->assign(array(
+            $tpl->assign([
                 'DOMAIN' => decode_idna($domainName),
                 'STATUS' => ($status == 'ok') ? tr('Activated') : translate_dmn_status($status),
                 'DOMAIN_TYPE' => $type,
                 'DOMAIN_ID' => $domainId,
                 'ACTIVATE_LINK' => '',
                 'TR_DEACTIVATE' => ($status == 'ok') ? tr('Deactivate') : tr('N/A'),
-            ));
+            ]);
             $tpl->parse('DEACTIVATE_LINK', 'deactivate_link');
         }
     } else {
-        $tpl->assign(array(
+        $tpl->assign([
             'DOMAIN' => decode_idna($domainName),
             'STATUS' => translate_dmn_status($status),
             'ACTIVATE_LINK' => '',
             'DEACTIVATE_LINK' => ''
-        ));
+        ]);
     }
 }
 
@@ -156,7 +158,7 @@ function client_generateView($tpl)
         $translations['core']['datatable'] = getDataTablesPluginTranslations(false);
     });
 
-    $tpl->assign(array(
+    $tpl->assign([
         'TR_PAGE_TITLE' => tr('Client / Email / External Mail Feature'),
         'TR_INTRO' => tr('Below, you can activate the external mail feature for one or many of your domains. Note that activating the external mail feature configures our server to relay your mail through your own mail server, but that no DNS record is created for it.'),
         'TR_DOMAIN' => tr('Domain'),
@@ -164,7 +166,7 @@ function client_generateView($tpl)
         'TR_ACTION' => tr('Action'),
         'TR_DEACTIVATE' => tr('Deactivate'),
         'TR_CANCEL' => tr('Cancel')
-    ));
+    ]);
 
     $domainProps = get_domain_default_props($_SESSION['user_id']);
     $domainId = $domainProps['domain_id'];
@@ -187,7 +189,7 @@ if (!customerHasFeature('external_mail')) {
 
 if (isset($_GET['action']) && isset($_GET['domain_id']) && isset($_GET['domain_type'])) {
     $action = clean_input($_GET['action']);
-    $domainId = filter_digits($_GET['domain_id']);
+    $domainId = intval($_GET['domain_id']);
     $domainType = clean_input($_GET['domain_type']);
 
     switch ($action) {
@@ -204,20 +206,20 @@ if (isset($_GET['action']) && isset($_GET['domain_id']) && isset($_GET['domain_t
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'client/mail_external.tpl',
     'page_message' => 'layout',
     'item' => 'page',
     'activate_link' => 'item',
     'deactivate_link' => 'item'
-));
+]);
 
 generateNavigation($tpl);
 client_generateView($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 

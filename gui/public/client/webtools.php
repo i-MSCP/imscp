@@ -81,7 +81,7 @@ $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
-	array(
+	[
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'client/webtools.tpl',
 		'page_message' => 'layout',
@@ -90,11 +90,11 @@ $tpl->define_dynamic(
 		'ftp_feature' => 'page',
 		'aps_feature' => 'page',
 		'webstats_feature' => 'page'
-	)
+    ]
 );
 
 $tpl->assign(
-	array(
+	[
 		'TR_PAGE_TITLE' => tr('Client / Webtools / Overview'),
 		'TR_FEATURE' => tr('Feature'),
 		'TR_DESCRIPTION' => tr('Description'),
@@ -112,7 +112,7 @@ $tpl->assign(
 		'TR_WEBSTATS_TXT' => tr('Access your domain statistics through the Web interface.'),
 		'TR_APP_INSTALLER' => tr('Application installer'),
 		'TR_APP_INSTALLER_TXT' => tr('Install various Web applications with a few clicks.')
-	)
+    ]
 );
 
 generateNavigation($tpl);
@@ -121,7 +121,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 
 $tpl->prnt();
 

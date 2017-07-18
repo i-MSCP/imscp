@@ -76,7 +76,7 @@ function generatePage($tpl)
 
     $adminName = decode_idna($adminName);
 
-    $tpl->assign(array(
+    $tpl->assign([
         'VL_USERNAME'     => tohtml($adminName, 'htmlAttr'),
         'VL_MAIL'         => tohtml($email, 'htmlAttr'),
         'VL_USR_ID'       => tohtml($customerId, 'htmlAttr'),
@@ -94,7 +94,7 @@ function generatePage($tpl)
         'VL_STREET2'      => tohtml($street2, 'htmlAttr'),
         'VL_PHONE'        => tohtml($phone, 'htmlAttr'),
         'VL_FAX'          => tohtml($fax, 'htmlAttr')
-    ));
+    ]);
 
     reseller_generate_ip_list($tpl, $_SESSION['user_id'], $domainIp);
     $_SESSION['local_data'] = "$dmnName;$hpId";
@@ -116,7 +116,7 @@ function addCustomer()
         showBadRequestErrorPage();
     }
 
-    $domainIp = filter_digits($_POST['domain_ip']);
+    $domainIp = intval($_POST['domain_ip']);
     $stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', $_SESSION['user_id']);
     if (!$stmt->rowCount()) {
         throw new iMSCP_Exception(sprintf('Could not find IPs for reseller with ID %s', $_SESSION['user_id']));
@@ -134,9 +134,9 @@ function addCustomer()
         $props = $_SESSION['ch_hpprops'];
         unset($_SESSION['ch_hpprops']);
     } else {
-        $stmt = exec_query('SELECT props FROM hosting_plans WHERE reseller_id = ? AND id = ?', array(
+        $stmt = exec_query('SELECT props FROM hosting_plans WHERE reseller_id = ? AND id = ?', [
             $_SESSION['user_id'], $hpId
-        ));
+        ]);
         $data = $stmt->fetchRow();
         $props = $data['props'];
     }
@@ -170,15 +170,15 @@ function addCustomer()
                     ?, ?, ?, unix_timestamp(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                 )
             ',
-            array(
+            [
                 $adminName, $encryptedPassword, 'user', $_SESSION['user_id'], $firstName, $lastName, $firm, $zip, $city,
                 $state, $country, $email, $phone, $fax, $street1, $street2, $customerId, $gender, 'toadd'
-            )
+            ]
         );
 
         $adminId = $db->insertId();
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddDomain, array(
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddDomain, [
             'domainName'    => $dmnName,
             'createdBy'     => $_SESSION['user_id'],
             'customerId'    => $adminId,
@@ -188,7 +188,7 @@ function addCustomer()
             'forwardUrl'    => $dmnUrlForward,
             'forwardType'   => $dmnTypeForward,
             'forwardHost'   => $dmnHostForward
-        ));
+        ]);
 
         exec_query(
             '
@@ -204,12 +204,12 @@ function addCustomer()
                     ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                 )
             ',
-            array(
+            [
                 $dmnName, $adminId, time(), $dmnExpire, $mail, $ftp, $traff, $sql_db, $sql_user, 'toadd', $als, $sub,
                 $domainIp, $disk, 0, $php, $cgi, $backup, $dns, $aps, $phpEditor, $phpiniAllowUrlFopen,
                 $phpiniDisplayErrors, $phpiniDisableFunctions, $phpMailFunction, $extMailServer, $webFolderProtection,
                 $mailQuota, $dmnUrlForward, $dmnTypeForward, $dmnHostForward
-            )
+            ]
         );
 
         $dmnId = $db->insertId();
@@ -227,12 +227,12 @@ function addCustomer()
         }
 
         send_add_user_auto_msg($_SESSION['user_id'], $adminName, $password, $email, $firstName, $lastName, tr('Customer'));
-        exec_query('INSERT INTO user_gui_props (user_id, lang, layout) VALUES (?, ?, ?)', array(
+        exec_query('INSERT INTO user_gui_props (user_id, lang, layout) VALUES (?, ?, ?)', [
             $adminId, $cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']
-        ));
+        ]);
         update_reseller_c_props($_SESSION['user_id']);
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddDomain, array(
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddDomain, [
             'domainName'    => $dmnName,
             'createdBy'     => $_SESSION['user_id'],
             'customerId'    => $adminId,
@@ -243,7 +243,7 @@ function addCustomer()
             'forwardUrl'    => $dmnUrlForward,
             'forwardType'   => $dmnTypeForward,
             'forwardHost'   => $dmnHostForward
-        ));
+        ]);
 
         $db->commit();
         send_request();
@@ -291,14 +291,14 @@ if (isset($_POST['uaction']) && 'user_add3_nxt' == $_POST['uaction'] && !isset($
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'        => 'shared/layouts/ui.tpl',
     'page'          => 'reseller/user_add3.tpl',
     'page_message'  => 'layout',
     'ip_entry'      => 'page',
     'alias_feature' => 'page'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'      => tr('Reseller / Customers / Add Customer - Next Step'),
     'TR_ADD_USER'        => tr('Add user'),
     'TR_CORE_DATA'       => tr('Core data'),
@@ -326,12 +326,12 @@ $tpl->assign(array(
     'TR_PHONE'           => tr('Phone'),
     'TR_FAX'             => tr('Fax'),
     'TR_BTN_ADD_USER'    => tr('Add user')
-));
+]);
 
 generateNavigation($tpl);
 generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

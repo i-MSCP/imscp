@@ -35,7 +35,7 @@
  * @param int $statusCode
  * @param array $data
  */
-function admin_sendJsonResponse($statusCode = 200, array $data = array())
+function admin_sendJsonResponse($statusCode = 200, array $data = [])
 {
 	header('Cache-Control: no-cache, must-revalidate');
 	header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
@@ -99,7 +99,7 @@ function admin_clearLogs()
 			$msg = sprintf('%s deleted the admin log older than one year.', $_SESSION['user_logged']);
 			break;
 		default:
-			admin_sendJsonResponse(400, array('message' => tr('Bad request.')));
+			admin_sendJsonResponse(400, ['message' => tr('Bad request.')]);
 			exit;
 	}
 
@@ -108,12 +108,12 @@ function admin_clearLogs()
 
 		if($stmt->rowCount()) {
 			write_log($msg, E_USER_NOTICE);
-			admin_sendJsonResponse(200, array('message' => tr('Log entries successfully deleted.')));
+			admin_sendJsonResponse(200, ['message' => tr('Log entries successfully deleted.')]);
 		} else {
-			admin_sendJsonResponse(202, array('message' => tr('Nothing has been deleted.')));
+			admin_sendJsonResponse(202, ['message' => tr('Nothing has been deleted.')]);
 		}
 	} catch(iMSCP_Exception_Database $e) {
-		admin_sendJsonResponse(500, array('message' => tr('An unexpected error occurred: %s', $e->getMessage())));
+		admin_sendJsonResponse(500, ['message' => tr('An unexpected error occurred: %s', $e->getMessage())]);
 	}
 }
 
@@ -126,7 +126,7 @@ function admin_getLogs()
 {
 	try {
 		// Filterable / orderable columns
-		$columns = array('log_time', 'log_message');
+		$columns = ['log_time', 'log_message'];
 
 		$nbColumns = count($columns);
 
@@ -139,7 +139,7 @@ function admin_getLogs()
 		$limit = '';
 
 		if(isset($_GET['iDisplayStart']) && isset($_GET['iDisplayLength']) && $_GET['iDisplayLength'] !== '-1') {
-			$limit = 'LIMIT ' . filter_digits($_GET['iDisplayStart']) . ', ' . filter_digits($_GET['iDisplayLength']);
+			$limit = 'LIMIT ' . intval($_GET['iDisplayStart']) . ', ' . intval($_GET['iDisplayLength']);
 		}
 
 		/* Ordering */
@@ -148,13 +148,13 @@ function admin_getLogs()
 		if(isset($_GET['iSortCol_0']) && isset($_GET['iSortingCols'])) {
 			$order = 'ORDER BY ';
 
-			for($i = 0; $i < filter_digits($_GET['iSortingCols']); $i++) {
-				if($_GET['bSortable_' . filter_digits($_GET['iSortCol_' . $i])] === 'true') {
+			for($i = 0; $i < intval($_GET['iSortingCols']); $i++) {
+				if($_GET['bSortable_' . intval($_GET['iSortCol_' . $i])] === 'true') {
 					$sortDir = (
-						isset($_GET['sSortDir_' . $i]) && in_array($_GET['sSortDir_' . $i], array('asc', 'desc'))
+						isset($_GET['sSortDir_' . $i]) && in_array($_GET['sSortDir_' . $i], ['asc', 'desc'])
 					) ? $_GET['sSortDir_' . $i] : 'asc';
 
-					$order .= $columns[filter_digits($_GET['iSortCol_' . $i])] . ' ' . $sortDir . ', ';
+					$order .= $columns[intval($_GET['iSortCol_' . $i])] . ' ' . $sortDir . ', ';
 				}
 			}
 
@@ -210,25 +210,25 @@ function admin_getLogs()
 		$total = $resultTotal[0];
 
 		/* Output */
-		$output = array(
-			'sEcho' => filter_digits($_GET['sEcho']),
+		$output = [
+			'sEcho' => intval($_GET['sEcho']),
 			'iTotalRecords' => $total,
 			'iTotalDisplayRecords' => $filteredTotal,
-			'aaData' => array()
-		);
+			'aaData' => []
+        ];
 
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
 		$dateFormat = $cfg['DATE_FORMAT'] . ' H:i:s';
 
 		while($data = $rResult->fetchRow(PDO::FETCH_ASSOC)) {
-			$row = array();
+			$row = [];
 
 			for($i = 0; $i < $nbColumns; $i++) {
 				if($columns[$i] == 'log_time') {
 					$row[$columns[$i]] = date($dateFormat, strtotime($data[$columns[$i]]));
 				} else {
-					$replaces = array(
+					$replaces = [
 						'/\b(deactivated|delete[sd]?|deletion|deactivation|failed)\b/i' => '<strong style="color:#FF0000">\\1</strong>',
 						'/\b(remove[sd]?)\b/i' => '<strong style="color:#FF0000">\\1</strong>',
 						'/\b(unable)\b/i' => ' <strong style="color:#FF0000">\\1</strong>',
@@ -239,7 +239,7 @@ function admin_getLogs()
 						'/\b(unknown)\b/i' => '<strong style="color:#CC00FF">\\1</strong>',
 						'/\b(logged)\b/i' => '<strong style="color:#336600">\\1</strong>',
 						'/\b(Warning[\!]?)\b/i' => '<strong style="color:#FF0000">\\1</strong>',
-					);
+                    ];
 
 					foreach($replaces as $pattern => $replacement) {
 						$data[$columns[$i]] = preg_replace($pattern, $replacement, $data[$columns[$i]]);
@@ -257,11 +257,11 @@ function admin_getLogs()
 		write_log(sprintf('Unable to get logs: %s', $e->getMessage()), E_USER_ERROR);
 
 		admin_sendJsonResponse(
-			500, array('message' => tr('An unexpected error occurred: %s', $e->getMessage()))
+			500, ['message' => tr('An unexpected error occurred: %s', $e->getMessage())]
 		);
 	}
 
-	admin_sendJsonResponse(400, array('message' => tr('Bad request.')));
+	admin_sendJsonResponse(400, ['message' => tr('Bad request.')]);
 }
 
 /***********************************************************************************************************************
@@ -287,7 +287,7 @@ if(isset($_REQUEST['action'])) {
 				admin_clearLogs();
 				break;
 			default:
-				admin_sendJsonResponse(400, array('message' => tr('Bad request.')));
+				admin_sendJsonResponse(400, ['message' => tr('Bad request.')]);
 		}
 	}
 
@@ -298,13 +298,13 @@ if(isset($_REQUEST['action'])) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
 	'layout' => 'shared/layouts/ui.tpl',
 	'page' => 'admin/admin_log.tpl',
 	'page_message' => 'layout'
-));
+]);
 
-$tpl->assign(array(
+$tpl->assign([
 	'TR_PAGE_TITLE' => tr('Admin / General / Admin Log'),
 	'TR_CLEAR_LOG' => tr('Clear log'),
 	'ROWS_PER_PAGE' => json_encode($cfg['DOMAIN_ROWS_PER_PAGE']),
@@ -320,7 +320,7 @@ $tpl->assign(array(
 	'TR_LOADING_DATA' => tr('Loading data...'),
 	'TR_TIMEOUT_ERROR' => json_encode(tr('Request Timeout: The server took too long to send the data.')),
 	'TR_UNEXPECTED_ERROR' => json_encode(tr('An unexpected error occurred.'))
-));
+]);
 
 iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
 	/** @var $e \iMSCP_Events_Event */
@@ -332,7 +332,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 
 $tpl->prnt();
 

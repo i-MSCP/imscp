@@ -45,14 +45,14 @@ function client_addHtaccessGroup()
 
     $domainId = get_user_domain_id($_SESSION['user_id']);
 
-    $stmt = exec_query('SELECT id FROM htaccess_groups WHERE ugroup = ? AND dmn_id = ?', array($htgroupName, $domainId));
+    $stmt = exec_query('SELECT id FROM htaccess_groups WHERE ugroup = ? AND dmn_id = ?', [$htgroupName, $domainId]);
     if ($stmt->rowCount()) {
         set_page_message(tr('This htaccess group already exists.'), 'error');
     }
 
-    exec_query('INSERT INTO htaccess_groups (dmn_id, ugroup, status) VALUES (?, ?, ?)', array(
+    exec_query('INSERT INTO htaccess_groups (dmn_id, ugroup, status) VALUES (?, ?, ?)', [
         $domainId, $htgroupName, 'toadd'
-    ));
+    ]);
     send_request();
     set_page_message(tr('Htaccess group successfully scheduled for addition.'), 'success');
     write_log(sprintf('%s added htaccess group: %s', $_SESSION['user_logged'], $htgroupName), E_USER_NOTICE);
@@ -71,24 +71,24 @@ customerHasFeature('protected_areas') or showBadRequestErrorPage();
 client_addHtaccessGroup();
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/puser_gadd.tpl',
     'page_message' => 'layout',
-));
+]);
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE'     => tr('Client / Webtools / Protected Areas / Manage Users and Groups / Add Group'),
     'TR_HTACCESS_GROUP' => tr('Htaccess group'),
     'TR_GROUPNAME'      => tr('Group name'),
     'GROUPNAME'         => (isset($_POST['groupname'])) ? tohtml($_POST['groupname']) : '',
     'TR_ADD_GROUP'      => tr('Add'),
     'TR_CANCEL'         => tr('Cancel')
-));
+]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

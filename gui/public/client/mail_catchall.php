@@ -32,19 +32,19 @@
 function client_generateAction($mailId, $mailStatus)
 {
     if ($mailStatus == 'toadd') {
-        return array(tr('N/A'), '#');
+        return [tr('N/A'), '#'];
     }
 
     if ($mailStatus == 'ok') {
-        return array(tr('Delete CatchAll'), "mail_catchall_delete.php?id=$mailId");
+        return [tr('Delete CatchAll'), "mail_catchall_delete.php?id=$mailId"];
     }
 
     if ($mailStatus == 'tochange') {
-        return array(tr('N/A'), '#');
+        return [tr('N/A'), '#'];
     }
 
     if ($mailStatus == 'todelete') {
-        return array(tr('N/A'), '#');
+        return [tr('N/A'), '#'];
     }
 
     return NULL;
@@ -68,7 +68,7 @@ function client_generateCatchallItem($tpl, $action, $dmnId, $dmnName, $mailId, $
     $showDmnName = decode_idna($dmnName);
 
     if ($action == 'create') {
-        $tpl->assign(array(
+        $tpl->assign([
             'CATCHALL_DOMAIN'        => tohtml($showDmnName),
             'CATCHALL_ACC'           => tr('None'),
             'TR_CATCHALL_STATUS'     => tr('N/A'),
@@ -76,7 +76,7 @@ function client_generateCatchallItem($tpl, $action, $dmnId, $dmnName, $mailId, $
             'CATCHALL_ACTION'        => $action,
             'CATCHALL_ACTION_SCRIPT' => "mail_catchall_add.php?id=$dmnId;$catchallType",
             'DEL_ICON'               => ''
-        ));
+        ]);
         return;
     }
 
@@ -84,14 +84,14 @@ function client_generateCatchallItem($tpl, $action, $dmnId, $dmnName, $mailId, $
 
     $showDmnName = decode_idna($dmnName);
     $showMailAcc = decode_idna($mailAcc);
-    $tpl->assign(array(
+    $tpl->assign([
         'CATCHALL_DOMAIN'        => tohtml($showDmnName),
         'CATCHALL_ACC'           => tohtml($showMailAcc),
         'TR_CATCHALL_STATUS'     => translate_dmn_status($mailStatus),
         'TR_CATCHALL_ACTION'     => $catchallAction,
         'CATCHALL_ACTION'        => $catchallAction,
         'CATCHALL_ACTION_SCRIPT' => $catchallActionScript
-    ));
+    ]);
 
     if ($catchallActionScript == '#') {
         $tpl->assign('DEL_ICON', '');
@@ -113,7 +113,7 @@ function client_generateCatchallList($tpl, $dmnId, $dmnName)
     if ($dmnName != $serverHostname) {
         $stmt = exec_query(
             'SELECT mail_id, mail_acc, status FROM mail_users WHERE domain_id = ? AND sub_id = ? AND mail_type = ?',
-            array($dmnId, 0, 'normal_catchall')
+            [$dmnId, 0, 'normal_catchall']
         );
 
         if (!$stmt->rowCount()) {
@@ -128,7 +128,7 @@ function client_generateCatchallList($tpl, $dmnId, $dmnName)
 
     $stmt = exec_query(
         'SELECT alias_id, alias_name FROM domain_aliasses WHERE domain_id = ? AND alias_status = ?',
-        array($dmnId, $statusOk)
+        [$dmnId, $statusOk]
     );
 
     while ($data = $stmt->fetchRow()) {
@@ -136,7 +136,7 @@ function client_generateCatchallList($tpl, $dmnId, $dmnName)
         $name = $data['alias_name'];
         $stmt2 = exec_query(
             'SELECT mail_id, mail_acc, status FROM mail_users WHERE domain_id = ? AND sub_id = ? AND mail_type = ?',
-            array($dmnId, $id, 'alias_catchall')
+            [$dmnId, $id, 'alias_catchall']
         );
 
         if (!$stmt2->rowCount()) {
@@ -157,7 +157,7 @@ function client_generateCatchallList($tpl, $dmnId, $dmnName)
             AND t1.alias_id = t2.alias_id
             AND t1.subdomain_alias_status = ?
         ",
-        array($dmnId, $statusOk)
+        [$dmnId, $statusOk]
     );
 
     while ($data = $stmt->fetchRow()) {
@@ -165,7 +165,7 @@ function client_generateCatchallList($tpl, $dmnId, $dmnName)
         $name = $data['subdomain_name'];
         $stmt2 = exec_query(
             'SELECT mail_id, mail_acc, status FROM mail_users WHERE domain_id = ? AND sub_id = ? AND mail_type = ?',
-            array($dmnId, $id, 'alssub_catchall')
+            [$dmnId, $id, 'alssub_catchall']
         );
 
         if (!$stmt2->rowCount()) {
@@ -186,7 +186,7 @@ function client_generateCatchallList($tpl, $dmnId, $dmnName)
             AND t1.domain_id = t2.domain_id
             AND t1.subdomain_status = ?
         ",
-        array($dmnId, $statusOk)
+        [$dmnId, $statusOk]
     );
 
     while ($data = $stmt->fetchRow()) {
@@ -194,7 +194,7 @@ function client_generateCatchallList($tpl, $dmnId, $dmnName)
         $name = $data['subdomain_name'];
         $stmt2 = exec_query(
             'SELECT mail_id, mail_acc, status FROM mail_users WHERE domain_id = ? AND sub_id = ? AND mail_type = ?',
-            array($dmnId, $id, 'subdom_catchall')
+            [$dmnId, $id, 'subdom_catchall']
         );
 
         if (!$stmt2->rowCount()) {
@@ -233,15 +233,15 @@ check_login('user');
 customerHasFeature('mail') or showBadRequestErrorPage();
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'        => 'shared/layouts/ui.tpl',
     'page'          => 'client/mail_catchall.tpl',
     'page_message'  => 'layout',
     'catchall_item' => 'page',
     'del_icon'      => 'catchall_item'
-));
+]);
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE'                => tr('Client / Email / Catchall'),
     'TR_STATUS'                    => tr('Status'),
     'TR_ACTION'                    => tr('Action'),
@@ -250,7 +250,7 @@ $tpl->assign(array(
     'TR_CATCHALL'                  => tr('Catch all'),
     'TR_MESSAGE_DELETE'            => tr('Are you sure you want to delete the %s catch all?', '%s'),
     'TR_CANCEL'                    => tr('Cancel')
-));
+]);
 
 iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e \iMSCP_Events_Event */
@@ -262,6 +262,6 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 

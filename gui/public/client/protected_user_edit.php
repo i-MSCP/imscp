@@ -50,9 +50,9 @@ function client_updateHtaccessUser($domainId, $htuserId)
         return;
     }
 
-    exec_query('UPDATE htaccess_users SET upass = ?, status = ? WHERE id = ? AND dmn_id = ?', array(
+    exec_query('UPDATE htaccess_users SET upass = ?, status = ? WHERE id = ? AND dmn_id = ?', [
         Crypt::apr1MD5($_POST['pass']), 'tochange', $htuserId, $domainId
-    ));
+    ]);
 
     send_request();
     write_log(sprintf('%s updated htaccess user ID: %s', $_SESSION['user_logged'], $htuserId), E_USER_NOTICE);
@@ -73,10 +73,10 @@ if (!isset($_REQUEST['uname'])) {
     showBadRequestErrorPage();
 }
 
-$htuserId = filter_digits($_REQUEST['uname']);
+$htuserId = intval($_REQUEST['uname']);
 $domainId = get_user_domain_id($_SESSION['user_id']);
 
-$stmt = exec_query('SELECT uname FROM htaccess_users WHERE id = ? AND dmn_id = ?', array($htuserId, $domainId));
+$stmt = exec_query('SELECT uname FROM htaccess_users WHERE id = ? AND dmn_id = ?', [$htuserId, $domainId]);
 
 if (!$stmt->rowCount()) {
     showBadRequestErrorPage();
@@ -87,12 +87,12 @@ $row = $stmt->fetchRow();
 client_updateHtaccessUser($domainId, $htuserId);
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/puser_edit.tpl',
     'page_message' => 'layout'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'      => tr('Client / Webtools / Protected Areas / Manage Users and Groups / Edit User'),
     'TR_HTACCESS_USER'   => tr('Htaccess user'),
     'TR_USERNAME'        => tr('Username'),
@@ -102,11 +102,11 @@ $tpl->assign(array(
     'UID'                => tohtml($htuserId),
     'TR_UPDATE'          => tr('Update'),
     'TR_CANCEL'          => tr('Cancel')
-));
+]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

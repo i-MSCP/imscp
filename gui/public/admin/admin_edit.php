@@ -39,7 +39,7 @@ function admin_updateUserData($userId)
 {
     global $userData;
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $userId));
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, ['userId' => $userId]);
 
     $fname = isset($_POST['fname']) ? clean_input($_POST['fname']) : '';
     $lname = isset($_POST['lname']) ? clean_input($_POST['lname']) : '';
@@ -66,10 +66,10 @@ function admin_updateUserData($userId)
                 fax = ?, street1 = ?, street2 = ?, gender = ?
               WHERE admin_id = ?
             ',
-            array(
+            [
                 $fname, $lname, $firm, $zip, $city, $state, $country, $email, $phone, $fax, $street1, $street2,
                 $gender, $userId
-            )
+            ]
         );
     } else {
         exec_query(
@@ -81,15 +81,15 @@ function admin_updateUserData($userId)
               WHERE
                 admin_id = ?
             ",
-            array(
+            [
                 iMSCP\Crypt::apr1MD5($password), $fname, $lname, $firm, $zip, $city, $state, $country, $email,
                 $phone, $fax, $street1, $street2, $gender, $userId
-            ));
+            ]);
 
         exec_query('DELETE FROM login WHERE user_name = ?', $userName);
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $userId));
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, ['userId' => $userId]);
 
     if (isset($_POST['send_data']) && !empty($_POST['password'])) {
         if ($userData['admin_type'] == 'admin') {
@@ -150,7 +150,7 @@ if (!isset($_GET['edit_id'])) {
     showBadRequestErrorPage();
 }
 
-$userId = filter_digits($_GET['edit_id']);
+$userId = intval($_GET['edit_id']);
 
 if ($userId == $_SESSION['user_id']) {
     redirectTo('personal_change.php');
@@ -175,18 +175,18 @@ $userData = $stmt->fetchRow();
 if (!empty($_POST) && admin_isValidData()) {
     admin_updateUserData($userId);
     set_page_message(tr('User data successfully updated.'), 'success');
-    redirectTo('manage_users.php');
+    redirectTo('users.php');
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'        => 'shared/layouts/ui.tpl',
-    'page'          => 'admin/admin_edit.tpl',
+    'page'          => 'admin/user_edit.tpl',
     'page_message'  => 'layout',
     'hosting_plans' => 'page'
-));
+]);
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE'          => tr('Admin / Users / Overview / Edit Admin'),
     'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field.'),
     'TR_PASSWORD_NOT_MATCH'  => tr("Passwords do not match."),
@@ -234,12 +234,12 @@ $tpl->assign(array(
     ) ? ' selected' : '',
     'SEND_DATA_CHECKED'      => (isset($_POST['send_data'])) ? ' checked' : '',
     'EDIT_ID'                => $userId
-));
+]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 

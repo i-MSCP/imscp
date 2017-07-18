@@ -41,21 +41,21 @@ check_login('admin');
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
 	'layout' => 'shared/layouts/ui.tpl',
 	'page' => 'admin/server_status.tpl',
 	'page_message' => 'layout',
 	'service_status' => 'page'
-));
+]);
 
-$tpl->assign(array(
+$tpl->assign([
 	'TR_PAGE_TITLE' => tr('Admin / General / Services Status'),
 	'TR_SERVICE' => tr('Service Name'),
 	'TR_IP' => tr('IP Address'),
 	'TR_PORT' => tr('Port'),
 	'TR_STATUS' => tr('Status'),
 	'TR_SERVER_STATUS' => tr('Server status')
-));
+]);
 
 iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
 	/** @var $e \iMSCP_Events_Event */
@@ -77,13 +77,13 @@ foreach ($services as $service) {
 		$ip = $services->getIp();
 
 		$tpl->assign(
-			array(
+			[
 				'SERVICE' => tohtml($services->getName()),
 				'IP' => ($ip === '0.0.0.0') ? tr('Any') : tohtml($ip),
 				'PORT' => tohtml($services->getPort()),
 				'STATUS' => $serviceState ? "<b>$running</b>" : $down,
 				'CLASS' => $serviceState ? 'up' : 'down'
-			)
+            ]
 		);
 
 		$tpl->parse('SERVICE_STATUS', '.service_status');
@@ -92,6 +92,6 @@ foreach ($services as $service) {
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 
 $tpl->prnt();

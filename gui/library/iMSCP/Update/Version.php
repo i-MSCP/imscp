@@ -105,19 +105,19 @@ class iMSCP_Update_Version extends iMSCP_Update
         $file = CACHE_PATH . '/imscp_info.json';
         if ($forceReload || !file_exists($file) || strtotime('+1 day', filemtime($file)) < time()) {
             clearstatcache();
-            $context = stream_context_create(array(
-                'http' => array(
+            $context = stream_context_create([
+                'http' => [
                     'method' => 'GET',
                     'protocol_version' => '1.1',
-                    'header' => array(
+                    'header' => [
                         'Host: api.github.com',
                         'Accept: application/vnd.github.v3+json',
                         'User-Agent: i-MSCP',
                         'Connection: close',
                         'timeout' => 3
-                    )
-                )
-            ));
+                    ]
+                ]
+            ]);
 
             if (!stream_context_set_option($context, 'ssl', 'verify_peer', false)) {
                 $this->setError(tr('Unable to set sslverifypeer option'));

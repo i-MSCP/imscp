@@ -165,7 +165,7 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
      */
     public function getInfo()
     {
-        return array(
+        return [
             'author'      => 'Laurent Declercq',
             'email'       => 'team@i-mscp.net',
             'version'     => '0.0.6',
@@ -174,7 +174,7 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
             'name'        => 'Bruteforce',
             'desc'        => 'Provides countermeasures against brute-force and dictionary attacks.',
             'url'         => 'http://www.i-mscp.net'
-        );
+        ];
     }
 
     /**
@@ -303,7 +303,7 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
                     ?, ?, 1, NULL, UNIX_TIMESTAMP()
                 )
             ",
-            array($this->sessionId, $this->clientIpAddr)
+            [$this->sessionId, $this->clientIpAddr]
         );
     }
 }

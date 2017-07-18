@@ -45,7 +45,7 @@ function checkMailAccountOwner($mailAccountId)
             AND `t1`.`mail_auto_respond` = ?
             AND `t1`.`status` = ?
         ',
-        array($mailAccountId, $domainProps['domain_id'], 1, 'ok'));
+        [$mailAccountId, $domainProps['domain_id'], 1, 'ok']);
 
     return (bool)$stmt->rowCount();
 }
@@ -70,9 +70,9 @@ function updateAutoresponder($mailAccountId, $autoresponderMessage)
 
     try {
         $db->beginTransaction();
-        exec_query('UPDATE `mail_users` SET `status` = ?, `mail_auto_respond_text` = ? WHERE `mail_id` = ?', array(
+        exec_query('UPDATE `mail_users` SET `status` = ?, `mail_auto_respond_text` = ? WHERE `mail_id` = ?', [
             'tochange', $autoresponderMessage, $mailAccountId
-        ));
+        ]);
         delete_autoreplies_log_entries();
         $db->commit();
         send_request();
@@ -112,32 +112,32 @@ if (!customerHasFeature('mail') || !(isset($_REQUEST['mail_account_id']) && is_n
     showBadRequestErrorPage();
 }
 
-$mailAccountId = filter_digits($_REQUEST['mail_account_id']);
+$mailAccountId = intval($_REQUEST['mail_account_id']);
 if (!checkMailAccountOwner($mailAccountId)) {
     showBadRequestErrorPage();
 }
 
 if (!isset($_POST['mail_account_id'])) {
     $tpl = new iMSCP_pTemplate();
-    $tpl->define_dynamic(array(
+    $tpl->define_dynamic([
         'layout' => 'shared/layouts/ui.tpl',
         'page' => 'client/mail_autoresponder.tpl',
         'page_message' => 'layout'
-    ));
-    $tpl->assign(array(
+    ]);
+    $tpl->assign([
         'TR_PAGE_TITLE' => tr('Client / Email / Overview / Edit Auto Responder'),
         'TR_AUTORESPONDER_MESSAGE' => tr('Please enter your auto-responder message below'),
         'TR_ACTION' => tr('Update'),
         'TR_CANCEL' => tr('Cancel'),
         'MAIL_ACCOUNT_ID' => $mailAccountId
-    ));
+    ]);
 
     generateNavigation($tpl);
     generatePage($tpl, $mailAccountId);
     generatePageMessage($tpl);
 
     $tpl->parse('LAYOUT_CONTENT', 'page');
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
     $tpl->prnt();
 
     unsetMessages();

@@ -38,7 +38,7 @@ function admin_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData
         return true;
     }
 
-    $ret = send_mail(array(
+    $ret = send_mail([
         'mail_id' => 'admin-circular',
         'fname' => $rcptToData['fname'],
         'lname' => $rcptToData['lname'],
@@ -48,7 +48,7 @@ function admin_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData
         'sender_email' => encode_idna($senderEmail),
         'subject' => $subject,
         'message' => $body
-    ));
+    ]);
 
     if (!$ret) {
         write_log(sprintf('Could not send admin circular to %s', $rcptToData['admin_name']), E_USER_ERROR);
@@ -185,13 +185,13 @@ function admin_sendCircular()
         return false;
     }
 
-    $responses = iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeSendCircular, array(
+    $responses = iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeSendCircular, [
         'sender_name' => $senderName,
         'sender_email' => $senderEmail,
         'rcpt_to' => $rcptTo,
         'subject' => $subject,
         'body' => $body
-    ));
+    ]);
 
     if ($responses->isStopped()) {
         return true;
@@ -224,13 +224,13 @@ function admin_sendCircular()
         admin_sendToCustomers($senderName, $senderEmail, $subject, $body);
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterSendCircular, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterSendCircular, [
         'sender_name' => $senderName,
         'sender_email' => $senderEmail,
         'rcpt_to' => $rcptTo,
         'subject' => $subject,
         'body' => $body
-    ));
+    ]);
     set_page_message(tr('Circular successfully sent.'), 'success');
     write_log(sprintf('A circular has been sent by an administrator: %s', $_SESSION['user_logged']), E_USER_NOTICE);
     return true;
@@ -278,47 +278,47 @@ function generatePage($tpl)
         }
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'SENDER_NAME' => tohtml($senderName),
         'SENDER_EMAIL' => tohtml($senderEmail),
         'SUBJECT' => tohtml($subject),
         'BODY' => tohtml($body)
-    ));
+    ]);
 
-    $rcptToOptions = array(
-        array('all_users', tr('All users'))
-    );
+    $rcptToOptions = [
+        ['all_users', tr('All users')]
+    ];
 
     if (systemHasManyAdmins() && systemHasResellers()) {
-        $rcptToOptions[] = array('administrators_resellers', tr('Administrators and resellers'));
+        $rcptToOptions[] = ['administrators_resellers', tr('Administrators and resellers')];
     }
 
     if (systemHasManyAdmins() && systemHasCustomers()) {
-        $rcptToOptions[] = array('administrators_customers', tr('Administrators and customers'));
+        $rcptToOptions[] = ['administrators_customers', tr('Administrators and customers')];
     }
 
     if (systemHasResellers() && systemHasCustomers()) {
-        $rcptToOptions[] = array('resellers_customers', tr('Resellers and customers'));
+        $rcptToOptions[] = ['resellers_customers', tr('Resellers and customers')];
     }
 
     if (systemHasManyAdmins()) {
-        $rcptToOptions[] = array('administrators', tr('Administrators'));
+        $rcptToOptions[] = ['administrators', tr('Administrators')];
     }
 
     if (systemHasResellers()) {
-        $rcptToOptions[] = array('resellers', tr('Resellers'));
+        $rcptToOptions[] = ['resellers', tr('Resellers')];
     }
 
     if (systemHasCustomers()) {
-        $rcptToOptions[] = array('customers', tr('Customers'));
+        $rcptToOptions[] = ['customers', tr('Customers')];
     }
 
     foreach ($rcptToOptions as $option) {
-        $tpl->assign(array(
+        $tpl->assign([
             'RCPT_TO' => $option[0],
             'TR_RCPT_TO' => $option[1],
             'SELECTED' => $rcptTo == $option[0] ? ' selected="selected"' : ''
-        ));
+        ]);
         $tpl->parse('RCPT_TO_OPTION', '.rcpt_to_option');
     }
 }
@@ -337,17 +337,17 @@ if (!systemHasAdminsOrResellersOrCustomers()) {
 }
 
 if (!empty($_POST) && admin_sendCircular()) {
-    redirectTo('manage_users.php');
+    redirectTo('users.php');
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'admin/circular.tpl',
     'page_message' => 'layout',
     'rcpt_to_option' => 'page'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE' => tr('Admin / Users / Circular'),
     'TR_CIRCULAR' => tr('Circular'),
     'TR_SEND_TO' => tr('Send to'),
@@ -357,13 +357,13 @@ $tpl->assign(array(
     'TR_SENDER_NAME' => tr('Sender name'),
     'TR_SEND_CIRCULAR' => tr('Send circular'),
     'TR_CANCEL' => tr('Cancel')
-));
+]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 generatePage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 

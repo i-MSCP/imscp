@@ -429,12 +429,6 @@ function sbmt(form, uaction) {
     return false;
 }
 
-function sbmt_details(form, uaction) {
-    form.details.value = uaction;
-    form.submit();
-    return false;
-}
-
 /**
  *
  * Javascript sprintf by http://jan.moesen.nu/

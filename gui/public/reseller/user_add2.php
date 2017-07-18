@@ -31,7 +31,7 @@ function getFirstStepData()
 {
     global $dmnName, $hpId;
 
-    foreach (array('dmn_name', 'dmn_expire', 'dmn_url_forward', 'dmn_type_forward', 'dmn_host_forward', 'dmn_tpl') as $data) {
+    foreach (['dmn_name', 'dmn_expire', 'dmn_url_forward', 'dmn_type_forward', 'dmn_host_forward', 'dmn_tpl'] as $data) {
         if (!array_key_exists($data, $_SESSION)) {
             return false;
         }
@@ -55,7 +55,7 @@ function generatePage($tpl)
 
     $cfg = iMSCP_Registry::get('config');
 
-    $tpl->assign(array(
+    $tpl->assign([
         'VL_TEMPLATE_NAME' => tohtml($hpName, 'htmlAttr'),
         'MAX_SUBDMN_CNT' => tohtml($sub, 'htmlAttr'),
         'MAX_DMN_ALIAS_CNT' => tohtml($als, 'htmlAttr'),
@@ -72,7 +72,7 @@ function generatePage($tpl)
         'VL_PHPN' => $php == '_yes_' ? '' : ' checked',
         'VL_CGIY' => $cgi == '_yes_' ? ' checked' : '',
         'VL_CGIN' => $cgi == '_yes_' ? '' : ' checked'
-    ));
+    ]);
 
     if (!resellerHasFeature('subdomains')) {
         $tpl->assign('SUBDOMAIN_FEATURE', '');
@@ -85,10 +85,10 @@ function generatePage($tpl)
     if (!resellerHasFeature('custom_dns_records')) {
         $tpl->assign('CUSTOM_DNS_RECORDS_FEATURE', '');
     } else {
-        $tpl->assign(array(
+        $tpl->assign([
             'VL_DNSY' => $dns == '_yes_' ? ' checked' : '',
             'VL_DNSN' => $dns == '_yes_' ? '' : ' checked'
-        ));
+        ]);
     }
 
     if (!resellerHasFeature('mail')) {
@@ -107,26 +107,26 @@ function generatePage($tpl)
     if (!resellerHasFeature('aps')) {
         $tpl->assign('APS_FEATURE', '');
     } else {
-        $tpl->assign(array(
+        $tpl->assign([
             'VL_SOFTWAREY' => $aps == '_yes_' ? ' checked' : '',
             'VL_SOFTWAREN' => $aps == '_yes_' ? '' : ' checked'
-        ));
+        ]);
     }
 
     if (!resellerHasFeature('backup')) {
         $tpl->assign('BACKUP_FEATURE', '');
     } else {
-        $tpl->assign(array(
+        $tpl->assign([
             'VL_BACKUPD' => in_array('_dmn_', $backup) ? ' checked' : '',
             'VL_BACKUPS' => in_array('_sql_', $backup) ? ' checked' : '',
             'VL_BACKUPM' => in_array('_mail_', $backup) ? ' checked' : ''
-        ));
+        ]);
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'VL_WEB_FOLDER_PROTECTION_YES' => $webFolderProtection == '_yes_' ? ' checked' : '',
         'VL_WEB_FOLDER_PROTECTION_NO' => $webFolderProtection == '_yes_' ? '' : ' checked'
-    ));
+    ]);
 
     $phpini = iMSCP_PHPini::getInstance();
 
@@ -135,7 +135,7 @@ function generatePage($tpl)
         return;
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'PHP_EDITOR_YES' => $phpini->clientHasPermission('phpiniSystem') ? ' checked' : '',
         'PHP_EDITOR_NO' => $phpini->clientHasPermission('phpiniSystem') ? '' : ' checked',
         'TR_PHP_EDITOR' => tr('PHP Editor'),
@@ -145,7 +145,7 @@ function generatePage($tpl)
         'TR_FIELDS_OK' => tr('All fields are valid.'),
         'TR_MIB' => tr('MiB'),
         'TR_SEC' => tr('Sec.')
-    ));
+    ]);
 
     iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
         /** @var iMSCP_Events_Event $e */
@@ -154,7 +154,7 @@ function generatePage($tpl)
         $translations['core']['fields_ok'] = tr('All fields are valid.');
         $translations['core']['out_of_range_value_error'] = tr('Value for the PHP %%s directive must be in range %%d to %%d.');
         $translations['core']['lower_value_expected_error'] = tr('%%s cannot be greater than %%s.');
-        $translations['core']['error_field_stack'] = iMSCP_Registry::isRegistered('errFieldsStack') ? iMSCP_Registry::get('errFieldsStack') : array();
+        $translations['core']['error_field_stack'] = iMSCP_Registry::isRegistered('errFieldsStack') ? iMSCP_Registry::get('errFieldsStack') : [];
     });
 
     $permissionsBlock = false;
@@ -162,49 +162,49 @@ function generatePage($tpl)
     if (!$phpini->resellerHasPermission('phpiniAllowUrlFopen')) {
         $tpl->assign('PHP_EDITOR_ALLOW_URL_FOPEN_BLOCK', '');
     } else {
-        $tpl->assign(array(
+        $tpl->assign([
             'TR_CAN_EDIT_ALLOW_URL_FOPEN' => tr('Can edit the PHP %s configuration option', '<b>allow_url_fopen</b>'),
             'ALLOW_URL_FOPEN_YES' => $phpini->clientHasPermission('phpiniAllowUrlFopen') ? ' checked' : '',
             'ALLOW_URL_FOPEN_NO' => $phpini->clientHasPermission('phpiniAllowUrlFopen') ? '' : ' checked'
-        ));
+        ]);
         $permissionsBlock = true;
     }
 
     if (!$phpini->resellerHasPermission('phpiniDisplayErrors')) {
         $tpl->assign('PHP_EDITOR_DISPLAY_ERRORS_BLOCK', '');
     } else {
-        $tpl->assign(array(
+        $tpl->assign([
             'TR_CAN_EDIT_DISPLAY_ERRORS' => tr('Can edit the PHP %s configuration option', '<b>display_errors</b>'),
             'DISPLAY_ERRORS_YES' => $phpini->clientHasPermission('phpiniDisplayErrors') ? ' checked' : '',
             'DISPLAY_ERRORS_NO' => $phpini->clientHasPermission('phpiniDisplayErrors') ? '' : ' checked'
-        ));
+        ]);
         $permissionsBlock = true;
     }
 
     if ($cfg['HTTPD_SERVER'] == 'apache_itk') {
-        $tpl->assign(array(
+        $tpl->assign([
             'PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK' => '',
             'PHP_EDITOR_MAIL_FUNCTION_BLOCK' => ''
-        ));
+        ]);
     } else {
         if ($phpini->resellerHasPermission('phpiniDisableFunctions')) {
-            $tpl->assign(array(
+            $tpl->assign([
                 'TR_CAN_EDIT_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s configuration option', '<b>disable_functions</b>'),
                 'DISABLE_FUNCTIONS_YES' => $phpini->getClientPermission('phpiniDisableFunctions') == 'yes' ? ' checked' : '',
                 'DISABLE_FUNCTIONS_NO' => $phpini->getClientPermission('phpiniDisableFunctions') == 'no' ? ' checked' : '',
                 'DISABLE_FUNCTIONS_EXEC' => $phpini->getClientPermission('phpiniDisableFunctions') == 'exec' ? ' checked' : '',
                 'TR_ONLY_EXEC' => tr('Only exec')
-            ));
+            ]);
         } else {
             $tpl->assign('PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK', '');
         }
 
         if ($phpini->resellerHasPermission('phpiniMailFunction')) {
-            $tpl->assign(array(
+            $tpl->assign([
                 'TR_CAN_USE_MAIL_FUNCTION' => tr('Can use the PHP %s function', '<b>mail</b>'),
                 'MAIL_FUNCTION_YES' => $phpini->clientHasPermission('phpiniMailFunction') ? ' checked' : '',
                 'MAIL_FUNCTION_NO' => $phpini->clientHasPermission('phpiniMailFunction') ? '' : ' checked'
-            ));
+            ]);
         } else {
             $tpl->assign('PHP_EDITOR_MAIL_FUNCTION_BLOCK', '');
         }
@@ -215,13 +215,13 @@ function generatePage($tpl)
     if (!$permissionsBlock) {
         $tpl->assign('PHP_EDITOR_PERMISSIONS_BLOCK', '');
     } else {
-        $tpl->assign(array(
+        $tpl->assign([
             'TR_PERMISSIONS' => tr('Permissions'),
             'TR_ONLY_EXEC' => tr("Only exec")
-        ));
+        ]);
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'TR_POST_MAX_SIZE' => tr('PHP %s configuration option', '<b>post_max_size</b>'),
         'POST_MAX_SIZE' => tohtml($phpini->getDomainIni('phpiniPostMaxSize'), 'htmlAttr'),
         'TR_UPLOAD_MAX_FILEZISE' => tr('PHP %s configuration option', '<b>upload_max_filesize</b>'),
@@ -237,7 +237,7 @@ function generatePage($tpl)
         'MAX_EXECUTION_TIME_LIMIT' => tohtml($phpini->getResellerPermission('phpiniMaxExecutionTime'), 'htmlAttr'),
         'MAX_INPUT_TIME_LIMIT' => tohtml($phpini->getResellerPermission('phpiniMaxInputTime'), 'htmlAttr'),
         'MEMORY_LIMIT_LIMIT' => tohtml($phpini->getResellerPermission('phpiniMemoryLimit'), 'htmlAttr')
-    ));
+    ]);
 }
 
 /**
@@ -254,9 +254,9 @@ function getHostingPlanData()
         return;
     }
 
-    $stmt = exec_query('SELECT name, props FROM hosting_plans WHERE reseller_id = ? AND id = ?', array(
+    $stmt = exec_query('SELECT name, props FROM hosting_plans WHERE reseller_id = ? AND id = ?', [
         $_SESSION['user_id'], $hpId
-    ));
+    ]);
 
     if (!$stmt->rowCount()) {
         showBadRequestErrorPage();
@@ -320,7 +320,7 @@ function checkInputData()
     $php = $php === '_yes_' ? '_yes_' : '_no_';
     $cgi = $cgi === '_yes_' ? '_yes_' : '_no_';
     $dns = resellerHasFeature('custom_dns_records') && $dns === '_yes_' ? '_yes_' : '_no_';
-    $backup = resellerHasFeature('backup') ? array_intersect($backup, array('_dmn_', '_sql_', '_mail_')) : array();
+    $backup = resellerHasFeature('backup') ? array_intersect($backup, ['_dmn_', '_sql_', '_mail_']) : [];
     $aps = resellerHasFeature('aps') && $aps === '_yes_' ? '_yes_' : '_no_';
     $extMail = $extMail === '_yes_' ? '_yes_' : '_no_';
     $webFolderProtection = $webFolderProtection === '_yes_' ? '_yes_' : '_no_';
@@ -329,7 +329,7 @@ function checkInputData()
         $php = '_yes_';
     }
 
-    $errFieldsStack = array();
+    $errFieldsStack = [];
 
     // Subdomains limit
     if (!resellerHasFeature('subdomains')) {
@@ -489,7 +489,7 @@ $hpName = 'Custom';
 $sub = $als = $mail = $mailQuota = $ftp = $sqld = $sqlu = $traffic = $diskspace = '0';
 $php = $cgi = $dns = $aps = $extMail = '_no_';
 $webFolderProtection = '_yes_';
-$backup = array();
+$backup = [];
 
 if (!getFirstStepData()) {
     set_page_message(tr('Domain data were altered. Please try again.'), 'error');
@@ -529,7 +529,7 @@ if (isset($_POST['uaction']) && 'user_add2_nxt' == $_POST['uaction'] && !isset($
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'reseller/user_add2.tpl',
     'page_message' => 'layout',
@@ -549,8 +549,8 @@ $tpl->define_dynamic(array(
     'php_editor_disable_functions_block' => 'php_editor_permissions_block',
     "php_mail_function_block" => 'php_editor_permissions_block',
     'php_editor_default_values_block' => 'php_editor_block'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE' => tr('Reseller / Customers / Add Customer - Next Step'),
     'TR_ADD_USER' => tr('Add user'),
     'TR_HOSTING_PLAN' => tr('Hosting plan'),
@@ -581,12 +581,12 @@ $tpl->assign(array(
     'TR_WEB_FOLDER_PROTECTION' => tr('Web folder protection'),
     'TR_WEB_FOLDER_PROTECTION_HELP' => tr('If set to `yes`, Web folders will be protected against deletion.'),
     'TR_SOFTWARE_SUPP' => tr('Software installer')
-));
+]);
 
 generateNavigation($tpl);
 generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

@@ -33,7 +33,7 @@ function generatePage($tpl)
     $cfg = iMSCP_Registry::get('config');
     $stmt = exec_query('SELECT domain_created FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
     $row = $stmt->fetchRow();
-    $tpl->assign(array(
+    $tpl->assign([
         'TR_ACCOUNT_SUMMARY'   => tr('Account summary'),
         'TR_USERNAME'          => tr('Username'),
         'USERNAME'             => tohtml($_SESSION['user_logged']),
@@ -42,7 +42,7 @@ function generatePage($tpl)
         'TR_REGISTRATION_DATE' => tr('Registration date'),
         'REGISTRATION_DATE'    => ($row['domain_created'] != 0)
             ? tohtml(date($cfg['DATE_FORMAT'], $row['domain_created'])) : tr('Unknown')
-    ));
+    ]);
 }
 
 /***********************************************************************************************************************
@@ -55,11 +55,11 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptS
 check_login('reseller');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'shared/partials/profile.tpl',
     'page_message' => 'layout'
-));
+]);
 $tpl->assign('TR_PAGE_TITLE', tr('Reseller / Profile / Account Summary'));
 
 generateNavigation($tpl);
@@ -67,5 +67,5 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

@@ -37,10 +37,10 @@ $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
-	array(
+	[
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/settings_maintenance_mode.tpl',
-		'page_message' => 'layout'));
+		'page_message' => 'layout']);
 
 if (isset($_POST['uaction']) and $_POST['uaction'] == 'apply') {
 	$maintenancemode = $_POST['maintenancemode'];
@@ -67,7 +67,7 @@ if ($cfg->MAINTENANCEMODE) {
 }
 
 $tpl->assign(
-	array(
+	[
 		'TR_PAGE_TITLE' => tr('Admin / System Tools / Maintenance Settings'),
 		'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
 		'TR_MESSAGE' => tr('Message'),
@@ -79,14 +79,14 @@ $tpl->assign(
 		'TR_ENABLED' => tr('Enabled'),
 		'TR_DISABLED' => tr('Disabled'),
 		'TR_APPLY' => tr('Apply'),
-		'TR_MAINTENANCE_MESSAGE' => tr('Maintenance message')));
+		'TR_MAINTENANCE_MESSAGE' => tr('Maintenance message')]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 
 $tpl->prnt();
 

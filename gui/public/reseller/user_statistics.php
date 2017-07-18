@@ -47,7 +47,7 @@ function _generateUserStatistics($tpl, $adminId)
 	$trafficPercent = make_usage_vals($trafficUsageBytes, $trafficLimitBytes);
 	$diskPercent = make_usage_vals($diskspaceUsageBytes, $diskspaceLimitBytes);
 
-	$tpl->assign(array(
+	$tpl->assign([
 		'USER_ID' => tohtml($adminId),
 		'USERNAME' => tohtml(decode_idna($adminName)),
 		'TRAFF_PERCENT' => tohtml($trafficPercent),
@@ -80,7 +80,7 @@ function _generateUserStatistics($tpl, $adminId)
 		'SQL_USER_MSG' => ($sqlUserMax)
 			? (($sqlUserMax > 0) ? tohtml(tr('%1$d / %2$d', $sqlUserCount, $sqlUserMax)) : tohtml(tr('disabled')))
 			: tohtml(tr('%d / unlimited', $sqlUserCount))
-	));
+    ]);
 }
 
 /**
@@ -91,7 +91,7 @@ function _generateUserStatistics($tpl, $adminId)
  */
 function generatePage($tpl)
 {
-	$stmt = exec_query('SELECT admin_id FROM admin WHERE created_by = ?', filter_digits($_SESSION['user_id']));
+	$stmt = exec_query('SELECT admin_id FROM admin WHERE created_by = ?', $_SESSION['user_id']);
 
 	while($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 		_generateUserStatistics($tpl, $row['admin_id']);
@@ -112,15 +112,15 @@ check_login('reseller');
 
 if(resellerHasCustomers()) {
 	$tpl = new iMSCP_pTemplate();
-	$tpl->define_dynamic(array(
+	$tpl->define_dynamic([
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/user_statistics.tpl',
 		'page_message' => 'layout',
 		'user_statistics_entries_block' => 'page',
 		'user_statistics_entry_block' => 'user_statistics_entries_block'
-	));
+    ]);
 
-	$tpl->assign(array(
+	$tpl->assign([
 		'TR_PAGE_TITLE' => tohtml(tr('Reseller / Statistics / Overview')),
 		'TR_USER' => tohtml(tr('User'), 'htmlAttr'),
 		'TR_TRAFF' => tohtml(tr('Traffic usage')),
@@ -136,7 +136,7 @@ if(resellerHasCustomers()) {
 		'TR_SQL_DB' => tohtml(tr('SQL databases')),
 		'TR_SQL_USER' => tohtml(tr('SQL users')),
 		'TR_USER_TOOLTIP' => tohtml(tr('Show detailed statistics for this user'), 'htmlAttr')
-	));
+    ]);
 
 	$eventManager->registerListener('onGetJsTranslations', function ($e) {
 		/** @var $e \iMSCP_Events_Event */
@@ -148,7 +148,7 @@ if(resellerHasCustomers()) {
 	generatePageMessage($tpl);
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
-	$eventManager->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+	$eventManager->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 	$tpl->prnt();
 
 	unsetMessages();

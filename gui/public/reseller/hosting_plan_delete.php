@@ -31,9 +31,9 @@ if (!isset($_GET['id'])) {
     showBadRequestErrorPage();
 }
 
-$stmt = exec_query('DELETE FROM hosting_plans WHERE id = ? AND reseller_id = ?', array(
-    filter_digits($_GET['id']), $_SESSION['user_id']
-));
+$stmt = exec_query('DELETE FROM hosting_plans WHERE id = ? AND reseller_id = ?', [
+    intval($_GET['id']), $_SESSION['user_id']
+]);
 
 if ($stmt->rowCount()) {
     set_page_message(tr('Hosting plan successfully deleted.'), 'success');

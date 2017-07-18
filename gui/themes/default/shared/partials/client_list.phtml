@@ -1,0 +1,155 @@
+<h3 class="user_blue"><span><?= tohtml(tr('Customers')); ?></span></h3>
+
+<!-- BDP: client_search_form -->
+<script>
+<? if($_SESSION['user_type'] == 'reseller'): ?>
+    function action_delete(link) {
+        return jQuery.imscp.confirmOnclick(
+            link, "<?= tojs(tr('Are you sure you want to delete this user?')); ?>"
+        );
+    }
+<? endif; ?>
+
+    $(function() {
+        $("#search_field").on("change", function() {
+            var $searchValue = $("#search_value");
+            if($(this).val() === "anything") {
+                $searchValue.prop('disabled', true).val('').parent().hide();
+                return;
+            }
+
+            $searchValue.prop('disabled', false).parent().show();
+        }).trigger('change');
+
+        $("#search_user").on('submit', function() {
+            var $searchField = $("#search_field");
+            if($searchField.val().trim() === "anything" || $("#search_value").val().trim() !== "") {
+                return true;
+            }
+
+            alert("<?= tojs(tr('Missing search criteria')); ?>");
+            return false;
+        });
+
+        $("#show_hide_aliases").on("click", function() {
+            var $form = $(this).closest('form');
+            $form.find("#client_domain_aliases_switch").val($(this).data("action"));
+            $form.trigger('submit');
+        });
+    });
+</script>
+<form action="users.php" method="post" name="search_user" id="search_user">
+    <div style="line-height:40px;vertical-align: middle; float: left">
+        <label>
+            <span><?= tohtml(tr('Filter customers by')); ?></span>
+            <select name="search_field" id="search_field">
+                <option value="anything"{CLIENT_NONE_SELECTED}><?= tohtml(tr('anything')); ?></option>
+                <option value="domain_name"{CLIENT_DOMAIN_NAME_SELECTED}><?= tohtml(tr('domain name')); ?></option>
+                <option value="customer_id"{CLIENT_CUSTOMER_ID_SELECTED}><?= tohtml(tr('customer ID')); ?></option>
+                <option value="lname"{CLIENT_FIRST_NAME_SELECTED}><?= tohtml(tr('first name')); ?></option>
+                <option value="lname"{CLIENT_LAST_NAME_SELECTED}><?= tohtml(tr('last name')); ?></option>
+                <option value="firm"{CLIENT_COMPANY_SELECTED}><?= tohtml(tr('compagny')); ?></option>
+                <option value="city"{CLIENT_CITY_SELECTED}><?= tohtml(tr('city')); ?></option>
+                <option value="state"{CLIENT_STATE_SELECTED}><?= tohtml(tr('state/province')); ?></option>
+                <option value="country"{CLIENT_COUNTRY_SELECTED}><?= tohtml(tr('country')); ?></option>
+<? if($_SESSION['user_type'] == 'admin'): ?>
+                <option value="reseller_name"{CLIENT_RESELLER_NAME_SELECTED}><?= tohtml(tr('reseller name')); ?></option>
+<? endif; ?>
+            </select>
+        </label>
+        <label>
+            <span><?= tohtml(tr('that match with')); ?></span>
+            <input name="search_value" id="search_value" type="text" value="{SEARCH_VALUE}" required disabled></label>
+        <label>
+            <span><?= tohtml(tr('which status is')); ?></span>
+            <select name="search_status" id="search_status">
+                <option value="anything"{CLIENT_ANYTHING_SELECTED}><?= tohtml(tr('anything')); ?></option>
+                <option value="ok"{CLIENT_OK_SELECTED}><?= tohtml(tr('ok')); ?></option>
+                <option value="disabled"{CLIENT_DISABLED_SELECTED}><?= tohtml(tr('suspended')); ?></option>
+                <option value="error"{CLIENT_ERROR_SELECTED}><?= tohtml(tr('error')); ?></option>
+            </select>
+        </label>
+        <input type="hidden" name="client_domain_aliases_switch" id="client_domain_aliases_switch" value="{CLIENT_DOMAIN_ALIASES_SWITCH_VALUE}">
+        <input name="Submit" type="submit" value="<?= tohtml(tr('Search'), 'htmlAttr'); ?>">
+    </div>
+    <!-- BDP: client_domain_aliases_switch -->
+    <div style="line-height:40px;vertical-align: middle; float: right">
+        <!-- BDP: client_domain_aliases_show -->
+        <span class="icon i_show_alias clickable" id="show_hide_aliases" data-action="show" title="<?= tohtml(tr('Show domain aliases'), 'htmlAttr'); ?>"><?= tohtml(tr('Show domain aliases')); ?></span>
+        <!-- EDP: client_domain_aliases_show -->
+        <!-- BDP: client_domain_aliases_hide -->
+        <span class="icon i_show_alias clickable" id="show_hide_aliases" data-action="hide" title="<?= tohtml(tr('Hide domain aliases'), 'htmlAttr'); ?>"><?= tohtml(tr('Hide domain aliases')); ?></span>
+        <!-- EDP: client_domain_aliases_hide -->
+    </div>
+    <!-- EDP: client_domain_aliases_switch -->
+
+    <div style="clear:both"></div>
+</form>
+<!-- EDP: client_search_form -->
+<!-- BDP: client_message -->
+<div class="static_info"><?= tohtml(tr('No user found.')); ?></div>
+<!-- EDP: client_message -->
+<!-- BDP: client_list -->
+<table class="datatable" id="users_table">
+    <thead>
+    <tr>
+        <th><?= tohtml(tr('Status')); ?></th>
+        <th><?= tohtml(tr('Username')); ?></th>
+        <th><?= tohtml(tr('Created on')); ?></th>
+<? if($_SESSION['user_type'] == 'admin'): ?>
+        <th><?= tohtml(tr('Created by')); ?></th>
+<? endif; ?>
+        <th><?= tohtml(tr('Actions')); ?></th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- BDP: client_item -->
+    <tr>
+        <!-- BDP: client_domain_status_ok -->
+        <td><a href="domain_status_change.php?domain_id={CLIENT_DOMAIN_ID}" class="icon {CLIENT_STATUS_CLASS}" title="{TR_CLIENT_STATUS_TOOLTIP}">{TR_CLIENT_STATUS}</a></td>
+        <td><a href="http://{CLIENT_DOMAIN_URL}/" target="_blank" class="icon i_goto">{CLIENT_USERNAME}</a></td>
+        <!-- EDP: client_domain_status_ok -->
+        <!-- BDP: client_domain_status_not_ok -->
+        <td><span class="icon {CLIENT_STATUS_CLASS}" title="{TR_CLIENT_STATUS_TOOLTIP}">{TR_CLIENT_STATUS}</span></td>
+        <td><span class="icon i_lock">{CLIENT_USERNAME}</span></td>
+        <!-- EDP: client_domain_status_not_ok -->
+        <td>{CLIENT_CREATED_ON}</td>
+<? if($_SESSION['user_type'] == 'admin'): ?>
+        <td>{CLIENT_CREATED_BY}</td>
+<? endif; ?>
+        <td>
+            <a class="icon i_identity" href="domain_details.php?domain_id={CLIENT_DOMAIN_ID}" title="<?= tohtml(tr('Details'), 'htmlAttr'); ?>"><?= tohtml(tr('Details')); ?></a>
+            <a class="icon i_details" href="change_user_interface.php?to_id={CLIENT_ID}" title="<?= tohtml(tr('Switch to user interface'), 'htmlAttr'); ?>"><?= tohtml(tr('Switch')); ?></a>
+            <a class="icon i_user" href="user_edit.php?edit_id={CLIENT_ID}" title="<?= tohtml(tr('Edit user'), 'htmlAttr'); ?>"><?= tohtml(tr('Edit user')); ?></a>
+            
+            <!-- BDP: client_restricted_links -->
+<? if($_SESSION['user_type'] == 'reseller'): ?>
+            <a class="icon i_domain_icon" href="domain_edit.php?edit_id={CLIENT_DOMAIN_ID}" title="<?= tohtml(tr('Edit domain'), 'htmlAttr'); ?>"><?= tohtml(tr('Edit domain')); ?></a>
+<? endif; ?>
+            <a class="icon i_delete" href="user_delete.php?user_id={CLIENT_ID}" onclick="return action_delete(this)" title="<?= tohtml(tr('Delete user'), 'htmlAttr'); ?>"><?= tohtml(tr('Delete user')); ?></a>
+            <!-- EDP: client_restricted_links -->
+        </td>
+    </tr>
+    <!-- BDP: client_domain_alias_blk -->
+    <tr>
+        <td colspan="5"><a href="http://{CLIENT_DOMAIN_ALIAS_URL}/" target="_blank" class="icon i_goto">{CLIENT_DOMAIN_ALIAS}</a></td>
+    </tr>
+    <!-- EDP: client_domain_alias_blk -->
+    <!-- EDP: client_item -->
+    <tbody>
+</table>
+<div class="paginator">
+    <!-- BDP: client_scroll_prev -->
+    <a class="icon i_prev" href="users.php?psi={PREV_PSI}" title="<?= tohtml(tr('Previous'), 'htmlAttr'); ?>"><?= tohtml(tr('Previous')); ?></a>
+    <!-- EDP: client_scroll_prev -->
+    <!-- BDP: client_scroll_prev_gray -->
+    <span class="icon i_prev_gray"></span>
+    <!-- EDP: client_scroll_prev_gray -->
+    <!-- BDP: client_scroll_next_gray -->
+    <span class="icon i_next_gray"></span>
+    <!-- EDP: client_scroll_next_gray -->
+    <!-- BDP: client_scroll_next -->
+    <a class="icon i_next" href="users.php?psi={NEXT_PSI}" title="<?= tohtml(tr('Previous'), 'htmlAttr'); ?>"><?= tohtml(tr('Next')); ?></a>
+    <!-- EDP: client_scroll_next -->
+</div>
+<!-- EDP: client_list -->

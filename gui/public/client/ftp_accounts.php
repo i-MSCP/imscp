@@ -42,11 +42,11 @@ function generatePage($tpl)
     }
 
     while ($row = $stmt->fetchRow()) {
-        $tpl->assign(array(
+        $tpl->assign([
             'FTP_ACCOUNT'        => tohtml($row['userid']),
             'UID'                => tohtml($row['userid'], 'htmlAttr'),
             'FTP_ACCOUNT_STATUS' => translate_dmn_status($row['status'])
-        ));
+        ]);
         $tpl->parse('FTP_ITEM', '.ftp_item');
     }
 }
@@ -63,7 +63,7 @@ check_login('user');
 customerHasFeature('ftp') or showBadRequestErrorPage();
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/ftp_accounts.tpl',
     'page_message' => 'layout',
@@ -71,8 +71,8 @@ $tpl->define_dynamic(array(
     'ftp_accounts' => 'page',
     'ftp_item'     => 'ftp_accounts',
     'ftp_actions'  => 'ftp_item'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'         => tr('Client / FTP / Overview'),
     'TR_FTP_ACCOUNT'        => tr('FTP account'),
     'TR_FTP_ACTIONS'        => tr('Actions'),
@@ -80,7 +80,7 @@ $tpl->assign(array(
     'TR_EDIT'               => tr('Edit'),
     'TR_DELETE'             => tr('Delete'),
     'TR_MESSAGE_DELETE'     => tr('Are you sure you want to delete the %s FTP user?', '%s'),
-));
+]);
 
 $eventManager->registerListener('onGetJsTranslations', function ($e) {
     /* @var $e iMSCP_Events_Event */
@@ -94,5 +94,5 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-$eventManager->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+$eventManager->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

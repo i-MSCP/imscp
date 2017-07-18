@@ -36,15 +36,15 @@ function getDomainsList()
     }
 
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
-    $domainsList = array(
-        array(
+    $domainsList = [
+        [
             'name'        => $mainDmnProps['domain_name'],
             'id'          => $mainDmnProps['domain_id'],
             'type'        => 'dmn',
             'mount_point' => '/',
             'url_forward' => $mainDmnProps['url_forward']
-        )
-    );
+        ]
+    ];
 
     $stmt = exec_query(
         "
@@ -67,7 +67,7 @@ function getDomainsList()
             WHERE t2.domain_id = :domain_id
             AND t1.subdomain_alias_status = :status_ok
         ",
-        array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => 'ok')
+        ['domain_id' => $mainDmnProps['domain_id'], 'status_ok' => 'ok']
     );
 
     if ($stmt->rowCount()) {
@@ -90,11 +90,11 @@ function generatePage($tpl)
 {
     $forwardType = (
         isset($_POST['forward_type'])
-        && in_array($_POST['forward_type'], array('301', '302', '303', '307', 'proxy'), true)
+        && in_array($_POST['forward_type'], ['301', '302', '303', '307', 'proxy'], true)
     ) ? $_POST['forward_type'] : '302';
     $forwardHost = ($forwardType == 'proxy' && isset($_POST['forward_host'])) ? 'On' : 'Off';
 
-    $tpl->assign(array(
+    $tpl->assign([
         'SUBDOMAIN_NAME'     => (isset($_POST['subdomain_name'])) ? tohtml($_POST['subdomain_name']) : '',
         'FORWARD_URL_YES'    => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? ' checked' : '',
         'FORWARD_URL_NO'     => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? '' : ' checked',
@@ -107,7 +107,7 @@ function generatePage($tpl)
         'FORWARD_TYPE_307'   => ($forwardType == '307') ? ' checked' : '',
         'FORWARD_TYPE_PROXY' => ($forwardType == 'proxy') ? ' checked' : '',
         'FORWARD_HOST'       => ($forwardHost == 'On') ? ' checked' : ''
-    ));
+    ]);
 
     $shareableMountpointCount = 0;
     foreach (getDomainsList() as $domain) {
@@ -115,11 +115,11 @@ function generatePage($tpl)
             $shareableMountpointCount++;
         }
 
-        $tpl->assign(array(
+        $tpl->assign([
             'DOMAIN_NAME'          => tohtml($domain['name']),
             'DOMAIN_NAME_UNICODE'  => tohtml(decode_idna($domain['name'])),
             'DOMAIN_NAME_SELECTED' => (isset($_POST['domain_name']) && $_POST['domain_name'] == $domain['name']) ? ' selected' : '',
-        ));
+        ]);
 
         if ($domain['type'] == 'dmn' || $domain['type'] == 'als') {
             $tpl->parse('PARENT_DOMAIN', '.parent_domain');
@@ -138,10 +138,10 @@ function generatePage($tpl)
         $tpl->assign('SHARED_MOUNT_POINT_OPTION_JS', '');
         $tpl->assign('SHARED_MOUNT_POINT_OPTION', '');
     } else {
-        $tpl->assign(array(
+        $tpl->assign([
             'SHARED_MOUNT_POINT_YES' => (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes') ? ' checked' : '',
             'SHARED_MOUNT_POINT_NO'  => (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes') ? '' : ' checked'
-        ));
+        ]);
     }
 }
 
@@ -200,7 +200,7 @@ function addSubdomain()
         SELECT domain_id FROM domain WHERE domain_name = :subdomain_name
         UNION ALL
         SELECT alias_id FROM domain_aliasses WHERE alias_name = :subdomain_name',
-        array('subdomain_name' => $subdomainName)
+        ['subdomain_name' => $subdomainName]
     );
     if ($stmt->rowCount()) {
         set_page_message(tr('Subdomain %s is unavailable.', "<strong>$subdomainName</strong>"), 'error');
@@ -220,7 +220,7 @@ function addSubdomain()
 
     // Set default mount point
     if ($domainType == 'dmn') {
-        if (in_array($subLabelAscii, array('backups', 'cgi-bin', 'errors', 'logs', 'phptmp'))) {
+        if (in_array($subLabelAscii, ['backups', 'cgi-bin', 'errors', 'logs', 'phptmp'])) {
             $mountPoint = "/sub_$subLabelAscii";
         } else {
             $mountPoint = "/$subLabelAscii";
@@ -260,7 +260,7 @@ function addSubdomain()
     if (isset($_POST['url_forwarding'])
         && $_POST['url_forwarding'] == 'yes'
         && isset($_POST['forward_type'])
-        && in_array($_POST['forward_type'], array('301', '302', '303', '307', 'proxy'), true)
+        && in_array($_POST['forward_type'], ['301', '302', '303', '307', 'proxy'], true)
     ) {
         if (!isset($_POST['forward_url_scheme']) || !isset($_POST['forward_url'])) {
             showBadRequestErrorPage();
@@ -284,7 +284,7 @@ function addSubdomain()
             $uri->setPath(rtrim(utils_normalizePath($uri->getPath()), '/') . '/'); // Normalize URI path
 
             if ($uri->getHost() == $subdomainNameAscii
-                && ($uri->getPath() == '/' && in_array($uri->getPort(), array('', 80, 443)))
+                && ($uri->getPath() == '/' && in_array($uri->getPort(), ['', 80, 443]))
             ) {
                 throw new iMSCP_Exception(
                     tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
@@ -311,7 +311,7 @@ function addSubdomain()
     try {
         $db->beginTransaction();
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddSubdomain, array(
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddSubdomain, [
             'subdomainName'  => $subdomainName,
             'subdomainType'  => $domainType,
             'parentDomainId' => $domainId,
@@ -321,7 +321,7 @@ function addSubdomain()
             'forwardType'    => $forwardType,
             'forwardHost'    => $forwardHost,
             'customerId'     => $_SESSION['user_id']
-        ));
+        ]);
 
         if ($domainType == 'als') {
             $query = "
@@ -344,9 +344,9 @@ function addSubdomain()
             ";
         }
 
-        exec_query($query, array(
+        exec_query($query, [
             $domainId, $subLabelAscii, $mountPoint, $documentRoot, $forwardUrl, $forwardType, $forwardHost, 'toadd'
-        ));
+        ]);
 
         $subdomainId = $db->insertId();
 
@@ -357,7 +357,7 @@ function addSubdomain()
         $phpini->loadDomainIni($_SESSION['user_id'], $mainDmnProps['domain_id'], 'dmn'); // Load main domain PHP configuration options
         $phpini->saveDomainIni($_SESSION['user_id'], $subdomainId, $domainType == 'dmn' ? 'sub' : 'subals');
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddSubdomain, array(
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddSubdomain, [
             'subdomainName'  => $subdomainName,
             'subdomainType'  => $domainType,
             'parentDomainId' => $domainId,
@@ -368,7 +368,7 @@ function addSubdomain()
             'forwardHost'    => $forwardHost,
             'customerId'     => $_SESSION['user_id'],
             'subdomainId'    => $subdomainId
-        ));
+        ]);
 
         $db->commit();
         send_request();
@@ -406,7 +406,7 @@ if (!empty($_POST) && addSubdomain()) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'                       => 'shared/layouts/ui.tpl',
     'page'                         => 'client/subdomain_add.tpl',
     'page_message'                 => 'layout',
@@ -414,8 +414,8 @@ $tpl->define_dynamic(array(
     'shared_mount_point_option_js' => 'page',
     'shared_mount_point_option'    => 'page',
     'shared_mount_point_domain'    => 'shared_mount_point_option'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'                 => tr('Client / Domains / Add Subdomain'),
     'TR_SUBDOMAIN'                  => tr('Subdomain'),
     'TR_SUBDOMAIN_NAME'             => tr('Subdomain name'),
@@ -437,12 +437,12 @@ $tpl->assign(array(
     'TR_PROXY_PRESERVE_HOST'        => tr('Preserve Host'),
     'TR_ADD'                        => tr('Add'),
     'TR_CANCEL'                     => tr('Cancel')
-));
+]);
 
 generateNavigation($tpl);
 generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

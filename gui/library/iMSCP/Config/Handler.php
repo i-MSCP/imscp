@@ -132,7 +132,7 @@ class iMSCP_Config_Handler implements ArrayAccess
 	{
 		$ref = new ReflectionObject($this);
 		$properties = $ref->getProperties(ReflectionProperty::IS_PUBLIC);
-		$array = array();
+		$array = [];
 
 		foreach($properties as $property) {
 			$name = $property->name;

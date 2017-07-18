@@ -38,17 +38,17 @@ $config = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
-	array(
+	[
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/rootkit_log.tpl',
 		'page_message' => 'layout',
 		'antirootkits_log' => 'page'
-	)
+    ]
 );
 
 $tpl->assign('TR_PAGE_TITLE', tr('Admin / System Tools / Anti-Rootkits Logs'));
 
-$antiRootkits = array();
+$antiRootkits = [];
 
 if (isset($config['ANTI_ROOTKITS_PACKAGES'])) {
 	$antiRootkits = explode(',', $config['ANTI_ROOTKITS_PACKAGES']);
@@ -56,11 +56,11 @@ if (isset($config['ANTI_ROOTKITS_PACKAGES'])) {
 
 $antiRootkits[] = 'Other';
 
-$antiRootkitLogFiles = array(
+$antiRootkitLogFiles = [
 	'Chkrootkit' => 'CHKROOTKIT_LOG',
 	'Rkhunter' => 'RKHUNTER_LOG',
 	'Other' => 'OTHER_ROOTKIT_LOG'
-);
+];
 
 foreach ($antiRootkitLogFiles as $antiRootkit => $logVar) {
 	if (!in_array($antiRootkit, $antiRootkits) || !isset($config[$logVar]) || $config[$logVar] == '') {
@@ -82,8 +82,8 @@ if (!empty($antiRootkitLogFiles)) {
 			$content = nl2br(tohtml($log));
 			$content = '<div>' . $content . '</div>';
 
-			$search = array();
-			$replace = array();
+			$search = [];
+			$replace = [];
 
 			// rkhunter-like log colouring
 			if ($antiRootkit == 'Rkhunter') {
@@ -135,10 +135,10 @@ if (!empty($antiRootkitLogFiles)) {
 		}
 
 		$tpl->assign(
-			array(
+			[
 				'LOG' => $content,
 				'FILENAME' => $logFile
-			)
+            ]
 		);
 
 		$tpl->parse('ANTIROOTKITS_LOG', '.antirootkits_log');
@@ -155,7 +155,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 
 $tpl->prnt();
 

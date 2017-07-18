@@ -48,7 +48,7 @@ function reseller_loadUserData($adminId)
           WHERE admin_id = ?
           AND created_by = ?
         ',
-        array($adminId, $_SESSION['user_id'])
+        [$adminId, $_SESSION['user_id']]
     );
 
     if (!$stmt->rowCount()) {
@@ -84,7 +84,7 @@ function reseller_generatePage($tpl)
     global $adminName, $email, $customerId, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
            $street1, $street2, $phone, $fax;
 
-    $tpl->assign(array(
+    $tpl->assign([
         'VL_USERNAME'     => tohtml(decode_idna($adminName)),
         'VL_MAIL'         => tohtml($email),
         'VL_USR_ID'       => tohtml($customerId),
@@ -102,7 +102,7 @@ function reseller_generatePage($tpl)
         'VL_UNKNOWN'      => ($gender == 'U') ? ' selected' : '',
         'VL_PHONE'        => tohtml($phone),
         'VL_FAX'          => tohtml($fax)
-    ));
+    ]);
 }
 
 /**
@@ -113,12 +113,12 @@ function reseller_generatePage($tpl)
  */
 function reseller_updateUserData($adminId)
 {
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $adminId));
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, ['userId' => $adminId]);
 
     global $adminName, $email, $customerId, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
            $street1, $street2, $phone, $fax, $password, $passwordRepeat;
 
-    $resellerId = filter_digits($_SESSION['user_id']);
+    $resellerId = intval($_SESSION['user_id']);
 
     if ($password === '' && $passwordRepeat === '') { // Save without password
         exec_query(
@@ -129,10 +129,10 @@ function reseller_updateUserData($adminId)
               WHERE admin_id = ?
               AND created_by = ?
             ',
-            array(
+            [
                 $firstName, $lastName, $firm, $zip, $city, $state, $country, $email, $phone, $fax, $street1, $street2,
                 $gender, $customerId, $adminId, $resellerId
-            )
+            ]
         );
     } else { // Change password
         if ($password !== $passwordRepeat) {
@@ -154,17 +154,17 @@ function reseller_updateUserData($adminId)
               WHERE admin_id = ?
               AND created_by = ?
             ',
-            array(
+            [
                 $encryptedPassword, $firstName, $lastName, $firm, $zip, $city, $state, $country, $email, $phone, $fax,
                 $street1, $street2, $gender, $customerId, 'tochangepwd', $adminId, $resellerId
-            )
+            ]
         );
 
         $adminName = get_user_name($adminId);
         exec_query('DELETE FROM login WHERE user_name = ?', $adminName);
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $adminId));
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, ['userId' => $adminId]);
 
     set_page_message(tr('User data successfully updated'), 'success');
     write_log("{$_SESSION['user_logged']} updated data for $adminName.", E_USER_NOTICE);
@@ -192,16 +192,16 @@ if (!isset($_REQUEST['edit_id'])) {
     showBadRequestErrorPage();
 }
 
-$userId = filter_digits($_GET['edit_id']);
+$userId = intval($_GET['edit_id']);
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'reseller/user_edit.tpl',
     'page_message' => 'layout',
     'ip_entry'     => 'page'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'      => tr('Reseller / Customers / Overview / Edit Customer'),
     'TR_CORE_DATA'       => tr('Core data'),
     'TR_USERNAME'        => tr('Username'),
@@ -228,7 +228,7 @@ $tpl->assign(array(
     'EDIT_ID'            => $userId,
     'TR_UPDATE'          => tr('Update'),
     'TR_SEND_DATA'       => tr('Send new login data')
-));
+]);
 
 reseller_loadUserData($userId);
 
@@ -241,5 +241,5 @@ reseller_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

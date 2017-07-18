@@ -32,16 +32,16 @@ $eventManager->dispatch(iMSCP_Events::onAdminScriptStart);
 check_login('admin');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'admin/system_info.tpl',
     'page_message' => 'layout',
     'device_block' => 'page'
-));
+]);
 
 $sysinfo = new iMSCP_SystemInfo();
 
-$tpl->assign(array(
+$tpl->assign([
     'CPU_MODEL' => tohtml($sysinfo->cpu['model']),
     'CPU_CORES' => tohtml($sysinfo->cpu['cpus']),
     'CPU_CLOCK_SPEED' => tohtml($sysinfo->cpu['cpuspeed']),
@@ -56,12 +56,12 @@ $tpl->assign(array(
     'SWAP_TOTAL' => bytesHuman($sysinfo->swap['total'] * 1024),
     'SWAP_USED' => bytesHuman($sysinfo->swap['used'] * 1024),
     'SWAP_FREE' => bytesHuman($sysinfo->swap['free'] * 1024)
-));
+]);
 
 $devices = $sysinfo->filesystem;
 
 foreach ($devices as $device) {
-    $tpl->assign(array(
+    $tpl->assign([
         'MOUNT' => tohtml($device['mount']),
         'TYPE' => tohtml($device['fstype']),
         'PARTITION' => tohtml($device['disk']),
@@ -70,11 +70,11 @@ foreach ($devices as $device) {
         'USED' => bytesHuman($device['used'] * 1024),
         'SIZE' => bytesHuman($device['size'] * 1024
         )
-    ));
+    ]);
     $tpl->parse('DEVICE_BLOCK', '.device_block');
 }
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE' => tr('Admin / System Tools / System Information'),
     'TR_SYSTEM_INFO' => tr('System data'),
     'TR_KERNEL' => tr('Kernel Version'),
@@ -99,7 +99,7 @@ $tpl->assign(array(
     'TR_PARTITION' => tr('Partition'),
     'TR_PERCENT' => tr('Percent'),
     'TR_SIZE' => tr('Size')
-));
+]);
 
 $eventManager->registerListener('onGetJsTranslations', function ($e) {
     /* @var $e iMSCP_Events_Event */
@@ -110,7 +110,7 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-$eventManager->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+$eventManager->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

@@ -30,7 +30,7 @@ class iMSCP_Database
     /**
      * @var iMSCP_Database[] Array which contain Database objects, indexed by connection name
      */
-    protected static $_instances = array();
+    protected static $_instances = [];
 
     /**
      * @var iMSCP_Events_Manager
@@ -78,7 +78,7 @@ class iMSCP_Database
      * @param string $name Database name
      * @param array $driverOptions OPTIONAL Driver options
      */
-    private function __construct($user, $pass, $type, $host, $name, $driverOptions = array())
+    private function __construct($user, $pass, $type, $host, $name, $driverOptions = [])
     {
         $driverOptions[PDO::MYSQL_ATTR_INIT_COMMAND] = "SET NAMES 'utf8'";
         $driverOptions[PDO::ATTR_EMULATE_PREPARES] = true; # TODO should be FALSE but we must first update code (including plugins)
@@ -198,7 +198,7 @@ class iMSCP_Database
     {
         $this->events()->dispatch(
             new iMSCP_Database_Events_Database(
-                iMSCP_Events::onBeforeQueryPrepare, array('context' => $this, 'query' => $sql)
+                iMSCP_Events::onBeforeQueryPrepare, ['context' => $this, 'query' => $sql]
             )
         );
 
@@ -210,7 +210,7 @@ class iMSCP_Database
 
         $this->events()->dispatch(
             new iMSCP_Database_Events_Statement(
-                iMSCP_Events::onAfterQueryPrepare, array('context' => $this, 'statement' => $stmt)
+                iMSCP_Events::onAfterQueryPrepare, ['context' => $this, 'statement' => $stmt]
             )
         );
 
@@ -237,7 +237,7 @@ class iMSCP_Database
         if ($stmt instanceof PDOStatement) {
             $this->events()->dispatch(
                 new iMSCP_Database_Events_Statement(
-                    iMSCP_Events::onBeforeQueryExecute, array('context' => $this, 'statement' => $stmt)
+                    iMSCP_Events::onBeforeQueryExecute, ['context' => $this, 'statement' => $stmt]
                 )
             );
 
@@ -249,7 +249,7 @@ class iMSCP_Database
         } elseif (is_string($stmt)) {
             $this->events()->dispatch(
                 new iMSCP_Database_Events_Database(
-                    iMSCP_Events::onBeforeQueryExecute, array('context' => $this, 'query' => $stmt)
+                    iMSCP_Events::onBeforeQueryExecute, ['context' => $this, 'query' => $stmt]
                 )
             );
 
@@ -257,7 +257,7 @@ class iMSCP_Database
                 $rs = $this->_db->query($stmt);
             } else {
                 $parameters = func_get_args();
-                $rs = call_user_func_array(array($this->_db, 'query'), $parameters);
+                $rs = call_user_func_array([$this->_db, 'query'], $parameters);
             }
         } else {
             throw new iMSCP_Exception_Database('Wrong parameter. Expects either a string or PDOStatement object');
@@ -266,7 +266,7 @@ class iMSCP_Database
         if ($rs) {
             $stmt = ($rs === true) ? $stmt : $rs;
             $this->events()->dispatch(new iMSCP_Database_Events_Statement(
-                iMSCP_Events::onAfterQueryExecute, array('context' => $this, 'statement' => $stmt)
+                iMSCP_Events::onAfterQueryExecute, ['context' => $this, 'statement' => $stmt]
             ));
 
             return new iMSCP_Database_ResultSet($stmt);
@@ -294,7 +294,7 @@ class iMSCP_Database
     {
         if ($like) {
             $stmt = $this->_db->prepare('SHOW TABLES LIKE ?');
-            $stmt->execute(array($like));
+            $stmt->execute([$like]);
         } else {
             $stmt = $this->_db->query('SHOW TABLES');
         }

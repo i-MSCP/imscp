@@ -70,7 +70,7 @@ function gen_user_personal_data($tpl, $user_id) {
 
 	$rs = exec_query($query, $user_id);
 	$tpl->assign(
-		array(
+		[
 			 'FIRST_NAME' => empty($rs->fields['fname']) ? '' : tohtml($rs->fields['fname']),
 			 'LAST_NAME' => empty($rs->fields['lname']) ? '' : tohtml($rs->fields['lname']),
 			 'FIRM' => empty($rs->fields['firm']) ? '' : tohtml($rs->fields['firm']),
@@ -85,7 +85,7 @@ function gen_user_personal_data($tpl, $user_id) {
 			 'FAX' => empty($rs->fields['fax']) ? '' : tohtml($rs->fields['fax']),
 			 'VL_MALE' => (($rs->fields['gender'] == 'M') ? $cfg->HTML_SELECTED : ''),
 			 'VL_FEMALE' => (($rs->fields['gender'] == 'F') ? $cfg->HTML_SELECTED : ''),
-			 'VL_UNKNOWN' => ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? $cfg->HTML_SELECTED : '')));
+			 'VL_UNKNOWN' => ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? $cfg->HTML_SELECTED : '')]);
 }
 
 /**
@@ -94,7 +94,7 @@ function gen_user_personal_data($tpl, $user_id) {
  */
 function update_user_personal_data($user_id) {
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $user_id));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, ['userId' => $user_id]);
 
 	$fname = clean_input($_POST['fname']);
 	$lname = clean_input($_POST['lname']);
@@ -120,11 +120,11 @@ function update_user_personal_data($user_id) {
 		WHERE
 			`admin_id` = ?
 	";
-	exec_query($query, array($fname, $lname, $firm, $zip, $city, $state, $country,
+	exec_query($query, [$fname, $lname, $firm, $zip, $city, $state, $country,
                             $street1, $street2, $email, $phone, $fax, $gender,
-                            $user_id));
+                            $user_id]);
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $user_id));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, ['userId' => $user_id]);
 
 	write_log($_SESSION['user_logged'] . ": update personal data", E_USER_NOTICE);
 	set_page_message(tr('Personal data successfully updated.'), 'success');
@@ -133,7 +133,7 @@ function update_user_personal_data($user_id) {
 generateNavigation($tpl);
 
 $tpl->assign(
-	array(
+	[
 		 'TR_TITLE_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
 		 'TR_PERSONAL_DATA' => tr('Personal data'),
 		 'TR_FIRST_NAME' => tr('First name'),
@@ -152,13 +152,13 @@ $tpl->assign(
 		 'TR_MALE' => tr('Male'),
 		 'TR_FEMALE' => tr('Female'),
 		 'TR_UNKNOWN' => tr('Unknown'),
-		 'TR_UPDATE_DATA' => tr('Change')));
+		 'TR_UPDATE_DATA' => tr('Change')]);
 
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 
 $tpl->prnt();
 

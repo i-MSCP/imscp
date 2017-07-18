@@ -29,10 +29,10 @@ class iMSCP_Exception_Handler
     /**
      * @var array Exception writers class names
      */
-    protected $writers = array(
+    protected $writers = [
         'iMSCP_Exception_Writer_Browser',
         'iMSCP_Exception_Writer_Mail'
-    );
+    ];
 
     /**
      * Constructor
@@ -78,7 +78,7 @@ class iMSCP_Exception_Handler
      */
     public function setExceptionHandler()
     {
-        set_exception_handler(array($this, 'handleException'));
+        set_exception_handler([$this, 'handleException']);
     }
 
     /**

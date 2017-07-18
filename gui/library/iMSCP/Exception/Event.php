@@ -33,7 +33,7 @@ class iMSCP_Exception_Event extends iMSCP_Events_Event
      */
     public function __construct($exception)
     {
-        parent::__construct('onUncaughtException', array('exception' => $exception));
+        parent::__construct('onUncaughtException', ['exception' => $exception]);
     }
 
     /**

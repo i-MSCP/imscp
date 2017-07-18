@@ -38,9 +38,9 @@ function client_getEmailAccountData($mailId)
         return $mailData;
     }
 
-    $stmt = exec_query('SELECT * FROM mail_users WHERE mail_id = ? AND domain_id = ?', array(
+    $stmt = exec_query('SELECT * FROM mail_users WHERE mail_id = ? AND domain_id = ?', [
         $mailId, get_user_domain_id($_SESSION['user_id'])
-    ));
+    ]);
 
     if (!$stmt->rowCount()) {
         showBadRequestErrorPage();
@@ -62,7 +62,7 @@ function client_editMailAccount()
         || !isset($_POST['quota'])
         || !isset($_POST['forward_list'])
         || !isset($_POST['account_type'])
-        || !in_array($_POST['account_type'], array('1', '2', '3'), true)
+        || !in_array($_POST['account_type'], ['1', '2', '3'], true)
     ) {
         showBadRequestErrorPage();
     }
@@ -78,8 +78,8 @@ function client_editMailAccount()
     }
 
     $domainType = $match[1];
-    $mailTypeNormal = in_array($_POST['account_type'], array('1', '3'));
-    $mailTypeForward = in_array($_POST['account_type'], array('2', '3'));
+    $mailTypeNormal = in_array($_POST['account_type'], ['1', '3']);
+    $mailTypeForward = in_array($_POST['account_type'], ['2', '3']);
 
     if (!$mailTypeNormal && !$mailTypeForward) {
         showBadRequestErrorPage();
@@ -147,7 +147,7 @@ function client_editMailAccount()
                   AND domain_id = ?
                   AND quota IS NOT NULL
                 ',
-                array($mailData['mail_id'], $mainDmnProps['domain_id'])
+                [$mailData['mail_id'], $mainDmnProps['domain_id']]
             );
 
             $customerMailboxesQuotaSumBytes = $stmt->fetchRow(PDO::FETCH_COLUMN);
@@ -216,19 +216,19 @@ function client_editMailAccount()
         }
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditMail, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditMail, [
         'mailId' => $mailData['mail_id']
-    ));
+    ]);
     exec_query(
         '
                 UPDATE mail_users
                 SET mail_pass = ?, mail_forward = ?, mail_type = ?, status = ?, po_active = ?, quota = ?
                 WHERE mail_id = ?
             ',
-        array(
+        [
             $password, $forwardList, $mailType, 'tochange', $mailTypeNormal ? 'yes' : 'no', $mailQuotaLimitBytes,
             $mailData['mail_id']
-        )
+        ]
     );
 
     # Force synching of quota info on next load (or remove cached data in case of normal account changed to forward account)
@@ -238,9 +238,9 @@ function client_editMailAccount()
     list($user, $domain) = explode('@', $mailAddr);
     unset($_SESSION['maildirsize'][utils_normalizePath($postfixConfig['MTA_VIRTUAL_MAIL_DIR'] . "/$domain/$user/maildirsize")]);
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditMail, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditMail, [
         'mailId' => $mailData['mail_id']
-    ));
+    ]);
     send_request();
     write_log("{$_SESSION['user_logged']}: Updated Email account: $mailAddr", E_USER_NOTICE);
     set_page_message(tr('Email account successfully scheduled for update.'), 'success');
@@ -267,21 +267,21 @@ function client_generatePage($tpl)
           AND domain_id = ?
           AND quota IS NOT NULL
         ',
-        array($mailId, $mainDmnProps['domain_id'])
+        [$mailId, $mainDmnProps['domain_id']]
     );
 
     $customerMailboxesQuotaSumBytes = $stmt->fetchRow(PDO::FETCH_COLUMN);
     $customerEmailQuotaLimitBytes = filter_digits($mainDmnProps['mail_quota'], 0);
 
     if ($customerEmailQuotaLimitBytes < 1) {
-        $tpl->assign(array(
+        $tpl->assign([
             'TR_QUOTA'  => tohtml(tr('Quota in MiB (0 for unlimited)')),
             'MIN_QUOTA' => 0,
             'MAX_QUOTA' => tohtml(floor(PHP_INT_MAX), 'htmlAttr'),
             'QUOTA'     => isset($_POST['quota'])
                 ? tohtml(filter_digits($_POST['quota']), 'htmlAttr')
                 : tohtml(floor($mailData['quota'] / 1048576), 'htmlAttr')
-        ));
+        ]);
         $mailTypeForwardOnly = false;
     } else {
         if ($customerEmailQuotaLimitBytes > $customerMailboxesQuotaSumBytes) {
@@ -300,20 +300,20 @@ function client_generatePage($tpl)
             $mailTypeForwardOnly = true;
         }
 
-        $tpl->assign(array(
+        $tpl->assign([
             'TR_QUOTA'  => tohtml(tr('Quota in MiB (Max: %s)', bytesHuman($mailQuotaLimitBytes, NULL, 0))),
             'MIN_QUOTA' => 1,
             'MAX_QUOTA' => tohtml($mailMaxQuotaLimitMib, 'htmlAttr'),
             'QUOTA'     => isset($_POST['quota'])
                 ? tohtml(filter_digits($_POST['quota']), 'htmlAttr')
                 : tohtml($mailQuotaLimitMiB, 'htmlAttr')
-        ));
+        ]);
     }
 
     $mailType = '';
 
     if (!isset($_POST['account_type'])
-        || !in_array($_POST['account_type'], array('1', '2', '3'))
+        || !in_array($_POST['account_type'], ['1', '2', '3'])
     ) {
         if (preg_match('/_mail/', $mailData['mail_type'])) {
             $mailType = '1';
@@ -326,7 +326,7 @@ function client_generatePage($tpl)
         $mailType = $_POST['account_type'];
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'MAIL_ID'                => tohtml($mailId),
         'USERNAME'               => tohtml($username),
         'NORMAL_CHECKED'         => ($mailType == '1') ? ' checked' : '',
@@ -344,7 +344,7 @@ function client_generatePage($tpl)
         'DOMAIN_NAME'            => tohtml($domainName),
         'DOMAIN_NAME_UNICODE'    => tohtml(decode_idna($domainName)),
         'DOMAIN_NAME_SELECTED'   => ' selected'
-    ));
+    ]);
 
     iMSCP_Events_Aggregator::getInstance()->registerListener(
         'onGetJsTranslations',
@@ -373,12 +373,12 @@ if (!empty($_POST) && client_editMailAccount()) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/mail_edit.tpl',
     'page_message' => 'layout'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'          => tr('Client / Email / Edit Email Account'),
     'TR_MAIl_ACCOUNT_DATA'   => tr('Email account data'),
     'TR_USERNAME'            => tr('Username'),
@@ -393,12 +393,12 @@ $tpl->assign(array(
     'TR_FWD_HELP'            => tr('Separate multiple email addresses by comma or a line-break.'),
     'TR_UPDATE'              => tr('Update'),
     'TR_CANCEL'              => tr('Cancel')
-));
+]);
 
 client_generatePage($tpl);
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

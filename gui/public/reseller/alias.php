@@ -29,8 +29,8 @@
  */
 function reseller_getDatatable()
 {
-    $columns = array('alias_name', 'alias_mount', 'url_forward', 'admin_name', 'alias_status');
-    $columnAliases = array('t1.alias_name', 't1.alias_mount', 't1.url_forward', 't3.admin_name', 't1.alias_status');
+    $columns = ['alias_name', 'alias_mount', 'url_forward', 'admin_name', 'alias_status'];
+    $columnAliases = ['t1.alias_name', 't1.alias_mount', 't1.url_forward', 't3.admin_name', 't1.alias_status'];
     $nbColumns = count($columns);
 
     /* Paging */
@@ -40,7 +40,7 @@ function reseller_getDatatable()
         && isset($_GET['iDisplayLength'])
         && $_GET['iDisplayLength'] != '-1'
     ) {
-        $limit = 'LIMIT ' . filter_digits($_GET['iDisplayStart']) . ', ' . filter_digits($_GET['iDisplayLength']);
+        $limit = 'LIMIT ' . intval($_GET['iDisplayStart']) . ', ' . intval($_GET['iDisplayLength']);
     }
 
     /* Ordering */
@@ -50,16 +50,16 @@ function reseller_getDatatable()
         $order = 'ORDER BY ';
 
         if (isset($_GET['iSortingCols'])) {
-            $iSortingCols = filter_digits($_GET['iSortingCols']);
+            $iSortingCols = intval($_GET['iSortingCols']);
 
             for ($i = 0; $i < $iSortingCols; $i++) {
                 if (isset($_GET['iSortCol_' . $i])
-                    && isset($_GET['bSortable_' . filter_digits($_GET['iSortCol_' . $i])])
-                    && $_GET['bSortable_' . filter_digits($_GET['iSortCol_' . $i])] == 'true'
+                    && isset($_GET['bSortable_' . intval($_GET['iSortCol_' . $i])])
+                    && $_GET['bSortable_' . intval($_GET['iSortCol_' . $i])] == 'true'
                     && isset($_GET['sSortDir_' . $i])
-                    && in_array($_GET['sSortDir_' . $i], array('asc', 'desc'), true)
+                    && in_array($_GET['sSortDir_' . $i], ['asc', 'desc'], true)
                 ) {
-                    $order .= $columnAliases[filter_digits($_GET['iSortCol_' . $i])] . ' ' . $_GET['sSortDir_' . $i] . ', ';
+                    $order .= $columnAliases[intval($_GET['iSortCol_' . $i])] . ' ' . $_GET['sSortDir_' . $i] . ', ';
                 }
             }
         }
@@ -101,8 +101,8 @@ function reseller_getDatatable()
         "
             SELECT SQL_CALC_FOUND_ROWS t1.alias_id, " . implode(', ', $columnAliases) . "
             FROM domain_aliasses AS t1
-            INNER JOIN domain AS t2 USING(domain_id)
-            INNER JOIN admin AS t3 ON(t3.admin_id = t2.domain_admin_id)
+            JOIN domain AS t2 USING(domain_id)
+            JOIN admin AS t3 ON(t3.admin_id = t2.domain_admin_id)
             $where $order $limit
         "
     );
@@ -116,8 +116,8 @@ function reseller_getDatatable()
     $stmt = exec_query(
         "
             SELECT COUNT(t1.alias_id) FROM domain_aliasses AS t1
-            INNER JOIN domain AS t2 USING(domain_id)
-            INNER JOIN admin AS t3 ON(t3.admin_id = t2.domain_admin_id)
+            JOIN domain AS t2 USING(domain_id)
+            JOIN admin AS t3 ON(t3.admin_id = t2.domain_admin_id)
             WHERE t3.created_by = ?
         ",
         $_SESSION['user_id']
@@ -126,19 +126,19 @@ function reseller_getDatatable()
     $iTotalRecords = $iTotalRecords[0];
 
     /* Output */
-    $output = array(
-        'sEcho' => filter_digits($_GET['sEcho']),
+    $output = [
+        'sEcho' => intval($_GET['sEcho']),
         'iTotalDisplayRecords' => $iTotalDisplayRecords,
         'iTotalRecords' => $iTotalRecords,
-        'aaData' => array()
-    );
+        'aaData' => []
+    ];
 
     $trDelete = tr('Delete');
     $trEdit = tr('Edit');
     $trActivate = tr('Activate');
 
     while ($data = $rResult->fetchRow()) {
-        $row = array();
+        $row = [];
         $aliasName = decode_idna($data['alias_name']);
 
         for ($i = 0; $i < $nbColumns; $i++) {
@@ -211,14 +211,14 @@ if (is_xhr()) {
 /** @var $tpl iMSCP_pTemplate */
 $tpl = new iMSCP_pTemplate();
 
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'reseller/alias.tpl',
     'page_message' => 'layout',
     'als_add_button' => 'page'
-));
+]);
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE' => tr('Reseller / Customers / Domain Aliases'),
     'TR_ALIAS_NAME' => tr('Domain alias name'),
     'TR_MOUNT_POINT' => tr('Mount point'),
@@ -230,7 +230,7 @@ $tpl->assign(array(
     'TR_MESSAGE_DELETE_ALIAS' => tojs(tr('Are you sure you want to delete the %s domain alias?', '%s')),
     'TR_MESSAGE_DELETE_ALIAS_ORDER' => tojs(tr('Are you sure you want to delete the %s domain alias order?', '%s')),
     'TR_PROCESSING_DATA' => tr('Processing...')
-));
+]);
 
 iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e \iMSCP_Events_Event */
@@ -255,5 +255,5 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

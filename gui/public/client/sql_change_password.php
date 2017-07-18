@@ -45,12 +45,12 @@ function client_generatePage($tpl, $id)
     }
 
     $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-    $tpl->assign(array(
+    $tpl->assign([
         'USER_NAME' => tohtml($row['sqlu_name']),
         'ID' => tohtml($id)
-    ));
+    ]);
 
-    return array($row['sqlu_name'], $row['sqlu_host']);
+    return [$row['sqlu_name'], $row['sqlu_host']];
 }
 
 /**
@@ -96,7 +96,7 @@ function client_updateSqlUserPassword($id, $user, $host)
     $config = iMSCP_Registry::get('config');
     $mysqlConfig = new iMSCP_Config_Handler_File($config['CONF_DIR'] . '/mysql/mysql.data');
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditSqlUser, array('sqlUserId' => $id));
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditSqlUser, ['sqlUserId' => $id]);
 
     // Here we cannot use transaction due to statements that cause an implicit commit. Thus we execute
     // those statements first to let the i-MSCP database in clean state if one of them fails.
@@ -104,15 +104,15 @@ function client_updateSqlUserPassword($id, $user, $host)
 
     // Update SQL user password in the mysql system tables;
     if ($mysqlConfig['SQLD_TYPE'] == 'mariadb' || version_compare($mysqlConfig['SQLD_VERSION'], '5.7.6', '<')) {
-        exec_query('SET PASSWORD FOR ?@? = PASSWORD(?)', array($user, $host, $password));
+        exec_query('SET PASSWORD FOR ?@? = PASSWORD(?)', [$user, $host, $password]);
     } else {
-        exec_query('ALTER USER ?@? IDENTIFIED BY ? PASSWORD EXPIRE NEVER', array($user, $host, $password));
+        exec_query('ALTER USER ?@? IDENTIFIED BY ? PASSWORD EXPIRE NEVER', [$user, $host, $password]);
     }
 
     set_page_message(tr('SQL user password successfully updated.'), 'success');
     write_log(sprintf('%s updated %s@%s SQL user password.', decode_idna($_SESSION['user_logged']), $user, $host), E_USER_NOTICE);
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditSqlUser, array('sqlUserId' => $id));
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditSqlUser, ['sqlUserId' => $id]);
     redirectTo('sql_manage.php');
 }
 
@@ -130,27 +130,27 @@ if (!isset($_REQUEST['id'])) {
     showBadRequestErrorPage();
 }
 
-$id = filter_digits($_REQUEST['id']);
+$id = intval($_REQUEST['id']);
 
 if (!check_user_sql_perms($id)) {
     showBadRequestErrorPage();
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'client/sql_change_password.tpl',
     'page_message' => 'layout'
-));
+]);
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE' => tr('Client / Databases / Overview / Update SQL User Password'),
     'TR_DB_USER' => tr('User'),
     'TR_PASSWORD' => tr('Password'),
     'TR_PASSWORD_CONFIRMATION' => tr('Password confirmation'),
     'TR_CHANGE' => tr('Update'),
     'TR_CANCEL' => tr('Cancel')
-));
+]);
 
 list($user, $host) = client_generatePage($tpl, $id);
 
@@ -159,7 +159,7 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

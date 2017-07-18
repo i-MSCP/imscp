@@ -45,7 +45,7 @@ function _client_countDefaultMails($mainDmnId)
           AND
            (mail_acc = ? OR mail_acc = ? OR mail_acc = ?)
         ',
-        array($mainDmnId, 'ok', 'toadd', 'abuse', 'postmaster', 'webmaster')
+        [$mainDmnId, 'ok', 'toadd', 'abuse', 'postmaster', 'webmaster']
     );
 
     return $stmt->fetchRow(PDO::FETCH_COLUMN);
@@ -61,10 +61,10 @@ function _client_countDefaultMails($mainDmnId)
 function _client_generateUserMailAction($mailId, $mailStatus)
 {
     if ($mailStatus == 'ok') {
-        return array(tr('Delete'), "mail_delete.php?id=$mailId", tr('Edit'), "mail_edit.php?id=$mailId");
+        return [tr('Delete'), "mail_delete.php?id=$mailId", tr('Edit'), "mail_edit.php?id=$mailId"];
     }
 
-    return array(tr('N/A'), '#', tr('N/A'), '#');
+    return [tr('N/A'), '#', tr('N/A'), '#'];
 }
 
 /**
@@ -84,18 +84,18 @@ function _client_generateUserMailAutoRespond($tpl, $mailId, $mailStatus, $mailAu
     }
 
     if (!$mailAutoRespond) {
-        $tpl->assign(array(
+        $tpl->assign([
             'AUTO_RESPOND'           => tr('Enable'),
             'AUTO_RESPOND_SCRIPT'    => "mail_autoresponder_enable.php?mail_account_id=$mailId",
             'AUTO_RESPOND_EDIT_LINK' => ''
-        ));
+        ]);
     } else {
-        $tpl->assign(array(
+        $tpl->assign([
             'AUTO_RESPOND'             => tr('Disable'),
             'AUTO_RESPOND_SCRIPT'      => "mail_autoresponder_disable.php?mail_account_id=$mailId",
             'AUTO_RESPOND_EDIT'        => tr('Edit'),
             'AUTO_RESPOND_EDIT_SCRIPT' => "mail_autoresponder_edit.php?mail_account_id=$mailId",
-        ));
+        ]);
         $tpl->parse('AUTO_RESPOND_EDIT_LINK', 'auto_respond_edit_link');
     }
 
@@ -184,7 +184,7 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
             $mailQuotaInfo = tr('n/a');
         }
 
-        $tpl->assign(array(
+        $tpl->assign([
             'MAIL_ADDR'          => tohtml(decode_idna($mailAddr)),
             'MAIL_TYPE'          => $mailType,
             'MAIL_QUOTA_INFO'    => $mailQuotaInfo,
@@ -195,7 +195,7 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
             'MAIL_EDIT_SCRIPT'   => $mailEditScript,
             'DEL_ITEM'           => $row['mail_id'],
             'DISABLED_DEL_ITEM'  => ($row['status'] != 'ok') ? ' disabled' : ''
-        ));
+        ]);
 
         _client_generateUserMailAutoRespond($tpl, $row['mail_id'], $row['status'], $row['mail_auto_respond']);
         $tpl->parse('MAIL_ITEM', '.mail_item');
@@ -273,7 +273,7 @@ if (!customerHasMailOrExtMailFeatures()) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'                 => 'shared/layouts/ui.tpl',
     'page'                   => 'client/mail_accounts.tpl',
     'page_message'           => 'layout',
@@ -283,8 +283,8 @@ $tpl->define_dynamic(array(
     'auto_respond_item'      => 'mail_item',
     'auto_respond_edit_link' => 'auto_respond_item',
     'sync_quota_info_link'   => 'mail_items'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'                        => tr('Client / Email / Overview'),
     'TR_MAIL'                              => tr('Mail'),
     'TR_TYPE'                              => tr('Type'),
@@ -299,7 +299,7 @@ $tpl->assign(array(
     'TR_MESSAGE_DELETE_SELECTED_ITEMS_ERR' => tojs(tr('You must select a least one mail account to delete')),
     'TR_SYNC_QUOTA_INFO'                   => tr('Sync quota info'),
     'TR_SYNC_QUOTA_TOOLTIP'                => tohtml(tr('Force synching of mailboxes quota info. Quota info are automatically synced every 5 minutes.'), 'htmlAttr')
-));
+]);
 
 iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e \iMSCP_Events_Event */
@@ -311,5 +311,5 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

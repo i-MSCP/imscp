@@ -30,9 +30,9 @@ function client_deleteMailAccount($mailId, $domainId)
 {
     static $postfixConfig = NULL;
 
-    $stmt = exec_query('SELECT mail_addr, mail_type FROM mail_users WHERE mail_id = ? AND domain_id = ?', array(
+    $stmt = exec_query('SELECT mail_addr, mail_type FROM mail_users WHERE mail_id = ? AND domain_id = ?', [
         $mailId, $domainId
-    ));
+    ]);
 
     if (!$stmt->rowCount()) {
         throw new iMSCP_Exception('Bad request.', 400);
@@ -40,8 +40,8 @@ function client_deleteMailAccount($mailId, $domainId)
 
     $row = $stmt->fetchRow();
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteMail, array('mailId' => $mailId));
-    exec_query('UPDATE mail_users SET status = ? WHERE mail_id = ?', array('todelete', $mailId));
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteMail, ['mailId' => $mailId]);
+    exec_query('UPDATE mail_users SET status = ? WHERE mail_id = ?', ['todelete', $mailId]);
 
     if (strpos($row['mail_type'], '_mail') !== false) {
         # Remove cached quota info if any
@@ -67,10 +67,10 @@ function client_deleteMailAccount($mailId, $domainId)
             SELECT mail_id, mail_acc, mail_forward FROM mail_users
             WHERE mail_addr <> :mail_addr AND (mail_acc RLIKE :rlike OR mail_forward RLIKE :rlike) 
         ',
-        array(
+        [
             'mail_addr' => $row['mail_addr'],
             'rlike'     => '(,|^)' . $row['mail_addr'] . '(,|$)'
-        )
+        ]
     );
 
     if ($stmt->rowCount()) {
@@ -88,17 +88,17 @@ function client_deleteMailAccount($mailId, $domainId)
             }
 
             if ($row['mail_acc'] == '' || $row['mail_forward'] == '') {
-                exec_query('UPDATE mail_users SET status = ? WHERE mail_id = ?', array('todelete', $row['mail_id']));
+                exec_query('UPDATE mail_users SET status = ? WHERE mail_id = ?', ['todelete', $row['mail_id']]);
             } else {
-                exec_query('UPDATE mail_users SET status = ?, mail_acc = ?, mail_forward = ? WHERE mail_id = ?', array(
+                exec_query('UPDATE mail_users SET status = ?, mail_acc = ?, mail_forward = ? WHERE mail_id = ?', [
                     'tochange', $row['mail_acc'], $row['mail_forward'], $row['mail_id']
-                ));
+                ]);
             }
         }
     }
 
     delete_autoreplies_log_entries();
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMail, array('mailId' => $mailId));
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMail, ['mailId' => $mailId]);
     set_page_message(tr('Mail account %s successfully scheduled for deletion.', decode_idna($row['mail_addr'])), 'success');
 }
 
@@ -130,7 +130,7 @@ try {
     $db->beginTransaction();
 
     foreach ($mailIds as $mailId) {
-        $mailId = filter_digits($mailId);
+        $mailId = intval($mailId);
         client_deleteMailAccount($mailId, $domainId);
         $nbDeletedMails++;
     }

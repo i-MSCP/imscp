@@ -18,52 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/**
- * Helper function to generates domain details
- *
- * @param iMSCP_pTemplate $tpl Template engine
- * @param int $domainId Domain unique identifier
- * @return void
- */
-function gen_domain_details($tpl, $domainId)
-{
-    $tpl->assign('USER_DETAILS', '');
-
-    if (isset($_SESSION['details']) && $_SESSION['details'] == 'hide') {
-        $tpl->assign(array(
-            'TR_VIEW_DETAILS' => tr('View aliases'),
-            'SHOW_DETAILS'    => 'show'
-        ));
-        return;
-    }
-
-    if (isset($_SESSION['details']) && $_SESSION['details'] == 'show') {
-        $tpl->assign(array(
-            'TR_VIEW_DETAILS' => tr('Hide aliases'),
-            'SHOW_DETAILS'    => 'hide'
-        ));
-
-        $stmt = exec_query('SELECT alias_id, alias_name FROM domain_aliasses WHERE domain_id = ? ORDER BY alias_id DESC', $domainId);
-        if (!$stmt->rowCount()) {
-            $tpl->assign('USER_DETAILS', '');
-            return;
-        }
-
-        while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-            $tpl->assign('ALIAS_DOMAIN', tohtml(decode_idna($row['alias_name'])));
-            $tpl->parse('USER_DETAILS', '.user_details');
-        }
-        return;
-    }
-
-    $tpl->assign(array(
-        'TR_VIEW_DETAILS' => tr('View aliases'),
-        'SHOW_DETAILS'    => 'show'
-    ));
-}
+// Common
 
 /**
- * Helper function to generate logged from block.
+ * Generate logged from block
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
@@ -73,10 +31,14 @@ function generateLoggedFrom($tpl)
     $tpl->define_dynamic('logged_from', 'layout');
 
     if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
-        $tpl->assign(array(
-            'YOU_ARE_LOGGED_AS' => tr('%1$s you are now logged as %2$s', $_SESSION['logged_from'], decode_idna($_SESSION['user_logged'])),
+        $tpl->assign([
+            'YOU_ARE_LOGGED_AS' => tr(
+                '%1$s you are now logged as %2$s',
+                $_SESSION['logged_from'],
+                decode_idna($_SESSION['user_logged'])
+            ),
             'TR_GO_BACK'        => tr('Back')
-        ));
+        ]);
         $tpl->parse('LOGGED_FROM', 'logged_from');
         return;
     }
@@ -85,7 +47,7 @@ function generateLoggedFrom($tpl)
 }
 
 /**
- * Helper function to generates an html list of available languages
+ * Generates list of available languages
  *
  * @param  iMSCP_pTemplate $tpl Template engine
  * @param  string $selectedLanguage Selected language
@@ -93,18 +55,18 @@ function generateLoggedFrom($tpl)
  */
 function gen_def_language($tpl, $selectedLanguage)
 {
-    foreach ( i18n_getAvailableLanguages() as $language) {
-        $tpl->assign(array(
+    foreach (i18n_getAvailableLanguages() as $language) {
+        $tpl->assign([
             'LANG_VALUE'    => tohtml($language['locale'], 'htmlAttr'),
             'LANG_SELECTED' => ($language['locale'] == $selectedLanguage) ? ' selected' : '',
             'LANG_NAME'     => tohtml($language['language'])
-        ));
+        ]);
         $tpl->parse('DEF_LANGUAGE', '.def_language');
     }
 }
 
 /**
- * Helper function to generate HTML list of months and years
+ * Generate list of months and years
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @param  int $fromMonth
@@ -121,29 +83,31 @@ function generateMonthsAndYearsHtmlList($tpl, $fromMonth = NULL, $fromYear = NUL
         $fromMonth = date('m');
     }
 
-    $fromYearTwoDigit = ($fromYear) ? date('y', mktime(0, 0, 0, 1, 1, $fromYear)) : date('y');
+    $fromYearTwoDigit = ($fromYear)
+        ? date('y', mktime(0, 0, 0, 1, 1, $fromYear))
+        : date('y');
 
     foreach (range(1, 12) as $month) {
-        $tpl->assign(array(
+        $tpl->assign([
             'OPTION_SELECTED' => ($month == $fromMonth) ? ' selected' : '',
             'MONTH_VALUE'     => tohtml($month)
-        ));
+        ]);
         $tpl->parse('MONTH_LIST', '.month_list');
     }
 
     $currentYear = date('y');
     foreach (range($currentYear - ($numberYears - 1), $currentYear) as $year) {
-        $tpl->assign(array(
+        $tpl->assign([
             'OPTION_SELECTED' => ($fromYearTwoDigit == $year) ? ' selected' : '',
             'VALUE'           => tohtml($year, 'htmlAttr'),
             'HUMAN_VALUE'     => tohtml(date('Y', mktime(0, 0, 0, 1, 1, $year)))
-        ));
+        ]);
         $tpl->parse('YEAR_LIST', '.year_list');
     }
 }
 
 /**
- * Helper function to generate navigation
+ * Generate navigation
  *
  * @throws iMSCP_Exception
  * @param iMSCP_pTemplate $tpl iMSCP_pTemplate instance
@@ -151,19 +115,19 @@ function generateMonthsAndYearsHtmlList($tpl, $fromMonth = NULL, $fromYear = NUL
  */
 function generateNavigation($tpl)
 {
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeGenerateNavigation, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeGenerateNavigation, [
         'templateEngine' => $tpl
-    ));
+    ]);
 
     $cfg = iMSCP_Registry::get('config');
-    $tpl->define_dynamic(array(
+    $tpl->define_dynamic([
         'main_menu'        => 'layout',
         'main_menu_block'  => 'main_menu',
         'menu'             => 'layout',
         'left_menu_block'  => 'menu',
         'breadcrumbs'      => 'layout',
         'breadcrumb_block' => 'breadcrumbs'
-    ));
+    ]);
 
     generateLoggedFrom($tpl);
 
@@ -183,12 +147,11 @@ function generateNavigation($tpl)
                 $page2 = $navigation->findOneBy('class', 'webtools');
 
                 foreach ($webmails as $webmail) {
-                    $page = array(
+                    $page = [
                         'label'  => tr('%s webmail', $webmail),
                         'uri'    => '/' . (($webmail == 'Roundcube') ? 'webmail' : strtolower($webmail)) . '/',
                         'target' => '_blank',
-                    );
-
+                    ];
                     $page1->addPage($page);
                     $page2->addPage($page);
                 }
@@ -197,10 +160,10 @@ function generateNavigation($tpl)
     }
 
     // Dynamic links (All levels)
-    $tpl->assign(array(
+    $tpl->assign([
         'SUPPORT_SYSTEM_PATH'   => 'ticket_system.php',
         'SUPPORT_SYSTEM_TARGET' => '_self'
-    ));
+    ]);
 
     // Remove support system page if feature is globally disabled
     if (!$cfg['IMSCP_SUPPORT_SYSTEM']) {
@@ -210,13 +173,13 @@ function generateNavigation($tpl)
     // Custom menus
     if (NULL != ($customMenus = getCustomMenus($_SESSION['user_type']))) {
         foreach ($customMenus as $customMenu) {
-            $navigation->addPage(array(
+            $navigation->addPage([
                 'order'  => $customMenu['menu_order'],
                 'label'  => tohtml($customMenu['menu_name']),
                 'uri'    => get_menu_vars($customMenu['menu_link']),
                 'target' => (!empty($customMenu['menu_target']) ? tohtml($customMenu['menu_target']) : '_self'),
                 'class'  => 'custom_link'
-            ));
+            ]);
         }
     }
 
@@ -230,11 +193,14 @@ function generateNavigation($tpl)
     /** @var $page Zend_Navigation_Page */
     foreach ($navigation as $page) {
         if (NULL !== ($callbacks = $page->get('privilege_callback'))) {
-            $callbacks = (isset($callbacks['name'])) ? array($callbacks) : $callbacks;
+            $callbacks = (isset($callbacks['name'])) ? [$callbacks] : $callbacks;
 
             foreach ($callbacks as $callback) {
                 if (is_callable($callback['name'])) {
-                    if (!call_user_func_array($callback['name'], isset($callback['param']) ? (array)$callback['param'] : array())) {
+                    if (!call_user_func_array(
+                        $callback['name'], isset($callback['param']) ? (array)$callback['param'] : []
+                    )
+                    ) {
                         continue 2;
                     }
                 } else {
@@ -245,23 +211,24 @@ function generateNavigation($tpl)
         }
 
         if ($page->isVisible()) {
-            $tpl->assign(array(
+            $tpl->assign([
                 'HREF'                    => $page->getHref(),
-                'CLASS'                   => $page->getClass() . (($_SESSION['show_main_menu_labels']) ? ' show_labels' : ''),
+                'CLASS'                   => $page->getClass()
+                    . (($_SESSION['show_main_menu_labels']) ? ' show_labels' : ''),
                 'IS_ACTIVE_CLASS'         => ($page->isActive(true)) ? 'active' : 'dummy',
                 'TARGET'                  => ($page->getTarget()) ? tohtml($page->getTarget()) : '_self',
                 'MAIN_MENU_LABEL_TOOLTIP' => tohtml($page->getLabel(), 'htmlAttr'),
                 'MAIN_MENU_LABEL'         => ($_SESSION['show_main_menu_labels']) ? tohtml($page->getLabel()) : ''
-            ));
+            ]);
 
             // Add page to main menu
             $tpl->parse('MAIN_MENU_BLOCK', '.main_menu_block');
 
             if ($page->isActive(true)) {
-                $tpl->assign(array(
+                $tpl->assign([
                     'TR_SECTION_TITLE'    => tohtml($page->getLabel()),
                     'SECTION_TITLE_CLASS' => $page->getClass()
-                ));
+                ]);
 
                 // Add page to breadcrumb
                 $tpl->assign('BREADCRUMB_LABEL', tohtml($page->getLabel()));
@@ -273,29 +240,31 @@ function generateNavigation($tpl)
                     /** @var $subpage Zend_Navigation_Page_Uri */
                     foreach ($iterator as $subpage) {
                         if (NULL !== ($callbacks = $subpage->get('privilege_callback'))) {
-                            $callbacks = (isset($callbacks['name'])) ? array($callbacks) : $callbacks;
+                            $callbacks = (isset($callbacks['name'])) ? [$callbacks] : $callbacks;
 
                             foreach ($callbacks AS $callback) {
                                 if (is_callable($callback['name'])) {
                                     if (!call_user_func_array(
                                         $callback['name'],
-                                        isset($callback['param']) ? (array)$callback['param'] : array())
+                                        isset($callback['param']) ? (array)$callback['param'] : [])
                                     ) {
                                         continue 2;
                                     }
                                 } else {
                                     $name = (is_array($callback['name'])) ? $callback['name'][1] : $callback['name'];
-                                    throw new iMSCP_Exception(sprintf('Privileges callback is not callable: %s', $name));
+                                    throw new iMSCP_Exception(
+                                        sprintf('Privileges callback is not callable: %s', $name)
+                                    );
                                 }
                             }
                         }
 
-                        $tpl->assign(array(
+                        $tpl->assign([
                             'HREF'            => $subpage->getHref(),
                             'IS_ACTIVE_CLASS' => ($subpage->isActive(true)) ? 'active' : 'dummy',
                             'LEFT_MENU_LABEL' => tohtml($subpage->getLabel()),
                             'TARGET'          => ($subpage->getTarget()) ? $subpage->getTarget() : '_self'
-                        ));
+                        ]);
 
                         if ($subpage->isVisible()) {
                             // Add subpage to left menu
@@ -303,10 +272,11 @@ function generateNavigation($tpl)
                         }
 
                         if ($subpage->isActive(true)) {
-                            $tpl->assign(array(
-                                'TR_TITLE'    => ($subpage->get('dynamic_title')) ? $subpage->get('dynamic_title') : tohtml($subpage->getLabel()),
+                            $tpl->assign([
+                                'TR_TITLE'    => ($subpage->get('dynamic_title'))
+                                    ? $subpage->get('dynamic_title') : tohtml($subpage->getLabel()),
                                 'TITLE_CLASS' => $subpage->get('title_class')
-                            ));
+                            ]);
 
                             if (!$subpage->hasPages()) {
                                 $tpl->assign('HREF', $subpage->getHref() . "$query");
@@ -336,24 +306,27 @@ function generateNavigation($tpl)
     $tpl->parse('MENU', 'menu');
 
     // Static variables
-    $tpl->assign(array(
+    $tpl->assign([
         'TR_MENU_LOGOUT' => tr('Logout'),
-        'VERSION'        => (isset($cfg['Version']) && $cfg['Version'] != '') ? $cfg['Version'] : tohtml(tr('Unknown')),
-        'BUILDDATE'      => (isset($cfg['BuildDate']) && $cfg['BuildDate'] != '') ? $cfg['BuildDate'] : tohtml(tr('Unavailable')),
-        'CODENAME'       => (isset($cfg['CodeName']) && $cfg['CodeName'] != '') ? $cfg['CodeName'] : tohtml(tr('Unknown'))
-    ));
+        'VERSION'        => (isset($cfg['Version']) && $cfg['Version'] != '')
+            ? $cfg['Version'] : tohtml(tr('Unknown')),
+        'BUILDDATE'      => (isset($cfg['BuildDate']) && $cfg['BuildDate'] != '')
+            ? $cfg['BuildDate'] : tohtml(tr('Unavailable')),
+        'CODENAME'       => (isset($cfg['CodeName']) && $cfg['CodeName'] != '')
+            ? $cfg['CodeName'] : tohtml(tr('Unknown'))
+    ]);
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterGenerateNavigation, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterGenerateNavigation, [
         'templateEngine' => $tpl
-    ));
+    ]);
 }
 
 /**
- * Returns custom menus for given user.
+ * Get custom menus for the given user
  *
  * @throws iMSCP_Exception
  * @param string $userLevel User type (admin, reseller or user)
- * @return null|array Array containing custom menus definitions or NULL in case no custom menu is found
+ * @return null|[] Array containing custom menus definitions or NULL in case no custom menu is found
  */
 function getCustomMenus($userLevel)
 {
@@ -378,7 +351,7 @@ function getCustomMenus($userLevel)
 // Admin
 
 /**
- * Helper function to generate admin list template part
+ * Generate administrator list
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
@@ -397,20 +370,10 @@ function gen_admin_list($tpl)
     );
 
     if (!$stmt->rowCount()) {
-        $tpl->assign(array(
-            'ADMIN_MESSAGE' => tr('No administrator accounts found.'),
-            'ADMIN_LIST'    => ''
-        ));
-        $tpl->parse('ADMIN_MESSAGE', 'admin_message');
+        $tpl->assign('ADMINISTRATOR_LIST', '');
+        $tpl->parse('ADMINISTRATOR_MESSAGE', 'administrator_message');
         return;
     }
-
-    $tpl->assign(array(
-        'TR_ADMIN_USERNAME'   => tr('Username'),
-        'TR_ADMIN_CREATED_ON' => tr('Creation date'),
-        'TR_ADMIN_CREATED_BY' => tr('Created by'),
-        'TR_ADMIN_ACTIONS'    => tr('Actions')
-    ));
 
     while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
         $adminCreated = $row['domain_created'];
@@ -423,32 +386,31 @@ function gen_admin_list($tpl)
         }
 
         if (empty($row['created_by']) || $row['admin_id'] == $_SESSION['user_id']) {
-            $tpl->assign('ADMIN_DELETE_LINK', '');
+            $tpl->assign('ADMINISTRATOR_DELETE_LINK', '');
         } else {
-            $tpl->assign(array(
-                'ADMIN_DELETE_SHOW' => '',
-                'TR_DELETE'         => tr('Delete'),
-                'URL_DELETE_ADMIN'  => 'user_delete.php?delete_id=' . $row['admin_id'],
-                'ADMIN_USERNAME'    => tohtml($row['admin_name'])
-            ));
+            $tpl->assign([
+                'ADMINISTRATOR_USERNAME' => tohtml($row['admin_name']),
+                'ADMINISTRATOR_EDIT_URL' => 'user_delete.php?delete_id=' . $row['admin_id'],
+
+            ]);
             $tpl->parse('ADMIN_DELETE_LINK', 'admin_delete_link');
         }
 
-        $tpl->assign(array(
-            'ADMIN_USERNAME'   => tohtml($row['admin_name']),
-            'ADMIN_CREATED_ON' => tohtml($adminCreated),
-            'ADMIN_CREATED_BY' => ($row['created_by'] != '') ? tohtml($row['created_by']) : tr('System'),
-            'URL_EDIT_ADMIN'   => 'admin_edit.php?edit_id=' . $row['admin_id']
-        ));
-        $tpl->parse('ADMIN_ITEM', '.admin_item');
+        $tpl->assign([
+            'ADMINISTRATOR_USERNAME'   => tohtml($row['admin_name']),
+            'ADMINISTRATOR_CREATED_ON' => tohtml($adminCreated),
+            'ADMINISTRATPR_CREATED_BY' => ($row['created_by'] != '') ? tohtml($row['created_by']) : tr('System'),
+            'ADMINISTRATOR_EDIT_URL'   => 'user_edit.php?edit_id=' . $row['admin_id']
+        ]);
+        $tpl->parse('ADMINISTRATOR_ITEM', '.administrator_item');
     }
 
-    $tpl->parse('ADMIN_LIST', 'admin_list');
-    $tpl->assign('ADMIN_MESSAGE', '');
+    $tpl->parse('ADMINISRATOR_LIST', 'administrator_list');
+    $tpl->assign('ADMINISTRATOR_MESSAGE', '');
 }
 
 /**
- * Helper function to generate reseller list template part
+ * Generate reseller list
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
@@ -468,28 +430,16 @@ function gen_reseller_list($tpl)
     );
 
     if (!$stmt->rowCount()) {
-        $tpl->assign(array(
-            'RSL_MESSAGE' => tr('No reseller accounts found.'),
-            'RSL_LIST'    => ''
-        ));
-        $tpl->parse('RSL_MESSAGE', 'rsl_message');
+        $tpl->assign('RESELLER_LIST', '');
+        $tpl->parse('RESELLER_MESSAGE', 'reseller_message');
         return;
     }
 
-    $tpl->assign(array(
-        'TR_RSL_USERNAME'   => tr('Username'),
-        'TR_RSL_CREATED_BY' => tr('Created by'),
-        'TR_RSL_ACTIONS'    => tr('Actions')
-    ));
-
     while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-        $tpl->assign(array(
-            'TR_DELETE'                => tr('Delete'),
-            'URL_DELETE_RSL'           => 'user_delete.php?delete_id=' . $row['admin_id'],
-            'TR_CHANGE_USER_INTERFACE' => tohtml(tr('Switch to user interface'), 'htmlAttr'),
-            'GO_TO_USER_INTERFACE'     => tr('Switch'),
-            'URL_CHANGE_INTERFACE'     => 'change_user_interface.php?to_id=' . $row['admin_id']
-        ));
+        $tpl->assign([
+            'RESELLER_SWITCH_INTERFACE_URL' => 'change_user_interface.php?to_id=' . $row['admin_id'],
+            'RESELLER_DELETE_URL'           => 'user_delete.php?delete_id=' . $row['admin_id']
+        ]);
 
         $resellerCreated = $row['domain_created'];
 
@@ -499,21 +449,53 @@ function gen_reseller_list($tpl)
             $resellerCreated = date($cfg['DATE_FORMAT'], $resellerCreated);
         }
 
-        $tpl->assign(array(
-            'RSL_USERNAME'        => tohtml($row['admin_name']),
+        $tpl->assign([
+            'RESELLER_NAME'       => tohtml($row['admin_name']),
             'RESELLER_CREATED_ON' => tohtml($resellerCreated),
-            'RSL_CREATED_BY'      => ($row['created_by'] != '') ? tohtml($row['created_by']) : tr('Unknown'),
-            'URL_EDIT_RSL'        => 'reseller_edit.php?edit_id=' . $row['admin_id']
-        ));
-        $tpl->parse('RSL_ITEM', '.rsl_item');
+            'RESELLER_CREATED_BY' => ($row['created_by'] != '') ? tohtml($row['created_by']) : tr('Unknown'),
+            'RESELLER_EDIT_URL'   => 'reseller_edit.php?edit_id=' . $row['admin_id']
+        ]);
+        $tpl->parse('RESELER_ITEM', '.reseller_item');
     }
 
-    $tpl->parse('RSL_LIST', 'rsl_list');
-    $tpl->assign('RSL_MESSAGE', '');
+    $tpl->parse('RESELLER_LIST', 'reseller_list');
+    $tpl->assign('RESELLER_MESSAGE', '');
 }
 
 /**
- * Helper function to generate a user list
+ * Generates user domain_aliases_list
+ *
+ * @param iMSCP_pTemplate $tpl Template engine
+ * @param int $domainId Domain unique identifier
+ * @return void
+ */
+function gen_user_domain_aliases_list($tpl, $domainId)
+{
+    if (!isset($_SESSION['client_domain_aliases_switch']) || $_SESSION['client_domain_aliases_switch'] != 'show') {
+        $tpl->assign('CLIENT_DOMAIN_ALIAS_BLK', '');
+        return;
+    }
+    
+    $stmt = exec_query(
+        'SELECT alias_name FROM domain_aliasses WHERE domain_id = ? ORDER BY alias_id DESC', $domainId
+    );
+
+    if (!$stmt->rowCount()) {
+        $tpl->assign('CLIENT_DOMAIN_ALIAS_BLK', '');
+        return;
+    }
+
+    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+        $tpl->assign([
+            'CLIENT_DOMAIN_ALIAS_URL' => tohtml($row['alias_name'], 'htmlAttr'),
+            'CLIENT_DOMAIN_ALIAS', tohtml(decode_idna($row['alias_name']))
+        ]);
+        $tpl->parse('CLIENT_DOMAIN_ALIAS_BLK', '.client_domain_alias_blk');
+    }
+}
+
+/**
+ * Generate user list
  *
  * @param iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
@@ -521,323 +503,309 @@ function gen_reseller_list($tpl)
 function gen_user_list($tpl)
 {
     $cfg = iMSCP_Registry::get('config');
-    $startIndex = 0;
-    $rowsPerPage = filter_digits($cfg['DOMAIN_ROWS_PER_PAGE']);
 
-    if (isset($_GET['psi']) && $_GET['psi'] == 'last') {
-        if (isset($_SESSION['search_page'])) {
-            $_GET['psi'] = $_SESSION['search_page'];
-        } else {
-            unset($_GET['psi']);
+    if (!empty($_POST)) {
+        if (!isset($_POST['search_status'])
+            || !isset($_POST['search_field'])
+            || !isset($_POST['client_domain_aliases_switch'])
+            || !in_array($_POST['client_domain_aliases_switch'], ['show', 'hide'])
+        ) {
+            showBadRequestErrorPage();
         }
-    }
 
-    if (isset($_GET['psi'])) {
-        $startIndex = $_GET['psi'];
-    }
-
-    if (isset($_POST['uaction']) && !empty($_POST['uaction'])) {
-        $_SESSION['search_for'] = clean_input($_POST['search_for']);
-        $_SESSION['search_common'] = clean_input($_POST['search_common']);
+        $_SESSION['client_domain_aliases_switch'] = clean_input($_POST['client_domain_aliases_switch']);
+        $_SESSION['search_field'] = clean_input($_POST['search_field']);
+        $_SESSION['search_value'] = isset($_POST['search_value']) ? clean_input($_POST['search_value']) : '';
         $_SESSION['search_status'] = clean_input($_POST['search_status']);
-        $startIndex = 0;
-    } elseif (isset($_SESSION['search_for']) && !isset($_GET['psi'])) {
-        unset($_SESSION['search_for']);
-        unset($_SESSION['search_common']);
-        unset($_SESSION['search_status']);
+    } elseif (!isset($_GET['psi'])) {
+        unset($_SESSION['search_field'], $_SESSION['search_value'], $_SESSION['search_status']);
     }
 
-    $searchQuery = $countQuery = '';
+    $sLimit = isset($_GET['psi']) ? intval($_GET['psi']) : 0;
+    $eLimit = intval($cfg['DOMAIN_ROWS_PER_PAGE']);
 
-    if (isset($_SESSION['search_for'])) {
-        gen_admin_domain_query(
-            $searchQuery, $countQuery, $startIndex, $rowsPerPage, $_SESSION['search_for'], $_SESSION['search_common'],
-            $_SESSION['search_status']
+    if (!empty($_POST)) {
+        list($cQuery, $sQuery) = get_search_user_queries(
+            $sLimit, $eLimit, $_SESSION['search_field'], $_SESSION['search_value'], $_SESSION['search_status']
         );
-        gen_admin_domain_search_options(
-            $tpl, $_SESSION['search_for'], $_SESSION['search_common'], $_SESSION['search_status']
-        );
-        $stmt = execute_query($countQuery);
+        gen_search_user_fields($tpl, $_SESSION['search_field'], $_SESSION['search_value'], $_SESSION['search_status']);
     } else {
-        gen_admin_domain_query($searchQuery, $countQuery, $startIndex, $rowsPerPage, 'n/a', 'n/a', 'n/a');
-        gen_admin_domain_search_options($tpl, 'n/a', 'n/a', 'n/a');
-        $stmt = execute_query($countQuery);
+        list($cQuery, $sQuery) = get_search_user_queries($sLimit, $eLimit);
+        gen_search_user_fields($tpl);
     }
 
-    $recordCount = $stmt->fetchRow(PDO::FETCH_COLUMN);
+    $rowCount = execute_query($cQuery)->fetchRow(PDO::FETCH_COLUMN);
 
-    if (!$recordCount) {
-        if (isset($_SESSION['search_for'])) {
-            $tpl->assign(array(
-                'USR_MESSAGE'     => tr('No records found matching the search criteria.'),
-                'USR_LIST'        => '',
-                'SCROLL_PREV'     => '',
-                'SCROLL_NEXT'     => '',
-                'TR_VIEW_DETAILS' => tr('view aliases'),
-                'SHOW_DETAILS'    => 'show'
-            ));
-
-            unset($_SESSION['search_for']);
-            unset($_SESSION['search_common']);
-            unset($_SESSION['search_status']);
+    if ($rowCount == 0) {
+        if (!empty($_POST)) {
+            $tpl->assign([
+                'CLIENT_DOMAIN_ALIASES_SWITCH' => '',
+                'CLIENT_LIST'                  => '',
+            ]);
         } else {
-            $tpl->assign(array(
-                'SEARCH_FORM'     => '',
-                'USR_MESSAGE'     => tr('No customer accounts found.'),
-                'USR_LIST'        => '',
-                'SCROLL_PREV'     => '',
-                'SCROLL_NEXT'     => '',
-                'TR_VIEW_DETAILS' => tr('view aliases'),
-                'SHOW_DETAILS'    => 'show'
-            ));
+            $tpl->assign([
+                'CLIENT_SEARCH_FORM' => '',
+                'CLIENT_LIST'        => ''
+            ]);
         }
 
-        $tpl->parse('USR_MESSAGE', 'usr_message');
+        $tpl->parse('CLIENT_MESSAGE', 'client_message');
         return;
-    }
-
-    $prevSi = $startIndex - $rowsPerPage;
-
-    if ($startIndex == 0) {
-        $tpl->assign('SCROLL_PREV', '');
+    } elseif (isset($_SESSION['client_domain_aliases_switch'])) {
+        $tpl->assign([
+            'CLIENT_DOMAIN_ALIASES_SWITCH_VALUE' => $_SESSION['client_domain_aliases_switch'],
+            ($_SESSION['client_domain_aliases_switch'] == 'show')
+                ? 'CLIENT_DOMAIN_ALIASES_SHOW'
+                : 'CLIENT_DOMAIN_ALIASES_HIDE'   => ''
+        ]);
     } else {
-        $tpl->assign(array(
-            'SCROLL_PREV_GRAY' => '',
-            'PREV_PSI'         => $prevSi
-        ));
+        $tpl->assign([
+            'CLIENT_DOMAIN_ALIASES_SWITCH_VALUE' => 'hide',
+            'CLIENT_DOMAIN_ALIASES_HIDE'         => ''
+        ]);
     }
 
-    $nextSi = $startIndex + $rowsPerPage;
-    if ($nextSi + 1 > $recordCount) {
-        $tpl->assign('SCROLL_NEXT', '');
+    if ($sLimit == 0) {
+        $tpl->assign('CLIENT_SCROLL_PREV', '');
     } else {
-        $tpl->assign(array(
-            'SCROLL_NEXT_GRAY' => '',
-            'NEXT_PSI'         => $nextSi
-        ));
+        $prevSi = $sLimit - $eLimit;
+
+        $tpl->assign([
+            'CLIENT_SCROLL_PREV_GRAY' => '',
+            'CLIENT_PREV_PSI'         => $prevSi > 0 ? $prevSi : 0
+        ]);
     }
 
-    $tpl->assign(array(
-        'TR_USR_USERNAME'   => tr('Username'),
-        'TR_USR_CREATED_BY' => tr('Created by'),
-        'TR_USR_ACTIONS'    => tr('Actions'),
-        'TR_USER_STATUS'    => tr('Status'),
-        'TR_DETAILS'        => tr('Details')
-    ));
+    $nextSi = $sLimit + $eLimit;
 
-    $stmt = execute_query($searchQuery);
+    if ($nextSi + 1 > $rowCount) {
+        $tpl->assign('CLIENT_SCROLL_NEXT', '');
+    } else {
+        $tpl->assign([
+            'CLIENT_SCROLL_NEXT_GRAY' => '',
+            'CLIENT_NEXT_PSI'         => $nextSi
+        ]);
+    }
+
+    $stmt = execute_query($sQuery);
 
     while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-        $tpl->assign(array(
-            'USR_DELETE_SHOW'          => '',
-            'USER_ID'                  => $row['admin_id'],
-            'DOMAIN_ID'                => $row['domain_id'],
-            'TR_DELETE'                => tr('Delete'),
-            'URL_DELETE_USR'           => 'user_delete.php?domain_id=' . $row['domain_id'],
-            'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
-            'GO_TO_USER_INTERFACE'     => tr('Switch'),
-            'URL_CHANGE_INTERFACE'     => 'change_user_interface.php?to_id=' . $row['domain_admin_id'],
-            'USR_USERNAME'             => tohtml($row['domain_name']),
-            'TR_EDIT_DOMAIN'           => tr('Edit domain'),
-            'TR_EDIT_USR'              => tr('Edit user')
-        ));
-
-        $tpl->parse('USR_DELETE_LINK', 'usr_delete_link');
+        $statusOk = true;
+        $statusTxt = $statusTooltip = translate_dmn_status(
+            ($row['admin_status'] != 'ok') ? $row['admin_status'] : $row['domain_status']
+        );
 
         if ($row['admin_status'] == 'ok' && $row['domain_status'] == 'ok') {
-            $status = 'ok';
-            $statusTooltip = tr('Click to deactivate');
-            $statusTxt = translate_dmn_status($row['domain_status']);
-            $statusBool = true;
-            $canChange = true;
+            $class = 'i_ok';
+            $statusTooltip = tr('Click to suspend this customer account.');
         } elseif ($row['domain_status'] == 'disabled') {
-            $status = 'disabled';
-            $statusTooltip = tr('Click to activate');
-            $statusTxt = translate_dmn_status($row['domain_status']);
-            $statusBool = false;
-            $canChange = true;
-        } elseif (
-            $row['admin_status'] == 'tochange' || $row['admin_status'] == 'tochangepwd' ||
-            $row['domain_status'] == 'toadd' || $row['domain_status'] == 'torestore' ||
-            $row['domain_status'] == 'tochange' || $row['domain_status'] == 'toenable' ||
-            $row['domain_status'] == 'todisable' || $row['domain_status'] == 'todelete'
+            $class = 'i_disabled';
+            $statusTooltip = tr('Click to unsuspend this customer account.');
+        } elseif (in_array($row['admin_status'], ['tochange', 'tochangepw'])
+            || in_array($row['domain_status'], ['toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete'])
         ) {
-            $status = 'reload';
-            $statusTxt = $statusTooltip = translate_dmn_status(($row['admin_status'] != 'ok') ? $row['admin_status'] : $row['domain_status']);
-            $statusBool = false;
-            $canChange = false;
+            $class = 'i_reload';
+            $statusOk = false;
         } else {
-            $status = 'error';
-            $statusTooltip = tr('An unexpected error occurred. Go to the debugger interface for more details.');
-            $statusTxt = translate_dmn_status(($row['admin_status'] != 'ok') ? $row['admin_status'] : $row['domain_status']);
-            $statusBool = false;
-            $canChange = false;
+            $class = 'i_error';
+            $statusTooltip = tr('An unexpected error occurred.');
+            $statusOk = false;
         }
 
-        $tpl->assign(array(
-            'STATUS'         => $status,
-            'STATUS_TOOLTIP' => $statusTooltip,
-            'TR_STATUS'      => $statusTxt,
-        ));
-
-        if ($canChange) {
-            $tpl->assign('DOMAIN_STATUS_NOCHANGE', '');
-            $tpl->parse('DOMAIN_STATUS_CHANGE', 'domain_status_change');
+        if ($statusOk) {
+            $tpl->assign([
+                'CLIENT_DOMAIN_STATUS_NOT_OK' => '',
+                'CLIENT_DOMAIN_URL'           => tohtml($row['domain_name'], 'htmlAttr')
+            ]);
+            $tpl->parse('CLIENT_DOMAIN_STATUS_OK', 'client_domain_status_ok');
+            $tpl->parse('CLIENT_RESTRICTED_LINKS', 'client_restricted_links');
         } else {
-            $tpl->assign('DOMAIN_STATUS_CHANGE', '');
-            $tpl->parse('DOMAIN_STATUS_NOCHANGE', 'domain_status_nochange');
+            $tpl->assign([
+                'CLIENT_DOMAIN_STATUS_OK' => '',
+                'CLIENT_RESTRICTED_LINKS' => ''
+            ]);
+            $tpl->parse('CLIENT_DOMAIN_STATUS_NOT_OK', 'client_domain_status_not_ok');
         }
 
-        $adminName = decode_idna($row['domain_name']);
-        $domainCreated = $row['domain_created'];
+        $tpl->assign([
+            'CLIENT_STATUS_CLASS'      => $class,
+            'TR_CLIENT_STATUS_TOOLTIP' => $statusTooltip,
+            'TR_CLIENT_STATUS'         => $statusTxt,
+            'CLIENT_USERNAME'          => tohtml(decode_idna($row['domain_name']), 'htmlAttr'),
+            'CLIENT_DOMAIN_ID'         => $row['domain_id'],
+            'CLIENT_ID'                => $row['admin_id'],
+            'CLIENT_CREATED_ON'        => tohtml(
+                ($row['domain_created'] == 0) ? tr('N/A') : date($cfg['DATE_FORMAT'], $row['domain_created'])
+            ),
+            'CLIENT_CREATED_BY'        => tohtml($row['reseller_name'])
+        ]);
 
-        if ($domainCreated == 0) {
-            $domainCreated = tr('N/A');
-        } else {
-            $domainCreated = date($cfg['DATE_FORMAT'], $domainCreated);
-        }
-
-        $domainExpires = $row['domain_expires'];
-
-        if ($domainExpires == 0) {
-            $domainExpires = tr('Not Set');
-        } else {
-            $domainExpires = date($cfg['DATE_FORMAT'], $domainExpires);
-        }
-
-        if ($statusBool == false) { // reload
-            $tpl->assign('USR_STATUS_RELOAD_TRUE', '');
-            $tpl->assign('USR_USERNAME', tohtml($adminName));
-            $tpl->parse('USR_STATUS_RELOAD_FALSE', 'usr_status_reload_false');
-        } else {
-            $tpl->assign('USR_STATUS_RELOAD_FALSE', '');
-            $tpl->assign('USR_USERNAME', tohtml($adminName));
-            $tpl->parse('USR_STATUS_RELOAD_TRUE', 'usr_status_reload_true');
-        }
-
-        $tpl->assign(array(
-            'USER_CREATED_ON'   => tohtml($domainCreated),
-            'USER_EXPIRES_ON'   => $domainExpires,
-            'USR_CREATED_BY'    => tohtml($row['reseller_name']),
-            'USR_OPTIONS'       => '',
-            'URL_EDIT_USR'      => 'admin_edit.php?edit_id=' . $row['domain_admin_id'],
-            'TR_MESSAGE_DELETE' => tojs(tr('Are you sure you want to delete the %s user?', '%s'))
-        ));
-        gen_domain_details($tpl, $row['domain_id']);
-        $tpl->parse('USR_ITEM', '.usr_item');
+        gen_user_domain_aliases_list($tpl, $row['domain_id']);
+        $tpl->parse('CLIENT_ITEM', '.client_item');
     }
 
-    $tpl->parse('USR_LIST', 'usr_list');
-    $tpl->assign('USR_MESSAGE', '');
+    $tpl->parse('CLIENT_LIST', 'client_list');
+    $tpl->assign('CLIENT_MESSAGE', '');
 }
 
 /**
- * Helper function to generate manage users template part.
+ * Generate manage users page
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
  */
 function get_admin_manage_users($tpl)
 {
-    $tpl->assign(array(
-        'TR_MANAGE_USERS'   => tr('Manage users'),
-        'TR_ADMINISTRATORS' => tr('Administrators'),
-        'TR_RESELLERS'      => tr('Resellers'),
-        'TR_CUSTOMERS'      => tr('Customers'),
-        'TR_SEARCH'         => tr('Search'),
-        'TR_CREATED_ON'     => tr('Creation date'),
-        'TR_EXPIRES_ON'     => tr('Expire date'),
-        'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s'),
-        'TR_EDIT'           => tr('Edit')
-    ));
-
     gen_admin_list($tpl);
     gen_reseller_list($tpl);
     gen_user_list($tpl);
 }
 
+// Admin/reseller
+
 /**
- * Helper function to generate domain search form template part.
+ * Get count and search queries for users search
+ *
+ * @param int $sLimit Start limit
+ * @param int $eLimit End limit
+ * @param string|null $searchField Field to search
+ * @param string|null $searchValue Value to search
+ * @param string|null $searchStatus Status to search
+ * @return array Array containing count and search queries
+ */
+function get_search_user_queries($sLimit, $eLimit, $searchField = NULL, $searchValue = NULL, $searchStatus = NULL)
+{
+    $sLimit = intval($sLimit);
+    $eLimit = intval($eLimit);
+    $where = '';
+
+    if ($_SESSION['user_type'] == 'reseller') {
+        $where .= 'WHERE t2.created_by = ' . intval($_SESSION['user_id']);
+    }
+
+    if ($searchStatus !== NULL && $searchStatus != 'anything') {
+        $where .= (($where == '') ? 'WHERE ' : ' ') . 't1.domain_status' . (
+            ($searchStatus == 'ok' || $searchStatus == 'disabled')
+                ? ' = ' . quoteValue($searchStatus)
+                : " NOT IN ('ok', 'toadd', 'tochange', 'toenable', 'torestore', 'todisable', 'todelete')"
+            );
+    }
+
+    if ($searchField !== NULL && $searchField != 'anything') {
+        if ($searchField == 'domain_name') {
+            $where .= (($where == '') ? 'WHERE ' : ' AND ') . 't1.domain_name';
+        } elseif ($_SESSION['user_type'] == 'admin' && $searchField == 'reseller_name') {
+            $where .= (($where == '') ? 'WHERE ' : ' AND ') . 't3.admin_name';
+        } elseif (in_array(
+            $searchField, ['customer_id', 'fname', 'lname', 'firm', 'city', 'state', 'country'], true
+        )) {
+            $where .= (($where == '') ? 'WHERE ' : ' AND ') . "t2.$searchField";
+        } else {
+            showBadRequestErrorPage();
+        }
+
+        $searchValue = str_replace(['!', '_', '%'], ['!!!', '!_', '!%'], $searchValue);
+        $where .= ' LIKE ' . quoteValue(
+                '%' . (($searchField == 'domain_name') ? encode_idna($searchValue) : $searchValue) . '%'
+            ) . " ESCAPE '!'";
+    }
+
+    return [
+        "
+            SELECT COUNT(t1.domain_id)
+            FROM domain AS t1
+            JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
+            JOIN admin AS t3 ON(t3.admin_id = t2.created_by)
+            $where
+        ",
+        "
+            SELECT t1.domain_id, t1.domain_name, t1.domain_created, t1.domain_status, t1.domain_disk_limit,
+                t1.domain_disk_usage, t2.admin_id, t2.admin_status, t3.admin_name AS reseller_name
+            FROM domain AS t1
+            JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
+            JOIN admin AS t3 ON(t3.admin_id = t2.created_by)
+            $where
+            ORDER BY t1.domain_name ASC
+            LIMIT $sLimit, $eLimit
+        "
+    ];
+}
+
+/**
+ * Generate user search fields
  *
  * @param iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param string $searchFor Object to search for
- * @param string $searchCommon Common object to search for
- * @param string $searchStatus Object status to search for
+ * @param string|null $searchField Field to search
+ * @param string|null $searchValue Value to search
+ * @param string|null $searchStatus Status to search
  * @return void
  */
-function gen_admin_domain_search_options($tpl, $searchFor, $searchCommon, $searchStatus)
+function gen_search_user_fields($tpl, $searchField = NULL, $searchValue = NULL, $searchStatus = NULL)
 {
-    $htmlSelected = ' selected';
-    $domainSelected = $customerIdSelected = $firstnameSelected = $lastnameSelected = $companySelected = $citySelected =
-    $stateSelected = $countrySelected = $allSelected = $okSelected = $suspendedSelected = $resellerNameSelected = '';
+    $none = $domain = $customerId = $firstname = $lastname = $company = $city = $state = $country = $resellerName =
+    $anything = $ok = $suspended = $error = '';
 
-    if ($searchFor == 'n/a' && $searchCommon == 'n/a' && $searchStatus == 'n/a') {
-        // we have no search and let's generate search fields empty
-        $domainSelected = $htmlSelected;
-        $allSelected = $htmlSelected;
-    }
-
-    if ($searchCommon == 'domain_name') {
-        $domainSelected = $htmlSelected;
-    } elseif ($searchCommon == 'customer_id') {
-        $customerIdSelected = $htmlSelected;
-    } elseif ($searchCommon == 'fname') {
-        $firstnameSelected = $htmlSelected;
-    } elseif ($searchCommon == 'lname') {
-        $lastnameSelected = $htmlSelected;
-    } elseif ($searchCommon === 'firm') {
-        $companySelected = $htmlSelected;
-    } elseif ($searchCommon == 'city') {
-        $citySelected = $htmlSelected;
-    } elseif ($searchCommon == 'state') {
-        $stateSelected = $htmlSelected;
-    } elseif ($searchCommon == 'country') {
-        $countrySelected = $htmlSelected;
-    } elseif ($searchCommon == 'reseller_name') {
-        $resellerNameSelected = $htmlSelected;
-    }
-
-    if ($searchStatus == 'all') {
-        $allSelected = $htmlSelected;
-    } elseif ($searchStatus == 'ok') {
-        $okSelected = $htmlSelected;
-    } elseif ($searchStatus == 'disabled') {
-        $suspendedSelected = $htmlSelected;
-    }
-
-    if ($searchFor == 'n/a' || $searchFor == '') {
-        $tpl->assign(array('SEARCH_FOR' => ''));
+    if ($searchField === NULL && $searchValue === NULL && $searchStatus === NULL) {
+        $none = $anything = ' selected';
+        $tpl->assign('SEARCH_VALUE', '');
     } else {
-        $tpl->assign(array('SEARCH_FOR' => $searchFor));
+        if ($searchField == NULL || $searchField == 'anything') {
+            $none = ' selected';
+        } elseif ($searchField == 'domain_name') {
+            $domain = ' selected';
+        } elseif ($searchField == 'customer_id') {
+            $customerId = ' selected';
+        } elseif ($searchField == 'fname') {
+            $firstname = ' selected';
+        } elseif ($searchField == 'lname') {
+            $lastname = ' selected';
+        } elseif ($searchField == 'firm') {
+            $company = ' selected';
+        } elseif ($searchField == 'city') {
+            $city = ' selected';
+        } elseif ($searchField == 'state') {
+            $state = ' selected';
+        } elseif ($searchField == 'country') {
+            $country = ' selected';
+        } elseif ($_SESSION['user_type'] == 'admin' && $searchField == 'reseller_name') {
+            $resellerName = ' selected';
+        } else {
+            showBadRequestErrorPage();
+        }
+
+        if ($searchStatus === NULL || $searchStatus == 'anything') {
+            $anything = 'selected ';
+        } elseif ($searchStatus == 'ok') {
+            $ok = ' selected';
+        } elseif ($searchStatus == 'disabled') {
+            $suspended = ' selected';
+        } elseif (($searchStatus == 'error')) {
+            $error = ' selected';
+        } else {
+            showBadRequestErrorPage();
+        }
+
+        $tpl->assign('SEARCH_VALUE', ($searchValue !== NULL) ? tohtml($searchValue) : '');
     }
 
-    $tpl->assign(array(
-        'M_DOMAIN_NAME'            => tr('Domain name'),
-        'M_CUSTOMER_ID'            => tr('Customer ID'),
-        'M_FIRST_NAME'             => tr('First name'),
-        'M_LAST_NAME'              => tr('Last name'),
-        'M_COMPANY'                => tr('Company'),
-        'M_CITY'                   => tr('City'),
-        'M_STATE'                  => tr('State/Province'),
-        'M_COUNTRY'                => tr('Country'),
-        'M_ALL'                    => tr('All'),
-        'M_OK'                     => tr('OK'),
-        'M_SUSPENDED'              => tr('Suspended'),
-        'M_ERROR'                  => tr('Error'),
-        'M_RESELLER_NAME'          => tr('Reseller name'),
-        'M_DOMAIN_NAME_SELECTED'   => $domainSelected,
-        'M_CUSTOMER_ID_SELECTED'   => $customerIdSelected,
-        'M_FIRST_NAME_SELECTED'    => $firstnameSelected,
-        'M_LAST_NAME_SELECTED'     => $lastnameSelected,
-        'M_COMPANY_SELECTED'       => $companySelected,
-        'M_CITY_SELECTED'          => $citySelected,
-        'M_STATE_SELECTED'         => $stateSelected,
-        'M_COUNTRY_SELECTED'       => $countrySelected,
-        'M_ALL_SELECTED'           => $allSelected,
-        'M_OK_SELECTED'            => $okSelected,
-        'M_SUSPENDED_SELECTED'     => $suspendedSelected,
-        'M_RESELLER_NAME_SELECTED' => $resellerNameSelected
-    ));
+    $tpl->assign([
+        # search_field select
+        'CLIENT_NONE_SELECTED'          => $none,
+        'CLIENT_DOMAIN_NAME_SELECTED'   => $domain,
+        'CLIENT_CUSTOMER_ID_SELECTED'   => $customerId,
+        'CLIENT_FIRST_NAME_SELECTED'    => $firstname,
+        'CLIENT_LAST_NAME_SELECTED'     => $lastname,
+        'CLIENT_COMPANY_SELECTED'       => $company,
+        'CLIENT_CITY_SELECTED'          => $city,
+        'CLIENT_STATE_SELECTED'         => $state,
+        'CLIENT_COUNTRY_SELECTED'       => $country,
+        'CLIENT_RESELLER_NAME_SELECTED' => $resellerName,
+        # search_status select
+        'CLIENT_ANYTHING_SELECTED'      => $anything,
+        'CLIENT_OK_SELECTED'            => $ok,
+        'CLIENT_DISABLED_SELECTED'      => $suspended,
+        'CLIENT_ERROR_SELECTED'         => $error
+    ]);
 }
 
 // Reseller
@@ -852,176 +820,22 @@ function gen_admin_domain_search_options($tpl, $searchFor, $searchCommon, $searc
  */
 function reseller_generate_ip_list($tpl, $resellerId, $domainIp)
 {
-
     $stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', $resellerId);
     $row = $stmt->fetchRow();
     $resellerIps = explode(';', rtrim($row['reseller_ips'], ';'));
 
     $stmt = execute_query('SELECT * FROM server_ips');
     while ($row = $stmt->fetchRow()) {
-        if (in_array($row['ip_id'], $resellerIps)) {
-            $tpl->assign(array(
-                'IP_NUM'      => tohtml(($row['ip_number'] == '0.0.0.0') ? tr('Any') : $row['ip_number'], 'htmlAttr'),
-                'IP_VALUE'    => $row['ip_id'],
-                'IP_SELECTED' => $domainIp === $row['ip_id'] ? ' selected' : ''
-            ));
-            $tpl->parse('IP_ENTRY', '.ip_entry');
-        }
-    }
-}
-
-/**
- * Generate reseller domain search form
- *
- * @param iMSCP_pTemplate $tpl
- * @param string $searchFor
- * @param string $searchCommon
- * @param string $searchStatus
- * @return void
- */
-function gen_manage_domain_search_options($tpl, $searchFor, $searchCommon, $searchStatus)
-{
-    $htmlSelected = ' selected';
-
-    if ($searchFor === 'n/a' && $searchCommon === 'n/a' && $searchStatus === 'n/a') {
-        // we have no search and let's generate search fields empty
-        $domainSelected = $htmlSelected;
-        $customerIdSelected = '';
-        $firstnameSelected = '';
-        $lastnameSelected = '';
-        $companySelected = '';
-        $citySelected = '';
-        $stateSelected = '';
-        $countrySelected = '';
-
-        $allSelected = $htmlSelected;
-        $okSelected = '';
-        $suspendedSelected = '';
-    } else {
-        if ($searchCommon === 'domain_name') {
-            $domainSelected = $htmlSelected;
-            $customerIdSelected = '';
-            $firstnameSelected = '';
-            $lastnameSelected = '';
-            $companySelected = '';
-            $citySelected = '';
-            $stateSelected = '';
-            $countrySelected = '';
-        } elseif ($searchCommon === 'customer_id') {
-            $domainSelected = '';
-            $customerIdSelected = $htmlSelected;
-            $firstnameSelected = '';
-            $lastnameSelected = '';
-            $companySelected = '';
-            $citySelected = '';
-            $stateSelected = '';
-            $countrySelected = '';
-        } elseif ($searchCommon === 'fname') {
-            $domainSelected = '';
-            $customerIdSelected = '';
-            $firstnameSelected = $htmlSelected;
-            $lastnameSelected = '';
-            $companySelected = '';
-            $citySelected = '';
-            $stateSelected = '';
-            $countrySelected = '';
-        } elseif ($searchCommon === 'lname') {
-            $domainSelected = '';
-            $customerIdSelected = '';
-            $firstnameSelected = '';
-            $lastnameSelected = $htmlSelected;
-            $companySelected = '';
-            $citySelected = '';
-            $stateSelected = '';
-            $countrySelected = '';
-        } elseif ($searchCommon === 'firm') {
-            $domainSelected = '';
-            $customerIdSelected = '';
-            $firstnameSelected = '';
-            $lastnameSelected = '';
-            $companySelected = $htmlSelected;
-            $citySelected = '';
-            $stateSelected = '';
-            $countrySelected = '';
-        } elseif ($searchCommon === 'city') {
-            $domainSelected = '';
-            $customerIdSelected = '';
-            $firstnameSelected = '';
-            $lastnameSelected = '';
-            $companySelected = '';
-            $citySelected = $htmlSelected;
-            $stateSelected = '';
-            $countrySelected = '';
-        } elseif ($searchCommon === 'state') {
-            $domainSelected = '';
-            $customerIdSelected = '';
-            $firstnameSelected = '';
-            $lastnameSelected = '';
-            $companySelected = '';
-            $citySelected = '';
-            $stateSelected = $htmlSelected;
-            $countrySelected = '';
-        } elseif ($searchCommon === 'country') {
-            $domainSelected = '';
-            $customerIdSelected = '';
-            $firstnameSelected = '';
-            $lastnameSelected = '';
-            $companySelected = '';
-            $citySelected = '';
-            $stateSelected = '';
-            $countrySelected = $htmlSelected;
-        } else {
-            showBadRequestErrorPage();
-            exit;
+        if (!in_array($row['ip_id'], $resellerIps)) {
+            continue;
         }
 
-        if ($searchStatus === 'all') {
-            $allSelected = $htmlSelected;
-            $okSelected = '';
-            $suspendedSelected = '';
-        } elseif ($searchStatus === 'ok') {
-            $allSelected = '';
-            $okSelected = $htmlSelected;
-            $suspendedSelected = '';
-        } elseif ($searchStatus === 'disabled') {
-            $allSelected = '';
-            $okSelected = '';
-            $suspendedSelected = $htmlSelected;
-        } else {
-            showBadRequestErrorPage();
-            exit;
-        }
+        $tpl->assign([
+            'IP_NUM'      => tohtml(($row['ip_number'] == '0.0.0.0')
+                ? tr('Any') : $row['ip_number'], 'htmlAttr'),
+            'IP_VALUE'    => $row['ip_id'],
+            'IP_SELECTED' => $domainIp === $row['ip_id'] ? ' selected' : ''
+        ]);
+        $tpl->parse('IP_ENTRY', '.ip_entry');
     }
-
-    if ($searchFor === 'n/a' || $searchFor === '') {
-        $tpl->assign('SEARCH_FOR', '');
-    } else {
-        $tpl->assign('SEARCH_FOR', tohtml($searchFor));
-    }
-
-    $tpl->assign(array(
-        'M_DOMAIN_NAME'          => tr('Domain name'),
-        'M_CUSTOMER_ID'          => tr('Customer ID'),
-        'M_FIRST_NAME'           => tr('First name'),
-        'M_LAST_NAME'            => tr('Last name'),
-        'M_COMPANY'              => tr('Company'),
-        'M_CITY'                 => tr('City'),
-        'M_STATE'                => tr('State/Province'),
-        'M_COUNTRY'              => tr('Country'),
-        'M_ALL'                  => tr('All'),
-        'M_OK'                   => tr('OK'),
-        'M_SUSPENDED'            => tr('Suspended'),
-        'M_ERROR'                => tr('Error'),
-        'M_DOMAIN_NAME_SELECTED' => $domainSelected,
-        'M_CUSTOMER_ID_SELECTED' => $customerIdSelected,
-        'M_FIRST_NAME_SELECTED'  => $firstnameSelected,
-        'M_LAST_NAME_SELECTED'   => $lastnameSelected,
-        'M_COMPANY_SELECTED'     => $companySelected,
-        'M_CITY_SELECTED'        => $citySelected,
-        'M_STATE_SELECTED'       => $stateSelected,
-        'M_COUNTRY_SELECTED'     => $countrySelected,
-        'M_ALL_SELECTED'         => $allSelected,
-        'M_OK_SELECTED'          => $okSelected,
-        'M_SUSPENDED_SELECTED'   => $suspendedSelected,
-    ));
 }

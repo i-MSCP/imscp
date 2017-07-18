@@ -37,7 +37,7 @@
  */
 function scheduleBackupRestoration($userId)
 {
-    exec_query("UPDATE domain SET domain_status = ? WHERE domain_admin_id = ?", array('torestore', $userId));
+    exec_query("UPDATE domain SET domain_status = ? WHERE domain_admin_id = ?", ['torestore', $userId]);
     send_request();
     write_log($_SESSION['user_logged'] . ": scheduled backup restoration.", E_USER_NOTICE);
     set_page_message(tr('Backup has been successfully scheduled for restoration.'), 'success');
@@ -58,11 +58,11 @@ if (!empty($_POST)) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/backup.tpl',
     'page_message' => 'layout'
-));
+]);
 
 $cfg = iMSCP_Registry::get('config');
 $algo = strtolower($cfg['BACKUP_COMPRESS_ALGORITHM']);
@@ -81,7 +81,7 @@ if ($algo == 'no') {
     $name = NULL;
 }
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE'         => tr('Client / Webtools / Daily Backup'),
     'TR_BACKUP'             => tr('Backup'),
     'TR_DAILY_BACKUP'       => tr('Daily backup'),
@@ -94,11 +94,11 @@ $tpl->assign(array(
     'TR_RESTORE_DIRECTIONS' => tr('Click the Restore button and the system will restore the last daily backup'),
     'TR_RESTORE'            => tr('Restore'),
     'TR_CONFIRM_MESSAGE'    => tr('Are you sure you want to restore the backup?')
-));
+]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

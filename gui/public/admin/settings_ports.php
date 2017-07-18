@@ -70,13 +70,13 @@ function toSession($mode)
 	$_SESSION['errorFieldsIds'] = json_encode($errorFieldsIds);
 
 	if($mode == 'add') { // Data for error on add
-		$values = array(
+		$values = [
 			'name_new' => $_POST['name_new'],
 			'ip_new' => $_POST['ip_new'],
 			'port_new' => $_POST['port_new'],
 			'port_type_new' => $_POST['port_type_new'],
 			'show_val_new' => $_POST['show_val_new']
-		);
+        ];
 
 		$_SESSION['error_on_add'] = $values;
 	} else { // Data for error on update
@@ -162,7 +162,7 @@ function admin_addUpdateServices($mode = 'add')
 	$dbConfig = iMSCP_Registry::get('dbConfig');
 
 	// Create a pool for error fields ids and gets a reference to him
-	$errorFieldsIds = &iMSCP_Registry::set('errorFieldsIds', array());
+	$errorFieldsIds = &iMSCP_Registry::set('errorFieldsIds', []);
 
 	if($mode == 'add') { // Adds a service port
 		$port = $_POST['port_new'];
@@ -262,7 +262,7 @@ function admin_showServices($tpl)
 			$selectedOff = $status == '1' ? '' : $htmlSelected;
 
 			$tpl->assign(
-				array(
+				[
 					'SERVICE' => '<input name="name[]" type="text" id="name' . $index .
 						'" value="' . tohtml($name) . '" class="textinput" maxlength="25" />',
 					'NAME' => tohtml($name),
@@ -270,13 +270,13 @@ function admin_showServices($tpl)
 					'TR_DELETE' => tr('Delete'),
 					'URL_DELETE' => "?delete=$service",
 					'NUM' => $index
-				)
+                ]
 			);
 
 			$tpl->parse('PORT_DELETE_LINK', 'port_delete_link');
 
 			$tpl->assign(
-				array(
+				[
 					'VAR_NAME' => tohtml($service),
 					'IP' => ($ip == 'localhost') ? '127.0.0.1' : (! $ip ? '0.0.0.0' : tohtml($ip)),
 					'PORT' => tohtml($port),
@@ -284,7 +284,7 @@ function admin_showServices($tpl)
 					'SELECTED_TCP' => $selectedTcp,
 					'SELECTED_ON' => $selectedOn,
 					'SELECTED_OFF' => $selectedOff
-				)
+                ]
 			);
 
 			$tpl->parse('SERVICE_PORTS', '.service_ports');
@@ -293,16 +293,16 @@ function admin_showServices($tpl)
 		// Add fields
 		$tpl->assign(
 			isset($errorOnAdd)
-				? array(
+				? [
 					'VAL_FOR_NAME_NEW' =>  $errorOnAdd['name_new'],
 					'VAL_FOR_IP_NEW' => $errorOnAdd['ip_new'],
 					'VAL_FOR_PORT_NEW' => $errorOnAdd['port_new']
-				)
-				: array(
+            ]
+				: [
 					'VAL_FOR_NAME_NEW' => '',
 					'VAL_FOR_IP_NEW' => '',
 					'VAL_FOR_PORT_NEW' => ''
-				)
+            ]
 		);
 
 		// Error fields ids
@@ -360,15 +360,15 @@ if (isset($_POST['uaction']) && $_POST['uaction'] != 'reset') {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
 	'layout' => 'shared/layouts/ui.tpl',
 	'page' => 'admin/settings_ports.tpl',
 	'page_message' => 'layout',
 	'service_ports' => 'page',
 	'port_delete_link' => 'service_ports'
-));
+]);
 
-$tpl->assign(array(
+$tpl->assign([
 	'TR_PAGE_TITLE' => tr('Admin / Settings / Service Ports'),
 	'TR_ACTION' => tr('Action'),
 	'TR_UDP' => tr('udp'),
@@ -387,7 +387,7 @@ $tpl->assign(array(
 	'VAL_FOR_SUBMIT_ON_UPDATE' => tr('Update'),
 	'VAL_FOR_SUBMIT_ON_ADD' => tr('Add'),
 	'VAL_FOR_SUBMIT_ON_RESET' => tr('Reset')
-));
+]);
 
 iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
 	/** @var $e \iMSCP_Events_Event */
@@ -400,7 +400,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 
 $tpl->prnt();
 

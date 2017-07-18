@@ -53,7 +53,7 @@ function client_getPost($varname, $defaultValue = '')
  */
 function hasConflict($rrName, $rrType, $isNewRecord, &$errorString)
 {
-    $resolver = new DnsResolver(array('nameservers' => array('127.0.0.1')));
+    $resolver = new DnsResolver(['nameservers' => ['127.0.0.1']]);
 
     try {
         /** @var Net_DNS2_Packet_Response $response */
@@ -261,7 +261,7 @@ function client_validate_SRV($srvName, $proto, $priority, $weight, $port, $host,
         return false;
     }
 
-    if (!in_array($proto, array('udp', 'tcp', 'tls'))) {
+    if (!in_array($proto, ['udp', 'tcp', 'tls'])) {
         showBadRequestErrorPage();
     }
 
@@ -397,10 +397,10 @@ function client_decodeDnsRecordData($data)
         }
     }
 
-    return array(
+    return [
         $name, $ipv4, $ipv6, $srvName, $srvProto, $ttl, $srvPrio, $srvWeight, $srvTargetPort, $srvTargetHost, $cname,
         $txt, $ownedBy
-    );
+    ];
 }
 
 /**
@@ -422,7 +422,7 @@ function client_saveDnsRecord($dnsRecordId)
         $dnsRecordType = client_getPost('type');
 
         if ($dnsRecordClass != 'IN'
-            || !in_array($dnsRecordType, array('A', 'AAAA', 'CNAME', 'MX', 'NS', 'SPF', 'SRV', 'TXT'))
+            || !in_array($dnsRecordType, ['A', 'AAAA', 'CNAME', 'MX', 'NS', 'SPF', 'SRV', 'TXT'])
         ) {
             showBadRequestErrorPage();
         }
@@ -433,7 +433,7 @@ function client_saveDnsRecord($dnsRecordId)
         } else {
             $stmt = exec_query(
                 'SELECT alias_id, alias_name FROM domain_aliasses WHERE alias_id = ? AND domain_id = ?',
-                array(filter_digits($_POST['zone_id']), $mainDmnId)
+                [intval($_POST['zone_id']), $mainDmnId]
             );
 
             if (!$stmt->rowCount()) {
@@ -455,7 +455,7 @@ function client_saveDnsRecord($dnsRecordId)
                 WHERE domain_dns_id = ?
                 AND t1.domain_id = ?
             ',
-            array($dnsRecordId, $mainDmnId)
+            [$dnsRecordId, $mainDmnId]
         );
 
         if (!$stmt->rowCount()) {
@@ -651,14 +651,14 @@ function client_saveDnsRecord($dnsRecordId)
         $db->beginTransaction();
 
         if (!$dnsRecordId) {
-            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddCustomDNSrecord, array(
+            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddCustomDNSrecord, [
                 'domainId' => $mainDmnId,
                 'aliasId'  => $domainId,
                 'name'     => $dnsRecordName,
                 'class'    => $dnsRecordClass,
                 'type'     => $dnsRecordType,
                 'data'     => $dnsRecordData
-            ));
+            ]);
 
             exec_query(
                 '
@@ -668,13 +668,13 @@ function client_saveDnsRecord($dnsRecordId)
                    ?, ?, ?, ?, ?, ?, ?, ?
                   )
                 ',
-                array(
+                [
                     $mainDmnId, $domainId, $dnsRecordName, $dnsRecordClass, $dnsRecordType, $dnsRecordData,
                     'custom_dns_feature', 'toadd'
-                )
+                ]
             );
 
-            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddCustomDNSrecord, array(
+            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddCustomDNSrecord, [
                 'id'       => $db->insertId(),
                 'domainId' => $mainDmnId,
                 'aliasId'  => $domainId,
@@ -682,9 +682,9 @@ function client_saveDnsRecord($dnsRecordId)
                 'class'    => $dnsRecordClass,
                 'type'     => $dnsRecordType,
                 'data'     => $dnsRecordData
-            ));
+            ]);
         } else {
-            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditCustomDNSrecord, array(
+            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditCustomDNSrecord, [
                 'id'       => $dnsRecordId,
                 'domainId' => $mainDmnId,
                 'aliasId'  => $domainId,
@@ -692,7 +692,7 @@ function client_saveDnsRecord($dnsRecordId)
                 'class'    => $dnsRecordClass,
                 'type'     => $dnsRecordType,
                 'data'     => $dnsRecordData
-            ));
+            ]);
 
             exec_query(
                 '
@@ -700,7 +700,7 @@ function client_saveDnsRecord($dnsRecordId)
                   SET domain_dns = ?, domain_class = ?, domain_type = ?, domain_text = ?, domain_dns_status = ?
                   WHERE domain_dns_id = ?
                 ',
-                array($dnsRecordName, $dnsRecordClass, $dnsRecordType, $dnsRecordData, 'tochange', $dnsRecordId)
+                [$dnsRecordName, $dnsRecordClass, $dnsRecordType, $dnsRecordData, 'tochange', $dnsRecordId]
             );
 
             // Also update status of any DNS resource record with error
@@ -714,7 +714,7 @@ function client_saveDnsRecord($dnsRecordId)
                 $mainDmnId
             );
 
-            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditCustomDNSrecord, array(
+            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditCustomDNSrecord, [
                 'id'       => $dnsRecordId,
                 'domainId' => $mainDmnId,
                 'aliasId'  => $domainId,
@@ -722,7 +722,7 @@ function client_saveDnsRecord($dnsRecordId)
                 'class'    => $dnsRecordClass,
                 'type'     => $dnsRecordType,
                 'data'     => $dnsRecordData
-            ));
+            ]);
         }
 
         $db->commit();
@@ -762,7 +762,7 @@ function client_generatePage($tpl, $dnsRecordId)
                 SELECT alias_id AS domain_id, alias_name AS domain_name FROM domain_aliasses
                 WHERE domain_id = ? AND alias_status <> ?
             ",
-            array($mainDomainId, $mainDomainId, 'ordered')
+            [$mainDomainId, $mainDomainId, 'ordered']
         );
 
         $domainId = client_getPost('zone_id', '0');
@@ -773,23 +773,23 @@ function client_generatePage($tpl, $dnsRecordId)
             $selectOptions .= "\t\t\t\t\t" . '<option value="' . $data['domain_id'] . '"' . ($data['domain_id'] == $domainId ? $selected : '') . '>' . decode_idna($data['domain_name']) . "</option>\n";
         }
 
-        $tpl->assign(array(
+        $tpl->assign([
             'SELECT_ZONES'      => $selectOptions,
             'DNS_TYPE_DISABLED' => ''
-        ));
+        ]);
     } // Edit DNS record
     else {
-        $stmt = exec_query('SELECT * FROM `domain_dns` WHERE `domain_dns_id` = ? AND `domain_id` = ?', array($dnsRecordId, $mainDomainId));
+        $stmt = exec_query('SELECT * FROM `domain_dns` WHERE `domain_dns_id` = ? AND `domain_id` = ?', [$dnsRecordId, $mainDomainId]);
 
         if (!$stmt->rowCount()) {
             showBadRequestErrorPage();
         }
 
         $data = $stmt->fetchRow();
-        $tpl->assign(array(
+        $tpl->assign([
             'ADD_RECORD'        => '',
             'DNS_TYPE_DISABLED' => ' disabled'
-        ));
+        ]);
     }
 
     list($name, $ipv4, $ipv6, $srvName, $srvProto, $srvTTL, $srvPriority, $srvWeight, $srvTargetPort, $srvTargetHost,
@@ -801,12 +801,12 @@ function client_generatePage($tpl, $dnsRecordId)
         showBadRequestErrorPage();
     }
 
-    $dnsTypes = client_create_options(array('A', 'AAAA', 'SRV', 'CNAME', 'MX', 'NS', 'SPF', 'TXT'), client_getPost('type', $data['domain_type']));
-    $dnsClasses = client_create_options(array('IN'), client_getPost('class', $data['domain_class']));
-    $tpl->assign(array(
+    $dnsTypes = client_create_options(['A', 'AAAA', 'SRV', 'CNAME', 'MX', 'NS', 'SPF', 'TXT'], client_getPost('type', $data['domain_type']));
+    $dnsClasses = client_create_options(['IN'], client_getPost('class', $data['domain_class']));
+    $tpl->assign([
         'ID'                      => tohtml($dnsRecordId),
         'DNS_SRV_NAME'            => tohtml(client_getPost('dns_srv_name', decode_idna($srvName))),
-        'SELECT_DNS_SRV_PROTOCOL' => client_create_options(array('tcp', 'udp', 'tls'), client_getPost('srv_proto', $srvProto)),
+        'SELECT_DNS_SRV_PROTOCOL' => client_create_options(['tcp', 'udp', 'tls'], client_getPost('srv_proto', $srvProto)),
         'DNS_NAME'                => tohtml(client_getPost('dns_name', decode_idna($name))),
         'DNS_TTL'                 => tohtml(client_getPost('dns_ttl', $srvTTL)),
         'SELECT_DNS_TYPE'         => $dnsTypes,
@@ -819,7 +819,7 @@ function client_generatePage($tpl, $dnsRecordId)
         'DNS_SRV_HOST'            => tohtml(client_getPost('dns_srv_host', decode_idna($srvTargetHost))),
         'DNS_CNAME'               => tohtml(client_getPost('dns_cname', decode_idna($cname))),
         'DNS_TXT_DATA'            => tohtml(client_getPost('dns_txt_data', $txt))
-    ));
+    ]);
 }
 
 /***********************************************************************************************************************
@@ -832,7 +832,7 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptSta
 check_login('user');
 customerHasFeature('custom_dns_records') or showBadRequestErrorPage();
 
-$dnsRecordId = isset($_GET['id']) ? filter_digits($_GET['id']) : 0;
+$dnsRecordId = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 if (!empty($_POST)) {
     if (client_saveDnsRecord($dnsRecordId)) {
@@ -847,13 +847,13 @@ if (!empty($_POST)) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/dns_edit.tpl',
     'page_message' => 'layout',
     'logged_from'  => 'page'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'        => ($dnsRecordId > 0) ? tr('Client / Domain / Edit DNS resource record') : tr('Client / Domains / Add DNS resource record'),
     'ACTION_MODE'          => ($dnsRecordId > 0) ? 'dns_edit.php?id={ID}' : 'dns_add.php',
     'TR_CUSTOM_DNS_RECORD' => tr('DNS resource record'),
@@ -878,7 +878,7 @@ $tpl->assign(array(
     'TR_SEC'               => tr('Sec.'),
     'TR_UPDATE'            => tr('Update'),
     'TR_CANCEL'            => tr('Cancel')
-));
+]);
 
 $tpl->assign(($dnsRecordId > 0) ? 'FORM_ADD_MODE' : 'FORM_EDIT_MODE', '');
 
@@ -887,7 +887,7 @@ client_generatePage($tpl, $dnsRecordId);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

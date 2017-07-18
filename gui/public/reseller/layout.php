@@ -53,9 +53,9 @@ function reseller_generateLayoutColorForm($tpl)
 	if (!empty($colors)) {
 		foreach ($colors as $color) {
 			$tpl->assign(
-				array(
+				[
 					'COLOR' => $color,
-					'SELECTED_COLOR' => ($color == $selectedColor) ? $cfg->HTML_SELECTED : ''));
+					'SELECTED_COLOR' => ($color == $selectedColor) ? $cfg->HTML_SELECTED : '']);
 
 			$tpl->parse('LAYOUT_COLOR_BLOCK', '.layout_color_block');
 		}
@@ -80,14 +80,14 @@ $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
-	array(
+	[
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/layout.tpl',
 		'page_message' => 'layout',
 		'logo_remove_button' => 'page',
 		'layout_colors_block' => 'page',
 		'layout_color_block' => 'layout_colors_block'
-	)
+    ]
 );
 
 /**
@@ -111,7 +111,7 @@ if (isset($_POST['uaction'])) {
 			set_page_message(tr('Unknown layout color.'), 'error');
 		}
 	} elseif($_POST['uaction'] == 'changeShowLabels') {
-        layout_setMainMenuLabelsVisibility($_SESSION['user_id'], filter_digits($_POST['mainMenuShowLabels']));
+        layout_setMainMenuLabelsVisibility($_SESSION['user_id'], intval($_POST['mainMenuShowLabels']));
 		set_page_message(tr('Main menu labels visibility successfully updated.'), 'success');
     } else {
 		set_page_message(tr('Unknown action: %s', tohtml($_POST['uaction'])), 'error');
@@ -123,14 +123,14 @@ $userId = $_SESSION['user_id'];
 
 if (layout_isMainMenuLabelsVisible($userId)) {
     $tpl->assign(
-        array(
+        [
             'MAIN_MENU_SHOW_LABELS_ON' => $html_selected,
-            'MAIN_MENU_SHOW_LABELS_OFF' => ''));
+            'MAIN_MENU_SHOW_LABELS_OFF' => '']);
 } else {
     $tpl->assign(
-        array(
+        [
             'MAIN_MENU_SHOW_LABELS_ON' => '',
-            'MAIN_MENU_SHOW_LABELS_OFF' => $html_selected));
+            'MAIN_MENU_SHOW_LABELS_OFF' => $html_selected]);
 }
 
 
@@ -143,7 +143,7 @@ if (layout_isUserLogo($ispLogo)) {
 }
 
 $tpl->assign(
-	array(
+	[
 		'TR_PAGE_TITLE' => tr('Reseller / Profile / Layout'),
 		'OWN_LOGO' => $ispLogo,
 		'TR_LAYOUT_SETTINGS' => tr('Layout'),
@@ -157,7 +157,7 @@ $tpl->assign(
 		'TR_CHOOSE_LAYOUT_COLOR' =>  tr('Choose layout color'),
 		'TR_CHANGE' => tr('Change'),
         'TR_OTHER_SETTINGS' => tr('Other settings'),
-        'TR_MAIN_MENU_SHOW_LABELS' => tr('Show labels for main menu links')));
+        'TR_MAIN_MENU_SHOW_LABELS' => tr('Show labels for main menu links')]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
@@ -165,7 +165,7 @@ reseller_generateLayoutColorForm($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 
 $tpl->prnt();
 

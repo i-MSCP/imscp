@@ -115,7 +115,7 @@ class iMSCP_Initializer
         $this->checkForDatabaseUpdate();
         $this->initializePlugins();
         // Trigger the onAfterInitialize event
-        $this->eventManager->dispatch(iMSCP_Events::onAfterInitialize, array('context' => $this));
+        $this->eventManager->dispatch(iMSCP_Events::onAfterInitialize, ['context' => $this]);
         self::$_initialized = true;
     }
 
@@ -136,7 +136,7 @@ class iMSCP_Initializer
         $this->initializeUserGuiProperties();
         $this->initializeLocalization();
         $this->initializePlugins();
-        $this->eventManager->dispatch(iMSCP_Events::onAfterInitialize, array('context' => $this));
+        $this->eventManager->dispatch(iMSCP_Events::onAfterInitialize, ['context' => $this]);
         self::$_initialized = true;
     }
 
@@ -154,7 +154,7 @@ class iMSCP_Initializer
         $this->setTimezone();
         $this->initializeLocalization(); // Needed for rebuilt of languages index
         // Trigger the onAfterInitialize event
-        $this->eventManager->dispatch(iMSCP_Events::onAfterInitialize, array('context' => $this));
+        $this->eventManager->dispatch(iMSCP_Events::onAfterInitialize, ['context' => $this]);
         self::$_initialized = true;
     }
 
@@ -199,13 +199,13 @@ class iMSCP_Initializer
     {
         // Set layout color for the current environment (Must be donne at end)
         $this->eventManager->registerListener(
-            array(
+            [
                 iMSCP_Events::onLoginScriptEnd,
                 iMSCP_Events::onLostPasswordScriptEnd,
                 iMSCP_Events::onAdminScriptEnd,
                 iMSCP_Events::onResellerScriptEnd,
                 iMSCP_Events::onClientScriptEnd
-            ),
+            ],
             'layout_init'
         );
 
@@ -231,7 +231,7 @@ class iMSCP_Initializer
             throw new iMSCP_Exception('The gui/data/sessions directory must be writable.');
         }
 
-        Zend_Session::setOptions(array(
+        Zend_Session::setOptions([
             'use_cookies'         => 'on',
             'use_only_cookies'    => 'on',
             'use_trans_sid'       => 'off',
@@ -242,7 +242,7 @@ class iMSCP_Initializer
             'gc_maxlifetime'      => 1440,
             'gc_probability'      => 1,
             'save_path'           => $sessionDir
-        ));
+        ]);
 
         Zend_Session::start();
     }
@@ -387,7 +387,7 @@ class iMSCP_Initializer
         }
 
         // Start the buffer and attach the filter to him
-        ob_start(array($filter, iMSCP_Filter_Compress_Gzip::CALLBACK_NAME));
+        ob_start([$filter, iMSCP_Filter_Compress_Gzip::CALLBACK_NAME]);
     }
 
     /**
@@ -405,16 +405,16 @@ class iMSCP_Initializer
                     $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
                     if ((empty($row['lang']) && empty($row['layout']))) {
-                        list($lang, $theme) = array($this->config['USER_INITIAL_LANG'], $this->config['USER_INITIAL_THEME']);
+                        list($lang, $theme) = [$this->config['USER_INITIAL_LANG'], $this->config['USER_INITIAL_THEME']];
                     } elseif (empty($row['lang'])) {
-                        list($lang, $theme) = array($this->config['USER_INITIAL_LANG'], $row['layout']);
+                        list($lang, $theme) = [$this->config['USER_INITIAL_LANG'], $row['layout']];
                     } elseif (empty($row['layout'])) {
-                        list($lang, $theme) = array($row['lang'], $this->config['USER_INITIAL_THEME']);
+                        list($lang, $theme) = [$row['lang'], $this->config['USER_INITIAL_THEME']];
                     } else {
-                        list($lang, $theme) = array($row['lang'], $row['layout']);
+                        list($lang, $theme) = [$row['lang'], $row['layout']];
                     }
                 } else {
-                    list($lang, $theme) = array($this->config['USER_INITIAL_LANG'], $this->config['USER_INITIAL_THEME']);
+                    list($lang, $theme) = [$this->config['USER_INITIAL_LANG'], $this->config['USER_INITIAL_THEME']];
                 }
 
                 $_SESSION['user_def_lang'] = $lang;
@@ -467,18 +467,18 @@ class iMSCP_Initializer
         $cache = Zend_Cache::factory(
             'Core',
             'File',
-            array(
+            [
                 'caching'                   => true,
                 'lifetime'                  => NULL, // Translation cache is never flushed automatically
                 'automatic_serialization'   => true,
                 'automatic_cleaning_factor' => 0,
                 'ignore_user_abort'         => true,
                 'cache_id_prefix'           => 'iMSCP_Translate'
-            ),
-            array(
+            ],
+            [
                 'hashed_directory_level' => 0,
                 'cache_dir'              => CACHE_PATH . '/translations'
-            )
+            ]
         );
 
         if ($this->config['DEBUG']) {
@@ -488,13 +488,13 @@ class iMSCP_Initializer
         }
 
         // Setup primary translator for iMSCP core translations
-        iMSCP_Registry::set('translator', new Zend_Translate(array(
+        iMSCP_Registry::set('translator', new Zend_Translate([
             'adapter'        => 'gettext',
             'content'        => sprintf($trFilePathPattern, $locale, $locale),
             'locale'         => $locale,
             'disableNotices' => true,
             'tag'            => 'iMSCP'
-        )));
+        ]));
     }
 
     /**
@@ -505,7 +505,7 @@ class iMSCP_Initializer
     protected function checkForDatabaseUpdate()
     {
         $this->eventManager->registerListener(
-            array(iMSCP_Events::onLoginScriptStart, iMSCP_Events::onBeforeSetIdentity),
+            [iMSCP_Events::onLoginScriptStart, iMSCP_Events::onBeforeSetIdentity],
             function ($event) {
                 if (!iMSCP_Update_Database::getInstance()->isAvailableUpdate()) {
                     return;
@@ -538,11 +538,11 @@ class iMSCP_Initializer
     protected function initializeNavigation()
     {
         $this->eventManager->registerListener(
-            array(
+            [
                 iMSCP_Events::onAdminScriptStart,
                 iMSCP_Events::onResellerScriptStart,
                 iMSCP_Events::onClientScriptStart
-            ),
+            ],
             'layout_loadNavigation'
         );
     }

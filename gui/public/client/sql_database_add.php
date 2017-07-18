@@ -48,38 +48,38 @@ function client_generatePage($tpl)
             $tpl->assign('MYSQL_PREFIX_ALL', '');
         } else {
             $tpl->parse('MYSQL_PREFIX_INFRONT', 'mysql_prefix_infront');
-            $tpl->assign(array(
+            $tpl->assign([
                 'MYSQL_PREFIX_BEHIND' => '',
                 'MYSQL_PREFIX_ALL' => ''
-            ));
+            ]);
         }
     } else {
-        $tpl->assign(array(
+        $tpl->assign([
             'MYSQL_PREFIX_NO' => '',
             'MYSQL_PREFIX_INFRONT' => '',
             'MYSQL_PREFIX_BEHIND' => ''
-        ));
+        ]);
         $tpl->parse('MYSQL_PREFIX_ALL', 'mysql_prefix_all');
     }
 
     if (isset($_POST['uaction'])
         && $_POST['uaction'] == 'add_db'
     ) {
-        $tpl->assign(array(
+        $tpl->assign([
             'DB_NAME' => clean_input($_POST['db_name']),
             'USE_DMN_ID' => isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' ? ' checked' : '',
             'START_ID_POS_SELECTED' => isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end' ? ' checked' : '',
             'END_ID_POS_SELECTED' => isset($_POST['id_pos']) && $_POST['id_pos'] === 'end' ? ' checked' : ''
-        ));
+        ]);
         return;
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'DB_NAME' => '',
         'USE_DMN_ID' => '',
         'START_ID_POS_SELECTED' => $cfg['HTML_SELECTED'],
         'END_ID_POS_SELECTED' => ''
-    ));
+    ]);
 }
 
 /**
@@ -135,7 +135,7 @@ function client_addSqlDb($userId)
         return;
     }
 
-    if (in_array($dbName, array('information_schema', 'mysql', 'performance_schema', 'sys', 'test'))
+    if (in_array($dbName, ['information_schema', 'mysql', 'performance_schema', 'sys', 'test'])
         || client_isDatabase($dbName)
     ) {
         set_page_message(tr('Database name is unavailable or unallowed.'), 'error');
@@ -143,10 +143,10 @@ function client_addSqlDb($userId)
     }
 
     try {
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddSqlDb, array('dbName' => $dbName));
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddSqlDb, ['dbName' => $dbName]);
         execute_query(sprintf('CREATE DATABASE IF NOT EXISTS %s', quoteIdentifier($dbName)));
-        exec_query('INSERT INTO sql_database (domain_id, sqld_name) VALUES (?, ?)', array($mainDmnId, $dbName));
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlDb, array('dbName' => $dbName));
+        exec_query('INSERT INTO sql_database (domain_id, sqld_name) VALUES (?, ?)', [$mainDmnId, $dbName]);
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlDb, ['dbName' => $dbName]);
         set_page_message(tr('SQL database successfully created.'), 'success');
         write_log(sprintf('%s added new SQL database: %s', decode_idna($_SESSION['user_logged']), $dbName), E_USER_NOTICE);
     } catch (iMSCP_Exception $e) {
@@ -189,7 +189,7 @@ client_checkSqlDbLimit();
 client_addSqlDb($_SESSION['user_id']);
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'client/sql_database_add.tpl',
     'page_message' => 'layout',
@@ -198,9 +198,9 @@ $tpl->define_dynamic(array(
     'mysql_prefix_infront' => 'page',
     'mysql_prefix_behind' => 'page',
     'mysql_prefix_all' => 'page'
-));
+]);
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE' => tr('Client / Databases / Add SQL Database'),
     'TR_DATABASE' => tr('Database'),
     'TR_DB_NAME' => tr('Database name'),
@@ -209,12 +209,12 @@ $tpl->assign(array(
     'TR_END_ID_POS' => tr('Behind'),
     'TR_ADD' => tr('Add'),
     'TR_CANCEL' => tr('Cancel')
-));
+]);
 
 client_generatePage($tpl);
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

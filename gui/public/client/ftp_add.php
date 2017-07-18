@@ -48,21 +48,21 @@ function generateDomainTypeList($mainDmnId, $tpl)
     );
     $row = $stmt->fetchRow();
 
-    $domains = array(
-        array('count' => '1', 'type' => 'dmn', 'tr' => tr('Domain')),
-        array('count' => $row['sub_count'], 'type' => 'sub', 'tr' => tr('Subdomain')),
-        array('count' => $row['als_count'], 'type' => 'als', 'tr' => tr('Domain alias')),
-        array('count' => $row['alssub_count'], 'type' => 'alssub', 'tr' => tr('Subdomain alias'))
-    );
+    $domains = [
+        ['count' => '1', 'type' => 'dmn', 'tr' => tr('Domain')],
+        ['count' => $row['sub_count'], 'type' => 'sub', 'tr' => tr('Subdomain')],
+        ['count' => $row['als_count'], 'type' => 'als', 'tr' => tr('Domain alias')],
+        ['count' => $row['alssub_count'], 'type' => 'alssub', 'tr' => tr('Subdomain alias')]
+    ];
 
     foreach ($domains as $domain) {
         if ($domain['count']) {
-            $tpl->assign(array(
+            $tpl->assign([
                 'DOMAIN_TYPE'          => tohtml($domain['type']),
                 'DOMAIN_TYPE_SELECTED' => (isset($_POST['domain_type']) && $_POST['domain_type'] == $domain['type'])
                     ? ' selected' : ($domain['type'] == 'dmn' ? ' selected' : ''),
                 'TR_DOMAIN_TYPE'       => $domain['tr']
-            ));
+            ]);
             $tpl->parse('DOMAIN_TYPES', '.domain_types');
         }
     }
@@ -80,10 +80,10 @@ function getDomainList($mainDmnName, $mainDmnId, $dmnType = 'dmn')
 {
     if ($dmnType == 'dmn') {
         $domainName = decode_idna($mainDmnName);
-        return array(array(
+        return [[
             'domain_name_val' => $domainName,
             'domain_name'     => $domainName
-        ));
+        ]];
     }
 
     switch ($dmnType) {
@@ -110,18 +110,18 @@ function getDomainList($mainDmnName, $mainDmnId, $dmnType = 'dmn')
     }
 
 
-    $stmt = exec_query($query, array($mainDmnId, 'ok'));
+    $stmt = exec_query($query, [$mainDmnId, 'ok']);
     if (!$stmt->rowCount()) {
         showBadRequestErrorPage();
     }
 
-    $dmnList = array();
+    $dmnList = [];
     while ($row = $stmt->fetchRow()) {
         $domainName = decode_idna($row['name']);
-        $dmnList[] = array(
+        $dmnList[] = [
             'domain_name_val' => $domainName,
             'domain_name'     => $domainName
-        );
+        ];
     }
 
     return $dmnList;
@@ -209,14 +209,14 @@ function addAccount()
     try {
         $db->beginTransaction();
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddFtp, array(
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddFtp, [
             'ftpUserId'      => $username,
             'ftpPassword'    => $encryptedPassword,
             'ftpUserUid'     => $row1['admin_sys_uid'],
             'ftpUserGid'     => $row1['admin_sys_gid'],
             'ftpUserShell'   => $shell,
             'ftpUserHome'    => $homeDir
-        ));
+        ]);
 
         exec_query(
             '
@@ -226,23 +226,23 @@ function addAccount()
                     ?, ?, ?, ?, ?, ?, ?, ?
                 )
             ',
-            array(
+            [
                 $username, $_SESSION['user_id'], $encryptedPassword, $row1['admin_sys_uid'], $row1['admin_sys_gid'],
                 $shell, $homeDir, 'toadd'
-            )
+            ]
         );
 
         $stmt = exec_query('SELECT COUNT(*) AS cnt FROM ftp_group WHERE groupname = ?', $row1['admin_name']);
         $row2 = $stmt->fetchRow();
 
         if ($row2['cnt'] == 0) {
-            exec_query('INSERT INTO ftp_group (groupname, gid, members) VALUES (?, ?, ?)', array(
+            exec_query('INSERT INTO ftp_group (groupname, gid, members) VALUES (?, ?, ?)', [
                 $row1['admin_name'], $row1['admin_sys_gid'], $username
-            ));
+            ]);
         } else {
-            exec_query('UPDATE ftp_group SET members = ? WHERE groupname = ?', array(
+            exec_query('UPDATE ftp_group SET members = ? WHERE groupname = ?', [
                 $row1['members'] . ",$username", $row1['admin_name']
-            ));
+            ]);
         }
 
         if (!$row1['quota_entry']) {
@@ -255,21 +255,21 @@ function addAccount()
                         ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                      )
                 ',
-                array(
+                [
                     $row1['admin_name'], 'group', 'false', 'hard', $row1['domain_disk_limit'] * 1024 * 1024, 0, 0, 0, 0,
                     0
-                )
+                ]
             );
         }
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddFtp, array(
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddFtp, [
             'ftpUserId'      => $username,
             'ftpPassword'    => $encryptedPassword,
             'ftpUserUid'     => $row1['admin_sys_uid'],
             'ftpUserGid'     => $row1['admin_sys_gid'],
             'ftpUserShell'   => $shell,
             'ftpUserHome'    => $homeDir
-        ));
+        ]);
 
         $db->commit();
         send_request();
@@ -302,13 +302,13 @@ function generatePage($tpl)
     $_SESSION['ftp_chooser_domain_id'] = $mainDmnProps['domain_id'];
     $_SESSION['ftp_chooser_user'] = $_SESSION['user_logged'];
     $_SESSION['ftp_chooser_root_dir'] = '/';
-    $_SESSION['ftp_chooser_hidden_dirs'] = array();
-    $_SESSION['ftp_chooser_unselectable_dirs'] = array();
+    $_SESSION['ftp_chooser_hidden_dirs'] = [];
+    $_SESSION['ftp_chooser_unselectable_dirs'] = [];
 
-    $tpl->assign(array(
+    $tpl->assign([
         'USERNAME' => isset($_POST['username']) ? tohtml($_POST['username'], 'htmlAttr') : '',
         'HOME_DIR' => isset($_POST['home_dir']) ? tohtml($_POST['home_dir'], 'htmlAttr') : '/'
-    ));
+    ]);
 
     generateDomainTypeList($mainDmnProps['domain_id'], $tpl);
     $dmnList = getDomainList(
@@ -318,12 +318,12 @@ function generatePage($tpl)
     );
 
     foreach ($dmnList as $dmn) {
-        $tpl->assign(array(
+        $tpl->assign([
             'DOMAIN_NAME_VAL'      => tohtml($dmn['domain_name_val'], 'htmlAttr'),
             'DOMAIN_NAME'          => tohtml($dmn['domain_name']),
             'DOMAIN_NAME_SELECTED' => (isset($_POST['domain_name']) && $_POST['domain_name'] == $dmn['domain_name'])
                 ? ' selected' : ''
-        ));
+        ]);
         $tpl->parse('DOMAIN_LIST', '.domain_list');
     }
 }
@@ -361,14 +361,14 @@ if (!empty($_POST)) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/ftp_add.tpl',
     'page_message' => 'layout',
     'domain_list'  => 'page',
     'domain_types' => 'page'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'        => tr('Client / FTP / Add FTP Account'),
     'TR_FTP_ACCOUNT_DATA'  => tr('Ftp account data'),
     'TR_DOMAIN_TYPE_LABEL' => tr('Domain type'),
@@ -379,7 +379,7 @@ $tpl->assign(array(
     'TR_CHOOSE_DIR'        => tr('Choose dir'),
     'TR_ADD'               => tr('Add'),
     'TR_CANCEL'            => tr('Cancel')
-));
+]);
 
 $eventManager->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e iMSCP_Events_Event */
@@ -393,5 +393,5 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-$eventManager->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+$eventManager->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

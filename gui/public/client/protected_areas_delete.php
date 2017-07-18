@@ -27,10 +27,10 @@ if (!customerHasFeature('protected_areas') || !isset($_GET['id'])) {
     showBadRequestErrorPage();
 }
 
-$id = filter_digits($_GET['id']);
-$stmt = exec_query('UPDATE htaccess SET status = ? WHERE id = ? AND dmn_id = ? AND status = ?', array(
+$id = intval($_GET['id']);
+$stmt = exec_query('UPDATE htaccess SET status = ? WHERE id = ? AND dmn_id = ? AND status = ?', [
     'todelete', $id, get_user_domain_id($_SESSION['user_id']), 'ok'
-));
+]);
 
 if (!$stmt->rowCount()) {
     showBadRequestErrorPage();

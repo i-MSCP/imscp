@@ -33,42 +33,42 @@ class iMSCP_pTemplate
     /**
      * @var array
      */
-    protected $tpl_name = array();
+    protected $tpl_name = [];
 
     /**
      * @var array
      */
-    protected $tpl_data = array();
+    protected $tpl_data = [];
 
     /**
      * @var array
      */
-    protected $tpl_options = array();
+    protected $tpl_options = [];
 
     /**
      * @var array
      */
-    protected $dtpl_name = array();
+    protected $dtpl_name = [];
 
     /**
      * @var array
      */
-    protected $dtpl_data = array();
+    protected $dtpl_data = [];
 
     /**
      * @var array
      */
-    protected $dtpl_options = array();
+    protected $dtpl_options = [];
 
     /**
      * @var array
      */
-    protected $dtpl_values = array();
+    protected $dtpl_values = [];
 
     /**
      * @var array
      */
-    protected $namespace = array();
+    protected $namespace = [];
 
     /**
      * @var iMSCP_Events_Aggregator
@@ -125,7 +125,7 @@ class iMSCP_pTemplate
     /**
      * @var array
      */
-    protected $stack = array();
+    protected $stack = [];
 
     /**
      * @var int
@@ -314,11 +314,11 @@ class iMSCP_pTemplate
             }
 
             if (preg_match($this->tpl_start_rexpr, $tag, $matches)) {
-                return array($matches[1], 'b', $tag_spos, $tag_epos + strlen($this->tpl_end_tag) - 1);
+                return [$matches[1], 'b', $tag_spos, $tag_epos + strlen($this->tpl_end_tag) - 1];
             }
 
             if (preg_match($this->tpl_end_rexpr, $tag, $matches)) {
-                return array($matches[1], 'e', $tag_spos, $tag_epos + strlen($this->tpl_end_tag) - 1);
+                return [$matches[1], 'e', $tag_spos, $tag_epos + strlen($this->tpl_end_tag) - 1];
             }
 
             $spos = $tag_epos;
@@ -342,17 +342,17 @@ class iMSCP_pTemplate
         if ($curl_b) {
             if ($curl_e) {
                 if ($curl_b < $curl_e) {
-                    return array('{', $curl_b);
+                    return ['{', $curl_b];
                 }
 
-                return array('}', $curl_e);
+                return ['}', $curl_e];
             }
 
-            return array('{', $curl_b);
+            return ['{', $curl_b];
         }
 
         if ($curl_e) {
-            return array('}', $curl_e);
+            return ['}', $curl_e];
         }
 
         return false;
@@ -404,7 +404,7 @@ class iMSCP_pTemplate
 
         $this->sp = 0;
         $start_from = -1;
-        $this->stack[$this->sp++] = array('{', $curl_b);
+        $this->stack[$this->sp++] = ['{', $curl_b];
         $curl = $this->find_next_curl($data, $start_from);
 
         while ($curl) {
@@ -487,10 +487,10 @@ class iMSCP_pTemplate
         static $parentTplDir = null;
 
         if (!is_array($fname)) {
-            $this->eventManager->dispatch(iMSCP_Events::onBeforeAssembleTemplateFiles, array(
+            $this->eventManager->dispatch(iMSCP_Events::onBeforeAssembleTemplateFiles, [
                 'context' => $this,
                 'templatePath' => $this->root_dir . '/' . $fname
-            ));
+            ]);
         } else { // INCLUDED file
             $fname = $parentTplDir !== null ? $parentTplDir . '/' . $fname[1] : $fname[1];
         }
@@ -501,27 +501,27 @@ class iMSCP_pTemplate
         $prevParentTplDir = $parentTplDir;
         $parentTplDir = dirname($fname);
 
-        $this->eventManager->dispatch(iMSCP_Events::onBeforeLoadTemplateFile, array(
+        $this->eventManager->dispatch(iMSCP_Events::onBeforeLoadTemplateFile, [
             'context' => $this,
             'templatePath' => $this->root_dir . '/' . $fname
-        ));
+        ]);
 
         ob_start();
         include $this->root_dir . '/' . $fname;
         $fileContent = ob_get_clean();
 
-        $this->eventManager->dispatch(iMSCP_Events::onAfterLoadTemplateFile, array(
+        $this->eventManager->dispatch(iMSCP_Events::onAfterLoadTemplateFile, [
             'context' => $this,
             'templateContent' => $fileContent
-        ));
+        ]);
 
-        $fileContent = preg_replace_callback($this->tpl_include, array($this, 'get_file'), $fileContent);
+        $fileContent = preg_replace_callback($this->tpl_include, [$this, 'get_file'], $fileContent);
         $parentTplDir = $prevParentTplDir;
 
-        $this->eventManager->dispatch(iMSCP_Events::onAfterAssembleTemplateFiles, array(
+        $this->eventManager->dispatch(iMSCP_Events::onAfterAssembleTemplateFiles, [
             'context' => $this,
             'templateContent' => $fileContent
-        ));
+        ]);
 
         return $fileContent;
     }
@@ -609,11 +609,11 @@ class iMSCP_pTemplate
      */
     public function parse($pname, $tname)
     {
-        $this->eventManager->dispatch(iMSCP_Events::onParseTemplate, array(
+        $this->eventManager->dispatch(iMSCP_Events::onParseTemplate, [
             'pname' => $pname,
             'tname' => $tname,
             'templateEngine' => $this
-        ));
+        ]);
 
         if (!preg_match('/[A-Z0-9][A-Z0-9_]*/', $pname) || !preg_match('/[A-Za-z0-9][A-Za-z0-9_]*/', $tname)) {
             return;

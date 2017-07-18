@@ -37,23 +37,18 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptS
 check_login('reseller');
 
 if (isset($_GET['domain_id'])) {
-	$domainId = filter_digits($_GET['domain_id']);
-	$resellerId = filter_digits($_SESSION['user_id']);
+	$domainId = intval($_GET['domain_id']);
+	$resellerId = intval($_SESSION['user_id']);
 
 	$stmt = exec_query(
 		'
-			SELECT
-				admin_id, created_by, domain_status
-			FROM
-				domain
-			INNER JOIN
-				admin ON(admin_id = domain_admin_id)
-			WHERE
-				domain_id = ?
-			AND
-				created_by = ?
+			SELECT admin_id, created_by, domain_status
+			FROM domain
+			JOIN admin ON(admin_id = domain_admin_id)
+			WHERE domain_id = ?
+			AND created_by = ?
 		',
-		array($domainId, $resellerId)
+		[$domainId, $resellerId]
 	);
 
 	if ($stmt->rowCount()) {

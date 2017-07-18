@@ -148,12 +148,12 @@ HTML;
         }
 
         $tpl = new iMSCP_pTemplate();
-        $tpl->define_dynamic(array(
+        $tpl->define_dynamic([
             'layout' => 'shared/layouts/simple.tpl',
             'page' => $this->templateFile,
             'page_message' => 'layout',
             'backlink_block' => 'page'
-        ));
+        ]);
 
         if (iMSCP_Registry::isRegistered('backButtonDestination')) {
             $backButtonDestination = iMSCP_Registry::get('backButtonDestination');
@@ -161,7 +161,7 @@ HTML;
             $backButtonDestination = 'javascript:history.go(-1)';
         }
 
-        $tpl->assign(array(
+        $tpl->assign([
             'TR_PAGE_TITLE' => 'i-MSCP - internet Multi Server Control Panel - Fatal Error',
             'HEADER_BLOCK' => '',
             'BOX_MESSAGE_TITLE' => 'An unexpected error occurred',
@@ -169,7 +169,7 @@ HTML;
             'BOX_MESSAGE' => $this->message,
             'BACK_BUTTON_DESTINATION' => $backButtonDestination,
             'TR_BACK' => 'Back'
-        ));
+        ]);
         $tpl->parse('LAYOUT_CONTENT', 'page');
         $this->templateEngine = $tpl;
     }

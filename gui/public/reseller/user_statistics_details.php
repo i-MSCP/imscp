@@ -38,15 +38,15 @@ function _getDomainTraffic($domainId, $beginTime, $endTime)
             SUM(dtraff_mail) AS mail_traffic, SUM(dtraff_pop) AS pop_traffic
           FROM domain_traffic WHERE domain_id = ? AND dtraff_time BETWEEN ? AND ?
         ',
-        array($domainId, $beginTime, $endTime)
+        [$domainId, $beginTime, $endTime]
     );
 
     if ($stmt->rowCount()) {
         $row = $stmt->fetchRow();
-        return array($row['web_traffic'], $row['ftp_traffic'], $row['mail_traffic'], $row['pop_traffic']);
+        return [$row['web_traffic'], $row['ftp_traffic'], $row['mail_traffic'], $row['pop_traffic']];
     }
 
-    return array(0, 0, 0, 0);
+    return [0, 0, 0, 0];
 }
 
 /**
@@ -60,10 +60,13 @@ function generatePage($tpl, $userId)
 {
     $stmt = exec_query(
         '
-          SELECT admin_name, domain_id FROM admin INNER JOIN domain ON(domain_admin_id = admin_id)
-          WHERE admin_id = ? AND created_by = ?
+          SELECT admin_name, domain_id
+          FROM admin
+          JOIN domain ON(domain_admin_id = admin_id)
+          WHERE admin_id = ?
+          AND created_by = ?
         ',
-        array($userId, $_SESSION['user_id'])
+        [$userId, $_SESSION['user_id']]
     );
 
     if (!$stmt->rowCount()) {
@@ -75,8 +78,8 @@ function generatePage($tpl, $userId)
     $adminName = decode_idna($row['admin_name']);
 
     if (isset($_POST['month']) && isset($_POST['year'])) {
-        $year = filter_digits($_POST['year']);
-        $month = filter_digits($_POST['month']);
+        $year = intval($_POST['year']);
+        $month = intval($_POST['month']);
     } else {
         $month = date('m');
         $year = date('Y');
@@ -98,7 +101,7 @@ function generatePage($tpl, $userId)
 
     $stmt = exec_query(
         'SELECT domain_id FROM domain_traffic WHERE dtraff_time BETWEEN ? AND ? LIMIT 1',
-        array(getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year))
+        [getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)]
     );
 
     if ($stmt->rowCount()) {
@@ -116,14 +119,14 @@ function generatePage($tpl, $userId)
                 $domainId, $beginTime, $endTime
             );
 
-            $tpl->assign(array(
+            $tpl->assign([
                 'DATE' => date($dateFormat, strtotime($year . '-' . $month . '-' . $fromDay)),
                 'WEB_TRAFFIC' => bytesHuman($webTraffic),
                 'FTP_TRAFFIC' => bytesHuman($ftpTraffic),
                 'SMTP_TRAFFIC' => bytesHuman($smtpTraffic),
                 'POP3_TRAFFIC' => bytesHuman($popTraffic),
                 'ALL_TRAFFIC' => bytesHuman($webTraffic + $ftpTraffic + $smtpTraffic + $popTraffic),
-            ));
+            ]);
 
             $all[0] += $webTraffic;
             $all[1] += $ftpTraffic;
@@ -133,7 +136,7 @@ function generatePage($tpl, $userId)
             $tpl->parse('TRAFFIC_TABLE_ITEM', '.traffic_table_item');
         }
 
-        $tpl->assign(array(
+        $tpl->assign([
             'USER_ID' => tohtml($userId),
             'USERNAME' => tohtml($adminName),
             'ALL_WEB_TRAFFIC' => tohtml(bytesHuman($all[0])),
@@ -141,14 +144,14 @@ function generatePage($tpl, $userId)
             'ALL_SMTP_TRAFFIC' => tohtml(bytesHuman($all[2])),
             'ALL_POP3_TRAFFIC' => tohtml(bytesHuman($all[3])),
             'ALL_ALL_TRAFFIC' => tohtml(bytesHuman(array_sum($all)))
-        ));
+        ]);
     } else {
         set_page_message(tr('No statistics found for the given period. Try another period.'), 'static_info');
-        $tpl->assign(array(
+        $tpl->assign([
             'USERNAME' => tohtml($adminName),
             'USER_ID' => tohtml($userId),
             'USER_STATISTICS_DETAILS_BLOCK' => ''
-        ));
+        ]);
     }
 }
 
@@ -168,7 +171,7 @@ if (!resellerHasCustomers()) {
 }
 
 if (isset($_GET['user_id'])) {
-    $userId = filter_digits($_GET['user_id']);
+    $userId = intval($_GET['user_id']);
     $_SESSION['stats_user_id'] = $userId;
 } elseif (isset($_SESSION['reseller_stats_user_id'])) {
     redirectTo('user_statistics_details.php?user_id=' . $_SESSION['reseller_stats_user_id']);
@@ -179,7 +182,7 @@ if (isset($_GET['user_id'])) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'reseller/user_statistics_details.tpl',
     'page_message' => 'layout',
@@ -187,8 +190,8 @@ $tpl->define_dynamic(array(
     'year_list' => 'page',
     'user_statistics_details_block' => 'page',
     'traffic_table_item' => 'user_statistics_details_block'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE' => tohtml(tr('Reseller / Statistics / Overview / {USERNAME} USER Statistics')),
     'TR_MONTH' => tohtml(tr('Month')),
     'TR_YEAR' => tohtml(tr('Year')),
@@ -200,14 +203,14 @@ $tpl->assign(array(
     'TR_ALL_TRAFFIC' => tohtml(tr('All traffic')),
     'TR_ALL' => tohtml(tr('All')),
     'TR_DAY' => tohtml(tr('Day'))
-));
+]);
 
 generateNavigation($tpl);
 generatePage($tpl, $userId);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-$eventManager->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+$eventManager->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

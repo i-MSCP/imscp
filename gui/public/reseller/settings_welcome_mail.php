@@ -35,11 +35,11 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptS
 check_login('reseller');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'reseller/settings_welcome_mail.tpl',
     'page_message' => 'layout'
-));
+]);
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
     $data['subject'] = (isset($_POST['auto_subject'])) ? clean_input($_POST['auto_subject']) : '';
@@ -65,7 +65,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
 
 $data = get_welcome_email($_SESSION['user_id']);
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE'               => tr('Reseller / Customers / Welcome Email'),
     'TR_MESSAGE_TEMPLATE_INFO'    => tr('Message template info'),
     'TR_USER_LOGIN_NAME'          => tr('User login (system) name'),
@@ -85,12 +85,12 @@ $tpl->assign(array(
     'MESSAGE_VALUE'               => tohtml($data['message']),
     'SENDER_EMAIL_VALUE'          => tohtml($data['sender_email']),
     'SENDER_NAME_VALUE'           => tohtml(!empty($data['sender_name'])) ? $data['sender_name'] : tr('Unknown')
-));
+]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 unsetMessages();

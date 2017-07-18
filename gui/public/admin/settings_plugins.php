@@ -55,9 +55,9 @@ function uploadPlugin($pluginManager)
     $ret = false;
 
     # Upload plugin archive into gui/data/tmp directory (eg. gui/data/tmp/PluginName.zip)
-    $tmpArchPath = utils_uploadFile('plugin_archive', array(function ($tmpDirectory) {
+    $tmpArchPath = utils_uploadFile('plugin_archive', [function ($tmpDirectory) {
         $tmpFilePath = $_FILES['plugin_archive']['tmp_name'];
-        if (!checkMimeType($tmpFilePath, array('application/x-gzip', 'application/x-bzip2',))) {
+        if (!checkMimeType($tmpFilePath, ['application/x-gzip', 'application/x-bzip2',])) {
             set_page_message(tr('Only tar.gz and tar.bz2 archives are supported.'), 'error');
             return false;
         }
@@ -71,7 +71,7 @@ function uploadPlugin($pluginManager)
         }
 
         return $tmpDirectory . '/' . $_FILES['plugin_archive']['name'];
-    }, $tmpDirectory));
+    }, $tmpDirectory]);
 
     if ($tmpArchPath === false) {
         redirectTo('settings_plugins.php');
@@ -87,7 +87,7 @@ function uploadPlugin($pluginManager)
         }
 
         // Check for plugin integrity (Any plugin must provide at least two files: $pluginName.php and info.php files
-        foreach (array($pluginName, 'info') as $file) {
+        foreach ([$pluginName, 'info'] as $file) {
             if (!isset($arch["$pluginName/$file.php"])) {
                 throw new iMSCPException(tr("%s doens't look like an i-MSCP plugin archive.", "$pluginName/$file.php"));
             }
@@ -190,7 +190,7 @@ function generatePage($tpl, $pluginManager)
             }
         }
 
-        $tpl->assign(array(
+        $tpl->assign([
             'PLUGIN_NAME' => tohtml($pluginName),
             'PLUGIN_DESCRIPTION' => tr($pluginInfo['desc']),
             'PLUGIN_STATUS' => $pluginManager->pluginHasError($pluginName) ? tr('Unexpected error') : translateStatus($pluginStatus),
@@ -199,7 +199,7 @@ function generatePage($tpl, $pluginManager)
             'PLUGIN_AUTHOR' => tohtml($pluginInfo['author']),
             'PLUGIN_MAILTO' => tohtml($pluginInfo['email']),
             'PLUGIN_SITE' => tohtml($pluginInfo['url'])
-        ));
+        ]);
 
         if ($pluginManager->pluginHasError($pluginName)) {
             $tpl->assign(
@@ -207,54 +207,54 @@ function generatePage($tpl, $pluginManager)
                 tr('An unexpected error occurred: %s', '<br><br>' . $pluginManager->pluginGetError($pluginName))
             );
             $tpl->parse('PLUGIN_STATUS_DETAILS_BLOCK', 'plugin_status_details_block');
-            $tpl->assign(array(
+            $tpl->assign([
                 'PLUGIN_DEACTIVATE_LINK' => '',
                 'PLUGIN_ACTIVATE_LINK' => '',
                 'PLUGIN_PROTECTED_LINK' => ''
-            ));
+            ]);
         } else {
             $tpl->assign('PLUGIN_STATUS_DETAILS_BLOCK', '');
 
             if ($pluginManager->pluginIsProtected($pluginName)) { // Protected plugin
-                $tpl->assign(array(
+                $tpl->assign([
                     'PLUGIN_ACTIVATE_LINK' => '',
                     'PLUGIN_DEACTIVATE_LINK' => '',
                     'TR_UNPROTECT_TOOLTIP' => tr('To unprotect this plugin, you must edit the %s file', $cacheFile)
-                ));
+                ]);
                 $tpl->parse('PLUGIN_PROTECTED_LINK', 'plugin_protected_link');
             } elseif ($pluginManager->pluginIsUninstalled($pluginName)) { // Uninstalled plugin
-                $tpl->assign(array(
+                $tpl->assign([
                     'PLUGIN_DEACTIVATE_LINK' => '',
                     'ACTIVATE_ACTION' => 'install',
                     'TR_ACTIVATE_TOOLTIP' => tr('Install this plugin'),
                     'UNINSTALL_ACTION' => 'delete',
                     'TR_UNINSTALL_TOOLTIP' => tr('Delete this plugin'),
                     'PLUGIN_PROTECTED_LINK' => ''
-                ));
+                ]);
                 $tpl->parse('PLUGIN_ACTIVATE_LINK', 'plugin_activate_link');
             } elseif ($pluginManager->pluginIsDisabled($pluginName)) { // Disabled plugin
-                $tpl->assign(array(
+                $tpl->assign([
                     'PLUGIN_DEACTIVATE_LINK' => '',
                     'ACTIVATE_ACTION' => 'enable',
                     'TR_ACTIVATE_TOOLTIP' => tr('Activate this plugin'),
                     'UNINSTALL_ACTION' => $pluginManager->pluginIsUninstallable($pluginName) ? 'uninstall' : 'delete',
                     'TR_UNINSTALL_TOOLTIP' => $pluginManager->pluginIsUninstallable($pluginName) ? tr('Uninstall this plugin') : tr('Delete this plugin'),
                     'PLUGIN_PROTECTED_LINK' => ''
-                ));
+                ]);
                 $tpl->parse('PLUGIN_ACTIVATE_LINK', 'plugin_activate_link');
             } elseif ($pluginManager->pluginIsEnabled($pluginName)) { // Enabled plugin
-                $tpl->assign(array(
+                $tpl->assign([
                     'PLUGIN_ACTIVATE_LINK' => '',
                     'PLUGIN_PROTECTED_LINK' => ''
-                ));
+                ]);
 
                 $tpl->parse('PLUGIN_DEACTIVATE_LINK', 'plugin_deactivate_link');
             } else { // Plugin with unknown status
-                $tpl->assign(array(
+                $tpl->assign([
                     'PLUGIN_DEACTIVATE_LINK' => '',
                     'PLUGIN_ACTIVATE_LINK' => '',
                     'PLUGIN_PROTECTED_LINK' => ''
-                ));
+                ]);
             }
         }
 
@@ -283,7 +283,7 @@ function checkAction($pluginManager, $pluginName, $action)
     switch ($action) {
         case 'install':
             if (!$pluginManager->pluginIsInstallable($pluginName)
-                || !in_array($pluginStatus, array('toinstall', 'uninstalled'))
+                || !in_array($pluginStatus, ['toinstall', 'uninstalled'])
             ) {
                 set_page_message(tr('Plugin %s cannot be installed.', $pluginName), 'warning');
                 $ret = false;
@@ -292,7 +292,7 @@ function checkAction($pluginManager, $pluginName, $action)
             break;
         case 'uninstall':
             if(!$pluginManager->pluginIsUninstallable($pluginName) ||
-                !in_array($pluginStatus, array('touninstall', 'disabled'))
+                !in_array($pluginStatus, ['touninstall', 'disabled'])
             ) {
                 set_page_message(tr('Plugin %s cannot be uninstalled.', $pluginName), 'warning');
                 $ret = false;
@@ -314,14 +314,14 @@ function checkAction($pluginManager, $pluginName, $action)
 
             break;
         case 'enable':
-            if (!in_array($pluginStatus, array('toenable', 'disabled'))) {
+            if (!in_array($pluginStatus, ['toenable', 'disabled'])) {
                 set_page_message(tr('Plugin %s cannot be activated.', $pluginName), 'warning');
                 $ret = false;
             }
 
             break;
         case 'disable':
-            if (!in_array($pluginStatus, array('todisable', 'enabled'))) {
+            if (!in_array($pluginStatus, ['todisable', 'enabled'])) {
                 set_page_message(tr('Plugin %s cannot be deactivated.', $pluginName), 'warning');
                 $ret = false;
             }
@@ -333,7 +333,7 @@ function checkAction($pluginManager, $pluginName, $action)
                     if($pluginStatus != 'uninstalled') {
                         $ret = false;
                     }
-                } elseif(!in_array($pluginStatus, array('uninstalled', 'disabled'))) {
+                } elseif(!in_array($pluginStatus, ['uninstalled', 'disabled'])) {
                     $ret = false;
                 }
 
@@ -372,7 +372,7 @@ function doAction($pluginManager, $pluginName, $action)
     }
 
     try {
-        if (in_array($action, array('install', 'update', 'enable'))) {
+        if (in_array($action, ['install', 'update', 'enable'])) {
             $pluginManager->pluginCheckCompat($pluginName, $pluginManager->pluginLoad($pluginName)->getInfo());
         }
 
@@ -380,7 +380,7 @@ function doAction($pluginManager, $pluginName, $action)
             return;
         }
 
-        $ret = call_user_func(array($pluginManager, 'plugin' . ucfirst($action)), $pluginName);
+        $ret = call_user_func([$pluginManager, 'plugin' . ucfirst($action)], $pluginName);
 
         if ($ret === false) {
             set_page_message(tr('An unexpected error occurred'));
@@ -492,7 +492,7 @@ function doBulkAction($pluginManager)
 {
     $action = clean_input($_POST['bulk_actions']);
 
-    if (!in_array($action, array('install', 'uninstall', 'enable', 'disable', 'delete', 'protect'))) {
+    if (!in_array($action, ['install', 'uninstall', 'enable', 'disable', 'delete', 'protect'])) {
         showBadRequestErrorPage();
     }
 
@@ -518,13 +518,13 @@ function updatePluginList($pluginManager)
     $eventManager = $pluginManager->getEventManager();
 
     /** @var EventCollection $responses */
-    $responses = $eventManager->dispatch(Events::onBeforeUpdatePluginList, array('pluginManager' => $pluginManager));
+    $responses = $eventManager->dispatch(Events::onBeforeUpdatePluginList, ['pluginManager' => $pluginManager]);
     if ($responses->isStopped()) {
         return;
     }
 
     $updateInfo = $pluginManager->pluginUpdateList();
-    $eventManager->dispatch(Events::onAfterUpdatePluginList, array('pluginManager' => $pluginManager));
+    $eventManager->dispatch(Events::onAfterUpdatePluginList, ['pluginManager' => $pluginManager]);
     set_page_message(
         tr(
             'Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated, %s plugin(s) reconfigured, and %s plugin(s) deleted.',
@@ -610,7 +610,7 @@ if (!empty($_POST) || !empty($_GET) || !empty($_FILES)) {
 }
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'admin/settings_plugins.tpl',
     'page_message' => 'layout',
@@ -620,19 +620,19 @@ $tpl->define_dynamic(array(
     'plugin_activate_link' => 'plugin_block',
     'plugin_deactivate_link' => 'plugin_block',
     'plugin_protected_link' => 'plugin_block'
-));
+]);
 
 EventManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($event) {
     /** @var $event \iMSCP_Events_Event $translations */
-    $event->getParam('translations')->core = array_merge($event->getParam('translations')->core, array(
+    $event->getParam('translations')->core = array_merge($event->getParam('translations')->core, [
         'dataTable' => getDataTablesPluginTranslations(false),
         'force_retry' => tr('Force retry'),
         'close' => tr('Close'),
         'error_details' => tr('Error details')
-    ));
+    ]);
 });
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE' => tr('Admin / Settings / Plugin Management'),
     'TR_BULK_ACTIONS' => tr('Bulk Actions'),
     'TR_PLUGIN' => tr('Plugin'),
@@ -658,14 +658,14 @@ $tpl->assign(array(
     'TR_PLUGIN_ARCHIVE_TOOLTIP' => tr('Only tar.gz, tar.bz2 and zip archives are accepted.'),
     'TR_PLUGIN_HINT' => tr('Plugins hook into i-MSCP to extend its functionality with custom features. Plugins are developed independently from the core i-MSCP application by thousands of developers all over the world. You can find new plugins to install by browsing the %s.', '<a style="text-decoration: underline" href="http://i-mscp.net/filebase/index.php/Filebase/" target="_blank">' . tr('i-MSCP plugin store') . '</a></u>'),
     'TR_CLICK_FOR_MORE_DETAILS' => tr('Click here for more details')
-));
+]);
 
 generateNavigation($tpl);
 generatePage($tpl, $pluginManager);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventManager::getInstance()->dispatch(Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+EventManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

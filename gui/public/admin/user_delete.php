@@ -38,7 +38,7 @@
  */
 function admin_deleteUser($userId)
 {
-    $userId = filter_digits($userId);
+    $userId = intval($userId);
     $cfg = iMSCP_Registry::get('config');
     $db = iMSCP_Database::getInstance();
     $stmt = exec_query(
@@ -56,12 +56,12 @@ function admin_deleteUser($userId)
     }
 
     // Users (admins/resellers) common items to delete
-    $itemsToDelete = array(
+    $itemsToDelete = [
         'admin' => 'admin_id = ?',
         'email_tpls' => 'owner_id = ?',
         'tickets' => 'ticket_from = ? OR ticket_to = ?',
         'user_gui_props' => 'user_id = ?'
-    );
+    ];
 
     // Note: Admin can also have they own hosting_plans bug must not be considered
     // as common item since first admin must be never removed
@@ -75,11 +75,11 @@ function admin_deleteUser($userId)
 
         // Add specific reseller items to remove
         $itemsToDelete = array_merge(
-            array(
+            [
                 'hosting_plans' => 'reseller_id = ?',
                 'reseller_props' => 'reseller_id = ?',
                 'web_software' => 'reseller_id = ?'
-            ),
+            ],
             $itemsToDelete
         );
     }
@@ -91,14 +91,14 @@ function admin_deleteUser($userId)
         // Cleanup database
         $db->beginTransaction();
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteUser, array('userId' => $userId));
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteUser, ['userId' => $userId]);
 
         foreach ($itemsToDelete as $table => $where) {
             $query = "DELETE FROM " . quoteIdentifier($table) . ($where ? " WHERE $where" : '');
             exec_query($query, array_fill(0, substr_count($where, '?'), $userId));
         }
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteUser, array('userId' => $userId));
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteUser, ['userId' => $userId]);
 
         $db->commit();
 
@@ -134,7 +134,7 @@ function admin_deleteUser($userId)
         throw $e;
     }
 
-    redirectTo('manage_users.php');
+    redirectTo('users.php');
 }
 
 /**
@@ -182,7 +182,7 @@ function admin_validateUserDeletion($userId)
         set_page_message(tr('You cannot delete the default administrator.'), 'error');
     }
 
-    if (!in_array($row['admin_type'], array('admin', 'reseller'))) {
+    if (!in_array($row['admin_type'], ['admin', 'reseller'])) {
         showBadRequestErrorPage(); # Not an administrator, nor a reseller; assume a bad request
     }
 
@@ -218,7 +218,7 @@ if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) { # admin/reseller 
         admin_deleteUser($_GET['delete_id']);
     }
 } elseif (isset($_GET['user_id'])) {
-    $userId = filter_digits($_GET['user_id']);
+    $userId = intval($_GET['user_id']);
 
     try {
         if (!deleteCustomer($userId)) {
@@ -247,4 +247,4 @@ if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) { # admin/reseller 
     }
 }
 
-redirectTo('manage_users.php');
+redirectTo('users.php');

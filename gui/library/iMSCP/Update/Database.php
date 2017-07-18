@@ -191,7 +191,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     public function getDatabaseUpdatesDetails()
     {
-        $updatesDetails = array();
+        $updatesDetails = [];
         $reflection = new ReflectionClass(__CLASS__);
 
         foreach (range($this->getNextUpdate(), $this->lastUpdate) as $revision) {
@@ -263,7 +263,7 @@ class iMSCP_Update_Database extends iMSCP_Update
         $tableWithDup = $table . '_tmp1';
         $tableWithoutDup = $table . '_tmp2';
 
-        return array(
+        return [
             sprintf(
                 "CREATE TABLE %s LIKE %s; INSERT %s SELECT * FROM %s GROUP BY %s;",
                 quoteIdentifier($tableWithoutDup),
@@ -275,7 +275,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             sprintf('ALTER TABLE %s RENAME TO %s', $originTable, quoteIdentifier($tableWithDup)),
             sprintf('ALTER TABLE %s RENAME TO %s', $tableWithoutDup, quoteIdentifier($originTable)),
             $this->dropTable($tableWithDup)
-        );
+        ];
     }
 
     /**
@@ -384,7 +384,7 @@ class iMSCP_Update_Database extends iMSCP_Update
         $table = quoteIdentifier($table);
         $indexType = strtoupper($indexType);
         $columnsTmp = (array)$columns;
-        $columns = array();
+        $columns = [];
 
         // Parse column definitions
         foreach ($columnsTmp as $columnDef) {
@@ -423,7 +423,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function dropIndexByColumn($table, $column)
     {
-        $sqlQueries = array();
+        $sqlQueries = [];
         $table = quoteIdentifier($table);
         $stmt = exec_query("SHOW INDEX FROM $table WHERE COLUMN_NAME = ?", $column);
         if ($stmt->rowCount()) {
@@ -502,7 +502,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r176()
     {
-        return array(
+        return [
             // sql_database table update
             $this->changeColumn('sql_database', 'domain_id', 'domain_id INT(10) UNSIGNED NOT NULL'),
             $this->changeColumn(
@@ -523,7 +523,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             ),
             $this->addIndex('sql_user', 'sqlu_name', 'INDEX', 'sqlu_name'),
             $this->addIndex('sql_user', 'sqlu_host', 'INDEX', 'sqlu_host')
-        );
+        ];
     }
 
     /**
@@ -533,7 +533,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r177()
     {
-        $sqlQueries = array();
+        $sqlQueries = [];
         $sqlUserHost = iMSCP_Registry::get('config')->DATABASE_USER_HOST;
 
         if ($sqlUserHost == '127.0.0.1') {
@@ -574,7 +574,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     public function r178()
     {
-        $sqlQueries = array();
+        $sqlQueries = [];
         $stmt = execute_query('SELECT cert_id, password, `key` FROM ssl_certs');
         if (!$stmt->rowCount()) {
             return null;
@@ -695,7 +695,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r186()
     {
-        return $this->addIndex('ssl_certs', array('domain_id', 'domain_type'), 'UNIQUE', 'domain_id_domain_type');
+        return $this->addIndex('ssl_certs', ['domain_id', 'domain_type'], 'UNIQUE', 'domain_id_domain_type');
     }
 
     /**
@@ -705,7 +705,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r189()
     {
-        $sqlQueries = array();
+        $sqlQueries = [];
         $stmt = execute_query('SELECT cert_id, private_key, certificate, ca_bundle FROM ssl_certs');
 
         if (!$stmt->rowCount()) {
@@ -773,11 +773,11 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r193()
     {
-        return array(
+        return [
             $this->addIndex('mail_users', 'mail_addr', 'INDEX', 'mail_addr'),
             $this->addIndex('mail_users', 'status', 'INDEX', 'status'),
             $this->addIndex('mail_users', 'po_active', 'INDEX', 'po_active')
-        );
+        ];
     }
 
     /**
@@ -787,10 +787,10 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r194()
     {
-        return array(
+        return [
             $this->addColumn('plugin', 'plugin_priority', "INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER plugin_config"),
             $this->addIndex('plugin', 'plugin_priority', 'INDEX', 'plugin_priority')
-        );
+        ];
     }
 
     /**
@@ -867,7 +867,7 @@ class iMSCP_Update_Database extends iMSCP_Update
         );
 
         if ($sql !== null) {
-            return array($sql, 'UPDATE plugin SET plugin_config_prev = plugin_config');
+            return [$sql, 'UPDATE plugin SET plugin_config_prev = plugin_config'];
         }
 
         return null;
@@ -880,14 +880,14 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r201()
     {
-        return array(
+        return [
             $this->changeColumn(
                 'plugin',
                 'plugin_config_prev',
                 'plugin_config_prev TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL'
             ),
             'UPDATE plugin SET plugin_config_prev = plugin_config'
-        );
+        ];
     }
 
     /**
@@ -911,7 +911,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r203()
     {
-        return array(
+        return [
             $this->changeColumn(
                 'domain',
                 'allowbackup',
@@ -919,7 +919,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             ),
             "UPDATE domain SET allowbackup = REPLACE(allowbackup, 'full', 'dmn|sql|mail')",
             "UPDATE domain SET allowbackup = REPLACE(allowbackup, 'no', '')"
-        );
+        ];
     }
 
     /**
@@ -929,7 +929,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r204()
     {
-        $sqlQueries = array();
+        $sqlQueries = [];
         $stmt = exec_query('SELECT id, props FROM hosting_plans');
 
         if (!$stmt->rowCount()) {
@@ -1002,7 +1002,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r211()
     {
-        return array(
+        return [
             $this->addColumn('php_ini', 'admin_id', 'INT(10) NOT NULL AFTER `id`'),
             $this->addColumn(
                 'php_ini',
@@ -1013,7 +1013,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             $this->addIndex('php_ini', 'domain_id', 'KEY'),
             $this->addIndex('php_ini', 'domain_type', 'KEY'),
             "UPDATE php_ini JOIN domain USING(domain_id) SET admin_id = domain_admin_id WHERE domain_type = 'dmn'"
-        );
+        ];
     }
 
     /**
@@ -1027,7 +1027,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r212()
     {
-        $sqlQueries = array();
+        $sqlQueries = [];
 
         // Add permission column for resellers
         $sqlQueries[] = $this->addColumn(
@@ -1116,7 +1116,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r218()
     {
-        return array(
+        return [
             $this->changeColumn(
                 'domain',
                 'external_mail_dns_ids',
@@ -1127,7 +1127,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                 'external_mail_dns_ids',
                 "external_mail_dns_ids VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''"
             )
-        );
+        ];
     }
 
     /**
@@ -1167,7 +1167,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r221()
     {
-        return array(
+        return [
             $this->changeColumn(
                 'domain_dns', 'domain_dns', "`domain_dns` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL"
             ),
@@ -1176,10 +1176,10 @@ class iMSCP_Update_Database extends iMSCP_Update
             ),
             $this->addIndex(
                 'domain_dns',
-                array('domain_id', 'alias_id', 'domain_dns(255)', 'domain_class', 'domain_type', 'domain_text(255)'),
+                ['domain_id', 'alias_id', 'domain_dns(255)', 'domain_class', 'domain_type', 'domain_text(255)'],
                 'UNIQUE'
             )
-        );
+        ];
     }
 
     /**
@@ -1192,17 +1192,17 @@ class iMSCP_Update_Database extends iMSCP_Update
     {
         $stmt = exec_query('SELECT userid FROM ftp_users');
         while ($row = $stmt->fetchRow()) {
-            exec_query('UPDATE ftp_users SET userid = ? WHERE userid = ?', array(
+            exec_query('UPDATE ftp_users SET userid = ? WHERE userid = ?', [
                 encode_idna($row['userid']), $row['userid']
-            ));
+            ]);
         }
 
         $stmt = exec_query('SELECT groupname, members FROM ftp_group');
         while ($row = $stmt->fetchRow()) {
             $members = implode(',', array_map('encode_idna', explode(',', $row['members'])));
-            exec_query('UPDATE ftp_group SET groupname = ?, members = ? WHERE groupname = ?', array(
+            exec_query('UPDATE ftp_group SET groupname = ?, members = ? WHERE groupname = ?', [
                 encode_idna($row['groupname']), $members, $row['groupname']
-            ));
+            ]);
         }
 
         return null;
@@ -1244,7 +1244,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r225()
     {
-        $sqlQueries = array();
+        $sqlQueries = [];
 
         $sql = $this->addColumn(
             'domain_aliasses',
@@ -1298,7 +1298,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             $uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/';
             $uri->setPath($uriPath);
             exec_query(
-                'UPDATE domain_aliasses SET url_forward = ? WHERE alias_id = ?', array($uri->getUri(), $row['alias_id'])
+                'UPDATE domain_aliasses SET url_forward = ? WHERE alias_id = ?', [$uri->getUri(), $row['alias_id']]
             );
         }
 
@@ -1310,9 +1310,9 @@ class iMSCP_Update_Database extends iMSCP_Update
             $uri = iMSCP_Uri_Redirect::fromString($row['subdomain_url_forward']);
             $uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/';
             $uri->setPath($uriPath);
-            exec_query('UPDATE subdomain SET subdomain_url_forward = ? WHERE subdomain_id = ?', array(
+            exec_query('UPDATE subdomain SET subdomain_url_forward = ? WHERE subdomain_id = ?', [
                 $uri->getUri(), $row['subdomain_id']
-            ));
+            ]);
         }
 
         $stmt = exec_query(
@@ -1325,9 +1325,9 @@ class iMSCP_Update_Database extends iMSCP_Update
             $uri = iMSCP_Uri_Redirect::fromString($row['subdomain_alias_url_forward']);
             $uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/';
             $uri->setPath($uriPath);
-            exec_query('UPDATE subdomain_alias SET subdomain_alias_url_forward = ? WHERE subdomain_alias_id = ?', array(
+            exec_query('UPDATE subdomain_alias SET subdomain_alias_url_forward = ? WHERE subdomain_alias_id = ?', [
                 $uri->getUri(), $row['subdomain_alias_id']
-            ));
+            ]);
         }
     }
 
@@ -1338,7 +1338,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r227()
     {
-        return array(
+        return [
             $this->addColumn(
                 'ssl_certs',
                 'hsts_max_age',
@@ -1349,7 +1349,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                 'hsts_include_subdomains',
                 "VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off' AFTER hsts_max_age"
             )
-        );
+        ];
     }
 
     /**
@@ -1379,13 +1379,13 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r230()
     {
-        return $sqlQueries = array(
+        return $sqlQueries = [
             $this->dropColumn('domain', 'external_mail_dns_ids'),
             $this->dropColumn('domain_aliasses', 'external_mail_dns_ids'),
             "DELETE FROM domain_dns WHERE owned_by = 'ext_mail_feature'",
             "UPDATE domain_aliasses SET external_mail = 'off'",
             "UPDATE domain SET external_mail = 'off'"
-        );
+        ];
     }
 
     /**
@@ -1437,7 +1437,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
                 $domain = exec_query(
                     "SELECT domain_id FROM domain WHERE domain_admin_id = ? AND domain_status <> ?",
-                    array($client['admin_id'], 'todelete')
+                    [$client['admin_id'], 'todelete']
                 );
 
                 if (!$domain->rowCount()) {
@@ -1452,7 +1452,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
                 $subdomains = exec_query(
                     'SELECT subdomain_id FROM subdomain WHERE domain_id = ? AND subdomain_status <> ?',
-                    array($domain['domain_id'], 'todelete')
+                    [$domain['domain_id'], 'todelete']
                 );
                 while ($subdomain = $subdomains->fetchRow()) {
                     $phpini->loadDomainIni($client['admin_id'], $subdomain['subdomain_id'], 'sub');
@@ -1464,7 +1464,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
                 $domainAliases = exec_query(
                     'SELECT alias_id FROM domain_aliasses WHERE domain_id = ? AND alias_status <> ?',
-                    array($domain['domain_id'], 'todelete')
+                    [$domain['domain_id'], 'todelete']
                 );
                 while ($domainAlias = $domainAliases->fetchRow()) {
                     $phpini->loadDomainIni($client['admin_id'], $domainAlias['alias_id'], 'als');
@@ -1479,7 +1479,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                         SELECT subdomain_alias_id FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
                         WHERE domain_id = ? AND subdomain_alias_status <> ?
                     ',
-                    array($domain['domain_id'], 'todelete')
+                    [$domain['domain_id'], 'todelete']
                 );
                 while ($subdomainAlias = $subdomainAliases->fetchRow()) {
                     $phpini->loadDomainIni($client['admin_id'], $subdomainAlias['subdomain_alias_id'], 'subals');
@@ -1501,11 +1501,11 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r234()
     {
-        $sqlQueries = $this->removeDuplicateRowsOnColumns('php_ini', array('admin_id', 'domain_id', 'domain_type'));
+        $sqlQueries = $this->removeDuplicateRowsOnColumns('php_ini', ['admin_id', 'domain_id', 'domain_type']);
         $sqlQueries = array_merge($sqlQueries, $this->dropIndexByColumn('php_ini', 'admin_id'));
         $sqlQueries = array_merge($sqlQueries, $this->dropIndexByColumn('php_ini', 'domain_id'));
         $sqlQueries = array_merge($sqlQueries, $this->dropIndexByColumn('php_ini', 'domain_type'));
-        $sqlQueries[] = $this->addIndex('php_ini', array('admin_id', 'domain_id', 'domain_type'), 'UNIQUE', 'unique_php_ini');
+        $sqlQueries[] = $this->addIndex('php_ini', ['admin_id', 'domain_id', 'domain_type'], 'UNIQUE', 'unique_php_ini');
         return $sqlQueries;
     }
 
@@ -1520,7 +1520,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r235()
     {
-        return array(
+        return [
             $this->addColumn('domain', 'url_forward', "VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'"),
             $this->addColumn('domain', 'type_forward', "VARCHAR(5) COLLATE utf8_unicode_ci DEFAULT NULL"),
             $this->addColumn('domain', 'host_forward', "VARCHAR(3) COLLATE utf8_unicode_ci DEFAULT 'Off'"),
@@ -1539,7 +1539,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                 'subdomain_alias_host_forward',
                 "VARCHAR(3) COLLATE utf8_unicode_ci DEFAULT 'Off' AFTER subdomain_alias_type_forward"
             ),
-        );
+        ];
     }
 
     /**
@@ -1549,7 +1549,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r236()
     {
-        return array(
+        return [
             "UPDATE domain_aliasses SET url_forward = 'no', type_forward = NULL WHERE url_forward LIKE 'ftp://%'",
             "
                 UPDATE subdomain SET subdomain_url_forward = 'no', subdomain_type_forward = NULL
@@ -1559,7 +1559,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                 UPDATE subdomain_alias SET subdomain_alias_url_forward = 'no', subdomain_alias_type_forward = NULL
                 WHERE subdomain_alias_url_forward LIKE 'ftp://%'
             "
-        );
+        ];
     }
 
     /**
@@ -1570,8 +1570,8 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r237()
     {
-        $sqlQueries = $this->removeDuplicateRowsOnColumns('domain_traffic', array('domain_id', 'dtraff_time'));
-        $sqlQueries[] = $this->addIndex('domain_traffic', array('domain_id', 'dtraff_time'), 'UNIQUE', 'i_unique_timestamp');
+        $sqlQueries = $this->removeDuplicateRowsOnColumns('domain_traffic', ['domain_id', 'dtraff_time']);
+        $sqlQueries[] = $this->addIndex('domain_traffic', ['domain_id', 'dtraff_time'], 'UNIQUE', 'i_unique_timestamp');
         return $sqlQueries;
     }
 
@@ -1616,8 +1616,8 @@ class iMSCP_Update_Database extends iMSCP_Update
             return null;
         }
 
-        $sqlQueries = $this->removeDuplicateRowsOnColumns('httpd_vlogger', array('vhost', 'ldate'));
-        $sqlQueries[] = $this->addIndex('httpd_vlogger', array('vhost', 'ldate'));
+        $sqlQueries = $this->removeDuplicateRowsOnColumns('httpd_vlogger', ['vhost', 'ldate']);
+        $sqlQueries[] = $this->addIndex('httpd_vlogger', ['vhost', 'ldate']);
         return $sqlQueries;
     }
 
@@ -1661,7 +1661,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                 $netmask = '32';
             }
 
-            exec_query('UPDATE server_ips SET ip_netmask = ? WHERE ip_id = ?', array($netmask, $row['ip_id']));
+            exec_query('UPDATE server_ips SET ip_netmask = ? WHERE ip_id = ?', [$netmask, $row['ip_id']]);
         }
 
         return null;
@@ -1674,13 +1674,13 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r244()
     {
-        return array(
+        return [
             "
                 ALTER TABLE plugin CHANGE plugin_locked plugin_lockers
                 TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL;
             ",
             "UPDATE plugin SET plugin_lockers = '{}'"
-        );
+        ];
     }
 
     /**
@@ -1694,7 +1694,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r245()
     {
-        return array(
+        return [
             $this->addColumn(
                 'domain',
                 'document_root',
@@ -1715,7 +1715,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                 'subdomain_alias_document_root',
                 "varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT '/htdocs' AFTER subdomain_alias_mount"
             ),
-        );
+        ];
     }
 
     /**
@@ -1758,12 +1758,12 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected function r249()
     {
         $stmt = exec_query('SELECT mail_id, mail_pass FROM mail_users WHERE mail_pass <> ? AND mail_pass NOT LIKE ?',
-            array('_no_', '$6$%')
+            ['_no_', '$6$%']
         );
         while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-            exec_query('UPDATE mail_users SET mail_pass = ? WHERE mail_id = ?', array(
+            exec_query('UPDATE mail_users SET mail_pass = ? WHERE mail_id = ?', [
                 iMSCP\Crypt::sha512($row['mail_pass']), $row['mail_id']
-            ));
+            ]);
         }
     }
 
@@ -1846,10 +1846,10 @@ class iMSCP_Update_Database extends iMSCP_Update
                 # Turn normal+forward account into forward only account
                 exec_query(
                     "UPDATE mail_users SET mail_pass = '_no_', mail_type = ?, quota = NULL WHERE mail_id = ?",
-                    array(
+                    [
                         preg_replace('/,?\b\.*_mail\b,?/', '', $row['mail_type']),
                         $row['mail_id']
-                    )
+                    ]
                 );
             } else {
                 # Schedule deletion of the mail account as virtual mailboxes

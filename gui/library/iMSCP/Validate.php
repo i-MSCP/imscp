@@ -36,7 +36,7 @@ class iMSCP_Validate
     /**
      * @var Zend_Validate_Abstract[]
      */
-    protected $_validators = array();
+    protected $_validators = [];
 
     /**
      * Instance of last Validator invoked.
@@ -57,32 +57,32 @@ class iMSCP_Validate
      *
      * @var array
      */
-    protected $_lastValidationErrorMessages = array();
+    protected $_lastValidationErrorMessages = [];
 
     /**
      * Error messages that override those provided by validators in a specific validation context.
      *
      * @var array
      */
-    protected $_messages = array(
-        'domain' => array(
+    protected $_messages = [
+        'domain' => [
             'hostnameCannotDecodePunycode' => "'%value%' appears to be a domain name but the given punycode notation cannot be decoded",
             'hostnameDashCharacter' => "'%value%' appears to be a domain name but contains a dash in an invalid position",
             'hostnameInvalidHostname' => "'%value%' does not match the expected structure for a domain name",
             'hostnameInvalidHostnameSchema' => "'%value%' appears to be a domain name but cannot match against domain name schema for TLD '%tld%'",
             'hostnameUndecipherableTld' => "'%value%' appears to be a domain name but cannot extract TLD part",
             'hostnameUnknownTld' => "'%value%' appears to be a domain name but cannot match TLD against known list",
-        ),
+        ],
 
-        'subdomain' => array(
+        'subdomain' => [
             'hostnameCannotDecodePunycode' => "'%value%' appears to be a subdomain name but the given punycode notation cannot be decoded",
             'hostnameDashCharacter' => "'%value%' appears to be a subdomain name but contains a dash in an invalid position",
             'hostnameInvalidHostname' => "'%value%' does not match the expected structure for a subdomain name",
             'hostnameInvalidHostnameSchema' => "'%value%' appears to be a subdomain name but cannot match against subdomain schema for TLD '%tld%'",
             'hostnameUndecipherableTld' => "'%value%' appears to be a subdomain name but cannot extract TLD part",
             'hostnameUnknownTld' => "'%value%' appears to be a subdomain name but cannot match TLD against known list",
-        )
-    );
+        ]
+    ];
 
     /**
      * Singleton - Make new unavailable.
@@ -132,7 +132,7 @@ class iMSCP_Validate
      * @param array $options Validator options OPTIONAL
      * @return bool TRUE if email address is valid, FALSE otherwise
      */
-    public function email($email, $options = array())
+    public function email($email, $options = [])
     {
         if (array_key_exists('onlyLocalPart', $options) && $options['onlyLocalPart']) {
             // We do not want process hostname part validation on email address so
@@ -140,7 +140,7 @@ class iMSCP_Validate
             $options['domain'] = false;
             $email .= '@dummy';
         } else {
-            $options['hostname'] = new Zend_Validate_Hostname(array('tld' => false));
+            $options['hostname'] = new Zend_Validate_Hostname(['tld' => false]);
         }
 
         return $this->_processValidation('EmailAddress', $email, $options);
@@ -154,7 +154,7 @@ class iMSCP_Validate
      * @param array $options Validator options OPTIONAL
      * @return bool TRUE if hostname is valid, FALSE otherwise
      */
-    public function hostname($hostname, $options = array())
+    public function hostname($hostname, $options = [])
     {
         if (!array_key_exists('tld', $options)) {
             $options['tld'] = false;
@@ -171,7 +171,7 @@ class iMSCP_Validate
      * @param array $options Validator options OPTIONAL
      * @return bool TRUE if ip address is valid, FALSE otherwise
      */
-    public function ip($ip, $options = array())
+    public function ip($ip, $options = [])
     {
         return $this->_processValidation('Ip', $ip, $options);
     }
@@ -201,7 +201,7 @@ class iMSCP_Validate
      * @param array $options Options to pass to the validator OPTIONAL
      * @return Zend_Validate_Abstract
      */
-    public function getZendValidator($validatorName, $options = array())
+    public function getZendValidator($validatorName, $options = [])
     {
         if (!array_key_exists($validatorName, $this->_validators)) {
             $validator = 'Zend_Validate_' . $validatorName;
@@ -227,7 +227,7 @@ class iMSCP_Validate
     {
         if (!empty($this->_lastValidationErrorMessages)) {
             $messages = $this->_lastValidationErrorMessages;
-            $this->_lastValidationErrorMessages = array();
+            $this->_lastValidationErrorMessages = [];
             return format_message($messages);
         } else {
             return '';

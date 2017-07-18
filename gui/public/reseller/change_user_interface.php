@@ -35,7 +35,7 @@ if (isset($_SESSION['logged_from'])
 if (isset($_SESSION['user_id'])
     && isset($_GET['to_id'])
 ) { // Switch to customer
-    $toUserId = filter_digits($_GET['to_id']);
+    $toUserId = intval($_GET['to_id']);
 
     // Admin logged as reseller
     if (isset($_SESSION['logged_from'])

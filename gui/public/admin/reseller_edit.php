@@ -39,7 +39,9 @@ function &admin_getData($resellerId, $forUpdate = false)
 
     $stmt = exec_query(
         '
-            SELECT t1.*, t2.* FROM admin AS t1 INNER JOIN reseller_props AS t2 ON(t2.reseller_id = t1.admin_id)
+            SELECT t1.*, t2.*
+            FROM admin AS t1
+            JOIN reseller_props AS t2 ON(t2.reseller_id = t1.admin_id)
             WHERE t1.admin_id = ?
         ',
         $resellerId
@@ -74,7 +76,7 @@ function &admin_getData($resellerId, $forUpdate = false)
 
     if (!$stmt->rowCount()) {
         set_page_message(tr('Unable to get the IP address list. Please fix this problem.'), 'error');
-        redirectTo('manage_users.php');
+        redirectTo('users.php');
     }
 
     $data['server_ips'] = $stmt->fetchAll();
@@ -84,17 +86,17 @@ function &admin_getData($resellerId, $forUpdate = false)
 
     // Fetch all ip id used by reseller's customers
     $stmt = exec_query(
-        'SELECT DISTINCT domain_ip_id FROM domain INNER JOIN admin ON(admin_id = domain_admin_id) WHERE created_by = ?',
+        'SELECT DISTINCT domain_ip_id FROM domain JOIN admin ON(admin_id = domain_admin_id) WHERE created_by = ?',
         $resellerId
     );
 
     if ($stmt->rowCount()) {
         $data['used_ips'] = $stmt->fetchAll(PDO::FETCH_COLUMN);
     } else {
-        $data['used_ips'] = array();
+        $data['used_ips'] = [];
     }
 
-    $fallbackData = array();
+    $fallbackData = [];
     foreach ($data as $key => $value) {
         $fallbackData["fallback_$key"] = $value;
     }
@@ -119,13 +121,13 @@ function &admin_getData($resellerId, $forUpdate = false)
     }
 
     foreach (
-        array(
+        [
             'password', 'password_confirmation', 'fname', 'lname', 'gender', 'firm', 'zip', 'city', 'state',
             'country', 'email', 'phone', 'fax', 'street1', 'street2', 'max_dmn_cnt', 'max_sub_cnt', 'max_als_cnt',
             'max_mail_cnt', 'max_ftp_cnt', 'max_sql_db_cnt', 'max_sql_user_cnt', 'max_traff_amnt',
             'max_disk_amnt', 'software_allowed', 'softwaredepot_allowed', 'websoftwaredepot_allowed',
             'support_system', 'customer_id'
-        ) as $key
+        ] as $key
     ) {
         if (isset($_POST[$key])) {
             $data[$key] = clean_input($_POST[$key]);
@@ -139,7 +141,7 @@ function &admin_getData($resellerId, $forUpdate = false)
 
         $data['reseller_ips'] = $_POST['reseller_ips'];
     } else { // We are safe here
-        $data['reseller_ips'] = array();
+        $data['reseller_ips'] = [];
     }
 
     if (isset($_POST['php_ini_system'])) {
@@ -194,7 +196,7 @@ function &admin_getData($resellerId, $forUpdate = false)
  */
 function _admin_generateAccountForm($tpl, &$data)
 {
-    $tpl->assign(array(
+    $tpl->assign([
         'TR_ACCOUNT_DATA' => tr('Account data'),
         'TR_RESELLER_NAME' => tr('Name'),
         'RESELLER_NAME' => tohtml($data['admin_name']),
@@ -203,7 +205,7 @@ function _admin_generateAccountForm($tpl, &$data)
         'PASSWORD_CONFIRMATION' => tohtml($data['password_confirmation']),
         'TR_EMAIL' => tr('Email'),
         'EMAIL' => tohtml($data['email'])
-    ));
+    ]);
 }
 
 /**
@@ -218,12 +220,12 @@ function _admin_generateIpListForm($tpl, &$data)
     $assignedTranslation = tr('Already in use');
     $unusedTranslation = tr('Not used');
 
-    $tpl->assign(array(
+    $tpl->assign([
         'TR_IP_ADDRESS' => tr('IP address'),
         'TR_IP_LABEL' => tr('Label'),
         'TR_ASSIGN' => tr('Assign'),
         'TR_STATUS' => tr('Usage status')
-    ));
+    ]);
 
     iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
         /** @var $e \iMSCP_Events_Event */
@@ -233,13 +235,13 @@ function _admin_generateIpListForm($tpl, &$data)
     foreach ($data['server_ips'] as $ipData) {
         $resellerHasIp = in_array($ipData['ip_id'], $data['reseller_ips']);
         $isUsedIp = in_array($ipData['ip_id'], $data['used_ips']);
-        $tpl->assign(array(
+        $tpl->assign([
             'IP_ID' => tohtml($ipData['ip_id']),
             'IP_NUMBER' => tohtml(($ipData['ip_number'] == '0.0.0.0') ? tr('Any') : $ipData['ip_number']),
             'IP_ASSIGNED' => $resellerHasIp ? ' checked' : '',
             'IP_STATUS' => $isUsedIp ? $assignedTranslation : $unusedTranslation,
             'IP_READONLY' => $isUsedIp ? ' title="' . tohtml(tr('You cannot unassign an IP address already in use.'), 'htmlAttr') . '" readonly' : ''
-        ));
+        ]);
         $tpl->parse('IP_BLOCK', '.ip_block');
     }
 }
@@ -253,7 +255,7 @@ function _admin_generateIpListForm($tpl, &$data)
  */
 function _admin_generateLimitsForm($tpl, &$data)
 {
-    $tpl->assign(array(
+    $tpl->assign([
         'TR_ACCOUNT_LIMITS' => tr('Account limits'),
         'TR_MAX_DMN_CNT' => tr('Domain limit') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
         'MAX_DMN_CNT' => tohtml($data['max_dmn_cnt']),
@@ -273,7 +275,7 @@ function _admin_generateLimitsForm($tpl, &$data)
         'MAX_TRAFF_AMNT' => tohtml($data['max_traff_amnt']),
         'TR_MAX_DISK_AMNT' => tr('Disk space limit [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
         'MAX_DISK_AMNT' => tohtml($data['max_disk_amnt'])
-    ));
+    ]);
 }
 
 /**
@@ -286,7 +288,7 @@ function _admin_generateLimitsForm($tpl, &$data)
 function _admin_generateFeaturesForm($tpl, &$data)
 {
     $cfg = iMSCP_Registry::get('config');
-    $tpl->assign(array(
+    $tpl->assign([
         'TR_FEATURES' => tr('Features'),
         'TR_SETTINGS' => tr('PHP Settings'),
         'TR_PHP_EDITOR' => tr('PHP Editor'),
@@ -333,7 +335,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
         'TR_NO' => tr('No'),
         'TR_MIB' => tr('MiB'),
         'TR_SEC' => tr('Sec.')
-    ));
+    ]);
 
     iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
         /** @var iMSCP_Events_Event $e */
@@ -343,11 +345,11 @@ function _admin_generateFeaturesForm($tpl, &$data)
         $translations['core']['out_of_range_value_error'] = tr('Value for the PHP %%s directive must be in range %%d to %%d.');
         $translations['core']['lower_value_expected_error'] = tr('%%s cannot be greater than %%s.');
         $translations['core']['error_field_stack'] = iMSCP_Registry::isRegistered('errFieldsStack')
-            ? iMSCP_Registry::get('errFieldsStack') : array();
+            ? iMSCP_Registry::get('errFieldsStack') : [];
     });
 
     if ($cfg['HTTPD_PACKAGE'] != 'Servers::httpd::apache_itk') {
-        $tpl->assign(array(
+        $tpl->assign([
             'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s configuration option', '<b>disable_functions</b>'),
             'PHP_INI_AL_DISABLE_FUNCTIONS_YES' => $data['php_ini_al_disable_functions'] == 'yes' ? ' checked' : '',
             'PHP_INI_AL_DISABLE_FUNCTIONS_NO' => $data['php_ini_al_disable_functions'] != 'yes' ? ' checked' : '',
@@ -355,7 +357,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
             'TR_PHP_INI_AL_MAIL_FUNCTION' => tr('Can use the PHP %s function', '<b>mail</b>'),
             'PHP_INI_AL_MAIL_FUNCTION_YES' => $data['php_ini_al_mail_function'] == 'yes' ? ' checked' : '',
             'PHP_INI_AL_MAIL_FUNCTION_NO' => $data['php_ini_al_mail_function'] != 'yes' ? ' checked' : '',
-        ));
+        ]);
     } else {
         $tpl->assign('PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK', '');
         $tpl->assign('PHP_EDITOR_MAIL_FUNCTION_BLOCK', '');
@@ -371,7 +373,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
  */
 function  _admin_generatePersonalDataFrom($tpl, &$data)
 {
-    $tpl->assign(array(
+    $tpl->assign([
         'TR_PERSONAL_DATA' => tr('Personal data'),
         'TR_CUSTOMER_ID' => tr('Customer ID'),
         'CUSTOMER_ID' => tohtml($data['customer_id']),
@@ -404,7 +406,7 @@ function  _admin_generatePersonalDataFrom($tpl, &$data)
         'PHONE' => tohtml($data['phone']),
         'TR_FAX' => tr('Fax'),
         'FAX' => tohtml($data['fax'])
-    ));
+    ]);
 }
 
 /**
@@ -433,7 +435,7 @@ function admin_generateForm($tpl, &$data)
  */
 function admin_checkAndUpdateData($resellerId)
 {
-    $errFieldsStack = array();
+    $errFieldsStack = [];
     $data =& admin_getData($resellerId, true);
     $db = iMSCP_Database::getInstance();
 
@@ -461,7 +463,7 @@ function admin_checkAndUpdateData($resellerId)
         }
 
         // Check for ip addresses
-        $resellerIps = array();
+        $resellerIps = [];
         foreach ($data['server_ips'] as $serverIpData) {
             if (in_array($serverIpData['ip_id'], $data['reseller_ips'], true)) {
                 $resellerIps[] = $serverIpData['ip_id'];
@@ -603,9 +605,9 @@ function admin_checkAndUpdateData($resellerId)
         }
 
         if (empty($errFieldsStack) && !Zend_Session::namespaceIsset('pageMessages')) { // Update process begin here
-            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $resellerId));
+            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, ['userId' => $resellerId]);
 
-            $oldValues = $newValues = array();
+            $oldValues = $newValues = [];
             foreach ($data as $property => $value) {
                 if (strpos($property, 'fallback_') !== false) {
                     $property = substr($property, 9);
@@ -625,11 +627,11 @@ function admin_checkAndUpdateData($resellerId)
 
             // Update reseller personal data (including password if needed)
 
-            $bindParams = array(
+            $bindParams = [
                 $data['fname'], $data['lname'], $data['gender'], $data['firm'],
                 $data['zip'], $data['city'], $data['state'], $data['country'], $data['email'], $data['phone'],
                 $data['fax'], $data['street1'], $data['street2'], $resellerId
-            );
+            ];
 
             if ($data['password'] != '') {
                 $setPassword = '`admin_pass` = ?,';
@@ -663,7 +665,7 @@ function admin_checkAndUpdateData($resellerId)
                     WHERE
                         reseller_id = ?
                 ',
-                array(
+                [
                     $data['max_dmn_cnt'], $data['max_sub_cnt'], $data['max_als_cnt'], $data['max_mail_cnt'],
                     $data['max_ftp_cnt'], $data['max_sql_db_cnt'], $data['max_sql_user_cnt'], $data['max_traff_amnt'],
                     $data['max_disk_amnt'], implode(';', $resellerIps) . ';', $data['customer_id'], $data['software_allowed'],
@@ -679,7 +681,7 @@ function admin_checkAndUpdateData($resellerId)
                     $phpini->getResellerPermission('phpiniMaxInputTime'),
                     $phpini->getResellerPermission('phpiniMemoryLimit'),
                     $resellerId
-                )
+                ]
             );
 
             // Sync client PHP permissions with reseller PHP permissions
@@ -693,35 +695,37 @@ function admin_checkAndUpdateData($resellerId)
             if ($data['software_allowed'] == 'no') {
                 exec_query(
                     '
-                        UPDATE domain INNER JOIN admin ON(admin_id = domain_admin_id) SET domain_software_allowed = ?
+                        UPDATE domain
+                        JOIN admin ON(admin_id = domain_admin_id)
+                        SET domain_software_allowed = ?
                         WHERE created_by = ?
                     ',
-                    array($data['softwaredepot_allowed'], $resellerId)
+                    [$data['softwaredepot_allowed'], $resellerId]
                 );
             }
 
             if ($data['websoftwaredepot_allowed'] == 'no') {
                 $stmt = exec_query(
                     'SELECT software_id FROM web_software WHERE software_depot = ? AND reseller_id = ?',
-                    array('yes', $resellerId)
+                    ['yes', $resellerId]
                 );
 
                 if ($stmt->rowCount()) {
                     while ($row = $stmt->fetchRow()) {
-                        exec_query('UPDATE web_software_inst SET software_res_del = ? WHERE software_id = ?', array(
+                        exec_query('UPDATE web_software_inst SET software_res_del = ? WHERE software_id = ?', [
                             '1', $row['software_id']
-                        ));
+                        ]);
                     }
 
-                    exec_query('DELETE FROM web_software WHERE software_depot = ? AND reseller_id = ?', array(
+                    exec_query('DELETE FROM web_software WHERE software_depot = ? AND reseller_id = ?', [
                         'yes', $resellerId
-                    ));
+                    ]);
                 }
             }
 
-            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array(
+            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, [
                 'userId' => $resellerId
-            ));
+            ]);
             
             $db->commit();
 
@@ -812,18 +816,18 @@ if (!isset($_GET['edit_id'])) {
     showBadRequestErrorPage();
 }
 
-$resellerId = filter_digits($_GET['edit_id']);
+$resellerId = intval($_GET['edit_id']);
 
 $phpini = iMSCP_PHPini::getInstance();
 $phpini->loadResellerPermissions($resellerId); // Load reseller PHP permissions
 
 if (!empty($_POST) && admin_checkAndUpdateData($resellerId)) {
-    redirectTo('manage_users.php');
+    redirectTo('users.php');
 }
 
 $data =& admin_getData($resellerId);
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'admin/reseller_edit.tpl',
     'page_message' => 'layout',
@@ -831,22 +835,22 @@ $tpl->define_dynamic(array(
     'ip_block' => 'ips_block',
     'php_editor_disable_functions_block' => 'page',
     'php_editor_mail_function_block' => 'page'
-));
+]);
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE' => tr('Admin / Users / Edit Reseller'),
     'EDIT_ID' => $resellerId,
     'TR_EDIT_RESELLER' => tr('Edit reseller'),
     'TR_UPDATE' => tr('Update'),
     'TR_CANCEL' => tr('Cancel')
-));
+]);
 
 generateNavigation($tpl);
 admin_generateForm($tpl, $data);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

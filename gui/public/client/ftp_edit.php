@@ -72,9 +72,9 @@ function updateFtpAccount($userid)
         return false;
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditFtp, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditFtp, [
         'ftpUserId' => $userid
-    ));
+    ]);
 
     $cfg = iMSCP_Registry::get('config');
     $homeDir = utils_normalizePath($cfg['USER_WEB_DIR'] . '/' . $mainDmnProps['domain_name'] . '/' . $homeDir);
@@ -82,17 +82,17 @@ function updateFtpAccount($userid)
     if ($passwd !== '') {
         exec_query(
             'UPDATE ftp_users SET passwd = ?, homedir = ?, status = ? WHERE userid = ? AND admin_id = ?',
-            array(\iMSCP\Crypt::sha512($passwd), $homeDir, 'tochange', $userid, $_SESSION['user_id'])
+            [\iMSCP\Crypt::sha512($passwd), $homeDir, 'tochange', $userid, $_SESSION['user_id']]
         );
     } else {
-        exec_query('UPDATE ftp_users SET homedir = ?, status = ? WHERE userid = ? AND admin_id = ?', array(
+        exec_query('UPDATE ftp_users SET homedir = ?, status = ? WHERE userid = ? AND admin_id = ?', [
             $homeDir, 'tochange', $userid, $_SESSION['user_id']
-        ));
+        ]);
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditFtp, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditFtp, [
         'ftpUserId' => $userid
-    ));
+    ]);
 
     send_request();
     write_log(sprintf('%s updated Ftp account: %s', $_SESSION['user_logged'], $userid), E_USER_NOTICE);
@@ -115,8 +115,8 @@ function generatePage($tpl, $ftpUserId)
     $_SESSION['ftp_chooser_domain_id'] = $mainDmnProps['domain_id'];
     $_SESSION['ftp_chooser_user'] = $_SESSION['user_logged'];
     $_SESSION['ftp_chooser_root_dir'] = '/';
-    $_SESSION['ftp_chooser_hidden_dirs'] = array();
-    $_SESSION['ftp_chooser_unselectable_dirs'] = array();
+    $_SESSION['ftp_chooser_hidden_dirs'] = [];
+    $_SESSION['ftp_chooser_unselectable_dirs'] = [];
 
     $cfg = iMSCP_Registry::get('config');
     $stmt = exec_query('SELECT homedir FROM ftp_users WHERE userid = ?', $ftpUserId);
@@ -131,11 +131,11 @@ function generatePage($tpl, $ftpUserId)
         $customFtpHomeDir = substr($ftpHomeDir, strlen($customerHomeDir));
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'USERNAME' => tohtml(decode_idna($ftpUserId), 'htmlAttr'),
         'HOME_DIR' => (isset($_POST['home_dir'])) ? tohtml($_POST['home_dir']) : tohtml($customFtpHomeDir),
         'ID'       => tohtml($ftpUserId, 'htmlAttr'),
-    ));
+    ]);
 }
 
 /***********************************************************************************************************************
@@ -164,12 +164,12 @@ if (!empty($_POST)) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/ftp_edit.tpl',
     'page_message' => 'layout'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'      => tr('Client / FTP / Overview / Edit FTP Account'),
     'TR_FTP_USER_DATA'   => tr('Ftp account data'),
     'TR_USERNAME'        => tr('Username'),
@@ -179,7 +179,7 @@ $tpl->assign(array(
     'TR_CHOOSE_DIR'      => tr('Choose dir'),
     'TR_CHANGE'          => tr('Update'),
     'TR_CANCEL'          => tr('Cancel')
-));
+]);
 
 $eventManager->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e iMSCP_Events_Event */
@@ -194,5 +194,5 @@ generatePage($tpl, $userid);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-$eventManager->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+$eventManager->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

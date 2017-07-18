@@ -49,10 +49,14 @@ function client_checkSqlUserPermissions($tpl, $databaseId)
 
     $stmt = exec_query(
         '
-            SELECT domain_id FROM domain INNER JOIN sql_database USING(domain_id)
-            WHERE domain_id = ? AND sqld_id = ? LIMIT 1
+            SELECT domain_id
+            FROM domain
+            JOIN sql_database USING(domain_id)
+            WHERE domain_id = ?
+            AND sqld_id = ?
+            LIMIT 1
         ',
-        array($domainProperties['domain_id'], $databaseId)
+        [$domainProperties['domain_id'], $databaseId]
     );
 
     if (!$stmt->rowCount()) {
@@ -74,21 +78,26 @@ function client_generateSqlUserList($tpl, $customerId, $databaseId)
     // want operate on
     $stmt = exec_query(
         "
-            SELECT sqlu_id, sqlu_name, sqlu_host FROM sql_user INNER JOIN sql_database USING(sqld_id)
-            WHERE domain_id = :domain_id AND sqld_id != :sqld_id AND CONCAT(sqlu_name, sqlu_host) NOT IN(
-                SELECT CONCAT(sqlu_name, sqlu_host) FROM sql_user WHERE sqld_id = :sqld_id
+            SELECT sqlu_id, sqlu_name, sqlu_host FROM sql_user
+            JOIN sql_database USING(sqld_id)
+            WHERE domain_id = :domain_id
+            AND sqld_id != :sqld_id
+            AND CONCAT(sqlu_name, sqlu_host) NOT IN(
+                SELECT CONCAT(sqlu_name, sqlu_host)
+                FROM sql_user
+                WHERE sqld_id = :sqld_id
             ) GROUP BY sqlu_name, sqlu_host
         ",
-        array('domain_id' => get_user_domain_id($customerId), 'sqld_id' => $databaseId)
+        ['domain_id' => get_user_domain_id($customerId), 'sqld_id' => $databaseId]
     );
 
     if ($stmt->rowCount()) {
         while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-            $tpl->assign(array(
-                'SQLUSER_ID' => filter_digits($row['sqlu_id']),
+            $tpl->assign([
+                'SQLUSER_ID' => intval($row['sqlu_id']),
                 'SQLUSER_NAME' => tohtml($row['sqlu_name']),
                 'SQLUSER_HOST' => tohtml(decode_idna($row['sqlu_host'])),
-            ));
+            ]);
             $tpl->parse('SQLUSER_LIST', '.sqluser_list');
         }
     } else {
@@ -105,7 +114,7 @@ function client_generateSqlUserList($tpl, $customerId, $databaseId)
  */
 function client_isSqlUser($sqlUser, $sqlUserHost)
 {
-    $stmt = exec_query('SELECT User FROM mysql.user WHERE User = ? AND Host = ?', array($sqlUser, $sqlUserHost));
+    $stmt = exec_query('SELECT User FROM mysql.user WHERE User = ? AND Host = ?', [$sqlUser, $sqlUserHost]);
     return (bool)($stmt->rowCount());
 }
 
@@ -160,7 +169,7 @@ function client_addSqlUser($customerId, $dbId)
 
         if ($host !== '%'
             && $host !== 'localhost'
-            && !iMSCP_Validate::getInstance()->hostname($host, array('allow' => Zend_Validate_Hostname::ALLOW_DNS | Zend_Validate_Hostname::ALLOW_IP))
+            && !iMSCP_Validate::getInstance()->hostname($host, ['allow' => Zend_Validate_Hostname::ALLOW_DNS | Zend_Validate_Hostname::ALLOW_IP])
         ) {
             set_page_message(tr('Invalid SQL user host: %s', iMSCP_Validate::getInstance()->getLastValidationMessages()), 'error');
             return;
@@ -201,13 +210,13 @@ function client_addSqlUser($customerId, $dbId)
             return;
         }
 
-        if (client_isSqlUser($user, $host) || in_array($user, array('debian-sys-maint', 'mysql.user', 'root'))) {
+        if (client_isSqlUser($user, $host) || in_array($user, ['debian-sys-maint', 'mysql.user', 'root'])) {
             set_page_message(tr("The `%s' SQL user is not available or not permitted.", $user . '@' . decode_idna($host)), 'error');
             return;
         }
     } elseif (isset($_POST['sqluser_id'])) { // Using existing SQL user as specified in input data
         $needUserCreate = false;
-        $userId = filter_digits($_POST['sqluser_id']);
+        $userId = intval($_POST['sqluser_id']);
         $stmt = exec_query('SELECT sqlu_name, sqlu_host FROM sql_user WHERE sqlu_id = ?', $userId);
 
         if (!$stmt->rowCount()) {
@@ -223,7 +232,7 @@ function client_addSqlUser($customerId, $dbId)
     }
 
     # Retrieve database to which SQL user should be assigned
-    $stmt = exec_query('SELECT sqld_name FROM sql_database WHERE sqld_id = ? AND domain_id = ?', array($dbId, $dmnId));
+    $stmt = exec_query('SELECT sqld_name FROM sql_database WHERE sqld_id = ? AND domain_id = ?', [$dbId, $dmnId]);
 
     if (!$stmt->rowCount()) {
         showBadRequestErrorPage();
@@ -241,9 +250,9 @@ function client_addSqlUser($customerId, $dbId)
 
     if($needUserCreate && isset($password)) {
         if ($mysqlConfig['SQLD_TYPE'] == 'mariadb' || version_compare($mysqlConfig['SQLD_VERSION'], '5.7.6', '<')) {
-            exec_query('CREATE USER ?@? IDENTIFIED BY ?', array($user, $host, $password));
+            exec_query('CREATE USER ?@? IDENTIFIED BY ?', [$user, $host, $password]);
         } else {
-            exec_query('CREATE USER ?@? IDENTIFIED BY ? PASSWORD EXPIRE NEVER', array($user, $host, $password));
+            exec_query('CREATE USER ?@? IDENTIFIED BY ? PASSWORD EXPIRE NEVER', [$user, $host, $password]);
         }
     }
 
@@ -256,10 +265,10 @@ function client_addSqlUser($customerId, $dbId)
     // In practice, without escaping, an user added for db `a_c` would also have access to a db `abc`.
     $dbName = preg_replace('/([%_])/', '\\\\$1', $dbName);
 
-    exec_query(sprintf('GRANT ALL PRIVILEGES ON %s.* to ?@?', quoteIdentifier($dbName)), array($user, $host));
-    exec_query('INSERT INTO sql_user (sqld_id, sqlu_name, sqlu_host) VALUES (?, ?, ?)', array(
+    exec_query(sprintf('GRANT ALL PRIVILEGES ON %s.* to ?@?', quoteIdentifier($dbName)), [$user, $host]);
+    exec_query('INSERT INTO sql_user (sqld_id, sqlu_name, sqlu_host) VALUES (?, ?, ?)', [
         $dbId, $user, $host
-    ));
+    ]);
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlUser);
 
@@ -289,36 +298,36 @@ function client_generatePage($tpl, $databaseId)
             $tpl->assign('MYSQL_PREFIX_ALL', '');
         } else {
             $tpl->parse('MYSQL_PREFIX_INFRONT', 'mysql_prefix_infront');
-            $tpl->assign(array(
+            $tpl->assign([
                 'MYSQL_PREFIX_BEHIND' => '',
                 'MYSQL_PREFIX_ALL' => ''
-            ));
+            ]);
         }
     } else {
-        $tpl->assign(array(
+        $tpl->assign([
             'MYSQL_PREFIX_NO' => '',
             'MYSQL_PREFIX_INFRONT' => '',
             'MYSQL_PREFIX_BEHIND' => ''
-        ));
+        ]);
         $tpl->parse('MYSQL_PREFIX_ALL', 'mysql_prefix_all');
     }
 
     if (isset($_POST['uaction']) && $_POST['uaction'] == 'add_user') {
-        $tpl->assign(array(
+        $tpl->assign([
             'USER_NAME' => isset($_POST['user_name']) ? tohtml($_POST['user_name'], true) : '',
             'USER_HOST' => isset($_POST['user_host']) ? tohtml($_POST['user_host'], true) : '',
             'USE_DMN_ID' => isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' ? ' checked' : '',
             'START_ID_POS_SELECTED' => isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end' ? ' selected' : '',
             'END_ID_POS_SELECTED' => isset($_POST['id_pos']) && $_POST['id_pos'] === 'end' ? ' selected' : ''
-        ));
+        ]);
     } else {
-        $tpl->assign(array(
+        $tpl->assign([
             'USER_NAME' => '',
             'USER_HOST' => tohtml($cfg['DATABASE_USER_HOST'] == '127.0.0.1' ? 'localhost' : decode_idna($cfg['DATABASE_USER_HOST'])),
             'USE_DMN_ID' => '',
             'START_ID_POS_SELECTED' => ' selected',
             'END_ID_POS_SELECTED' => ''
-        ));
+        ]);
     }
 
     $tpl->assign('ID', $databaseId);
@@ -337,12 +346,12 @@ if (!customerHasFeature('sql') || !isset($_REQUEST['id'])) {
     showBadRequestErrorPage();
 }
 
-$databaseId = filter_digits($_REQUEST['id']);
+$databaseId = intval($_REQUEST['id']);
 
 client_addSqlUser($_SESSION['user_id'], $databaseId);
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'client/sql_user_add.tpl',
     'page_message' => 'layout',
@@ -354,9 +363,9 @@ $tpl->define_dynamic(array(
     'sqluser_list' => 'page',
     'show_sqluser_list' => 'page',
     'create_sqluser' => 'page'
-));
+]);
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE' => tr('Client / Databases / Overview / Add SQL User'),
     'TR_ADD_SQL_USER' => tr('Add SQL user'),
     'TR_USER_NAME' => tr('SQL user name'),
@@ -373,7 +382,7 @@ $tpl->assign(array(
     'TR_SQL_USER_NAME' => tr('SQL users'),
     'TR_ASSIGN_EXISTING_SQL_USER' => tr('Assign existing SQL user'),
     'TR_NEW_SQL_USER_DATA' => tr('New SQL user data')
-));
+]);
 
 client_checkSqlUserPermissions($tpl, $databaseId);
 client_generateSqlUserList($tpl, $_SESSION['user_id'], $databaseId);
@@ -382,7 +391,7 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

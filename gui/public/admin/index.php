@@ -88,7 +88,7 @@ function admin_getAdminGeneralInfo($tpl)
         $showTotalMails = ($totalMails - $totalDefaultMails) . '/' . $totalMails;
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'ACCOUNT_NAME' => tohtml($_SESSION['user_logged']),
         'ADMIN_USERS' => records_count('admin', 'admin_type', 'admin'),
         'RESELLER_USERS' => records_count('admin', 'admin_type', 'reseller'),
@@ -100,7 +100,7 @@ function admin_getAdminGeneralInfo($tpl)
         'FTP_ACCOUNTS' => records_count('ftp_users', '', ''),
         'SQL_DATABASES' => records_count('sql_database', '', ''),
         'SQL_USERS' => get_sql_user_count()
-    ));
+    ]);
 }
 
 /**
@@ -125,7 +125,7 @@ function admin_generateServerTrafficInfo($tpl)
             SELECT IFNULL((SUM(bytes_in) + SUM(bytes_out)), 0) AS serverTrafficUsage FROM server_traffic
             WHERE  traff_time BETWEEN ? AND ?
         ',
-        array(getFirstDayOfMonth(), getLastDayOfMonth())
+        [getFirstDayOfMonth(), getLastDayOfMonth()]
     );
 
     if ($stmt->rowCount()) {
@@ -154,10 +154,10 @@ function admin_generateServerTrafficInfo($tpl)
         set_page_message(tr('You are exceeding the monthly server traffic limit.'), 'static_warning');
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'TRAFFIC_WARNING' => $trafficMessage,
         'TRAFFIC_PERCENT' => $trafficUsagePercent
-    ));
+    ]);
 }
 
 /***********************************************************************************************************************
@@ -173,13 +173,13 @@ $cfg = iMSCP_Registry::get('config');
 check_login('admin', $cfg['PREVENT_EXTERNAL_LOGIN_ADMIN']);
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'admin/index.tpl',
     'page_message' => 'layout',
     'traffic_warning_message' => 'page'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE' => tr('Admin / General / Overview'),
     'TR_PROPERTIES' => tr('Properties'),
     'TR_VALUES' => tr('Values'),
@@ -195,7 +195,7 @@ $tpl->assign(array(
     'TR_SQL_DATABASES' => tr('SQL databases'),
     'TR_SQL_USERS' => tr('SQL users'),
     'TR_SERVER_TRAFFIC' => tr('Server traffic')
-));
+]);
 
 generateNavigation($tpl);
 admin_generateSupportQuestionsMessage();
@@ -205,7 +205,7 @@ admin_generateServerTrafficInfo($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

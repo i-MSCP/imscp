@@ -106,9 +106,9 @@ function removeOldKeys($ttl)
  */
 function setUniqKey($adminName, $uniqueKey)
 {
-    exec_query('UPDATE admin SET uniqkey = ?, uniqkey_time = ? WHERE admin_name = ?', array(
+    exec_query('UPDATE admin SET uniqkey = ?, uniqkey_time = ? WHERE admin_name = ?', [
         $uniqueKey, date('Y-m-d H:i:s', time()), $adminName
-    ));
+    ]);
 }
 
 /**
@@ -130,16 +130,16 @@ function setPassword($userType, $uniqueKey, $userPassword)
               SET admin_pass = ?, uniqkey = NULL, uniqkey_time = NULL, admin_status = ?
               WHERE uniqkey = ?
             ',
-            array($passwordHash, 'tochangepwd', $uniqueKey)
+            [$passwordHash, 'tochangepwd', $uniqueKey]
         );
 
         send_request();
         return;
     }
 
-    exec_query('UPDATE admin SET admin_pass = ?, uniqkey = NULL, uniqkey_time = NULL WHERE uniqkey = ?', array(
+    exec_query('UPDATE admin SET admin_pass = ?, uniqkey = NULL, uniqkey_time = NULL WHERE uniqkey = ?', [
         $passwordHash, $uniqueKey
-    ));
+    ]);
 }
 
 /**
@@ -194,7 +194,7 @@ function sendPasswordRequestValidation($adminName)
     $uniqueKey = uniqkeygen();
     setUniqKey($adminName, $uniqueKey);
 
-    $ret = send_mail(array(
+    $ret = send_mail([
         'mail_id'      => 'lostpw-msg-1',
         'fname'        => $row['fname'],
         'lname'        => $row['lname'],
@@ -202,10 +202,10 @@ function sendPasswordRequestValidation($adminName)
         'email'        => $row['email'],
         'subject'      => $data['subject'],
         'message'      => $data['message'],
-        'placeholders' => array(
+        'placeholders' => [
             '{LINK}' => getRequestBaseUrl() . '/lostpassword.php?key=' . $uniqueKey
-        )
-    ));
+        ]
+    ]);
 
     if (!$ret) {
         write_log(sprintf("Couldn't send new password request validation to %s", $adminName), E_USER_ERROR);
@@ -259,7 +259,7 @@ function sendPassword($uniqueKey)
     }
 
     $data = get_lostpassword_password_email($createdBy);
-    $ret = send_mail(array(
+    $ret = send_mail([
         'mail_id'      => 'lostpw-msg-2',
         'fname'        => $row['fname'],
         'lname'        => $row['lname'],
@@ -267,10 +267,10 @@ function sendPassword($uniqueKey)
         'email'        => $row['email'],
         'subject'      => $data['subject'],
         'message'      => $data['message'],
-        'placeholders' => array(
+        'placeholders' => [
             '{PASSWORD}' => $userPassword
-        )
-    ));
+        ]
+    ]);
 
     if (!$ret) {
         write_log(sprintf("Couldn't send new passsword to %s", $row['admin_name']), E_USER_ERROR);

@@ -33,7 +33,7 @@ class iMSCP_Events_Event implements iMSCP_Events_Description
 	/**
 	 * @var array|ArrayAccess|object The event parameters
 	 */
-	protected $params = array();
+	protected $params = [];
 
 	/**
 	 * @var bool Whether or not to stop propagation

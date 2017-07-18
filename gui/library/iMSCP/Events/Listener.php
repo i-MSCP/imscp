@@ -44,7 +44,7 @@ class iMSCP_Events_Listener
 	 * @param string|array|object|callable $listener PHP callback
 	 * @param array $metadata Listener metadata
 	 */
-	public function __construct($listener, array $metadata = array())
+	public function __construct($listener, array $metadata = [])
 	{
 		$this->metadata = $metadata;
 		$this->registerHandler($listener);
@@ -61,8 +61,8 @@ class iMSCP_Events_Listener
 	{
 		$event = $this->getMetadatum('event');
 
-		if($event && is_callable(array($handler, $event))) {
-			$this->handler = array($handler, $event);
+		if($event && is_callable([$handler, $event])) {
+			$this->handler = [$handler, $event];
 		} elseif(is_callable($handler)) {
 			$this->handler = $handler;
 		} else {
@@ -86,7 +86,7 @@ class iMSCP_Events_Listener
 	 * @param  array $args Arguments to pass to listener
 	 * @return mixed
 	 */
-	public function call(array $args = array())
+	public function call(array $args = [])
 	{
 		$handler = $this->getHandler();
 
@@ -220,6 +220,6 @@ class iMSCP_Events_Listener
 
 		// Returning a non boolean value may not be nice for a validate method, but that allows the usage of a static
 		// string listener without using the call_user_func function.
-		return array($class, $method);
+		return [$class, $method];
 	}
 }

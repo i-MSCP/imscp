@@ -69,10 +69,10 @@ function add_user($tpl)
                   ?, ?, 'admin', unix_timestamp(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                 )
                 ",
-                array(
+                [
                     $username, $upass, $user_id, $fname, $lname, $firm, $zip, $city, $state, $country, $email, $phone,
                     $fax, $street1, $street2, $gender
-                ));
+                ]);
 
             /** @var $db iMSCP_Database */
             $db = iMSCP_Registry::get('db');
@@ -82,9 +82,9 @@ function add_user($tpl)
             $user_def_lang = $cfg['USER_INITIAL_LANG'];
             $user_theme_color = $cfg['USER_INITIAL_THEME'];
 
-            exec_query('REPLACE INTO user_gui_props (user_id, lang, layout) VALUES (?, ?, ?)', array(
+            exec_query('REPLACE INTO user_gui_props (user_id, lang, layout) VALUES (?, ?, ?)', [
                 $new_admin_id, $user_def_lang, $user_theme_color
-            ));
+            ]);
 
             iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddUser);
             send_add_user_auto_msg(
@@ -97,9 +97,9 @@ function add_user($tpl)
                 tr('Administrator')
             );
             set_page_message(tr('Admin account successfully created.'), 'success');
-            redirectTo('manage_users.php');
+            redirectTo('users.php');
         } else { // check user data
-            $tpl->assign(array(
+            $tpl->assign([
                 'EMAIL'      => clean_input($_POST['email']),
                 'USERNAME'   => clean_input($_POST['username']),
                 'FIRST_NAME' => clean_input($_POST['fname']),
@@ -116,13 +116,13 @@ function add_user($tpl)
                 'VL_MALE'    => ($_POST['gender'] == 'M') ? ' selected' : '',
                 'VL_FEMALE'  => ($_POST['gender'] == 'F') ? ' selected' : '',
                 'VL_UNKNOWN' => (($_POST['gender'] == 'U') || empty($_POST['gender'])) ? ' selected' : ''
-            ));
+            ]);
         }
 
         return;
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'EMAIL'      => '',
         'USERNAME'   => '',
         'FIRST_NAME' => '',
@@ -139,7 +139,7 @@ function add_user($tpl)
         'VL_MALE'    => '',
         'VL_FEMALE'  => '',
         'VL_UNKNOWN' => ' selected'
-    ));
+    ]);
 }
 
 /**
@@ -186,16 +186,16 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStar
 check_login('admin');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'admin/admin_add.tpl',
     'page_message' => 'layout'
-));
+]);
 
 $tpl->assign('TR_PAGE_TITLE', tr('Admin / Users / Add Admin'));
 
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field.'),
     'TR_PASSWORD_NOT_MATCH'  => tr("Passwords do not match."),
     'TR_ADD_ADMIN'           => tr('Add admin'),
@@ -221,13 +221,13 @@ $tpl->assign(array(
     'TR_PHONE'               => tr('Phone'),
     'TR_FAX'                 => tr('Fax'),
     'TR_ADD'                 => tr('Add')
-));
+]);
 
 generateNavigation($tpl);
 add_user($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 unsetMessages();

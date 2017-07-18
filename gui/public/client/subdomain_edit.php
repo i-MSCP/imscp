@@ -68,7 +68,7 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
         ';
     }
 
-    $stmt = exec_query($query, array($subdomainId, $domainId, 'ok'));
+    $stmt = exec_query($query, [$subdomainId, $domainId, 'ok']);
     if (!$stmt->rowCount()) {
         return false;
     }
@@ -98,7 +98,7 @@ function client_generatePage($tpl)
         showBadRequestErrorPage();
     }
 
-    $subdomainId = filter_digits($_GET['id']);
+    $subdomainId = intval($_GET['id']);
     $subdomainType = clean_input($_GET['type']);
     $subdomainData = _client_getSubdomainData($subdomainId, $subdomainType);
     if ($subdomainData === false) {
@@ -133,7 +133,7 @@ function client_generatePage($tpl)
         $forwardUrl = isset($_POST['forward_url']) ? $_POST['forward_url'] : '';
         $forwardType = (
             isset($_POST['forward_type'])
-            && in_array($_POST['forward_type'], array('301', '302', '303', '307', 'proxy'), true)
+            && in_array($_POST['forward_type'], ['301', '302', '303', '307', 'proxy'], true)
         ) ? $_POST['forward_type'] : '302';
 
         if ($forwardType == 'proxy' && isset($_POST['forward_host'])) {
@@ -141,7 +141,7 @@ function client_generatePage($tpl)
         }
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'SUBDOMAIN_ID'       => $subdomainId,
         'SUBDOMAIN_TYPE'     => $subdomainType,
         'SUBDOMAIN_NAME'     => tohtml($subdomainData['subdomain_name_utf8']),
@@ -157,7 +157,7 @@ function client_generatePage($tpl)
         'FORWARD_TYPE_307'   => ($forwardType == '307') ? ' checked' : '',
         'FORWARD_TYPE_PROXY' => ($forwardType == 'proxy') ? ' checked' : '',
         'FORWARD_HOST'       => ($forwardHost == 'On') ? ' checked' : ''
-    ));
+    ]);
 
     // Cover the case where URL forwarding feature is activated and that the
     // default /htdocs directory doesn't exists yet
@@ -174,8 +174,8 @@ function client_generatePage($tpl)
     $_SESSION['ftp_chooser_domain_id'] = get_user_domain_id($_SESSION['user_id']);
     $_SESSION['ftp_chooser_user'] = $_SESSION['user_logged'];
     $_SESSION['ftp_chooser_root_dir'] = utils_normalizePath($subdomainData['subdomain_mount'] . '/htdocs');
-    $_SESSION['ftp_chooser_hidden_dirs'] = array();
-    $_SESSION['ftp_chooser_unselectable_dirs'] = array();
+    $_SESSION['ftp_chooser_hidden_dirs'] = [];
+    $_SESSION['ftp_chooser_unselectable_dirs'] = [];
 }
 
 /**
@@ -207,7 +207,7 @@ function client_editSubdomain()
     if (isset($_POST['url_forwarding'])
         && $_POST['url_forwarding'] == 'yes'
         && isset($_POST['forward_type'])
-        && in_array($_POST['forward_type'], array('301', '302', '303', '307', 'proxy'), true)
+        && in_array($_POST['forward_type'], ['301', '302', '303', '307', 'proxy'], true)
     ) {
         if (!isset($_POST['forward_url_scheme']) || !isset($_POST['forward_url'])) {
             showBadRequestErrorPage();
@@ -231,7 +231,7 @@ function client_editSubdomain()
             $uri->setPath(rtrim(utils_normalizePath($uri->getPath()), '/') . '/'); // Normalize URI path
 
             if ($uri->getHost() == $subdomainData['subdomain_name']
-                && ($uri->getPath() == '/' && in_array($uri->getPort(), array('', 80, 443)))
+                && ($uri->getPath() == '/' && in_array($uri->getPort(), ['', 80, 443]))
             ) {
                 throw new iMSCP_Exception(
                     tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
@@ -270,14 +270,14 @@ function client_editSubdomain()
         $documentRoot = utils_normalizePath('/htdocs' . $documentRoot);
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditSubdomain, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditSubdomain, [
         'subdomainId'  => $subdomainId,
         'mountPoint'   => $subdomainData['subdomain_mount'],
         'documentRoot' => $documentRoot,
         'forwardUrl'   => $forwardUrl,
         'forwardType'  => $forwardType,
         'forwardHost'  => $forwardHost
-    ));
+    ]);
 
     if ($subdomainType == 'dmn') {
         $query = '
@@ -295,16 +295,16 @@ function client_editSubdomain()
         ';
     }
 
-    exec_query($query, array($documentRoot, $forwardUrl, $forwardType, $forwardHost, 'tochange', $subdomainId));
+    exec_query($query, [$documentRoot, $forwardUrl, $forwardType, $forwardHost, 'tochange', $subdomainId]);
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditSubdomain, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditSubdomain, [
         'subdomainId'  => $subdomainId,
         'mountPoint'   => $subdomainData['subdomain_mount'],
         'documentRoot' => $documentRoot,
         'forwardUrl'   => $forwardUrl,
         'forwardType'  => $forwardType,
         'forwardHost'  => $forwardHost
-    ));
+    ]);
 
     send_request();
     write_log(sprintf('%s updated properties of the Ms subdomain', $_SESSION['user_logged'], $subdomainData['subdomain_name_utf8']), E_USER_NOTICE);
@@ -328,13 +328,13 @@ if (!empty($_POST) && client_editSubdomain()) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'             => 'shared/layouts/ui.tpl',
     'page'               => 'client/subdomain_edit.tpl',
     'page_message'       => 'layout',
     'document_root_bloc' => 'page'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'             => tr('Client / Domains / Edit Subdomain'),
     'TR_SUBDOMAIN'              => tr('Subdomain'),
     'TR_SUBDOMAIN_NAME'         => tr('Subdomain name'),
@@ -357,7 +357,7 @@ $tpl->assign(array(
     'TR_PROXY_PRESERVE_HOST'    => tr('Preserve Host'),
     'TR_UPDATE'                 => tr('Update'),
     'TR_CANCEL'                 => tr('Cancel')
-));
+]);
 
 iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e iMSCP_Events_Event */
@@ -371,5 +371,5 @@ client_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

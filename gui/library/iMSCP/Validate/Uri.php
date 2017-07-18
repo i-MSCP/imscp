@@ -25,9 +25,9 @@ class iMSCP_Validate_Uri extends Zend_Validate_Abstract
 {
 	const INVALID_URI = 'invalidURI';
 
-	protected $_messageTemplates = array(
+	protected $_messageTemplates = [
 		self::INVALID_URI => "'%value%' is not a valid URI.",
-	);
+    ];
 
 	/**
 	 * Returns true if the $uri is valid

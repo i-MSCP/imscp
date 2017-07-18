@@ -36,28 +36,28 @@ $ESCAPER = new Zend_Escaper_Escaper('UTF-8');
  */
 function clean_html($text)
 {
-    $search = array(
-        '@<script[^>]*?>.*?</script[\s]*>@si', // remove JavaScript
-        '@<[\/\!]*?[^<>]*?>@si', // remove HTML tags
-        '@([\r\n])[\s]+@', // remove spaces
-        '@&(quot|#34|#034);@i', // change HTML entities
-        '@&(apos|#39|#039);@i', // change HTML entities
-        '@&(amp|#38);@i',
-        '@&(lt|#60);@i',
-        '@&(gt|#62);@i',
-        '@&(nbsp|#160);@i',
-        '@&(iexcl|#161);@i',
-        '@&(cent|#162);@i',
-        '@&(pound|#163);@i',
-        '@&(copy|#169);@i'
-        /*'@&#(\d+);@e'*/
-    ); // handle as php
-
-    $replace = array('', '', '\1', '"', "'", '&', '<', '>', ' ', chr(161), chr(162), chr(163), chr(169),);
-    $text = preg_replace($search, $replace, $text);
-    $text = strip_tags($text);
-
-    return $text;
+    return strip_tags(
+        preg_replace(
+            [
+                '@<script[^>]*?>.*?</script[\s]*>@si', // remove JavaScript
+                '@<[\/\!]*?[^<>]*?>@si', // remove HTML tags
+                '@([\r\n])[\s]+@', // remove spaces
+                '@&(quot|#34|#034);@i', // change HTML entities
+                '@&(apos|#39|#039);@i', // change HTML entities
+                '@&(amp|#38);@i',
+                '@&(lt|#60);@i',
+                '@&(gt|#62);@i',
+                '@&(nbsp|#160);@i',
+                '@&(iexcl|#161);@i',
+                '@&(cent|#162);@i',
+                '@&(pound|#163);@i',
+                '@&(copy|#169);@i'
+                /*'@&#(\d+);@e'*/
+            ],
+            ['', '', '\1', '"', "'", '&', '<', '>', ' ', chr(161), chr(162), chr(163), chr(169)],
+            $text
+        )
+    );
 }
 
 /**
@@ -74,15 +74,15 @@ function clean_input($input)
 /**
  * Filter digits from the given string
  *
- * In case filtering lead to an empty string and if there is no default value
- * defined a bad request error (400) will be raised.
- * 
+ * In case filtering lead to an empty string and if there is no $default value
+ * defined, a bad request error (400) is raised.
+ *
  * @param string $input String to filter
  * @param string $default Default value if $input is empty after filtering
  * @return string containing only digits
- * 
+ *
  */
-function filter_digits($input, $default = null)
+function filter_digits($input, $default = NULL)
 {
     static $filter = NULL;
 
@@ -91,12 +91,12 @@ function filter_digits($input, $default = null)
     }
 
     $input = $filter->filter(clean_input($input));
-    
-    if($input === '') {
-        if(null !== $default) {
+
+    if ($input === '') {
+        if (NULL !== $default) {
             showBadRequestErrorPage();
         }
-        
+
         $input = $default;
     }
 
@@ -232,7 +232,7 @@ function validates_username($username, $min_char = 2, $max_char = 30)
  */
 function chk_email($email, $localPartOnly = false)
 {
-    $options = array();
+    $options = [];
 
     if ($localPartOnly) {
         $options['onlyLocalPart'] = true;
@@ -314,7 +314,7 @@ function isValidDomainName($domainName)
  */
 function imscp_limit_check($data, $extra = -1)
 {
-    if ($extra !== null && !is_bool($extra)) {
+    if ($extra !== NULL && !is_bool($extra)) {
         if (is_array($extra)) {
             $nextra = '';
             $max = count($extra);
@@ -345,7 +345,7 @@ function imscp_limit_check($data, $extra = -1)
  */
 function who_owns_this($id, $type = 'dmn', $forcefinal = false)
 {
-    $who = null;
+    $who = NULL;
     // Fix $type according to type or by alias
     switch ($type) {
         case 'dmn_id':
@@ -447,120 +447,120 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false)
      *
      * NOTE: 'query' MUST be formated like: 'SELECT something FROM...' in order to correctly detect the field being selected
      */
-    $resolvers = array();
+    $resolvers = [];
 
-    $resolvers['domain_id'] = array();
+    $resolvers['domain_id'] = [];
     $resolvers['domain_id']['query'] = 'SELECT `domain_admin_id` FROM `domain` WHERE `domain_id` = ? LIMIT 1;';
     $resolvers['domain_id']['is_final'] = true;
 
-    $resolvers['alias_id'] = array();
+    $resolvers['alias_id'] = [];
     $resolvers['alias_id']['query'] = 'SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_id` = ? LIMIT 1;';
     $resolvers['alias_id']['is_final'] = false;
     $resolvers['alias_id']['next'] = 'dmn';
 
-    $resolvers['alias'] = array();
+    $resolvers['alias'] = [];
     $resolvers['alias']['query'] = 'SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name` = ? LIMIT 1;';
     $resolvers['alias']['is_final'] = false;
     $resolvers['alias']['next'] = 'dmn';
 
-    $resolvers['subdomain_id'] = array();
+    $resolvers['subdomain_id'] = [];
     $resolvers['subdomain_id']['query'] = 'SELECT `domain_id` FROM `subdomain` WHERE `subdomain_id` = ? LIMIT 1;';
     $resolvers['subdomain_id']['is_final'] = false;
     $resolvers['subdomain_id']['next'] = 'dmn';
 
-    $resolvers['subdomain'] = array();
+    $resolvers['subdomain'] = [];
     $resolvers['subdomain']['query'] = false;
     $resolvers['subdomain']['separator'] = '.';
     $resolvers['subdomain']['pos'] = 1;
     $resolvers['subdomain']['is_final'] = false;
     $resolvers['subdomain']['next'] = 'dmn';
 
-    $resolvers['subdomain_alias_id'] = array();
+    $resolvers['subdomain_alias_id'] = [];
     $resolvers['subdomain_alias_id']['query'] = 'SELECT `alias_id` FROM `subdomain_alias` WHERE `subdomain_alias_id` = ? LIMIT 1;';
     $resolvers['subdomain_alias_id']['is_final'] = false;
     $resolvers['subdomain_alias_id']['next'] = 'alias';
 
-    $resolvers['subdomain_alias'] = array();
+    $resolvers['subdomain_alias'] = [];
     $resolvers['subdomain_alias']['query'] = false;
     $resolvers['subdomain_alias']['separator'] = '.';
     $resolvers['subdomain_alias']['pos'] = 1;
     $resolvers['subdomain_alias']['is_final'] = false;
     $resolvers['subdomain_alias']['next'] = 'alias';
 
-    $resolvers['client'] = array();
+    $resolvers['client'] = [];
     $resolvers['client']['query'] = 'SELECT `created_by` FROM `admin` WHERE `admin_id` = ? LIMIT 1;';
     $resolvers['client']['is_final'] = true;
 
     $resolvers['reseller'] = $resolvers['admin'] = $resolvers['client'];
 
-    $resolvers['domain'] = array();
+    $resolvers['domain'] = [];
     $resolvers['domain']['query'] = 'SELECT `domain_admin_id` FROM `domain` WHERE `domain` = ? LIMIT 1;';
     $resolvers['domain']['is_final'] = true;
 
-    $resolvers['ticket_id'] = array();
+    $resolvers['ticket_id'] = [];
     $resolvers['ticket_id']['query'] = 'SELECT `ticket_from` FROM `ticket` WHERE `ticket_id` = ? LIMIT 1;';
     $resolvers['ticket_id']['is_final'] = true;
 
-    $resolvers['uid'] = array();
+    $resolvers['uid'] = [];
     $resolvers['uid']['query'] = 'SELECT `admin_id` FROM `admin` WHERE `admin_sys_uid` = ? LIMIT 1;';
     $resolvers['uid']['is_final'] = true;
 
-    $resolvers['gid'] = array();
+    $resolvers['gid'] = [];
     $resolvers['gid']['query'] = 'SELECT `admin_id` FROM `admin` WHERE `admin_sys_gid` = ? LIMIT 1;';
     $resolvers['gid']['is_final'] = true;
 
-    $resolvers['ftp_user'] = array();
+    $resolvers['ftp_user'] = [];
     $resolvers['ftp_user']['query'] = 'SELECT `admin_id` FROM `ftp_users` WHERE `userid` = ? LIMIT 1;';
     $resolvers['ftp_user']['is_final'] = true;
 
-    $resolvers['sql_user_id'] = array();
+    $resolvers['sql_user_id'] = [];
     $resolvers['sql_user_id']['query'] = 'SELECT `sqld_id` FROM `sql_user` WHERE `sqlu_id` = ? LIMIT 1;';
     $resolvers['sql_user_id']['is_final'] = false;
     $resolvers['sql_user_id']['next'] = 'sqld_id';
 
-    $resolvers['sql_database_id'] = array();
+    $resolvers['sql_database_id'] = [];
     $resolvers['sql_database_id']['query'] = 'SELECT `domain_id` FROM `sql_database` WHERE `sqld_id` = ? LIMIT 1;';
     $resolvers['sql_database_id']['is_final'] = false;
     $resolvers['sql_database_id']['next'] = 'dmn';
 
-    $resolvers['sql_user'] = array();
+    $resolvers['sql_user'] = [];
     $resolvers['sql_user']['query'] = 'SELECT sqld_id FROM sql_user WHERE sqlu_name = ? LIMIT 1;';
     $resolvers['sql_user']['is_final'] = false;
     $resolvers['sql_user']['next'] = 'sqld_id';
 
-    $resolvers['sql_database'] = array();
+    $resolvers['sql_database'] = [];
     $resolvers['sql_database']['query'] = 'SELECT `domain_id` FROM `sql_database` WHERE `sqld_name` = ? LIMIT 1;';
     $resolvers['sql_database']['is_final'] = false;
     $resolvers['sql_database']['next'] = 'dmn';
 
-    $resolvers['mail_id'] = array();
+    $resolvers['mail_id'] = [];
     $resolvers['mail_id']['query'] = 'SELECT `domain_id` FROM `mail_users` WHERE `mail_id` = ? LIMIT 1;';
     $resolvers['mail_id']['is_final'] = false;
     $resolvers['mail_id']['next'] = 'dmn';
 
-    $resolvers['mail'] = array();
+    $resolvers['mail'] = [];
     $resolvers['mail']['query'] = false;
     $resolvers['mail']['separator'] = '@';
     $resolvers['mail']['post'] = 1;
     $resolvers['mail']['is_final'] = false;
     $resolvers['mail']['next'] = 'dmn';
 
-    $resolvers['htaccess_id'] = array();
+    $resolvers['htaccess_id'] = [];
     $resolvers['htaccess_id']['query'] = 'SELECT `dmn_id` FROM `htaccess` WHERE `id` = ? LIMIT 1;';
     $resolvers['htaccess_id']['is_final'] = false;
     $resolvers['htaccess_id']['next'] = 'dmn';
 
-    $resolvers['htaccess_group_id'] = array();
+    $resolvers['htaccess_group_id'] = [];
     $resolvers['htaccess_group_id']['query'] = 'SELECT `dmn_id` FROM `htaccess_groups` WHERE `id` = ? LIMIT 1;';
     $resolvers['htaccess_group_id']['is_final'] = false;
     $resolvers['htaccess_group_id']['next'] = 'dmn';
 
-    $resolvers['htaccess_user_id'] = array();
+    $resolvers['htaccess_user_id'] = [];
     $resolvers['htaccess_user_id']['query'] = 'SELECT `dmn_id` FROM `htaccess_users` WHERE `id` = ? LIMIT 1;';
     $resolvers['htaccess_user_id']['is_final'] = false;
     $resolvers['htaccess_user_id']['next'] = 'dmn';
 
-    $resolvers['hosting_plan_id'] = array();
+    $resolvers['hosting_plan_id'] = [];
     $resolvers['hosting_plan_id']['query'] = 'SELECT `reseller_id` FROM `hosting_plans` WHERE `id` = ? LIMIT 1;';
     $resolvers['hosting_plan_id']['is_final'] = true;
 
@@ -568,7 +568,7 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false)
         $r = $resolvers[$type];
 
         if ($r['query']) {
-            $matches = array();
+            $matches = [];
 
             if (!preg_match('/SELECT[ \t]+`([\w]+)`[ \t]+FROM/i', $r['query'], $matches)) {
                 throw new iMSCP_Exception(tr('Malformed resolver SQL query'));
@@ -596,7 +596,7 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false)
     }
 
     if ($type != 'admin' && (empty($who) || $who <= 0)) {
-        $who = null;
+        $who = NULL;
     }
 
     return $who;

@@ -43,7 +43,7 @@ $userId = $_SESSION['user_id'];
 $previousPage = 'ticket_system';
 
 if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
-	$ticketId = filter_digits($_GET['ticket_id']);
+	$ticketId = intval($_GET['ticket_id']);
 
 	$query = "
 		SELECT
@@ -55,7 +55,7 @@ if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
 		AND
 			(`ticket_from` = ? OR `ticket_to` = ?)
 	";
-	$stmt = exec_query($query, array($ticketId, $userId, $userId));
+	$stmt = exec_query($query, [$ticketId, $userId, $userId]);
 
 	if ($stmt->rowCount() == 0) {
         set_page_message(tr("Ticket with Id '%d' was not found.", $ticketId), 'error');

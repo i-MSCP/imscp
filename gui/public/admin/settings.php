@@ -58,7 +58,7 @@ if (!empty($_POST)) {
     $compressOutput = isset($_POST['compress_output']) ? clean_input($_POST['compress_output']) : $cfg['COMPRESS_OUTPUT'];
     $showCompressionSize = isset($_POST['show_compression_size']) ? clean_input($_POST['show_compression_size']) : $cfg['SHOW_COMPRESSION_SIZE'];
     $domainRowsPerPage = isset($_POST['domain_rows_per_page']) ? clean_input($_POST['domain_rows_per_page']) : $cfg['DOMAIN_ROWS_PER_PAGE'];
-    $logLevel = isset($_POST['log_level']) && in_array($_POST['log_level'], array('0', 'E_USER_ERROR', 'E_USER_WARNING', 'E_USER_NOTICE')) ? $_POST['log_level'] : $cfg['LOG_LEVEL'];
+    $logLevel = isset($_POST['log_level']) && in_array($_POST['log_level'], ['0', 'E_USER_ERROR', 'E_USER_WARNING', 'E_USER_NOTICE']) ? $_POST['log_level'] : $cfg['LOG_LEVEL'];
     $prevExtLoginAdmin = isset($_POST['prevent_external_login_admin']) ? clean_input($_POST['prevent_external_login_admin']) : $cfg['PREVENT_EXTERNAL_LOGIN_ADMIN'];
     $prevExtLoginReseller = isset($_POST['prevent_external_login_reseller']) ? clean_input($_POST['prevent_external_login_reseller']) : $cfg['PREVENT_EXTERNAL_LOGIN_RESELLER'];
     $prevExtLoginClient = isset($_POST['prevent_external_login_client']) ? clean_input($_POST['prevent_external_login_client']) : $cfg['PREVENT_EXTERNAL_LOGIN_CLIENT'];
@@ -138,242 +138,242 @@ if (!empty($_POST)) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'admin/settings.tpl',
     'page_message' => 'layout',
     'def_language' => 'page'
-));
+]);
 
 
 if ($cfg['CHECK_FOR_UPDATES']) {
-    $tpl->assign(array(
+    $tpl->assign([
         'CHECK_FOR_UPDATES_SELECTED_ON' => ' selected',
         'CHECK_FOR_UPDATES_SELECTED_OFF' => ''
-    ));
+    ]);
 } else {
-    $tpl->assign(array(
+    $tpl->assign([
         'CHECK_FOR_UPDATES_SELECTED_ON' => '',
         'CHECK_FOR_UPDATES_SELECTED_OFF' => ' selected'
-    ));
+    ]);
 }
 
 if ($cfg['LOSTPASSWORD']) {
-    $tpl->assign(array(
+    $tpl->assign([
         'LOSTPASSWORD_SELECTED_ON' => ' selected',
         'LOSTPASSWORD_SELECTED_OFF' => ''
-    ));
+    ]);
 } else {
-    $tpl->assign(array(
+    $tpl->assign([
         'LOSTPASSWORD_SELECTED_ON' => '',
         'LOSTPASSWORD_SELECTED_OFF', ' selected'
-    ));
+    ]);
 }
 
 if ($cfg['PASSWD_STRONG']) {
-    $tpl->assign(array(
+    $tpl->assign([
         'PASSWD_STRONG_ON' => ' selected',
         'PASSWD_STRONG_OFF' => ''
-    ));
+    ]);
 } else {
-    $tpl->assign(array(
+    $tpl->assign([
         'PASSWD_STRONG_ON' => '',
         'PASSWD_STRONG_OFF' => ' selected'
-    ));
+    ]);
 }
 
 if ($cfg['BRUTEFORCE']) {
-    $tpl->assign(array(
+    $tpl->assign([
         'BRUTEFORCE_SELECTED_ON' => 'selected',
         'BRUTEFORCE_SELECTED_OFF' => ''
-    ));
+    ]);
 } else {
-    $tpl->assign(array(
+    $tpl->assign([
         'BRUTEFORCE_SELECTED_ON' => '',
         'BRUTEFORCE_SELECTED_OFF' => ' selected'
-    ));
+    ]);
 }
 
 if ($cfg['BRUTEFORCE_BETWEEN']) {
-    $tpl->assign(array(
+    $tpl->assign([
         'BRUTEFORCE_BETWEEN_SELECTED_ON' => ' selected',
         'BRUTEFORCE_BETWEEN_SELECTED_OFF' => ''
-    ));
+    ]);
 } else {
-    $tpl->assign(array(
+    $tpl->assign([
         'BRUTEFORCE_BETWEEN_SELECTED_ON' => '',
         'BRUTEFORCE_BETWEEN_SELECTED_OFF' => ' selected'
-    ));
+    ]);
 }
 
 if ($cfg['IMSCP_SUPPORT_SYSTEM']) {
-    $tpl->assign(array(
+    $tpl->assign([
         'SUPPORT_SYSTEM_SELECTED_ON' => ' selected',
         'SUPPORT_SYSTEM_SELECTED_OFF' => ''
-    ));
+    ]);
 } else {
-    $tpl->assign(array(
+    $tpl->assign([
         'SUPPORT_SYSTEM_SELECTED_ON' => '',
         'SUPPORT_SYSTEM_SELECTED_OFF' => ' selected'
-    ));
+    ]);
 }
 
 if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
-    $tpl->assign(array(
+    $tpl->assign([
         'CREATE_DEFAULT_EMAIL_ADDRESSES_ON' => ' selected',
         'CREATE_DEFAULT_EMAIL_ADDRESSES_OFF' => ''
-    ));
+    ]);
 } else {
-    $tpl->assign(array(
+    $tpl->assign([
         'CREATE_DEFAULT_EMAIL_ADDRESSES_ON' => '',
         'CREATE_DEFAULT_EMAIL_ADDRESSES_OFF' => ' selected'
-    ));
+    ]);
 }
 
 if ($cfg['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
-    $tpl->assign(array(
+    $tpl->assign([
         'COUNT_DEFAULT_EMAIL_ADDRESSES_ON' => ' selected',
         'COUNT_DEFAULT_EMAIL_ADDRESSES_OFF' => ''
-    ));
+    ]);
 } else {
-    $tpl->assign(array(
+    $tpl->assign([
         'COUNT_DEFAULT_EMAIL_ADDRESSES_ON' => '',
         'COUNT_DEFAULT_EMAIL_ADDRESSES_OFF' => ' selected'
-    ));
+    ]);
 }
 
 if ($cfg['HARD_MAIL_SUSPENSION']) {
-    $tpl->assign(array(
+    $tpl->assign([
         'HARD_MAIL_SUSPENSION_ON' => ' selected',
         'HARD_MAIL_SUSPENSION_OFF' => ''
-    ));
+    ]);
 } else {
-    $tpl->assign(array(
+    $tpl->assign([
         'HARD_MAIL_SUSPENSION_ON' => '',
         'HARD_MAIL_SUSPENSION_OFF' => ' selected'
-    ));
+    ]);
 }
 
 if (isset($cfg['EMAIL_QUOTA_SYNC_MODE']) && $cfg['EMAIL_QUOTA_SYNC_MODE']) {
-    $tpl->assign(array(
+    $tpl->assign([
         'REDISTRIBUTE_EMAIl_QUOTA_YES' => ' selected',
         'REDISTRIBUTE_EMAIl_QUOTA_NO' => ''
-    ));
+    ]);
 } else {
-    $tpl->assign(array(
+    $tpl->assign([
         'REDISTRIBUTE_EMAIl_QUOTA_YES' => '',
         'REDISTRIBUTE_EMAIl_QUOTA_NO' => ' selected'
-    ));
+    ]);
 }
 
 if ($cfg['COMPRESS_OUTPUT']) {
-    $tpl->assign(array(
+    $tpl->assign([
         'COMPRESS_OUTPUT_ON' => ' selected',
         'COMPRESS_OUTPUT_OFF' => ''
-    ));
+    ]);
 } else {
-    $tpl->assign(array(
+    $tpl->assign([
         'COMPRESS_OUTPUT_ON' => '',
         'COMPRESS_OUTPUT_OFF' => ' selected'
-    ));
+    ]);
 }
 
 if ($cfg['SHOW_COMPRESSION_SIZE']) {
-    $tpl->assign(array(
+    $tpl->assign([
         'SHOW_COMPRESSION_SIZE_SELECTED_ON' => ' selected',
         'SHOW_COMPRESSION_SIZE_SELECTED_OFF' => ''
-    ));
+    ]);
 } else {
-    $tpl->assign(array(
+    $tpl->assign([
         'SHOW_COMPRESSION_SIZE_SELECTED_ON' => '',
         'SHOW_COMPRESSION_SIZE_SELECTED_OFF' => ' selected'
-    ));
+    ]);
 }
 
 if ($cfg['PREVENT_EXTERNAL_LOGIN_ADMIN']) {
-    $tpl->assign(array(
+    $tpl->assign([
         'PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_ON' => ' selected',
         'PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_OFF' => ''
-    ));
+    ]);
 } else {
-    $tpl->assign(array(
+    $tpl->assign([
         'PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_ON' => '',
         'PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_OFF' => ' selected'
-    ));
+    ]);
 }
 
 if ($cfg['PREVENT_EXTERNAL_LOGIN_RESELLER']) {
-    $tpl->assign(array(
+    $tpl->assign([
         'PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_ON' => ' selected',
         'PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_OFF' => ''
-    ));
+    ]);
 } else {
-    $tpl->assign(array(
+    $tpl->assign([
         'PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_ON' => '',
         'PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_OFF' => ' selected'
-    ));
+    ]);
 }
 
 if ($cfg['PREVENT_EXTERNAL_LOGIN_CLIENT']) {
-    $tpl->assign(array(
+    $tpl->assign([
             'PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_ON' => ' selected',
             'PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_OFF' => ''
-        )
+        ]
     );
 } else {
-    $tpl->assign(array(
+    $tpl->assign([
         'PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_ON' => '',
         'PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_OFF' => ' selected'
-    ));
+    ]);
 }
 
 switch ($cfg['LOG_LEVEL']) {
     case 0:
-        $tpl->assign(array(
+        $tpl->assign([
             'LOG_LEVEL_SELECTED_OFF' => ' selected',
             'LOG_LEVEL_SELECTED_NOTICE' => '',
             'LOG_LEVEL_SELECTED_WARNING' => '',
             'LOG_LEVEL_SELECTED_ERROR' => ''
-        ));
+        ]);
         break;
     case E_USER_NOTICE:
-        $tpl->assign(array(
+        $tpl->assign([
             'LOG_LEVEL_SELECTED_OFF' => '',
             'LOG_LEVEL_SELECTED_NOTICE' => ' selected',
             'LOG_LEVEL_SELECTED_WARNING' => '',
             'LOG_LEVEL_SELECTED_ERROR' => ''
-        ));
+        ]);
         break;
     case E_USER_WARNING:
-        $tpl->assign(array(
+        $tpl->assign([
             'LOG_LEVEL_SELECTED_OFF' => '',
             'LOG_LEVEL_SELECTED_NOTICE' => '',
             'LOG_LEVEL_SELECTED_WARNING' => ' selected',
             'LOG_LEVEL_SELECTED_ERROR' => ''
-        ));
+        ]);
         break;
     default:
-        $tpl->assign(array(
+        $tpl->assign([
             'LOG_LEVEL_SELECTED_OFF' => '',
             'LOG_LEVEL_SELECTED_NOTICE' => '',
             'LOG_LEVEL_SELECTED_WARNING' => '',
             'LOG_LEVEL_SELECTED_ERROR' => ' selected'
-        ));
+        ]);
 }
 
 if ($cfg['ENABLE_SSL']) {
-    $tpl->assign(array(
+    $tpl->assign([
         'ENABLE_SSL_ON' => ' selected',
         'ENABLE_SSL_OFF' => ''
-    ));
+    ]);
 } else {
-    $tpl->assign(array(
+    $tpl->assign([
         'ENABLE_SSL_ON' => '',
         'ENABLE_SSL_OFF' => ' selected'
-    ));
+    ]);
 }
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE' => tr('Admin / Settings'),
     'TR_UPDATES' => tr('Updates'),
     'LOSTPASSWORD_TIMEOUT_VALUE' => tohtml($cfg['LOSTPASSWORD_TIMEOUT']),
@@ -428,14 +428,14 @@ $tpl->assign(array(
     'TR_PREVENT_EXTERNAL_LOGIN_ADMIN' => tr('Prevent external login for admins'),
     'TR_PREVENT_EXTERNAL_LOGIN_RESELLER' => tr('Prevent external login for resellers'),
     'TR_PREVENT_EXTERNAL_LOGIN_CLIENT' => tr('Prevent external login for clients')
-));
+]);
 
 generateNavigation($tpl);
 gen_def_language($tpl, $cfg['USER_INITIAL_LANG']);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

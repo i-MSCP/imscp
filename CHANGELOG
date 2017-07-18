@@ -17,7 +17,9 @@ BACKEND
 FRONTEND
     Fixed: Cannot edit mailbox quota due to integer type casting (i386 arch)
     Fixed: Cannot set value bigger than 2 GB for mailbox quota due to integer type casting (i386 arch)
+    Fixed: Customers must stay able to login when their password or their main domain is being modified
     Fixed: Several integer type casting issues
+    Review: Make usage of short syntax for arrays
 
 SCRIPTS
     Removed: Explicite unlocking of locked files -- Files are automatically unlocked

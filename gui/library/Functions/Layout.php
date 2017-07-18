@@ -40,18 +40,18 @@ function get_user_gui_props($user_id)
     $stmt = exec_query($query, $user_id);
 
     if (!$stmt->rowCount() || (empty($stmt->fields['lang']) && empty($stmt->fields['layout']))) {
-        return array($cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']);
+        return [$cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']];
     }
 
     if (empty($stmt->fields['lang'])) {
-        return array($cfg['USER_INITIAL_LANG'], $stmt->fields['layout']);
+        return [$cfg['USER_INITIAL_LANG'], $stmt->fields['layout']];
     }
 
     if (empty($stmt->fields['layout'])) {
-        return array($stmt->fields['lang'], $cfg['USER_INITIAL_THEME']);
+        return [$stmt->fields['lang'], $cfg['USER_INITIAL_THEME']];
     }
     
-    return array($stmt->fields['lang'], $stmt->fields['layout']);
+    return [$stmt->fields['lang'], $stmt->fields['layout']];
 }
 
 /**
@@ -72,12 +72,12 @@ function generatePageMessage($tpl)
         return;
     }
 
-    foreach (array('success', 'error', 'warning', 'info', 'static_success', 'static_error', 'static_warning', 'static_info') as $level) {
+    foreach (['success', 'error', 'warning', 'info', 'static_success', 'static_error', 'static_warning', 'static_info'] as $level) {
         if (isset($namespace->{$level})) {
-            $tpl->assign(array(
+            $tpl->assign([
                 'MESSAGE_CLS' => $level,
                 'MESSAGE'     => $namespace->{$level}
-            ));
+            ]);
             $tpl->parse('PAGE_MESSAGE', '.page_message');
         }
     }
@@ -101,7 +101,7 @@ function set_page_message($message, $level = 'info')
         throw new iMSCP_Exception('set_page_message() expects a string for $message');
     }
 
-    if (!in_array($level, array('info', 'warning', 'error', 'success', 'static_success', 'static_error', 'static_warning', 'static_info'))) {
+    if (!in_array($level, ['info', 'warning', 'error', 'success', 'static_success', 'static_error', 'static_warning', 'static_info'])) {
         throw new iMSCP_Exception(sprintf('Wrong level %s for page message.', $level));
     }
 
@@ -166,8 +166,8 @@ function get_menu_vars($menuLink)
     ";
     $stmt = exec_query($query, $_SESSION['user_id']);
 
-    $search = array();
-    $replace = array();
+    $search = [];
+    $replace = [];
 
     $search [] = '{uid}';
     $replace[] = $_SESSION['user_id'];
@@ -305,14 +305,14 @@ function layout_init($event)
 
     /** @var $tpl iMSCP_pTemplate */
     $tpl = $event->getParam('templateEngine');
-    $tpl->assign(array(
+    $tpl->assign([
         'THEME_CHARSET'        => 'UTF-8',
         'THEME_ASSETS_PATH'    => '/themes/' . $cfg->USER_INITIAL_THEME . '/assets',
         'THEME_ASSETS_VERSION' => $themesAssetsVersion,
         'THEME_COLOR'          => $color,
         'ISP_LOGO'             => (isset($_SESSION['user_id'])) ? layout_getUserLogo() : '',
         'JS_TRANSLATIONS'      => i18n_getJsTranslations()
-    ));
+    ]);
     $tpl->parse('LAYOUT', 'layout');
 }
 
@@ -330,13 +330,13 @@ function layout_setUserLayoutColor($userId, $color)
     }
 
     $query = 'UPDATE `user_gui_props` SET `layout_color` = ? WHERE `user_id` = ?';
-    exec_query($query, array($color, $userId));
+    exec_query($query, [$color, $userId]);
 
     // Dealing with sessions across multiple browsers for same user identifier - Begin
 
     $sessionId = session_id();
     $query = "SELECT `session_id` FROM `login` WHERE `user_name` = ?  AND `session_id` <> ?";
-    $stmt = exec_query($query, array($_SESSION['user_logged'], $sessionId));
+    $stmt = exec_query($query, [$_SESSION['user_logged'], $sessionId]);
 
     if (!$stmt->rowCount()) {
         return true;
@@ -432,7 +432,7 @@ function layout_updateUserLogo()
         $tmpFilePath = $_FILES['logoFile']['tmp_name'];
 
         // Checking file mime type
-        if (!($fileMimeType = checkMimeType($tmpFilePath, array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/png')))) {
+        if (!($fileMimeType = checkMimeType($tmpFilePath, ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png']))) {
             set_page_message(tr('You can only upload images.'), 'error');
             return false;
         }
@@ -460,7 +460,7 @@ function layout_updateUserLogo()
         return $cfg['GUI_ROOT_DIR'] . '/data/persistent/ispLogos/' . $fileName;
     };
 
-    if (($logoPath = utils_uploadFile('logoFile', array($beforeMove, $cfg))) === false) {
+    if (($logoPath = utils_uploadFile('logoFile', [$beforeMove, $cfg])) === false) {
         return false;
     }
 
@@ -473,7 +473,7 @@ function layout_updateUserLogo()
     // We must catch old logo before update
     $oldLogoFile = layout_getUserLogo(false, false);
 
-    exec_query('UPDATE `user_gui_props` SET `logo` = ? WHERE `user_id` = ?', array(basename($logoPath), $userId));
+    exec_query('UPDATE `user_gui_props` SET `logo` = ? WHERE `user_id` = ?', [basename($logoPath), $userId]);
 
     // Deleting old logo (we are safe here) - We don't return FALSE on failure.
     // The administrator will be warned through logs.
@@ -507,7 +507,7 @@ function layout_deleteUserLogo($logoFilePath = NULL, $onlyFile = false)
     }
 
     if (!$onlyFile) {
-        exec_query('UPDATE `user_gui_props` SET `logo` = ? WHERE `user_id` = ?', array(NULL, $userId));
+        exec_query('UPDATE `user_gui_props` SET `logo` = ? WHERE `user_id` = ?', [NULL, $userId]);
     }
 
     if (strpos($logoFilePath, $cfg['ISP_LOGO_PATH']) === false) {
@@ -636,7 +636,7 @@ function layout_setMainMenuLabelsVisibility($userId, $visibility)
     $visibility = ($visibility) ? 1 : 0;
 
     $query = 'UPDATE `user_gui_props` SET `show_main_menu_labels` = ? WHERE `user_id` = ?';
-    exec_query($query, array($visibility, $userId));
+    exec_query($query, [$visibility, $userId]);
 
     if (!isset($_SESSION['logged_from_id'])) {
         $_SESSION['show_main_menu_labels'] = $visibility;

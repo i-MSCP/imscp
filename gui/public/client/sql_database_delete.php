@@ -39,7 +39,7 @@ if (!customerHasFeature('sql') || !isset($_GET['id'])) {
     showBadRequestErrorPage();
 }
 
-$dbId = filter_digits($_GET['id']);
+$dbId = intval($_GET['id']);
 
 if (!delete_sql_database(get_user_domain_id($_SESSION['user_id']), $dbId)) {
     write_log(sprintf('Could not delete SQL database with ID %s. An unexpected error occurred.', $dbId), E_USER_NOTICE);

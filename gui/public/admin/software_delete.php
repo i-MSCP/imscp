@@ -30,10 +30,10 @@ $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
-	array(
+	[
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/software_delete.tpl',
-		'page_message', 'page'));
+		'page_message', 'page']);
 
 /**
  * @param $tpl
@@ -43,9 +43,9 @@ function gen_page_data($tpl) {
 		$tpl->assign('DELETE_MESSAGE_TEXT', clean_input($_POST['delete_msg_text']));
 	} else {
 		$tpl->assign(
-			array(
+			[
 				'DELETE_MESSAGE_TEXT' => '',
-				'MESSAGE' => ''));
+				'MESSAGE' => '']);
 	}
 }
 if (isset($_GET['id']) || isset($_POST['id'])) {
@@ -142,7 +142,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 		}
 
 		$tpl->assign(
-			array(
+			[
 				'TR_MANAGE_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Software Management'),
 				'TR_DELETE_SEND_TO' => tr('Send message to'),
 				'TR_DELETE_MESSAGE_TEXT' => tr('Message'),
@@ -151,7 +151,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 				'TR_DELETE_DATA' => tr('Reseller data'),
 				'TR_DELETE' => tr('Delete'),
 				'SOFTWARE_ID' => $software_id,
-				'RESELLER_ID' => $rs->fields['reseller_id']));
+				'RESELLER_ID' => $rs->fields['reseller_id']]);
 	}
 
 	generateNavigation($tpl);

@@ -52,15 +52,15 @@ function customer_updatePassword()
         return;
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, [
         'userId' => $_SESSION['user_id']
-    ));
-    exec_query('UPDATE admin SET admin_pass = ?, admin_status = ? WHERE admin_id = ?', array(
+    ]);
+    exec_query('UPDATE admin SET admin_pass = ?, admin_status = ? WHERE admin_id = ?', [
         Crypt::apr1MD5($_POST['password']), 'tochangepwd', $_SESSION['user_id']
-    ));
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array(
+    ]);
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, [
         'userId' => $_SESSION['user_id']
-    ));
+    ]);
     send_request();
     write_log(sprintf('%s: updated password.', $_SESSION['user_logged']), E_USER_NOTICE);
     set_page_message(tr('Password successfully updated.'), 'success');
@@ -78,22 +78,22 @@ check_login('user');
 customer_updatePassword();
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'shared/partials/password_update.tpl',
     'page_message' => 'layout'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'            => tr('Client / Profile / Password'),
     'TR_PASSWORD_DATA'         => tr('Password data'),
     'TR_PASSWORD'              => tr('Password'),
     'TR_PASSWORD_CONFIRMATION' => tr('Password confirmation'),
     'TR_UPDATE'                => tr('Update')
-));
+]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

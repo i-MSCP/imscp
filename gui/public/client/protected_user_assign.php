@@ -31,9 +31,9 @@
  */
 function client_getHtaccessUsername($htuserId, $domainId)
 {
-    $stmt = exec_query('SELECT uname, status FROM htaccess_users WHERE id = ? AND dmn_id = ?', array(
+    $stmt = exec_query('SELECT uname, status FROM htaccess_users WHERE id = ? AND dmn_id = ?', [
         $htuserId, $domainId
-    ));
+    ]);
 
     if (!$stmt->rowCount()) {
         showBadRequestErrorPage();
@@ -60,11 +60,11 @@ function client_generatePage($tpl)
     $domainId = get_user_domain_id($_SESSION['user_id']);
 
     if (isset($_GET['uname']) && is_number($_GET['uname'])) {
-        $htuserId = filter_digits($_GET['uname']);
+        $htuserId = intval($_GET['uname']);
         $tpl->assign('UNAME', tohtml(client_getHtaccessUsername($htuserId, $domainId)));
         $tpl->assign('UID', $htuserId);
     } elseif (isset($_POST['nadmin_name']) && is_number($_POST['nadmin_name'])) {
-        $htuserId = filter_digits($_POST['nadmin_name']);
+        $htuserId = intval($_POST['nadmin_name']);
         $tpl->assign('UNAME', tohtml(client_getHtaccessUsername($htuserId, $domainId)));
         $tpl->assign('UID', $htuserId);
     } else {
@@ -93,10 +93,10 @@ function client_generatePage($tpl)
         // let's generate all groups where the user is assigned
         for ($i = 0, $cnt_members = count($members); $i < $cnt_members; $i++) {
             if ($htuserId == $members[$i]) {
-                $tpl->assign(array(
+                $tpl->assign([
                     'GRP_IN'    => tohtml($groupName),
                     'GRP_IN_ID' => $groupId,
-                ));
+                ]);
 
                 $tpl->parse('ALREADY_IN', '.already_in');
                 $grp_in = $groupId;
@@ -105,10 +105,10 @@ function client_generatePage($tpl)
         }
 
         if ($grp_in !== $groupId) {
-            $tpl->assign(array(
+            $tpl->assign([
                 'GRP_NAME' => tohtml($groupName),
                 'GRP_ID'   => $groupId
-            ));
+            ]);
             $tpl->parse('GRP_AVLB', '.grp_avlb');
             $notAddedIn++;
         }
@@ -155,9 +155,9 @@ function client_addHtaccessUserToHtaccessGroup()
     $domainId = get_user_domain_id($_SESSION['user_id']);
     $htuserId = clean_input($_POST['nadmin_name']);
     $htgroupId = $_POST['groups'];
-    $stmt = exec_query('SELECT id, ugroup, members FROM htaccess_groups WHERE dmn_id = ? AND id = ?', array(
+    $stmt = exec_query('SELECT id, ugroup, members FROM htaccess_groups WHERE dmn_id = ? AND id = ?', [
         $domainId, $htgroupId
-    ));
+    ]);
 
     if (!$stmt->rowCount()) {
         showBadRequestErrorPage();
@@ -171,9 +171,9 @@ function client_addHtaccessUserToHtaccessGroup()
         $members = $members . ',' . $htuserId;
     }
 
-    exec_query('UPDATE htaccess_groups SET members = ?, status = ? WHERE id = ? AND dmn_id = ?', array(
+    exec_query('UPDATE htaccess_groups SET members = ?, status = ? WHERE id = ? AND dmn_id = ?', [
         $members, 'tochange', $htgroupId, $domainId
-    ));
+    ]);
 
     send_request();
     set_page_message(tr('Htaccess user successfully assigned to the %s htaccess group', $row['ugroup']), 'success');
@@ -208,12 +208,12 @@ function client_removeHtaccessUserFromHtaccessGroup()
     }
 
     $domainId = get_user_domain_id($_SESSION['user_id']);
-    $htgroupId = filter_digits($_POST['groups_in']);
+    $htgroupId = intval($_POST['groups_in']);
     $htuserId = clean_input($_POST['nadmin_name']);
 
-    $stmt = exec_query('SELECT ugroup, members FROM htaccess_groups WHERE id = ? AND dmn_id = ?', array(
+    $stmt = exec_query('SELECT ugroup, members FROM htaccess_groups WHERE id = ? AND dmn_id = ?', [
         $htgroupId, $domainId
-    ));
+    ]);
 
     if (!$stmt->rowCount()) {
         showBadRequestErrorPage();
@@ -230,9 +230,9 @@ function client_removeHtaccessUserFromHtaccessGroup()
 
     unset($members[$key]);
     $members = implode(',', $members);
-    exec_query('UPDATE htaccess_groups SET members = ?, status = ? WHERE id = ? AND dmn_id = ?', array(
+    exec_query('UPDATE htaccess_groups SET members = ?, status = ? WHERE id = ? AND dmn_id = ?', [
         $members, 'tochange', $htgroupId, $domainId
-    ));
+    ]);
 
     send_request();
     set_page_message(tr('Htaccess user successfully deleted from the %s htaccess group ', $row['ugroup']), 'success');
@@ -253,7 +253,7 @@ client_addHtaccessUserToHtaccessGroup();
 client_removeHtaccessUserFromHtaccessGroup();
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'        => 'shared/layouts/ui.tpl',
     'page'          => 'client/puser_assign.tpl',
     'page_message'  => 'layout',
@@ -263,20 +263,20 @@ $tpl->define_dynamic(array(
     'not_in_group'  => 'page',
     'grp_avlb'      => 'not_in_group',
     'add_button'    => 'not_in_group'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'      => 'Client / Webtools / Protected Areas / Manage Users and Groups / Assign Group',
     'TR_SELECT_GROUP'    => tr('Select group'),
     'TR_MEMBER_OF_GROUP' => tr('Member of group'),
     'TR_ADD'             => tr('Add'),
     'TR_REMOVE'          => tr('Remove'),
     'TR_CANCEL'          => tr('Cancel')
-));
+]);
 
 generateNavigation($tpl);
 client_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

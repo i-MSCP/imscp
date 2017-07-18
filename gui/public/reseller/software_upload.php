@@ -38,7 +38,7 @@ $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
-	array(
+	[
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/software_upload.tpl',
 		'page_message' => 'layout',
@@ -50,7 +50,7 @@ $tpl->define_dynamic(
 		'list_webdepotsoftware' => 'web_software_repository',
 		'package_install_link' => 'page',
 		'package_info_link' => 'page'
-	)
+    ]
 );
 
 if (ask_reseller_is_allowed_web_depot($_SESSION['user_id']) == "yes") {
@@ -74,7 +74,7 @@ if (ask_reseller_is_allowed_web_depot($_SESSION['user_id']) == "yes") {
 
 		$packages_cnt = get_webdepot_software_list($tpl, $_SESSION['user_id']);
 
-		$tpl->assign(array(
+		$tpl->assign([
 			'TR_WEBDEPOT' => tr('i-MSCP Software installer / Web software repository'),
 			'TR_APPLY_CHANGES' => tr('Update from web depot'),
 			'TR_PACKAGE_TITLE' => tr('Package title'),
@@ -86,7 +86,7 @@ if (ask_reseller_is_allowed_web_depot($_SESSION['user_id']) == "yes") {
 			'TR_PACKAGE_ACTION' => tr('Package actions'),
 			'TR_WEBDEPOTSOFTWARE_COUNT' => tr('Web software depot packages total'),
 			'TR_WEBDEPOTSOFTWARE_ACT_NUM' => $packages_cnt
-		));
+        ]);
 
 		iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
 			/** @var $e \iMSCP_Events_Event */
@@ -153,10 +153,10 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 		";
 		$rs = exec_query(
 			$query,
-			array(
+			[
 				$user_id, 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', '0',
 				$filename, 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 'toadd'
-			)
+            ]
 		);
 		/** @var $db iMSCP_Database */
 		$db = iMSCP_Registry::get('db');
@@ -250,10 +250,10 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 		}
 		if ($upload == 1) {
 			$tpl->assign(
-				array(
+				[
 					'VAL_WGET' => '',
 					'SW_INSTALLED' => ''
-				)
+                ]
 			);
 			send_request();
 			set_page_message(tr('File successfully uploaded.'), 'success');
@@ -274,7 +274,7 @@ $tpl->assign('TR_PAGE_TITLE', tr('Reseller / General / Software Upload'));
 $sw_cnt = get_avail_software_reseller($tpl, $_SESSION['user_id']);
 
 $tpl->assign(
-	array(
+	[
 		'TR_SOFTWARE_UPLOAD' => tr('Software upload'),
 		'GENERAL_INFO' => tr('General information'),
 		'TR_UPLOADED_SOFTWARE' => tr('Software available'),
@@ -298,7 +298,7 @@ $tpl->assign(
 		'TR_UPLOAD_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Sofware Management'),
 		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?'),
 		'TR_MESSAGE_INSTALL' => tr('Are you sure to install this package from the webdepot?')
-	)
+    ]
 );
 
 generateNavigation($tpl);
@@ -306,7 +306,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 
 $tpl->prnt();
 

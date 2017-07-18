@@ -51,9 +51,9 @@ class LazyDecoder implements \ArrayAccess, \Countable
     public function __construct($json, $depth = 512, $options = 0)
     {
         if (version_compare(PHP_VERSION, '5.4', '<')) {
-            $this->parameters = array($json, true, $depth);
+            $this->parameters = [$json, true, $depth];
         } else {
-            $this->parameters = array($json, true, $depth, $options);
+            $this->parameters = [$json, true, $depth, $options];
         }
     }
 

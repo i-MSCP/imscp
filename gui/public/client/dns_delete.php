@@ -27,31 +27,31 @@ if (!customerHasFeature('custom_dns_records') || !isset($_GET['id'])) {
     showBadRequestErrorPage();
 }
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteCustomDNSrecord, array(
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteCustomDNSrecord, [
     'id' => $dnsRecordId
-));
+]);
 
-$dnsRecordId = filter_digits($_GET['id']);
+$dnsRecordId = intval($_GET['id']);
 $stmt = exec_query(
     "
       UPDATE domain_dns
-      INNER JOIN domain USING(domain_id)
+      JOIN domain USING(domain_id)
       SET domain_dns_status = ?
       WHERE domain_dns_id = ?
       AND domain_admin_id = ?
       AND owned_by = 'custom_dns_feature'
       AND domain_dns_status NOT IN('toadd', 'tochange', 'todelete')
     ",
-    array('todelete', $dnsRecordId, $_SESSION['user_id'])
+    ['todelete', $dnsRecordId, $_SESSION['user_id']]
 );
 
 if (!$stmt->rowCount()) {
     showBadRequestErrorPage();
 }
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteCustomDNSrecord, array(
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteCustomDNSrecord, [
     'id' => $dnsRecordId
-));
+]);
 
 send_request();
 write_log(sprintf('%s scheduled deletion of a custom DNS record', decode_idna($_SESSION['user_logged'])), E_USER_NOTICE);

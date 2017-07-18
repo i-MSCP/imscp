@@ -44,7 +44,7 @@ function checkMailAccountOwner($mailAccountId)
             WHERE `t1`.`mail_id` = ? AND `t2`.`domain_id` = `t1`.`domain_id` AND `t2`.`domain_id` = ?
             AND `t1`.`mail_auto_respond` = ? AND `t1`.`status` = ?
         ',
-        array($mailAccountId, $domainProps['domain_id'], 1, 'ok')
+        [$mailAccountId, $domainProps['domain_id'], 1, 'ok']
     );
 
     return (bool)$stmt->rowCount();
@@ -63,9 +63,9 @@ function deactivateAutoresponder($mailAccountId)
 
     try {
         $db->beginTransaction();
-        exec_query('UPDATE `mail_users` SET `status` = ?, `mail_auto_respond` = ? WHERE `mail_id` = ?', array(
+        exec_query('UPDATE `mail_users` SET `status` = ?, `mail_auto_respond` = ? WHERE `mail_id` = ?', [
             'tochange', 0, $mailAccountId
-        ));
+        ]);
         delete_autoreplies_log_entries();
         $db->commit();
         send_request();
@@ -88,7 +88,7 @@ check_login('user');
 if (!customerHasFeature('mail') && !(isset($_REQUEST['mail_account_id']) && is_numeric($_REQUEST['mail_account_id']))) {
     showBadRequestErrorPage();
 }
-$mailAccountId = filter_digits($_REQUEST['mail_account_id']);
+$mailAccountId = intval($_REQUEST['mail_account_id']);
 if (checkMailAccountOwner($mailAccountId)) {
     deactivateAutoresponder($mailAccountId);
     redirectTo('mail_accounts.php');

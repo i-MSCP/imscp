@@ -27,7 +27,7 @@ class iMSCP_Services implements iterator, countable
 	/**
 	 * @var array[] Array of services where keys are service names and valus are arrays containing service properties
 	 */
-	private $services = array();
+	private $services = [];
 
 	/**
 	 * @var string Service name currently queried

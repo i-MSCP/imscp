@@ -18,470 +18,470 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-return array(
-    'general' => array(
+return [
+    'general' => [
         'label' => tr('General'),
         'uri' => '/client/index.php',
         'class' => 'general',
-        'pages' => array(
-            'overview' => array(
+        'pages' => [
+            'overview' => [
                 'label' => tr('Overview'),
                 'uri' => '/client/index.php',
                 'title_class' => 'general'
-            )
-        )
-    ),
-    'domains' => array(
+            ]
+        ]
+    ],
+    'domains' => [
         'label' => tr('Domains'),
         'uri' => '/client/domains_manage.php',
         'class' => 'domains',
-        'pages' => array(
-            'overview' => array(
+        'pages' => [
+            'overview' => [
                 'label' => tr('Overview'),
                 'uri' => '/client/domains_manage.php',
                 'title_class' => 'domains',
-                'pages' => array(
-                    'domain_edit_link' => array(
+                'pages' => [
+                    'domain_edit_link' => [
                         'label' => tr('Edit domain'),
                         'uri' => '/client/domain_edit.php',
                         'title_class' => 'domains',
                         'visible' => '0'
-                    ),
-                    'domain_alias_edit_link' => array(
+                    ],
+                    'domain_alias_edit_link' => [
                         'label' => tr('Edit domain alias'),
                         'uri' => '/client/alias_edit.php',
                         'title_class' => 'domains',
                         'visible' => '0'
-                    ),
-                    'subdomain_edit_link' => array(
+                    ],
+                    'subdomain_edit_link' => [
                         'label' => tr('Edit subdomain'),
                         'uri' => '/client/subdomain_edit.php',
                         'title_class' => 'domains',
                         'visible' => '0'
-                    ),
-                    'custom_dns_record_edit_link' => array(
+                    ],
+                    'custom_dns_record_edit_link' => [
                         'label' => tr('Edit DNS resource record'),
                         'uri' => '/client/dns_edit.php',
                         'title_class' => 'domains',
                         'visible' => '0'
-                    ),
-                    'cert_view_link' => array(
+                    ],
+                    'cert_view_link' => [
                         'dynamic_title' => '{TR_DYNAMIC_TITLE}',
                         'uri' => '/client/cert_view.php',
                         'title_class' => 'domains',
                         'visible' => '0'
-                    )
-                )
-            ),
-            'add_domain_alias' => array(
+                    ]
+                ]
+            ],
+            'add_domain_alias' => [
                 'label' => tr('Add domain alias'),
                 'uri' => '/client/alias_add.php',
                 'title_class' => 'domains',
-                'privilege_callback' => array(
+                'privilege_callback' => [
                     'name' => 'customerHasFeature',
                     'param' => 'domain_aliases'
-                )
-            ),
-            'add_subdomain' => array(
+                ]
+            ],
+            'add_subdomain' => [
                 'label' => tr('Add subdomain'),
                 'uri' => '/client/subdomain_add.php',
                 'title_class' => 'domains',
-                'privilege_callback' => array(
+                'privilege_callback' => [
                     'name' => 'customerHasFeature',
                     'param' => 'subdomains'
-                )
-            ),
-            'add_custom_dns_record' => array(
+                ]
+            ],
+            'add_custom_dns_record' => [
                 'label' => tr('Add DNS resource record'),
                 'uri' => '/client/dns_add.php',
                 'title_class' => 'domains',
-                'privilege_callback' => array(
+                'privilege_callback' => [
                     'name' => 'customerHasFeature',
                     'param' => 'custom_dns_records'
-                )
-            ),
-            'php_settings' => array(
+                ]
+            ],
+            'php_settings' => [
                 'label' => tr('PHP settings'),
                 'uri' => '/client/phpini.php',
                 'title_class' => 'domains',
-                'privilege_callback' => array(
+                'privilege_callback' => [
                     'name' => 'customerHasFeature',
                     'param' => 'php_editor'
-                )
-            )
-        )
-    ),
-    'ftp' => array(
+                ]
+            ]
+        ]
+    ],
+    'ftp' => [
         'label' => tr('Ftp'),
         'uri' => '/client/ftp_accounts.php',
         'class' => 'ftp',
-        'privilege_callback' => array(
+        'privilege_callback' => [
             'name' => 'customerHasFeature',
             'param' => 'ftp'
-        ),
-        'pages' => array(
-            'overview' => array(
+        ],
+        'pages' => [
+            'overview' => [
                 'label' => tr('Overview'),
                 'uri' => '/client/ftp_accounts.php',
                 'title_class' => 'ftp',
-                'pages' => array(
-                    'ftp_account_edit_link' => array(
+                'pages' => [
+                    'ftp_account_edit_link' => [
                         'label' => tr('Edit FTP account'),
                         'uri' => '/client/ftp_edit.php',
                         'visible' => '0',
                         'title_class' => 'ftp'
-                    )
-                )
-            ),
-            'add_ftp_account' => array(
+                    ]
+                ]
+            ],
+            'add_ftp_account' => [
                 'label' => tr('Add FTP account'),
                 'uri' => '/client/ftp_add.php',
                 'title_class' => 'ftp'
-            ),
-            'file_manager' => array(
+            ],
+            'file_manager' => [
                 'label' => tr('Filemanager'),
                 'uri' => '/ftp/',
                 'target' => '_blank'
-            )
-        )
-    ),
-    'databases' => array(
+            ]
+        ]
+    ],
+    'databases' => [
         'label' => tr('Databases'),
         'uri' => '/client/sql_manage.php',
         'class' => 'database',
-        'privilege_callback' => array(
+        'privilege_callback' => [
             'name' => 'customerHasFeature',
             'param' => 'sql'
-        ),
-        'pages' => array(
-            'overview' => array(
+        ],
+        'pages' => [
+            'overview' => [
                 'label' => tr('Overview'),
                 'uri' => '/client/sql_manage.php',
                 'title_class' => 'sql',
-                'pages' => array(
-                    'add_sql_user_link' => array(
+                'pages' => [
+                    'add_sql_user_link' => [
                         'label' => tr('Add SQL user'),
                         'uri' => '/client/sql_user_add.php',
                         'visible' => '0',
                         'title_class' => 'user'
-                    ),
-                    'update_sql_user_password_link' => array(
+                    ],
+                    'update_sql_user_password_link' => [
                         'label' => tr('Update SQL user password'),
                         'uri' => '/client/sql_change_password.php',
                         'visible' => '0',
                         'title_class' => 'password'
-                    )
-                )
-            ),
-            'add_sql_database' => array(
+                    ]
+                ]
+            ],
+            'add_sql_database' => [
                 'label' => tr('Add SQL database'),
                 'uri' => '/client/sql_database_add.php',
                 'title_class' => 'sql'
-            ),
-            'phpmyadmin' => array(
+            ],
+            'phpmyadmin' => [
                 'label' => tr('PhpMyAdmin'),
                 'uri' => '/pma/',
                 'target' => '_blank'
-            )
-        )
-    ),
-    'mail' => array(
+            ]
+        ]
+    ],
+    'mail' => [
         'label' => tr('Mail'),
         'uri' => '/client/mail_accounts.php',
         'class' => 'email',
-        'privilege_callback' => array(
+        'privilege_callback' => [
             'name' => 'customerHasMailOrExtMailFeatures'
-        ),
-        'pages' => array(
-            'overview' => array(
+        ],
+        'pages' => [
+            'overview' => [
                 'label' => tr('Overview'),
                 'uri' => '/client/mail_accounts.php',
                 'title_class' => 'email',
-                'pages' => array(
-                    'mail_account_edit_link' => array(
+                'pages' => [
+                    'mail_account_edit_link' => [
                         'label' => tr('Edit mail account'),
                         'uri' => '/client/mail_edit.php',
                         'visible' => '0',
                         'title_class' => 'email'
-                    ),
-                    'mail_account_quota_link' => array(
+                    ],
+                    'mail_account_quota_link' => [
                         'label' => tr('Edit mail quota'),
                         'uri' => '/client/mail_quota.php',
                         'visible' => '0',
                         'title_class' => 'email'
-                    ),
-                    'enable_autoresponder_link' => array(
+                    ],
+                    'enable_autoresponder_link' => [
                         'label' => tr('Enable auto responder'),
                         'uri' => '/client/mail_autoresponder_enable.php',
                         'visible' => '0',
                         'title_class' => 'email'
-                    ),
-                    'edit_autoresponder_link' => array(
+                    ],
+                    'edit_autoresponder_link' => [
                         'label' => tr('Edit auto responder'),
                         'uri' => '/client/mail_autoresponder_edit.php',
                         'visible' => '0',
                         'title_class' => 'email'
-                    )
-                )
-            ),
-            'add_email_account' => array(
+                    ]
+                ]
+            ],
+            'add_email_account' => [
                 'label' => tr('Add email account'),
                 'uri' => '/client/mail_add.php',
                 'title_class' => 'email',
-                'privilege_callback' => array(
+                'privilege_callback' => [
                     'name' => 'customerHasFeature',
                     'param' => 'mail'
-                ),
-            ),
-            'catchall' => array(
+                ],
+            ],
+            'catchall' => [
                 'label' => tr('Catchall'),
                 'uri' => '/client/mail_catchall.php',
                 'title_class' => 'email',
-                'privilege_callback' => array(
+                'privilege_callback' => [
                     'name' => 'customerHasFeature',
                     'param' => 'mail'
-                ),
-                'pages' => array(
-                    'add_catchall_link' => array(
+                ],
+                'pages' => [
+                    'add_catchall_link' => [
                         'label' => tr('Add catchall'),
                         'uri' => '/client/mail_catchall_add.php',
                         'visible' => '0',
                         'title_class' => 'email'
-                    )
-                )
-            ),
-            'external_mail_servers' => array(
+                    ]
+                ]
+            ],
+            'external_mail_servers' => [
                 'label' => tr('External mail servers'),
                 'uri' => '/client/mail_external.php',
                 'title_class' => 'email',
-                'privilege_callback' => array(
+                'privilege_callback' => [
                     'name' => 'customerHasFeature',
                     'param' => 'external_mail'
-                )
-            )
-        )
-    ),
-    'statistics' => array(
+                ]
+            ]
+        ]
+    ],
+    'statistics' => [
         'label' => tr('Statistics'),
         'uri' => '/client/traffic_statistics.php',
         'class' => 'statistics',
-        'pages' => array(
-            'overview' => array(
+        'pages' => [
+            'overview' => [
                 'label' => tr('Traffic statistics'),
                 'uri' => '/client/traffic_statistics.php',
                 'title_class' => 'stats'
-            ),
-            'webstats' => array(
+            ],
+            'webstats' => [
                 'label' => tr('Web statistics'),
                 'uri' => '{WEBSTATS_PATH}',
                 'target' => '_blank',
-                'privilege_callback' => array(
+                'privilege_callback' => [
                     'name' => 'customerHasFeature',
                     'param' => 'webstats'
-                )
-            )
-        )
-    ),
-    'webtools' => array(
+                ]
+            ]
+        ]
+    ],
+    'webtools' => [
         'label' => tr('Webtools'),
         'uri' => '/client/webtools.php',
         'class' => 'webtools',
-        'pages' => array(
-            'overview' => array(
+        'pages' => [
+            'overview' => [
                 'label' => tr('Overview'),
                 'uri' => '/client/webtools.php',
                 'title_class' => 'tools'
-            ),
-            'protected_areas' => array(
+            ],
+            'protected_areas' => [
                 'label' => tr('Protected areas'),
                 'uri' => '/client/protected_areas.php',
                 'title_class' => 'htaccess',
-                'privilege_callback' => array(
+                'privilege_callback' => [
                     'name' => 'customerHasFeature',
                     'param' => 'protected_areas'
-                ),
-                'pages' => array(
-                    'add_protected_area_link' => array(
+                ],
+                'pages' => [
+                    'add_protected_area_link' => [
                         'dynamic_title' => '{TR_DYNAMIC_TITLE}',
                         'uri' => '/client/protected_areas_add.php',
                         'title_class' => 'htaccess',
                         'visible' => '0'
-                    ),
-                    'manage_htaccess_users_and_groups_link' => array(
+                    ],
+                    'manage_htaccess_users_and_groups_link' => [
                         'label' => tr('Manage htaccess users and groups'),
                         'uri' => '/client/protected_user_manage.php',
                         'title_class' => 'users',
                         'visible' => '0',
-                        'pages' => array(
-                            'assign_htaccess_group_link' => array(
+                        'pages' => [
+                            'assign_htaccess_group_link' => [
                                 'label' => tr('Assign group'),
                                 'uri' => '/client/protected_user_assign.php',
                                 'title_class' => 'users',
                                 'visible' => '0'
-                            ),
-                            'edit_htaccess_user_link' => array(
+                            ],
+                            'edit_htaccess_user_link' => [
                                 'label' => tr('Edit htaccess user'),
                                 'uri' => '/client/protected_user_edit.php',
                                 'title_class' => 'users',
                                 'visible' => '0'
-                            ),
-                            'add_htaccess_user_link' => array(
+                            ],
+                            'add_htaccess_user_link' => [
                                 'label' => tr('Add Htaccess user'),
                                 'uri' => '/client/protected_user_add.php',
                                 'title_class' => 'users',
                                 'visible' => '0'
-                            ),
-                            'add_htaccess_group_link' => array(
+                            ],
+                            'add_htaccess_group_link' => [
                                 'label' => tr('Add Htaccess group'),
                                 'uri' => '/client/protected_group_add.php',
                                 'title_class' => 'users',
                                 'visible' => '0'
-                            )
-                        )
-                    )
-                )
-            ),
-            'custom_error_pages' => array(
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'custom_error_pages' => [
                 'label' => tr('Custom error pages'),
                 'uri' => '/client/error_pages.php',
                 'title_class' => 'errors',
-                'privilege_callback' => array(
+                'privilege_callback' => [
                     'name' => 'customerHasFeature',
                     'param' => 'custom_error_pages'
-                ),
-                'pages' => array(
-                    'custom_error_page_edit_link' => array(
+                ],
+                'pages' => [
+                    'custom_error_page_edit_link' => [
                         'label' => tr('Edit custom error page'),
                         'uri' => '/client/error_edit.php',
                         'visible' => '0',
                         'title_class' => 'errors'
-                    ),
-                ),
-            ),
-            'softwares' => array(
+                    ],
+                ],
+            ],
+            'softwares' => [
                 'label' => tr('Software'),
                 'uri' => '/client/software.php',
                 'title_class' => 'apps_installer',
-                'privilege_callback' => array(
+                'privilege_callback' => [
                     'name' => 'customerHasFeature',
                     'param' => 'aps'
-                ),
-                'pages' => array(
-                    'software_view_link' => array(
+                ],
+                'pages' => [
+                    'software_view_link' => [
                         'label' => tr('Software details'),
                         'uri' => '/client/software_view.php',
                         'title_class' => 'apps_installer',
                         'visible' => '0'
-                    ),
-                    'software_install_link' => array(
+                    ],
+                    'software_install_link' => [
                         'label' => tr('Software installation'),
                         'uri' => '/client/software_install.php',
                         'visible' => '0',
                         'title_class' => 'apps_installer'
-                    )
-                )
-            ),
-            'daily_backup' => array(
+                    ]
+                ]
+            ],
+            'daily_backup' => [
                 'label' => tr('Daily backup'),
                 'uri' => '/client/backup.php',
                 'title_class' => 'hdd',
-                'privilege_callback' => array(
+                'privilege_callback' => [
                     'name' => 'customerHasFeature',
                     'param' => 'backup'
-                ),
-            ),
-            'file_manager' => array(
+                ],
+            ],
+            'file_manager' => [
                 'label' => tr('Filemanager'),
                 'uri' => '/ftp/',
                 'target' => '_blank',
-                'privilege_callback' => array(
+                'privilege_callback' => [
                     'name' => 'customerHasFeature',
                     'param' => 'ftp'
-                ),
-            ),
-            'phpmyadmin' => array(
+                ],
+            ],
+            'phpmyadmin' => [
                 'label' => tr('PhpMyAdmin'),
                 'uri' => '/pma/',
                 'target' => '_blank',
-                'privilege_callback' => array(
+                'privilege_callback' => [
                     'name' => 'customerHasFeature',
                     'param' => 'sql'
-                )
-            ),
-            'webstats' => array(
+                ]
+            ],
+            'webstats' => [
                 'label' => tr('Web statistics'),
                 'uri' => '{WEBSTATS_PATH}',
                 'target' => '_blank',
-                'privilege_callback' => array(
+                'privilege_callback' => [
                     'name' => 'customerHasFeature',
                     'param' => 'webstats'
-                )
-            )
-        )
-    ),
-    'support' => array(
+                ]
+            ]
+        ]
+    ],
+    'support' => [
         'label' => tr('Support'),
         'uri' => '{SUPPORT_SYSTEM_PATH}',
         'target' => '{SUPPORT_SYSTEM_TARGET}',
         'class' => 'support',
-        'privilege_callback' => array(
+        'privilege_callback' => [
             'name' => 'customerHasFeature',
             'param' => 'support'
-        ),
-        'pages' => array(
-            'tickets_open' => array(
+        ],
+        'pages' => [
+            'tickets_open' => [
                 'label' => tr('Open tickets'),
                 'uri' => '/client/ticket_system.php',
                 'title_class' => 'support'
-            ),
-            'tickets_closed' => array(
+            ],
+            'tickets_closed' => [
                 'label' => tr('Closed tickets'),
                 'uri' => '/client/ticket_closed.php',
                 'title_class' => 'support'
-            ),
-            'new_ticket' => array(
+            ],
+            'new_ticket' => [
                 'label' => tr('New ticket'),
                 'uri' => '/client/ticket_create.php',
                 'title_class' => 'support'
-            ),
-            'view_ticket' => array(
+            ],
+            'view_ticket' => [
                 'label' => tr('View ticket'),
                 'uri' => '/client/ticket_view.php',
                 'title_class' => 'support',
                 'visible' => '0'
-            )
-        )
-    ),
-    'profile' => array(
+            ]
+        ]
+    ],
+    'profile' => [
         'label' => tr('Profile'),
         'uri' => '/client/profile.php',
         'class' => 'profile',
-        'pages' => array(
-            'overview' => array(
+        'pages' => [
+            'overview' => [
                 'label' => tr('Account summary'),
                 'uri' => '/client/profile.php',
                 'title_class' => 'profile'
-            ),
-            'personal_data' => array(
+            ],
+            'personal_data' => [
                 'label' => tr('Personal data'),
                 'uri' => '/client/personal_change.php',
                 'title_class' => 'profile'
-            ),
-            'passsword' => array(
+            ],
+            'passsword' => [
                 'label' => tr('Password'),
                 'uri' => '/client/password_update.php',
                 'title_class' => 'profile'
-            ),
-            'language' => array(
+            ],
+            'language' => [
                 'label' => tr('Language'),
                 'uri' => '/client/language.php',
                 'title_class' => 'multilanguage'
-            ),
-            'layout' => array(
+            ],
+            'layout' => [
                 'label' => tr('Layout'),
                 'uri' => '/client/layout.php',
                 'title_class' => 'layout'
-            )
-        )
-    )
-);
+            ]
+        ]
+    ]
+];

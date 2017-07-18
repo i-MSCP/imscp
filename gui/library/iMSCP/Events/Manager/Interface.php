@@ -39,7 +39,7 @@ interface iMSCP_Events_Manager_Interface
 	 * @param mixed $arguments OPTIONAL The data to pass to the event listener method
 	 * @return iMSCP_Events_Listener_ResponseCollection
 	 */
-	public function dispatch($event, $arguments = array());
+	public function dispatch($event, $arguments = []);
 
 	/**
 	 * Registers an event listener that listens on the specified events

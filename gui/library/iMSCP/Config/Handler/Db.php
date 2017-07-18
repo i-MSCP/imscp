@@ -40,7 +40,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, 
     /**
      * @var array Array that contains all configuration parameters from the database
      */
-    protected $_parameters = array();
+    protected $_parameters = [];
 
     /**
      * PDOStatement to insert a configuration parameter in the database
@@ -357,7 +357,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, 
      */
     public function forceReload()
     {
-        $this->_parameters = array();
+        $this->_parameters = [];
         $this->_loadAll();
     }
 
@@ -468,7 +468,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, 
             $this->_insertStmt = $this->_db->prepare($query);
         }
 
-        if (!$this->_insertStmt->execute(array(':index' => $this->_key, ':value' => $this->_value))) {
+        if (!$this->_insertStmt->execute([':index' => $this->_key, ':value' => $this->_value])) {
             throw new iMSCP_Exception_Database("Couldn't insert new entry `{$this->_key}` in config table.");
         } else {
             $this->flushCache = true;
@@ -492,7 +492,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, 
             $this->_updateStmt = $this->_db->prepare($query);
         }
 
-        if (!$this->_updateStmt->execute(array(':index' => $this->_key, ':value' => $this->_value))) {
+        if (!$this->_updateStmt->execute([':index' => $this->_key, ':value' => $this->_value])) {
             throw new iMSCP_Exception_Database("Couldn't update entry `{$this->_key}` in config table.");
         } else {
             $this->flushCache = true;
@@ -513,7 +513,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, 
             $this->_deleteStmt = $this->_db->prepare($query);
         }
 
-        if (!$this->_deleteStmt->execute(array(':index' => $this->_key))) {
+        if (!$this->_deleteStmt->execute([':index' => $this->_key])) {
             throw new iMSCP_Exception_Database("Couldn't delete entry in config table.");
         } else {
             $this->flushCache = true;

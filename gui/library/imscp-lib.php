@@ -37,28 +37,28 @@ define('DBCONFIG_CACHE_FILE_PATH', CACHE_PATH . '/imscp_dbconfig.conf');
 
 // Setup include path
 set_include_path(implode(PATH_SEPARATOR, array_unique(
-    array_merge(array(LIBRARY_PATH, LIBRARY_PATH . '/vendor'), explode(PATH_SEPARATOR, get_include_path()))
+    array_merge([LIBRARY_PATH, LIBRARY_PATH . '/vendor'], explode(PATH_SEPARATOR, get_include_path()))
 )));
 
 // Setup autoloader
 require_once LIBRARY_PATH . '/vendor/Zend/Loader/AutoloaderFactory.php';
 
-Zend_Loader_AutoloaderFactory::factory(array(
-    'Zend_Loader_StandardAutoloader' => array(
+Zend_Loader_AutoloaderFactory::factory([
+    'Zend_Loader_StandardAutoloader' => [
         'autoregister_zf' => true,
-        'namespaces'      => array(
+        'namespaces'      => [
             'iMSCP'           => LIBRARY_PATH . '/iMSCP',
             'Mso\IdnaConvert' => LIBRARY_PATH . '/vendor/idna_convert/src/Mso/IdnaConvert'
-        ),
-        'prefixes'        => array(
+        ],
+        'prefixes'        => [
             'iMSCP_' => LIBRARY_PATH . '/iMSCP',
             'Crypt_' => LIBRARY_PATH . '/vendor/phpseclib/Crypt',
             'File_'  => LIBRARY_PATH . '/vendor/phpseclib/File',
             'Math_'  => LIBRARY_PATH . '/vendor/phpseclib/Math',
             'Net_'   => LIBRARY_PATH . '/vendor/Net'
-        )
-    )
-));
+        ]
+    ]
+]);
 
 // Set handler for uncaught exceptions
 iMSCP_Registry::set('exceptionHandler', new iMSCP_Exception_Handler());
@@ -124,10 +124,10 @@ if (is_readable(CONFIG_CACHE_FILE_PATH)) {
     $config['MAX_SQL_PASS_LENGTH'] = 32;
 
     // Captcha background color
-    $config['LOSTPASSWORD_CAPTCHA_BGCOLOR'] = array(176, 222, 245);
+    $config['LOSTPASSWORD_CAPTCHA_BGCOLOR'] = [176, 222, 245];
 
     // Captcha text color
-    $config['LOSTPASSWORD_CAPTCHA_TEXTCOLOR'] = array(1, 53, 920);
+    $config['LOSTPASSWORD_CAPTCHA_TEXTCOLOR'] = [1, 53, 920];
 
     // Captcha imagewidth
     $config['LOSTPASSWORD_CAPTCHA_WIDTH'] = 276;
@@ -138,11 +138,11 @@ if (is_readable(CONFIG_CACHE_FILE_PATH)) {
     /**
      * Captcha ttf fontfiles (have to be under compatible open source license)
      */
-    $config['LOSTPASSWORD_CAPTCHA_FONTS'] = array(
+    $config['LOSTPASSWORD_CAPTCHA_FONTS'] = [
         'FreeMono.ttf', 'FreeMonoBold.ttf', 'FreeMonoBoldOblique.ttf', 'FreeMonoOblique.ttf', 'FreeSans.ttf',
         'FreeSansBold.ttf', 'FreeSansBoldOblique.ttf', 'FreeSansOblique.ttf', 'FreeSerif.ttf', 'FreeSerifBold.ttf',
         'FreeSerifBoldItalic.ttf', 'FreeSerifItalic.ttf'
-    );
+    ];
 
     /**
      * The following settings can be overridden via the control panel - (admin/settings.php)

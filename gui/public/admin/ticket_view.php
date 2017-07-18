@@ -39,7 +39,7 @@ if (!hasTicketSystem() || !isset($_GET['ticket_id'])) {
     showBadRequestErrorPage();
 }
 
-$ticketId = filter_digits($_GET['ticket_id']);
+$ticketId = intval($_GET['ticket_id']);
 $status = getTicketStatus($ticketId);
 
 if ($status == 1 || $status == 4) {
@@ -65,14 +65,14 @@ if (isset($_POST['uaction'])) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'         => 'shared/layouts/ui.tpl',
     'page'           => 'admin/ticket_view.tpl',
     'page_message'   => 'layout',
     'ticket'         => 'page',
     'ticket_message' => 'ticket'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'       => tr('Admin / Support / View Ticket'),
     'TR_TICKET_INFO'      => tr('Ticket information'),
     'TR_TICKET_URGENCY'   => tr('Priority'),
@@ -82,12 +82,12 @@ $tpl->assign(array(
     'TR_TICKET_CONTENT'   => tr('Message'),
     'TR_TICKET_NEW_REPLY' => tr('Reply'),
     'TR_TICKET_REPLY'     => tr('Send reply')
-));
+]);
 
 generateNavigation($tpl);
 showTicketContent($tpl, $ticketId, $_SESSION['user_id']);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

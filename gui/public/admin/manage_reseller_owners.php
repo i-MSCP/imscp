@@ -36,7 +36,7 @@ $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
-	array(
+	[
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/manage_reseller_owners.tpl',
 		'page_message' => 'layout',
@@ -44,7 +44,7 @@ $tpl->define_dynamic(
 		'reseller_list' => 'page',
 		'reseller_item' => 'reseller_list',
 		'select_admin' => 'page',
-		'select_admin_option' => 'select_admin'));
+		'select_admin_option' => 'select_admin']);
 
 /**
  * @todo check if it's useful to have the table admin two times in the same query
@@ -72,10 +72,10 @@ function gen_reseller_table($tpl) {
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
-			array(
+			[
 				'MESSAGE' => tr('Reseller list is empty.'),
 				'RESELLER_LIST' => '',
-			)
+            ]
 		);
 
 		$tpl->parse('PAGE_MESSAGE', 'page_message');
@@ -87,12 +87,12 @@ function gen_reseller_table($tpl) {
 			$admin_id_var_name = "admin_id_".$admin_id;
 
 			$tpl->assign(
-				array(
+				[
 					'NUMBER' => $i + 1,
 					'RESELLER_NAME' => tohtml($rs->fields['admin_name']),
 					'OWNER' => tohtml($rs->fields['created_by']),
 					'CKB_NAME' => $admin_id_var_name,
-				)
+                ]
 			);
 
 			$tpl->parse('RESELLER_ITEM', '.reseller_item');
@@ -131,10 +131,10 @@ function gen_reseller_table($tpl) {
 		}
 
 		$tpl->assign(
-			array(
+			[
 				'OPTION' => tohtml($rs->fields['admin_name']),
 				'VALUE' => $rs->fields['admin_id'],
-				'SELECTED' => $selected));
+				'SELECTED' => $selected]);
 
 		$tpl->parse('SELECT_ADMIN_OPTION', '.select_admin_option');
 
@@ -183,7 +183,7 @@ function update_reseller_owner() {
 						`admin_id` = ?
 				";
 
-				exec_query($query, array($dest_admin, $admin_id));
+				exec_query($query, [$dest_admin, $admin_id]);
 			}
 
 			$rs->moveNext();
@@ -198,7 +198,7 @@ update_reseller_owner();
 gen_reseller_table($tpl);
 
 $tpl->assign(
-	array(
+	[
 		'TR_RESELLER_ASSIGNMENT' => tr('Reseller assignment'),
 		'TR_RESELLER_USERS' => tr('Reseller users'),
 		'TR_NUMBER' => tr('No.'),
@@ -206,11 +206,11 @@ $tpl->assign(
 		'TR_RESELLER_NAME' => tr('Reseller name'),
 		'TR_OWNER' => tr('Owner'),
 		'TR_TO_ADMIN' => tr('To Admin'),
-		'TR_MOVE' => tr('Move')));
+		'TR_MOVE' => tr('Move')]);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 
 $tpl->prnt();
 

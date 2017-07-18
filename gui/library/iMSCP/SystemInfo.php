@@ -112,14 +112,14 @@ class iMSCP_SystemInfo
      */
     public static function getFilePartitionInfo($file)
     {
-        $filePartitionInfo = array();
-        $descriptorSpec = array(
-            0 => array('pipe', 'r'), // stdin is a pipe that the child will read from
-            1 => array('pipe', 'w'), // stdout is a pipe that the child will write to
-            2 => array('pipe', 'a') // stderr is a pipe that he cild will write to
-        );
+        $filePartitionInfo = [];
+        $descriptorSpec = [
+            0 => ['pipe', 'r'], // stdin is a pipe that the child will read from
+            1 => ['pipe', 'w'], // stdout is a pipe that the child will write to
+            2 => ['pipe', 'a'] // stderr is a pipe that he cild will write to
+        ];
 
-        $pipes = array(); // satisfy warning
+        $pipes = []; // satisfy warning
         $proc = proc_open('df -TP ' . escapeshellarg($file), $descriptorSpec, $pipes);
 
         if (is_resource($proc)) {
@@ -136,7 +136,7 @@ class iMSCP_SystemInfo
             array_shift($filePartitionInfo);
 
             $filePartitionInfo = array_combine(
-                array('mount', 'fstype', 'size', 'used', 'free', 'percent', 'disk'),
+                ['mount', 'fstype', 'size', 'used', 'free', 'percent', 'disk'],
                 preg_split('/\s+/', trim($filePartitionInfo[0]))
             );
 
@@ -155,19 +155,19 @@ class iMSCP_SystemInfo
      */
     private function _getCPUInfo()
     {
-        $cpu = array(
+        $cpu = [
             'model' => tr('N/A'), 'cpus' => tr('N/A'), 'cpuspeed' => tr('N/A'), 'cache' => tr('N/A'),
             'bogomips' => tr('N/A')
-        );
+        ];
 
         if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
-            $tmp = array();
+            $tmp = [];
 
-            $pattern = array(
+            $pattern = [
                 '/CPU: (.*) \((.*)-MHz (.*)\)/', // FreeBSD
                 '/^cpu(.*) (.*) MHz/', // OpenBSD
                 '/^cpu(.*)\, (.*) MHz/' // NetBSD
-            );
+            ];
 
             if ($cpu['model'] = $this->sysctl('hw.model')) {
                 $cpu["cpus"] = $this->sysctl('hw.ncpu');
@@ -265,10 +265,10 @@ class iMSCP_SystemInfo
                 // sparc64 specific implementation
                 // Originally made by Sven Blumenstein <bazik@gentoo.org> in
                 // 2004 Modified by Tom Weustink <freshy98@gmx.net> in 2004
-                $sparclist = array(
+                $sparclist = [
                     'SUNW,UltraSPARC@0,0', 'SUNW,UltraSPARC-II@0,0', 'SUNW,UltraSPARC@1c,0', 'SUNW,UltraSPARC-IIi@1c,0',
                     'SUNW,UltraSPARC-II@1c,0', 'SUNW,UltraSPARC-IIe@0,0'
-                );
+                ];
 
                 foreach ($sparclist as $sparc) {
                     $raw = $this->read(
@@ -318,19 +318,19 @@ class iMSCP_SystemInfo
      */
     private function _getFileSystemInfo()
     {
-        $filesystem = array();
-        $descriptorSpec = array(
-            0 => array('pipe', 'r'), // stdin is a pipe that the child will read from
-            1 => array('pipe', 'w'), // stdout is a pipe that the child will write to
-            2 => array('pipe', 'a') // stderr is a pipe that he cild will write to
-        );
+        $filesystem = [];
+        $descriptorSpec = [
+            0 => ['pipe', 'r'], // stdin is a pipe that the child will read from
+            1 => ['pipe', 'w'], // stdout is a pipe that the child will write to
+            2 => ['pipe', 'a'] // stderr is a pipe that he cild will write to
+        ];
 
         /* Read output of df command from stdout
          * Args:
          *	T: Show File System type
          *	P: Show in POSIX format
          */
-        $pipes = array(); // satisfy warning
+        $pipes = []; // satisfy warning
         $proc = proc_open('df -TP', $descriptorSpec, $pipes);
 
         if (is_resource($proc)) {
@@ -405,7 +405,7 @@ class iMSCP_SystemInfo
      */
     private function _getLoadInfo()
     {
-        $load = array(tr('N/A'), tr('N/A'), tr('N/A'));
+        $load = [tr('N/A'), tr('N/A'), tr('N/A')];
 
         if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
             if ($loadRaw = $this->sysctl('vm.loadavg')) {
@@ -438,17 +438,17 @@ class iMSCP_SystemInfo
      */
     private function _getRAMInfo()
     {
-        $ram = array('total' => 0, 'free' => 0, 'used' => 0);
+        $ram = ['total' => 0, 'free' => 0, 'used' => 0];
 
         if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
             if ($ramRaw = $this->sysctl("hw.physmem")) {
-                $descriptorSpec = array(
-                    0 => array('pipe', 'r'), // stdin is a pipe that the child will read from
-                    1 => array('pipe', 'w'), // stdout is a pipe that the child will write to
-                    2 => array('pipe', 'a')     // stderr is a pipe that he cild will write to
-                );
+                $descriptorSpec = [
+                    0 => ['pipe', 'r'], // stdin is a pipe that the child will read from
+                    1 => ['pipe', 'w'], // stdout is a pipe that the child will write to
+                    2 => ['pipe', 'a']     // stderr is a pipe that he cild will write to
+                ];
 
-                $pipes = array();
+                $pipes = [];
                 $proc = proc_open('vmstat', $descriptorSpec, $pipes);
 
                 if (is_resource($proc)) {
@@ -515,14 +515,14 @@ class iMSCP_SystemInfo
      */
     private function _getSwapInfo()
     {
-        $swap = array('total' => 0, 'free' => 0, 'used' => 0);
+        $swap = ['total' => 0, 'free' => 0, 'used' => 0];
 
         if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
-            $descriptorSpec = array(
-                0 => array('pipe', 'r'), // stdin is a pipe that the child will read from
-                1 => array('pipe', 'w'), // stdout is a pipe that the child will write to
-                2 => array('pipe', 'a') // stderr is a pipe that he cild will write to
-            );
+            $descriptorSpec = [
+                0 => ['pipe', 'r'], // stdin is a pipe that the child will read from
+                1 => ['pipe', 'w'], // stdout is a pipe that the child will write to
+                2 => ['pipe', 'a'] // stderr is a pipe that he cild will write to
+            ];
 
             if ($this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
                 $args = '-l -k';
@@ -530,7 +530,7 @@ class iMSCP_SystemInfo
                 $args = '-k';
             }
 
-            $pipes = array(); // satisfy warning
+            $pipes = []; // satisfy warning
             $proc = proc_open('swapctl ' . $args, $descriptorSpec, $pipes);
 
             if (is_resource($proc)) {
@@ -674,13 +674,13 @@ class iMSCP_SystemInfo
      */
     protected function sysctl($args)
     {
-        $descriptorSpec = array(
-            0 => array('pipe', 'r'), // stdin is a pipe that the child will read from
-            1 => array('pipe', 'w'), // stdout is a pipe that the child will write to
-            2 => array('pipe', 'a') // stderr is a pipe that he cild will write to
-        );
+        $descriptorSpec = [
+            0 => ['pipe', 'r'], // stdin is a pipe that the child will read from
+            1 => ['pipe', 'w'], // stdout is a pipe that the child will write to
+            2 => ['pipe', 'a'] // stderr is a pipe that he cild will write to
+        ];
         $stdout = '';
-        $pipes = array(); // satisfy warning
+        $pipes = []; // satisfy warning
         $proc = proc_open('sysctl -n ' . $args, $descriptorSpec, $pipes);
 
         if (is_resource($proc)) {

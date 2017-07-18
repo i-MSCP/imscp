@@ -55,7 +55,7 @@ class iMSCP_I18n_Parser_Gettext
 	/**
 	 * @var array Translation table
 	 */
-	protected $translationTable = array();
+	protected $translationTable = [];
 
 	/**
 	 * @var string Whether the current file is little endian
@@ -322,7 +322,7 @@ class iMSCP_I18n_Parser_Gettext
 				break;
 			case self::TRANSLATION_TABLE:
 				$nbString = $this->nbStrings;
-				$parseResult = array();
+				$parseResult = [];
 
 				for ($index = 1; $index < $nbString; $index++) {
 					// Getting msgid

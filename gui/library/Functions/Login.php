@@ -55,7 +55,7 @@ function login_credentials(iMSCP_Authentication_AuthEvent $authEvent)
     $password = (!empty($_POST['upass'])) ? clean_input($_POST['upass']) : '';
 
     if ($username === '' || $password === '') {
-        $message = array();
+        $message = [];
 
         if (empty($username)) {
             $message[] = tr('The username field is empty.');
@@ -112,10 +112,10 @@ function login_credentials(iMSCP_Authentication_AuthEvent $authEvent)
 
                 $identity = $authResult->getIdentity();
 
-                exec_query('UPDATE admin SET admin_pass = ?, admin_status = ? WHERE admin_id = ?', array(
+                exec_query('UPDATE admin SET admin_pass = ?, admin_status = ? WHERE admin_id = ?', [
                     \iMSCP\Crypt::apr1MD5($password), ($identity->admin_type) == 'user' ? 'tochangepwd' : 'ok',
                     $identity->admin_id
-                ));
+                ]);
 
                 write_log(sprintf('Password for user %s has been re-encrypted using APR-1 algorithm', $identity->admin_name), E_USER_NOTICE);
 
@@ -123,7 +123,7 @@ function login_credentials(iMSCP_Authentication_AuthEvent $authEvent)
                     send_request();
                 }
             },
-            array('password' => $password, 'identity' => $identity)
+            ['password' => $password, 'identity' => $identity]
         );
     }
 
@@ -143,32 +143,37 @@ function login_checkDomainAccount($event)
     /** @var $identity stdClass */
     $identity = $event->getParam('identity');
 
-    if ($identity->admin_type == 'user') {
-        $stmt = exec_query(
-            '
+    if ($identity->admin_type != 'user') {
+        return;
+    }
+
+    $stmt = exec_query(
+        '
               SELECT domain_expires, domain_status, admin_status
               FROM domain
-              INNER JOIN admin ON(domain_admin_id = admin_id)
+              JOIN admin ON(domain_admin_id = admin_id)
               WHERE domain_admin_id = ?
             ',
-            $identity->admin_id
+        $identity->admin_id
+    );
+
+    $event->stopPropagation();
+
+    if (!$stmt->rowCount()) {
+        write_log(
+            sprintf('Account data were not found in database for the %s user', $identity->admin_name),
+            E_USER_ERROR
         );
+        set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
+    } else {
+        $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
-        $isAccountStateOk = true;
-
-        if (($stmt->fields['admin_status'] != 'ok') || ($stmt->fields['domain_status'] != 'ok')) {
-            $isAccountStateOk = false;
-            set_page_message(tr('Your account is currently under maintenance or disabled. Please, contact your reseller.'), 'error');
+        if ($row['admin_status'] == 'disabled' || $row['domain_status'] == 'disabled') {
+            set_page_message(tr('Your account has been disabled. Please, contact your reseller.'), 'error');
+        } elseif ($row['domain_expires'] > 0 && $row['domain_expires'] < time()) {
+            set_page_message(tr('Your account has expired. Please, contact your reseller.'), 'error');
         } else {
-            $domainExpireDate = $stmt->fields['domain_expires'];
-            if ($domainExpireDate && $domainExpireDate < time()) {
-                $isAccountStateOk = false;
-                set_page_message(tr('Your account has expired.'), 'error');
-            }
-        }
-
-        if (!$isAccountStateOk) {
-            redirectTo('index.php');
+            $event->stopPropagation(false);
         }
     }
 }
@@ -235,7 +240,7 @@ function check_login($userLevel, $preventExternalLogin = true)
 
     // If all goes fine update session and last access
     $_SESSION['user_login_time'] = time();
-    exec_query('UPDATE login SET lastaccess = ? WHERE session_id = ?', array($_SESSION['user_login_time'], session_id()));
+    exec_query('UPDATE login SET lastaccess = ? WHERE session_id = ?', [$_SESSION['user_login_time'], session_id()]);
 }
 
 /**
@@ -258,7 +263,7 @@ function change_user_interface($fromId, $toId)
               ORDER BY FIELD(admin_id, ?, ?)
               LIMIT 2
             ',
-            array($fromId, $toId, $fromId, $toId)
+            [$fromId, $toId, $fromId, $toId]
         );
 
         if ($stmt->rowCount() < 2) {
@@ -267,8 +272,8 @@ function change_user_interface($fromId, $toId)
 
         list($from, $to) = $stmt->fetchAll(PDO::FETCH_OBJ);
 
-        $fromToMap = array();
-        $fromToMap['admin']['BACK'] = 'manage_users.php';
+        $fromToMap = [];
+        $fromToMap['admin']['BACK'] = 'users.php';
         $fromToMap['admin']['reseller'] = 'index.php';
         $fromToMap['admin']['user'] = 'index.php';
         $fromToMap['reseller']['user'] = 'index.php';

@@ -54,15 +54,15 @@ if (isset($_POST['uaction'])) {
 	}
 }
 
-$userdata = array(
+$userdata = [
 	'OPT_URGENCY_1' => '',
 	'OPT_URGENCY_2' => '',
 	'OPT_URGENCY_3' => '',
 	'OPT_URGENCY_4' => ''
-);
+];
 
 if (isset($_POST['urgency'])) {
-	$userdata['URGENCY'] = filter_digits($_POST['urgency']);
+	$userdata['URGENCY'] = intval($_POST['urgency']);
 } else {
 	$userdata['URGENCY'] = 2;
 }
@@ -87,12 +87,12 @@ $userdata['USER_MESSAGE'] = isset($_POST['user_message']) ? clean_input($_POST['
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic(
-	array(
+	[
 		 'page' => 'client/ticket_create.tpl',
-		 'page_message' => 'layout'));
+		 'page_message' => 'layout']);
 
 $tpl->assign(
-	array(
+	[
 		 'TR_PAGE_TITLE' => tr('Client / Support / New Ticket'),
 		 'TR_NEW_TICKET' => tr('New ticket'),
 		 'TR_LOW' => tr('Low'),
@@ -105,7 +105,7 @@ $tpl->assign(
 		 'TR_YOUR_MESSAGE' => tr('Your message'),
 		 'TR_SEND_MESSAGE' => tr('Send message'),
 		 'TR_OPEN_TICKETS' => tr('Open tickets'),
-		 'TR_CLOSED_TICKETS' => tr('Closed tickets')));
+		 'TR_CLOSED_TICKETS' => tr('Closed tickets')]);
 
 $tpl->assign($userdata);
 
@@ -114,7 +114,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 
 $tpl->prnt();
 

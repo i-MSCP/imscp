@@ -86,11 +86,11 @@ function generateDirectoryList($tpl)
         $parent = '/';
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'ICON'     => 'parent',
         'DIR_NAME' => tr('Parent directory'),
         'LINK'     => tohtml("/shared/ftp_choose_dir.php?cur_dir=$parent", 'htmlAttr')
-    ));
+    ]);
 
     if (substr_count($parent, '/') < 2 // Only check for unselectable parent directory when needed
         && isUnselectable($parent)
@@ -113,24 +113,24 @@ function generateDirectoryList($tpl)
                 continue;
 
             if (isUnselectable($directory)) {
-                $tpl->assign(array(
+                $tpl->assign([
                     'ICON'      => 'locked',
                     'DIR_NAME'  => tohtml($entry['file']),
                     'DIRECTORY' => tohtml($directory, 'htmlAttr'),
                     'LINK'      => tohtml('/shared/ftp_choose_dir.php?cur_dir=' . $directory, 'htmlAttr')
-                ));
+                ]);
                 $tpl->assign('ACTION_LINK', '');
                 $tpl->parse('DIR_ITEM', '.dir_item');
                 continue;
             }
         }
 
-        $tpl->assign(array(
+        $tpl->assign([
             'ICON'      => 'folder',
             'DIR_NAME'  => tohtml($entry['file']),
             'DIRECTORY' => tohtml($directory, 'htmlAttr'),
             'LINK'      => tohtml('/shared/ftp_choose_dir.php?cur_dir=' . $directory, 'htmlAttr')
-        ));
+        ]);
         $tpl->parse('ACTION_LINK', 'action_link');
         $tpl->parse('DIR_ITEM', '.dir_item');
     }
@@ -146,19 +146,19 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onSharedScriptSta
 check_login('all');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'partial'      => 'shared/partials/ftp_choose_dir.tpl',
     'page_message' => 'partial',
     'ftp_chooser'  => 'partial',
     'dir_item'     => 'ftp_chooser',
     'action_link'  => 'dir_item',
     'layout'       => ''
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TOOLTIP_CHOOSE' => tohtml(tr('Choose'), 'htmlAttr'),
     'CHOOSE'         => tr('Choose'),
     'layout'         => ''
-));
+]);
 
 if (!isset($_SESSION['ftp_chooser_user']) || !isset($_SESSION['ftp_chooser_domain_id'])) {
     $tpl->assign('FTP_CHOOSER', '');
@@ -189,5 +189,5 @@ if (!isset($_SESSION['ftp_chooser_user']) || !isset($_SESSION['ftp_chooser_domai
 generatePageMessage($tpl);
 
 $tpl->parse('PARTIAL', 'partial');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onSharedScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onSharedScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

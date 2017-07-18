@@ -62,7 +62,7 @@ function reseller_generateOrdersAliasesMessage()
             INNER JOIN domain USING(domain_id) INNER JOIN admin ON(admin_id = domain_admin_id)
             WHERE alias_status = ? AND created_by = ?
         ',
-        array('ordered', $_SESSION['user_id'])
+        ['ordered', $_SESSION['user_id']]
     );
     $row = $stmt->fetchRow();
 
@@ -91,10 +91,10 @@ function reseller_generateTrafficUsageBar($tpl, $trafficUsageBytes, $trafficLimi
         $trafficUsageData = tr('%1$s%% [%2$s of unlimited]', $trafficUsagePercent, bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes));
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'TRAFFIC_USAGE_DATA' => $trafficUsageData,
         'TRAFFIC_PERCENT' => $trafficUsagePercent
-    ));
+    ]);
 }
 
 /**
@@ -115,10 +115,10 @@ function reseller_generateDiskUsageBar($tpl, $diskspaceUsageBytes, $diskspaceLim
         $diskUsageData = tr('%1$s%% [%2$s of unlimited]', $diskspaceUsagePercent, bytesHuman($diskspaceUsageBytes));
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'DISK_USAGE_DATA' => $diskUsageData,
         'DISK_PERCENT' => $diskspaceUsagePercent
-    ));
+    ]);
 }
 
 /**
@@ -158,7 +158,7 @@ function reseller_generatePageData($tpl, $resellerId, $resellerName)
         $tpl->assign('DISK_WARNING_MESSAGE', '');
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'TR_ACCOUNT_OVERVIEW' => tr('Account overview'),
         'TR_ACCOUNT_LIMITS' => tr('Account limits'),
         'TR_FEATURES' => tr('Features'),
@@ -213,7 +213,7 @@ function reseller_generatePageData($tpl, $resellerId, $resellerName)
         'APS_STATUS' => ($resellerProperties['software_allowed'] == 'yes')
             ? '<span style="color:green;">' . tr('Enabled') . '</span>'
             : '<span style="color:red;">' . tr('Disabled') . '</span>'
-    ));
+    ]);
 }
 
 /***********************************************************************************************************************
@@ -229,19 +229,19 @@ $cfg = iMSCP_Registry::get('config');
 check_login('reseller', $cfg['PREVENT_EXTERNAL_LOGIN_RESELLER']);
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'reseller/index.tpl',
     'page_message' => 'layout',
     'traffic_warning_message' => 'page',
     'disk_warning_message' => 'page'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE' => tr('Reseller / General / Overview'),
     'TR_SAVE' => tr('Save'),
     'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
     'TR_DISK_USAGE' => tr('Disk usage')
-));
+]);
 
 generateNavigation($tpl);
 reseller_generateSupportQuestionsMessage();
@@ -250,7 +250,7 @@ reseller_generatePageData($tpl, $_SESSION['user_id'], $_SESSION['user_logged']);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-$eventManager->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+$eventManager->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

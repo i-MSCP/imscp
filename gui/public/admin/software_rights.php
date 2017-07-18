@@ -30,7 +30,7 @@ $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
-	array(
+	[
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/software_rights.tpl',
 		'page_message' => 'layout',
@@ -38,7 +38,7 @@ $tpl->define_dynamic(
 		'no_reseller_list' => 'page',
 		'no_select_reseller' => 'page',
 		'select_reseller' => 'page',
-		'reseller_item' => 'select_reseller'));
+		'reseller_item' => 'select_reseller']);
 
 if (isset($_GET['id']) || isset($_POST['id'])) {
 	if (isset($_GET['id']) && is_numeric($_GET['id'])) {
@@ -71,7 +71,7 @@ $query = "
 $rs = exec_query($query, $software_id);
 
 $tpl->assign(
-	array(
+	[
 		'SOFTWARE_RIGHTS_ID' => $software_id,
 		'TR_SOFTWARE_DEPOT' => tr('Softwaredepot'),
 		'TR_SOFTWARE_NAME' => tr('%1$s - (Version: %2$s, Language: %3$s)', $rs->fields['software_name'], $rs->fields['software_version'], $rs->fields['software_language']),
@@ -83,14 +83,14 @@ $tpl->assign(
 		'TR_ADDED_BY' => tr('Added by'),
 		'TR_ADD_RIGHTS_BUTTON' => tr('Add permissions'),
 		'TR_SOFTWARE_RIGHTS' => tr('Software permissions'),
-		'TR_ADMIN_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Software Management (Permissions)')));
+		'TR_ADMIN_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Software Management (Permissions)')]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 
 $tpl->prnt();
 

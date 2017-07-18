@@ -29,12 +29,12 @@ abstract class iMSCP_Plugin
     /**
      * @var array Plugin configuration parameters
      */
-    private $config = array();
+    private $config = [];
 
     /**
      * @var array Plugin previous configuration parameters
      */
-    private $configPrev = array();
+    private $configPrev = [];
 
     /**
      * @var bool TRUE if plugin configuration is loaded, FALSE otherwise
@@ -108,7 +108,7 @@ abstract class iMSCP_Plugin
     function getInfo()
     {
         $file = $this->getPluginManager()->pluginGetDirectory() . '/' . $this->getName() . '/info.php';
-        $info = array();
+        $info = [];
 
         if (@is_readable($file)) {
             $info = include($file);
@@ -131,7 +131,7 @@ abstract class iMSCP_Plugin
         }
 
         return array_merge(
-            array(
+            [
                 'author'      => tr('Unknown'),
                 'email'       => '',
                 'version'     => '0.0.0',
@@ -141,7 +141,7 @@ abstract class iMSCP_Plugin
                 'name'        => $this->getName(),
                 'desc'        => tr('Not provided'),
                 'url'         => ''
-            ),
+            ],
             $info
         );
     }
@@ -213,7 +213,7 @@ abstract class iMSCP_Plugin
         $this->isLoadedConfig = false;
         $pluginName = $this->getName();
         $file = $this->getPluginManager()->pluginGetDirectory() . "/$pluginName/config.php";
-        $config = array();
+        $config = [];
 
         if (!file_exists($file)) {
             return $config;
@@ -297,8 +297,8 @@ abstract class iMSCP_Plugin
             return;
         }
 
-        $this->config = array();
-        $this->configPrev = array();
+        $this->config = [];
+        $this->configPrev = [];
     }
 
     /**
@@ -403,7 +403,7 @@ abstract class iMSCP_Plugin
      */
     public function getItemWithErrorStatus()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -515,7 +515,7 @@ abstract class iMSCP_Plugin
 
         $pluginInfo = $pluginManager->pluginGetInfo($pluginName);
         $dbSchemaVersion = isset($pluginInfo['db_schema_version']) ? $pluginInfo['db_schema_version'] : '000';
-        $migrationFiles = array();
+        $migrationFiles = [];
 
         /** @var $migrationFileInfo DirectoryIterator */
         foreach (new DirectoryIterator($sqlDir) as $migrationFileInfo) {

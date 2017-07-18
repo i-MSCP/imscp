@@ -349,6 +349,6 @@
     </table>
     <div class="buttons">
         <input name="Submit" type="submit" value="{TR_UPDATE}">
-        <a class="link_as_button" href="manage_users.php">{TR_CANCEL}</a>
+        <a class="link_as_button" href="users.php">{TR_CANCEL}</a>
     </div>
 </form>

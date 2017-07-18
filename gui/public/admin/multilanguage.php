@@ -39,7 +39,7 @@ function admin_generateLanguagesList($tpl)
     $defaultLanguage = $cfg['USER_INITIAL_LANG'];
 
     foreach ($languages as $language) {
-        $tpl->assign(array(
+        $tpl->assign([
             'LANGUAGE_NAME'             => tohtml($language['language']),
             'NUMBER_TRANSLATED_STRINGS' => ($language['locale'] == 'auto')
                 ? $language['translatedStrings'] : tohtml(tr('%d strings translated', $language['translatedStrings'])),
@@ -47,7 +47,7 @@ function admin_generateLanguagesList($tpl)
             'LAST_TRANSLATOR'           => tohtml($language['lastTranslator']), 
             'LOCALE_CHECKED'            => ($language['locale'] == $defaultLanguage) ? 'checked' : '',
             'LOCALE'                    => tohtml($language['locale'], 'htmlAttr')
-        ));
+        ]);
         $tpl->parse('LANGUAGE_BLOCK', '.language_block');
     }
 }
@@ -81,15 +81,15 @@ if (isset($_POST['uaction'])) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'            => 'shared/layouts/ui.tpl',
     'page'              => 'admin/multilanguage.phtml',
     'page_message'      => 'layout',
     'languages_block'   => 'page',
     'language_block_js' => 'page',
     'language_block'    => 'languages_block'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'                => tohtml(tr('Admin / Settings / Languages')),
     'TR_MULTILANGUAGE'             => tohtml(tr('Internationalization')),
     'TR_LANGUAGE_NAME'             => tohtml(tr('Language')),
@@ -104,12 +104,12 @@ $tpl->assign(array(
     'TR_REBUILD_INDEX'             => tohtml(tr('Rebuild languages index'), 'htmlAttr'),
     'TR_UPLOAD_HELP'               => tohtml(tr('Only gettext Machine Object files (MO files) are accepted.'), 'htmlAttr'),
     'TR_IMPORT'                    => tohtml(tr('Import'), 'htmlAttr')
-));
+]);
 
 generateNavigation($tpl);
 admin_generateLanguagesList($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventManager::getInstance()->dispatch(Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+EventManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

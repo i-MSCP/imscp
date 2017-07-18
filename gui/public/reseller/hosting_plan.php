@@ -40,14 +40,14 @@ function generatePage($tpl)
         return;
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'TR_ID' => tr('Id'),
         'TR_NAME' => tr('Name'),
         'TR_STATUS' => tr('Status'),
         'TR_EDIT' => tr('Edit'),
         'TR_ACTION' => tr('Actions'),
         'TR_DELETE' => tr('Delete')
-    ));
+    ]);
 
     iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
         /** @var iMSCP_Events_Event $e */
@@ -56,11 +56,11 @@ function generatePage($tpl)
     });
 
     while ($row = $stmt->fetchRow()) {
-        $tpl->assign(array(
+        $tpl->assign([
             'ID' => $row['id'],
             'NAME' => tohtml($row['name']),
             'STATUS' => $row['status'] ? tr('Available') : tr('Unavailable'),
-        ));
+        ]);
         $tpl->parse('HOSTING_PLAN', '.hosting_plan');
     }
 }
@@ -75,13 +75,13 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptS
 check_login('reseller');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'reseller/hosting_plan.tpl',
     'page_message' => 'layout',
     'hosting_plans' => 'page',
     'hosting_plan' => 'hosting_plans'
-));
+]);
 
 $tpl->assign('TR_PAGE_TITLE', tr('Reseller / Hosting Plans / Overview'));
 
@@ -90,5 +90,5 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

@@ -184,7 +184,7 @@ class VirtualFileSystem
 
         for ($i = 0, $len = count($list); $i < $len; $i++) {
             $chunks = preg_split('/\s+/', $list[$i], 9);
-            $list[$i] = array(
+            $list[$i] = [
                 'perms'  => $chunks[0],
                 'number' => $chunks[1],
                 'owner'  => $chunks[2],
@@ -195,7 +195,7 @@ class VirtualFileSystem
                 'time'   => $chunks[7],
                 'file'   => $chunks[8],
                 'type'   => substr($chunks[0], 0, 1)
-            );
+            ];
         }
 
         return $list;
@@ -355,14 +355,14 @@ class VirtualFileSystem
 
             exec_query(
                 'INSERT INTO ftp_users (userid, passwd, uid, gid, shell, homedir, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                array(
+                [
                     $this->user,
                     Crypt::sha512($this->passwd),
                     $row['admin_sys_uid'],
                     $row['admin_sys_gid'],
                     '/bin/sh',
                     utils_normalizePath(Registry::get('config')->USER_WEB_DIR . '/' . $this->user), 'ok'
-                )
+                ]
             );
         } catch (\Exception $e) {
             if ($e instanceof DatabaseException && $e->getCode() == 23000) {

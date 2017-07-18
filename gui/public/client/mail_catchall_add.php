@@ -38,7 +38,7 @@ function client_addCatchall($itemId)
         redirectTo('mail_catchall.php');
     }
 
-    $match = array();
+    $match = [];
     $mailType = $dmnId = $subId = $mailAddr = '';
 
     if (isset($_POST['mail_type'])) {
@@ -75,10 +75,10 @@ function client_addCatchall($itemId)
                         $match = explode('@', $mailAccount);
                         $mailAddr = '@' . $match[1];
 
-                        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddMailCatchall, array(
+                        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddMailCatchall, [
                             'mailCatchall'    => $mailAddr,
-                            'mailForwardList' => array($mailAccount)
-                        ));
+                            'mailForwardList' => [$mailAccount]
+                        ]);
 
                         exec_query(
                             '
@@ -89,16 +89,16 @@ function client_addCatchall($itemId)
                                     ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                                 )
                             ',
-                            array(
+                            [
                                 $mailAccount, '_no_', '_no_', $dmnId, $mailType, $subId, 'toadd', 0, NULL, $mailAddr
-                            )
+                            ]
                         );
 
-                        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddMailCatchall, array(
+                        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddMailCatchall, [
                             'mailCatchallId'  => iMSCP_Database::getInstance()->insertId(),
                             'mailCatchall'    => $mailAddr,
-                            'mailForwardList' => array($mailAccount)
-                        ));
+                            'mailForwardList' => [$mailAccount]
+                        ]);
 
                         send_request();
                         write_log("{$_SESSION['user_logged']} added new catch all", E_USER_NOTICE);
@@ -184,7 +184,7 @@ function client_addCatchall($itemId)
                 }
 
                 $mailForward = clean_input($_POST['forward_list']);
-                $mailAccount = array();
+                $mailAccount = [];
                 $faray = preg_split("/[\n,]+/", $mailForward);
 
                 foreach ($faray as $value) {
@@ -201,10 +201,10 @@ function client_addCatchall($itemId)
                     $mailAccount[] = $value;
                 }
 
-                iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddMailCatchall, array(
+                iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddMailCatchall, [
                     'mailCatchall'    => $mailAddr,
                     'mailForwardList' => $mailAccount
-                ));
+                ]);
 
                 exec_query(
                     '
@@ -215,17 +215,17 @@ function client_addCatchall($itemId)
                             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                         )
                     ',
-                    array(
+                    [
                         implode(',', $mailAccount), '_no_', '_no_', $dmnId, $mailType, $subId, 'toadd', 'no',
                         '_no_', NULL, $mailAddr
-                    )
+                    ]
                 );
 
-                iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddMailCatchall, array(
+                iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddMailCatchall, [
                     'mailCatchallId'  => iMSCP_Database::getInstance()->insertId(),
                     'mailCatchall'    => $mailAddr,
                     'mailForwardList' => $mailAccount
-                ));
+                ]);
 
                 send_request();
                 write_log("{$_SESSION['user_logged']} added new catch all", E_USER_NOTICE);
@@ -256,7 +256,7 @@ function client_generatePage($tpl, $id)
     $dmnId = $domainProps['domain_id'];
     $htmlChecked = $cfg['HTML_CHECKED'];
     $okStatus = 'ok';
-    $match = array();
+    $match = [];
 
     if (preg_match('/^(\d+);(normal|alias|subdom|alssub)$/', $id, $match)) {
         $itemId = $match[1];
@@ -273,34 +273,34 @@ function client_generatePage($tpl, $id)
                     AND status = ?
                     ORDER BY mail_type DESC, mail_acc
                 ',
-                array($dmnId, 0, $okStatus)
+                [$dmnId, 0, $okStatus]
             );
 
             if (!$stmt->rowCount()) {
-                $tpl->assign(array(
+                $tpl->assign([
                     'FORWARD_MAIL_CHECKED' => $htmlChecked,
                     'FORWARD_LIST_VAL'     => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : '',
                     'MAIL_LIST'            => ''
-                ));
+                ]);
             } else {
-                $tpl->assign(array(
+                $tpl->assign([
                     'NORMAL_MAIL_CHECKED'  => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward')
                         ? '' : $htmlChecked,
                     'FORWARD_MAIL_CHECKED' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward')
                         ? $htmlChecked : '',
                     'FORWARD_LIST_VAL'     => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : ''
-                ));
+                ]);
 
                 while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
                     $showMailAccount = decode_idna($row['mail_acc']);
                     $showDomainName = decode_idna($row['domain_name']);
                     $mailAccount = $row['mail_acc'];
                     $domainName = $row['domain_name'];
-                    $tpl->assign(array(
+                    $tpl->assign([
                         'MAIL_ID'            => $row['mail_id'],
                         'MAIL_ACCOUNT'       => tohtml($showMailAccount . '@' . $showDomainName),
                         'MAIL_ACCOUNT_PUNNY' => tohtml($mailAccount . '@' . $domainName)
-                    ));
+                    ]);
                     $tpl->parse('MAIL_ITEM', '.mail_item');
                 }
             }
@@ -316,23 +316,23 @@ function client_generatePage($tpl, $id)
                     AND status = ?
                     ORDER BY mail_type DESC, mail_acc
                 ",
-                array($dmnId, $itemId, $okStatus)
+                [$dmnId, $itemId, $okStatus]
             );
 
             if (!$stmt->rowCount()) {
-                $tpl->assign(array(
+                $tpl->assign([
                     'FORWARD_MAIL_CHECKED' => $htmlChecked,
                     'FORWARD_LIST_VAL'     => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : '',
                     'MAIL_LIST'            => ''
-                ));
+                ]);
             } else {
-                $tpl->assign(array(
+                $tpl->assign([
                     'NORMAL_MAIL_CHECKED'  => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward')
                         ? '' : $htmlChecked,
                     'FORWARD_MAIL_CHECKED' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward')
                         ? $htmlChecked : '',
                     'FORWARD_LIST_VAL'     => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : ''
-                ));
+                ]);
 
                 while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
                     $showMailAccount = decode_idna($row['mail_acc']);
@@ -340,11 +340,11 @@ function client_generatePage($tpl, $id)
                     $mailAccount = $row['mail_acc'];
                     $alsName = $row['alias_name'];
 
-                    $tpl->assign(array(
+                    $tpl->assign([
                         'MAIL_ID'            => $row['mail_id'],
                         'MAIL_ACCOUNT'       => tohtml($showMailAccount . '@' . $show_alias_name),
                         'MAIL_ACCOUNT_PUNNY' => tohtml($mailAccount . '@' . $alsName)
-                    ));
+                    ]);
 
                     $tpl->parse('MAIL_ITEM', '.mail_item');
                 }
@@ -362,34 +362,34 @@ function client_generatePage($tpl, $id)
                     AND status = ?
                     ORDER BY mail_type DESC, mail_acc
                 ",
-                array($dmnId, $itemId, $okStatus)
+                [$dmnId, $itemId, $okStatus]
             );
 
             if (!$stmt->rowCount()) {
-                $tpl->assign(array(
+                $tpl->assign([
                     'FORWARD_MAIL_CHECKED' => $htmlChecked,
                     'FORWARD_LIST_VAL'     => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : '',
                     'MAIL_LIST'            => ''
-                ));
+                ]);
             } else {
-                $tpl->assign(array(
+                $tpl->assign([
                     'NORMAL_MAIL_CHECKED'  => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward')
                         ? '' : $htmlChecked,
                     'FORWARD_MAIL_CHECKED' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward')
                         ? $htmlChecked : '',
                     'FORWARD_LIST_VAL'     => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : ''
-                ));
+                ]);
 
                 while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
                     $showMailAccount = decode_idna($row['mail_acc']);
                     $showAliasName = decode_idna($row['subdomain_name']);
                     $mailAccount = $row['mail_acc'];
                     $alsName = $row['subdomain_name'];
-                    $tpl->assign(array(
+                    $tpl->assign([
                         'MAIL_ID'            => $row['mail_id'],
                         'MAIL_ACCOUNT'       => tohtml($showMailAccount . '@' . $showAliasName),
                         'MAIL_ACCOUNT_PUNNY' => tohtml($mailAccount . '@' . $alsName)
-                    ));
+                    ]);
                     $tpl->parse('MAIL_ITEM', '.mail_item');
                 }
             }
@@ -406,23 +406,23 @@ function client_generatePage($tpl, $id)
                     AND status = ?
                     ORDER BY mail_type DESC, mail_acc
                 ",
-                array($dmnId, $itemId, $okStatus)
+                [$dmnId, $itemId, $okStatus]
             );
 
             if (!$stmt->rowCount()) {
-                $tpl->assign(array(
+                $tpl->assign([
                     'FORWARD_MAIL_CHECKED' => $htmlChecked,
                     'FORWARD_LIST_VAL'     => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : '',
                     'MAIL_LIST'            => ''
-                ));
+                ]);
             } else {
-                $tpl->assign(array(
+                $tpl->assign([
                     'NORMAL_MAIL_CHECKED'  => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward')
                         ? '' : $htmlChecked,
                     'FORWARD_MAIL_CHECKED' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward')
                         ? $htmlChecked : '',
                     'FORWARD_LIST_VAL'     => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : ''
-                ));
+                ]);
 
                 while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
                     $showMailAccount = decode_idna($row['mail_acc']);
@@ -430,11 +430,11 @@ function client_generatePage($tpl, $id)
                     $mailAccount = $row['mail_acc'];
                     $alsName = $row['subdomain_name'];
 
-                    $tpl->assign(array(
+                    $tpl->assign([
                         'MAIL_ID'            => $row['mail_id'],
                         'MAIL_ACCOUNT'       => tohtml($showMailAccount . '@' . $showAliasName),
                         'MAIL_ACCOUNT_PUNNY' => tohtml($mailAccount . '@' . $alsName)
-                    ));
+                    ]);
 
                     $tpl->parse('MAIL_ITEM', '.mail_item');
                 }
@@ -464,14 +464,14 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'create_catchall') {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/mail_catchall_add.tpl',
     'page_message' => 'layout',
     'mail_list'    => 'page',
     'mail_item'    => 'mail_list'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_CLIENT_CREATE_CATCHALL_PAGE_TITLE' => tr('i-MSCP - Client/Create CatchAll Mail Account'),
     'TR_PAGE_TITLE'                        => tr('Client / Email / Catchall / Add Catchall'),
     'TR_MAIL_LIST'                         => tr('Email account list'),
@@ -482,13 +482,13 @@ $tpl->assign(array(
     'TR_FORWARD_TO'                        => tr('Forward to'),
     'TR_FWD_HELP'                          => tr('Separate multiple email addresses with a line-break.'),
     'ID'                                   => tohtml($itemId)
-));
+]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 client_generatePage($tpl, $itemId);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 

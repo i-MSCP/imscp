@@ -34,7 +34,7 @@ function client_generatePage($tpl)
         showBadRequestErrorPage();
     }
 
-    $softwareId = filter_digits($_GET['id']);
+    $softwareId = intval($_GET['id']);
     $domainProperties = get_domain_default_props($_SESSION['user_id']);
     $stmt = exec_query('SELECT created_by FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
 
@@ -54,7 +54,7 @@ check_login('user');
 customerHasFeature('aps') or showBadRequestErrorPage();
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'                  => 'shared/layouts/ui.tpl',
     'page'                    => 'client/software_view.tpl',
     'page_message'            => 'layout',
@@ -63,9 +63,9 @@ $tpl->define_dynamic(array(
     'installed_software_info' => 'page',
     'software_item'           => 'page',
     'no_software'             => 'page'
-));
+]);
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE'    => tr('Client / Webtools / Software / View'),
     'SOFTWARE_ID'      => client_generatePage($tpl),
     'TR_VIEW_SOFTWARE' => tr('Software details'),
@@ -79,11 +79,11 @@ $tpl->assign(array(
     'TR_BACK'          => tr('Back'),
     'TR_INSTALL'       => tr('Install'),
     'TR_SOFTWARE_MENU' => tr('Software installation')
-));
+]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

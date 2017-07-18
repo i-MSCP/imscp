@@ -30,10 +30,10 @@ $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
-	array(
+	[
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/software_options.tpl',
-		'page_message' => 'layout'));
+		'page_message' => 'layout']);
 
 $tpl->assign('TR_PAGE_TITLE', tr('Admin / Settings / Software Options'));
 
@@ -67,7 +67,7 @@ $query = "SELECT * FROM `web_software_options`";
 $rs = execute_query($query);
 
 $tpl->assign(
-	array(
+	[
 		'TR_OPTIONS_SOFTWARE' => tr('Software installer options'),
 		'TR_MAIN_OPTIONS' => tr('Software installer options'),
 		'TR_USE_WEBDEPOT' => tr('Remote Web software repository'),
@@ -79,14 +79,14 @@ $tpl->assign(
 		'WEBDEPOT_LAST_UPDATE_VALUE' => ($rs->fields['webdepot_last_update'] == "0000-00-00 00:00:00") ? tr('not available') : $rs->fields['webdepot_last_update'],
 		'TR_APPLY_CHANGES' => tr('Apply changes'),
 		'TR_ENABLED' => tr('Enabled'),
-		'TR_DISABLED' => tr('Disabled')));
+		'TR_DISABLED' => tr('Disabled')]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 
 $tpl->prnt();
 

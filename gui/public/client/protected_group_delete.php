@@ -30,7 +30,7 @@ if (!customerHasFeature('protected_areas') || !isset($_GET['gname'])) {
 try {
     iMSCP_Database::getInstance()->beginTransaction();
 
-    $htgroupId = filter_digits($_GET['gname']);
+    $htgroupId = intval($_GET['gname']);
     $domainId = get_user_domain_id($_SESSION['user_id']);
 
     // Schedule deletion or update of any .htaccess files in which the htgroup was used
@@ -52,15 +52,15 @@ try {
             $status = 'tochange';
         }
 
-        exec_query('UPDATE htaccess SET group_id = ?, status = ? WHERE id = ?', array(
+        exec_query('UPDATE htaccess SET group_id = ?, status = ? WHERE id = ?', [
             $htgroupList, $status, $row['id']
-        ));
+        ]);
     }
 
     // Schedule htgroup deletion
-    exec_query('UPDATE htaccess_groups SET status = ? WHERE id = ? AND dmn_id = ?', array(
+    exec_query('UPDATE htaccess_groups SET status = ? WHERE id = ? AND dmn_id = ?', [
         'todelete', $htgroupId, $domainId
-    ));
+    ]);
 
     iMSCP_Database::getInstance()->commit();
 

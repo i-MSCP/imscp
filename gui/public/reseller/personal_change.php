@@ -34,10 +34,10 @@ $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
-	array(
+	[
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/personal_change.tpl',
-		'page_message' => 'layout'));
+		'page_message' => 'layout']);
 
 $tpl->assign('TR_PAGE_TITLE',  tr('Reseller / Profile / Personal Data'));
 
@@ -77,7 +77,7 @@ function gen_reseller_personal_data($tpl, $user_id) {
 	$rs = exec_query($query, $user_id);
 
 	$tpl->assign(
-		array(
+		[
 			 'FIRST_NAME' => (($rs->fields['fname'] == null) ? '' : tohtml($rs->fields['fname'])),
 			 'LAST_NAME' => (($rs->fields['lname'] == null) ? '' : tohtml($rs->fields['lname'])),
 			 'FIRM' => (($rs->fields['firm'] == null) ? '' : tohtml($rs->fields['firm'])),
@@ -92,7 +92,7 @@ function gen_reseller_personal_data($tpl, $user_id) {
 			 'FAX' => (($rs->fields['fax'] == null) ? '' : tohtml($rs->fields['fax'])),
 			 'VL_MALE' => (($rs->fields['gender'] == 'M') ? $cfg->HTML_SELECTED : ''),
 			 'VL_FEMALE' => (($rs->fields['gender'] == 'F') ? $cfg->HTML_SELECTED : ''),
-			 'VL_UNKNOWN' => ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? $cfg->HTML_SELECTED : '')));
+			 'VL_UNKNOWN' => ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? $cfg->HTML_SELECTED : '')]);
 }
 
 /**
@@ -100,7 +100,7 @@ function gen_reseller_personal_data($tpl, $user_id) {
  */
 function update_reseller_personal_data($user_id) {
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $user_id));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, ['userId' => $user_id]);
 
 	$fname = clean_input($_POST['fname']);
 	$lname = clean_input($_POST['lname']);
@@ -139,13 +139,13 @@ function update_reseller_personal_data($user_id) {
 
 	exec_query(
 			$query,
-			array(
+			[
 				$fname, $lname, $firm, $zip, $city, $state, $country, $email,
 				$phone, $fax, $street1, $street2, $gender, $user_id
-			)
+            ]
 	);
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $user_id));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, ['userId' => $user_id]);
 
 	set_page_message(tr('Personal data successfully updated.'), 'success');
 	redirectTo('profile.php');
@@ -154,7 +154,7 @@ function update_reseller_personal_data($user_id) {
 generateNavigation($tpl);
 
 $tpl->assign(
-	array(
+	[
 		'TR_GENERAL_INFO' => tr('General information'),
 		'TR_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
 		'TR_PERSONAL_DATA' => tr('Personal data'),
@@ -174,13 +174,13 @@ $tpl->assign(
 		'TR_MALE' => tr('Male'),
 		'TR_FEMALE' => tr('Female'),
 		'TR_UNKNOWN' => tr('Unknown'),
-		'TR_UPDATE' => tr('Update')));
+		'TR_UPDATE' => tr('Update')]);
 
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 
 $tpl->prnt();
 

@@ -40,7 +40,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 		AND
 			`domain_id` = ?
 	";
-	$rs = exec_query($query, array($_GET['id'], $dmn_id));
+	$rs = exec_query($query, [$_GET['id'], $dmn_id]);
 
 	if ($rs->recordCount() != 1) {
 		set_page_message(tr('Wrong software id.'), 'error');
@@ -55,7 +55,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 				AND
 					`domain_id` = ?
 			";
-			$res = exec_query($delete, array($_GET['id'], $dmn_id));
+			$res = exec_query($delete, [$_GET['id'], $dmn_id]);
 			set_page_message(tr('Software deleted.'), 'success');
 		}else{
 			$delete = "
@@ -68,7 +68,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 				AND
 					`domain_id` = ?
 			";
-			$res = exec_query($delete, array('todelete', $_GET['id'], $dmn_id));
+			$res = exec_query($delete, ['todelete', $_GET['id'], $dmn_id]);
 			send_request();
 			set_page_message(tr('Software successfully scheduled for deletion.'), 'success');
 		}

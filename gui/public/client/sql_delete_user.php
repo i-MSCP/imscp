@@ -39,7 +39,7 @@ if (!customerHasFeature('sql') || !isset($_GET['id'])) {
     showBadRequestErrorPage();
 }
 
-$userId = filter_digits($_GET['id']);
+$userId = intval($_GET['id']);
 
 if (!sql_delete_user(get_user_domain_id($_SESSION['user_id']), $userId)) {
     write_log(sprintf('Could not delete SQL user with ID %d. An unexpected error occurred.', $userId), E_USER_ERROR);

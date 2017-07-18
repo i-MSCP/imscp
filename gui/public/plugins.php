@@ -35,9 +35,9 @@ if (empty($plugins)) {
 }
 
 $eventsManager = iMSCP_Events_Aggregator::getInstance();
-$responses = $eventsManager->dispatch(iMSCP_Events::onBeforePluginsRoute, array(
+$responses = $eventsManager->dispatch(iMSCP_Events::onBeforePluginsRoute, [
     'pluginManager' => $pluginManager
-));
+]);
 
 if ($responses->isStopped()) {
     showNotFoundErrorPage();
@@ -66,9 +66,9 @@ if (NULL === $pluginActionScriptPath) {
     showNotFoundErrorPage();
 }
 
-$eventsManager->dispatch(iMSCP_Events::onAfterPluginsRoute, array(
+$eventsManager->dispatch(iMSCP_Events::onAfterPluginsRoute, [
     'pluginManager' => $pluginManager, 'scriptPath' => $pluginActionScriptPath
-));
+]);
 
 if (!is_file($pluginActionScriptPath)) {
     showNotFoundErrorPage();

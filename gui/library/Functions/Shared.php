@@ -102,13 +102,13 @@ function imscp_domain_exists($domainName, $resellerId)
         $parentDomain = substr($domainName, $domainPartCnt);
 
         // Execute query the redefined queries for domains/accounts and aliases tables
-        $stmt = exec_query($queryDomain, array($parentDomain, $resellerId));
+        $stmt = exec_query($queryDomain, [$parentDomain, $resellerId]);
         $row = $stmt->fetchRow();
         if ($row['cnt']) {
             return true;
         }
 
-        $stmt = exec_query($queryAliases, array($parentDomain, $resellerId));
+        $stmt = exec_query($queryAliases, [$parentDomain, $resellerId]);
         $row = $stmt->fetchRow();
         if ($row['cnt']) {
             return true;
@@ -169,7 +169,7 @@ function get_domain_default_props($domainAdminId, $createdBy = null)
                 SELECT * FROM domain INNER JOIN admin ON(admin_id = domain_admin_id)
                 WHERE domain_admin_id = ? AND created_by = ?
             ',
-            array($domainAdminId, $createdBy)
+            [$domainAdminId, $createdBy]
         );
     }
 
@@ -281,10 +281,10 @@ function shared_getCustomerProps($userId)
     // Retrieve max available diskspace limit for the customer
     $diskMax = $row['domain_disk_limit'];
 
-    return array(
+    return [
         $subConsumed, $subMax, $alsConsumed, $alsMax, $mailConsumed, $mailMax, $ftpConsumed, $ftpMax, $sqlDbConsumed,
         $sqlDbMax, $sqlUserConsumed, $sqlUserMax, $trafficMax, $diskMax
-    );
+    ];
 }
 
 /**
@@ -361,7 +361,7 @@ function update_reseller_c_props($resellerId)
               t1.current_traff_amnt = t2.traffic_limit
             WHERE t1.reseller_id = ?
         ",
-        array($resellerId, $resellerId)
+        [$resellerId, $resellerId]
     );
 }
 
@@ -408,18 +408,18 @@ function change_domain_status($customerId, $action)
     try {
         $db->beginTransaction();
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeChangeDomainStatus, array(
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeChangeDomainStatus, [
             'customerId' => $customerId,
             'action'     => $action
-        ));
+        ]);
 
         if ($action == 'deactivate') {
             if ($cfg['HARD_MAIL_SUSPENSION']) { # SMTP/IMAP/POP disabled
-                exec_query('UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ?', array(
+                exec_query('UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ?', [
                     'todisable', 'no', $domainId
-                ));
+                ]);
             } else { # IMAP/POP disabled
-                exec_query('UPDATE mail_users SET po_active = ? WHERE domain_id = ?', array('no', $domainId));
+                exec_query('UPDATE mail_users SET po_active = ? WHERE domain_id = ?', ['no', $domainId]);
             }
         } else {
             exec_query(
@@ -428,7 +428,7 @@ function change_domain_status($customerId, $action)
                         SET status = ?, po_active = IF(mail_type LIKE '%_mail%', 'yes', po_active)
                         WHERE domain_id = ? AND status = ?
                     ",
-                array('toenable', $domainId, 'disabled')
+                ['toenable', $domainId, 'disabled']
             );
             exec_query(
                 "
@@ -436,32 +436,32 @@ function change_domain_status($customerId, $action)
                     SET po_active = IF(mail_type LIKE '%_mail%', 'yes', po_active)
                     WHERE domain_id = ?
                     AND status <> ?",
-                array($domainId, 'disabled')
+                [$domainId, 'disabled']
             );
         }
 
         # TODO implements customer deactivation
         #exec_query('UPDATE admin SET admin_status = ? WHERE admin_id = ?', array($newStatus, $customerId));
-        exec_query('UPDATE ftp_users SET status = ? WHERE admin_id = ?', array($newStatus, $customerId));
-        exec_query('UPDATE htaccess SET status = ? WHERE dmn_id = ?', array($newStatus, $domainId));
-        exec_query('UPDATE htaccess_groups SET status = ? WHERE dmn_id = ?', array($newStatus, $domainId));
-        exec_query('UPDATE htaccess_users SET status = ? WHERE dmn_id = ?', array($newStatus, $domainId));
-        exec_query("UPDATE domain SET domain_status = ? WHERE domain_id = ?", array($newStatus, $domainId));
-        exec_query("UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?", array($newStatus, $domainId));
-        exec_query("UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?", array($newStatus, $domainId));
+        exec_query('UPDATE ftp_users SET status = ? WHERE admin_id = ?', [$newStatus, $customerId]);
+        exec_query('UPDATE htaccess SET status = ? WHERE dmn_id = ?', [$newStatus, $domainId]);
+        exec_query('UPDATE htaccess_groups SET status = ? WHERE dmn_id = ?', [$newStatus, $domainId]);
+        exec_query('UPDATE htaccess_users SET status = ? WHERE dmn_id = ?', [$newStatus, $domainId]);
+        exec_query("UPDATE domain SET domain_status = ? WHERE domain_id = ?", [$newStatus, $domainId]);
+        exec_query("UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?", [$newStatus, $domainId]);
+        exec_query("UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?", [$newStatus, $domainId]);
         exec_query(
             '
                 UPDATE subdomain_alias INNER JOIN domain_aliasses USING(alias_id) SET subdomain_alias_status = ?
                 WHERE domain_id = ?
             ',
-            array($newStatus, $domainId)
+            [$newStatus, $domainId]
         );
-        exec_query('UPDATE domain_dns SET domain_dns_status = ? WHERE domain_id = ?', array($newStatus, $domainId));
+        exec_query('UPDATE domain_dns SET domain_dns_status = ? WHERE domain_id = ?', [$newStatus, $domainId]);
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterChangeDomainStatus, array(
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterChangeDomainStatus, [
             'customerId' => $customerId,
             'action'     => $action
-        ));
+        ]);
 
         $db->commit();
         send_request();
@@ -497,7 +497,7 @@ function sql_delete_user($dmnId, $userId)
             SELECT sqlu_name, sqlu_host, sqld_name FROM sql_user INNER JOIN sql_database USING(sqld_id)
             WHERE sqlu_id = ? AND domain_id = ?
         ',
-        array($userId, $dmnId)
+        [$userId, $dmnId]
     );
 
     if (!$stmt->rowCount()) {
@@ -509,34 +509,34 @@ function sql_delete_user($dmnId, $userId)
     $host = $row['sqlu_host'];
     $dbName = $row['sqld_name'];
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlUser, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlUser, [
         'sqlUserId' => $userId,
         'sqlUsername' => $user,
         'sqlUserhost' => $host
-    ));
+    ]);
 
-    $stmt = exec_query('SELECT COUNT(sqlu_id) AS cnt FROM sql_user WHERE sqlu_name = ? AND sqlu_host = ?', array(
+    $stmt = exec_query('SELECT COUNT(sqlu_id) AS cnt FROM sql_user WHERE sqlu_name = ? AND sqlu_host = ?', [
         $user, $host
-    ));
+    ]);
 
     $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
     if ($row['cnt'] < 2) {
-        exec_query('DELETE FROM mysql.user WHERE User = ? AND Host = ?', array($user, $host));
-        exec_query('DELETE FROM mysql.db WHERE Host = ? AND User = ?', array($host, $user));
+        exec_query('DELETE FROM mysql.user WHERE User = ? AND Host = ?', [$user, $host]);
+        exec_query('DELETE FROM mysql.db WHERE Host = ? AND User = ?', [$host, $user]);
     } else {
         $dbName = preg_replace('/([%_])/', '\\\\$1', $dbName);
-        exec_query('DELETE FROM mysql.db WHERE Host = ? AND Db = ? AND User = ?', array($host, $dbName, $user));
+        exec_query('DELETE FROM mysql.db WHERE Host = ? AND Db = ? AND User = ?', [$host, $dbName, $user]);
     }
 
     exec_query('DELETE FROM sql_user WHERE sqlu_id = ?', $userId);
     execute_query('FLUSH PRIVILEGES');
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSqlUser, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSqlUser, [
         'sqlUserId' => $userId,
         'sqlUsername' => $user,
         'sqlUserhost' => $host
-    ));
+    ]);
 
     return true;
 }
@@ -553,7 +553,7 @@ function delete_sql_database($dmnId, $dbId)
     ignore_user_abort(true);
     set_time_limit(0);
 
-    $stmt = exec_query('SELECT sqld_name FROM sql_database WHERE domain_id = ? AND sqld_id = ?', array($dmnId, $dbId));
+    $stmt = exec_query('SELECT sqld_name FROM sql_database WHERE domain_id = ? AND sqld_id = ?', [$dmnId, $dbId]);
     if (!$stmt->rowCount()) {
         return false;
     }
@@ -561,14 +561,14 @@ function delete_sql_database($dmnId, $dbId)
     $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
     $dbName = $row['sqld_name'];
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlDb, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlDb, [
         'sqlDbId' => $dbId,
         'sqlDatabaseName' => $dbName
-    ));
+    ]);
 
     $stmt = exec_query(
         'SELECT sqlu_id FROM sql_user INNER JOIN sql_database USING(sqld_id) WHERE sqld_id = ? AND domain_id = ?',
-        array($dbId, $dmnId)
+        [$dbId, $dmnId]
     );
 
     while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
@@ -578,12 +578,12 @@ function delete_sql_database($dmnId, $dbId)
     }
 
     exec_query(sprintf('DROP DATABASE IF EXISTS %s', quoteIdentifier($dbName)));
-    exec_query('DELETE FROM sql_database WHERE domain_id = ? AND sqld_id = ?', array($dmnId, $dbId));
+    exec_query('DELETE FROM sql_database WHERE domain_id = ? AND sqld_id = ?', [$dmnId, $dbId]);
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSqlDb, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSqlDb, [
         'sqlDbId' => $dbId,
         'sqlDatabaseName' => $dbName
-    ));
+    ]);
 
     return true;
 }
@@ -609,7 +609,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 
     if ($checkCreatedBy) {
         $query .= ' AND created_by = ?';
-        $stmt = exec_query($query, array($customerId, $_SESSION['user_id']));
+        $stmt = exec_query($query, [$customerId, $_SESSION['user_id']]);
     } else {
         $stmt = exec_query($query, $customerId);
     }
@@ -635,9 +635,9 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 
         $db->beginTransaction();
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteCustomer, array(
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteCustomer, [
             'customerId' => $customerId
-        ));
+        ]);
 
         // Deletes all protected areas data (areas, groups and users)
 
@@ -657,7 +657,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
         exec_query('DELETE FROM ftp_group WHERE groupname = ?', $data['admin_name']);
         exec_query('DELETE FROM quotalimits WHERE name = ?', $data['admin_name']);
         exec_query('DELETE FROM quotatallies WHERE name = ?', $data['admin_name']);
-        exec_query('DELETE FROM tickets WHERE ticket_from = ? OR ticket_to = ?', array($customerId, $customerId));
+        exec_query('DELETE FROM tickets WHERE ticket_from = ? OR ticket_to = ?', [$customerId, $customerId]);
         exec_query('DELETE FROM user_gui_props WHERE user_id = ?', $customerId);
         exec_query('DELETE FROM php_ini WHERE admin_id = ?', $customerId);
 
@@ -665,35 +665,35 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
         // Delegated tasks - begin
         //
 
-        exec_query('UPDATE ftp_users SET status = ? WHERE admin_id = ?', array('todelete', $customerId));
-        exec_query('UPDATE mail_users SET status = ? WHERE domain_id = ?', array('todelete', $data['domain_id']));
+        exec_query('UPDATE ftp_users SET status = ? WHERE admin_id = ?', ['todelete', $customerId]);
+        exec_query('UPDATE mail_users SET status = ? WHERE domain_id = ?', ['todelete', $data['domain_id']]);
         exec_query(
             '
                 UPDATE subdomain_alias AS t1 JOIN domain_aliasses AS t2 ON(t2.domain_id = ?)
                 SET t1.subdomain_alias_status = ? WHERE t1.alias_id = t2.alias_id
             ',
-            array($data['domain_id'], 'todelete')
+            [$data['domain_id'], 'todelete']
         );
-        exec_query('UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', array('todelete', $data['domain_id']));
-        exec_query('UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', array('todelete', $data['domain_id']));
-        exec_query('UPDATE domain SET domain_status = ? WHERE domain_id = ?', array('todelete', $data['domain_id']));
-        exec_query('UPDATE admin SET admin_status = ? WHERE admin_id = ?', array('todelete', $customerId));
-        exec_query("UPDATE ssl_certs SET status = ? WHERE domain_type = 'dmn' AND domain_id = ?", array(
+        exec_query('UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', ['todelete', $data['domain_id']]);
+        exec_query('UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', ['todelete', $data['domain_id']]);
+        exec_query('UPDATE domain SET domain_status = ? WHERE domain_id = ?', ['todelete', $data['domain_id']]);
+        exec_query('UPDATE admin SET admin_status = ? WHERE admin_id = ?', ['todelete', $customerId]);
+        exec_query("UPDATE ssl_certs SET status = ? WHERE domain_type = 'dmn' AND domain_id = ?", [
             'todelete', $data['domain_id']
-        ));
+        ]);
         exec_query(
             "
                 UPDATE ssl_certs SET status = ?
                 WHERE domain_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?) AND domain_type = ?
             ",
-            array('todelete', $data['domain_id'], 'als')
+            ['todelete', $data['domain_id'], 'als']
         );
         exec_query(
             "
                 UPDATE ssl_certs SET status = ?
                 WHERE domain_id IN (SELECT subdomain_id FROM subdomain WHERE domain_id = ?) AND domain_type = ?
             ",
-            array('todelete', $data['domain_id'], 'sub')
+            ['todelete', $data['domain_id'], 'sub']
         );
         exec_query(
             "
@@ -704,7 +704,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
                 )
                 AND domain_type = ?
             ",
-            array('todelete', $data['domain_id'], 'alssub')
+            ['todelete', $data['domain_id'], 'alssub']
         );
 
         //
@@ -713,9 +713,9 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 
         update_reseller_c_props($data['created_by']);
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteCustomer, array(
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteCustomer, [
             'customerId' => $customerId
-        ));
+        ]);
 
         $db->commit();
     } catch (iMSCP_Exception $e) {
@@ -749,10 +749,10 @@ function deleteDomainAlias($aliasId, $aliasName)
     try {
         $db->beginTransaction();
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteDomainAlias, array(
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteDomainAlias, [
             'domainAliasId' => $aliasId,
             'domainAliasName' => $aliasName
-        ));
+        ]);
 
         // Delete any FTP account that belongs to the domain alias
 
@@ -777,7 +777,7 @@ function deleteDomainAlias($aliasId, $aliasName)
             $ftpGgid = $row['gid'];
             $ftpMembers = preg_split('/,/', $row['members'], -1, PREG_SPLIT_NO_EMPTY);
 
-            $nFtpMembers = array();
+            $nFtpMembers = [];
             foreach ($ftpMembers as $ftpMember) {
                 if (!preg_match("/@(?:.+?\\.)*$aliasName$/", $ftpMember)) {
                     $nFtpMembers[] = $ftpMember;
@@ -785,7 +785,7 @@ function deleteDomainAlias($aliasId, $aliasName)
             }
 
             if (!empty($nFtpMembers)) {
-                exec_query('UPDATE ftp_group SET members = ? WHERE gid = ?', array(implode(',', $nFtpMembers), $ftpGgid));
+                exec_query('UPDATE ftp_group SET members = ? WHERE gid = ?', [implode(',', $nFtpMembers), $ftpGgid]);
             } else {
                 exec_query('DELETE FROM ftp_group WHERE groupname = ?', $ftpGname);
                 exec_query('DELETE FROM quotalimits WHERE name = ?', $ftpGname);
@@ -813,7 +813,7 @@ function deleteDomainAlias($aliasId, $aliasName)
                 UPDATE mail_users SET status = ? WHERE (sub_id = ? AND mail_type LIKE ?)
                 OR (sub_id IN (SELECT subdomain_alias_id FROM subdomain_alias WHERE alias_id = ?) AND mail_type LIKE ?)
             ",
-            array('todelete', $aliasId, '%alias_%', $aliasId, '%alssub_%')
+            ['todelete', $aliasId, '%alias_%', $aliasId, '%alssub_%']
         );
 
         # Schedule deletion of any SSL certificate that belongs to the domain alias
@@ -823,16 +823,16 @@ function deleteDomainAlias($aliasId, $aliasName)
                 UPDATE ssl_certs SET status = ?
                 WHERE domain_id IN (SELECT subdomain_alias_id FROM subdomain_alias WHERE alias_id = ?) AND domain_type = ?
             ',
-            array('todelete', 'alssub', $aliasId)
+            ['todelete', 'alssub', $aliasId]
         );
-        exec_query('UPDATE ssl_certs SET status = ? WHERE domain_id = ? and domain_type = ?', array('todelete', $aliasId, 'als'));
-        exec_query('UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE alias_id = ?', array('todelete', $aliasId));
-        exec_query('UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', array('todelete', $aliasId));
+        exec_query('UPDATE ssl_certs SET status = ? WHERE domain_id = ? and domain_type = ?', ['todelete', $aliasId, 'als']);
+        exec_query('UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE alias_id = ?', ['todelete', $aliasId]);
+        exec_query('UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', ['todelete', $aliasId]);
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteDomainAlias, array(
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteDomainAlias, [
             'domainAliasId' => $aliasId,
             'domainAliasName' => $aliasName
-        ));
+        ]);
 
         $db->commit();
 
@@ -873,7 +873,7 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
     }
 
     if ($subgroupname != '') {
-        $sqldIds = array();
+        $sqldIds = [];
 
         while (!$stmt->EOF) {
             array_push($sqldIds, $stmt->fields['field']);
@@ -1013,10 +1013,10 @@ function update_reseller_props($resellerId, $props)
                 max_sql_user_cnt = ?, current_traff_amnt = ?, max_traff_amnt = ?, current_disk_amnt = ?, max_disk_amnt = ?
             WHERE reseller_id = ?
         ',
-        array(
+        [
             $dmnCur, $dmnMax, $subCur, $subMax, $alsCur, $alsMax, $mailCur, $mailMax, $ftpCur, $ftpMax, $sqlDbCur,
             $sqlDbMax, $sqlUserCur, $sqlUserMax, $traffCur, $traffMax, $diskCur, $diskMax, $resellerId
-        )
+        ]
     );
 
     return $stmt;
@@ -1094,7 +1094,7 @@ function sync_mailboxes_quota($domainId, $newQuota)
                 $result = 1;
             }
 
-            $stmt->execute(array(((int)$result - (int)$oldResult) * 1048576, $mailbox['mail_id']));
+            $stmt->execute([((int)$result - (int)$oldResult) * 1048576, $mailbox['mail_id']]);
         }
     }
 }
@@ -1350,7 +1350,7 @@ function utils_normalizePath($path, $posixCompliant = false)
     }
 
     $segments = explode('/', $path);
-    $newSegments = array();
+    $newSegments = [];
 
     foreach ($segments as $segment) {
 
@@ -1452,7 +1452,7 @@ function utils_arrayMergeRecursive(array $array1, array $array2)
  */
 function utils_arrayDiffRecursive(array $array1, array $array2)
 {
-    $diff = array();
+    $diff = [];
     foreach ($array1 as $key => $value) {
         if (array_key_exists($key, $array2)) {
             if (is_array($value)) {
@@ -1569,7 +1569,7 @@ function isSecureRequest()
         || (
             !empty($_SERVER['HTTP_X_FORWARDED_PROTO'])
             && in_array(strtolower(
-                current(explode(',', $_SERVER['HTTP_X_FORWARDED_PROTO']))), array('https', 'on', 'ssl', '1')
+                current(explode(',', $_SERVER['HTTP_X_FORWARDED_PROTO']))), ['https', 'on', 'ssl', '1']
             )
         )
     ) {
@@ -1598,13 +1598,13 @@ function getRequestScheme()
  */
 function getRequestHost()
 {
-    $possibleHostSources = array('HTTP_X_FORWARDED_HOST', 'HTTP_HOST', 'SERVER_NAME', 'SERVER_ADDR');
-    $sourceTransformations = array(
+    $possibleHostSources = ['HTTP_X_FORWARDED_HOST', 'HTTP_HOST', 'SERVER_NAME', 'SERVER_ADDR'];
+    $sourceTransformations = [
         "HTTP_X_FORWARDED_HOST" => function ($value) {
             $elements = explode(',', $value);
             return trim(end($elements));
         }
-    );
+    ];
 
     $host = '';
     foreach ($possibleHostSources as $source) {
@@ -1751,7 +1751,7 @@ function shared_getCustomerMonthlyTrafficData($domainId)
         $webTraffic = $ftpTraffic = $smtpTraffic = $popTraffic = $totalTraffic = 0;
     }
 
-    return array($webTraffic, $ftpTraffic, $smtpTraffic, $popTraffic, $totalTraffic);
+    return [$webTraffic, $ftpTraffic, $smtpTraffic, $popTraffic, $totalTraffic];
 }
 
 /**
@@ -1786,10 +1786,10 @@ function shared_getCustomerStats($adminId)
         $row['domain_id']
     );
 
-    return array(
+    return [
         $row['admin_name'], $row['domain_id'], $webTraffic, $ftpTraffic, $smtpTraffic, $popTraffic, $totalTraffic,
         $row['diskspace_usage'], $row['monthly_traffic_limit'], $row['diskspace_limit']
-    );
+    ];
 }
 
 /**
@@ -1849,7 +1849,7 @@ function write_log($msg, $logLevel = E_USER_WARNING)
         $severity = 'Unknown error';
     }
 
-    send_mail(array(
+    send_mail([
         'mail_id' => 'imscp-log',
         'username' => tr('administrator'),
         'email' => $cfg['DEFAULT_ADMIN_ADDRESS'],
@@ -1873,7 +1873,7 @@ Please do not reply to this email.
 
 ________________
 i-MSCP Mailer'),
-        'placeholders' => array(
+        'placeholders' => [
             '{USERNAME}' => tr('administrator'),
             '{HOSTNAME}' => $cfg['SERVER_HOSTNAME'],
             '{SERVER_IP}' => $cfg['BASE_SERVER_PUBLIC_IP'],
@@ -1882,8 +1882,8 @@ i-MSCP Mailer'),
             '{BUILDDATE}' => $cfg['BuildDate'] ?: tr('Unavailable'),
             '{MESSAGE_SEVERITY}' => $severity,
             '{MESSAGE}' => $msg
-        ),
-    ));
+        ],
+    ]);
 }
 
 /**
@@ -1901,7 +1901,7 @@ i-MSCP Mailer'),
 function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $ulname, $utype)
 {
     $data = get_welcome_email($adminId);
-    $ret = send_mail(array(
+    $ret = send_mail([
         'mail_id' => 'add-user-auto-msg',
         'fname' => $ufname,
         'lname' => $ulname,
@@ -1909,11 +1909,11 @@ function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $uln
         'email' => $uemail,
         'subject' => $data['subject'],
         'message' => $data['message'],
-        'placeholders' => array(
+        'placeholders' => [
             '{USERTYPE}' => $utype,
             '{PASSWORD}' => $upass
-        )
-    ));
+        ]
+    ]);
 
     if (!$ret) {
         write_log(sprintf("Lost Password: Couldn't send welcome email to %s", $uname), E_USER_ERROR);
@@ -1938,14 +1938,14 @@ function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $uln
 function get_client_software_permission($tpl, $userId)
 {
     $query = "SELECT `domain_software_allowed`, `domain_ftpacc_limit` FROM `domain` WHERE `domain_admin_id` = ?";
-    $stmt = exec_query($query, array($userId));
+    $stmt = exec_query($query, [$userId]);
 
     if (!$stmt->rowCount()) {
         throw new iMSCP_Exception('Unable to retrieve software installer permissions for the given user');
     }
 
     if ($stmt->fields('domain_software_allowed') == 'yes' && $stmt->fields('domain_ftpacc_limit') != '1') {
-        $tpl->assign(array(
+        $tpl->assign([
             'SOFTWARE_SUPPORT' => tr('yes'),
             'TR_SOFTWARE_MENU' => tr('Software installer'),
             'SOFTWARE_MENU' => tr('yes'),
@@ -1957,10 +1957,10 @@ function get_client_software_permission($tpl, $userId)
             'SW_MSG' => tr('Enabled'),
             'SW_ALLOWED' => tr('Software installer'),
             'TR_SOFTWARE_DESCRIPTION' => tr('Software Description')
-        ));
+        ]);
         $tpl->parse('T_SOFTWARE_SUPPORT', '.t_software_support');
     } else {
-        $tpl->assign(array(
+        $tpl->assign([
             'T_SOFTWARE_SUPPORT' => '',
             'T_SOFTWARE_MENU' => '',
             'SOFTWARE_ITEM' => '',
@@ -1968,7 +1968,7 @@ function get_client_software_permission($tpl, $userId)
             'TR_SOFTWARE_DESCRIPTION' => tr('You do not have permission to install software yet'),
             'SW_MSG' => tr('Disabled'),
             'SW_ALLOWED' => tr('Software installer')
-        ));
+        ]);
     }
 }
 
@@ -1983,26 +1983,26 @@ function get_client_software_permission($tpl, $userId)
 function get_reseller_software_permission($tpl, $resellerId)
 {
     $query = "SELECT `software_allowed` FROM `reseller_props` WHERE `reseller_id` = ?";
-    $stmt = exec_query($query, array($resellerId));
+    $stmt = exec_query($query, [$resellerId]);
 
     if (!$stmt->rowCount()) {
         throw new iMSCP_Exception('Unable to found properties of the given reseller');
     }
 
     if ($stmt->fields('software_allowed') == 'yes') {
-        $tpl->assign(array(
+        $tpl->assign([
             'SOFTWARE_SUPPORT' => tr('yes'),
             'SW_ALLOWED' => tr('Software installer'),
             'SW_MSG' => tr('enabled')
-        ));
+        ]);
         $tpl->parse('T_SOFTWARE_SUPPORT', 't_software_support');
     } else {
-        $tpl->assign(array(
+        $tpl->assign([
             'SOFTWARE_SUPPORT' => tr('no'),
             'SW_ALLOWED' => tr('Software installer'),
             'SW_MSG' => tr('disabled'),
             'T_SOFTWARE_SUPPORT' => ''
-        ));
+        ]);
     }
 }
 
@@ -2021,7 +2021,7 @@ function get_application_installer_conf()
     }
 
     $row = $stmt->fetchRow();
-    return array($row['use_webdepot'], $row['webdepot_xml_url'], $row['webdepot_last_update']);
+    return [$row['use_webdepot'], $row['webdepot_xml_url'], $row['webdepot_last_update']];
 }
 
 /**
@@ -2060,25 +2060,25 @@ function check_package_is_installed($packageInstallType, $packageName, $packageV
         ";
     }
 
-    $stmt = exec_query($query, array($packageInstallType, $packageName, $packageVersion, $packageLanguage));
+    $stmt = exec_query($query, [$packageInstallType, $packageName, $packageVersion, $packageLanguage]);
     $softwaresCount = $stmt->rowCount();
     $query = "
         SELECT `software_id` FROM `web_software`
         WHERE `software_installtype`  = ? AND `software_name` = ? AND `software_version` = ?
         AND `software_language` = ? AND `software_master_id` = '0' AND `software_depot` = 'yes'
     ";
-    $stmt = exec_query($query, array($packageInstallType, $packageName, $packageVersion, $packageLanguage));
+    $stmt = exec_query($query, [$packageInstallType, $packageName, $packageVersion, $packageLanguage]);
     $softwaresCountDepot = $stmt->rowCount();
 
     if ($softwaresCount || $softwaresCountDepot) {
         if ($softwaresCount) {
-            return array(true, 'reseller');
+            return [true, 'reseller'];
         }
 
-        return array(true, 'sw_depot');
+        return [true, 'sw_depot'];
     }
 
-    return array(false, 'not_installed');
+    return [false, 'not_installed'];
 }
 
 /**
@@ -2096,7 +2096,7 @@ function get_webdepot_software_list($tpl, $userId)
 
     if ($rowCount) {
         while ($row = $stmt->fetchRow()) {
-            $tpl->assign(array(
+            $tpl->assign([
                 'TR_PACKAGE_NAME' => tohtml($row['package_title']),
                 'TR_PACKAGE_TOOLTIP' => tohtml($row['package_description'], 'htmlAttr'),
                 'TR_PACKAGE_INSTALL_TYPE' => tohtml($row['package_install_type']),
@@ -2105,7 +2105,7 @@ function get_webdepot_software_list($tpl, $userId)
                 'TR_PACKAGE_TYPE' => tohtml($row['package_type']),
                 'TR_PACKAGE_VENDOR_HP' => $row['package_vendor_hp'] === ''
                     ? tr('N/A') : '<a href="' . $row['package_vendor_hp'] . '" target="_blank">' . tr('Vendor hompage') . '</a>'
-            ));
+            ]);
 
             list($isInstalled, $installedOn) = check_package_is_installed(
                 $row['package_install_type'], $row['package_title'], $row['package_version'], $row['package_language'],
@@ -2113,20 +2113,20 @@ function get_webdepot_software_list($tpl, $userId)
             );
 
             if ($isInstalled) {
-                $tpl->assign(array(
+                $tpl->assign([
                     'PACKAGE_HTTP_URL' => '',
                     'TR_PACKAGE_INSTALL' => ($installedOn == "sw_depot")
                         ? tr('Installed in software repository') : tr('Installed in reseller repository'),
                     'TR_MESSAGE_INSTALL' => ''
-                ));
+                ]);
                 $tpl->parse('PACKAGE_INFO_LINK', 'package_info_link');
                 $tpl->assign('PACKAGE_INSTALL_LINK', '');
             } else {
-                $tpl->assign(array(
+                $tpl->assign([
                     'PACKAGE_HTTP_URL' => $row['package_download_link'],
                     'TR_PACKAGE_INSTALL' => tr('Start installation'),
                     'TR_MESSAGE_INSTALL' => tr('Are you sure you want to install this package from the Web software repository?')
-                ));
+                ]);
                 $tpl->parse('PACKAGE_INSTALL_LINK', 'package_install_link');
                 $tpl->assign('PACKAGE_INFO_LINK', '');
             }
@@ -2136,10 +2136,10 @@ function get_webdepot_software_list($tpl, $userId)
 
         $tpl->assign('NO_WEBDEPOTSOFTWARE_LIST', '');
     } else {
-        $tpl->assign(array(
+        $tpl->assign([
             'NO_WEBDEPOTSOFTWARE_AVAILABLE' => tr('No software in Web repository found!'),
             'WEB_SOFTWARE_REPOSITORY' => ''
-        ));
+        ]);
     }
 
     return $rowCount;
@@ -2153,7 +2153,7 @@ function get_webdepot_software_list($tpl, $userId)
  */
 function update_webdepot_software_list($repositoryIndexFile, $webRepositoryLastUpdate)
 {
-    $options = array('http' => array('user_agent' => 'PHP libxml agent'));
+    $options = ['http' => ['user_agent' => 'PHP libxml agent']];
     $context = stream_context_create($options);
     libxml_set_streams_context($context);
 
@@ -2182,22 +2182,22 @@ function update_webdepot_software_list($repositoryIndexFile, $webRepositoryLastU
                             ?, ?, ?, ?, ?, ?, ?, ?, ?
                         )
                 ';
-                exec_query($query, array(
+                exec_query($query, [
                     clean_input($package->INSTALL_TYPE), clean_input($package->TITLE), clean_input($package->VERSION),
                     clean_input($package->LANGUAGE), clean_input($package->TYPE), clean_input($package->DESCRIPTION),
                     encode_idna(strtolower(clean_input($package->VENDOR_HP))),
                     encode_idna(strtolower(clean_input($package->DOWNLOAD_LINK))),
                     encode_idna(strtolower(clean_input($package->SIGNATURE_LINK)))
-                ));
+                ]);
             } else {
                 $badSoftwarePackageDefinition++;
                 break;
             }
         }
         if (!$badSoftwarePackageDefinition) {
-            exec_query('UPDATE `web_software_options` SET `webdepot_last_update` = ?', array(
+            exec_query('UPDATE `web_software_options` SET `webdepot_last_update` = ?', [
                 $webRepositoryIndexFile->LAST_UPDATE->DATE
-            ));
+            ]);
             set_page_message(tr('Web software repository index been successfully updated.'), 'success');
         } else {
             set_page_message(tr('Update of Web software repository index has been aborted. Missing or empty fields.'), 'error');
@@ -2341,7 +2341,7 @@ function execute_query($query, $parameters = null)
         if (null !== $parameters) {
             $parameters = func_get_args();
             array_shift($parameters);
-            $stmt = call_user_func_array(array($db, 'execute'), $parameters);
+            $stmt = call_user_func_array([$db, 'execute'], $parameters);
         } else {
             $stmt = $db->execute($query);
         }
@@ -2454,12 +2454,12 @@ function records_count($table, $where = '', $bind = '')
  */
 function unsetMessages()
 {
-    $glToUnset = array(
+    $glToUnset = [
         'user_updated', 'dmn_tpl', 'chtpl', 'step_one', 'step_two_data', 'ch_hpprops', 'user_add3_added',
         'user_has_domain', 'local_data', 'reseller_added', 'user_added', 'aladd', 'edit_ID', 'aldel', 'hpid',
         'user_deleted', 'hdomain', 'aledit', 'acreated_by', 'dhavesub', 'ddel', 'dhavealias', 'dhavealias', 'dadel',
         'local_data'
-    );
+    ];
 
     foreach ($glToUnset as $toUnset) {
         if (array_key_exists($toUnset, $GLOBALS)) {
@@ -2467,12 +2467,12 @@ function unsetMessages()
         }
     }
 
-    $sessToUnset = array(
+    $sessToUnset = [
         'reseller_added', 'dmn_name', 'dmn_tpl', 'chtpl', 'step_one', 'step_two_data', 'ch_hpprops', 'user_add3_added',
         'user_has_domain', 'user_added', 'aladd', 'edit_ID', 'aldel', 'hpid', 'user_deleted', 'hdomain', 'aledit',
         'acreated_by', 'dhavesub', 'ddel', 'dhavealias', 'dadel', 'local_data',
         'dmn_expire', 'dmn_url_forward', 'dmn_type_forward', 'dmn_host_forward'
-    );
+    ];
 
     foreach ($sessToUnset as $toUnset) {
         if (array_key_exists($toUnset, $_SESSION)) {
@@ -2505,9 +2505,9 @@ if (!function_exists('http_build_url')) {
      * @param bool|array $new_url If set, it will be filled with the parts of the composed url like parse_url() would return
      * @return string URL
      */
-    function http_build_url($url, $parts = array(), $flags = HTTP_URL_REPLACE, &$new_url = false)
+    function http_build_url($url, $parts = [], $flags = HTTP_URL_REPLACE, &$new_url = false)
     {
-        $keys = array('user', 'pass', 'port', 'path', 'query', 'fragment');
+        $keys = ['user', 'pass', 'port', 'path', 'query', 'fragment'];
 
         // HTTP_URL_STRIP_ALL becomes all the HTTP_URL_STRIP_Xs
         if ($flags & HTTP_URL_STRIP_ALL) {
@@ -2594,7 +2594,7 @@ if (!function_exists('http_build_url')) {
  */
 function getDataTablesPluginTranslations($json = true)
 {
-    $tr = array(
+    $tr = [
         'sLengthMenu' => tr(
             'Show %s records per page',
             '
@@ -2613,9 +2613,9 @@ function getDataTablesPluginTranslations($json = true)
         'infoEmpty' => tr('Showing 0 to 0 of 0 records'),
         'infoFiltered' => tr('(filtered from %s total records)', '_MAX_'),
         'search' => tr('Search'),
-        'paginate' => array('previous' => tr('Previous'), 'next' => tr('Next')),
+        'paginate' => ['previous' => tr('Previous'), 'next' => tr('Next')],
         'processing' => tr('Loading data...')
-    );
+    ];
 
     return ($json) ? json_encode($tr) : $tr;
 }
@@ -2648,7 +2648,7 @@ function showErrorPage($code)
     if (isset($_SERVER['HTTP_ACCEPT'])) {
         if (strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
             header("Content-type: application/json");
-            exit(json_encode(array('code' => 404, 'message' => $message)));
+            exit(json_encode(['code' => 404, 'message' => $message]));
         }
 
         if (strpos($_SERVER['HTTP_ACCEPT'], 'application/xmls') !== false) {
@@ -2721,10 +2721,10 @@ function calc_bars($crnt, $max, $bars_max)
         $bars = $bars_max;
     }
 
-    return array(
+    return [
         sprintf("%.2f", $percent_usage),
         sprintf("%d", $bars)
-    );
+    ];
 }
 
 /**
@@ -2753,13 +2753,13 @@ function calc_bars($crnt, $max, $bars_max)
 function bytesHuman($bytes, $unit = null, $decimals = 2, $power = 1024)
 {
     if ($power == 1000) {
-        $units = array(
+        $units = [
             'B' => 0, 'kB' => 1, 'MB' => 2, 'GB' => 3, 'TB' => 4, 'PB' => 5, 'EB' => 6, 'ZB' => 7, 'YB' => 8
-        );
+        ];
     } elseif ($power == 1024) {
-        $units = array(
+        $units = [
             'B' => 0, 'kiB' => 1, 'MiB' => 2, 'GiB' => 3, 'TiB' => 4, 'PiB' => 5, 'EiB' => 6, 'ZiB' => 7, 'YiB' => 8
-        );
+        ];
     } else {
         throw new iMSCP_Exception('Unknown power value');
     }
@@ -2961,7 +2961,7 @@ function getWebmailList()
         return explode(',', $config['WEBMAIL_PACKAGES']);
     }
 
-    return array();
+    return [];
 }
 
 /**

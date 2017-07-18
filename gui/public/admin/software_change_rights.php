@@ -89,7 +89,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 				AND
 					`softwaredepot_allowed` = 'yes'
 			";
-			$rs2 = exec_query($query2, array());
+			$rs2 = exec_query($query2, []);
 			if ($rs2->recordCount() > 0){
 				while(!$rs2->EOF) {
 					$query3 = "
@@ -102,17 +102,17 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 						AND 
 							`software_master_id` = ?
 					";
-					$rs3 = exec_query($query3, array($rs2->fields['reseller_id'],$software_id));
+					$rs3 = exec_query($query3, [$rs2->fields['reseller_id'],$software_id]);
 					if ($rs3->recordCount() === 0){
 						exec_query(
 							$query,
-								array(
+								[
 									$software_id, $rs2->fields['reseller_id'], $rs->fields['software_name'],
 									$rs->fields['software_version'], $rs->fields['software_language'], $rs->fields['software_type'],
 									$rs->fields['software_db'], $rs->fields['software_archive'], $rs->fields['software_installfile'],
 									$rs->fields['software_prefix'], $rs->fields['software_link'], $rs->fields['software_desc'],
 									$rs->fields['software_active'], "ok", $user_id, "yes"
-								)
+                                ]
 						);
                         /** @var $db iMSCP_Database */
                         $db = iMSCP_Registry::get('db');
@@ -128,7 +128,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 		}else{
 			exec_query(
 				$query, 
-					array(
+					[
 						$software_id, $reseller_id, 
 						$rs->fields['software_name'], 
 						$rs->fields['software_version'],
@@ -142,7 +142,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 						$rs->fields['software_desc'], 
 						$rs->fields['software_active'],
 						"ok", $user_id, "yes"
-					)
+                    ]
 			);
             /** @var $db iMSCP_Database */
             $db = iMSCP_Registry::get('db');
@@ -169,7 +169,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 			WHERE
 				`software_master_id` = ?
 		";
-		exec_query($delete, array($software_id, $reseller_id));
+		exec_query($delete, [$software_id, $reseller_id]);
 		exec_query($update, $software_id);
 		set_page_message(tr('Rights successfully removed.'), 'success');
 		redirectTo('software_rights.php?id='.$software_id);

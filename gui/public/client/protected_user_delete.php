@@ -30,10 +30,10 @@ if (!customerHasFeature('protected_areas') || !isset($_GET['uname'])) {
 try {
     iMSCP_Database::getInstance()->beginTransaction();
 
-    $htuserId = filter_digits($_GET['uname']);
+    $htuserId = intval($_GET['uname']);
     $domainId = get_user_domain_id($_SESSION['user_id']);
 
-    $stmt = exec_query('SELECT uname FROM htaccess_users WHERE dmn_id = ? AND id = ?', array($domainId, $htuserId));
+    $stmt = exec_query('SELECT uname FROM htaccess_users WHERE dmn_id = ? AND id = ?', [$domainId, $htuserId]);
 
     if (!$stmt->rowCount()) {
         showBadRequestErrorPage();
@@ -54,9 +54,9 @@ try {
 
         unset($members[$candidate]);
 
-        exec_query('UPDATE htaccess_groups SET members = ?, status = ? WHERE id = ?', array(
+        exec_query('UPDATE htaccess_groups SET members = ?, status = ? WHERE id = ?', [
             implode(',', $htuserList), 'tochange', $row['id']
-        ));
+        ]);
     }
 
     // Schedule deletion or update of any .htaccess files in which the htuser was used
@@ -78,13 +78,13 @@ try {
             $status = 'tochange';
         }
 
-        exec_query('UPDATE htaccess SET user_id = ?, status = ? WHERE id = ?', array($htuserList, $status, $row['id']));
+        exec_query('UPDATE htaccess SET user_id = ?, status = ? WHERE id = ?', [$htuserList, $status, $row['id']]);
     }
 
     // Schedule htuser deletion
-    $stmt = exec_query('UPDATE htaccess_users SET status = ? WHERE id = ? AND dmn_id = ?', array(
+    $stmt = exec_query('UPDATE htaccess_users SET status = ? WHERE id = ? AND dmn_id = ?', [
         'todelete', $htuserId, $domainId
-    ));
+    ]);
 
     iMSCP_Database::getInstance()->commit();
 

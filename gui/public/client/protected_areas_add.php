@@ -36,7 +36,7 @@ function isAllowedDir($directory)
 
     $disallowedDirs = implode('|', array_map(function ($dir) {
         return quotemeta(utils_normalizePath('/' . $dir));
-    }, array('/', '00_private', 'backups', 'errors', 'logs', 'phptmp')));
+    }, ['/', '00_private', 'backups', 'errors', 'logs', 'phptmp']));
 
     $mountpointsReg = implode('|', array_map(function ($dir) {
         $path = utils_normalizePath('/' . $dir);
@@ -64,7 +64,7 @@ function handleProtectedArea()
     }
 
     $protectionType = (
-        isset($_POST['protection_type']) && in_array($_POST['protection_type'], array('user', 'group'), true)
+        isset($_POST['protection_type']) && in_array($_POST['protection_type'], ['user', 'group'], true)
     ) ? $_POST['protection_type'] : 'user';
 
     $error = false;
@@ -146,9 +146,9 @@ function handleProtectedArea()
         $db->beginTransaction();
 
         if (isset($_REQUEST['id']) && $_REQUEST['id'] > 0) {
-            $stmt = exec_query('UPDATE htaccess SET status = ? WHERE id = ? AND dmn_id = ?', array(
+            $stmt = exec_query('UPDATE htaccess SET status = ? WHERE id = ? AND dmn_id = ?', [
                 'todelete', $_REQUEST['id'], $mainDmnProps['domain_id']
-            ));
+            ]);
 
             if (!$stmt->rowCount()) {
                 showBadRequestErrorPage();
@@ -163,10 +163,10 @@ function handleProtectedArea()
                     ?, ?, ?, ?, ?, ?, ?
                 )
             ',
-            array(
+            [
                 $mainDmnProps['domain_id'], $userIdList, $groupIdList, 'Basic', $protectedAreaName, $protectedAreaPath,
                 'toadd'
-            )
+            ]
         );
 
         $db->commit();
@@ -202,13 +202,13 @@ function generatePage($tpl)
     $_SESSION['ftp_chooser_domain_id'] = $mainDmnProps['domain_id'];
     $_SESSION['ftp_chooser_user'] = $_SESSION['user_logged'];
     $_SESSION['ftp_chooser_root_dir'] = '/';
-    $_SESSION['ftp_chooser_hidden_dirs'] = array('00_private', 'backups', 'errors', 'logs', 'phptmp');
+    $_SESSION['ftp_chooser_hidden_dirs'] = ['00_private', 'backups', 'errors', 'logs', 'phptmp'];
     $_SESSION['ftp_chooser_unselectable_dirs'] = $mountpoints;
 
     if (isset($_REQUEST['id']) && $_REQUEST['id'] > 0) {
-        $stmt = exec_query('SELECT * FROM htaccess WHERE dmn_id = ? AND id = ?', array(
-            $mainDmnProps['domain_id'], filter_digits($_REQUEST['id'])
-        ));
+        $stmt = exec_query('SELECT * FROM htaccess WHERE dmn_id = ? AND id = ?', [
+            $mainDmnProps['domain_id'], intval($_REQUEST['id'])
+        ]);
         if (!$stmt->rowCount()) {
             showBadRequestErrorPage();
         }
@@ -218,38 +218,38 @@ function generatePage($tpl)
         $userIds = $row['user_id'];
         $groupIds = $row['group_id'];
         $authType = ((isset($_POST['protection_type']) && $_POST['protection_type'] === 'group') || $userIds == 0) ? 'group' : 'user';
-        $tpl->assign(array(
+        $tpl->assign([
             'AREA_NAME' => (isset($_POST['protected_area_name']))
                 ? tohtml($_POST['protected_area_name'], 'htmlAttr') : tohtml($row['auth_name'], 'htmlAttr'),
             'PATH'      => (isset($_POST['protected_area_path']))
                 ? tohtml($_POST['protected_area_path'], 'htmlAttr') : tohtml($row['path'], 'htmlAttr')
-        ));
+        ]);
     } else {
         $userIds = 0;
         $groupIds = 0;
         $authType = ((isset($_POST['protection_type']) && $_POST['protection_type'] === 'group')) ? 'group' : 'user';
-        $tpl->assign(array(
+        $tpl->assign([
             'ID'        => 0,
             'AREA_NAME' => (isset($_POST['protected_area_name']))
                 ? tohtml($_POST['protected_area_name'], 'htmlAttr') : '',
             'PATH'      => (isset($_POST['protected_area_path']))
                 ? tohtml($_POST['protected_area_path'], 'htmlAttr')
                 : tohtml(utils_normalizePath('/' . $mainDmnProps['document_root']), 'htmlAttr')
-        ));
+        ]);
     }
 
     if ($authType == 'user') {
-        $tpl->assign(array(
+        $tpl->assign([
             'USER_CHECKED'  => ' checked',
             'GROUP_CHECKED' => ''
-        ));
+        ]);
     }
 
     if ($authType == 'group') {
-        $tpl->assign(array(
+        $tpl->assign([
             'USER_CHECKED'  => '',
             'GROUP_CHECKED' => ' checked'
-        ));
+        ]);
     }
 
     $stmt = exec_query('SELECT * FROM htaccess_users WHERE dmn_id = ?', $mainDmnProps['domain_id']);
@@ -261,32 +261,32 @@ function generatePage($tpl)
     # Create htuser list
     $userIds = isset($_POST['users']) ? (array)$_POST['users'] : explode(',', $userIds);
     while ($row = $stmt->fetchRow()) {
-        $tpl->assign(array(
+        $tpl->assign([
             'USER_VALUE'    => tohtml($row['id']),
             'USER_LABEL'    => tohtml($row['uname']),
             'USER_SELECTED' => ($authType === 'user' && in_array($row['id'], $userIds)) ? ' selected' : ''
-        ));
+        ]);
         $tpl->parse('USER_ITEM', '.user_item');
     }
 
     # Create htgroup list
     $stmt = exec_query('SELECT * FROM htaccess_groups WHERE dmn_id = ?', $mainDmnProps['domain_id']);
     if (!$stmt->rowCount()) {
-        $tpl->assign(array(
+        $tpl->assign([
             'AUTH_SELECTORS_JS'      => '',
             'AUTH_SELECTORS'         => '',
             'AUTH_GROUP_LIST'        => '',
             'TR_AUTHENTICATION_DATA' => tr('Authentication users'),
-        ));
+        ]);
     } else {
         $tpl->assign('TR_AUTHENTICATION_DATA', tr('Authentication users/groups'));
         $groupIds = isset($_POST['groups']) ? (array)$_POST['groups'] : explode(',', $groupIds);
         while ($row = $stmt->fetchRow()) {
-            $tpl->assign(array(
+            $tpl->assign([
                 'GROUP_VALUE'    => tohtml($row['id']),
                 'GROUP_LABEL'    => tohtml($row['ugroup']),
                 'GROUP_SELECTED' => ($authType == 'group' && in_array($row['id'], $groupIds)) ? ' selected' : ''
-            ));
+            ]);
             $tpl->parse('GROUP_ITEM', '.group_item');
         }
     }
@@ -309,7 +309,7 @@ if (!empty($_POST))
     handleProtectedArea();
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'              => 'shared/layouts/ui.tpl',
     'page'                => 'client/protect_it.tpl',
     'page_message'        => 'layout',
@@ -319,8 +319,8 @@ $tpl->define_dynamic(array(
     'auth_group_list'     => 'page',
     'group_item'          => 'auth_group_list',
     'user_item'           => 'page'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'          => tr('Client / Webtools / Protected Areas / {TR_DYNAMIC_TITLE}'),
     'TR_DYNAMIC_TITLE'       => (isset($_REQUEST['id']) && $_REQUEST['id'] > 0)
         ? tr('Edit protected area') : tr('Add protected area'),
@@ -333,7 +333,7 @@ $tpl->assign(array(
     'TR_PROTECT_IT'          => (isset($_REQUEST['id']) && $_REQUEST['id'] > 0)
         ? tr('Edit protected area') : tr('Add protected area'),
     'TR_CANCEL'              => tr('Cancel')
-));
+]);
 
 iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e iMSCP_Events_Event */
@@ -347,5 +347,5 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

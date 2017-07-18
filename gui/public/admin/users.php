@@ -28,40 +28,37 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStar
 check_login('admin');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'admin/manage_users.phtml',
-    'page_message' => 'layout',
-    'admin_message' => 'page',
-    'admin_list' => 'page',
-    'admin_item' => 'admin_list',
-    'admin_delete_link' => 'admin_item',
-    'rsl_message' => 'page',
-    'rsl_list' => 'page',
-    'rsl_item' => 'rsl_list',
-    'usr_message' => 'page',
-    'search_form' => 'page',
-    'usr_list' => 'page',
-    'usr_item' => 'usr_list',
-    'domain_status_change' => 'usr_item',
-    'domain_status_nochange' => 'usr_item',
-    'user_details' => 'usr_list',
-    'usr_status_reload_true' => 'usr_item',
-    'usr_status_reload_false' => 'usr_item',
-    'usr_delete_show' => 'usr_item',
-    'usr_delete_link' => 'usr_item',
-    'icon' => 'usr_item',
-    'scroll_prev_gray' => 'page',
-    'scroll_prev' => 'page',
-    'scroll_next_gray' => 'page',
-    'scroll_next' => 'page'
-));
+$tpl->define_dynamic([
+    'layout'                         => 'shared/layouts/ui.tpl',
+    'page'                           => 'admin/users.phtml',
+    'page_message'                   => 'layout',
+    'administrator_message'          => 'page',
+    'administrator_list'             => 'page',
+    'administrator_item'             => 'administrator_list',
+    'administrator_delete_link'      => 'administrator_item',
+    'reseller_message'               => 'page',
+    'reseller_list'                  => 'page',
+    'reseller_item'                  => 'reseller_list',
+    'client_search_form'             => 'page',
+    'client_show_domain_aliases_blk' => 'client_search_form',
+    'client_message'                 => 'page',
+    'client_list'                    => 'page',
+    'client_item'                    => 'client_list',
+    'client_domain_status_ok'        => 'client_item',
+    'client_domain_status_not_ok'    => 'client_item',
+    'client_restricted_links'        => 'client_item',
+    'client_domain_aliases_switch'   => 'client_item',
+    'client_domain_aliases_show'     => 'client_domain_aliases_switch',
+    'client_domain_aliases_hide'     => 'client_domain_aliases_switch',
+    'client_scroll_prev'             => 'client_list',
+    'client_scroll_prev_gray'        => 'client_list',
+    'client_scroll_next_gray'        => 'client_list',
+    'client_scroll_next'             => 'client_list'
+]);
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE' => tr('Admin / Users / Overview'),
-    'TR_NEXT' => tr('Next'),
-    'TR_PREVIOUS' => tr('Previous')
-));
+]);
 
 if (isset($_POST['details']) && !empty($_POST['details'])) {
     $_SESSION['details'] = $_POST['details'];
@@ -94,7 +91,7 @@ get_admin_manage_users($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

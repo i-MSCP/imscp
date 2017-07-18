@@ -43,8 +43,8 @@ function setFtpRootDir($tpl = NULL)
         $_SESSION['ftp_chooser_domain_id'] = $domainProps['domain_id'];
         $_SESSION['ftp_chooser_user'] = $_SESSION['user_logged'];
         $_SESSION['ftp_chooser_root_dir'] = utils_normalizePath($mountPoint . '/' . $documentRoot);
-        $_SESSION['ftp_chooser_hidden_dirs'] = array();
-        $_SESSION['ftp_chooser_unselectable_dirs'] = array();
+        $_SESSION['ftp_chooser_hidden_dirs'] = [];
+        $_SESSION['ftp_chooser_unselectable_dirs'] = [];
         return;
     }
 
@@ -52,7 +52,7 @@ function setFtpRootDir($tpl = NULL)
     header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
     header('Content-type: application/json');
 
-    $data = array();
+    $data = [];
 
     if (!isset($_POST['domain_id']) || !isset($_POST['domain_type'])) {
         header('Status: 400 Bad Request');
@@ -60,15 +60,15 @@ function setFtpRootDir($tpl = NULL)
     } else {
         try {
             list($mountPoint, $documentRoot) = getDomainMountpoint(
-                filter_digits($_POST['domain_id']), clean_input($_POST['domain_type']), $_SESSION['user_id']
+                intval($_POST['domain_id']), clean_input($_POST['domain_type']), $_SESSION['user_id']
             );
 
             # Update parameters for the FTP chooser
             $_SESSION['ftp_chooser_domain_id'] = $domainProps['domain_id'];
             $_SESSION['ftp_chooser_user'] = $_SESSION['user_logged'];
             $_SESSION['ftp_chooser_root_dir'] = utils_normalizePath($mountPoint . '/' . $documentRoot);
-            $_SESSION['ftp_chooser_hidden_dirs'] = array();
-            $_SESSION['ftp_chooser_unselectable_dirs'] = array();
+            $_SESSION['ftp_chooser_hidden_dirs'] = [];
+            $_SESSION['ftp_chooser_unselectable_dirs'] = [];
 
             header('Status: 200 OK');
             $data['document_root'] = utils_normalizePath($documentRoot);
@@ -119,10 +119,10 @@ if (!isset($_GET['id']) || !is_number($_GET['id'])) {
     showBadRequestErrorPage();
 }
 
-$softwareId = filter_digits($_GET['id']);
+$softwareId = intval($_GET['id']);
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'            => 'shared/layouts/ui.tpl',
     'page'              => 'client/software_install.tpl',
     'page_message'      => 'layout',
@@ -131,7 +131,7 @@ $tpl->define_dynamic(array(
     'software_install'  => 'page',
     'no_software'       => 'page',
     'require_installdb' => 'page'
-));
+]);
 
 if (!empty($_POST)) {
     if (is_xhr()) {
@@ -173,7 +173,7 @@ if (!empty($_POST)) {
         showBadRequestErrorPage();
     }
 
-    $domainId = filter_digits($postData[0]);
+    $domainId = intval($postData[0]);
     $domainType = clean_input($postData[1]);
     $domainProps = get_domain_default_props($_SESSION['user_id']);
     $aliasId = $subId = $aliasSubId = 0;
@@ -189,7 +189,7 @@ if (!empty($_POST)) {
                   AND domain_status = ?
                   AND url_forward = ?
                 ",
-                array($domainId, $_SESSION['user_id'], 'ok', 'no')
+                [$domainId, $_SESSION['user_id'], 'ok', 'no']
             );
             break;
         case 'sub':
@@ -203,7 +203,7 @@ if (!empty($_POST)) {
                   AND subdomain_url_forward = ?
                   AND subdomain_status = ?
                 ',
-                array($domainId, $domainProps['domain_id'], 'no', 'ok')
+                [$domainId, $domainProps['domain_id'], 'no', 'ok']
             );
             break;
         case 'als':
@@ -217,7 +217,7 @@ if (!empty($_POST)) {
                   AND alias_status = ?
                   AND url_forward = ?
                 ',
-                array($domainId, $domainProps['domain_id'], 'ok', 'no')
+                [$domainId, $domainProps['domain_id'], 'ok', 'no']
             );
             break;
         case 'alssub':
@@ -226,13 +226,13 @@ if (!empty($_POST)) {
                 '
                   SELECT subdomain_alias_mount AS mpoint, subdomain_alias_document_root AS document_root
                   FROM subdomain_alias
-                  INNER JOIN domain_aliasses USING(alias_id)
+                  JOIN domain_aliasses USING(alias_id)
                   WHERE subdomain_alias_id = ?
                   AND subdomain_alias_url_forward = ?
                   AND domain_id = ?
                   AND subdomain_alias_status =?
                 ',
-                array($domainId, 'no', $domainProps['domain_id'], 'ok')
+                [$domainId, 'no', $domainProps['domain_id'], 'ok']
             );
             break;
         default:
@@ -250,9 +250,9 @@ if (!empty($_POST)) {
         $error = true;
     } else {
         $stmt = exec_query(
-            'SELECT software_name, software_version FROM web_software_inst WHERE domain_id = ? AND path = ?', array(
+            'SELECT software_name, software_version FROM web_software_inst WHERE domain_id = ? AND path = ?', [
             $domainId, $installPath
-        ));
+        ]);
 
         if ($stmt->rowCount()) {
             $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
@@ -292,9 +292,9 @@ if (!empty($_POST)) {
         $appSqlPassword = clean_input($_POST['database_pwd']);
 
         # Checks that database exists and is owned by the customer
-        $stmt = exec_query('SELECT sqld_id FROM sql_database WHERE domain_id = ? AND sqld_name = ?', array(
+        $stmt = exec_query('SELECT sqld_id FROM sql_database WHERE domain_id = ? AND sqld_name = ?', [
             $domainProps['domain_id'], $appDatabase
-        ));
+        ]);
         if (!$stmt->rowCount()) {
             set_page_message(tr("Unknown `%s' database. Database must exists.", $appDatabase), 'error');
             $error = true;
@@ -302,9 +302,9 @@ if (!empty($_POST)) {
             $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
             # Check that SQL user belongs to the given database
-            $stmt = exec_query('SELECT COUNT(sqlu_id) FROM sql_user WHERE sqld_id = ? AND sqlu_name = ?', array(
+            $stmt = exec_query('SELECT COUNT(sqlu_id) FROM sql_user WHERE sqld_id = ? AND sqlu_name = ?', [
                 $row['sqld_id'], $appSqlUser
-            ));
+            ]);
             if (!$stmt->fetchRow(PDO::FETCH_COLUMN)) {
                 set_page_message(tr('Invalid SQL user. SQL user must exists and belong to the provided database.'), 'error');
                 $error = true;
@@ -334,12 +334,12 @@ if (!empty($_POST)) {
             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
           )
         ',
-        array(
+        [
             $domainProps['domain_id'], $aliasId, $subId, $aliasSubId, $softwareId, $softwareData['software_master_id'],
             $softwareData['software_name'], $softwareData['software_version'], $softwareData['software_language'],
             $installPath, $softwarePrefix, $appDatabase, $appSqlUser, $appSqlPassword, $appLoginName,  $appPassword,
             $appEmail, 'toadd', $softwareData['software_depot']
-        )
+        ]
     );
 
     write_log(sprintf('%s added new software instance: %s', decode_idna($_SESSION['user_logged']), $softwareData['software_name']), E_USER_NOTICE);
@@ -354,7 +354,7 @@ if (!empty($_POST)) {
     $appEmail = $_SESSION['user_email'];
 }
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE'               => tr('Client / Webtools / Software / Software Installation'),
     'SOFTWARE_ID'                 => tohtml($softwareId),
     'TR_NAME'                     => tr('Software'),
@@ -380,7 +380,7 @@ $tpl->assign(array(
     'VAL_INSTALL_EMAIL'           => tohtml($appEmail),
     'VAL_DATABASE_NAME'           => tohtml($appDatabase),
     'VAL_DATABASE_USER'           => tohtml($appSqlUser)
-));
+]);
 
 iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e iMSCP_Events_Event */
@@ -394,6 +394,6 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 unsetMessages();

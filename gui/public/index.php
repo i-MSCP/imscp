@@ -52,23 +52,23 @@ if (isset($_REQUEST['action'])) {
 redirectToUiLevel();
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'         => 'shared/layouts/simple.tpl',
     'page_message'   => 'layout',
     'lostpwd_button' => 'page'
-));
+]);
 
-$tpl->assign(array(
+$tpl->assign([
     'productLongName'  => tr('internet Multi Server Control Panel'),
     'productLink'      => 'https://www.i-mscp.net',
     'productCopyright' => tr('© 2010-2017 i-MSCP Team<br>All Rights Reserved')
-));
+]);
 
 $cfg = iMSCP_Registry::get('config');
 
 if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
     $tpl->define_dynamic('page', 'message.tpl');
-    $tpl->assign(array(
+    $tpl->assign([
         'TR_PAGE_TITLE'           => tr('i-MSCP - Multi Server Control Panel / Maintenance'),
         'HEADER_BLOCK'            => '',
         'BOX_MESSAGE_TITLE'       => tr('System under maintenance'),
@@ -77,40 +77,40 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
             : tr("We are sorry, but the system is currently under maintenance.\nPlease try again later."),
         'TR_BACK'                 => tr('Administrator login'),
         'BACK_BUTTON_DESTINATION' => '/index.php?admin=1'
-    ));
+    ]);
 } else {
-    $tpl->define_dynamic(array(
+    $tpl->define_dynamic([
         'page'                  => 'index.tpl',
         'lost_password_support' => 'page',
         'ssl_support'           => 'page'
-    ));
+    ]);
 
-    $tpl->assign(array(
+    $tpl->assign([
         'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Login'),
         'TR_LOGIN'      => tr('Login'),
         'TR_USERNAME'   => tr('Username'),
         'UNAME'         => isset($_POST['uname']) ? tohtml($_POST['uname'], 'htmlAttr') : '',
         'TR_PASSWORD'   => tr('Password')
-    ));
+    ]);
 
     if ($cfg['PANEL_SSL_ENABLED'] == 'yes' && $cfg['BASE_SERVER_VHOST_PREFIX'] != 'https://') {
         $isSecure = isSecureRequest() ? true : false;
-        $uri = array(
+        $uri = [
             ($isSecure ? 'http' : 'https') . '://',
             getRequestHost(),
             ($isSecure)
                 ? (getRequestPort() != 443 ? ':' . $cfg['BASE_SERVER_VHOST_HTTP_PORT'] : '')
                 : (getRequestPort() != 80 ? ':' . $cfg['BASE_SERVER_VHOST_HTTPS_PORT'] : '')
-        );
+        ];
 
-        $tpl->assign(array(
+        $tpl->assign([
             'SSL_LINK'           => tohtml(implode('', $uri), 'htmlAttr'),
             'SSL_IMAGE_CLASS'    => ($isSecure) ? 'i_unlock' : 'i_lock',
             'TR_SSL'             => ($isSecure) ? tr('Normal connection') : tr('Secure connection'),
             'TR_SSL_DESCRIPTION' => ($isSecure)
                 ? tohtml(tr('Use normal connection (No SSL)'), 'htmlAttr')
                 : tohtml(tr('Use secure connection (SSL)'), 'htmlAttr')
-        ));
+        ]);
     } else {
         $tpl->assign('SSL_SUPPORT', '');
     }
@@ -125,5 +125,5 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-$eventManager::getInstance()->dispatch(iMSCP_Events::onLoginScriptEnd, array('templateEngine' => $tpl));
+$eventManager::getInstance()->dispatch(iMSCP_Events::onLoginScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

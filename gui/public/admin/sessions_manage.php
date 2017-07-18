@@ -92,36 +92,36 @@ function client_generatePage($tpl)
 
 		if ($username === null) {
 			$tpl->assign(
-				array(
+				[
 					'ADMIN_USERNAME' => tr('Unknown'),
 					'LOGIN_TIME' => date('G:i:s', $stmt->fields['lastaccess'])
-				)
+                ]
 			);
 		} else {
 			$tpl->assign(
-				array(
+				[
 					'ADMIN_USERNAME' =>
 					$username . (($username == $_SESSION['user_logged'] && $currentUserSessionId !== $sessionId)
 						? ' (' . tr('from other browser') . ')' : ''),
 					'LOGIN_TIME' => date('G:i:s', $stmt->fields['lastaccess'])
-				)
+                ]
 			);
 		}
 
 		if ($currentUserSessionId === $sessionId) { // Deletion of our own session is not allowed
 			$tpl->assign(
-				array(
+				[
 					'DISCONNECT_LINK' => 'sessions_manage.php?own=1',
 					'KILL_LINK' => 'sessions_manage.php?own=1'
-				)
+                ]
 			);
 		} else {
 			$tpl->assign(
-				array(
+				[
 					'DISCONNECT_LINK'
 						=> "sessions_manage.php?logout_only&kill={$stmt->fields['session_id']}&username={$username}",
 					'KILL_LINK' => "sessions_manage.php?kill={$stmt->fields['session_id']}&username={$username}"
-				)
+                ]
 			);
 		}
 
@@ -146,16 +146,16 @@ $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
-	array(
+	[
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/sessions_manage.tpl',
 		'page_message' => 'layout',
 		'user_session' => 'page'
-	)
+    ]
 );
 
 $tpl->assign(
-	array(
+	[
 		'TR_PAGE_TITLE' => tr('Admin / Users / Sessions'),
 		'TR_USERNAME' => tr('Username'),
 		'TR_USERTYPE' => tr('User type'),
@@ -163,7 +163,7 @@ $tpl->assign(
 		'TR_ACTIONS' => tr('Actions'),
 		'TR_DISCONNECT' => tr('Disconnect'),
 		'TR_KILL' => tr('Kill session')
-	)
+    ]
 );
 
 generateNavigation($tpl);
@@ -173,7 +173,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 
 $tpl->prnt();
 

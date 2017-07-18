@@ -82,7 +82,7 @@ function getDomainData($configLevel)
         $query .= "
             UNION ALL
             SELECT t1.alias_name, t1.alias_status, alias_id, 'als' FROM domain_aliasses AS t1
-            INNER JOIN domain AS t2 USING(domain_id)
+            JOIN domain AS t2 USING(domain_id)
             WHERE t2.domain_admin_id = :admin_id AND t1.url_forward = 'no' AND t1.alias_status <> :domain_status
         ";
     }
@@ -92,18 +92,22 @@ function getDomainData($configLevel)
         $query .= "
             UNION ALL
             SELECT CONCAT(t1.subdomain_name, '.', t2.domain_name), t1.subdomain_status, subdomain_id, 'sub'
-            FROM subdomain AS t1 INNER JOIN domain AS t2 USING(domain_id)
-            WHERE t2.domain_admin_id  = :admin_id AND t1.subdomain_status <> :domain_status
+            FROM subdomain AS t1
+            JOIN domain AS t2 USING(domain_id)
+            WHERE t2.domain_admin_id  = :admin_id
+            AND t1.subdomain_status <> :domain_status
             UNION ALL
             SELECT CONCAT(t1.subdomain_alias_name, '.', t2.alias_name), t1.subdomain_alias_status,
                 subdomain_alias_id, 'subals'
-            FROM subdomain_alias AS t1 INNER JOIN domain_aliasses t2 USING(alias_id)
-            INNER JOIN domain AS t3 USING(domain_id)
-            WHERE domain_admin_id = :admin_id AND subdomain_alias_status <> :domain_status
+            FROM subdomain_alias AS t1
+            JOIN domain_aliasses t2 USING(alias_id)
+            JOIN domain AS t3 USING(domain_id)
+            WHERE domain_admin_id = :admin_id
+            AND subdomain_alias_status <> :domain_status
         ";
     }
 
-    $stmt = exec_query($query, array('admin_id' => $_SESSION['user_id'], 'domain_status' => 'todelete'));
+    $stmt = exec_query($query, ['admin_id' => $_SESSION['user_id'], 'domain_status' => 'todelete']);
     return $stmt->fetchAll();
 }
 
@@ -120,7 +124,7 @@ function updatePhpConfig($phpini, $configLevel)
     global $phpini, $configLevel;
 
     if (isset($_POST['domain_id']) && isset($_POST['domain_type'])) {
-        $dmnId = filter_digits($_POST['domain_id']);
+        $dmnId = intval($_POST['domain_id']);
         $dmnType = clean_input($_POST['domain_type']);
     } else {
         $dmnId = get_user_domain_id($_SESSION['user_id']);
@@ -128,13 +132,13 @@ function updatePhpConfig($phpini, $configLevel)
     }
 
     if ($configLevel == 'per_user' && $dmnType != 'dmn'
-        || $configLevel == 'per_domain' && !in_array($dmnType, array('dmn', 'als'))
+        || $configLevel == 'per_domain' && !in_array($dmnType, ['dmn', 'als'])
     ) {
         showBadRequestErrorPage();
     }
 
     if ($configLevel == 'per_user' && $dmnType != 'dmn' || $configLevel == 'per_domain' &&
-        !in_array($dmnType, array('dmn', 'als'))
+        !in_array($dmnType, ['dmn', 'als'])
     ) {
         showBadRequestErrorPage();
     }
@@ -160,13 +164,13 @@ function updatePhpConfig($phpini, $configLevel)
     }
 
     if ($phpini->getClientPermission('phpiniDisableFunctions') == 'yes') {
-        $disabledFunctions = array();
+        $disabledFunctions = [];
 
         foreach (
-            array(
+            [
                 'show_source', 'system', 'shell_exec', 'shell_exec', 'passthru', 'exec', 'phpinfo', 'shell',
                 'symlink', 'proc_open', 'popen'
-            ) as $function
+            ] as $function
         ) {
             if (isset($_POST[$function])) {
                 $disabledFunctions[] = $function;
@@ -184,7 +188,7 @@ function updatePhpConfig($phpini, $configLevel)
         $disabledFunctions = explode(',', $phpini->getDomainIni('phpiniDisableFunctions'));
 
         if (isset($_POST['exec']) && $_POST['exec'] == 'yes') {
-            $disabledFunctions = array_diff($disabledFunctions, array('exec'));
+            $disabledFunctions = array_diff($disabledFunctions, ['exec']);
         } elseif (!in_array('exec', $disabledFunctions, true)) {
             $disabledFunctions[] = 'exec';
         }
@@ -217,7 +221,7 @@ function updatePhpConfig($phpini, $configLevel)
 function generatePage($tpl, $phpini, $config, $configLevel)
 {
     if (isset($_GET['domain_id']) && isset($_GET['domain_type'])) {
-        $dmnId = filter_digits($_GET['domain_id']);
+        $dmnId = intval($_GET['domain_id']);
         $dmnType = clean_input($_GET['domain_type']);
     } else {
         $dmnId = get_user_domain_id($_SESSION['user_id']);
@@ -225,7 +229,7 @@ function generatePage($tpl, $phpini, $config, $configLevel)
     }
 
     if ($configLevel == 'per_user' && $dmnType != 'dmn'
-        || $configLevel == 'per_domain' && !in_array($dmnType, array('dmn', 'als'))
+        || $configLevel == 'per_domain' && !in_array($dmnType, ['dmn', 'als'])
     ) {
         showBadRequestErrorPage();
     }
@@ -247,12 +251,12 @@ function generatePage($tpl, $phpini, $config, $configLevel)
 
     if ($configLevel != 'per_user') {
         foreach ($dmnsData as $dmnData) {
-            $tpl->assign(array(
+            $tpl->assign([
                 'DOMAIN_ID' => tohtml($dmnData['domain_id'], 'htmlAttr'),
                 'DOMAIN_TYPE' => tohtml($dmnData['domain_type'], 'htmlAttr'),
                 'DOMAIN_NAME_UNICODE' => tohtml(decode_idna($dmnData['domain_name'])),
                 'SELECTED' => ($dmnData['domain_id'] == $dmnId && $dmnData['domain_type'] == $dmnType) ? ' selected' : ''
-            ));
+            ]);
 
             $tpl->parse('DOMAIN_NAME_BLOCK', '.domain_name_block');
         }
@@ -265,28 +269,28 @@ function generatePage($tpl, $phpini, $config, $configLevel)
     if (!$phpini->clientHasPermission('phpiniAllowUrlFopen')) {
         $tpl->assign('ALLOW_URL_FOPEN_BLOCK', '');
     } else {
-        $tpl->assign(array(
+        $tpl->assign([
             'TR_ALLOW_URL_FOPEN' => tr('Allow URL fopen'),
             'ALLOW_URL_FOPEN_ON' => $phpini->getDomainIni('phpiniAllowUrlFopen') == 'on' ? ' checked' : '',
             'ALLOW_URL_FOPEN_OFF' => $phpini->getDomainIni('phpiniAllowUrlFopen') == 'off' ? ' checked' : ''
-        ));
+        ]);
     }
 
     if (!$phpini->clientHasPermission('phpiniDisplayErrors')) {
         $tpl->assign('DISPLAY_ERRORS_BLOCK', '');
     } else {
-        $tpl->assign(array(
+        $tpl->assign([
             'TR_DISPLAY_ERRORS' => tr('Display errors'),
             'DISPLAY_ERRORS_ON' => $phpini->getDomainIni('phpiniDisplayErrors') == 'on' ? ' checked' : '',
             'DISPLAY_ERRORS_OFF' => $phpini->getDomainIni('phpiniDisplayErrors') == 'off' ? ' checked' : ''
-        ));
+        ]);
     }
 
     if (!$phpini->clientHasPermission('phpiniDisplayErrors') || $config['HTTPD_SERVER'] == 'apache_itk') {
         $tpl->assign('ERROR_REPORTING_BLOCK', '');
     } else {
         $errorReporting = $phpini->getDomainIni('phpiniErrorReporting');
-        $tpl->assign(array(
+        $tpl->assign([
             'TR_ERROR_REPORTING' => tohtml(tr('Error reporting')),
             'TR_ERROR_REPORTING_DEFAULT' => tohtml(tr('All errors, except E_NOTICES, E_STRICT AND E_DEPRECATED (Default)')),
             'TR_ERROR_REPORTING_DEVELOPEMENT' => tohtml(tr('All errors (Development)')),
@@ -294,28 +298,28 @@ function generatePage($tpl, $phpini, $config, $configLevel)
             'ERROR_REPORTING_0' => $errorReporting == 'E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED' ? ' selected' : '',
             'ERROR_REPORTING_1' => $errorReporting == 'E_ALL & ~E_DEPRECATED & ~E_STRICT' ? ' selected' : '',
             'ERROR_REPORTING_2' => $errorReporting == '-1' ? ' selected' : ''
-        ));
+        ]);
     }
 
     if ($config['HTTPD_SERVER'] == 'apache_itk' || !$phpini->clientHasPermission('phpiniDisableFunctions')) {
-        $tpl->assign(array(
+        $tpl->assign([
             'DISABLE_FUNCTIONS_BLOCK' => '',
             'DISABLE_EXEC_BLOCK' => ''
-        ));
+        ]);
     } elseif ($phpini->getClientPermission('phpiniDisableFunctions') == 'exec') {
         $disableFunctions = explode(',', $phpini->getDomainIni('phpiniDisableFunctions'));
         $execYes = in_array('exec', $disableFunctions) ? false : true;
-        $tpl->assign(array(
+        $tpl->assign([
             'TR_DISABLE_FUNCTIONS_EXEC' => tohtml(tr('PHP exec() function')),
             'TR_EXEC_HELP' => tohtml(tr("When set to 'yes', your PHP scripts can call the PHP exec() function."), 'htmlAttr'),
             'EXEC_YES' => $execYes ? ' checked' : '',
             'EXEC_NO' => $execYes ? '' : ' checked',
             'DISABLE_FUNCTIONS_BLOCK' => ''
-        ));
+        ]);
     } else {
-        $disableableFunctions = array(
+        $disableableFunctions = [
             'EXEC', 'PASSTHRU', 'PHPINFO', 'POPEN', 'PROC_OPEN', 'SHOW_SOURCE', 'SYSTEM', 'SHELL', 'SHELL_EXEC', 'SYMLINK'
-        );
+        ];
 
         if ($phpini->clientHasPermission('phpiniMailFunction')) {
             $disableableFunctions[] = 'MAIL';
@@ -328,17 +332,17 @@ function generatePage($tpl, $phpini, $config, $configLevel)
             $tpl->assign($function, in_array(strtolower($function), $disabledFunctions, true) ? ' checked' : '');
         }
 
-        $tpl->assign(array(
+        $tpl->assign([
             'TR_DISABLE_FUNCTIONS' => tohtml(tr('Disabled functions')),
             'DISABLE_EXEC_BLOCK' => ''
-        ));
+        ]);
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'TR_PHP_SETTINGS' => tohtml(tr('PHP Settings')),
         'TR_YES' => tohtml(tr('Yes')),
         'TR_NO' => tohtml(tr('No'))
-    ));
+    ]);
 }
 
 /***********************************************************************************************************************
@@ -365,7 +369,7 @@ if (!empty($_POST)) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'client/phpini.tpl',
     'page_message' => 'layout',
@@ -377,21 +381,21 @@ $tpl->define_dynamic(array(
     'mail_function_block' => 'disable_functions_block',
     'disable_exec_block' => 'page',
     'error_reporting_block' => 'page'
-));
+]);
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE' => tohtml(tr('Client / Domains / PHP Settings'), 'htmlAttr'),
     'TR_MENU_PHPINI' => tohtml(tr('PHP Editor')),
     'TR_DOMAIN' => tohtml(tr('Domain')),
     'TR_DOMAIN_TOOLTIP' => tohtml(tr('Domain for which PHP Editor must act.'), 'htmlAttr'),
     'TR_UPDATE' => tohtml(tr('Update'), 'htmlAttr'),
     'TR_CANCEL' => tohtml(tr('Cancel'))
-));
+]);
 
 generateNavigation($tpl);
 generatePage($tpl, $phpini, $config, $configLevel);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

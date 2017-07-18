@@ -36,13 +36,17 @@ check_login('reseller');
 resellerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
 if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['del_id'])) {
-    $id = filter_digits($_GET['del_id']);
+    $id = intval($_GET['del_id']);
     $stmt = exec_query(
         '
-            SELECT alias_id FROM domain_aliasses INNER JOIN domain USING(domain_id) INNER JOIN admin ON(admin_id = domain_admin_id)
-            WHERE alias_id = ? AND created_by = ?
+            SELECT alias_id
+            FROM domain_aliasses
+            JOIN domain USING(domain_id)
+            JOIN admin ON(admin_id = domain_admin_id)
+            WHERE alias_id = ?
+            AND created_by = ?
         ',
-        array($id, $_SESSION['user_id'])
+        [$id, $_SESSION['user_id']]
     );
     if (!$stmt->rowCount()) {
         showBadRequestErrorPage();
@@ -52,8 +56,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['del_i
 
     try {
         $db->beginTransaction();
-        exec_query('DELETE FROM php_ini WHERE domain_id = ? AND domain_type = ?', array($id, 'als'));
-        exec_query('DELETE FROM domain_aliasses WHERE alias_id = ? AND alias_status = ?', array($id, 'ordered'));
+        exec_query('DELETE FROM php_ini WHERE domain_id = ? AND domain_type = ?', [$id, 'als']);
+        exec_query('DELETE FROM domain_aliasses WHERE alias_id = ? AND alias_status = ?', [$id, 'ordered']);
         $db->commit();
         write_log(sprintf('An alias order has been deleted by %s.', $_SESSION['user_logged']), E_USER_NOTICE);
         set_page_message('Alias order successfully deleted.', 'success');
@@ -70,18 +74,18 @@ if (!isset($_GET['action']) || $_GET['action'] !== 'activate' || !isset($_GET['a
     showBadRequestErrorPage();
 }
 
-$id = filter_digits($_GET['act_id']);
+$id = intval($_GET['act_id']);
 $stmt = exec_query(
     '
         SELECT alias_name, domain_id, email
         FROM domain_aliasses
-        INNER JOIN domain USING(domain_id)
-        INNER JOIN admin ON(admin_id = domain_admin_id)
+        JOIN domain USING(domain_id)
+        JOIN admin ON(admin_id = domain_admin_id)
         WHERE alias_id = ?
         AND alias_status = ?
         AND created_by = ?
     ',
-    array($id, 'ordered', $_SESSION['user_id'])
+    [$id, 'ordered', $_SESSION['user_id']]
 );
 if (!$stmt->rowCount()) {
     showBadRequestErrorPage();
@@ -93,23 +97,23 @@ $db = iMSCP_Database::getInstance();
 try {
     $db->beginTransaction();
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddDomainAlias, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddDomainAlias, [
         'domainId' => $row['domain_id'],
         'domainAliasName' => $row['alias_name']
-    ));
+    ]);
 
-    exec_query('UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', array('toadd', $id));
+    exec_query('UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', ['toadd', $id]);
 
     $cfg = iMSCP_Registry::get('config');
     if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
         client_mail_add_default_accounts($row['domain_id'], $row['email'], $row['alias_name'], 'alias', $id);
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddDomainAlias, array(
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddDomainAlias, [
         'domainId' => $row['domain_id'],
         'domainAliasName' => $row['alias_name'],
         'domainAliasId' => $id
-    ));
+    ]);
     
     $db->commit();
     send_request();

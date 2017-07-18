@@ -43,7 +43,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 		AND
 			`reseller_id` = ?
 	";
-	$rs = exec_query($query, array($_GET['id'], $_SESSION['user_id']));
+	$rs = exec_query($query, [$_GET['id'], $_SESSION['user_id']]);
 
 	if ($rs->recordCount() != 1) {
 		set_page_message(tr('Wrong software id.'), 'error');
@@ -72,7 +72,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 			AND
 				`reseller_id` = ?
 		";
-		$res = exec_query($delete, array($_GET['id'], $_SESSION['user_id']));
+		$res = exec_query($delete, [$_GET['id'], $_SESSION['user_id']]);
 
 		set_page_message(tr('Software successfully scheduled for deletion.'), 'success');
 		redirectTo('software_upload.php');

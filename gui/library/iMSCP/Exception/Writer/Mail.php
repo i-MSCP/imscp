@@ -47,7 +47,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer_Abstract
         }
 
         $footprintsCacheFile = CACHE_PATH . '/mail_body_footprints.php';
-        $footprints = array();
+        $footprints = [];
         $now = time();
 
         // Load footprints cache file
@@ -55,7 +55,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer_Abstract
             $footprints = include($footprintsCacheFile);
 
             if (!is_array($footprints)) {
-                $footprints = array();
+                $footprints = [];
             }
         }
 
@@ -90,7 +90,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer_Abstract
      */
     protected function prepareMailData($exception)
     {
-        $data = array();
+        $data = [];
         if (!iMSCP_Registry::isRegistered('config')) {
             return $data;
         }
@@ -128,13 +128,13 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer_Abstract
         }
 
         $contextInfo = '';
-        foreach (array('HTTP_USER_AGENT', 'REQUEST_URI', 'HTTP_REFERER', 'REMOTE_ADDR', 'X-FORWARDED-FOR', 'SERVER_ADDR') as $key) {
+        foreach (['HTTP_USER_AGENT', 'REQUEST_URI', 'HTTP_REFERER', 'REMOTE_ADDR', 'X-FORWARDED-FOR', 'SERVER_ADDR'] as $key) {
             if (isset($_SERVER[$key]) && $_SERVER[$key] !== '') {
                 $contextInfo .= ucwords(strtolower(str_replace('_', ' ', $key))) . ": {$_SERVER["$key"]}\n";
             }
         }
 
-        return array(
+        return [
             'mail_id' => 'exception-notification',
             'footprint' => sha1($message),
             'username' => 'administrator',
@@ -167,13 +167,13 @@ ___________________________
 i-MSCP Mailer
 EOF
         ,
-            'placeholders' => array(
+            'placeholders' => [
                 '{FILE}' => $exception->getFile(),
                 '{LINE}' => $exception->getLine(),
                 '{EXCEPTION}' => $message,
                 '{BACKTRACE}' => $backtraces,
                 '{CONTEXT_INFO}' => $contextInfo
-            )
-        );
+            ]
+        ];
     }
 }

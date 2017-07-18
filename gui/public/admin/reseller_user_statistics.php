@@ -45,7 +45,7 @@ function _generateUserStatistics($tpl, $adminId)
     $trafficUsagePercent = make_usage_vals($trafficUsageBytes, $trafficLimitBytes);
     $diskspaceUsagePercent = make_usage_vals($diskspaceUsageBytes, $diskspaceLimitBytes);
 
-    $tpl->assign(array(
+    $tpl->assign([
         'USER_NAME' => tohtml(decode_idna($adminName)),
         'USER_ID' => tohtml($adminId),
         'TRAFF_PERCENT' => tohtml($trafficUsagePercent),
@@ -78,7 +78,7 @@ function _generateUserStatistics($tpl, $adminId)
         'SQL_USER_MSG' => ($usql_user_max)
             ? tohtml(tr('%1$d of %2$d', $usql_user_current, translate_limit_value($usql_user_max)))
             : tohtml(translate_limit_value($usql_user_max))
-    ));
+    ]);
 }
 
 /**
@@ -114,7 +114,7 @@ $eventManager->dispatch(iMSCP_Events::onAdminScriptStart);
 check_login('admin');
 
 if (isset($_GET['reseller_id'])) {
-    $resellerId = filter_digits($_GET['reseller_id']);
+    $resellerId = intval($_GET['reseller_id']);
     $_SESSION['stats_reseller_id'] = $resellerId;
 } elseif (isset($_SESSION['stats_reseller_id'])) {
     redirectTo('reseller_user_statistics.php?reseller_id=' . $_SESSION['stats_reseller_id']);
@@ -128,13 +128,13 @@ if (isset($_GET['reseller_id'])) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'admin/reseller_user_statistics.tpl',
     'page_message' => 'layout',
     'reseller_user_statistics_block' => 'page'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE' => tohtml(tr('Admin / Statistics / Reseller Statistics / User Statistics')),
     'TR_USERNAME' => tohtml(tr('User')),
     'TR_TRAFF' => tohtml(tr('Traffic usage')),
@@ -150,7 +150,7 @@ $tpl->assign(array(
     'TR_SQL_DB' => tohtml(tr('SQL databases')),
     'TR_SQL_USER' => tohtml(tr('SQL users')),
     'TR_DETAILED_STATS_TOOLTIP' => tohtml(tr('Show detailed statistics for this user'), 'htmlAttr')
-));
+]);
 
 $eventManager->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e \iMSCP_Events_Event */
@@ -162,7 +162,7 @@ generatePage($tpl, $resellerId);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-$eventManager->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+$eventManager->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

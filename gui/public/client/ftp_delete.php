@@ -32,9 +32,9 @@ if (!customerHasFeature('ftp') || !isset($_GET['id'])) {
 }
 
 $ftpUserId = clean_input($_GET['id']);
-$stmt = exec_query('SELECT `gid` FROM `ftp_users` WHERE `userid` = ? AND `admin_id` = ?', array(
+$stmt = exec_query('SELECT `gid` FROM `ftp_users` WHERE `userid` = ? AND `admin_id` = ?', [
     $ftpUserId, $_SESSION['user_id']
-));
+]);
 
 if (!$stmt->rowCount()) {
     showBadRequestErrorPage();
@@ -47,7 +47,7 @@ $db = iMSCP_Database::getInstance();
 try {
     $db->beginTransaction();
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteFtp, array('ftpUserId' => $ftpUserId));
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteFtp, ['ftpUserId' => $ftpUserId]);
 
     $stmt = exec_query("SELECT `groupname`, `members` FROM `ftp_group` WHERE `gid` = ?", $ftpUserGid);
 
@@ -61,9 +61,9 @@ try {
             unset($members[$member]);
 
             if (!empty($members)) {
-                exec_query('UPDATE `ftp_group` SET `members` = ? WHERE `gid` = ?', array(
+                exec_query('UPDATE `ftp_group` SET `members` = ? WHERE `gid` = ?', [
                     implode(',', $members), $ftpUserGid
-                ));
+                ]);
             } else {
                 exec_query('DELETE FROM `ftp_group` WHERE `groupname` = ?', $groupName);
                 exec_query('DELETE FROM `quotalimits` WHERE `name` = ?', $groupName);
@@ -73,7 +73,7 @@ try {
     }
 
     $cfg = iMSCP_Registry::get('config');
-    exec_query('UPDATE `ftp_users` SET `status` = ? WHERE `userid` = ?', array('todelete', $ftpUserId));
+    exec_query('UPDATE `ftp_users` SET `status` = ? WHERE `userid` = ?', ['todelete', $ftpUserId]);
 
     if (isset($cfg['FILEMANAGER_PACKAGE']) && $cfg['FILEMANAGER_PACKAGE'] == 'Pydio') {
         // Quick fix to delete Ftp preferences directory as created by Pydio
@@ -84,7 +84,7 @@ try {
         }
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteFtp, array('ftpUserId' => $ftpUserId));
+    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteFtp, ['ftpUserId' => $ftpUserId]);
 
     $db->commit();
     send_request();

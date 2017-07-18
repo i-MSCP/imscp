@@ -86,7 +86,7 @@ class iMSCP_Authentication_Result
      * @param mixed $identity
      * @param array|string $messages Message(s)
      */
-    public function __construct($code, $identity, $messages = array())
+    public function __construct($code, $identity, $messages = [])
     {
         $code = (int)$code;
 

@@ -40,26 +40,33 @@ function _client_getDomainName($domainId, $domainType)
                 break;
             case 'als':
                 $query = '
-                    SELECT alias_name AS domain_name FROM domain_aliasses INNER JOIN domain USING(domain_id)
+                    SELECT alias_name AS domain_name FROM domain_aliasses
+                    JOIN domain USING(domain_id)
                     WHERE alias_id = ?
                     AND domain_admin_id = ?
             ';
                 break;
             case 'sub':
                 $query = "
-                    SELECT CONCAT(subdomain_name, '.', domain_name) AS domain_name FROM subdomain
-                    INNER JOIN domain USING(domain_id) WHERE subdomain_id = ? AND domain_admin_id = ?
+                    SELECT CONCAT(subdomain_name, '.', domain_name) AS domain_name
+                    FROM subdomain
+                    JOIN domain USING(domain_id)
+                    WHERE subdomain_id = ?
+                    AND domain_admin_id = ?
                 ";
                 break;
             default:
                 $query = "
-                    SELECT CONCAT(subdomain_alias_name, '.', alias_name) AS domain_name FROM subdomain_alias
-                    INNER JOIN domain_aliasses USING(alias_id) INNER JOIN domain USING(domain_id)
-                    WHERE subdomain_alias_id = ? AND domain_admin_id = ?
+                    SELECT CONCAT(subdomain_alias_name, '.', alias_name) AS domain_name
+                    FROM subdomain_alias
+                    JOIN domain_aliasses USING(alias_id)
+                    JOIN domain USING(domain_id)
+                    WHERE subdomain_alias_id = ?
+                    AND domain_admin_id = ?
                 ";
         }
 
-        $stmt = exec_query($query, array($domainId, $_SESSION['user_id']));
+        $stmt = exec_query($query, [$domainId, $_SESSION['user_id']]);
 
         if (!$stmt->rowCount()) {
             return false;
@@ -96,7 +103,7 @@ function _client_updateDomainStatus($domainType, $domainId)
             $query = 'UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE subdomain_alias_id = ?';
     }
 
-    exec_query($query, array('tochange', $domainId));
+    exec_query($query, ['tochange', $domainId]);
 }
 
 /**
@@ -130,14 +137,14 @@ EOF;
     $sslTpl = new iMSCP_pTemplate();
     $sslTpl->setRootDir($config['CONF_DIR'] . '/openssl');
     $sslTpl->define('tpl', 'openssl.cnf.tpl');
-    $sslTpl->assign(array(
+    $sslTpl->assign([
         'COMMON_NAME' => $data['domain_name'],
         'EMAIL_ADDRESS' => $data['email'],
         'DOMAIN_NAME' => $data['domain_name'],
         'ALT_NAMES' => $altNames,
         'ADMIN_SYS_NAME' => $data['admin_sys_name'],
         'BASE_SERVER_VHOST' => $config['BASE_SERVER_VHOST']
-    ));
+    ]);
     $sslTpl->parse('TPL', 'tpl');
 
     $opensslConfFile = @tempnam(sys_get_temp_dir(), $_SESSION['user_id'] . '-openssl.cnf');
@@ -181,16 +188,16 @@ function client_generateSelfSignedCert($domainName)
         return false;
     }
 
-    $distinguishedName = array(
+    $distinguishedName = [
         'countryName' => 'US', //  TODO map of country names to ISO-3166 codes
         'stateOrProvinceName' => !empty($row['state']) ? $row['state'] : 'N/A',
         'localityName' => !empty($row['city']) ? $row['city'] : 'N/A',
         'organizationName' => !empty($row['firm']) ? $row['firm'] : 'N/A',
         'commonName' => $domainName,
         'emailAddress' => $row['email']
-    );
+    ];
 
-    $sslConfig = array('config' => $sslConfigFilePath);
+    $sslConfig = ['config' => $sslConfigFilePath];
     $csr = @openssl_csr_new($distinguishedName, $pkey, $sslConfig);
     if (!is_resource($csr)) {
         write_log(sprintf('Could not generate SSL certificate signing request: %s', openssl_error_string()), E_USER_ERROR);
@@ -237,12 +244,12 @@ function client_addSslCert($domainId, $domainType)
 {
     $config = iMSCP_Registry::get('config');
     $domainName = _client_getDomainName($domainId, $domainType);
-    $allowHSTS = (isset($_POST['allow_hsts']) && in_array($_POST['allow_hsts'], array('on', 'off'), true))
+    $allowHSTS = (isset($_POST['allow_hsts']) && in_array($_POST['allow_hsts'], ['on', 'off'], true))
         ? $_POST['allow_hsts'] : 'off';
     $hstsMaxAge = ($allowHSTS == 'on' && isset($_POST['hsts_max_age']) && is_number($_POST['hsts_max_age'])
-        &&  $_POST['hsts_max_age'] >= 0) ? filter_digits($_POST['hsts_max_age']) : '31536000';
+        &&  $_POST['hsts_max_age'] >= 0) ? intval($_POST['hsts_max_age']) : '31536000';
     $hstsIncludeSubDomains = ($allowHSTS == 'on' && isset($_POST['hsts_include_subdomains'])
-        && in_array($_POST['hsts_include_subdomains'], array('on', 'off'), true))
+        && in_array($_POST['hsts_include_subdomains'], ['on', 'off'], true))
         ? $_POST['hsts_include_subdomains'] : 'off';
     $selfSigned = (isset($_POST['selfsigned']) && $_POST['selfsigned'] === 'on');
 
@@ -265,7 +272,7 @@ function client_addSslCert($domainId, $domainType)
     $privateKey = clean_input($_POST['private_key']);
     $certificate = clean_input($_POST['certificate']);
     $caBundle = clean_input($_POST['ca_bundle']);
-    $certId = filter_digits($_POST['cert_id']);
+    $certId = intval($_POST['cert_id']);
 
     if (!$selfSigned) { // Validate SSL certificate (private key, SSL certificate and certificate chain)
         $privateKey = @openssl_pkey_get_private($privateKey, $passPhrase);
@@ -305,7 +312,7 @@ function client_addSslCert($domainId, $domainType)
                 return;
             }
 
-            if (@openssl_x509_checkpurpose($certificate, X509_PURPOSE_SSL_SERVER, array($config['DISTRO_CA_BUNDLE']), $tmpfname) !== true) {
+            if (@openssl_x509_checkpurpose($certificate, X509_PURPOSE_SSL_SERVER, [$config['DISTRO_CA_BUNDLE']], $tmpfname) !== true) {
                 set_page_message(tr('At least one intermediate certificate is invalid or missing.'), 'error');
                 return;
             }
@@ -317,7 +324,7 @@ function client_addSslCert($domainId, $domainType)
             }
 
             // Note: Here we also add the certificate in the trusted chain to support self-signed certificates
-            if(@openssl_x509_checkpurpose($certificate, X509_PURPOSE_SSL_SERVER, array($config['DISTRO_CA_BUNDLE'], $tmpfname)) !== true) {
+            if(@openssl_x509_checkpurpose($certificate, X509_PURPOSE_SSL_SERVER, [$config['DISTRO_CA_BUNDLE'], $tmpfname]) !== true) {
                 set_page_message(tr('At least one intermediate certificate is invalid or missing.'), 'error');
                 return;
             }
@@ -362,10 +369,10 @@ function client_addSslCert($domainId, $domainType)
                         ?, ?, ?, ?, ?, ?, ?, ?, ?
                     )
                 ',
-                array(
+                [
                     $domainId, $domainType, $privateKeyStr, $certificateStr, $caBundleStr, $allowHSTS,
                     $hstsMaxAge, $hstsIncludeSubDomains, 'toadd'
-                )
+                ]
             );
         } else { // Update existing certificate
             exec_query(
@@ -374,10 +381,10 @@ function client_addSslCert($domainId, $domainType)
                         hsts_max_age = ?, hsts_include_subdomains = ?, status = ?
                     WHERE cert_id = ? AND domain_id = ? AND domain_type = ?
                 ',
-                array(
+                [
                     $privateKeyStr, $certificateStr, $caBundleStr, $allowHSTS, $hstsMaxAge,
                     $hstsIncludeSubDomains, 'tochange', $certId, $domainId, $domainType
-                )
+                ]
             );
         }
 
@@ -424,15 +431,15 @@ function client_deleteSslCert($domainId, $domainType)
         showBadRequestErrorPage();
     }
 
-    $certId = filter_digits($_POST['cert_id']);
+    $certId = intval($_POST['cert_id']);
     $db = iMSCP_Database::getInstance();
 
     try {
         $db->beginTransaction();
 
-        exec_query('UPDATE ssl_certs SET status = ? WHERE cert_id = ? AND domain_id = ? AND domain_type = ?', array(
+        exec_query('UPDATE ssl_certs SET status = ? WHERE cert_id = ? AND domain_id = ? AND domain_type = ?', [
             'todelete', $certId, $domainId, $domainType
-        ));
+        ]);
 
         _client_updateDomainStatus($domainType, $domainId);
 
@@ -467,7 +474,7 @@ function client_generatePage($tpl, $domainId, $domainType)
         showBadRequestErrorPage();
     }
 
-    $stmt = exec_query('SELECT * FROM ssl_certs WHERE domain_id = ? AND domain_type = ?', array($domainId, $domainType));
+    $stmt = exec_query('SELECT * FROM ssl_certs WHERE domain_id = ? AND domain_type = ?', [$domainId, $domainType]);
 
     if ($stmt->rowCount()) {
         $row = $stmt->fetchRow();
@@ -481,7 +488,7 @@ function client_generatePage($tpl, $domainId, $domainType)
         $hstsIncludeSubDomains = ($row['hsts_include_subdomains'] == 'on');
         $trAction = tr('Update');
         $status = $row['status'];
-        $tpl->assign('STATUS', in_array($status, array('toadd', 'tochange', 'todelete', 'ok'))
+        $tpl->assign('STATUS', in_array($status, ['toadd', 'tochange', 'todelete', 'ok'])
             ? translate_dmn_status($status) : '<span style="color: red;font-weight: bold">' . $status . "</span>"
         );
     } elseif (customerHasFeature('ssl')) {
@@ -495,10 +502,10 @@ function client_generatePage($tpl, $domainId, $domainType)
         $hstsMaxAge = '31536000';
         $hstsIncludeSubDomains = false;
         $tpl->assign(
-            array(
+            [
                 'SSL_CERTIFICATE_STATUS' => '',
                 'SSL_CERTIFICATE_ACTION_DELETE' => ''
-            )
+            ]
         );
     } else {
         set_page_message('SSL feature is currently disabled.', 'static_warning');
@@ -515,12 +522,12 @@ function client_generatePage($tpl, $domainId, $domainType)
         $caBundle = $_POST['ca_bundle'];
         $allowHSTS = (isset($_POST['allow_hsts']) && $_POST['allow_hsts'] === 'on');
         $hstsMaxAge = ($allowHSTS && isset($_POST['hsts_max_age']) && is_number($_POST['hsts_max_age'])
-            && $_POST['hsts_max_age'] >= 0) ? filter_digits($_POST['hsts_max_age']) : '31536000';
+            && $_POST['hsts_max_age'] >= 0) ? intval($_POST['hsts_max_age']) : '31536000';
         $hstsIncludeSubDomains = ($allowHSTS && isset($_POST['hsts_include_subdomains'])
             && $_POST['hsts_include_subdomains'] === 'on');
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'TR_DYNAMIC_TITLE' => $dynTitle,
         'DOMAIN_NAME' => tohtml(decode_idna($domainName)),
         'HSTS_CHECKED_ON' => $allowHSTS ? ' checked' : '',
@@ -535,9 +542,9 @@ function client_generatePage($tpl, $domainId, $domainType)
         'TR_ACTION' => $trAction,
         'TR_YES' => tr('Yes'),
         'TR_NO' => tr('No')
-    ));
+    ]);
 
-    if (!customerHasFeature('ssl') || isset($status) && in_array($status, array('toadd', 'tochange', 'todelete'))) {
+    if (!customerHasFeature('ssl') || isset($status) && in_array($status, ['toadd', 'tochange', 'todelete'])) {
         $tpl->assign('SSL_CERTIFICATE_ACTIONS', '');
         if (!customerHasFeature('ssl')) {
             set_page_message(tr('SSL feature is not available. You can only view your certificate.'), 'static_warning');
@@ -555,21 +562,21 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptSta
 check_login('user');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'client/cert_view.tpl',
     'page_message' => 'layout',
     'ssl_certificate_status' => 'page',
     'ssl_certificate_actions' => 'page'
-));
+]);
 
 if (!isset($_GET['domain_id']) || !isset($_GET['domain_type']) ||
-    !in_array($_GET['domain_type'], array('dmn', 'als', 'sub', 'alssub'))
+    !in_array($_GET['domain_type'], ['dmn', 'als', 'sub', 'alssub'])
 ) {
     showBadRequestErrorPage();
 }
 
-$domainId = filter_digits($_GET['domain_id']);
+$domainId = intval($_GET['domain_id']);
 $domainType = clean_input($_GET['domain_type']);
 
 if (customerHasFeature('ssl') && !empty($_POST)) {
@@ -583,7 +590,7 @@ if (customerHasFeature('ssl') && !empty($_POST)) {
 }
 
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_PAGE_TITLE' => tr('Client / Domains / SSL Certificate'),
     'TR_CERTIFICATE_DATA' => tr('Certificate data'),
     'TR_CERT_FOR' => tr('Common name'),
@@ -602,12 +609,12 @@ $tpl->assign(array(
     'TR_CANCEL' => tr('Cancel'),
     'DOMAIN_ID' => tohtml($domainId),
     'DOMAIN_TYPE' => tohtml($domainType)
-));
+]);
 
 generateNavigation($tpl);
 client_generatePage($tpl, $domainId, $domainType);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

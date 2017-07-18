@@ -102,11 +102,11 @@ function client_generateTrafficUsageBar($tpl, $usage, $maxUsage, $barMax)
         $traffic_usage_data = tr('%1$d%% [%2$s of unlimited]', $percent, bytesHuman($usage));
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'TRAFFIC_USAGE_DATA' => $traffic_usage_data,
         'TRAFFIC_BARS' => $bars,
         'TRAFFIC_PERCENT' => $percent > 100 ? 100 : $percent
-    ));
+    ]);
 
     if ($maxUsage != 0 && $usage > $maxUsage) {
         $tpl->assign('TR_TRAFFIC_WARNING', tr('You are exceeding your monthly traffic limit.'));
@@ -134,11 +134,11 @@ function client_generateDiskUsageBar($tpl, $usage, $maxUsage, $barMax)
         $traffic_usage_data = tr('%1$s%% [%2$s of unlimited]', $percent, bytesHuman($usage));
     }
 
-    $tpl->assign(array(
+    $tpl->assign([
         'DISK_USAGE_DATA' => $traffic_usage_data,
         'DISK_BARS' => $bars,
         'DISK_PERCENT' => $percent > 100 ? 100 : $percent
-    ));
+    ]);
 
     if ($maxUsage != 0 && $usage > $maxUsage) {
         $tpl->assign('TR_DISK_WARNING', tr('You are exceeding your disk space limit.'));
@@ -159,7 +159,7 @@ function client_generateFeatureStatus($tpl)
     $trYes = '<span style="color: green;">' . tr('Enabled') . '</span>';
     $trNo = '<span style="color: red;">' . tr('Disabled') . '</span>';;
     $tpl->assign(
-        array(
+        [
             //'DOMAIN_FEATURE_STATUS' =>  customerHasFeature('domain') ? $trYes : $trNo,
             'DOMAIN_FEATURE_STATUS' => $trYes,
             'PHP_FEATURE_STATUS' => customerHasFeature('php') ? $trYes : $trNo,
@@ -169,7 +169,7 @@ function client_generateFeatureStatus($tpl)
             'EXTERNAL_MAIL_SERVERS_FEATURE_STATUS' => customerHasFeature('external_mail') ? $trYes : $trNo,
             'APP_INSTALLER_FEATURE_STATUS' => customerHasFeature('aps') ? $trYes : $trNo,
             'WEBSTATS_FEATURE_STATUS' => customerHasFeature('webstats') ? $trYes : $trNo
-        )
+        ]
     );
 
     if (customerHasFeature('backup')) {
@@ -177,7 +177,7 @@ function client_generateFeatureStatus($tpl)
         // Backup feature for customer can also be disabled by reseller via GUI
         $domainProperties['allowbackup'] = explode('|', $domainProperties['allowbackup']);
 
-        $bkTranslation = array();
+        $bkTranslation = [];
         foreach ($domainProperties['allowbackup'] as $bkvalue) {
             switch ($bkvalue) {
                 case 'dmn':
@@ -239,7 +239,7 @@ function client_makeTrafficUsage($domainId)
         $percent = sprintf('%.2f', $percent);
     }
 
-    return array($percent, $totalTraffic);
+    return [$percent, $totalTraffic];
 }
 
 /**
@@ -262,7 +262,7 @@ function _client_getDomainRemainingTime($domainExpireDate)
     $month = floor($difftime / $mo);
     $difftime = $difftime % $mo;
     $days = floor($difftime / $d);
-    return array($years, $month, $days);
+    return [$years, $month, $days];
 }
 
 /**
@@ -293,15 +293,15 @@ function client_generateDomainExpiresInformation($tpl)
             set_page_message(tr('Your account has expired. Please renew your subscription.'), 'warning');
         }
 
-        $tpl->assign(array(
+        $tpl->assign([
             'DOMAIN_REMAINING_TIME' => $domainRemainingTime,
             'DOMAIN_EXPIRES_DATE' => $domainExpiresDate
-        ));
+        ]);
     } else {
-        $tpl->assign(array(
+        $tpl->assign([
             'DOMAIN_REMAINING_TIME' => '',
             'DOMAIN_EXPIRES_DATE' => tr('Never')
-        ));
+        ]);
     }
 }
 
@@ -316,7 +316,7 @@ $cfg = iMSCP_Registry::get('config');
 check_login('user', $cfg['PREVENT_EXTERNAL_LOGIN_CLIENT']);
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout' => 'shared/layouts/ui.tpl',
     'page' => 'client/index.tpl',
     'page_message' => 'layout',
@@ -324,7 +324,7 @@ $tpl->define_dynamic(array(
     'backup_domain_feature' => 'page',
     'traffic_warning' => 'page',
     'disk_warning' => 'page'
-));
+]);
 $tpl->assign('TR_PAGE_TITLE', tr('Client / General / Overview'));
 
 generateNavigation($tpl);
@@ -349,7 +349,7 @@ list(
     $subdomainCount, $domainAliasCount, $mailAccountsCount, $ftpAccountsCount, $sqlDatabasesCount, $sqlUsersCount
     ) = get_domain_running_props_cnt($domainProperties['domain_id']);
 
-$tpl->assign(array(
+$tpl->assign([
     'TR_DOMAIN_ACCOUNT' => tr('Domain account'),
     'TR_ACCOUNT_NAME' => tr('Account name'),
     'TR_DOMAIN_NAME' => tr('Domain name'),
@@ -391,10 +391,10 @@ $tpl->assign(array(
     'DISK_SQLSIZE' => bytesHuman($domainProperties['domain_disk_sql']),
     'TR_DISK_MAIL_USAGE' => tr('Mail usage'),
     'DISK_MAILSIZE' => bytesHuman($domainProperties['domain_disk_mail'])
-));
+]);
 
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

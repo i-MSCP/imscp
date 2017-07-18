@@ -28,7 +28,7 @@ class iMSCP_Events_Listener_PriorityQueue implements Countable, IteratorAggregat
 	 *
 	 * @var array
 	 */
-	protected $items = array();
+	protected $items = [];
 
 	/**
 	 * @var iMSCP_Events_Listener_SplPriorityQueue Inner queue object
@@ -57,7 +57,7 @@ class iMSCP_Events_Listener_PriorityQueue implements Countable, IteratorAggregat
 	public function addListener(iMSCP_Events_Listener $listener, $priority = 1)
 	{
 		$priority = (int) $priority;
-		$this->items[] = array('listener' => $listener, 'priority' => $priority);
+		$this->items[] = ['listener' => $listener, 'priority' => $priority];
 		$this->queue->insert($listener, $priority);
 
 		return $this;

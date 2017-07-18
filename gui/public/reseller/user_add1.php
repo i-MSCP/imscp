@@ -71,7 +71,7 @@ function reseller_checkData()
     if (isset($_POST['url_forwarding'])
         && $_POST['url_forwarding'] == 'yes'
         && isset($_POST['forward_type'])
-        && in_array($_POST['forward_type'], array('301', '302', '303', '307', 'proxy'), true)
+        && in_array($_POST['forward_type'], ['301', '302', '303', '307', 'proxy'], true)
     ) {
         if (!isset($_POST['forward_url_scheme']) || !isset($_POST['forward_url'])) {
             showBadRequestErrorPage();
@@ -95,7 +95,7 @@ function reseller_checkData()
             $uri->setPath(rtrim(utils_normalizePath($uri->getPath()), '/') . '/'); // Normalize URI path
 
             if ($uri->getHost() == $asciiDmnName
-                && ($uri->getPath() == '/' && in_array($uri->getPort(), array('', 80, 443)))
+                && ($uri->getPath() == '/' && in_array($uri->getPort(), ['', 80, 443]))
             ) {
                 throw new iMSCP_Exception(
                     tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
@@ -168,11 +168,11 @@ function reseller_generatePage($tpl)
 {
     $forwardType = (
         isset($_POST['forward_type'])
-        && in_array($_POST['forward_type'], array('301', '302', '303', '307', 'proxy'), true)
+        && in_array($_POST['forward_type'], ['301', '302', '303', '307', 'proxy'], true)
     ) ? $_POST['forward_type'] : '302';
     $forwardHost = ($forwardType == 'proxy' && isset($_POST['forward_host'])) ? 'On' : 'Off';
 
-    $tpl->assign(array(
+    $tpl->assign([
         'DOMAIN_NAME_VALUE'    => (isset($_POST['dmn_name'])) ? tohtml($_POST['dmn_name']) : '',
         'FORWARD_URL_YES'      => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes')
             ? ' checked' : '',
@@ -194,11 +194,11 @@ function reseller_generatePage($tpl)
         'NEVER_EXPIRE_CHECKED' => (isset($_POST['datepicker'])) ? '' : ' checked',
         'CHTPL1_VAL'           => (isset($_POST['chtpl']) && $_POST['chtpl'] == '_yes_') ? ' checked' : '',
         'CHTPL2_VAL'           => (isset($_POST['chtpl']) && $_POST['chtpl'] == '_yes_') ? '' : ' checked'
-    ));
+    ]);
 
-    $stmt = exec_query('SELECT id, name FROM hosting_plans WHERE reseller_id = ? AND status = ? ORDER BY name', array(
+    $stmt = exec_query('SELECT id, name FROM hosting_plans WHERE reseller_id = ? AND status = ? ORDER BY name', [
         $_SESSION['user_id'], '1'
-    ));
+    ]);
 
     if (!$stmt->rowCount()) {
         $tpl->assign('HOSTING_PLAN_ENTRIES_BLOCK', '');
@@ -207,11 +207,11 @@ function reseller_generatePage($tpl)
 
     while ($row = $stmt->fetchRow()) {
         $hpId = isset($_POST['dmn_tpl']) ? $_POST['dmn_tpl'] : '';
-        $tpl->assign(array(
+        $tpl->assign([
             'HP_NAME'     => tohtml($row['name']),
             'HP_ID'       => tohtml($row['id']),
             'HP_SELECTED' => ($row['id'] == $hpId) ? ' selected' : ''
-        ));
+        ]);
         $tpl->parse('HOSTING_PLAN_ENTRY_BLOCK', '.hosting_plan_entry_block');
     }
 }
@@ -230,15 +230,15 @@ if (!empty($_POST)) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'                       => 'shared/layouts/ui.tpl',
     'page'                         => 'reseller/user_add1.tpl',
     'page_message'                 => 'layout',
     'hosting_plan_entries_block'   => 'page',
     'hosting_plan_entry_block'     => 'hosting_plan_entries_block',
     'customize_hosting_plan_block' => 'hosting_plan_entries_block'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'             => tr('Reseller / Customers / Add Customer'),
     'TR_ADD_USER'               => tr('Add user'),
     'TR_CORE_DATA'              => tr('Domain data'),
@@ -262,12 +262,12 @@ $tpl->assign(array(
     'TR_PROXY'                  => 'PROXY',
     'TR_PROXY_PRESERVE_HOST'    => tr('Preserve Host'),
     'TR_NEXT_STEP'              => tr('Next step')
-));
+]);
 
 generateNavigation($tpl);
 reseller_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

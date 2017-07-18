@@ -37,10 +37,10 @@ $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
-	array(
+	[
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/personal_change.tpl',
-		'page_message' => 'layout'));
+		'page_message' => 'layout']);
 
 $tpl->assign('TR_PAGE_TITLE', tr('Admin / Profile / Personal Data'));
 
@@ -72,7 +72,7 @@ function gen_admin_personal_data(&$tpl, $user_id) {
 	$rs = exec_query($query, $user_id);
 
 	$tpl->assign(
-		array(
+		[
 			'FIRST_NAME' => empty($rs->fields['fname']) ? '' : tohtml($rs->fields['fname']),
 			'LAST_NAME' => empty($rs->fields['lname']) ? '' : tohtml($rs->fields['lname']),
 			'FIRM' => empty($rs->fields['firm']) ? '' : tohtml($rs->fields['firm']),
@@ -87,7 +87,7 @@ function gen_admin_personal_data(&$tpl, $user_id) {
 			'FAX' => empty($rs->fields['fax']) ? '' : tohtml($rs->fields['fax']),
 			'VL_MALE' => (($rs->fields['gender'] == 'M') ? $cfg->HTML_SELECTED : ''),
 			'VL_FEMALE' => (($rs->fields['gender'] == 'F') ? $cfg->HTML_SELECTED : ''),
-			'VL_UNKNOWN' => ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? $cfg->HTML_SELECTED : '')));
+			'VL_UNKNOWN' => ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? $cfg->HTML_SELECTED : '')]);
 }
 
 /**
@@ -95,7 +95,7 @@ function gen_admin_personal_data(&$tpl, $user_id) {
  */
 function update_admin_personal_data($user_id) {
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $user_id));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, ['userId' => $user_id]);
 
 	$fname = clean_input($_POST['fname']);
 	$lname = clean_input($_POST['lname']);
@@ -122,7 +122,7 @@ function update_admin_personal_data($user_id) {
 			`admin_id` = ?
     ";
 
-	exec_query($query, array($fname,
+	exec_query($query, [$fname,
 			$lname,
 			$firm,
 			$zip,
@@ -135,9 +135,9 @@ function update_admin_personal_data($user_id) {
 			$phone,
 			$fax,
 			$gender,
-			$user_id));
+			$user_id]);
 
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' =>$user_id));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, ['userId' =>$user_id]);
 
 	set_page_message(tr('Personal data successfully updated.'), 'success');
 	redirectTo('profile.php');
@@ -146,7 +146,7 @@ function update_admin_personal_data($user_id) {
 generateNavigation($tpl);
 
 $tpl->assign(
-	array(
+	[
 		'TR_PERSONAL_DATA' => tr('Personal data'),
 		'TR_FIRST_NAME' => tr('First name'),
 		'TR_LAST_NAME' => tr('Last name'),
@@ -164,13 +164,13 @@ $tpl->assign(
 		'TR_MALE' => tr('Male'),
 		'TR_FEMALE' => tr('Female'),
 		'TR_UNKNOWN' => tr('Unknown'),
-		'TR_UPDATE_DATA' => tr('Update data')));
+		'TR_UPDATE_DATA' => tr('Update data')]);
 
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 
 $tpl->prnt();
 

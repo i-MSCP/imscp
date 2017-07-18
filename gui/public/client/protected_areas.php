@@ -35,17 +35,17 @@ function generatePage($tpl)
     }
 
     while ($row = $stmt->fetchRow()) {
-        $tpl->assign(array(
+        $tpl->assign([
             'AREA_NAME' => tohtml($row['auth_name']),
             'AREA_PATH' => tohtml($row['path']),
             'STATUS'    => translate_dmn_status($row['status'])
-        ));
+        ]);
 
-        if (!in_array($row['status'], array('toadd', 'tochange', 'todelete'))) {
-            $tpl->assign(array(
+        if (!in_array($row['status'], ['toadd', 'tochange', 'todelete'])) {
+            $tpl->assign([
                 'ID'             => tohtml($row['id'], 'htmlAttr'),
                 'DATA_AREA_NAME' => tohtml($row['auth_name'], 'htmlAttr'),
-            ));
+            ]);
             $tpl->parse('ACTION_LINKS', 'action_links');
         } else {
             $tpl->assign('ACTION_LINKS', tr('N/A'));
@@ -66,15 +66,15 @@ check_login('user');
 customerHasFeature('protected_areas') or showBadRequestErrorPage();
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'          => 'shared/layouts/ui.tpl',
     'page'            => 'client/protected_areas.tpl',
     'page_message'    => 'layout',
     'protected_areas' => 'page',
     'dir_item'        => 'protected_areas',
     'action_links'    => 'dir_item'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'              => tr('Client / Webtools / Protected Areas'),
     'TR_NAME'                    => tr('Name'),
     'TR_PATH'                    => tr('Path'),
@@ -84,7 +84,7 @@ $tpl->assign(array(
     'TR_DELETE'                  => tr('Delete'),
     'TR_ADD_PROTECTED_AREA'      => tr('Add new protected area'),
     'TR_MANAGE_USERS_AND_GROUPS' => tr('Manage users and groups')
-));
+]);
 
 iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
     /* @var $e iMSCP_Events_Event */
@@ -98,5 +98,5 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

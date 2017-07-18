@@ -35,11 +35,11 @@ function _client_getDomainsList()
 
     if (NULL === $domainsList) {
         $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
-        $domainsList = array(array(
+        $domainsList = [[
             'name' => $mainDmnProps['domain_name'],
             'id'   => $mainDmnProps['domain_id'],
             'type' => 'dmn'
-        ));
+        ]];
         $stmt = exec_query(
             "
               SELECT CONCAT(t1.subdomain_name, '.', t2.domain_name) AS name, t1.subdomain_id AS id,'sub' AS type
@@ -60,7 +60,7 @@ function _client_getDomainsList()
               WHERE t2.domain_id = :domain_id
               AND subdomain_alias_status = :status_ok
           ",
-            array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => 'ok')
+            ['domain_id' => $mainDmnProps['domain_id'], 'status_ok' => 'ok']
         );
         if ($stmt->rowCount()) {
             $domainsList = array_merge($domainsList, $stmt->fetchAll(PDO::FETCH_ASSOC));
@@ -87,7 +87,7 @@ function client_addMailAccount()
         || !isset($_POST['quota'])
         || !isset($_POST['forward_list'])
         || !isset($_POST['account_type'])
-        || !in_array($_POST['account_type'], array('1', '2', '3'), true)
+        || !in_array($_POST['account_type'], ['1', '2', '3'], true)
     ) {
         showBadRequestErrorPage();
     }
@@ -95,8 +95,8 @@ function client_addMailAccount()
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
     $password = $forwardList = '_no_';
     $mailType = $subId = '';
-    $mailTypeNormal = in_array($_POST['account_type'], array('1', '3'));
-    $mailTypeForward = in_array($_POST['account_type'], array('2', '3'));
+    $mailTypeNormal = in_array($_POST['account_type'], ['1', '3']);
+    $mailTypeForward = in_array($_POST['account_type'], ['2', '3']);
     $mailQuotaLimitBytes = NULL;
 
     // Check for username
@@ -250,10 +250,10 @@ function client_addMailAccount()
         /** @var $db iMSCP_Database */
         $db = iMSCP_Registry::get('db');
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddMail, array(
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddMail, [
             'mailUsername' => $username,
             'MailAddress'  => $mailAddr
-        ));
+        ]);
         exec_query(
             '
               INSERT INTO mail_users (
@@ -263,16 +263,16 @@ function client_addMailAccount()
                 ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
               )
             ',
-            array(
+            [
                 $username, $password, $forwardList, $mainDmnProps['domain_id'], $mailType, $subId, 'toadd',
                 $mailTypeNormal ? 'yes' : 'no', '0', NULL, $mailQuotaLimitBytes, $mailAddr
-            )
+            ]
         );
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddMail, array(
+        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddMail, [
             'mailUsername' => $username,
             'mailAddress'  => $mailAddr,
             'mailId'       => $db->insertId()
-        ));
+        ]);
         send_request();
         write_log("{$_SESSION['user_logged']}: added new Email account: $mailAddr", E_USER_NOTICE);
         set_page_message(tr('Email account successfully scheduled for addition.'), 'success');
@@ -303,12 +303,12 @@ function client_generatePage($tpl)
     $customerEmailQuotaLimitBytes = filter_digits($mainDmnProps['mail_quota'], 0);
 
     if ($customerEmailQuotaLimitBytes < 1) {
-        $tpl->assign(array(
+        $tpl->assign([
             'TR_QUOTA'  => tohtml(tr('Quota in MiB (0 for unlimited)')),
             'MIN_QUOTA' => 0,
             'MAX_QUOTA' => tohtml(floor(PHP_INT_MAX), 'htmlAttr'),
             'QUOTA'     => isset($_POST['quota']) ? tohtml(filter_digits($_POST['quota']), 'htmlAttr') : 10
-        ));
+        ]);
         $mailTypeForwardOnly = false;
     } else {
         if ($customerEmailQuotaLimitBytes > $customerMailboxesQuotaSumBytes) {
@@ -327,34 +327,34 @@ function client_generatePage($tpl)
             $mailTypeForwardOnly = true;
         }
 
-        $tpl->assign(array(
+        $tpl->assign([
             'TR_QUOTA'  => tohtml(tr('Quota in MiB (Max: %s)', bytesHuman($mailQuotaLimitBytes, NULL, 0))),
             'MIN_QUOTA' => 1,
             'MAX_QUOTA' => tohtml($mailMaxQuotaLimitMib, 'htmlAttr'),
             'QUOTA'     => isset($_POST['quota'])
                 ? tohtml(filter_digits($_POST['quota']), 'htmlAttr')
                 : tohtml(min(10, $mailQuotaLimitMiB), 'htmlAttr')
-        ));
+        ]);
     }
 
-    $mailType = (isset($_POST['account_type']) && in_array($_POST['account_type'], array('1', '2', '3')))
+    $mailType = (isset($_POST['account_type']) && in_array($_POST['account_type'], ['1', '2', '3']))
         ? $_POST['account_type'] : '1';
 
-    $tpl->assign(array(
+    $tpl->assign([
         'USERNAME'               => isset($_POST['username']) ? tohtml($_POST['username']) : '',
         'NORMAL_CHECKED'         => ($mailType == '1') ? ' checked' : '',
         'FORWARD_CHECKED'        => ($mailType == '2') ? ' checked' : '',
         'NORMAL_FORWARD_CHECKED' => ($mailType == '3') ? ' checked' : '',
         'FORWARD_LIST'           => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : '',
-    ));
+    ]);
 
     foreach (_client_getDomainsList() as $domain) {
-        $tpl->assign(array(
+        $tpl->assign([
             'DOMAIN_NAME'          => tohtml($domain['name']),
             'DOMAIN_NAME_UNICODE'  => tohtml(decode_idna($domain['name'])),
             'DOMAIN_NAME_SELECTED' => (isset($_POST['domain_name']) && $_POST['domain_name'] == $domain['name'])
                 ? ' selected' : '',
-        ));
+        ]);
         $tpl->parse('DOMAIN_NAME_ITEM', '.domain_name_item');
     }
 
@@ -395,13 +395,13 @@ if (!empty($_POST)) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'           => 'shared/layouts/ui.tpl',
     'page'             => 'client/mail_add.tpl',
     'page_message'     => 'layout',
     'domain_name_item' => 'page',
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'          => tr('Client / Email / Add Email Account'),
     'TR_MAIl_ACCOUNT_DATA'   => tr('Email account data'),
     'TR_USERNAME'            => tr('Username'),
@@ -416,12 +416,12 @@ $tpl->assign(array(
     'TR_FWD_HELP'            => tr('Separate multiple email addresses by comma or a line-break.'),
     'TR_ADD'                 => tr('Add'),
     'TR_CANCEL'              => tr('Cancel')
-));
+]);
 
 client_generatePage($tpl);
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

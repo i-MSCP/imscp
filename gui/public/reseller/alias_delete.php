@@ -31,14 +31,17 @@ if (!resellerHasFeature('domain_aliases') || !isset($_GET['id'])) {
     showBadRequestErrorPage();
 }
 
-$îd = filter_digits($_GET['id']);
+$îd = intval($_GET['id']);
 $stmt = exec_query(
     '
         SELECT alias_name
-        FROM domain_aliasses INNER JOIN domain USING (domain_id) INNER JOIN admin ON(admin_id = domain_admin_id)
-        WHERE alias_id = ? AND created_by = ?
+        FROM domain_aliasses
+        JOIN domain USING (domain_id)
+        JOIN admin ON(admin_id = domain_admin_id)
+        WHERE alias_id = ?
+        AND created_by = ?
     ',
-    array($îd, $_SESSION['user_id'])
+    [$îd, $_SESSION['user_id']]
 );
 
 if ($stmt->rowCount()) {

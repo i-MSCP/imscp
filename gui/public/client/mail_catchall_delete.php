@@ -39,26 +39,26 @@ if (!isset($_GET['id'])) {
     showBadRequestErrorPage();
 }
 
-$catchallId = filter_digits($_GET['id']);
+$catchallId = intval($_GET['id']);
 
 $stmt = exec_query(
     'SELECT mail_id FROM mail_users WHERE domain_id = ? AND mail_id = ?',
-    array(get_user_domain_id($_SESSION['user_id']), $catchallId)
+    [get_user_domain_id($_SESSION['user_id']), $catchallId]
 );
 
 if (!$stmt->rowCount()) {
     showBadRequestErrorPage();
 }
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteMailCatchall, array(
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteMailCatchall, [
     'mailCatchallId' => $catchallId
-));
+]);
 
-exec_query('UPDATE mail_users SET status = ? WHERE mail_id = ?', array('todelete', $catchallId));
+exec_query('UPDATE mail_users SET status = ? WHERE mail_id = ?', ['todelete', $catchallId]);
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMailCatchall, array(
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMailCatchall, [
     'mailCatchallId' => $catchallId
-));
+]);
 
 send_request();
 write_log($_SESSION['user_logged'] . ': deletes email catch all!', E_USER_NOTICE);

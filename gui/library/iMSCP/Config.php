@@ -73,7 +73,7 @@ class iMSCP_Config
      *
      * @staticvar array
      */
-    private static $_instances = array();
+    private static $_instances = [];
 
     /**
      * Get a iMSCP_Config_Handler instance

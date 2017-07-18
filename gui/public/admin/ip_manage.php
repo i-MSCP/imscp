@@ -37,7 +37,7 @@ use Zend_Session as Session;
  * @param array $data JSON data
  * @return void
  */
-function sendJsonResponse($statusCode = 200, array $data = array())
+function sendJsonResponse($statusCode = 200, array $data = [])
 {
     header('Cache-Control: no-cache, must-revalidate');
     header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
@@ -75,16 +75,16 @@ function generatePage($tpl)
     generateIpsList($tpl);
     generateDevicesList($tpl);
 
-    $ipConfigMode = isset($_POST['ip_config_mode']) && in_array($_POST['ip_config_mode'], array('auto', 'manual'))
+    $ipConfigMode = isset($_POST['ip_config_mode']) && in_array($_POST['ip_config_mode'], ['auto', 'manual'])
         ? $_POST['ip_config_mode']
         : 'auto';
 
-    $tpl->assign(array(
+    $tpl->assign([
         'VALUE_IP'         => isset($_POST['ip_number']) ? tohtml($_POST['ip_number']) : '',
         'VALUE_IP_NETMASK' => isset($_POST['ip_netmask']) ? tohtml($_POST['ip_netmask']) : 24,
         'IP_CONFIG_AUTO'   => $ipConfigMode == 'auto' ? ' checked' : '',
         'IP_CONFIG_MANUAL' => $ipConfigMode == 'manual' ? ' checked' : ''
-    ));
+    ]);
 }
 
 /**
@@ -95,7 +95,7 @@ function generatePage($tpl)
  */
 function generateIpsList($tpl)
 {
-    $assignedIps = array();
+    $assignedIps = [];
     $stmt = execute_query('SELECT reseller_ips FROM reseller_props');
     while ($row = $stmt->fetchRow()) {
         $resellerIps = explode(';', $row['reseller_ips'], -1);
@@ -138,7 +138,7 @@ function generateIpsList($tpl)
             $actionIpId = NULL;
         }
 
-        $tpl->assign(array(
+        $tpl->assign([
             'IP'           => tohtml(($row['ip_number'] == '0.0.0.0') ? tr('Any') : $row['ip_number']),
             'IP_NETMASK'   => $net->getIpPrefixLength($net->compress($row['ip_number'])) ?: $row['ip_netmask'] ?: tr('N/A'),
             'IP_EDITABLE'  => ($row['ip_status'] == 'ok'
@@ -147,14 +147,14 @@ function generateIpsList($tpl)
             ) ? true : false,
             'NETWORK_CARD' => ($row['ip_card'] === NULL)
                 ? '' : (($row['ip_card'] !== 'any') ? tohtml($row['ip_card']) : tohtml(tr('Any')))
-        ));
+        ]);
 
         if ($row['ip_status'] == 'ok' && $row['ip_card'] != 'any' && $row['ip_number'] !== '0.0.0.0') {
-            $tpl->assign(array(
+            $tpl->assign([
                 'IP_ID'            => $row['ip_id'],
                 'IP_CONFIG_AUTO'   => $row['ip_config_mode'] != 'manual' ? ' checked' : '',
                 'IP_CONFIG_MANUAL' => $row['ip_config_mode'] == 'manual' ? ' checked' : ''
-            ));
+            ]);
             $tpl->parse('IP_CONFIG_MODE_BLOCK', 'ip_config_mode_block');
         } else {
             $tpl->assign('IP_CONFIG_MODE_BLOCK', tr('N/A'));
@@ -163,10 +163,10 @@ function generateIpsList($tpl)
         if ($actionIpId === NULL) {
             $tpl->assign('IP_ACTION_DELETE', $actionName);
         } else {
-            $tpl->assign(array(
+            $tpl->assign([
                 'ACTION_NAME'  => $actionName,
                 'ACTION_IP_ID' => $actionIpId
-            ));
+            ]);
             $tpl->parse('IP_ACTION_DELETE', 'ip_action_delete');
         }
 
@@ -194,10 +194,10 @@ function generateDevicesList($tpl)
 
     sort($netDevices);
     foreach ($netDevices as $netDevice) {
-        $tpl->assign(array(
+        $tpl->assign([
             'NETWORK_CARD' => $netDevice,
             'SELECTED'     => isset($_POST['ip_card']) && $_POST['ip_card'] == $netDevice ? ' selected' : ''
-        ));
+        ]);
         $tpl->parse('NETWORK_CARD_BLOCK', '.network_card_block');
     }
 }
@@ -213,7 +213,7 @@ function generateDevicesList($tpl)
  */
 function checkIpData($ipAddr, $ipNetmask, $ipConfigMode, $ipCard)
 {
-    $errFieldsStack = array();
+    $errFieldsStack = [];
 
     // Validate IP addr
     if (filter_var($ipAddr, FILTER_VALIDATE_IP, FILTER_FLAG_NO_RES_RANGE) === false) {
@@ -241,7 +241,7 @@ function checkIpData($ipAddr, $ipNetmask, $ipConfigMode, $ipCard)
     }
 
     // Validate IP addr configuration mode
-    if (!in_array($ipConfigMode, array('auto', 'manual'), true)) {
+    if (!in_array($ipConfigMode, ['auto', 'manual'], true)) {
         showBadRequestErrorPage();
     }
 
@@ -265,14 +265,14 @@ function editIpAddr()
 {
     try {
         if (!isset($_POST['ip_id'])) {
-            sendJsonResponse(400, array('message' => tr('Bad request.')));
+            sendJsonResponse(400, ['message' => tr('Bad request.')]);
         }
 
-        $ipId = filter_digits($_POST['ip_id']);
+        $ipId = intval($_POST['ip_id']);
 
-        $stmt = exec_query('SELECT * FROM server_ips WHERE ip_id = ? AND ip_status = ?', array($ipId, 'ok'));
+        $stmt = exec_query('SELECT * FROM server_ips WHERE ip_id = ? AND ip_status = ?', [$ipId, 'ok']);
         if (!$stmt->rowCount()) {
-            sendJsonResponse(400, array('message' => tr('Bad request.')));
+            sendJsonResponse(400, ['message' => tr('Bad request.')]);
         }
 
         $net = Net::getInstance();
@@ -286,28 +286,28 @@ function editIpAddr()
 
         if (!checkIpData($row['ip_number'], $ipNetmask, $ipConfigMode, $ipCard)) {
             Session::namespaceUnset('pageMessages');
-            sendJsonResponse(400, array('message' => tr('Bad request.')));
+            sendJsonResponse(400, ['message' => tr('Bad request.')]);
         }
 
-        EventManager::getInstance()->dispatch(Events::onEditIpAddr, array(
+        EventManager::getInstance()->dispatch(Events::onEditIpAddr, [
             'ip_id'          => $ipId,
             'ip_number'      => $row['ip_number'],
             'ip_netmask'     => $ipNetmask,
             'ip_card'        => $ipCard,
             'ip_config_mode' => $ipConfigMode
-        ));
+        ]);
 
         exec_query(
             'UPDATE server_ips SET ip_netmask = ?, ip_card = ?, ip_config_mode = ?, ip_status = ? WHERE ip_id = ?',
-            array($ipNetmask, $ipCard, $ipConfigMode, 'tochange', $ipId
-            ));
+            [$ipNetmask, $ipCard, $ipConfigMode, 'tochange', $ipId
+            ]);
 
         send_request();
         write_log(sprintf("Configuration for the `%s' IP address has been changed by %s", $row['ip_number'], $_SESSION['user_logged']), E_USER_NOTICE);
         set_page_message(tr('IP address successfully scheduled for modification.'), 'success');
         sendJsonResponse(200);
     } catch (\Exception $e) {
-        sendJsonResponse(500, array('message' => sprintf('An unexpected error occurred: %s', $e->getMessage())));
+        sendJsonResponse(500, ['message' => sprintf('An unexpected error occurred: %s', $e->getMessage())]);
     }
 }
 
@@ -344,16 +344,16 @@ function addIpAddr()
         }
     }
 
-    EventManager::getInstance()->dispatch(Events::onAddIpAddr, array(
+    EventManager::getInstance()->dispatch(Events::onAddIpAddr, [
         'ip_number'      => $ipAddr,
         'ip_netmask'     => $ipNetmask,
         'ip_card'        => $ipCard,
         'ip_config_mode' => $ipConfigMode
-    ));
+    ]);
 
     exec_query(
         'INSERT INTO server_ips (ip_number, ip_netmask, ip_card, ip_config_mode, ip_status) VALUES (?, ?, ?, ?, ?)',
-        array($ipAddr, $ipNetmask, $ipCard, $ipConfigMode, 'toadd')
+        [$ipAddr, $ipNetmask, $ipCard, $ipConfigMode, 'toadd']
     );
 
     send_request();
@@ -381,7 +381,7 @@ if (!empty($_POST)) {
 }
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic(array(
+$tpl->define_dynamic([
     'layout'                => 'shared/layouts/ui.tpl',
     'page'                  => 'admin/ip_manage.tpl',
     'page_message'          => 'layout',
@@ -391,8 +391,8 @@ $tpl->define_dynamic(array(
     'ip_action_delete'      => 'ip_address_block',
     'ip_address_form_block' => 'page',
     'network_card_block'    => 'ip_address_form_block'
-));
-$tpl->assign(array(
+]);
+$tpl->assign([
     'TR_PAGE_TITLE'           => tr('Admin / Settings / IP Management'),
     'TR_IP'                   => tr('IP address'),
     'TR_IP_NETMASK'           => tr('IP netmask'),
@@ -409,13 +409,13 @@ $tpl->assign(array(
         . tr('Note that in manual mode, the NIC and the subnet mask are only indicative.'),
     'TR_AUTO'                 => tr('Auto'),
     'TR_MANUAL'               => tr('Manual')
-));
+]);
 
 $eventManager->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e \iMSCP_Events_Event */
     $translation = $e->getParam('translations');
     $translation['core']['datatable'] = getDataTablesPluginTranslations(false);
-    $translation['core']['err_fields_stack'] = Registry::isRegistered('errFieldsStack') ? Registry::get('errFieldsStack') : array();
+    $translation['core']['err_fields_stack'] = Registry::isRegistered('errFieldsStack') ? Registry::get('errFieldsStack') : [];
     $translation['core']['confirm_deletion_msg'] = tr("Are you sure you want to delete the `%%s' IP address?");
     $translation['core']['edit_tooltip'] = tr("Click to edit");
 });
@@ -425,5 +425,5 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-$eventManager->dispatch(Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+$eventManager->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
