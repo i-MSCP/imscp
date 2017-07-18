@@ -35,18 +35,18 @@
  */
 function cli_getMailData($domainName)
 {
-    static $data = array();
+    static $data = [];
 
     if (!array_key_exists($domainName, $data)) {
         $stmt = exec_query('SELECT domain_id FROM domain WHERE domain_name = ?', $domainName);
 
         if ($stmt->rowCount()) {
             $row = $stmt->fetchRow();
-            $data[$domainName] = array(
+            $data[$domainName] = [
                 'domain_id' => $row['domain_id'],
                 'sub_id' => '0',
                 'mail_type' => MT_NORMAL_MAIL
-            );
+            ];
         } else {
             $stmt = exec_query(
                 "
@@ -58,20 +58,20 @@ function cli_getMailData($domainName)
 
             if ($stmt->rowCount()) {
                 $row = $stmt->fetchRow();
-                $data[$domainName] = array(
+                $data[$domainName] = [
                     'domain_id' => $row['domain_id'],
                     'sub_id' => $row['subdomain_id'],
                     'mail_type' => MT_SUBDOM_MAIL
-                );
+                ];
             } else {
                 $stmt = exec_query('SELECT domain_id FROM domain_aliasses WHERE alias_name = ?', $domainName);
                 if ($stmt->rowCount()) {
                     $row = $stmt->fetchRow();
-                    $data[$domainName] = array(
+                    $data[$domainName] = [
                         'domain_id' => $row['domain_id'],
                         'sub_id' => '0',
                         'mail_type' => MT_ALIAS_MAIL
-                    );
+                    ];
                 } else {
                     $stmt = exec_query(
                         "
@@ -85,11 +85,11 @@ function cli_getMailData($domainName)
 
                     if ($stmt->rowCount()) {
                         $row = $stmt->fetchRow();
-                        $data[$domainName] = array(
+                        $data[$domainName] = [
                             'domain_id' => $row['domain_id'],
                             'sub_id' => $row['subdomain_alias_id'],
                             'mail_type' => MT_ALSSUB_MAIL
-                        );
+                        ];
                     } else {
                         $data[$domainName] = null;
                     }
@@ -157,7 +157,7 @@ while (($csvEntry = fgetcsv($handle, 1024, $csvDelimiter)) !== false) {
 
         list($mailUser, $mailDomain) = explode('@', $asciiMailAddr);
 
-        $mailAccount = array_merge(cli_getMailData($mailDomain), array(
+        $mailAccount = array_merge(cli_getMailData($mailDomain), [
             'mail_acc' => $mailUser,
             'mail_pass' => $mailPassword,
             'mail_forward' => '_no_',
@@ -166,7 +166,7 @@ while (($csvEntry = fgetcsv($handle, 1024, $csvDelimiter)) !== false) {
             'mail_auto_respond_text' => null,
             'quota' => '0',
             'mail_addr' => $asciiMailAddr
-        ));
+        ]);
 
         try {
             $stmt->execute($mailAccount);
