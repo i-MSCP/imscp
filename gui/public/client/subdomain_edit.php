@@ -61,7 +61,7 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
               t1.subdomain_alias_type_forward AS type_forward, t1.subdomain_alias_host_forward AS host_forward,
               t2.alias_name AS alias_name
             FROM subdomain_alias AS t1
-            INNER JOIN domain_aliasses AS t2 USING(alias_id)
+            JOIN domain_aliasses AS t2 USING(alias_id)
             WHERE subdomain_alias_id = ?
             AND t2.domain_id = ?
             AND t1.subdomain_alias_status = ?

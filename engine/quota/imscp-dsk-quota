@@ -87,7 +87,7 @@ sub quotaFiles
         
                         SELECT CONCAT(subdomain_name, '.', domain_name) AS domain_name
                         FROM subdomain
-                        INNER JOIN domain USING(domain_id)
+                        JOIN domain USING(domain_id)
                         WHERE domain_id = ?
                         AND subdomain_status <> 'todelete'
         
@@ -95,7 +95,7 @@ sub quotaFiles
         
                         SELECT CONCAT(subdomain_alias_name, '.',  alias_name) AS domain_name
                         FROM subdomain_alias
-                        INNER JOIN domain_aliasses USING(alias_id)
+                        JOIN domain_aliasses USING(alias_id)
                         WHERE domain_id = ?
                         AND subdomain_alias_status <> 'todelete'
                     ",

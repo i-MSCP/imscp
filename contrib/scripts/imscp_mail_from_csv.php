@@ -50,7 +50,9 @@ function cli_getMailData($domainName)
         } else {
             $stmt = exec_query(
                 "
-                    SELECT domain_id, subdomain_id FROM subdomain INNER JOIN domain USING(domain_id)
+                    SELECT domain_id, subdomain_id
+                    FROM subdomain
+                    JOIN domain USING(domain_id)
                     WHERE CONCAT(subdomain_name, '.', domain_name) = ?
                 ",
                 $domainName
@@ -75,9 +77,10 @@ function cli_getMailData($domainName)
                 } else {
                     $stmt = exec_query(
                         "
-                            SELECT domain_id, subdomain_alias_id FROM subdomain_alias
-                            INNER JOIN domain_aliasses USING(alias_id)
-                            INNER JOIN domain USING(domain_id)
+                            SELECT domain_id, subdomain_alias_id
+                            FROM subdomain_alias
+                            JOIN domain_aliasses USING(alias_id)
+                            JOIN domain USING(domain_id)
                             WHERE CONCAT(subdomain_alias_name, '.', alias_name) = ?
                         ",
                         $domainName

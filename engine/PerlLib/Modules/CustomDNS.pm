@@ -110,8 +110,8 @@ sub process
                 WHERE $condition
             "
         );
-        $dbh->do( "DELETE FROM domain_dns WHERE $condition AND domain_dns_status = 'todelete'" );
-        $dbh->commit( );
+        $self->{'_dbh'}->do( "DELETE FROM domain_dns WHERE $condition AND domain_dns_status = 'todelete'" );
+        $self->{'_dbh'}->commit( );
     };
     if ($@) {
         $self->{'_dbh'}->rollback( );
@@ -164,7 +164,7 @@ sub _loadData
             ? "t1.domain_id = $domainId AND t1.alias_id = 0" : "t1.alias_id = $domainId";
 
         local $self->{'_dbh'}->{'RaiseError'} = 1;
-        my $rows = $self->{'_dbh'}->fetchall_arrayref(
+        my $rows = $self->{'_dbh'}->selectall_arrayref(
             "
                 SELECT t1.domain_dns, t1.domain_class, t1.domain_type, t1.domain_text, t1.domain_dns_status,
                     IFNULL(t3.alias_name, t2.domain_name) AS domain_name, t4.ip_number
@@ -199,7 +199,7 @@ sub _loadData
                 $_->[3] = join ' ', map( qq/"$_"/, @chuncks );
             }
 
-            push @{$self->{'dns_records'}}, [ (@{$record})[0 .. 3] ];
+            push @{$self->{'dns_records'}}, [ (@{$_})[0 .. 3] ];
         }
     };
     if ($@) {

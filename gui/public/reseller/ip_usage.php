@@ -45,7 +45,7 @@ function listIPDomains($tpl)
 					domain_name
 				FROM
 					domain
-				INNER JOIN
+				JOIN
 					admin ON(admin_id = domain_admin_id)
 				WHERE
 					domain_ip_id = :ip_id
@@ -56,9 +56,9 @@ function listIPDomains($tpl)
 					alias_name AS domain_name
 				FROM
 					domain_aliasses
-				INNER JOIN
+				JOIN
 					domain USING(domain_id)
-				INNER JOIN
+				JOIN
 					admin ON(admin_id = domain_admin_id)
 				WHERE
 					alias_ip_id = :ip_id

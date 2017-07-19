@@ -886,22 +886,33 @@ class iMSCP_PHPini
                     break;
                 case 'sub':
                     $query = "
-                        UPDATE subdomain INNER JOIN domain USING(domain_id) SET subdomain_status = 'tochange'
-                        WHERE domain_admin_id = ? AND subdomain_id = ?
+                        UPDATE subdomain
+                        JOIN domain USING(domain_id)
+                        SET subdomain_status = 'tochange'
+                        WHERE domain_admin_id = ?
+                        AND subdomain_id = ?
                         AND subdomain_status NOT IN ('disabled','todelete')
                     ";
                     break;
                 case 'als';
                     $query = "
-                        UPDATE domain_aliasses INNER JOIN domain USING(domain_id) SET alias_status = 'tochange'
-                        WHERE domain_admin_id = ? AND alias_id = ? AND alias_status NOT IN ('disabled','todelete')
+                        UPDATE domain_aliasses
+                        JOIN domain USING(domain_id)
+                        SET alias_status = 'tochange'
+                        WHERE domain_admin_id = ?
+                        AND alias_id = ?
+                        AND alias_status NOT IN ('disabled','todelete')
                     ";
                     break;
                 case 'subals':
                     $query = "
-                        UPDATE subdomain_alias INNER JOIN domain_aliasses USING(alias_id) INNER JOIN domain USING(domain_id)
+                        UPDATE subdomain_alias
+                        JOIN domain_aliasses USING(alias_id)
+                        JOIN domain USING(domain_id)
                         SET subdomain_alias_status = 'tochange'
-                        WHERE domain_admin_id = ? AND subdomain_alias_id = ? AND subdomain_alias_status NOT IN ('disabled','todelete')
+                        WHERE domain_admin_id = ?
+                        AND subdomain_alias_id = ?
+                        AND subdomain_alias_status NOT IN ('disabled','todelete')
                     ";
                     break;
                 default:
@@ -958,8 +969,11 @@ class iMSCP_PHPini
 
         $subdomainAliases = exec_query(
             '
-                SELECT subdomain_alias_id FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
-                WHERE domain_id = ? AND subdomain_alias_status <> ?
+                SELECT subdomain_alias_id
+                FROM subdomain_alias
+                JOIN domain_aliasses USING(alias_id)
+                WHERE domain_id = ?
+                AND subdomain_alias_status <> ?
             ',
             [$domainId, 'todelete']
         );

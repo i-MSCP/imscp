@@ -39,7 +39,7 @@ function update_existing_client_installations_res_upload(
         "
           SELECT domain_id
           FROM domain
-          INNER JOIN admin ON (admin_id = domain_admin_id)
+          JOIN admin ON(admin_id = domain_admin_id)
           WHERE domain_software_allowed = 'yes'
           AND created_by = ?
         ",
@@ -85,7 +85,7 @@ function update_existing_client_installations_sw_depot($softwareId, $softwareMas
         "
           SELECT domain_id
           FROM domain
-          INNER JOIN admin ON(admin_id = domain_admin_id)
+          JOIN admin ON(admin_id = domain_admin_id)
           WHERE domain_software_allowed = 'yes'
           AND created_by = ?
         ",
@@ -388,7 +388,7 @@ function get_avail_softwaredepot($tpl)
                             "
                               SELECT t1.admin_name
                               FROM admin AS t1
-                              INNER JOIN web_software AS t2 ON(t2.reseller_id = t1.admin_id)
+                              JOIN web_software AS t2 ON(t2.reseller_id = t1.admin_id)
                               WHERE t2.software_id = ?
                             ",
                             substr(strrchr($row['swstatus'], '_'), 1)
@@ -1396,7 +1396,7 @@ function gen_user_domain_list($tpl, $customerId)
         "
             SELECT subdomain_id, CONCAT(subdomain_name, '.', domain_name) AS subdomain_name
             FROM subdomain
-            INNER JOIN domain USING (domain_id)
+            JOIN domain USING (domain_id)
             WHERE subdomain_url_forward = 'no'
             AND subdomain_status = 'ok'
             AND domain_id = ?

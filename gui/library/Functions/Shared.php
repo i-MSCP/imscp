@@ -84,14 +84,19 @@ function imscp_domain_exists($domainName, $resellerId)
 
     # $domainName is a subzone of another domain which doesn't belong to the given reseller?
     $queryDomain = '
-        SELECT COUNT(domain_id) AS cnt FROM domain INNER JOIN admin ON(admin_id = domain_admin_id)
-        WHERE domain_name = ? AND created_by <> ?
+        SELECT COUNT(domain_id) AS cnt
+        FROM domain
+        JOIN admin ON(admin_id = domain_admin_id)
+        WHERE domain_name = ?
+        AND created_by <> ?
     ';
     $queryAliases = '
-        SELECT COUNT(alias_id) AS cnt FROM domain_aliasses
-        INNER JOIN domain USING(domain_id)
-        INNER JOIN admin ON(admin_id = domain_admin_id)
-        WHERE alias_name = ? AND created_by <> ?
+        SELECT COUNT(alias_id) AS cnt
+        FROM domain_aliasses
+        JOIN domain USING(domain_id)
+        JOIN admin ON(admin_id = domain_admin_id)
+        WHERE alias_name = ?
+        AND created_by <> ?
     ';
 
     $domainLabels = explode('.', trim($domainName));
@@ -118,7 +123,9 @@ function imscp_domain_exists($domainName, $resellerId)
     // $domainName already exists as subdomain?
     $stmt = exec_query(
         "
-            SELECT COUNT('subdomain_id') AS  cnt FROM subdomain INNER JOIN domain USING(domain_id)
+            SELECT COUNT('subdomain_id') AS cnt
+            FROM subdomain
+            JOIN domain USING(domain_id)
             WHERE CONCAT(subdomain_name, '.', domain_name) = ?
         ",
         $domainName
@@ -130,7 +137,9 @@ function imscp_domain_exists($domainName, $resellerId)
 
     $stmt = exec_query(
         "
-            SELECT COUNT(subdomain_alias_id) AS cnt FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
+            SELECT COUNT(subdomain_alias_id) AS cnt
+            FROM subdomain_alias
+            JOIN domain_aliasses USING(alias_id)
             WHERE CONCAT(subdomain_alias_name, '.', alias_name) = ?
         ",
         $domainName
@@ -166,8 +175,11 @@ function get_domain_default_props($domainAdminId, $createdBy = null)
     } else {
         $stmt = exec_query(
             '
-                SELECT * FROM domain INNER JOIN admin ON(admin_id = domain_admin_id)
-                WHERE domain_admin_id = ? AND created_by = ?
+                SELECT *
+                FROM domain
+                JOIN admin ON(admin_id = domain_admin_id)
+                WHERE domain_admin_id = ?
+                AND created_by = ?
             ',
             [$domainAdminId, $createdBy]
         );
@@ -390,7 +402,9 @@ function change_domain_status($customerId, $action)
 
     $stmt = exec_query(
         '
-            SELECT domain_id, admin_name FROM domain INNER JOIN admin ON(admin_id = domain_admin_id)
+            SELECT domain_id, admin_name
+            FROM domain
+            JOIN admin ON(admin_id = domain_admin_id)
             WHERE domain_admin_id = ?
         ',
         $customerId
@@ -451,7 +465,9 @@ function change_domain_status($customerId, $action)
         exec_query("UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?", [$newStatus, $domainId]);
         exec_query(
             '
-                UPDATE subdomain_alias INNER JOIN domain_aliasses USING(alias_id) SET subdomain_alias_status = ?
+                UPDATE subdomain_alias
+                JOIN domain_aliasses USING(alias_id)
+                SET subdomain_alias_status = ?
                 WHERE domain_id = ?
             ',
             [$newStatus, $domainId]
@@ -494,8 +510,11 @@ function sql_delete_user($dmnId, $userId)
 
     $stmt = exec_query(
         '
-            SELECT sqlu_name, sqlu_host, sqld_name FROM sql_user INNER JOIN sql_database USING(sqld_id)
-            WHERE sqlu_id = ? AND domain_id = ?
+            SELECT sqlu_name, sqlu_host, sqld_name
+            FROM sql_user
+            JOIN sql_database USING(sqld_id)
+            WHERE sqlu_id = ?
+            AND domain_id = ?
         ',
         [$userId, $dmnId]
     );
@@ -567,7 +586,7 @@ function delete_sql_database($dmnId, $dbId)
     ]);
 
     $stmt = exec_query(
-        'SELECT sqlu_id FROM sql_user INNER JOIN sql_database USING(sqld_id) WHERE sqld_id = ? AND domain_id = ?',
+        'SELECT sqlu_id FROM sql_user JOIN sql_database USING(sqld_id) WHERE sqld_id = ? AND domain_id = ?',
         [$dbId, $dmnId]
     );
 
@@ -603,7 +622,9 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 
     // Get username, uid and gid of domain user
     $query = '
-        SELECT admin_name, created_by, domain_id FROM admin INNER JOIN domain ON(domain_admin_id = admin_id)
+        SELECT admin_name, created_by, domain_id
+        FROM admin
+        JOIN domain ON(domain_admin_id = admin_id)
         WHERE admin_id = ?
     ';
 
@@ -1770,7 +1791,8 @@ function shared_getCustomerStats($adminId)
               IFNULL(domain_traffic_limit, 0) AS monthly_traffic_limit,
               IFNULL(domain_disk_limit, 0) AS diskspace_limit,
               admin_name
-            FROM domain INNER JOIN admin on(admin_id = domain_admin_id)
+            FROM domain
+            JOIN admin on(admin_id = domain_admin_id)
             WHERE domain_admin_id = ? ORDER BY domain_name
         ',
         $adminId

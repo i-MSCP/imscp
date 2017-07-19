@@ -139,7 +139,7 @@ sub _loadData
                         GROUP BY dmn_id
                     ), '') AS users) AS t1
                 ) AS t2
-                INNER JOIN domain AS t3 ON (t2.dmn_id = t3.domain_id)
+                JOIN domain AS t3 ON (t2.dmn_id = t3.domain_id)
                 WHERE id = ?
             ",
             undef, $htgroupId, $htgroupId

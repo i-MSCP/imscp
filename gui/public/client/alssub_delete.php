@@ -42,8 +42,10 @@ $id = clean_input($_GET['id']);
 $stmt = exec_query(
     "
         SELECT t1.subdomain_alias_id, CONCAT(t1.subdomain_alias_name, '.', t2.alias_name) AS subdomain_alias_name
-        FROM subdomain_alias AS t1 INNER JOIN domain_aliasses AS t2 ON (t2.alias_id = t1.alias_id)
-        WHERE t2.domain_id = ? AND t1.subdomain_alias_id = ?
+        FROM subdomain_alias AS t1
+        JOIN domain_aliasses AS t2 ON(t2.alias_id = t1.alias_id)
+        WHERE t2.domain_id = ?
+        AND t1.subdomain_alias_id = ?
     ",
     [get_user_domain_id($_SESSION['user_id']), $id]
 );

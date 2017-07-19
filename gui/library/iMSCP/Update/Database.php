@@ -1476,8 +1476,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 
                 $subdomainAliases = exec_query(
                     '
-                        SELECT subdomain_alias_id FROM subdomain_alias INNER JOIN domain_aliasses USING(alias_id)
-                        WHERE domain_id = ? AND subdomain_alias_status <> ?
+                        SELECT subdomain_alias_id
+                        FROM subdomain_alias
+                        JOIN domain_aliasses USING(alias_id)
+                        WHERE domain_id = ?
+                        AND subdomain_alias_status <> ?
                     ',
                     [$domain['domain_id'], 'todelete']
                 );

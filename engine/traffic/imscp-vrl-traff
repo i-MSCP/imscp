@@ -67,14 +67,14 @@ sub run
 
            SELECT domain_id AS upper_domain_id, CONCAT(subdomain_name, '.', domain_name)
            FROM subdomain
-           INNER JOIN domain USING (domain_id)
+           JOIN domain USING (domain_id)
            WHERE subdomain_status <> 'todelete'
 
            UNION ALL
 
            SELECT domain_id AS upper_domain_id, CONCAT(subdomain_alias_name, '.', alias_name)
            FROM subdomain_alias
-           INNER JOIN domain_aliasses USING (alias_id)
+           JOIN domain_aliasses USING (alias_id)
            WHERE subdomain_alias_status <> 'todelete'
        "
     );

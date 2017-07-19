@@ -580,24 +580,22 @@ sub _buildDHparametersFile
 
             if (iMSCP::ProgramFinder::find('certtool')) {
                 $tmpFile = File::Temp->new( UNLINK => 0 );
-                $cmd = "certtool --generate-dh-params --sec-param medium > $tmpFile";
+                $cmd = "certtool --generate-dh-params --sec-param high > $tmpFile";
             } else {
-                $cmd = 'DH_BITS=2048 mkdhparams';
+                $cmd = 'DH_BITS=3072 mkdhparams';
             }
 
-            my $stderr;
-            my $rs = executeNoWait(
-                $cmd,
-                (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                    ? undef : sub {
-                        next if $_[0] =~ /^[.+]/;
-                        step( undef, "Generating DH parameter file\n\n$_[0]", 1, 1 );
-                    }
-                ),
-                sub { $stderr .= $_[0] }
-            );
-            error( $stderr || 'Unknown error' ) if $rs;
+            my $output = '';
+            my $outputHandler = sub {
+                next if $_[0] =~ /^[.+]/;
+                $output .= $_[0];
+                step( undef, "Generating DH parameter file\n\n$output", 1, 1 );
+            };
 
+            my $rs = executeNoWait(
+                $cmd, (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : $outputHandler), $outputHandler
+            );
+            error( $output || 'Unknown error') if $rs;
             $rs ||= iMSCP::File->new( filename => $tmpFile->filename )->moveFile(
                 "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem"
             ) if $tmpFile;

@@ -146,7 +146,7 @@ function client_addCatchall($itemId)
                         "
                             SELECT domain_id, CONCAT(subdomain_name, '.', domain_name) AS subdomain_name
                             FROM subdomain
-                            INNER JOIN domain USING(domain_id)
+                            JOIN domain USING(domain_id)
                             WHERE subdomain_id = ?
                         ",
                         $itemId
@@ -166,7 +166,7 @@ function client_addCatchall($itemId)
                         "
                             SELECT domain_id, CONCAT(subdomain_alias_name, '.', alias_name) AS subdomain_alias_name
                             FROM subdomain_alias
-                            INNER JOIN domain_aliasses USING(alias_id)
+                            JOIN domain_aliasses USING(alias_id)
                             WHERE subdomain_alias_id = ?
                         ",
                         $itemId
@@ -267,7 +267,7 @@ function client_generatePage($tpl, $id)
                 '
                     SELECT mail_id, mail_type, domain_name, mail_acc
                     FROM mail_users
-                    INNER JOIN domain USING(domain_id)
+                    JOIN domain USING(domain_id)
                     WHERE domain_id = ?
                     AND sub_id = ?
                     AND status = ?
@@ -309,7 +309,7 @@ function client_generatePage($tpl, $id)
                 "
                     SELECT mail_id, mail_type, alias_name, mail_acc
                     FROM mail_users
-                    INNER JOIN domain_aliasses ON(sub_id = alias_id)
+                    JOIN domain_aliasses ON(sub_id = alias_id)
                     WHERE mail_users.domain_id = ?
                     AND alias_id = ?
                     AND mail_type LIKE 'alias_%'
@@ -354,8 +354,8 @@ function client_generatePage($tpl, $id)
                 "
                     SELECT mail_id, mail_type, CONCAT(subdomain_name, '.', domain_name) AS subdomain_name, mail_acc
                     FROM mail_users
-                    INNER JOIN subdomain ON(sub_id = subdomain_id)
-                    INNER JOIN domain ON(subdomain.domain_id = domain.domain_id)
+                    JOIN subdomain ON(sub_id = subdomain_id)
+                    JOIN domain ON(subdomain.domain_id = domain.domain_id)
                     WHERE mail_users.domain_id = ?
                     AND subdomain_id = ?
                     AND mail_type LIKE 'subdom_%'
@@ -398,8 +398,8 @@ function client_generatePage($tpl, $id)
                 "
                     SELECT mail_id, mail_type, CONCAT(subdomain_alias_name, '.', alias_name) AS subdomain_name, mail_acc
                     FROM mail_users
-                    INNER JOIN subdomain_alias ON(sub_id = subdomain_alias_id)
-                    INNER JOIN domain_aliasses USING(alias_id)
+                    JOIN subdomain_alias ON(sub_id = subdomain_alias_id)
+                    JOIN domain_aliasses USING(alias_id)
                     WHERE mail_users.domain_id = ?
                     AND subdomain_alias_id = ?
                     AND mail_type LIKE 'alssub_%'

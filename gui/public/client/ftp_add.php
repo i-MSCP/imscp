@@ -100,8 +100,9 @@ function getDomainList($mainDmnName, $mainDmnId, $dmnType = 'dmn')
             $query = "
                 SELECT CONCAT(t2.subdomain_alias_name, '.', t1.alias_name) AS name
                 FROM domain_aliasses AS t1
-                INNER JOIN subdomain_alias AS t2 ON(t2.alias_id = t1.alias_id)
-                WHERE t1.domain_id = ? AND t2.subdomain_alias_status = ?
+                JOIN subdomain_alias AS t2 ON(t2.alias_id = t1.alias_id)
+                WHERE t1.domain_id = ?
+                AND t2.subdomain_alias_status = ?
             ";
             break;
         default:

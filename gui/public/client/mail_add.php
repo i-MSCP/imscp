@@ -44,7 +44,7 @@ function _client_getDomainsList()
             "
               SELECT CONCAT(t1.subdomain_name, '.', t2.domain_name) AS name, t1.subdomain_id AS id,'sub' AS type
               FROM subdomain AS t1
-              INNER JOIN domain AS t2 USING(domain_id)
+              JOIN domain AS t2 USING(domain_id)
               WHERE t1.domain_id = :domain_id
               AND t1.subdomain_status = :status_ok
               UNION
@@ -56,7 +56,7 @@ function _client_getDomainsList()
               SELECT CONCAT(t1.subdomain_alias_name, '.', t2.alias_name) AS name, t1.subdomain_alias_id AS id,
                 'alssub' AS type
               FROM subdomain_alias AS t1
-              INNER JOIN domain_aliasses AS t2 USING(alias_id)
+              JOIN domain_aliasses AS t2 USING(alias_id)
               WHERE t2.domain_id = :domain_id
               AND subdomain_alias_status = :status_ok
           ",

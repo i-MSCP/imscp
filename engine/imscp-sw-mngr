@@ -88,7 +88,7 @@ sub sw_mngr_engine
 			`admin_sys_uid`, `admin_sys_gid`, `domain_name`
 		FROM
 			`admin`
-		INNER JOIN
+		JOIN
 			`domain` ON(`domain_admin_id` = `admin_id`)
 		WHERE
 			`domain_id` = $sw_domain_id

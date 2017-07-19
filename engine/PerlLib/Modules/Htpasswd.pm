@@ -122,8 +122,10 @@ sub _loadData
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         my $row = $self->{'_dbh'}->selectrow_hashref(
             '
-                SELECT t1.uname, t1.upass, t1.status, t1.id, t2.domain_name, t2.domain_admin_id, t2.web_folder_protection
-                FROM htaccess_users AS t1 INNER JOIN domain AS t2 ON (t1.dmn_id = t2.domain_id)
+                SELECT t1.uname, t1.upass, t1.status, t1.id, t2.domain_name, t2.domain_admin_id,
+                    t2.web_folder_protection
+                FROM htaccess_users AS t1
+                JOIN domain AS t2 ON (t1.dmn_id = t2.domain_id)
                 WHERE t1.id = ?
             ',
             undef, $htuserId

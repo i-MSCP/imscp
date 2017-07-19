@@ -41,8 +41,8 @@ function _reseller_getAliasData($domainAliasId)
                 SELECT t1.alias_name, t1.alias_mount, t1.alias_document_root, t1.url_forward, t1.type_forward,
                   t1.host_forward, t2.domain_id
                 FROM domain_aliasses AS t1
-                INNER JOIN domain AS t2 USING(domain_id)
-                INNER JOIN admin AS t3 ON(admin_id = domain_admin_id)
+                JOIN domain AS t2 USING(domain_id)
+                JOIN admin AS t3 ON(admin_id = domain_admin_id)
                 WHERE t1.alias_id = ?
                 AND t1.alias_status = ?
                 AND t3.created_by = ?

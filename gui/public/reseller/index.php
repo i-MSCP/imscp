@@ -58,9 +58,12 @@ function reseller_generateOrdersAliasesMessage()
 {
     $stmt = exec_query(
         '
-            SELECT COUNT(alias_id) AS cnt FROM domain_aliasses
-            INNER JOIN domain USING(domain_id) INNER JOIN admin ON(admin_id = domain_admin_id)
-            WHERE alias_status = ? AND created_by = ?
+            SELECT COUNT(alias_id) AS cnt
+            FROM domain_aliasses
+            JOIN domain USING(domain_id)
+            JOIN admin ON(admin_id = domain_admin_id)
+            WHERE alias_status = ?
+            AND created_by = ?
         ',
         ['ordered', $_SESSION['user_id']]
     );
