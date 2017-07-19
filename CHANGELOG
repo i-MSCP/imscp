@@ -21,12 +21,15 @@ FRONTEND
     Fixed: Several integer type casting issues
     Review: Make usage of short syntax for arrays
 
-SCRIPTS
-    Removed: Explicite unlocking of locked files -- Files are automatically unlocked
-
 INSTALLER
     Fixed: Hide notice about user/group changes (Courier)
     Fixed: Missing LOGROTATE(8) configuration file for RSYSLOGD(8) (Debian 9/Stretch; Ubuntu 16.04/Xenial)
+    
+PACKAGES
+    Fixed: Can't locate Package/FileManager/Net2FTP/Net2FTP.pm when upgrading from some older versions (Package::FileManager)
+
+SCRIPTS
+    Removed: Explicite unlocking of locked files -- Files are automatically unlocked
 
 SERVICES
     Fixed: MOUNT(2) operation failures are ignored (imscp_mountall)

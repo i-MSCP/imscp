@@ -122,9 +122,11 @@ sub preinstall
         ? $main::imscpOldConfig{'FILEMANAGER_ADDON'} # backward compatibility with 1.1.x Serie (upgrade process)
         : $main::imscpOldConfig{'FILEMANAGER_PACKAGE'};
 
-    # Ensure backward compatibility (See #IP-1249)
+    # Ensure backward compatibility
     if ($oldPackage eq 'AjaXplorer') {
         $oldPackage = 'Pydio';
+    } elsif ($oldPackage eq 'Net2FTP') {
+        $oldPackage = 'Net2ftp';
     }
 
     my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
@@ -185,7 +187,6 @@ sub uninstall
     return 0 unless $package;
 
     # Ensure backward compatibility (See #IP-1249)
-    $package = 'Pydio' if $package eq 'AjaXplorer';
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
     if ($@) {
