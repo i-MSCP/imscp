@@ -460,6 +460,7 @@ sub _setupVlogger
     my $oldUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'};
     my $pass = randomStr(16, iMSCP::Crypt::ALNUM);
 
+    my $db = iMSCP::Database->factory( );
     my $rs = main::setupImportSqlSchema( $db, "$self->{'apacheCfgDir'}/vlogger.sql" );
     return $rs if $rs;
 
