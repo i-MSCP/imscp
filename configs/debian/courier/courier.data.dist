@@ -21,7 +21,7 @@ SASL_CONF_DIR = /etc/postfix/sasl
 PWCHECK_METHOD= authdaemon
 LOG_LEVEL = 2
 MECH_LIST = plain login
-AUTHDAEMON_PATH = var/run/authdaemon/socket
+AUTHDAEMON_PATH = /var/run/courier/authdaemon/socket
 
 # Maildrop
 QUOTA_WARN_MSG_PATH = /etc/quotawarnmsg

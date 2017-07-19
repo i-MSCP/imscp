@@ -194,7 +194,7 @@ sub setEnginePermissions
         $rs ||= setRights(
             $self->{'config'}->{'AUTHLIB_SOCKET_DIR'},
             {
-                user  => $self->{'config'}->{'AUTHDAEMON_USER'},
+                user  => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'}, # Else, maildrop won't be able to connect
                 group => $self->{'config'}->{'AUTHDAEMON_GROUP'},
                 mode  => '0750'
             }
