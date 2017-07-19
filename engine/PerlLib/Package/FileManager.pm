@@ -186,7 +186,6 @@ sub uninstall
     $package ||= $main::imscpConfig{'FILEMANAGER_PACKAGE'};
     return 0 unless $package;
 
-    # Ensure backward compatibility (See #IP-1249)
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
     if ($@) {
