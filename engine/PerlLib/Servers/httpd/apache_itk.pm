@@ -358,7 +358,7 @@ sub disableDmn
             HTTPD_LOG_DIR   => $self->{'config'}->{'HTTPD_LOG_DIR'},
             USER_WEB_DIR    => $main::imscpConfig{'USER_WEB_DIR'},
             SERVER_ALIASES  => "www.$data->{'DOMAIN_NAME'}".($main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'}
-                ? " $data->{'ALIAS'}.$main::imscpConfig{'BASE_SERVER_VHOST'}'" : ''
+                ? " $data->{'ALIAS'}.$main::imscpConfig{'BASE_SERVER_VHOST'}" : ''
             )
         }
     );
@@ -1516,7 +1516,7 @@ sub _addCfg
             HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
             HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
             SERVER_ALIASES         => "www.$data->{'DOMAIN_NAME'}".($main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'}
-                ? " $data->{'ALIAS'}.$main::imscpConfig{'BASE_SERVER_VHOST'}'" : ''
+                ? " $data->{'ALIAS'}.$main::imscpConfig{'BASE_SERVER_VHOST'}" : ''
             )
         }
     );

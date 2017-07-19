@@ -1530,7 +1530,7 @@ sub _addCfg
             HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
             PHP_FCGI_STARTER_DIR   => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'},
             SERVER_ALIASES  => "www.$data->{'DOMAIN_NAME'}".($main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'}
-                ? " $data->{'ALIAS'}.$main::imscpConfig{'BASE_SERVER_VHOST'}'" : ''
+                ? " $data->{'ALIAS'}.$main::imscpConfig{'BASE_SERVER_VHOST'}" : ''
             )
         }
     );

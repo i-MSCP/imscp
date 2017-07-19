@@ -42,6 +42,7 @@ SERVERS
     Fixed: Couldn't generate /etc/courier/dhparams.pem file: Unknown security parameter string: 2048 (Courier)
     Fixed: SASL authentication failure: cannot connect to courier-authdaemon: No such file or directory (Postfix/Cyrus-SASL)
     Fixed: Several warnings raised by POSTFIX(1) when files located inside its directories are not owned by the `postfix' user (Postfix)
+    Fixed: Unwanted leading character in server alias names - Alternative URLs feature (httpd servers)
 
 VENDOR
     Updated: Zend Framework libraries to version 1.12.20
