@@ -194,7 +194,7 @@ sub setEnginePermissions
         $rs ||= setRights(
             $self->{'config'}->{'AUTHLIB_SOCKET_DIR'},
             {
-                user  => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+                user  => $self->{'config'}->{'AUTHDAEMON_USER'},
                 group => $self->{'config'}->{'AUTHDAEMON_GROUP'},
                 mode  => '0750'
             }
@@ -225,7 +225,7 @@ sub setEnginePermissions
             "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem",
             {
                 user  => $self->{'config'}->{'AUTHDAEMON_USER'},
-                group => $main::imscpConfig{'ROOT_GROUP'},
+                group => $self->{'config'}->{'AUTHDAEMON_GROUP'},
                 mode  => '0600'
             }
         );

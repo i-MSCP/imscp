@@ -139,7 +139,9 @@ sub _removeConfig
 
     # Umount authdaemond socket directory from Postfix chroot
 
-    my $fsFile = File::Spec->canonpath( "$self->{'mta'}->{'config'}->{'POSTFIX_QUEUE_DIR'}/private/authdaemon" );
+    my $fsFile = File::Spec->canonpath(
+        "$self->{'mta'}->{'config'}->{'POSTFIX_QUEUE_DIR'}/$self->{'config'}->{'AUTHLIB_SOCKET_DIR'}"
+    );
     my $rs = removeMountEntry( qr%.*?[ \t]+\Q$fsFile\E(?:/|[ \t]+)[^\n]+% );
     $rs ||= umount( $fsFile );
     return $rs if $rs;

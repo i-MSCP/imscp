@@ -34,13 +34,13 @@ use iMSCP::Debug;
 use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ execute executeNoWait /;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::Mount qw/ addMountEntry mount isMountpoint /;
+use iMSCP::Mount qw/ addMountEntry isMountpoint mount umount /;
 use iMSCP::ProgramFinder;
 use iMSCP::Stepper;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ process replaceBloc /;
 use iMSCP::Umask;
 use Servers::mta::postfix;
 use Servers::po::courier;
@@ -168,7 +168,7 @@ sub install
 
     my $rs = $self->_setupAuthdaemonSqlUser( );
     $rs ||= $self->_buildConf( );
-    $rs ||= $self->_setupCyrusSASL( );
+    $rs ||= $self->_setupSASL( );
     $rs ||= $self->_migrateFromDovecot( );
     $rs ||= $self->_oldEngineCompatibility( );
 }
@@ -478,19 +478,20 @@ EOF
     0;
 }
 
-=item _setupCyrusSASL( )
+=item _setupSASL( )
 
- Setup Cyrus SASL for Postfix
+ Setup SASL for Postfix
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _setupCyrusSASL
+sub _setupSASL
 {
     my ($self) = @_;
 
-    # Add postfix user in authdaemon group
+    # Add postfix user in authdaemon group to make it able to access
+    # authdaemon rundir
 
     my $rs = iMSCP::SystemUser->new( )->addToGroup(
         $self->{'config'}->{'AUTHDAEMON_GROUP'}, $self->{'mta'}->{'config'}->{'POSTFIX_USER'}
@@ -498,15 +499,17 @@ sub _setupCyrusSASL
     return $rs if $rs;
 
     # Mount authdaemond socket directory in Postfix chroot
-
+    # Postfix won't be able to connect to socket located outside of its chroot
     my $fsSpec = File::Spec->canonpath( $self->{'config'}->{'AUTHLIB_SOCKET_DIR'} );
-    my $fsFile = File::Spec->canonpath( "$self->{'mta'}->{'config'}->{'POSTFIX_QUEUE_DIR'}/private/authdaemon" );
+    my $fsFile = File::Spec->canonpath(
+        "$self->{'mta'}->{'config'}->{'POSTFIX_QUEUE_DIR'}/$self->{'config'}->{'AUTHLIB_SOCKET_DIR'}"
+    );
     my $fields = { fs_spec => $fsSpec, fs_file => $fsFile, fs_vfstype => 'none', fs_mntops => 'bind,slave' };
     iMSCP::Dir->new( dirname => $fsFile )->make( );
     $rs = addMountEntry( "$fields->{'fs_spec'} $fields->{'fs_file'} $fields->{'fs_vfstype'} $fields->{'fs_mntops'}" );
     $rs ||= mount( $fields ) unless isMountpoint( $fields->{'fs_file'} );
 
-    # Build SASL smtpd.conf configuration file
+    # Build Cyrus SASL smtpd.conf configuration file
 
     $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'courier', 'smtpd.conf', \ my $cfgTpl );
     return $rs if $rs;
@@ -518,6 +521,16 @@ sub _setupCyrusSASL
             return 1;
         }
     }
+
+    $cfgTpl = process(
+        {
+            PWCHECK_METHOD  => $self->{'config'}->{'PWCHECK_METHOD'},
+            LOG_LEVEL       => $self->{'config'}->{'LOG_LEVEL'},
+            MECH_LIST       => $self->{'config'}->{'MECH_LIST'},
+            AUTHDAEMON_PATH => $self->{'config'}->{'AUTHDAEMON_PATH'}
+        },
+        $cfgTpl
+    );
 
     local $UMASK = 027; # smtpd.conf file must not be created/copied world-readable
 
@@ -531,7 +544,7 @@ sub _setupCyrusSASL
 
 =item _buildDHparametersFile( )
 
- Build a DH parameters file with a stronger size (2048 instead of 768)
+ Build the DH parameters file with a stronger size (2048 instead of 768)
 
  Fix: #IP-1401
  Return int 0 on success, other on failure
@@ -542,7 +555,7 @@ sub _buildDHparametersFile
 {
     my ($self) = @_;
 
-    return 0 unless iMSCP::ProgramFinder::find( 'mkdhparams' );
+    return 0 unless iMSCP::ProgramFinder::find( 'certtool' ) || iMSCP::ProgramFinder::find( 'mkdhparams' );
 
     if (-f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem") {
         my $rs = execute(
@@ -560,13 +573,36 @@ sub _buildDHparametersFile
     }
 
     startDetail( );
+
     my $rs = step(
         sub {
-            my $rs = execute( 'DH_BITS=2048 mkdhparams', \ my $stdout, \ my $stderr );
-            debug( $stdout ) if $stdout;
+            my ($tmpFile, $cmd);
+
+            if (iMSCP::ProgramFinder::find('certtool')) {
+                $tmpFile = File::Temp->new( UNLINK => 0 );
+                $cmd = "certtool --generate-dh-params --sec-param medium > $tmpFile";
+            } else {
+                $cmd = 'DH_BITS=2048 mkdhparams';
+            }
+
+            my $stderr;
+            my $rs = executeNoWait(
+                $cmd,
+                (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
+                    ? undef : sub {
+                        next if $_[0] =~ /^[.+]/;
+                        step( undef, "Generating DH parameter file\n\n$_[0]", 1, 1 );
+                    }
+                ),
+                sub { $stderr .= $_[0] }
+            );
             error( $stderr || 'Unknown error' ) if $rs;
+
+            $rs ||= iMSCP::File->new( filename => $tmpFile->filename )->moveFile(
+                "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem"
+            ) if $tmpFile;
             $rs;
-        }, 'Generating DH parameter file. Please be patient...', 1, 1
+        }, 'Generating DH parameter file', 1, 1
     );
     endDetail( );
     $rs;
@@ -623,33 +659,33 @@ sub _buildSslConfFiles
 {
     my ($self) = @_;
 
-    return 0 unless main::setupGetQuestion( 'SERVICES_SSL_ENABLED' ) eq 'yes';
+    return 0 unless main::setupGetQuestion( 'SERVICES_SSL_ENABLED', 'no' ) eq 'yes';
 
-    for my $conffile($self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
-        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'courier', $conffile, \ my $cfgTpl, { } );
+    for ($self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
+        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'courier', $_, \ my $cfgTpl, { } );
         return $rs if $rs;
 
         unless (defined $cfgTpl) {
-            $cfgTpl = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$conffile" )->get( );
+            $cfgTpl = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$_" )->get( );
             unless (defined $cfgTpl) {
-                error( sprintf( "Couldn't read %s file", "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$conffile" ) );
+                error( sprintf( "Couldn't read %s file", "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$_" ) );
                 return 1;
             }
         }
 
-        $rs = $self->{'eventManager'}->trigger( 'beforePoBuildSslConfFile', \ $cfgTpl, $conffile );
+        $rs = $self->{'eventManager'}->trigger( 'beforePoBuildSslConfFile', \ $cfgTpl, $_ );
         return $rs if $rs;
 
-        if ($cfgTpl =~ /^TLS_CERTFILE=/gms) {
-            $cfgTpl =~ s!^TLS_CERTFILE=.*$!TLS_CERTFILE=$main::imscpConfig{'CONF_DIR'}/imscp_services.pem!gm;
+        if ($cfgTpl =~ /^TLS_CERTFILE=/gm) {
+            $cfgTpl =~ s!^(TLS_CERTFILE=).*!$1$main::imscpConfig{'CONF_DIR'}/imscp_services.pem!gm;
         } else {
-            $cfgTpl .= "TLS_CERTFILE=$main::imscpConfig{'CONF_DIR'}/imscp_services.pem";
+            $cfgTpl .= "TLS_CERTFILE=$main::imscpConfig{'CONF_DIR'}/imscp_services.pem\n";
         }
 
-        $rs = $self->{'eventManager'}->trigger( 'afterPoBuildSslConfFile', \ $cfgTpl, $conffile );
+        $rs = $self->{'eventManager'}->trigger( 'afterPoBuildSslConfFile', \ $cfgTpl, $_ );
         return $rs if $rs;
 
-        my $file = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$conffile" );
+        my $file = iMSCP::File->new( filename => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$_" );
         $file->set( $cfgTpl );
 
         $rs = $file->save( );
@@ -733,6 +769,14 @@ sub _oldEngineCompatibility
         error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
     }
+
+    # Remove older authdaemond socket directory from Postfix chroot
+
+    my $fsFile = File::Spec->canonpath( "$self->{'mta'}->{'config'}->{'POSTFIX_QUEUE_DIR'}/private/authdaemon" );
+    $rs ||= umount( $fsFile );
+    return $rs if $rs;
+
+    iMSCP::Dir->new( dirname => $fsFile )->remove( );
 
     $self->{'eventManager'}->trigger( 'afterPodOldEngineCompatibility' );
 }
