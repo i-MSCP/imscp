@@ -580,9 +580,9 @@ sub _buildDHparametersFile
 
             if (iMSCP::ProgramFinder::find('certtool')) {
                 $tmpFile = File::Temp->new( UNLINK => 0 );
-                $cmd = "certtool --generate-dh-params --sec-param high > $tmpFile";
+                $cmd = "certtool --generate-dh-params --sec-param medium > $tmpFile";
             } else {
-                $cmd = 'DH_BITS=3072 mkdhparams';
+                $cmd = 'DH_BITS=2048 mkdhparams';
             }
 
             my $output = '';
