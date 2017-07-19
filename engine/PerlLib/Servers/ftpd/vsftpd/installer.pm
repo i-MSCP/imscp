@@ -317,7 +317,7 @@ sub _setupDatabase
         # Give required privileges to this SQL user
         # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
         my $quotedDbName = $dbh->quote_identifier( $dbName );
-        $db->do( "GRANT SELECT ON $quotedDbName.ftp_users TO ?\@?", undef, $dbUser, $dbUserHost );
+        $dbh->do( "GRANT SELECT ON $quotedDbName.ftp_users TO ?\@?", undef, $dbUser, $dbUserHost );
     };
     if ($@) {
         error( $@ );
