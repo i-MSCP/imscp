@@ -47,7 +47,7 @@ start)
 	fi
 	if [ ! -d "$rundir" ]; then
 		mkdir -m 0750 $rundir
-		chown vmail:daemon $rundir
+		chown daemon:mail $rundir
 		# set file context for SELinux (#668564)
 		[ -x /sbin/restorecon ] && /sbin/restorecon $rundir
 	fi

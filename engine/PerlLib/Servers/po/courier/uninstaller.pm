@@ -137,8 +137,7 @@ sub _removeConfig
 {
     my ($self) = @_;
 
-    # Umount authdaemond socket directory from Postfix chroot
-
+    # Umount the courier-authdaemond rundir from the Postfix chroot
     my $fsFile = File::Spec->canonpath(
         "$self->{'mta'}->{'config'}->{'POSTFIX_QUEUE_DIR'}/$self->{'config'}->{'AUTHLIB_SOCKET_DIR'}"
     );
@@ -148,15 +147,13 @@ sub _removeConfig
 
     iMSCP::Dir->new( dirname => $fsFile )->remove( );
 
-    # Remove postfix user from authdaemon group
-
+    # Remove the `postfix' user from the `mail' group
     $rs = iMSCP::SystemUser->new( )->removeFromGroup(
-        $self->{'config'}->{'AUTHDAEMON_GROUP'}, $self->{'mta'}->{'config'}->{'POSTFIX_USER'}
+        $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}, $self->{'mta'}->{'config'}->{'POSTFIX_USER'}
     );
     return $rs if $rs;
 
-    # Remove i-MSCP configuration stanza from courier imap daemon configuration file
-
+    # Remove i-MSCP configuration stanza from the courier-imap daemon configuration file
     if (-f "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd") {
         my $file = iMSCP::File->new( filename => "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd" );
         my $fileContent = $file->get( );
@@ -180,22 +177,19 @@ sub _removeConfig
         return $rs if $rs;
     }
 
-    # Remove SALS configuration file
-
+    # Remove the configuration file for SASL
     if (-f "$self->{'config'}->{'SASL_CONF_DIR'}/smtpd.conf") {
         $rs = iMSCP::File->new( filename => "$self->{'config'}->{'SASL_CONF_DIR'}/smtpd.conf" )->delFile( );
         return $rs if $rs;
     }
 
-    # Remove systemd-tmpfiles
-
+    # Remove the systemd-tmpfiles file
     if (-f '/etc/tmpfiles.d/courier-authdaemon.conf') {
         $rs = iMSCP::File->new( filename => '/etc/tmpfiles.d/courier-authdaemon.conf' )->delFile( );
         return $rs if $rs;
     }
 
-    # Remove quota warning script
-
+    # Remove the quota warning script
     if (-f $self->{'config'}->{'QUOTA_WARN_MSG_PATH'}) {
         $rs = iMSCP::File->new( filename => $self->{'config'}->{'QUOTA_WARN_MSG_PATH'} )->delFile( );
         return $rs if $rs;

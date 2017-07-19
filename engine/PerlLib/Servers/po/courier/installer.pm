@@ -40,6 +40,7 @@ use iMSCP::Getopt;
 use iMSCP::Mount qw/ addMountEntry isMountpoint mount umount /;
 use iMSCP::ProgramFinder;
 use iMSCP::Stepper;
+use iMSCP::SystemUser;
 use iMSCP::TemplateParser qw/ process replaceBloc /;
 use iMSCP::Umask;
 use Servers::mta::postfix;
@@ -490,11 +491,10 @@ sub _setupSASL
 {
     my ($self) = @_;
 
-    # Add postfix user in authdaemon group to make it able to access
+    # Add postfix user in `mail' group to make it able to access
     # authdaemon rundir
-
     my $rs = iMSCP::SystemUser->new( )->addToGroup(
-        $self->{'config'}->{'AUTHDAEMON_GROUP'}, $self->{'mta'}->{'config'}->{'POSTFIX_USER'}
+        $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}, $self->{'mta'}->{'config'}->{'POSTFIX_USER'}
     );
     return $rs if $rs;
 
@@ -768,12 +768,18 @@ sub _oldEngineCompatibility
         return $rs if $rs;
     }
 
-    # Remove older authdaemond socket directory from Postfix chroot
+    # Remove postfix user from authdaemon group.
+    # It is now added in mail group (since 1.4.8)
+    $rs = iMSCP::SystemUser->new( )->removeFromGroup(
+        $self->{'config'}->{'AUTHDAEMON_GROUP'}, $self->{'mta'}->{'config'}->{'POSTFIX_USER'}
+    );
+    return $rs if $rs;
 
+    # Remove old authdaemon socket private/authdaemon mount directory.
+    # Replaced by var/run/courier/authdaemon (since 1.4.8)
     my $fsFile = File::Spec->canonpath( "$self->{'mta'}->{'config'}->{'POSTFIX_QUEUE_DIR'}/private/authdaemon" );
     $rs ||= umount( $fsFile );
     return $rs if $rs;
-
     iMSCP::Dir->new( dirname => $fsFile )->remove( );
 
     $self->{'eventManager'}->trigger( 'afterPodOldEngineCompatibility' );

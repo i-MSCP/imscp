@@ -250,7 +250,7 @@ sub addToGroup
     0;
 }
 
-=item addToGroup( [ $groupname = $self->{'groupname'} [, $username = $self->{'username'} ] ] )
+=item removeFromGroup( [ $groupname = $self->{'groupname'} [, $username = $self->{'username'} ] ] )
 
  Remove given UNIX user from the given UNIX group
 

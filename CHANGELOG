@@ -33,10 +33,12 @@ SERVICES
     Review: Rotate log files on a daily basis instead of a weekly basis for faster processing (Mail service log files)
 
 SERVERS
-    Changed: Mount authdaemon rundir on var/run/courier/authdaemon instead of private/authdaemon (Postfix/Cyrus-SASL)
+    Changed: Mount courier-authdaemon rundir on var/run/courier/authdaemon instead of private/authdaemon (Postfix/Cyrus-SASL)
+    Changed: The `postfix' user is now added in the `mail' group instead of the `daemon' group (Postfix/Cyrus-SASL)
+    Changed: The ownership for the /var/run/courier/authdaemon directory is now `daemon:mail' (courier-authdaemon)
     Fixed: Couldn't generate /etc/courier/dhparams.pem file: Unknown security parameter string: 2048 (Courier)
-    Fixed: SASL authentication failure: cannot connect to Courier authdaemond: No such file or directory (Postfix/Cyrus-SASL)
-    Fixed: Several warnings raised by postfix when files located inside its directories are not owned by `postfix' user (Postfix)
+    Fixed: SASL authentication failure: cannot connect to courier-authdaemon: No such file or directory (Postfix/Cyrus-SASL)
+    Fixed: Several warnings raised by POSTFIX(1) when files located inside its directories are not owned by the `postfix' user (Postfix)
 
 VENDOR
     Updated: Zend Framework libraries to version 1.12.20
